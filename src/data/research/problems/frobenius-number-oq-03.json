@@ -1,0 +1,116 @@
+{
+    "slug": "frobenius-number-oq-03",
+    "title": "Frobenius Number — Three Generators with Explicit Formulas",
+    "phase": "OBSERVE",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "problemStatement": {
+        "formal": "\\text{For } a \\ge 2 \\text{ and } \\gcd(a, d) = 1: \\ g(a, a+d, a+2d) = \\left\\lfloor \\tfrac{a-2}{2} \\right\\rfloor \\cdot a + (a-1) \\cdot d \\ (\\text{Roberts 1956}).\\ \\text{Specialization } d=1:\\ g(n, n+1, n+2) = \\left\\lfloor \\tfrac{n-2}{2} \\right\\rfloor \\cdot n + (n-1)\\ \\text{for } n \\ge 3.",
+        "plain": "Extend the gallery's two-generator Frobenius proof to three generators. The general three-generator problem g(a, b, c) lacks a closed form (Selmer 1977 gave a polynomial-time algorithm, but no explicit formula). However, for STRUCTURED families like arithmetic progressions, three consecutive integers, Fibonacci triples, and Mersenne triples, explicit closed forms ARE known. This entry targets one or more of these special-family closed-form theorems for formalization in Lean, with three-consecutive integers as the natural starting point.",
+        "whyMatters": [
+            "Direct extension of the gallery's flagship 2-generator Frobenius result (frobenius-number-oq-01, verified): each successful 3-generator family adds a worked example to a gap in Mathlib's combinatorics coverage.",
+            "Numerical semigroups: the broader theory (Rosales–García-Sánchez monograph 2009) is essentially absent from Mathlib v4.26.0; this entry would seed the worked-examples library.",
+            "Concrete bridge from elementary number theory to combinatorics on words / Diophantine analysis: the Apéry-set machinery underlying the Roberts formula is the same machinery used in Selmer's polynomial algorithm and in extremal results on the Sylvester sum.",
+            "Catalogue of closed forms for parametric Frobenius families is mature in the literature (Ramírez Alfonsín OUP 2005 monograph collects 70+); a Lean-side translation will be useful both as a Mathlib contribution and as a teaching example."
+        ]
+    },
+    "knownResults": {
+        "proven": [
+            "Roberts (1956): For a ≥ 2 and gcd(a, d) = 1, g(a, a+d, a+2d) = ⌊(a-2)/2⌋·a + (a-1)·d. The k=1 specialization (3 consecutive integers) is g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1) for n ≥ 3.",
+            "Brauer (1942): Same formula for general k-AP — generalizes to g(a, a+d, …, a+kd) = ⌊(a-2)/k⌋·a + (a-1)·d for k ≥ 1, gcd(a,d)=1.",
+            "Selmer (1977): Polynomial-time algorithm for g(a, b, c) via Apéry sets, refined by Davison (1994), Killingbergtrø (2000), Beihoffer–Hendry–Nijenhuis–Wagon (2005).",
+            "Marín–Ramírez Alfonsín–Revuelta (2007): Closed form for Fibonacci triples g(F_k, F_{k+1}, F_{k+2}), with similar results for Tribonacci.",
+            "Brauer–Shockley (1962): General identity g(S) = max Ap(S, a) − a for any a ∈ S, with Ap(S, a) the Apéry set.",
+            "Ramírez Alfonsín (1996): The general k-generator Frobenius problem is NP-hard for k ≥ 4."
+        ],
+        "open": [
+            "g(a, b, c) for three arbitrary coprime integers — polynomial algorithm exists (Selmer) but no closed-form expression in elementary functions of (a, b, c).",
+            "Density and statistics of Frobenius numbers over random tuples (Aliev–Henk–Hinrichs 2011, …).",
+            "The Wilf conjecture: relates the Frobenius number, embedding dimension, and number of gaps of a numerical semigroup; open in general."
+        ],
+        "goal": "Add a fully verified Lean proof of at least one explicit-formula case for three generators. Minimum-viable target: three-consecutive integers, g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1) for n ≥ 3. Stretch target: the Roberts 3-AP formula."
+    },
+    "currentState": {
+        "phase": "OBSERVE",
+        "since": "2026-05-12T14:25:00.000Z",
+        "iteration": 1,
+        "focus": "S1 (researcher-4, 2026-05-12): OBSERVE survey establishing the formal target (Roberts-1956 closed-form for arithmetic-progression triples, specialized to three-consecutive integers as the cleanest sub-target), the literature map (Ramírez Alfonsín OUP 2005 monograph, Rosales–García-Sánchez Springer 2009, Roberts 1956, Brauer 1942, Selmer 1977, Marín–Ramírez Alfonsín–Revuelta 2007), and the Mathlib infrastructure gap (no numerical-semigroup theory in v4.26.0 at pinned rev 2df2f0150c). Direct numerical verification of g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1) for n ∈ {3, 4, 5, 6, 7} (all five match). No Lean code modified.",
+        "blockers": [],
+        "nextAction": "S2: Create new file proofs/Proofs/FrobeniusNumberOQ03.lean (~100 lines) containing the Representable3 a b c n := ∃ x y z : ℕ, n = a*x + b*y + c*z predicate and seven foundational closure lemmas (representable3_zero, representable3_a/b/c, representable3_add_a/b/c) — verbatim three-generator port of Proofs/FrobeniusNumber.lean lines 42–69. S3+ then introduces frobeniusNumber3 and the main theorem g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1).",
+        "attemptCounts": {
+            "total": 1,
+            "currentApproach": 1,
+            "approachesTried": 1
+        }
+    },
+    "knowledge": {
+        "progressSummary": "S1 (researcher-4, 2026-05-12): OBSERVE phase. Survey-only iteration establishing problem formalization target, Mathlib infrastructure map, and 6-stage decomposition. Direct numerical sanity table for n ∈ {3, …, 7} confirms the Roberts d=1 formula. Mathlib infrastructure absent (no NumericalSemigroup module); existing two-generator infrastructure in Proofs/FrobeniusNumber.lean ports directly to three generators with a single extra threaded variable. Literature mature (Ramírez Alfonsín 2005 monograph, Rosales–García-Sánchez 2009). 0 Lean files modified, 0 sorries, 0 axioms.",
+        "builtItems": [
+            "research/problems/frobenius-number-oq-03/problem.md (new, ~200 lines): formal statement, classification, Mathlib infrastructure map, literature and proof structure.",
+            "research/problems/frobenius-number-oq-03/knowledge.md (new, ~100 lines): S1 session note with numerical sanity table, Mathlib API checks at pinned rev 2df2f0150c.",
+            "research/problems/frobenius-number-oq-03/state.md (new, ~70 lines): phase OBSERVE, S2 next-action sketch with concrete Lean skeleton.",
+            "src/data/research/problems/frobenius-number-oq-03.json (this file, new, ~80 lines): seeker-selected slug populated with insights/mathlibGaps/nextSteps/references."
+        ],
+        "insights": [
+            "The three-consecutive-integers case g(n, n+1, n+2) for n ≥ 3 is the cleanest concrete target: it admits the Roberts d=1 closed form ⌊(n-2)/2⌋·n + (n-1), validated numerically for n ∈ {3, …, 7}.",
+            "Mathlib v4.26.0 has NO numerical-semigroup theory (verified via GitHub Contents API at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67): no NumericalSemigroup module, no Apéry-set lemmas, no Frobenius-number generalizations beyond frobeniusNumber_pair (two coprime generators).",
+            "The existing gallery infrastructure in Proofs/FrobeniusNumber.lean (310 lines, 15 theorems, 3 defs) ports verbatim to three generators with one extra threaded variable: Representable3 a b c n := ∃ x y z, n = a*x + b*y + c*z, with all closure lemmas (representable3_zero, representable3_a/b/c, representable3_add_a/b/c) being one-line analogs of the two-generator versions.",
+            "The Brauer–Shockley identity g(S) = max Ap(S, a) − a is the single conceptual lemma underlying all closed-form derivations; for the three-consecutive case it can be bypassed entirely by direct case analysis modulo n.",
+            "The literature has 70+ catalogued explicit-formula families (Ramírez Alfonsín monograph Chapter 3); the gallery could absorb 3-AP (Roberts), Fibonacci triples (Marín–Ramírez Alfonsín–Revuelta 2007), Mersenne triples (Cooper–Karikomi–Snabb), and others as S6+ iterations after the foundation lands.",
+            "Numerical sanity validates the closed form: g(3,4,5) = 2, g(4,5,6) = 7, g(5,6,7) = 9, g(6,7,8) = 17, g(7,8,9) = 20 — all five values match ⌊(n-2)/2⌋·n + (n-1)."
+        ],
+        "mathlibGaps": [
+            "No Mathlib.Combinatorics.NumericalSemigroup module exists at v4.26.0 — neither Frobenius-number generalizations beyond two coprime generators, nor Apéry-set machinery, nor the Brauer–Shockley identity.",
+            "Even basic three-generator definitions like sumset {a*x + b*y + c*z : x, y, z ∈ ℕ} have no idiomatic Mathlib spelling; this entry would establish the convention.",
+            "The standard Frobenius existence lemma (for gcd(a,b,c) = 1 the non-representable set is finite, hence has a max) is not available in Mathlib — only the 2-generator case via frobeniusNumber_pair."
+        ],
+        "nextSteps": [
+            "S2: Create Proofs/FrobeniusNumberOQ03.lean with Representable3 + 7 closure lemmas (~100 lines, 0 sorries, 0 axioms). Direct port of FrobeniusNumber.lean lines 42–69 with one extra generator. Includes Proofs.lean entry + minimal gallery meta.json + index.ts.",
+            "S3: Define frobeniusNumber3 a b c (noncomputable via sSup) and prove existence of g(a,b,c) for gcd(a,b,c) = 1 (finite non-representable set). ~80 lines.",
+            "S4: Lift large_representable from two-generator to three-consecutive case: ∀ m ≥ ⌊(n-2)/2⌋·n + n, Representable3 n (n+1) (n+2) m. Constructive witness via case-split on m mod n. ~120 lines.",
+            "S5: Prove the main theorem frobenius_three_consecutive : frobeniusNumber3 n (n+1) (n+2) = ⌊(n-2)/2⌋·n + (n-1) for n ≥ 3. Combines S4 with non-representability of the candidate (finite mod-n case-check). ~100 lines. Sorry-free, 0 axioms.",
+            "S6 (stretch): Lift to the Roberts 3-AP formula g(a, a+d, a+2d) = ⌊(a-2)/2⌋·a + (a-1)·d for coprime a, d. Reuses S2/S3 infrastructure, generalizes S4/S5 via Apéry-set argument. ~150 lines.",
+            "S7+ (deferred): Fibonacci triples, Mersenne triples, geometric sequences — each is a self-contained closed-form formalization referencing the S2–S3 foundation."
+        ]
+    },
+    "tags": [
+        "seeker-selected",
+        "coin-problem",
+        "combinatorics",
+        "coprime",
+        "frobenius",
+        "number-theory"
+    ],
+    "relatedProofs": [
+        "frobenius-number",
+        "frobenius-number-oq-01",
+        "frobenius-two-coprime"
+    ],
+    "references": {
+        "papers": [
+            "J. B. Roberts, Note on linear forms, Proc. Amer. Math. Soc. 7 (1956) 465–469.",
+            "A. Brauer, On a problem of partitions, Amer. J. Math. 64 (1942) 299–312.",
+            "E. S. Selmer, On the linear diophantine problem of Frobenius, J. Reine Angew. Math. 293/294 (1977) 1–17.",
+            "J. L. Ramírez Alfonsín, The Diophantine Frobenius Problem, OUP Lecture Series 30 (2005).",
+            "J. C. Rosales, P. A. García-Sánchez, Numerical Semigroups, Springer Developments in Math. 20 (2009).",
+            "F. Marín, J. L. Ramírez Alfonsín, M. P. Revuelta, On the Frobenius number of Fibonacci numerical semigroups, Integers 7 (2007) #A14.",
+            "D. Beihoffer, J. Hendry, A. Nijenhuis, S. Wagon, Faster algorithms for Frobenius numbers, Electron. J. Combin. 12 (2005) #R27.",
+            "A. Brauer, J. E. Shockley, On a problem of Frobenius, J. Reine Angew. Math. 211 (1962) 215–220."
+        ],
+        "urls": [
+            "https://en.wikipedia.org/wiki/Coin_problem",
+            "https://oeis.org/A005843"
+        ],
+        "mathlib": [
+            "Mathlib.NumberTheory.Frobenius",
+            "Mathlib.Data.Nat.Defs",
+            "Mathlib.Tactic"
+        ]
+    },
+    "started": "2026-05-12T14:25:00.000Z",
+    "lastUpdate": "2026-05-12T14:25:00.000Z",
+    "significance": 6,
+    "tractability": 6,
+    "leanFiles": []
+}
