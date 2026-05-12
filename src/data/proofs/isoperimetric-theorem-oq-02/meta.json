@@ -63,7 +63,8 @@
       "The proof does not establish the full converse (|∂S| = 2 implies S is an interval), which would require additional compactness or connectivity reasoning — an open formalization challenge pointed to by this entry's open questions",
       "**Compression technique and uniqueness of minimizers**: The key technique generalizing this 1D result to higher dimensions is 'compression' (also called 'pushing'): given any set S, replace it with an 'interval-shadow' in each coordinate direction — a set of equal size that is at least as spread as an interval slice. This replacement never increases the boundary, and iterating gives an interval. In 1D, this is visible directly: min(S)-1 and max(S)+1 are the unique boundary elements of any minimal set, forcing S to be an interval. Lean formalizations of the full uniqueness direction would expose exactly this compression structure.",
       "**Base case of Bollobás-Leader d-dimensional induction**: The Bollobás-Leader (1991) proof that cubes minimize the boundary in ℤ^d proceeds by induction on d: slice S along the d-th coordinate into fibers S_k = {x : (x, k) ∈ S}, apply the (d-1)-dimensional result to each fiber, then apply this 1D result to the sizes |S_k| as a function of k. The 1D bound |∂(S_k sizes)| ≥ 2 (with equality at intervals) is literally the inductive base case — the proof in this file is not just a toy example but a structural ingredient of the full d-dimensional theorem.",
-      "**Discrete-to-continuous bridge and Lévy's concentration lemma**: The discrete isoperimetric inequality on {0,1}^n (Harper's theorem) implies exponential concentration: if S ⊆ {0,1}^n has measure ≥ 1/2 and S_t = {x : d(x,S) ≤ t} is the t-neighborhood, then P(S_t^c) ≤ 2e^{-2t²/n}. Passing n → ∞ (with rescaling) recovers the Gaussian measure concentration, the analytic base of the Central Limit Theorem. The 1D result in this file corresponds to n = 1 in this chain: |∂S| ≥ 2 is the n=1 instance of Harper's exact formula for the minimum boundary of a set of size k in {0,1}^n."
+      "**Discrete-to-continuous bridge and Lévy's concentration lemma**: The discrete isoperimetric inequality on {0,1}^n (Harper's theorem) implies exponential concentration: if S ⊆ {0,1}^n has measure ≥ 1/2 and S_t = {x : d(x,S) ≤ t} is the t-neighborhood, then P(S_t^c) ≤ 2e^{-2t²/n}. Passing n → ∞ (with rescaling) recovers the Gaussian measure concentration, the analytic base of the Central Limit Theorem. The 1D result in this file corresponds to n = 1 in this chain: |∂S| ≥ 2 is the n=1 instance of Harper's exact formula for the minimum boundary of a set of size k in {0,1}^n.",
+      "**Spectral / Cheeger-constant interpretation**: For a graph $G$ on $V$, the Cheeger constant $h(G) = \\min_{S : |S| \\leq |V|/2} \\frac{|\\partial S|}{|S|}$ controls the spectral gap of the graph Laplacian $\\lambda_2$ via Cheeger's inequality $h^2/2 \\leq \\lambda_2 \\leq 2h$. The discrete isoperimetric problem is therefore equivalent (up to constants) to computing the spectral gap. The 1D result $|\\partial S| \\geq 2$ corresponds to the spectral gap of the path graph on $\\mathbb{Z}$ (which has continuous spectrum starting at 0 — consistent with $h = 0$ for infinite paths; the cardinality-2 bound is finite-set isoperimetric content, not Cheeger content). On finite circles $\\mathbb{Z}/n\\mathbb{Z}$ the same compression gives the discrete Cheeger constant $h = 2/n$, matching the lowest non-zero Laplacian eigenvalue $\\lambda_2 = 4\\sin^2(\\pi/n)$."
     ],
     "prerequisites": [
       "Finset basics (min', max', image, sdiff)",
@@ -111,13 +112,51 @@
   "conclusion": {
     "summary": "The 1D discrete isoperimetric inequality on ℤ is fully verified: |∂S| ≥ 2 for any finite S with |S| ≥ 2, with integer intervals attaining the bound. The proof is short (~136 lines, 0 axioms, 0 sorries) and reduces the bound to extracting Finset.min' and Finset.max' as boundary witnesses.",
     "openQuestions": [
-      "Generalize to ℤ^d: for finite S ⊆ ℤ^d with |S| = n, characterize the minimum-boundary configurations (Bollobás–Leader cubical compression)",
-      "Formalize Harper's theorem on the discrete hypercube {0,1}^n: among subsets of size k, initial segments of the simplicial order minimize the edge boundary",
-      "Prove the converse: if |∂S| = 2 then S is an integer interval (uniqueness of equality)",
-      "Quantitative stability: if |∂S| ≤ 2 + ε, how close is S to an interval (e.g. in symmetric difference)?"
+      "Generalize to ℤ^d: for finite S ⊆ ℤ^d with |S| = n, characterize the minimum-boundary configurations (Bollobás–Leader cubical compression). Concretely: what Mathlib API would make the inductive step (slice along the d-th coordinate + apply this 1D file + recurse on (d-1)) ergonomic — `Finset.image (·.snd)` and `Finset.preimage` are present, but no compression infrastructure yet.",
+      "Formalize Harper's theorem on the discrete hypercube {0,1}^n: among subsets of size k, initial segments of the simplicial order minimize the edge boundary. Mathlib has `Finset.boolHypercube`-like structure via `Fin n → Bool`; a full proof needs the simplicial order, the compression operation, and the colex-based monotonicity argument.",
+      "Prove the converse: if |∂S| = 2 then S is an integer interval (uniqueness of equality). The natural argument uses the fact that any 'gap' inside S contributes ≥ 2 extra boundary points; making this rigorous in Lean requires a careful induction on max(S) - min(S).",
+      "Quantitative stability: if |∂S| ≤ 2 + ε, how close is S to an interval (e.g. in symmetric difference)? Formally: $|\\partial S| \\leq 2 + 2\\varepsilon \\Rightarrow \\exists [a,b],\\ |S \\triangle [a,b]| \\leq f(\\varepsilon, |S|)$ for some explicit $f$. This is the discrete analog of Fuglede / Hall's quantitative isoperimetric stability.",
+      "Cheeger / spectral version: relate $|\\partial S| / |S|$ on finite subgraphs of $\\mathbb{Z}$ to the spectral gap of the path / cycle Laplacian, formalizing Cheeger's inequality $h^2/2 \\leq \\lambda_2 \\leq 2h$ in this discrete 1D setting."
     ],
     "implications": "This is the smallest non-trivial discrete isoperimetric statement and provides a clean Lean foundation for working towards the d-dimensional and hypercube cases, which are central in extremal combinatorics and concentration of measure."
   },
+  "references": [
+    {
+      "authors": "Harper, L. H.",
+      "title": "Optimal Numberings and Isoperimetric Problems on Graphs",
+      "year": "1966",
+      "venue": "Journal of Combinatorial Theory 1(3), pp. 385–393",
+      "note": "The original proof that initial segments of the simplicial order minimize the edge boundary on the discrete hypercube $\\{0,1\\}^n$. Introduced the 'pushing' / compression technique that drives most subsequent discrete isoperimetric results. The 1D result formalized in this file is the $n=1$ specialization."
+    },
+    {
+      "authors": "Bollobás, B. and Leader, I.",
+      "title": "Edge-Isoperimetric Inequalities in the Grid",
+      "year": "1991",
+      "venue": "Combinatorica 11(4), pp. 299–314",
+      "note": "Extends Harper's compression technique to $\\mathbb{Z}^d$, establishing that 'cubes' (products of intervals) minimize the edge boundary. The proof inducts on $d$ and uses the 1D case (this file's result) as the base case for the sizes of fibers along the d-th coordinate."
+    },
+    {
+      "authors": "Loomis, L. H. and Whitney, H.",
+      "title": "An Inequality Related to the Isoperimetric Inequality",
+      "year": "1949",
+      "venue": "Bulletin of the AMS 55(10), pp. 961–962",
+      "note": "Early continuous-discrete bridge: the projection-volume inequality $\\prod_i |\\pi_i(K)|^{d-1} \\geq |K|^d$ that underlies higher-dimensional discrete isoperimetric estimates. Provides a coarse but dimension-uniform lower bound on the boundary of subsets of $\\mathbb{Z}^d$."
+    },
+    {
+      "authors": "Bollobás, Béla",
+      "title": "Combinatorics: Set Systems, Hypergraphs, Families of Vectors and Combinatorial Probability",
+      "year": "1986",
+      "venue": "Cambridge University Press, Chapter 16 'The Isoperimetric Problem'",
+      "note": "Textbook treatment of discrete isoperimetric inequalities including Harper's theorem and 1D / lattice variants. Standard reference for the compression technique and equality characterizations."
+    },
+    {
+      "authors": "Talagrand, Michel",
+      "title": "Concentration of measure and isoperimetric inequalities in product spaces",
+      "year": "1995",
+      "venue": "Publications mathématiques de l'IHÉS 81, pp. 73–205",
+      "note": "Connects discrete isoperimetric inequalities (Harper-style) to concentration of measure on product probability spaces. The exponential concentration bounds in Talagrand's framework derive from the boundary inequalities whose 1D root is the present file."
+    }
+  ],
   "leanFile": {
     "imports": [
       "Mathlib"
