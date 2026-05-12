@@ -55,7 +55,7 @@
     "lineCount": 169,
     "assumptions": "3 axioms: erdos_selfridge_nondivisibility (Erdős-Selfridge impossibility result), monier_factorial_bound (n_k ≤ k!), cambie_lcm_bound (n_k ≤ k·lcm(2,...,k-1)). Former threshold axioms proved and eliminated.",
     "theoremCount": 5,
-    "definitionCount": 4
+    "definitionCount": 5
   },
   "overview": {
     "historicalContext": "**Erdős-Selfridge and Binomial Divisibility**\n\nErdős Problem #1063 originates from a 1983 paper by Paul Erdős and John Selfridge on the arithmetic structure of binomial coefficients. They observed that the $k$ consecutive integers $n, n-1, \\ldots, n-k+1$ appearing in the numerator of $\\binom{n}{k} = \\frac{n(n-1)\\cdots(n-k+1)}{k!}$ have a subtle divisibility relationship with $\\binom{n}{k}$ itself. Their key result: for $n \\geq 2k$, it is impossible for ALL $k$ of these integers to divide $\\binom{n}{k}$ — the prime factorization of $k!$ cannot simultaneously cancel every factor.\n\n**The threshold question**: The natural follow-up asks for the least $n_k \\geq 2k$ where all but one of these $k$ integers divide $\\binom{n}{k}$. Computed values are $n_2 = 4$ (since $3 \\mid \\binom{4}{2} = 6$ but $4 \\nmid 6$), $n_3 = 6$, $n_4 = 9$, $n_5 = 12$.\n\n**Monier's bound (1985)**: Louis Monier proved $n_k \\leq k!$ by showing that $n = k!$ satisfies the all-but-one condition — the highly composite structure of $k!$ ensures most nearby factors divide $\\binom{k!}{k}$. This was the first non-trivial result but grows super-exponentially.\n\n**Cambie's improvement**: Stijn Cambie dramatically improved the bound to $n_k \\leq k \\cdot \\text{lcm}(2, \\ldots, k-1)$, which by the prime number theorem ($\\log \\text{lcm}(1, \\ldots, m) = \\psi(m) \\sim m$) gives $n_k \\leq e^{(1+o(1))k}$. The gap between $n_k \\geq 2k$ (trivial) and $n_k \\leq e^{(1+o(1))k}$ remains vast — whether $n_k$ grows polynomially or exponentially is the central open question.",
@@ -230,7 +230,7 @@
     "lineCount": 169,
     "axiomCount": 3,
     "theoremCount": 5,
-    "definitionCount": 4,
+    "definitionCount": 5,
     "path": "Proofs/Erdos1063Problem.lean",
     "sorries": 0
   },
