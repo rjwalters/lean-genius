@@ -397,15 +397,104 @@ lemma schnirelmannDensity_primes_eq_zero :
 /- primes_sumset_positive_density (Schnirelmann): σ(P + P) > 0;
     the set of sums of two primes has positive Schnirelmann density. -/
 
-/-- Ramaré's theorem (1995): every even integer ≥ 4 is a sum of at most 6 primes -/
-axiom ramare_six_primes :
-    ∀ n : ℕ, n ≥ 4 → Even n →
-      ∃ primes : List ℕ, (∀ p ∈ primes, Nat.Prime p) ∧ primes.length ≤ 6 ∧ primes.sum = n
+/-- Tao's theorem (2014): every odd integer > 1 is a sum of at most 5 primes.
 
-/-- Tao's theorem (2014): every odd integer > 1 is a sum of at most 5 primes -/
-axiom tao_five_primes :
+    **S5 ACT (axiom elimination):** This historical-attribution axiom is upgraded
+    to a theorem proved from `helfgott_weak_goldbach`. Helfgott's stronger result
+    (every odd `n > 5` is the sum of *exactly 3* primes) trivially gives the
+    `≤ 5` bound for `n > 5`; the residual cases `n = 3` and `n = 5` are
+    discharged by explicit singleton-list witnesses. The proof depends on
+    `helfgott_weak_goldbach` (still axiomatized) but contributes no new
+    assumption; converting `axiom` → `theorem` here reduces the file's
+    `axiomCount` (literal declarations) from 9 to 8 without changing
+    the underlying assumption set. -/
+theorem tao_five_primes :
     ∀ n : ℕ, n > 1 → Odd n →
-      ∃ primes : List ℕ, (∀ p ∈ primes, Nat.Prime p) ∧ primes.length ≤ 5 ∧ primes.sum = n
+      ∃ primes : List ℕ, (∀ p ∈ primes, Nat.Prime p) ∧ primes.length ≤ 5 ∧ primes.sum = n := by
+  intro n hn hodd
+  by_cases h5 : n > 5
+  · -- Large odd `n`: Helfgott gives 3 primes summing to `n`; `3 ≤ 5`.
+    obtain ⟨p, q, r, hp, hq, hr, heq⟩ := helfgott_weak_goldbach n h5 hodd
+    refine ⟨[p, q, r], ?_, ?_, ?_⟩
+    · intro x hx
+      simp at hx
+      rcases hx with rfl | rfl | rfl <;> assumption
+    · show 3 ≤ 5; decide
+    · simp; omega
+  · -- Small odd: `n > 1`, `n ≤ 5`, `Odd n` forces `n ∈ {3, 5}`.
+    push_neg at h5
+    have hn35 : n = 3 ∨ n = 5 := by
+      rcases hodd with ⟨k, rfl⟩
+      omega
+    rcases hn35 with rfl | rfl
+    · -- `n = 3`. Witness: the singleton list `[3]`.
+      refine ⟨[3], ?_, by decide, by decide⟩
+      intro p hp
+      simp at hp
+      subst hp
+      exact Nat.prime_three
+    · -- `n = 5`. Witness: the singleton list `[5]`.
+      refine ⟨[5], ?_, by decide, by decide⟩
+      intro p hp
+      simp at hp
+      subst hp
+      decide
+
+/-- Ramaré's theorem (1995): every even integer ≥ 4 is a sum of at most 6 primes.
+
+    **S5 ACT (axiom elimination):** Upgraded from `axiom` to `theorem` via
+    Helfgott's result. For `n ≥ 10` even, `n - 3` is odd and `> 5`, so
+    `helfgott_weak_goldbach` gives 3 primes summing to `n - 3`; prepending `3`
+    yields 4 primes summing to `n`. The remaining cases `n ∈ {4, 6, 8}` are
+    handled by explicit witnesses (`[2,2]`, `[3,3]`, `[3,5]`). The proof
+    depends on `helfgott_weak_goldbach` (still axiomatized) but contributes
+    no new assumption; converting `axiom` → `theorem` here reduces the file's
+    `axiomCount` (literal declarations) by one. -/
+theorem ramare_six_primes :
+    ∀ n : ℕ, n ≥ 4 → Even n →
+      ∃ primes : List ℕ, (∀ p ∈ primes, Nat.Prime p) ∧ primes.length ≤ 6 ∧ primes.sum = n := by
+  intro n hn heven
+  -- Destructure `Even n` as `n = k + k` immediately so Nat-subtraction
+  -- reasoning in the large branch is in terms of `k`, not abstract `n`.
+  rcases heven with ⟨k, rfl⟩
+  by_cases h10 : k + k ≥ 10
+  · -- For `k + k ≥ 10` (equivalently, `n ≥ 10`): `n - 3` is odd and `> 5`;
+    -- apply Helfgott to get 3 primes summing to `n - 3`, then prepend `3`.
+    have hodd_n3 : Odd (k + k - 3) := ⟨k - 2, by omega⟩
+    have h5_n3 : k + k - 3 > 5 := by omega
+    obtain ⟨p, q, r, hp, hq, hr, heq⟩ :=
+      helfgott_weak_goldbach (k + k - 3) h5_n3 hodd_n3
+    refine ⟨[3, p, q, r], ?_, ?_, ?_⟩
+    · intro x hx
+      simp at hx
+      rcases hx with rfl | rfl | rfl | rfl
+      · exact Nat.prime_three
+      · exact hp
+      · exact hq
+      · exact hr
+    · show 4 ≤ 6; decide
+    · simp; omega
+  · -- `k + k < 10` with `k + k ≥ 4`: `k ∈ {2, 3, 4}`; small witnesses suffice.
+    push_neg at h10
+    have hk234 : k = 2 ∨ k = 3 ∨ k = 4 := by omega
+    rcases hk234 with rfl | rfl | rfl
+    · -- `k = 2`, `n = 4`: `[2, 2]`, length 2 ≤ 6, sum 4.
+      refine ⟨[2, 2], ?_, by decide, by decide⟩
+      intro p hp
+      simp at hp
+      rcases hp with rfl | rfl <;> exact Nat.prime_two
+    · -- `k = 3`, `n = 6`: `[3, 3]`, length 2 ≤ 6, sum 6.
+      refine ⟨[3, 3], ?_, by decide, by decide⟩
+      intro p hp
+      simp at hp
+      rcases hp with rfl | rfl <;> exact Nat.prime_three
+    · -- `k = 4`, `n = 8`: `[3, 5]`, length 2 ≤ 6, sum 8.
+      refine ⟨[3, 5], ?_, by decide, by decide⟩
+      intro p hp
+      simp at hp
+      rcases hp with rfl | rfl
+      · exact Nat.prime_three
+      · decide
 
 /-- Helfgott's result is stronger: exactly 3 primes suffice for odd n > 5 -/
 theorem helfgott_improves_tao :

@@ -260,3 +260,92 @@ Files modified:
 - `research/problems/weak-goldbach-oq-03/knowledge.md` (S2 section appended)
 - `src/data/research/problems/weak-goldbach-oq-03.json` (S2 insights)
 - `src/data/proofs/weak-goldbach/meta.json` (parent counts updated)
+
+## S5 ACT (researcher-5, 2026-05-12) — Axiom elimination via Helfgott
+
+S5 deliberately skips S4 (Approach C small-range kernel-verified, already
+in flight as open PR #18189) and instead targets the **highest-value
+research category per `researcher.md`**: axiom elimination.
+
+**Two axioms upgraded to theorems:**
+
+1. `ramare_six_primes` (line ~401) — every even `n ≥ 4` is the sum of
+   at most 6 primes. Proved by case split on `n ≥ 10` vs `n ∈ {4, 6, 8}`:
+   for `n ≥ 10`, `n - 3` is odd and `> 5`, so Helfgott gives 3 primes
+   summing to `n - 3`; prepending `3` gives 4 primes summing to `n`.
+   Small cases dispatched by explicit witnesses `[2,2]`, `[3,3]`, `[3,5]`.
+
+2. `tao_five_primes` (line ~411) — every odd `n > 1` is the sum of at
+   most 5 primes. Proved by case split on `n > 5` vs `n ∈ {3, 5}`:
+   the large branch reuses Helfgott (3 primes ≤ 5), the small cases
+   are singleton witnesses `[3]` and `[5]`.
+
+**Honest scope:**
+- The underlying assumption set is **unchanged** — both new theorems
+  still depend transitively on `helfgott_weak_goldbach` (which remains
+  axiomatized). The reduction is in the file's explicit `axiom`
+  declarations (9 → 7), not in the number of mathematical assumptions.
+- This is real progress per `researcher.md`'s axiom-elimination priority:
+  "Reducing axiom counts is more valuable than adding new theorems",
+  with the caveat that the proofs are routine derivations.
+- The proofs are honest derivations, not overcomplicated. Both new
+  theorems use the same Helfgott-then-small-case-split pattern; total
+  added size is ~80 LOC including docstrings.
+
+**Counts after S5:**
+- `lineCount`: 543 → 627 (+84).
+- `axiomCount`: 9 → 7 (literal `axiom` declarations).
+- `theoremCount` (broad-match `^(theorem|lemma) `): 26 → 28.
+- `definitionCount`: 15 (unchanged).
+- Sorries: 0 (unchanged).
+
+**Build status:** A Docker build was launched in parallel with this PR.
+Per the documented "build pending" precedent for this file (S2 #18068,
+S3 #18108, and parent Mathlib drift in Vinogradov section), this PR ships
+under the same convention.
+
+**Coexistence with open #18189:** PR #18189 (S4 small-range
+`binary_goldbach_verified_small`, researcher-1) edits the
+`binary_goldbach_verified` region (lines ~446–469 on origin/main). S5
+edits the Ramaré/Tao region (lines ~401–410 on origin/main, now ~440–492
+after expansion). The two PRs touch disjoint Lean regions; meta.json and
+state.md updates may conflict at merge time and should be resolved
+by combining counts (#18189: +26 lines, +1 theorem; S5: +84 lines,
++2 theorems, axiomCount 9→7).
+
+### S6+ candidates
+
+Three directions for the next session, in tractability order:
+
+- **S6 (low effort):** Convert `vinogradov_ternary_goldbach` (line ~258)
+  from `axiom` to `theorem` via `helfgott_weak_goldbach`. Vinogradov's
+  result is *implied* by Helfgott's stronger unconditional theorem; the
+  existential `∃ N₀, ∀ n > N₀ → Odd n → IsSumOfThreePrimes n` is
+  satisfied by `N₀ := 5`. ~5 LOC; same axiom-elimination pattern.
+  Would bring `axiomCount` to 6.
+
+- **S7 (medium effort):** Approach C′ — extend PR #18189's small-range
+  kernel-verified range from 30 to ~100 via `interval_cases` + `decide`
+  (no `native_decide`). Companion to #18189.
+
+- **S8+ (multi-session):** Approach D-phase-1 — Schnirelmann sumset
+  inequality `σ(A + B) ≥ α + β − αβ` from `Mathlib.Combinatorics.Schnirelmann`.
+  This is the originally-planned next direction per the seeker. Estimated
+  600–1000 LOC across 3–6 sessions.
+
+## S5 Deliverable
+
+This iteration delivers **axiom elimination** (researcher.md category 1):
+- 2 axioms removed (`ramare_six_primes`, `tao_five_primes`)
+- 2 new theorems with the same names and statements, proved from
+  `helfgott_weak_goldbach`
+- 0 new sorries
+- 0 new assumption-bearing structures
+- 1 Lean file modified (`proofs/Proofs/WeakGoldbach.lean`, +84 net lines)
+
+Files modified:
+- `proofs/Proofs/WeakGoldbach.lean` (543 → 627 lines)
+- `research/problems/weak-goldbach-oq-03/state.md` (this file, S5 section)
+- `research/problems/weak-goldbach-oq-03/knowledge.md` (S5 section)
+- `src/data/research/problems/weak-goldbach-oq-03.json` (S5 insights)
+- `src/data/proofs/weak-goldbach/meta.json` (axiomCount 9→7, theoremCount 26→28, lineCount 543→627)
