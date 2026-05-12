@@ -2266,6 +2266,7 @@ import Proofs.FourierSeriesOQ02OQ03OQ02Aristotle
 import Proofs.FourierSeriesOQ02OQ04
 import Proofs.FourierSeriesOQ03
 import Proofs.FourierSeriesOQ04
+import Proofs.FourierSeriesOQ04OQ01
 import Proofs.FriendshipTheorem
 import Proofs.FriendshipTheoremOQ01
 import Proofs.FriendshipTheoremOQ02
