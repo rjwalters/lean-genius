@@ -1,0 +1,95 @@
+{
+  "slug": "lagrange-theorem-oq-01-oq-01-oq-01",
+  "title": "Exhibit a non-cyclic group of order pq when p | (q-1)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall p\\,q \\text{ primes with } p < q \\text{ and } p \\mid (q-1),\\; \\exists G\\; \\text{finite group with } |G| = pq \\text{ and } G \\not\\cong \\mathbb{Z}/(pq).",
+    "plain": "The parent lagrange-theorem-oq-01-oq-01 (Sylow-theoretic classification of pq-groups) proves that when p divides q-1 there should be two groups of order pq up to isomorphism: the cyclic one and a non-abelian one. But the parent only proves the conditional 'IF a non-cyclic group of order pq exists, THEN its Sylow p-count is q'. This OQ asks for the unconditional existence direction: exhibit an explicit non-cyclic group G with |G| = pq whenever p | (q-1).",
+    "whyMatters": [
+      "Completes the existence direction of the pq-classification. Without it, the parent's 'two groups exist when p | q-1' is a counting statement about an unspecified witness.",
+      "Provides the first explicit non-abelian finite-group construction in the gallery. The current lagrange-theorem-oq-01 chain is entirely about cyclic / abelian classification.",
+      "Sets up Mathlib's DihedralGroup (Approach A) and SemidirectProduct (Approach B) APIs as load-bearing for the gallery's future group-theory entries (Schur–Zassenhaus, p-nilpotent groups, soluble groups)."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "lagrange_pq_sylow_counts: n_q = 1 ∧ (n_p = 1 ∨ n_p = q) (parent, always)",
+      "lagrange_pq_unique_normal_q: ∃ Q : Sylow q G, Q.Normal (parent, always)",
+      "pq_unique_when_coprime: ∀ G ... |G| = p*q → IsCyclic G (parent, when p ∤ q-1; universal)",
+      "lagrange_pq_nonabelian_n_p_eq_q: n_p = q (parent, when p | q-1 AND ¬IsCyclic G; conditional)",
+      "DihedralGroup.card [NeZero n]: Fintype.card (DihedralGroup n) = 2 * n (Mathlib)",
+      "DihedralGroup.not_isCyclic: n ≠ 1 → ¬ IsCyclic (DihedralGroup n) (Mathlib)",
+      "SemidirectProduct.card: Nat.card (N ⋊[φ] G) = Nat.card N * Nat.card G (Mathlib)"
+    ],
+    "open": [
+      "For p = 2 specialization (q odd prime): exhibit explicit non-cyclic group of order 2q. Uses DihedralGroup q directly. (Approach A — S2 target)",
+      "For general p < q primes with p | q-1: exhibit explicit non-cyclic group of order pq. Uses ZMod q ⋊[φ] ZMod p with non-trivial φ. (Approach B — S3+ target)"
+    ],
+    "goal": "Produce a Lean term-level theorem of the form '∃ (G : Type) [Group G] [Fintype G], Fintype.card G = p*q ∧ ¬ IsCyclic G' whenever p < q are primes and p | (q-1). Approach A target: specialize to p = 2 using Mathlib's DihedralGroup q. Approach B target (deferred): general case via SemidirectProduct."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T08:30:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-10, 2026-05-12): survey three approaches (A: DihedralGroup q for p=2; B: ZMod q ⋊[φ] ZMod p in general; C: hand-built small cases). Recommended Approach A as the S2 attack target — single PR, ~50 net lines Lean, uses only DihedralGroup.card + DihedralGroup.not_isCyclic from Mathlib (stable API verified at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 via direct GitHub raw read). Covers an infinite family: q ∈ {3, 5, 7, 11, 13, 17, ...}, pq ∈ {6, 10, 14, 22, 26, 34, ...}.",
+    "blockers": [],
+    "nextAction": "S2: implement Approach A in new file proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01.lean. Three deliverables: (1) main theorem exists_noncyclic_of_order_two_mul_odd_prime taking hq : Nat.Prime q and hq_ne_two : q ≠ 2, returning ⟨DihedralGroup q, inferInstance, inferInstance, DihedralGroup.card, DihedralGroup.not_isCyclic (fun h => hq.one_lt.ne' h.symm)⟩. (2) Four concrete corollaries: exists_noncyclic_of_order_{6, 10, 14, 22} specializing at q ∈ {3, 5, 7, 11}. (3) Gallery entry at src/data/proofs/lagrange-theorem-oq-01-oq-01-oq-01/ (meta.json + annotations.json + index.ts). ~50 lines net, single session.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-10, 2026-05-12): OBSERVE survey. Surveyed three approaches to constructing a non-cyclic group of order pq when p | (q-1): A (DihedralGroup q for p=2 case, ~50 lines, RECOMMENDED for S2), B (semidirect product ZMod q ⋊[φ] ZMod p in general, ~200 lines, deferred to S3+), C (hand-built small cases, ~30-50 lines per case, supplementary). Verified key Mathlib lemmas at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 via direct GitHub raw read of Mathlib/GroupTheory/SpecificGroups/Dihedral.lean: DihedralGroup.card [NeZero n] (line 149), DihedralGroup.nat_card (line 152), DihedralGroup.not_isCyclic (line 233), DihedralGroup.isCyclic_iff (line 238); and Mathlib/GroupTheory/SemidirectProduct.lean: SemidirectProduct.card (line 311), notation N ⋊[φ] G. 0 Lean changes in S1; 4 markdown/JSON files produced.",
+    "builtItems": [
+      "research/problems/lagrange-theorem-oq-01-oq-01-oq-01/problem.md (new, ~280 lines): full statement, three-approach survey, sub-lemma list, Mathlib API map, tractability assessment.",
+      "research/problems/lagrange-theorem-oq-01-oq-01-oq-01/state.md (new, ~110 lines): phase=OBSERVE, S1 survey, S2 next-action sketch with concrete Lean code (15-line main theorem + 4 corollaries).",
+      "research/problems/lagrange-theorem-oq-01-oq-01-oq-01/knowledge.md (new, ~220 lines): S1 session note with parent context, three-approach analysis, Mathlib API verification at pinned rev, edge cases (q=2 excluded, q=3 smallest), insights, mathlibGaps, nextSteps.",
+      "src/data/research/problems/lagrange-theorem-oq-01-oq-01-oq-01.json (this file): research index entry."
+    ],
+    "insights": [
+      "The parent's lagrange_pq_nonabelian_n_p_eq_q is conditional on ¬ IsCyclic G. It does not assert existence of any non-cyclic group of order pq — it only constrains hypothetical non-cyclic ones. This OQ supplies the missing existence side.",
+      "Approach A (DihedralGroup q for q odd prime) leverages Mathlib's complete DihedralGroup API: card under [NeZero n] gives Fintype.card = 2*n, and not_isCyclic gives ¬ IsCyclic for n ≠ 1. With q an odd prime ≥ 3, both hypotheses are discharged via Nat.Prime.ne_zero and Nat.Prime.one_lt. The composition is a 15-line theorem.",
+      "Approach A covers an infinite family of (p, q) pairs: p = 2 with q ∈ {3, 5, 7, 11, 13, 17, 19, 23, ...}, giving order pq ∈ {6, 10, 14, 22, 26, 34, 38, 46, ...}. The p = 2 slice alone is significant gallery coverage even without the general case.",
+      "Approach B (general p, q via ZMod q ⋊[φ] ZMod p) requires constructing a non-trivial hom φ : ZMod p →* MulAut (ZMod q) from the cyclic structure of (ZMod q)ˣ and the divisibility p | q-1. Each piece is in Mathlib (SemidirectProduct, ZMod.unitsCyclic or derivable, MulAut ≃* (ZMod q)ˣ for additive), but the chain is 3-4 sessions.",
+      "DihedralGroup 2 ≅ Klein four-group (order 4 ≠ 2*2 as distinct primes, since p must differ from q). The S2 statement must explicitly require q ≠ 2 to maintain the parent's p < q convention.",
+      "DihedralGroup 3 ≅ S₃ (symmetric group on 3 letters, order 6). Smallest non-abelian finite group. Matches the parent's order_6_non_unique divisibility lemma; S2's exists_noncyclic_of_order_6 completes the matched pair.",
+      "Mathlib's DihedralGroup is implemented as an inductive type with constructors r : ZMod n → DihedralGroup n and sr : ZMod n → DihedralGroup n (rotations and reflections). Group instance, Fintype instance ([NeZero n]), cardinality, and non-cyclicity are all in-file at Mathlib/GroupTheory/SpecificGroups/Dihedral.lean.",
+      "The semidirect-product (Approach B) approach also gives the unit group iso (ZMod q)ˣ ≃* MulAut (ZMod q) (additive automorphisms of cyclic group ZMod q are multiplication-by-unit). This bridge is in Mathlib but rarely used in gallery proofs.",
+      "After this OQ resolves (Approach A), the parent's universal cyclic statement (when p ∤ q-1) and this OQ's universal non-cyclic existence (when p | q-1, p = 2) together give the full classification picture for the p = 2 slice."
+    ],
+    "mathlibGaps": [
+      "No standalone '∃ G : Type, ... |G| = pq ∧ ¬ IsCyclic G' theorem in Mathlib for primes p < q with p | q-1. The pieces (DihedralGroup.card, DihedralGroup.not_isCyclic) are there but the composition is not packaged.",
+      "For Approach B: no direct '∃ φ : ZMod p →* MulAut (ZMod q), φ ≠ 1' theorem for primes p < q with p | q-1. Could be a Mathlib contribution after Approach B lands.",
+      "No 'smallest non-abelian group of order n' registry in Mathlib. Each gallery non-abelian witness must currently be assembled by hand. Future Mathlib feature."
+    ],
+    "nextSteps": [
+      "S2: Implement Approach A in proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01.lean. Main theorem (15 lines) + 4 concrete corollaries (orders 6, 10, 14, 22; 30 lines) + namespace boilerplate. ~50 lines net, single session.",
+      "S2-companion: Add gallery entry under src/data/proofs/lagrange-theorem-oq-01-oq-01-oq-01/ (meta.json + annotations.json + index.ts; ~80 lines) so the proof appears in the gallery alongside the parent.",
+      "S3 (deferred, Approach B partial): cyclic structure of (ZMod q)ˣ for prime q + extraction of element of order p from p | q-1. ~80 lines.",
+      "S4 (deferred, Approach B completion): hom construction + semidirect product assembly + non-cyclic proof. ~120 lines.",
+      "S5 (optional, after Approach B): add order-21 concrete corollary exists_noncyclic_of_order_21 specializing at p = 3, q = 7."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "group-theory",
+    "sylow",
+    "dihedral-group",
+    "semidirect-product",
+    "existence-witness",
+    "non-abelian"
+  ],
+  "relatedProofs": [
+    "lagrange-theorem-oq-01-oq-01",
+    "lagrange-theorem-oq-01",
+    "lagrange-theorem-oq-02",
+    "lagrange-theorem"
+  ],
+  "createdAt": "2026-05-12T08:30:00.000Z",
+  "updatedAt": "2026-05-12T08:30:00.000Z"
+}
