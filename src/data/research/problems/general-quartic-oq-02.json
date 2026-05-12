@@ -1,0 +1,113 @@
+{
+  "slug": "general-quartic-oq-02",
+  "title": "Numerical Instabilities in Ferrari's Quartic Formula",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Characterize regions of } (p,q,r) \\in \\mathbb{R}^3 \\text{ where Ferrari's explicit root formula loses numerical precision; in particular, give a symbolic ferrariRoots-vs-biquadratic limit identity as } q \\to 0.",
+    "plain": "Ferrari's closed-form solution of the quartic over ℂ is numerically unstable in finite precision. Characterize the instability mechanisms rigorously, isolate a tractable formal sub-question (the biquadratic-limit removable singularity), and scaffold it for the next session.",
+    "whyMatters": [
+      "Closes the q=0 / alpha=0 boundary case of the parent gallery entry's axiomatized Ferrari formula.",
+      "Surfaces a Mathlib gap (no Polynomial.discriminant, no condition-number framework).",
+      "Lets the gallery teach Ferrari's method honestly: it is correct symbolically but numerically dominated by companion-matrix QR."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent: depressed_quartic_forward/backward (ring identity)",
+      "Parent: resolvent_cubic_has_root (via FTA)",
+      "Parent: ferrari_factorization symbolic identity (axiomatized)"
+    ],
+    "open": [
+      "OQ-02.a: Construct a 1-parameter family along which Ferrari's intermediate beta = q/(2 alpha) blows up faster than the quartic roots spread.",
+      "OQ-02.b: Discriminant-bounded relative-condition-number bound for ferrariRoots (kappa <= C * poly / epsilon when |Delta| >= epsilon).",
+      "OQ-02.c (S2 target): As q -> 0, ferrariRoots(p,q,r,m) agrees as a Multiset with the biquadratic roots."
+    ],
+    "goal": "S2: scaffold and state ferrari_biquad_limit (OQ-02.c) in proofs/Proofs/GeneralQuartic.lean; S3+: discharge it. OQ-02.a and OQ-02.b are deferred indefinitely."
+  },
+  "currentState": {
+    "phase": "ORIENT",
+    "since": "2026-05-12T08:30Z",
+    "iteration": 2,
+    "focus": "S1 OBSERVE complete: three-part decomposition (OQ-02.a/.b/.c) established, three approach families surveyed, Approach A (OQ-02.c biquadratic-limit identity) selected as S2 target. No Lean changes in S1.",
+    "blockers": [],
+    "nextAction": "S2 SCAFFOLD: add resolvent_cubic_q_zero (provable by ring_nf) and ferrari_biquad_limit (with sorry) to proofs/Proofs/GeneralQuartic.lean. Target <= 100 LOC.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE (markdown-only, no Lean changes): surveyed Pan 1997, Bini-Pan 1996, Kahan 2004, Press et al. Numerical Recipes. Isolated three distinct instability mechanisms in Ferrari's formula (resolvent-cubic cancellation, beta = q/(2 alpha) divide-by-near-zero, wrong-root-pairing). Decomposed the original vague OQ-02 into three formal sub-questions (a/b/c). Mapped three formalization approaches and selected the biquadratic-limit symbolic identity (OQ-02.c) as the most tractable S2 target on the basis of (i) being a pure C-symbolic identity provable without numerical-analysis infrastructure, (ii) closing the alpha = 0 boundary case of the parent's axiomatized ferrariRoots, (iii) requiring no new Mathlib imports beyond those already used in the parent file.",
+    "builtItems": [
+      "research/problems/general-quartic-oq-02/problem.md — formal three-part decomposition (OQ-02.a, .b, .c) with statement, classification, motivation, related-proof table, and reference list.",
+      "research/problems/general-quartic-oq-02/knowledge.md — survey of prior art (Pan, Bini-Pan, Kahan, Press), three classical instability mechanisms identified, three approach families mapped, S2 target selected with stated Lean snippet, three Mathlib gaps surfaced.",
+      "research/problems/general-quartic-oq-02/state.md — phase advanced NEW -> ORIENT, iteration 1 -> 2, S2 next-action specified with line-budget."
+    ],
+    "insights": [
+      "Three distinct instability mechanisms separate cleanly: (1) upstream resolvent-cubic catastrophic cancellation, (2) quartic-specific divide-by-near-zero in beta = q/(2 alpha), (3) discrete wrong-root-pairing with no analytic remedy. Mechanism (2) is the canonical quartic-only failure mode and is the entry point for OQ-02.a / .c.",
+      "OQ-02.c (the q -> 0 limit) is a pure symbolic identity over C, not a floating-point statement. It can therefore be proved with Mathlib's existing polynomial / cpow API; no numerical-analysis infrastructure is required.",
+      "At q = 0, the resolvent cubic has m = -p/2 as a 'trivial' root that gives alpha = 0 (degenerate Ferrari branch). For OQ-02.c we choose a non-trivial resolvent root; existence follows from polynomial-degree counting + FTA.",
+      "Mechanism (3) is *fundamental*, not a fixable bug: any single fixed branch policy for the square root in alpha is unstable in some region of parameter space. This means OQ-02.b cannot have a uniform constant C for all (p, q, r); the bound must allow C to depend on the branch policy."
+    ],
+    "mathlibGaps": [
+      "Polynomial.discriminant : Polynomial R -> R — not defined in named form for general R-coefficient polynomials. Needed for OQ-02.b.",
+      "Condition-number abstraction condNum : (X -> Y) -> X -> Real — no general framework in Mathlib. Numerical-analysis content is sparse.",
+      "Multi-parameter big-O / big-Theta comparison via Filter.Tendsto exists but is unwieldy for the asymptotic-rate inequalities OQ-02.a needs."
+    ],
+    "nextSteps": [
+      "S2 SCAFFOLD: add resolvent_cubic_q_zero (provable by ring_nf) and ferrari_biquad_limit (sorry-marked) to proofs/Proofs/GeneralQuartic.lean.",
+      "S3: discharge ferrari_biquad_limit by: (a) prove resolvent_root_at_biquad — for every (p, r) there is an m with (resolventCubic p 0 r).eval m = 0 and 2*m + p ≠ 0; (b) prove the algebraic root-matching identity.",
+      "Eventual session: open Mathlib gap issue for Polynomial.discriminant if absent."
+    ]
+  },
+  "tags": [
+    "algebra",
+    "polynomial",
+    "numerical-analysis",
+    "wiedijk-100",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "general-quartic"
+  ],
+  "references": {
+    "papers": [
+      "V. Pan (1997). Solving a Polynomial Equation: Some History and Recent Progress. SIAM Review 39(2), 187-220.",
+      "D. Bini and V. Pan (1996). Polynomial and Matrix Computations, Vol. 1. Birkhauser.",
+      "W. Kahan (2004). To Solve a Real Cubic Equation. (Manuscript / lecture notes.)",
+      "J. H. Wilkinson (1965). The Algebraic Eigenvalue Problem. Oxford.",
+      "W. H. Press et al. Numerical Recipes (3rd ed.), section 5.6 'Quartic Equations'."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Quartic_equation",
+      "https://en.wikipedia.org/wiki/Condition_number"
+    ],
+    "mathlib": [
+      "Mathlib.Algebra.Polynomial.Basic",
+      "Mathlib.Algebra.Polynomial.Degree.Definitions",
+      "Mathlib.Analysis.Complex.Polynomial.Basic",
+      "Mathlib.Data.Complex.Basic"
+    ]
+  },
+  "started": "2026-05-12T04:48:16.448Z",
+  "lastUpdate": "2026-05-12T08:30Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/GeneralQuartic.lean",
+      "filename": "GeneralQuartic.lean",
+      "lineCount": 361,
+      "theoremCount": 9,
+      "axiomCount": 6,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeneralQuartic.lean"
+    }
+  ]
+}
