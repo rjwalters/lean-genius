@@ -215,7 +215,8 @@ lemma isRamsey_one_iff (n s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) :
         have : χ {i} = true := hχ_true i hge
         simp [this] at hχ
       have hcard : S.card ≤ a := hcard_lo S hSlt
-      have ha_bound : a ≤ s - 1 := by simp [a]; omega
+      -- a = min (s - 1) n ≤ s - 1, contradicting hcard + hScard : S.card = s.
+      have ha_bound : a ≤ s - 1 := min_le_left _ _
       omega
     · -- true-clique S of size t: every i ∈ S has a ≤ i.val.
       have hSge : ∀ i ∈ S, a ≤ i.val := by
@@ -228,12 +229,16 @@ lemma isRamsey_one_iff (n s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) :
       have hcard : S.card ≤ n - a := hcard_hi S hSge
       -- Bound n - a ≤ t - 1, case-split on the `min`.
       have ha_bound : n - a ≤ t - 1 := by
-        rcases le_or_lt (s - 1) n with hsa | hsa
+        rcases le_or_gt (s - 1) n with hsa | hsa
         · -- a = s - 1
-          have ha_eq : a = s - 1 := by simp [a]; omega
+          have ha_eq : a = s - 1 := by
+            show min (s - 1) n = s - 1
+            exact min_eq_left hsa
           omega
-        · -- a = n
-          have ha_eq : a = n := by simp [a]; omega
+        · -- a = n (when s - 1 > n)
+          have ha_eq : a = n := by
+            show min (s - 1) n = n
+            exact min_eq_right (le_of_lt hsa)
           omega
       omega
   · -- (⇐) s + t - 1 ≤ n → IsRamsey n 1 s t.  Pigeonhole partition of `Fin n`
@@ -245,7 +250,7 @@ lemma isRamsey_one_iff (n s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) :
     have hF_neg : (Finset.univ.filter (fun i : Fin n => ¬ (χ {i} = false))) = G := by
       ext i
       simp only [Finset.mem_filter, Finset.mem_univ, true_and, G]
-      cases hc : χ {i} <;> simp [hc]
+      cases hc : χ {i} <;> simp
     have hsum : F.card + G.card = n := by
       have h :
           (Finset.univ.filter (fun i : Fin n => χ {i} = false)).card +
@@ -294,12 +299,18 @@ theorem ramseyNumber_one (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) :
     ext n; rw [Set.mem_setOf_eq, Set.mem_setOf_eq]
     exact isRamsey_one_iff n s t hs ht
   rw [hset]
-  -- sInf {n | s+t-1 ≤ n} = s+t-1
+  -- sInf {n | s+t-1 ≤ n} = s+t-1: `s+t-1` is the min of the upward-closed set.
   apply le_antisymm
-  · exact Nat.sInf_le (le_refl _)
-  · refine le_csInf ⟨s + t - 1, le_refl _⟩ ?_
-    intro n hn
-    exact hn
+  · -- sInf ≤ s+t-1: membership witness `s+t-1 ≤ s+t-1`.
+    apply Nat.sInf_le
+    rw [Set.mem_setOf_eq]
+  · -- s+t-1 ≤ sInf: every member of the set is ≥ s+t-1.
+    apply le_csInf
+    · refine ⟨s + t - 1, ?_⟩
+      rw [Set.mem_setOf_eq]
+    · intro n hn
+      rw [Set.mem_setOf_eq] at hn
+      exact hn
 
 /-! ### S4-prep: color symmetry and degenerate-side `ramseyNumber` base cases
 
