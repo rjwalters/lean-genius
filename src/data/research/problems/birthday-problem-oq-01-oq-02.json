@@ -1,0 +1,92 @@
+{
+  "slug": "birthday-problem-oq-01-oq-02",
+  "title": "Coupling between expected pairs and collision probability",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "probCollision n d \\le \\uparrow(\\text{expectedPairs}\\ n\\ d)\\ \\wedge\\ \\text{probCollision}\\ n\\ d \\ge \\frac{(\\text{expectedPairs}\\ n\\ d)^2}{E[X^2]}",
+    "plain": "Bracket the Birthday Problem collision probability between (i) the Markov upper bound C(n,2)/d = expectedPairs n d (OQ01) and (ii) the Paley-Zygmund lower bound E[X]^2 / E[X^2]. Sandwiches OQ02's product-formulation probCollision between OQ01's first-moment quantity above and a second-moment quantity below.",
+    "whyMatters": [
+      "Closes a methodology gap: the gallery has both moment-based (OQ01) and probability-based (OQ02) treatments of the birthday problem, but no formal proof that the two viewpoints bracket the same quantity.",
+      "Gives variancePairs_le_expected (OQ01:164) a downstream client; currently unused without a coupling theorem.",
+      "Markov bound is sharpest at small C(n,2)/d; the OQ02 exponential bound is sharpest near the threshold; the two couplings together produce a complementary pair of closed-form bounds.",
+      "Mathlib has no Finset.one_sub_prod_le_sum lemma at the pinned revision; a gallery-side proof has upstream value."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [
+      "Markov bound: probCollision n d <= upArrow(expectedPairs n d).",
+      "Paley-Zygmund bound: probCollision n d >= (expectedPairs n d)^2 / E[X^2].",
+      "Bridge: probAllDistinct n d = descFactorial(d, n) / d^n (relates OQ02 product to OQ01OQ01 counting)."
+    ],
+    "goal": "Formalize both couplings plus the OQ02-OQ01OQ01 bridge. After all sorries close: status verified, 0 axioms, file ~150-200 lines."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-11T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE: documented two complementary couplings (Markov upper bound and Paley-Zygmund lower bound) between OQ01 expectedPairs and OQ02 probCollision. Mapped Mathlib infrastructure, identified 3 Mathlib gaps, and laid out a 5-step S2-S6 decomposition.",
+    "blockers": [],
+    "nextAction": "S2: state and prove one_sub_prod_le_sum helper in new Proofs/BirthdayProblemOQ01OQ02.lean (~25 lines, induction on n, uses Finset.prod_range_succ + Finset.sum_range_succ + nlinarith).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-12, 2026-05-11): OBSERVE survey for the coupling between BirthdayProblemOQ01.expectedPairs (rational first-moment) and BirthdayProblemOQ02.probCollision (real probability product). Established two natural couplings: (a) Markov upper bound probCollision <= expectedPairs, one-line proof chaining a new union-bound helper one_sub_prod_le_sum with the existing gauss_sum_div (OQ02:145); (b) Paley-Zygmund lower bound probCollision >= E[X]^2/E[X^2], requires the second-moment formula plus a bridge to OQ01OQ01.collisionCount. Verified the algebra on n=23 (d=365) and n=50 (d=365) numerically: Markov gap 0.186 vs exponential gap 0.007 at n=23; Paley-Zygmund gives >=1/2 at n=28 (the classical threshold) without invoking exp. Identified Mathlib gaps: no Finset.one_sub_prod_le_sum at pinned revision, no discrete-sample-space Markov/Paley-Zygmund. No Lean changes this iteration -- pure documentation S1.",
+    "builtItems": [],
+    "insights": [
+      "Markov coupling probCollision <= expectedPairs has a one-line proof: chain one_sub_prod_le_sum (union bound) with gauss_sum_div (existing in OQ02:145) and two_mul_choose_two (existing in OQ01:109). ~40 lines total S2+S3.",
+      "Paley-Zygmund lower bound is heavier (~80 lines) because it needs (a) a second-moment formula and (b) a bridge between OQ02 product formulation and OQ01OQ01 finite-sample-space formulation. Best split: S4 (E[X^2] formula), S6 (bridge), S5 (Paley-Zygmund).",
+      "The OQ02 exponential bound is strictly sharper than Paley-Zygmund for the birthday parameter range (gap 0.007 vs 0.097 at n=23, d=365), but Markov gives an UPPER bound that the exponential argument does not.",
+      "variancePairs_le_expected (OQ01:164) is currently unused in the gallery; Paley-Zygmund (this OQ's S5) is the natural downstream client.",
+      "n=28 threshold (E[X]>1 for d=365) coincides with the Paley-Zygmund lower-bound 0.5 threshold: (C(28,2)/365)/(1+C(28,2)/365) = (378/365)/(743/365) = 378/743 >= 0.5. The two thresholds are not independent."
+    ],
+    "mathlibGaps": [
+      "No Finset.one_sub_prod_le_sum lemma at the pinned Mathlib revision that fires on the form 1 - prod(1 - f i) <= sum (f i). Provable in ~25 lines by induction on the index set (S2 deliverable).",
+      "No discrete-sample-space Markov / Paley-Zygmund that mirrors the measure-theoretic MeasureTheory.measure_*_inv_le_* family. The measure-theoretic version requires setting up a probability measure on Fin n -> Fin d, non-trivial in decide-style proofs.",
+      "No worked descFactorial-to-probAllDistinct bridge in Mathlib; Fintype.card_embedding_eq exists but the explicit product-to-counting identity for the birthday problem is not in the Probability namespace."
+    ],
+    "nextSteps": [
+      "S2: state and prove one_sub_prod_le_sum in new Proofs/BirthdayProblemOQ01OQ02.lean (~25 lines, induction with Finset.prod_range_succ + Finset.sum_range_succ).",
+      "S3: prove probCollision_le_expectedPairs (Markov coupling, ~40 lines, chains one_sub_prod_le_sum + gauss_sum_div + two_mul_choose_two + push_cast).",
+      "S6: prove probAllDistinct_eq_descFactorial_div (bridge OQ02 product to OQ01OQ01 counting, ~30 lines, telescoping).",
+      "S4: state and prove the E[X^2] formula in OQ01-OQ02 style using variancePairs (~50 lines).",
+      "S5: probCollision_ge_paley_zygmund (lower bound, ~80 lines, depends on S4 + S6, may need to be split)."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "probability",
+    "birthday-problem",
+    "markov-inequality",
+    "paley-zygmund",
+    "coupling"
+  ],
+  "relatedProofs": [
+    "birthday-problem-oq-01",
+    "birthday-problem-oq-01-oq-01",
+    "birthday-problem-oq-02",
+    "birthday-problem-oq-02-oq-01",
+    "birthday-problem-oq-03",
+    "birthday-problem"
+  ],
+  "references": {
+    "papers": [
+      "Mitzenmacher M., Upfal E. (2017) Probability and Computing, 2nd ed., Section 3.3 (Second Moment Method)",
+      "Kahane J.-P. (1985) Some Random Series of Functions, Theorem 6.1 (Paley-Zygmund)"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Algebra.BigOperators.Group.Finset",
+      "Mathlib.Data.Rat.Cast.Defs",
+      "Mathlib.Combinatorics.Choose.Factorial",
+      "Mathlib.Data.Fintype.Pi"
+    ]
+  }
+}
