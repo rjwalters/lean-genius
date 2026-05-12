@@ -414,6 +414,36 @@ theorem geometric_tail_identity (r R : ℝ) (hR : 0 < R) (hrR : r < R) (n : ℕ)
       = r ^ (n + 1) / R ^ n / (R - r) := by rw [key]
     _ = r ^ (n + 1) / (R ^ n * (R - r)) := by rw [div_div]
 
+/-- **Cauchy diagonal-norm bound** (S4 sub-lemma; one remaining `sorry`).
+
+For `f : ℂ → ℂ` holomorphic on `Metric.ball a R` with uniform sup bound
+`‖f z‖ ≤ M` on that disk, the *diagonal* multilinear evaluation
+`p k (fun _ ↦ w)` of the `k`-th formal-power-series coefficient is
+bounded by `M · (‖w‖ / R)^k` for every `w` with `‖w‖ < R`.
+
+This is the textbook Cauchy coefficient estimate. The proof chain is
+sketched in the §3b umbrella docstring above; concretely it routes through
+`Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le` (Cauchy
+integral on `sphere a r'` with `r' ∈ (max r ‖w‖, R)`), the formal-series /
+iterated-derivative bridge `HasFPowerSeriesOnBall.factorial_smul` plus
+`iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod` (1D collapses to `w^k`),
+and finally a `r' → R⁻` continuity-of-upper-bound limit.
+
+This sub-lemma is the **only remaining `sorry`** in this file after S4. It
+isolates the residual formalization gap to a single named statement so that
+future iterations (or a Mathlib contribution) can close it without
+revisiting the surrounding combination scaffolding. -/
+theorem cauchy_diag_norm_bound
+    (f : ℂ → ℂ) (a : ℂ) (R M : ℝ)
+    (_hR : 0 < R) (_hM : 0 ≤ M)
+    (p : FormalMultilinearSeries ℂ ℂ ℂ)
+    (_hf : HasFPowerSeriesOnBall f p a (ENNReal.ofReal R))
+    (_hbound : ∀ z ∈ Metric.ball a R, ‖f z‖ ≤ M)
+    (k : ℕ) (w : ℂ) (_hw : ‖w‖ < R) :
+    ‖p k (fun _ ↦ w)‖ ≤ M * (‖w‖ / R) ^ k := by
+  -- Deferred to S5: see docstring for the Mathlib Cauchy-integral chain.
+  sorry
+
 /-- **Corrected Cauchy uniform bound** (complex hypothesis, fixed index).
 
 For `f : ℂ → ℂ` holomorphic on `Metric.ball a R` (the open complex disk
@@ -432,27 +462,86 @@ tail begins at degree `n + 1` and the geometric sum
 `∑_{k ≥ n+1} M · (r/R)^k = M · (r/R)^(n+1) · R/(R−r) =
 M · r^(n+1) / (R^n · (R − r))` (via `geometric_tail_identity`).
 
-The proof (deferred) chains:
-1. `cauchy_diag_norm_bound` (Cauchy coefficient bound on the diagonal
-   multilinear input): `‖p k (fun _ ↦ z − a)‖ ≤ M · (‖z − a‖ / R)^k`.
-   Mathlib chain: `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le`
-   + `HasFPowerSeriesOnBall.factorial_smul` + `r' → R⁻` limit.
-2. `HasFPowerSeriesOnBall.hasSum` + `norm_sub_le_of_geometric_bound_of_hasSum`:
-   tail bound from per-degree bound.
-3. `geometric_tail_identity`: convert ratio form to polynomial form.
+**Proof (S4, this iteration).** The combination is now formalized in full;
+the only residual `sorry` is the Cauchy coefficient bound
+`cauchy_diag_norm_bound` (its own statement is closed under a separate
+`sorry`). The proof chains:
 
-`sorry` here marks the formalization gap, *not* a mathematical gap. -/
+1. `HasFPowerSeriesOnBall.hasSum_sub` (Mathlib): from `z` in the
+   `EMetric.ball a (ENNReal.ofReal R)`, get
+   `HasSum (fun k ↦ p k (fun _ ↦ z − a)) (f z)`.
+2. `cauchy_diag_norm_bound` (this file, sorry): for every `k`,
+   `‖p k (fun _ ↦ (z − a))‖ ≤ M · (‖z − a‖ / R)^k ≤ M · (r / R)^k`.
+3. `norm_sub_le_of_geometric_bound_of_hasSum` (Mathlib): combine 1 + 2 at
+   index `n + 1` to bound `‖partialSum (n+1) − f z‖ ≤ M · (r/R)^(n+1) / (1 − r/R)`.
+4. Algebraic identity `(r/R)^(n+1) / (1 − r/R) = r^(n+1) / (R^n · (R−r))`
+   (a rescaling of `geometric_tail_identity`) plus `norm_sub_rev` give the
+   final stated bound. -/
 theorem analytic_taylor_remainder_uniform_bound_complex
     (f : ℂ → ℂ) (a : ℂ) (R M : ℝ)
-    (_hR : 0 < R) (_hM : 0 ≤ M)
+    (hR : 0 < R) (hM : 0 ≤ M)
     (p : FormalMultilinearSeries ℂ ℂ ℂ)
-    (_hf : HasFPowerSeriesOnBall f p a (ENNReal.ofReal R))
-    (_hbound : ∀ z ∈ Metric.ball a R, ‖f z‖ ≤ M)
-    (r : ℝ) (_hr : 0 < r) (_hrR : r < R)
-    (n : ℕ) (z : ℂ) (_hz : ‖z - a‖ ≤ r) :
+    (hf : HasFPowerSeriesOnBall f p a (ENNReal.ofReal R))
+    (hbound : ∀ z ∈ Metric.ball a R, ‖f z‖ ≤ M)
+    (r : ℝ) (hr : 0 < r) (hrR : r < R)
+    (n : ℕ) (z : ℂ) (hz : ‖z - a‖ ≤ r) :
     ‖f z - p.partialSum (n + 1) (z - a)‖ ≤ M * r ^ (n + 1) / (R ^ n * (R - r)) := by
-  -- Deferred to S4: see docstring for the Mathlib chain.
-  sorry
+  -- Setup: arithmetic preconditions.
+  have hzR : ‖z - a‖ < R := lt_of_le_of_lt hz hrR
+  have hRr_pos : 0 < R - r := sub_pos.mpr hrR
+  have hrR_lt_one : r / R < 1 := (div_lt_one hR).mpr hrR
+  have hrR_nn : 0 ≤ r / R := div_nonneg hr.le hR.le
+  have hR_ne : (R : ℝ) ≠ 0 := ne_of_gt hR
+  have hRr_ne : (R - r : ℝ) ≠ 0 := ne_of_gt hRr_pos
+  have hRn_ne : (R : ℝ) ^ n ≠ 0 := pow_ne_zero _ hR_ne
+  -- Step 1: `z ∈ EMetric.ball a (ENNReal.ofReal R)` (the hypothesis of `hasSum_sub`).
+  have hz_eball : z ∈ EMetric.ball a (ENNReal.ofReal R) := by
+    rw [EMetric.mem_ball, edist_dist, dist_eq_norm]
+    exact (ENNReal.ofReal_lt_ofReal_iff_of_nonneg (norm_nonneg _)).mpr hzR
+  -- Step 2: `HasSum` of the diagonal series to `f z`.
+  have hsum : HasSum (fun k : ℕ => p k fun _ => z - a) (f z) :=
+    hf.hasSum_sub hz_eball
+  -- Step 3: per-term geometric bound `‖p k (fun _ ↦ (z-a))‖ ≤ M · (r/R)^k`.
+  have hterm : ∀ k, ‖p k fun _ => z - a‖ ≤ M * (r / R) ^ k := by
+    intro k
+    have h_cauchy := cauchy_diag_norm_bound f a R M hR hM p hf hbound k (z - a) hzR
+    have hwR_nn : 0 ≤ ‖z - a‖ / R := div_nonneg (norm_nonneg _) hR.le
+    have hwR_le : ‖z - a‖ / R ≤ r / R := by gcongr
+    have hpow : (‖z - a‖ / R) ^ k ≤ (r / R) ^ k := by gcongr
+    calc ‖p k fun _ => z - a‖
+        ≤ M * (‖z - a‖ / R) ^ k := h_cauchy
+      _ ≤ M * (r / R) ^ k := by
+          exact mul_le_mul_of_nonneg_left hpow hM
+  -- Step 4: apply `norm_sub_le_of_geometric_bound_of_hasSum` at index `n + 1`.
+  have htail :=
+    norm_sub_le_of_geometric_bound_of_hasSum hrR_lt_one hterm hsum (n + 1)
+  -- `htail : ‖(∑ k ∈ range (n+1), p k (fun _ ↦ (z-a))) - f z‖ ≤ M * (r/R)^(n+1) / (1 - r/R)`
+  -- Step 5: rewrite the LHS finite sum as `p.partialSum (n+1) (z - a)`.
+  have h_partialSum :
+      (∑ k ∈ Finset.range (n + 1), p k fun _ => z - a)
+        = p.partialSum (n + 1) (z - a) := by
+    rfl
+  rw [h_partialSum] at htail
+  -- Step 6: `‖partialSum (n+1) − f z‖ = ‖f z − partialSum (n+1)‖`.
+  rw [norm_sub_rev] at htail
+  -- Step 7: rewrite the RHS `M * (r/R)^(n+1) / (1 - r/R)` to `M * r^(n+1) / (R^n * (R-r))`.
+  -- We use the already-proven `geometric_tail_identity` and a careful chain of
+  -- associativity rewrites — `field_simp + ring` here leaves stray `R⁻¹^n` factors
+  -- that `ring` cannot combine.
+  have h_rhs_eq :
+      M * (r / R) ^ (n + 1) / (1 - r / R) = M * r ^ (n + 1) / (R ^ n * (R - r)) := by
+    have h_geo := geometric_tail_identity r R hR hrR n
+    -- h_geo : (r / R) ^ (n + 1) * R / (R - r) = r ^ (n + 1) / (R ^ n * (R - r))
+    have h1r : (1 - r / R : ℝ) = (R - r) / R := by field_simp
+    calc M * (r / R) ^ (n + 1) / (1 - r / R)
+        = M * (r / R) ^ (n + 1) / ((R - r) / R) := by rw [h1r]
+      _ = M * (r / R) ^ (n + 1) * R / (R - r) := by rw [div_div_eq_mul_div]
+      _ = M * ((r / R) ^ (n + 1) * R) / (R - r) := by rw [mul_assoc]
+      _ = M * ((r / R) ^ (n + 1) * R / (R - r)) := by rw [mul_div_assoc]
+      _ = M * (r ^ (n + 1) / (R ^ n * (R - r))) := by rw [h_geo]
+      _ = M * r ^ (n + 1) / (R ^ n * (R - r)) := by rw [← mul_div_assoc]
+  rw [h_rhs_eq] at htail
+  exact htail
 
 /-! ## §3a. Existential Cauchy-style geometric approximation (S2 addition, proven)
 
@@ -525,6 +614,7 @@ theorem analytic_taylor_remainder_uniform_geometric_complex
 #check @OriginalRemainderForm
 #check @originalRemainderForm_is_false
 #check @geometric_tail_identity
+#check @cauchy_diag_norm_bound
 #check @analytic_taylor_remainder_uniform_bound_complex
 #check @analytic_taylor_remainder_uniform_geometric_complex
 
