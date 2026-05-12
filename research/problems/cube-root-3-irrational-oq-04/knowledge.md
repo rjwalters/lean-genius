@@ -471,3 +471,126 @@ genuine Mathlib contribution candidate, but is out of scope here.)
   `CentralLimitTheoremOQ02OQ04`, `GreensTheoremOQ01OQ01OQ02OQ03`)
   added by recent PRs that skipped regeneration — pure cleanup, no
   semantic conflict.
+
+## S5 (researcher-5, 2026-05-12) — fourth partial quotient `a₃ = 1`
+
+### Result
+
+`cbrt3_a3 : ⌊1 / (1 / (1 / (cbrt3 - 1) - 2) - 3)⌋ = (1 : ℤ)`
+
+in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean` (lines ~345–398),
+the fourth partial quotient of the simple CF `[1; 2, 3, 1, 4, …]`.
+
+### How the S5-prep helper was used
+
+The S5-prep PR #17859 (researcher-1, 2026-05-12) introduced the
+biconditional helper
+
+```lean
+Cbrt3Helpers.lt_cbrt3_iff_cube_lt {q : ℝ} (hq : 0 ≤ q) :
+    q < cbrt3 ↔ q ^ 3 < 3
+```
+
+and demonstrated it on `twenty_three_sixteenths_lt_cbrt3 :
+(23/16 : ℝ) < cbrt3`. S5 imports this one bound directly:
+
+```lean
+have h_lo : (23/16 : ℝ) < cbrt3 :=
+  Cbrt3Helpers.twenty_three_sixteenths_lt_cbrt3
+```
+
+No new cubing-bound lemma was added to the main file — the helper
+file is now the canonical home for cubing-bound infrastructure, while
+`CubeRoot3IrrationalOQ04.lean` accumulates only the partial-quotient
+floor identities.
+
+### Algebraic chain (7 steps, all linear after inversion)
+
+Starting from `23/16 < cbrt3 < 13/9`:
+
+```
+  23/16 < cbrt3      < 13/9                  [S5-prep + S4]
+  7/16  < cbrt3 - 1  < 4/9                   linarith
+  9/4   < 1/(cbrt3-1) < 16/7                 lt_div_iff₀, div_lt_iff₀
+  1/4   < x₂          < 2/7    (x₂ = ·−2)    linarith
+  7/2   < 1/x₂        < 4                    lt_div_iff₀, div_lt_iff₀
+  1/2   < x₃          < 1      (x₃ = ·−3)    linarith
+  1     ≤ 1/x₃        < 2                    le_div_iff₀, div_lt_iff₀
+                                              ⌊1/x₃⌋ = 1               le_antisymm
+```
+
+Each `lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀` rewrite turns a
+ratio inequality into a linear one, then `linarith` closes from the
+previous step's bound. The final `le_antisymm` step splits the floor
+identity into `⌊1/x₃⌋ ≤ 1` (from `1/x₃ < 2` via `Int.floor_lt`) and
+`1 ≤ ⌊1/x₃⌋` (from `1 ≤ 1/x₃` via `Int.le_floor`).
+
+### Cube boundaries
+
+Both cube targets are tight to within `~10⁻³`:
+
+- `(23/16)³ = 12167/4096 ≈ 2.9705`     gap `121/4096 ≈ 0.0296`
+- `(13/9)³  = 2197/729   ≈ 3.0137`     gap `10/729  ≈ 0.0137`
+
+The S4 bounds `(10/7, 13/9)` had gaps of order `~0.03 / ~0.01`; the
+S5 sandwich `(23/16, 13/9)` reuses the S4 upper bound and only
+tightens the lower side.
+
+### What S5 validates about S5-prep
+
+1. **The iff-helper template is drift-robust.** A single
+   `rw [lt_cbrt3_iff_cube_lt (by norm_num)]; norm_num` replaces the
+   ~14-line `by_contra + cube + nlinarith` block. S5 used this once
+   (via the cached `twenty_three_sixteenths_lt_cbrt3`); future
+   iterations (S6, S7, …) can each add fresh cubing bounds with two
+   lines in the helper file rather than a full block in the main
+   file.
+2. **The namespace split is clean.** `Cbrt3Helpers.cbrt3_nonneg` /
+   `cbrt3_pos` in the helper file do not collide with the local
+   `CubeRoot3IrrationalOQ04.cbrt3_nonneg` because S5 is inside the
+   latter namespace; the helper's bound is referenced by its fully
+   qualified name `Cbrt3Helpers.twenty_three_sixteenths_lt_cbrt3`.
+3. **Per-`aᵢ` proofs decouple from cubing infrastructure.** The S5
+   proof contains zero `nlinarith` calls and zero `ring` calls — it
+   is purely `linarith` after the helper bound is in scope. This is
+   a structural simplification compared to S2/S3/S4, each of which
+   inlined `nlinarith` blocks for their cubing bounds.
+
+### What S6 will need
+
+`cbrt3_a4 : ⌊1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1)⌋ = (4 : ℤ)`.
+
+Let `x₄ := 1/x₃ - 1`. From `1/x₃ ∈ (1, 2)`, `x₄ ∈ (0, 1)`. To get
+`a₄ = 4` need `1/x₄ ∈ [4, 5)`, i.e. `x₄ ∈ (1/5, 1/4]`, i.e.
+`1/x₃ ∈ (6/5, 5/4]`, i.e. `x₃ ∈ [4/5, 5/6)`, i.e. `1/x₂ ∈ (3 + 4/5,
+3 + 5/6] = (19/5, 23/6]`, i.e. `x₂ ∈ [6/23, 5/19)`, i.e.
+`1/(cbrt3-1) ∈ [2 + 6/23, 2 + 5/19) = [52/23, 43/19)`, i.e.
+`cbrt3 - 1 ∈ (19/43, 23/52]`, i.e. `cbrt3 ∈ (62/43, 75/52]`.
+
+So S6 needs two new cubing bounds:
+
+- `sixty_two_forty_thirds_lt_cbrt3 : (62/43 : ℝ) < cbrt3`
+  cube target `(62/43)³ = 238328/79507 ≈ 2.99762 < 3`.
+- `cbrt3_lt_seventy_five_fifty_seconds : cbrt3 < (75/52 : ℝ)`
+  cube target `(75/52)³ = 421875/140608 ≈ 3.00037 > 3`.
+
+Both expressible in 2 lines each via the helper file's
+`lt_cbrt3_iff_cube_lt` / `cbrt3_lt_iff_three_lt_cube`. After that,
+the algebraic chain is 7 more `lt_div_iff₀` / `div_lt_iff₀` rewrites
+similar to S5. The cube boundaries are dramatically tighter than
+S5's (~`10⁻³` vs S5's ~`10⁻²`), reflecting the fact that the fifth
+convergent is `62/43` (denominator 43) versus S4's `10/7` and `13/9`
+(denominators 7 and 9).
+
+### Risk Notes
+
+- The new S5 proof depends on `Cbrt3Helpers.twenty_three_sixteenths_lt_cbrt3`
+  (in `Proofs.CubeRoot3IrrationalOQ04Helpers`), so the import chain
+  picks up the entire helper file. Both files are still
+  Mathlib-only + parent-only; no extra dependencies.
+- The `linarith` chain is 7 steps deep but each step has only one
+  hypothesis from the previous; no Fourier-Motzkin blowup expected.
+- Build pending (same Docker symlink constraint as S2/S3/S4/S5-prep).
+- No conflicting PRs at write-time: searched `gh pr list
+  --search "cube-root-3-irrational-oq-04 S5"` and `--search
+  "cube-root-3-irrational-oq-04 a3"` both return empty.

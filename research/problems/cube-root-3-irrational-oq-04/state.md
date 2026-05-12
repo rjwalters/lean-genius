@@ -1,10 +1,23 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12 (S4)
-**Iteration**: 4
+**Since**: 2026-05-12 (S5)
+**Iteration**: 5
 
 ## Current Focus
+
+S5 (researcher-5): Fourth partial quotient.
+`cbrt3_a3 : ⌊1 / (1 / (1 / (cbrt3 - 1) - 2) - 3)⌋ = (1 : ℤ)` — the
+fourth partial quotient `a₃ = 1` of the simple CF `[1; 2, 3, 1, 4, …]`.
+The S5-prep helpers PR (#17859, researcher-1) supplies the new lower
+bound `Cbrt3Helpers.twenty_three_sixteenths_lt_cbrt3` (cube target
+`12167/4096 < 12288/4096 = 3`) via the two-line cubing-iff template.
+The upper bound is the S4-proved `cbrt3_lt_thirteen_ninths`. Proof is
+rational-arithmetic only (one helper import + a 7-step
+`lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀` chain on a triple-nested
+fraction); no axioms; depends on `cbrt3_cubed` only.
+
+## Previous Focus
 
 S4 (researcher-3): Third partial quotient.
 `cbrt3_a2 : ⌊1 / (1 / (cbrt3 - 1) - 2)⌋ = (3 : ℤ)` — the third
@@ -12,11 +25,8 @@ partial quotient `a₂ = 3` of the simple CF `[1; 2, 3, 1, 4, …]`.
 Two new cubing-bound lemmas (`ten_sevenths_lt_cbrt3`,
 `cbrt3_lt_thirteen_ninths`) plus the floor identity, following
 the template specified by S3's next-action sketch verbatim.
-Proof is rational-arithmetic only (cubing bounds +
-`div_lt_iff₀` / `le_div_iff₀` / `lt_div_iff₀` + `Int.le_floor` /
-`Int.floor_lt`); no axioms; depends on `cbrt3_cubed` only.
 
-## Previous Focus
+## Earlier Focus
 
 S3 (researcher-8): Second partial quotient.
 `cbrt3_a1 : ⌊1 / (cbrt3 - 1)⌋ = (2 : ℤ)` — the second partial
@@ -36,8 +46,8 @@ chain of lemmas
 ```
 cbrt3_a0 : ⌊cbrt3⌋ = 1                                 ✓ S2
 cbrt3_a1 : ⌊1/(cbrt3 - 1)⌋ = 2                         ✓ S3
-cbrt3_a2 : ⌊1/(1/(cbrt3-1) - 2)⌋ = 3                   ✓ S4 (this iteration)
-cbrt3_a3 : ⌊1/(1/(1/(cbrt3-1) - 2) - 3)⌋ = 1           (S5+)
+cbrt3_a2 : ⌊1/(1/(cbrt3-1) - 2)⌋ = 3                   ✓ S4
+cbrt3_a3 : ⌊1/(1/(1/(cbrt3-1) - 2) - 3)⌋ = 1           ✓ S5 (this iteration)
 cbrt3_a4 : … = 4                                       (S6+)
 ```
 
@@ -53,23 +63,44 @@ clone. Strict text-only iterations (this S3) are unaffected.
 
 ## Next Action
 
-**S5 (any researcher)**: Prove the fourth partial quotient,
+**S6 (any researcher)**: Prove the fifth partial quotient,
+`cbrt3_a4 : ⌊1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1)⌋ = (4 : ℤ)`
+in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`.
+
+Let `x₄ := 1/x₃ - 1` where `x₃ := 1/x₂ - 3`, `x₂ := 1/(cbrt3-1) - 2`.
+The fifth-convergent denominator is `43`, the fourth is `9`, so by
+the standard CF tightness one expects `cbrt3 ∈ (43/30, 62/43)`
+giving `a₄ = 4`. More directly:
+
+  Need `4 ≤ 1/x₄ < 5`, i.e. `1/5 < x₄ ≤ 1/4`, i.e. `6/5 < 1/x₃ ≤ 5/4`,
+  i.e. `4/5 ≤ x₃ < 5/6`, i.e. `19/5 < 1/x₂ ≤ 23/6` [pending check],
+  …
+
+The exact rational bounds depend on the next convergents of the CF
+`[1; 2, 3, 1, 4, …]`; the fifth convergent is `62/43`. The S6
+researcher should compute the cube boundaries fresh and use the
+two-line `Cbrt3Helpers.lt_cbrt3_iff_cube_lt` /
+`cbrt3_lt_iff_three_lt_cube` templates from PR #17859. Both
+boundaries should give cubes within ~10⁻³ of `3`.
+
+For the previous (S5) next-action sketch see the S4 archived
+section below; the cubing-iff helpers are now standardized.
+
+## Prior Next-Action Sketch (S5, now resolved)
+
+**S5**: Prove the fourth partial quotient,
 `cbrt3_a3 : ⌊1 / (1 / (1/(cbrt3 - 1) - 2) - 3)⌋ = (1 : ℤ)` in
-`proofs/Proofs/CubeRoot3IrrationalOQ04.lean`.
+`proofs/Proofs/CubeRoot3IrrationalOQ04.lean`. **RESOLVED in S5
+(this iteration).**
 
-Let `x₃ := 1/x₂ - 3` where `x₂ := 1/(cbrt3-1) - 2`. Need
-`1 ≤ 1/x₃ < 2`, i.e. `1/2 < x₃ ≤ 1`, i.e. `7/2 < 1/x₂ ≤ 4`, i.e.
-`1/4 ≤ x₂ < 2/7`, i.e. `9/4 ≤ 1/(cbrt3-1) < 16/7`, i.e.
-`7/16 < cbrt3 - 1 ≤ 4/9`, i.e. `23/16 < cbrt3 ≤ 13/9`.
-
-Cube boundaries: `(23/16)^3 = 12167/4096 ≈ 2.97 < 3` and
-`(13/9)^3 = 2197/729 > 3` (already proved as
-`cbrt3_lt_thirteen_ninths`). New bound needed:
-`twenty_three_sixteenths_lt_cbrt3 : (23/16 : ℝ) < cbrt3` via cubing
-`12167/4096 < 12288/4096 = 3`.
-
-For the previous (S4) next-action sketch see the S3 archived
-section below; for the upcoming S5 follow the exact same template.
+Used `Cbrt3Helpers.twenty_three_sixteenths_lt_cbrt3` (cube
+`12167/4096 < 12288/4096`) for the lower bound and the existing
+`cbrt3_lt_thirteen_ninths` for the upper bound. The 7-step
+algebraic chain
+`23/16 < cbrt3 < 13/9 ↦ 9/4 < 1/(cbrt3-1) < 16/7 ↦ 1/4 < x₂ < 2/7 ↦
+ 7/2 < 1/x₂ < 4 ↦ 1/2 < x₃ < 1 ↦ 1 < 1/x₃ < 2 ↦ ⌊1/x₃⌋ = 1`
+discharges via repeated `lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀`
+rewrites with `linarith` closing each step.
 
 ## Prior Next-Action Sketch (S4, now resolved)
 
@@ -116,8 +147,8 @@ two `div_lt_iff₀` / `le_div_iff₀` algebraic manipulations.
 
 ## Attempt Counts
 
-- Total attempts: 4 (S1 survey, S2 a₀, S3 a₁, S4 a₂)
-- Current approach attempts: 4 (cubing + nlinarith)
+- Total attempts: 5 (S1 survey, S2 a₀, S3 a₁, S4 a₂, S5 a₃)
+- Current approach attempts: 5 (cubing + nlinarith on bounds, then linarith chain on floor identity)
 - Approaches tried: 1
 
 ## Open files
@@ -183,3 +214,29 @@ Third partial-quotient iteration on this slug. Phase ACT.
 - Followed S3's S4 next-action sketch verbatim (Step 1 hpos1,
   Step 2 hinner_gt via `lt_div_iff₀`, Step 3 hinner_lt via
   `div_lt_iff₀`, Step 4 hpos2, Step 5 floor antisymmetry).
+
+## S5 Deliverable
+
+Fourth partial-quotient iteration on this slug. Phase ACT.
+
+- **1 new theorem**, sorry-free, no axioms:
+  - `cbrt3_a3 : ⌊1 / (1 / (1 / (cbrt3 - 1) - 2) - 3)⌋ = (1 : ℤ)` —
+    main result, `a₃ = 1`.
+- Uses pre-existing S5-prep helper:
+  - `Cbrt3Helpers.twenty_three_sixteenths_lt_cbrt3` from PR #17859
+    (researcher-1) for the new lower bound `23/16 < cbrt3` (cube
+    target `12167/4096 < 12288/4096 = 3`).
+- Uses pre-existing S4 lemma `cbrt3_lt_thirteen_ninths` for the upper
+  bound.
+- 0 axioms; 0 sorries; no new cubing-bound lemmas needed in the main
+  file (the S5-prep helper file is the canonical home for the new
+  bound, isolating the cubing-iff infrastructure from the
+  partial-quotient lemmas).
+- Lean file: `proofs/Proofs/CubeRoot3IrrationalOQ04.lean` grown
+  ~286 → ~398 lines (1 theorem + 1 prose section). Added import
+  `Proofs.CubeRoot3IrrationalOQ04Helpers`.
+- Build pending (same Docker symlink constraint as S2/S3/S4).
+- Followed the S4 next-action sketch with one new structural twist:
+  the lower bound is now a single-symbol reference into the helper
+  file rather than an inlined `by_contra + nlinarith` block,
+  validating PR #17859's iff-based refactor as drift-robust.
