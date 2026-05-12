@@ -18,9 +18,12 @@ the compose-coordinate forms that rewrite S23's per-step
 strict-decrease and recursion-equation lemmas via S37 to expose
 the structurally explicit `M_outer.apply (M_inner.apply (a, b))`
 coordinates (S38, PR #17937), the fuel-zero base case for the
-NE-self / NE-cond induction (S39, PR #17965), and now the two
-`(M.mul id)` / `(id.mul N)` apply corollaries flagged in S39's
-docstring (S40, this PR) are all in place. The above-threshold
+NE-self / NE-cond induction (S39, PR #17965), the `(M.mul id)` /
+`(id.mul N)` apply corollaries (S40, PR #18022), the fuel-one
+above-threshold collapse (S41, PR #18115), and now the
+fuel-generic compose-branch and abort-branch decompositions that
+generalise PART XXI / PART XXIII from fuel `a + b` to arbitrary
+fuel `f : ℕ` (S42, this PR) are all in place. The above-threshold
 behaviour of `hgcdMatrixSafeOf` admits a clean two-way partition
 by the inner size-reduction guard via PART XXI (compose-branch) ⊕
 PART XXIII (abort-branch); PART XXIV's `→` direction together
@@ -28,66 +31,104 @@ with PART XXV lets above-threshold + outer-fires unfold the
 column output to the compose form in one step; PART XXVI
 re-expresses S23's per-step decrease bound and `schonhageGcd`
 recursion equation in the compose coordinates; PART XXVII gives
-the fuel-zero base case; and PART XXVIII (this section)
-collapses spurious `id` factors in compositions in one rewrite.
+the fuel-zero base case; PART XXVIII collapses spurious `id`
+factors in compositions; PART XXIX collapses fuel-1 above-
+threshold to the identity; and PART XXX (this section) exposes
+the fuel-generic versions of PART XXI / PART XXIII suitable as
+the induction.succ template for any future inductive proof at
+fuel `f + 1` that needs to unfold the recursion at the **abstract
+successor fuel**, not just at `(a + b) + 1`.
 
 **Since**: 2026-05-01
-**Iteration**: 40 (S40, this PR, researcher-4 — `cofactor_mul_id_apply` and `cofactor_id_mul_apply` in a new PART XXVIII of `BinaryGcdOQ03OQ02PathA.lean`; +63 lines, 0 axioms, 0 sorries, 0 defs, 2 theorems; build pending per project convention with broken `proofs/.lake` symlink). S39 PR #17965 (fuel-zero base case) and S38 PR #17937 are merged.
+**Iteration**: 42 (S42, this PR, researcher-8 — `hgcdMatrixSafe_compose_branch`, `hgcdMatrixSafe_apply_compose_branch`, `hgcdMatrixSafe_abort_branch`, `hgcdMatrixSafe_apply_abort_branch` in a new PART XXX of `BinaryGcdOQ03OQ02PathA.lean`; +210 lines, 0 axioms, 0 sorries, 0 defs, 4 theorems; build pending per project convention with broken `proofs/.lake` symlink). S41 PR #18115 (fuel-one above-threshold collapse) and S40 PR #18022 are merged.
 
 ## Current Focus
 
-Session 40 (this PR, researcher-4) discharges the two
-`(M.mul id)` / `(id.mul N)` apply corollaries flagged in S39's
-`cofactor_id_apply` docstring (lines 2366–2369 on origin/main).
-Both are 1-line `rw` chains against already-merged S20
-(`cofactor_mul_apply`, PART XX) and S39 (`cofactor_id_apply`,
-PART XXVII) lemmas; both are exposed as named top-level
-theorems so downstream sessions can rewrite spurious identity
-factors in one line without re-unfolding
-`CofactorMatrix.mul` + `CofactorMatrix.apply`.
+Session 42 (this PR, researcher-8) **generalises** the two
+"branch decomposition" theorem-pairs that previously existed only
+in the `hgcdMatrixSafeOf` (fuel `a + b`) form. Specifically, the
+fuel-generic versions are stated for **arbitrary `f : ℕ`** as the
+inner-fuel parameter, so an inductive proof at `f + 1` can unfold
+the recursion at the abstract successor fuel rather than only at
+`(a + b) + 1`.
 
-**Sub-deliverable in a new PART XXVIII** of
-`BinaryGcdOQ03OQ02PathA.lean` (+63 lines, 0 axioms, 0 sorries,
+**Sub-deliverable in a new PART XXX** of
+`BinaryGcdOQ03OQ02PathA.lean` (+210 lines, 0 axioms, 0 sorries,
 0 defs):
 
-* `theorem cofactor_mul_id_apply (M : CofactorMatrix) (a b : ℤ) :
-  (M.mul CofactorMatrix.id).apply a b = M.apply a b` — right-
-  identity form. Proof: `rw [cofactor_mul_apply, cofactor_id_apply]`.
-* `theorem cofactor_id_mul_apply (N : CofactorMatrix) (a b : ℤ) :
-  (CofactorMatrix.id.mul N).apply a b = N.apply a b` — left-
-  identity form. Same proof; closure relies on `Prod` structure
-  eta (`((p.1, p.2)) = p`) to collapse the final inner pair.
+* `theorem hgcdMatrixSafe_compose_branch (f a b : ℕ) (hab) (hlt) :
+  hgcdMatrixSafe (f + 1) a b = (hgcdMatrixSafe f u v).mul
+  (hgcdMatrixSafe f (a / 2^s) (b / 2^s))` — matrix-level
+  compose-branch decomposition at arbitrary fuel `f`.
+  Specialises to `hgcdMatrixSafeOf_compose_branch` (PART XXI,
+  S31) at `f := a + b`. Proof: drops `unfold hgcdMatrixSafeOf`
+  from the `_Of` version; the rest is `rw [hgcdMatrixSafe_succ,
+  if_neg hab]` + `dsimp only` + `if_pos hlt`.
+* `theorem hgcdMatrixSafe_apply_compose_branch (f a b : ℕ) (hab)
+  (hlt) : (hgcdMatrixSafe (f + 1) a b).apply ↑a ↑b = …` — apply
+  form. Composes the matrix-level compose with `cofactor_mul_apply`.
+  Specialises to `hgcdSafeApply_compose_branch` (PART XXI, S31)
+  at `f := a + b`.
+* `theorem hgcdMatrixSafe_abort_branch (f a b : ℕ) (hab) (hge) :
+  hgcdMatrixSafe (f + 1) a b = hgcdMatrixSafe f (a / 2^s) (b /
+  2^s)` — matrix-level abort-branch decomposition at arbitrary
+  fuel `f`. Specialises to `hgcdMatrixSafeOf_abort_branch`
+  (PART XXIII, S34) at `f := a + b`. Proof: `rw [hgcdMatrixSafe_succ,
+  if_neg hab]` + `dsimp only` + `if_neg (Nat.not_lt.mpr hge)`.
+* `theorem hgcdMatrixSafe_apply_abort_branch (f a b : ℕ) (hab)
+  (hge) : (hgcdMatrixSafe (f + 1) a b).apply ↑a ↑b = (hgcdMatrixSafe
+  f (a / 2^s) (b / 2^s)).apply ↑a ↑b` — apply form. Direct
+  corollary of the matrix-level abort.
 
-**Why useful.** PART XXVII's fuel-zero apply lemmas produce
-`CofactorMatrix.id` factors via `hgcdMatrixSafe_zero`. When such
-an `id` factor appears multiplied with another cofactor matrix
-(e.g. a fuel-step unfolding where one recursive call hits the
-`f = 0` base case), these corollaries collapse the spurious
-identity factor in one rewrite, instead of unfolding
-`CofactorMatrix.mul` + `CofactorMatrix.apply` and arithmetic-
-normalising every time.
+**Why useful.** The fuel-zero base case (PART XXVII, S39) and
+fuel-one above-threshold collapse (PART XXIX, S41) supply the
+induction.zero / induction.succ-at-`f=0` templates the S32b
+proof program expects. The natural induction.succ template at
+**arbitrary fuel** needs to unfold the recursion at `f + 1` —
+exactly what these four fuel-generic theorems supply. The
+existing `_Of` variants (PART XXI / PART XXIII) only state the
+case at the specific fuel `a + b`, so they cannot serve as the
+inductive step directly. PART XXX closes that packaging gap.
+
+**Relationship to existing artefacts.** The `_Of` variants in
+PART XXI / PART XXIII are kept intact (no churn): they are
+formally corollaries at `f := a + b`, but explicitly stating
+them as theorems remains useful for the eight places downstream
+of S31/S34 that consume them by name (PART XXIV, PART XXV's
+`hgcdMatrixSafeOf_of_outerFires` / `hgcdSafeApply_of_outerFires`,
+the PART XX's `hgcdMatrixSafe_inner_abort_imp_outer_fails`
+mention, and various witness `example`s).
 
 **Net delta**: 0 new axioms / sorries / definitions /
-`native_decide` witnesses. +63 lines (2 theorems + PART XXVIII
-banner + section docstring). Both proofs are pure `rw` chains
-against existing merged lemmas. Independent of the open S32b
-non-expansion question — they package mechanical identities,
-not new mathematical content.
+`native_decide` witnesses. +210 lines (4 theorems + PART XXX
+banner + section docstring). All four proofs are pure `rw` /
+`dsimp only` / `exact` chains against `hgcdMatrixSafe_succ`,
+`cofactor_mul_apply`, and `Nat.not_lt`. Independent of the open
+S32b non-expansion question — they package the recursion-unfold
+step in fuel-generic form, not new mathematical content.
 
 Honesty notes:
 
 * This is **still not** S32b: the non-expansion-bearing ~80-line
-  half of the S28b iff remains open. S40 just packages two
-  mechanical identity-collapse lemmas; it does not advance the
-  discharge of the parent open conjecture.
+  half of the S28b iff remains open. S42 just generalises the
+  branch-decomposition packaging from fuel `a + b` to arbitrary
+  fuel `f`; it does not advance the discharge of the parent open
+  conjecture.
 * Build pending: per the broken `proofs/.lake` symlink trap
   (memory `feedback_researcher_lake_symlink_broken.md`), no
   Docker build is run here. The deployer auto-merges
   build-pending research PRs on this slug per its established
-  S20–S39 merge pattern. If the second `rw` fails to close
-  (e.g., a future Mathlib `Prod` eta regression), the surgical
-  fix is to append an explicit `simp` step or a `Prod.mk.eta`
-  rewrite.
+  S20–S41 merge pattern. The four proofs mirror the existing
+  `_Of` proofs exactly (which compile on origin/main), differing
+  only in dropping the `unfold hgcdMatrixSafeOf` opener — so the
+  build risk is essentially zero. If a future Lean / Mathlib
+  regression breaks the simp set, the surgical fix would be the
+  same on both the `_Of` versions and the generic versions.
+* PR collision risk: the only other open PR on this slug
+  (#17304 from S23, 2026-05-08) targets the old PART XIII
+  insertion point (file line ~735, pre-S26 numbering, and DIRTY);
+  S42's PART XXX is appended at end-of-namespace (post-S41 line
+  2649) immediately before `end HGcdSafe`, structurally disjoint.
 * PR collision risk: the only open PR on this slug (#17304 from
   S23, 2026-05-08) targets the old PART XIII insertion point
   (file line ~735, pre-S26 numbering, and DIRTY); S40's PART
