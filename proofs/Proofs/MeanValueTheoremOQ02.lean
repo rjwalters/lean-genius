@@ -53,7 +53,7 @@ The n-th Taylor polynomial of f centered at a is:
     evaluated at x. Uses Mathlib's `iteratedDeriv` for higher-order
     derivatives. -/
 def taylorPolynomial (f : ℝ → ℝ) (a : ℝ) (n : ℕ) (x : ℝ) : ℝ :=
-  ∑ k in Finset.range (n + 1),
+  ∑ k ∈ Finset.range (n + 1),
     (iteratedDeriv k f a) / (k.factorial : ℝ) * (x - a) ^ k
 
 /-- The 0th Taylor polynomial is the constant function f(a). -/
@@ -66,7 +66,6 @@ theorem taylorPolynomial_one (f : ℝ → ℝ) (a x : ℝ) :
     taylorPolynomial f a 1 x = f a + deriv f a * (x - a) := by
   simp [taylorPolynomial, Finset.sum_range_succ, iteratedDeriv_zero,
     iteratedDeriv_one]
-  ring
 
 /-!
 ## Part II: Taylor's Theorem with Lagrange Remainder
