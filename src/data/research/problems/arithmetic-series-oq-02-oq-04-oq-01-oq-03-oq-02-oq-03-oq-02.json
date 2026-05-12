@@ -1,0 +1,82 @@
+{
+  "slug": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02",
+  "title": "(q,t)-deformation (Macdonald-type) of qMultichoose",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "parent": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03",
+  "problemStatement": {
+    "formal": "\\text{Define } \\mathrm{qtBinom}(q, t, n, k) := \\prod_{i=1}^{k} \\frac{1 - q^{n+1-i} t^{i-1}}{1 - q^i t^{i-1}}, \\quad \\mathrm{qtMultichoose}(q, t, n, k) := \\mathrm{qtBinom}(q, t, n + k - 1, k). \\text{ Prove: (i) } \\mathrm{qtMultichoose}(q, 1, n, k) = \\mathrm{qMultichoose}(q, n, k), \\text{ (ii) } \\mathrm{qtMultichoose}(1, 1, n, k) = \\mathrm{multichoose}(n, k), \\text{ (iii) an interpolating } (q,t)\\text{-Pascal recurrence exists.}",
+    "plain": "The parent gallery entry proves qMultichoose(q, n, k) := qBinom(q, n+k-1, k) is the natural q-analog of the integer multichoose coefficient and satisfies a q-Pascal recurrence. This sub-OQ asks whether the natural Macdonald-style (q,t)-deformation qtMultichoose(q, t, n, k) := qtBinom(q, t, n+k-1, k) — where qtBinom is the Macdonald (q,t)-binomial coefficient (Macdonald 1995, §VI.6) — satisfies: (i) recovers qMultichoose at t = 1; (ii) recovers ordinary multichoose at q = t = 1; (iii) satisfies an interpolating (q,t)-Pascal recurrence; (iv) connects to Macdonald polynomial principal specializations. The candidate definition is well-established mathematically; the Lean formalisation is genuinely new — would be the first Lean entry to mention Macdonald theory.",
+    "whyMatters": [
+      "First Lean entry on Macdonald theory: gallery has no current treatment of Macdonald or Hall-Littlewood polynomials, which underpin modern algebraic combinatorics and DAHA representation theory.",
+      "Mathematical depth: the Macdonald (q,t)-Pascal recurrence (Macdonald §VI.6 (6.4)) does NOT specialise cleanly to the parent's q-Pascal at t = 1 — its t-factor vanishes. Finding the INTERPOLATING (q,t)-Pascal is research-grade.",
+      "Mathlib gap: Macdonald polynomials, Hall-Littlewood functions, and Cherednik DAHA infrastructure are all absent from Mathlib v4.26.0. This OQ would catalyze first-pass Lean infrastructure."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent (researcher-3, 2026-05-05): qMultichoose(q, n, k) = qBinom(q, n+k-1, k) is the q-analog of Nat.multichoose; satisfies q-Pascal qMultichoose(q, n+1, k+1) = qMultichoose(q, n+1, k) + q^(k+1) · qMultichoose(q, n, k+1).",
+      "Macdonald 1995: the (q,t)-binomial qtBinom(q, t, n, k) := ∏_{i=1}^k (1 - q^(n+1-i) t^(i-1)) / (1 - q^i t^(i-1)) is the standard definition.",
+      "Specialisation at t = 1: qtBinom(q, 1, n, k) = qBinom(q, n, k) (Gaussian binomial).",
+      "Specialisation at q = t = 1: qtBinom(1, 1, n, k) = binom(n, k) (via 0/0 limit, removable singularity).",
+      "Macdonald §VI.6 (6.4): a (q,t)-Pascal recurrence exists with rational t-coefficient (1 - t^(k+1)) / (1 - q^(n-k) t^k); however, this DOES NOT specialise to the parent's q-Pascal at t = 1.",
+      "Haiman 2001: Macdonald polynomial positivity (n! conjecture) — connects (q,t)-objects to algebraic geometry of Hilbert schemes."
+    ],
+    "open": [
+      "The interpolating (q,t)-Pascal recurrence for qtMultichoose that specialises to the parent's q-Pascal at t = 1: of the form qtMultichoose(q, t, n+1, k+1) = qtMultichoose(q, t, n+1, k) + q^(k+1) t^a(n,k) · qtMultichoose(q, t, n, k+1) for some explicit a(n, k).",
+      "Whether qtMultichoose admits a clean Lean formalisation over CommRing R (the rational expression nominally requires Field R).",
+      "Explicit identification of the Macdonald polynomial principal-specialization that involves qtMultichoose (Macdonald §VI.6 Exercise 1 gives a partial answer)."
+    ],
+    "goal": "Formalize in Lean: (1) qtBinom and qtMultichoose definitions in Field R. (2) Boundary cases zero/one. (3) Specialization at t = 1 to qMultichoose. (4) Interpolating (q,t)-Pascal recurrence. (5) Specialization at q = t = 1 to Nat.multichoose. (6) Optional: axiomatise Macdonald polynomial connection. Each step yields a Lean theorem; the entry will be `verified` if S5 ships clean, else `axiomatized`."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T21:50:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-10, 2026-05-12): OBSERVE survey for the (q,t)-deformation sub-OQ. Wrote problem.md (~4.0K words) with full Lean target signatures + S2-S7 decomposition; knowledge.md (~3.0K words) with Macdonald historical timeline (1973-2001), specialization table, computational verification for (n,k) = (2,2) showing t-independence, Mathlib gap analysis (no Macdonald polynomials in Mathlib); state.md with conjectural interpolating Pascal form. No Lean changes.",
+    "blockers": [],
+    "nextAction": "S2: define qtBinom (Macdonald product formula) and qtMultichoose := qtBinom(_, _, n+k-1, k) in proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean over Field R. Prove zero/one boundary cases (zero_right, zero_left, one_left, one_right). Expected ~40 Lean lines, 3-5 sorries (real boundary-case proofs). S3-S5 specialize at t=1 and q=t=1; S4 is the deep open question (interpolating (q,t)-Pascal).",
+    "attemptCounts": {
+      "S1_observe": 1,
+      "S2_definitions": 0,
+      "S3_t_eq_1_specialization": 0,
+      "S4_qt_pascal_interpolating": 0,
+      "S5_qt_eq_1_1_specialization": 0,
+      "S6_macdonald_axiom": 0,
+      "S7_gallery": 0
+    }
+  },
+  "knowledge": {
+    "insights": [
+      "Macdonald §VI.6 (6.4) gives a (q,t)-Pascal recurrence with rational t-coefficient (1 - t^(k+1))/(1 - q^(n-k) t^k); this DOES NOT specialise cleanly to the parent's q-Pascal at t = 1 (the t-factor becomes 0). Finding the INTERPOLATING form is the deepest technical task.",
+      "Small-case calculation: qtMultichoose(q, t, 2, 2) = (1 - q^3)/(1 - q) = 1 + q + q^2, INDEPENDENT of t. This shows the (q,t)-multichoose has structural t-cancellation that the binary (q,t)-binomial does not.",
+      "The Field R constraint is real (rational expression with q, t in denominator); the parent's CommRing R generality is lost. Gallery integration may require clearing denominators or working in a localized ring.",
+      "Mathlib v4.26.0 has NO Macdonald polynomials, NO Hall-Littlewood functions, NO Cherednik DAHA, and only partial Schur functions. This OQ would catalyze infrastructure."
+    ],
+    "builtItems": [
+      "Wrote research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02/problem.md (formal targets + S2-S7 plan).",
+      "Wrote research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02/knowledge.md (Macdonald historical + Pascal analysis + Mathlib gap).",
+      "Wrote research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02/state.md (phase OBSERVE).",
+      "Created src/data/research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02.json (this file)."
+    ],
+    "progressSummary": "S1 OBSERVE complete. Candidate Macdonald (q,t)-deformation qtMultichoose := qtBinom(_, _, n+k-1, k) defined. Three specialization theorems and one Pascal recurrence identified as S2-S5 deliverables. Key surprise: Macdonald's standard (q,t)-Pascal does NOT specialise to parent's q-Pascal — S4 requires deriving an interpolating form."
+  },
+  "tags": [
+    "seeker-selected",
+    "combinatorics",
+    "q-analogs",
+    "qt-analogs",
+    "macdonald-polynomials",
+    "hall-littlewood",
+    "gaussian-binomial",
+    "multiset",
+    "representation-theory",
+    "mathlib-gap",
+    "research"
+  ],
+  "significance": 5,
+  "tractability": 4,
+  "lastUpdated": "2026-05-12T21:50:00.000Z"
+}
