@@ -3,6 +3,7 @@ import Mathlib.Data.Finset.Card
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Fin.Basic
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
+import Mathlib.Order.Interval.Finset.Nat
 import Mathlib.Data.Nat.Lattice
 import Mathlib.Tactic
 
@@ -19,10 +20,12 @@ diagonal hypergraph Ramsey number `R_k(s,t)` as the least `n` such that every
 monochromatic `s`-clique of one color or a monochromatic `t`-clique of the
 other.
 
-This file is the **S2 scaffold** — it sets up the API and states the main
-existence theorem (`ramsey_existence`, OQ-03a) as a `sorry`. The two-layer
-neighborhood induction (Ramsey 1930) and the Erdős–Rado tower upper bound
-(OQ-03b) are deferred to later sessions per
+After **S3** (this revision) the `k = 1` pigeonhole sanity check
+`ramseyNumber_one s t = s + t - 1` is proved — the simplest instance of the
+hypergraph Ramsey theorem and a unit test for the API introduced in S2.
+The general existence theorem `ramsey_existence` (OQ-03a, two-layer Ramsey
+1930 induction) and the Erdős–Rado tower upper bound (OQ-03b) remain
+`sorry`-marked, deferred to S4+ per
 `research/problems/erdos-szekeres-oq-03/state.md`.
 
 ## Status
@@ -30,12 +33,12 @@ neighborhood induction (Ramsey 1930) and the Erdős–Rado tower upper bound
 - [x] Definitions: `kColoring`, `IsMonochromatic`, `IsRamsey`, `ramseyNumber`.
 - [x] `IsMonochromatic_of_card_lt_k`: any subset smaller than `k` is trivially
   monochromatic of every color (the `powersetCard` is empty).
-- [x] `is_ramsey_zero_clique`: the degenerate `s = 0` case (every coloring has
-  a `0`-clique).
-- [ ] `ramsey_existence` (OQ-03a): the main result, stated as `sorry`. Proof
-  strategy in `state.md`.
-- [ ] `ramseyNumber_one` (k=1 pigeonhole sanity check): stated as `sorry` and
-  scheduled for S3 alongside the existence theorem.
+- [x] `is_ramsey_zero_false` / `is_ramsey_zero_true`: degenerate `s = 0` /
+  `t = 0` base cases (the empty set witnesses both).
+- [x] **`isRamsey_one_iff` and `ramseyNumber_one` (S3)**: the `k = 1` case
+  is the pigeonhole `s + t - 1` bound, by partitioning singletons.
+- [ ] `ramsey_existence` (OQ-03a): the general result, stated as `sorry`.
+  Proof strategy in `state.md`.
 
 ## Approach
 
@@ -106,7 +109,8 @@ every 2-coloring of `[n]^{(k)}` contains a monochromatic `s`- or `t`-clique.
 
 This is the main result of the OQ-03 entry. The proof (Ramsey 1930) is by
 two-layer induction on `k` and `s + t`; see `state.md` for the strategy.
-Deferred to S3. -/
+Deferred to S4+ (S3 closed the `k = 1` sanity check; the `k ≥ 2` induction
+needs the additional neighborhood-collapse machinery). -/
 theorem ramsey_existence (k s t : ℕ) (hk : 2 ≤ k) (hs : k ≤ s) (ht : k ≤ t) :
     ∃ n, IsRamsey n k s t := by
   sorry
@@ -135,18 +139,167 @@ lemma is_ramsey_zero_true (n k s : ℕ) (hk : 1 ≤ k) : IsRamsey n k s 0 := by
   · exact Finset.card_empty
   · exact isMonochromatic_empty_zero χ true hk
 
-/-- (k=1 sanity check, scheduled for S3.) The `k = 1` Ramsey number is the
-pigeonhole bound `s + t - 1`. Stated here for the API; proof deferred to S3
-(it needs both the pigeonhole-forward direction and an explicit bad coloring
-for the lower bound).
+/-- (S3 helper.) At uniformity `k = 1`, the Ramsey condition is equivalent to
+the pigeonhole bound `s + t - 1 ≤ n`.
 
-The forward direction (showing `IsRamsey (s+t-1) 1 s t` via `Finset.filter`
-counting) is straightforward; the reverse `¬ IsRamsey (s+t-2) 1 s t` requires
-constructing the coloring with `s-1` `false`-singletons and `t-1`
-`true`-singletons. -/
+* Forward (`s + t - 1 ≤ n → IsRamsey n 1 s t`): partition `Fin n` by
+  `χ {·}`; one of the two color classes has cardinality `≥ s` or `≥ t`.
+* Backward (`IsRamsey n 1 s t → s + t - 1 ≤ n`): contrapositive — if
+  `n ≤ s + t - 2` then the coloring with `min (s-1) n` `false`-singletons
+  and the rest `true` exhibits no monochromatic `s`- or `t`-clique. -/
+lemma isRamsey_one_iff (n s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) :
+    IsRamsey n 1 s t ↔ s + t - 1 ≤ n := by
+  classical
+  constructor
+  · -- (⇒) IsRamsey n 1 s t → s + t - 1 ≤ n.  Contrapositive: if n ≤ s+t-2 we
+    -- exhibit a coloring that defeats every monochromatic s/t-clique candidate.
+    intro hR
+    by_contra hlt
+    push_neg at hlt
+    -- hlt : n < s + t - 1, equivalently n ≤ s + t - 2.
+    -- Build the "bad" coloring: first `a = min (s-1) n` singletons are `false`,
+    -- rest `true`. (Definition only depends on each singleton's element.)
+    set a : ℕ := min (s - 1) n with ha_def
+    -- Decidability of `a ≤ i.val` for `i : Fin n` lets us define χ.
+    let χ : kColoring n := fun S => decide (∃ i ∈ S, a ≤ i.val)
+    -- Two helper facts about χ on singletons.
+    have hχ_false : ∀ i : Fin n, i.val < a → χ {i} = false := by
+      intro i hi
+      show decide (∃ j ∈ ({i} : Finset (Fin n)), a ≤ j.val) = false
+      simp only [Finset.mem_singleton, exists_eq_left]
+      exact decide_eq_false (Nat.not_le_of_lt hi)
+    have hχ_true : ∀ i : Fin n, a ≤ i.val → χ {i} = true := by
+      intro i hi
+      show decide (∃ j ∈ ({i} : Finset (Fin n)), a ≤ j.val) = true
+      simp only [Finset.mem_singleton, exists_eq_left]
+      exact decide_eq_true hi
+    -- Two card bounds via the globally-injective `Fin.val : Fin n → ℕ`.
+    -- (1) Any S with `∀ i ∈ S, i.val < a` has |S| ≤ a (image ⊆ Finset.range a).
+    -- (2) Any S with `∀ i ∈ S, a ≤ i.val` has |S| ≤ n - a (image ⊆ Finset.Ico a n).
+    have hcard_lo : ∀ (S : Finset (Fin n)), (∀ i ∈ S, i.val < a) → S.card ≤ a := by
+      intro S hS
+      have h_im : S.image (fun i : Fin n => i.val) ⊆ Finset.range a := by
+        intro x hx
+        rcases Finset.mem_image.mp hx with ⟨i, hiS, rfl⟩
+        exact Finset.mem_range.mpr (hS i hiS)
+      calc S.card
+          = (S.image (fun i : Fin n => i.val)).card :=
+              (Finset.card_image_of_injective S Fin.val_injective).symm
+        _ ≤ (Finset.range a).card := Finset.card_le_card h_im
+        _ = a := Finset.card_range a
+    have hcard_hi : ∀ (S : Finset (Fin n)), (∀ i ∈ S, a ≤ i.val) → S.card ≤ n - a := by
+      intro S hS
+      have h_im : S.image (fun i : Fin n => i.val) ⊆ Finset.Ico a n := by
+        intro x hx
+        rcases Finset.mem_image.mp hx with ⟨i, hiS, rfl⟩
+        exact Finset.mem_Ico.mpr ⟨hS i hiS, i.isLt⟩
+      calc S.card
+          = (S.image (fun i : Fin n => i.val)).card :=
+              (Finset.card_image_of_injective S Fin.val_injective).symm
+        _ ≤ (Finset.Ico a n).card := Finset.card_le_card h_im
+        _ = n - a := Nat.card_Ico a n
+    -- Helper: from monochromatic-`c` on S, every `i ∈ S` has `χ {i} = c`.
+    have hmono_singleton : ∀ {S : Finset (Fin n)} {c : Bool},
+        IsMonochromatic χ 1 S c → ∀ i ∈ S, χ {i} = c := by
+      intro S c hmono i hiS
+      apply hmono
+      rw [Finset.mem_powersetCard]
+      exact ⟨Finset.singleton_subset_iff.mpr hiS, Finset.card_singleton i⟩
+    rcases hR χ with ⟨S, hScard, hSmono⟩ | ⟨S, hScard, hSmono⟩
+    · -- false-clique S of size s: every i ∈ S has χ {i} = false ⇒ i.val < a.
+      have hSlt : ∀ i ∈ S, i.val < a := by
+        intro i hiS
+        have hχ : χ {i} = false := hmono_singleton hSmono i hiS
+        by_contra hge
+        push_neg at hge
+        have : χ {i} = true := hχ_true i hge
+        simp [this] at hχ
+      have hcard : S.card ≤ a := hcard_lo S hSlt
+      have ha_bound : a ≤ s - 1 := by simp [a]; omega
+      omega
+    · -- true-clique S of size t: every i ∈ S has a ≤ i.val.
+      have hSge : ∀ i ∈ S, a ≤ i.val := by
+        intro i hiS
+        have hχ : χ {i} = true := hmono_singleton hSmono i hiS
+        by_contra hlt'
+        push_neg at hlt'
+        have : χ {i} = false := hχ_false i hlt'
+        simp [this] at hχ
+      have hcard : S.card ≤ n - a := hcard_hi S hSge
+      -- Bound n - a ≤ t - 1, case-split on the `min`.
+      have ha_bound : n - a ≤ t - 1 := by
+        rcases le_or_lt (s - 1) n with hsa | hsa
+        · -- a = s - 1
+          have ha_eq : a = s - 1 := by simp [a]; omega
+          omega
+        · -- a = n
+          have ha_eq : a = n := by simp [a]; omega
+          omega
+      omega
+  · -- (⇐) s + t - 1 ≤ n → IsRamsey n 1 s t.  Pigeonhole partition of `Fin n`
+    -- by the color χ {·}; one color class has size ≥ s or ≥ t.
+    intro hge χ
+    -- F := false-singletons, G := true-singletons; they partition `Fin n`.
+    let F : Finset (Fin n) := Finset.univ.filter (fun i : Fin n => χ {i} = false)
+    let G : Finset (Fin n) := Finset.univ.filter (fun i : Fin n => χ {i} = true)
+    have hF_neg : (Finset.univ.filter (fun i : Fin n => ¬ (χ {i} = false))) = G := by
+      ext i
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and, G]
+      cases hc : χ {i} <;> simp [hc]
+    have hsum : F.card + G.card = n := by
+      have h :
+          (Finset.univ.filter (fun i : Fin n => χ {i} = false)).card +
+            (Finset.univ.filter (fun i : Fin n => ¬ (χ {i} = false))).card =
+          (Finset.univ : Finset (Fin n)).card :=
+        Finset.filter_card_add_filter_neg_card_eq_card _
+      rw [hF_neg] at h
+      have hcard_univ : (Finset.univ : Finset (Fin n)).card = n := by
+        rw [Finset.card_univ, Fintype.card_fin]
+      simpa [F, hcard_univ] using h
+    by_cases hFs : s ≤ F.card
+    · -- |F| ≥ s: pick S ⊆ F with |S| = s; every singleton of S has χ {·} = false.
+      obtain ⟨S, hSsub, hScard⟩ := Finset.exists_subset_card_eq hFs
+      refine Or.inl ⟨S, hScard, ?_⟩
+      intro T hT
+      rw [Finset.mem_powersetCard] at hT
+      obtain ⟨hTsub, hTcard⟩ := hT
+      obtain ⟨i, rfl⟩ := Finset.card_eq_one.mp hTcard
+      have hi : i ∈ S := Finset.singleton_subset_iff.mp hTsub
+      have hiF : i ∈ F := hSsub hi
+      simpa [F, Finset.mem_filter] using hiF
+    · -- |F| < s ⇒ |G| > n - s ≥ (s+t-1) - s = t - 1, hence |G| ≥ t.
+      push_neg at hFs
+      have hGcard : t ≤ G.card := by omega
+      obtain ⟨S, hSsub, hScard⟩ := Finset.exists_subset_card_eq hGcard
+      refine Or.inr ⟨S, hScard, ?_⟩
+      intro U hU
+      rw [Finset.mem_powersetCard] at hU
+      obtain ⟨hUsub, hUcard⟩ := hU
+      obtain ⟨i, rfl⟩ := Finset.card_eq_one.mp hUcard
+      have hi : i ∈ S := Finset.singleton_subset_iff.mp hUsub
+      have hiG : i ∈ G := hSsub hi
+      simpa [G, Finset.mem_filter] using hiG
+
+/-- (S3, OQ-03 sanity check.) **The `k = 1` Ramsey number is the pigeonhole bound**
+`R_1(s, t) = s + t - 1`. This is the base case of the Erdős–Rado tower upper bound
+and the simplest instance of the hypergraph Ramsey theorem. It serves as a unit
+test for the `RamseyK.IsRamsey` / `RamseyK.ramseyNumber` API introduced in S2.
+
+The proof reduces to `isRamsey_one_iff` plus the standard `Nat.sInf` computation
+on the upward-closed set `{n | s + t - 1 ≤ n} = Set.Ici (s + t - 1)`. -/
 theorem ramseyNumber_one (s t : ℕ) (hs : 1 ≤ s) (ht : 1 ≤ t) :
     ramseyNumber 1 s t = s + t - 1 := by
-  sorry
+  unfold ramseyNumber
+  have hset : {n | IsRamsey n 1 s t} = {n | s + t - 1 ≤ n} := by
+    ext n; rw [Set.mem_setOf_eq, Set.mem_setOf_eq]
+    exact isRamsey_one_iff n s t hs ht
+  rw [hset]
+  -- sInf {n | s+t-1 ≤ n} = s+t-1
+  apply le_antisymm
+  · exact Nat.sInf_le (le_refl _)
+  · refine le_csInf ⟨s + t - 1, le_refl _⟩ ?_
+    intro n hn
+    exact hn
 
 /-! ### S4-prep: color symmetry and degenerate-side `ramseyNumber` base cases
 
