@@ -124,7 +124,7 @@ Lean-4 spelling thereof) — this is the precise S2 deliverable.
 noncomputable section
 
 open Real Set
-open scoped NNReal ENNReal
+open scoped NNReal ENNReal Topology Filter
 
 namespace MeanValueTheoremOQ02OQ04OQ01
 
@@ -414,35 +414,119 @@ theorem geometric_tail_identity (r R : ℝ) (hR : 0 < R) (hrR : r < R) (n : ℕ)
       = r ^ (n + 1) / R ^ n / (R - r) := by rw [key]
     _ = r ^ (n + 1) / (R ^ n * (R - r)) := by rw [div_div]
 
-/-- **Cauchy diagonal-norm bound** (S4 sub-lemma; one remaining `sorry`).
+/-- **Cauchy diagonal-norm bound at a strict intermediate radius**
+(S5 sub-lemma; one remaining `sorry`).
+
+For `f : ℂ → ℂ` holomorphic on `Metric.ball a R` with uniform sup bound
+`‖f z‖ ≤ M` on that disk, the *diagonal* multilinear evaluation
+`p k (fun _ ↦ w)` of the `k`-th formal-power-series coefficient is
+bounded by `M · (‖w‖ / r')^k` for every `r' ∈ (0, R)`.
+
+This is the **finite-radius** form of the textbook Cauchy coefficient
+estimate. It is the statement that directly matches Mathlib's
+Cauchy-integral chain on the closed sphere `sphere a r'`: the bound
+involves only the *strict* sub-disk radius `r'`, not the boundary `R`.
+The boundary form `‖p k (fun _ ↦ w)‖ ≤ M · (‖w‖ / R)^k` then follows
+by taking `r' → R⁻` (continuity of the upper bound — formalized in
+`cauchy_diag_norm_bound` below).
+
+The remaining proof chain (deferred to a future iteration; this is the
+only residual `sorry` in this file as of S5) routes through:
+
+1. **Sub-disk inclusion**: `closedBall a r' ⊂ Metric.ball a R` for
+   `r' < R`, so `f` is bounded by `M` on `sphere a r' ⊂ closedBall a r'`.
+2. `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le`
+   (Cauchy integral on `sphere a r'`):
+   `‖iteratedDeriv k f a‖ ≤ k! · M / (r')^k`.
+3. `HasFPowerSeriesOnBall.factorial_smul`: relates the formal-series
+   coefficient `p k` to `iteratedFDeriv k f a / k!`.
+4. `iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod` (in 1D the product
+   collapses to `w^k`):
+   `(iteratedFDeriv k f a) (fun _ ↦ w) = w^k * iteratedDeriv k f a`.
+5. Combine: `‖p k (fun _ ↦ w)‖ ≤ M · (‖w‖ / r')^k`.
+
+Why this decomposition is useful. The boundary form
+`cauchy_diag_norm_bound` requires two distinct mathematical ingredients:
+(a) the Cauchy estimate on a *closed* sphere of radius `r' < R`, and
+(b) the continuity-of-upper-bound limit `r' → R⁻`. The original
+`cauchy_diag_norm_bound` statement entangled both. This sub-lemma
+isolates ingredient (a) — the *finite-radius* Cauchy bound — so that
+the limit argument (ingredient b) can be discharged independently and
+the remaining gap is the precise statement Mathlib's Cauchy-integral
+infrastructure produces directly. -/
+theorem cauchy_diag_norm_bound_at_radius
+    (f : ℂ → ℂ) (a : ℂ) (R M : ℝ)
+    (_hR : 0 < R) (_hM : 0 ≤ M)
+    (p : FormalMultilinearSeries ℂ ℂ ℂ)
+    (_hf : HasFPowerSeriesOnBall f p a (ENNReal.ofReal R))
+    (_hbound : ∀ z ∈ Metric.ball a R, ‖f z‖ ≤ M)
+    (k : ℕ) (w : ℂ) (r' : ℝ) (_hr' : 0 < r') (_hr'R : r' < R) :
+    ‖p k (fun _ ↦ w)‖ ≤ M * (‖w‖ / r') ^ k := by
+  -- Deferred to S6: see docstring for the Mathlib Cauchy-integral chain on
+  -- `sphere a r'` followed by the formal-series / iterated-derivative bridge.
+  sorry
+
+/-- **Cauchy diagonal-norm bound** (S4 statement; S5 limit-extraction proof).
 
 For `f : ℂ → ℂ` holomorphic on `Metric.ball a R` with uniform sup bound
 `‖f z‖ ≤ M` on that disk, the *diagonal* multilinear evaluation
 `p k (fun _ ↦ w)` of the `k`-th formal-power-series coefficient is
 bounded by `M · (‖w‖ / R)^k` for every `w` with `‖w‖ < R`.
 
-This is the textbook Cauchy coefficient estimate. The proof chain is
-sketched in the §3b umbrella docstring above; concretely it routes through
-`Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le` (Cauchy
-integral on `sphere a r'` with `r' ∈ (max r ‖w‖, R)`), the formal-series /
-iterated-derivative bridge `HasFPowerSeriesOnBall.factorial_smul` plus
-`iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod` (1D collapses to `w^k`),
-and finally a `r' → R⁻` continuity-of-upper-bound limit.
+**Proof (S5).** The bound for every strict intermediate radius
+`r' ∈ (0, R)` is supplied by `cauchy_diag_norm_bound_at_radius`:
+`‖p k (fun _ ↦ w)‖ ≤ M · (‖w‖ / r')^k`. The function
+`r' ↦ M · (‖w‖ / r')^k` is continuous at `R` (since `R > 0`), so
+`Filter.Tendsto` along `𝓝[<] R` lands at `M · (‖w‖ / R)^k`.
+`le_of_tendsto` then transports the eventual pointwise bound to the
+limit value, yielding the boundary bound.
 
-This sub-lemma is the **only remaining `sorry`** in this file after S4. It
-isolates the residual formalization gap to a single named statement so that
-future iterations (or a Mathlib contribution) can close it without
-revisiting the surrounding combination scaffolding. -/
+This is the **only remaining `sorry`** in this file (it routes through
+`cauchy_diag_norm_bound_at_radius`'s deferred Mathlib Cauchy-integral
+chain). The limit-extraction step is **fully proven** below; what
+remains is the finite-radius Cauchy estimate, which is exactly what
+Mathlib's `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le`
+infrastructure provides. -/
 theorem cauchy_diag_norm_bound
     (f : ℂ → ℂ) (a : ℂ) (R M : ℝ)
-    (_hR : 0 < R) (_hM : 0 ≤ M)
+    (hR : 0 < R) (hM : 0 ≤ M)
     (p : FormalMultilinearSeries ℂ ℂ ℂ)
-    (_hf : HasFPowerSeriesOnBall f p a (ENNReal.ofReal R))
-    (_hbound : ∀ z ∈ Metric.ball a R, ‖f z‖ ≤ M)
+    (hf : HasFPowerSeriesOnBall f p a (ENNReal.ofReal R))
+    (hbound : ∀ z ∈ Metric.ball a R, ‖f z‖ ≤ M)
     (k : ℕ) (w : ℂ) (_hw : ‖w‖ < R) :
     ‖p k (fun _ ↦ w)‖ ≤ M * (‖w‖ / R) ^ k := by
-  -- Deferred to S5: see docstring for the Mathlib Cauchy-integral chain.
-  sorry
+  -- Setup.
+  have hR_ne : (R : ℝ) ≠ 0 := ne_of_gt hR
+  -- Pointwise bound on the open interval `(0, R)` of intermediate radii,
+  -- via the deferred finite-radius Cauchy estimate.
+  have h_at_r : ∀ r' ∈ Set.Ioo (0 : ℝ) R,
+      ‖p k (fun _ ↦ w)‖ ≤ M * (‖w‖ / r') ^ k := by
+    rintro r' ⟨hr'_pos, hr'_lt_R⟩
+    exact cauchy_diag_norm_bound_at_radius f a R M hR hM p hf hbound k w r'
+      hr'_pos hr'_lt_R
+  -- The function `r' ↦ M · (‖w‖ / r')^k` is continuous at `R`.
+  -- Composition: const ↦ `M` × ((const `‖w‖` / id) ^ k).
+  have hg_cont : ContinuousAt (fun r' : ℝ => M * (‖w‖ / r') ^ k) R := by
+    refine continuousAt_const.mul ?_
+    exact ((continuousAt_const.div continuousAt_id hR_ne).pow k)
+  -- Tendsto along `𝓝[<] R` lands at the boundary value.
+  have h_tendsto :
+      Filter.Tendsto (fun r' : ℝ => M * (‖w‖ / r') ^ k)
+        (𝓝[<] R) (𝓝 (M * (‖w‖ / R) ^ k)) :=
+    hg_cont.tendsto.mono_left nhdsWithin_le_nhds
+  -- The open interval `(0, R)` is eventually in `𝓝[<] R` (and nonempty since
+  -- `R > 0`), so the pointwise bound holds eventually along the filter.
+  have h_Ioo_mem : Set.Ioo (0 : ℝ) R ∈ 𝓝[<] R := by
+    rw [mem_nhdsWithin]
+    refine ⟨Set.Ioi 0, isOpen_Ioi, hR, ?_⟩
+    rintro x ⟨hx_pos, hx_lt_R⟩
+    exact ⟨hx_pos, hx_lt_R⟩
+  have h_event :
+      ∀ᶠ r' in 𝓝[<] R, ‖p k (fun _ ↦ w)‖ ≤ M * (‖w‖ / r') ^ k :=
+    Filter.eventually_of_mem h_Ioo_mem h_at_r
+  -- Transport the eventual lower bound through the limit (`ge_of_tendsto` lifts
+  -- a lower bound on `f c` to a lower bound on `lim f`).
+  exact ge_of_tendsto h_tendsto h_event
 
 /-- **Corrected Cauchy uniform bound** (complex hypothesis, fixed index).
 
@@ -614,6 +698,7 @@ theorem analytic_taylor_remainder_uniform_geometric_complex
 #check @OriginalRemainderForm
 #check @originalRemainderForm_is_false
 #check @geometric_tail_identity
+#check @cauchy_diag_norm_bound_at_radius
 #check @cauchy_diag_norm_bound
 #check @analytic_taylor_remainder_uniform_bound_complex
 #check @analytic_taylor_remainder_uniform_geometric_complex
