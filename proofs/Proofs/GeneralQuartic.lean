@@ -319,7 +319,7 @@ theorem biquadratic_simple (p r : ℂ) :
 
 /-! ## Part VI.5: Biquadratic-Limit Removable Singularity (OQ-02.c)
 
-This subsection scaffolds the biquadratic-limit identity sketched in
+This subsection discharges the biquadratic-limit identity sketched in
 `research/problems/general-quartic-oq-02/knowledge.md` (Approach A). At
 `q = 0`, the indeterminate-form factor `β = q / (2α)` in `ferrariRoots`
 degenerates whenever a chosen resolvent root `m` satisfies `2m + p = 0`.
@@ -330,8 +330,11 @@ contribution vanishes). `ferrari_biquad_limit` then states that for every
 Ferrari roots, when squared, fall in the two-element biquadratic root
 pair `{(-p ± √(p²−4r))/2}` — the canonical biquadratic root set.
 
-`ferrari_biquad_limit` is left as `sorry` here; its proof is deferred to
-the next session (OQ-02 S3+). -/
+`ferrari_biquad_limit` is proved in S3 (DISCHARGE): Sub-step A pairs a
+square root `u^2 = r` (from FTA on `X^2 + C(-r)`) with the case-split
+`m₁ = -p + u` vs `m₂ = -p - u`; Sub-step B chains
+`ferrari_roots_are_roots` with `biquadratic_simple` to land each
+`yᵢ^2` in the biquadratic root pair. -/
 
 /-- At `q = 0`, the constant term of the resolvent cubic simplifies (the
 `-q²` contribution vanishes). Provable by `ring`. -/
@@ -352,7 +355,7 @@ theorem resolvent_root_neg_p_half_at_q_zero (p r : ℂ) :
   simp only [resolventCubic, eval_add, eval_mul, eval_pow, eval_X, eval_C]
   ring
 
-/-- **Biquadratic limit (OQ-02.c, S2 scaffold)**
+/-- **Biquadratic limit (OQ-02.c, S3 DISCHARGE)**
 
 In the biquadratic limit `q = 0`, Ferrari's formula admits a
 non-degenerate resolvent root `m` (i.e. one with `2m + p ≠ 0`), and at
@@ -364,12 +367,24 @@ This closes the `α = 0` boundary case of `ferrariRoots`: the formula
 degenerates only on the trivial resolvent root `m = -p/2`
 (see `resolvent_root_neg_p_half_at_q_zero`), which exists for every
 `(p, r)` but is excluded by the `(p, r) ≠ (0, 0)` hypothesis here for
-*some* other resolvent root to exist (a polynomial-degree argument:
-when both `p` and `r` are zero, the resolvent cubic collapses to
-`8X^3` whose only root is `m = 0 = -p/2`).
+*some* other resolvent root to exist.
 
-Proof deferred to OQ-02 S3+; see
-`research/problems/general-quartic-oq-02/knowledge.md` → "Approach A". -/
+**Proof strategy (S3 DISCHARGE):**
+
+* *Sub-step A (non-degenerate resolvent root exists).* Use FTA on
+  `X^2 + C(-r)` to obtain `u : ℂ` with `u^2 = r`. Then both `m₁ := -p + u`
+  and `m₂ := -p - u` are roots of `resolventCubic p 0 r` (algebraic
+  identity: `eval (-p + v) = (8v - 4p)(v^2 - r)`). Case-split on whether
+  `m₁` satisfies `2*m₁ + p ≠ 0`. If yes, use `m₁`. Otherwise `u = p/2`,
+  so `r = p^2/4`; the hypothesis `p ≠ 0 ∨ r ≠ 0` then forces `p ≠ 0`,
+  and `m₂ = -3p/2` satisfies `2*m₂ + p = -2p ≠ 0`.
+
+* *Sub-step B (Ferrari roots squared land in biquadratic root pair).*
+  By `ferrari_roots_are_roots`, each `yᵢ ∈ ferrariRoots p 0 r m hm`
+  satisfies `(depressedQuartic p 0 r).eval yᵢ = 0`. Then
+  `biquadratic_simple` (the `q = 0` characterization) gives
+  `yᵢ^2 = z₁ ∨ yᵢ^2 = z₂` directly. This bypasses any explicit-formula
+  expansion of `yᵢ^2`; see `knowledge.md` → "Approach A" → "Alternative". -/
 theorem ferrari_biquad_limit (p r : ℂ) (hpr : p ≠ 0 ∨ r ≠ 0) :
     ∃ m : ℂ, ∃ (hm : (resolventCubic p 0 r).eval m = 0), 2 * m + p ≠ 0 ∧
       (let s : ℂ := Complex.cpow (p^2 - 4*r) (1/2 : ℂ)
@@ -380,7 +395,64 @@ theorem ferrari_biquad_limit (p r : ℂ) (hpr : p ≠ 0 ∨ r ≠ 0) :
        (y₂^2 = z₁ ∨ y₂^2 = z₂) ∧
        (y₃^2 = z₁ ∨ y₃^2 = z₂) ∧
        (y₄^2 = z₁ ∨ y₄^2 = z₂)) := by
-  sorry
+  -- Step 1: Obtain u with u² = r via FTA on X² + C(-r) (degree 2 over ℂ).
+  obtain ⟨u, hu⟩ : ∃ u : ℂ, u^2 = r := by
+    have hdeg : (X^2 + C (-r) : Polynomial ℂ).degree = 2 :=
+      Polynomial.degree_X_pow_add_C (by norm_num) _
+    obtain ⟨u, hu⟩ : ∃ u : ℂ, (X^2 + C (-r) : Polynomial ℂ).eval u = 0 :=
+      IsAlgClosed.exists_root _ (by rw [hdeg]; decide)
+    simp only [eval_add, eval_pow, eval_X, eval_C] at hu
+    exact ⟨u, by linear_combination hu⟩
+  -- Step 2: Helper -- (-p + v) is a resolvent root whenever v² = r.
+  -- Algebraic identity: (resolventCubic p 0 r).eval (-p + v) = (8v - 4p) * (v² - r),
+  -- verified by `linear_combination`.
+  have hresolv : ∀ v : ℂ, v^2 = r → (resolventCubic p 0 r).eval (-p + v) = 0 := by
+    intro v hv
+    simp only [resolventCubic, eval_add, eval_mul, eval_pow, eval_X, eval_C]
+    linear_combination (8*v - 4*p) * hv
+  -- Sub-step B (alternative path per knowledge.md):
+  -- For any valid resolvent root m, each Ferrari root yᵢ satisfies the depressed
+  -- quartic (`ferrari_roots_are_roots`), hence yᵢ² is a root of the biquadratic
+  -- (`biquadratic_simple`), i.e., yᵢ² ∈ {z₁, z₂}.
+  have hsub_B : ∀ (m : ℂ) (hm : (resolventCubic p 0 r).eval m = 0),
+      (let s : ℂ := Complex.cpow (p^2 - 4*r) (1/2 : ℂ)
+       let z₁ : ℂ := (-p + s) / 2
+       let z₂ : ℂ := (-p - s) / 2
+       let (y₁, y₂, y₃, y₄) := ferrariRoots p 0 r m hm
+       (y₁^2 = z₁ ∨ y₁^2 = z₂) ∧
+       (y₂^2 = z₁ ∨ y₂^2 = z₂) ∧
+       (y₃^2 = z₁ ∨ y₃^2 = z₂) ∧
+       (y₄^2 = z₁ ∨ y₄^2 = z₂)) := by
+    intro m hm
+    obtain ⟨hy₁, hy₂, hy₃, hy₄⟩ := ferrari_roots_are_roots p 0 r m hm
+    exact ⟨(biquadratic_simple p r _).mp hy₁,
+           (biquadratic_simple p r _).mp hy₂,
+           (biquadratic_simple p r _).mp hy₃,
+           (biquadratic_simple p r _).mp hy₄⟩
+  -- Step 3: Sub-step A. Both m₁ = -p + u and m₂ = -p - u are resolvent roots.
+  -- Case-split on whether m₁ is non-degenerate.
+  by_cases h1 : 2 * (-p + u) + p = 0
+  · -- m₁ degenerate: deduce u = p/2, so r = u² = p²/4. Then `p ≠ 0 ∨ r ≠ 0`
+    -- forces p ≠ 0 (else r = 0 contradicts the disjunct). m₂ = -p - u = -3p/2,
+    -- and 2*m₂ + p = -2p ≠ 0.
+    have hu_p : u = p / 2 := by linear_combination h1 / 2
+    have hr_p : r = p^2 / 4 := by rw [← hu, hu_p]; ring
+    have hp : p ≠ 0 := by
+      rcases hpr with h | h
+      · exact h
+      · intro hp0; exact h (by rw [hr_p, hp0]; ring)
+    have hu_neg : (-u)^2 = r := by linear_combination hu
+    have h_m₂_resolv : (resolventCubic p 0 r).eval (-p - u) = 0 := by
+      rw [show (-p - u : ℂ) = -p + (-u) from by ring]
+      exact hresolv (-u) hu_neg
+    have hm₂_nondeg : 2 * (-p - u) + p ≠ 0 := by
+      rw [hu_p]
+      intro h_eq
+      exact hp (by linear_combination -h_eq / 2)
+    exact ⟨-p - u, h_m₂_resolv, hm₂_nondeg, hsub_B (-p - u) h_m₂_resolv⟩
+  · -- m₁ non-degenerate
+    push_neg at h1
+    exact ⟨-p + u, hresolv u hu, h1, hsub_B (-p + u) (hresolv u hu)⟩
 
 /-! ## Part VII: Historical Context and Significance -/
 
