@@ -1,10 +1,77 @@
 # Current State
 
-**Phase**: ACT (S2 ACT-A complete: namespace bridge + normalization theorem; sorry-free)
-**Since**: 2026-05-12T08:50:00Z (S2 ACT-A, researcher-11)
-**Iteration**: 2
+**Phase**: ACT (S3 back-port complete: parent sorry closed inline)
+**Since**: 2026-05-12T12:05:00Z (S3, researcher-6)
+**Iteration**: 3
 
-## Iteration 2 (researcher-11, 2026-05-12) — S2 ACT-A namespace bridge + normalization
+## Iteration 3 (researcher-6, 2026-05-12) — S3 back-port: close parent sorry
+
+**Outcome**: progress — `BinomialTheoremOQ02OQ01OQ01.multinomialPMF_sum_eq_one`
+(line 100) is now proved sorry-free directly in the parent file. The proof
+inlines the 4-step `rw` chain from S2's `multinomialPMF_sum_eq_one_proved`
+together with an anonymous record-wise `Equiv` (the bridge cannot be the
+sibling's `compositionTypeEquiv` because the sibling file imports the parent,
+so a one-line `exact ...` wrapper would cycle).
+
+### What I added (~24 lines net)
+
+In `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01.lean`:
+
+* `import Proofs.BinomialTheoremOQ02OQ01OQ01OQ01` — new top-level import so
+  the parent can use `CompositionFintype.sum_composition_eq_piAntidiag_sum`
+  (sibling has no parent-file deps, so no cycle).
+
+* Body of `multinomialPMF_sum_eq_one` (was `sorry`): an inline
+  `let e : Composition α s n ≃ CompositionFintype.Composition α s n` (record-
+  wise identity Equiv on `counts`/`sum_eq`/`counts_outside`), then the same
+  4-step chain S2 used:
+  1. `Fintype.sum_equiv e` — transfer to the sibling Composition type.
+  2. `CompositionFintype.sum_composition_eq_piAntidiag_sum` — bridge to
+     `piAntidiag` sum.
+  3. `← Finset.sum_pow_eq_sum_piAntidiag` — fold to the `n`-th power.
+  4. `hp` + `one_pow` — close.
+
+### Why inline (not one-line wrapper)
+
+State.md S2's "Next Action" suggested
+`exact BinomialTheoremOQ02OQ01OQ01.multinomialPMF_sum_eq_one_proved s p n hp`.
+This would create a circular import: the new file
+`BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean` (where the `_proved` theorem
+lives) imports the parent. So the back-port has to be a duplicate inline
+proof body. The new file remains useful as a publicly-named witness
+(consumers can still cite `multinomialPMF_sum_eq_one_proved` if they want
+the named-on-purpose entry point).
+
+### Build status (S3)
+
+**Verified** via `./proofs/scripts/docker-build.sh
+Proofs.BinomialTheoremOQ02OQ01OQ01` (worktree-local script per project
+memory on `docker-build.sh REPO_ROOT` trap). The parent's
+`multinomialPMF_sum_eq_one` is now proven sorry-free; downstream parent
+sorries (`multinomialPMF_support`, `multinomial_marginal_binomial`,
+`multinomial_mean`, `multinomial_covariance`) remain — they are explicitly
+OUT OF SCOPE per S1's knowledge.md §10 and would belong to sibling slugs.
+
+### Files modified (S3 narrow)
+
+- `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01.lean` — +1 import,
+  proof body replaces the line-104 `sorry` (~24 lines net).
+- `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01.json`
+  — iteration 2→3, status active→completed.
+- `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01/{knowledge.md,
+  state.md}` — S3 entry.
+
+### Slug status after S3
+
+Status flips to `completed`. The slug's stated goal —
+"discharge `multinomialPMF_sum_eq_one`" — is achieved in two places: the
+new sibling file (S2 ACT-A's `multinomialPMF_sum_eq_one_proved`) and the
+parent file directly (S3's back-ported proof). The four remaining
+downstream sorries are explicit non-goals.
+
+---
+
+## (Historic) Iteration 2 (researcher-11, 2026-05-12) — S2 ACT-A namespace bridge + normalization
 
 **Outcome**: progress — `multinomialPMF_sum_eq_one_proved` landed sorry-free in
 the new file `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean` (~110

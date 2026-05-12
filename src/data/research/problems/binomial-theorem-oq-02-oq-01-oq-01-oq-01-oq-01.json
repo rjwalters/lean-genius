@@ -2,7 +2,7 @@
   "slug": "binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01",
   "title": "Discharge multinomialPMF_sum_eq_one by combining the gallery's piAntidiag bridge with Mathlib's multinomial theorem",
   "phase": "ACT",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -28,20 +28,21 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T08:50:00.000Z",
-    "iteration": 2,
-    "focus": "S2 ACT-A (researcher-11, 2026-05-12) — created proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean (~110 lines, sorry-free) with the namespace-bridge compositionTypeEquiv between BinomialTheoremOQ02OQ01OQ01.Composition and CompositionFintype.Composition, plus the main theorem multinomialPMF_sum_eq_one_proved discharging the parent's deferred sorry on multinomialPMF_sum_eq_one (BinomialTheoremOQ02OQ01OQ01.lean:102). The proof is the 4-step rw chain documented in S1's knowledge.md §8: (1) Fintype.sum_equiv compositionTypeEquiv to transfer to the sibling Composition type, (2) CompositionFintype.sum_composition_eq_piAntidiag_sum to land on a piAntidiag sum, (3) ← Finset.sum_pow_eq_sum_piAntidiag to fold into a power, (4) hp + one_pow to close. Added import to proofs/Proofs.lean (alphabetical position between OQ01OQ01OQ01.lean and OQ01OQ01OQ02.lean). The parent's sorry remains; S3 back-port is optional follow-up.",
+    "since": "2026-05-12T12:05:00.000Z",
+    "iteration": 3,
+    "focus": "S3 back-port (researcher-6, 2026-05-12) — closed the parent's BinomialTheoremOQ02OQ01OQ01.multinomialPMF_sum_eq_one sorry directly by inlining a record-wise anonymous Equiv plus the same 4-step rw chain used in S2's multinomialPMF_sum_eq_one_proved. The state.md S2 next-action suggestion of `exact ...` (one-line wrapper) could not be used because the new sibling file (where _proved lives) imports the parent — a wrapper would cycle. Instead the parent imports Proofs.BinomialTheoremOQ02OQ01OQ01OQ01 (no cycle: the sibling has no parent-file deps) and inlines the proof body. The slug's stated goal — discharge multinomialPMF_sum_eq_one — is now achieved in both places (sibling file from S2 and parent file from S3). The four remaining downstream sorries (multinomialPMF_support, multinomial_marginal_binomial, multinomial_mean, multinomial_covariance) are explicit non-goals per S1 knowledge.md §10.",
     "blockers": [],
-    "nextAction": "S3 (optional): back-port the proven theorem into BinomialTheoremOQ02OQ01OQ01.lean by replacing the line-102 sorry with `exact BinomialTheoremOQ02OQ01OQ01.multinomialPMF_sum_eq_one_proved s p n hp` (one-line wrapper). Trivial follow-up; would close the parent file's open sorry as well. Alternative: defer to a sibling slug for the four downstream sorries (multinomialPMF_support, multinomial_marginal_binomial, multinomial_mean, multinomial_covariance) — explicitly OUT OF SCOPE for this slug per S1 knowledge.md §10.",
+    "nextAction": "None. Slug status → completed. Sibling slugs would carry the downstream sorries (multinomialPMF_support, multinomial_marginal_binomial, multinomial_mean, multinomial_covariance) if/when those are added to the pool.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S2 ACT-A (researcher-11, 2026-05-12): the deferred multinomialPMF_sum_eq_one is now proved sorry-free in a new sibling file BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean (~110 lines). The proof closes the route documented in S1: namespace bridge via compositionTypeEquiv (record-wise identity equivalence between the parent and sibling Composition types), Fintype.sum_equiv to transfer summation, CompositionFintype.sum_composition_eq_piAntidiag_sum to land on piAntidiag, ← Finset.sum_pow_eq_sum_piAntidiag to fold into the n-th power, then hp + one_pow. Added the import to proofs/Proofs.lean. The parent's sorry remains for the moment; S3 back-port is a one-line wrapper away. // S1 OBSERVE (2026-05-12, researcher-10): scaffolded the four artifact files for a previously empty (knowledge-score 0) tier-B slug. Mathlib v4.26.0 API audit at pin 2df2f015 confirms Finset.sum_pow_eq_sum_piAntidiag exists at Mathlib/Data/Nat/Choose/Multinomial.lean line 301-304, requires [CommSemiring R], and is stable across recent Mathlib releases. The gallery's BinomialTheoremOQ02OQ01OQ01OQ01.lean already provides sum_composition_eq_piAntidiag_sum. The remaining nontrivial subtask is the namespace bridge: the parent file's Composition and the child file's CompositionFintype.Composition are structurally identical but distinct Lean types, requiring a ~10-line compositionTypeEquiv. Total estimated S2 ACT-A: 50-60 lines of Lean.",
+    "progressSummary": "S3 back-port (researcher-6, 2026-05-12): closed the parent's multinomialPMF_sum_eq_one sorry directly by adding `import Proofs.BinomialTheoremOQ02OQ01OQ01OQ01` to the parent and inlining the same 4-step rw chain S2 used (anonymous record-wise Equiv → Fintype.sum_equiv → sum_composition_eq_piAntidiag_sum → ← sum_pow_eq_sum_piAntidiag → hp + one_pow). The state.md S2 next-action's `exact BinomialTheoremOQ02OQ01OQ01.multinomialPMF_sum_eq_one_proved s p n hp` (one-line wrapper) is not possible because the new sibling file (where _proved lives) imports the parent — so the back-port is a duplicate inline proof body. The new file remains useful as a publicly-named witness. // S2 ACT-A (researcher-11, 2026-05-12): the deferred multinomialPMF_sum_eq_one was proved sorry-free in a new sibling file BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean (~110 lines). The proof closes the route documented in S1: namespace bridge via compositionTypeEquiv, Fintype.sum_equiv, CompositionFintype.sum_composition_eq_piAntidiag_sum, ← Finset.sum_pow_eq_sum_piAntidiag, hp + one_pow. Added the import to proofs/Proofs.lean. // S1 OBSERVE (2026-05-12, researcher-10): scaffolded the four artifact files for a previously empty (knowledge-score 0) tier-B slug. Mathlib v4.26.0 API audit at pin 2df2f015 confirms Finset.sum_pow_eq_sum_piAntidiag exists at Mathlib/Data/Nat/Choose/Multinomial.lean line 301-304, requires [CommSemiring R], and is stable across recent Mathlib releases.",
     "builtItems": [
+      "**(S3 NEW)** proofs/Proofs/BinomialTheoremOQ02OQ01OQ01.lean — closed line-104 sorry on multinomialPMF_sum_eq_one via inline anonymous Equiv plus the same 4-step rw chain; added top-level `import Proofs.BinomialTheoremOQ02OQ01OQ01OQ01` (no cycle: sibling does not import parent); ~24 lines net.",
       "**(S2 NEW)** proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean — namespace-bridge file with compositionTypeEquiv (record-wise identity Equiv between parent and sibling Composition types) and multinomialPMF_sum_eq_one_proved (the proven normalization theorem); ~110 lines, sorry-free, build verified (BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean)",
       "**(S2 NEW)** proofs/Proofs.lean — added import in alphabetical position between OQ01OQ01OQ01.lean and OQ01OQ01OQ02.lean",
       "problem.md (formal statement + Lean target signature + non-claims)",

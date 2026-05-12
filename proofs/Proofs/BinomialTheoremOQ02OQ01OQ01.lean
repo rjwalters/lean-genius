@@ -4,6 +4,7 @@ import Mathlib.Data.Nat.Choose.Sum
 import Mathlib.Data.ENNReal.Basic
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Tactic
+import Proofs.BinomialTheoremOQ02OQ01OQ01OQ01
 
 /-
 # Multinomial PMF Integration with Mathlib's PMF Framework
@@ -101,7 +102,29 @@ theorem multinomialPMF_sum_eq_one {α : Type*} [DecidableEq α]
     (s : Finset α) (p : α → ℝ≥0∞) (n : ℕ)
     (hp : ∑ i ∈ s, p i = 1) :
     ∑ k : Composition α s n, multinomialPMFVal s p n k = 1 := by
-  sorry -- Follows from multinomial theorem in ENNReal and the sum constraint
+  -- Anonymous record-wise equivalence to the sibling file's Composition type.
+  -- Both Composition structures have identical fields (counts, sum_eq,
+  -- counts_outside); the only reason for the bridge is namespace separation.
+  let e : Composition α s n ≃ CompositionFintype.Composition α s n :=
+    { toFun := fun c => ⟨c.counts, c.sum_eq, c.counts_outside⟩
+      invFun := fun c => ⟨c.counts, c.sum_eq, c.counts_outside⟩
+      left_inv := fun c => by cases c; rfl
+      right_inv := fun c => by cases c; rfl }
+  -- Step 1: transfer the Composition-indexed sum via the equivalence; the
+  -- summand is preserved pointwise because the bridge is the identity on
+  -- the underlying `counts` field, and `multinomialPMFVal` only reads `counts`.
+  rw [Fintype.sum_equiv e
+        (fun c => multinomialPMFVal s p n c)
+        (fun c => (Nat.multinomial s c.counts : ℝ≥0∞)
+                    * ∏ i ∈ s, p i ^ c.counts i)
+        (fun _ => rfl)]
+  -- Step 2: use the sibling's bridge to land on a piAntidiag sum.
+  rw [CompositionFintype.sum_composition_eq_piAntidiag_sum (M := ℝ≥0∞) s n
+        (fun k => (Nat.multinomial s k : ℝ≥0∞) * ∏ i ∈ s, p i ^ k i)]
+  -- Step 3: fold the piAntidiag sum into a power via Mathlib's multinomial theorem.
+  rw [← Finset.sum_pow_eq_sum_piAntidiag s p n]
+  -- Step 4: substitute ∑ p = 1 and 1^n = 1.
+  rw [hp, one_pow]
 
 -- ============================================================
 -- PART 4: The PMF Instance
