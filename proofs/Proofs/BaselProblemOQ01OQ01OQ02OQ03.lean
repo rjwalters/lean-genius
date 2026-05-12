@@ -1011,6 +1011,113 @@ example :
       ≤ (10 / 2) ^ Nat.sqrt 10 := by
   decide
 
+-- =====================================================================
+-- ITER 23: filtered Iter-19 + small-prime power-product envelope
+-- =====================================================================
+-- Iter 19's `prod_prime_pow_pred_le_prod_div_prime` is a product
+-- inequality over the *full* prime filter `{p ≤ n : p.Prime}`. The
+-- complete envelope toward Hanson restricts both products to the
+-- small-prime filter `{p ≤ n : p.Prime ∧ p² ≤ n}` (Iter 20's support).
+-- The full-filter → small-filter passage on the LHS requires Iter 17's
+-- support-reduction lemma (PR #17619, currently OPEN since 2026-05-09)
+-- to assert `p² > n → p^(Nat.log p n - 1) = 1`. Without that PR landing,
+-- we work directly on the small-filter side: `prod_le_prod` of Iter 18's
+-- pointwise atom `prime_pow_pred_le_div` over the small-prime filter
+-- yields the small-prime variant directly, and chaining with Iter 22's
+-- `prod_div_small_prime_le_pow_sqrt` gives the **small-prime
+-- power-product envelope**
+--   ∏_{p ≤ n, p.Prime, p² ≤ n} p^(Nat.log p n - 1) ≤ (n / 2)^√n   (n ≥ 2).
+-- This is the LHS half of the Hanson bridge **without depending on
+-- PR #17619**: once that PR (or a direct replacement) collapses the
+-- full-filter LHS to the small-filter LHS, the envelope upgrades to the
+-- full correction-factor bound automatically.
+
+/-- **Filtered Iter 19** (Iter 23): the product-level correction-factor
+    bound restricted to the small-prime filter `{p prime : p² ≤ n}`.
+    Pointwise application of Iter 18's `prime_pow_pred_le_div` across
+    the filter (analogously to Iter 19's unfiltered version), via
+    `Finset.prod_le_prod`.
+
+    The membership hypothesis `p ∈ (range (n+1)).filter (Prime ∧ p²≤n)`
+    gives both `p < n + 1` (so `p ≤ n`) and `p.Prime`, the two inputs
+    needed by `prime_pow_pred_le_div`. The third filter clause
+    `p ^ 2 ≤ n` is not used in this proof but defines the index set.
+
+    Concrete checks (matching Iter 19/22 numerics):
+    * `n = 10`: small filter `{2, 3}` (`5² = 25 > 10`),
+                LHS = `2^(log₂ 10 - 1) · 3^(log₃ 10 - 1) = 2² · 3¹ = 12`,
+                RHS = `(10/2) · (10/3) = 5 · 3 = 15`. ✓ (12 ≤ 15)
+    * `n = 20`: small filter `{2, 3}` (`5² = 25 > 20`),
+                LHS = `2³ · 3¹ = 24`,
+                RHS = `10 · 6 = 60`. ✓ (24 ≤ 60)
+    * `n = 100`: small filter `{2, 3, 5, 7}`,
+                 LHS = `2^5 · 3^3 · 5^1 · 7^1 = 32 · 27 · 5 · 7 = 30240`,
+                 RHS = `50 · 33 · 20 · 14 = 462000`. ✓ -/
+theorem prod_prime_pow_pred_le_prod_div_prime_small (n : ℕ) :
+    ∏ p ∈ (Finset.range (n + 1)).filter (fun p => p.Prime ∧ p ^ 2 ≤ n),
+        p ^ (Nat.log p n - 1) ≤
+    ∏ p ∈ (Finset.range (n + 1)).filter (fun p => p.Prime ∧ p ^ 2 ≤ n),
+        n / p := by
+  apply Finset.prod_le_prod
+  · intro p _
+    exact Nat.zero_le _
+  · intro p hp
+    rw [Finset.mem_filter, Finset.mem_range] at hp
+    obtain ⟨hp_lt, hp_prime, _⟩ := hp
+    have hpn : p ≤ n := by omega
+    exact prime_pow_pred_le_div hp_prime hpn
+
+/-- **Small-prime power-product envelope** (Iter 23 main): chaining
+    Iter 23's filtered Iter-19
+    (`prod_prime_pow_pred_le_prod_div_prime_small`) with Iter 22's
+    `(n/2)^√n` correction-factor envelope
+    (`prod_div_small_prime_le_pow_sqrt`) gives the **structural**
+    small-prime power-product bound
+
+      `∏_{p prime, p² ≤ n} p^(Nat.log p n - 1) ≤ (n / 2) ^ √n`
+
+    under the hypothesis `2 ≤ n` (inherited from Iter 22).
+
+    This is the **LHS half of the Hanson bridge**, expressed entirely
+    on the small-prime filter. The remaining work to obtain Hanson's
+    `lcmRange n ≤ 3^n` then reduces to:
+
+    1. **Full-filter → small-filter collapse** on Iter 19's LHS (i.e.,
+       Iter 17's support reduction, PR #17619 OPEN): once available,
+       `prod_prime_pow_pred_le_prod_div_prime_small` becomes equivalent
+       to `prod_prime_pow_pred_le_prod_div_prime`, and this iter's
+       envelope upgrades to the **full correction-factor envelope**
+       `∏_{p ≤ n, prime} p^(Nat.log p n - 1) ≤ (n/2)^√n`.
+    2. **Primorial bound** `primorial n ≤ 4^n` (Mathlib's
+       `Nat.primorial_le_4_pow`).
+    3. **Asymptotic threshold** for `4^n · (n/2)^√n ≤ 3^n` (small `n`
+       handled by `hanson_n1`–`hanson_n20`).
+
+    Concrete numerics:
+    * `n = 10`: filter `{2, 3}`, LHS = `2² · 3¹ = 12`,
+                 `Nat.sqrt 10 = 3`, RHS = `5³ = 125`. ✓ (12 ≤ 125)
+    * `n = 100`: filter `{2, 3, 5, 7}`,
+                  LHS = `2^5 · 3^3 · 5 · 7 = 30240`,
+                  `Nat.sqrt 100 = 10`, RHS = `50^10 ≈ 9.77 · 10^16`. ✓
+    -/
+theorem prod_prime_pow_pred_small_le_pow_sqrt {n : ℕ} (hn : 2 ≤ n) :
+    ∏ p ∈ (Finset.range (n + 1)).filter (fun p => p.Prime ∧ p ^ 2 ≤ n),
+        p ^ (Nat.log p n - 1)
+      ≤ (n / 2) ^ n.sqrt :=
+  (prod_prime_pow_pred_le_prod_div_prime_small n).trans
+    (prod_div_small_prime_le_pow_sqrt hn)
+
+/-- **Concrete numerical witness** (Iter 23): at `n = 10` the small-prime
+    power product `∏_{p ∈ {2,3}} p^(Nat.log p 10 - 1) = 12` is bounded
+    by `(10 / 2) ^ Nat.sqrt 10 = 5³ = 125`.
+
+    Sanity check for `prod_prime_pow_pred_small_le_pow_sqrt`. -/
+example :
+    ∏ p ∈ (Finset.range 11).filter (fun p => p.Prime ∧ p ^ 2 ≤ 10),
+        p ^ (Nat.log p 10 - 1)
+      ≤ (10 / 2) ^ Nat.sqrt 10 := by
+  native_decide
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
