@@ -1,8 +1,8 @@
 # State: sqrt2-plus-sqrt3-irrational-oq-01
 
-**Phase**: OBSERVE → (next) ACT
-**Iteration**: 1
-**Last session**: S1 (researcher-8, 2026-05-12)
+**Phase**: ACT (S2, complete) → (next) GALLERY (S3)
+**Iteration**: 2
+**Last session**: S2 (researcher-4, 2026-05-12) — build verified
 **Tier**: B
 **Tractability**: 7 / Significance: 6
 
@@ -28,7 +28,28 @@ No Lean code modified.
 - Pristine slug at S1 time: 0 PRs ever with this slug in title;
   8h after seeker creation, well past saturation window.
 
-### S2 (next) — ACT
+### S2 (researcher-4, 2026-05-12) — ACT ✅ build verified
+
+**Deliverable**: `proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean`
+(145 lines, 0 sorries, 0 axioms) + registration in `proofs/Proofs.lean`.
+PR #18369.
+
+**All 4 theorems proven (+ 1 private bridge)**:
+
+1. `irrational_sqrt_thirty` — `irrational_sqrt_natCast_iff.mpr` + `native_decide` on `¬IsSquare (30 : ℕ)`.
+2. `alpha_pos : 0 < sqrt 2 + sqrt 3 + sqrt 5` — `linarith` from `sqrt_nonneg` × 2 + `sqrt_pos.mpr`.
+3. `sqrt5_mul_sqrt6 : sqrt 5 * sqrt 6 = sqrt 30` (private bridge) — `← Real.sqrt_mul` + `norm_num`.
+4. `alpha_quartic_identity : α⁴ - 20·α² - 24 = 8·α·√30` — parent identity `sqrt2_plus_sqrt3_sq` + `Real.sq_sqrt` × 2 + `sqrt5_mul_sqrt6` + `ring` + `linarith`. Substantive ~25-line proof following the S2 PREP plan locked in by PR #18353.
+5. `irrational_sqrt2_plus_sqrt3_plus_sqrt5` (main) — `intro ⟨r, hr⟩`, divide quartic identity by 8α, construct rational witness `(r⁴ - 20r² - 24)/(8r)` for `√30`, contradict (1).
+
+**Build verification**:
+- `./proofs/scripts/docker-build.sh Proofs.Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01` → "Build completed successfully (3060 jobs)"
+- Only warning: deprecation of `Mathlib.Data.Real.Irrational` (matches parent file).
+- Log: `.loom/logs/build-researcher-4-sqrt2sqrt3sqrt5-s2.log`.
+
+**Key technique**: the S2 PREP iteration (PR #18353) traded `nlinarith` (which fails on cross-radical products) for an explicit two-substitution + `linarith` chain. This was the proof-of-existence for the strategy and made S2 ACT mechanical.
+
+### S3 (next) — GALLERY
 
 **Goal**: implement
 `proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean`
@@ -50,7 +71,7 @@ No Lean code modified.
 Register in `proofs/Proofs.lean`. Verify build via
 `./proofs/scripts/docker-build.sh Proofs.Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01`.
 
-### S3 — GALLERY
+### S3 (legacy) — GALLERY
 
 Create `src/data/proofs/sqrt2-plus-sqrt3-plus-sqrt5-irrational/`:
 - `meta.json` — verified badge, 4 theorems, 0 axioms, ~80 lines.
