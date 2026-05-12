@@ -1,0 +1,105 @@
+{
+  "slug": "product-of-segments-of-chords-oq-03",
+  "title": "Power-of-a-point ↔ four-point concyclicity determinant",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "significance": 6,
+  "tractability": 6,
+  "problemStatement": {
+    "formal": "Four points P_i = (x_i, y_i) in R^2 are concyclic (with P_1, P_2, P_3 non-collinear) iff the 4x4 concyclicity determinant Δ(P_1, P_2, P_3, P_4) = det[[x_i^2 + y_i^2, x_i, y_i, 1]] vanishes. Bridge claim: chord-product equality (PA · PB = PC · PD along intersecting chords through P) implies Δ(A, B, C, D) = 0; combined with the determinant criterion, this discharges the parent file's converse_product_implies_concyclic_axiom.",
+    "plain": "Four points lie on a single circle exactly when the 4x4 'concyclicity determinant' with rows (x_i^2 + y_i^2, x_i, y_i, 1) vanishes. The parent gallery proof has the forward direction of the power-of-a-point criterion (concyclic → equal chord products) but axiomatises the converse. OQ-03 closes this by formalising the determinant criterion and bridging it to the chord-product equality via row reduction + Cramer's rule.",
+    "whyMatters": [
+      "Eliminates a gallery axiom: parent product-of-segments-of-chords has axiomCount 1 (converse_product_implies_concyclic_axiom). After S6, axiomCount → 0 and status can move from 'axiomatized' toward 'verified'.",
+      "Bridges two classical concyclicity criteria: Steiner's power-of-a-point (1826) and the Möbius determinant criterion (1827), both of which encode the fact that three non-collinear points determine a unique circle.",
+      "Provides a Mathlib test case for Matrix.det_fin_four + Matrix.cramer on a non-trivial 4x4 polynomial determinant. Resulting lemma `concyclicityDet_eq_zero_iff` would be a candidate for upstream contribution.",
+      "Downstream applications: Delaunay-triangulation in-circle predicates, Ptolemy's theorem (related gallery entry), inversive geometry. A formal concyclicity predicate is foundational."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent: powerOfPoint, chord_quadratic, chord_roots_product (Vieta), chord_product_algebraic, product_of_segments_of_chords (forward direction).",
+      "Mathlib: Matrix.det_fin_four, Matrix.cramer, Matrix.mulVec_cramer, Matrix.det_ne_zero_iff_isUnit at v4.26.0."
+    ],
+    "open": [
+      "Definition concyclicityDet : Vec2 → Vec2 → Vec2 → Vec2 → ℝ via Matrix.det_fin_four.",
+      "Forward direction: four points concyclic → concyclicityDet = 0 (row reduction).",
+      "Converse direction: concyclicityDet = 0 ∧ non-collinear(P_1, P_2, P_3) → ∃ O r, ‖P_i - O‖ = r for all i (Cramer's rule on the implicit-circle linear system).",
+      "Bridge: chord-product equality PA · PB = PC · PD (with collinear chords through P) → concyclicityDet(A, B, C, D) = 0 (uses chord_roots_product + Vieta).",
+      "Discharge parent axiom converse_product_implies_concyclic_axiom using the converse direction + bridge."
+    ],
+    "goal": "Build companion file Proofs/ProductOfSegmentsOfChordsOQ03.lean (~210 lines, 4 main theorems + 1 def) that discharges the parent axiom. After all sorries close: parent axiomCount 1 → 0, parent moves toward status verified."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T18:00:00.000Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE: documented the determinant-criterion ↔ power-of-a-point bridge, verified the determinant criterion on the unit-square inscribed-in-unit-circle test case (Δ = 0), surveyed Mathlib's Matrix.det_fin_four + Cramer's rule API, decomposed the goal into S2–S6, and identified the axiom-discharge endpoint.",
+    "blockers": [],
+    "nextAction": "S2: create Proofs/ProductOfSegmentsOfChordsOQ03.lean with concyclicityDet definition (Matrix.det_fin_four), numerical example (decide), and main theorem statement with 1 sorry (~40 lines, build-verified SCAFFOLD).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-11, 2026-05-12): OBSERVE survey for the bridge between the parent file's power-of-a-point invariant and the classical 4x4 concyclicity determinant. Verified Δ = 0 on the four unit-circle vertices (1,0), (0,1), (-1,0), (0,-1) (rows 1+3 = rows 2+4) and Δ = -8 when one vertex moves off-circle to (0,-2). Mapped Mathlib v4.26.0 infrastructure (Matrix.det_fin_four, Matrix.cramer, !![...] notation). Identified that the strategy is purely algebraic (Cramer on the implicit-circle equation x^2 + y^2 + Dx + Ey + F = 0), avoiding the need to bridge Vec2 = Fin 2 → ℝ with EuclideanSpace ℝ (Fin 2). Identified 3 Mathlib gaps (no concyclicity-det lemma, no circleThroughThreePoints in parent file, no power-of-a-point ↔ implicit-circle bridge). No Lean changes this iteration -- pure documentation S1.",
+    "builtItems": [],
+    "insights": [
+      "The implicit-circle equation x^2 + y^2 + Dx + Ey + F = 0 gives an immediate translation between power-of-a-point and concyclicity: power(P) = x_P^2 + y_P^2 + D x_P + E y_P + F evaluated against any circle through three reference points.",
+      "Four points satisfy a common circle equation iff the 4x3 linear system has a solution iff the augmented 4x4 has rank 3 iff the concyclicity determinant Δ vanishes. This is the linear-algebra encoding of 'three non-collinear points determine a unique circle'.",
+      "Verified numerically: Δ(A, B, C, D) = 0 for A=(1,0), B=(0,1), C=(-1,0), D=(0,-1) (unit-circle vertices) because rows 1+3 = rows 2+4 both equal (2, 0, 0, 2). Moving D to (0,-2) gives Δ = -8. ✓",
+      "The bridge chord_product_equal → Δ = 0 falls out of row reduction: subtracting row j from row i in Δ replaces the first column with ‖P_i‖^2 − ‖P_j‖^2 = (P_i − P_j) · (P_i + P_j). When the chord directions are collinear through P, this is a scalar multiple of (P_i − P_j) · n̂ along chord normals, and the product equality forces a row dependency by Vieta on the chord quadratic.",
+      "Mathlib has Affine.Simplex.circumcenter / circumradius which could in principle short-circuit the (⇐) direction, but using it requires bridging the parent's Vec2 = Fin 2 → ℝ convention with EuclideanSpace ℝ (Fin 2). The direct Cramer's rule proof is cleaner and stays inside the parent's existing convention.",
+      "Parent gallery openQuestion #3 (conclusion.openQuestions[2]) is exactly this problem: 'How does the power of a point relate to the determinant criterion for concyclicity?' OQ-03 is the natural follow-up to ship the parent toward verified status."
+    ],
+    "mathlibGaps": [
+      "No specialised concyclicity-determinant lemma in Mathlib v4.26.0. Matrix.det_fin_four handles the expansion but there is no `Matrix.concyclicityDet_eq_zero_iff` or equivalent. Candidate for upstream contribution.",
+      "No circleThroughThreePoints constructor in the parent file. The parent uses converse_product_implies_concyclic_axiom precisely because it lacks this. Could either build it (4x4 Cramer) or import Affine.Simplex.circumcenter (with the EuclideanSpace bridge).",
+      "No bridge between power-of-a-point and the implicit-circle equation. The identity ‖P − A‖ · ‖P − B‖ = |D · x_P + E · y_P + F + x_P^2 + y_P^2| is implicit in chord_product_algebraic but not named in either parent or Mathlib."
+    ],
+    "nextSteps": [
+      "S2: Create Proofs/ProductOfSegmentsOfChordsOQ03.lean with concyclicityDet definition via Matrix.det_fin_four, numerical example (decide / norm_num), and main theorem statement with sorry (~40 lines, build-verified SCAFFOLD).",
+      "S3: Prove (⇐) direction: Δ = 0 ∧ non-collinear(P_1, P_2, P_3) → ∃ O r > 0, ‖P_i − O‖ = r for all i. Uses Cramer on the 3x3 system for (D, E, F), then translates to (O, r) = (-D/2, -E/2, √(D^2/4 + E^2/4 − F)). ~80 lines.",
+      "S4: Prove (⇒) direction: concyclic(P_1..P_4) → Δ = 0. Use row reduction: subtract row 4 from rows 1, 2, 3; common circle equation makes each subtracted row a linear combination of the others, forcing Δ = 0. ~30 lines.",
+      "S5: Bridge: PA · PB = PC · PD ∧ chords collinear through P → Δ = 0. Uses chord_roots_product + parent's chord_product_algebraic via the row-subtract identity. ~50 lines.",
+      "S6: Discharge parent axiom: converse_product_implies_concyclic = (S5 bridge) ▷ (S3 converse). Delete the axiom, update parent meta.json axiomCount 1 → 0 and status. ~10 lines."
+    ]
+  },
+  "relatedGalleryProofs": [
+    {
+      "slug": "product-of-segments-of-chords",
+      "relevance": "Parent gallery proof. Provides powerOfPoint, chord_quadratic, chord_roots_product, chord_product_algebraic. Hosts the converse_product_implies_concyclic_axiom we aim to discharge."
+    },
+    {
+      "slug": "ptolemys-theorem",
+      "relevance": "Sibling concyclicity criterion (Ptolemy identity AC · BD = AB · CD + AD · BC for cyclic quadrilateral). Both criteria characterise concyclicity; the determinant version is the linear-algebra encoding."
+    },
+    {
+      "slug": "area-of-circle",
+      "relevance": "Uses the same EuclideanSpace ℝ (Fin 2) / Vec2 infrastructure. Determinant calculations on coordinates in the same convention."
+    },
+    {
+      "slug": "vietas-formulas",
+      "relevance": "Vieta on the chord quadratic gives t_1 · t_2 = power(P); the row-subtract identity in the (⇐) direction reuses this."
+    },
+    {
+      "slug": "pythagorean-theorem",
+      "relevance": "Squared-distance expansion ‖P − Q‖^2 = (x_P − x_Q)^2 + (y_P − y_Q)^2 underlies the determinant's first column."
+    }
+  ],
+  "tags": [
+    "geometry",
+    "circles",
+    "linear-algebra",
+    "concyclicity",
+    "determinant",
+    "power-of-a-point",
+    "wiedijk-100",
+    "seeker-selected"
+  ],
+  "createdAt": "2026-05-12T15:12:46Z",
+  "lastUpdatedAt": "2026-05-12T18:30:00Z"
+}
