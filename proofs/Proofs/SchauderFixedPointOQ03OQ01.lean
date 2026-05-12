@@ -109,6 +109,50 @@ lemma uhc_local_thickening {X Y : Type*} [TopologicalSpace X]
           ?_, fun _ hx => hx⟩
   exact Metric.self_subset_thickening hε _
 
+/-- **S18f scaffold (input-diameter refinement of S17 `uhc_local_thickening`):**
+
+    Sharpens `uhc_local_thickening` (S17 helper, line 101 above) by
+    additionally bounding the input-ball diameter: at every basepoint
+    `x₀ : X` and every `ε > 0` there is an open neighborhood `U ∋ x₀`
+    contained in `Metric.ball x₀ ε` (input-side diameter `< ε` on
+    `↥S`-distances) on which `F` is contained in the `ε`-thickening of
+    `F(x₀)` (output-side bound).
+
+    **Why both bounds are needed:** the eventual `IsGraphApproxSelection`
+    predicate (line 471) requires `∃ x' y, dist x x' < ε ∧ y ∈ F x' ∧
+    dist (f x) y < ε`. The Cellina–Browder construction picks
+    `x' := i ∈ ρ.finsupport x` (a partition center) and uses
+    `x ∈ tsupport (ρ i) ⊆ U i` (the subordinate-partition clause from
+    S18d) together with the open-cover from this helper. To certify
+    `dist x i < ε` we need the input-side bound `U i ⊆ Metric.ball i ε`,
+    which the S17 helper does **not** provide — the S17 survey
+    (`s17-cellina-mathlib-api-survey.md`, Step 5 footnote) explicitly
+    flagged this as a load-bearing missing clause for the final graph
+    bound. This iteration closes that gap.
+
+    **Proof:** intersect the `U₀` produced by `uhc_local_thickening` with
+    `Metric.ball x₀ ε`. Both are open (`IsOpen.inter` + `Metric.isOpen_ball`)
+    and both contain `x₀` (`hx_U₀` + `Metric.mem_ball_self hε`); the
+    thickening clause restricts to the intersection trivially via
+    `Set.inter_subset_left`, and the new input-ball clause is
+    `Set.inter_subset_right`.
+
+    No new axiom is introduced; `axiom approx_selection_exists` (Axiom 2
+    below) remains in the file unchanged. -/
+lemma uhc_local_thickening_with_input_diameter
+    {X Y : Type*} [PseudoMetricSpace X] [PseudoMetricSpace Y]
+    {F : SetValuedMap X Y} (hF : IsUpperHemicontinuous F)
+    (x₀ : X) (ε : ℝ) (hε : 0 < ε) :
+    ∃ U : Set X, IsOpen U ∧ x₀ ∈ U ∧ U ⊆ Metric.ball x₀ ε ∧
+      ∀ x ∈ U, F x ⊆ Metric.thickening ε (F x₀) := by
+  obtain ⟨U₀, hU₀_open, hx_U₀, hU₀_thick⟩ :=
+    uhc_local_thickening hF x₀ ε hε
+  refine ⟨U₀ ∩ Metric.ball x₀ ε,
+          hU₀_open.inter Metric.isOpen_ball,
+          ⟨hx_U₀, Metric.mem_ball_self hε⟩,
+          Set.inter_subset_right,
+          fun x hx => hU₀_thick x hx.1⟩
+
 -- ============================================================
 -- Part II: Key Axioms
 -- ============================================================

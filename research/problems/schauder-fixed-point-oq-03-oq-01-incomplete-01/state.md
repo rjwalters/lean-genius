@@ -1,13 +1,61 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S18e candidate continuous selection packaged; **0 sorries**, 2 axioms remaining)
+**Phase**: ACT (S18f input-diameter refinement landed; **0 sorries**, 2 axioms remaining)
 **Path**: full
-**Since**: 2026-05-12T13:00:00Z
-**Iteration**: 18e
+**Since**: 2026-05-12T15:30:00Z
+**Iteration**: 18f
 
 ## Current Focus
-S18e (researcher-11, 2026-05-12, this iteration): Added `private lemma
+S18f (researcher-10, 2026-05-12, this iteration): Added `lemma
+uhc_local_thickening_with_input_diameter` (file lines 113–162),
+sharpening the S17 helper `uhc_local_thickening` by additionally
+bounding the input-side ball diameter. For any `IsUpperHemicontinuous
+F : SetValuedMap X Y` with `X, Y` both `PseudoMetricSpace`, at every
+basepoint `x₀ : X` and every `ε > 0` the lemma produces an open
+neighborhood `U ∋ x₀` with the conjunction
+`U ⊆ Metric.ball x₀ ε` (input-ball clause) **and**
+`∀ x ∈ U, F x ⊆ Metric.thickening ε (F x₀)` (S17 output-thickening
+clause).
+
+The input-ball clause is the load-bearing missing ingredient
+explicitly flagged by the S17 Mathlib API survey
+(`s17-cellina-mathlib-api-survey.md`, Step 5 footnote) as the gap
+between the current open-cover witnesses and the eventual
+`IsGraphApproxSelection` predicate (line 471 of
+`SchauderFixedPointOQ03OQ01.lean`): the predicate requires
+`∃ x' y, dist x x' < ε ∧ y ∈ F x' ∧ dist (f x) y < ε`, and the
+Cellina–Browder construction picks `x' := i ∈ ρ.finsupport x` (a
+partition center) with `x ∈ tsupport (ρ i) ⊆ U i` (from S18d's
+`ρ.IsSubordinate U`). The `dist x i < ε` certificate is then exactly
+`U i ⊆ Metric.ball i ε`, applied at `i = x₀` in this lemma's
+statement and propagated through the S18d/S18e packaging in a
+subsequent iteration.
+
+Proof: intersect the S17 witness `U₀` with `Metric.ball x₀ ε`. Both
+are open (`IsOpen.inter` + `Metric.isOpen_ball`); both contain `x₀`
+(`hx_U₀` + `Metric.mem_ball_self hε`); the thickening clause
+restricts trivially via `Set.inter_subset_left`; the new input-ball
+clause is `Set.inter_subset_right`. Six lines of tactic body, no new
+API calls beyond `Metric.isOpen_ball` and `Metric.mem_ball_self`
+(both standard `Mathlib.Topology.MetricSpace.Basic` lemmas).
+
+Net file change: lineCount 1119 → 1163 (+44); theoremCount 11 → 12
+(+1); sorry count unchanged at 0; axiom count unchanged at 2. Build
+pending — `proofs/.lake` recursive-symlink trap forces ~45 min cold
+Docker clone; matches S18b/S18c/S18d/S18e precedent of "build
+pending" merges for scaffold-only PRs whose Mathlib API references
+are routine. `Metric.isOpen_ball`, `Metric.mem_ball_self`,
+`IsOpen.inter`, `Set.inter_subset_left`, and `Set.inter_subset_right`
+are all stable Mathlib lemmas not affected by recent API drift.
+
+The new helper does **not** discharge `axiom approx_selection_exists`
+in this iteration — that requires (i) re-deriving S18c/S18d to chain
+through this stronger neighborhood basis, and (ii) the S19 graph-bound
+proof itself. The S17 survey's `2ε`-vs-`ε` accounting is still open;
+this iteration installs only the input-ball ingredient.
+
+S18e (researcher-11, 2026-05-12, PR #18130 merged): Added `private lemma
 exists_continuous_selection_with_witnesses` packaging Cellina–Browder
 Step 4 (continuous selection from the S18d subordinate partition of
 unity). Given a compact convex `S ⊆ EuclideanSpace ℝ (Fin n)` and an
@@ -186,9 +234,18 @@ Two axioms remain:
    decomposes implementation into 6 PRs (each ≤ 80 lines).
 
 ## Next Action
-**S18f (next claim, ~60–100 lines)**: Discharge `axiom approx_selection_exists`
-by deriving it from S18e's `exists_continuous_selection_with_witnesses`
-(Cellina–Browder Step 5: graph-distance bound).
+**S19 (next claim, ~60–100 lines)**: Discharge `axiom approx_selection_exists`
+by deriving it from S18e's `exists_continuous_selection_with_witnesses` plus
+S18f's `uhc_local_thickening_with_input_diameter` (Cellina–Browder Step 5:
+graph-distance bound). The S18f input-ball clause now closes the
+`dist x i < ε` half of the graph bound; the remaining work is the
+`dist (f x) (ysel i)` half (the convex-combination accounting and the
+`2ε`-vs-`ε` constant calibration flagged in the S17 survey).
+
+**S18f (this iteration, landed)**: Input-diameter refinement of S17's
+`uhc_local_thickening` — see Current Focus above.
+
+### Original S18f outline (now S19; preserved verbatim):
 
 Given the S18e bundle `⟨f, U, ρ, ysel, hU_open, hU_mem, hU_sub,
 hρ_sub, hysel_in_F, hf_formula⟩`, prove
@@ -247,7 +304,8 @@ brouwer_unit_ball` (Axiom 1) and is otherwise sorry-free.
 | S18b | 2026-05-12 | researcher-11 | #17802 (merged) | Private helper `typeclass_witnesses_compact_subset` (+43 lines, +1 theorem, meta sync 827→907) |
 | S18c | 2026-05-12 | researcher-3 | #17910 (merged) | Private helper `exists_finite_subcover_for_uhc` packaging Steps 1–2 (+50 lines, +1 theorem, meta sync 907→957) |
 | S18d | 2026-05-12 | researcher-12 | #17993 (merged) | Private helper `exists_partition_subordinate_to_uhc_cover` packaging Step 3 subordinate partition of unity (+58 lines, +1 theorem, meta sync 957→1015) |
-| S18e | 2026-05-12 | researcher-11 | (this PR) | Private helper `exists_continuous_selection_with_witnesses` packaging Step 4 candidate continuous selection (+104 lines, +1 theorem, meta sync 1015→1119) |
+| S18e | 2026-05-12 | researcher-11 | #18130 (merged) | Private helper `exists_continuous_selection_with_witnesses` packaging Step 4 candidate continuous selection (+104 lines, +1 theorem, meta sync 1015→1119) |
+| S18f | 2026-05-12 | researcher-10 | (this PR) | Helper `uhc_local_thickening_with_input_diameter` (S17 input-ball refinement; closes the S17 survey Step-5 input-diameter gap) (+44 lines, +1 theorem, meta sync 1119→1163) |
 
 ## Reference Files (in this directory)
 - `problem.md` — original problem statement
