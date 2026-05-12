@@ -1019,6 +1019,59 @@ private lemma sylow_two_set_eq_one_union_compl_cube_id
     sylow_two_set_diff_one_eq_compl_cube_id hcard hncard_compl P
   rw [← h_split, h_diff_eq]
 
+/-- **S21 ingredient 5 — Subsingleton step under conditional
+    cardinality hypothesis** (private, axiom-free, conditional).
+
+    Composes S20's `sylow_two_set_eq_one_union_compl_cube_id`
+    P-independent set-equality with `Sylow.ext + SetLike.coe_injective`
+    to derive `Subsingleton (Sylow 2 G)`:
+
+        Subsingleton (Sylow 2 G)
+
+    under the same conditional hypothesis
+    `Set.ncard ((Set.univ : Set G) \ {g | g^3 = 1}) = 3` that S20
+    requires. The hypothesis is the cardinality corollary of the S16
+    target `cube_id_card_eq_nine` (in flight via PRs #17586 + #17587),
+    since for `|G| = 12`: `Set.ncard univ = 12` and
+    `Set.ncard {g | g^3 = 1} = 9` give `Set.ncard (univ \ ...) = 3`
+    by `Set.ncard_diff` + `Set.ncard_univ`.
+
+    This lemma is ingredient 5 of the S10 element-counting closure
+    of `sylow_two_unique_when_n3_four`. With S21 in hand, the only
+    remaining work to close S10 is to discharge `hncard_compl` from
+    `hn3 : Nat.card (Sylow 3 G) = 4` via the (still in-flight) S16
+    cardinality lemma plus the elementary
+    `Set.ncard_diff` / `Set.ncard_univ` bridge.
+
+    **Proof skeleton**: take two Sylow 2-subgroups `P` and `P'`; apply
+    S20 to each to get
+    `(P : Set G) = ({1} : Set G) ∪ ((univ : Set G) \ {g | g^3 = 1})`
+    and the same for `P'`. The RHS is `P`-independent, so transitivity
+    gives `(P : Set G) = (P' : Set G)`. Then `SetLike.coe_injective`
+    lifts to `(P : Subgroup G) = (P' : Subgroup G)`, and `Sylow.ext`
+    lifts further to `P = P'`. -/
+private lemma sylow_two_subsingleton_of_compl_ncard
+    {G : Type*} [Group G] [Finite G]
+    [Fact (Nat.Prime 2)]
+    (hcard : Nat.card G = 12)
+    (hncard_compl :
+      Set.ncard ((Set.univ : Set G) \ {g : G | g ^ 3 = 1}) = 3) :
+    Subsingleton (Sylow 2 G) := by
+  refine ⟨fun P P' => ?_⟩
+  -- Both (P : Set G) and (P' : Set G) equal the same P-independent RHS.
+  have hP :
+      (P : Set G) =
+        ({1} : Set G) ∪ ((Set.univ : Set G) \ {g : G | g ^ 3 = 1}) :=
+    sylow_two_set_eq_one_union_compl_cube_id hcard hncard_compl P
+  have hP' :
+      (P' : Set G) =
+        ({1} : Set G) ∪ ((Set.univ : Set G) \ {g : G | g ^ 3 = 1}) :=
+    sylow_two_set_eq_one_union_compl_cube_id hcard hncard_compl P'
+  -- Transitivity at the Set level.
+  have hset : (P : Set G) = (P' : Set G) := hP.trans hP'.symm
+  -- Lift Set-equality to Subgroup-equality, then to Sylow-equality.
+  exact Sylow.ext (SetLike.coe_injective hset)
+
 /-- **S10 placeholder**: when `|G| = 12` has 4 Sylow 3-subgroups, the
     Sylow 2-subgroup is unique. Proof via element counting:
     `|{g : G | g^3 = 1}| = 1 + 4 · 2 = 9` (using pairwise trivial
