@@ -1,0 +1,85 @@
+{
+  "slug": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+  "title": "Bochner-valued generalization of intervalIntegral_swap",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall E\\ \\text{Banach (NormedAddCommGroup, NormedSpace }\\mathbb{R}\\text{ E, CompleteSpace E)},\\ \\forall f : \\mathbb{R} \\to \\mathbb{R} \\to E,\\ \\forall a, b, c, d \\in \\mathbb{R},\\ \\text{(measurability + integrability hypotheses)} \\Rightarrow \\int_c^d \\int_a^b f\\, dx\\, dy = \\int_a^b \\int_c^d f\\, dy\\, dx.",
+    "plain": "Does the parent gallery entry's intervalIntegral_swap (three real-valued versions: ordered, general, continuous) extend cleanly to Banach-space-valued integrands f : R x R -> E? The pool synopsis hints YES; this entry verifies that hint via a Mathlib API audit.",
+    "whyMatters": [
+      "Mathlib reusability: a Bochner-valued intervalIntegral_swap subsumes the parent's real-valued version and applies to vector-field line integrals, complex contour integrals, Banach-valued PDE/probability work.",
+      "If the parent proof script ports verbatim modulo one tactic substitution, this is a 'free' generalization that strengthens the eventual Mathlib contribution.",
+      "Discharges the hFubini hypothesis in vector-valued Green / Stokes variants in the gallery (greens-theorem-oq-02-oq-02, greens-theorem-oq-02-oq-04)."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent (greens-theorem-oq-01-oq-01-oq-02): intervalIntegral_swap_of_le, intervalIntegral_swap, intervalIntegral_swap_of_continuous all proved for f : R -> R -> R, 0 sorries, 0 axioms (verified status).",
+      "Mathlib's MeasureTheory.integral_integral_swap is stated Bochner-valued (any [NormedAddCommGroup E] [NormedSpace R E])."
+    ],
+    "open": [
+      "Whether the AEStronglyMeasurable vs Measurable hypothesis preference matters in practice for the Banach codomain (both formulations should close; AEStronglyMeasurable is the idiomatic Bochner choice).",
+      "Whether a Mathlib contribution should ship the Bochner version directly (real case = 1-line specialization) or both versions side-by-side."
+    ],
+    "goal": "Lift the parent's three real-valued intervalIntegral_swap theorems to Bochner-valued integrands f : R -> R -> E, with E a Banach space. Demonstrate the lift is 'free' modulo the one-tactic substitution linarith -> abel."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-11T00:00:00.000Z",
+    "iteration": 1,
+    "focus": "Mathlib API audit confirming the parent's proof script generalizes verbatim modulo linarith -> abel.",
+    "blockers": [],
+    "nextAction": "S2 SCAFFOLD: create proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean with the three Bochner-valued theorem statements (ordered case fully proved; general and continuous cases as : = by sorry) plus companion Aristotle file for routine helpers.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE 2026-05-11: Mathlib API audit complete. Every Mathlib lemma the parent invokes (integral_integral_swap, integral_of_le, integral_symm, integral_neg, restrict_mono, prod_mono, restrict_prod_eq_prod_restrict, ContinuousOn.integrableOn_compact) is already stated for Bochner-valued integrands. The only adjustment needed for the Bochner port is replacing four `linarith` invocations in the general-case sign analysis with `abel` (the underlying identity is additive-abelian-group, not order-theoretic). No Lean changes this iteration.",
+    "builtItems": [
+      "research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-03/problem.md (problem statement, decomposition, references)",
+      "research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-03/knowledge.md (Mathlib API audit table, linarith->abel rationale, S2 statement template)",
+      "research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-03/state.md (S1 session log, S2/S3/S4 plan)",
+      "src/data/research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-03.json (this file: gallery candidate entry)"
+    ],
+    "insights": [
+      "The Bochner generalization is 'free': every Mathlib lemma the parent invokes is already Bochner-valued. The codomain hypothesis [NormedAddCommGroup E] [NormedSpace R E] [CompleteSpace E] flows through unchanged.",
+      "The only ℝ-specific element of the parent's proof is four `linarith` invocations in the general-case 4-branch sign analysis. `linarith` does not act on a general additive group, but the underlying combinations (A = -B, B = C, C = -D ⊢ A = D) are pure additive-abelian-group identities — `abel` closes them directly.",
+      "The cleanest Mathlib-contribution path is to upstream the Bochner version directly; the real case becomes a one-line specialization. This is a stronger contribution than the real-only parent and consolidates the lemma's API surface.",
+      "The hypothesis `Measurable (fun p => f p.1 p.2)` may be borderline for general Banach E without second-countability; `AEStronglyMeasurable` is the more idiomatic Bochner choice. Both formulations should close on standard examples."
+    ],
+    "mathlibGaps": [
+      "intervalIntegral.swap (Bochner-valued) does not exist in Mathlib — neither the real version (parent finding) nor the Bochner version. Headline contribution candidate for Mathlib.MeasureTheory.Integral.IntervalIntegral.",
+      "intervalIntegral.swap_of_continuous (Bochner-valued) for hypothesis-light vector-valued continuous integrands; useful for vector-field calculus."
+    ],
+    "nextSteps": [
+      "S2 SCAFFOLD: create proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean (Bochner-valued statements, ordered case fully proved, general/continuous as sorry) plus Aristotle companion.",
+      "S3: port general 4-case proof with linarith -> abel substitution.",
+      "S4: continuous case + gallery entry (src/data/proofs/<slug>/) + Mathlib-contribution discussion in docstring."
+    ]
+  },
+  "tags": [
+    "analysis",
+    "measure-theory",
+    "fubini",
+    "interval-integral",
+    "bochner",
+    "banach-valued",
+    "green-theorem",
+    "mathlib-gap",
+    "research",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "greens-theorem",
+    "greens-theorem-oq-01",
+    "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-01-oq-01-oq-02",
+    "greens-theorem-oq-01-oq-01-oq-03"
+  ]
+}
