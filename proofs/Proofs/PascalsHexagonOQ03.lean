@@ -152,6 +152,35 @@ theorem hexRev_mem_hexagonalGroup : hexRev ∈ hexagonalGroup := by
   exact Subgroup.subset_closure (Set.mem_insert_of_mem _ rfl)
 
 -- ============================================================
+-- PART 2b: Dihedral Relations on `hexRot` and `hexRev` (S2)
+-- ============================================================
+-- The three relations below are the defining relations of `DihedralGroup 6`:
+--   r^6 = 1,    s^2 = 1,    s r s = r⁻¹.
+-- They are proved by concrete computation on `Equiv.Perm (Fin 6)`. The
+-- S3 plan uses them to construct an injective monoid homomorphism
+-- `DihedralGroup 6 →* Equiv.Perm (Fin 6)` whose image equals
+-- `hexagonalGroup`, yielding `Nat.card hexagonalGroup = 12`.
+
+/-- **Dihedral relation 1**: `hexRot` has order dividing 6. -/
+theorem hexRot_pow_six : hexRot ^ 6 = 1 := by
+  ext i
+  fin_cases i <;> decide
+
+/-- **Dihedral relation 2**: `hexRev` has order dividing 2 (is an involution).
+
+    Note: in `Equiv.Perm (Fin 6)`, `x ^ 2 = x * x` definitionally, so this
+    form is equivalent to `hexRev ^ 2 = 1`. -/
+theorem hexRev_mul_self : hexRev * hexRev = 1 := by
+  ext i
+  fin_cases i <;> decide
+
+/-- **Dihedral relation 3** (rotation conjugates to its inverse under reversal):
+    `hexRev * hexRot * hexRev = hexRot⁻¹`. -/
+theorem hexRev_hexRot_hexRev : hexRev * hexRot * hexRev = hexRot⁻¹ := by
+  ext i
+  fin_cases i <;> decide
+
+-- ============================================================
 -- PART 3: Hexagon Labelings as Sym(6) ⧸ D_6
 -- ============================================================
 
@@ -171,11 +200,17 @@ theorem card_sym6 : Fintype.card (Equiv.Perm (Fin 6)) = 720 := by
 
 /-- **OQ-03-OQ-01**: the dihedral subgroup `hexagonalGroup` has order 12.
 
-    Strategy (deferred): exhibit `hexagonalGroup` as the image of a
-    group homomorphism from `DihedralGroup 6` (which has order 12 by
-    `DihedralGroup.fintype` / `Nat.card_dihedralGroup`), and show this
-    homomorphism is injective by checking the dihedral relations
-    `hexRot^6 = 1`, `hexRev^2 = 1`, `hexRev * hexRot * hexRev = hexRot⁻¹`. -/
+    S3 plan: the three dihedral defining relations are now in hand
+    (`hexRot_pow_six`, `hexRev_mul_self`, `hexRev_hexRot_hexRev`).
+    The remaining work is to (i) define a homomorphism
+    `φ : DihedralGroup 6 →* Equiv.Perm (Fin 6)` by
+    `φ (r i) = hexRot ^ i.val`, `φ (sr i) = hexRev * hexRot ^ i.val`,
+    using the three relations for the `map_mul'` proof; (ii) show
+    `φ.range = hexagonalGroup`; (iii) show `φ` is injective (e.g.,
+    via `orderOf hexRot = 6`, leveraging `hexRot_pow_six` + that
+    `hexRot ^ k ≠ 1` for `1 ≤ k ≤ 5` by `native_decide`); then
+    `Nat.card hexagonalGroup = Nat.card (DihedralGroup 6) = 12` by
+    `DihedralGroup.nat_card`. -/
 theorem card_hexagonalGroup : Nat.card hexagonalGroup = 12 := by
   sorry
 
