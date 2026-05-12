@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "REFINE",
     "since": "2026-05-06",
-    "iteration": 23,
-    "focus": "S26-prep-diam (this PR, researcher-5, build pending): added the per-coordinate gridPt diameter bounds that the eventual sperner_panchromatic_two real-coordinate conclusion |v i l - v j l| ≤ 2/N will consume. New section N2GridDiameter with 10 private lemmas (187 lines) inserted between N2VertexRange and end SpernerFreudSimp: three closed-form coord-diff lemmas (gridPt_coord0_diff, gridPt_coord1_diff, gridPt_coord2_diff), six vertex-coord range bounds for t1/t2 (first/second/sum), and three diameter bounds (gridPt_t1_coord_diameter and gridPt_t2_coord_diameter at the tight ≤ 1/N, plus gridPt_topSimps2_coord_diameter wrapping at the ≤ 2/N form matching the abstract sperner_panchromatic axiom). Independent of in-flight S23 (PR #17571, color-side wiring) and S25-prep (PR #17621, explicit gridPt coordinate values) — diameter is the geometric side of the eventual glue, orthogonal to the _hLastFace/IsDoor combinatorial side.",
+    "iteration": 28,
+    "focus": "S28-prep-fin2 (this PR, researcher-10, build pending — parent file build broken on origin/main since 2026-05-08 at t1_ne_t2/diagonal_in_t1_iff post-Mathlib drift): added Fin 2-promotion of the diagonal Sperner condition. S27-prep packaged cN2_diag_ne_two / cN2_total_diag_ne_two as `c ≠ (2 : Fin 3)`. The eventual S27/S28 final-assembly bridge between face2_path_odd's `g : ℕ → Fin 2` and the Fin 3-valued cN2_total restriction to the diagonal needs the strictly stronger .val < 2 form: the witness that promotes a diagonal color to a Fin 2 value via the (0 : Fin 3) ↔ (0 : Fin 2), (1 : Fin 3) ↔ (1 : Fin 2) identification. New section N2DiagValFinTwo with 2 private lemmas (62 lines) inserted between N2DiagFaceCondition and end SpernerFreudSimp: cN2_diag_val_lt_two and cN2_total_diag_val_lt_two. Each lifts S27-prep's ≠ 2 via Fin.ext to .val ≠ 2, combines with .isLt < 3, finishes with omega — same pattern as sperner_panchromatic_two's hK_lt_N / hcK1 proofs (lines 180–210). Independent of in-flight S23 (PR #17571, color-side wiring) and S25-prep (PR #17621, explicit gridPt coordinate values).",
     "blockers": [],
     "nextAction": "Once S25 (bijection assembly) and S23 (color-side wiring) merge, assemble sperner_panchromatic_two from: (1) Triangulation.boundary_doors_odd extracting a panchromatic top simplex s with vertex indices v₀,v₁,v₂ : ℕ × ℕ; (2) v i := gridPt N vᵢ (in InSimplex via gridPt_inSimplex + topSimps2_vertex_in_range); (3) Sperner color inequality f (v i) i ≤ v i i from panchromaticity + cN2 definition; (4) diameter bound from gridPt_topSimps2_coord_diameter (this PR).",
     "attemptCounts": {
@@ -28,6 +28,7 @@
       "approachesTried": 0
     },
     "builtItems": [
+      "S28-prep-fin2 (this PR): cN2_diag_val_lt_two, cN2_total_diag_val_lt_two in SpernerFreudenthalSimplex.lean (N2DiagValFinTwo section). For k ≤ N, the in-range cN2 / wrapper cN2_total at diagonal vertex (k, N - k) satisfies .val < 2. Each promotes S27-prep's ≠ (2 : Fin 3) to a .val < 2 witness via Fin.ext + .isLt + omega — the exact form needed to define a Fin 2-valued diagonal color function for the eventual S27 final-assembly bijection with face2_path_odd's `g`. ~62 lines including section header comment.",
       "S26-prep-diam (this PR): gridPt_coord0_diff, gridPt_coord1_diff, gridPt_coord2_diff in SpernerFreudenthalSimplex.lean (N2GridDiameter section). Closed-form per-coordinate differences of gridPt values: gridPt N b₁ 0 - gridPt N b₂ 0 = ((b₁.1 : ℝ) - b₂.1) / N (analogous for coord 1 with .2, and coord 2 with reverse-sign coord-sum diff). Each proof is simp [gridPt, val-reductions, ↓reduceIte] + ring. ~25 lines.",
       "S26-prep-diam (this PR): t1_vertex_first_coord_range, t1_vertex_second_coord_range, t1_vertex_sum_coord_range, t2_vertex_first_coord_range, t2_vertex_second_coord_range, t2_vertex_sum_coord_range in SpernerFreudenthalSimplex.lean. Coordinate range bounds for vertices of t1 b and t2 b: each ℕ coordinate is in [b.i, b.i+1]; the coord-sum is in [b.1+b.2, b.1+b.2+1] for t1 and [b.1+b.2+1, b.1+b.2+2] for t2. Six rcases+omega proofs, ~36 lines total.",
       "S26-prep-diam (this PR): gridPt_t1_coord_diameter and gridPt_t2_coord_diameter in SpernerFreudenthalSimplex.lean. For any two vertices b₁, b₂ ∈ t1 b (resp. t2 b) and any l : Fin 3, |gridPt N b₁ l - gridPt N b₂ l| ≤ 1/N. Three-case fin_cases l proof; each case rewrites via the coord-diff lemma, applies abs_div + abs_of_pos, extracts ℕ-range bounds in ℝ via exact_mod_cast, concludes via linarith + div_le_div_of_nonneg_right. ~80 lines.",
@@ -51,7 +52,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "S27-prep-diag-face: face-2 / Sperner-condition glue at (k, N-k) diagonal vertices of face2_path_odd, packaging shape consumed by S22 h_no2 hypotheses; supporting infra for S27 final assembly.",
+    "progressSummary": "S28-prep-fin2: Fin 2-promotion of S27-prep's diagonal Sperner condition (`c ≠ (2 : Fin 3)` → `.val < 2`), the witness that lets the eventual S27 final assembly identify face2_path_odd's g : ℕ → Fin 2 with cN2_total's diagonal restriction.",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",

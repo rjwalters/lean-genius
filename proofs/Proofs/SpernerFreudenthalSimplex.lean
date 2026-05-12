@@ -3142,4 +3142,66 @@ private lemma cN2_total_diag_ne_two (k : ℕ) (hk : k ≤ N) :
 
 end N2DiagFaceCondition
 
+-- ============================================================
+-- (S28-prep) `Fin 2`-promotion of the diagonal Sperner condition.
+--
+-- S27-prep's `cN2_diag_ne_two` / `cN2_total_diag_ne_two` package
+-- the diagonal Sperner exclusion as `c ≠ (2 : Fin 3)`. The
+-- eventual S27/S28 final-assembly bridge between
+-- `face2_path_odd`'s `g : ℕ → Fin 2` and `cN2_total`'s
+-- `Fin 3`-valued diagonal restriction needs the strictly
+-- stronger `.val < 2` form: the witness that promotes a
+-- diagonal color to a `Fin 2` value via the
+-- `(0 : Fin 3) ↔ (0 : Fin 2)`, `(1 : Fin 3) ↔ (1 : Fin 2)`
+-- identification. This section packages that promotion, mirroring
+-- the `Fin.val_ne ⇒ val < bound` pattern already used in
+-- `sperner_panchromatic_two`'s `hK_lt_N` / `hcK1` proofs.
+--
+--   * `cN2_diag_val_lt_two` — `.val < 2` form for in-range `cN2`.
+--   * `cN2_total_diag_val_lt_two` — wrapper-level `.val < 2`.
+--
+-- Each proof reuses S27-prep's `≠ 2` lemma + the `.isLt` bound
+-- + `omega`. Independent of in-flight #17571 (S23 color wiring
+-- in `(b.1, b.2 + 1)`-endpoint form) and #17621 (S25-prep gridPt
+-- coordinate helpers): these consume the wrapper at non-diagonal
+-- form and the geometric simplex respectively. The promotion
+-- here lives entirely on the `face2_path_odd` `(k, N - k)`-
+-- parametrization side and unblocks the eventual `g k ≠ g (k+1)
+-- ↔ cN2_total (k, N-k) ≠ cN2_total (k+1, N-(k+1))` color-change
+-- correspondence S22's IsDoor bridge will consume.
+-- ============================================================
+
+section N2DiagValFinTwo
+
+variable (N : ℕ) (hN : 0 < N)
+variable (f : (Fin 3 → ℝ) → Fin 3 → ℝ)
+variable (hf_map : ∀ v, InSimplex v → InSimplex (f v))
+
+/-- Strengthening of `cN2_diag_ne_two` (S27-prep) to a `.val < 2`
+form: for `k ≤ N`, the in-range diagonal color's `.val` lies in
+`{0, 1}`. The pattern matches `sperner_panchromatic_two`'s
+`hK_lt_N`/`hcK1` proofs: combine `Fin.ext` to lift `.val ≠ n`
+from `c ≠ n`, then `.isLt` + `omega`. -/
+private lemma cN2_diag_val_lt_two (k : ℕ) (hk : k ≤ N) :
+    (cN2 N hN f hf_map (k, N - k) (by omega)).val < 2 := by
+  have hne : cN2 N hN f hf_map (k, N - k) (by omega) ≠ (2 : Fin 3) :=
+    cN2_diag_ne_two N hN f hf_map k hk
+  have hval_ne : (cN2 N hN f hf_map (k, N - k) (by omega)).val ≠ 2 :=
+    fun h => hne (Fin.ext h)
+  have hlt := (cN2 N hN f hf_map (k, N - k) (by omega)).isLt
+  omega
+
+/-- Wrapper-level companion of `cN2_diag_val_lt_two`: for `k ≤ N`,
+`cN2_total`'s `.val` at the diagonal vertex `(k, N - k)` lies in
+`{0, 1}`. Composes `cN2_total_diag_eq` (S27-prep) with
+`cN2_diag_val_lt_two`. This is the exact form consumed when
+defining the `Fin 2`-valued diagonal color function the S27
+final-assembly bijection with `face2_path_odd`'s `g` will use. -/
+private lemma cN2_total_diag_val_lt_two (k : ℕ) (hk : k ≤ N) :
+    (cN2_total N hN f hf_map (k, N - k)).val < 2 := by
+  rw [cN2_total_diag_eq N hN f hf_map k hk]
+  exact cN2_diag_val_lt_two N hN f hf_map k hk
+
+end N2DiagValFinTwo
+
 end SpernerFreudSimp
