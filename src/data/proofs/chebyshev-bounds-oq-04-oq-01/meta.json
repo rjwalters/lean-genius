@@ -2,7 +2,7 @@
     "id": "chebyshev-bounds-oq-04-oq-01",
     "title": "Toward an Elementary PNT (Selberg-Erdős): Λ₂ Framework",
     "slug": "chebyshev-bounds-oq-04-oq-01",
-    "description": "The OQ-04-OQ-01 follow-up question asks whether the axiom chebyshevPsi_asymptotic (ψ(n)/n → 1) of ChebyshevBoundsOQ04.lean can be discharged elementarily, in the spirit of Selberg's and Erdős's 1949 proofs of the Prime Number Theorem without complex analysis. This iteration scaffolds the Selberg-Erdős strategy: it defines the auxiliary function Λ₂(n) = Λ(n)·log n + (Λ ∗ Λ)(n), the partial sum S₂(N) = Σ_{n ≤ N} Λ₂(n), and proves routine non-negativity, base-value, and monotonicity lemmas. The Lean file is axiom-free and adds 0 sorries, but does not yet attempt the central Selberg symmetry formula — that is left as the next-iteration target with a documented roadmap.",
+    "description": "The OQ-04-OQ-01 follow-up question asks whether the axiom chebyshevPsi_asymptotic (ψ(n)/n → 1) of ChebyshevBoundsOQ04.lean can be discharged elementarily, in the spirit of Selberg's and Erdős's 1949 proofs of the Prime Number Theorem without complex analysis. This iteration scaffolds the Selberg-Erdős strategy: it defines the auxiliary function Λ₂(n) = Λ(n)·log n + (Λ ∗ Λ)(n), the partial sum S₂(N) = Σ_{n ≤ N} Λ₂(n), and proves routine non-negativity, base-value, and monotonicity lemmas. Iteration 2 (2026-05-11) extends the framework with the prime-value lemmas vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0) and selbergLambda2_prime (Λ₂(p) = (log p)²) — the file's documented next-iteration deliverables. The Lean file remains axiom-free and adds 0 sorries; the central Selberg symmetry formula remains the next major target.",
     "meta": {
         "author": "Lean Genius",
         "date": "2026-05-09",
@@ -25,8 +25,8 @@
         "dateAdded": "2026-05-09",
         "axiomCount": 0,
         "assumptions": "No new axioms. The parent file ChebyshevBoundsOQ04.lean contributes 2 axioms (chebyshevPsi_asymptotic, pnt_equivalence) inherited via import; this OQ-04-OQ-01 file adds none of its own. The ultimate goal is to discharge chebyshevPsi_asymptotic by proving Selberg's symmetry formula and the Erdős-Selberg combinatorial finishing argument.",
-        "lineCount": 206,
-        "theoremCount": 10,
+        "lineCount": 230,
+        "theoremCount": 12,
         "definitionCount": 3,
         "additionalFiles": [],
         "originalContributions": [
@@ -35,6 +35,7 @@
             "Routine base-value lemmas: vonMangoldtConv_zero (divisors 0 = ∅), vonMangoldtConv_one (only divisor is 1, Λ(1) = 0), selbergLambda2_zero, selbergLambda2_one — all axiom-free, sorry-free",
             "Non-negativity lemmas: vonMangoldtConv_nonneg, selbergLambda2_nonneg, selbergSum2_nonneg via Finset.sum_nonneg + vonMangoldt_nonneg + Real.log_nonneg (with case-split on n = 0)",
             "Partial-sum recurrence selbergSum2_succ and monotonicity selbergSum2_mono via Finset.sum_le_sum_of_subset_of_nonneg",
+            "Iteration 2 prime-value lemmas: vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0 via Nat.divisors_prime and Finset.sum_pair) and selbergLambda2_prime (Λ₂(p) = (log p)² via vonMangoldt_apply_prime) — both axiom-free, sorry-free, completing the documented next-iteration deliverables #1 and #2",
             "Documented roadmap for the elementary PNT proof: Selberg symmetry formula (S₂(N) = 2N log N + O(N)) → Tauberian oscillation control → Erdős combinatorial finishing → ψ(n)/n → 1",
             "Identification of three concrete Mathlib gaps: (i) no Selberg symmetry formula, (ii) no Möbius–log identity Σ_{d|n} μ(d) log²(n/d), (iii) no Λ₂-specific partial-summation framework"
         ]
@@ -58,8 +59,8 @@
         ]
     },
     "conclusion": {
-        "summary": "This iteration scaffolds Selberg's auxiliary function Λ₂(n) = Λ(n)·log n + (Λ ∗ Λ)(n) and the partial sum S₂(N) = Σ_{n ≤ N} Λ₂(n) in Lean 4, proving routine non-negativity and base-value lemmas. No new axioms are introduced; the parent's chebyshevPsi_asymptotic axiom remains the open target. The file documents the four-stage Selberg-Erdős roadmap (auxiliary function → symmetry formula → Tauberian step → Erdős finishing) and identifies three Mathlib gaps that future iterations will need to fill.",
-        "implications": "An elementary Lean formalization of PNT would be a milestone result: Mathlib currently has no PNT proof at all. If this scaffold can be extended to Selberg's symmetry formula (estimated ~1500 additional lines), the remaining Erdős combinatorial step is largely independent of the analytic side and could be formalized as a self-contained lemma family. Concurrent work in the gallery on chebyshev-pnt-bridge already provides ψ ↔ π equivalences that would chain with this work for the full PNT statement.",
+        "summary": "This iteration (2) extends the Selberg-Erdős scaffold with the prime-value lemmas vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0) and selbergLambda2_prime (Λ₂(p) = (log p)²). Combined with iteration 1's auxiliary function definition, partial sum, and non-negativity infrastructure, the file now establishes Λ₂'s value on primes — the simplest non-trivial computation and a prerequisite for the Möbius–log identity Λ₂ = μ ∗ log² that drives Selberg's symmetry formula. No new axioms are introduced; the parent's chebyshevPsi_asymptotic axiom remains the open target.",
+        "implications": "An elementary Lean formalization of PNT would be a milestone result: Mathlib currently has no PNT proof at all. With the prime-value lemmas now in place, the next analytic step is the Möbius–log identity, after which Selberg's symmetry formula (estimated ~1500 additional lines) and the Erdős combinatorial finishing argument complete the program. Concurrent work in the gallery on chebyshev-pnt-bridge already provides ψ ↔ π equivalences that would chain with this work for the full PNT statement.",
         "openQuestions": [
             "Prove the Möbius–log identity Σ_{d ∣ n} μ(d) · log²(n/d) = Λ₂(n) for n ≥ 1 — provable from the standard expansion Λ = μ ∗ log via Möbius inversion",
             "Prove Selberg's symmetry formula S₂(N) = 2N·log N + O(N) — the central analytic step of the elementary proof",
@@ -104,11 +105,18 @@
             "summary": "Proves selbergSum2_zero (= 0), selbergSum2_succ (recurrence), selbergSum2_nonneg (from Λ₂ ≥ 0), and selbergSum2_mono (Monotone selbergSum2) via Finset.sum_le_sum_of_subset_of_nonneg."
         },
         {
-            "id": "sec-future-work",
-            "title": "Future Work (docstring)",
+            "id": "sec-prime-values",
+            "title": "Prime values",
             "startLine": 179,
             "endLine": 204,
-            "summary": "Documents the next-iteration targets in increasing order of difficulty: vonMangoldtConv_prime, selbergLambda2_prime, the Möbius–log identity Λ₂ = μ ∗ log², Selberg's symmetry formula, and the Erdős-Selberg Tauberian step culminating in chebyshevPsi_asymptotic."
+            "summary": "Iteration 2 lemmas: vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0 via Nat.divisors_prime and Finset.sum_pair, using Λ(1) = 0 on both endpoints of the {1, p} divisor set) and selbergLambda2_prime (Λ₂(p) = (log p)² from the convolution lemma plus vonMangoldt_apply_prime). These close items #1 and #2 from Iteration 1's documented Future Work."
+        },
+        {
+            "id": "sec-future-work",
+            "title": "Future Work (docstring)",
+            "startLine": 206,
+            "endLine": 228,
+            "summary": "Documents the remaining roadmap after iteration 2: the Möbius–log identity Λ₂ = μ ∗ log² (provable from Λ = μ ∗ log), Selberg's symmetry formula S₂(N) = 2N log N + O(N), and the Erdős-Selberg Tauberian step culminating in chebyshevPsi_asymptotic."
         }
     ],
     "crossReferences": [

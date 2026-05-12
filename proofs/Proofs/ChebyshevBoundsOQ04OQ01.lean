@@ -176,31 +176,55 @@ theorem selbergSum2_mono : Monotone selbergSum2 := by
   · intro k _ _
     exact selbergLambda2_nonneg k
 
+/-! ### Prime values
+
+For prime `p`, `(Λ ∗ Λ)(p) = 0` (the only divisors of `p` are `1` and
+`p`, and each summand contains a factor `Λ(1) = 0`). Combined with
+`Λ(p) = log p`, this gives the clean closed form `Λ₂(p) = (log p)²`,
+the simplest non-trivial value of the auxiliary function. -/
+
+/-- `(Λ ∗ Λ)(p) = 0` for every prime `p`. The sum over `p.divisors =
+    {1, p}` is `Λ(1)·Λ(p) + Λ(p)·Λ(1) = 0`. -/
+theorem vonMangoldtConv_prime (p : ℕ) (hp : Nat.Prime p) :
+    vonMangoldtConv p = 0 := by
+  unfold vonMangoldtConv
+  rw [Nat.divisors_prime hp]
+  have hne : (1 : ℕ) ≠ p := hp.one_lt.ne
+  rw [Finset.sum_pair hne]
+  rw [Nat.div_one, Nat.div_self hp.pos, vonMangoldt_apply_one]
+  ring
+
+/-- `Λ₂(p) = (log p)²` for every prime `p`. The first summand contributes
+    `Λ(p)·log p = (log p)²` (by `vonMangoldt_apply_prime`) and the
+    convolution summand vanishes (by `vonMangoldtConv_prime`). -/
+theorem selbergLambda2_prime (p : ℕ) (hp : Nat.Prime p) :
+    selbergLambda2 p = (Real.log p) ^ 2 := by
+  unfold selbergLambda2
+  rw [vonMangoldtConv_prime p hp, vonMangoldt_apply_prime hp]
+  ring
+
 /-! ## Future Work
 
-The next-iteration deliverables are, in order of increasing difficulty:
+The remaining next-iteration deliverables are, in order of increasing
+difficulty:
 
-1. **`vonMangoldtConv_prime`**: `(Λ ∗ Λ)(p) = 0` for prime `p`. Routine
-   from `Nat.Prime.divisors`.
-
-2. **`selbergLambda2_prime`**: `Λ₂(p) = (log p)²`. Direct from (1) and
-   `vonMangoldt_apply_prime`.
-
-3. **`selbergLambda2_eq_moebius_log_sq`**: the identity
+1. **`selbergLambda2_eq_moebius_log_sq`**: the identity
         Λ₂(n) = Σ_{d ∣ n} μ(d) · (log (n/d))²    (n ≥ 1).
    Provable from the Mathlib `moebius_mul_coe_zeta` machinery once one
    knows Λ = μ ∗ log (the standard expansion).
 
-4. **`selbergSum2_eq_two_n_log_n_plus_O`**: Selberg's symmetry formula
+2. **`selbergSum2_eq_two_n_log_n_plus_O`**: Selberg's symmetry formula
         S₂(N) = 2 N · log N + O(N).
    This is the central identity. The error-term step requires summation
    by parts and quantitative control of Σ_{d ≤ x} μ(d) — but only its
    `O(x)` form, which is well within elementary bounds.
 
-5. **Tauberian step → PNT**: Erdős–Selberg's combinatorial finishing
+3. **Tauberian step → PNT**: Erdős–Selberg's combinatorial finishing
    argument, the longest part of the elementary proof.
 
-The total estimated formalization size is several thousand lines, but
-each step decomposes into Mathlib-friendly pieces. -/
+Iteration 2 (this commit) closes the easy prime-value lemmas
+`vonMangoldtConv_prime` and `selbergLambda2_prime`. The total estimated
+formalization size for the remaining roadmap is several thousand lines,
+but each step decomposes into Mathlib-friendly pieces. -/
 
 end ChebyshevBoundsOQ04OQ01
