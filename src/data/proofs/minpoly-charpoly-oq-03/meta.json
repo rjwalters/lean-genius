@@ -22,11 +22,11 @@
     "badge": "research",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 377,
+    "lineCount": 459,
     "assumptions": "0 axioms; 1 sorry guarding the proof of `rational_canonical_form_exists`. The sorry is the four-sub-OQ scaffold's main deliverable (S1 OBSERVE → S2+ ACT). The statement itself is unconditional. Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic`, `Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly`, `Mathlib.Algebra.Polynomial.Monic`, `Mathlib.Tactic`, `Proofs.MinpolyCharpoly`.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-12",
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 3,
     "originalContributions": [
       "InvariantFactorChain structure: bundles a list of monic polynomials with divisibility chain p_1 | p_2 | ... | p_k as a first-class invariant",
@@ -152,9 +152,9 @@
       "BigOperators"
     ],
     "namespace": "MinpolyCharpolyOQ03",
-    "lineCount": 377,
+    "lineCount": 459,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 11,
     "definitionCount": 3,
     "path": "Proofs/MinpolyCharpolyOQ03.lean",
     "sorries": 1
