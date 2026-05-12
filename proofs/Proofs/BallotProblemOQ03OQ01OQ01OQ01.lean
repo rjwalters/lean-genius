@@ -1068,6 +1068,68 @@ private lemma rotateSortedListSuffixSym_le {n c : ℕ} (M : Sym (Fin n) c)
     (rotateSortedListSuffixSym M k j).1 ≤ M.1 :=
   rotateSortedList_drop_le M k j
 
+/-! #### S36 — Degenerate cases of `rotateSortedListSuffixSym`
+
+Two `.1`-projection identities pinning the just-merged S35
+`rotateSortedListSuffixSym` (line 1055) at the two natural boundary
+values of the split index `j`:
+
+* `j = 0` (no drop): the suffix equals `M.1` (the full multiset).
+* `j = c` (drop all): the suffix is `0` (the empty multiset).
+
+These bracket the parameter range; the non-trivial `0 < j < c` cases
+are precisely where the 2B.4' refined-codomain bijection lands
+(`j = a + 1` with `1 ≤ a + 1 < a + b = c`). The boundary identities
+serve two roles downstream:
+
+1. **Simp normal forms.** At the boundaries the suffix collapses to
+   either `M.1` or `0`, both of which are canonical `Multiset (Fin n)`
+   constants. Tagging both lemmas `@[simp]` lets later proofs discharge
+   boundary cases automatically (e.g., the inverse map of 2B.4'
+   distinguishes "no descent" from "first-element descent" cases, which
+   reduce to `j = 0` / `j = c` respectively).
+
+2. **Sanity checks on the `Sym (Fin n) (c - j)` indexing.** With
+   `Nat.sub_zero` and `Nat.sub_self` definitionally reducing, the
+   `Sym` codomain becomes `Sym (Fin n) c` and `Sym (Fin n) 0`
+   respectively, and these lemmas confirm the value matches the
+   canonical inhabitants `⟨M.1, _⟩` and `⟨0, _⟩`.
+
+Both proofs are ≤ 4 lines. Neither changes the file's sorry count
+(still 2) or axiom count (still 0). Independent of the open PR #17680
+(`rotateSortedListPrefixSym` packaging, post-`_mod` anchor at line 949)
+— this S36 PR inserts at a different anchor point (post-S35 suffix-Sym
+at line 1069), so the two PRs land in either order without rebase
+conflict. -/
+
+/-- **`rotateSortedListSuffixSym` at `j = 0` is `M`** (`.1`-projection
+    form). The drop-zero suffix is the full rotation, whose underlying
+    multiset is `M.1` by `rotateSortedList_toMultiset` (S31). The
+    `Sym (Fin n) (c - 0)` codomain reduces to `Sym (Fin n) c`
+    definitionally, so the `.1` projection lands in the right type for
+    comparison with `M.1`. -/
+@[simp] private lemma rotateSortedListSuffixSym_zero_val {n c : ℕ}
+    (M : Sym (Fin n) c) (k : ℕ) :
+    (rotateSortedListSuffixSym M k 0).1 = M.1 := by
+  show ((rotateSortedList M k).drop 0 : Multiset (Fin n)) = M.1
+  rw [List.drop_zero]
+  exact rotateSortedList_toMultiset M k
+
+/-- **`rotateSortedListSuffixSym` at `j = c` is empty** (`.1`-projection
+    form). At the upper boundary, the drop discards every element of
+    the length-`c` rotation, leaving the empty multiset. Proof via
+    `Multiset.card_eq_zero` applied to S34's
+    `rotateSortedList_drop_card`: cardinality `c - c = 0` forces the
+    multiset itself to be `0`. The `Sym (Fin n) (c - c)` codomain
+    reduces to `Sym (Fin n) 0` definitionally. -/
+@[simp] private lemma rotateSortedListSuffixSym_self_val {n c : ℕ}
+    (M : Sym (Fin n) c) (k : ℕ) :
+    (rotateSortedListSuffixSym M k c).1 = (0 : Multiset (Fin n)) := by
+  apply Multiset.card_eq_zero.mp
+  show ((rotateSortedList M k).drop c : Multiset (Fin n)).card = 0
+  rw [rotateSortedList_drop_card]
+  omega
+
 /-- **Total multiset of a Sym pair (as a `Sym`).**
 
     The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in

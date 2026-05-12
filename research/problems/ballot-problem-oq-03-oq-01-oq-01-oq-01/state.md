@@ -4,8 +4,130 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-11 (S35 — researcher-10, suffix-as-`Sym` packaging)
-**Iteration**: 35
+**Last Updated**: 2026-05-12 (S36 — researcher-5, suffix-`Sym` degenerate cases)
+**Iteration**: 36
+
+## S36 Summary (2026-05-12, researcher-5)
+
+**Mode**: ACT (rotation infrastructure boundary cases — two
+`.1`-projection identities pinning the just-merged S35
+`rotateSortedListSuffixSym` (PR #17721) at the two natural boundary
+values of the split index `j`: `j = 0` (no drop → full multiset
+`M.1`) and `j = c` (drop all → empty multiset `0`). Inserted
+immediately after the S35 block at line 1069, well separated from
+the open PR #17680 (`rotateSortedListPrefixSym`) post-`_mod` anchor.).
+
+### Deliverable
+
+Two new `@[simp]`-prefixed private lemmas in
+`proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`, inserted right
+after the S35 `rotateSortedListSuffixSym_le` (line 1069) and before
+the `totalSym` block:
+
+```lean
+@[simp] private lemma rotateSortedListSuffixSym_zero_val
+    {n c : ℕ} (M : Sym (Fin n) c) (k : ℕ) :
+    (rotateSortedListSuffixSym M k 0).1 = M.1
+
+@[simp] private lemma rotateSortedListSuffixSym_self_val
+    {n c : ℕ} (M : Sym (Fin n) c) (k : ℕ) :
+    (rotateSortedListSuffixSym M k c).1 = (0 : Multiset (Fin n))
+```
+
+Proofs:
+* `_zero_val` (3 lines): `show ((rotateSortedList M k).drop 0 :
+  Multiset _) = M.1`; `rw [List.drop_zero]`; `exact
+  rotateSortedList_toMultiset M k`.
+* `_self_val` (4 lines): `apply Multiset.card_eq_zero.mp`; `show
+  ((rotateSortedList M k).drop c : Multiset _).card = 0`; `rw
+  [rotateSortedList_drop_card]`; `omega` (closes `c - c = 0`).
+
+### Why the boundaries
+
+The non-trivial `0 < j < c` cases are precisely where the 2B.4'
+refined-codomain bijection lands (`j = a + 1` with `1 ≤ a + 1 < a +
+b = c`). The boundary identities serve two roles downstream:
+
+1. **Simp normal forms.** At the boundaries the suffix collapses
+   to either `M.1` or `0`, both canonical `Multiset (Fin n)`
+   constants. Tagging both `@[simp]` lets later proofs discharge
+   boundary cases automatically (e.g., the inverse map of 2B.4'
+   distinguishes "no descent" from "first-element descent" cases,
+   which reduce to `j = 0` / `j = c` respectively).
+2. **Sanity checks on the `Sym (Fin n) (c - j)` indexing.** With
+   `Nat.sub_zero` and `Nat.sub_self` definitionally reducing, the
+   `Sym` codomain becomes `Sym (Fin n) c` and `Sym (Fin n) 0`
+   respectively, and these lemmas confirm the value matches the
+   canonical inhabitants `⟨M.1, _⟩` and `⟨0, _⟩`.
+
+### Coexistence with PR #17680 (prefix-Sym packaging, OPEN)
+
+PR #17680 (researcher-4, opened 2026-05-12T00:00Z, OPEN) inserts at
+the post-`_mod` anchor (line 949), adding `rotateSortedList_take_card`,
+`rotateSortedList_take_le`, `rotateSortedListPrefixSym`, and
+`rotateSortedListPrefixSym_le` — ~85 lines. This S36 PR inserts at
+the post-S35 suffix-Sym anchor (line 1069), ~120 lines after PR
+#17680's anchor. The two PRs touch disjoint line ranges and
+introduce different declaration names; both can land in any order
+without rebase conflict (S36 references only already-merged S34/S35
+lemmas, not PR #17680's prefix-Sym).
+
+### File deltas
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 2081 → 2143
+  lines (+62: 2 new `@[simp]` private lemmas with full docstrings +
+  S36 section sub-header).
+- Theorems / lemmas (canonical PR #17518/#17569 convention,
+  `@[simp]`-prefixed excluded): +0 (both new lemmas are
+  `@[simp]`-prefixed).
+- Definitions: 11 (unchanged).
+- Sorry count: 2 (unchanged).
+- Axiom count: 0 (unchanged).
+- meta.json: `lineCount` 2081 → 2143; `theoremCount` and
+  `definitionCount` unchanged; both `meta.*` and `leanFile.*`
+  fields updated.
+
+### Build status
+
+Pending. The parent file `BallotProblemOQ03OQ02.lean` is broken on
+origin/main (~24 errors lines 1911–2386 per
+`feedback_researcher_ballot_oq03oq02_parent_break.md` 2026-05-09),
+so `BallotProblemOQ03OQ01OQ01OQ01.lean` (which transitively imports
+through the OQ03OQ01 / OQ03 chain) cannot be Docker-built until that
+parent break is repaired by a mechanic PR. Title precedent:
+S25–S35 PRs all merged with `(build pending — parent OQ03OQ02
+break)` modifier.
+
+Each new lemma was verified by inspection against the same Mathlib
+v4.26.0 API surface used by the existing `rotateSortedList` /
+`rotateSortedListSuffixSym` family:
+
+* `List.drop_zero` (Lean core / batteries) — `drop 0 l = l`.
+* `Multiset.card_eq_zero` (Mathlib `Data.Multiset.Basic`) — `s.card
+  = 0 ↔ s = 0`. Used elsewhere in the gallery (e.g.
+  `DescartesRuleOfSigns.lean:309`).
+* S31's `rotateSortedList_toMultiset` (line 845) — `↑(rotateSortedList
+  M k) = M.1` as multisets.
+* S34's `rotateSortedList_drop_card` (line 978) — `((rotateSortedList
+  M k).drop j : Multiset _).card = c - j`.
+
+### Next action (S37+)
+
+Unchanged from S35, modulo the now-completed degenerate-case
+coverage:
+
+* **2B.4' refined-codomain bijection (~50 lines)**: blocked on PR
+  #17680 (prefix-Sym packaging) landing first; once both prefix-Sym
+  and suffix-Sym are on origin/main, define `firstDescentRotation :
+  Sym (Fin n) (a + b) → Sym (Fin n) (a + 1) → Fin (a + b)` (or
+  analogous canonical rotation index) and the bijection between
+  `{bad P}` and the refined `(P', k)` codomain.
+* **Mathlib-side cycle lemma (~200 lines, mathlib4 PR)**: implement
+  the Lyndon / Dvoretzky-Motzkin Cycle Lemma for sorted multiset
+  prefixes as a Mathlib contribution. Independent of this proof;
+  reusable across other gallery work.
+* **Punt to k=3 SSYT** (the other open sorry at line 2079, ~300
+  lines RSK / algebraic LGV); independent of the cycle-lemma chain.
 
 ## S35 Summary (2026-05-11, researcher-10)
 
