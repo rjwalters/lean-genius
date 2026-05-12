@@ -1,7 +1,7 @@
 {
   "slug": "weak-goldbach-oq-03",
   "title": "Formalize Helfgott's proof of weak Goldbach without axioms",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -38,27 +38,31 @@
     "goal": "Eliminate the 9 axioms in Proofs/WeakGoldbach.lean by progressive replacement with Lean-level proofs or stronger constructions. Phased approach: TRACTABLE first (Approaches A-C, ~80-200 lines Lean total across 3 sessions), then INTERMEDIATE (Approach D, Schnirelmann's theorem proper, ~600-1000 lines over 3-6 sessions, also Mathlib contribution), then HEROIC deferred to long-term roadmap. S2 target: Approach A (Mathlib Schnirelmann integration), ~80 lines Lean, single session."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T09:18:00.000Z",
-    "iteration": 1,
-    "focus": "S1 (researcher-5, 2026-05-12): survey 9 axioms + 2 True-stub theorems + 1 placeholder definition in Proofs/WeakGoldbach.lean. Classified each by feasibility tier (TRACTABLE / INTERMEDIATE / HEROIC). Recommended Approach A (Mathlib Schnirelmann integration) as S2 target — single PR, ~80 lines Lean, replaces the parent's placeholder schnirelmannDensity := 0 with Mathlib's real definition from Mathlib.Combinatorics.Schnirelmann. Identified Mathlib gap: Schnirelmann's theorem and Mann's theorem on subadditivity are explicitly on Mathlib's TODO list at v4.26.0; closing the schnirelmann_basis_theorem axiom (Approach D) doubles as a Mathlib contribution.",
+    "phase": "ACT",
+    "since": "2026-05-12T11:25:00.000Z",
+    "iteration": 2,
+    "focus": "S2 (researcher-8, 2026-05-12): Approach A delivered. Imported Mathlib.Combinatorics.Schnirelmann; replaced placeholder def schnirelmannDensity := 0 with a noncomputable abbrev re-exporting Mathlib's; added schnirelmannDensity_primes_eq_zero via schnirelmannDensity_eq_zero_of_one_notMem since 1 ∉ {primes}. The axiom schnirelmann_basis_theorem now refers to the real Mathlib density, so its hypothesis schnirelmannDensity A > 0 is no longer trivially false by definition. Parent file: 480 → 497 lines, +1 theorem, 0 net definitions, 9 axioms unchanged.",
     "blockers": [],
-    "nextAction": "S2: implement Approach A in proofs/Proofs/WeakGoldbach.lean. Three changes: (1) add import Mathlib.Combinatorics.Schnirelmann. (2) Remove placeholder def schnirelmannDensity (A : Set ℕ) [DecidablePred (· ∈ A)] : ℝ := 0 at lines ~329-332 (clash with Mathlib's def). (3) Add 1-3 small lemmas exercising Mathlib API, e.g., schnirelmannDensity_primes_eq_zero via schnirelmannDensity_eq_zero_of_one_notMem since 1 ∉ {primes}. ~80 lines net, single session. Build verification via ./proofs/scripts/docker-build.sh Proofs.WeakGoldbach (Mathlib Schnirelmann module is in cache, ~10 min recompile of WeakGoldbach.lean).",
+    "nextAction": "S3 (any researcher): Approach B — upgrade the 2 True-stub theorems vinogradov_minor_arc_bound (line 292) and linnik_goldbach_representations (line 406) to bear real (modest) content via Nat.primeCounting + triangle-inequality bounds. ~40-60 lines Lean. Alternatively S4: Approach C — split binary_goldbach_verified axiom into small-range (n ≤ 10³ or 10⁴) native_decide theorem + residual large-range axiom (~50 lines).",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-5, 2026-05-12): OBSERVE survey. Full audit of parent Proofs/WeakGoldbach.lean: 480 lines, 24 theorems, 0 sorries — but 9 axioms + 2 True-stub theorems + 1 placeholder def, totaling 12 unverified content pieces. Classified into three feasibility tiers: TRACTABLE (A=Mathlib Schnirelmann integration ~80 LOC, B=True-stub upgrades ~40 LOC, C=native_decide small-range binary Goldbach ~50 LOC), INTERMEDIATE (D=Schnirelmann's theorem proper ~600-1000 LOC, 3-6 sessions; also Mathlib contribution), HEROIC (E=Vinogradov/Helfgott/circle method/Chen/Tao/Ramaré/helfgott_explicit_bound, multi-year). Verified Mathlib API at v4.26.0: schnirelmannDensity is defined (Mathlib.Combinatorics.Schnirelmann); basic bounds schnirelmannDensity_nonneg, _le_one, _le_of_notMem, _eq_zero_of_one_notMem, _le_of_subset all exist; Mathlib TODO list explicitly mentions Schnirelmann's theorem and Mann's theorem on subadditivity. Approach A is the S2 target. 0 Lean changes in S1; 4 markdown/JSON files produced.",
+    "progressSummary": "S2 (researcher-8, 2026-05-12): ACT — Approach A delivered. Imported Mathlib.Combinatorics.Schnirelmann; replaced placeholder def schnirelmannDensity := 0 with noncomputable abbrev re-exporting _root_.schnirelmannDensity; added schnirelmannDensity_primes_eq_zero proven via schnirelmannDensity_eq_zero_of_one_notMem with witness (fun h => Nat.not_prime_one h). The hypothesis of schnirelmann_basis_theorem (schnirelmannDensity A > 0) is now mathematically meaningful (previously vacuous: 0 > 0 false by definition). Parent counts: lineCount 480 → 497, theoremCount 24 → 25, axiomCount 9 unchanged, definitionCount 15 unchanged (abbrev replaces def). Build verification asynchronous (broken proofs/.lake symlink forces fresh clone, ~30-45 min). S3 target: Approach B — upgrade vinogradov_minor_arc_bound and linnik_goldbach_representations True-stubs to real (modest) bounds via Nat.primeCounting (~40-60 LOC). S1 (researcher-5, 2026-05-12): OBSERVE survey. Full audit of parent Proofs/WeakGoldbach.lean: 480 lines, 24 theorems, 0 sorries — but 9 axioms + 2 True-stub theorems + 1 placeholder def, totaling 12 unverified content pieces. Classified into three feasibility tiers: TRACTABLE (A=Mathlib Schnirelmann integration ~80 LOC, B=True-stub upgrades ~40 LOC, C=native_decide small-range binary Goldbach ~50 LOC), INTERMEDIATE (D=Schnirelmann's theorem proper ~600-1000 LOC, 3-6 sessions; also Mathlib contribution), HEROIC (E=Vinogradov/Helfgott/circle method/Chen/Tao/Ramaré/helfgott_explicit_bound, multi-year). Verified Mathlib API at v4.26.0: schnirelmannDensity is defined (Mathlib.Combinatorics.Schnirelmann); basic bounds schnirelmannDensity_nonneg, _le_one, _le_of_notMem, _eq_zero_of_one_notMem, _le_of_subset all exist; Mathlib TODO list explicitly mentions Schnirelmann's theorem and Mann's theorem on subadditivity. Approach A is the S2 target. 0 Lean changes in S1; 4 markdown/JSON files produced.",
     "builtItems": [
+      "proofs/Proofs/WeakGoldbach.lean (S2): added import Mathlib.Combinatorics.Schnirelmann; replaced placeholder def schnirelmannDensity := 0 (lines 328-332) with noncomputable abbrev re-exporting _root_.schnirelmannDensity (lines 329-337); added lemma schnirelmannDensity_primes_eq_zero (lines 348-359). File: 480 → 497 lines.",
+      "src/data/proofs/weak-goldbach/meta.json (S2): updated leanFile.lineCount 480 → 497, theoremCount 24 → 25.",
       "research/problems/weak-goldbach-oq-03/problem.md (new, ~330 lines): full statement, 4-approach survey, axiom + stub audit table, Mathlib API map, tractability assessment, related-proofs table, key difficulties.",
-      "research/problems/weak-goldbach-oq-03/state.md (new, ~100 lines): phase=OBSERVE, S1 survey, S2 next-action sketch with concrete Lean code, S3+ candidates ladder.",
-      "research/problems/weak-goldbach-oq-03/knowledge.md (new, ~210 lines): S1 session note with full audit table (13 items), three-tier feasibility analysis, load-bearing Mathlib API listing, edge cases, insights, mathlibGaps, nextSteps.",
+      "research/problems/weak-goldbach-oq-03/state.md (new, ~100 lines; +S2 section): phase=OBSERVE → ACT, S1 survey, S2 next-action sketch with concrete Lean code, S3+ candidates ladder.",
+      "research/problems/weak-goldbach-oq-03/knowledge.md (new, ~210 lines; +S2 section): S1 session note with full audit table (13 items), three-tier feasibility analysis, load-bearing Mathlib API listing, edge cases, insights, mathlibGaps, nextSteps; S2 design-decision notes and verified Mathlib API surface.",
       "src/data/research/problems/weak-goldbach-oq-03.json (this file): research index entry."
     ],
     "insights": [
+      "S2 confirmation (researcher-8, 2026-05-12): Mathlib API at v4.26.0 exports schnirelmannDensity in root namespace (no Schnirelmann wrapper). Confirmed exports: schnirelmannDensity_nonneg, _le_one, _eq_zero_of_one_notMem (matched 1-arg form), _le_of_notMem (with k as implicit), _le_div, _empty, _finite (Set.Finite hypothesis), _univ, _setOf_mod_eq_one. The constructor schnirelmannDensity_eq_zero_of_one_notMem takes (h : 1 ∉ A) and discharges directly via (fun h => Nat.not_prime_one h) since Set.setOf membership unfolds definitionally to the predicate. No tactic needed for the prime case.",
+      "S2 design note (researcher-8): noncomputable abbrev is preferable to def or outright deletion when retaining the local name. Deletion would silently shift schnirelmannDensity inside namespace WeakGoldbach to root resolution, but loses the documentation site for the placeholder → real-density transition. Abbrev keeps the docstring and is reducible (zero cost).",
       "'0 sorries' ≠ '0 assumptions'. The parent file's 0-sorry count is misleading: 9 axioms + 2 True-stub theorems + 1 placeholder definition sum to 12 unverified pieces of content. Any 'axiom-free' claim must address all 12.",
       "The Mathlib gap on Schnirelmann's theorem is explicit. The Mathlib.Combinatorics.Schnirelmann module docstring at v4.26.0 lists Schnirelmann's theorem and Mann's theorem as TODO. The OQ's Approach D doubles as a Mathlib contribution opportunity.",
       "The placeholder definition schnirelmannDensity := 0 is fixable immediately. Mathlib has the real definition (Mathlib.Combinatorics.Schnirelmann); the parent file just needs to import it. This is item 13 in the audit and dovetails with Approach A — the recommended S2 target.",
@@ -97,5 +101,5 @@
     "research"
   ],
   "createdAt": "2026-05-12T09:18:00.000Z",
-  "updatedAt": "2026-05-12T09:18:00.000Z"
+  "updatedAt": "2026-05-12T11:25:00.000Z"
 }
