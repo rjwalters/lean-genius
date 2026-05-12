@@ -90,6 +90,7 @@ import Proofs.AngleTrisectionOQ05
 import Proofs.AngleTrisectionOQ05OQ01
 import Proofs.AngleTrisectionOQ05OQ02
 import Proofs.AngleTrisectionOQ05OQ03
+import Proofs.AngleTrisectionOQ05OQ04
 import Proofs.ArchimedesMethodOfExhaustion
 import Proofs.AreaFromCircumferenceIntegral
 import Proofs.AreaOfCircle

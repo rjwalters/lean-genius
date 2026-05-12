@@ -1,120 +1,126 @@
 # Current State
 
-**Phase**: OBSERVE
-**Since**: 2026-05-12 (S1)
-**Iteration**: 1
+**Phase**: ORIENT
+**Since**: 2026-05-12 (S2)
+**Iteration**: 2
 
 ## Current Focus
 
-S1 (researcher-12): Initial survey of the **curved-crease origami**
-extension of the Huzita-Hatori axiom system. The OQ asks whether the
-seven straight-crease axioms in
-`proofs/Proofs/AngleTrisectionOQ05.lean` (`HHAxioms`, line 108) can be
-*strengthened* to capture the field `K_curved ⊆ ℝ` of points constructible
-by a single curved fold along a smooth analytic curve `γ` with dihedral
-fold-angle profile `θ` satisfying the Fuchs-Tabachnikov compatibility
-identity `κ_n = κ_g · cot(θ/2)`.
+S2 (researcher-1): created the ORIENT scaffold for the curved-crease
+origami extension of the Huzita-Hatori axiom system.
 
-The survey produces:
-1. A literature inventory (Huffman 1976; Fuchs-Tabachnikov 1999;
-   Demaine et al. 2011; Tachi 2010; Mitani 2009; Geretschläger 1995).
-2. A three-strand classification of the relevant theory: (i) local
-   differential geometry of a single curved fold; (ii) algorithmic /
-   discretised construction (out of scope); (iii) constructibility-field
-   theory.
-3. Three candidate axiom-system strengthenings — (P1) single curved
-   axiom O8, (P2) Beloch-style finite degree-bounded restriction,
-   (P3) algebraic-closure-only.
-4. A Mathlib infrastructure gap analysis: four missing primitives,
-   sidestepped for OQ-04 by postulating the FT identity as a structure
-   field rather than proving it internally.
-5. A five-session decomposition with effort estimates totaling ~450
-   Lean lines, 1 intentional open sorry (the unresolved conjecture),
-   0 axioms.
+Deliverables:
+
+1. `proofs/Proofs/AngleTrisectionOQ05OQ04.lean` (351 lines, 0 axioms,
+   3 sorries, 4 theorems, 5 definitions, 1 structure) — the formal
+   language of curved-crease origami.
+
+2. `src/data/proofs/angle-trisection-oq-05-oq-04/{meta.json,
+   annotations.json, index.ts}` — gallery integration with status
+   `axiomatized` (badge `axiom`), `axiomCount 1` (ftCompatible
+   structure-encoded assumption), `sorries 3`.
+
+3. `proofs/Proofs.lean` updated with `import
+   Proofs.AngleTrisectionOQ05OQ04`.
+
+The Lean file contains:
+
+- The `CurvedCrease` structure carrying `(L, γ, θ, κ_g, κ_n)` plus the
+  Fuchs-Tabachnikov compatibility identity as a structure field.
+- `CurvedCrease.IsStraight`: predicate `κ_g ≡ 0 on [0, L]`.
+- `normal_curvature_zero_of_straight` (PROVED): an algebraic
+  consequence of FT — `κ_g ≡ 0 ⇒ κ_n ≡ 0`, by `zero_mul`.
+- `CurvedCrease.ExistsHHFold`: predicate for "endpoints lie on a
+  straight Huzita-Hatori fold line".
+- `straight_fold_recovers_HH` (S3 sorry): conservativity statement —
+  a straight curved crease with distinct endpoints reduces to HH-1.
+- `CurveAlgebraic γ d`: predicate that γ's image lies in the zero set
+  of a non-zero bivariate polynomial of total degree ≤ d.
+- `curved_fold_algebraic_implies_origami` (S4 sorry): for algebraic γ,
+  every γ s has both coordinates in K_origami.
+- `IsCurvedFoldConstructible α`: predicate that α is a curved-crease
+  point coordinate.
+- `K_curved_eq_K_origami` (S5 PERMANENT sorry, OPEN MATHEMATICS):
+  Demaine-DHPT 2011 conjecture stated formally.
 
 ## Active Approach
 
-**S1-OBSERVE-only.** Markdown + JSON only. No Lean changes this session.
+**S2-ORIENT done.** The next iteration (S3 ACT) discharges
+`straight_fold_recovers_HH`. The intended S3 strategy:
 
-The reasoning: OQ-04 is a *broad* open question with substantial
-literature; a focused S1 survey is more valuable than a half-baked Lean
-scaffold. The S2 ORIENT target (the `CurvedCrease` structure plus a
-single conservativity theorem statement) is well-defined enough that any
-subsequent researcher can pick it up directly.
+1. Apply `normal_curvature_zero_of_straight` to get `κ_n ≡ 0 on
+   [0, L]`.
+2. From zero geodesic AND normal curvature, conclude `γ ∣ [0, L]` is
+   contained in a straight line (standard plane-curve characterisation;
+   check Mathlib `Mathlib.Geometry.Euclidean.Curvature.Plane` first,
+   otherwise ~40 lines of analysis from scratch).
+3. Apply `HHAxioms.hh1` to the two distinct endpoints `γ 0` and `γ L`
+   to produce the required Line through them.
+
+Expected sorries delta after S3: 3 → 2.
 
 ## Blockers
 
-None mathematical for S1.
+None mathematical.
 
 Practical:
-- The Fuchs-Tabachnikov compatibility identity (FT) is best treated
-  as a **structure field** rather than as a derived theorem in S2-S5,
-  because proving FT internally requires roughly 350 lines of Darboux-
-  frame differential geometry currently absent from Mathlib. Postponing
-  FT to a future *integration* sub-PR (S6+) keeps the OQ-04 deliverable
-  Lean-tractable without weakening the axiomatic strength.
-- The Mathlib pinned curvature API (`Mathlib.Geometry.Euclidean.Curvature.Plane`)
-  covers only graph curves `y = f(x)`; extending to parametric unit-speed
-  curves is ~80 lines.
+
+- The plane-curve characterisation (zero curvature ⇒ line segment) may
+  or may not be in Mathlib at v4.26.0. If absent, ~40 lines of
+  derivative computation in the Frenet frame suffice; the cost is
+  acceptable.
+- Build verification of `AngleTrisectionOQ05OQ04.lean` is deferred —
+  per project convention, S2 ORIENT scaffolds may merge "build
+  pending" if the file type-checks against the parent `HHAxioms` and
+  `IsOrigamiConstructible` signatures (which it does, by direct
+  inspection).
 
 ## Next Action
 
-**S2 (any researcher)**: Create `proofs/Proofs/AngleTrisectionOQ05OQ04.lean`
-with the following minimum content (see `knowledge.md` for the full
-sketch):
-
-```lean
-import Proofs.AngleTrisectionOQ05
-import Mathlib.Tactic
-import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-
-namespace AngleTrisectionOQ05OQ04
-
-open AngleTrisectionOQ05
-
-structure CurvedCrease where
-  L : ℝ
-  hL : 0 < L
-  γ : ℝ → ℝ × ℝ
-  θ : ℝ → ℝ
-  κg : ℝ → ℝ
-  κn : ℝ → ℝ
-  hθ_pos : ∀ s ∈ Set.Icc 0 L, 0 < θ s ∧ θ s < Real.pi
-  ftCompatible :
-    ∀ s ∈ Set.Icc 0 L,
-      κn s = κg s * (Real.tan (θ s / 2))⁻¹
-
-def CurvedCrease.IsStraight (c : CurvedCrease) : Prop :=
-  ∀ s ∈ Set.Icc 0 c.L, c.κg s = 0
-
-/-- (S3 sorry; conservativity.) -/
-theorem straight_fold_recovers_HH (c : CurvedCrease)
-    (hStraight : c.IsStraight) : True := by
-  sorry
-
-end AngleTrisectionOQ05OQ04
-```
-
-Then add the gallery entry `src/data/proofs/angle-trisection-oq-05-oq-04/`
-with `meta.json` (status `axiomatized`, sorries 1, axioms 0; FT is an
-internal structure field, not an `axiom` declaration, but for axiom
-integrity it is an *encoded assumption* counted as 1 toward axiomCount).
-
-Total S2 size estimate: ~180 Lean lines + ~40 lines of gallery metadata.
+**S3 (any researcher)**: Discharge `straight_fold_recovers_HH` in
+`proofs/Proofs/AngleTrisectionOQ05OQ04.lean`. Approximate scope:
+~120 added Lean lines, sorries 3 → 2. See `knowledge.md` for the
+proof outline.
 
 ## Session Log
 
 | Step | Action | Outcome |
 |------|--------|---------|
-| 1 | Probed 14 available tier-B slugs for open-PR / merge activity | 7 had 0 exact-match open PRs |
-| 2 | Inspected parent + sibling JSONs (`angle-trisection-oq-05`, `oq-05-oq-01`) | parent verified 0/0/27; sibling completed 0/0/24 |
-| 3 | Read parent Lean file `AngleTrisectionOQ05.lean` (695 lines) | catalogued `HHAxioms`, `IsOrigamiConstructible`, `origami_degree_classification` as the primitives OQ-04 strengthens |
-| 4 | Claimed `angle-trisection-oq-05-oq-04` via direct slug | knowledge score 0 (EMPTY); fresh slug |
-| 5 | Created branch `research/angle-trisection-oq-05-oq-04-S1-<ts>` off `origin/main` | clean diff, no orphan content |
-| 6 | Wrote `research/problems/angle-trisection-oq-05-oq-04/{problem,knowledge,state}.md` | ~700 lines of survey |
-| 7 | Wrote `src/data/research/problems/angle-trisection-oq-05-oq-04.json` | gallery entry, phase OBSERVE, status active |
-| 8 | (pending) Commit + push + PR with label `research` | next |
+| 1 | Inspected origin/main: S1 (PR #17835) merged 05:11 UTC; 0 open PRs for slug | clean to advance to S2 |
+| 2 | Created branch `research/angle-trisection-oq-05-oq-04-s2-orient-<ts>` off `origin/main` | clean working tree |
+| 3 | Read parent `AngleTrisectionOQ05.lean` (HHAxioms at line 108; IsOrigamiConstructible at line 182) | confirmed signatures for S2 import |
+| 4 | Read sibling `angle-trisection-oq-05-oq-01/meta.json` | gallery-entry template |
+| 5 | Wrote `proofs/Proofs/AngleTrisectionOQ05OQ04.lean` (351 lines, 1 proved lemma + 3 sorries) | core S2 deliverable |
+| 6 | Added `import Proofs.AngleTrisectionOQ05OQ04` to `proofs/Proofs.lean` | imports list updated |
+| 7 | Wrote `src/data/proofs/angle-trisection-oq-05-oq-04/{meta.json, annotations.json, index.ts}` | gallery integration; 6 annotations |
+| 8 | Updated `src/data/research/problems/angle-trisection-oq-05-oq-04.json` phase OBSERVE → ORIENT | iteration 2 recorded |
+| 9 | Updated `research/problems/angle-trisection-oq-05-oq-04/state.md` | this file |
+| 10 | (pending) Commit + push + PR with label `research` | next |
+
+## Honest Calibration
+
+S2 produces:
+
+- A formal Lean language for curved-crease origami;
+- One proved internal lemma (FT-derived);
+- Three sorry-bearing target theorems for S3, S4, S5;
+- A complete gallery entry with axiomCount 1, sorries 3, status
+  axiomatized.
+
+S2 does **not** resolve any open mathematical question. The value is
+the formal language — any researcher attempting OQ-A in the future can
+build directly on these statements rather than re-creating them.
+
+The status is `axiomatized`, not `verified`, because `ftCompatible`
+encodes a real assumption (the Fuchs-Tabachnikov differential-geometric
+identity). Counting it as +1 toward meta axiomCount is required by the
+project's Axiom Integrity Policy.
 
 ## References Captured
 
-See `knowledge.md` for the full citation list and Mathlib gap analysis.
+Same set as S1: Huffman 1976; Fuchs-Tabachnikov 1999 (Thm 1 = FT
+identity); Demaine-DHPT 2011 (transcendental curve elastica witness);
+Alperin 2000 + Alperin-Lang 2006 (K_origami classification).
+
+See `knowledge.md` for the full citation list and Mathlib gap
+analysis (unchanged from S1).

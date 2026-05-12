@@ -1,0 +1,351 @@
+import Proofs.AngleTrisectionOQ05
+import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
+import Mathlib.Algebra.MvPolynomial.Basic
+import Mathlib.Tactic
+
+/-
+# Curved-Crease Origami: Strengthening Huzita-Hatori (OQ-05-OQ-04)
+
+## Open Question
+
+The seven straight-crease Huzita-Hatori axioms (`AngleTrisectionOQ05.HHAxioms`,
+line 108) characterise origami constructibility for FLAT (straight-line)
+creases. This file initiates the S2 ORIENT scaffold for the open
+question:
+
+  Can `HHAxioms` be strengthened by a finite extension to capture
+  curved-crease origami constructibility?
+
+The mathematical heart of curved-crease theory is the Fuchs-Tabachnikov
+compatibility identity (Fuchs-Tabachnikov 1999, Thm 1):
+
+  κ_n(s) = κ_g(s) · cot(θ(s) / 2)
+
+We encode this as a structure field rather than deriving it from
+Darboux-frame differential geometry. Deriving it internally would
+require ~350 lines of curve-on-surface API currently absent from
+Mathlib at the pinned revision (`v4.26.0`). Encoding it as a structure
+field makes the rest of the formalisation tractable while keeping the
+mathematical content faithful: any concrete `CurvedCrease` witness
+still has to supply a proof that FT holds for its `(γ, θ, κg, κn)`.
+
+## This File (S2 ORIENT)
+
+- `CurvedCrease` — a structure carrying `(L, γ, θ, κg, κn)` plus FT.
+- `CurvedCrease.IsStraight` — `κ_g ≡ 0` on the parameter interval.
+- `normal_curvature_zero_of_straight` — internal lemma (proved):
+  straight-fold limit ⇒ `κ_n ≡ 0`.
+- `CurvedCrease.ExistsHHFold` — predicate for "curve endpoints lie on
+  a straight Huzita-Hatori fold line".
+- `straight_fold_recovers_HH` (S3 target) — conservativity statement.
+- `CurveAlgebraic` — predicate that the crease curve is algebraic.
+- `curved_fold_algebraic_implies_origami` (S4 target) — partial
+  sharpness.
+- `IsCurvedFoldConstructible` — `α` is a coordinate of some
+  curved-crease point.
+- `K_curved_eq_K_origami` (S5 / OPEN) — Demaine-Demaine-Hart-Price-
+  Tachi 2011 conjecture stated as a Lean theorem.
+
+## Honest Calibration
+
+This S2 file does **not** resolve the mathematical question. It
+provides:
+1. A formal language (`CurvedCrease`) in which the question is stated.
+2. The conservativity statement that any candidate strengthening must
+   satisfy (`straight_fold_recovers_HH`).
+3. Statement-only theorems for the S3 / S4 / S5 targets.
+
+The intended meta status is `axiomatized` because `ftCompatible` is a
+structure-encoded assumption: it counts as +1 toward the meta
+`axiomCount`, even though zero `axiom` declarations appear in this
+file. 3 intentional `sorry` markers (S3 / S4 / S5 targets).
+
+## References
+
+* Huffman, D. A. (1976). *Curvature and creases: A primer on paper.*
+  IEEE Trans. Comput. C-25(10), 1010-1019.
+* Fuchs, D.; Tabachnikov, S. (1999). *More on paperfolding.* Amer.
+  Math. Monthly 106(1), 27-35. (Theorem 1 is the FT identity.)
+* Demaine, E. D.; Demaine, M. L.; Hart, V.; Price, G. N.; Tachi, T.
+  (2011). *(Non)existence of pleated folds: How paper folds between
+  creases.* Graphs Combin. 27(3), 377-397.
+* Alperin, R. C.; Lang, R. J. (2006). *One-, two-, and multi-fold
+  origami axioms.* 4OSME, 371-393.
+-/
+
+namespace AngleTrisectionOQ05OQ04
+
+open AngleTrisectionOQ05
+
+-- ============================================================
+-- PART 1: The Curved-Crease Structure
+-- ============================================================
+
+/--
+A **curved crease** is the data of
+* a parameter length `L > 0`;
+* a planar curve `γ : ℝ → ℝ × ℝ` (the crease in the unfolded paper);
+* a dihedral fold-angle profile `θ : ℝ → ℝ` taking values in
+  `(0, π)` on `[0, L]`;
+* a signed geodesic curvature `κ_g : ℝ → ℝ` (intrinsic to the paper,
+  equal to the signed planar curvature of `γ` since the paper is flat);
+* a normal curvature `κ_n : ℝ → ℝ` of `γ` as a curve on the folded
+  surface;
+subject to the Fuchs-Tabachnikov compatibility identity.
+
+Two of these fields encode genuine assumptions:
+* `hθ_pos` states that the dihedral fold angle is a strict dihedral
+  angle (no degeneration to a fully flat or fully closed fold);
+* `ftCompatible` is the Fuchs-Tabachnikov identity — the single
+  differential-geometric constraint distinguishing smooth curved folds
+  from arbitrary `(γ, θ)` pairs.
+
+For the gallery `axiomCount` we count `ftCompatible` as **1**
+structure-encoded assumption.
+-/
+structure CurvedCrease where
+  /-- Crease parameter length. -/
+  L : ℝ
+  /-- The crease is non-degenerate. -/
+  hL : 0 < L
+  /-- Planar curve carrying the crease (unfolded paper). -/
+  γ : ℝ → ℝ × ℝ
+  /-- Dihedral fold-angle profile along the crease. -/
+  θ : ℝ → ℝ
+  /-- Signed geodesic curvature of the crease. -/
+  κg : ℝ → ℝ
+  /-- Normal curvature of `γ` as a curve on the folded surface. -/
+  κn : ℝ → ℝ
+  /-- The fold angle is a strict dihedral angle on `[0, L]`. -/
+  hθ_pos : ∀ s ∈ Set.Icc (0 : ℝ) L, 0 < θ s ∧ θ s < Real.pi
+  /-- Fuchs-Tabachnikov compatibility: `κ_n(s) = κ_g(s) · cot(θ(s)/2)`.
+
+  Encoded with `cot = (tan)⁻¹` to avoid a partial `Real.cot`. Note
+  `θ s / 2 ∈ (0, π/2)` on `[0, L]` so `Real.tan (θ s / 2) > 0`. -/
+  ftCompatible :
+    ∀ s ∈ Set.Icc (0 : ℝ) L,
+      κn s = κg s * (Real.tan (θ s / 2))⁻¹
+
+/-- A curved crease is **straight** if its geodesic curvature is
+identically zero on the parameter interval `[0, L]`.
+
+The straight-fold limit `κ_g ≡ 0` is the canonical degeneration in
+which the curved-crease formalism reduces to the classical
+Huzita-Hatori straight-fold theory. -/
+def CurvedCrease.IsStraight (c : CurvedCrease) : Prop :=
+  ∀ s ∈ Set.Icc (0 : ℝ) c.L, c.κg s = 0
+
+-- ============================================================
+-- PART 2: Straight-Limit Lemma (proved internally)
+-- ============================================================
+
+/--
+**Straight-fold normal-curvature vanishing.**
+
+If `c` is a straight curved crease (geodesic curvature `≡ 0` on
+`[0, L]`) then its normal curvature `κ_n` is also identically zero on
+`[0, L]`. This is an immediate algebraic consequence of the
+Fuchs-Tabachnikov identity `κ_n = κ_g · cot(θ/2)`: setting
+`κ_g ≡ 0` forces `κ_n ≡ 0`, no smoothness or analysis required.
+
+This is the **internal proof** of S2: it establishes the first
+concrete fact about straight curved folds without depending on any
+deferred sorry.
+-/
+theorem normal_curvature_zero_of_straight (c : CurvedCrease)
+    (hStraight : c.IsStraight) :
+    ∀ s ∈ Set.Icc (0 : ℝ) c.L, c.κn s = 0 := by
+  intro s hs
+  have hft : c.κn s = c.κg s * (Real.tan (c.θ s / 2))⁻¹ :=
+    c.ftCompatible s hs
+  have hκg : c.κg s = 0 := hStraight s hs
+  rw [hft, hκg, zero_mul]
+
+-- ============================================================
+-- PART 3: S3 Target — Conservativity over `HHAxioms`
+-- ============================================================
+
+/-
+### Conservativity statement
+
+A **straight** curved crease — one with geodesic curvature identically
+zero — should reduce to a fold satisfying one of the seven Huzita-Hatori
+axioms.
+
+The minimal claim we capture in S2 is `ExistsHHFold`: there is a Line
+through the two endpoints `γ 0` and `γ L`, with the rest of `HHAxioms`
+intact. S3 will sharpen this to a full case analysis on the endpoint
+incidences (HH-1 through HH-7).
+-/
+
+/-- Existence of an HH-axiom-satisfying straight fold extending a given
+curved crease. The minimal form: there exists an `HHAxioms` witness
+together with a `Line` containing both crease endpoints. -/
+def CurvedCrease.ExistsHHFold (c : CurvedCrease) : Prop :=
+  ∃ _ : HHAxioms,
+    ∃ l : Line, l.contains (c.γ 0) ∧ l.contains (c.γ c.L)
+
+/--
+**Conservativity (S3 target).**
+
+A straight curved crease with distinct endpoints reduces to a fold
+satisfying the straight-crease Huzita-Hatori axiom HH-1 (line through
+two distinct points).
+
+The intended proof outline (deferred to S3):
+
+1. By `normal_curvature_zero_of_straight`, `κ_n ≡ 0` on `[0, L]`.
+2. With both signed curvatures vanishing, `γ ∣ [0, L]` is a line
+   segment (standard characterisation of plane curves with zero
+   curvature).
+3. Apply `HHAxioms.hh1` to the endpoints `γ 0` and `γ L` (which are
+   distinct by hypothesis) to produce the required line.
+
+This statement is the **minimum useful conservativity claim**: it
+asserts that the curved-crease formalism is a genuine extension of the
+H-H axioms, not a replacement, and not weaker. -/
+theorem straight_fold_recovers_HH (c : CurvedCrease)
+    (_hStraight : c.IsStraight)
+    (_h_distinct : c.γ 0 ≠ c.γ c.L) :
+    c.ExistsHHFold := by
+  sorry  -- S3 ACT: reduce κ_g ≡ 0 case to HHAxioms.hh1 / line characterisation.
+
+-- ============================================================
+-- PART 4: S4 Target — Algebraic-Curve Sharpness
+-- ============================================================
+
+/-
+### Algebraic curved folds lie inside the origami field
+
+If `γ` is an algebraic plane curve of degree at most `d` (its image is
+contained in the zero set of a non-zero real polynomial of total
+degree `≤ d` in two variables), then every coordinate of every point
+on `γ` lies in the origami-constructible field.
+
+The strategy combines:
+* Rule-line endpoints on `γ` are algebraic over `ℚ(γ-coefficients)`
+  (Demaine et al. 2011, Section 5).
+* The Fuchs-Tabachnikov compatibility identity is polynomial in
+  `(κ_g, κ_n, tan(θ/4))` after rationalising
+  `cot(θ/2) = (1 - tan²(θ/4)) / (2 tan(θ/4))`.
+* Origami solves cubics and quartics by `origami_degree_classification`
+  from the parent file, so the polynomial system reduces to degrees
+  dividing some `2^a · 3^b`.
+-/
+
+/-- A planar curve `γ : ℝ → ℝ × ℝ` is **algebraic of degree at most
+`d`** if its image is contained in the zero set of a non-zero real
+polynomial in two variables of total degree at most `d`. -/
+def CurveAlgebraic (γ : ℝ → ℝ × ℝ) (d : ℕ) : Prop :=
+  ∃ p : MvPolynomial (Fin 2) ℝ,
+    p ≠ 0 ∧ p.totalDegree ≤ d ∧
+    ∀ s : ℝ,
+      MvPolynomial.eval
+        (fun i : Fin 2 => if i = 0 then (γ s).1 else (γ s).2) p = 0
+
+/--
+**Algebraic sharpness (S4 target).**
+
+If a curved crease `c` has algebraic crease curve `γ` of degree at
+most `d`, then each coordinate of any point `γ s` (for `s ∈ [0, c.L]`)
+satisfies `IsOrigamiConstructible` at some degree.
+
+The S4 iteration will sharpen the `∃ deg` quantifier to a concrete
+function of `d` (likely `deg = 2 ^ (3 * d) * 3 ^ d` or a tighter
+bound).
+-/
+theorem curved_fold_algebraic_implies_origami
+    (c : CurvedCrease) (d : ℕ)
+    (_hAlg : CurveAlgebraic c.γ d) (s : ℝ)
+    (_hs : s ∈ Set.Icc (0 : ℝ) c.L) :
+    ∃ deg : ℕ,
+      IsOrigamiConstructible (c.γ s).1 deg ∧
+      IsOrigamiConstructible (c.γ s).2 deg := by
+  sorry  -- S4 ACT: algebraic-curve sharpness via origami_degree_classification.
+
+-- ============================================================
+-- PART 5: S5 Target — Formal Statement of OQ-A
+-- ============================================================
+
+/-
+### OQ-A as a Lean conjecture (statement only)
+
+OQ-A asks whether the field `K_curved` (curved-fold constructible) is
+strictly larger than `K_origami`. Demaine et al. 2011 conjecture that
+no new POINTS are produced (so `K_curved = K_origami`) despite curved
+folds tracing transcendental CURVES (the elastica family).
+
+We state OQ-A as a Lean theorem so that the formal language is fixed;
+its proof is genuinely open mathematics dating to Huffman 1976. The
+`sorry` is a **permanent placeholder** until the question is settled.
+
+The phrasing below quantifies over all real `α` and asks whether
+curved-fold constructibility is equivalent to existence of some
+origami-constructible degree witness. This is the natural Lean
+analogue of "K_curved = K_origami as subfields of ℝ".
+-/
+
+/-- A real number `α` is **curved-fold constructible** if it appears as
+the first coordinate of some point on the crease of some `CurvedCrease`,
+for some parameter `s ∈ [0, L]`.
+
+This is the simplest possible Lean witness; richer formulations (e.g.
+quotient by symmetries, closure under composition, etc.) will be added
+in later iterations only if needed. -/
+def IsCurvedFoldConstructible (α : ℝ) : Prop :=
+  ∃ c : CurvedCrease, ∃ s : ℝ, s ∈ Set.Icc (0 : ℝ) c.L ∧ α = (c.γ s).1
+
+/--
+**OQ-A (open mathematics; S5 statement only).**
+
+The field of curved-fold-constructible real numbers coincides with the
+origami-constructible field. Equivalently, no curved-fold construction
+produces a point coordinate beyond what single straight-fold origami
+already produces.
+
+Demaine-Demaine-Hart-Price-Tachi 2011 conjecture this is **true**; the
+formal proof is open.
+
+This Lean statement is intentionally `sorry`-bearing as a permanent
+placeholder until the mathematical question is settled. The value here
+is the **formal language**, not the proof.
+-/
+theorem K_curved_eq_K_origami :
+    ∀ α : ℝ,
+      IsCurvedFoldConstructible α ↔
+        ∃ d : ℕ, IsOrigamiConstructible α d := by
+  sorry  -- S5 PERMANENT OPEN: Huffman 1976 / Demaine-DHPT 2011 conjecture.
+
+-- ============================================================
+-- Summary
+-- ============================================================
+
+/-
+## S2 ORIENT deliverable summary
+
+| Decl                                       | Kind      | Sorries  |
+|--------------------------------------------|-----------|----------|
+| `CurvedCrease`                             | structure | —        |
+| `CurvedCrease.IsStraight`                  | def       | 0        |
+| `normal_curvature_zero_of_straight`        | theorem   | 0 proved |
+| `CurvedCrease.ExistsHHFold`                | def       | 0        |
+| `straight_fold_recovers_HH`                | theorem   | 1 (S3)   |
+| `CurveAlgebraic`                           | def       | 0        |
+| `curved_fold_algebraic_implies_origami`    | theorem   | 1 (S4)   |
+| `IsCurvedFoldConstructible`                | def       | 0        |
+| `K_curved_eq_K_origami`                    | theorem   | 1 (S5)   |
+
+Totals: **3 theorems with sorry, 1 proved theorem, 4 definitions, 1
+structure. 0 `axiom` declarations. 1 structure-encoded assumption
+(`ftCompatible`), so `axiomCount = 1`. Status `axiomatized`.**
+
+## Status history
+
+* S1 (researcher-12, 2026-05-12): OBSERVE markdown survey, no Lean.
+* S2 (this file, 2026-05-12): ORIENT scaffold — structure + 3 stmts.
+* S3 (planned): discharge `straight_fold_recovers_HH`.
+* S4 (planned): discharge `curved_fold_algebraic_implies_origami`.
+* S5 (planned, OPEN): `K_curved_eq_K_origami` remains a sorry.
+-/
+
+end AngleTrisectionOQ05OQ04
