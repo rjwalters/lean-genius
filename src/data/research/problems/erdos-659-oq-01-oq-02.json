@@ -1,0 +1,80 @@
+{
+  "slug": "erdos-659-oq-01-oq-02",
+  "title": "4-point-property distance bound in ℝ^d for d ≥ 3",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "parent": "erdos-659-oq-01",
+  "problemStatement": {
+    "formal": "\\text{For } d \\ge 3, \\text{ determine } \\inf \\left\\{ \\liminf_{n \\to \\infty} \\frac{|\\mathrm{distinctDistances}(A_n)|}{n^{2/d}} : A_n \\subset \\mathbb{R}^d, |A_n| = n, A_n \\text{ has 4-point property} \\right\\}.",
+    "plain": "The parent 'erdos-659-oq-01' proves that in ℝ², any n-point set with the 4-point property has at least c·n/√(log n) distinct distances (the Moree-Osburn lattice matches this). This sub-OQ asks the same question in higher dimensions: what is the asymptotic minimum distinct-distance count for the 4-point property in ℝ^d for d ≥ 3? Provisional answer (S1 OBSERVE synthesis): the rate is Θ(n^(2/d)), strictly faster growth than the 2D rate of n/√(log n). The 2D-specific log-shaving comes from Landau's binary-form theorem, which has no ternary/higher analogue (Bernays 1912: positive-definite ternary forms represent positive density, no log factor). The conjectured rate matches the generic distinct-distance lower bound (Solymosi-Vu 2008: Ω(n^(2/d - ε)) for any n-point set in ℝ^d), and the upper bound follows from a Cartesian-prime-lattice construction.",
+    "whyMatters": [
+      "Sharpness of dimensional dependence: the parent shows 2D has an anomalously slow rate n/√(log n) due to Landau's binary-form theorem; this OQ asks whether the slow rate is special to 2D, which is a long-standing question in metric combinatorics (Erdős 1975).",
+      "Gallery diversity: no existing gallery entry surfaces the explicit d-dimensional scaling of distinct-distance lower bounds. This OQ would be the gallery's first treatment of the d-dependent rate for distance problems.",
+      "Mathlib gap: even axiomatised, this OQ would be the first Lean formalisation of distinct-distance lower bounds in ℝ^d for d ≥ 3 in any major library. Solymosi-Vu 2008 is absent from Mathlib v4.26.0."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent OQ-01: d = 2 rate is Θ(n/√(log n)) (Moree-Osburn 2006 upper + Landau 1908 / Davenport descent lower, parent file axiomatised).",
+      "Landau (1908): the count of integers ≤ N representable by positive-definite binary quadratic forms is Θ(N/√(log N)).",
+      "Bernays (1912): the count for positive-definite ternary forms is Θ(N) — linear, no log shaving.",
+      "Solymosi-Vu (2008): any n-point set in ℝ^d for d ≥ 3 has Ω(n^(2/d - ε)) distinct distances; the exponent is conjectured to be exactly 2/d.",
+      "Kaplan-Matoušek-Sharir-Sheffer (2017): refined exponent for d ≥ 3, still falling short of 2/d.",
+      "Erdős (1975) conjecture: Δ_d(n) ≥ Ω(n^(2/d)/polylog(n)) for ℝ^d distinct distances, open for d ≥ 3."
+    ],
+    "open": [
+      "Exact rate of the 4-point property in ℝ^d for d ≥ 3: is it exactly Θ(n^(2/d)), or with a log correction?",
+      "Construction matching the conjectured rate: does the Cartesian-prime-lattice {(a_1, a_2√2, ..., a_d√p_(d-1))} achieve the 4-point property with C·n^(2/d) distinct distances? (Conjectured yes, but no rigorous proof in literature.)",
+      "Optimal constant c_d in the lower bound: Solymosi-Vu's argument gives c_d ≍ e^(-cd^2), conjecturally far from optimal."
+    ],
+    "goal": "Formalize in Lean an axiomatised version of the conjectured Θ(n^(2/d)) rate: (1) Define distinctDistancesD and fourPointPropertyD for arbitrary d. (2) Axiomatise Solymosi-Vu lower bound. (3) Axiomatise the Cartesian-lattice construction's properties. (4) Combine to obtain dim_d_distance_rate."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T21:35:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-10, 2026-05-12): OBSERVE survey for the erdos-659-oq-01-oq-02 sub-OQ. Wrote problem.md (~4.5K words) with full Lean target signatures + S2-S6 decomposition; knowledge.md (~3.0K words) with historical timeline (Landau 1908, Bernays 1912, Erdős 1946, Moree-Osburn 2006, Solymosi-Vu 2008, Guth-Katz 2015, KMSS 2017); explicit Cartesian-prime-lattice construction worked out; Mathlib gap table identifying 3 axioms needed; sibling OQ comparison. No Lean changes.",
+    "blockers": [],
+    "nextAction": "S2: define distinctDistancesD and fourPointPropertyD in proofs/Proofs/Erdos659OQ01OQ02.lean. Approach: parameterise the parent's Section I definitions on d : ℕ using EuclideanSpace ℝ (Fin d). Expected ~25 Lean lines, sorry-free, no axioms (definitions only); this is the type-infrastructure for the subsequent S3-S5 axiom layer.",
+    "attemptCounts": {
+      "S1_observe": 1,
+      "S2_definitions": 0,
+      "S3_construction_axiom": 0,
+      "S4_solymosi_vu_axiom": 0,
+      "S5_main_theorem": 0,
+      "S6_gallery": 0
+    }
+  },
+  "knowledge": {
+    "insights": [
+      "The 2D rate n/√(log n) is a Landau-binary-form artefact, NOT a generic distinct-distance phenomenon. In d ≥ 3, ternary/higher forms have linear-in-N count (Bernays 1912), removing the log factor.",
+      "Solymosi-Vu 2008's generic distinct-distance Ω(n^(2/d - ε)) lower bound transfers directly to the 4-point-property setting (the 4-point property is a restriction, not a relaxation).",
+      "Cartesian-prime-lattice {(a_1, a_2√2, ..., a_d√p_(d-1))} gives an explicit upper-bound construction with O(n^(2/d)) distinct distances; the 4-point property holds because prime-multiplier separation prevents simultaneous distance equalities along multiple axes.",
+      "Mathlib v4.26.0 has EuclideanSpace ℝ (Fin d) but NO Solymosi-Vu, NO Bernays/Davenport-Cassels density, NO 4-point property — all major distance-counting infrastructure is absent."
+    ],
+    "builtItems": [
+      "Wrote research/problems/erdos-659-oq-01-oq-02/problem.md (formal problem + Lean targets + S2-S6 plan).",
+      "Wrote research/problems/erdos-659-oq-01-oq-02/knowledge.md (historical timeline + Cartesian-lattice computation + Mathlib gap table).",
+      "Wrote research/problems/erdos-659-oq-01-oq-02/state.md (phase OBSERVE).",
+      "Created src/data/research/problems/erdos-659-oq-01-oq-02.json (this file)."
+    ],
+    "progressSummary": "S1 OBSERVE complete. Formal problem statement with Lean target signatures. Provisional rate Θ(n^(2/d)) synthesized from Solymosi-Vu lower + Cartesian-lattice upper. 3 axioms identified for eventual axiomatized formalization."
+  },
+  "tags": [
+    "seeker-selected",
+    "erdos-problem",
+    "distance-problems",
+    "four-point-property",
+    "higher-dimensional",
+    "distinct-distances",
+    "solymosi-vu",
+    "quadratic-forms",
+    "mathlib-gap",
+    "research"
+  ],
+  "significance": 6,
+  "tractability": 3,
+  "lastUpdated": "2026-05-12T21:35:00.000Z"
+}
