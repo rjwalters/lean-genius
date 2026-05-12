@@ -77,9 +77,9 @@ machinery; they diverge at the per-block model (Jordan block vs.
 companion matrix) and at the field assumption (alg. closed vs. any
 field).
 
-## What This File Contributes (S1 scaffold)
+## What This File Contributes (S1 scaffold + S2 entry-wise API)
 
-The S1 OBSERVE iteration provides:
+The S1 OBSERVE iteration provided:
 
 * **`JordanBlockShape`** — a data structure capturing a multiset of
   block sizes per eigenvalue, sufficient to reconstruct the JNF up to
@@ -87,17 +87,32 @@ The S1 OBSERVE iteration provides:
 * **`jordanBlock`** — the matrix `λ · I + N_d` where `N_d` is the
   upper-shift matrix on `Fin d` (i.e., `1` strictly above the diagonal
   in the canonical basis ordering). Stated for any commutative ring.
-* **`jordanBlock_diag_eq`** — unconditional sanity lemma: the diagonal
-  entries of `jordanBlock K λ d` are all `λ`.
+* **`jordanBlock_diag_eq`** / **`jordanBlock_super_diag_eq`** —
+  unconditional sanity lemmas for the diagonal entries (all `λ`) and
+  super-diagonal entries (all `1`) of `jordanBlock K λ d`.
 * **`jordan_normal_form_exists`** — the **main JNF existence theorem
   statement**, guarded by a single `sorry` that the four sub-OQs above
   are intended to discharge.
 
-This file does **not** discharge any of OQ-01-OQ-01..04. The single
-sorry below is the entire JNF assembly. The contribution of S1 is the
-resolution of the OQ at the strategy level (affirmative + 4-step
-roadmap + 1 identified Mathlib gap) plus the Lean-side surface for
-follow-on iterations.
+The S2 iteration (this PR) adds the *third* case of the entry-wise
+classification, completing the case-by-case coverage of every
+`(i, j)` position in a Jordan block:
+
+* **`jordanBlock_off_diag_eq`** — entries `(i, j)` with `i ≠ j` and
+  `j ≠ i + 1` are `0`.
+* **`jordanBlock_zero_dim`** — `jordanBlock R λ 0 = 0` (the empty-
+  index Jordan block agrees with the zero matrix), useful for
+  inductive arguments on block dimension.
+
+These lemmas do **not** discharge any of OQ-01-OQ-01..04. The single
+sorry on `jordan_normal_form_exists` is the entire JNF assembly. The
+contribution of S1+S2 is the resolution of the OQ at the strategy
+level (affirmative + 4-step roadmap + 1 identified Mathlib gap), the
+Lean-side surface for follow-on iterations, and a complete entry-wise
+API for the `jordanBlock` definition. Together the three entry-wise
+lemmas (`_diag_eq`, `_super_diag_eq`, `_off_diag_eq`) partition the
+`Fin d × Fin d` index set, which is the canonical input shape that the
+upcoming OQ-01-OQ-01 charpoly identity will consume.
 
 ## References
 
@@ -111,7 +126,9 @@ follow-on iterations.
 * [x] Resolution at strategy level (affirmative)
 * [x] Mathlib gap analysis (single gap: nilpotent canonical form)
 * [x] Sub-OQ decomposition (OQ-01-OQ-01 .. OQ-01-OQ-04)
-* [x] Scaffold (JordanBlockShape, jordanBlock, sanity lemma)
+* [x] Scaffold (JordanBlockShape, jordanBlock, sanity lemmas)
+* [x] Entry-wise classification of `jordanBlock` (S2: `_off_diag_eq`,
+  `_zero_dim`)
 * [ ] Discharge `jordan_normal_form_exists` (sorry-guarded — deferred to sub-OQs)
 
 ## Mathlib Dependencies
@@ -182,6 +199,24 @@ theorem jordanBlock_super_diag_eq (R : Type*) [CommRing R] (lam : R)
     intro h; rw [h] at hij; omega
   simp [jordanBlock, hne, hij]
 
+/-- Off-diagonal and off-super-diagonal entries of `jordanBlock R λ d`
+are `0`. Together with `jordanBlock_diag_eq` and
+`jordanBlock_super_diag_eq` this completes the entry-wise classification
+of `jordanBlock R λ d` into the three cases of its `if … then … else
+if … then … else 0` definition. -/
+theorem jordanBlock_off_diag_eq (R : Type*) [CommRing R] (lam : R)
+    (d : Nat) (i : Fin d) (j : Fin d)
+    (hne : i ≠ j) (hns : (j : Nat) ≠ (i : Nat) + 1) :
+    jordanBlock R lam d i j = 0 := by
+  simp [jordanBlock, hne, hns]
+
+/-- The trivial Jordan block over the empty index `Fin 0`: any function
+`Fin 0 → Fin 0 → R` is the zero matrix vacuously. Stated for
+convenience in inductive arguments on block dimension. -/
+theorem jordanBlock_zero_dim (R : Type*) [CommRing R] (lam : R) :
+    jordanBlock R lam 0 = 0 := by
+  ext i j; exact Fin.elim0 i
+
 /-
 ## Main JNF Existence Theorem (statement only — proof deferred)
 
@@ -219,9 +254,15 @@ theorem jordan_normal_form_exists
   -- is sorry-guarded in S1; sub-OQs OQ-01-OQ-01..04 discharge it.
   sorry
 
-/-- Sanity check: `JordanBlockShape.totalDim` of the empty shape is `0`. -/
+/-- Sanity check: `JordanBlockShape.totalDim` of the empty shape is `0`.
+
+(S2 drift-fix: replaces S1's `absurd hp (List.not_mem_nil _)` —
+unsound after Mathlib's v4.26.0 signature change of `List.not_mem_nil`
+to `(h : a ∈ []) → False` — with the equivalent `nomatch hp`,
+which is robust under future API changes since it relies only on the
+empty `List.Mem _ []` type having no constructors.) -/
 theorem totalDim_empty {K : Type*} :
-    (⟨[], by intro p hp; exact absurd hp (List.not_mem_nil _)⟩ :
+    (⟨[], by intro _ hp; nomatch hp⟩ :
         JordanBlockShape K).totalDim = 0 := by
   simp [JordanBlockShape.totalDim]
 

@@ -1,7 +1,7 @@
 {
   "slug": "minpoly-charpoly-oq-01",
   "title": "Jordan Normal Form via Minpoly/Charpoly Infrastructure",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "B",
   "path": "full",
@@ -31,15 +31,15 @@
     "goal": "Statement and proof of `jordan_normal_form_exists`: every square matrix M over an algebraically closed field admits a JordanBlockShape S (list of (eigenvalue, block size) pairs) such that M is similar to the block-diagonal matrix built from `jordanBlock K λᵢ dᵢ` blocks, with total dimension matching the matrix size and eigenvalue multiplicities matching the characteristic-polynomial root multiplicities."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T10:00:00Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE (this PR, researcher-12) — SCAFFOLD: created `Proofs/MinpolyCharpolyOQ01.lean` (228 lines, 1 sorry, 4 theorems, 4 definitions/structures) with the JordanBlockShape data structure, the jordanBlock matrix definition with two unconditional API lemmas, the main JNF existence theorem statement (weak form, sorry-guarded), and one unconditional sanity lemma. Gallery entry (this JSON) + research markdown + manifest import all included. Resolution at strategy level: AFFIRMATIVE — four-ingredient plan (gen-eigenspace decomposition + internal direct sum + Jordan-Chevalley + nilpotent canonical form) with three Mathlib ingredients confirmed present and one local gap (nilpotent canonical form) identified as the load-bearing OQ-01-OQ-02.",
+    "phase": "ACT",
+    "since": "2026-05-12T11:55:00Z",
+    "iteration": 2,
+    "focus": "S2 ACT (researcher-6, 2026-05-12) — entry-wise API completion + incidental S1 drift-fix: added two unconditional API lemmas to MinpolyCharpolyOQ01.lean: (a) `jordanBlock_off_diag_eq` — entries (i,j) with i ≠ j and (j : Nat) ≠ (i : Nat) + 1 are 0, completing the three-way entry classification alongside `_diag_eq` (S1) and `_super_diag_eq` (S1); (b) `jordanBlock_zero_dim` — `jordanBlock R λ 0 = 0`, the empty-index Jordan block equals the zero matrix (useful for inductive arguments on block dimension). Build verification also uncovered and fixed a latent Mathlib drift in S1's `totalDim_empty`: the v4.26.0 signature change of `List.not_mem_nil` to `(h : a ∈ []) → False` broke S1's `absurd hp (List.not_mem_nil _)` witness; replaced with the API-independent `nomatch hp`. File 228 → 260 lines (+32 = 27 new lemmas + 5 drift-fix), sorries unchanged at 1 (the load-bearing jordan_normal_form_exists sorry from S1), 0 axioms, theorems 4 → 6. Build verified locally via Docker (Mathlib cache hit).",
     "blockers": [],
-    "nextAction": "S2 candidate A: open child OQ minpoly-charpoly-oq-01-oq-01 and scaffold MinpolyCharpolyOQ01OQ01.lean with the jordanBlock API — charpoly identity (jordanBlock R λ d).charpoly = (X - C λ)^d, minpoly identity, nilpotent-shift identity (jordanBlock R 0 d)^d = 0. ~80 lines, fully dischargable (no sorry). Alternatively: S2 candidate B — upgrade S1 weak-form jordan_normal_form_exists to the strong form with similarity transform P (~5-line statement edit, still sorry-guarded); or S2 candidate C — begin OQ-01-OQ-02 (nilpotent canonical form, ~400 lines).",
+    "nextAction": "S3 candidate A (still recommended from S1): open child OQ minpoly-charpoly-oq-01-oq-01 and scaffold MinpolyCharpolyOQ01OQ01.lean with the jordanBlock charpoly identity (jordanBlock R λ d).charpoly = (X - C λ)^d, minpoly identity, nilpotent-shift identity (jordanBlock R 0 d)^d = 0. The three entry-wise lemmas from S1+S2 are the API inputs. Alternative S3 candidate D: add `eigenvalueMultiset_card_eq_totalDim` lemma (`(S.eigenvalueMultiset).card = S.totalDim`) via induction on S.blocks using Multiset.card_replicate — pure API, no Mathlib drift risk.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
@@ -53,7 +53,10 @@
       "jordanBlock_diag_eq (theorem, unconditional): diagonal entries of jordanBlock R λ d are all λ.",
       "jordanBlock_super_diag_eq (theorem, unconditional): strictly-above-diagonal entries (positions (i, i+1)) of jordanBlock R λ d are 1.",
       "jordan_normal_form_exists (theorem, sorry-guarded): the S1 statement of JNF existence in weak form (existence of a JordanBlockShape with correct total dimension).",
-      "totalDim_empty (theorem, unconditional): the empty JordanBlockShape has totalDim = 0."
+      "totalDim_empty (theorem, unconditional): the empty JordanBlockShape has totalDim = 0.",
+      "**(S2 NEW)** jordanBlock_off_diag_eq (theorem, unconditional): entries (i,j) of jordanBlock R λ d with i ≠ j and (j : Nat) ≠ (i : Nat) + 1 are 0 — the third case of the entry-wise classification, completing the three-way partition of Fin d × Fin d.",
+      "**(S2 NEW)** jordanBlock_zero_dim (theorem, unconditional): `jordanBlock R λ 0 = 0` — the empty-index Jordan block equals the zero matrix, useful for inductive arguments on block dimension.",
+      "**(S2 DRIFT-FIX)** totalDim_empty proof updated: replaced S1's `absurd hp (List.not_mem_nil _)` (broken by Mathlib v4.26.0 signature change of `List.not_mem_nil` from `a ∉ ([] : List α)` to `(h : a ∈ []) → False`) with the API-independent `nomatch hp`. The theorem statement is unchanged."
     ],
     "insights": [
       "**Four-ingredient resolution**: gen-eigenspace decomposition + internal direct sum + Jordan-Chevalley + nilpotent canonical form. Three ingredients confirmed in Mathlib v4.26.0; the fourth (nilpotent canonical form) is a self-contained classical proof (~400 lines), not a genuine obstacle. The OQ resolves AFFIRMATIVELY at the strategy level.",
@@ -116,7 +119,7 @@
     ]
   },
   "started": "2026-05-12T10:00:00Z",
-  "lastUpdate": "2026-05-12T10:00:00Z",
+  "lastUpdate": "2026-05-12T11:55:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

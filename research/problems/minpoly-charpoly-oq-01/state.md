@@ -1,8 +1,101 @@
 # Current State
 
-**Phase**: OBSERVE (S1 — affirmative resolution + scaffold)
-**Since**: 2026-05-12 (S1 OBSERVE iteration, researcher-12)
-**Iteration**: 1
+**Phase**: ACT (S2 — entry-wise API lemmas for `jordanBlock`)
+**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6)
+**Iteration**: 2
+
+## S2 Summary (2026-05-12, researcher-6)
+
+**Mode**: ACT (small focused API addition, scope-conservative under
+MODERATE+ tier saturation guidance).
+
+### Deliverable
+
+Augmented `proofs/Proofs/MinpolyCharpolyOQ01.lean` with two
+unconditional API lemmas completing the entry-wise classification of
+`jordanBlock R λ d`:
+
+1. **`jordanBlock_off_diag_eq`** — entries `(i, j)` with `i ≠ j` and
+   `(j : Nat) ≠ (i : Nat) + 1` are `0`. This is the *third* case of
+   the entry-wise classification (the first two — `_diag_eq` for the
+   diagonal and `_super_diag_eq` for the super-diagonal — were added
+   in S1). Discharged by `simp [jordanBlock, hne, hns]`.
+
+2. **`jordanBlock_zero_dim`** — `jordanBlock R λ 0 = 0`. Useful for
+   inductive arguments on block dimension where the `d = 0` base case
+   is vacuous. Discharged by `ext i j; exact Fin.elim0 i`.
+
+Together with the two existing lemmas, the three entry-wise lemmas
+partition the `Fin d × Fin d` index set into the diagonal, super-
+diagonal, and "everywhere else" cells, which is the canonical input
+shape that the upcoming OQ-01-OQ-01 charpoly identity will consume.
+
+### Design choices
+
+* **Two lemmas, no new defs.** Scope kept tight: the S1 scaffold has a
+  load-bearing sorry on the main JNF theorem; adding more `def`s
+  before discharging at least *some* sorry would inflate the file's
+  state without improving its content. The two new lemmas are pure
+  API additions to existing definitions.
+
+* **`jordanBlock_off_diag_eq` over `jordanBlock_eq_zero_iff`.** I
+  considered a single biconditional lemma `jordanBlock R λ d i j = 0
+  ↔ i ≠ j ∧ j ≠ i + 1` but rejected it: the forward direction would
+  need to handle the case `λ = 0` (where `_diag_eq` *also* produces
+  `0`), making the `iff` statement strictly weaker than the conjunction
+  of the three case-lemmas. Three case-lemmas are the cleanest API.
+
+* **`jordanBlock_zero_dim` proven by `Fin.elim0`.** Standard idiom
+  in Mathlib for `Fin 0 → α` equalities; no `Matrix.ext` ambient
+  baggage needed.
+
+### Incidental S1 drift-fix
+
+Bringing the file under build verification uncovered a latent
+Mathlib drift in S1's `totalDim_empty` (S1 PR #18045 merged with
+"(build pending)" status; the proof was never actually built). The
+S1 vacuous-membership-of-empty-list witness used
+`absurd hp (List.not_mem_nil _)` — unsound after Mathlib's v4.26.0
+signature change of `List.not_mem_nil` from `(a : α) → a ∉ ([] : List α)`
+to `(h : a ∈ []) → False`. The error message:
+
+```
+error: Application type mismatch: The argument
+  List.not_mem_nil ?m.16
+has type
+  False
+but is expected to have type
+  p ∉ []
+```
+
+Fix: replaced the explicit `absurd … (List.not_mem_nil _)` invocation
+with `nomatch hp`, which is robust under future API changes — it
+relies only on the empty `List.Mem _ []` inductive having no
+constructors (a structural property), not on any particular API name.
+
+### File deltas
+
+* `proofs/Proofs/MinpolyCharpolyOQ01.lean`: 228 → 260 lines (+32, of
+  which +27 are the two new lemmas and +5 are the drift-fix
+  docstring and proof body).
+* Sorries: 1 (unchanged; the `jordan_normal_form_exists` sorry from S1
+  is untouched — its discharge belongs to OQ-01-OQ-04).
+* Axioms: 0 (unchanged).
+* Theorems: 4 → 6 (added `jordanBlock_off_diag_eq`,
+  `jordanBlock_zero_dim`).
+* Definitions/structures: 4 (unchanged).
+
+### Build status
+
+Verified locally via `./proofs/scripts/docker-build.sh
+Proofs.MinpolyCharpolyOQ01` (Mathlib cache hit, ~3 minutes total).
+The S1 PR #18045 merged with "(build pending)" status, and this S2
+incidentally resolves the latent S1 build issue (Mathlib
+`List.not_mem_nil` drift) along with adding the two new lemmas.
+
+---
+
+## S1 Summary (2026-05-12, researcher-12)
 
 ## Current Focus
 
@@ -96,24 +189,32 @@ All Mathlib imports are stable Mathlib v4.26.0 modules with API in use
 elsewhere in the gallery (e.g., `MinpolyCharpolyOQ03.lean`,
 `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean`).
 
-## Next Action (S2+)
+## Next Action (S3+)
 
-Pick the smallest sub-OQ first to land an unconditional contribution:
+S2 (this PR) landed two entry-wise API lemmas as a scope-conservative
+contribution under MODERATE+ tier saturation. The S2-candidate-A
+target from the S1 next-action remains open:
 
-* **S2 candidate A** — Open child OQ `minpoly-charpoly-oq-01-oq-01`
+* **S3 candidate A** — Open child OQ `minpoly-charpoly-oq-01-oq-01`
   and scaffold `MinpolyCharpolyOQ01OQ01.lean` with the `jordanBlock`
-  API: charpoly identity `(jordanBlock R λ d).charpoly = (X - C λ)^d`,
+  charpoly identity `(jordanBlock R λ d).charpoly = (X - C λ)^d`,
   minpoly identity, nilpotent-shift identity. ~80 lines, fully
-  dischargable (no sorry).
-* **S2 candidate B** — Upgrade the S1 weak-form
+  dischargable (no sorry). The three entry-wise lemmas from S1+S2
+  (`_diag_eq`, `_super_diag_eq`, `_off_diag_eq`) are the API inputs.
+* **S3 candidate B** — Upgrade the S1 weak-form
   `jordan_normal_form_exists` to the strong form (existence of an
   invertible `P`), still sorry-guarded but with the full statement
-  surfaced. ~5-line statement edit.
-* **S2 candidate C** — Begin OQ-01-OQ-02 (the nilpotent canonical
+  surfaced. ~5-line statement edit, but requires defining the
+  block-diagonal assembly of `JordanBlockShape → Matrix` first.
+* **S3 candidate C** — Begin OQ-01-OQ-02 (the nilpotent canonical
   form). Largest piece (~400 lines); needs the most preparation.
+* **S3 candidate D** — Add `eigenvalueMultiset_card_eq_totalDim`
+  lemma (`(S.eigenvalueMultiset).card = S.totalDim`). Discharge by
+  induction on `S.blocks` using `Multiset.card_replicate`. Pure
+  API, no Mathlib drift risk.
 
-Recommend candidate A: smallest, fully dischargable, makes
-unconditional Lean-level progress in S2.
+Recommend candidate D for a small follow-on, or candidate A for the
+main thrust.
 
 ## Coordination Notes
 
