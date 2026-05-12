@@ -64,6 +64,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Statement, Strategy, and File Tags",
+      "startLine": 1,
+      "endLine": 41,
+      "summary": "Lines 1–2 import Mathlib and the parent LawOfCosinesOQ04 (which supplies Stewart's theorem). Lines 4–40 are a 37-line block comment that states the open question, the angle bisector length formula t²(b+c)² = bc((b+c)² − a²), and the two-ingredient proof sketch (angle bisector ratio + Stewart's). Line 36 declares the file totals (7 theorems/lemmas, 0 sorries, 0 axioms). The comment includes the algebraic walk-through end-to-end — a reader knows the full derivation before any Lean code appears.",
+      "mathContext": "Setup: triangle $ABC$ with sides $a = BC$, $b = CA$, $c = AB$; angle bisector from $A$ has length $t$ and meets $BC$ at $D$ with $BD = m$, $DC = n$, $m + n = a$. Bisector ratio: $m b = n c$. Two derived ratios: $m(b+c) = ac$ and $n(b+c) = ab$. Applied to Stewart's $b^2 m + c^2 n = a(t^2 + mn)$, they give $t^2(b+c)^2 = bc((b+c)^2 - a^2)$."
+    },
+    {
       "id": "ratio-lemmas",
       "title": "Angle Bisector Ratio Lemmas",
       "startLine": 42,
