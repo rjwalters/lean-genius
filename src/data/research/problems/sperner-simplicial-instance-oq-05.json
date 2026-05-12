@@ -1,0 +1,128 @@
+{
+  "slug": "sperner-simplicial-instance-oq-05",
+  "title": "Implement Scarf's algorithm as a *computable* function in Lean 4: input a Spe...",
+  "phase": "S1 OBSERVE complete",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Three candidate targets enumerated; see research/sperner-simplicial-instance-oq-05/problem.md}",
+    "plain": "Implement Scarf's algorithm as a computable function in Lean 4: input a Sperner-colored Triangulation V n, output a panchromatic cell. Three reasonable interpretations (C1) brute-force enumeration via Finset.filter (computable today, 0 new infrastructure); (C2) literal Scarf door-chain pivoting walk (the algorithmic content of the OQ); (C3) refactor of AbstractSimplicialData.findOppositeIdx from Classical.choose to a computable Finset.filter.min' formulation. S1 commits S2 to (C1) for fastest ship.",
+    "whyMatters": [
+      "Bridges the gallery's non-constructive Sperner parity proof to a verified algorithm",
+      "Would let `Proofs/BrouwerFixedPointOQ04OQ04.lean:244` axiom `scarf_approx_fixed_point` be replaced by a verified Lean term (modulo the analytic epsilon-fixed-point bridge)",
+      "Provides a `#eval`-able fixed-point search procedure for any concrete Triangulation, with the 1-d `intervalTriangulation` as a worked example",
+      "Surfaces a clean Mathlib PR target: decidable witness extractor for `CellComplex.sperner`"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent `Triangulation.sperner` proves existence (non-constructive) — `Proofs/SpernerSimplicialInstance.lean:147`",
+      "`IsPanchromatic` and `IsDoor` are `Decidable` — `Proofs/SpernerMathlib4.lean:452, 459`",
+      "`door_count_parity` (Proofs/SpernerMathlib4.lean:386): the algorithmic heart of Scarf's pivot is a verified mod-2 counting theorem",
+      "`intervalTriangulation m hm` and `iadj` are fully computable — `Proofs/SpernerSimplicialInstance.lean:958, ~800-880`"
+    ],
+    "open": [
+      "(C1) `def findPanchromaticBrute : Triangulation V n → (V → Fin (n+1)) → Option T.Cell` and the correctness/totality theorems — not yet written",
+      "(C2) Scarf door-chain walk `def scarfWalk` and the termination/correctness proofs — not yet written",
+      "(C3) `findOppositeIdx` refactor from `Classical.choose` to `Finset.filter … .min'` — not yet attempted"
+    ],
+    "goal": "Replace `axiom scarf_approx_fixed_point` in `BrouwerFixedPointOQ04OQ04.lean:244` with a verified Lean term backed by a computable Scarf algorithm."
+  },
+  "currentState": {
+    "phase": "S1 OBSERVE complete",
+    "since": "2026-05-12T16:30:00Z",
+    "iteration": 1,
+    "focus": "S1 surveyed parent gallery (SpernerSimplicialInstance.lean 994 LOC, SpernerMathlib4.lean 732 LOC) and Mathlib v4.26.0; identified the explicit OQ-stated bottleneck (noncomputable findOppositeIdx at line 367) and three candidate formal targets ranked by ROI. S2 commits to (C1) brute-force enumeration + correctness as the highest-ROI ship.",
+    "blockers": [],
+    "nextAction": "S2 ACT: create `proofs/Proofs/SpernerSimplicialInstanceOQ05.lean` with `findPanchromaticBrute` (~50 LOC), correctness lemma, totality-under-parity lemma, and a `#eval`-able demo on `intervalTriangulation 3`. Independent of (C3) refactor.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE: comprehensive survey of parent gallery + Mathlib + neighbouring open slugs. Three candidate targets identified with LOC estimates. No Lean code written yet — S1 is observation/scaffolding only.",
+    "builtItems": [
+      "research/sperner-simplicial-instance-oq-05/problem.md — three candidate formal targets with LOC estimates and recommended S2 commitment to (C1)",
+      "research/sperner-simplicial-instance-oq-05/knowledge.md — Mathlib v4.26.0 + gallery API survey, decidability infrastructure inventory, algorithmic content of Scarf's pivot, gap list for follow-on sessions",
+      "research/sperner-simplicial-instance-oq-05/state.md — session log with tractability matrix and race/coordination notes"
+    ],
+    "insights": [
+      "Parent `Triangulation.sperner` is *combinatorially* constructive (door-following is finite) but *Lean-formally* non-constructive: the proof traces through `sperner_parity` ⇝ `exists_of_sum_eq_one` ⇝ `Finset.exists`-flavoured choice. To produce a computable Scarf algorithm, we either (a) bypass `sperner` and write a direct walk, or (b) attach a `Decidable`-witness extractor on top of the existing existence proof.",
+      "`IsPanchromatic` and `IsDoor` are *already* `Decidable` (SpernerMathlib4.lean:452, 459). So `Finset.filter (IsPanchromatic c _ ·) Finset.univ |>.toList.head?` is a 1-line computable extractor for any Triangulation — Candidate (C1) ships in ~50 LOC and is independent of any refactor.",
+      "The OQ-stated bottleneck `noncomputable def AbstractSimplicialData.findOppositeIdx` (line 367) uses `Classical.choose` on a *decidable* existential. The choice is unnecessary; `Finset.filter (fun k => D.vertexEnum t ht k ∉ f) Finset.univ |>.min' _` would compute. This is candidate (C3), a ~80 LOC pure refactor of a verified 0-sorry parent.",
+      "The 1-d case is *already* fully computable: `intervalTriangulation`, `iadj`, `iadj_cases` use no `Classical.choose`. So a 1-d Scarf walk specialisation (C2-1d) can be written today without touching `findOppositeIdx`, in ~120 LOC. Generalisation (C2-gen) requires (C3) first.",
+      "Scarf's pivot step is `door_count_parity` (SpernerMathlib4.lean:386) made computational: a non-panchromatic cell has 0 or 2 door-positions; entering through one determines the other uniquely. The `private def adjMap` (line 467) is the involution; making it the body of a Decidable-typed pivot function is the only missing structural step.",
+      "`BrouwerFixedPointOQ04OQ04.lean:244` carries `axiom scarf_approx_fixed_point` for the analytic ε-fixed-point statement. A successful (C2-gen) + ε-mesh-refinement bridge would let that axiom become a verified theorem — the long-tail value of this OQ slug.",
+      "Termination of Scarf's walk: cells visited form an injection into `T.Cell` (no cycle, by `adj_symm` + `isDoor_iff_of_adj` at SpernerMathlib4.lean:495–500). Hence walk length ≤ `|T.Cell|`; Lean encodes as a `Fin (|T.Cell|+1)`-bounded recursion or `Nat.find` on the visited-set complement."
+    ],
+    "mathlibGaps": [
+      "No `Mathlib.Combinatorics.Sperner` module — the gallery is the only Lean 4 Sperner formalization. If (C2) lands cleanly, a Mathlib PR splitting `CellComplex.sperner` + a decidable witness extractor would be a natural contribution (cf. Yael Dillies mathlib4#25231, #34310).",
+      "No `Mathlib.Analysis.FixedPoint.Brouwer` — Brouwer is an open formalization target. The gallery's `BrouwerFixedPointOQ04OQ04.lean:244` `axiom scarf_approx_fixed_point` is the placeholder; OQ-05 plus an analytic ε-fixed-point bridge would let that axiom be discharged.",
+      "Mathlib has *unordered* `Geometry.SimplicialComplex` but no `Fin (n+1)`-indexed (ordered-vertex) layer. The gallery's `AbstractSimplicialData.vertexEnum` (via `Finset.sort`) is the missing bridge — once it is fully computable (after (C3)), it is a natural Mathlib PR.",
+      "A small helper `Finset.filter_nonempty_of_card_lt` (or its existing equivalent) would simplify the `findOppositeIdx` computable refactor."
+    ],
+    "nextSteps": [
+      "S2 ACT (committed): create `proofs/Proofs/SpernerSimplicialInstanceOQ05.lean` with `findPanchromaticBrute` (~50 LOC) + correctness + totality + #eval demo on `intervalTriangulation`. Gallery entry `src/data/proofs/sperner-simplicial-instance-oq-05/` with meta.json (status: original, axioms: 0, sorries: 0). Build via `./proofs/scripts/docker-build.sh Proofs.SpernerSimplicialInstanceOQ05`.",
+      "S3 (deferred): (C3) refactor — replace `noncomputable def AbstractSimplicialData.findOppositeIdx` (SpernerSimplicialInstance.lean:367) with a `Finset.filter … .min'` formulation. Touches lines ~367–510; full file re-verification required.",
+      "S4 (deferred): (C2-1d) literal Scarf door-chain walk specialised to `intervalTriangulation`, ~120 LOC, no `findOppositeIdx` dependency.",
+      "S5+ (long-tail): (C2-gen) general Scarf walk on any `Triangulation`, requires (C3) merged first. Eventual: replace `axiom scarf_approx_fixed_point` in `BrouwerFixedPointOQ04OQ04.lean:244`."
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "sperner-lemma",
+    "simplicial-complex",
+    "triangulation",
+    "pseudomanifold",
+    "cell-complex",
+    "seeker-selected",
+    "computability",
+    "scarf-algorithm",
+    "fixed-point-search"
+  ],
+  "relatedProofs": [
+    "sperner-simplicial-instance",
+    "sperner-mathlib4",
+    "brouwer-fixed-point-oq-04-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Scarf, H. (1967). The approximation of fixed points of a continuous mapping. SIAM J. Appl. Math. 15, 1328-1343.",
+      "Sperner, E. (1928). Neuer Beweis fur die Invarianz der Dimensionszahl und des Gebietes. Abh. Math. Sem. Univ. Hamburg 6, 265-272.",
+      "Border, K. C. (1985). Fixed Point Theorems with Applications to Economics and Game Theory. Cambridge, ch. 7."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Sperner%27s_lemma",
+      "https://en.wikipedia.org/wiki/Scarf%27s_algorithm"
+    ],
+    "mathlib": [
+      "Mathlib.Logic.Decidable.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Finset.Sort",
+      "Mathlib.Data.Fintype.Basic",
+      "Mathlib.Tactic.Decide",
+      "Yael Dillies mathlib4#25231 (Sperner-related draft)",
+      "Yael Dillies mathlib4#34310"
+    ]
+  },
+  "started": "2026-05-12T14:35:20.210Z",
+  "lastUpdate": "2026-05-12T16:30:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/SpernerSimplicialInstance.lean",
+      "filename": "SpernerSimplicialInstance.lean",
+      "lineCount": 995,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SpernerSimplicialInstance.lean"
+    }
+  ]
+}
