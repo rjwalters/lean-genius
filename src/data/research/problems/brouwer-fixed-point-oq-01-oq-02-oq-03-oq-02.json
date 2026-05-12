@@ -1,0 +1,286 @@
+{
+  "slug": "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02",
+  "title": "**Eliminating singular_homology_retraction_split**: This requires a complete ...",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: **Eliminating singular_homology_retraction_split**: This requires a complete ....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-11T19:15:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE — Mathlib feasibility survey for eliminating singular_homology_retraction_split. See research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02/knowledge.md.",
+    "activeApproach": "Decompose axiom into S1–S6 classical singular-homology ingredients; check Mathlib v4.26.0 coverage; identify the prism operator (topological→chain homotopy invariance) as the single missing structural piece blocking H_n(B^n) = 0.",
+    "blockers": [
+      "Mathlib v4.26.0 has no prism operator / topological homotopy invariance for singularChainComplexFunctor.",
+      "Mathlib v4.26.0 has no computation of H_{n-1}(S^{n-1}); no Mayer–Vietoris or excision in SingularHomology."
+    ],
+    "nextAction": "Session 2 next action: ACT-A scaffold — split singular_homology_retraction_split into two narrower axioms H_{n-1}_sphere_nonzero (deep, Mathlib-deferred) and H_{n-1}_ball_zero (provable once B1 lands), preserving downstream proofs. Keep total axiom count the same in this iteration; goal is structural separation, not net axiom reduction.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE complete: surveyed Mathlib v4.26.0 (lake-manifest rev 2df2f015) for the singular-homology infrastructure required to eliminate singular_homology_retraction_split. Singular chain complex / homology functors and chain-homotopy invariance are present; convex contractibility of the closed ball is present; topological homotopy invariance (prism operator) and any sphere-homology computation are missing. Sketched a 3-step ACT plan (ACT-A split-axiom scaffold; ACT-B instantiate functors and prove H_{n-1}(B^n) = 0; ACT-C upstream Mathlib prism operator).",
+    "builtItems": [],
+    "insights": [
+      "Mathlib v4.26.0 has singularChainComplexFunctor and singularHomologyFunctor on TopCat (Andrew Yang, 2025), with totally-disconnected homology computed; specializing to PUnit gives H_n(*) = 0 for n ≥ 1.",
+      "Mathlib's Homotopy.homologyMap_eq already gives chain-homotopy → homology equivalence; no need to reprove this.",
+      "Convex.contractibleSpace + convex_ball provide ContractibleSpace for the closed metric ball, so the topological half of H_n(B^n) = 0 is in hand.",
+      "The single missing structural ingredient is the prism operator (topological homotopy → chain homotopy). Without it, H_n(B^n) = 0 cannot be derived from contractibility, even though all surrounding infrastructure exists.",
+      "Even without sphere-homology computation, B1 (prism operator) alone reduces the current axiom to H_{n-1}(S^{n-1}) ≠ 0 — structurally cleaner but not yet axiom-free."
+    ],
+    "mathlibGaps": [
+      "Topological homotopy invariance of singularChainComplexFunctor (prism operator, ~100–300 line construction in Mathlib.AlgebraicTopology.SingularHomology).",
+      "Computation of H_{n-1}(S^{n-1}) ≅ ℤ (requires Mayer–Vietoris / excision / suspension or direct simplicial argument).",
+      "No Mayer–Vietoris long exact sequence in Mathlib.AlgebraicTopology.SingularHomology.",
+      "No excision theorem in Mathlib.AlgebraicTopology.SingularHomology."
+    ],
+    "nextSteps": [
+      "ACT-A: split singular_homology_retraction_split into H_{n-1}_sphere_nonzero (deep) and H_{n-1}_ball_zero (provable once prism operator exists); preserve downstream proofs in BrouwerFixedPointOQ01OQ02OQ03.lean.",
+      "ACT-B: instantiate singularChainComplexFunctor / singularHomologyFunctor at AddCommGrp / ℤ and prove H_{n-1}_ball_zero using Convex.contractibleSpace plus a temporary singular_homology_topological_homotopy_invariance named assumption (then discharge it once ACT-C lands).",
+      "ACT-C (upstream Mathlib): implement the prism operator in a new file Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance. This is the natural Mathlib contribution unblocking the rest of the elimination."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "extension"
+  ],
+  "relatedProofs": [
+    "brouwer-fixed-point",
+    "brouwer-fixed-point-oq-01",
+    "brouwer-fixed-point-oq-01-oq-02",
+    "brouwer-fixed-point-oq-01-oq-02-oq-03",
+    "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-01",
+    "brouwer-fixed-point-oq-01-oq-03",
+    "brouwer-fixed-point-oq-02",
+    "brouwer-fixed-point-oq-02-oq-01",
+    "brouwer-fixed-point-oq-02-oq-02",
+    "brouwer-fixed-point-oq-04",
+    "brouwer-fixed-point-oq-04-oq-02",
+    "brouwer-fixed-point-oq-04-oq-03",
+    "brouwer-fixed-point-oq-04-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Hatcher, Algebraic Topology, §2.1 (prism operator, p. 111–113; sphere-homology Theorem 2.13)",
+      "Bredon, Topology and Geometry, §IV.16 (Mayer–Vietoris in singular homology)"
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/AlgebraicTopology/SingularHomology/Basic.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Homology/Homotopy.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/Convex/Contractible.html"
+    ],
+    "mathlib": [
+      "Mathlib.AlgebraicTopology.SingularHomology.Basic (singularChainComplexFunctor, singularHomologyFunctor, totally-disconnected case)",
+      "Mathlib.Algebra.Homology.Homotopy (Homotopy.homologyMap_eq, HomotopyEquiv.toHomologyIso)",
+      "Mathlib.Analysis.Convex.Contractible (Convex.contractibleSpace, StarConvex.contractibleSpace)",
+      "Mathlib.Topology.Homotopy.Contractible (ContractibleSpace, Nullhomotopic)"
+    ]
+  },
+  "started": "2026-05-08T19:09:00.561Z",
+  "lastUpdate": "2026-05-11T19:15:00Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/BrouwerFixedPoint.lean",
+      "filename": "BrouwerFixedPoint.lean",
+      "lineCount": 250,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPoint.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01.lean",
+      "filename": "BrouwerFixedPointOQ01.lean",
+      "lineCount": 403,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02.lean",
+      "lineCount": 234,
+      "theoremCount": 10,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02OQ03.lean",
+      "lineCount": 172,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03OQ01.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02OQ03OQ01.lean",
+      "lineCount": 215,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ03.lean",
+      "filename": "BrouwerFixedPointOQ01OQ03.lean",
+      "lineCount": 217,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02.lean",
+      "filename": "BrouwerFixedPointOQ02.lean",
+      "lineCount": 392,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02Ext.lean",
+      "filename": "BrouwerFixedPointOQ02Ext.lean",
+      "lineCount": 204,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02Ext.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02OQ01.lean",
+      "filename": "BrouwerFixedPointOQ02OQ01.lean",
+      "lineCount": 1072,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02OQ02.lean",
+      "filename": "BrouwerFixedPointOQ02OQ02.lean",
+      "lineCount": 269,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02OQ03.lean",
+      "filename": "BrouwerFixedPointOQ02OQ03.lean",
+      "lineCount": 215,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ02Stability.lean",
+      "filename": "BrouwerFixedPointOQ02Stability.lean",
+      "lineCount": 198,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02Stability.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ04.lean",
+      "filename": "BrouwerFixedPointOQ04.lean",
+      "lineCount": 506,
+      "theoremCount": 22,
+      "axiomCount": 2,
+      "defCount": 11,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ04OQ01.lean",
+      "filename": "BrouwerFixedPointOQ04OQ01.lean",
+      "lineCount": 297,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ04OQ02.lean",
+      "filename": "BrouwerFixedPointOQ04OQ02.lean",
+      "lineCount": 520,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ04OQ03.lean",
+      "filename": "BrouwerFixedPointOQ04OQ03.lean",
+      "lineCount": 157,
+      "theoremCount": 2,
+      "axiomCount": 2,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ03.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ04OQ04.lean",
+      "filename": "BrouwerFixedPointOQ04OQ04.lean",
+      "lineCount": 406,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ04.lean"
+    }
+  ]
+}
