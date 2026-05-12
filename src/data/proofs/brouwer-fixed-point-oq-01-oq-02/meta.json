@@ -19,7 +19,7 @@
     "proofRepoPath": "Proofs/BrouwerFixedPointOQ01OQ02.lean",
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 1,
+    "axiomCount": 2,
     "mathlibDependencies": [
       {
         "theorem": "AddMonoidHom.ext",
@@ -52,9 +52,9 @@
       "13 total theorems separating algebraic core (0 axioms), ball-zero scaffold (theorem), and sphere-nonzero residual (1 axiom)"
     ],
     "dateAdded": "2026-04-04",
-    "lineCount": 295,
+    "lineCount": 375,
     "assumptions": "1 axiom: H_n_minus_1_sphere_nonzero (n ≥ 1, r : Retraction n, φ : ℤ →+ Unit) ⇒ ∃ ψ : Unit →+ ℤ, ψ.comp φ = id ℤ — encoding the deep singular-homology facts H_{n-1}(S^{n-1}) ≅ ℤ (Mathlib gap B2: no Mayer–Vietoris, no excision, no sphere homology) combined with retraction-functoriality. The companion lemma H_n_minus_1_ball_zero is provable in the mock model (Unit is trivial) and becomes the substantive theorem H_{n-1}(B^n) = 0 once the prism operator (Mathlib gap B1) is contributed. The original composite axiom singular_homology_retraction_split is preserved as a derived theorem combining the two. no_retraction_axiom appears only in a block-comment example, not as an actual axiom. The algebraic argument (Part II) is fully proved with 0 axioms.",
-    "theoremCount": 12,
+    "theoremCount": 13,
     "definitionCount": 3
   },
   "overview": {
@@ -145,12 +145,12 @@
     }
   ],
   "leanFile": {
-    "lineCount": 295,
+    "lineCount": 375,
     "path": "Proofs/BrouwerFixedPointOQ01OQ02.lean",
-    "axiomCount": 1,
+    "axiomCount": 2,
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 12
+    "theoremCount": 13
   },
   "sorries": 0
 }
