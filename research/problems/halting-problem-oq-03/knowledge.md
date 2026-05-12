@@ -280,3 +280,59 @@ S2's deliverable will be the answer to Q1–Q3 plus the API skeleton.
     Peters.
 14. Sieg, W. (2002). *Calculations by man and machine: conceptual
     analysis.* Reflections on the Foundations of Mathematics.
+
+## 5. S3 ACT-B addendum (researcher-6, 2026-05-12)
+
+### 5.1 Abstract iterated jump as a recursion-theoretic skeleton
+
+Section 8 of `RelativizedHalting.lean` adds the abstract analog of the
+Turing-jump iteration. The key intuition is that the relativized diagonal
+construction is itself a function on oracles:
+
+$$\mathrm{jumpOracle}(H, o)(n) \;=\; \lnot\, H(o, n, n).$$
+
+This map fixes $H$ and lifts an oracle to a strictly stronger oracle (in
+the abstract sense: there exists a code, namely *any* $c$, where $H$
+mispredicts $\mathrm{jumpOracle}(H, o)$ given $o$). Iterating it gives a
+chain $o, \mathrm{jumpOracle}(H, o), \mathrm{jumpOracle}^2(H, o), \ldots$
+that mirrors the classical $A, A', A'', \ldots$. The proven theorem
+`jumpIter_differs` is the abstract analog of Post 1944's strictness
+result; `no_uniform_jumpIter_predictor` is the abstract analog of "no
+single Turing-computable function decides the join $\bigoplus_n A^{(n)}$".
+
+### 5.2 Why the abstract iteration suffices as a skeleton
+
+The abstract framework deliberately does **not** define
+"Turing-computable" or "computable in" — those require either Mathlib's
+`Nat.Partrec.Code` (which is sealed; see S2 ACT-A's analysis) or a
+parallel `OracleCode` inductive (deferred to the bridge sub-OQ). Instead,
+the abstract framework states the diagonal-witness *structure* that any
+future bridge will have to instantiate. Specifically:
+
+* The bridge's "jump" operator will lift the abstract `jumpOracle` along
+  the predictor-restriction-to-`Computable_in` map: if `H` is
+  `Computable_in` `o` then `jumpOracle H o` is `Computable_in` `o'` for
+  some `o' >_T o`, and the abstract `jumpIter_differs` becomes the
+  concrete "no oracle TM with oracle $o^{(n)}$ decides $o^{(n+1)}$".
+* The bridge's "no uniform predictor" theorem will instantiate
+  `no_uniform_jumpIter_predictor` to the special case where all
+  predictors range over `Computable_in` classes, recovering the
+  classical "$\bigoplus_n \emptyset^{(n)}$ is not computable" statement.
+
+### 5.3 Open API questions (S3 — answered)
+
+* **Q5 (does `jumpIter_differs` need an extra hypothesis on `H`?)**:
+  **No**. The abstract diagonal lemma `relativized_diagonal_differs` is
+  unconditional in `H` — it holds for every total predictor `H` — so the
+  iterated form is also unconditional. The Mathlib-class version, by
+  contrast, will require `H` to be `Computable_in` the current oracle.
+
+* **Q6 (does `no_uniform_jumpIter_predictor` need a separate proof or
+  follow from S2?)**: It follows from `no_uniform_relativized_halting_oracle`
+  by specializing the outer `H` to the candidate predictor `H'` itself
+  and the outer level `n` to `0`. This is a 5-line proof in S3.
+
+* **Q7 (is `jumpIterWitness` necessary or is `jumpIter ... (n+1)`
+  enough?)**: Strictly redundant by definitional equality, but useful for
+  downstream consumers that wish to refer to "the level-`n` witness" by a
+  stable name independent of the `jumpIter` definition. Cheap to include.

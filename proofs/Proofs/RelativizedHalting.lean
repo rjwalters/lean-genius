@@ -11,12 +11,12 @@ can correctly decide its own halting problem. This is the Lean target
 stated formally below as `no_relativized_halting_oracle` and packaged in the
 oracle-class form `relativized_halting_undecidable`.
 
-## Scope (S2 ACT-A, fresh-slug iteration, researcher-10, 2026-05-12)
+## Scope (S2 ACT-A + S3 ACT-B, researcher-10 then researcher-6, 2026-05-12)
 This file is intentionally **zero-import** (matching the parent
 `Proofs.HaltingProblem`). It establishes the diagonal core of sub-goal OQ-03a
 at the abstract `Nat -> Nat -> Bool` level. Concretely:
 
-* Definitions:
+* Definitions (S2):
     * `RelativizedHaltingPredictor` — an oracle-aware halting predictor,
       modelled as `(Nat -> Bool) -> Nat -> Nat -> Bool`.
     * `relativizedDiagonalBehavior` — the relativized analog of the
@@ -24,7 +24,7 @@ at the abstract `Nat -> Nat -> Bool` level. Concretely:
     * `Decides_in` — the abstract oracle-class membership predicate:
       "predictor `H` decides relativized halting for oracle `o`".
 
-* Theorems (all proved, no sorries):
+* Theorems (S2; all proved, no sorries):
     * `relativized_diagonal_differs` — for every oracle `o`, predictor `H`,
       and code `n`, the relativized diagonal differs from `H` at `(n, n)`.
     * `no_relativized_halting_oracle` — the contradiction form of OQ-03a.
@@ -33,6 +33,25 @@ at the abstract `Nat -> Nat -> Bool` level. Concretely:
     * `relativized_collapses_to_classical_at_trivial_oracle` — sanity check
       that the `o = fun _ => false` specialization of the relativized
       diagonal recovers the parent's `diagonalBehavior`.
+    * `no_uniform_relativized_halting_oracle` — no single predictor decides
+      relativized halting uniformly across every oracle.
+
+* Definitions and theorems added in S3 ACT-B (abstract iterated jump, all
+  proved, no sorries):
+    * `jumpOracle` — abstract analog of the classical Turing jump
+      `A ↦ A'`, taking `(H, o)` to the diagonal-witness oracle.
+    * `jumpIter` — n-fold iteration of `jumpOracle`, abstract analog of
+      the chain `A, A', A'', ...` of iterated Turing jumps.
+    * `jumpIter_zero`, `jumpIter_succ` — definitional equations.
+    * `jumpIter_differs` — at every level `n` and every code `c`, the
+      oracle at level `n+1` differs from `H`'s prediction at the diagonal
+      of the level-`n` oracle. Abstract analog of Post 1944.
+    * `jumpIter_halting_undecidable` — relativized halting is undecidable
+      at every jump level.
+    * `no_uniform_jumpIter_predictor` — no predictor uniformly decides
+      relativized halting across the entire jump iteration (free `H, o₀, n`).
+    * `jumpIterWitness`, `jumpIterWitness_differs` — named alias for the
+      level-`(n+1)` diagonal witness, for downstream reuse.
 
 ## Out of scope (deferred to future iterations)
 * The Mathlib-`Nat.Partrec.Code` bridge. State.md S2 proposed parameterizing
@@ -210,10 +229,112 @@ theorem relativizedDiagonalWitness_eq (H : RelativizedHaltingPredictor)
     (o : Nat → Bool) :
     relativizedDiagonalWitness H o = relativizedDiagonalBehavior H o := rfl
 
+/-! ### Section 8. Abstract iterated jump (Post's hierarchy at the abstract level)
+
+Classically, the Turing jump `A ↦ A'` lifts to a strictly increasing iteration
+`A, A', A'', ...` whose limit defines the arithmetical hierarchy
+(Post 1944; Soare 1987, ch. III). At the abstract
+`(Nat → Bool) → Nat → Nat → Bool` level used in Sections 1–7, the analog of
+the Turing jump is the *diagonal-witness map*: given a predictor `H` and a
+current oracle `o`, emit the new oracle `n ↦ !(H o n n)` against which `H`
+cannot decide its own relativized halting.
+
+This section defines `jumpOracle`, iterates it as `jumpIter`, and proves that
+each iteration strictly diagonalizes against `H`. No predictor uniformly
+decides relativized halting at every level of the iteration.
+
+The full Mathlib-class Turing-jump construction (a parallel `OracleCode`
+inductive + a lift to a `Computable_in` class) is deferred to a follow-on
+sub-OQ `halting-problem-oq-03-bridge`.
+-/
+
+/-- The abstract jump of an oracle `o` under predictor `H`: the new oracle
+`n ↦ !(H o n n)`, definitionally equal to `relativizedDiagonalBehavior H o`.
+This is the abstract analog of the classical Turing jump `A ↦ A'`. -/
+def jumpOracle (H : RelativizedHaltingPredictor) (o : Nat → Bool) : Nat → Bool :=
+  relativizedDiagonalBehavior H o
+
+/-- The n-fold iterated jump of an oracle `o₀` under predictor `H`. Abstract
+analog of the chain `A, A', A'', ...` of iterated Turing jumps. -/
+def jumpIter (H : RelativizedHaltingPredictor) :
+    (Nat → Bool) → Nat → (Nat → Bool)
+  | o₀, 0 => o₀
+  | o₀, n + 1 => jumpOracle H (jumpIter H o₀ n)
+
+@[simp] theorem jumpIter_zero (H : RelativizedHaltingPredictor)
+    (o₀ : Nat → Bool) : jumpIter H o₀ 0 = o₀ := rfl
+
+@[simp] theorem jumpIter_succ (H : RelativizedHaltingPredictor)
+    (o₀ : Nat → Bool) (n : Nat) :
+    jumpIter H o₀ (n + 1) = jumpOracle H (jumpIter H o₀ n) := rfl
+
+/-- **Each jump level strictly diagonalizes against `H`.** At every level
+`n` and every code `c`, the oracle at level `n+1` differs from `H`'s
+prediction at the diagonal of the level-`n` oracle. Abstract analog of
+Post 1944's `A' ∉ Comp(A)` at the diagonal-witness level. -/
+theorem jumpIter_differs (H : RelativizedHaltingPredictor)
+    (o₀ : Nat → Bool) (n c : Nat) :
+    jumpIter H o₀ (n + 1) c ≠ H (jumpIter H o₀ n) c c := by
+  show jumpOracle H (jumpIter H o₀ n) c ≠ H (jumpIter H o₀ n) c c
+  exact relativized_diagonal_differs H (jumpIter H o₀ n) c
+
+/-- **Relativized halting is undecidable at every jump level.** For every
+starting oracle `o₀`, every level `n`, and every predictor `H'`, there is a
+witness behavior at oracle level `n` that `H'` mispredicts at every code.
+This is the level-`n` analog of `relativized_halting_undecidable` (which is
+the level-0 case after unfolding `jumpIter_zero`). -/
+theorem jumpIter_halting_undecidable (H : RelativizedHaltingPredictor)
+    (o₀ : Nat → Bool) (n : Nat) :
+    ∀ H' : RelativizedHaltingPredictor,
+    ∃ behavior : Behavior, ∀ code : Nat,
+    H' (jumpIter H o₀ n) code code ≠ behavior code :=
+  fun H' => relativized_halting_undecidable (jumpIter H o₀ n) H'
+
+/-- **No predictor uniformly decides relativized halting across the jump
+iteration.** Strengthening of `no_uniform_relativized_halting_oracle`: even
+when the underlying oracle ranges over all `jumpIter H o₀ n` choices (with
+free `H, o₀, n`), no single predictor `H'` matches every behavior at every
+code. Abstract analog of "no Turing-computable function decides the join
+`⊕_n ∅^{(n)}` of all finite jumps of the empty oracle". -/
+theorem no_uniform_jumpIter_predictor :
+    ¬ ∃ H' : RelativizedHaltingPredictor,
+        ∀ (H : RelativizedHaltingPredictor) (o₀ : Nat → Bool)
+          (n : Nat) (behavior : Behavior) (code : Nat),
+        H' (jumpIter H o₀ n) code code = behavior code := by
+  intro ⟨H', hH'⟩
+  apply no_uniform_relativized_halting_oracle
+  exact ⟨H', fun o behavior code => hH' H' o 0 behavior code⟩
+
+/-- The level-`(n+1)` diagonal witness against `H` at oracle level `n`,
+exposed as an alias for downstream consumers (e.g. a future Mathlib bridge
+that wants to refer to the level-`n` witness by name without unfolding
+`jumpIter`). -/
+def jumpIterWitness (H : RelativizedHaltingPredictor) (o₀ : Nat → Bool)
+    (n : Nat) : Behavior :=
+  jumpIter H o₀ (n + 1)
+
+theorem jumpIterWitness_eq_succ (H : RelativizedHaltingPredictor)
+    (o₀ : Nat → Bool) (n : Nat) :
+    jumpIterWitness H o₀ n = jumpIter H o₀ (n + 1) := rfl
+
+theorem jumpIterWitness_differs (H : RelativizedHaltingPredictor)
+    (o₀ : Nat → Bool) (n c : Nat) :
+    jumpIterWitness H o₀ n c ≠ H (jumpIter H o₀ n) c c :=
+  jumpIter_differs H o₀ n c
+
 #check relativized_diagonal_differs
 #check no_relativized_halting_oracle
 #check relativized_halting_undecidable
 #check relativized_collapses_to_classical_at_trivial_oracle
 #check no_uniform_relativized_halting_oracle
+#check jumpOracle
+#check jumpIter
+#check jumpIter_zero
+#check jumpIter_succ
+#check jumpIter_differs
+#check jumpIter_halting_undecidable
+#check no_uniform_jumpIter_predictor
+#check jumpIterWitness
+#check jumpIterWitness_differs
 
 end RelativizedHalting
