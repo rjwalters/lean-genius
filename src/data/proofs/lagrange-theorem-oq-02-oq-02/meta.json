@@ -201,6 +201,14 @@
   ],
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Class-Equation Blueprint and Tags",
+      "startLine": 1,
+      "endLine": 47,
+      "summary": "Lines 1–2 import Mathlib and the parent file Proofs.LagrangeTheoremOQ02. Lines 4–37 are a 34-line block comment that introduces the class equation $|G| = |Z(G)| + \\sum [G:C_G(x)]$, the four-step proof chain (conjugacy partition → orbit-stabilizer → singletons-are-central → split), the three key applications (p-group center, order-$p^2$ abelian, Sylow $pq$), the prerequisite hierarchy Lagrange → Orbit-Stabilizer → Burnside → Class Equation → p-Groups, and references to Dummit & Foote §4.3 and Rotman §2.5. Lines 39–47 set `maxHeartbeats 800000`, open the namespace, open Subgroup/ConjClasses/MulAction, and lead into the Part I banner.",
+      "mathContext": "Class equation: $|G| = |Z(G)| + \\sum_{[x] \\text{ non-central}} [G : C_G(x)]$. The center $Z(G) = \\{x \\in G : \\forall g, gx = xg\\}$ contributes singleton classes; each non-central conjugacy class $[x]$ has size $[G : C_G(x)]$ by orbit-stabilizer applied to the conjugation action."
+    },
+    {
       "id": "class-equation-main",
       "title": "The Class Equation",
       "startLine": 55,
