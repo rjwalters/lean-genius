@@ -11,7 +11,7 @@ can correctly decide its own halting problem. This is the Lean target
 stated formally below as `no_relativized_halting_oracle` and packaged in the
 oracle-class form `relativized_halting_undecidable`.
 
-## Scope (S2 ACT-A + S3 ACT-B, researcher-10 then researcher-6, 2026-05-12)
+## Scope (S2 ACT-A + S3 ACT-B + S5 ACT-D + S6, 2026-05-12)
 This file is intentionally **zero-import** (matching the parent
 `Proofs.HaltingProblem`). It establishes the diagonal core of sub-goal OQ-03a
 at the abstract `Nat -> Nat -> Bool` level. Concretely:
@@ -52,6 +52,23 @@ at the abstract `Nat -> Nat -> Bool` level. Concretely:
       relativized halting across the entire jump iteration (free `H, o₀, n`).
     * `jumpIterWitness`, `jumpIterWitness_differs` — named alias for the
       level-`(n+1)` diagonal witness, for downstream reuse.
+
+* Section 9 (S5 ACT-D, semigroup law, all proved, no sorries):
+    * `jumpIter_compose` — `jumpIter H o₀ (m + n) = jumpIter H (jumpIter
+      H o₀ m) n`. Abstract analog of `(A^(m))^(n) = A^(m+n)`.
+
+* Section 10 (S6, step dichotomy and flip characterization, all
+  proved, no sorries):
+    * `jumpIter_succ_apply` — rfl reduction lemma exposing
+      `jumpIter (n+1) c = Bool.not (H (jumpIter n) c c)`.
+    * `jumpIter_step_dichotomy` — at every step and code, the jump
+      iteration either preserves or flips the Boolean value.
+    * `jumpIter_step_flip_iff` — consecutive levels differ at code `c`
+      iff `H (jumpIter H o₀ n) c c = jumpIter H o₀ n c`. Abstract
+      Boolean analog of Post 1944's strictness condition pinned to a
+      specific code.
+    * `jumpIter_step_stable_of_self_disagree` — disagreement at the
+      c-diagonal yields step-wise stability at `c`.
 
 ## Out of scope (deferred to future iterations)
 * The Mathlib-`Nat.Partrec.Code` bridge. State.md S2 proposed parameterizing
@@ -349,6 +366,111 @@ theorem jumpIter_compose (H : RelativizedHaltingPredictor)
         jumpOracle H (jumpIter H (jumpIter H o₀ m) k)
     rw [ih]
 
+/-! ### Section 10. Step dichotomy and flip characterization
+
+Section 8's `jumpIter_differs` witnesses that `jumpIter H o₀ (n + 1) c` is
+always different from `H (jumpIter H o₀ n) c c` — the diagonal-against-`H`
+property at every step. The S5 bridge collapse result shows that when `H`
+is oracle-blind (an embedded classical predictor), every level ≥ 1 of the
+jump tower is the *same* function. The two results suggest a richer
+question: *when* are consecutive levels of `jumpIter` actually distinct at
+a particular code `c`?
+
+This section characterizes the answer:
+
+* **Boolean dichotomy.** At every step and every code, the value either
+  stays the same or flips (`jumpIter_step_dichotomy`). There is no other
+  option, because `jumpIter (n+1) c = !(H (jumpIter n) c c)` is a Boolean
+  expression equal to one of `jumpIter n c` and `!(jumpIter n c)`.
+
+* **Flip characterization.** Consecutive levels differ at code `c` iff
+  the predictor `H` *agrees with the current oracle's value at the
+  diagonal of `c`* (`jumpIter_step_flip_iff`). This is the abstract
+  Boolean version of Post 1944's strictness condition: classical
+  strictness `A < A'` says some oracle-class member of `A'` is not in
+  `A`; the abstract analog at a fixed code is that the predictor
+  confirms the current oracle's value, which (because the next-level
+  oracle is the negation of `H`'s diagonal) forces the next level to
+  flip at that code.
+
+* **Stability under disagreement.** The contrapositive in positive form
+  (`jumpIter_step_stable_of_self_disagree`): disagreement at the
+  c-diagonal yields step-wise stability at `c`.
+
+The S5 collapse theorem `jumpIter_embedClassical_succ_eq_classicalDiagonal`
+is the contrapositive shadow at the function level: for an embedded
+classical predictor (oracle-blind), no agreement code exists at any level
+≥ 1, *and the chain collapses*. The parallel S6-light PR #18114 packages
+the existence direction: a non-degenerate predictor (`IsNonDegenerate H`)
+yields a strict-step inequality `jumpIter (n+1) ≠ jumpIter n` as
+functions, from a level-`n` agreement witness. This section is
+strict in the per-code direction; PR #18114 is strict at the function
+level under a global non-degeneracy hypothesis.
+-/
+
+/-- The reduction lemma exposing the next-level value of the jump tower.
+`rfl` modulo unfolding `jumpIter`, `jumpOracle`, and
+`relativizedDiagonalBehavior`. Stating it explicitly makes the boolean
+reasoning in Section 10 less syntactically fragile. -/
+theorem jumpIter_succ_apply (H : RelativizedHaltingPredictor)
+    (o₀ : Nat → Bool) (n c : Nat) :
+    jumpIter H o₀ (n + 1) c = Bool.not (H (jumpIter H o₀ n) c c) := rfl
+
+/-- **Step dichotomy.** Every step of `jumpIter` at code `c` either
+preserves the value at `c` or flips it. There is no third option,
+because `jumpIter (n+1) c = Bool.not (H (jumpIter n) c c)` is a Boolean.
+Note: `cases h : x` substitutes `x` in the goal; the 4 cases reduce to
+closed Boolean disjunctions, dispatched by `decide`. -/
+theorem jumpIter_step_dichotomy (H : RelativizedHaltingPredictor)
+    (o₀ : Nat → Bool) (n c : Nat) :
+    jumpIter H o₀ (n + 1) c = jumpIter H o₀ n c
+      ∨ jumpIter H o₀ (n + 1) c = Bool.not (jumpIter H o₀ n c) := by
+  rw [jumpIter_succ_apply]
+  cases hH : H (jumpIter H o₀ n) c c <;>
+    cases hJ : jumpIter H o₀ n c <;> decide
+
+/-- **Flip characterization.** Consecutive levels of `jumpIter` differ at
+code `c` iff the predictor `H` agrees with the current oracle's value at
+the diagonal of `c`. Abstract Boolean analog of Post 1944's strictness
+condition pinned at a specific code. -/
+theorem jumpIter_step_flip_iff (H : RelativizedHaltingPredictor)
+    (o₀ : Nat → Bool) (n c : Nat) :
+    jumpIter H o₀ (n + 1) c ≠ jumpIter H o₀ n c
+      ↔ H (jumpIter H o₀ n) c c = jumpIter H o₀ n c := by
+  rw [jumpIter_succ_apply]
+  constructor
+  · intro hne
+    cases hH : H (jumpIter H o₀ n) c c
+    · cases hJ : jumpIter H o₀ n c
+      · rfl
+      · exfalso; apply hne; rw [hH, hJ]; rfl
+    · cases hJ : jumpIter H o₀ n c
+      · exfalso; apply hne; rw [hH, hJ]; rfl
+      · rfl
+  · intro hAg
+    rw [hAg]
+    cases jumpIter H o₀ n c
+    · decide
+    · decide
+
+/-- **Stability under self-disagreement.** If the predictor `H` disagrees
+with the current oracle's value at the diagonal of `c`, the next jump
+level *preserves* the value at `c`. Equivalent to the contrapositive of
+`jumpIter_step_flip_iff`; convenient as a positive equality statement
+for downstream consumers (e.g. constant-tower lemmas). -/
+theorem jumpIter_step_stable_of_self_disagree (H : RelativizedHaltingPredictor)
+    (o₀ : Nat → Bool) (n c : Nat)
+    (h : H (jumpIter H o₀ n) c c ≠ jumpIter H o₀ n c) :
+    jumpIter H o₀ (n + 1) c = jumpIter H o₀ n c := by
+  rw [jumpIter_succ_apply]
+  cases hH : H (jumpIter H o₀ n) c c
+  · cases hJ : jumpIter H o₀ n c
+    · exact absurd (hH.trans hJ.symm) h
+    · rfl
+  · cases hJ : jumpIter H o₀ n c
+    · rfl
+    · exact absurd (hH.trans hJ.symm) h
+
 #check relativized_diagonal_differs
 #check no_relativized_halting_oracle
 #check relativized_halting_undecidable
@@ -364,5 +486,9 @@ theorem jumpIter_compose (H : RelativizedHaltingPredictor)
 #check jumpIterWitness
 #check jumpIterWitness_differs
 #check jumpIter_compose
+#check jumpIter_succ_apply
+#check jumpIter_step_dichotomy
+#check jumpIter_step_flip_iff
+#check jumpIter_step_stable_of_self_disagree
 
 end RelativizedHalting
