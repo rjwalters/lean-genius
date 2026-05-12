@@ -2505,6 +2505,86 @@ lemma applyFlip_eq_iff (s : SignFlip) (v : Fin 4 → ℤ) :
     · rw [if_pos hsi, h i hsi]; ring
     · rw [if_neg hsi]
 
+/-- **(S18c-orbit precursor)** Sign-flip stabilizer cardinality.
+
+    For any `v : Fin 4 → ℤ`, the stabilizer of `v` under the sign-flip
+    action `applyFlip` has cardinality `2 ^ k`, where `k` is the number
+    of zero coordinates of `v`:
+
+      `|{ s : SignFlip // applyFlip s v = v }| = 2 ^ |{ i : Fin 4 | v i = 0 }|`.
+
+    Combined with the orbit-stabilizer theorem
+    `MulAction.orbit_card_dvd_of_finite`, this yields the sign-flip
+    orbit cardinality `16 / 2^k = 2^(4-k) = 2^(# nonzero coords of v)`.
+    For solutions to `sumSq v = n` with `n > 0`, at least one
+    coordinate is nonzero (otherwise `sumSq v = 0 ≠ n`), so the
+    sign-flip orbit has cardinality at least 2.
+
+    The 8-divisibility target `orbitCard_dvd_eight_of_pos_target_decl`
+    additionally needs the permutation-side stabilizer count and a
+    case analysis on the zero/coincidence pattern of
+    `(|v 0|, |v 1|, |v 2|, |v 3|)` (deferred to subsequent S18c
+    iterations). This lemma supplies the sign-flip half of that
+    count via a direct bijection between the stabilizer and
+    `({ i : Fin 4 // v i = 0 } → Bool)`: restricting to zero
+    coordinates is a free choice (any flip of a zero coordinate
+    leaves the tuple fixed), while the stabilizer condition forces
+    `s i = false` at every nonzero coordinate (by `applyFlip_eq_iff`).
+
+    Spec: `s18-eight-divisibility-spec.md §3.8`; precursor to S18c
+    orbit-cardinality argument. -/
+lemma signFlipStabilizer_card (v : Fin 4 → ℤ) :
+    Fintype.card { s : SignFlip // applyFlip s v = v } =
+      2 ^ (Finset.univ.filter (fun i : Fin 4 => v i = 0)).card := by
+  classical
+  -- Construct an explicit equivalence
+  --   stabilizer ≃ ({ i : Fin 4 // v i = 0 } → Bool)
+  -- by restricting `s` to zero coordinates (the nonzero coordinates
+  -- carry no information because the stabilizer condition forces
+  -- `s i = false` there).
+  -- Helper: extend a function on zero coords to a SignFlip by `false`.
+  let ext_of_zero : ({ i : Fin 4 // v i = 0 } → Bool) → SignFlip :=
+    fun f i => if h : v i = 0 then f ⟨i, h⟩ else false
+  have ext_in_stab : ∀ f, applyFlip (ext_of_zero f) v = v := by
+    intro f
+    rw [applyFlip_eq_iff]
+    intro i hi
+    by_cases h : v i = 0
+    · exact h
+    · -- nonzero coord ⇒ ext_of_zero f i = false; contradicts hi : ... = true
+      have : ext_of_zero f i = false := by
+        change (if h' : v i = 0 then f ⟨i, h'⟩ else false) = false
+        exact dif_neg h
+      rw [this] at hi
+      exact (Bool.false_ne_true hi).elim
+  let e : { s : SignFlip // applyFlip s v = v } ≃ ({ i : Fin 4 // v i = 0 } → Bool) :=
+  { toFun := fun s ⟨i, _⟩ => s.val i
+    invFun := fun f => ⟨ext_of_zero f, ext_in_stab f⟩
+    left_inv := by
+      rintro ⟨s, hs⟩
+      apply Subtype.ext
+      funext i
+      change ext_of_zero (fun ⟨j, _⟩ => s j) i = s i
+      change (if h : v i = 0 then s i else false) = s i
+      by_cases h : v i = 0
+      · rw [dif_pos h]
+      · rw [dif_neg h]
+        -- need s i = false from hs + h.
+        -- `Bool.eq_false_or_eq_true` returns `s i = true ∨ s i = false`.
+        rcases Bool.eq_false_or_eq_true (s i) with hsi | hsi
+        · -- case s i = true: contradicts h via applyFlip_eq_iff
+          exact absurd (((applyFlip_eq_iff s v).mp hs) i hsi) h
+        · -- case s i = false: directly close
+          exact hsi.symm
+    right_inv := by
+      intro f
+      funext ⟨i, hi⟩
+      change ext_of_zero f i = f ⟨i, hi⟩
+      change (if h : v i = 0 then f ⟨i, h⟩ else false) = f ⟨i, hi⟩
+      rw [dif_pos hi] }
+  rw [Fintype.card_congr e, Fintype.card_fun, Fintype.card_bool,
+      Fintype.card_subtype]
+
 /-- Sign-flip action is a bijection on `Fin 4 → ℤ`, with itself as inverse
     (by involutivity). -/
 lemma applyFlip_bijective (s : SignFlip) :
