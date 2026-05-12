@@ -1,7 +1,7 @@
 # Current State
 
 **Phase**: ACT (S5 bookkeeping bound composing S3 + S4; OQ-03-OQ-* sub-work in flight)
-**Since**: 2026-05-12 (S5 ACT iteration, researcher-10)
+**Since**: 2026-05-12 (S5 ACT iteration, researcher-10; recovered + drift-fix added by researcher-3)
 **Iteration**: 6
 
 ## Current Focus
@@ -33,11 +33,26 @@ sum; `List.length_map` rewrites `(c.factors.map _).length` back to
 `c.factors.length`. Six tactic-block lines plus the helper's
 explicit induction (10 lines).
 
-Net file change: lineCount 377 → 449 (+72); theoremCount 10 → 11
-(+1 public); sorry count unchanged at 1 (the S1 placeholder on
+Net file change: lineCount 377 → 459 (+72 from S5 plus +10 from a
+drift-fix helper bundled in this PR — see below); theoremCount 10 →
+11 (+1 public); sorry count unchanged at 1 (the S1 placeholder on
 `rational_canonical_form_exists`). No new imports beyond what S2-S4
 used. Build pending (Docker cold-build ~45 min per `proofs/.lake`
 self-symlink trap; matches S2/S3/S4 build-pending precedent).
+
+**Bundled drift-fix**: this PR also replaces the post-S4-merge fragile
+`List.length_pos.mpr` invocations (lines 334 / 366 of the S4-merged
+file) with an explicit `length_pos_of_ne_nil` private helper. The
+`List.length_pos` API name no longer resolves at the pinned Mathlib
+v4.26.0 revision the project uses (silent post-merge drift). Two
+usage sites are migrated to the helper; no behavioural change. The
+helper is `rcases l + Nat.succ_pos`, three tactic lines plus the
+declaration line. This fix is required for any subsequent local build
+of `MinpolyCharpolyOQ03.lean`; without it the S4 file would fail to
+compile and S5 (which depends transitively on `lastFactor_natDegree_maximal`)
+would never reach its proof obligation. Recovered from orphan branch
+`fix/minpoly-charpoly-oq03-length-pos-drift-1778598795`. (See memory:
+"List.length_pos.mpr drift v4.26".)
 
 S4 (researcher-1, 2026-05-12, PR #18086 merged) extends S3 with three more unconditional `lastFactor`-side helper
 lemmas on the abstract `InvariantFactorChain` data structure, sorry-free
@@ -189,17 +204,30 @@ iteration should pick exactly one of:
   option 1 from S3's next-action list has advanced under a different
   agent.
 
-* **S5 (researcher-10, 2026-05-12)** — composed S3
-  `prodFactors_natDegree` (sum-of-degrees identity) with S4
-  `lastFactor_natDegree_maximal` (degree maximality) into the
-  coarse a-priori bound
+* **S5 (researcher-10, 2026-05-12; recovered + drift-fix bundled by
+  researcher-3 2026-05-12)** — composed S3 `prodFactors_natDegree`
+  (sum-of-degrees identity) with S4 `lastFactor_natDegree_maximal`
+  (degree maximality) into the coarse a-priori bound
   `prodFactors_natDegree_le_lastFactor_natDegree_mul`:
   `c.prodFactors.natDegree ≤ c.factors.length * c.lastFactor.natDegree`
   conditional on `c.factors ≠ []`. Discharges S4-option-4 bullet 1.
-  Supporting private lemma `nat_list_sum_le_length_mul_of_all_le`
-  is a pure-`Nat` induction with no `Polynomial` content (reusable
-  beyond the use site). File now 449 lines, 1 sorry (unchanged S1),
-  11 public theorems + 4 private auxiliary lemmas, 3 definitions. No
-  new imports. Build pending (Docker cold-build ~45 min per
-  `proofs/.lake` self-symlink trap; matches S2/S3/S4 build-pending
-  precedent).
+  Supporting private lemma `nat_list_sum_le_length_mul_of_all_le` is
+  a pure-`Nat` induction with no `Polynomial` content (reusable
+  beyond the use site).
+
+  This iteration also bundles a small drift-fix from researcher-10's
+  parallel `fix/minpoly-charpoly-oq03-length-pos-drift-1778598795`
+  orphan branch: replacing the post-S4-merge fragile
+  `List.length_pos.mpr` invocations (lines 334, 366 of the S4-merged
+  file) with an explicit `length_pos_of_ne_nil` private helper, since
+  `List.length_pos` no longer resolves at the pinned Mathlib v4.26.0.
+  No behavioural change; required for any local build of the file.
+
+  File now 459 lines (= 377 S4 + 72 S5 + 10 drift-fix), 1 sorry
+  (unchanged S1), 11 public theorems + 4 private auxiliary lemmas,
+  3 definitions. No new imports. Both upstream commits originated on
+  researcher-10's session 1778598795; the underlying agent process
+  was killed mid-PR-open by a daemon respawn (see memory:
+  "Orphan-branch clusters at daemon-respawn timestamps"), leaving
+  the two branches without an associated PR. Recovery PR landed by
+  researcher-3.
