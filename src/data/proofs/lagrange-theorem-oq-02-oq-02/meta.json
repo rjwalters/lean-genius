@@ -54,6 +54,16 @@
         "theorem": "ConjClasses.mem_carrier_iff_isConj",
         "description": "Membership in conjugacy class carrier via IsConj",
         "module": "Mathlib.Algebra.Group.Conj"
+      },
+      {
+        "theorem": "Subgroup.index_comap_of_surjective",
+        "description": "For surjective f : G →* H and K ≤ H: [G : f⁻¹(K)] = [H : K]. The key arithmetic bridge from orbit cardinality (via ConjAct G) to centralizer index in G.",
+        "module": "Mathlib.GroupTheory.Index"
+      },
+      {
+        "theorem": "ConjAct.toConjAct",
+        "description": "The canonical isomorphism G ≃* ConjAct G; surjective, so its preimage of a subgroup has the same index.",
+        "module": "Mathlib.GroupTheory.ConjAct"
       }
     ],
     "originalContributions": [
@@ -69,13 +79,14 @@
     "historicalContext": "The class equation is one of the fundamental structural results in finite group theory. Cauchy (1845) proved that prime-order elements exist; this was generalized by Jordan (1871) and Sylow (1872) into the complete conjugacy class decomposition. The equation |G| = |Z(G)| + Σ [G : C_G(xᵢ)] expresses that G is partitioned into conjugacy classes — singleton classes for central elements and non-singleton classes for the rest. The size of each class [G : C_G(x)] follows from the orbit-stabilizer theorem applied to the conjugation action g · x = gxg⁻¹ (stabilizer = centralizer C_G(x), orbit = conjugacy class).\n\nThe class equation is the engine behind p-group theory: since p | |G| and each non-central class has size divisible by p, the equation gives p | |Z(G)|. For nontrivial p-groups, this means Z(G) ≠ {e}. From there, groups of order p² are abelian (G/Z(G) has order 1 or p; if p, then cyclic, making G abelian). This chain ultimately leads to the classification of groups of order pq and the Sylow theorems as the deeper structure behind the equation.",
     "problemStatement": "**The Open Question**: Can the class equation |G| = |Z(G)| + Σ_{non-central conjugacy classes [x]} [G : C_G(x)] be formally proved in Lean 4, establishing the orbit-centralizer formula and its p-group corollaries?\n\n**Answer**: Yes, completely. The class equation comes from Mathlib's `Group.nat_card_center_add_sum_card_noncenter_eq_card`. The orbit-centralizer formula `|[x]| = [G : C_G(x)]` is fully proved: orbit ≃ (ConjAct G)/stabilizer by orbit-stabilizer, then (ConjAct G)/stabilizer card equals G/centralizer card via `Subgroup.index_comap_of_surjective` applied to the isomorphism `ConjAct.toConjAct : G ≃* ConjAct G`. All p-group corollaries proved from Mathlib.",
     "text": "The class equation |G| = |Z(G)| + Σ [G : C_G(x)] emerges from the orbit-stabilizer theorem applied to conjugation. The proof chain:\n\n(1) **Partition**: G is partitioned into conjugacy classes via `ConjClasses.mk : G → ConjClasses G`\n(2) **Orbit-stabilizer**: |conjugacy class of x| = [G : C_G(x)] (by orbit-stabilizer with stabilizer = centralizer)\n(3) **Central ↔ singleton**: a conjugacy class has exactly one element iff the element is central (gxg⁻¹ = x for all g iff gx = xg for all g)\n(4) **Split**: |G| = (sum of singleton classes) + (sum of non-singleton classes) = |Z(G)| + Σ [G : C_G(x)]",
-    "proofStrategy": "The class equation is extracted directly from Mathlib's `Group.nat_card_center_add_sum_card_noncenter_eq_card` in `Mathlib.GroupTheory.ClassEquation`. The orbit-centralizer formula is established via: (a) `conj_orbit_eq_carrier` connecting orbits under `ConjAct G` to conjugacy class carriers, and (b) `conj_stabilizer_eq_centralizer` identifying the conjugation stabilizer with the centralizer. The connection of orbit size to centralizer index (one sorry) uses the orbit-stabilizer theorem `|orbit| × |stabilizer| = |G|` with the centralizer index = |G|/|centralizer|.",
+    "proofStrategy": "The class equation is extracted directly from Mathlib's `Group.nat_card_center_add_sum_card_noncenter_eq_card` in `Mathlib.GroupTheory.ClassEquation`. The orbit-centralizer formula is established via: (a) `conj_orbit_eq_carrier` connecting orbits under `ConjAct G` to conjugacy class carriers, and (b) `conj_stabilizer_eq_centralizer` identifying the conjugation stabilizer with the centralizer. The arithmetic bridge from `Nat.card (orbit)` to `Subgroup.index (centralizer)` is supplied by `Subgroup.index_comap_of_surjective` applied to the surjective `ConjAct.toConjAct : G ≃* ConjAct G` — the centralizer in `G` is exactly the comap of the conjugation stabilizer in `ConjAct G`, so their indices agree. This closes the file with 0 sorries.",
     "keyInsights": [
       "The class equation factors into two parts: (1) the total sum over all classes equals |G| (partition), and (2) singleton classes correspond exactly to central elements (fixed points of conjugation).",
       "The conjugation action of `ConjAct G` on G has: orbit of x = conjugacy class of x, and stabilizer of x = centralizer C_G(x). This is the quantitative engine: |[x]| = |G| / |C_G(x)| = [G : C_G(x)].",
       "For p-groups: each non-central class has p | |[x]| (since |[x]| | |G| = p^k and |[x]| > 1). Combined with p | |G|, the class equation mod p gives p | |Z(G)|.",
       "A₄ (order 12) has 4 conjugacy classes of sizes 1+3+4+4 = 12, with trivial center. This directly shows A₄ is not a p-group, consistent with 12 = 4·3.",
-      "The unique sorry (card_conjClass_eq_centralizer_index) is purely technical: the mathematical fact |[x]| = [G:C_G(x)] is well-established; it needs careful manipulation of Nat.card and subgroup index arithmetic."
+      "The orbit-centralizer arithmetic identity `|[x]| = [G : C_G(x)]` is closed using `Subgroup.index_comap_of_surjective` applied to `ConjAct.toConjAct`: rather than chase a `Nat.card (orbit) × Nat.card (stabilizer) = Nat.card G` argument, the centralizer is recognized as the comap of the conjugation stabilizer under a surjective group iso, and indices transfer for free. This avoids the divisibility shuffles that typically appear in orbit-stabilizer proofs over `Nat`.",
+      "The proof of A₄'s non-abelianness uses `decide` (kernel-level evaluation) while the conjugacy class count uses `native_decide` (compiled). The split reflects a workflow tradeoff: `decide` is safer (no trust in compiled output) but slower; `native_decide` is needed for the larger fintype enumeration of conjugacy classes."
     ]
   },
   "leanFile": {
@@ -140,8 +151,8 @@
       "title": "Orbit-Stabilizer for Conjugation",
       "startLine": 72,
       "endLine": 165,
-      "summary": "conj_orbit_eq_carrier, conj_stabilizer_eq_centralizer, card_conjClass_eq_centralizer_index (with 1 sorry). Connects ConjAct G orbits to conjugacy class carriers and identifies the stabilizer as the centralizer C_G(x).",
-      "mathContext": "Conjugation action: $(g, x) \\mapsto gxg^{-1}$. Orbit of $x$ = conjugacy class $[x]$. Stabilizer of $x$ = $\\{g \\mid gxg^{-1} = x\\} = C_G(x)$ (centralizer). Orbit-stabilizer: $|[x]| = [G : C_G(x)]$. The sorry: connecting `Nat.card (orbit)` to `Subgroup.index (centralizer)` via arithmetic."
+      "summary": "conj_orbit_eq_carrier, conj_stabilizer_eq_centralizer, card_conjClass_eq_centralizer_index (0 sorries). Connects ConjAct G orbits to conjugacy class carriers, identifies the stabilizer as the centralizer C_G(x), and closes the index arithmetic via Subgroup.index_comap_of_surjective on ConjAct.toConjAct.",
+      "mathContext": "Conjugation action: $(g, x) \\mapsto gxg^{-1}$. Orbit of $x$ = conjugacy class $[x]$. Stabilizer of $x$ = $\\{g \\mid gxg^{-1} = x\\} = C_G(x)$ (centralizer). Orbit-stabilizer: $|[x]| = [G : C_G(x)]$. The arithmetic bridge: $[G : C_G(x)] = [\\text{ConjAct}\\,G : \\text{stab}_{\\text{ConjAct}\\,G}(x)]$ because $C_G(x)$ is the comap of the conjugation stabilizer under the surjective iso $\\text{ConjAct.toConjAct}$."
     },
     {
       "id": "p-groups",
@@ -158,6 +169,28 @@
       "endLine": 257,
       "summary": "A₄ class equation: 4 conjugacy classes of sizes 1+3+4+4=12 verified by native_decide. Trivial center: Z(A₄) = {e}. A₄ is not abelian (checked by native_decide). Demonstrates the class equation concretely.",
       "mathContext": "In $A_4$: $|Z(A_4)| = 1$, non-central classes: $\\{(12)(34),(13)(24),(14)(23)\\}$ (size 3) and two classes of 3-cycles (size 4 each). Class equation: $12 = 1 + 3 + 4 + 4 = 12$ ✓. Confirms $A_4$ is not a p-group ($12 = 2^2 \\cdot 3$, not a prime power)."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "LagrangeTheoremOQ02OQ02.class_equation",
+      "statement": "∀ (G : Type*) [Group G], Nat.card ↥(Subgroup.center G) + ∑ x ∈ noncenterClasses, Nat.card x.carrier = Nat.card G",
+      "description": "The class equation: the order of G decomposes as the order of the center plus the sum of non-central conjugacy class sizes. Direct application of Mathlib's `Group.nat_card_center_add_sum_card_noncenter_eq_card`."
+    },
+    {
+      "name": "LagrangeTheoremOQ02OQ02.card_conjClass_eq_centralizer_index",
+      "statement": "∀ [Group G] [Fintype G] (x : G), Nat.card (ConjClasses.mk x).carrier = (Subgroup.centralizer ({x} : Set G)).index",
+      "description": "Orbit-centralizer identity: |[x]| = [G : C_G(x)]. Closed (0 sorries) by recognizing the centralizer as the comap of the ConjAct stabilizer under the surjective ConjAct.toConjAct iso, then invoking Subgroup.index_comap_of_surjective."
+    },
+    {
+      "name": "LagrangeTheoremOQ02OQ02.center_nontrivial_of_pgroup",
+      "statement": "[Fact p.Prime] → IsPGroup p G → Nontrivial G → Nontrivial ↥(Subgroup.center G)",
+      "description": "p-group center nontriviality: a nontrivial finite p-group has a nontrivial center. Mod-p argument: the class equation gives p ∣ |Z(G)| since p divides every non-central class size."
+    },
+    {
+      "name": "LagrangeTheoremOQ02OQ02.p_sq_group_comm",
+      "statement": "[Fact p.Prime] → IsPGroup p G → Fintype.card G = p ^ 2 → ∀ a b : G, a * b = b * a",
+      "description": "Groups of order p² are abelian. Follows from center_nontrivial_of_pgroup plus the fact that G/Z(G) cyclic implies G abelian — Mathlib packages this as IsPGroup.commGroupOfCardEqPrimeSq."
     }
   ],
   "crossReferences": [
@@ -178,12 +211,13 @@
     }
   ],
   "conclusion": {
-    "summary": "The class equation |G| = |Z(G)| + Σ [G:C_G(x)] is formalized with 1 sorry (the orbit-to-centralizer-index arithmetic connection) and 0 axioms. All p-group corollaries (center nontriviality, p²-groups are abelian) are proved from Mathlib. The A₄ concrete verification confirms 4 classes of sizes 1+3+4+4=12.",
-    "implications": "The class equation is the quantitative engine of p-group theory and ultimately of the Sylow theorems. The center nontriviality argument (p | |Z(G)| when G is a p-group) is the key step in proving that p-groups are nilpotent, that groups of order p² are abelian, and in the inductive structure of the upper central series. The formalization here demonstrates that Lean 4 + Mathlib already has the class equation as a top-level theorem, reducing the proof to a simple application, while the orbit-stabilizer connection remains the subtle computational piece.",
+    "summary": "The class equation |G| = |Z(G)| + Σ [G:C_G(x)] is fully formalized with 0 sorries and 0 axioms (status: verified). All p-group corollaries (center nontriviality, p²-groups are abelian) are proved from Mathlib. The A₄ concrete verification confirms 4 classes of sizes 1+3+4+4=12 by `native_decide`.",
+    "implications": "The class equation is the quantitative engine of p-group theory and ultimately of the Sylow theorems. The center nontriviality argument (p | |Z(G)| when G is a p-group) is the key step in proving that p-groups are nilpotent, that groups of order p² are abelian, and in the inductive structure of the upper central series. The formalization here demonstrates two design lessons: (1) Mathlib already has the class equation as a top-level theorem `Group.nat_card_center_add_sum_card_noncenter_eq_card`, reducing the high-level proof to a single application; (2) the seemingly innocuous identity `|[x]| = [G : C_G(x)]` is best closed not by direct orbit-stabilizer divisibility but by recognizing $C_G(x) = (\\text{ConjAct.toConjAct})^{-1}(\\text{stab}(x))$ and invoking `Subgroup.index_comap_of_surjective`. This is a reusable pattern for any orbit-cardinality lemma involving a group iso.",
     "openQuestions": [
-      "Can card_conjClass_eq_centralizer_index be proved without sorry, completing the orbit-to-centralizer-index connection in Lean 4?",
-      "Can the class equation be used to formally prove the Burnside lemma (number of orbits = average number of fixed points) in Lean 4?",
-      "Is the p-group fixed point theorem IsPGroup.card_modEq_card_fixedPoints sufficient to recover the class equation as a special case (conjugation action fixed points = center)?"
+      "Can the class equation be used to formally prove the Burnside lemma (number of orbits = average number of fixed points) in Lean 4 using only the infrastructure developed here?",
+      "Is the p-group fixed point theorem IsPGroup.card_modEq_card_fixedPoints sufficient to recover the class equation as a special case (conjugation action fixed points = center)?",
+      "Can the `Subgroup.index_comap_of_surjective` + `ConjAct.toConjAct` pattern be packaged as a general `Subgroup.index_orbit_eq_centralizer` simp lemma for upstream contribution to Mathlib, eliminating the need for ad hoc `comap` manipulations in every conjugacy-class cardinality argument?",
+      "For infinite groups, the class equation generalizes to a (possibly transfinite) sum. Which fragments of the finite proof here transfer to `Group.Conjugacy` over an arbitrary group, and where does the cardinality argument break down (e.g., free groups, where every non-central element has uncountable conjugacy class)?"
     ]
   },
   "sorries": 0
