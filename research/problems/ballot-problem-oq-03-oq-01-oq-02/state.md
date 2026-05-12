@@ -1,11 +1,73 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 then refutes S66's "off-spine filter" replanning** and pins the target at the unfiltered `F_side_identity_aligned` exactly as stated in Helpers.lean line 15670)
+**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-12 (Session 67 / filter ablation researcher-5)
-**Iteration**: 67
+**Last Updated**: 2026-05-12 (Session 68 / c'-col residual researcher-1)
+**Iteration**: 68
+
+## Session 68 — c'-column residual on (3,2,2) and (4,3): `−(h_d − 2)` REFUTED; correct formula is `−|off-spine c-arm region|` (researcher-1, 2026-05-12)
+
+**Mode.** ANALYSIS-ONLY (no `.lean` edits).
+
+**Outcome.** Concrete `(3,2,2)`- and `(4,3)`-shape computations
+test S67's "Suggested replacement Next Action" conjecture
+`c'-column residual = −(h_d − 2) · #(non-vanishing crossings)`.
+
+**Two findings:**
+
+1. **`(3,2,2)` REFUTES `−(h_d − 2)` per-crossing scaling.**
+   `μ = (3,2,2)`, `c = (0,2)`, `c' = (2,1)`.  `h_d = 4`,
+   `h_d − 2 = 2`, but the c'-column residual equals **`−1`**,
+   not `−2`.  Computation: candidate crossings `(0,1)` and
+   `(1,1)`; `(1,1)` is **double-vanishing** (corner of `μ\c'`,
+   strict-hook descendant `(2,1)` is corner `≠ c` in `μ`), so
+   only `(0,1)` contributes, with weighted residual `2 − 3 = −1`.
+
+2. **Surviving conjecture (matches all five test diagrams):**
+   ```
+   c'-column residual = −|{(i,j) ∈ μ\c' : i < c'.1 ∧ j > c'.2}|
+                      = −(number of off-spine c-arm cells in μ\c')
+   ```
+   For `c.1 = 0` (all tests), this equals `c.2 − c'.2`.  The
+   off-spine c-arm cells each contribute `+1` to the off-spine
+   residual; the off-spine non-c-arm cells contribute pointwise
+   `0`; the c'-row residual is `0`.  Cancellation forces the
+   c'-column residual to absorb `−|c-arm region|`.
+
+**Double-vanishing crossing characterization.**  Cell
+`(i, c'.2)` with `i < c'.1` is double-vanishing iff
+`i = c'.1 − 1` AND row `i` length in `μ` equals `c'.2 + 1`.
+S57.6 prep 1's `strictHookCells_off_spine_class_at_c'`
+partition (Helpers.lean 15243) lumps all `{i < c'.1}` into
+arm-class; a refinement may be needed for the S57.7 proof to
+treat double-vanishing crossings explicitly (or, equivalently,
+S57.7's c'-column residual formula must yield 0 on the
+double-vanishing cells, which it does automatically since both
+sides vanish).
+
+**Cross-test summary (five diagrams).**
+
+| μ       | c    | c'    | h_d | (h_d−1)² | h_d(h_d−2) | #c-arm | c'-col residual |
+|---------|------|-------|-----|----------|------------|--------|-----------------|
+| (3,2)   | (0,2)| (1,1) | 3   | 4        | 3          | 1      | −1              |
+| (3,2,1) | (0,2)| (1,1) | 3   | 4        | 3          | 1      | −1              |
+| (4,2)   | (0,3)| (1,1) | 4   | 9        | 8          | 2      | −2              |
+| **(3,2,2)** | (0,2)| (2,1) | **4** | **9** | **8** | **1** | **−1** (S67 conjecture predicts −2) |
+| (4,3)   | (0,3)| (1,2) | 3   | 4        | 3          | 1      | −1              |
+
+All five match `−|c-arm region|`; only `(3,2,2)` distinguishes
+`−|c-arm region|` from `−(h_d − 2)`.
+
+**Files modified.**
+* `research/problems/ballot-problem-oq-03-oq-01-oq-02/state.md` — this entry; Next Action revised (S67's `−(h_d − 2)` formula → S68's `−|c-arm region|`).
+* `research/problems/ballot-problem-oq-03-oq-01-oq-02/sessions/2026-05-12-s07.md` — full computation tables for `(3,2,2)` and `(4,3)`, structural diagnosis, S69 candidate test diagrams.
+* `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` — iteration 67 → 68, progressSummary update.
+
+**Build status.** No `.lean` changes; no build attempted.
+Parent `BallotProblemOQ03OQ02.lean` remains broken on
+`origin/main`.
 
 ## Session 67 — Filter ablation: off-spine-restricted S57.7 fails on (3,2,1) and (4,2); unfiltered `F_side_identity_aligned` holds (researcher-5, 2026-05-12)
 
@@ -705,35 +767,70 @@ sum.
 
 2. **Sub-lemma S57.7-col — c'-column residual formula.**
    For cells `(i, c'.2) ∈ (μ\c').cells` with `i < c'.1` (case-1
-   arm-class non-vanishing crossings), use S65's
-   `hookLength_at_arm_class_case1` to relate the K-step
-   recurrences on both sides.  Identify the weighted residual
-   `∑_{i < c'.1, (i,c'.2) ∈ μ\c'} (gnwProb μ c h_μ(i,c'.2) (i,c'.2) · (h_d-1)²
-   − gnwProb (μ\c') c h'(i,c'.2) (i,c'.2) · h_d(h_d-2))`
-   as a closed form.  Test-case data: `−1` on `(3,2)` and
-   `(3,2,1)` (h_d=3, one c'-column non-vanishing crossing),
-   `−2` on `(4,2)` (h_d=4, one crossing).  **Conjecture:**
-   c'-column residual = `−(h_d − 2) · |{i < c'.1 : (i,c'.2) ∈ μ\c'}|`
-   — to be tested on `(3,2,2)` and `(4,3)` in S68 analysis.
+   arm-class crossings per S57.6 prep 1), partition further into
+   **non-vanishing** and **double-vanishing** crossings.
+
+   * **Double-vanishing crossing characterization (S68):** cell
+     `(c'.1 − 1, c'.2)` is double-vanishing iff row `c'.1 − 1`
+     in `μ` has length exactly `c'.2 + 1` (both sides yield 0
+     automatically: μ-side because its only strict-hook descendant
+     is the corner `c' ≠ c`; (μ\c')-side because it becomes a
+     corner of `μ\c'`).  Contributes 0 to the c'-column residual.
+     Cells `(i, c'.2)` with `i < c'.1 − 1` are always
+     non-vanishing crossings.
+
+   * **Non-vanishing crossings** use S65's
+     `hookLength_at_arm_class_case1` to relate K-step
+     recurrences on both sides.  The weighted residual sums to
+     ```
+     c'-column residual = −|{(i,j) ∈ μ\c' : i < c'.1 ∧ j > c'.2}|
+                        = −(c.2 − c'.2) when c.1 = 0
+     ```
+     **S68 conjecture (matches 5/5 test diagrams).**  S67's
+     prior `−(h_d − 2) · #(crossings)` conjecture is **refuted**
+     on `(3,2,2)` (h_d − 2 = 2 but residual = −1).
 
 3. **Sub-lemma S57.7-off — off-spine residual formula.**
    For cells off both spines of `c'`, identify the residual via
    S57.4's `gnwProb_succ_eq_off_spine_of_c'` K-step lift.
-   Test-case data: `+1` on `(3,2)` and `(3,2,1)`, `+2` on `(4,2)` —
-   each equal in magnitude to the c'-column residual.
+   **Refined formula (S68):**
+   ```
+   off-spine residual = +|{(i,j) ∈ μ\c' : i < c'.1 ∧ j > c'.2}|
+                      = +(c.2 − c'.2) when c.1 = 0
+   ```
+   Off-spine cells outside the c-arm quadrant
+   (`i ≥ c'.1 ∨ j ≤ c'.2`) contribute pointwise 0 to the
+   weighted residual; cells in the c-arm quadrant each contribute
+   `+1`.
 
 4. **Assembly.**  c'-row contribution (0) + c'-column (−R) +
-   off-spine (+R) = 0.  No `δ_arm`-style global integration
-   needed; the cancellation is regional and finite.
+   off-spine (+R) = 0 where `R = |off-spine c-arm region|`.  The
+   cancellation is regional and finite; no `δ_arm`-style global
+   integration needed.
 
-**Recommended Session 68: c'-column residual generalization.**
-Compute the c'-column residual on `(3,2,2)` (two c'-column
-non-vanishing crossings) and `(4,3)` to test the
-`−(h_d − 2) · #(crossings)` conjecture above.  If it holds, S57.7
-decomposes cleanly along regional boundaries with no global
-δ_arm correction.
+**Recommended Session 69: multi-crossing concentration test.**
+S68's five test diagrams all have **at most one** non-vanishing
+c'-column crossing.  Compute the c'-column residual on a diagram
+with **two or more** non-vanishing crossings (e.g.
+`μ = (4,3,3)` with `c = (0,3)`, `c' = (2,2)`, giving crossings
+`(0, 2)` and `(1, 2)` both with row lengths > 3; or
+`μ = (5,3,2)` with `c = (0,4)`, `c' = (2,1)`, giving crossings
+`(0, 1)` and `(1, 1)`).  Two possible outcomes: (a) residual
+concentrates on a single cell (likely the innermost
+`(c'.1 − 2, c'.2)` cell); (b) distributes across multiple cells.
+Either outcome refines step 2's per-cell formula for the S57.7
+proof.
 
-**Estimated (after S68 confirms the c'-column formula).**
+**Recommended Session 70: c.1 ≠ 0 test (off-spine c-arm not in row 0).**
+All five S68 test diagrams have `c.1 = 0`, which forces the
+off-spine c-arm region to be `{(0, j) : c'.2 < j ≤ c.2}` with
+size `c.2 − c'.2`.  For `c.1 ≥ 1`, the c-arm region splits across
+multiple rows, and the `|c-arm region|` formula must be verified
+geometrically rather than identified with `c.2 − c'.2`.  Candidate:
+`μ = (3,3,2)` with `c = (1,2)`, `c' = (2,1)` (`c.1 = 1`,
+`c'.1 = 2`, `c.2 = 2`, `c'.2 = 1`, case 1).
+
+**Estimated lemma sizes (after S69 + S70 confirm the formula).**
 150–250 lines for the c'-column residual lemma + ~80 lines for
 the off-spine residual lemma + ~40 lines assembly.  Total likely
 exceeds the ~15500-line Helpers.lean ceiling, forcing the
@@ -741,10 +838,10 @@ Option E3 extraction into `BallotProblemOQ03OQ01OQ02DoubleRemove.lean`
 to land first.
 
 **Risk.**  Medium.  Step 2's c'-column residual formula is the
-crux; if the `−(h_d − 2) · #(crossings)` conjecture fails on a
-larger test diagram, the framing needs adjustment but the
-fundamental structure (regional decomposition with case-1
-c'-row vanishing) should survive.
+crux; the `−|c-arm region|` form survives all S68 tests and
+the off-spine cancellation argument is now structurally clean,
+but S69's multi-crossing distribution behavior and S70's
+non-row-0 c verification are still pending.
 
 ## Historical Next Action (S57.7 off-spine filter, refuted by Session 67)
 
