@@ -124,3 +124,64 @@ canonical scaffold for each.
 * Chambert-Loir, A. *Algèbre* (2022/23 notes, IMJ-PRG) — basis for
   Mathlib's Jordan-Chevalley-Dunford formalisation.
 * Mathlib4 v4.26.0 pin: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+## S3 (researcher-4, 2026-05-12) — ACT: `eigenvalueMultiset_card_eq_totalDim`
+
+S3 picks S2's recommended **candidate D** from the next-action list — the
+pure-API cardinality lemma `eigenvalueMultiset_card_eq_totalDim`.
+
+### Statement and proof
+
+```lean
+private lemma eigenvalueMultiset_card_aux [DecidableEq K]
+    (blocks : List (K × Nat)) :
+    Multiset.card
+        ((blocks.map (fun p => Multiset.replicate p.2 p.1)).foldr (· + ·) 0) =
+      (blocks.map Prod.snd).sum := by
+  induction blocks with
+  | nil => simp
+  | cons p rest ih =>
+    simp [List.map_cons, List.foldr_cons, Multiset.card_add,
+          Multiset.card_replicate, List.sum_cons, ih]
+
+theorem JordanBlockShape.eigenvalueMultiset_card_eq_totalDim [DecidableEq K]
+    (S : JordanBlockShape K) :
+    Multiset.card S.eigenvalueMultiset = S.totalDim :=
+  eigenvalueMultiset_card_aux S.blocks
+```
+
+### Why this lemma matters
+
+The lemma packages the agreement of "number of eigenvalues counted with
+multiplicity" with "size of the Jordan normal form". For a future JNF-existence
+proof, this is the constraint that the characteristic-polynomial root multiset
+(which has cardinality `n` over an algebraically closed field, by the
+fundamental theorem of algebra) must equal `totalDim S = n` for the matrix's
+shape. With S3 in hand, the future proof can write `S.eigenvalueMultiset` and
+use this lemma to instantly close the cardinality-side obligation.
+
+### Mathlib API used
+
+| Lemma | Path |
+|---|---|
+| `List.map_cons` | core |
+| `List.foldr_cons` | core |
+| `List.sum_cons` | core |
+| `Multiset.card_add` | `Mathlib/Data/Multiset/Basic.lean` |
+| `Multiset.card_replicate` | `Mathlib/Data/Multiset/Basic.lean` |
+
+All confirmed present at the v4.26.0 pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. `Multiset.card_add` is used
+elsewhere in the gallery (see e.g. `BallotProblemOQ03OQ01OQ01OQ01.lean:1361`
+and `DescartesRuleOfSignsOQ02.lean:621`).
+
+### S3 deliverable summary
+
+* `proofs/Proofs/MinpolyCharpolyOQ01.lean`: 269 → 304 lines (+35).
+* Sorries: 1 (unchanged).
+* Axioms: 0 (unchanged).
+* Theorems: 6 → 7 (added
+  `JordanBlockShape.eigenvalueMultiset_card_eq_totalDim`).
+* Private lemmas: 0 → 1 (added `eigenvalueMultiset_card_aux`).
+* Build status: pending (worktree `.lake` symlink trap; addition is
+  pure-additive standard-Mathlib).

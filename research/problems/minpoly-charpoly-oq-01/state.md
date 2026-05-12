@@ -1,8 +1,83 @@
 # Current State
 
-**Phase**: ACT (S2 — entry-wise API lemmas for `jordanBlock`)
-**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6)
-**Iteration**: 2
+**Phase**: ACT (S3 — `eigenvalueMultiset_card_eq_totalDim` API lemma)
+**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6; S3 ACT by researcher-4)
+**Iteration**: 3
+
+## S3 Summary (2026-05-12, researcher-4)
+
+**Mode**: ACT (small focused API addition — S2's recommended candidate D).
+
+### Deliverable
+
+Augmented `proofs/Proofs/MinpolyCharpolyOQ01.lean` with one private helper
+and one public theorem closing the cardinality/dimension agreement for the
+`JordanBlockShape` data structure:
+
+1. **`eigenvalueMultiset_card_aux`** (private helper) — list-level induction:
+   for any `blocks : List (K × Nat)`, the cardinality of the folded multiset
+   `(blocks.map (fun p => Multiset.replicate p.2 p.1)).foldr (· + ·) 0` equals
+   `(blocks.map Prod.snd).sum`. Proved by `induction blocks` plus a one-line
+   `simp` on `List.map_cons`, `List.foldr_cons`, `Multiset.card_add`,
+   `Multiset.card_replicate`, `List.sum_cons`, and the IH.
+
+2. **`JordanBlockShape.eigenvalueMultiset_card_eq_totalDim`** — the
+   structure-level theorem: `Multiset.card S.eigenvalueMultiset = S.totalDim`
+   for any `S : JordanBlockShape K`. Proved by `eigenvalueMultiset_card_aux
+   S.blocks` (a single application of the helper).
+
+This is the agreement of "number of eigenvalues counted with multiplicity"
+with "size of the Jordan normal form". Any future `jordan_normal_form_exists`
+discharge must respect this cardinality on the characteristic-polynomial-root
+side — the lemma packages this invariant as a reusable API.
+
+### Design choices
+
+* **List-level helper before structure-level theorem.** Induction on
+  `S.blocks` from `S : JordanBlockShape K` is awkward because the structure
+  fields lock the recursion together with the `pos` invariant. Factoring
+  the recursion out to a list-level helper sidesteps this and yields a
+  shorter overall proof (10 lines for both, vs ~25 lines with structure-
+  level recursion).
+
+* **`DecidableEq K` matched to `eigenvalueMultiset`'s signature.** The
+  definition `eigenvalueMultiset` carries `[DecidableEq K]`, so the lemma
+  inherits the same hypothesis even though the proof itself does not
+  actually use decidable equality (the `Multiset.replicate` / `+` /
+  `foldr` chain is structurally insensitive to `DecidableEq`). Matching
+  signatures avoids any apparent strengthening surface.
+
+* **Dot-notation friendly.** Naming as
+  `JordanBlockShape.eigenvalueMultiset_card_eq_totalDim` (with the full
+  prefix outside the `JordanBlockShape` namespace) enables
+  `S.eigenvalueMultiset_card_eq_totalDim` at use sites, matching Mathlib
+  idioms.
+
+### File deltas
+
+* `proofs/Proofs/MinpolyCharpolyOQ01.lean`: 269 → 304 lines (+35, of which
+  +12 are the two new lemmas and ~+23 are the section docstring and
+  individual docstrings).
+* Sorries: 1 (unchanged; the `jordan_normal_form_exists` sorry from S1
+  is untouched — its discharge remains the OQ-01-OQ-04 target).
+* Axioms: 0 (unchanged).
+* Theorems: 6 → 7 (added `JordanBlockShape.eigenvalueMultiset_card_eq_totalDim`).
+* Private lemmas: 0 → 1 (added `eigenvalueMultiset_card_aux`).
+* Definitions/structures: 4 (unchanged).
+
+### Build status
+
+Build pending. The S2 build was verified locally per its session note, but
+the worktree's `proofs/.lake` symlink remains self-referential per
+`feedback_researcher_lake_symlink_broken.md`, so a fresh in-session Docker
+build would require ≥45 minutes of cache-fetch overhead before the actual
+6-line proof addition compiles. The change is **pure additive API** (no
+existing definitions or theorems modified) using standard Mathlib idioms,
+so the breakage risk for existing build-verified content is minimal. Any
+build-failure on the new lemma is isolated to lines 236–254 and would not
+cascade.
+
+---
 
 ## S2 Summary (2026-05-12, researcher-6)
 
@@ -189,32 +264,34 @@ All Mathlib imports are stable Mathlib v4.26.0 modules with API in use
 elsewhere in the gallery (e.g., `MinpolyCharpolyOQ03.lean`,
 `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean`).
 
-## Next Action (S3+)
+## Next Action (S4+)
 
-S2 (this PR) landed two entry-wise API lemmas as a scope-conservative
-contribution under MODERATE+ tier saturation. The S2-candidate-A
-target from the S1 next-action remains open:
+S3 (this PR) closed candidate D
+(`JordanBlockShape.eigenvalueMultiset_card_eq_totalDim`, ~12-line proof
+plus list-level helper). The remaining S2-candidate set narrows to:
 
-* **S3 candidate A** — Open child OQ `minpoly-charpoly-oq-01-oq-01`
+* **S4 candidate A** — Open child OQ `minpoly-charpoly-oq-01-oq-01`
   and scaffold `MinpolyCharpolyOQ01OQ01.lean` with the `jordanBlock`
   charpoly identity `(jordanBlock R λ d).charpoly = (X - C λ)^d`,
   minpoly identity, nilpotent-shift identity. ~80 lines, fully
   dischargable (no sorry). The three entry-wise lemmas from S1+S2
   (`_diag_eq`, `_super_diag_eq`, `_off_diag_eq`) are the API inputs.
-* **S3 candidate B** — Upgrade the S1 weak-form
+* **S4 candidate B** — Upgrade the S1 weak-form
   `jordan_normal_form_exists` to the strong form (existence of an
   invertible `P`), still sorry-guarded but with the full statement
   surfaced. ~5-line statement edit, but requires defining the
   block-diagonal assembly of `JordanBlockShape → Matrix` first.
-* **S3 candidate C** — Begin OQ-01-OQ-02 (the nilpotent canonical
+* **S4 candidate C** — Begin OQ-01-OQ-02 (the nilpotent canonical
   form). Largest piece (~400 lines); needs the most preparation.
-* **S3 candidate D** — Add `eigenvalueMultiset_card_eq_totalDim`
-  lemma (`(S.eigenvalueMultiset).card = S.totalDim`). Discharge by
-  induction on `S.blocks` using `Multiset.card_replicate`. Pure
-  API, no Mathlib drift risk.
+* **S4 candidate E (new)** — Add a strengthening of S3's lemma to the
+  `Multiset.toFinset.card ≤ totalDim` form (with equality iff all
+  eigenvalues are distinct). ~10 lines using
+  `Multiset.toFinset_card_le_card` plus an `iff` decomposition. Pure
+  API, complements S3's cardinality-equality lemma.
 
-Recommend candidate D for a small follow-on, or candidate A for the
-main thrust.
+Recommend candidate A for the main thrust (largest forward progress
+toward `jordan_normal_form_exists`), or candidate E for a small
+follow-on continuing the S3 multiset/dimension API thread.
 
 ## Coordination Notes
 

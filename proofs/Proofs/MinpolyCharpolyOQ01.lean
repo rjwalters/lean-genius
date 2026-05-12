@@ -217,6 +217,41 @@ theorem jordanBlock_zero_dim (R : Type*) [CommRing R] (lam : R) :
     jordanBlock R lam 0 = 0 := by
   ext i j; exact Fin.elim0 i
 
+/-! ## S3 candidate D: cardinality of `eigenvalueMultiset` equals `totalDim`
+
+A small but useful API lemma about `JordanBlockShape`: the cardinality of the
+eigenvalue multiset (which counts each eigenvalue with multiplicity equal to
+the sum of its block sizes) equals the total dimension. This is the natural
+agreement of "number of eigenvalues counted with multiplicity" with "size of
+the Jordan normal form", and it is the relation that any future
+`jordan_normal_form_exists`-discharging proof must respect on the
+characteristic-polynomial-root side.
+
+The proof is a direct list induction: each block contributes `Multiset.replicate
+p.2 p.1` to the eigenvalue multiset (cardinality `p.2`) and `p.2` to the total
+dimension. -/
+
+/-- List-level helper: the cardinality of the eigenvalue multiset built from a
+list of `(eigenvalue, block-size)` pairs equals the sum of block sizes. -/
+private lemma eigenvalueMultiset_card_aux {K : Type*} [DecidableEq K]
+    (blocks : List (K × Nat)) :
+    Multiset.card
+        ((blocks.map (fun p => Multiset.replicate p.2 p.1)).foldr (· + ·) 0) =
+      (blocks.map Prod.snd).sum := by
+  induction blocks with
+  | nil => simp
+  | cons p rest ih =>
+    simp [List.map_cons, List.foldr_cons, Multiset.card_add,
+          Multiset.card_replicate, List.sum_cons, ih]
+
+/-- **S3-D**: the cardinality of `eigenvalueMultiset` equals `totalDim`.
+For any `JordanBlockShape`, the eigenvalue multiset has exactly `totalDim`-many
+elements (each block of size `d` contributes `d` copies of its eigenvalue). -/
+theorem JordanBlockShape.eigenvalueMultiset_card_eq_totalDim {K : Type*}
+    [DecidableEq K] (S : JordanBlockShape K) :
+    Multiset.card S.eigenvalueMultiset = S.totalDim :=
+  eigenvalueMultiset_card_aux S.blocks
+
 /-
 ## Main JNF Existence Theorem (statement only — proof deferred)
 
