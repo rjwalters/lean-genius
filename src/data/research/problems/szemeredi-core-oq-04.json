@@ -1,7 +1,7 @@
 {
   "slug": "szemeredi-core-oq-04",
   "title": "Algorithmic Szemerédi: formalize the Alon-Duke-Lefmann-Rödl-Yuster 1994 constructive partition algorithm",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "constructive-refactor",
@@ -31,27 +31,29 @@
     "goal": "Replace `Classical.choice` at `SzemerediRegularity.lean:436` with a constructive `findRegularPartition` built on a decidable surrogate for `IsEpsilonRegular`."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-05-12T03:30:00.000Z",
-    "iteration": 2,
-    "focus": "S2 (researcher-9, 2026-05-12) — ORIENT scaffold. Created Proofs/SzemerediCoreOQ04.lean (145 lines) with the three S1 deliverables: (a) witnessFamilyB G A B := A.image (B.filter ∘ G.Adj) ∪ A.image (B.filter ∘ (¬G.Adj)) — polynomial-size family of size ≤ 2·|A|; (b) IsWitnessRegular G eps A B quantifying over witnessFamilyB; (c) noncomputable Decidable instance via Classical.dec (forced by Szemeredi.Core's open Classical → noncomputable edgeDensity). Two supporting lemmas sorry-free (witnessFamilyB_card_le and witnessFamilyB_subset). One sorry remaining on witness_regular_implies_epsilon_regular : IsWitnessRegular eps → IsEpsilonRegular (4*eps), with proof strategy documented inline (per-vertex density transfer → averaging → restriction slack).",
+    "phase": "ACT",
+    "since": "2026-05-12T06:30:00.000Z",
+    "iteration": 3,
+    "focus": "S3 ACT (researcher-6, 2026-05-12) — alternate path: constructive witness extraction. Added two sorry-free theorems to Proofs/SzemerediCoreOQ04.lean: (a) witnessOfIrregular : ¬ IsWitnessRegular → ∃ B' ∈ witnessFamilyB, |B'| ≥ eps·|B| ∧ |density bias| > eps (push_neg-style decomposition of the universally quantified definition); (b) isWitnessRegular_of_no_witness : the contrapositive form, spelling out the forward direction as a corollary. File now 238 lines (was 188), 1 sorry retained on the main witness_regular_implies_epsilon_regular ε-grid ADLRY implication.",
     "blockers": [],
-    "nextAction": "S3: prove witness_regular_implies_epsilon_regular (3-step density decomposition; ~30-60 lines, Aristotle-friendly via companion SzemerediCoreOQ04Aristotle.lean). Alternate easier S3: extract constructive witnessOfIrregular : ¬ IsWitnessRegular → ∃ B' ∈ witnessFamilyB, ... (push_neg-style decomposition).",
+    "nextAction": "S4: prove witness_regular_implies_epsilon_regular (3-step density decomposition: per-vertex bound from grid → averaging over A → restriction A→A'). Estimated ~60-100 lines, Aristotle-friendly. With witnessOfIrregular now in place, Target C (constructive findRegularPartition) can proceed in parallel.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 3,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S2 (researcher-9, 2026-05-12): ORIENT scaffold. Created Proofs/SzemerediCoreOQ04.lean (145 lines) with the three S1 deliverables — Target A from the three-target hierarchy. Two definitions sorry-free (witnessFamilyB and IsWitnessRegular), two supporting lemmas sorry-free (witnessFamilyB_card_le proving |family| ≤ 2|A|, witnessFamilyB_subset proving every member ⊆ B), one noncomputable Decidable instance via Classical.dec (forced by parent file's open Classical), and one theorem with sorry (witness_regular_implies_epsilon_regular with slack constant 4). The sorry has a documented three-step proof strategy: per-vertex density transfer from B ∩ N(a) and B \\ N(a) members of the grid → averaging over a ∈ A → restriction slack from A → A'. Aristotle-friendly via planned SzemerediCoreOQ04Aristotle.lean once the scaffold is on origin/main. S1 honesty point retained: this is formalization (ADLRY 1994 is 30 years old), not research. // S1 (researcher-1, 2026-05-11): OBSERVE survey. Identified the algorithmic Szemerédi target — decoupling the partition construction in Proofs/SzemerediRegularity.lean:436 (regularity_lemma_strong) from Classical.choice using the ADLRY 1994 constructive witness.",
+    "progressSummary": "S3 ACT (researcher-6, 2026-05-12): added two sorry-free theorems on top of S2's scaffold — the alternate-path constructive witness extraction. `witnessOfIrregular` is a push_neg-style decomposition of `¬ IsWitnessRegular`: given irregularity of the surrogate, produce an explicit `B'` in the ε-grid family with both the cardinality lower bound and the density-bias upper bound that witnesses the failure. `isWitnessRegular_of_no_witness` is the contrapositive (the forward direction of the equivalence, made explicit). Together these complete the constructive surface of Target B (witness extraction) — the next iteration's task is the main ε-grid ADLRY implication (witness_regular_implies_epsilon_regular). // S2 (researcher-9, 2026-05-12): ORIENT scaffold. Created Proofs/SzemerediCoreOQ04.lean (145 lines) with the three S1 deliverables — Target A from the three-target hierarchy. Two definitions sorry-free (witnessFamilyB and IsWitnessRegular), two supporting lemmas sorry-free (witnessFamilyB_card_le proving |family| ≤ 2|A|, witnessFamilyB_subset proving every member ⊆ B), one noncomputable Decidable instance via Classical.dec, and one theorem with sorry (witness_regular_implies_epsilon_regular with slack constant 4). // S1 (researcher-1, 2026-05-11): OBSERVE survey. Identified the algorithmic Szemerédi target — decoupling the partition construction in Proofs/SzemerediRegularity.lean:436 (regularity_lemma_strong) from Classical.choice using the ADLRY 1994 constructive witness.",
     "builtItems": [
       "witnessFamilyB G A B — ε-grid family of size ≤ 2|A| (SzemerediCoreOQ04.lean:53)",
       "witnessFamilyB_card_le — polynomial-size bound proof (SzemerediCoreOQ04.lean:62)",
       "witnessFamilyB_subset — every member is ⊆ B (SzemerediCoreOQ04.lean:73)",
       "IsWitnessRegular G eps A B — decidable surrogate predicate (SzemerediCoreOQ04.lean:91)",
       "instDecidableIsWitnessRegular — Classical.dec instance (SzemerediCoreOQ04.lean:106)",
-      "witness_regular_implies_epsilon_regular — slack-4 implication theorem with sorry (SzemerediCoreOQ04.lean:140)"
+      "witness_regular_implies_epsilon_regular — slack-4 implication theorem with sorry (SzemerediCoreOQ04.lean:140)",
+      "**(S3 NEW)** witnessOfIrregular — constructive witness extraction for irregular pairs (push_neg-style decomposition of ¬ IsWitnessRegular; sorry-free; SzemerediCoreOQ04.lean:200)",
+      "**(S3 NEW)** isWitnessRegular_of_no_witness — contrapositive form (SzemerediCoreOQ04.lean:213)"
     ],
     "insights": [
       "IsEpsilonRegular at SzemerediCore.lean:39 quantifies over arbitrary Finset V — decidable in principle (Finset over Fintype is finite) but no explicit instance, and the naive Decidable would be O(2^|V|)-time. The ADLRY surrogate is the meaningful decidable replacement.",

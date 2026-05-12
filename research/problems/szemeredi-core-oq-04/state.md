@@ -1,13 +1,69 @@
 # Current State
 
-**Phase**: ORIENT (S2 scaffold landed; one sorry on implication)
-**Since**: 2026-05-12T03:30:00Z
-**Last Updated**: 2026-05-12 (Iteration 2, researcher-9)
-**Iteration**: 2
+**Phase**: ACT (S3 alternate path: constructive witness extraction added, sorry-free; main slack-4 implication sorry retained)
+**Since**: 2026-05-12T06:30:00Z
+**Last Updated**: 2026-05-12 (Iteration 3, researcher-6)
+**Iteration**: 3
 
-## Current Focus
+## Iteration 3 (researcher-6, 2026-05-12) — S3 ACT (alternate path)
 
-Iteration 2 (researcher-9, 2026-05-12) — **S2 scaffold**: created
+**Outcome**: progress — added two sorry-free theorems (constructive witness extraction); 1 sorry retained on the main slack-4 implication.
+
+### What I added (50 lines)
+
+Two new sorry-free theorems in `proofs/Proofs/SzemerediCoreOQ04.lean`:
+
+1. **`witnessOfIrregular`** (Target B in S1's roadmap): constructive witness extraction.
+
+   ```lean
+   theorem witnessOfIrregular (G : SimpleGraph V) [DecidableRel G.Adj]
+       (eps : ℚ) (A B : Finset V) (h : ¬ IsWitnessRegular G eps A B) :
+       ∃ B' ∈ witnessFamilyB G A B,
+         (B'.card : ℚ) ≥ eps * B.card ∧
+         |edgeDensity G A B' - edgeDensity G A B| > eps := by
+     unfold IsWitnessRegular at h
+     push_neg at h
+     exact h
+   ```
+
+   The proof is a one-step `push_neg` decomposition. Given irregularity of the surrogate, the negation of the bounded universal `∀ B' ∈ family, antecedent → conclusion` is exactly the existential `∃ B' ∈ family, antecedent ∧ ¬ conclusion`. With `¬ |x| ≤ ε ↔ |x| > ε`, this is the constructive witness statement.
+
+2. **`isWitnessRegular_of_no_witness`** (the contrapositive form, made explicit). One-line proof: `exact h`.
+
+### Why this is the "alternate path"
+
+The Iteration-2 `Next Action` listed both:
+- **Main path** (recommended): `witness_regular_implies_epsilon_regular` — the slack-4 ε-grid ADLRY implication. ~60-100 lines, per-vertex density transfer + averaging + restriction.
+- **Alternate path** (easier): `witnessOfIrregular` extraction — a push_neg decomposition.
+
+I chose the alternate path because:
+- It is a one-session deliverable.
+- It is sorry-free.
+- It completes the **constructive surface of Target B** (witness extraction), which Target C (constructive `findRegularPartition`) depends on.
+
+### Build status (S3)
+
+**Verified** via `./proofs/scripts/docker-build.sh Proofs.SzemerediCoreOQ04`:
+- 7744 jobs, only the pre-existing sorry warning on `witness_regular_implies_epsilon_regular`.
+- Linter warnings (unused `[Fintype V]` in section variables) appear for `witnessOfIrregular` and `isWitnessRegular_of_no_witness`; these are pre-existing patterns (also in `witnessFamilyB_subset` and the placeholder), not blocking.
+
+### Files modified (S3 narrow)
+
+- `proofs/Proofs/SzemerediCoreOQ04.lean` — +50 lines (Part 3b section with 2 new theorems).
+- `src/data/research/problems/szemeredi-core-oq-04.json` — phase ORIENT→ACT, iter 2→3, builtItems +2.
+- `research/problems/szemeredi-core-oq-04/{knowledge.md, state.md}` — S3 entry.
+
+### Next Action (S4)
+
+Prove `witness_regular_implies_epsilon_regular` (3-step density decomposition: per-vertex bound from grid → averaging over A → restriction A→A'). Aristotle-friendly. Estimated 60-100 lines.
+
+In parallel: build Target C (`findRegularPartition`) using `witnessOfIrregular` as the iterate-on-failure step.
+
+---
+
+## (Historic) Iteration 2 (researcher-9, 2026-05-12) — S2 scaffold
+
+Created
 `proofs/Proofs/SzemerediCoreOQ04.lean` (145 lines) with the three S1
 deliverables.
 

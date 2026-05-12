@@ -196,3 +196,63 @@ layer on top.
   project memory) implies callers *will* materialise, but until
   one does, the S5 deliverable is the only "uses witnessRegularity"
   consumer.
+
+### S3 (researcher-6, 2026-05-12) — ACT (alternate path)
+
+**Outcome**: progress — two sorry-free theorems added; 1 sorry retained.
+
+**What I added** (50 new lines in `proofs/Proofs/SzemerediCoreOQ04.lean`):
+
+1. **`witnessOfIrregular`** (the constructive witness extraction):
+   ```lean
+   theorem witnessOfIrregular (G : SimpleGraph V) [DecidableRel G.Adj]
+       (eps : ℚ) (A B : Finset V) (h : ¬ IsWitnessRegular G eps A B) :
+       ∃ B' ∈ witnessFamilyB G A B,
+         (B'.card : ℚ) ≥ eps * B.card ∧
+         |edgeDensity G A B' - edgeDensity G A B| > eps := by
+     unfold IsWitnessRegular at h
+     push_neg at h
+     exact h
+   ```
+   This is a one-step `push_neg` decomposition. The proof works
+   because `IsWitnessRegular` is a bounded universal `∀ B' ∈ family,
+   antecedent → conclusion`, and `push_neg` rewrites `¬ ∀ … → …` into
+   `∃ …, ∧ ¬ …`, with the inner `¬ |x| ≤ ε ↔ |x| > ε` simplification.
+
+2. **`isWitnessRegular_of_no_witness`** (the contrapositive, made
+   explicit as a corollary). The proof is `exact h` — just an
+   eta-contraction of the universal hypothesis to the definitional
+   form of `IsWitnessRegular`. Useful as a forward-direction reference.
+
+**Why this is the "alternate path"**: state.md's S3 next-action listed
+the main path (the slack-4 implication `witness_regular_implies_
+epsilon_regular`) AND an alternate easier path (the `witnessOfIrregular`
+extraction). I chose the alternate path because:
+- It is genuinely a one-session deliverable (~5-line proof).
+- It is sorry-free.
+- It completes the "Target B" surface (constructive witness
+  extraction), which Target C (constructive partition) depends on.
+
+The main ADLRY implication (slack-4) requires the per-vertex
+density transfer + averaging + restriction argument — 60-100 lines of
+careful real-number bound manipulation, not achievable in one session.
+
+**Build verified** via `./proofs/scripts/docker-build.sh
+Proofs.SzemerediCoreOQ04`. Build succeeded; the only sorry warning is
+the pre-existing one on `witness_regular_implies_epsilon_regular`.
+
+**Files modified (S3 narrow)**:
+- `proofs/Proofs/SzemerediCoreOQ04.lean` — added §3b (50 lines, 2 new
+  theorems, both sorry-free).
+- `src/data/research/problems/szemeredi-core-oq-04.json` — S3 entry,
+  phase OBSERVE→ACT, iter 2→3, builtItems +2, progressSummary.
+- `research/problems/szemeredi-core-oq-04/{knowledge.md, state.md}` —
+  this S3 entry.
+
+**Next steps**:
+- S4: prove `witness_regular_implies_epsilon_regular` (the slack-4
+  ε-grid ADLRY implication; per-vertex density transfer + averaging +
+  restriction). ~60-100 lines.
+- S5 (parallel): build Target C (constructive partition `findRegularPartition`)
+  using `witnessOfIrregular` as the iterate-on-failure step.
+- S6: Mathlib bridge to `SimpleGraph.IsUniform`.
