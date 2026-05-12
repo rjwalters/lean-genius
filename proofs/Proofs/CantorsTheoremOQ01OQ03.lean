@@ -43,9 +43,11 @@ parent question.
 1. `konig_general` — for any infinite κ, κ < cf(2^κ)
 2. `konig_constraint_continuum` — applied to 𝔠 (parallels sibling oq-02)
 3. `konig_constraint_aleph` — applied to ℵ_α
-4. `cf_powerSet_real_gt_continuum` — cf(|𝒫(ℝ)|) > 𝔠
-5. `cf_powerSet_real_ne_aleph0` — cf(|𝒫(ℝ)|) ≠ ℵ₀
-6. `oq01oq03_resolution` — bundle theorem affirmatively answering the OQ
+4. `konig_constraint_beth` — applied to ℶ_α (ordinal generalization of
+   sibling oq-02's `konig_constraint_beth (n : ℕ)`)
+5. `cf_powerSet_real_gt_continuum` — cf(|𝒫(ℝ)|) > 𝔠
+6. `cf_powerSet_real_ne_aleph0` — cf(|𝒫(ℝ)|) ≠ ℵ₀
+7. `oq01oq03_resolution` — bundle theorem affirmatively answering the OQ
 
 ## Relationship to Parent and Sibling
 
@@ -59,6 +61,8 @@ parent question.
 The new content here vs the sibling:
 - `konig_general` (universally quantified, not just specialized to 𝔠).
 - `konig_constraint_aleph` (parameterized over arbitrary aleph index).
+- `konig_constraint_beth` (parameterized over arbitrary *ordinal* index;
+  sibling's version is restricted to `n : ℕ`).
 - `cf_powerSet_real_ne_aleph0` (canonical "rules out ℵ_ω" corollary).
 - `oq01oq03_resolution` (bundles four forms as the OQ resolution).
 -/
@@ -108,6 +112,22 @@ theorem konig_constraint_aleph (α : Ordinal.{0}) :
     (Cardinal.aleph α : Cardinal.{0}) <
       (2 ^ (Cardinal.aleph α : Cardinal.{0})).ord.cof :=
   konig_general (Cardinal.aleph0_le_aleph α)
+
+/-- **König's constraint for ℶ_α (ordinal generalization)**: For any
+    ordinal α, ℶ_α < cf(2^ℶ_α).
+
+    Generalizes sibling `CantorsTheoremOQ01OQ02.konig_constraint_beth`,
+    which is stated only for `n : ℕ`, to arbitrary ordinals. The proof
+    reuses sibling's `beth_zero.symm` + `beth_strictMono.monotone` chain
+    to establish `ℵ₀ ≤ ℶ_α`, then invokes `konig_general`. -/
+theorem konig_constraint_beth (α : Ordinal.{0}) :
+    (Cardinal.beth α : Cardinal.{0}) <
+      (2 ^ (Cardinal.beth α : Cardinal.{0})).ord.cof := by
+  apply konig_general
+  calc (ℵ₀ : Cardinal.{0})
+      = Cardinal.beth 0 := Cardinal.beth_zero.symm
+    _ ≤ Cardinal.beth α :=
+        Cardinal.beth_strictMono.monotone (Ordinal.zero_le _)
 
 -- ============================================================
 -- PART 3: Application to |𝒫(ℝ)|
@@ -201,6 +221,7 @@ end CantorsTheoremOQ01OQ03
 #check CantorsTheoremOQ01OQ03.konig_general
 #check CantorsTheoremOQ01OQ03.konig_constraint_continuum
 #check CantorsTheoremOQ01OQ03.konig_constraint_aleph
+#check CantorsTheoremOQ01OQ03.konig_constraint_beth
 #check CantorsTheoremOQ01OQ03.cf_powerSet_real_gt_continuum
 #check CantorsTheoremOQ01OQ03.cf_powerSet_real_ne_aleph0
 #check CantorsTheoremOQ01OQ03.oq01oq03_resolution

@@ -20,15 +20,16 @@
     "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 206,
-    "assumptions": "0 axioms, 0 sorries. Uses Mathlib's `Cardinal.lt_cof_power`, `Cardinal.aleph0_le_continuum`, `Cardinal.aleph0_le_aleph`, plus the parent file CantorsTheoremOQ01.lean and sibling CantorsTheoremOQ01OQ02.lean.",
+    "lineCount": 227,
+    "assumptions": "0 axioms, 0 sorries. Uses Mathlib's `Cardinal.lt_cof_power`, `Cardinal.aleph0_le_continuum`, `Cardinal.aleph0_le_aleph`, `Cardinal.beth_zero`, `Cardinal.beth_strictMono`, plus the parent file CantorsTheoremOQ01.lean and sibling CantorsTheoremOQ01OQ02.lean.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-12",
-    "theoremCount": 6,
+    "theoremCount": 7,
     "definitionCount": 0,
     "originalContributions": [
       "konig_general: ∀ infinite κ, κ < cf(2^κ) (general form, not just specialized)",
       "konig_constraint_aleph: König applied to ℵ_α for arbitrary ordinal α",
+      "konig_constraint_beth: König applied to ℶ_α for arbitrary ordinal α (sibling oq-02 has only the ℕ-indexed version)",
       "cf_powerSet_real_ne_aleph0: cf(|𝒫(ℝ)|) ≠ ℵ₀ (canonical 'rules out ℵ_ω' corollary)",
       "oq01oq03_resolution: bundle theorem packaging the affirmative resolution of the open question"
     ],
@@ -46,6 +47,16 @@
       {
         "theorem": "Cardinal.aleph0_le_aleph",
         "description": "ℵ₀ ≤ ℵ_α for any ordinal α",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cardinal.beth_zero",
+        "description": "ℶ₀ = ℵ₀ (base of the beth hierarchy)",
+        "module": "Mathlib.SetTheory.Cardinal.Ordinal"
+      },
+      {
+        "theorem": "Cardinal.beth_strictMono",
+        "description": "The beth function ℶ : Ordinal → Cardinal is strictly monotone",
         "module": "Mathlib.SetTheory.Cardinal.Ordinal"
       }
     ],
