@@ -1,0 +1,109 @@
+{
+  "slug": "erdos101-problem-oq-04",
+  "title": "Solymosi–Stojaković lower bound on four-point lines: n^{2−O(1/√log n)} construction",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "lower-bound-formalization",
+  "problemStatement": {
+    "formal": "Solymosi & Stojaković (2013): for every $\\varepsilon > 0$, there is $N$ such that for all $n \\geq N$, there exists a planar point set $P$ with $|P| = n$, NoFiveCollinear $P$, and $\\mathrm{fourPointLineCount}(P) \\geq n^{2 - \\varepsilon / \\sqrt{\\log n}}$. The construction uses random linear projections of a high-dimensional grid: a $d$-dimensional grid $G_d = \\{0, \\ldots, k-1\\}^d$ has many 4-term arithmetic progressions; a generic linear $\\pi : \\mathbb{R}^d \\to \\mathbb{R}^2$ projects these APs to 4-collinear sets while (with positive probability over $\\pi$) creating no 5 collinear points. Parameter optimization in $d, k$ yields the $n^{2 - O(1/\\sqrt{\\log n})}$ rate.",
+    "plain": "Erdős Problem #101 ($100) asks for the asymptotic behavior of L_4(n) = max |{four-point lines}| over n-point sets with no five collinear. The parent formalizes the upper bound L_4(n) ≤ n(n-1)/12. This OQ-04 targets the formalization of the Solymosi–Stojaković (2013) lower bound L_4(n) ≥ n^{2−O(1/√log n)}, which disproved Erdős's conjectured Θ(n^{3/2}) shape. Sandwiches the truth between n^{2−o(1)} and n^2 — the remaining gap is the open o(n^2) question.",
+    "whyMatters": [
+      "Provides a machine-verified lower bound complementing the parent's machine-verified upper bound — a quantitative sandwich for an Erdős problem ($100 unsolved $o(n^2)$ gap).",
+      "Solymosi–Stojaković's bound disproved Erdős's $\\Theta(n^{3/2})$ conjecture. Formalizing it documents a refuted classical conjecture in Lean — historically significant in its own right.",
+      "The random-perturbation incidence-geometry technique generalizes: Behrend-style AP_4 lower bounds, Szemerédi cases, sum-product lower bounds, all use related polynomial-genericity arguments.",
+      "Demonstrates that Mathlib's measure theory + probability + discrete geometry layers can carry a real combinatorial-geometry theorem — a stress test for the gallery's combinatorial / probabilistic infrastructure."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Solymosi & Stojaković (2013), *Combinatorica* 33: 247–258 — proved $L_4(n) \\geq n^{2 - O(1/\\sqrt{\\log n})}$ via random projection of a high-dimensional grid. Modern reference: Brass–Moser–Pach (2005) §7.2.",
+      "Parent gallery `Proofs/Erdos101Problem.lean` (757 lines, 23 theorems, 0 axioms, 0 sorries, status: verified) provides PlanarPointSet / collinear / NoFiveCollinear / fourPointLineCount / improved_upper_bound (≤ n(n-1)/12).",
+      "Grünbaum (1972), *Arrangements and Spreads* — weaker lower bound $L_4(n) \\gtrsim n^{3/2}$ via specific construction; pre-Solymosi–Stojaković state of art.",
+      "Erdős (1995) conjectured $L_4(n) = \\Theta(n^{3/2})$ — refuted by Solymosi–Stojaković (2013).",
+      "Mathlib has `Mathlib.Combinatorics.Additive.AP` (arithmetic progressions), `Mathlib.MeasureTheory.Measure.Lebesgue.Basic`, `Mathlib.Probability.Probability`, `Pi.Fintype`/`Finset.product` (grids). The Polynomial.eval_ne_zero infrastructure for non-vanishing arguments exists but the genericity-of-projection step may need new lemmas."
+    ],
+    "open": [
+      "S2-A: state `solymosi_stojakovic_lower_bound` theorem in Lean (sorry-bodied, 1 sorry on the open lower bound).",
+      "S2-B (alternative): prove Grünbaum's Ω(n^{3/2}) construction via $\\{(i, j) : i^2 + j \\equiv 0 \\bmod p\\} \\subset \\mathbb{F}_p^2$. Concrete, ~150 lines, fully proved.",
+      "S2-C (alternative): full framework scaffold — d-dimensional grid + 4-AP enumeration + generic projection + framework theorem. ~200 lines, 2-3 sorries.",
+      "S3-S5: random-projection / no-5-collinear / 4-AP counting steps (Path A toward full Solymosi–Stojaković).",
+      "S6: parameter optimization $n^{2 - O(1/\\sqrt{\\log n})}$."
+    ],
+    "goal": "First Lean formalization of the Solymosi–Stojaković lower bound on four-point lines, complementing the parent's upper bound to give a quantitative sandwich for Erdős Problem #101."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T16:55:00.000Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE (researcher-9, 2026-05-12) — doc-only scaffold. Created problem.md, knowledge.md, state.md, this JSON. No Lean changes. Identified the Solymosi–Stojaković random-projection of high-dimensional grids as the target proof; surveyed Mathlib's MeasureTheory + probability + AP + grid infrastructure; presented three S2 paths (state-only, Grünbaum-first, full framework) with explicit tradeoffs. Parent erdos101-problem provides PlanarPointSet, collinear, fourPointLineCount, and the dual upper bound n(n-1)/12; OQ-04 is the lower-bound direction, requiring construction of witnesses rather than bounding.",
+    "blockers": [
+      "S4-S5 (random-projection no-5-collinear): measure-theoretic genericity argument; may need new Mathlib infrastructure for parameter-space measure theory."
+    ],
+    "nextAction": "S2 ORIENT. Commit to one of three paths: (S2-A) state the main theorem with sorry body — 50 lines, 1 sorry, minimal commitment; (S2-B) prove Grünbaum's Ω(n^{3/2}) via $\\{(i,j) : i^2 + j \\equiv 0 \\bmod p\\}$ — 150 lines, 0 sorries, concrete content; (S2-C) full Solymosi–Stojaković framework — 200 lines, 2-3 sorries, front-loads multi-session investment."
+  },
+  "knowledge": {
+    "lastKnowledgeUpdate": "2026-05-12T16:55:00.000Z",
+    "openQuestionsAdded": [
+      "Will the random-projection genericity step (S4-S5) require new Mathlib infrastructure for parameter-space measure theory? Mathlib v4.26.0 has Polynomial.eval_ne_zero but the measure-of-bad-set argument may need MeasureTheory.MeasureZero of algebraic varieties, which is non-trivial."
+    ],
+    "mathlibAPIVerified": [
+      "Parent gallery `Proofs/Erdos101Problem.lean` (defs: PlanarPointSet, collinear, NoFiveCollinear, fourCollinearFamily, fourPointLineCount, fourCollinearThrough; theorems: improved_upper_bound, fourCollinearThrough_bound, trivial_upper_bound).",
+      "Pi.Fintype, Fintype.card_pi, Finset.product, Finset.pi — basic grid infrastructure.",
+      "Polynomial.eval_ne_zero patterns — needed for genericity of projection.",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic — Lebesgue measure on R^n.",
+      "Mathlib.Combinatorics.Additive.AP — arithmetic progressions on additive groups (verify 4-term API at v4.26.0)."
+    ]
+  },
+  "references": [
+    {
+      "title": "Many collinear k-tuples with no k+1 collinear points",
+      "authors": ["J. Solymosi", "M. Stojaković"],
+      "year": "2013",
+      "venue": "Combinatorica 33: 247–258",
+      "doi": "10.1007/s00493-013-2820-6",
+      "note": "Main target reference. Proves L_4(n) ≥ n^{2−O(1/√log n)} via random linear projection of a high-dimensional grid; disproved Erdős's Θ(n^{3/2}) conjecture."
+    },
+    {
+      "title": "Problems and results in combinatorial geometry",
+      "authors": ["P. Erdős"],
+      "year": "1995",
+      "venue": "Various",
+      "note": "Original conjecture L_4(n) = Θ(n^{3/2}). Problem #101 in the modern enumeration. $100 prize on the o(n^2) gap."
+    },
+    {
+      "title": "Arrangements and Spreads",
+      "authors": ["B. Grünbaum"],
+      "year": "1972",
+      "venue": "CBMS Regional Conference Series in Mathematics 10",
+      "note": "Weaker lower bound L_4(n) ≳ n^{3/2}. Concrete construction (alternative S2-B target)."
+    },
+    {
+      "title": "The orchard problem",
+      "authors": ["S. A. Burr", "B. Grünbaum", "N. J. A. Sloane"],
+      "year": "1974",
+      "venue": "Geometriae Dedicata 2: 397–424",
+      "note": "Related 3-line orchard problem; uses similar finite-field constructions."
+    },
+    {
+      "title": "Research Problems in Discrete Geometry",
+      "authors": ["P. Brass", "W. Moser", "J. Pach"],
+      "year": "2005",
+      "venue": "Springer",
+      "note": "§7.2 surveys the four-point line problem. Modern reference."
+    },
+    {
+      "title": "Erdős Problems #101",
+      "authors": ["Erdős Problems database"],
+      "url": "https://erdosproblems.com/101",
+      "note": "Live problem database with current best bounds and references."
+    }
+  ],
+  "provenance": {
+    "addedBy": "seeker",
+    "addedAt": "2026-05-12T14:13:22Z",
+    "sourceProofId": "erdos101-problem",
+    "sourceTitle": "Erdős Problem #101: Four-Point Lines from Planar Point Sets",
+    "sourceType": "open-question"
+  }
+}
