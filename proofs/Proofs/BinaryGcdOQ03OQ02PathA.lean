@@ -1832,6 +1832,121 @@ example :
 
 example : (CofactorMatrix.id.apply 1 0) = (1, 0) := by decide
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XXIII: ABORT-BRANCH DECOMPOSITION (Session 34, dual of PART XXI)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Abort-branch matrix / apply decomposition
+
+    PART XXI (S31) exposed the compose-branch decomposition of
+    `hgcdMatrixSafeOf` and `hgcdSafeApply` as standalone theorems:
+    above threshold (`hab`) and inner-fires (`hlt : max u v < max a b`),
+    `hgcdMatrixSafeOf a b = (hgcdMatrixSafe (a+b) u v).mul M_inner`
+    and `hgcdSafeApply a b` is the outer matrix's `apply` action on
+    the inner's column output.
+
+    The complementary structural lemmas — the **abort-branch**
+    forms used internally inside `hgcdMatrixSafe_inner_abort_imp_outer_fails`
+    (PART XX, S30) as local `hMatrix` / `hApply` `have` blocks —
+    were not previously exposed as top-level theorems. This section
+    promotes them so any future iteration (S32b non-expansion,
+    S32c the full S28b equivalence, etc.) can reference the abort
+    decomposition directly rather than reproducing the
+    `unfold + hgcdMatrixSafe_succ + if_neg + dsimp + if_neg` pattern.
+
+    The proof code is exactly the body of S30's hMatrix/hApply
+    local `have` blocks (`BinaryGcdOQ03OQ02PathA.lean` PART XX),
+    with `if_pos hlt` replaced by `if_neg (Nat.not_lt.mpr hge)`.
+
+    Together with PART XXI's compose-branch theorems, the abort
+    and compose decompositions partition the above-threshold
+    behaviour of `hgcdMatrixSafeOf`:
+
+    * compose branch (PART XXI): `max u v < max a b` ⇒
+      `hgcdMatrixSafeOf a b = (hgcdMatrixSafe (a+b) u v).mul M_inner`.
+    * abort branch (PART XXIII, this section): `max a b ≤ max u v` ⇒
+      `hgcdMatrixSafeOf a b = M_inner`.
+
+    No new axioms or sorries; net +50 lines (2 theorems with
+    docstrings). -/
+
+/-- **Abort-branch matrix decomposition.**
+
+    Above threshold (`hab`), if the inner-guard *aborts* — i.e.,
+    the natAbs pair `(u, v)` of `M_inner.apply (a, b)` satisfies
+    `max a b ≤ max u v` (`hge`, the negation of the size-reduction
+    guard) — then `hgcdMatrixSafeOf a b` collapses to the inner
+    recursion `M_inner := hgcdMatrixSafe (a + b) (a / 2^s) (b / 2^s)`
+    itself, without the outer composition.
+
+    Dual to PART XXI's `hgcdMatrixSafeOf_compose_branch`. Together
+    the two theorems partition the above-threshold behaviour of
+    `hgcdMatrixSafeOf` into the two possible cases of the inner
+    size-reduction guard.
+
+    This is the same matrix-level equation discharged by the
+    `hMatrix` local `have` block in
+    `hgcdMatrixSafe_inner_abort_imp_outer_fails` (PART XX, S30).
+    Exposing it as a top-level theorem makes the abort-branch
+    reduction reusable without re-deriving the
+    `unfold + hgcdMatrixSafe_succ + if_neg + dsimp + if_neg`
+    pattern at every use site. -/
+theorem hgcdMatrixSafeOf_abort_branch (a b : ℕ)
+    (hab : ¬ max a b < hgcdThresholdSafe)
+    (hge :
+      max a b ≤
+        max
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs) :
+    hgcdMatrixSafeOf a b
+      = hgcdMatrixSafe (a + b)
+          (a / 2 ^ hgcdShiftSafe a b)
+          (b / 2 ^ hgcdShiftSafe a b) := by
+  unfold hgcdMatrixSafeOf
+  rw [hgcdMatrixSafe_succ, if_neg hab]
+  dsimp only
+  rw [if_neg (Nat.not_lt.mpr hge)]
+
+/-- **Abort-branch `apply` decomposition.**
+
+    Builds on `hgcdMatrixSafeOf_abort_branch`: in the inner-abort
+    branch, the column output `hgcdSafeApply a b` equals
+    `M_inner.apply (a, b)` directly, without the outer composition.
+
+    Dual to PART XXI's `hgcdSafeApply_compose_branch`. Same
+    `apply`-level equation derived inside the `hApply` local
+    `have` block of S30's
+    `hgcdMatrixSafe_inner_abort_imp_outer_fails` (PART XX).
+    The hypothesis `hge` is exactly the inner-abort hypothesis
+    used by S30's S28c packaging step.
+
+    Significance for S32b/c: pairs with
+    `hgcdSafeApply_compose_branch` to give a complete
+    case-distinction API on the inner guard, so the converse
+    direction of the S28b equivalence can be stated as a clean
+    `iff` rather than two separate forward arguments. -/
+theorem hgcdSafeApply_abort_branch (a b : ℕ)
+    (hab : ¬ max a b < hgcdThresholdSafe)
+    (hge :
+      max a b ≤
+        max
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs) :
+    hgcdSafeApply a b
+      = (hgcdMatrixSafe (a + b)
+          (a / 2 ^ hgcdShiftSafe a b)
+          (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ) := by
+  unfold hgcdSafeApply
+  rw [hgcdMatrixSafeOf_abort_branch a b hab hge]
+
 end HGcdSafe
 
 /-! ## Summary
