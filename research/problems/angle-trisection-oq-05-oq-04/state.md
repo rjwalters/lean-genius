@@ -1,54 +1,70 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12 (S6)
-**Iteration**: 6
+**Since**: 2026-05-12 (S7)
+**Iteration**: 7
 
 ## Current Focus
+
+S7 (researcher-3): close the **`P ∈ ℓ₁` case** of HH-7
+unconditionally (in the relative position of `ℓ₁` and `ℓ₂`), and add
+the generic primitive `reflectAcross_self_of_contains` (a point on a
+line is fixed by reflection across that line). Combined with S6's
+non-parallel case (`crossDet ℓ₁ ℓ₂ ≠ 0`), the constructive coverage
+of HH-7 is now `{crossDet ≠ 0} ∪ {P ∈ ℓ₁}` — the whole HH-7 statement
+except the genuinely-unsolvable parallel-with-`P ∉ ℓ₁` corner that S6
+identified.
+
+### Deliverables of this iteration (new in S7)
+
+1. `proofs/Proofs/AngleTrisectionOQ05OQ04.lean` grows 814 → 923 lines
+   with a new "PART 9: Constructive HH-7 (P-on-ℓ₁ Case) — Identity-
+   Like Fold" section. Counts: 0 axioms, 3 sorries (unchanged), 21
+   theorems (18 proved + 3 sorry), 9 definitions, 1 structure.
+
+2. Two new proved theorems, both sorry-free and axiom-free:
+   - `reflectAcross_self_of_contains` — generic lemma: a point on a
+     line is fixed under reflection across that line. Proof: the
+     numerator `2 · (l.a · p.1 + l.b · p.2 + l.c)` of the reflection
+     parameter vanishes when `p ∈ l`, so `t = 0` and the reflection
+     returns `(p.1, p.2) = p`. `linarith` + `simp only` with
+     `zero_div`, `zero_mul`, `sub_zero`, `Prod.mk.eta`.
+   - `hh7_existence_p_on_ℓ₁` — standalone HH-7 existence in the
+     `P ∈ ℓ₁` case. Witness: `perpThroughPoint P ℓ₂` (S5's HH-4
+     construction). Proof: `perpThroughPoint_contains` (S5) gives
+     `P` is on the fold; `reflectAcross_self_of_contains` (S7) gives
+     `reflectAcross fold P = P`, which lies on `ℓ₁` by hypothesis;
+     `reflectAcross_perpThroughPoint_preserves` (S5) gives `ℓ₂`
+     preservation. The witness works **unconditionally** in the
+     relative position of `ℓ₁` and `ℓ₂` (no `crossDet ≠ 0` needed).
+
+3. **Why this matters for the eventual `HHAxioms` instance.** Five of
+   the seven HH ingredients are now constructive in standalone form:
+   HH-1 (S3, PR #17915), HH-2 (S4, PR #17926), HH-4 (S5, PR #17988),
+   HH-7 non-parallel (S6, PR #18009), and HH-7 P-on-ℓ₁ (S7, this PR).
+   The HH-7 constructive coverage is now `{crossDet ≠ 0} ∪ {P ∈ ℓ₁}`;
+   only the corner `crossDet = 0 ∧ P ∉ ℓ₁` remains open, which S6
+   showed is *genuinely* unsolvable (any fold perpendicular to ℓ₂ in
+   the parallel configuration preserves perpendicular distance to
+   `ℓ₁`, so `P ∉ ℓ₁` is invariant).
+
+4. Gallery metadata updated:
+   `src/data/proofs/angle-trisection-oq-05-oq-04/meta.json`
+   (lineCount 814 → 923; theoremCount 15 → 21 — also corrects prior
+   S6 undercount; definitionCount 9 unchanged; sorries 3 unchanged;
+   axiomCount 1 unchanged; added PART 9 section entry; added two
+   original-contributions bullets for S7; refreshed S6 section's
+   endLine 814 → 812 to reflect the post-S6 file end before S7;
+   updated title and description).
+
+### Prior session deliverables (preserved)
 
 S6 (researcher-6): constructive HH-7 (Hatori fold, **non-parallel
 case**) as the fourth of seven HH-axiom ingredients required by the
 conservativity target `straight_fold_recovers_HH` (S3, still open in
 PR #17915).
 
-### Deliverables of this iteration (new in S6)
 
-1. `proofs/Proofs/AngleTrisectionOQ05OQ04.lean` grows 659 → 814 lines
-   with a new "PART 8: Constructive HH-7 (Non-Parallel Case) — Hatori
-   Fold" section. Counts: 0 axioms, 3 sorries (unchanged), 15
-   theorems (12 proved + 3 sorry), 9 definitions, 1 structure.
-
-2. Four new theorems and two new definitions, all proved without sorry:
-   - `crossDet ℓ₁ ℓ₂ := ℓ₁.b·ℓ₂.a − ℓ₁.a·ℓ₂.b` — cross-determinant of
-     the two lines' normals; vanishes iff lines are parallel.
-   - `hatoriFold p ℓ₁ ℓ₂ h_nonpar : Line` — explicit
-     `noncomputable def` of the fold perpendicular to `ℓ₂` sending `P`
-     onto `ℓ₁`, parametrised by the non-parallel hypothesis.
-   - `hatoriFold_normSq_pos` — denominator `ℓ₂.a² + ℓ₂.b² > 0`
-     (specialises `perpThroughPoint_normSq_pos`).
-   - `reflectAcross_hatoriFold_preserves_ℓ₂` — fold preserves `ℓ₂`
-     setwise (perpendicular-to-ℓ₂ property; mirrors HH-4's proof).
-   - `reflectAcross_hatoriFold_to_ℓ₁` — reflection of `P` lands on `ℓ₁`
-     (the new geometric content; proof via `field_simp` + `ring` after
-     `crossDet ≠ 0` is exposed).
-   - `hh7_existence_nonparallel` — standalone HH-7 existence under the
-     non-parallel side condition.
-
-3. **Critical observation**: the parent's `AngleTrisectionOQ05.HHAxioms.hh7`
-   is stated unconditionally (`∀ P ℓ₁ ℓ₂, ∃ l, ...`) but is actually
-   FALSE when `ℓ₁ ∥ ℓ₂ ∧ P ∉ ℓ₁`. S6 makes the tacit non-parallel
-   side condition explicit and documents the obstruction in the
-   section docstring. The fully unconditional HH-7 requires a separate
-   case analysis (`P ∈ ℓ₁` → identity-like fold works; `P ∉ ℓ₁ ∧ ℓ₁ ∥ ℓ₂`
-   → genuinely unsolvable; non-parallel → S6 deliverable).
-
-4. Gallery metadata updated:
-   `src/data/proofs/angle-trisection-oq-05-oq-04/meta.json`
-   (lineCount 573 → 814; theoremCount 11 → 15; definitionCount 7 → 9;
-   added PART 8 section entry; added six original-contributions
-   bullets for S6; updated title and description).
-
-### Prior session deliverables (preserved)
 
 S5 (researcher-5): constructive HH-4 (perpendicular fold through a
 point preserving a given line) as the third of seven HH-axiom
