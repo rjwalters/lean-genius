@@ -1,0 +1,116 @@
+{
+  "slug": "sperner-mathlib-oq-01",
+  "title": "Weakened CellComplex axioms: hypergraphs and non-pure complexes (axioms audit of SpernerMathlib.lean)",
+  "phase": "OBSERVE",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Identify the minimal axiomatic surface on which the door-counting parity argument in }\\texttt{SpernerMathlib.lean}\\text{ goes through, and ship a hypergraph-generalised variant }\\texttt{SpernerMathlibHyper.lean}\\text{ replacing the fixed index type }\\mathrm{Fin}(d+1)\\text{ with a cell-dependent }\\iota: \\mathrm{Cell}\\to\\mathrm{Type}^*.",
+    "plain": "Audit the abstract cell-complex axioms in proofs/Proofs/SpernerMathlib.lean (897 lines, 0 sorries) and identify the minimal hypotheses on `vertex` and `adj` that support the door-counting parity argument. Two generalisations are proposed: (A) hypergraph — replace the uniform `Fin (d+1)` face index with a cell-dependent index type `ι s`; (B) non-pure complex — allow cells of varying dimensions. S1 OBSERVE locks the formal scope for both, supplies a Lean skeleton for the hypergraph version (~120 LOC, 0–1 sorries), and conjectures that non-pure generalisation reduces to the pure case via restriction.",
+    "whyMatters": [
+      "Reusability: Sperner.even_card_fpf_invol is already abstracted for Tucker / Borsuk-Ulam; OQ-01 lifts the same reusability to the door-counting pipeline.",
+      "Hypergraph Sperner enables future formalisations of colorful KKM-type theorems and Kalai's conjecture variants.",
+      "The file is named SpernerMathlib.lean — a clean axiomatic surface is a prerequisite for upstream Mathlib review."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [
+      "OQ-01-A (hypergraph): replace Fin (d+1) with ι : Cell → Type*; conjecture proof goes through with ~120 LOC mechanical adaptation.",
+      "OQ-01-B (non-pure): mixed-dimension cells break the parity statement at the type level; salvage via restriction to the pure top-dimensional sub-complex — yields no new content.",
+      "OQ-01-C (boundary-axioms minimality): hadj_ne is load-bearing under hadj_symm + hadj_vertex alone because adj s k = some ⟨s, k⟩ (self-face-loop) is otherwise admitted."
+    ],
+    "goal": "Ship proofs/Proofs/SpernerMathlibHyper.lean with the hypergraph-generalised IsDoorHyper, IsPanchromaticHyper, even_card_interior_doors_hyper, sperner_parity_hyper, exists_panchromatic_hyper (~120 Lean LOC, 0–1 sorries); preserve the original SpernerMathlib.lean unchanged."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T20:45:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE — axiomatic audit + weakening map + S2 hypergraph skeleton.",
+    "blockers": [],
+    "nextAction": "S2 ACT — create proofs/Proofs/SpernerMathlibHyper.lean with the hypergraph-generalised API (~120 LOC, 0–1 sorries). Skeleton in knowledge.md §4.1.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE doc-only: tabulated the three explicit hypotheses (hadj_symm, hadj_vertex, hadj_ne) and the implicit Fin (d+1) uniform-arity assumption carried by even_card_interior_doors / door_count_parity / sperner_parity / exists_panchromatic. Mapped each hypothesis to its consuming proof step and identified the minimal weakening admitted. Concluded: (A) hypergraph generalisation is mechanically achievable by parameter substitution to ι : Cell → Type* with a palette P; (B) non-pure generalisation is ill-formed at the type level and reduces to the pure case via restriction; (C) hadj_ne is load-bearing absent vertex-per-cell injectivity. Confirmed Mathlib's AbstractSimplicialComplex does not subsume the indexed-face abstraction.",
+    "builtItems": [
+      "research/problems/sperner-mathlib-oq-01/problem.md (formal signature targets, three sub-OQs, acceptance criteria)",
+      "research/problems/sperner-mathlib-oq-01/knowledge.md (axioms inventory, per-step weakening map, Mathlib alignment, S2 Lean skeleton, non-pure counter-example sketch, risk register)",
+      "research/problems/sperner-mathlib-oq-01/state.md (phase OBSERVE, S2 scope lock, race awareness)"
+    ],
+    "insights": [
+      "The current file deliberately uses hypotheses-as-parameters rather than a structure CellComplex — this design choice already pre-empts most of the hypergraph generalisation cost.",
+      "Replacing Fin (d+1) with ι : Cell → Type* requires also abstracting the coloring codomain to a palette P of fixed cardinality, so that 'panchromatic' has a dimension-independent meaning.",
+      "Sperner's parity fails ill-formedly on non-pure complexes — not because the parity statement is false, but because mixed-dimensional cells cannot share a common notion of 'doors'.",
+      "hadj_ne (adjacent cells distinct) is load-bearing because hadj_vertex + hadj_symm alone admit the self-face-loop corner adj s k = some ⟨s, k⟩.",
+      "Sibling sperner-simplicial-bridge-oq-01 (concrete simplicial bridge, PR #18234 merged 2026-05-12) is complementary, not competing: the hypergraph API here is abstract; the simplicial bridge there is concrete."
+    ],
+    "mathlibGaps": [
+      "Mathlib.Combinatorics.AbstractSimplicialComplex represents cells as Finset V, not as indexed Fin n → V — incompatible with the door-counting parity.",
+      "Mathlib.AlgebraicTopology.SimplicialSet is category-theoretic and heavier than needed.",
+      "No Mathlib API for cell-dependent dependent-index face complexes."
+    ],
+    "nextSteps": [
+      "S2 ACT — ship proofs/Proofs/SpernerMathlibHyper.lean (~120 LOC, 0–1 sorries) with IsDoorHyper, IsPanchromaticHyper, even_card_interior_doors_hyper, sperner_parity_hyper, exists_panchromatic_hyper.",
+      "S3 ACT (optional) — restriction-to-pure-sub-complex lemma for non-pure (~30 LOC).",
+      "Sister-slug coordination: the simplicial-bridge sibling (oq-simplicial-bridge-oq-01) provides concrete instances; the hypergraph API consumes them.",
+      "S4 (optional) — Mathlib upstreaming experiment."
+    ]
+  },
+  "tags": [
+    "set-theory",
+    "combinatorics",
+    "topology",
+    "sperner",
+    "cell-complex",
+    "hypergraphs",
+    "axioms-audit",
+    "mathlib",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "sperner-mathlib",
+    "sperner-simplicial-bridge-oq-01",
+    "sperner-simplicial-instance-oq-05",
+    "sperner-ndim-mathlib-oq-01",
+    "sperner-freudenthal",
+    "sperner-grid"
+  ],
+  "references": {
+    "papers": [
+      {
+        "author": "Sperner, E.",
+        "year": 1928,
+        "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
+        "venue": "Abh. Math. Sem. Univ. Hamburg 6: 265–272"
+      },
+      {
+        "author": "De Longueville, M.",
+        "year": 2013,
+        "title": "A Course in Topological Combinatorics, §2 (Sperner / KKM family)",
+        "venue": "Springer"
+      },
+      {
+        "author": "Bárány, I.",
+        "year": 2010,
+        "title": "Sperner's lemma and discrete fixed-point theory",
+        "venue": "Handbook of Discrete and Computational Geometry"
+      }
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Combinatorics.AbstractSimplicialComplex (not subsumed; uses Finset V, not indexed faces)",
+      "Mathlib.AlgebraicTopology.SimplicialSet (heavier; not relevant)"
+    ]
+  },
+  "started": "2026-05-12T20:45:00Z",
+  "lastUpdate": "2026-05-12T20:45:00Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": []
+}
