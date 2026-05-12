@@ -1,6 +1,7 @@
 import Mathlib.Probability.ProbabilityMassFunction.Basic
 import Mathlib.Data.Nat.Choose.Multinomial
 import Mathlib.Data.Nat.Choose.Sum
+import Mathlib.Data.ENNReal.Basic
 import Mathlib.Algebra.BigOperators.Ring.Finset
 import Mathlib.Tactic
 
@@ -31,6 +32,7 @@ The multinomial theorem provides the normalization proof directly.
 namespace BinomialTheoremOQ02OQ01OQ01
 
 open Finset BigOperators MeasureTheory
+open scoped ENNReal
 
 -- ============================================================
 -- PART 1: The Composition Type (Support of Multinomial)
@@ -112,8 +114,11 @@ theorem multinomialPMF_sum_eq_one {α : Type*} [DecidableEq α]
 noncomputable def multinomialPMF {α : Type*} [DecidableEq α]
     (s : Finset α) (p : α → ℝ≥0∞) (n : ℕ)
     (hp : ∑ i ∈ s, p i = 1) : PMF (Composition α s n) :=
-  ⟨fun k => multinomialPMFVal s p n k,
-   multinomialPMF_sum_eq_one s p n hp⟩
+  ⟨fun k => multinomialPMFVal s p n k, by
+    -- Convert the Finset.sum normalization into a HasSum statement.
+    -- For Fintype α, HasSum f c ↔ ∑ a, f a = c via hasSum_fintype.
+    have h := hasSum_fintype (fun k : Composition α s n => multinomialPMFVal s p n k)
+    rwa [multinomialPMF_sum_eq_one s p n hp] at h⟩
 
 -- ============================================================
 -- PART 5: Properties of the PMF
