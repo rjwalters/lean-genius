@@ -1,81 +1,90 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12 (S2)
-**Iteration**: 2
-**Last Updated**: 2026-05-12 (researcher-1)
+**Since**: 2026-05-12 (S3)
+**Iteration**: 3
+**Last Updated**: 2026-05-12 (researcher-5)
 
 ## Current Focus
 
-S2 (researcher-1) delivered the Solymosi–Stojaković 2013 existential
-lower bound as a `theorem ... := by sorry` together with the corollary
-that Erdős's original $\Theta(n^{3/2})$ conjecture is refuted by the
-same construction.  Both new theorems are sorry stubs — the
-construction itself uses algebraic geometry over finite fields and is
-deferred to a much later iteration.  No new axioms were introduced.
+S3 (researcher-5) discharges `erdos_three_halves_conjecture_refuted`
+from S2's `solymosi_stojakovic_lower_bound` by elementary real-analysis
+arithmetic.  The sorry count drops from 3 → 2; the file is still axiom
+free.
 
 ## Active Approach
 
-**Statement-first scaffold; small cases + recorded lower bound.**
+**Specialise SS to `C = 1/2` and use the strict monotonicity of
+`Real.rpow` in the exponent.**
 
-Following S1's "statement-first" pattern, S2 records:
-
-1. `solymosi_stojakovic_lower_bound` — $\forall C > 0, \exists N, \forall n \geq N,
-   \exists P$ with $|P| = n$, no-five-collinear, and
-   $\text{fourPointLineCount}\,P \geq n^{2 - C / \sqrt{\log n}}$. Sorry.
-2. `erdos_three_halves_conjecture_refuted` — there is no $N$ such that
-   every no-five-collinear $P$ with $|P| \geq N$ satisfies
-   $\text{fourPointLineCount}\,P \leq |P|^{3/2}$.  Sorry (real-analysis
-   arithmetic — discharges from (1) by $2 - C/\sqrt{\log n} > 3/2$ for
-   sufficiently large $n$).
+1. Apply `solymosi_stojakovic_lower_bound (1/2 : ℝ)` to obtain `N₁` and
+   a witness `P` for every `n ≥ N₁`.
+2. Choose `m := max N₀ (max N₁ 3)`, so the hypothesised global upper
+   bound applies at `P` of cardinality `m` and `m ≥ 3` gives the
+   asymptotic threshold.
+3. For `m ≥ 3 > Real.exp 1` (via `Real.exp_one_lt_d9`), `Real.log m > 1`,
+   so `Real.sqrt (Real.log m) > 1`, so
+   `(1/2) / Real.sqrt (Real.log m) < 1/2`, so the SS exponent
+   `2 - (1/2) / Real.sqrt (Real.log m)` strictly exceeds `3/2`.
+4. `Real.rpow_lt_rpow_of_exponent_lt hm_gt_one h_exp_gt` then gives
+   `m^(3/2) < m^(2 - (1/2)/sqrt log m)`, which combined with the
+   hypothesised `count ≤ m^(3/2)` and the SS bound
+   `m^(2 - (1/2)/sqrt log m) ≤ count` produces a contradiction by
+   `linarith`.
 
 ## Next Action
 
-S3 candidates (in order of expected value):
+S4 candidates (in order of expected value):
 
-1. **Discharge `erdos_three_halves_conjecture_refuted`.** The proof is
-   pure real-analysis arithmetic given S2's
-   `solymosi_stojakovic_lower_bound`: pick $C = 1/2$ (or any
-   $C > 0$), find $N$ with $2 - C/\sqrt{\log n} > 3/2$ for $n \geq N$,
-   then derive the contradiction.  Estimated 30–60 lines of
-   `Real.rpow_lt_rpow` + `Real.log_pos` manipulation.
+1. **`Asymptotics.IsBigO` / `IsLittleO` bridge.** Define
+   `maxFourPointLines : ℕ → ℕ` via `Finset.sup'` or `Set.Sup` over the
+   (finite-by-Mathlib-decidable-equality) set of no-five-collinear
+   sets of fixed size at most `n`.  Convert
+   `fourPointLineCount_le_quadratic` into a `Asymptotics.IsBigO ⟨atTop⟩`
+   statement against `n^2`, and record the OPEN conjecture as the
+   `Asymptotics.IsLittleO` form `sorry`.  Bridge to the existing
+   `IsLittleOh_n_squared` definition by direct unfolding.
 
-2. **`Asymptotics.IsBigO` / `IsLittleO` bridge.** Show
-   `(fun n => maxFourPointLines n) =O[atTop] (· ^ 2)` from the
-   real-valued $n^2/12$ bound; record the conjecture as
-   `=o[atTop] (· ^ 2)` `sorry`.  Requires defining
-   `maxFourPointLines : ℕ → ℕ` via `Finset.sup'` or `Set.Sup`.
+2. **Refute Erdős's $\Theta(n^{3/2})$ via `Real.rpow` lower-bound
+   formalisation**: extend the S3 refutation to a positive
+   strict-inequality statement `∀ N, ∃ P, NoFiveCollinear P ∧ N ≤ |P|
+   ∧ (P.points.card : ℝ)^(3/2 : ℝ) < (fourPointLineCount P : ℝ)`.
+   This is the "constructive" (rather than negated-existence) form of
+   the same fact and is a one-step rephrasing of the S3 proof.
 
-3. **Investigate per-point Cauchy–Schwarz refinements.** The parent
-   file's `fourCollinearThrough_bound` $\leq (n-1)/3$ combined with
-   second-moment double counting may give a $1 - o(1)$ leading
-   constant on the $n^2/12$ elementary bound.  Not $o(n^2)$, but a
-   concrete *improvement on a non-trivial constant* would be the
-   first sub-elementary upper bound.
+3. **Cauchy–Schwarz refinement** of `fourCollinearThrough_bound`
+   $\leq (n-1)/3$ to potentially yield a $1 - o(1)$ leading constant
+   on the elementary $n^2/12$ bound (not $o(n^2)$, but a real
+   improvement on the constant).
 
 ## Attempt Counts
 
-- Total attempts: 2
-- Current approach attempts: 1 (S2 lower-bound recording)
-- Approaches tried: 1 (S1 scaffold, S2 lower-bound recording —
-  same statement-first approach extended)
+- Total attempts: 3
+- Current approach attempts: 1 (S3 discharge of refutation corollary)
+- Approaches tried: 2 (S1 scaffold + S2 lower-bound recording;
+  S3 elementary real-analysis discharge)
 
 ## Build Status
 
-S2 build: PENDING.  New imports
-(`Mathlib.Analysis.SpecialFunctions.Pow.Real`,
-`Mathlib.Analysis.SpecialFunctions.Log.Basic`,
-`Mathlib.Analysis.SpecialFunctions.Sqrt`) provide `Real.rpow`,
-`Real.log`, `Real.sqrt` used in the lower-bound statement.  CI is
-ground truth.
+S3 build: **PENDING** (Docker not available in worktree;
+`proofs/.lake` is a self-symlink and CI is ground truth).  S3
+introduces *no new imports* — all required Mathlib API
+(`Real.exp_one_lt_d9`, `Real.exp_pos`, `Real.log_exp`,
+`Real.log_lt_log`, `Real.sqrt_one`, `Real.sqrt_lt_sqrt`,
+`Real.rpow_lt_rpow_of_exponent_lt`, `div_lt_iff`) is already in
+the S2 import set and is exercised by other gallery files
+(see e.g. `Erdos1039Problem.lean`, `Erdos1201Problem.lean`,
+`BinomialTheoremOQ03OQ02OQ03.lean`).
 
-S2 risk profile:
-* 2 new theorems, both `theorem ... := by sorry` — no proof tactics
-  to fail on.
-* 3 new Mathlib imports are well-established modules.
-* No changes to existing theorems or definitions.
+S3 risk profile:
+* One discharge, no new theorem statements — the existing
+  `erdos_three_halves_conjecture_refuted` is unchanged.
+* The proof uses only well-established Mathlib API.
+* The single tricky cast is `(m : ℕ) → (m : ℝ)`: handled by
+  `exact_mod_cast hm_three : (3 : ℝ) ≤ (m : ℝ)`.
 
 ## Blockers
 
-None for S2 (statement-only).  Closing the OPEN conjecture is itself a
-$\$100$ Erdős prize-level result and not a single-session goal.
+None for S3.  The remaining OPEN content is the main conjecture
+`erdos_101_oq_01` (a $\$100$ Erdős prize) and the SS construction
+itself (algebraic geometry over finite fields, deferred).

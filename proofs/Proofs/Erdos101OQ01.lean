@@ -314,12 +314,70 @@ This corollary follows from `solymosi_stojakovic_lower_bound` together
 with the elementary asymptotic
 $2 - C / \sqrt{\log n} > 3/2$ for sufficiently large $n$.
 
-The corollary is recorded as `theorem ... := by sorry`; discharging it
-in a follow-up iteration is a real-analysis exercise that does not
-require the construction itself. -/
+**S3 (this iteration)**: discharge.  Specialise the lower bound to
+$C = 1/2$.  For $m \geq 3$, $\log m > 1$ (since $m > e$, using
+`Real.exp_one_lt_d9 : \exp 1 < 2.7182818286 < 3`), so
+$\sqrt{\log m} > 1$, hence $\tfrac{1/2}{\sqrt{\log m}} < 1/2$ and
+$2 - \tfrac{1/2}{\sqrt{\log m}} > 3/2$.  The strict monotonicity of
+`Real.rpow` in its exponent (for base $> 1$) then yields
+$m^{2 - 1/(2\sqrt{\log m})} > m^{3/2}$, which contradicts the
+hypothesised $m^{3/2}$ upper bound on the four-point line count of
+the Solymosi–Stojaković witness set. -/
 theorem erdos_three_halves_conjecture_refuted :
     ¬ (∃ N : ℕ, ∀ (P : PlanarPointSet), NoFiveCollinear P → N ≤ P.points.card →
         (fourPointLineCount P : ℝ) ≤ (P.points.card : ℝ) ^ (3 / 2 : ℝ)) := by
-  sorry
+  rintro ⟨N₀, hN₀⟩
+  -- Apply the Solymosi–Stojaković lower bound with `C = 1/2`.
+  obtain ⟨N₁, hN₁⟩ :=
+    solymosi_stojakovic_lower_bound (1 / 2 : ℝ) (by norm_num)
+  -- Pick a single $m$ that simultaneously beats `N₀`, `N₁`, and `3`.
+  set m : ℕ := max N₀ (max N₁ 3) with hm_def
+  have hm_N₀ : N₀ ≤ m := le_max_left _ _
+  have hm_N₁ : N₁ ≤ m :=
+    (le_max_left N₁ 3).trans (le_max_right _ _)
+  have hm_three : (3 : ℕ) ≤ m :=
+    (le_max_right N₁ 3).trans (le_max_right _ _)
+  -- Solymosi–Stojaković witness at size `m`.
+  obtain ⟨P, hcard, hP_no5, hP_lb⟩ := hN₁ m hm_N₁
+  -- Hypothesised $m^{3/2}$ upper bound applied to the same `P`.
+  have hP_card_ge : N₀ ≤ P.points.card := hcard.symm ▸ hm_N₀
+  have hP_ub : (fourPointLineCount P : ℝ) ≤
+      (P.points.card : ℝ) ^ (3 / 2 : ℝ) :=
+    hN₀ P hP_no5 hP_card_ge
+  -- Real coercions for `m`.
+  have hm_real_ge_three : (3 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm_three
+  have hm_gt_one : (1 : ℝ) < (m : ℝ) := by linarith
+  -- `Real.log m > 1` since `m ≥ 3 > exp 1`.
+  have h_exp_lt_three : Real.exp 1 < (3 : ℝ) := by
+    linarith [Real.exp_one_lt_d9]
+  have h_exp_lt_m : Real.exp 1 < (m : ℝ) := by linarith
+  have hlog_gt_one : (1 : ℝ) < Real.log (m : ℝ) := by
+    have h := Real.log_lt_log (Real.exp_pos 1) h_exp_lt_m
+    rwa [Real.log_exp] at h
+  -- `Real.sqrt (Real.log m) > 1`.
+  have hsqrt_gt_one : (1 : ℝ) < Real.sqrt (Real.log (m : ℝ)) := by
+    have h := Real.sqrt_lt_sqrt (by norm_num : (0 : ℝ) ≤ 1) hlog_gt_one
+    rwa [Real.sqrt_one] at h
+  have hsqrt_pos : (0 : ℝ) < Real.sqrt (Real.log (m : ℝ)) := by linarith
+  -- `(1/2) / sqrt (log m) < 1/2` and hence `2 - … > 3/2`.
+  have h_frac_lt_half :
+      (1 / 2 : ℝ) / Real.sqrt (Real.log (m : ℝ)) < 1 / 2 := by
+    rw [div_lt_iff hsqrt_pos]
+    nlinarith [hsqrt_gt_one]
+  have h_exp_gt :
+      (3 / 2 : ℝ) < 2 - (1 / 2 : ℝ) / Real.sqrt (Real.log (m : ℝ)) := by
+    linarith
+  -- Strict monotonicity of `Real.rpow` in the exponent (base `> 1`).
+  have h_rpow_lt :
+      (m : ℝ) ^ (3 / 2 : ℝ) <
+        (m : ℝ) ^ (2 - (1 / 2 : ℝ) / Real.sqrt (Real.log (m : ℝ))) :=
+    Real.rpow_lt_rpow_of_exponent_lt hm_gt_one h_exp_gt
+  -- Rewrite the hypothesised upper bound in terms of `m`.
+  have hP_ub_m : (fourPointLineCount P : ℝ) ≤ (m : ℝ) ^ (3 / 2 : ℝ) := by
+    rw [hcard] at hP_ub; exact hP_ub
+  -- The Solymosi–Stojaković lower bound is already phrased in `m`.
+  -- Chain: `m^(2-1/2/sqrt log m) ≤ count ≤ m^(3/2)` but
+  -- `m^(3/2) < m^(2-1/2/sqrt log m)` — contradiction.
+  linarith [hP_lb, hP_ub_m, h_rpow_lt]
 
 end Erdos101OQ01
