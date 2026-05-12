@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "REFLECT",
     "since": "2026-05-01T00:00:00.000Z",
-    "iteration": 33,
-    "focus": "S33 — Lean-verified refutation of the general non-expansion lemma (PART XXII): theorem cofactor_general_non_expansion_counterexample via decide on M=⟨2,1,1,1⟩, N=id, (1,0). Closes spec §5.2 sub-task (b) first disjunct definitively. Build pending.",
+    "iteration": 34,
+    "focus": "S34 (merged PR #17771) — abort-branch decomposition theorems hgcdMatrixSafeOf_abort_branch and hgcdSafeApply_abort_branch in PART XXIII of BinaryGcdOQ03OQ02PathA.lean, structural duals of S31's compose-branch theorems. Above-threshold + inner-aborts (max a b ≤ max u v) implies hgcdMatrixSafeOf a b = M_inner directly. Together with S31, completes the case-distinction API on the inner size-reduction guard. +115 lines, 0 axioms, 0 sorries. Build pending. (S35 PR is markdown/JSON sync only: bumps state.md head + this currentState block, rewrites stale state.md Next Action list to point to S32b/c; 0 Lean changes.)",
     "blockers": [
       "Complexity bound O(M(n) log n) is unfalsifiable in current Mathlib: no bit-complexity model for arithmetic, no fast multiplication. Genuinely blocked; not a blocker on size-reduction work.",
       "S17 finding: the row-vector invariant approach is FALSE under the current algorithm. Cannot proceed with the row-convention size-reduction theorem until the proof program is redirected (algorithm refinement, restricted hypothesis, or column-convention rewrite)."
