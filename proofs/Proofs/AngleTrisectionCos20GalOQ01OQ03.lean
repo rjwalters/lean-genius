@@ -1055,6 +1055,83 @@ theorem cyclotomic_two_mul_prime_eval_neg_one_uniform
   simp only [eval_pow, eval_neg, eval_X, neg_neg, one_pow]
   rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
 
+/-! ## S10: Uniform constant-coefficient corollary
+
+S9 delivered the uniform numerical anchor
+`cyclotomic_two_mul_prime_eval_neg_one_uniform`:
+`(cyclotomic (2 * p) ℤ).eval (-1) = p` for every odd prime `p ≥ 3`. The
+per-prime cyclotomic bridges
+`r_{3, 5, 7, 11, 13}_constantCoeff_eq_cyclotomic` of S5+S6 use the
+**literal** cyclotomic indices `{6, 10, 14, 22, 26}`. S10 lifts those
+per-prime bridges into a single statement parameterised by `(2 * p)`,
+yielding the uniform constant-coefficient identity
+
+  `r_constantCoeff_eq_signed_cyclotomic_uniform`
+  : `∀ p ∈ ({3, 5, 7, 11, 13} : Finset ℕ),
+      (r p).coeff 0 = (-1)^((p-1)/2) · (cyclotomic (2 * p) ℤ).eval (-1)`
+
+and combining it with the S9 numerical anchor yields the **fully
+uniform** signed-`p` form, decoupled from the literal cyclotomic index:
+
+  `r_constantCoeff_eq_signed_uniform`
+  : `∀ p (verified), p.Prime → Odd p →
+       (r p).coeff 0 = (-1)^((p-1)/2) · (p : ℤ)`.
+
+This is the S10 deliverable announced in `state.md`. Note the
+quantification is over the **verified** prime set `{3, 5, 7, 11, 13}`
+because `r p = 0` for `p ∉ {3, 5, 7, 11, 13}`; the uniformity is in the
+**indexing of cyclotomic** (now `2 * p` instead of literal `{6, 10,
+14, 22, 26}`), not in the parametric polynomial `r`. Closing the gap to
+"all odd primes" requires the gallery-side extension of `r` itself,
+which awaits the cyclotomic-ramification proof outlined in
+`eisenstein_conjecture_cos_pi_p` (line 1083).
+
+**Proof structure.**
+1. `r_constantCoeff_eq_signed_cyclotomic_uniform` reduces by case-split
+   on `Finset.mem_insert` to the five per-prime cyclotomic bridges
+   already proved in S5/S6; the `(2 * p)` indices reduce definitionally
+   to the literal `{6, 10, 14, 22, 26}`.
+2. `r_constantCoeff_eq_signed_uniform` then rewrites the cyclotomic
+   evaluation via the S9 numerical anchor, requiring only that the
+   verified primes are themselves prime and odd (discharged by `decide`
+   at each case for the membership-derived `p`).
+-/
+
+/-- For each verified prime `p ∈ {3, 5, 7, 11, 13}`, the constant
+coefficient of `r p` equals `(-1)^((p-1)/2) · Φ_{2p}(-1)`. Uniform
+restatement of the S5/S6 per-prime cyclotomic bridges using `(2 * p)`
+indexing (which reduces definitionally to the literal cyclotomic index
+at each case). -/
+theorem r_constantCoeff_eq_signed_cyclotomic_uniform (p : ℕ)
+    (hp : p ∈ ({3, 5, 7, 11, 13} : Finset ℕ)) :
+    (r p).coeff 0 = (-1) ^ ((p - 1) / 2) * (cyclotomic (2 * p) ℤ).eval (-1) := by
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+  rcases hp with rfl | rfl | rfl | rfl | rfl
+  · exact r_3_constantCoeff_eq_cyclotomic
+  · exact r_5_constantCoeff_eq_cyclotomic
+  · exact r_7_constantCoeff_eq_cyclotomic
+  · exact r_11_constantCoeff_eq_cyclotomic
+  · exact r_13_constantCoeff_eq_cyclotomic
+
+/-- Uniform constant-coefficient corollary: for each verified prime
+`p ∈ {3, 5, 7, 11, 13}`, the constant coefficient of `r p` equals
+`(-1)^((p-1)/2) · p`. Combines `r_constantCoeff_eq_signed_cyclotomic_uniform`
+with the S9 uniform anchor `cyclotomic_two_mul_prime_eval_neg_one_uniform`.
+
+Re-derives the per-prime `r_constantCoeff_eq_signed_p` via the cyclotomic
+anchor route: the S9 lemma `(cyclotomic (2*p) ℤ).eval (-1) = p` for odd
+prime `p` collapses the cyclotomic factor on the RHS down to the plain
+`p`, recovering the empirical sign-pattern fingerprint without case-split. -/
+theorem r_constantCoeff_eq_signed_uniform (p : ℕ)
+    (hp : p ∈ ({3, 5, 7, 11, 13} : Finset ℕ)) :
+    (r p).coeff 0 = (-1) ^ ((p - 1) / 2) * (p : ℤ) := by
+  have h_prime : p.Prime ∧ Odd p := by
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+    rcases hp with rfl | rfl | rfl | rfl | rfl
+    all_goals exact ⟨by decide, by decide⟩
+  rw [r_constantCoeff_eq_signed_cyclotomic_uniform p hp,
+      cyclotomic_two_mul_prime_eval_neg_one_uniform h_prime.1 h_prime.2]
+
 /-! ## Uniform conjecture (general odd prime p ≥ 3) -/
 
 /--
