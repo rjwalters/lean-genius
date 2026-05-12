@@ -1,0 +1,141 @@
+{
+  "slug": "minpoly-charpoly-oq-02",
+  "title": "Diagonalizable Matrices via Squarefree Minimal Polynomial",
+  "phase": "OBSERVE",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall M \\in \\mathrm{Mat}_n(K),\\ K \\text{ algebraically closed, } \\mathrm{char}\\ K = 0 \\Longrightarrow\\ \\bigl(M \\text{ is diagonalizable} \\iff \\mathrm{minpoly}_K(M) \\text{ is squarefree}\\bigr).",
+    "plain": "Can the textbook diagonalizability characterisation — a matrix M ∈ Mat_n(K) over an algebraically closed field of characteristic zero is diagonalizable iff its minimal polynomial is squarefree (no repeated roots) — be formalized in Lean 4?",
+    "whyMatters": [
+      "This is the operational test for diagonalizability used everywhere in elementary linear algebra and applied mathematics (numerical linear algebra, dynamical systems, quantum mechanics, …).",
+      "The parent gallery entry `minpoly-charpoly` (17 theorems on minpoly | charpoly) has this as `conclusion.openQuestions[1]` — sandwiched between OQ-01 (Jordan normal form) and OQ-03 (rational canonical form). Closing it completes the three open questions of the parent.",
+      "Unlike the Jordan / rational canonical form sub-OQs, the diagonalizability characterisation has **no Mathlib gap**: the entire forward and reverse implications follow from `Module.End.IsSemisimple` ↔ `Squarefree (minpoly K f)` (`Mathlib.LinearAlgebra.Semisimple`) plus the alg-closed `splits` boundary."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Standard textbook fact (Axler, *Linear Algebra Done Right* 3rd ed., §8.A; Dummit–Foote, *Abstract Algebra* 3rd ed., §12.2): over an algebraically closed field, an operator is diagonalizable iff its minimal polynomial has distinct roots.",
+      "Mathlib `Module.End.isSemisimple_iff_squarefree_minpoly` (`Mathlib.LinearAlgebra.Semisimple`): for a finite-dim endomorphism over a field where minpoly is separable, `IsSemisimple` ↔ `Squarefree (minpoly K f)`.",
+      "Mathlib `Matrix.minpoly_toLin'` (`Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly`): the minimal polynomial transports across the matrix–endomorphism bridge.",
+      "Mathlib `Module.End.IsSemisimple` API: definition and basic closure properties.",
+      "In-tree (S1, this PR): `Matrix.IsDiagonalizable` predicate, `Matrix.IsDiagonalizable.of_isDiag`, `Matrix.IsDiagonalizable.zero`."
+    ],
+    "open": [
+      "Full discharge of `diagonalizable_iff_squarefree_minpoly` (sorry in S1 scaffold).",
+      "Bridge `Matrix.IsDiagonalizable M ↔ Module.End.IsSemisimple (Matrix.toLin' M) ∧ Polynomial.Splits (algebraMap K K) (minpoly K M)` (OQ-02-OQ-02 target).",
+      "General-field version with explicit `splits` hypothesis (OQ-02-OQ-03).",
+      "Char-0 corollary: `CharZero K → ∀ M, Separable (minpoly K M)` so the `IsSemisimple` ↔ `Squarefree minpoly` API applies unconditionally (OQ-02-OQ-04)."
+    ],
+    "goal": "Statement and proof of `diagonalizable_iff_squarefree_minpoly`: over an algebraically closed field of characteristic zero (and, in OQ-02-OQ-03, over any field with the explicit `splits` hypothesis), `M.IsDiagonalizable ↔ Squarefree (minpoly K M)`."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T20:35:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE (researcher-6, 2026-05-12, this PR) — SCAFFOLD: created `Proofs/MinpolyCharpolyOQ02.lean` (134 lines) with `Matrix.IsDiagonalizable` predicate, main statement `diagonalizable_iff_squarefree_minpoly` (1 sorry, weak alg-closed-char-0 form), two unconditional sanity lemmas (`of_isDiag`, `zero`), gallery entry JSON, manifest import. Documents the three-ingredient Mathlib bridge (`isSemisimple_iff_squarefree_minpoly` + `minpoly_toLin'` + alg-closed splits) and decomposes follow-up work into four sub-OQs sized at ≈ 450 lines total. Comparison with siblings OQ-01 (JNF, ~930 lines, Mathlib gap on nilpotent canonical form) and OQ-03 (RCF, ~900 lines, no gap, companion-matrix in-tree): OQ-02 is the smallest of the three and has no Mathlib gap.",
+    "blockers": [],
+    "nextAction": "S2 candidate A: OQ-02-OQ-01 — scaffold `MinpolyCharpolyOQ02OQ01.lean` with the matrix↔endomorphism bridge `Matrix.IsDiagonalizable M ↔ Module.End.IsSemisimple (Matrix.toLin' M) ∧ Polynomial.Splits (algebraMap K K) (minpoly K M)` (~100 lines, ~1 sorry deferred to OQ-02-OQ-02). S2 candidate B: char-0 corollary `CharZero K → ∀ M, Separable (minpoly K M)` so the `IsSemisimple` ↔ `Squarefree minpoly` API applies without extra hypotheses (small, ~80 lines, no sorry). S2 candidate C: strong-form upgrade adding the explicit `Matrix.toLin'`/`Matrix.IsDiagonalizable.isSemisimple` corollary, still sorry-guarded but exposing the operator-theoretic side.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE (researcher-6, 2026-05-12, this PR) — SCAFFOLD: created `Proofs/MinpolyCharpolyOQ02.lean` (134 lines) — `Matrix.IsDiagonalizable` predicate, main theorem statement `diagonalizable_iff_squarefree_minpoly` (1 sorry, weak form) over algebraically-closed K with CharZero, plus two unconditional sanity lemmas (diagonal matrices and the zero matrix are diagonalizable). Gallery entry (this JSON) + manifest import included. Three-ingredient Mathlib resolution documented: `Module.End.isSemisimple_iff_squarefree_minpoly` + `Matrix.minpoly_toLin'` + alg-closed `Polynomial.Splits` boundary. Sub-OQ decomposition (OQ-02-OQ-01 .. OQ-02-OQ-04) sized at ≈ 450 lines total. **No Mathlib gap** — entire forward and reverse implications already in Mathlib v4.26.0; remaining work is purely integrative.",
+    "builtItems": [
+      "Matrix.IsDiagonalizable (def): `∃ P, IsUnit P ∧ IsDiag (P⁻¹ * M * P)` — the matrix-level diagonalizability predicate as an existential over invertible similarity transforms.",
+      "diagonalizable_iff_squarefree_minpoly (theorem, sorry-guarded): the S1 statement of the textbook characterisation under `IsAlgClosed K + CharZero K`. Single sorry, to be discharged by OQ-02-OQ-01 .. OQ-02-OQ-04.",
+      "Matrix.IsDiagonalizable.of_isDiag (theorem, unconditional): a diagonal matrix is diagonalizable — `P = 1` works.",
+      "Matrix.IsDiagonalizable.zero (theorem, unconditional): the zero matrix is diagonalizable."
+    ],
+    "insights": [
+      "**Three-ingredient resolution** — `Module.End.isSemisimple_iff_squarefree_minpoly` + `Matrix.minpoly_toLin'` + alg-closed `splits` boundary. All three are in Mathlib `v4.26.0`; the remaining work is purely integrative. **No Mathlib gap.**",
+      "**OQ-02 is the smallest of the three minpoly-charpoly sub-OQs** — Sub-OQ roadmap totals ≈ 450 lines, compared to ~930 for OQ-01 (JNF) and ~900 for OQ-03 (RCF). The `Module.End.IsSemisimple` API absorbs the bulk of the work, and the matrix↔endomorphism transport is one Mathlib lemma.",
+      "**Alg-closed-char-0 vs general field** — Over `IsAlgClosed K` the `Polynomial.Splits` hypothesis is automatic (every polynomial splits) and `CharZero K` implies the minpoly is separable (so the Mathlib `IsSemisimple ↔ Squarefree minpoly` API applies). The general-field version requires both as explicit hypotheses.",
+      "**Diagonalizable = Semisimple + Splits** — operator-theoretically, diagonalizability decomposes as semisimplicity (eigenspaces span) plus the field-theoretic condition that all eigenvalues are in K (`splits`). The minimal-polynomial form `Squarefree` captures the semisimplicity half; the `splits` half is a field-theoretic side condition that disappears over algebraically closed fields.",
+      "**Weak vs strong statement** — S1 asserts only the iff at the matrix level. The strong form (similarity transform `P` is constructive from an eigenbasis) is the target of OQ-02-OQ-02 and is a ~5–10 line statement edit on top of S1's weak form."
+    ],
+    "mathlibGaps": [
+      "(None for the headline theorem.) The four sub-OQs are integrative, not gap-filling."
+    ],
+    "nextSteps": [
+      "S2 candidate A: open child OQ minpoly-charpoly-oq-02-oq-01 and scaffold MinpolyCharpolyOQ02OQ01.lean with the matrix↔endomorphism bridge `Matrix.IsDiagonalizable M ↔ Module.End.IsSemisimple (Matrix.toLin' M) ∧ Polynomial.Splits (algebraMap K K) (minpoly K M)` (~100 lines, with one deferred sorry for the converse direction).",
+      "S2 candidate B: char-0 corollary `CharZero K → ∀ M, Separable (minpoly K M)` — small (~80 lines), no sorry. Lets the `IsSemisimple ↔ Squarefree minpoly` Mathlib API apply without an extra `Separable` side hypothesis.",
+      "S2 candidate C: strong-form upgrade exposing the operator-theoretic decomposition: `Matrix.IsDiagonalizable.isSemisimple_toLin' (M : Matrix n n K) (h : M.IsDiagonalizable) : Module.End.IsSemisimple (Matrix.toLin' M)` — sorry-guarded, but exposes the structure of the eventual proof.",
+      "S2 candidate D: add `Matrix.IsDiagonalizable.charpoly_squarefree_imp` corollary — direct application of `charpoly` factoring through `minpoly`. Unconditional, no sorry.",
+      "S3+: discharge sub-OQs sequentially. Suggested order: OQ-02-OQ-04 (char-0 separability — smallest, fully dischargable) → OQ-02-OQ-01 (matrix bridge) → OQ-02-OQ-02 (alg-closed full discharge) → OQ-02-OQ-03 (general field with explicit splits)."
+    ]
+  },
+  "tags": [
+    "linear-algebra",
+    "matrices",
+    "diagonalization",
+    "minimal-polynomial",
+    "squarefree",
+    "semisimple",
+    "algebraically-closed",
+    "characteristic-zero",
+    "algebra",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "minpoly-charpoly",
+    "minpoly-charpoly-oq-01",
+    "minpoly-charpoly-oq-03",
+    "cayley-hamilton",
+    "cayley-hamilton-minpoly"
+  ],
+  "references": {
+    "papers": [
+      "Axler, S. (2015). *Linear Algebra Done Right* (3rd ed.). Springer. §8.A — diagonalizability and the minimal polynomial.",
+      "Dummit, D. S. & Foote, R. M. (2004). *Abstract Algebra* (3rd ed.). Wiley. §12.2 — rational and Jordan canonical forms; diagonalizability via squarefree minimal polynomial.",
+      "Hoffman, K. & Kunze, R. (1971). *Linear Algebra* (2nd ed.). Prentice Hall. §6.4."
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Semisimple.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Matrix/Charpoly/Minpoly.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/Squarefree.html",
+      "https://en.wikipedia.org/wiki/Diagonalizable_matrix"
+    ],
+    "mathlib": [
+      "Module.End.IsSemisimple (Mathlib.LinearAlgebra.Semisimple)",
+      "Module.End.isSemisimple_iff_squarefree_minpoly (Mathlib.LinearAlgebra.Semisimple)",
+      "Matrix.minpoly_toLin' (Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly)",
+      "Polynomial.Squarefree (Mathlib.Algebra.Polynomial.Squarefree)",
+      "Polynomial.Splits (Mathlib.FieldTheory.Splitting Field.Basic)",
+      "IsAlgClosed (Mathlib.FieldTheory.IsAlgClosed.Basic)",
+      "Matrix.IsDiag (Mathlib.LinearAlgebra.Matrix.Diagonal)"
+    ]
+  },
+  "started": "2026-05-12T20:35:00Z",
+  "lastUpdate": "2026-05-12T20:35:00Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/MinpolyCharpoly.lean",
+      "filename": "MinpolyCharpoly.lean",
+      "lineCount": 247,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpoly.lean"
+    },
+    {
+      "path": "Proofs/MinpolyCharpolyOQ02.lean",
+      "filename": "MinpolyCharpolyOQ02.lean",
+      "lineCount": 134,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ02.lean"
+    }
+  ]
+}
