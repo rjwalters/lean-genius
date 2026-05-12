@@ -949,6 +949,75 @@ private lemma rotateSortedList_mod {n c : ℕ} (M : Sym (Fin n) c) (k : ℕ) :
   conv_lhs => rw [show c = (M.1.sort (· ≤ ·)).length from hlen.symm]
   exact List.rotate_mod _ _
 
+/-! #### S34 — Drop-suffix and take/drop split helpers
+
+Three additional pure-Mathlib wrapper lemmas extending the S31/S32/S33
+`rotateSortedList` family to the `List.drop` and `List.take_append_drop`
+side. Symmetric counterparts of the open `_take_*` block (PR #17664):
+together they give Sym-codomain witnesses for both halves of every
+`take j ++ drop j` decomposition of any rotation of `M.1.sort`, plus the
+structural identity that the two halves sum (as multisets) to `M.1`.
+None of these lemma names overlaps with PR #17664's prefix block, so the
+two PRs can land in either order without conflict (different lemma
+names; insertion at a different anchor point — after `rotateSortedList_mod`
+rather than after `rotateSortedList_mem`). Each is a one- to three-line
+proof against `Mathlib.Data.List.Basic` / `Mathlib.Data.Multiset.Basic`.
+Neither changes the file's sorry count (still 2) or axiom count
+(still 0). -/
+
+/-- **Cardinality of the suffix of a rotation.** The multiset cardinality
+    of `(rotateSortedList M k).drop j` is `c - j` (the remaining elements
+    after dropping the first `j` from a length-`c` list). Direct from
+    `List.length_drop` and `rotateSortedList_length`. The truncated-`Nat`
+    subtraction is the natural form here: when `j ≥ c`, both sides equal
+    `0` (the suffix is empty). Symmetric counterpart of the prefix
+    cardinality lemma in PR #17664 (`rotateSortedList_take_card`,
+    cardinality `j` under the precondition `j ≤ c`); used to package
+    `(rotateSortedList M k).drop j` as a `Sym (Fin n) (c - j)` complement
+    of the prefix in the 2B.4' refined-codomain bijection. -/
+@[simp] private lemma rotateSortedList_drop_card {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) :
+    ((rotateSortedList M k).drop j : Multiset (Fin n)).card = c - j := by
+  rw [Multiset.coe_card, List.length_drop, rotateSortedList_length]
+
+/-- **Suffix is a sub-multiset of M.** The drop-suffix of any rotation of
+    `M.1.sort` is `≤ M.1` as a multiset. Combines `List.drop_sublist` with
+    `Multiset.coe_le.mpr` and `rotateSortedList_toMultiset` exactly as
+    PR #17664's `rotateSortedList_take_le` does for the prefix. The lemma
+    is the codomain witness for the `Sym (Fin n) (c - j)` complement of
+    the prefix in the 2B.4' refined-codomain bijection: every
+    `(P', Q) : Sym (Fin n) (a+1) × Sym (Fin n) (b-1)` arising from a
+    `(rotation index k, split index j = a+1)` decomposition has both
+    components as `≤ M.1` submultisets. -/
+private lemma rotateSortedList_drop_le {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) :
+    ((rotateSortedList M k).drop j : Multiset (Fin n)) ≤ M.1 := by
+  rw [← rotateSortedList_toMultiset M k]
+  exact Multiset.coe_le.mpr (List.drop_sublist j _).subperm
+
+/-- **Prefix and suffix sum to `M.1`.** The structural lemma underlying
+    every `(P, Q)` decomposition of a rotation: as multisets, the prefix
+    `(rotateSortedList M k).take j` and the suffix
+    `(rotateSortedList M k).drop j` sum to `M.1`. Direct lift of
+    `List.take_append_drop` through the `List → Multiset` coercion,
+    using `rotateSortedList_toMultiset` to identify the rotation's
+    underlying multiset with `M.1`.
+
+    Use site (2B.4' refined-codomain bijection): given a "bad" P (no
+    col-strict complement) of size `a`, the cycle-lemma argument moves
+    one element from `Q` into `P` to obtain `P' : Sym (Fin n) (a+1)`
+    with `P' ≤ M.1`; the inverse must recover both halves of a Sym pair
+    `(P', Q')` with `P'.1 + Q'.1 = M.1`. This lemma is the structural
+    fact that `take j ++ drop j` always gives such a pair, packaging the
+    `take_append_drop` identity at the multiset level where the
+    cycle-lemma bijection naturally lives. -/
+private lemma rotateSortedList_take_add_drop {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) :
+    ((rotateSortedList M k).take j : Multiset (Fin n))
+      + ((rotateSortedList M k).drop j : Multiset (Fin n)) = M.1 := by
+  rw [← Multiset.coe_add, List.take_append_drop]
+  exact rotateSortedList_toMultiset M k
+
 /-- **Total multiset of a Sym pair (as a `Sym`).**
 
     The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in
