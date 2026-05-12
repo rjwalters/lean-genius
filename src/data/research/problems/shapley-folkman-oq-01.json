@@ -1,0 +1,67 @@
+{
+  "slug": "shapley-folkman-oq-01",
+  "title": "Shapley–Folkman extension to infinite-dim Hilbert spaces",
+  "phase": "OBSERVE",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Drop } [\\mathrm{FiniteDimensional}\\, \\mathbb{R}\\, E] \\text{ from } \\mathrm{shapley\\_folkman} \\text{ in } \\mathrm{ShapleyFolkman.lean}, \\text{ replacing } \\mathrm{Module.finrank}\\, \\mathbb{R}\\, E \\text{ with a suitable dimension notion in infinite-dim Hilbert spaces.}",
+    "plain": "The parent proof shapley-folkman is verified in finite-dim ℝ-modules via Module.finrank ℝ E. The seeker note asks whether replacing finrank with a 'suitable dimension' extends the theorem to infinite-dim Hilbert space (e.g. ℓ²). S1 OBSERVE establishes that NO drop-in numerical replacement works: Lean's Module.finrank is 0 in infinite-dim, collapsing the bound; the affine-dependence step in the proof is provably false for arbitrarily large index sets in infinite-dim. The honest infinite-dim analogs are Aumann (1965) set-valued integrals and Lyapunov (1940) vector-measure convexity — neither in Mathlib.",
+    "whyMatters": [
+      "Economics: Aumann (1965) used Lyapunov to prove that markets with a continuum of agents have convex aggregate excess-demand sets — this is the infinite-dim analog of Shapley–Folkman that economists actually use.",
+      "Convex analysis: Lyapunov's convexity theorem is the bridge from finite-dim Shapley–Folkman to infinite-dim convexification results.",
+      "Honest gallery framing: a naive reader of the parent proof might assume the d-dim bound extends to Hilbert spaces by 'just replacing d'. Formalizing the explicit ℓ² counter-example documents what fails."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent shapley-folkman (ShapleyFolkman.lean:1140, verified): the finite-dim theorem with [FiniteDimensional ℝ E] and Module.finrank ℝ E bound, 0 sorries, 0 axioms.",
+      "Mathlib: Carathéodory's theorem (convexHull_eq_union, Mathlib.Analysis.Convex.Caratheodory), atomless measure spaces (MeasureTheory.Measure.IsAtom), vector-valued integration into Banach spaces."
+    ],
+    "open": [
+      "shapley_folkman_no_uniform_bound (Approach C, S2-A target): for any n, there is E (= EuclideanSpace ℝ (Fin n)) and Sᵢ = {0, eᵢ} with a midpoint x ∈ convexHull ℝ (∑ᵢ Sᵢ) requiring all n indices to be 'excess'.",
+      "shapley_folkman_fails_in_finrank_zero (S2-B target): in any non-finite-dim ℝ-module with a non-zero element, [FiniteDimensional ℝ E] cannot be dropped.",
+      "Aumann set-valued integral convexity (Approach A, deferred): requires Lyapunov's convexity theorem upstream (200–300 lines, not in Mathlib).",
+      "Lyapunov vector-measure convexity (prerequisite for Approach A, deferred): the engine of Aumann (1965)."
+    ],
+    "goal": "Create proofs/Proofs/ShapleyFolkmanOQ01.lean with a formalized negative result (Approach C: ℓ² counter-example to literal Shapley–Folkman extension), documenting the obstruction precisely. Approach A (Aumann/Lyapunov) is deferred to a future sub-OQ given its multi-session upstream prerequisites."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12",
+    "iteration": 1,
+    "focus": "S1 OBSERVE doc-only deliverable complete. Key finding: Module.finrank ℝ E = 0 in infinite-dim collapses the bound; affine-dependence step at ShapleyFolkman.lean:151 is provably false for ω-sized independent families. Three viable infinite-dim analogs identified (Aumann/Lyapunov/Ekeland), only Approach C (explicit counter-example) is single-session-feasible. S2-A (40 lines) shortlisted: shapley_folkman_no_uniform_bound in EuclideanSpace ℝ (Fin n).",
+    "blockers": [
+      "Lyapunov's convexity theorem (Approach A prerequisite): not in Mathlib; multi-session formalization project."
+    ],
+    "nextAction": "S2-A ACT: create proofs/Proofs/ShapleyFolkmanOQ01.lean with shapley_folkman_no_uniform_bound (~40 lines). Defer S2-B (lp 2 lift) until S2-A is build-verified.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE: filled seeker-stub problem.md, surveyed Mathlib for upstream API. Key finding: NO drop-in numerical replacement for Module.finrank exists in infinite-dim. The correct analog (Aumann set-valued integrals via Lyapunov vector-measure convexity) requires multi-session upstream work not feasible at OQ-01 scope. Shortlisted Approach C — explicit ℓ² counter-example — as the narrowest viable S2 ACT (~40 lines in EuclideanSpace ℝ (Fin n), parameterized in n to give 'no uniform bound' force). No Lean changes in S1.",
+    "builtItems": [
+      "research/problems/shapley-folkman-oq-01/problem.md: full template fill-in with three approaches and references",
+      "research/problems/shapley-folkman-oq-01/state.md: Session 1 entry + S2-A next action",
+      "research/problems/shapley-folkman-oq-01/knowledge.md: parent file map (4 finite-dim-essential steps) + three analogs (Aumann/Lyapunov/Ekeland) + counter-example sketch",
+      "research/problems/shapley-folkman-oq-01/sessions/2026-05-12-s01-observe.md: full S1 OBSERVE report with vacuity argument and S2 shortlist"
+    ],
+    "insights": [
+      "Module.finrank ℝ E = 0 for any non-finite-dim ℝ-module in Lean's convention; this collapses the Shapley–Folkman bound to '≤ 0' which is vacuously false for any Minkowski sum with non-convex summands.",
+      "excess_vertices_affine_dependent at ShapleyFolkman.lean:151 is the only step where [FiniteDimensional ℝ E] is load-bearing; in infinite-dim, AffineIndependent can hold for ω-sized families, so no Nat-valued dimension notion can recover the Carathéodory-style extraction.",
+      "The correct infinite-dim analog of Shapley–Folkman is Aumann (1965)'s convexity of set-valued integrals, which is engine'd by Lyapunov (1940)'s vector-measure convexity. Neither theorem is in Mathlib.",
+      "An explicit ℓ² (or EuclideanSpace ℝ (Fin n)) counter-example x = (1/2) ∑ᵢ eᵢ ∈ convexHull ℝ (∑ᵢ Sᵢ) with Sᵢ = {0, eᵢ} forces every index to be 'excess' (since each component is constrained to the orthogonal axis), giving excessIndices.card = n unbounded as n → ∞."
+    ],
+    "techniques": [
+      "EuclideanSpace ℝ (Fin n) + EuclideanSpace.basisFun for concrete finite-dim counter-example",
+      "Orthogonal-component constraint: Sᵢ ⊆ span ℝ {eᵢ} forces xᵢ = tᵢ eᵢ, ruling out cross-coordinate compensation",
+      "Midpoint extraction: x = (1/2) ∑ eᵢ is non-extreme in each convexHull ℝ Sᵢ, making every i excess"
+    ]
+  },
+  "createdAt": "2026-05-12",
+  "updatedAt": "2026-05-12"
+}
