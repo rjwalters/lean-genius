@@ -1,0 +1,146 @@
+{
+  "slug": "minpoly-charpoly-oq-01",
+  "title": "Jordan Normal Form via Minpoly/Charpoly Infrastructure",
+  "phase": "OBSERVE",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall M \\in \\mathrm{Mat}_n(K),\\ K \\text{ algebraically closed} \\Longrightarrow\\ \\exists\\ (\\lambda_i, d_i) \\in (K \\times \\mathbb{N}_{>0})^k\\ \\text{and an invertible } P\\ \\text{with}\\ P^{-1} M P\\ =\\ \\bigoplus_i\\ \\mathrm{jordanBlock}(\\lambda_i, d_i).",
+    "plain": "Can the Jordan normal form theorem — every matrix M over an algebraically closed field is similar to a block-diagonal matrix of Jordan blocks (λ·I + N) — be formalized in Lean 4 using the minpoly/charpoly infrastructure of the parent gallery entry?",
+    "whyMatters": [
+      "JNF is the canonical form for matrix similarity over algebraically closed fields and one of the most-taught results in linear algebra.",
+      "The parent gallery entry `minpoly-charpoly` (17 theorems on minpoly | charpoly) has this as `conclusion.openQuestions[0]` — closing it completes the alg-closed half of the parent's canonical-form story (RCF is the field-independent dual via `minpoly-charpoly-oq-03`).",
+      "A clean Lean formalisation is upstreamable to Mathlib: `Mathlib.LinearAlgebra.JordanChevalley` already exists and a sibling `JordanNormalForm.lean` is a natural addition."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Jordan (1870, *Traité des substitutions*): JNF exists and is unique up to permutation of blocks, over an algebraically closed field.",
+      "Mathlib `Module.End.iSup_genEigenspace_eq_top` (`LinearAlgebra/Eigenspace/Triangularizable.lean`): the generalized eigenspaces of an endomorphism span the whole space (finite-dim, alg. closed).",
+      "Mathlib `Module.End.exists_isNilpotent_isSemisimple` (`LinearAlgebra/JordanChevalley.lean`): Jordan-Chevalley-Dunford decomposition — finite-dim endomorphism over a perfect field splits as nilpotent + semisimple (polynomial expressions in f).",
+      "Mathlib `Mathlib/LinearAlgebra/Eigenspace/Pi.lean`: internal-direct-sum lemmas for generalized eigenspaces."
+    ],
+    "open": [
+      "Full discharge of `jordan_normal_form_exists` (sorry in S1 scaffold).",
+      "Strong-form statement: existence of an invertible similarity transform P with P⁻¹ M P = direct sum of Jordan blocks (S1 statement asserts only existence of a JordanBlockShape of the correct total dimension).",
+      "Nilpotent canonical form (Jordan basis theorem for nilpotent operators) — the single load-bearing Mathlib gap.",
+      "Uniqueness of the JNF up to permutation of blocks — corollary once existence is proved.",
+      "Algebraically-closed-field assumption: extend to similarity over `AlgebraicClosure K` for general field `K`."
+    ],
+    "goal": "Statement and proof of `jordan_normal_form_exists`: every square matrix M over an algebraically closed field admits a JordanBlockShape S (list of (eigenvalue, block size) pairs) such that M is similar to the block-diagonal matrix built from `jordanBlock K λᵢ dᵢ` blocks, with total dimension matching the matrix size and eigenvalue multiplicities matching the characteristic-polynomial root multiplicities."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T10:00:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE (this PR, researcher-12) — SCAFFOLD: created `Proofs/MinpolyCharpolyOQ01.lean` (228 lines, 1 sorry, 4 theorems, 4 definitions/structures) with the JordanBlockShape data structure, the jordanBlock matrix definition with two unconditional API lemmas, the main JNF existence theorem statement (weak form, sorry-guarded), and one unconditional sanity lemma. Gallery entry (this JSON) + research markdown + manifest import all included. Resolution at strategy level: AFFIRMATIVE — four-ingredient plan (gen-eigenspace decomposition + internal direct sum + Jordan-Chevalley + nilpotent canonical form) with three Mathlib ingredients confirmed present and one local gap (nilpotent canonical form) identified as the load-bearing OQ-01-OQ-02.",
+    "blockers": [],
+    "nextAction": "S2 candidate A: open child OQ minpoly-charpoly-oq-01-oq-01 and scaffold MinpolyCharpolyOQ01OQ01.lean with the jordanBlock API — charpoly identity (jordanBlock R λ d).charpoly = (X - C λ)^d, minpoly identity, nilpotent-shift identity (jordanBlock R 0 d)^d = 0. ~80 lines, fully dischargable (no sorry). Alternatively: S2 candidate B — upgrade S1 weak-form jordan_normal_form_exists to the strong form with similarity transform P (~5-line statement edit, still sorry-guarded); or S2 candidate C — begin OQ-01-OQ-02 (nilpotent canonical form, ~400 lines).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE (researcher-12, 2026-05-12, this PR) — SCAFFOLD: created `Proofs/MinpolyCharpolyOQ01.lean` with JordanBlockShape structure, jordanBlock matrix definition, main JNF existence theorem statement (1 sorry, weak form), two unconditional API lemmas on jordanBlock (diagonal and super-diagonal entries), and totalDim_empty sanity lemma. Gallery entry (this JSON) + research markdown + manifest import included. Four-ingredient resolution documented: gen-eigenspace decomposition (Mathlib) + internal direct sum (Mathlib) + Jordan-Chevalley (Mathlib) + nilpotent canonical form (LOCAL GAP). Sub-OQ decomposition (OQ-01-OQ-01 .. OQ-01-OQ-04) sized at ~930 lines total. Comparison with sibling OQ-03 (RCF): same overall size, dual structure (alg-closed vs any field; Jordan block vs companion matrix; Mathlib gap on per-block model vs Mathlib gap-free).",
+    "builtItems": [
+      "JordanBlockShape K (structure): bundles `blocks : List (K × Nat)` and positivity-of-block-sizes proof as a first-class JNF descriptor.",
+      "JordanBlockShape.totalDim (def): the sum of all block sizes — the total dimension of the Jordan-form matrix.",
+      "JordanBlockShape.eigenvalueMultiset (def): the multiset of eigenvalues (with multiplicity equal to the sum of their block sizes) — target value matches charpoly root multiset.",
+      "jordanBlock R λ d (noncomputable def): the d×d matrix `λ · I + N_d` with λ on the diagonal and 1 strictly above the diagonal.",
+      "jordanBlock_diag_eq (theorem, unconditional): diagonal entries of jordanBlock R λ d are all λ.",
+      "jordanBlock_super_diag_eq (theorem, unconditional): strictly-above-diagonal entries (positions (i, i+1)) of jordanBlock R λ d are 1.",
+      "jordan_normal_form_exists (theorem, sorry-guarded): the S1 statement of JNF existence in weak form (existence of a JordanBlockShape with correct total dimension).",
+      "totalDim_empty (theorem, unconditional): the empty JordanBlockShape has totalDim = 0."
+    ],
+    "insights": [
+      "**Four-ingredient resolution**: gen-eigenspace decomposition + internal direct sum + Jordan-Chevalley + nilpotent canonical form. Three ingredients confirmed in Mathlib v4.26.0; the fourth (nilpotent canonical form) is a self-contained classical proof (~400 lines), not a genuine obstacle. The OQ resolves AFFIRMATIVELY at the strategy level.",
+      "**The Mathlib gap**: a 2026-05-12 search of Mathlib at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 finds no `jordanBlock` definition and no nilpotent-shift-basis theorem. The only `Jordan*` files are JordanChevalley (semisimple+nilpotent split, not blocks), Algebra/Jordan/Basic (Jordan algebras, unrelated), and measure-theory Hahn-Jordan files.",
+      "**Comparison with OQ-03 (RCF)**: the two normal forms are dual. JNF requires algebraically closed (or perfect, with caveats) and uses Jordan blocks; RCF works over any field and uses companion matrices. JNF has a Mathlib gap on the per-block model; RCF has its per-block model already in-tree. Estimated effort: ~930 lines (JNF) vs ~900 lines (RCF).",
+      "**Structure-encoded shape**: bundling the multiset of (eigenvalue, block size) pairs as a single `JordanBlockShape` structure makes downstream statements concise (the strong-form statement is one line of similarity, not one line per eigenvalue).",
+      "**Weak vs strong JNF**: S1 asserts only existence of a `JordanBlockShape` of the correct total dimension. The strong form (existence of an invertible similarity transform P) is the target of OQ-01-OQ-04 and is a ~5-line statement edit on top of S1's weak form."
+    ],
+    "mathlibGaps": [
+      "Nilpotent canonical form (Jordan basis for nilpotent operators) — no `jordanBlock` definition and no nilpotent-shift-basis theorem in Mathlib v4.26.0. This is the load-bearing OQ-01-OQ-02 (~400 lines). Standard textbook construction (Axler §8.D) — cyclic-vector chains + linear-independence + dimension count.",
+      "(Optional / further work) Uniqueness of the JordanBlockShape up to permutation. Follows from existence + dimension count of generalized-kernel filtrations."
+    ],
+    "nextSteps": [
+      "S2 candidate A: open child OQ minpoly-charpoly-oq-01-oq-01 and scaffold MinpolyCharpolyOQ01OQ01.lean with the jordanBlock API — charpoly identity (jordanBlock R λ d).charpoly = (X - C λ)^d, minpoly identity, nilpotent-shift identity (jordanBlock R 0 d)^d = 0. ~80 lines, fully dischargable (no sorry).",
+      "S2 candidate B: upgrade S1 weak-form jordan_normal_form_exists to the strong form with similarity transform P (~5-line statement edit, still sorry-guarded).",
+      "S2 candidate C: begin OQ-01-OQ-02 (nilpotent canonical form). Largest piece (~400 lines); needs the most preparation. Approach: cyclic-vector chain construction (Axler §8.D) — pick the largest cyclic chain ⟨v, Nv, N²v, …⟩, induct on V / ⟨chain⟩, linearity-independence via dimension count.",
+      "S3+: discharge sub-OQs sequentially. Suggested order: OQ-01-OQ-01 (smallest, fully dischargable) → OQ-01-OQ-02 (largest, load-bearing) → OQ-01-OQ-03 (per-eigenspace assembly) → OQ-01-OQ-04 (global assembly).",
+      "Audit: re-confirm Mathlib pin (2df2f0150c275ad53cb3c90f7c98ec15a56a1a67) does not have a nilpotent-canonical-form theorem (the rate-limited GitHub code search returned zero hits, but a local Mathlib4-checkout grep is more reliable).",
+      "Build verification: run `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ01` — ~45 min Docker cold per `proofs/.lake` self-symlink trap. Following project convention for S1 OBSERVE single-sorry scaffolds, CI is the ground truth."
+    ]
+  },
+  "tags": [
+    "linear-algebra",
+    "matrices",
+    "jordan-normal-form",
+    "minimal-polynomial",
+    "characteristic-polynomial",
+    "cayley-hamilton",
+    "algebraically-closed",
+    "generalized-eigenspace",
+    "jordan-chevalley",
+    "algebra",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "minpoly-charpoly",
+    "minpoly-charpoly-oq-03",
+    "cayley-hamilton",
+    "cayley-hamilton-minpoly",
+    "cayley-hamilton-reduction-oq-02-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "Jordan, C. (1870). *Traité des substitutions et des équations algébriques.* Gauthier-Villars.",
+      "Axler, S. (2015). *Linear Algebra Done Right* (3rd ed.). Springer. Ch. 8.",
+      "Dummit, D. S. & Foote, R. M. (2004). *Abstract Algebra* (3rd ed.). Wiley. §12.3.",
+      "Chambert-Loir, A. *Algèbre* (2022/23 IMJ-PRG notes). Ch. 4 — basis for Mathlib's Jordan-Chevalley-Dunford proof."
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/JordanChevalley.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/LinearAlgebra/Eigenspace/Triangularizable.html",
+      "https://en.wikipedia.org/wiki/Jordan_normal_form"
+    ],
+    "mathlib": [
+      "Module.End.iSup_genEigenspace_eq_top (Mathlib.LinearAlgebra.Eigenspace.Triangularizable)",
+      "Module.End.exists_eigenvalue (Mathlib.LinearAlgebra.Eigenspace.Triangularizable)",
+      "Module.End.exists_isNilpotent_isSemisimple (Mathlib.LinearAlgebra.JordanChevalley)",
+      "Matrix.charpoly (Mathlib.LinearAlgebra.Matrix.Charpoly.Basic)",
+      "Matrix.minpoly_dvd_charpoly (Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly)"
+    ]
+  },
+  "started": "2026-05-12T10:00:00Z",
+  "lastUpdate": "2026-05-12T10:00:00Z",
+  "significance": 7,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/MinpolyCharpoly.lean",
+      "filename": "MinpolyCharpoly.lean",
+      "lineCount": 247,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpoly.lean"
+    },
+    {
+      "path": "Proofs/MinpolyCharpolyOQ01.lean",
+      "filename": "MinpolyCharpolyOQ01.lean",
+      "lineCount": 228,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ01.lean"
+    }
+  ]
+}

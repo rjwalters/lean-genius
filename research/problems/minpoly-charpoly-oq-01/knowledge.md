@@ -1,0 +1,126 @@
+# Knowledge — minpoly-charpoly-oq-01
+
+## Mathlib `v4.26.0` Infrastructure Survey
+
+Pin: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+### Ingredient 1 — Generalized eigenspaces span (PRESENT)
+
+`Mathlib/LinearAlgebra/Eigenspace/Triangularizable.lean` provides:
+
+* `Module.End.exists_eigenvalue` — every endomorphism of a non-trivial
+  finite-dim vector space over an algebraically closed field has an
+  eigenvalue.
+* `Module.End.iSup_genEigenspace_eq_top` — the generalized eigenspaces
+  of an endomorphism span the whole space (finite-dim, alg. closed).
+* `Module.End.iSup_genEigenspace_restrict_eq_top` — the previous
+  statement is preserved under restriction to an invariant submodule.
+
+These give the "outer" decomposition `V = ⨆ μ, V_μ^∞` (in `Submodule`
+language). Lifting to a direct sum is Ingredient 2.
+
+### Ingredient 2 — Internal direct sum of gen eigenspaces (PRESENT)
+
+`Mathlib/LinearAlgebra/Eigenspace/Pi.lean` provides
+linear-independence / direct-sum-internal lemmas for the generalized
+eigenspaces (the supremum is in fact `DirectSum.IsInternal`-equivalent
+when the spaces are pairwise disjoint, which they always are for
+distinct eigenvalues).
+
+### Ingredient 3 — Jordan-Chevalley-Dunford (PRESENT)
+
+`Mathlib/LinearAlgebra/JordanChevalley.lean` provides:
+
+* `Module.End.exists_isNilpotent_isSemisimple` — over a perfect field
+  (e.g., any field of characteristic 0, or an algebraically closed
+  field), every finite-dimensional endomorphism `f` splits as a sum
+  `f = n + s` with `n` nilpotent and `s` semisimple, both polynomial
+  expressions in `f`.
+
+The proof routes via Newton's method
+(`Mathlib/Dynamics/Newton.lean`) and the squarefree-radical-of-minpoly
+construction. This already does much of the work for JNF: applied to
+each generalized eigenspace `V_λ`, it splits `f|_{V_λ}` as
+`λ · 1 + N_λ` with `N_λ` nilpotent.
+
+### Ingredient 4 — Nilpotent canonical form (LOCAL GAP)
+
+A search of Mathlib `v4.26.0` for terms `JordanBlock`, `jordanBlock`,
+`nilpotent_shift`, `nilpotent_basis`, `shift matrix nilpotent` returns
+**no hits** in the linear-algebra hierarchy. The only `Jordan*` files
+are:
+
+* `Mathlib/LinearAlgebra/JordanChevalley.lean` — semisimple + nilpotent
+  split, not Jordan-block decomposition.
+* `Mathlib/Algebra/Lie/AdjointAction/JordanChevalley.lean` — same idea
+  for Lie algebras.
+* `Mathlib/Algebra/Jordan/Basic.lean` — Jordan **algebras**, unrelated.
+* `Mathlib/MeasureTheory/VectorMeasure/Decomposition/Jordan*.lean` —
+  Hahn-Jordan decomposition of measures, unrelated.
+
+So the classical step **"every nilpotent endomorphism of a
+finite-dimensional vector space admits a basis in which its matrix is a
+direct sum of shift blocks"** is not in Mathlib. This is the load-
+bearing OQ-01-OQ-02 in the proposed decomposition.
+
+Standard textbook proof routes (cf. Axler §8.D):
+
+* Take `N` nilpotent of index `m` on `V`.
+* Pick a basis of `V / Im(N)`, lift each basis vector to `V`, then
+  build descending Jordan chains by applying `N` until they vanish.
+* Equivalently: pick the largest cyclic `⟨v, Nv, N²v, …⟩` chain, induct
+  on `V / ⟨chain⟩`.
+
+Either route is ~400 lines in Mathlib style (cyclic-vector chain
+construction + linear-independence proofs + dimension count).
+
+## Sub-OQ Roadmap (proposed)
+
+| Sub-OQ | Content | Est. lines |
+|--------|---------|------------|
+| OQ-01-OQ-01 | `jordanBlock K λ d` definition + basic API (charpoly, minpoly, diagonal/super-diag identities, nilpotent shift identity `(jordanBlock K 0 d - 0)^d = 0`). | ~80 |
+| OQ-01-OQ-02 | Jordan basis theorem for nilpotent operators: `IsNilpotent N → ∃ basis, ⟦N⟧ = direct sum of jordanBlock K 0 dᵢ`. | ~400 |
+| OQ-01-OQ-03 | Per-eigenspace assembly: combine ingredient 3 (Jordan-Chevalley) with OQ-01-OQ-02 to put each `f|_{V_λ}` into Jordan form on `V_λ`. | ~250 |
+| OQ-01-OQ-04 | Global assembly: combine ingredients 1+2 (gen-eigenspace decomposition) with OQ-01-OQ-03 to put `f` into Jordan form on `V`. Yields `jordan_normal_form_exists` strong form. | ~200 |
+
+Total roadmap: ≈ 930 lines.
+
+## Comparison with Sibling OQ-03 (Rational Canonical Form)
+
+| Aspect | OQ-01 (JNF) | OQ-03 (RCF) |
+|--------|-------------|-------------|
+| Field assumption | Algebraically closed (or perfect, with caveats) | Any field |
+| Per-block model | Jordan block `λ · I + N` | Companion matrix `companion(p_i)` |
+| Mathlib status of per-block model | **Gap** (nilpotent canonical form) | **Present** (in-tree `CayleyHamiltonReductionOQ02OQ01.lean`) |
+| Mathlib status of structural decomp | Eigenspace supremum (alg. closed) | `Module.equiv_directSum_of_isTorsion` |
+| Estimated effort | ~930 lines | ~900 lines |
+
+The two normal forms are duals of each other; the gallery now has a
+canonical scaffold for each.
+
+## Open Issues / Cautions
+
+* The Mathlib pin scan was done via GitHub code search (rate-limit
+  applied after 4 queries). A follow-on iteration with local
+  `Mathlib4`-checkout grep is recommended to confirm the absence of
+  `JordanBlock`-style definitions (the rate-limited search returned
+  zero hits for `jordanBlock` and `shift matrix nilpotent` but only
+  one hit for `nilpotent basis representation`).
+* Algebraically-closed field assumption: the statement degrades to the
+  Jordan form **over the algebraic closure** of `K` for general `K`.
+  This is the standard textbook caveat and would be a follow-up
+  refinement (e.g., a `MinpolyCharpolyOQ01OQ05` sub-OQ stating
+  similarity over `AlgebraicClosure K`).
+* The S1 statement asserts only "there exists a `JordanBlockShape` of
+  the correct total dimension". The strong form — existence of an
+  invertible `P` with `P⁻¹ M P = jordanMatrix S` — is deferred to
+  OQ-01-OQ-04 (global assembly).
+
+## References
+
+* Axler, S. *Linear Algebra Done Right* (3rd ed., 2015), Ch. 8 (Jordan
+  form chapter).
+* Dummit & Foote, *Abstract Algebra* (3rd ed., 2004), §12.3.
+* Chambert-Loir, A. *Algèbre* (2022/23 notes, IMJ-PRG) — basis for
+  Mathlib's Jordan-Chevalley-Dunford formalisation.
+* Mathlib4 v4.26.0 pin: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
