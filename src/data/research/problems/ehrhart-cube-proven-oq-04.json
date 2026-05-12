@@ -24,30 +24,32 @@
       "worpitzky_d2: (n+1)^2 = C(n+1, 2) + C(n+2, 2) — by induction on n using Pascal",
       "cube_h_star_eulerian: h_k*([0,1]^d) = A(d, k) — S2, via Polynomial.finset_sum_coeff + Finset.sum_ite_eq'",
       "cube_lattice_count_eulerian: |Fin d → Fin (n+1)| = Σ A(d,k) C(n+1+k, d) — S2, via Fintype.card_fun + worpitzky",
-      "Seven concrete (d, n) verifications by `decide`"
+      "Seven concrete (d, n) verifications by `decide`",
+      "eulerian_zero_eq_one: ∀ d, A(d, 0) = 1 — S3, by Nat recursion",
+      "eulerian_eq_zero_of_le: ∀ d ≥ 1, ∀ k ≥ d, A(d, k) = 0 — S3, double Nat recursion",
+      "eulerian_row_sum_factorial: Σ_{k<d} A(d, k) = d! for d ≥ 1 — S3, induction on d via sum reorganisation"
     ],
     "open": [
       "worpitzky_identity_cube: (n+1)^d = Σ A(d, k) C(n+1+k, d) for general d ≥ 1, n ≥ 0",
-      "eulerian_row_sum_factorial: Σ_{k<d} A(d, k) = d!",
       "eulerian_palindrome: A(d, k) = A(d, d-1-k) for k < d"
     ],
     "goal": "Close worpitzky_identity_cube via induction on d (Approach A — algebraic)"
   },
   "currentState": {
     "phase": "SCAFFOLDED",
-    "since": "2026-05-12T03:30:00Z",
-    "iteration": 2,
-    "focus": "S2 STRUCTURAL complete: closed cube_h_star_eulerian and cube_lattice_count_eulerian (2 of 5 sorries). 3 combinatorial sorries remain: worpitzky_identity_cube, eulerian_row_sum_factorial, eulerian_palindrome.",
+    "since": "2026-05-12T04:00:00Z",
+    "iteration": 3,
+    "focus": "S3 ROW-SUM complete: helpers (eulerian_zero_eq_one, eulerian_eq_zero_of_le) + eulerian_row_sum_factorial closed. 2 combinatorial sorries remain: worpitzky_identity_cube (main), eulerian_palindrome (descent involution).",
     "blockers": [],
-    "nextAction": "S3: Close worpitzky_identity_cube via induction on d using Pascal's identity and the Eulerian recurrence. Expected ~80-120 lines of Lean.",
+    "nextAction": "S4: Close worpitzky_identity_cube via induction on d. Approach (A) algebraic: Pascal's identity C(n+1+k, d+1) = C(n+k, d+1) + C(n+k, d) plus Eulerian recurrence. S3 helpers (eulerian_zero_eq_one, eulerian_eq_zero_of_le, eulerian_row_sum_factorial) directly support boundary handling; central technical step is rewriting (n+1)^(d+1) = (n+1) · (n+1)^d and reconciling with the binomial recurrence.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 SCAFFOLD + S2 STRUCTURAL (researcher-11, 2026-05-12): S1 established eulerianNumber via recurrence (matches OEIS A008292) with 13 rfl values, cubeHStarPoly definition, Worpitzky d=1, d=2 cases proved. S2 closed two of the five sorries: `cube_h_star_eulerian` (definitional, via Polynomial.finset_sum_coeff + Finset.sum_ite_eq') and `cube_lattice_count_eulerian` (bridging corollary, via Fintype.card_fun + worpitzky_identity_cube as hypothesis). 3 combinatorial sorries remain: worpitzky_identity_cube (main), eulerian_row_sum_factorial, eulerian_palindrome.",
+    "progressSummary": "S1 SCAFFOLD + S2 STRUCTURAL + S3 ROW-SUM (researcher-3, 2026-05-12): S3 adds two helper lemmas (`eulerian_zero_eq_one : ∀ d, A(d, 0) = 1` and `eulerian_eq_zero_of_le : d ≥ 1 → k ≥ d → A(d, k) = 0`) and closes `eulerian_row_sum_factorial : Σ_{k<d} A(d, k) = d!` via direct induction. Proof structure: rewrite LHS into `(d+1) · Σ_{k<d} A(d, k)` form by extending both sums to `range (d+1)` (using `A(d, d) = 0`), unfolding the recurrence inside the LHS sum, and combining via the pointwise identity `(k+1)·A(d, k) + (d-k)·A(d, k) = (d+1)·A(d, k)` (which uses `A(d, d) = 0` for the boundary case `k = d`). 2 combinatorial sorries remain: worpitzky_identity_cube (main), eulerian_palindrome (descent involution).",
     "builtItems": [
       "eulerianNumber : ℕ → ℕ → ℕ (def)",
       "cubeHStarPoly : ℕ → Polynomial ℕ (def)",
@@ -58,14 +60,19 @@
       "cube_h_star_eulerian (S2, proven — definitional via coeff_smul + coeff_X_pow)",
       "cube_lattice_count_eulerian (S2, proven — via Fintype.card_fun + worpitzky)",
       "7 decide-verifications at (d, n) up to (4, 2)",
-      "3 deferred theorems (sorries) with documented proof strategies"
+      "eulerian_zero_eq_one (S3, proven — Nat recursion on d)",
+      "eulerian_eq_zero_of_le (S3, proven — double Nat recursion on d, k)",
+      "eulerian_row_sum_factorial (S3, proven — induction on d, sum reorganisation, A(d, d) = 0 boundary)",
+      "2 deferred theorems (sorries) with documented proof strategies"
     ],
     "insights": [
       "Nat-subtraction in the eulerianNumber recurrence handles the boundary k ≥ d cleanly: both branches collapse to 0 automatically",
       "Worpitzky d=2 requires inductive proof on n using Pascal — non-trivial, demonstrates the Lean proof pattern for general d",
       "Three equivalent statements of OQ-04 (Worpitzky, generating function, h*-vector); Worpitzky form is most tractable in Lean as it avoids PowerSeries",
       "Mathlib does not have Eulerian numbers — first Lean formalization in this gallery; Mathlib contribution path opens",
-      "cubeHStarPoly's k-th coefficient is definitional (Σ A(d,j) • X^j → coeff_smul + coeff_X_pow + Finset.sum_ite_eq') — the substantive content lives entirely in worpitzky_identity_cube"
+      "cubeHStarPoly's k-th coefficient is definitional (Σ A(d,j) • X^j → coeff_smul + coeff_X_pow + Finset.sum_ite_eq') — the substantive content lives entirely in worpitzky_identity_cube",
+      "S3 row-sum technique: extend both row sums to a common `range (d+1)` index set using `A(d, d) = 0`, then combine pointwise via `(k+1) + (d-k) = d+1` (for k < d) and direct A(d, d) = 0 cancellation (for k = d). Avoids `Finset.sum_Ico_eq_sum_range` reindexing.",
+      "Helper `eulerian_eq_zero_of_le` carries the recursion on the FIRST argument (d), with case-split on whether d = 0 or d ≥ 1 for the inner recursion call. Required to discharge `(d - k) * A(d, k) = 0` boundary contributions."
     ],
     "mathlibGaps": [
       "No Eulerian numbers (`Nat.eulerianNumber` or similar)",
@@ -73,8 +80,7 @@
       "PowerSeries 1/(1-X)^{d+1} expansion as Σ C(n+d, d) X^n needs careful lemma chain"
     ],
     "nextSteps": [
-      "S3: Close worpitzky_identity_cube by induction on d (Approach A)",
-      "S4: Close eulerian_row_sum_factorial via the algebraic-recurrence argument (Σ A(d+1,k) = (d+1) Σ A(d,k))",
+      "S4: Close worpitzky_identity_cube by induction on d. Approach (A) algebraic: Pascal's identity C(n+1+k, d+1) = C(n+k, d+1) + C(n+k, d) + Eulerian recurrence. S3 helpers (eulerian_zero_eq_one, eulerian_eq_zero_of_le, eulerian_row_sum_factorial) directly support boundary handling.",
       "S5: Define permutation descents and prove eulerianNumber d k = (filter (descent = k) (univ : Finset (Equiv.Perm (Fin d)))).card",
       "S6: Prove eulerian_palindrome via the descent-reversal involution on Equiv.Perm",
       "S7+: Mathlib upstream PR for Eulerian numbers"
@@ -113,7 +119,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.563Z",
-  "lastUpdate": "2026-05-12T03:30:00Z",
+  "lastUpdate": "2026-05-12T04:00:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -131,11 +137,11 @@
     {
       "path": "Proofs/EhrhartCubeProvenOQ04.lean",
       "filename": "EhrhartCubeProvenOQ04.lean",
-      "lineCount": 324,
+      "lineCount": 422,
       "theoremCount": 25,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProvenOQ04.lean"
     }
