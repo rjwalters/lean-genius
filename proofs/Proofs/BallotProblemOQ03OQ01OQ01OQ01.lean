@@ -1214,6 +1214,91 @@ conflict. -/
   rw [rotateSortedList_drop_card]
   omega
 
+/-! #### S38 — Period and complement-form for `rotateSortedListSuffixSym`
+
+Two `Sym`-level structural lemmas for `rotateSortedListSuffixSym` (S35,
+line 1055), each a one-line rebrand of an already-merged
+`rotateSortedList`-level fact:
+
+* `rotateSortedListSuffixSym_mod` — periodicity. The `Sym`-packaged
+  suffix at rotation index `k % c` equals the suffix at rotation index
+  `k`. Lifts `rotateSortedList_mod` (S33, line 944) through the `.1`
+  projection via `Subtype.ext`. The canonical normalization for the
+  cycle-lemma argument: every rotation index is equivalent (mod `c`) to
+  one in `Fin c`, so the 2B.4' refined-codomain bijection's domain can
+  be taken as `Fin c × Sym (Fin n) (a + 1)` instead of `ℕ × Sym (Fin n)
+  (a + 1)`.
+
+* `rotateSortedListSuffixSym_val_eq_sub_take` — complement form. The
+  underlying multiset of the suffix equals `M.1` minus the `take`-prefix
+  multiset. Direct consequence of S34's
+  `rotateSortedList_take_add_drop` (line 1014, `take + drop = M.1`) via
+  `add_tsub_cancel_left`. Together with `rotateSortedListSuffixSym_le`
+  (S35, line 1066, `(suffix).1 ≤ M.1`) this gives the two equivalent
+  `Multiset (Fin n)` descriptions of the suffix: as a literal `drop` and
+  as the canonical complement `M.1 - take`. The complement form is the
+  natural input to subset-of-multiset arguments where the suffix appears
+  as "everything in `M` not in the prefix" (the cycle-lemma inverse
+  direction: given a `P' ≤ M.1` of size `a + 1`, the complement
+  `M.1 - P'.1` is the unique candidate for the `b - 1`-sized partner
+  `Q'`).
+
+Both proofs are 3 lines after `Subtype.ext` / `show`. Neither changes
+the file's sorry count (still 2) or axiom count (still 0). Insertion
+point: just after `rotateSortedListSuffixSym_self_val` (S36, line 1131)
+and before `totalSym` (line 1133). Independent of the open PR #17777
+(`rotateSortedListPrefixSym` packaging, rebase of #17680, at the
+post-`_mod` anchor near line 949) — disjoint declaration names
+(`...PrefixSym` vs `...SuffixSym`) and disjoint insertion ranges. -/
+
+/-- **`rotateSortedListSuffixSym` is periodic in `k` with period `c`**.
+
+    The `Sym`-packaged suffix at rotation index `k % c` equals the
+    `Sym`-packaged suffix at rotation index `k`. Lifts S33's
+    `rotateSortedList_mod` (the analogous identity at the underlying
+    `List` level) through the `.1` projection via `Subtype.ext`.
+
+    Together with S36's boundary identities
+    `rotateSortedListSuffixSym_zero_val` / `_self_val` and S35's
+    codomain witness `rotateSortedListSuffixSym_le`, this completes
+    the basic structural toolkit for the `Sym`-packaged suffix: every
+    rotation index `k` is equivalent (mod `c`) to a canonical
+    representative in `Fin c`. The 2B.4' refined-codomain bijection's
+    domain can therefore be taken as `Fin c × Sym (Fin n) (a + 1)`
+    instead of `ℕ × Sym (Fin n) (a + 1)`. -/
+private lemma rotateSortedListSuffixSym_mod {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) :
+    rotateSortedListSuffixSym M (k % c) j = rotateSortedListSuffixSym M k j := by
+  apply Subtype.ext
+  show ((rotateSortedList M (k % c)).drop j : Multiset (Fin n))
+       = ((rotateSortedList M k).drop j : Multiset (Fin n))
+  rw [rotateSortedList_mod]
+
+/-- **`rotateSortedListSuffixSym` as the complement of the `take`-prefix**.
+
+    The underlying multiset of the `Sym`-packaged suffix equals `M.1`
+    minus the `take`-prefix multiset. Direct consequence of S34's
+    `rotateSortedList_take_add_drop` (`take + drop = M.1`) via
+    `add_tsub_cancel_left` (`a + b - a = b` in any `OrderedAddCommMonoid`
+    with truncated subtraction, including `Multiset (Fin n)`).
+
+    Together with `rotateSortedListSuffixSym_le` (S35), this gives the
+    two equivalent descriptions of the suffix multiset: as a literal
+    `(rotateSortedList M k).drop j` and as the canonical complement
+    `M.1 - ((rotateSortedList M k).take j)`. The complement form is the
+    natural input to the cycle-lemma inverse direction: given a
+    `P' : Sym (Fin n) (a + 1)` with `P'.1 ≤ M.1`, the suffix-side
+    partner `Q' : Sym (Fin n) (b - 1)` is uniquely determined as the
+    complement `M.1 - P'.1` (no rotation freedom on the suffix
+    indexing, once the prefix is fixed). -/
+private lemma rotateSortedListSuffixSym_val_eq_sub_take {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) :
+    (rotateSortedListSuffixSym M k j).1
+      = M.1 - ((rotateSortedList M k).take j : Multiset (Fin n)) := by
+  have h := rotateSortedList_take_add_drop M k j
+  show ((rotateSortedList M k).drop j : Multiset (Fin n)) = _
+  rw [← h, add_tsub_cancel_left]
+
 /-- **Total multiset of a Sym pair (as a `Sym`).**
 
     The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in
