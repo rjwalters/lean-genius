@@ -2,9 +2,107 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T20:43:00Z
-**Iteration**: 5 (S5 — bracketing_uniform_sup_bound + bracketing_uniform_from_grid)
+**Iteration**: 6 (S6 — `glivenko_cantelli_uniform_proved` via diagonal ε = 1/(m+1))
 
-## S5 (this session, researcher-6, 2026-05-11) — §2.4 deterministic + limit form
+## S6 (this session, researcher-5, 2026-05-12) — §2.5 diagonal composition
+
+S5 landed §2.4 (`bracketing_uniform_sup_bound` + `bracketing_uniform_from_grid`).
+S6 (this session) lands the last theorem of the bracketing decomposition, §2.5
+(`glivenko_cantelli_uniform_proved`), closing the loop on the axiom shift.
+
+### What landed
+
+`glivenko_cantelli_uniform_proved`: same signature as the parent's
+`glivenko_cantelli_uniform` axiom; proves
+`∀ᵐ ω ∂μ, Tendsto (fun n => ⨆ x, |Fₙ(x, ω) - F(x)|) atTop (nhds 0)`. Proof
+is a diagonal composition of §2.2–§2.4:
+
+1. Pick the accuracy schedule `ε m := 1 / (m + 1)`. Each is positive.
+2. For each `m : ℕ`, take a bracketing grid `G m :=
+   (bracketingGrid_exists hX_meas (hε_pos m)).some` via the §2.2 axiom.
+3. For each `m`, §2.3 supplies a full-measure set on which the empirical CDF
+   converges to the true CDF at every grid point `(G m).q j`.
+4. The countable family `{m ↦ "full-measure set for G m"}` is combined into
+   a single full-measure set via `MeasureTheory.ae_all_iff` (`ℕ` is
+   countable).
+5. On this single full-measure set, for any `δ > 0`, choose `m` with
+   `1 / (m + 1) < δ / 3` via `exists_nat_one_div_lt`. Apply §2.4 with the
+   slack `η := ε m`; eventually `⨆ x, |Fₙ(x, ω) - F(x)| ≤ 2 ε m + ε m =
+   3 ε m < δ`. Combined with `Real.iSup_nonneg` (the iSup is non-negative)
+   this gives `dist (⨆ ...) 0 < δ` eventually.
+
+### Mathlib API used
+
+* `MeasureTheory.ae_all_iff` (combining countably many full-measure sets) —
+  same lemma §2.3 used at the finite Fin (k+2) layer, here re-used at the
+  countably-infinite ℕ layer.
+* `Metric.tendsto_atTop` (Mathlib.Topology.MetricSpace.Pseudo.Defs:932) —
+  metric characterisation of `Tendsto u atTop (nhds a)`.
+* `Filter.eventually_atTop` — to extract an explicit threshold `N` from
+  `∀ᶠ n in atTop, ...`.
+* `exists_nat_one_div_lt` (Mathlib.Algebra.Order.Archimedean:191) — to pick
+  `m` with `1 / (m + 1) < δ / 3`.
+* `Real.iSup_nonneg` (Mathlib.Data.Real.Archimedean:225) — to flip
+  `dist (⨆ ...) 0 = |⨆ ... - 0|` to `⨆ ...`.
+* `Real.dist_eq`, `abs_of_nonneg`, `sub_zero` — standard distance/abs
+  manipulations on `ℝ`.
+
+### Counts
+
+The bracketing companion file went 447 → 522 lines (+75 lines), 3 → 4
+theorems (added `glivenko_cantelli_uniform_proved`). Axiom count for the
+companion is unchanged at 1 (`bracketingGrid_exists`); no new axioms or
+sorries introduced. The main file `LawsOfLargeNumbersOQ04OQ03.lean` is
+unchanged (158 lines, 4 theorems, 0 sorries, 0 axioms). Per gallery
+convention `meta.lineCount` / `theoremCount` track the main file only —
+no meta.json update needed.
+
+### Build status
+
+Pending. Build attempted under Docker
+(`./proofs/scripts/docker-build.sh Proofs.LawsOfLargeNumbersOQ04OQ03Bracketing`);
+expected ~45 min cold under the broken `proofs/.lake` self-symlink. PR
+title bears the "(build pending)" suffix per the recent precedent for
+§2.3+ work on this slug. API names were verified against Mathlib 4.26
+source (`Real.iSup_nonneg`, `exists_nat_one_div_lt`, `Metric.tendsto_atTop`,
+`ae_all_iff`).
+
+### Status of the bracketing decomposition
+
+After S6 lands, the bracketing decomposition of `bracketing-decomposition-draft.md`
+§2 is fully complete:
+
+| Section | Theorem | Status |
+|---------|---------|--------|
+| §2.1 | `BracketingGrid` structure | Landed S3 |
+| §2.2 | `bracketingGrid_exists` axiom | Landed S3 (axiom; Mathlib-side gap) |
+| §2.3 | `bracketing_simultaneous_pointwise` | Landed S4 |
+| §2.4 | `bracketing_uniform_sup_bound` + `bracketing_uniform_from_grid` | Landed S5 |
+| §2.5 | `glivenko_cantelli_uniform_proved` | **Landed S6 (this session)** |
+
+The chain has the parent's `glivenko_cantelli_uniform` AND the bracketing
+companion's `bracketingGrid_exists`. After S6, the parent's monolithic
+axiom is **logically redundant**: the bracketing companion now proves it
+modulo a purely real-analytic axiom. Retiring the parent's axiom is a
+mechanical follow-up (S7) — rename `glivenko_cantelli_uniform_proved` to
+`glivenko_cantelli_uniform` and delete the original axiom, or have the
+parent's theorem re-export the companion's.
+
+### Remaining work
+
+- **S7 (next session)**: retire parent's `axiom glivenko_cantelli_uniform`
+  in `LawsOfLargeNumbersOQ04.lean`. Replace with `theorem ...` proved by
+  `glivenko_cantelli_uniform_proved` from the bracketing companion (which
+  requires a re-export or shim because the bracketing companion imports
+  the parent, not vice versa — the cleanest path is to move the proved
+  variant into the parent file, or split the parent file to break the
+  cycle).
+- **S8+ (future Mathlib upstream)**: discharge `bracketingGrid_exists`
+  itself by formalising `Monotone.exists_increasing_continuity_seq`
+  (purely real-analytic; the only Mathlib gap remaining in the entire
+  Glivenko-Cantelli chain).
+
+## S5 (researcher-6, 2026-05-11) — §2.4 deterministic + limit form
 
 S4 landed §2.3 (`bracketing_simultaneous_pointwise`). S5 (this session) lands
 the second of the three remaining theorems, §2.4

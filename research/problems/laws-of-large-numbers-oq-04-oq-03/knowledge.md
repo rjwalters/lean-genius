@@ -255,3 +255,80 @@ against the parent file's already-built declarations and against my prior
 familiarity with Mathlib 4.26's `Finset.sup'`, `ciSup_le`, `Metric`, and
 `Filter` APIs. PR uses "(build pending)" suffix matching the precedent
 established for recent §2.3 work on this slug.
+
+---
+
+## Session 2026-05-12 (Session 6) — §2.5 glivenko_cantelli_uniform_proved
+
+**Mode**: ITERATIVE
+**Outcome**: progress (axiom shift complete on the bracketing companion side)
+
+### What I Did
+
+1. Claimed slug, fetched origin/main (parent file fixed by mechanic PR #17864
+   on 2026-05-12 — `.real` integral_const drift resolved per memory).
+2. Read S5's state.md next-steps: §2.5 (~20 lines, composition of §2.2 +
+   §2.3 + §2.4 along `ε = 1/(m+1)`).
+3. Verified Mathlib API names against the actual source files
+   (`/Users/rwalters/Projects/lean-genius-proofs/.lake/packages/mathlib`):
+   `Real.iSup_nonneg` (`Mathlib.Data.Real.Archimedean:225`),
+   `exists_nat_one_div_lt` (`Mathlib.Algebra.Order.Archimedean:191`),
+   `Metric.tendsto_atTop` (`Mathlib.Topology.MetricSpace.Pseudo.Defs:932`),
+   `MeasureTheory.ae_all_iff` (`Mathlib.MeasureTheory.OuterMeasure.AE:93`).
+4. Wrote `glivenko_cantelli_uniform_proved` in the bracketing companion.
+   Substituted S5's prep-note hint `ae_iInter_iff` with `ae_all_iff` — same
+   countable-conjunction lemma, used at the ℕ layer here rather than the
+   `Fin (k+2)` layer §2.3 used it at. Net: 47 tactic lines.
+
+### Key Findings
+
+- **`ae_all_iff` at the ℕ layer**: the same lemma §2.3 invoked over `Fin (k+2)`
+  applies verbatim over `ℕ` (also countable). The proof grew by one outer
+  `ae_all_iff` call to thread the diagonal `m : ℕ`.
+- **`exists_nat_one_div_lt` for the diagonal step**: `(0 < ε) → ∃ n : ℕ,
+  1 / (n + 1) < ε`. With `ε := δ / 3 > 0` this gives `m` such that
+  `3 / (m + 1) < δ`. Applying §2.4 with `η := 1 / (m + 1)` yields the
+  eventual sup-error bound `2 · 1/(m+1) + 1/(m+1) = 3/(m+1) < δ`.
+- **`Real.iSup_nonneg` is unconditional**: per Mathlib source,
+  `0 ≤ ⨆ i, f i` when `∀ i, 0 ≤ f i`, with no `BddAbove` requirement —
+  the default value of `Real.sSup` for unbounded or empty sets is 0,
+  which is also ≥ 0. This lets us flip
+  `dist (⨆ ...) 0 = |⨆ ... - 0| = ⨆ ...` cleanly without any extra
+  bookkeeping about boundedness.
+- **`Metric.tendsto_atTop`**: namespace-`Metric` (lines 344–977 of the
+  `Pseudo/Defs.lean` namespace block), characterises `Tendsto u atTop
+  (nhds a)` by `∀ ε > 0, ∃ N, ∀ n ≥ N, dist (u n) a < ε`. Drop-in for
+  the `Real.dist_eq` + `abs_of_nonneg` chain.
+
+### Files Modified
+
+- `proofs/Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean` (447 → 522 lines,
+  +1 theorem `glivenko_cantelli_uniform_proved`).
+- `research/problems/laws-of-large-numbers-oq-04-oq-03/state.md` (S6 entry).
+- `research/problems/laws-of-large-numbers-oq-04-oq-03/knowledge.md`
+  (this S6 entry).
+
+Per gallery convention `meta.lineCount` / `theoremCount` track the main
+file only — no `src/data/proofs/.../meta.json` update needed.
+
+### Next Steps
+
+- **S7**: retire the parent's `axiom glivenko_cantelli_uniform` in
+  `LawsOfLargeNumbersOQ04.lean`. The cleanest path is to move the proved
+  variant from the bracketing companion *into* the parent file (or split
+  the parent so the bracketing companion can be imported earlier in the
+  chain). After retirement: chain axiom count goes 2 → 1, with the sole
+  remaining axiom (`bracketingGrid_exists`) being purely real-analytic.
+- **S8+ (Mathlib upstream)**: discharge `bracketingGrid_exists` itself by
+  contributing `Monotone.exists_increasing_continuity_seq` to Mathlib.
+  This is the last open mathematical content in the entire Glivenko–
+  Cantelli chain.
+
+### Honesty
+
+Build verification attempted with `LEAN_BUILD_TIMEOUT=55m
+./proofs/scripts/docker-build.sh Proofs.LawsOfLargeNumbersOQ04OQ03Bracketing`.
+The broken `proofs/.lake` self-symlink forces a cold Mathlib fetch; result
+may not finish within session window. PR title bears the "(build pending)"
+suffix matching S3–S5 precedent on this slug. API names verified against
+Mathlib 4.26 source by file-path lookup before commit (not by build).

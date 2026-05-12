@@ -444,4 +444,78 @@ theorem bracketing_uniform_from_grid [IsProbabilityMeasure μ]
     _ ≤ η + 2 * ε := by linarith
     _ = 2 * ε + η := by ring
 
+-- ============================================================================
+-- §2.5: Uniform convergence (proved modulo `bracketingGrid_exists`)
+-- ============================================================================
+
+/-! ### §2.5 Glivenko–Cantelli uniform convergence
+
+Composes §2.2 (`bracketingGrid_exists`), §2.3 (`bracketing_simultaneous_pointwise`)
+and §2.4 (`bracketing_uniform_from_grid`) along the diagonal `ε := 1 / (m+1)`,
+`m : ℕ`. The countably many simultaneous-pointwise full-measure sets are
+combined via `MeasureTheory.ae_all_iff` into a single full-measure set on
+which, for every accuracy `δ > 0`, picking `m` with `1/(m+1) < δ/3` and
+applying §2.4 with `η := 1/(m+1)` gives `⨆x |Fₙ − F| ≤ 3/(m+1) < δ` eventually.
+
+This is the exact statement of the parent file's `glivenko_cantelli_uniform`
+axiom; with this theorem in place the parent axiom becomes redundant and can
+be retired in a follow-up, leaving `bracketingGrid_exists` as the sole
+remaining axiom in the chain. -/
+theorem glivenko_cantelli_uniform_proved [IsProbabilityMeasure μ]
+    {X : ℕ → Ω → ℝ}
+    (hX_meas : ∀ i, Measurable (X i))
+    (hX_iid : iIndepFun X μ)
+    (hX_ident : ∀ i, IdentDistrib (X i) (X 0) μ μ) :
+    ∀ᵐ ω ∂μ,
+      Filter.Tendsto
+        (fun n => ⨆ x : ℝ, |empiricalCDF X n x ω - trueCDF X μ x|)
+        Filter.atTop (nhds 0) := by
+  -- Diagonal accuracy schedule: ε m := 1 / (m + 1)
+  let ε : ℕ → ℝ := fun m => 1 / ((m : ℝ) + 1)
+  have hε_pos : ∀ m : ℕ, 0 < ε m := fun m => by
+    show (0 : ℝ) < 1 / ((m : ℝ) + 1)
+    positivity
+  -- Pick a bracketing grid for each accuracy ε m
+  let G : (m : ℕ) → BracketingGrid (trueCDF X μ) (ε m) := fun m =>
+    (bracketingGrid_exists hX_meas (hε_pos m)).some
+  -- Per-m simultaneous pointwise convergence at grid points
+  have h_per_m : ∀ m : ℕ, ∀ᵐ ω ∂μ, ∀ j : Fin ((G m).k + 2),
+      Filter.Tendsto (fun n => empiricalCDF X n ((G m).q j) ω)
+        Filter.atTop (nhds (trueCDF X μ ((G m).q j))) := by
+    intro m
+    exact bracketing_simultaneous_pointwise hX_meas hX_iid hX_ident (G m).q
+  -- Combine the countably many full-measure sets via `ae_all_iff`
+  have h_all : ∀ᵐ ω ∂μ, ∀ m : ℕ, ∀ j : Fin ((G m).k + 2),
+      Filter.Tendsto (fun n => empiricalCDF X n ((G m).q j) ω)
+        Filter.atTop (nhds (trueCDF X μ ((G m).q j))) := by
+    rw [ae_all_iff]
+    exact h_per_m
+  filter_upwards [h_all] with ω h_pw_all
+  -- Show `Tendsto (⨆x ...) atTop (nhds 0)` via the metric characterisation
+  rw [Metric.tendsto_atTop]
+  intro δ hδ
+  -- Choose `m : ℕ` with `1 / (m + 1) < δ / 3` (so `3 · ε m < δ`)
+  obtain ⟨m, hm⟩ := exists_nat_one_div_lt
+    (div_pos hδ (by norm_num : (0 : ℝ) < 3))
+  -- Apply §2.4 with this `m` and slack `η := ε m`
+  have h_event :=
+    bracketing_uniform_from_grid (hε_pos m) (G m) (h_pw_all m) (ε m) (hε_pos m)
+  -- Extract the eventual index from `∀ᶠ n, ...`
+  rw [Filter.eventually_atTop] at h_event
+  obtain ⟨N, hN⟩ := h_event
+  refine ⟨N, fun n hn => ?_⟩
+  -- Bound the sup-error: ⨆ ≤ 2 ε m + ε m = 3 ε m
+  have hUle :
+      (⨆ x : ℝ, |empiricalCDF X n x ω - trueCDF X μ x|) ≤ 2 * ε m + ε m :=
+    hN n hn
+  -- ⨆ ≥ 0 since the integrand is a pointwise absolute value
+  have hUnn : 0 ≤ ⨆ x : ℝ, |empiricalCDF X n x ω - trueCDF X μ x| :=
+    Real.iSup_nonneg (fun _ => abs_nonneg _)
+  -- 3 · ε m < δ
+  have h3εm : 3 * ε m < δ := by
+    have hεlt : ε m < δ / 3 := hm
+    linarith
+  rw [Real.dist_eq, sub_zero, abs_of_nonneg hUnn]
+  linarith
+
 end GlivenkoCantelli
