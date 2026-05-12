@@ -1,7 +1,7 @@
 {
   "slug": "bounded-prime-gaps-oq-03-oq-02",
   "title": "Certified-computation replacement for engelsma_lower_bound axiom (50-tuple diameter 246)",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -27,12 +27,12 @@
     "goal": "Replace the axiom with a theorem proved by Lean's kernel (ideally via native_decide on a pruned search procedure faithfully reifying Engelsma's algorithm)."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-05-11T19:35:00Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE — axiom located (line 134) and reduced to finitary decidable form via translation invariance; three approach paths surveyed; Path B (verified backtracking with prime-residue pruning) identified as target.",
+    "iteration": 2,
+    "focus": "S2 (this PR) — Decidable infrastructure for IsAdmissible. New file BoundedPrimeGapsOQ03OQ02.lean (+109 lines, 1 abbrev, 1 theorem, 1 instance, 0 axioms, 0 sorries): abbrev IsAdmissibleBdd as the Finset-bounded variant of IsAdmissible, theorem isAdmissible_iff_bdd for the equivalence (forward by restriction; backward by case-split on p ≤ H.card, with Finset.card_image_le discharging p > H.card), and instance instDecidableIsAdmissible via decidable_of_iff. Discharges §3.1 of knowledge.md and unblocks Path B small-case prototypes (§3.3, §4). Build pending (broken proofs/.lake symlink in current worktree per memory feedback_researcher_lake_symlink_broken.md); proof script is stable Mathlib API + omega only.",
     "blockers": [],
-    "nextAction": "S2 Option A — build Decidable (IsAdmissible H) instance in a new file BoundedPrimeGapsOQ03OQ02.lean (~40-60 lines, foundational, low risk). See knowledge.md §3.1 and §9 for the concrete recipe.",
+    "nextAction": "S3 — small-case sanity native_decide via §3.3 of knowledge.md (e.g. `∀ H ∈ (Finset.range 16).powersetCard 6, 0 ∈ H → IsAdmissible H → H.max' ... ≥ 12` — ~8008 admissibility checks, tractable). This stress-tests the S2 Decidable instance before committing to S4 Path-B prototyping at `(k, w) = (6, 16)` or `(10, 30)`.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -113,7 +113,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.561Z",
-  "lastUpdate": "2026-05-11T19:35:00Z",
+  "lastUpdate": "2026-05-12T03:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -160,6 +160,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ02.lean",
+      "lineCount": 109,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean"
     }
   ]
 }
