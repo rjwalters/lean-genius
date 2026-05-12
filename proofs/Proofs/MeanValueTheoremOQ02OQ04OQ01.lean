@@ -124,6 +124,7 @@ Lean-4 spelling thereof) — this is the precise S2 deliverable.
 noncomputable section
 
 open Real Set
+open scoped NNReal ENNReal
 
 namespace MeanValueTheoremOQ02OQ04OQ01
 
@@ -322,6 +323,65 @@ theorem analytic_taylor_remainder_uniform_bound_complex
   -- Deferred to S2: see §3 docstring for the Mathlib chain.
   sorry
 
+/-! ## §3a. Existential Cauchy-style geometric approximation (S2 addition, proven)
+
+This is the Mathlib-native translation of
+`HasFPowerSeriesOnBall.uniform_geometric_approx'` from its `y`-centered
+form `f (a + y)` (with `y` in a ball around `0`) to a `z`-centered form
+(with `z` in a ball around `a`). The translation is purely a change of
+variables `y = z − a`; no new mathematics, but it packages the Mathlib
+lemma in a form that is more directly usable for downstream consumers
+who reason about `z ∈ Metric.ball a r` rather than `y ∈ Metric.ball 0 r`.
+
+The existential constants `K ∈ (0, 1)` and `C > 0` come from Mathlib's
+internal Cauchy + geometric-tail combination and depend on the formal
+multilinear series `p` (and the gap between `r` and the convergence
+radius `R`), not on a user-supplied complex sup bound `M`. The sharper
+explicit form (with `K = ‖z − a‖ / r`, `C = M · R / (R − r)`, requiring
+`‖f‖ ≤ M` on `Metric.ball a R`) is left as the §3b `sorry` above; it
+requires the Cauchy integral formula chain (`Complex.norm_cauchyPowerSeries_le`
++ `DifferentiableOn.hasFPowerSeriesOnBall`), which is heavier machinery
+than `uniform_geometric_approx'` alone. -/
+
+/-- **Existential Cauchy-style geometric approximation, complex
+hypothesis** (S2 addition, proven via Mathlib's
+`HasFPowerSeriesOnBall.uniform_geometric_approx'`).
+
+For any `f : ℂ → ℂ` admitting a formal power series expansion `p` on
+the disk `Metric.ball a R`, and any `r' < R`, there exist constants
+`K ∈ (0, 1)` and `C > 0` such that on the strict subdisk
+`Metric.ball a r'`, the residual after the `n`-th partial sum decays
+geometrically in `n`:
+```
+  ‖f z − p.partialSum n (z − a)‖ ≤ C · (K · (‖z − a‖ / r'))^n.
+```
+This is precisely Mathlib's `uniform_geometric_approx'` after the
+change of variables `z = a + y`. It does **not** require a complex sup
+bound `‖f‖ ≤ M` on the disk — only that `f` admits the power-series
+expansion (which is automatic for `f` complex-differentiable on the
+closed disk, via `DifferentiableOn.hasFPowerSeriesOnBall`).
+
+Pairing with the §3b `sorry`: the §3b explicit form
+`M · r^(n+1) / (R^n · (R − r))` strengthens this existential by
+identifying `C` and `K` with the explicit Cauchy constants, but
+requires the sup bound `‖f‖ ≤ M` on the complex disk (the hypothesis
+the parent OQ-04 axiom drops; cf. §2's refutation). -/
+theorem analytic_taylor_remainder_uniform_geometric_complex
+    {f : ℂ → ℂ} {p : FormalMultilinearSeries ℂ ℂ ℂ} {a : ℂ} {R : ℝ≥0∞}
+    (hf : HasFPowerSeriesOnBall f p a R) {r : ℝ≥0} (hr : (r : ℝ≥0∞) < R) :
+    ∃ K ∈ Set.Ioo (0 : ℝ) 1, ∃ C > 0,
+      ∀ z ∈ Metric.ball a (r : ℝ), ∀ n,
+        ‖f z - p.partialSum n (z - a)‖ ≤ C * (K * (‖z - a‖ / r)) ^ n := by
+  obtain ⟨K, hK, C, hC, hp⟩ := hf.uniform_geometric_approx' hr
+  refine ⟨K, hK, C, hC, fun z hz n => ?_⟩
+  have hy : z - a ∈ Metric.ball (0 : ℂ) (r : ℝ) := by
+    rw [Metric.mem_ball, dist_zero_right]
+    rwa [Metric.mem_ball, dist_eq_norm] at hz
+  have key := hp (z - a) hy n
+  have h_simp : a + (z - a) = z := by ring
+  rw [h_simp] at key
+  exact key
+
 /-! ## §4. Verification -/
 
 #check @runge
@@ -332,5 +392,6 @@ theorem analytic_taylor_remainder_uniform_bound_complex
 #check @oq04_axiom_is_false
 #check @oq04_parent_axiom_is_false_in_principle
 #check @analytic_taylor_remainder_uniform_bound_complex
+#check @analytic_taylor_remainder_uniform_geometric_complex
 
 end MeanValueTheoremOQ02OQ04OQ01
