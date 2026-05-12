@@ -14,14 +14,14 @@
   {
     "id": "ann-001",
     "proofId": "law-of-cosines-oq-01-oq-01-oq-01",
-    "range": { "startLine": 27, "endLine": 27 },
+    "range": { "startLine": 27, "endLine": 29 },
     "type": "technique",
-    "title": "Import the Side-over-Angle Form",
-    "content": "The single import `Proofs.LawOfCosinesOQ01OQ02` brings in `spherical_law_of_sines_all`, which is the conjunction sin(a)/sin(A) = sin(b)/sin(B) ∧ sin(a)/sin(A) = sin(c)/sin(C) for nondegenerate spherical triangles. The proof obligation in this file is the symmetric statement with sides and angles exchanged.",
+    "title": "Import the Side-over-Angle Form; Open Required Namespaces",
+    "content": "The single import `Proofs.LawOfCosinesOQ01OQ02` brings in `spherical_law_of_sines_all`, which is the conjunction sin(a)/sin(A) = sin(b)/sin(B) ∧ sin(a)/sin(A) = sin(c)/sin(C) for nondegenerate spherical triangles. The proof obligation in this file is the symmetric statement with sides and angles exchanged. The accompanying `open SphericalLawOfCosines Real` (line 29) is required for two reasons: (1) `SphericalLawOfCosines` is the namespace where `SphericalTriangle` and its `sideA`/`sideB`/`sideC` projections live, so unqualified `SphericalTriangle` in the theorem signature resolves to the right structure; (2) `Real` exposes `Real.sin` for the `sin` calls in the goal — without it the expressions would need fully-qualified `Real.sin` everywhere. Note that this `open` does NOT import a namespace's *contents*; it only adds those names to the resolver's search path for the remainder of the file.",
     "mathContext": "The side-over-angle form $\\frac{\\sin a}{\\sin A} = \\frac{\\sin b}{\\sin B} = \\frac{\\sin c}{\\sin C}$ is proved in the parent file via the Gram-determinant identity $\\sin^2(X)\\sin^2(y)\\sin^2(z) = G$ (where $G = 1 - \\cos^2 a - \\cos^2 b - \\cos^2 c + 2\\cos a\\cos b\\cos c$ is the Gram determinant of perpendicular projections on the unit sphere). Once the side-over-angle form is in hand, the angle-over-side form is purely formal — no further geometric content is needed.",
     "significance": "supporting",
-    "relatedConcepts": ["spherical law of sines", "Gram determinant", "perpendicular projection"],
-    "prerequisites": ["spherical law of sines (side-over-angle form)", "Lean 4 imports"]
+    "relatedConcepts": ["spherical law of sines", "Gram determinant", "perpendicular projection", "open namespace"],
+    "prerequisites": ["spherical law of sines (side-over-angle form)", "Lean 4 imports", "Lean 4 namespace resolution"]
   },
   {
     "id": "ann-002",
@@ -53,7 +53,7 @@
     "range": { "startLine": 47, "endLine": 50 },
     "type": "insight",
     "title": "Algebraic Inversion via div_eq_div_iff (First Conjunct)",
-    "content": "The core of the proof for sin(A)/sin(a) = sin(B)/sin(b): `div_eq_div_iff (ne_of_gt hA) (ne_of_gt hB)` rewrites the goal into the cross-multiplied form sin(A)·sin(b) = sin(B)·sin(a). Applied symmetrically to the parent hypothesis h1 : sin(a)/sin(A) = sin(b)/sin(B), it yields sin(a)·sin(B) = sin(b)·sin(A). The two cross-multiplied forms differ only by a sign; `linear_combination -h1` closes the goal automatically.",
+    "content": "The core of the proof for sin(A)/sin(a) = sin(B)/sin(b): `div_eq_div_iff (ne_of_gt hA) (ne_of_gt hB)` rewrites the goal into the cross-multiplied form sin(A)·sin(b) = sin(B)·sin(a). Applied symmetrically to the parent hypothesis h1 : sin(a)/sin(A) = sin(b)/sin(B), it yields sin(a)·sin(B) = sin(b)·sin(A). The two cross-multiplied forms agree up to a sign once factors are commuted: goal − (−1)·h1 = (sin A · sin b − sin B · sin a) + (sin a · sin B − sin b · sin A) = 0 as a polynomial identity over commutative reals. `linear_combination -h1` instructs Lean to verify this with `ring` as the residual checker, closing the goal in one tactic step. The `-1` coefficient is essential — `linear_combination h1` (without negation) would leave a non-zero residual and fail.",
     "mathContext": "$\\texttt{div\\_eq\\_div\\_iff}$: for nonzero $b, d$, the equation $\\frac{a}{b} = \\frac{c}{d}$ is equivalent to $a \\cdot d = c \\cdot b$. Applying it on both the goal and the hypothesis transforms a division-form equality into a polynomial identity that Lean's `linear_combination` tactic can verify by reducing to $0 = 0$ after a single linear combination of the hypothesis. The hypothesis 0 < sin(angle) provides the `ne_of_gt` nonzero requirement.",
     "significance": "key",
     "relatedConcepts": ["div_eq_div_iff", "linear_combination", "cross-multiplication", "polynomial identities"],
