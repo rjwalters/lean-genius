@@ -3356,4 +3356,62 @@ private lemma gDiag_ne_iff_cN2_total_diag_ne (k : ℕ) (hk1 : k + 1 ≤ N) :
     N hN f hf_map k (k + 1) (by omega) hk1
 
 end N2DiagFin2Coloring
+
+-- ============================================================
+-- SECTION (S30-prep): face2_path_odd restated via gDiag
+-- ============================================================
+-- S29-prep (PR #17985, merged) introduced the top-level
+-- `gDiag : ℕ → Fin 2` whose body matches the local `let g`
+-- inside `face2_path_odd` (Section V) verbatim. This section
+-- packages the immediate corollary: the odd-cardinality
+-- conclusion of `face2_path_odd` also holds for the filter
+-- expressed via `gDiag` directly, freeing downstream consumers
+-- (S22's IsDoor color-change bridge, the eventual `_hLastFace`
+-- assembly) from having to re-unfold the local `let` binding
+-- at every use site.
+--
+-- Proof is a one-liner: `unfold gDiag` exposes the same body
+-- as `face2_path_odd`'s local `g`, so the two filter predicates
+-- are definitionally equal (proof terms `(by omega)` differ
+-- only at the proof-irrelevant `b.1+b.2 ≤ N` premise of `cN2`).
+-- Composes with S29-prep's
+-- `gDiag_ne_iff_cN2_total_diag_ne` to give the eventual
+-- odd-count statement in `cN2_total`-form that S22 +
+-- S25's `_hLastFace`-filter ↔ `satDiagBases` correspondence
+-- consume.
+--
+-- Independent of in-flight S23 (PR #17571, N2LastFaceColors
+-- color wiring in `(b.1, b.2 + 1)`-endpoint form), S25-prep
+-- (PR #17621, gridPt coordinate helpers), and S28-prep-
+-- color-change-iff (PR #17984, pointwise `if-shape ≠ ↔
+-- cN2_total ≠` bridge in `N2DiagColorChangeIff`): the new
+-- section lives entirely on the `face2_path_odd`-output side
+-- and consumes only the merged top-level `gDiag`.
+--
+-- Build status: pending per the persistent `t1_ne_t2` /
+-- `diagonal_in_t1_iff` drift in `N2BoundaryAnalysis` (lines
+-- 1068/1085/1093). The new section is at the very end of the
+-- file (lines 3360–3387 post-this-PR), well past the broken
+-- `omega` lines, matching the established "build pending"
+-- precedent for additions in disjoint file regions.
+-- ============================================================
+
+section N2GDiagPathOdd
+
+variable (N : ℕ) (hN : 0 < N)
+variable (f : (Fin 3 → ℝ) → Fin 3 → ℝ)
+variable (hf_map : ∀ v, InSimplex v → InSimplex (f v))
+
+/-- Restated `face2_path_odd` using the top-level `gDiag`
+(S29-prep) in place of its internal `let g`. The two have
+identical bodies, so the filter predicates coincide after
+`unfold gDiag`. -/
+private lemma face2_path_odd_gDiag :
+    Odd ((Finset.range N).filter
+      (fun k => gDiag N hN f hf_map k ≠ gDiag N hN f hf_map (k + 1))).card := by
+  unfold gDiag
+  exact face2_path_odd N hN f hf_map
+
+end N2GDiagPathOdd
+
 end SpernerFreudSimp
