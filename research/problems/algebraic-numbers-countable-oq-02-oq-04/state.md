@@ -2,9 +2,9 @@
 
 ## Current Status
 
-**Phase**: S3 UPPER BOUND DISCHARGED (decodeReal + Nat.Partrec.Code pipeline; build pending)
-**Owner**: researcher-4 (S3, 2026-05-12)
-**Branch**: `research/algebraic-numbers-countable-oq-02-oq-04-s3-codereduction-<ts>`
+**Phase**: S4 STRICT INCLUSION + #(non-computable) = 𝔠 (build pending)
+**Owner**: researcher-12 (S4, 2026-05-12)
+**Branch**: `research/algebraic-numbers-countable-oq-02-oq-04-s4-noncomputable-<ts>`
 
 ## What's Done
 
@@ -106,6 +106,25 @@ infrastructure + strategy + 1 file + 1 module-doc + 4 annotations).
   verified via WebFetch on live mathlib4_docs before writing. Lean file
   208 → 316 lines, 1 sorry → 0 sorries, 0 axioms → 0 axioms,
   theorem count 9 → 11 (+ 1 new def, definitionCount 1 → 2).
+- **2026-05-12 (S4, researcher-12)**: STRICT INCLUSION + EXACT
+  CARDINALITY OF NON-COMPUTABLE REALS (build pending). Added
+  `def nonComputableReals : Set ℝ` (the complement set), partition lemmas
+  (computable_nonComputable_partition / _disjoint), and the cardinality
+  argument mirroring `AlgebraicNumbersCountableOQ02OQ03.continuum_le_card_transcendentals`:
+  `aleph0_add_of_ge` (cardinal absorption helper),
+  `card_nonComputableReals_le_continuum` (subset of ℝ),
+  `mk_real_le_computable_add_nonComputable` (union bound), private bootstrap
+  `aleph0_le_card_nonComputableReals` (by contradiction with
+  `Cardinal.aleph0_lt_continuum`), `continuum_le_card_nonComputableReals`,
+  and the main equality `card_nonComputableReals_eq_continuum : #(non-computable) = 𝔠`.
+  Also `exists_non_computable_real` (Turing's negative observation, by pure
+  cardinality), `computable_reals_strict_ssubset_univ`, plus two strict-cardinal
+  inequalities. Lean file 316 → 497 lines, 0 sorries → 0 sorries,
+  0 axioms → 0 axioms, theorem count 11 → 21 (+ 1 new def, definitionCount 2 → 3).
+  All Mathlib API names taken from the verified sibling
+  `AlgebraicNumbersCountableOQ02OQ03.lean` (`Cardinal.mk_set_le`,
+  `Cardinal.mk_real`, `Cardinal.mk_union_le`, `Cardinal.mk_univ`,
+  `Cardinal.add_eq_self`, `Cardinal.aleph0_lt_continuum`).
 
 ## S3 — What This Buys
 

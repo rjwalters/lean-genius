@@ -313,4 +313,185 @@ theorem card_computable_reals_eq_aleph0 :
     (#({r : ℝ | IsComputable r} : Set ℝ) : Cardinal) = ℵ₀ :=
   le_antisymm card_computable_reals_le_aleph0 aleph0_le_card_computable_reals
 
+/-! ## S4 — Strict inclusion `{r | IsComputable r} ⊊ ℝ` and `#non-computable = 𝔠`
+
+Turing's negative observation: there exist non-computable real numbers, in fact
+continuum-many. The argument is purely cardinal — no explicit Cantor diagonal
+or Chaitin-Ω construction is needed:
+
+  𝔠 = #ℝ ≤ #(computable) + #(non-computable)
+        ≤ ℵ₀ + #(non-computable)
+        = #(non-computable)                       (absorption, when ℵ₀ ≤ #(nc))
+
+The bootstrap `ℵ₀ ≤ #(non-computable)` itself follows by contradiction: if
+#(non-computable) < ℵ₀ then #ℝ ≤ ℵ₀ + ℵ₀ = ℵ₀, contradicting `ℵ₀ < 𝔠`. The
+construction parallels the sibling result for transcendentals
+(`AlgebraicNumbersCountableOQ02OQ03.continuum_le_card_transcendentals`).
+
+This S4 deliverable adds:
+
+* `nonComputableReals` — the complement set `{r : ℝ | ¬ IsComputable r}`.
+* `card_nonComputableReals_eq_continuum` — exact cardinality 𝔠.
+* `exists_non_computable_real` — Turing's negative result, formalised.
+* `computable_reals_strict_ssubset_univ` — strict subset of `ℝ`.
+-/
+
+/-- The set of **non-computable** real numbers, i.e. those not arising as the
+    limit of any Mathlib-`Computable` rational sequence. This is the complement
+    of `{r : ℝ | IsComputable r}` inside `ℝ`. -/
+def nonComputableReals : Set ℝ := {r : ℝ | ¬ IsComputable r}
+
+/-- The computable and non-computable reals partition `ℝ`. -/
+private theorem computable_nonComputable_partition :
+    ({r : ℝ | IsComputable r} : Set ℝ) ∪ nonComputableReals = Set.univ := by
+  ext x
+  simp only [Set.mem_union, Set.mem_setOf_eq, nonComputableReals, Set.mem_univ, iff_true]
+  exact Classical.em _
+
+/-- Disjointness of the partition. -/
+private theorem computable_nonComputable_disjoint :
+    Disjoint ({r : ℝ | IsComputable r} : Set ℝ) nonComputableReals := by
+  rw [Set.disjoint_left]
+  intro x hx hnx
+  exact hnx hx
+
+/-- Cardinal absorption: `ℵ₀ + κ = κ` whenever `ℵ₀ ≤ κ`.
+
+    Proof: `ℵ₀ + κ ≤ κ + κ = κ` (by `Cardinal.add_eq_self`); the other direction
+    is trivial. Mirrors the helper in
+    `AlgebraicNumbersCountableOQ02OQ03.aleph0_add_of_ge`. -/
+private theorem aleph0_add_of_ge {κ : Cardinal} (h : ℵ₀ ≤ κ) : ℵ₀ + κ = κ :=
+  le_antisymm
+    (calc ℵ₀ + κ ≤ κ + κ := add_le_add_right h κ
+              _ = κ := Cardinal.add_eq_self h)
+    (le_add_left κ ℵ₀)
+
+/-- **Upper bound**: the non-computable reals are a subset of `ℝ`, so their
+    cardinality is at most 𝔠. -/
+theorem card_nonComputableReals_le_continuum :
+    (#(↑nonComputableReals : Set ℝ) : Cardinal) ≤ 𝔠 := by
+  calc (#(↑nonComputableReals : Set ℝ) : Cardinal)
+      ≤ #ℝ := Cardinal.mk_set_le nonComputableReals
+    _ = 𝔠 := Cardinal.mk_real
+
+/-- **Union bound** specialising the partition to `ℝ`:
+    `𝔠 = #ℝ ≤ #(computable) + #(non-computable)`. -/
+private theorem mk_real_le_computable_add_nonComputable :
+    (#ℝ : Cardinal) ≤ (#({r : ℝ | IsComputable r} : Set ℝ) : Cardinal) +
+        (#(↑nonComputableReals : Set ℝ) : Cardinal) := by
+  have h1 :
+      (#(↑(({r : ℝ | IsComputable r} : Set ℝ) ∪ nonComputableReals) : Set ℝ) : Cardinal) ≤
+      (#({r : ℝ | IsComputable r} : Set ℝ) : Cardinal) +
+        (#(↑nonComputableReals : Set ℝ) : Cardinal) :=
+    Cardinal.mk_union_le _ _
+  rwa [computable_nonComputable_partition, Cardinal.mk_univ] at h1
+
+/-- **Bootstrap lower bound**: the non-computable reals are at least ℵ₀-many.
+
+    Suppose, for contradiction, `#(non-computable) < ℵ₀`. Combined with
+    `card_computable_reals_le_aleph0`, the union bound forces `#ℝ ≤ ℵ₀ + ℵ₀ = ℵ₀`,
+    contradicting `Cardinal.aleph0_lt_continuum` and `Cardinal.mk_real`. -/
+private theorem aleph0_le_card_nonComputableReals :
+    ℵ₀ ≤ (#(↑nonComputableReals : Set ℝ) : Cardinal) := by
+  by_contra h
+  push_neg at h
+  have h_lt : (#(↑nonComputableReals : Set ℝ) : Cardinal) ≤ ℵ₀ := h.le
+  have h_real_le_aleph0 : (#ℝ : Cardinal) ≤ ℵ₀ := by
+    calc (#ℝ : Cardinal)
+        ≤ (#({r : ℝ | IsComputable r} : Set ℝ) : Cardinal) +
+            (#(↑nonComputableReals : Set ℝ) : Cardinal) :=
+              mk_real_le_computable_add_nonComputable
+      _ ≤ ℵ₀ + ℵ₀ := add_le_add card_computable_reals_le_aleph0 h_lt
+      _ = ℵ₀ := Cardinal.add_eq_self le_rfl
+  rw [Cardinal.mk_real] at h_real_le_aleph0
+  exact absurd h_real_le_aleph0 (not_le.mpr Cardinal.aleph0_lt_continuum)
+
+/-- **Lower bound** for the main cardinality: `𝔠 ≤ #(non-computable)`.
+
+    Combine the bootstrap `ℵ₀ ≤ #(non-computable)` with the union bound and
+    cardinal absorption:
+        𝔠 = #ℝ ≤ #(computable) + #(non-computable)
+              ≤ ℵ₀ + #(non-computable)
+              = #(non-computable). -/
+theorem continuum_le_card_nonComputableReals :
+    𝔠 ≤ (#(↑nonComputableReals : Set ℝ) : Cardinal) := by
+  have h_absorb :
+      ℵ₀ + (#(↑nonComputableReals : Set ℝ) : Cardinal) =
+        (#(↑nonComputableReals : Set ℝ) : Cardinal) :=
+    aleph0_add_of_ge aleph0_le_card_nonComputableReals
+  calc 𝔠
+      = #ℝ := Cardinal.mk_real.symm
+    _ ≤ (#({r : ℝ | IsComputable r} : Set ℝ) : Cardinal) +
+          (#(↑nonComputableReals : Set ℝ) : Cardinal) :=
+            mk_real_le_computable_add_nonComputable
+    _ ≤ ℵ₀ + (#(↑nonComputableReals : Set ℝ) : Cardinal) :=
+          add_le_add_right card_computable_reals_le_aleph0 _
+    _ = (#(↑nonComputableReals : Set ℝ) : Cardinal) := h_absorb
+
+/-- **Main S4 theorem — exact cardinality of non-computable reals**: 𝔠.
+
+    The non-computable reals have the same cardinality as ℝ itself. In the
+    cardinality sense, "almost all" reals are non-computable: removing the
+    countable computable reals from ℝ leaves a set of full cardinality 𝔠. -/
+theorem card_nonComputableReals_eq_continuum :
+    (#(↑nonComputableReals : Set ℝ) : Cardinal) = 𝔠 :=
+  le_antisymm card_nonComputableReals_le_continuum continuum_le_card_nonComputableReals
+
+/-- **Turing's negative observation, formalised**: there exists a real number
+    that is *not* computable.
+
+    Proof by contradiction: if every real were computable, then
+    `{r : ℝ | IsComputable r} = Set.univ`, hence `#ℝ ≤ ℵ₀` via
+    `card_computable_reals_le_aleph0`. This contradicts
+    `Cardinal.aleph0_lt_continuum` and `Cardinal.mk_real`.
+
+    No explicit non-computable real (e.g. Chaitin's Ω, halting probability) is
+    constructed — the existence is established purely by the cardinality gap. -/
+theorem exists_non_computable_real : ∃ r : ℝ, ¬ IsComputable r := by
+  by_contra h
+  push_neg at h
+  -- h : ∀ r, IsComputable r
+  have h_eq : ({r : ℝ | IsComputable r} : Set ℝ) = Set.univ := by
+    ext r
+    simp [h r]
+  have h_real_le_aleph0 : (#ℝ : Cardinal) ≤ ℵ₀ := by
+    calc (#ℝ : Cardinal)
+        = (#(↑({r : ℝ | IsComputable r} : Set ℝ) : Set ℝ) : Cardinal) := by
+            rw [h_eq, Cardinal.mk_univ]
+      _ ≤ ℵ₀ := card_computable_reals_le_aleph0
+  rw [Cardinal.mk_real] at h_real_le_aleph0
+  exact absurd h_real_le_aleph0 (not_le.mpr Cardinal.aleph0_lt_continuum)
+
+/-- **Strict inclusion** `{r : ℝ | IsComputable r} ⊊ Set.univ`.
+
+    Combines `Set.subset_univ` (the non-strict inclusion) with
+    `exists_non_computable_real` (a witness in the complement). -/
+theorem computable_reals_strict_ssubset_univ :
+    ({r : ℝ | IsComputable r} : Set ℝ) ⊊ Set.univ := by
+  refine ⟨Set.subset_univ _, ?_⟩
+  intro h_univ_sub
+  obtain ⟨r, hr⟩ := exists_non_computable_real
+  exact hr (h_univ_sub (Set.mem_univ r))
+
+/-- **Strict inequality on cardinalities**: `#(computable) < #ℝ`.
+
+    Direct consequence of `card_computable_reals_eq_aleph0` and
+    `Cardinal.mk_real` together with `Cardinal.aleph0_lt_continuum`. -/
+theorem card_computable_reals_lt_card_reals :
+    (#({r : ℝ | IsComputable r} : Set ℝ) : Cardinal) < #ℝ := by
+  rw [card_computable_reals_eq_aleph0, Cardinal.mk_real]
+  exact Cardinal.aleph0_lt_continuum
+
+/-- **Strict inequality on cardinalities**: `#(computable) < #(non-computable)`.
+
+    Together with `card_computable_reals_eq_aleph0` and
+    `card_nonComputableReals_eq_continuum`, this records the asymmetry: the
+    computable reals are an ℵ₀-sized exception inside an otherwise
+    continuum-sized field of non-computable reals. -/
+theorem card_computable_lt_card_nonComputable :
+    (#({r : ℝ | IsComputable r} : Set ℝ) : Cardinal) <
+      (#(↑nonComputableReals : Set ℝ) : Cardinal) := by
+  rw [card_computable_reals_eq_aleph0, card_nonComputableReals_eq_continuum]
+  exact Cardinal.aleph0_lt_continuum
+
 end AlgebraicNumbersCountableOQ02OQ04
