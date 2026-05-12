@@ -16,7 +16,7 @@
       "central-binomial"
     ],
     "badge": "original",
-    "sorries": 1,
+    "sorries": 0,
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
     "assumptions": "",
@@ -42,7 +42,7 @@
   "overview": {
     "historicalContext": "The Catalan numbers $C_n = 1, 1, 2, 5, 14, 42, 132, \\ldots$ were discovered by Euler (1751) in counting triangulations of polygons, and named after Eugene Catalan (1838) who studied parenthesizations. They are arguably the most important sequence in enumerative combinatorics, counting over 200 distinct combinatorial structures.\n\nThe connection to binomial coefficients via $C_n = \\binom{2n}{n}/(n+1)$ is fundamental. The central binomial coefficients $\\binom{2n}{n}$ count lattice paths from $(0,0)$ to $(2n,0)$ with steps $\\pm 1$; the Catalan numbers count the subset of such paths that never go below the x-axis (Dyck paths).",
     "problemStatement": "Formalize the connection between binomial coefficients and Catalan numbers. Define C_n, prove initial values, establish the identity C_n(n+1) = C(2n,n), prove the 4^n upper bound, and state the Catalan convolution.",
-    "proofStrategy": "**Part I**: Define catalan(n) = C(2n,n) - C(2n,n+1) and verify C_0 through C_5 by norm_num.\n\n**Part II**: State the fundamental identity catalan_mul_succ and the auxiliary choose_2n_succ.\n\n**Part III**: Define centralBinom and prove centralBinom_le_four_pow using the binomial row sum C(2n,0)+...+C(2n,2n) = 2^{2n} = 4^n.\n\n**Part IV**: Derive catalan_le_four_pow from the central binomial bound.\n\n**Parts V-VI**: Value tables and the convolution identity (stated with sorry).",
+    "proofStrategy": "**Part I**: Define catalan(n) = C(2n,n) - C(2n,n+1) and verify C_0 through C_5 by norm_num.\n\n**Part II**: State the fundamental identity catalan_mul_succ and the auxiliary choose_2n_succ.\n\n**Part III**: Define centralBinom and prove centralBinom_le_four_pow using the binomial row sum C(2n,0)+...+C(2n,2n) = 2^{2n} = 4^n.\n\n**Part IV**: Derive catalan_le_four_pow from the central binomial bound.\n\n**Parts V-VI**: Value tables and the convolution identity proved via Mathlib's `catalan_succ'`.",
     "keyInsights": [
       "$\\binom{2n}{n} \\leq 4^n$ via the binomial row sum: $\\binom{2n}{n} \\leq \\sum_k \\binom{2n}{k} = 2^{2n} = 4^n$. This uses Mathlib's `Nat.sum_range_choose` and Finset.single_le_sum. The bound is tight up to a $\\sqrt{n}$ factor (Stirling gives $\\binom{2n}{n} \\sim 4^n / \\sqrt{\\pi n}$).",
       "The Catalan formula $C_n = \\binom{2n}{n} - \\binom{2n}{n+1}$ is the reflection principle: lattice paths from $(0,0)$ to $(2n,0)$ that stay non-negative minus those that go below the $x$-axis. The 'bad' paths are in bijection with all paths to $(2n,-2)$, which are counted by $\\binom{2n}{n+1}$.",
@@ -135,5 +135,5 @@
       "description": "Also uses central binomial coefficient bounds $\\binom{2n}{n} \\leq 4^n$ for prime distribution estimates"
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
