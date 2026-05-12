@@ -81,7 +81,37 @@
     {
       "targetId": "chinese-remainder-non-coprime-oq-02",
       "relationship": "extends",
-      "description": "2-moduli non-coprime CRT; this file extends to 3 moduli using iterated reduction"
+      "description": "2-moduli non-coprime CRT for Euclidean domains; this file extends to 3 moduli via iterated reduction. The 2-moduli version is invoked twice in `ed_crt_three_sufficient`: first on (m₁, m₂) to construct x₀, then on (lcm(m₁,m₂), m₃) using the GCD-LCM distributive law proved in Part II."
+    },
+    {
+      "proofId": "chinese-remainder-non-coprime",
+      "relationship": "extends",
+      "description": "The ℤ-specific non-coprime CRT for 2 moduli. This file generalizes both: from ℤ to arbitrary Euclidean domains AND from 2 to 3 moduli. Pairwise GCD compatibility remains the necessary-and-sufficient solvability criterion."
+    },
+    {
+      "proofId": "chinese-remainder-constructive",
+      "relationship": "complementary",
+      "description": "The classical (pairwise-coprime) CRT: for coprime moduli the system always has a solution, unique modulo the product. This file is the dual extreme: when the moduli are arbitrary (non-coprime), solvability requires pairwise GCD compatibility and uniqueness drops from product to lcm. Both viewpoints together cover the full CRT solvability landscape."
+    },
+    {
+      "proofId": "bezout-identity",
+      "relationship": "uses",
+      "description": "Wiedijk #60. The 185-line hard direction of the GCD-LCM distributive law `gcd_lcm_dvd_lcm_gcd` is a direct Bézout decomposition: write gcd(a,b) = u·a + v·b, then expand iteratively with the coprime factoring of a/gcd(a,b), b/gcd(a,b), and gcd(gcd(a,b),c)/gcd. Without Bézout's identity in EuclideanDomains, this proof is not constructible."
+    },
+    {
+      "proofId": "binary-gcd",
+      "relationship": "complementary",
+      "description": "Stein's binary GCD algorithm computes gcd(a,b) using only subtraction and bit-shifts. Both this file and the binary-GCD entry work in the same Euclidean-domain setting (Mathlib's EuclideanDomain typeclass); the binary algorithm provides an algorithmic foundation for the gcd computations that `gcd_dvd_of_dvd_sub` and `gcd_dvd_sub_of_congr` rely on here."
+    },
+    {
+      "proofId": "fundamental-theorem-algebra",
+      "relationship": "context",
+      "description": "Polynomial rings k[X] over a field k are Euclidean domains, so the 3-moduli non-coprime CRT applies to polynomial systems: pᵢ(X)|(f(X) − rᵢ(X)) with arbitrary (not necessarily coprime) pᵢ. The fundamental theorem of algebra (k=ℂ implies every nonconstant polynomial splits) supplies concrete factorizations to which this distributive-lattice CRT applies."
+    },
+    {
+      "proofId": "binary-gcd-oq-03",
+      "relationship": "complementary",
+      "description": "Generic-base extension of binary GCD: replaces 2 with an arbitrary integer base, exposing the same EuclideanDomain GCD lemmas this file invokes (`gcd_dvd_left`, `dvd_gcd`, `dvd_lcm_left/right`). The two together cover the algorithmic and structural sides of the GCD-in-Euclidean-domain framework."
     }
   ],
   "sections": [
