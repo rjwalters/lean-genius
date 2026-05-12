@@ -1,7 +1,7 @@
 {
   "slug": "gauss-wilson-non-cyclic-oq-01",
   "title": "Full Gauss–Wilson product formula from the 2-torsion characterization",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -20,12 +20,12 @@
     "goal": "prod_univ_units_zmod_eq_neg_one_iff_isCyclic (n : ℕ) [NeZero n] : ∏ x : (ZMod n)ˣ, x = -1 ↔ IsCyclic (ZMod n)ˣ"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T13:00:00.000Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE (researcher-5, 2026-05-12): doc-only S1, no Lean changes. Three-phase decomposition: Phase A — abstract `prod_univ_eq_prod_two_torsion` for finite CommGroup via `Finset.prod_involution` with the inverse map; Phase B — product over an elementary abelian 2-group of order ≥ 4 equals 1, via translation involution x ↦ h₀·x; Phase C — specialize to (ZMod n)ˣ via parent's `card_sq_eq_one_ge_three` (non-cyclic ⇒ |2-torsion| ≥ 4) + `ZMod.isCyclic_units_iff` (boundary characterization). Mathlib has `Finset.prod_involution`, `ZMod.isCyclic_units_iff`, `prod_univ_units_id_eq_neg_one` (domain-only special case); no prebuilt lemmas for the three phases above. 15-row numerical sanity table matches the dichotomy.",
+    "phase": "ACT",
+    "since": "2026-05-12T17:55:00.000Z",
+    "iteration": 3,
+    "focus": "S3 ACT partial (researcher-1, 2026-05-12): Phase B core theorem shipped modulo one strategic sorry. proofs/Proofs/GaussWilsonNonCyclicOQ01B.lean (165 lines, 1 sorry) ships five build-pending helper lemmas (mul_left_self_inv_of_elementary, mul_left_ne_self_of_ne_one, pow_eq_one_of_sq_eq_one, pow_eq_self_of_sq_eq_one, exists_two_distinct_ne_one) and the main Phase B theorem prod_univ_eq_one_of_elementary_card_ge_four derived from the strategic sorry (prod_univ_eq_pow_card_div_two_of_elementary) via a clean by_cases on Even(N/2). The strategic sorry isolates the transversal-pairing identity (orbit structure of left translation by h ≠ 1 on elementary 2-abelian H); future S4 closes it via Finset.prod_image + transversal construction or MulAction.Quotient route.",
     "blockers": [],
-    "nextAction": "S2 ACT: create proofs/Proofs/GaussWilsonNonCyclicOQ01A.lean implementing Phase A alone (~30 lines, target 0–1 sorries). Single self-contained statement `prod_univ_eq_prod_two_torsion (G : Type*) [CommGroup G] [Fintype G] [DecidableEq G] : ∏ x : G, x = ∏ x ∈ univ.filter (·^2 = 1), x`. Uses only `Mathlib.Algebra.BigOperators.Group.Finset.Basic`. No dependency on the parent file or OQ-03 file. S3 attacks Phase B (elementary abelian 2-group); S4 assembles Phase C on top.",
+    "nextAction": "S4 (any researcher) — close the strategic sorry prod_univ_eq_pow_card_div_two_of_elementary by building a transversal Finset T ⊂ Finset.univ with |T| = |H|/2 and T ∩ (h • T) = ∅, applying Finset.prod_union to split univ = T ∪ (h • T), then Finset.prod_image to push h * · through. The product over h • T equals h^|T| · ∏ x ∈ T, x, and the two ∏ x ∈ T, x factors combine via x² = 1 ⇒ P · P = ∏ x², 1 = 1. Estimated 60–100 Lean lines. Alternative: MulAction.Quotient.prodOfMul (or equivalent) for the action of Subgroup.zpowers h on H. After S4 closes the sorry, S5 assembles Phase C via the parent files card_sq_eq_one_ge_three.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -33,12 +33,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE (researcher-5, 2026-05-12): 4-document scaffold. Three-phase decomposition with Mathlib readiness map, 15-row numerical sanity table, Lean proof sketches for each phase, sibling-overlap analysis with OQ-03 (OQ-01 is strictly easier; ships without OQ-03 progress).",
+    "progressSummary": "S3 ACT partial (researcher-1, 2026-05-12): Phase B core theorem prod_univ_eq_one_of_elementary_card_ge_four delivered modulo one strategic sorry (transversal-pairing identity). 5 build-pending sorry-free helper lemmas + 1 strategic sorry isolating the orbit-product step. Build pending (worktree .lake recursive). Phase A (S2 PR #18147) + Phase B partial (S3) lay the structural groundwork for S5 Phase C assembly.",
     "builtItems": [
       "research/problems/gauss-wilson-non-cyclic-oq-01/problem.md (new, ~150 lines): full open-question statement, three-phase decomposition (A: generic 2-torsion reduction, B: elementary abelian 2-group product, C: ZMod specialization), Mathlib readiness map, sibling-overlap analysis with OQ-03, references.",
       "research/problems/gauss-wilson-non-cyclic-oq-01/knowledge.md (new, ~200 lines): 15-row numerical sanity table (n ∈ {1..25, 8, 12, 15, 16, 24}) confirming the dichotomy, full Lean proof sketches for each phase with Mathlib API targets, gap analysis identifying 3 potential Mathlib upstream contributions, S2 next-action skeleton.",
       "research/problems/gauss-wilson-non-cyclic-oq-01/state.md (new): S1 phase log, blockers (none), race awareness vs OQ-03.",
-      "src/data/research/problems/gauss-wilson-non-cyclic-oq-01.json (new): gallery-facing problem JSON."
+      "src/data/research/problems/gauss-wilson-non-cyclic-oq-01.json (new): gallery-facing problem JSON.",
+      "proofs/Proofs/GaussWilsonNonCyclicOQ01B.lean (S3, 165 lines, 1 sorry): Phase B core theorem prod_univ_eq_one_of_elementary_card_ge_four for finite CommGroup H with x² = 1 (∀x ∈ H) and |H| ≥ 4 ⇒ ∏ x : H, x = 1. Derived from one strategic sorry prod_univ_eq_pow_card_div_two_of_elementary via by_cases Even(|H|/2). Ships 5 build-pending sorry-free helpers: mul_left_self_inv_of_elementary, mul_left_ne_self_of_ne_one, pow_eq_one_of_sq_eq_one, pow_eq_self_of_sq_eq_one, exists_two_distinct_ne_one.",
+      "proofs/Proofs.lean: alphabetical insertion of import Proofs.GaussWilsonNonCyclicOQ01B."
     ],
     "insights": [
       "OQ-01 is strictly easier than OQ-03 (sibling): OQ-01 needs only the cyclic/non-cyclic dichotomy (already in Mathlib as `isCyclic_units_iff`), while OQ-03 needs CRT-based exact 2-torsion cardinalities. OQ-01 can ship without waiting for OQ-03 progress.",
@@ -47,7 +49,9 @@
       "Phase B uses `Finset.prod_involution` (or ninvolution) with `x ↦ h₀·x` for any fixed non-identity h₀: pairs multiply to `h₀ · x^2 = h₀` (since x² = 1), giving total `h₀^(|H|/2)`. For |H| = 2^k with k ≥ 2, |H|/2 is even, so result = 1.",
       "The dichotomy emerges cleanly: cyclic ⇔ |G[2]| ≤ 2 ⇔ G[2] = {1} or {1, -1} ⇒ Phase A product = 1 or -1; non-cyclic ⇔ |G[2]| ≥ 4 (parent gives ≥ 3, elementary abelian + Lagrange gives ≥ 4) ⇒ Phase B product = 1.",
       "The classical Wilson form `(p-1)! ≡ -1 mod p` is the prime-case projection through the bijection `(ZMod p)ˣ ↔ {1, ..., p-1}` followed by `Finset.prod_Ico_id_eq_factorial`. Mathlib's `ZMod.wilsons_lemma` already provides this for primes.",
-      "Parent file's `card_sq_eq_one_ge_three` provides only the qualitative ≥ 3 bound. Upgrading to ≥ 4 in Phase C uses that the 2-torsion is a *group* (closed under multiplication), so its cardinality is a power of 2 — Lagrange + Sylow give |G[2]| ∈ {1, 2, 4, 8, ...}, and ≥ 3 forces ≥ 4."
+      "Parent file's `card_sq_eq_one_ge_three` provides only the qualitative ≥ 3 bound. Upgrading to ≥ 4 in Phase C uses that the 2-torsion is a *group* (closed under multiplication), so its cardinality is a power of 2 — Lagrange + Sylow give |G[2]| ∈ {1, 2, 4, 8, ...}, and ≥ 3 forces ≥ 4.",
+      "S3 (researcher-1, 2026-05-12): the Phase B derivation can be sliced cleanly between (a) the orbit-product identity ∏ x : H, x = h ^ (|H|/2) which needs ≈ 50 lines of transversal/quotient setup, and (b) the contradiction-based argument that |H|/2 even ⇒ ∏ = 1 vs |H|/2 odd ⇒ h = h₀ = h₁ which needs only ≈ 15 lines of Even/Odd pow casework given (a). Strategic-sorry isolation at (a) ships the Phase B structure now and reduces the residual gap to one textbook identity.",
+      "S3 (researcher-1, 2026-05-12): no structure theorem for finite elementary 2-abelian groups is actually needed in the Phase B proof — the contradiction h₀ = h₁ (when |H|/2 is odd) does not require |H| = 2^k. Picking two distinct non-identity elements via Finset.erase suffices, avoiding any IsPGroup / Sylow.card_eq_pow_card machinery."
     ],
     "mathlibGaps": [
       "No standalone `Finset.prod_univ_eq_prod_two_torsion` (or `prod_univ_eq_prod_self_inverse`) for finite commutative groups. Phase A would provide this as a gallery-local lemma with potential upstreaming.",
@@ -55,9 +59,8 @@
       "The 'finite + exponent 2 ⇒ order is a power of 2' step requires assembly from `Monoid.exponent_dvd_iff` + `Sylow.card_eq_pow_card_orderOf`. A direct `Fintype.card_eq_pow_two_of_exponent_dvd_two` would shortcut Phase C's lower-bound upgrade ≥ 3 → ≥ 4."
     ],
     "nextSteps": [
-      "S2: Phase A in isolation. Create proofs/Proofs/GaussWilsonNonCyclicOQ01A.lean (~30 lines, 0–1 sorries) with `prod_univ_eq_prod_two_torsion` and a small `#example`-style numerical sanity check at G = (ZMod 8)ˣ.",
-      "S3: Phase B. Create proofs/Proofs/GaussWilsonNonCyclicOQ01B.lean (~60 lines, 0–1 sorries) with `prod_univ_of_elementary_abelian_two_card_ge_four`. May need a small lemma `Fintype.card_eq_pow_two_of_exponent_dvd_two`.",
-      "S4: Phase C. Create proofs/Proofs/GaussWilsonNonCyclicOQ01.lean assembling the main theorem `prod_univ_units_zmod_eq_neg_one_iff_isCyclic`, citing Phase A, Phase B, parent's `card_sq_eq_one_ge_three`, and `ZMod.isCyclic_units_iff`."
+      "S4 (next, any researcher): close the strategic sorry prod_univ_eq_pow_card_div_two_of_elementary. Approach (a): explicit transversal Finset T ⊂ Finset.univ with |T| = |H|/2 and T ∩ (h • T) = ∅, then Finset.prod_union + Finset.prod_image. Approach (b): MulAction.Quotient.prod via Subgroup.zpowers h, computing the product orbit-by-orbit. Estimated 60–100 Lean lines either way.",
+      "S5 (after S4): Phase C — assemble prod_univ_units_zmod_eq_neg_one_iff_isCyclic via Phase A + Phase B + parents card_sq_eq_one_ge_three + ZMod.isCyclic_units_iff. Estimated 80–120 lines. Need to upgrade |G[2]| ≥ 3 ⇒ ≥ 4 (Lagrange + power-of-2 cardinality) or work directly via 2-torsion subgroup."
     ]
   },
   "tags": [
@@ -92,7 +95,7 @@
     ]
   },
   "started": "2026-05-12T13:00:00.000Z",
-  "lastUpdate": "2026-05-12T13:00:00.000Z",
+  "lastUpdate": "2026-05-12T17:55:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -106,6 +109,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclic.lean"
+    },
+    {
+      "path": "Proofs/GaussWilsonNonCyclicOQ01A.lean",
+      "filename": "GaussWilsonNonCyclicOQ01A.lean",
+      "lineCount": 66,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclicOQ01A.lean"
+    },
+    {
+      "path": "Proofs/GaussWilsonNonCyclicOQ01B.lean",
+      "filename": "GaussWilsonNonCyclicOQ01B.lean",
+      "lineCount": 165,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclicOQ01B.lean"
     }
   ]
 }
