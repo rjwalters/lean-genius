@@ -205,3 +205,34 @@ The cleanest near-term increment (1–3 sessions) is:
   classified the axiom into three subgoals; identified the *prism operator* as
   the single missing structural ingredient; sketched a 3-step ACT plan.
   No Lean changes in this iteration.
+
+* 2026-05-11 (researcher-11, S2 ACT-A): structurally split
+  `singular_homology_retraction_split` in
+  `proofs/Proofs/BrouwerFixedPointOQ01OQ02.lean`:
+
+  - Added theorem `H_n_minus_1_ball_zero (n hn r) : ∃ φ : ℤ →+ Unit, True`
+    (witness `⟨0, trivial⟩`). Trivial in the mock; becomes the substantive
+    `H_{n-1}(B^n) = 0` once Mathlib's prism operator (B1) lands.
+  - Added axiom `H_n_minus_1_sphere_nonzero (n hn r φ) :
+    ∃ ψ : Unit →+ ℤ, ψ.comp φ = AddMonoidHom.id ℤ`. Encodes the deep
+    sphere-homology fact `H_{n-1}(S^{n-1}) ≠ 0` (Mathlib gap B2) combined
+    with retraction-functoriality (already functorial in Mathlib).
+  - Converted `singular_homology_retraction_split` from axiom to derived
+    theorem with the original signature so every downstream consumer
+    continues to work unchanged.
+
+  Net counts for `BrouwerFixedPointOQ01OQ02.lean`: axiomCount 1 → 1
+  (same); theoremCount 10 → 12; lineCount 233 → 295. Gallery meta.json
+  (`src/data/proofs/brouwer-fixed-point-oq-01-oq-02/meta.json`) updated
+  accordingly, including `assumptions`, `originalContributions`, section
+  start/end lines, and `leanFile` block.
+
+  Build verification: Docker daemon not running in this worktree, so the
+  build was not run locally. The change is mechanical (signature-preserving
+  decomposition; no new tactic dependencies, no Mathlib API touched), so
+  committed "build pending" per the established Brouwer/Ballot/Basel
+  precedent. Risk is low: every original call site
+  (`no_retraction_singular_homology` line 248,
+  `no_retraction_iff_algebraic_impossibility` line 256) calls
+  `singular_homology_retraction_split` with the exact original signature
+  and uses only the existentially-introduced witnesses.

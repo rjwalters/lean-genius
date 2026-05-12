@@ -39,7 +39,31 @@ axiom no_retraction_axiom (n : ℕ) (hn : n ≥ 1) : ¬∃ r : Retraction n, Tru
 This file derives no-retraction from **more primitive** axioms that precisely
 identify what singular homology contributes. The pure algebraic argument is fully proved.
 
-## Summary: 11 theorems, 0 sorries, 1 axiom
+## Summary: 13 theorems, 0 sorries, 1 axiom
+
+## S2 ACT-A scaffold (2026-05-11)
+
+The previous composite axiom `singular_homology_retraction_split` has been
+decomposed into two named lemmas — one trivial in the mock model (and named to
+match its future role) and one residual axiom:
+
+  * `H_n_minus_1_ball_zero` — *theorem* in the mock model. Asserts the
+    existence of the inclusion-induced map `φ : ℤ →+ Unit`. Trivially provable
+    here (`⟨0, trivial⟩`) because `Unit` is the mock encoding of
+    `H_{n-1}(B^n) = 0`. In the real-singular-homology setting, this lemma
+    becomes the substantive statement `H_{n-1}(B^n) = 0`, provable once the
+    *prism operator* (Mathlib gap B1) is contributed.
+
+  * `H_n_minus_1_sphere_nonzero` — *axiom*. Encodes both the sphere-homology
+    fact `H_{n-1}(S^{n-1}) ≅ ℤ` (Mathlib gap B2, deep) and the functoriality
+    identity `r* ∘ i* = id`. This is the structurally cleanest residual
+    assumption after B1 is discharged.
+
+`singular_homology_retraction_split` is preserved as a *theorem* combining the
+two — so all downstream consumers (`no_retraction_singular_homology`,
+`no_retraction_iff_algebraic_impossibility`) continue to work unchanged.
+
+Net axiom count: unchanged at 1.
 -/
 
 set_option linter.unusedVariables false
@@ -150,25 +174,63 @@ The singular homology computations (Mayer-Vietoris, contractibility) are deep
 analytic results not yet in Mathlib; we axiomatize them here.
 -/
 
-/-- **Axiom (Singular Homology)**: The existence of a retraction r : B^n → S^{n-1}
-    implies the existence of an inclusion-induced map φ : ℤ →+ Unit
-    (modelling i* : H_{n-1}(S^{n-1}) → H_{n-1}(B^n))
-    and a retraction-induced map ψ : Unit →+ ℤ (modelling r*)
-    such that ψ ∘ φ = id.
+/-- **Lemma (`H_{n-1}(B^n) = 0`, mock form)**: for any retraction
+    `r : B^n → S^{n-1}`, the inclusion-induced map
+    `i* : H_{n-1}(S^{n-1}) → H_{n-1}(B^n)` exists. In the mock model
+    `H_{n-1}(B^n)` is identified with the trivial group `Unit`, so the
+    statement reduces to `∃ φ : ℤ →+ Unit, True`, witnessed by `φ = 0`.
 
-    This axiom encodes:
-    - H_{n-1}(S^{n-1}) ≅ ℤ (via Mayer-Vietoris, computed by excision)
-    - H_{n-1}(B^n) = 0 (B^n is contractible, trivial reduced homology)
-    - Functoriality: r ∘ i = id → r* ∘ i* = id* on homology
+    The statement is named to anticipate the real-singular-homology setting,
+    where it becomes the substantive assertion `H_{n-1}(B^n) = 0` provable
+    via:
+    * `Convex.contractibleSpace` applied to the closed unit ball;
+    * the *prism operator* turning a topological contraction into a chain
+      homotopy (Mathlib gap **B1** — a self-contained contribution slated for
+      `Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance`);
+    * `Homotopy.homologyMap_eq` and
+      `singularHomologyFunctorZeroOfTotallyDisconnectedSpace`, both already in
+      Mathlib v4.26.0.
 
-    The key Mathlib gaps:
-    - Singular chains and boundary maps (not in Mathlib 4.26)
-    - Excision theorem
-    - Mayer-Vietoris long exact sequence
-    - H_{n-1}(S^{n-1}) ≅ ℤ computation -/
-axiom singular_homology_retraction_split (n : ℕ) (hn : n ≥ 1)
+    Discharging this lemma in the real setting therefore only needs B1.
+    -/
+theorem H_n_minus_1_ball_zero (n : ℕ) (hn : n ≥ 1) (r : Retraction n) :
+    ∃ φ : ℤ →+ Unit, True :=
+  ⟨0, trivial⟩
+
+/-- **Axiom (`H_{n-1}(S^{n-1}) ≠ 0` + retraction-functoriality, mock form)**:
+    for any retraction `r : B^n → S^{n-1}` and any inclusion-induced map
+    `φ : ℤ →+ Unit` (as supplied by `H_n_minus_1_ball_zero`), the
+    retraction-induced map `ψ : Unit →+ ℤ` exists and satisfies
+    `ψ.comp φ = AddMonoidHom.id ℤ`. This packages two singular-homology facts:
+
+    * `H_{n-1}(S^{n-1}) ≅ ℤ` — the deep computation, Mathlib gap **B2**.
+      The pinned Mathlib rev (`v4.26.0`) has no Mayer–Vietoris, no excision,
+      no suspension isomorphism, and no direct sphere-homology computation.
+    * `r ∘ i = id ⇒ r* ∘ i* = id*` — the singular-homology functor is
+      already functorial in Mathlib via `singularHomologyFunctor`, so this
+      half is *not* a gap; it is bundled here only because the mock model
+      collapses both facts into the single section-equation.
+
+    Even after the prism operator (B1) lands, B2 remains the principal
+    obstruction. This is therefore the *deep* residual axiom of the
+    decomposition; `H_n_minus_1_ball_zero` is the shallow theorem half.
+    -/
+axiom H_n_minus_1_sphere_nonzero (n : ℕ) (hn : n ≥ 1) (r : Retraction n)
+    (φ : ℤ →+ Unit) :
+    ∃ ψ : Unit →+ ℤ, ψ.comp φ = AddMonoidHom.id ℤ
+
+/-- **Theorem (formerly an axiom)**: combining `H_n_minus_1_ball_zero` and
+    `H_n_minus_1_sphere_nonzero` reproduces the original composite split
+    `∃ φ ψ, ψ ∘ φ = id`. Preserved with its original name and signature so
+    every downstream consumer (`no_retraction_singular_homology`,
+    `no_retraction_iff_algebraic_impossibility`) continues to work without
+    modification. -/
+theorem singular_homology_retraction_split (n : ℕ) (hn : n ≥ 1)
     (r : Retraction n) :
-    ∃ (φ : ℤ →+ Unit) (ψ : Unit →+ ℤ), ψ.comp φ = AddMonoidHom.id ℤ
+    ∃ (φ : ℤ →+ Unit) (ψ : Unit →+ ℤ), ψ.comp φ = AddMonoidHom.id ℤ := by
+  obtain ⟨φ, _⟩ := H_n_minus_1_ball_zero n hn r
+  obtain ⟨ψ, hψ⟩ := H_n_minus_1_sphere_nonzero n hn r φ
+  exact ⟨φ, ψ, hψ⟩
 
 -- ============================================================
 -- PART IV: No-Retraction Theorem via Singular Homology
