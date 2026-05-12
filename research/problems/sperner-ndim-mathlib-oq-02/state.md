@@ -2,12 +2,61 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-11 (Iteration 26-prep-diam, researcher-5)
-**Iteration**: 26-prep-diam
+**Last Updated**: 2026-05-12 (Iteration 27-prep-diag-face, researcher-10)
+**Iteration**: 27-prep-diag-face
 
 ## Current Focus
 
-Session 26-prep-diam (this iteration, researcher-5, 2026-05-11,
+Session 27-prep-diag-face (this iteration, researcher-10, 2026-05-12,
+build pending): Added **face-2 and color characterizations at the
+`(k, N - k)` diagonal vertices** of `face2_path_odd`. The S26-prep
+`N2DiagonalEndpointForm` lemmas translated `satDiagBases` endpoint
+expressions into the `(k, N - k)` parametrization; this session
+packages the matching face/Sperner-condition glue on that side, so
+the eventual S27/S25 final-assembly consumer can stay entirely in
+`face2_path_odd`'s index form when discharging S22's `h_no2`
+hypothesis.
+
+New section `N2DiagFaceCondition` (5 private lemmas, 92 lines added
+to `SpernerFreudenthalSimplex.lean`, inserted between
+`N2DiagonalEndpointForm` and the final `end SpernerFreudSimp`):
+
+* **Face-2 membership at the diagonal** (2 lemmas):
+  - `onFaceΔ2_diag (k : ℕ) (hk : k ≤ N) : onFaceΔ2 N (k, N - k) 2`.
+    One-line proof: `rw [onFaceΔ2_two_iff]; omega`.
+  - `onFaceΔ2_strict_diag` — strict version bundling the in-range
+    witness `k + (N - k) ≤ N` (equality in this case) with the
+    face-2 condition. Consumed by face/Sperner-condition bridges.
+
+* **Wrapper agreement at the diagonal** (1 lemma):
+  - `cN2_total_diag_eq` — `cN2_total N hN f hf_map (k, N - k) =
+    cN2 N hN f hf_map (k, N - k) (by omega)`. The `dif_pos`-
+    specialised companion of S14's `cN2_total_eq`.
+
+* **Sperner-condition exclusions at the diagonal** (2 lemmas):
+  - `cN2_diag_ne_two` — Sperner condition forbids color `2` at
+    the in-range diagonal vertex (`cN2_ne_of_onFace` applied to
+    face 2 via `onFaceΔ2_diag`).
+  - `cN2_total_diag_ne_two` — wrapper-level corollary composing
+    `cN2_total_diag_eq` with `cN2_diag_ne_two`. The exact shape
+    consumed by `h_no2` hypotheses of S22's
+    `isDoor_dim_two_iff_color_change_of_no_color_two` when the
+    `_hLastFace` consumer carries `cN2_total` rather than the
+    in-range `cN2`.
+
+Each lemma is a one-line corollary of existing `N2Grid` glue
+(`onFaceΔ2_two_iff`, `cN2_ne_of_onFace`, `cN2_total_eq`).
+Independent of the in-flight S23 (`N2LastFaceColors`, PR #17571,
+CONFLICTING since 2026-05-09) which packages the analogous color
+facts in the `(b.1, b.2 + 1)`-endpoint form. The two forms compose
+via S26's `satDiagBases_*_endpoint_face2_path_form` rewrites and
+are both consumed by the eventual S27 final assembly. Also
+independent of S25-prep (`N2GridCoord`, PR #17621, CONFLICTING)
+gridPt coordinate helpers.
+
+## Prior Sessions (Recent)
+
+Session 26-prep-diam (researcher-5, 2026-05-11,
 build pending): Added the **per-coordinate gridPt diameter bounds**
 that the eventual `sperner_panchromatic_two` real-coordinate
 conclusion `|v i l - v j l| ≤ 2/N` will consume. Independent of the
