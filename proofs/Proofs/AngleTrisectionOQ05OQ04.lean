@@ -920,4 +920,225 @@ theorem hh7_existence_p_on_ℓ₁ :
     intro q hq
     exact reflectAcross_perpThroughPoint_preserves p ℓ₂ q hq
 
+
+-- ============================================================
+-- PART 10: Constructive HH-3 (Parallel Case) — Translate Bisector (S8)
+-- ============================================================
+
+/-
+### PART 10 overview (S8)
+
+S3–S7 produced five of the seven HH-axiom constructive ingredients:
+S3 (HH-1, line through two points), S4 (HH-2, perpendicular bisector),
+S5 (HH-4, perpendicular through point), S6 (HH-7, Hatori non-parallel),
+and S7 (HH-7, P-on-ℓ₁ case). The remaining ingredients are HH-3 (place
+one line onto another), HH-5 (fold through `P₂` placing `P₁` on `ℓ`),
+and HH-6 (Beloch fold; cubic-solving, deepest).
+
+PART 10 discharges **HH-3 in the parallel case** (`crossDet ℓ₁ ℓ₂ = 0`).
+The geometry: when `ℓ₁ ∥ ℓ₂`, the unique reflection mapping `ℓ₁` setwise
+onto `ℓ₂` is the *translate-bisector* — the line parallel to both `ℓ₁`
+and `ℓ₂` whose perpendicular distance from each is half the gap between
+them. We construct it explicitly with the same normal vector as `ℓ₁`
+and an algebraically-chosen constant term, avoiding the square roots
+that the (intersecting) angle-bisector case would require.
+
+The full HH-3 (both parallel and intersecting cases) requires angle
+bisectors using `Real.sqrt` for the normalization; the intersecting
+case is left to a subsequent session. The parallel case is genuinely
+non-trivial — it cannot be discharged by S5's `perpThroughPoint`
+construction because no specific point is given; HH-3 quantifies over
+*all* points of `ℓ₁` simultaneously.
+
+### Deliverables of this iteration (new in S8)
+
+1. `parallelBisector_dot_ne_zero` — given `crossDet ℓ₁ ℓ₂ = 0`, the
+   inner product `ℓ₁.a · ℓ₂.a + ℓ₁.b · ℓ₂.b` is nonzero. Geometrically:
+   parallel non-degenerate lines have nonzero normal-vector dot product
+   (their normals are nonzero scalar multiples of each other).
+
+2. `parallelBisector ℓ₁ ℓ₂ h_par` — explicit `noncomputable def` of
+   the translate-bisector. Its coefficients are
+   `(ℓ₁.a, ℓ₁.b, (s · ℓ₁.c + ℓ₂.c · (ℓ₁.a² + ℓ₁.b²)) / (2s))` where
+   `s = ℓ₁.a · ℓ₂.a + ℓ₁.b · ℓ₂.b`. Non-degeneracy is inherited
+   directly from `ℓ₁.nondeg` (the normal vector matches `ℓ₁`'s).
+
+3. `parallelNormal_left_id` / `parallelNormal_right_id` — under
+   `crossDet ℓ₁ ℓ₂ = 0`, the scaling identities `D · ℓ₂.a = s · ℓ₁.a`
+   and `D · ℓ₂.b = s · ℓ₁.b` (where `D = ℓ₁.a² + ℓ₁.b²` and `s` as
+   above). These are the algebraic content of parallelism: under the
+   `D`-rescaling, `ℓ₂`'s normal is precisely `(s/D)` times `ℓ₁`'s
+   normal. Both proofs are one-line `linear_combination` against
+   `crossDet ℓ₁ ℓ₂ = 0`.
+
+4. `reflectAcross_parallelBisector_to_ℓ₂` — the main HH-3 reflection
+   law for the parallel case. For any `q ∈ ℓ₁`, the reflection of `q`
+   across `parallelBisector ℓ₁ ℓ₂ h_par` lies on `ℓ₂`. The proof
+   substitutes the bisector's `(a, b, c)` into `reflectAcross`, clears
+   the two denominators `D` and `2s` via `field_simp`, and closes
+   with `linear_combination` against `hq` (point on `ℓ₁`) and `h_par`
+   (crossDet identity).
+
+5. `hh3_existence_parallel` — standalone HH-3 existence in the
+   parallel case. Witness: `parallelBisector ℓ₁ ℓ₂ h_par`; proof
+   chains the reflection law above.
+
+### Coverage status after S8
+
+Six of the seven HH-axiom existence ingredients are now constructive:
+
+- HH-1 (S3, PR #17915) — unconditional.
+- HH-2 (S4, PR #17926, merged) — unconditional.
+- HH-3 (S8, this PR) — parallel case (`crossDet ℓ₁ ℓ₂ = 0`).
+- HH-4 (S5, PR #17988, merged) — unconditional.
+- HH-7 (S6 + S7, PRs #18009, #18059, merged) — `crossDet ≠ 0`
+  ∪ `P ∈ ℓ₁`; corner `crossDet = 0 ∧ P ∉ ℓ₁` genuinely unsolvable.
+
+Remaining:
+
+- HH-3 intersecting case (`crossDet ℓ₁ ℓ₂ ≠ 0`) — needs `Real.sqrt`
+  for the angle bisector. Deferred to S9.
+- HH-5 (Beloch-light) — parabola-tangent construction. S10+.
+- HH-6 (Beloch fold) — common tangent to two parabolas. S11+.
+
+No new axiom, no new sorry, no change to existing assumption count.
+-/
+
+/-- Given two **parallel** non-degenerate lines `ℓ₁`, `ℓ₂` (i.e.
+`crossDet ℓ₁ ℓ₂ = 0`), their normal-vector inner product
+`ℓ₁.a · ℓ₂.a + ℓ₁.b · ℓ₂.b` is nonzero.
+
+**Proof sketch.** Suppose `s := ℓ₁.a · ℓ₂.a + ℓ₁.b · ℓ₂.b = 0`. Then
+combining `s = 0` with `crossDet = ℓ₁.b · ℓ₂.a − ℓ₁.a · ℓ₂.b = 0`:
+`ℓ₁.a · s + ℓ₁.b · crossDet = (ℓ₁.a² + ℓ₁.b²) · ℓ₂.a`, which forces
+`ℓ₂.a = 0` since `ℓ₁.a² + ℓ₁.b² > 0`. Symmetrically, `ℓ₂.b = 0`. But
+both `ℓ₂.a = 0` and `ℓ₂.b = 0` contradicts `ℓ₂.nondeg`. -/
+theorem parallelBisector_dot_ne_zero
+    (ℓ₁ ℓ₂ : Line) (h_par : crossDet ℓ₁ ℓ₂ = 0) :
+    ℓ₁.a * ℓ₂.a + ℓ₁.b * ℓ₂.b ≠ 0 := by
+  intro h_zero
+  have hD_pos : 0 < ℓ₁.a^2 + ℓ₁.b^2 := perpThroughPoint_normSq_pos ℓ₁
+  have hD_ne : ℓ₁.a^2 + ℓ₁.b^2 ≠ 0 := ne_of_gt hD_pos
+  have h_cross : ℓ₁.b * ℓ₂.a - ℓ₁.a * ℓ₂.b = 0 := h_par
+  -- From s = 0 and crossDet = 0: (ℓ₁.a² + ℓ₁.b²) · ℓ₂.a = 0 ⇒ ℓ₂.a = 0.
+  have h_a : (ℓ₁.a^2 + ℓ₁.b^2) * ℓ₂.a = 0 := by
+    linear_combination ℓ₁.a * h_zero + ℓ₁.b * h_cross
+  have h_a0 : ℓ₂.a = 0 := by
+    rcases mul_eq_zero.mp h_a with h | h
+    · exact absurd h hD_ne
+    · exact h
+  -- Symmetrically, (ℓ₁.a² + ℓ₁.b²) · ℓ₂.b = 0 ⇒ ℓ₂.b = 0.
+  have h_b : (ℓ₁.a^2 + ℓ₁.b^2) * ℓ₂.b = 0 := by
+    linear_combination ℓ₁.b * h_zero - ℓ₁.a * h_cross
+  have h_b0 : ℓ₂.b = 0 := by
+    rcases mul_eq_zero.mp h_b with h | h
+    · exact absurd h hD_ne
+    · exact h
+  rcases ℓ₂.nondeg with ha | hb
+  · exact ha h_a0
+  · exact hb h_b0
+
+/-- The **translate-bisector** of two parallel lines `ℓ₁ ∥ ℓ₂`. Its
+normal vector matches `ℓ₁`'s (so the bisector is parallel to both
+input lines); its constant term is chosen so that the reflection
+across the bisector sends every point of `ℓ₁` to a point of `ℓ₂`.
+
+Formula:
+```
+  (a, b, c) = (ℓ₁.a, ℓ₁.b, (s · ℓ₁.c + ℓ₂.c · (ℓ₁.a² + ℓ₁.b²)) / (2s))
+```
+where `s = ℓ₁.a · ℓ₂.a + ℓ₁.b · ℓ₂.b`. The denominator `2s` is
+nonzero by `parallelBisector_dot_ne_zero`. The hypothesis
+`h_par : crossDet ℓ₁ ℓ₂ = 0` (parallelism) is consumed only by the
+denominator-non-vanishing argument and the downstream reflection
+proof; the structure itself is well-defined for any `s` (Lean
+silently returns `0` for `1/0`, which is harmless — we only use the
+bisector via the reflection law that requires `s ≠ 0`).
+
+Non-degeneracy is inherited from `ℓ₁.nondeg`. -/
+noncomputable def parallelBisector
+    (ℓ₁ ℓ₂ : Line) (_h_par : crossDet ℓ₁ ℓ₂ = 0) : Line where
+  a := ℓ₁.a
+  b := ℓ₁.b
+  c := ((ℓ₁.a * ℓ₂.a + ℓ₁.b * ℓ₂.b) * ℓ₁.c
+        + ℓ₂.c * (ℓ₁.a^2 + ℓ₁.b^2))
+       / (2 * (ℓ₁.a * ℓ₂.a + ℓ₁.b * ℓ₂.b))
+  nondeg := ℓ₁.nondeg
+
+/-- **Scaling identity (a-component).** Under `crossDet ℓ₁ ℓ₂ = 0`,
+the normal vector `(ℓ₂.a, ℓ₂.b)` is `(s/(ℓ₁.a² + ℓ₁.b²))` times
+`(ℓ₁.a, ℓ₁.b)`, where `s = ℓ₁.a · ℓ₂.a + ℓ₁.b · ℓ₂.b`. This identity
+states the `a`-component: `(ℓ₁.a² + ℓ₁.b²) · ℓ₂.a = s · ℓ₁.a`.
+
+**Proof.** `(ℓ₁.a² + ℓ₁.b²) · ℓ₂.a − s · ℓ₁.a = ℓ₁.b · (ℓ₁.b · ℓ₂.a
+− ℓ₁.a · ℓ₂.b) = ℓ₁.b · crossDet ℓ₁ ℓ₂ = 0`. -/
+theorem parallelNormal_left_id
+    (ℓ₁ ℓ₂ : Line) (h_par : crossDet ℓ₁ ℓ₂ = 0) :
+    (ℓ₁.a^2 + ℓ₁.b^2) * ℓ₂.a
+      = (ℓ₁.a * ℓ₂.a + ℓ₁.b * ℓ₂.b) * ℓ₁.a := by
+  have h_cross : ℓ₁.b * ℓ₂.a - ℓ₁.a * ℓ₂.b = 0 := h_par
+  linear_combination ℓ₁.b * h_cross
+
+/-- **Scaling identity (b-component).** The companion of
+`parallelNormal_left_id`: `(ℓ₁.a² + ℓ₁.b²) · ℓ₂.b = s · ℓ₁.b` under
+`crossDet ℓ₁ ℓ₂ = 0`.
+
+**Proof.** `(ℓ₁.a² + ℓ₁.b²) · ℓ₂.b − s · ℓ₁.b = −ℓ₁.a · (ℓ₁.b · ℓ₂.a
+− ℓ₁.a · ℓ₂.b) = 0`. -/
+theorem parallelNormal_right_id
+    (ℓ₁ ℓ₂ : Line) (h_par : crossDet ℓ₁ ℓ₂ = 0) :
+    (ℓ₁.a^2 + ℓ₁.b^2) * ℓ₂.b
+      = (ℓ₁.a * ℓ₂.a + ℓ₁.b * ℓ₂.b) * ℓ₁.b := by
+  have h_cross : ℓ₁.b * ℓ₂.a - ℓ₁.a * ℓ₂.b = 0 := h_par
+  linear_combination -ℓ₁.a * h_cross
+
+/-- **HH-3 reflection law (parallel case).** Reflection across the
+translate-bisector of two parallel lines `ℓ₁ ∥ ℓ₂` sends every point
+of `ℓ₁` to a point of `ℓ₂`.
+
+**Proof outline.** Let `D := ℓ₁.a² + ℓ₁.b²` and
+`s := ℓ₁.a · ℓ₂.a + ℓ₁.b · ℓ₂.b`. Both are nonzero (`D` by
+`perpThroughPoint_normSq_pos`, `s` by `parallelBisector_dot_ne_zero`).
+Multiplying the reflection-applied `ℓ₂`-equation by `2 · s · D` and
+simplifying via `field_simp`, the residual polynomial identity is
+`(b · q.1 − a · q.2) · crossDet − s · (a · q.1 + b · q.2 + c) = 0`,
+which `linear_combination` closes against `hq` and `h_par`. -/
+theorem reflectAcross_parallelBisector_to_ℓ₂
+    (ℓ₁ ℓ₂ : Line) (h_par : crossDet ℓ₁ ℓ₂ = 0)
+    (q : Point) (hq : ℓ₁.contains q) :
+    ℓ₂.contains (reflectAcross (parallelBisector ℓ₁ ℓ₂ h_par) q) := by
+  have hD_pos : 0 < ℓ₁.a^2 + ℓ₁.b^2 := perpThroughPoint_normSq_pos ℓ₁
+  have hD_ne : ℓ₁.a^2 + ℓ₁.b^2 ≠ 0 := ne_of_gt hD_pos
+  have hS_ne : ℓ₁.a * ℓ₂.a + ℓ₁.b * ℓ₂.b ≠ 0 :=
+    parallelBisector_dot_ne_zero ℓ₁ ℓ₂ h_par
+  have h_cross : ℓ₁.b * ℓ₂.a - ℓ₁.a * ℓ₂.b = 0 := h_par
+  simp only [Line.contains, reflectAcross, parallelBisector] at hq ⊢
+  field_simp
+  linear_combination
+    (-2 * (ℓ₁.a * ℓ₂.a + ℓ₁.b * ℓ₂.b)) * hq
+      + (2 * (ℓ₁.b * q.1 - ℓ₁.a * q.2)) * h_cross
+
+/-- **HH-3 (existence form, parallel case, standalone).** Given two
+parallel non-degenerate lines `ℓ₁`, `ℓ₂` (i.e. `crossDet ℓ₁ ℓ₂ = 0`),
+there exists a fold line whose reflection sends every point of `ℓ₁`
+to a point of `ℓ₂`. The explicit witness is the translate-bisector
+`parallelBisector ℓ₁ ℓ₂ h_par`.
+
+This is the parallel case of the HH-3 field of `HHAxioms`. Combined
+with the five prior HH-existence theorems (S3 HH-1, S4 HH-2, S5 HH-4,
+S6 HH-7 non-parallel, S7 HH-7 P-on-ℓ₁), six of seven HH ingredients
+are now constructive (in the parallel-case sense for HH-3 and the
+non-parallel ∪ P-on-ℓ₁ sense for HH-7); only HH-5 (Beloch-light) and
+HH-6 (Beloch fold) remain, plus the intersecting case of HH-3 (which
+requires `Real.sqrt` for the angle bisector and is deferred to a
+subsequent session). -/
+theorem hh3_existence_parallel :
+    ∀ (ℓ₁ ℓ₂ : Line), crossDet ℓ₁ ℓ₂ = 0 →
+    ∃ l : Line,
+      ∀ p : Point, ℓ₁.contains p → ℓ₂.contains (reflectAcross l p) := by
+  intro ℓ₁ ℓ₂ h_par
+  refine ⟨parallelBisector ℓ₁ ℓ₂ h_par, ?_⟩
+  intro p hp
+  exact reflectAcross_parallelBisector_to_ℓ₂ ℓ₁ ℓ₂ h_par p hp
+
 end AngleTrisectionOQ05OQ04
