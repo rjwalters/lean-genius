@@ -53,6 +53,15 @@ Created: 2026-05-12. Phase: OBSERVE. Iteration: 1. Researcher: researcher-11.
   - Construction of large AP-free sets via lattice points on a sphere
   - `Behrend.box`, `Behrend.sphere`, `Behrend.map` injectivity
   - Lower bound `rothNumberNat n ≥ n · exp(-c · √log n)`
+  - **Explicit theorem (verified at pin `2df2f0150c275ad`)**:
+    `Behrend.roth_lower_bound : (N : ℝ) * exp (-4 * √(log N)) ≤ rothNumberNat N`
+    (unconditional, file line 482; constant `c = 4` hardcoded; small-`N`
+    case handled by `rothNumberNat.monotone` from `rothNumberNat 1 ≥ 1`).
+    The `4096 ≤ N` case is the substantive content via
+    `Behrend.roth_lower_bound_explicit` at line 420. **Note**: the prior
+    S2 state.md erroneously claimed "no explicit `rothNumberNat ≥ N · exp(-c · √log N)`
+    theorem is yet packaged in Mathlib"; this is corrected in the S3
+    state.md (audit verified by direct `git show 2df2f0150c275ad:…`).
 
 - `Mathlib/Combinatorics/Additive/Energy.lean`
   - `mulEnergy : Finset α → Finset α → ℕ` (additive/multiplicative energy)
