@@ -158,5 +158,15 @@
       "title": "Central Limit Theorem (classical)",
       "relation": "Foundational ancestor. The classical CLT is the i.i.d. specialization of Ibragimov's mixing CLT (α(n) = 0 for n ≥ 1)."
     }
-  ]
+  ],
+  "conclusion": {
+    "summary": "This S2 ORIENT scaffold establishes the Lean infrastructure for Ibragimov's 1962 CLT under polynomial α-mixing decay. It defines four predicates (Stationary, PolynomialMixingRate, MomentBound2δ, IbragimovHypotheses), states the two main theorems (mixing_clt_ibragimov and longrun_variance_absolutely_convergent) as sorries scheduled for follow-up sessions, and proves the two helper lemmas (polynomial_summable_of_exponent_gt_one and ibragimov_threshold_summable) that supply the sharp-threshold arithmetic r > (2+δ)/δ ⇒ rδ/(2+δ) > 1.",
+    "implications": "The sharp threshold r > (2+δ)/δ is the cornerstone of the mixing-CLT literature: it exhibits an exact trade-off between the moment exponent δ and the mixing-decay rate r, and below it the CLT can fail for explicit Gaussian linear processes (Bradley 2007 vol III). Formalizing this trade-off in Lean gives a rigorous reference for downstream uses — sample-mean CLTs for Markov chains, GMM asymptotics in econometrics, and stationary-process limit theorems for ergodic dynamical systems. The structure-encoded `IbragimovHypotheses` bundle pattern is reusable for other dependent-CLT variants (martingale-difference, β-mixing, near-epoch dependence), and the proven `polynomial_summable_of_exponent_gt_one` is a generic ζ-function helper that should ultimately be upstreamed to Mathlib alongside an α-mixing API contribution.",
+    "openQuestions": [
+      "Sharpness in the other direction: construct a stationary α-mixing sequence with E[|X₁|^{2+δ}] < ∞, α(n) = c·n^{-(2+δ)/δ} (i.e., r at the threshold), and S_n/√n that does NOT converge in distribution. Bradley 2007 sketches Gaussian-linear-process examples; a Lean formalization would settle the sharpness rigorously.",
+      "Davydov's covariance inequality (S4 target): formalize |Cov(X,Y)| ≤ 12·α(σ(X), σ(Y))^{δ/(2+δ)}·‖X‖_{2+δ}·‖Y‖_{2+δ} as a standalone Mathlib-quality lemma. The constant 12 can be tightened to 2·6^{1/(1+δ)} via Hölder + truncation but the cleanest constant for the CLT proof is 12.",
+      "Generalize to β-mixing or ρ-mixing rates: the same Bernstein-block strategy works under absolute regularity (β-mixing) with sharper constants, and under ρ-mixing without any moment assumption beyond L². Which mixing class gives the smallest moment requirement for a CLT? Bradley 2007 vol I conjectures a unified theorem but no full proof is known in the polynomial-rate regime.",
+      "Functional CLT (invariance principle): under the same hypotheses, the partial-sum process (1/√n)·S_{⌊nt⌋} converges weakly to a Brownian motion of variance σ². The Lean infrastructure built here for the marginal CLT should suffice for an invariance-principle extension via tightness of the rescaled process."
+    ]
+  }
 }
