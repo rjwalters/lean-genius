@@ -4,16 +4,108 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-09 (Iteration 17, researcher-13)
-**Iteration**: 17
+**Last Updated**: 2026-05-11 (Iteration 18, researcher-9)
+**Iteration**: 18
 
 ## Current Focus
 
-Iteration 17 (2026-05-09, this PR, researcher-13): **arithmetic helpers
-for the small-prime correction-factor reduction** — extracts the two
-key arithmetic observations behind the "only primes `p ≤ √n` matter"
-strategic remark from Iter 16's docstring as standalone, sorry-free,
-reusable lemmas:
+Iteration 18 (2026-05-11, this PR, researcher-9): **per-prime
+numerical bounds on the Iter-16 correction-factor terms**. Builds on
+the Iter-17 helpers (`log_le_one_of_sq_lt`,
+`prime_pow_pred_eq_one_of_sq_lt`, merged as #17624) to add three
+short, reusable, sorry-free numerical lemmas that convert the
+*equality* `lcmRange n = primorial n · correction(n)` (Iter 16,
+#17578) into *pointwise inequalities* on the correction-factor term
+`p^(Nat.log p n - 1)` for each prime `p ≤ n`:
+
+* `prime_pow_pred_mul_eq_pow {p n : ℕ} (hp : p.Prime) (hpn : p ≤ n)
+    : p ^ (Nat.log p n - 1) * p = p ^ Nat.log p n` —
+  exponent recurrence. Extracts the inline manipulation in Iter 16's
+  proof (the `conv_lhs => rw [← Nat.sub_add_cancel h_log_pos]`
+  step) as a named, reusable lemma. Proof: `Nat.log p n ≥ 1` (via
+  `Nat.log_pos` from `1 < p` and `p ≤ n`) so
+  `(Nat.log p n - 1) + 1 = Nat.log p n` via `Nat.sub_add_cancel`,
+  then `pow_succ` closes.
+* `prime_pow_pred_le_self {p n : ℕ} (hp : p.Prime) (hpn : p ≤ n)
+    : p ^ (Nat.log p n - 1) ≤ n` —
+  coarse upper bound. Trivial chain
+  `p^(log p n - 1) ≤ p^(log p n) ≤ n` via `Nat.pow_le_pow_right`
+  (monotone exponent, using `1 ≤ p`) and `Nat.pow_log_le_self` (the
+  maximal-power inequality, using `n ≠ 0` from `2 ≤ p ≤ n`). The
+  fallback bound when the sharper `/p` form is not directly useful.
+* `prime_pow_pred_le_div {p n : ℕ} (hp : p.Prime) (hpn : p ≤ n)
+    : p ^ (Nat.log p n - 1) ≤ n / p` —
+  **sharp** upper bound. The strict improvement over
+  `prime_pow_pred_le_self` by exactly the factor `p` saved by Iter 16's
+  primorial decomposition. Proof: convert to multiplicative form via
+  `Nat.le_div_iff_mul_le hp.pos` (the LHS `≤ n / p ↔ LHS · p ≤ n`),
+  rewrite `LHS · p = p^(log p n)` via the recurrence
+  `prime_pow_pred_mul_eq_pow`, then close with `Nat.pow_log_le_self`.
+
+### Strategic value
+
+These three lemmas are the **arithmetic inequality layer** that
+converts the algebraic correction-factor decomposition into a form
+attackable by elementary product-bound arguments:
+
+* **Iter 16 (algebraic)**: `lcmRange n = primorial n · ∏ p^(log_p n - 1)`.
+* **Iter 17 (small-prime support, helpers)**: factor `p^(log_p n - 1) = 1`
+  whenever `p² > n`, so the product effectively ranges over primes
+  `p ≤ √n`.
+* **Iter 18 (per-prime bound, this PR)**: each remaining factor
+  satisfies `p^(log_p n - 1) ≤ n / p`.
+
+Chaining all three: the correction product is bounded by
+`∏_{p ≤ √n} (n/p)` — and the *number* of small primes is `π(√n) ≈
+2√n / log n` by PNT, so the bound is `(n / 2)^(2√n / log n) ≤ n^(c√n)`
+for some `c`, asymptotically smaller than any `(1 + ε)^n`. Combined
+with Mathlib's `Nat.primorial_le_4_pow`, this gives
+`lcmRange n ≤ 4^n · n^(c√n)`, a sub-`(4 + ε)^n` bound (and any such
+bound discharges Hanson's `≤ 3^n` for sufficiently large `n` after a
+final asymptotic tightening to `3` via Beta-integral or Chebyshev
+finer estimates). The numerical witnesses `hanson_n1..hanson_n20`
+already cover the small-`n` range to bridge the asymptotic gap.
+
+### File delta
+
++83 lines (795 → 878), +3 theorems (48 → 51). Definitions/sorries/
+axiomCount unchanged. Build pending — proof bodies use only Mathlib
+API already exercised by Iters 5–17:
+
+* `Nat.log_pos`, `Nat.sub_add_cancel`, `pow_succ` (used in Iter 16's
+  `lcmRange_eq_primorial_mul_prod_prime_pow_pred`).
+* `Nat.pow_le_pow_right`, `Nat.sub_le` (used in Iter 14's
+  `pow_primeCounting_le_pow_pred`).
+* `Nat.pow_log_le_self` (used in Iter 5's `prime_pow_dvd_lcmRange`
+  and Iter 10's `lcmRange_le_pow_card_primes_le`).
+* `Nat.le_div_iff_mul_le` (new use here, but standard
+  `Init.Data.Nat.Div.Basic` API).
+* `Nat.Prime.pos`, `Nat.Prime.two_le`, `Nat.Prime.one_lt` (used
+  throughout Iters 5–17).
+
+### Compatibility with open PRs
+
+* **#17619 (OPEN, researcher-1, Iter 17 alternate)**:
+  `lcmRange_correction_supported_on_small_primes` — global filter
+  reformulation. **Compatible**: #17619 reformulates the entire
+  correction *product* to range over `{p : p² ≤ n}`; this PR adds
+  per-prime *numerical* bounds. The two compose: chain
+  `lcmRange_correction_supported_on_small_primes` (drop large primes)
+  then apply `prime_pow_pred_le_div` (bound each small-prime factor)
+  to get the target `∏_{p ≤ √n} (n/p)` bound. No file-line overlap
+  beyond inserting after the Iter-17 helpers section.
+* **#17551 (OPEN, researcher-1, Iter 15 alternate)**:
+  `primeCounting_le_sub_two` — π(n) ≤ n-2 sharpening.
+  **Orthogonal**: prime-counting bound for `n^π(n)` route; this PR
+  targets the correction-factor product route. No file-line overlap.
+
+### Iteration 17 (background, merged base)
+
+Iteration 17 (2026-05-09, merged as #17624, researcher-13):
+**arithmetic helpers for the small-prime correction-factor reduction** —
+extracts the two key arithmetic observations behind the "only primes
+`p ≤ √n` matter" strategic remark from Iter 16's docstring as
+standalone, sorry-free, reusable lemmas:
 
 * `log_le_one_of_sq_lt {p n : ℕ} (hp : 1 < p) (hsq : n < p * p)
     : Nat.log p n ≤ 1` —
@@ -392,36 +484,18 @@ Currently blocked on:
   `4^n` intermediate.
 
 ## Attempt Count
-- Total attempts: 14.
+- Total attempts: 18.
 - Current approach attempts: 0 (Approach 1 not started; awaits Mathlib).
-- Approaches tried: bootstrap with elementary bounds + axiom (iter 1);
-  structural-lemma layer for inductive proofs (iter 2); generic
-  power-divisibility lemma `pow_dvd_lcmRange` (iter 3); empirical
-  evidence extension n ∈ {25, 30, 50} (iter 4, in flight as #16880);
-  prime-power specialization `prime_pow_dvd_lcmRange` (iter 5, #17021);
-  coprime distinct prime powers `coprime_prime_pow_pow_of_ne` (iter 6,
-  #17128); easy direction of Chebyshev's decomposition
-  `prod_prime_powers_dvd_lcmRange` (iter 7, #17166); reverse
-  direction `lcmRange_dvd_prod_prime_powers` via `Nat.factorization`
-  (iter 8, #17312); antisymmetric closure
-  `lcmRange_eq_prod_prime_powers` (iter 9, #17333);
-  prime-counting bound `lcmRange_le_pow_card_primes_le` (iter 10,
-  #17369); primeCounting reformulation
-  `lcmRange_le_pow_primeCounting` (iter 11, #17401);
-  three-fix build unblock — Mathlib drift `Nat.pos_pow_of_pos → Nat.pow_pos`
-  (line 118), `rw [h1]` cascade fix `→ conv_lhs => rw [h1]` (line 262),
-  and `lcmRange_succ` forward-chain re-routing through `dvd_lcmRange`
-  (line 376) — iter 12, #17448; restores build for iters 5–11;
-  prime-counting subordination chain `primeCounting_le_self`,
-  `pow_primeCounting_le_pow_self`, `lcmRange_le_pow_self_via_primeCounting`
-  (iter 13, #17499 merged build pending) — makes explicit that Iter 11's
-  `lcmRange ≤ n^π(n)` subordinates Part 3's `lcmRange ≤ n^n` via
-  the trivial `π(n) ≤ n` bound; sharpened-prime-counting bound
-  `primeCounting_le_pred`, `pow_primeCounting_le_pow_pred`,
-  `lcmRange_le_pow_pred` (iter 14, this PR, build pending) —
-  exploits `1 ∉ Prime` (in addition to Iter 13's `0 ∉ Prime`) to
-  tighten the chain to `lcmRange n ≤ n^π(n) ≤ n^(n-1)`, saving one
-  factor of `n` in the exponent.
+- Approaches tried: iters 1–17 as previously documented; iter 18
+  (this PR, researcher-9, build pending) — per-prime numerical bounds
+  on Iter-16 correction-factor terms: `prime_pow_pred_mul_eq_pow`
+  (exponent recurrence `p^(log p n - 1) · p = p^(log p n)`),
+  `prime_pow_pred_le_self` (coarse bound `p^(log p n - 1) ≤ n`), and
+  `prime_pow_pred_le_div` (sharp bound `p^(log p n - 1) ≤ n / p`).
+  These complete the per-prime inequality layer needed to chain
+  Iter-16's algebraic factorisation through Iter-17's small-prime
+  support filter and then bound the correction product by
+  `∏_{p ≤ √n} (n/p)`.
 
 ## Blockers
 - **Mathlib Beta-integral over ℚ**: not in usable form.
@@ -430,41 +504,32 @@ Currently blocked on:
 
 ## Next Action
 
-**Iteration 14 (this PR, build pending)**: sharpened prime-counting
-bound `π(n) ≤ n - 1` and resulting chain
-`lcmRange n ≤ n^π(n) ≤ n^(n-1)`. Three new theorems sharpen Iter 13
-by exploiting that *both* `0` and `1` are non-prime:
+**Iteration 18 (this PR, build pending)**: per-prime numerical bounds
+on Iter-16 correction-factor terms — `prime_pow_pred_mul_eq_pow`
+(exponent recurrence), `prime_pow_pred_le_self` (coarse `≤ n`),
+`prime_pow_pred_le_div` (sharp `≤ n / p`). Builds on merged Iter 17
+helpers `log_le_one_of_sq_lt` and `prime_pow_pred_eq_one_of_sq_lt`
+(#17624) and the Iter 16 factorisation
+`lcmRange n = primorial n · ∏ p^(log p n - 1)` (#17578). File delta:
++83 lines (795 → 878), +3 theorems (48 → 51). Sorries/axiom count
+unchanged.
 
-* `primeCounting_le_pred (n : ℕ) : Nat.primeCounting n ≤ n - 1` —
-  the prime filter on `(Finset.range (n+1))` is a subset of
-  `((Finset.range (n+1)).erase 0).erase 1`, whose cardinality is
-  `n - 1` (with `Nat` truncated subtraction).
-* `pow_primeCounting_le_pow_pred (n : ℕ) (hn : 1 ≤ n) :
-  n ^ Nat.primeCounting n ≤ n ^ (n - 1)` — one-line via
-  `Nat.pow_le_pow_right`.
-* `lcmRange_le_pow_pred (n : ℕ) : lcmRange n ≤ n ^ (n - 1)` — strict
-  improvement over Iter 13's `lcmRange_le_pow_self_via_primeCounting`,
-  saving one factor of `n` in the exponent.
+**Iteration 19 candidate (product-bound chain)**: combine
+`prime_pow_pred_le_div` (this PR, sharp `≤ n / p`) with
+`Finset.prod_le_prod` (Mathlib) to get the **product bound**
+`∏ p^(log p n - 1) ≤ ∏_{p ≤ n prime} (n / p)`. If
+`lcmRange_correction_supported_on_small_primes` (open #17619) lands
+first, even better — drop the large primes first, then bound
+pointwise, getting `∏_{p ≤ √n} (n / p)`. This is the Chebyshev-style
+`O(n^√n)`-decay bound on the correction product that, combined with
+`Nat.primorial_le_4_pow`, would discharge Hanson up to a final
+asymptotic step.
 
-**File delta**: +97 lines (560 → 657), +3 theorems (40 → 43),
-definitions/sorries/axiomCount unchanged. Build pending — proof
-bodies use only Mathlib API already exercised by Iter 13
-(`Finset.card_erase_of_mem`, `Finset.card_le_card`,
-`Nat.not_prime_one`, `Nat.pow_le_pow_right`).
-
-**Iteration 15 candidate**: connect the prime-counting bound to
-asymptotic Chebyshev-style improvements. Mathlib has
-`Nat.primeCounting_eq_card_primes` and Bertrand-derived prime-gap
-bounds; a tighter bound like `lcmRange n ≤ n^{n / log n}` (Chebyshev
-1850) would discharge the parent file's `lcm_hanson_bound` axiom up
-to a constant multiplier in the exponent (Hanson 1972 saves the
-specific constant `log 3` ~ 1.0986). Alternatively, an Iter 15a
-candidate is to upgrade `primeCounting_le_pred` to use
-`Nat.Prime.two_le`, sharpening the subset to
-`Finset.Ioc 1 n` directly (cleaner card computation via
-`Nat.card_Ioc`), then chase the bound `π(n) ≤ ⌈n/2⌉` for `n ≥ 4` by
-also excluding even composites — yielding `lcmRange n ≤ n^⌈n/2⌉`,
-strictly stronger than `n^(n-1)` for `n ≥ 4`.
+**Iteration 20 candidate (cardinality bound on small primes)**:
+prove `((Finset.range (n+1)).filter (fun p => Nat.Prime p ∧ p^2 ≤ n)).card
+≤ n.sqrt` directly, OR more conservatively
+`≤ Nat.primeCounting n.sqrt`. Both are useful for converting
+`∏_{p ≤ √n} (n / p) ≤ n^|small primes|` into a concrete bound.
 
 **Long-term paths still open:**
 
