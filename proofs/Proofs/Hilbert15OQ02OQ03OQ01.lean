@@ -509,4 +509,103 @@ theorem reverseRowWord_two_length {ν μ : Partition 2}
   simp [List.length_append, List.length_map, List.length_reverse,
         List.length_finRange]
 
+/-! ## Part XI: S3c-Prep-2 — Row-0 / Row-1 Prefix Decomposition (`n = 2`)
+
+The S3c proof of `lrCoeffN_def_two_eq_lrCoeff2_of_support` needs to isolate
+the row-0 portion of `T.reverseRowWord` and apply the lattice-word
+predicate at prefix length `r₀ := ν.parts 0 - μ.parts 0`. Building on
+Part X's decomposition `reverseRowWord = L₀ ++ L₁`, we record:
+
+* `reverseRowWord_two_take_r0` — the first `r₀` entries of the word
+  are exactly `L₀` (row 0's reverse-mapped list). Direct from
+  `List.take_left` after equating `r₀` with `L₀.length` via a
+  small `subst`-based helper.
+* `reverseRowWord_two_drop_r0` — the entries beyond `r₀` are exactly
+  `L₁` (row 1's reverse-mapped list). Dual via `List.drop_left`.
+* `reverseRowWord_two_lattice_row0` — instantiates the lattice-word
+  predicate at the row-0 / row-1 boundary `p = r₀`, yielding the
+  row-0 count bound `count 1 ≤ count 0` over the row-0 sub-list.
+  This is Step 1 (row-0 forced to zeros) of the S3c proof sketch,
+  reduced to a count bound over an explicit list.
+
+These lemmas leave the underlying row-0 forcing argument
+(count-to-pointwise reasoning on a list of `Fin 2` values mapped from
+`(List.finRange r₀).reverse`) for S3d / S3e iterations.
+
+The two private helpers `take_left_of_length` / `drop_left_of_length`
+sit just above the public theorems. They are the standard "rewrite
+the take/drop amount to the prefix length, then close with
+`List.take_left` / `List.drop_left`" idiom, packaged so the `subst`
+acts on a free variable rather than on a complex sub-expression of
+the goal (which would otherwise be ambiguous with the `r₀` that also
+appears inside `List.finRange r₀` and the lambda's `Fin r₀` type
+annotation). -/
+
+private lemma take_left_of_length {α : Type*} {l₁ l₂ : List α} {n : ℕ}
+    (h : l₁.length = n) : (l₁ ++ l₂).take n = l₁ := by
+  subst h
+  exact List.take_left _ _
+
+private lemma drop_left_of_length {α : Type*} {l₁ l₂ : List α} {n : ℕ}
+    (h : l₁.length = n) : (l₁ ++ l₂).drop n = l₂ := by
+  subst h
+  exact List.drop_left _ _
+
+/-- **First-`r₀` prefix of `reverseRowWord` (`n = 2`)** is row 0's
+    reverse-mapped list. Direct from `reverseRowWord_two_eq` and
+    the `take_left_of_length` helper which packages
+    `List.take_left` with a length-rewrite step. -/
+theorem reverseRowWord_two_take_r0 {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ) :
+    T.reverseRowWord.take (ν.parts 0 - μ.parts 0) =
+      (List.finRange (ν.parts 0 - μ.parts 0)).reverse.map
+        (fun j => T.1 ⟨0, j⟩) := by
+  rw [reverseRowWord_two_eq]
+  apply take_left_of_length
+  simp [List.length_map, List.length_reverse, List.length_finRange]
+
+/-- **Drop-`r₀` suffix of `reverseRowWord` (`n = 2`)** is row 1's
+    reverse-mapped list. Dual to `reverseRowWord_two_take_r0`,
+    closed by `drop_left_of_length` after the same length identification. -/
+theorem reverseRowWord_two_drop_r0 {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ) :
+    T.reverseRowWord.drop (ν.parts 0 - μ.parts 0) =
+      (List.finRange (ν.parts 1 - μ.parts 1)).reverse.map
+        (fun j => T.1 ⟨1, j⟩) := by
+  rw [reverseRowWord_two_eq]
+  apply drop_left_of_length
+  simp [List.length_map, List.length_reverse, List.length_finRange]
+
+/-- **Lattice condition at the row-0 / row-1 boundary (`n = 2`).** If
+    `T.reverseRowWord` is a lattice word, instantiating the predicate
+    at prefix length `r₀ := ν.parts 0 - μ.parts 0` gives the row-0
+    count bound `count 1 ≤ count 0` over the row-0 sub-list.
+
+    This is the cleanest reformulation of Step 1 in the S3c proof
+    sketch ("row 0 is forced to all zeros"): the row-0 portion of the
+    reverse row word — reading row 0 right-to-left — is a list of
+    `Fin 2` values whose count of `1`s is bounded by the count of
+    `0`s. Combined with `List.count`-pointwise reasoning, this forces
+    every cell in row 0 to be `0`. (That forcing step is left for
+    follow-on iterations; this lemma packages the lattice-word
+    application cleanly.) -/
+theorem reverseRowWord_two_lattice_row0 {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ)
+    (hLW : isLatticeWord T.reverseRowWord) :
+    ((List.finRange (ν.parts 0 - μ.parts 0)).reverse.map
+        (fun j => T.1 ⟨0, j⟩)).count (1 : Fin 2) ≤
+    ((List.finRange (ν.parts 0 - μ.parts 0)).reverse.map
+        (fun j => T.1 ⟨0, j⟩)).count (0 : Fin 2) := by
+  have hbnd : ν.parts 0 - μ.parts 0 < T.reverseRowWord.length + 1 := by
+    rw [reverseRowWord_two_length]
+    omega
+  -- Annotate the expected type so the `.val` projection on `⟨r₀, hbnd⟩`
+  -- reduces to `r₀` during elaboration, letting `rw` find the pattern.
+  have hLW' :
+      (T.reverseRowWord.take (ν.parts 0 - μ.parts 0)).count (1 : Fin 2) ≤
+      (T.reverseRowWord.take (ν.parts 0 - μ.parts 0)).count (0 : Fin 2) :=
+    hLW ⟨ν.parts 0 - μ.parts 0, hbnd⟩ 0 1 (by decide)
+  rw [reverseRowWord_two_take_r0] at hLW'
+  exact hLW'
+
 end Hilbert15OQ02OQ03OQ01

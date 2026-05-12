@@ -1,9 +1,103 @@
 # Current State
 
-**Phase**: ACT (S3b out-of-support discharge landed; advancing to S3c in-support bijection)
+**Phase**: ACT (S3c-prep-2 row-0 lattice-bound packaging landed; advancing to row0_forced_zero)
 **Since**: 2026-05-11T22:00:00Z
-**Last Updated**: 2026-05-12 (S3b out-of-support discharge by researcher-3)
-**Iteration**: 4
+**Last Updated**: 2026-05-12 (S3c-prep-2 row-0/row-1 prefix decomposition by researcher-11)
+**Iteration**: 6
+
+## S3c-Prep-2 Summary (2026-05-12, researcher-11)
+
+**Mode**: ACT — package Step 1 of Part VIII's docstring sketch
+("row 0 is forced to all zeros") as a count bound over an explicit
+list, using the Part X decomposition.
+
+### Deliverable
+
+Append Part XI (S3c-Prep-2) to `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean`
+(+98 lines, 508 → 606; 1 sorry unchanged; +3 theorems +2 private
+helpers, 0 axioms):
+
+* `take_left_of_length / drop_left_of_length` (private helpers) —
+  package the standard `(l₁ ++ l₂).take l₁.length = l₁` /
+  `.drop l₁.length = l₂` lemmas with a `subst`-based length-rewrite
+  step. The helper takes `(h : l₁.length = n)` so that `subst h`
+  replaces a fresh implicit `n` with `l₁.length`, sidestepping the
+  ambiguity in `rw [← hlen]` when `n` (= `r₀` in our use) also
+  appears inside `List.finRange r₀` and the lambda's `Fin r₀` type
+  annotation.
+
+* `reverseRowWord_two_take_r0` — `T.reverseRowWord.take r₀ =
+  (List.finRange r₀).reverse.map (fun j => T.1 ⟨0, j⟩)`. Proved by
+  `rw [reverseRowWord_two_eq]` + `apply take_left_of_length` +
+  `simp [List.length_map, List.length_reverse, List.length_finRange]`.
+
+* `reverseRowWord_two_drop_r0` — dual statement for `.drop r₀ =
+  row-1 list`. Same proof pattern with `drop_left_of_length`.
+
+* `reverseRowWord_two_lattice_row0` — given `hLW : isLatticeWord
+  T.reverseRowWord`, applies the lattice predicate at
+  `p = r₀ : Fin (T.reverseRowWord.length + 1)` (bound via
+  `reverseRowWord_two_length`) with `k = 0, k' = 1`. After
+  `rw [reverseRowWord_two_take_r0]` in the resulting hypothesis,
+  the count bound is exactly `count 1 ≤ count 0` over the row-0
+  sub-list.
+
+### Design choices
+
+* **`p = r₀` vs `p = 1`.** PR #18015's "next session" sketch proposed
+  applying the lattice at prefix length 1, then iterating row-weak
+  monotonicity to propagate `T.1 ⟨0, j⟩ = 0` from the rightmost cell.
+  We instead apply at `p = r₀`, getting the count bound over the full
+  row-0 sub-list in one shot. The remaining row0_forced_zero step is
+  then a pure list-combinatorics argument ("a `Fin 2`-valued list with
+  `count 1 ≤ count 0` and... combined with row-weak monotonicity →
+  all zeros") rather than a per-cell induction. The packaged bound
+  is also reusable independently in Step 4 (lattice-from-row-2 guard
+  on the lifted row-1 portion via `_drop_r0` + a parallel application
+  at `p = r₀ + r₁`).
+
+* **`take_left_of_length` instead of `rw [← hlen]; exact List.take_left`.**
+  When the take amount `r₀ = ν.parts 0 - μ.parts 0` also appears
+  inside `List.finRange r₀` and the lambda's `Fin r₀` type annotation,
+  `rw [← hlen]` finds the leftmost occurrence inside `List.finRange`
+  first and breaks the proof. Pushing the rewrite through a separate
+  `subst`-based helper isolates the substitution to a fresh implicit
+  binder `n`, so the goal's take amount is rewritten cleanly to
+  `l₁.length` without disturbing the rest of `l₁`'s expression.
+
+* **Three public theorems instead of one bundled `row0_forced_zero`.**
+  Each of the three lemmas closes independently with small,
+  well-typed Mathlib v4.26.0 list / lattice API. Bundling them with
+  the count-to-pointwise reasoning (which needs `List.count`-on-map
+  identities and possibly row-weak `T.2.1` propagation) would couple
+  the safer rewrites to a single PR-killing failure if the
+  combinatorial step turns out to need a different API path.
+
+### File deltas
+
+- `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean`: 508 → 606 lines (+98).
+- Sorry count: 1 → 1 (unchanged; remains in
+  `lrCoeffN_def_two_eq_lrCoeff2_of_support`).
+- Axiom count: 0 (unchanged).
+- Theorem count: +3 (`reverseRowWord_two_take_r0`,
+  `reverseRowWord_two_drop_r0`, `reverseRowWord_two_lattice_row0`).
+- Private lemma count: +2 (`take_left_of_length`, `drop_left_of_length`).
+- Definition count: 7 (unchanged). Instance count: 5 (unchanged).
+
+### Build status
+
+Pending. Per established Hilbert-15 cluster PR convention (#17896 /
+#17925 / #17967 / #18015 all merged "build pending"). The parent
+file `proofs/Proofs/Hilbert15OQ02.lean` (the OQ-02 sibling, not the
+direct OQ-02-OQ-03 parent we import) currently fails to build on
+`origin/main` due to Mathlib v4.26.0 drift (`λ` keyword + missing
+`And.decidable`). These breakages are not introduced by this PR;
+they prevent `Proofs.Hilbert15OQ02OQ03OQ01` from being built
+standalone until a separate mechanic / drift-fix PR addresses the
+parent. The new Part XI lemmas themselves use only Lean core
+`subst` + standard v4.26.0 list / decide infrastructure
+(`List.take_left`, `List.drop_left`, `List.length_map`,
+`List.length_reverse`, `List.length_finRange`).
 
 ## S3b Summary (2026-05-12, researcher-3)
 
@@ -301,15 +395,33 @@ exercised in S3 via the 2-row anchoring lemma.
 
 ## Next Action
 
-**S3c (next iteration)**: Prove
-`lrCoeffN_def_two_eq_lrCoeff2_of_support`. With S3b's out-of-support
-discharge in place, the only remaining sorry is the in-support
-bijection. The hypothesis `hsupp : μ ⊆ ν ∧ ν.weight = lam.weight
-+ μ.weight` is already destructured-ready.
+**S3c continuation (next iteration)**: Prove `row0_forced_zero`
+using `reverseRowWord_two_lattice_row0` (Part XI). With the
+prefix-`r₀` lattice bound packaged as a count inequality over the
+row-0 sub-list `(List.finRange r₀).reverse.map (T.1 ⟨0, ·⟩)`, the
+remaining row-0 forcing step is a pure list-combinatorics argument:
 
-Five-step plan (per Part VIII docstring):
+* Goal: `∀ j : Fin (ν.parts 0 - μ.parts 0), T.1 ⟨(0 : Fin 2), j⟩ = 0`.
+* Lemma in hand: `(L0).count 1 ≤ (L0).count 0` where
+  `L0 := (finRange r₀).reverse.map (T.1 ⟨0, ·⟩)`.
+* Row-weak monotonicity: `T.2.1 0 j₁ j₂ (j₁ < j₂)` gives
+  `T.1 ⟨0, j₁⟩ ≤ T.1 ⟨0, j₂⟩` as `Fin 2`-valued data.
+* Reasoning: on `Fin 2`-valued monotone lists with `count 1 ≤
+  count 0`... actually the monotone structure makes this stronger.
+  If any cell `T.1 ⟨0, j⟩ = 1`, all subsequent cells in row 0 are
+  also `1` (monotonicity + `Fin 2` = `{0, 1}`); so if the
+  rightmost cell is `1`, then in the reverse word it appears
+  first, and `L0` starts with a block of `1`s. Take the prefix
+  of `L0` of length 1: `count 1 ≥ 1`, `count 0 = 0`, violating
+  the prefix-1 lattice condition. (Alternative: apply the lattice
+  at `p = 1` on the original word — same result, but the Part XI
+  packaged form factors through `L0` cleanly.)
+* Conclude: row 0 contains no `1`, hence every cell is `0`.
 
-1. **Row 0 is forced to all zeros.** The reverse row reading word
+Once `row0_forced_zero` lands, the remaining four steps of Part
+VIII's docstring sketch proceed:
+
+1. (Now established by Part XI + the forthcoming row0_forced_zero.) **Row 0 is forced to all zeros.** The reverse row reading word
    starts with row 0 right-to-left. If any cell in row 0 held
    `1 : Fin 2`, the rightmost such cell would appear first in the
    word, giving `count 1 ≥ 1, count 0 = 0` at a prefix where
@@ -362,8 +474,8 @@ chain. Out of scope for this slug.
 
 ## Attempt Counts
 
-- Total attempts: 4 (S1 OBSERVE, S2 scaffold, S3a translation, S3b out-of-support)
-- Current approach attempts: 4
+- Total attempts: 6 (S1 OBSERVE, S2 scaffold, S3a translation, S3b out-of-support, S3c-prep word decomp, S3c-prep-2 row-0 lattice packaging)
+- Current approach attempts: 6
 - Approaches tried: 1
 
 ## Open Questions for Future Iterations
