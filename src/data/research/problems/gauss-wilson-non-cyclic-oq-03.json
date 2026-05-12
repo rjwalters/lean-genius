@@ -21,14 +21,14 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T08:00:00.000Z",
-    "iteration": 2,
-    "focus": "S2 (researcher-1, 2026-05-12): ACT — created proofs/Proofs/GaussWilsonNonCyclicOQ03.lean (~120 lines, 1 sorry, 0 axioms). Defines computable numSqrtsOne via Nat.primeFactors (avoiding the noncomputable Nat.factorization route), and verifies the formula at 13 small n via decide (n = 1, 2, 4, 8, 16, 3, 15, 105, 12, 24, 60, 120). States the main theorem card_sqrts_one_eq_numSqrtsOne with sorry. Build pending — proofs/.lake symlink in worktree is recursive; build is deferred but the file is self-contained and uses only standard Mathlib API (ZMod, Nat.primeFactors, Finset.filter).",
+    "since": "2026-05-12T11:00:00.000Z",
+    "iteration": 4,
+    "focus": "S4-prep (researcher-11, 2026-05-12): ACT — three generic group-theoretic order-2 decomposition lemmas appended to GaussWilsonNonCyclicOQ03.lean. (a) filter_sq_eq_one_eq_filter_orderOf_dvd_two: u^2=1 ↔ orderOf u ∣ 2, immediate from orderOf_dvd_iff_pow_eq_one. (b) filter_orderOf_dvd_two_eq_union: divides-prime-2 → order=1 ∪ order=2, via Nat.dvd_prime on 2. (c) card_filter_sq_eq_one_decomp: cardinality splits as the disjoint union count #{orderOf=1} + #{orderOf=2}, with disjointness from 1 ≠ 2. These are package the order-of half of the S4 odd-prime-power count generically; the cyclic-structure totient lookup (IsCyclic.card_orderOf_eq_totient at φ(1) = 1 + φ(2) = 1) is the entry point for S4 proper. File: 181 → 257 lines, +3 theorems, 1 sorry unchanged, 0 axioms.",
     "blockers": [],
-    "nextAction": "S3: prove the prime-power cases. (a) For odd prime p and k ≥ 1, show #{x : ZMod (p^k) // x²=1} = 2 via the cyclicity of (ZMod p^k)ˣ + the standard 2-torsion-count-in-cyclic-of-even-order lemma. (b) For 2^k, case-split k ∈ {0, 1, 2, ≥3}; explicitly enumerate the (ZMod 2^k)ˣ ≅ ℤ/2 × ℤ/2^{k-2} decomposition for k ≥ 3 (parent file already exhibits the diagonal generator). Estimated ~100 lines, 0 new sorries (closes 0 of the main sorry — main thm proof lives in S5).",
+    "nextAction": "S4: full odd-prime-power unit count. card_sqrts_one_unit_prime_pow_odd (p hp hp2 k hk) : #{u : (ZMod (p^k))ˣ // u^2 = 1} = 2 via: (a) IsCyclic (ZMod (p^k))ˣ from ZMod.isCyclic_units_of_prime_pow; (b) card_filter_sq_eq_one_decomp (S4-prep) splits the count into #{orderOf=1} + #{orderOf=2}; (c) IsCyclic.card_orderOf_eq_totient at d=1 gives φ(1) = 1 (the identity); (d) same at d=2 gives φ(2) = 1, but requires 2 ∣ Fintype.card (ZMod p^k)ˣ = p^{k-1}(p-1), valid for odd p since p-1 is even. Then combine with S3's card_sqrts_one_eq_card_units_sqrts_one for the ring-level statement. Target ~50 lines, 0 sorries.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 4,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
