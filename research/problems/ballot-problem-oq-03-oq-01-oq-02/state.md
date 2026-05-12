@@ -1,11 +1,91 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization)
+**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization; **Session 69 refutes S68's `−|c-arm region|` formula on (4,3,2)** — multi-row c-arm regions fail integrality, c'-column residual is `−3/2` not `−3`; introduces "walk-vanishing" classification (broader than S68's double-vanishing) and shows residual concentrates on the single walk-non-vanishing crossing with magnitude not matching any simple `|c-arm|` count)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-12 (Session 68 / c'-col residual researcher-1)
-**Iteration**: 68
+**Last Updated**: 2026-05-12 (Session 69 / multi-crossing concentration researcher-1)
+**Iteration**: 69
+
+## Session 69 — multi-crossing concentration test on (4,3,2): S68's `−|c-arm region|` formula REFUTED; walk-vanishing classifier introduced (researcher-1, 2026-05-12)
+
+**Mode.** ANALYSIS-ONLY (no `.lean` edits).
+
+**Outcome.** S68 (`sessions/2026-05-12-s07.md`) closed with the
+surviving conjecture `c'-column residual = −|off-spine c-arm region in μ\c'|`
+and recommended an S69 multi-crossing concentration test.  This
+session runs the test on `μ = (4,3,2)`, `c = (0,3)`, `c' = (2,1)`
+— smaller than S68's suggested `(5,3,2)` but preserving the
+structural property: case 1, `c'.1 = 2`, two c'-column
+candidate crossings `(0,1)`, `(1,1)` both with row lengths
+`> c'.2 + 1` so neither is **double-vanishing** by S68's
+structural criterion.
+
+**Three findings:**
+
+1. **Unfiltered `F_side_identity_aligned` holds on (4,3,2).**
+   `LHS = RHS = 36`.
+
+2. **`−|c-arm region|` formula REFUTED.** S68's conjecture
+   predicts `−3` (c-arm region has 3 cells `(0,2), (0,3), (1,2)
+   ∈ (4,3,1)`).  Actual c'-column residual is **`−3/2`** — half
+   the predicted magnitude, and non-integer.  Off-spine
+   residuals also break the "+1 per c-arm cell" pattern of all
+   five S68 tests: `(4,3,2)` off-spine c-arm cells contribute
+   `+1/2, +1, 0` (at `(0,2)`, `(0,3)`, `(1,2)` resp.).
+
+3. **New classification: "walk-vanishing" crossings.**  Cell
+   `(1,1)` in `(4,3,2)` is **NOT** a corner of `μ` or `μ\c'`
+   (so not S68-double-vanishing) yet `gnwProb μ c K (1,1) = 0
+   AND gnwProb (μ\c') c K (1,1) = 0`.  Reason: every
+   strict-hook descendant of `(1,1)` in both `μ` and `μ\c'` is
+   a corner `≠ c` (`(1,2)` and `(2,1) = c'`), so the K=1
+   average is `0` and propagates stably.  This is a strictly
+   broader vanishing category than S68's double-vanishing.
+   The c'-column residual is **concentrated** on the single
+   walk-non-vanishing crossing `(0,1)` (residual `−3/2`);
+   `(1,1)` contributes 0.
+
+**Cross-test summary (six diagrams).**
+
+| μ       | c     | c'    | h_d | walk-non-vanish c'-col crossings | c'-col residual | S68 prediction |
+|---------|-------|-------|-----|----------------------------------|-----------------|----------------|
+| (3,2)   | (0,2) | (1,1) | 3   | 1                                | −1              | −1 ✓           |
+| (3,2,1) | (0,2) | (1,1) | 3   | 1                                | −1              | −1 ✓           |
+| (4,2)   | (0,3) | (1,1) | 4   | 1                                | −2              | −2 ✓           |
+| (3,2,2) | (0,2) | (2,1) | 4   | 1                                | −1              | −1 ✓           |
+| (4,3)   | (0,3) | (1,2) | 3   | 1                                | −1              | −1 ✓           |
+| **(4,3,2)** | (0,3) | (2,1) | **5** | **1 (out of 2 structural)** | **−3/2**        | **−3 ✗**       |
+
+**Walk-vanishing general criterion.**  In case 1, a
+c'-column cell `(i, c'.2)` with `i < c'.1` is walk-vanishing
+on BOTH sides iff every strict-hook descendant in `μ` and in
+`μ\c'` is a corner ≠ c.  This subsumes S68's double-vanishing
+(corner of `μ\c'`) and adds the case where the cell is a
+non-corner whose strict-hook descendants happen to all be
+corners ≠ c.
+
+**Implication for S57.7.**  S68's plan to bound the c'-column
+residual by `−|c-arm region|` fails for diagrams with
+multi-row c-arm regions and walk-vanishing crossings.  The
+S57.7 proof of `F_side_identity_aligned` will need:
+
+* a walk-vanishing classifier (broader than the existing
+  S57.6 prep 1 `strictHookCells_off_spine_class_at_c'`),
+* a refined per-crossing residual formula (more data points
+  needed — only one walk-non-vanishing crossing seen across
+  all 6 tests so far),
+* reconciliation with the off-spine residual which similarly
+  breaks the S68 uniform-`+1`-per-c-arm pattern.
+
+**Files modified.**
+* `research/problems/ballot-problem-oq-03-oq-01-oq-02/state.md` — this entry; Next Action revised (S68's `−|c-arm region|` formula → unresolved, S70 retest).
+* `research/problems/ballot-problem-oq-03-oq-01-oq-02/sessions/2026-05-12-s08.md` — full computation tables for `(4,3,2)`, structural diagnosis (walk-vanishing classifier), six-diagram cross-test summary.
+* `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` — iteration 68 → 69, progressSummary update.
+
+**Build status.** No `.lean` changes; no build attempted.
+Parent `BallotProblemOQ03OQ02.lean` remains broken on
+`origin/main`.
 
 ## Session 68 — c'-column residual on (3,2,2) and (4,3): `−(h_d − 2)` REFUTED; correct formula is `−|off-spine c-arm region|` (researcher-1, 2026-05-12)
 
@@ -739,20 +819,26 @@ case-1 c'-row/c'-column/off-spine decomposition.**  Targets the
 lemma at Helpers.lean line 15670 verbatim, with sums over the
 full `(removeCorner μ c' hc').cells` and **no off-spine filter**.
 
-S66's "off-spine-restricted" reformulation (in
-`sessions/2026-05-12-s05.md` lines ~239–256) is **refuted** by
-Session 67's `(3,2,1)` and `(4,2)` computations: filtered residuals
-are +1, +1, +2 (on `(3,2)`, `(3,2,1)`, `(4,2)`), not 0.  The
-unfiltered identity *does* hold on all three test diagrams.
+S66's "off-spine-restricted" reformulation is refuted by S67;
+the unfiltered identity holds on all S67 + S68 + S69 test
+diagrams.  S57.6 prep 1/2/3 chain (PRs #17747 / #17817 /
+#17865) reduces the proof modulo the non-vanishing arm-class
+(case 1) and leg-class (case 2) summands, where per-cell
+equality fails (S66 counter-example).
 
-The S57.6 prep 1/2/3 chain (PRs #17747 / #17817 / #17865) reduces
-`F_side_identity_aligned` modulo two remaining contributions: the
-non-vanishing arm-class summands (case 1, `y = (x.1, c'.2)`) and
-the non-vanishing leg-class summands (case 2, `y = (c'.1, x.2)`).
-*Per-cell* equality `gnwProb μ c K y = gnwProb (μ\c') c K y` is
-**false** on these cells (Session 66 counter-example).  S67 shows
-the right framing: a **three-way regional decomposition** of the
-sum.
+**S69 finding (this session): residual formula UNRESOLVED.**
+The two prior conjectures —
+* S67's `c'-col residual = −(h_d − 2) · #(crossings)` (refuted by S68),
+* S68's `c'-col residual = −|off-spine c-arm region|` (refuted by S69)
+
+— both fail.  S69 introduces a third vanishing category:
+**walk-vanishing** crossings (non-corners of both `μ` and
+`μ\c'` whose strict-hook descendants are all corners `≠ c`,
+yielding `gnwProb = 0` on both sides).  In `(4,3,2)` `c=(0,3)`
+`c'=(2,1)`, the crossing `(1,1)` is walk-vanishing (not
+double-vanishing); the residual is concentrated on the single
+walk-non-vanishing crossing `(0,1)` with magnitude `−3/2`, not
+the predicted `−3 = −|c-arm region|`.
 
 **Approach (regional decomposition, case 1).**
 
@@ -760,88 +846,94 @@ sum.
    For cells `(c'.1, s) ∈ (μ\c').cells` (necessarily `s < c'.2`
    in case 1), `gnwProb μ c K (c'.1, s) = 0` (S57.3a
    `gnwProb_zero_of_row_eq_c'_case1`) and
-   `gnwProb (μ\c') c K (c'.1, s) = 0` (need: dual fact for
-   `(μ\c')`; likely follows from `(c'.1, s)` becoming a corner
-   of `μ\c'` since `c'` was its sole right-obstacle and column
-   `s`'s row-`c'.1+1` cell vanishes — to verify in general).
+   `gnwProb (μ\c') c K (c'.1, s) = 0` (dual; likely from
+   `(c'.1, s)` becoming a corner of `μ\c'` — verify in
+   general).
 
 2. **Sub-lemma S57.7-col — c'-column residual formula.**
-   For cells `(i, c'.2) ∈ (μ\c').cells` with `i < c'.1` (case-1
-   arm-class crossings per S57.6 prep 1), partition further into
-   **non-vanishing** and **double-vanishing** crossings.
+   *Status as of S69: unresolved.*  For cells `(i, c'.2) ∈
+   (μ\c').cells` with `i < c'.1` (case-1 arm-class crossings
+   per S57.6 prep 1), partition into **walk-vanishing**,
+   **double-vanishing**, and **walk-non-vanishing** crossings.
 
-   * **Double-vanishing crossing characterization (S68):** cell
-     `(c'.1 − 1, c'.2)` is double-vanishing iff row `c'.1 − 1`
-     in `μ` has length exactly `c'.2 + 1` (both sides yield 0
-     automatically: μ-side because its only strict-hook descendant
-     is the corner `c' ≠ c`; (μ\c')-side because it becomes a
-     corner of `μ\c'`).  Contributes 0 to the c'-column residual.
-     Cells `(i, c'.2)` with `i < c'.1 − 1` are always
-     non-vanishing crossings.
+   * **Walk-vanishing criterion (S69):** cell `(i, c'.2)` is
+     walk-vanishing on BOTH sides iff every strict-hook
+     descendant in `μ` AND in `μ\c'` is a corner ≠ c.  This
+     subsumes S68's double-vanishing (corner of `μ\c'`) and
+     adds the case where the cell is a non-corner of both
+     but whose strict-hook descendants happen to all be
+     corners ≠ c (e.g. `(1,1)` in `(4,3,2)`).  Contributes 0
+     to the c'-column residual.
 
-   * **Non-vanishing crossings** use S65's
-     `hookLength_at_arm_class_case1` to relate K-step
-     recurrences on both sides.  The weighted residual sums to
-     ```
-     c'-column residual = −|{(i,j) ∈ μ\c' : i < c'.1 ∧ j > c'.2}|
-                        = −(c.2 − c'.2) when c.1 = 0
-     ```
-     **S68 conjecture (matches 5/5 test diagrams).**  S67's
-     prior `−(h_d − 2) · #(crossings)` conjecture is **refuted**
-     on `(3,2,2)` (h_d − 2 = 2 but residual = −1).
+   * **Walk-non-vanishing crossings carry the c'-column
+     residual.**  The exact magnitude is **unresolved**:
+     - 5/5 S68 tests with c'.1 ∈ {1,2} and at most one walk-
+       non-vanishing crossing: residual matches
+       `−|c-arm region|` (and equals `−(c.2 − c'.2)` for c.1=0).
+     - 1/1 S69 test with c'.1 = 2 and one walk-non-vanishing
+       crossing (out of two structural candidates): residual
+       is `−3/2`, NOT `−3 = −|c-arm region|`.
+     - The half-integer behavior in `(4,3,2)` breaks the
+       integrality assumption of the S68 formula.
+
+   **Open question.** Identify the exact per-crossing residual
+   formula across walk-non-vanishing crossings.  Candidate
+   refinements:
+   - `−(h_d − 2)/2 · #(walk-non-vanish)`? Predicts `−3/2` for
+     `(4,3,2)` (h_d=5, (h_d-2)/2=3/2) ✓ and `−1, −1, −3, −1, −1`
+     for the five S68 tests; matches `(3,2)`,`(3,2,1)`,`(3,2,2)`,
+     `(4,3)` but predicts `−3` on `(4,2)` where actual is `−2`.
+     **Refuted on `(4,2)`** (h_d=4, (h_d-2)/2=1, predicts `−1`,
+     not the observed `−2`).
+   - Likely the formula depends on both h_d and the off-spine
+     residual structure, requiring more S70+ data points.
 
 3. **Sub-lemma S57.7-off — off-spine residual formula.**
-   For cells off both spines of `c'`, identify the residual via
-   S57.4's `gnwProb_succ_eq_off_spine_of_c'` K-step lift.
-   **Refined formula (S68):**
-   ```
-   off-spine residual = +|{(i,j) ∈ μ\c' : i < c'.1 ∧ j > c'.2}|
-                      = +(c.2 − c'.2) when c.1 = 0
-   ```
-   Off-spine cells outside the c-arm quadrant
-   (`i ≥ c'.1 ∨ j ≤ c'.2`) contribute pointwise 0 to the
-   weighted residual; cells in the c-arm quadrant each contribute
-   `+1`.
+   *Status as of S69: unresolved.*  S68's "+1 per c-arm cell"
+   pattern breaks on `(4,3,2)`: off-spine c-arm cells `(0,2)`,
+   `(0,3)`, `(1,2)` contribute `+1/2, +1, 0` respectively.
 
-4. **Assembly.**  c'-row contribution (0) + c'-column (−R) +
-   off-spine (+R) = 0 where `R = |off-spine c-arm region|`.  The
-   cancellation is regional and finite; no `δ_arm`-style global
-   integration needed.
+4. **Assembly.**  c'-row (0) + c'-column (R_col) + off-spine
+   (R_off) = 0 where `R_col = −R_off`.  The total cancellation
+   still holds (verified on all 6 tests); the per-region
+   formulas need further refinement.
 
-**Recommended Session 69: multi-crossing concentration test.**
-S68's five test diagrams all have **at most one** non-vanishing
-c'-column crossing.  Compute the c'-column residual on a diagram
-with **two or more** non-vanishing crossings (e.g.
-`μ = (4,3,3)` with `c = (0,3)`, `c' = (2,2)`, giving crossings
-`(0, 2)` and `(1, 2)` both with row lengths > 3; or
-`μ = (5,3,2)` with `c = (0,4)`, `c' = (2,1)`, giving crossings
-`(0, 1)` and `(1, 1)`).  Two possible outcomes: (a) residual
-concentrates on a single cell (likely the innermost
-`(c'.1 − 2, c'.2)` cell); (b) distributes across multiple cells.
-Either outcome refines step 2's per-cell formula for the S57.7
-proof.
+**Recommended Session 70: replicate S69's test on S68's
+originally suggested `(5,3,2)` to triangulate the residual
+formula.**  Compute c'-column residual on `μ = (5,3,2)` with
+`c = (0,4)`, `c' = (2,1)`.  h_d = 6 (vs 5 on (4,3,2)), and
+both `(0,1)` and `(1,1)` may be walk-non-vanishing (TBD by
+direct computation — `(1,1)`'s strict hook in `μ = (5,3,2)`
+includes `(1,2)` which is **not** a corner of `μ` since
+`(1,3) ∉ μ` but `(2,2)` doesn't exist either, so `(1,2)` IS
+a corner of `μ`; same as `(4,3,2)`).  Comparing `(4,3,2)` vs
+`(5,3,2)` residuals separates h_d-dependence from
+shape-dependence.
 
-**Recommended Session 70: c.1 ≠ 0 test (off-spine c-arm not in row 0).**
-All five S68 test diagrams have `c.1 = 0`, which forces the
-off-spine c-arm region to be `{(0, j) : c'.2 < j ≤ c.2}` with
-size `c.2 − c'.2`.  For `c.1 ≥ 1`, the c-arm region splits across
-multiple rows, and the `|c-arm region|` formula must be verified
-geometrically rather than identified with `c.2 − c'.2`.  Candidate:
-`μ = (3,3,2)` with `c = (1,2)`, `c' = (2,1)` (`c.1 = 1`,
-`c'.1 = 2`, `c.2 = 2`, `c'.2 = 1`, case 1).
+**Recommended Session 71: c.1 ≠ 0 test.**  All six tests so
+far have `c.1 = 0`, which keeps c in the topmost row.  For
+`c.1 ≥ 1`, the c-arm region splits.  Candidate: `μ = (3,3,2)`
+with `c = (1,2)`, `c' = (2,1)` (`c.1 = 1`, `c'.1 = 2`,
+`c.2 = 2`, `c'.2 = 1`, case 1).
 
-**Estimated lemma sizes (after S69 + S70 confirm the formula).**
-150–250 lines for the c'-column residual lemma + ~80 lines for
-the off-spine residual lemma + ~40 lines assembly.  Total likely
-exceeds the ~15500-line Helpers.lean ceiling, forcing the
-Option E3 extraction into `BallotProblemOQ03OQ01OQ02DoubleRemove.lean`
-to land first.
+**Recommended Session 72: shape variation at fixed h_d.**
+Find two shapes with the same h_d but different walk-
+non-vanishing crossing counts; compare residuals.
 
-**Risk.**  Medium.  Step 2's c'-column residual formula is the
-crux; the `−|c-arm region|` form survives all S68 tests and
-the off-spine cancellation argument is now structurally clean,
-but S69's multi-crossing distribution behavior and S70's
-non-row-0 c verification are still pending.
+**Estimated lemma sizes (lower bound, with both per-region
+formulas still TBD).**  Combined ≥ 280 lines for c'-column
+walk-vanishing classifier + walk-non-vanishing per-crossing
+formula + off-spine residual formula + assembly.  Total
+likely exceeds the ~15500-line Helpers.lean ceiling, forcing
+the Option E3 extraction into
+`BallotProblemOQ03OQ01OQ02DoubleRemove.lean` to land first.
+
+**Risk.**  Increased (formerly Medium, now Medium-High).
+Two prior c'-column residual formulas refuted in three
+consecutive sessions; the structural pattern is more subtle
+than initially conjectured.  Recommendation: gather 3+ more
+data points (S70/S71/S72) before attempting any `.lean`
+proof of S57.7's c'-column sub-lemma.
 
 ## Historical Next Action (S57.7 off-spine filter, refuted by Session 67)
 
