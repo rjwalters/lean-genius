@@ -2,13 +2,58 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-12 (Iteration 27-prep-diag-face, researcher-10)
-**Iteration**: 27-prep-diag-face
+**Last Updated**: 2026-05-12 (Iteration 28-prep-fin2, researcher-10)
+**Iteration**: 28-prep-fin2
 
 ## Current Focus
 
-Session 27-prep-diag-face (this iteration, researcher-10, 2026-05-12,
-build pending): Added **face-2 and color characterizations at the
+Session 28-prep-fin2 (this iteration, researcher-10, 2026-05-12,
+build pending — parent file build broken on origin/main since
+2026-05-08 at `t1_ne_t2`/`diagonal_in_t1_iff` post-Mathlib drift):
+Added **`Fin 2`-promotion of the diagonal Sperner condition**.
+S27-prep packaged the diagonal Sperner exclusion as
+`cN2 ... (k, N - k) ≠ (2 : Fin 3)` / `cN2_total ... (k, N - k) ≠
+(2 : Fin 3)`. The eventual S27 / S28 final-assembly bridge between
+`face2_path_odd`'s `g : ℕ → Fin 2` and the `Fin 3`-valued
+`cN2_total` restriction to the diagonal needs the strictly
+stronger `.val < 2` form: the witness that promotes a diagonal
+color to a `Fin 2` value via the
+`(0 : Fin 3) ↔ (0 : Fin 2)`, `(1 : Fin 3) ↔ (1 : Fin 2)`
+identification. This session packages that promotion, mirroring
+the `Fin.val_ne ⇒ val < bound` pattern already in
+`sperner_panchromatic_two`'s `hK_lt_N` / `hcK1` proofs (lines
+180–210).
+
+New section `N2DiagValFinTwo` (2 private lemmas, 62 lines added to
+`SpernerFreudenthalSimplex.lean`, inserted between
+`N2DiagFaceCondition` and the final `end SpernerFreudSimp`):
+
+* **`.val < 2` promotion** (2 lemmas):
+  - `cN2_diag_val_lt_two (k : ℕ) (hk : k ≤ N) :
+    (cN2 N hN f hf_map (k, N - k) (by omega)).val < 2`.
+    Proof: lift S27-prep's `cN2_diag_ne_two` to `.val ≠ 2` via
+    `Fin.ext`, combine with the `.isLt` bound `< 3`, finish with
+    `omega`.
+  - `cN2_total_diag_val_lt_two (k : ℕ) (hk : k ≤ N) :
+    (cN2_total N hN f hf_map (k, N - k)).val < 2`.
+    Proof: rewrite via S27-prep's `cN2_total_diag_eq` then apply
+    `cN2_diag_val_lt_two`.
+
+Independent of the still-stale in-flight S23 (`N2LastFaceColors`,
+PR #17571, CONFLICTING since 2026-05-09) which packages the
+analogous color facts in the `(b.1, b.2 + 1)`-endpoint form
+rather than the `(k, N - k)`-diagonal form, and of S25-prep
+(`N2GridCoord`, PR #17621, CONFLICTING) gridPt coordinate
+helpers. The promotion here lives entirely on the
+`face2_path_odd` `(k, N - k)`-parametrization side and unblocks
+the eventual `g k ≠ g (k+1) ↔ cN2_total (k, N - k) ≠ cN2_total
+(k+1, N - (k+1))` color-change correspondence S22's IsDoor
+bridge will consume.
+
+## Prior Sessions (Recent)
+
+Session 27-prep-diag-face (researcher-10, 2026-05-12, build
+pending): Added **face-2 and color characterizations at the
 `(k, N - k)` diagonal vertices** of `face2_path_odd`. The S26-prep
 `N2DiagonalEndpointForm` lemmas translated `satDiagBases` endpoint
 expressions into the `(k, N - k)` parametrization; this session
@@ -19,7 +64,7 @@ hypothesis.
 
 New section `N2DiagFaceCondition` (5 private lemmas, 92 lines added
 to `SpernerFreudenthalSimplex.lean`, inserted between
-`N2DiagonalEndpointForm` and the final `end SpernerFreudSimp`):
+`N2DiagonalEndpointForm` and `N2DiagValFinTwo`):
 
 * **Face-2 membership at the diagonal** (2 lemmas):
   - `onFaceΔ2_diag (k : ℕ) (hk : k ≤ N) : onFaceΔ2 N (k, N - k) 2`.
