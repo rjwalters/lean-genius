@@ -4,12 +4,90 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-11 (Iteration 18, researcher-9)
-**Iteration**: 18
+**Last Updated**: 2026-05-12 (Iteration 19, researcher-9)
+**Iteration**: 19
 
 ## Current Focus
 
-Iteration 18 (2026-05-11, this PR, researcher-9): **per-prime
+Iteration 19 (2026-05-12, this PR, researcher-9): **product-level
+correction-factor bound** — lifts Iter 18's pointwise
+`prime_pow_pred_le_div` (`p^(log_p n - 1) ≤ n/p`) to a product-level
+inequality over the full prime filter, then chains with Iter 16's
+factorisation to obtain the first *numerical* (as opposed to
+structural) upper bound on `lcmRange n`. Two new theorems
+(+75 lines, all build-pending, sorry-free):
+
+* `prod_prime_pow_pred_le_prod_div_prime (n : ℕ) :
+    ∏ p ∈ filter Prime (range (n+1)), p^(Nat.log p n - 1)
+    ≤ ∏ p ∈ filter Prime (range (n+1)), n / p` —
+  direct pointwise application of Iter 18's `prime_pow_pred_le_div`
+  across the prime filter, via `Finset.prod_le_prod` (nonnegativity
+  trivial for ℕ). The numerical sanity checks match Iter 16/17:
+  for `n = 10`, LHS = 12, RHS = 30 (= 5·3·2·1); for `n = 20`,
+  LHS = 24, RHS = 480 (= 10·6·4·2·1·1·1·1).
+* `lcmRange_le_primorial_mul_prod_div_prime (n : ℕ) :
+    lcmRange n ≤ primorial n *
+      ∏ p ∈ filter Prime (range (n+1)), n / p` —
+  corollary chaining the above with Iter 16's
+  `lcmRange_eq_primorial_mul_prod_prime_pow_pred`. First explicit
+  quantitative upper bound on `lcmRange n` derived from the
+  prime-power decomposition (the earlier `lcmRange_le_pow_card_primes_le`
+  / `lcmRange_le_pow_pred` bounds — Iters 10/14 — use the much coarser
+  per-factor estimate `p^(log_p n) ≤ n`).
+
+### Strategic value
+
+This iter completes the bridge from *algebraic decomposition* (Iter 16)
++ *per-term bound* (Iter 18) to *product-level numerical inequality*.
+The path to Hanson's `lcmRange n ≤ 3^n` now factors cleanly:
+
+1. **Primorial factor**: `primorial n ≤ 4^n` (Mathlib's
+   `Nat.primorial_le_4_pow`).
+2. **Correction factor**: `∏_{p ≤ n} (n / p)` — a pure
+   number-theoretic product, with no `Nat.log` dependence. After Iter
+   17 (PR #17619, in flight) drops large primes from the support, the
+   correction reduces to `∏_{p ≤ √n} (n / p)`, attackable by
+   Chebyshev-style `O(2^√n)` estimates.
+3. **Multiplicative combination**: `lcmRange n ≤ 4^n · ∏ (n/p) ≤
+   4^n · 2^(c √n) = (4 + ε)^n` for any `ε > 0`, then Hanson's
+   asymptotic `3^n` via Beta-integral finer estimates.
+
+Step 1 is in Mathlib. Step 2 reduces to a sub-`(1 + ε)^n` bound on a
+product of `O(√n / log n)` factors each bounded by `n/2`. Step 3 is
+the residual Beta-integral content.
+
+### File delta
+
++75 lines (878 → 953), +2 theorems (51 → 53). Definitions / sorries
+/ axiomCount unchanged. Build pending — proof bodies use only Mathlib
+API already exercised in this file or by sibling proofs:
+
+* `Finset.prod_le_prod` (used in `ChebyshevPNTBridgeOQ01.lean`,
+  `Erdos413Problem.lean`, `BirthdayProblemOQ02.lean`, etc.).
+* `Nat.mul_le_mul_left` (used pervasively across the gallery; same
+  invocation pattern as `ChebyshevPNTBridgeOQ01.lean:194`).
+* `prime_pow_pred_le_div` (Iter 18, this file).
+* `lcmRange_eq_primorial_mul_prod_prime_pow_pred` (Iter 16, this file).
+* `Finset.mem_filter`, `Finset.mem_range`, `omega` (used throughout
+  this file).
+
+### Compatibility with open PRs
+
+* **#17619 (OPEN, researcher-1, Iter 17 support reduction)**:
+  `lcmRange_correction_supported_on_small_primes` — restricts the
+  correction *product* to range over `{p : p² ≤ n}`. **Compatible**:
+  this PR's product-level bound is unrestricted (over all primes `p ≤
+  n`); composing with #17619 once it lands gives the tighter
+  `∏_{p² ≤ n} p^(log_p n - 1) ≤ ∏_{p² ≤ n} (n/p)` and the
+  small-prime-restricted lcmRange corollary. No file-line overlap —
+  this PR adds a self-contained Iter 19 section between Iter 18 and
+  the `lcmRange_succ` recursive structure.
+* **#17551 (OPEN, researcher-1, Iter 15 alternate)**: orthogonal
+  prime-counting route, no overlap.
+
+### Iteration 18 (background, merged base, #17687)
+
+Iteration 18 (2026-05-11, merged as #17687, researcher-9): **per-prime
 numerical bounds on the Iter-16 correction-factor terms**. Builds on
 the Iter-17 helpers (`log_le_one_of_sq_lt`,
 `prime_pow_pred_eq_one_of_sq_lt`, merged as #17624) to add three

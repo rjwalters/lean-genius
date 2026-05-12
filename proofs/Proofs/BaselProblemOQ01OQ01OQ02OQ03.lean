@@ -749,6 +749,81 @@ theorem prime_pow_pred_le_div {p n : ℕ} (hp : p.Prime) (hpn : p ≤ n) :
     omega
   exact Nat.pow_log_le_self p hn_ne
 
+-- =====================================================================
+-- ITER 19: product-level correction-factor bound (pointwise Iter 18 → product)
+-- =====================================================================
+-- Apply Iter 18's pointwise `prime_pow_pred_le_div` term-by-term across
+-- the prime filter `(Finset.range (n + 1)).filter Nat.Prime`, obtaining
+-- the natural product-level inequality
+--   ∏ p^(Nat.log p n - 1) ≤ ∏ (n / p)   over primes p ≤ n.
+-- Chaining with Iter 16's primorial-correction factorisation then yields
+-- the corollary
+--   lcmRange n ≤ primorial n · ∏ (n / p)   over primes p ≤ n.
+-- This converts the structural decomposition of Iters 16/17 into a
+-- *quantitative* upper bound on `lcmRange n`. The remaining work
+-- toward Hanson's `lcmRange n ≤ 3^n` is then a pure product-bounding
+-- problem on `∏ (n / p)` (e.g. Chebyshev's `∏ (n/p) ≤ 2^(c √n)` after
+-- dropping primes `p > √n` via Iter 17's `prime_pow_pred_eq_one_of_sq_lt`).
+
+/-- **Product-level correction-factor bound** (Iter 19): the Iter-16
+    correction product `∏_{p prime ≤ n} p^(⌊log_p n⌋ - 1)` is bounded
+    above by `∏_{p prime ≤ n} (n / p)`.
+
+    Direct pointwise application of Iter 18's `prime_pow_pred_le_div`
+    across the prime filter, via `Finset.prod_le_prod` (the
+    nonnegativity hypothesis is trivial in `ℕ`).
+
+    Concrete checks (matching Iter 16/17 numerics):
+    * `n = 10`: LHS = ∏_{p∈{2,3,5,7}} p^(log_p 10 - 1) = 2² · 3¹ · 5⁰ · 7⁰ = 12.
+               RHS = ∏_{p∈{2,3,5,7}} 10/p = 5 · 3 · 2 · 1 = 30. ✓ (12 ≤ 30)
+    * `n = 20`: LHS = 2³ · 3¹ · 5⁰ · 7⁰ · 11⁰ · 13⁰ · 17⁰ · 19⁰ = 24.
+               RHS = 10 · 6 · 4 · 2 · 1 · 1 · 1 · 1 = 480. ✓ (24 ≤ 480)
+
+    The bound is loose for large `n` because Iter 17 already shows that
+    primes `p > √n` contribute `1` on the LHS but contribute `n/p ≥ 1`
+    on the RHS. A sharper variant restricted to the small-prime filter
+    `{p : p² ≤ n}` would tighten both sides; that refinement is left for
+    a future iteration once Iter 17's support-reduction lemma (PR
+    #17619, in flight) is merged. -/
+theorem prod_prime_pow_pred_le_prod_div_prime (n : ℕ) :
+    ∏ p ∈ (Finset.range (n + 1)).filter Nat.Prime, p ^ (Nat.log p n - 1) ≤
+    ∏ p ∈ (Finset.range (n + 1)).filter Nat.Prime, n / p := by
+  apply Finset.prod_le_prod
+  · intro p _
+    exact Nat.zero_le _
+  · intro p hp
+    rw [Finset.mem_filter, Finset.mem_range] at hp
+    obtain ⟨hp_lt, hp_prime⟩ := hp
+    have hpn : p ≤ n := by omega
+    exact prime_pow_pred_le_div hp_prime hpn
+
+/-- **lcmRange quantitative bound** (Iter 19 corollary): combining Iter
+    16's primorial-correction factorisation with the product-level Iter
+    19 pointwise bound,
+
+      `lcmRange n ≤ primorial n · ∏_{p prime ≤ n} (n / p)`.
+
+    First explicit *numerical* (as opposed to structural) upper bound on
+    `lcmRange n` derived from the prime-power decomposition. Strategic
+    position on the path to Hanson's `3^n`:
+
+    1. **Primorial factor** `primorial n ≤ 4^n` (Mathlib's
+       `Nat.primorial_le_4_pow`).
+    2. **Correction factor** `∏_{p ≤ n} (n / p)` reduces, via Iter 17,
+       to `∏_{p ≤ √n} (n / p)` (large primes contribute `1`); a
+       Chebyshev-style `∏_{p ≤ √n} (n/p) ≤ 2^(c √n)` would then yield
+       `lcmRange n ≤ 4^n · 2^(c √n) = (4 + ε)^n`.
+
+    Numerics (sanity, n = 10): primorial(10) = 210, ∏ (10/p) over
+    primes ≤ 10 is `5 · 3 · 2 · 1 = 30`, product `= 6300`, and indeed
+    `lcmRange(10) = 2520 ≤ 6300`. ✓ For n = 20: primorial(20) · 480 =
+    9,699,690 · 480 = 4,655,851,200 ≥ `lcmRange(20) = 232,792,560`. ✓ -/
+theorem lcmRange_le_primorial_mul_prod_div_prime (n : ℕ) :
+    lcmRange n ≤ primorial n *
+      ∏ p ∈ (Finset.range (n + 1)).filter Nat.Prime, n / p := by
+  rw [lcmRange_eq_primorial_mul_prod_prime_pow_pred]
+  exact Nat.mul_le_mul_left _ (prod_prime_pow_pred_le_prod_div_prime n)
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
