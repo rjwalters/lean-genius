@@ -55,7 +55,19 @@
       "**Axiomatization depth**: The single axiom `shafarevich_inverse_galois` encapsulates roughly 500+ pages of algebraic number theory (class field theory, profinite groups, Brauer groups). All 7 corollaries are fully proved from this one assumption.",
       "**inferInstance power**: The cyclic and abelian corollaries are essentially trivial in Lean — `IsSolvable (ZMod n)` and `IsSolvable G` for abelian G are automatically inferred via `CommGroup.isSolvable`. Shafarevich converts this trivial algebraic fact into a deep number-theoretic conclusion.",
       "**S₅ nuance**: S₅ is not realizable via Shafarevich (non-solvable), but S₅ IS realizable over ℚ by other means (e.g., as Gal(x⁵-2x-5/ℚ)). The obstruction is not to realizability, but to realizability via the solvable-group pathway.",
-      "**Lean representation of Gal(L/ℚ)**: The Galois group is represented as `L ≃ₐ[ℚ] L` — the type of ℚ-algebra automorphisms — which naturally forms a group under composition. `IsGalois ℚ L` ensures this matches the classical Galois group."
+      "**Lean representation of Gal(L/ℚ)**: The Galois group is represented as `L ≃ₐ[ℚ] L` — the type of ℚ-algebra automorphisms — which naturally forms a group under composition. `IsGalois ℚ L` ensures this matches the classical Galois group.",
+      "**Derived-series induction**: Shafarevich's proof is by induction on the derived length $k$ of $G$ (the smallest $k$ with $G^{(k)} = 1$). Length $1$ (abelian) is handled by the Kronecker–Weber theorem and class field theory (every finite abelian group is a quotient of $(\\mathbb{Z}/N\\mathbb{Z})^\\times$ for some $N$, hence a Galois group of a sub-cyclotomic field). The inductive step lifts a realization of $G/G^{(k-1)}$ to one of $G$ by solving an embedding problem in cohomological language, which is where the Brauer-group machinery enters.",
+      "**Embedding problem reformulation**: For a surjection $\\pi: G \\twoheadrightarrow G/N$ (with $N$ abelian) and a Galois realization $\\rho_0: \\mathrm{Gal}(\\bar{\\mathbb{Q}}/\\mathbb{Q}) \\twoheadrightarrow G/N$, finding a lift $\\rho: \\mathrm{Gal}(\\bar{\\mathbb{Q}}/\\mathbb{Q}) \\twoheadrightarrow G$ amounts to solving a 2-cohomology class in $H^2(G/N, N)$ inside the Brauer group. Shafarevich showed this class always vanishes for solvable groups over ℚ — the technical heart of the theorem."
+    ],
+    "prerequisites": [
+      "**Galois extensions** $L/K$ — algebraic, normal, separable; Mathlib `IsGalois K L`. The Galois group $\\mathrm{Gal}(L/K)$ is the type `L ≃ₐ[K] L` of $K$-algebra automorphisms.",
+      "**Solvable groups** — groups whose derived series $G \\supset [G,G] \\supset [[G,G],[G,G]] \\supset \\cdots$ terminates at $\\{1\\}$. Mathlib `IsSolvable`, with `CommGroup.isSolvable` instance for the abelian base case.",
+      "**Abel–Ruffini theorem** (parent file `abel-ruffini-galois-extensions`) — a polynomial is solvable by radicals iff its Galois group is solvable. The → direction; this file is the ← direction.",
+      "**Symmetric groups** $S_n$ and `Equiv.Perm (Fin n)` — $S_n$ is solvable iff $n \\leq 4$; the threshold theorem `symmetric_solvable_of_le_four` is imported from the parent file.",
+      "**Cyclotomic fields** $\\mathbb{Q}(\\zeta_n)$ and the Kronecker–Weber theorem — every finite abelian extension of $\\mathbb{Q}$ lies in a cyclotomic field. Establishes the abelian base case of Shafarevich.",
+      "**Class field theory** (over $\\mathbb{Q}$) — describes abelian extensions of number fields via idele/ideal class groups; provides the abelian step of the derived-series induction in Shafarevich's proof.",
+      "**Group cohomology** $H^n(G, A)$ and **embedding problems** — recast lifting Galois representations as solving 2-cocycles; the Brauer-group obstruction is the central object of Shafarevich's argument.",
+      "**Quotient groups and normal subgroups** — `Subgroup.Normal`, the quotient `G ⧸ N`, and `quotient_solvable_of_solvable`/`subgroup_solvable_of_solvable` from Mathlib for the closure corollaries."
     ]
   },
   "sections": [
@@ -117,6 +129,100 @@
     {
       "proofId": "abel-ruffini",
       "relationship": "Grandparent: proves the polynomial-theoretic side (solvable by radicals ↔ solvable Galois group), completing the bidirectional characterization"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "AbelRuffiniGaloisExtensionsOQ05.shafarevich_inverse_galois",
+      "statement": "∀ {G : Type*} [Group G] [Fintype G] [IsSolvable G], ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L], Nonempty (L ≃ₐ[ℚ] L) ∧ Nonempty (G ≃* (L ≃ₐ[ℚ] L))",
+      "description": "**Shafarevich's theorem (axiom).** Every finite solvable group $G$ is realizable as the Galois group of some Galois extension $L/\\mathbb{Q}$. The single deep assumption underlying this entire file; the proof requires class field theory, cohomological embedding problem theory, and Brauer groups (Neukirch–Schmidt–Wingberg §9.5, ~500+ pages of algebraic number theory)."
+    },
+    {
+      "name": "AbelRuffiniGaloisExtensionsOQ05.cyclic_group_realizable",
+      "statement": "(n : ℕ) (hn : 0 < n) → ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L], Nonempty (ZMod n ≃* (L ≃ₐ[ℚ] L))",
+      "description": "**Cyclic group case.** $\\mathbb{Z}/n\\mathbb{Z}$ is realizable as $\\mathrm{Gal}(L/\\mathbb{Q})$ for some Galois $L$. Proof: `NeZero n` from `0 < n`, then `IsSolvable (ZMod n)` is inferred (via `CommGroup.isSolvable`), and Shafarevich destructures the existential. Concretely classical: $\\mathbb{Z}/n\\mathbb{Z} \\cong \\mathrm{Gal}(\\mathbb{Q}(\\zeta_n)/\\mathbb{Q})$ for prime $n$ (Kronecker–Weber)."
+    },
+    {
+      "name": "AbelRuffiniGaloisExtensionsOQ05.abelian_group_realizable",
+      "statement": "(G : Type*) [CommGroup G] [Fintype G] → ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L], Nonempty (G ≃* (L ≃ₐ[ℚ] L))",
+      "description": "**Abelian group case.** Every finite abelian group $G$ is realizable over $\\mathbb{Q}$. Proof: `CommGroup G` gives `IsSolvable G` by inference; apply Shafarevich. Mathematically: $G \\hookrightarrow (\\mathbb{Z}/N)^\\times$ for some $N$ by the structure theorem for finite abelian groups, then Kronecker–Weber realizes the inclusion as $\\mathrm{Gal}(\\mathbb{Q}(\\zeta_N)/L)$ for some intermediate $L$."
+    },
+    {
+      "name": "AbelRuffiniGaloisExtensionsOQ05.s3_realizable",
+      "statement": "∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L], Nonempty (Equiv.Perm (Fin 3) ≃* (L ≃ₐ[ℚ] L))",
+      "description": "**$S_3$ is realizable.** Proof: `symmetric_solvable_of_le_four` (parent file) at $n = 3$ yields `IsSolvable (Equiv.Perm (Fin 3))`; apply Shafarevich. Concretely, the splitting field of a generic irreducible cubic $x^3 + px + q \\in \\mathbb{Q}[x]$ with non-square discriminant has Galois group $S_3$."
+    },
+    {
+      "name": "AbelRuffiniGaloisExtensionsOQ05.s4_realizable",
+      "statement": "∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L], Nonempty (Equiv.Perm (Fin 4) ≃* (L ≃ₐ[ℚ] L))",
+      "description": "**$S_4$ is realizable.** Analogous to $S_3$: `symmetric_solvable_of_le_four` at $n = 4$ gives solvability. Concretely, the splitting field of a generic irreducible quartic with generic resolvent cubic has Galois group $S_4$ over $\\mathbb{Q}$ (Hilbert's irreducibility)."
+    },
+    {
+      "name": "AbelRuffiniGaloisExtensionsOQ05.subgroup_of_solvable_realizable",
+      "statement": "∀ {G : Type*} [Group G] [Fintype G] [IsSolvable G] (H : Subgroup G), ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L], Nonempty (H ≃* (L ≃ₐ[ℚ] L))",
+      "description": "**Subgroup closure.** Any subgroup $H$ of a finite solvable group $G$ is itself realizable. Proof: `subgroup_solvable_of_solvable` from the parent file gives `IsSolvable H`; apply Shafarevich to $H$ (using `Fintype H` from finite ambient). Note: the Galois correspondence makes subgroups of $\\mathrm{Gal}(L/\\mathbb{Q})$ correspond to intermediate fields, but the Lean statement asserts only an abstract realization, not necessarily a sub-extension of $L$."
+    },
+    {
+      "name": "AbelRuffiniGaloisExtensionsOQ05.quotient_of_solvable_realizable",
+      "statement": "∀ {G : Type*} [Group G] [Fintype G] [IsSolvable G] (N : Subgroup G) [N.Normal], ∃ (L : Type*) [Field L] [Algebra ℚ L] [IsGalois ℚ L], Nonempty (G ⧸ N ≃* (L ≃ₐ[ℚ] L))",
+      "description": "**Quotient closure.** For any normal subgroup $N \\trianglelefteq G$ with $G$ solvable, the quotient $G/N$ is realizable. Proof: `quotient_solvable_of_solvable` gives `IsSolvable (G ⧸ N)`; apply Shafarevich. Galois-theoretically: quotients of a Galois group correspond to normal sub-extensions, but again the Lean result asserts abstract realization."
+    },
+    {
+      "name": "AbelRuffiniGaloisExtensionsOQ05.s5_not_solvable_obstruction",
+      "statement": "¬ IsSolvable (Equiv.Perm (Fin 5))",
+      "description": "**$S_5$ obstruction.** $S_5$ is not solvable (its commutator $A_5$ is simple non-abelian, so the derived series stabilizes at $A_5 \\neq 1$); Shafarevich's theorem does not apply. Crucially $S_5$ *is* realizable over $\\mathbb{Q}$ by Hilbert's irreducibility (e.g., $\\mathrm{Gal}(x^5 - 2x - 5 / \\mathbb{Q}) \\cong S_5$), but via methods outside Shafarevich's scope. Imported from the parent file as `s5_not_solvable`."
+    }
+  ],
+  "references": [
+    {
+      "type": "research-paper",
+      "citation": "Shafarevich, I.R. (1954). \"Construction of fields of algebraic numbers with a given solvable Galois group.\" Izv. Akad. Nauk SSSR. Ser. Mat. 18, 525–578.",
+      "relevance": "The original 1954 paper proving the central axiom of this file: every finite solvable group is realizable as a Galois group over $\\mathbb{Q}$. Shafarevich's argument inducts on the derived length, using class field theory for abelian steps and an embedding-problem solution for the inductive step. This file axiomatizes the result and proves 7 corollaries from it."
+    },
+    {
+      "type": "textbook",
+      "citation": "Neukirch, J., Schmidt, A., Wingberg, K. (2008). *Cohomology of Number Fields* (2nd ed.). Grundlehren der Mathematischen Wissenschaften 323, Springer. §9.5 (Shafarevich's theorem).",
+      "relevance": "Definitive modern reference for the full proof of Shafarevich's theorem in the language of profinite Galois groups and group cohomology. §9.5 walks through the embedding-problem reformulation and the Brauer-group obstruction analysis. The estimated 500+ pages of prerequisite material (class field theory, profinite groups, étale cohomology) is laid out in earlier chapters of the same volume."
+    },
+    {
+      "type": "textbook",
+      "citation": "Völklein, H. (1996). *Groups as Galois Groups: An Introduction.* Cambridge Studies in Advanced Mathematics 53, Cambridge University Press.",
+      "relevance": "Graduate-level survey of the inverse Galois problem covering both Shafarevich's theorem (solvable case) and methods for realizing specific non-solvable groups ($S_n$, simple groups of Lie type, sporadic groups). Provides the broader context — Shafarevich resolves the solvable subproblem; the full inverse Galois problem remains open."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Kronecker, L. (1853); Weber, H. (1886). Kronecker–Weber theorem: every finite abelian extension of $\\mathbb{Q}$ is contained in some cyclotomic field $\\mathbb{Q}(\\zeta_n)$.",
+      "relevance": "Establishes the abelian base case of Shafarevich's inductive proof. For an abelian group $G$, embed $G \\hookrightarrow (\\mathbb{Z}/N)^\\times \\cong \\mathrm{Gal}(\\mathbb{Q}(\\zeta_N)/\\mathbb{Q})$ for suitable $N$, then take fixed-field of the kernel. The abelian corollary `abelian_group_realizable` in this file is, classically, a direct consequence of Kronecker–Weber rather than the deeper Shafarevich machinery."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Hilbert, D. (1892). \"Ueber die Irreducibilität ganzer rationaler Functionen mit ganzzahligen Coefficienten.\" J. Reine Angew. Math. 110, 104–129.",
+      "relevance": "Hilbert's irreducibility theorem — the workhorse for realizing non-solvable groups like $S_n$ (n ≥ 5) over $\\mathbb{Q}$ by specializing function-field Galois extensions. Used to justify the remark in `s5_not_solvable_obstruction` that $S_5$ is realizable (e.g., $\\mathrm{Gal}(x^5 - 2x - 5)$) despite being outside Shafarevich's scope."
+    },
+    {
+      "type": "textbook",
+      "citation": "Stewart, I. (2015). *Galois Theory* (4th ed.). Chapman & Hall/CRC.",
+      "relevance": "Standard undergraduate/graduate text covering the Abel–Ruffini theorem and the basic theory of solvable extensions; provides the framing for the bidirectional characterization (Abel–Ruffini + Shafarevich) discussed throughout this file."
+    },
+    {
+      "type": "textbook",
+      "citation": "Lang, S. (2002). *Algebra* (Revised 3rd ed.). Graduate Texts in Mathematics 211, Springer. Chapter VI (Galois theory), Chapter IX (Algebraic number theory).",
+      "relevance": "Reference for the group-theoretic machinery used in the file: derived series, solvability closure under subgroups/quotients, the symmetric-group threshold, and the basic Galois correspondence. The instances `subgroup_solvable_of_solvable` and `quotient_solvable_of_solvable` (imported from the parent file) follow Lang VI.7."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.GroupTheory.Solvable\" — `IsSolvable`, `CommGroup.isSolvable`, subgroup/quotient closure. (accessed 2026)",
+      "relevance": "Provides the `IsSolvable` typeclass and the closure properties used throughout. `CommGroup.isSolvable` is the instance that powers the cyclic and abelian corollaries (via `inferInstance` typeclass search), turning the deep number-theoretic conclusion into a one-line application of Shafarevich."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.FieldTheory.Galois.Basic\" — `IsGalois`, `AlgEquiv`, `Gal(L/K) = L ≃ₐ[K] L`. (accessed 2026)",
+      "relevance": "Provides the Lean representation of Galois groups used in the existential statements: `L ≃ₐ[ℚ] L` carries a `Group` instance under composition, and `IsGalois ℚ L` packages the algebraicness, normality, and separability assumptions of a Galois extension."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.FieldTheory.AbelRuffini\" — formal solvability-by-radicals criterion. (accessed 2026)",
+      "relevance": "Imported at the top of the file. Provides Mathlib's formal account of the polynomial-side Abel–Ruffini theorem; together with this file's group-side Shafarevich axiom, completes the bidirectional radical/solvable characterization in the gallery."
     }
   ],
   "leanFile": {
