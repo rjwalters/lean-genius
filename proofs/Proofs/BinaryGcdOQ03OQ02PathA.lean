@@ -2648,6 +2648,216 @@ theorem hgcdMatrixSafe_one_above_threshold_natAbs_max_le (a b : ℕ)
       ≤ max a b :=
   (hgcdMatrixSafe_one_above_threshold_natAbs_max_eq a b hab).le
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XXX: FUEL-GENERIC COMPOSE/ABORT BRANCHES (Session 42)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Fuel-generic compose-branch and abort-branch decompositions
+
+    PART XXI (S31, PR #17683) introduced `hgcdMatrixSafeOf_compose_branch`
+    and `hgcdSafeApply_compose_branch`, and PART XXIII (S34, PR #17771)
+    introduced the dual `hgcdMatrixSafeOf_abort_branch` and
+    `hgcdSafeApply_abort_branch`. Both pairs are stated at the
+    **specific fuel `a + b`** (since `hgcdMatrixSafeOf a b =
+    hgcdMatrixSafe (a + b + 1) a b`).
+
+    This PART exposes the **fuel-generic** versions:
+    `hgcdMatrixSafe (f + 1) a b = …` and
+    `(hgcdMatrixSafe (f + 1) a b).apply (↑a) (↑b) = …` for an
+    **arbitrary** fuel parameter `f : ℕ`. The proofs are
+    structurally identical to the `_Of` variants — they just drop
+    the `unfold hgcdMatrixSafeOf` step (since the inner-fuel is now
+    abstract rather than `a + b`).
+
+    **Why useful.** The fuel-zero base case (PART XXVII, S39) and
+    fuel-one above-threshold collapse (PART XXIX, S41) discharge
+    the recursion at fuel `0` and fuel `1`. Any inductive proof of
+    non-expansion at fuel `f + 1` (the open NE-cond / NE-self
+    program of `s32-non-expansion-analysis.md` §3–§6) needs to
+    unfold the recursion at the **abstract successor fuel** `f + 1`,
+    not just at `(a + b) + 1`. The existing `_Of` variants pin the
+    fuel, so they cannot serve as the induction.succ template
+    directly; this PART supplies the missing fuel-generic forms.
+
+    The `_Of` variants in PART XXI / PART XXIII are recovered as
+    corollaries at `f := a + b` (their stated form). They are kept
+    intact to avoid downstream churn; the new generic theorems
+    sit alongside them.
+
+    **Four named theorems** (all conditioned on `hab : ¬ max a b <
+    hgcdThresholdSafe`, the above-threshold dispatch):
+
+    * `hgcdMatrixSafe_compose_branch (f a b : ℕ)` — matrix-level
+      compose: `hgcdMatrixSafe (f + 1) a b =
+        (hgcdMatrixSafe f u v).mul M_inner`, where
+      `M_inner := hgcdMatrixSafe f (a / 2 ^ s) (b / 2 ^ s)` and
+      `(u, v) := natAbs of M_inner.apply (↑a, ↑b)`.
+
+    * `hgcdMatrixSafe_apply_compose_branch (f a b : ℕ)` — apply
+      form: `(hgcdMatrixSafe (f + 1) a b).apply (↑a) (↑b) =
+        (hgcdMatrixSafe f u v).apply M_inner.apply.1 M_inner.apply.2`.
+      Composes the matrix-level compose with `cofactor_mul_apply`.
+
+    * `hgcdMatrixSafe_abort_branch (f a b : ℕ)` — matrix-level
+      abort: `hgcdMatrixSafe (f + 1) a b = M_inner` (the inner
+      recursion is passed through, no outer composition).
+
+    * `hgcdMatrixSafe_apply_abort_branch (f a b : ℕ)` — apply
+      form: `(hgcdMatrixSafe (f + 1) a b).apply (↑a) (↑b) =
+        M_inner.apply (↑a) (↑b)`. Direct corollary of the
+      matrix-level abort.
+
+    Build: pure `rw [hgcdMatrixSafe_succ, if_neg hab]` + `dsimp
+    only` + `if_pos`/`if_neg` on the inner guard, mirroring the
+    `_Of` proofs. No new axioms, no new sorries, no new
+    definitions. -/
+
+/-- **Fuel-generic compose-branch matrix decomposition.**
+
+    Generalises `hgcdMatrixSafeOf_compose_branch` (PART XXI, S31,
+    fuel `a + b`) to arbitrary fuel `f : ℕ`. Above threshold
+    (`hab`), if the inner-guard *compose* branch fires
+    (`hlt : max u v < max a b` for `(u, v)` the natAbs pair of
+    `M_inner.apply (↑a, ↑b)`), then `hgcdMatrixSafe (f + 1) a b`
+    equals the composed matrix `(hgcdMatrixSafe f u v).mul
+    M_inner`.
+
+    Specialises to `hgcdMatrixSafeOf_compose_branch` at
+    `f := a + b` (since `hgcdMatrixSafeOf a b = hgcdMatrixSafe
+    (a + b + 1) a b`).
+
+    Proof: identical to the `_Of` version sans the
+    `unfold hgcdMatrixSafeOf` opener; the rest is
+    `rw [hgcdMatrixSafe_succ, if_neg hab]` + `dsimp only` +
+    `if_pos hlt`. -/
+theorem hgcdMatrixSafe_compose_branch (f a b : ℕ)
+    (hab : ¬ max a b < hgcdThresholdSafe)
+    (hlt :
+      max
+        ((hgcdMatrixSafe f
+            (a / 2 ^ hgcdShiftSafe a b)
+            (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+        ((hgcdMatrixSafe f
+            (a / 2 ^ hgcdShiftSafe a b)
+            (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs
+        < max a b) :
+    hgcdMatrixSafe (f + 1) a b
+      = (hgcdMatrixSafe f
+          ((hgcdMatrixSafe f
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+          ((hgcdMatrixSafe f
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs).mul
+        (hgcdMatrixSafe f
+          (a / 2 ^ hgcdShiftSafe a b)
+          (b / 2 ^ hgcdShiftSafe a b)) := by
+  rw [hgcdMatrixSafe_succ, if_neg hab]
+  dsimp only
+  rw [if_pos hlt]
+
+/-- **Fuel-generic compose-branch `apply` decomposition.**
+
+    Generalises `hgcdSafeApply_compose_branch` (PART XXI, S31,
+    fuel `a + b`) to arbitrary fuel `f : ℕ`. Above threshold and in
+    the compose branch, `(hgcdMatrixSafe (f + 1) a b).apply (↑a)
+    (↑b)` equals the outer matrix `hgcdMatrixSafe f u v` applied
+    to the inner's column output `M_inner.apply (↑a) (↑b)`.
+
+    Specialises to `hgcdSafeApply_compose_branch` at `f := a + b`
+    (since `hgcdSafeApply a b = (hgcdMatrixSafeOf a b).apply (↑a)
+    (↑b) = (hgcdMatrixSafe (a + b + 1) a b).apply (↑a) (↑b)`).
+
+    Proof: rewrite the matrix via `hgcdMatrixSafe_compose_branch`,
+    then `exact cofactor_mul_apply _ _ _ _` to distribute the
+    apply over the multiplicative composition. -/
+theorem hgcdMatrixSafe_apply_compose_branch (f a b : ℕ)
+    (hab : ¬ max a b < hgcdThresholdSafe)
+    (hlt :
+      max
+        ((hgcdMatrixSafe f
+            (a / 2 ^ hgcdShiftSafe a b)
+            (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+        ((hgcdMatrixSafe f
+            (a / 2 ^ hgcdShiftSafe a b)
+            (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs
+        < max a b) :
+    (hgcdMatrixSafe (f + 1) a b).apply (a : ℤ) (b : ℤ)
+      = (hgcdMatrixSafe f
+          ((hgcdMatrixSafe f
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+          ((hgcdMatrixSafe f
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs).apply
+          ((hgcdMatrixSafe f
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1
+          ((hgcdMatrixSafe f
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2 := by
+  rw [hgcdMatrixSafe_compose_branch f a b hab hlt]
+  exact cofactor_mul_apply _ _ _ _
+
+/-- **Fuel-generic abort-branch matrix decomposition.**
+
+    Generalises `hgcdMatrixSafeOf_abort_branch` (PART XXIII, S34,
+    fuel `a + b`) to arbitrary fuel `f : ℕ`. Above threshold
+    (`hab`), if the inner-guard *aborts* (`hge : max a b ≤ max u v`,
+    the negation of the size-reduction guard), then
+    `hgcdMatrixSafe (f + 1) a b` collapses to the inner recursion
+    `M_inner` directly, without outer composition.
+
+    Specialises to `hgcdMatrixSafeOf_abort_branch` at `f := a + b`.
+
+    Proof: `rw [hgcdMatrixSafe_succ, if_neg hab]` + `dsimp only` +
+    `if_neg (Nat.not_lt.mpr hge)`. -/
+theorem hgcdMatrixSafe_abort_branch (f a b : ℕ)
+    (hab : ¬ max a b < hgcdThresholdSafe)
+    (hge :
+      max a b ≤
+        max
+          ((hgcdMatrixSafe f
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+          ((hgcdMatrixSafe f
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs) :
+    hgcdMatrixSafe (f + 1) a b
+      = hgcdMatrixSafe f
+          (a / 2 ^ hgcdShiftSafe a b)
+          (b / 2 ^ hgcdShiftSafe a b) := by
+  rw [hgcdMatrixSafe_succ, if_neg hab]
+  dsimp only
+  rw [if_neg (Nat.not_lt.mpr hge)]
+
+/-- **Fuel-generic abort-branch `apply` decomposition.**
+
+    Generalises `hgcdSafeApply_abort_branch` (PART XXIII, S34,
+    fuel `a + b`) to arbitrary fuel `f : ℕ`. In the inner-abort
+    branch, `(hgcdMatrixSafe (f + 1) a b).apply (↑a) (↑b)` equals
+    `M_inner.apply (↑a) (↑b)` directly.
+
+    Specialises to `hgcdSafeApply_abort_branch` at `f := a + b`.
+
+    Proof: rewrite the matrix via `hgcdMatrixSafe_abort_branch`. -/
+theorem hgcdMatrixSafe_apply_abort_branch (f a b : ℕ)
+    (hab : ¬ max a b < hgcdThresholdSafe)
+    (hge :
+      max a b ≤
+        max
+          ((hgcdMatrixSafe f
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+          ((hgcdMatrixSafe f
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs) :
+    (hgcdMatrixSafe (f + 1) a b).apply (a : ℤ) (b : ℤ)
+      = (hgcdMatrixSafe f
+          (a / 2 ^ hgcdShiftSafe a b)
+          (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ) := by
+  rw [hgcdMatrixSafe_abort_branch f a b hab hge]
+
 end HGcdSafe
 
 /-! ## Summary
