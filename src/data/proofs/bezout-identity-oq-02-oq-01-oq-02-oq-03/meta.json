@@ -113,6 +113,17 @@
       "Mathlib's UniqueFactorizationMonoid.irreducible_iff_prime is the bridge between the element-level properties and the UFD conclusion: it converts the two properties (irreducible, not prime) into a direct contradiction with any UFD instance.",
       "The Lean proof uses decide for the dual factorization 2·3 = (1+√-5)(1-√-5) and norm computations, reducing concrete arithmetic in ℤ[√-5] to kernel computation. This demonstrates the power of decidability in formal mathematics.",
       "The ideal class group Cl(ℤ[√-5]) ≅ ℤ/2ℤ is the algebraic invariant behind this failure: the non-principal ideal (2,1+√-5) has class of order 2, and the two element factorizations of 6 correspond to the two ways of decomposing the principal ideal (6) = p₁²·p₂·p₃ into prime ideal products."
+    ],
+    "prerequisites": [
+      "Commutative ring theory: definition of integral domain, ideal, prime ideal, maximal ideal",
+      "Dedekind domain axiomatization: Noetherian, integrally closed in field of fractions, Krull dimension ≤ 1 (Mathlib.RingTheory.DedekindDomain.Basic)",
+      "Zsqrtd construction: the ring ℤ[√d] = {a + b√d : a, b ∈ ℤ} with multiplication (a+b√d)(c+e√d) = (ac+dbe) + (ae+bc)√d (Mathlib.NumberTheory.Zsqrtd.Basic)",
+      "Norm map on ℤ[√d]: N(a+b√d) = a² − d·b², multiplicative, and N(z) = 1 ↔ z is a unit",
+      "UniqueFactorizationMonoid typeclass: in any UFD, irreducible ↔ prime (Mathlib.RingTheory.UniqueFactorizationDomain)",
+      "Irreducible vs Prime in a commutative monoid with zero: definitions and the basic implication prime ⇒ irreducible (which holds in any integral domain)",
+      "Mathlib tactics decide, native_decide for finite computations in ℤ[√-5]; interval_cases for exhausting bounded integers; nlinarith for nonlinear arithmetic over ℝ/ℤ",
+      "IsDedekindDomain.dimensionLtOne: in a Dedekind domain, every nonzero prime ideal is maximal — the geometric statement of Krull dimension ≤ 1",
+      "Star structure on ℤ[√d]: conjugate (a+b√d)* = a − b√d, used to construct multiplicative inverses for unit elements via z·z* = N(z)"
     ]
   },
   "conclusion": {
@@ -135,5 +146,179 @@
     "theoremCount": 24,
     "definitionCount": 1,
     "sorries": 0
-  }
+  },
+  "mainTheorems": [
+    {
+      "name": "zsqrtneg5_not_ufd",
+      "type": "core",
+      "statement": "$\\neg\\ \\mathrm{UniqueFactorizationMonoid}\\ \\mathbb{Z}[\\sqrt{-5}]$",
+      "significance": "**The headline theorem.** ℤ[√-5] is the canonical example of a Dedekind domain that fails element-level unique factorization. Proof: in a UFD, `UniqueFactorizationMonoid.irreducible_iff_prime` forces irreducible ⇔ prime; but `two_irreducible` and `two_not_prime` give an explicit witness of irreducible-but-not-prime. The contradiction is fully constructive.",
+      "description": "ℤ[√-5] is NOT a unique factorization monoid. Combines two_irreducible and two_not_prime via Mathlib's UniqueFactorizationMonoid.irreducible_iff_prime."
+    },
+    {
+      "name": "two_irreducible",
+      "type": "core",
+      "statement": "$\\mathrm{Irreducible}\\ (2 : \\mathbb{Z}[\\sqrt{-5}])$",
+      "significance": "First half of the non-UFD witness. If $2 = ab$ then $N(a) \\cdot N(b) = N(2) = 4$; the norm gap (no element has $N = 2$ or $N = 3$) forces $\\{N(a), N(b)\\} = \\{1, 4\\}$, hence one factor is a unit. Discharged by interval_cases on $a^2 + 5b^2 \\in \\{1,2,3,4\\}$.",
+      "description": "2 is irreducible in ℤ[√-5]: norm divisibility analysis closes every nontrivial factorization."
+    },
+    {
+      "name": "two_not_prime",
+      "type": "core",
+      "statement": "$\\neg\\ \\mathrm{Prime}\\ (2 : \\mathbb{Z}[\\sqrt{-5}])$",
+      "significance": "Second half of the non-UFD witness. $2 \\mid (1+\\sqrt{-5})(1-\\sqrt{-5}) = 6$ by construction, but if $2 \\mid (1 \\pm \\sqrt{-5}) = 2k$ then $6 = N(1 \\pm \\sqrt{-5}) = N(2) \\cdot N(k) = 4 \\cdot N(k)$, forcing $4 \\mid 6$ — impossible by `omega`.",
+      "description": "2 is not prime in ℤ[√-5]: norm divisibility 4 ∤ 6 blocks the prime-divides-one-factor implication."
+    },
+    {
+      "name": "isUnit_iff_norm_one",
+      "type": "supporting",
+      "statement": "$\\forall z : \\mathbb{Z}[\\sqrt{-5}],\\ \\mathrm{IsUnit}(z) \\iff N(z) = 1$",
+      "significance": "The Norm-Unit Bridge — converts the abstract unit predicate into a finite arithmetic condition. Forward direction: $N(z) \\cdot N(z^{-1}) = N(1) = 1$ with $N \\geq 0$ forces $N(z) = 1$. Backward direction: $z \\cdot z^* = \\langle N(z), 0 \\rangle = 1$ when $N(z) = 1$, exhibiting $z^*$ as inverse. Used by `two_irreducible` to convert $N(a) = 1$ into IsUnit a.",
+      "description": "A Zsqrtd element is a unit iff its norm equals 1. Discharged using the star/conjugate to build the inverse."
+    },
+    {
+      "name": "norm_mul_eq",
+      "type": "supporting",
+      "statement": "$\\forall a, b : \\mathbb{Z}[\\sqrt{-5}],\\ N(a \\cdot b) = N(a) \\cdot N(b)$",
+      "significance": "Multiplicativity of the norm — the workhorse identity. Reduces multiplicative questions in ℤ[√-5] to multiplicative questions about integer norms, where divisibility is decidable. Proved by unfolding Zsqrtd.norm and Zsqrtd.mul_def, then `ring`.",
+      "description": "The norm N(a+b√-5) = a²+5b² is multiplicative. Critical for both two_irreducible (norm product = 4) and two_not_prime (norm product = 6 with factor 4)."
+    },
+    {
+      "name": "prime_ideal_is_maximal",
+      "type": "supporting",
+      "statement": "$\\forall R\\ [\\mathrm{IsDedekindDomain}\\ R]\\ (p : \\mathrm{Ideal}\\ R),\\ p \\neq \\bot \\to p.\\mathrm{IsPrime} \\to p.\\mathrm{IsMaximal}$",
+      "significance": "The Krull-dimension-≤-1 condition that distinguishes Dedekind domains from general Noetherian integrally closed rings. Used to motivate the ideal-level FTA: in a Dedekind domain, every nonzero proper ideal factors uniquely into a product of maximal (= prime) ideals.",
+      "description": "In a Dedekind domain, every nonzero prime ideal is maximal. Direct application of IsDedekindDomain.dimensionLtOne."
+    },
+    {
+      "name": "pid_is_dedekind",
+      "type": "supporting",
+      "statement": "$\\forall R\\ [\\mathrm{CommRing}\\ R]\\ [\\mathrm{IsDomain}\\ R]\\ [\\mathrm{IsPrincipalIdealRing}\\ R],\\ \\mathrm{IsDedekindDomain}\\ R$",
+      "significance": "Establishes the inclusion PID ⊂ Dedekind via Mathlib's instance chain. Discharged by `inferInstance`. The converse fails in general (Dedekind ≠ PID): ℤ[√-5] is Dedekind but not PID (class number 2).",
+      "description": "Every PID is a Dedekind domain. Establishes the standard hierarchy EuclideanDomain ⊂ PID ⊂ Dedekind."
+    },
+    {
+      "name": "irred_imp_prime_in_ufd",
+      "type": "supporting",
+      "statement": "$\\forall R\\ [\\mathrm{CancelCommMonoidWithZero}\\ R]\\ [\\mathrm{UniqueFactorizationMonoid}\\ R]\\ (p : R),\\ \\mathrm{Irreducible}\\ p \\to \\mathrm{Prime}\\ p$",
+      "significance": "The contrapositive used by `zsqrtneg5_not_ufd`: in any UFD, irreducible elements must be prime. ℤ[√-5] violates this implication via the explicit witness 2.",
+      "description": "In a UFD, irreducible implies prime. Wraps UniqueFactorizationMonoid.irreducible_iff_prime.mp."
+    },
+    {
+      "name": "hierarchy",
+      "type": "supporting",
+      "statement": "$\\forall R\\ [\\mathrm{CommRing}\\ R]\\ [\\mathrm{IsDomain}\\ R]\\ [\\mathrm{IsPrincipalIdealRing}\\ R],\\ \\mathrm{IsDedekindDomain}\\ R \\wedge \\mathrm{UniqueFactorizationMonoid}\\ R$",
+      "significance": "Bundles the two PID-derivable typeclasses. In the Dedekind setting, Dedekind+UFD ⇔ PID, so this conjunction characterizes PIDs among Dedekind domains.",
+      "description": "Every PID is both a Dedekind domain and a UFD. The Dedekind+UFD ⇒ PID converse is true in this setting (proved separately in Mathlib)."
+    },
+    {
+      "name": "zsqrtneg5_witness",
+      "type": "supporting",
+      "statement": "$\\mathrm{Irreducible}\\ (2 : \\mathbb{Z}[\\sqrt{-5}]) \\wedge \\neg\\ \\mathrm{Prime}\\ (2 : \\mathbb{Z}[\\sqrt{-5}]) \\wedge\\ 2 \\cdot 3 = \\langle 1, 1 \\rangle \\cdot \\langle 1, -1 \\rangle$",
+      "significance": "The packaged non-UFD certificate. Combines the irreducibility of 2, its non-primality, and the explicit dual factorization $6 = 2 \\cdot 3 = (1+\\sqrt{-5})(1-\\sqrt{-5})$ into a single shareable record for downstream consumers.",
+      "description": "Summary witness bundling all three facts that establish ℤ[√-5] as a non-UFD."
+    }
+  ],
+  "crossReferences": [
+    {
+      "proofId": "bezout-identity-oq-02-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "Direct parent (FTA Generalization to Euclidean Domains): established that every Euclidean domain is a UFD via the chain EuclideanDomain → GCDMonoid → UniqueFactorizationMonoid. The open question raised there — whether unique factorization generalizes to the broader Dedekind setting — is answered HERE: it does, but only at the level of ideals, with ℤ[√-5] as the explicit witness that element-level factorization can fail."
+    },
+    {
+      "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Sibling (Gaussian Integers: Euclidean Domain and Prime Classification): ℤ[i] is the well-behaved counterpoint to ℤ[√-5]. Both are quadratic rings with a norm, but ℤ[i] is Euclidean (hence PID, UFD, Dedekind — all four typeclasses) while ℤ[√-5] sits one rung lower (Dedekind only). The norm-based factorization technique used in both files is the same; only the arithmetic of the norm differs (a²+b² for ℤ[i] vs a²+5b² for ℤ[√-5])."
+    },
+    {
+      "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-03",
+      "relationship": "related",
+      "description": "Sibling (ℤ[√-2] as a Euclidean Domain): another quadratic ring of integers where ℤ[√d] IS a Euclidean domain. ℤ[√-2] (class number 1) and ℤ[√-5] (class number 2) bracket the Stark-Heegner classification — the 9 negative d for which ℤ[√d] is a UFD are d ∈ {-1,-2,-3,-7,-11,-19,-43,-67,-163}, and this file's non-UFD ℤ[√-5] is the smallest |d| for which it fails."
+    },
+    {
+      "proofId": "bezout-identity-oq-02-oq-01-oq-02-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Sibling (Fermat's Two-Square Theorem via Gaussian Integers): an application of the ℤ[i] machinery from the parent sibling. The two-square theorem (p sum of two squares iff p = 2 or p ≡ 1 mod 4) and the failure of unique factorization in ℤ[√-5] (this entry) together illustrate how the class number of a quadratic ring controls which classical number-theoretic results lift to that ring."
+    },
+    {
+      "proofId": "bezout-identity-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Grandparent (Fundamental Theorem of Arithmetic from Euclid's Lemma): proves the FTA for ℤ via Euclid's lemma. The chain ℤ → Euclidean domain → PID → Dedekind ⊂ {ℤ[√-5]} extends this classical result to algebraic number rings; the present entry is the natural limit, showing where the element-level FTA breaks down."
+    },
+    {
+      "proofId": "bezout-identity",
+      "relationship": "extends",
+      "description": "Great-grandparent (Bézout's Identity): the root of this research lineage. Bézout → Euclid → FTA → FTA-for-Euclidean-domains → Dedekind-domain-FTA (ideal-level). This file completes the lineage by exhibiting the obstacle that motivated the shift from elements to ideals in the first place."
+    },
+    {
+      "proofId": "bezout-identity-oq-02",
+      "relationship": "related",
+      "description": "Direct precursor (Euclid's Lemma via coprime_iff_linear_combination): Euclid's lemma is the engine behind the standard FTA proof; the failure of unique factorization in ℤ[√-5] can be diagnosed as the failure of Euclid's lemma at the element level (2 divides a product without dividing either factor), restored only at the ideal level."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Dedekind, Richard"],
+      "year": 1871,
+      "title": "Über die Theorie der ganzen algebraischen Zahlen",
+      "venue": "Supplement X to Dirichlet's *Vorlesungen über Zahlentheorie* (2nd edition), Vieweg, Braunschweig",
+      "note": "The foundational treatise introducing ideals as the right algebraic objects to restore unique factorization. Dedekind's resolution of Kummer's 'ideal numbers' as actual sub-modules of an algebraic number ring is the conceptual leap that this file's main theorem (Dedekind ⊊ UFD) makes precise."
+    },
+    {
+      "authors": ["Kummer, Ernst Eduard"],
+      "year": 1847,
+      "title": "Zur Theorie der complexen Zahlen",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), Vol. 35, pp. 319–326",
+      "note": "Introduces 'ideal numbers' (Idealzahlen) to restore unique factorization in cyclotomic rings ℤ[ζₚ] where it fails for p ≥ 23. The historical motivation for Dedekind's ideals; ℤ[√-5] is the simplest non-cyclotomic example of the same phenomenon."
+    },
+    {
+      "authors": ["Marcus, Daniel A."],
+      "year": 1977,
+      "title": "Number Fields",
+      "venue": "Universitext, Springer-Verlag",
+      "note": "Standard introductory text on algebraic number theory. Chapter 3 (Dedekind domains) gives the textbook treatment of ideal unique factorization, including the ℤ[√-5] example and the class group computation Cl(ℤ[√-5]) ≅ ℤ/2ℤ formalized in spirit by this file."
+    },
+    {
+      "authors": ["Lang, Serge"],
+      "year": 1994,
+      "title": "Algebraic Number Theory (2nd edition)",
+      "venue": "Graduate Texts in Mathematics 110, Springer-Verlag",
+      "note": "Reference treatment of Dedekind domains and class field theory. The hierarchy EuclideanDomain → PID → Dedekind formalized in this entry's `pid_is_dedekind` and `hierarchy` theorems appears in Chapter I, §3–4."
+    },
+    {
+      "authors": ["Stark, Harold M."],
+      "year": 1967,
+      "title": "A complete determination of the complex quadratic fields of class-number one",
+      "venue": "Michigan Mathematical Journal, Vol. 14, pp. 1–27",
+      "note": "Completes Heegner's 1952 proof of the Stark-Heegner theorem: ℤ[√d] (d < 0 squarefree) is a UFD iff d ∈ {-1,-2,-3,-7,-11,-19,-43,-67,-163}. The present entry's ℤ[√-5] is the smallest |d| ≡ 3 mod 4 not on this list and is therefore the natural minimal non-UFD example."
+    },
+    {
+      "authors": ["Hartshorne, Robin"],
+      "year": 1977,
+      "title": "Algebraic Geometry",
+      "venue": "Graduate Texts in Mathematics 52, Springer-Verlag",
+      "note": "Chapter I, §6 introduces the geometric picture: a Dedekind domain is precisely the coordinate ring of a regular irreducible affine curve. The Krull-dimension-≤-1 condition encoded in `IsDedekindDomain.dimensionLtOne` corresponds to the curve being 1-dimensional."
+    },
+    {
+      "authors": ["The mathlib Community"],
+      "year": 2024,
+      "title": "Mathlib4: Mathlib.RingTheory.DedekindDomain.Basic",
+      "venue": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/DedekindDomain/Basic.html",
+      "note": "Source of the `IsDedekindDomain` typeclass and `IsDedekindDomain.dimensionLtOne` lemma used in `prime_ideal_is_maximal`. Mathlib's IsDedekindDomain is defined as the conjunction `IsNoetherian ∧ IsIntegrallyClosed ∧ DimensionLEOne`."
+    },
+    {
+      "authors": ["The mathlib Community"],
+      "year": 2024,
+      "title": "Mathlib4: Mathlib.NumberTheory.Zsqrtd.Basic",
+      "venue": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Zsqrtd/Basic.html",
+      "note": "Source of the `Zsqrtd` ring construction and its `norm` operation used throughout the ℤ[√-5] analysis. Mathlib defines `Zsqrtd.norm (a+b√d) = a² - d·b²`, which under d = -5 becomes a²+5b², the actual quantity bounded in `norm_ne_two` and `norm_ne_three`."
+    },
+    {
+      "authors": ["The mathlib Community"],
+      "year": 2024,
+      "title": "Mathlib4: Mathlib.RingTheory.UniqueFactorizationDomain",
+      "venue": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/RingTheory/UniqueFactorizationDomain/Basic.html",
+      "note": "Source of `UniqueFactorizationMonoid.irreducible_iff_prime`, the bridge lemma that converts the irreducible-but-not-prime witness (`two_irreducible` ∧ `two_not_prime`) into the non-UFD conclusion in `zsqrtneg5_not_ufd`."
+    }
+  ]
 }
