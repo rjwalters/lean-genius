@@ -44,7 +44,9 @@ import Mathlib.Topology.Order.Basic
 import Mathlib.Analysis.InnerProductSpace.EuclideanDist
 import Mathlib.Analysis.InnerProductSpace.Projection
 import Mathlib.Analysis.Convex.Basic
+import Mathlib.Analysis.Convex.Combination
 import Mathlib.Topology.MetricSpace.HausdorffDistance
+import Mathlib.Topology.PartitionOfUnity
 import Mathlib.Topology.Sequences
 import Mathlib.Tactic
 
@@ -471,6 +473,52 @@ axiom approx_selection_exists {n : ℕ}
     (hF_uhc : IsUpperHemicontinuous F)
     (ε : ℝ) (hε : 0 < ε) :
     ∃ f : ↥S → ↥S, Continuous f ∧ IsGraphApproxSelection F (fun x => (f x : ↥S)) ε
+
+/-- **S18a helper for `approx_selection_exists` axiom elimination
+    (Step 4: convex combinations weighted by a partition of unity stay
+    in the convex set):**
+
+    For a convex set `K ⊆ E` in any real vector space `E` and a partition
+    of unity `ρ : PartitionOfUnity ι X s` on a topological space `X`, the
+    weighted sum `∑ i ∈ ρ.finsupport x₀, ρ i x₀ • y i` of points
+    `y i ∈ K` (for every `i` in the local finite support at `x₀`)
+    lies in `K`, provided `x₀ ∈ s`.
+
+    The lemma packages three facts:
+    * `PartitionOfUnity.nonneg` — each partition value is `≥ 0`;
+    * `PartitionOfUnity.sum_finsupport` — the values sum to `1` at every
+      `x₀ ∈ s`;
+    * `Convex.sum_mem` — finite convex combinations of points in a convex
+      set stay in the set.
+    These three are exactly the hypotheses `Convex.sum_mem` requires from
+    a partition of unity, in a single call.
+
+    **Use site (S18e+).** Step 4 of the Cellina–Browder PartitionOfUnity
+    proof of `axiom approx_selection_exists` (line 465 above) defines the
+    candidate continuous selection
+    `f x := ∑ i ∈ ρ.finsupport x, ρ i x • y_{x_i}` where the `y_{x_i}`
+    are chosen at the subcover centers from Steps 1–2 (S17 survey, Steps
+    1–2). This lemma certifies `f x ∈ S` at every `x ∈ ↥S` (taking
+    `X = ↥S`, `E = EuclideanSpace ℝ (Fin n)`, `K = S` for the ambient
+    convex set, and using the axiom's `hS_convex` hypothesis).
+
+    The statement is intentionally generic in the index, base, and target
+    types (no `Fin n`-specific or `↥S`-specific assumptions) so it can be
+    reused beyond the immediate Schauder-FP context if the in-file
+    Cellina–Browder construction is later upstreamed.
+
+    Reference: S17 Mathlib API survey
+    (`research/problems/schauder-fixed-point-oq-03-oq-01-incomplete-01/s17-cellina-mathlib-api-survey.md`),
+    Step 4 (`PartitionOfUnity` API row). -/
+private lemma convex_combination_of_partition_in_S
+    {ι X E : Type*} [TopologicalSpace X]
+    [AddCommGroup E] [Module ℝ E]
+    {s : Set X} {K : Set E}
+    (ρ : PartitionOfUnity ι X s) (hK : Convex ℝ K)
+    {x₀ : X} (hx₀ : x₀ ∈ s)
+    {y : ι → E} (hy : ∀ i ∈ ρ.finsupport x₀, y i ∈ K) :
+    (∑ i ∈ ρ.finsupport x₀, ρ i x₀ • y i) ∈ K :=
+  hK.sum_mem (fun i _ => ρ.nonneg i x₀) (ρ.sum_finsupport hx₀) hy
 
 /-- **Sequential Compactness in Metric Spaces**
 

@@ -1,10 +1,10 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S17 Mathlib API survey complete; **0 sorries**, 2 axioms remaining)
+**Phase**: ACT (S18a convex-combination helper landed; **0 sorries**, 2 axioms remaining)
 **Path**: full
-**Since**: 2026-05-11T17:55:00Z
-**Iteration**: 17
+**Since**: 2026-05-12T02:15:00Z
+**Iteration**: 18a
 
 ## Current Focus
 S17 (researcher-11, 2026-05-11, survey + plan): Mathlib v4.26 API survey
@@ -64,20 +64,30 @@ Two axioms remain:
    decomposes implementation into 6 PRs (each ≤ 80 lines).
 
 ## Next Action
-**S18a (next claim)**: Add private helper
-`convex_combination_of_partition_in_S` packaging `Convex.sum_mem` +
-`PartitionOfUnity.sum_finsupport` + `PartitionOfUnity.nonneg`. ~30 Lean
-lines, provable now from Mathlib without partition-of-unity construction.
-Standalone PR; verifies `Convex.sum_mem` API signature concretely under
-our use site.
+**S18b (next claim, ~80 lines)**: Add typeclass instance plumbing for the
+eventual `approx_selection_exists_proof` theorem: derive
+`[CompactSpace ↥S]` (via `isCompact_iff_compactSpace.mp hS_compact`),
+`[ParacompactSpace ↥S]` (via compact ⇒ paracompact, or directly from
+the metric structure), and `[NormalSpace ↥S]` (via T4 from metric).
+Land as a standalone analysis-only PR with the three `have` blocks
+isolated in a documented preamble; no axiom replacement yet.
 
 **Independent S18-prep**: Read lines 69–89 of
 `proofs/Proofs/SchauderFixedPointOQ03OQ01.lean` to confirm whether
 `IsUpperHemicontinuous` quantifies over ambient-image open sets or
-subtype-relative open sets (action item from s17 survey, step 1).
+subtype-relative open sets (action item from s17 survey, step 1). This
+gates the Step 1 reuse decision: if subtype-relative, S17's
+`uhc_local_thickening` (PR #17708) is directly applicable; if
+ambient-image, an extra preimage-pull step is required in S18c.
 
 ## Open PRs
-None as of 2026-05-11T17:55Z.
+- PR #17708 (researcher-1, 2026-05-12T00:54Z): S17 — Cellina–Browder
+  Step 1 scaffold helper (`lemma uhc_local_thickening`, +37 lines, build
+  pending). CONFLICTING with origin/main after #17711 merged the API
+  survey alongside.
+- PR #17493 (researcher-5, 2026-05-08T22:43Z): S11 — closed-ball Brouwer
+  specialization (very old, predates S11.A strict-weakening; superseded
+  by current `axiom brouwer_unit_ball` form).
 
 ## Iteration History (recent)
 
@@ -87,7 +97,8 @@ None as of 2026-05-11T17:55Z.
 | S14 | 2026-05-09 | researcher-3 | #17601 (merged) | exists_continuous_proj_convex helper proven; sorry 1→0 |
 | S15 | 2026-05-09 | researcher-3 | #17654 (merged) | Mathlib API drift fix |
 | S16 | 2026-05-12 | researcher-8 | #17697 (merged) | docstring sync to actual sorry-free state |
-| S17 | 2026-05-11 | researcher-11 | (this PR) | Mathlib v4.26 API survey for `approx_selection_exists` axiom elimination |
+| S17 | 2026-05-11 | researcher-11 | #17711 (merged) | Mathlib v4.26 API survey for `approx_selection_exists` axiom elimination |
+| S18a | 2026-05-12 | researcher-9 | (this PR) | Private helper `convex_combination_of_partition_in_S` packaging `Convex.sum_mem` + `PartitionOfUnity` API (+48 lines, build pending) |
 
 ## Reference Files (in this directory)
 - `problem.md` — original problem statement
@@ -102,5 +113,6 @@ None as of 2026-05-11T17:55Z.
 - `s13-s11a-body-implementation.md` — S13 (researcher-10) implementation note
 - `s14-s11b-implementation.md` — S14 (researcher-3) helper implementation note
 - `s15-mathlib-api-drift-fix.md` — S15 (researcher-3) drift-fix note
-- `s17-cellina-mathlib-api-survey.md` — **S17 (this iteration)** Mathlib API map for axiom elimination
+- `s17-cellina-mathlib-api-survey.md` — S17 (researcher-11) Mathlib API map for axiom elimination
+- `s18a-convex-combination-helper.md` — **S18a (this iteration)** convex-combination-of-partition-of-unity helper note
 
