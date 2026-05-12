@@ -1766,6 +1766,72 @@ theorem hgcdSafeApply_compose_branch (a b : ℕ)
   rw [hgcdMatrixSafeOf_compose_branch a b hab hlt]
   exact cofactor_mul_apply _ _ _ _
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XXII: GENERAL NON-EXPANSION COUNTEREXAMPLE (Session 33)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Lean witness for S32's general non-expansion refutation
+
+    `s32-non-expansion-analysis.md` (PR #17720, S32, markdown
+    only) refuted the general non-expansion lemma cited as
+    spec §5.2 sub-task (b) — the conjecture that for arbitrary
+    unimodular `M, N : CofactorMatrix`,
+    `max ((M.mul N).apply a b).natAbs ≤ max (N.apply a b).natAbs`.
+    The refutation was algebraic (worked-out two-matrix table)
+    but uncompiled.
+
+    This section commits the counterexample to Lean. Take
+    `M := ⟨2, 1, 1, 1⟩` (det = 2·1 − 1·1 = 1) and
+    `N := CofactorMatrix.id` (det = 1, with `N.apply 1 0 = (1, 0)`
+    so its `max.natAbs = 1`). Then `M.mul N = M = ⟨2, 1, 1, 1⟩`
+    and `(M.mul N).apply 1 0 = (2, 1)` so its `max.natAbs = 2`.
+    Hence `2 ≤ 1` fails, refuting the general non-expansion
+    inequality.
+
+    This closes the spec §5.2 sub-task (b) **first disjunct**
+    (the general lemma) with a Lean-verified negative answer.
+    Future S32b/S32c work toward closing the converse direction
+    of the S28b equivalence must therefore route through the
+    `hgcdMatrixSafe`-specific conditional form (§5 of the S32
+    analysis), not the general unimodular form.
+
+    Build: `decide` on tiny ℤ literals (no `native_decide`,
+    no recursion). Adds 0 axioms, 0 sorries, 0 definitions. -/
+
+/-- **Counterexample to the general non-expansion lemma.**
+
+    There exist unimodular cofactor matrices `M, N` and a
+    pair `(a, b) : ℤ × ℤ` such that
+    `max ((M.mul N).apply a b).natAbs > max (N.apply a b).natAbs`.
+
+    Witness: `M := ⟨2, 1, 1, 1⟩`, `N := CofactorMatrix.id`,
+    `(a, b) := (1, 0)`. Then `M.det = N.det = 1` and
+    `(M.mul N).apply 1 0 = (2, 1)` while `N.apply 1 0 = (1, 0)`,
+    so `max 2 1 = 2 > 1 = max 1 0`.
+
+    Refutes the general form of the spec §5.2 sub-task (b)
+    non-expansion conjecture (cf. `s32-non-expansion-analysis.md`
+    §1, PR #17720). -/
+theorem cofactor_general_non_expansion_counterexample :
+    let M : CofactorMatrix := ⟨2, 1, 1, 1⟩
+    let N : CofactorMatrix := CofactorMatrix.id
+    M.det = 1 ∧ N.det = 1 ∧
+    ¬ (max ((M.mul N).apply 1 0).1.natAbs ((M.mul N).apply 1 0).2.natAbs
+       ≤ max (N.apply 1 0).1.natAbs (N.apply 1 0).2.natAbs) := by
+  refine ⟨?_, ?_, ?_⟩
+  · decide
+  · decide
+  · decide
+
+/-- Self-narrating decompositions of the counterexample (the two
+    `apply` outputs whose `max.natAbs` values witness the gap). -/
+example :
+    let M : CofactorMatrix := ⟨2, 1, 1, 1⟩
+    let N : CofactorMatrix := CofactorMatrix.id
+    (M.mul N).apply 1 0 = (2, 1) := by decide
+
+example : (CofactorMatrix.id.apply 1 0) = (1, 0) := by decide
+
 end HGcdSafe
 
 /-! ## Summary

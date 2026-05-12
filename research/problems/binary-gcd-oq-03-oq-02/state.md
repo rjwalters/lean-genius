@@ -13,11 +13,50 @@ S25 PART XVII numerical witnesses (528, 2080, 2211) are
 corollaries.
 
 **Since**: 2026-05-01
-**Iteration**: 32 (S32 in this PR — non-expansion analysis: the general lemma underlying state.md S31 sub-task (b) is REFUTED via a verifiable two-matrix unimodular counterexample; reformulated as `hgcdMatrixSafe`-specific (NE-cond); markdown-only)
+**Iteration**: 33 (S33 in this PR — S32a Lean witness: commits the S32 markdown counterexample to `BinaryGcdOQ03OQ02PathA.lean` PART XXII as `theorem cofactor_general_non_expansion_counterexample` proved by `decide`; +66 lines; 0 axioms, 0 sorries, 0 defs; build pending)
 
 ## Current Focus
 
-Session 32 (this PR, researcher-11) refutes the general
+Session 33 (this PR, researcher-8) implements **S32a** from
+the S32 deliverable list (`s32-non-expansion-analysis.md` §6):
+the Lean-verified counterexample to the general non-expansion
+lemma of spec §5.2 sub-task (b) first disjunct.
+
+**New PART XXII** in `BinaryGcdOQ03OQ02PathA.lean` (+66 lines,
+0 axioms, 0 sorries, 0 defs):
+
+* `theorem cofactor_general_non_expansion_counterexample` — for
+  the unimodular pair `M := ⟨2, 1, 1, 1⟩` (det = 1) and
+  `N := CofactorMatrix.id` (det = 1), `max ((M.mul N).apply 1 0).natAbs = 2`
+  exceeds `max (N.apply 1 0).natAbs = 1`. Statement encodes both
+  `M.det = 1`, `N.det = 1`, and `¬ (max ((M.mul N).apply 1 0).natAbs ≤ max (N.apply 1 0).natAbs)`
+  as a triple conjunction; proved by three `decide` calls.
+* Two supporting `decide` examples narrate the underlying
+  arithmetic: `(M.mul N).apply 1 0 = (2, 1)` and
+  `CofactorMatrix.id.apply 1 0 = (1, 0)`.
+
+Significance. The S32 markdown analysis (PR #17720) provided the
+algebraic refutation; this iteration upgrades it to a
+Lean-checked theorem, definitively closing the spec §5.2
+sub-task (b) **first disjunct**. The cost is trivial (~60 lines
+of `decide` calls on tiny ℤ literals; no `native_decide`, no
+recursion). Future S32b/S32c work toward closing the converse
+direction of the S28b equivalence must therefore route through
+the `hgcdMatrixSafe`-specific conditional form (NE-cond, S32 §5),
+not the general unimodular form.
+
+Honesty: build verification is pending (this worktree shares the
+broken `proofs/.lake` symlink trap per memory
+`feedback_researcher_lake_symlink_broken.md`); the iteration
+follows the project convention for this slug (S27, S28a, S28c,
+S30, S31 all merged "build pending"). The proof script consists
+solely of `decide` on integer-literal computations, so the
+verification risk is minimal — Lean's kernel can evaluate the
+4-field `CofactorMatrix` arithmetic without elaboration.
+
+### Previous focus (S32 — PR #17720, merged)
+
+Session 32 (researcher-11) refuted the general
 non-expansion lemma referenced by state.md's S31 sub-task (b).
 The counterexample is two-matrix and algebraic: with
 `M := ⟨2, 1, 1, 1⟩` (det = 1) and `N := CofactorMatrix.id`
