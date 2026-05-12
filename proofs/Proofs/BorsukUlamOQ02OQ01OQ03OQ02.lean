@@ -1239,6 +1239,86 @@ theorem symBUDim_eq_buDim_in_bertrand_window_of (h : ConjectureLPB)
     n_div_two_lt_largestPrimeBelow n hn, largestPrimeBelow_le n,
     h n d hn⟩
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART XXIII: Bertrand-window monotonicity packaging
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-! ### Monotonicity of `buDim ∘ largestPrimeBelow`
+
+Path Forward Item 2 from Iter 15. The parent file (`BorsukUlamOQ02OQ01OQ03.lean`)
+proves `symBUDim_le_of_le : m ≤ n → symBUDim m d ≤ symBUDim n d`
+unconditionally (modulo parent axiom `sym_has_smaller_sym`). Combined with
+this file's axiom `symBUDim_eq_largestPrime` (PART X), monotonicity in `n`
+transfers to monotonicity of `buDim (largestPrimeBelow n) d` in `n`.
+
+Combining further with PART VI's `n_div_two_lt_largestPrimeBelow`
+(Bertrand–Chebyshev) and `largestPrimeBelow_le` gives a *selector-free*
+existential packaging: for `n ≤ m`, there exist primes `p` in the dyadic
+window `(n/2, n]` and `q` in `(m/2, m]` with `buDim p d ≤ buDim q d`.
+This is the "monotone in the Bertrand window" form: as `n` grows, the
+prime witness grows with it (always strictly above the dyadic floor).
+-/
+
+/-- **Monotonicity of `buDim ∘ largestPrimeBelow`** (uses file's axiom).
+    For `2 ≤ n ≤ m` and any `d`,
+    `buDim (largestPrimeBelow n) d ≤ buDim (largestPrimeBelow m) d`.
+
+    One-line rewrite proof through the file's axiom, reducing to the
+    parent's `symBUDim_le_of_le`. -/
+theorem buDim_largestPrime_mono {n m : ℕ} (hn : 2 ≤ n) (hnm : n ≤ m) (d : ℕ) :
+    buDim (largestPrimeBelow n) d ≤ buDim (largestPrimeBelow m) d := by
+  rw [← symBUDim_eq_largestPrime n d hn,
+      ← symBUDim_eq_largestPrime m d (hn.trans hnm)]
+  exact symBUDim_le_of_le n m d hnm
+
+/-- **Hypothesis-form** of `buDim_largestPrime_mono`: same monotonicity
+    under `ConjectureLPB`. -/
+theorem buDim_largestPrime_mono_of (h : ConjectureLPB)
+    {n m : ℕ} (hn : 2 ≤ n) (hnm : n ≤ m) (d : ℕ) :
+    buDim (largestPrimeBelow n) d ≤ buDim (largestPrimeBelow m) d := by
+  rw [← symBUDim_eq_largestPrime_of h n d hn,
+      ← symBUDim_eq_largestPrime_of h m d (hn.trans hnm)]
+  exact symBUDim_le_of_le n m d hnm
+
+/-- **Bertrand-window monotonicity packaging** (uses file's axiom). For
+    `2 ≤ n ≤ m` and any `d`, there exist primes `p` in the Bertrand
+    window `(n/2, n]` and `q` in `(m/2, m]` with `buDim p d ≤ buDim q d`.
+
+    The internal selector `largestPrimeBelow` is hidden behind two
+    existentials. Useful for downstream applications that want to think
+    of the conjecture's monotonicity prediction as
+    "Bertrand-window primes have monotonically non-decreasing buDim". -/
+theorem exists_bertrand_window_primes_mono
+    {n m : ℕ} (hn : 2 ≤ n) (hnm : n ≤ m) (d : ℕ) :
+    ∃ p q : ℕ, Nat.Prime p ∧ Nat.Prime q ∧
+      n / 2 < p ∧ p ≤ n ∧ m / 2 < q ∧ q ≤ m ∧
+      buDim p d ≤ buDim q d :=
+  ⟨largestPrimeBelow n, largestPrimeBelow m,
+    largestPrimeBelow_isPrime n hn,
+    largestPrimeBelow_isPrime m (hn.trans hnm),
+    n_div_two_lt_largestPrimeBelow n hn,
+    largestPrimeBelow_le n,
+    n_div_two_lt_largestPrimeBelow m (hn.trans hnm),
+    largestPrimeBelow_le m,
+    buDim_largestPrime_mono hn hnm d⟩
+
+/-- **Hypothesis-form** of `exists_bertrand_window_primes_mono`: under
+    `ConjectureLPB`, the same Bertrand-window monotonicity packaging
+    holds. -/
+theorem exists_bertrand_window_primes_mono_of (h : ConjectureLPB)
+    {n m : ℕ} (hn : 2 ≤ n) (hnm : n ≤ m) (d : ℕ) :
+    ∃ p q : ℕ, Nat.Prime p ∧ Nat.Prime q ∧
+      n / 2 < p ∧ p ≤ n ∧ m / 2 < q ∧ q ≤ m ∧
+      buDim p d ≤ buDim q d :=
+  ⟨largestPrimeBelow n, largestPrimeBelow m,
+    largestPrimeBelow_isPrime n hn,
+    largestPrimeBelow_isPrime m (hn.trans hnm),
+    n_div_two_lt_largestPrimeBelow n hn,
+    largestPrimeBelow_le n,
+    n_div_two_lt_largestPrimeBelow m (hn.trans hnm),
+    largestPrimeBelow_le m,
+    buDim_largestPrime_mono_of h hn hnm d⟩
+
 /-
 ## Summary
 
@@ -1564,4 +1644,9 @@ theorem symBUDim_eq_buDim_in_bertrand_window_of (h : ConjectureLPB)
 #check @symBUDim_prime_even_formula_of
 #check @symBUDim_eq_buDim_in_bertrand_window
 #check @symBUDim_eq_buDim_in_bertrand_window_of
+
+#check @buDim_largestPrime_mono
+#check @buDim_largestPrime_mono_of
+#check @exists_bertrand_window_primes_mono
+#check @exists_bertrand_window_primes_mono_of
 end BorsukUlamSymPrime
