@@ -10,7 +10,7 @@
     "plain": "Formal mathematical investigation: Continued fraction expansion of cube root of 3.",
     "whyMatters": [
       "Mathlib coverage: first worked example of GenContFract.of applied to a cubic irrational in the project gallery.",
-      "Diophantine approximation: pairs with cube-root-3-irrational (the existence proof) to give a 'how irrational' deepening \u2014 CF prefix data.",
+      "Diophantine approximation: pairs with cube-root-3-irrational (the existence proof) to give a 'how irrational' deepening — CF prefix data.",
       "Companion to the Lagrange theorem family in the gallery (eventual-periodicity iff quadratic-irrational)."
     ]
   },
@@ -21,34 +21,36 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T03:00:00.000Z",
-    "iteration": 3,
-    "focus": "S3 (researcher-8, 2026-05-12): proved cbrt3_a1 : Int.floor (1/(cbrt3-1)) = (2:Int) \u2014 the second partial quotient a_1=2 of the simple CF [1;2,3,1,4,...]. Supporting lemmas: four_thirds_lt_cbrt3 (cube 64/27 < 3) and cbrt3_lt_three_halves (cube 27/8 > 3); algebraic step via div_lt_iff\u2080 / le_div_iff\u2080 + Int.le_floor / Int.floor_lt. 0 sorries, 0 axioms. File grows ~110 \u2192 ~184 lines (+3 theorems).",
+    "since": "2026-05-12T04:30:00.000Z",
+    "iteration": 4,
+    "focus": "S4 (researcher-3, 2026-05-12): proved cbrt3_a2 : Int.floor (1/(1/(cbrt3-1) - 2)) = (3:Int) — the third partial quotient a_2=3 of the simple CF [1;2,3,1,4,...]. Supporting lemmas: ten_sevenths_lt_cbrt3 (cube 1000/343 < 1029/343 = 3) and cbrt3_lt_thirteen_ninths (cube 2197/729 > 2187/729 = 3); algebraic step via div_lt_iff₀ / le_div_iff₀ / lt_div_iff₀ + Int.le_floor / Int.floor_lt on a double-nested fraction. 0 sorries, 0 axioms. File grows ~184 → ~286 lines (+3 theorems, +1 prose section). Followed S3's S4 next-action sketch verbatim.",
     "blockers": [],
-    "nextAction": "S4: prove cbrt3_a2 : Int.floor (1/(1/(cbrt3-1) - 2)) = (3:Int). Needs ten_sevenths_lt_cbrt3 (cube 1000/343 < 3) and cbrt3_lt_thirteen_ninths (cube 2197/729 > 3); algebraic step a double-nested div_lt_iff\u2080 / le_div_iff\u2080 chain. Reuse S2/S3 cubing template.",
+    "nextAction": "S5: prove cbrt3_a3 : Int.floor (1/(1/(1/(cbrt3-1) - 2) - 3)) = (1:Int). Needs twenty_three_sixteenths_lt_cbrt3 (cube 12167/4096 < 12288/4096 = 3); the upper bound is already cbrt3_lt_thirteen_ninths (S4). Algebraic step is a triple-nested div_lt_iff₀ / le_div_iff₀ chain.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
+      "total": 4,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S3 (researcher-8, 2026-05-12): second-partial-quotient iteration. Established cbrt3_a1 : Int.floor (1/(cbrt3-1)) = (2:Int) \u2014 the second partial quotient a_1 of the non-periodic simple CF [1;2,3,1,4,...] \u2014 via two new supporting cubing lemmas (four_thirds_lt_cbrt3, cbrt3_lt_three_halves) plus div_lt_iff\u2080 / le_div_iff\u2080. Cumulatively the file proves a_0=1 and a_1=2; 0 sorries, 0 axioms, depends only on parent's cbrt3_cubed. The S2 cubing-by-ring template extended one-to-one to S3, only swapping the cube targets. S2 (researcher-10, 2026-05-11): a_0=1 baseline. S1 (researcher-1, 2026-05-11): OBSERVE survey with Lagrange obstacle + Mathlib API map.",
+    "progressSummary": "S4 (researcher-3, 2026-05-12): third-partial-quotient iteration. Established cbrt3_a2 : Int.floor (1/(1/(cbrt3-1) - 2)) = (3:Int) — the third partial quotient a_2 of the non-periodic simple CF [1;2,3,1,4,...] — via two new supporting cubing lemmas (ten_sevenths_lt_cbrt3, cbrt3_lt_thirteen_ninths) plus a 5-step algebraic chain (positivity of cbrt3-1; 9/4 bound on 1/(cbrt3-1); 7/3 bound on 1/(cbrt3-1); positivity of inner-minus-2; floor antisymmetry). Cumulatively the file proves a_0=1, a_1=2, a_2=3 — the first three partial quotients of OEIS A002945; 0 sorries, 0 axioms, depends only on parent's cbrt3_cubed. The S2/S3 cubing-by-ring template extended one-to-one to S4 with no new ad-hoc reasoning. S3 (researcher-8, 2026-05-12): a_1=2. S2 (researcher-10, 2026-05-11): a_0=1 baseline. S1 (researcher-1, 2026-05-11): OBSERVE survey with Lagrange obstacle + Mathlib API map.",
     "builtItems": [
-      "Proofs/CubeRoot3IrrationalOQ04.lean (new, ~110 lines, 4 theorems): cbrt3_nonneg, one_le_cbrt3, cbrt3_lt_two, cbrt3_floor_eq_one \u2014 first partial quotient a_0 = 1 of the simple CF of cbrt3. 0 sorries, 0 axioms.",
-      "Proofs/CubeRoot3IrrationalOQ04.lean (extended, ~110 \u2192 ~184 lines, 7 theorems total): +four_thirds_lt_cbrt3, +cbrt3_lt_three_halves, +cbrt3_a1 \u2014 second partial quotient a_1 = 2. 0 sorries, 0 axioms in this iteration."
+      "Proofs/CubeRoot3IrrationalOQ04.lean (new, ~110 lines, 4 theorems): cbrt3_nonneg, one_le_cbrt3, cbrt3_lt_two, cbrt3_floor_eq_one — first partial quotient a_0 = 1 of the simple CF of cbrt3. 0 sorries, 0 axioms.",
+      "Proofs/CubeRoot3IrrationalOQ04.lean (extended, ~110 → ~184 lines, 7 theorems total): +four_thirds_lt_cbrt3, +cbrt3_lt_three_halves, +cbrt3_a1 — second partial quotient a_1 = 2. 0 sorries, 0 axioms in this iteration.",
+      "Proofs/CubeRoot3IrrationalOQ04.lean (extended, ~184 → ~286 lines, 10 theorems total): +ten_sevenths_lt_cbrt3, +cbrt3_lt_thirteen_ninths, +cbrt3_a2 — third partial quotient a_2 = 3. 0 sorries, 0 axioms in this iteration."
     ],
     "insights": [
-      "Lagrange (1770): CF eventually periodic iff quadratic irrational. cbrt3 has minimal polynomial X^3-3 (degree 3 over Q, irreducible by Eisenstein at p=3), so its CF is non-periodic \u2014 no finite-description theorem about all a_i is possible.",
-      "First five partial quotients computed: a0=1, a1=2, a2=3, a3=1, a4=4 (matches OEIS A002945). First five convergents: 1/1, 3/2, 10/7, 13/9, 62/43 \u2014 alternate above/below cbrt3 as expected for any irrational CF.",
+      "Lagrange (1770): CF eventually periodic iff quadratic irrational. cbrt3 has minimal polynomial X^3-3 (degree 3 over Q, irreducible by Eisenstein at p=3), so its CF is non-periodic — no finite-description theorem about all a_i is possible.",
+      "First five partial quotients computed: a0=1, a1=2, a2=3, a3=1, a4=4 (matches OEIS A002945). First five convergents: 1/1, 3/2, 10/7, 13/9, 62/43 — alternate above/below cbrt3 as expected for any irrational CF.",
       "IntFractPair.stream is the right interface for single-a_i extraction; GenContFract.of adds a structural layer that is overkill for prefix verification. Use IntFractPair.b directly.",
       "Each a_i lemma is independent (direct floor-bound, not a CF recursion), so S2 through S6 can be parallelized.",
       "Roth's theorem (mu(cbrt3)=2) constrains a_i growth (sub-polynomial in q_{i-1}) but is not a prerequisite for finite-prefix lemmas; Roth is its own deep target in the gallery.",
       "Cubing-by-ring-then-nlinarith is drift-robust over pow_le_pow_left / pow_lt_pow_left. Unfold cbrt3^3 to cbrt3*cbrt3*cbrt3 via ring; nlinarith then closes the cubic bound from the linear contradiction hypothesis + cbrt3_nonneg, without naming any monotonicity lemma. Generalizes cleanly to all subsequent a_i bounds.",
-      "Int.le_floor / Int.floor_lt are preferable to the packed Int.floor_eq_iff for two-sided floor identities \u2014 le_antisymm + the two halves keeps the proof readable and isolates which bound is failing.",
+      "Int.le_floor / Int.floor_lt are preferable to the packed Int.floor_eq_iff for two-sided floor identities — le_antisymm + the two halves keeps the proof readable and isolates which bound is failing.",
       "S3 confirms the S2 cubing-by-ring-then-nlinarith template scales one-to-one across a_i with no new ad-hoc reasoning; the per-a_i bound bounds are (4/3, 3/2) for a_1 with cube targets (64/27, 27/8). For S4 (a_2=3) the bounds will be (10/7, 13/9) with cube targets (1000/343, 2197/729).",
-      "div_lt_iff\u2080 and le_div_iff\u2080 (with \u2080-suffix) are the right Mathlib names for the algebraic step '1/x bounds' on a positive denominator at the pinned revision. The non-suffixed div_lt_iff / le_div_iff also exist for the (0 < c) signature but the suffixed forms are preferred in newer proofs in this repository (Erdos643, Stirling, Erdos795).",
-      "Each a_i lemma proof is ~25 lines after the cubing lemmas are in place: 5 lines for positivity + 10 lines each for the upper/lower floor bound via div_lt_iff\u2080/le_div_iff\u2080 + Int.floor_lt/Int.le_floor + exact_mod_cast. The cubing lemmas themselves are ~12 lines each (by_contra + nlinarith chain)."
+      "S4 confirms the cubing template extends to nested fractions: cbrt3_a2 needs (10/7, 13/9) and cube targets (1000/343 < 1029/343 = 3, 2197/729 > 2187/729 = 3). Both cube boundaries are within 0.1 of 3 — the convergent denominators are tight — but nlinarith handles the cubing closure verbatim once cbrt3^3 = 3 is substituted. The algebraic step is a 5-step chain (positivity of cbrt3-1, two-sided bound on 1/(cbrt3-1) via div_lt_iff₀/lt_div_iff₀, positivity of inner-minus-2, two-sided bound on 1/(inner-2), floor antisymmetry); each step is a single linarith / linarith chain. For S5 (a_3=1) the relevant bound is 23/16 < cbrt3, with cube target 12167/4096 < 12288/4096 = 3.",
+      "div_lt_iff₀ and le_div_iff₀ (with ₀-suffix) are the right Mathlib names for the algebraic step '1/x bounds' on a positive denominator at the pinned revision. The non-suffixed div_lt_iff / le_div_iff also exist for the (0 < c) signature but the suffixed forms are preferred in newer proofs in this repository (Erdos643, Stirling, Erdos795).",
+      "Each a_i lemma proof is ~25 lines after the cubing lemmas are in place: 5 lines for positivity + 10 lines each for the upper/lower floor bound via div_lt_iff₀/le_div_iff₀ + Int.floor_lt/Int.le_floor + exact_mod_cast. The cubing lemmas themselves are ~12 lines each (by_contra + nlinarith chain)."
     ],
     "mathlibGaps": [
       "No worked example of GenContFract.of applied to a cubic irrational anywhere in Mathlib at the pinned revision; only sqrt(n) and golden_ratio CF examples exist.",
@@ -56,8 +58,8 @@
       "No tactic-level support for \"cube both sides of an inequality involving Real.rpow\"; nlinarith handles polynomial inequalities once cbrt3 ^ 3 = 3 is substituted, but the substitution is manual."
     ],
     "nextSteps": [
-      "S4: prove cbrt3_a2 : Int.floor (1/(1/(cbrt3-1) - 2)) = (3:Int). Auxiliary cubing lemmas ten_sevenths_lt_cbrt3 (cube 1000/343 < 3) and cbrt3_lt_thirteen_ninths (cube 2197/729 > 3) reuse the S2/S3 template directly. Algebraic step is the same div_lt_iff\u2080 / le_div_iff\u2080 pattern on a double-nested fraction (handle inner positivity inductively from S3).",
-      "S5: cbrt3_a3 = 1 and S6: cbrt3_a4 = 4. After S4 the template is fully exercised; S5\u2013S6 are mechanical.",
+      "S5: prove cbrt3_a3 : Int.floor (1/(1/(1/(cbrt3-1) - 2) - 3)) = (1:Int). Auxiliary cubing lemma twenty_three_sixteenths_lt_cbrt3 (cube 12167/4096 < 12288/4096 = 3) plus reuse of S4's cbrt3_lt_thirteen_ninths upper bound. Algebraic step is a triple-nested div_lt_iff₀ / le_div_iff₀ chain following the S4 template (5-step: outer positivity, two-sided inner bound, two-sided outer bound, floor antisymmetry).",
+      "S6: cbrt3_a4 = 4. After S5 the template is fully exercised on triple-nested fractions; S6 is mechanical.",
       "S7: bundle the per-a_i lemmas into a single IntFractPair.stream cbrt3 statement at indices 0..4, tying the per-quotient lemmas to the canonical Mathlib API.",
       "S8+ (deferred): convergent lemmas convergent_n cbrt3 = (h_n, k_n) for n = 0..4, with the recurrence h_n = a_n h_{n-1} + h_{n-2}, k_n = a_n k_{n-1} + k_{n-2}."
     ]
@@ -88,7 +90,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.562Z",
-  "lastUpdate": "2026-05-12T03:00:00.000Z",
+  "lastUpdate": "2026-05-12T04:30:00.000Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [
@@ -139,8 +141,8 @@
     {
       "path": "Proofs/CubeRoot3IrrationalOQ04.lean",
       "filename": "CubeRoot3IrrationalOQ04.lean",
-      "lineCount": 184,
-      "theoremCount": 7,
+      "lineCount": 286,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
