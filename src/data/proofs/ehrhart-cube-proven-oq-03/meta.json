@@ -1,0 +1,93 @@
+{
+  "id": "ehrhart-cube-proven-oq-03",
+  "title": "Ehrhart Polynomial of the Hypersimplex: First-Principles Scaffold",
+  "slug": "ehrhart-cube-proven-oq-03",
+  "description": "Open question from `ehrhart-cube-proven`: prove axiom-free the Ehrhart-style lattice-point count for the dilated hypersimplex Δ(d, k) — the convex hull of all 0/1-vectors in ℤ^d with exactly k coordinates equal to 1, equivalently the slice of the unit cube [0,1]^d by the hyperplane Σ x_i = k. This S1 OBSERVE scaffold defines `hypersimplexLatticeCount d k n` as a `Finset.filter` cardinality on `Fin d → Fin (n+1)` constrained by Σ x_i = n·k, and states two reference identities to discharge in S2/S3: (i) `hypersimplex_count_k_one`: Δ(d, 1) lattice count equals C(n + d - 1, d - 1) (reduces to the standard simplex via the OQ-01 multiset bijection); (ii) `hypersimplex_palindrome_k_d_minus_1`: Δ(d, d-1) lattice count equals Δ(d, 1) lattice count (the involution x ↦ n - x is a lattice isomorphism Δ(d, k) ↔ Δ(d, d - k)). Four numeric sanity checks are closed by `decide`, anchoring the definition.",
+  "leanFile": {
+    "path": "Proofs/EhrhartCubeProvenOQ03.lean",
+    "filename": "EhrhartCubeProvenOQ03.lean",
+    "lineCount": 119,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "sorries": 2,
+    "axiomCount": 0
+  },
+  "meta": {
+    "author": "Lean Genius Research",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Hypersimplex",
+    "date": "2026",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/EhrhartCubeProvenOQ03.lean",
+    "tags": [
+      "combinatorics",
+      "ehrhart-theory",
+      "lattice-points",
+      "polytopes",
+      "hypersimplex",
+      "open-problem",
+      "research",
+      "seeker-selected"
+    ],
+    "badge": "formalized"
+  },
+  "sections": [
+    {
+      "id": "section-1-definition",
+      "title": "Section I — Hypersimplex Lattice-Point Definition",
+      "startLine": 36,
+      "endLine": 62,
+      "description": "Defines `coordSumEq` (the coordinate-sum predicate) and `hypersimplexLatticeCount d k n` as the cardinality of `Finset.univ.filter (Σ x_i = n·k)` over `Fin d → Fin (n+1)`. Both definitions are decidable instances, enabling `decide` for small concrete values."
+    },
+    {
+      "id": "section-2-reference-identities",
+      "title": "Section II — Reference identities (S2 / S3 targets, `sorry`)",
+      "startLine": 64,
+      "endLine": 92,
+      "description": "States two reference identities to discharge in S2 and S3: `hypersimplex_count_k_one` (k=1 reduces to standard simplex via OQ-01 multiset bijection) and `hypersimplex_palindrome_k_d_minus_1` (the involution `x ↦ n - x` sends Δ(d, k) lattice points to Δ(d, d-k) lattice points)."
+    },
+    {
+      "id": "section-3-sanity-checks",
+      "title": "Section III — Numeric sanity checks (no `sorry`)",
+      "startLine": 93,
+      "endLine": 119,
+      "description": "Four numeric sanity checks closed by `decide` anchoring the definition: `hypersimplex_count_2_1_2 = 3`, `hypersimplex_count_3_1_1 = 3`, `hypersimplex_count_3_2_1 = 3` (palindrome witness), and `hypersimplex_count_3_1_2 = C(4, 2)` (binomial check)."
+    }
+  ],
+  "overview": {
+    "title": "Hypersimplex Δ(d, k): the missing sibling between the simplex and the cube",
+    "summary": "The d-dimensional hypersimplex Δ(d, k) = conv { x ∈ {0,1}^d : Σ x_i = k } interpolates between the standard d-simplex (k = 1) and the unit cube. Three sibling files in this family already prove the cube ([0,1]^d), the standard simplex (OQ-01), and the cross-polytope (OQ-02) Ehrhart polynomials axiom-free. OQ-04 completes the cube's h*-vector / Eulerian-number story. OQ-03 introduces the hypersimplex via a `Finset.filter` cardinality over `Fin d → Fin (n+1)` constrained by the coordinate sum.",
+    "mainTheorem": "S2 target: `hypersimplexLatticeCount d 1 n = C(n + d - 1, d - 1)`. S3 target: `hypersimplexLatticeCount d (d - 1) n = hypersimplexLatticeCount d 1 n` (palindrome via lattice involution).",
+    "approach": "Reuse the simplex multiset bijection `Sym (Fin (d+1)) n` from `EhrhartSimplexProven.lean` for S2; instantiate the involution `x ↦ (Fin.mk (n - x i) ...)` for S3. The generic Stanley formula `L(Δ(d,k), n) = Σ_j (-1)^j C(d, j) C(n(k-j) + d - 1, d - 1)` is deferred to S4+ as a bridge to OQ-04's Eulerian numbers."
+  },
+  "conclusion": {
+    "title": "S1 OBSERVE scaffold delivered",
+    "summary": "Fresh hypersimplex Ehrhart-counting infrastructure in place. Four numeric `decide` checks (including a binomial witness `hypersimplex_count_3_1_2 = C(4, 2)`) verify the definition matches expected combinatorial values for small (d, k, n). Two `sorry`'d theorems pinpoint the S2 and S3 targets.",
+    "nextSteps": "S2: discharge `hypersimplex_count_k_one` by reducing to the simplex multiset bijection from `EhrhartSimplexProven.lean`. S3: discharge the palindrome via the involution `x ↦ n - x` on `Fin d → Fin (n+1)` and `Finset.sum_sub_distrib`."
+  },
+  "crossReferences": [
+    {
+      "type": "parent",
+      "slug": "ehrhart-cube-proven",
+      "title": "Ehrhart Polynomial of the Unit Cube: First-Principles Proof",
+      "relation": "Parent problem; supplies the `(Fin d → Fin (n+1))` lattice-point encoding reused here for the slice Σ x_i = n·k."
+    },
+    {
+      "type": "sibling",
+      "slug": "ehrhart-cube-proven-oq-01",
+      "title": "Ehrhart Polynomial of the Standard Simplex: First-Principles Proof",
+      "relation": "Sibling: supplies the multiset bijection `Sym (Fin (d+1)) n` whose specialisation discharges OQ-03's k = 1 case."
+    },
+    {
+      "type": "sibling",
+      "slug": "ehrhart-cube-proven-oq-02",
+      "title": "Ehrhart Polynomial of the Cross-Polytope: Axiom-Free Proof",
+      "relation": "Sibling: parallel hyperplane-slice family; Pascal/hockey-stick algebraic infrastructure reusable for the generic Stanley formula in OQ-03 S4+."
+    },
+    {
+      "type": "sibling",
+      "slug": "ehrhart-cube-proven-oq-04",
+      "title": "Eulerian-Number Interpretation of the h*-Vector of the Unit Cube",
+      "relation": "Sibling: Stanley's general hypersimplex formula `L(Δ(d, k), n) = Σ_j A(d-1, j) · C(n - j + d - 1, d - 1)` uses the Eulerian numbers `A(d-1, j)` formalised in OQ-04 — the S4+ bridge target."
+    }
+  ]
+}

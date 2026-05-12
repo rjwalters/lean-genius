@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ann-header",
+    "proofId": "ehrhart-cube-proven-oq-03",
+    "range": { "startLine": 1, "endLine": 34 },
+    "type": "context",
+    "title": "Header: Hypersimplex Ehrhart Scaffold (S1 OBSERVE)",
+    "content": "Positions this file as the S1 OBSERVE scaffold for `ehrhart-cube-proven-oq-03`: an axiom-free, first-principles approach to the Ehrhart-style lattice-point count of the d-dimensional hypersimplex $\\Delta(d, k) = \\mathrm{conv}\\{x \\in \\{0,1\\}^d : \\sum x_i = k\\}$. Three deliverables: (1) `hypersimplexLatticeCount` definition via `Finset.filter`; (2) two `sorry`'d reference identities (S2/S3 targets); (3) four numeric `decide` sanity checks. Sits between the standard simplex (OQ-01) and the cross-polytope (OQ-02) in the parent ehrhart-cube-proven family.",
+    "mathContext": "$\\Delta(d, k)$ is the slice of the unit cube $[0, 1]^d$ by the affine hyperplane $\\sum x_i = k$. Lattice points in $n \\cdot \\Delta(d, k)$ correspond bijectively to functions $x : \\mathrm{Fin}\\ d \\to \\mathrm{Fin}\\ (n + 1)$ with $\\sum_i x_i = n \\cdot k$.",
+    "significance": "context",
+    "relatedConcepts": ["hypersimplex", "Ehrhart polynomial", "lattice-point counting", "hyperplane slice"],
+    "prerequisites": ["Mathlib `Finset.filter`", "`Fin d → Fin (n+1)` cube encoding"]
+  },
+  {
+    "id": "ann-coord-sum-eq",
+    "proofId": "ehrhart-cube-proven-oq-03",
+    "range": { "startLine": 47, "endLine": 53 },
+    "type": "definition",
+    "title": "`coordSumEq`: Decidable Coordinate-Sum Predicate",
+    "content": "`coordSumEq d n target x` is `(∑ i : Fin d, (x i : ℕ)) = target`. The instance `Decidable (coordSumEq d n target x)` is derived from `Nat`'s decidable equality, enabling Lean's `decide` tactic to close concrete numeric instances of the hypersimplex count.",
+    "mathContext": "The Σ-predicate is the algebraic encoding of the affine hyperplane $\\sum x_i = nk$ in the lattice $\\mathbb{Z}^d$.",
+    "significance": "key",
+    "relatedConcepts": ["decidable predicate", "Finset.sum", "Fin lift"],
+    "prerequisites": ["Mathlib `Decidable`", "`Finset.univ.sum`"]
+  },
+  {
+    "id": "ann-hypersimplex-lattice-count",
+    "proofId": "ehrhart-cube-proven-oq-03",
+    "range": { "startLine": 55, "endLine": 62 },
+    "type": "definition",
+    "title": "`hypersimplexLatticeCount`: Slice Cardinality",
+    "content": "`hypersimplexLatticeCount d k n` is the cardinality of `Finset.univ.filter (Σ x_i = n · k)` over the finite function space `Fin d → Fin (n + 1)`. Mirrors the parent file's `cube_lattice_count` (which counts the whole cube `(Fin d → Fin (n+1))`) but adds the slice predicate. This is the central object: `L(Δ(d, k), n) = hypersimplexLatticeCount d k n`.",
+    "mathContext": "$L(\\Delta(d, k), n) = |\\{x \\in [0, n]^d \\cap \\mathbb{Z}^d : \\sum x_i = nk\\}|$. The encoding `Fin (n+1)` for each coordinate ensures bounds $0 \\le x_i \\le n$.",
+    "significance": "key",
+    "relatedConcepts": ["Ehrhart polynomial", "Finset.filter", "lattice slice"],
+    "prerequisites": ["`Fintype.card`", "`Finset.filter`"]
+  },
+  {
+    "id": "ann-k-one-target",
+    "proofId": "ehrhart-cube-proven-oq-03",
+    "range": { "startLine": 66, "endLine": 78 },
+    "type": "theorem",
+    "title": "S2 Target: `hypersimplex_count_k_one`",
+    "content": "States `hypersimplexLatticeCount d 1 n = (n + d - 1).choose (d - 1)`. The `sorry` placeholder for the S2 iteration. Proof strategy: lattice points are weak compositions of $n$ into $d$ nonneg parts each $\\le n$ — but with $k = 1$ the upper bound $n$ is non-binding (a single coordinate carries the whole sum unless distributed), so this collapses to the unrestricted multiset bijection $\\mathrm{Sym}\\,(\\mathrm{Fin}\\,d)\\,n$ used in `EhrhartSimplexProven.simplex_lattice_count` (giving $\\binom{n + d - 1}{d - 1}$).",
+    "mathContext": "$L(\\Delta(d, 1), n) = \\binom{n + d - 1}{d - 1}$ — same as the count for a $(d - 1)$-simplex scaled by $n$.",
+    "significance": "key",
+    "relatedConcepts": ["weak composition", "Sym (Fin d) n", "multiset bijection", "stars and bars"],
+    "prerequisites": ["`Sym.card_sym_eq_choose`", "`EhrhartSimplexProven.simplex_lattice_count`"]
+  },
+  {
+    "id": "ann-palindrome-target",
+    "proofId": "ehrhart-cube-proven-oq-03",
+    "range": { "startLine": 80, "endLine": 91 },
+    "type": "theorem",
+    "title": "S3 Target: `hypersimplex_palindrome_k_d_minus_1`",
+    "content": "States `hypersimplexLatticeCount d (d - 1) n = hypersimplexLatticeCount d 1 n`. The `sorry` placeholder for the S3 iteration. Proof strategy: the involution $\\varphi : x \\mapsto (\\mathrm{Fin.mk}(n - x_i))_i$ on `Fin d → Fin (n + 1)` is a lattice automorphism with $\\sum_i \\varphi(x)_i = nd - \\sum_i x_i$. Therefore $\\sum_i x_i = n(d - 1) \\iff \\sum_i \\varphi(x)_i = n$, giving a bijection between the two filter sets. Use `Finset.card_image_of_injective` or `Equiv.toFinset.card`.",
+    "mathContext": "Δ(d, k) and Δ(d, d - k) are congruent via the lattice involution $x \\mapsto \\mathbf{1} - x$ in [0,1]^d; scaling by $n$ gives the integer-lattice involution $x \\mapsto n\\mathbf{1} - x$.",
+    "significance": "key",
+    "relatedConcepts": ["lattice involution", "Δ(d,k) ↔ Δ(d, d-k) symmetry", "Finset.sum_sub_distrib"],
+    "prerequisites": ["`Finset.card_image_of_injective`", "`Finset.sum_sub_distrib`", "`Fin.cast`"]
+  },
+  {
+    "id": "ann-sanity-checks",
+    "proofId": "ehrhart-cube-proven-oq-03",
+    "range": { "startLine": 93, "endLine": 119 },
+    "type": "technique",
+    "title": "Section III — Four `decide` Sanity Checks",
+    "content": "Four concrete numeric verifications closed by `decide`: (i) $L(\\Delta(2,1), 2) = 3$ (the points $(0,2), (1,1), (2,0)$); (ii) $L(\\Delta(3,1), 1) = 3$ (the three standard basis directions $e_1, e_2, e_3$); (iii) $L(\\Delta(3,2), 1) = 3$ (palindrome witness — same value as $\\Delta(3,1)$); (iv) $L(\\Delta(3,1), 2) = \\binom{4}{2} = 6$ (binomial witness for the S2 target with $d = 3$, $n = 2$). These `decide` proofs anchor the definition: any future iteration that breaks them would change the meaning of `hypersimplexLatticeCount`.",
+    "mathContext": "Concrete verification at small $(d, k, n)$ is a standard hedge against off-by-one or convention errors in lattice-point counting definitions. Pattern reused from sibling files (`cube_3d_at_0/1/2/3` in `EhrhartCubeProven.lean`).",
+    "significance": "key",
+    "relatedConcepts": ["`decide` tactic", "binomial verification", "palindrome sanity"],
+    "prerequisites": ["Lean `decide`", "`Nat.choose` evaluation"]
+  }
+]
