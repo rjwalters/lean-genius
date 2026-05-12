@@ -132,6 +132,38 @@
       "Is there a type-theoretic universe analogue of the beth hierarchy in Lean 4's universe polymorphism?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "cantors-theorem-oq-01",
+      "relationship": "parent",
+      "description": "Parent open question 'The Cardinality of $\\mathcal{P}(\\mathbb{R})$: What is $|\\mathcal{P}(\\mathbb{R})|$?'. Establishes $|\\mathcal{P}(\\mathbb{R})| = \\beth_2$ (one level up from $|\\mathbb{R}| = \\beth_1$). This OQ-01-OQ-02 extends the parent's result one more iteration: $|\\mathcal{P}(\\mathcal{P}(\\mathbb{R}))| = \\beth_3$. The parent theorem `card_powerSet_real_eq_beth_two` is imported directly here as the base case of the recursion."
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "foundational",
+      "description": "Cantor's theorem $|A| < |\\mathcal{P}(A)|$ — the strict-inequality engine that drives every step of the iterated power-set hierarchy. Each level $\\beth_n < \\beth_{n+1}$ in this file's `iteratedPowerSet_strict_mono` is a direct application of `Cardinal.cantor` to the previous level. Without Cantor's theorem, no strict separation between $\\beth_n$ and $\\beth_{n+1}$ would be available; the hierarchy could collapse."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "foundational",
+      "description": "Cantor's diagonal argument — the original 1891 proof technique behind `Cardinal.cantor`. For each level of the iterated hierarchy, diagonalization produces an element of $\\mathcal{P}(\\beth_n)$ not in any enumeration of $\\beth_n$, giving the strict inequality $\\beth_n < \\beth_{n+1}$. This entry's strict-tower theorem $\\beth_0 < \\beth_1 < \\beth_2 < \\beth_3$ is, internally, four invocations of the diagonal argument."
+    },
+    {
+      "targetId": "continuum-hypothesis",
+      "relationship": "related",
+      "description": "Cohen-Gödel independence of the Continuum Hypothesis: CH ($\\aleph_1 = \\beth_1 = 2^{\\aleph_0}$) is independent of ZFC. By Easton's theorem the same holds at every $\\beth_n$ for $n \\geq 2$: the aleph-indices of $\\beth_2, \\beth_3, \\ldots$ are independent of ZFC. This contrasts sharply with the present file's *beth-index* identities $|\\mathcal{P}^n(\\mathbb{R})| = \\beth_{n+1}$, which are unconditional ZFC theorems. The dichotomy 'beth equalities are absolute, aleph-equalities are independent' is the structural point: $\\beth$ is defined by iteration of power-set (constructive), $\\aleph$ is defined by transfinite ordinal indexing of cardinals (model-dependent at limit stages)."
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "complementary",
+      "description": "Cantor 1874 countability of algebraic numbers ($|\\overline{\\mathbb{Q}} \\cap \\mathbb{R}| = \\aleph_0 = \\beth_0$). This entry sits at the *bottom* rung of the beth hierarchy. Together, $|\\overline{\\mathbb{Q}} \\cap \\mathbb{R}| = \\beth_0$ (countable, by Cantor 1874) and $|\\mathcal{P}^n(\\mathbb{R})| = \\beth_{n+1}$ (this file) trace out the full beth tower from $\\beth_0$ upward: $\\beth_0 < \\beth_1 = |\\mathbb{R}| < \\beth_2 = |\\mathcal{P}(\\mathbb{R})| < \\beth_3 = |\\mathcal{P}(\\mathcal{P}(\\mathbb{R}))| < \\cdots$."
+    },
+    {
+      "targetId": "cantors-theorem-oq-01-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling OQ-01-OQ-01 of the parent `cantors-theorem-oq-01`. Both extend the parent's $|\\mathcal{P}(\\mathbb{R})| = \\beth_2$ result in different directions — sibling formalizations under the same parent contribute complementary perspectives on the beth-tower structure."
+    }
+  ],
   "mainTheorems": [
     {
       "name": "card_powerSet_powerSet_real_eq_beth_three",
