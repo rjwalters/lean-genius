@@ -57,8 +57,76 @@
       "**Mathlib's SumTwoSquares is the bridge**: The Mathlib theorem Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one (from NumberTheory.SumTwoSquares) encodes Euler's criterion — it says a prime p with p ≡ 3 (mod 4) cannot divide a number of the form k² + 1. This is the machine-checked version of a classical result connecting quadratic residues to Fermat's theorem on sums of two squares (every prime p ≡ 1 mod 4 is a sum of two squares).",
       "**Sum of two squares: the deeper connection**: The condition $p \\equiv 1 \\pmod 4$ is equivalent, by **Fermat's theorem on sums of two squares** (conjectured 1640, proved Euler 1749), to $p = a^2 + b^2$ for some integers $a, b$. The proof here uses the easier direction: if $p \\mid k^2 + 1$ then $-1 \\equiv k^2 \\pmod p$, so $-1$ is a perfect square mod $p$, forcing $p \\equiv 1 \\pmod 4$. The harder direction — every prime $p \\equiv 1 \\pmod 4$ is a sum of two squares — requires Gaussian integer factorization or Minkowski's theorem and is a genuinely deeper result also formalized in Mathlib's `NumberTheory.SumTwoSquares`.",
       "**Gaussian primes and the ring ℤ[i]**: From the algebraic perspective, primes $p \\equiv 1 \\pmod 4$ are exactly the rational primes that split in the Gaussian integers $\\mathbb{Z}[i]$: $p = (a+bi)(a-bi)$. Primes $p \\equiv 3 \\pmod 4$ remain prime (inert) in $\\mathbb{Z}[i]$, while $2 = -i(1+i)^2$ ramifies. This trichotomy (split/inert/ramified) is the algebraic number theory perspective on the same mod-4 classification proved elementarily here — what appears as a residue condition mod 4 is really about how primes behave in the ring extension $\\mathbb{Z} \\subset \\mathbb{Z}[i]$."
+    ],
+    "prerequisites": [
+      "Euclid's infinitude of primes (find a number N > n! with a new prime factor)",
+      "Modular arithmetic mod 4 and quadratic residues",
+      "Euler's criterion: $-1$ is a quadratic residue mod $p$ iff $p \\equiv 1 \\pmod 4$",
+      "Fermat's theorem on sums of two squares (every $p \\equiv 1 \\pmod 4$ is $a^2 + b^2$)",
+      "The factorial function and its prime-factor properties (`Nat.dvd_factorial`)",
+      "Mathlib's `NumberTheory.SumTwoSquares` module (Euler's criterion in machine-checked form)",
+      "Sibling files: `InfinitudePrimes4k1` (≡ 1 construction) and `InfinitudePrimes4k3` (≡ 3 construction)"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "infinitely_many_primes_1_mod_4",
+      "type": "theorem",
+      "description": "$\\forall n \\in \\mathbb{N}, \\exists p$ prime with $p > n$ and $p \\equiv 1 \\pmod 4$. Direct answer to OQ-03 from `infinitude-primes-4k3`. Proof is one line — re-export of `InfinitudePrimes4k1.infinitely_many_primes_1_mod_4`, whose construction is $N = (2(n+1)!)^2 + 1$ followed by Euler's criterion to extract a prime factor $p \\equiv 1 \\pmod 4$."
+    },
+    {
+      "name": "both_classes_infinite",
+      "type": "theorem",
+      "description": "$\\{p \\text{ prime} \\mid p \\equiv 1 \\pmod 4\\}$ and $\\{p \\text{ prime} \\mid p \\equiv 3 \\pmod 4\\}$ are both `Set.Infinite`. Proof packages `InfinitudePrimes4k1.primes_1_mod_4_infinite` and `InfinitudePrimes4k3.primes_3_mod_4_infinite` into a conjunction. The pair of infinite sets covers every odd prime (by the classification theorem below)."
+    },
+    {
+      "name": "odd_prime_mod_four_classification",
+      "type": "theorem",
+      "description": "Every prime $p \\neq 2$ satisfies $p \\equiv 1 \\pmod 4$ or $p \\equiv 3 \\pmod 4$. A basic modular-arithmetic fact (odd primes have $p \\bmod 4 \\in \\{1, 3\\}$ since $p \\bmod 4 \\in \\{0, 2\\}$ would force $p$ to be even), re-exported from `InfinitudePrimes4k3.prime_mod_four`."
+    },
+    {
+      "name": "constructions_cover_all_odd_primes",
+      "type": "theorem",
+      "description": "For every odd prime $p$, exhibits $p$ as a witness in one of the two infinite families with $n = 0$, $q = p$. Proof structure: `rcases` on `odd_prime_mod_four_classification` to split $p \\equiv 1$ vs $p \\equiv 3$, then supply the trivial witness $(0, p)$. Demonstrates the disjunctive cover at the constructive level — every odd prime is *named* by one of the two constructions, not just classified abstractly."
+    }
+  ],
+  "references": [
+    {
+      "type": "research-paper",
+      "citation": "Euler, L. (1749). \"De numeris, qui sunt aggregata duorum quadratorum.\" Novi Commentarii academiae scientiarum Petropolitanae 4, 3-40.",
+      "relevance": "Original proof of Fermat's theorem on sums of two squares (every prime $p \\equiv 1 \\pmod 4$ is a sum of two integer squares), which contains the quadratic-residue criterion $(-1/p) = 1 \\iff p \\equiv 1 \\pmod 4$ used in this proof (via Mathlib's `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one`). Euler's argument is by infinite descent; the modern Mathlib proof is structurally similar but uses the quadratic-residue formalism directly."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Dirichlet, P.G.L. (1837). \"Beweis des Satzes, dass jede unbegrenzte arithmetische Progression, deren erstes Glied und Differenz ganze Zahlen ohne gemeinschaftlichen Factor sind, unendlich viele Primzahlen enthält.\" Abhandlungen der Königlich Preussischen Akademie der Wissenschaften, 45-81.",
+      "relevance": "Dirichlet's theorem on primes in arithmetic progressions (every $\\gcd(a, d) = 1$ AP $\\{a, a+d, a+2d, \\ldots\\}$ contains infinitely many primes). This file together with `infinitude-primes-4k3` gives the elementary special case for modulus 4. Dirichlet's general proof uses Dirichlet L-functions and non-vanishing at $s = 1$; the elementary proofs here avoid all analytic machinery for the specific moduli 1 and 3 (mod 4)."
+    },
+    {
+      "type": "textbook",
+      "citation": "Hardy, G.H., and Wright, E.M. (2008). \"An Introduction to the Theory of Numbers,\" 6th ed., revised by D.R. Heath-Brown and J.H. Silverman. Oxford University Press. §2.2 (Euclid's proof and variants), §16.1 (Quadratic residues), §20.1-3 (Sums of two squares).",
+      "relevance": "Standard reference for the Euclid-style elementary proofs of infinitude in specific arithmetic progressions (§2.2 covers ≡ 3 mod 4 explicitly) and for the quadratic-residue + sum-of-two-squares chain (§16, §20) that underlies the ≡ 1 mod 4 case. Provides the historical context for why the modulus-4 case admits two distinct elementary proofs while modulus-3 and modulus-5 require different approaches."
+    },
+    {
+      "type": "textbook",
+      "citation": "Ireland, K., and Rosen, M. (1990). \"A Classical Introduction to Modern Number Theory,\" 2nd ed. Springer GTM 84. Ch. 5 (Quadratic residues), Ch. 9 (Gaussian integers).",
+      "relevance": "Modern algebraic-number-theory framing: the mod-4 splitting of primes is the prototype of how primes behave in the ring extension $\\mathbb{Z} \\subset \\mathbb{Z}[i]$. Primes $p \\equiv 1 \\pmod 4$ split, $p \\equiv 3 \\pmod 4$ remain inert, $p = 2$ ramifies. This is the algebraic shadow of the elementary classification proved here."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.NumberTheory.SumTwoSquares\" — `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one` and related lemmas. (accessed 2026)",
+      "relevance": "The Mathlib module that machine-checks Euler's criterion in the form needed here: if a prime $p$ divides $k^2 + 1$ for some $k$, then $p \\not\\equiv 3 \\pmod 4$ (equivalently, $p \\equiv 1$ or $p = 2$). This is the key lemma used by `InfinitudePrimes4k1.infinitely_many_primes_1_mod_4`, which this file re-exports."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Proofs.InfinitudePrimes4k1\" — `infinitely_many_primes_1_mod_4`, `primes_1_mod_4_infinite`. (this repository, accessed 2026)",
+      "relevance": "The sibling gallery file containing the actual construction $N = (2(n+1)!)^2 + 1$, the application of Euler's criterion, and the proof that the resulting prime factor is greater than $n$. This file re-exports both theorems and packages them with `InfinitudePrimes4k3` results to form the answer to OQ-03."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Proofs.InfinitudePrimes4k3\" — `primes_3_mod_4_infinite`, `prime_mod_four`. (this repository, accessed 2026)",
+      "relevance": "The parent gallery file (the entry whose OQ-03 this file answers). Contains the ≡ 3 mod 4 construction $N = 4(n+1)! - 1$ and the basic mod-4 classification of odd primes. Both are re-exported here to form the complete picture."
+    }
+  ],
   "sections": [
     {
       "id": "module-header",
