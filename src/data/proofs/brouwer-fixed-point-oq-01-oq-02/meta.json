@@ -19,7 +19,7 @@
     "proofRepoPath": "Proofs/BrouwerFixedPointOQ01OQ02.lean",
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 2,
+    "axiomCount": 3,
     "mathlibDependencies": [
       {
         "theorem": "AddMonoidHom.ext",
@@ -55,7 +55,7 @@
     ],
     "dateAdded": "2026-04-04",
     "lineCount": 375,
-    "assumptions": "2 axioms. (1) H_n_minus_1_sphere_nonzero (n ≥ 1, r : Retraction n, φ : ℤ →+ Unit) ⇒ ∃ ψ : Unit →+ ℤ, ψ.comp φ = id ℤ — encoding the deep singular-homology facts H_{n-1}(S^{n-1}) ≅ ℤ (Mathlib gap B2: no Mayer–Vietoris, no excision, no sphere homology) combined with retraction-functoriality. (2) contractible_singularHomology_zero (n ≥ 1, X : Type, [TopologicalSpace X] [ContractibleSpace X]) ⇒ singularHomology n X is zero — a thin classical-fact surrogate for Mathlib gap B1 (the prism operator bridging topological homotopy and chain homotopy). The mock-form lemma H_n_minus_1_ball_zero is preserved as a trivial theorem (existential witness ⟨0, trivial⟩) so downstream consumers continue working; alongside it H_n_minus_1_ball_zero_substantive is proved using contractible_singularHomology_zero. The composite singular_homology_retraction_split is preserved as a derived theorem combining the mock form with sphere-nonzero. no_retraction_axiom appears only in a block-comment example, not as an actual axiom. The algebraic argument (Part II) is fully proved with 0 axioms.",
+    "assumptions": "3 axioms. (1) H_n_minus_1_sphere_nonzero (n ≥ 1, r : Retraction n, φ : ℤ →+ Unit) ⇒ ∃ ψ : Unit →+ ℤ, ψ.comp φ = id ℤ — encoding the deep singular-homology facts H_{n-1}(S^{n-1}) ≅ ℤ (Mathlib gap B2: no Mayer–Vietoris, no excision, no sphere homology) combined with retraction-functoriality. (2) contractible_singularHomology_zero (n ≥ 1, X : Type, [TopologicalSpace X] [ContractibleSpace X]) ⇒ singularHomology n X is zero — a thin classical-fact surrogate for Mathlib gap B1 (the prism operator bridging topological homotopy and chain homotopy). (3) sphere_singularHomology_nonzero (n ≥ 1) — the thin B2 surrogate axiom installed in S7 ACT-D-1 (PR #18168): the n-th singular homology of the (n-1)-sphere is not zero, strictly weaker than the textbook H_n(𝕊 n) ≅ ℤ statement (asserts non-vanishing only). The mock-form lemma H_n_minus_1_ball_zero is preserved as a trivial theorem (existential witness ⟨0, trivial⟩) so downstream consumers continue working; alongside it H_n_minus_1_ball_zero_substantive is proved using contractible_singularHomology_zero. The composite singular_homology_retraction_split is preserved as a derived theorem combining the mock form with sphere-nonzero. no_retraction_axiom appears only in a block-comment example, not as an actual axiom. The algebraic argument (Part II) is fully proved with 0 axioms.",
     "theoremCount": 13,
     "definitionCount": 3
   },
@@ -149,7 +149,7 @@
   "leanFile": {
     "lineCount": 375,
     "path": "Proofs/BrouwerFixedPointOQ01OQ02.lean",
-    "axiomCount": 2,
+    "axiomCount": 3,
     "sorries": 0,
     "definitionCount": 3,
     "theoremCount": 13
