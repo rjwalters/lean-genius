@@ -2,7 +2,7 @@
   "id": "erdos-101-oq-01",
   "title": "Erdős #101 OQ-01: Four-Point Lines are $o(n^2)$",
   "slug": "erdos-101-oq-01",
-  "description": "Formal statement of Erdős's $100 open question OQ-01 of Problem #101: under no-five-collinear, is the four-point line count $o(n^2)$? Scaffold file with the asymptotic vocabulary, the formal conjecture (1 sorry), and small-case lemmas the conjecture subsumes — proved unconditionally.",
+  "description": "Formal statement of Erdős's $100 open question OQ-01 of Problem #101: under no-five-collinear, is the four-point line count $o(n^2)$? Scaffold file with the asymptotic vocabulary, the formal conjecture (sorry), small-case lemmas the conjecture subsumes (proved unconditionally), and S2's recording of the Solymosi–Stojaković 2013 lower bound + the corollary refuting Erdős's original $\\Theta(n^{3/2})$ conjecture.",
   "meta": {
     "author": "Erdős",
     "erdosNumber": 101,
@@ -18,18 +18,18 @@
       "research"
     ],
     "badge": "wip",
-    "sorries": 1,
+    "sorries": 3,
     "sourceUrl": "https://erdosproblems.com/101",
     "erdosUrl": "https://erdosproblems.com/101",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-05-11",
     "axiomCount": 0,
-    "lineCount": 253,
-    "assumptions": "1 sorry: erdos_101_oq_01 (the main open conjecture, $100 Erdős prize). All supporting lemmas (small-case bound, real-valued $O(n^2)$ trivial bound, $n^2/12$ rate witness) are unconditional and axiom-free; they witness the regime in which the conjecture would tighten existing bounds.",
+    "lineCount": 325,
+    "assumptions": "3 sorries: (1) erdos_101_oq_01 (the main open conjecture, $100 Erdős prize); (2) solymosi_stojakovic_lower_bound (the 2013 lower bound, recorded statement — construction itself uses algebraic geometry over finite fields and is deferred); (3) erdos_three_halves_conjecture_refuted (corollary that Erdős's original $\\Theta(n^{3/2})$ upper bound is refuted, follows from the lower bound by elementary real-analysis arithmetic). All other supporting lemmas (small-case bound, real-valued $O(n^2)$ trivial bound, $n^2/12$ rate witness) are unconditional and axiom-free. 0 axioms remain — every assumption is a deferred proof obligation rather than a permanent axiomatisation.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 6,
+    "theoremCount": 8,
     "definitionCount": 4,
-    "substantiveTheoremCount": 5
+    "substantiveTheoremCount": 7
   },
   "sections": [
     {
@@ -76,9 +76,17 @@
       "id": "obstructions",
       "title": "Proof obstructions and next iterations",
       "startLine": 218,
-      "endLine": 253,
+      "endLine": 264,
       "summary": "Documents the Solymosi–Stojaković lower bound $n^{2-O(1/\\sqrt{\\log n})}$ refuting Erdős's $\\Theta(n^{3/2})$ conjecture; the obstructions from Szemerédi–Trotter and trivial double counting; and the S2/S3 next-iteration plan (lower-bound formalisation, `Asymptotics.IsBigO` connection).",
       "mathContext": "The gap between known lower $n^{2-O(1/\\sqrt{\\log n})}$ and known upper $O(n^2)$ is the substantive content of OQ-01."
+    },
+    {
+      "id": "solymosi-stojakovic",
+      "title": "S2: Solymosi–Stojaković Lower Bound + Refutation of $\\Theta(n^{3/2})$",
+      "startLine": 265,
+      "endLine": 323,
+      "summary": "Records the Solymosi–Stojaković 2013 existential lower bound `solymosi_stojakovic_lower_bound` ($\\forall C > 0, \\exists N, \\forall n \\geq N, \\exists P$ with $|P| = n$, no-five-collinear, and $\\text{fourPointLineCount}\\,P \\geq n^{2-C/\\sqrt{\\log n}}$) as a `theorem ... := by sorry` (construction deferred, statement registered). Adds the corollary `erdos_three_halves_conjecture_refuted` recording that no global $O(n^{3/2})$ upper bound exists, also as a sorry to be discharged by elementary real-analysis arithmetic.",
+      "mathContext": "$\\Omega(n^{2-O(1/\\sqrt{\\log n})}) > \\Omega(n^{3/2})$ for large $n$; the Solymosi–Stojaković construction over finite fields realises this asymptotic. Recorded as `theorem ... := by sorry` rather than `axiom` to keep the file axiom-free."
     }
   ],
   "overview": {
@@ -112,18 +120,21 @@
   },
   "leanFile": {
     "imports": [
-      "Proofs.Erdos101Problem"
+      "Proofs.Erdos101Problem",
+      "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Sqrt"
     ],
     "opens": [
       "Classical"
     ],
     "namespace": "Erdos101OQ01",
-    "lineCount": 253,
+    "lineCount": 325,
     "axiomCount": 0,
-    "theoremCount": 6,
+    "theoremCount": 8,
     "definitionCount": 4,
     "path": "Proofs/Erdos101OQ01.lean",
-    "sorries": 1
+    "sorries": 3
   },
   "crossReferences": [
     {

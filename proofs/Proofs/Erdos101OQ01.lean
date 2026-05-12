@@ -53,6 +53,9 @@ Reference: https://erdosproblems.com/101
 -/
 
 import Proofs.Erdos101Problem
+import Mathlib.Analysis.SpecialFunctions.Pow.Real
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
+import Mathlib.Analysis.SpecialFunctions.Sqrt
 
 namespace Erdos101OQ01
 
@@ -239,15 +242,84 @@ paper, and we defer it to a follow-up iteration.
 
 ## Next iterations
 
-* **S2**: formalise the Solymosi–Stojaković lower-bound *statement*
-  (without the construction) as a recorded fact, witnessing
-  $\Omega(n^{2 - O(1/\sqrt{\log n})})$ existential lower bound; this
-  refutes Erdős's $\Theta(n^{3/2})$ original conjecture.
 * **S3**: connect `fourPointLineCount_le_quadratic` to a
   `Asymptotics.IsBigO` style statement using `Mathlib.Analysis.
   Asymptotics`; investigate whether the existing `improved_upper_bound`
   can yield a $1 - o(1)$ leading constant via per-point Cauchy–Schwarz
   beyond `fourCollinearThrough_bound`.
+
+## S2 (this iteration): Solymosi–Stojaković lower bound
+
+S2 records the Solymosi–Stojaković (2013) existential lower bound as a
+`theorem ... := by sorry` (the construction itself is well beyond
+elementary Lean and is deferred to a much later iteration).  The
+statement is enough to *refute* Erdős's original $\Theta(n^{3/2})$
+conjecture: the lower bound $n^{2 - C / \sqrt{\log n}}$ grows
+asymptotically faster than $n^{3/2}$ for any fixed $C > 0$, so the
+$\Theta(n^{3/2})$ conjecture is false in the upper-bound direction.
+
+The conjecture sits between the trivial $O(n^2)$ upper bound and the
+Solymosi–Stojaković $\Omega(n^{2 - O(1/\sqrt{\log n})})$ lower bound;
+OQ-01 asks whether the upper side can be improved to $o(n^2)$.
 -/
+
+/- ## S2 ACT: Solymosi–Stojaković 2013 existential lower bound
+
+The following two `theorem ... := by sorry` declarations record:
+
+1. The Solymosi–Stojaković (2013) lower bound on the maximum
+   four-point line count, witnessed by an explicit construction over
+   finite fields (we do **not** formalise the construction; we record
+   only the statement as a deferred proof obligation).
+2. The corollary that Erdős's $\Theta(n^{3/2})$ conjecture is refuted
+   by the same construction.
+
+Both are recorded as `theorem ... := by sorry` rather than `axiom`
+declarations, so the file remains axiom-free (the assumption is a
+deferred *proof obligation* rather than a permanent assumption).
+-/
+
+/-- **Solymosi–Stojaković 2013 lower bound** (existential statement).
+
+For every $C > 0$, all sufficiently large $n$ admit a no-five-collinear
+planar point set of size $n$ with at least
+$n^{2 - C / \sqrt{\log n}}$ four-point lines.
+
+Reference: J. Solymosi and M. Stojaković, "Many collinear k-tuples
+with no $k+1$ collinear points," *Discrete & Computational Geometry*
+50 (2013), 811–820.
+
+The construction uses algebraic geometry over finite fields and is
+deferred to a much later iteration.  We record the statement as a
+`theorem ... := by sorry` so it can be consumed by other theorems
+without introducing a permanent `axiom`. -/
+theorem solymosi_stojakovic_lower_bound :
+    ∀ C : ℝ, 0 < C → ∃ N : ℕ, ∀ n : ℕ, N ≤ n →
+      ∃ P : PlanarPointSet, P.points.card = n ∧ NoFiveCollinear P ∧
+        (fourPointLineCount P : ℝ) ≥
+          (n : ℝ) ^ (2 - C / Real.sqrt (Real.log n)) := by
+  sorry
+
+/-- **Refutation of Erdős's original $\Theta(n^{3/2})$ conjecture.**
+
+Erdős originally conjectured that the maximum number of four-point
+lines under no-five-collinear is $\Theta(n^{3/2})$.  The Solymosi–
+Stojaković lower bound refutes the upper half of that conjecture: for
+every $C > 0$ and sufficiently large $n$, there exists a
+no-five-collinear planar point set of size $n$ with strictly more than
+$n^{3/2}$ four-point lines, i.e. there is no global $O(n^{3/2})$
+upper bound.
+
+This corollary follows from `solymosi_stojakovic_lower_bound` together
+with the elementary asymptotic
+$2 - C / \sqrt{\log n} > 3/2$ for sufficiently large $n$.
+
+The corollary is recorded as `theorem ... := by sorry`; discharging it
+in a follow-up iteration is a real-analysis exercise that does not
+require the construction itself. -/
+theorem erdos_three_halves_conjecture_refuted :
+    ¬ (∃ N : ℕ, ∀ (P : PlanarPointSet), NoFiveCollinear P → N ≤ P.points.card →
+        (fourPointLineCount P : ℝ) ≤ (P.points.card : ℝ) ^ (3 / 2 : ℝ)) := by
+  sorry
 
 end Erdos101OQ01
