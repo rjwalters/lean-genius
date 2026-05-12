@@ -1,0 +1,395 @@
+{
+  "slug": "ballot-problem-oq-01-oq-01-oq-02-oq-01",
+  "title": "Step ≥ -m Cycle Lemma — Refuting the Naive ⌈S/m⌉ Lower Bound",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(∀ x ∈ l, -(m : ℤ) ≤ x) → 0 < l.sum → (Int.toNat ⌈(l.sum : ℚ) / m⌉) ≤ (goodRotations l).card",
+    "plain": "For step ≥ -m sequences (m > 1) with sum S > 0, is |goodRotations l| ≥ ⌈S/m⌉? (Conjecture refuted this session.)",
+    "whyMatters": [
+      "Resolves parent meta openQuestions[0] — the natural-but-wrong direction is now documented.",
+      "Identifies conjecture D (m-jump downward IVT) as the genuine generalization of the parent unit-decrement IVT.",
+      "Clarifies that bounded *negative* steps alone do not control |goodRotations|; bounded step alphabets (Mohanty 1979) are the correct setting."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "goodRotations_nonempty (BallotProblemOQ01.lean:494): 0 < l.sum → 0 < |goodRotations l|, for arbitrary l.",
+      "|goodRotations l| = l.sum when steps ∈ {+1, -k} (parent strong cycle lemma).",
+      "|goodRotations l| = l.length when all steps > 0 (parent all-positive case)."
+    ],
+    "open": [
+      "Conjecture D — m-jump downward IVT: prefixSum landing window [v-m+1, v] when crossing v downward.",
+      "Conjecture B — slack count bound: l.sum ≤ m·|goodRotations| + (m-1)·l.length under step ≥ -m.",
+      "Conjecture C — sharper bound charging slack per negative step.",
+      "Conjecture E — restricted alphabet {+1, -m}: recovers ⌈S/m⌉ ≤ |goodRotations| (essentially proven by parent infrastructure)."
+    ],
+    "goal": "Formalize conjecture D (m-jump downward IVT) in Lean as the foundational m-generalization.",
+    "refutedConjecture": {
+      "statement": "(∀ x ∈ l, -m ≤ x) ∧ 0 < l.sum → ⌈S/m⌉ ≤ |goodRotations l|",
+      "counterexample": "l = [-m, m+S] for any m ≥ 2 and any S ≥ m+1; smallest: m=2, l=[-2,5], sum=3, ⌈3/2⌉=2, |goodRotations|=1.",
+      "mechanism": "A single -m step skips m-1 integer levels of the prefix-sum trajectory, eliminating m-1 would-be good-rotation witnesses that the unit-decrement IVT supplies in the m=1 case."
+    }
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T19:42:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE complete; refutation documented; S2 ACT target (conjecture D, m-jump downward IVT) identified.",
+    "blockers": [],
+    "nextAction": "S2 ACT: create proofs/Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean (namespace BallotMJumpCycleLemma); prove m_jump_downward_ivt mirroring unit_decrement_downward_ivt with conclusion window [v-m+1, v].",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE: Refuted parent openQuestions[0] via 2-element counterexample family l = [-m, m+S]. Identified m-jump downward IVT (conjecture D) as the genuine m-generalization of the parent unit-decrement IVT, with mirroring leftmost-crossing proof template. No Mathlib gap.",
+    "builtItems": [
+      "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/problem.md — full restatement with refutation and 5 refined conjectures A-E",
+      "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/knowledge.md — worked verification, mechanism analysis, Mathlib audit, next-steps roadmap"
+    ],
+    "insights": [
+      "Two-element counterexample suffices: l = [-m, m+S] with S = m+1 gives |goodRotations| = 1 < 2 = ⌈S/m⌉ for all m ≥ 2.",
+      "The IVT in the m = 1 case derives its power from the level-visitation guarantee (consecutive prefix sums differ by ≤ 1). For m ≥ 2, a single -m step can skip m-1 integer levels.",
+      "The {+1,-k} cycle lemma works because BOTH the up-climbs (every level visited via +1 steps) AND the down-drops are constrained. The refuted conjecture controlled only the down-drops.",
+      "The right m-generalization places the witness in a window [v-m+1, v] of width m (D), not at exact level v."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "S2 ACT: prove conjecture D (m-jump downward IVT) ~50 LOC in new file BallotProblemOQ01OQ01OQ02OQ01.lean.",
+      "S3 ACT (optional): prove conjecture E (restricted alphabet {+1, -m}) using the existing {+1, -k} infrastructure.",
+      "S4 GALLERY: create src/data/proofs/ballot-problem-oq-01-oq-01-oq-02-oq-01/ with meta.json describing the refuted conjecture and the recovered m-jump IVT."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "ballot-problem",
+    "cycle-lemma",
+    "generalization",
+    "refuted-conjecture"
+  ],
+  "relatedProofs": [
+    "ballot-problem",
+    "ballot-problem-oq-01",
+    "ballot-problem-oq-01-oq-01",
+    "ballot-problem-oq-01-oq-01-oq-02",
+    "ballot-problem-oq-01-oq-02",
+    "ballot-problem-oq-01-oq-02-oq-01",
+    "ballot-problem-oq-01-oq-02-oq-01-oq-01",
+    "ballot-problem-oq-01-oq-02-oq-01-oq-02",
+    "ballot-problem-oq-01-oq-02-oq-04",
+    "ballot-problem-oq-01-oq-04",
+    "ballot-problem-oq-01-oq-04-oq-01",
+    "ballot-problem-oq-02",
+    "ballot-problem-oq-02-oq-02",
+    "ballot-problem-oq-03",
+    "ballot-problem-oq-03-oq-01",
+    "ballot-problem-oq-03-oq-01-oq-01",
+    "ballot-problem-oq-03-oq-01-oq-01-oq-01",
+    "ballot-problem-oq-03-oq-01-oq-02",
+    "ballot-problem-oq-03-oq-01-oq-04",
+    "ballot-problem-oq-03-oq-02",
+    "ballot-problem-oq-03-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-08T19:09:00.560Z",
+  "lastUpdate": "2026-05-12T19:42:00Z",
+  "significance": 6,
+  "tractability": 8,
+  "leanFiles": [
+    {
+      "path": "Proofs/BallotProblem.lean",
+      "filename": "BallotProblem.lean",
+      "lineCount": 252,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblem.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01.lean",
+      "filename": "BallotProblemOQ01.lean",
+      "lineCount": 790,
+      "theoremCount": 44,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ01.lean",
+      "filename": "BallotProblemOQ01OQ01.lean",
+      "lineCount": 152,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ01OQ02.lean",
+      "filename": "BallotProblemOQ01OQ01OQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02.lean",
+      "filename": "BallotProblemOQ01OQ02.lean",
+      "lineCount": 1048,
+      "theoremCount": 37,
+      "axiomCount": 0,
+      "defCount": 18,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01.lean",
+      "lineCount": 250,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01Aristotle.lean",
+      "lineCount": 113,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ01.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 201,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01OQ02.lean",
+      "lineCount": 199,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ02.lean",
+      "filename": "BallotProblemOQ01OQ02OQ02.lean",
+      "lineCount": 261,
+      "theoremCount": 15,
+      "axiomCount": 2,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ04.lean",
+      "filename": "BallotProblemOQ01OQ02OQ04.lean",
+      "lineCount": 312,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ04.lean",
+      "filename": "BallotProblemOQ01OQ04.lean",
+      "lineCount": 74,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ04Core.lean",
+      "filename": "BallotProblemOQ01OQ04Core.lean",
+      "lineCount": 179,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04Core.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ04OQ01.lean",
+      "filename": "BallotProblemOQ01OQ04OQ01.lean",
+      "lineCount": 1165,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02.lean",
+      "filename": "BallotProblemOQ02.lean",
+      "lineCount": 340,
+      "theoremCount": 8,
+      "axiomCount": 2,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ02OQ02.lean",
+      "filename": "BallotProblemOQ02OQ02.lean",
+      "lineCount": 186,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03.lean",
+      "filename": "BallotProblemOQ03.lean",
+      "lineCount": 2923,
+      "theoremCount": 119,
+      "axiomCount": 0,
+      "defCount": 31,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ01.lean",
+      "filename": "BallotProblemOQ03OQ01OQ01.lean",
+      "lineCount": 131,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
+      "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
+      "lineCount": 2349,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 17,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean",
+      "filename": "BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean",
+      "lineCount": 132,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ02.lean",
+      "filename": "BallotProblemOQ03OQ01OQ02.lean",
+      "lineCount": 399,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean",
+      "filename": "BallotProblemOQ03OQ01OQ02Aristotle.lean",
+      "lineCount": 118,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
+      "filename": "BallotProblemOQ03OQ01OQ02Helpers.lean",
+      "lineCount": 15996,
+      "theoremCount": 79,
+      "axiomCount": 0,
+      "defCount": 15,
+      "sorryCount": 9,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ01OQ04.lean",
+      "filename": "BallotProblemOQ03OQ01OQ04.lean",
+      "lineCount": 183,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ02.lean",
+      "filename": "BallotProblemOQ03OQ02.lean",
+      "lineCount": 2512,
+      "theoremCount": 28,
+      "axiomCount": 0,
+      "defCount": 23,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ03OQ03.lean",
+      "filename": "BallotProblemOQ03OQ03.lean",
+      "lineCount": 188,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ03.lean"
+    }
+  ]
+}
