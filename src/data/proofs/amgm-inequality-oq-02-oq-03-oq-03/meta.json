@@ -25,6 +25,24 @@
     "originalContributions": [
       "Full Maclaurin chain theorem by induction on the gap between indices",
       "Corollary M₁ ≥ Mₙ: arithmetic mean dominates the n-th Maclaurin mean"
+    ],
+    "prerequisites": [
+      "Elementary symmetric polynomials e_k and their normalization a_k = e_k/C(n,k)",
+      "Maclaurin means M_k = a_k^{1/k} for non-negative reals (defined in AmgmInequalityOQ02)",
+      "The adjacent-step inequality M_k ≥ M_{k+1} (axiomatized in AmgmInequalityOQ02; proved via Newton log-concavity in AmgmInequalityOQ02OQ03)",
+      "Lean 4 induction on natural numbers, calc blocks, and the `Nat.exists_eq_add_of_le` bridging lemma"
+    ],
+    "mathlibDependencies": [
+      {
+        "theorem": "Nat.exists_eq_add_of_le",
+        "description": "Converts j ≤ k into ∃ d, k = j + d, enabling the obtain ⟨d, rfl⟩ pattern that drives the gap-induction strategy.",
+        "module": "Mathlib.Data.Nat.Defs"
+      },
+      {
+        "theorem": "omega (tactic)",
+        "description": "Closes linear arithmetic side conditions over ℕ such as j + m ≤ n and j + m + 1 ≤ n that arise in each inductive step.",
+        "module": "Mathlib.Tactic.Omega"
+      }
     ]
   },
   "overview": {
@@ -112,6 +130,66 @@
       "targetId": "amgm-inequality",
       "relationship": "related",
       "description": "Base AM-GM inequality; the corollary maclaurin_m1_ge_mn recovers AM ≥ GM as the special case j=1, k=n of the Maclaurin chain"
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "maclaurin_chain_aux",
+      "type": "supporting",
+      "description": "Private auxiliary: Mⱼ ≥ Mⱼ₊ₐ for arbitrary gap d, proved by induction on d. Each successor step composes the IH with `maclaurin_step` from the parent file via calc transitivity.",
+      "leanType": "(x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) (j : ℕ) (hj : 0 < j) (d : ℕ) (hjn : j + d ≤ n) → maclaurinMean j x ≥ maclaurinMean (j + d) x"
+    },
+    {
+      "name": "maclaurin_full_chain",
+      "type": "core",
+      "description": "Main exported theorem: for 0 < j ≤ k ≤ n, Mⱼ ≥ Mₖ. Uses `Nat.exists_eq_add_of_le` to recover the gap d from `j ≤ k`, then delegates to maclaurin_chain_aux.",
+      "leanType": "(x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) (j k : ℕ) (hj : 0 < j) (hjk : j ≤ k) (hkn : k ≤ n) → maclaurinMean j x ≥ maclaurinMean k x"
+    },
+    {
+      "name": "maclaurin_m1_ge_mn",
+      "type": "supporting",
+      "description": "AM ≥ GM corollary: M₁ ≥ Mₙ. Specializes maclaurin_full_chain to j=1, k=n; M₁ = arithmetic mean and Mₙ = geometric mean, so this is the classical AM-GM inequality.",
+      "leanType": "(hn : 1 ≤ n) (x : Fin n → ℝ) (hx : ∀ i, 0 ≤ x i) → maclaurinMean 1 x ≥ maclaurinMean n x"
+    }
+  ],
+  "references": [
+    {
+      "authors": "Newton, Isaac",
+      "title": "Arithmetica Universalis (Universal Arithmetic)",
+      "year": "1707",
+      "venue": "Cambridge",
+      "note": "Contains the log-concavity observation eₖ² ≥ eₖ₋₁ · eₖ₊₁ for elementary symmetric polynomials (Newton's inequalities) — the foundational result underlying the Maclaurin step formalized in AmgmInequalityOQ02OQ03."
+    },
+    {
+      "authors": "Maclaurin, Colin",
+      "title": "A Second Letter to Martin Folkes, Esq.; concerning the Roots of Equations, with the Demonstration of other Rules in Algebra",
+      "year": "1729",
+      "venue": "Philosophical Transactions of the Royal Society, Vol. 36, pp. 59–96",
+      "doi": "10.1098/rstl.1729.0011",
+      "note": "Original statement of the chain M₁ ≥ M₂ ≥ ⋯ ≥ Mₙ as a strengthening of Newton's inequalities. Maclaurin presented the result as a means-based interpolation between the arithmetic and geometric means."
+    },
+    {
+      "authors": "Hardy, G. H.; Littlewood, J. E.; Pólya, G.",
+      "title": "Inequalities",
+      "year": "1934",
+      "venue": "Cambridge University Press",
+      "note": "§2.22 (Theorem 52) gives the canonical modern proof of the Maclaurin chain via the power inequality aₖ^{k+1} ≥ aₖ₊₁^k where aₖ = eₖ/C(n,k). The 2nd edition (1952) is the standard reference today."
+    },
+    {
+      "authors": "Bullen, P. S.",
+      "title": "Handbook of Means and Their Inequalities",
+      "year": "2003",
+      "venue": "Mathematics and Its Applications, Vol. 560, Springer (Kluwer)",
+      "doi": "10.1007/978-94-017-0399-4",
+      "note": "Chapter VIII §1 surveys Maclaurin means and the chain inequality. Discusses equivalent formulations (Niven's, Whiteley's) and connections to log-concavity of generating polynomials."
+    },
+    {
+      "authors": "Mathlib contributors",
+      "title": "Nat.exists_eq_add_of_le (Mathlib.Data.Nat.Defs)",
+      "year": "2024",
+      "venue": "Mathlib4 (mathlib_version 4.x)",
+      "url": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Nat/Defs.html",
+      "note": "Bridging lemma j ≤ k → ∃ d, k = j + d, used to convert the order hypothesis into the gap form required by the induction in maclaurin_chain_aux."
     }
   ],
   "leanFile": {
