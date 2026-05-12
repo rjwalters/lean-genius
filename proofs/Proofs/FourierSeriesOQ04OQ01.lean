@@ -66,7 +66,7 @@ set_option maxHeartbeats 400000
 
 noncomputable section
 
-open MeasureTheory Complex Filter Topology
+open MeasureTheory Complex Filter Topology AddCircle
 open scoped ENNReal NNReal Real
 
 /-- The 2-torus `𝕋² = (ℝ/ℤ)²`, modelled as `Fin 2 → AddCircle 1`. -/
@@ -173,6 +173,31 @@ theorem multiFourierCoeff_zero (k : Fin 2 → ℤ) :
 theorem sphPartialSum_zero (R : ℝ) (x : T2) :
     sphPartialSum (fun _ : T2 => (0 : ℂ)) R x = 0 := by
   simp [sphPartialSum, multiFourierCoeff_zero]
+
+/-! ## S2c — `latticeDisc` cardinality bound (Gauss-circle prep)
+
+Quantitative bound on `(latticeDisc R).card`. The disc is realised as a
+`Finset.filter` of a bounding box `[-⌈|R|⌉, ⌈|R|⌉]²`, so its cardinality is
+bounded above by the box cardinality. This is the trivial pre-Gauss bound;
+the sharper Gauss-circle estimate `card ≤ ⌈π·R²⌉ + O(R)` is deferred to a
+later session. For crude `ℓ¹` majorisation of the spherical partial sum,
+the bounding-box bound suffices.
+-/
+
+/-- The lattice disc is a subset of the integer bounding box
+    `[-⌈|R|⌉, ⌈|R|⌉]²`. -/
+theorem latticeDisc_subset_bbox (R : ℝ) :
+    latticeDisc R ⊆ Finset.Icc (fun _ : Fin 2 => -⌈|R|⌉)
+      (fun _ : Fin 2 => ⌈|R|⌉) := by
+  unfold latticeDisc
+  exact Finset.filter_subset _ _
+
+/-- The cardinality of the lattice disc is bounded by the cardinality of
+    the integer bounding box `[-⌈|R|⌉, ⌈|R|⌉]²`. -/
+theorem latticeDisc_card_le_bbox (R : ℝ) :
+    (latticeDisc R).card ≤
+      (Finset.Icc (fun _ : Fin 2 => -⌈|R|⌉) (fun _ : Fin 2 => ⌈|R|⌉)).card :=
+  Finset.card_le_card (latticeDisc_subset_bbox R)
 
 end
 
