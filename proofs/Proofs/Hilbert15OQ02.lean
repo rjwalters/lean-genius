@@ -408,6 +408,7 @@ theorem lr_right_identity (p : Partition2) :
   simp only [Partition2.size]
   split_ifs <;> omega
 
+set_option maxHeartbeats 400000 in
 /-- **Commutativity**: `c^ν_{λ,μ} = c^ν_{μ,λ}` for all 2-row partitions.
 
     The conditions determining `lrCoeff2 = 1` are:
@@ -472,7 +473,7 @@ theorem lr_pieri_converse (ν μ : Partition2) (k : ℕ)
   unfold isHorizontalStrip Partition2.size
   unfold lrCoeff2 at h
   simp only [Partition2.size, Nat.add_zero, min_def] at h
-  split_ifs at h <;> constructor <;> constructor <;> omega
+  split_ifs at h <;> refine ⟨⟨?_, ?_, ?_⟩, ?_⟩ <;> omega
 
 /-! ## Summary
 
