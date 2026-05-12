@@ -149,7 +149,7 @@
     "openQuestions": [
       "Is |𝒫(ℝ)| = ℵ₂? (Independent of ZFC — consistent both ways)",
       "What is the exact aleph-index of ℶ₂? (Easton: essentially anything with cofinality > 𝔠)",
-      "Can König's constraint be formalized in Lean4 without axioms? (Requires formalizing infinite product cardinal arithmetic)",
+      "Can König's constraint be formalized in Lean4 without axioms? (Requires formalizing infinite product cardinal arithmetic) [RESOLVED in oq-01-oq-03 — theorem `CantorsTheoremOQ01OQ03.oq01oq03_resolution`, formalized 2026-05-12 via `Cardinal.lt_cof_power`]",
       "Is |𝒫(𝒫(ℝ))| = ℶ₃? (Yes — provable in ZFC, same pattern as ℶ₂)"
     ]
   },
@@ -163,6 +163,11 @@
       "targetId": "cantor-diagonalization",
       "relationship": "foundational",
       "description": "Cantor's diagonal argument provides the core technique: the proof that |S| < |P(S)| uses a diagonal construction to show no surjection S → P(S) exists"
+    },
+    {
+      "targetId": "cantors-theorem-oq-01-oq-03",
+      "relationship": "extends",
+      "description": "Child file formalizes König's constraint (cf(2^𝔠) > 𝔠) — the Part 7 placeholder in this file is now backed by `CantorsTheoremOQ01OQ03.oq01oq03_resolution`, resolving openQuestions[2]"
     },
     {
       "targetId": "cantor-diagonalization-oq-01",
