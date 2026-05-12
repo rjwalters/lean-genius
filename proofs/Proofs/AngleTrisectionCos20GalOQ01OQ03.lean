@@ -583,6 +583,139 @@ theorem r_constantCoeff_eq_cyclotomic_small :
    r_5_constantCoeff_eq_cyclotomic,
    r_7_constantCoeff_eq_cyclotomic⟩
 
+/-! ## S6: Cyclotomic anchor extension — Φ_{2p}(−1) = p for p ∈ {11, 13}
+
+S5 established the cyclotomic anchor Φ_{2p}(−1) = p for the bottom three
+gallery primes p ∈ {3, 5, 7} via explicit `cyclotomic_{2p}` forms plus
+direct evaluation. S6 extends the per-prime cyclotomic bridge (Tactic A2
+in `state.md`) to the remaining gallery primes p ∈ {11, 13}, covering
+the full verified gallery set {3, 5, 7, 11, 13}.
+
+The general identity `Φ_{2p}(X) = Φ_p(−X)` (Tactic A1) — a single uniform
+proof for all odd primes p ≥ 3 — is still deferred, but with the
+per-prime extension below the gallery's empirical sign pattern
+`(r p).coeff 0 = (-1)^((p-1)/2) · Φ_{2p}(−1)` is now matched against
+Mathlib's cyclotomic API for *every* explicitly defined case in `r`,
+leaving no per-prime gap that an A1 lift would still need to close.
+
+**Proof structure (per prime).**
+1. `cyclotomic_p_eq` for `p ∈ {11, 13}` via `eq_cyclotomic_iff` with
+   `properDivisors p = {1}` and `cyclotomic_one` (same template as the
+   S5 `cyclotomic_5_eq`/`cyclotomic_7_eq`).
+2. `cyclotomic_{2p}_eq` via `eq_cyclotomic_iff` with
+   `properDivisors (2p) = {1, 2, p}`, `cyclotomic_one`, `cyclotomic_two`,
+   and the step (1) lemma (same template as S5's
+   `cyclotomic_ten_eq`/`cyclotomic_fourteen_eq`).
+3. `cyclotomic_{2p}_eval_neg_one` by `rw [cyclotomic_{2p}_eq]` and
+   `simp + norm_num`.
+4. `r_p_constantCoeff_eq_cyclotomic` combining the eval lemma with the
+   appropriate projection of `r_constantCoeff_eq_signed_p`.
+
+**Risk.** The two `ring` calls close degree-22 and degree-26 polynomial
+identities; both are tractable (≤200 monomial expansion) but the
+degree-26 call is the largest such `ring` in this file. No new
+Mathlib API beyond what S5 used is required.
+
+**Axiom bookkeeping.** No new axioms; no new sorries; 1 sorry remains
+(the open conjecture). Five new theorems plus one packaged 5-prime
+bridge `r_constantCoeff_eq_cyclotomic_full` superseding the
+S5 `r_constantCoeff_eq_cyclotomic_small` predicate (S5 lemma retained
+for compatibility).
+-/
+
+/-- `cyclotomic 11 ℤ = X^10 + X^9 + ⋯ + X + 1`. Same template as
+`cyclotomic_5_eq`: `properDivisors 11 = {1}` plus `cyclotomic_one`,
+closed by `ring`. -/
+theorem cyclotomic_11_eq :
+    cyclotomic 11 ℤ =
+      X^10 + X^9 + X^8 + X^7 + X^6 + X^5 + X^4 + X^3 + X^2 + X + 1 := by
+  refine ((eq_cyclotomic_iff (by norm_num : 0 < 11) _).mpr ?_).symm
+  rw [show Nat.properDivisors 11 = ({1} : Finset ℕ) from by decide,
+      Finset.prod_singleton, cyclotomic_one]
+  ring
+
+/-- `cyclotomic 13 ℤ = X^12 + X^11 + ⋯ + X + 1`. -/
+theorem cyclotomic_13_eq :
+    cyclotomic 13 ℤ =
+      X^12 + X^11 + X^10 + X^9 + X^8 + X^7 + X^6 + X^5 + X^4 + X^3 + X^2 + X + 1 := by
+  refine ((eq_cyclotomic_iff (by norm_num : 0 < 13) _).mpr ?_).symm
+  rw [show Nat.properDivisors 13 = ({1} : Finset ℕ) from by decide,
+      Finset.prod_singleton, cyclotomic_one]
+  ring
+
+/-- `cyclotomic 22 ℤ = X^10 - X^9 + X^8 - ⋯ - X + 1`. The 22nd cyclotomic
+polynomial. Derived via `eq_cyclotomic_iff` plus the divisor structure
+`properDivisors 22 = {1, 2, 11}`. -/
+theorem cyclotomic_22_eq :
+    cyclotomic 22 ℤ =
+      X^10 - X^9 + X^8 - X^7 + X^6 - X^5 + X^4 - X^3 + X^2 - X + 1 := by
+  refine ((eq_cyclotomic_iff (by norm_num : 0 < 22) _).mpr ?_).symm
+  rw [show Nat.properDivisors 22 = ({1, 2, 11} : Finset ℕ) from by decide,
+      show (({1, 2, 11} : Finset ℕ)) = insert 1 (insert 2 ({11} : Finset ℕ))
+        from rfl,
+      Finset.prod_insert
+        (show (1 : ℕ) ∉ insert 2 ({11} : Finset ℕ) from by decide),
+      Finset.prod_insert (show (2 : ℕ) ∉ ({11} : Finset ℕ) from by decide),
+      Finset.prod_singleton, cyclotomic_one, cyclotomic_two, cyclotomic_11_eq]
+  ring
+
+/-- `cyclotomic 26 ℤ = X^12 - X^11 + X^10 - ⋯ - X + 1`. -/
+theorem cyclotomic_26_eq :
+    cyclotomic 26 ℤ =
+      X^12 - X^11 + X^10 - X^9 + X^8 - X^7 + X^6 - X^5 + X^4 - X^3 + X^2 - X + 1 := by
+  refine ((eq_cyclotomic_iff (by norm_num : 0 < 26) _).mpr ?_).symm
+  rw [show Nat.properDivisors 26 = ({1, 2, 13} : Finset ℕ) from by decide,
+      show (({1, 2, 13} : Finset ℕ)) = insert 1 (insert 2 ({13} : Finset ℕ))
+        from rfl,
+      Finset.prod_insert
+        (show (1 : ℕ) ∉ insert 2 ({13} : Finset ℕ) from by decide),
+      Finset.prod_insert (show (2 : ℕ) ∉ ({13} : Finset ℕ) from by decide),
+      Finset.prod_singleton, cyclotomic_one, cyclotomic_two, cyclotomic_13_eq]
+  ring
+
+/-- `(cyclotomic 22 ℤ).eval (-1) = 11`. The norm prediction for p = 11. -/
+theorem cyclotomic_twentytwo_eval_neg_one :
+    (cyclotomic 22 ℤ).eval (-1) = 11 := by
+  rw [cyclotomic_22_eq]
+  simp only [eval_add, eval_sub, eval_pow, eval_X, eval_one]
+  norm_num
+
+/-- `(cyclotomic 26 ℤ).eval (-1) = 13`. The norm prediction for p = 13. -/
+theorem cyclotomic_twentysix_eval_neg_one :
+    (cyclotomic 26 ℤ).eval (-1) = 13 := by
+  rw [cyclotomic_26_eq]
+  simp only [eval_add, eval_sub, eval_pow, eval_X, eval_one]
+  norm_num
+
+/-- For p = 11: `(r 11).coeff 0 = (-1)^5 · Φ_22(-1) = (-1) · 11 = -11`. -/
+theorem r_11_constantCoeff_eq_cyclotomic :
+    (r 11).coeff 0 = (-1)^((11 - 1)/2) * (cyclotomic 22 ℤ).eval (-1) := by
+  rw [cyclotomic_twentytwo_eval_neg_one]
+  exact r_constantCoeff_eq_signed_p.2.2.2.1
+
+/-- For p = 13: `(r 13).coeff 0 = (-1)^6 · Φ_26(-1) = 1 · 13 = 13`. -/
+theorem r_13_constantCoeff_eq_cyclotomic :
+    (r 13).coeff 0 = (-1)^((13 - 1)/2) * (cyclotomic 26 ℤ).eval (-1) := by
+  rw [cyclotomic_twentysix_eval_neg_one]
+  exact r_constantCoeff_eq_signed_p.2.2.2.2
+
+/-- Packaged: for each of p ∈ {3, 5, 7, 11, 13}, the gallery's
+`(r p).coeff 0` matches the cyclotomic prediction
+`(-1)^((p-1)/2) · Φ_{2p}(-1)`. Extends `r_constantCoeff_eq_cyclotomic_small`
+from S5 (which covered only {3, 5, 7}) to the full verified gallery set,
+matching the per-prime range of `r_constantCoeff_eq_signed_p`. -/
+theorem r_constantCoeff_eq_cyclotomic_full :
+    (r 3).coeff 0 = (-1)^((3 - 1)/2) * (cyclotomic 6 ℤ).eval (-1)
+    ∧ (r 5).coeff 0 = (-1)^((5 - 1)/2) * (cyclotomic 10 ℤ).eval (-1)
+    ∧ (r 7).coeff 0 = (-1)^((7 - 1)/2) * (cyclotomic 14 ℤ).eval (-1)
+    ∧ (r 11).coeff 0 = (-1)^((11 - 1)/2) * (cyclotomic 22 ℤ).eval (-1)
+    ∧ (r 13).coeff 0 = (-1)^((13 - 1)/2) * (cyclotomic 26 ℤ).eval (-1) :=
+  ⟨r_3_constantCoeff_eq_cyclotomic,
+   r_5_constantCoeff_eq_cyclotomic,
+   r_7_constantCoeff_eq_cyclotomic,
+   r_11_constantCoeff_eq_cyclotomic,
+   r_13_constantCoeff_eq_cyclotomic⟩
+
 /-! ## Uniform conjecture (general odd prime p ≥ 3) -/
 
 /--
