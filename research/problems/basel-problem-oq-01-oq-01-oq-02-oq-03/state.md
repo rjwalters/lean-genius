@@ -4,12 +4,78 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-12 (Iteration 24, researcher-1)
-**Iteration**: 24
+**Last Updated**: 2026-05-12 (Iteration 25, researcher-6)
+**Iteration**: 25
 
 ## Current Focus
 
-Iteration 24 (2026-05-12, this PR, researcher-1): **Full
+Iteration 25 (2026-05-12, this PR, researcher-6): **Chebyshev
+envelope assembly — first end-to-end asymptotic bound on
+`lcmRange n` from prime-power structure.** Chains Iter 16's
+`lcmRange_eq_primorial_mul_prod_prime_pow_pred` (Chebyshev
+decomposition factored through primorial), Mathlib's classical
+`primorial_le_4_pow` (Erdős primorial bound), and Iter 24's
+`prod_prime_pow_pred_le_pow_sqrt` (full correction-factor envelope)
+into a single multiplicative inequality. One new theorem + one
+`native_decide` witness example (+40 lines, sorry-free, axiom-free,
+single `Nat.mul_le_mul`):
+
+* `lcmRange_le_4_pow_mul_pow_sqrt {n : ℕ} (hn : 2 ≤ n) :
+  lcmRange n ≤ 4 ^ n * (n / 2) ^ n.sqrt` — the **Chebyshev
+  envelope** for `n ≥ 2`. Proof: rewrite via Iter 16 then chain
+  `primorial_le_4_pow n` and `prod_prime_pow_pred_le_pow_sqrt hn`
+  through `Nat.mul_le_mul`.
+* `example`: `lcmRange 10 ≤ 4^10 · 5^3 = 131072000` (`native_decide`
+  witness, the LHS is `2520`).
+
+### Strategic value
+
+Iter 25 is the **first asymptotic bound** on `lcmRange n` derived
+purely from prime-power structure (Parts 2–4 of the file). Until
+this iter, the only complete unconditional asymptotic envelope was
+`lcmRange n ≤ n^n` (Part 3, via factorials); Iter 16 supplied the
+multiplicative decomposition but stopped short of bounding both
+factors. The new bound is asymptotically `4^n · 2^O(√n · log n)`,
+which is:
+
+* **Strictly weaker than Hanson's target `3^n`** — `4^n` exceeds
+  `3^n` for all `n ≥ 1`, so this bound alone does NOT close the
+  axiomatized `hanson_bound`. It captures the right `O(4^n)` leading
+  factor that any prime-power-based proof must produce (the
+  primorial side), then loses ground on the small-prime correction.
+* **Strictly stronger than the factorial bound** — for `n ≥ ~14`,
+  `4^n · (n/2)^√n ≤ n^n` (the `4 ≤ n` margin compounds via
+  `4^n ≤ (n/2)^n / (n/8)^n`; the correction factor is sub-polynomial
+  in `n^n`). Concrete witness: at `n = 20`, our bound gives
+  `≈ 1.10 · 10¹⁶`, vs. `20! ≈ 2.43 · 10¹⁸` and `20^20 ≈ 1.05 · 10²⁶`.
+
+### Asymptotic gap analysis: `(4/3)^n vs (n/2)^√n`
+
+Hanson's `3^n` against our envelope reduces (taking logs) to:
+
+  `(n · log 2) vs (√n · log(n/2)) / log 3`
+
+The RHS grows as `√n · log n / log 3`, which is `o(n)` — so
+asymptotically, the correction factor is dwarfed by the `(4/3)^n`
+gap. Concretely, `(4/3)^n > (n/2)^√n` for all `n` large enough
+(around `n ≥ 320` per a continuous-extension calculation); for
+smaller `n`, the small-`n` numerical checks (`hanson_n1`–
+`hanson_n20`) close the gap. The route to closing `hanson_bound`
+via this envelope therefore requires:
+
+1. **Sharper correction-factor bound** — replace
+   `prod_prime_pow_pred_le_pow_sqrt` by a Chebyshev-density estimate
+   `≤ exp(O(√n))` (Chebyshev's `θ` lower bound), or
+2. **Cancellation between primorial and correction** — exploit the
+   fact that `primorial n ~ exp((1+o(1)) n)` is asymptotically
+   `e^n`, not `4^n`, leaving room to absorb the correction.
+
+Both routes are intrinsic Mathlib upstream work (Chebyshev's
+density theorem is not in v4.26.0).
+
+## Prior Iterations
+
+Iteration 24 (2026-05-12, researcher-1): **Full
 correction-factor envelope — direct in-file support reduction
 chained with Iter 23's small-prime envelope** — combines the
 support-reduction primitive `prime_pow_pred_eq_one_of_sq_lt`
