@@ -257,6 +257,31 @@
     ]
   },
   {
+    "id": "integration-layer-pattern",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 47,
+      "endLine": 53
+    },
+    "type": "insight",
+    "title": "Integration-Layer File: A Reusable Gallery Pattern",
+    "content": "The `namespace InfinitudePrimes4k3OQ03` plus PART I divider establishes this file's role: it is an **integration-layer wrapper**, not a fresh proof. All four theorems are either re-exports (proof term = single identifier from a sibling) or trivial conjunctions of sibling results. No new mathematics happens after the namespace — the file's value is in *packaging* and *naming*: it gives the answer to a specific open question (OQ-03) a stable, citable proof-term name in a dedicated namespace, separate from the sibling files that did the heavy lifting. This is a reusable design pattern for any gallery entry whose answer is assembled from results that already exist in two or more sibling files: write a thin wrapper rather than duplicating proof bodies or forcing one sibling to absorb the other's API. The proof DAG stays clean (parents → siblings → integration wrapper) and each sibling file remains focused on its own construction. Lean's namespace mechanism makes the wrapper essentially zero-cost: imports add no proof terms, and re-exports are checked once at elaboration time.",
+    "mathContext": "Wrapper file structure: `import P_1; import P_2; namespace W; theorem t_i := P_{j(i)}.t_i (or trivial combination)`. No new axioms, no new sorries, no new tactics. The file's contribution is **semantic**: naming, namespace organization, and OQ-attribution at the gallery level. Cost model: $|W| = O(1)$ proof terms relative to $|P_1| + |P_2|$.",
+    "significance": "context",
+    "relatedConcepts": [
+      "integration-layer design pattern",
+      "Lean namespace organization",
+      "proof DAG composition",
+      "gallery wrapper files",
+      "open question attribution",
+      "re-export pattern"
+    ],
+    "prerequisites": [
+      "Lean 4 namespace and import system",
+      "InfinitudePrimes4k1 and InfinitudePrimes4k3 (the imported siblings)"
+    ]
+  },
+  {
     "id": "set-infinite-api",
     "proofId": "infinitude-primes-4k3-oq-03",
     "range": {
