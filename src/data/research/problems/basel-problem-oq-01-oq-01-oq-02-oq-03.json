@@ -31,16 +31,16 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08T20:50:00Z",
-    "iteration": 20,
-    "focus": "Iter 20 (this PR, researcher-11): cardinality bound on small-prime filter — |{p prime : p^2 ≤ n}| ≤ Nat.sqrt n. Pure combinatorial counting step (Step 3 of the four-step Hanson bridge documented in state.md). Independent of in-flight PR #17619 (Iter 17 support-reduction). +58 lines, +1 theorem + 1 example.",
+    "iteration": 21,
+    "focus": "Iter 21 (this PR, researcher-11): small-prime correction-factor product bound — ∏_{p prime, p² ≤ n} (n / p) ≤ (n / 2) ^ |{small primes}|. Two new theorems: div_prime_le_div_two (pointwise n/p ≤ n/2 for any prime p, one-line proof via Nat.div_le_div_left + Nat.Prime.two_le), and prod_div_small_prime_le_pow_card (the product bound, three-line proof via Finset.prod_le_pow_card). Pairs with Iter 20's small_prime_card_le_sqrt to obtain the (n/2)^√n envelope after a future card-monotonicity step. +68 lines (1014 → 1082), +2 theorems + 1 example (54 → 56). Sorries / axioms / defs unchanged.",
     "blockers": [
       "Mathlib lacks Beta-integral identity in rational-denominator form for Hanson's approach.",
       "Mathlib lacks the bridge `lcm(1,...,n) ≤ n · primorial(n)` for the easier 4^n route. (Note: the literal `≤ n · primorial(n)` form is FALSE — counterexample: lcm(1..9) = 2520 > 9 · 210 = 1890. The correct bridge is via Chebyshev's prime-power formula.)"
     ],
-    "nextAction": "Iter 21: combine small_prime_card_le_sqrt with prod_prime_pow_pred_le_prod_div_prime (Iter 19) and the eventual lcmRange_correction_supported_on_small_primes (PR #17619, in flight) to derive the small-prime restricted product bound. Specifically, prove `∏_{p prime, p^2 ≤ n} (n / p) ≤ (n / 2) ^ Nat.sqrt n` via `Finset.prod_le_pow_card` and `n / p ≤ n / 2` for prime `p ≥ 2`. Combined with `Nat.primorial_le_4_pow`, this is the structural envelope `lcmRange n ≤ 4^n · (n/2)^√n`, sub-`(4 + ε)^n` for any ε > 0 and large n.",
+    "nextAction": "Iter 22 candidate: card-monotonicity step `(n/2) ^ card ≤ (n/2) ^ √n` for n ≥ 2 (using small_prime_card_le_sqrt + Nat.pow_le_pow_right with `1 ≤ n/2`). Then chain Iter 21's product bound through it to obtain `∏_{p prime, p² ≤ n} (n/p) ≤ (n/2) ^ √n` (with the appropriate `n ≥ 2` hypothesis, since for `n = 1` the LHS = 1 but RHS = 0^1 = 0). Long-term Iter 23+: combine with Iter 17 support reduction (PR #17619) and Iter 19 product bound to discharge full correction factor `∏_{p ≤ n} (n/p) ≤ (n/2) ^ √n`; then with Nat.primorial_le_4_pow → `lcmRange n ≤ 4^n · (n/2)^√n`, the structural Chebyshev envelope.",
     "attemptCounts": {
-      "total": 20,
-      "currentApproach": 4,
+      "total": 21,
+      "currentApproach": 5,
       "approachesTried": 2
     }
   },

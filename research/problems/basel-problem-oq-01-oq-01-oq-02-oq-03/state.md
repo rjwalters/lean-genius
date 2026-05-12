@@ -4,10 +4,74 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-12 (Iteration 20, researcher-11)
-**Iteration**: 20
+**Last Updated**: 2026-05-12 (Iteration 21, researcher-11)
+**Iteration**: 21
 
 ## Current Focus
+
+Iteration 21 (2026-05-12, this PR, researcher-11): **small-prime
+correction-factor product bound** — combines the pointwise atom
+`n / p ≤ n / 2` (any prime `p`, since primes are `≥ 2`) with
+`Finset.prod_le_pow_card` to obtain
+
+```
+∏_{p prime, p² ≤ n} (n / p) ≤ (n / 2) ^ |{small primes}|
+```
+
+over the Iter-20 small-prime filter. Two new theorems
+(+68 lines, sorry-free, axiom-free):
+
+* `div_prime_le_div_two {p : ℕ} (hp : p.Prime) (n : ℕ) : n / p ≤ n / 2`
+  — pointwise atom. Single-line proof:
+  `Nat.div_le_div_left hp.two_le (by norm_num)`.
+* `prod_div_small_prime_le_pow_card (n : ℕ)` — main lemma. Three-line
+  proof via `Finset.prod_le_pow_card` applied to the Iter-20 filter,
+  invoking `div_prime_le_div_two` pointwise.
+* `example` decide-witness at `n = 100` (LHS = `50·33·20·14 = 462000`,
+  RHS = `50⁴ = 6,250,000`, well below the loose bound).
+
+### Strategic value
+
+Step 5 of the four-step Hanson bridge (the "multiplicative combination"
+Iter 20 candidate):
+
+1. ✓ Iter 19 (#17710): product bound `∏ p^(log_p n - 1) ≤ ∏ (n/p)`.
+2. ⏳ Iter 17 (PR #17619): support reduction (`p² > n → factor = 1`).
+3. ✓ Iter 20 (#17767): cardinality bound `|small primes| ≤ √n`.
+4. **This iter (atom)**: `n / p ≤ n / 2` for any prime `p`.
+5. **This iter (main)**: `∏_{p² ≤ n} (n/p) ≤ (n/2) ^ card`.
+6. ⏳ Iter 22+: chain through Iter 20 (card ≤ √n) + pow-monotonicity
+   (with `n ≥ 2` hypothesis) to get `≤ (n/2) ^ √n`, then assemble
+   with Iter 17 + Iter 19 for the full correction-factor envelope.
+
+Iter 21 is **structurally independent** of #17619 (Iter 17): it bounds
+the product *over the small-prime filter directly*, regardless of how
+the large-prime tail is handled.
+
+### File delta
+
++68 lines (1014 → 1082), +2 theorems + 1 example (54 → 56). Definitions
+(1) / sorries (0) / axiomCount (1) unchanged. Build pending — proof
+uses only:
+
+* `Nat.div_le_div_left` (`k ≤ m → 0 < k → n / m ≤ n / k`,
+  exercised in `Erdos1009OQ02Problem.lean:234` and
+  `Erdos404Problem.lean:115`).
+* `Nat.Prime.two_le` (every prime is `≥ 2`).
+* `Finset.prod_le_pow_card` (Mathlib generic, exercised in
+  `Erdos678Problem.lean:210`).
+* `Finset.mem_filter` (used pervasively).
+
+### Compatibility with open PRs
+
+* **#17619 (OPEN, Iter 17 support reduction)**: orthogonal — Iter 21
+  is the multiplicative-combination step for the *small-prime
+  product* directly; Iter 17 is the upstream support-reduction step
+  that lets us *also* bound the full prime product by the small-prime
+  product (when assembled).
+* **#17551 (OPEN, Iter 15 alternate)**: orthogonal, no overlap.
+
+### Iteration 20 (background, merged base, #17767)
 
 Iteration 20 (2026-05-12, this PR, researcher-11): **cardinality bound
 on small-prime filter** — proves that the number of primes `p` with
