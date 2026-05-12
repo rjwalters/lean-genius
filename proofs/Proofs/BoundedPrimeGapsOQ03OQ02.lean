@@ -106,4 +106,44 @@ instance instDecidableIsAdmissible (H : Finset ℕ) :
     Decidable (IsAdmissible H) :=
   decidable_of_iff (IsAdmissibleBdd H) (isAdmissible_iff_bdd H).symm
 
+/-! ## S3: Regression checks exercising the Decidable instance
+
+The following kernel-`decide` checks confirm the S2 instance reduces correctly
+on a few concrete tuples. They serve two purposes:
+
+1. **Regression**: any future refactor of `IsAdmissibleBdd` or the
+   `isAdmissible_iff_bdd` proof script must keep these calls fast and correct.
+2. **Path A foundation**: per `knowledge.md` §3.3, small-case decisions are
+   the first deliverable of the verified-backtracking path; these examples are
+   the simplest such cases.
+
+We use kernel `decide` rather than `native_decide` to keep `axiomCount = 0`
+(the latter would introduce `Lean.ofReduceBool`). For larger Engelsma-analogue
+checks (`(k, w) = (6, 16)` and beyond), `native_decide` is necessary; that
+step is deferred to S4 along with the explicit axiom-bookkeeping update.
+-/
+
+/-- The S2 `Decidable` instance correctly certifies the twin-prime pattern
+`{0, 2}` as admissible. Kernel `decide` reduces through `decidable_of_iff`
+to `Finset.decidableDforallFinset` over `Finset.range 3`. -/
+theorem admissible_twin_via_S2 : IsAdmissible ({0, 2} : Finset ℕ) := by decide
+
+/-- The S2 `Decidable` instance correctly certifies the triple `{0, 2, 6}`
+as admissible. (Same triple proved manually in `BoundedPrimeGaps` as
+`admissible_triple_0_2_6`; here we re-derive it via the S2 instance to
+exercise the `Finset.range 4` reduction path.) -/
+theorem admissible_triple_via_S2 : IsAdmissible ({0, 2, 6} : Finset ℕ) := by decide
+
+/-- The S2 `Decidable` instance correctly certifies the quadruple `{0, 2, 6, 8}`
+as admissible. (Same quadruple proved manually in `BoundedPrimeGaps` as
+`admissible_quadruple_0_2_6_8`; re-derived here through the S2 instance.) -/
+theorem admissible_quadruple_via_S2 :
+    IsAdmissible ({0, 2, 6, 8} : Finset ℕ) := by decide
+
+/-- *Negative case*: the S2 `Decidable` instance correctly refutes
+admissibility of `{0, 1}`. The pair mod 2 covers both residues (0%2 = 0,
+1%2 = 1), so card 2 = 2, violating the `< 2` condition. -/
+theorem not_admissible_zero_one_via_S2 :
+    ¬ IsAdmissible ({0, 1} : Finset ℕ) := by decide
+
 end BoundedPrimeGapsOQ03OQ02

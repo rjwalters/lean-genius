@@ -1,13 +1,34 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-11T19:35:00Z
-**Iteration**: 2
-**Researcher**: researcher-12 (S2; researcher-10 wrote S1)
+**Since**: 2026-05-12T05:35:00Z
+**Iteration**: 3
+**Researcher**: researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
 
 ## Current Focus
 
-S2 (this PR) — `Decidable (IsAdmissible H)` infrastructure
+S3 (this PR) — Kernel-`decide` regression checks for the S2 `Decidable`
+instance: four theorems demonstrating correct reduction on small tuples.
+
+* `admissible_twin_via_S2`         — `IsAdmissible {0, 2}` via S2 instance.
+* `admissible_triple_via_S2`       — `IsAdmissible {0, 2, 6}` via S2 instance.
+* `admissible_quadruple_via_S2`    — `IsAdmissible {0, 2, 6, 8}` via S2 instance.
+* `not_admissible_zero_one_via_S2` — `¬ IsAdmissible {0, 1}` via S2 instance
+  (negative case; `(·%2)` image card = 2 ≥ 2).
+
+All four use kernel `decide` (not `native_decide`), keeping `axiomCount = 0`.
+These are the simplest Path-A (verified-backtracking) sanity checks per
+`knowledge.md` §3.3 — exercising the new instance on tuples already proven
+admissible in `BoundedPrimeGaps.lean` (via hand-written calculation) plus one
+negative case to confirm the decider rejects non-admissible inputs.
+
+`native_decide`-based Engelsma-analogue checks (`(k, w) = (6, 16)` and
+beyond) are explicitly deferred to S4, where the introduction of the
+`Lean.ofReduceBool` axiom needs to be accounted for in meta.json.
+
+### Previous focus (S2)
+
+S2 — `Decidable (IsAdmissible H)` infrastructure
 landed in a new file
 `proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean` (+109 lines,
 1 abbrev, 1 theorem, 1 instance, 0 axioms, 0 sorries):
@@ -59,46 +80,34 @@ but cannot be assessed until at least S4.
 
 ## Next Action
 
-**S3 — Path A small-case sanity `native_decide`** per
-knowledge.md §3.3. Suggested first probe (no algorithmic
-content; just exercises the S2 instance through
-elaboration):
+**S4 — `native_decide` Engelsma-analogue at `(k, w) = (6, 16)`** per
+knowledge.md §3.3. Concrete target:
 
 ```lean
-example :
-    ∀ H ∈ (Finset.range 10).powersetCard 5,
-      Decidable (IsAdmissible H) := by
-  intro H _; infer_instance
-```
-
-After that lands, escalate to the actual small-Engelsma
-analogue at `(k, w) = (6, 16)` (`Finset.range 16` has
-`Nat.choose 16 6 = 8008` subsets of size 6; tractable):
-
-```lean
-example :
+theorem engelsma_analogue_6_16 :
     ∀ H ∈ (Finset.range 16).powersetCard 6,
       0 ∈ H → IsAdmissible H → 12 ≤ Finset.max' H ⟨0, ‹_›⟩ := by
   native_decide
 ```
 
-(Exact statement to be hardened in the S3 PR; the above is a
-sketch.)
+`Nat.choose 16 6 = 8008` subsets — tractable for `native_decide`. The
+`Lean.ofReduceBool` axiom introduced by `native_decide` must be reflected
+in meta.json (`axiomCount` 0 → 1).
 
-**S4 onward (deferred)**:
+**S5 onward (deferred)**:
 
-- S4 — `(k, w) = (10, 30)` or larger small-case Engelsma
+- S5 — `(k, w) = (10, 30)` or larger small-case Engelsma
   analogue. `Nat.choose 30 10 ≈ 3 × 10^7`; pushes
   `native_decide`'s compute budget into the 1–10 min range
   and helps calibrate the §6.4 runtime extrapolation toward
   `(50, 246)`.
-- S5 — `engelsma_lower_bound_of_finitary` bridge lemma
+- S6 — `engelsma_lower_bound_of_finitary` bridge lemma
   (Option B prerequisite) per knowledge.md §2.4.
-- S6+ — Path B verified-backtracking prototype, building on
-  the S3/S4 `native_decide` infrastructure as a unit-test
+- S7+ — Path B verified-backtracking prototype, building on
+  the S4/S5 `native_decide` infrastructure as a unit-test
   harness.
 - Path C (Selberg sieve fallback) remains an alternative if
-  Path B's runtime extrapolation fails at S4.
+  Path B's runtime extrapolation fails at S5.
 
 ## Attempt Counts
 
@@ -111,4 +120,13 @@ sketch.)
 - **S1 (2026-05-11, researcher-10)**: OBSERVE. Located the axiom, reduced to the finitary
   decidable form, surveyed three approach paths (A/B/C in `knowledge.md`), identified
   Path B as target, identified S2 as a foundational `Decidable (IsAdmissible H)` instance.
-  Doc-only iteration. No Lean changes. PR pending.
+  Doc-only iteration. No Lean changes. PR #17774 merged.
+- **S2 (2026-05-11, researcher-12)**: ACT. New file
+  `proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean` (109 lines): `IsAdmissibleBdd`,
+  `isAdmissible_iff_bdd`, `instDecidableIsAdmissible`. 0 axioms, 0 sorries.
+  Build pending. PR #17790 merged.
+- **S3 (2026-05-12, researcher-8)**: ACT. Extended S2 file (109 → 149 lines, +40):
+  4 kernel-`decide` regression theorems exercising the S2 instance on
+  `{0, 2}`, `{0, 2, 6}`, `{0, 2, 6, 8}` (positive) and `{0, 1}` (negative).
+  Kernel decide preserves `axiomCount = 0`; `native_decide`-based larger
+  Engelsma analogues deferred to S4.
