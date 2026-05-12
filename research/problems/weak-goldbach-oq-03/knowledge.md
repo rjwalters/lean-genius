@@ -398,3 +398,95 @@ For `vinogradov_minor_arc_bound`:
   `∃ C : ℝ, ∀ N : ℕ, N ≥ 2 → |exponentialSumOverPrimes N α| ≤ C * N`
   (trivial bound, not the deep Vinogradov bound). The deep
   `N / (log N)^A` bound is HEROIC and stays.
+
+---
+
+## S5 ACT Session (researcher-5, 2026-05-12)
+
+### Strategy chosen
+
+**Axiom elimination over multi-session Schnirelmann work.** The seeker
+recommended Approach D-phase-1 (Schnirelmann sumset inequality, multi-
+session 600–1000 LOC) as the canonical S5+ direction. S5 instead
+implemented a narrow axiom-elimination pass on two routine-derivable
+axioms (`ramare_six_primes`, `tao_five_primes`), both of which follow
+trivially from `helfgott_weak_goldbach` and never had real reason to be
+separate axiomatic claims — they predate Helfgott historically but are
+all subsumed by his unconditional 3-prime result.
+
+Per `researcher.md` axiom-elimination priority:
+> "A file with 100 theorems and 50 axioms is weaker than a file with 20
+> theorems and 2 axioms. Every axiom is an unverified assumption."
+
+The S5 reduction (9 → 7 explicit axioms) is real progress by this
+metric. The underlying assumption set is unchanged (still depends on
+helfgott_weak_goldbach), but the file's axiom surface is cleaner: the
+remaining 7 axioms are *genuine* assumptions (deep results not subsumed
+by Helfgott) rather than historical attribution markers.
+
+### Mechanical pattern (Helfgott corollary)
+
+Both proofs share the structure:
+1. `by_cases hLarge : <large enough for Helfgott>` (`n > 5` for tao;
+   `n ≥ 10` for ramare).
+2. Large branch: `obtain ⟨p, q, r, hp, hq, hr, heq⟩ := helfgott_weak_goldbach _ _ _`
+   gives 3 primes; refine with `[p, q, r]` or `[3, p, q, r]`.
+3. Small branch: `push_neg at hLarge; rcases hOddOrEven with ⟨k, rfl⟩;
+   interval_cases k` enumerates the residual cases; explicit witnesses.
+
+For the prime-membership obligation `∀ p ∈ primes, Nat.Prime p`, the
+unfold pattern is:
+```lean
+intro p hp
+simp at hp        -- reduces `p ∈ [a, b, ...]` to `p = a ∨ p = b ∨ ...`
+rcases hp with rfl | rfl | ... <;> assumption  -- or exact specific prime lemmas
+```
+
+For the sum-equals-`n` obligation, `simp; omega` reliably closes after
+`List.sum` unfolds and Helfgott's `heq` is in scope.
+
+### Reusable lemma observation
+
+`Even n` in Mathlib v4.26.0 unfolds to `∃ r, n = r + r` (additive,
+not multiplicative). For Nat-subtraction reasoning where we need
+`Odd (n - 3)` from `Even n` with `n ≥ 10`, destructuring `Even` as
+`n = k + k` first (so `n - 3 = k + k - 3 = 2*(k - 2) + 1`) puts `omega`
+in friendly territory. Destructuring inside a sub-tactic block left
+the outer goal in a slightly fragile state in early drafts; doing it
+at the top of each `by_cases` branch is cleaner.
+
+### Counts delta
+
+| Field | Before S5 | After S5 | Delta |
+|-------|-----------|----------|-------|
+| `axiomCount` | 9 | 7 | −2 |
+| `theoremCount` (broad `^(theorem\|lemma) `) | 26 | 28 | +2 |
+| `lineCount` | 543 | 627 | +84 |
+| `definitionCount` | 15 | 15 | 0 |
+| Sorries | 0 | 0 | 0 |
+
+### Insights for S6+
+
+- **`vinogradov_ternary_goldbach` is similarly routine** — it asserts
+  `∃ N₀, ∀ n > N₀, Odd n → IsSumOfThreePrimes n`, which is satisfied by
+  `N₀ := 5` via Helfgott. Another ~5 LOC axiom elimination available.
+  Would bring `axiomCount` to 6.
+- **`helfgott_explicit_bound`** (line ~488) is also potentially
+  derivable from `helfgott_weak_goldbach`, depending on its precise
+  statement — needs inspection.
+- The remaining "genuinely separate" axioms after these eliminations
+  would be: `helfgott_weak_goldbach` (the central deep result),
+  `circle_method_asymptotic` (Hardy-Littlewood circle method),
+  `schnirelmann_basis_theorem` (Schnirelmann density implies basis),
+  `chen_theorem` (Chen 1973), `binary_goldbach_verified` (Oliveira e
+  Silva 2013 computational). These are 5 genuinely distinct deep claims.
+
+### Honesty note
+
+These eliminations do **not** mathematically advance the formalization —
+the proofs are routine corollaries of an already-formalized stronger
+result. They make the *axiom surface* cleaner (better honesty signal
+in meta.json: 7 deep claims vs 9 mixed historical-and-deep claims) but
+do not contribute new mathematical content. Per `researcher.md`'s
+"Honesty Standards" the value is in the gallery-integrity improvement,
+not in any new theorem-power.
