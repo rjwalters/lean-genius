@@ -42,6 +42,18 @@
     ]
   },
   {
+    "id": "ann-mcpoq03-namespace-setup",
+    "proofId": "minpoly-charpoly-oq-03",
+    "range": { "startLine": 108, "endLine": 118 },
+    "type": "context",
+    "title": "Namespace, Opens, Variables, and Part 1 Header",
+    "content": "Three single-line declarations bind the scope of the rest of the file:\n\n* `namespace MinpolyCharpolyOQ03` (L108): all subsequent declarations are scoped under this namespace; downstream files import as `MinpolyCharpolyOQ03.InvariantFactorChain`, `MinpolyCharpolyOQ03.rational_canonical_form_exists`, etc.\n* `open Matrix Polynomial BigOperators` (L110): exposes unqualified `Matrix.charpoly` as `charpoly`, polynomial-ring notation (e.g. `F[X]`), and `BigOperators` for `∏` / `∑` syntax used in `prodFactors`.\n* `variable {F : Type*} [Field F]` (L112): the field parameter applied implicitly to every declaration in the file. Choosing `Field F` (rather than `[CommRing F]` or `[IntegralDomain F]`) reflects that the structure theorem `Module.equiv_directSum_of_isTorsion` requires `F[X]` to be a PID — which holds iff `F` is a field.\n\nLines 114-118 begin Part 1 with a sectional comment block setting up the invariant-factor data definitions.",
+    "mathContext": "The `Field F` typeclass is the *minimal* base for RCF: weaker hypotheses (e.g. `CommRing F`) would not give a PID structure on `F[X]`, breaking the route via `Module.equiv_directSum_of_isTorsion`. Stronger hypotheses (e.g. `IsAlgClosed F`) are not needed — that's precisely the field-independence virtue of RCF over JNF.",
+    "significance": "supporting",
+    "relatedConcepts": ["namespace scoping", "open directive", "variable declarations", "Field typeclass", "F[X] is a PID iff F is a field"],
+    "prerequisites": ["Lean 4 namespace mechanics", "typeclass binding"]
+  },
+  {
     "id": "ann-mcpoq03-invariantchain",
     "proofId": "minpoly-charpoly-oq-03",
     "range": { "startLine": 113, "endLine": 137 },

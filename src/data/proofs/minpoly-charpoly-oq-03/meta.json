@@ -190,14 +190,48 @@
     }
   ],
   "sorries": 1,
-  "references": {
-    "papers": [
-      "Frobenius, G. (1879). 'Theorie der linearen Formen mit ganzen Coefficienten.' Crelle's Journal, 86, 146-208.",
-      "Dummit & Foote. *Abstract Algebra* (3rd ed., 2004), §12.2."
-    ],
-    "urls": [
-      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Module/PID.html",
-      "https://en.wikipedia.org/wiki/Frobenius_normal_form"
-    ]
-  }
+  "references": [
+    {
+      "authors": ["Frobenius, Georg"],
+      "year": 1879,
+      "title": "Theorie der linearen Formen mit ganzen Coefficienten",
+      "venue": "Journal für die reine und angewandte Mathematik (Crelle's Journal), vol. 86, pp. 146-208",
+      "note": "Frobenius's original classification of matrices over a field up to similarity via the rational canonical form — the source result this scaffold targets."
+    },
+    {
+      "authors": ["Frobenius, Georg"],
+      "year": 1896,
+      "title": "Über die mit einer Matrix vertauschbaren Matrizen",
+      "venue": "Sitzungsberichte der Berliner Akademie",
+      "note": "Cited in the Lean module's References section. Frobenius's refinement establishing uniqueness of the invariant-factor chain."
+    },
+    {
+      "authors": ["Dummit, David S.", "Foote, Richard M."],
+      "year": 2004,
+      "title": "Abstract Algebra",
+      "venue": "John Wiley & Sons, 3rd edition, §12.2",
+      "note": "Modern textbook treatment of RCF via the structure theorem for finitely generated modules over a PID — the proof route this scaffold's S2+ sub-OQs will follow."
+    },
+    {
+      "authors": ["Hungerford, Thomas W."],
+      "year": 1974,
+      "title": "Algebra",
+      "venue": "Graduate Texts in Mathematics 73, Springer-Verlag, §VII.4",
+      "note": "Alternative graduate-level reference for the RCF / structure-theorem chain. Companion to Dummit-Foote."
+    },
+    {
+      "authors": ["The mathlib Community"],
+      "year": 2024,
+      "title": "Mathlib4: Mathlib.Algebra.Module.PID",
+      "venue": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Module/PID.html",
+      "note": "Source of `Module.equiv_directSum_of_isTorsion` — the structure-theorem workhorse that OQ-03-OQ-02 will invoke."
+    },
+    {
+      "authors": ["Wikipedia"],
+      "year": 2025,
+      "title": "Frobenius normal form",
+      "venue": "https://en.wikipedia.org/wiki/Frobenius_normal_form",
+      "note": "General-audience overview of the rational canonical form (a.k.a. Frobenius normal form), including the relationship to Jordan normal form over algebraically closed fields."
+    }
+  ]
 }
