@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S28 reconnaissance (this PR, build-pending tolerant — markdown only): naive coprime-firing conjecture from PR #17489 Next Steps §2 refuted by (130, 89); 3-PR follow-up plan (S28a/b/c) recorded with H2 (Lehmer-prefix-mismatch) as the structurally informative direction. No Lean changes; coordinated with in-flight PR #17489 (S27 triangular cardinality + S24/S25 bridge).",
+    "progressSummary": "S32 (this PR, markdown only): general non-expansion lemma for arbitrary unimodular CofactorMatrix pairs (S31 sub-task b, first disjunct) REFUTED via verifiable two-matrix counterexample (M=(2,1,1,1), N=id, (1,0)). Sidestep via HGCD-specific (NE-cond) restricted to inner-fires branch is the only viable path. Three concrete next-actions proposed (S32a/b/c). 0 Lean changes, 0 new axioms, 0 new sorries.",
     "builtItems": [
       "BinaryGcdOQ03OQ02.lean PART XIV (Session 17): hgcdMatrix_130_89_value — native_decide-checked: hgcdMatrix 5 130 89 = ⟨-3, 5, 20, -33⟩. Anchors the counterexample to the proposed all-fuel row-vector invariant.",
       "BinaryGcdOQ03OQ02.lean PART XIV (Session 17): hgcdMatrix_130_89_row_alpha — native_decide: 130 · M.α + 89 · M.γ = 1390 (where M = hgcdMatrix 5 130 89). The α-row product magnitude exceeds max(130, 89) = 130.",
@@ -98,7 +98,8 @@
       "schonhageGcd_succ_recurse_of_fires + schonhageGcd_succ_fallback_of_aborts (specialised reduction equations)",
       "5 PART XIV native_decide witnesses: schonhageOuterGuardFires {(0,0), (5,3), (12,8), (63,1), (63,63)} = false",
       "S26 (PR #17432): outerGuardSurveyPairs_eq_empty_iff + outerGuardSurveySize_eq_zero_iff + outerGuardFiringCount_eq_zero_of_empty + outerGuardFiringCount_eq_zero_of_size_zero in BinaryGcdOQ03OQ02PathA.lean (PART XVIII), plus 3 degenerate-range example witnesses",
-      "research/problems/binary-gcd-oq-03-oq-02/s28-coprime-firing-spec.md (this PR): ~280-line reconnaissance + dead-end correction documenting (a) refutation of naive coprime-firing conjecture via (130, 89) trace, (b) three refined hypothesis candidates H1/H2/H3 ranked by tractability, (c) Mathlib v4.26.0 API survey for the refined direction, (d) 3-PR sequence S28a/S28b/S28c with line estimates, (e) per-session honesty section"
+      "research/problems/binary-gcd-oq-03-oq-02/s28-coprime-firing-spec.md (this PR): ~280-line reconnaissance + dead-end correction documenting (a) refutation of naive coprime-firing conjecture via (130, 89) trace, (b) three refined hypothesis candidates H1/H2/H3 ranked by tractability, (c) Mathlib v4.26.0 API survey for the refined direction, (d) 3-PR sequence S28a/S28b/S28c with line estimates, (e) per-session honesty section",
+      "S32 (markdown): research/problems/binary-gcd-oq-03-oq-02/s32-non-expansion-analysis.md (+267 lines) — refutes general non-expansion lemma + reformulates as HGCD-specific (NE-cond) + three concrete next-action proposals."
     ],
     "insights": [
       "S17 (CRITICAL): the proposed all-fuel row-vector invariant for hgcdMatrix is FALSE. The decided witness at (a, b) = (130, 89) shows row output (1390, -2287) with both an α-magnitude failure (1390 > 130) and a β-sign failure (-2287 < 0, no nat witness). 875/2211 ≈ 39.6% of input pairs above hgcdThreshold = 64 violate the bound; worst case (107, 85) produces matrix entries of order 10^268. The single-axis joint induction proposed by S16 was setting up to prove an impossibility.",
@@ -145,7 +146,11 @@
       "S26: empty-range (hi <= lo) and sub-threshold (hi <= 64) density questions both dispatch to closed-form zero-firing without native_decide. Together S25 and S26 cover every density question whose answer is forced to zero by structural constraints; remaining open work is native_decide calibration of outerGuardFiringCount 64 hi for hi > 64.",
       "Naive S28 conjecture FALSE: not every coprime pair above threshold fires the outer guard — refuted by S17 family (130, 89) which is coprime (130 = 2·5·13, 89 prime) but has schonhageOuterGuardFires = false because hgcdMatrixSafe inner-guard aborts and M_inner.apply does not reduce max (per state.md S20 attestation, PR #17087)",
       "Outer-guard firing rate on outerGuardSurveyPairs 64 130 strictly less than 100%; structural lower-bound NOT achievable via coprime-only hypothesis — refined hypothesis must mention either bit-length structure (H1 — also FAILS on (107, 85) where bit-length gap = 0) or Lehmer-prefix agreement (H2 — most informative direction, ~80 Lean lines)",
-      "Distinction: 39.6% row-output-bound failure rate (S17 PART XIV stat for unguarded hgcdMatrix) is NOT directly the outer-guard firing rate for hgcdMatrixSafe — the inner abort branch substitutes M_inner, so the actual M.apply tested by the outer guard is different from the unguarded composition that produces 10^268-sized entries"
+      "Distinction: 39.6% row-output-bound failure rate (S17 PART XIV stat for unguarded hgcdMatrix) is NOT directly the outer-guard firing rate for hgcdMatrixSafe — the inner abort branch substitutes M_inner, so the actual M.apply tested by the outer guard is different from the unguarded composition that produces 10^268-sized entries",
+      "S32: GENERAL non-expansion lemma 'max ((M.mul N).apply a b).natAbs <= max (N.apply a b).natAbs' for arbitrary unimodular M, N is FALSE — counterexample M=(2,1,1,1) det=1, N=id, (1,0): M.apply=(2,1) but N.apply=(1,0), so 2 not<= 1. Verifiable by `decide` on CofactorMatrix definitions in BinaryGcdOQ03.lean:48-62.",
+      "S32: Refutation of S31 sub-task (b) first disjunct — sidestep via 'weaker conditional form' (HGCD-specific) is the only viable path. The structural failure mode is the integer-shear pattern (1, k, 0, 1): det = 1 yet sends (1, 1) to (1+k, 1) for arbitrary k.",
+      "S32: Naive HGCD-specific non-expansion (NE-self): 'max (hgcdMatrixSafe f p q).apply (p,q).natAbs <= max p q' ALSO FALSE — inherits S28a inner-abort counterexample (130, 89): above threshold, aborts, output max >= 130. The conditional form (NE-cond) restricting to inner-fires branch is needed.",
+      "S32: Three next-action proposals (s32-non-expansion-analysis.md §6): (a) ~30-line Lean `decide`-verified counterexample, (b) ~80-line `hgcdMatrixSafe_apply_compose_decrease` theorem, (c) ~120-line full S28b equivalence theorem. (a) is the lowest-risk follow-up; (b) is the core open piece for closing compose ⇒ outer-fires."
     ],
     "mathlibGaps": [
       "Half-GCD / HGCD: no formalization in Mathlib or this gallery (verified by grep 2026-04-28).",
@@ -161,7 +166,10 @@
       "S27: native_decide witness on outerGuardFiringCount 64 130 OR closed-form triangular-sum cardinality for outerGuardSurveyPairs (hi - lo) * (hi - lo + 1) / 2",
       "S28a (~30 Lean lines): append (130, 89) and (107, 85) outer-guard counterexamples to PART XIV (BinaryGcdOQ03OQ02PathA.lean) plus Nat.Coprime sanity facts, after PR #17489 merges",
       "S28b (~50 lines): structural inner-guard / outer-guard equivalence lemma — when does hgcdMatrixSafe_succ second if-branch return M_inner with M_inner.apply (a, b) failing the strict-decrease check?",
-      "S28c (~80 lines): refined coprime-firing theorem H2 — Lehmer-prefix-mismatch hypothesis: prefix agreement between (a, b) and the recursive subproblem at hgcdShiftSafe a b ⟹ outer guard fires"
+      "S28c (~80 lines): refined coprime-firing theorem H2 — Lehmer-prefix-mismatch hypothesis: prefix agreement between (a, b) and the recursive subproblem at hgcdShiftSafe a b ⟹ outer guard fires",
+      "S32a: Add `decide`-verified Lean counterexample to BinaryGcdOQ03OQ02PathA.lean (~30 lines) showing general non-expansion FALSE.",
+      "S32b: Prove `hgcdMatrixSafe_apply_compose_decrease` (~80 lines) — the conditional non-expansion restricted to the compose branch, closing S31 sub-task (b).",
+      "S32c: Prove full S28b equivalence `schonhageOuterGuardFires_above_iff_inner_fires` (~120 lines) by combining S30's direction with S32b."
     ]
   },
   "tags": [

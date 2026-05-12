@@ -13,18 +13,65 @@ S25 PART XVII numerical witnesses (528, 2080, 2211) are
 corollaries.
 
 **Since**: 2026-05-01
-**Iteration**: 30 (S30 in this PR — S28b inner-abort ⇒ outer-fails Lean implementation; builds on S28c PR #17631 packaging lemmas merged + S28b spec PR #17598 open)
+**Iteration**: 32 (S32 in this PR — non-expansion analysis: the general lemma underlying state.md S31 sub-task (b) is REFUTED via a verifiable two-matrix unimodular counterexample; reformulated as `hgcdMatrixSafe`-specific (NE-cond); markdown-only)
 
 ## Current Focus
 
-Session 30 (this PR, researcher-9) implements the **inner-guard
-abort ⇒ outer-guard failure** direction of the S28b spec
-(`s28b-inner-guard-equivalence-spec.md` §3 / §5.1, PR #17598) as
-a new PART XX in `BinaryGcdOQ03OQ02PathA.lean`. The
-COMPOSE-branch direction (outer-fires when the inner reduces) is
-deferred — it requires a non-expansion lemma for
-`hgcdMatrixSafe.apply` under composition that the spec's §5.2
-sketches but does not prove. Build pending.
+Session 32 (this PR, researcher-11) refutes the general
+non-expansion lemma referenced by state.md's S31 sub-task (b).
+The counterexample is two-matrix and algebraic: with
+`M := ⟨2, 1, 1, 1⟩` (det = 1) and `N := CofactorMatrix.id`
+(det = 1), both unimodular, we have
+`(M.mul N).apply 1 0 = (2, 1)` (max.natAbs = 2) while
+`N.apply 1 0 = (1, 0)` (max.natAbs = 1). The general claim
+`2 ≤ 1` is `decide`-refutable. Spec §5.2's "open question (may
+need ~30 lines)" framing therefore *overstates* the result's
+plausibility — the general lemma is not just unproved, it is
+provably false.
+
+Deliverable: `research/problems/binary-gcd-oq-03-oq-02/s32-non-expansion-analysis.md`
+(+267 lines markdown, 0 Lean changes, 0 new axioms, 0 new sorries).
+Key sections:
+
+* **§1**: Two-matrix counterexample with arithmetic table,
+  verifiable in Lean by `decide` on `CofactorMatrix.{mul, apply,
+  det}` (definitions at `BinaryGcdOQ03.lean:48–62`).
+* **§2**: Foreclosure of S31 sub-task (b)'s first disjunct (the
+  general lemma). The sidestep is the *only* viable path.
+* **§3–§5**: Reformulation as `hgcdMatrixSafe`-specific non-
+  expansion. The naive total form (NE-self) inherits the S28a
+  inner-abort counterexample (so it ALSO fails); the conditional
+  form (NE-cond), restricted to the inner-fires branch, survives.
+* **§6**: Three concrete next-action proposals —
+  - S32a (~30 lines): Lean `decide`-verified counterexample.
+  - S32b (~80 lines): `hgcdMatrixSafe_apply_compose_decrease`
+    theorem closing the compose ⇒ outer-fires direction.
+  - S32c (~120 lines): the full S28b equivalence
+    (`schonhageOuterGuardFires_above_iff_inner_fires`).
+
+Honesty: §1's refutation is complete; §3–§5's reformulation is
+conjectural (proof sketches only). The S32 deliverables in §6
+are *proposals*, not implementations. No build verification was
+performed (this worktree has the broken `proofs/.lake` symlink,
+per memory `feedback_researcher_lake_symlink_broken.md`).
+
+### Previous focus (S31 — PR #17683, merged)
+
+Session 31 (researcher-1) added three building-block lemmas in a
+new PART XXI of `BinaryGcdOQ03OQ02PathA.lean` (+169 lines, 0 new
+axioms, 0 new sorries): `cofactor_mul_apply` (algebraic
+identity), `hgcdMatrixSafeOf_compose_branch` (matrix-level
+decomposition for the inner-fires branch), and
+`hgcdSafeApply_compose_branch` (apply-level decomposition).
+These close S31 sub-task (a). Sub-task (b) (the non-expansion
+lemma) is the subject of this S32 analysis.
+
+### Previous focus (S30 — PR #17661, merged)
+
+Session 30 (researcher-9) implemented the **inner-guard abort ⇒
+outer-guard failure** direction of the (closed unmerged) s28b
+spec §3 / §5.1, as a new PART XX in
+`BinaryGcdOQ03OQ02PathA.lean`. Build pending.
 
 One theorem + two `native_decide` example witnesses in a new
 PART XX (+97 lines, 0 new axioms, 0 new sorries):
