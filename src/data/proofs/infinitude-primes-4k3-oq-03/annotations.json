@@ -175,6 +175,32 @@
     ]
   },
   {
+    "id": "cyclotomic-pattern",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 24,
+      "endLine": 33
+    },
+    "type": "insight",
+    "title": "Why x² + 1 Works: The Cyclotomic Pattern",
+    "content": "The construction $N = (2(n+1)!)^2 + 1$ in the 1 (mod 4) case is not arbitrary — it instantiates a general pattern from cyclotomic polynomials. The polynomial $f(x) = x^2 + 1$ is exactly the **4th cyclotomic polynomial** $\\Phi_4(x)$. The key fact: if a prime $p \\nmid n$ divides $\\Phi_n(k)$ for some integer $k$, then the order of $k$ mod $p$ is exactly $n$, so by Lagrange's theorem $n \\mid p - 1$, i.e. $p \\equiv 1 \\pmod n$. For $n = 4$: primes dividing $k^2 + 1$ have $k$ of order 4 mod $p$, hence $4 \\mid p - 1$ — exactly Euler's criterion. This generalizes to every class $\\equiv 1 \\pmod n$ (Bang 1886, Wendt 1895): take $f(x) = \\Phi_n(x)$, apply Euclid's argument with the factorial-multiplied input. The classes $\\not\\equiv 1 \\pmod n$ are genuinely harder — for $n = 4$ the second class $\\equiv 3$ admits an ad hoc product argument (its parent file `infinitude-primes-4k3`), but for $n = 5$ only $a = 1, 4$ have Euclid-style proofs (Murty's criterion: $a^2 \\equiv 1 \\pmod n$).",
+    "mathContext": "$\\Phi_n(x)$ = $n$-th cyclotomic polynomial = $\\prod_{\\gcd(k,n)=1, 1 \\leq k \\leq n} (x - e^{2\\pi i k/n})$. For $n = 4$: $\\Phi_4(x) = x^2 + 1$. **Key lemma** (Wendt): $p \\nmid n$ and $p \\mid \\Phi_n(k)$ for some $k$ $\\Rightarrow$ $\\mathrm{ord}_p(k) = n$ $\\Rightarrow$ $n \\mid p - 1$ $\\Rightarrow$ $p \\equiv 1 \\pmod n$. **Murty's criterion** for which $(a, d)$ admit Euclid-style proofs: $a^2 \\equiv 1 \\pmod d$. For $d = 4$: $a \\in \\{1, 3\\}$ (both work). For $d = 5$: $a \\in \\{1, 4\\}$ only.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclotomic polynomial",
+      "order of element mod p",
+      "Lagrange's theorem",
+      "Bang–Zsygmondy theorem",
+      "Murty's criterion for elementary AP infinitude",
+      "Wendt 1895"
+    ],
+    "prerequisites": [
+      "cyclotomic polynomials Φ_n",
+      "order of element in (ℤ/pℤ)×",
+      "Lagrange's theorem on subgroup orders"
+    ]
+  },
+  {
     "id": "set-infinite-api",
     "proofId": "infinitude-primes-4k3-oq-03",
     "range": {
