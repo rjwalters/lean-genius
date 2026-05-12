@@ -1,0 +1,98 @@
+{
+  "slug": "lagrange-theorem-oq-02-oq-02-oq-01",
+  "title": "Can the class equation be used to formally prove the Burnside lemma (number of orbits = average number of fixed points) in Lean 4 using only the infrastructure developed here?",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall G\\ [\\mathrm{Group}\\ G][\\mathrm{Fintype}\\ G]\\ \\forall X\\ [\\mathrm{MulAction}\\ G\\ X][\\mathrm{Fintype}\\ X],\\ \\sum_{g \\in G} |\\mathrm{Fix}(g)| = |X/G| \\cdot |G|",
+    "plain": "Use the orbit-decomposition machinery from the parent file's class equation to derive Burnside's lemma in its symmetric form (sum of fixed-point counts = number of orbits times group order).",
+    "whyMatters": [
+      "The class equation and Burnside's lemma are the same orbit-decomposition identity applied to two different actions. Articulating the parallel in Lean clarifies the conceptual structure of orbit/class counting.",
+      "Burnside's lemma is the standard tool for counting equivalence classes under group actions (combinatorial enumeration, Pólya theory).",
+      "Affirmative resolution adds a directly reusable wrapper to the gallery for downstream combinatorial work."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Mathlib's MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group (in Mathlib.GroupTheory.GroupAction.Quotient) proves the symmetric form directly.",
+      "In-tree precedent: proofs/Proofs/BurnsideCountingOQ03OQ03.lean line 87 invokes the Mathlib lemma cleanly, confirming API name and signature."
+    ],
+    "open": [
+      "Does the bundled oq01_resolution theorem need explicit universe annotations, or does Type* work?",
+      "Optional polish: cross-reference the new file into the parent's gallery openQuestions[0]."
+    ],
+    "goal": "Write proofs/Proofs/LagrangeTheoremOQ02OQ02OQ01.lean with 4 theorems (burnside_lemma_sum_form, burnside_lemma_average_form, conjugation_burnside_form, oq01_resolution) proving the affirmative resolution. ≤ 100 lines, 0 sorries, 0 axiom declarations."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T03:30:00.000Z",
+    "iteration": 1,
+    "focus": "S1 SCAFFOLD complete: problem.md, knowledge.md, state.md, this JSON. Mathlib API confirmed via in-tree usage at BurnsideCountingOQ03OQ03.lean:87.",
+    "blockers": [],
+    "nextAction": "S2 ACT: write Proofs/LagrangeTheoremOQ02OQ02OQ01.lean per knowledge.md §5 decomposition (≤ 100 lines, 4 theorems) plus gallery entry triple.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE: Mathlib API (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group) located, verified by in-tree usage, S2 decomposition into 4 theorems specified. Expected resolution: YES with ≤ 100 lines, 0 sorries, 0 axioms.",
+    "builtItems": [
+      "research/problems/lagrange-theorem-oq-02-oq-02-oq-01/problem.md — problem statement + target theorems + decomposition table",
+      "research/problems/lagrange-theorem-oq-02-oq-02-oq-01/knowledge.md — classical statement, parent-file connection, Mathlib API names/signatures, axiom-cleanliness, S2 plan",
+      "research/problems/lagrange-theorem-oq-02-oq-02-oq-01/state.md — session state",
+      "src/data/research/problems/lagrange-theorem-oq-02-oq-02-oq-01.json — this file"
+    ],
+    "insights": [
+      "MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group is the symmetric form of Burnside's lemma in Mathlib (Mathlib.GroupTheory.GroupAction.Quotient).",
+      "The class equation is the orbit-decomposition identity (|X|=Σ|o|) for the conjugation action G⇌G; Burnside is the same identity for an arbitrary action G⇌X with the sum-swap to Σ_g|Fix(g)|.",
+      "fixedBy (per-element) vs fixedPoints (whole group): Burnside uses fixedBy summed over G; the parent's p-group corollary uses fixedPoints. Different API choices for different theorems.",
+      "Mathlib lemma signature consistent with in-tree call site BurnsideCountingOQ03OQ03.lean:87 — no API drift suspected.",
+      "Axiom-cleanliness: import chain only uses Classical.choice/propext/Quot.sound (Mathlib's standard triple). No new axioms introduced by this file."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "S2: write Proofs/LagrangeTheoremOQ02OQ02OQ01.lean with burnside_lemma_sum_form (Mathlib wrap), burnside_lemma_average_form (Nat.mul_div_cancel corollary), conjugation_burnside_form (specialised to G⇌G by conj), oq01_resolution (bundle).",
+      "S2: full gallery entry (meta.json + annotations.json + index.ts).",
+      "S3 (optional): cross-reference into parent's openQuestions[0] with [RESOLVED in oq-01]."
+    ]
+  },
+  "tags": [
+    "group-theory",
+    "algebra",
+    "burnside-lemma",
+    "class-equation",
+    "orbit-stabilizer",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "lagrange-theorem",
+    "lagrange-theorem-oq-01",
+    "lagrange-theorem-oq-02",
+    "lagrange-theorem-oq-02-oq-01",
+    "lagrange-theorem-oq-02-oq-02",
+    "burnside-counting-oq-03-oq-03"
+  ],
+  "references": {
+    "papers": [
+      "Burnside, W. (1897). Theory of Groups of Finite Order. Cambridge University Press.",
+      "Cauchy, A.-L. (1845). Mémoire sur les arrangements. Exercices d'Analyse et de Physique Mathématique."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Burnside%27s_lemma"
+    ],
+    "mathlib": [
+      "Mathlib.GroupTheory.GroupAction.Quotient (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group)",
+      "Mathlib.GroupTheory.ClassEquation (Group.nat_card_center_add_sum_card_noncenter_eq_card)"
+    ]
+  },
+  "started": "2026-05-12T03:30:00.000Z",
+  "lastUpdate": "2026-05-12T03:30:00.000Z",
+  "significance": 6,
+  "tractability": 7,
+  "leanFiles": []
+}
