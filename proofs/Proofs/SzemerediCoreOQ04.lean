@@ -30,12 +30,21 @@
   prevent definition drift across the cluster. The decidable surrogate is
   a new layer that imports `SzemerediCore` but does not modify it.
 
-  Scope of this S2 scaffold:
-    • The definitions and `Decidable` instance are sorry-free.
-    • The ADLRY implication carries one `sorry`: the density-decomposition
-      bound. The proof strategy is documented inline.
-    • Downstream targets (witness extraction, computable
-      `findRegularPartition`, Mathlib bridge) are deferred to S3–S5.
+  Scope (after S5 case-split refactor):
+    • The definitions, `Decidable` instance, and constructive witness
+      extraction (`witnessOfIrregular`) are sorry-free.
+    • The main wrapper `witness_regular_implies_epsilon_regular` is
+      sorry-free; it case-splits on `1 ≤ 4 · eps` and dispatches to the
+      trivial regime inline and to `_small_eps` otherwise.
+    • The single `sorry` lives in `witness_regular_implies_epsilon_regular_small_eps`,
+      which carries the strictly tighter hypothesis `4 · eps < 1` (i.e.
+      `eps < 1/4`). The deferred proof is the genuine ADLRY
+      second-moment / Cauchy-Schwarz content (Lemma 3.4, Zhao §3.4).
+    • Per-vertex bias scaffolding (`vertexBias`, Part 6) prepares the
+      second-moment proof; all definitions and lemmas there are
+      sorry-free.
+    • Downstream target (computable `findRegularPartition`, Mathlib
+      bridge) is deferred to S6+.
 -/
 import Mathlib
 import Proofs.SzemerediCore
@@ -234,55 +243,106 @@ lemma IsWitnessRegular_anti (G : SimpleGraph V) [DecidableRel G.Adj]
     hreg B' hB' hcB'_eps
   linarith
 
+/-- **Non-trivial regime of the slack-4 ADLRY implication** (`0 < eps < 1/4`).
+
+    Isolates the genuine ADLRY content as a standalone lemma so that the
+    main wrapper `witness_regular_implies_epsilon_regular` can dispatch
+    the trivial regime `eps ≥ 1/4` via the universal bound
+    `|d(A', B') - d(A, B)| ≤ 1 ≤ 4 · eps` (see Part 5 boundary cases).
+
+    With `4 · eps < 1` we have `eps < 1/4`, so the universal `≤ 1` bound
+    is no longer sufficient and the second-moment / Cauchy-Schwarz
+    argument over `a ∈ A` is required (ADLRY 1994 Lemma 3.4; Zhao §3.4).
+
+    **Proof obligation** (still open): given `IsWitnessRegular G eps A B`,
+    show that for any `A' ⊆ A`, `B' ⊆ B` with `|A'| ≥ 4 · eps · |A|` and
+    `|B'| ≥ 4 · eps · |B|`,
+    `|edgeDensity G A' B' − edgeDensity G A B| ≤ 4 · eps`. The route
+    (see `research/problems/szemeredi-core-oq-04/knowledge.md` §S4
+    "Recommended next-iteration approach"):
+
+    1. Partition `A` into `A_good := {a ∈ A | vertexBias G a A B ≤ eps}`
+       and its complement `A_bad`. The grid hypothesis bounds
+       `|A_bad| ≤ eps · |A|` via averaging the per-grid-member estimates
+       over `a ∈ A` and applying Chebyshev / Markov.
+    2. For `A' ⊆ A` with `|A'| ≥ 4 · eps · |A|`, conclude
+       `|A' ∩ A_bad| ≤ |A_bad| ≤ eps · |A| ≤ (1/4) · |A'|` — so `A'` is
+       composed mostly (`≥ 3/4`) of unbiased vertices.
+    3. For unbiased `a ∈ A_good`, the per-vertex bias bounds the
+       contribution of `a` to `e(A', B') − e(A, B) · |A'|·|B'|/(|A|·|B|)`.
+       Summing and using the size bound on `B'` (≥ 4ε·|B|) gives the
+       slack-4 conclusion via triangle inequality at the end.
+
+    **Audit note** (from S4 PR #17994 + #18008): the earlier
+    triangle-inequality decomposition
+    `|d(A',B') − d(A,B)| ≤ |d(A',B') − d(A,B')| + |d(A,B') − d(A,B)|`
+    is FALSE in the small-eps regime — the B-side step requires a
+    Frieze-Kannan cut-norm bound stronger than the grid hypothesis, and
+    the A-side step needs a per-vertex restriction lemma rather than the
+    coarse `|A\A'|/|A| ≤ 1 − 4ε`. The second-moment route avoids both
+    pitfalls. -/
+theorem witness_regular_implies_epsilon_regular_small_eps
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 0 < eps) (hsmall : 4 * eps < 1)
+    (A B : Finset V) (hreg : IsWitnessRegular G eps A B) :
+    IsEpsilonRegular G (4 * eps) A B := by
+  intro A' B' hA' hB' hcA' hcB'
+  -- See docstring for the deferred second-moment / Cauchy-Schwarz route.
+  sorry
+
 /-- **ADLRY 1994 ε-grid lemma (one direction)**: if the pair `(A, B)`
     satisfies the witness-regular surrogate at parameter `ε`, then it
     is ε-regular at parameter `4 · ε`.
 
-    **Status (S4 audit)**: the slack-4 claim follows from a
-    *second-moment / Cauchy-Schwarz* argument (Alon-Duke-Lefmann-
-    Rödl-Yuster 1994, Lemma 3.4; Zhao §3.4). The proof is non-trivial
-    and is deferred to a future iteration.
+    **Proof structure (S5)**: case-splits on the *target* parameter
+    `4 · ε`.
 
-    **Audit of the previous proof sketch** (see
-    `research/problems/szemeredi-core-oq-04/knowledge.md` §S4):
+    * **Trivial regime** (`1 ≤ 4 · ε`, i.e. `ε ≥ 1/4`): the conclusion
+      holds for every `(A, B)` because `|d(A', B') − d(A, B)| ≤ 1 ≤ 4 · ε`
+      from the edge-density bounds (`edgeDensity_nonneg` + `_le_one`).
+      Closed inline by `linarith`; matches `Part 5`'s
+      `witness_regular_implies_epsilon_regular_large_eps` (which lives
+      after this theorem in the file and is the dot-notation-friendly
+      version of the same one-liner).
 
-    The earlier docstring proposed a triangle-inequality decomposition
-    `|d(A',B') - d(A,B)| ≤ |d(A',B') - d(A,B')| + |d(A,B') - d(A,B)|`
-    with each term bounded by `2ε`. Closer inspection shows that this
-    decomposition does NOT yield slack `4ε` from the grid hypothesis
-    alone:
+    * **Non-trivial regime** (`4 · ε < 1`, i.e. `ε < 1/4`): delegated
+      to `witness_regular_implies_epsilon_regular_small_eps` above.
+      That lemma carries the sole remaining `sorry` in this file; the
+      proof route (second-moment / Cauchy-Schwarz over `a ∈ A`) is
+      documented in its docstring and in
+      `research/problems/szemeredi-core-oq-04/knowledge.md` §S4-S5.
 
-    *B-side step* (`|d(A,B') - d(A,B)| ≤ 2ε` for arbitrary `B' ⊆ B`):
-    `IsWitnessRegular` controls the deviation only for `B' ∈ witnessFamilyB`,
-    which has at most `2|A|` members. Extending to arbitrary `B'` requires
-    an additional argument — typically a Frieze-Kannan / cut-norm style
-    second-moment bound, which is stronger than the grid hypothesis
-    provides at slack `2ε`.
+    **Net effect of the S5 refactor**: this wrapper is sorry-free; the
+    deep mathematical content compresses to a helper with strictly
+    tighter precondition (`4ε < 1` added). Downstream callers see no
+    interface change.
 
-    *A-side step* (`|d(A',B') - d(A,B')| ≤ 2ε` for `A' ⊆ A` with
-    `|A'| ≥ 4ε|A|`): false in general without `hreg`. The previous
-    sketch claimed this followed from `|A \ A'|/|A| ≤ 1 - 4ε`, but
-    `1 - 4ε` is the *upper* bound on the loss-fraction (close to `1`
-    when `ε` is small), not a `2ε` bound on the density perturbation.
-
-    The CORRECT proof route uses a second-moment (variance) decomposition
-    over `a ∈ A` with the grid family providing per-vertex deviation
-    estimates; see knowledge.md §S4 for the literature pointer.
-
-    **Helpers exposed (S4)**:
+    **Helpers exposed (S4–S5)**:
     * `IsWitnessRegular.density_bound` — direct grid-member application.
     * `IsWitnessRegular_anti` — anti-monotonicity in `eps`.
-
-    These are sorry-free and intended as primitives for the future
-    second-moment proof. -/
+    * `witness_regular_implies_epsilon_regular_small_eps` — non-trivial
+      regime placeholder; carries the sole sorry.
+    * `witness_regular_implies_epsilon_regular_large_eps` — trivial
+      regime, sorry-free (Part 5).
+    * `vertexBias` + lemmas — per-vertex bias scaffolding (Part 6,
+      sorry-free), prepared for the second-moment proof. -/
 theorem witness_regular_implies_epsilon_regular
     (G : SimpleGraph V) [DecidableRel G.Adj]
     {eps : ℚ} (heps : 0 < eps) (A B : Finset V)
     (hreg : IsWitnessRegular G eps A B) :
     IsEpsilonRegular G (4 * eps) A B := by
-  intro A' B' hA' hB' hcA' hcB'
-  -- See docstring above for the S4 audit and proof-route discussion.
-  sorry
+  by_cases hlarge : 1 ≤ 4 * eps
+  · -- Trivial regime: universal `|d(A', B') - d(A, B)| ≤ 1 ≤ 4 · eps`.
+    intro A' B' _ _ _ _
+    have h1 := edgeDensity_nonneg G A' B'
+    have h2 := edgeDensity_le_one G A' B'
+    have h3 := edgeDensity_nonneg G A B
+    have h4 := edgeDensity_le_one G A B
+    rw [abs_sub_le_iff]
+    refine ⟨?_, ?_⟩ <;> linarith
+  · push_neg at hlarge
+    exact witness_regular_implies_epsilon_regular_small_eps
+      G heps hlarge A B hreg
 
 /-! ## Part 3b: Constructive witness extraction (S3, sorry-free)
 
@@ -442,12 +502,54 @@ theorem IsEpsilonRegular_of_one_le_eps (G : SimpleGraph V) [DecidableRel G.Adj]
     `IsEpsilonRegular G (4 * eps) A B` is true for *every* `(A, B)` —
     no hypothesis on `IsWitnessRegular` is needed. This isolates the
     trivial branch of the slack-4 case split; the non-trivial work
-    lives in `witness_regular_implies_epsilon_regular` for the regime
-    `0 < eps < 1/4`. -/
+    lives in `witness_regular_implies_epsilon_regular_small_eps` for
+    the regime `0 < eps < 1/4`. (As of S5, the main wrapper
+    `witness_regular_implies_epsilon_regular` performs the case split
+    inline and is sorry-free.) -/
 theorem witness_regular_implies_epsilon_regular_large_eps
     (G : SimpleGraph V) [DecidableRel G.Adj]
     {eps : ℚ} (heps : 1 ≤ 4 * eps) (A B : Finset V) :
     IsEpsilonRegular G (4 * eps) A B :=
   IsEpsilonRegular_of_one_le_eps G heps A B
+
+/-! ## Part 6: Per-vertex bias (S5 scaffold for second-moment route)
+
+The non-trivial regime `0 < eps < 1/4` of the slack-4 ADLRY implication
+uses a second-moment / Cauchy-Schwarz argument over `a ∈ A`. The
+per-vertex bias `|d({a}, B) - d(A, B)|` measures the deviation of a
+single vertex's edge density from the bulk; an averaging step (Markov /
+Chebyshev) bounds the number of biased vertices using the grid
+hypothesis, then a triangle inequality at the end transfers the bound
+to subset densities. The definitions and basic properties live here
+as sorry-free primitives for the future
+`witness_regular_implies_epsilon_regular_small_eps` proof. -/
+
+/-- **Per-vertex density bias**: the absolute deviation of the edge
+density between the singleton `{a}` and `B` from the bulk edge density
+`d(A, B)`. Always in `[0, 1]` (since `edgeDensity ∈ [0, 1]`). -/
+noncomputable def vertexBias (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a : V) (A B : Finset V) : ℚ :=
+  |edgeDensity G {a} B - edgeDensity G A B|
+
+/-- Per-vertex bias is non-negative (absolute value). -/
+lemma vertexBias_nonneg (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a : V) (A B : Finset V) :
+    0 ≤ vertexBias G a A B :=
+  abs_nonneg _
+
+/-- Per-vertex bias is at most `1`, since both densities lie in `[0, 1]`.
+Immediate from `abs_edgeDensity_sub_le_one_left`. -/
+lemma vertexBias_le_one (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a : V) (A B : Finset V) :
+    vertexBias G a A B ≤ 1 :=
+  abs_edgeDensity_sub_le_one_left G A {a} B
+
+/-- **Trivial regime for `vertexBias`**: if `1 ≤ eps`, every vertex is
+"`eps`-unbiased". Used as a degenerate case in the second-moment proof
+to avoid edge cases at the regime boundary. -/
+lemma vertexBias_le_of_one_le (G : SimpleGraph V) [DecidableRel G.Adj]
+    (a : V) (A B : Finset V) {eps : ℚ} (heps : 1 ≤ eps) :
+    vertexBias G a A B ≤ eps :=
+  (vertexBias_le_one G a A B).trans heps
 
 end Szemeredi.OQ04
