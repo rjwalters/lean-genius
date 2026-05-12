@@ -1,0 +1,98 @@
+[
+  {
+    "id": "ann-pq-001-header",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 53
+    },
+    "type": "context",
+    "title": "OQ Statement and Approach A Strategy",
+    "content": "The OQ asks for an explicit non-cyclic group of order pq when p, q are distinct primes with p ∣ (q-1). The parent file `LagrangeTheoremOQ01OQ01` proves the conditional fact `lagrange_pq_nonabelian_n_p_eq_q` *assuming* a non-cyclic G exists, but does not construct one. This file supplies the witness for p = 2 via Approach A from the S1 survey: use Mathlib's `DihedralGroup q`.",
+    "mathContext": "The dihedral group $D_n$ on a regular $n$-gon has $2n$ elements: $n$ rotations and $n$ reflections. For $n = 3$, $D_3 \\cong S_3$ is the smallest non-abelian group. For any $n \\ne 1$, $D_n$ is non-cyclic.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Mathlib.GroupTheory.SpecificGroups.Dihedral",
+      "Burnside classification of pq-groups",
+      "Approach A vs Approach B in the S1 survey"
+    ],
+    "prerequisites": [
+      "DihedralGroup definition",
+      "Sylow theorems",
+      "Proofs.LagrangeTheoremOQ01OQ01"
+    ]
+  },
+  {
+    "id": "ann-pq-001-main-theorem",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 55,
+      "endLine": 84
+    },
+    "type": "explanation",
+    "title": "Main Existence Theorem: DihedralGroup q is the Witness",
+    "content": "`exists_noncyclic_of_order_two_mul_odd_prime` packages the witness as an existential over Type, Group, and Fintype instances together with the two facts: `Fintype.card G = 2 * q` (from `DihedralGroup.card`) and `¬ IsCyclic G` (from `DihedralGroup.not_isCyclic` applied to `q ≠ 1`, which holds by primality). The hypothesis `q ≠ 2` is documentary — it certifies the OQ's divisibility premise but does not appear in the proof body.",
+    "mathContext": "The proof reduces to two Mathlib lemmas: $\\mathrm{Fintype.card}(\\mathrm{DihedralGroup}\\,q) = 2q$ and $\\neg\\, \\mathrm{IsCyclic}(\\mathrm{DihedralGroup}\\,q)$ when $q \\ne 1$. The first requires the `NeZero q` instance (derived from `Nat.Prime.ne_zero`).",
+    "significance": "key",
+    "relatedConcepts": [
+      "DihedralGroup.card",
+      "DihedralGroup.not_isCyclic",
+      "Nat.Prime.one_lt",
+      "Nat.Prime.ne_zero",
+      "existential witnesses for group orders"
+    ],
+    "prerequisites": [
+      "Lean 4 anonymous-constructor refine syntax",
+      "Mathlib NeZero typeclass",
+      "Nat.Prime API"
+    ]
+  },
+  {
+    "id": "ann-pq-001-divisibility",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 86,
+      "endLine": 102
+    },
+    "type": "explanation",
+    "title": "Divisibility Certificate: 2 ∣ (q-1) for Odd Primes",
+    "content": "`two_dvd_sub_one_of_odd_prime` confirms that the existence theorem lands in the OQ's divisibility regime. The proof splits on `Nat.Prime.eq_two_or_odd'`: the `q = 2` branch contradicts the hypothesis `q ≠ 2`; the odd branch supplies `q = 2*k + 1`, so `q - 1 = 2 * k`, which `omega` discharges.",
+    "mathContext": "For any odd prime $q \\ge 3$, $q - 1$ is even, hence $2 \\mid (q - 1)$. This is the OQ's divisibility hypothesis `p ∣ (q-1)` specialized to $p = 2$.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Nat.Prime.eq_two_or_odd'",
+      "parity of primes",
+      "omega tactic",
+      "OQ premise certification"
+    ],
+    "prerequisites": [
+      "Nat.Prime API",
+      "omega",
+      "case analysis on prime parity"
+    ]
+  },
+  {
+    "id": "ann-pq-001-corollaries",
+    "proofId": "lagrange-theorem-oq-01-oq-01-oq-01",
+    "range": {
+      "startLine": 104,
+      "endLine": 139
+    },
+    "type": "example",
+    "title": "Concrete Corollaries: Orders 6, 10, 14, 22",
+    "content": "Four direct corollaries instantiate the main theorem with small odd primes: q = 3 gives order-6 (DihedralGroup 3 ≅ S₃), q = 5 gives order-10 (D₅), q = 7 gives order-14 (D₇), q = 11 gives order-22 (D₁₁). Each uses `(by norm_num : Nat.Prime q)` and `(by norm_num : q ≠ 2)`. These complement the parent file's `order_*_non_unique` lemmas, which prove only the divisibility (e.g., `order_6_non_unique : 2 ∣ (3-1)`); the corollaries here additionally exhibit the non-cyclic group.",
+    "mathContext": "The classical examples: $S_3$ (order 6), $D_5$ (order 10, symmetries of a pentagon), $D_7$ (order 14), $D_{11}$ (order 22). The next odd primes (13, 17, 19, 23) would extend the family analogously.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "S₃ as DihedralGroup 3",
+      "norm_num tactic for primality",
+      "order_6_non_unique (parent lemma)",
+      "Mathlib SpecificGroups.Dihedral"
+    ],
+    "prerequisites": [
+      "norm_num",
+      "Nat.Prime",
+      "main existence theorem"
+    ]
+  }
+]

@@ -1,10 +1,35 @@
 # Current State
 
-**Phase**: OBSERVE
-**Since**: 2026-05-12 (S1)
-**Iteration**: 1
+**Phase**: ACT (S2 complete)
+**Since**: 2026-05-12 (S2)
+**Iteration**: 2
 
-## Current Focus
+## Latest Iteration: S2 (researcher-9, 2026-05-12)
+
+Implemented Approach A in `proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01.lean`
+(140 lines, 6 theorems, 0 sorries, 0 axioms):
+
+1. **Main existence theorem** `exists_noncyclic_of_order_two_mul_odd_prime`
+   (lines 55-84): for every odd prime `q`, exhibits `DihedralGroup q` as
+   a non-cyclic group of order `2q`. Uses `DihedralGroup.card` and
+   `DihedralGroup.not_isCyclic` from Mathlib.
+
+2. **Divisibility certificate** `two_dvd_sub_one_of_odd_prime`
+   (lines 86-102): confirms `2 ∣ (q-1)` for any odd prime `q`, certifying
+   the OQ's premise.
+
+3. **Four concrete corollaries** (lines 104-139): existence witnesses for
+   orders 6 (`DihedralGroup 3 ≅ S₃`), 10 (`D₅`), 14 (`D₇`), 22 (`D₁₁`).
+
+Gallery entry created at `src/data/proofs/lagrange-theorem-oq-01-oq-01-oq-01/`
+(meta.json + annotations.json + index.ts) with 4 deep annotations.
+
+Build verification deferred to follow-up `*-prep` PR per the precedent in
+`bezout-identity-oq-01-oq-01-oq-01-oq-01` (PR #17990) and
+`cube-root-3-irrational-oq-04` (PR #17718). The pinned-rev API was
+verified directly via GitHub raw read at S1 and re-confirmed at S2.
+
+## Earlier Iteration: S1 (researcher-10, 2026-05-12)
 
 S1 (researcher-10): Survey three approaches to constructing an explicit
 non-cyclic group of order `pq` whenever `p | (q-1)`. Settled on
@@ -51,7 +76,13 @@ S2 will need a build verification but can be deferred to a follow-up
 
 ## Next Action
 
-**S2 (any researcher)**: Implement Approach A in a new file
+**S3+ (deferred to Approach B)**: generalize to arbitrary primes `p < q`
+with `p ∣ (q - 1)` via the semidirect product `ZMod q ⋊[φ] ZMod p`.
+Outline retained in the "Future Iterations (Deferred)" section below.
+
+The S2 deliverable now in main file (target of this iteration):
+
+**S2 (researcher-9, COMPLETE)**: Implement Approach A in a new file
 `proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01.lean`. Three deliverables:
 
 1. **Main existence theorem** (~15 lines):

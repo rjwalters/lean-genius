@@ -1,7 +1,7 @@
 {
   "slug": "lagrange-theorem-oq-01-oq-01-oq-01",
   "title": "Exhibit a non-cyclic group of order pq when p | (q-1)",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -25,22 +25,21 @@
       "SemidirectProduct.card: Nat.card (N ⋊[φ] G) = Nat.card N * Nat.card G (Mathlib)"
     ],
     "open": [
-      "For p = 2 specialization (q odd prime): exhibit explicit non-cyclic group of order 2q. Uses DihedralGroup q directly. (Approach A — S2 target)",
       "For general p < q primes with p | q-1: exhibit explicit non-cyclic group of order pq. Uses ZMod q ⋊[φ] ZMod p with non-trivial φ. (Approach B — S3+ target)"
     ],
     "goal": "Produce a Lean term-level theorem of the form '∃ (G : Type) [Group G] [Fintype G], Fintype.card G = p*q ∧ ¬ IsCyclic G' whenever p < q are primes and p | (q-1). Approach A target: specialize to p = 2 using Mathlib's DihedralGroup q. Approach B target (deferred): general case via SemidirectProduct."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T08:30:00.000Z",
-    "iteration": 1,
-    "focus": "S1 (researcher-10, 2026-05-12): survey three approaches (A: DihedralGroup q for p=2; B: ZMod q ⋊[φ] ZMod p in general; C: hand-built small cases). Recommended Approach A as the S2 attack target — single PR, ~50 net lines Lean, uses only DihedralGroup.card + DihedralGroup.not_isCyclic from Mathlib (stable API verified at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 via direct GitHub raw read). Covers an infinite family: q ∈ {3, 5, 7, 11, 13, 17, ...}, pq ∈ {6, 10, 14, 22, 26, 34, ...}.",
+    "phase": "ACT",
+    "since": "2026-05-12T11:47:36.000Z",
+    "iteration": 2,
+    "focus": "S2 (researcher-9, 2026-05-12): Approach A implemented. Created proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01.lean (140 lines, 6 theorems, 0 sorries, 0 axioms) with main existence theorem exists_noncyclic_of_order_two_mul_odd_prime (DihedralGroup q witness), divisibility certificate two_dvd_sub_one_of_odd_prime, and four concrete corollaries (orders 6, 10, 14, 22). Gallery entry created. Build verification deferred to follow-up *-prep PR per cube-root-3-irrational-oq-04 and bezout-identity-oq-01-oq-01-oq-01-oq-01 precedent.",
     "blockers": [],
-    "nextAction": "S2: implement Approach A in new file proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01.lean. Three deliverables: (1) main theorem exists_noncyclic_of_order_two_mul_odd_prime taking hq : Nat.Prime q and hq_ne_two : q ≠ 2, returning ⟨DihedralGroup q, inferInstance, inferInstance, DihedralGroup.card, DihedralGroup.not_isCyclic (fun h => hq.one_lt.ne' h.symm)⟩. (2) Four concrete corollaries: exists_noncyclic_of_order_{6, 10, 14, 22} specializing at q ∈ {3, 5, 7, 11}. (3) Gallery entry at src/data/proofs/lagrange-theorem-oq-01-oq-01-oq-01/ (meta.json + annotations.json + index.ts). ~50 lines net, single session.",
+    "nextAction": "S3+ (deferred to Approach B): generalize to arbitrary primes p < q with p | (q-1) via SemidirectProduct ZMod q ⋊[φ] ZMod p. Requires constructing non-trivial hom φ : ZMod p →* MulAut (ZMod q) from cyclic (ZMod q)ˣ. ~200 lines, 3-4 sessions.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -91,5 +90,5 @@
     "lagrange-theorem"
   ],
   "createdAt": "2026-05-12T08:30:00.000Z",
-  "updatedAt": "2026-05-12T08:30:00.000Z"
+  "updatedAt": "2026-05-12T11:55:00.000Z"
 }
