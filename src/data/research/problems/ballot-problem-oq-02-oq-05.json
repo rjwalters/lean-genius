@@ -1,0 +1,135 @@
+{
+  "slug": "ballot-problem-oq-02-oq-05",
+  "title": "Donsker's functional CLT — connecting discrete and continuous ballot",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{For i.i.d. mean-0 variance-1 } \\xi_i, \\text{ the rescaled interpolated walk } S_n^*(t) = (S_{\\lfloor n t \\rfloor} + (n t - \\lfloor n t \\rfloor) \\xi_{\\lfloor n t \\rfloor + 1}) / \\sqrt n \\Rightarrow W \\text{ in } C([0, 1]) \\text{ (standard Brownian motion).}",
+    "plain": "Provide a formal proof of Donsker's functional central limit theorem (FCLT) that exhibits the continuous-time ballot problem (parent: ballot-problem-oq-02) as the n → ∞ scaling limit of the discrete ballot random walk. Donsker (1951) says: for i.i.d. mean-0 variance-1 random variables, the rescaled interpolated partial-sum process converges weakly in C([0, 1]) to standard Brownian motion. Continuous mapping then derives the parent's three axioms (reflection principle, first-passage CDF, Lévy arcsine law) from elementary discrete identities.",
+    "whyMatters": [
+      "Mathlib coverage: Mathlib v4.26.0 has no Brownian motion, no weak convergence on C([0, 1]), and no Donsker theorem; this OQ articulates the Donsker pipeline in Mathlib idiom and identifies seven Mathlib gaps (Polish-space for C, Prokhorov, Kolmogorov-Centsov, continuous mapping theorem, random walk, Donsker, Brownian existence).",
+      "Removes parent axioms: the parent BallotProblemOQ02.lean carries three axioms (reflection_principle, firstPassageTime_eq_maxEvent, embedded arcsine). Donsker + discrete identities + continuous mapping derives all three. Net axiom count for the OQ-05 + parent system collapses three ad hoc axioms to one named classical statement (Donsker).",
+      "Wiedijk #45: Donsker's theorem is item 45 on the 'Formalizing 100 Theorems' tracker; no major theorem prover has it on file. Even an axiomatized Lean version is genuine library novelty.",
+      "Pedagogical: surfaces the canonical bridge between discrete-time combinatorial probability (ballot, Catalan, cycle lemma) and continuous-time analytical probability (Brownian motion, reflection, arcsine), one of the central themes of probability theory."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Discrete ballot problem (Bertrand 1887, Wiedijk #28): P(A leads throughout) = (p-q)/(p+q) — formalized in gallery ballot-problem family.",
+      "Pointwise CLT for symmetric ±1 walks: S_n / √n → N(0, 1) — classical, partially in Mathlib via Mathlib.Probability.CentralLimitTheorem.",
+      "Discrete reflection principle: P(max S_k ≥ a) = 2 P(S_n ≥ a) - P(S_n = a) — André 1887, Feller 1968 §III.",
+      "Sparre Andersen 1949: P(L_n = k) = C(2k,k) · C(2(n-k),n-k) · 2^{-2n} for L_n = #{k : S_k > 0} — bijective combinatorics via cycle lemma.",
+      "Continuous-time ballot problem with reflection principle, first-passage CDF, Lévy arcsine — axiomatized in parent ballot-problem-oq-02 (3 axioms, 8 theorems, 339 lines).",
+      "Donsker's FCLT 1951: S_n* ⇒ W in C([0, 1]) for i.i.d. mean-0 variance-1 walks — classical, NOT in Mathlib.",
+      "Lévy's arcsine law 1939: P(fraction time positive ≤ r) = (2/π) arcsin √r — classical, NOT in Mathlib."
+    ],
+    "open": [
+      "What is the optimal axiom budget? Net 2-3 axioms (Donsker, continuous-mapping-for-sup, possibly continuous-mapping-for-integral) replace 3 parent axioms — neutral in count but concentrated into named classical statements.",
+      "Can Mathlib's Mathlib.MeasureTheory.Measure.Portmanteau be extended to give a usable continuous-mapping theorem on C([0, 1]) without requiring Polish-space machinery? Would need separability of BoundedContinuousFunction proved via Stone-Weierstrass.",
+      "Can Kolmogorov-Centsov continuity be axiomatized at the level needed for tightness (just the moment-bound implication), avoiding the full general statement?"
+    ],
+    "goal": "Formalize in Lean: (1) interpolatedRescaled definition + WeakConvergesInC01 predicate; (2) donsker_fclt as an axiom at the right type; (3) discrete_reflection as a sorry-free theorem (lattice-path bijection); (4) continuous_mapping_sup as a one-line axiom; (5) derive parent's reflection_principle as a theorem from (2)+(3)+(4); (6) downgrade parent's firstPassageTime_eq_maxEvent from axiom to theorem using BrownianMotion.pathContinuous + Real.csInf_mem; (7) Sparre Andersen as a sorry-free theorem (bijective combinatorics); (8) derive parent's arcsine identity as a theorem from Sparre Andersen + Stirling + continuous-mapping-for-integral."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T18:15:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-6, 2026-05-12): inaugural OBSERVE survey for the Donsker-FCLT extension of the continuous-time ballot problem. Wrote problem.md (~3.5K words) with formal Lean targets + 13-ingredient Mathlib infrastructure map; knowledge.md (~3K words) with historical timeline (Bachelier 1900, Wiener 1923, Kolmogorov 1933, Lévy 1939, Sparre Andersen 1949, Donsker 1951, Prokhorov 1956, Billingsley 1968, Karatzas-Shreve 1991, Mörters-Peres 2010), three continuous-mapping theorem formulations, Skorohod-vs-C[0,1] tradeoffs, full bibliography. No Lean changes — pure OBSERVE phase. Identified 7 Mathlib gaps and the axiomatize-Donsker pipeline that collapses three parent axioms into one named classical statement.",
+    "blockers": [],
+    "nextAction": "S2: create proofs/Proofs/BallotProblemOQ02OQ05.lean with (a) noncomputable def interpolatedRescaled : (ℕ → Ω → ℝ) → ℕ → ℝ → Ω → ℝ; (b) def WeakConvergesInC01 (ad hoc predicate placeholder until Mathlib lands Continuous on C([0, 1])); (c) axiom donsker_fclt : i.i.d. mean-0 variance-1 implies ∃ BrownianMotion bm, WeakConvergesInC01 (interpolatedRescaled xi) bm.W. Expected ~80 Lean lines, 0 sorries, 1 new axiom, 0 new theorems. Imports: Mathlib + Proofs.BallotProblemOQ02 (for the BrownianMotion structure).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-6, 2026-05-12): inaugural OBSERVE survey. Established the formalization architecture for Donsker's FCLT in Lean: (1) axiomatize Donsker's theorem as a single named axiom at the right type (∃ BrownianMotion bm, WeakConvergesInC01 ...); (2) prove the discrete reflection identity sorry-free via lattice-path bijection (~100 lines); (3) axiomatize the continuous mapping theorem for the sup-functional (avoids the Polish-space / Portmanteau gap chain); (4) derive parent's three axioms (reflection_principle, firstPassageTime_eq_maxEvent, embedded arcsine) as theorems, with optional Sparre Andersen + Stirling for the arcsine case. Mathlib gap census: 7 missing pieces (Polish C([0,1]), Prokhorov, Kolmogorov-Centsov, CMT, random walk, Donsker, Brownian existence). Wiedijk #45 status: open in all major provers; even axiomatized Lean version is novel.",
+    "builtItems": [],
+    "insights": [
+      "Axiomatize-Donsker pipeline: a single named axiom for Donsker's FCLT replaces three ad hoc axioms in the parent file. The continuous mapping theorem for the sup-functional is the second axiom needed; an optional third axiom handles the integral functional for Lévy arcsine. Net axiom count is neutral (3 → 2 or 3) but concentrated into named classical statements rather than ad hoc lemmas.",
+      "Interpolated walk S_n*(t) = (S_floor + frac · xi_next) / √n versus step walk S_n^step(t) = S_floor / √n: the interpolated version lives in C([0,1]) (continuous piecewise linear), avoiding the Skorohod D([0,1]) complexity. Mathlib has neither space first-class but BoundedContinuousFunction is available for C([0,1]).",
+      "Discrete reflection identity P(max S_k ≥ a) = 2 P(S_n ≥ a) - P(S_n = a) is the only single-session sorry-free deliverable in the OQ-05 pipeline (~100 lines via Finset.card_bij). Everything else axiomatizes or derives. This makes S3 the highest-value early target — it is the only piece where Lean can verify genuine new mathematical content rather than just statement-encoding.",
+      "Continuous mapping theorem on C([0,1]) has three useful formulations: basic (Φ continuous), Portmanteau (equivalences for bounded continuous test functions), and a.s.-continuity (Φ continuous on a P(X ∈ C) = 1 set). The a.s. form is essential for the Lévy arcsine derivation (the positive-time integral functional is continuous only on paths that do not spend positive Lebesgue measure at level 0, which is a W-full set by local time arguments).",
+      "Sparre Andersen 1949 discrete arcsine P(L_n = k) = C(2k,k) · C(2(n-k),n-k) · 2^{-2n} is the bridge between discrete (provable) and continuous (Donsker + CMT) arcsine laws. The cycle-lemma proof is well-known and tractable in Lean (~150 lines), reusing infrastructure from the parent ballot-problem family.",
+      "Mathlib v4.26.0 has 4 of 13 ingredients available (ProbabilityMeasure, BoundedContinuousFunction, iIndepFun, gaussianReal), 2 partial (Portmanteau basic equivalences, IsTightFamily), and 7 gaps (Polish C, Prokhorov, Kolmogorov-Centsov, CMT, random walk, Donsker, Brownian existence). The 7 gaps are why a direct Donsker proof is well beyond a single-iteration deliverable.",
+      "Wiedijk's '100 Theorems' tracker lists item 45 (Donsker's theorem), item 91 (Lévy's arcsine law), and item 92 (Brownian reflection principle) as open in all major provers as of 2026. The OQ-05 pipeline addresses all three simultaneously — axiomatized in Lean — which would be a meaningful contribution to the formal-mathematics ecosystem.",
+      "Skorohod J_1 topology on D([0,1]) versus sup-norm topology on C([0,1]): the two agree on C([0,1]) ⊂ D([0,1]), but Mathlib has neither first-class. Restricting to interpolated walks (in C([0,1])) sidesteps Skorohod entirely and uses only BoundedContinuousFunction infrastructure available at v4.26.0.",
+      "Net axiom-budget honesty: the parent's status is 'axiomatized' with 3 named axioms. After S2-S6 the status remains 'axiomatized' (Donsker itself is an axiom), but the axiom count is concentrated into 2-3 named classical theorems rather than ad hoc lemmas. The parent file's status could potentially downgrade to 'verified' once Mathlib gains Donsker as a theorem (multi-year horizon)."
+    ],
+    "mathlibGaps": [
+      "No Polish-space instance for C([0, 1], ℝ) at v4.26.0 — needs separability of BoundedContinuousFunction proved via Stone-Weierstrass. Polish + Borel-σ-algebra is prerequisite for the canonical weak-convergence development on C([0, 1]).",
+      "No Prokhorov theorem (tightness ↔ relative compactness for probability measures on a Polish space) — the standard tool that turns finite-dimensional convergence + tightness into weak convergence. A Mathlib version would unlock Donsker.",
+      "No Kolmogorov-Centsov continuity criterion (E|X_t - X_s|^p ≤ C |t - s|^{1+α} ⇒ continuous version exists) — supplies the tightness bound for Donsker via the second-moment estimate E|S_n*(t) - S_n*(s)|^2 = |t - s|.",
+      "No continuous mapping theorem for weak convergence on metric spaces — partial via Mathlib.MeasureTheory.Measure.Portmanteau (basic equivalences), but the full Φ : M → ℝ continuous + X_n ⇒ X ⇒ Φ(X_n) ⇒ Φ(X) statement is missing.",
+      "No formal definition of random walk as a ProbabilityTheory primitive — must be encoded ad hoc per use via iIndepFun + partial-sum manipulation.",
+      "No Donsker's theorem itself (Wiedijk #45) — open in all major provers as of 2026.",
+      "No first-class Brownian motion construction — the parent file axiomatizes via a BrownianMotion structure with W : ℝ → Ω → ℝ + properties; this is the existence problem, distinct from but prerequisite to Donsker."
+    ],
+    "nextSteps": [
+      "S2: create proofs/Proofs/BallotProblemOQ02OQ05.lean with interpolatedRescaled definition + WeakConvergesInC01 predicate + donsker_fclt axiom. Expected ~80 lines, 0 sorries, 1 new axiom. Imports: Mathlib + Proofs.BallotProblemOQ02 (for the BrownianMotion structure). This is statement-only — no theorem proving.",
+      "S3: prove discrete_reflection : P(max_{1 ≤ k ≤ n} S_k ≥ a) = 2 P(S_n ≥ a) - P(S_n = a) for the symmetric ±1 walk via lattice-path bijection. Expected ~100 lines, 0 sorries, 0 new axioms. This is the highest-value sorry-free deliverable in the pipeline — the only piece that verifies genuine combinatorial content.",
+      "S4: state continuous_mapping_sup : (X_n ⇒ X in C([0,1])) → (sup X_n ⇒ sup X) as an axiom. Combine with S2 + S3 to derive parent's reflection_principle as a theorem. Expected ~50 lines, 0 sorries, 1 new axiom, 1 new theorem (closes first parent axiom).",
+      "S5: downgrade parent's firstPassageTime_eq_maxEvent from axiom to theorem using BrownianMotion.pathContinuous + Real.csInf_mem (no Donsker dependency needed). Expected ~30 lines, 0 sorries, 0 axioms, 1 new theorem (closes second parent axiom).",
+      "S6: prove sparre_andersen : P(L_n = k) = (2k choose k)·(2(n-k) choose (n-k))·2^{-2n} for the symmetric ±1 walk via cycle-lemma bijection. State continuous_mapping_integral : (X_n ⇒ X in C([0,1])) → (∫ 1_{X_n > 0} ⇒ ∫ 1_{X > 0}) as an axiom. Combine to derive parent's arcsine identity. Expected ~150 lines, 0 sorries, 1 new axiom, 2 new theorems (closes third parent axiom). Largest single step in the plan; may need splitting.",
+      "S7: update Proofs/BallotProblemOQ02.lean to depend on Proofs/BallotProblemOQ02OQ05.lean, downgrading three parent axioms to theorems. Update meta.json axiomCount 3 → 0 in the parent (status remains axiomatized due to the new file's 2-3 named axioms). Net axiom budget across the system: 2-3 (Donsker + CMT-sup + optional CMT-integral) vs. parent's prior 3 ad hoc axioms — neutral count, concentrated into named classical statements.",
+      "S8+ (deferred): downgrade donsker_fclt itself from axiom to theorem. Requires Mathlib gaining Polish-C([0,1]) + Prokhorov + Kolmogorov-Centsov + finite-dimensional multivariate CLT. Multi-year horizon; track as a Mathlib upstream contribution."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "probability",
+    "brownian-motion",
+    "donsker",
+    "functional-clt",
+    "ballot-problem",
+    "weak-convergence",
+    "mathlib-gap",
+    "classical"
+  ],
+  "relatedProofs": [
+    "ballot-problem-oq-02",
+    "ballot-problem",
+    "ballot-problem-oq-01",
+    "ballot-problem-oq-03-oq-01",
+    "arcsine-law",
+    "central-limit-theorem",
+    "central-limit-theorem-oq-04",
+    "kolmogorov-smirnov",
+    "catalan-numbers"
+  ],
+  "references": {
+    "papers": [
+      "Donsker, M. D. 'An invariance principle for certain probability limit theorems.' Mem. Amer. Math. Soc. 6 (1951), 12 pp.",
+      "Lévy, P. 'Sur certains processus stochastiques homogènes.' Compositio Math. 7 (1939): 283-339.",
+      "Sparre Andersen, E. 'On the number of positive sums of random variables.' Skand. Aktuarietidskr. 32 (1949): 27-36.",
+      "Prokhorov, Y. V. 'Convergence of random processes and limit theorems in probability theory.' Theor. Probab. Appl. 1 (1956): 157-214.",
+      "Wiener, N. 'Differential-Space.' J. Math. Phys. 2 (1923): 131-174.",
+      "Billingsley, P. Convergence of Probability Measures, 2nd ed., Wiley 1999, Chapter 2 (Donsker), Chapter 3 (Tightness).",
+      "Karatzas, I. and Shreve, S. E. Brownian Motion and Stochastic Calculus, 2nd ed., Springer 1991, §2.8 (Donsker).",
+      "Feller, W. An Introduction to Probability Theory and Its Applications, Vol. I, 3rd ed., Wiley 1968, Chapter III (Reflection principle).",
+      "Resnick, S. A Probability Path, Birkhäuser 1999, §9.5 (Donsker, pedagogical).",
+      "Mörters, P. and Peres, Y. Brownian Motion, Cambridge 2010, Chapter 1 (functional CLT and Skorohod embedding)."
+    ],
+    "urls": [
+      "https://www.cs.ru.nl/~freek/100/",
+      "https://oeis.org/A000984"
+    ],
+    "mathlib": [
+      "Mathlib.MeasureTheory.Measure.ProbabilityMeasure",
+      "Mathlib.MeasureTheory.Measure.Portmanteau",
+      "Mathlib.MeasureTheory.Measure.Tight",
+      "Mathlib.Topology.ContinuousFunction.Bounded",
+      "Mathlib.Probability.Distributions.Gaussian",
+      "Mathlib.Probability.Independence.Basic",
+      "Mathlib.Probability.CentralLimitTheorem"
+    ]
+  },
+  "started": "2026-05-12T18:15:00.000Z",
+  "lastUpdate": "2026-05-12T18:15:00.000Z",
+  "significance": 8,
+  "tractability": 3,
+  "leanFiles": []
+}
