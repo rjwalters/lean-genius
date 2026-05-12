@@ -1,0 +1,165 @@
+{
+  "slug": "bounded-prime-gaps-oq-03-oq-02",
+  "title": "Certified-computation replacement for engelsma_lower_bound axiom (50-tuple diameter 246)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall H \\subseteq \\mathbb{N},\\ \\mathrm{IsAdmissible}(H) \\land |H| \\ge 50 \\implies \\max(H) - \\min(H) \\ge 246. \\quad \\text{Goal: replace the axiom with a } \\texttt{native\\_decide}\\text{-backed proof.}",
+    "plain": "BoundedPrimeGapsOQ03.lean asserts as an axiom (line 134) that every admissible 50-tuple has diameter at least 246, citing Engelsma's 2013 exhaustive computer search. OQ-03-OQ-02 asks: can this axiom be replaced with a machine-verified Lean computation via decide / native_decide on a suitably encoded finite search problem?",
+    "whyMatters": [
+      "Axiom elimination — BoundedPrimeGapsOQ03.lean currently has 1 axiom; replacing it upgrades the file toward 'verified' status.",
+      "Pattern transferability — the same template (admissible-tuple lower bounds via certified search) recurs for engelsma54Tuple, Sutherland's narrow tuples, and future Polymath improvements.",
+      "Mathlib contribution path — a Decidable (IsAdmissible H) instance + verified backtracking would be a natural Mathlib contribution under a future Mathlib.NumberTheory.AdmissibleTuples namespace.",
+      "Methodology marker — demonstrates a non-trivial certified-computation result in the gallery, parallel in spirit to Flyspeck but at a much smaller scale."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "admissible_50_tuple_diam_achieved — the Engelsma 50-tuple realizes diameter 246 (BoundedPrimeGapsOQ03.lean, line 143).",
+      "engelsma50Tuple_admissible — the specific 50-tuple {0,4,6,...,246} is admissible, by case-split on small primes (BoundedPrimeGapsOQ03.lean, line 66).",
+      "IsAdmissible definition with the residue-coverage condition, plus admissible_subset and admissible_singleton."
+    ],
+    "open": [
+      "engelsma_lower_bound — the lower-bound side ≥ 246, currently axiomatized."
+    ],
+    "goal": "Replace the axiom with a theorem proved by Lean's kernel (ideally via native_decide on a pruned search procedure faithfully reifying Engelsma's algorithm)."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-11T19:35:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE — axiom located (line 134) and reduced to finitary decidable form via translation invariance; three approach paths surveyed; Path B (verified backtracking with prime-residue pruning) identified as target.",
+    "blockers": [],
+    "nextAction": "S2 Option A — build Decidable (IsAdmissible H) instance in a new file BoundedPrimeGapsOQ03OQ02.lean (~40-60 lines, foundational, low risk). See knowledge.md §3.1 and §9 for the concrete recipe.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE complete (researcher-10). The axiom engelsma_lower_bound from BoundedPrimeGapsOQ03.lean was located and shown to be logically equivalent to the finitary statement '∀ H ∈ (Finset.range 246).powersetCard 50, 0 ∈ H → ¬ IsAdmissible H' via translation invariance. Three approach paths were surveyed: Path A (direct native_decide on $\\binom{246}{50}\\approx 1.7\\times 10^{54}$ subsets) is infeasible; Path B (verified backtracking with prime-residue pruning, reifying Engelsma's algorithm) is the target; Path C (sieve + residual decide) does not reduce the certified-search cost. No Lean changes in S1 — doc-only iteration with problem.md / knowledge.md / state.md created. Feasibility checkpoint deferred to S4 (small-scale Path-B prototype).",
+    "builtItems": [
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/problem.md — formal statement, classification, approach menu, related-proof table.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/knowledge.md — full S1 survey: §1 target, §2 reduction to finitary form (with bridge-lemma proof sketch), §3 decidability and direct-enumeration cost, §4 Engelsma's algorithm and Path-B representation choice, §5 sieve-based fallback Path C (eliminated), §6 risk register, §7 Mathlib API survey, §8 sibling lessons, §9 next-action menu.",
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/state.md — S1 conclusion + S2 next-action recipe."
+    ],
+    "insights": [
+      "Translation invariance reduces the unbounded `∀ H : Finset ℕ` axiom to a finitary `∀ H ∈ Finset.range 246` quantification — this is the *only* way certified computation is even relevant.",
+      "Decidability of IsAdmissible H is straightforward (~40 lines) — the `∀ p Prime` quantifier is automatically bounded by `p ≤ H.card` since for larger primes card_image_le forces the inequality.",
+      "Path A's direct `native_decide` is infeasible by ~50 orders of magnitude; the only viable certified-computation strategy is to implement Engelsma's pruning in Lean and prove its correctness, then native_decide the search-returns-empty equation.",
+      "Path C (sieve-based lower bound + residual enumeration) does not help because the sieve gives min_diam ≥ 207, leaving $\\binom{207}{50}$ subsets to enumerate — still infeasible without pruning. So C does not remove the need for B.",
+      "The hard work is concentrated in S5+ (verified backtracking, ~500-1500 lines). S2 (Decidable instance) and S3 (finitary-form bridge) are well-scoped and independent of the feasibility question."
+    ],
+    "mathlibGaps": [
+      "Decidable (IsAdmissible H) — not in Mathlib (admissible-tuple theory is absent from Mathlib entirely).",
+      "Finset.image_translate_admissible (translation invariance of admissibility) — needed for the §2.4 bridge.",
+      "A verified-backtracking combinator library — not in Mathlib; Path B will build a bespoke one in the gallery and (potentially) upstream after stabilization."
+    ],
+    "nextSteps": [
+      "S2 — build Decidable (IsAdmissible H) instance via the bounded form IsAdmissibleBdd; sanity-check with #eval on small tuples (~½ session, ~40-60 lines).",
+      "S3 — prove engelsma_lower_bound_of_finitary bridge lemma (translation invariance + 50-subset extraction); ~50-100 lines.",
+      "S4 — small-scale Path-B prototype on parameters (k=6, w=16) or (k=10, w=30) as feasibility checkpoint for the full (50, 246) target. Decide go/no-go.",
+      "S5+ — full Engelsma-style verified backtracking for (50, 246); native_decide the search-returns-empty equation; complete the axiom replacement.",
+      "Fallback (if S4 shows native_decide is too slow): land S2 + S3 as standalone gallery improvements, narrow the axiom statement to the irreducible content, defer the full replacement."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "primes",
+    "prime-gaps",
+    "sieve-theory",
+    "polymath",
+    "admissible-tuples",
+    "computer-search",
+    "decidability",
+    "native-decide",
+    "certified-computation",
+    "open-problem",
+    "research",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "bounded-prime-gaps",
+    "bounded-prime-gaps-oq-01",
+    "bounded-prime-gaps-oq-01-oq-02",
+    "bounded-prime-gaps-oq-01-oq-03",
+    "bounded-prime-gaps-oq-03",
+    "bounded-prime-gaps-oq-03-oq-01",
+    "bounded-prime-gaps-oq-03-oq-01-oq-04",
+    "bounded-prime-gaps-oq-04",
+    "bounded-prime-gaps-oq-04-oq-01",
+    "bounded-prime-gaps-oq-04-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "T. Engelsma, Permissible patterns and prime gaps (2013, unpublished; opertech8.com).",
+      "D. H. J. Polymath, Variants of the Selberg sieve, and bounded intervals containing many primes, Research in the Mathematical Sciences 1 (2014), #12.",
+      "A. V. Sutherland, Narrow admissible k-tuples (2014, computational tables; math.mit.edu/~drew/admissible.html).",
+      "J. Maynard, Small gaps between primes, Annals of Mathematics 181 (2015), 383-413."
+    ],
+    "urls": [
+      "https://www.opertech8.com/primes/index.html",
+      "https://math.mit.edu/~drew/admissible.html"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Prime.Basic — Nat.decidablePrime, Nat.Prime",
+      "Mathlib.Data.Finset.Image — Finset.card_image_le, Finset.image_image",
+      "Mathlib.Data.Finset.Basic — Finset.decidableDforallFinset",
+      "Mathlib.Data.Finset.Powerset — Finset.powersetCard"
+    ]
+  },
+  "started": "2026-05-08T19:09:00.561Z",
+  "lastUpdate": "2026-05-11T19:35:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/BoundedPrimeGaps.lean",
+      "filename": "BoundedPrimeGaps.lean",
+      "lineCount": 2018,
+      "theoremCount": 125,
+      "axiomCount": 3,
+      "defCount": 16,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGaps.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03.lean",
+      "filename": "BoundedPrimeGapsOQ03.lean",
+      "lineCount": 280,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01.lean",
+      "lineCount": 390,
+      "theoremCount": 20,
+      "axiomCount": 2,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ01OQ04.lean",
+      "lineCount": 188,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean"
+    }
+  ]
+}
