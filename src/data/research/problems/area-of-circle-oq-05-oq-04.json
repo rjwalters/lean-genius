@@ -30,11 +30,11 @@
   },
   "currentState": {
     "phase": "RESEARCH",
-    "since": "2026-05-12T10:58:14+00:00",
-    "iteration": 3,
-    "focus": "S3 ACT-B: generalised the complex Gaussian to arbitrary positive weight b. Added complex_gaussian_integral_scaled (∫_ℂ exp(-b·normSq z) = π/b) and ‖z‖² variant + unit-weight (∫_ℂ exp(-‖z‖²) = π) + normalised density (∫_ℂ (1/π)·exp(-‖z‖²) = 1). Same Fubini-style proof as S2a, parameterised in b. 0 sorries, 0 axioms.",
+    "since": "2026-05-12T17:00:00+00:00",
+    "iteration": 4,
+    "focus": "S4a ACT: n-dimensional parametric complex Gaussian ∫_{ℂⁿ} exp(-(b·∑‖zᵢ‖²)) = (π/b)ⁿ proved for arbitrary n : ℕ and b > 0. Same Fubini skeleton as AreaOfCircleOQ05OQ02.diagonal_gaussian (real n-fold), with each ℂ-axis contributing π/b via complex_gaussian_integral_scaled_norm (S3). Adds 4 theorems: complex_gaussian_integral_scaled_pow (main), complex_gaussian_integral_scaled_pow_normSq (normSq form), complex_gaussian_integral_pow_unit_norm (b=1 corollary), complex_gaussian_integral_pow_normalised ((1/π)ⁿ density). 0 sorries, 0 axioms.",
     "blockers": [],
-    "nextAction": "S4: either (a) prove the n-dimensional complex Gaussian ∫_{ℂⁿ} exp(-b·∑‖zᵢ‖²) = (π/b)ⁿ via induction or by composing the n-real Multivariate Gaussian (AreaOfCircleOQ05OQ02) with the complex transport; OR (b) S2b p-adic scaffold with axiom padicAddChar + Haar stub. Recommendation: (a) keeps the file axiom-free and pushes the complex-side coverage further; (b) is the deeper open content but requires axioms.",
+    "nextAction": "S5: three viable directions. (S5a) Prove the complex Gaussian f(z) = exp(-π‖z‖²) is a Fourier-eigenfunction of the 2-D real Fourier transform; canonical archimedean statement of (C2). (S5b) Contribute Mathlib milestone — explicit MeasureTheory.Measure ℚ_p with μ(ℤ_p) = 1 (plausible single Mathlib PR). (S5c) Complex orthogonality ∫ zᵢ · z̄ⱼ · (1/π)ⁿ · exp(-∑‖zₖ‖²) = δᵢⱼ via parametric differentiation, building on the S4a n-dim normalised density.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE + S2a ACT-A (b=π) + S3 ACT-B (parametric b>0) complete with build verified. AreaOfCircleOQ05OQ04.lean now has 8 theorems + 2 private helpers, all sorry-free and axiom-free. Complete complex-side coverage: π-weight, parametric b, unit weight, normalised density. p-adic case (C2) remains deferred pending two Mathlib milestones (ψ_p : ℚ_p → ℂ and explicit Haar on ℚ_p).",
+    "progressSummary": "S1 OBSERVE + S2a ACT-A (b=π) + S3 ACT-B (parametric b>0) + S4a ACT (n-dim parametric) complete with build verified. AreaOfCircleOQ05OQ04.lean now 429 lines, 12 theorems + 2 private helpers, all sorry-free and axiom-free. Complete complex-side coverage: π-weight, parametric b, unit weight, normalised density, n-dim parametric, n-dim unit-weight, n-dim normalised. p-adic case (C2) remains deferred pending two Mathlib milestones (ψ_p : ℚ_p → ℂ and explicit Haar on ℚ_p).",
     "builtItems": [
       {
         "item": "S1 OBSERVE markdown set (problem.md, knowledge.md, state.md)",
@@ -63,6 +63,10 @@
       {
         "item": "Proofs/AreaOfCircleOQ05OQ04.lean: integral_b_gaussian (b-scaled scalar re-export), complex_gaussian_integral_scaled (∫_ℂ exp(-(b·normSq z)) = π/b), complex_gaussian_integral_scaled_norm (‖z‖² form), complex_gaussian_integral_unit_norm (b=1, value π), complex_gaussian_integral_normalised (1/π density integrates to 1) — proven via parametric Fubini + Real.mul_self_sqrt",
         "session": "S3"
+      },
+      {
+        "item": "Proofs/AreaOfCircleOQ05OQ04.lean: complex_gaussian_integral_scaled_pow (n-dim ∫_{ℂⁿ} exp(-(b·∑‖zᵢ‖²)) = (π/b)ⁿ), complex_gaussian_integral_scaled_pow_normSq (normSq form), complex_gaussian_integral_pow_unit_norm (b=1 corollary, value πⁿ), complex_gaussian_integral_pow_normalised ((1/π)ⁿ joint density) — proven via Real.exp_sum reduction + integral_fintype_prod_volume_eq_pow + complex_gaussian_integral_scaled_norm per axis",
+        "session": "S4a"
       }
     ],
     "insights": [
@@ -74,7 +78,10 @@
       "The scalar π-weighted Gaussian ∫ exp(-π · x²) dx = √(π/π) = 1 specialises scaled_gaussian at a = π; this gives a clean unit factor on each axis of the complex factorisation.",
       "The proof of the complex Gaussian = 1 needs zero new analysis - it is purely a transport + Fubini composition on top of existing real Gaussian / measure-preserving machinery already in Mathlib.",
       "The complex Gaussian generalises uniformly in b > 0 because Fubini-and-transport composes with scaled_gaussian, which is itself uniform in a. Each real factor contributes √(π/b); two factors compose to π/b via Real.mul_self_sqrt.",
-      "The unit-weight complex Gaussian ∫_ℂ exp(-‖z‖²) = π is the 'circle area' identity: the Gaussian density at zero scaling has total mass equal to the area of the unit disc. This is the cleanest statement linking the slug's 'area of circle' theme to the complex Gaussian."
+      "The unit-weight complex Gaussian ∫_ℂ exp(-‖z‖²) = π is the 'circle area' identity: the Gaussian density at zero scaling has total mass equal to the area of the unit disc. This is the cleanest statement linking the slug's 'area of circle' theme to the complex Gaussian.",
+      "integral_fintype_prod_volume_eq_pow at Mathlib/MeasureTheory/Integral/Pi.lean:123 is the right n-fold Fubini lemma when all factors share the same f : E → 𝕜; it gives (∫ f) ^ Fintype.card ι directly, avoiding per-index simp_rw.",
+      "The S4a reduction exp(-(b · ∑ ‖zᵢ‖²)) = ∏ᵢ exp(-(b · ‖zᵢ‖²)) is a three-step rewrite chain that needs no custom lemma: Finset.mul_sum distributes b into the sum, ← Finset.sum_neg_distrib pushes negation inside, then Real.exp_sum converts to a product. Same combo used in parent file AreaOfCircleOQ05OQ02.diagonal_gaussian (real n-fold).",
+      "Once the n-fold reduction is in place, no measure-preserving change of variables is needed at the n-dimensional level: the Fin n → ℂ integrand factors before any transport, so we never need to interact with Complex.measurableEquivRealProd beyond what was already done in S2a / S3 for the per-axis factor."
     ],
     "mathlibGaps": [
       "No padicAddChar : Q_p -> C (standard additive character with psi_p|_{Z_p} = 1, psi_p(p^{-n}) = e^{2*pi*i/p^n}).",

@@ -1,14 +1,16 @@
 /-
-Area of Circle OQ-05-OQ-04 (S2a + S3): The Complex Gaussian Integral
+Area of Circle OQ-05-OQ-04 (S2a + S3 + S4a): The Complex Gaussian Integral
 
 Proves the complex Gaussian identities
 
     ∫_ℂ exp(-π · ‖z‖²) dz = 1               (S2a, b = π specialisation)
     ∫_ℂ exp(-(b · ‖z‖²)) dz = π / b         (S3, parametric in b > 0)
+    ∫_{ℂⁿ} exp(-(b · ∑ ‖zᵢ‖²)) dz = (π/b)ⁿ  (S4a, n-dim parametric)
 
 and the natural corollaries `∫_ℂ exp(-‖z‖²) dz = π` (unit weight,
-"complex Gaussian = area of unit disc") and the probability density
-`∫_ℂ (1/π) · exp(-‖z‖²) dz = 1`.
+"complex Gaussian = area of unit disc"), the probability density
+`∫_ℂ (1/π) · exp(-‖z‖²) dz = 1`, and the multidimensional analogues
+`∫_{ℂⁿ} exp(-∑ ‖zᵢ‖²) = πⁿ` and `∫_{ℂⁿ} (1/π)ⁿ · exp(-∑‖zᵢ‖²) = 1`.
 
 The S2a results assert that the Gaussian density `e^{-π |z|²}` on ℂ
 integrates to 1 against the standard Lebesgue measure on ℂ (induced
@@ -77,6 +79,7 @@ Parent: `AreaOfCircleOQ05OQ02.lean` (multivariate Gaussian, all proved).
 import Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral
 import Mathlib.MeasureTheory.Measure.Lebesgue.Complex
 import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.MeasureTheory.Integral.Pi
 import Proofs.AreaOfCircleOQ05
 
 namespace ComplexGaussianCircle
@@ -288,6 +291,91 @@ theorem complex_gaussian_integral_normalised :
   rw [integral_const_mul, complex_gaussian_integral_unit_norm, one_div,
       inv_mul_cancel₀ Real.pi_ne_zero]
 
+/-! ## Part 3: The n-dimensional complex Gaussian (S4a)
+
+The parametric complex Gaussian generalises uniformly in dimension: for
+`n : ℕ` and `b > 0`,
+
+    ∫_{ℂⁿ} exp(-(b · ∑ᵢ ‖zᵢ‖²)) dz = (π / b)ⁿ.
+
+This is the complex-side counterpart of the parent file's diagonal real
+Gaussian (`AreaOfCircleOQ05OQ02.diagonal_gaussian`, with a uniform weight
+`b`): each ℂ-axis contributes a factor `π/b` (via
+`complex_gaussian_integral_scaled_norm`), and `n` axes compose by
+`integral_fintype_prod_volume_eq_pow`. The proof skeleton mirrors
+`diagonal_gaussian` (`← Finset.sum_neg_distrib` + `Real.exp_sum` +
+n-fold Fubini), differing only in that the per-axis factor is itself the
+2-real-dimensional `complex_gaussian_integral_scaled_norm` rather than
+the 1-real-dimensional `scaled_gaussian`. -/
+
+/-- **n-dimensional parametric complex Gaussian**: for `b > 0` and `n : ℕ`,
+
+    ∫_{ℂⁿ} exp(-(b · ∑ᵢ ‖zᵢ‖²)) dz = (π / b)ⁿ.
+
+The `n = 1` case is `complex_gaussian_integral_scaled_norm` after the
+trivial reindexing `Fin 1 → ℂ ≃ ℂ`. The `n = 2` case is the joint
+density used in the 2-mode coherent-state model in quantum optics
+(each mode contributes `π/b`).
+
+Proof: factor the exponential of a sum as a product (`Real.exp_sum`),
+apply n-fold Fubini (`integral_fintype_prod_volume_eq_pow`), and
+evaluate each ℂ-factor by `complex_gaussian_integral_scaled_norm`. -/
+theorem complex_gaussian_integral_scaled_pow {n : ℕ} (b : ℝ) (hb : 0 < b) :
+    ∫ z : Fin n → ℂ, Real.exp (-(b * ∑ i, ‖z i‖ ^ 2)) = (Real.pi / b) ^ n := by
+  -- Step 1: factor exp(-(b · ∑ᵢ ‖zᵢ‖²)) = ∏ᵢ exp(-(b · ‖zᵢ‖²)).
+  -- Distribute `b` into the sum, then push the negation inside, then
+  -- apply `Real.exp_sum`. This is the same pattern as the parent file's
+  -- `diagonal_gaussian` (real-axis n-fold Gaussian).
+  simp_rw [Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum]
+  -- Step 2: n-fold Fubini over `Fin n → ℂ`. The integrand `∏ᵢ exp(-(b · ‖z i‖²))`
+  -- has the shape `∏ᵢ f (z i)` with `f := fun z : ℂ => exp(-(b · ‖z‖²))`,
+  -- so `integral_fintype_prod_volume_eq_pow` applies and gives
+  -- `(∫ z : ℂ, f z) ^ Fintype.card (Fin n)`.
+  rw [integral_fintype_prod_volume_eq_pow
+        (ι := Fin n) (fun z : ℂ => Real.exp (-(b * ‖z‖ ^ 2)))]
+  -- Step 3: evaluate the per-axis factor (`π/b`) and collapse `Fintype.card (Fin n) = n`.
+  rw [complex_gaussian_integral_scaled_norm b hb, Fintype.card_fin]
+
+/-- `normSq` form of the n-dimensional parametric complex Gaussian:
+
+    ∫_{ℂⁿ} exp(-(b · ∑ᵢ normSq (zᵢ))) dz = (π / b)ⁿ.
+
+This is the version that pairs directly with the `Complex.normSq` form
+of the `n = 1` theorem `complex_gaussian_integral_scaled`. Useful for
+consumers that prefer the algebraic `normSq` to the analytic `‖·‖²`. -/
+theorem complex_gaussian_integral_scaled_pow_normSq {n : ℕ} (b : ℝ) (hb : 0 < b) :
+    ∫ z : Fin n → ℂ, Real.exp (-(b * ∑ i, Complex.normSq (z i))) = (Real.pi / b) ^ n := by
+  -- Replace each `normSq (z i)` by `‖z i‖ ^ 2` inside the sum, then reduce to
+  -- the `‖·‖²` version. Using `simp_rw` (rather than `congr`) keeps the
+  -- additive-monoid structure on the sum's codomain fully determined.
+  simp_rw [Complex.normSq_eq_norm_sq]
+  exact complex_gaussian_integral_scaled_pow b hb
+
+/-- **n-dimensional unit-weight complex Gaussian**: ∫_{ℂⁿ} exp(-∑ᵢ ‖zᵢ‖²) dz = πⁿ.
+
+The unit-weight case `b = 1` of `complex_gaussian_integral_scaled_pow`.
+Generalises `complex_gaussian_integral_unit_norm` (the `n = 1` value `π`)
+to arbitrary dimension. -/
+theorem complex_gaussian_integral_pow_unit_norm {n : ℕ} :
+    ∫ z : Fin n → ℂ, Real.exp (-∑ i, ‖z i‖ ^ 2) = Real.pi ^ n := by
+  have h := complex_gaussian_integral_scaled_pow (n := n) 1 one_pos
+  -- `h : ∫ z, exp(-(1 * ∑ᵢ ‖zᵢ‖²)) = (π / 1) ^ n`.
+  simp only [one_mul, div_one] at h
+  exact h
+
+/-- **Normalised n-dimensional complex Gaussian density**: the
+    n-dimensional unit-weight Gaussian divided by `πⁿ` is a probability
+    density on `ℂⁿ`:
+
+    ∫_{ℂⁿ} (1/π)ⁿ · exp(-∑ᵢ ‖zᵢ‖²) dz = 1.
+
+This is the multidimensional analogue of
+`complex_gaussian_integral_normalised`. -/
+theorem complex_gaussian_integral_pow_normalised {n : ℕ} :
+    ∫ z : Fin n → ℂ, (1 / Real.pi) ^ n * Real.exp (-∑ i, ‖z i‖ ^ 2) = 1 := by
+  rw [integral_const_mul, complex_gaussian_integral_pow_unit_norm,
+      one_div, inv_pow, inv_mul_cancel₀ (pow_ne_zero n Real.pi_ne_zero)]
+
 /-! ## Status
 
 - `integral_pi_gaussian` : proved (direct from `scaled_gaussian`).
@@ -298,6 +386,10 @@ theorem complex_gaussian_integral_normalised :
 - `complex_gaussian_integral_scaled_norm` : proved (`‖z‖²` form).
 - `complex_gaussian_integral_unit_norm` : proved (`b = 1` corollary).
 - `complex_gaussian_integral_normalised` : proved (`1/π` density).
+- `complex_gaussian_integral_scaled_pow` : proved (n-dim parametric, S4a).
+- `complex_gaussian_integral_scaled_pow_normSq` : proved (`normSq` form).
+- `complex_gaussian_integral_pow_unit_norm` : proved (n-dim `b = 1`).
+- `complex_gaussian_integral_pow_normalised` : proved (`(1/π)ⁿ` density).
 
 All theorems above are sorry-free and axiom-free.
 

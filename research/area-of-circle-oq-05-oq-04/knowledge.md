@@ -168,3 +168,55 @@ Status of the four candidates:
   satisfies, but Lean needs explicit `(μ := volume)` `(ν := volume)`
   annotations to pick up the right product measure when both factors
   are `volume : Measure ℝ`.
+
+## S4a Mathlib API confirmed (verified 2026-05-12 against v4.26.0)
+
+### n-fold Fubini
+
+* `MeasureTheory.integral_fintype_prod_volume_eq_prod {ι : Type*} [Fintype ι]
+  {E : ι → Type*} (f : (i : ι) → E i → 𝕜)
+  [∀ i, MeasureSpace (E i)] [∀ i, SigmaFinite (volume : Measure (E i))] :
+  ∫ x : (i : ι) → E i, ∏ i, f i (x i) = ∏ i, ∫ x, f i x` — n-fold Fubini.
+  Source: `Mathlib/MeasureTheory/Integral/Pi.lean:114`.
+* `MeasureTheory.integral_fintype_prod_volume_eq_pow {ι : Type*} [Fintype ι]
+  {E : Type*} (f : E → 𝕜) [MeasureSpace E] [SigmaFinite (volume : Measure E)] :
+  ∫ x : ι → E, ∏ i, f (x i) = (∫ x, f x) ^ (Fintype.card ι)` — uniform
+  n-fold Fubini (all factors share `f`). Source: same file, line 123.
+  Used by S4a in `complex_gaussian_integral_scaled_pow`.
+
+### Sum/product algebra
+
+* `Real.exp_sum (s : Finset α) (f : α → ℝ) : Real.exp (∑ x ∈ s, f x) =
+  ∏ x ∈ s, Real.exp (f x)`. Source:
+  `Mathlib/Analysis/Complex/Exponential.lean:222`. (Also `Complex.exp_sum`
+  at line 141 of the same file.)
+* `Finset.mul_sum : b * ∑ i ∈ s, f i = ∑ i ∈ s, b * f i` — distributes
+  a scalar into a sum.
+* `Finset.sum_neg_distrib : ∑ i ∈ s, -f i = -∑ i ∈ s, f i` — applied
+  backward (`← Finset.sum_neg_distrib`) to push `-` inside `∑`. Same
+  combo used in parent `AreaOfCircleOQ05OQ02.diagonal_gaussian`.
+
+### Cardinality
+
+* `Fintype.card_fin (n : ℕ) : Fintype.card (Fin n) = n`. Source:
+  `Mathlib/Data/Fintype/Card.lean:485`.
+
+### Lessons (S4a)
+
+* The S4a skeleton is identical to the parent file's real-axis
+  `diagonal_gaussian` (`AreaOfCircleOQ05OQ02.lean`), differing only in
+  that the per-axis factor is `complex_gaussian_integral_scaled_norm`
+  (2-real-dim) rather than `scaled_gaussian` (1-real-dim).
+* `integral_fintype_prod_volume_eq_pow` is preferable to
+  `integral_fintype_prod_volume_eq_prod` when all factors are the same:
+  it sidesteps the per-index `Finset.prod_congr` reduction and gives the
+  final `(π/b)^n` form directly via `Fintype.card_fin`.
+* The reduction `exp(-(b · ∑ ‖zᵢ‖²)) = ∏ᵢ exp(-(b · ‖zᵢ‖²))` is a
+  three-step rewrite chain that doesn't need any custom lemma:
+  `Finset.mul_sum` distributes `b`, `← Finset.sum_neg_distrib` pushes
+  the negation inside, and `Real.exp_sum` converts the resulting
+  `exp (∑ ...)` to `∏ exp (...)`.
+* No measure-preserving change of variables is needed at the
+  n-dimensional level: the `Fin n → ℂ` integrand factors before any
+  transport, so we never need to interact with `Complex.measurableEquivRealProd`
+  beyond what was already done in S2a / S3 for the per-axis factor.
