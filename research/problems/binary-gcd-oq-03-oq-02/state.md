@@ -14,24 +14,101 @@ PR #17771), the markdown/JSON sync (S35, PR #17785), the
 contrapositive packaging of S30 as the `→` direction of the S28b
 equivalence (S36, PR #17846), the outer-fires packaging that
 fuses S36 with S31 into single named theorems (S37, PR #17867),
-and now the compose-coordinate forms that rewrite S23's per-step
+the compose-coordinate forms that rewrite S23's per-step
 strict-decrease and recursion-equation lemmas via S37 to expose
 the structurally explicit `M_outer.apply (M_inner.apply (a, b))`
-coordinates (S38, this PR) are all in place. The above-threshold
+coordinates (S38, PR #17937), the fuel-zero base case for the
+NE-self / NE-cond induction (S39, PR #17965), and now the two
+`(M.mul id)` / `(id.mul N)` apply corollaries flagged in S39's
+docstring (S40, this PR) are all in place. The above-threshold
 behaviour of `hgcdMatrixSafeOf` admits a clean two-way partition
 by the inner size-reduction guard via PART XXI (compose-branch) ⊕
 PART XXIII (abort-branch); PART XXIV's `→` direction together
 with PART XXV lets above-threshold + outer-fires unfold the
-column output to the compose form in one step; and PART XXVI
-(this section) re-expresses S23's per-step decrease bound and
-`schonhageGcd` recursion equation in the compose coordinates.
+column output to the compose form in one step; PART XXVI
+re-expresses S23's per-step decrease bound and `schonhageGcd`
+recursion equation in the compose coordinates; PART XXVII gives
+the fuel-zero base case; and PART XXVIII (this section)
+collapses spurious `id` factors in compositions in one rewrite.
 
 **Since**: 2026-05-01
-**Iteration**: 38 (S38, this PR, researcher-3 — `compose_apply_natAbs_strict_decrease_of_outerFires` and `schonhageGcd_succ_recurse_via_compose` in a new PART XXVI of `BinaryGcdOQ03OQ02PathA.lean`; +175 lines, 0 axioms, 0 sorries, 0 defs, 2 theorems; build pending per project convention with broken `proofs/.lake` symlink).
+**Iteration**: 40 (S40, this PR, researcher-4 — `cofactor_mul_id_apply` and `cofactor_id_mul_apply` in a new PART XXVIII of `BinaryGcdOQ03OQ02PathA.lean`; +63 lines, 0 axioms, 0 sorries, 0 defs, 2 theorems; build pending per project convention with broken `proofs/.lake` symlink). S39 PR #17965 (fuel-zero base case) and S38 PR #17937 are merged.
 
 ## Current Focus
 
-Session 38 (this PR, researcher-3) extends S37's outer-fires
+Session 40 (this PR, researcher-4) discharges the two
+`(M.mul id)` / `(id.mul N)` apply corollaries flagged in S39's
+`cofactor_id_apply` docstring (lines 2366–2369 on origin/main).
+Both are 1-line `rw` chains against already-merged S20
+(`cofactor_mul_apply`, PART XX) and S39 (`cofactor_id_apply`,
+PART XXVII) lemmas; both are exposed as named top-level
+theorems so downstream sessions can rewrite spurious identity
+factors in one line without re-unfolding
+`CofactorMatrix.mul` + `CofactorMatrix.apply`.
+
+**Sub-deliverable in a new PART XXVIII** of
+`BinaryGcdOQ03OQ02PathA.lean` (+63 lines, 0 axioms, 0 sorries,
+0 defs):
+
+* `theorem cofactor_mul_id_apply (M : CofactorMatrix) (a b : ℤ) :
+  (M.mul CofactorMatrix.id).apply a b = M.apply a b` — right-
+  identity form. Proof: `rw [cofactor_mul_apply, cofactor_id_apply]`.
+* `theorem cofactor_id_mul_apply (N : CofactorMatrix) (a b : ℤ) :
+  (CofactorMatrix.id.mul N).apply a b = N.apply a b` — left-
+  identity form. Same proof; closure relies on `Prod` structure
+  eta (`((p.1, p.2)) = p`) to collapse the final inner pair.
+
+**Why useful.** PART XXVII's fuel-zero apply lemmas produce
+`CofactorMatrix.id` factors via `hgcdMatrixSafe_zero`. When such
+an `id` factor appears multiplied with another cofactor matrix
+(e.g. a fuel-step unfolding where one recursive call hits the
+`f = 0` base case), these corollaries collapse the spurious
+identity factor in one rewrite, instead of unfolding
+`CofactorMatrix.mul` + `CofactorMatrix.apply` and arithmetic-
+normalising every time.
+
+**Net delta**: 0 new axioms / sorries / definitions /
+`native_decide` witnesses. +63 lines (2 theorems + PART XXVIII
+banner + section docstring). Both proofs are pure `rw` chains
+against existing merged lemmas. Independent of the open S32b
+non-expansion question — they package mechanical identities,
+not new mathematical content.
+
+Honesty notes:
+
+* This is **still not** S32b: the non-expansion-bearing ~80-line
+  half of the S28b iff remains open. S40 just packages two
+  mechanical identity-collapse lemmas; it does not advance the
+  discharge of the parent open conjecture.
+* Build pending: per the broken `proofs/.lake` symlink trap
+  (memory `feedback_researcher_lake_symlink_broken.md`), no
+  Docker build is run here. The deployer auto-merges
+  build-pending research PRs on this slug per its established
+  S20–S39 merge pattern. If the second `rw` fails to close
+  (e.g., a future Mathlib `Prod` eta regression), the surgical
+  fix is to append an explicit `simp` step or a `Prod.mk.eta`
+  rewrite.
+* PR collision risk: the only open PR on this slug (#17304 from
+  S23, 2026-05-08) targets the old PART XIII insertion point
+  (file line ~735, pre-S26 numbering, and DIRTY); S40's PART
+  XXVIII is appended at end-of-namespace (post-S39 line 2421)
+  immediately before `end HGcdSafe`, structurally disjoint.
+
+### Previous focus (S39 — PR #17965, merged 2026-05-12)
+
+Session 39 added PART XXVII to `BinaryGcdOQ03OQ02PathA.lean`:
+four named theorems packaging the **fuel-zero base case** for
+the NE-self / NE-cond induction sketched in
+`s32-non-expansion-analysis.md` §3–§5: `cofactor_id_apply`,
+`hgcdMatrixSafe_zero_apply`, `hgcdMatrixSafe_zero_natAbs_max_eq`,
+`hgcdMatrixSafe_zero_natAbs_max_le`. S40 (this PR) discharges
+the two `(M.mul id)` / `(id.mul N)` apply corollaries that S39
+flagged as natural follow-ups in `cofactor_id_apply`'s
+docstring.
+
+### Previous focus (S38 — PR #17937, merged 2026-05-12)
+
+Session 38 (researcher-3) extends S37's outer-fires
 packaging from `hgcdMatrixSafeOf` / `hgcdSafeApply` to the
 **`schonhageGcd` recursion step itself** by composing S37's
 `hgcdSafeApply_of_outerFires` with S23's
