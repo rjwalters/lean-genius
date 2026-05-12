@@ -48,6 +48,18 @@
     "prerequisites": ["AbelRuffiniGaloisExtensions.lean", "Equiv.Perm Fin n", "IsSolvable"]
   },
   {
+    "id": "ann-solvable-iff-realizable",
+    "proofId": "abel-ruffini-galois-extensions-oq-05",
+    "range": { "startLine": 137, "endLine": 143 },
+    "type": "theorem",
+    "title": "solvable_iff_shafarevich_realizable: the abstract characterization",
+    "content": "This is the cleaned-up, parameter-only version of Shafarevich's theorem: take any finite group G with `[IsSolvable G]` and the existence theorem fires. Three roles: (1) the abstract API consumed by every downstream specialization in this file (cyclic, abelian, S₃, S₄, subgroup, quotient corollaries all chain through it via instance synthesis); (2) the explicit name `solvable_iff_...` foreshadows the bidirectional restatement once Mathlib's Abel-Ruffini reverse direction is also formalized; (3) a single application of the `shafarevich_inverse_galois` axiom whose `obtain` pattern matches every other corollary's structure, making the file maximally repetitive — by design, since each corollary's *content* is just the `IsSolvable` instance.\n\nThe naming `solvable_iff_*` is aspirational: only the forward direction is proved here; the converse (radical extension's Galois group is solvable) is the Abel-Ruffini direction in the parent file `AbelRuffiniGaloisExtensions.lean`. A bidirectional bundle theorem awaits both directions being available in the same namespace.",
+    "mathContext": "$\\forall G$ [Group, Fintype, IsSolvable], $\\exists L/\\mathbb{Q}$ Galois, $G \\cong \\mathrm{Gal}(L/\\mathbb{Q})$. The full equivalence $G \\text{ solvable} \\Leftrightarrow G \\cong \\mathrm{Gal}(L/\\mathbb{Q})$ for some radical $L/\\mathbb{Q}$ requires combining this direction with the parent file's Abel-Ruffini direction.",
+    "significance": "key",
+    "relatedConcepts": ["abstract Shafarevich API", "instance-driven specialization", "Abel-Ruffini bidirectional", "naming conventions"],
+    "prerequisites": ["shafarevich_inverse_galois axiom", "IsSolvable typeclass", "Fintype constraint"]
+  },
+  {
     "id": "ann-closure",
     "proofId": "abel-ruffini-galois-extensions-oq-05",
     "range": { "startLine": 145, "endLine": 163 },
