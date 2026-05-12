@@ -44,7 +44,8 @@
       "Bochner-Riesz regularization $(1 - |k|^2/R^2)_+^\\delta$ introduces a smooth weight that tapers high-frequency contributions. For $\\delta > (n-1)/2$ (the 'critical index'), the means converge in all $L^p$ ($1 \\leq p \\leq \\infty$). Below the critical index, convergence is more subtle and the full Bochner-Riesz conjecture remains open.",
       "The Carleson-Hunt theorem (1D): for $f \\in L^p$, $1 < p \\leq \\infty$, the partial sums $S_N f(x) \\to f(x)$ a.e. The maximal function $S^* f = \\sup_N |S_N f|$ is bounded on $L^p$ for $p > 1$. This is the key tool—whether analogous bounds hold for spherical maximal functions in n≥2 is the crux of the 2D conjecture.",
       "L² convergence via Parseval always holds: $\\|f - S_R^{\\text{sph}} f\\|_{L^2}^2 = \\sum_{|k| > R} |\\hat{f}(k)|^2 \\to 0$ by dominated convergence (Bessel's inequality and L² square-summability). This is independent of dimension and explains why L² is the 'easy' case while pointwise a.e. requires much harder analysis.",
-      "The Bochner-Riesz problem in $n=2$ is fully solved by the Carleson-Sjölin theorem (1972), which uses Stein-Tomas-type restriction estimates: $L^p$ boundedness of the Fourier extension operator $E_S g(x) = \\widehat{g\\,d\\sigma}(x)$ from the sphere $S^{n-1}$ controls $S_R^\\delta$ via a stationary-phase decomposition. This embeds multi-dimensional Fourier convergence inside Stein's restriction theory — a direction with no 1D analogue, and the reason why 'higher dimensions' is genuinely harder, not just notationally heavier."
+      "The Bochner-Riesz problem in $n=2$ is fully solved by the Carleson-Sjölin theorem (1972), which uses Stein-Tomas-type restriction estimates: $L^p$ boundedness of the Fourier extension operator $E_S g(x) = \\widehat{g\\,d\\sigma}(x)$ from the sphere $S^{n-1}$ controls $S_R^\\delta$ via a stationary-phase decomposition. This embeds multi-dimensional Fourier convergence inside Stein's restriction theory — a direction with no 1D analogue, and the reason why 'higher dimensions' is genuinely harder, not just notationally heavier.",
+      "**Scaffold-file discipline**: This file ships three `noncomputable def`s that all return the literal `0 : ℂ` — `fourierCoeff`, `rectPartialSum`, `spherPartialSum`. The deliberate choice of `0` over `sorry` is significant: `sorry` is *axiomatic* (it consumes `axiomCount` budget and produces non-terminating terms), while `def f := 0` is *trivially verified* (the file legitimately has 0 axioms / 0 sorries). The scaffold pattern lets the gallery name a *future API* without falsely claiming any theorems are proven. PR #17223 explicitly removed prose that had attempted to characterize the docstring-only declarations as theorems. The upgrade path is to replace each `0` with the actual `MeasureTheory.integral` once Mathlib's `Fin n → AddCircle 1` Haar-measure infrastructure is wired up — the signatures and downstream API stay stable."
     ],
     "prerequisites": [
       "**1D Fourier series convergence theory** — Dirichlet's pointwise theorem for piecewise smooth functions on $\\mathbb{T}$, the Dirichlet kernel $D_N(x) = \\sin((2N+1)\\pi x)/\\sin(\\pi x)$, and the Riemann-Lebesgue lemma. This file extends each of these objects (kernel, convergence statement) to $n$ dimensions.",
@@ -113,6 +114,11 @@
       "targetId": "fourier-series-oq-03",
       "relationship": "related",
       "description": "OQ-03 covers the Dirichlet kernel and pointwise convergence criteria; this OQ-04 shows the n-dimensional Dirichlet kernel D_N^n = ∏ D_N^1 has L¹ norm growing as (log N)^n, explaining why rectangular summation fails in n≥2"
+    },
+    {
+      "targetId": "fourier-series",
+      "relationship": "ancestor",
+      "description": "Root gallery entry: classical 1D Fourier series convergence on T¹. This OQ-04 lifts the framework to T^n, with the central observation that 1D Carleson-Hunt cannot be tensored: spherical summation breaks the product structure that would make a direct lift possible."
     }
   ],
   "references": [
