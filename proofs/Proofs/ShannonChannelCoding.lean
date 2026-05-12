@@ -10,10 +10,11 @@
 
   Axioms: 3 (channel_coding_achievability, channel_coding_converse,
     bsc_capacity_eq)
-  Theorems: 12 (jointDist_nonneg, jointDist_sum_one, channelMI_nonneg,
+  Theorems: 13 (jointDist_nonneg, jointDist_sum_one, channelMI_nonneg,
     channelMI_le_log_card, capacity_nonneg, channelMI_le_capacity,
     capacity_le_log_card, rate_of_code_pos, fano_inequality,
-    fano_converse_step, bsc_capacity_le_one, bsc_capacity_nonneg)
+    fano_converse_step, fano_converse_capacity,
+    bsc_capacity_le_one, bsc_capacity_nonneg)
   Sorries: 0
 -/
 import Mathlib
@@ -253,6 +254,75 @@ theorem fano_converse_step {α β : Type*} [Fintype α] [Fintype β]
   -- Fano: H(X|Y) ≤ h(P_e) + P_e · log(|α| - 1).
   have hfano := fano_inequality pXY hp hsum
   -- Combine algebraically.
+  linarith
+
+/-- **Fano-form converse single-letter bound with channel capacity.**
+
+    For a channel `ch : DMChannel α β` and a uniform input distribution
+    `inp : InputDist α` (i.e., `inp.p ≡ (Fintype.card α)⁻¹`),
+
+    `log |α| ≤ channelCapacity ch + h(P_e) + P_e · log(|α| - 1)`
+
+    where `P_e` is the Fano error term for the joint distribution
+    `jointDist ch inp`.
+
+    This is the canonical "uniform-input single-letter converse": for
+    the worst-case (uniform) codebook over `|α|` codewords, the
+    log-cardinality is bounded by `channelCapacity ch` plus the Fano
+    error penalty. Rearranges to `(1 - P_e) · log |α| ≤
+    channelCapacity ch + h(P_e)` once one absorbs the always-nonneg
+    correction `P_e · log(|α| / (|α| - 1)) ≥ 0` (for `|α| ≥ 2`); the
+    bare form stated here is the single-letter ingredient that block-
+    coding arguments invoke at each channel use of an `n`-block code.
+
+    The proof combines three ingredients:
+    * `fano_converse_step` (this file) — the abstract single-letter
+      identity under explicit uniform-entropy hypothesis;
+    * `entropy_of_uniform_eq_log_card` (`ShannonEntropy.lean`) —
+      discharges the uniform-entropy hypothesis;
+    * `channelMI_le_capacity` (this file, line 137) — replaces
+      `mutualInformation (jointDist ch inp)` with `channelCapacity ch`.
+
+    The X-marginal of `jointDist ch inp` is `inp.p`, since each row
+    `∑ y, ch.W x y = 1` (channel rows are probability distributions);
+    this is the bridge that lets `entropy_of_uniform_eq_log_card`
+    apply to the joint-distribution marginal. -/
+theorem fano_converse_capacity {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β] [Nonempty α]
+    (ch : DMChannel α β) (inp : InputDist α)
+    (h_inp_uniform : ∀ x : α, inp.p x = (Fintype.card α : ℝ)⁻¹) :
+    let P_e := 1 - ∑ y : β, ∑ x : α,
+                 jointDist ch inp (x, y) ^ 2 /
+                   (∑ x' : α, jointDist ch inp (x', y))
+    Real.log (Fintype.card α) ≤
+      channelCapacity ch +
+      InformationTheory.BinaryEntropy.h P_e +
+      P_e * Real.log ((Fintype.card α : ℝ) - 1) := by
+  intro P_e
+  -- The X-marginal of `jointDist ch inp` equals `inp.p`,
+  -- since `∑ y, ch.W x y = 1` (channel rows are probability distributions).
+  have h_marg : (fun x : α => ∑ y : β, jointDist ch inp (x, y)) = inp.p := by
+    funext x
+    show ∑ y : β, inp.p x * ch.W x y = inp.p x
+    rw [← Finset.mul_sum, ch.sum_one, mul_one]
+  -- The hypothesis `h_inp_uniform` says `inp.p` is the uniform constant.
+  have h_inp_eq : inp.p = fun _ : α => (Fintype.card α : ℝ)⁻¹ := funext h_inp_uniform
+  -- Discharge the `h_uniform` hypothesis of `fano_converse_step` using
+  -- `entropy_of_uniform_eq_log_card` (in `ShannonEntropy.lean`).
+  have h_uniform :
+      shannonEntropy (fun x : α => ∑ y : β, jointDist ch inp (x, y)) =
+        Real.log (Fintype.card α) := by
+    rw [h_marg, h_inp_eq]
+    exact entropy_of_uniform_eq_log_card
+  -- Apply `fano_converse_step` to the joint distribution.
+  have hfano_step :=
+    fano_converse_step (jointDist ch inp)
+      (jointDist_nonneg ch inp) (jointDist_sum_one ch inp) h_uniform
+  -- `mutualInformation (jointDist ch inp) = channelMI ch inp` by definition.
+  have hcap : mutualInformation (jointDist ch inp) ≤ channelCapacity ch := by
+    show channelMI ch inp ≤ channelCapacity ch
+    exact channelMI_le_capacity ch inp
+  -- Combine the two bounds.
   linarith
 
 /- ## Main theorems -/

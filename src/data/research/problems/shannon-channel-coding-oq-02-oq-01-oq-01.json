@@ -17,37 +17,43 @@
   },
   "currentState": {
     "phase": "ACT-PROGRESS",
-    "since": "2026-05-12T05:40:00Z",
-    "iteration": 5,
-    "focus": "S5: fano_converse_step named lemma in ShannonChannelCoding.lean — single-letter Fano-form converse log|α| ≤ I(X;Y) + h(P_e) + P_e·log(|α|-1) under abstract uniform-entropy hypothesis. Decoupled from S4 PR #17879.",
+    "since": "2026-05-12T10:20:00Z",
+    "iteration": 6,
+    "focus": "S6: fano_converse_capacity composite — uniform-input single-letter converse with channelCapacity bound. Combines S3 channelMI_le_capacity + S4 entropy_of_uniform_eq_log_card + S5 fano_converse_step into log|α| ≤ channelCapacity ch + h(P_e) + P_e·log(|α|-1).",
     "blockers": [],
-    "nextAction": "S6 candidate: discharge channel_coding_converse axiom (asymptotic regime) using fano_converse_step + channelMI_le_capacity + OQ02OQ03's converse_from_combined_bound algebra. Alt: prove entropy_uniform_implies_uniform_marginal converse.",
+    "nextAction": "S7 candidate: discharge channel_coding_converse axiom (asymptotic) via n-block extension; or lighter Shannon-form rearrangement (1-P_e)·log|α| ≤ C + h(P_e) by absorbing P_e·log(|α|-1) ≤ P_e·log|α| slack; or sibling entropy_uniform_implies_uniform_marginal converse in ShannonEntropy.lean.",
     "attemptCounts": {
-      "total": 5,
+      "total": 6,
       "currentApproach": 1,
-      "approachesTried": 5
+      "approachesTried": 6
     }
   },
   "knowledge": {
-    "progressSummary": "S5 (researcher-5, 2026-05-12): fano_converse_step lemma added to ShannonChannelCoding.lean (line 200 region, +47 lines). Proves log|\u03b1| \u2264 I(X;Y) + h(P_e) + P_e\u00b7log(|\u03b1|-1) under explicit uniform-entropy hypothesis, decoupled from S4 PR #17879. Parent gallery: theoremCount 11\u219212, lineCount 275\u2192324. Build pending.",
+    "progressSummary": "S6 (researcher-3, 2026-05-12): fano_converse_capacity composite lemma added to ShannonChannelCoding.lean after fano_converse_step. Combines S3 channelMI_le_capacity + S4 entropy_of_uniform_eq_log_card + S5 fano_converse_step into a single uniform-input bound log|\u03b1| \u2264 channelCapacity ch + h(P_e) + P_e\u00b7log(|\u03b1|-1) for a DM channel with uniform InputDist. Parent gallery: theoremCount 12\u219213. Build pending.",
     "builtItems": [
       "fano_from_oq03_std (ShannonChannelCodingOQ02OQ01.lean:201): bridge via InformationTheory.conditionalEntropy by definitional equality (rfl)",
       "fano_singleton_card_one (ShannonChannelCodingOQ02OQ01.lean:216): |\u03b1|=1 case via Subsingleton + h_nonneg",
       "fano_inequality_proved (ShannonChannelCodingOQ02OQ01.lean:288): dispatcher matching the fano_inequality axiom signature exactly",
-      "ShannonChannelCoding.lean: `theorem fano_inequality := FanoFromConditionalEntropy.fano_inequality_proved pXY hp hsum` (line 157) + `import Proofs.ShannonChannelCodingOQ02OQ01`"
+      "ShannonChannelCoding.lean: `theorem fano_inequality := FanoFromConditionalEntropy.fano_inequality_proved pXY hp hsum` (line 157) + `import Proofs.ShannonChannelCodingOQ02OQ01`",
+      "fano_converse_step (ShannonChannelCoding.lean:235 region): abstract single-letter identity log|\u03b1| \u2264 I(X;Y) + h(P_e) + P_e\u00b7log(|\u03b1|-1) under explicit h_uniform hypothesis (S5, PR #17887)",
+      "entropy_of_uniform_eq_log_card (ShannonEntropy.lean:233): H(uniform) = log|\u03b1| equality witness (S4, PR #17879)",
+      "fano_converse_capacity (ShannonChannelCoding.lean:290 region): uniform-input composite log|\u03b1| \u2264 channelCapacity ch + h(P_e) + P_e\u00b7log(|\u03b1|-1) for any DM channel with uniform InputDist (S6, this PR)"
     ],
     "insights": [
       "The two conditionalEntropy definitions are body-identical, hence rfl-equal; this lets the bridge use a term-mode `:=` instead of a tactic rewrite.",
       "For |\u03b1|=1, both sides of Fano simplify to 0: H(X|Y)=0 (degenerate ratio inside log), P_e=0 (singleton collapse), and (card \u03b1 : \u211d) - 1 = 0 annihilates the second RHS term.",
       "Empty \u03b1 is vacuous via Finset.univ_eq_empty + sum_empty contradicting hsum=1.",
       "fano_inequality_proved signature matches axiom byte-for-byte modulo the `(Fintype.card \u03b1 : \u211d)` cast (both files use the same cast form).",
-      "Term-mode reference `:= dispatcher pXY hp hsum` suffices for axiom->theorem swap when the dispatcher's body is defeq to the axiom's stated type (unused `let pX` in the axiom unfolds away; Real.log argument elaborates uniformly under expected type \u211d)."
+      "Term-mode reference `:= dispatcher pXY hp hsum` suffices for axiom->theorem swap when the dispatcher's body is defeq to the axiom's stated type (unused `let pX` in the axiom unfolds away; Real.log argument elaborates uniformly under expected type \u211d).",
+      "S6 bridge: the X-marginal of jointDist ch inp equals inp.p exactly, since each channel row \u2211 y, ch.W x y = 1 by the DMChannel structure axiom; one Finset.mul_sum factoring then closes the marginal identity by rfl on inp.p x.",
+      "channelMI ch inp = mutualInformation (jointDist ch inp) is a definitional equality (the `def channelMI`'s body), so a `show channelMI ch inp \u2264 channelCapacity ch` redirect on the goal of an inequality stated in terms of `mutualInformation (jointDist ch inp)` suffices to invoke `channelMI_le_capacity` without intermediate manipulation."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Verify Docker build of ShannonChannelCoding.lean and ShannonChannelCodingOQ02OQ01.lean; if term-mode proof fails for defeq reasons, switch to tactic-mode `:= by exact FanoFromConditionalEntropy.fano_inequality_proved pXY hp hsum` or `:= by simp only []; exact ...`.",
-      "Mechanic: re-sync any sibling meta.json entries that reference 4-axiom counts on shannon-channel-coding.",
-      "Follow-up question: can channel_coding_converse axiom be discharged similarly via fano_inequality + standard data-processing inequality?"
+      "Verify Docker build of ShannonChannelCoding.lean post-S6; the proof relies on already-merged S3/S4/S5 ingredients but final compilation lives with CI on this PR.",
+      "S7 candidate (heavy): discharge channel_coding_converse axiom (asymptotic block-coding regime) via S6 + memoryless-channel chain rule I(X^n;Y^n) ≤ n·channelCapacity ch.",
+      "S7 candidate (lighter): prove canonical Shannon-form rearrangement (1-P_e)·log|α| ≤ channelCapacity ch + h(P_e) by absorbing the always-nonneg slack P_e·(log|α| - log(|α|-1)) ≥ 0 for |α| ≥ 2.",
+      "S7 candidate (sibling): prove entropy_uniform_implies_uniform_marginal converse in ShannonEntropy.lean (equality case of entropy_le_log_card)."
     ]
   },
   "tags": [
@@ -70,15 +76,15 @@
     "mathlib": []
   },
   "started": "2026-05-08T19:09:00.565Z",
-  "lastUpdate": "2026-05-12T05:40:00Z",
+  "lastUpdate": "2026-05-12T10:20:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/ShannonChannelCoding.lean",
       "filename": "ShannonChannelCoding.lean",
-      "lineCount": 324,
-      "theoremCount": 12,
+      "lineCount": 394,
+      "theoremCount": 13,
       "axiomCount": 3,
       "defCount": 5,
       "sorryCount": 0,
