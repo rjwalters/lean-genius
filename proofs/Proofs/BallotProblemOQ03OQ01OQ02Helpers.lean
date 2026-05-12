@@ -15113,6 +15113,83 @@ private lemma sum_gnwProb_arm_of_c'_reduce_case2
     exact gnwProb_unreachable_zero K (c'.1, s) (Or.inr (by omega))
   rw [Finset.range_eq_Ico, Finset.range_eq_Ico, ← h_consec, h_zero, add_zero]
 
+/-- **(S57.6 prep) Off-spine strict-hook class at `c'`.**
+
+For an off-spine cell `x` (i.e., `x.1 ≠ c'.1 ∧ x.2 ≠ c'.2`), every
+cell `y ∈ strictHookCells μ x.1 x.2` falls into **exactly one** of
+three geometrically distinguished classes with respect to `c'`'s
+spine:
+
+* **Off-spine** (`y.1 ≠ c'.1 ∧ y.2 ≠ c'.2`): same predicate as `x`.
+  These cells satisfy the `c'`-invariance hypotheses of S57.4's
+  `gnwProb_succ_eq_off_spine_of_c'`, so the K-step pointwise identity
+  recurses by IH (in a joint induction whose conclusion is universal
+  in `y`).
+
+* **Arm-cell on `c'`'s column** (`y.1 = x.1 ∧ y.2 = c'.2`): the unique
+  arm cell whose column matches `c'`'s.  Since `x.1 ≠ c'.1`, this
+  cell is off `c'`'s row but lies on `c'`'s column; S57.3a's
+  `gnwProb_zero_of_col_eq_c'_case2` applies whenever
+  `c.2 < c'.2` (case 2 of `distinct_corners_dichotomy`).
+
+* **Leg-cell on `c'`'s row** (`y.1 = c'.1 ∧ y.2 = x.2`): the unique
+  leg cell whose row matches `c'`'s.  Since `x.2 ≠ c'.2`, this cell
+  is on `c'`'s row but off `c'`'s column; S57.3a's
+  `gnwProb_zero_of_row_eq_c'_case1` applies whenever `c.1 < c'.1`
+  (case 1 of `distinct_corners_dichotomy`).
+
+**Mutual exclusivity.**  The three branches are pairwise disjoint:
+the off-spine branch contradicts each crossing branch on the
+respective coordinate; the two crossing branches together would
+force `x.1 = c'.1`, contradicting `hx_off_row`.
+
+**Role in S57.6 (`gnwProb_eq_off_spine_of_c'`).**  Combined with the
+joint K-induction whose inductive step is S57.4's
+`gnwProb_succ_eq_off_spine_of_c'`, this 3-way partition reduces the
+hypothesis `∀ y ∈ strictHookCells μ x.1 x.2, gnwProb μ c K y =
+gnwProb (μ\c') c K y` to:
+
+* off-spine `y`: IH directly applies (off-spine condition lifts);
+* `y` on `c'`'s column with `y.1 = x.1` (under case 2): both sides
+  vanish via S57.3a's `gnwProb_zero_of_col_eq_c'_case2`
+  (universal in the first `μ` argument, so applies to both
+  `gnwProb μ` and `gnwProb (μ\c')`);
+* `y` on `c'`'s row with `y.2 = x.2` (under case 1): both sides
+  vanish via S57.3a's `gnwProb_zero_of_row_eq_c'_case1`.
+
+This is the structural fact underlying the "Strict-hook cells `y`
+that *cross* `c'`'s spine ... handled by S57.3a's per-cell helpers
+on whichever side of the case-1/case-2 dichotomy applies" claim
+of PR #17734's `Next step (S57.6)` plan.
+
+**Status.**  Sorry-free.  Purely a structural fact about
+`strictHookCells = arm ∪ leg` (definition at line 14222) — no
+`gnwProb` semantics involved. -/
+private lemma strictHookCells_off_spine_class_at_c'
+    {μ : YoungDiagram} {c' x : ℕ × ℕ}
+    (hx_off_row : x.1 ≠ c'.1) (hx_off_col : x.2 ≠ c'.2)
+    {y : ℕ × ℕ} (hy : y ∈ strictHookCells μ x.1 x.2) :
+    (y.1 ≠ c'.1 ∧ y.2 ≠ c'.2) ∨
+    (y.1 = x.1 ∧ y.2 = c'.2) ∨
+    (y.1 = c'.1 ∧ y.2 = x.2) := by
+  simp only [strictHookCells, Finset.mem_union, Finset.mem_image,
+             Finset.mem_Ico] at hy
+  rcases hy with ⟨s, ⟨_hjs, _hsr⟩, rfl⟩ | ⟨r, ⟨_hir, _hrc⟩, rfl⟩
+  · -- arm cell: y = (x.1, s) with s ∈ Ico (x.2 + 1) (μ.rowLen x.1).
+    -- Both coordinates are determined; check whether s = c'.2.
+    by_cases hsc' : s = c'.2
+    · -- y = (x.1, c'.2): the arm-on-c'-column class.
+      exact Or.inr (Or.inl ⟨rfl, hsc'⟩)
+    · -- y = (x.1, s) with s ≠ c'.2: off-spine.
+      exact Or.inl ⟨hx_off_row, hsc'⟩
+  · -- leg cell: y = (r, x.2) with r ∈ Ico (x.1 + 1) (μ.colLen x.2).
+    -- Both coordinates are determined; check whether r = c'.1.
+    by_cases hrc' : r = c'.1
+    · -- y = (c'.1, x.2): the leg-on-c'-row class.
+      exact Or.inr (Or.inr ⟨hrc', rfl⟩)
+    · -- y = (r, x.2) with r ≠ c'.1: off-spine.
+      exact Or.inl ⟨hrc', hx_off_col⟩
+
 /-- Bridge lemma: for distinct corners `c ≠ c'` of `μ`, summing `gnwProb μ c K` over the
     strict hook of any cell `(i, j)` is the same as summing it over the strict hook of
     that cell in `μ \ c'`.  This is because the two strict-hook sets differ at most by
