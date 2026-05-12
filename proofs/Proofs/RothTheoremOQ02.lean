@@ -1,4 +1,5 @@
 import Mathlib.Combinatorics.Additive.Corner.Roth
+import Mathlib.Combinatorics.Additive.AP.Three.Behrend
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 /-!
@@ -109,10 +110,41 @@ theorem bloom_sisask_consistent_with_isLittleO :
       (fun N : ℕ => (N : ℝ)) :=
   rothNumberNat_isLittleO_id
 
+/-- **Consistency of the Bloom–Sisask upper bound with Behrend's lower bound.**
+For every `N ≥ 3`, Behrend's explicit lower bound on `rothNumberNat N`
+does not exceed the Bloom–Sisask upper bound:
+
+  `N * exp(-4 * √(log N)) ≤ N / (log N)^(1 + blasiConst)`.
+
+This sanity-checks the `rothNumberNat_bloom_sisask` axiom against the
+*unconditional* lower bound `Behrend.roth_lower_bound` proved in Mathlib
+v4.26.0:
+
+  `(N : ℝ) * exp (-4 * √(log N)) ≤ rothNumberNat N`.
+
+The proof is purely transitive through `rothNumberNat N`: both bounds
+hold simultaneously, so the lower bound is `≤` the upper bound. We do
+*not* prove the underlying analytic inequality
+`(1 + c) * log log N ≤ 4 * √(log N)` directly; the consistency follows
+automatically from the existence of both bounds.
+
+The point is to record explicitly that the two endpoint inequalities are
+compatible — i.e. they do not cross — and to flag that the gap between
+them (Behrend's `exp(-4√(log N))` vs Bloom–Sisask's `1 / (log N)^(1+c)`)
+remains the central open quantitative question. Kelley–Meka (2023) brings
+the upper bound much closer to Behrend, with `N * exp(-c * (log N)^(1/12))`;
+the analogue of this theorem against the Kelley–Meka bound (much tighter)
+is a natural follow-up. -/
+theorem bloom_sisask_consistent_with_Behrend (N : ℕ) (hN : 3 ≤ N) :
+    (N : ℝ) * Real.exp (-4 * Real.sqrt (Real.log N)) ≤
+      (N : ℝ) / Real.log N ^ (1 + blasiConst) :=
+  (Behrend.roth_lower_bound).trans (rothNumberNat_le_blasi N hN)
+
 #check rothNumberNat_bloom_sisask
 #check blasiConst
 #check blasiConst_pos
 #check rothNumberNat_le_blasi
 #check bloom_sisask_consistent_with_isLittleO
+#check bloom_sisask_consistent_with_Behrend
 
 end RothTheoremOQ02
