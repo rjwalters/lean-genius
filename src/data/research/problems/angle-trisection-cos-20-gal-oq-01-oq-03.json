@@ -1,0 +1,155 @@
+{
+  "slug": "angle-trisection-cos-20-gal-oq-01-oq-03",
+  "title": "For which primes p does the minimal polynomial of cos(\u03c0/p) have Eisenstein fo...",
+  "phase": "ORIENT",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: For which primes p does the minimal polynomial of cos(\u03c0/p) have Eisenstein fo....",
+    "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "NEW",
+    "since": "2026-05-08T19:09:00.559Z",
+    "iteration": 1,
+    "focus": "Initial exploration of the problem.",
+    "blockers": [],
+    "nextAction": "Begin problem exploration.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "ORIENT - S1 surveyed; identified unified cyclotomic-ramification proof. Empirically verified for p in {5,7,11,13}. Recommended Level 2 (parametric statement + per-prime proof) for S2; main Mathlib risk is the local-uniformizer-to-Eisenstein lemma.",
+    "builtItems": [],
+    "insights": [
+      "Gallery has two empirically-verified instances of the conjecture: cos(pi/5) at OQ01OQ02 with r=Y^2-5Y+5 Eisenstein at 5, and cos(pi/7) at OQ01 with r=Y^3-7Y^2+14Y-7 Eisenstein at 7. Both use the substitution Y = 2X + 2 to convert the minimal polynomial of cos(pi/p) into Eisenstein-at-p form.",
+      "Cyclotomic-ramification proof of the general conjecture: 2 + 2cos(pi/p) = (1+zeta_{2p})(1+zeta_{2p}^{-1}). Norm computation via Phi_{2p}(-1) = Phi_p(1) = p (using Phi_{2p}(X) = Phi_p(-X) for p odd prime) gives N_{Q(theta_p)/Q}(2+theta_p) = p, so the constant term of the minimal polynomial is plus or minus p, hence has p-adic valuation exactly 1.",
+      "Local-field argument: 1 + zeta_{2p} is a uniformizer of the unique prime above p in Z[zeta_{2p}] (totally ramified, e = p-1). Restricting to the real subfield gives ramification index 2 from full cyclotomic, hence v_p(2+theta_p) = 1 in Z[theta_p], i.e., 2+theta_p is a uniformizer at the prime above p in the real subfield. A uniformizer of a totally ramified extension has Eisenstein minimal polynomial; this is the unified proof.",
+      "Empirical verification beyond gallery: r_{11}(Y) = Y^5 - 11Y^4 + 44Y^3 - 77Y^2 + 55Y - 11 is Eisenstein at 11 (all sub-leading coefficients are multiples of 11, constant -11 not divisible by 121). r_{13}(Y) = Y^6 - 13Y^5 + 65Y^4 - 156Y^3 + 182Y^2 - 91Y + 13 likewise Eisenstein at 13.",
+      "Three formalization levels identified: (1) per-prime enumeration (anti-pattern: just more cases like p=11, 13); (2) parametric statement r_p(Y) with per-prime proof via cyclotomic value-at-1 and Newton identities (recommended for S2); (3) full ramification-theoretic proof using a uniformizer-implies-Eisenstein general lemma (highest-value but Mathlib gap risk)."
+    ],
+    "mathlibGaps": [
+      "General lemma 'L/Q_p totally ramified of degree e, pi uniformizer implies minimal polynomial of pi over Q_p is Eisenstein at p' may not be packaged in Mathlib for the general DVR / IsLocalRing context. If missing, build locally (~200-400 lines) or use a Newton-identity workaround.",
+      "Maximal real subfield API: Q(zeta_n + zeta_n^{-1}) inside Q(zeta_n) may have sparse coverage. The ramification index (p-1)/2 of p in Z[theta_p] for the real subfield may need to be derived from IsCyclotomicExtension.Rat results.",
+      "Norm-via-Phi_{2p}(-1) = Phi_p(1) = p identity: should follow from Polynomial.cyclotomic_prime_eval_one or similar Mathlib API but may require an explicit chain of rewrites bridging Phi_{2p}(-1) and Phi_p(1)."
+    ],
+    "nextSteps": [
+      "S2: Create proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean with parametric definition r_p : N -> Z[X] and main statement: for all p prime >= 3, IsEisensteinAt (r_p p) (Ideal.span {(p:Z)}). Stub general proof with sorry; verify by decide/native_decide for concrete p in {5, 7, 11, 13}.",
+      "S2 alt: Add gallery entry src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/ with meta.json, problem.md, index.ts, annotations.json placeholders.",
+      "S3: Replace sorry with the Phi_{2p}(-1) = p constant-term argument using Mathlib's cyclotomic value-at-1 and the identity Phi_{2p}(X) = Phi_p(-X) for p odd prime.",
+      "S4: Prove p-divisibility of sub-leading coefficients. Two paths: (a) symmetric-function path via trace_{theta_p^k} computation from cyclotomic; (b) local-uniformizer path via Mathlib's ramification API for IsCyclotomicExtension.Rat. Try (a) first as it's more elementary.",
+      "S5+: Polish, eliminate remaining sorries, gallery entry build verification."
+    ]
+  },
+  "tags": [
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "angle-trisection",
+    "angle-trisection-cos-20-gal",
+    "angle-trisection-cos-20-gal-oq-01",
+    "angle-trisection-cos-20-gal-oq-01-oq-01",
+    "angle-trisection-cos-20-gal-oq-01-oq-02",
+    "angle-trisection-cos-20-gal-oq-01-oq-02-oq-02",
+    "angle-trisection-cos-20-gal-oq-03",
+    "angle-trisection-cos-20-gal-oq-03-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-08T19:09:00.559Z",
+  "lastUpdate": "2026-05-12T02:28:59Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/AngleTrisectionCos20Gal.lean",
+      "filename": "AngleTrisectionCos20Gal.lean",
+      "lineCount": 475,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20Gal.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01.lean",
+      "filename": "AngleTrisectionCos20GalOQ01.lean",
+      "lineCount": 417,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01OQ01.lean",
+      "filename": "AngleTrisectionCos20GalOQ01OQ01.lean",
+      "lineCount": 183,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02.lean",
+      "filename": "AngleTrisectionCos20GalOQ01OQ02.lean",
+      "lineCount": 440,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean",
+      "filename": "AngleTrisectionCos20GalOQ01OQ02OQ02.lean",
+      "lineCount": 339,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ03.lean",
+      "filename": "AngleTrisectionCos20GalOQ03.lean",
+      "lineCount": 435,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ03.lean"
+    },
+    {
+      "path": "Proofs/AngleTrisectionCos20GalOQ03OQ01.lean",
+      "filename": "AngleTrisectionCos20GalOQ03OQ01.lean",
+      "lineCount": 463,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ03OQ01.lean"
+    }
+  ]
+}
