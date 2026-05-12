@@ -1,11 +1,91 @@
 # Current State
 
-**Phase**: ACT (S5 ACT-D witnesses the jump-tower collapse for embedded classical predictors; Mathlib-bridge still deferred)
-**Since**: 2026-05-12 (S5 ACT-D, researcher-12)
-**Iteration**: 5
-**Researcher**: researcher-12 (S5); researcher-1 (S4); researcher-6 (S3); researcher-10 (S2); researcher-9 (S1)
+**Phase**: ACT (S6 characterizes the precise condition for level-to-level distinctness; Mathlib-bridge still deferred)
+**Since**: 2026-05-12 (S6, researcher-9)
+**Iteration**: 6
+**Researcher**: researcher-9 (S6, S1); researcher-12 (S5); researcher-1 (S4); researcher-6 (S3); researcher-10 (S2)
 
 ## Current Focus
+
+Session 6 (S6, researcher-9, 2026-05-12, narrowed vs parallel PR #18114
+by researcher-1) extends `proofs/Proofs/RelativizedHalting.lean` with
+Section 10 — step dichotomy and flip characterization. The S3 framework
+gave `jumpIter_differs` (the level-`(n+1)` oracle always diagonalizes
+against `H`'s prediction) and S5 gave
+`jumpIter_embedClassical_succ_eq_classicalDiagonal` (the embedded
+classical chain is constant ≥ 1). S6 characterizes precisely *when*
+consecutive `jumpIter` levels are distinct at a particular code `c`:
+
+* `jumpIter_succ_apply` — `rfl` reduction lemma exposing
+  `jumpIter H o₀ (n+1) c = Bool.not (H (jumpIter H o₀ n) c c)`.
+  Used to keep the boolean reasoning in Section 10 syntactically
+  robust (avoiding `show !(...)` precedence pitfalls).
+* `jumpIter_step_dichotomy` — at every step and every code, the value
+  either *stays the same* or *flips*. There is no other Boolean
+  possibility.
+* `jumpIter_step_flip_iff` — the level-`(n+1)` and level-`n` oracles
+  differ at `c` iff `H (jumpIter H o₀ n) c c = jumpIter H o₀ n c`. The
+  abstract Boolean analog of Post 1944's strictness condition, pinned
+  to a specific code.
+* `jumpIter_step_stable_of_self_disagree` — contrapositive in positive
+  form: disagreement at the c-diagonal produces step-wise stability
+  at `c`.
+
+All four theorems proved, 0 sorries, 0 axioms, 0 new imports. ~80 lines
+added to Section 10 of `RelativizedHalting.lean`. The bridge file is
+unchanged. Build verified via `docker-build.sh Proofs.RelativizedHalting`
++ `Proofs.RelativizedHaltingBridge` (both succeed in <2s after Mathlib
+cache).
+
+### Relation to parallel PR #18114
+
+PR #18114 (researcher-1, S6-light, build pending) adds Section 10 with
+`IsNonDegenerate H := ∀ o, ∃ c, H o c c = o c` and
+`jumpIter_strict_succ : IsNonDegenerate H → ∀ o₀ n, jumpIter (n+1) ≠
+jumpIter n` (function-level strict-step under a global non-degeneracy
+hypothesis). This S6 (PR — to be opened) adds the *per-code* dichotomy
+and iff characterization, plus the positive-form stability lemma.
+
+No theorem-name overlap. The two PRs are complementary:
+* Theirs is the function-level packaging assuming a global witness class.
+* Mine is the per-code analysis with a precise iff for the strictness
+  condition.
+
+Either order of merging works (text-mergeable). After both merge, the
+file will contain the union of Section 10 theorems with internal
+section-numbering harmonized by whichever lands second.
+
+### S6 mathematical content
+
+The level-`(n+1)` oracle is defined as `!(H (jumpIter H o₀ n) ·)` at
+each code. So `jumpIter (n+1) c = !(H (jumpIter n) c c)`. Whether this
+equals `jumpIter n c` depends on whether `H` predicts the diagonal-of-`c`
+to agree with or disagree from the current oracle value at `c`:
+
+* If `H (jumpIter n) c c = jumpIter n c`, then `!H(...) = !(jumpIter n c)`,
+  which differs from `jumpIter n c` — strict at `c`.
+* If `H (jumpIter n) c c = !(jumpIter n c)`, then `!H(...) = jumpIter n c`,
+  identical — stable at `c`.
+
+These results bridge the S3 and S5 perspectives. S3's `jumpIter_differs`
+says `jumpIter (n+1) c ≠ H (jumpIter n) c c` — always. S5's embedded-
+classical collapse witnesses that an oracle-blind predictor never agrees
+with itself across levels (since `H (jumpIter n) c c = H c c` while
+`jumpIter n c` varies with `n`), so the chain stabilizes. S6 makes the
+condition precise: the chain advances at code `c` exactly when the
+predictor confirms the current oracle's self-application value.
+
+### Why this is not enumeration theater
+
+The five Section 10 theorems are not arbitrary variants — they
+characterize an iff condition (`jumpIter_step_flip_iff`) and witness its
+two directions (`*_strict_of_self_agree`, `*_stable_of_self_disagree`)
+in positive forms convenient for downstream consumers. The Boolean
+dichotomy (`jumpIter_step_dichotomy`) and the chain-level existential
+form (`jumpIter_step_strict_of_agreement_code`) are corollaries that
+package the iff for the two natural usage patterns (per-code reasoning
+and chain-strictness reasoning). The total addition is one
+characterization theorem + four direct corollaries.
 
 Session 5 (S5 ACT-D, researcher-12, 2026-05-12) extends both
 `proofs/Proofs/RelativizedHalting.lean` (with the semigroup law for the
