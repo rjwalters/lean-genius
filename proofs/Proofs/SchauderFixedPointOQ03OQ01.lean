@@ -600,6 +600,56 @@ private lemma typeclass_witnesses_compact_subset {n : ℕ}
   -- ParacompactSpace ↥S: inferred from CompactSpace (paracompact_of_compact).
   exact ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩
 
+/-- **S18c scaffold (Cellina–Browder Steps 1–2 packaged together):**
+
+    For an upper-hemicontinuous set-valued map `F : ↥S → 2^↥S` on a
+    compact `S ⊆ EuclideanSpace ℝ (Fin n)` and any `ε > 0`, produce:
+
+    * a function `U : ↥S → Set ↥S` of subtype-relative open
+      neighborhoods (one per base point), each contained in the inverse
+      image (in the UHC sense) of the `ε`-thickening of `F(x)`;
+    * a finite `s : Finset ↥S` of cover centers whose open
+      neighborhoods exhaust all of `↥S`.
+
+    The construction chains `uhc_local_thickening` (S17 scaffold, PR
+    #17708) pointwise over `↥S`, then invokes
+    `CompactSpace.elim_nhds_subcover` once `[CompactSpace ↥S]` is
+    materialised from `hS_compact` (the same `haveI` line as in
+    `typeclass_witnesses_compact_subset`, S18b PR #17802). The
+    quantifier-signature gating question on `IsUpperHemicontinuous` was
+    resolved doc-only in PR #17800: `uhc_local_thickening` applies
+    directly at `Y = ↥S` with no preimage pull-back step.
+
+    No new axiom is introduced; `axiom approx_selection_exists` (Axiom
+    2 above) remains in the file unchanged. The full ↥S-indexed family
+    `U` is returned alongside the finite cover `s` so that the
+    downstream S18d invocation of
+    `PartitionOfUnity.exists_isSubordinate` (subordinate partition of
+    unity, Cellina Step 3) can choose either the full family `U` or
+    the finite subfamily `{U x : x ∈ s}` as its index set.
+
+    Reference: S17 Mathlib API survey
+    (`research/problems/schauder-fixed-point-oq-03-oq-01-incomplete-01/s17-cellina-mathlib-api-survey.md`),
+    Steps 1–2; S17-followup quantifier resolution PR #17800. -/
+private lemma exists_finite_subcover_for_uhc {n : ℕ}
+    (S : Set (EuclideanSpace ℝ (Fin n))) (hS_compact : IsCompact S)
+    (F : SetValuedMap (↥S) (↥S))
+    (hF_uhc : IsUpperHemicontinuous F)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ U : ↥S → Set ↥S, ∃ s : Finset ↥S,
+      (∀ x : ↥S, IsOpen (U x)) ∧
+      (∀ x : ↥S, x ∈ U x) ∧
+      (∀ x z : ↥S, z ∈ U x → F z ⊆ Metric.thickening ε (F x)) ∧
+      (⋃ x ∈ s, U x = (⊤ : Set ↥S)) := by
+  haveI : CompactSpace ↥S := isCompact_iff_compactSpace.mp hS_compact
+  -- Step 1: pointwise local thickening from UHC (S17 scaffold).
+  choose U hU_open hU_mem hU_sub using
+    fun x : ↥S => uhc_local_thickening hF_uhc x ε hε
+  -- Step 2: compactness extracts a finite subcover (CompactSpace API).
+  obtain ⟨s, hs⟩ :=
+    CompactSpace.elim_nhds_subcover U fun x => (hU_open x).mem_nhds (hU_mem x)
+  exact ⟨U, s, hU_open, hU_mem, hU_sub, hs⟩
+
 /-- **Sequential Compactness in Metric Spaces**
 
     In a compact metric space, every sequence has a convergent subsequence.
