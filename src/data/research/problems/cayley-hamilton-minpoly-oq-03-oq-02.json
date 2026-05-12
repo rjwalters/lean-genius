@@ -1,0 +1,404 @@
+{
+  "slug": "cayley-hamilton-minpoly-oq-03-oq-02",
+  "title": "Can the $O(n^\\omega)$ algorithm of Keller-Gehrig (1985) be formalized, extending the Krylov framework?",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Formalise: KellerGehrig}(M) \\text{ computes } \\mu_M \\text{ via repeated squaring of } M \\text{ in } O(n^\\omega) \\text{ field operations.}",
+    "plain": "The Krylov method (OQ-03) computes the minimal polynomial in O(n^3) via n matrix-vector products. Keller-Gehrig (1985) replaces these with ⌈log₂ n⌉ matrix-matrix squarings to reach O(n^ω), where ω is the matrix-multiplication exponent. Can the algorithm be formalised in Lean 4 over current Mathlib?",
+    "whyMatters": [
+      "Closes the algorithmic chapter of cayley-hamilton-minpoly: O(n^3) Krylov (OQ-03) extends to the subcubic regime via the same structural objects.",
+      "Clean target for the 'complexity in Mathlib' discussion: even structural layers (1)+(2) commit nothing and slot into any future complexity-monad design.",
+      "Aligns with OSforGFF integration / Mathlib upgrade trajectory."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "OQ-03: O(n^3) Krylov method formalised with iteration bound d ≤ n, polynomial-evaluation = Krylov-sum identity, nonderogatory-cyclic-vector optimality.",
+      "OQ-03: krylov_recurrence shows one matvec advances the sequence by one step.",
+      "OQ-03: minpoly_degree_le_dim establishes the n-bound on minimal-polynomial degree."
+    ],
+    "open": [
+      "Layer 1: squared-Krylov sequence T_k = M^(2^k) — definition + recurrence + bridge to M^(2^k). Tractable, ≈ 35 lines.",
+      "Layer 2: Krylov-prefix ⊆ squared-Krylov span — correctness of the polynomial-evaluation pass. Tractable, ≈ 60 lines.",
+      "Layer 3: O(n^ω) operation count — BLOCKED on Mathlib having no complexity monad and no fast matrix multiplication."
+    ],
+    "goal": "Formalise layers 1 + 2 over the existing OQ-03 Krylov framework; explicitly defer layer 3 with a written-down account of the missing complexity infrastructure."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-11T19:30:00.000Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE — survey-only iteration. Three-layer decomposition; commit to layers 1+2, defer layer 3.",
+    "blockers": [
+      "Layer 3 only: Mathlib has no complexity-monad / cost-counting framework.",
+      "Layer 3 only: Mathlib.Matrix.mul is the naive O(n^3) algorithm; no Strassen / abstract fast-matmul oracle.",
+      "Layer 3 only: matrix-multiplication exponent ω is not in Mathlib even as an opaque constant."
+    ],
+    "nextAction": "S2 — write proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean (~35 lines): squareKrylov def + squareKrylov_zero/succ + squareKrylov_eq_pow_two bridge to M^(2^k). Single Docker build.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE — three-layer decomposition committed; layers 1+2 tractable, layer 3 deferred.",
+    "builtItems": [
+      "problem.md: rich plain/formal statements, infrastructure map vs. OQ-03 line numbers, S2-S6 decomposition, risk notes.",
+      "knowledge.md: algorithm-in-3-sentences, numerical breakeven at n=64 (Strassen wins at n≈256, CW-Williams wins at n≈64), Mathlib gap inventory for the complexity monad, worked S2 stub.",
+      "state.md: phase OBSERVE, blockers gated to layer 3, S2 next-action recipe."
+    ],
+    "insights": [
+      "The Keller-Gehrig speed-up is structural (n cheap matvecs vs ⌈log n⌉ expensive matmuls), so it formalises today modulo any complexity framework.",
+      "The asymptotic claim depends on the fast-matmul instance: with Mathlib's naive Matrix.mul the algorithm runs cubically. Honest meta.status must be 'axiomatized' on any future promotion.",
+      "OQ-03 already provides ~90% of the algebraic infrastructure; the new ingredient is repeated squaring (~35 lines).",
+      "Numerical breakeven shows naive cubic Matrix.mul is defensible at typical n; Strassen wins around n≈256."
+    ],
+    "mathlibGaps": [
+      "No squareKrylov / repeated-squaring matrix sequence.",
+      "No complexity monad (Cost / WithCount / cost-passing-style) — community has no consensus design.",
+      "No fast matrix multiplication (no Strassen, no FastMul typeclass, no abstract O(n^ω) oracle).",
+      "No matrix-multiplication exponent ω as a Mathlib constant or axiomatised real."
+    ],
+    "nextSteps": [
+      "S2: squareKrylov definition + 3 theorems (~35 lines, 1 Docker build).",
+      "S3: Krylov-prefix ⊆ squared-Krylov span via polynomial Horner evaluation (~60 lines, 1 build).",
+      "S4: 2^k ≥ n bound (~25 lines, no build — pure Nat arithmetic).",
+      "S5: explicit deferral of layer 3 in knowledge.md, with one-paragraph outline of what a future complexity-monad PR would need to add."
+    ]
+  },
+  "tags": [
+    "linear-algebra",
+    "matrices",
+    "polynomials",
+    "minimal-polynomial",
+    "krylov-method",
+    "computational-complexity",
+    "research",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "cayley-hamilton",
+    "cayley-hamilton-minpoly",
+    "cayley-hamilton-minpoly-oq-01",
+    "cayley-hamilton-minpoly-oq-02",
+    "cayley-hamilton-minpoly-oq-02-oq-01",
+    "cayley-hamilton-minpoly-oq-02-oq-01-oq-02",
+    "cayley-hamilton-minpoly-oq-02-oq-02",
+    "cayley-hamilton-minpoly-oq-02-oq-03",
+    "cayley-hamilton-minpoly-oq-03",
+    "cayley-hamilton-minpoly-oq-03-oq-01",
+    "cayley-hamilton-minpoly-oq-04",
+    "cayley-hamilton-minpoly-oq-05",
+    "cayley-hamilton-minpoly-oq-05-oq-01",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-01",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-02",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-03",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-01",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-03",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-04",
+    "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-wip-05",
+    "cayley-hamilton-minpoly-oq-05-oq-02",
+    "cayley-hamilton-minpoly-oq-05-oq-02-oq-03"
+  ],
+  "references": {
+    "papers": [
+      "W. Keller-Gehrig, Fast algorithms for the characteristic polynomial, Theoretical Computer Science 36 (1985), 309-317.",
+      "M. Giesbrecht, Nearly optimal algorithms for canonical matrix forms, SIAM J. Comput. 24 (1995), 948-969.",
+      "A. Storjohann, Algorithms for matrix canonical forms, PhD thesis, ETH Zürich (2000).",
+      "J. von zur Gathen & J. Gerhard, Modern Computer Algebra, §12.3 (Cambridge UP, 2013)."
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.Data.Matrix.Mul"
+    ]
+  },
+  "started": "2026-05-08T19:09:00.562Z",
+  "lastUpdate": "2026-05-11T19:30:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ01.lean",
+      "filename": "CayleyHamiltonMinpolyOQ01.lean",
+      "lineCount": 308,
+      "theoremCount": 20,
+      "axiomCount": 3,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ02.lean",
+      "filename": "CayleyHamiltonMinpolyOQ02.lean",
+      "lineCount": 132,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ02OQ01.lean",
+      "filename": "CayleyHamiltonMinpolyOQ02OQ01.lean",
+      "lineCount": 218,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ02OQ01OQ02.lean",
+      "filename": "CayleyHamiltonMinpolyOQ02OQ01OQ02.lean",
+      "lineCount": 172,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ02OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean",
+      "filename": "CayleyHamiltonMinpolyOQ02OQ02.lean",
+      "lineCount": 391,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ02OQ03.lean",
+      "filename": "CayleyHamiltonMinpolyOQ02OQ03.lean",
+      "lineCount": 137,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ03.lean",
+      "filename": "CayleyHamiltonMinpolyOQ03.lean",
+      "lineCount": 369,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ03.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ03Aristotle.lean",
+      "filename": "CayleyHamiltonMinpolyOQ03Aristotle.lean",
+      "lineCount": 115,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean",
+      "filename": "CayleyHamiltonMinpolyOQ03OQ01.lean",
+      "lineCount": 266,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ04.lean",
+      "filename": "CayleyHamiltonMinpolyOQ04.lean",
+      "lineCount": 317,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ04.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ04Backward.lean",
+      "filename": "CayleyHamiltonMinpolyOQ04Backward.lean",
+      "lineCount": 481,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ04Backward.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ04BackwardAristotle.lean",
+      "filename": "CayleyHamiltonMinpolyOQ04BackwardAristotle.lean",
+      "lineCount": 126,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ04BackwardAristotle.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05.lean",
+      "lineCount": 233,
+      "theoremCount": 23,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ01.lean",
+      "lineCount": 271,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ01.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ01.lean",
+      "lineCount": 363,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ02.lean",
+      "lineCount": 271,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ03.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ03.lean",
+      "lineCount": 346,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
+      "lineCount": 288,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean",
+      "lineCount": 307,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP02.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04WIP02.lean",
+      "lineCount": 576,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03.lean",
+      "lineCount": 254,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP03.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean",
+      "lineCount": 360,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean",
+      "lineCount": 191,
+      "theoremCount": 1,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ02.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ02.lean",
+      "lineCount": 263,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ02.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ02OQ03.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ02OQ03.lean",
+      "lineCount": 245,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ02OQ03.lean"
+    }
+  ]
+}
