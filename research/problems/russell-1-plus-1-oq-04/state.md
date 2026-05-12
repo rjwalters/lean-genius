@@ -1,10 +1,104 @@
 # Current State
 
-**Phase**: ACT (S3 augmentation complete — named theorems + #print axioms; advancing to S4 gallery)
+**Phase**: ACT (S5 ζ-demonstrator complete — let-bound row + #print axioms; OQ-04 saturated, deferred meta-theorem → OQ-04-OQ-01)
 **Since**: 2026-05-12T05:00:00Z (S1)
-**Last Updated**: 2026-05-12 (S3 ACT by researcher-1)
-**Iteration**: 3
-**Last researcher**: researcher-1
+**Last Updated**: 2026-05-12 (S5 ACT by researcher-6)
+**Iteration**: 5
+**Last researcher**: researcher-6
+
+## S5 Summary (2026-05-12, researcher-6)
+
+**Mode**: ACT (add the optional `let`-bound ζ-demonstrator row noted
+in S1's `nextSteps` and S3/S4 state.md).
+
+### Deliverable
+
+Augmented `proofs/Proofs/OnePlusOneOQ04.lean` with a sixth row that
+isolates the `ζ`-rule (let-reduction):
+
+1. **New def `addLet`**: `Peano.add` applied to `let`-bound copies
+   of its arguments. Definitionally equal to `Peano.add n m`, but
+   only after `ζ` fires on the two `let`-binders.
+
+2. **New theorem `row5_let : addLet Peano.one Peano.one = Peano.two := rfl`**.
+   Rules(E) = `{δ, ι, ζ}`. 7-step rewrite (row 1's 5 plus 2 `ζ`-steps).
+
+3. **Header table extended** to include the 6th row with column
+   alignment widened to fit `{δ, ι, ζ}`. New "Observation (ζ)"
+   paragraph explaining why ζ is a *fourth* CIC primitive rather
+   than syntactic sugar (no β/ι/δ rule has a `let` in its LHS
+   pattern, so on closed terms with let-bindings, ζ is not
+   derivable from `{β, ι, δ}`).
+
+4. **New `## Row 5` section** with full docstring: necessity
+   argument (without ζ the LHS is stuck at
+   `let n' := one; let m' := one; Peano.add n' m'`, which `ι`
+   cannot reduce because `Peano.add`'s pattern-match expects a
+   constructor head, not a `let`) and sufficiency argument (after
+   ζ fires the term reduces to `Peano.add Peano.one Peano.one`,
+   identical to row 1's LHS, closing on `{δ, ι}`).
+
+5. **Part 6 extended** with `#print axioms row5_let` stanza
+   (expected: `'OnePlusOneOQ04.row5_let' depends on no axioms`).
+   Part 6 docstring updated "five" → "six" row witnesses.
+
+### Design choices
+
+- **Single `let`-binder vs. nested**: I used a *pair* of let-binders
+  (`let n' := n; let m' := m`) rather than a single binder. The
+  pair is more honest as a ζ-stress-test: a single binder
+  followed by one application could in principle be elided by an
+  optimizer, but a pair of binders followed by a binary
+  application makes the ζ-step unambiguous. Each let-binder
+  produces exactly one `ζ`-step (2 total), giving the cleanest
+  step-count arithmetic with row 1.
+- **`addLet` not `Peano.addLet`**: kept in the `OnePlusOneOQ04`
+  namespace rather than extending `Peano`, since this is a
+  pedagogical artifact specific to the OQ-04 taxonomy, not a
+  general-purpose addition operator.
+- **`def addLet (n m : Peano.ℕ) : Peano.ℕ`** (not `def addLet := …`):
+  giving explicit argument names makes the `let`-binders
+  obviously *bind something* (the formal parameter), which is
+  the pedagogical point. An anonymous-argument variant
+  (`addLet := fun n m => let … in Peano.add n' m'`) would
+  introduce a spurious β-step.
+
+### File deltas
+
+- `proofs/Proofs/OnePlusOneOQ04.lean`: +52 lines
+  (header table row + ζ observation + §Row 5 docstring + `def addLet` +
+  `theorem row5_let` + Part 6 prose + `#print axioms row5_let`).
+- Sorry count: 0 (unchanged).
+- Axiom count: 0 (unchanged; row5_let machine-verified at compile time).
+- Theorem count: 5 → 6 (added `row5_let`).
+- Definition count: 7 → 8 (added `addLet`).
+
+### Build status
+
+**Verified** via `./proofs/scripts/docker-build.sh Proofs.OnePlusOneOQ04`.
+Six info messages confirm the propositional dual:
+
+```
+info: 'OnePlusOneOQ04.row0_unfolded'        does not depend on any axioms
+info: 'OnePlusOneOQ04.row1_peano_pattern'   does not depend on any axioms
+info: 'OnePlusOneOQ04.row2_peano_recursor'  does not depend on any axioms
+info: 'OnePlusOneOQ04.row3_church'          does not depend on any axioms
+info: 'OnePlusOneOQ04.row4_binary'          does not depend on any axioms
+info: 'OnePlusOneOQ04.row5_let'             does not depend on any axioms
+```
+
+### OQ-04 status after S5
+
+The OQ-04 question is now saturated at the *worked-example* level:
+all five rule subsets identified in S1's taxonomy table are
+witnessed by an `:= rfl` Lean theorem, and each witness's
+axiom-freedom is machine-checked at compile time. The remaining
+work belongs to the child question **OQ-04-OQ-01** (a precise
+meta-theorem stating `Rules(E)` and proving minimality of the
+rule subsets, perhaps via a sandboxed kernel parametrised on a
+subset of `{β, ι, δ, ζ}`).
+
+
 
 ## S3 Summary (2026-05-12, researcher-1)
 
@@ -207,36 +301,26 @@ None. S1 is complete; S2 is unblocked.
 
 ## Next Action
 
-**S3 ACT**: Augment `proofs/Proofs/OnePlusOneOQ04.lean` with
-`#print axioms` + `#reduce` stanzas for each example, plus a
-docstring section at the top tying the file to `problem.md`'s
-summary table. The `#print axioms` stanzas confirm each example
-is axiom-free, doubling as the *propositional* dual of the
-reduction-rule taxonomy (per knowledge.md S1 insight #6).
+**OQ-04 saturated at the worked-example level** after S5.
+Remaining work belongs to the child question **OQ-04-OQ-01** (or
+a new sibling): a precise meta-theorem stating `Rules(E)` and
+proving minimality of the rule subsets, perhaps via a sandboxed
+kernel parametrised on a subset of `{β, ι, δ, ζ}`. That work is
+significantly larger than a single research iteration.
 
-**S4 ACT**: Add a gallery entry
-`src/data/proofs/russell-1-plus-1-oq-04/` so the worked file is
-browsable on the live site. `meta.json` uses `status:
-"verified"`, `badge: "original"`, `axiomCount: 0`, `sorries: 0`.
-Cross-reference the parent entry `russell-1-plus-1`.
+Optional follow-ons (not strictly required for OQ-04):
 
-**S5 (optional)**: A `let`-binding example demonstrating the role
-of `ζ`:
-
-```lean
-def addLet (n m : Peano.ℕ) : Peano.ℕ :=
-  let n' := n; let m' := m
-  Peano.add n' m'
-example : addLet Peano.one Peano.one = Peano.two := rfl
-```
-
-**Deferred (→ OQ-04-OQ-01)**: A meta-theorem stating `Rules(E)`
-precisely (perhaps via a sandboxed kernel parametrised on a
-subset of `{β, ι, δ, ζ}`) and proving minimality. Significant
-project; stub as a child open question.
+- **S6 (optional)**: A `#reduce`-stanza per row showing the
+  *literal* kernel-reduced output. Verbose (each `#reduce` emits
+  the fully-normalised term), but pedagogically clean for the
+  Church and recursor rows where the normalisation is non-trivial.
+- **S7 (optional)**: A timing harness using `set_option
+  trace.profiler true` to measure the *kernel cost* (μs per
+  rewrite class) of each row. Would empirically reify the
+  "step count" column of the taxonomy table.
 
 ## Attempt Counts
 
-- Total attempts: 2 (S1 OBSERVE complete; S2 ACT complete)
-- Current approach attempts: 2
+- Total attempts: 5 (S1 OBSERVE; S2 ACT skeleton; S3 ACT named theorems + #print axioms; S4 ACT gallery entry; S5 ACT ζ-demonstrator row)
+- Current approach attempts: 5
 - Approaches tried: 1 (reduction-rule taxonomy across encodings)

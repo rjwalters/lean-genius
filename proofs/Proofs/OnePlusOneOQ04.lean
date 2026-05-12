@@ -16,13 +16,14 @@ the goal by reflexivity. The **necessity** claim (each rule in
 
 ## The Taxonomy Table
 
-| Encoding `E`                                  | `Rules(E)` | Step count `N` |
-|-----------------------------------------------|------------|:--------------:|
-| Unfolded baseline (constructors on both sides)| `∅`        |       0        |
-| Peano with pattern-matched `add` (parent file)| `{δ, ι}`   |       5        |
-| Peano with raw recursor `Nat.rec`             | `{δ, ι, β}`|       6        |
-| Church numerals `(α → α) → α → α`             | `{δ, β}`   |       6        |
-| Binary naturals `Bin = one ∣ b0 ∣ b1`         | `{δ, ι}`   |       3        |
+| Encoding `E`                                       | `Rules(E)`    | Step count `N` |
+|----------------------------------------------------|---------------|:--------------:|
+| Unfolded baseline (constructors on both sides)     | `∅`           |       0        |
+| Peano with pattern-matched `add` (parent file)     | `{δ, ι}`      |       5        |
+| Peano with raw recursor `Nat.rec`                  | `{δ, ι, β}`   |       6        |
+| Church numerals `(α → α) → α → α`                  | `{δ, β}`      |       6        |
+| Binary naturals `Bin = one ∣ b0 ∣ b1`              | `{δ, ι}`      |       3        |
+| Peano with `let`-bound arguments (ζ demonstrator)  | `{δ, ι, ζ}`   |       7        |
 
 (`N` counts single-rule kernel rewrites from `one_E + one_E` to
 syntactic identity with `two_E`. The four CIC rules are
@@ -34,6 +35,14 @@ affect the *minimal set*, only the count.)
 versa. So there is no single encoding strictly less powerful than
 all others (modulo the trivial `∅` baseline). This is a
 structural property of CIC, not an implementation accident.
+
+**Observation (ζ).** The let-bound row dominates row 1 in the
+subset order — `{δ, ι} ⊊ {δ, ι, ζ}` — and is the *only* row in
+which `ζ` is essential. Removing `ζ` from the kernel would leave
+the let-bound row's `rfl` claim unprovable while leaving rows
+0–4 unaffected. This is what makes `ζ` a *fourth* primitive of
+CIC (not derivable from `{β, ι, δ}` on closed CIC terms with
+let-bindings) rather than syntactic sugar.
 
 ## References
 
@@ -165,14 +174,61 @@ def Bin.add : Bin → Bin → Bin
     walks the bit-string. -/
 theorem row4_binary : Bin.add Bin.one Bin.one = Bin.b0 Bin.one := rfl
 
+/-! ## Row 5: Peano with `let`-bound Arguments — `Rules(E) = {δ, ι, ζ}`
+
+This row exists to isolate the `ζ`-rule (let-reduction). Rows 0–4
+never require `ζ` because none of them contains a `let`-binding;
+the kernel reaches a `rfl` closure on `{β, ι, δ}` alone. Once a
+`let`-binding is introduced, `ζ` becomes load-bearing: without it,
+the kernel cannot eliminate the bound name and the two sides of
+`addLet Peano.one Peano.one = Peano.two` fail to converge to a
+common normal form (the left side is stuck at
+`let n' := Peano.one; let m' := Peano.one; Peano.add n' m'`,
+which is not syntactically `Peano.two`).
+
+The semantics is:
+
+* `ζ` reduces `(let x := e; body)` to `body[x := e]` — the
+  defining equation of the `let`-construct.
+* On *closed* CIC terms, `ζ` is *not* derivable from `{β, ι, δ}`:
+  no β/ι/δ-step can erase a `let`-binder, because none of those
+  rules has a `let` in its left-hand pattern. This is what makes
+  CIC a four-rule kernel rather than three. -/
+
+/-- The parent file's `Peano.add` applied to `let`-bound copies of
+    its arguments. Definitionally equal to `Peano.add n m`, but
+    only after `ζ` fires on the two `let`-bindings. -/
+def addLet (n m : Peano.ℕ) : Peano.ℕ :=
+  let n' := n
+  let m' := m
+  Peano.add n' m'
+
+/-- Witness: `addLet one one = two := rfl`. Kernel rewrite
+    sequence: `δ` (unfold `addLet`, `one`, `two`); `ζ` (eliminate
+    the two `let`-binders for `n'` and `m'`); `ι` (the two
+    `match`-clauses of `Peano.add` fire, exactly as in row 1).
+    7 steps total — row 1's 5 steps plus the two `ζ`-steps.
+
+    `ζ` is **necessary**: without it, the LHS reduces to
+    `let n' := Peano.one; let m' := Peano.one; Peano.add n' m'`,
+    which the kernel cannot identify with `Peano.two` because the
+    `let`-binders block any further `ι`-step (`Peano.add`'s
+    pattern-match expects a constructor head, not a `let`).
+
+    `ζ` is also **sufficient (together with δ, ι)**: no further
+    rule is needed, because after `ζ` fires the term reduces to
+    `Peano.add Peano.one Peano.one`, identical to row 1's LHS,
+    which closes on `{δ, ι}`. -/
+theorem row5_let : addLet Peano.one Peano.one = Peano.two := rfl
+
 /-! ## Part 6: Axiom-Freedom Verification
 
-Each of the five row witnesses is `:= rfl`, so the proof is by
+Each of the six row witnesses is `:= rfl`, so the proof is by
 kernel reduction with no extra axioms. The `#print axioms` stanzas
 below produce a machine-checked confirmation of this claim
 (expected output for each: `'<name>' depends on no axioms`),
 serving as the *propositional* dual to the *reductional* taxonomy
-of `Rules(E)` documented in Parts 1–5.
+of `Rules(E)` documented in Parts 1–5 (and the ζ-row of §5).
 
 This dual is the substance of the OQ-04 contribution: the
 `{β, ι, δ, ζ}` rule alphabet is *all that is needed* in the sense
@@ -190,5 +246,6 @@ will fail by inspection — a lightweight regression detector. -/
 #print axioms row2_peano_recursor
 #print axioms row3_church
 #print axioms row4_binary
+#print axioms row5_let
 
 end OnePlusOneOQ04
