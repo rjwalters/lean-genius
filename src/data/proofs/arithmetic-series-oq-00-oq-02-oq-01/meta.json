@@ -33,7 +33,15 @@
       "no_integer_weight: no integer-valued weight satisfies the identity — w(2) = 8/3 forces a contradiction",
       "nicWeight_unique_at_12: uniqueness at k=1,2 — any rational weight satisfying the identity for all n must equal nicWeight"
     ],
-    "mathlib_version": "4.26.0"
+    "mathlib_version": "4.26.0",
+    "prerequisites": [
+      "Nicomachus's theorem: ∑_{k=1}^n k³ = (∑_{k=1}^n k)² (parent gallery file arithmetic-series, theorem `NicomachusTheorem.sum_cubes_eq_sq_sum`)",
+      "Field structure of ℚ: nonzero denominators allow `div_mul_cancel₀`",
+      "Finset.sum_congr for termwise substitution under a sum",
+      "Finset.Ico expansion and decide-based unfolding for concrete small-n cases",
+      "Mathlib tactics: norm_num, omega, linarith, ring, norm_cast",
+      "Counterexample from arithmetic-series-oq-00-oq-02 (parent): w(k) = k² fails at n=2 (LHS = 13, RHS = 9)"
+    ]
   },
   "parent": "arithmetic-series-oq-00-oq-02",
   "openQuestion": "Is there a weight w(k) other than k² such that ∑_{k=1}^n w(k)·(2k-1) = (∑_{k=1}^n k)² for all n?",
@@ -48,6 +56,13 @@
       "Concrete values: w(1) = 1 (same as k² at k=1, both sides = 1), w(2) = 8/3, w(3) = 27/5. The denominator grows linearly (2k-1 is always odd), so the weight is never an integer for k ≥ 2.",
       "Connection to Nicomachus: ∑w(k)·(2k-1) = ∑k³ = (∑k)² is the classical identity restated with a non-trivial weight that makes the cancellation obvious.",
       "Structural pattern: when an open question of the form '∑f(k)·g(k) = h(k)' fails for a guessed f, one can sometimes recover existence by *defining* f(k) := h(k)' / g(k) (or its summand-wise telescoping analog), at the cost of f being non-integer. Here h(k)' = k³ (the term in Nicomachus) and g(k) = 2k-1, giving the irreducible f = k³/(2k-1)."
+    ],
+    "prerequisites": [
+      "Nicomachus's theorem ∑k³ = (∑k)² (from gallery entry `arithmetic-series`)",
+      "Counterexample fact: w(k) = k² fails at n=2 (from parent `arithmetic-series-oq-00-oq-02`)",
+      "Rational arithmetic and the identity k³/(2k-1) · (2k-1) = k³ for k ≥ 1",
+      "Telescoping sums and the algebraic identity (k(k+1)/2)² − ((k-1)k/2)² = k³",
+      "Basic divisibility / modular arithmetic: 3 ∤ 8 (the integer-weight obstruction)"
     ]
   },
   "sections": [
@@ -117,6 +132,74 @@
       "targetId": "arithmetic-series",
       "relationship": "depends",
       "description": "Foundational arithmetic-series infrastructure in the gallery (∑k = n(n+1)/2 etc.)."
+    }
+  ],
+  "mainTheorems": [
+    {
+      "name": "nicWeight",
+      "type": "definition",
+      "description": "The unique rational weight w(k) = k³/(2k−1). Over ℚ the denominator is nonzero for k ≥ 1 (in fact 2k−1 > 0), so the quotient is well-defined. The numerator k³ is chosen exactly so that the multiplicative factor (2k−1) of the target identity cancels the denominator.",
+      "leanType": "(k : ℕ) → ℚ"
+    },
+    {
+      "name": "nicWeight_mul",
+      "type": "core",
+      "description": "Key cancellation lemma: for k ≥ 1, nicWeight(k) · (2k − 1) = k³. Proved by `div_mul_cancel₀` once the denominator is shown nonzero. This single equation reduces the entire weighted-sum problem to Nicomachus's classical identity.",
+      "leanType": "(k : ℕ) (hk : 1 ≤ k) → nicWeight k * (2 * (k : ℚ) - 1) = (k : ℚ)^3"
+    },
+    {
+      "name": "nicWeight_sum_eq",
+      "type": "core",
+      "description": "**Main identity** (existence): ∑_{k=1}^n nicWeight(k)·(2k−1) = (∑_{k=1}^n k)² for all n. Proved by `Finset.sum_congr` (replacing each summand via `nicWeight_mul`), then invoking Nicomachus's theorem `sum_cubes_eq_sq_sum` from the parent gallery file.",
+      "leanType": "(n : ℕ) → ∑ k in Finset.Ico 1 (n+1), nicWeight k * (2 * (k : ℚ) - 1) = (∑ k in Finset.Ico 1 (n+1), (k : ℚ))^2"
+    },
+    {
+      "name": "nicWeight_two",
+      "type": "supporting",
+      "description": "Concrete value: nicWeight(2) = 8/3. The witness that nicWeight is not integer-valued — and the precise numerical obstruction (3 ∤ 8) for the `no_integer_weight` theorem below. Proved by `unfold nicWeight; norm_num`.",
+      "leanType": "nicWeight 2 = 8 / 3"
+    },
+    {
+      "name": "no_integer_weight",
+      "type": "core",
+      "description": "**No integer weight exists**: for every w : ℕ → ℤ, the identity ∑_{k=1}^n w(k)·(2k−1) = (∑_{k=1}^n k)² fails for some n. The proof specializes to n=1 (forcing w(1) = 1) and n=2 (forcing 3·w(2) = 8); `omega` then derives False from 3·w(2) = 8 over ℤ. The mod-3 obstruction at the second case is structural.",
+      "leanType": "(w : ℕ → ℤ) → ¬ ∀ n, ∑ k in Finset.Ico 1 (n+1), (w k : ℚ) * (2 * (k : ℚ) - 1) = (∑ k in Finset.Ico 1 (n+1), (k : ℚ))^2"
+    },
+    {
+      "name": "nicWeight_unique_at_12",
+      "type": "core",
+      "description": "**Uniqueness at k = 1, 2**: any rational weight satisfying the identity for all n must have w(1) = 1 and w(2) = 8/3 — i.e., agree with nicWeight at the first two indices. Same sum-expansion strategy as `no_integer_weight`; `linarith` recovers the forced values. The full uniqueness ∀ k, w(k) = nicWeight(k) is documented as a deferred theorem (telescoping induction).",
+      "leanType": "(w : ℕ → ℚ) (h : ∀ n, ∑ k in Finset.Ico 1 (n+1), w k * (2 * (k : ℚ) - 1) = (∑ k in Finset.Ico 1 (n+1), (k : ℚ))^2) → w 1 = nicWeight 1 ∧ w 2 = nicWeight 2"
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Nicomachus of Gerasa"],
+      "title": "Introduction to Arithmetic",
+      "year": "ca. 100 CE",
+      "venue": "Book II, Ch. 20. English translation: M. L. D'Ooge (1926), University of Michigan Studies, Humanistic Series, vol. XVI",
+      "note": "Original statement of the cubes-as-square-of-triangular identity ∑k³ = (∑k)² (one of the earliest non-trivial power-sum identities). The reduction of this file's weighted identity to Nicomachus's is what makes the proof one line."
+    },
+    {
+      "authors": ["Johann Faulhaber"],
+      "title": "Academia Algebrae",
+      "year": "1631",
+      "venue": "Augsburg",
+      "note": "Faulhaber's general formulas for ∑_{k=1}^n k^p as polynomials of degree p+1 in n. The Nicomachus identity is the p=3 case; Faulhaber's formulas frame the general theory of which weighted sums admit closed forms, of which this file's k³/(2k-1) result is a small instance."
+    },
+    {
+      "authors": ["Jacob Bernoulli"],
+      "title": "Ars Conjectandi",
+      "year": "1713",
+      "venue": "Part II, Ch. III. Basel, Thurnisius (posthumous)",
+      "note": "Bernoulli's rigorization of Faulhaber's formulas, introducing Bernoulli numbers. The classical framework in which this entry's uniqueness question — does ∑w(k)·(2k−1) = (∑k)² determine w uniquely? — is most naturally posed."
+    },
+    {
+      "authors": ["The Mathlib Community"],
+      "title": "Mathlib4: A Unified Library of Mathematics Formalized in Lean 4",
+      "year": "2024",
+      "venue": "https://github.com/leanprover-community/mathlib4",
+      "note": "Provides `Finset.sum_congr`, `Finset.sum_Ico_succ_top`, `div_mul_cancel₀`, and the tactics `norm_num`, `omega`, `linarith`, `decide`. The file's entire proof of `nicWeight_sum_eq` is `Finset.sum_congr rfl (fun k hk => nicWeight_mul k _) ▸ sum_cubes_eq_sq_sum n` modulo housekeeping."
     }
   ],
   "leanFile": {
