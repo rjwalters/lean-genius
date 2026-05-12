@@ -28,11 +28,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-11T19:35:00Z",
-    "iteration": 2,
-    "focus": "S2 (this PR) — Decidable infrastructure for IsAdmissible. New file BoundedPrimeGapsOQ03OQ02.lean (+109 lines, 1 abbrev, 1 theorem, 1 instance, 0 axioms, 0 sorries): abbrev IsAdmissibleBdd as the Finset-bounded variant of IsAdmissible, theorem isAdmissible_iff_bdd for the equivalence (forward by restriction; backward by case-split on p ≤ H.card, with Finset.card_image_le discharging p > H.card), and instance instDecidableIsAdmissible via decidable_of_iff. Discharges §3.1 of knowledge.md and unblocks Path B small-case prototypes (§3.3, §4). Build pending (broken proofs/.lake symlink in current worktree per memory feedback_researcher_lake_symlink_broken.md); proof script is stable Mathlib API + omega only.",
+    "since": "2026-05-12T05:35:00Z",
+    "iteration": 3,
+    "focus": "S3 (this PR) — Kernel-`decide` regression checks. Extends BoundedPrimeGapsOQ03OQ02.lean (109 → 149 lines, +40) with 4 theorems exercising the S2 Decidable instance: `admissible_twin_via_S2` ({0, 2}), `admissible_triple_via_S2` ({0, 2, 6}), `admissible_quadruple_via_S2` ({0, 2, 6, 8}), and `not_admissible_zero_one_via_S2` (negative case for {0, 1}). All four use kernel `decide` (not `native_decide`), preserving `axiomCount = 0`. These are the simplest Path-A sanity checks per knowledge.md §3.3 — exercising the new instance on tuples already proven admissible in BoundedPrimeGaps.lean (via hand-written calculation) plus one negative case to confirm rejection of non-admissible inputs. Build pending; proof script is `decide` only on small Finsets.",
     "blockers": [],
-    "nextAction": "S3 — small-case sanity native_decide via §3.3 of knowledge.md (e.g. `∀ H ∈ (Finset.range 16).powersetCard 6, 0 ∈ H → IsAdmissible H → H.max' ... ≥ 12` — ~8008 admissibility checks, tractable). This stress-tests the S2 Decidable instance before committing to S4 Path-B prototyping at `(k, w) = (6, 16)` or `(10, 30)`.",
+    "nextAction": "S4 — `native_decide` Engelsma-analogue at `(k, w) = (6, 16)`: `∀ H ∈ (Finset.range 16).powersetCard 6, 0 ∈ H → IsAdmissible H → 12 ≤ Finset.max' H ...` (~8008 admissibility checks). Will introduce `Lean.ofReduceBool` axiom — must reflect this in meta.json (`axiomCount` 0 → 1).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -164,8 +164,8 @@
     {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
       "filename": "BoundedPrimeGapsOQ03OQ02.lean",
-      "lineCount": 109,
-      "theoremCount": 1,
+      "lineCount": 149,
+      "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
