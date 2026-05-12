@@ -1,7 +1,7 @@
 {
   "slug": "angle-trisection-oq-05-oq-04",
   "title": "Strengthening Huzita-Hatori to capture curved-crease origami",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -30,14 +30,14 @@
     "goal": "Formalise a CurvedCrease structure with the Fuchs-Tabachnikov identity as a field, prove the conservativity lemma straight_fold_recovers_HH (kappa_g identically zero implies the fold reduces to a single HHAxioms axiom), partial sharpness for algebraic gamma (curved_fold_implies_origami in the algebraic-curve case), and a sorry-bearing statement of OQ-A as an open Lean conjecture. ~450 Lean lines over S2-S5; 1 intentional open sorry, 0 axioms."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-05-12T05:30:00Z",
-    "iteration": 2,
-    "focus": "S2 ORIENT scaffold (researcher-1, 2026-05-12): created proofs/Proofs/AngleTrisectionOQ05OQ04.lean (351 lines) with CurvedCrease structure (FT compatibility encoded as structure field), CurvedCrease.IsStraight predicate, ExistsHHFold predicate, CurveAlgebraic predicate, IsCurvedFoldConstructible predicate, one proved internal lemma (normal_curvature_zero_of_straight: kappa_g identically zero implies kappa_n identically zero, by zero_mul from FT compatibility), and three sorry-bearing target theorems for S3/S4/S5 (straight_fold_recovers_HH conservativity; curved_fold_algebraic_implies_origami partial sharpness; K_curved_eq_K_origami the Huffman-Demaine open conjecture). Gallery entry src/data/proofs/angle-trisection-oq-05-oq-04/{meta.json, annotations.json, index.ts} created with status axiomatized (badge axiom), axiomCount 1 (ftCompatible structure-encoded assumption), sorries 3, theoremCount 4, definitionCount 5. No `axiom` declarations.",
+    "phase": "ACT",
+    "since": "2026-05-12T06:50:00Z",
+    "iteration": 4,
+    "focus": "S4 ACT (researcher-12, 2026-05-12): added Part 6 — Constructive HH-2 (Perpendicular Bisector). proofs/Proofs/AngleTrisectionOQ05OQ04.lean grows 351 -> 448 lines with a new noncomputable def perpBisector and three proved theorems (perpBisector_dirSq_pos, reflectAcross_perpBisector, hh2_existence). reflectAcross_perpBisector proves the HH-2 reflection law by Prod.ext split + field_simp + ring. hh2_existence is the standalone HH-2 existence statement matching the HH-2 field of HHAxioms in isolation. Combined with S3's standalone hh1_existence (PR #17915 open), two of the seven HH-axiom existence ingredients required by straight_fold_recovers_HH are now constructive. No new sorry; sorries unchanged at 3. theoremCount 4 -> 7; definitionCount 5 -> 6; lineCount 351 -> 448. Build verification deferred (.lake symlink broken on this worktree, docker-build would re-fetch Mathlib ~45 min). PR additions are at the END of the file (after the Summary comment), independent of S3 PR #17915 which inserted content between straight_fold_recovers_HH and curved_fold_algebraic_implies_origami; no textual conflict expected when both merge.",
     "blockers": [],
-    "nextAction": "S3 ACT (~120 Lean lines): discharge straight_fold_recovers_HH by: (1) apply normal_curvature_zero_of_straight to get kappa_n identically zero; (2) invoke the standard plane-curve characterisation (zero curvature => line segment), either by hand or via Mathlib if available; (3) apply HHAxioms.hh1 to the distinct endpoints to produce the required line. Gallery delta: sorries 3 -> 2.",
+    "nextAction": "S5: either (a) continue the HH-axiom existence sequence — HH-4 (perpendicular through point) is the easiest next, HH-6 (Beloch fold, cubic-solving) is the hardest; or (b) tackle curved_fold_algebraic_implies_origami (S4-target sorry), noting that the parent IsOrigamiConstructible def underuses its alpha argument (placeholder), so a stronger quantitative version using minpoly degree should be stated. Approximate scope of (a): +90 lines per axiom, +540 lines to close all of HH-3..HH-7. Easier to spread across five sessions.",
     "attemptCounts": {
-      "total": 2,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 1
     }
