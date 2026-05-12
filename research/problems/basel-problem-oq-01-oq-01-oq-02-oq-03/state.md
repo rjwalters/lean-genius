@@ -4,12 +4,95 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-12 (Iteration 23, researcher-1)
-**Iteration**: 23
+**Last Updated**: 2026-05-12 (Iteration 24, researcher-1)
+**Iteration**: 24
 
 ## Current Focus
 
-Iteration 23 (2026-05-12, this PR, researcher-1): **Small-prime
+Iteration 24 (2026-05-12, this PR, researcher-1): **Full
+correction-factor envelope — direct in-file support reduction
+chained with Iter 23's small-prime envelope** — combines the
+support-reduction primitive `prime_pow_pred_eq_one_of_sq_lt`
+(Iter 17, merged via #17624 — distinct from still-open Iter 17
+PR #17619) with Iter 23's `prod_prime_pow_pred_small_le_pow_sqrt`
+to produce the FULL correction-factor envelope over the entire
+prime filter `Nat.Prime` (not just the small-prime sub-filter
+`p² ≤ n`). Two new theorems + one decide-witness example
+(+108 lines, sorry-free, axiom-free):
+
+* `prod_prime_pow_pred_eq_small (n : ℕ)` — **support-reduction
+  equality**. Statement:
+  `∏_{p prime, p ≤ n+1} p^(Nat.log p n - 1) = ∏_{p² ≤ n} p^(Nat.log p n - 1)`.
+  Proof: `(Finset.prod_subset _ _).symm` with `s₁ = small filter`,
+  `s₂ = full prime filter`; the "complement is 1" condition is exactly
+  `prime_pow_pred_eq_one_of_sq_lt` applied to `p` in big-but-not-small
+  (`p² > n`). This is the direct in-file analogue of the
+  `lcmRange_correction_supported_on_small_primes` lemma that PR #17619
+  (still OPEN since 2026-05-09) attempted but did not merge.
+* `prod_prime_pow_pred_le_pow_sqrt {n : ℕ} (hn : 2 ≤ n)` — **full
+  correction-factor envelope** (main lemma of Iter 24). Statement:
+  `∏_{p prime, p ≤ n+1} p^(Nat.log p n - 1) ≤ (n / 2) ^ √n`. Two-line
+  term-mode proof: `rw [prod_prime_pow_pred_eq_small]` then chain
+  Iter 23's `prod_prime_pow_pred_small_le_pow_sqrt`.
+* `example` (`native_decide` witness at `n = 10`): LHS = `12`
+  (full filter `{2,3,5,7}`, primes 5 and 7 contribute `p⁰ = 1`),
+  RHS = `5³ = 125`.
+
+### Strategic value
+
+Iter 24 **closes the small-vs-full filter gap** left open by PR #17619
+(Iter 17 support reduction, OPEN since 2026-05-09). The full Hanson
+assembly now reduces to:
+
+1. ✓ **Full correction-factor envelope** (this iter):
+   `∏_{p prime, p ≤ n+1} p^(Nat.log p n - 1) ≤ (n/2)^√n` under `n ≥ 2`.
+2. **Chebyshev envelope assembly** (future iter): chain Iter 16's
+   `lcmRange_eq_primorial_mul_prod_prime_pow_pred` with this iter's
+   full envelope and Mathlib's `Nat.primorial_le_4_pow` to get
+   `lcmRange n ≤ 4^n · (n / 2)^√n` (for `n ≥ 2`).
+3. **Asymptotic threshold** (future iter): identify the smallest `n₀`
+   for which `4^n · (n / 2)^√n ≤ 3^n` holds for all `n ≥ n₀`, and
+   verify boundary case (small `n` already covered by `hanson_n1`–
+   `hanson_n20`).
+
+This iter is **structurally orthogonal to PR #17619**: it uses the
+weaker support-reduction primitive `prime_pow_pred_eq_one_of_sq_lt`
+(already merged via #17624) rather than the full-product equality
+`lcmRange_correction_supported_on_small_primes` that #17619 attempted.
+Should #17619 ever land, its `lcmRange_correction_supported_on_small_primes`
+becomes equivalent to (and superseded by) Iter 24's
+`prod_prime_pow_pred_eq_small`.
+
+### File delta
+
++108 lines (1247 → 1355), +2 theorems + 1 `native_decide` witness
+example (59 → 61 in meta convention). Definitions (1) / sorries (0) /
+axiomCount (1) unchanged. Build pending — proof bodies use only:
+
+* `Finset.prod_subset` (Mathlib generic).
+* `Finset.mem_filter`, `Finset.mem_range`, `omega`, `by_contra`,
+  `push_neg` (used throughout this file).
+* `pow_two` (Mathlib generic, converts `p ^ 2 ≤ n` ↔ `p * p ≤ n`).
+* `prime_pow_pred_eq_one_of_sq_lt` (Iter 17, #17624, line 668).
+* `prod_prime_pow_pred_small_le_pow_sqrt` (Iter 23, #17932, line 1103).
+
+### Compatibility with open PRs
+
+* **#17619 (OPEN, Iter 17 support reduction, own prior session)**:
+  **compatible** — Iter 24's `prod_prime_pow_pred_eq_small` is the
+  direct in-file analogue of #17619's
+  `lcmRange_correction_supported_on_small_primes`. Both lemmas have
+  equivalent content (full-filter ↔ small-filter equality on the
+  correction product). If #17619 eventually lands, its lemma name
+  becomes a redundant alias. No file conflict — disjoint regions of
+  the file (Iter 24 inserts at line 1119, between Iter 23 and
+  `lcmRange_succ`).
+* **#17551 (OPEN, Iter 15 alternate, own prior session)**: orthogonal,
+  no overlap.
+
+### Iteration 23 (background, merged base, #17932)
+
+Iteration 23 (2026-05-12, researcher-1): **Small-prime
 power-product envelope (LHS half of the Hanson bridge, without
 PR #17619)** — bypasses the long-stale Iter-17 support-reduction PR
 (#17619, OPEN since 2026-05-09) by working directly on the small-prime
@@ -853,24 +936,28 @@ Currently blocked on:
 
 ## Next Action
 
-**Iteration 23 (this PR, build pending)**: small-prime power-product
-envelope (LHS half of the Hanson bridge, without PR #17619). New
-theorems `prod_prime_pow_pred_le_prod_div_prime_small` (filtered
-Iter 19) and `prod_prime_pow_pred_small_le_pow_sqrt` (chained envelope
-under `2 ≤ n`), plus a decide-witness example at `n = 10`. File delta:
-+107 lines (1140 → 1247), +2 theorems + 1 example (57 → 59 via
-convention regex). Sorries (0) / axiom count (1) / definitions (1)
-unchanged.
+**Iteration 24 (this PR, build pending)**: full correction-factor
+envelope via direct in-file support reduction. New theorems
+`prod_prime_pow_pred_eq_small` (the support-reduction equality
+`∏_{p prime} = ∏_{p² ≤ n}`, direct in-file analogue of #17619's
+`lcmRange_correction_supported_on_small_primes`) and
+`prod_prime_pow_pred_le_pow_sqrt` (`∏_{p prime, p ≤ n+1} p^(Nat.log p n - 1) ≤ (n/2)^√n` under `2 ≤ n`), plus a `native_decide` example at
+`n = 10`. File delta: +108 lines (1247 → 1355), +2 theorems + 1 example
+(59 → 61 in meta convention). Sorries (0) / axiom count (1) /
+definitions (1) unchanged.
 
-**Iteration 24 candidate (direct support-reduction lemma)**: if
-PR #17619 (Iter 17, OPEN since 2026-05-09) remains stalled, replicate
-its `lcmRange_correction_supported_on_small_primes` directly in-file,
-following the outline in #17619's PR body: `Finset.prod_subset` with
-the small-prime filter as the smaller index; "complement is 1" uses
-`Nat.log_lt_iff_lt_pow` to derive `Nat.log p n - 1 = 0` for `p² > n`.
-Once this lands, Iter 23's `prod_prime_pow_pred_small_le_pow_sqrt`
-auto-upgrades to the full correction-factor envelope
-`∏_{p ≤ n, p.Prime} p^(Nat.log p n - 1) ≤ (n/2)^√n` over all primes.
+**Iteration 25 candidate (Chebyshev envelope assembly)**: chain
+Iter 16's `lcmRange_eq_primorial_mul_prod_prime_pow_pred` (`#17578`)
+with Iter 24's full correction-factor envelope and Mathlib's
+`Nat.primorial_le_4_pow` to obtain the **structural Chebyshev envelope**
+
+```
+lcmRange n ≤ 4^n · (n / 2) ^ √n  (n ≥ 2)
+```
+
+via `Nat.mul_le_mul` on the two factors (primorial ≤ 4^n,
+correction ≤ (n/2)^√n). Three-line term-mode proof should suffice
+once Iter 24 lands.
 
 **Iteration 26 candidate (4^n · (n/2)^√n assembly)**: combine
 `Nat.primorial_le_4_pow` (Mathlib, exists) with Iter 16's factorisation
