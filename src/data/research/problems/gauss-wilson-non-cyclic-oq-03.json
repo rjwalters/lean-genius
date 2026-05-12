@@ -21,24 +21,25 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T11:00:00.000Z",
-    "iteration": 4,
-    "focus": "S4-prep (researcher-11, 2026-05-12): ACT — three generic group-theoretic order-2 decomposition lemmas appended to GaussWilsonNonCyclicOQ03.lean. (a) filter_sq_eq_one_eq_filter_orderOf_dvd_two: u^2=1 ↔ orderOf u ∣ 2, immediate from orderOf_dvd_iff_pow_eq_one. (b) filter_orderOf_dvd_two_eq_union: divides-prime-2 → order=1 ∪ order=2, via Nat.dvd_prime on 2. (c) card_filter_sq_eq_one_decomp: cardinality splits as the disjoint union count #{orderOf=1} + #{orderOf=2}, with disjointness from 1 ≠ 2. These are package the order-of half of the S4 odd-prime-power count generically; the cyclic-structure totient lookup (IsCyclic.card_orderOf_eq_totient at φ(1) = 1 + φ(2) = 1) is the entry point for S4 proper. File: 181 → 257 lines, +3 theorems, 1 sorry unchanged, 0 axioms.",
+    "since": "2026-05-12T13:00:00.000Z",
+    "iteration": 5,
+    "focus": "S4 (researcher-6, 2026-05-12): ACT — composed S4-prep order-2 decomposition with IsCyclic.card_orderOf_eq_totient into the generic endpoint card_filter_sq_eq_one_cyclic_even: any IsCyclic group of even order has exactly 2 square roots of 1. Proof reduces via card_filter_sq_eq_one_decomp + totient at d=1 and d=2 to phi(1) + phi(2) = 2, dispatched by decide. File: 257 → 296 lines (+39), +1 theorem, 0 axioms, 1 sorry (main theorem unchanged). Build verified via Docker.",
     "blockers": [],
-    "nextAction": "S4: full odd-prime-power unit count. card_sqrts_one_unit_prime_pow_odd (p hp hp2 k hk) : #{u : (ZMod (p^k))ˣ // u^2 = 1} = 2 via: (a) IsCyclic (ZMod (p^k))ˣ from ZMod.isCyclic_units_of_prime_pow; (b) card_filter_sq_eq_one_decomp (S4-prep) splits the count into #{orderOf=1} + #{orderOf=2}; (c) IsCyclic.card_orderOf_eq_totient at d=1 gives φ(1) = 1 (the identity); (d) same at d=2 gives φ(2) = 1, but requires 2 ∣ Fintype.card (ZMod p^k)ˣ = p^{k-1}(p-1), valid for odd p since p-1 is even. Then combine with S3's card_sqrts_one_eq_card_units_sqrts_one for the ring-level statement. Target ~50 lines, 0 sorries.",
+    "nextAction": "S5: ZMod prime-power specialisation card_sqrts_one_unit_prime_pow_odd (p hp hp2 k hk) : #{u : (ZMod (p^k))ˣ // u^2 = 1} = 2. Instantiate card_filter_sq_eq_one_cyclic_even (S4) with: (a) IsCyclic (ZMod p^k)ˣ from ZMod.isCyclic_units_of_prime_pow; (b) 2 ∣ Fintype.card (ZMod p^k)ˣ = p^{k-1}(p-1), valid for odd p since p-1 is even. Compose with S3 card_sqrts_one_eq_card_units_sqrts_one for the ring-level statement. Target ~30 lines, 0 sorries. Then S6: CRT multiplicativity; S7: induction on n.primeFactors.card to close the main sorry.",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 4,
+      "total": 5,
+      "currentApproach": 5,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S2 (researcher-1, 2026-05-12): ACT iteration. Created proofs/Proofs/GaussWilsonNonCyclicOQ03.lean (~120 lines) implementing the S1 skeleton: computable epsTwo, omegaOdd, numSqrtsOne defs via Nat.primeFactors; 13 decide examples verifying the formula on representative n; main theorem statement with 1 sorry. Build verification deferred (recursive .lake symlink) but the file uses only standard Mathlib API.",
+    "progressSummary": "S4 closes the generic order-of half: every cyclic group of even order has exactly 2 square roots of 1, dispatched by totient lookup. S5 will plug in the ZMod-side cyclicity + even-order witnesses to get the prime-power specialisation; S6 will multiplicatively assemble via CRT; S7 will close the remaining sorry by induction on n.primeFactors.card.",
     "builtItems": [
       "research/problems/gauss-wilson-non-cyclic-oq-03/problem.md (new, ~280 lines): full problem statement, two formal-statement variants (counted-form on the ring and structural-form on the unit group), Mathlib infrastructure map, theoretical path through CRT + prime-power cyclicity + (ZMod 2^k)ˣ structure, decomposition into S2–S5 sessions.",
       "research/problems/gauss-wilson-non-cyclic-oq-03/state.md (new): phase NEW → OBSERVE; concrete S2 skeleton for proofs/Proofs/GaussWilsonNonCyclicOQ03.lean with 1 sorry placeholder.",
       "research/problems/gauss-wilson-non-cyclic-oq-03/knowledge.md (new, ~200 lines): numerical table N=1..120 verifying the formula at 18 values, closed-formula derivation, parent-file API summary, Mathlib status with module names, three equivalent counts (ring / units / characters), S2 skeleton.",
-      "proofs/Proofs/GaussWilsonNonCyclicOQ03.lean (new, ~120 lines): epsTwo, omegaOdd, numSqrtsOne defs; numSqrtsOne_pos proved; 13 decide examples spanning powers of 2, odd-only, and mixed cases; card_sqrts_one_eq_numSqrtsOne main theorem statement with sorry."
+      "proofs/Proofs/GaussWilsonNonCyclicOQ03.lean (new, ~120 lines): epsTwo, omegaOdd, numSqrtsOne defs; numSqrtsOne_pos proved; 13 decide examples spanning powers of 2, odd-only, and mixed cases; card_sqrts_one_eq_numSqrtsOne main theorem statement with sorry.",
+      "proofs/Proofs/GaussWilsonNonCyclicOQ03.lean S4 generic endpoint: card_filter_sq_eq_one_cyclic_even (Section 6). For any [Group][DecidableEq][Fintype][IsCyclic] G with 2 ∣ Fintype.card G, #{u : G | u^2 = 1} = 2. Proof: rw card_filter_sq_eq_one_decomp; rw card_orderOf_eq_totient at d=1 and d=2; decide. 257 → 296 lines."
     ],
     "insights": [
       "Closed formula: # = 2^(ω_odd(n) + ε₂(n)) where ω_odd(n) is the number of distinct odd prime factors of n and ε₂(n) is 0 if v₂(n) ≤ 1, 1 if v₂(n) = 2, 2 if v₂(n) ≥ 3.",
@@ -48,7 +49,8 @@
       "Parent file uses Nat.ordProj_mul_ordCompl_eq_self for the 2-adic split (not Nat.factorization directly). S2 should match this convention for code-style consistency, or document the choice explicitly.",
       "Definition design: use Nat.primeFactors (computable, returns Finset ℕ) rather than Nat.factorization.support (noncomputable due to multiplicity under the hood). Allows decide-based small-case verification.",
       "The two-adic correction epsTwo is most naturally expressed as nested ifs on n % 8 and n % 4 rather than v₂(n) directly — keeps the def in the decidable fragment.",
-      "Three concrete defs cleanly separate concerns: epsTwo (2-adic), omegaOdd (odd prime count), numSqrtsOne (combined 2^...). Future S3..S5 lemmas attach to each independently."
+      "Three concrete defs cleanly separate concerns: epsTwo (2-adic), omegaOdd (odd prime count), numSqrtsOne (combined 2^...). Future S3..S5 lemmas attach to each independently.",
+      "S4 generic step: IsCyclic + 2 ∣ |G| ⇒ #{u | u² = 1} = 2. The order-1 component is the identity (φ(1) = 1); the order-2 component is the unique involution (φ(2) = 1, available iff 2 ∣ |G|). This decouples the order-of analysis from the ZMod-specific cyclicity proof; downstream (S5+) just plugs in ZMod.isCyclic_units_of_prime_pow + p-1 even for odd p."
     ],
     "mathlibGaps": [
       "A standalone `card_sqrts_one_formula` theorem for ZMod n at the pinned revision. The pieces (CRT, prime-power cyclicity, (ZMod 2^k)ˣ structure) are all present but the assembled exact-count formula appears to be gallery-only.",

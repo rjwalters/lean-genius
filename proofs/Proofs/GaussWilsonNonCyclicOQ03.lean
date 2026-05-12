@@ -254,4 +254,43 @@ theorem card_filter_sq_eq_one_decomp
   have h2 : orderOf u = 2 := (Finset.mem_filter.mp hu2).2
   omega
 
+-- ============================================================================
+-- Section 6: Cyclic-group count of u^2 = 1 (S4)
+-- ============================================================================
+
+/-! ### S4 — `card = 2` for cyclic groups of even order
+
+For an IsCyclic group `G` whose order is divisible by `2`,
+`#{u : G | u^2 = 1} = 2`. The two solutions are the identity and the
+unique element of order `2` (whose existence is guaranteed by
+`2 ∣ |G|` together with cyclicity).
+
+This is the order-theoretic endpoint of the S4-prep decomposition
+(`card_filter_sq_eq_one_decomp` above): combining the order-1 and
+order-2 components via `IsCyclic.card_orderOf_eq_totient` gives
+`Nat.totient 1 + Nat.totient 2 = 1 + 1 = 2`. -/
+
+/-- **Cyclic, even order ⇒ exactly two square roots of 1.**
+
+For any cyclic group of even order, the count of solutions of
+`u^2 = 1` is exactly `2`: the identity (the unique order-1 element)
+and the unique element of order `2` (which exists by cyclicity +
+`2 ∣ |G|`).
+
+Specialising to `(ZMod p^k)ˣ` for an odd prime `p` (cyclic by
+`ZMod.isCyclic_units_of_prime_pow`, even by `2 ∣ p - 1`) yields
+the S4 deliverable mentioned in `state.md` §"Next Action": the
+odd-prime-power unit-side count is `2`. -/
+theorem card_filter_sq_eq_one_cyclic_even
+    (G : Type*) [Group G] [DecidableEq G] [Fintype G] [IsCyclic G]
+    (heven : 2 ∣ Fintype.card G) :
+    (Finset.univ.filter (fun u : G => u ^ 2 = 1)).card = 2 := by
+  rw [card_filter_sq_eq_one_decomp]
+  have h1 :=
+    IsCyclic.card_orderOf_eq_totient (α := G) (one_dvd (Fintype.card G))
+  have h2 := IsCyclic.card_orderOf_eq_totient (α := G) heven
+  rw [h1, h2]
+  -- Nat.totient 1 = 1, Nat.totient 2 = 1, so 1 + 1 = 2.
+  decide
+
 end GaussWilsonNonCyclicOQ03

@@ -1,10 +1,39 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12 (S4-prep)
-**Iteration**: 4
+**Since**: 2026-05-12 (S4)
+**Iteration**: 5
 
 ## Current Focus
+
+S4 (researcher-6, 2026-05-12): ACT — composed the three S4-prep
+order-2 decomposition lemmas with `IsCyclic.card_orderOf_eq_totient`
+into a single generic conclusion `card_filter_sq_eq_one_cyclic_even`:
+in any IsCyclic group of even order, the count of solutions of
+`u^2 = 1` is exactly `2`. The proof is the canonical totient lookup
+`φ(1) + φ(2) = 1 + 1 = 2`, dispatched by `decide` after rewriting
+`#{orderOf u = 1}` and `#{orderOf u = 2}` via S4-prep's
+`card_filter_sq_eq_one_decomp`.
+
+This is the order-theoretic endpoint of S4-prep: the
+`IsCyclic` + `2 ∣ |G|` hypothesis collapses the disjoint-union
+cardinality into a closed numeric value. It is the generic skeleton
+that the subsequent ZMod-side specialisation
+`card_sqrts_one_unit_prime_pow_odd` (S5) will instantiate with:
+
+- `IsCyclic (ZMod p^k)ˣ` from `ZMod.isCyclic_units_of_prime_pow`;
+- `2 ∣ Fintype.card (ZMod p^k)ˣ = p^{k-1}(p-1)` from `p` odd, so
+  `p - 1` is even.
+
+File: `proofs/Proofs/GaussWilsonNonCyclicOQ03.lean` 257 → 296 lines
+(+39 lines, +1 new generic theorem in a new Section 6). Build
+verified via Docker; 0 axioms, 1 sorry (unchanged, the main theorem
+target).
+
+## Prior Sessions
+
+### S4-prep (researcher-11, 2026-05-12, merged via #18072)
+
 
 S4-prep (researcher-11, 2026-05-12): ACT — added three **generic
 group-theoretic** order-2 decomposition lemmas to
