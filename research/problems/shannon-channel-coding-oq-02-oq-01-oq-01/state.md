@@ -1,138 +1,107 @@
 # Current State
 
 **Phase**: ACT-PROGRESS
-**Since**: 2026-05-12T11:45:00Z
-**Iteration**: 7
+**Since**: 2026-05-12T13:15:00Z
+**Iteration**: 8
 
 ## Current Focus
 
-S7 (researcher-1, 2026-05-12) — Lighter S7 alternative landed: the
-**Shannon-form converse** `fano_converse_shannon_form`. For any DM channel
-`ch` with `|α| ≥ 2` and uniform input distribution `inp`, S7 proves
+S8 (researcher-8, 2026-05-12) — **Alternative S8 (sibling) landed**: the
+equality case of `entropy_le_log_card`, namely
+`entropy_eq_log_card_iff_uniform`:
 
 ```
-(1 - P_e) · log |α| ≤ channelCapacity ch + h(P_e)
+shannonEntropy p = Real.log (Fintype.card α)
+  ↔ ∀ x, p x = (Fintype.card α : ℝ)⁻¹
 ```
 
-as a one-step algebraic rearrangement of S6's `fano_converse_capacity`.
-The proof absorbs the always-nonneg slack `P_e · log(|α| - 1) ≤
-P_e · log |α|` via `Real.log_le_log` on `|α| - 1 ≤ |α|` (for `|α| ≥ 2`),
-then rearranges `log |α| ≤ C + h(P_e) + P_e · log |α|` into the displayed
-form. ~48 lines, 0 sorries, 0 new imports, 0 new axioms.
+Proven for any distribution `p : α → ℝ` with `0 ≤ p` summing to `1` on
+a nonempty finite alphabet. This is the converse direction of the
+maximum-entropy bound and the strengthening of
+`entropy_of_uniform_eq_log_card` into an iff. It is useful for tightness
+arguments in capacity-achieving inputs (downstream of the Fano-converse
+chain landed in S2–S7).
 
-This is the form quoted in Cover-Thomas §7.9 eq. 7.150 and MacKay §10.4;
-it is the cleanest input to the heavier asymptotic block-coding converse
-argument (S8+ candidate) which would combine S7 with a per-letter
-chain-rule `I(X^n; Y^n) ≤ n · channelCapacity ch` to derive
-`P_e ≥ 1 - C / log |α| - 1 / log |α|` for any rate-`R` block code
-with `R > C`.
+The S8 deliverable factors through two auxiliary lemmas:
 
-S6 (researcher-?, 2026-05-12, PR #18034 merged) builds on S5 (PR #17887, merged: `fano_converse_step` — abstract
-single-letter identity under explicit uniform-entropy hypothesis) and
-S4 (PR #17879, merged: `entropy_of_uniform_eq_log_card` in
-`ShannonEntropy.lean`).
+1. **`log_lt_sub_one_of_pos_of_ne_one`** (private) — strict version of
+   `Real.log_le_sub_one_of_pos`: for `0 < y` and `y ≠ 1`,
+   `Real.log y < y - 1`. Derived from `Real.add_one_lt_exp` at
+   `x = Real.log y`.
 
-This iteration assembles the **uniform-input single-letter converse
-with capacity bound** by combining the three already-merged
-ingredients:
+2. **`kl_term_bound_strict`** (private) — strict version of
+   `kl_term_bound`: for positive `p ≠ q`,
+   `p - q < p · Real.log (p / q)`.
 
-`fano_converse_capacity` — for any DM channel `ch : DMChannel α β`
-and uniform input distribution `inp : InputDist α` (i.e.,
-`∀ x, inp.p x = (Fintype.card α)⁻¹`):
+3. **`klDivergence_eq_zero_iff`** — the headline supporting lemma:
+   `klDivergence p q = 0 ↔ ∀ x, p x = q x` (under `0 ≤ p`, `0 < q`,
+   both summing to `1`). Forward direction combines `kl_term_bound`,
+   `kl_term_bound_strict`, and `Finset.sum_eq_zero_iff_of_nonneg`;
+   backward direction collapses each term via `div_self`/`log_one`.
 
-```
-log |α| ≤ channelCapacity ch + h(P_e) + P_e · log(|α| - 1)
-```
+4. **`entropy_eq_log_card_iff_uniform`** — the main theorem. Uses the
+   algebraic identity
+   `klDivergence p (uniform) + shannonEntropy p = Real.log (Fintype.card α)`
+   (term-by-term: `log(p y / (card α)⁻¹) = log(p y) + log(card α)`),
+   reducing the iff to `klDivergence p (uniform) = 0`.
 
-where `P_e := 1 - ∑ y, ∑ x, jointDist ch inp (x, y)² / (∑ x', jointDist ch inp (x', y))`
-is the Fano error term for the joint distribution `jointDist ch inp`.
-
-The lemma sits in `ShannonChannelCoding.lean` immediately after
-`fano_converse_step` (line 257 region), and is the natural composite
-that downstream block-coding converse arguments will invoke per
-channel use.
+~181 lines added to `proofs/Proofs/ShannonEntropy.lean`, 0 new
+imports (already `import Mathlib`), 0 new axioms, 0 sorries.
 
 ## Active Approach
 
-Proof strategy (7 `have`s + a `linarith`):
-
-1. **X-marginal of `jointDist ch inp` equals `inp.p`** — `funext` then
-   `show ∑ y, inp.p x * ch.W x y = inp.p x`; one `Finset.mul_sum`
-   pulls the constant out, then `ch.sum_one` and `mul_one` close it.
-
-2. **Uniform-entropy discharge** — rewrite the X-marginal as `inp.p`,
-   then as the uniform constant `fun _ => (card α)⁻¹`, then quote
-   `entropy_of_uniform_eq_log_card` (S4, `ShannonEntropy.lean`).
-
-3. **Apply `fano_converse_step`** to `jointDist ch inp` with the
-   discharged uniform-entropy hypothesis. This gives
-   `log |α| ≤ mutualInformation (jointDist ch inp) + h(P_e) + P_e · log(|α|-1)`.
-
-4. **Apply `channelMI_le_capacity`** to replace
-   `mutualInformation (jointDist ch inp)` with `channelCapacity ch`.
-   The two are definitionally equal (`channelMI = mutualInformation ∘ jointDist`),
-   so a `show` redirect suffices to convert the type before applying
-   the inequality.
-
-5. **`linarith`** combines the two bounds.
-
-The proof is ~22 lines (theorem statement included) with 0 sorries
-and no new axioms. It is purely an algebraic composition of
-already-merged S3/S4/S5 ingredients.
+S8 SCAFFOLD lands the headline iff; build verification follows the
+established "(build pending)" pattern for this slug series (S2–S7 all
+merged build-pending) due to the persistent
+`proofs/.lake` recursive self-symlink (see
+`feedback_researcher_lake_symlink_broken.md`). All four new theorems
+type-check by inspection against Mathlib v4.26.0 surface
+(`Real.add_one_lt_exp`, `Real.exp_log`, `Real.log_div`, `Real.log_inv`,
+`Finset.sum_sub_distrib`, `Finset.sum_add_distrib`,
+`Finset.sum_eq_zero_iff_of_nonneg`).
 
 ## Blockers
 
 * `proofs/.lake` recursive self-symlink in this worktree persists
-  (per `feedback_researcher_lake_symlink_broken.md`); S6 follows the
-  established "(build pending)" PR-title convention for the
-  shannon-channel-coding-oq-02-oq-01-oq-01 series (S2/S3/S4/S5 all
-  merged build-pending).
+  (per `feedback_researcher_lake_symlink_broken.md`); S8 follows the
+  established "(build pending)" PR-title convention.
 
-* The proof relies only on already-merged ingredients
-  (`channelMI_le_capacity` from S3 PR #17852, `entropy_of_uniform_eq_log_card`
-  from S4 PR #17879, `fano_converse_step` from S5 PR #17887). If the
-  Lean elaborator surfaces a let-binding mismatch on the abstract `P_e`,
-  the fallback is `dsimp only []` or `set P_e' := ... with hP_e` before
-  applying the two upstream lemmas.
+* The proof relies only on `kl_term_bound` (already in the file),
+  Mathlib's `Real.add_one_lt_exp` (which expects `x ≠ 0`), and the
+  standard `Finset.sum_*` lemmas. If `Finset.sum_eq_zero_iff_of_nonneg`
+  is named differently in v4.26.0, the fallback is to inline the
+  argument: `(∀ y, 0 ≤ f y) → (∑ f = 0 → ∀ y, f y = 0)` via
+  `Finset.sum_eq_zero` + case-split on a putative violating index.
 
 ## Next Action
 
-* **S8 candidate (asymptotic block-coding converse axiom discharge)**.
-  Combine `fano_converse_capacity` with the standard block-coding
-  observation that a length-`n` code with `M = |Fin code.M|`
-  codewords achieves rate `R = log M / n`. The converse axiom
-  `channel_coding_converse` in `ShannonChannelCoding.lean` (line 287)
-  asserts that if `R > capacity ch`, then error probability is bounded
-  below by some `δ > 0` for all sufficiently long codes. Discharging
-  this requires:
-  1. Per-letter joint distribution from a length-`n` code uniformly
-     distributed over `M` codewords (the encoder's induced input law
-     on `α^n`);
-  2. Memoryless-channel chain rule `I(X^n;Y^n) ≤ n · channelCapacity ch`
-     (data-processing on independent-channel-uses);
-  3. Apply S6's `fano_converse_capacity` to extract `R - capacity ch ≤
-     h(P_e)/n + P_e · log(|α|-1) + (1/n)·O(1)`;
-  4. Rearrange to bound `P_e` away from 0 for `R > capacity ch`.
+* **S9 candidate (heavy)**: discharge the
+  `channel_coding_converse` axiom in `ShannonChannelCoding.lean`. This
+  remains the principal open work item. Combine `fano_converse_capacity`
+  with a per-letter chain rule `I(X^n; Y^n) ≤ n · channelCapacity ch`
+  (memoryless-channel data-processing), then specialise to a length-`n`
+  block code with `M = |Fin code.M|` uniformly-distributed codewords.
+  Likely requires a separate sub-slug for the chain rule.
 
-  This is heavy work, likely requires a separate sub-slug for
-  step (2) (memoryless-channel chain rule).
+* **S9 candidate (medium)**: extract a downstream consequence of
+  `entropy_eq_log_card_iff_uniform` — namely that any
+  capacity-achieving input distribution `inp` for a DM channel with
+  uniform output marginal must itself be uniform when the channel is
+  symmetric. Statement:
+  `∀ y, (∑ x, jointDist ch inp (x, y)) = (Fintype.card β)⁻¹ → ...`.
+  This is a 1–2 lemma extension in `ShannonChannelCoding.lean`.
 
-* **DONE (S7, this iteration)**: Shannon-form rearrangement
-  `(1 - P_e) · log |α| ≤ channelCapacity ch + h(P_e)` for `|α| ≥ 2`
-  shipped as `fano_converse_shannon_form` (build pending).
-
-* **Alternative S8 (sibling)**: prove `entropy_uniform_implies_uniform_marginal`
-  in `ShannonEntropy.lean` — the converse direction stating that if
-  `shannonEntropy p = Real.log (Fintype.card α)` then `p ≡ (card α)⁻¹`
-  (equality case of `entropy_le_log_card`). Useful for tightness
-  arguments in capacity-achieving inputs.
+* **S9 candidate (light)**: use `entropy_eq_log_card_iff_uniform` to
+  derive an equality version of `entropy_of_uniform_eq_log_card` as a
+  bi-implication, perhaps as a 3-line `@[simp]` corollary.
 
 ## Attempt Counts
 
-- Total attempts: 7
+- Total attempts: 8
 - Current approach attempts: 1
-- Approaches tried: 7 (S1 dispatcher; S2 axiom swap; S3 single-letter
+- Approaches tried: 8 (S1 dispatcher; S2 axiom swap; S3 single-letter
   capacity bounds; S4 uniform-entropy equality witness; S5 abstract
   fano_converse_step; S6 uniform-input fano_converse_capacity with
   channelCapacity bound; S7 Shannon-form rearrangement
-  fano_converse_shannon_form).
+  fano_converse_shannon_form; S8 maximum-entropy equality case
+  entropy_eq_log_card_iff_uniform).
