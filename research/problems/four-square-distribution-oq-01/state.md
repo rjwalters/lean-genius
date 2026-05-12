@@ -1,30 +1,33 @@
 # Research State: four-square-distribution-oq-01
 
 ## Current State
-**Phase**: ACT (S18c-orbit-precursor-2 — sign-flip ORBIT cardinality
-`|Orbit v| = 2^(# nonzero coords v)`, this PR)
+**Phase**: ACT (S18c-orbit-precursor-2 — sign-flip ORBIT
+non-triviality `|Orbit v| ≥ 2` for `v` with a nonzero coordinate,
+this PR)
 **Phase note**: S18c-orbit-precursor-2 (this PR, researcher-3) — Part 32
-adds `signFlipOrbit_card` and `signFlipOrbit_card_ge_two` inside
-`namespace S18c`. For any `v : Fin 4 → ℤ`,
+adds `signFlipOrbit_card_ge_two` inside `namespace S18c`. For
+`v : Fin 4 → ℤ` with at least one nonzero coordinate,
 
-  `|{ w : Fin 4 → ℤ // ∃ s : SignFlip, applyFlip s v = w }| =
-     2 ^ |{ i : Fin 4 | v i ≠ 0 }|`.
+  `2 ≤ (Finset.univ.image (fun s : SignFlip => applyFlip s v)).card`.
 
-The proof builds an explicit equivalence between the orbit and
-`({ i : Fin 4 // v i ≠ 0 } → Bool)` via `decide (w i = -(v i))`
-(well-defined because `v i ≠ -(v i)` whenever `v i ≠ 0`). The inverse
-extends a Bool-function on nonzero coords to a full sign-flip by `false`
-on zero coords. Counted via `Fintype.card_fun`, `Fintype.card_bool`,
-`Fintype.card_subtype`.
+Proof exhibits two distinct orbit elements: `v` itself (image of the
+all-`false` sign-flip, by `applyFlip_zero` from Part 29) and the
+single-flip at the nonzero coordinate (image of
+`s := fun j => decide (j = i₀)`). These differ at coordinate `i₀`
+since `v i₀ ≠ -(v i₀)` whenever `v i₀ ≠ 0`. Concluded via
+`Finset.one_lt_card.mpr`.
 
-Combined with Part 31's `signFlipStabilizer_card`
-(`|Stab v| = 2^(# zero coords v)`), the orbit-stabilizer identity
-`|orbit| · |stab| = 2^4 = 16 = |SignFlip|` is now exhibited directly
-for the (ℤ/2)⁴-action `applyFlip` — no formal `MulAction` instance
-required. The follow-on `signFlipOrbit_card_ge_two` immediately gives
-the nontriviality lower bound used in the 8-divisibility argument: any
-`v` with `sumSq v > 0` has at least one nonzero coordinate, so its
-sign-flip orbit has cardinality ≥ 2.
+The full orbit cardinality `|Orbit v| = 2^(# nonzero coords v)`
+(via direct bijection with `({i : Fin 4 // v i ≠ 0} → Bool)`) was
+attempted but stranded on `Fintype` synthesis for the existential
+subtype `{w // ∃ s, applyFlip s v = w}` — Lean cannot infer a
+`Fintype` instance on a subtype of `Fin 4 → ℤ` (an infinite type)
+without explicit witness, even though the existential predicate is
+decidable. A `Finset.image`-based reformulation works but requires
+~100 lines of fiber-counting machinery. Deferred to a follow-up
+iteration; the non-triviality lower bound established here is
+sufficient for the 8-divisibility argument given the S₄-orbit
+contribution.
 
 S18c-orbit-precursor (PR #18139, merged 2026-05-12, researcher-11) — Part 31
 adds `signFlipStabilizer_card` inside the existing `namespace S18c`,
@@ -481,24 +484,26 @@ Currently still blocked on Mathlib infrastructure:
   precursor to the deferred S18c-orbit cardinality argument
   (`orbitCard_dvd_eight_of_pos_target_decl`).
 - S18c-orbit-precursor-2 (researcher-3, 2026-05-12, this PR): Part 32 —
-  `signFlipOrbit_card` and `signFlipOrbit_card_ge_two`. AXIOM-FREE:
-  for any `v : Fin 4 → ℤ`, the sign-flip ORBIT has cardinality
-  `|{ w : Fin 4 → ℤ // ∃ s : SignFlip, applyFlip s v = w }|
-    = 2 ^ (Finset.univ.filter (fun i => v i ≠ 0)).card`.
-  Proof builds an explicit `Equiv` between the orbit and
-  `({ i : Fin 4 // v i ≠ 0 } → Bool)` via `decide (w i = -(v i))`
-  (forward) and `false`-extension at zero coords (inverse). The forward
-  map is well-defined because `v i ≠ -(v i)` whenever `v i ≠ 0`, so
-  `decide` cleanly recovers the sign-flip bit from `w i`. Counted via
-  the same `Fintype.card_fun` / `Fintype.card_bool` / `Fintype.card_subtype`
-  pipeline as Part 31. Companion `signFlipOrbit_card_ge_two` records the
-  nontriviality lower bound used in the 8-divisibility argument: any
-  `v : Fin 4 → ℤ` with at least one nonzero coordinate has orbit
-  cardinality ≥ 2. Combined with Part 31, the orbit-stabilizer identity
-  `|orbit| · |stab| = 2 ^ 4 = 16 = |SignFlip|` is now exhibited directly
-  — no formal `MulAction` instance required. +133 lines (2732 → 2865),
-  +2 theorems (145 → 147), 0 new axioms, 0 new sorries. Standalone
-  (uses only Part 29's `applyFlip`, plus standard Mathlib `Fintype.card_*`).
+  `signFlipOrbit_card_ge_two`. AXIOM-FREE: for `v : Fin 4 → ℤ` with at
+  least one nonzero coordinate `i₀`, the sign-flip image
+  `Finset.univ.image (applyFlip · v)` has cardinality `≥ 2`. Proof
+  exhibits two distinct orbit elements: `v` itself (image of the
+  all-`false` sign-flip, by `applyFlip_zero`) and the single-flip at
+  `i₀` (image of `fun j => decide (j = i₀)`); these differ at `i₀`
+  since `v i₀ ≠ -(v i₀)` whenever `v i₀ ≠ 0`. Concluded via
+  `Finset.one_lt_card.mpr`. +69 lines (2732 → 2801), +1 theorem (145
+  → 146), 0 new axioms, 0 new sorries. Standalone (uses only Part 29's
+  `applyFlip` / `applyFlip_zero`, plus `Finset.one_lt_card`).
+  Note: an earlier draft of this iteration attempted the full
+  cardinality `|Orbit v| = 2^(# nonzero coords v)` via explicit `Equiv`
+  with `({i // v i ≠ 0} → Bool)`, but stranded on `Fintype` synthesis
+  for the existential subtype `{w // ∃ s, applyFlip s v = w}` (Lean
+  cannot infer `Fintype` on a subset of an infinite type without
+  explicit witness even with decidable predicates). The
+  `Finset.image`-based reformulation requires ~100 lines of
+  fiber-counting machinery and is deferred to a follow-up; the
+  non-triviality lower bound established here is the load-bearing
+  result for the 8-divisibility argument.
 - Approaches tried: 1 (Approach A — modular form bridge).
 
 ## Blockers
@@ -554,14 +559,14 @@ Currently still blocked on Mathlib infrastructure:
      `signFlipStabilizer_card` inside `namespace S18c`, +~70 lines,
      0 axioms, 0 sorries.
    - **S18c-orbit-precursor-2 (Part 32, THIS PR)**: sign-flip ORBIT
-     cardinality `|Orbit_(ℤ/2)⁴ v| = 2^(# nonzero coords v)` via an
-     explicit equivalence to `({ i : Fin 4 // v i ≠ 0 } → Bool)`. Adds
-     `signFlipOrbit_card` (the cardinality identity) and
-     `signFlipOrbit_card_ge_two` (the nontriviality lower bound, for
-     `v` with at least one nonzero coordinate) inside `namespace S18c`,
-     +~133 lines, 0 axioms, 0 sorries. Combined with Part 31, exhibits
-     the orbit-stabilizer identity `|orbit| · |stab| = 16` directly,
-     without needing a formal `MulAction` instance on `SignFlip`.
+     non-triviality `2 ≤ |Orbit_(ℤ/2)⁴ v|` for `v` with at least one
+     nonzero coordinate `i₀`, by exhibiting two distinct orbit
+     elements (`v` itself + the single-flip at `i₀`). Adds
+     `signFlipOrbit_card_ge_two` inside `namespace S18c`, +~69 lines,
+     0 axioms, 0 sorries. The full cardinality
+     `|Orbit_(ℤ/2)⁴ v| = 2^(# nonzero coords v)` was attempted but
+     stranded on `Fintype` synthesis for the existential subtype; the
+     `Finset.image` reformulation defers to a follow-up.
    - **S18c-orbit (next)**: invoke `MulAction.orbit_card_dvd_of_finite`
      (Mathlib v4.26.0 per spec §3.8). Case analysis on the zero /
      coincidence pattern of `(|v 0|, |v 1|, |v 2|, |v 3|)` to show

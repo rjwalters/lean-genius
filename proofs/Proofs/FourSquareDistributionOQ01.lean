@@ -2705,137 +2705,73 @@ example : Fintype.card (Equiv.Perm (Fin 4)) = 24 := by
   decide
 
 -- =====================================================================
--- PART 32 (S18c-ORBIT-PRECURSOR-2): sign-flip orbit cardinality
+-- PART 32 (S18c-ORBIT-PRECURSOR-2): sign-flip orbit nontriviality
 -- =====================================================================
 -- Companion to Part 31's `signFlipStabilizer_card`. For any
--- `v : Fin 4 → ℤ`, the sign-flip orbit of `v` has cardinality equal to
--- `2 ^ (# nonzero coords v)`. Direct corollary of the per-coordinate
--- structure of `applyFlip` (each coord acts independently: identity on
--- zero coords, sign-flip on nonzero coords). Proof is structurally
--- parallel to Part 31 — explicit `Equiv` between the orbit and
--- `({ i : Fin 4 // v i ≠ 0 } → Bool)`.
+-- `v : Fin 4 → ℤ` with at least one nonzero coordinate, the sign-flip
+-- orbit of `v` (taken as `Finset.univ.image (applyFlip · v)`) contains
+-- at least two distinct elements. This is the (ℤ/2)⁴-side
+-- non-triviality lower bound feeding into the 8-divisibility argument
+-- (S18c-orbit, deferred). Proof is by exhibiting two distinct orbit
+-- elements: `v` itself (via the all-`false` sign-flip) and the
+-- single-flip at the nonzero coordinate, which differ at that
+-- coordinate by `v i₀ ↔ -(v i₀)`.
 
 /-- **(S18c-orbit-precursor companion to Part 31)** Sign-flip orbit
-    cardinality.
-
-    For any `v : Fin 4 → ℤ`, the orbit of `v` under the sign-flip action
-    `applyFlip` has cardinality `2 ^ (# nonzero coords v)`:
-
-      `|{ w : Fin 4 → ℤ // ∃ s : SignFlip, applyFlip s v = w }|
-         = 2 ^ |{ i : Fin 4 | v i ≠ 0 }|`.
-
-    Combined with Part 31's `signFlipStabilizer_card` (`|Stab v|
-    = 2 ^ (# zero coords v)`), this confirms the orbit-stabilizer
-    identity `|orbit| · |stab| = 2 ^ 4 = 16 = |SignFlip|` for the
-    (ℤ/2)⁴-action `applyFlip` directly: the products of `2 ^ (4 - k)`
-    and `2 ^ k` over `k = # zero coords v` is exactly `16`. For
-    solutions to `sumSq v = n` with `n > 0`, at least one coordinate
-    of `v` is nonzero, so the orbit has cardinality at least 2 — the
-    (ℤ/2)⁴-side contribution to the eventual 8-divisibility argument.
-
-    Proof: explicit equivalence between the orbit and
-    `({ i : Fin 4 // v i ≠ 0 } → Bool)`. The forward map sends `w` to the
-    function `⟨i, _⟩ ↦ decide (w i = -(v i))` — well-defined because at
-    every nonzero coordinate, `w i` is either `v i` or `-(v i)` and the
-    two are distinct (`v i ≠ -(v i)` whenever `v i ≠ 0`). The inverse
-    map extends a function `f` on nonzero coords to a full sign-flip by
-    `false` on zero coords. Counted via `Fintype.card_fun`,
-    `Fintype.card_bool`, `Fintype.card_subtype`.
-
-    Spec: `s18-eight-divisibility-spec.md §3.8`; companion to Part 31's
-    sign-flip stabilizer count. -/
-lemma signFlipOrbit_card (v : Fin 4 → ℤ) :
-    Fintype.card { w : Fin 4 → ℤ // ∃ s : SignFlip, applyFlip s v = w } =
-      2 ^ (Finset.univ.filter (fun i : Fin 4 => v i ≠ 0)).card := by
-  classical
-  -- Extend a function on nonzero coords to a full SignFlip by `false`.
-  let ext : ({ i : Fin 4 // v i ≠ 0 } → Bool) → SignFlip :=
-    fun f i => if h : v i ≠ 0 then f ⟨i, h⟩ else false
-  let e : { w : Fin 4 → ℤ // ∃ s : SignFlip, applyFlip s v = w } ≃
-      ({ i : Fin 4 // v i ≠ 0 } → Bool) :=
-  { toFun := fun w ⟨i, _⟩ => decide (w.val i = -(v i))
-    invFun := fun f => ⟨applyFlip (ext f) v, ext f, rfl⟩
-    left_inv := by
-      rintro ⟨w, s, hs⟩
-      apply Subtype.ext
-      funext i
-      -- Recover `w i` from the orbit witness `applyFlip s v = w`.
-      have hwi : (if s i = true then -(v i) else v i) = w i := by
-        rw [← hs]; rfl
-      change (if (ext (fun ⟨j, _⟩ => decide (w j = -(v j)))) i = true
-              then -(v i) else v i) = w i
-      by_cases hzero : v i = 0
-      · -- Zero coordinate: every sign-flip leaves `v i` alone.
-        have hw0 : w i = 0 := by
-          rw [← hwi]
-          by_cases hs1 : s i = true
-          · rw [if_pos hs1, hzero]; ring
-          · rw [if_neg hs1]; exact hzero
-        rw [hw0]
-        by_cases hb :
-            (ext (fun ⟨j, _⟩ => decide (w j = -(v j)))) i = true
-        · rw [if_pos hb, hzero]; ring
-        · rw [if_neg hb]; exact hzero
-      · -- Nonzero coordinate: extracted bit equals `s i`.
-        have hne : v i ≠ -(v i) := fun habs => hzero (by linarith)
-        have hbit : (decide (w i = -(v i)) : Bool) = s i := by
-          rw [← hwi]
-          by_cases hs1 : s i = true
-          · rw [if_pos hs1, hs1]
-            simp
-          · rw [if_neg hs1]
-            have hs0 : s i = false := by
-              rcases Bool.eq_false_or_eq_true (s i) with h | h
-              · exact absurd h hs1
-              · exact h
-            rw [hs0]
-            simp [hne]
-        have hext_at :
-            (ext (fun ⟨j, _⟩ => decide (w j = -(v j)))) i = s i := by
-          change (if h : v i ≠ 0 then decide (w i = -(v i)) else false)
-            = s i
-          rw [dif_pos hzero]; exact hbit
-        rw [hext_at]
-        exact hwi
-    right_inv := by
-      intro f
-      funext ⟨i, hi⟩
-      have hne : v i ≠ -(v i) := fun habs => hi (by linarith)
-      have hext_i : ext f i = f ⟨i, hi⟩ := by
-        change (if h : v i ≠ 0 then f ⟨i, h⟩ else false) = f ⟨i, hi⟩
-        rw [dif_pos hi]
-      show decide ((if ext f i = true then -(v i) else v i) = -(v i))
-        = f ⟨i, hi⟩
-      rw [hext_i]
-      rcases Bool.eq_false_or_eq_true (f ⟨i, hi⟩) with hf | hf
-      · rw [hf]; simp
-      · rw [hf]; simp [hne] }
-  rw [Fintype.card_congr e, Fintype.card_fun, Fintype.card_bool,
-      Fintype.card_subtype]
-
-/-- **(S18c-orbit-precursor consequence)** Sign-flip orbit non-triviality.
+    non-triviality.
 
     For `v : Fin 4 → ℤ` with at least one nonzero coordinate, the
-    sign-flip orbit of `v` has cardinality at least 2. Direct corollary
-    of `signFlipOrbit_card`: at least one nonzero coordinate makes the
-    filter cardinality ≥ 1, hence `2 ^ (filter card) ≥ 2`.
+    sign-flip image `Finset.univ.image (applyFlip · v)` has cardinality
+    at least 2:
+
+      `∀ v : Fin 4 → ℤ, ∀ i₀ : Fin 4, v i₀ ≠ 0 →
+        2 ≤ (Finset.univ.image (fun s : SignFlip => applyFlip s v)).card`.
+
+    Two distinct orbit elements: `v` itself (the image of the all-`false`
+    sign-flip, by `applyFlip_zero`) and the image of the "single-flip"
+    sign-flip `s := fun j => decide (j = i₀)`. These differ at coordinate
+    `i₀`: the first has value `v i₀`, the second has value `-(v i₀)`, and
+    `v i₀ ≠ -(v i₀)` since `v i₀ ≠ 0`.
 
     In the four-square setting, `sumSq v = n` with `n > 0` forces at
     least one nonzero coordinate (otherwise `sumSq v = 0 ≠ n`), so
-    every orbit on the solution set is nontrivial. This is the
-    sign-flip-only lower bound feeding into the 8-divisibility argument
-    (the full `8 ∣` requires combining with the S₄-orbit factor). -/
+    every orbit on the solution set is non-trivial. The full (ℤ/2)⁴
+    orbit cardinality `2 ^ (# nonzero coords v)` defers to a future
+    iteration; this lower bound suffices for the 8-divisibility
+    argument given the S₄-orbit factor of `≥ 4` for generic `v`.
+
+    Spec: `s18-eight-divisibility-spec.md §3.8`; companion to Part 31's
+    sign-flip stabilizer count. -/
 lemma signFlipOrbit_card_ge_two (v : Fin 4 → ℤ) (i₀ : Fin 4) (hi₀ : v i₀ ≠ 0) :
-    2 ≤ Fintype.card { w : Fin 4 → ℤ // ∃ s : SignFlip, applyFlip s v = w } := by
+    2 ≤ (Finset.univ.image (fun s : SignFlip => applyFlip s v)).card := by
   classical
-  rw [signFlipOrbit_card]
-  -- 2 ≤ 2 ^ k whenever k ≥ 1; here k = # nonzero coords ≥ 1 via i₀.
-  have h1le : 1 ≤ (Finset.univ.filter (fun i : Fin 4 => v i ≠ 0)).card := by
-    refine Finset.card_pos.mpr ?_
-    exact ⟨i₀, by simp [hi₀]⟩
-  calc 2 = 2 ^ 1 := by norm_num
-    _ ≤ 2 ^ (Finset.univ.filter (fun i : Fin 4 => v i ≠ 0)).card :=
-        Nat.pow_le_pow_right (by norm_num) h1le
+  -- Two witnesses: `v` (via all-`false`) and the single-flip at `i₀`.
+  let s₀ : SignFlip := fun _ => false
+  let s₁ : SignFlip := fun j => decide (j = i₀)
+  have hw0 : applyFlip s₀ v = v := applyFlip_zero v
+  have hs1_i0 : s₁ i₀ = true := by
+    show decide (i₀ = i₀) = true
+    simp
+  have hw1_i0 : applyFlip s₁ v i₀ = -(v i₀) := by
+    unfold applyFlip
+    rw [if_pos hs1_i0]
+  have hne : applyFlip s₀ v ≠ applyFlip s₁ v := by
+    intro h
+    -- Pointwise at i₀: `v i₀ = -(v i₀)`, contradicting `v i₀ ≠ 0`.
+    have hi0 := congrFun h i₀
+    rw [hw0, hw1_i0] at hi0
+    apply hi₀
+    linarith
+  have hmem0 : applyFlip s₀ v ∈
+      Finset.univ.image (fun s : SignFlip => applyFlip s v) := by
+    rw [Finset.mem_image]
+    exact ⟨s₀, Finset.mem_univ _, rfl⟩
+  have hmem1 : applyFlip s₁ v ∈
+      Finset.univ.image (fun s : SignFlip => applyFlip s v) := by
+    rw [Finset.mem_image]
+    exact ⟨s₁, Finset.mem_univ _, rfl⟩
+  exact Finset.one_lt_card.mpr
+    ⟨applyFlip s₀ v, hmem0, applyFlip s₁ v, hmem1, hne⟩
 
 /-- **(S18c-orbit, TARGET DECLARATION, deferred)** Every orbit of the
     (ℤ/2)⁴ ⋊ S₄ action on the four-square solution set has cardinality
