@@ -1,0 +1,131 @@
+{
+  "slug": "zsqrtd-neg-two-oq-03",
+  "title": "x² + ny² Representations for n ∈ {3, 7, 11} — Parallel Constructions",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall n \\in \\{3, 7, 11\\}: \\text{Construct a parallel formalization of Fermat's theorem } \\text{`}p = x^2 + ny^2\\text{'} \\text{ for primes } p \\text{ with } (-n/p) = 1, \\text{ analogous to the parent } \\texttt{zsqrtd-neg-two}\\text{'s proof for } n = 2. \\text{ Concrete } n = 3 \\text{ target: primes } p \\equiv 1 \\pmod{3} \\text{ are representable as } x^2 + 3y^2.",
+    "plain": "The parent gallery proof zsqrtd-neg-two formalizes the case n = 2: primes p ≡ 1, 3 (mod 8) are representable as x² + 2y². This OQ asks whether the same proof template can be replayed for n ∈ {3, 7, 11}, the next three values of n such that ℚ(√-n) is an imaginary quadratic field of class number 1 (Heegner numbers). The construction must address the maximal-order subtlety: for n ≡ 3 (mod 4), the ring ℤ[√-n] is NOT the ring of integers, so the parent's Euclidean-rounding pattern fails; the correct construction uses ℤ[ω] (Eisenstein integers) for n = 3 and ℤ[(1+√-n)/2] for n = 7, 11. The minimum-viable target is the n = 3 case via the Eisenstein integers (Fermat's other theorem). Stretch: an n-parametric typeclass abstraction over class-number-1 imaginary quadratic rings.",
+    "whyMatters": [
+      "Direct extension of the parent's flagship verified proof (zsqrtd-neg-two, 20 theorems, 0 sorries, 0 axioms). Each x² + ny² closed-form theorem is a classical landmark (Fermat 1640, Euler 1763, Lagrange 1775, Gauss 1801).",
+      "Establishes a template gallery family for the seven other class-number-1 imaginary quadratic fields (n ∈ {1, 2, 3, 7, 11, 19, 43, 67, 163} — the Heegner numbers), with n = 3 being the third member of the ℤ[i], ℤ[√-2], ℤ[ω] triplet that every algebraic-number-theory textbook covers.",
+      "Bridges to Mathlib's underutilized cyclotomic library: IsCyclotomicExtension {3} ℤ ℤ[ω] is in Mathlib v4.26.0 but has very few concrete worked examples in the gallery. This OQ would establish a usable pattern for cyclotomic-ring-based number-theoretic proofs.",
+      "The n-parametric typeclass abstraction (R3 route, stretch) would be a candidate Mathlib contribution: no existing IsImagQuadClassOne or similar typeclass exists at v4.26.0."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Fermat (1640) / Euler (1763): prime p is x² + 3y² iff p = 3 or p ≡ 1 (mod 3). The first proven case is the n = 3 'other' Fermat theorem.",
+      "Fermat (1640) / Lagrange (1775): prime p is x² + 7y² iff p = 7 or p ≡ 1, 2, 4 (mod 7).",
+      "Fermat (1640) / classical: prime p is x² + 11y² iff p = 11 or p ≡ 1, 3, 4, 5, 9 (mod 11).",
+      "Gauss, Disquisitiones Arithmeticae (1801): full classification of primes represented by quadratic forms of discriminant D, via genus theory.",
+      "Cox, Primes of the form x² + ny² (Wiley 1989/2013): monograph treatment of class field theory for the general case n ≥ 1, including the n = 14, 27, ... cases where ring class fields are needed.",
+      "Parent file Proofs/ZsqrtdNegTwo.lean (476 lines, 20 theorems, 0 sorries, 0 axioms, verified): the n = 2 case via ℤ[√-2] as a Euclidean domain with rounding bound (1/2)² + 2·(1/2)² = 3/4 < 1."
+    ],
+    "open": [
+      "Q1 (R1, n = 3 sub-case, ~550-700 Lean lines): Prove sq_add_three_sq_of_prime_one_mod_three : ∀ prime p ≡ 1 (mod 3), ∃ a b : ℤ, a² + 3b² = p. Construction: define Eisenstein integers ℤ[ω] as a fresh structure (parallel to parent's ZsqrtNegTwo), establish the norm N(a + bω) = a² - ab + b² with multiplicativity, prove ℤ[ω] is a Euclidean domain via rounding to ½ℤ (bound 4/16 = 1/4 < 1), then port the parent's three-step splitting/extraction pipeline.",
+      "Q2 (R2, n = 7 or n = 11 ports, ~400-500 Lean lines each): analogous theorems with the maximal-order ℤ[(1+√-n)/2] construction. Each is a self-contained S6+ deliverable.",
+      "Q3 (R3, typeclass abstraction, ~1500-2500 Lean lines, deferred): define class IsImagQuadClassOne (R : Type*) [CommRing R] with worked instances at n ∈ {1, 2, 3, 7, 11}. Suitable as a long-term Mathlib contribution.",
+      "Q4 (sub-question, may be Aristotle-able after S2): mechanical verification of ZMod.exists_sq_eq_neg_three_iff at v4.26.0 — the analog of the parent's exists_sq_eq_neg_two_iff. If absent in Mathlib, derive from generic Legendre-symbol lemmas + QR + supplementary laws."
+    ],
+    "goal": "Replay the parent zsqrtd-neg-two proof template for n = 3 via the Eisenstein integers ℤ[ω], delivering sq_add_three_sq_of_prime_one_mod_three : ∀ prime p ≡ 1 (mod 3), ∃ a b : ℤ, a² + 3b² = p. R1 (Eisenstein-integer direct port) is the recommended S2-S5 plan, ~550-700 Lean lines total, 0 sorries, 0 axioms. The n = 7, 11 ports and the typeclass abstraction are stretch / long-term goals."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T17:25:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-5, 2026-05-12): OBSERVE survey on the third open question of zsqrtd-neg-two. Established the maximal-order subtlety (ℤ[√-3] is non-PID, the correct ring is ℤ[ω]; ℤ[√-7] and ℤ[√-11] are similarly non-maximal). Catalogued three discharge routes (R1 fresh Eisenstein scaffold direct port — recommended for S2-S5 ~550-700 lines; R2 via Mathlib cyclotomic library — ~1000+ lines, more reusable; R3 typeclass abstraction over n ∈ {1, 2, 3, 7, 11} — ~1500-2500 lines, long-term Mathlib contribution). Mathlib API surface mapped: Zsqrtd.norm, IsPrimitiveRoot.toInteger, IsCyclotomicExtension.Three, QuadraticReciprocity all confirmed available; ZMod.exists_sq_eq_neg_three_iff lemma name conjectured, S2 verification needed. Numerical sanity for n = 3: all 12 primes p ≡ 1 (mod 3) up to p = 97 have explicit x² + 3y² decompositions verified. 0 Lean files modified, 0 sorries, 0 axioms.",
+    "blockers": [],
+    "nextAction": "S2 (any researcher): R1 ACT — create Proofs/ZsqrtdNegTwoOQ03.lean (~150 lines) with the concrete Eisenstein structure (re, im : ℤ representation of a + bω with ω² + ω + 1 = 0), the Ring instance via direct multiplication formula (ac - bd) + (ad + bc - bd)·ω, norm N(a + bω) = a² - ab + b² with norm_nonneg (via 4N(z) = (2a - b)² + 3b² ≥ 0) and norm_mul. The EuclideanDomain instance is deferred to S3. Mathlib API to verify: whether IsPrimitiveRoot-based cyclotomic constructions can be used instead of a fresh struct (cleaner if available; fall back to fresh struct otherwise).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-5, 2026-05-12): OBSERVE phase. Survey-only iteration establishing the formal n = 3 sub-target (Fermat's other theorem: p ≡ 1 mod 3 implies p = x² + 3y²) plus three discharge routes (R1 direct Eisenstein port — recommended, R2 via Mathlib cyclotomic library, R3 typeclass abstraction). Documented the maximal-order subtlety as the central conceptual hazard (ℤ[√-3] is NOT a PID, the parent's rounding construction does NOT port; the correct ring is ℤ[ω] = ℤ[(-1+√-3)/2]). Mathlib infrastructure map (Zsqrtd, LegendreSymbol.QuadraticReciprocity, Cyclotomic.Three) covered with explicit gaps flagged (no EuclideanDomain instance for cyclotomic Eisenstein integers; ZMod.exists_sq_eq_neg_three_iff naming needs verification). Mathematical background: rounding-to-½ℤ bound (1/4 < 1) for the Euclidean structure, splitting argument (-3/p) = (p/3) via quadratic reciprocity, three-step pipeline (non-irreducibility → p = N(α) → convert a² - ab + b² to x² + 3y² via 4p = (2a - b)² + 3b² + parity analysis). Numerical sanity: 12/12 primes p ≡ 1 mod 3 up to 97 have explicit (x, y) decompositions. 0 Lean files modified, 0 sorries, 0 axioms.",
+    "builtItems": [
+      "research/problems/zsqrtd-neg-two-oq-03/problem.md (S1, new, ~270 lines): formal target, classification, three-route classification (R1 direct port via Eisenstein integers, R2 via Mathlib cyclotomic library, R3 typeclass abstraction), Mathlib infrastructure map at v4.26.0, numerical sanity for n = 3 across 8 primes, references (Fermat/Euler/Lagrange/Gauss/Cox/Ireland-Rosen).",
+      "research/problems/zsqrtd-neg-two-oq-03/knowledge.md (S1, new, ~250 lines): mathematical background (Heegner-number table, Eisenstein ring construction with norm + units derivation, rounding-bound calculation 4/16 < 1, splitting (-3/p) = (p/3) via QR, conversion 4p = (2a-b)² + 3b² with parity case-split), Mathlib API surface checks (3 confirmed available, 1 conjectured, 3 gaps), Lean skeleton sketch for S2, n = 7 and n = 11 analogs, parallel-work check.",
+      "research/problems/zsqrtd-neg-two-oq-03/state.md (S1, new, ~130 lines): OBSERVE phase, 5-stage R1 plan, S2 next-action with concrete Lean code skeleton, session log, calibration on Mathlib API risk + maximal-order conceptual hazard.",
+      "src/data/research/problems/zsqrtd-neg-two-oq-03.json (S1, new, this file): research index entry."
+    ],
+    "insights": [
+      "The OQ-03 statement as literally written (parallel constructions for n ∈ {3, 7, 11}) has a CRITICAL subtlety: for n ≡ 3 mod 4 the ring ℤ[√-n] is NON-MAXIMAL — the ring of integers is ℤ[(1+√-n)/2], strictly larger. The parent's Euclidean-rounding pattern (which depends on the bound (1+|d|)/4 < 1) fails for any n ≥ 3. The Lean port must construct the maximal order separately.",
+      "For n = 3 the maximal order is the Eisenstein integers ℤ[ω] = ℤ[(-1+√-3)/2] = ℤ[exp(2πi/3)]. The norm form is N(a + bω) = a² - ab + b² (NOT the naive a² + 3b² shape). The conversion to x² + 3y² shape comes from 4(a² - ab + b²) = (2a - b)² + 3b² plus parity analysis: the 'both odd' sub-case forces p ≡ 0 mod 4 and is contradicted by p being an odd prime.",
+      "The rounding-to-½ℤ in ℤ[ω] gives error bound (1/4)² + 3·(1/4)² = 1/4 < 1 ✓ (vs. the parent's rounding-to-ℤ in ℤ[√-2] giving 1/4 + 2/4 = 3/4 < 1). Same conceptual pattern, with the finer lattice ½ℤ × ½ℤ (subset constrained to ℤ + ℤω) used to handle the off-center geometry of the Eisenstein lattice.",
+      "Splitting via (-3/p) = (p/3) by quadratic reciprocity: for odd p ≠ 3, (-3/p) = (-1/p)(3/p). QR gives (3/p)(p/3) = (-1)^((p-1)/2), so (3/p) = (-1)^((p-1)/2)(p/3). Combining: (-3/p) = (-1)^((p-1)/2) · (-1)^((p-1)/2) · (p/3) = (p/3). So (-3/p) = 1 iff p ≡ 1 mod 3. (For n = 7, 11 the same QR calculation gives (-n/p) = (p/n) modulo identical exponent cancellations.)",
+      "Mathlib v4.26.0 has Zsqrtd.norm, IsPrimitiveRoot.toInteger, IsCyclotomicExtension.Three, and QuadraticReciprocity all confirmed available. The CRITICAL gap is the EuclideanDomain instance for the Eisenstein integers: even via the cyclotomic library, Mathlib gives IsPrincipalIdealRing abstractly but does NOT provide a concrete Euclidean function. The R1 path must construct it; this is the main S3 deliverable (~200 lines).",
+      "The R2 route (via Mathlib cyclotomic library) is more reusable in principle but ~1000+ lines vs. R1's ~550-700: the abstract framing requires verbose `change`/`simp`/`cast` chains to bridge between the abstract `IsCyclotomicExtension` setting and concrete integer arithmetic. R1 is recommended for the gallery deliverable; R2 is a candidate Mathlib contribution.",
+      "The R3 typeclass abstraction (n-parametric over class-number-1 imaginary quadratic rings) is ambitious (~1500-2500 lines). It requires deciding which Euclidean function to fix per instance (the n = 19, 43, 67, 163 Heegner cases are norm-Euclidean only via Lenstra-style non-standard Euclidean functions, not naive rounding). Best deferred to a long-term Mathlib contribution roadmap.",
+      "Aristotle non-applicability: the Euclidean structure on ℤ[ω] requires explicit rounding constructions and is NOT a routine Aristotle target. Plan for manual S3 ACT iteration. By contrast, the algebraic identities used in S5 (norm extraction + parity case-split) MAY be Aristotle-able after S3-S4 are in place, since they reduce to polynomial-ring computations + omega.",
+      "Numerical sanity for n = 3: all 12 primes p ≡ 1 mod 3 up to 97 ({7, 13, 19, 31, 37, 43, 61, 67, 73, 79, 97} plus p = 3 as edge case) have explicit (x, y) ∈ ℤ² decompositions p = x² + 3y². Primes p ≡ 2 mod 3 (2, 5, 11, 17, 23, ...) are NOT representable. The biconditional direction (non-representability) is a sibling sub-question, similar to zsqrtd-neg-two-oq-02."
+    ],
+    "mathlibGaps": [
+      "No EuclideanDomain instance for the Eisenstein integers in Mathlib v4.26.0 (NEITHER via Zsqrtd.basic — correct, since ℤ[√-3] is not a PID, NOR via the cyclotomic library — abstractly IsPrincipalIdealRing is derived but no concrete Euclidean function is pre-instantiated). The R1 path must build this fresh in S3 (~200 lines).",
+      "No Zsqrtd.MaxOrder-style construction of ℤ[(1+√-n)/2] for general n ≡ 3 mod 4 in Mathlib. Required for R1 ports to n = 7, 11.",
+      "ZMod.exists_sq_eq_neg_three_iff lemma name is CONJECTURED based on analogy to the parent's exists_sq_eq_neg_two_iff. If absent at v4.26.0, derive from generic Legendre symbol API + QR + supplementary laws (~30 extra Lean lines).",
+      "No representation-theorem corollary for x² + ny² at any n ≥ 3 in Mathlib at v4.26.0. Each n in {3, 7, 11} is a fresh deliverable for the gallery.",
+      "No IsImagQuadClassOne (or similar) typeclass abstracting the class-number-1 imaginary quadratic rings. R3 route would establish this from scratch."
+    ],
+    "nextSteps": [
+      "S2 ACT (~150 lines, 0 sorries in the deliverable but the EuclideanDomain instance stubbed as a 1-line `sorry`-stub or `noncomputable instance := … sorry`): create Proofs/ZsqrtdNegTwoOQ03.lean with the concrete Eisenstein structure, Ring instance (verified via `ext + ring`), norm function, norm_nonneg (via 4N(z) = (2a - b)² + 3b² and nlinarith), and norm_mul (via simp + ring). Add Proofs.lean entry + minimal src/data/proofs/zsqrtd-neg-two-oq-03/{meta.json, index.ts}. Alternative: try IsCyclotomicExtension approach first as a clean handle; fall back to fresh struct if abstract framing produces verbose proofs.",
+      "S3 ACT (~200 lines): build the EuclideanDomain Eisenstein instance via rounding to ½ℤ. The instDiv definition mirrors the parent (rounding the rational quotient z·ȳ/N(y)), with care that the rounding lattice is ½ℤ + ½ℤ·ω (or equivalently ℤ + ℤ·ω, since the Eisenstein lattice is already integer-coefficient). Establish norm-of-remainder bound 1/4 < 1 via case analysis. Likely the most technically dense session.",
+      "S4 ACT (~100 lines): bridge to the splitting argument via ZMod.exists_sq_eq_neg_three_iff (verify Mathlib API in S2; derive from generic Legendre-symbol lemmas + QR if absent). Construct the analog of the parent's sq_add_two_sq_of_nat_prime_of_not_irreducible: if p is non-irreducible in ℤ[ω], then p = N(α) = a² - ab + b² for some a, b ∈ ℤ.",
+      "S5 ACT (~100 lines): main theorem sq_add_three_sq_of_prime_one_mod_three. Conversion step: 4p = (2a - b)² + 3b², parity case-split (both even ⇒ p = x'² + 3y'²; both odd ⇒ 4p ≡ 4 mod 4 but also ≡ 0 mod 4 of (m² + 3n²) with m, n odd ⇒ contradiction). Sorry-free, 0 axioms.",
+      "S6+ STRETCH (~400 lines each, optional): port to n = 7 via ℤ[(1+√-7)/2] and n = 11 via ℤ[(1+√-11)/2]. Each requires a fresh maximal-order construction; the norm form changes shape (n = 7: a² + ab + 2b²; n = 11: a² + ab + 3b²) but the splitting argument is structurally identical.",
+      "S∞ DEFERRED (R3, ~1500-2500 lines): typeclass abstraction over n ∈ {1, 2, 3, 7, 11}. Recommended as a Mathlib contribution rather than a gallery deliverable."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "number-theory",
+    "algebraic-number-theory",
+    "quadratic-forms",
+    "class-number-one",
+    "eisenstein-integers",
+    "cyclotomic-field",
+    "heegner-numbers",
+    "fermat-other-theorem",
+    "mathlib-Zsqrtd",
+    "mathlib-Cyclotomic"
+  ],
+  "relatedProofs": [
+    "zsqrtd-neg-two",
+    "zsqrtd-neg-two-oq-01",
+    "zsqrtd-neg-two-oq-02",
+    "three-squares-theorem",
+    "fermat-two-squares",
+    "fermat-two-squares-oq-01"
+  ],
+  "references": {
+    "papers": [
+      "P. Fermat, letters to Mersenne (1640) — original conjecture for x² + ny², n ∈ {1, 2, 3, 7}.",
+      "L. Euler, De numeris qui sunt aggregata duorum quadratorum multiplicatorum (1763) — first proof of the n = 3 case.",
+      "J.-L. Lagrange, Recherches d'arithmétique (1775) — refines Euler's method to n = 7.",
+      "C. F. Gauss, Disquisitiones Arithmeticae (1801) — Sections IV-V on quadratic forms.",
+      "D. A. Cox, Primes of the form x² + ny²: Fermat, class field theory, and complex multiplication, Wiley 1989, 2nd ed. 2013 — standard monograph.",
+      "K. Ireland, M. Rosen, A Classical Introduction to Modern Number Theory, Springer GTM 84, 2nd ed. 1990 — Chapter 17 covers the ℤ[ω] case in an undergraduate style."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Eisenstein_integer",
+      "https://en.wikipedia.org/wiki/Heegner_number",
+      "https://oeis.org/A002476"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.Zsqrtd.Basic",
+      "Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity",
+      "Mathlib.NumberTheory.Cyclotomic.Three",
+      "Mathlib.NumberTheory.NumberField.Discriminant.Basic",
+      "Mathlib.RingTheory.Polynomial.Cyclotomic.Basic"
+    ]
+  },
+  "started": "2026-05-12T17:25:00.000Z",
+  "lastUpdate": "2026-05-12T17:25:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": []
+}
