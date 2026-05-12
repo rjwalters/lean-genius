@@ -78,6 +78,14 @@
   },
   "sections": [
     {
+      "id": "sec-header",
+      "title": "Header: Question, Strategy, and Mathematical Context",
+      "startLine": 1,
+      "endLine": 57,
+      "summary": "Module docstring stating OQ-01-OQ-03 (extension to arbitrary null sets), the three-step proof strategy, and examples (\u211a, countable sets, singletons, Cantor set). Imports Mathlib's Lebesgue basics and Bochner integral.",
+      "mathContext": "Goal: $\\mu(S) = 0 \\Rightarrow \\int \\mathbf{1}_S \\, d\\mu = 0$ for any measurable null $S$. Three steps: (1) `compl_mem_ae_iff.mpr`: $\\mu(S)=0 \\Rightarrow S^c \\in \\mu.ae$; (2) `Set.indicator_of_notMem`: $x \\notin S \\Rightarrow \\mathbf{1}_S(x)=0$; (3) `integral_eq_zero_of_ae`: a.e.-zero $\\Rightarrow$ integral zero."
+    },
+    {
       "id": "sec-core",
       "title": "Part I: Core Abstract Theorem",
       "startLine": 58,
@@ -108,6 +116,14 @@
       "endLine": 210,
       "summary": "Changing a function on a null set doesn't affect the integral; a.e.-zero functions integrate to zero.",
       "mathContext": "If $f = g$ off a null set $S$, then $\\int f \\, d\\mu = \\int g \\, d\\mu$. This is the abstract principle behind all null-set invisibility."
+    },
+    {
+      "id": "sec-oq01-closure",
+      "title": "Part V: OQ-01 Corollary and Summary",
+      "startLine": 213,
+      "endLine": 244,
+      "summary": "One-line term-mode example deriving the OQ-01 Dirichlet result ∫_{[0,1]} 𝟙_ℚ dλ = 0 from `integral_indicator_of_null_on_set`. Concludes with a 15-theorem catalogue.",
+      "mathContext": "$\\int_{[0,1]} \\mathbf{1}_{\\mathbb{Q}\\cap\\mathbb{R}} \\, d\\lambda = 0$ via `integral_indicator_of_null_on_set _ _ (Set.countable_range (Rat.cast) |>.measure_zero volume)`. The original OQ-01 proof shrinks to a single composition."
     }
   ],
   "crossReferences": [
