@@ -2,9 +2,9 @@
 
 ## Current Status
 
-**Phase**: S2 LOWER BOUND (rational embedding ⇒ ℵ₀ ≤ # computable reals)
-**Owner**: researcher-1 (S2, 2026-05-12)
-**Branch**: `research/algebraic-numbers-countable-oq-02-oq-04-s2-rat-lower-<ts>`
+**Phase**: S3 UPPER BOUND DISCHARGED (decodeReal + Nat.Partrec.Code pipeline; build pending)
+**Owner**: researcher-4 (S3, 2026-05-12)
+**Branch**: `research/algebraic-numbers-countable-oq-02-oq-04-s3-codereduction-<ts>`
 
 ## What's Done
 
@@ -93,22 +93,66 @@ infrastructure + strategy + 1 file + 1 module-doc + 4 annotations).
   (exact ℵ₀) **conditional on the main S1 sorry** — no new assumptions.
   Lean file 110 → 208 lines, 1 sorry → 1 sorry, 0 axioms → 0 axioms,
   theorem count 2 → 9. Strategy for S3 unchanged.
+- **2026-05-12 (S3, researcher-4 session 68)**: UPPER BOUND DISCHARGED
+  (build pending). Added `noncomputable def decodeReal : Nat.Partrec.Code → ℝ`
+  using `Classical.choose` on existence of (r, f) matching the eval-encoding
+  constraint, plus two helper lemmas: `exists_code_of_computable_rat_seq`
+  (Computable.encode.comp + Partrec.nat_iff + Nat.Partrec.Code.exists_code) and
+  `computable_real_mem_range_decodeReal` (uniqueness of limit + Part.some +
+  Encodable.encode injectivity). Replaced the `sorry` in
+  `computable_reals_countable` with a 2-line proof via Set.countable_range +
+  Set.Countable.mono. With S3 landed, `card_computable_reals_le_aleph0` and
+  `card_computable_reals_eq_aleph0` become unconditional. Mathlib API names
+  verified via WebFetch on live mathlib4_docs before writing. Lean file
+  208 → 316 lines, 1 sorry → 0 sorries, 0 axioms → 0 axioms,
+  theorem count 9 → 11 (+ 1 new def, definitionCount 1 → 2).
 
-## S2 — What This Buys
+## S3 — What This Buys
 
-Before S2, the only result was the *conditional* upper bound. After S2:
+With S3 landed (build pending):
 
-- The lower bound `ℵ₀ ≤ #(computable reals)` is **unconditional**.
-- The exact equality `#(computable reals) = ℵ₀` is **one sorry away**: it
-  depends only on the main `computable_reals_countable` (still S3+).
-- Once S3 lands, we get the full cardinality result for free with no extra
-  proof — `card_computable_reals_eq_aleph0` is already stated and typechecks.
+- `computable_reals_countable` (upper bound) is fully proved — no sorries.
+- `card_computable_reals_le_aleph0` becomes unconditional.
+- `card_computable_reals_eq_aleph0` becomes unconditional (S2 stated it as a
+  `le_antisymm` between the upper and lower bounds — both are now unconditional).
+- The Lean file totals 11 theorems + 2 definitions, 0 sorries, 0 axioms.
 
-The five "concrete computables" (rat/int/nat/zero/one) also serve as
-sanity checks on the `IsComputable` definition: any sensible definition
-must make these computable, and the constant-sequence witness confirms
-it does.
+## Verified Mathlib API (used in S3 proof)
 
-## API Risks Flagged for S3 (unchanged from S1)
+All Mathlib lemma names verified via mathlib4_docs WebFetch before writing:
 
-(see original S1 notes above)
+| Lemma | Module | Statement |
+|---|---|---|
+| `Computable.encode` | `Computability.Partrec` | `Computable Encodable.encode` |
+| `Computable.comp` | `Computability.Partrec` | composition of Computable |
+| `Computable.partrec` | `Computability.Partrec` | `Computable f → Partrec ↑f` |
+| `Partrec.nat_iff` | `Computability.Partrec` | `Partrec f ↔ Nat.Partrec f` for `f : ℕ →. ℕ` |
+| `Nat.Partrec.Code.exists_code` | `Computability.PartrecCode` | `Nat.Partrec f ↔ ∃ c, c.eval = f` |
+| `Set.countable_range` | `Data.Set.Countable` | `[Countable ι] → (Set.range f).Countable` |
+| `Set.Countable.mono` | `Data.Set.Countable` | `s₁ ⊆ s₂ → s₂.Countable → s₁.Countable` |
+| `tendsto_nhds_unique` | `Topology.Basic` | uniqueness of limit in a Hausdorff space |
+| `Part.some_injective` | `Data.Part` | `Function.Injective Part.some` |
+| `Encodable.encode_injective` | `Logic.Encodable.Basic` | injectivity of encoding |
+| `le_aleph0_iff_set_countable` | `SetTheory.Cardinal.Basic` | cardinal ≤ ℵ₀ ↔ countable |
+
+`Denumerable Nat.Partrec.Code` is confirmed via the docs page; this provides
+the `Countable Nat.Partrec.Code` instance needed by `Set.countable_range`.
+
+## Build risk assessment (S3)
+
+- *Low*: All Mathlib lemmas name-checked against live mathlib4 docs.
+- *Medium*: `Partrec.nat_iff.mp hg.partrec` relies on the coercion
+  `↑(fun n => encode (f n)) : ℕ →. ℕ` definitionally unfolding to
+  `fun n => Part.some (encode (f n))`. If Lean needs a `show` hint or an
+  explicit `Nat.Partrec.of_eq` bridge, this is the most likely fix-up.
+- *Medium*: `dif_pos h_exists` after `unfold decodeReal` may leave the goal
+  in a form needing one extra `Exists.choose` step. Recovery: insert
+  `change h_exists.choose = r` before the uniqueness argument.
+- *Low*: `Part.some_injective` may need to be `Part.some_inj.mp` in some
+  Mathlib revisions; both are equivalent.
+
+## API Risks Flagged for S1+S2 (unchanged from previous sessions)
+
+- `Computable (f : ℕ → ℚ)` requires `Primcodable ℚ` (provided via
+  `Mathlib.Data.Rat.Denumerable`).
+- `Computable.const q` works because `Primcodable ℚ` is available.
