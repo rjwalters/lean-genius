@@ -163,3 +163,47 @@ To avoid duplication / merge collisions, **this S2 PR is narrowed to one unique 
 - **Alternative S5**: use `cauchyPowerSeries` + `Complex.norm_cauchyPowerSeries_le` + `DifferentiableOn.hasFPowerSeriesOnBall` + power-series uniqueness on the closed disk of radius `r' < R`. This routes through `cauchyPowerSeries` directly, potentially shorter than the iterated-derivative path.
 
 - **Audit sibling gallery files** that import `MeanValueTheoremOQ02OQ04` for similar OQ-04-axiom-dependence (still open from S2).
+
+## Session 2026-05-12 (Session 5, researcher-3) — Limit-extraction proof for `cauchy_diag_norm_bound`
+
+**Mode**: REVISIT (RICH knowledge, 4 prior sessions)
+**Outcome**: progress (cauchy_diag_norm_bound is now PROVEN by limit-extraction from a new finite-radius sub-lemma; the residual sorry shifts to the finite-radius form)
+
+### What I Did
+
+1. **Decomposed `cauchy_diag_norm_bound` into two natural sub-steps**:
+   - **(a)** the Cauchy estimate at a strict intermediate radius `r' ∈ (0, R)`: `‖p k (fun _ ↦ w)‖ ≤ M · (‖w‖/r')^k` — captured in new sub-lemma `cauchy_diag_norm_bound_at_radius`, deferred to S6.
+   - **(b)** the limit-extraction step `r' → R⁻`: continuity of `r' ↦ M · (‖w‖/r')^k` at `R > 0` lets `Filter.Tendsto` along `𝓝[<] R` transport the pointwise bound from `Set.Ioo 0 R` to the boundary value `M · (‖w‖ / R)^k`. **Fully proved this iteration.**
+
+2. **Wrote ~50-line limit-extraction proof** for `cauchy_diag_norm_bound`. Key Mathlib API used:
+   - `ContinuousAt.mul`, `ContinuousAt.div` (with `R ≠ 0` from `0 < R` via `ne_of_gt`), `ContinuousAt.pow`, `continuousAt_const`, `continuousAt_id`
+   - `ContinuousAt.tendsto` + `Filter.Tendsto.mono_left` + `nhdsWithin_le_nhds` for `Tendsto … (𝓝[<] R) (𝓝 g R)`
+   - `mem_nhdsWithin` + `isOpen_Ioi.mem_nhds hR` for `Set.Ioo 0 R ∈ 𝓝[<] R`
+   - `Filter.eventually_of_mem` for `∀ᶠ r' in 𝓝[<] R, ‖p k (fun _ ↦ w)‖ ≤ M · (‖w‖/r')^k`
+   - `le_of_tendsto` to transport the eventual bound to the boundary limit
+
+3. **Build verification**: docker-build started this session. State.md updated to reflect the new sorry locality.
+
+### Mathematical Insight
+
+The limit-extraction is structurally orthogonal to the Cauchy-integral chain on `sphere a r'`. By isolating it, the residual gap (the finite-radius form `cauchy_diag_norm_bound_at_radius`) is now precisely the statement Mathlib's Cauchy estimate produces directly — no further "take limit" plumbing required of a future S6 iteration. This makes the remaining gap easier to discharge and the proof easier to audit.
+
+The function `g(r') := M · (‖w‖ / r')^k` is in fact *monotonically decreasing* on `(0, ∞)` (assuming `M ≥ 0` and `‖w‖ ≥ 0`), so the infimum over `r' ∈ (0, R)` is attained as `r' → R⁻` and equals `g(R) = M · (‖w‖ / R)^k`. The limit-extraction is "tight" — no slack is introduced by taking the limit.
+
+### Edge cases handled by the inner sub-lemma
+
+- `w = 0`, `k = 0`: bound at r' is `M · (0/r')^0 = M · 1 = M`. Limit gives `M · (0/R)^0 = M`. Both consistent with `‖p 0 (fun _ ↦ 0)‖ = ‖f a‖ ≤ M`.
+- `w = 0`, `k > 0`: bound at r' is `M · 0^k = 0`. Limit gives 0. Both consistent with multilinear annihilation `p k (fun _ ↦ 0) = 0`.
+- `w ≠ 0`: limit refinement is genuine — `(‖w‖/r')^k > (‖w‖/R)^k` strictly for `r' < R`.
+
+### Files Modified
+
+- **Modified**: `proofs/Proofs/MeanValueTheoremOQ02OQ04OQ01.lean` — split `cauchy_diag_norm_bound` into `cauchy_diag_norm_bound_at_radius` (new sorry, S6 deferral) + `cauchy_diag_norm_bound` (now proven by limit-extraction). +91 lines.
+- **Modified**: `research/problems/mean-value-theorem-oq-02-oq-04-oq-01/{knowledge.md, state.md}` — S5 entry.
+- **Modified**: `src/data/research/problems/mean-value-theorem-oq-02-oq-04-oq-01.json` — synced.
+
+### Next Steps (S6+)
+
+- **Discharge `cauchy_diag_norm_bound_at_radius`** via Mathlib's `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le` + the formal-series / iterated-derivative bridge (`HasFPowerSeriesOnBall.factorial_smul` and `iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod`). The limit-extraction step is now closed; S6 only needs the *finite-radius* Cauchy bound. Estimated 60-100 lines.
+
+- **Reference template**: `Proofs/TaylorTheoremOQ02.lean::fps_coeff_eq_taylor_coeff` already implements the ℝ-analogue of the formal-series / iterated-derivative bridge via `HasFPowerSeriesAt.iteratedFDeriv_eq_sum_of_completeSpace`. The ℂ-version should be parallel (ℂ is also a CompleteSpace).

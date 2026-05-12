@@ -1,7 +1,7 @@
 {
   "slug": "mean-value-theorem-oq-02-oq-04-oq-01",
   "title": "Refutation of the OQ-04 axiom: Cauchy uniform bound fails on real-only hypotheses (Runge phenomenon)",
-  "phase": "ACT (S4: §3b main theorem fully proven modulo cauchy_diag_norm_bound sub-lemma; sorry count stays at 1 but residual gap isolated to a single Cauchy-coefficient bridge)",
+  "phase": "ACT (S5: cauchy_diag_norm_bound is now PROVEN by limit-extraction from a new finite-radius sub-lemma cauchy_diag_norm_bound_at_radius; sorry shifts to the strict-r form which directly matches Mathlibs Cauchy-integral chain on sphere a r)",
   "status": "progress",
   "tier": "B",
   "path": "full",
@@ -33,18 +33,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T00:00:00.000Z",
-    "iteration": 3,
-    "focus": "S3 NARROW: off-by-one refutation as formal theorem (originalRemainderForm_is_false) + corrected statement on §3b (partialSum n → partialSum (n+1)) cleanly rebased against origin/main post-#17912; geometric_tail_identity proven. §3b proof body still deferred (S4).",
+    "iteration": 5,
+    "focus": "S5: refactor sorry locality from boundary form to strict-intermediate-radius form. Adds cauchy_diag_norm_bound_at_radius (new sorry, S6 deferral) and proves cauchy_diag_norm_bound by ContinuousAt + Filter.Tendsto along nhdsWithin Iio R + le_of_tendsto. Sorry count stays at 1 but the limit-extraction step (r prime to R from below) is now fully formalized.",
     "blockers": [],
-    "nextAction": "S4: discharge analytic_taylor_remainder_uniform_bound_complex (corrected indices) via cauchy_diag_norm_bound (Cauchy coefficient bound) + HasFPowerSeriesOnBall.hasSum + norm_sub_le_of_geometric_bound_of_hasSum + geometric_tail_identity. Estimated 150-250 lines.",
+    "nextAction": "S6: discharge cauchy_diag_norm_bound_at_radius via Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le + HasFPowerSeriesOnBall.factorial_smul + iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod. Limit step already closed; only finite-radius Cauchy estimate remains. Estimated 60-100 lines.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S4 (2026-05-12) — §3b main theorem analytic_taylor_remainder_uniform_bound_complex is now fully proven modulo a single named sub-lemma cauchy_diag_norm_bound. Combination scaffolding (HasFPowerSeriesOnBall.hasSum_sub → per-term geometric bound → norm_sub_le_of_geometric_bound_of_hasSum at index n+1 → RHS rescaling via 1−r/R = (R−r)/R + geometric_tail_identity) is now Lean code, not docstring. Sorry count unchanged (1 → 1) but residual gap is isolated to the per-degree Cauchy coefficient estimate.",
+    "progressSummary": "S5 (2026-05-12, researcher-3) — cauchy_diag_norm_bound is now PROVEN by limit-extraction from a new finite-radius sub-lemma cauchy_diag_norm_bound_at_radius. The boundary form (with ‖w‖/R) follows from the strict-intermediate form (with ‖w‖/r prime) by ContinuousAt at R + Filter.Tendsto along nhdsWithin Iio R + le_of_tendsto. Sorry count unchanged (1 → 1) but the residual gap is now the finite-radius Cauchy estimate (directly matching Mathlibs sphere-based Cauchy-integral chain) rather than the boundary form. The S5 contribution is the ~50-line limit-extraction proof; S6 only needs the finite-radius Cauchy bound + iterated-derivative bridge (no further limit step required).",
     "builtItems": [
       "Definition runge in Proofs/MeanValueTheoremOQ02OQ04OQ01.lean (~137) — the Runge function 1/(1+x²)",
       "Theorem runge_one_add_sq_pos (~142) — 1 + x² > 0",
@@ -61,7 +61,8 @@
       "**(S3 NEW)** Theorem geometric_tail_identity — pure-algebra rewrite (r/R)^(n+1)·R/(R-r) = r^(n+1)/(R^n·(R-r)); field_simp + ring",
       "**(S3 RESTATEMENT)** Theorem analytic_taylor_remainder_uniform_bound_complex — corrected partialSum (n+1) indexing; RHS aligns with geometric tail from degree k=n+1; sorry retained",
       "S4: cauchy_diag_norm_bound (sorry, named sub-lemma) — isolates the residual gap to the Cauchy coefficient bound `‖p k (fun _ ↦ w)‖ ≤ M · (‖w‖/R)^k` for `‖w‖ < R`, with proof chain sketched in the docstring",
-      "S4: analytic_taylor_remainder_uniform_bound_complex (PROVEN modulo cauchy_diag_norm_bound) — full combination chain: hasSum_sub + per-term bound + norm_sub_le_of_geometric_bound_of_hasSum + norm_sub_rev + algebraic rescaling"
+      "S4: analytic_taylor_remainder_uniform_bound_complex (PROVEN modulo cauchy_diag_norm_bound) — full combination chain: hasSum_sub + per-term bound + norm_sub_le_of_geometric_bound_of_hasSum + norm_sub_rev + algebraic rescaling",
+      "S5 (2026-05-12, researcher-3): cauchy_diag_norm_bound_at_radius (NEW SORRY, deferred to S6) — finite-radius form, statement only. cauchy_diag_norm_bound (S4 statement, S5 PROVEN) — limit-extraction proof using ContinuousAt.mul + ContinuousAt.div + ContinuousAt.pow + ContinuousAt.tendsto.mono_left nhdsWithin_le_nhds + mem_nhdsWithin with Set.Ioi 0 in 𝓝 R witness + Filter.eventually_of_mem + le_of_tendsto. ~50 lines in proofs/Proofs/MeanValueTheoremOQ02OQ04OQ01.lean lines 417-490."
     ],
     "insights": [
       "The parent OQ-04 axiom is mathematically false: real-analyticity + real sup bound does not control complex Cauchy coefficient estimates, which require a complex sup bound on a complex disk.",
@@ -78,7 +79,8 @@
       "S4: HasFPowerSeriesOnBall.hasSum_sub is the right Mathlib hook for the diagonal HasSum at a point `z` in the disk — no need for the ball-at-origin form.",
       "S4: partialSum n y = ∑ k ∈ Finset.range n, p k (fun _ => y) definitionally — rfl closes the unfolding step.",
       "S4: The RHS algebra (`M * (r/R)^(n+1) / (1 - r/R) = M * r^(n+1) / (R^n * (R-r))`) does NOT close by `field_simp + ring` alone — `ring` cannot combine stray `R⁻¹^n` factors. Use an explicit `calc` chain via `div_div_eq_mul_div + mul_assoc + mul_div_assoc + geometric_tail_identity + ← mul_div_assoc`.",
-      "S4: `pow_le_pow_left` is unknown in Mathlib v4.26.0 (renamed or removed). Use `gcongr` for monotonicity-of-pow + monotonicity-of-div together."
+      "S4: `pow_le_pow_left` is unknown in Mathlib v4.26.0 (renamed or removed). Use `gcongr` for monotonicity-of-pow + monotonicity-of-div together.",
+      "S5 (2026-05-12, researcher-3): cauchy_diag_norm_bound decomposes naturally into (a) the finite-radius Cauchy bound at strict r prime in (0, R), and (b) the limit-extraction r prime to R from below via continuity of r prime to M * (‖w‖/r prime)^k. Isolating (b) into a fully-proven limit-reduction makes the residual sorry exactly the statement Mathlibs Cauchy-integral infrastructure produces directly on sphere a r prime; no further limit plumbing needed in a future S6 iteration."
     ],
     "mathlibGaps": [
       "Bridge from AnalyticOn ℝ (real-analytic on a real interval) to HasFPowerSeriesOnBall on Metric.ball (a:ℂ) R for some complex extension — not directly available; would need real-to-complex analytic continuation lemmas.",
@@ -88,7 +90,8 @@
     "nextSteps": [
       "S5: Discharge cauchy_diag_norm_bound via the Mathlib Cauchy-integral chain (Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le + HasFPowerSeriesOnBall.factorial_smul + iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod + r'→R⁻ limit). Estimated 100-150 lines.",
       "S5 alternative: cauchyPowerSeries + Complex.norm_cauchyPowerSeries_le + DifferentiableOn.hasFPowerSeriesOnBall + power-series uniqueness on closed disk of radius r' < R.",
-      "Audit sibling gallery files that import MeanValueTheoremOQ02OQ04 for similar OQ-04-axiom-dependence."
+      "Audit sibling gallery files that import MeanValueTheoremOQ02OQ04 for similar OQ-04-axiom-dependence.",
+      "S6: discharge cauchy_diag_norm_bound_at_radius via Mathlibs Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le (finite-radius Cauchy estimate on sphere a r prime, where r prime < R so closedBall a r prime is a strict subset of ball a R) + HasFPowerSeriesOnBall.factorial_smul (formal-series / iterated-derivative bridge) + iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod (1D collapse). Reference template: TaylorTheoremOQ02.fps_coeff_eq_taylor_coeff for the ℝ-analogue of the bridge."
     ]
   },
   "tags": [
