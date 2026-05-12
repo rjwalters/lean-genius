@@ -1,0 +1,52 @@
+{
+  "slug": "spherical-law-of-sines-oq-03",
+  "title": "Four-Parts Formula (Cotangent Rule) for Spherical Triangles",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "route-A-law-of-cosines",
+  "problemStatement": {
+    "formal": "For a spherical triangle on the unit sphere with unit-vector vertices A, B, C : Fin 3 → ℝ, arc-length sides a := arcLen(B,C), b := arcLen(A,C), c := arcLen(A,B), and dihedral angles α := dihedralAngle(A,B,C), β := dihedralAngle(B,C,A), γ := dihedralAngle(C,A,B), prove the cotangent four-parts formula in the polynomial form: sin α · cos a · sin b = sin a · sin α · cos b · cos γ + sin a · cos α · sin γ. The classical-form corollary, cot a · sin b = cos b · cos γ + sin γ · cot α, follows by dividing through by sin a · sin α (both nonzero on a non-degenerate spherical triangle).",
+    "plain": "The four-parts formula (a.k.a. the cotangent rule) of spherical trigonometry is the third of the parent SphericalLawOfSines proof's three explicitly-stated openQuestions. It relates four consecutive elements of a spherical triangle (outer side, inner angle, inner side, outer angle) via cot a sin b = cos b cos γ + sin γ cot α. The formula is the workhorse of classical celestial navigation and astronomy — it converts between equatorial and horizontal coordinate systems given local sidereal time, and it derives the intercept method's Sumner line. Mathematically it is a one-line corollary of two applications of the spherical law of cosines plus the law of sines; this gallery entry packages that derivation into the parent's Fin 3 → ℝ cross-product framework.",
+    "whyMatters": [
+      "Closes the third and final openQuestion of the parent spherical-law-of-sines gallery entry; alongside OQ-01 (spherical excess) and OQ-02 (dual law of cosines) this completes the standard catalogue of spherical-trig identities derivable from the cross-product framework.",
+      "Bridges the two flagship spherical-trig gallery proofs: spherical-law-of-sines and spherical-law-of-cosines were verified standalone but had no proof linking them; the cotangent rule is the natural shared corollary.",
+      "Concrete navigation application: Smart (1977) §3.7 and Bowditch (2002) §22.6 both use the cotangent rule as the primary formula for converting between celestial coordinate systems; this gives the gallery a workable navigation case study.",
+      "Lowest-friction of the three OQ-* siblings: tractability 7 vs 4-5 for OQ-01/OQ-02 because no new infrastructure is needed — only an algebraic substitution chaining two known sibling theorems."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Classical: Smart, Textbook on Spherical Astronomy (1977) §3.7 eq (3.31); Todhunter, Spherical Trigonometry (1886) §62; Wikipedia 'Spherical trigonometry' §'Cotangent four-part formulae'. One of the standard six cyclic variants is in every introductory text.",
+      "Parent spherical-law-of-sines (Proofs/SphericalLawOfSines.lean, 323 lines, 0 axioms, 0 sorries, status: verified) provides dot, normSq, IsUnit3, arcLen, tripleProduct, projPerp, dihedralAngle, lagrange_identity, projPerp_cross_eq, sin_sq_dihedralAngle, sin_sq_arcLen, and spherical_law_of_sines_all_sq.",
+      "Sibling spherical-law-of-cosines (Proofs/SphericalLawOfCosines.lean, verified) provides the standard spherical law of cosines cos(a) = cos(b)cos(c) + sin(b)sin(c)cos(α) (exact name + namespace to be confirmed in S2 ORIENT).",
+      "Sibling spherical-law-of-cosines-oq-05 (haversine, verified via PR #17898) demonstrates the parent's cross-product framework extending cleanly to navigation-application identities.",
+      "Mathlib v4.26.0 provides Real.sin, Real.cos, Real.arccos, Real.sin_arccos (unconditional), Real.sin_nonneg_of_nonneg_of_le_pi, Real.arccos_nonneg, Real.arccos_le_pi — enough to bridge the parent's `sin_sq_arcLen` to a linear `sin(arcLen) ≥ 0` form. No Real.cot at the pinned revision; encode locally as cos/sin.",
+      "Sibling spherical-law-of-sines-oq-01 (spherical excess) and spherical-law-of-sines-oq-02 (dual law of cosines): both currently in OBSERVE phase, no Lean code; problem.md exists for each."
+    ],
+    "open": [
+      "Helper lemma: sin_arcLen_nonneg (sine of an arccos value is nonnegative because arccos returns to [0,π]) — ~3 LOC in S2.",
+      "Helper lemma: sin_arcLen_eq_sqrt extracting sin(arcLen u w) = sqrt(normSq (projPerp w u)) from parent's sin_sq_arcLen + nonnegativity — ~5-10 LOC in S2.",
+      "Module-path verification for sibling spherical-law-of-cosines proof (worktree .lake symlink trap; deferred to S2).",
+      "Main theorem statement spherical_cotangent_rule_polynomial in the parent's Fin 3 → ℝ framework (polynomial form, no cot) — ~10 LOC in S2.",
+      "Strategic sorry cotangent_rule_from_cosines (the actual two-line-of-cosines substitution) with full algebra in docstring — closed in S3 ACT.",
+      "Corollary spherical_cotangent_rule (with cot encoded as cos/sin) and explicit non-degeneracy sin a ≠ 0, sin α ≠ 0 — defer to S4 or skip.",
+      "Cyclic-relabelling permutations (six in total) — possibly stated as a `cot_rule_cyclic` derived corollary, defer to S4 or future iteration."
+    ]
+  },
+  "tractability": {
+    "lineCountEstimate": "60-100 (Route A: algebra over two parent/sibling theorems) or 150-200 (Route B: independent cross-product derivation, fallback)",
+    "sorriesExpected": "1 strategic sorry in S2 (cotangent_rule_from_cosines), closed in S3",
+    "buildRisk": "low — depends on (a) sibling spherical-law-of-cosines API name, (b) framework compatibility; both will be verified in S2 ORIENT before any nontrivial Lean code is written"
+  },
+  "approach": {
+    "current": "Route A: derive from two applications of the spherical law of cosines + law of sines (~60-100 LOC).",
+    "alternatives": "Route B: independent cross-product derivation in parent's Fin 3 → ℝ framework, mirroring parent's `linear_combination` style (~150-200 LOC). Reserve as fallback if Route A namespace bridge to sibling proves brittle."
+  },
+  "createdAt": "2026-05-12T18:01:16Z",
+  "lastUpdated": "2026-05-12T18:01:16Z",
+  "researcher": "researcher-10",
+  "claimedBy": "researcher-10",
+  "claimedAt": "2026-05-12T18:01:16Z",
+  "claimExpires": "2026-05-12T19:31:16Z"
+}
