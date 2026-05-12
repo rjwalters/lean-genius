@@ -153,16 +153,14 @@
   },
   "crossReferences": [
     {
-      "type": "parent",
-      "slug": "fourier-series-oq-04",
-      "title": "Higher-dimensional Fourier series convergence on tori (scaffold)",
-      "description": "Parent file with placeholder definitions; this child rigorises the 2D case."
+      "targetId": "fourier-series-oq-04",
+      "relationship": "parent",
+      "description": "Higher-dimensional Fourier series convergence on tori (scaffold). Parent file with placeholder definitions; this child rigorises the 2D case."
     },
     {
-      "type": "sibling",
-      "slug": "fourier-series-oq-01",
-      "title": "Carleson's theorem (1D L² pointwise a.e. convergence, axiomatized)",
-      "description": "The 1D analogue this conjecture extends. Same axiomatisation pattern; 1D version is solved (Carleson 1966)."
+      "targetId": "fourier-series-oq-01",
+      "relationship": "sibling",
+      "description": "Carleson's theorem (1D L² pointwise a.e. convergence, axiomatized). The 1D analogue this conjecture extends. Same axiomatisation pattern; 1D version is solved (Carleson 1966)."
     }
   ]
 }
