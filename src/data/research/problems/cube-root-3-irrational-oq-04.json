@@ -1,0 +1,132 @@
+{
+  "slug": "cube-root-3-irrational-oq-04",
+  "title": "Continued fraction expansion of cube root of 3",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "Formal mathematical investigation: Continued fraction expansion of cube root of 3.",
+    "whyMatters": [
+      "Mathlib coverage: first worked example of GenContFract.of applied to a cubic irrational in the project gallery.",
+      "Diophantine approximation: pairs with cube-root-3-irrational (the existence proof) to give a 'how irrational' deepening \u2014 CF prefix data.",
+      "Companion to the Lagrange theorem family in the gallery (eventual-periodicity iff quadratic-irrational)."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-08T19:09:00.563Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE: documented theoretical obstacle (Lagrange) + Mathlib API map + finite-prefix decomposition for [1; 2, 3, 1, 4, ...]",
+    "blockers": [],
+    "nextAction": "S2: prove cbrt3_floor_eq_one : Int.floor cbrt3 = (1:Int) in new Proofs/CubeRoot3IrrationalOQ04.lean",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-1, 2026-05-11): OBSERVE survey for the simple continued fraction expansion of cbrt3 := (3:\u211d)^(1/3:\u211d). Established theoretical obstacle (Lagrange 1770: CF eventually periodic \u27fa quadratic irrational; \u221b3 has degree 3, so CF is non-periodic \u2014 no finite-description theorem possible). Computed the first five partial quotients explicitly: [a0,a1,a2,a3,a4] = [1, 2, 3, 1, 4] (OEIS A002945) and the first five convergents [1/1, 3/2, 10/7, 13/9, 62/43]. Mapped Mathlib infrastructure: GenContFract.of, IntFractPair.stream, GenContFract.convergents. Identified 3 Mathlib gaps and a 4-step S2+ decomposition (one lemma per a_i). No Lean changes this iteration \u2014 pure documentation S1.",
+    "builtItems": [],
+    "insights": [
+      "Lagrange (1770): CF eventually periodic iff quadratic irrational. cbrt3 has minimal polynomial X^3-3 (degree 3 over Q, irreducible by Eisenstein at p=3), so its CF is non-periodic \u2014 no finite-description theorem about all a_i is possible.",
+      "First five partial quotients computed: a0=1, a1=2, a2=3, a3=1, a4=4 (matches OEIS A002945). First five convergents: 1/1, 3/2, 10/7, 13/9, 62/43 \u2014 alternate above/below cbrt3 as expected for any irrational CF.",
+      "IntFractPair.stream is the right interface for single-a_i extraction; GenContFract.of adds a structural layer that is overkill for prefix verification. Use IntFractPair.b directly.",
+      "Each a_i lemma is independent (direct floor-bound, not a CF recursion), so S2 through S6 can be parallelized.",
+      "Roth's theorem (mu(cbrt3)=2) constrains a_i growth (sub-polynomial in q_{i-1}) but is not a prerequisite for finite-prefix lemmas; Roth is its own deep target in the gallery."
+    ],
+    "mathlibGaps": [
+      "No worked example of GenContFract.of applied to a cubic irrational anywhere in Mathlib at the pinned revision; only sqrt(n) and golden_ratio CF examples exist.",
+      "No lemma of the form IntFractPair.stream_get_eq_of_* that discharges a floor obligation via rational bounds on the running value x_i.",
+      "No tactic-level support for \"cube both sides of an inequality involving Real.rpow\"; nlinarith handles polynomial inequalities once cbrt3 ^ 3 = 3 is substituted, but the substitution is manual."
+    ],
+    "nextSteps": [
+      "S2: state and prove cbrt3_floor_eq_one : Int.floor cbrt3 = (1:Int) in a new Proofs/CubeRoot3IrrationalOQ04.lean (~30 lines, monotonicity of x -> x^3 on [0, infty) after substituting cbrt3_cubed).",
+      "S3: prove cbrt3_a1 : Int.floor (1/(cbrt3 - 1)) = (2:Int) \u2014 needs the bound 4/3 < cbrt3 < 3/2 (cube to 64/27 < 3 < 27/8) (~60 lines).",
+      "S4: decide between (A) a chain of floor(...) = a_i lemmas or (B) a single statement about IntFractPair.stream cbrt3 at indices 0..4. Recommendation: B \u2014 more compact, single Mathlib API surface.",
+      "S5+: convergent lemmas (convergent_0=(1,1), convergent_1=(3,2), ...) combined with the a_i lemmas to populate a small 'CF prefix' theorem bundle for the gallery."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "continued-fractions",
+    "cubic-irrationals",
+    "mathlib-gap"
+  ],
+  "relatedProofs": [
+    "cube-root-3-irrational",
+    "cube-root-3-irrational-oq-02",
+    "cube-root-3-irrational-oq-02-oq-01",
+    "cube-root-3-irrational-oq-02-oq-02",
+    "cube-root-2-irrational",
+    "roth-theorem-k3-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://oeis.org/A002945"
+    ],
+    "mathlib": [
+      "Mathlib.Algebra.ContinuedFractions.Basic",
+      "Mathlib.Algebra.ContinuedFractions.Computation.Basic",
+      "Mathlib.Algebra.ContinuedFractions.ConvergentsEquiv"
+    ]
+  },
+  "started": "2026-05-08T19:09:00.562Z",
+  "lastUpdate": "2026-05-11T01:30:00.000Z",
+  "significance": 5,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CubeRoot3Irrational.lean",
+      "filename": "CubeRoot3Irrational.lean",
+      "lineCount": 84,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3Irrational.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ02.lean",
+      "filename": "CubeRoot3IrrationalOQ02.lean",
+      "lineCount": 124,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ02.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ02OQ01.lean",
+      "filename": "CubeRoot3IrrationalOQ02OQ01.lean",
+      "lineCount": 134,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ02OQ02.lean",
+      "filename": "CubeRoot3IrrationalOQ02OQ02.lean",
+      "lineCount": 105,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ02OQ02.lean"
+    }
+  ]
+}
