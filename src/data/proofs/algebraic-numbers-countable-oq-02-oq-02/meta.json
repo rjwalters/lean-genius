@@ -185,6 +185,26 @@
       "targetId": "cantor-diagonalization-oq-02",
       "relationship": "related",
       "description": "Studies the cardinality of ω₁ (first uncountable ordinal), building on the strict inequality ℵ₀ < |ℝ| established by this entry. The nested interval proof is the most elementary way to obtain this inequality; ω₁ is its ordinal counterpart. The Continuum Hypothesis (|ℝ| = ℵ₁) remains independent of ZFC, making the exact position of 2^ℵ₀ in the aleph hierarchy — and hence whether |ℝ| = |ω₁| — undecidable."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-02-oq-03",
+      "relationship": "extends",
+      "description": "Sharpens this entry's $\\neg \\text{Countable}\\,\\mathbb{R}$ result (which only gives $\\#\\mathbb{R} > \\aleph_0$) to the exact identity $\\#\\text{transcendentalReals} = \\mathfrak{c} = 2^{\\aleph_0}$, the precise cardinality of the transcendental complement. Where the present entry's nested-interval construction outputs a single missed real per enumeration, `oq-02-oq-03` quantifies the global gap: the missed reals form a set of cardinality $\\mathfrak{c}$, equal to all of $\\mathbb{R}$ (infinite cardinal absorption: $\\aleph_0 + \\kappa = \\kappa$ for infinite $\\kappa$)."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-02-oq-04",
+      "relationship": "complementary",
+      "description": "The constructive complement to this entry's existence proof: gives the EXPLICIT countable layer of computable reals sitting below $\\mathbb{R}$. The cardinality tower $\\mathbb{Q} \\subsetneq \\text{Alg} \\subseteq \\text{Computable} \\subsetneq \\mathbb{R}$ has three layers of size $\\aleph_0$ (the present nested-intervals proof works to show all three are countable / strictly smaller than $\\mathbb{R}$) and one of size $\\mathfrak{c}$. The computable-real countability uses Turing-machine enumeration; the nested-intervals proof formalized here gives the missing piece — uncountability of the ambient $\\mathbb{R}$ — without invoking computability theory."
+    },
+    {
+      "targetId": "cantors-theorem-oq-01",
+      "relationship": "extends",
+      "description": "Iterates Cantor's theorem $|P(A)| > |A|$ up the cardinal hierarchy: $|P(\\mathbb{R})| = 2^{\\mathfrak{c}} > \\mathfrak{c} = |\\mathbb{R}| > \\aleph_0 = |\\mathbb{N}|$. The present nested-intervals proof gives the first strict inequality $|\\mathbb{R}| > |\\mathbb{N}|$ via an explicit constructive witness (the limit point $\\sup_n a_n$ avoids each $f(n)$); `cantors-theorem-oq-01` continues to the next step, where the witness becomes more abstract (the set $\\{x \\in \\mathbb{R} \\mid x \\notin f(x)\\}$ for any putative bijection $f : \\mathbb{R} \\to P(\\mathbb{R})$). Both arguments share the diagonal-self-reference structure."
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "related",
+      "description": "Turing's 1936 undecidability of the Halting Problem is a categorical diagonal argument: given a hypothetical decider $H(P, x)$ for halting, define $D(P) := \\text{if } H(P, P) \\text{ then loop else halt}$, producing $D(D)$ halts $\\iff$ $D(D)$ does not halt. This entry's nested-interval construction is the topological dual: given a hypothetical enumeration $f : \\mathbb{N} \\to \\mathbb{R}$, define a sequence of intervals avoiding each $f(n)$, producing a limit point not in $\\text{range}(f)$. Both arguments instantiate the universal Cantor pattern (Cantor's general theorem $|P(A)| > |A|$); Turing's 1936 paper explicitly credits the inspiration to Cantor's diagonal."
     }
   ],
   "leanFile": {
@@ -224,10 +244,12 @@
     "summary": "A complete formalization of Cantor's 1874 nested interval proof of ℝ uncountability. The key technical insight — using thirds-based subdivision to guarantee strictly increasing left endpoints — resolves a subtle boundary-case issue that makes simpler bisection constructions fail.",
     "implications": "This provides an alternative to the cardinality-based proof in OQ-02, with distinct computational character. The limit point `sSup {a f n}` is an explicit function of the enumeration f — in computable analysis (Weihrauch complexity / Type-2 effectivity), the witness is computable given oracle access to f. The formalization makes the completeness axiom usage transparent: the single `sSup` call in `limitPoint` is the only point where Dedekind completeness of ℝ enters; the rest of the 285-line proof is constructive real arithmetic. The nested interval technique generalizes: Bolzano-Weierstrass (every bounded real sequence has a convergent subsequence) uses the same bisection structure, and the abstract Baire Category Theorem (every nonempty complete metric space without isolated points is uncountable) replaces nested intervals with nested open balls avoiding each f(n) — making this formalization a concrete, fully verified instance of a deep topological principle.",
     "openQuestions": [
-      "Can the nested interval construction be made fully constructive (avoiding Classical.choice in the supremum)?",
-      "What is the computational content of the limit point — can it be extracted as a Cauchy sequence?",
-      "Can the construction be generalized to prove uncountability of other complete metric spaces?",
-      "What is the minimal axiom system needed to formalize this proof — does it require excluded middle, or can it be done in constructive type theory with a suitable notion of supremum?"
+      "Can the nested interval construction be made fully constructive (avoiding Classical.choice in the supremum)? Bishop-style constructive analysis defines $\\sup$ only for sets with a computable bound on convergence, suggesting a constructive variant of `limitPoint` is possible given a computable rate-of-convergence for the bisection: each step shrinks the interval by factor $2/3$, giving Cauchy modulus $\\epsilon_n = (2/3)^n (b_0 - a_0)$.",
+      "What is the computational content of the limit point — can it be extracted as a Cauchy sequence with explicit modulus? The sequence $a_n = \\text{left endpoint at step } n$ is itself a computable Cauchy sequence (given an oracle for the enumeration $f$); its limit is the missing real. Formalizing this would give a Type-2 effectivity / Weihrauch-degree analysis of the uncountability theorem.",
+      "Can the construction be generalized to prove uncountability of other complete metric spaces? Yes: the Baire Category Theorem states every nonempty complete metric space without isolated points is uncountable, with the proof replacing nested intervals by nested open balls of shrinking radius, each avoiding $f(n)$. Formalizing this Baire-category generalization in Lean would subsume both this entry and the more general statement.",
+      "What is the minimal axiom system needed to formalize this proof — does it require excluded middle, or can it be done in constructive type theory with a suitable notion of supremum? The cardinal-bounds proof in `algebraic-numbers-countable-oq-02` uses Classical.em; the nested-interval construction here might evade it. Bishop's constructive real analysis (CRA) and Errett Bishop's *Foundations of Constructive Analysis* (1967) provide the relevant axiom-counting framework.",
+      "**[Addressed in `algebraic-numbers-countable-oq-02-oq-03`]** Sharpen $\\neg \\text{Countable}\\,\\mathbb{R}$ to the exact cardinality $\\#\\mathbb{R} = \\mathfrak{c}$; the companion entry formalizes the missing cardinal-arithmetic step via $\\aleph_0 + \\mathfrak{c} = \\mathfrak{c}$.",
+      "Formalize the topological content of nested intervals as a special case of compactness: $\\{[a_n, b_n]\\}_n$ is a decreasing chain of nonempty compact sets in $\\mathbb{R}$, so by Cantor's intersection theorem $\\bigcap_n [a_n, b_n] \\neq \\emptyset$. The witness point is the supremum of left endpoints, equal to the infimum of right endpoints when the lengths shrink to zero. This abstract compactness formulation generalizes to complete metric spaces and is the natural Lean refactoring of the present proof."
     ]
   },
   "references": [
