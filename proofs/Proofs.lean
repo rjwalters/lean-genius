@@ -2518,6 +2518,7 @@ import Proofs.MinkowskiTheoremOQ02OQ01
 import Proofs.MinkowskiTheoremOQ04
 import Proofs.MinpolyCharpoly
 import Proofs.MinpolyCharpolyOQ03
+import Proofs.MinpolyCharpolyOQ03OQ01
 import Proofs.MobiusInversionIE
 import Proofs.MorleysTheorem
 import Proofs.MorleysTheoremOQ01
