@@ -45,9 +45,31 @@
     ]
   },
   {
+    "id": "ann-4sq-mktype-helper",
+    "proofId": "four-square-distribution",
+    "range": { "startLine": 109, "endLine": 152 },
+    "type": "technique",
+    "title": "The `private mkType` Helper and Per-Type Proof Obligations",
+    "content": "Lines 110–113 introduce a `private def mkType` helper that bundles RepType's two structural proof obligations — `sorted : a₁ ≤ a₂ ∧ a₂ ≤ a₃ ∧ a₃ ≤ a₄` and `sum_eq : a₁^2 + a₂^2 + a₃^2 + a₄^2 = n` — into a single anonymous constructor application. The `private` modifier scopes the helper to the file, signaling that callers should construct `RepType` values via the named `type_<n>_<letter>` definitions rather than reach in directly.\n\nLines 116–152 then construct the 13 concrete `RepType` values used throughout the file. Each `type_<n>_*` definition supplies *shape-specific* proofs of the sortedness conjunction: for `(0,0,0,1)` the sortedness chain is `⟨le_refl, le_refl, Nat.zero_le⟩` (two equal pairs, plus `0 ≤ k`); for `(1,1,1,1)` it is `⟨le_refl, le_refl, le_refl⟩` (all equal); for `(0,0,1,2)` it is `⟨le_refl, Nat.zero_le, le_of_lt (by norm_num)⟩` (zero pair, zero-to-positive transition, strict positive ordering). The sum equality is uniformly closed by `norm_num` since it is a concrete polynomial identity in ℕ, except for the all-distinct case `type_30_a` where `by omega` handles the `1 ≤ 2 ≤ 3 ≤ 4` chain.\n\nThe pattern matters because it scales: enumerating types for n = 11, 12, ... requires only following the same template, and the `omega` / `norm_num` tactics close every new case automatically. This is the engineering payoff of structuring RepType with bundled invariants rather than carrying them as separate hypotheses — every downstream theorem about contributions can assume the invariants hold without re-proving them.",
+    "mathContext": "RepType's two invariants (sortedness and sum-of-squares) are *propositional*, not definitional — Lean treats `RepType n` as a Σ-type whose right component is a proof of `(sorted) ∧ (sum_eq)`. The `mkType` helper makes the bundling syntactically uniform; the per-type sortedness proofs reflect the *shape* of each ordered tuple (which pairs are equal, which strict, which involve 0). This is the Lean 4 idiom for representing a finite combinatorial structure as a *dependent type* whose elements come with embedded validity certificates, eliminating the need for separate well-formedness checks throughout the file.",
+    "significance": "supporting",
+    "prerequisites": [
+      "Lean 4 anonymous constructor syntax ⟨…⟩",
+      "le_refl, Nat.zero_le, le_of_lt as ≤-proof primitives",
+      "norm_num and omega for decidable arithmetic"
+    ],
+    "relatedConcepts": [
+      "RepType structure (lines 50-57)",
+      "Σ-types with embedded invariants",
+      "sortedness as a proof obligation",
+      "norm_num arithmetic decision procedure",
+      "omega Presburger arithmetic"
+    ]
+  },
+  {
     "id": "ann-4sq-enumeration",
     "proofId": "four-square-distribution",
-    "range": { "startLine": 102, "endLine": 227 },
+    "range": { "startLine": 154, "endLine": 227 },
     "type": "concept",
     "title": "Computable Enumeration via native_decide: Types for n = 1 to 10",
     "content": "Parts 3–4 enumerate all representation types for small n and verify contributions by native_decide. The mkType helper constructs RepType values with explicit proof obligations for sorting and sum conditions.\n\nn=1 through 7: each has exactly one RepType, with contributions 8, 24, 32, 8+16=24, 48, 96, 64. n=9: two types — (0,0,0,3) contributing 8 and (0,1,2,2) contributing 96, totaling 104 = 8×σ*(9) = 8×13. n=10: (0,0,1,3) contributing 48 and (1,1,2,2) contributing 96, totaling 144 = 8×18.\n\nThe native_decide tactic directly evaluates the computable definitions — no proof needed beyond the definitional unfolding. This is the Lean 4 idiom for verifying fixed-input computational facts about structures with DecidableEq.",
