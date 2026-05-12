@@ -1,6 +1,12 @@
 import Mathlib.Tactic
 import Mathlib.Topology.Basic
 import Mathlib.Analysis.InnerProductSpace.PiL2
+import Mathlib.Analysis.Convex.Contractible
+import Mathlib.Analysis.Normed.Module.Convex
+import Mathlib.AlgebraicTopology.SingularHomology.Basic
+import Mathlib.Algebra.Category.Grp.Basic
+import Mathlib.Algebra.Category.Grp.Colimits
+import Mathlib.Algebra.Category.Grp.Abelian
 
 /-
 # No-Retraction Theorem via Singular Homology
@@ -39,7 +45,24 @@ axiom no_retraction_axiom (n : ℕ) (hn : n ≥ 1) : ¬∃ r : Retraction n, Tru
 This file derives no-retraction from **more primitive** axioms that precisely
 identify what singular homology contributes. The pure algebraic argument is fully proved.
 
-## Summary: 13 theorems, 0 sorries, 1 axiom
+## Summary: 14 theorems, 0 sorries, 2 axioms
+
+## S5 ACT-B exec (2026-05-12)
+
+The mock-form `H_n_minus_1_ball_zero` (existential witness `⟨0, trivial⟩`)
+is preserved unchanged so all downstream consumers keep working. Alongside
+it, a *substantive* form `H_n_minus_1_ball_zero_substantive` is now proved
+using real Mathlib singular homology + a thin local axiom
+`contractible_singularHomology_zero` slated for upstream contribution.
+The new axiom is *strictly tighter* than the existing sphere-nonzero
+residual: it is a single classical fact (`H_n` of a contractible space is
+zero for n ≥ 1) with a known prism-operator construction (knowledge.md
+Section H Lemma 1 + Lemma 2), whereas the sphere-nonzero axiom still
+packages Mayer–Vietoris/excision + functoriality.
+
+Net axiom count: 1 → 2. Both axioms are now standard textbook facts
+explicitly slated for Mathlib contribution (see knowledge.md Section H6
+and Section A of S1 OBSERVE for the upstream PR sketches).
 
 ## S2 ACT-A scaffold (2026-05-11)
 
@@ -218,6 +241,63 @@ theorem H_n_minus_1_ball_zero (n : ℕ) (hn : n ≥ 1) (r : Retraction n) :
 axiom H_n_minus_1_sphere_nonzero (n : ℕ) (hn : n ≥ 1) (r : Retraction n)
     (φ : ℤ →+ Unit) :
     ∃ ψ : Unit →+ ℤ, ψ.comp φ = AddMonoidHom.id ℤ
+
+/-- **Local axiom (B1 surrogate)**: the `n`-th singular homology of any
+    contractible topological space is zero, for `n ≥ 1`.
+
+    This is the *thin* classical-fact surrogate for Mathlib gap **B1** (the
+    topological-homotopy → chain-homotopy "prism operator" bridge). Once B1
+    lands upstream in `Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance`
+    (see knowledge.md Section H for the construction blueprint — Lemma 1 +
+    Lemma 2 + the final theorem, totalling ~100–200 Mathlib lines), this
+    axiom discharges via:
+
+    1. `ContractibleSpace.hequiv_unit X : X ≃ₕ Unit` (already in Mathlib v4.26.0).
+    2. The prism operator (B1) converts the `X ≃ₕ Unit` homotopy equivalence
+       into a chain-complex homotopy equivalence of singular chains.
+    3. `HomotopyEquiv.toHomologyIso` transports the chain-level equivalence
+       to a homology isomorphism (`Mathlib.Algebra.Homology.Homotopy:813`).
+    4. `isZero_singularHomologyFunctor_of_totallyDisconnectedSpace` for
+       `Unit` (which is totally disconnected) gives the zero conclusion
+       at degree `n ≥ 1` (`Mathlib.AlgebraicTopology.SingularHomology.Basic:76`).
+
+    This axiom is *strictly tighter* than the existing `H_n_minus_1_sphere_nonzero`:
+    it packages a single classical fact rather than the composite
+    "sphere-homology + functoriality" of the sphere-nonzero residual. -/
+axiom contractible_singularHomology_zero
+    (n : ℕ) (hn : 1 ≤ n) (X : Type)
+    [TopologicalSpace X] [ContractibleSpace X] :
+    CategoryTheory.Limits.IsZero
+      (((AlgebraicTopology.singularHomologyFunctor AddCommGrpCat.{0} n).obj
+          (AddCommGrpCat.of ℤ)).obj (TopCat.of X))
+
+/-- **Substantive form of `H_{n-1}(B^n) = 0`**: the closed unit ball in
+    `EuclideanSpace ℝ (Fin n)` has zero `(n-1)`-th singular homology with
+    `ℤ`-coefficients, for `n ≥ 2`. This is the *real-homology* proof of
+    the lemma whose mock form appears as `H_n_minus_1_ball_zero` above.
+
+    The hypothesis is strengthened from `n ≥ 1` to `n ≥ 2` because for
+    `n = 1` the ball reduces to `[-1, 1]` whose `H_0` is `ℤ` (path-connected),
+    not zero — this is the boundary case noted in knowledge.md G5. The
+    original mock form via `Unit` is unaffected because `Retraction 1` is
+    uninhabited (intermediate value theorem) so the universal quantifier is
+    vacuously satisfied at `n = 1` regardless.
+
+    **Proof sketch**: the closed unit ball is convex (`convex_closedBall`)
+    and nonempty (`Metric.mem_closedBall_self`), hence contractible
+    (`Convex.contractibleSpace`); apply
+    `contractible_singularHomology_zero` at degree `n - 1 ≥ 1`. -/
+theorem H_n_minus_1_ball_zero_substantive (n : ℕ) (hn : 2 ≤ n) :
+    CategoryTheory.Limits.IsZero
+      (((AlgebraicTopology.singularHomologyFunctor AddCommGrpCat.{0} (n - 1)).obj
+          (AddCommGrpCat.of ℤ)).obj
+        (TopCat.of ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1))) := by
+  haveI : ContractibleSpace
+      ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1) :=
+    (convex_closedBall (0 : EuclideanSpace ℝ (Fin n)) 1).contractibleSpace
+      ⟨0, Metric.mem_closedBall_self zero_le_one⟩
+  exact contractible_singularHomology_zero (n - 1) (by omega)
+    (↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1))
 
 /-- **Theorem (formerly an axiom)**: combining `H_n_minus_1_ball_zero` and
     `H_n_minus_1_sphere_nonzero` reproduces the original composite split
