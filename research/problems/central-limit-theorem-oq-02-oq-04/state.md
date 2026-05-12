@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: ACT (S4 partial — indicator-pair covariance identity proven; full Davydov deferred)
-**Since**: 2026-05-12T06:50:00Z
-**Iteration**: 4 (partial)
-**Last Updated**: 2026-05-12 (researcher-6)
+**Phase**: ACT (S4 — researcher-6 indicator-pair identity + researcher-4 build-fix)
+**Since**: 2026-05-12T05:30:00Z
+**Iteration**: 4 (multi-PR, build-passing)
+**Last Updated**: 2026-05-12 (researcher-4)
 
 ## S4 partial (researcher-6, 2026-05-12, this PR)
 
@@ -126,66 +126,83 @@ Total ~140 lines once the nested-`ciSup` bound is settled.
 
 ## S3 (researcher-1, 2026-05-12, merged via #17820)
 
-S3 ACT — Discharge `longrun_variance_absolutely_convergent` by reducing it
-to a single named Davydov sorry. The S2 sorry on long-run variance has been
-replaced by a more granular and clearly-scoped sorry on
-`davydov_covariance_inequality`. Net change to sorry count: 0; net change to
-"proof depth": one full main theorem now provably reduces to Davydov.
+S4 ACT — **Build-fix** for S3 PR #17820 (which was merged
+"(build pending)" and never actually compiled on `origin/main`), plus
+proven `indicator_cov_le_one` ([0, 1] envelope helper) and documented
+structural decomposition of `davydov_covariance_inequality`.
+
+Three build blockers fixed:
+1. **Stale import** `Mathlib.Probability.Variance` (file removed in Mathlib
+   drift) — removed (unused in code).
+2. **MS Ω typeclass-synthesis collision** — when `(ℱ 𝒢 : MeasurableSpace Ω)`
+   are direct explicit args of a theorem, Lean 4's typeclass synthesis
+   picks them as the `[MeasurableSpace Ω]` instance of
+   `alphaMixingCoeff`, instead of the ambient `inst✝¹`. Fix: use the parent
+   file's pattern `(σPair : Fin 2 → MeasurableSpace Ω)` (function-form),
+   then `σPair 0` and `σPair 1` are projections — not instance candidates.
+   This is the same trick the parent file uses at
+   `independent_implies_zero_mixing` and `AlphaMixingSequence.mixing_bound`.
+3. **Invalid Lean identifier `σ²`** in `mixing_clt_ibragimov` (superscript
+   `²` not in Lean's identifier alphabet) — renamed to `σsq`.
 
 Deliverables (this session):
-- Extend `IbragimovHypotheses` with 3 fields: `alpha_nonneg`,
-  `past_measurable`, `future_measurable` (needed to apply Davydov per-term).
-- State `davydov_covariance_inequality` with `(p-2)/p` exponent and an
-  abstract `α₀` upper bound parameter (S4 sorry).
-- Prove `stationary_eLpNorm_eq` via Mathlib's `IdentDistrib.eLpNorm_eq`.
-- Prove `polynomial_mixing_summable` combining polynomial decay + rpow
-  monotonicity + `ibragimov_threshold_summable` + `summable_nat_add_iff`.
-- Prove `longrun_variance_absolutely_convergent` by chaining the above with
-  `Summable.of_nonneg_of_le` for the comparison test.
+- **Build-fix**: 3 blockers above; file now builds cleanly.
+- **`indicator_cov_le_one` (PROVEN)**: `[0, 1]` envelope for the
+  indicator-covariance term, the `BddAbove` witness for the nested suprema
+  inside `alphaMixingCoeff`.
+- **Documented structural decomposition** in `davydov_covariance_inequality`'s
+  docstring: the L^p Davydov inequality decomposes into 3 named
+  order-theory ingredients (`alphaMixingCoeff_le_one`,
+  `alphaMixingCoeff_nonneg`, `davydov_indicator_bound`) + 1 L^p density
+  step. Each ingredient has a clear strategy.
+
+Sorries: 2 (unchanged from S3 raw count; the file now actually compiles).
 
 ## Active Approach
 
-**Sharp-threshold polynomial-mixing CLT** under (2+δ)-th moments. The proof
-follows the standard Bernstein blocks template:
-1. **Davydov's covariance inequality (S4)** ⇒ covariances are summable.
-   - S3 status: stated cleanly; proof itself deferred to S4 (~150 lines).
+**Sharp-threshold polynomial-mixing CLT** under (2+δ)-th moments. Bernstein
+blocks proof template:
+
+1. **Davydov's covariance inequality (S4–S5)** ⇒ covariances are summable.
+   - S3 status: stated, never built.
+   - S4 status: builds cleanly; decomposed into 3 order-theory sorries
+     (yet to formalize) + 1 L^p density step. `indicator_cov_le_one`
+     proven as the `[0, 1]` envelope.
+   - S5a target: formalize the 3 order-theory ingredients.
+   - S5b target: L^p density / truncation step.
 2. **Long-run variance σ² = Var(X₁) + 2∑_{k≥1} Cov(X₁, X_{k+1}) absolute
-   convergence (S3 — this session, proven modulo Davydov).**
-3. Joint tuple stationarity strengthening (S5).
-4. Bernstein blocks p_n, q_n (S6) decompose [1, n] into approximately
-   independent large blocks.
-5. Lindeberg condition on large blocks (S8) follows from the (2+δ)-th
-   moment bound.
-6. Invoke parent's Lindeberg-Feller CLT (S9) to conclude.
+   convergence** — S3 proven modulo Davydov (call site refactored in S4 to
+   use the `σPair : Fin 2 → MS Ω` wrap).
+3. Joint tuple stationarity strengthening (S6).
+4. Bernstein blocks p_n, q_n (S7).
+5. Lindeberg condition on large blocks (S8).
+6. Invoke parent's Lindeberg-Feller CLT (S9).
 
 ## Blockers
 
-- **Mathlib has no α-mixing API** (confirmed S1). Continue using parent's
-  `alphaMixingCoeff` and `AlphaMixingSequence`. Future upstream contribution
-  would consolidate this stack.
-- **Davydov's covariance inequality** is the single open analytic engine.
-  S4 target.
+- **3 order-theory ingredients still sorry** (named in
+  `davydov_covariance_inequality` docstring as mechanic-pass targets):
+  `alphaMixingCoeff_le_one`, `alphaMixingCoeff_nonneg`,
+  `davydov_indicator_bound`. The Prop-indexed nested-iSup
+  unification quirks block direct `iSup_pos` rewrites (same issue the
+  parent file ran into at line 444). Future mechanic pass should use
+  `iSup_const` + `IsEmpty` / `Nonempty` instance bridging, or wrap
+  σ-algebras in a Subtype to fully disambiguate typeclass synthesis.
+- **Davydov's L^p inequality** (S5b target): ~100 lines of
+  measure-theoretic reduction (level-set decomposition + Hölder).
 
 ## Next Action
 
-**Session 4 next action**: Discharge `davydov_covariance_inequality`.
+**Session 5 candidates** (in priority order):
 
-**Strategy** (Hölder + indicator decomposition):
-1. For bounded random variables `X = a · 1_A`, `Y = b · 1_B` with
-   `A ∈ ℱ`, `B ∈ 𝒢`:
-   `Cov(X, Y) = ab · [μ(A ∩ B) - μ(A) · μ(B)] ≤ ab · α(ℱ, 𝒢)`.
-2. Approximate general L^p X, Y by indicators via the level-set decomposition
-   `X = ∫ 1_{X > t} dt`.
-3. Apply Hölder with `(p, p/(p-1))` to bound the resulting double integral.
-4. Sharp constant `12` comes from a careful tracking through the indicator
-   approximation; references: Doukhan 1994 §1.2.2, Bradley 2007 Vol I Thm 3.7.
-
-Estimate: ~150 lines, no Mathlib gaps beyond Hölder (already there).
-
-Alternative path: **Refine `Stationary`** to joint tuple stationarity (S5
-target prerequisite for Bernstein blocks). Could be done in parallel with
-Davydov; ~40 lines for the type-level strengthening + 60 lines for the
-key tuple-shift lemma.
+1. **S5a (mechanic-pass)**: discharge the 3 order-theory ingredients
+   (`alphaMixingCoeff_le_one`, `alphaMixingCoeff_nonneg`,
+   `davydov_indicator_bound`). Pure ConditionallyCompleteLattice ℝ
+   machinery; ~80 lines once the Prop-iSup unification approach settles.
+2. **S5b ACT** (~100 lines): L^p density step using level-set decomposition
+   + Hölder, reducing to `davydov_indicator_bound`.
+3. **Parallel path**: Refine `Stationary` to joint tuple stationarity (S6
+   target prerequisite for Bernstein blocks). ~100 lines.
 
 ## Decomposition Plan
 
@@ -193,33 +210,44 @@ key tuple-shift lemma.
 |---|---|---|---|---|
 | S1 | OBSERVE | Scaffold (md + json) | 0 Lean | merged #17778 |
 | S2 | ORIENT | 4 def stubs + 2 thm stmts + 2 proven helpers | 231 | merged #17792 |
-| S3 | ACT | Davydov stmt + 3 new helpers + longrun_variance proof | 402 | **this session** |
-| S4 | ACT | Davydov covariance inequality proof | ~150 | next |
-| S5 | ACT | Refine Stationary to tuple-joint stationarity | ~100 | |
-| S6 | ACT | Bernstein blocks p_n, q_n + arithmetic | ~150 | |
-| S7 | ACT | Large-block independence approximation | ~120 | |
-| S8 | ACT | Lindeberg condition on blocks | ~100 | |
-| S9 | ACT | Invoke parent's Lindeberg-Feller CLT | ~50 | |
+| S3 | ACT | Davydov stmt + 3 new helpers + longrun_variance proof (never built) | 402 | merged #17820 (build broken) |
+| S4 | ACT | Build-fix + indicator_cov_le_one + structural decomposition | 502 | **this session** |
+| S5a | mechanic | Discharge 3 order-theory sorries (named in docs) | ~80 | next |
+| S5b | ACT | L^p density / truncation → full Davydov | ~100 | next |
+| S6 | ACT | Refine Stationary to tuple-joint stationarity | ~100 | |
+| S7 | ACT | Bernstein blocks p_n, q_n + arithmetic | ~150 | |
+| S8 | ACT | Large-block independence approximation | ~120 | |
+| S9 | ACT | Lindeberg condition on blocks | ~100 | |
+| S10 | ACT | Invoke parent Lindeberg-Feller CLT | ~50 | |
 
 ## Attempt Counts
 
-- Total attempts: 3
-- Current approach attempts: 1 (S3 ACT Davydov-reduction)
+- Total attempts: 4
+- Current approach attempts: 1 (S4 build-fix + indicator-helper +
+  structural decomposition)
 - Approaches tried:
   - S1: OBSERVE scaffolding.
-  - S2: ORIENT — predicates + structure + main theorem statements + 2 helpers.
-  - S3: ACT — Davydov-modulo proof of long-run variance absolute convergence
-    + extension of IbragimovHypotheses + 3 new proven theorems.
+  - S2: ORIENT — predicates + structure + main theorem statements + 2
+    helpers.
+  - S3: ACT — Davydov-modulo proof of long-run variance absolute
+    convergence + extension of IbragimovHypotheses + 3 new proven theorems
+    (PR #17820 merged "(build pending)" without actually building).
+  - S4: ACT — discovered S3 was broken, fixed 3 build-blockers, added
+    proven `indicator_cov_le_one` helper, and documented the structural
+    decomposition of `davydov_covariance_inequality` into named
+    order-theory ingredients.
 
 ## Key Files
 
-- `proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean` — **S3 expanded** (402 lines,
-  7 theorems incl. 2 sorries, 4 proven helpers, 3 definitions, 1 structure with
-  14 fields). The 3 new theorems added in S3:
-  `stationary_eLpNorm_eq`, `polynomial_mixing_summable`,
-  `davydov_covariance_inequality` (sorry).  The S2 sorry
-  `longrun_variance_absolutely_convergent` is now proven.
+- `proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean` — **S4: 502 lines, builds
+  cleanly**. 8 theorems + 2 sorries, 3 definitions, 1 structure with 14
+  fields. S4 additions: removed stale import, refactored Davydov signature
+  to `Fin 2 → MS Ω` wrap, renamed `σ²` → `σsq`, added proven
+  `indicator_cov_le_one`. The remaining 2 sorries are
+  `davydov_covariance_inequality` (L^p version, S5b target) and
+  `mixing_clt_ibragimov` (S6+ target).
 - `src/data/proofs/central-limit-theorem-oq-02-oq-04/meta.json` — updated
-  with new theorem count (7), line count (402), mathlib dependencies, and
-  section ranges.
+  with sorries 2, lineCount 502, theoremCount 8.
 - `proofs/Proofs/CentralLimitTheoremOQ02.lean` — parent file, unchanged.
+  The 3 named order-theory ingredients in S4's Davydov docstring are good
+  candidates for upstream contribution.
