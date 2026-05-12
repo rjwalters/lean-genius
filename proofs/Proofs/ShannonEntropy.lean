@@ -247,6 +247,187 @@ theorem entropy_of_uniform_eq_log_card {α : Type*} [Fintype α] [DecidableEq α
   rw [Real.log_inv, ← mul_assoc, mul_inv_cancel₀ hcard_ne, one_mul, neg_neg]
 
 -- ============================================================
+-- Maximum Entropy: Equality Case (Converse)
+-- ============================================================
+
+-- Strict version of `Real.log_le_sub_one_of_pos`: when `y > 0` and `y ≠ 1`,
+-- the bound `log y ≤ y - 1` is strict. Derived from `Real.add_one_lt_exp`
+-- applied at `x = log y` (which is nonzero exactly when `y ≠ 1`), then
+-- `Real.exp_log hy` rewrites `exp (log y) = y`.
+private lemma log_lt_sub_one_of_pos_of_ne_one {y : ℝ}
+    (hy : 0 < y) (hne : y ≠ 1) :
+    Real.log y < y - 1 := by
+  have hlog_ne : Real.log y ≠ 0 := by
+    intro h
+    apply hne
+    rw [← Real.exp_log hy, h, Real.exp_zero]
+  have hexp := Real.add_one_lt_exp hlog_ne
+  rw [Real.exp_log hy] at hexp
+  linarith
+
+-- Strict pointwise KL bound. The companion of `kl_term_bound`:
+-- when `p ≠ q` (both positive), the inequality `p · log(p/q) ≥ p - q`
+-- is strict.
+private lemma kl_term_bound_strict {p q : ℝ}
+    (hp : 0 < p) (hq : 0 < q) (hne : p ≠ q) :
+    p - q < p * Real.log (p / q) := by
+  -- q / p ≠ 1, since p ≠ q.
+  have hqp_ne_one : q / p ≠ 1 := by
+    intro h
+    have hpne : (p : ℝ) ≠ 0 := ne_of_gt hp
+    field_simp at h
+    exact hne h.symm
+  -- Strict log inequality at `q / p`.
+  have h1 : Real.log (q / p) < q / p - 1 :=
+    log_lt_sub_one_of_pos_of_ne_one (div_pos hq hp) hqp_ne_one
+  have h2 : p * Real.log (q / p) < q - p := by
+    calc p * Real.log (q / p)
+        < p * (q / p - 1) := (mul_lt_mul_left hp).mpr h1
+      _ = q - p := by field_simp
+  have h3 : Real.log (p / q) = -Real.log (q / p) := by
+    rw [Real.log_div (ne_of_gt hp) (ne_of_gt hq),
+        Real.log_div (ne_of_gt hq) (ne_of_gt hp)]
+    ring
+  have h4 : p * Real.log (p / q) = -(p * Real.log (q / p)) := by
+    rw [h3]; ring
+  linarith
+
+-- Equality case of KL non-negativity: `D(p ∥ q) = 0 ↔ p ≡ q`,
+-- under the standing convention `0 · log(0 / q) = 0` and `q` strictly
+-- positive (the typical setup for relative-entropy lemmas in this file).
+--
+-- Proof of forward direction.
+-- Each KL term majorises `p y - q y` (by `kl_term_bound` if `p y > 0`,
+-- and `0 ≥ p y - q y = -q y` is FALSE — but the if-branch contributes `0`,
+-- and the pointwise inequality `p y - q y ≤ (if … then 0 else …)`
+-- still holds because the LHS at `p y = 0` is `-q y < 0`).
+-- The sum of pointwise differences is therefore nonneg and sums to `0`
+-- (since `∑ (p y - q y) = 0`), so each pointwise difference vanishes.
+-- At `p y = 0` this forces `-q y = 0`, contradicting `q y > 0` — hence
+-- `p y > 0` for all `y`. At each such `y`, equality in `kl_term_bound`
+-- combined with the strict version (`kl_term_bound_strict`) forces
+-- `p y = q y`.
+theorem klDivergence_eq_zero_iff {α : Type*} [Fintype α] [DecidableEq α]
+    {p q : α → ℝ} (hp : ∀ x, 0 ≤ p x) (hq : ∀ x, 0 < q x)
+    (hpsum : ∑ x, p x = 1) (hqsum : ∑ x, q x = 1) :
+    klDivergence p q = 0 ↔ ∀ x, p x = q x := by
+  unfold klDivergence
+  refine ⟨fun hzero x => ?_, fun heq => ?_⟩
+  · -- Forward direction.
+    set g : α → ℝ :=
+      fun y => if p y = 0 then 0 else p y * Real.log (p y / q y) with hg_def
+    -- Pointwise lower bound: p y - q y ≤ g y.
+    have hbound : ∀ y ∈ (Finset.univ : Finset α), p y - q y ≤ g y := by
+      intro y _
+      by_cases hpy : p y = 0
+      · simp [hg_def, hpy]
+        linarith [hq y]
+      · simp [hg_def, hpy]
+        have hpy_pos : 0 < p y := lt_of_le_of_ne (hp y) (Ne.symm hpy)
+        linarith [kl_term_bound hpy_pos (hq y)]
+    -- The sum of (g y - (p y - q y)) is nonneg and equals 0, so each
+    -- summand vanishes.
+    have hdiff_nonneg : ∀ y ∈ (Finset.univ : Finset α),
+        0 ≤ g y - (p y - q y) := by
+      intro y hy
+      linarith [hbound y hy]
+    have hsum_diff_zero : ∑ y, (g y - (p y - q y)) = 0 := by
+      rw [Finset.sum_sub_distrib]
+      have h_g_sum : ∑ y, g y = 0 := hzero
+      have h_pq_sum : ∑ y, (p y - q y) = 0 := by
+        rw [Finset.sum_sub_distrib, hpsum, hqsum, sub_self]
+      rw [h_g_sum, h_pq_sum, sub_self]
+    have hdiff_zero : ∀ y ∈ (Finset.univ : Finset α),
+        g y - (p y - q y) = 0 :=
+      (Finset.sum_eq_zero_iff_of_nonneg hdiff_nonneg).mp hsum_diff_zero
+    have hx_eq : g x = p x - q x := by
+      have := hdiff_zero x (Finset.mem_univ x)
+      linarith
+    -- Case-split on p x = 0.
+    by_cases hpx : p x = 0
+    · -- p x = 0 forces -q x = 0, contradicting q x > 0.
+      simp [hg_def, hpx] at hx_eq
+      linarith [hq x]
+    · -- p x > 0: g x = p x · log(p x / q x). Equality with p x - q x
+      -- contradicts kl_term_bound_strict unless p x = q x.
+      have hpx_pos : 0 < p x := lt_of_le_of_ne (hp x) (Ne.symm hpx)
+      simp [hg_def, hpx] at hx_eq
+      by_contra hne
+      have := kl_term_bound_strict hpx_pos (hq x) hne
+      linarith
+  · -- Backward direction. p ≡ q makes each KL term `0`.
+    apply Finset.sum_eq_zero
+    intro x _
+    have hpx_eq : p x = q x := heq x
+    by_cases hpx : p x = 0
+    · simp [hpx]
+    · rw [if_neg hpx, hpx_eq, div_self (ne_of_gt (hq x)),
+          Real.log_one, mul_zero]
+
+-- Maximum entropy equality case: `H(p) = log |α| ↔ p is uniform`.
+-- The converse of `entropy_le_log_card` and the strengthening of
+-- `entropy_of_uniform_eq_log_card` into an iff.
+--
+-- Useful for tightness arguments in capacity-achieving inputs (downstream
+-- of `entropy_of_uniform_eq_log_card` in the Fano-converse chain).
+--
+-- Proof. KL with the uniform reference distribution `q = (card α)⁻¹`
+-- satisfies the algebraic identity
+--   `klDivergence p q + shannonEntropy p = Real.log (card α)`,
+-- so `H(p) = log |α| ↔ klDivergence p q = 0`. Apply
+-- `klDivergence_eq_zero_iff` to conclude.
+theorem entropy_eq_log_card_iff_uniform {α : Type*} [Fintype α] [DecidableEq α]
+    [Nonempty α] {p : α → ℝ}
+    (hp : ∀ x, 0 ≤ p x) (hsum : ∑ x, p x = 1) :
+    shannonEntropy p = Real.log (Fintype.card α) ↔
+    ∀ x, p x = (Fintype.card α : ℝ)⁻¹ := by
+  have hcard_pos : (0 : ℝ) < Fintype.card α :=
+    Nat.cast_pos.mpr Fintype.card_pos
+  have hcard_ne : (Fintype.card α : ℝ) ≠ 0 := ne_of_gt hcard_pos
+  have hinv_pos : (0 : ℝ) < (Fintype.card α : ℝ)⁻¹ := inv_pos.mpr hcard_pos
+  have hinv_ne : ((Fintype.card α : ℝ)⁻¹) ≠ 0 := inv_ne_zero hcard_ne
+  -- Uniform reference distribution.
+  have hq_pos : ∀ _ : α, (0 : ℝ) < (Fintype.card α : ℝ)⁻¹ := fun _ => hinv_pos
+  have hq_sum : (∑ _ : α, ((Fintype.card α : ℝ)⁻¹) : ℝ) = 1 := by
+    simp only [Finset.sum_const, Finset.card_univ, nsmul_eq_mul]
+    exact mul_inv_cancel₀ hcard_ne
+  -- Key identity: KL(p || uniform) + H(p) = log |α|.
+  have hKL_eq :
+      klDivergence p (fun _ : α => (Fintype.card α : ℝ)⁻¹) + shannonEntropy p
+        = Real.log (Fintype.card α) := by
+    unfold klDivergence shannonEntropy
+    have h_split : ∀ y : α,
+        (if p y = 0 then 0 else p y * Real.log (p y / (Fintype.card α : ℝ)⁻¹)) =
+        (if p y = 0 then 0 else p y * Real.log (p y))
+          + p y * Real.log (Fintype.card α) := by
+      intro y
+      by_cases hpy : p y = 0
+      · simp [hpy]
+      · simp [hpy]
+        have hpy_pos : 0 < p y := lt_of_le_of_ne (hp y) (Ne.symm hpy)
+        rw [Real.log_div (ne_of_gt hpy_pos) hinv_ne, Real.log_inv]
+        ring
+    simp_rw [h_split]
+    rw [Finset.sum_add_distrib]
+    have hcoll : (∑ y : α, p y * Real.log (Fintype.card α)) =
+        Real.log (Fintype.card α) := by
+      rw [← Finset.sum_mul, hsum, one_mul]
+    rw [hcoll]
+    ring
+  -- Iff via klDivergence_eq_zero_iff.
+  constructor
+  · intro hH
+    have hKL_zero :
+        klDivergence p (fun _ : α => (Fintype.card α : ℝ)⁻¹) = 0 := by
+      linarith
+    exact (klDivergence_eq_zero_iff hp hq_pos hsum hq_sum).mp hKL_zero
+  · intro hpx
+    have hKL_zero :
+        klDivergence p (fun _ : α => (Fintype.card α : ℝ)⁻¹) = 0 :=
+      (klDivergence_eq_zero_iff hp hq_pos hsum hq_sum).mpr hpx
+    linarith
+
+-- ============================================================
 -- Log-Sum Inequality
 -- ============================================================
 
