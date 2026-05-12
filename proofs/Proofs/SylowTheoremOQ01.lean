@@ -54,10 +54,10 @@ private lemma factorization_pq_at_q (h : IsPQGroup G) :
   rw [Nat.factorization_mul (Nat.Prime.ne_zero h.hp) (Nat.Prime.ne_zero h.hq),
       Finsupp.add_apply]
   have h1 : h.p.factorization h.q = 0 := by
-    rw [(Nat.Prime.prime h.hp).factorization, Finsupp.single_apply,
+    rw [h.hp.factorization, Finsupp.single_apply,
         if_neg (Ne.symm h.hpq)]
   have h2 : h.q.factorization h.q = 1 := by
-    rw [(Nat.Prime.prime h.hq).factorization, Finsupp.single_apply, if_pos rfl]
+    rw [h.hq.factorization, Finsupp.single_apply, if_pos rfl]
   omega
 
 /-- The p-adic valuation of p*q is 1 when p, q are distinct primes -/
@@ -66,9 +66,9 @@ private lemma factorization_pq_at_p (h : IsPQGroup G) :
   rw [Nat.factorization_mul (Nat.Prime.ne_zero h.hp) (Nat.Prime.ne_zero h.hq),
       Finsupp.add_apply]
   have h1 : h.p.factorization h.p = 1 := by
-    rw [(Nat.Prime.prime h.hp).factorization, Finsupp.single_apply, if_pos rfl]
+    rw [h.hp.factorization, Finsupp.single_apply, if_pos rfl]
   have h2 : h.q.factorization h.p = 0 := by
-    rw [(Nat.Prime.prime h.hq).factorization, Finsupp.single_apply,
+    rw [h.hq.factorization, Finsupp.single_apply,
         if_neg (Ne.symm h.hpq)]
   omega
 
