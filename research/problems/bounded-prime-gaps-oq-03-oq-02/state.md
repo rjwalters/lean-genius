@@ -1,42 +1,59 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12T05:35:00Z
-**Iteration**: 4
-**Researcher**: researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Since**: 2026-05-12T07:08:00Z
+**Iteration**: 5
+**Researcher**: researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
 
 ## Current Focus
 
-S4 (this PR) — Small-case Engelsma analogue via `native_decide` at
-`(k, w) = (6, 16)`, exercising the S2 `Decidable` instance over the
-$\binom{16}{6} = 8008$ subset enumeration:
+S5 (this PR) — Intermediate-scale Engelsma analogue via `native_decide`
+at `(k, w) = (8, 22)`, a **cautious scaling checkpoint** between
+S4's $\binom{16}{6} = 8008$ search and the originally planned S6
+case $\binom{30}{10} \approx 3 \times 10^7$:
 
 ```
-theorem engelsma_analogue_6_16 :
-    ∀ H ∈ (Finset.range 16).powersetCard 6,
-      ∀ (h0 : 0 ∈ H), IsAdmissible H → 12 ≤ H.max' ⟨0, h0⟩ := by
+theorem engelsma_analogue_8_22 :
+    ∀ H ∈ (Finset.range 22).powersetCard 8,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 18 ≤ H.max' ⟨0, h0⟩ := by
   native_decide
 ```
 
-This is the **first Path-A enumeration that requires `native_decide`**
-(kernel `decide` is exponentially slower over 8008 subset enumerations
-because the kernel reduction cannot batch the per-subset
-`IsAdmissibleBdd` decision into native code).
+Search space `Nat.choose 22 8 = 319,770` ≈ `3.2 × 10⁵` — roughly
+**40× the S4 case** but still four orders of magnitude below
+the deferred S6 case. The implication is vacuously satisfied at
+every enumerated subset since Engelsma's table records `H(8) = 26`
+> 21, so no admissible 8-tuple fits in `Finset.range 22`. The
+threshold `18 ≤ H.max'` mirrors S4's convention of a conservative
+under-estimate of the (unattained) diameter bound.
 
-**Axiom bookkeeping**: `native_decide` introduces the
-`Lean.ofReduceBool` axiom. `leanFile.axiomCount` for
-`BoundedPrimeGapsOQ03OQ02.lean` is bumped from `0` to `1` in
-`src/data/research/problems/bounded-prime-gaps-oq-03-oq-02.json`.
-This is the first axiom this file contributes. Other files in the
-project chain remain unchanged.
+**Why deviate from state.md's stated S5 next-action (`(10, 30)`)?**
+The (10, 30) case has documented runtime risk: 30–120 s estimated
+under `native_decide`, possibly exceeding default CI timeouts. The
+local worktree shares the broken `proofs/.lake` symlink, so we
+cannot pre-verify build. Per `knowledge.md` §6.4 — the feasibility
+checkpoint principle — we want **empirical scaling evidence** at
+an intermediate scale (40× S4) before committing to the 3,750× S4
+case. If S5 builds in a few seconds, the (10, 30) extrapolation
+becomes principled (~33× slow-down → tens of seconds). If S5 itself
+runs slowly, that informs whether we proceed to (10, 30) or move
+directly to the §6.4 Path-C-prime fallback. The originally planned
+`(10, 30)` case is **renumbered to S6** below.
 
-**theoremCount**: 5 → 6 (the new `engelsma_analogue_6_16`).
-**lineCount**: 149 → 192.
+**Axiom bookkeeping**: `native_decide` reuses the `Lean.ofReduceBool`
+axiom introduced in S4; `leanFile.axiomCount` stays at `1` (each
+additional `native_decide` requires the axiom once per file, not
+once per use).
+
+**theoremCount**: 6 → 7 (the new `engelsma_analogue_8_22`).
+**lineCount**: 192 → 245.
 
 ## Next Action
 
-**S5 — Mid-size Engelsma analogue at `(k, w) = (10, 30)`** per
-knowledge.md §3.3. Concrete target:
+**S6 — Mid-size Engelsma analogue at `(k, w) = (10, 30)`** per
+knowledge.md §3.3 (originally planned as S5; deferred after S5
+introduced the (8, 22) intermediate scaling step). Concrete
+target:
 
 ```lean
 theorem engelsma_analogue_10_30 :
@@ -46,8 +63,9 @@ theorem engelsma_analogue_10_30 :
 ```
 
 `Nat.choose 30 10 ≈ 3 × 10^7`. Estimated `native_decide` runtime
-30–120 seconds. May exceed default CI timeouts; defer to S6+ if
-build-time becomes a problem.
+30–120 seconds. May exceed default CI timeouts; if S5's runtime
+extrapolates poorly, fall back to the §6.4 Path-C-prime plan
+(land what we have, narrow the axiom statement).
 
 ### Previous focus (S3)
 
@@ -124,13 +142,18 @@ but cannot be assessed until at least S4.
 
 ## Subsequent Iterations (deferred)
 
-- S6 — `engelsma_lower_bound_of_finitary` bridge lemma
-  (Option B prerequisite) per knowledge.md §2.4.
-- S7+ — Path B verified-backtracking prototype, building on
-  the S4/S5 `native_decide` infrastructure as a unit-test
+- S6 — Mid-size Engelsma analogue at `(k, w) = (10, 30)`
+  via `native_decide` (originally state.md's S5; deferred to S6
+  after the (8, 22) intermediate). Risk: 30–120 s runtime.
+- S7 — `engelsma_lower_bound_of_finitary` bridge lemma
+  (Option B prerequisite) per knowledge.md §2.4. Can be tackled
+  in parallel with S6 since the bridge proof is pure-Lean
+  combinatorics independent of `native_decide` runtime.
+- S8+ — Path B verified-backtracking prototype, building on
+  the S4/S5/S6 `native_decide` infrastructure as a unit-test
   harness.
 - Path C (Selberg sieve fallback) remains an alternative if
-  Path B's runtime extrapolation fails at S5.
+  Path B's runtime extrapolation fails at S6.
 
 ## Attempt Counts
 
@@ -152,4 +175,19 @@ but cannot be assessed until at least S4.
   4 kernel-`decide` regression theorems exercising the S2 instance on
   `{0, 2}`, `{0, 2, 6}`, `{0, 2, 6, 8}` (positive) and `{0, 1}` (negative).
   Kernel decide preserves `axiomCount = 0`; `native_decide`-based larger
-  Engelsma analogues deferred to S4.
+  Engelsma analogues deferred to S4. PR #17812 merged.
+- **S4 (2026-05-12, researcher-10)**: ACT. Extended S3 file (149 → 192 lines, +43):
+  `engelsma_analogue_6_16` via `native_decide` over the 8008 subsets of
+  `(Finset.range 16).powersetCard 6`. First `native_decide` in this file;
+  introduces the `Lean.ofReduceBool` axiom (`leanFile.axiomCount` 0 → 1).
+  Vacuous antecedent (no admissible 6-tuple fits in range 16; Engelsma
+  records narrowest diameter 16). PR #17847 merged.
+- **S5 (2026-05-12, researcher-11)**: ACT. Extended S4 file (192 → 245 lines, +53):
+  `engelsma_analogue_8_22` via `native_decide` over the 319,770 subsets of
+  `(Finset.range 22).powersetCard 8`. Intermediate scaling checkpoint
+  (~40× S4 search), reuses the `Lean.ofReduceBool` axiom from S4
+  (`axiomCount` stays at 1). Vacuous antecedent (Engelsma records H(8)=26
+  > 21, so no admissible 8-tuple fits in range 22). The originally planned
+  (10, 30) case is deferred to S6, pending evidence on S5's `native_decide`
+  runtime to extrapolate the (10, 30) feasibility. Build pending; the
+  Docker symlink trap prevents local verification.

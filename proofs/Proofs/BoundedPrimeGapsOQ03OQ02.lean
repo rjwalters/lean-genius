@@ -189,4 +189,57 @@ theorem engelsma_analogue_6_16 :
       ∀ (h0 : 0 ∈ H), IsAdmissible H → 12 ≤ H.max' ⟨0, h0⟩ := by
   native_decide
 
+/-! ## S5: Intermediate-scale Engelsma analogue at `(k, w) = (8, 22)`
+
+The next-action recorded in `state.md` after S4 is the
+`(k, w) = (10, 30)` Engelsma analogue, but that case carries a real
+runtime risk: `Nat.choose 30 10 ≈ 3 × 10^7` admissibility checks,
+estimated 30–120 s under `native_decide`, possibly exceeding the
+default CI timeout. Per the §6.4 feasibility-checkpoint plan in
+`knowledge.md`, we want empirical scaling evidence *before*
+committing to that case.
+
+This S5 iteration inserts a **cautious intermediate** at
+`(k, w) = (8, 22)`. The search space is `Nat.choose 22 8 = 319,770`
+≈ `3.2 × 10^5` — roughly 40× the S4 case (8008) but still four
+orders of magnitude below the deferred S6 case. If S5 builds in
+a few seconds, the (10, 30) extrapolation becomes principled
+(estimated `~10⁷ / 3·10⁵ ≈ 33×` slow-down → tens of seconds,
+within typical CI limits). If S5 itself runs slowly, that data
+point informs whether we proceed to (10, 30) or move directly to
+the §6.4 Path-C-prime fallback.
+
+Engelsma's table records `H(8) = 26` (the narrowest admissible
+8-tuple has diameter exactly 26). Since `Finset.range 22 = {0,…,21}`
+has diameter at most 21 < 26, there is **no admissible 8-tuple
+contained in `Finset.range 22`**; the implication's antecedent
+`IsAdmissible H` is therefore vacuously false on every 8-subset
+enumerated, and `native_decide` confirms this non-existence by
+checking the bounded admissibility decider on each of the 319,770
+subsets. The threshold `18 ≤ H.max'` mirrors S4's
+`12 ≤ H.max'` convention (a conservative under-estimate of the
+Engelsma bound 21, leaving room for any future tightening).
+
+This step is again vacuous in the strong sense (no admissible
+witness exists), but it stresses the S2 `Decidable` instance
+~40× harder than S4 and is the canonical intermediate scaling
+checkpoint for the (10, 30) and (50, 246) cases.
+
+`axiomCount` for this file stays at 1: `Lean.ofReduceBool` was
+already introduced by S4 and is reused (each additional
+`native_decide` only requires the axiom once per file).
+-/
+
+/-- **S5 intermediate Engelsma analogue.** Every 8-element subset
+`H ⊆ Finset.range 22` containing `0` either fails to be admissible
+or has `H.max' ≥ 18`. Decided in one `native_decide` call over the
+`Nat.choose 22 8 = 319,770` enumeration — roughly 40× the S4
+search and the canonical scaling checkpoint for the deferred
+S6 case at `(k, w) = (10, 30)` (per `knowledge.md` §6.4). Reuses
+the `Lean.ofReduceBool` axiom introduced in S4; no new axioms. -/
+theorem engelsma_analogue_8_22 :
+    ∀ H ∈ (Finset.range 22).powersetCard 8,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 18 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide
+
 end BoundedPrimeGapsOQ03OQ02
