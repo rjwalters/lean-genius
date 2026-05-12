@@ -1,10 +1,65 @@
 # Current State
 
-**Phase**: ACT (S3 ACT-B extended the abstract framework with iterated-jump theorems; Mathlib-bridge still deferred)
-**Since**: 2026-05-12 (S3 ACT-B, researcher-6)
-**Iteration**: 3
+**Phase**: ACT (S5 ACT-D witnesses the jump-tower collapse for embedded classical predictors; Mathlib-bridge still deferred)
+**Since**: 2026-05-12 (S5 ACT-D, researcher-12)
+**Iteration**: 5
+**Researcher**: researcher-12 (S5); researcher-1 (S4); researcher-6 (S3); researcher-10 (S2); researcher-9 (S1)
 
 ## Current Focus
+
+Session 5 (S5 ACT-D, researcher-12, 2026-05-12) extends both
+`proofs/Proofs/RelativizedHalting.lean` (with the semigroup law for the
+abstract jump iteration) and `proofs/Proofs/RelativizedHaltingBridge.lean`
+(with a Section 5 documenting the *jump-tower collapse* under classical
+embedding). Concretely:
+
+* `RelativizedHalting.jumpIter_compose` — Section 9, the additive
+  semigroup law `jumpIter H o₀ (m + n) = jumpIter H (jumpIter H o₀ m) n`.
+  Abstract analog of `(A^(m))^(n) = A^(m+n)` for the classical Turing
+  jump. One-step induction on `n` (zero by `rfl`; succ by
+  `jumpIter_succ` + IH rewrite). The recursion-theoretic primitive that
+  any future arithmetical-hierarchy work (OQ-03b) will need for stating
+  Post's theorem at level `n+1` from the level-`n` predicate.
+* `RelativizedHaltingBridge.relativizedDiagonal_embedClassical_eq_classicalDiagonal`
+  (and `_funext` variant) — under `embedClassical`, the relativized
+  diagonal at *any* oracle is just the classical diagonal of `H`
+  (oracle-blind). Pointwise `rfl`.
+* `RelativizedHaltingBridge.jumpOracle_embedClassical_eq_classicalDiagonal`
+  — the level-1 jump collapses to the classical diagonal.
+* `RelativizedHaltingBridge.jumpIter_embedClassical_succ_eq_classicalDiagonal`
+  (and `_funext` variant) — every level `n ≥ 1` of the embedded
+  jump tower equals `diagonalBehavior H c`. Proof: induction on `n`,
+  both branches `rfl` (no IH needed; the inductive call is itself
+  oracle-blind).
+* `RelativizedHaltingBridge.jumpIter_embedClassical_stable_above_one`
+  — for any `m, n ≥ 1`, jump-tower entries coincide pointwise: the
+  embedded tower is constant above level 0.
+* `RelativizedHaltingBridge.jumpIterWitness_embedClassical_eq_classicalDiagonal`
+  — the named `jumpIterWitness` alias collapses too (packaged via the
+  level-`(n+1)` corollary for downstream consumers).
+
+All theorems proved, 0 sorries, 0 axioms, 0 new imports. Both files
+remain zero-import (matching the parent `Proofs.HaltingProblem`).
+
+### S5 ACT-D mathematical content
+
+Classical Post 1944 establishes the strict chain
+`A < A' < A'' < ...` in the Turing degrees. The abstract `jumpIter`
+framework from S3 ACT-B captures the strictness as
+`jumpIter_differs`: at every level `n` and every code `c`,
+`jumpIter H o₀ (n+1) c ≠ H (jumpIter H o₀ n) c c`. The S5 ACT-D
+content quantifies *why* the abstract chain is nontrivial: when the
+predictor is genuinely oracle-aware, `jumpIter` produces a strictly
+increasing diagonal sequence (by `jumpIter_differs`); when the
+predictor is oracle-blind (the embedded classical case), `jumpIter`
+collapses to the constant function `diagonalBehavior H` above level 0.
+
+This is a *strict-separation* result for the abstract framework. It
+witnesses, as a Lean term, why the future Mathlib-class bridge sub-OQ
+(`halting-problem-oq-03-bridge`) must develop a parallel `OracleCode`
+inductive that genuinely uses the oracle in its computation — embedding
+the existing `Nat.Partrec.Code` as oracle-blind would produce the same
+collapsed tower S5 ACT-D witnesses here.
 
 Session 3 (S3 ACT-B, researcher-6, 2026-05-12) extends the S2 zero-import
 `proofs/Proofs/RelativizedHalting.lean` with Section 8: an abstract
@@ -180,8 +235,8 @@ project.
 
 ## Next Session Pointer
 
-S3 ACT-B (this session) chose a lightweight extension over the two heavier
-options the prior state.md proposed:
+S3 ACT-B chose a lightweight extension over the two heavier options the
+prior state.md proposed:
 
 * **(Done in S3) Abstract iterated-jump framework.** Adds Section 8 to
   `RelativizedHalting.lean` (~80 lines, 0 sorries) capturing the Post-1944
@@ -189,10 +244,21 @@ options the prior state.md proposed:
   drop-in extension of S2 — no S2 theorem is modified — and the new content
   is the bridge between OQ-03a (single-jump strictness) and OQ-03b
   (arithmetical hierarchy = limit of finite jumps + transfinite extension).
+* **(Done in S4 ACT-C, researcher-1, PR #18038)** Classical↔abstract
+  bridge — `proofs/Proofs/RelativizedHaltingBridge.lean` (~117 lines,
+  0 sorries, 0 axioms), making the
+  `Proofs.HaltingProblem` ⇐ `Proofs.RelativizedHalting`
+  implication explicit as `halting_problem_undecidable_from_relativized`.
+* **(Done in S5 ACT-D, researcher-12, this session)** Jump-tower
+  collapse for embedded classical predictors — `jumpIter_compose` (added
+  to `Proofs.RelativizedHalting`, Section 9) plus Section 5 of
+  `Proofs.RelativizedHaltingBridge` (six theorems witnessing that
+  `embedClassical` produces a constant level-≥1 jump tower). 0 sorries,
+  0 axioms, 0 new imports. ~60 lines split across the two files.
 
-Two options remain for S4+, in priority order:
+Three options remain for S6+, in priority order:
 
-1. **(Recommended) S4 — Mathlib bridge sub-OQ.** Open a new sub-OQ slug
+1. **(Recommended) S6 — Mathlib bridge sub-OQ.** Open a new sub-OQ slug
    `halting-problem-oq-03-bridge` and develop the parallel `OracleCode`
    inductive (~200 lines) + the `Code.evalnO` semantics + the lift
    `no_relativized_halting_oracle ⇒ undec` in Mathlib-class form, including
@@ -200,27 +266,62 @@ Two options remain for S4+, in priority order:
    2-3 sessions of work; appropriate for a researcher with `Computability.
    PartrecCode` familiarity. The S3 abstract framework provides the
    recursion-theoretic skeleton that the Mathlib-class version needs to
-   instantiate.
+   instantiate. S5's jump-tower-collapse result explicitly motivates why
+   the bridge must use a genuinely oracle-using `OracleCode` rather than
+   embedding the existing oracle-blind `Nat.Partrec.Code`.
 
-2. **S4 — Arithmetical hierarchy (OQ-03b).** Develop `Sigma^0_n / Pi^0_n /
+2. **S6 — Arithmetical hierarchy (OQ-03b).** Develop `Sigma^0_n / Pi^0_n /
    Delta^0_n` from scratch (~400 lines, 4-6 sessions). Per the S1 plan this
    likely warrants its own sub-OQ slug (`arithmetical-hierarchy-oq-01` or
    similar). Defer pending a strategic decision on whether the gallery
-   wants in-tree arithmetical hierarchy. The S3 `jumpIter` is the recursive
-   step in the Post's-theorem reading of `Sigma^0_{n+1}` membership.
+   wants in-tree arithmetical hierarchy. The S3 `jumpIter` + S5
+   `jumpIter_compose` (semigroup law) are the recursive primitives in
+   the Post's-theorem reading of `Sigma^0_{n+1}` membership.
 
-Both follow-on options strictly extend the S2+S3 abstract result; neither
-modifies any prior theorem. The S2+S3 file is final for OQ-03a at the
-abstract level.
+3. **(Lightweight) S6 — Self-application strictness chain.** Add a
+   `jumpIter_strict_chain` lemma stating that for any `H` with
+   non-degenerate diagonalization (formalized as: there exists `o` such
+   that `jumpIter H o₀ (n+1)` ≠ `jumpIter H o₀ n` pointwise at some
+   code), the entire chain `o₀, jumpIter ... 1, jumpIter ... 2, ...` is
+   pointwise distinct. ~50 lines. Useful as a self-contained corollary
+   for the (current) gallery exhibit, motivating Post 1944 without
+   reaching for the Mathlib bridge.
+
+All three options strictly extend the S2+S3+S4+S5 abstract result;
+neither modifies any prior theorem.
 
 ## Pool Status Note
 
-After this S3 PR is filed, the status remains `progress` (the abstract
-framework is now extended to all finite jump levels; the Mathlib-bridge and
-OQ-03b/c remain). The slug retains tier-B score because the bridge is a
-non-trivial follow-on.
+After this S5 PR is filed, the status remains `progress` (the abstract
+framework is now extended with semigroup structure for `jumpIter` and
+the jump-tower-collapse witnesses under classical embedding; the
+Mathlib-bridge and OQ-03b/c remain). The slug retains tier-B score
+because the bridge is a non-trivial follow-on.
 
-## Build Status (S3 ACT-B)
+## Build Status (S5 ACT-D)
+
+**Build verified** via
+`./proofs/scripts/docker-build.sh Proofs.RelativizedHaltingBridge`
+completed successfully (4 jobs). All `#check` outputs for the new S5
+theorems type-checked cleanly, matching the stated signatures:
+
+* `RelativizedHalting.jumpIter_compose` — semigroup law for `jumpIter`,
+  one `induction n` (zero by `rfl`; succ by `show ... ; rw [ih]`).
+* `RelativizedHaltingBridge.relativizedDiagonal_embedClassical_eq_classicalDiagonal`
+  (+ `_funext`) — pointwise `rfl`; oracle argument is discarded by
+  `embedClassical`.
+* `RelativizedHaltingBridge.jumpOracle_embedClassical_eq_classicalDiagonal`
+  — pointwise `rfl`.
+* `RelativizedHaltingBridge.jumpIter_embedClassical_succ_eq_classicalDiagonal`
+  (+ `_funext`) — induction on `n`; both branches `rfl`.
+* `RelativizedHaltingBridge.jumpIter_embedClassical_stable_above_one`
+  — two `rw` invocations of the succ-collapse theorem.
+* `RelativizedHaltingBridge.jumpIterWitness_embedClassical_eq_classicalDiagonal`
+  — direct corollary of the succ-collapse theorem.
+
+Zero sorries, zero axioms, zero new imports.
+
+## Build Status (S3 ACT-B; historical)
 
 S3 ACT-B build attempted via
 `./proofs/scripts/docker-build.sh Proofs.RelativizedHalting` with a 15-minute
