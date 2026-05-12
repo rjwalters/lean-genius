@@ -293,4 +293,43 @@ theorem card_filter_sq_eq_one_cyclic_even
   -- Nat.totient 1 = 1, Nat.totient 2 = 1, so 1 + 1 = 2.
   decide
 
+-- ============================================================================
+-- Section 7: Odd-prime-power specialisation (S5)
+-- ============================================================================
+
+/-! ### S5 — odd prime power unit count
+
+For an odd prime `p` and `k ≥ 1`, instantiate the generic
+`card_filter_sq_eq_one_cyclic_even` at `G = (ZMod (p^k))ˣ`.
+
+* `ZMod.isCyclic_units_of_prime_pow` supplies cyclicity for `(ZMod (p^k))ˣ`.
+* The order is `φ(p^k) = p^{k-1}(p-1)` (via `ZMod.card_units_eq_totient` +
+  `Nat.totient_prime_pow`), which is even because `p` odd ⇒ `p - 1` even
+  (via `Nat.Prime.even_sub_one`).
+
+This is the per-prime-power count input that the subsequent CRT
+multiplicativity step (S6, currently scheduled) consumes when assembling
+the closed-form `numSqrtsOne(n) = 2^(ω_odd(n) + ε₂(n))` formula. -/
+
+/-- **S5 ACT — odd prime power unit count.**
+
+For any odd prime `p` and any `k ≥ 1`, the number of square roots of unity
+in `(ZMod (p^k))ˣ` equals exactly `2` (the identity and the unique element
+of order `2`). The proof composes `card_filter_sq_eq_one_cyclic_even` (the
+S4 generic theorem) with `ZMod.isCyclic_units_of_prime_pow` and the
+`p` odd ⇒ `2 ∣ (p - 1)` ⇒ `2 ∣ φ(p^k)` chain.
+
+This closes the *unit-side* count at odd prime powers. The CRT
+multiplicativity step (S6) then assembles per-prime-power counts into the
+full closed-form `numSqrtsOne` formula. -/
+theorem card_filter_sq_eq_one_units_zmod_prime_pow_odd
+    {p k : ℕ} (hp : p.Prime) (hp_odd : p ≠ 2) (hk : 0 < k) [NeZero (p ^ k)] :
+    (Finset.univ.filter (fun u : (ZMod (p ^ k))ˣ => u ^ 2 = 1)).card = 2 := by
+  haveI : Fact p.Prime := ⟨hp⟩
+  haveI := ZMod.isCyclic_units_of_prime_pow p hp hp_odd k
+  apply card_filter_sq_eq_one_cyclic_even
+  rw [ZMod.card_units_eq_totient, Nat.totient_prime_pow hp hk]
+  -- 2 ∣ p^(k-1) * (p-1) because p odd ⇒ 2 ∣ (p - 1).
+  exact dvd_mul_of_dvd_right (hp.even_sub_one hp_odd).two_dvd _
+
 end GaussWilsonNonCyclicOQ03
