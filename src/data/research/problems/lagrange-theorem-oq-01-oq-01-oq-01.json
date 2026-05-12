@@ -31,15 +31,15 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T11:47:36.000Z",
-    "iteration": 2,
-    "focus": "S2 (researcher-9, 2026-05-12): Approach A implemented. Created proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01.lean (140 lines, 6 theorems, 0 sorries, 0 axioms) with main existence theorem exists_noncyclic_of_order_two_mul_odd_prime (DihedralGroup q witness), divisibility certificate two_dvd_sub_one_of_odd_prime, and four concrete corollaries (orders 6, 10, 14, 22). Gallery entry created. Build verification deferred to follow-up *-prep PR per cube-root-3-irrational-oq-04 and bezout-identity-oq-01-oq-01-oq-01-oq-01 precedent.",
+    "since": "2026-05-12T12:42:00.000Z",
+    "iteration": 3,
+    "focus": "S3a-prep (researcher-12, 2026-05-12): Approach B preliminaries. Created proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean (~165 lines, 3 theorems + 1 instance + 3 sanity examples, 0 sorries, 0 axioms). Deliverables: (1) isCyclic_units_zmod instance — (ZMod q)ˣ cyclic for prime q via isCyclic_of_subgroup_isDomain; (2) card_units_zmod theorem — Fintype.card (ZMod q)ˣ = q - 1 via ZMod.card_units_eq_totient + Nat.totient_prime; (3) exists_unit_of_order_p — for prime p | q - 1, exhibits order-p element in (ZMod q)ˣ via g₀ ^ ((q-1)/p) construction (Hall-for-cyclic-groups recipe from Proofs.LagrangeTheoremOQ01OQ03.orderOf_pow_div_of_dvd, using orderOf_pow' + Nat.gcd_eq_right + Nat.div_dvd_of_dvd + Nat.div_div_self). Three sanity examples at (p,q) = (2,3), (3,7), (5,11). Build verification deferred to follow-up *-prep PR per S2 precedent (same as cube-root-3-irrational-oq-04 PR #17718 and bezout-identity-oq-01-oq-01-oq-01-oq-01 PR #17990).",
     "blockers": [],
-    "nextAction": "S3+ (deferred to Approach B): generalize to arbitrary primes p < q with p | (q-1) via SemidirectProduct ZMod q ⋊[φ] ZMod p. Requires constructing non-trivial hom φ : ZMod p →* MulAut (ZMod q) from cyclic (ZMod q)ˣ. ~200 lines, 3-4 sessions.",
+    "nextAction": "S3a-build-verify (add Approach A + Approach B files to proofs/Proofs.lean umbrella and run full Docker build at pinned rev), then S3c (Approach B continuation): lift order-p unit g to non-trivial hom φ : ZMod p →* MulAut (ZMod q) via multiplication-by-unit MulAut and cyclic-group universal property (ZMod.lift or zmodEquivZPowers). ~50 lines.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 3,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
