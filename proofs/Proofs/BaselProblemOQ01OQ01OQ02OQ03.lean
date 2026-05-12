@@ -1401,11 +1401,40 @@ theorem hanson_n12 : lcmRange 12 ≤ 3 ^ 12 := by decide
 theorem hanson_n15 : lcmRange 15 ≤ 3 ^ 15 := by native_decide
 theorem hanson_n20 : lcmRange 20 ≤ 3 ^ 20 := by native_decide
 
+/-- **Iter 27 — extended numerical witnesses** for `n ∈ {25, 30, 50, 100}`.
+
+    Hanson's bound `lcmRange n ≤ 3^n` is verified by `native_decide`
+    on substantially larger inputs than the `hanson_n1`–`hanson_n20`
+    table from Iter 0. The numerical margin grows with `n` (OEIS A003418
+    cross-references in `lcmRange_*_eq` below):
+
+    *  `lcmRange  25 ≈ 2.68 × 10¹⁰`  vs  `3^ 25 ≈ 8.47 × 10¹¹`,  margin ~32×.
+    *  `lcmRange  30 ≈ 2.33 × 10¹²`  vs  `3^ 30 ≈ 2.06 × 10¹⁴`,  margin ~88×.
+    *  `lcmRange  50 ≈ 3.10 × 10²¹`  vs  `3^ 50 ≈ 7.18 × 10²³`,  margin ~232×.
+    *  `lcmRange 100 ≈ 6.97 × 10⁴⁰`  vs  `3^100 ≈ 5.15 × 10⁴⁷`,  margin ~7.4 × 10⁶.
+
+    Strategic value: the Iter-25 Chebyshev envelope `lcmRange n ≤
+    4^n · (n/2)^√n` is asymptotically `(4/3)^n · 2^(O(√n log n))`-loose
+    against Hanson's target (Iter 26 falsifies the threshold route).
+    Any future sharper primorial bound (Iter 27 candidate: `primorial n
+    ≤ c^n` for `c < 3`) only kicks in for `n ≥ n₀`; extending the
+    numerical floor to `n = 100` raises the value of `n₀` we can afford
+    before the asymptotic kicks in. -/
+theorem hanson_n25  : lcmRange 25  ≤ 3 ^ 25  := by native_decide
+theorem hanson_n30  : lcmRange 30  ≤ 3 ^ 30  := by native_decide
+theorem hanson_n50  : lcmRange 50  ≤ 3 ^ 50  := by native_decide
+theorem hanson_n100 : lcmRange 100 ≤ 3 ^ 100 := by native_decide
+
 -- Concrete lcm values (sanity checks, expected from OEIS A003418):
 theorem lcmRange_5_eq  : lcmRange 5  = 60        := by decide
 theorem lcmRange_10_eq : lcmRange 10 = 2520      := by decide
 theorem lcmRange_15_eq : lcmRange 15 = 360360    := by native_decide
 theorem lcmRange_20_eq : lcmRange 20 = 232792560 := by native_decide
+theorem lcmRange_25_eq : lcmRange 25 = 26771144400 := by native_decide
+theorem lcmRange_30_eq : lcmRange 30 = 2329089562800 := by native_decide
+theorem lcmRange_50_eq : lcmRange 50 = 3099044504245996706400 := by native_decide
+theorem lcmRange_100_eq :
+    lcmRange 100 = 69720375229712477164533808935312303556800 := by native_decide
 
 -- =====================================================================
 -- PART 5: Hanson's general bound (open conjecture, axiomatized)
