@@ -57,7 +57,9 @@
       "psum_one_eq_esymm_one bridges two Mathlib lemmas (psum_one and esymm_one) that each separately state p\u2081 = \u03a3 X i = e\u2081",
       "All three corollaries work over any CommRing, not just \u211d \u2014 the algebraic structure is the only requirement",
       "The ring tactic closes each corollary after the antidiagonal is fully expanded, separating the combinatorial filtering from the algebraic simplification",
-      "The three-tactic pipeline \u2014 omega for antidiagonal arithmetic, sum_insert/sum_singleton for finite sum expansion, ring for polynomial identity \u2014 is a separable and composable proof strategy: each tactic handles exactly one layer of the proof (number theory \u2192 combinatorics \u2192 algebra)"
+      "The three-tactic pipeline \u2014 omega for antidiagonal arithmetic, sum_insert/sum_singleton for finite sum expansion, ring for polynomial identity \u2014 is a separable and composable proof strategy: each tactic handles exactly one layer of the proof (number theory \u2192 combinatorics \u2192 algebra)",
+      "**Generating-function perspective**: Newton-Girard is the logarithmic-derivative relation between two generating functions. Let $E(t) = \\prod_i (1 + x_i t) = \\sum_k e_k t^k$ and $P(t) = \\sum_{k\\ge 1} p_k t^{k-1}$. Then $\\frac{E'(t)}{E(t)} = \\sum_i \\frac{x_i}{1+x_i t} = P(-t)$, i.e. $E'(t) = E(t) \\cdot P(-t)$. Equating coefficients of $t^{k-1}$ yields exactly the Newton-Girard recurrence proved here. This is why the recurrence can be derived from a single formula in any commutative ring \u2014 it lives at the level of formal power series and has nothing to do with $\\mathbb{R}$ or analytic convergence.",
+      "**Schur-positivity bridge**: The Newton-Girard recurrence is the change-of-basis from power-sum symmetric functions $\\{p_\\lambda\\}$ to elementary symmetric functions $\\{e_\\lambda\\}$ at the level of one-row partitions. The full change-of-basis matrices (Schur in $p_\\lambda$, Schur in $e_\\lambda$ via Jacobi-Trudi) sit on top of this and explain why Schur polynomials are simultaneously polynomial in both bases. Mathlib's `MvPolynomial.Symmetric.NewtonIdentities` thus underlies any future Schur-polynomial formalization."
     ],
     "prerequisites": [
       "MvPolynomial.psum_eq_mul_esymm_sub_sum \u2014 general Newton-Girard recurrence (Mathlib)",
@@ -112,9 +114,11 @@
     "summary": "Derives three Newton-Girard corollaries (k=1,2,3) from Mathlib's general recurrence. All theorems are machine-verified with 0 sorries and 0 axiom declarations. The core results rely on Mathlib's MvPolynomial.psum_eq_mul_esymm_sub_sum; original contributions are the explicit antidiagonal instantiations at k=2,3 and the bridging lemma psum_one_eq_esymm_one.",
     "implications": "**For Newton-Girard**: The three corollaries (p\u2081=e\u2081, p\u2082=e\u2081\u00b2\u22122e\u2082, p\u2083=e\u2081p\u2082\u2212e\u2082p\u2081+3e\u2083) are the foundational cases used in symmetric function theory and algebraic combinatorics.\n\n**For Symmetric Functions**: Combined with the parent's diagonal/off-diagonal decomposition, the k=2 corollary completes the Newton-Girard identity: (\u03a3x\u1d62)\u00b2 = \u03a3x\u1d62\u00b2 + 2\u00b7e\u2082.\n\n**For Mathlib Integration**: Demonstrates the pattern for instantiating the general psum_eq_mul_esymm_sub_sum recurrence at specific degrees using antidiagonal filters and omega, usable as a template for higher k.",
     "openQuestions": [
-      "Extend to k=4,5,... using the same antidiagonal template",
-      "Formalize the relationship between Newton-Girard and Schur positivity",
-      "Prove the general recurrence inductively without Mathlib, as an independent verification"
+      "Extend to k=4,5,... using the same antidiagonal template. Concretely: $p_4 = e_1 p_3 - e_2 p_2 + e_3 p_1 - 4 e_4$, requiring two `sum_insert` calls; $p_5 = e_1 p_4 - e_2 p_3 + e_3 p_2 - e_4 p_1 + 5 e_5$, requiring three. Can the pattern be turned into a `macro`/`elab` that auto-generates the proof for any user-supplied $k$?",
+      "Formalize the inverse direction (`MvPolynomial.mul_esymm_eq_sum`) at k=2,3 as named corollaries: $2 e_2 = e_1 p_1 - p_2$ and $3 e_3 = e_2 p_1 - e_1 p_2 + p_3$. Mathlib already has the general statement; the explicit corollaries would complete the symmetry with this file.",
+      "Connect to complete homogeneous symmetric polynomials $h_k = \\sum_{i_1 \\le \\ldots \\le i_k} x_{i_1} \\cdots x_{i_k}$ via the dual Newton-Girard identities $k h_k = \\sum_{j=1}^k h_{k-j} p_j$ (note the *positive* signs, in contrast to the $e_k$ version). Is `MvPolynomial.psum_eq_mul_hsymm_sub_sum` in Mathlib, or does it need to be added?",
+      "Formalize the relationship between Newton-Girard and Schur positivity. The Jacobi-Trudi formula expresses Schur polynomials $s_\\lambda = \\det(h_{\\lambda_i - i + j})$ and dually $s_\\lambda = \\det(e_{\\lambda'_i - i + j})$; combined with this file's recurrence on $e_k \\leftrightarrow p_k$, one obtains an explicit basis change between $\\{p_\\lambda\\}$ and $\\{s_\\lambda\\}$.",
+      "Prove the general recurrence inductively without Mathlib, as an independent verification — exercising the generating-function approach (`E'(t) = E(t) P(-t)`) in formal power series via `PowerSeries` in Mathlib."
     ]
   },
   "crossReferences": [
@@ -151,10 +155,39 @@
   ],
   "references": [
     {
+      "authors": "Girard, Albert",
+      "title": "Invention nouvelle en l'alg\u00e8bre",
+      "year": "1629",
+      "venue": "Amsterdam: Guillaume Iansson Blaeuw",
+      "note": "The earliest known statement of the identities relating power sums of polynomial roots to elementary symmetric polynomials \u2014 predates Newton by ~40 years. The historical attribution to Newton alone is incorrect; the modern name 'Newton-Girard identities' reflects the double discovery."
+    },
+    {
       "authors": "Newton, Isaac",
       "title": "Arithmetica Universalis",
       "year": "1707",
-      "note": "Newton's identities relating power sums to elementary symmetric polynomials. The n=2 case p\u2082 = e\u2081\u00b2 - 2e\u2082 and n=3 case p\u2083 = e\u2081p\u2082 - e\u2082p\u2081 + 3e\u2083 are proved explicitly here."
+      "venue": "Cambridge (manuscript ~1666)",
+      "note": "Newton's independent rediscovery and systematic treatment of the identities relating power sums to elementary symmetric polynomials. The k=2 case p\u2082 = e\u2081\u00b2 \u2212 2e\u2082 and k=3 case p\u2083 = e\u2081p\u2082 \u2212 e\u2082p\u2081 + 3e\u2083 are proved explicitly here."
+    },
+    {
+      "authors": "Macdonald, I. G.",
+      "title": "Symmetric Functions and Hall Polynomials",
+      "year": "1995",
+      "venue": "Oxford University Press, 2nd edition, Chapter I \u00a72",
+      "note": "Canonical modern reference for symmetric function theory. The Newton-Girard identities appear as formulas (2.11\u2032) and (2.11\u2033); the generating-function derivation (E'(t)/E(t) = P(-t)) is in \u00a72.10. The Mathlib `MvPolynomial.Symmetric.NewtonIdentities` formalization follows the combinatorial approach in \u00a72."
+    },
+    {
+      "authors": "Mead, D. G.",
+      "title": "Newton's Identities",
+      "year": "1992",
+      "venue": "American Mathematical Monthly 99(8), pp. 749\u2013751",
+      "note": "Modern elementary proof of Newton's identities using only the relations between elementary symmetric polynomials and roots of a polynomial, accessible without symmetric function theory machinery."
+    },
+    {
+      "authors": "Zeilberger, Doron",
+      "title": "A Combinatorial Proof of Newton's Identities",
+      "year": "1984",
+      "venue": "Discrete Mathematics 49(3), p. 319",
+      "note": "Bijective combinatorial proof underpinning the Mathlib formalization `MvPolynomial.psum_eq_mul_esymm_sub_sum` \u2014 interprets the recurrence as an involution-based double-counting argument on sequences."
     }
   ],
   "sorries": 0,
