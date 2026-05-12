@@ -1,0 +1,247 @@
+{
+  "slug": "greens-theorem-oq-01-oq-01-oq-02-oq-02",
+  "title": "Can the integrability hypothesis be weakened from `uIcc a b × uIcc c d` to lo...",
+  "phase": "OBSERVING",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{(formal statement to be added)}",
+    "plain": "AVAILABLE: Can the integrability hypothesis be weakened from `uIcc a b × uIcc c d` to local integrability (`LocallyIntegrable`), similar to how Fubini-Tonelli handles σ-finite measures?.",
+    "whyMatters": [
+      "Usability — `LocallyIntegrable` is the canonical Mathlib idiom for compact-supported L¹; constructing the parent's `(restrict A).prod (restrict B)` form is verbose.",
+      "No mathematical content lost — like sibling OQ-03 (Bochner), this is a 'free' wrapper composing existing Mathlib API.",
+      "Composability — orthogonal to OQ-03; a combined Bochner + LocallyIntegrable wrapper is the obvious follow-up."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVING",
+    "since": "2026-05-12T13:08:00Z",
+    "iteration": 2,
+    "focus": "S1 OBSERVE: audit Mathlib `LocallyIntegrable` API; reframe seeker's 'weakened ... to LocallyIntegrable' phrasing as a user-interface wrapper (since LocallyIntegrable is strictly stronger than the parent's single-compact-rectangle hypothesis).",
+    "blockers": [],
+    "nextAction": "S2 SCAFFOLD: create proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean with `intervalIntegral_swap_of_locallyIntegrable` proven inline (~30 lines). Build-verify via Docker wrapper.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE complete (researcher-8, 2026-05-12). Identified that `LocallyIntegrable f volume` on ℝ² is strictly *stronger* than the parent's hypothesis (integrability on one compact rectangle), not weaker as the seeker phrasing suggests. The useful deliverable is a user-interface wrapper that takes `LocallyIntegrable` and discharges the awkward `(restrict A).prod (restrict B)` form via Mathlib's `LocallyIntegrable.integrableOn_isCompact` plus `restrict_prod_eq_prod_restrict` (already used in the parent's continuous case). Proof script is a 5-line modification of the parent's `intervalIntegral_swap_of_continuous`. No Mathlib gap.",
+    "builtItems": [
+      "research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-02/problem.md (S1 OBSERVE)",
+      "research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-02/knowledge.md (S1 OBSERVE)",
+      "research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-02/state.md (S1 OBSERVE)"
+    ],
+    "insights": [
+      "The seeker's 'weakened ... to LocallyIntegrable' phrasing inverts the implication direction: LocallyIntegrable f volume → IntegrableOn f K volume for any compact K, but not conversely. The wrapper strengthens the hypothesis but simplifies the interface.",
+      "Mathlib's `LocallyIntegrable.integrableOn_isCompact` is the canonical bridge; combined with `restrict_prod_eq_prod_restrict measurableSet_uIcc measurableSet_uIcc` (already invoked by the parent's continuous case) it discharges the parent's product-restrict hypothesis in 3 lines.",
+      "The Measurable hypothesis cannot be folded into LocallyIntegrable (which only gives AEStronglyMeasurable) without auditing whether the parent's `mono_measure` chain accepts AEStronglyMeasurable; deferred to S2 / later.",
+      "Composes orthogonally with sibling OQ-03 (Bochner codomain); a combined wrapper is a candidate follow-up OQ."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "S2 SCAFFOLD: write proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean with the single wrapper theorem inline (~30 lines).",
+      "Build-verify via ./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02 from the worktree.",
+      "S3 (optional): gallery entry + Mathlib contribution path discussion in docstring."
+    ]
+  },
+  "tags": [
+    "analysis",
+    "measure-theory",
+    "fubini",
+    "interval-integral",
+    "green-theorem",
+    "mathlib-gap",
+    "research",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "greens-theorem",
+    "greens-theorem-oq-01",
+    "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-01-oq-01-oq-01",
+    "greens-theorem-oq-01-oq-01-oq-01-oq-01",
+    "greens-theorem-oq-01-oq-01-oq-02",
+    "greens-theorem-oq-01-oq-01-oq-02-oq-03",
+    "greens-theorem-oq-01-oq-01-oq-03",
+    "greens-theorem-oq-01-oq-02",
+    "greens-theorem-oq-02",
+    "greens-theorem-oq-02-oq-04",
+    "greens-theorem-oq-03",
+    "greens-theorem-oq-03-oq-04",
+    "greens-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-12T03:16:39.863Z",
+  "lastUpdate": "2026-05-12T13:08:00Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/GreensTheorem.lean",
+      "filename": "GreensTheorem.lean",
+      "lineCount": 359,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheorem.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01.lean",
+      "filename": "GreensTheoremOQ01.lean",
+      "lineCount": 339,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01.lean",
+      "lineCount": 155,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 261,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ01OQ01.lean",
+      "lineCount": 517,
+      "theoremCount": 4,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ02.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ02.lean",
+      "lineCount": 232,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ02OQ03.lean",
+      "lineCount": 217,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ03.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ03.lean",
+      "lineCount": 229,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ02.lean",
+      "filename": "GreensTheoremOQ01OQ02.lean",
+      "lineCount": 228,
+      "theoremCount": 5,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02.lean",
+      "filename": "GreensTheoremOQ02.lean",
+      "lineCount": 508,
+      "theoremCount": 21,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ02OQ04.lean",
+      "filename": "GreensTheoremOQ02OQ04.lean",
+      "lineCount": 260,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03.lean",
+      "filename": "GreensTheoremOQ03.lean",
+      "lineCount": 558,
+      "theoremCount": 31,
+      "axiomCount": 3,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ03OQ04.lean",
+      "filename": "GreensTheoremOQ03OQ04.lean",
+      "lineCount": 251,
+      "theoremCount": 6,
+      "axiomCount": 1,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ03OQ04.lean"
+    },
+    {
+      "path": "Proofs/GreensTheoremOQ04.lean",
+      "filename": "GreensTheoremOQ04.lean",
+      "lineCount": 588,
+      "theoremCount": 22,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ04.lean"
+    }
+  ]
+}
