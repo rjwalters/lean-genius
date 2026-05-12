@@ -47,6 +47,7 @@ import Mathlib.GroupTheory.Nilpotent
 import Mathlib.GroupTheory.Sylow
 import Mathlib.GroupTheory.SpecificGroups.Alternating
 import Mathlib.GroupTheory.SpecificGroups.ZGroup
+import Mathlib.Data.Set.Card.Arithmetic
 import Mathlib.Tactic
 
 namespace BurnsidePQ
@@ -1136,6 +1137,117 @@ private lemma sylow_two_subsingleton_of_cube_id_card_nine
     Subsingleton (Sylow 2 G) :=
   sylow_two_subsingleton_of_compl_ncard hcard
     (cube_id_complement_ncard_eq_three_of_card_nine hcard hcube_card)
+
+/-- **S23 cube-id count from partition ingredients** (private, axiom-free,
+    conditional).
+
+    Composes S15's set decomposition `cube_id_set_eq_disjoint_union` with
+    the two atomic partition ingredients in flight on PRs #17586 + #17587
+    (taken here as hypotheses) plus the Sylow-3 count `n_3 = 4`, to derive
+    the cube-identity element count
+
+        Set.ncard {g : G | g ^ 3 = 1} = 9.
+
+    With this lemma in hand, closing the S10 placeholder
+    `sylow_two_unique_when_n3_four` becomes a one-line composition with
+    `sylow_two_subsingleton_of_cube_id_card_nine` (S22 above):
+
+        intro hcard hn3
+        haveI : Fact (Nat.Prime 3) := ⟨by decide⟩
+        let hdisj := fun Q Q' hne =>
+          sylow_three_diff_singleton_disjoint hcard hne     -- in flight #17586
+        let hfiber := sylow_three_set_diff_one_ncard_eq_two hcard  -- in flight #17587
+        have h9 := cube_id_card_eq_nine_of_partition_ingredients
+                      hcard hdisj hfiber hn3
+        exact sylow_two_subsingleton_of_cube_id_card_nine hcard h9
+
+    **Proof skeleton**: rewrites `{g | g ^ 3 = 1}` via S15 to the
+    disjoint-union form `{1} ∪ ⋃ Q : Sylow 3 G, ((Q : Set G) \ {1})`,
+    then splits the cardinality across the three pieces:
+    * Disjointness of `{1}` from each `Q \ {1}` (trivial: `1 ∉ Q \ {1}`)
+      plus `Set.disjoint_iUnion_right` gives `{1}` disjoint from the union.
+    * `Set.ncard_union_eq` peels off `{1}` (ncard 1).
+    * `Set.ncard_iUnion_of_finite` (from `Mathlib.Data.Set.Card.Arithmetic`)
+      converts the iUnion ncard to `∑ᶠ Q, Set.ncard ((Q : Set G) \ {1})`
+      using `hdisj` (the in-flight S16 PR #17586 target).
+    * `hfiber` (the in-flight S16 PR #17587 target) makes each summand
+      `2`, giving `∑ᶠ Q, 2`.
+    * `finsum_eq_sum_of_fintype` + `Finset.sum_const` + `Finset.card_univ`
+      + `Nat.card_eq_fintype_card` + `hn3` yields `Nat.card (Sylow 3 G) • 2
+      = 4 • 2 = 8`.
+    * Final: `1 + 8 = 9` by `decide`.
+
+    **Non-overlap with in-flight PRs**:
+    * #17586 / #17587 target the *atomic ingredients* of the partition
+      (Set-level pairwise disjointness and per-fiber cardinality);
+      S23 *composes* them with S15 and the Mathlib `Set.ncard_iUnion`
+      arithmetic to produce the cube-id count. Strictly downstream — no
+      content overlap.
+    * #17685 (S19, forward subset for ingredient 4) targets the Sylow-2
+      side; independent of the Sylow-3-side partition arithmetic here.
+
+    **Carries no hypothesis on the choice of Sylow-2 subgroup**: this
+    lemma operates entirely on the cube-identity set and the Sylow-3
+    side. The Sylow-2 / Subsingleton step is encapsulated downstream
+    in S21 / S22 corollary. -/
+private lemma cube_id_card_eq_nine_of_partition_ingredients
+    {G : Type*} [Group G] [Finite G]
+    [Fact (Nat.Prime 3)]
+    (hcard : Nat.card G = 12)
+    (hdisj : ∀ Q Q' : Sylow 3 G, Q ≠ Q' →
+             Disjoint ((Q : Set G) \ ({1} : Set G))
+                      ((Q' : Set G) \ ({1} : Set G)))
+    (hfiber : ∀ Q : Sylow 3 G,
+              Set.ncard ((Q : Set G) \ ({1} : Set G)) = 2)
+    (hn3 : Nat.card (Sylow 3 G) = 4) :
+    Set.ncard {g : G | g ^ 3 = 1} = 9 := by
+  -- Step 1: S15 decomposition rewrites the cube-identity set as a
+  -- singleton ∪ iUnion of punctured Sylow-3 subgroups.
+  rw [cube_id_set_eq_disjoint_union hcard]
+  -- Step 2: Disjointness of {1} from the iUnion. Pointwise: `1 ∉ Q \ {1}`
+  -- for every Sylow 3 subgroup `Q`, hence `Set.disjoint_iUnion_right`
+  -- discharges disjointness against the indexed family.
+  have h_disj_singleton_iUnion :
+      Disjoint ({1} : Set G)
+               (⋃ Q : Sylow 3 G, ((Q : Set G) \ ({1} : Set G))) := by
+    rw [Set.disjoint_iUnion_right]
+    intro Q
+    refine Set.disjoint_left.mpr ?_
+    intro g hg hg'
+    rw [Set.mem_singleton_iff] at hg
+    exact hg'.2 hg
+  -- Step 3: ncard of the singleton-iUnion union via `Set.ncard_union_eq`,
+  -- yielding `1 + Set.ncard (⋃ Q, Q \ {1})`.
+  rw [Set.ncard_union_eq h_disj_singleton_iUnion (Set.finite_singleton _)
+        (Set.toFinite _),
+      Set.ncard_singleton]
+  -- Step 4: ncard of the disjoint iUnion via `Set.ncard_iUnion_of_finite`.
+  -- Converts `hdisj` to the `Pairwise (Disjoint on _)` form expected by
+  -- the Mathlib API.
+  have hfin :
+      ∀ Q : Sylow 3 G, ((Q : Set G) \ ({1} : Set G)).Finite :=
+    fun _ => Set.toFinite _
+  have hdisj_pairwise :
+      Pairwise (Disjoint on
+                fun Q : Sylow 3 G => (Q : Set G) \ ({1} : Set G)) := by
+    intro Q Q' hne
+    exact hdisj Q Q' hne
+  rw [Set.ncard_iUnion_of_finite hfin hdisj_pairwise]
+  -- Step 5: substitute the per-fiber cardinality `hfiber` via
+  -- `finsum_congr` to convert each `Set.ncard (Q \ {1})` to `2`.
+  have hsum_eq :
+      (∑ᶠ Q : Sylow 3 G, Set.ncard ((Q : Set G) \ ({1} : Set G)))
+        = ∑ᶠ _Q : Sylow 3 G, (2 : ℕ) :=
+    finsum_congr (fun Q => hfiber Q)
+  rw [hsum_eq]
+  -- Step 6: collapse `∑ᶠ Q, 2` to `Nat.card (Sylow 3 G) • 2 = 4 • 2 = 8`
+  -- via the `Fintype`/`Finset` bridge, using `Fintype.ofFinite` to obtain
+  -- a `Fintype` instance from the ambient `Finite (Sylow 3 G)` synthesis.
+  haveI : Fintype (Sylow 3 G) := Fintype.ofFinite _
+  rw [finsum_eq_sum_of_fintype, Finset.sum_const, Finset.card_univ,
+      ← Nat.card_eq_fintype_card, hn3]
+  -- Final arithmetic: 1 + 4 • 2 = 9.
+  decide
 
 /-- **S10 placeholder**: when `|G| = 12` has 4 Sylow 3-subgroups, the
     Sylow 2-subgroup is unique. Proof via element counting:
