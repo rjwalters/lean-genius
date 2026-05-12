@@ -1,10 +1,69 @@
 # Current State
 
-**Phase**: ACT (S3a-prep complete)
-**Since**: 2026-05-12 (S3a-prep)
-**Iteration**: 3
+**Phase**: ACT (S3a-build-verify attempted — pre-existing parent drift in `SylowTheoremOQ01.lean` blocks full Docker verification)
+**Since**: 2026-05-12 (S3a-build-verify)
+**Iteration**: 4
 
-## Latest Iteration: S3a-prep (researcher-12, 2026-05-12)
+## Latest Iteration: S3a-build-verify (researcher-9, 2026-05-12)
+
+Mechanic-style PR per the S3a-prep state.md "Next Action" (one-shot
+umbrella wiring + Docker build).
+
+**Deliverable.** Added two import lines to `proofs/Proofs.lean`:
+
+```
+import Proofs.LagrangeTheoremOQ01OQ01OQ01
+import Proofs.LagrangeTheoremOQ01OQ01OQ01ApproachB
+```
+
+Both lines inserted alphabetically (after
+`Proofs.LagrangeTheoremOQ01OQ01`, before `Proofs.LagrangeTheoremOQ01OQ02`).
+
+**Docker build attempt.** `Proofs.LagrangeTheoremOQ01OQ01OQ01ApproachB`
+build fails on the transitively-imported `Proofs.SylowTheoremOQ01`,
+NOT on the Lagrange S3a building blocks. First errors:
+
+```
+Proofs/SylowTheoremOQ01.lean:57:31: Invalid field `factorization`:
+  The environment does not contain `And.factorization`
+Proofs/SylowTheoremOQ01.lean:60:31: Invalid field `factorization`:
+  The environment does not contain `And.factorization`
+Proofs/SylowTheoremOQ01.lean:112:9: Tactic `rcases` failed:
+  `x✝ : ?m.30` is not an inductive datatype
+... (additional cascade errors in SylowTheoremOQ01)
+```
+
+The root cause is **pre-existing Mathlib drift** in
+`Proofs/SylowTheoremOQ01.lean` at v4.26.0; the file has not been
+updated since 2024 (latest commit
+`e5c13e673e6` audit-only) while Mathlib's `Nat.factorization` API
+moved. `Proofs.SylowTheoremOQ01` is already imported by
+`Proofs/Proofs.lean` line 2746 on `origin/main`, so the umbrella
+build was already broken before this PR's two new imports — adding
+the Lagrange OQ01OQ01OQ01 files does NOT introduce new breakage.
+
+**Lagrange S3a files themselves:** un-verified by this PR's run, but
+the dependency chain is
+`LagrangeTheoremOQ01OQ01OQ01ApproachB → LagrangeTheoremOQ01OQ01OQ01 → LagrangeTheoremOQ01OQ01 → SylowTheoremOQ01`,
+so the cascade prevents any build attempt from reaching the Lagrange
+files. The Lagrange S3a content (Approach A's `DihedralGroup` witness
+and Approach B's `(ZMod q)ˣ` cyclic-units + order-`p` extraction) is
+not implicated.
+
+**Recommended follow-up (separate mechanic-fix PR):** Repair
+`SylowTheoremOQ01.lean` by replacing the `And.factorization` /
+`rcases` patterns (lines 57, 60, 69, 71, 112, 132, etc.) with the
+v4.26.0-correct `Nat.Prime` destructuring (likely
+`hp.factorization` is being miscued because `hp : Nat.Prime h.p` got
+shadowed by an inner `And.intro`). After Sylow is fixed, the Lagrange
+S3a build chain unblocks.
+
+**Files modified by this PR.**
+- `proofs/Proofs.lean` — two import lines.
+- `research/problems/lagrange-theorem-oq-01-oq-01-oq-01/state.md` —
+  this entry.
+
+## Iteration 3: S3a-prep (researcher-12, 2026-05-12)
 
 Approach B preliminaries: created
 `proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean` (~165 lines,
