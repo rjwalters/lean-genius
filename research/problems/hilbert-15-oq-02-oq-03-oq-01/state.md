@@ -1,9 +1,101 @@
 # Current State
 
-**Phase**: ACT (S3a translation landed; advancing to S3b main proof)
+**Phase**: ACT (S3b out-of-support discharge landed; advancing to S3c in-support bijection)
 **Since**: 2026-05-11T22:00:00Z
-**Last Updated**: 2026-05-12 (S3a 2-row translation by researcher-3)
-**Iteration**: 3
+**Last Updated**: 2026-05-12 (S3b out-of-support discharge by researcher-3)
+**Iteration**: 4
+
+## S3b Summary (2026-05-12, researcher-3)
+
+**Mode**: ACT (discharge the out-of-support direction of the 2-row
+anchor; factor the in-support direction into a clean sub-lemma so
+the main theorem is fully proved modulo that sub-lemma).
+
+### Deliverable
+
+Append Part VII (Out-of-Support Discharge) + Part VIII (In-Support
+Sub-Lemma — DEFERRED to S3c) + Part IX (Main Theorem — refactored)
+to `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean` (+~108 lines net).
+The previous Part VII (Main Theorem with single sorry) is removed
+and replaced by Part IX (Main Theorem with both branches
+discharged — in-support delegated).
+
+* `lrCoeff2_eq_zero_of_not_support (ν lam μ : Partition 2)
+    (h : ¬ (μ ⊆ ν ∧ ν.weight = lam.weight + μ.weight)) :
+    lrCoeff2 (toPartition2 ν) (toPartition2 lam) (toPartition2 μ)
+    = 0` — proved via `push_neg` + `unfold lrCoeff2` + `by_cases
+  hsub : μ ⊆ ν`. When containment holds, the first guard is
+  `¬¬contains` (use `if_neg (not_not_intro hcont)`) and the size
+  guard fires via `toPartition2_size` and the negated conjunction.
+  When containment fails, the first guard fires directly via the
+  contrapositive of `toPartition2_contains_iff`.
+
+* `lrCoeffN_def_two_eq_lrCoeff2_of_support (ν lam μ : Partition 2)
+    (hsupp : μ ⊆ ν ∧ ν.weight = lam.weight + μ.weight) :
+    lrCoeffN_def ν lam μ = lrCoeff2 (toPartition2 ν) ...` — stated
+  with `sorry`. 60-line docstring with the 5-step Fulton 2-row
+  bijection sketch (row-0 forced to all zeros by lattice prefix;
+  content equation determines row-1; weakly-increasing → unique;
+  remaining guards match `lrCoeff2`'s 4 pass-conditions;
+  `Fintype.card_eq_of_equiv` to singleton/empty).
+
+* `lrCoeffN_def_two_eq_lrCoeff2 (ν lam μ : Partition 2) :
+    lrCoeffN_def ν lam μ = lrCoeff2 (toPartition2 ν) ...` —
+  refactored from `:= by sorry` to `by_cases hsupp ; ·
+  lrCoeffN_def_two_eq_lrCoeff2_of_support _ _ _ hsupp ; · rw
+  [lrCoeffN_def_eq_zero_of_not_support _ _ _ hsupp]; exact
+  (lrCoeff2_eq_zero_of_not_support _ _ _ hsupp).symm`. Both
+  branches are now discharged; only the in-support sub-lemma
+  carries a `sorry`.
+
+### Design choices
+
+* **Out-of-support direction proved on the `lrCoeff2` side too.**
+  The plan in S3a's docstring suggested "RHS collapse to 0 via
+  `toPartition2_contains_iff` and `toPartition2_size`", but did
+  not factor it as its own lemma. Doing so (a) keeps the main
+  theorem's `by_cases` block to two `exact` lines, (b) gives a
+  named theorem that downstream callers can re-use (e.g., S3d
+  when lifting the 7 Gr(2,4) constants), (c) isolates the
+  if-cascade analysis from the in-support bijection complexity.
+
+* **In-support as a separate sub-lemma instead of an inline
+  sorry.** Keeps the file's named-theorem count consistent
+  (always real signatures, no anonymous sorries inside a tactic
+  block); makes the main theorem fully discharged modulo a
+  single named hypothesis-carrying lemma; makes S3c's PR a
+  one-theorem diff rather than a refactor of `lrCoeffN_def_two_eq_lrCoeff2`.
+
+* **`not_not_intro hcont_p2`** for the `if_neg`-of-double-negation
+  step. `not_not_intro : p → ¬¬p` is in Lean core
+  (`Init/Core.lean:838`), so no Mathlib import gymnastics.
+
+* **`simp only [toPartition2_a, toPartition2_b]` after `unfold
+  lrCoeff2`.** The unfolded `lrCoeff2` body references
+  `(toPartition2 μ).a` etc., which our existing rfl simp lemmas
+  rewrite to `μ.parts 0` so that `hsub : ∀ i : Fin 2, μ.parts i
+  ≤ ν.parts i` can be applied at `i = 0` and `i = 1` directly.
+
+### File deltas
+
+- `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean`: 351 → 455 lines (+104).
+- Sorry count: 1 → 1 (moved from `lrCoeffN_def_two_eq_lrCoeff2`
+  to `lrCoeffN_def_two_eq_lrCoeff2_of_support`; main theorem is
+  now fully discharged modulo the sub-lemma).
+- Axiom count: 0 (unchanged).
+- Theorem count: 6 → 8 (`lrCoeff2_eq_zero_of_not_support`,
+  `lrCoeffN_def_two_eq_lrCoeff2_of_support`, plus the refactored
+  `lrCoeffN_def_two_eq_lrCoeff2`).
+- Definition count: 7 (unchanged).
+- Instance count: 5 (unchanged).
+
+### Build status
+
+Pending. Per Hilbert-15 cluster PR convention. The S3b
+out-of-support proof uses `push_neg`, `by_cases`, `unfold`,
+`if_neg`, `if_pos`, `not_not_intro`, `simp only [@[simp]
+existing lemmas]`, `fin_cases` — all standard Mathlib +
+Init/Core. The S3c sub-lemma sorry is explicit.
 
 ## S3a Summary (2026-05-12, researcher-3)
 
@@ -209,30 +301,51 @@ exercised in S3 via the 2-row anchoring lemma.
 
 ## Next Action
 
-**S3b (next iteration)**: Prove `lrCoeffN_def_two_eq_lrCoeff2`. The
-signature, translation, and equivalence lemmas (S3a) are now in
-place; what remains is the bijection between
-`{T : SkewSSYTFin 2 ν μ // T.content = lam ∧ isLatticeWord
-T.reverseRowWord}` and `lrCoeff2`'s singleton/empty support set on
-2-row data.
+**S3c (next iteration)**: Prove
+`lrCoeffN_def_two_eq_lrCoeff2_of_support`. With S3b's out-of-support
+discharge in place, the only remaining sorry is the in-support
+bijection. The hypothesis `hsupp : μ ⊆ ν ∧ ν.weight = lam.weight
++ μ.weight` is already destructured-ready.
 
-Suggested approach (from the main lemma docstring):
+Five-step plan (per Part VIII docstring):
 
-1. Case-split on `μ ⊆ ν ∧ ν.weight = lam.weight + μ.weight`. In
-   the out-of-support case use `lrCoeffN_def_eq_zero_of_not_support`
-   on the LHS and `toPartition2_contains_iff` + `toPartition2_size`
-   to push the guard through to RHS = 0.
-2. In the in-support case, define `r₁ := ν.parts 0 - μ.parts 0`
-   and `r₂ := ν.parts 1 - μ.parts 1`. Fulton's 2-row analysis
-   (Hilbert15OQ02.lean:95-150 comment block) forces `k₁ = r₁` via
-   the ballot condition.
-3. Construct an `Equiv` from `{T // ...}` to the singleton/empty
-   set parameterised by `lrCoeff2`'s `if`-cascade and close via
-   `Fintype.card_eq_of_equiv`.
+1. **Row 0 is forced to all zeros.** The reverse row reading word
+   starts with row 0 right-to-left. If any cell in row 0 held
+   `1 : Fin 2`, the rightmost such cell would appear first in the
+   word, giving `count 1 ≥ 1, count 0 = 0` at a prefix where
+   `0 < 1` — violating the lattice condition. So every `T ⟨0, j⟩
+   = 0 : Fin 2`. Implies `T.content 0 ≥ r₀`, hence `lam.parts 0
+   ≥ r₀`.
 
-Target: ~150-line proof.
+2. **Row 1 content is determined.** With row 0 contributing `r₀`
+   zeros, the content equation `T.content 0 = lam.parts 0` forces
+   `c₀ := lam.parts 0 - r₀` zeros in row 1. The remaining `c₁ :=
+   r₁ - c₀ = lam.parts 1` cells are ones.
 
-**S3c (later)**: Lift the 7 verified `lrCoeff2 ... = 1` (resp. = 0)
+3. **Row 1 is uniquely determined.** Weakly-increasing row 1
+   with `c₀` zeros and `c₁` ones is the function
+   `j ↦ if j.val < c₀ then 0 else 1`. So `Fintype.card ≤ 1`.
+
+4. **Remaining guards match `lrCoeff2`'s pass-conditions.**
+   Column-strict-in-overlap requires row-1 entries in columns
+   `[μ.parts 0, ν.parts 1)` to be `> 0`, i.e., `= 1`; that
+   overlap has size `ν.parts 1 - μ.parts 0` if positive, with
+   local row-1 indices `[μ.parts 0 - μ.parts 1, r₁)`. The
+   condition that those are all `1` is `c₀ ≤ μ.parts 0 -
+   μ.parts 1`, matching `lrCoeff2`'s `¬(ov > 0 ∧ k₂ > μ.a -
+   μ.b)` (note `k₂ = lam.parts 0 - r₀ = c₀`). Lattice from
+   row 2: `c₁ ≤ r₀`, i.e., `r₀ ≥ lam.parts 1`, matching the
+   `¬(r₁ < λ.b)` guard.
+
+5. **Bijection.** When all four guards hold, the unique function
+   above satisfies the `SkewSSYTFin` conditions giving
+   `Fintype.card = 1`; when any fails, no candidate exists
+   giving `Fintype.card = 0`. Close via `Fintype.card_eq_of_equiv`
+   (singleton/empty target).
+
+Target: ~150 lines.
+
+**S3d (later)**: Lift the 7 verified `lrCoeff2 ... = 1` (resp. = 0)
 results in `Hilbert15OQ02.lean` to `lrCoeffN_def`-form by
 rewriting with `lrCoeffN_def_two_eq_lrCoeff2` and re-discharging
 via `native_decide`.
@@ -249,8 +362,8 @@ chain. Out of scope for this slug.
 
 ## Attempt Counts
 
-- Total attempts: 3 (S1 OBSERVE, S2 scaffold, S3a translation)
-- Current approach attempts: 3
+- Total attempts: 4 (S1 OBSERVE, S2 scaffold, S3a translation, S3b out-of-support)
+- Current approach attempts: 4
 - Approaches tried: 1
 
 ## Open Questions for Future Iterations
