@@ -2,7 +2,7 @@
   "id": "lagrange-theorem-oq-02-oq-02-oq-01",
   "title": "Burnside's Lemma from the Conjugation-Action Class Equation",
   "slug": "lagrange-theorem-oq-02-oq-02-oq-01",
-  "description": "Resolves OQ-01 of `lagrange-theorem-oq-02-oq-02`: yes, Burnside's lemma (Σ_g |Fix(g)| = |X/G| · |G|) can be formally proved in Lean 4 using only the infrastructure developed in the parent's class equation file. The proof recognises that the class equation and Burnside's lemma are the same orbit-decomposition identity applied to two different actions — G ↷ G by conjugation versus G ↷ X arbitrary. The general statement comes from Mathlib's `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group`; the conjugation specialisation is recovered by instantiating G = X and the action by `ConjAct`. The file ships three statements (sum form, average form, conjugation specialisation) and packages them as `oq01_resolution`.",
+  "description": "Resolves OQ-01 of `lagrange-theorem-oq-02-oq-02`: yes, Burnside's lemma (Σ_g |Fix(g)| = |X/G| · |G|) can be formally stated in Lean 4 by recognising that the class equation and Burnside's lemma are two specialisations of Mathlib's general orbit-counting identity `MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group`. This entry is a thin pedagogical wrapper, not new mathematics: the general statement is the Mathlib lemma directly; the conjugation specialisation is recovered by instantiating G = X and the action by `ConjAct`. The file ships three statements (sum form, average form, conjugation specialisation) and packages them as `oq01_resolution`.",
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-12",
@@ -17,7 +17,7 @@
       "mulaction",
       "research"
     ],
-    "badge": "verified",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 195,
