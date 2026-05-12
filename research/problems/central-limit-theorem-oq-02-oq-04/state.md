@@ -1,9 +1,120 @@
 # Current State
 
-**Phase**: ACT (S4 — researcher-6 indicator-pair identity + researcher-4 build-fix)
-**Since**: 2026-05-12T05:30:00Z
-**Iteration**: 4 (multi-PR, build-passing)
-**Last Updated**: 2026-05-12 (researcher-4)
+**Phase**: ACT (S5 — `alphaMixingCoeff` order-theory ingredients)
+**Since**: 2026-05-12T17:50:00Z
+**Iteration**: 5 (theorem count 9 → 11; build-verified)
+**Last Updated**: 2026-05-12 (researcher-3)
+
+## S5 (researcher-3, 2026-05-12, this PR — order-theory ingredients (1) & (2))
+
+**Davydov structural decomposition — 2 of 3 named ingredients now proven.**
+
+This narrow PR closes two of the three named order-theory ingredients in the
+structural decomposition of `davydov_covariance_inequality` (documented inline
+since S4):
+
+```lean
+theorem alphaMixingCoeff_nonneg {μ : Measure Ω}
+    (σPair : Fin 2 → MeasurableSpace Ω) :
+    0 ≤ CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) := by
+  unfold CentralLimitTheoremOQ02.alphaMixingCoeff
+  apply Real.iSup_nonneg; intro _A
+  apply Real.iSup_nonneg; intro _hA
+  apply Real.iSup_nonneg; intro _B
+  apply Real.iSup_nonneg; intro _hB
+  exact abs_nonneg _
+
+theorem alphaMixingCoeff_le_one {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω) :
+    CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) ≤ 1 := by
+  unfold CentralLimitTheoremOQ02.alphaMixingCoeff
+  apply Real.iSup_le _ (by norm_num); intro A
+  apply Real.iSup_le _ (by norm_num); intro _hA
+  apply Real.iSup_le _ (by norm_num); intro B
+  apply Real.iSup_le _ (by norm_num); intro _hB
+  exact indicator_cov_le_one A B
+```
+
+### Key technical tricks
+
+The parent file `CentralLimitTheoremOQ02.lean` line 444 deferred
+`alphaMixingCoeff_nonneg` "due to nested ciSup elaboration complexity
+(MeasurableSpace instances conflict in nested suprema)" — two intertwined
+obstacles.
+
+**Obstacle 1: typeclass-synthesis conflict.** Direct `(ℱ 𝒢 : MeasurableSpace
+Ω)` explicit arguments compete with the ambient `[MeasurableSpace Ω]`
+instance for synthesis inside the nested `⨆`. **Resolution.** Bundle the
+σ-algebra pair as `σPair : Fin 2 → MeasurableSpace Ω`; the projections
+`σPair 0` and `σPair 1` are function applications, not instance candidates.
+This is the file convention already used by `davydov_covariance_inequality`
+(S4) and the parent file's `independent_implies_zero_mixing`.
+
+**Obstacle 2: nested `BddAbove` discharge.** A naive `le_ciSup_of_le`
+approach would require a `BddAbove` witness at each of the 4 nested `⨆`
+layers, mixing `Type` (`Set Ω`) and `Prop` (`MeasurableSet …`) indices.
+**Resolution.** `Real.iSup_nonneg` and `Real.iSup_le` from
+`Mathlib.Data.Real.Archimedean` are stated reflectively in `ι : Sort*` —
+they apply uniformly to **any** index sort, including the propositional
+`MeasurableSet …` layers. The unbounded/empty-range edge cases collapse to
+`sSup ∅ = 0 ∈ ℝ` automatically (Mathlib's convention for ℝ as a
+`ConditionallyCompleteLinearOrder`). No per-level `BddAbove` machinery is
+needed — the proof is 5 lines each, fully discharged via `apply ... ;
+intro`.
+
+### Strategic positioning
+
+* **Non-overlapping with PR #18202** (researcher-5 — S5a `polynomial_summable_of_exponent_gt_one`
+  drift fix). #18202 touches Part II only; this PR adds to Part III only. Both
+  can merge independently.
+* **Closes named ingredients (1) and (2)** of the Davydov decomposition. The
+  remaining order-theory sorry is `davydov_indicator_bound` (ingredient (3)),
+  which now has `alphaMixingCoeff_le_one` available as the `BddAbove` witness
+  for the inverse direction (`le_ciSup_of_le`). Becomes tractable in the next
+  iteration.
+* **Resolves the parent file's deferred TODO** noted at
+  `CentralLimitTheoremOQ02.lean` line 444. The reflective `Real.iSup_nonneg`
+  approach is upstream-portable.
+
+### Counts
+
+* `lineCount`: 544 → **601** (+57 net: ~30 lines of two new proven theorems
+  with full docstrings explaining the dual typeclass / BddAbove obstacles;
+  Part III header docstring rewritten ~+10 lines to reflect the new
+  structure; `davydov_covariance_inequality` docstring re-marked +12 lines
+  to flag the now-proven ingredients (1) and (2)).
+* `theoremCount`: 9 → **11** (+2 fully proven).
+* `definitionCount`: 4 (unchanged).
+* `sorries`: **3** (unchanged — this PR does not touch any existing sorry;
+  PR #18202 in flight closes `polynomial_summable_of_exponent_gt_one` to
+  bring this to 2 once it merges).
+* `axiomCount`: 0 (unchanged).
+
+### Build status
+
+**[BUILD VERIFIED]** — Docker build of `Proofs.CentralLimitTheoremOQ02OQ04`
+on Mathlib v4.26.0 completes successfully on the worktree. The two new
+proofs use only:
+
+* `Real.iSup_nonneg` (`Mathlib.Data.Real.Archimedean` line 301)
+* `Real.iSup_le` (`Mathlib.Data.Real.Archimedean` line 236)
+* `abs_nonneg`, `norm_num`, `indicator_cov_le_one` (already in scope).
+
+No new imports required.
+
+### Next iteration (S5b / S6)
+
+Three productive paths now open:
+
+1. **`davydov_indicator_bound`** (the third order-theory ingredient): use
+   `le_ciSup_of_le` repeatedly with `alphaMixingCoeff_le_one`'s implicit
+   `BddAbove` discharge. ~30 lines. Closes the indicator base case.
+2. **L^p density step** (S5b ACT, ~100 lines): truncate + Hölder
+   amplification.
+3. **Joint tuple stationarity** (S6 prerequisite for Bernstein blocks),
+   ~100 lines.
+
+---
 
 ## S4 partial (researcher-6, 2026-05-12, this PR)
 
