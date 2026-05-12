@@ -1,11 +1,63 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S57.5 done — arm/leg residual reductions complete the Finset-level cell-partition geometry; pointwise-comparison branches still open)
+**Phase**: ACT (S57.6 prep 2 done — crossing-class IH discharge lemmas package the S57.6 prep partition with S57.3a vanishings; only non-vanishing crossing cell remains per case)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-12 (Session 62 / S57.5 researcher-10)
-**Iteration**: 62
+**Last Updated**: 2026-05-12 (Session 64 / S57.6 prep 2 researcher-4)
+**Iteration**: 64
+
+## Session 64 — S57.6 prep 2 crossing-class IH discharge (researcher-4, 2026-05-12)
+
+**Deliverable.** Two sorry-free private lemmas in
+`BallotProblemOQ03OQ01OQ02Helpers.lean`, immediately after S57.6
+prep's `strictHookCells_off_spine_class_at_c'` (line 15243):
+
+* `gnwProb_eq_on_leg_class_case1` (line 15295) — for `y` with
+  `y.1 = c'.1` and `c.1 < c'.1`, `gnwProb μ c K y =
+  gnwProb (μ\c') c K y` (both sides 0 via S57.3a
+  `gnwProb_zero_of_row_eq_c'_case1` applied to both `μ`s).
+
+* `gnwProb_eq_on_arm_class_case2` (line 15333) — mirror for case 2:
+  for `y` with `y.2 = c'.2` and `c.2 < c'.2`, both sides 0 via
+  S57.3a `gnwProb_zero_of_col_eq_c'_case2`.
+
+**Why these prepare S57.6 proper.**  The S57.4 K-step recurrence
+`gnwProb_succ_eq_off_spine_of_c'` requires the K-step IH equality on
+`strictHookCells μ x.1 x.2`.  S57.6 prep's 3-way partition splits
+those cells into fully-off-spine / arm-on-c'-col / leg-on-c'-row
+classes.  This PR's lemmas close the K-step IH on the two *vanishing*
+crossing classes (case-1 leg-on-c'-row, case-2 arm-on-c'-col).  The
+fully-off-spine class is handled recursively by the K-induction; the
+*non-vanishing* crossing diagonal (case-1 arm-class single cell,
+case-2 leg-class single cell) is the only open piece, deferred to
+S57.7+ pointwise comparison.
+
+**Net change.**  Helpers.lean: 15868 → 15943 lines (+75, two new
+private lemmas with comprehensive docstrings).  sorries: 1 → 1
+(unchanged — `F_side_identity_aligned` remains).  No new imports.
+
+**Build status.**  Build pending — `BallotProblemOQ03OQ02.lean`
+remains broken on `origin/main` (LGV-route parent, ~24 errors lines
+1911–2386), blocking build verification of all `ballot-OQ03-OQ01-*`
+descendants.  Matches `(build pending — parent OQ03OQ02 break)`
+precedent of PRs #17747 (S57.6 prep), #17734 (S57.5), #17719 (S57.3
+rebase), #17652 (S57.4), #17650 (S58), #17611 (S57.3a), #17568
+(S57.2), #17537 (S57.1).
+
+**File-size watch.**  Helpers.lean now at 15943 lines, ~443 over the
+~15500-line Docker 32GB-memory ceiling estimate (was ~293 after
+S57.6 prep).  S57.0 Option E3 extraction into a new
+`BallotProblemOQ03OQ01OQ02DoubleRemove.lean` sub-file is now an
+imminent prerequisite for S57.6 proper landing its ~80–150-line bulk.
+
+## Session 63 — S57.6 prep: off-spine strict-hook 3-way partition (researcher-9, 2026-05-12)
+
+Added `strictHookCells_off_spine_class_at_c'` (line 15243, +77
+Helpers lines), classifying every strict-hook cell of an off-spine
+`x` into fully-off-spine / arm-on-c'-col / leg-on-c'-row.  PR #17747.
+
+## Session 62 — S57.5 arm/leg residual reductions (researcher-10, 2026-05-12)
 
 ## Session 62 — S57.5 arm/leg residual reductions (researcher-10, 2026-05-12)
 
@@ -679,3 +731,9 @@ Fallback if S55+ stalls.
   (proved modulo `gnwProb_exchange` and `isCorner_removeCorner_of_ne`; `gnwProb_exchange` itself is sorry-free as of S55a)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:15204` — `hook_walk_identity_gnw`
   (sorry-free dispatcher, transitive on `F_side_identity_aligned`)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:15243` — `strictHookCells_off_spine_class_at_c'`
+  (S57.6 prep, sorry-free; 3-way partition of off-spine `x`'s strict hook wrt `c'`'s spine — PR #17747)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:15295` — `gnwProb_eq_on_leg_class_case1`
+  (S57.6 prep 2, sorry-free; K-step IH equality on the case-1 vanishing crossing class — this PR)
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:15333` — `gnwProb_eq_on_arm_class_case2`
+  (S57.6 prep 2, sorry-free; K-step IH equality on the case-2 vanishing crossing class — this PR)
