@@ -317,6 +317,71 @@ theorem biquadratic_simple (p r : ℂ) :
     -- Apply axiom for backward direction
     exact biquadratic_backward p r y h
 
+/-! ## Part VI.5: Biquadratic-Limit Removable Singularity (OQ-02.c)
+
+This subsection scaffolds the biquadratic-limit identity sketched in
+`research/problems/general-quartic-oq-02/knowledge.md` (Approach A). At
+`q = 0`, the indeterminate-form factor `β = q / (2α)` in `ferrariRoots`
+degenerates whenever a chosen resolvent root `m` satisfies `2m + p = 0`.
+The two helper lemmas isolate the trivial root `m = -p/2` and rewrite the
+resolvent cubic in the cleaner constant-term `4p^3 - 4pr` (the `-q²`
+contribution vanishes). `ferrari_biquad_limit` then states that for every
+`(p, r) ≠ (0, 0)` there exists a non-degenerate resolvent root whose four
+Ferrari roots, when squared, fall in the two-element biquadratic root
+pair `{(-p ± √(p²−4r))/2}` — the canonical biquadratic root set.
+
+`ferrari_biquad_limit` is left as `sorry` here; its proof is deferred to
+the next session (OQ-02 S3+). -/
+
+/-- At `q = 0`, the constant term of the resolvent cubic simplifies (the
+`-q²` contribution vanishes). Provable by `ring`. -/
+theorem resolvent_cubic_q_zero (p r : ℂ) :
+    resolventCubic p 0 r =
+    C 8 * X^3 + C (20 * p) * X^2 + C (16 * p^2 - 8 * r) * X + C (4 * p^3 - 4 * p * r) := by
+  unfold resolventCubic
+  ring
+
+/-- At `q = 0`, `m = -p/2` is always a root of the resolvent cubic.
+This is the *trivial* (degenerate) resolvent root: it makes
+`α² = 2m + p = 0`, so `α = 0` and the `β = q/(2α)` factor in
+`ferrariRoots` is the indeterminate `0/0`. For the non-trivial Ferrari
+branch (Approach A in `knowledge.md`), we need a *different* resolvent
+root, which exists whenever `(p, r) ≠ (0, 0)`. -/
+theorem resolvent_root_neg_p_half_at_q_zero (p r : ℂ) :
+    (resolventCubic p 0 r).eval (-p / 2) = 0 := by
+  simp only [resolventCubic, eval_add, eval_mul, eval_pow, eval_X, eval_C]
+  ring
+
+/-- **Biquadratic limit (OQ-02.c, S2 scaffold)**
+
+In the biquadratic limit `q = 0`, Ferrari's formula admits a
+non-degenerate resolvent root `m` (i.e. one with `2m + p ≠ 0`), and at
+any such `m` each of the four Ferrari roots squared lies in the
+two-element biquadratic root set
+`{(-p + √(p²−4r))/2, (-p − √(p²−4r))/2}`.
+
+This closes the `α = 0` boundary case of `ferrariRoots`: the formula
+degenerates only on the trivial resolvent root `m = -p/2`
+(see `resolvent_root_neg_p_half_at_q_zero`), which exists for every
+`(p, r)` but is excluded by the `(p, r) ≠ (0, 0)` hypothesis here for
+*some* other resolvent root to exist (a polynomial-degree argument:
+when both `p` and `r` are zero, the resolvent cubic collapses to
+`8X^3` whose only root is `m = 0 = -p/2`).
+
+Proof deferred to OQ-02 S3+; see
+`research/problems/general-quartic-oq-02/knowledge.md` → "Approach A". -/
+theorem ferrari_biquad_limit (p r : ℂ) (hpr : p ≠ 0 ∨ r ≠ 0) :
+    ∃ m : ℂ, ∃ (hm : (resolventCubic p 0 r).eval m = 0), 2 * m + p ≠ 0 ∧
+      (let s : ℂ := Complex.cpow (p^2 - 4*r) (1/2 : ℂ)
+       let z₁ : ℂ := (-p + s) / 2
+       let z₂ : ℂ := (-p - s) / 2
+       let (y₁, y₂, y₃, y₄) := ferrariRoots p 0 r m hm
+       (y₁^2 = z₁ ∨ y₁^2 = z₂) ∧
+       (y₂^2 = z₁ ∨ y₂^2 = z₂) ∧
+       (y₃^2 = z₁ ∨ y₃^2 = z₂) ∧
+       (y₄^2 = z₁ ∨ y₄^2 = z₂)) := by
+  sorry
+
 /-! ## Part VII: Historical Context and Significance -/
 
 /-
@@ -357,4 +422,7 @@ end GeneralQuartic
 #check GeneralQuartic.quartic_four_roots
 #check GeneralQuartic.ferrariRoots
 #check GeneralQuartic.ferrari_roots_are_roots
+#check GeneralQuartic.resolvent_cubic_q_zero
+#check GeneralQuartic.resolvent_root_neg_p_half_at_q_zero
+#check GeneralQuartic.ferrari_biquad_limit
 #check GeneralQuartic.biquadratic_simple

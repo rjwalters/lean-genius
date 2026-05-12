@@ -11,6 +11,106 @@ First substantive iteration. Established formal three-part decomposition
 candidate formalization approaches, and selected the OQ-02.c
 **biquadratic-limit identity** as the S2 target on tractability grounds.
 
+### S2 ACT — SCAFFOLD (2026-05-12)
+
+Implemented S2 SCAFFOLD per state.md. Added three theorems to
+`proofs/Proofs/GeneralQuartic.lean` (Part VI.5):
+
+1. **`resolvent_cubic_q_zero`** (sorry-free, `unfold + ring`): rewrites
+   the resolvent cubic at `q = 0` in its cleaner constant-term form
+   `4p³ − 4pr` (the `−q²` contribution vanishes).
+2. **`resolvent_root_neg_p_half_at_q_zero`** (sorry-free, `simp + ring`):
+   `m = -p/2` is always a root at `q = 0`. This is the *trivial*
+   resolvent root: it makes `α² = 2m + p = 0`, so the Ferrari `β` factor
+   is the indeterminate `0/0` form. The non-degenerate Ferrari branch
+   (Approach A) requires a different resolvent root.
+3. **`ferrari_biquad_limit`** (`sorry`, deferred to S3): the
+   biquadratic-limit identity — at `q = 0`, for `(p, r) ≠ (0, 0)`, there
+   exists a resolvent root `m` with `2m + p ≠ 0`, and at any such `m`
+   the four Ferrari roots squared lie in the biquadratic root pair
+   `{(-p + √(p²−4r))/2, (-p − √(p²−4r))/2}`.
+
+**Hypothesis `p ≠ 0 ∨ r ≠ 0` justification.** At `(p, r) = (0, 0)`, the
+resolvent cubic reduces to `8X³`, whose only root is `m = 0 = -p/2`,
+hence no non-degenerate Ferrari branch exists. Excluding this single
+parameter point keeps the statement vacuously satisfied where the
+biquadratic identity is meaningless (the depressed quartic is
+`y⁴ = 0`).
+
+**S3 DECOMPOSITION** (next action):
+
+The `sorry`-marked `ferrari_biquad_limit` decomposes into two
+independent sub-steps:
+
+- **Sub-step A: non-degenerate resolvent root exists.**
+  Show `∃ m, (resolventCubic p 0 r).eval m = 0 ∧ 2*m + p ≠ 0` given
+  `p ≠ 0 ∨ r ≠ 0`. Strategy: by contradiction, suppose every root
+  satisfies `2m + p = 0`, i.e. `m = -p/2`. Then `(resolventCubic p 0 r)`
+  has `m = -p/2` as a *triple* root, so it equals `C 8 * (X + C(p/2))^3`.
+  Expanding (in `Polynomial ℂ`) and comparing coefficients:
+  - Coeff of `X²`: actual `20p`, triple-root `12p` ⟹ `p = 0`.
+  - With `p = 0`: `resolventCubic 0 0 r = C 8 * X^3 + C (-8r) * X
+    = X (C 8 * X^2 + C (-8r))`. For triple-root at `0`, this requires
+    `r = 0`.
+  - Contradicts `p ≠ 0 ∨ r ≠ 0`. QED.
+
+  Concrete Lean strategy: prove `m = -p/2` is *not* a triple root unless
+  both `p = 0` and `r = 0`, using `Polynomial.degree_eq_card_roots` or
+  manually counting via Vieta. Roots of `resolventCubic` over ℂ come
+  with multiplicity 3 (total) and `m = -p/2` has multiplicity ≤ 2 unless
+  `(p, r) = (0, 0)` ⟹ other root exists.
+
+- **Sub-step B: algebraic root-matching at a non-degenerate `m`.**
+  Assume `(resolventCubic p 0 r).eval m = 0` and `2m + p ≠ 0`. Set
+  `α := Complex.cpow (2m + p) (1/2)`, so `α² = 2m + p ≠ 0` (cpow
+  property). Since `q = 0` and `α ≠ 0`, `β = 0` by the parent file's
+  `ferrariRoots` definition (the `if` collapses to the `else` branch
+  with `q = 0` in the numerator). Then:
+  ```
+  disc1 = α² − 4(p/2 + m + 0) = α² − 2p − 4m = (2m + p) − 2p − 4m
+        = -p − 2m = -(2m + p) = -α²
+  ```
+  Symmetric for `disc2 = -α²`. So `sqrt1 = sqrt2 = Complex.cpow (-α²) (1/2)`,
+  and the four Ferrari roots are
+  `y₁ = (-α + sqrt)/2`, `y₂ = (-α − sqrt)/2`, `y₃ = (α + sqrt)/2`,
+  `y₄ = (α − sqrt)/2`. Compute `yᵢ²` and use the resolvent cubic
+  condition `8m³ + 20pm² + (16p² - 8r)m + 4p³ - 4pr = 0` (at `q = 0`)
+  to verify each `yᵢ² ∈ {z₁, z₂}` where `z_{1,2} = (-p ± √(p²-4r))/2`.
+
+  Key intermediate identity (provable by `ring` + the resolvent
+  equation): given `α² = 2m + p` and `8m³ + 20pm² + (16p² - 8r)m
+  + 4p³ - 4pr = 0`, we have `α⁴ = -4 z₁ z₂ + 2 z₁ (-p + s) + ...`
+  — or, more cleanly, `(α² + p)² = 4r` (via the original Ferrari
+  resolvent derivation). This gives `α² = -p ± s = 2z_{1,2}`, hence
+  `α²/2 = z₁` or `z₂`. Then `yᵢ² = ((±α + sqrt)/2)² = (α² ± 2α sqrt
+  + sqrt²)/4 = (α² + sqrt² ± 2α sqrt)/4`. Using `sqrt² = -α²`,
+  `α² + sqrt² = 0`, so `yᵢ² = ±α sqrt / 2`. And `α sqrt = α
+  Complex.cpow (-α²) (1/2) = ±i α²`, giving `yᵢ² = ±i α² / 2 = ±i z_{1,2}`...
+  hmm, this doesn't quite land. Let me re-examine in S3.
+
+  *Alternative*: just use `biquadratic_simple` directly. Each `yᵢ` is a
+  root of the depressed quartic (by `ferrari_roots_are_roots`), hence
+  `yᵢ²` is a root of the biquadratic `z² + pz + r = 0`, hence equal to
+  `z₁` or `z₂`. This bypasses the explicit-formula expansion entirely
+  and uses only `biquadratic_simple` (already in the file) and
+  `ferrari_roots_are_roots` (axiomatized via `ferrari_roots_verify`).
+
+  *Tradeoff*: the alternative path *uses* the parent's
+  `ferrari_roots_verify` axiom. The explicit-formula path would be more
+  satisfying as it would corroborate the axiom, but it is also harder.
+  S3 should attempt the explicit-formula path first; fall back to the
+  alternative if blocked.
+
+**Files modified in S2 SCAFFOLD:**
+- `proofs/Proofs/GeneralQuartic.lean`: +68 lines (Part VI.5 added,
+  three theorems, three `#check` summary entries).
+
+**Metrics after S2:**
+- Lean theoremCount: 9 → 12 (+3)
+- Lean sorryCount: 0 → 1 (the deferred `ferrari_biquad_limit`)
+- Lean axiomCount: 6 (unchanged)
+- LOC: 360 → 428 (+68, under 100-LOC budget)
+
 ## Survey of Prior Art
 
 ### Folklore Status

@@ -192,12 +192,12 @@
       "Complex"
     ],
     "namespace": "GeneralQuartic",
-    "lineCount": 360,
+    "lineCount": 428,
     "axiomCount": 6,
-    "theoremCount": 9,
+    "theoremCount": 12,
     "definitionCount": 5,
     "path": "Proofs/GeneralQuartic.lean",
-    "sorries": 0
+    "sorries": 1
   },
   "mainTheorems": [
     {
@@ -207,5 +207,5 @@
       "leanType": "quartic a b c d e -> exists roots, forall r in roots, a*r^4 + b*r^3 + c*r^2 + d*r + e = 0"
     }
   ],
-  "sorries": 0
+  "sorries": 1
 }
