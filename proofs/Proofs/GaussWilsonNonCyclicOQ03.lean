@@ -178,4 +178,80 @@ theorem card_sqrts_one_eq_card_units_sqrts_one (n : ℕ) [NeZero n] :
   -- Cardinality of the image equals cardinality of the original (val is injective).
   rw [← himg, Finset.card_image_of_injective _ Units.val_injective]
 
+-- ============================================================================
+-- Section 5: Order-2 decomposition of the square-root filter (S4 prep)
+-- ============================================================================
+
+/-! ### S4 preparation — generic group-theoretic decomposition
+
+The S3 ring↔unit bridge reduces the ring-side count to a unit-group count
+`#{u : (ZMod n)ˣ // u^2 = 1}`. The S4 strategy is then: at each prime power
+`p^k`, use the cyclic structure of `(ZMod p^k)ˣ` (for odd `p`, or `p^k ∈
+{1, 2, 4}`) and the `ℤ/2 × ℤ/2^{k-2}` structure for `p = 2, k ≥ 3` to count.
+
+This subsection packages the **order-theoretic** half of that argument
+generically (no `ZMod`/`Cyclic`/`Units` baggage): the count of `u² = 1`
+in any finite group splits as the sum of the order-1 and order-2 counts.
+The cyclic / specific-structure step is then a one-line totient lookup on
+`#{u | orderOf u = 1} = φ(1) = 1` and `#{u | orderOf u = 2} = φ(2) = 1`
+(both via `IsCyclic.card_orderOf_eq_totient`).
+
+Three lemmas:
+
+* `filter_sq_eq_one_eq_filter_orderOf_dvd_two` — `u^2 = 1 ↔ orderOf u ∣ 2`
+  (immediate from `orderOf_dvd_iff_pow_eq_one`).
+* `filter_orderOf_dvd_two_eq_union` — `orderOf u ∣ 2` decomposes as the
+  union `{orderOf = 1} ∪ {orderOf = 2}` (Nat.dvd_prime on 2).
+* `card_filter_sq_eq_one_decomp` — cardinality split using disjoint union
+  on the previous decomposition. -/
+
+/-- **Filter equality**: `u^2 = 1` iff `orderOf u ∣ 2`. -/
+theorem filter_sq_eq_one_eq_filter_orderOf_dvd_two
+    (G : Type*) [Group G] [DecidableEq G] [Fintype G] :
+    Finset.univ.filter (fun u : G => u ^ 2 = 1) =
+      Finset.univ.filter (fun u : G => orderOf u ∣ 2) := by
+  ext u
+  simp [orderOf_dvd_iff_pow_eq_one]
+
+/-- **Union decomposition** of the order-divides-2 filter: every unit
+of order dividing the prime `2` has order exactly `1` or `2`
+(`Nat.dvd_prime` on `2`). -/
+theorem filter_orderOf_dvd_two_eq_union
+    (G : Type*) [Group G] [DecidableEq G] [Fintype G] :
+    Finset.univ.filter (fun u : G => orderOf u ∣ 2) =
+      (Finset.univ.filter (fun u : G => orderOf u = 1)) ∪
+      (Finset.univ.filter (fun u : G => orderOf u = 2)) := by
+  ext u
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and, Finset.mem_union]
+  refine ⟨?_, ?_⟩
+  · intro hdvd
+    rcases (Nat.dvd_prime Nat.prime_two).mp hdvd with h | h
+    · exact Or.inl h
+    · exact Or.inr h
+  · rintro (h | h)
+    · rw [h]; exact one_dvd _
+    · rw [h]
+
+/-- **Cardinality split**: `#{u | u^2 = 1} = #{u | orderOf u = 1} +
+#{u | orderOf u = 2}`. The two components are disjoint (`1 ≠ 2`) so
+cardinality is additive on the union.
+
+For `IsCyclic` groups, `IsCyclic.card_orderOf_eq_totient` further
+reduces each component to a `Nat.totient` value (`φ(1) = 1`,
+`φ(2) = 1`); this is the entry point for S4's odd-prime-power count
+once cyclicity has been established. -/
+theorem card_filter_sq_eq_one_decomp
+    (G : Type*) [Group G] [DecidableEq G] [Fintype G] :
+    (Finset.univ.filter (fun u : G => u ^ 2 = 1)).card =
+      (Finset.univ.filter (fun u : G => orderOf u = 1)).card +
+      (Finset.univ.filter (fun u : G => orderOf u = 2)).card := by
+  rw [filter_sq_eq_one_eq_filter_orderOf_dvd_two,
+      filter_orderOf_dvd_two_eq_union]
+  apply Finset.card_union_of_disjoint
+  rw [Finset.disjoint_left]
+  intro u hu1 hu2
+  have h1 : orderOf u = 1 := (Finset.mem_filter.mp hu1).2
+  have h2 : orderOf u = 2 := (Finset.mem_filter.mp hu2).2
+  omega
+
 end GaussWilsonNonCyclicOQ03

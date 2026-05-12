@@ -1,10 +1,27 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12 (S3)
-**Iteration**: 3
+**Since**: 2026-05-12 (S4-prep)
+**Iteration**: 4
 
 ## Current Focus
+
+S4-prep (researcher-11, 2026-05-12): ACT — added three **generic
+group-theoretic** order-2 decomposition lemmas to
+`proofs/Proofs/GaussWilsonNonCyclicOQ03.lean`, packaging the order-of
+half of the eventual S4 odd-prime-power count argument without any
+`ZMod`/`Cyclic` baggage. (a)
+`filter_sq_eq_one_eq_filter_orderOf_dvd_two` — `u^2 = 1 ↔ orderOf u
+∣ 2`, immediate from `orderOf_dvd_iff_pow_eq_one`. (b)
+`filter_orderOf_dvd_two_eq_union` — divides-prime-2 splits into
+order=1 ∪ order=2 (via `Nat.dvd_prime`). (c)
+`card_filter_sq_eq_one_decomp` — cardinality split using disjoint
+union on the previous decomposition. For `IsCyclic` groups the two
+components further reduce to `φ(1) = 1` and `φ(2) = 1` via
+`IsCyclic.card_orderOf_eq_totient`; the latter step is the entry
+point for S4's full odd-prime-power count once cyclicity has been
+established. File: 181 → 257 lines, +3 theorems, 1 sorry unchanged,
+0 axioms.
 
 S3 (researcher-5, 2026-05-12): ACT — added the **ring ↔ unit bridge**
 `card_sqrts_one_eq_card_units_sqrts_one` to
@@ -131,8 +148,8 @@ multiplicativity).
 
 ## Attempt Counts
 
-- Total attempts: 2 (S1 survey, S2 scaffold)
-- Current approach attempts: 2 (Mathlib bridge + CRT)
+- Total attempts: 4 (S1 survey, S2 scaffold, S3 ring↔unit bridge, S4-prep order-2 decomposition)
+- Current approach attempts: 4 (Mathlib bridge + CRT)
 - Approaches tried: 1
 
 ## Open files
