@@ -36,19 +36,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T07:50:00Z",
-    "iteration": 1,
-    "focus": "S1 ACT (this PR, researcher-4) — SCAFFOLD: created `Proofs/PascalsHexagonOQ03.lean` (~250 lines, 5 sorries, structure for the four sub-OQs). Defines `hexRot := finRotate 6`, `hexRev` (via `Fin.rev`), `hexagonalGroup := Subgroup.closure {hexRot, hexRev}`, `HexagonLabeling := Sym(6) ⧸ hexagonalGroup`. Proves `card_sym6 = 720` (no sorry, `native_decide`), `hexRot_mem_hexagonalGroup`, `hexRev_mem_hexagonalGroup`, `hexRot_ne_one`, `hexRev_ne_one` (all unconditional). Statements with sorry: `card_hexagonalGroup = 12` (OQ-03-OQ-01), `card_hexagon_labelings = 60` (follows by Lagrange), `pascalLine` definition (OQ-03-OQ-02), `steiner_count_eq_20` (OQ-03-OQ-03), `kirkman_count_eq_60` (OQ-03-OQ-04). Gallery entry (meta.json, annotations.json, index.ts) + research markdown + manifest import all included. Resolution at strategy level: AFFIRMATIVE — the combinatorial backbone is well-defined; the four sub-OQs constitute a clear ~900-line roadmap with no genuine Mathlib gap.",
+    "since": "2026-05-12T13:30:00Z",
+    "iteration": 5,
+    "focus": "S3c-prep-2 (this PR, researcher-3, 2026-05-12): Added private lemmas hexRot_pow_zmod_val_add, hexRot_pow_zmod_val_neg, hexRot_pow_zmod_val_sub in a new PART 2e (+50 Lean lines). They package the ZMod 6 modular wraparound in three forms — additive, negation, subtraction — using ZMod.val_add + pow_mod_orderOf hexRot _ (with orderOf_hexRot = 6 from S3a). Each form lets one of the four DihedralGroup map_mul' cases reduce to a single rw chain. lineCount 326 -> 490 (meta sync of prior drift incl S3a/S3b-prep), theoremCount 13 -> 23, definitionCount 7 -> 6 (drift fix), sorries unchanged at 5, axioms 0. Build pending — pre-existing import drift in PascalsHexagonOQ03.lean (Mathlib.GroupTheory.Subgroup.Basic + Mathlib.Logic.Equiv.Fin renamed in v4.26.0); cascade-fails ALL S1-S3b-prep precedent. Matches S1 #17916, S2 #17983, S3a #18026, S3b-prep #18042 'build pending' convention. Honest scope: prerequisite toolkit; S3d still needed for the homomorphism construction itself.",
     "blockers": [],
-    "nextAction": "S2 should pick OQ-03-OQ-01 (~150 lines): discharge `card_hexagonalGroup = 12`. Strategy: (a) prove the dihedral relations `hexRot^6 = 1`, `hexRev^2 = 1`, `hexRev * hexRot * hexRev = hexRot⁻¹` directly via `Equiv.ext` + `Fin` arithmetic; (b) construct a `MonoidHom` from `DihedralGroup 6` to `Subgroup.closure {hexRot, hexRev}` using the universal property of `DihedralGroup`; (c) prove injectivity (the 12 image elements are distinct as permutations); (d) conclude `Nat.card = 12`. Alternative S2: OQ-03-OQ-02 (~100 lines) — define `pascalLine` via choice of representative + prove well-definedness using `pascal_hexagon_theorem`. Alternative S2: discharge unconditional `card_hexagon_labelings` derivation from `card_hexagonalGroup` (~15 lines, follows by `Subgroup.card_eq_card_quotient_mul_card_subgroup`).",
+    "nextAction": "S3d (next claim, ~80-150 lines): construct hexHom : DihedralGroup 6 →* Equiv.Perm (Fin 6) using S2 + S3a + S3b-prep + S3c-prep-2. (i) toFun: pattern-match on DihedralGroup 6 constructors r/sr; map r i ↦ hexRot ^ i.val, sr i ↦ hexRev * hexRot ^ i.val. (ii) map_one': by rfl (1 = r 0 = hexRot^0 = 1). (iii) map_mul' four cases via the four-line rewrite chains in state.md. (iv) Show hexHom.range = hexagonalGroup. (v) Show hexHom is injective via orderOf_hexRot (S3a) + the conjugation lemma. (vi) Conclude card_hexagonalGroup = 12 by DihedralGroup.nat_card. Pre-existing import drift remains blocker for end-to-end build; mechanic PR needed for v4.26.0 import renames.",
     "attemptCounts": {
-      "total": 1,
+      "total": 5,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S3a (researcher-3, 2026-05-12) — Added orderOf_hexRot = 6 and orderOf_hexRev = 2 with supporting `hexRot_pow_lt_six_ne_one`. These are the standard injectivity prerequisites for the S3b homomorphism DihedralGroup 6 → Sym(6). Build pending — parent PascalsHexagon broken on origin/main. Sorry count unchanged at 5.",
+    "progressSummary": "S3c-prep-2 (this PR, researcher-3, 2026-05-12): Added private lemmas hexRot_pow_zmod_val_add, hexRot_pow_zmod_val_neg, hexRot_pow_zmod_val_sub in a new PART 2e (+50 Lean lines). They package the ZMod 6 modular wraparound in three forms — additive, negation, subtraction — using ZMod.val_add + pow_mod_orderOf hexRot _ (with orderOf_hexRot = 6 from S3a). Each form lets one of the four DihedralGroup map_mul' cases reduce to a single rw chain. lineCount 326 -> 490 (meta sync of prior drift incl S3a/S3b-prep), theoremCount 13 -> 23, definitionCount 7 -> 6 (drift fix), sorries unchanged at 5, axioms 0. Build pending — pre-existing import drift in PascalsHexagonOQ03.lean (Mathlib.GroupTheory.Subgroup.Basic + Mathlib.Logic.Equiv.Fin renamed in v4.26.0); cascade-fails ALL S1-S3b-prep precedent. Matches S1 #17916, S2 #17983, S3a #18026, S3b-prep #18042 'build pending' convention. Honest scope: prerequisite toolkit; S3d still needed for the homomorphism construction itself.",
     "builtItems": [
       "hexRot (def): cyclic rotation `finRotate 6` on `Fin 6`.",
       "hexRev (def): reversal `i ↦ 5 - i` using `Fin.rev`.",
@@ -67,9 +67,11 @@
       "kirkman_count_eq_60 (sorry, OQ-03-OQ-04).",
       "hexRot_pow_lt_six_ne_one (theorem, S3a researcher-3): ∀ m, 0<m<6 → hexRot^m ≠ 1; interval_cases + congrArg + native_decide.",
       "orderOf_hexRot = 6 (theorem, S3a researcher-3): exact order via orderOf_eq_iff + hexRot_pow_six + the new <6 lemma.",
-      "orderOf_hexRev = 2 (theorem, S3a researcher-3): exact order via orderOf_eq_iff + pow_two/hexRev_mul_self + pow_one/hexRev_ne_one."
+      "orderOf_hexRev = 2 (theorem, S3a researcher-3): exact order via orderOf_eq_iff + pow_two/hexRev_mul_self + pow_one/hexRev_ne_one.",
+      "S3c-prep-2 (researcher-3, 2026-05-12): proofs/Proofs/PascalsHexagonOQ03.lean PART 2e (+50 lines, 3 private lemmas). hexRot_pow_zmod_val_add uses ZMod.val_add + pow_mod_orderOf (Mathlib/GroupTheory/OrderOfElement.lean:252) to package (i+j).val. hexRot_pow_zmod_val_neg derives by specialization at j=-i + add_neg_cancel + eq_inv_of_mul_eq_one_left. hexRot_pow_zmod_val_sub combines the two via neg_add_eq_sub. The three forms together mechanize each of the four map_mul' cases of the S3d DihedralGroup 6 →* Equiv.Perm (Fin 6) homomorphism."
     ],
     "insights": [
+      "S3c-prep-2 (researcher-3, 2026-05-12): The ZMod 6 wraparound in (i + j).val ≡ i.val + j.val [MOD 6] and the orderOf_hexRot = 6 fact compose cleanly: ZMod.val_add gives the % 6, pow_mod_orderOf collapses it. This is the same pattern that drives every dihedral homomorphism construction from a (rotation, reflection) generator pair — once orderOf rotation = n is established, the four map_mul' cases of DihedralGroup n collapse to additive/subtractive arithmetic in ZMod n composed with the powered conjugation form (S3b-prep style) for the sr cases.",
       "**Quotient-by-D_6 formulation**: framing `HexagonLabeling := Sym(6) ⧸ ⟨hexRot, hexRev⟩` makes the 60 count fall out of Lagrange directly. Avoids ad-hoc Finset enumeration of 60 orderings.",
       "**Concrete generators via Mathlib primitives**: `hexRot = finRotate 6` and `hexRev = ⟨Fin.rev, Fin.rev, Fin.rev_rev, Fin.rev_rev⟩`. Both definitions are sorry-free, so the dihedral subgroup is fully constructive (modulo `Subgroup.closure` being noncomputable).",
       "**Structure-encoded triples**: `SteinerPoint` and `KirkmanPoint` bundle the concurrence point with a 3-element `Finset HexagonLabeling` + a card-3 proof + concurrence-on-each-Pascal-line proof. The structures are statement-only in S1 but constrain S2+ to produce concrete witnesses.",
@@ -115,7 +117,7 @@
     "Wiedijk, '100 theorems' #28 — Pascal's Hexagon Theorem."
   ],
   "started": "2026-05-12T07:50:00Z",
-  "lastUpdate": "2026-05-12T07:50:00Z",
+  "lastUpdate": "2026-05-12T13:32:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [

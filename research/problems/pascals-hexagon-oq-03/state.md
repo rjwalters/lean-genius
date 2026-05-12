@@ -2,9 +2,34 @@
 
 ## Current phase
 
-**S3b-prep ACT** — powered semiconjugacy lemmas (`hexRev_inv`, `hexRev_semiconj_hexRot`, `hexRev_semiconj_hexRot_pow`, `hexRev_hexRot_pow_hexRev`) added. The four `map_mul'` cases of the planned `DihedralGroup 6 →* Equiv.Perm (Fin 6)` homomorphism (S3c) now rewrite mechanically from S2 + S3a + S3b-prep.
+**S3c-prep-2 ACT** — `ZMod 6`-indexed power helpers added (`hexRot_pow_zmod_val_add`, `hexRot_pow_zmod_val_neg`, `hexRot_pow_zmod_val_sub`). Together with the S3b-prep powered semiconjugacy lemmas, each of the four `map_mul'` cases of the planned `DihedralGroup 6 →* Equiv.Perm (Fin 6)` homomorphism (S3d) reduces to a single `rw` chain — the modular wraparound `(i ± j).val ≡ i.val ± j.val [MOD 6]` is now packaged.
 
 ## Latest iteration
+
+**Iteration 5** (2026-05-12, researcher-3)
+
+**Outcome**: S3c-prep-2 complete — three new private lemmas added to `proofs/Proofs/PascalsHexagonOQ03.lean` in a new PART 2e (~50 lines):
+
+| Lemma | Statement | Tactic |
+|---|---|---|
+| `hexRot_pow_zmod_val_add` | `hexRot ^ (i + j).val = hexRot ^ i.val * hexRot ^ j.val` for `i, j : ZMod 6` | `← pow_add` + `ZMod.val_add` + `← orderOf_hexRot` + `pow_mod_orderOf` |
+| `hexRot_pow_zmod_val_neg` | `(hexRot ^ i.val)⁻¹ = hexRot ^ (-i).val` for `i : ZMod 6` | Specialize the additive lemma at `j = -i`; collapse via `add_neg_cancel` + `ZMod.val_zero` + `pow_zero` + `eq_inv_of_mul_eq_one_left` |
+| `hexRot_pow_zmod_val_sub` | `(hexRot ^ i.val)⁻¹ * hexRot ^ j.val = hexRot ^ (j - i).val` for `i, j : ZMod 6` | Replace inverse via negation lemma; collapse via additive lemma; `neg_add_eq_sub` |
+
+These three rewrites cover every modular wraparound in the four `map_mul'` cases of the S3d homomorphism:
+
+- **r-r** (`r i * r j = r (i + j)`): direct application of `hexRot_pow_zmod_val_add`.
+- **r-sr** (`r i * sr j = sr (j - i)`): need `hexRot^i.val * hexRev = hexRev * (hexRot^i.val)⁻¹` (derivable from S3b-prep `hexRev_semiconj_hexRot_pow` + `hexRev_mul_self`); then `hexRot_pow_zmod_val_sub`.
+- **sr-r** (`sr i * r j = sr (i + j)`): `mul_assoc` + `hexRot_pow_zmod_val_add`.
+- **sr-sr** (`sr i * sr j = r (j - i)`): three `mul_assoc` + `hexRev_hexRot_pow_hexRev` (S3b-prep) + `hexRot_pow_zmod_val_sub`.
+
+**Sorry delta**: unchanged at 5 (3 new lemmas are fully proved; `card_hexagonalGroup` still sorry pending the homomorphism).
+
+**Build status**: pending. Parent `Proofs/PascalsHexagon.lean` is broken on origin/main (40 Mathlib drift errors). S1 PR #17916, S2 PR #17983, S3a PR #18026, S3b-prep PR #18042 all merged "(build pending)"; this PR follows the same precedent. No new Mathlib dependencies — only `pow_mod_orderOf` (`Mathlib/GroupTheory/OrderOfElement.lean:252` at pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`), `ZMod.val_add`, `ZMod.val_zero`, `add_neg_cancel`, `neg_add_eq_sub`, and `eq_inv_of_mul_eq_one_left`.
+
+**Meta sync**: lineCount drift from prior iterations (S3a + S3b-prep both merged "build pending" without bumping `meta.json`). Updated `meta.lineCount` 326 → 490, `meta.theoremCount` 13 → 23, `meta.definitionCount` 7 → 6 (overcount in original — one fewer than declared); same updates to the `leanFile` sub-block. Added `originalContributions` entry for S3c-prep-2.
+
+**Honest scope note**: S3c-prep-2 does NOT discharge OQ-03-OQ-01. It supplies the modular-arithmetic toolkit so that S3d (the homomorphism construction + range + injectivity) is a mechanical case split. The hard mathematical content of S3d is the bijectivity argument and modular-arithmetic algebra; S3c-prep-2 packages the arithmetic side, leaving the bijectivity for the next iteration.
 
 **Iteration 4** (2026-05-12, researcher-3)
 
