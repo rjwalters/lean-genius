@@ -1,0 +1,50 @@
+[
+  {
+    "id": "ann-mvt02oq04-uniform-axiom",
+    "proofId": "mean-value-theorem-oq-02-oq-04",
+    "type": "axiom",
+    "range": {
+      "startLine": 95,
+      "endLine": 134
+    },
+    "title": "Cauchy Uniform Bound on the Analytic Taylor Remainder (Axiom)",
+    "content": "The axiom `analytic_taylor_remainder_uniform_bound` states: for f real-analytic on the open interval (a-R, a+R) with uniform sup bound |f y| ≤ M on that interval, and any 0 < r < R, the Taylor remainder at order n satisfies |f(x) - taylorPolynomial f a n x| ≤ M·r^(n+1) / (R-r) for every x ∈ [a-r, a+r] and any n ∈ ℕ. The hypothesis uses `AnalyticOn ℝ f (Set.Ioo (a-R) (a+R))` (Mathlib's analytic-functions predicate) combined with the uniform sup bound. The Taylor polynomial is the same `MeanValueTheoremOQ02.taylorPolynomial` from the parent file (no duplication). This axiomatizes the OQ-04 question verbatim; discharge via Cauchy's coefficient estimates is deferred to S2.",
+    "mathContext": "$|f(x) - T_n f(a)(x)| \\le M \\cdot r^{n+1} / (R - r)$ for all $x \\in [a-r, a+r]$ and all $n \\in \\mathbb{N}$, when $f$ is analytic on $(a-R, a+R)$ with $|f| \\le M$ uniformly and $0 < r < R$. The standard proof uses Cauchy's integral formula or, in Mathlib, the coefficient bound `‖p k‖ \\le M / R^k` combined with the geometric tail $\\sum_{k > n} (r/R)^k = (r/R)^{n+1} / (1 - r/R)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "AnalyticOn",
+      "HasFPowerSeriesOnBall",
+      "Cauchy's estimates",
+      "Taylor remainder",
+      "geometric series"
+    ],
+    "prerequisites": [
+      "Mathlib.Analysis.Analytic.Basic",
+      "Proofs.MeanValueTheoremOQ02",
+      "MeanValueTheoremOQ02.taylorPolynomial"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04-zero-corollary",
+    "proofId": "mean-value-theorem-oq-02-oq-04",
+    "type": "theorem",
+    "range": {
+      "startLine": 136,
+      "endLine": 167
+    },
+    "title": "n=0 Specialization: Cauchy Tangent-Line Bound",
+    "content": "The theorem `analytic_remainder_zero_bound` derives the n=0 specialization of the OQ-04 axiom: for f real-analytic on (a-R, a+R) with sup bound M and 0 < r < R, |f(x) - f(a)| ≤ M·r / (R-r) for x ∈ [a-r, a+r]. The proof is a three-line one-shot: instantiate the axiom at n=0, rewrite using `MeanValueTheoremOQ02.taylorPolynomial_zero` (which says T_0 = f(a)), and apply `simpa` to clear r^(0+1) = r.",
+    "mathContext": "At $n = 0$: $T_0 f(a)(x) = f(a)$, so the OQ-04 bound becomes $|f(x) - f(a)| \\le M \\cdot r / (R - r)$. This is the analytic-function strengthening of the ordinary MVT Lipschitz bound $|f(x) - f(a)| \\le \\sup |f'| \\cdot |x - a|$: the right-hand side now depends only on the sup bound $M$ of $f$ itself (not its derivative) and the geometric shrinkage factor $r / (R - r)$.",
+    "significance": "important",
+    "relatedConcepts": [
+      "taylorPolynomial_zero",
+      "MVT",
+      "Lipschitz bound",
+      "Cauchy bound"
+    ],
+    "prerequisites": [
+      "MeanValueTheoremOQ02.taylorPolynomial_zero",
+      "analytic_taylor_remainder_uniform_bound"
+    ]
+  }
+]
