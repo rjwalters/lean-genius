@@ -1,13 +1,41 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S18c open-cover + finite subcover landed; **0 sorries**, 2 axioms remaining)
+**Phase**: ACT (S18d subordinate partition of unity landed; **0 sorries**, 2 axioms remaining)
 **Path**: full
-**Since**: 2026-05-12T06:10:00Z
-**Iteration**: 18c
+**Since**: 2026-05-12T07:30:00Z
+**Iteration**: 18d
 
 ## Current Focus
-S18c (researcher-3, 2026-05-12, this iteration): Added `private lemma
+S18d (researcher-12, 2026-05-12, this iteration): Added `private lemma
+exists_partition_subordinate_to_uhc_cover` packaging Cellina–Browder
+Step 3 (subordinate partition of unity). For a compact `S ⊆
+EuclideanSpace ℝ (Fin n)` and an upper-hemicontinuous `F : ↥S → 2^↥S`
+at any `ε > 0`, the lemma chains `exists_finite_subcover_for_uhc`
+(S18c, PR #17910) to obtain the open family `U : ↥S → Set ↥S`,
+discards the S18c finite-subcover witness `s : Finset ↥S` (full
+↥S-indexing is preferred for the `PartitionOfUnity` API), derives the
+universal cover hypothesis `Set.univ ⊆ ⋃ x : ↥S, U x` from S18c's
+`x ∈ U x` clause via `Set.mem_iUnion.mpr`, and feeds the result to
+`PartitionOfUnity.exists_isSubordinate`
+(`Mathlib.Topology.PartitionOfUnity` line 629 at pinned rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`). The required
+`[NormalSpace ↥S]` and `[ParacompactSpace ↥S]` instances are supplied
+automatically by the `haveI : CompactSpace ↥S` line plus Mathlib's
+typeclass derivation chain (S18b PR #17802); `IsClosed Set.univ` is
+discharged by `isClosed_univ`. The lemma returns the open family `U`
+together with a `ρ : PartitionOfUnity (↥S) (↥S) (Set.univ : Set ↥S)`
+satisfying `ρ.IsSubordinate U`, plus the three S18c clauses
+(open / basepoint / thickening) required by the eventual S18e
+selection construction. Net file change: lineCount 957 → 1015 (+58);
+theoremCount 9 → 10 (+1); sorry count unchanged at 0; axiom count
+unchanged at 2. Build pending (`proofs/.lake` recursive-symlink trap
+forces ~45 min cold Docker clone; matches S18b/S18c precedent of
+"build pending" merges for scaffold-only PRs whose Mathlib API
+references are verified by directly fetching the pinned rev via
+`raw.githubusercontent.com`).
+
+S18c (researcher-3, 2026-05-12, PR #17910 merged): Added `private lemma
 exists_finite_subcover_for_uhc` packaging Cellina–Browder Steps 1–2 in
 a single statement. For a compact `S ⊆ EuclideanSpace ℝ (Fin n)` and
 an upper-hemicontinuous `F : ↥S → 2^↥S` at any `ε > 0`, the lemma
@@ -123,19 +151,26 @@ Two axioms remain:
    decomposes implementation into 6 PRs (each ≤ 80 lines).
 
 ## Next Action
-**S18d (next claim, ~30 lines)**: Subordinate partition of unity
-(Cellina Step 3). With S18c's `U : ↥S → Set ↥S` open family and the
-typeclass instances from S18b (`[NormalSpace ↥S]`,
-`[ParacompactSpace ↥S]`) in scope, invoke
-`PartitionOfUnity.exists_isSubordinate`
-(`Mathlib.Topology.PartitionOfUnity` L433) to obtain
-`ρ : PartitionOfUnity (↥S) (↥S) Set.univ` with `ρ.IsSubordinate U`.
-Package as `private lemma exists_partition_subordinate_to_uhc_cover`
-threading the S18c output (`U` and `Set.univ ⊆ ⋃ x : ↥S, U x`,
-obtained from `hU_mem x : x ∈ U x` via `Set.subset_iUnion`) into
-`exists_isSubordinate`. The `hs : IsClosed s` hypothesis is
-`isClosed_univ`. No axiom elimination yet; readies S18e (continuous
-selection construction).
+**S18e (next claim, ~60–80 lines)**: Define the continuous selection
+`f : C(↥S, ↥S)` (Cellina Step 4):
+
+1. Use `choose y hy using fun x : ↥S => hF_ne x` to pick
+   representatives `y : ↥S → ↥S` with `y x ∈ F x`.
+2. Define `f x := ∑ᶠ i, ρ i x • (y i : EuclideanSpace ℝ (Fin n))` using
+   the S18d `ρ : PartitionOfUnity (↥S) (↥S) Set.univ`. Lift back into
+   `↥S` via `Convex.sum_mem` plus the `hF_convex` clause from
+   `kakutani_from_brouwer`; this is already abstracted as
+   `convex_combination_of_partition_in_S` (S18a, PR #17755).
+3. Continuity follows from `ρ`'s smoothness / continuity API in
+   `Mathlib.Topology.PartitionOfUnity`; locate the relevant
+   `PartitionOfUnity.continuous_*` lemma at the pinned rev.
+
+Package as `private lemma exists_continuous_selection_of_uhc` taking
+the same hypotheses as `exists_partition_subordinate_to_uhc_cover`
+plus `hF_ne : ∀ x, (F x).Nonempty` and `hF_convex` (already on
+`kakutani_from_brouwer`). Output: `∃ f : C(↥S, ↥S), <ε-graph-bound>`.
+S18f then closes the loop by deriving `approx_selection_exists` from
+S18e + S18c's `F z ⊆ Metric.thickening ε (F x)` clause.
 
 ## Open PRs
 - PR #17493 (researcher-5, 2026-05-08T22:43Z): S11 — closed-ball Brouwer
@@ -155,7 +190,8 @@ selection construction).
 | S17 | 2026-05-12 | researcher-1 | #17708 (merged) | `lemma uhc_local_thickening` Cellina–Browder Step-1 scaffold (+37 lines) |
 | S18a | 2026-05-12 | researcher-9 | #17755 (merged) | Private helper `convex_combination_of_partition_in_S` (+48 lines) |
 | S18b | 2026-05-12 | researcher-11 | #17802 (merged) | Private helper `typeclass_witnesses_compact_subset` (+43 lines, +1 theorem, meta sync 827→907) |
-| S18c | 2026-05-12 | researcher-3 | (this PR) | Private helper `exists_finite_subcover_for_uhc` packaging Steps 1–2 (+50 lines, +1 theorem, meta sync 907→957) |
+| S18c | 2026-05-12 | researcher-3 | #17910 (merged) | Private helper `exists_finite_subcover_for_uhc` packaging Steps 1–2 (+50 lines, +1 theorem, meta sync 907→957) |
+| S18d | 2026-05-12 | researcher-12 | (this PR) | Private helper `exists_partition_subordinate_to_uhc_cover` packaging Step 3 subordinate partition of unity (+58 lines, +1 theorem, meta sync 957→1015) |
 
 ## Reference Files (in this directory)
 - `problem.md` — original problem statement
@@ -173,5 +209,6 @@ selection construction).
 - `s17-cellina-mathlib-api-survey.md` — S17 (researcher-11) Mathlib API map for axiom elimination
 - `s18a-convex-combination-helper.md` — S18a (researcher-9, merged #17755) convex-combination-of-partition-of-unity helper note
 - `s18b-typeclass-witnesses.md` — S18b (researcher-11, merged #17802) typeclass instance plumbing note
-- `s18c-open-cover-finite-subcover.md` — **S18c (this iteration)** open-cover + finite-subcover packaging note
+- `s18c-open-cover-finite-subcover.md` — S18c (researcher-3, merged #17910) open-cover + finite-subcover packaging note
+- `s18d-subordinate-partition-of-unity.md` — **S18d (this iteration)** subordinate partition of unity packaging note
 

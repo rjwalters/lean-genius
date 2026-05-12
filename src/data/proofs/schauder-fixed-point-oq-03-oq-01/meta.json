@@ -44,13 +44,15 @@
       "uhc_local_thickening: S17 Cellina–Browder Step-1 scaffold (UHC at any open V = ε-thickening yields a local U where F maps into the thickening; proved from the UHC definition)",
       "convex_combination_of_partition_in_S: S18a Step-4 helper (Convex.sum_mem + PartitionOfUnity API: weighted sums by a partition of unity stay in the convex target)",
       "typeclass_witnesses_compact_subset: S18b typeclass instance plumbing for the eventual approx_selection_exists_proof — confirms CompactSpace/T2Space/NormalSpace/ParacompactSpace on ↥S are derivable from IsCompact S alone at the pinned Mathlib rev",
+      "exists_finite_subcover_for_uhc: S18c Cellina–Browder Steps 1–2 packaged together — pointwise UHC local thickening (uhc_local_thickening) plus CompactSpace.elim_nhds_subcover yield a ↥S-indexed open family U with a finite subcover s",
+      "exists_partition_subordinate_to_uhc_cover: S18d Cellina–Browder Step 3 — wraps the S18c open cover with a PartitionOfUnity (↥S) (↥S) Set.univ subordinate to U via PartitionOfUnity.exists_isSubordinate (NormalSpace + ParacompactSpace from CompactSpace; Set.univ closed)",
       "seq_compact_of_compact: Sequential compactness derived from Mathlib's IsCompact.isSeqCompact",
       "approx_fixedpoint_implies_fixedpoint: Limit argument for approximate fixed points (proved)",
       "kakutani_from_brouwer: Combines Brouwer + approximate selections to prove Kakutani (proved)"
     ],
     "dateAdded": "2026-04-12",
     "axiomCount": 2,
-    "lineCount": 957,
+    "lineCount": 1015,
     "prerequisites": [
       "Brouwer's fixed point theorem",
       "Compact metric spaces",
@@ -59,7 +61,7 @@
     ],
     "assumptions": "Two axioms: (1) `brouwer_unit_ball` — Brouwer's FPT on the closed unit ball in EuclideanSpace ℝ (Fin n) (S11.A strict-weakening 2026-05-09: the previous axiom asserted FPT for any nonempty compact convex S; the unit-ball-only form is strictly weaker — identical axiom count, smaller mathematical commitment); (2) `approx_selection_exists` — existence of continuous ε-graph-approximate selections (Cellina–Browder form) for UHC maps with convex values. The general-compact-convex Brouwer form is recovered in-house as `theorem brouwer_fpt` via the nearest-point retraction reduction (S8/S11.A; S11.A.body landed S13/2026-05-09, so the theorem's body is sorry-free, but it transitively depends on the sorry-stubbed `exists_continuous_proj_convex` helper pending S11.B — see s11-strict-weakening-spec.md). Sequential compactness, previously a third axiom, is now derived from Mathlib. The combination argument and the limit lemma are fully proved. S6 analysis showed that the strictly stronger pointwise form `∀ x, ∃ y ∈ F x, dist (f x) y < ε` is FALSE under USC + convex values alone, so the selection axiom must be stated in the graph form; `kakutani_from_brouwer` threads a triangle-inequality `ε ↦ 2·(ε/2) = ε` step to recover the diagonal-distance witness expected by `approx_fixedpoint_implies_fixedpoint`.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 9,
+    "theoremCount": 10,
     "definitionCount": 4
   },
   "overview": {
@@ -208,9 +210,9 @@
       "Metric"
     ],
     "namespace": "KakutaniFromBrouwer",
-    "lineCount": 957,
+    "lineCount": 1015,
     "axiomCount": 2,
-    "theoremCount": 9,
+    "theoremCount": 10,
     "definitionCount": 4,
     "path": "Proofs/SchauderFixedPointOQ03OQ01.lean",
     "sorries": 0
