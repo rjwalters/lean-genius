@@ -16,11 +16,11 @@
     ],
     "proofRepoPath": "Proofs/BinomialTheoremOQ02OQ01OQ01.lean",
     "badge": "wip",
-    "sorries": 6,
+    "sorries": 5,
     "dateAdded": "2026-03-30",
     "axiomCount": 0,
     "lineCount": 269,
-    "assumptions": "No axioms. 6 sorries (aggregate): 5 in main file (ENNReal normalization, support characterization, marginal distributions, mean, covariance) + 1 in BinomialTheoremOQ02OQ01OQ01Aristotle.lean. The Fintype instance and concrete dice example are fully proved.",
+    "assumptions": "No axioms. 5 sorries (aggregate): 4 in main file (support characterization at line 164, marginal distribution at line 185, mean at line 200, covariance at line 213) + 1 in BinomialTheoremOQ02OQ01OQ01Aristotle.lean. ENNReal normalization (multinomialPMF_sum_eq_one), the Fintype instance, the PMF construction, and the concrete dice example are fully proved.",
     "originalContributions": [
       "Composition type as support of multinomial distribution",
       "PMF construction via multinomialPMFVal in ENNReal",
