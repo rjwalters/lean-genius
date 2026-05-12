@@ -1,0 +1,111 @@
+{
+  "slug": "gauss-wilson-non-cyclic-oq-01",
+  "title": "Full Gauss–Wilson product formula from the 2-torsion characterization",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\prod_{x \\in (\\mathbb{Z}/n\\mathbb{Z})^\\times} x = -1 \\text{ if } \\mathrm{IsCyclic}\\,(\\mathbb{Z}/n\\mathbb{Z})^\\times, \\text{ else } 1",
+    "plain": "Derive the full Gauss–Wilson product formula — the product of all units in (ℤ/nℤ)ˣ equals −1 when the unit group is cyclic and 1 otherwise — from the parent file's 2-torsion characterization (which proves only the qualitative ≥ 3 lower bound on |{x : x² = 1}| in the non-cyclic case). The cyclic boundary is precisely n ∈ {0,1,2,4,p^m,2p^m} for odd prime p — Mathlib's `ZMod.isCyclic_units_iff`. Equivalently, the product equals −1 iff (n−1)! ≡ −1 mod n on the cyclic-prime sub-case, recovering the classical Wilson form via `ZMod.wilsons_lemma`.",
+    "whyMatters": [
+      "Completes the gallery's coverage of Gauss's 1801 generalization (Disquisitiones Arithmeticae §78): the parent file proves the *contrapositive group-theoretic core* (non-cyclic ⇒ 2-torsion ≥ 3) but does not produce the historic product formula.",
+      "Provides the cleanest known phrasing of when ∏_{x ∈ G} x = 1 for a finite abelian group G: the boundary is whether |G[2]| = 2 or |G[2]| ≥ 4 — a direct dichotomy with no number-theoretic special-casing.",
+      "Three-phase decomposition has natural Mathlib upstreaming potential: Phase A (`prod_univ_eq_prod_two_torsion` for finite CommGroup) and Phase B (`prod_univ_eq_one_of_elementary_abelian_two_card_ge_four`) are both generic finite-group results not present in Mathlib."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": "prod_univ_units_zmod_eq_neg_one_iff_isCyclic (n : ℕ) [NeZero n] : ∏ x : (ZMod n)ˣ, x = -1 ↔ IsCyclic (ZMod n)ˣ"
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T13:00:00.000Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE (researcher-5, 2026-05-12): doc-only S1, no Lean changes. Three-phase decomposition: Phase A — abstract `prod_univ_eq_prod_two_torsion` for finite CommGroup via `Finset.prod_involution` with the inverse map; Phase B — product over an elementary abelian 2-group of order ≥ 4 equals 1, via translation involution x ↦ h₀·x; Phase C — specialize to (ZMod n)ˣ via parent's `card_sq_eq_one_ge_three` (non-cyclic ⇒ |2-torsion| ≥ 4) + `ZMod.isCyclic_units_iff` (boundary characterization). Mathlib has `Finset.prod_involution`, `ZMod.isCyclic_units_iff`, `prod_univ_units_id_eq_neg_one` (domain-only special case); no prebuilt lemmas for the three phases above. 15-row numerical sanity table matches the dichotomy.",
+    "blockers": [],
+    "nextAction": "S2 ACT: create proofs/Proofs/GaussWilsonNonCyclicOQ01A.lean implementing Phase A alone (~30 lines, target 0–1 sorries). Single self-contained statement `prod_univ_eq_prod_two_torsion (G : Type*) [CommGroup G] [Fintype G] [DecidableEq G] : ∏ x : G, x = ∏ x ∈ univ.filter (·^2 = 1), x`. Uses only `Mathlib.Algebra.BigOperators.Group.Finset.Basic`. No dependency on the parent file or OQ-03 file. S3 attacks Phase B (elementary abelian 2-group); S4 assembles Phase C on top.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE (researcher-5, 2026-05-12): 4-document scaffold. Three-phase decomposition with Mathlib readiness map, 15-row numerical sanity table, Lean proof sketches for each phase, sibling-overlap analysis with OQ-03 (OQ-01 is strictly easier; ships without OQ-03 progress).",
+    "builtItems": [
+      "research/problems/gauss-wilson-non-cyclic-oq-01/problem.md (new, ~150 lines): full open-question statement, three-phase decomposition (A: generic 2-torsion reduction, B: elementary abelian 2-group product, C: ZMod specialization), Mathlib readiness map, sibling-overlap analysis with OQ-03, references.",
+      "research/problems/gauss-wilson-non-cyclic-oq-01/knowledge.md (new, ~200 lines): 15-row numerical sanity table (n ∈ {1..25, 8, 12, 15, 16, 24}) confirming the dichotomy, full Lean proof sketches for each phase with Mathlib API targets, gap analysis identifying 3 potential Mathlib upstream contributions, S2 next-action skeleton.",
+      "research/problems/gauss-wilson-non-cyclic-oq-01/state.md (new): S1 phase log, blockers (none), race awareness vs OQ-03.",
+      "src/data/research/problems/gauss-wilson-non-cyclic-oq-01.json (new): gallery-facing problem JSON."
+    ],
+    "insights": [
+      "OQ-01 is strictly easier than OQ-03 (sibling): OQ-01 needs only the cyclic/non-cyclic dichotomy (already in Mathlib as `isCyclic_units_iff`), while OQ-03 needs CRT-based exact 2-torsion cardinalities. OQ-01 can ship without waiting for OQ-03 progress.",
+      "Three-phase decomposition: Phase A (generic abelian group → 2-torsion reduction) and Phase B (elementary abelian 2-group of order ≥ 4 → product = 1) are both *generic finite-group results* not yet packaged in Mathlib. Both are upstreaming candidates.",
+      "Phase A uses `Finset.prod_involution` with `g ↦ g⁻¹` on the complement of the 2-torsion: each non-self-inverse element pairs with its distinct inverse, multiplying to 1. The same template was used in Mathlib's `prod_univ_units_id_eq_neg_one` for the domain case.",
+      "Phase B uses `Finset.prod_involution` (or ninvolution) with `x ↦ h₀·x` for any fixed non-identity h₀: pairs multiply to `h₀ · x^2 = h₀` (since x² = 1), giving total `h₀^(|H|/2)`. For |H| = 2^k with k ≥ 2, |H|/2 is even, so result = 1.",
+      "The dichotomy emerges cleanly: cyclic ⇔ |G[2]| ≤ 2 ⇔ G[2] = {1} or {1, -1} ⇒ Phase A product = 1 or -1; non-cyclic ⇔ |G[2]| ≥ 4 (parent gives ≥ 3, elementary abelian + Lagrange gives ≥ 4) ⇒ Phase B product = 1.",
+      "The classical Wilson form `(p-1)! ≡ -1 mod p` is the prime-case projection through the bijection `(ZMod p)ˣ ↔ {1, ..., p-1}` followed by `Finset.prod_Ico_id_eq_factorial`. Mathlib's `ZMod.wilsons_lemma` already provides this for primes.",
+      "Parent file's `card_sq_eq_one_ge_three` provides only the qualitative ≥ 3 bound. Upgrading to ≥ 4 in Phase C uses that the 2-torsion is a *group* (closed under multiplication), so its cardinality is a power of 2 — Lagrange + Sylow give |G[2]| ∈ {1, 2, 4, 8, ...}, and ≥ 3 forces ≥ 4."
+    ],
+    "mathlibGaps": [
+      "No standalone `Finset.prod_univ_eq_prod_two_torsion` (or `prod_univ_eq_prod_self_inverse`) for finite commutative groups. Phase A would provide this as a gallery-local lemma with potential upstreaming.",
+      "No standalone `prod_univ_of_elementary_abelian_two_card_ge_four` for finite groups with exponent dividing 2 and order ≥ 4. Phase B would provide this as a gallery-local lemma with potential upstreaming.",
+      "The 'finite + exponent 2 ⇒ order is a power of 2' step requires assembly from `Monoid.exponent_dvd_iff` + `Sylow.card_eq_pow_card_orderOf`. A direct `Fintype.card_eq_pow_two_of_exponent_dvd_two` would shortcut Phase C's lower-bound upgrade ≥ 3 → ≥ 4."
+    ],
+    "nextSteps": [
+      "S2: Phase A in isolation. Create proofs/Proofs/GaussWilsonNonCyclicOQ01A.lean (~30 lines, 0–1 sorries) with `prod_univ_eq_prod_two_torsion` and a small `#example`-style numerical sanity check at G = (ZMod 8)ˣ.",
+      "S3: Phase B. Create proofs/Proofs/GaussWilsonNonCyclicOQ01B.lean (~60 lines, 0–1 sorries) with `prod_univ_of_elementary_abelian_two_card_ge_four`. May need a small lemma `Fintype.card_eq_pow_two_of_exponent_dvd_two`.",
+      "S4: Phase C. Create proofs/Proofs/GaussWilsonNonCyclicOQ01.lean assembling the main theorem `prod_univ_units_zmod_eq_neg_one_iff_isCyclic`, citing Phase A, Phase B, parent's `card_sq_eq_one_ge_three`, and `ZMod.isCyclic_units_iff`."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "group-theory",
+    "cyclic-groups",
+    "zmod",
+    "wilson-gauss",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "gauss-wilson-non-cyclic",
+    "gauss-wilson-non-cyclic-oq-03",
+    "wilson-theorem",
+    "fermat-little-theorem",
+    "chinese-remainder-theorem"
+  ],
+  "references": {
+    "papers": [
+      "Gauss, C. F. (1801). Disquisitiones Arithmeticae §78 (the original statement of the full product formula).",
+      "Hardy, G. H. & Wright, E. M. (1979). An Introduction to the Theory of Numbers, 5th ed., §6.3 (Wilson's theorem and Gauss's generalization)."
+    ],
+    "urls": [
+      "https://oeis.org/A001783"
+    ],
+    "mathlib": [
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.RingTheory.ZMod.UnitsCyclic",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.FieldTheory.Finite.Basic",
+      "Mathlib.NumberTheory.Wilson"
+    ]
+  },
+  "started": "2026-05-12T13:00:00.000Z",
+  "lastUpdate": "2026-05-12T13:00:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/GaussWilsonNonCyclic.lean",
+      "filename": "GaussWilsonNonCyclic.lean",
+      "lineCount": 323,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclic.lean"
+    }
+  ]
+}
