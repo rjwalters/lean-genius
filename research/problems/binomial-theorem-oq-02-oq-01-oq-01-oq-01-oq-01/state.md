@@ -1,8 +1,81 @@
 # Current State
 
-**Phase**: OBSERVE → ORIENT (S1 scaffold; no Lean changes yet)
-**Since**: 2026-05-12 (S1 OBSERVE, researcher-10)
-**Iteration**: 1
+**Phase**: ACT (S2 ACT-A complete: namespace bridge + normalization theorem; sorry-free)
+**Since**: 2026-05-12T08:50:00Z (S2 ACT-A, researcher-11)
+**Iteration**: 2
+
+## Iteration 2 (researcher-11, 2026-05-12) — S2 ACT-A namespace bridge + normalization
+
+**Outcome**: progress — `multinomialPMF_sum_eq_one_proved` landed sorry-free in
+the new file `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean` (~110
+lines). The proof discharges the deferred parent-file sorry on
+`multinomialPMF_sum_eq_one` (line 102 of `BinomialTheoremOQ02OQ01OQ01.lean`)
+along the route documented in S1's `knowledge.md` §8.
+
+### What I added (~110 lines)
+
+New file `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean`:
+
+* `compositionTypeEquiv` — namespace bridge between
+  `BinomialTheoremOQ02OQ01OQ01.Composition` and
+  `CompositionFintype.Composition`. The structure fields agree
+  (`counts`, `sum_eq`, `counts_outside`); both maps are the identity
+  on the underlying record. Sorry-free, ~6 lines of body.
+
+* `multinomialPMF_sum_eq_one_proved` — the main result, sorry-free,
+  ~6 lines of `rw` chain:
+  1. `Fintype.sum_equiv compositionTypeEquiv` — transfer to
+     `CompositionFintype.Composition`.
+  2. `CompositionFintype.sum_composition_eq_piAntidiag_sum` — bridge
+     to `piAntidiag` sum.
+  3. `← Finset.sum_pow_eq_sum_piAntidiag` — fold to the `n`-th power.
+  4. `hp` + `one_pow` — close.
+
+Plus `import Proofs.BinomialTheoremOQ02OQ01OQ01OQ01OQ01` added to
+`proofs/Proofs.lean` (alphabetical position between
+`...OQ01OQ01OQ01.lean` and `...OQ01OQ01OQ02.lean` per S1's plan).
+
+### Build status (S2)
+
+**Verified** via `./proofs/scripts/docker-build.sh
+Proofs.BinomialTheoremOQ02OQ01OQ01OQ01OQ01`. Build succeeded; no
+new sorries introduced. The parent's `multinomialPMF_sum_eq_one`
+sorry remains in `BinomialTheoremOQ02OQ01OQ01.lean:102` because
+this iteration deliberately keeps the file as a *proof-of-existence*
+(per S1's Q1 recommendation) — downstream consumers can use the
+proven `multinomialPMF_sum_eq_one_proved` directly without
+back-porting.
+
+### Files modified (S2 narrow)
+
+- `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean` — new file
+  (~110 lines).
+- `proofs/Proofs.lean` — +1 import (alphabetical position).
+- `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01.json`
+  — phase OBSERVE→ACT, iter 1→2, builtItems +2.
+- `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01/{knowledge.md, state.md}`
+  — S2 entry.
+
+### Next Action (S3, optional)
+
+Either:
+
+* **S3a (back-port).** Replace the parent's `sorry` at
+  `BinomialTheoremOQ02OQ01OQ01.lean:102` with a one-line wrapper
+  calling `BinomialTheoremOQ02OQ01OQ01.multinomialPMF_sum_eq_one_proved`.
+  Trivial follow-up; would close the parent file's open sorry as well.
+* **S3b (out-of-scope cleanup).** Discharge the four downstream
+  sorries in the parent (`multinomialPMF_support`,
+  `multinomial_marginal_binomial`, `multinomial_mean`,
+  `multinomial_covariance`) — explicitly marked OUT OF SCOPE in S1
+  knowledge.md §10. Defer to a sibling slug.
+
+If neither S3 fires, the slug flips to `completed` after S2 merges.
+
+---
+
+## (Historic) Iteration 1 (researcher-10, 2026-05-12) — S1 OBSERVE
+
 
 ## Current Focus
 
