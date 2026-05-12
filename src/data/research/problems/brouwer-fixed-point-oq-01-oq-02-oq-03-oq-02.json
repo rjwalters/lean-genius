@@ -16,28 +16,29 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-12T07:15:00Z",
-    "iteration": 4,
-    "focus": "S4 ACT-C prep — blueprint upstream Mathlib contribution that closes gap B1 (topological-homotopy → chain-homotopy bridge / prism operator). No Lean edits in this iteration. Deliverable: Section H of knowledge.md (~250 lines) detailing the three-layer construction (simplicial homotopy → chain homotopy via alternatingFaceMapComplex → singular chains via TopCat.toSSet), recommended Mathlib placement, complexity estimates, risk register, and a near-term local-axiom fallback (Section H9).",
-    "activeApproach": "Three-layer factoring of B1: (1) Lemma 1 = AlternatingFaceMapComplex.mapHomotopy (~40–80 lines, the only genuinely new construction); (2) Lemma 2 = TopCat.toSSet.mapHomotopy (~30–60 lines, routine bridge); (3) Theorem = singularChainHomotopyOfTopHomotopy (~10–20 lines, composition). Plus standard corollaries (HomotopyEquiv, homologyMap_eq) for ~20–40 lines. Total upstream contribution 100–200 lines, ~3–6 sessions. Strategic recommendation: pursue a local axiom singular_chain_homotopy_of_top_homotopy in the gallery file (Section H9 route) as the immediate ACT-B exec next step — costs +1 named axiom but unblocks substantive H_n_minus_1_ball_zero in a single session, and the new axiom is strictly tighter than the current sphere-nonzero residual axiom.",
+    "phase": "OBSERVE",
+    "since": "2026-05-12T13:30:00Z",
+    "iteration": 6,
+    "focus": "S6 OBSERVE — doc-only Mathlib API survey of sphere-side infrastructure at the pinned rev (v4.26.0, 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67) to scope a future ACT-D execution sequence that installs a thin B2 surrogate axiom (sphere_singularHomology_nonzero) and substantive H_n_minus_1_sphere_nonzero_substantive theorem, mirroring the ball-side substantive structure landed in S5 ACT-B exec (PR #18018). Deliverable: knowledge.md Section L (L1–L9) with exact axiom signatures, ACT-D plan, and a newly-identified algebraic-bridge gap.",
+    "activeApproach": "Discoveries this iteration: (L1) Mathlib/Topology/Category/TopCat/Sphere.lean (Xia, Young 2024) provides TopCat.disk/diskBoundary/sphere/ball as ULift-wrapped TopCat.{u} objects with scoped notation 𝔻/∂𝔻/𝕊/𝔹. (L3) Direct path-search confirms zero references to Metric.sphere in Mathlib/AlgebraicTopology and zero NotContractibleSpace instances for spheres, so the B2 gap (sphere homology nontriviality) is structurally unchanged. (L4–L5) Exact axiom and theorem statements drafted using the new TopCat.diskBoundary. (L6) Sphere-side bridge problem identified as NOT covered by sibling PR #18011's G6 Subsingleton-bridge — needs a new Section G7 algebraic lemma (`¬ IsZero (X) → ∃ x : X, x ≠ 0` for AddCommGrpCat). (L7) ACT-D execution plan over S7–S10 with explicit deliverables. (L8) Build risk for S7 ACT-D-1 lower than S5 because no typeclass-synthesis chain.",
     "blockers": [
-      "B1 (Mathlib gap) — prism operator / topological-homotopy → chain-homotopy bridge still missing. ACT-C blueprint (Section H of knowledge.md) maps the contribution; pending Mathlib PR or a local axiom.",
-      "B2 (Mathlib gap) — H_{n-1}(S^{n-1}) ≅ ℤ still missing; the deep residual obstruction isolated in H_n_minus_1_sphere_nonzero. Not blocking the next session's work.",
-      "Docker daemon status in this worktree unverified; this iteration is markdown-only so no build risk."
+      "B1 (Mathlib gap) — prism operator still missing; encoded as the thin local axiom contractible_singularHomology_zero (S5 ACT-B exec). Upstream contribution path mapped in Section H.",
+      "B2 (Mathlib gap) — H_{n-1}(S^{n-1}) ≅ ℤ still missing. S6 OBSERVE refined the gap classification and proposed a thin B2 surrogate (Section L4) to be installed in S7 ACT-D-1.",
+      "Sibling PR #18011 (G6 Subsingleton/Unit-bridge) still OPEN. S9 ACT-D-3 depends on its merge for the algebraic-bridge half. S7 ACT-D-1 is INDEPENDENT and can proceed before #18011 merges."
     ],
-    "nextAction": "Session 5 next action: ACT-B exec via local-axiom route (Section H9). (1) Introduce local axiom singular_chain_homotopy_of_top_homotopy in BrouwerFixedPointOQ01OQ02.lean. (2) Strengthen hypothesis of H_n_minus_1_ball_zero to n ≥ 2 (per Section G5/H7). (3) Prove H_n_minus_1_ball_zero substantively using the 5-step sketch from G5 (closedBall contractibility, ContractibleSpace.hequiv_unit, the new local axiom, isZero_singularHomologyFunctor_of_totallyDisconnectedSpace, HomotopyEquiv.toHomologyIso). (4) Unit-bridge step (G6) translates IsZero back into the existing ∃ φ : ℤ →+ Unit, True signature. Net axiom count: 1 → 2 (sphere-nonzero + B1 surrogate), but H_n_minus_1_ball_zero becomes substantive. Alternative if Mathlib API import drift is detected: defer ACT-B exec and instead carry out the Unit-bridge lemma (Section G6) as a self-contained Lean addition.",
+    "nextAction": "Session 7 next action: ACT-D-1 — install candidate-(a) axiom sphere_singularHomology_nonzero + trivial substantive theorem H_n_minus_1_sphere_nonzero_substantive (knowledge.md §L4 + §L5). ~30 lines of Lean addition using TopCat.diskBoundary; build risk lower than S5 because no typeclass-synthesis chain. Net axiom delta: +1. Followed by S8 ACT-D-2 (Section G7 algebraic bridge for `¬ IsZero (X) → ∃ x : X, x ≠ 0`), S9 ACT-D-3 (combine G7 + functoriality + PR #18011's G6 to bridge to `∃ ψ, ψ ∘ φ = id` shape), S10 ACT-D-4 (drop mock H_n_minus_1_sphere_nonzero axiom, net axiom delta −1).",
     "attemptCounts": {
-      "total": 4,
+      "total": 6,
       "currentApproach": 1,
-      "approachesTried": 4
+      "approachesTried": 6
     }
   },
   "knowledge": {
-    "progressSummary": "S5 ACT-B EXEC (build verified, 2026-05-12): Added local axiom contractible_singularHomology_zero (thin B1 surrogate) + substantive theorem H_n_minus_1_ball_zero_substantive (real-homology proof for n ≥ 2). Mock chain preserved — all downstream consumers compile unchanged. Net axiom count: 1 → 2; both are now standard textbook facts with explicit Mathlib contribution paths.",
+    "progressSummary": "S6 OBSERVE (doc-only, 2026-05-12): Sphere-side ACT-D prep via Mathlib API survey at pinned rev v4.26.0. Discovered TopCat.disk/diskBoundary/sphere/ball already exist in Mathlib/Topology/Category/TopCat/Sphere.lean (Xia, Young 2024). Confirmed B2 gap structurally unchanged (zero Metric.sphere references in Mathlib/AlgebraicTopology). Drafted exact thin B2 surrogate axiom and substantive theorem signatures for S7 ACT-D-1. Identified Section G7 algebraic-bridge gap NOT covered by sibling PR #18011. Earlier: S5 ACT-B EXEC (build verified) added contractible_singularHomology_zero + H_n_minus_1_ball_zero_substantive; net axiom 1 → 2, both textbook-class.",
     "builtItems": [
       "Local axiom contractible_singularHomology_zero in BrouwerFixedPointOQ01OQ02.lean:266 — thin B1 surrogate.",
-      "Substantive theorem H_n_minus_1_ball_zero_substantive in BrouwerFixedPointOQ01OQ02.lean:290 — real-homology proof for n ≥ 2 via convex_closedBall + Convex.contractibleSpace + the new local axiom."
+      "Substantive theorem H_n_minus_1_ball_zero_substantive in BrouwerFixedPointOQ01OQ02.lean:290 — real-homology proof for n ≥ 2 via convex_closedBall + Convex.contractibleSpace + the new local axiom.",
+      "S6 OBSERVE: knowledge.md Section L (L1–L9) — Mathlib API survey of sphere-side infrastructure, exact axiom signatures, ACT-D execution plan over S7–S10."
     ],
     "insights": [
       "B1 (the topological-homotopy → chain-homotopy bridge) factors cleanly into three layers via Mathlib's existing simplicial framework: (i) simplicial-homotopy → chain-homotopy via the alternating-face-map functor, (ii) topological-homotopy → simplicial-homotopy via TopCat.toSSet, (iii) composition gives the singular-chain version. Only layer (i) requires genuinely new Lean code; the other two are routine bridges. (Section H3 of knowledge.md.)",
@@ -58,7 +59,13 @@
       "ACT-B exec proof sketch concretized: 5 steps, ~30 Lean lines once B1 (prism operator) is available. Steps 1, 2, 4, 5 are direct calls into Mathlib (Convex.contractibleSpace, ContractibleSpace.hequiv_unit, isZero_singularHomologyFunctor_of_totallyDisconnectedSpace, HomotopyEquiv.toHomologyIso). Step 3 is the single B1 invocation.",
       "Unit-bridge step (mock ↔ real translation): converting IsZero (H_{n-1}(B^n)) into ∃ φ : ℤ →+ Unit, True is a 5–10 line lemma using AddCommGrpCat IsZero and Subsingleton.toEquivPUnit (or equivalent). Two options for ACT-B exec: (a) keep the existential signature and bridge post-IsZero — recommended, minimal-diff; (b) strengthen the signature to IsZero directly. Both are routine.",
       "S5 ACT-B exec executed the H9 local-axiom route in non-destructive form: real-homology proof of H_{n-1}(B^n) = 0 lives alongside (not replacing) the trivial-mock H_n_minus_1_ball_zero, so downstream consumers compile unchanged.",
-      "The new thin local axiom contractible_singularHomology_zero is *strictly tighter* than the existing sphere-nonzero residual: it packages a single classical fact (H_n of a contractible space is zero for n ≥ 1) with explicit Mathlib contribution path (knowledge.md Section H Lemma 1 + Lemma 2)."
+      "The new thin local axiom contractible_singularHomology_zero is *strictly tighter* than the existing sphere-nonzero residual: it packages a single classical fact (H_n of a contractible space is zero for n ≥ 1) with explicit Mathlib contribution path (knowledge.md Section H Lemma 1 + Lemma 2).",
+      "S6 (L1) Mathlib has already-named TopCat-level sphere objects: TopCat.disk, TopCat.diskBoundary, TopCat.sphere, TopCat.ball in Mathlib/Topology/Category/TopCat/Sphere.lean (Xia, Young 2024). They are ULift-wrapped TopCat.{u} objects with scoped notation 𝔻/∂𝔻/𝕊/𝔹, plus diskBoundaryInclusion/ballInclusion morphisms with mono instances. The ball-side substantive proof in S5 uses TopCat.of ↥(Metric.closedBall ...) directly and could be cleaned up to use TopCat.disk in a future refactor.",
+      "S6 (L3) B2 gap classification refined: direct path-search of Mathlib/AlgebraicTopology returned zero hits for `Metric.sphere`, confirming no sphere-homology computation exists at the pinned rev. New refinement: B2-CW (cellular chain complex of 𝕊 n) is now the cleanest upstream contribution path because TopCat.sphere already provides the right signatures.",
+      "S6 (L4) Exact thin B2 surrogate axiom drafted: `axiom sphere_singularHomology_nonzero (n : ℕ) (hn : 1 ≤ n) : ¬ IsZero ((singularHomologyFunctor AddCommGrpCat.{0} n).obj (AddCommGrpCat.of ℤ)).obj (TopCat.diskBoundary (n + 1))`. Strictly weaker than `≅ ℤ` but sufficient for the no-retraction contradiction.",
+      "S6 (L6) Sphere-side bridge problem is NOT covered by sibling PR #18011's G6 Subsingleton-bridge. The sphere half needs a different shape: converting `¬ IsZero (X)` into `∃ x : X, x ≠ 0` for AddCommGrpCat (Section G7), which is an additional self-contained algebra step not in PR #18011's Part VI.",
+      "S6 (L7) ACT-D execution plan: S7 install B2 surrogate + trivial substantive theorem (~30 lines), S8 design Section G7 algebraic bridge, S9 combine G7 + functoriality + PR #18011's G6 to bridge to `∃ ψ, ψ ∘ φ = id`, S10 drop mock H_n_minus_1_sphere_nonzero axiom for net axiom delta −1 (back to 2 axioms, both textbook).",
+      "S6 (L8) Build risk for S7 ACT-D-1 is lower than S5: APIs involved are singularHomologyFunctor, AddCommGrpCat, TopCat.diskBoundary, CategoryTheory.Limits.IsZero — all verified present, no typeclass-synthesis chain composition."
     ],
     "mathlibGaps": [
       "Topological homotopy invariance of singularChainComplexFunctor (prism operator, ~100–300 line construction in Mathlib.AlgebraicTopology.SingularHomology).",
@@ -67,9 +74,12 @@
       "No excision theorem in Mathlib.AlgebraicTopology.SingularHomology."
     ],
     "nextSteps": [
-      "S6 Unit-bridge lemma (knowledge.md G6, ~5–10 lines): convert IsZero (H_{n-1}(B^n)) into the existential form used by downstream consumers, allowing the substantive theorem to replace (not just supplement) the mock.",
-      "S6 sphere-side parallel: introduce a similar local axiom for B2 (sphere-homology Mayer–Vietoris/excision) and substantive parallel of H_n_minus_1_sphere_nonzero, aligning the two axioms at the same abstraction level.",
-      "Multi-session Mathlib B1 contribution: AlternatingFaceMapComplex.mapHomotopy (knowledge.md H3 Lemma 1) — the only genuinely new construction needed upstream."
+      "S7 ACT-D-1: install candidate-(a) axiom sphere_singularHomology_nonzero + trivial substantive theorem H_n_minus_1_sphere_nonzero_substantive (knowledge.md §L4 + §L5). ~30 lines of Lean using TopCat.diskBoundary; build risk lower than S5. Net axiom delta +1.",
+      "S8 ACT-D-2: design and install Section G7 algebraic bridge (`¬ IsZero (X) → ∃ x : X, x ≠ 0` for AddCommGrpCat). Self-contained, no homology dependencies.",
+      "S9 ACT-D-3: combine G7 + functoriality + PR #18011's G6 Subsingleton-bridge to convert the substantive sphere theorem into the existential `∃ ψ : Unit →+ ℤ, ψ ∘ φ = id` shape. Depends on PR #18011 merge.",
+      "S10 ACT-D-4: drop mock H_n_minus_1_sphere_nonzero axiom in favour of substantive form. Net axiom delta −1 (back to 2 axioms total, both textbook-class with explicit Mathlib paths).",
+      "Sibling: G6 Unit-bridge lemma (knowledge.md G6, ~5–10 lines) — partially done in OPEN PR #18011's Part VI Subsingleton lemmas. Awaiting merge.",
+      "Multi-session Mathlib B1 contribution: AlternatingFaceMapComplex.mapHomotopy (knowledge.md H3 Lemma 1)."
     ]
   },
   "tags": [
@@ -109,7 +119,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.561Z",
-  "lastUpdate": "2026-05-12T07:15:00Z",
+  "lastUpdate": "2026-05-12T13:30:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
