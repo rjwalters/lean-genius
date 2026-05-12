@@ -1,0 +1,239 @@
+{
+  "slug": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+  "title": "Inductive n×n quasideterminant theory over division rings",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Define qdetN : (n : ℕ) → Matrix (Fin n) (Fin n) D → Fin n → Fin n → D over a division ring D by strong induction on n, with qdetN 1 A 0 0 = A 0 0 and qdetN (k+1) A i j = A i j - ∑_{p,q} A i (Fin.succAbove j q) · Minv q p · A (Fin.succAbove i p) j where Minv is the homological-relations inverse of A.submatrix (Fin.succAbove i) (Fin.succAbove j) expressed via qdetN k. Prove the Schur-complement recurrence qdetN_recurrence and the commutative reduction qdetN n A i j * minor_det = A.det over fields.",
+    "plain": "Generalize the 2×2 (CramersRuleOQ01OQ02) and 3×3 (CramersRuleOQ01OQ02OQ01) Gelfand–Retakh quasideterminant theory to general n×n matrices over a division ring, via mutual strong recursion on n. Goal: an inductive qdetN with Schur-complement recurrence and commutative reduction qdetN = det / minor.",
+    "whyMatters": [
+      "Closes the n×n recursive principle stated but not proved in CramersRuleOQ01OQ02OQ01 lines 29–36.",
+      "Yields a uniform-in-n Cramer's rule over division rings (generalizes cramer_rule_3x3).",
+      "First Lean formalization of Gelfand–Retakh quasideterminants at arbitrary n; Mathlib has no analogue."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "n=2: full 4-qdet theory + Schur expansion + commutative reduction (CramersRuleOQ01OQ02.lean, 463 lines).",
+      "n=3: full 9-qdet theory + non-commutative qdet3_00_nc + Schur recurrence summary (CramersRuleOQ01OQ02OQ01.lean, 314 lines)."
+    ],
+    "open": [
+      "qdetN inductive definition for all n.",
+      "qdetN_recurrence over a division ring.",
+      "qdetN_field_quotient (commutative reduction)."
+    ],
+    "goal": "qdetN defined for all n, qdetN_recurrence proved, commutative reduction proved, n×n Cramer derived."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T08:30:00Z",
+    "iteration": 1,
+    "focus": "OBSERVE: formal statement scoped, two routes (Route A commutative qdetF, Route B non-commutative qdetN) mapped, Mathlib API surveyed. S2 plan: implement Route A first.",
+    "blockers": [
+      "Mathlib has no Matrix.quasideterminant; all infrastructure original.",
+      "Mutual recursion (qdetN ↔ qdetN_inv) on decreasing n may need explicit termination_by / decreasing_by."
+    ],
+    "nextAction": "S2 [DEFINE]: create proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean implementing qdetF (commutative route): qdetF n A i j := A.det / (A.submatrix (Fin.succAbove i) (Fin.succAbove j)).det; prove qdetF_field_quotient, qdetF_ne_zero, and n=2/n=3 specializations.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-12, 2026-05-12): OBSERVE complete. Formalized statement, scoped two definition routes, surveyed Mathlib API, identified Route A (commutative qdetF via det/minor) as cleanest S2 target. No Lean changes.",
+    "builtItems": [
+      "research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01/problem.md (formal statement, classification, references)",
+      "research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01/knowledge.md (literature survey, two-route plan, Mathlib API map, 6-session sequencing S2–S6)",
+      "research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01/state.md (phase=OBSERVE, next-action=S2 DEFINE)"
+    ],
+    "insights": [
+      "Route A (commutative qdetF n A i j := A.det / minor_det) avoids mutual recursion and closes the commutative half uniformly in n; it is the cleanest first iteration.",
+      "Route B (non-commutative qdetN) needs mutual strong recursion with qdetN_inv on decreasing n; Lean structural recursion sees the size decrease through A.submatrix.",
+      "Gelfand–Retakh sign convention matches the parent file (qdet3 = det / minor with no extra ± sign at i=j=0), confirmed by qdet3_00_explicit.",
+      "n=2 and n=3 specializations follow by unfolding Matrix.det_fin_two / Matrix.det_fin_three plus the existing parent identities."
+    ],
+    "mathlibGaps": [
+      "No Matrix.quasideterminant at any n.",
+      "Matrix.nonsingInv is field-only; non-commutative inversion via homological relations is not in Mathlib."
+    ],
+    "nextSteps": [
+      "S2 [DEFINE] Implement Route A: qdetF, qdetF_field_quotient, qdetF_ne_zero, n=2/n=3 specializations. Target ≤ 250 lines, ≤ 2 sorries.",
+      "S3 [NC-DEFINE] Implement Route B: qdetN over division rings via mutual strong recursion with qdetN_inv.",
+      "S4 [NC-RECURRENCE] Prove qdetN_recurrence (Schur identity at every n).",
+      "S5 [CONSISTENCY] Prove qdetN n A i j = qdetF n A i j over a field (consistency theorem).",
+      "S6 [CRAMER] State and prove cramer_rule_nxn_qdet (n×n Cramer's rule over division rings)."
+    ]
+  },
+  "tags": [
+    "linear-algebra",
+    "matrices",
+    "non-commutative",
+    "division-rings",
+    "quasideterminants",
+    "cramer",
+    "schur-complement",
+    "recursion",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "cramers-rule",
+    "cramers-rule-oq-01",
+    "cramers-rule-oq-01-oq-02",
+    "cramers-rule-oq-01-oq-02-oq-01",
+    "cramers-rule-oq-01-oq-03",
+    "cramers-rule-oq-01-oq-04",
+    "cramers-rule-oq-02",
+    "cramers-rule-oq-02-oq-02",
+    "cramers-rule-oq-03",
+    "cramers-rule-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Gelfand, I. M.; Retakh, V. S. Determinants of matrices over noncommutative rings. Funct. Anal. Appl. 25 (1991), 91–102.",
+      "Gelfand, I.; Gelfand, S.; Retakh, V.; Wilson, R. L. Quasideterminants. Adv. Math. 193 (2005), 56–141."
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.LinearAlgebra.Matrix.Adjugate",
+      "Mathlib.LinearAlgebra.Matrix.NonsingularInverse",
+      "Mathlib.Data.Matrix.Block",
+      "Matrix.det_succ_column_zero",
+      "Matrix.det_succ_row",
+      "Matrix.det_fin_two",
+      "Matrix.det_fin_three",
+      "Matrix.fromBlocks",
+      "Fin.succAbove"
+    ]
+  },
+  "started": "2026-05-12T08:02:11.449Z",
+  "lastUpdate": "2026-05-12T08:30:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/CramersRule.lean",
+      "filename": "CramersRule.lean",
+      "lineCount": 162,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRule.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01.lean",
+      "filename": "CramersRuleOQ01.lean",
+      "lineCount": 283,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ02.lean",
+      "filename": "CramersRuleOQ01OQ02.lean",
+      "lineCount": 463,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ02OQ01.lean",
+      "filename": "CramersRuleOQ01OQ02OQ01.lean",
+      "lineCount": 314,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ03.lean",
+      "filename": "CramersRuleOQ01OQ03.lean",
+      "lineCount": 229,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ01OQ04.lean",
+      "filename": "CramersRuleOQ01OQ04.lean",
+      "lineCount": 328,
+      "theoremCount": 17,
+      "axiomCount": 4,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ02.lean",
+      "filename": "CramersRuleOQ02.lean",
+      "lineCount": 208,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ02.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ02OQ02.lean",
+      "filename": "CramersRuleOQ02OQ02.lean",
+      "lineCount": 190,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ03.lean",
+      "filename": "CramersRuleOQ03.lean",
+      "lineCount": 176,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ03.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ03OQ03.lean",
+      "filename": "CramersRuleOQ03OQ03.lean",
+      "lineCount": 156,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/CramersRuleOQ04.lean",
+      "filename": "CramersRuleOQ04.lean",
+      "lineCount": 176,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ04.lean"
+    }
+  ]
+}
