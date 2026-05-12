@@ -23,7 +23,7 @@
     "badge": "axiom",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 614,
+    "lineCount": 621,
     "assumptions": "0 new axioms in this file. The parent file's axiom analytic_taylor_remainder_uniform_bound is shown mathematically false (Runge counterexample, fully formalized in §2). The S1-S2 explicit-form RHS paired with partialSum n is also shown false (off-by-one refutation in §3a via constant-1 witness on ℂ, S3 contribution). One sorry remains in cauchy_diag_norm_bound (the per-degree Cauchy coefficient estimate ‖p k (fun _ ↦ w)‖ ≤ M · (‖w‖ / R)^k); the surrounding §3b main theorem analytic_taylor_remainder_uniform_bound_complex is now fully proven modulo this single sub-lemma (S4 contribution).",
     "dateAdded": "2026-05-12",
     "mathlib_version": "4.26.0",
@@ -96,7 +96,7 @@
       "Demonstration that the explicit R^n factor in the denominator (M·r^(n+1) / (R^n · (R-r))) is essential; the OQ-04 statement that absorbs R^n into M is too weak to be true under real-only hypotheses.",
       "S4 (Iter 4): the §3b main theorem analytic_taylor_remainder_uniform_bound_complex is now fully proven modulo a single named sub-lemma cauchy_diag_norm_bound. The combination scaffolding (HasFPowerSeriesOnBall.hasSum_sub → per-term geometric bound via cauchy_diag_norm_bound → norm_sub_le_of_geometric_bound_of_hasSum at index n+1 → norm_sub_rev + field_simp + ring rescaling using 1 − r/R = (R−r)/R) is now Lean code, not docstring. Sorry count stays at 1 (moved from main-theorem black-box to a single Cauchy-coefficient gap)."
     ],
-    "theoremCount": 10,
+    "theoremCount": 12,
     "definitionCount": 3
   },
   "overview": {
