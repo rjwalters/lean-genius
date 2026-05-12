@@ -1,0 +1,126 @@
+{
+  "slug": "inverse-galois-a5-oq-01",
+  "title": "Eliminate three_dvd_gal_card via Dedekind's theorem on Frobenius elements",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Prove the axiom } \\texttt{three\\_dvd\\_gal\\_card} : 3 \\mid \\#\\,\\mathrm{Gal}(q/\\mathbb{Q}) \\text{ where } q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5, \\text{ thereby eliminating the last axiom of } \\texttt{Proofs/InverseGaloisA5.lean} \\text{ and upgrading the parent } \\texttt{inverse-galois-a5} \\text{ from } \\texttt{axiomatized} \\text{ to } \\texttt{verified}.",
+    "plain": "The parent gallery proof of A5 as a Galois group over Q (inverse-galois-a5) is formalized in Proofs/InverseGaloisA5.lean with 0 sorries but 1 surviving axiom: three_dvd_gal_card asserting 3 divides |Gal(q)|. The axiom is supported by Part XII's decidable verification that q mod 7 factors as (X-5)(X-6)(irreducible cubic) over F7. Dedekind's theorem on Frobenius elements bridges this factorization to a 3-cycle in the Galois group. This OQ asks for the formal Lean discharge of the axiom, replacing it with theorem three_dvd_gal_card_proved.",
+    "whyMatters": [
+      "Closes the last axiom of a flagship proof. inverse-galois-a5 has 1 axiom + 0 sorries + 84 theorems across 2067 lines, with all four other historical axioms already eliminated. Closing three_dvd_gal_card upgrades the entry from status axiomatized to verified (badge axiom -> original).",
+      "First gallery-level Dedekind theorem instance. Dedekind's theorem on Frobenius elements at unramified primes is not in Mathlib at v4.26.0. A specialised instance at (q, p)=(q, 7) is sufficient for this OQ; a fully general version would be a landmark Mathlib contribution.",
+      "Two distinct mathematical routes exist. R1 = specialised Dedekind via prime ideal at 7 in O_K (recommended, ~250-500 Lean lines, parent-specific). R2 = full Dedekind in Mathlib (~1500-2000 lines, multi-OQ payoff). R3 = resolvent sextic with no rational root (~600 lines, independent of Dedekind).",
+      "Cross-impact on sibling inverse-Galois proofs. A full R2 Dedekind formalisation would simultaneously unblock axiom elimination across inverse-galois-d4, inverse-galois-f20, inverse-galois-oq-01/02/06-oq-01, and abel-ruffini-galois-extensions. R1 alone is parent-specific."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "q_irreducible (parent, via Eisenstein at p=5): q(x) = x^5 - 5x^4 + 10x^3 - 10x^2 + 25x - 5 is irreducible over Q.",
+      "five_dvd_gal_card (parent, via Cauchy): 5 | |Gal(q)|.",
+      "gal_card_dvd_120 (parent, via root permutation): |Gal(q)| | 120.",
+      "gal_card_dvd_60_proved (parent, via Vandermonde discriminant chain Parts VIII-XV, ~400 Lean lines): |Gal(q)| | 60. Eliminates the discriminant axiom.",
+      "no_subgroup_order_15 (parent, Sylow theory): no subgroup of S_5 has order 15.",
+      "no_subgroup_order_30 (parent, A_5 simplicity): no subgroup of S_5 has order 30.",
+      "disc_value_is_square (parent, Part XII): (32000 : Z)^2 = 1024000000.",
+      "trinomial_disc_computation (parent, Part XII): 4^4 * 20^5 + 5^5 * 16^4 = 1024000000.",
+      "q_root_mod7_at_5, q_root_mod7_at_6 (parent, Part XII, decidable): q(5) and q(6) are zero in F_7.",
+      "cubic_factor_no_roots_mod7 (parent, Part XII, decidable): X^3 + 6X^2 + 4X + 1 has no roots in F_7, hence is irreducible.",
+      "q_gal_iso_a5, a5_realizable_iso, gal_not_solvable (parent, Part XVI-XVII): the main theorems consuming q_gal_card.",
+      "Dedekind's theorem itself (Neukirch I.9.6, Lang I.7, Dummit-Foote 14.8): factorization pattern of q mod p (unramified) determines the cycle type of Frob_p in Gal(q/Q) via the natural permutation representation."
+    ],
+    "open": [
+      "Q1 (R1, ~250-500 Lean lines): Discharge three_dvd_gal_card by constructing a prime ideal p3 of O_K above 7 with inertia degree f(p3/7) = 3, extracting its Frobenius generator frob3 in Gal(q/Q), showing orderOf frob3 = 3, and concluding via orderOf_dvd_card. Requires Mathlib.NumberTheory.RamificationInertia.* API surface exploration.",
+      "Q2 (R2, ~1500-2000 Lean lines): Formalise the full Dedekind theorem (cycle-type-from-mod-p-factorisation for a monic separable polynomial over Q) in Mathlib. Landmark contribution; multi-month effort; resolves many gallery axioms simultaneously.",
+      "Q3 (R3, ~600 Lean lines): Alternative route via resolvent sextic. The cubic resolvent R(q) has no rational root, so Gal(R(q)/Q) is transitive in S_3 (hence contains a 3-cycle, hence order divisible by 3). The natural surjection Gal(q) -> Gal(R(q)/Q) then forces 3 | |Gal(q)|. Independent of Dedekind; replaces it with resolvent + Galois correspondence."
+    ],
+    "goal": "Eliminate the axiom three_dvd_gal_card in Proofs/InverseGaloisA5.lean by replacing it with a theorem three_dvd_gal_card_proved discharged from Mathlib's ramification-inertia infrastructure. Phased approach: R1 (specialised Dedekind at p=7) is the recommended S2-S4 plan, delivering the gallery-status upgrade (axiomatized -> verified) in ~3-4 sessions and ~490 Lean lines. R3 (resolvent sextic) is a safety-valve alternative if R1 stalls on prime-ideal construction. R2 (full Mathlib Dedekind) is deferred to a long-term Mathlib contribution roadmap."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T12:55:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-12, 2026-05-12): OBSERVE survey only. Identified the lone axiom three_dvd_gal_card (line 309 of Proofs/InverseGaloisA5.lean), classified three discharge routes (R1 specialised Dedekind / R2 full Mathlib Dedekind / R3 resolvent sextic), mapped Mathlib's ramification-inertia API surface, and drafted a Lean skeleton for the recommended R1 path. Parent file Part XII (lines 715-884) already contains the decidable verification q_root_mod7_at_5, q_root_mod7_at_6, cubic_factor_no_roots_mod7 — only the Frobenius-construction-and-cycle-type bridge remains.",
+    "blockers": [],
+    "nextAction": "S2 (any researcher): R1 ORIENT — create proofs/Proofs/InverseGaloisA5Dedekind.lean (~80 lines, 4 sorries) with the Frobenius bridge: seven_unramified (disc(q) coprime to 7), p3 : Ideal (O_K) above 7 with inertia degree 3, frob3 : q.Gal as the Frobenius generator at p3, frob3_order_eq_three, and three_dvd_gal_card_proved : 3 | Fintype.card q.Gal via orderOf_dvd_card. Update proofs/Proofs.lean to include the new file. Parent file unchanged in S2; axiom replacement deferred to S4.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-12, 2026-05-12): OBSERVE survey on the lone axiom of the parent inverse-galois-a5 proof. 0 Lean changes; 4 doc files produced (problem.md ~280 lines, knowledge.md ~200 lines, state.md ~150 lines, this JSON). Three discharge routes catalogued (R1 specialised Dedekind ~250-500 lines, R2 full Mathlib Dedekind ~1500-2000 lines, R3 resolvent sextic ~600 lines). R1 recommended for S2-S4. Mathlib API surface mapped: NumberField.Basic, RamificationInertia.Galois, Perm.Cycle.Type. Parent Part XII evidence inventory: 5 supporting decidable theorems already in place. No axiom delta in S1.",
+    "builtItems": [
+      "research/problems/inverse-galois-a5-oq-01/problem.md (new, ~280 lines): full statement of three_dvd_gal_card, three-route classification (R1/R2/R3) with effort estimates, Mathlib gap map, reference reading list (Dummit-Foote, Neukirch, Lang, Cohen), five-session decomposition (S1 OBSERVE -> S2 ORIENT -> S3 ACT -> S4 CLOSE -> optional S5 alternative).",
+      "research/problems/inverse-galois-a5-oq-01/knowledge.md (new, ~200 lines): parent file inventory (the relevant decls at lines 207-309-511-779-787-791-796), specialised Dedekind theorem statement, Mathlib API survey by module, Lean skeleton for R1 ORIENT, decomposition plan with effort estimates, mathlib gap analysis, sibling cross-impact table.",
+      "research/problems/inverse-galois-a5-oq-01/state.md (new, ~150 lines): OBSERVE phase, S2 next-action sketch with concrete Lean code skeleton, session log, honest calibration.",
+      "src/data/research/problems/inverse-galois-a5-oq-01.json (this file, new): research index entry."
+    ],
+    "insights": [
+      "The parent's three_dvd_gal_card (line 309) is the ONLY axiom in Proofs/InverseGaloisA5.lean. All four prior axioms (A discriminant-square, C and D complex-conjugation-based, original q_gal_card) have been eliminated in earlier sessions. Closing this axiom is the single-step path to the parent's verified status.",
+      "The parent's Part XII (lines 715-884) supplies the entire decidable half of the Dedekind argument. q_root_mod7_at_5, q_root_mod7_at_6, and cubic_factor_no_roots_mod7 all close via the decide tactic. The remaining work is purely the Frobenius-construction-and-cycle-type bridge.",
+      "Mathlib.NumberTheory.RamificationInertia.Galois exists at v4.26.0 and provides the inertia-degree and Frobenius-generator framework needed for R1. The specific API for extracting a Galois-group Frobenius element from a prime ideal needs hands-on verification at the pinned revision; expect an S2 import-and-API-probe phase.",
+      "Three distinct discharge routes exist with very different cost/payoff profiles. R1 (specialised) ~250-500 Lean and parent-specific. R2 (full Mathlib Dedekind) ~1500-2000 Lean but resolves dozens of gallery axioms across the inverse-Galois family. R3 (resolvent sextic) ~600 Lean using a different mathematical bridge.",
+      "The resolvent sextic route (R3) is a viable safety valve. If the prime-ideal construction in R1 stalls, R3 uses no number-field-of-integers machinery: just the resolvent polynomial (computable via norm_num) and the standard Galois-correspondence surjection Gal(q) -> Gal(R(q)).",
+      "Parent file's docstring (lines 870-878) records that three_dvd_gal_card has TWO independent supports — the mod-7 factorisation (Dedekind R1/R2) AND the resolvent-sextic absence-of-rational-root (R3). Either route alone is mathematically sufficient.",
+      "Cross-impact: R2 alone would eliminate axioms in inverse-galois-d4 (axiom on D4 cycle types), inverse-galois-f20 (similar), and several abel-ruffini-galois-extensions OQs. R1 is parent-specific and does NOT propagate.",
+      "Aristotle non-applicability: the Frobenius-construction sorries are NOT routine Aristotle targets — they require explicit ring-of-integers arithmetic and ramification-index reasoning that current Aristotle heuristics cannot handle. Plan for manual S3 ACT iteration."
+    ],
+    "mathlibGaps": [
+      "Dedekind's theorem on Frobenius cycle decomposition: NOT in Mathlib at v4.26.0. Specialised version at (q, p)=(q, 7): ~250-500 Lean lines (R1). Fully general version: ~1500-2000 lines (R2), landmark Mathlib PR opportunity.",
+      "Resolvent cubic / sextic polynomial constructions: NOT in Mathlib. R3 route would need ~200 lines just for the resolvent + ~400 lines for the Galois surjection argument.",
+      "Explicit Frobenius generator from inertia data of an unramified prime: partial coverage in Mathlib.NumberTheory.RamificationInertia.Galois; the surface for extracting an element of q.Gal from a prime ideal of O_K needs verification at v4.26.0."
+    ],
+    "nextSteps": [
+      "S2 ORIENT (~80 Lean lines, 4 sorries): create proofs/Proofs/InverseGaloisA5Dedekind.lean with the Frobenius bridge skeleton. Add to proofs/Proofs.lean auto-import list. No parent-file changes.",
+      "S3 ACT (~400 Lean lines, -4 sorries): discharge the Frobenius construction. Construct p3 : Ideal (O_K) above 7 with inertia degree 3; extract frob3 : q.Gal from its decomposition group; prove orderOf frob3 = 3 by linking decomposition group order to inertia degree (since 7 is unramified). The hardest step is the explicit p3 construction; the rest is API plumbing.",
+      "S4 CLOSE (~10 Lean diff + ~30 meta.json): in InverseGaloisA5.lean, replace axiom three_dvd_gal_card with theorem three_dvd_gal_card := InverseGaloisA5Dedekind.three_dvd_gal_card_proved. Update src/data/proofs/inverse-galois-a5/meta.json: status axiomatized -> verified, badge axiom -> original, axiomCount 1 -> 0. Build verify via docker.",
+      "S5 ALTERNATIVE (only if R1 stalls in S3): switch to R3 — define the resolvent sextic of q (~200 lines via norm_num on coefficients); prove it has no rational root (~50 lines, decide on a bounded search); construct the surjection Gal(q) -> Gal(R(q)) (~300 lines, Galois correspondence); conclude 3 | |Gal(q)| from |S3| | |Gal(R(q))|."
+    ]
+  },
+  "relatedProofs": [
+    "abel-ruffini-galois-extensions",
+    "inverse-galois",
+    "inverse-galois-a5",
+    "inverse-galois-d4",
+    "inverse-galois-d4-oq-03",
+    "inverse-galois-f20",
+    "inverse-galois-oq-01",
+    "inverse-galois-oq-02",
+    "inverse-galois-oq-06-oq-01"
+  ],
+  "tags": [
+    "alternating-group",
+    "axiom-elimination",
+    "dedekind-theorem",
+    "discriminant",
+    "frobenius-element",
+    "galois-theory",
+    "inverse-galois-problem",
+    "mathlib-NumberTheory-RamificationInertia",
+    "non-solvable",
+    "polynomial-irreducibility",
+    "ramification-inertia",
+    "research",
+    "seeker-selected"
+  ],
+  "createdAt": "2026-05-12T12:55:00.000Z",
+  "updatedAt": "2026-05-12T12:55:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/InverseGaloisA5.lean",
+      "filename": "InverseGaloisA5.lean",
+      "lineCount": 2067,
+      "theoremCount": 84,
+      "axiomCount": 1,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5.lean"
+    }
+  ]
+}
