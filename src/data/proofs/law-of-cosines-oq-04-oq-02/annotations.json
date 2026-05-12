@@ -123,6 +123,30 @@
     ]
   },
   {
+    "id": "ann-locq04oq02-heron-form",
+    "proofId": "law-of-cosines-oq-04-oq-02",
+    "range": { "startLine": 80, "endLine": 124 },
+    "type": "insight",
+    "title": "Heron-Form Factorization: Connecting to the Area Formula",
+    "content": "The formula $t^2(b+c)^2 = bc((b+c)^2 - a^2)$ factors over $\\mathbb{R}[a,b,c]$ in a way that reveals its deep connection to Heron's area formula. Factoring the difference of squares: $(b+c)^2 - a^2 = (b+c-a)(b+c+a) = 4(s-a) \\cdot s$, where $s = (a+b+c)/2$ is the semi-perimeter. Substituting: $t^2 = \\frac{4bc \\cdot s(s-a)}{(b+c)^2}$. This is the **Heron-form** of the angle-bisector length — the same product $s(s-a)$ that appears in Heron's area formula $\\text{Area}^2 = s(s-a)(s-b)(s-c)$. The connection is not accidental: the angle bisector and the inradius/incircle theory share the same semi-perimeter scaffolding. The formula $t^2 = \\frac{4bc \\cdot s(s-a)}{(b+c)^2}$ also makes positivity transparent — when the triangle inequality $a < b+c$ holds, $s > a$ so $s-a > 0$, and all factors on the right are positive, confirming $t > 0$. The degenerate case $a = b+c$ (collinear points) gives $s - a = 0$ and $t = 0$ as expected.",
+    "mathContext": "**Heron-form**: $t^2 = \\frac{4bc \\cdot s(s-a)}{(b+c)^2}$ where $s = (a+b+c)/2$. **Derivation**: $(b+c)^2 - a^2 = (b+c+a)(b+c-a) = (2s)(2(s-a)) = 4s(s-a)$. **Inradius link**: $\\text{Area} = rs$ where $r$ is the inradius. Combined with Heron $\\text{Area} = \\sqrt{s(s-a)(s-b)(s-c)}$, we get $r = \\sqrt{(s-a)(s-b)(s-c)/s}$. The factor $s(s-a)$ in $t^2$ pairs with $(s-b)(s-c)$ in Heron's formula. **Symmetry check**: the bisectors from $B$ and $C$ have analogous formulas with $s(s-b)$ and $s(s-c)$ respectively — the three bisector lengths together encode the area via $t_A t_B t_C \\cdot \\text{something}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Heron's formula",
+      "semi-perimeter s = (a+b+c)/2",
+      "difference of squares factorization",
+      "inradius and incircle",
+      "triangle inequality and positivity",
+      "Stewart-Heron connection"
+    ],
+    "prerequisites": [
+      "angle_bisector_squared theorem",
+      "Heron's area formula",
+      "semi-perimeter notation",
+      "difference of squares: x² - y² = (x-y)(x+y)"
+    ]
+  },
+  {
     "id": "ann-locq04oq02-special-cases",
     "proofId": "law-of-cosines-oq-04-oq-02",
     "range": { "startLine": 148, "endLine": 173 },
