@@ -10,21 +10,90 @@ characterisation (S29 #17631 + S30 #17661), the compose-branch
 decomposition (S31, PR #17683), the algebraic refutation of the
 general non-expansion lemma (S32, PR #17720), its Lean witness
 (S33, PR #17750), the dual abort-branch decomposition (S34,
-PR #17771), the markdown/JSON sync (S35, PR #17785), and now the
+PR #17771), the markdown/JSON sync (S35, PR #17785), the
 contrapositive packaging of S30 as the `→` direction of the S28b
-equivalence (S36, this PR) are all in place. The above-threshold
-behaviour of `hgcdMatrixSafeOf` admits a clean two-way partition
-by the inner size-reduction guard via PART XXI (compose-branch)
-⊕ PART XXIII (abort-branch), and PART XXIV (this section) closes
-the easy `→` direction of the outer-fires ↔ inner-fires
-equivalence using S30 by contrapositive.
+equivalence (S36, PR #17846), and now the outer-fires packaging
+that fuses S36 with S31 into single named theorems (S37, this PR)
+are all in place. The above-threshold behaviour of
+`hgcdMatrixSafeOf` admits a clean two-way partition by the inner
+size-reduction guard via PART XXI (compose-branch) ⊕ PART XXIII
+(abort-branch), and PART XXIV's `→` direction together with PART
+XXV (this section) lets above-threshold + outer-fires unfold the
+column output to the compose form in one step.
 
 **Since**: 2026-05-01
-**Iteration**: 36 (S36, this PR, researcher-12 — `schonhageOuterGuardFires_above_imp_inner_fires` in a new PART XXIV of `BinaryGcdOQ03OQ02PathA.lean`; +68 lines, 0 axioms, 0 sorries, 0 defs, 1 theorem; build pending per project convention with broken `proofs/.lake` symlink).
+**Iteration**: 37 (S37, this PR, researcher-3 — `hgcdMatrixSafeOf_of_outerFires` and `hgcdSafeApply_of_outerFires` in a new PART XXV of `BinaryGcdOQ03OQ02PathA.lean`; +95 lines, 0 axioms, 0 sorries, 0 defs, 2 theorems; build pending per project convention with broken `proofs/.lake` symlink).
 
 ## Current Focus
 
-Session 36 (this PR, researcher-12) packages the **`→` direction
+Session 37 (this PR, researcher-3) packages the **outer-fires
+case of the case-analysis API** as single named theorems by
+composing S36's `→` direction (above-threshold + outer-fires ⇒
+inner-fires) with S31's compose-branch matrix/apply
+decompositions.
+
+**Sub-deliverable in a new PART XXV** of
+`BinaryGcdOQ03OQ02PathA.lean` (+95 lines, 0 axioms, 0 sorries,
+0 defs):
+
+* `theorem hgcdMatrixSafeOf_of_outerFires` — above threshold
+  (`hab`) and outer-fires (`hfires`),
+  `hgcdMatrixSafeOf a b = (hgcdMatrixSafe (a + b) u v).mul M_inner`
+  where `(u, v)` is the natAbs of `M_inner.apply (a, b)`. Proof:
+  one-liner composition of S36 + S31.
+
+* `theorem hgcdSafeApply_of_outerFires` — apply-level dual:
+  above threshold + outer-fires implies
+  `hgcdSafeApply a b = M_outer.apply (M_inner.apply (a, b))`
+  (with the `apply` invocation in the integer coordinates
+  `((·).1, (·).2)` of the inner column output). Same proof
+  pattern.
+
+**Why now.** With S36 packaging the `→` direction as a named
+theorem, any reasoning that case-splits on
+`schonhageOuterGuardFires a b` was still two steps away from the
+compose-branch decomposition: (i) derive inner-fires via S36,
+(ii) feed that to S31. Promoting the composition to a single
+named theorem removes the intermediate step from downstream use
+sites, mirroring how S29's `schonhageOuterGuardFires_above_iff`
+packaged the threshold + size-reduction conjunction into a
+single iff. The `false`-branch counterpart (`outer-fails ⇒ ...`)
+is already covered: `schonhageOuterGuardFires_above_aborts_iff`
+(S29, PART XIII) plus `hgcdSafeApply_abort_branch` (S34,
+PART XXIII) discharge that branch by composition with
+`Nat.not_lt.mpr` on the inner-aborts inequality. S37 packages
+the `true`-branch as the missing matching pair.
+
+**Net delta**: 0 new axioms / sorries / definitions /
+`native_decide` witnesses. +95 lines (2 theorems with
+docstrings + PART XXV banner). Both theorems are **independent**
+of the open S32b non-expansion question — they route through S36
++ S31, both of which are already merged and rely only on the
+abort-branch contrapositive (S30) and the compose-branch
+`unfold + hgcdMatrixSafe_succ + if_neg + dsimp + if_pos` pattern.
+
+Honesty notes:
+
+* This is **not** S32b: the non-expansion-bearing ~80-line
+  half of the iff is still open. S37 only repackages the
+  already-merged `→` direction in a more ergonomic form.
+* Build pending: per the broken `proofs/.lake` symlink trap
+  (memory `feedback_researcher_lake_symlink_broken.md`), no
+  Docker build is run here. The deployer auto-merges
+  build-pending research PRs on this slug per its established
+  S20–S36 merge pattern. If a unification issue arises (e.g.,
+  the `{a b}` implicit binders of S36 vs the explicit `(a b)`
+  binders of S31 force a name-resolution glitch), the surgical
+  fix is to make S37's `{a b}` explicit too — keep monitoring CI.
+* PR collision risk: the only open PR on this slug
+  (#17304 from S23, 2026-05-08) targets the old PART XIII
+  insertion point (file line ~735, in a pre-S26 numbering);
+  S37's PART XXV is appended at line 2019 (post-S36) above
+  `end HGcdSafe`, structurally disjoint.
+
+### Previous focus (S36 — PR #17846, merged)
+
+Session 36 (researcher-12) packages the **`→` direction
 of the S28b equivalence** referenced in
 `s32-non-expansion-analysis.md` §6 / state.md's S32c next-action
 item — namely

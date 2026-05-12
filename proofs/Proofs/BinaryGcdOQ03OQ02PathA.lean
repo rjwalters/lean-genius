@@ -2015,6 +2015,101 @@ theorem schonhageOuterGuardFires_above_imp_inner_fires {a b : ℕ}
   rw [hfails] at hfires
   exact Bool.noConfusion hfires
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XXV: OUTER-FIRES PACKAGING (Session 37)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Outer-fires decomposition (matrix + apply)
+
+    PART XXIV (S36) proved the `→` direction of the S28b
+    equivalence: above threshold + outer-fires ⇒ inner-fires.
+    PART XXI (S31) proved the compose-branch decomposition: above
+    threshold + inner-fires ⇒ `hgcdMatrixSafeOf` factors as
+    `M_outer.mul M_inner` and `hgcdSafeApply` is the outer
+    matrix's `apply` on the inner column output.
+
+    This section composes the two into single named theorems that
+    bypass the manual inner-fires step at use sites. Above
+    threshold + outer-fires now directly yields the
+    matrix-/apply-level compose decomposition.
+
+    Significance. Together with PART XXIII's
+    `hgcdMatrixSafeOf_abort_branch` / `hgcdSafeApply_abort_branch`
+    (which discharge the inner-aborts case as an outer-fails
+    corollary by S30), this completes the case-analysis API on the
+    outer guard: any reasoning that case-splits on
+    `schonhageOuterGuardFires a b` can now dispatch the
+    `true`-branch directly to the compose decomposition without
+    re-deriving the inner-fires hypothesis at each call site.
+
+    Build: pure forward composition (apply S36, then S31). No new
+    axioms, no new sorries, no native_decide, no recursion. -/
+
+/-- **Outer-fires matrix decomposition.**
+
+    Above threshold (`hab`), if the outer guard
+    `schonhageOuterGuardFires a b` fires (`hfires`), then
+    `hgcdMatrixSafeOf a b` factors as the composed matrix
+    `(hgcdMatrixSafe (a + b) u v).mul M_inner`, where
+    `M_inner := hgcdMatrixSafe (a + b) (a / 2^s) (b / 2^s)` is the
+    inner recursion and `(u, v)` is the natAbs of the inner's
+    column output `M_inner.apply (a, b)`.
+
+    Composes S36's `schonhageOuterGuardFires_above_imp_inner_fires`
+    (PART XXIV) with S31's `hgcdMatrixSafeOf_compose_branch`
+    (PART XXI). Removes the manual inner-fires step from any use
+    site that already has the outer-fires hypothesis on hand. -/
+theorem hgcdMatrixSafeOf_of_outerFires {a b : ℕ}
+    (hab : ¬ max a b < hgcdThresholdSafe)
+    (hfires : schonhageOuterGuardFires a b = true) :
+    hgcdMatrixSafeOf a b
+      = (hgcdMatrixSafe (a + b)
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs).mul
+        (hgcdMatrixSafe (a + b)
+          (a / 2 ^ hgcdShiftSafe a b)
+          (b / 2 ^ hgcdShiftSafe a b)) :=
+  hgcdMatrixSafeOf_compose_branch a b hab
+    (schonhageOuterGuardFires_above_imp_inner_fires hab hfires)
+
+/-- **Outer-fires `apply` decomposition.**
+
+    Above threshold (`hab`), if the outer guard
+    `schonhageOuterGuardFires a b` fires (`hfires`), then
+    `hgcdSafeApply a b` equals the outer matrix
+    `hgcdMatrixSafe (a + b) u v` applied to the inner's column
+    output `M_inner.apply (a, b)` (as integers; `(u, v)` is the
+    natAbs of that pair).
+
+    Composes S36's `schonhageOuterGuardFires_above_imp_inner_fires`
+    (PART XXIV) with S31's `hgcdSafeApply_compose_branch`
+    (PART XXI). The outer-fires hypothesis carries enough
+    information to fully unfold the column output without re-
+    deriving inner-fires. -/
+theorem hgcdSafeApply_of_outerFires {a b : ℕ}
+    (hab : ¬ max a b < hgcdThresholdSafe)
+    (hfires : schonhageOuterGuardFires a b = true) :
+    hgcdSafeApply a b
+      = (hgcdMatrixSafe (a + b)
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs).apply
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2 :=
+  hgcdSafeApply_compose_branch a b hab
+    (schonhageOuterGuardFires_above_imp_inner_fires hab hfires)
+
 end HGcdSafe
 
 /-! ## Summary
