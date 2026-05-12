@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-module-docstring",
+    "proofId": "kepler-conjecture-oq-04",
+    "range": { "startLine": 1, "endLine": 51 },
+    "type": "context",
+    "title": "Module docstring: three-flagship OQ-04 survey + S2 SCAFFOLD plan",
+    "content": "The module docstring is the narrative spine of OQ-04. It cites three flagship sub-questions of non-spherical packing in ℝ³ — (i) tetrahedra (Chen–Engel–Glotzer 2010), (ii) ellipsoids (Donev–Stillinger–Chaikin–Torquato 2004 and Bezdek–Kuperberg 2007), (iii) Ulam's 1972 conjecture — and then commits to a single concrete S2 deliverable: instantiate the parent file's `PackingDensity` type with the Chen–Engel–Glotzer rational constant `4000/4671` and prove three axiom-free `norm_num`-discharged bounds. The docstring also pre-records the entire S3 reduction chain — `4000/4671 > π/(3√2)` ⇔ `12000·√2 > 4671·π` ⇔ (squaring) `288 000 000 > 21 818 241·π²` ⇔ `π² < 13.2002` — so future agents can pick up exactly where S2 stops. The literary structure (parent-axiomatization recap → three-flagship survey → S2 goal → S3 deferred algebra) is a template worth replicating for other OQ entries that scaffold open problems.",
+    "mathContext": "Three density landmarks established: $\\delta_{\\text{FCC}} = \\frac{\\pi}{3\\sqrt{2}} \\approx 0.7405$ (parent, Hales–Flyspeck), $\\delta_{\\text{tet,CEG}} = \\frac{4000}{4671} \\approx 0.8564$ (this file's witness), and Ulam's conjectured ball-extremal lower bound $\\delta_K \\geq \\pi/(3\\sqrt{2})$ for centrally symmetric $K \\subset \\mathbb{R}^3$ (deferred). The S3 plan reduces a transcendental real-number comparison to a single rational $\\pi^2$ bound via squaring.",
+    "significance": "context",
+    "relatedConcepts": ["packing density landscape", "shape-specific bounds", "Chen-Engel-Glotzer 2010", "Donev-Stillinger-Chaikin-Torquato 2004", "Bezdek-Kuperberg 2007", "Ulam 1972 conjecture", "squaring reduction"],
+    "prerequisites": ["sphere packing intuition (FCC density)", "convex bodies in ℝ³", "abstract PackingDensity type from parent file"]
+  },
+  {
     "id": "ann-imports",
     "proofId": "kepler-conjecture-oq-04",
     "range": { "startLine": 53, "endLine": 58 },
