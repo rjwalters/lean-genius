@@ -33,18 +33,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T00:00:00.000Z",
-    "iteration": 2,
-    "focus": "S2: existential-form corrected statement proven via Mathlib's uniform_geometric_approx'; explicit-form retained as sorry but indexing corrected (partialSum n → partialSum (n+1)); honest re-assessment of the Mathlib chain needed for the explicit form.",
+    "iteration": 3,
+    "focus": "S3 NARROW: off-by-one refutation as formal theorem (originalRemainderForm_is_false) + corrected statement on §3b (partialSum n → partialSum (n+1)) cleanly rebased against origin/main post-#17912; geometric_tail_identity proven. §3b proof body still deferred (S4).",
     "blockers": [],
-    "nextAction": "S3+: discharge analytic_taylor_remainder_uniform_bound_complex (explicit form) via the Cauchy integral chain — Complex.norm_cauchyPowerSeries_le + DifferentiableOn.hasFPowerSeriesOnBall to derive ‖p k‖ ≤ M/R^k from sup bound, then geometric tail summation. Estimated 150-200 lines.",
+    "nextAction": "S4: discharge analytic_taylor_remainder_uniform_bound_complex (corrected indices) via cauchy_diag_norm_bound (Cauchy coefficient bound) + HasFPowerSeriesOnBall.hasSum + norm_sub_le_of_geometric_bound_of_hasSum + geometric_tail_identity. Estimated 150-250 lines.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "REFUTED (S1) + EXISTENTIAL CORRECTED FORM PROVEN (S2): parent OQ-04 axiom refuted by Runge counterexample; existential Cauchy-style geometric approximation in z-centered coordinates proven via Mathlib's HasFPowerSeriesOnBall.uniform_geometric_approx'; explicit Cauchy form retained as sorry with corrected partialSum (n+1) indexing (Iter-1 was off-by-one).",
+    "progressSummary": "REFUTED (S1) + EXISTENTIAL CORRECTED FORM PROVEN (S2) + OFF-BY-ONE REFUTATION FORMALIZED (S3): parent OQ-04 axiom refuted by Runge counterexample; existential Cauchy-style approximation proven via Mathlib uniform_geometric_approx; S1-S2 explicit-form RHS paired with partialSum n is FALSE (constant-1 witness, 1 ≤ 1/3) and the corrected statement uses partialSum (n+1); geometric_tail_identity proven.",
     "builtItems": [
       "Definition runge in Proofs/MeanValueTheoremOQ02OQ04OQ01.lean (~137) — the Runge function 1/(1+x²)",
       "Theorem runge_one_add_sq_pos (~142) — 1 + x² > 0",
@@ -55,7 +55,11 @@
       "Theorem oq04_axiom_is_false (~226) — constructive refutation",
       "Theorem oq04_parent_axiom_is_false_in_principle (~270) — corollary",
       "**(S2 NEW)** Theorem analytic_taylor_remainder_uniform_geometric_complex (~319) — existential corrected form, PROVEN via Mathlib's uniform_geometric_approx' (16-line proof)",
-      "Theorem analytic_taylor_remainder_uniform_bound_complex (~376) — explicit corrected form, sorry retained, indexing fixed to partialSum (n+1)"
+      "Theorem analytic_taylor_remainder_uniform_bound_complex (~376) — explicit corrected form, sorry retained, indexing fixed to partialSum (n+1)",
+      "**(S3 NEW)** Definition OriginalRemainderForm — Prop-encoding of the S1-S2 false explicit form (refuted in originalRemainderForm_is_false)",
+      "**(S3 NEW)** Theorem originalRemainderForm_is_false — constant-1 witness refutation forcing (1:ℝ) ≤ 1/3 contradiction; uses constFormalMultilinearSeries + HasFPowerSeriesOnBall.mono",
+      "**(S3 NEW)** Theorem geometric_tail_identity — pure-algebra rewrite (r/R)^(n+1)·R/(R-r) = r^(n+1)/(R^n·(R-r)); field_simp + ring",
+      "**(S3 RESTATEMENT)** Theorem analytic_taylor_remainder_uniform_bound_complex — corrected partialSum (n+1) indexing; RHS aligns with geometric tail from degree k=n+1; sorry retained"
     ],
     "insights": [
       "The parent OQ-04 axiom is mathematically false: real-analyticity + real sup bound does not control complex Cauchy coefficient estimates, which require a complex sup bound on a complex disk.",
@@ -65,7 +69,10 @@
       "The Prop-encoding pattern (def Statement : Prop := ...; theorem ¬ Statement) keeps refutations independent of whether the original axiom remains declared.",
       "**(S2 finding)** The S1 explicit-form statement had an off-by-one bug: it used partialSum n where the classical Cauchy bound (M·r^(n+1)/(R^n·(R-r))) requires partialSum (n+1). Witness: f ≡ 1 at n=0 has residual 1 but Iter-1 bound = M·r/(R-r) < 1 for small r. Iter-2 fixes this.",
       "**(S2 finding)** Mathlib's HasFPowerSeriesOnBall.uniform_geometric_approx' and FormalMultilinearSeries.norm_mul_pow_le_mul_pow_of_lt_radius both give *existential* constants (C, K), not explicit (M, R). The explicit M/R^n Cauchy coefficient bound requires the Cauchy integral formula via Complex.norm_cauchyPowerSeries_le + DifferentiableOn.hasFPowerSeriesOnBall (a deeper Mathlib chain than S1 anticipated).",
-      "**(S2 finding)** Mathlib's lemma `uniform_geometric_approx'` is in y-centered form (f(a+y), y ∈ ball 0 r'); a z-centered version (f z, z ∈ ball a r) is useful for downstream applications. The translation is purely change-of-variables but worth packaging as a named theorem."
+      "**(S2 finding)** Mathlib's lemma `uniform_geometric_approx'` is in y-centered form (f(a+y), y ∈ ball 0 r'); a z-centered version (f z, z ∈ ball a r) is useful for downstream applications. The translation is purely change-of-variables but worth packaging as a named theorem.",
+      "Mathlib partialSum n convention truncates at degree n−1 (∑ k ∈ Finset.range n); the geometric tail from degree k=n is M·r^n·R/(R^n·(R-r)), not M·r^(n+1)/(R^n·(R-r)).",
+      "constFormalMultilinearSeries 𝕜 E c is the Mathlib power series for constant functions; combined with hasFPowerSeriesOnBall_const + HasFPowerSeriesOnBall.mono gives a counterexample witness on any radius.",
+      "S3 supersedes PR #17904 (DIRTY/CONFLICTING after #17912 merged): same off-by-one finding, cleanly rebased against current origin/main with descriptive Prop name OriginalRemainderForm."
     ],
     "mathlibGaps": [
       "Bridge from AnalyticOn ℝ (real-analytic on a real interval) to HasFPowerSeriesOnBall on Metric.ball (a:ℂ) R for some complex extension — not directly available; would need real-to-complex analytic continuation lemmas.",

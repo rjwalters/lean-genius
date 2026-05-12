@@ -23,8 +23,8 @@
     "badge": "axiom",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 397,
-    "assumptions": "0 new axioms in this file. The parent file's axiom analytic_taylor_remainder_uniform_bound is shown to be mathematically false (Runge counterexample, fully formalized). One sorry remains: the proof of the corrected complex-disk version analytic_taylor_remainder_uniform_bound_complex, deferred to S2 (proof outline in §3 docstring).",
+    "lineCount": 520,
+    "assumptions": "0 new axioms in this file. The parent file's axiom analytic_taylor_remainder_uniform_bound is shown mathematically false (Runge counterexample, fully formalized in §2). The S1-S2 explicit-form RHS paired with partialSum n is also shown false (off-by-one refutation in §3a via constant-1 witness on ℂ, S3 contribution). One sorry remains: the proof of the corrected complex-disk version analytic_taylor_remainder_uniform_bound_complex with the indexing fix partialSum (n+1), deferred to S4.",
     "dateAdded": "2026-05-12",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [

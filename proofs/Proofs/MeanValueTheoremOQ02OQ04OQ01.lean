@@ -275,40 +275,171 @@ theorem oq04_parent_axiom_is_false_in_principle : ¬ OQ04_AxiomStatement :=
 
 The mathematically correct Cauchy uniform bound replaces the real
 sup-bound on `(a − R, a + R) ⊂ ℝ` with a complex sup-bound on
-`Metric.ball (a : ℂ) R ⊂ ℂ`. We restate the corrected version as a
-`theorem` with a single `sorry`; the proof is deferred to S2 and goes
-through Mathlib's `HasFPowerSeriesOnBall.uniform_geometric_approx'`
-plus the explicit Cauchy coefficient estimate
-`FormalMultilinearSeries.norm_mul_pow_le_mul_pow_of_lt_radius`. -/
+`Metric.ball (a : ℂ) R ⊂ ℂ`.
 
-/-- **Corrected Cauchy uniform bound** (complex hypothesis).
+### Off-by-one fix (S3)
+
+The S1-S2 placeholder statement of §3 paired `p.partialSum n` with the
+RHS `M · r^(n+1) / (R^n · (R-r))`. **This pairing is off by one.**
+
+Mathlib's convention is `p.partialSum n x := ∑ k ∈ Finset.range n, …`,
+so `partialSum n` truncates at degree `n − 1` and the remainder starts
+at degree `n`. The geometric tail `∑_{k ≥ n} M · (r/R)^k` evaluates to
+`M · (r/R)^n · R / (R − r) = M · r^n · R / (R^n · (R − r))`, not to
+`M · r^(n+1) / (R^n · (R − r))`. The two differ by a factor of `r/R`,
+and the S1-S2 statement is **false at `n = 0`** for any `0 < r < R/2`:
+the constant function `f ≡ 1` has `‖f z − p.partialSum 0 (z − a)‖ =
+‖1 − 0‖ = 1`, while the S1-S2 RHS at `n = 0` is `r/(R − r) < 1`.
+
+The §3a theorem `originalRemainderForm_is_false` formalizes this
+refutation via the constant-1 witness on `Metric.ball (0 : ℂ) 1` at
+`(R, M, r, n, z) = (1, 1, 1/4, 0, 0)`.
+
+§3b restates the corrected version with `p.partialSum (n + 1)` so that
+the truncation matches the parent's `taylorPolynomial f a n` of degree
+≤ `n`. With the index shift, the geometric tail starting at degree
+`k = n + 1` evaluates to `M · r^(n+1) / (R^n · (R − r))` (correct).
+
+The §3b proof is decomposed into:
+
+* `geometric_tail_identity` (proven, pure algebra): the rewrite
+  `(r / R)^(n+1) · R / (R − r) = r^(n+1) / (R^n · (R − r))`.
+* `cauchy_diag_norm_bound` (deferred, sorry): the per-degree Cauchy
+  coefficient bound `‖p k (fun _ ↦ w)‖ ≤ M · (‖w‖ / R)^k` for `‖w‖ < R`.
+* `analytic_taylor_remainder_uniform_bound_complex` (deferred, sorry):
+  one-step combination of `cauchy_diag_norm_bound`,
+  `HasFPowerSeriesOnBall.hasSum`,
+  `norm_sub_le_of_geometric_bound_of_hasSum`, and
+  `geometric_tail_identity`.
+
+`sorry` markers here mark formalization gaps, *not* mathematical gaps;
+the corrected statement is the textbook Cauchy uniform bound. -/
+
+/-- The S1-S2 explicit-form RHS packaged as a `Prop` predicate (without
+`partialSum (n+1)` index correction). We refute this predicate in
+`originalRemainderForm_is_false`; the corrected statement appears
+below as `analytic_taylor_remainder_uniform_bound_complex`.
+
+Quantifies over `(f, a, R, M, p, hypotheses, r, n, z, hz)` and asserts
+`‖f z − p.partialSum n (z − a)‖ ≤ M · r^(n+1) / (R^n · (R − r))`. -/
+def OriginalRemainderForm : Prop :=
+  ∀ (f : ℂ → ℂ) (a : ℂ) (R M : ℝ),
+    0 < R → 0 ≤ M →
+    ∀ (p : FormalMultilinearSeries ℂ ℂ ℂ),
+    HasFPowerSeriesOnBall f p a (ENNReal.ofReal R) →
+    (∀ z ∈ Metric.ball a R, ‖f z‖ ≤ M) →
+    ∀ (r : ℝ), 0 < r → r < R →
+    ∀ (n : ℕ) (z : ℂ), ‖z - a‖ ≤ r →
+      ‖f z - p.partialSum n (z - a)‖ ≤ M * r ^ (n + 1) / (R ^ n * (R - r))
+
+/-- **The S1-S2 explicit-form statement is false** (off-by-one refutation).
+
+The constant function `f ≡ 1` on `Metric.ball (0 : ℂ) 1` with `R = 1`,
+`M = 1`, `r = 1/4`, `n = 0`, `z = 0` satisfies every hypothesis of
+`OriginalRemainderForm` (analyticity via `hasFPowerSeriesOnBall_const`
+restricted to radius 1, sup bound `‖(1 : ℂ)‖ = 1 ≤ 1`, strict
+inequalities), but the conclusion would force
+`‖(1 : ℂ) − 0‖ ≤ 1 / 3`, i.e. `1 ≤ 1/3`, contradiction.
+
+The witness `(constFormalMultilinearSeries ℂ ℂ 1).partialSum 0` is the
+empty sum (`Finset.range 0 = ∅`), hence `= 0 : ℂ`, so the LHS evaluates
+to `‖1 − 0‖ = 1`. The RHS `1 · (1/4)^1 / (1^0 · (1 − 1/4)) = (1/4) /
+(3/4) = 1/3`. The numerical contradiction `1 ≤ 1/3` is discharged by
+`norm_num`.
+
+The mathematical root cause is the `partialSum n` truncation
+convention (sum over `Finset.range n`, i.e., degrees `0, …, n−1`):
+the geometric tail from degree `n` evaluates to
+`M · r^n · R / (R^n · (R − r))`, not `M · r^(n+1) / (R^n · (R − r))`.
+The corrected statement (§3b) uses `partialSum (n + 1)` so the index
+matches the RHS. -/
+theorem originalRemainderForm_is_false : ¬ OriginalRemainderForm := by
+  intro h
+  -- Apply the alleged universal statement to the constant-1 witness on `ℂ`.
+  set f : ℂ → ℂ := fun _ => (1 : ℂ)
+  set p : FormalMultilinearSeries ℂ ℂ ℂ := constFormalMultilinearSeries ℂ ℂ (1 : ℂ)
+  have hR : (0 : ℝ) < 1 := by norm_num
+  have hM : (0 : ℝ) ≤ 1 := by norm_num
+  -- Convert the radius-⊤ constant power series to radius `ENNReal.ofReal 1`.
+  have h_top_ofReal : (ENNReal.ofReal (1 : ℝ)) ≤ ⊤ := le_top
+  have h_ofReal_pos : (0 : ℝ≥0∞) < ENNReal.ofReal 1 := by
+    rw [ENNReal.ofReal_pos]; norm_num
+  have hf : HasFPowerSeriesOnBall f p 0 (ENNReal.ofReal (1 : ℝ)) := by
+    have h_const : HasFPowerSeriesOnBall (fun _ : ℂ => (1 : ℂ))
+        (constFormalMultilinearSeries ℂ ℂ (1 : ℂ)) (0 : ℂ) ⊤ :=
+      hasFPowerSeriesOnBall_const
+    exact h_const.mono h_ofReal_pos h_top_ofReal
+  have hbound : ∀ z ∈ Metric.ball (0 : ℂ) (1 : ℝ), ‖f z‖ ≤ 1 := by
+    intro z _
+    show ‖(1 : ℂ)‖ ≤ 1
+    simp
+  have hr : (0 : ℝ) < 1 / 4 := by norm_num
+  have hrR : (1 / 4 : ℝ) < 1 := by norm_num
+  have hz : ‖(0 : ℂ) - 0‖ ≤ (1 / 4 : ℝ) := by
+    simp
+  have hbound_apply :=
+    h f 0 1 1 hR hM p hf hbound (1 / 4) hr hrR 0 0 hz
+  -- LHS: `‖f 0 − p.partialSum 0 (0 − 0)‖ = ‖1 − 0‖ = 1`.
+  have h_partialSum : (p.partialSum 0) ((0 : ℂ) - 0) = 0 := by
+    unfold FormalMultilinearSeries.partialSum
+    simp
+  rw [h_partialSum] at hbound_apply
+  -- `f 0` is definitionally `(1 : ℂ)`; convert and rewrite the norm.
+  have h_f_zero : f 0 = (1 : ℂ) := rfl
+  rw [h_f_zero, sub_zero] at hbound_apply
+  have h_norm_one : ‖(1 : ℂ)‖ = 1 := norm_one
+  rw [h_norm_one] at hbound_apply
+  -- RHS at `(R, M, r, n) = (1, 1, 1/4, 0)`: `1 * (1/4)^1 / (1^0 * (1 - 1/4)) = 1/3`.
+  norm_num at hbound_apply
+
+/-! ### §3b. Corrected statement (`partialSum (n + 1)`) -/
+
+/-- **Geometric tail identity** (proven, pure algebra).
+
+The rewrite `(r / R)^(n+1) · R / (R − r) = r^(n+1) / (R^n · (R − r))`
+under hypotheses `0 < r`, `r < R`. Used to convert between the
+"geometric-ratio" form of the Cauchy tail bound and the explicit
+"polynomial-power" form. -/
+theorem geometric_tail_identity (r R : ℝ) (hR : 0 < R) (hrR : r < R) (n : ℕ) :
+    (r / R) ^ (n + 1) * R / (R - r) = r ^ (n + 1) / (R ^ n * (R - r)) := by
+  have hR_ne : R ≠ 0 := ne_of_gt hR
+  have hRr_pos : 0 < R - r := by linarith
+  have hRr_ne : R - r ≠ 0 := ne_of_gt hRr_pos
+  have hRn_ne : R ^ n ≠ 0 := pow_ne_zero n hR_ne
+  -- Split into two steps via the intermediate identity `(r/R)^(n+1) * R = r^(n+1) / R^n`.
+  have key : (r / R) ^ (n + 1) * R = r ^ (n + 1) / R ^ n := by
+    rw [div_pow, pow_succ R n]
+    field_simp
+  calc (r / R) ^ (n + 1) * R / (R - r)
+      = r ^ (n + 1) / R ^ n / (R - r) := by rw [key]
+    _ = r ^ (n + 1) / (R ^ n * (R - r)) := by rw [div_div]
+
+/-- **Corrected Cauchy uniform bound** (complex hypothesis, fixed index).
 
 For `f : ℂ → ℂ` holomorphic on `Metric.ball a R` (the open complex disk
 of radius `R` around `a`) with uniform sup bound `‖f z‖ ≤ M` on that
-disk, and any `0 < r < R`, the partial sum of the formal power series
-of `f` at `a` satisfies
+disk, and any `0 < r < R`, the *degree-(n+1) truncated* partial sum of
+the formal power series of `f` at `a` satisfies
 ```
-  ‖f z − p.partialSum n (z − a)‖ ≤ M · (r / R)^(n+1) · R / (R − r)
-                                  = M · r^(n+1) / (R^n · (R − r))
+  ‖f z − p.partialSum (n + 1) (z − a)‖ ≤ M · r^(n+1) / (R^n · (R − r))
 ```
 for every `z` with `‖z − a‖ ≤ r` and every `n : ℕ`.
 
-This is the correct Cauchy form: note the explicit `R^n` factor in the
-denominator, which is precisely what the OQ-04 statement omits (and
-which is why `runge` violates the OQ-04 statement at `R = 100, n = 0`:
-the missing `R^n = 100^0 = 1` happens to coincide with the OQ-04 bound
-at `n = 0`, but the *real* sup-bound `M = 1` is too weak — Cauchy
-estimates need the *complex* sup bound on a complex disk of radius `1`,
-where `runge` is unbounded near `±i`).
+This is the textbook Cauchy uniform bound. The `n + 1` in
+`partialSum (n + 1)` is the **degree** of the truncated polynomial
+(matching the parent's `taylorPolynomial f a n` convention), so the
+tail begins at degree `n + 1` and the geometric sum
+`∑_{k ≥ n+1} M · (r/R)^k = M · (r/R)^(n+1) · R/(R−r) =
+M · r^(n+1) / (R^n · (R − r))` (via `geometric_tail_identity`).
 
-The proof (deferred to next iteration) chains:
-1. `HasFPowerSeriesOnBall.uniform_geometric_approx'` (Mathlib): gives
-   `‖f(a + y) − p.partialSum n y‖ ≤ C · (a · ‖y‖/r')^n` for some
-   geometric `a < 1` and `C > 0`.
-2. `FormalMultilinearSeries.norm_mul_pow_le_mul_pow_of_lt_radius`
-   (Mathlib): `∀ k, ‖p k‖ ≤ M / r^k` — the Cauchy coefficient bound.
-3. Explicit geometric-tail summation: `∑_{k > n} (M/R^k) · r^k =
-   M · (r/R)^{n+1} / (1 − r/R)`.
+The proof (deferred) chains:
+1. `cauchy_diag_norm_bound` (Cauchy coefficient bound on the diagonal
+   multilinear input): `‖p k (fun _ ↦ z − a)‖ ≤ M · (‖z − a‖ / R)^k`.
+   Mathlib chain: `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le`
+   + `HasFPowerSeriesOnBall.factorial_smul` + `r' → R⁻` limit.
+2. `HasFPowerSeriesOnBall.hasSum` + `norm_sub_le_of_geometric_bound_of_hasSum`:
+   tail bound from per-degree bound.
+3. `geometric_tail_identity`: convert ratio form to polynomial form.
 
 `sorry` here marks the formalization gap, *not* a mathematical gap. -/
 theorem analytic_taylor_remainder_uniform_bound_complex
@@ -319,8 +450,8 @@ theorem analytic_taylor_remainder_uniform_bound_complex
     (_hbound : ∀ z ∈ Metric.ball a R, ‖f z‖ ≤ M)
     (r : ℝ) (_hr : 0 < r) (_hrR : r < R)
     (n : ℕ) (z : ℂ) (_hz : ‖z - a‖ ≤ r) :
-    ‖f z - p.partialSum n (z - a)‖ ≤ M * r ^ (n + 1) / (R ^ n * (R - r)) := by
-  -- Deferred to S2: see §3 docstring for the Mathlib chain.
+    ‖f z - p.partialSum (n + 1) (z - a)‖ ≤ M * r ^ (n + 1) / (R ^ n * (R - r)) := by
+  -- Deferred to S4: see docstring for the Mathlib chain.
   sorry
 
 /-! ## §3a. Existential Cauchy-style geometric approximation (S2 addition, proven)
@@ -391,6 +522,9 @@ theorem analytic_taylor_remainder_uniform_geometric_complex
 #check @runge_one
 #check @oq04_axiom_is_false
 #check @oq04_parent_axiom_is_false_in_principle
+#check @OriginalRemainderForm
+#check @originalRemainderForm_is_false
+#check @geometric_tail_identity
 #check @analytic_taylor_remainder_uniform_bound_complex
 #check @analytic_taylor_remainder_uniform_geometric_complex
 
