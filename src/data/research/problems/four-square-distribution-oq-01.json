@@ -49,6 +49,7 @@
   "knowledge": {
     "progressSummary": "S17 (PR #17677, merged 2026-05-11): canonical σ*-side uniqueness reduces axiom to needing 3 hypotheses + 8∣r4Count. S18 spec (PR #17688, open): 3-stage decomposition for axiom-free 8∣r4Count. S18a (this PR, ~80 lines Part 27): structural foldl ↔ nested-sum bridge for r4Count, route-agnostic between D₄/(ℤ/2)⁴ ⋊ S₄ orbit decompositions.",
     "builtItems": [
+      "S18 spec: research/problems/four-square-distribution-oq-01/s18-eight-divisibility-spec.md (416 lines) — analysis-only spec for axiom-free `8 ∣ r4Count n`.",
       "sigmaStar (def): Jacobi's modified divisor sum at FourSquareDistributionOQ01.lean:74",
       "jacobiR4 (def): 8 * sigmaStar n at FourSquareDistributionOQ01.lean:90",
       "shiftedRange (def): integer range [-n, n] at FourSquareDistributionOQ01.lean:108",
@@ -121,6 +122,8 @@
       "S18a (Part 27): r4Count_eq_nested_sum — Sublemma 3.1 (List form): r4Count n equals triple-nested List.sum over shiftedRange n with innermost filter-length on 4th coordinate (FourSquareDistributionOQ01.lean:2333)"
     ],
     "insights": [
+      "S18 spec (researcher-4, 2026-05-11): Decomposed the path to axiom-free `8 ∣ r4Count n` for `n > 0` into 3 sub-deliverables S18a/b/c (~370 lines total). Documents 1 viable route ((ℤ/2)⁴ ⋊ S₄ 384-element group action — orbit sizes always divisible by 8 for n > 0) and 1 failed route (D₄ — υ involution fixes (a, b, 0, 0) solutions, blocking freeness). S18 is contingent on S13 modular-form route remaining inaccessible (Mathlib still lacks EisensteinSeries.E2_qExpansion).",
+      "S18 spec: The bottleneck for S18a is reformulating `r4Count` from a 4-deep `List.foldl` to a `Finset.card` over `Finset.Icc (-(n : ℤ)) n`-product — ~80 lines of Lean by induction on the foldl's `R := shiftedRange n`. Sublemmas 3.2–3.5 (involutions and their commutation) are mechanical (~75 lines combined).",
       "The factor 8 = 2³ in Jacobi's formula corresponds to the order-2³ stabilizer that always acts trivially on a sum-of-four-squares signature.",
       "The 4-divisibility constraint in σ*(n) is precisely what makes the formula consistent for n divisible by 4; e.g. r₄(4) = 24 and σ*(4) = 1+2 = 3.",
       "The same number r₄(n) is computed three different ways here for n = 1..10 (brute enumeration, divisor sum, and parent's type decomposition), all agreeing — providing strong cross-validation.",
@@ -211,7 +214,7 @@
     ]
   },
   "started": "2026-05-06T16:07:09+03:00",
-  "lastUpdate": "2026-05-09",
+  "lastUpdate": "2026-05-11T21:11:00.000Z",
   "significance": 7,
   "tractability": 3,
   "leanFiles": [
