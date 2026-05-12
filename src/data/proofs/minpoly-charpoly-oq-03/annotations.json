@@ -83,6 +83,30 @@
     ]
   },
   {
+    "id": "ann-mcpoq03-field-independence",
+    "proofId": "minpoly-charpoly-oq-03",
+    "range": { "startLine": 9, "endLine": 80 },
+    "type": "insight",
+    "title": "RCF vs Jordan Normal Form: Why Field-Independence Matters",
+    "content": "The Rational Canonical Form is the *field-independent* counterpart of the **Jordan Normal Form** (JNF). Both classify matrices up to similarity, but they make different demands on the ground field:\n\n* **JNF** requires the characteristic polynomial to *split* over the base field — i.e., $F$ must be algebraically closed (or at least contain all eigenvalues of $M$). Over $\\mathbb{Q}$, JNF generally does not exist (eigenvalues of a rational matrix may be irrational or complex).\n* **RCF** exists over *any* field. The companion-matrix blocks $C(p_i)$ have entries in $F$ (not in $\\overline{F}$), because the invariant factors $p_i \\in F[X]$ live in the original polynomial ring.\n\nThe price of field-independence is that the blocks $C(p_i)$ are larger and harder to read off than Jordan blocks: a Jordan block exhibits the eigenvalue $\\lambda$ explicitly along the diagonal, whereas a companion block $C(p_i)$ encodes the *roots* of $p_i$ only implicitly. Over $\\overline{F}$ the two forms are linked: if $p_i = \\prod_j (X - \\lambda_{ij})^{e_{ij}}$ is the factorisation into linear factors, then $C(p_i)$ is similar to a direct sum of Jordan blocks for the eigenvalues $\\lambda_{ij}$ with sizes $e_{ij}$. The *elementary divisors* of $M$ — the prime power factors of the invariant factors — give exactly the Jordan block sizes.\n\nFor formalisation in Lean 4, RCF is strictly easier than JNF: it does not require a `[IsAlgClosed F]` hypothesis or an algebraic-closure construction, and it can be applied to matrices over $\\mathbb{Q}$, $\\mathbb{F}_p$, or any other field directly. This is why the scaffold here targets RCF, with JNF as a possible downstream refinement once Mathlib's algebraic-closure machinery is mature enough.",
+    "mathContext": "**JNF over $\\overline{F}$**: $M$ is similar to $\\bigoplus_{i,j} J_{e_{ij}}(\\lambda_{ij})$ where $J_e(\\lambda)$ is the Jordan block of size $e$ for eigenvalue $\\lambda$. Requires $\\mathrm{charpoly}(M)$ to split: $\\mathrm{charpoly}(M) = \\prod_{i,j} (X - \\lambda_{ij})^{e_{ij}}$. **RCF over $F$**: $M$ is similar to $\\bigoplus_i C(p_i)$ where $p_i$ are the invariant factors. Works over any field, even when $\\mathrm{charpoly}(M)$ does not split. **Relationship**: the elementary divisors of $M$ (prime-power factors of the $p_i$) are $(X - \\lambda_{ij})^{e_{ij}}$ over $\\overline{F}$, and each $C(p_i)$ over $\\overline{F}$ is similar to $\\bigoplus_j J_{e_{ij}}(\\lambda_{ij})$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Jordan normal form",
+      "Algebraic closure",
+      "Elementary divisors",
+      "Companion matrix vs Jordan block",
+      "Field-independent canonical forms",
+      "Similarity classification over Q vs C"
+    ],
+    "prerequisites": [
+      "Jordan normal form and its splitting hypothesis",
+      "Companion matrix definition",
+      "Algebraically closed fields",
+      "Polynomial factorisation over extensions"
+    ]
+  },
+  {
     "id": "ann-mcpoq03-emptychain",
     "proofId": "minpoly-charpoly-oq-03",
     "range": { "startLine": 177, "endLine": 192 },
