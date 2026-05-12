@@ -66,7 +66,7 @@ set_option maxHeartbeats 400000
 
 noncomputable section
 
-open MeasureTheory Complex Filter Topology
+open MeasureTheory Complex Filter Topology AddCircle
 open scoped ENNReal NNReal Real
 
 /-- The 2-torus `𝕋² = (ℝ/ℤ)²`, modelled as `Fin 2 → AddCircle 1`. -/
