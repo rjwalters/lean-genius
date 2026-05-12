@@ -299,11 +299,124 @@ def toPartition2 (p : Partition 2) : Partition2 :=
     · exact h 0
     · exact h 1
 
-/-! ## Part VII: 2-Row Anchor — Main Theorem (S3b — DEFERRED) -/
+/-! ## Part VII: 2-Row Anchor — Out-of-Support Discharge (S3b) -/
 
-/-- **Main 2-row anchor (DEFERRED to S3b).** The abstract LR count
-    `lrCoeffN_def` on `Partition 2` data agrees with the concrete
-    closed-form `LRComplexity.lrCoeff2`.
+/-- **`lrCoeff2` vanishes outside the LR support.** The closed-form
+    2-row LR coefficient `lrCoeff2 (toPartition2 ν) (toPartition2 lam)
+    (toPartition2 μ)` is `0` whenever the support guard
+    `μ ⊆ ν ∧ ν.weight = lam.weight + μ.weight` fails. Mirrors
+    `lrCoeffN_def_eq_zero_of_not_support` on the abstract count
+    side and is the RHS half of the out-of-support case in
+    `lrCoeffN_def_two_eq_lrCoeff2`.
+
+    Proof: `lrCoeff2`'s definition is a chain of `if`-guards. The
+    first guard is `¬ (μ.a ≤ ν.a ∧ μ.b ≤ ν.b)`, which translates
+    via `toPartition2_contains_iff` to `¬ (μ ⊆ ν)`. The second
+    guard is `ν.size ≠ λ.size + μ.size`, which translates via
+    `toPartition2_size` to `ν.weight ≠ lam.weight + μ.weight`. One
+    of the two must hold by hypothesis, so the chain bottoms out
+    at `0`. -/
+theorem lrCoeff2_eq_zero_of_not_support (ν lam μ : Partition 2)
+    (h : ¬ (μ ⊆ ν ∧ ν.weight = lam.weight + μ.weight)) :
+    LRComplexity.lrCoeff2 (toPartition2 ν) (toPartition2 lam) (toPartition2 μ) = 0 := by
+  push_neg at h
+  unfold LRComplexity.lrCoeff2
+  by_cases hsub : μ ⊆ ν
+  · -- Containment holds, so the first `if ¬(...) then 0` guard is FALSE.
+    -- The size mismatch then closes the second guard.
+    have hcont_p2 :
+        (toPartition2 μ).a ≤ (toPartition2 ν).a ∧
+        (toPartition2 μ).b ≤ (toPartition2 ν).b := by
+      simp only [toPartition2_a, toPartition2_b]
+      exact ⟨hsub 0, hsub 1⟩
+    have hsz_p2 :
+        (toPartition2 ν).size ≠
+          (toPartition2 lam).size + (toPartition2 μ).size := by
+      simp only [toPartition2_size]
+      exact h hsub
+    rw [if_neg (not_not_intro hcont_p2), if_pos hsz_p2]
+  · -- Containment fails, so the first `if ¬(...) then 0` guard is TRUE.
+    have hncont_p2 :
+        ¬ ((toPartition2 μ).a ≤ (toPartition2 ν).a ∧
+           (toPartition2 μ).b ≤ (toPartition2 ν).b) := by
+      simp only [toPartition2_a, toPartition2_b]
+      rintro ⟨h0, h1⟩
+      apply hsub
+      intro i
+      fin_cases i
+      · exact h0
+      · exact h1
+    rw [if_pos hncont_p2]
+
+/-! ## Part VIII: 2-Row Anchor — In-Support Sub-Lemma (S3c — DEFERRED) -/
+
+/-- **In-support case of the 2-row anchor (DEFERRED to S3c).** Under
+    the LR support guard `μ ⊆ ν ∧ ν.weight = lam.weight + μ.weight`,
+    the abstract count `lrCoeffN_def ν lam μ` equals
+    `lrCoeff2 (toPartition2 ν) (toPartition2 lam) (toPartition2 μ)`.
+
+    This is the constructive heart of the 2-row anchor. The
+    `lrCoeff2` value is always `0` or `1` (`lrCoeff2_le_one`,
+    `Hilbert15OQ02.lean:258`), and `lrCoeff2 = 1` precisely when
+    all four pass-conditions in `lrCoeff2`'s `if`-cascade hold:
+
+    * `lam.parts 0 ≥ r₀` (where `r₀ := ν.parts 0 - μ.parts 0`)
+    * `lam.parts 0 - r₀ ≤ r₁` (where `r₁ := ν.parts 1 - μ.parts 1`)
+    * Column-strict in overlap: `lam.parts 0 - r₀ ≤ μ.parts 0 - μ.parts 1`
+      whenever the overlap is non-empty.
+    * Lattice from row 2: `r₀ ≥ lam.parts 1`.
+
+    **Proof sketch (S3c).**
+
+    1. **Row 0 is forced to all zeros.** The reverse row reading
+       word starts with row 0 right-to-left. If any cell in row 0
+       held `1 : Fin 2`, the rightmost such cell would appear
+       first in the word, giving `count 1 ≥ 1` and `count 0 = 0`
+       at a prefix where `0 < 1` — violating the lattice
+       condition. So every `T ⟨0, j⟩ = 0 : Fin 2`. This forces
+       `T.content 0 ≥ r₀`, hence `lam.parts 0 ≥ r₀`.
+
+    2. **Row 1 content is determined.** With row 0 contributing
+       `r₀` zeros, the content equation `T.content 0 = lam.parts 0`
+       forces `c₀ := lam.parts 0 - r₀` zeros in row 1. The
+       remaining `c₁ := r₁ - c₀ = lam.parts 1` cells are ones.
+
+    3. **Row 1 is uniquely determined.** Weakly-increasing row 1
+       with `c₀` zeros and `c₁` ones is the function `j ↦
+       if j.val < c₀ then 0 else 1`. So there is at most one
+       valid `T` and `Fintype.card ≤ 1`.
+
+    4. **The unique candidate's column-strict and lattice
+       conditions match `lrCoeff2`'s remaining guards.** Column-
+       strictness on overlap requires the row-1 entries in
+       columns `[μ.parts 0, ν.parts 1)` to be `> 0`, i.e., `1`.
+       That overlap has size `(ν.parts 1 - μ.parts 0)` if
+       positive, and the local row-1 indices are `[μ.parts 0 -
+       μ.parts 1, r₁)`. The condition that those are all `1`
+       is `c₀ ≤ μ.parts 0 - μ.parts 1`. Lattice from row 2:
+       at every prefix of row 1 right-to-left, the count of
+       `1`'s mustn't exceed `r₀` (zeros from row 0), giving
+       `c₁ ≤ r₀`, i.e., `r₀ ≥ lam.parts 1`.
+
+    5. **Bijection between candidates and `lrCoeff2 = 1`.** All
+       four guards match exactly; when they hold, the unique
+       function above satisfies the SkewSSYTFin conditions,
+       giving `Fintype.card = 1`; when any fails, no candidate
+       exists, giving `Fintype.card = 0`.
+
+    Targeted at ~150 lines in S3c after the `SkewSSYTFin`
+    `Fintype.card` reduction on the 2-row shape is built. -/
+theorem lrCoeffN_def_two_eq_lrCoeff2_of_support (ν lam μ : Partition 2)
+    (hsupp : μ ⊆ ν ∧ ν.weight = lam.weight + μ.weight) :
+    lrCoeffN_def ν lam μ =
+      LRComplexity.lrCoeff2 (toPartition2 ν) (toPartition2 lam) (toPartition2 μ) := by
+  sorry
+
+/-! ## Part IX: 2-Row Anchor — Main Theorem (S3b) -/
+
+/-- **Main 2-row anchor.** The abstract LR count `lrCoeffN_def` on
+    `Partition 2` data agrees with the concrete closed-form
+    `LRComplexity.lrCoeff2`.
 
     This is the S3 load-bearing lemma. Three roles:
 
@@ -321,31 +434,22 @@ def toPartition2 (p : Partition 2) : Partition2 :=
        `Hilbert15OQ02.lean` lift mechanically to
        `lrCoeffN_def`-form by rewriting with this theorem.
 
-    **Proof sketch (S3b).** Case-split on the support guard
-    `μ ⊆ ν ∧ ν.weight = lam.weight + μ.weight`:
+    **Proof structure (S3b).** Case-split on the support guard:
 
-    * **Out-of-support.** `lrCoeffN_def_eq_zero_of_not_support`
-      rewrites the LHS to `0`. On the RHS, the corresponding
-      `lrCoeff2` guards — `μ ⊆ ν` and the size equation — collapse
-      to `0` via `toPartition2_contains_iff` and
-      `toPartition2_size`.
-    * **In-support.** With `r₁ := ν.parts 0 - μ.parts 0` and
-      `r₂ := ν.parts 1 - μ.parts 1`, the cell sigma-type
-      `(i : Fin 2) × Fin (ν.parts i - μ.parts i)` has exactly
-      `r₁ + r₂` cells. Fulton's 2-row analysis (ballot condition
-      forces `k₁ = r₁`) gives a constructive bijection between
-      `{T : SkewSSYTFin // content = lam ∧ isLatticeWord ...}` and
-      the singleton/empty set parameterised by `lrCoeff2`'s
-      `if`-cascade. The bijection is the `Fin (r₁ + r₂) → Fin 2`
-      function with `k₂ = lam.a - r₁` ones in row 2.
+    * **Out-of-support** (proved here, S3b). The LHS rewrites to
+      `0` via `lrCoeffN_def_eq_zero_of_not_support`; the RHS
+      rewrites to `0` via the dual
+      `lrCoeff2_eq_zero_of_not_support`.
 
-    Targeted at ~150-line proof in S3b after refining
-    `SkewSSYTFin`'s `Fintype.card` reduction on the 2-row shape.
-    Until then this theorem is stated with `sorry` to anchor the
-    parent file's S4 refactor against a concrete signature. -/
+    * **In-support** (deferred to S3c). Delegated to the sub-
+      lemma `lrCoeffN_def_two_eq_lrCoeff2_of_support` whose
+      docstring records the full bijection sketch. -/
 theorem lrCoeffN_def_two_eq_lrCoeff2 (ν lam μ : Partition 2) :
     lrCoeffN_def ν lam μ =
       LRComplexity.lrCoeff2 (toPartition2 ν) (toPartition2 lam) (toPartition2 μ) := by
-  sorry
+  by_cases hsupp : μ ⊆ ν ∧ ν.weight = lam.weight + μ.weight
+  · exact lrCoeffN_def_two_eq_lrCoeff2_of_support ν lam μ hsupp
+  · rw [lrCoeffN_def_eq_zero_of_not_support _ _ _ hsupp]
+    exact (lrCoeff2_eq_zero_of_not_support ν lam μ hsupp).symm
 
 end Hilbert15OQ02OQ03OQ01
