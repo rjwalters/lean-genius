@@ -80,20 +80,59 @@
   },
   "sections": [
     {
-      "title": "n-Part Partitions",
-      "content": "A partition with n parts is formalized as a structure `Partition n` with a weakly decreasing function `parts : Fin n → ℕ`. The weight (total size) is the sum of all parts. This is more general than the 2-row `Partition2` from OQ-02, capturing all GL_n representations.\n\nThe key technical point: Mathlib already has `Finset.univ.sum` and `Finset.sum` for computing these sums, so the partition structure requires no new Mathlib infrastructure."
+      "id": "sec-header",
+      "title": "Header: Question Statement, Answer, and Roadmap",
+      "startLine": 1,
+      "endLine": 71,
+      "summary": "Imports Mathlib.Tactic, Finset.Basic, Fin.Basic, and the parent file Proofs.Hilbert15OQ02. The module docstring states the OQ-03 question (minimal Mathlib extension for LR positivity as LP), answers that exactly two missing components are needed (general `lrCoeffN` ≈ 300 lines + admissibility predicate ≈ 200 lines), states Klyachko's theorem in the Horn-inequality framework $c^γ_{α,β} > 0 \\iff$ all admissible Horn inequalities hold, observes that this gives a polynomial-time LP for positivity, enumerates the 4 definitions / 3 axioms / 8 theorems delivered, and cites Klyachko 1998 and Knutson–Tao 1999."
     },
     {
-      "title": "Index Triples and Horn Inequalities",
-      "content": "An `IndexTriple n r` consists of three r-element subsets (I, J, K) of {0,...,n-1}. The **Horn inequality** for a triple is:\n$$\\sum_{k \\in K} \\gamma_k \\leq \\sum_{i \\in I} \\alpha_i + \\sum_{j \\in J} \\beta_j$$\n\nThis is formalized as `hornInequality t α β γ` which reduces to `Finset.sum` operations — all within Mathlib's existing `Finset` API. Crucially, `hornInequality` is decidable (`Nat.decLe`) since it is just `Nat.le` on finite sums.\n\nThe **linearity** theorem `horn_scale` proves that scaling all partition parts by c preserves the inequality, confirming this is indeed a linear (not just combinatorial) constraint."
+      "id": "sec-part-i-partitions",
+      "title": "Part I: General n-Part Partitions (L72–89)",
+      "startLine": 72,
+      "endLine": 89,
+      "summary": "Defines `Partition n` as a structure with weakly-decreasing `parts : Fin n → ℕ`, `Partition.weight` as the sum-over-Fin-n of parts, `Partition.zero` as the trivially-zero partition, and proves `Partition.zero_weight : (Partition.zero n).weight = 0`. Generalizes the 2-row `Partition2` from the parent OQ-02 entry, captures all GL_n representations.",
+      "mathContext": "A partition $\\alpha = (\\alpha_0 \\ge \\alpha_1 \\ge \\cdots \\ge \\alpha_{n-1} \\ge 0)$ in $\\mathbb{N}^n$ with weight $|\\alpha| = \\sum \\alpha_i$. The structure uses `Fin n → ℕ` with a decreasing-property field, so `Finset.univ.sum` works out of the box."
     },
     {
-      "title": "Klyachko's Theorem and What It Needs",
-      "content": "Klyachko's theorem (axiomatized) states:\n$$c^\\gamma_{\\alpha,\\beta} > 0 \\iff \\forall r < n,\\ \\forall (I,J,K) \\text{ admissible},\\ \\sum_K \\gamma \\leq \\sum_I \\alpha + \\sum_J \\beta$$\n\nThe three missing Mathlib ingredients:\n\n1. **`lrCoeffN`** (~300 lines): General LR coefficient via reverse row reading word and ballot condition for n-row partitions. Mathlib has no general SSYT (semistandard Young tableau) formalization for arbitrary skew shapes.\n\n2. **`admissible`** (~200 lines): Recursive predicate — (I,J,K) at rank r is admissible if c^K_{I,J} > 0 at rank r-1. This requires general LR coefficients at each recursive step.\n\n3. **Klyachko's proof** (~3000 lines): Requires stable vector bundles on ℙ¹, GIT quotients, and Schubert calculus for G/P — all absent from Mathlib."
+      "id": "sec-part-ii-horn",
+      "title": "Part II: Index Triples and Horn Inequalities (L91–124)",
+      "startLine": 91,
+      "endLine": 124,
+      "summary": "Defines `IndexTriple n r` (three r-element subsets I, J, K of {0,...,n-1}) and `hornInequality t α β γ` (the linear inequality $\\sum_{k \\in K} \\gamma_k \\le \\sum_{i \\in I} \\alpha_i + \\sum_{j \\in J} \\beta_j$). Both are decidable predicates reducible to `Nat.le` on `Finset.sum`. Proves `horn_ineq_swap`: the (I,J,K)-Horn inequality is symmetric in α ↔ β when J ↔ I.",
+      "mathContext": "Horn inequality (Horn 1962): $\\sum_{k \\in K} \\gamma_k \\le \\sum_{i \\in I} \\alpha_i + \\sum_{j \\in J} \\beta_j$ for $|I| = |J| = |K| = r$. Klyachko's theorem says: $c^\\gamma_{\\alpha,\\beta} > 0$ iff this holds for *every admissible* $(I,J,K)$. Linearity in $\\alpha, \\beta, \\gamma$ is crucial for the LP framing."
     },
     {
-      "title": "LP Reduction and Polynomial Time",
-      "content": "The LP reduction follows immediately from Klyachko's theorem: checking all admissible Horn inequalities is equivalent to checking LR positivity. Since:\n- Each Horn inequality is **linear** in α, β, γ\n- There are **at most n·8^n** admissible triples (proved in `total_horn_constraints`)\n- Linear feasibility for polynomially-many constraints runs in **polynomial time**\n\nthe positivity problem c^γ_{α,β} > 0 is in **P** (polynomial time).\n\nThe Weyl inequality theorem `weyl_inequality` derives the r=1 base case as a consequence: for any admissible singleton triple ({i},{j},{k}), we get γ_k ≤ α_i + β_j — this is exactly Weyl's 1912 inequality, now appearing as a corollary of the general framework."
+      "id": "sec-part-iii-klyachko",
+      "title": "Part III: Klyachko's Theorem (Axiomatized) (L126–163)",
+      "startLine": 126,
+      "endLine": 163,
+      "summary": "Three axioms: `lrCoeffN` (general n-row Littlewood-Richardson coefficient, ≈ 300 lines missing from Mathlib), `admissible` (recursive admissibility predicate for index triples, ≈ 200 lines), and `klyachko_theorem` (Klyachko 1998: $c^γ_{α,β} > 0 \\iff$ all admissible Horn inequalities hold, ≈ 3000-line proof requiring stable vector bundles, GIT quotients, and Schubert calculus for G/P).",
+      "mathContext": "Klyachko (1998) and Knutson–Tao (1999) honeycomb model: $c^\\gamma_{\\alpha,\\beta} > 0$ iff the Horn cone $\\{(\\alpha,\\beta,\\gamma) : |\\alpha|+|\\beta|=|\\gamma|, \\text{all admissible Horn ineqs hold}\\}$ contains the point. Admissibility is recursive on rank: $(I,J,K)$ at rank $r$ is admissible iff $c^{\\chi_K}_{\\chi_I,\\chi_J} > 0$ at rank $r-1$."
+    },
+    {
+      "id": "sec-part-iv-lp",
+      "title": "Part IV: Polynomial-Time LP Reduction (L165–200)",
+      "startLine": 165,
+      "endLine": 200,
+      "summary": "Packages the LP reduction as `lr_positivity_reduces_to_lp` (one-line corollary of `klyachko_theorem`), proves `horn_scale` (Horn inequalities preserved under coefficient scaling, the linearity-of-LP fact), and proves `lr_polytime_positivity` (existence of a polytime positivity oracle: at most n·8^n linear constraints, each Nat.le-decidable).",
+      "mathContext": "LP feasibility with $n \\cdot 8^n$ linear constraints in $3n$ variables runs in polynomial time (Khachiyan 1979 ellipsoid method; Karmarkar 1984 interior point). Combined with Klyachko's theorem, decides $c^\\gamma_{\\alpha,\\beta} > 0$ in poly($n$) time."
+    },
+    {
+      "id": "sec-part-v-weyl",
+      "title": "Part V: Weyl Inequality — r=1 Base Case (L202–223)",
+      "startLine": 202,
+      "endLine": 223,
+      "summary": "Proves `weyl_inequality`: for any admissible singleton triple ({i}, {j}, {k}) at rank r=1, we get $\\gamma_k \\le \\alpha_i + \\beta_j$. This is Weyl's 1912 inequality on Hermitian matrix eigenvalues, now appearing as a corollary of the general Horn framework. Specializes `hornInequality` at r=1 with single-element subsets.",
+      "mathContext": "Weyl (1912): if $H_1, H_2, H_3$ are Hermitian $n \\times n$ matrices with $H_3 = H_1 + H_2$ and eigenvalues $\\alpha, \\beta, \\gamma$ (decreasing), then $\\gamma_k \\le \\alpha_i + \\beta_j$ for $i + j = k$. This is the rank-1 case of the general Horn inequalities."
+    },
+    {
+      "id": "sec-part-vi-count",
+      "title": "Part VI: Constraint Count (LP Polynomiality) (L225–249)",
+      "startLine": 225,
+      "endLine": 249,
+      "summary": "Proves the two count bounds that establish LP polynomiality: `admissible_triple_count_bound` (at most $\\binom{n}{r}^3$ triples at rank r, since I, J, K each have $\\binom{n}{r}$ choices independently), and `total_horn_constraints` (summing over r gives $\\sum_{r=0}^{n-1} \\binom{n}{r}^3 \\le n \\cdot 8^n$). The bound uses $\\binom{n}{r} \\le 2^n$ for each factor.",
+      "mathContext": "$\\sum_{r=0}^{n-1} \\binom{n}{r}^3 \\le n \\cdot (2^n)^3 = n \\cdot 8^n$. Sharper bounds exist via Vandermonde ($\\binom{2n}{n} = \\sum \\binom{n}{r}^2$), but $n \\cdot 8^n$ suffices for the polynomial-time statement: LP feasibility with $n \\cdot 8^n$ constraints in $3n$ variables is in $P$."
     }
   ],
   "conclusion": {
