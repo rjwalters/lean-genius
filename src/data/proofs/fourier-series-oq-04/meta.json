@@ -67,6 +67,14 @@
       "summary": "Module header explaining the four key differences from 1D Fourier theory: L¹ rectangular divergence (Fefferman 1971), smooth function divergence, Bochner-Riesz framework, and L² persistence. Lists references: Grafakos, Stein-Weiss, Fefferman. Imports Mathlib and opens MeasureTheory and Complex."
     },
     {
+      "id": "section-namespace-and-part-headers",
+      "title": "Namespace, Imports, and PART Section Headers",
+      "startLine": 22,
+      "endLine": 31,
+      "summary": "`namespace FourierSeriesOQ04` declaration, `open MeasureTheory Complex` directive (bringing the relevant Mathlib measure-theory and complex-analysis namespaces into scope), and the PART I block-comment header introducing the multi-dimensional Fourier-coefficient subsystem. This bookkeeping bridges the §I module docstring (lines 1–24) to the formal definitions starting at line 32.",
+      "mathContext": "The namespace-and-PART-header pattern is the file's organizational scaffold: each PART block-comment header (`/* PART I/II/III/IV */`) marks a phase of the file's exposition — coefficient definitions, summation methods, axiomatized convergence results, and final remarks. The `open MeasureTheory Complex` makes `Complex.exp`, `Complex.I`, `MeasureTheory.integral` available without prefix."
+    },
+    {
       "id": "section-fourier-coefficients",
       "title": "Part I: Multi-Dimensional Fourier Coefficients",
       "startLine": 32,
