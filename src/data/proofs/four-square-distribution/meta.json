@@ -52,6 +52,14 @@
   },
   "sections": [
     {
+      "id": "intro-docstring",
+      "title": "Imports and Open-Question Framing",
+      "startLine": 1,
+      "endLine": 35,
+      "summary": "Imports `Mathlib.NumberTheory.SumFourSquares`, `Finset.Basic`/`Card`, `Multiset.Basic`, `List.Sort`, `Mathlib.Tactic`. The module docstring states the gallery open question OQ-02 ('How do representations distribute among the possible orderings?'), summarizes the four contributions of the file (computable representation types, symmetry multipliers, small-n enumeration, structural properties), and records the key insight that Jacobi's factor of 8 arises from the signed-permutation symmetry group acting on 4-tuples.",
+      "mathContext": "$r_4(n) = \\sum_{\\text{types } t \\text{ for } n} \\text{contribution}(t)$, where $\\text{contribution}(t) = \\binom{4}{m_1, m_2, \\ldots}^{\\!*}\\cdot 2^{\\text{nz}(t)}$ — the multinomial coefficient over multiplicities times $2^k$ for $k$ nonzero positions. The factor of 8 in Jacobi's formula $r_4(n) = 8\\sigma^*(n)$ is the GCD of all type contributions."
+    },
+    {
       "id": "rep-types",
       "title": "Part 1: Representation Types and Symmetry",
       "startLine": 36,
