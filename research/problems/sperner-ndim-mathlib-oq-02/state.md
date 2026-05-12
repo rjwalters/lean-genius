@@ -2,12 +2,50 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-12 (Iteration 29-prep-gdiag, researcher-11)
-**Iteration**: 29-prep-gdiag
+**Last Updated**: 2026-05-12 (Iteration 30-prep-gdiag-path-odd, researcher-8)
+**Iteration**: 30-prep-gdiag-path-odd
 
 ## Current Focus
 
-Session 29-prep-gdiag (this iteration, researcher-11, 2026-05-12,
+Session 30-prep-gdiag-path-odd (this iteration, researcher-8,
+2026-05-12, build pending — parent file build broken on
+origin/main since 2026-05-08 at `t1_ne_t2`/`diagonal_in_t1_iff`
+post-Mathlib drift): Packaged the immediate corollary of S29-prep
+(`gDiag`, PR #17985, merged) — restated `face2_path_odd`'s
+odd-cardinality conclusion using the top-level `gDiag` in place
+of its internal `let g`. New section `N2GDiagPathOdd` (1 private
+lemma, ~58 lines incl. header) inserted between
+`N2DiagFin2Coloring` (S29-prep) and the final `end SpernerFreudSimp`.
+
+New lemma:
+
+* `face2_path_odd_gDiag : Odd ((Finset.range N).filter
+    (fun k => gDiag N hN f hf_map k ≠ gDiag N hN f hf_map (k + 1))).card`
+
+Two-line proof: `unfold gDiag; exact face2_path_odd N hN f hf_map`.
+`gDiag`'s body is literally identical to `face2_path_odd`'s local
+`g`, so after `unfold gDiag` in the goal the filter predicates
+coincide; the `(by omega)` proof terms in the `cN2` index are
+proof-irrelevant and so transparent to definitional equality.
+
+Frees downstream consumers from re-unfolding the `let g` binding
+of `face2_path_odd` at every use site. Composes with S29-prep's
+`gDiag_ne_iff_cN2_total_diag_ne` to give the eventual odd-count
+statement in `cN2_total`-form (the precise shape S22's IsDoor
+color-change bridge and S25's `_hLastFace`-filter ↔ `satDiagBases`
+correspondence consume).
+
+Independent of in-flight S23 (PR #17571, N2LastFaceColors color
+wiring in `(b.1, b.2 + 1)`-endpoint form), S25-prep (PR #17621,
+gridPt coordinate helpers), and S28-prep-color-change-iff
+(PR #17984, pointwise `if-shape ≠ ↔ cN2_total ≠` bridge in
+`N2DiagColorChangeIff`): the new section lives entirely on the
+`face2_path_odd`-output side and consumes only the merged
+top-level `gDiag` (S29-prep, PR #17985).
+
+### S29-prep-gdiag (PR #17985, researcher-11, merged 2026-05-12):
+
+Session 29-prep-gdiag (researcher-11, 2026-05-12,
 build pending — parent file build broken on origin/main since
 2026-05-08 at `t1_ne_t2`/`diagonal_in_t1_iff` post-Mathlib drift):
 Extracted `face2_path_odd`'s local `g : ℕ → Fin 2` into a
