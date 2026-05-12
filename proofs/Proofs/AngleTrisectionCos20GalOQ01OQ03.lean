@@ -436,6 +436,153 @@ theorem r_13_irreducible : Irreducible (r 13) := by
     norm_num
   · exact r_13_monic.isPrimitive
 
+/-! ## S5: Cyclotomic anchor — Φ_{2p}(−1) = p for p ∈ {3, 5, 7}
+
+These lemmas make the cyclotomic-API side of the norm fingerprint
+concrete. For each odd prime p ∈ {3, 5, 7}, the explicit form of
+`cyclotomic (2*p) ℤ` is identified, and its evaluation at `-1` is shown
+to equal `p`. Combined with `r_constantCoeff_eq_signed_p`, this
+verifies the prediction
+`(r p).coeff 0 = (-1)^((p-1)/2) · Φ_{2p}(-1) = (-1)^((p-1)/2) · p`
+for these primes via two independent computations: the gallery's
+direct coefficient evaluation, and Mathlib's cyclotomic-polynomial API.
+
+**Mathematical content.** For odd prime p ≥ 3, primitive 2p-th roots of
+unity are exactly the negatives of primitive p-th roots, so
+`Φ_{2p}(X) = Φ_p(-X)`. Evaluating at `X = -1`:
+`Φ_{2p}(-1) = Φ_p(1) = p` (Mathlib's `eval_one_cyclotomic_prime`).
+
+**Mathlib status.** Mathlib v4.26.0 has `cyclotomic_one`, `cyclotomic_two`,
+`cyclotomic_three` (explicit values for n ≤ 3), `cyclotomic_prime`
+(`Φ_p = ∑_{i<p} X^i` for p prime), `eq_cyclotomic_iff`
+(`P = cyclotomic n R ↔ P · ∏_{d ∈ properDivisors n} Φ_d = X^n - 1`),
+and `eval_one_cyclotomic_prime` (`Φ_p(1) = p`). The general reflection
+`Φ_{2p}(X) = Φ_p(-X)` is NOT in Mathlib in this form. We derive each
+explicit `cyclotomic_{2p}` form via `eq_cyclotomic_iff` plus the
+divisor structure of 2p, then evaluate by direct simp/ring.
+
+Lifting to a uniform `Φ_{2p}(-1) = p` for all odd primes p ≥ 3 is the
+S6 target; the bridge identity goes through `cyclotomic_prime_mul_X_sub_one`
+composed with `X → -X` plus polynomial cancellation in `ℤ[X]`.
+-/
+
+/-- `cyclotomic 5 ℤ = X^4 + X^3 + X^2 + X + 1`. Derived via
+`eq_cyclotomic_iff` and the identity `(X-1)(X^4+X^3+X^2+X+1) = X^5 - 1`. -/
+theorem cyclotomic_5_eq : cyclotomic 5 ℤ = X^4 + X^3 + X^2 + X + 1 := by
+  refine ((eq_cyclotomic_iff (by norm_num : 0 < 5) _).mpr ?_).symm
+  rw [show Nat.properDivisors 5 = ({1} : Finset ℕ) from by decide,
+      Finset.prod_singleton, cyclotomic_one]
+  ring
+
+/-- `cyclotomic 7 ℤ = X^6 + X^5 + X^4 + X^3 + X^2 + X + 1`. -/
+theorem cyclotomic_7_eq :
+    cyclotomic 7 ℤ = X^6 + X^5 + X^4 + X^3 + X^2 + X + 1 := by
+  refine ((eq_cyclotomic_iff (by norm_num : 0 < 7) _).mpr ?_).symm
+  rw [show Nat.properDivisors 7 = ({1} : Finset ℕ) from by decide,
+      Finset.prod_singleton, cyclotomic_one]
+  ring
+
+/-- `cyclotomic 6 ℤ = X^2 - X + 1`. The 6th cyclotomic polynomial. Derived
+via `eq_cyclotomic_iff` plus the divisor structure `properDivisors 6 = {1, 2, 3}`
+and the identity `(X^2-X+1)(X-1)(X+1)(X^2+X+1) = X^6 - 1`. -/
+theorem cyclotomic_six_eq : cyclotomic 6 ℤ = X^2 - X + 1 := by
+  refine ((eq_cyclotomic_iff (by norm_num : 0 < 6) _).mpr ?_).symm
+  rw [show Nat.properDivisors 6 = ({1, 2, 3} : Finset ℕ) from by decide,
+      show (({1, 2, 3} : Finset ℕ)) = insert 1 (insert 2 ({3} : Finset ℕ))
+        from rfl,
+      Finset.prod_insert
+        (show (1 : ℕ) ∉ insert 2 ({3} : Finset ℕ) from by decide),
+      Finset.prod_insert (show (2 : ℕ) ∉ ({3} : Finset ℕ) from by decide),
+      Finset.prod_singleton, cyclotomic_one, cyclotomic_two, cyclotomic_three]
+  ring
+
+/-- `cyclotomic 10 ℤ = X^4 - X^3 + X^2 - X + 1`. -/
+theorem cyclotomic_ten_eq :
+    cyclotomic 10 ℤ = X^4 - X^3 + X^2 - X + 1 := by
+  refine ((eq_cyclotomic_iff (by norm_num : 0 < 10) _).mpr ?_).symm
+  rw [show Nat.properDivisors 10 = ({1, 2, 5} : Finset ℕ) from by decide,
+      show (({1, 2, 5} : Finset ℕ)) = insert 1 (insert 2 ({5} : Finset ℕ))
+        from rfl,
+      Finset.prod_insert
+        (show (1 : ℕ) ∉ insert 2 ({5} : Finset ℕ) from by decide),
+      Finset.prod_insert (show (2 : ℕ) ∉ ({5} : Finset ℕ) from by decide),
+      Finset.prod_singleton, cyclotomic_one, cyclotomic_two, cyclotomic_5_eq]
+  ring
+
+/-- `cyclotomic 14 ℤ = X^6 - X^5 + X^4 - X^3 + X^2 - X + 1`. -/
+theorem cyclotomic_fourteen_eq :
+    cyclotomic 14 ℤ = X^6 - X^5 + X^4 - X^3 + X^2 - X + 1 := by
+  refine ((eq_cyclotomic_iff (by norm_num : 0 < 14) _).mpr ?_).symm
+  rw [show Nat.properDivisors 14 = ({1, 2, 7} : Finset ℕ) from by decide,
+      show (({1, 2, 7} : Finset ℕ)) = insert 1 (insert 2 ({7} : Finset ℕ))
+        from rfl,
+      Finset.prod_insert
+        (show (1 : ℕ) ∉ insert 2 ({7} : Finset ℕ) from by decide),
+      Finset.prod_insert (show (2 : ℕ) ∉ ({7} : Finset ℕ) from by decide),
+      Finset.prod_singleton, cyclotomic_one, cyclotomic_two, cyclotomic_7_eq]
+  ring
+
+/-- `(cyclotomic 6 ℤ).eval (-1) = 3`. The norm prediction for p = 3. -/
+theorem cyclotomic_six_eval_neg_one : (cyclotomic 6 ℤ).eval (-1) = 3 := by
+  rw [cyclotomic_six_eq]
+  simp only [eval_add, eval_sub, eval_pow, eval_X, eval_one]
+  norm_num
+
+/-- `(cyclotomic 10 ℤ).eval (-1) = 5`. The norm prediction for p = 5. -/
+theorem cyclotomic_ten_eval_neg_one : (cyclotomic 10 ℤ).eval (-1) = 5 := by
+  rw [cyclotomic_ten_eq]
+  simp only [eval_add, eval_sub, eval_pow, eval_X, eval_one]
+  norm_num
+
+/-- `(cyclotomic 14 ℤ).eval (-1) = 7`. The norm prediction for p = 7. -/
+theorem cyclotomic_fourteen_eval_neg_one :
+    (cyclotomic 14 ℤ).eval (-1) = 7 := by
+  rw [cyclotomic_fourteen_eq]
+  simp only [eval_add, eval_sub, eval_pow, eval_X, eval_one]
+  norm_num
+
+/-! ## S5 bridge: r p constant term equals (-1)^((p-1)/2) · Φ_{2p}(-1)
+
+For each prime p ∈ {3, 5, 7}, the constant term of `r p` is exactly
+`(-1)^((p-1)/2)` times the explicit cyclotomic evaluation `Φ_{2p}(-1)`.
+This bridges the gallery's algebraic computation
+(`r_constantCoeff_eq_signed_p`) and Mathlib's cyclotomic-polynomial API,
+making the prediction
+`N_{ℚ(θ_p)/ℚ}(2 + θ_p) = (-1)^((p-1)/2) · Φ_{2p}(-1)`
+*directly verifiable* on both sides. Any general proof of
+`eisenstein_conjecture_cos_pi_p` must reproduce this identity.
+-/
+
+/-- For p = 3: `(r 3).coeff 0 = (-1)^1 · Φ_6(-1) = (-1) · 3 = -3`. -/
+theorem r_3_constantCoeff_eq_cyclotomic :
+    (r 3).coeff 0 = (-1)^((3 - 1)/2) * (cyclotomic 6 ℤ).eval (-1) := by
+  rw [cyclotomic_six_eval_neg_one]
+  exact r_constantCoeff_eq_signed_p.1
+
+/-- For p = 5: `(r 5).coeff 0 = (-1)^2 · Φ_10(-1) = 1 · 5 = 5`. -/
+theorem r_5_constantCoeff_eq_cyclotomic :
+    (r 5).coeff 0 = (-1)^((5 - 1)/2) * (cyclotomic 10 ℤ).eval (-1) := by
+  rw [cyclotomic_ten_eval_neg_one]
+  exact r_constantCoeff_eq_signed_p.2.1
+
+/-- For p = 7: `(r 7).coeff 0 = (-1)^3 · Φ_14(-1) = (-1) · 7 = -7`. -/
+theorem r_7_constantCoeff_eq_cyclotomic :
+    (r 7).coeff 0 = (-1)^((7 - 1)/2) * (cyclotomic 14 ℤ).eval (-1) := by
+  rw [cyclotomic_fourteen_eval_neg_one]
+  exact r_constantCoeff_eq_signed_p.2.2.1
+
+/-- Packaged: for each of p ∈ {3, 5, 7}, the gallery's `(r p).coeff 0`
+matches the cyclotomic prediction `(-1)^((p-1)/2) · Φ_{2p}(-1)`.
+This converts the empirical sign pattern of S3 into a verifiable
+identity in terms of Mathlib's cyclotomic API. -/
+theorem r_constantCoeff_eq_cyclotomic_small :
+    (r 3).coeff 0 = (-1)^((3 - 1)/2) * (cyclotomic 6 ℤ).eval (-1)
+    ∧ (r 5).coeff 0 = (-1)^((5 - 1)/2) * (cyclotomic 10 ℤ).eval (-1)
+    ∧ (r 7).coeff 0 = (-1)^((7 - 1)/2) * (cyclotomic 14 ℤ).eval (-1) :=
+  ⟨r_3_constantCoeff_eq_cyclotomic,
+   r_5_constantCoeff_eq_cyclotomic,
+   r_7_constantCoeff_eq_cyclotomic⟩
+
 /-! ## Uniform conjecture (general odd prime p ≥ 3) -/
 
 /--
