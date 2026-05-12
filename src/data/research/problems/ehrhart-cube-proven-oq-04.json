@@ -1,0 +1,141 @@
+{
+  "slug": "ehrhart-cube-proven-oq-04",
+  "title": "Eulerian number interpretation of h*-vector of unit cube",
+  "phase": "SCAFFOLDED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "(n+1)^d = \\sum_{k=0}^{d-1} A(d, k) \\cdot \\binom{n+1+k}{d}",
+    "plain": "Prove Worpitzky's identity for the unit d-cube: (n+1)^d = Σ_{k=0}^{d-1} A(d, k) C(n+1+k, d), where A(d, k) is the Eulerian number. Equivalently, the Ehrhart h*-vector of [0,1]^d is the Eulerian sequence (A(d, 0), ..., A(d, d-1)).",
+    "whyMatters": [
+      "Completes the Ehrhart h*-vector story for one of three classical lattice polytopes (simplex/cube/cross-polytope)",
+      "Connects Ehrhart theory to permutation statistics (Stanley EC1 §1.4)",
+      "Validates Stanley's 1980 h*-vector non-negativity theorem in a non-trivial case",
+      "Lays Mathlib foundation for a future Mathlib.Combinatorics.Enumerative.Eulerian contribution"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "eulerianNumber d k for d ≤ 4 by rfl",
+      "Row-sum Σ A(d, k) = d! for d ≤ 4 by rfl",
+      "Palindrome A(d, k) = A(d, d-1-k) for d ≤ 4 by rfl",
+      "worpitzky_d1: (n+1)^1 = 1 · C(n+1, 1)",
+      "worpitzky_d2: (n+1)^2 = C(n+1, 2) + C(n+2, 2) — by induction on n using Pascal",
+      "Seven concrete (d, n) verifications by `decide`"
+    ],
+    "open": [
+      "worpitzky_identity_cube: (n+1)^d = Σ A(d, k) C(n+1+k, d) for general d ≥ 1, n ≥ 0",
+      "eulerian_row_sum_factorial: Σ_{k<d} A(d, k) = d!",
+      "eulerian_palindrome: A(d, k) = A(d, d-1-k) for k < d",
+      "cube_h_star_eulerian: coefficient extraction of cubeHStarPoly",
+      "cube_lattice_count_eulerian: bridging corollary with EhrhartCubeProven"
+    ],
+    "goal": "Close worpitzky_identity_cube via induction on d (Approach A — algebraic)"
+  },
+  "currentState": {
+    "phase": "SCAFFOLDED",
+    "since": "2026-05-12T01:00:00Z",
+    "iteration": 1,
+    "focus": "S1 SCAFFOLD complete (Eulerian definition + 13 rfl values + Worpitzky d=1, d=2 cases + main theorem statement). S2 will close Worpitzky via induction on d.",
+    "blockers": [],
+    "nextAction": "S2: Close worpitzky_identity_cube via induction on d using Pascal's identity and the Eulerian recurrence. Expected ~80-120 lines of Lean.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 SCAFFOLD (researcher-11, 2026-05-12): established eulerianNumber via recurrence (matches OEIS A008292), 13 concrete value lemmas by rfl, Worpitzky d=1 and d=2 cases proved (the d=2 case is a non-trivial induction on n via Pascal), 7 decide-verifications, main theorem statement with proof strategy documented.",
+    "builtItems": [
+      "eulerianNumber : ℕ → ℕ → ℕ (def)",
+      "cubeHStarPoly : ℕ → Polynomial ℕ (def)",
+      "13 concrete value lemmas (d ≤ 4, all rfl)",
+      "4 row-sum sanity checks (d ≤ 4, rfl)",
+      "3 palindrome sanity checks (rfl)",
+      "worpitzky_d1, worpitzky_d2 (proven)",
+      "7 decide-verifications at (d, n) up to (4, 2)",
+      "5 deferred theorems (sorries) with documented proof strategies"
+    ],
+    "insights": [
+      "Nat-subtraction in the eulerianNumber recurrence handles the boundary k ≥ d cleanly: both branches collapse to 0 automatically",
+      "Worpitzky d=2 requires inductive proof on n using Pascal — non-trivial, demonstrates the Lean proof pattern for general d",
+      "Three equivalent statements of OQ-04 (Worpitzky, generating function, h*-vector); Worpitzky form is most tractable in Lean as it avoids PowerSeries",
+      "Mathlib does not have Eulerian numbers — first Lean formalization in this gallery; Mathlib contribution path opens"
+    ],
+    "mathlibGaps": [
+      "No Eulerian numbers (`Nat.eulerianNumber` or similar)",
+      "No permutation descents (`Equiv.Perm.descents` or similar)",
+      "PowerSeries 1/(1-X)^{d+1} expansion as Σ C(n+d, d) X^n needs careful lemma chain"
+    ],
+    "nextSteps": [
+      "S2: Close worpitzky_identity_cube by induction on d (Approach A)",
+      "S3: Close eulerian_row_sum_factorial as a corollary of Worpitzky (set n = 0)",
+      "S4: Define permutation descents and prove eulerianNumber d k = (filter (descent = k) (univ : Finset (Equiv.Perm (Fin d)))).card",
+      "S5: Prove eulerian_palindrome via the descent-reversal involution on Equiv.Perm",
+      "S6: cube_lattice_count_eulerian (corollary, immediate after S2)",
+      "S7+: Mathlib upstream PR for Eulerian numbers"
+    ]
+  },
+  "tags": [
+    "combinatorics",
+    "ehrhart-theory",
+    "eulerian-numbers",
+    "h-star-vector",
+    "worpitzky-identity",
+    "permutation-statistics",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "ehrhart-cube-proven",
+    "ehrhart-cube-proven-oq-01",
+    "ehrhart-cube-proven-oq-02"
+  ],
+  "references": {
+    "papers": [
+      "Euler, L. (1755). Institutiones calculi differentialis. — Original Eulerian numbers in generating-series context.",
+      "Worpitzky, J. (1883). Studien über die Bernoullischen und Eulerschen Zahlen. Crelle's Journal. — Original Worpitzky identity.",
+      "Stanley, R. P. (1980). Decompositions of rational convex polytopes. Annals of Discrete Mathematics 6. — h*-vector non-negativity theorem.",
+      "Stanley, R. P. (1986/2012). Enumerative Combinatorics, Volume 1, §1.4. — Modern reference on Eulerian numbers."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Eulerian_number",
+      "https://oeis.org/A008292"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Choose.Basic (Nat.choose, Nat.choose_succ_succ)",
+      "Mathlib.Data.Nat.Factorial.Basic (Nat.factorial)",
+      "Mathlib.Algebra.BigOperators.Basic (Finset.sum_range_succ)",
+      "Mathlib.Algebra.Polynomial.Basic (Polynomial.coeff)"
+    ]
+  },
+  "started": "2026-05-08T19:09:00.563Z",
+  "lastUpdate": "2026-05-12T01:00:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/EhrhartCubeProven.lean",
+      "filename": "EhrhartCubeProven.lean",
+      "lineCount": 297,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProven.lean"
+    },
+    {
+      "path": "Proofs/EhrhartCubeProvenOQ04.lean",
+      "filename": "EhrhartCubeProvenOQ04.lean",
+      "lineCount": 301,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 5,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProvenOQ04.lean"
+    }
+  ]
+}

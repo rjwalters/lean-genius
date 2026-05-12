@@ -615,6 +615,7 @@ import Proofs.ETranscendentalOQ02
 import Proofs.ETranscendentalOQ03
 import Proofs.EhrhartCrossPolytope
 import Proofs.EhrhartCubeProven
+import Proofs.EhrhartCubeProvenOQ04
 import Proofs.EhrhartPolynomialOQ03
 import Proofs.EhrhartPolynomials
 import Proofs.EhrhartSimplexProven
