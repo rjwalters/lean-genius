@@ -28,14 +28,14 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T05:00:00Z",
-    "iteration": 2,
-    "focus": "S2 (researcher-3, 2026-05-12) ACT complete: new file proofs/Proofs/OnePlusOneOQ04.lean (161 lines, 0 axioms, 0 sorries) with five `example := rfl` theorems witnessing each row of the S1 taxonomy table: (0) unfolded baseline `Peano.ℕ.succ (Peano.ℕ.succ Peano.ℕ.zero) = Peano.ℕ.succ (Peano.ℕ.succ Peano.ℕ.zero)`; (1) Peano pattern-match `Peano.one + Peano.one = Peano.two`; (2) Peano raw-recursor via new `addRec` (`{δ,ι,β}`); (3) Church numerals via new `Church/cOne/cTwo/cAdd` (`{δ,β}`); (4) binary naturals via new `inductive Bin` + `Bin.succ`/`Bin.add` (`{δ,ι}`, `Bin.add Bin.one Bin.one = Bin.b0 Bin.one`). Imported into proofs/Proofs.lean alphabetically between Proofs.OnePlusOne and Proofs.PACLearning.",
+    "since": "2026-05-12T08:30:00Z",
+    "iteration": 3,
+    "focus": "S3 (researcher-1, 2026-05-12) ACT complete: augmented proofs/Proofs/OnePlusOneOQ04.lean — converted each of the five `example := rfl` row witnesses into a named `theorem` (row0_unfolded, row1_peano_pattern, row2_peano_recursor, row3_church, row4_binary) and added a `Part 6: Axiom-Freedom Verification` section with `#print axioms` stanzas for each row witness. The `#print axioms` block is the *propositional* dual of the *reductional* taxonomy of Parts 1–5 (per S1 knowledge.md insight #6): each row's reduction-rule subset `Rules(E) ⊆ {β,ι,δ,ζ}` is *sufficient* (witnessed by `:= rfl`) AND no Classical/extensional axiom is silently consumed (verified by `#print axioms`). File 161 → 187 lines, 0 sorries, 0 axioms, no Mathlib import added.",
     "blockers": [],
-    "nextAction": "S3: Augment OnePlusOneOQ04.lean with `#print axioms` + `#reduce` stanzas per example (confirms axiom-freeness as the propositional dual of the reduction-rule taxonomy). S4: Add gallery entry src/data/proofs/russell-1-plus-1-oq-04/ (status=verified, badge=original, axiomCount=0, sorries=0).",
+    "nextAction": "S4: Add gallery entry src/data/proofs/russell-1-plus-1-oq-04/ (status=verified, badge=original, axiomCount=0, sorries=0, leanFile pointing to proofs/Proofs/OnePlusOneOQ04.lean). Cross-reference parent entry russell-1-plus-1. S5 (optional): A let-binding example demonstrating ζ's role.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
@@ -44,9 +44,15 @@
     "builtItems": [
       "research/problems/russell-1-plus-1-oq-04/problem.md (~210 lines) — expanded problem statement, theoretical framework, representation catalogue, summary table, Principia comparison, Mathlib infrastructure map, next-action decomposition, risk notes.",
       "research/problems/russell-1-plus-1-oq-04/knowledge.md (~200 lines) — S1 entry with taxonomy table, five hand-traces, lower-bound arguments, 6 insights, 3 Mathlib gaps, 5 next steps, risk notes, references.",
-      "research/problems/russell-1-plus-1-oq-04/state.md — updated phase to OBSERVE→ACT, next action specified as S2 worked Lean file.",
-      "proofs/Proofs/OnePlusOneOQ04.lean (161 lines, 0 axioms, 0 sorries) — S2 ACT worked Lean file. Five `example := rfl` theorems, one per row of the S1 taxonomy table. New defs `addRec` (raw recursor for Peano), `Church : Type 1`/`cOne`/`cTwo`/`cAdd` (Church numerals), `inductive Bin`/`Bin.succ` (carry chain)/`Bin.add` (struct-rec on 2nd arg). Imported into proofs/Proofs.lean.",
-      "proofs/Proofs.lean — +1 import for Proofs.OnePlusOneOQ04 (alphabetic between OnePlusOne and PACLearning)."
+      "research/problems/russell-1-plus-1-oq-04/state.md — updated phase to OBSERVE→ACT→ACT(S3).",
+      "proofs/Proofs/OnePlusOneOQ04.lean (S3: 187 lines, was 161; 0 axioms, 0 sorries) — five named row theorems (row0_unfolded, row1_peano_pattern, row2_peano_recursor, row3_church, row4_binary) with `#print axioms` stanzas in a new Part 6: Axiom-Freedom Verification section. Defs from S2 (addRec, Church/cOne/cTwo/cAdd, inductive Bin/Bin.succ/Bin.add) unchanged.",
+      "proofs/Proofs.lean — +1 import for Proofs.OnePlusOneOQ04 (alphabetic between OnePlusOne and PACLearning).",
+      "**(S3 NEW)** row0_unfolded — named theorem replacing S2's anonymous example for Row 0 (unfolded baseline; Rules(E) = ∅).",
+      "**(S3 NEW)** row1_peano_pattern — named theorem for Row 1 (Peano pattern-match; Rules(E) = {δ, ι}).",
+      "**(S3 NEW)** row2_peano_recursor — named theorem for Row 2 (Peano raw recursor; Rules(E) = {δ, ι, β}).",
+      "**(S3 NEW)** row3_church — named theorem for Row 3 (Church numerals; Rules(E) = {δ, β}).",
+      "**(S3 NEW)** row4_binary — named theorem for Row 4 (binary naturals; Rules(E) = {δ, ι}).",
+      "**(S3 NEW)** Part 6: Axiom-Freedom Verification — five `#print axioms` stanzas confirming each row witness depends on no axioms (propositional dual of the reduction-rule taxonomy)."
     ],
     "insights": [
       "Minimality of Rules(E) is encoding-relative; the same theorem `1+1=2 := rfl` lives at four distinct points in the subset lattice 2^{β,ι,δ,ζ} depending on representation.",

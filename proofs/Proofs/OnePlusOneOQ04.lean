@@ -55,7 +55,7 @@ namespace OnePlusOneOQ04
     no reduction is required: `Rules(E) = ∅`. This witnesses that
     `∅ ⊆ Rules(E)` is strict whenever `add`, `one`, or `two` is
     a `def`. -/
-example :
+theorem row0_unfolded :
     Peano.ℕ.succ (Peano.ℕ.succ Peano.ℕ.zero) =
       Peano.ℕ.succ (Peano.ℕ.succ Peano.ℕ.zero) := rfl
 
@@ -70,13 +70,20 @@ example :
 
     `δ` is required because `one`, `add`, `two` are `def`s; `ι`
     is required because `add` pattern-matches on a constructor. -/
-example : Peano.one + Peano.one = Peano.two := rfl
+theorem row1_peano_pattern : Peano.one + Peano.one = Peano.two := rfl
 
 /-! ## Row 2: Peano with Raw Recursor — `Rules(E) = {δ, ι, β}` -/
 
 /-- Same `Peano.ℕ`, but `add` written via the auto-generated
-    eliminator `Peano.ℕ.rec` rather than the equation compiler. -/
-def addRec (n m : Peano.ℕ) : Peano.ℕ :=
+    eliminator `Peano.ℕ.rec` rather than the equation compiler.
+
+    Marked `noncomputable` because Lean 4's code generator declines
+    `Peano.ℕ.rec` with a non-Prop motive. (Equivalent definitions via
+    `match` *do* compile; `Peano.add` itself in the parent file is
+    such a `match` form. The raw-recursor form here is for kernel
+    reduction at the type-checking level only — exactly what `rfl`
+    needs — not for runtime execution.) -/
+noncomputable def addRec (n m : Peano.ℕ) : Peano.ℕ :=
   Peano.ℕ.rec (motive := fun _ => Peano.ℕ) n
     (fun _ acc => Peano.ℕ.succ acc) m
 
@@ -89,7 +96,7 @@ def addRec (n m : Peano.ℕ) : Peano.ℕ :=
     λ. This is the precise sense in which the equation compiler
     "hides" the β inside `ι` at the user-visible level — the raw
     recursor exposes it. -/
-example : addRec Peano.one Peano.one = Peano.two := rfl
+theorem row2_peano_recursor : addRec Peano.one Peano.one = Peano.two := rfl
 
 /-! ## Row 3: Church Numerals — `Rules(E) = {δ, β}` -/
 
@@ -117,7 +124,7 @@ def cAdd : Church → Church → Church :=
     Church numerals are purely λ-encoded. This is the structural
     incomparability with the Peano row — `{δ, β} ⊄ {δ, ι}` and
     vice versa. -/
-example : cAdd cOne cOne = cTwo := rfl
+theorem row3_church : cAdd cOne cOne = cTwo := rfl
 
 /-! ## Row 4: Binary Naturals — `Rules(E) = {δ, ι}` -/
 
@@ -156,6 +163,32 @@ def Bin.add : Bin → Bin → Bin
     The shallow `1+1` depth is illusory in general: for
     `2^k + 2^k` the depth is `O(k)` `ι`-steps as the carry chain
     walks the bit-string. -/
-example : Bin.add Bin.one Bin.one = Bin.b0 Bin.one := rfl
+theorem row4_binary : Bin.add Bin.one Bin.one = Bin.b0 Bin.one := rfl
+
+/-! ## Part 6: Axiom-Freedom Verification
+
+Each of the five row witnesses is `:= rfl`, so the proof is by
+kernel reduction with no extra axioms. The `#print axioms` stanzas
+below produce a machine-checked confirmation of this claim
+(expected output for each: `'<name>' depends on no axioms`),
+serving as the *propositional* dual to the *reductional* taxonomy
+of `Rules(E)` documented in Parts 1–5.
+
+This dual is the substance of the OQ-04 contribution: the
+`{β, ι, δ, ζ}` rule alphabet is *all that is needed* in the sense
+that every row is closed by reflexivity alone, with no recourse to
+`Classical.choice`, `propext`, `Quot.sound`, or any further
+extension to CIC.
+
+If any of these stanzas prints additional axioms (e.g. after a
+future refactor introduces a `Classical`-dependent helper into one
+of the encodings), the file will still compile but the dual claim
+will fail by inspection — a lightweight regression detector. -/
+
+#print axioms row0_unfolded
+#print axioms row1_peano_pattern
+#print axioms row2_peano_recursor
+#print axioms row3_church
+#print axioms row4_binary
 
 end OnePlusOneOQ04
