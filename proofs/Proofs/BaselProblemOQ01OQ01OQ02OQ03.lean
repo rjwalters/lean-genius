@@ -1266,6 +1266,51 @@ theorem lcmRange_le_4_pow_mul_pow_sqrt {n : ℕ} (hn : 2 ≤ n) :
 example : lcmRange 10 ≤ 4 ^ 10 * (10 / 2) ^ Nat.sqrt 10 := by
   native_decide
 
+/-- **Chebyshev envelope is strictly looser than Hanson's `3^n`**
+    (Iter 26): for every `n ≥ 2`, `3^n < 4^n · (n / 2)^√n`.
+
+    *Strategic content*: this records the formal fact that the Iter-25
+    structural envelope `lcmRange_le_4_pow_mul_pow_sqrt` alone CANNOT
+    close the `lcm_hanson_bound` axiom. The envelope is **always**
+    asymptotically (and in fact pointwise for `n ≥ 2`) strictly larger
+    than Hanson's target `3^n`, so no "find an `n₀` where envelope ≤ 3^n"
+    route exists — the gap `(4/3)^n · (n/2)^√n` grows without bound.
+
+    The path forward must strengthen at least one factor of the Iter-16
+    decomposition `lcmRange n = primorial n · ∏ p^(Nat.log p n - 1)`:
+
+    1. **Sharper primorial bound** — `primorial n ≤ c^n` with `c < 3`,
+       e.g. via Chebyshev's θ-density `θ(n) = (1 + o(1)) · n` (PNT;
+       not in Mathlib v4.26.0).
+    2. **Cancellation route** — exploit the Chebyshev identity
+       `lcm(1..n) = ∏ p^⌊log_p n⌋` (Iter 14 / Iter 16) directly,
+       avoiding the primorial × correction split that loses the
+       `(4/3)^n` factor.
+
+    Proof: `(n/2)^√n ≥ 1` (since `n/2 ≥ 1` from `n ≥ 2`), so
+    `4^n · (n/2)^√n ≥ 4^n`, and `3^n < 4^n` since `3 < 4` and `n ≠ 0`.
+    Three-step term-mode, sorry-free, axiom-free. -/
+theorem four_pow_mul_pow_sqrt_gt_three_pow {n : ℕ} (hn : 2 ≤ n) :
+    3 ^ n < 4 ^ n * (n / 2) ^ n.sqrt := by
+  have h_pos : 0 < n / 2 :=
+    (Nat.one_le_div_iff (by decide : (0 : ℕ) < 2)).mpr hn
+  have h_one_le : 1 ≤ (n / 2) ^ n.sqrt := Nat.one_le_pow _ _ h_pos
+  have h_lt : (3 : ℕ) ^ n < 4 ^ n :=
+    Nat.pow_lt_pow_left (by omega) (by omega)
+  calc (3 : ℕ) ^ n
+      < 4 ^ n := h_lt
+    _ = 4 ^ n * 1 := (Nat.mul_one _).symm
+    _ ≤ 4 ^ n * (n / 2) ^ n.sqrt := Nat.mul_le_mul_left _ h_one_le
+
+/-- **Concrete numerical witness** (Iter 26): at `n = 10`, the Iter-25
+    envelope `4^10 · 5^3 = 131072000` strictly exceeds Hanson's target
+    `3^10 = 59049`. Concrete demonstration that the envelope alone
+    cannot match Hanson's bound.
+
+    Sanity check for `four_pow_mul_pow_sqrt_gt_three_pow`. -/
+example : 3 ^ 10 < 4 ^ 10 * (10 / 2) ^ Nat.sqrt 10 := by
+  native_decide
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound

@@ -4,12 +4,82 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-12 (Iteration 25, researcher-6)
-**Iteration**: 25
+**Last Updated**: 2026-05-12 (Iteration 26, researcher-12)
+**Iteration**: 26
 
 ## Current Focus
 
-Iteration 25 (2026-05-12, this PR, researcher-6): **Chebyshev
+Iteration 26 (2026-05-12, this PR, researcher-12): **Chebyshev
+envelope is pointwise strictly larger than Hanson's target `3^n`** —
+formally records that the Iter-25 structural envelope
+`lcmRange_le_4_pow_mul_pow_sqrt` ALONE cannot discharge
+`lcm_hanson_bound`. Corrects a math error in the previously stated
+"Iter 27 candidate (asymptotic threshold)" plan, which presupposed
+an `n₀` such that `4^n · (n/2)^√n ≤ 3^n` for all `n ≥ n₀`; no such
+`n₀` exists (the gap GROWS as `n → ∞` since `(4/3)^n → ∞` and
+`(n/2)^√n` grows only as `exp(O(√n · log n))`, so the LHS grows by
+roughly `(4/3)^n` faster than the RHS). One new theorem + one
+`decide` witness example (+45 lines, sorry-free, axiom-free):
+
+* `four_pow_mul_pow_sqrt_gt_three_pow {n : ℕ} (hn : 2 ≤ n) :
+  3 ^ n < 4 ^ n * (n / 2) ^ n.sqrt` — **envelope-loose lemma**.
+  Proof: `(n/2) ≥ 1` from `2 ≤ n` via `Nat.one_le_div_iff` gives
+  `(n/2)^n.sqrt ≥ 1` (`Nat.one_le_pow`), so the envelope is at
+  least `4^n · 1 = 4^n`; chain `Nat.pow_lt_pow_left (3 < 4) (n ≠ 0)`
+  to get `3^n < 4^n ≤ 4^n · (n/2)^n.sqrt`. Five-line calc proof.
+* `example : 3 ^ 10 < 4 ^ 10 * (10 / 2) ^ Nat.sqrt 10` — concrete
+  numerical witness at `n = 10`: `59049 < 131072000` via `decide`.
+
+### Strategic value
+
+Iter 26 **redirects the entire research roadmap** for this slug. Before
+this iter, Iter 27 candidate proposed finding `n₀` such that
+`4^n · (n/2)^√n ≤ 3^n` for all `n ≥ n₀`. That plan is impossible
+(falsified by this iter), so the slug's remaining paths to discharging
+`lcm_hanson_bound` must strengthen at least one factor of the
+Iter-16 decomposition `lcmRange n = primorial n · ∏ p^(Nat.log p n - 1)`:
+
+1. **Sharper primorial bound** — `primorial n ≤ c^n` for some
+   `c < 3` (e.g. `c = e` via Chebyshev's `θ(n) = (1 + o(1)) · n`
+   from PNT; Mathlib v4.26.0 has only the looser `primorial_le_4_pow`).
+2. **Cancellation route** — exploit the Chebyshev identity
+   `lcm(1..n) = ∏ p^⌊log_p n⌋` (Iter 14 / Iter 16) directly,
+   avoiding the primorial × correction split (which loses a
+   factor of `(4/3)^n` to the envelope).
+
+Iter 26 is **mathematically corrective**, not constructive — it
+formally rules out a dead-end route. The next constructive iteration
+candidates are listed in the Next Action block below; both targets
+are intrinsic Mathlib upstream work (Chebyshev's `θ`-density theorem
+is not in v4.26.0, so route 1 requires upstream contribution; route 2
+is internally available but harder).
+
+### File delta
+
++45 lines (1395 → 1440), +1 theorem + 1 example (61 → 63 in meta
+convention). Definitions (1) / sorries (0) / axiomCount (1) unchanged.
+Build pending — proof body uses only:
+
+* `Nat.one_le_div_iff` (Iter 22, this file line 1001).
+* `Nat.one_le_pow` (Mathlib generic; exercised in
+  `Erdos10PrimePlusPowers.lean`, `BinaryGcdOQ01OQ04.lean`).
+* `Nat.pow_lt_pow_left` (Mathlib generic; exercised at line 1393
+  of this file in `hanson_strictly_stronger_than_factorial`).
+* `Nat.mul_one`, `Nat.mul_le_mul_left` (used pervasively).
+
+### Compatibility with open PRs
+
+* **#17619 (OPEN, Iter 17 support reduction, stale since 2026-05-09)**:
+  orthogonal — Iter 26 is a `3^n < envelope` *negation* on the
+  Iter-25-merged envelope, not a refinement of the correction-factor
+  support side. No file-line overlap (Iter 26 inserts at line 1268,
+  between Iter 25's example and the recursive structure block).
+* **#17551 (OPEN, Iter 15 alternate, π(n) ≤ n-2)**: orthogonal,
+  no overlap.
+
+### Iteration 25 (background, merged base, #18023)
+
+Iteration 25 (2026-05-12, researcher-6): **Chebyshev
 envelope assembly — first end-to-end asymptotic bound on
 `lcmRange n` from prime-power structure.** Chains Iter 16's
 `lcmRange_eq_primorial_mul_prod_prime_pow_pred` (Chebyshev
@@ -1002,53 +1072,49 @@ Currently blocked on:
 
 ## Next Action
 
-**Iteration 24 (this PR, build pending)**: full correction-factor
-envelope via direct in-file support reduction. New theorems
-`prod_prime_pow_pred_eq_small` (the support-reduction equality
-`∏_{p prime} = ∏_{p² ≤ n}`, direct in-file analogue of #17619's
-`lcmRange_correction_supported_on_small_primes`) and
-`prod_prime_pow_pred_le_pow_sqrt` (`∏_{p prime, p ≤ n+1} p^(Nat.log p n - 1) ≤ (n/2)^√n` under `2 ≤ n`), plus a `native_decide` example at
-`n = 10`. File delta: +108 lines (1247 → 1355), +2 theorems + 1 example
-(59 → 61 in meta convention). Sorries (0) / axiom count (1) /
+**Iteration 26 (this PR, build pending)**: pointwise envelope-loose
+lemma `four_pow_mul_pow_sqrt_gt_three_pow` proving
+`3^n < 4^n · (n / 2)^n.sqrt` for all `n ≥ 2`, plus a `decide` witness
+at `n = 10`. File delta: +45 lines (1395 → 1440), +1 theorem +
+1 example (61 → 63 in meta convention). Sorries (0) / axiom count (1) /
 definitions (1) unchanged.
 
-**Iteration 25 candidate (Chebyshev envelope assembly)**: chain
-Iter 16's `lcmRange_eq_primorial_mul_prod_prime_pow_pred` (`#17578`)
-with Iter 24's full correction-factor envelope and Mathlib's
-`Nat.primorial_le_4_pow` to obtain the **structural Chebyshev envelope**
+This iter **falsifies** the stale Iter 27 candidate (asymptotic
+threshold via `4^n · (n/2)^√n ≤ 3^n`) — no such threshold exists
+because the envelope grows roughly as `(4/3)^n` faster than `3^n`.
+The remaining iter candidates redirect toward genuinely productive
+refinements:
 
-```
-lcmRange n ≤ 4^n · (n / 2) ^ √n  (n ≥ 2)
-```
+**Iteration 27 candidate (sharper primorial bound)**: replace
+Mathlib's `Nat.primorial_le_4_pow` (used in Iter 25) with a tighter
+`primorial n ≤ c^n` for some `c < 3` (e.g. `c = e ≈ 2.718` via PNT's
+`θ(n) = (1 + o(1)) · n` from Chebyshev's density theorem). Mathlib
+v4.26.0 has the asymptotic `Nat.Prime.psi_asymptotic_eq_self` /
+`Nat.Prime.theta_asymptotic_eq_self` (PNT-equivalent) but NO
+non-asymptotic explicit `c^n` bound with `c < 4`. A first step toward
+upstream: state and prove `primorial n ≤ 3^n` for `n ≥ N` for some
+small `N` via Mathlib's `Nat.Prime.theta` machinery (or Erdős's
+finer central-binomial argument, which gives `4^n` non-tightly).
 
-via `Nat.mul_le_mul` on the two factors (primorial ≤ 4^n,
-correction ≤ (n/2)^√n). Three-line term-mode proof should suffice
-once Iter 24 lands.
+**Iteration 28 candidate (cancellation route)**: bypass the
+primorial × correction split entirely by working with the
+Chebyshev identity `lcm(1..n) = ∏ p^⌊log_p n⌋` (Iter 14 / Iter 16)
+directly. The full prime-power product can be re-grouped as
+`∏ p^⌊log_p n⌋ = exp(Σ_{p^k ≤ n} log p) = exp(ψ(n))` where `ψ` is
+Chebyshev's psi function. Hanson's `3^n` bound corresponds to
+`ψ(n) ≤ n · log 3`, a non-asymptotic explicit version of the PNT
+`ψ(n) ~ n`. The Beta-integral approach of Hanson 1972 (problem.md,
+References) gives this directly. **Estimated effort**: multi-week
+to multi-month Mathlib upstream contribution (Beta-integral over
+`ℚ` infrastructure missing in v4.26.0).
 
-**Iteration 26 candidate (4^n · (n/2)^√n assembly)**: combine
-`Nat.primorial_le_4_pow` (Mathlib, exists) with Iter 16's factorisation
-`lcmRange n = primorial n · ∏ p^(log_p n - 1)` (#17578) and the
-full correction-factor envelope (Iter 24 once support-reduction lands)
-to obtain the **structural Chebyshev envelope**
-
-```
-lcmRange n ≤ 4^n · (n / 2) ^ √n  (n ≥ 2)
-```
-
-This is the asymptotic form that closes the gap to Hanson's `3^n`
-modulo a final numerical comparison: `4^n · (n/2)^√n ≤ 3^n` iff
-`(4/3)^n ≤ (2/n)^√n`, which holds for sufficiently large `n` but FAILS
-for small `n` (e.g., `n = 9`: `(4/3)^9 ≈ 9.99`, `(2/9)^3 ≈ 0.011`).
-For small `n`, the existing direct numerical Hanson lemmas
-(`hanson_n1`–`hanson_n20`) suffice. The asymptotic-threshold computation
-is the remaining gap.
-
-**Iteration 27 candidate (asymptotic threshold)**: identify the
-smallest `n₀` for which `4^n · (n/2)^√n ≤ 3^n` holds for all `n ≥ n₀`,
-and verify the boundary case `n₀` numerically. Likely `n₀ ∈ {30, 50}`
-range based on the `(4/3)^n` vs `(2/n)^√n` crossover analysis. Could
-be done with `native_decide` for a specific bound, or symbolically via
-`Real.log` and `exp` (more work).
+**Iteration 29 candidate (extended numerical witnesses)**: extend
+the `hanson_n1`–`hanson_n20` decide-witnesses to `hanson_n30`,
+`hanson_n50`, `hanson_n100` via `native_decide`. `lcmRange 100 ≈
+69 · 10⁴⁰` vs `3^100 ≈ 5.15 · 10⁴⁷` — fits in `Nat`; `native_decide`
+should handle it. This isn't on the route to closing Hanson asymptotically,
+but tightens the numerical floor in case a future sharper primorial
+bound only kicks in for `n ≥ n₀` with `n₀ > 20`.
 
 **Long-term paths still open:**
 
@@ -1056,7 +1122,11 @@ be done with `native_decide` for a specific bound, or symbolically via
    the Mathlib bridge `lcm(1..n) ≤ n · primorial(n)`. Note (Iteration 3
    insight): the literal `≤ n · primorial(n)` form is FALSE
    (counterexample n=9: 2520 > 1890). Correct route is via Chebyshev's
-   prime-power formula above.
+   prime-power formula above. **Update (Iter 25 + Iter 26)**: the
+   structural Chebyshev envelope `lcmRange n ≤ 4^n · (n/2)^√n`
+   (Iter 25) is strictly larger than `4^n` (since `(n/2)^√n ≥ 1`
+   for `n ≥ 2`), so this envelope ALSO does not close the `≤ 4^n`
+   intermediate without further refinement.
 
 2. **Full Hanson `3^n`** (Beta-integral + Chebyshev): months.
 

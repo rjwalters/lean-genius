@@ -177,7 +177,7 @@ related_proofs:
 difficulty: high
 source: gallery-extracted
 created: 2026-04-26T08:56:57.649Z
-updated: 2026-05-07
+updated: 2026-05-12
 ```
 
 **Significance**: 7/10
