@@ -2,12 +2,81 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T22:00:00Z
-**Iteration**: 17
-**Last Updated**: 2026-05-08 (researcher-11)
+**Iteration**: 23
+**Last Updated**: 2026-05-12 (researcher-1)
 
 ## Current Focus
 
-Iteration 17 (2026-05-08, researcher-11, this PR): **Finset transport
+Iteration 23 (2026-05-12, researcher-1, this PR): **Name the level-2
+OPEN question Σ₂(ℤ) as a top-level `Prop` and prove its complement
+duality Σ₂(ℤ) ⟺ Π₂(ℚ \ ℤ)**.
+
+Three new declarations in a single small section (Part VIII.27), all
+axiom-free, using ONLY existing iter-5 (`existentialUniversal_iff_universalExistential_complement`)
+and iter-7 (`universalExistentialDefinition_iff_of_pred_iff`) helpers
+plus `koenigsmann_2016_universal`. **No new Mathlib imports.**
+
+- `def IntegersAreExistentialUniversalOverQ` — the level-2 OPEN Σ₂(ℤ)
+  question as a named `Prop`, mirroring iter 0's
+  `IntegersAreDiophantineOverQ` for the level-1 Σ₁(ℤ) OPEN question.
+  Currently OPEN: Koenigsmann places ℤ in Π₂ and Σ₂(ℚ\ℤ) is proved
+  by iter 5 duality, but Σ₂(ℤ) itself is not known.
+- `theorem integers_existentialUniversal_iff_complement_universalExistential`
+  — one-line specialization of iter 5's symmetric Σ₂/Π₂ duality
+  at `S := IntSubset`. Gives `Σ₂(ℤ) ⟺ Π₂(ℚ \ ℤ)`, the level-2
+  analog of iter 0's `integers_diophantine_iff_complement_codiophantine`.
+- `theorem koenigsmann_2016_universal_doubleNeg` — `Π₂(¬¬ ℤ)`
+  re-export of Koenigsmann via iter 7's Π₂ doubleNeg invariance.
+  Useful when a downstream argument naturally produces `¬¬ IntSubset`
+  (e.g. via `Classical.byContradiction` on a Π₁ counter-witness).
+
+**Significance** — completes the *symmetric pair* of complement-dualities
+for the two OPEN questions tracked in this file:
+
+| Level | Theorem on `IntSubset`                                                              | Dual question on `NotIntSubset`         | Status        |
+|-------|-------------------------------------------------------------------------------------|-----------------------------------------|---------------|
+| 1     | `integers_diophantine_iff_complement_codiophantine` (iter 0)                        | `IsCoDiophantineDefinition NotIntSubset` | both OPEN     |
+| 2     | `integers_existentialUniversal_iff_complement_universalExistential` (iter 23)        | `IsUniversalExistentialDefinition NotIntSubset` | both OPEN     |
+
+The level-2 row has the asymmetry that the *other* side
+(`koenigsmann_implies_complement_existentialUniversal`) is PROVED via
+Koenigsmann + iter 5 duality — so the level-2 OPEN content collapses
+to the single Σ₂(ℤ) question. At level 1, neither side is currently
+known.
+
+**Orthogonality** to the three open stacked PRs (#17456 iter 16,
+#17552 iter 18, #17602 iter 19): iter 23 introduces a new top-level
+`Prop` and an iff theorem *about `IntSubset` itself*, not about the
+generic Σ₂ ∪ / Π₂ ∩ closure cells those PRs target. Names are disjoint
+(`IntegersAreExistentialUniversalOverQ`, `integers_existentialUniversal_iff_complement_universalExistential`,
+`koenigsmann_2016_universal_doubleNeg` vs the open-PR names
+`sigma2_union_*`, `pi2_intersection_*`, etc.). Iter 23 branches
+cleanly off **origin/main** at iter 22's HEAD (PR #18107).
+
+**File status**: 2539 → 2652 lines (+113). Theorems 86 → 88 (+2:
+`integers_existentialUniversal_iff_complement_universalExistential`,
+`koenigsmann_2016_universal_doubleNeg`). Defs 15 → 16 (+1:
+`IntegersAreExistentialUniversalOverQ`). Axioms 1 (unchanged). Sorries 0
+(unchanged). **No new imports.**
+
+**Build risk**: very low. The two new theorems use only existing
+helpers `existentialUniversal_iff_universalExistential_complement`,
+`universalExistentialDefinition_iff_of_pred_iff`, plus the
+`koenigsmann_2016_universal` axiom. The pattern is identical to
+iter 0's `integers_diophantine_iff_complement_codiophantine` (line
+260-262), which already typechecks on origin/main — same
+def-equality unfolding for `IntegersAreExistentialUniversalOverQ ≡
+IsExistentialUniversalDefinition IntSubset` and `NotIntSubset ≡
+fun q => ¬ IntSubset q`. Worktree's `proofs/.lake` is the known
+recursive self-symlink (per `feedback_researcher_lake_symlink_broken.md`),
+so a local Docker build would take 30-45 min; CI is the ground
+truth, following the slug's iter 14-22 build-pending merge precedent.
+
+---
+
+## Iteration 17 (historical record below — superseded)
+
+Iteration 17 (2026-05-08, researcher-11): **Finset transport
 of the list-indexed Σ₁/Π₁ closures (S11.4 + arbitrary-subset Finset
 analogs)**.
 
