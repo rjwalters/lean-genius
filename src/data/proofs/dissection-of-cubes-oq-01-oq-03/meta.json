@@ -77,6 +77,14 @@
   },
   "sections": [
     {
+      "id": "module-header",
+      "title": "Module Header: Imports, Docstring, and Namespace Setup",
+      "startLine": 1,
+      "endLine": 53,
+      "summary": "Imports `Mathlib` (heavy aggregate) plus the parent gallery files `Proofs.DissectionOfCubes` and `Proofs.DissectionOfCubesOQ01`; declares `namespace DissectionOfCubesOQ01OQ03`; opens `DissectionOfCubes`, `DissectionOfCubesOQ01`, and `BigOperators`; enters a `noncomputable section` and installs the classical `DecidableEq Cube` instance via `Classical.decEq _`. The 40-line docstring states the research question (can ∑ c.side³ = 1 be incorporated into the `CubeDissection` structure?), records the affirmative answer via the new `VolumeDissection` extension, and tabulates all 14 theorems across the four parts that follow.",
+      "mathContext": "Setup stage: the classical `DecidableEq Cube` instance is required for `Finset.sum_insert` (which needs decidable equality to discriminate the membership case), so `volumeSum_insert` and related lemmas pivot on this instance. `noncomputable` is used because `VolumeDissection` carries real-valued constraints that are not computably decidable. The `open BigOperators` brings the `∑` notation into scope. The 14-theorem roadmap is partitioned into four orthogonal parts: $(i)$ basic algebraic properties of `volumeSum`, $(ii)$ a-priori bounds $c.\\text{side}^3 \\le 1$ and $c.\\text{side} \\le 1$, $(iii)$ the collision-pair consequence $2s^3 \\le 1$ (i.e. $s \\le 2^{-1/3}$) for any colliding sides, and $(iv)$ a `VolumeDissection`-existence witness."
+    },
+    {
       "id": "volume-sum-basics",
       "title": "Volume Sum Definition and Basics",
       "startLine": 54,
