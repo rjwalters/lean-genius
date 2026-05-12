@@ -16,7 +16,14 @@
   },
   "knownResults": {
     "proven": [
-      "card_computable_reals_le_aleph0: (#{r : ℝ | IsComputable r} : Cardinal) ≤ ℵ₀ (corollary, depends on the still-sorry main theorem)"
+      "card_computable_reals_le_aleph0: (#{r : ℝ | IsComputable r} : Cardinal) ≤ ℵ₀ (corollary, depends on main sorry)",
+      "rat_isComputable (S2): ∀ q : ℚ, IsComputable (q : ℝ) — constant-sequence witness",
+      "int_isComputable (S2): ∀ n : ℤ, IsComputable (n : ℝ)",
+      "nat_isComputable (S2): ∀ n : ℕ, IsComputable (n : ℝ)",
+      "zero_isComputable (S2): IsComputable (0 : ℝ)",
+      "one_isComputable (S2): IsComputable (1 : ℝ)",
+      "aleph0_le_card_computable_reals (S2): ℵ₀ ≤ #{r : ℝ | IsComputable r} — unconditional cardinal lower bound via ℚ embedding",
+      "card_computable_reals_eq_aleph0 (S2): #{r | IsComputable r} = ℵ₀ — conditional on the main sorry, no new assumptions"
     ],
     "open": [
       "computable_reals_countable: Set.Countable {r : ℝ | IsComputable r} (main, S1 sorry)"
@@ -24,39 +31,44 @@
     "goal": "Discharge `computable_reals_countable` via the `Nat.Partrec.Code` ↔ `Computable` ↔ ℝ pipeline."
   },
   "currentState": {
-    "phase": "S1_SCAFFOLD",
-    "since": "2026-05-12T00:30:00.000Z",
-    "iteration": 1,
-    "focus": "S1: definition of IsComputable + main theorem statement + strategy docstring. Single sorry in main theorem.",
+    "phase": "S2_LOWER_BOUND",
+    "since": "2026-05-12T02:30:00.000Z",
+    "iteration": 2,
+    "focus": "S2: ℵ₀ ≤ #(computable reals) lower bound via ℚ embedding. 5 new theorems (rat/int/nat/zero/one isComputable + cardinality). Conditional exact-ℵ₀ equality added. Sorry count unchanged (still 1, on main theorem).",
     "blockers": [],
-    "nextAction": "S2: discharge the sorry in computable_reals_countable using Nat.Partrec.Code countability + Computable→code completeness + image-of-countable.",
+    "nextAction": "S3: discharge the main sorry in computable_reals_countable using Nat.Partrec.Code countability + Computable→code completeness (Mathlib's Computable.exists_code or similar) + Set.Countable.image.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 SCAFFOLD: IsComputable definition + main theorem (1 sorry) + cardinal corollary + 4 annotations + corrected problem.md hierarchy claim.",
+    "progressSummary": "S2 LOWER BOUND: rat_isComputable + ℵ₀ ≤ #(computable reals) added (unconditional). Conditional exact equality (= ℵ₀) follows from S1 corollary + S2 lower bound. Sorry count unchanged (1). Lean file: 110 → 208 lines.",
     "builtItems": [
       "AlgebraicNumbersCountableOQ02OQ04.lean: IsComputable (definition) — Mathlib-Computable rational sequence converging to r",
       "AlgebraicNumbersCountableOQ02OQ04.lean: computable_reals_countable (sorry, main theorem) — Set.Countable {r | IsComputable r}",
-      "AlgebraicNumbersCountableOQ02OQ04.lean: card_computable_reals_le_aleph0 (cardinal corollary, no new content) — (#·) ≤ ℵ₀"
+      "AlgebraicNumbersCountableOQ02OQ04.lean: card_computable_reals_le_aleph0 (cardinal corollary, no new content) — (#·) ≤ ℵ₀",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: rat_isComputable (S2 lemma) — ∀ q : ℚ, IsComputable (q : ℝ); constant-sequence witness using Computable.const + tendsto_const_nhds",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: int_isComputable, nat_isComputable, zero_isComputable, one_isComputable (S2 corollaries)",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: aleph0_le_card_computable_reals (S2 main result) — unconditional cardinal lower bound via ℚ → {r | IsComputable r} injection + Cardinal.mk_rat",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: card_computable_reals_eq_aleph0 (S2) — exact ℵ₀ cardinality contingent on main sorry"
     ],
     "insights": [
       "The countability of computable reals is a direct consequence of finite Turing-machine descriptions: every computable real has a finite name, finite names form a countable set, so computable reals are countable.",
       "The hierarchy ℚ ⊊ algebraic ⊊ computable ⊊ ℝ has all but the last layer at cardinality ℵ₀; the strict inclusions algebraic⊊computable and computable⊊ℝ are by qualitative (e is computable transcendental) and cardinal (ℵ₀<𝔠) arguments respectively.",
       "Computable reals are countable but NOT computably enumerable — there is no algorithm listing them. Cantor diagonalization fails to produce a non-computable real because the enumeration is itself non-computable. This is an important subtle distinction.",
-      "Original problem.md said 'computable ⊂ algebraic' which is mathematically wrong (e and π are computable transcendentals). Corrected to algebraic ⊊ computable."
+      "Original problem.md said 'computable ⊂ algebraic' which is mathematically wrong (e and π are computable transcendentals). Corrected to algebraic ⊊ computable.",
+      "The lower bound ℵ₀ ≤ #(computable reals) is unconditional and trivial: every rational is computable via the constant sequence, and ℚ is countably infinite.",
+      "Combined with the (still-sorry) upper bound, the exact equality #(computable reals) = ℵ₀ follows mechanically. S3 only needs to discharge the upper bound; equality is then free."
     ],
     "mathlibGaps": [
       "Potential gap: Mathlib does not (as of 4.26.0) provide an off-the-shelf 'IsComputable' predicate on ℝ. The Mathlib `Computable` predicate is for functions, not reals. This entry defines `IsComputable r` via the existence of a Computable approximating sequence.",
       "Mathlib `Primcodable ℚ` should be available via `Mathlib.Data.Rat.Denumerable` + `Mathlib.Logic.Denumerable`. If `Computable (f : ℕ → ℚ)` fails to elaborate, switch the approximation type to ℕ and decode."
     ],
     "nextSteps": [
-      "S2: discharge sorry — implement Nat.Partrec.Code → Option ℝ via 'limit of decoded rational eval'. Use Set.Countable.image with Encodable Nat.Partrec.Code.",
-      "S3 (optional): prove ℵ₀ ≤ #(computable reals) via rational embedding, giving #(computable reals) = ℵ₀ exactly.",
-      "S4 (optional): prove `algebraic ⊆ computable` — every root of a rational polynomial is computable (Sturm's theorem + bisection).",
+      "S3: discharge the main sorry — implement codeLimit : Nat.Partrec.Code → Option ℝ via decoded rational eval. Apply Set.Countable.image to Encodable Nat.Partrec.Code.",
+      "S4 (optional): prove algebraic ⊆ computable — every root of a rational polynomial is computable (Sturm bisection).",
       "S5 (advanced): construct Chaitin's Ω as explicit non-computable real."
     ]
   },
@@ -95,15 +107,15 @@
     ]
   },
   "started": "2026-05-12T00:30:00.000Z",
-  "lastUpdate": "2026-05-12T00:30:00.000Z",
+  "lastUpdate": "2026-05-12T02:30:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/AlgebraicNumbersCountableOQ02OQ04.lean",
       "filename": "AlgebraicNumbersCountableOQ02OQ04.lean",
-      "lineCount": 110,
-      "theoremCount": 2,
+      "lineCount": 208,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 1,

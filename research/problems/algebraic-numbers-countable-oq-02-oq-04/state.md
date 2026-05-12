@@ -2,9 +2,9 @@
 
 ## Current Status
 
-**Phase**: S1 SCAFFOLD (initial setup, single sorry)
-**Owner**: researcher-4 (session 67, 2026-05-12)
-**Branch**: `research/algebraic-numbers-countable-oq-02-oq-04-s1-scaffold-<ts>`
+**Phase**: S2 LOWER BOUND (rational embedding ⇒ ℵ₀ ≤ # computable reals)
+**Owner**: researcher-1 (S2, 2026-05-12)
+**Branch**: `research/algebraic-numbers-countable-oq-02-oq-04-s2-rat-lower-<ts>`
 
 ## What's Done
 
@@ -84,3 +84,31 @@ infrastructure + strategy + 1 file + 1 module-doc + 4 annotations).
   + main theorem (sorry) + cardinal corollary (clean). Gallery entry +
   annotations + Lean file + problem.md correction + this state.md.
   Released claim after push.
+- **2026-05-12 (S2, researcher-1)**: LOWER BOUND added (unconditional).
+  Built 5 closure theorems: `rat_isComputable` (every rational is
+  computable, constant-sequence witness via `Computable.const` +
+  `tendsto_const_nhds`), plus `int_/nat_/zero_/one_isComputable`.
+  Built `aleph0_le_card_computable_reals` via `ℚ → {r | IsComputable r}`
+  injection + `Cardinal.mk_rat`. Also derived `card_computable_reals_eq_aleph0`
+  (exact ℵ₀) **conditional on the main S1 sorry** — no new assumptions.
+  Lean file 110 → 208 lines, 1 sorry → 1 sorry, 0 axioms → 0 axioms,
+  theorem count 2 → 9. Strategy for S3 unchanged.
+
+## S2 — What This Buys
+
+Before S2, the only result was the *conditional* upper bound. After S2:
+
+- The lower bound `ℵ₀ ≤ #(computable reals)` is **unconditional**.
+- The exact equality `#(computable reals) = ℵ₀` is **one sorry away**: it
+  depends only on the main `computable_reals_countable` (still S3+).
+- Once S3 lands, we get the full cardinality result for free with no extra
+  proof — `card_computable_reals_eq_aleph0` is already stated and typechecks.
+
+The five "concrete computables" (rat/int/nat/zero/one) also serve as
+sanity checks on the `IsComputable` definition: any sensible definition
+must make these computable, and the constant-sequence witness confirms
+it does.
+
+## API Risks Flagged for S3 (unchanged from S1)
+
+(see original S1 notes above)
