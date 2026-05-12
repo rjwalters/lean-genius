@@ -10,10 +10,10 @@
 
   Axioms: 3 (channel_coding_achievability, channel_coding_converse,
     bsc_capacity_eq)
-  Theorems: 11 (jointDist_nonneg, jointDist_sum_one, channelMI_nonneg,
+  Theorems: 12 (jointDist_nonneg, jointDist_sum_one, channelMI_nonneg,
     channelMI_le_log_card, capacity_nonneg, channelMI_le_capacity,
     capacity_le_log_card, rate_of_code_pos, fano_inequality,
-    bsc_capacity_le_one, bsc_capacity_nonneg)
+    fano_converse_step, bsc_capacity_le_one, bsc_capacity_nonneg)
   Sorries: 0
 -/
 import Mathlib
@@ -206,6 +206,54 @@ theorem fano_inequality {α β : Type*} [Fintype α] [Fintype β]
       InformationTheory.BinaryEntropy.h P_e +
         P_e * Real.log (Fintype.card α - 1) :=
   FanoFromConditionalEntropy.fano_inequality_proved pXY hp hsum
+
+/-- **Fano-form converse intermediate identity** (single-letter form).
+
+    For any joint distribution `pXY : α × β → ℝ` whose X-marginal achieves the
+    maximum-entropy bound `H(X) = log |α|` (i.e., X is uniform on α),
+
+    `log |α| ≤ I(X;Y) + h(P_e) + P_e · log(|α| - 1)`
+
+    where `P_e := 1 - ∑ y, ∑ x, pXY(x,y)² / pY(y)` is the Fano error term.
+
+    Equivalently, `log |α| - h(P_e) - P_e · log(|α| - 1) ≤ I(X;Y)`. Combined
+    with `channelMI_le_capacity` (which gives `I(X;Y) ≤ channelCapacity ch`),
+    this yields the canonical single-letter converse
+    `(1 − P_e) · log |α| ≤ channelCapacity ch + h(P_e)` (after rearranging
+    `P_e · log(|α| / (|α| − 1)) ≥ 0` for `|α| ≥ 2`).
+
+    The proof is a single `linarith` step on:
+    * `chain_rule pXY`  — `I(X;Y) = H(X-marginal) − H(X|Y)`
+    * `h_uniform`       — `H(X-marginal) = log |α|`  (hypothesis)
+    * `fano_inequality pXY` — `H(X|Y) ≤ h(P_e) + P_e · log(|α| - 1)`
+
+    The `h_uniform` hypothesis is satisfied for uniform X via
+    `entropy_of_uniform_eq_log_card` (in `ShannonEntropy.lean`); stating it
+    abstractly here keeps the lemma applicable to any X-marginal achieving
+    the max-entropy bound, and avoids importing additional uniform-distribution
+    plumbing into this file. -/
+theorem fano_converse_step {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β]
+    (pXY : α × β → ℝ) (hp : ∀ xy, 0 ≤ pXY xy)
+    (hsum : ∑ xy : α × β, pXY xy = 1)
+    (h_uniform : shannonEntropy (fun x : α => ∑ y : β, pXY (x, y)) =
+                 Real.log (Fintype.card α)) :
+    let P_e := 1 - ∑ y : β, ∑ x : α, pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y))
+    Real.log (Fintype.card α) ≤
+      mutualInformation pXY +
+      InformationTheory.BinaryEntropy.h P_e +
+      P_e * Real.log ((Fintype.card α : ℝ) - 1) := by
+  intro P_e
+  -- I(X;Y) = H(X) - H(X|Y); with h_uniform: H(X) = log |α|,
+  -- this gives mutualInformation pXY = log |α| - conditionalEntropy pXY.
+  have hchain : mutualInformation pXY =
+      shannonEntropy (fun x : α => ∑ y : β, pXY (x, y)) -
+        conditionalEntropy pXY := chain_rule hp hsum
+  rw [h_uniform] at hchain
+  -- Fano: H(X|Y) ≤ h(P_e) + P_e · log(|α| - 1).
+  have hfano := fano_inequality pXY hp hsum
+  -- Combine algebraically.
+  linarith
 
 /- ## Main theorems -/
 
