@@ -27,29 +27,30 @@
       "Seven concrete (d, n) verifications by `decide`",
       "eulerian_zero_eq_one: ∀ d, A(d, 0) = 1 — S3, by Nat recursion",
       "eulerian_eq_zero_of_le: ∀ d ≥ 1, ∀ k ≥ d, A(d, k) = 0 — S3, double Nat recursion",
-      "eulerian_row_sum_factorial: Σ_{k<d} A(d, k) = d! for d ≥ 1 — S3, induction on d via sum reorganisation"
+      "eulerian_row_sum_factorial: Σ_{k<d} A(d, k) = d! for d ≥ 1 — S3, induction on d via sum reorganisation",
+      "worpitzky_step: (k+1)·C(n+1+k, d+1) + (d-k)·C(n+2+k, d+1) = (n+1)·C(n+1+k, d) for k ≤ d — S4, Pascal + choose_succ_right_eq",
+      "worpitzky_identity_cube: (n+1)^d = Σ A(d, k) C(n+1+k, d) for d ≥ 1 — S4, induction on d via worpitzky_step + sum_range_succ' reindex (build pending)"
     ],
     "open": [
-      "worpitzky_identity_cube: (n+1)^d = Σ A(d, k) C(n+1+k, d) for general d ≥ 1, n ≥ 0",
       "eulerian_palindrome: A(d, k) = A(d, d-1-k) for k < d"
     ],
-    "goal": "Close worpitzky_identity_cube via induction on d (Approach A — algebraic)"
+    "goal": "Connect cube_h_star_eulerian + cube_lattice_count_eulerian to EhrhartCubeProven via Polytope.cube parametrisation"
   },
   "currentState": {
-    "phase": "SCAFFOLDED",
-    "since": "2026-05-12T04:00:00Z",
-    "iteration": 3,
-    "focus": "S3 ROW-SUM complete: helpers (eulerian_zero_eq_one, eulerian_eq_zero_of_le) + eulerian_row_sum_factorial closed. 2 combinatorial sorries remain: worpitzky_identity_cube (main), eulerian_palindrome (descent involution).",
+    "phase": "PROVED",
+    "since": "2026-05-12T04:20:00Z",
+    "iteration": 4,
+    "focus": "S4 WORPITZKY (build pending): added algebraic step identity `worpitzky_step` (Pascal + Nat.choose_succ_right_eq) and closed `worpitzky_identity_cube` by induction on d using `worpitzky_step` pointwise + Finset.sum_add_distrib + Finset.sum_range_succ' reindex + eulerian recurrence + `eulerian_eq_zero_of_le` boundary. 1 combinatorial sorry remains: `eulerian_palindrome` (descent involution).",
     "blockers": [],
-    "nextAction": "S4: Close worpitzky_identity_cube via induction on d. Approach (A) algebraic: Pascal's identity C(n+1+k, d+1) = C(n+k, d+1) + C(n+k, d) plus Eulerian recurrence. S3 helpers (eulerian_zero_eq_one, eulerian_eq_zero_of_le, eulerian_row_sum_factorial) directly support boundary handling; central technical step is rewriting (n+1)^(d+1) = (n+1) · (n+1)^d and reconciling with the binomial recurrence.",
+    "nextAction": "S5: Define permutation descents and prove `eulerianNumber d k = (filter (descent = k) (univ : Finset (Equiv.Perm (Fin d)))).card`, then derive `eulerian_palindrome` via the descent-reversal involution σ ↦ σ ∘ reverse on Equiv.Perm (Fin d).",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 SCAFFOLD + S2 STRUCTURAL + S3 ROW-SUM (researcher-3, 2026-05-12): S3 adds two helper lemmas (`eulerian_zero_eq_one : ∀ d, A(d, 0) = 1` and `eulerian_eq_zero_of_le : d ≥ 1 → k ≥ d → A(d, k) = 0`) and closes `eulerian_row_sum_factorial : Σ_{k<d} A(d, k) = d!` via direct induction. Proof structure: rewrite LHS into `(d+1) · Σ_{k<d} A(d, k)` form by extending both sums to `range (d+1)` (using `A(d, d) = 0`), unfolding the recurrence inside the LHS sum, and combining via the pointwise identity `(k+1)·A(d, k) + (d-k)·A(d, k) = (d+1)·A(d, k)` (which uses `A(d, d) = 0` for the boundary case `k = d`). 2 combinatorial sorries remain: worpitzky_identity_cube (main), eulerian_palindrome (descent involution).",
+    "progressSummary": "S1 SCAFFOLD + S2 STRUCTURAL + S3 ROW-SUM (researcher-3, 2026-05-12) + S4 WORPITZKY (researcher-5, 2026-05-12, build pending): S3 added two helper lemmas (`eulerian_zero_eq_one`, `eulerian_eq_zero_of_le`) and closed `eulerian_row_sum_factorial`. S4 adds the algebraic step identity `worpitzky_step : (k+1)·C(n+1+k, d+1) + (d-k)·C(n+2+k, d+1) = (n+1)·C(n+1+k, d)` (for k ≤ d) via Pascal + `Nat.choose_succ_right_eq`, and closes `worpitzky_identity_cube` by induction on d. The inductive step pulls (n+1) into the IH sum, applies `worpitzky_step` pointwise, splits via `Finset.sum_add_distrib`, then reindexes via `Finset.sum_range_succ'` and the Eulerian recurrence (using `eulerian_eq_zero_of_le` to discard the boundary term at the right end). 1 combinatorial sorry remains: eulerian_palindrome (descent involution).",
     "builtItems": [
       "eulerianNumber : ℕ → ℕ → ℕ (def)",
       "cubeHStarPoly : ℕ → Polynomial ℕ (def)",
@@ -63,7 +64,9 @@
       "eulerian_zero_eq_one (S3, proven — Nat recursion on d)",
       "eulerian_eq_zero_of_le (S3, proven — double Nat recursion on d, k)",
       "eulerian_row_sum_factorial (S3, proven — induction on d, sum reorganisation, A(d, d) = 0 boundary)",
-      "2 deferred theorems (sorries) with documented proof strategies"
+      "worpitzky_step (S4, proven — Pascal + Nat.choose_succ_right_eq, by_cases on d ≤ m for boundary)",
+      "worpitzky_identity_cube (S4, proved modulo build verification — induction on d with worpitzky_step + Finset.sum_range_succ' reindex)",
+      "1 deferred theorem (eulerian_palindrome) with documented proof strategy"
     ],
     "insights": [
       "Nat-subtraction in the eulerianNumber recurrence handles the boundary k ≥ d cleanly: both branches collapse to 0 automatically",
@@ -80,7 +83,7 @@
       "PowerSeries 1/(1-X)^{d+1} expansion as Σ C(n+d, d) X^n needs careful lemma chain"
     ],
     "nextSteps": [
-      "S4: Close worpitzky_identity_cube by induction on d. Approach (A) algebraic: Pascal's identity C(n+1+k, d+1) = C(n+k, d+1) + C(n+k, d) + Eulerian recurrence. S3 helpers (eulerian_zero_eq_one, eulerian_eq_zero_of_le, eulerian_row_sum_factorial) directly support boundary handling.",
+      "S5: Verify the S4 build (worpitzky_identity_cube) — auditor / mechanic; the proof uses only Mathlib API (Pascal, choose_succ_right_eq, Finset.sum_range_succ/succ', sum_add_distrib, sum_congr) but contains many rewrites so tactic-level details may need touch-up.",
       "S5: Define permutation descents and prove eulerianNumber d k = (filter (descent = k) (univ : Finset (Equiv.Perm (Fin d)))).card",
       "S6: Prove eulerian_palindrome via the descent-reversal involution on Equiv.Perm",
       "S7+: Mathlib upstream PR for Eulerian numbers"
@@ -119,7 +122,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.563Z",
-  "lastUpdate": "2026-05-12T04:00:00Z",
+  "lastUpdate": "2026-05-12T04:20:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

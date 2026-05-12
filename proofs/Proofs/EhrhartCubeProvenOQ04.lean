@@ -2,16 +2,18 @@
   Eulerian Numbers and the h*-Vector of the Unit Cube
   (ehrhart-cube-proven-oq-04)
 
-  S1 SCAFFOLD + S2 STRUCTURAL + S3 ROW-SUM. The companion file
-  `EhrhartCubeProven.lean` proves `L([0,1]^d, n) = (n+1)^d` axiom-free.
+  S1 SCAFFOLD + S2 STRUCTURAL + S3 ROW-SUM + S4 WORPITZKY. The companion
+  file `EhrhartCubeProven.lean` proves `L([0,1]^d, n) = (n+1)^d` axiom-free.
   The Ehrhart h*-vector of the unit d-cube is conjecturally (and classically)
   equal to the sequence of Eulerian numbers (A(d, 0), A(d, 1), …, A(d, d-1)).
 
   S2 closed the two *structural* sorries (`cube_h_star_eulerian` and
-  `cube_lattice_count_eulerian`); S3 adds helper lemmas
-  (`eulerian_zero_eq_one`, `eulerian_eq_zero_of_le`) and closes
-  `eulerian_row_sum_factorial` (Σ A(d, k) = d!). The remaining combinatorial
-  sorries (`worpitzky_identity_cube`, `eulerian_palindrome`) are for S4+.
+  `cube_lattice_count_eulerian`). S3 added helper lemmas
+  (`eulerian_zero_eq_one`, `eulerian_eq_zero_of_le`) and closed
+  `eulerian_row_sum_factorial` (Σ A(d, k) = d!). S4 adds the algebraic step
+  identity `worpitzky_step` and closes `worpitzky_identity_cube` by induction
+  on `d`. The single remaining combinatorial sorry (`eulerian_palindrome`)
+  requires the descent-bijection machinery and is deferred to S5+.
 
   Concretely, Worpitzky's identity states:
 
@@ -41,7 +43,7 @@
                                               defined as Σ_{k=0}^{d-1} A(d,k) · X^k
 
   Main theorems:
-  • `worpitzky_identity_cube`               — Σ A(d,k) C(n+1+k, d) = (n+1)^d   (deferred)
+  • `worpitzky_identity_cube`               — Σ A(d,k) C(n+1+k, d) = (n+1)^d   (S4: PROVED)
   • `cube_h_star_eulerian`                  — h_k*([0,1]^d) = A(d, k)          (S2: PROVED)
   • `eulerian_row_sum_factorial`            — Σ_{k=0}^{d-1} A(d, k) = d!       (S3: PROVED)
   • `eulerian_palindrome`                   — A(d, k) = A(d, d-1-k) for k < d  (deferred)
@@ -50,6 +52,9 @@
   Helper lemmas (S3):
   • `eulerian_zero_eq_one`                  — A(d, 0) = 1 for all d ≥ 0
   • `eulerian_eq_zero_of_le`                — A(d, k) = 0 for d ≥ 1, k ≥ d
+
+  Helper lemmas (S4):
+  • `worpitzky_step`                         — (k+1)·C(n+1+k,d+1) + (d-k)·C(n+2+k,d+1) = (n+1)·C(n+1+k,d)
 
   Concrete (proven, no sorry):
   • `eulerian_1_0`, `eulerian_2_*`, `eulerian_3_*`, `eulerian_4_*` — values by rfl
@@ -276,7 +281,53 @@ example : eulerianNumber 4 1 = eulerianNumber 4 2 := rfl
 -- ============================================================
 
 /--
-  **Worpitzky's identity** (deferred, main theorem):
+  **Worpitzky step identity** (S4, proved): the algebraic identity that
+  multiplies the Worpitzky sum from row `d` up to row `d+1`. For any
+  natural numbers `n`, `d`, `k` with `k ≤ d`,
+      (k+1) · C(n+1+k, d+1) + (d-k) · C(n+2+k, d+1) = (n+1) · C(n+1+k, d).
+  Proved by Pascal (`Nat.choose_succ_succ`) and the absorption identity
+  `C(m, d) · (m-d) = C(m, d+1) · (d+1)` (`Nat.choose_succ_right_eq`).
+-/
+lemma worpitzky_step (n d k : ℕ) (hk : k ≤ d) :
+    (k + 1) * Nat.choose (n + 1 + k) (d + 1) + (d - k) * Nat.choose (n + 2 + k) (d + 1)
+      = (n + 1) * Nat.choose (n + 1 + k) d := by
+  set m := n + 1 + k with hm_def
+  have hm1 : n + 2 + k = m + 1 := by omega
+  rw [hm1, Nat.choose_succ_succ m d]
+  -- After Pascal: (k+1)·C(m, d+1) + (d-k)·(C(m, d) + C(m, d+1)) = (n+1)·C(m, d)
+  by_cases hmd : d ≤ m
+  · -- Standard case: use Nat.choose_succ_right_eq
+    have hch : Nat.choose m (d + 1) * (d + 1) = Nat.choose m d * (m - d) :=
+      Nat.choose_succ_right_eq m d
+    have key : (d + 1) * Nat.choose m (d + 1) = (m - d) * Nat.choose m d := by
+      have hl : Nat.choose m (d + 1) * (d + 1) = (d + 1) * Nat.choose m (d + 1) := by ring
+      have hr : Nat.choose m d * (m - d) = (m - d) * Nat.choose m d := by ring
+      linarith
+    have hsum_coef : (k + 1) + (d - k) = d + 1 := by omega
+    have hmk : (m - d) + (d - k) = n + 1 := by omega
+    calc (k + 1) * Nat.choose m (d + 1)
+            + (d - k) * (Nat.choose m d + Nat.choose m (d + 1))
+        = (k + 1) * Nat.choose m (d + 1)
+            + ((d - k) * Nat.choose m d + (d - k) * Nat.choose m (d + 1)) := by
+          rw [Nat.mul_add]
+      _ = ((k + 1) * Nat.choose m (d + 1) + (d - k) * Nat.choose m (d + 1))
+            + (d - k) * Nat.choose m d := by ring
+      _ = ((k + 1) + (d - k)) * Nat.choose m (d + 1) + (d - k) * Nat.choose m d := by
+          rw [Nat.add_mul]
+      _ = (d + 1) * Nat.choose m (d + 1) + (d - k) * Nat.choose m d := by
+          rw [hsum_coef]
+      _ = (m - d) * Nat.choose m d + (d - k) * Nat.choose m d := by rw [key]
+      _ = ((m - d) + (d - k)) * Nat.choose m d := by rw [Nat.add_mul]
+      _ = (n + 1) * Nat.choose m d := by rw [hmk]
+  · -- d > m: C(m, d) = C(m, d+1) = 0
+    push_neg at hmd
+    have hc1 : Nat.choose m d = 0 := Nat.choose_eq_zero_of_lt hmd
+    have hc2 : Nat.choose m (d + 1) = 0 :=
+      Nat.choose_eq_zero_of_lt (lt_of_lt_of_le hmd (Nat.le_succ d))
+    simp [hc1, hc2]
+
+/--
+  **Worpitzky's identity** (S4, PROVED, main theorem):
       (n + 1)^d = Σ_{k=0}^{d-1} A(d, k) · C(n + 1 + k, d)
   for `d ≥ 1` and `n ≥ 0`.
 
@@ -284,22 +335,133 @@ example : eulerianNumber 4 1 = eulerianNumber 4 2 := rfl
   equals the Eulerian numbers. Specialised to the cube via the gallery proof
   `EhrhartCubeProven.cube_lattice_count : L([0,1]^d, n) = (n+1)^d`.
 
-  Proof strategy (deferred to S2+):
-  1. **Induction on `d`** using the recurrence
-     `A(d+1, k) = (k+1) A(d, k) + (d+1-k) A(d, k-1)`
-     and Pascal's identity `C(n+1+k, d+1) = C(n+k, d+1) + C(n+k, d)`.
-  2. **Alternative (Stanley)**: combinatorial proof via the bijection
-     between permutations and labelled lattice paths; each `(n+1)^d`
-     monomial corresponds to a sequence of choices that decomposes
-     uniquely as (descent-pattern, position-pattern).
-  3. **Alternative (generating-function)**: prove the rational generating-function
-     identity ∑_n (n+1)^d t^n = (Σ A(d,k) t^k) / (1-t)^{d+1} and extract
-     coefficients.
+  Proof: induction on `d`.
+  • Base case `d = 1`: reduces to `(n+1)^1 = 1·(n+1)` via `eulerian_zero_eq_one`
+    and `Nat.choose_one_right`.
+  • Inductive step: assuming the identity for `d ≥ 1`, multiply by `(n+1)` and
+    apply `worpitzky_step` (♣) pointwise on the IH RHS; split via
+    `Finset.sum_add_distrib`; reindex one half by `k ↦ k+1` via
+    `Finset.sum_range_succ'`; re-collect using the Eulerian recurrence
+    `A(d+1, k+1) = (k+2)·A(d, k+1) + (d-k)·A(d, k)` and `A(d, d) = 0`
+    (`eulerian_eq_zero_of_le`) to absorb the boundary term at the right end.
 -/
 theorem worpitzky_identity_cube (d : ℕ) (hd : 0 < d) (n : ℕ) :
     (n + 1)^d = ∑ k ∈ Finset.range d,
                 eulerianNumber d k * Nat.choose (n + 1 + k) d := by
-  sorry
+  induction d with
+  | zero => exact absurd hd (lt_irrefl 0)
+  | succ d ih =>
+    rcases Nat.eq_zero_or_pos d with hd0 | hd_pos
+    · -- d = 0: target is (n+1)^1 = A(1, 0) · C(n+1, 1) = 1 · (n+1) = n+1
+      subst hd0
+      simp [Finset.sum_range_succ, eulerianNumber, pow_one, Nat.choose_one_right]
+    · -- d ≥ 1: use ih and worpitzky_step
+      have ih' := ih hd_pos
+      have hd_succ_pred : (d - 1) + 1 = d := Nat.succ_pred_eq_of_pos hd_pos
+      -- ----- Step 1: rewrite LHS (n+1)^(d+1) as S₁ + S₂ -----
+      have lhs_eq :
+          (n + 1)^(d + 1) =
+            (∑ k ∈ Finset.range d,
+                eulerianNumber d k * (k + 1) * Nat.choose (n + 1 + k) (d + 1))
+            + (∑ k ∈ Finset.range d,
+                eulerianNumber d k * (d - k) * Nat.choose (n + 2 + k) (d + 1)) := by
+        calc (n + 1)^(d + 1)
+            = (n + 1)^d * (n + 1) := by rw [pow_succ]
+          _ = (∑ k ∈ Finset.range d,
+                  eulerianNumber d k * Nat.choose (n + 1 + k) d) * (n + 1) := by
+                rw [ih']
+          _ = ∑ k ∈ Finset.range d,
+                  eulerianNumber d k * Nat.choose (n + 1 + k) d * (n + 1) := by
+                rw [Finset.sum_mul]
+          _ = ∑ k ∈ Finset.range d,
+                  eulerianNumber d k *
+                    ((k + 1) * Nat.choose (n + 1 + k) (d + 1)
+                      + (d - k) * Nat.choose (n + 2 + k) (d + 1)) := by
+                refine Finset.sum_congr rfl fun k hk => ?_
+                have hkd : k ≤ d := Nat.le_of_lt (Finset.mem_range.mp hk)
+                rw [← worpitzky_step n d k hkd]; ring
+          _ = ∑ k ∈ Finset.range d,
+                  (eulerianNumber d k * (k + 1) * Nat.choose (n + 1 + k) (d + 1)
+                    + eulerianNumber d k * (d - k) * Nat.choose (n + 2 + k) (d + 1)) := by
+                refine Finset.sum_congr rfl fun k _ => by ring
+          _ = _ := Finset.sum_add_distrib
+      -- ----- Step 2: rewrite RHS as e(d,0)·C(n+1,d+1) + (T₁ + T₂) -----
+      have rhs_eq :
+          (∑ k ∈ Finset.range (d + 1),
+              eulerianNumber (d + 1) k * Nat.choose (n + 1 + k) (d + 1))
+            =
+          eulerianNumber d 0 * Nat.choose (n + 1) (d + 1)
+            + ((∑ k ∈ Finset.range d,
+                  (k + 2) * eulerianNumber d (k + 1) * Nat.choose (n + 2 + k) (d + 1))
+              + (∑ k ∈ Finset.range d,
+                  (d - k) * eulerianNumber d k * Nat.choose (n + 2 + k) (d + 1))) := by
+        rw [Finset.sum_range_succ' (fun k =>
+              eulerianNumber (d + 1) k * Nat.choose (n + 1 + k) (d + 1)) d]
+        -- e(d+1, 0) = e(d, 0) by the recurrence; n+1+0 = n+1.
+        have hzero : eulerianNumber (d + 1) 0 = eulerianNumber d 0 := rfl
+        rw [hzero, Nat.add_zero]
+        -- Expand each body summand via the recurrence and shift.
+        have hbody :
+            (∑ k ∈ Finset.range d,
+                eulerianNumber (d + 1) (k + 1) * Nat.choose (n + 1 + (k + 1)) (d + 1))
+              =
+            (∑ k ∈ Finset.range d,
+                ((k + 2) * eulerianNumber d (k + 1) * Nat.choose (n + 2 + k) (d + 1)
+                 + (d - k) * eulerianNumber d k * Nat.choose (n + 2 + k) (d + 1))) := by
+          refine Finset.sum_congr rfl fun k _ => ?_
+          have hrec : eulerianNumber (d + 1) (k + 1)
+                    = (k + 2) * eulerianNumber d (k + 1) + (d - k) * eulerianNumber d k := rfl
+          have hshift : n + 1 + (k + 1) = n + 2 + k := by ring
+          rw [hrec, hshift]; ring
+        rw [hbody, Finset.sum_add_distrib]
+        ring
+      -- ----- Step 3: reduce S₁ to e(d, 0)·C(n+1, d+1) + T₁ -----
+      have hrange : Finset.range d = Finset.range (d - 1 + 1) := by
+        congr 1; omega
+      have s1_eq :
+          (∑ k ∈ Finset.range d,
+              eulerianNumber d k * (k + 1) * Nat.choose (n + 1 + k) (d + 1))
+            =
+          eulerianNumber d 0 * Nat.choose (n + 1) (d + 1)
+            + (∑ k ∈ Finset.range d,
+                (k + 2) * eulerianNumber d (k + 1) * Nat.choose (n + 2 + k) (d + 1)) := by
+        rw [hrange]
+        rw [Finset.sum_range_succ' (fun k =>
+              eulerianNumber d k * (k + 1) * Nat.choose (n + 1 + k) (d + 1)) (d - 1)]
+        rw [Finset.sum_range_succ (fun k =>
+              (k + 2) * eulerianNumber d (k + 1) * Nat.choose (n + 2 + k) (d + 1)) (d - 1)]
+        -- The k = d - 1 boundary term on the RHS vanishes: A(d, d) = 0.
+        have hk_boundary :
+            ((d - 1) + 2) * eulerianNumber d ((d - 1) + 1)
+              * Nat.choose (n + 2 + (d - 1)) (d + 1) = 0 := by
+          have hed : eulerianNumber d (d - 1 + 1) = 0 := by
+            rw [hd_succ_pred]
+            exact eulerian_eq_zero_of_le d d hd_pos (le_refl d)
+          rw [hed]; ring
+        rw [hk_boundary, Nat.add_zero]
+        -- Pointwise alignment of the two reindexed sums.
+        have hsum_align :
+            (∑ k ∈ Finset.range (d - 1),
+                eulerianNumber d (k + 1) * (k + 1 + 1)
+                  * Nat.choose (n + 1 + (k + 1)) (d + 1))
+              =
+            (∑ k ∈ Finset.range (d - 1),
+                (k + 2) * eulerianNumber d (k + 1) * Nat.choose (n + 2 + k) (d + 1)) := by
+          refine Finset.sum_congr rfl fun k _ => ?_
+          have hshift : n + 1 + (k + 1) = n + 2 + k := by ring
+          rw [hshift]; ring
+        rw [hsum_align]
+        ring
+      -- ----- Combine everything -----
+      have s2_eq_t2 :
+          (∑ k ∈ Finset.range d,
+              eulerianNumber d k * (d - k) * Nat.choose (n + 2 + k) (d + 1))
+            =
+          (∑ k ∈ Finset.range d,
+              (d - k) * eulerianNumber d k * Nat.choose (n + 2 + k) (d + 1)) := by
+        refine Finset.sum_congr rfl fun k _ => by ring
+      rw [lhs_eq, rhs_eq, s1_eq, s2_eq_t2]
+      ring
 
 -- Concrete cases for small d (proven without the main theorem)
 
