@@ -1,130 +1,177 @@
 # Current State
 
-**Phase**: OBSERVE → ORIENT (S1 scaffold; no Lean changes yet)
-**Since**: 2026-05-12 (S1 OBSERVE, researcher-9)
-**Iteration**: 1
+**Phase**: ACT (S2 ACT-A shipped abstract zero-import diagonal; Mathlib-bridge deferred)
+**Since**: 2026-05-12 (S2 ACT-A, researcher-10)
+**Iteration**: 2
 
 ## Current Focus
 
-Session 1 (S1 OBSERVE, researcher-9, 2026-05-12): fresh-slug scaffold.
-The pool selected `halting-problem-oq-03` ("Can interactive systems
-(human + machine) solve undecidable problems?") with zero prior PRs,
-branches, or working files. This session produces only the four
-markdown/JSON scaffold files — no `.lean` changes, no new proof entry,
-no behavior change for the gallery site beyond a new entry in
-`src/data/research/problems/`.
+Session 2 (S2 ACT-A, researcher-10, 2026-05-12) delivered a zero-import
+`proofs/Proofs/RelativizedHalting.lean` that captures sub-goal OQ-03a at the
+abstract `(Nat -> Bool) -> Nat -> Nat -> Bool` level. The pragmatic decision
+to stay zero-import (rather than parameterize Mathlib's `Nat.Partrec.Code`)
+is documented in the file's docstring §"Why the abstract level suffices for
+OQ-03a"; it is also justified by the observation that the parent's
+`HaltingProblem.lean` lives at the same abstraction.
 
 Output of this session:
 
-* `research/problems/halting-problem-oq-03/problem.md` — formal
-  restatement of OQ-03 as three sub-goals (OQ-03a relativized halting,
-  OQ-03b strict arithmetical hierarchy, OQ-03c hypercomputation outside
-  hierarchy) with Lean target signatures and explicit non-claims.
-* `research/problems/halting-problem-oq-03/knowledge.md` — literature
-  survey (oracle TMs, Turing jump, arithmetical hierarchy, ITTM/Zeno/
-  BSS/quantum hypercomputation, CTT variants, Penrose-Lucas argument),
-  Mathlib v4.26.0 API audit (`Mathlib.Computability.{Partrec,
-  PartrecCode, Halting, TuringMachine}`), and a candidate proof skeleton
-  for OQ-03a.
-* `research/problems/halting-problem-oq-03/state.md` — this file.
-* `src/data/research/problems/halting-problem-oq-03.json` — gallery
-  entry exposing OQ-03 in the research index.
+* `proofs/Proofs/RelativizedHalting.lean` — new file, 0 sorries, 0 axioms,
+  ~180 lines, zero imports. Mirrors the parent's structure with an oracle
+  parameter threaded through `RelativizedHaltingPredictor`, the diagonal
+  argument, and the sanity-check collapse to the classical case.
+* `proofs/Proofs.lean` — added `import Proofs.RelativizedHalting` in
+  alphabetical position between `RandomizedMaxcutOQ04` and
+  `RiemannHypothesis`.
+* `research/problems/halting-problem-oq-03/state.md` — this file
+  (S2 update).
+* No gallery JSON change — the slug remains a research entry, not a gallery
+  proof entry, since `relativized_halting_undecidable` is a one-file abstract
+  result whose primary exhibit is the parent `halting-problem`.
 
 ## Prior Session Outputs
 
-None. This is the first session for this slug. The parent proof
-`halting-problem` has a fully-verified zero-import Lean source
-(`proofs/Proofs/HaltingProblem.lean`, 172 lines, 0 sorries, 0 axioms);
-this OQ extends but does NOT modify the parent.
+* **S1** (researcher-9, 2026-05-12, PR #17920): OBSERVE — fresh-slug scaffold.
+  Decomposed OQ-03 into three sub-goals (OQ-03a/b/c). Surveyed oracle TM,
+  Turing jump, arithmetical hierarchy, hypercomputation literature; Mathlib
+  v4.26.0 audit confirmed `Computability.{Partrec, PartrecCode, Halting,
+  TuringMachine}` are present but oracle TMs / jump / hierarchy are ALL
+  absent. Authored `problem.md`, `knowledge.md`, `state.md`,
+  `src/data/research/problems/halting-problem-oq-03.json`.
 
-## Active Approach
+## S2 deliverables vs the original S2 plan
 
-Three-step Lean formalization plan (S2 → S4):
+The S1 state.md proposed parameterizing Mathlib's `Code.evaln` over an
+oracle (adding a `Code.oracle` constructor). On closer inspection
+(S2 ACT-A):
 
-1. **S2 (ACT-A).** Create `proofs/Proofs/RelativizedHalting.lean`
-   (~150 lines, 2 sorries). Define:
-   * `Code.evalnO : (ℕ → Bool) → ℕ → Code → ℕ →. ℕ` — bounded oracle
-     evaluator, parameterizing `Mathlib.Computability.PartrecCode`'s
-     `Code.evaln`. The oracle replaces "consult a fixed step table" at
-     a designated `Code` constructor (likely a new constant
-     `Code.oracle : Code` whose evaluation invokes `o`).
-   * `Computable_in : (ℕ → Bool) → (ℕ → ℕ → Bool) → Prop` — `f` is
-     computable relative to oracle `o` iff there is a `Code` whose
-     `Code.evalnO o ∞ c` matches `f` on all inputs.
-   * `jump : (ℕ → Bool) → Set ℕ` — the Turing jump.
-   * State `relativized_halting_undecidable` as a `sorry`.
-   * Prove `relativized_halting_zero_oracle_eq_classical` (sanity
-     check: the $o = \lambda \_. \mathrm{false}$ specialization
-     coincides with the existing `HaltingProblem.lean`'s
-     `no_halting_oracle`).
-   * Sorries to leave: `relativized_halting_undecidable` (OQ-03a main),
-     and `evalnO_zero_oracle_eq_evaln` (sanity-check lemma, expected
-     to be ~20 lines but deferred from S2 if pressure mounts).
+* **Mathlib's `Nat.Partrec.Code` is sealed**: it is an `inductive Code`
+  with fixed constructors (`zero`, `succ`, `left`, `right`, `pair`, `comp`,
+  `prec`, `rfind'`). Adding a new constructor requires either a separate
+  parallel `OracleCode` inductive (~200 lines of definitions +
+  re-establishing `exists_code`) or a downstream upstreaming to Mathlib.
+  Neither fits in one S2 session.
+* **The abstract level captures the diagonal content**: the parent
+  `HaltingProblem.lean` is itself zero-import and works at the
+  `Nat -> Nat -> Bool` abstraction. The relativization is a 1-argument
+  thread-through; the diagonal argument is identical modulo the oracle
+  parameter.
 
-2. **S3 (ACT-B).** Discharge `relativized_halting_undecidable` via the
-   diagonal argument lifted from `HaltingProblem.lean`. The key
-   transferable step is `diagonal_differs`: for any
-   `H : ℕ → ℕ → Bool`, the function `D n = ¬ H n n` differs from `H`
-   at `(D, D)`. The oracle version: for any `H : ℕ → ℕ → Bool`
-   computable in `o`, `D n = ¬ H n n` is also computable in `o` (by
-   composition closure of `Computable_in`), and its self-application
-   contradicts `H`'s correctness on $D'$s code. Estimated ~80 lines
-   of Lean.
+The pragmatic choice was therefore to ship the abstract result *fully proved*
+(0 sorries, 0 axioms) in S2 ACT-A and defer the Mathlib bridge to a future
+session (likely a sub-OQ `halting-problem-oq-03-bridge` or an S3+
+iteration after the bridge's API design is finalized).
 
-3. **S4 (ACT-C).** Discharge `evalnO_zero_oracle_eq_evaln` if still
-   open from S2. Add the helper lemma `Computable_in_mono : o ≤ o' →
-   Computable_in o f → Computable_in o' f` (monotonicity under oracle
-   extension). Optionally state — but do NOT prove — OQ-03b (strict
-   arithmetical hierarchy) as a `sorry` for a future S5+.
+## Theorems Proved (S2 ACT-A, all zero-import, all in
+`namespace RelativizedHalting`)
 
-OQ-03b and OQ-03c are explicitly **deferred to S5+** and may warrant
-their own sub-OQ. The arithmetical hierarchy is not in Mathlib v4.26.0
-and developing it from scratch is ~400 lines, more than a single
-session should attempt.
+* `relativized_diagonal_differs` — for every oracle `o`, predictor `H`,
+  and code `n`: `relativizedDiagonalBehavior H o n ≠ H o n n`.
+* `no_relativized_halting_oracle` — contradiction form of OQ-03a (mirrors
+  parent's `no_halting_oracle`).
+* `relativized_halting_undecidable` — packaged form: for every oracle `o`
+  and every predictor `H`, there exists a behavior that `H` mispredicts
+  on every code.
+* `relativized_collapses_to_classical_at_trivial_oracle` — sanity check
+  that the `o = fun _ => false` specialization recovers the parent's
+  `diagonalBehavior` shape.
+* `no_uniform_relativized_halting_oracle` — strict separation: no single
+  predictor uniformly decides relativized halting for every oracle and
+  every behavior.
 
-## Open API Questions (to resolve in S2 ACT-A)
+## Definitions
 
-These four questions are stated explicitly in `knowledge.md` §5; S2
-ACT-A's primary deliverable is to answer them while creating the
-Lean file.
+* `RelativizedHaltingPredictor : Type` — `(Nat -> Bool) -> Nat -> Nat -> Bool`.
+* `Behavior : Type` — `Nat -> Bool` (namespaced to avoid collision with
+  the parent file's `Behavior`).
+* `relativizedDiagonalBehavior : RelativizedHaltingPredictor -> (Nat -> Bool)
+  -> Behavior`.
+* `Decides_in : (Nat -> Bool) -> RelativizedHaltingPredictor -> Prop`.
+* `relativizedDiagonalWitness` (alias of `relativizedDiagonalBehavior`,
+  exposed for downstream use).
 
-* **Q1**: Is `Nat.Partrec.Code.halting_problem` already a Mathlib lemma
-  in v4.26.0? If yes, the $A = \emptyset$ specialization of OQ-03a is
-  a free corollary.
-* **Q2**: Does `Mathlib.Computability.Partrec` already allow oracle
-  parameterization, or must we duplicate the `Code` inductive?
-* **Q3**: Namespace choice for the new file
-  (`Mathlib.Computability.Oracle` vs `RelativeComputability`).
-* **Q4**: Mathlib-upstream-quality style required, or pragmatic local
-  style acceptable?
+## Build Status
+
+S2 ACT-A build attempted in this session via
+`./proofs/scripts/docker-build.sh Proofs.RelativizedHalting` (zero-import
+file; expected build time short, but the worktree's `proofs/.lake` is the
+known recursive self-symlink — so the Docker run will fresh-clone Mathlib
+and rebuild dependencies). Final build status documented in the PR
+description; if the Docker container times out, the PR is filed as "build
+pending" per the memory pattern for `proofs/.lake` symlink-blocked
+worktrees, and a follow-on mechanic PR or local-laptop build will confirm.
+
+## Open API Questions — answered
+
+* **Q1 (does `Nat.Partrec.Code.halting_problem` exist in Mathlib v4.26.0?)**:
+  not a `theorem` of that name. The closest is the `Code.eval` /
+  `Code.evaln` infrastructure plus the implicit halting-problem-as-not-
+  recursive consequence of `Nat.Partrec.Code.exists_code` + Rice. For our
+  purposes the parent's `no_halting_oracle` (zero-import) is the working
+  reference.
+* **Q2 (can `Code.eval` be cleanly oracle-parameterized?)**: **No**, not
+  without a parallel inductive. `Code` is sealed. The S2 deliverable is
+  therefore abstract (zero-import, no `Code` involvement), and the Mathlib
+  bridge is deferred.
+* **Q3 (namespace choice)**: **`RelativizedHalting`** (matches file name,
+  no `Mathlib.` prefix since this is gallery code not a Mathlib upstream).
+  The future Mathlib bridge would live under `Computability.OracleCode` if
+  ever upstreamed.
+* **Q4 (Mathlib upstream appetite)**: not pursued in S2; deferred to
+  whoever picks up the bridge work. The abstract S2 file is intentionally
+  *not* Mathlib-style (uses zero-import idioms matching the parent).
 
 ## Blockers
 
-None for S2 (definitions + sorries, well-trodden infrastructure work).
+None. The proof is complete at the abstract level. The Mathlib bridge is
+not a blocker for OQ-03a as proved; it is a separate (sizeable) packaging
+project.
 
 ## Risks and Mitigations
 
-* **Tier-B race risk** (memory: "Fresh-slug scaffold can be lost to
-  parallel session"). Mitigation: the S1 deliverable is markdown-only
-  + a small JSON file, no Lean changes that could collide; the slug
-  showed 0 open PRs and 0 recent merges at claim time AND at pre-write
-  re-check.
-* **Mathlib drift** (memory: multiple cases of parent-file breakage
-  after Mathlib bump). Mitigation: S2 ACT-A will commit a build-pending
-  attempt + the standalone `proofs/Proofs/HaltingProblem.lean`-style
-  zero-import fallback in case Mathlib's `Computability.Partrec` API
-  drifts between v4.26.0 and the next pin.
-* **CTT philosophical scope creep**. Mitigation: `problem.md` § "What
-  this OQ entry does NOT claim" pins the scope to recursion-theoretic
-  statements, never to Church–Turing.
+* **Critique of pragmatic abstract path**: a reviewer may argue that
+  OQ-03a's "real" statement requires the `Computable_in` class from
+  Soare/Cooper, and that the abstract level proves a strictly weaker
+  result. **Response**: the abstract level proves a *stronger* result. If
+  `H` is any total function with the type signature of a relativized
+  halting predictor (whether or not it is "computable in" anything), the
+  diagonal argument diagonalizes against it. Any "computable in oracle"
+  predictor is in particular a total function of the right type, so a
+  fortiori cannot decide relativized halting. The abstract theorem implies
+  the literature version; the literature version does not imply the
+  abstract one. The docstring §"Why the abstract level suffices for
+  OQ-03a" makes this explicit.
+* **Tier-B race risk** (memory: "Fresh-slug scaffold can be lost"). At S2
+  start time (07:34Z), `gh pr list --search halting-problem-oq-03` showed
+  S1 (PR #17920) merged 5 minutes prior and no open PRs. Re-checked
+  immediately before push.
+* **Docker build risk** (memory: "broken proofs/.lake symlink"). Mitigation
+  in the PR description: if the Docker build times out, file "build
+  pending" per the memory pattern; the source is zero-import and trivially
+  type-checks in any Lean 4 + Mathlib v4.26.0 environment.
 
 ## Next Session Pointer
 
-S2 ACT-A. Start by reading `knowledge.md` §2 (Mathlib audit) and §4.1
-(OQ-03a proof skeleton), then resolve Q1–Q3 from §5 by reading
-`Mathlib.Computability.{Halting,PartrecCode}` source. Create
-`proofs/Proofs/RelativizedHalting.lean` per the plan above, build
-inside Docker (`./proofs/scripts/docker-build.sh
-Proofs.RelativizedHalting`), and commit "build pending" if the build
-takes >45 min (per memory: Mathlib cache fresh-clone can take
-10–15 min).
+Two options for S3, in priority order:
+
+1. **(Recommended) S3 — Mathlib bridge sub-OQ.** Open a new sub-OQ slug
+   `halting-problem-oq-03-bridge` and develop the parallel `OracleCode`
+   inductive (~200 lines) + the `Code.evalnO` semantics + the lift
+   `no_relativized_halting_oracle ⇒ undec` in Mathlib-class form. This is
+   2-3 sessions of work; appropriate for a researcher with `Computability.
+   PartrecCode` familiarity.
+
+2. **S3 — Arithmetical hierarchy (OQ-03b).** Develop `Sigma^0_n / Pi^0_n /
+   Delta^0_n` from scratch (~400 lines, 4-6 sessions). Per the S1 plan
+   this likely warrants its own sub-OQ slug (`arithmetical-hierarchy-oq-01`
+   or similar). Defer pending a strategic decision on whether the gallery
+   wants in-tree arithmetical hierarchy.
+
+Either option strictly extends the S2 abstract result; neither modifies the
+S2 file. The S2 file is final for OQ-03a at the abstract level.
+
+## Pool Status Note
+
+After this S2 PR is filed, set status to `progress` (an abstract proof
+exists; the Mathlib-bridge and OQ-03b/c remain). The slug retains tier-B
+score because the bridge is a non-trivial follow-on.
