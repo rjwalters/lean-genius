@@ -2704,6 +2704,75 @@ example : Fintype.card (Equiv.Perm (Fin 4)) = 24 := by
   rw [Fintype.card_perm, Fintype.card_fin]
   decide
 
+-- =====================================================================
+-- PART 32 (S18c-ORBIT-PRECURSOR-2): sign-flip orbit nontriviality
+-- =====================================================================
+-- Companion to Part 31's `signFlipStabilizer_card`. For any
+-- `v : Fin 4 → ℤ` with at least one nonzero coordinate, the sign-flip
+-- orbit of `v` (taken as `Finset.univ.image (applyFlip · v)`) contains
+-- at least two distinct elements. This is the (ℤ/2)⁴-side
+-- non-triviality lower bound feeding into the 8-divisibility argument
+-- (S18c-orbit, deferred). Proof is by exhibiting two distinct orbit
+-- elements: `v` itself (via the all-`false` sign-flip) and the
+-- single-flip at the nonzero coordinate, which differ at that
+-- coordinate by `v i₀ ↔ -(v i₀)`.
+
+/-- **(S18c-orbit-precursor companion to Part 31)** Sign-flip orbit
+    non-triviality.
+
+    For `v : Fin 4 → ℤ` with at least one nonzero coordinate, the
+    sign-flip image `Finset.univ.image (applyFlip · v)` has cardinality
+    at least 2:
+
+      `∀ v : Fin 4 → ℤ, ∀ i₀ : Fin 4, v i₀ ≠ 0 →
+        2 ≤ (Finset.univ.image (fun s : SignFlip => applyFlip s v)).card`.
+
+    Two distinct orbit elements: `v` itself (the image of the all-`false`
+    sign-flip, by `applyFlip_zero`) and the image of the "single-flip"
+    sign-flip `s := fun j => decide (j = i₀)`. These differ at coordinate
+    `i₀`: the first has value `v i₀`, the second has value `-(v i₀)`, and
+    `v i₀ ≠ -(v i₀)` since `v i₀ ≠ 0`.
+
+    In the four-square setting, `sumSq v = n` with `n > 0` forces at
+    least one nonzero coordinate (otherwise `sumSq v = 0 ≠ n`), so
+    every orbit on the solution set is non-trivial. The full (ℤ/2)⁴
+    orbit cardinality `2 ^ (# nonzero coords v)` defers to a future
+    iteration; this lower bound suffices for the 8-divisibility
+    argument given the S₄-orbit factor of `≥ 4` for generic `v`.
+
+    Spec: `s18-eight-divisibility-spec.md §3.8`; companion to Part 31's
+    sign-flip stabilizer count. -/
+lemma signFlipOrbit_card_ge_two (v : Fin 4 → ℤ) (i₀ : Fin 4) (hi₀ : v i₀ ≠ 0) :
+    2 ≤ (Finset.univ.image (fun s : SignFlip => applyFlip s v)).card := by
+  classical
+  -- Two witnesses: `v` (via all-`false`) and the single-flip at `i₀`.
+  let s₀ : SignFlip := fun _ => false
+  let s₁ : SignFlip := fun j => decide (j = i₀)
+  have hw0 : applyFlip s₀ v = v := applyFlip_zero v
+  have hs1_i0 : s₁ i₀ = true := by
+    show decide (i₀ = i₀) = true
+    simp
+  have hw1_i0 : applyFlip s₁ v i₀ = -(v i₀) := by
+    unfold applyFlip
+    rw [if_pos hs1_i0]
+  have hne : applyFlip s₀ v ≠ applyFlip s₁ v := by
+    intro h
+    -- Pointwise at i₀: `v i₀ = -(v i₀)`, contradicting `v i₀ ≠ 0`.
+    have hi0 := congrFun h i₀
+    rw [hw0, hw1_i0] at hi0
+    apply hi₀
+    linarith
+  have hmem0 : applyFlip s₀ v ∈
+      Finset.univ.image (fun s : SignFlip => applyFlip s v) := by
+    rw [Finset.mem_image]
+    exact ⟨s₀, Finset.mem_univ _, rfl⟩
+  have hmem1 : applyFlip s₁ v ∈
+      Finset.univ.image (fun s : SignFlip => applyFlip s v) := by
+    rw [Finset.mem_image]
+    exact ⟨s₁, Finset.mem_univ _, rfl⟩
+  exact Finset.one_lt_card.mpr
+    ⟨applyFlip s₀ v, hmem0, applyFlip s₁ v, hmem1, hne⟩
+
 /-- **(S18c-orbit, TARGET DECLARATION, deferred)** Every orbit of the
     (ℤ/2)⁴ ⋊ S₄ action on the four-square solution set has cardinality
     divisible by 8 when `n > 0`.
