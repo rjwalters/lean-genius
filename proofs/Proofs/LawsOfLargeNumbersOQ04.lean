@@ -15,19 +15,28 @@ where Fₙ(x) = (1/n) |{i ≤ n : Xᵢ ≤ x}|.
   random variables (by `IdentDistrib.comp` and `iIndepFun.comp`). SLLN gives
   Fₙ(x) → F(x) a.s. for each x.
 
-**Step 2 (AXIOM)**: For any ε > 0, choose finitely many continuity points q₁,...,qₖ of F
+**Step 2 (PROVED in companion `LawsOfLargeNumbersOQ04OQ03Bracketing.lean`)**:
+  For any ε > 0, choose finitely many continuity points q₁,...,qₖ of F
   partitioning ℝ with F-mass < ε per interval. On the finite grid, pointwise convergence
   holds simultaneously a.s. (finite intersection). For any x between grid points,
   |Fₙ(x) - F(x)| ≤ max_j |Fₙ(qⱼ) - F(qⱼ)| + ε, giving uniform convergence.
 
 ## Axioms
 
-1. `glivenko_cantelli_uniform`: the bracketing uniformity step (not in Mathlib 4.26)
-
 The two integration facts that were previously axiomatic
 (`thresholdIndicator_integrable` and `integral_thresholdIndicator_eq_cdf`) are now
 proved in this file using Mathlib's bounded-measurable integrability (`Integrable.mono'`)
-and the integral-indicator API; only the bracketing uniformity step remains axiomatic.
+and the integral-indicator API.
+
+The bracketing uniformity step (`glivenko_cantelli_uniform`), previously declared
+as an axiom in this file, has been **retired** in S7: the bracketing companion
+`LawsOfLargeNumbersOQ04OQ03Bracketing.lean` proves it from the smaller, purely
+real-analytic axiom `bracketingGrid_exists` (the only Mathlib gap remaining in
+the entire Glivenko-Cantelli chain).
+
+This file is therefore fully axiom-free; the chain's sole remaining assumption
+sits in the bracketing companion, with content
+`Monotone.exists_increasing_continuity_seq` — the natural Mathlib upstream target.
 -/
 
 import Mathlib.Probability.StrongLaw
@@ -158,26 +167,14 @@ theorem empiricalCDF_pointwise_convergence [IsProbabilityMeasure μ]
   ext n
   simp only [empiricalCDF_eq_mean]
 
-/-! ## Uniform Convergence (Glivenko-Cantelli) -/
+/-! ## Uniform Convergence (Glivenko-Cantelli)
 
-/-- **Glivenko-Cantelli theorem** (AXIOM): the empirical CDF converges uniformly a.s.
-    The proof uses a finite bracketing argument:
-    1. For ε > 0, choose continuity points q₁,...,qₖ of F with max F-jump < ε.
-    2. By pointwise convergence, Fₙ(qⱼ) → F(qⱼ) for each j, a.s.
-    3. By finite intersection, all grid points converge simultaneously a.s.
-    4. For any x with qⱼ ≤ x < qⱼ₊₁, monotonicity gives
-         |Fₙ(x) - F(x)| ≤ max_j |Fₙ(qⱼ) - F(qⱼ)| + ε
-    5. Taking supremum over x gives the uniform bound.
-    Not yet formalized in Mathlib 4.26. -/
-axiom glivenko_cantelli_uniform [IsProbabilityMeasure μ]
-    {X : ℕ → Ω → ℝ}
-    (hX_meas : ∀ i, Measurable (X i))
-    (hX_iid : iIndepFun X μ)
-    (hX_ident : ∀ i, IdentDistrib (X i) (X 0) μ μ) :
-    ∀ᵐ ω ∂μ,
-      Filter.Tendsto
-        (fun n => ⨆ x : ℝ, |empiricalCDF X n x ω - trueCDF X μ x|)
-        Filter.atTop (nhds 0)
+    The **uniform convergence theorem** `glivenko_cantelli_uniform` was previously
+    declared as an axiom in this file. It has been retired in S7: the bracketing
+    companion `LawsOfLargeNumbersOQ04OQ03Bracketing.lean` proves it (via finite
+    bracketing of continuity points) from the strictly weaker, purely real-analytic
+    axiom `bracketingGrid_exists`. See that companion for the proved theorem.
+-/
 
 /-! ## Structural Properties -/
 

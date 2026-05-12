@@ -2,10 +2,10 @@
 # Glivenko-Cantelli: Bracketing Decomposition Scaffold
 (laws-of-large-numbers-oq-04-oq-03 — Session 3)
 
-The parent file `LawsOfLargeNumbersOQ04` discharges the uniform Glivenko-Cantelli
-theorem with one axiom, `glivenko_cantelli_uniform`, that bundles the entire
-finite-bracketing argument as a single black box. Session 2's
-`bracketing-decomposition-draft.md` decomposes that axiom orthogonally into
+The parent file `LawsOfLargeNumbersOQ04` previously discharged the uniform
+Glivenko-Cantelli theorem with one axiom, `glivenko_cantelli_uniform`, that
+bundled the entire finite-bracketing argument as a single black box. Session 2's
+`bracketing-decomposition-draft.md` decomposed that axiom orthogonally into
 three pieces:
 
   1. **Grid existence** (analytic, on F): for every ε > 0 there exist finitely
@@ -25,19 +25,21 @@ Session 3 (this file) ships pieces (1) and a typed scaffold:
     grid for any CDF derived from a probability measure on ℝ. Replaces the
     parent's monolithic `glivenko_cantelli_uniform` once §2.3–§2.5 land.
 
-Sessions 4+ will fill in the three theorems §2.3 (`bracketing_simultaneous_pointwise`),
-§2.4 (`bracketing_uniform_from_grid`), and §2.5 (`glivenko_cantelli_uniform_proved`)
-following `bracketing-decomposition-draft.md` §2 verbatim.
+Sessions 4–6 filled in §2.3 (`bracketing_simultaneous_pointwise`),
+§2.4 (`bracketing_uniform_from_grid`), and §2.5 (`glivenko_cantelli_uniform`,
+which proves the parent's uniform-convergence statement from the smaller
+real-analytic `bracketingGrid_exists`).
 
-## Axiom shift, not net axiom reduction (yet)
+## Axiom retirement (S7)
 
-Until §2.5 lands, the chain has the parent's `glivenko_cantelli_uniform` AND
-the new `bracketingGrid_exists` axiom — net count goes 1 → 2. After §2.5
-proves `glivenko_cantelli_uniform_proved` from `bracketingGrid_exists`, the
-parent's monolithic axiom can be retired (or the gallery entry can adopt the
-proved variant), bringing the chain back to 1 axiom whose mathematical content
-is now purely real-analytic (no probability) and is the natural Mathlib home
-for upstream contribution as `Monotone.exists_increasing_continuity_seq`.
+After §2.3–§2.5 landed, the parent's monolithic `glivenko_cantelli_uniform`
+axiom became logically redundant. S7 retired it: the axiom was deleted from
+`LawsOfLargeNumbersOQ04.lean`, and §2.5's proved variant was renamed from
+`glivenko_cantelli_uniform_proved` to `glivenko_cantelli_uniform` to become
+the canonical statement. The chain now has a single axiom
+(`bracketingGrid_exists`), whose mathematical content is purely real-analytic
+(no probability) and is the natural Mathlib home for upstream contribution as
+`Monotone.exists_increasing_continuity_seq`.
 
 ## Build status
 
@@ -107,11 +109,10 @@ structure BracketingGrid (F : ℝ → ℝ) (ε : ℝ) where
     `Monotone.exists_increasing_continuity_seq`
     (`bracketing-decomposition-draft.md` §2.2 sketch).
 
-    Once §2.3–§2.5 of the bracketing decomposition land in subsequent sessions,
-    this single axiom replaces the parent's monolithic
-    `glivenko_cantelli_uniform`, narrowing the open mathematical content from
-    a probabilistic uniformity statement to a purely real-analytic ε-cover
-    induction. -/
+    After S7 retired the parent's monolithic `glivenko_cantelli_uniform`,
+    this single axiom is the chain's sole remaining assumption — narrowing
+    the open mathematical content from a probabilistic uniformity statement
+    to a purely real-analytic ε-cover induction. -/
 axiom bracketingGrid_exists [IsProbabilityMeasure μ]
     {X : ℕ → Ω → ℝ} (hX_meas : ∀ i, Measurable (X i))
     {ε : ℝ} (hε : 0 < ε) :
@@ -457,11 +458,10 @@ combined via `MeasureTheory.ae_all_iff` into a single full-measure set on
 which, for every accuracy `δ > 0`, picking `m` with `1/(m+1) < δ/3` and
 applying §2.4 with `η := 1/(m+1)` gives `⨆x |Fₙ − F| ≤ 3/(m+1) < δ` eventually.
 
-This is the exact statement of the parent file's `glivenko_cantelli_uniform`
-axiom; with this theorem in place the parent axiom becomes redundant and can
-be retired in a follow-up, leaving `bracketingGrid_exists` as the sole
-remaining axiom in the chain. -/
-theorem glivenko_cantelli_uniform_proved [IsProbabilityMeasure μ]
+This is the canonical statement of uniform Glivenko-Cantelli. It replaces
+the parent's `glivenko_cantelli_uniform` axiom (retired in S7), leaving
+`bracketingGrid_exists` as the sole remaining axiom in the chain. -/
+theorem glivenko_cantelli_uniform [IsProbabilityMeasure μ]
     {X : ℕ → Ω → ℝ}
     (hX_meas : ∀ i, Measurable (X i))
     (hX_iid : iIndepFun X μ)
