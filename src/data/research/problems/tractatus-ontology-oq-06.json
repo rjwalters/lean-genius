@@ -1,0 +1,115 @@
+{
+  "slug": "tractatus-ontology-oq-06",
+  "title": "World-model spectrum between free and constrained models in TractatusOntology",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Classify the inhabitants of } \\mathtt{WorldModel}\\,S \\text{ into a refinement preorder with } \\mathtt{freeModel}\\,S \\text{ as terminal object, and identify which Tractarian theorems are spectrum-invariant vs spectrum-dependent.}",
+    "plain": "Organize the space of world models between the free (fully-independent) model and arbitrarily-constrained models into a principled spectrum, with a refinement preorder and a table classifying which Tractarian results survive at each tier.",
+    "whyMatters": [
+      "Makes the Tractatus's commitment to elementary independence precise as a point in a parameterized model-theoretic design space.",
+      "Provides a reusable taxonomy so downstream formalizations (epistemic logic, dynamic logic, causal inference) can plug into the TLP machinery.",
+      "Directly addresses Round-3 peer-review item #4 (Model spectrum section)."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "freeModel S inhabits WorldModel S with W = S → Prop (TractatusOntology.lean:288-291).",
+      "ConstrainedWorld S a b and weatherModel both refute IndependentWorlds (lines 596-604, 644-648).",
+      "truth_functional_compositionality_gen holds for every WorldModel (line 323) — spectrum-invariant."
+    ],
+    "open": [
+      "Refines preorder on WorldModel S with freeModel as terminal object (S2-α target).",
+      "Tautology preservation downward along Refines (S3 target).",
+      "Uniqueness-up-to-refinement-iso of freeModel among independence-satisfying models (S4+ target)."
+    ],
+    "goal": "Four-tier classification (free / Horn-constrained / equivalence-constrained / Kripke or quotient), with theorem-survival table and a refinement preorder making freeModel the maximum element."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T16:10:00Z",
+    "iteration": 1,
+    "focus": "Survey landscape of world-model variants reachable from the existing WorldModel S structure; produce a four-tier classification and identify a refinement preorder.",
+    "blockers": [],
+    "nextAction": "S2-α: Define Refines : WorldModel S → WorldModel S → Prop in TractatusOntology.lean (or a new TractatusOntologySpectrum.lean) and prove freeModel S is the maximum element.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE: doc-only survey establishing a four-tier spectrum (T0 free, T1 predicate-constrained with Horn / equivalence / cardinality sub-cases, T2 Kripke, T3 quotient), a candidate refinement preorder under which freeModel S is the maximum element, and a theorem-survival table separating spectrum-invariant results (compositionality, tautology-invariance) from spectrum-dependent ones (elementary_independence).",
+    "builtItems": [
+      ".lean/research/tractatus-ontology-oq-06/problem.md (S1 OBSERVE — problem statement and scope)",
+      ".lean/research/tractatus-ontology-oq-06/knowledge.md (S1 OBSERVE — four-tier spectrum, refinement preorder, theorem-survival table, three S2 candidates)",
+      ".lean/research/tractatus-ontology-oq-06/state.md (S1 OBSERVE — session log and next-action sketch)"
+    ],
+    "insights": [
+      "WorldModel S is maximally general (arbitrary W + holds relation); meaningful spectrum structure emerges from constraining W to subtype shapes {w : S → Prop // φ w}.",
+      "Compositionality and tautology-invariance are spectrum-invariant (proved for arbitrary WorldModel); elementary independence is the discriminating feature that pins down freeModel up to refinement-isomorphism.",
+      "freeModel S is the maximum element of the natural refinement preorder: any inhabited WorldModel M injects into freeModel via w ↦ (fun s ↦ M.holds w s).",
+      "The existing weatherModel and ConstrainedWorld are both instances of a 'Horn-constrained' Tier 1a family; a generic HornModel constructor would replace ad-hoc instances with parameterized infrastructure."
+    ],
+    "mathlibGaps": [
+      "Subtype + Filter API for predicate-constrained Tier 1 models (Mathlib.Order.Filter.Basic).",
+      "Relation.ReflTransGen for Tier 2 Kripke accessibility (already in Mathlib).",
+      "Quotient/Setoid for Tier 3 (already in Mathlib).",
+      "No Mathlib gap blocks S2-α; the preorder definition uses only the existing WorldModel structure."
+    ],
+    "nextSteps": [
+      "S2-α: Refines preorder + freeModel-is-maximum lemma (~30-60 lines, recommended starting point).",
+      "S2-β: Generic HornModel S (cs : List (S × S)) constructor + ConstrainedWorld equivalence.",
+      "S3: Tautology preservation downward along Refines.",
+      "S4+: freeModel uniqueness up to refinement-isomorphism among independence-satisfying inhabitants."
+    ]
+  },
+  "tags": [
+    "philosophy",
+    "logic",
+    "ontology",
+    "model-theory",
+    "truth-functions",
+    "seeker-selected",
+    "spectrum",
+    "refinement-preorder"
+  ],
+  "relatedProofs": [
+    "tractatus-ontology"
+  ],
+  "references": {
+    "papers": [
+      "Wittgenstein, Tractatus Logico-Philosophicus (1921), §§2.061-2.062 (independence), §§5.5-5.501 (truth-functional generation).",
+      "McGuinness & Hacker, 'Atomism and Saying-Showing in the Tractatus' — commentary motivating the spectrum framing of independence as a meta-claim."
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Order/Filter/Basic.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Logic/Equiv/Defs.html"
+    ],
+    "mathlib": [
+      "Mathlib.Order.RelClasses",
+      "Mathlib.Logic.Equiv.Defs",
+      "Mathlib.Order.Filter.Basic",
+      "Mathlib.Logic.Relation"
+    ]
+  },
+  "started": "2026-05-12T14:35:20.294Z",
+  "lastUpdate": "2026-05-12T16:10:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/TractatusOntology.lean",
+      "filename": "TractatusOntology.lean",
+      "lineCount": 1231,
+      "theoremCount": 40,
+      "axiomCount": 1,
+      "defCount": 26,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TractatusOntology.lean"
+    }
+  ]
+}
