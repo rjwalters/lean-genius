@@ -22,13 +22,26 @@ is the specialised Dedekind theorem at the unramified prime `p = 7`:
   roots with cycle type `(1, 1, 3)`, so it has order 3 in `q.Gal`;
 * `orderOf σ = 3 ⇒ 3 ∣ Fintype.card q.Gal` via `orderOf_dvd_card`.
 
-## Current S2 status (ORIENT)
+## Current status (S3 ORIENT refinement)
 
 Only one substantive sorry remains in this file:
 
 * `exists_gal_order_three : ∃ σ : q.Gal, orderOf σ = 3` — the Frobenius
-  construction. S3 will discharge this via
-  `Mathlib.NumberTheory.RamificationInertia.Galois`.
+  construction. S4 will discharge this using the pinned `v4.26.0` API:
+  - `AlgHom.IsArithFrobAt` and `IsArithFrobAt.exists_of_isInvariant`
+    (`Mathlib/RingTheory/Frobenius.lean`)
+  - `arithFrobAt R G Q : G` (explicit Frobenius choice, same file)
+  - `Ideal.Quotient.stabilizerHom_surjective` and
+    `Algebra.isInvariant_of_isGalois`
+    (`Mathlib/RingTheory/Invariant/Basic.lean`)
+  - `Ideal.inertiaDegIn`, `card_inertia_eq_ramificationIdxIn`
+    (`Mathlib/NumberTheory/RamificationInertia/Galois.lean`)
+
+See `research/problems/inverse-galois-a5-oq-01/knowledge.md` § "S3 —
+ORIENT refinement" for the full API audit and the residual Mathlib
+gap (the bridge `orderOf (arithFrobAt R G Q) ≥ inertiaDegIn (Q.under R) S`
+at unramified primes — the genuine new content for S4 ACT, ~100-150
+Lean lines out of a total ~230-360 estimated for S4).
 
 The trivial precondition (`seven_nondiv_disc`) and the trivial bridge
 (`three_dvd_gal_card_proved`) are proved with `omega` / `orderOf_dvd_card`.
