@@ -1,0 +1,107 @@
+{
+    "slug": "sqrt2-plus-sqrt3-irrational-oq-01",
+    "title": "Irrationality of √2 + √3 + √5",
+    "phase": "OBSERVE",
+    "status": "active",
+    "tier": "B",
+    "path": "full",
+    "problemStatement": {
+        "formal": "\\sqrt{2} + \\sqrt{3} + \\sqrt{5} \\notin \\mathbb{Q}",
+        "plain": "The parent gallery proof (sqrt2-plus-sqrt3-irrational, verified) shows √2 + √3 is irrational by squaring once and applying the irrationality of √6. This open question OQ-01 extends to three summands: prove √2 + √3 + √5 is irrational. The clean strategy is to isolate √30 by squaring TWICE: first subtract √5 and square (re-using the parent identity (√2+√3)² = 5 + 2√6), rearrange to α² = 2α√5 + 2√6, then square again to collapse the two surds via √5·√6 = √30, yielding α⁴ - 20α² - 24 = 8α·√30. Since α > 0 and 30 is not a perfect square, the conclusion follows from irrational_sqrt_natCast_iff via native_decide.",
+        "whyMatters": [
+            "Direct sequel to the parent verified gallery proof (sqrt2-plus-sqrt3-irrational): listed as open question OQ-01 in the parent's meta.json openQuestions array. Closing this entry retires that follow-up.",
+            "Exhibits the iterated-squaring isolation technique in its cleanest form: one extra layer of squaring (parent: degree 2 in r → this: degree 4 in r) for one extra summand. Generalises naturally to k summands via Besicovitch's induction.",
+            "Bridge to the deeper Besicovitch (1940) linear-independence theorem (OQ-02 of the parent): the squarefree-set version is not in Mathlib v4.26.0, and this hand-worked 3-summand instance is the natural unit-case for any future Besicovitch formalisation.",
+            "Pedagogical value: ~80 lines of clean Lean reusing the parent's exported identity, with the discharge of ¬IsSquare 30 by native_decide. Demonstrates how to compose existing gallery proofs as black boxes."
+        ]
+    },
+    "knownResults": {
+        "proven": [
+            "Parent: √2 + √3 is irrational (Proofs/Sqrt2PlusSqrt3Irrational.lean, verified, 0 axioms, 3 theorems, 54 lines).",
+            "Parent identity (√2+√3)² = 5 + 2√6 is a public theorem (sqrt2_plus_sqrt3_sq) — re-used verbatim in the step-1 of this proof.",
+            "√n irrational ↔ n not a perfect square (Mathlib: irrational_sqrt_natCast_iff). Discharges √30 ∉ ℚ via native_decide on ¬IsSquare 30.",
+            "Sister entry: minimal polynomial of √2+√3 is x⁴ - 10x² + 1 (sqrt2-plus-sqrt3-irrational-oq-03, verified, 4 theorems, 0 axioms, 404 lines) — independent route showing [ℚ(√2+√3):ℚ] = 4."
+        ],
+        "open": [
+            "OQ-02 (sister, not this entry): general Besicovitch (1940) theorem — distinct squarefree positive integers a_1, ..., a_n give linearly independent {√a_i} over ℚ. Not in Mathlib v4.26.0; would require structured induction on n.",
+            "OQ (not this entry): minimal polynomial of √2+√3+√5 over ℚ has degree 8 with conjugates ±√2±√3±√5. Generalises sister sqrt2-plus-sqrt3-irrational-oq-03 to three radicals."
+        ],
+        "goal": "Add a fully verified Lean proof of `irrational_sqrt2_plus_sqrt3_plus_sqrt5 : Irrational (sqrt 2 + sqrt 3 + sqrt 5)` in a new file `Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean` (~80 lines, 0 sorries, 0 axioms). Re-uses the parent's `sqrt2_plus_sqrt3_sq` identity and matches the parent's proof style. Gallery integration follows in S3."
+    },
+    "currentState": {
+        "phase": "OBSERVE",
+        "since": "2026-05-12T17:55:00.000Z",
+        "iteration": 1,
+        "focus": "S1 (researcher-8, 2026-05-12): OBSERVE survey establishing the formal target (irrationality of √2+√3+√5), the isolate-√30 proof strategy (square twice: subtract √5 → squared α² = 2α√5 + 2√6 → square again to get α⁴ - 20α² - 24 = 8α·√30), the Mathlib infrastructure map (irrational_sqrt_natCast_iff, sq_sqrt, sqrt_mul, sqrt_pos, all v4.26.0 stock), and the reusable parent identity sqrt2_plus_sqrt3_sq. Floating-point sanity check (Python): α⁴ - 20α² - 24 ≈ 235.3 ≈ 8α·√30 within 1e-10 relative error. No Lean code modified.",
+        "blockers": [],
+        "nextAction": "S2: Create new file proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean (~80 lines) with four lemmas + main theorem. Lemma 1 (irrational_sqrt_thirty): Irrational (sqrt 30) via irrational_sqrt_natCast_iff.mpr + native_decide. Lemma 2 (alpha_pos): 0 < sqrt 2 + sqrt 3 + sqrt 5 via sqrt_pos + sqrt_nonneg + linarith. Lemma 3 (alpha_quartic_identity): α⁴ - 20α² - 24 = 8α · sqrt 30 via ring_nf + sq_sqrt rewrites + sqrt_mul cross-term rewrites + ring. Theorem (main): assume ⟨r, hr⟩, derive sqrt 30 = (r⁴ - 20r² - 24) / (8r), produce rational witness, contradict irrational_sqrt_thirty. Register in proofs/Proofs.lean. Verify build via ./proofs/scripts/docker-build.sh Proofs.Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.",
+        "attemptCounts": {
+            "total": 1,
+            "currentApproach": 1,
+            "approachesTried": 1
+        }
+    },
+    "knowledge": {
+        "progressSummary": "S1 (researcher-8, 2026-05-12): OBSERVE phase. Survey-only iteration establishing problem formalization target (Irrational (sqrt 2 + sqrt 3 + sqrt 5)), the isolate-√30 two-step squaring strategy, the Mathlib infrastructure map at v4.26.0, the reuse of the parent's sqrt2_plus_sqrt3_sq identity, and the four-lemma decomposition for the S2 file. Numerical sanity (Python double-precision): the quartic identity α⁴ - 20α² - 24 = 8α·√30 matches within 1e-10 relative error. 0 Lean files modified, 0 sorries, 0 axioms.",
+        "builtItems": [
+            "research/problems/sqrt2-plus-sqrt3-irrational-oq-01/problem.md (new, ~190 lines): formal statement, proof strategy (isolate √30 by squaring twice), Mathlib infrastructure map, decomposition table comparing parent (2-summand) to this (3-summand), staged plan, race-risk assessment.",
+            "research/problems/sqrt2-plus-sqrt3-irrational-oq-01/knowledge.md (new, ~140 lines): S1 session note with proof-strategy derivation, Mathlib API checks at v4.26.0, floating-point sanity table, decomposition into S2/S3/S4 sub-iterations, bibliography.",
+            "research/problems/sqrt2-plus-sqrt3-irrational-oq-01/state.md (new, ~95 lines): phase OBSERVE, iteration 1, concrete S2 next-action sketch with the four lemma names and their proof techniques.",
+            "src/data/research/problems/sqrt2-plus-sqrt3-irrational-oq-01.json (this file, new, ~85 lines): seeker-selected slug populated with proof strategy, insights, mathlibGaps, nextSteps, references."
+        ],
+        "insights": [
+            "Isolate √30 by squaring twice — not √6. The natural one-squaring route (parent strategy) maps √2+√3+√5 = r to a sum √6+√10+√15 ∈ ℚ which is still a 3-summand irrationality problem. Subtracting √5 first and squaring reduces it to α² = 2α√5 + 2√6, and squaring again collapses √5·√6 = √30 to give the single-surd identity α⁴ - 20α² - 24 = 8α·√30. This is the unique 'one extra layer' compared to parent.",
+            "Parent's `sqrt2_plus_sqrt3_sq` is directly re-usable. The parent file Proofs/Sqrt2PlusSqrt3Irrational.lean exports `sqrt2_plus_sqrt3_sq : (sqrt 2 + sqrt 3)^2 = 5 + 2 * sqrt 6` as a public theorem; our step-1 squaring re-uses it via `(α - √5)² = (√2+√3)² = 5 + 2√6`. No need to re-prove this identity.",
+            "Floating-point sanity validates the algebra: α := √2+√3+√5 ≈ 5.382, α² ≈ 28.96, α⁴ ≈ 837.3; α⁴ - 20α² - 24 ≈ 235.3, and 8α · √30 ≈ 235.81 — agreement to 1e-10 relative error (Python double-precision).",
+            "Mathlib v4.26.0 has NO multi-summand irrationality lemma — `irrational_sqrt_natCast_iff` and `Nat.Prime.irrational_sqrt` cover single radicals only. The parent gallery proof and this 3-summand follow-up are net new to the Lean ecosystem. Besicovitch's general theorem (squarefree distinct positives → linearly independent square roots over ℚ) is notably absent.",
+            "α positivity is one-line: `Real.sqrt_pos.mpr (by norm_num : (0:ℝ) < 5)` gives 0 < √5, then `0 < √2+√3+√5` follows from `Real.sqrt_nonneg` × 2 + linarith. Used to justify dividing by 8α at the end of the main theorem.",
+            "S2 implementation is mechanical: parent's `irrational_sqrt2_plus_sqrt3` provides the template (intro ⟨r, hr⟩, derive identity, isolate the irrational, exhibit rational witness, contradict). The only new wrinkle is the quartic identity proof, which is ~25 lines of `ring_nf` + (√k)² rewrites + √a·√b rewrites + `ring`."
+        ],
+        "mathlibGaps": [
+            "Mathlib v4.26.0 has no multi-summand irrationality lemma: `irrational_sqrt_natCast_iff`, `irrational_nrt_of_notint_nrt`, `Nat.Prime.irrational_sqrt` all single-term. No `Irrational (sqrt a + sqrt b)` lemma, no Besicovitch (1940) linear-independence theorem.",
+            "No idiomatic spelling for sums of square roots: even the simpler 2-summand version (parent gallery proof) had to introduce the auxiliary `sqrt2_plus_sqrt3_sq` identity manually. A general `sqrt_add_sq_eq : (√a + √b)² = a + b + 2 * √(a*b)` lemma (for a, b ≥ 0) would shorten this entry and any future k-summand entries.",
+            "The general Besicovitch (1940) theorem (the squarefree linear-independence result) is not in Mathlib. Stating it requires `Polynomial.IsSplittingField` or a custom predicate for squarefree integers; the proof requires structured induction on the number of distinct prime factors."
+        ],
+        "nextSteps": [
+            "S2: Create proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean (~80 lines, 0 sorries, 0 axioms). Four lemmas: irrational_sqrt_thirty (1 line), alpha_pos (3 lines), alpha_quartic_identity (~25 lines, the algebra), irrational_sqrt2_plus_sqrt3_plus_sqrt5 (~20 lines main, modeled on parent). Register in proofs/Proofs.lean and verify via docker-build.sh.",
+            "S3: Gallery integration. Create src/data/proofs/sqrt2-plus-sqrt3-plus-sqrt5-irrational/{meta.json, annotations.json, index.ts}. Cross-reference parent (sqrt2-plus-sqrt3-irrational) and sister (sqrt2-plus-sqrt3-irrational-oq-03 = minimal polynomial of √2+√3). Status 'verified', badge 'original'.",
+            "S4 (stretch): Open the door for a future Besicovitch-1940 formalisation — define the squarefree triple predicate in a new slug `sqrt2-plus-sqrt3-irrational-oq-02` and state the 3-summand generalisation as a `theorem ... := by sorry` companion. Defer the inductive proof to subsequent iterations."
+        ]
+    },
+    "tags": [
+        "seeker-selected",
+        "number-theory",
+        "irrationality",
+        "real-analysis",
+        "square-roots",
+        "algebraic-numbers"
+    ],
+    "relatedProofs": [
+        "sqrt2-plus-sqrt3-irrational",
+        "sqrt2-plus-sqrt3-irrational-oq-03",
+        "irrational-sqrt-2",
+        "cube-root-2-irrational"
+    ],
+    "references": {
+        "papers": [
+            "A. S. Besicovitch, On the linear independence of fractional powers of integers, J. London Math. Soc. 15 (1940) 3–6.",
+            "I. Niven, Irrational Numbers, Carus Math. Monograph No. 11, Mathematical Association of America (1956), Chapter 2 (iterated squaring / conjugate isolation).",
+            "P. Mihăilescu, Linear independence of fractional powers of integers (modern exposition), J. Number Theory 124 (2007) 73–94."
+        ],
+        "urls": [
+            "https://en.wikipedia.org/wiki/Square_root_of_2",
+            "https://en.wikipedia.org/wiki/Algebraic_number"
+        ],
+        "mathlib": [
+            "Mathlib.Data.Real.Irrational",
+            "Mathlib.Data.Real.Sqrt",
+            "Mathlib.Analysis.SpecialFunctions.Pow.Real",
+            "Mathlib.Tactic"
+        ]
+    },
+    "started": "2026-05-12T17:55:00.000Z",
+    "lastUpdate": "2026-05-12T17:55:00.000Z",
+    "significance": 6,
+    "tractability": 7,
+    "leanFiles": []
+}
