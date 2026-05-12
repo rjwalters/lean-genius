@@ -1597,6 +1597,175 @@ example : schonhageOuterGuardFires 107 85 = false :=
   hgcdMatrixSafe_inner_abort_imp_outer_fails 107 85
     (by decide) (by native_decide)
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XXI: COMPOSE-BRANCH DECOMPOSITION (Session 31)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Compose-branch matrix / apply decomposition
+
+    PART XX (S30) implemented the **inner-abort ⇒ outer-fails**
+    direction of the `s28b-inner-guard-equivalence-spec.md` §3
+    equivalence: when the inner-guard abort branch of
+    `hgcdMatrixSafe (a + b + 1) a b` is taken, the resulting
+    `schonhageOuterGuardFires a b` is `false`.
+
+    This session takes the structural step toward the converse
+    direction (**compose ⇒ outer-fires**, spec §5.2). The full
+    converse requires a non-expansion lemma
+    `max ((M.mul N).apply a b).natAbs ≤ max (N.apply a b).natAbs`
+    for general unimodular `M, N` — an open question per the
+    spec. As a deliberate prerequisite, this section provides
+    three building-block lemmas that are sorry-free, independent
+    of the non-expansion question, and immediately reusable in any
+    future closure of S31:
+
+    1. `cofactor_mul_apply` — restated locally so this file does
+       not need to import `BinaryGcdOQ03OQ02.lean` (which carries
+       a 2000+ line preamble unrelated to PathA's purpose). The
+       canonical statement at `BinaryGcdOQ03OQ02.lean:77` (in the
+       `HGcd` namespace) is reproduced verbatim here under the
+       `HGcdSafe` namespace.
+
+    2. `hgcdMatrixSafeOf_compose_branch` — the **matrix-level**
+       compose-branch decomposition. Mirror of S30's `hMatrix`
+       local lemma, but for the inner-fires branch
+       (`max u v < max a b`) rather than the inner-aborts branch.
+
+    3. `hgcdSafeApply_compose_branch` — the **apply-level**
+       compose-branch decomposition. Builds on (1) and (2): the
+       column output `hgcdSafeApply a b` equals the outer matrix
+       `hgcdMatrixSafe (a + b) u v` applied to the inner's column
+       output `M_inner.apply (a, b)`.
+
+    The S30 abort-branch theorem is recovered structurally by
+    swapping `if_pos hlt` ↦ `if_neg (Nat.not_lt.mpr hge)` in
+    `hgcdMatrixSafeOf_compose_branch`'s proof; the two are
+    structurally dual.
+
+    These three lemmas do **not** prove the converse direction by
+    themselves. The compose-branch's `apply` output is bounded
+    by the outer matrix's behaviour on the *inner's* intermediate
+    pair, not by the original `(a, b)`. Closing the converse
+    requires showing
+    `max (outerMat.apply (innerOut.1) (innerOut.2)).natAbs
+        ≤ max innerOut.1.natAbs innerOut.2.natAbs`,
+    which is the spec §5.2 non-expansion conjecture. -/
+
+/-- **Cofactor multiplication composes the `apply` action.**
+
+    For any two cofactor matrices `M, N` and integers `a, b`,
+    `(M.mul N).apply a b = M.apply (N.apply a b).1 (N.apply a b).2`.
+
+    Restated locally in `HGcdSafe` so PathA does not need to
+    import `BinaryGcdOQ03OQ02.lean`. Identical to the canonical
+    version at `BinaryGcdOQ03OQ02.lean:77` (which lives in the
+    `HGcd` namespace).
+
+    Proof: unfold both `CofactorMatrix.mul` and
+    `CofactorMatrix.apply`; the two coordinates of the resulting
+    pair match by `ring` since cofactor multiplication is exactly
+    the row-by-column matrix product. -/
+theorem cofactor_mul_apply (M N : CofactorMatrix) (a b : ℤ) :
+    (M.mul N).apply a b =
+      M.apply (N.apply a b).1 (N.apply a b).2 := by
+  simp only [CofactorMatrix.mul, CofactorMatrix.apply, Prod.mk.injEq]
+  refine ⟨?_, ?_⟩ <;> ring
+
+/-- **Compose-branch matrix decomposition.**
+
+    Above threshold (`hab`), if the inner-guard *compose* branch
+    of `hgcdMatrixSafe (a + b + 1) a b` is taken — i.e., the
+    natAbs pair `(u, v)` of `M_inner.apply (a, b)` satisfies
+    `max u v < max a b` (`hlt`) — then `hgcdMatrixSafeOf a b`
+    equals the **composed matrix**
+    `(hgcdMatrixSafe (a + b) u v).mul M_inner`, where
+    `M_inner := hgcdMatrixSafe (a + b) (a / 2 ^ s) (b / 2 ^ s)`
+    is the inner recursion.
+
+    Dual to the S30 `hgcdMatrixSafe_inner_abort_imp_outer_fails`
+    `hMatrix` local lemma, which discharges the abort branch via
+    `if_neg`. The same `dsimp only` + `if_*` pattern from S18's
+    `hgcdMatrixSafe_det_unit` `let`-handling reduces the
+    `hgcdMatrixSafe_succ` RHS to the inner if's then-branch.
+
+    Proof structure mirrors S30: unfold `hgcdMatrixSafeOf`,
+    rewrite `hgcdMatrixSafe_succ` and `if_neg hab` to pin the
+    outer threshold dispatch to the recursive branch, `dsimp
+    only` to beta-reduce the introduced `let` bindings, then
+    `if_pos hlt` to commit to the inner-fires branch. -/
+theorem hgcdMatrixSafeOf_compose_branch (a b : ℕ)
+    (hab : ¬ max a b < hgcdThresholdSafe)
+    (hlt :
+      max
+        ((hgcdMatrixSafe (a + b)
+            (a / 2 ^ hgcdShiftSafe a b)
+            (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+        ((hgcdMatrixSafe (a + b)
+            (a / 2 ^ hgcdShiftSafe a b)
+            (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs
+        < max a b) :
+    hgcdMatrixSafeOf a b
+      = (hgcdMatrixSafe (a + b)
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs).mul
+        (hgcdMatrixSafe (a + b)
+          (a / 2 ^ hgcdShiftSafe a b)
+          (b / 2 ^ hgcdShiftSafe a b)) := by
+  unfold hgcdMatrixSafeOf
+  rw [hgcdMatrixSafe_succ, if_neg hab]
+  dsimp only
+  rw [if_pos hlt]
+
+/-- **Compose-branch `apply` decomposition.**
+
+    Builds on `hgcdMatrixSafeOf_compose_branch` and
+    `cofactor_mul_apply`: in the inner-fires branch, the column
+    output `hgcdSafeApply a b` equals the outer matrix
+    `hgcdMatrixSafe (a + b) u v` applied to the inner's column
+    output `M_inner.apply (a, b)`.
+
+    Significance for S31: this is the **forward bridge** for the
+    compose ⇒ outer-fires direction. To conclude the outer guard
+    fires (`schonhageOuterGuardFires a b = true`), we need
+    `max .1.natAbs .2.natAbs < max a b` for `hgcdSafeApply a b`.
+    The compose-branch hypothesis `hlt` is on the *inner's*
+    column pair, not the outer composite's. The remaining gap —
+    that the outer matrix's action on the inner's output does not
+    expand `max` beyond `max u v` — is the non-expansion
+    conjecture noted in the S31 spec §5.2. -/
+theorem hgcdSafeApply_compose_branch (a b : ℕ)
+    (hab : ¬ max a b < hgcdThresholdSafe)
+    (hlt :
+      max
+        ((hgcdMatrixSafe (a + b)
+            (a / 2 ^ hgcdShiftSafe a b)
+            (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+        ((hgcdMatrixSafe (a + b)
+            (a / 2 ^ hgcdShiftSafe a b)
+            (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs
+        < max a b) :
+    hgcdSafeApply a b
+      = (hgcdMatrixSafe (a + b)
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs).apply
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2 := by
+  unfold hgcdSafeApply
+  rw [hgcdMatrixSafeOf_compose_branch a b hab hlt]
+  exact cofactor_mul_apply _ _ _ _
+
 end HGcdSafe
 
 /-! ## Summary
