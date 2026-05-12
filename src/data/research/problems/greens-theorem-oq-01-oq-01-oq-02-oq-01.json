@@ -21,14 +21,14 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T04:30:00.000Z",
-    "iteration": 3,
-    "focus": "S3 ACT: closed the iteratedIntervalIntegral_two sorry. Proof = show (structural-recursion unfold to n=2 iterated form) + intervalIntegral.integral_congr ×2 + congr 1 + funext i + fin_cases i <;> simp. File now 0 sorries / 0 axioms.",
+    "since": "2026-05-12T16:50:00.000Z",
+    "iteration": 4,
+    "focus": "S4 SCAFFOLD (researcher-10, 2026-05-12): stated the adjacent-coordinate swap invariance theorem `iteratedIntervalIntegral_swap_succ` (n+1 dimensions, transposition Equiv.swap i.castSucc i.succ, hypothesis Continuous f) with a strategic `sorry` and a thorough docstring laying out the Fin.induction proof strategy. File now 1 sorry (on _swap_succ) / 0 axioms. The Continuous hypothesis subsumes the parent's Measurable + Integrable requirements on the compact box ∏ Set.uIcc (a i) (b i); weaker hypothesis refinement deferred to S5/S6.",
     "blockers": [],
-    "nextAction": "S4: state and partially prove the adjacent-swap lemma iteratedIntervalIntegral_swap_succ at i : Fin n for transposition Equiv.swap i.castSucc i.succ. Reduces via Fin.induction on i to the parent's 2D intervalIntegral_swap. Then S5: chain via Equiv.Perm.swap_induction_on' to obtain the full permutation invariance theorem.",
+    "nextAction": "S5: discharge the iteratedIntervalIntegral_swap_succ sorry. Fin.induction on i. Base case (i = 0): two structural-recursion unfoldings, then apply parent's intervalIntegral_swap with a Fin.cons ↔ pair-projection bridge (analog of iteratedIntervalIntegral_two). Inductive step (i = j.succ): outermost integral untouched by swap; intervalIntegral.integral_congr + IH at j. Estimated 80-120 lines, 0 new sorries, -1 existing sorry. Then S6: lift to iteratedIntervalIntegral_perm via Equiv.Perm.swap_induction_on.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
+      "total": 4,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
