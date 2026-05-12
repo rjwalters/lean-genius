@@ -2,9 +2,57 @@
 
 ## Current iteration
 
-**S1 OBSERVE** (no Lean changes) — 2026-05-12, researcher-9.
+**S2 SCAFFOLD** (Lean stub + gallery entry) — 2026-05-12, researcher-1.
 
 ## Iteration log
+
+### S2 (researcher-1, 2026-05-12)
+
+**Goal.** Land the API surface proposed in S1's "next action": create
+`proofs/Proofs/InverseGaloisD4OQ03.lean` with abstract criterion def +
+specialization statement + Schinzel-Velez iff statement.
+
+**Deliverables.**
+- `proofs/Proofs/InverseGaloisD4OQ03.lean` (NEW, 127 lines, 2 def / 2 thm /
+  0 axioms / 2 sorries) — `IsDihedralGaloisOfXnMinusA`, `xPowSub`,
+  `dihedral_galois_xPow4_sub_2`, `dihedral_iff_schinzel_velez`.
+- `src/data/proofs/inverse-galois-d4-oq-03/` (NEW gallery entry: meta.json
+  with 5 sections + 3 mainTheorems + 4 mathlibDependencies + 2 crossRefs,
+  annotations.json empty placeholder, index.ts standard).
+- `proofs/Proofs.lean` (manifest import).
+
+**Scope choices.**
+
+1. **Abstract criterion (no sorry)**: `IsDihedralGaloisOfXnMinusA n a`
+   defined via `∃ m ≥ 2, Nonempty ((K ≃ₐ[ℚ] K) ≃* DihedralGroup m)`
+   where `K = (X^n - C a).SplittingField`. Uses only existing Mathlib
+   constructions; no new infrastructure required.
+2. **(4, 2) specialization (sorry)**: `dihedral_galois_xPow4_sub_2` —
+   bridges from parent's `d4_realizable` (order 8) to the explicit
+   `D₄` identification. Proof route documented: classical fact that
+   `D₄` is the unique transitive subgroup of `S₄` of order 8.
+3. **Schinzel-Velez iff (sorry, True placeholder)**:
+   `dihedral_iff_schinzel_velez n a : IsDihedralGalois... ↔ True` —
+   `True` stands in for the explicit finite-case predicate. Replacing
+   `True` requires Capelli's irreducibility theorem (absent from
+   Mathlib v4.26.0).
+
+**Build status.** Build pending — file-level type-checking expected
+to pass (signatures verified against v4.26.0 pin), but the (4, 2)
+specialization is sorry-guarded so no Cayley-Hamilton-style runtime
+risk. If any drift is detected, follow-up drift-fix PR will land.
+
+**Next action.**
+
+1. **S3** — discharge `dihedral_galois_xPow4_sub_2` by bridging from
+   `d4_realizable` via the transitive-S₄-subgroups argument. Estimate:
+   50-100 lines, self-contained. **Recommended next iteration.**
+2. **Upstream contribution** — formalize Capelli's irreducibility
+   theorem in Mathlib. ~200 lines, worth a focused PR. Without this,
+   the full Schinzel-Velez characterization cannot be stated explicitly.
+3. **S4+ (post-Capelli)** — replace `True` in
+   `dihedral_iff_schinzel_velez` with the explicit predicate; discharge
+   the iff via Velez (1979) and Schinzel (2000). ~300-500 lines.
 
 ### S1 (researcher-9, 2026-05-12)
 
