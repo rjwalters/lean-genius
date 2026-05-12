@@ -338,6 +338,70 @@ theorem primes_sum_two_squares_infinite :
   haveI : Fact p.Prime := ⟨hp⟩
   exact Nat.Prime.sq_add_sq (by omega)
 
+/-! ## S6 SCAFFOLD: logarithmic-density target (Mertens-1874 form)
+
+The qualitative divergence in `not_summable_primes_4k1_log_div` (S5) extracts
+*no rate* — it only says the partial sums of `log p / p` over primes
+`p ≡ 1 (mod 4)` are unbounded. The Mertens-1874 quantitative statement
+pins the rate at `(1/2) log N`, i.e. logarithmic density 1/2:
+
+  ∑_{p ≤ N, p ≡ 1 (mod 4)} (log p) / p  ~  (1/2) · log N    (N → ∞).
+
+This is the **logarithmic-density** form of OQ-03, strictly weaker than the
+natural-density form but **unblocked by the current Mathlib pin**: the proof
+follows by Abel summation on the S4 lower bound
+`LSeries_residueClass_one_mod_four_lower_bound` together with the analogous
+upper bound (a corollary of `vonMangoldt_LSeries_eq` plus the standard tail
+estimate). The Ikehara-Tauberian machinery is **not** required for the
+logarithmic form — that's what makes Mertens-1874 a semi-elementary result.
+
+S6 (this iteration) is a **statement-only scaffold**: the target asymptotic
+is declared with `sorry`, giving subsequent iterations a concrete syntactic
+target. The proof (~100-150 lines, Abel summation in the limit `x ↘ 1`) is
+deferred to S7+.
+-/
+
+/-- **S6 SCAFFOLD (logarithmic Mertens-density target, stated with `sorry`).**
+The partial sums of `log p / p` over primes `p ≡ 1 (mod 4)` up to `N` grow
+asymptotically like `(1/2) · log N`. Equivalently, the prime-residue-class
+counting function has *logarithmic* density `1/2 = 1/φ(4)` in the Mertens
+sense.
+
+This is strictly *weaker* than `primes_4k1_natural_density`
+(which would give natural density `1/2`) but strictly *stronger* than
+`not_summable_primes_4k1_log_div` (S5, qualitative divergence only). It
+captures Mertens-1874's precise rate, which the natural-density form
+deepens to a counting asymptotic via the (currently missing) Tauberian
+transfer.
+
+**Proof outline (Abel summation, deferred to S7+):**
+
+1. By Abel summation, for any `f : ℕ → ℝ` and `s > 1`,
+   `∑_{n ≤ N} f n / n^s` and `∫_1^N (∑_{n ≤ t} f n) / t^(s+1) dt`
+   are related by an explicit identity (Mathlib:
+   `tsum_eq_integral_of_summable` / `Real.Abel_summation`).
+2. Apply this with `f n = (vonMangoldt.residueClass 1 n) · (n.Prime indicator)`
+   and `s = x` in the limit `x ↘ 1`, using S4's
+   `LSeries_residueClass_one_mod_four_lower_bound`.
+3. Convert the von Mangoldt restricted-prime sum to the elementary
+   `(log p) / p` form via `residueClass_one_mod_four_apply_prime` and
+   `vonMangoldt_apply_prime`.
+4. The analogous upper bound (using `LSeries_residueClass` continuity on
+   the half-plane `re s ≥ 1`) pins the `1/2 = 1/φ(4)` constant.
+
+**Status (Mathlib v4.26.0):** unblocked. All required Mathlib API
+(`Real.log`, `LSeries`, `vonMangoldt.LSeries_residueClass_lower_bound`,
+`Asymptotics.IsEquivalent`, Abel summation) is present at the pinned
+revision `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. The remaining work is
+analytic-number-theory bookkeeping rather than missing infrastructure. -/
+theorem mertens_log_density_4k1 :
+    Tendsto
+      (fun N : ℕ =>
+        (((Finset.range (N + 1)).filter (fun p => p.Prime ∧ p % 4 = 1)).sum
+          (fun p => Real.log (p : ℝ) / (p : ℝ))) / Real.log (N : ℝ))
+      atTop (𝓝 (1 / 2)) := by
+  sorry
+
 /-! ## OQ-03 target: natural-density form -/
 
 /-- **OQ-03 deliverable (stated, not yet proved).**
@@ -387,6 +451,7 @@ theorem primes_4k1_natural_density :
 #check not_summable_primes_4k1_vonMangoldt_div
 #check not_summable_primes_4k1_log_div
 #check primes_sum_two_squares_infinite
+#check mertens_log_density_4k1
 #check primes_4k1_natural_density
 
 end InfinitudePrimes4k1OQ03
