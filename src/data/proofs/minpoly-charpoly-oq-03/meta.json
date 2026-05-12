@@ -86,11 +86,19 @@
   },
   "sections": [
     {
-      "id": "intro-docstring",
-      "title": "§0: Open Question, Resolution Plan, and Sub-OQ Decomposition",
+      "id": "imports",
+      "title": "§0a: Imports",
       "startLine": 1,
+      "endLine": 6,
+      "summary": "Five imports: `MinpolyCharpoly` parent (17 theorems on minpoly | charpoly), Mathlib's `Matrix.Charpoly.{Basic,Minpoly}` for the characteristic polynomial, `Polynomial.Monic` for the monic predicate carried by every invariant factor, and `Tactic` for the catch-all tactic bundle. Notably absent: `Mathlib.Algebra.Module.PID` (the structure theorem) — deferred to OQ-03-OQ-02 to minimise the S1 dependency surface.",
+      "mathContext": "Toolkit: $\\mathrm{Matrix.charpoly}$, $\\mathrm{Polynomial.Monic}$, parent's $\\mathrm{minpoly} \\mid \\mathrm{charpoly}$ lemmas. Structure-theorem imports deliberately deferred."
+    },
+    {
+      "id": "intro-docstring",
+      "title": "§0b: Open Question, Resolution Plan, and Sub-OQ Decomposition",
+      "startLine": 7,
       "endLine": 109,
-      "summary": "Imports (MinpolyCharpoly parent, Mathlib charpoly/minpoly/monic, Tactic) and the top-level docstring stating the OQ-03 question, the affirmative resolution via the three-ingredient plan (companion matrices in-tree, Mathlib structure theorem for PID-modules, cyclic-summand-to-companion correspondence), and the four-sub-OQ decomposition roadmap (~150 + 300 + 250 + 200 = ~900 lines total).",
+      "summary": "Top-level docstring stating the OQ-03 question, the affirmative resolution via the three-ingredient plan (companion matrices in-tree, Mathlib structure theorem for PID-modules, cyclic-summand-to-companion correspondence), and the four-sub-OQ decomposition roadmap (~150 + 300 + 250 + 200 = ~900 lines total).",
       "mathContext": "OQ-03: 'Can the rational canonical form (based on minpoly factorization) be formalized in Lean 4?' Resolution: YES via three ingredients, no Mathlib gap."
     },
     {
