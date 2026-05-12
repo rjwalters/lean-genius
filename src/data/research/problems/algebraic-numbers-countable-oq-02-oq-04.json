@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S2 LOWER BOUND: rat_isComputable + ℵ₀ ≤ #(computable reals) added (unconditional). Conditional exact equality (= ℵ₀) follows from S1 corollary + S2 lower bound. Sorry count unchanged (1). Lean file: 110 → 208 lines.",
+    "progressSummary": "S3 UPPER BOUND DISCHARGED (build pending): decodeReal + Nat.Partrec.Code pipeline replaces sorry in computable_reals_countable. card_computable_reals_le_aleph0 and card_computable_reals_eq_aleph0 become unconditional. Lean file 208 → 316 lines, sorries 1 → 0.",
     "builtItems": [
       "AlgebraicNumbersCountableOQ02OQ04.lean: IsComputable (definition) — Mathlib-Computable rational sequence converging to r",
       "AlgebraicNumbersCountableOQ02OQ04.lean: computable_reals_countable (sorry, main theorem) — Set.Countable {r | IsComputable r}",
@@ -52,7 +52,11 @@
       "AlgebraicNumbersCountableOQ02OQ04.lean: rat_isComputable (S2 lemma) — ∀ q : ℚ, IsComputable (q : ℝ); constant-sequence witness using Computable.const + tendsto_const_nhds",
       "AlgebraicNumbersCountableOQ02OQ04.lean: int_isComputable, nat_isComputable, zero_isComputable, one_isComputable (S2 corollaries)",
       "AlgebraicNumbersCountableOQ02OQ04.lean: aleph0_le_card_computable_reals (S2 main result) — unconditional cardinal lower bound via ℚ → {r | IsComputable r} injection + Cardinal.mk_rat",
-      "AlgebraicNumbersCountableOQ02OQ04.lean: card_computable_reals_eq_aleph0 (S2) — exact ℵ₀ cardinality contingent on main sorry"
+      "AlgebraicNumbersCountableOQ02OQ04.lean: card_computable_reals_eq_aleph0 (S2) — exact ℵ₀ cardinality contingent on main sorry",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: decodeReal (noncomputable def, S3) — Nat.Partrec.Code → ℝ via Classical.choose on existence of (r, f) with c.eval n = Part.some (encode (f n)) and (f n : ℝ) → r",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: exists_code_of_computable_rat_seq (lemma, S3) — pipeline: Computable.encode.comp + Partrec.nat_iff + Nat.Partrec.Code.exists_code",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: computable_real_mem_range_decodeReal (lemma, S3) — every IsComputable real is in Set.range decodeReal; uses tendsto_nhds_unique + Part.some_injective + Encodable.encode_injective",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: computable_reals_countable (theorem, S3 proof) — 2-line proof via (Set.countable_range decodeReal).mono"
     ],
     "insights": [
       "The countability of computable reals is a direct consequence of finite Turing-machine descriptions: every computable real has a finite name, finite names form a countable set, so computable reals are countable.",
@@ -60,16 +64,21 @@
       "Computable reals are countable but NOT computably enumerable — there is no algorithm listing them. Cantor diagonalization fails to produce a non-computable real because the enumeration is itself non-computable. This is an important subtle distinction.",
       "Original problem.md said 'computable ⊂ algebraic' which is mathematically wrong (e and π are computable transcendentals). Corrected to algebraic ⊊ computable.",
       "The lower bound ℵ₀ ≤ #(computable reals) is unconditional and trivial: every rational is computable via the constant sequence, and ℚ is countably infinite.",
-      "Combined with the (still-sorry) upper bound, the exact equality #(computable reals) = ℵ₀ follows mechanically. S3 only needs to discharge the upper bound; equality is then free."
+      "Combined with the (still-sorry) upper bound, the exact equality #(computable reals) = ℵ₀ follows mechanically. S3 only needs to discharge the upper bound; equality is then free.",
+      "S3 build pipeline (verified Mathlib API): (1) Computable.encode : Computable Encodable.encode (Primcodable target), (2) Computable.comp for composition closure, (3) Partrec.nat_iff : Partrec f ↔ Nat.Partrec f for f : ℕ →. ℕ, (4) Nat.Partrec.Code.exists_code : Nat.Partrec f ↔ ∃ c, c.eval = f, (5) Set.countable_range (Countable domain) + Set.Countable.mono. Denumerable Nat.Partrec.Code is the instance.",
+      "Uniqueness of the chosen real (in computable_real_mem_range_decodeReal) follows from injectivity of Part.some (Part.some_injective) and Encodable.encode (Encodable.encode_injective): if two sequences have the same encoded eval at every n, they are pointwise equal, so their limits agree via tendsto_nhds_unique.",
+      "The decodeReal map embeds the upper-bound argument in a single noncomputable function, side-stepping the Surjective/Image API in favor of plain Set.range. Classical.choose handles the partiality of eval cleanly without affecting the countability conclusion."
     ],
     "mathlibGaps": [
       "Potential gap: Mathlib does not (as of 4.26.0) provide an off-the-shelf 'IsComputable' predicate on ℝ. The Mathlib `Computable` predicate is for functions, not reals. This entry defines `IsComputable r` via the existence of a Computable approximating sequence.",
       "Mathlib `Primcodable ℚ` should be available via `Mathlib.Data.Rat.Denumerable` + `Mathlib.Logic.Denumerable`. If `Computable (f : ℕ → ℚ)` fails to elaborate, switch the approximation type to ℕ and decode."
     ],
     "nextSteps": [
-      "S3: discharge the main sorry — implement codeLimit : Nat.Partrec.Code → Option ℝ via decoded rational eval. Apply Set.Countable.image to Encodable Nat.Partrec.Code.",
-      "S4 (optional): prove algebraic ⊆ computable — every root of a rational polynomial is computable (Sturm bisection).",
-      "S5 (advanced): construct Chaitin's Ω as explicit non-computable real."
+      "Verify the S3 build (Docker, ~45 min cold) — if green, bump badge wip → verified.",
+      "S4: prove algebraic ⊆ computable via Sturm sequence / bisection root-finding; lifts the algebraic_reals_countable result.",
+      "S5: prove IsComputable e and IsComputable π for explicit transcendental computable witnesses (strict inclusion algebraic ⊊ computable).",
+      "S6 (advanced): construct Chaitin Ω or a Cantor-diagonal non-computable real (explicit witness for computable ⊊ ℝ beyond cardinality).",
+      "S7 (advanced): prove the computable reals form a real closed subfield of ℝ (closure under arithmetic)."
     ]
   },
   "tags": [
