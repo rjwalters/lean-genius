@@ -1,12 +1,49 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S18a convex-combination helper landed; **0 sorries**, 2 axioms remaining)
+**Phase**: ACT (S18b typeclass-instance plumbing landed; **0 sorries**, 2 axioms remaining)
 **Path**: full
-**Since**: 2026-05-12T02:15:00Z
-**Iteration**: 18a
+**Since**: 2026-05-12T03:35:00Z
+**Iteration**: 18b
 
 ## Current Focus
+S18b (researcher-11, 2026-05-12, this iteration): Added `private lemma
+typeclass_witnesses_compact_subset` confirming that the four typeclass
+instances required for the Cellina–Browder construction
+(`CompactSpace ↥S`, `T2Space ↥S`, `NormalSpace ↥S`, `ParacompactSpace ↥S`)
+are derivable from `IsCompact S` alone at the pinned Mathlib v4.26.0
+rev. Only `CompactSpace` requires an explicit `haveI`
+(`isCompact_iff_compactSpace.mp hS_compact`); the remaining three are
+auto-inferred from `Subtype.t2Space` (Separation/Hausdorff.lean L351),
+`NormalSpace.of_compactSpace_r1Space` (Separation/Regular.lean L489;
+`R1Space ↥S` chained from `T2Space.r1Space` at L120 of Hausdorff.lean),
+and `paracompact_of_compact` (Compactness/Paracompact.lean L180). Net
+file change: lineCount 864 → 907 (+43); theoremCount 7 → 8 (+1); sorry
+count unchanged at 0; axiom count unchanged at 2. Also synced
+meta.json drift from S17 #17708 and S18a #17755 (the meta values had
+not been updated through the two intervening merges): top-level meta
++ leanFile both go from `lineCount=827, theoremCount=6, imports=7` to
+`lineCount=907, theoremCount=8, imports=10`, plus three new
+`originalContributions` entries for S17/S18a/S18b. Build pending
+(`proofs/.lake` recursive-symlink trap forces ~45 min cold Docker
+clone; all four Mathlib API references verified at pinned rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` via GitHub Contents API).
+
+**Independent S18-prep finding (this iteration):** `IsUpperHemicontinuous`
+at line 71 quantifies over `V : Set Y` with `IsOpen V` in the *ambient*
+topology of `Y` — when applied to `F : SetValuedMap ↥S ↥S`, `Y = ↥S`
+already carries the subtype topology, so `V` ranges over **subtype-relative**
+open sets. This confirms that S17's `uhc_local_thickening` (PR #17708)
+is directly applicable in the eventual `approx_selection_exists_proof`
+without an extra preimage-pull step. (Resolved the action item from
+s17 survey, step 1.)
+
+S18a (researcher-9, 2026-05-12, PR #17755 merged): Added `private lemma
+convex_combination_of_partition_in_S` packaging `Convex.sum_mem` with
+`PartitionOfUnity.nonneg` and `PartitionOfUnity.sum_finsupport` into a
+single one-line lemma for the Step-4 convex-combination membership check.
++48 lines (lineCount 779→827, theoremCount 5→6).
+
 S17 (researcher-11, 2026-05-11, survey + plan): Mathlib v4.26 API survey
 for `approx_selection_exists` (Cellina–Browder graph form) axiom
 elimination. After S16 (PR #17697) closed the docstring-vs-code drift
@@ -64,30 +101,24 @@ Two axioms remain:
    decomposes implementation into 6 PRs (each ≤ 80 lines).
 
 ## Next Action
-**S18b (next claim, ~80 lines)**: Add typeclass instance plumbing for the
-eventual `approx_selection_exists_proof` theorem: derive
-`[CompactSpace ↥S]` (via `isCompact_iff_compactSpace.mp hS_compact`),
-`[ParacompactSpace ↥S]` (via compact ⇒ paracompact, or directly from
-the metric structure), and `[NormalSpace ↥S]` (via T4 from metric).
-Land as a standalone analysis-only PR with the three `have` blocks
-isolated in a documented preamble; no axiom replacement yet.
-
-**Independent S18-prep**: Read lines 69–89 of
-`proofs/Proofs/SchauderFixedPointOQ03OQ01.lean` to confirm whether
-`IsUpperHemicontinuous` quantifies over ambient-image open sets or
-subtype-relative open sets (action item from s17 survey, step 1). This
-gates the Step 1 reuse decision: if subtype-relative, S17's
-`uhc_local_thickening` (PR #17708) is directly applicable; if
-ambient-image, an extra preimage-pull step is required in S18c.
+**S18c (next claim, ~50 lines)**: Open-cover build + finite subcover
+(Cellina Steps 1–2). For each `x ∈ ↥S`, S17's `uhc_local_thickening`
+(PR #17708) gives an open `U_x ∋ x` with `F(U_x) ⊆ ε`-thickening of
+`F(x)` — and per the S18b prep finding, this lemma is **directly
+applicable** (UHC quantifies over subtype-relative open sets in our
+use case, no preimage-pull step needed). Use
+`CompactSpace.elim_nhds_subcover` (available once `[CompactSpace ↥S]`
+is in scope per S18b) to extract a finite subcover
+`{U_{x_i}}_{i=1}^k`. Package the result as
+`private lemma exists_finite_subcover_for_uhc` taking the same
+hypotheses as `axiom approx_selection_exists`. No axiom elimination
+yet; this readies S18d (subordinate partition of unity).
 
 ## Open PRs
-- PR #17708 (researcher-1, 2026-05-12T00:54Z): S17 — Cellina–Browder
-  Step 1 scaffold helper (`lemma uhc_local_thickening`, +37 lines, build
-  pending). CONFLICTING with origin/main after #17711 merged the API
-  survey alongside.
 - PR #17493 (researcher-5, 2026-05-08T22:43Z): S11 — closed-ball Brouwer
   specialization (very old, predates S11.A strict-weakening; superseded
   by current `axiom brouwer_unit_ball` form).
+- PR #17708 (S17 Step-1 scaffold) MERGED 2026-05-12T03:21Z; no longer open.
 
 ## Iteration History (recent)
 
@@ -98,7 +129,9 @@ ambient-image, an extra preimage-pull step is required in S18c.
 | S15 | 2026-05-09 | researcher-3 | #17654 (merged) | Mathlib API drift fix |
 | S16 | 2026-05-12 | researcher-8 | #17697 (merged) | docstring sync to actual sorry-free state |
 | S17 | 2026-05-11 | researcher-11 | #17711 (merged) | Mathlib v4.26 API survey for `approx_selection_exists` axiom elimination |
-| S18a | 2026-05-12 | researcher-9 | (this PR) | Private helper `convex_combination_of_partition_in_S` packaging `Convex.sum_mem` + `PartitionOfUnity` API (+48 lines, build pending) |
+| S17 | 2026-05-12 | researcher-1 | #17708 (merged) | `lemma uhc_local_thickening` Cellina–Browder Step-1 scaffold (+37 lines) |
+| S18a | 2026-05-12 | researcher-9 | #17755 (merged) | Private helper `convex_combination_of_partition_in_S` (+48 lines) |
+| S18b | 2026-05-12 | researcher-11 | (this PR) | Private helper `typeclass_witnesses_compact_subset` (+43 lines, +1 theorem, meta sync 827→907) |
 
 ## Reference Files (in this directory)
 - `problem.md` — original problem statement
@@ -114,5 +147,6 @@ ambient-image, an extra preimage-pull step is required in S18c.
 - `s14-s11b-implementation.md` — S14 (researcher-3) helper implementation note
 - `s15-mathlib-api-drift-fix.md` — S15 (researcher-3) drift-fix note
 - `s17-cellina-mathlib-api-survey.md` — S17 (researcher-11) Mathlib API map for axiom elimination
-- `s18a-convex-combination-helper.md` — **S18a (this iteration)** convex-combination-of-partition-of-unity helper note
+- `s18a-convex-combination-helper.md` — S18a (researcher-9, merged #17755) convex-combination-of-partition-of-unity helper note
+- `s18b-typeclass-witnesses.md` — **S18b (this iteration)** typeclass instance plumbing note
 

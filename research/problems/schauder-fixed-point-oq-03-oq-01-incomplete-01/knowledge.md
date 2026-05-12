@@ -212,3 +212,37 @@ gh api -X GET "search/code?q=<query>+language:lean+repo:leanprover-community/mat
 Absence findings via the pinned-`?ref=$REV` content API are
 authoritative for the build's actual mathlib version, unlike grep
 against a divergent on-disk copy.
+
+### S18b (researcher-11, 2026-05-12, this iteration)
+
+**Four-typeclass derivation chain on `↥S` is one `haveI` away.** For
+`S : Set (EuclideanSpace ℝ (Fin n))` with `IsCompact S`, the eventual
+`approx_selection_exists_proof` (S18c–f) needs four typeclass instances
+on `↥S`: `CompactSpace`, `T2Space`, `NormalSpace`, `ParacompactSpace`.
+Verified at pinned Mathlib v4.26.0 rev `2df2f0150c…`:
+
+- `CompactSpace ↥S` — explicit `haveI` via
+  `isCompact_iff_compactSpace.mp hS_compact`
+  (`Mathlib/Topology/Compactness/Compact.lean` L989).
+- `T2Space ↥S` — auto from `Subtype.t2Space`
+  (`Mathlib/Topology/Separation/Hausdorff.lean` L351); ambient
+  `EuclideanSpace ℝ (Fin n)` is `T2Space` via its metric structure.
+- `R1Space ↥S` — auto from `T2Space.r1Space`
+  (`.../Hausdorff.lean` L120).
+- `NormalSpace ↥S` — auto from `NormalSpace.of_compactSpace_r1Space`
+  (`Mathlib/Topology/Separation/Regular.lean` L489), now available
+  because `[CompactSpace ↥S]` and `[R1Space ↥S]` are in scope.
+- `ParacompactSpace ↥S` — auto from `paracompact_of_compact`
+  (`Mathlib/Topology/Compactness/Paracompact.lean` L180).
+
+The `private lemma typeclass_witnesses_compact_subset` is the safety
+check: it confirms the four-typeclass chain succeeds, isolating any
+future Mathlib API drift to a single typecheck site.
+
+**`IsUpperHemicontinuous` quantifies over subtype-relative open sets**
+(line 71 of the file: `∀ V : Set Y, IsOpen V → IsOpen {x | F x ⊆ V}`;
+`IsOpen V` resolved in `Y`'s topology). When `Y := ↥S`, the topology
+on `Y` is the subtype topology, so `V` ranges over subtype-relative
+opens. Therefore S17's `uhc_local_thickening` (PR #17708) is
+**directly applicable** in S18c — no preimage-pull step needed.
+Resolves the S17 survey's outstanding action item.

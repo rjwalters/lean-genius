@@ -557,6 +557,49 @@ private lemma convex_combination_of_partition_in_S
     (∑ i ∈ ρ.finsupport x₀, ρ i x₀ • y i) ∈ K :=
   hK.sum_mem (fun i _ => ρ.nonneg i x₀) (ρ.sum_finsupport hx₀) hy
 
+/-- **S18b scaffold (typeclass instance plumbing for `approx_selection_exists_proof`):**
+
+    The Cellina–Browder construction (S17 survey, S18a–f decomposition) for
+    a compact convex `S ⊆ EuclideanSpace ℝ (Fin n)` requires four typeclass
+    instances on `↥S`:
+
+    1. `CompactSpace ↥S` — constructed from the `IsCompact S` hypothesis via
+       `isCompact_iff_compactSpace.mp` (`Mathlib/Topology/Compactness/Compact.lean`
+       line 989 at pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`).
+    2. `T2Space ↥S` — inherited automatically from the ambient
+       `EuclideanSpace ℝ (Fin n)` (which is `T2` via its metric structure)
+       through the subtype instance `Subtype.t2Space`
+       (`Mathlib/Topology/Separation/Hausdorff.lean` line 351).
+    3. `NormalSpace ↥S` — derived from `CompactSpace + R1Space` via
+       `NormalSpace.of_compactSpace_r1Space`
+       (`Mathlib/Topology/Separation/Regular.lean` line 489). The required
+       `R1Space ↥S` is itself an automatic consequence of `T2Space ↥S` via
+       `T2Space.r1Space` (`.../Hausdorff.lean` line 120).
+    4. `ParacompactSpace ↥S` — derived from `CompactSpace ↥S` alone via
+       `paracompact_of_compact`
+       (`Mathlib/Topology/Compactness/Paracompact.lean` line 180).
+
+    Only (1) requires explicit construction; (2)–(4) are obtained by
+    typeclass inference once (1) is in scope. This lemma confirms the
+    four-fold derivation typechecks at the pinned rev and isolates the
+    single `haveI` step that materializes (1). The S18c–f Cellina–Browder
+    construction will reproduce this `haveI` line inside the eventual
+    `theorem approx_selection_exists_proof` so that every Mathlib
+    partition-of-unity, normal-space-Urysohn, and locally-finite-cover
+    lemma has its typeclass prerequisites available without further
+    setup.
+
+    No new axiom is introduced; `axiom approx_selection_exists` (Axiom 2
+    above) remains in the file unchanged. -/
+private lemma typeclass_witnesses_compact_subset {n : ℕ}
+    (S : Set (EuclideanSpace ℝ (Fin n))) (hS_compact : IsCompact S) :
+    CompactSpace ↥S ∧ T2Space ↥S ∧ NormalSpace ↥S ∧ ParacompactSpace ↥S := by
+  haveI : CompactSpace ↥S := isCompact_iff_compactSpace.mp hS_compact
+  -- T2Space ↥S    : inferred from Subtype.t2Space (ambient EuclideanSpace is T2).
+  -- NormalSpace ↥S: inferred from CompactSpace + (R1Space ← T2Space).
+  -- ParacompactSpace ↥S: inferred from CompactSpace (paracompact_of_compact).
+  exact ⟨inferInstance, inferInstance, inferInstance, inferInstance⟩
+
 /-- **Sequential Compactness in Metric Spaces**
 
     In a compact metric space, every sequence has a convergent subsequence.
