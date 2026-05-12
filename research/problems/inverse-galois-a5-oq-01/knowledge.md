@@ -250,3 +250,166 @@ verify on merge.
 
 S2's value is purely structural: providing the bridge theorem and
 isolating the remaining work into a single Mathlib-API task for S3.
+
+## S3 (researcher-4, 2026-05-12) — ORIENT refinement: Mathlib API audit
+
+### Goal of this iteration
+
+S1's API survey (lines 82-96 above) was drafted before the Lean
+v4.26.0 / Mathlib pin was inspected first-hand; it gestures at
+`Ideal.Quotient.frobenius` and at "`Mathlib.NumberTheory.RamificationInertia.Galois`
+provides the Frobenius element framework" but does not pin specific
+declaration names. S3 fills that gap by reading the pinned Mathlib
+source at `rev 2df2f01...` (`v4.26.0`, May 2026) and replacing the
+hand-waved API references with concrete declaration names, file
+paths, and signatures. This is **the audit S4 ACT will operate on**,
+so S4 can spend its budget on the new bridge lemma rather than
+re-doing the import probe.
+
+**Scope**: docs only. No Lean changes. No sorry / axiom delta.
+
+### Confirmed Mathlib infrastructure (`v4.26.0`)
+
+Source files inspected via `gh api repos/leanprover-community/mathlib4/contents/...?ref=v4.26.0`:
+
+#### A. `Mathlib/RingTheory/Frobenius.lean` (new in Mathlib 2025, Andrew Yang)
+
+This file — added during the 2025 cycle and present at the pinned
+revision — is the **canonical Frobenius infrastructure** for R1. S1's
+survey predates it; it supersedes the conjectural `Ideal.Quotient.frobenius`
+name.
+
+| Decl | Kind | Signature (paraphrased) |
+|------|------|------------------------|
+| `AlgHom.IsArithFrobAt` | def (Prop) | `(φ : S →ₐ[R] S) (Q : Ideal S) : Prop`. Says `∀ x, φ x - x ^ Nat.card (R ⧸ Q.under R) ∈ Q`. |
+| `AlgHom.IsArithFrobAt.restrict` | def | A Frobenius restricts to the `Nat.card (R ⧸ Q.under R)`-power map on `S ⧸ Q`. |
+| `AlgHom.IsArithFrobAt.comap_eq` | thm | `[Q.IsPrime] → Q.comap φ = Q`. |
+| `AlgHom.IsArithFrobAt.eq_of_isUnramifiedAt` | thm | Frobenius is unique under unramifiedness. |
+| `IsArithFrobAt` | abbrev | Group-action version: `IsArithFrobAt R σ Q := (MulSemiringAction.toAlgHom R S σ).IsArithFrobAt Q`. |
+| `IsArithFrobAt.mul_inv_mem_inertia` | thm | Any two Frobenii at `Q` differ by an inertia-subgroup element. |
+| `IsArithFrobAt.conj` | thm | `IsArithFrobAt R σ Q → IsArithFrobAt R (τ * σ * τ⁻¹) (τ • Q)`. |
+| `IsArithFrobAt.exists_of_isInvariant` | thm | `[Q.IsPrime] [Finite (S ⧸ Q)] → ∃ σ : G, IsArithFrobAt R σ Q`. **The existence theorem we need.** |
+| `arithFrobAt` | noncomputable def (root namespace) | `[Q.IsPrime] [Finite (S ⧸ Q)] → G`. An explicit Frobenius choice, equivariant under conjugation across primes lying over the same base prime. |
+| `IsArithFrobAt.arithFrobAt` | thm | `arithFrobAt R G Q` satisfies the Frobenius congruence. |
+| `isConj_arithFrobAt` | thm | Frobenii at primes lying over the same base prime are conjugate in `G`. |
+
+**Pre-conditions of `exists_of_isInvariant` / `arithFrobAt`** (must
+be satisfied for the application):
+- `[Group G] [MulSemiringAction G S] [SMulCommClass G R S]`
+- `[Finite G]`
+- `[Algebra.IsInvariant R S G]`  (`R` is the fixed subring of `S` under `G`)
+- `[Q.IsPrime]`
+- `[Finite (S ⧸ Q)]`  (residue field is finite — automatic for primes of `𝒪_K` over `ℤ`)
+
+For our case `S = 𝒪_{q.SplittingField}`, `R = ℤ`, `G = q.Gal`,
+`Q = some prime of 𝒪_K above 7` these all hold (modulo the standard
+typeclass-inference work to give `G` a `MulSemiringAction` on `S`).
+
+#### B. `Mathlib/NumberTheory/RamificationInertia/Galois.lean`
+
+Contains the ramification/inertia framework specialised to Galois extensions.
+
+| Decl | Kind | Role |
+|------|------|------|
+| `Ideal.ramificationIdxIn` | def | The common ramification index of any prime over `p` (only meaningful in the Galois case). |
+| `Ideal.inertiaDegIn` | def | The common inertia degree of any prime over `p`. |
+| `exists_smul_eq_of_isGaloisGroup` | thm | The Galois group acts transitively on primes lying over `p` (`∃ σ : G, σ • P = Q`). |
+| `ramificationIdx_eq_of_isGaloisGroup` | thm | All ramification indices over a fixed `p` are equal. |
+| `inertiaDeg_eq_of_isGaloisGroup` | thm | All inertia degrees over a fixed `p` are equal. |
+| `ramificationIdxIn_eq_ramificationIdx` / `inertiaDegIn_eq_inertiaDeg` | thm | Bridge between the "In" version and the prime-specific version. |
+| `ncard_primesOver_mul_ramificationIdxIn_mul_inertiaDegIn` | thm | `r · (e · f) = [L : K]` — the fundamental cardinality identity in Galois form. |
+| `card_inertia_eq_ramificationIdxIn` | thm | `Nat.card (inertia subgroup) = ramificationIdxIn`. |
+| `ncard_primesOver_mul_card_inertia_mul_finrank` | thm | A second cardinality identity in terms of inertia and the residue extension. |
+
+#### C. `Mathlib/RingTheory/Invariant/Basic.lean`
+
+Provides the decomposition-group surjection that completes the chain
+from "Frobenius in `G` at `Q`" to "concrete element of `Gal(L/K)`".
+
+| Decl | Kind | Role |
+|------|------|------|
+| `Ideal.Quotient.stabilizerHom` | def | Map `MulAction.stabilizer G Q →* (S ⧸ Q) ≃ₐ[R ⧸ P] (S ⧸ Q)`. The decomposition group acts on the residue field. |
+| `Ideal.Quotient.stabilizerHom_surjective` | thm | The decomposition-group → residue-field-Galois-group map is surjective. |
+| `IsFractionRing.stabilizerHom` | def | Same idea passed to the fraction field. |
+| `IsFractionRing.stabilizerHom_surjective` | thm | Surjection from the decomposition group onto `Gal(L/K)` (the genuine Galois group). |
+| `Algebra.isInvariant_of_isGalois` | thm | A Galois extension `L/K` with rings of integers `B/A` gives `Algebra.IsInvariant A B Gal(L/K)`. **Crucial** — turns our setting into one where `arithFrobAt` applies. |
+| `IsIntegralClosure.MulSemiringAction` | noncomputable def | Builds the `MulSemiringAction Gal(L/K) B` instance from `IsAlgebraic K L`. |
+
+### Refined R1 Lean discharge plan (replacing S1's skeleton)
+
+The cleaner discharge for `exists_gal_order_three : ∃ σ : q.Gal, orderOf σ = 3`:
+
+```lean
+-- Setup typeclasses (most likely automatic via Algebra.isInvariant_of_isGalois):
+let K := q.SplittingField         -- already a Galois extension of ℚ
+let 𝒪 := 𝓞 K                       -- ring of integers
+-- Algebra.isInvariant_of_isGalois : Algebra.IsInvariant ℤ 𝒪 q.Gal ✓
+-- IsIntegralClosure.MulSemiringAction : MulSemiringAction q.Gal 𝒪 ✓
+
+-- Step 1: Exhibit a prime Q of 𝒪 above 7 with Q.IsPrime, Finite (𝒪 ⧸ Q),
+-- and inertia degree 3. (~50-100 lines.)
+-- Use: Ideal.exists_isMaximal_ne_bot_of_isPrime + ramification existence.
+-- The inertia degree value 3 follows from the cubic-factor decomposition
+-- of q mod 7 (parent's cubic_factor_no_roots_mod7).
+
+-- Step 2: The Frobenius element σ := arithFrobAt ℤ q.Gal Q. (1 line.)
+
+-- Step 3: Show orderOf σ = 3.
+--   3a: orderOf σ ∣ Nat.card (decomposition group at Q)
+--       = ramificationIdxIn · inertiaDegIn = 1 · 3 = 3
+--   3b: The image of σ in the residue Galois group is the
+--       Frobenius-power map x ↦ x^7, which has order = inertiaDegIn = 3
+--       (residue field 𝔽_{7^3} over 𝔽_7).
+--   3c: stabilizerHom_surjective + lifting gives orderOf σ ≥ 3, so = 3.
+-- (~100-200 lines, the genuinely new content.)
+```
+
+### Pinpointed Mathlib gap (residual content for S4 ACT)
+
+After this audit, the **single bridge lemma still missing in Mathlib**
+is the inequality
+
+  `orderOf (arithFrobAt R G Q) ≥ Ideal.inertiaDegIn (Q.under R) S`
+
+(at unramified primes, equality holds; in general the orderOf is
+the ramification index times the inertia degree). Mathlib has:
+- the Frobenius-existence side (`arithFrobAt`),
+- the residue-extension-order side
+  (`(R ⧸ P).Frobenius` has order `inertiaDegIn` because the residue
+  field extension is degree-`inertiaDegIn` over `𝔽_p`),
+
+but the link is exactly the decomposition-group analysis the S4 ACT
+PR will spell out (using `stabilizerHom_surjective` to lift the
+residue-side Frobenius order back to `q.Gal`).
+
+### Estimated S4 ACT budget (revised from S1's 400-line estimate)
+
+| Sub-step | Lean lines (est.) | Mathlib API anchor |
+|----------|-------------------|---------------------|
+| (a) Typeclass plumbing (`Algebra.IsInvariant`, `MulSemiringAction`, `Finite (𝒪 ⧸ Q)`) | 30-50 | `isInvariant_of_isGalois`, `IsIntegralClosure.MulSemiringAction` |
+| (b) Exhibit a specific `Q : Ideal 𝒪` over 7 with `inertiaDegIn = 3` | 100-150 | `Ideal.exists_isMaximal_*`, parent's `cubic_factor_no_roots_mod7` |
+| (c) Define `σ := arithFrobAt ℤ q.Gal Q` | 1 | `arithFrobAt` |
+| (d) Show `orderOf σ = 3` via decomposition-group + residue-Frobenius | 100-150 | `stabilizerHom_surjective`, `FiniteField.pow_card`, `iterateFrobeniusEquiv` |
+| (e) Plumbing back to `exists_gal_order_three` (already proved bridge in S2) | 5-10 | `orderOf_dvd_card` |
+
+**Total: 230-360 Lean lines.** S1's estimate of 400 lines remains
+realistic; the audit narrows the upper bound and provides exact API
+names so S4 ACT can dispatch step by step.
+
+### Build/verification status
+
+S3 OBSERVE refinement is doc-only (no Lean changes). No build needed.
+The Lean snippets above are pseudo-code intended to guide S4 ACT.
+
+### What S3 does NOT do
+
+- Does NOT discharge `exists_gal_order_three` (the sole sorry).
+- Does NOT modify any Lean file (`InverseGaloisA5Dedekind.lean`,
+  `Proofs.lean`, `InverseGaloisA5.lean` unchanged).
+- Does NOT change axiom or sorry counts.
+- Does NOT upgrade gallery status.
+
+S3's value: replace S1's hand-waved Mathlib references with concrete,
+verified-against-`v4.26.0` declaration names + signatures, so S4 ACT
+inherits a precise import-and-API-call list instead of an
+exploratory phase.
