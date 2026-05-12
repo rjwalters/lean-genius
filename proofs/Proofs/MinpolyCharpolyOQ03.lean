@@ -324,6 +324,16 @@ These extend S3 with three more sorry-free facts about the
   when the chain is eventually instantiated by a matrix M.
 -/
 
+/-- Internal robust witness for `0 < l.length` from `l ≠ []`. Replaces
+    the post-merge fragile `List.length_pos.mpr` invocation in S4
+    (PR #18086) whose `List.length_pos` reference no longer exists at
+    the pinned Mathlib v4.26.0 rev (see "Build status" in PR header). -/
+private lemma length_pos_of_ne_nil {α : Type*} {l : List α} (h : l ≠ []) :
+    0 < l.length := by
+  rcases l with _ | _
+  · exact absurd rfl h
+  · exact Nat.succ_pos _
+
 /-- The `lastFactor` of a nonempty chain coincides with the indexed
     access at the last position. Internal-use lemma bridging the
     `getLast?.getD 1` definition with the `Fin`-indexed access used
@@ -331,7 +341,7 @@ These extend S3 with three more sorry-free facts about the
 private theorem lastFactor_eq_getElem_pred
     (c : InvariantFactorChain F) (h : c.factors ≠ []) :
     c.lastFactor = c.factors[c.factors.length - 1]'(by
-      have hpos : 0 < c.factors.length := List.length_pos.mpr h
+      have hpos : 0 < c.factors.length := length_pos_of_ne_nil h
       omega) := by
   show c.factors.getLast?.getD 1 = _
   rw [List.getLast?_eq_getLast h]
@@ -363,7 +373,7 @@ theorem lastFactor_natDegree_maximal
     p.natDegree ≤ c.lastFactor.natDegree := by
   rw [List.mem_iff_getElem] at hp
   obtain ⟨i, hi, hip⟩ := hp
-  have hpos : 0 < c.factors.length := List.length_pos.mpr h
+  have hpos : 0 < c.factors.length := length_pos_of_ne_nil h
   let i' : Fin c.factors.length := ⟨i, hi⟩
   let j  : Fin c.factors.length := ⟨c.factors.length - 1, by omega⟩
   have hij : i'.val ≤ j.val := by
