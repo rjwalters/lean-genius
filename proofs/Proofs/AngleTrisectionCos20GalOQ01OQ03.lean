@@ -324,6 +324,72 @@ theorem r_constantCoeff_eq_signed_p :
     simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
     decide
 
+/-! ## Sub-leading (trace) coefficient pattern (structural)
+
+The next-to-top coefficient of `r p` for the five verified primes is
+uniformly `-p`:
+
+    p = 5  : coeff X¹ in r 5 = -5
+    p = 7  : coeff X² in r 7 = -7
+    p = 11 : coeff X⁴ in r 11 = -11
+    p = 13 : coeff X⁵ in r 13 = -13
+
+Mathematically this encodes `-Tr_{ℚ(θ_p)/ℚ}(2 + 2 cos(π/p)) = -p`, since
+by Vieta the sub-leading coefficient of a monic minimal polynomial equals
+minus the sum of conjugates (the field trace).  The trace equals `p`
+because the `(p-1)/2` conjugates of `2 + 2 cos(π/p)` are
+`2 + 2 cos(k π / p)` for odd `k ∈ {1, 3, …, p − 2}`, and
+`∑_{k odd} 2 cos(k π / p) = 1` (a standard cyclotomic identity), giving
+trace `(p − 1) + 1 = p`.
+
+For `p = 3` the polynomial has degree 1 and the sub-leading coefficient
+coincides with the constant term, so the trace pattern `coeff 0 = -3` is
+already a direct consequence of `r_constantCoeff_eq_signed_p` (where the
+sign exponent `(3 − 1)/2 = 1` gives `-3`).  Hence the dedicated trace
+lemma below covers the four non-degenerate primes; we add a separate
+`r_3_traceCoeff` clause so the boundary case is recorded explicitly.
+
+Together with `r_constantCoeff_eq_signed_p` (the norm half), this lemma
+fixes both Vieta endpoints of `r p`:
+
+* Constant term =  `(-1)^((p-1)/2) · N_{ℚ(θ_p)/ℚ}(2 + θ_p) = (-1)^((p-1)/2) · p`.
+* Sub-leading  =  `-Tr_{ℚ(θ_p)/ℚ}(2 + θ_p) = -p`.
+
+Any general proof of `eisenstein_conjecture_cos_pi_p` via the
+cyclotomic-ramification route must reproduce both fingerprints.
+-/
+
+/-- Sub-leading coefficient of `r p` equals `-p` for the four
+non-degenerate verified primes p ∈ {5, 7, 11, 13}.  Encodes
+`Tr_{ℚ(θ_p)/ℚ}(2 + 2 cos(π/p)) = p`. -/
+theorem r_subLeadingCoeff_eq_neg_p :
+    (r 5).coeff 1 = -5
+    ∧ (r 7).coeff 2 = -7
+    ∧ (r 11).coeff 4 = -11
+    ∧ (r 13).coeff 5 = -13 := by
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · rw [r_5_eq]
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    decide
+  · rw [r_7_eq]
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    decide
+  · rw [r_11_eq]
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    decide
+  · rw [r_13_eq]
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+    decide
+
+/-- Boundary trace for `p = 3`: the polynomial `r 3 = X − 3` has degree 1,
+so its sub-leading coefficient is the constant term `−3`.  Recorded
+separately because the index `(p − 1)/2 − 1 = 0` collides with the
+constant coefficient (already handled by `r_constantCoeff_eq_signed_p`). -/
+theorem r_3_traceCoeff : (r 3).coeff 0 = -3 := by
+  rw [r_3_eq]
+  simp only [coeff_sub, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X]
+  decide
+
 /-! ## Irreducibility corollaries for p ∈ {11, 13} (new gallery content) -/
 
 /-- `r 11 = X⁵ − 11X⁴ + 44X³ − 77X² + 55X − 11` is irreducible over ℤ
