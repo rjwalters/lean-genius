@@ -1,0 +1,130 @@
+{
+  "slug": "fourier-series-oq-04-oq-01",
+  "title": "2D Carleson conjecture for spherical Fourier series on T^2",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall f \\in L^2(\\mathbb{T}^2):\\quad S_R^{\\text{sph}} f(x) \\xrightarrow{R \\to \\infty} f(x) \\text{ for a.e. } x, \\text{ where } S_R^{\\text{sph}} f(x) = \\sum_{|k| \\le R} \\widehat f(k)\\, e^{2\\pi i k \\cdot x}, \\quad k \\in \\mathbb{Z}^2.",
+    "plain": "Does the spherical Fourier series of an arbitrary square-integrable function on the 2-torus converge pointwise almost everywhere? This is the 2D analogue of Carleson's 1966 theorem; it has been open since at least Stein's 1971 ICM address.",
+    "whyMatters": [
+      "Flagship open problem of harmonic analysis. Listed in Tao 2002 'Some recent progress on the restriction conjecture' as a central problem connecting Bochner-Riesz, restriction, and Kakeya.",
+      "The 1D version (Carleson 1966, Hunt 1968) is one of the deepest theorems of 20th-century analysis. The 2D analogue is genuinely different: Fefferman's 1971 ball-multiplier theorem rules out the 1D L^p-interpolation approach.",
+      "Gallery scope: parent file Proofs/FourierSeriesOQ04.lean (103 lines, 0 theorems, 3 placeholder := 0 definitions) declares the open status in its docstring. This child entry promotes that docstring claim into a formal axiom + a body of unconditional partial results."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "L^2 norm convergence (any summation method, all n): ||S_R^sph f - f||_{L^2} -> 0 for f in L^2(T^n). Direct from Plancherel.",
+      "Bochner-Riesz, delta > (n-1)/2 (Stein 1958): a.e. convergence in L^p for 1 <= p <= infinity.",
+      "1D Carleson (Carleson 1966, L^2) and Hunt 1968 (L^p, 1 < p < infinity) on T^1.",
+      "Lipschitz / C^1 data: spherical partial sums converge uniformly in any n via Fourier coefficient decay."
+    ],
+    "open": [
+      "The 2D spherical Carleson conjecture itself (this slug).",
+      "Bochner-Riesz conjecture in n >= 2 for 0 < delta <= (n-1)/2 (a strict superset of the spherical L^2 case)."
+    ],
+    "goal": "Lean-formalize the conjecture as an axiom; surround it with the unconditional partial results (Plancherel L^2-norm convergence, Bochner-Riesz delta > 1/2 a.e. convergence) and the asymmetry results (Fefferman 1971 rectangular divergence in L^1)."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T08:38:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-6, 2026-05-12): OBSERVE survey of the 2D Carleson spherical-summation conjecture for L^2(T^2). Doc-only, no Lean changes. Deliverables: state.md, problem.md (formal statement + classification), knowledge.md (Mathlib API map + unconditional companion results + Bochner-Riesz context), and this discovery JSON. The parent file Proofs/FourierSeriesOQ04.lean (103 lines, 0 theorems, 3 placeholder := 0 definitions) declares the open-problem status in its docstring (lines 95-96).",
+    "blockers": [],
+    "nextAction": "S2a (any researcher) — ACT, doc-light scaffold: create proofs/Proofs/FourierSeriesOQ04OQ01.lean (~150 lines) with rigorous multiFourierCoeff / latticeDisc / sphPartialSum definitions, the conjecture as `axiom carleson_2d_sph`, and one unconditional companion theorem (sphPartialSum_L2_norm_converge, may have sorry pending Plancherel-on-T^2). Gallery entry src/data/proofs/fourier-series-oq-04-oq-01/meta.json with status='axiomatized', badge='axiom', sorries=1, axiomCount=1, additionalFiles=['Proofs/FourierSeriesOQ04.lean'].",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-6, 2026-05-12) — OBSERVE survey. Established that the 2D Carleson spherical-summation conjecture is open in mathematics (Stein 1971 ICM; Tao 2002 survey; no progress as of 2024). Identified the precise formal statement (sum over integer lattice points in a closed Euclidean disc of radius R), the Mathlib API gap (no MultiFourierCoeff on Fin n -> AddCircle T), the unconditional companion results (Plancherel L^2-norm convergence trivially; Bochner-Riesz a.e. for delta > (n-1)/2 classically), and the asymmetry results (Fefferman 1971 rectangular L^1 divergence; ball-multiplier theorem ruling out L^p for p != 2). S2a is a doc-light scaffold creating proofs/Proofs/FourierSeriesOQ04OQ01.lean with the conjecture axiomatized + one provable companion (Plancherel-derived L^2-norm convergence). No Lean changes in this iteration.",
+    "builtItems": [
+      "research/problems/fourier-series-oq-04-oq-01/problem.md (new, ~120 lines): formal statement, classification (tier B, sig 6, tract 5), why-matters, theoretical context (known unconditional, known negative, open status).",
+      "research/problems/fourier-series-oq-04-oq-01/knowledge.md (new, ~120 lines): S1 OBSERVE survey with Mathlib API map (verified what is and is not available), insights (5 numbered), gaps (4 numbered), next steps (priority order), risk notes (4 numbered).",
+      "research/problems/fourier-series-oq-04-oq-01/state.md (new, ~80 lines): phase OBSERVE, S1 focus, active approach (axiomatize + partial results), blockers (none mathematical), detailed S2a next-action spec.",
+      "src/data/research/problems/fourier-series-oq-04-oq-01.json (new, this file): discovery metadata."
+    ],
+    "insights": [
+      "The 2D Carleson conjecture is the 'endpoint' of two flagship open problems — Bochner-Riesz in L^2 AND 1D Carleson lifted to n=2. Either positive progress would collapse one of these; no conditional approach (Kakeya, restriction) has discharged the L^2 endpoint.",
+      "L^2 norm convergence is trivial by Plancherel (the partial-sum residual is the L^2-norm of the tail of a square-summable series). The difficulty is the a.e. claim, which requires a maximal-operator estimate sup_R |S_R^sph f|.",
+      "Rectangular vs spherical asymmetry is genuinely n-dependent: in 1D the two coincide; in n >= 2, Fefferman 1971 showed rectangular L^1 may diverge a.e. yet spherical L^2 a.e. is open. Both facts can be stated separately in the gallery without conflict.",
+      "Fefferman's ball-multiplier theorem (the characteristic function of the unit ball is not an L^p multiplier on R^n for p != 2, n >= 2) is the canonical obstruction to applying Hunt-style L^p-interpolation. This is why the 2D conjecture is genuinely L^2-specific.",
+      "Doc-only S1 is the right scope for a fresh slug whose parent is a stub: parent FourierSeriesOQ04.lean has placeholder `:= 0` definitions. Until those are rigorised (S2a), the child cannot prove anything substantive. The S1 deliverable is laying the math substrate.",
+      "The honest formalisation matches CLAUDE.md's Axiom Integrity Policy: status='axiomatized', badge='axiom', axiomCount=1 (or more after Bochner-Riesz / Fefferman are added). Per memory_marquee_initiative and infrastructure conventions, open problems get axioms not 'verified' claims."
+    ],
+    "mathlibGaps": [
+      "No MultiFourierCoeff / fourierCoeff over (Fin n -> AddCircle T). Mathlib's fourierCoeff is 1D-only at AddCircle T.",
+      "No BochnerRiesz, sphericalPartialSum, ballMultiplier definitions.",
+      "No multi-dimensional Plancherel / Parseval (as an explicit identity over T^n). Should follow from lp 2 over Fin n -> Z but is not spelled out.",
+      "No Fefferman_ball_multiplier or related counterexample (requires Besicovitch / Kakeya machinery not present)."
+    ],
+    "nextSteps": [
+      "S2a (ACT, doc-light): create proofs/Proofs/FourierSeriesOQ04OQ01.lean (~150 lines) — rigorous definitions of multiFourierCoeff / latticeDisc / sphPartialSum on T^2 = Fin 2 -> AddCircle 1; the conjecture as `axiom carleson_2d_sph`; one unconditional companion theorem sphPartialSum_L2_norm_converge (may have sorry pending Mathlib n-D Plancherel). Plus gallery entry src/data/proofs/fourier-series-oq-04-oq-01/meta.json.",
+      "S2b (ACT, slower): formalise Bochner-Riesz a.e. convergence for delta > (n-1)/2 (Stein 1958). Real theorem to formalise (1958-era classical), not a placeholder. Estimate 300-500 lines, 2-3 iterations.",
+      "S3 (ACT, speculative): Fefferman 1971 ball-multiplier counterexample. Classical proof uses Besicovitch sets and a Kakeya-style construction — likely beyond a single Lean file without a major Mathlib detour. Postpone until Mathlib gains Kakeya infrastructure.",
+      "(skip): attempting to prove the conjecture itself. This is genuine open mathematics; no PR should claim to close it."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "harmonic-analysis",
+    "fourier-series",
+    "convergence",
+    "multi-dimensional",
+    "bochner-riesz",
+    "carleson-conjecture",
+    "open-problem"
+  ],
+  "relatedProofs": [
+    "fourier-series",
+    "fourier-series-oq-01",
+    "fourier-series-oq-02",
+    "fourier-series-oq-02-oq-03",
+    "fourier-series-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Carleson, L. (1966). On convergence and growth of partial sums of Fourier series. Acta Math. 116, 135-157.",
+      "Hunt, R. A. (1968). On the convergence of Fourier series. Orthogonal Expansions and their Continuous Analogues, 235-255.",
+      "Stein, E. M. (1958). On limits of sequences of operators. Ann. of Math. 74, 140-170.",
+      "Fefferman, C. (1971). The multiplier problem for the ball. Ann. of Math. 94, 330-336.",
+      "Fefferman, C. (1971). On the divergence of multiple Fourier series. Bull. Amer. Math. Soc. 77, 191-195.",
+      "Tao, T. (2002). Some recent progress on the restriction conjecture. Fourier Analysis and Convexity (Birkhauser), 217-243.",
+      "Grafakos, L. (2014). Classical Fourier Analysis. 3rd ed. Springer GTM 249, Ch. 3 (Multi-dimensional Fourier series).",
+      "Stein, E. M.; Weiss, G. (1971). Introduction to Fourier Analysis on Euclidean Spaces. Princeton Math. Series 32."
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Carleson%27s_theorem",
+      "https://en.wikipedia.org/wiki/Bochner%E2%80%93Riesz_mean",
+      "https://terrytao.wordpress.com/2007/05/26/the-bochner-riesz-conjecture-implies-the-restriction-conjecture/"
+    ],
+    "mathlib": [
+      "Mathlib.Analysis.Fourier.AddCircle",
+      "Mathlib.Analysis.Fourier.FourierTransform",
+      "Mathlib.MeasureTheory.Function.LpSpace.Basic",
+      "Mathlib.Analysis.InnerProductSpace.l2Space",
+      "Mathlib.MeasureTheory.Constructions.Pi"
+    ]
+  },
+  "started": "2026-05-12T08:38:00.000Z",
+  "lastUpdate": "2026-05-12T08:38:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/FourierSeriesOQ04.lean",
+      "filename": "FourierSeriesOQ04.lean",
+      "lineCount": 103,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04.lean"
+    }
+  ]
+}
