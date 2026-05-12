@@ -1,0 +1,150 @@
+{
+  "id": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+  "title": "Uniform n×n Quasideterminants over a Field (Route A)",
+  "slug": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
+  "description": "S2 of the inductive n×n Gelfand–Retakh quasideterminant initiative. Introduces qdetF, the commutative quasideterminant defined uniformly in n over a field as det(A)/det(minor_{ij}(A)). Proves the multiplicative defining identity, non-vanishing, and three specialization bridges back to the parent 2×2 (CramersRuleOQ01OQ02.qdet00/qdet11) and 3×3 (CramersRuleOQ01OQ02OQ01.qdet3) theories. Closes the commutative half of the open question; the fully non-commutative qdetN over a division ring is deferred to S3.",
+  "meta": {
+    "author": "Lean Genius",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Quasideterminant",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean",
+    "tags": [
+      "linear-algebra",
+      "matrices",
+      "non-commutative",
+      "division-rings",
+      "quasideterminants",
+      "cramer",
+      "schur-complement",
+      "recursion"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 187,
+    "assumptions": "None for the qdetF definition and the multiplicative identity. The n=2 specialization theorems require the non-degeneracy hypothesis carried in the parent file (A 1 1 ≠ 0 for the (0,0)-case, A 0 0 ≠ 0 for the (1,1)-case).",
+    "originalContributions": [
+      "Defined minorIJ: the complementary n×n submatrix of an (n+1)×(n+1) matrix via Fin.succAbove, uniformly in n (generalizes CramersRuleOQ01OQ02OQ01.block3)",
+      "Defined qdetF: the (i,j)-quasideterminant of an (n+1)×(n+1) matrix over a field as det(A)/det(minor_{ij}(A)), the canonical Gelfand–Retakh commutative quotient form uniform in n",
+      "Proved qdetF_field_quotient: the multiplicative defining identity qdetF · minor_det = det(A) (uniform-in-n analogue of qdet3_mul_minor_eq_det)",
+      "Proved qdetF_ne_zero: non-vanishing whenever det(A) and minor_det are both nonzero",
+      "Proved qdetF_eq_qdet3 by rfl: n=3 specialization recovers CramersRuleOQ01OQ02OQ01.qdet3 (block3 is an abbrev for the same A.submatrix Fin.succAbove Fin.succAbove)",
+      "Proved minorIJ_22_00_det and minorIJ_22_11_det: the (0,0)- and (1,1)-minors of a 2×2 matrix evaluate to A 1 1 and A 0 0 respectively, via det_fin_one + explicit Fin.succAbove evaluation",
+      "Proved qdetF_eq_qdet00: under A 1 1 ≠ 0, qdetF A 0 0 = CramersRuleOQ01OQ02.qdet00 A (bridges the n=2 Schur-form quasideterminant to the uniform commutative form)",
+      "Proved qdetF_eq_qdet11: under A 0 0 ≠ 0, qdetF A 1 1 = CramersRuleOQ01OQ02.qdet11 A",
+      "Proved qdetF_summary: packaged multiplicative identity + definitional equation in a single result"
+    ],
+    "theoremCount": 6,
+    "definitionCount": 2
+  },
+  "sections": [
+    {
+      "id": "complementary-submatrix",
+      "title": "The Complementary n×n Submatrix",
+      "startLine": 64,
+      "endLine": 72,
+      "summary": "Defines minorIJ : Matrix (Fin (n+1)) (Fin (n+1)) F → Fin (n+1) → Fin (n+1) → Matrix (Fin n) (Fin n) F as A.submatrix (Fin.succAbove i) (Fin.succAbove j). This is the uniform-in-n complementary minor — the (n-deleted-row, n-deleted-column) sub-matrix.",
+      "mathContext": "Fin.succAbove i : Fin n → Fin (n+1) maps an index in the smaller type to the corresponding index in the larger type, skipping i. The submatrix construction A.submatrix r c at indices (i,j) returns A (r i) (c j), giving the natural cofactor minor."
+    },
+    {
+      "id": "uniform-quasideterminant",
+      "title": "The Uniform-in-n Quasideterminant",
+      "startLine": 78,
+      "endLine": 109,
+      "summary": "Defines qdetF A i j := A.det / (minorIJ A i j).det over a field, proves qdetF_field_quotient (the multiplicative defining identity) and qdetF_ne_zero (non-vanishing criterion). Both are one-line proofs via div_mul_cancel₀ and div_ne_zero.",
+      "mathContext": "Over a commutative field F, the Gelfand–Retakh (i,j)-quasideterminant of an (n+1)×(n+1) matrix is det(A) / minor(A,i,j). This is the canonical quotient form, uniform in n. The multiplicative form qdetF · minor_det = det(A) is the foundational identity from which all Cramer-type results derive."
+    },
+    {
+      "id": "n-3-specialization",
+      "title": "n=3 Specialization (qdetF = qdet3 by rfl)",
+      "startLine": 112,
+      "endLine": 121,
+      "summary": "Proves qdetF_eq_qdet3: for A : Matrix (Fin 3) (Fin 3) F, qdetF A i j = CramersRuleOQ01OQ02OQ01.qdet3 A i j by rfl. The equality is definitional because block3 is an abbrev for A.submatrix Fin.succAbove Fin.succAbove.",
+      "mathContext": "The 3×3 quasideterminant theory of CramersRuleOQ01OQ02OQ01.lean uses the same definitional template as qdetF restricted to n+1 = 3. Because abbrev unfolds transparently, the equality holds at the level of definitional equality without any rewriting."
+    },
+    {
+      "id": "n-2-specialization",
+      "title": "n=2 Specialization (Schur Form via qdet00/qdet11)",
+      "startLine": 125,
+      "endLine": 175,
+      "summary": "Bridges the uniform commutative form qdetF to the 2×2 Schur-form quasideterminants of CramersRuleOQ01OQ02. minorIJ_22_00_det evaluates the (0,0)-minor as A 1 1 (and dually for (1,1)). qdetF_eq_qdet00 and qdetF_eq_qdet11 use the parent identities qdet00_mul_eq_det / mul_qdet11_eq_det together with mul_right_cancel₀ to identify qdetF with qdet00 / qdet11 under the standard non-degeneracy hypothesis.",
+      "mathContext": "The 2×2 Schur-form qdet00 A = A 0 0 - A 0 1 * (A 1 1)⁻¹ * A 1 0 is non-commutative-friendly (uses inverses, not divisions). Over a field with A 1 1 ≠ 0, it equals A.det / A 1 1 = qdetF A 0 0. The bridge isolates this purely commutative reduction."
+    }
+  ],
+  "overview": {
+    "historicalContext": "Gelfand and Retakh introduced quasideterminants in 1991 as the correct non-commutative analogue of the determinant: an n×n matrix over a division ring has n^2 quasideterminants, one per entry, each defined recursively via a Schur complement of the complementary (n-1)×(n-1) submatrix. Over a commutative field, $|A|_{ij} = \\det(A) / \\text{minor}(A,i,j)$. The recursive structure — inverse of the complementary submatrix, itself built from lower-order quasideterminants — has been formalized in Lean only at n=2 (CramersRuleOQ01OQ02.lean, 463 lines) and n=3 (CramersRuleOQ01OQ02OQ01.lean, 313 lines). This file (S2 of the open-question initiative for general n) introduces the commutative half uniformly in n, leaving the non-commutative inductive qdetN over a division ring (Route B) for S3.",
+    "problemStatement": "Define a uniform-in-n quasideterminant qdetF over a field that recovers CramersRuleOQ01OQ02.qdet00/qdet11 (n=2) and CramersRuleOQ01OQ02OQ01.qdet3 (n=3) by the canonical det/minor quotient.",
+    "text": "qdetF is defined uniformly in n via the commutative quotient formula. The defining identity qdetF · minor_det = det(A) is one line (div_mul_cancel₀). Non-vanishing follows from div_ne_zero. The n=3 specialization is rfl because the parent block3 is an abbrev. The n=2 specializations require slightly more work: the (0,0)- and (1,1)-minors of a 2×2 matrix are singleton matrices whose determinants reduce via det_fin_one + Fin.succAbove evaluation; the connection to qdet00/qdet11 then comes from mul_right_cancel₀ applied to the parent's qdet00_mul_eq_det / mul_qdet11_eq_det.",
+    "proofStrategy": "(1) Define minorIJ and qdetF uniformly. (2) Prove the multiplicative identity and non-vanishing in one line each. (3) Show n=3 specialization holds by rfl. (4) For the n=2 specializations: pin the minor determinants via det_fin_one, then use mul_right_cancel₀ with the parent file's existing qdet00_mul_eq_det / mul_qdet11_eq_det identities to identify qdetF with qdet00 / qdet11. (5) Package a one-line summary theorem combining the multiplicative identity with the definitional quotient.",
+    "keyInsights": [
+      "The uniform-in-n commutative quasideterminant is a single quotient — no induction, no recursion, no mutual definition required",
+      "The n=3 bridge is rfl: the parent block3 is an abbrev, so the uniform minorIJ and the 3×3-specific block3 are definitionally equal",
+      "The n=2 bridge reduces to mul_right_cancel₀ once the parent's qdet00_mul_eq_det / mul_qdet11_eq_det are recognized as multiplicative-form variants of the same identity",
+      "The fully non-commutative theory (Route B: qdetN over a division ring) is genuinely harder — it needs mutual strong recursion with qdetN_inv on decreasing n — and is deferred to S3"
+    ],
+    "prerequisites": [
+      "2×2 quasideterminant theory (CramersRuleOQ01OQ02.lean)",
+      "3×3 quasideterminant theory (CramersRuleOQ01OQ02OQ01.lean)",
+      "Matrix.det_fin_one, Matrix.det_fin_two",
+      "Fin.succAbove for submatrix selection",
+      "Matrix.submatrix_apply"
+    ]
+  },
+  "conclusion": {
+    "summary": "Route A of the inductive n×n quasideterminant program is implemented in 187 lines, 0 sorries, 0 axioms. The uniform-in-n commutative qdetF generalizes both qdet00/qdet11 (n=2) and qdet3 (n=3) in their non-degenerate regimes, with the n=3 bridge holding by rfl and the n=2 bridges by mul_right_cancel₀ + det_fin_one.",
+    "implications": "The commutative half of the open question (define a uniform-in-n quasideterminant matching the parent 2×2 and 3×3 theories) is closed. The remaining content is the fully non-commutative inductive qdetN over a division ring (S3), whose proof of consistency over a field is qdetF_summary's S5 analogue.",
+    "openQuestions": [
+      "Define qdetN : (n : ℕ) → Matrix (Fin n) (Fin n) D → Fin n → Fin n → D over a division ring D via mutual strong recursion with qdetN_inv (S3).",
+      "Prove qdetN_recurrence: the Schur identity at every n (S4).",
+      "Prove qdetN_eq_qdetF over a field — the consistency theorem connecting Route A and Route B (S5).",
+      "Derive cramer_rule_nxn_qdet: the n×n Cramer's rule over a division ring (S6)."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "cramers-rule-oq-01-oq-02-oq-01",
+      "relationship": "extends",
+      "description": "Extends the 3×3 quasideterminant theory uniformly to all n via the commutative quotient qdetF, with the n=3 specialization holding by rfl"
+    },
+    {
+      "targetId": "cramers-rule-oq-01-oq-02",
+      "relationship": "extends",
+      "description": "The n=2 specializations qdetF_eq_qdet00 / qdetF_eq_qdet11 connect the uniform commutative qdetF back to the 2×2 Schur-form quasideterminants qdet00 / qdet11"
+    },
+    {
+      "targetId": "cramers-rule",
+      "relationship": "related",
+      "description": "Cramer's n×n rule (Mathlib) is the determinant-based analogue; qdetF is the quasideterminant-based generalization in the non-degenerate regime"
+    }
+  ],
+  "leanFile": {
+    "imports": [
+      "Mathlib.LinearAlgebra.Matrix.Adjugate",
+      "Mathlib.LinearAlgebra.Matrix.NonsingularInverse",
+      "Mathlib.Tactic",
+      "Proofs.CramersRuleOQ01OQ02",
+      "Proofs.CramersRuleOQ01OQ02OQ01"
+    ],
+    "opens": [
+      "Matrix"
+    ],
+    "namespace": "CramersRuleOQ01OQ02OQ01OQ01",
+    "lineCount": 187,
+    "axiomCount": 0,
+    "theoremCount": 6,
+    "definitionCount": 2,
+    "path": "Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean",
+    "sorries": 0
+  },
+  "references": [
+    {
+      "text": "Gelfand, I. & Retakh, V. (1991). Determinants of matrices over noncommutative rings. Functional Analysis and its Applications 25(2), 91-102.",
+      "url": "https://en.wikipedia.org/wiki/Quasideterminant"
+    },
+    {
+      "text": "Gelfand, I., Gelfand, S., Retakh, V., & Wilson, R. L. (2005). Quasideterminants. Advances in Mathematics 193(1), 56-141.",
+      "url": "https://en.wikipedia.org/wiki/Quasideterminant"
+    }
+  ],
+  "sorries": 0
+}

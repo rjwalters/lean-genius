@@ -1,0 +1,34 @@
+[
+  {
+    "id": "qdetf-uniform-definition",
+    "title": "The uniform-in-n commutative quasideterminant",
+    "startLine": 79,
+    "endLine": 81,
+    "content": "qdetF is the canonical Gelfand–Retakh quasideterminant in its commutative (Schur-complement-as-quotient) form, uniform in n. For any (n+1)×(n+1) matrix A over a field F, qdetF A i j is just det(A) / det(minor_{ij}(A)). This single definition specializes to qdet00/qdet11 (n=2, in the non-degenerate regime where A 1 1 or A 0 0 is nonzero) and to qdet3 (n=3, by rfl, since block3 is an abbrev for the same A.submatrix Fin.succAbove Fin.succAbove). The fully non-commutative analogue qdetN over a division ring requires mutual strong recursion with qdetN_inv and is deferred to S3.",
+    "category": "definition"
+  },
+  {
+    "id": "qdetf-multiplicative-identity",
+    "title": "The multiplicative defining identity",
+    "startLine": 86,
+    "endLine": 91,
+    "content": "qdetF_field_quotient is the multiplicative form of the defining identity: qdetF · minor_det = det(A) (when minor_det ≠ 0). It is the n×n analogue of CramersRuleOQ01OQ02OQ01.qdet3_mul_minor_eq_det, with the same one-line proof via div_mul_cancel₀. This identity is the foundational tool for n×n Cramer's-rule arguments using quasideterminants: instead of dividing by det(A), one divides by the minor determinant to isolate a single column/row variable.",
+    "category": "theorem"
+  },
+  {
+    "id": "qdetf-eq-qdet3-by-rfl",
+    "title": "n=3 bridge by rfl",
+    "startLine": 117,
+    "endLine": 121,
+    "content": "The equality qdetF A i j = CramersRuleOQ01OQ02OQ01.qdet3 A i j (for A : Matrix (Fin 3) (Fin 3) F) holds by rfl because block3 is an abbrev for A.submatrix (Fin.succAbove i) (Fin.succAbove j) — exactly the body of minorIJ. Lean's reducibility settings make abbrevs transparent to definitional equality, so the two definitions are judgmentally equal without any rewriting. This is the cleanest possible bridge: the 3×3 quasideterminant theory is literally a special case of qdetF.",
+    "category": "theorem"
+  },
+  {
+    "id": "qdetf-eq-qdet00-bridge",
+    "title": "n=2 bridge via mul_right_cancel₀",
+    "startLine": 137,
+    "endLine": 151,
+    "content": "The 2×2 (0,0)-quasideterminant qdet00 A = A 0 0 - A 0 1 * (A 1 1)⁻¹ * A 1 0 is non-commutative-friendly (uses inverses, not divisions). Over a field with A 1 1 ≠ 0, the parent file's qdet00_mul_eq_det gives qdet00 A * A 1 1 = A.det. Symmetrically, qdetF_field_quotient gives qdetF A 0 0 * A 1 1 = A.det (using minorIJ_22_00_det to identify the minor determinant as A 1 1). Both sides have the same product against the nonzero A 1 1, so mul_right_cancel₀ closes qdetF A 0 0 = qdet00 A. This bridge uses NONE of the non-degeneracy beyond the standard A 1 1 ≠ 0 hypothesis carried in the parent file's API.",
+    "category": "theorem"
+  }
+]

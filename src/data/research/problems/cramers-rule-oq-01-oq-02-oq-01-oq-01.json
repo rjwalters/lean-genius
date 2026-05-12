@@ -1,7 +1,7 @@
 {
   "slug": "cramers-rule-oq-01-oq-02-oq-01-oq-01",
   "title": "Inductive n×n quasideterminant theory over division rings",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -27,40 +27,42 @@
     "goal": "qdetN defined for all n, qdetN_recurrence proved, commutative reduction proved, n×n Cramer derived."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T08:30:00Z",
-    "iteration": 1,
-    "focus": "OBSERVE: formal statement scoped, two routes (Route A commutative qdetF, Route B non-commutative qdetN) mapped, Mathlib API surveyed. S2 plan: implement Route A first.",
+    "phase": "ACT",
+    "since": "2026-05-12T12:30:00Z",
+    "iteration": 2,
+    "focus": "S2 ACT: Route A (commutative qdetF) implemented over a field. CramersRuleOQ01OQ02OQ01OQ01.lean created (~175 lines, 0 sorries, 0 axioms). Uniform-in-n definition + multiplicative identity + non-vanishing + 3 specialization bridges (n=3 to qdet3 by rfl, n=2 to qdet00/qdet11 under standard non-degeneracy hypotheses).",
     "blockers": [
       "Mathlib has no Matrix.quasideterminant; all infrastructure original.",
-      "Mutual recursion (qdetN ↔ qdetN_inv) on decreasing n may need explicit termination_by / decreasing_by."
+      "S3 Route B: mutual recursion (qdetN ↔ qdetN_inv) on decreasing n may need explicit termination_by / decreasing_by."
     ],
-    "nextAction": "S2 [DEFINE]: create proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean implementing qdetF (commutative route): qdetF n A i j := A.det / (A.submatrix (Fin.succAbove i) (Fin.succAbove j)).det; prove qdetF_field_quotient, qdetF_ne_zero, and n=2/n=3 specializations.",
+    "nextAction": "S3 [NC-DEFINE]: extend with Route B. Define qdetN : (n : ℕ) → Matrix (Fin n) (Fin n) D → Fin n → Fin n → D over a division ring D via strong recursion on n; mutually-recursive qdetN_inv. Defer recurrence theorem to S4.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-12, 2026-05-12): OBSERVE complete. Formalized statement, scoped two definition routes, surveyed Mathlib API, identified Route A (commutative qdetF via det/minor) as cleanest S2 target. No Lean changes.",
+    "progressSummary": "S2 (researcher-9, 2026-05-12): ACT complete. Route A (commutative qdetF over a field) implemented in proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean (~175 lines, 0 sorries): qdetF definition, qdetF_field_quotient (multiplicative identity), qdetF_ne_zero, qdetF_eq_qdet3 (rfl), qdetF_eq_qdet00 / qdetF_eq_qdet11 (n=2 bridges). Closes the commutative half of the open question uniformly in n. Build kicked off via docker wrapper.",
     "builtItems": [
       "research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01/problem.md (formal statement, classification, references)",
       "research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01/knowledge.md (literature survey, two-route plan, Mathlib API map, 6-session sequencing S2–S6)",
-      "research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01/state.md (phase=OBSERVE, next-action=S2 DEFINE)"
+      "research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01/state.md (phase=ACT, iteration=2, next-action=S3 NC-DEFINE)",
+      "proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean (S2: qdetF, qdetF_field_quotient, qdetF_ne_zero, qdetF_eq_qdet3, qdetF_eq_qdet00, qdetF_eq_qdet11, qdetF_summary; 1 abbrev + 1 def + 6 thms + 2 lemmas; 0 sorries, 0 axioms)"
     ],
     "insights": [
       "Route A (commutative qdetF n A i j := A.det / minor_det) avoids mutual recursion and closes the commutative half uniformly in n; it is the cleanest first iteration.",
       "Route B (non-commutative qdetN) needs mutual strong recursion with qdetN_inv on decreasing n; Lean structural recursion sees the size decrease through A.submatrix.",
       "Gelfand–Retakh sign convention matches the parent file (qdet3 = det / minor with no extra ± sign at i=j=0), confirmed by qdet3_00_explicit.",
-      "n=2 and n=3 specializations follow by unfolding Matrix.det_fin_two / Matrix.det_fin_three plus the existing parent identities."
+      "n=2 and n=3 specializations follow by unfolding Matrix.det_fin_two / Matrix.det_fin_three plus the existing parent identities.",
+      "S2 result: qdetF_eq_qdet3 holds by rfl (block3 is an abbrev for A.submatrix Fin.succAbove Fin.succAbove), and qdetF_eq_qdet00 / qdetF_eq_qdet11 reduce to the parent qdet00_mul_eq_det / mul_qdet11_eq_det via mul_right_cancel₀.",
+      "The minor at i=j=0 (resp i=j=1) of a 2×2 matrix is the singleton matrix [[A 1 1]] (resp [[A 0 0]]); det_fin_one + Fin.succAbove evaluation pins this."
     ],
     "mathlibGaps": [
       "No Matrix.quasideterminant at any n.",
       "Matrix.nonsingInv is field-only; non-commutative inversion via homological relations is not in Mathlib."
     ],
     "nextSteps": [
-      "S2 [DEFINE] Implement Route A: qdetF, qdetF_field_quotient, qdetF_ne_zero, n=2/n=3 specializations. Target ≤ 250 lines, ≤ 2 sorries.",
       "S3 [NC-DEFINE] Implement Route B: qdetN over division rings via mutual strong recursion with qdetN_inv.",
       "S4 [NC-RECURRENCE] Prove qdetN_recurrence (Schur identity at every n).",
       "S5 [CONSISTENCY] Prove qdetN n A i j = qdetF n A i j over a field (consistency theorem).",

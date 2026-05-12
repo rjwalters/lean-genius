@@ -1,61 +1,81 @@
 # Current State
 
-**Phase**: OBSERVE → ORIENT
-**Since**: 2026-05-12T08:30:00Z
-**Iteration**: 1
-**Last session**: S1 (researcher-12, 2026-05-12)
+**Phase**: ACT (S2)
+**Since**: 2026-05-12T12:30:00Z
+**Iteration**: 2
+**Last session**: S2 (researcher-9, 2026-05-12)
 
 ## Current Focus
 
-OBSERVE: formal statement nailed down, two routes (commutative `qdetF`, fully
-non-commutative `qdetN`) scoped, Mathlib API surveyed, S2 plan written. No
-Lean changes yet.
+S2 ACT: Route A (commutative quasideterminant `qdetF`) implemented over a
+field. `proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean` created. The file
+contains the uniform-in-n quotient definition, the multiplicative defining
+identity, non-vanishing, and three specializations bridging back to
+the parent 2×2 and 3×3 files.
 
 ## Active Approach
 
-**Route A first (S2)**: define `qdetF n A i j := A.det / (A.submatrix
-(Fin.succAbove i) (Fin.succAbove j)).det` over a field and prove the
-multiplicative form `qdetF_field_quotient`. Specialize to n=2 and n=3 by
-unfolding `Matrix.det_fin_two` / `Matrix.det_fin_three` and re-derive
-`qdet3_00_explicit`-style identities from the parent file.
+**Route A complete (S2)**: `qdetF (n+1)×(n+1)` over a field via
+`A.det / (minor_{ij} A).det`. Three bridges proved:
+- n=3 specialization: `qdetF_eq_qdet3` (by `rfl`).
+- n=2 (0,0): `qdetF_eq_qdet00` (under `A 1 1 ≠ 0`).
+- n=2 (1,1): `qdetF_eq_qdet11` (under `A 0 0 ≠ 0`).
 
-**Route B (S3+)**: build the fully non-commutative `qdetN` via mutual strong
-recursion with `qdetN_inv`. Deferred until Route A lands.
+**Route B (S3+ next)**: build the fully non-commutative `qdetN` via mutual
+strong recursion with `qdetN_inv`. Plan unchanged from S1.
 
 ## Blockers
 
-- **Mathlib has no `Matrix.quasideterminant`.** All infrastructure original.
-- **Mutual recursion + invertibility witnesses**: Route B needs
-  `WellFoundedRecursion` on `Σ n, Matrix (Fin n) (Fin n) D` with
-  `qdetN_inv` and `qdetN` defined simultaneously. Lean may need
-  explicit `termination_by` / `decreasing_by` annotations.
+- **Mathlib has no `Matrix.quasideterminant`.** Route A is the first
+  uniform-in-n Lean formalization.
+- **Mutual recursion + invertibility witnesses (S3)**: Route B needs
+  `WellFoundedRecursion` on `Σ n, Matrix (Fin n) (Fin n) D` carrying the
+  `qdetN_inv` witnesses through the descent.
 
 ## Next Action
 
-**S2 [DEFINE]**: create `proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean` with:
+**S3 [NC-DEFINE]**: extend with a `*NC.lean` companion (or in the same file)
+to add:
 
-1. `qdetF (n : ℕ) (A : Matrix (Fin n) (Fin n) F) (i j : Fin n) : F`
-2. `qdetF_field_quotient`: `qdetF n A i j * minor_det = A.det` when
-   `minor_det ≠ 0`.
-3. `qdetF_eq_qdet` (n=2 specialization to `CramersRuleOQ01OQ02.qdet00` etc.)
-4. `qdetF_eq_qdet3` (n=3 specialization to `qdet3 A i j`).
-5. `qdetF_ne_zero` (analogue of `qdet3_ne_zero`).
+1. `qdetN : (n : ℕ) → Matrix (Fin n) (Fin n) D → Fin n → Fin n → D` over a
+   division ring D, via strong recursion on n.
+2. Mutually-recursive `qdetN_inv : Matrix (Fin n) (Fin n) D` (the
+   homological-relations inverse).
+3. Defer the recurrence theorem to S4.
 
-Target ≤ 250 lines; ≤ 2 sorries (preferably zero). Build via
-`./proofs/scripts/docker-build.sh Proofs.CramersRuleOQ01OQ02OQ01OQ01`.
+Target ≤ 200 added lines; ≤ 2 sorries (preferably zero, accepting
+`termination_by` annotations).
 
 ## Attempt Counts
 
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1
 
 ## Session-by-session
 
 - **S1 (2026-05-12, researcher-12)**: OBSERVE. Formalized statement,
   surveyed Mathlib API, mapped 6-session plan (S2-S6). PR opened for
-  `problem.md` + `knowledge.md` + `state.md` + JSON only; no Lean changes.
+  problem.md + knowledge.md + state.md + JSON only.
+- **S2 (2026-05-12, researcher-9)**: ACT. Route A implemented.
+  `CramersRuleOQ01OQ02OQ01OQ01.lean` created (~175 lines) with:
+  - 1 abbrev (`minorIJ`)
+  - 1 def (`qdetF`)
+  - 6 theorems (`qdetF_field_quotient`, `qdetF_ne_zero`,
+    `qdetF_eq_qdet3`, `qdetF_eq_qdet00`, `qdetF_eq_qdet11`,
+    `qdetF_summary`)
+  - 2 supporting lemmas (`minorIJ_22_00_det`, `minorIJ_22_11_det`)
+  - 0 sorries
+  - Build status: docker build kicked off, build-pending precedent
+    per PR #17990 / PR #17718.
 
 ## Done When
 
 See `knowledge.md` "Done When" section.
+
+- [x] **S2 (Route A)**: `qdetF` defined uniformly in n;
+      `qdetF_field_quotient` proved; n=2/n=3 bridges proved.
+- [ ] **S3 (Route B)**: `qdetN` defined inductively over a division ring.
+- [ ] **S4**: `qdetN_recurrence` proved.
+- [ ] **S5**: consistency `qdetN_eq_qdetF` over fields proved.
+- [ ] **S6**: `cramer_rule_nxn_qdet` proved over division rings.
