@@ -1,0 +1,108 @@
+{
+  "slug": "godel-second-incompleteness-oq02-oq-02",
+  "title": "Solovay's arithmetical completeness theorem: the propositional modal logic GL axiomatizes exactly the provability facts of PA",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "GL \\vdash \\varphi \\iff \\forall * : \\mathrm{PropAtom} \\to \\mathrm{Formula_{PA}},\\, \\mathrm{PA} \\vdash \\varphi^* \\text{, where } \\square \\text{ is realized as } \\mathrm{Prov}(\\ulcorner \\cdot \\urcorner).",
+    "plain": "Formalize Solovay's 1976 arithmetical completeness theorem in the GodelIncompleteness gallery framework: the propositional modal logic GL (Gödel-Löb, with axioms K, L, and rule NEC) proves exactly those propositional formulas whose every arithmetical realization is PA-provable.",
+    "whyMatters": [
+      "Canonical bridge between modal logic and formal arithmetic — bounds the propositional theory of provability exactly.",
+      "Gives a decidable characterization (GL is in PSPACE) of an inherently undecidable theory (PA).",
+      "Foundation for downstream provability-logic refinements (GLP, GLS, polymodal extensions).",
+      "Natural third pillar after first and second incompleteness; Wiedijk-100 list adjacent."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "First and second incompleteness theorems already formalized in GodelIncompleteness.lean and GodelSecondIncompletenessOQ02.lean (6 axioms total).",
+      "Löb's theorem informally stated at GodelSecondIncompletenessOQ02.lean:213 (no Lean proof — needs D2/D3 + Henkin fixed-point)."
+    ],
+    "open": [
+      "S2-α: Extend Formula type with object-level impl; state D2 and D3 as honest object-level axioms (companion file).",
+      "S2-β/S3: Soundness direction of Solovay — GL ⊢ φ ⇒ ∀ realizations *, PA ⊢ φ*.",
+      "S3+: Completeness direction — requires concrete Σ_1-formalization of Provable, Segerberg Kripke completeness, Solovay's h construction, and Σ_1-completeness of PA."
+    ],
+    "goal": "Reach a build-verified Lean 4 proof of at least the soundness direction (GL ⊢ φ ⇒ PA ⊢ φ* for all realizations). The completeness direction requires architectural restructuring of the parent file's opaque Provable axiom and is deferred to a separate multi-session effort."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T16:55:00Z",
+    "iteration": 1,
+    "focus": "Survey GL axiomatization, arithmetical realization, gallery-correspondence for soundness, and Solovay's completeness construction. Identify the architectural mismatch between opaque Provable and Σ_1-formalized provability as the principal barrier to completeness.",
+    "blockers": [],
+    "nextAction": "S2-α: Companion file GodelSecondIncompletenessOQ02Companion.lean extending Formula with impl + D2/D3 axioms. ~50-120 lines, 2 new axioms isolated from parent.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE: doc-only survey establishing GL axiomatization (K, L, NEC), arithmetical realization operation, gallery-correspondence table (D1 is in parent, D2 and D3 are subsumed into con_implies_G), Solovay's recursive-labeling completeness sketch, and Mathlib API gap analysis. Soundness direction is achievable with modest extensions (S2-α/β); completeness direction requires major architectural rebuild (S3+).",
+    "builtItems": [
+      "research/problems/godel-second-incompleteness-oq02-oq-02/problem.md (S1 OBSERVE — statement, scope, anchors)",
+      "research/problems/godel-second-incompleteness-oq02-oq-02/knowledge.md (S1 OBSERVE — GL axioms, realization, soundness/completeness split, Mathlib survey, S2 candidates)",
+      "research/problems/godel-second-incompleteness-oq02-oq-02/state.md (S1 OBSERVE — session log and S2-α sketch)"
+    ],
+    "insights": [
+      "Soundness direction is reachable with companion-file extensions (Formula.impl, D2, D3 as axioms).",
+      "Completeness direction has a fundamental architectural mismatch: the opaque Provable predicate in GodelFirstIncompletenessOQ01 is incompatible with Solovay's concrete Σ_1-construction.",
+      "Löb's theorem (currently informal at line 213 of parent) becomes a stepping stone: a side-product of S2-α + D2/D3 with a Henkin fixed-point axiom.",
+      "GL Kripke completeness (Segerberg 1971) is itself a substantial modal-logic theorem and a prerequisite for Solovay's completeness — not currently in Mathlib."
+    ],
+    "mathlibGaps": [
+      "No modal logic / provability logic library in Mathlib.",
+      "Mathlib's first-order ModelTheory framework lacks Σ_n stratification (needed for Σ_1-completeness of PA).",
+      "No β-function / sequence-coding in PA at the level needed for Solovay's h.",
+      "GL Kripke completeness (Segerberg) is not in Mathlib — would be its own contribution."
+    ],
+    "nextSteps": [
+      "S2-α: Companion file with Formula.impl + D2/D3 axioms (~50-120 lines, recommended start).",
+      "S2-β/S3: Soundness direction of Solovay — induction on GL_proves with realization function.",
+      "S3-Löb: Formalize Löb's theorem itself once D2/D3 are stated (~150 lines, fills the line-213 informal gap).",
+      "S4+: Completeness direction — major rebuild requiring concrete Σ_1-Provable, GL Kripke completeness, Solovay's h, and PA Σ_1-completeness."
+    ]
+  },
+  "tags": [
+    "logic",
+    "foundations",
+    "incompleteness",
+    "self-reference",
+    "advanced",
+    "wiedijk-100",
+    "seeker-selected",
+    "provability-logic",
+    "modal-logic",
+    "solovay"
+  ],
+  "relatedProofs": [
+    "godel-second-incompleteness-oq02",
+    "godel-incompleteness",
+    "godel-first-incompleteness-oq01"
+  ],
+  "references": {
+    "papers": [
+      "Solovay, R. M. (1976), 'Provability interpretations of modal logic', Israel J. Math. — original arithmetical completeness theorem.",
+      "Boolos, G. (1993), The Logic of Provability — canonical textbook reference.",
+      "Segerberg, K. (1971), 'An essay in classical modal logic' — Kripke completeness of GL.",
+      "Löb, M. H. (1955), 'Solution of a problem of Leon Henkin', J. Symbolic Logic — Löb's theorem."
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/ModelTheory/Basic.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Computability/Partrec.html"
+    ],
+    "mathlib": [
+      "Mathlib.ModelTheory.Basic",
+      "Mathlib.Computability.Partrec",
+      "Mathlib.Computability.Primrec",
+      "Mathlib.Logic.Basic"
+    ]
+  },
+  "started": "2026-05-12T14:35:20.287Z",
+  "lastUpdate": "2026-05-12T16:55:00Z",
+  "significance": 6,
+  "tractability": 6
+}
