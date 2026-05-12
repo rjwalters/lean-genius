@@ -143,6 +143,15 @@
       "mathContext": "Continuous Fubini: for $f: \\mathbb{R}^2 \\to E$ continuous, the iterated interval integrals on any $(a,b) \\times (c,d)$ rectangle coincide automatically."
     }
   ],
+  "conclusion": {
+    "summary": "This S2 SCAFFOLD ports the parent's first `intervalIntegral_swap` theorem (ordered case) to a Banach codomain `E` (NormedAddCommGroup, NormedSpace ℝ, CompleteSpace) by *verbatim* reuse of the parent's real-valued proof. The two private sign-flip helpers (`flip_bounds_E`, `neg_outside_E`) are also fully proven for E. The general case and the continuous-function specialization are stated for E with `sorry`, awaiting S3 (a 4-way sign analysis where the parent's four `linarith` calls become `abel`).",
+    "implications": "The Bochner integral is the standard tool for Banach-valued integration in analysis and probability — empirical processes, vector measures, stochastic processes, Banach-valued differential forms. Having a working `intervalIntegral_swap` for Banach codomains is a building block for any one-dimensional vector-calculus development (Green's theorem, Stokes' theorem, divergence theorem) phrased over Mathlib's `∫ x in a..b, f x` notation rather than the lower-level `∫ x in s, f x ∂μ`. More broadly, the audit-then-port workflow demonstrated here is a template for handling Mathlib codomain-generalization questions efficiently: catalog the dependencies, identify the *only* tactic that is codomain-specific (`linarith`), and substitute (`abel`). This pattern keeps the gallery's Banach-valued extensions in lockstep with their real-valued parents without duplicating mathematical effort.",
+    "openQuestions": [
+      "Does the same audit-then-port pattern work for the *signed* measure setting (replacing `volume` with a general signed measure of bounded variation)? The Mathlib API around `Measure.prod` is structured for `MeasureTheory.Measure` (positive), so signed-measure Fubini would need an additional Jordan-decomposition step.",
+      "Can `intervalIntegral_swap` be extended to a *locally convex* codomain (not necessarily normed), using Pettis integration in place of Bochner? Mathlib does not currently have a developed Pettis-integral API, so this would require infrastructure work.",
+      "What is the cleanest way to phrase the Banach-valued analogue of Green's theorem (∮ closed-curve integral = ∬ region integral) on top of this Fubini lemma? The natural target is `f : ℝ² → E` with `E` Banach, where the line integral is the standard Riemann-Stieltjes type and the area integral is Bochner."
+    ]
+  },
   "crossReferences": [
     {
       "type": "parent",
