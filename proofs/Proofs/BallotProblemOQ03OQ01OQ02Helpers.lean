@@ -14997,6 +14997,122 @@ private lemma gnwProb_succ_eq_off_spine_of_c'
       Finset.sum_congr rfl (fun y hy => h_IH y hy)
     rw [h_sum]
 
+/-- **(S57.5) Leg-of-c' residual reduction — case 1.**
+
+In case 1 of `distinct_corners_dichotomy` (i.e., `c.1 < c'.1`), the
+leg-of-c' summand
+`∑ r ∈ Finset.range c'.1, gnwProb μ c K (r, c'.2)`
+reduces to a sum over the smaller range `Finset.range (c.1 + 1)`,
+because the high-row contributions `r ∈ Finset.Ico (c.1 + 1) c'.1`
+all vanish: for such `r`, the cell `(r, c'.2)` satisfies
+`c.1 < r = (r, c'.2).1`, so `gnwProb_unreachable_zero` applies via
+the `Or.inl` (row-disjunct) branch.
+
+**Why the residual `range (c.1 + 1)` is not further reducible by
+`gnwProb_unreachable_zero` alone.**  For `r ≤ c.1`, the cell
+`(r, c'.2)` has `r ≤ c.1` (so the `Or.inl` row-disjunct fails) and
+`x.2 = c'.2 < c.2` in case 1 (so the `Or.inr` column-disjunct also
+fails — `c'.2 < c.2` means `c.2 > x.2`, not `c.2 < x.2`).  The
+walk from `(r, c'.2)` to `c = (c.1, c.2)` exists via right-then-down
+moves, so the integrand is genuinely non-zero in this residual.  At
+`r = c.1` the cell is the doubly-affected cell `d = (c.1, c'.2)` of
+case 1 (`min c.1 c'.1 = c.1`, `min c.2 c'.2 = c'.2`).
+
+**Role in S57.0's K-induction plan for `F_side_identity_aligned`.**
+This is the complement of `sum_gnwProb_leg_of_c'_eq_zero_case2`
+(S57.3, PR #17605/#17719): where that lemma handles the *trivial*
+case-2 leg-of-c' vanishing, this lemma handles the *non-trivial*
+case-1 leg-of-c' residual.  Together with its case-2 arm-of-c'
+mirror (`sum_gnwProb_arm_of_c'_reduce_case2` below), the four
+S57.3+S57.5 lemmas cover all four sub-branches of the cell partition
+(case 1 / case 2, arm-of-c' / leg-of-c') — the live sub-branches
+reduce to a bounded residual, and the trivial sub-branches collapse
+to zero.
+
+**Genericity in `μ`.**  Universal in `μ`, so it applies to the
+LHS sum (`gnwProb μ c (h_μ x) x`) and to the RHS sum
+(`gnwProb (μ\c') c (h_{μ\c'} x) x`) of `F_side_identity_aligned`
+alike — specialize `K := hookLength μ x.1 x.2` for the LHS or
+`K := hookLength (μ\c') x.1 x.2` for the RHS.
+
+**Status.**  Sorry-free.  Uses `Finset.sum_Ico_consecutive`,
+`Finset.range_eq_Ico`, `Finset.sum_eq_zero`, and S57.2's
+`gnwProb_unreachable_zero`. -/
+private lemma sum_gnwProb_leg_of_c'_reduce_case1
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc1 : c.1 < c'.1) (K : ℕ) :
+    ∑ r ∈ Finset.range c'.1, gnwProb μ c K (r, c'.2) =
+      ∑ r ∈ Finset.range (c.1 + 1), gnwProb μ c K (r, c'.2) := by
+  have h_consec :
+      ∑ r ∈ Finset.Ico 0 (c.1 + 1), gnwProb μ c K (r, c'.2) +
+      ∑ r ∈ Finset.Ico (c.1 + 1) c'.1, gnwProb μ c K (r, c'.2) =
+      ∑ r ∈ Finset.Ico 0 c'.1, gnwProb μ c K (r, c'.2) :=
+    Finset.sum_Ico_consecutive _ (Nat.zero_le _) hc1
+  have h_zero :
+      ∑ r ∈ Finset.Ico (c.1 + 1) c'.1, gnwProb μ c K (r, c'.2) = 0 := by
+    apply Finset.sum_eq_zero
+    intro r hr
+    simp only [Finset.mem_Ico] at hr
+    exact gnwProb_unreachable_zero K (r, c'.2) (Or.inl (by omega))
+  rw [Finset.range_eq_Ico, Finset.range_eq_Ico, ← h_consec, h_zero, add_zero]
+
+/-- **(S57.5) Arm-of-c' residual reduction — case 2.**
+
+In case 2 of `distinct_corners_dichotomy` (i.e., `c.2 < c'.2`), the
+arm-of-c' summand
+`∑ s ∈ Finset.range c'.2, gnwProb μ c K (c'.1, s)`
+reduces to a sum over the smaller range `Finset.range (c.2 + 1)`,
+because the high-column contributions `s ∈ Finset.Ico (c.2 + 1) c'.2`
+all vanish: for such `s`, the cell `(c'.1, s)` satisfies
+`c.2 < s = (c'.1, s).2`, so `gnwProb_unreachable_zero` applies via
+the `Or.inr` (column-disjunct) branch.
+
+**Why the residual `range (c.2 + 1)` is not further reducible by
+`gnwProb_unreachable_zero` alone.**  For `s ≤ c.2`, the cell
+`(c'.1, s)` has `s ≤ c.2` (so the `Or.inr` column-disjunct fails) and
+`x.1 = c'.1 < c.1` in case 2 (so the `Or.inl` row-disjunct also
+fails — `c'.1 < c.1` means `c.1 > x.1`, not `c.1 < x.1`).  The walk
+from `(c'.1, s)` to `c = (c.1, c.2)` exists via down-then-right
+moves, so the integrand is genuinely non-zero in this residual.  At
+`s = c.2` the cell is the doubly-affected cell `d = (c'.1, c.2)` of
+case 2 (`min c.1 c'.1 = c'.1`, `min c.2 c'.2 = c.2`).
+
+**Role in S57.0's K-induction plan for `F_side_identity_aligned`.**
+This is the complement of `sum_gnwProb_arm_of_c'_eq_zero_case1`
+(S57.3, PR #17605/#17719): where that lemma handles the *trivial*
+case-1 arm-of-c' vanishing, this lemma handles the *non-trivial*
+case-2 arm-of-c' residual.  Mirror of `sum_gnwProb_leg_of_c'_reduce_case1`
+(above) under the `gnwProb_transpose` symmetry (S58):
+exchanging rows and columns maps case 1 leg-of-c' to case 2
+arm-of-c'.  For implementation simplicity, the proof here is given
+directly rather than via transpose.
+
+**Genericity in `μ`.**  Universal in `μ`, so it applies to the
+LHS sum (`gnwProb μ c (h_μ x) x`) and to the RHS sum
+(`gnwProb (μ\c') c (h_{μ\c'} x) x`) of `F_side_identity_aligned`
+alike.
+
+**Status.**  Sorry-free.  Uses `Finset.sum_Ico_consecutive`,
+`Finset.range_eq_Ico`, `Finset.sum_eq_zero`, and S57.2's
+`gnwProb_unreachable_zero`. -/
+private lemma sum_gnwProb_arm_of_c'_reduce_case2
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc2 : c.2 < c'.2) (K : ℕ) :
+    ∑ s ∈ Finset.range c'.2, gnwProb μ c K (c'.1, s) =
+      ∑ s ∈ Finset.range (c.2 + 1), gnwProb μ c K (c'.1, s) := by
+  have h_consec :
+      ∑ s ∈ Finset.Ico 0 (c.2 + 1), gnwProb μ c K (c'.1, s) +
+      ∑ s ∈ Finset.Ico (c.2 + 1) c'.2, gnwProb μ c K (c'.1, s) =
+      ∑ s ∈ Finset.Ico 0 c'.2, gnwProb μ c K (c'.1, s) :=
+    Finset.sum_Ico_consecutive _ (Nat.zero_le _) hc2
+  have h_zero :
+      ∑ s ∈ Finset.Ico (c.2 + 1) c'.2, gnwProb μ c K (c'.1, s) = 0 := by
+    apply Finset.sum_eq_zero
+    intro s hs
+    simp only [Finset.mem_Ico] at hs
+    exact gnwProb_unreachable_zero K (c'.1, s) (Or.inr (by omega))
+  rw [Finset.range_eq_Ico, Finset.range_eq_Ico, ← h_consec, h_zero, add_zero]
+
 /-- Bridge lemma: for distinct corners `c ≠ c'` of `μ`, summing `gnwProb μ c K` over the
     strict hook of any cell `(i, j)` is the same as summing it over the strict hook of
     that cell in `μ \ c'`.  This is because the two strict-hook sets differ at most by

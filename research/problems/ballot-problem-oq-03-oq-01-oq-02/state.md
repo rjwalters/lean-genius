@@ -1,16 +1,91 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S58 + S57.4 done — transpose-equivariance infrastructure (`strictHookCells_transpose`, `gnwProb_transpose`) and off-spine inductive step (`isCorner_invariant_off_spine_of_c'`, `gnwProb_succ_eq_off_spine_of_c'`); pointwise-comparison branches still open)
+**Phase**: ACT (S57.5 done — arm/leg residual reductions complete the Finset-level cell-partition geometry; pointwise-comparison branches still open)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-09 (Session 58 researcher-5 + Session 57.4 researcher-10)
-**Iteration**: 60
+**Last Updated**: 2026-05-12 (Session 62 / S57.5 researcher-10)
+**Iteration**: 62
+
+## Session 62 — S57.5 arm/leg residual reductions (researcher-10, 2026-05-12)
+
+**Deliverable.** Two sorry-free private lemmas in
+`BallotProblemOQ03OQ01OQ02Helpers.lean` (after S57.4's
+`gnwProb_succ_eq_off_spine_of_c'`, line ~14998):
+
+* `sum_gnwProb_leg_of_c'_reduce_case1` — case 1 (`c.1 < c'.1`):
+  `∑ r ∈ range c'.1, gnwProb μ c K (r, c'.2) = ∑ r ∈ range (c.1+1), …`.
+  High-row block `Ico (c.1+1) c'.1` vanishes pointwise via
+  `gnwProb_unreachable_zero`'s `Or.inl` disjunct.
+
+* `sum_gnwProb_arm_of_c'_reduce_case2` — case 2 (`c.2 < c'.2`):
+  `∑ s ∈ range c'.2, gnwProb μ c K (c'.1, s) = ∑ s ∈ range (c.2+1), …`.
+  Mirror of the case-1 lemma; high-column block vanishes via
+  `Or.inr` disjunct.
+
+**Why these complete the geometry.**  S57.3 (PR #17719) handles the
+*trivial vanishing* sub-branches (case-1 arm-of-c', case-2 leg-of-c').
+S57.5 handles the *non-trivial residual* sub-branches.  Together the
+four lemmas tightly bound each sub-branch:
+
+|        | Arm-of-c'                                | Leg-of-c'                                |
+|--------|-------------------------------------------|------------------------------------------|
+| Case 1 | **Vanishes** (S57.3, PR #17719)           | **Reduces** to `range (c.1+1)` (S57.5)   |
+| Case 2 | **Reduces** to `range (c.2+1)` (S57.5)    | **Vanishes** (S57.3, PR #17719)          |
+
+**Tightness.**  For the case-1 leg-of-c' residual `r ∈ range (c.1+1)`,
+cells `(r, c'.2)` have `r ≤ c.1` (so `Or.inl` fails) and `x.2 = c'.2
+< c.2` in case 1 (so `Or.inr` also fails).  The cells are
+*reachable* from `c`, so the residual is genuinely nonzero; at
+`r = c.1` it contains the **doubly-affected cell** `d = (c.1, c'.2)`.
+Mirror tightness for case-2 arm-of-c': residual contains `d =
+(c'.1, c.2)` at `s = c.2`.
+
+**Net change.**  Helpers.lean: 15600 → 15716 lines (+116, two new
+private lemmas with comprehensive docstrings).  sorries: 1 → 1
+(unchanged — `F_side_identity_aligned` remains).  No new imports.
+
+**Build status.**  Build pending — `BallotProblemOQ03OQ02.lean`
+remains broken on `origin/main` (LGV-route parent, ~24 errors lines
+1911–2386), blocking build verification of all `ballot-OQ03-OQ01-*`
+descendants.  Matches `(build pending — parent OQ03OQ02 break)`
+precedent of PRs #17719 (S57.3), #17652 (S57.4), #17650 (S58),
+#17611 (S57.3a), #17568 (S57.2), #17537 (S57.1).
+
+**File-size watch.**  Helpers.lean now at 15716 lines, crossing the
+~15500-line Docker 32GB-memory ceiling estimate by ~216 lines.  CI
+will confirm; if build memory pressure manifests post-parent-fix,
+the next S57.6+ commit should trigger the S57.0 Option E3 extraction
+into a new `BallotProblemOQ03OQ01OQ02DoubleRemove.lean` sub-file.
+
+## Earlier sessions (preserved)
+
+**Session 58 + S57.4** added transpose-equivariance infrastructure
+(`strictHookCells_transpose`, `gnwProb_transpose`) and the off-spine
+inductive step (`isCorner_invariant_off_spine_of_c'`,
+`gnwProb_succ_eq_off_spine_of_c'`).
 
 ## Current Focus
-Close `F_side_identity_aligned` (Helpers, line ~14811) — the
-**common-domain parametric F-side hook-shift identity** that is the
-sole remaining sorry-bearing lemma on the GNW route after S56.
+Close `F_side_identity_aligned` (Helpers, line ~15275 post-S57.5) —
+the **common-domain parametric F-side hook-shift identity** that is
+the sole remaining sorry-bearing lemma on the GNW route after S56.
+
+**Session 62 / S57.5 (researcher-10, this session)** added two
+sorry-free residual-reduction lemmas as the complement of S57.3
+(PR #17605/#17719):
+* `sum_gnwProb_leg_of_c'_reduce_case1` — case 1 leg-of-c' sum reduces
+  to `range (c.1 + 1)` (high-row block vanishes via
+  `gnwProb_unreachable_zero`'s `Or.inl` disjunct).
+* `sum_gnwProb_arm_of_c'_reduce_case2` — case 2 arm-of-c' sum reduces
+  to `range (c.2 + 1)` (high-column block vanishes via `Or.inr`).
+
+After S57.5 the Finset-level cell-partition geometry is closed: all
+four sub-branches (case 1 / case 2, arm-of-c' / leg-of-c') are
+tightly bounded — two vanish (S57.3, PR #17719) and two reduce to a
+small residual (S57.5).  Each residual contains the doubly-affected
+cell `d` (`min c.1 c'.1, min c.2 c'.2`) plus a few "below-`c`" cells
+where genuine pointwise comparison is required.
+
 **Session 58 (researcher-5)** added two sorry-free transpose-equivariance
 lemmas as S57.4 reduction infrastructure:
 * `strictHookCells_transpose` (Helpers, line ~14788) —
@@ -393,9 +468,31 @@ in place:
   memory ceiling estimate (~15500).  CI will verify the PR.
 
 ## Next Action
+**S57.6 — derive unconditional pointwise off-spine integrand identity**
+via well-founded recursion on `hookLength μ x.1 x.2`, using S57.4's
+`gnwProb_succ_eq_off_spine_of_c'` as the inductive step.  The strict
+hook of an off-spine cell `x` may contain "crossing" cells `y` with
+`y.1 = c'.1` or `y.2 = c'.2`; these are discharged by S57.3a's per-cell
+helpers (`gnwProb_zero_of_row_eq_c'_case1` /
+`gnwProb_zero_of_col_eq_c'_case2`) on whichever side of the
+case-1/case-2 dichotomy applies.  Estimated ~80–150 lines.  This
+closes the (S6) off-spine branch of S57.0.
+
+After S57.6, the (S2)/(S3) live arm/leg residuals — `range (c.1 + 1)`
+in case 1, `range (c.2 + 1)` in case 2 (S57.5 reductions) — remain the
+only piece of `F_side_identity_aligned`.  Each residual contains the
+doubly-affected cell `d` plus `c.1` / `c.2` below-`c` cells where
+genuine arm/leg pointwise comparison between `gnwProb μ` and
+`gnwProb (μ\c')` is required (S57.7, likely needs a `δ_arm`
+correction term).
+
+## Historical Next Action (S57.3, now superseded by S57.5)
 **S57.3 — apply `gnwProb_unreachable_zero` to discharge (S2) and (S3)
-in the trivial branches**, completing the case-1 arm-of-c' and case-2
-leg-of-c' summands of the K-induction.  After S57.2's lemma, the
+in the trivial branches** *[completed; both per-cell variants merged
+as #17611 and sum-form variants in flight as PR #17719; complement
+non-trivial residuals reduced by S57.5 — this session]*, completing
+the case-1 arm-of-c' and case-2 leg-of-c' summands of the K-induction.
+After S57.2's lemma, the
 remaining work for `F_side_identity_aligned` reduces materially:
 * **(S2) case 1** (`c.1 < c'.1`, arm-of-c'): `gnwProb_unreachable_zero`
   immediately gives `gnwProb μ c (h_μ x) x = 0` and
