@@ -13,6 +13,7 @@ Every odd integer greater than 5 is the sum of three primes.
 - Vinogradov, "Representation of an odd number as sum of three primes" (1937)
 -/
 
+import Mathlib.Combinatorics.Schnirelmann
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Tactic
 
@@ -325,11 +326,15 @@ problems. He proved that every sufficiently large integer is a sum of a
 bounded number of primes, providing the first unconditional progress.
 -/
 
-/-- Schnirelmann density of a set A ⊆ ℕ:
-    σ(A) = inf_{n ≥ 1} |A ∩ [1,n]| / n -/
-def schnirelmannDensity (A : Set ℕ) [DecidablePred (· ∈ A)] : ℝ :=
-  -- This is a simplified version; full definition needs infimum
-  0 -- placeholder
+/-- Schnirelmann density σ(A) = inf_{n ≥ 1} |A ∩ (0,n]| / n.
+
+This is `Mathlib.Combinatorics.Schnirelmann.schnirelmannDensity`, re-exported
+from the Mathlib API. Replacing the prior `:= 0` placeholder makes the
+hypothesis `schnirelmannDensity A > 0` in `schnirelmann_basis_theorem`
+mathematically meaningful (under the placeholder the hypothesis was false
+by definition for every `A`, trivially satisfying the axiom). -/
+noncomputable abbrev schnirelmannDensity (A : Set ℕ) [DecidablePred (· ∈ A)] : ℝ :=
+  _root_.schnirelmannDensity A
 
 /-- A set A is an additive basis of order h if every natural number
     can be expressed as a sum of at most h elements of A -/
@@ -339,6 +344,18 @@ def IsAdditiveBasis (A : Set ℕ) (h : ℕ) : Prop :=
 /-- Schnirelmann's theorem: if σ(A) > 0, then A is an additive basis -/
 axiom schnirelmann_basis_theorem (A : Set ℕ) [DecidablePred (· ∈ A)] :
     schnirelmannDensity A > 0 → ∃ h : ℕ, IsAdditiveBasis A h
+
+/-- The primes have Schnirelmann density 0, because `1 ∉ {p | p.Prime}`.
+
+Proved by `schnirelmannDensity_eq_zero_of_one_notMem` from Mathlib. This
+exercises the Mathlib API now reachable via the `Schnirelmann` import and
+confirms that the density definition is no longer the constant-zero
+placeholder (under the placeholder, *every* set had density 0 trivially;
+this lemma shows the genuine Mathlib density also evaluates to 0 here
+precisely because `1` is not prime). -/
+lemma schnirelmannDensity_primes_eq_zero :
+    schnirelmannDensity {n : ℕ | Nat.Prime n} = 0 :=
+  _root_.schnirelmannDensity_eq_zero_of_one_notMem (fun h => Nat.not_prime_one h)
 
 /-- Schnirelmann's result on primes: the set P + P (sums of two primes)
     has positive Schnirelmann density. Combined with his basis theorem,

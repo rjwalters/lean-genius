@@ -279,3 +279,122 @@ module dependency).
 **S3+ candidates**: Approach B (True-stub upgrades), Approach C
 (`native_decide` for small range), then Approach D (Schnirelmann's
 theorem proper, multi-session).
+
+## S2 (researcher-8, 2026-05-12) — ACT (Approach A delivery)
+
+### What was done
+
+Delivered all three S1-prescribed changes to `proofs/Proofs/WeakGoldbach.lean`:
+
+1. **Import**: `import Mathlib.Combinatorics.Schnirelmann` added at top.
+2. **Placeholder replaced**: `def schnirelmannDensity ... := 0` (5 lines)
+   replaced by `noncomputable abbrev schnirelmannDensity ... := _root_.schnirelmannDensity A`
+   (2 lines + 7 lines of docstring).
+3. **Lemma added**:
+   ```lean
+   lemma schnirelmannDensity_primes_eq_zero :
+       schnirelmannDensity {n : ℕ | Nat.Prime n} = 0 :=
+     _root_.schnirelmannDensity_eq_zero_of_one_notMem
+       (fun h => Nat.not_prime_one h)
+   ```
+
+### Key API confirmations (via Mathlib `master` lookup)
+
+`Mathlib.Combinatorics.Schnirelmann` at v4.26.0 exports the following
+in root namespace (no `Schnirelmann` wrapper):
+
+```lean
+noncomputable def schnirelmannDensity (A : Set ℕ) [DecidablePred (· ∈ A)] : ℝ :=
+  ⨅ n : {n : ℕ // 0 < n}, #{a ∈ Ioc 0 n | a ∈ A} / n
+
+lemma schnirelmannDensity_nonneg : 0 ≤ schnirelmannDensity A
+lemma schnirelmannDensity_le_one : schnirelmannDensity A ≤ 1
+lemma schnirelmannDensity_eq_zero_of_one_notMem (h : 1 ∉ A) :
+    schnirelmannDensity A = 0
+lemma schnirelmannDensity_le_of_notMem {k : ℕ} (hk : k ∉ A) :
+    schnirelmannDensity A ≤ 1 - (k⁻¹ : ℝ)
+lemma schnirelmannDensity_le_div {n : ℕ} (hn : n ≠ 0) :
+    schnirelmannDensity A ≤ #{a ∈ Ioc 0 n | a ∈ A} / n
+lemma schnirelmannDensity_empty : schnirelmannDensity ∅ = 0
+lemma schnirelmannDensity_finite {A : Set ℕ} (hA : A.Finite) :
+    schnirelmannDensity A = 0
+lemma schnirelmannDensity_univ : schnirelmannDensity Set.univ = 1
+lemma schnirelmannDensity_setOf_mod_eq_one {m : ℕ} (hm : m ≠ 1) :
+    schnirelmannDensity {n | n % m = 1} = (m⁻¹ : ℝ)
+```
+
+The definition is `noncomputable`, so any local alias must also be
+`noncomputable` (we used `noncomputable abbrev`).
+
+### Design decisions
+
+**Why `abbrev` instead of deleting the local def?** Three reasons:
+
+1. **Backwards compatibility**: The local `axiom schnirelmann_basis_theorem`
+   (and any future references) continue to read `schnirelmannDensity A`
+   without qualification. Inside `namespace WeakGoldbach`, this resolves
+   to `WeakGoldbach.schnirelmannDensity` (our abbrev), which transparently
+   unfolds to `_root_.schnirelmannDensity` (Mathlib's). No risk of accidental
+   shadowing if a downstream user `open`s a different namespace.
+
+2. **Documentation**: The abbrev carries a docstring explaining the
+   transition from placeholder to real density. Deletion would leave a
+   silent semantic change with no visible audit trail.
+
+3. **Cost**: Zero — `abbrev` is `reducible`, so unfolding is automatic.
+
+**Why `(fun h => Nat.not_prime_one h)` rather than `Nat.not_prime_one`
+directly or `by decide`?**
+
+- `Nat.not_prime_one h` would be the "η-equivalent" form. The explicit
+  lambda is slightly safer because `Set.mem_setOf_eq` is reflexive
+  (definitional) but not always normalized by elaboration; the lambda
+  forces Lean to unfold `(1 ∈ {n | Nat.Prime n})` to `Nat.Prime 1`
+  during type-checking of the body, where `Nat.not_prime_one : ¬ Nat.Prime 1`
+  exactly matches.
+
+- `by decide` would also work but is heavier (it kernel-evaluates
+  primality of 1) and produces a more opaque proof term.
+
+### Counts delta
+
+| Metric | S1 (pre) | S2 (post) | Δ |
+|--------|----------|-----------|---|
+| `lineCount` (parent file) | 480 | 497 | +17 |
+| `axiomCount` (parent file) | 9 | 9 | 0 |
+| `definitionCount` (parent file) | 15 | 15 | 0 |
+| `theoremCount` (parent file) | 24 | 25 | +1 |
+| Sorries (parent file) | 0 | 0 | 0 |
+| `True`-stub placeholders | 2 | 2 | 0 |
+
+### What S2 does NOT accomplish
+
+- **Axiom count is unchanged.** `schnirelmann_basis_theorem` remains
+  axiomatized. S2 only makes its hypothesis non-vacuous; eliminating it
+  is Approach D's multi-session task.
+- **`True`-stub theorems** at lines 292 and 406 are unchanged. Approach
+  B (S3 target) addresses those.
+- **The placeholder `def schnirelmannDensity := 0`** was a logical bug:
+  it trivialized `schnirelmann_basis_theorem`'s hypothesis (the hypothesis
+  was `0 > 0`, always false, so the axiom was vacuous). S2's replacement
+  fixes this bug, so a downstream agent attempting to *prove*
+  `schnirelmann_basis_theorem` will now face the real mathematical content.
+
+### Next session (S3)
+
+**Approach B**: Upgrade `vinogradov_minor_arc_bound` (line 292) and
+`linnik_goldbach_representations` (line 406) from `True`-stub form to
+real (modest) content.
+
+For `linnik_goldbach_representations` specifically:
+- Goal shape:
+  `∃ C : ℝ, ∀ n : ℕ, n ≥ 2 → Even n → ...`
+- Trivial real-content bound: `representationCount n ≤ (Nat.primeCounting n)^3`
+  via `Finset.card_le_card` applied to the product
+  `(primesUpTo n) × (primesUpTo n) × (primesUpTo n) ⊇ {(p,q,r) : p+q+r = n}`.
+
+For `vinogradov_minor_arc_bound`:
+- Goal shape: `True` currently. Upgrade to:
+  `∃ C : ℝ, ∀ N : ℕ, N ≥ 2 → |exponentialSumOverPrimes N α| ≤ C * N`
+  (trivial bound, not the deep Vinogradov bound). The deep
+  `N / (log N)^A` bound is HEROIC and stays.
