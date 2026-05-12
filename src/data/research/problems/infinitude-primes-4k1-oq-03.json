@@ -1,0 +1,116 @@
+{
+  "slug": "infinitude-primes-4k1-oq-03",
+  "title": "Lean 4 proof that primes \\equiv 1 \\pmod 4 have density 1/2 among primes",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\lim_{N\\to\\infty} \\dfrac{\\#\\{p \\le N : p\\text{ prime},\\, p \\equiv 1 \\pmod 4\\}}{\\pi(N)} = \\tfrac{1}{2}",
+    "plain": "Strengthen the parent infinitude theorem to the density form: primes ≡ 1 (mod 4) form a half-density subset of all primes. This is the (q=4, a=1) specialization of the prime number theorem for arithmetic progressions (PNT-AP); for q=4 the totient is 2 so the density is 1/φ(4) = 1/2.",
+    "whyMatters": [
+      "Pairs with the elementary infinitude proof to give Dirichlet 1837 → PNT-AP density 1/φ(q) at the simplest non-trivial modulus.",
+      "First specialization of Mathlib.NumberTheory.LSeries.PrimesInAP in the project gallery (the file matured in 2024–2025).",
+      "Density form makes Fermat's two-square theorem density-quantitative: exactly half of all primes are sums of two squares."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T05:10:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-1, 2026-05-12): OBSERVE survey scaffold. Question: does Lean 4 have a proof that primes ≡ 1 (mod 4) have density 1/2 among primes? Documented the strategy as a Mathlib bridge — specialize Mathlib's PNT-AP infrastructure (`Mathlib.NumberTheory.LSeries.PrimesInAP`) at (q=4, a=1), wire through `Nat.totient 4 = 2`. No Lean changes this iteration; produced problem.md (~250 lines), state.md, knowledge.md with numerical Chebyshev-bias data up to N=10⁶, three-density theory comparison, and S2 skeleton.",
+    "blockers": [],
+    "nextAction": "S2: create proofs/Proofs/InfinitudePrimes4k1OQ03.lean specializing Mathlib's PNT-AP density form at (q=4, a=1). Skeleton in knowledge.md; the proof reduces to: identify the precise current name of the density-form theorem in `Mathlib.NumberTheory.LSeries.PrimesInAP` (likely `Nat.setOf_prime_and_eq_mod_*_tendsto_*`), specialize with q=4 a=1, and use `totient_four : Nat.totient 4 = 2 := by decide`. ~80 lines, 0 axioms expected.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-1, 2026-05-12): OBSERVE survey. Established that this is a Mathlib bridge, not a fresh formalization — the deep PNT-AP machinery is in `Mathlib.NumberTheory.LSeries.PrimesInAP` (added 2024–2025), and the OQ-03 deliverable is to specialize at (q=4, a=1) using `Nat.totient 4 = 2`. Documented the three-density distinction (natural / Dirichlet / log) and the Chebyshev bias data showing convergence to 1/2 for both 4k+1 and 4k+3 classes by N=10⁶. Parent file InfinitudePrimes4k1.lean (verified, 0 axioms, 178 lines) provides the infinitude form; OQ-03 strengthens to density.",
+    "builtItems": [
+      "research/problems/infinitude-primes-4k1-oq-03/problem.md (new, ~250 lines): full problem statement, two formal-statement variants (natural-density and Dirichlet-density forms), Mathlib infrastructure map, theoretical path through Dirichlet characters + L-function nonvanishing + Ikehara Tauberian, decomposition into S2–S5 sessions.",
+      "research/problems/infinitude-primes-4k1-oq-03/state.md (new): phase NEW → OBSERVE; concrete S2 skeleton for proofs/Proofs/InfinitudePrimes4k1OQ03.lean.",
+      "research/problems/infinitude-primes-4k1-oq-03/knowledge.md (new): Chebyshev bias data N=100..10⁶ (4k+1 ratio rises 0.440 → 0.499, 4k+3 ratio falls 0.520 → 0.501), Mathlib status with module names, three-density comparison table, S2 skeleton."
+    ],
+    "insights": [
+      "Density 1/2 derivation: for q=4 the reduced residues are exactly {1, 3} so |(ℤ/4ℤ)ˣ| = φ(4) = 2, giving density 1/φ(4) = 1/2 per class by PNT-AP.",
+      "Chebyshev bias (1853): for small N, π(N; 4, 1) < π(N; 4, 3) — e.g. at N=10⁶, 39175 vs 39322. Both converge to half of π(N), but 4k+3 leads. The OQ density-1/2 statement is the asymptotic limit, not a finite-N inequality.",
+      "Three densities (natural / Dirichlet / log) all give 1/φ(q) for coprime (q, a). Natural is PNT-AP-equivalent (deepest); Dirichlet is the 1837 original (medium); log is Mertens-level (semi-elementary). For OQ-03 the natural-density form is the cleaner target because it matches the human-language reading.",
+      "Parent file already imports Mathlib.NumberTheory.SumTwoSquares for the Euler-criterion lemma; the density-form file can chain through it for free to get the \"sum-of-two-squares primes have density 1/2\" corollary.",
+      "Mathlib's PNT-AP statement family (Nat.setOf_prime_and_eq_mod_*_tendsto_*) is recent (2024–2025) and the precise name may have shifted; S2 should `exact?` against the pinned revision before hard-coding.",
+      "No elementary proof of the density form is known. Chebyshev (1853) gave ε-bounds on the ratio but the limit required L-function machinery (Dirichlet 1837 for log-density, de la Vallée-Poussin 1899 for natural density)."
+    ],
+    "mathlibGaps": [
+      "(possibly already filled) A clean ratio form `(π(N; q, a) : ℝ) / (π(N) : ℝ) → 1/φ(q)`; Mathlib likely phrases the asymptotic as `π(N; q, a) ~ (1/φ(q)) * (N / log N)` via IsEquivalent. Converting to the ratio form is a 10–15 line lemma.",
+      "(possibly already filled) A (q=4, a=1) specialization with `Nat.totient 4 = 2` plugged in. Mathlib's statements are typically parametric in (q, a).",
+      "A density-form `sum_of_two_squares_density = 1/2` corollary that explicitly chains through Fermat's two-square theorem. Likely never stated in Mathlib because both inputs are general; the gallery is the right place for this corollary."
+    ],
+    "nextSteps": [
+      "S2: create proofs/Proofs/InfinitudePrimes4k1OQ03.lean (~80 lines). Specialize Mathlib's PNT-AP density form at (q=4, a=1) using `Nat.totient 4 = 2`. Use `exact?` / `#check Nat.` autocomplete in a Lean REPL to identify the precise current name of the density-form theorem; then specialize and ratio-convert if needed.",
+      "S3 (optional): density-form corollary for sum-of-two-squares primes, chaining through Fermat's two-square theorem. ~30 lines.",
+      "S4 (optional): sister class density theorem for primes ≡ 3 (mod 4); direct from PNT-AP with (q=4, a=3). Pair-with-4k3 corollary in the same file.",
+      "S5 (optional): finer-grained statement: π(N; 4, 1) = (N / (2 log N)) + o(N/log N), peeling the asymptotic equivalent."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "prime-numbers",
+    "modular-arithmetic",
+    "dirichlet-theorem",
+    "sum-of-two-squares",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "infinitude-primes-4k1",
+    "infinitude-primes",
+    "infinitude-primes-4k3",
+    "prime-number-theorem",
+    "sum-of-two-squares",
+    "dirichlet-theorem"
+  ],
+  "references": {
+    "papers": [
+      "Dirichlet, P. G. L. (1837). Über den Satz, dass jede unbegrenzte arithmetische Progression... unendlich viele Primzahlen enthält.",
+      "Chebyshev, P. L. (1853). Letter to M. Fuss on the residues of primes.",
+      "de la Vallée-Poussin, C. J. (1899). Recherches analytiques sur la théorie des nombres premiers.",
+      "Knapowski, S. & Turán, P. (1962–1977). Comparative prime-number theory I–VIII."
+    ],
+    "urls": [
+      "https://oeis.org/A002144",
+      "https://oeis.org/A002145"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.LSeries.PrimesInAP",
+      "Mathlib.NumberTheory.DirichletCharacter.Basic",
+      "Mathlib.NumberTheory.LSeries.DirichletContinuation",
+      "Mathlib.NumberTheory.LSeries.NonvanishingOne",
+      "Mathlib.NumberTheory.Totient",
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Mathlib.Data.ZMod.Units"
+    ]
+  },
+  "started": "2026-05-12T04:48:16.449Z",
+  "lastUpdate": "2026-05-12T05:10:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/InfinitudePrimes4k1.lean",
+      "filename": "InfinitudePrimes4k1.lean",
+      "lineCount": 178,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InfinitudePrimes4k1.lean"
+    }
+  ]
+}
