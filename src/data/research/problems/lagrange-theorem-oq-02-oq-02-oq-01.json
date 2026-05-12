@@ -1,8 +1,8 @@
 {
   "slug": "lagrange-theorem-oq-02-oq-02-oq-01",
   "title": "Can the class equation be used to formally prove the Burnside lemma (number of orbits = average number of fixed points) in Lean 4 using only the infrastructure developed here?",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "ACT",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -26,25 +26,29 @@
     "goal": "Write proofs/Proofs/LagrangeTheoremOQ02OQ02OQ01.lean with 4 theorems (burnside_lemma_sum_form, burnside_lemma_average_form, conjugation_burnside_form, oq01_resolution) proving the affirmative resolution. ≤ 100 lines, 0 sorries, 0 axiom declarations."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T03:30:00.000Z",
-    "iteration": 1,
-    "focus": "S1 SCAFFOLD complete: problem.md, knowledge.md, state.md, this JSON. Mathlib API confirmed via in-tree usage at BurnsideCountingOQ03OQ03.lean:87.",
+    "phase": "ACT",
+    "since": "2026-05-12T04:00:00.000Z",
+    "iteration": 2,
+    "focus": "S2 ACT complete: Proofs/LagrangeTheoremOQ02OQ02OQ01.lean (195 lines, 4 theorems, 0 sorries, 0 axioms) plus full gallery entry triple. OQ-01 resolved affirmatively.",
     "blockers": [],
-    "nextAction": "S2 ACT: write Proofs/LagrangeTheoremOQ02OQ02OQ01.lean per knowledge.md §5 decomposition (≤ 100 lines, 4 theorems) plus gallery entry triple.",
+    "nextAction": "S3 (optional polish): cross-reference into parent's openQuestions[0] with [RESOLVED in oq-01], or derive class equation from conjugation_burnside_form (converse direction). OQ-01 itself is resolved.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE: Mathlib API (MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group) located, verified by in-tree usage, S2 decomposition into 4 theorems specified. Expected resolution: YES with ≤ 100 lines, 0 sorries, 0 axioms.",
+    "progressSummary": "S2 ACT COMPLETE: OQ-01 resolved affirmatively. proofs/Proofs/LagrangeTheoremOQ02OQ02OQ01.lean (195 lines, 4 theorems, 0 sorries, 0 axioms) + full gallery entry (meta.json + annotations.json + index.ts) with 5 sections, 4 mainTheorems, 6 annotations, 9 mathlib/textbook references. burnside_lemma_sum_form is a one-line Mathlib invocation; conjugation_burnside_form exhibits the parent's class equation as a specialisation. oq01_resolution bundles both as a single conjunction.",
     "builtItems": [
-      "research/problems/lagrange-theorem-oq-02-oq-02-oq-01/problem.md — problem statement + target theorems + decomposition table",
-      "research/problems/lagrange-theorem-oq-02-oq-02-oq-01/knowledge.md — classical statement, parent-file connection, Mathlib API names/signatures, axiom-cleanliness, S2 plan",
-      "research/problems/lagrange-theorem-oq-02-oq-02-oq-01/state.md — session state",
-      "src/data/research/problems/lagrange-theorem-oq-02-oq-02-oq-01.json — this file"
+      "research/problems/lagrange-theorem-oq-02-oq-02-oq-01/problem.md — problem statement + target theorems + decomposition table (S1)",
+      "research/problems/lagrange-theorem-oq-02-oq-02-oq-01/knowledge.md — classical statement, parent-file connection, Mathlib API names/signatures, axiom-cleanliness, S2 plan (S1)",
+      "research/problems/lagrange-theorem-oq-02-oq-02-oq-01/state.md — session state (updated S2)",
+      "src/data/research/problems/lagrange-theorem-oq-02-oq-02-oq-01.json — this file (updated S2)",
+      "proofs/Proofs/LagrangeTheoremOQ02OQ02OQ01.lean — 195 lines, 4 theorems, 0 sorries, 0 axioms (S2)",
+      "src/data/proofs/lagrange-theorem-oq-02-oq-02-oq-01/meta.json — full gallery metadata (S2)",
+      "src/data/proofs/lagrange-theorem-oq-02-oq-02-oq-01/annotations.json — 6 deep annotations (S2)",
+      "src/data/proofs/lagrange-theorem-oq-02-oq-02-oq-01/index.ts — re-export (S2)"
     ],
     "insights": [
       "MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group is the symmetric form of Burnside's lemma in Mathlib (Mathlib.GroupTheory.GroupAction.Quotient).",
@@ -55,9 +59,8 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "S2: write Proofs/LagrangeTheoremOQ02OQ02OQ01.lean with burnside_lemma_sum_form (Mathlib wrap), burnside_lemma_average_form (Nat.mul_div_cancel corollary), conjugation_burnside_form (specialised to G⇌G by conj), oq01_resolution (bundle).",
-      "S2: full gallery entry (meta.json + annotations.json + index.ts).",
-      "S3 (optional): cross-reference into parent's openQuestions[0] with [RESOLVED in oq-01]."
+      "S3 (optional polish): cross-reference into parent's openQuestions[0] with [RESOLVED in oq-01], or derive parent's class equation from conjugation_burnside_form (converse direction).",
+      "OQ-01 itself is resolved; remaining work is polish only."
     ]
   },
   "tags": [
@@ -91,8 +94,10 @@
     ]
   },
   "started": "2026-05-12T03:30:00.000Z",
-  "lastUpdate": "2026-05-12T03:30:00.000Z",
+  "lastUpdate": "2026-05-12T04:00:00.000Z",
   "significance": 6,
   "tractability": 7,
-  "leanFiles": []
+  "leanFiles": [
+    "proofs/Proofs/LagrangeTheoremOQ02OQ02OQ01.lean"
+  ]
 }
