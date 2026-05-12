@@ -1,0 +1,151 @@
+[
+  {
+    "id": "ann-mvt02oq04oq01-header-refutation",
+    "proofId": "mean-value-theorem-oq-02-oq-04-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 4,
+      "endLine": 110
+    },
+    "title": "Refutation Summary: The OQ-04 Axiom is Mathematically False",
+    "content": "The file's module docstring states the OQ-01 question (can the parent OQ-04 axiom be discharged via Mathlib's HasFPowerSeriesOnBall?) and answers NO with an explicit Runge-function counterexample. The Runge function f(x)=1/(1+x²) is real-analytic on all of ℝ, uniformly bounded by 1, but has complex poles at ±i. With a=0, R=100, M=1, r=1, n=0, x=1, every hypothesis of the parent axiom is satisfied (analytic on (-100,100), |f|≤1 there) but the conclusion |f(1)−f(0)| ≤ 1·1/(100−1) = 1/99 fails: |1/2−1| = 1/2 ≫ 1/99. The root cause is the Runge phenomenon: real-analyticity plus a real sup bound does not control complex Cauchy coefficient estimates, which require a complex sup bound on a complex disk. The corrected statement (§3) replaces the real interval with Metric.ball (a:ℂ) R and adds the explicit R^n factor in the denominator.",
+    "mathContext": "Runge counterexample: $f(x) = 1/(1+x^2)$, real-analytic on $\\mathbb{R}$, $|f| \\le 1$ uniformly. At $a=0, R=100, r=1, n=0, x=1$: hypothesis side OK, conclusion would require $|f(1) - f(0)| = 1/2 \\le 1 \\cdot 1/(100-1) = 1/99 \\approx 0.0101$, but $1/2 > 1/99$. Root cause: complex radius of convergence at $0$ is $1$ (distance to $\\pm i$), not $R=100$, so Cauchy's $\\|a_k\\| \\le M/R^k$ requires the complex sup bound on $D(0, R) \\subset \\mathbb{C}$, not the real sup bound on $(-R, R) \\subset \\mathbb{R}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Runge phenomenon",
+      "Cauchy's coefficient estimates",
+      "real-vs-complex analyticity",
+      "counterexample formalization",
+      "AnalyticOn ℝ",
+      "HasFPowerSeriesOnBall"
+    ],
+    "prerequisites": [
+      "real-analytic functions",
+      "complex analysis",
+      "Cauchy's integral formula",
+      "Mathlib.Analysis.Analytic.Basic"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04oq01-runge-def",
+    "proofId": "mean-value-theorem-oq-02-oq-04-oq-01",
+    "type": "definition",
+    "range": {
+      "startLine": 119,
+      "endLine": 124
+    },
+    "title": "The Runge Function",
+    "content": "Defines `runge : ℝ → ℝ := fun x => 1 / (1 + x ^ 2)`. This is the canonical witness function in numerical analysis for the Runge phenomenon: real-analytic on all of ℝ, uniformly bounded by 1, but with complex poles at ±i that limit the complex Cauchy radius around any real point to at most 1. The standard pedagogical use of runge is to demonstrate divergence of high-degree polynomial interpolation on equispaced nodes; here we use it to demonstrate the failure of the OQ-04 axiom's real-only hypothesis.",
+    "mathContext": "$\\text{runge}(x) = \\dfrac{1}{1 + x^2}$. Properties: real-analytic on $\\mathbb{R}$ (denominator everywhere $\\ge 1 > 0$), $|\\text{runge}| \\le 1$ everywhere, $\\text{runge}(0) = 1$, $\\text{runge}(1) = 1/2$. Complex poles at $z = \\pm i$ (where $1 + z^2 = 0$), giving complex radius of convergence $1$ around any real point.",
+    "significance": "essential",
+    "relatedConcepts": [
+      "Runge function",
+      "rational functions",
+      "real-analytic functions",
+      "complex poles"
+    ],
+    "prerequisites": [
+      "rational functions",
+      "complex analysis"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04oq01-analyticOn",
+    "proofId": "mean-value-theorem-oq-02-oq-04-oq-01",
+    "type": "tactic",
+    "range": {
+      "startLine": 159,
+      "endLine": 175
+    },
+    "title": "AnalyticOn Composition: A Mathlib Cookbook Recipe",
+    "content": "The proof of `runge_analyticOn_R` is a clean composition of Mathlib's analytic-function combinators: `analyticOn_id ℝ` (identity is analytic), `AnalyticOn.pow 2` (squaring is analytic), `analyticOn_const` (constants are analytic), `AnalyticOn.add` (sum of analytic is analytic), `AnalyticOn.div` with a nonzero-denominator hypothesis (quotient of analytic is analytic where denominator is nonzero). The denominator non-vanishing fact `1 + x² > 0` is supplied by `runge_one_add_sq_pos`. This pattern is the canonical Mathlib recipe for proving rational functions are analytic on intervals avoiding their real zeros — applicable far beyond this specific file.",
+    "mathContext": "Recipe: $\\text{AnalyticOn}_{\\mathbb{R}} (f / g) S$ when both $\\text{AnalyticOn}_{\\mathbb{R}} f S$ and $\\text{AnalyticOn}_{\\mathbb{R}} g S$ hold and $g(x) \\ne 0$ for all $x \\in S$. For polynomials in particular, build via `analyticOn_const + analyticOn_id + .pow + .add + .mul`, then apply `.div` with a `positivity`-discharged denominator hypothesis.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "AnalyticOn.div",
+      "AnalyticOn.pow",
+      "AnalyticOn.add",
+      "analyticOn_id",
+      "analyticOn_const",
+      "Mathlib analytic combinators"
+    ],
+    "prerequisites": [
+      "analytic functions",
+      "Mathlib.Analysis.Analytic.Basic",
+      "Mathlib.Analysis.Analytic.Constructions",
+      "Mathlib.Analysis.Analytic.Linear"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04oq01-axiom-statement-prop",
+    "proofId": "mean-value-theorem-oq-02-oq-04-oq-01",
+    "type": "definition",
+    "range": {
+      "startLine": 179,
+      "endLine": 195
+    },
+    "title": "OQ04_AxiomStatement: Prop-Encoded Axiom for Constructive Refutation",
+    "content": "Packages the parent file's axiom signature as a Prop-valued definition `OQ04_AxiomStatement`. This indirection lets us refute the axiom *as a proposition* (using `¬ OQ04_AxiomStatement`) without invoking the parent file's `axiom analytic_taylor_remainder_uniform_bound` (which would close the goal trivially via `False.elim` of the inconsistency). Thus the refutation stands even if the parent axiom is later removed from the gallery. This Prop-encoding pattern is reusable for any future 'is this axiom statement true?' analyses.",
+    "mathContext": "Pattern: `def AxiomStatement : Prop := ∀ (data...), hypotheses → conclusion`; then prove `¬ AxiomStatement` by specializing at a witness. Keeps the refutation independent of whether the original axiom is declared.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Prop encoding",
+      "constructive refutation",
+      "axiom hygiene",
+      "specialization-by-witness"
+    ],
+    "prerequisites": [
+      "Lean 4 propositional logic",
+      "constructive negation"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04oq01-refutation-proof",
+    "proofId": "mean-value-theorem-oq-02-oq-04-oq-01",
+    "type": "tactic",
+    "range": {
+      "startLine": 197,
+      "endLine": 232
+    },
+    "title": "The Refutation Proof: Specialize, Substitute, Contradict",
+    "content": "Three-stage refutation of OQ04_AxiomStatement at the Runge witness. Stage 1: verify all hypotheses (positivity of R, nonneg M, AnalyticOn ℝ runge with the interval rewrite, uniform sup bound on the open interval, positivity of r and r<R, x ∈ Icc). Stage 2: apply the alleged universal statement to extract `|runge 1 - taylorPolynomial runge 0 0 1| ≤ 1·1^(0+1)/(100-1)`. Stage 3: rewrite using `MeanValueTheoremOQ02.taylorPolynomial_zero` (T_0 = f(a)) to reduce to `|runge 1 - runge 0|`, substitute the numerical values `runge 1 = 1/2` and `runge 0 = 1`, simplify both sides to `|1/2 - 1| = 1/2` and `1·1/99 = 1/99`, then close with `norm_num` on the false `1/2 ≤ 1/99`. The 50× gap makes the contradiction robust.",
+    "mathContext": "Numerical contradiction: $|f(1) - f(0)| = |1/2 - 1| = 1/2 \\approx 0.5$, claimed bound $M \\cdot r^{n+1}/(R-r) = 1 \\cdot 1/99 \\approx 0.0101$. Gap factor: $\\approx 50$. The bound at $n=0$ degenerates to the standard MVT-style bound on $|f(x) - f(a)|$, but with $\\sup|f|/(R-r)$ replacing $\\sup|f'|$—and the substitution is mathematically invalid without complex hypotheses.",
+    "significance": "key",
+    "relatedConcepts": [
+      "constructive refutation",
+      "specialization at counterexample",
+      "norm_num tactic",
+      "taylorPolynomial_zero rewrite"
+    ],
+    "prerequisites": [
+      "Lean 4 tactic mode",
+      "norm_num decision procedure",
+      "Set.Ioo / Set.Icc membership"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04oq01-corrected",
+    "proofId": "mean-value-theorem-oq-02-oq-04-oq-01",
+    "type": "concept",
+    "range": {
+      "startLine": 244,
+      "endLine": 270
+    },
+    "title": "Corrected Statement: Complex-Disk Cauchy Bound",
+    "content": "States `analytic_taylor_remainder_uniform_bound_complex`, the *correct* version of the Cauchy uniform bound. Differences from the OQ-04 axiom: (1) f is complex-valued (f : ℂ → ℂ); (2) the analyticity hypothesis is `HasFPowerSeriesOnBall f p a (ENNReal.ofReal R)` on the *complex* disk; (3) the sup bound is on `Metric.ball a R` ⊂ ℂ; (4) the conclusion uses the formal-power-series partialSum (not the parent's iteratedDeriv-based taylorPolynomial); (5) the right-hand side has the corrected denominator R^n · (R - r) (not (R - r)). The proof is `sorry`, deferred to S2 with explicit Mathlib chain documented inline: HasFPowerSeriesOnBall.uniform_geometric_approx' yields the existential C·a^n form, FormalMultilinearSeries.norm_mul_pow_le_mul_pow_of_lt_radius gives the explicit Cauchy bound ‖p k‖ ≤ M / R^k, and the geometric tail summation closes.",
+    "mathContext": "$\\text{Corrected:} \\|f z - p.\\text{partialSum } n (z - a)\\| \\le M \\cdot r^{n+1} / (R^n \\cdot (R - r))$ for $f : \\mathbb{C} \\to \\mathbb{C}$ holomorphic on $\\text{Metric.ball } a R$ with sup bound $M$ on that disk, $\\|z - a\\| \\le r < R$. Note the explicit $R^n$ factor: this is what the OQ-04 axiom omits, and it is essential — at $n=0$ the bound becomes $M \\cdot r/(R-r)$, but already at $n=1$ the corrected $M \\cdot r^2 / (R \\cdot (R-r))$ is much smaller than the OQ-04 statement's $M \\cdot r^2 / (R-r)$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "HasFPowerSeriesOnBall",
+      "Metric.ball complex",
+      "FormalMultilinearSeries.partialSum",
+      "Cauchy coefficient estimates",
+      "geometric tail summation"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "Mathlib.Analysis.Analytic.Basic",
+      "Mathlib.Analysis.Calculus.FormalMultilinearSeries"
+    ]
+  }
+]
