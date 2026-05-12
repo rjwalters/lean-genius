@@ -2,7 +2,7 @@
   {
     "id": "ann-mcpoq03-imports",
     "proofId": "minpoly-charpoly-oq-03",
-    "range": { "startLine": 1, "endLine": 7 },
+    "range": { "startLine": 1, "endLine": 6 },
     "type": "context",
     "title": "Import Stack: Charpoly + Minpoly + Parent File",
     "content": "Six imports stage the three ingredients of the RCF formalisation:\n\n* **Charpoly layer** (L1-2): `Mathlib.LinearAlgebra.Matrix.Charpoly.Basic` provides `Matrix.charpoly`, `Matrix.aeval_self_charpoly` (Cayley-Hamilton), and `charpoly_monic`. `Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly` provides `Matrix.minpoly_toLin'` (basis-independence of `minpoly`).\n* **Polynomial layer** (L3): `Mathlib.Algebra.Polynomial.Monic` provides `Polynomial.Monic` and the monoid lemmas used by `prodFactors_monic` in future iterations.\n* **Tactic + Parent** (L4-5): `Mathlib.Tactic` gives `simp`/`omega`/`linarith` etc. `Proofs.MinpolyCharpoly` is imported so future iterations can directly reuse the parent's 17 theorems (e.g. `minpoly_dvd_charpoly`, `charpoly_annihilates`, `both_monic`).\n\nNotable absences (to be added by sub-OQs):\n* `Mathlib.Algebra.Module.PID` — needed by **OQ-03-OQ-01** and **OQ-03-OQ-02** to invoke `Module.equiv_directSum_of_isTorsion`.\n* `Mathlib.Data.Matrix.Block` — needed by **OQ-03-OQ-04** for `Matrix.blockDiagonal`.",
@@ -72,6 +72,18 @@
       "Lean 4 `structure` syntax",
       "`List.length`/`Fin`/`getElem` patterns"
     ]
+  },
+  {
+    "id": "ann-mcpoq03-derived-defs",
+    "proofId": "minpoly-charpoly-oq-03",
+    "range": { "startLine": 152, "endLine": 163 },
+    "type": "definition",
+    "title": "prodFactors and lastFactor: the two RCF target values",
+    "content": "Two noncomputable derived definitions package the two values that the rational canonical form will pin down: `prodFactors c := c.factors.prod` is the target `charpoly M` (Frobenius's product-of-invariant-factors equality), and `lastFactor c := c.factors.getLast?.getD 1` is the target `minpoly M` (which equals the largest invariant factor `p_k` by the dominance argument: every factor divides `p_k`, so `p_k` annihilates the module).\n\nThe `getLast?.getD 1` pattern is a defensive choice for the empty-chain edge case (the degenerate `0 × 0` matrix has empty chain; `charpoly` is 1; `minpoly` is also conventionally 1). The fallback to `1` is mathematically harmless because the empty chain doesn't arise for a nontrivial matrix. `noncomputable` is forced by `Polynomial F`'s ring structure (algebraic-closure-free, but multiplication and `getLast?` are not classical-decidability-free in this generality).\n\nThe split into two named definitions matters for downstream proof ergonomics: `c.prodFactors = M.charpoly` (S1 statement) and `c.lastFactor = M.minpoly` (deferred to S4+) are independent equations; pinning them down separately lets each sub-OQ target a single clean equality.",
+    "mathContext": "$\\mathrm{prodFactors}(c) = \\prod_{i} p_i$ (target $\\mathrm{charpoly}\\, M$); $\\mathrm{lastFactor}(c) = p_k$ if nonempty, else $1$ (target $\\mathrm{minpoly}\\, M$). The `lastFactor = minpoly` equality is the **strong** form refinement deferred from S1.",
+    "significance": "supporting",
+    "relatedConcepts": ["target values", "weak vs strong RCF", "noncomputable definitions", "List.getLast? Option semantics", "minpoly = largest invariant factor"],
+    "prerequisites": ["`List.prod`", "`List.getLast?`", "Option.getD fallback", "F[X] as a noncomputable ring"]
   },
   {
     "id": "ann-mcpoq03-mainthm",
