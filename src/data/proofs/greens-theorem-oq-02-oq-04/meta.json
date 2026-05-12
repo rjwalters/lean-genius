@@ -62,8 +62,101 @@
       "The L¹ setting is STRICTLY more general: Lipschitz curves can have corners where smooth curves cannot, and L¹ curl admits functions discontinuous on sets of measure zero.",
       "C¹ forms are automatically L¹ on compact sets (by continuity + compactness), making the smooth Stokes theorem a special case of Whitney's theorem.",
       "For rectangles: stokes_2d_rectangle (axiom-free) and greens_stokes_l1curl (uses Whitney axiom) are both valid, confirming mutual consistency of the two frameworks."
+    ],
+    "prerequisites": [
+      "**Differential forms on $\\mathbb{R}^n$** — 1-forms $\\omega = P\\,dx + Q\\,dy$, 2-forms $f\\,dx \\wedge dy$, the wedge product, and the exterior derivative $d: \\Omega^k \\to \\Omega^{k+1}$ with the key identity $d^2 = 0$ (Clairaut/Schwarz).",
+      "**Green's theorem under classical (C¹) regularity** — $\\oint_{\\partial D} (P\\,dx + Q\\,dy) = \\iint_D (\\partial Q/\\partial x - \\partial P/\\partial y)\\,dA$ for $C^1$ vector fields on regions with smooth boundary. This is the OQ-01 baseline that the L¹ generalization (OQ-02) and this file's Stokes reformulation extend.",
+      "**Whitney's minimal-regularity Green's theorem (OQ-02)** — the upstream `greens_theorem_l1curl` axiom: Lipschitz $\\partial D$ + L¹ curl is sufficient. This file consumes it; readers should know its statement and the single axiom assumed.",
+      "**Lebesgue integration and L¹ spaces** — `IntegrableOn`, dominated convergence, and the a.e.-equality framework. The Whitney hypothesis is an L¹ integrability + pointwise-a.e. equality, both Lebesgue notions.",
+      "**Lipschitz curves and the line integral** — `LipschitzClosedCurve`, `lipschitzLineIntegral`, and the Rademacher theorem (Lipschitz $\\Rightarrow$ a.e. differentiable) that makes the boundary integral well-defined despite corners.",
+      "**The de Rham complex $\\Omega^0 \\to \\Omega^1 \\to \\Omega^2$ in 2D** — closed forms $d\\omega = 0$, exact forms $\\omega = df$, and the Poincaré lemma ($d^2 = 0$ and locally closed $\\Rightarrow$ exact). The Cauchy-Goursat corollary `closed_l1form_zero_integral` is the L¹ analogue of the closed-$\\Rightarrow$-zero-circulation arc of this story.",
+      "**Cartan's exterior calculus and the abstract Stokes theorem** — $\\int_M d\\omega = \\int_{\\partial M} \\omega$ on smooth oriented manifolds with boundary. The file argues that Whitney's theorem IS the 2D instance with L¹ regularity; the abstract Stokes theorem in Mathlib would, in principle, discharge the Whitney axiom."
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "extDeriv1_2D_eq_curl",
+      "type": "theorem",
+      "description": "Definitional unfolding: `extDeriv1_2D ⟨P, Q⟩ p = ∂Q/∂x|_p - ∂P/∂y|_p`. Proved by `rfl`. Establishes the exterior derivative ↔ classical curl identification at the level of pointwise values."
+    },
+    {
+      "name": "curl_eq_extDeriv_iff",
+      "type": "theorem",
+      "description": "Language equivalence: `(∀ p, curlF p = extDeriv1_2D ⟨P,Q⟩ p) ↔ (∀ p, curlF p = ∂Q/∂x - ∂P/∂y)`. Lets Whitney's classical-curl hypothesis be restated in exterior-form language by `simp only [extDeriv1_2D_eq_curl]`."
+    },
+    {
+      "name": "extDeriv_eq_curl_ae",
+      "type": "theorem",
+      "description": "The Whitney a.e.-curl condition is trivially satisfied for `OneForm2D ω`: `∀ᵐ p, extDeriv1_2D ω p = ∂(ω.Q)/∂x - ∂(ω.P)/∂y`. Proved by `filter_upwards [] with p; rfl`."
+    },
+    {
+      "name": "greens_stokes_l1curl",
+      "type": "theorem",
+      "description": "**Main result.** Whitney's theorem in Stokes form: for a Lipschitz closed curve C traversing the boundary of $[a,b] \\times [c,d]$ and a 1-form ω with L¹ exterior derivative, `lipschitzLineIntegral ω.P ω.Q C = ∫ extDeriv1_2D ω`. Equivalently, $\\int_C \\omega = \\int_D d\\omega$. Proved by direct application of `greens_theorem_l1curl` after `simp only [extDeriv1_2D]`."
+    },
+    {
+      "name": "closed_l1form_zero_integral",
+      "type": "theorem",
+      "description": "**Cauchy-Goursat for L¹-closed forms.** If `extDeriv1_2D ω = 0` a.e. on the open rectangle, then `lipschitzLineIntegral ω.P ω.Q C = 0`. Generalizes the classical Cauchy-Goursat theorem (holomorphic functions on simply-connected regions) to the L¹/Lipschitz setting via the upstream `lineIntegral_zero_curl` lemma."
+    },
+    {
+      "name": "c1_form_l1_integrable",
+      "type": "theorem",
+      "description": "C¹ regularity ⟹ Whitney's L¹ hypothesis: if both partial derivatives `∂(ω.Q)/∂x` and `∂(ω.P)/∂y` are continuous on $\\mathbb{R}^2$, then `extDeriv1_2D ω` is `IntegrableOn (Icc a b ×ˢ Icc c d)`. Proved via `Continuous.sub` + `continuousOn.integrableOn_compact`."
+    },
+    {
+      "name": "c1_form_satisfies_whitney",
+      "type": "theorem",
+      "description": "Alias / packaging: confirms that a C¹ 1-form satisfies the Whitney L¹ hypothesis on every compact rectangle. Establishes the strict inclusion $C^1$-Stokes $\\subset$ Whitney-Stokes (L¹-Stokes) at the hypothesis level."
+    },
+    {
+      "name": "c1_stokes_from_whitney",
+      "type": "theorem",
+      "description": "C¹ Stokes as a special case of Whitney: for C¹ forms on a rectangle with a Lipschitz traversal, the Stokes conclusion $\\int_C \\omega = \\int_D d\\omega$ follows directly from `greens_stokes_l1curl` + `c1_form_l1_integrable`. Confirms that smooth Stokes is genuinely a consequence of the Whitney generalization, not an independent result."
+    },
+    {
+      "name": "stokes_scaling",
+      "type": "theorem",
+      "description": "**Linearity of the Stokes pairing.** `lipschitzLineIntegral (k·ω.P) (k·ω.Q) C = k · ∫ extDeriv1_2D ω`. Combines `lineIntegral_smul` (linearity of the line integral) with `greens_stokes_l1curl` (Whitney). Demonstrates that the Stokes identity respects the $\\mathbb{R}$-vector-space structure of 1-forms."
+    }
+  ],
+  "references": [
+    {
+      "type": "research-paper",
+      "citation": "Whitney, H. (1957). *Geometric Integration Theory*. Princeton Mathematical Series 21, Princeton University Press.",
+      "relevance": "The original source of the L¹-curl / Lipschitz-boundary generalization of Green's theorem. Chapter VI develops the theory of flat chains and L¹ forms that the upstream `greens_theorem_l1curl` axiom encodes. The Stokes reformulation in this file is the natural exterior-form repackaging of Whitney's Theorem 14B (Stokes theorem for flat cochains)."
+    },
+    {
+      "type": "research-paper",
+      "citation": "de Rham, G. (1931). \"Sur l'analysis situs des variétés à n dimensions.\" *Journal de Mathématiques Pures et Appliquées* 10, 115–200.",
+      "relevance": "Foundational paper for the exterior calculus framework: closed/exact forms, de Rham cohomology, and the d² = 0 identity. The Poincaré-lemma framing of `closed_l1form_zero_integral` is the L¹ analogue of de Rham's topological characterization of conservative fields."
+    },
+    {
+      "type": "textbook",
+      "citation": "Cartan, H. (1971). *Formes différentielles*. Hermann, Paris. English translation: *Differential Forms*, Dover (2006).",
+      "relevance": "Canonical reference for the exterior calculus on $\\mathbb{R}^n$: 1-forms, the wedge product, the exterior derivative as a coordinate-free operator, and the integration of forms over chains. The `OneForm2D` / `extDeriv1_2D` formalization is the n=2 case of Cartan's framework."
+    },
+    {
+      "type": "textbook",
+      "citation": "Lee, J.M. (2013). *Introduction to Smooth Manifolds* (2nd ed.). Graduate Texts in Mathematics 218, Springer.",
+      "relevance": "Standard graduate reference for the abstract Stokes theorem on smooth manifolds with boundary, $\\int_M d\\omega = \\int_{\\partial M} \\omega$ (Chapter 16). This is the manifold-theoretic Stokes that the file argues will eventually subsume `greens_theorem_l1curl` once Mathlib formalizes it."
+    },
+    {
+      "type": "textbook",
+      "citation": "Spivak, M. (1965). *Calculus on Manifolds: A Modern Approach to Classical Theorems of Advanced Calculus*. Addison-Wesley.",
+      "relevance": "The classic concise treatment of Green, Stokes, Gauss as instances of the manifold Stokes theorem. Spivak's exposition of the C¹ case is the model for the `c1_stokes_from_whitney` and `c1_form_satisfies_whitney` theorems."
+    },
+    {
+      "type": "textbook",
+      "citation": "Federer, H. (1969). *Geometric Measure Theory*. Grundlehren der mathematischen Wissenschaften 153, Springer.",
+      "relevance": "Develops the rectifiable-current and Lipschitz-chain machinery underlying the Whitney-style integration theory. Theorem 4.5.6 (Stokes theorem for rectifiable currents) is the high-powered analogue of `greens_stokes_l1curl` in arbitrary dimensions."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. *Mathlib.MeasureTheory.Integral.SetIntegral*, *Mathlib.Topology.MetricSpace.Lipschitz*. Accessed 2026.",
+      "relevance": "Provides the `IntegrableOn`, `ContinuousOn.integrableOn_compact`, and `LipschitzWith` infrastructure that underpins both the C¹ specialization theorems and the Lipschitz curve definitions used in this file."
+    }
+  ],
   "leanFile": {
     "path": "Proofs/GreensTheoremOQ02OQ04.lean",
     "namespace": "GreensTheoremOQ02OQ04",
