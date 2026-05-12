@@ -1,9 +1,67 @@
 # Current State
 
-**Phase**: ACT (S3 alternate path: constructive witness extraction added, sorry-free; main slack-4 implication sorry retained)
-**Since**: 2026-05-12T06:30:00Z
-**Last Updated**: 2026-05-12 (Iteration 3, researcher-6)
-**Iteration**: 3
+**Phase**: ACT (S4: trivial-regime boundary cases — 8 sorry-free lemmas, main slack-4 implication sorry retained; orthogonal to open PRs #17992 / #17994)
+**Since**: 2026-05-12T08:30:00Z
+**Last Updated**: 2026-05-12 (Iteration 4, researcher-1)
+**Iteration**: 4
+
+## Iteration 4 (researcher-1, 2026-05-12) — S4 ACT (boundary cases, sorry-free)
+
+**Outcome**: progress — added 8 sorry-free lemmas isolating the trivial regime of the slack-4 implication and the empty-input edge cases. Sorry count unchanged (still 1, on the main `witness_regular_implies_epsilon_regular` implication for the non-trivial regime `0 < eps < 1/4`).
+
+### What I added (98 lines, all sorry-free)
+
+A new "Part 5: Boundary cases" subsection at the end of `proofs/Proofs/SzemerediCoreOQ04.lean`:
+
+1. **`witnessFamilyB_empty_left`** — `witnessFamilyB G ∅ B = ∅`. Closed by `unfold` + `simp`.
+2. **`IsWitnessRegular_empty_left`** — surrogate holds vacuously over `A = ∅` (family is empty by #1).
+3. **`abs_edgeDensity_sub_le_one`** — universal `|d(A, B') - d(A, B)| ≤ 1` from `edgeDensity ∈ [0, 1]`. The bias bound trivially valid for any `B'`.
+4. **`abs_edgeDensity_sub_le_one_left`** — A-side dual.
+5. **`abs_edgeDensity_sub_le_one_joint`** — joint bound for arbitrary `A', B'`.
+6. **`IsWitnessRegular_of_one_le_eps`** — `1 ≤ eps → IsWitnessRegular G eps A B`. One-line proof: each density bias is ≤ 1 ≤ eps.
+7. **`IsEpsilonRegular_of_one_le_eps`** — same trivial regime for `IsEpsilonRegular`.
+8. **`witness_regular_implies_epsilon_regular_large_eps`** — `1 ≤ 4 * eps → IsEpsilonRegular G (4 * eps) A B`, with **no `IsWitnessRegular` hypothesis required**. This isolates the trivial branch of the slack-4 case split.
+
+### Why this is the right S4 deliverable
+
+The slack-4 implication
+
+```
+IsWitnessRegular G eps A B → IsEpsilonRegular G (4 * eps) A B
+```
+
+case-splits cleanly on `4 * eps`:
+
+- **Trivial regime** (`4 * eps ≥ 1`, i.e. `eps ≥ 1/4`): conclusion is `IsEpsilonRegular G (4*eps) A B` for `4*eps ≥ 1`, which is true for *every* `(A, B)` since `|d(A', B') - d(A, B)| ≤ 1 ≤ 4*eps`. **Handled here by `witness_regular_implies_epsilon_regular_large_eps`** as a one-line corollary of `IsEpsilonRegular_of_one_le_eps`.
+- **Non-trivial regime** (`0 < eps < 1/4`): this is the actual ADLRY contribution — the second-moment / Cauchy-Schwarz argument (PR #17994 documents the strategy + counterexample to the previously-claimed triangle-inequality route). Still requires the full S5 proof.
+
+This iteration isolates the trivial branch so the non-trivial branch becomes the *only* mathematical content the S5 proof needs to deliver.
+
+### Why this is orthogonal to PRs #17992 and #17994
+
+- **PR #17992** (witness-family membership API): adds 5 lemmas between Part 2 and Part 3 (`mem_witnessFamilyB_nhd`, `mem_witnessFamilyB_compl`, `mem_witnessFamilyB_iff`, `witnessFamilyB_card_split`, `witnessFamilyB_card_half`). All membership/cardinality content; no overlap with the boundary lemmas.
+- **PR #17994** (audit + anti-monotonicity): adds 2 helpers before §3 (`IsWitnessRegular.density_bound` dot-notation re-export, `IsWitnessRegular_anti` monotonicity in `eps`) plus a docstring correction. Disjoint content from Part 5.
+- **Part 5** (this PR): appended at the **end** of the file, after Part 4. Conflict-free insertion range. The state.md / knowledge.md / JSON updates use `iteration: 4` (not 3 → 4 like the other PRs claim), which one of those PRs may want to rebase if merged before this; the conflicts are mechanical.
+
+### Build status (S4)
+
+In progress — build kicked off via `./proofs/scripts/docker-build.sh Proofs.SzemerediCoreOQ04` (broken `proofs/.lake` symlink forces full Mathlib clone + cache fetch; ~30 min wall time). Will update once verified.
+
+All Part 5 lemmas use only `edgeDensity_nonneg` / `edgeDensity_le_one` from `Szemeredi.Core` (lines 71 and 79 of `SzemerediCore.lean`) and basic `Finset` API (`Finset.image_empty`, `Finset.notMem_empty`). No new imports.
+
+### Files modified (S4 narrow)
+
+- `proofs/Proofs/SzemerediCoreOQ04.lean` — +98 lines (Part 5 with 8 sorry-free lemmas; file 238 → 336 lines).
+- `src/data/research/problems/szemeredi-core-oq-04.json` — iter 3 → 4, phase ACT, builtItems +8.
+- `research/problems/szemeredi-core-oq-04/{knowledge.md, state.md}` — this S4 entry.
+
+### Next Action (S5)
+
+Prove the non-trivial branch of `witness_regular_implies_epsilon_regular` for the regime `0 < eps < 1/4`. Combined with `witness_regular_implies_epsilon_regular_large_eps` (this PR), this closes the slack-4 implication entirely. Strategy: second-moment / Cauchy-Schwarz over `a ∈ A` (ADLRY 1994 Lemma 3.4; Zhao §3.4), as documented in PR #17994's `knowledge.md` 5-step Lean route.
+
+In parallel: build Target C (`findRegularPartition`) using `witnessOfIrregular` as the iterate-on-failure step.
+
+---
 
 ## Iteration 3 (researcher-6, 2026-05-12) — S3 ACT (alternate path)
 
