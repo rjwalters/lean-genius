@@ -87,6 +87,15 @@
       "A₄ (order 12) has 4 conjugacy classes of sizes 1+3+4+4 = 12, with trivial center. This directly shows A₄ is not a p-group, consistent with 12 = 4·3.",
       "The orbit-centralizer arithmetic identity `|[x]| = [G : C_G(x)]` is closed using `Subgroup.index_comap_of_surjective` applied to `ConjAct.toConjAct`: rather than chase a `Nat.card (orbit) × Nat.card (stabilizer) = Nat.card G` argument, the centralizer is recognized as the comap of the conjugation stabilizer under a surjective group iso, and indices transfer for free. This avoids the divisibility shuffles that typically appear in orbit-stabilizer proofs over `Nat`.",
       "The proof of A₄'s non-abelianness uses `decide` (kernel-level evaluation) while the conjugacy class count uses `native_decide` (compiled). The split reflects a workflow tradeoff: `decide` is safer (no trust in compiled output) but slower; `native_decide` is needed for the larger fintype enumeration of conjugacy classes."
+    ],
+    "prerequisites": [
+      "**Group actions and the orbit-stabilizer theorem** — $|G \\cdot x| \\cdot |\\mathrm{Stab}_G(x)| = |G|$, the engine that turns conjugacy classes into index quotients. The conjugation action $g \\cdot x := gxg^{-1}$ is the relevant one here.",
+      "**Conjugacy classes, the center $Z(G)$, and centralizers $C_G(x)$** — definitions and basic properties: $x \\in Z(G) \\iff |[x]| = 1$; $|[x]| = [G : C_G(x)]$ by orbit-stabilizer.",
+      "**The `ConjAct G` construction in Mathlib** — a type alias for $G$ on which $G$ acts by conjugation. `ConjAct.toConjAct : G ≃* ConjAct G` is the identity-as-group-iso that lets us state the conjugation action as a regular `MulAction`.",
+      "**Lagrange's theorem** — $|H| \\mid |G|$ for any subgroup $H \\le G$, applied here to centralizers to conclude $[G : C_G(x)] \\mid |G|$.",
+      "**$p$-groups** — finite groups of prime-power order. The class-equation corollary that $Z(G) \\neq \\{e\\}$ for nontrivial $p$-groups is the main downstream application.",
+      "**`Nat.card` vs `Fintype.card` compatibility** — for finite types these agree, but Lean/Mathlib expose them through different APIs; `Nat.card_eq_fintype_card` and the `Subgroup.index_*` lemmas bridge the gap.",
+      "**Mathlib's `Mathlib.GroupTheory.ClassEquation` module** — provides `Group.nat_card_center_add_sum_card_noncenter_eq_card`, the bundled statement of the class equation used as a one-line application here."
     ]
   },
   "leanFile": {
@@ -107,6 +116,48 @@
     "theoremCount": 13,
     "definitionCount": 1
   },
+  "references": [
+    {
+      "type": "textbook",
+      "citation": "Dummit, D.S., and Foote, R.M. (2004). \"Abstract Algebra,\" 3rd ed. Wiley. §4.3 (Group actions and conjugation), §6.1 (p-groups, Sylow theorems).",
+      "relevance": "Standard graduate textbook treatment of the class equation as the conjugation-action specialization of orbit-stabilizer, with all the p-group corollaries proved here (center nontrivial, p² groups abelian, Sylow). §4.3 is the immediate reference for the proof chain (1)–(4) in the file docstring."
+    },
+    {
+      "type": "textbook",
+      "citation": "Rotman, J.J. (1995). \"An Introduction to the Theory of Groups,\" 4th ed. Springer GTM 148. §2.5 (Class equation and applications), §4.1 (Sylow theorems).",
+      "relevance": "Cited explicitly in the Lean file's docstring. Provides the historical and pedagogical framing — Rotman traces the equation back to Cauchy's 1845 lemma and uses it as the bridge between elementary group theory and Sylow theory."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Cauchy, A.-L. (1845). \"Mémoire sur les arrangements que l'on peut former avec des lettres données.\" Exercices d'analyse et de physique mathématique, Vol. 3, 151-252.",
+      "relevance": "Original source of the prime-order-element lemma ($p \\mid |G| \\Rightarrow \\exists x \\in G$ of order $p$), the historical antecedent of all class-equation-based arguments for finite group structure. The class equation generalizes Cauchy's argument from order-$p$ elements to all conjugacy classes."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Sylow, L. (1872). \"Théorèmes sur les groupes de substitutions.\" Mathematische Annalen 5(4), 584-594.",
+      "relevance": "Sylow's theorems on $p$-subgroups — the structural result the class equation is most often deployed to prove. The 'first Sylow theorem' (existence of Sylow $p$-subgroups) has a clean proof via the class equation applied to a group action on subsets."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.GroupTheory.ClassEquation\" — `Group.nat_card_center_add_sum_card_noncenter_eq_card` and related lemmas. (accessed 2026)",
+      "relevance": "Bundled Mathlib formulation of the class equation `|Z(G)| + Σ_{c ∈ noncenter G} |c| = |G|`. Cited explicitly in the Lean file docstring. This file's `class_equation_basic` theorem is a one-line application."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.GroupTheory.GroupAction.ConjAct\" — `ConjAct`, `ConjAct.toConjAct`, conjugation `MulAction`. (accessed 2026)",
+      "relevance": "Provides the type alias `ConjAct G` and the group isomorphism `ConjAct.toConjAct : G ≃* ConjAct G` that lets us treat conjugation as a regular `MulAction`. Essential to `conj_orbit_eq_carrier` and `conj_stabilizer_eq_centralizer`."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.GroupTheory.Subgroup.Basic\" — `Subgroup.index`, `Subgroup.index_comap_of_surjective`. (accessed 2026)",
+      "relevance": "The `Subgroup.index_comap_of_surjective` lemma is the technical bridge used to close `card_conjClass_eq_centralizer_index`: it transports the index across the surjective `ConjAct.toConjAct` iso, avoiding the divisibility shuffles that typically clutter orbit-stabilizer arithmetic proofs."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Proofs.LagrangeTheoremOQ02\" — companion file in the gallery providing the parent OQ-02 results that this file imports. (this repository, accessed 2026)",
+      "relevance": "Parent gallery file (the entry whose OQ-02 is answered here). The Lean file imports `Proofs.LagrangeTheoremOQ02` for prerequisite results; the gallery cross-reference makes the dependency explicit."
+    }
+  ],
   "openQuestions": [
     {
       "id": "oq-01",
