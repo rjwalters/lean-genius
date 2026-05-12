@@ -29,22 +29,22 @@
       "eulerian_eq_zero_of_le: ∀ d ≥ 1, ∀ k ≥ d, A(d, k) = 0 — S3, double Nat recursion",
       "eulerian_row_sum_factorial: Σ_{k<d} A(d, k) = d! for d ≥ 1 — S3, induction on d via sum reorganisation",
       "worpitzky_step: (k+1)·C(n+1+k, d+1) + (d-k)·C(n+2+k, d+1) = (n+1)·C(n+1+k, d) for k ≤ d — S4, Pascal + choose_succ_right_eq",
-      "worpitzky_identity_cube: (n+1)^d = Σ A(d, k) C(n+1+k, d) for d ≥ 1 — S4, induction on d via worpitzky_step + sum_range_succ' reindex (build pending)"
+      "worpitzky_identity_cube: (n+1)^d = Σ A(d, k) C(n+1+k, d) for d ≥ 1 — S4, induction on d via worpitzky_step + sum_range_succ' reindex (build pending)",
+      "eulerianNumber_recurrence: A(d+1, k+1) = (k+2)·A(d, k+1) + (d-k)·A(d, k) — S5 helper, definitional rfl",
+      "eulerian_palindrome: A(d, k) = A(d, d-1-k) for k < d — S5, induction on d with case-split on k (k = 0 / 1 ≤ k < d / k = d), uses ih + eulerian_zero_eq_one + eulerian_eq_zero_of_le; descent involution not required (build pending)"
     ],
-    "open": [
-      "eulerian_palindrome: A(d, k) = A(d, d-1-k) for k < d"
-    ],
+    "open": [],
     "goal": "Connect cube_h_star_eulerian + cube_lattice_count_eulerian to EhrhartCubeProven via Polytope.cube parametrisation"
   },
   "currentState": {
     "phase": "PROVED",
-    "since": "2026-05-12T04:20:00Z",
-    "iteration": 4,
-    "focus": "S4 WORPITZKY (build pending): added algebraic step identity `worpitzky_step` (Pascal + Nat.choose_succ_right_eq) and closed `worpitzky_identity_cube` by induction on d using `worpitzky_step` pointwise + Finset.sum_add_distrib + Finset.sum_range_succ' reindex + eulerian recurrence + `eulerian_eq_zero_of_le` boundary. 1 combinatorial sorry remains: `eulerian_palindrome` (descent involution).",
+    "since": "2026-05-12T05:00:00Z",
+    "iteration": 5,
+    "focus": "S5 PALINDROME (build pending): closed `eulerian_palindrome` by induction on d using only the recurrence and S3 helpers (no descent involution needed). The boundary `A(d+1, d) = 1` is derived from the recurrence + `eulerian_eq_zero_of_le (d, d)` + ih at j = d-1; the interior `1 ≤ k < d` case unfolds the recurrence on both sides and applies ih twice; the dual `k = d` boundary follows from `Nat.sub_self` and the k = 0 case. All five combinatorial theorems (cube_h_star_eulerian, eulerian_row_sum_factorial, worpitzky_identity_cube, eulerian_palindrome, cube_lattice_count_eulerian) are now closed.",
     "blockers": [],
-    "nextAction": "S5: Define permutation descents and prove `eulerianNumber d k = (filter (descent = k) (univ : Finset (Equiv.Perm (Fin d)))).card`, then derive `eulerian_palindrome` via the descent-reversal involution σ ↦ σ ∘ reverse on Equiv.Perm (Fin d).",
+    "nextAction": "S6 (optional): verify build of the whole file. Optional follow-up: expose the palindrome corollary form `(n+1)^d = Σ A(d, k) C(n+d-k, d)` derived from worpitzky_identity_cube + eulerian_palindrome. Mathlib upstream PR for Eulerian numbers (longer-term).",
     "attemptCounts": {
-      "total": 4,
+      "total": 5,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -66,7 +66,8 @@
       "eulerian_row_sum_factorial (S3, proven — induction on d, sum reorganisation, A(d, d) = 0 boundary)",
       "worpitzky_step (S4, proven — Pascal + Nat.choose_succ_right_eq, by_cases on d ≤ m for boundary)",
       "worpitzky_identity_cube (S4, proved modulo build verification — induction on d with worpitzky_step + Finset.sum_range_succ' reindex)",
-      "1 deferred theorem (eulerian_palindrome) with documented proof strategy"
+      "eulerianNumber_recurrence (S5 helper, definitional rfl — A(d+1, k+1) recurrence equation as a named lemma)",
+      "eulerian_palindrome (S5, proved modulo build verification — induction on d with k = 0 / 1 ≤ k < d / k = d case-split)"
     ],
     "insights": [
       "Nat-subtraction in the eulerianNumber recurrence handles the boundary k ≥ d cleanly: both branches collapse to 0 automatically",
@@ -140,11 +141,11 @@
     {
       "path": "Proofs/EhrhartCubeProvenOQ04.lean",
       "filename": "EhrhartCubeProvenOQ04.lean",
-      "lineCount": 422,
-      "theoremCount": 25,
+      "lineCount": 677,
+      "theoremCount": 27,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProvenOQ04.lean"
     }
