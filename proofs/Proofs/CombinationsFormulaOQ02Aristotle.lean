@@ -83,10 +83,24 @@ theorem succ_dvd_centralBinom (n : ℕ) : (n + 1) ∣ centralBinom n := by
       rw [Nat.coprime_comm]; exact Nat.coprime_succ_self (m + 1)
     exact hcop.dvd_of_dvd_mul_right hdvd
 
-/-- **Fundamental Catalan identity**: C_n * (n+1) = C(2n, n). -/
+/-- **Fundamental Catalan identity**: C_n * (n+1) = C(2n, n).
+    Proof: catalan n = C(2n,n) - C(2n,n+1), so catalan n * (n+1) =
+    C(2n,n)*(n+1) - C(2n,n+1)*(n+1) = C(2n,n)*(n+1) - C(2n,n)*n = C(2n,n).
+    The auxiliary identity C(2n,n+1)*(n+1) = C(2n,n)*n is proved inline via
+    `Nat.choose_succ_right_eq` to avoid a forward reference to `choose_2n_succ`. -/
 theorem catalan_mul_succ (n : ℕ) :
     catalan n * (n + 1) = centralBinom n := by
-  sorry
+  show catalan n * (n + 1) = Nat.choose (2 * n) n
+  simp only [catalan]
+  rw [Nat.sub_mul]
+  have hcs : Nat.choose (2 * n) (n + 1) * (n + 1) = Nat.choose (2 * n) n * n := by
+    have h := Nat.choose_succ_right_eq (2 * n) n
+    simp only [show 2 * n - n = n from by omega] at h
+    linarith [mul_comm (Nat.choose (2 * n) n) n]
+  rw [hcs]
+  have hbound : Nat.choose (2 * n) n * n ≤ Nat.choose (2 * n) n * (n + 1) :=
+    Nat.mul_le_mul_left _ (Nat.le_succ n)
+  omega
 
 /-- C(2n, n+1) * (n+1) = C(2n, n) * n (divisibility relationship). -/
 theorem choose_2n_succ (n : ℕ) :
