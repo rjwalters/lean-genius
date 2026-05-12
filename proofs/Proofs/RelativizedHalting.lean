@@ -322,6 +322,33 @@ theorem jumpIterWitness_differs (H : RelativizedHaltingPredictor)
     jumpIterWitness H o₀ n c ≠ H (jumpIter H o₀ n) c c :=
   jumpIter_differs H o₀ n c
 
+/-! ### Section 9. Semigroup structure of the abstract jump iteration
+
+`jumpIter` is the iterated application of `jumpOracle`; as such it satisfies
+the additive semigroup law `jumpIter H o₀ (m + n) = jumpIter H (jumpIter H
+o₀ m) n`. Classically this is the statement that the iterated Turing jump
+respects composition: `(A^(m))^(n) = A^(m+n)`. Recording the lemma here
+provides the recursion-theoretic primitive that any future arithmetical-
+hierarchy development (sub-goal OQ-03b) will use when stating Post's
+theorem at level `n+1` from the level-`n` predicate. The proof is one
+induction on `n` (zero by `rfl`, succ by `jumpIter_succ` + the IH).
+-/
+
+/-- **Semigroup law for the abstract Turing-jump iteration.** Iterating
+`jumpOracle` for `m + n` steps from seed `o₀` is the same as iterating
+for `m` steps from `o₀`, then iterating for `n` further steps from the
+result. Abstract analog of `(A^(m))^(n) = A^(m+n)` for the classical
+Turing jump. -/
+theorem jumpIter_compose (H : RelativizedHaltingPredictor)
+    (o₀ : Nat → Bool) (m n : Nat) :
+    jumpIter H o₀ (m + n) = jumpIter H (jumpIter H o₀ m) n := by
+  induction n with
+  | zero => rfl
+  | succ k ih =>
+    show jumpOracle H (jumpIter H o₀ (m + k)) =
+        jumpOracle H (jumpIter H (jumpIter H o₀ m) k)
+    rw [ih]
+
 #check relativized_diagonal_differs
 #check no_relativized_halting_oracle
 #check relativized_halting_undecidable
@@ -336,5 +363,6 @@ theorem jumpIterWitness_differs (H : RelativizedHaltingPredictor)
 #check no_uniform_jumpIter_predictor
 #check jumpIterWitness
 #check jumpIterWitness_differs
+#check jumpIter_compose
 
 end RelativizedHalting
