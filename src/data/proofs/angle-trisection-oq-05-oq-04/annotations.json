@@ -1,0 +1,143 @@
+[
+  {
+    "id": "ann-curved-crease-structure",
+    "proofId": "angle-trisection-oq-05-oq-04",
+    "range": {
+      "startLine": 80,
+      "endLine": 137
+    },
+    "type": "definition",
+    "title": "CurvedCrease: Smooth Curved Fold with Fuchs-Tabachnikov Compatibility",
+    "content": "Bundles the data of a smooth curved fold: a parameter length L > 0, planar curve γ : ℝ → ℝ × ℝ, dihedral fold-angle profile θ : ℝ → ℝ valued in (0, π) on [0, L], signed geodesic curvature κ_g, and normal curvature κ_n, subject to the Fuchs-Tabachnikov compatibility identity κ_n(s) = κ_g(s) · cot(θ(s)/2). The identity is encoded with cot = (tan)⁻¹ to avoid a partial `Real.cot`. Note θ(s) ∈ (0, π) ⇒ θ(s)/2 ∈ (0, π/2) ⇒ tan(θ(s)/2) > 0 so the inverse is well-defined where used.",
+    "mathContext": "A curved crease in the smooth differential-geometric setting (Fuchs-Tabachnikov 1999, §1) is a smooth planar curve γ together with a dihedral fold-angle profile θ along it; the geodesic and normal curvatures of γ as a curve on the folded paper surface are linked by κ_n = κ_g · cot(θ/2). Encoding this as a structure field rather than deriving it makes axiomCount = 1 but sidesteps ~350 lines of Darboux-frame differential geometry absent from Mathlib at v4.26.0.",
+    "significance": "key",
+    "relatedConcepts": [
+      "curved-crease origami",
+      "Fuchs-Tabachnikov compatibility",
+      "dihedral fold angle",
+      "geodesic curvature",
+      "normal curvature"
+    ],
+    "prerequisites": [
+      "real-valued trigonometric functions (Real.tan, Real.pi)",
+      "closed real intervals (Set.Icc)",
+      "the Huzita-Hatori axioms (AngleTrisectionOQ05.HHAxioms)"
+    ]
+  },
+  {
+    "id": "ann-normal-curvature-zero",
+    "proofId": "angle-trisection-oq-05-oq-04",
+    "range": {
+      "startLine": 138,
+      "endLine": 162
+    },
+    "type": "lemma",
+    "title": "normal_curvature_zero_of_straight: κ_g ≡ 0 ⇒ κ_n ≡ 0",
+    "content": "If a CurvedCrease c is straight (geodesic curvature identically zero on [0, L]) then its normal curvature is also identically zero on [0, L]. The proof is a 4-line algebraic computation: substitute ftCompatible (κ_n = κ_g · (tan(θ/2))⁻¹) and IsStraight (κ_g = 0) to get κ_n = 0 · ... = 0 via zero_mul. No analysis or smoothness is required. This is the only theorem in the S2 ORIENT scaffold that is fully proved (no sorry).",
+    "mathContext": "An immediate corollary of the Fuchs-Tabachnikov identity: with one factor zero, the product is zero, regardless of the dihedral fold-angle profile. Together with the standard plane-curve characterisation (zero curvature ⇒ line segment), this is the analytic engine behind the S3 conservativity statement.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Fuchs-Tabachnikov compatibility",
+      "straight-fold limit",
+      "zero geodesic curvature"
+    ],
+    "prerequisites": [
+      "ftCompatible structure field",
+      "IsStraight predicate",
+      "zero_mul lemma"
+    ]
+  },
+  {
+    "id": "ann-straight-fold-recovers-hh",
+    "proofId": "angle-trisection-oq-05-oq-04",
+    "range": {
+      "startLine": 164,
+      "endLine": 211
+    },
+    "type": "theorem",
+    "title": "straight_fold_recovers_HH: Conservativity over HHAxioms (S3 sorry)",
+    "content": "Statement-only theorem (S3 target): a straight curved crease with distinct endpoints reduces to a fold satisfying HHAxioms — specifically, there exists an HHAxioms witness together with a Line through both crease endpoints γ(0) and γ(L). The intended S3 proof outline: (1) κ_n ≡ 0 by `normal_curvature_zero_of_straight`; (2) zero curvature ⇒ γ is a line segment on [0, L] (standard plane-curve characterisation, ~40 lines); (3) apply HHAxioms.hh1 to the endpoints. The conservativity claim is the minimum useful statement: it asserts the curved-crease formalism is a genuine extension of HHAxioms, not a replacement.",
+    "mathContext": "Conservativity is the standard test for an axiom-system extension: the new theory should reduce to the old theory on the restricted (straight-fold) domain. Without it, curved-crease origami would be a *different* theory, not a *stronger* one — and the comparison K_curved ⊋ K_origami would not even be meaningful. The plane-curve fact 'zero curvature ⇒ line segment' is folklore differential geometry (e.g. do Carmo *Differential Geometry of Curves and Surfaces* §1.5).",
+    "significance": "key",
+    "relatedConcepts": [
+      "conservativity",
+      "axiom-system extension",
+      "Huzita-Hatori HH-1",
+      "plane curves with zero curvature"
+    ],
+    "prerequisites": [
+      "normal_curvature_zero_of_straight",
+      "HHAxioms.hh1 (line through two distinct points)",
+      "plane curves of zero curvature are line segments"
+    ]
+  },
+  {
+    "id": "ann-curve-algebraic",
+    "proofId": "angle-trisection-oq-05-oq-04",
+    "range": {
+      "startLine": 213,
+      "endLine": 263
+    },
+    "type": "theorem",
+    "title": "curved_fold_algebraic_implies_origami: Algebraic Sharpness (S4 sorry)",
+    "content": "Statement-only theorem (S4 target): if a CurvedCrease c has algebraic crease curve γ of degree ≤ d (image contained in the zero set of a non-zero bivariate real polynomial of total degree ≤ d), then both coordinates of any γ(s) for s ∈ [0, c.L] satisfy `IsOrigamiConstructible` at some natural number degree. The intended S4 proof outline combines Demaine-DHPT 2011 §5 (rule-line endpoints on algebraic γ are algebraic over ℚ(γ-coefficients)) with the parent file's `origami_degree_classification` (line 575: every degree dividing 2^a · 3^b is origami-constructible).",
+    "mathContext": "Algebraic sharpness is the strongest containment we can prove without resolving OQ-A: it shows that the curved-fold closure of an algebraic curve stays inside K_origami. The S5 conjecture K_curved = K_origami would extend this to ALL (not just algebraic) curved folds — but for transcendental γ (like the elastica) this is the Demaine-DHPT 2011 open conjecture.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "algebraic plane curves",
+      "MvPolynomial",
+      "Demaine-Demaine-Hart-Price-Tachi 2011",
+      "origami degree classification"
+    ],
+    "prerequisites": [
+      "MvPolynomial in two variables",
+      "IsOrigamiConstructible (parent line 182)",
+      "origami_degree_classification (parent line 575)"
+    ]
+  },
+  {
+    "id": "ann-k-curved-eq-k-origami",
+    "proofId": "angle-trisection-oq-05-oq-04",
+    "range": {
+      "startLine": 266,
+      "endLine": 317
+    },
+    "type": "theorem",
+    "title": "K_curved_eq_K_origami: OQ-A Open Conjecture (S5 PERMANENT sorry)",
+    "content": "Statement-only theorem (S5 PERMANENT, OPEN MATHEMATICS): for all real α, IsCurvedFoldConstructible α ↔ ∃ d, IsOrigamiConstructible α d. Demaine-Demaine-Hart-Price-Tachi 2011 conjecture: although curved folds can trace transcendental CURVES (e.g. the elastica), the field of constructible POINT COORDINATES coincides with K_origami. This Lean statement is intentionally sorry-bearing as a permanent placeholder until the mathematical question is settled. The value here is the formal language, not the proof.",
+    "mathContext": "OQ-A dates to Huffman 1976. The Demaine-DHPT 2011 paper showed that curved-crease origami can trace transcendental crease curves (the elastica family) — but every constructible POINT on such a curve is the image of a *rational* parameter value, and the rational-parameter coordinates need not gain transcendental power. Whether K_curved is strictly larger than K_origami as a *field of point coordinates* is open. Formalising the question is itself a contribution: any future researcher attempting the proof can build directly on this statement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "open conjecture",
+      "elastica",
+      "Huffman 1976",
+      "Demaine-Demaine-Hart-Price-Tachi 2011",
+      "K_origami"
+    ],
+    "prerequisites": [
+      "IsCurvedFoldConstructible",
+      "IsOrigamiConstructible"
+    ]
+  },
+  {
+    "id": "ann-axiom-integrity",
+    "proofId": "angle-trisection-oq-05-oq-04",
+    "range": {
+      "startLine": 80,
+      "endLine": 137
+    },
+    "type": "note",
+    "title": "Axiom Integrity: ftCompatible counts as +1 axiomCount",
+    "content": "Per the project's axiom-integrity policy, structure-encoded hypotheses are counted as assumptions in the meta `axiomCount`, even when no `axiom` declaration appears. The `ftCompatible` field of `CurvedCrease` is the Fuchs-Tabachnikov compatibility identity κ_n(s) = κ_g(s) · cot(θ(s)/2), which is a genuine differential-geometric constraint and not a tautology. Counting it as +1 toward axiomCount means: this file has 0 `axiom` declarations + 1 structure-encoded assumption = axiomCount 1. Status is `axiomatized` (badge `axiom`), not `verified`. This honest accounting is required by the project's `Axiom Integrity Policy` (see `CLAUDE.md`).",
+    "mathContext": "The Fuchs-Tabachnikov identity is provable in principle from the Darboux frame on γ (Fuchs-Tabachnikov 1999, Theorem 1) but requires ~350 lines of curve-on-surface differential geometry absent from Mathlib at the pinned revision v4.26.0. Encoding it as a structure field is an axiom-integrity tradeoff: it makes the S2 deliverable tractable today, but the meta `axiomCount` honestly reflects the assumption.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "axiom integrity",
+      "structure-encoded assumption",
+      "Mathlib differential geometry gap"
+    ],
+    "prerequisites": [
+      "Axiom Integrity Policy (CLAUDE.md)"
+    ]
+  }
+]

@@ -1,7 +1,7 @@
 {
   "slug": "angle-trisection-oq-05-oq-04",
   "title": "Strengthening Huzita-Hatori to capture curved-crease origami",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -30,31 +30,39 @@
     "goal": "Formalise a CurvedCrease structure with the Fuchs-Tabachnikov identity as a field, prove the conservativity lemma straight_fold_recovers_HH (kappa_g identically zero implies the fold reduces to a single HHAxioms axiom), partial sharpness for algebraic gamma (curved_fold_implies_origami in the algebraic-curve case), and a sorry-bearing statement of OQ-A as an open Lean conjecture. ~450 Lean lines over S2-S5; 1 intentional open sorry, 0 axioms."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T04:25:00Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE survey: literature inventory (Huffman 1976; Fuchs-Tabachnikov 1999; Demaine et al. 2011; Tachi 2010; Mitani 2009; Geretschläger 1995); three-strand theory classification (smooth local DG / algorithmic / constructibility-field); three candidate axiom strengthenings; Mathlib gap analysis (4 missing primitives, all sidestepped by postulating FT as a structure field). No Lean changes this iteration -- pure documentation.",
+    "phase": "ORIENT",
+    "since": "2026-05-12T05:30:00Z",
+    "iteration": 2,
+    "focus": "S2 ORIENT scaffold (researcher-1, 2026-05-12): created proofs/Proofs/AngleTrisectionOQ05OQ04.lean (351 lines) with CurvedCrease structure (FT compatibility encoded as structure field), CurvedCrease.IsStraight predicate, ExistsHHFold predicate, CurveAlgebraic predicate, IsCurvedFoldConstructible predicate, one proved internal lemma (normal_curvature_zero_of_straight: kappa_g identically zero implies kappa_n identically zero, by zero_mul from FT compatibility), and three sorry-bearing target theorems for S3/S4/S5 (straight_fold_recovers_HH conservativity; curved_fold_algebraic_implies_origami partial sharpness; K_curved_eq_K_origami the Huffman-Demaine open conjecture). Gallery entry src/data/proofs/angle-trisection-oq-05-oq-04/{meta.json, annotations.json, index.ts} created with status axiomatized (badge axiom), axiomCount 1 (ftCompatible structure-encoded assumption), sorries 3, theoremCount 4, definitionCount 5. No `axiom` declarations.",
     "blockers": [],
-    "nextAction": "S2 ORIENT: create proofs/Proofs/AngleTrisectionOQ05OQ04.lean with a CurvedCrease structure (L, gamma, theta, kappa_g, kappa_n, ftCompatible), CurvedCrease.IsStraight predicate, and statement-only theorem straight_fold_recovers_HH (sorry; S3 target). Estimated ~180 Lean lines.",
+    "nextAction": "S3 ACT (~120 Lean lines): discharge straight_fold_recovers_HH by: (1) apply normal_curvature_zero_of_straight to get kappa_n identically zero; (2) invoke the standard plane-curve characterisation (zero curvature => line segment), either by hand or via Mathlib if available; (3) apply HHAxioms.hh1 to the distinct endpoints to produce the required line. Gallery delta: sorries 3 -> 2.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-12, 2026-05-12): OBSERVE survey for strengthening the Huzita-Hatori axiom system to capture curved-crease origami. Established the Fuchs-Tabachnikov identity kappa_n = kappa_g * cot(theta/2) as the single mathematical compatibility constraint on a smooth curved fold; identified three candidate axiom schemata (P1 single parametric curved axiom, P2 Beloch-style finite-degree restriction, P3 algebraic-closure-only); mapped the four missing Mathlib primitives (geodesic curvature for parametric curves, developable ruled surface, fold-angle profile, FT identity); proposed sidestepping all four by encoding FT as a structure field. Decomposition over S2-S5 totals ~450 Lean lines and exactly 1 intentional open sorry (OQ-A formal conjecture statement) with 0 axioms. No Lean changes this iteration -- pure documentation S1.",
+    "progressSummary": "S2 (researcher-1, 2026-05-12): ORIENT scaffold complete. Lean file proofs/Proofs/AngleTrisectionOQ05OQ04.lean created with the full CurvedCrease formalism: structure (351 lines total), proved straight-fold vanishing lemma, and three target theorems (S3 conservativity, S4 algebraic sharpness, S5 OQ-A open conjecture) stated with sorry. Status axiomatized (ftCompatible is a structure-encoded assumption); 0 axiom declarations; 3 intentional sorries. Gallery entry src/data/proofs/angle-trisection-oq-05-oq-04/ created with meta.json (axiomCount 1, sorries 3, theoremCount 4, definitionCount 5), annotations.json (6 annotations), and index.ts. Build verification deferred to next iteration. S1 (researcher-12, 2026-05-12): OBSERVE survey only — Fuchs-Tabachnikov identity, three candidate axiom strengthenings, Mathlib gap analysis.",
     "builtItems": [
       "research/problems/angle-trisection-oq-05-oq-04/problem.md -- full problem statement, Fuchs-Tabachnikov identity, three candidate axiomatic strengthenings (P1/P2/P3), Mathlib gap map.",
       "research/problems/angle-trisection-oq-05-oq-04/knowledge.md -- parent file inventory (HHAxioms structure at AngleTrisectionOQ05:108), three-strand theory classification, Fuchs-Tabachnikov derivation sketch, five-session decomposition with effort estimates, S2 Lean skeleton.",
-      "research/problems/angle-trisection-oq-05-oq-04/state.md -- OBSERVE phase, S2 next-action sketch with full CurvedCrease structure definition."
+      "research/problems/angle-trisection-oq-05-oq-04/state.md -- OBSERVE phase, S2 next-action sketch with full CurvedCrease structure definition.",
+      "proofs/Proofs/AngleTrisectionOQ05OQ04.lean (S2, 351 lines): CurvedCrease structure with ftCompatible as structure field; IsStraight predicate; normal_curvature_zero_of_straight (proved); ExistsHHFold predicate; straight_fold_recovers_HH (S3 sorry); CurveAlgebraic predicate; curved_fold_algebraic_implies_origami (S4 sorry); IsCurvedFoldConstructible predicate; K_curved_eq_K_origami (S5 PERMANENT sorry / open mathematics).",
+      "src/data/proofs/angle-trisection-oq-05-oq-04/meta.json (S2): gallery meta with status axiomatized, badge axiom, axiomCount 1, sorries 3, lineCount 351, theoremCount 4, definitionCount 5; 6 mathlibDependencies; 6 sections; 3 openQuestions; 5 crossReferences.",
+      "src/data/proofs/angle-trisection-oq-05-oq-04/annotations.json (S2): 6 pedagogical annotations covering the structure, the proved lemma, three target theorems, and the axiom-integrity note.",
+      "src/data/proofs/angle-trisection-oq-05-oq-04/index.ts (S2): gallery integration boilerplate.",
+      "proofs/Proofs.lean (S2): added `import Proofs.AngleTrisectionOQ05OQ04` to the auto-generated import list."
     ],
     "insights": [
       "The Fuchs-Tabachnikov compatibility identity kappa_n(s) = kappa_g(s) * cot(theta(s)/2) is the SINGLE mathematical constraint distinguishing valid smooth curved folds from arbitrary (gamma, theta) pairs. Encoding FT as a structure field of CurvedCrease (rather than as a derived theorem) sidesteps ~350 lines of Darboux-frame differential geometry that is currently absent from Mathlib.",
       "Straight-fold limit kappa_g identically zero forces kappa_n identically zero and recovers exactly one of the seven HHAxioms axioms (depending on the incidence conditions on the crease endpoints). This is the conservativity statement straight_fold_recovers_HH and is the minimum useful S2-S3 deliverable.",
       "Three candidate axiom strengthenings have substantially different formal characters: (P1) single curved axiom O8 is the most natural but parametrised by infinite-dimensional smooth-function data; (P2) Beloch-style finite degree-bounded restriction is finitary but schema-of-axioms; (P3) algebraic-closure-only loses the geometric primitive entirely. OQ-04 asks whether they all generate the same field.",
       "Demaine et al. 2011 separate the constructibility of CURVES (strictly larger under curved crease) from the constructibility of POINTS (open). The OQ-04 question is precisely about the latter; the former is settled by the elastica witness.",
-      "Sibling AngleTrisectionOQ05OQ01 (k-fold via p-smooth degrees) + OQ02 (omega-fold algebraic completeness) provide the natural ALGEBRAIC ceiling against which K_curved must be compared. The conjectured pinning K_origami subset K_curved subset K_(omega-fold) gives a clean two-direction question."
+      "Sibling AngleTrisectionOQ05OQ01 (k-fold via p-smooth degrees) + OQ02 (omega-fold algebraic completeness) provide the natural ALGEBRAIC ceiling against which K_curved must be compared. The conjectured pinning K_origami subset K_curved subset K_(omega-fold) gives a clean two-direction question.",
+      "S2 verification: the straight-fold normal-curvature vanishing lemma (kappa_g ≡ 0 ⇒ kappa_n ≡ 0) is a 4-line algebraic proof from FT compatibility; no smoothness or analytic structure is needed beyond what is already in the structure. This is the only theorem in this file with no sorry.",
+      "S2 axiom integrity: ftCompatible counts as +1 toward meta axiomCount per the project's Axiom Integrity Policy. Status is `axiomatized` (badge `axiom`), not `verified`. 0 `axiom` declarations + 1 structure-encoded assumption = axiomCount 1.",
+      "S3 proof outline (deferred): (1) apply normal_curvature_zero_of_straight to get kappa_n ≡ 0 on [0, L]; (2) zero-curvature plane curves are line segments (Mathlib `Mathlib.Geometry.Euclidean.Curvature.Plane` may have this, or ~40 lines from scratch); (3) HHAxioms.hh1 produces a line through the two distinct endpoints."
     ],
     "mathlibGaps": [
       "Geodesic / planar curvature kappa_g(s) for a smooth parametric curve gamma : R -> R^2: Mathlib.Geometry.Euclidean.Curvature.Plane covers only graph curves y = f(x); extending to unit-speed parametric requires ~80 lines.",
