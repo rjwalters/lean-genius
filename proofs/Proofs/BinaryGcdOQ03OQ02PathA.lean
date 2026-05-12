@@ -2110,6 +2110,181 @@ theorem hgcdSafeApply_of_outerFires {a b : ℕ}
   hgcdSafeApply_compose_branch a b hab
     (schonhageOuterGuardFires_above_imp_inner_fires hab hfires)
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XXVI: SCHÖNHAGE STEP IN COMPOSE COORDINATES (Session 38)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### One Schönhage fuel step expressed in `M_outer · M_inner` coordinates
+
+    PART XXV (S37) packaged the outer-fires case at the matrix and
+    `apply` levels: above threshold + outer-fires implies
+    `hgcdSafeApply a b = M_outer.apply (M_inner.apply (a, b))`, where
+    `M_inner := hgcdMatrixSafe (a + b) (a / 2^s) (b / 2^s)` and
+    `M_outer := hgcdMatrixSafe (a + b) u v` with
+    `(u, v) := (M_inner.apply (a, b)).natAbs`.
+
+    This section composes that `apply`-level equation with two
+    `schonhageGcd`-step facts already available on
+    `origin/main` to obtain the **compose-coordinate forms** that
+    downstream inductive arguments about `schonhageGcd` actually
+    consume:
+
+    * `compose_apply_natAbs_strict_decrease_of_outerFires` — the
+      per-step strict size-reduction bound on the **composed**
+      column output `M_outer.apply (M_inner.apply (a, b))`.
+      Composes `schonhageOuterGuardFires_strict_decrease`
+      (PART XIII, S23) with `hgcdSafeApply_of_outerFires`
+      (PART XXV, S37): rewriting the `_strict_decrease` bound
+      via S37 exposes the same strict inequality on the
+      compose-coordinate column output, removing the intermediate
+      `hgcdSafeApply` abstraction.
+
+    * `schonhageGcd_succ_recurse_via_compose` — one fuel step
+      of `schonhageGcd` expressed as a recursion on the
+      compose-coordinate natAbs pair. Composes
+      `schonhageGcd_succ_recurse_of_fires` (PART XIII, S23) with
+      `hgcdSafeApply_of_outerFires` (PART XXV, S37): rewriting the
+      `schonhageGcd` recursion equation via S37 exposes the
+      `M_outer.apply (M_inner.apply (a, b))` natAbs pair as the
+      recursion target.
+
+    Significance. Together with PART XXV, this completes the
+    outer-fires-branch case-analysis API in **two coordinate
+    systems**: the high-level `hgcdSafeApply` form (PART XIII +
+    PART XXV) and the structural `M_outer.apply (M_inner.apply
+    (a, b))` form (this section). Future iterations that need to
+    reason about the **two-level matrix recursion** behind the
+    fuel step — for example, the conditional non-expansion
+    analysis sketched in `s32-non-expansion-analysis.md` §5 — can
+    cite the compose-coordinate forms directly rather than
+    re-deriving the `hgcdSafeApply` ↔ `M_outer.apply (M_inner.apply
+    (a, b))` rewrite at each use site.
+
+    Build: pure forward rewrites against already-proved S22 / S23 /
+    S37 lemmas. No `native_decide`, no recursion, no new axioms,
+    no new sorries, no new definitions. -/
+
+/-- **Strict size-reduction on the compose-coordinate column output.**
+
+    Above threshold (`hab`) and outer-fires (`hfires`), the
+    composed column output `M_outer.apply (M_inner.apply (a, b))`
+    has natAbs pair strictly smaller (in `max`) than `(a, b)`:
+
+    ```
+    max ((M_outer.apply (M_inner.apply (a, b))).1.natAbs)
+        ((M_outer.apply (M_inner.apply (a, b))).2.natAbs)
+      < max a b
+    ```
+
+    where
+    `M_inner := hgcdMatrixSafe (a + b) (a / 2^s) (b / 2^s)` and
+    `M_outer := hgcdMatrixSafe (a + b) u v` with
+    `(u, v) := (M_inner.apply (a, b)).natAbs` (per the S37
+    decomposition).
+
+    Direct rewrite of S23's
+    `schonhageOuterGuardFires_strict_decrease` via S37's
+    `hgcdSafeApply_of_outerFires`: the underlying inequality is
+    already proved on `hgcdSafeApply a b`; rewriting via the
+    compose decomposition substitutes the explicit compose form on
+    both sides of the `< max a b` bound.
+
+    Significance. The S23 strict-decrease lemma is phrased on the
+    abstracted column output `hgcdSafeApply a b`; this corollary
+    re-expresses the bound on the **structurally explicit**
+    `M_outer.apply (M_inner.apply (a, b))` form, exposing the
+    per-step decrease as a property of the two-level matrix
+    recursion. This is the natural input for any future analysis
+    of compose-coordinate non-expansion (`s32-non-expansion-
+    analysis.md` §5–§6). -/
+theorem compose_apply_natAbs_strict_decrease_of_outerFires {a b : ℕ}
+    (hab : ¬ max a b < hgcdThresholdSafe)
+    (hfires : schonhageOuterGuardFires a b = true) :
+    max
+      ((hgcdMatrixSafe (a + b)
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs).apply
+            ((hgcdMatrixSafe (a + b)
+                (a / 2 ^ hgcdShiftSafe a b)
+                (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1
+            ((hgcdMatrixSafe (a + b)
+                (a / 2 ^ hgcdShiftSafe a b)
+                (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2).1.natAbs
+      ((hgcdMatrixSafe (a + b)
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+          ((hgcdMatrixSafe (a + b)
+              (a / 2 ^ hgcdShiftSafe a b)
+              (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs).apply
+            ((hgcdMatrixSafe (a + b)
+                (a / 2 ^ hgcdShiftSafe a b)
+                (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1
+            ((hgcdMatrixSafe (a + b)
+                (a / 2 ^ hgcdShiftSafe a b)
+                (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2).2.natAbs
+      < max a b := by
+  rw [← hgcdSafeApply_of_outerFires hab hfires]
+  exact schonhageOuterGuardFires_strict_decrease hfires
+
+/-- **One `schonhageGcd` fuel step expressed in compose coordinates.**
+
+    Above threshold (`hab`) and outer-fires (`hfires`), one fuel
+    step of `schonhageGcd` recurses on the natAbs pair of the
+    composed column output `M_outer.apply (M_inner.apply (a, b))`:
+
+    ```
+    schonhageGcd (f + 1) a b
+      = schonhageGcd f
+          ((M_outer.apply (M_inner.apply (a, b))).1.natAbs)
+          ((M_outer.apply (M_inner.apply (a, b))).2.natAbs)
+    ```
+
+    where M_inner and M_outer are as in S37 / PART XXV.
+
+    Direct rewrite of S23's `schonhageGcd_succ_recurse_of_fires`
+    via S37's `hgcdSafeApply_of_outerFires`: S23 phrases the
+    recursion target on `hgcdSafeApply a b`; the rewrite
+    substitutes the compose-coordinate form so the recursion
+    target is explicit in the two-level matrix coordinates. -/
+theorem schonhageGcd_succ_recurse_via_compose (f a b : ℕ)
+    (hab : ¬ max a b < hgcdThresholdSafe)
+    (hfires : schonhageOuterGuardFires a b = true) :
+    schonhageGcd (f + 1) a b =
+      schonhageGcd f
+        ((hgcdMatrixSafe (a + b)
+            ((hgcdMatrixSafe (a + b)
+                (a / 2 ^ hgcdShiftSafe a b)
+                (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+            ((hgcdMatrixSafe (a + b)
+                (a / 2 ^ hgcdShiftSafe a b)
+                (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs).apply
+              ((hgcdMatrixSafe (a + b)
+                  (a / 2 ^ hgcdShiftSafe a b)
+                  (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1
+              ((hgcdMatrixSafe (a + b)
+                  (a / 2 ^ hgcdShiftSafe a b)
+                  (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2).1.natAbs
+        ((hgcdMatrixSafe (a + b)
+            ((hgcdMatrixSafe (a + b)
+                (a / 2 ^ hgcdShiftSafe a b)
+                (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+            ((hgcdMatrixSafe (a + b)
+                (a / 2 ^ hgcdShiftSafe a b)
+                (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs).apply
+              ((hgcdMatrixSafe (a + b)
+                  (a / 2 ^ hgcdShiftSafe a b)
+                  (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1
+              ((hgcdMatrixSafe (a + b)
+                  (a / 2 ^ hgcdShiftSafe a b)
+                  (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2).2.natAbs := by
+  rw [schonhageGcd_succ_recurse_of_fires f a b hfires,
+      hgcdSafeApply_of_outerFires hab hfires]
+
 end HGcdSafe
 
 /-! ## Summary
