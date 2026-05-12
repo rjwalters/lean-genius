@@ -1,5 +1,33 @@
 [
   {
+    "id": "perfect-numbers-oq-03-module-header",
+    "proofId": "perfect-numbers-oq-03",
+    "type": "context",
+    "range": {
+      "startLine": 1,
+      "endLine": 43
+    },
+    "title": "Module Header: Historical Context and the Three Pillars",
+    "content": "The module docstring frames the proof's three pillars and their historical lineage:\n\n**(1) Necessity (18th century, Euler)**: $M(n)$ prime $\\Rightarrow n$ prime. The contrapositive ($n$ composite $\\Rightarrow M(n)$ composite) follows directly from the factoring identity. Euler used this to enumerate even perfect numbers up to $M(31)$ in his 1747 manuscript *De numeris amicabilibus*, and the same identity underlies modern Mersenne-prime searches.\n\n**(2) Lucas Congruence (Lucas 1876)**: If a prime $q$ divides $M(p) = 2^p - 1$ with $p$ prime, then $p \\mid q - 1$. This is the heart of the **Lucas–Lehmer primality test** (Lucas 1878, refined by Lehmer 1930), which has discovered *all* known Mersenne primes since the 1950s — including the current record $M(136279841)$ discovered by GIMPS in October 2024 (the 52nd known Mersenne prime). Without the Lucas congruence, one would need to trial-divide $M(p)$ by every prime up to $\\sqrt{M(p)} \\approx 2^{p/2}$, which is computationally infeasible for $p > 50$; the congruence restricts candidate divisors to those $\\equiv 1 \\pmod p$, slashing the search space by a factor of $\\sim p$.\n\n**(3) LPW Conjecture (Lenstra–Pomerance–Wagstaff, 1980s)**: The expected count of Mersenne primes with exponent $\\le N$ is $\\sim (e^\\gamma/\\log 2) \\cdot \\log \\log N$. The constant $e^\\gamma/\\log 2 \\approx 2.5695$ encodes both the prime number theorem (via the $\\log$) and the conditional probability that a random integer near $M(p)$ is prime (giving the $\\log \\log$ second factor). The conjecture is consistent with the 51 (now 52) known Mersenne primes but is currently far from provable.\n\nThe formalization deliberately states LPW as a `def : Prop` rather than an `axiom`, preserving `axiomCount = 0` while making the conjecture mechanically expressible. This is a reusable pattern for unproved conjectures in Lean: the proposition can be referenced in downstream lemmas (as a hypothesis) without committing to its truth.",
+    "mathContext": "Three nested results: (i) $M(n)\\text{ prime} \\Rightarrow n\\text{ prime}$ (necessary condition on exponent); (ii) $q\\text{ prime}, q \\mid M(p) \\Rightarrow p \\mid q - 1$ (Lucas 1876; underlies Lucas–Lehmer test); (iii) $|\\{p \\le N : M(p)\\text{ prime}\\}| \\sim (e^\\gamma/\\log 2)\\,\\log \\log N$ (LPW conjecture, open).",
+    "significance": "key",
+    "relatedConcepts": [
+      "Euler 1747 — De numeris amicabilibus",
+      "Lucas–Lehmer primality test",
+      "GIMPS (Great Internet Mersenne Prime Search)",
+      "Lenstra–Pomerance–Wagstaff heuristic",
+      "Euler–Mascheroni constant γ",
+      "axiom-free encoding of open conjectures",
+      "M(136279841) (2024 record)"
+    ],
+    "prerequisites": [
+      "Mersenne primes and perfect numbers",
+      "Lucas–Lehmer test (historical context)",
+      "Filter.atTop asymptotics in Lean 4",
+      "axiom-free formalization conventions"
+    ]
+  },
+  {
     "id": "perfect-numbers-oq-03-mersenne-def",
     "proofId": "perfect-numbers-oq-03",
     "type": "definition",
