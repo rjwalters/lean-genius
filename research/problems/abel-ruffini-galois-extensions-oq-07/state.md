@@ -1,11 +1,114 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-11T00:30:00Z
-**Iteration**: 20 (S20 ingredient 4 reverse containment — set-equality via cardinality, conditional on S16 cube-id ncard)
-**Last Updated**: 2026-05-11 (researcher-5)
+**Since**: 2026-05-12T00:30:00Z
+**Iteration**: 21 (S21 ingredient 5 — Subsingleton step under conditional cardinality hypothesis)
+**Last Updated**: 2026-05-12 (researcher-12)
 
-## S20 (researcher-5, 2026-05-11, this PR)
+## S21 (researcher-12, 2026-05-12, this PR)
+
+Final ingredient (5/5) of the S10 element-counting closure
+`sylow_two_unique_when_n3_four`, per
+`session-13-s10-element-count-spec.md` §5. One new private lemma,
+axiom-free, build pending:
+
+`sylow_two_subsingleton_of_compl_ncard` (private, conditional):
+given `|G| = 12` and the same conditional cardinality hypothesis
+`Set.ncard ((Set.univ : Set G) \ {g | g^3 = 1}) = 3` that S20 takes,
+concludes
+```
+Subsingleton (Sylow 2 G).
+```
+
+The proof composes S20's `sylow_two_set_eq_one_union_compl_cube_id`
+(P-independent set-equality) with `Sylow.ext` and
+`SetLike.coe_injective`:
+
+1. Take any two `P, P' : Sylow 2 G`.
+2. Apply S20 twice to express `(P : Set G)` and `(P' : Set G)` as the
+   same RHS `{1} ∪ (univ \ {g | g^3 = 1})`.
+3. Transitivity gives `(P : Set G) = (P' : Set G)`.
+4. `SetLike.coe_injective` lifts to `(P : Subgroup G) = (P' : Subgroup G)`.
+5. `Sylow.ext` lifts to `P = P'`.
+
+### Strategic positioning
+
+S21 is the *explicitly deferred* Subsingleton step called out in the
+S20 corollary docstring (lines 988–991 of the file). With S21 in hand,
+the S10 closure of `sylow_two_unique_when_n3_four` reduces to a
+single discharge: derive `hncard_compl_eq_three` from
+`hn3 : Nat.card (Sylow 3 G) = 4`. That discharge composes:
+
+* S16 cardinality `Set.ncard {g : G | g^3 = 1} = 9` (in flight via
+  PRs #17586 + #17587 + a future composition lemma `cube_id_card_eq_nine`).
+* Elementary `Set.ncard_diff` + `Set.ncard_univ` arithmetic:
+  `12 - 9 = 3`.
+
+**Non-overlap with in-flight PRs**:
+* #17586 (Sylow-3 set-level disjointness) and #17587 (Sylow-3
+  per-fiber cardinality) target ingredient 3 (`cube_id_card_eq_nine`);
+  S21 targets ingredient 5 (Subsingleton derivation under conditional).
+* #17685 (S19) provides the *forward subset* form of ingredient 4;
+  S21 sits one level higher in the composition chain.
+* #17528 (old S14 PR) predates S14 merge; unrelated.
+* No content overlap with any open PR for this slug.
+
+**Carries no hypothesis on `n_3 = 4`** directly: the `n_3 = 4`
+dependency is fully encapsulated in the cube-id complement
+cardinality hypothesis (the same hypothesis S20 already takes). S21
+is a pure "P-independent set form ⇒ Subsingleton" argument.
+
+### Counts
+
+* `lineCount`: 1531 → 1584 (+53, including ~33 lines of docstring +
+  ~20 lines of proof body)
+* `theoremCount`: 32 → 33 (+1 private lemma)
+* `substantiveTheoremCount`: 18 (unchanged — supporting ingredient,
+  not a user-facing Burnside case)
+* `axiomCount`: 1 (unchanged)
+* `sorries`: 1 (unchanged — `sylow_two_unique_when_n3_four` remains
+  the S10 closure target; S21 prepares its ingredient-5 Subsingleton
+  step without closing it)
+
+### Build status
+
+**[BUILD UNVERIFIED]** Same caveat as S9–S20: worktree's
+`proofs/.lake` is a recursive self-symlink, so local Docker builds
+re-fresh-clone Mathlib (~30–45 min cold). The new lemma uses only
+Mathlib API already exercised in this same file:
+
+* `Sylow.ext` — used at line 578 of this file in the S11.5 proof.
+* `SetLike.coe_injective` — standard Mathlib core API for
+  `SetLike` instances; applies to `Subgroup G` via the canonical
+  `Subgroup G → Set G` coercion that the rest of the file already
+  uses.
+* `sylow_two_set_eq_one_union_compl_cube_id` (S20, line 998 of this
+  file) — just merged.
+
+No new imports, no new Mathlib lemmas beyond what S11.5–S20 already
+exercise.
+
+### Next iteration (S22)
+
+After this PR lands, the remaining work for closing
+`sylow_two_unique_when_n3_four`:
+
+1. **Compose `cube_id_card_eq_nine` from in-flight S16 PRs** (#17586
+   + #17587 + the disjoint-union cardinality count `1 + 4·2 = 9`).
+   ~15 lines.
+2. **Cardinality bridge**: `Set.ncard {g | g^3 = 1} = 9` plus
+   `Nat.card G = 12` ⇒
+   `Set.ncard ((univ : Set G) \ {g | g^3 = 1}) = 3` via
+   `Set.ncard_diff` / `Set.ncard_univ`. ~5 lines.
+3. **Close S10**: feed the bridge output into S21's
+   `sylow_two_subsingleton_of_compl_ncard`. ~3 lines, replacing the
+   single `sorry` in `sylow_two_unique_when_n3_four`.
+
+Estimated total ~25 lines once #17586 + #17587 land.
+
+---
+
+## S20 (researcher-5, 2026-05-11, merged via #17696)
 
 Fifth atomic ingredient for closing S10's `sylow_two_unique_when_n3_four`
 sorry, per `session-13-s10-element-count-spec.md` §4. Two new private
