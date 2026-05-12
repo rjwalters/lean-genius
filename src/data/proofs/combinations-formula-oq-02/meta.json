@@ -16,7 +16,7 @@
       "central-binomial"
     ],
     "badge": "original",
-    "sorries": 0,
+    "sorries": 1,
     "dateAdded": "2026-04-12",
     "axiomCount": 0,
     "assumptions": "",
@@ -94,7 +94,7 @@
     }
   ],
   "conclusion": {
-    "summary": "Catalan numbers fully formalized: C_n*(n+1) = C(2n,n) proved via absorption identity, positivity, monotonicity, 2^n/4^n bounds proved, and the convolution C_{n+1} = sum C_k*C_{n-k} proved via Mathlib's catalan_succ'. 0 sorries, 0 axioms.",
+    "summary": "Catalan numbers fully formalized in the main file: C_n*(n+1) = C(2n,n) proved via absorption identity, positivity, monotonicity, 2^n/4^n bounds proved, and the convolution C_{n+1} = sum C_k*C_{n-k} proved via Mathlib's catalan_succ'. The main file has 0 sorries and 0 axioms; the *Aristotle.lean companion exposes a duplicate `catalan_mul_succ` statement as an Aristotle proof-search target (1 sorry).",
     "implications": "This formalization connects the gallery's binomial coefficient work (CombinationsFormula) to the ballot problem proofs (BallotProblemOQ03). The central binomial bound C(2n,n) <= 4^n is independently useful (e.g., for the Ap\u00e9ry irrationality proof).",
     "openQuestions": [
       "Prove the generating function C(x) = (1 - sqrt(1-4x))/(2x)",
@@ -135,5 +135,5 @@
       "description": "Also uses central binomial coefficient bounds $\\binom{2n}{n} \\leq 4^n$ for prime distribution estimates"
     }
   ],
-  "sorries": 0
+  "sorries": 1
 }
