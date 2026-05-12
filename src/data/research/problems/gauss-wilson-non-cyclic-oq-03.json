@@ -1,0 +1,109 @@
+{
+  "slug": "gauss-wilson-non-cyclic-oq-03",
+  "title": "Exact count of square roots of unity in (ZMod n)× via CRT generalization",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\#\\{x \\in \\mathbb{Z}/n\\mathbb{Z} : x^2 = 1\\} = 2^{\\omega_{\\text{odd}}(n) + \\varepsilon_2(n)}",
+    "plain": "Upgrade the parent's qualitative lower bound (≥ 3 square roots of 1 for non-cyclic (ℤ/nℤ)×) to the exact count formula via CRT. For n = 2^a · m with m odd having k distinct odd prime factors, the number of solutions to x² ≡ 1 (mod n) is 2^(k + ε₂(n)) where ε₂(n) ∈ {0,1,2} is the standard 2-adic correction (0 if a ≤ 1, 1 if a = 2, 2 if a ≥ 3).",
+    "whyMatters": [
+      "Completes the gallery's coverage of the Gauss-Wilson generalization: the parent file proves the qualitative ≥ 3 lower bound; OQ-03 gives the quantitative exact count for every n.",
+      "Textbook CRT specialization in the gallery — the proof is a clean application of the Chinese Remainder Theorem plus the well-known unit-group structure of ZMod prime-power moduli.",
+      "Same count appears in three different formulations (ring solutions of x²=1, 2-torsion of (ZMod n)ˣ, real Dirichlet characters mod n) — a single proof unlocks all three corollaries."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": ""
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T05:25:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-1, 2026-05-12): OBSERVE survey scaffold. Question: can the CRT construction be generalized to give a formula for the number of square roots of unity in (ZMod n)× for any n? Answer: yes — closed formula # = 2^(ω_odd(n) + ε₂(n)) with ε₂(n) ∈ {0,1,2} based on the 2-adic valuation. Verified numerically for n = 1..120. Documented strategy as a Mathlib bridge — specialize ZMod.chineseRemainder + ZMod.unitsCyclic + the (ZMod 2^k)ˣ decomposition for k ≥ 3. No Lean changes this iteration; produced problem.md (~280 lines), state.md, knowledge.md with numerical table + closed-formula derivation + parent-file API summary, and S2..S5 skeleton.",
+    "blockers": [],
+    "nextAction": "S2: create proofs/Proofs/GaussWilsonNonCyclicOQ03.lean (~80 lines, 1 sorry, 0 axioms expected). Define noncomputable def numSqrtsOne (n : ℕ) : ℕ via Nat.factorization + power-of-2 case split; verify the formula at small n (1..16, 24, 30, 60, 105, 120) via decide/rfl examples; state main theorem `card_sqrts_one_eq_numSqrtsOne` with sorry. Subsequent S3 (prime-power cases via ZMod.unitsCyclic, ~100 lines), S4 (CRT multiplicativity, ~50 lines), S5 (induction on factorization.support, ~40 lines).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-1, 2026-05-12): OBSERVE survey. Established that this OQ has a clean closed-form answer derivable from Mathlib at the pinned revision via ZMod.chineseRemainder + (ZMod p^k)ˣ cyclic for odd p + (ZMod 2^k)ˣ structure for k ≥ 3. The deliverable is a counted-form theorem `card_sqrts_one_eq_numSqrtsOne` with a `noncomputable def numSqrtsOne` packaging the formula. Parent file GaussWilsonNonCyclic.lean (verified, 0 axioms, 323 lines) provides the existence direction; OQ-03 upgrades to exact count.",
+    "builtItems": [
+      "research/problems/gauss-wilson-non-cyclic-oq-03/problem.md (new, ~280 lines): full problem statement, two formal-statement variants (counted-form on the ring and structural-form on the unit group), Mathlib infrastructure map, theoretical path through CRT + prime-power cyclicity + (ZMod 2^k)ˣ structure, decomposition into S2–S5 sessions.",
+      "research/problems/gauss-wilson-non-cyclic-oq-03/state.md (new): phase NEW → OBSERVE; concrete S2 skeleton for proofs/Proofs/GaussWilsonNonCyclicOQ03.lean with 1 sorry placeholder.",
+      "research/problems/gauss-wilson-non-cyclic-oq-03/knowledge.md (new, ~200 lines): numerical table N=1..120 verifying the formula at 18 values, closed-formula derivation, parent-file API summary, Mathlib status with module names, three equivalent counts (ring / units / characters), S2 skeleton."
+    ],
+    "insights": [
+      "Closed formula: # = 2^(ω_odd(n) + ε₂(n)) where ω_odd(n) is the number of distinct odd prime factors of n and ε₂(n) is 0 if v₂(n) ≤ 1, 1 if v₂(n) = 2, 2 if v₂(n) ≥ 3.",
+      "The power-of-2 case is the only subtlety: for odd primes p, (ZMod p^k)ˣ is cyclic of even order → exactly 2 square roots of 1; the bifurcation at v₂(n) ∈ {0, 1, 2, ≥3} is the structural source of ε₂.",
+      "Three equivalent counts: solutions to x²=1 in ZMod n equals |2-torsion of (ZMod n)ˣ| equals number of real Dirichlet characters mod n (via Pontryagin duality Hom(A, ℤ/2) ≅ A[2]).",
+      "Parent file's `unitOfSqEqOne` is the ring↔unit-group bridge: every x : ZMod n with x²=1 is automatically a unit, so the ring-level count equals the unit-level count. OQ-03 should state the main theorem at whichever level is most direct for the proof (ring level recommended).",
+      "Parent file uses Nat.ordProj_mul_ordCompl_eq_self for the 2-adic split (not Nat.factorization directly). S2 should match this convention for code-style consistency, or document the choice explicitly."
+    ],
+    "mathlibGaps": [
+      "A standalone `card_sqrts_one_formula` theorem for ZMod n at the pinned revision. The pieces (CRT, prime-power cyclicity, (ZMod 2^k)ˣ structure) are all present but the assembled exact-count formula appears to be gallery-only.",
+      "A noncomputable def numSqrtsOne : ℕ → ℕ packaging the formula. Without this, every consumer has to redo the case split on v₂(n).",
+      "A statement at the unit group level Nat.card {u : (ZMod n)ˣ // u^2 = 1}. The parent's unitOfSqEqOne provides the bridge but a direct unit-level count would be a useful Mathlib addition."
+    ],
+    "nextSteps": [
+      "S2: create proofs/Proofs/GaussWilsonNonCyclicOQ03.lean (~80 lines). Define numSqrtsOne via case split on n.factorization 2; verify at small n via decide/rfl; state main theorem with 1 sorry placeholder.",
+      "S3: prove prime-power cases (~100 lines). Odd primes via ZMod.unitsCyclic + 2-torsion of even-order cyclic groups; (ZMod 2^k)ˣ at k = 0, 1, 2, ≥3 explicitly.",
+      "S4: CRT multiplicativity (~50 lines). Show card_sqrts_one (a * b) = card_sqrts_one a * card_sqrts_one b for coprime a, b via ZMod.chineseRemainder + Equiv.card_filter (or current name).",
+      "S5: full formula assembly (~40 lines). Induction on n.factorization.support to combine S3 + S4 into card_sqrts_one_eq_numSqrtsOne."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "group-theory",
+    "cyclic-groups",
+    "zmod",
+    "wilson-gauss",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "gauss-wilson-non-cyclic",
+    "gauss-wilson-non-cyclic-oq-01",
+    "wilson-theorem",
+    "chinese-remainder-theorem",
+    "fermat-little-theorem"
+  ],
+  "references": {
+    "papers": [
+      "Gauss, C. F. (1801). Disquisitiones Arithmeticae §96 (the original generalization of Wilson's theorem to composite moduli).",
+      "Hardy, G. H. & Wright, E. M. (1979). An Introduction to the Theory of Numbers, 5th ed., §6.3 (Wilson's theorem and generalizations)."
+    ],
+    "urls": [
+      "https://oeis.org/A060594"
+    ],
+    "mathlib": [
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.RingTheory.ZMod.UnitsCyclic",
+      "Mathlib.GroupTheory.SpecificGroups.Cyclic",
+      "Mathlib.NumberTheory.Padics.PadicVal",
+      "Mathlib.Data.Nat.Factorization.Basic"
+    ]
+  },
+  "started": "2026-05-12T04:44:06.000Z",
+  "lastUpdate": "2026-05-12T05:25:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/GaussWilsonNonCyclic.lean",
+      "filename": "GaussWilsonNonCyclic.lean",
+      "lineCount": 323,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclic.lean"
+    }
+  ]
+}
