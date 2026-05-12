@@ -1,0 +1,114 @@
+{
+  "slug": "algebraic-numbers-countable-oq-02-oq-04",
+  "title": "Countability of Computable Real Numbers",
+  "phase": "IN_PROGRESS",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Set.Countable } \\{r : \\mathbb{R} \\mid \\exists f : \\mathbb{N} \\to \\mathbb{Q}, \\text{Computable } f \\wedge (f n : \\mathbb{R}) \\to r\\}",
+    "plain": "Prove that the set of computable real numbers is countable. A real `r` is computable if there exists a Turing machine (Mathlib `Computable` function `ℕ → ℚ`) outputting a rational sequence converging to `r`. Since Turing-machine descriptions form a countable set, so do the computable reals — completing the hierarchy ℚ ⊊ algebraic ⊊ computable ⊊ ℝ at cardinality ℵ₀.",
+    "whyMatters": [
+      "Completes Turing's 1936 observation that computable reals form a countable subset of ℝ — the foundation of computable analysis.",
+      "Refines the cardinality hierarchy: the existing entry oq-02-oq-03 gave #transcendentals = 𝔠; this entry shows the *computable* layer is still only ℵ₀.",
+      "Bridge to computable analysis: subsequent results (computable arithmetic, computable Cauchy completion) rest on countability of the underlying set."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "card_computable_reals_le_aleph0: (#{r : ℝ | IsComputable r} : Cardinal) ≤ ℵ₀ (corollary, depends on the still-sorry main theorem)"
+    ],
+    "open": [
+      "computable_reals_countable: Set.Countable {r : ℝ | IsComputable r} (main, S1 sorry)"
+    ],
+    "goal": "Discharge `computable_reals_countable` via the `Nat.Partrec.Code` ↔ `Computable` ↔ ℝ pipeline."
+  },
+  "currentState": {
+    "phase": "S1_SCAFFOLD",
+    "since": "2026-05-12T00:30:00.000Z",
+    "iteration": 1,
+    "focus": "S1: definition of IsComputable + main theorem statement + strategy docstring. Single sorry in main theorem.",
+    "blockers": [],
+    "nextAction": "S2: discharge the sorry in computable_reals_countable using Nat.Partrec.Code countability + Computable→code completeness + image-of-countable.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 SCAFFOLD: IsComputable definition + main theorem (1 sorry) + cardinal corollary + 4 annotations + corrected problem.md hierarchy claim.",
+    "builtItems": [
+      "AlgebraicNumbersCountableOQ02OQ04.lean: IsComputable (definition) — Mathlib-Computable rational sequence converging to r",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: computable_reals_countable (sorry, main theorem) — Set.Countable {r | IsComputable r}",
+      "AlgebraicNumbersCountableOQ02OQ04.lean: card_computable_reals_le_aleph0 (cardinal corollary, no new content) — (#·) ≤ ℵ₀"
+    ],
+    "insights": [
+      "The countability of computable reals is a direct consequence of finite Turing-machine descriptions: every computable real has a finite name, finite names form a countable set, so computable reals are countable.",
+      "The hierarchy ℚ ⊊ algebraic ⊊ computable ⊊ ℝ has all but the last layer at cardinality ℵ₀; the strict inclusions algebraic⊊computable and computable⊊ℝ are by qualitative (e is computable transcendental) and cardinal (ℵ₀<𝔠) arguments respectively.",
+      "Computable reals are countable but NOT computably enumerable — there is no algorithm listing them. Cantor diagonalization fails to produce a non-computable real because the enumeration is itself non-computable. This is an important subtle distinction.",
+      "Original problem.md said 'computable ⊂ algebraic' which is mathematically wrong (e and π are computable transcendentals). Corrected to algebraic ⊊ computable."
+    ],
+    "mathlibGaps": [
+      "Potential gap: Mathlib does not (as of 4.26.0) provide an off-the-shelf 'IsComputable' predicate on ℝ. The Mathlib `Computable` predicate is for functions, not reals. This entry defines `IsComputable r` via the existence of a Computable approximating sequence.",
+      "Mathlib `Primcodable ℚ` should be available via `Mathlib.Data.Rat.Denumerable` + `Mathlib.Logic.Denumerable`. If `Computable (f : ℕ → ℚ)` fails to elaborate, switch the approximation type to ℕ and decode."
+    ],
+    "nextSteps": [
+      "S2: discharge sorry — implement Nat.Partrec.Code → Option ℝ via 'limit of decoded rational eval'. Use Set.Countable.image with Encodable Nat.Partrec.Code.",
+      "S3 (optional): prove ℵ₀ ≤ #(computable reals) via rational embedding, giving #(computable reals) = ℵ₀ exactly.",
+      "S4 (optional): prove `algebraic ⊆ computable` — every root of a rational polynomial is computable (Sturm's theorem + bisection).",
+      "S5 (advanced): construct Chaitin's Ω as explicit non-computable real."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "set-theory",
+    "cardinality",
+    "computability",
+    "computable-analysis",
+    "gallery-extracted",
+    "research"
+  ],
+  "relatedProofs": [
+    "algebraic-numbers-countable",
+    "algebraic-numbers-countable-oq-02",
+    "algebraic-numbers-countable-oq-02-oq-03",
+    "e-transcendental",
+    "cantor-diagonalization",
+    "schroeder-bernstein-oq-03"
+  ],
+  "references": {
+    "papers": [
+      "Alan Turing, On Computable Numbers, with an Application to the Entscheidungsproblem (1936)",
+      "Pour-El & Richards, Computability in Analysis and Physics (1989)",
+      "Klaus Weihrauch, Computable Analysis: An Introduction (2000)"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Computable_number"
+    ],
+    "mathlib": [
+      "Mathlib.Computability.Partrec",
+      "Mathlib.Computability.PartrecCode",
+      "Mathlib.Data.Rat.Denumerable",
+      "Mathlib.SetTheory.Cardinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Continuum"
+    ]
+  },
+  "started": "2026-05-12T00:30:00.000Z",
+  "lastUpdate": "2026-05-12T00:30:00.000Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/AlgebraicNumbersCountableOQ02OQ04.lean",
+      "filename": "AlgebraicNumbersCountableOQ02OQ04.lean",
+      "lineCount": 110,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AlgebraicNumbersCountableOQ02OQ04.lean"
+    }
+  ]
+}
