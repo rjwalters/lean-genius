@@ -892,6 +892,133 @@ private lemma sylow_two_set_diff_one_ncard_eq_three
     exact h4
   rw [Set.ncard_diff_singleton_of_mem h1mem, hncard]
 
+/-- **S20 ingredient 4 reverse containment via cardinality** (per
+    `session-13-s10-element-count-spec.md` §4): closes the set equality
+
+        (P : Set G) \ {1} = (Set.univ : Set G) \ {g : G | g ^ 3 = 1}
+
+    for any Sylow 2-subgroup `P` of `|G| = 12`, *conditional on* the
+    cardinality of the cube-identity complement
+    `Set.ncard ((Set.univ : Set G) \ {g | g^3 = 1}) = 3`.
+
+    **Three composing ingredients**:
+    * S17 `sylow_two_inter_cube_id_eq_singleton_one` (merged PR #17630):
+      forward set-level containment
+      `(P : Set G) ∩ {g | g^3 = 1} = {1}`, equivalently
+      `(P : Set G) \ {1} ⊆ (Set.univ : Set G) \ {g | g^3 = 1}` (after
+      Boolean rearrangement, performed inline in the proof below).
+    * S18 `sylow_two_set_diff_one_ncard_eq_three` (merged PR #17648):
+      LHS cardinality `Set.ncard ((P : Set G) \ {1}) = 3`.
+    * Hypothesis `hncard_compl`: RHS cardinality
+      `Set.ncard ((Set.univ : Set G) \ {g | g^3 = 1}) = 3`.
+
+    The three give set equality via `Set.eq_of_subset_of_ncard_le`
+    (finite-set version of subset + ncard match → equality).
+
+    **Conditional on `hncard_compl`**: this hypothesis is the cardinality
+    corollary of S16's `cube_id_card_eq_nine` (in flight via PRs #17586 +
+    #17587 supplying the Sylow-3 disjoint-union ingredients), since for
+    `|G| = 12` and `n_3 = 4`:
+    `Set.ncard ((Set.univ : Set G) \ {g | g^3 = 1}) = 12 - 9 = 3`.
+    Once S16 lands, the hypothesis is dischargeable by elementary
+    `Set.ncard_diff` / `Set.ncard_univ` arithmetic, and S20 inlines
+    immediately into the closure of `sylow_two_unique_when_n3_four`
+    (the S10 placeholder).
+
+    **Carries no hypothesis on `n_3 = 4`**: the `n_3 = 4` dependency of
+    the closure is fully encapsulated in `hncard_compl`. S20 itself is a
+    pure "subset + cardinality match → equality" argument, no Sylow
+    count involved.
+
+    **Strategic complementarity** with the in-flight S16 PRs (#17586,
+    #17587) and merged S17 (#17630) and S18 (#17648): the three landed
+    pieces supply (a) the forward set-level containment and (b) the LHS
+    cardinality; this S20 piece supplies the cardinality-driven reverse
+    containment that combines them with the S16 corollary into a full
+    set equality. No overlap with the Sylow-3 cube-id cardinality work
+    of S15 / S16. -/
+private lemma sylow_two_set_diff_one_eq_compl_cube_id
+    {G : Type*} [Group G] [Finite G]
+    [Fact (Nat.Prime 2)]
+    (hcard : Nat.card G = 12)
+    (hncard_compl :
+      Set.ncard ((Set.univ : Set G) \ {g : G | g ^ 3 = 1}) = 3)
+    (P : Sylow 2 G) :
+    (P : Set G) \ ({1} : Set G) =
+      (Set.univ : Set G) \ {g : G | g ^ 3 = 1} := by
+  -- Step 1: forward set-level containment from S17.
+  -- Boolean rearrangement: (P ∩ cube_id = {1}) ⟹ (P \ {1} ⊆ univ \ cube_id).
+  have h_subset :
+      (P : Set G) \ ({1} : Set G) ⊆
+        (Set.univ : Set G) \ {g : G | g ^ 3 = 1} := by
+    intro g hg
+    rw [Set.mem_diff, Set.mem_singleton_iff] at hg
+    obtain ⟨hgP, hg_ne⟩ := hg
+    refine ⟨Set.mem_univ g, ?_⟩
+    intro hg3
+    -- g ∈ P ∩ {g | g^3 = 1} = {1} (S17) ⟹ g = 1, contradicting hg_ne.
+    have h17 :
+        (P : Set G) ∩ {g : G | g ^ 3 = 1} = ({1} : Set G) :=
+      sylow_two_inter_cube_id_eq_singleton_one hcard P
+    have h_inter :
+        g ∈ (P : Set G) ∩ {g : G | g ^ 3 = 1} :=
+      Set.mem_inter hgP hg3
+    rw [h17, Set.mem_singleton_iff] at h_inter
+    exact hg_ne h_inter
+  -- Step 2: LHS cardinality from S18.
+  have hncard_lhs :
+      Set.ncard ((P : Set G) \ ({1} : Set G)) = 3 :=
+    sylow_two_set_diff_one_ncard_eq_three hcard P
+  -- Step 3: subset + ncard match → equality.
+  -- RHS finiteness explicitly via Set.toFinite (G has [Finite G]).
+  have hle :
+      Set.ncard ((Set.univ : Set G) \ {g : G | g ^ 3 = 1}) ≤
+        Set.ncard ((P : Set G) \ ({1} : Set G)) := by
+    omega
+  exact Set.eq_of_subset_of_ncard_le h_subset hle (Set.toFinite _)
+
+/-- **S20 corollary** — full set-equality form. Under the same
+    conditional hypothesis on cube-identity complement cardinality,
+    every Sylow 2-subgroup `P` satisfies
+
+        (P : Set G) = ({1} : Set G) ∪ ((Set.univ : Set G) \ {g | g^3 = 1}).
+
+    The RHS is *independent of `P`*: it depends only on `G`, not on the
+    choice of Sylow 2-subgroup. This P-independence is the final
+    ingredient needed to derive `Subsingleton (Sylow 2 G)` — ingredient
+    5 of the S10 closure of `sylow_two_unique_when_n3_four`. The
+    `Subsingleton` step itself (composing this with `Sylow.ext` +
+    `SetLike.coe_injective`) is deferred to the next iteration, alongside
+    discharge of `hncard_compl` from the upcoming S16 cardinality lemma.
+
+    **Proof skeleton**: combine
+    * `(P : Set G) = {1} ∪ ((P : Set G) \ {1})` (since `1 ∈ P`, via
+      `Set.union_diff_cancel` on the singleton subset),
+    * S20's `(P : Set G) \ {1} = (Set.univ : Set G) \ {g | g^3 = 1}`. -/
+private lemma sylow_two_set_eq_one_union_compl_cube_id
+    {G : Type*} [Group G] [Finite G]
+    [Fact (Nat.Prime 2)]
+    (hcard : Nat.card G = 12)
+    (hncard_compl :
+      Set.ncard ((Set.univ : Set G) \ {g : G | g ^ 3 = 1}) = 3)
+    (P : Sylow 2 G) :
+    (P : Set G) =
+      ({1} : Set G) ∪ ((Set.univ : Set G) \ {g : G | g ^ 3 = 1}) := by
+  -- Step 1: 1 ∈ (P : Set G); hence {1} ⊆ (P : Set G).
+  have h1mem : (1 : G) ∈ (P : Set G) := (P : Subgroup G).one_mem
+  have h_singleton_subset : ({1} : Set G) ⊆ (P : Set G) :=
+    Set.singleton_subset_iff.mpr h1mem
+  -- Step 2: P = {1} ∪ (P \ {1}) via Set.union_diff_cancel.
+  have h_split :
+      ({1} : Set G) ∪ ((P : Set G) \ ({1} : Set G)) = (P : Set G) :=
+    Set.union_diff_cancel h_singleton_subset
+  -- Step 3: rewrite (P \ {1}) using S20.
+  have h_diff_eq :
+      (P : Set G) \ ({1} : Set G) =
+        (Set.univ : Set G) \ {g : G | g ^ 3 = 1} :=
+    sylow_two_set_diff_one_eq_compl_cube_id hcard hncard_compl P
+  rw [← h_split, h_diff_eq]
+
 /-- **S10 placeholder**: when `|G| = 12` has 4 Sylow 3-subgroups, the
     Sylow 2-subgroup is unique. Proof via element counting:
     `|{g : G | g^3 = 1}| = 1 + 4 · 2 = 9` (using pairwise trivial
