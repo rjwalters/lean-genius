@@ -28,24 +28,25 @@
     "goal": "Lean-formalize the finiteness theorem (OQ-03a) and the Erdős–Rado upper bound (OQ-03b) via a new RamseyK.ramseyNumber API, then state the stepping-up lower bound (OQ-03c) as a theorem with sorry."
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-05-12",
-    "iteration": 1,
-    "focus": "S1 OBSERVE → ORIENT (researcher-8): literature survey + Lean API design. No Lean changes this session.",
+    "iteration": 2,
+    "focus": "S2 ACT-A scaffold (researcher-9): create RamseyHypergraph.lean with the RamseyK API surface (kColoring / IsMonochromatic / IsRamsey / ramseyNumber); 4 sorry-free degenerate-case lemmas; ramsey_existence and ramseyNumber_one stated as sorries.",
     "blockers": [],
-    "nextAction": "S2 ACT-A: create proofs/Proofs/RamseyHypergraph.lean with RamseyK.ramseyNumber definition, the k=1 pigeonhole base case, and ramsey_existence stated as a sorry.",
+    "nextAction": "S3 ACT-B: discharge ramseyNumber_one via pigeonhole (forward + lower-bound coloring) and start the ramsey_existence two-layer induction.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S1 ORIENT (researcher-8 2026-05-12): Decomposed OQ-03 into three sub-goals — (a) finiteness, (b) Erdős–Rado tower upper bound, (c) Erdős–Hajnal stepping-up lower bound — with explicit Lean API surface for a new RamseyK module. Identified Mathlib gap: no Hypergraph / RamseyK definition yet; existing SimpleGraph.ramseyNumber covers only k=2.",
+    "progressSummary": "S2 ACT-A scaffold (researcher-9 2026-05-12): created proofs/Proofs/RamseyHypergraph.lean with the four-element RamseyK API surface (kColoring, IsMonochromatic, IsRamsey, ramseyNumber via sInf), four sorry-free supporting lemmas (`isMonochromatic_of_card_lt`, `isMonochromatic_empty_zero`, `is_ramsey_zero_false`, `is_ramsey_zero_true`), and two sorry-bearing main theorems (`ramsey_existence` for OQ-03a, `ramseyNumber_one` for the k=1 sanity check). 147 lines, 0 axioms, 2 sorries. S1 ORIENT (researcher-8 2026-05-12): Decomposed OQ-03 into three sub-goals — (a) finiteness, (b) Erdős–Rado tower upper bound, (c) Erdős–Hajnal stepping-up lower bound — with explicit Lean API surface for a new RamseyK module.",
     "builtItems": [
-      "research/problems/erdos-szekeres-oq-03/problem.md — formal statement of OQ-03 as three sub-goals.",
-      "research/problems/erdos-szekeres-oq-03/knowledge.md — literature survey (Ramsey 1930, Erdős–Rado 1952, Erdős–Hajnal 1972, Conlon–Fox–Sudakov 2010) + Mathlib API audit + suggested RamseyK API surface.",
-      "research/problems/erdos-szekeres-oq-03/state.md — phase advanced NEW → ORIENT with S2 next-action pinned."
+      "proofs/Proofs/RamseyHypergraph.lean — RamseyK API + 4 sorry-free degenerate-case lemmas + 2 sorry-bearing theorems (S2).",
+      "research/problems/erdos-szekeres-oq-03/problem.md — formal statement of OQ-03 as three sub-goals (S1).",
+      "research/problems/erdos-szekeres-oq-03/knowledge.md — literature survey + Mathlib API audit + suggested API surface (S1).",
+      "research/problems/erdos-szekeres-oq-03/state.md — phase advanced ORIENT → ACT (S2); S3 next-action pinned."
     ],
     "insights": [
       "OQ-03 cleanly factors into existence + upper + lower bounds; the existence and upper bound share the same two-layer neighborhood induction.",
@@ -59,8 +60,7 @@
       "Tower function (iterated 2^·) is not packaged but can be obtained via Nat.iterate."
     ],
     "nextSteps": [
-      "S2: implement RamseyK module with definitions + k=1 pigeonhole + ramsey_existence sorry.",
-      "S3: discharge ramsey_existence by the two-layer induction.",
+      "S3: discharge ramseyNumber_one via pigeonhole (forward direction is straightforward; lower-bound construction takes an explicit coloring) and start ramsey_existence via the two-layer induction.",
       "S4: state erdos_rado_upper as a tower-function bound and prove it by unwinding the recursive R_k ≤ R_{k-1}(...) inequality.",
       "S5: spawn the stepping-up lower bound as a separate sub-OQ if S4 lands cleanly."
     ]
@@ -95,10 +95,21 @@
     ]
   },
   "started": "2026-05-12T04:48:16.447Z",
-  "lastUpdate": "2026-05-12T15:00:00.000Z",
+  "lastUpdate": "2026-05-12T06:15:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
+    {
+      "path": "Proofs/RamseyHypergraph.lean",
+      "filename": "RamseyHypergraph.lean",
+      "lineCount": 147,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseyHypergraph.lean"
+    },
     {
       "path": "Proofs/ErdosSzekeres.lean",
       "filename": "ErdosSzekeres.lean",

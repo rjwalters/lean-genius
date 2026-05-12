@@ -2449,6 +2449,7 @@ import Proofs.LagrangeTheoremOQ01OQ03
 import Proofs.LagrangeTheoremOQ02
 import Proofs.LagrangeTheoremOQ02OQ01
 import Proofs.LagrangeTheoremOQ02OQ02
+import Proofs.LagrangeTheoremOQ02OQ02OQ01
 import Proofs.LagrangeTheoremOQ03
 import Proofs.LagrangeTheoremOQ05
 import Proofs.LawOfCosines
@@ -2503,6 +2504,7 @@ import Proofs.MathematicalInductionOQ03
 import Proofs.MeanValueTheorem
 import Proofs.MeanValueTheoremOQ02
 import Proofs.MeanValueTheoremOQ02OQ04
+import Proofs.MeanValueTheoremOQ02OQ04OQ01
 import Proofs.MeanValueTheoremOQ03
 import Proofs.MeanValueTheoremOQ04
 import Proofs.MinkowskiFundamentalTheorem
@@ -2610,6 +2612,7 @@ import Proofs.QuadraticReciprocity
 import Proofs.QuadraticReciprocityAlgorithmOQ01
 import Proofs.QuadraticReciprocityOQ03
 import Proofs.RamanujanSumFallacy
+import Proofs.RamseyHypergraph
 import Proofs.RamseyR4k
 import Proofs.RamseyR4kExtensions
 import Proofs.RamseyR4kOQ01
