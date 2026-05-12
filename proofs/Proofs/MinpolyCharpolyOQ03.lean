@@ -94,6 +94,16 @@ structure theorem directly).
   monicness hypothesis.
 * **`factor_dvd_prodFactors`** *(S2)* — every invariant factor divides
   the chain's product. Unconditional; instance of `List.dvd_prod`.
+* **`prodFactors_ne_zero`** *(S3)* — the product of the invariant
+  factors is nonzero. Direct corollary of `prodFactors_monic` via
+  `Polynomial.Monic.ne_zero`.
+* **`prodFactors_natDegree`** *(S3)* — the natDegree of the product
+  equals the sum of factor natDegrees. Useful for the eventual
+  block-diagonal dimension argument (∑ deg pᵢ = n).
+* **`chain_natDegree_le`** *(S3)* — the divisibility chain implies the
+  natDegree chain: `factors[i].natDegree ≤ factors[j].natDegree` for
+  `i ≤ j`. Direct use of the structure's `chain` field plus
+  `Polynomial.natDegree_le_of_dvd`.
 
 ## References
 
@@ -222,5 +232,66 @@ theorem factor_dvd_prodFactors
     (c : InvariantFactorChain F) {p : F[X]} (hp : p ∈ c.factors) :
     p ∣ c.prodFactors :=
   List.dvd_prod hp
+
+/-! ## Part 4: S3 unconditional helpers — nonzero, natDegree sum,
+       natDegree chain.
+
+These extend the auditor follow-through (S2) with three more
+unconditional facts about `InvariantFactorChain`:
+
+* `prodFactors_ne_zero` — trivial corollary of `prodFactors_monic`.
+* `prodFactors_natDegree` — the natDegree of the product equals the
+  sum of factor natDegrees. Needed for the eventual dimension argument
+  `∑ deg pᵢ = n` in OQ-03-OQ-04.
+* `chain_natDegree_le` — divisibility chain ⇒ natDegree chain. Useful
+  for proving that `lastFactor` has the maximal natDegree, which is
+  what makes it the minimal polynomial in the RCF correspondence.
+-/
+
+/-- The product of the invariant factors is nonzero. Direct corollary
+    of `prodFactors_monic` (via `Polynomial.Monic.ne_zero`). -/
+theorem prodFactors_ne_zero (c : InvariantFactorChain F) :
+    c.prodFactors ≠ 0 :=
+  (prodFactors_monic c).ne_zero
+
+/-- Auxiliary: the natDegree of a list-product of monic polynomials is
+    the sum of their natDegrees. Follows from `Polynomial.natDegree_mul`
+    on monic factors (monic ⇒ nonzero), by induction on the list. -/
+private theorem list_prod_natDegree_of_all_monic
+    {l : List F[X]} (hl : ∀ p ∈ l, p.Monic) :
+    l.prod.natDegree = (l.map (·.natDegree)).sum := by
+  induction l with
+  | nil =>
+    simp
+  | cons p ps ih =>
+    have hp : p.Monic := hl p List.mem_cons_self
+    have hps_all : ∀ q ∈ ps, q.Monic :=
+      fun q hq => hl q (List.mem_cons_of_mem _ hq)
+    have hps_monic : ps.prod.Monic := list_prod_monic_of_all_monic hps_all
+    rw [List.prod_cons, List.map_cons, List.sum_cons,
+        Polynomial.natDegree_mul hp.ne_zero hps_monic.ne_zero,
+        ih hps_all]
+
+/-- The natDegree of the product of the invariant factors equals the
+    sum of the factors' natDegrees. Bridges between the abstract
+    chain data and the dimensional bookkeeping needed for the
+    block-diagonal assembly (OQ-03-OQ-04). -/
+theorem prodFactors_natDegree (c : InvariantFactorChain F) :
+    c.prodFactors.natDegree = (c.factors.map (·.natDegree)).sum :=
+  list_prod_natDegree_of_all_monic c.monic
+
+/-- Divisibility chain ⇒ natDegree chain. If `i ≤ j` (so
+    `factors[i] ∣ factors[j]`) then `factors[i].natDegree ≤
+    factors[j].natDegree`. Direct use of the structure's `chain` field
+    plus `Polynomial.natDegree_le_of_dvd` (which needs the larger
+    factor nonzero — supplied by monicness). -/
+theorem chain_natDegree_le
+    (c : InvariantFactorChain F)
+    {i j : Fin c.factors.length} (h : i.val ≤ j.val) :
+    c.factors[i].natDegree ≤ c.factors[j].natDegree := by
+  have hdvd : c.factors[i] ∣ c.factors[j] := c.chain i j h
+  have hmem : c.factors[j] ∈ c.factors := List.getElem_mem j.isLt
+  have hmonic : c.factors[j].Monic := c.monic _ hmem
+  exact Polynomial.natDegree_le_of_dvd hdvd hmonic.ne_zero
 
 end MinpolyCharpolyOQ03
