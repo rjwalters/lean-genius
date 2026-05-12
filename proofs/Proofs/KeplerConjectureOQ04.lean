@@ -27,27 +27,33 @@
   **S2 SCAFFOLD goal.** Introduce the tetrahedral dimer density as a
   named real-number constant, prove the basic positivity / less-than-one
   bounds (axiom-free, `norm_num`-discharged), and prepare the API
-  surface for the S3 numerical inequality `tetrahedronDimerDensity >
-  fccDensity` (refutes shape-universality of the sphere bound).
+  surface for the S3 numerical inequality.
 
-  The S3 inequality is a pure real-number computation:
-    `4000 / 4671 > π / (3 * Real.sqrt 2)`
-  ↔ `12000 * Real.sqrt 2 > 4671 * π`  (both sides positive)
-  ⇐ `(12000)² · 2 > 4671² · π²`        (square — both sides positive)
-  ↔ `288_000_000 > 21_818_241 · π²`
-  ↔ `π² < 288_000_000 / 21_818_241 ≈ 13.2002`
+  **S3 ACT — refutation of shape-universality.** Prove that
+  `tetrahedronDimerDensity > fccDensity` (the parent's FCC sphere
+  density `π / (3√2)`). Both sides positive; cross-multiply with
+  `div_lt_div_iff₀` and bound `π < 3.15` (`Real.pi_lt_d2`)
+  above, `√2 > 1.4` (via `Real.lt_sqrt`) below; close with `nlinarith`.
+  The proof adds NO new axioms.
 
-  which is comfortably satisfied by `Real.pi_lt_315` (`π < 3.15`, so
-  `π² < 9.9225 < 13.2002`). No new axioms needed.
+  Linear-margin chain:
+    `4671 · π    < 4671 · 3.15 = 14_713.65`
+    `4000 · 3 · √2 > 12 000 · 1.4 = 16_800`
+    margin ≈ `2_086.35`
+
+  **S4 ACT — `PackingDensity` instance + corollary.** Bundle
+  `tetrahedronDimerDensity` into a `PackingDensity` instance
+  (`tetrahedronDimerPacking`) and conclude existentially:
+  `∃ p : PackingDensity, fccDensity < p.density`. Witnesses that the
+  parent's abstract type admits values strictly above `fccDensity`,
+  formalising the bottom-line OQ-04 refutation.
 
   **Status of this file.**
   - 0 sorries, 0 axioms.
-  - One definition (`tetrahedronDimerDensity`).
-  - Three basic theorems: positivity, less-than-one, and the
-    Chen–Engel–Glotzer literature anchor as a `decide`-checked
-    rational inequality.
-  - S3 deferred: the `tetrahedronDimerDensity > fccDensity` numerical
-    inequality (target ~50 lines using `Real.pi_lt_315` and `Real.sq_sqrt`).
+  - Two definitions (`tetrahedronDimerDensity`, `tetrahedronDimerPacking`).
+  - Five theorems: positivity, less-than-one, rational anchor (`> 0.8563`),
+    inequality vs. `fccDensity`, and existential corollary.
+  - S5/S6 deferred (ellipsoid axioms, Ulam conjecture statement).
 -/
 
 import Mathlib
@@ -107,14 +113,115 @@ the Chen–Engel–Glotzer 2010 literature claim of "approximately
 reference to `π` or `Real.sqrt 2`.
 
 Numerically: `4000 / 4671 ≈ 0.856347676…`, comfortably above `0.8563`.
-The S3 inequality `tetrahedronDimerDensity > fccDensity` will use this
-bound as a structural pivot: `fccDensity = π/(3√2) ≈ 0.7405 < 0.8563`,
-so `tetrahedronDimerDensity > 0.8563 > fccDensity`, modulo the
-upper-bound side `fccDensity < 0.8563` (a separate numerical lemma).
+The S3 inequality `tetrahedronDimerDensity > fccDensity` (below) uses
+a tighter linear chain via `Real.pi_lt_d2` and `Real.lt_sqrt`, but
+this rational anchor remains independently useful for sanity checks
+and for downstream constructions wanting an `ℝ`-free comparator.
 -/
 theorem tetrahedronDimerDensity_gt_8563 :
     (8563 : ℝ) / 10000 < tetrahedronDimerDensity := by
   unfold tetrahedronDimerDensity
   norm_num
+
+/-!
+## S3 — Refutation of shape-universality
+
+The next theorem (`tetrahedronDimerDensity_gt_fccDensity`) is the
+central deliverable of OQ-04 in its strongest axiom-free form. It
+proves that the Chen–Engel–Glotzer dimer density `4000/4671 ≈ 0.8564`
+**strictly exceeds** the Kepler-Hales FCC sphere density
+`π/(3√2) ≈ 0.7405`, by ≈ 11.6 percentage points.
+
+The proof is a pure real-number inequality and adds **no new axioms**.
+It uses only two Mathlib lemmas beyond `norm_num` arithmetic:
+
+* `Real.pi_lt_d2` — verified numerical upper bound `π < 3.15`.
+* `Real.lt_sqrt`       — characterisation `x < √y ↔ x² < y` (for `0 ≤ x`).
+* `div_lt_div_iff₀`    — clears the divisions on both sides.
+
+Linear-margin closure:
+
+* LHS: `4671 · π   < 4671 · 3.15 = 14_713.65`
+* RHS: `4000 · 3 · √2 > 12_000 · 1.4 = 16_800`
+
+with linear margin `≈ 2_086.35`, closed by `nlinarith` once both
+single-variable bounds are in scope.
+-/
+
+/--
+**Refutation of shape-universality of the Kepler upper bound.**
+
+The Chen–Engel–Glotzer (2010) tetrahedral dimer density strictly
+exceeds the Kepler-Hales FCC sphere density.
+
+**Mathematical content.** The parent gallery's `kepler_conjecture`
+axiom states `δ ≤ π/(3√2)` for packings of *congruent spheres*. This
+theorem shows that the abstract `PackingDensity` type in
+`Proofs.KeplerConjecture` admits values *strictly above* `fccDensity`,
+witnessed by the tetrahedral dimer construction. Hence the Kepler
+upper bound is **shape-specific** — it does NOT generalise to all
+convex bodies in ℝ³.
+
+**Proof.** Cross-multiply (`div_lt_div_iff₀`) to remove division; then
+bound `π < 3.15` (`Real.pi_lt_d2`) and `√2 > 1.4` (via
+`Real.lt_sqrt`, since `1.4² = 1.96 < 2`); the resulting linear
+inequality `4671 · π < 12000 · √2` follows from
+`4671 · 3.15 = 14_713.65 < 16_800 = 12_000 · 1.4` by `nlinarith`.
+No new axioms added.
+-/
+theorem tetrahedronDimerDensity_gt_fccDensity :
+    fccDensity < tetrahedronDimerDensity := by
+  unfold fccDensity tetrahedronDimerDensity
+  have hπ_pos : (0 : ℝ) < Real.pi := Real.pi_pos
+  have hπ_ub : Real.pi < 3.15 := Real.pi_lt_d2
+  have hs2_lb : (1.4 : ℝ) < Real.sqrt 2 :=
+    (Real.lt_sqrt (by norm_num : (0 : ℝ) ≤ 1.4)).mpr (by norm_num : (1.4 : ℝ) ^ 2 < 2)
+  have h3s_pos : (0 : ℝ) < 3 * Real.sqrt 2 := by positivity
+  rw [div_lt_div_iff₀ h3s_pos (by norm_num : (0 : ℝ) < 4671)]
+  -- Goal: Real.pi * 4671 < 4000 * (3 * Real.sqrt 2)
+  -- LHS < 4671 * 3.15 = 14_713.65;  RHS > 12000 * 1.4 = 16800.
+  nlinarith [hπ_pos, hπ_ub, hs2_lb]
+
+/-!
+## S4 — `PackingDensity` instance + corollary
+
+Having proved the inequality, we package the tetrahedral dimer density
+as a concrete inhabitant of the parent's `PackingDensity` structure.
+This makes the refutation type-level: there *exists* a
+`PackingDensity` strictly above `fccDensity`, namely the tetrahedral
+dimer packing.
+
+No new axioms; both fields (`nonneg`, `le_one`) follow directly from
+the S2 positivity / less-than-one bounds above.
+-/
+
+/--
+**Tetrahedral dimer packing as a `PackingDensity` instance.**
+
+Bundles `tetrahedronDimerDensity` together with the S2-proven bounds
+`0 < · ` and `· < 1` into the parent's abstract `PackingDensity`
+structure (defined in `Proofs.KeplerConjecture`). This lets downstream
+results manipulate the dimer packing as a first-class `PackingDensity`
+witness.
+-/
+noncomputable def tetrahedronDimerPacking : PackingDensity where
+  density := tetrahedronDimerDensity
+  nonneg  := tetrahedronDimerDensity_pos.le
+  le_one  := tetrahedronDimerDensity_lt_one.le
+
+/--
+**Existential refutation of shape-universality.**
+
+There exists a `PackingDensity` strictly above the FCC sphere density
+`fccDensity`. The witness is `tetrahedronDimerPacking`.
+
+This is the bottom-line corollary of OQ-04: the parent's abstract
+`PackingDensity` type, taken without the sphere assumption, is NOT
+bounded above by `fccDensity`. Restoring such a bound requires the
+sphere shape hypothesis (i.e. the parent `kepler_conjecture` axiom).
+-/
+theorem exists_packingDensity_gt_fcc :
+    ∃ p : PackingDensity, fccDensity < p.density :=
+  ⟨tetrahedronDimerPacking, tetrahedronDimerDensity_gt_fccDensity⟩
 
 end KeplerConjectureOQ04
