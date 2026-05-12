@@ -1018,6 +1018,56 @@ private lemma rotateSortedList_take_add_drop {n c : ℕ}
   rw [← Multiset.coe_add, List.take_append_drop]
   exact rotateSortedList_toMultiset M k
 
+/-! #### S35 — Suffix-as-`Sym` packaging
+
+Wrapper bundling `rotateSortedList_drop_card` (S34, line 978) and
+`rotateSortedList_drop_le` (S34, line 992) into a single `Sym (Fin n)
+(c - j)` value with a built-in submultiset witness against `M.1`.
+Symmetric counterpart of the prefix packaging in PR #17680
+(`rotateSortedListPrefixSym` returning `Sym (Fin n) j` under the
+precondition `j ≤ c`). The two packagings together provide the forward
+direction of the 2B.4' refined-codomain bijection at the `Sym` level:
+every rotation index `k` plus split index `j` gives a canonical
+`(prefix, suffix)` pair in `Sym (Fin n) j × Sym (Fin n) (c - j)` whose
+multiset components sum (via `_take_add_drop`) to `M.1`.
+
+Two new private declarations (one def + one lemma); no new sorries, no
+new axioms, no new imports. -/
+
+/-- **Suffix of a rotation, packaged as a `Sym`.**
+    For `M : Sym (Fin n) c`, rotation index `k : ℕ`, and split index
+    `j : ℕ`, the drop-suffix `(rotateSortedList M k).drop j` becomes a
+    `Sym (Fin n) (c - j)` value via the cardinality witness
+    `rotateSortedList_drop_card`. The truncated-`Nat` subtraction is
+    the natural form: when `j ≥ c`, both the suffix and `c - j` are
+    empty, so `Sym (Fin n) 0 = ⟨∅, _⟩` is the canonical degenerate
+    value. No `j ≤ c` precondition needed (unlike
+    `rotateSortedListPrefixSym`'s `hj : j ≤ c`).
+
+    Use site (2B.4' refined-codomain bijection): paired with
+    `rotateSortedListPrefixSym` (PR #17680) under the precondition
+    `1 ≤ b` (so `j = a + 1 ≤ a + b = c`), the two packagings give the
+    forward direction `(rotation index k, split index a+1) ↦
+    (rotateSortedListPrefixSym M k (a+1) hj,
+     rotateSortedListSuffixSym M k (a+1)) :
+       Sym (Fin n) (a+1) × Sym (Fin n) (b-1)`
+    of the cycle-lemma bijection. -/
+private def rotateSortedListSuffixSym {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) : Sym (Fin n) (c - j) :=
+  ⟨((rotateSortedList M k).drop j : Multiset (Fin n)),
+   rotateSortedList_drop_card M k j⟩
+
+/-- **Suffix `Sym` is a sub-`Sym` of `M`.** The submultiset witness for
+    `rotateSortedListSuffixSym M k j`, lifted to the `.1` projection of
+    the `Sym`. Direct re-package of `rotateSortedList_drop_le` (S34).
+    Symmetric counterpart of `rotateSortedListPrefixSym_le` (PR #17680).
+    The codomain witness for the `Sym (Fin n) (c - j)` complement of the
+    prefix in the 2B.4' refined-codomain bijection. -/
+private lemma rotateSortedListSuffixSym_le {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) :
+    (rotateSortedListSuffixSym M k j).1 ≤ M.1 :=
+  rotateSortedList_drop_le M k j
+
 /-- **Total multiset of a Sym pair (as a `Sym`).**
 
     The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in
