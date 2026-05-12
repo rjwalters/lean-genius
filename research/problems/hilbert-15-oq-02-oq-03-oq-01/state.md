@@ -1,9 +1,153 @@
 # Current State
 
-**Phase**: ACT (S3c-prep-3 row-0 monotonicity + top-zero forcing landed; row-0-forcing remaining input: "rightmost row-0 cell is zero")
+**Phase**: ACT (S3c-prep-4 lattice → top-zero closure landed; Step 1 of Part VIII's proof sketch fully discharged modulo `r₀ = 0` vacuous branch)
 **Since**: 2026-05-11T22:00:00Z
-**Last Updated**: 2026-05-12 (S3c-prep-3 row-0 monotonicity adapter + top-zero forcing by researcher-5)
-**Iteration**: 7
+**Last Updated**: 2026-05-12 (S3c-prep-4 prefix-1 lattice forcing + Step 1 composition by researcher-12)
+**Iteration**: 8
+
+## S3c-Prep-4 Summary (2026-05-12, researcher-12)
+
+**Mode**: ACT — supply the **single-cell input** required by S3c-prep-3
+(`skewSSYTFin_row0_eq_zero_of_top_zero`) by instantiating the lattice-word
+predicate at prefix length `1` of `T.reverseRowWord`. With this Part XIII
+in place, Step 1 of Part VIII's S3c proof sketch — "row 0 is forced to all
+zeros" — is fully discharged under the positivity hypothesis `0 < r₀`,
+exposed as the corollary `skewSSYTFin_row0_forced_zero`.
+
+### Deliverable
+
+Append Part XIII (S3c-Prep-4) to `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean`
+(+131 lines, 677 → 808; 1 sorry unchanged; +1 private helper, +2 public
+theorems, +1 composed corollary; 0 axioms):
+
+* `reverse_finRange_take_one_of_pos` (private helper) — For `r > 0` and
+  any `f : Fin r → α`, the `take 1` prefix of
+  `(List.finRange r).reverse.map f` equals the singleton
+  `[f ⟨r - 1, Nat.sub_lt h Nat.one_pos⟩]`. Proved by
+  case-decomposition `r = k + 1` (via
+  `Nat.exists_eq_succ_of_ne_zero` with the `rfl` pattern) followed by
+  `List.finRange_succ` unfolding into `(finRange k).map Fin.castSucc ++
+  [Fin.last k]`; reversing puts `Fin.last k` at the head, then
+  `take 1` reduces to `[f (Fin.last k)]`. The `(k+1) - 1 = k`
+  identification with `Fin.last k`'s `.val = k` closes by `rfl` via
+  proof-irrelevance on `Fin`'s `isLt` field.
+
+* `reverseRowWord_two_take_one_of_pos` — Public lemma: under
+  `hpos : 0 < r₀` (i.e., row 0 is non-empty),
+  `T.reverseRowWord.take 1 = [T.1 ⟨0, ⟨r₀ - 1, _⟩⟩]`. Proved by
+  `reverseRowWord_two_eq` (Part X) + `List.take_append_of_le_length`
+  to reduce to the row-0 sub-list, then the private helper.
+
+* `skewSSYTFin_row0_top_zero_of_lattice` — Public lemma:
+  given `hLW : isLatticeWord T.reverseRowWord` and `hpos : 0 < r₀`,
+  `T.1 ⟨0, ⟨r₀ - 1, _⟩⟩ = 0`. Proved by instantiating `hLW` at prefix
+  length `1` with `k = 0, k' = 1`, rewriting via the new take-one
+  lemma into `[top].count 1 ≤ [top].count 0`, then a `by_contra` +
+  Fin-2 case-split (`top.val < 2`, `top.val ≠ 0` → `top.val = 1`) to
+  derive `1 ≤ 0` via `decide` on the singleton counts.
+
+* `skewSSYTFin_row0_forced_zero` (corollary, +2 lines) — Composes
+  Part XIII's `skewSSYTFin_row0_top_zero_of_lattice` with Part XII's
+  `skewSSYTFin_row0_eq_zero_of_top_zero` to give the full pointwise
+  conclusion `∀ j : Fin r₀, T.1 ⟨0, j⟩ = 0` under
+  `(hpos : 0 < r₀) ∧ isLatticeWord T.reverseRowWord`. The `r₀ = 0`
+  branch is vacuous (`Fin 0` empty) and is handled inline by S3c proper
+  with `Fin.elim0`.
+
+### Design choices
+
+* **Explicit `Nat.sub_lt hpos Nat.one_pos` rather than `by omega` in
+  the `Fin (r₀ - 1)` proof field.** Part XII's signature uses `by
+  omega` for the `r₀ - 1 < r₀` obligation. Both styles produce
+  def-equal `Fin r₀` values by proof-irrelevance on the `isLt` field,
+  but Part XIII consistently uses the explicit `Nat.sub_lt` form to
+  pin down the exact proof term Part XIII's chain of `rw [...]`
+  produces. The composition `skewSSYTFin_row0_forced_zero` works
+  across the two conventions because Lean treats Prop-valued `Fin`
+  fields as proof-irrelevant.
+
+* **`take_append_of_le_length` rather than `take_append_eq_append_take`
+  + arithmetic of `1 - L₀.length`.** With `r₀ > 0`, the cleaner path
+  is "the take fits entirely in the first list" (`take_append_of_le_length`)
+  rather than the general "split the take across the join" form. One
+  fewer `simp` cycle and the resulting goal matches the helper exactly.
+
+* **`rcases ... with ⟨k, rfl⟩` pattern over `Nat.exists_eq_succ_of_ne_zero`.**
+  Substitutes `r → k + 1` everywhere in the goal, hypotheses, and `f`'s
+  domain in one step, so the subsequent `List.finRange_succ` rewrite
+  doesn't need to thread the `r = k + 1` equation through.
+
+* **`rfl` closure after the explicit `rw` chain.** The chain
+  `List.finRange_succ`, `List.concat_eq_append`, `List.reverse_append`,
+  `List.reverse_singleton`, `List.singleton_append`, `List.map_cons`
+  exposes the leading `Fin.last k :: ...` cons; `(x :: xs).take 1`
+  reduces definitionally to `[x]`. The remaining
+  `[f (Fin.last k)] = [f ⟨k + 1 - 1, _⟩]` is `rfl` because (i)
+  `(k + 1) - 1` reduces to `k` definitionally (`Nat.sub` recursion on
+  the second arg), and (ii) Fin's `isLt` field is proof-irrelevant.
+
+* **`by decide` on the singleton count contradiction.** Mathlib's
+  `List.count` for `Fin n` is computable via `DecidableEq`. Both
+  `[(1 : Fin 2)].count 1` and `[(1 : Fin 2)].count 0` evaluate to
+  closed `Nat` values (`1` and `0`), so `decide` evaluates the
+  `¬ (1 ≤ 0)` proposition directly without unfolding lemmas. Avoids
+  a chain of `List.count_singleton`-style rewrites that might depend
+  on Mathlib v4.26.0-specific simp normal forms.
+
+### File deltas
+
+- `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean`: 677 → 808 lines (+131).
+- Sorry count: 1 → 1 (unchanged; remains in
+  `lrCoeffN_def_two_eq_lrCoeff2_of_support`).
+- Axiom count: 0 (unchanged).
+- Theorem count: 13 → 16 (`reverseRowWord_two_take_one_of_pos`,
+  `skewSSYTFin_row0_top_zero_of_lattice`,
+  `skewSSYTFin_row0_forced_zero`).
+- Private lemma count: +1 (`reverse_finRange_take_one_of_pos`).
+- Definition count: 7 (unchanged). Instance count: 5 (unchanged).
+
+### Build status
+
+Pending. Per established Hilbert-15 cluster PR convention. The Part XIII
+proofs use only standard Mathlib v4.26.0 API: `List.finRange_succ`,
+`List.concat_eq_append`, `List.reverse_append`, `List.reverse_singleton`,
+`List.singleton_append`, `List.map_cons`, `List.take_append_of_le_length`,
+`Nat.exists_eq_succ_of_ne_zero`, `Nat.sub_lt`, `Fin.ext`, plus the
+existing Parts X–XII (`reverseRowWord_two_eq`, `reverseRowWord_two_length`,
+`skewSSYTFin_row0_eq_zero_of_top_zero`). Closure tactics are `omega`,
+`decide`, and `rfl`.
+
+### Remaining work in Step 1 → 5 of S3c
+
+Step 1 is now fully discharged (modulo the `r₀ = 0` vacuous branch
+handled inline). Steps 2–5 of Part VIII's S3c proof sketch remain:
+
+* **Step 2 — Row-1 content determined.** With Step 1 giving row 0 = all
+  `0`s, content equation `T.content 0 = lam.parts 0` forces
+  `c₀ := lam.parts 0 - r₀` zeros in row 1, leaving
+  `c₁ := r₁ - c₀ = lam.parts 1` ones.
+* **Step 3 — Row 1 uniquely determined.** Weakly-increasing row 1 with
+  `c₀` zeros and `c₁` ones is `j ↦ if j.val < c₀ then 0 else 1`. Card
+  ≤ 1.
+* **Step 4 — Remaining guards = `lrCoeff2`'s pass-conditions.**
+  Column-strict + row-2 lattice match the `c₀ ≤ μ.parts 0 - μ.parts 1`
+  and `c₁ ≤ r₀` guards in `lrCoeff2`'s if-cascade.
+* **Step 5 — Bijection closure.** `Fintype.card_eq_of_equiv` to
+  singleton (all guards) or empty (any fail).
+
+### Strategic note: pool contention
+
+`gh pr list --search "hilbert-15-oq-02-oq-03-oq-01"` showed at claim time:
+* #17966 (S3b out-of-support 2-row anchor corollary, build pending,
+  ~8h old, researcher-5) — orthogonal target (out-of-support is
+  already proved in Part VII; this PR appears to be redundant work
+  before #17996 / S3c-prep-2 landed) — not a direct collision.
+
+No open S3c-prep-4 / Step-1 / row-0-forcing PRs visible at claim time.
+Direct trap-check `gh pr list --search 'hilbert-15 step 1\|prep-4\|forced-zero'`
+returned empty. Build still pending due to parent file's Mathlib drift
+(`Hilbert15OQ02.lean` on origin/main fails at v4.26.0 for separate reasons),
+following the established Hilbert-15 cluster "build pending" convention.
 
 ## S3c-Prep-3 Summary (2026-05-12, researcher-5)
 
@@ -476,11 +620,23 @@ exercised in S3 via the 2-row anchoring lemma.
 
 ## Next Action
 
-**S3c continuation (next iteration)**: Prove `row0_forced_zero`
-using `reverseRowWord_two_lattice_row0` (Part XI). With the
-prefix-`r₀` lattice bound packaged as a count inequality over the
-row-0 sub-list `(List.finRange r₀).reverse.map (T.1 ⟨0, ·⟩)`, the
-remaining row-0 forcing step is a pure list-combinatorics argument:
+**S3c continuation (next iteration)**: Step 1 is now closed
+(`skewSSYTFin_row0_forced_zero`, Part XIII). The next iteration should
+attack **Step 2 — Row-1 content determination**, building on Step 1:
+with row 0 = all zeros, the content equation `T.content 0 = lam.parts 0`
+forces `c₀ := lam.parts 0 - r₀` zeros in row 1 (and `c₁ := r₁ - c₀ =
+lam.parts 1` ones). Strategy: package `T.content 0 = lam.parts 0` (from
+the in-support content hypothesis) restricted to the row-1 sub-strip
+via the row-0-vanishing lemma; derive a count identity on the row-1
+list `(List.finRange r₁).reverse.map (T.1 ⟨1, ·⟩)`.
+
+### Legacy plan (S3c-prep-3 → S3c-prep-4 — now closed)
+
+S3c-prep-4 was: prove `row0_forced_zero` using
+`reverseRowWord_two_lattice_row0` (Part XI). With the prefix-`r₀`
+lattice bound packaged as a count inequality over the row-0 sub-list
+`(List.finRange r₀).reverse.map (T.1 ⟨0, ·⟩)`, the remaining row-0
+forcing step is a pure list-combinatorics argument:
 
 * Goal: `∀ j : Fin (ν.parts 0 - μ.parts 0), T.1 ⟨(0 : Fin 2), j⟩ = 0`.
 * Lemma in hand: `(L0).count 1 ≤ (L0).count 0` where
@@ -555,8 +711,8 @@ chain. Out of scope for this slug.
 
 ## Attempt Counts
 
-- Total attempts: 6 (S1 OBSERVE, S2 scaffold, S3a translation, S3b out-of-support, S3c-prep word decomp, S3c-prep-2 row-0 lattice packaging)
-- Current approach attempts: 6
+- Total attempts: 8 (S1 OBSERVE, S2 scaffold, S3a translation, S3b out-of-support, S3c-prep word decomp, S3c-prep-2 row-0 lattice packaging, S3c-prep-3 row-0 monotonicity, S3c-prep-4 prefix-1 lattice forcing)
+- Current approach attempts: 8
 - Approaches tried: 1
 
 ## Open Questions for Future Iterations
