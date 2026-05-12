@@ -1,0 +1,122 @@
+# area-of-circle-oq-05-oq-04 — Knowledge / Mathlib API survey
+
+S1 audit of what Mathlib v4.26.0 provides, against the three candidate
+formal statements in `problem.md`. All paths below are verified by direct
+`gh api repos/leanprover-community/mathlib4/contents/...` fetch on
+2026-05-12; no `tsx`/`pnpm` involved.
+
+## Available Mathlib infrastructure
+
+### `Mathlib.NumberTheory.Padics.*`
+
+- `Mathlib/NumberTheory/Padics/PadicNumbers.lean` — `ℚ_[p]` as completion of ℚ
+  under the p-adic norm; field structure, ring norm, completeness.
+- `Mathlib/NumberTheory/Padics/PadicIntegers.lean` — `ℤ_[p]` as subring of ℚ_[p]
+  with norm ≤ 1; local ring, DVR, nonarchimedean normed ring.
+- `Mathlib/NumberTheory/Padics/PadicNorm.lean` — `padicNorm : ℚ → ℚ`,
+  `padicValRat`, `padicValNat`. Real-valued norm via `Padic.norm`.
+- `Mathlib/NumberTheory/Padics/ProperSpace.lean` — `ℤ_[p]` is `CompactSpace`,
+  `ℚ_[p]` is `ProperSpace`. (Crucially: `ℚ_[p]` is locally compact.)
+- `Mathlib/NumberTheory/Padics/AddChar.lean` — continuous additive characters
+  `ℤ_[p] → R` for ultrametric normed `ℤ_[p]`-algebras `R`. Provides
+  `addChar_of_value_at_one`, `continuousAddCharEquiv`, Mahler-transform bridge.
+  NOTE: this is for *characters into* a `ℤ_[p]`-algebra, NOT the standard
+  C-valued character `ψ_p : ℚ_[p] → ℂ`. The latter does not appear to be in
+  Mathlib at v4.26.0.
+- `Mathlib/NumberTheory/Padics/MahlerBasis.lean` — Mahler's theorem; bridge to
+  Fourier analysis on `ℤ_[p]`.
+- `Mathlib/NumberTheory/Padics/RingHoms.lean`, `Hensel.lean`, `WithVal.lean`,
+  `ValuativeRel.lean`, `HeightOneSpectrum.lean`, `Complex.lean` — additional
+  algebraic structure (not directly relevant to S1).
+
+### `Mathlib.MeasureTheory.Measure.Haar.*`
+
+- `Mathlib/MeasureTheory/Measure/Haar/Basic.lean` — Haar measure on locally
+  compact topological groups (general construction; the existence theorem).
+- `Mathlib/MeasureTheory/Measure/Haar/Unique.lean` — Haar measure uniqueness up
+  to scaling.
+- `Mathlib/MeasureTheory/Measure/Haar/NormedSpace.lean`,
+  `OfBasis.lean`, `Extension.lean`, `Disintegration.lean` — variants;
+  the OfBasis file is what we'd use to *normalise* on ℤ_[p].
+- `Mathlib/MeasureTheory/Measure/Haar/DistribChar.lean` — Haar mod-character;
+  relevant for `‖·‖_p^s` integrals (C3) eventually.
+
+### Existing real Gaussian infrastructure (already used in OQ-05)
+
+- `Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral` —
+  `integral_gaussian : ∀ b : ℝ, ∫ x, exp(-b * x^2) = √(π/b)` for `b > 0`.
+- `Mathlib.MeasureTheory.Integral.Pi` — Fubini-style ℝⁿ integration
+  (used by `AreaOfCircleOQ05OQ02` for the multivariate case).
+
+## What's MISSING from Mathlib (gaps to surface)
+
+1. **Standard p-adic additive character `ψ_p : ℚ_[p] → ℂ`** with
+   `ψ_p|_{ℤ_[p]} = 1` and `ψ_p(p^{-n}) = e^{2πi · a_n}` where `a_n ∈ ℚ ∩ [0,1)`
+   is the "fractional part" component. Mathlib has only `ℤ_[p]`-algebra-valued
+   characters (`Mathlib.NumberTheory.Padics.AddChar`), which is the *dual*
+   direction (characters *of* ℤ_[p] into a Banach algebra). The standard
+   `ψ_p : ℚ_[p] → ℂˣ` of class field theory is NOT in Mathlib at v4.26.0.
+
+2. **Explicit `MeasureTheory.Measure` on ℚ_[p]**. The general Haar construction
+   in `Mathlib.MeasureTheory.Measure.Haar.Basic` produces a measure on any
+   locally compact group, and `ℚ_[p]` qualifies (proper metric space, additive
+   group). But no file in `Mathlib.NumberTheory.Padics` instantiates
+   `MeasureTheory.Measure ℚ_[p]` with the normalisation `μ(ℤ_[p]) = 1`. This
+   would be a useful small Mathlib PR.
+
+3. **Bruhat–Schwartz functions / Fourier transform on ℚ_[p]**. No analogue of
+   `Mathlib.Analysis.Fourier.FourierTransform` (which is set up for
+   `ℝⁿ` / locally compact abelian groups in the abstract) appears to be
+   specialised to ℚ_[p]. The general `Mathlib.Analysis.Fourier.AddCircle` and
+   `Mathlib.Analysis.Fourier.PontryaginDual` are nearby but not directly
+   applicable until ψ_p is constructed.
+
+## Tractability assessment of the three candidates
+
+| Candidate | Mathlib readiness | S1 effort to formalize | Notes |
+| --- | --- | --- | --- |
+| (C1) trivial character on ℤ_[p] | LOW — needs to construct ψ_p first | medium-high | even the "obvious" statement requires constructing ψ_p; the *content* is then `∫ 1 dμ = μ(ℤ_[p]) = 1` |
+| (C2) self-Fourier of `𝟙_{ℤ_[p]}` | LOW — needs ψ_p + Haar measure + character sum identity on `ℤ/p^k ℤ` | high | full content; deserves a multi-session attack |
+| (C3) Tate / Igusa local zeta | NONE — needs ψ_p, Haar, p-adic Fourier, Mellin | very high | research-grade; Mathlib roadmap target |
+| Complex Gaussian (bonus) | HIGH — already mostly in `Gaussian.GaussianIntegral` + `MeasureTheory.Integral.Pi` | LOW | ~30 line companion lemma; could be added to AreaOfCircleOQ05 directly |
+
+## Recommended S2 plan
+
+**Two parallel tracks**, in order of decreasing safety:
+
+1. **S2a (safe bridge)**: Add `∫_ℂ e^{−π|z|²} dA(z) = 1` as a small companion
+   theorem either in `AreaOfCircleOQ05.lean` (extending the existing real
+   Gaussian file) or in a new `AreaOfCircleOQ05OQ04.lean` scaffold. Reduces to
+   product of two real Gaussians by writing `|z|² = x² + y²` and applying
+   Fubini. Mathlib has all required infrastructure. Estimated: ~50 LOC, no
+   sorries.
+
+2. **S2b (p-adic scaffold, with sorries)**: Create `AreaOfCircleOQ05OQ04.lean`
+   with stubs:
+   - `axiom padicAddChar : ℚ_[p] → ℂ` (or `def padicAddChar … := by sorry`)
+   - the Haar measure normalised on ℤ_[p]
+   - the statement of (C2), with `sorry`-proof
+   This records the gap formally and signals the Mathlib milestones needed.
+
+## References (to seed the JSON)
+
+- Tate, J. "Fourier analysis in number fields and Hecke's zeta-functions"
+  (1950 thesis, in Cassels–Fröhlich, *Algebraic Number Theory*).
+- Igusa, J.-I. "An introduction to the theory of local zeta functions"
+  (AMS/IP Studies in Advanced Math 14, 2000).
+- Gouvêa, F.Q. *p-adic Numbers: An Introduction* (Springer UTM, 3rd ed. 2020).
+- Mahler, K. "An interpolation series for continuous functions of a p-adic
+  variable" (J. Reine Angew. Math. 199, 1958, 23–34).
+- Lewis, R.Y. "A formal proof of Hensel's lemma over the p-adic integers"
+  (CPP 2019) — the original Mathlib `PadicInt` paper.
+
+## Mathlib PRs that would unblock this OQ
+
+(For tracking; not actions for this session.)
+
+- Construct `ψ_p : ℚ_[p] → ℂ` (additive character, standard normalisation).
+  Likely target file: `Mathlib/NumberTheory/Padics/StandardAdditiveCharacter.lean`.
+- Instantiate `MeasureTheory.Measure ℚ_[p]` from
+  `Mathlib.MeasureTheory.Measure.Haar.Basic` with `μ(ℤ_[p]) = 1`. Likely target
+  file: `Mathlib/NumberTheory/Padics/HaarMeasure.lean`.
+- Prove `𝟙_{ℤ_[p]}` is self-Fourier under those data.

@@ -1,0 +1,463 @@
+{
+  "slug": "area-of-circle-oq-05-oq-04",
+  "title": "The Gaussian integral over $\\mathbb{C}$ (and more generally, over $p$-adic fi...",
+  "phase": "RESEARCH",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Three candidate formal statements (S1 deliberately defers single-target commit):\n(C1) Trivial: integral over Z_p of psi_p(x) dx = 1, where psi_p == 1 on Z_p and Haar mu(Z_p) = 1.\n(C2) Self-Fourier (intended): for the standard p-adic additive character psi_p : Q_p -> C and self-dual Haar measure (mu(Z_p) = 1), the indicator function f = 1_{Z_p} satisfies (F f)(xi) := integral over Q_p of f(x) * psi_p(xi*x) dx = 1_{Z_p}(xi). At xi = 0 this gives mu(Z_p) = 1; at xi not in Z_p the integrand-sum is a Gauss-sum-style character sum on Z/p^k Z that vanishes. This is the p-adic analogue of exp(-pi x^2) being a fixed point of the real Fourier transform.\n(C3) Tate/Igusa local zeta: integral over Z_p of |x|_p^s dx = (1 - p^{-1})/(1 - p^{-s-1}) (Igusa, f = x), giving the local Euler factor 1/(1 - p^{-s}) of zeta(s).\nBonus (immediate from Mathlib): integral over C of exp(-pi |z|^2) dA(z) = 1, via Fubini reduction to the real Gaussian.",
+    "plain": "p-adic analogue(s) of the Gaussian integral. The source candidate-pool entry states the integral over Q_p of e^{2*pi*i * ||x||_p} dx = 1, but this formula is ill-posed: ||.||_p is real-valued, so e^{2*pi*i * ||x||_p} carries no p-adic information about x mod p^k, and Haar measure on Q_p is infinite. We surface three well-defined alternative statements; (C2) self-Fourier of 1_{Z_p} is the right analogue of 'the Gaussian is its own Fourier transform' and is the recommended S2 target. Plus a small bonus: complex Gaussian over the plane integrates to 1, immediate from Mathlib.",
+    "whyMatters": [
+      "Pedagogical: the area-of-circle / polar-coordinates derivation of integral over R of exp(-x^2) dx = sqrt(pi) is a story about the Gaussian being a Fourier eigenfunction. The p-adic version (C2) makes this discrete/ultrametric and exhibits the same eigenfunction property for 1_{Z_p}, which is the deeper picture behind the surface formula.",
+      "Adelic bridge: in Tate's thesis the zeta-function factors as zeta(s) = zeta_infty(s) * prod_p zeta_p(s); the real Gaussian is the local factor at the archimedean place, and 1_{Z_p} is the local factor at the p-adic places. Formalising (C2) is the first p-adic milestone on that path.",
+      "Mathlib audit: the work surfaces two missing pieces - the standard additive character psi_p : Q_p -> C and an explicit Haar measure on Q_p with mu(Z_p) = 1. Both are plausible small Mathlib PRs."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Real Gaussian integral: integral over R of exp(-x^2) dx = sqrt(pi) (Mathlib integral_gaussian; already used in Proofs/AreaOfCircleOQ05.lean).",
+      "Multivariate Gaussian via spectral theorem (Proofs/AreaOfCircleOQ05OQ02.lean).",
+      "Complex Gaussian: integral over C of exp(-pi |z|^2) dA(z) = 1 - accessible from existing Mathlib; to be added in S2a.",
+      "Z_p is compact, Q_p is a proper metric space (Mathlib PadicInt.compactSpace, Padic.instProperSpace)."
+    ],
+    "open": [
+      "(C1) and (C2) require constructing the standard additive character psi_p : Q_p -> C - not in Mathlib at v4.26.0. Mathlib's Mathlib.NumberTheory.Padics.AddChar covers the dual direction (continuous characters Z_p -> R for R a Z_p-algebra).",
+      "Haar measure on (Q_p, +) normalised so mu(Z_p) = 1 is not explicitly instantiated in Mathlib; the general construction in Mathlib.MeasureTheory.Measure.Haar.Basic applies but needs a wrapper.",
+      "(C3) Tate/Igusa local zeta identities are several Mathlib milestones away."
+    ],
+    "goal": "Recommended path: S2a proves the complex Gaussian (low-risk bridge); S2b writes a sorry-bearing p-adic scaffold of (C2) flagged with axioms for the missing psi_p and Haar measure. Eventual full proof of (C2) blocks on two Mathlib contributions (standard psi_p, Haar on Q_p)."
+  },
+  "currentState": {
+    "phase": "RESEARCH",
+    "since": "2026-05-12T08:03:22.732Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE: surface that the source formula is malformed; identify three well-defined candidate p-adic Gaussian/Fourier identities and audit Mathlib readiness. Next: S2 writes a small Lean file with the complex Gaussian identity (provable) plus a sorry-bearing scaffold for the p-adic self-Fourier statement (axiomatised).",
+    "blockers": [],
+    "nextAction": "S2: create proofs/Proofs/AreaOfCircleOQ05OQ04.lean with (a) the complex Gaussian integral over the plane, proved via Fubini + integral_gaussian, and (b) axiom padicAddChar / sorry-stub for the self-Fourier identity 1_{Z_p} fixed by Fourier transform. See research/area-of-circle-oq-05-oq-04/{problem,knowledge,state}.md.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE complete. The candidate-pool slug's source formula is malformed; three well-defined alternatives stated. Mathlib has PadicInt/ProperSpace/AddChar but lacks the standard C-valued additive character on Q_p and an explicit Haar measure on Q_p. Complex Gaussian companion identity is immediate; recommended as S2a target.",
+    "builtItems": [
+      {
+        "item": "S1 OBSERVE markdown set (problem.md, knowledge.md, state.md)",
+        "session": "S1"
+      },
+      {
+        "item": "Identification of the source formula as ill-posed and three corrected statements",
+        "session": "S1"
+      },
+      {
+        "item": "Mathlib readiness audit (PadicInt/Padic/AddChar/Haar)",
+        "session": "S1"
+      }
+    ],
+    "insights": [
+      "||.||_p is real-valued, so e^{2*pi*i * ||x||_p} is a complex exponential of a real number and does not encode p-adic data - the source OQ formula is malformed.",
+      "The 'right' p-adic Gaussian is 1_{Z_p}: it is the unique (up to scaling) fixed point of the p-adic Fourier transform under the self-dual choice of additive character and Haar measure, exactly as exp(-pi x^2) is the Fourier eigenfunction in the archimedean case.",
+      "The polar-coordinates / area-of-circle derivation of integral over R of exp(-x^2) dx = sqrt(pi) has no direct p-adic analogue because there is no continuous rotation group on Q_p; the corresponding p-adic statement is the character-sum identity sum over a in Z/p^k Z of e^{2*pi*i a / p^k} = 0 for k >= 1, packaged ultrametrically.",
+      "Mathlib's PadicInt.AddChar covers Z_p -> R characters for Z_p-algebras R - this is the Cartier dual direction. The standard psi_p : Q_p -> C is in the opposite direction and absent from Mathlib v4.26.0."
+    ],
+    "mathlibGaps": [
+      "No padicAddChar : Q_p -> C (standard additive character with psi_p|_{Z_p} = 1, psi_p(p^{-n}) = e^{2*pi*i/p^n}).",
+      "No explicit MeasureTheory.Measure Q_p instance normalised so mu(Z_p) = 1 (general Haar machinery applies but needs a wrapper file).",
+      "No Bruhat-Schwartz function space or Fourier-transform infrastructure specialised to Q_p."
+    ],
+    "nextSteps": [
+      "S2a: prove the complex Gaussian integrates to 1 via Fubini + integral_gaussian in a new file proofs/Proofs/AreaOfCircleOQ05OQ04.lean; ~50 LOC, 0 sorries.",
+      "S2b: state (C2) as a Lean theorem with axiom padicAddChar and a Haar-measure stub; record the proof as sorry with a docstring explaining the character-sum-vanishing argument.",
+      "S3+: replace the axiom by an actual definition once a Mathlib PR for psi_p lands; replace the sorry by the character-sum argument."
+    ]
+  },
+  "tags": [
+    "analysis",
+    "integration",
+    "gaussian",
+    "pi",
+    "probability",
+    "normal-distribution",
+    "seeker-selected",
+    "gallery-extracted"
+  ],
+  "relatedProofs": [
+    "area-of-circle",
+    "area-of-circle-oq-01-oq-02-oq-01",
+    "area-of-circle-oq-01-oq-02-oq-01-oq-01",
+    "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-01",
+    "area-of-circle-oq-01-oq-02-oq-01-oq-01-oq-02",
+    "area-of-circle-oq-01-oq-02-oq-01-oq-03",
+    "area-of-circle-oq-01-oq-02-oq-02",
+    "area-of-circle-oq-01-oq-02-oq-02-oq-01",
+    "area-of-circle-oq-01-oq-02-oq-03",
+    "area-of-circle-oq-01-oq-02-oq-03-oq-03",
+    "area-of-circle-oq-01-oq-03",
+    "area-of-circle-oq-01-oq-03-oq-01",
+    "area-of-circle-oq-01-oq-03-oq-02",
+    "area-of-circle-oq-02",
+    "area-of-circle-oq-02-oq-01",
+    "area-of-circle-oq-02-oq-04",
+    "area-of-circle-oq-03-oq-01",
+    "area-of-circle-oq-03-oq-02",
+    "area-of-circle-oq-03-oq-02-oq-02",
+    "area-of-circle-oq-03-oq-02-oq-02-oq-01",
+    "area-of-circle-oq-03-oq-03",
+    "area-of-circle-oq-03-oq-03-oq-02",
+    "area-of-circle-oq-05",
+    "area-of-circle-oq-05-oq-01",
+    "area-of-circle-oq-05-oq-02"
+  ],
+  "references": {
+    "papers": [
+      {
+        "author": "Tate, J.",
+        "title": "Fourier analysis in number fields and Hecke's zeta-functions",
+        "year": 1950,
+        "venue": "Princeton thesis (in Cassels-Frohlich, Algebraic Number Theory)"
+      },
+      {
+        "author": "Igusa, J.-I.",
+        "title": "An introduction to the theory of local zeta functions",
+        "year": 2000,
+        "venue": "AMS/IP Studies in Advanced Math 14"
+      },
+      {
+        "author": "Gouvea, F. Q.",
+        "title": "p-adic Numbers: An Introduction",
+        "year": 2020,
+        "venue": "Springer UTM, 3rd ed."
+      },
+      {
+        "author": "Mahler, K.",
+        "title": "An interpolation series for continuous functions of a p-adic variable",
+        "year": 1958,
+        "venue": "J. Reine Angew. Math. 199, 23-34"
+      },
+      {
+        "author": "Lewis, R. Y.",
+        "title": "A formal proof of Hensel's lemma over the p-adic integers",
+        "year": 2019,
+        "venue": "CPP 2019"
+      }
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.NumberTheory.Padics.PadicNumbers",
+      "Mathlib.NumberTheory.Padics.PadicIntegers",
+      "Mathlib.NumberTheory.Padics.ProperSpace",
+      "Mathlib.NumberTheory.Padics.AddChar",
+      "Mathlib.NumberTheory.Padics.MahlerBasis",
+      "Mathlib.MeasureTheory.Measure.Haar.Basic",
+      "Mathlib.MeasureTheory.Measure.Haar.Unique",
+      "Mathlib.Analysis.SpecialFunctions.Gaussian.GaussianIntegral",
+      "Mathlib.MeasureTheory.Integral.Pi"
+    ]
+  },
+  "started": "2026-05-08T19:09:00.560Z",
+  "lastUpdate": "2026-05-12T08:03:22.732Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/AreaOfCircle.lean",
+      "filename": "AreaOfCircle.lean",
+      "lineCount": 156,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircle.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ01.lean",
+      "lineCount": 291,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 151,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01OQ01.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ01OQ01OQ01.lean",
+      "lineCount": 164,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ01OQ02.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ01OQ01OQ02.lean",
+      "lineCount": 211,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ01OQ03.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ01OQ03.lean",
+      "lineCount": 196,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ02.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ02.lean",
+      "lineCount": 83,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ02OQ01.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ02OQ01.lean",
+      "lineCount": 420,
+      "theoremCount": 11,
+      "axiomCount": 5,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ03.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ03.lean",
+      "lineCount": 218,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ02OQ03OQ03.lean",
+      "filename": "AreaOfCircleOQ01OQ02OQ03OQ03.lean",
+      "lineCount": 303,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ02OQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ03.lean",
+      "filename": "AreaOfCircleOQ01OQ03.lean",
+      "lineCount": 1938,
+      "theoremCount": 52,
+      "axiomCount": 0,
+      "defCount": 11,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ03Aristotle.lean",
+      "filename": "AreaOfCircleOQ01OQ03Aristotle.lean",
+      "lineCount": 101,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03Aristotle.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ03OQ01.lean",
+      "filename": "AreaOfCircleOQ01OQ03OQ01.lean",
+      "lineCount": 713,
+      "theoremCount": 26,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ01OQ03OQ02.lean",
+      "filename": "AreaOfCircleOQ01OQ03OQ02.lean",
+      "lineCount": 566,
+      "theoremCount": 15,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 8,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ01OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ02.lean",
+      "filename": "AreaOfCircleOQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ02OQ01.lean",
+      "filename": "AreaOfCircleOQ02OQ01.lean",
+      "lineCount": 164,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ02OQ04.lean",
+      "filename": "AreaOfCircleOQ02OQ04.lean",
+      "lineCount": 273,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ02OQ04.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ01.lean",
+      "filename": "AreaOfCircleOQ03OQ01.lean",
+      "lineCount": 233,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ02.lean",
+      "filename": "AreaOfCircleOQ03OQ02.lean",
+      "lineCount": 103,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ02OQ02.lean",
+      "filename": "AreaOfCircleOQ03OQ02OQ02.lean",
+      "lineCount": 205,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ02OQ02OQ01.lean",
+      "filename": "AreaOfCircleOQ03OQ02OQ02OQ01.lean",
+      "lineCount": 255,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ02OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ03.lean",
+      "filename": "AreaOfCircleOQ03OQ03.lean",
+      "lineCount": 191,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ03.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ03OQ03OQ02.lean",
+      "filename": "AreaOfCircleOQ03OQ03OQ02.lean",
+      "lineCount": 190,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ03OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ05.lean",
+      "filename": "AreaOfCircleOQ05.lean",
+      "lineCount": 133,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ05OQ01.lean",
+      "filename": "AreaOfCircleOQ05OQ01.lean",
+      "lineCount": 232,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05OQ01.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ05OQ01Aristotle.lean",
+      "filename": "AreaOfCircleOQ05OQ01Aristotle.lean",
+      "lineCount": 78,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 2,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ05OQ02.lean",
+      "filename": "AreaOfCircleOQ05OQ02.lean",
+      "lineCount": 190,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05OQ02.lean"
+    }
+  ]
+}
