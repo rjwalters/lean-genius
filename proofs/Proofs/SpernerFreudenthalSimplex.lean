@@ -3204,4 +3204,156 @@ private lemma cN2_total_diag_val_lt_two (k : ℕ) (hk : k ≤ N) :
 
 end N2DiagValFinTwo
 
+
+-- ============================================================
+-- (S29-prep) Top-level `Fin 2`-valued diagonal coloring `gDiag`
+-- and its identification with `cN2_total` on the diagonal.
+--
+-- `face2_path_odd` (Section V) packages its color path via a
+-- `let`-bound local `g : ℕ → Fin 2`. To bridge S22's IsDoor
+-- correspondence — which carries `cN2_total`-shaped color-change
+-- predicates — into `face2_path_odd`'s `g k ≠ g (k + 1)` filter
+-- form, the eventual S27/S28 final assembly needs an extracted
+-- top-level companion of that `g` plus the equivalence
+--
+--   gDiag k ≠ gDiag (k + 1)
+--     ↔ cN2_total (k, N - k) ≠ cN2_total (k + 1, N - (k + 1)).
+--
+-- This section packages exactly that bridge. The equivalence
+-- rewrites only the right-hand side (the `cN2_total`-side); no
+-- refactoring of `face2_path_odd` itself or of in-flight S25/S26
+-- work that consumes `face2_path_odd` directly. A future session
+-- can substitute `gDiag` into `face2_path_odd`'s `let g := ...`
+-- with a definitionally-equal body.
+--
+--   * `gDiag` — `noncomputable def` matching `face2_path_odd`'s
+--     local `g` body verbatim.
+--   * `gDiag_out_of_range` — out-of-range default `gDiag k = 1`.
+--   * `gDiag_in_range_eq_zero_iff` — for `k ≤ N`, `gDiag k = 0`
+--     iff the in-range diagonal `cN2`'s `.val = 0`.
+--   * `gDiag_in_range_eq_zero_iff_cN2_total` — wrapper variant
+--     reading the discriminant off `cN2_total` via S27-prep's
+--     `cN2_total_diag_eq`.
+--   * `gDiag_val_eq_cN2_total_diag_val` — the central val
+--     identification. Uses S28-prep's `cN2_total_diag_val_lt_two`
+--     to force both `cN2_total`'s `.val` and `gDiag`'s `.val`
+--     into `{0, 1}`, where the discriminator is order-preserving.
+--   * `gDiag_eq_iff_cN2_total_diag_eq` — for `k, m ≤ N`,
+--     `gDiag k = gDiag m ↔ cN2_total (k, N - k) =
+--     cN2_total (m, N - m)`. Pulled back from the val
+--     identification via `Fin.ext`.
+--   * `gDiag_ne_iff_cN2_total_diag_ne` — contrapositive
+--     specialised to consecutive indices `k, k + 1` (the form
+--     S22's IsDoor bridge consumes).
+--
+-- All proofs reuse S27-prep's `cN2_total_diag_eq` and S28-prep's
+-- `cN2_total_diag_val_lt_two`; no new Mathlib dependencies.
+-- Each lemma is short (3-10 lines) and syntactically isolated
+-- (additions append below the existing `N2DiagValFinTwo` section,
+-- not touching the broken `t1_ne_t2` / `diagonal_in_t1_iff` block
+-- at lines 1068/1085/1093 in `N2BoundaryAnalysis` — so this PR
+-- does not interact with the parent file's pre-existing build
+-- break per the established (build pending) precedent).
+-- ============================================================
+
+section N2DiagFin2Coloring
+
+variable (N : ℕ) (hN : 0 < N)
+variable (f : (Fin 3 → ℝ) → Fin 3 → ℝ)
+variable (hf_map : ∀ v, InSimplex v → InSimplex (f v))
+
+/-- `Fin 2`-valued color along the anti-diagonal of `Δ²`. Mirrors
+the local `g` defined inside `face2_path_odd` (Section V): for
+in-range indices `k ≤ N`, the discriminator `(cN2 ...).val = 0 ↦
+0, ≠ 0 ↦ 1` compresses the diagonal vertex color to `{0, 1}` (the
+`.val = 2` case is excluded by Sperner on face 2 — see
+`cN2_diag_ne_two`). Out-of-range indices default to `1`. -/
+private noncomputable def gDiag : ℕ → Fin 2 := fun k =>
+  if hk : k ≤ N then
+    if (cN2 N hN f hf_map (k, N - k) (by omega)).val = 0 then 0 else 1
+  else 1
+
+/-- Out-of-range default: for `N < k`, `gDiag k = 1`. -/
+private lemma gDiag_out_of_range (k : ℕ) (hk : N < k) :
+    gDiag N hN f hf_map k = 1 := by
+  unfold gDiag
+  rw [dif_neg (by omega)]
+
+/-- In-range `gDiag = 0` characterised via the in-range `cN2`'s
+`.val = 0`. Direct from the definition. -/
+private lemma gDiag_in_range_eq_zero_iff (k : ℕ) (hk : k ≤ N) :
+    gDiag N hN f hf_map k = 0 ↔
+      (cN2 N hN f hf_map (k, N - k) (by omega)).val = 0 := by
+  unfold gDiag
+  rw [dif_pos hk]
+  split_ifs with h
+  · exact ⟨fun _ => h, fun _ => rfl⟩
+  · refine ⟨fun heq => ?_, fun heq => (h heq).elim⟩
+    exact absurd heq (by decide)
+
+/-- Wrapper-level characterisation: for `k ≤ N`, `gDiag k = 0`
+iff `cN2_total`'s `.val = 0` at the diagonal vertex
+`(k, N - k)`. Composes `gDiag_in_range_eq_zero_iff` with
+S27-prep's `cN2_total_diag_eq`. -/
+private lemma gDiag_in_range_eq_zero_iff_cN2_total (k : ℕ) (hk : k ≤ N) :
+    gDiag N hN f hf_map k = 0 ↔
+      (cN2_total N hN f hf_map (k, N - k)).val = 0 := by
+  rw [gDiag_in_range_eq_zero_iff N hN f hf_map k hk,
+      cN2_total_diag_eq N hN f hf_map k hk]
+
+/-- Central val identification: for `k ≤ N`,
+`(gDiag k).val = (cN2_total (k, N - k)).val`. The proof case-
+splits on whether the diagonal `cN2_total`'s `.val` is `0` or
+`1` (both possibilities by S28-prep's `cN2_total_diag_val_lt_two`);
+in each case `gDiag` takes the matching `Fin 2` value. -/
+private lemma gDiag_val_eq_cN2_total_diag_val (k : ℕ) (hk : k ≤ N) :
+    (gDiag N hN f hf_map k).val =
+      (cN2_total N hN f hf_map (k, N - k)).val := by
+  have hkv := cN2_total_diag_val_lt_two N hN f hf_map k hk
+  rcases Decidable.em
+      ((cN2_total N hN f hf_map (k, N - k)).val = 0) with h0 | h0
+  · have hg0 : gDiag N hN f hf_map k = 0 :=
+      (gDiag_in_range_eq_zero_iff_cN2_total N hN f hf_map k hk).mpr h0
+    rw [hg0, h0]
+    rfl
+  · have hgne : gDiag N hN f hf_map k ≠ 0 := fun h =>
+      h0 ((gDiag_in_range_eq_zero_iff_cN2_total N hN f hf_map k hk).mp h)
+    have hg_val_ne : (gDiag N hN f hf_map k).val ≠ 0 :=
+      fun h => hgne (Fin.ext h)
+    have hg_lt : (gDiag N hN f hf_map k).val < 2 :=
+      (gDiag N hN f hf_map k).isLt
+    omega
+
+/-- For `k, m ≤ N`, `gDiag` agrees at `k, m` iff `cN2_total`
+agrees at the diagonal vertices `(k, N - k), (m, N - m)`. Pulled
+back from `gDiag_val_eq_cN2_total_diag_val` via `Fin.ext` /
+`congrArg Fin.val`. -/
+private lemma gDiag_eq_iff_cN2_total_diag_eq
+    (k m : ℕ) (hk : k ≤ N) (hm : m ≤ N) :
+    gDiag N hN f hf_map k = gDiag N hN f hf_map m ↔
+      cN2_total N hN f hf_map (k, N - k) =
+        cN2_total N hN f hf_map (m, N - m) := by
+  have hgk := gDiag_val_eq_cN2_total_diag_val N hN f hf_map k hk
+  have hgm := gDiag_val_eq_cN2_total_diag_val N hN f hf_map m hm
+  refine ⟨fun h => ?_, fun h => ?_⟩
+  · have hv := congrArg Fin.val h
+    rw [hgk, hgm] at hv
+    exact Fin.ext hv
+  · have hv := congrArg Fin.val h
+    rw [← hgk, ← hgm] at hv
+    exact Fin.ext hv
+
+/-- Contrapositive of `gDiag_eq_iff_cN2_total_diag_eq`, specialised
+to consecutive indices `k, k + 1` (the precise form S22's IsDoor
+bridge consumes when relating `face2_path_odd`'s color-change
+filter to the `cN2_total`-side color predicate). -/
+private lemma gDiag_ne_iff_cN2_total_diag_ne (k : ℕ) (hk1 : k + 1 ≤ N) :
+    gDiag N hN f hf_map k ≠ gDiag N hN f hf_map (k + 1) ↔
+      cN2_total N hN f hf_map (k, N - k) ≠
+        cN2_total N hN f hf_map (k + 1, N - (k + 1)) := by
+  rw [Ne, Ne, not_iff_not]
+  exact gDiag_eq_iff_cN2_total_diag_eq
+    N hN f hf_map k (k + 1) (by omega) hk1
+
+end N2DiagFin2Coloring
 end SpernerFreudSimp

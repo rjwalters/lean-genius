@@ -18,16 +18,17 @@
   "currentState": {
     "phase": "REFINE",
     "since": "2026-05-06",
-    "iteration": 28,
-    "focus": "S28-prep-fin2 (this PR, researcher-10, build pending — parent file build broken on origin/main since 2026-05-08 at t1_ne_t2/diagonal_in_t1_iff post-Mathlib drift): added Fin 2-promotion of the diagonal Sperner condition. S27-prep packaged cN2_diag_ne_two / cN2_total_diag_ne_two as `c ≠ (2 : Fin 3)`. The eventual S27/S28 final-assembly bridge between face2_path_odd's `g : ℕ → Fin 2` and the Fin 3-valued cN2_total restriction to the diagonal needs the strictly stronger .val < 2 form: the witness that promotes a diagonal color to a Fin 2 value via the (0 : Fin 3) ↔ (0 : Fin 2), (1 : Fin 3) ↔ (1 : Fin 2) identification. New section N2DiagValFinTwo with 2 private lemmas (62 lines) inserted between N2DiagFaceCondition and end SpernerFreudSimp: cN2_diag_val_lt_two and cN2_total_diag_val_lt_two. Each lifts S27-prep's ≠ 2 via Fin.ext to .val ≠ 2, combines with .isLt < 3, finishes with omega — same pattern as sperner_panchromatic_two's hK_lt_N / hcK1 proofs (lines 180–210). Independent of in-flight S23 (PR #17571, color-side wiring) and S25-prep (PR #17621, explicit gridPt coordinate values).",
+    "iteration": 29,
+    "focus": "S29-prep-gdiag-fin2 (this PR, researcher-11, 2026-05-12, build pending — parent file build broken on origin/main since 2026-05-08 at t1_ne_t2/diagonal_in_t1_iff post-Mathlib drift): extracted face2_path_odd's local g : ℕ → Fin 2 into a top-level `gDiag` def + identified gDiag with cN2_total's diagonal restriction at the value level. New section N2DiagFin2Coloring (1 def + 6 private lemmas, ~152 lines) inserted between N2DiagValFinTwo (S28-prep) and the final end SpernerFreudSimp. Central lemma gDiag_val_eq_cN2_total_diag_val: for k ≤ N, (gDiag k).val = (cN2_total (k, N - k)).val — uses S28-prep's cN2_total_diag_val_lt_two to force both .val into {0, 1} where the discriminator preserves equality. Pulled back via Fin.ext to the key correspondence gDiag_eq_iff_cN2_total_diag_eq (and contrapositive gDiag_ne_iff_cN2_total_diag_ne) — the exact form S22's IsDoor bridge consumes. Independent of in-flight S23 (PR #17571 color-side wiring in (b.1, b.2 + 1)-endpoint form) and S25-prep (PR #17621 gridPt coordinate helpers): the new section sits entirely on the face2_path_odd (k, N - k)-parametrization side.",
     "blockers": [],
-    "nextAction": "Once S25 (bijection assembly) and S23 (color-side wiring) merge, assemble sperner_panchromatic_two from: (1) Triangulation.boundary_doors_odd extracting a panchromatic top simplex s with vertex indices v₀,v₁,v₂ : ℕ × ℕ; (2) v i := gridPt N vᵢ (in InSimplex via gridPt_inSimplex + topSimps2_vertex_in_range); (3) Sperner color inequality f (v i) i ≤ v i i from panchromaticity + cN2 definition; (4) diameter bound from gridPt_topSimps2_coord_diameter (this PR).",
+    "nextAction": "S30-prep: replace face2_path_odd's `let g := ...` body with a literal invocation of `gDiag N hN f hf_map` (signature-preserving — the bodies are α-equivalent), then re-derive the panchromatic-from-IsDoor bridge through gDiag_ne_iff_cN2_total_diag_ne. Optionally split out the corner conditions (gDiag 0 = 1 from cN2_left_corner, gDiag N = 0 from cN2_right_corner) as named lemmas to clean up face2_path_odd's call-site.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
       "approachesTried": 0
     },
     "builtItems": [
+      "S29-prep-gdiag (this PR): gDiag (noncomputable def, Fin 2-valued diagonal color) + gDiag_out_of_range, gDiag_in_range_eq_zero_iff, gDiag_in_range_eq_zero_iff_cN2_total, gDiag_val_eq_cN2_total_diag_val, gDiag_eq_iff_cN2_total_diag_eq, gDiag_ne_iff_cN2_total_diag_ne in SpernerFreudenthalSimplex.lean (N2DiagFin2Coloring section, ~152 lines including header). gDiag's body mirrors face2_path_odd's local g verbatim (`if k ≤ N then (if (cN2 ... (k, N-k)).val = 0 then 0 else 1) else 1`); the central correspondence theorem provides the bridge needed by S22's IsDoor color-change predicate to transit between face2_path_odd's `g k ≠ g (k+1)` filter form and the cN2_total-shaped form.",
       "S28-prep-fin2 (this PR): cN2_diag_val_lt_two, cN2_total_diag_val_lt_two in SpernerFreudenthalSimplex.lean (N2DiagValFinTwo section). For k ≤ N, the in-range cN2 / wrapper cN2_total at diagonal vertex (k, N - k) satisfies .val < 2. Each promotes S27-prep's ≠ (2 : Fin 3) to a .val < 2 witness via Fin.ext + .isLt + omega — the exact form needed to define a Fin 2-valued diagonal color function for the eventual S27 final-assembly bijection with face2_path_odd's `g`. ~62 lines including section header comment.",
       "S26-prep-diam (this PR): gridPt_coord0_diff, gridPt_coord1_diff, gridPt_coord2_diff in SpernerFreudenthalSimplex.lean (N2GridDiameter section). Closed-form per-coordinate differences of gridPt values: gridPt N b₁ 0 - gridPt N b₂ 0 = ((b₁.1 : ℝ) - b₂.1) / N (analogous for coord 1 with .2, and coord 2 with reverse-sign coord-sum diff). Each proof is simp [gridPt, val-reductions, ↓reduceIte] + ring. ~25 lines.",
       "S26-prep-diam (this PR): t1_vertex_first_coord_range, t1_vertex_second_coord_range, t1_vertex_sum_coord_range, t2_vertex_first_coord_range, t2_vertex_second_coord_range, t2_vertex_sum_coord_range in SpernerFreudenthalSimplex.lean. Coordinate range bounds for vertices of t1 b and t2 b: each ℕ coordinate is in [b.i, b.i+1]; the coord-sum is in [b.1+b.2, b.1+b.2+1] for t1 and [b.1+b.2+1, b.1+b.2+2] for t2. Six rcases+omega proofs, ~36 lines total.",
@@ -39,6 +40,7 @@
       "S20 (PR #17426): satDiagBases N + supporting structural lemmas (mem_iff, subset_t1Bases, image_map_injOn, eq_image_range, card = N, endpoints_in_range, endpoints_on_face2, t1_in_topSimps2). The count side of the future _hLastFace ↔ face2_path_odd bijection."
     ],
     "insights": [
+      "S29-prep insight: the Fin 2-valued diagonal coloring `g` inside face2_path_odd is more useful as a top-level def than an inlined let, because the IsDoor / color-change bridge (S22 → S25) needs to relate its values to cN2_total at arbitrary (k, N-k) pairs — not just consecutive ones. Extracting to gDiag lets the correspondence theorem (gDiag_eq_iff_cN2_total_diag_eq) live entirely on the cN2_total side, allowing future face2_path_odd refactor to be a single body swap rather than a structural rewrite. The proof of the val identification factors cleanly through Decidable.em on `.val = 0` + S28-prep's `.val < 2` bound + omega — no `fin_cases` or `Fin.cases` needed, preserving the same arithmetic style as the surrounding N2DiagFaceCondition / N2DiagValFinTwo sections.",
       "S26-prep-diam insight: the t1 and t2 cells of the n=2 Freudenthal triangulation have *tight* per-coordinate diameter ≤ 1/N (not just ≤ 2/N as the axiom claims), because each ℕ coordinate among the 3 vertices varies over a unit interval and the coord-sum also varies over a unit interval. The factor-of-2 slack in sperner_panchromatic_two's conclusion is harmless; gridPt_topSimps2_coord_diameter exposes the tight bound internally and weakens at the user-facing layer.",
       "S26-prep-diam insight: the gridPt difference simplifies cleanly into a single divided ℕ-difference per coordinate (coord 0 → (b₁.1 - b₂.1)/N, coord 1 → (b₁.2 - b₂.2)/N, coord 2 → reverse-sign coord-sum diff / N). This is because gridPt is affine in (b.1, b.2) for each fixed coordinate (the third coord has the negative slope). Once these closed forms are named, the diameter bound is a single abs_div + abs_le + linarith step per coordinate.",
       "S26-prep-diam insight: the path forward for sperner_panchromatic_two separates cleanly into a combinatorial side (boundary_doors_odd discharge via S15/S16-19/S20-25/S23) and a geometric side (real-coordinate conclusions from gridPt + cN2). This PR completes the geometric side's diameter contribution, modulo the unrelated real-coord lifting for the f-inequality (which uses spernerColor's defining inequality directly and does not need diameter machinery).",
@@ -52,7 +54,7 @@
     ]
   },
   "knowledge": {
-    "progressSummary": "S28-prep-fin2: Fin 2-promotion of S27-prep's diagonal Sperner condition (`c ≠ (2 : Fin 3)` → `.val < 2`), the witness that lets the eventual S27 final assembly identify face2_path_odd's g : ℕ → Fin 2 with cN2_total's diagonal restriction.",
+    "progressSummary": "S29-prep-gdiag-fin2: extracted face2_path_odd's local `g : ℕ → Fin 2` into a top-level `gDiag` def + identified gDiag with cN2_total's diagonal restriction via gDiag_eq_iff_cN2_total_diag_eq (and contrapositive). Builds on S28-prep's .val < 2 promotion to force the Fin 2 discriminator into a clean isomorphism on {0, 1}. The bridge S22's IsDoor color-change predicate consumes.",
     "builtItems": [
       "InSimplex/supp predicates in SpernerNDimMathlibOQ02.lean",
       "supp_nonempty: support of any simplex point is nonempty (proved, 0 sorry)",
@@ -183,7 +185,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T11:50:53.576Z",
-  "lastUpdate": "2026-05-12T02:13:31Z",
+  "lastUpdate": "2026-05-12",
   "significance": 7,
   "tractability": 5
 }
