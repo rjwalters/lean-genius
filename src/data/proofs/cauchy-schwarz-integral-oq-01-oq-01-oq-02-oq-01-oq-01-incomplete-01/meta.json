@@ -139,5 +139,47 @@
       "Could an alternative approach via the Radon-Nikodym derivative (Halmos-Savage representation) give a shorter proof of localization_existence than the current ~600-line direct construction?"
     ]
   },
+  "crossReferences": [
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01-oq-01",
+      "relationship": "parent",
+      "description": "Direct parent — `Lp Riesz Representation for Sigma-Finite Measures` in the 3-sorry state. The parent file's three open sorries (Step A localization, Step B Lp truncation, Step C density extension) are the precise targets this `-incomplete-01` companion closes. All theorems here ultimately discharge into the parent's stated theorem `riesz_lp_surjective_sigma_finite`; the four-PR chain (#15278 → #15462 → #15485 → #15581) tracks the 3 → 0 sorry reduction step-by-step. Reading this entry in isolation only makes sense in light of the parent's overall proof skeleton — what Folland §6.2 calls 'the sigma-finite version of Riesz–Markov for Lp'."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02",
+      "relationship": "foundational",
+      "description": "Riesz representation for Lp spaces — the finite-measure case that the sigma-finite version localises to on each spanning set $S_n$. The classical Folland §6.2 proof structure (Step A: build $g_n \\in L^q(\\mu|_{S_n})$ from finite-measure Riesz on each piece, Step B: glue via dominated convergence, Step C: extend by density) is inherited directly from this entry; what is novel in the present file is *not* the structural strategy but the choice to bypass the missing Mathlib `Lp.restrict_comap` infrastructure with `extByZeroCLM` + Hölder-extremizer norm bounds."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01-oq-02-oq-01",
+      "relationship": "related",
+      "description": "Radon-Nikodým route to Lp duality — an *alternative* proof strategy that sidesteps the localisation-by-spanning-sets architecture used here entirely. Where the present file constructs $g$ piecewise via $g_n$ on $S_n$ and then glues by `Nat.find`, the Radon-Nikodým route builds $g$ as the derivative of a signed measure $\\nu_\\varphi(E) := \\varphi(\\mathbf{1}_E^{Lp})$ with respect to $\\mu$. Both paths arrive at the same conclusion (sigma-finite $(\\mathit{L}^p)^* \\cong L^q$); compare proof economy and Mathlib-API dependencies."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01",
+      "relationship": "foundational",
+      "description": "Hölder's inequality as the generalisation of Cauchy-Schwarz — the *only* analytic input needed for `integrationCLM_sf`. The CLM construction $\\Lambda(f) := \\int fg \\, d\\mu$ uses Hölder twice: (i) to establish that $fg \\in L^1$ when $f \\in L^p$, $g \\in L^q$ with $1/p + 1/q = 1$, giving the bound $|\\Lambda(f)| \\le \\|f\\|_p \\|g\\|_q$ that feeds `LinearMap.mkContinuous`; (ii) implicitly in the Hölder-extremizer norm-bound argument $\\|g_n\\|_q \\le \\|\\varphi \\circ \\mathrm{extByZeroCLM}\\| \\le \\|\\varphi\\|$. The S15 insight that IsFiniteMeasure was superfluous traces directly to Hölder being measure-theoretically generic."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-01",
+      "relationship": "foundational",
+      "description": "Hölder's inequality in `eLpNorm` form — the specific Mathlib API surface invoked by the helper lemma `lintegral_mul_le_sf` in this file. The eLpNorm form (using $\\mathrm{ENNReal}$-valued integrals to avoid finiteness preconditions) is what makes Hölder applicable to *any* measure without IsFiniteMeasure; the same observation generalises to `integrationCLM_sf`. Direct Mathlib dependency."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-01-oq-03",
+      "relationship": "related",
+      "description": "Complex-valued Hölder inequality via nnnorm — the natural extension of the present file from $\\mathbb{R}$-valued $L^p$ to $\\mathbb{C}$-valued. The constructions here (`integrationCLM_sf`, `extByZeroCLM`, the Hölder-extremizer truncation argument) all work over $\\mathbb{C}$ because Mathlib's `Lp` is parameterised by an arbitrary normed field $\\mathbb{K}$; the only required ingredient is the complex-valued Hölder bound formalised in this sibling, providing the $|fg| \\le |f| \\cdot |g|$ pointwise estimate that drives the CLM construction."
+    },
+    {
+      "targetId": "cauchy-schwarz-integral-oq-02",
+      "relationship": "related",
+      "description": "Minkowski integral inequality as a corollary of Cauchy-Schwarz — the *other* canonical $L^p$ inequality that, together with Hölder, makes $L^p(\\mu)$ a normed space. Minkowski gives the triangle inequality $\\|f + g\\|_p \\le \\|f\\|_p + \\|g\\|_p$ used implicitly throughout this file (every `Lp.add`, `Lp.smul`, and `LinearMap.mkContinuous` step relies on Minkowski for $L^p$-norm). The sigma-finite proof of Riesz only uses Minkowski as a structural prerequisite — the *substantive* inequality is Hölder."
+    },
+    {
+      "targetId": "lebesgue-measure",
+      "relationship": "context",
+      "description": "Lebesgue measure on $\\mathbb{R}^n$ — the prototypical sigma-finite (but not finite) measure that motivates the present file's IsFiniteMeasure-elimination project. On $\\mathbb{R}^n$ with the Lebesgue measure $\\lambda$, the spanning-set cover is $S_n := B(0, n)$ (closed balls), each with $\\lambda(S_n) < \\infty$. The classical Folland proof on $(\\mathbb{R}^n, \\lambda)$ was the original target — formalising it for the Mathlib gallery required generalising to abstract sigma-finite measures, which the present file accomplishes."
+    }
+  ],
   "sorries": 0
 }
