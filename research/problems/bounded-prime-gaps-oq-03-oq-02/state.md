@@ -1,13 +1,97 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12T07:08:00Z
-**Iteration**: 5
-**Researcher**: researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Since**: 2026-05-12T08:30:00Z
+**Iteration**: 6
+**Researcher**: researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
 
 ## Current Focus
 
-S5 (this PR) — Intermediate-scale Engelsma analogue via `native_decide`
+S6 (this PR) — **Non-vacuous Engelsma analogues at the boundary
+`w = H(k)+1`** for `k = 3, 4, 5, 6`. S4 (6,16) and S5 (8,22) verified
+the bound *vacuously* (Engelsma's table has `H(k) > w−1` in both
+cases, so no admissible tuple fits); S6 closes that gap by enumerating
+the minimal **non-vacuous** cases `(3,7)`, `(4,9)`, `(5,13)`, `(6,17)`
+where the bound `H(k) ≤ H.max'` is tight (witnessed by classical
+Hardy–Littlewood patterns from `BoundedPrimeGaps.lean`).
+
+```lean
+theorem engelsma_analogue_nonvacuous_3_7 :
+    ∀ H ∈ (Finset.range 7).powersetCard 3,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 6 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide   -- C(7,3) = 35
+
+theorem engelsma_analogue_nonvacuous_4_9 :
+    ∀ H ∈ (Finset.range 9).powersetCard 4,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 8 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide   -- C(9,4) = 126
+
+theorem engelsma_analogue_nonvacuous_5_13 :
+    ∀ H ∈ (Finset.range 13).powersetCard 5,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 12 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide   -- C(13,5) = 1,287
+
+theorem engelsma_analogue_nonvacuous_6_17 :
+    ∀ H ∈ (Finset.range 17).powersetCard 6,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 16 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide   -- C(17,6) = 12,376
+```
+
+Cumulative cost ≈ `1.4 × 10⁴` subsets — well below S5's `3.2 × 10⁵`
+and four orders of magnitude below the (deferred) `(10, 30)` case.
+All four theorems are non-vacuous: each is witnessed by a known
+admissible k-tuple from `BoundedPrimeGaps.lean` (`{0,2}`, `{0,2,6}`,
+`{0,2,6,8}`) or its standard sibling (`{0,2,6,8,12}`,
+`{0,4,6,10,12,16}`). `native_decide` must distinguish admissible
+from non-admissible to discharge each, exercising the S2 `Decidable`
+instance over real cases.
+
+**Why deviate from state.md's stated S6 next-action (`(10, 30)`)?**
+The `(10, 30)` case is still vacuous (Engelsma records
+`H(10) ≥ 32 > 29`), so it adds another `3 × 10⁷`-subset stress test
+of the decider *without* exercising the diameter bound. The
+non-vacuous boundary cases (S6 here) cost ~14k subsets total
+(four orders of magnitude cheaper) **and** genuinely test the
+bound, supplying the qualitative §6.4 feasibility-checkpoint
+evidence that the run-up to `(10, 30)` really wants: do tight
+bounds via `native_decide` actually go through, not just vacuous
+ones? The originally planned `(10, 30)` step is renumbered to S7
+below.
+
+**Axiom bookkeeping**: All four `native_decide` calls reuse the
+`Lean.ofReduceBool` axiom introduced in S4; `leanFile.axiomCount`
+stays at `1`.
+
+**theoremCount**: 7 → 11 (adds the four `engelsma_analogue_nonvacuous_*`).
+**lineCount**: 245 → 357.
+
+## Next Action
+
+**S7 — Mid-size Engelsma analogue at `(k, w) = (10, 30)`** per
+knowledge.md §3.3 (originally state.md's S5, deferred to S6, now
+S7 after S6 collected non-vacuous boundary evidence). Concrete
+target:
+
+```lean
+theorem engelsma_analogue_10_30 :
+    ∀ H ∈ (Finset.range 30).powersetCard 10,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 22 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide
+```
+
+`Nat.choose 30 10 ≈ 3 × 10^7`. Estimated `native_decide` runtime
+30–120 seconds. Vacuous antecedent (Engelsma records H(10) ≥ 32).
+May exceed default CI timeouts; if so, fall back to the §6.4
+Path-C-prime plan (land S2–S6, narrow the axiom statement). S6's
+non-vacuous (5,13) and (6,17) results give the qualitative
+confidence that S2's `Decidable` instance is correct on actually
+admissible inputs — orthogonal to the (10, 30) runtime question
+but a useful prerequisite for the Path-B verified-backtracking
+work in S8+.
+
+### Previous focus (S5)
+
+S5 — Intermediate-scale Engelsma analogue via `native_decide`
 at `(k, w) = (8, 22)`, a **cautious scaling checkpoint** between
 S4's $\binom{16}{6} = 8008$ search and the originally planned S6
 case $\binom{30}{10} \approx 3 \times 10^7$:
@@ -47,25 +131,6 @@ once per use).
 
 **theoremCount**: 6 → 7 (the new `engelsma_analogue_8_22`).
 **lineCount**: 192 → 245.
-
-## Next Action
-
-**S6 — Mid-size Engelsma analogue at `(k, w) = (10, 30)`** per
-knowledge.md §3.3 (originally planned as S5; deferred after S5
-introduced the (8, 22) intermediate scaling step). Concrete
-target:
-
-```lean
-theorem engelsma_analogue_10_30 :
-    ∀ H ∈ (Finset.range 30).powersetCard 10,
-      ∀ (h0 : 0 ∈ H), IsAdmissible H → 22 ≤ H.max' ⟨0, h0⟩ := by
-  native_decide
-```
-
-`Nat.choose 30 10 ≈ 3 × 10^7`. Estimated `native_decide` runtime
-30–120 seconds. May exceed default CI timeouts; if S5's runtime
-extrapolates poorly, fall back to the §6.4 Path-C-prime plan
-(land what we have, narrow the axiom statement).
 
 ### Previous focus (S3)
 
@@ -142,18 +207,23 @@ but cannot be assessed until at least S4.
 
 ## Subsequent Iterations (deferred)
 
-- S6 — Mid-size Engelsma analogue at `(k, w) = (10, 30)`
-  via `native_decide` (originally state.md's S5; deferred to S6
-  after the (8, 22) intermediate). Risk: 30–120 s runtime.
-- S7 — `engelsma_lower_bound_of_finitary` bridge lemma
+- S7 — Mid-size Engelsma analogue at `(k, w) = (10, 30)`
+  via `native_decide` (originally state.md's S5; renumbered after
+  S5's (8,22) intermediate and S6's non-vacuous boundary suite).
+  Risk: 30–120 s runtime. Vacuous antecedent (H(10) ≥ 32 > 29).
+- S8 — `engelsma_lower_bound_of_finitary` bridge lemma
   (Option B prerequisite) per knowledge.md §2.4. Can be tackled
-  in parallel with S6 since the bridge proof is pure-Lean
+  in parallel with S7 since the bridge proof is pure-Lean
   combinatorics independent of `native_decide` runtime.
-- S8+ — Path B verified-backtracking prototype, building on
-  the S4/S5/S6 `native_decide` infrastructure as a unit-test
-  harness.
+  Sub-pieces: (a) `IsAdmissible (H.image (· - m))` translation
+  invariance when `m ≤ min H`; (b) 50-subset extraction from a
+  card-≥50 set containing 0; (c) wiring the contradiction.
+- S9+ — Path B verified-backtracking prototype, building on
+  the S4/S5/S6/S7 `native_decide` infrastructure as a unit-test
+  harness. S6's non-vacuous boundary witnesses double as the
+  expected-output cases that any backtracker must agree with.
 - Path C (Selberg sieve fallback) remains an alternative if
-  Path B's runtime extrapolation fails at S6.
+  Path B's runtime extrapolation fails at S7.
 
 ## Attempt Counts
 
@@ -191,3 +261,17 @@ but cannot be assessed until at least S4.
   (10, 30) case is deferred to S6, pending evidence on S5's `native_decide`
   runtime to extrapolate the (10, 30) feasibility. Build pending; the
   Docker symlink trap prevents local verification.
+- **S6 (2026-05-12, researcher-5)**: ACT. Extended S5 file (245 → 357 lines, +112):
+  four **non-vacuous** Engelsma analogues `engelsma_analogue_nonvacuous_(k, H(k)+1)`
+  for `k = 3, 4, 5, 6` via `native_decide`. Search spaces 35 / 126 / 1,287 / 12,376
+  (cumulative ~1.4 × 10⁴). Reuses the `Lean.ofReduceBool` axiom from S4
+  (`axiomCount` stays at 1). Theorem count 7 → 11. Each bound is tight,
+  witnessed by classical Hardy–Littlewood admissible tuples (the parent
+  file's `admissible_twin`, `admissible_triple_0_2_6`,
+  `admissible_quadruple_0_2_6_8`, plus `{0,2,6,8,12}` and `{0,4,6,10,12,16}`).
+  Closes the gap left by S4/S5 (both vacuous) — actually exercises the
+  diameter bound rather than relying on emptiness of admissible witnesses.
+  Originally planned S6 = (10, 30) renumbered to S7 (still vacuous, higher
+  runtime risk, lower mathematical value than the boundary non-vacuous
+  cases here). Build pending; the Docker symlink trap prevents local
+  verification.

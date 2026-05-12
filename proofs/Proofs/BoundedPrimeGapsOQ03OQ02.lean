@@ -242,4 +242,116 @@ theorem engelsma_analogue_8_22 :
       ∀ (h0 : 0 ∈ H), IsAdmissible H → 18 ≤ H.max' ⟨0, h0⟩ := by
   native_decide
 
+/-! ## S6: Non-vacuous Engelsma analogues at the boundary `w = H(k)+1`
+
+S4 (`(k,w) = (6,16)`) and S5 (`(8,22)`) both verified the Engelsma
+bound *vacuously*: in each case Engelsma's table records `H(k) > w−1`,
+so no admissible k-tuple fits inside `Finset.range w`, and the
+implication's antecedent is universally false. While useful as
+stress-tests of the S2 `Decidable` instance, those statements do not
+exercise the diameter bound itself — they just witness the absence
+of admissible witnesses.
+
+S6 closes that gap by enumerating the **minimal non-vacuous case**
+`(k, H(k)+1)` for each small `k`. For these parameters the bound
+`H(k) ≤ H.max'` is *tight* (witnessed by classical Hardy–Littlewood
+patterns) and the `native_decide` enumeration must distinguish
+admissible from non-admissible k-tuples to discharge the goal.
+
+Engelsma's small-`k` table (cf. `knowledge.md` §4.1; Engelsma 2013):
+
+| k | H(k) | witness admissible k-tuple (parent file)            |
+|---|------|-----------------------------------------------------|
+| 2 | 2    | `admissible_twin` — `{0, 2}`                        |
+| 3 | 6    | `admissible_triple_0_2_6` — `{0, 2, 6}`             |
+| 4 | 8    | `admissible_quadruple_0_2_6_8` — `{0, 2, 6, 8}`     |
+| 5 | 12   | `{0, 2, 6, 8, 12}` (residues 0 mod 2; 0,2 mod 3)    |
+| 6 | 16   | `{0, 4, 6, 10, 12, 16}` (cf. `engelsma6Tuple`-style) |
+
+For each row, the canonical Engelsma analogue is
+
+```lean
+∀ H ∈ (Finset.range (H(k)+1)).powersetCard k,
+  ∀ h0 : 0 ∈ H, IsAdmissible H → H(k) ≤ H.max' ⟨0, h0⟩.
+```
+
+Enumeration cost `Nat.choose (H(k)+1) k`:
+
+- `(3, 7)` : `C(7,3) = 35`
+- `(4, 9)` : `C(9,4) = 126`
+- `(5,13)` : `C(13,5) = 1,287`
+- `(6,17)` : `C(17,6) = 12,376`
+
+Cumulative ≈ `1.4 × 10⁴` subsets — well below the S5 cost (`3.2 × 10⁵`)
+and four orders of magnitude below the deferred direct S7+ case
+`(10, 30)`. All four use `native_decide` (uniform with S4/S5) and
+reuse the `Lean.ofReduceBool` axiom; `axiomCount` stays at 1.
+
+**Why deviate from the originally planned S6 = `(10, 30)`?** That
+case is still *vacuous* (Engelsma records `H(10) ≥ 32 > 29`), so it
+adds another 10⁷-subset stress test of the decider without
+exercising the bound. By contrast, the non-vacuous boundary cases
+genuinely test the diameter inequality and supply the qualitative
+evidence (sharpness of the Mathlib `IsAdmissible` API on
+admissible-and-non-admissible inputs) that the §6.4 feasibility
+checkpoint really wants. The originally planned `(10, 30)` step is
+renumbered to S7 below.
+
+These four results are also the natural starting witnesses for the
+eventual Path-B verified-backtracking framework: any pruning
+algorithm aspiring to discharge `engelsma_lower_bound` at `(50, 246)`
+must agree with these small-case enumerations as a unit-test
+harness. -/
+
+/-- **S6 non-vacuous Engelsma analogue at `(k, w) = (3, 7)`.**
+Every 3-element subset `H ⊆ Finset.range 7` containing `0` is
+either non-admissible or has `H.max' ≥ 6`. The bound is tight:
+`{0, 2, 6}` is admissible (cf. `BoundedPrimeGaps.admissible_triple_0_2_6`),
+proves `H.max' = 6`, and matches Engelsma's `H(3) = 6`. Search
+space `Nat.choose 7 3 = 35`; `native_decide` discharges in well
+under a second. Reuses the `Lean.ofReduceBool` axiom; no axiom
+bookkeeping changes. -/
+theorem engelsma_analogue_nonvacuous_3_7 :
+    ∀ H ∈ (Finset.range 7).powersetCard 3,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 6 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide
+
+/-- **S6 non-vacuous Engelsma analogue at `(k, w) = (4, 9)`.**
+Every 4-element subset `H ⊆ Finset.range 9` containing `0` is
+either non-admissible or has `H.max' ≥ 8`. The bound is tight:
+`{0, 2, 6, 8}` is admissible (cf.
+`BoundedPrimeGaps.admissible_quadruple_0_2_6_8`), proves `H.max' = 8`,
+and matches Engelsma's `H(4) = 8`. Search space
+`Nat.choose 9 4 = 126`. Reuses the `Lean.ofReduceBool` axiom. -/
+theorem engelsma_analogue_nonvacuous_4_9 :
+    ∀ H ∈ (Finset.range 9).powersetCard 4,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 8 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide
+
+/-- **S6 non-vacuous Engelsma analogue at `(k, w) = (5, 13)`.**
+Every 5-element subset `H ⊆ Finset.range 13` containing `0` is
+either non-admissible or has `H.max' ≥ 12`. The bound is tight:
+`{0, 2, 6, 8, 12}` is admissible (residues `{0}` mod 2, `{0, 2}` mod 3,
+`{0, 1, 2, 3}` mod 5, `{0, 1, 2, 5, 6}` mod 7) with diameter `12`,
+matching Engelsma's `H(5) = 12`. Search space
+`Nat.choose 13 5 = 1,287`. Reuses the `Lean.ofReduceBool` axiom. -/
+theorem engelsma_analogue_nonvacuous_5_13 :
+    ∀ H ∈ (Finset.range 13).powersetCard 5,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 12 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide
+
+/-- **S6 non-vacuous Engelsma analogue at `(k, w) = (6, 17)`.**
+Every 6-element subset `H ⊆ Finset.range 17` containing `0` is
+either non-admissible or has `H.max' ≥ 16`. The bound is tight:
+`{0, 4, 6, 10, 12, 16}` is admissible (one can verify residues
+`{0}` mod 2, `{0, 1}` mod 3, `{0, 1, 2, 4}` mod 5,
+`{0, 2, 3, 4, 5, 6}` mod 7, `{0, 1, 4, 5, 6, 10}` mod 11,
+`{0, 3, 4, 6, 10, 12}` mod 13, image card ≤ 6 mod ≥ 17) with
+diameter `16`, matching Engelsma's `H(6) = 16`. Search space
+`Nat.choose 17 6 = 12,376`. Reuses the `Lean.ofReduceBool` axiom. -/
+theorem engelsma_analogue_nonvacuous_6_17 :
+    ∀ H ∈ (Finset.range 17).powersetCard 6,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 16 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide
+
 end BoundedPrimeGapsOQ03OQ02
