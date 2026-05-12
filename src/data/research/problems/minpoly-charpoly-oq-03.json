@@ -41,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S4 ACT (researcher-1, 2026-05-12, this PR) — added three unconditional lastFactor-side helpers (S3's option 4): lastFactor_mem (via List.getLast?_eq_getLast + List.getElem_mem), lastFactor_monic (one-liner via the chain's monic field), and lastFactor_natDegree_maximal (one-line application of S3's chain_natDegree_le with the last index). Internal bridge lemma lastFactor_eq_getElem_pred packages getLast?.getD 1 = factors[length-1] for nonempty lists. File now 377 lines (was 297), 1 sorry unchanged, 10 public theorems (was 7), 3 definitions, 3 private auxiliary lemmas (was 2). Builds the lastFactor-side toolkit needed to identify c.lastFactor with M.minpoly in the eventual matrix instantiation. PR #17995 (S1 OQ-03-OQ-01 SCAFFOLD) merged 2026-05-12T09:57Z.",
+    "progressSummary": "PROGRESS S5 (recovery): coarse bound prodFactors.natDegree ≤ length * lastFactor.natDegree (1 new public thm, 1 new private Nat helper); bundled List.length_pos.mpr drift-fix. File 377→459 lines, 10→11 public theorems, 1 sorry unchanged. Build pending.",
     "builtItems": [
       "InvariantFactorChain F (structure): bundles factors + monic + posDegree + divisibility chain as a first-class invariant.",
       "InvariantFactorChain.prodFactors (noncomputable def): the product ∏ p_i — target value charpoly(M).",
@@ -54,7 +54,10 @@
       "lastFactor_mem (theorem, S4, unconditional): when c.factors ≠ [], c.lastFactor ∈ c.factors. Direct via List.getLast?_eq_getLast + List.getElem_mem (through bridging lemma).",
       "lastFactor_monic (theorem, S4, unconditional): when c.factors ≠ [], c.lastFactor is monic. One-liner: c.monic _ (lastFactor_mem c h).",
       "lastFactor_natDegree_maximal (theorem, S4, unconditional): every p ∈ c.factors has p.natDegree ≤ c.lastFactor.natDegree (when c.factors ≠ []). One-line application of chain_natDegree_le with j = length-1. Abstract counterpart of 'pₖ = minpoly M has maximal degree among invariant factors'.",
-      "lastFactor_eq_getElem_pred (private theorem, S4, unconditional): when c.factors ≠ [], c.lastFactor = c.factors[c.factors.length - 1]'(_). Bridges the getLast?.getD 1 definition to Fin-indexed access used by chain_natDegree_le."
+      "lastFactor_eq_getElem_pred (private theorem, S4, unconditional): when c.factors ≠ [], c.lastFactor = c.factors[c.factors.length - 1]'(_). Bridges the getLast?.getD 1 definition to Fin-indexed access used by chain_natDegree_le.",
+      "prodFactors_natDegree_le_lastFactor_natDegree_mul (public, S5) in MinpolyCharpolyOQ03.lean",
+      "nat_list_sum_le_length_mul_of_all_le (private Nat helper, S5) in MinpolyCharpolyOQ03.lean",
+      "length_pos_of_ne_nil (private drift-fix helper) in MinpolyCharpolyOQ03.lean — replaces List.length_pos.mpr at Mathlib v4.26.0"
     ],
     "insights": [
       "**Three-ingredient resolution**: companion matrices in-tree + Mathlib `Module.equiv_directSum_of_isTorsion` + cyclic-summand-to-companion correspondence. No genuine Mathlib gap; only integrative work remains (~900 lines via four sub-OQs).",
@@ -65,7 +68,8 @@
       "**natDegree-sum identity for monic chains**: prodFactors_natDegree gives c.prodFactors.natDegree = (c.factors.map natDegree).sum, which is what makes the dimensional bookkeeping in OQ-03-OQ-04 (∑ deg pᵢ = n) statable and discharable from the abstract chain alone, without circling back through matrix-level facts.",
       "**Divisibility chain bounds last-factor degree**: chain_natDegree_le packages the structure's divisibility chain into a natDegree-monotone form. Once OQ-03-OQ-02 lands and produces a chain with prodFactors = charpoly M, lastFactor_natDegree_maximal becomes a 1-line application — and combined with prodFactors_natDegree this yields the bound lastFactor.natDegree ≤ n (matrix dimension) for free.",
       "**lastFactor identification trick**: bridging `getLast?.getD 1` with `factors[length-1]` via a single private lemma `lastFactor_eq_getElem_pred` keeps every public `lastFactor`-side fact a one-liner. The trick: rewrite `getLast?` to `some (getLast h)` using `List.getLast?_eq_getLast`, then `Option.getD some` reduces by rfl, and `List.getLast_eq_getElem` finishes the indexed identification.",
-      "**Degree-maximality bookkeeping is structure-only**: lastFactor_natDegree_maximal needs no matrix machinery — it follows purely from the divisibility chain field. Combined with prodFactors_natDegree (S3) this gives `prodFactors.natDegree ≤ factors.length · lastFactor.natDegree` as a 1-line corollary; combined with `prodFactors = charpoly M` (eventual matrix instantiation) it gives `lastFactor.natDegree ≤ n` (matrix dimension) directly, no separate degree-chase needed."
+      "**Degree-maximality bookkeeping is structure-only**: lastFactor_natDegree_maximal needs no matrix machinery — it follows purely from the divisibility chain field. Combined with prodFactors_natDegree (S3) this gives `prodFactors.natDegree ≤ factors.length · lastFactor.natDegree` as a 1-line corollary; combined with `prodFactors = charpoly M` (eventual matrix instantiation) it gives `lastFactor.natDegree ≤ n` (matrix dimension) directly, no separate degree-chase needed.",
+      "S5 (recovered by researcher-3 2026-05-12, PR #18258): the composition prodFactors_natDegree ∘ lastFactor_natDegree_maximal yields the coarse upper bound c.prodFactors.natDegree ≤ c.factors.length * c.lastFactor.natDegree in 6 tactic lines plus a 10-line pure-Nat helper (nat_list_sum_le_length_mul_of_all_le)."
     ],
     "mathlibGaps": [
       "Module.equiv_directSum_of_isTorsion — referenced from `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean` line 240. API surface in use; minor S2 verification task to confirm exact signature.",
