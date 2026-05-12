@@ -325,6 +325,54 @@ theorem fano_converse_capacity {α β : Type*} [Fintype α] [Fintype β]
   -- Combine the two bounds.
   linarith
 
+/-- **Shannon-form converse (S7, this iteration).**
+    For any DM channel `ch` with input alphabet of size `≥ 2` and any uniform
+    input distribution `inp`, the rate is bounded by capacity plus the binary
+    entropy of the error probability:
+
+    `(1 - P_e) · log |α| ≤ channelCapacity ch + h(P_e)`
+
+    where `P_e` is the Fano error term from `fano_converse_capacity`. This is
+    the canonical "Shannon-form" converse bound that appears in standard
+    information-theory textbooks (Cover-Thomas §7.9 eq. 7.150, MacKay §10.4).
+
+    The proof is a one-step rearrangement of `fano_converse_capacity`:
+    absorb the always-nonneg slack `P_e · log(|α| - 1) ≤ P_e · log |α|`
+    (using `log_le_log` on `|α| - 1 ≤ |α|` for `|α| ≥ 2`), then rearrange
+    `log |α| ≤ C + h(P_e) + P_e · log |α|` into the displayed form.
+
+    Downstream this is the cleanest entry-point for asymptotic
+    block-coding converse arguments: combined with the per-letter
+    chain-rule `I(X^n; Y^n) ≤ n · C`, the standard rearrangement gives
+    `P_e ≥ 1 - C / log|α| - 1 / log|α|` for any rate-`R` block code
+    with `R > C`. -/
+theorem fano_converse_shannon_form {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β] [Nonempty α]
+    (ch : DMChannel α β) (inp : InputDist α)
+    (h_inp_uniform : ∀ x : α, inp.p x = (Fintype.card α : ℝ)⁻¹)
+    (h_card : 2 ≤ Fintype.card α) :
+    let P_e := 1 - ∑ y : β, ∑ x : α,
+                 jointDist ch inp (x, y) ^ 2 /
+                   (∑ x' : α, jointDist ch inp (x', y))
+    0 ≤ P_e →
+    (1 - P_e) * Real.log (Fintype.card α) ≤
+      channelCapacity ch + InformationTheory.BinaryEntropy.h P_e := by
+  intro P_e h_pe_nn
+  -- Bring in the S6 bound `log |α| ≤ C + h(P_e) + P_e · log(|α| - 1)`.
+  have hS6 := fano_converse_capacity ch inp h_inp_uniform
+  -- Absorb the `log(|α| - 1) ≤ log |α|` slack.
+  have h_card_real : (2 : ℝ) ≤ (Fintype.card α : ℝ) := by exact_mod_cast h_card
+  have h_card_pos : (0 : ℝ) < (Fintype.card α : ℝ) - 1 := by linarith
+  have h_sub_le : (Fintype.card α : ℝ) - 1 ≤ (Fintype.card α : ℝ) := by linarith
+  have hlog_le : Real.log ((Fintype.card α : ℝ) - 1) ≤ Real.log (Fintype.card α) :=
+    Real.log_le_log h_card_pos h_sub_le
+  have h_pe_log :
+      P_e * Real.log ((Fintype.card α : ℝ) - 1) ≤
+        P_e * Real.log (Fintype.card α) :=
+    mul_le_mul_of_nonneg_left hlog_le h_pe_nn
+  -- Rearrange `log |α| ≤ C + h(P_e) + P_e · log |α|` into the displayed form.
+  nlinarith [hS6, h_pe_log]
+
 /- ## Main theorems -/
 
 /-- **Channel coding theorem (achievability).**

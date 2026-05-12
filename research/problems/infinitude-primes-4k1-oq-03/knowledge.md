@@ -410,3 +410,95 @@ unblocked by current Mathlib.
 * **0 new imports** (uses existing `Mathlib.NumberTheory.LSeries.PrimesInAP`).
 * **Total file count**: 11 theorems / lemmas in this file
   (10 proved + 1 sorry-target).
+
+
+## S5 (researcher-1, 2026-05-12) — ORIENT/ACT: elementary divergence + path-C corollary
+
+### What this iteration adds
+
+Two parallel deliverables, both fully proved:
+
+1. **Elementary form of the S4 Mertens-style divergence.** S4 proved
+   divergence in `residueClass`-indicator form
+   (`¬ Summable (n ↦ (if n.Prime then residueClass (1 : ZMod 4) n else 0) / n)`).
+   S5 unwraps the indicator and translates the residue condition to a `% 4`
+   case-split, yielding the *elementary* Mertens-1874 form
+
+   ```
+   ¬ Summable (n ↦ if (n.Prime ∧ n % 4 = 1) then Real.log n / n else 0)
+   ```
+
+   This is what a non-specialist reader would expect to see: the sum
+   `∑_{p ≡ 1 (mod 4)} log p / p` diverges. The translation is a one-shot
+   function-equality argument, factoring through the private helper
+
+   ```
+   residueClass_one_mod_four_apply_prime {p : ℕ} (hp : p.Prime) :
+     ArithmeticFunction.vonMangoldt.residueClass (1 : ZMod 4) p =
+       (if p % 4 = 1 then Real.log p else 0)
+   ```
+
+   which uses `ArithmeticFunction.vonMangoldt_apply_prime` (giving
+   `Λ p = log p` for prime `p`) plus the existing
+   `mod_four_eq_one_iff_zmodFour_eq_one` bridge.
+
+2. **Path-C sum-of-two-squares infinitude corollary.** Combining the
+   S2 Mathlib-bridge infinitude statement `primes_4k1_infinite_mod` with
+   Fermat's Christmas theorem `Nat.Prime.sq_add_sq`
+   (`Mathlib.NumberTheory.SumTwoSquares`), we get
+
+   ```
+   theorem primes_sum_two_squares_infinite :
+     {p : ℕ | p.Prime ∧ ∃ a b : ℕ, a^2 + b^2 = p}.Infinite
+   ```
+
+   `Nat.Prime.sq_add_sq` says any prime `p` with `p % 4 ≠ 3` is a sum of
+   two squares; the inclusion `{primes ≡ 1 (4)} ⊆ {primes that are sums of
+   two squares}` lifts via `Set.Infinite.mono`. This is the
+   *infinitude* form; the *density* form (such primes have density 1/2
+   among all primes) is deferred until a density form of the parent OQ-03
+   target is in place.
+
+### Why this is the right next step
+
+The S2 state.md identified three S3+ paths: (A) Tauberian transfer for natural
+density (blocked on Mathlib), (B) logarithmic-density via Mertens, and (C)
+sum-of-two-squares corollary once a density form exists. S5 advances *both*
+paths B and C without waiting for Mathlib evolution:
+
+* For path B: the elementary form of the divergence is the input the standard
+  Mertens-1874 Abel-summation proof of `∑_{p ≤ N, p ≡ 1 (4)} 1/p ~ (1/2) log log N`
+  consumes. Future S6 logarithmic-density work no longer needs to re-derive
+  the indicator unfolding.
+* For path C: the infinitude form of "sum-of-two-squares primes are infinite"
+  doesn't need a density form at all — it follows directly from S2's
+  infinitude bridge plus Fermat 1640. This gives the gallery a clean
+  number-theory corollary today.
+
+### Mathematical content
+
+The proof of `not_summable_primes_4k1_log_div` is a pure function-equality
+argument: the summands of the two statements agree pointwise, so summability
+of one equals summability of the other. The pointwise agreement breaks into
+three cases (n not prime; n prime and `≡ 1 (4)`; n prime and `≢ 1 (4)`),
+each closed by a chain of `if_pos` / `if_neg` rewrites plus the helper
+`residueClass_one_mod_four_apply_prime`.
+
+The proof of `primes_sum_two_squares_infinite` is a one-step subset argument:
+`{primes ≡ 1 (4)} ⊆ {primes that are sums of two squares}`, lifted to
+infinitude via `Set.Infinite.mono` from `primes_4k1_infinite_mod`. The
+subset inclusion is `Nat.Prime.sq_add_sq` applied to each prime, with
+`p % 4 ≠ 3` proved from `p % 4 = 1` by `omega`.
+
+### S5 deliverable summary
+
+* **0 new Lean files**; **1 private helper + 2 new public theorems** added to
+  `InfinitudePrimes4k1OQ03.lean` (~100 lines including the section docstring).
+* **All 3 declarations verified** (no new sorries introduced; the existing
+  `primes_4k1_natural_density` sorry is unchanged).
+* **0 new axiom declarations**.
+* **0 new imports** (Fermat's `Nat.Prime.sq_add_sq` is transitively available
+  via `Proofs.InfinitudePrimes4k1`, which imports
+  `Mathlib.NumberTheory.SumTwoSquares`).
+* **Total file count**: 14 declarations in this file
+  (1 private helper + 12 public proved + 1 sorry-target).

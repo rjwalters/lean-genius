@@ -240,6 +240,104 @@ theorem not_summable_primes_4k1_vonMangoldt_div :
       (if n.Prime then ArithmeticFunction.vonMangoldt.residueClass (1 : ZMod 4) n else 0) / n :=
   ArithmeticFunction.vonMangoldt.not_summable_residueClass_prime_div one_isUnit_zmodFour
 
+/-! ## S5 ORIENT/ACT: elementary divergence + sum-of-two-squares corollary
+
+These lemmas package the S4 divergence in a form a non-specialist reader can
+parse without knowing about `residueClass` indicators, and add the
+sum-of-two-squares infinitude corollary (path C from `state.md`) chaining
+through Fermat's Christmas theorem `Nat.Prime.sq_add_sq`.
+
+`residueClass_one_mod_four_apply_prime` is a private helper that unfolds
+`ArithmeticFunction.vonMangoldt.residueClass (1 : ZMod 4)` on prime arguments
+to the elementary case-split `if p % 4 = 1 then log p else 0`. The unfolding
+uses `vonMangoldt_apply_prime` (giving `Λ p = log p` for `p` prime) and the
+`mod_four_eq_one_iff_zmodFour_eq_one` bridge.
+
+`not_summable_primes_4k1_log_div` translates `not_summable_primes_4k1_vonMangoldt_div`
+into the elementary form `¬ Summable (n ↦ if (n.Prime ∧ n % 4 = 1) then log n / n
+else 0)`. This is the **Mertens-1874 qualitative divergence** in the formulation
+a number-theory reader would expect; the quantitative `(1/2) log log N` rate
+is left for a future iteration (Abel summation + the S4 lower bound).
+
+`primes_sum_two_squares_infinite` is the **path C corollary**: combining
+`primes_4k1_infinite_mod` with `Nat.Prime.sq_add_sq` (Fermat 1640, formalized
+in `Mathlib.NumberTheory.SumTwoSquares`), the set of primes representable
+as a sum of two squares is infinite. This is the elementary-density-free
+flavour of the path-C result; the *density* form (sum-of-two-squares primes
+have density 1/2) is deferred until a density form is in place.
+-/
+
+/-- **Helper: residueClass on primes unfolds to a `% 4` case-split.**
+For prime `p`, `vonMangoldt.residueClass (1 : ZMod 4) p = if p % 4 = 1 then log p else 0`.
+Combines `vonMangoldt_apply_prime` with `mod_four_eq_one_iff_zmodFour_eq_one`. -/
+private lemma residueClass_one_mod_four_apply_prime {p : ℕ} (hp : p.Prime) :
+    ArithmeticFunction.vonMangoldt.residueClass (1 : ZMod 4) p =
+      (if p % 4 = 1 then Real.log p else 0) := by
+  unfold ArithmeticFunction.vonMangoldt.residueClass
+  by_cases hmod : p % 4 = 1
+  · have hzm : (p : ZMod 4) = 1 := mod_four_eq_one_iff_zmodFour_eq_one.mp hmod
+    rw [if_pos hmod, Set.indicator_of_mem
+          (show p ∈ {n : ℕ | (n : ZMod 4) = 1} from hzm)]
+    exact ArithmeticFunction.vonMangoldt_apply_prime hp
+  · have hzm : (p : ZMod 4) ≠ 1 := fun h =>
+      hmod (mod_four_eq_one_iff_zmodFour_eq_one.mpr h)
+    rw [if_neg hmod]
+    exact Set.indicator_of_notMem
+      (show p ∉ {n : ℕ | (n : ZMod 4) = 1} from hzm) _
+
+/-- **Mertens-1874 qualitative divergence at `(q, a) = (4, 1)` — elementary form.**
+The function `n ↦ log n / n` restricted to primes `≡ 1 (mod 4)` is **not summable**.
+
+This is `not_summable_primes_4k1_vonMangoldt_div` translated through the
+residueClass-on-primes unfolding `residueClass_one_mod_four_apply_prime`. The
+elementary form avoids the `vonMangoldt.residueClass` indicator wrapper and
+states the divergence in the formulation most readers expect: the
+"Mertens-1874 divergence over primes in an arithmetic progression"
+specialized to `(q, a) = (4, 1)`.
+
+Quantitatively the Mertens rate is `∑_{p ≤ N, p ≡ 1 (4)} log p / p ~ (1/2) log N`
+(prime number theorem for arithmetic progressions, restricted to primes), but
+the asymptotic rate requires Abel summation on top of `LSeries_residueClass_lower_bound`
+and is deferred to a future iteration. -/
+theorem not_summable_primes_4k1_log_div :
+    ¬ Summable fun n : ℕ =>
+      (if n.Prime ∧ n % 4 = 1 then Real.log n / n else (0 : ℝ)) := by
+  have heq : (fun n : ℕ =>
+        (if n.Prime ∧ n % 4 = 1 then Real.log n / n else (0 : ℝ))) =
+      (fun n : ℕ =>
+        (if n.Prime then ArithmeticFunction.vonMangoldt.residueClass (1 : ZMod 4) n
+          else 0) / n) := by
+    funext n
+    by_cases hp : n.Prime
+    · rw [if_pos hp, residueClass_one_mod_four_apply_prime hp]
+      by_cases hmod : n % 4 = 1
+      · rw [if_pos ⟨hp, hmod⟩, if_pos hmod]
+      · rw [if_neg (fun ⟨_, h⟩ => hmod h), if_neg hmod, zero_div]
+    · rw [if_neg (fun ⟨h, _⟩ => hp h), if_neg hp, zero_div]
+  rw [heq]
+  exact not_summable_primes_4k1_vonMangoldt_div
+
+/-- **Path C corollary: primes that are sums of two squares are infinite.**
+By Fermat's Christmas theorem (`Nat.Prime.sq_add_sq` in
+`Mathlib.NumberTheory.SumTwoSquares`), every prime `p` with `p % 4 ≠ 3` is
+representable as `a² + b²` for some `a, b : ℕ`. In particular every prime
+`p ≡ 1 (mod 4)` is a sum of two squares; combined with `primes_4k1_infinite_mod`,
+**the set of primes expressible as a sum of two squares is infinite**.
+
+This is the *infinitude* form of the path-C result; the *density* form (such
+sums-of-two-squares primes have density 1/2 among all primes) is deferred
+until a natural-density or Dirichlet-density form of the OQ-03 target is
+in place. The infinitude form is unblocked by current Mathlib and is a
+clean elementary corollary of S2's Mathlib bridge plus Fermat's 1640
+theorem. -/
+theorem primes_sum_two_squares_infinite :
+    {p : ℕ | p.Prime ∧ ∃ a b : ℕ, a ^ 2 + b ^ 2 = p}.Infinite := by
+  apply primes_4k1_infinite_mod.mono
+  rintro p ⟨hp, hmod⟩
+  refine ⟨hp, ?_⟩
+  haveI : Fact p.Prime := ⟨hp⟩
+  exact Nat.Prime.sq_add_sq (by omega)
+
 /-! ## OQ-03 target: natural-density form -/
 
 /-- **OQ-03 deliverable (stated, not yet proved).**
@@ -287,6 +385,8 @@ theorem primes_4k1_natural_density :
 #check indicator_mod_four_eq_one
 #check LSeries_residueClass_one_mod_four_lower_bound
 #check not_summable_primes_4k1_vonMangoldt_div
+#check not_summable_primes_4k1_log_div
+#check primes_sum_two_squares_infinite
 #check primes_4k1_natural_density
 
 end InfinitudePrimes4k1OQ03
