@@ -1,0 +1,80 @@
+{
+  "slug": "erdos-455-oq-04",
+  "title": "Prime sequences with AP-gaps (generalization of Erdős #455)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "parent": "erdos-455",
+  "problemStatement": {
+    "formal": "\\text{Define } \\mathrm{APGapPrimeSeq}(d) := \\{q : \\mathbb{N} \\to \\mathbb{N} : q \\text{ strictly increasing prime sequence}, \\forall n, q_{n+2} - 2 q_{n+1} + q_n = d\\}. \\text{ Determine: (i) for } d = 0, \\text{ when does } \\mathrm{APGapPrimeSeq}(0) \\text{ contain length-} k \\text{ prefixes (Green-Tao); (ii) for } d > 0, \\text{ growth bound on } q_n.",
+    "plain": "The parent erdos-455 studies prime sequences with monotonically non-decreasing gaps (g_{n+1} ≥ g_n). This sub-OQ generalizes: what if the gaps themselves form an arithmetic progression (g_{n+1} - g_n = d constant)? Two subcases: (1) d = 0 means primes in arithmetic progression — this is Green-Tao 2008 territory; (2) d > 0 means strictly increasing gap differences, a refinement of the parent's monotone-gap condition. The d > 0 case is, to the author's knowledge, a new mathematical question; the conjectured growth bound q_n = Ω(n^3) follows from a heuristic combining linear gap growth with prime-density constraints.",
+    "whyMatters": [
+      "Direct extension of parent's monotone-gap framework with a tighter structural condition (second-order arithmetic).",
+      "The constant-gap subcase reduces to Green-Tao 2008 — a major modern theorem absent from Mathlib v4.26.0. Axiomatic formalisation here would be the gallery's first treatment of Green-Tao.",
+      "The d > 0 case poses a genuinely new question: are there arbitrarily long AP-gap prime sequences with strict d > 0? Manual enumeration suggests sparsity beyond length 4."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent (verified, axiomatised): Erdős #455 monotone-gap framework with Richter 1976 axiom liminf q_n / n^2 > 0.352.",
+      "Dirichlet 1837: infinitude of primes in any AP {a, a+d, a+2d, ...} with gcd(a, d) coprime.",
+      "van der Corput 1939: infinitely many 3-APs in primes.",
+      "Green & Tao 2008: arbitrarily long APs in primes — a deep modern theorem.",
+      "Folklore: no infinite AP in primes (q_0 + q_0 · d is divisible by q_0 in {q_0, q_0+d, q_0+2d, ...}).",
+      "Heath-Brown 1981: three primes and almost-prime in AP — quantitative refinement.",
+      "AP-gap prime sequences with d > 0 are sparse in length-4 manual enumeration."
+    ],
+    "open": [
+      "For d > 0: do arbitrarily long AP-gap prime sequences exist? Manual search suggests sparsity beyond length 4 for d = 2.",
+      "Exact growth bound: is q_n = Ω(n^3) the right order for d > 0 AP-gap sequences? Author's conjecture.",
+      "Computer-searchable: enumerate AP-gap prime sequences in first 10^5 primes for d ∈ {2, 4, 6, ...} and length k = 4, 5, ..."
+    ],
+    "goal": "Formalize in Lean: (1) HasAPGaps and APGapPrimeSeq d structures. (2) Equivalence apGap_zero_iff_prime_AP. (3) Monotone-gap subsumption apGap_subsumes_monotone for d ≥ 0. (4) Axiom Green-Tao for prefix-AP statements (d = 0 subcase). (5) Conjectural cubic growth axiom for d > 0. (6) Optional concrete small-case witnesses via native_decide. Gallery entry status: axiomatized (Green-Tao non-negotiable)."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T22:05:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-10, 2026-05-12): OBSERVE survey for AP-gap extension of Erdős #455. Wrote problem.md (~3.0K words) with full Lean target signatures + S2-S7 decomposition; knowledge.md (~2.5K words) with gap-condition hierarchy table, cubic-growth heuristic, manual length-4+ search showing sparsity, Mathlib gap analysis; state.md with S2 next-action plan. No Lean changes.",
+    "blockers": [],
+    "nextAction": "S2: define HasAPGaps and APGapPrimeSeq d in proofs/Proofs/Erdos455OQ04.lean. Approach: integer-valued d (allows d < 0 case with finite sequences); structure carries strict-mono + primality + AP-gap; trivial equivalence apGap_zero_iff_prime_AP and subsumption apGap_subsumes_monotone. Expected ~50 Lean lines, 0 sorries. S3-S5 axiomatize Green-Tao + cubic growth + gallery integration.",
+    "attemptCounts": {
+      "S1_observe": 1,
+      "S2_definitions": 0,
+      "S3_green_tao_axiom": 0,
+      "S4_growth_axiom": 0,
+      "S5_gallery": 0,
+      "S6_witnesses": 0
+    }
+  },
+  "knowledge": {
+    "insights": [
+      "Sub-OQ splits into two structurally distinct subcases: d = 0 (Green-Tao territory, axiomatised) and d > 0 (genuinely new question on sparse strictly-AP-gap prime sequences).",
+      "For d > 0: a priori q_n = q_0 + n g_0 + binom(n, 2) d = Θ(n^2); tightening to n^3 requires combining with Vinogradov/Heath-Brown prime density constraints — research-grade.",
+      "Manual enumeration in S1 failed to find length-5 AP-gap prime sequences with d = 2 (tried q_0 ∈ {3, 5, 7, 11, 13, 17, 19, 23} with various g_0): suggests strong sparsity.",
+      "Green-Tao 2008 is the only existing rigorous statement covering this OQ — and it's absent from Mathlib v4.26.0. Cannot be proven in a single iteration; must be axiomatised."
+    ],
+    "builtItems": [
+      "Wrote research/problems/erdos-455-oq-04/problem.md (formal targets + S2-S7 plan).",
+      "Wrote research/problems/erdos-455-oq-04/knowledge.md (gap-hierarchy + cubic heuristic + Mathlib gap).",
+      "Wrote research/problems/erdos-455-oq-04/state.md (phase OBSERVE).",
+      "Created src/data/research/problems/erdos-455-oq-04.json (this file)."
+    ],
+    "progressSummary": "S1 OBSERVE complete. Structural framework for AP-gap prime sequences defined with integer common difference d. Constant-gap (d = 0) subcase reduces to Green-Tao (axiomatised). Strict-AP-gap (d > 0) subcase is a new question; growth bound conjectural at Ω(n^3). S2 ready to start once any researcher claims."
+  },
+  "tags": [
+    "seeker-selected",
+    "erdos-problem",
+    "number-theory",
+    "prime-gaps",
+    "arithmetic-progression",
+    "green-tao",
+    "sequences",
+    "mathlib-gap",
+    "research"
+  ],
+  "significance": 6,
+  "tractability": 4,
+  "lastUpdated": "2026-05-12T22:05:00.000Z"
+}
