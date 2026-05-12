@@ -362,6 +362,7 @@ import Proofs.CantorsTheorem
 import Proofs.CantorsTheoremOQ01
 import Proofs.CantorsTheoremOQ01OQ01
 import Proofs.CantorsTheoremOQ01OQ02
+import Proofs.CantorsTheoremOQ01OQ03
 import Proofs.CantorsTheoremOQ02
 import Proofs.CantorsTheoremOQ03
 import Proofs.CauchySchwarz

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "konig-history",
+    "lineNumber": 12,
+    "type": "history",
+    "title": "König's 1905 Theorem",
+    "content": "Julius König proved this theorem in 1905 at the start of his (ultimately failed) attempt to disprove the continuum hypothesis. While CH remained open until Cohen (1963), the cofinality constraint cf(2^κ) > κ has stood as the foundational ZFC restriction on cardinal exponentiation. König's original argument is a diagonal-style construction; the modern presentation in Jech (Theorem 5.10) and Kunen uses cardinal-indexed sums and products."
+  },
+  {
+    "id": "lt-cof-power",
+    "lineNumber": 88,
+    "type": "key-lemma",
+    "title": "Mathlib's Cardinal.lt_cof_power",
+    "content": "The single Mathlib lemma that does all the work here. Signature: `Cardinal.lt_cof_power : ℵ₀ ≤ κ → 1 < c → κ < (c^κ).ord.cof`. With c=2 (always > 1, discharged by `norm_num`), this is exactly the cofinality form of König's theorem. The lemma's existence in Mathlib is the immediate affirmative answer to the open question: König's constraint IS formalizable, and Mathlib already did it. Our file packages four salient corollaries."
+  },
+  {
+    "id": "axioms-vs-choice",
+    "lineNumber": 30,
+    "type": "subtle-distinction",
+    "title": "Without Axioms vs Without Choice",
+    "content": "The OQ said 'without axioms'. There are two readings:\n\n(1) **Without explicit `axiom` declarations in the gallery file**: YES, achieved here. We use only Mathlib *theorems*.\n\n(2) **Without the Axiom of Choice (in the meta-theory)**: NO. Mathlib uses `Classical.choice` silently throughout its set theory. The proof of `Cardinal.lt_cof_power` reduces (eventually) to `Cardinal.sum_lt_prod`, whose proof constructs witnesses for each `f i < g i` via Choice.\n\nThe standard formal-mathematics convention is (1) — 'in ZFC' implicitly allows Choice. We adopt this convention while flagging the subtlety."
+  },
+  {
+    "id": "rules-out-aleph-omega",
+    "lineNumber": 130,
+    "type": "corollary",
+    "title": "Why cf ≠ ℵ₀ Matters: Ruling Out ℵ_ω",
+    "content": "The most-cited consequence of König's constraint is that |𝒫(ℝ)| ≠ ℵ_ω. The reasoning: cf(ℵ_ω) = ω = ℵ₀ (the supremum of countably many ℵ_n is reached countably). If |𝒫(ℝ)| = ℵ_ω, then cf(|𝒫(ℝ)|) = ℵ₀. But König says cf(|𝒫(ℝ)|) > 𝔠 ≥ ℵ₀, contradiction. So |𝒫(ℝ)| ≠ ℵ_ω. The theorem `cf_powerSet_real_ne_aleph0` in this file packages this as a one-line statement."
+  },
+  {
+    "id": "easton-context",
+    "lineNumber": 195,
+    "type": "broader-context",
+    "title": "Easton's Theorem and the Picture for Regular Cardinals",
+    "content": "Easton (1970) showed that for regular κ, the function `κ ↦ 2^κ` can consistently take essentially any monotone values above κ with cofinality > κ. König's constraint cf(2^κ) > κ is the *only* ZFC restriction. So:\n\n- |𝒫(ℝ)| can consistently equal ℵ₂, ℵ_3, ℵ_{ω₁+1}, ℵ_{ω₁·2}, etc.\n- |𝒫(ℝ)| cannot equal ℵ_ω, ℵ_{ω+ω}, ℵ_{ω₁·ω}, etc. (any aleph with cofinality ≤ 𝔠).\n\nThe König constraint formalized here is the line between provable and independent for cardinal exponentiation at regular cardinals."
+  },
+  {
+    "id": "general-form-vs-specialization",
+    "lineNumber": 85,
+    "type": "design-choice",
+    "title": "Why State the General Form?",
+    "content": "Sibling `CantorsTheoremOQ01OQ02` already specialized König to 𝔠 (via `konig_constraint_powerSet_real`). We could have stopped at the 𝔠-form. Instead, we state `konig_general` over arbitrary infinite κ first, then derive the 𝔠 and ℵ_α specializations as one-liners. This:\n\n(1) Makes the dependence on κ explicit in the theorem signature.\n(2) Allows external clients to apply König to any infinite cardinal without re-deriving from `Cardinal.lt_cof_power`.\n(3) Matches the gallery's preference for general statements where they're equally easy to prove."
+  }
+]

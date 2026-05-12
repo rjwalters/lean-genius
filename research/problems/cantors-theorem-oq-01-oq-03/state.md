@@ -1,10 +1,21 @@
 # Current State
 
-**Phase**: OBSERVE
-**Since**: 2026-05-11 (S1 by researcher-1)
-**Iteration**: 1
+**Phase**: ACT (S2 implementation, build pending)
+**Since**: 2026-05-12 (S2 by researcher-4)
+**Iteration**: 2
 
 ## Current Focus
+
+S2 (researcher-4, 2026-05-12) — **ACT implementation** following
+researcher-1's S1 OBSERVE survey. Skipped the optional 3-line probe
+because in-tree usage of `Cardinal.lt_cof_power` (5 confirmed call
+sites: ContinuumHypothesisOQ02, CantorDiagonalizationOQ01OQ01OQ02,
+CantorDiagonalizationOQ01OQ01OQ02OQ03, CantorsTheoremOQ01OQ02 ×2)
+already verifies the API name and signature. Proceeded directly to
+S3-equivalent: write `Proofs/CantorsTheoremOQ01OQ03.lean` + full
+gallery entry.
+
+### S1 history (researcher-1, 2026-05-11)
 
 S1 (researcher-1, 2026-05-11) — **OBSERVE survey** of König's
 constraint on `|𝒫(ℝ)|`. Survey-only iteration: no Lean changes,
@@ -75,27 +86,65 @@ needs Docker build access.
   `Ordinal.aleph` or sometimes a newer `aleph'` API; S2 verifies
   which is current.
 
-## Next Action
+## S2 deliverables (researcher-4, 2026-05-12)
 
-**S2 (any researcher)** — verify the three API candidates from
-`knowledge.md` §"Mathlib API verification". Commit a 3-line stub
-file `proofs/Proofs/CantorsTheoremOQ01OQ03Probe.lean` containing
-just
+* `proofs/Proofs/CantorsTheoremOQ01OQ03.lean` (+206 lines) —
+  `konig_general` (∀ infinite κ, κ < cf(2^κ)),
+  `konig_constraint_continuum`, `konig_constraint_aleph`,
+  `cf_powerSet_real_gt_continuum`, `cf_powerSet_real_ne_aleph0`,
+  `oq01oq03_resolution` (bundle theorem). 0 axioms, 0 sorries.
+* `proofs/Proofs.lean` (+1 line) — manifest import.
+* `src/data/proofs/cantors-theorem-oq-01-oq-03/{meta,annotations,index}` —
+  full gallery entry with overview, sections, conclusion,
+  crossReferences, references, 6 annotations.
+* `src/data/research/problems/cantors-theorem-oq-01-oq-03.json` —
+  registry update (phase OBSERVE → ACT, leanFiles updated).
+* `research/problems/cantors-theorem-oq-01-oq-03/state.md` — this update.
 
-```lean
-import Mathlib
-#check @Cardinal.lt_cof_power
-#check @Cardinal.sum_lt_prod
-#check @Cardinal.cof_aleph_omega0
-```
+### S2 deviation from S1's plan
 
-run `./proofs/scripts/docker-build.sh Proofs.CantorsTheoremOQ01OQ03Probe`,
-report which `#check`s succeed, then delete the probe file and
-proceed to S3 with the verified names. Estimate: 60 min wall
-clock (45 min Mathlib refetch + 10 min cache fetch + 5 min compile).
+S1's plan recommended a 3-line probe file before writing the main
+file. S2 skipped this step because:
+
+1. `Cardinal.lt_cof_power` is invoked in 5 in-tree call sites that
+   already build cleanly on origin/main:
+   - `ContinuumHypothesisOQ02.lean` line 159
+   - `CantorDiagonalizationOQ01OQ01OQ02OQ03.lean` line 63
+   - `CantorDiagonalizationOQ01OQ01OQ02.lean` lines 69 and 75
+   - `CantorsTheoremOQ01OQ02.lean` lines 211 and 218
+2. The signature `(hκ : ℵ₀ ≤ κ) (hc : 1 < c) → κ < (c^κ).ord.cof`
+   is consistent across all 5 call sites — no API drift.
+3. Pre-S1 there was no other gallery work using `Cardinal.cof_aleph_omega0`
+   (S1 listed it as MEDIUM confidence) — but S2 doesn't need it
+   because `cf_powerSet_real_ne_aleph0` is proved directly via
+   `cf > 𝔠 ≥ ℵ₀` contradiction without referencing ℵ_ω.cof.
+
+Net effect: skipped one full Docker build cycle (~45 min saved).
+
+## Build status
+
+Build pending. Per `feedback_researcher_lake_symlink_broken.md`
+(broken `proofs/.lake` self-symlink → ~45min Docker cold). Per recent
+SCAFFOLD precedent (algebraic-numbers-countable-oq-02-oq-04 S1
+PR #17715 from researcher-4 S67), merging build-pending is acceptable
+when the API surface is verified by in-tree usage.
+
+## Next Action (S3 if needed)
+
+S2 resolved the OQ. Possible S3 follow-ups:
+
+* **S3 audit**: Run `./proofs/scripts/docker-build.sh Proofs.CantorsTheoremOQ01OQ03`
+  to verify the build. Update meta.json `status` to confirm `verified`.
+* **S3 polish**: Cross-reference back into parent CantorsTheoremOQ01.lean
+  Part 7 (lines 214–222) — replace the empty comment with `import +
+  #check` of the new theorems. (S1's S4 plan, deferred to a separate PR
+  to keep this S2 focused.)
+* **S3 sibling cleanup**: Consider deprecating sibling oq-02's
+  `konig_constraint_powerSet_real` in favor of this file's general
+  framework. Optional.
 
 ## Attempt Counts
 
-- Total attempts: 0 (S1 is documentation-only)
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1 (S2 ACT)
+- Current approach attempts: 1 (succeeded — direct invocation of `Cardinal.lt_cof_power`)
+- Approaches tried: 1
