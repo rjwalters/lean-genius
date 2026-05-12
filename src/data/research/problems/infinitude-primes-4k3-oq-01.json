@@ -30,21 +30,23 @@
     "goal": "Audit the slug for genuine open content (this S1), then ship the narrow bridge corollary S2(a) in a follow-up session. Do NOT attempt the named conjecture — it is fully verified across three gallery entries and is in Mathlib."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T20:48:00Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE: duplicate-detection survey for full Dirichlet — slug duplicates `dirichlets-theorem` (mathlib), `infinitude-primes-4k3` (parent), and `dirichlets-theorem-oq-02` (alt elementary). Three narrow adjacent S2 targets shortlisted.",
+    "phase": "ACT",
+    "since": "2026-05-12T20:55:00Z",
+    "iteration": 2,
+    "focus": "S2 ACT(a) shipped: bridge corollary `proofs/Proofs/InfinitudePrimes4k3OQ01.lean` (+101 LOC) with one lemma + three theorems. 0 axioms, 0 sorries. Forward and reverse directions both proved: elementary `% 4 = 3` form ↔ analytic ZMod form.",
     "blockers": [],
-    "nextAction": "S2 ACT(a): bridge corollary in new `proofs/Proofs/InfinitudePrimes4k3OQ01.lean` (~25 LOC), explicitly connecting the elementary `p % 4 = 3` formulation to the analytic `(p : ZMod 4) = 3` formulation. Pre-Aristotle.",
+    "nextAction": "S3: optionally pick S2(b) parametric elementary `p ≡ -1 (mod q)` for `q ∈ {3,4,6,8,12,24}` (~150 LOC per modulus or ~300 LOC parametric) OR S2(c) explicit `Nat.log` counting bound (~80 LOC). Either is followed by S4 gallery graduation.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE — duplicate-detection audit: slug duplicates `dirichlets-theorem` (mathlib badge), `infinitude-primes-4k3` (parent), and `dirichlets-theorem-oq-02`. Recommended narrow S2 target: bridge corollary between elementary and analytic formulations.",
-    "builtItems": [],
+    "progressSummary": "S2 ACT(a) shipped: bridge corollary `proofs/Proofs/InfinitudePrimes4k3OQ01.lean` proves elementary `p % 4 = 3` form and analytic `(p : ZMod 4) = 3` form describe the same `Set.Infinite`. Forward direction recovers Mathlib's ZMod-Dirichlet without L-functions; reverse direction recovers the elementary set from `dirichlet_zmod (3 : ZMod 4) (by decide)`. 0 axioms, 0 sorries, build pending. S1 OBSERVE prior: duplicate-detection audit (slug duplicates `dirichlets-theorem` mathlib + `infinitude-primes-4k3` parent + `dirichlets-theorem-oq-02`).",
+    "builtItems": [
+      "proofs/Proofs/InfinitudePrimes4k3OQ01.lean (S2 ACT, researcher-12): zmod_4_eq_three_iff, primes_3_mod_4_set_eq, dirichlet_3_mod_4_via_elementary, elementary_via_dirichlet_zmod"
+    ],
     "insights": [
       "The seeker statement ('Dirichlet's theorem on primes in AP — full generality') is triple-duplicated in the gallery: `dirichlets-theorem` (analytic, via Mathlib `Nat.infinite_setOf_prime_and_eq_mod`), `infinitude-primes-4k3` (elementary, the slug's own parent), and `dirichlets-theorem-oq-02` (alt elementary).",
       "The genuinely-open Dirichlet axes are `dirichlets-theorem-oq-01` (Siegel zeros, axiomatized with 5 axioms) and `dirichlets-theorem-oq-03` (Linnik bounds, axiomatized with 2 axioms + 3 sorries) — both held by other slugs, not this one.",

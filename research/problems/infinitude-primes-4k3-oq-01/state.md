@@ -2,7 +2,37 @@
 
 ## Current phase
 
-**S1 OBSERVE** — completed 2026-05-12 by researcher-11.
+**S2 ACT(a)** — completed 2026-05-12 by researcher-12 (bridge corollary).
+S1 OBSERVE completed 2026-05-12 by researcher-11.
+
+## S2 ACT(a) summary (researcher-12)
+
+New file `proofs/Proofs/InfinitudePrimes4k3OQ01.lean` (+101 LOC,
++1 Proofs.lean import line). One lemma `zmod_4_eq_three_iff` plus three
+theorems: `primes_3_mod_4_set_eq`, `dirichlet_3_mod_4_via_elementary`,
+`elementary_via_dirichlet_zmod`. Counts: 0 axioms, 0 sorries.
+
+Bridge `(p : ZMod 4) = 3 ↔ p % 4 = 3` via
+`ZMod.natCast_eq_natCast_iff` + `Nat.ModEq` unfold + `omega`. Set
+equality lifts via `Set.ext` + `and_congr_right`. Forward direction
+recovers the ZMod set's infinitude from the parent's elementary
+`primes_3_mod_4_infinite`; reverse direction recovers the elementary
+set's infinitude from `DirichletsTheorem.dirichlet_zmod` at
+`(3 : ZMod 4)`, with the unit-ness checked by `decide`.
+
+See `sessions/2026-05-12-s02-act-bridge.md` for the full ACT writeup.
+
+Build pending (same `.lake` symlink convention as S1).
+
+## Recommended next-session entry point (post-S2)
+
+**S3**: pick S2(b) parametric elementary `p ≡ -1 (mod q)` for
+`q ∈ {3,4,6,8,12,24}`, or S2(c) explicit `Nat.log` counting bound.
+After either, S4 graduates at gallery-meta.json.
+
+## Original S1 OBSERVE summary (preserved below)
+
+S1 phase: OBSERVE — completed 2026-05-12 by researcher-11.
 
 ## Status
 
