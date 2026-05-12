@@ -194,19 +194,23 @@ theorem ibragimov_threshold_summable (δ r : ℝ)
 
 The parent file `CentralLimitTheoremOQ02.lean` defines `alphaMixingCoeff` as a
 4-fold nested supremum over measurable-pair indicators. This section proves
-the uniform-envelope helper that anchors the `BddAbove` witness for any
-further work on the nested suprema. The full upper/lower bounds
-(`alphaMixingCoeff_le_one`, `alphaMixingCoeff_nonneg`) and the *indicator
-base case* of Davydov's inequality
-`|μ(A ∩ B).toReal - μ(A).toReal · μ(B).toReal| ≤ alphaMixingCoeff μ ℱ 𝒢` are
-documented in the docstring of `davydov_covariance_inequality` (Part IV)
-as the structural decomposition of the L^p Davydov sorry; their formal
-proofs require resolving a Lean 4 typeclass-synthesis quirk where local
-`MeasurableSpace Ω` arguments compete with the ambient instance — a known
-issue (the parent file omits `alphaMixingCoeff_nonneg` at line 444 for the
-same reason). The mechanic-pass to discharge them must use either a
-function-wrapper for σ-algebras (cf. parent's `σ_k : ℕ → MeasurableSpace Ω`)
-or a Subtype barrier.
+three facts about the nested suprema:
+
+* `indicator_cov_le_one`: the per-term `[0, 1]` envelope, used as the
+  `BddAbove` witness elsewhere.
+* `alphaMixingCoeff_nonneg`: the 4-fold supremum is non-negative (S5; closes
+  the omission noted in the parent file at line 444).
+* `alphaMixingCoeff_le_one`: the 4-fold supremum is bounded above by `1`
+  (S5; the upper-bound companion of `alphaMixingCoeff_nonneg`).
+
+The two ingredient bounds dodge the parent file's "nested ciSup elaboration
+complexity" obstacle by using `Real.iSup_nonneg` / `Real.iSup_le`, which are
+reflective in `ι : Sort*` and so peel each `⨆` layer uniformly whether the
+index is `Set Ω` (a `Type`) or `MeasurableSet …` (a `Prop`). The indicator
+base case `davydov_indicator_bound` of Davydov's inequality
+`|μ(A ∩ B).toReal - μ(A).toReal · μ(B).toReal| ≤ alphaMixingCoeff μ ℱ 𝒢` is
+the remaining S5 mechanic-pass target (the `le_ciSup_of_le` direction; needs
+a `BddAbove` discharge from `alphaMixingCoeff_le_one`).
 -/
 
 /-- A uniform `[0, 1]` envelope for the indicator-covariance term: for any two
@@ -239,6 +243,55 @@ theorem indicator_cov_le_one
       _ = 1 := by norm_num
   rw [abs_le]
   refine ⟨by linarith, by linarith⟩
+
+/-- **Non-negativity of `alphaMixingCoeff`** (S5 — discharges named ingredient (2)
+of the Davydov structural decomposition; closes the omission noted in the parent
+file `CentralLimitTheoremOQ02.lean` at line 444).
+
+The defining 4-fold nested supremum has range contained in `[0, ∞)` since every
+inner term is `|·|`. The proof peels the nested `⨆` one layer at a time via
+`Real.iSup_nonneg`, which is reflective in `ι : Sort*` and therefore applies
+uniformly whether the index is a `Type` (`Set Ω`) or a `Prop` (`MeasurableSet …`).
+This avoids the per-level `BddAbove` discharge that the parent file flagged as
+the elaboration blocker.
+
+We follow the file convention of taking `σPair : Fin 2 → MeasurableSpace Ω` as
+the σ-algebra pair (rather than direct `(ℱ 𝒢 : MeasurableSpace Ω)` args), to
+dodge the Lean 4 typeclass-synthesis quirk where direct `MeasurableSpace Ω`
+arguments compete with the ambient `[MeasurableSpace Ω]` instance — the same
+pattern used by the parent file's `independent_implies_zero_mixing` and S4's
+`davydov_covariance_inequality`. -/
+theorem alphaMixingCoeff_nonneg
+    {μ : Measure Ω} (σPair : Fin 2 → MeasurableSpace Ω) :
+    0 ≤ CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) := by
+  unfold CentralLimitTheoremOQ02.alphaMixingCoeff
+  apply Real.iSup_nonneg; intro _A
+  apply Real.iSup_nonneg; intro _hA
+  apply Real.iSup_nonneg; intro _B
+  apply Real.iSup_nonneg; intro _hB
+  exact abs_nonneg _
+
+/-- **`alphaMixingCoeff ≤ 1`** for a probability measure (S5 — discharges named
+ingredient (1) of the Davydov structural decomposition).
+
+The defining supremum ranges over the `[0, 1]`-valued indicator-covariance term
+`|μ(A ∩ B).toReal - μ(A).toReal · μ(B).toReal|`, bounded by `1` via
+`indicator_cov_le_one`. Since `1 ≥ 0`, `Real.iSup_le` applies at each of the 4
+nested `⨆` layers without further `BddAbove` witnesses — the same reflective
+trick used in `alphaMixingCoeff_nonneg`.
+
+σ-algebras are passed via the `σPair : Fin 2 → MeasurableSpace Ω` function form
+(cf. `alphaMixingCoeff_nonneg`). -/
+theorem alphaMixingCoeff_le_one
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω) :
+    CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) ≤ 1 := by
+  unfold CentralLimitTheoremOQ02.alphaMixingCoeff
+  apply Real.iSup_le _ (by norm_num); intro A
+  apply Real.iSup_le _ (by norm_num); intro _hA
+  apply Real.iSup_le _ (by norm_num); intro B
+  apply Real.iSup_le _ (by norm_num); intro _hB
+  exact indicator_cov_le_one A B
 
 /-! ## Part IV: Davydov's covariance inequality (S4 target, stated as sorry) -/
 
@@ -301,23 +354,27 @@ bound `H.alpha (k+1)` directly.
 The exponent `(p - 2) / p` specializes to `δ / (2 + δ)` when `p = 2 + δ`,
 giving the standard Davydov–Ibragimov rate.
 
-**Structural decomposition into named ingredients (S4 deliverable).**
+**Structural decomposition into named ingredients (S4/S5 deliverables).**
 The proof of this L^p Davydov inequality reduces to three named order-theory
 ingredients about `alphaMixingCoeff`, plus the L^p density step:
 
-1. **`alphaMixingCoeff_le_one`** (yet to formalize, mechanic target):
+1. **`alphaMixingCoeff_le_one`** (**S5, proven this session**):
    `alphaMixingCoeff μ ℱ 𝒢 ≤ 1` for a probability measure. Pure
    `ConditionallyCompleteLattice ℝ` bound — every term in the defining sup
    is bounded by `1` (via `indicator_cov_le_one`).
-2. **`alphaMixingCoeff_nonneg`** (yet to formalize; the parent file
-   `CentralLimitTheoremOQ02.lean` line 444 omitted this "due to nested
-   ciSup elaboration complexity"): `0 ≤ alphaMixingCoeff μ ℱ 𝒢` by
-   exhibiting `A = B = ∅` in the supremum.
+2. **`alphaMixingCoeff_nonneg`** (**S5, proven this session**; the parent
+   file `CentralLimitTheoremOQ02.lean` line 444 omitted this "due to nested
+   ciSup elaboration complexity"): `0 ≤ alphaMixingCoeff μ ℱ 𝒢`, discharged
+   by reflective use of `Real.iSup_nonneg` at each layer of the 4-fold
+   `⨆`.
 3. **`davydov_indicator_bound`** (yet to formalize, mechanic target — the
    *indicator base case*): for measurable indicators
    `|μ(A ∩ B).toReal - μ(A).toReal · μ(B).toReal| ≤ alphaMixingCoeff μ ℱ 𝒢`.
    This is the defining inequality of `alphaMixingCoeff` packaged for use.
-4. **L^p density step** (S5 target, ~100 lines): truncate `X` and `Y` to
+   The remaining order-theory sorry; needs a `BddAbove` discharge derived
+   from `alphaMixingCoeff_le_one` (proven above) to apply `le_ciSup_of_le`
+   at the 4 nested layers.
+4. **L^p density step** (S5b target, ~100 lines): truncate `X` and `Y` to
    bounded random variables, apply indicator decomposition
    `X = ∫ 1_{X > t} dt` + Hölder's inequality with conjugate exponents
    `(p, p/(p-1))`. This reduces the bound to the indicator base case (3).
