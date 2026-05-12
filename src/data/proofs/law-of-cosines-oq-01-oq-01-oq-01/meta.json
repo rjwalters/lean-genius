@@ -51,7 +51,8 @@
       "B/b = C/c follows from A/a = B/b and A/a = C/c by transitivity: (A/a = B/b).symm.trans (A/a = C/c) ⟹ B/b = C/c. The bare minimum is the conjunction A/a = B/b ∧ A/a = C/c, since the C-equality is enough to derive the third.",
       "This 64-line wrapper is the lightest possible closure of the open question oq-01-oq-01-oq-01: by the time the side-over-angle form (which IS the harder direction, requiring the Gram-determinant nonnegativity argument) is in place, the angle-over-side form is just algebraic bookkeeping.",
       "The two forms (angle/side and side/angle) are not redundant in practice: in spherical astronomy and geodesy, the angle-over-side form is the natural one when angles are measured directly (as observed at a vertex) and side lengths are the unknowns to be solved; the side-over-angle form is natural when sides (great-circle arc lengths) are measured (e.g., from chronometers and bearings) and angles are computed. The Lean formalization preserves this duality by making each direction a separate theorem statement, both proved from the common Gram-determinant identity.",
-      "From a categorical perspective, the symmetry sin(X)/sin(x) ↔ sin(x)/sin(X) is the involution induced by inversion in the multiplicative group of positive reals. The choice of which form to take as primitive is conventional; the Gram-determinant proof produces the symmetric expression sin²(X)·sin²(y)·sin²(z) = G first, and either single-fraction form is then a corollary. This is a small instance of the pattern that homogeneous polynomial identities are more fundamental than affine ratios — algebraic geometers prefer projective invariants over their affine charts for exactly this reason."
+      "From a categorical perspective, the symmetry sin(X)/sin(x) ↔ sin(x)/sin(X) is the involution induced by inversion in the multiplicative group of positive reals. The choice of which form to take as primitive is conventional; the Gram-determinant proof produces the symmetric expression sin²(X)·sin²(y)·sin²(z) = G first, and either single-fraction form is then a corollary. This is a small instance of the pattern that homogeneous polynomial identities are more fundamental than affine ratios — algebraic geometers prefer projective invariants over their affine charts for exactly this reason.",
+      "The `linear_combination -h` step is not merely cosmetic: after `rw [div_eq_div_iff ..]` on both goal and hypothesis the goal becomes sin(A)·sin(b) = sin(B)·sin(a) while h1 becomes sin(a)·sin(B) = sin(b)·sin(A). These differ by a sign and a transposition of factors. `linear_combination -h1` instructs Lean to verify the polynomial identity 0 = (sin A · sin b) - (sin B · sin a) - (-1)·((sin a · sin B) - (sin b · sin A)); the `ring` checker then closes it by commutativity. Choosing the right scalar (-1 rather than +1) is what makes the tactic succeed in one step instead of a brittle nlinarith call."
     ],
     "prerequisites": [
       "Spherical law of sines, side-over-angle form: spherical_law_of_sines_all in Proofs/LawOfCosinesOQ01OQ02.lean",
@@ -214,22 +215,22 @@
     {
       "name": "spherical_law_of_sines_angle_over_side",
       "type": "core",
-      "statement": "$\\forall t : \\mathrm{SphericalTriangle}, t.\\mathrm{NonDegenerate}\\colon \\frac{\\sin A}{\\sin a} = \\frac{\\sin B}{\\sin b} \\,\\land\\, \\frac{\\sin A}{\\sin a} = \\frac{\\sin C}{\\sin c}$",
-      "significance": "**The headline theorem.** Closes OQ-01-OQ-01-OQ-01 from the parent dual-cosine-law entry. Algebraic inversion of the side-over-angle form via `div_eq_div_iff` + `linear_combination` — a textbook one-line manipulation in Lean once the Gram-determinant identity is in scope.",
+      "statement": "$\\forall t : \\mathrm{SphericalTriangle},\\ (h_a : 0 < \\sin a)\\ (h_b : 0 < \\sin b)\\ (h_c : 0 < \\sin c)\\ (h_A : 0 < \\sin A)\\ (h_B : 0 < \\sin B)\\ (h_C : 0 < \\sin C)\\colon\\ \\frac{\\sin A}{\\sin a} = \\frac{\\sin B}{\\sin b} \\,\\land\\, \\frac{\\sin A}{\\sin a} = \\frac{\\sin C}{\\sin c}$",
+      "significance": "**The headline theorem.** Closes OQ-01-OQ-01-OQ-01 from the parent dual-cosine-law entry. Algebraic inversion of the side-over-angle form via `div_eq_div_iff` + `linear_combination` — a textbook one-line manipulation in Lean once the Gram-determinant identity is in scope. The six positive-sine hypotheses are passed through verbatim from the parent (rather than packaged in a `NonDegenerate` predicate) to match the side-over-angle form's signature, avoiding a wrapper layer.",
       "description": "For a non-degenerate spherical triangle, sin(A)/sin(a) = sin(B)/sin(b) ∧ sin(A)/sin(a) = sin(C)/sin(c). Closes the open question oq-01-oq-01-oq-01 raised in the parent entry. Proof: algebraic inversion of the side-over-angle form via div_eq_div_iff + linear_combination."
     },
     {
       "name": "spherical_law_of_sines_BC_angle_over_side",
       "type": "supporting",
-      "statement": "$\\forall t : \\mathrm{SphericalTriangle}, t.\\mathrm{NonDegenerate}\\colon \\frac{\\sin B}{\\sin b} = \\frac{\\sin C}{\\sin c}$",
-      "significance": "Direct transitivity corollary — `h1.symm.trans h2` applied to the main theorem's conjunction. Stated separately so downstream callers can pull the $B/b = C/c$ pair without unpacking the conjunction.",
+      "statement": "$\\forall t : \\mathrm{SphericalTriangle},\\ (h_a : 0 < \\sin a)\\ (h_b : 0 < \\sin b)\\ (h_c : 0 < \\sin c)\\ (h_A : 0 < \\sin A)\\ (h_B : 0 < \\sin B)\\ (h_C : 0 < \\sin C)\\colon\\ \\frac{\\sin B}{\\sin b} = \\frac{\\sin C}{\\sin c}$",
+      "significance": "Direct transitivity corollary — `h1.symm.trans h2` applied to the main theorem's conjunction. Stated separately so downstream callers can pull the $B/b = C/c$ pair without unpacking the conjunction. Takes the same six positive-sine hypotheses as the main theorem because they are required to invoke it.",
       "description": "B/b = C/c follows from the conjunction in the main theorem by transitivity (h1.symm.trans h2). Stated separately for ease of consumption."
     },
     {
       "name": "spherical_law_of_sines_all",
       "type": "supporting",
-      "statement": "$\\forall t : \\mathrm{SphericalTriangle}, t.\\mathrm{NonDegenerate}\\colon \\frac{\\sin a}{\\sin A} = \\frac{\\sin b}{\\sin B} \\,\\land\\, \\frac{\\sin a}{\\sin A} = \\frac{\\sin c}{\\sin C}$",
-      "significance": "**The Gram-determinant input.** Proved in the sibling file `Proofs/LawOfCosinesOQ01OQ02.lean` via the identity $\\sin^2 X \\cdot \\sin^2 y \\cdot \\sin^2 z = G$ where $G$ is the Gram determinant of perpendicular projections. The side-over-angle form is the *natural* output of the Gram framework; this file's main theorem just inverts it.",
+      "statement": "$\\forall t : \\mathrm{SphericalTriangle},\\ (h_a : 0 < \\sin a)\\ (h_b : 0 < \\sin b)\\ (h_c : 0 < \\sin c)\\ (h_A : 0 < \\sin A)\\ (h_B : 0 < \\sin B)\\ (h_C : 0 < \\sin C)\\colon\\ \\frac{\\sin a}{\\sin A} = \\frac{\\sin b}{\\sin B} \\,\\land\\, \\frac{\\sin a}{\\sin A} = \\frac{\\sin c}{\\sin C}$",
+      "significance": "**The Gram-determinant input.** Proved at `LawOfCosinesOQ01OQ02.lean:308` via the identity $\\sin^2 X \\cdot \\sin^2 y \\cdot \\sin^2 z = G$ where $G$ is the Gram determinant of perpendicular projections. The side-over-angle form is the *natural* output of the Gram framework; this file's main theorem just inverts it. Same six positive-sine signature as the inversion theorems here.",
       "description": "Side-over-angle form (proved in parent file Proofs/LawOfCosinesOQ01OQ02.lean): sin(a)/sin(A) = sin(b)/sin(B) ∧ sin(a)/sin(A) = sin(c)/sin(C). This entry's algebraic inversion is the formal converse direction, completing the symmetric formulation."
     }
   ],
