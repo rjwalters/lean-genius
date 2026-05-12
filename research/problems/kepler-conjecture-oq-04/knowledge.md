@@ -220,3 +220,107 @@ strongest decidable form.
 S5/S6 are statement-only axiomatizations of well-known open and
 proven (but heavy) results, providing a clean gallery-side
 documentation of the open landscape around Kepler.
+
+## S3 + S4 (researcher-6, 2026-05-12) — ACT bundled refutation
+
+### Strategy chosen — linear margin, not squaring
+
+The S1 plan called for a **squaring** proof of `4000/4671 > π/(3√2)`
+via `Real.pi_sq_lt` (or equivalent). On inspection, a **linear**
+margin closes the goal much more cleanly:
+
+* `π < 3.15`               → `4671 · π    < 4671 · 3.15 = 14_713.65`
+* `√2 > 1.4`               → `4000 · 3 · √2 > 12_000 · 1.4 = 16_800`
+* Margin `16_800 − 14_713.65 = 2_086.35` (≈ 12.4% of LHS).
+
+**Mathlib v4.26.0 API drift (build 1 → build 2 → build 3).** The
+first build attempt used `Real.pi_lt_315` (`π < 3.15`) and
+`div_lt_div_iff`; build 2 tried `Real.pi_lt_3141593` and
+`div_lt_div_iff₀`. Both `Real.pi_lt_315` and `Real.pi_lt_3141593`
+were dropped in v4.26.0; the canonical name is `Real.pi_lt_d2`
+("decimal-2", `π < 3.15`), with a tighter `Real.pi_lt_d4`
+(`π < 3.1416`) also available. Build 3 uses `Real.pi_lt_d2` and
+`div_lt_div_iff₀` — both work. Saved to memory as
+`feedback_researcher_pi_lt_315_drift.md`.
+
+The `√2 > 1.4` bound comes from `Real.lt_sqrt`'s characterisation
+`x < √y ↔ x² < y` (for `0 ≤ x`), instantiated at `x = 1.4`, `y = 2`:
+since `1.4² = 1.96 < 2`, we get `1.4 < √2` directly — no axiom, no
+`Real.sqrt_two_gt_*` constant required.
+
+This is the cleanest formulation we found:
+
+```lean
+have hπ_ub : Real.pi < 3.15 := Real.pi_lt_d2
+have hs2_lb : (1.4 : ℝ) < Real.sqrt 2 :=
+  (Real.lt_sqrt (by norm_num : (0 : ℝ) ≤ 1.4)).mpr (by norm_num : (1.4:ℝ)^2 < 2)
+have h3s_pos : (0 : ℝ) < 3 * Real.sqrt 2 := by positivity
+rw [div_lt_div_iff₀ h3s_pos (by norm_num : (0:ℝ) < 4671)]
+-- Goal: Real.pi * 4671 < 4000 * (3 * Real.sqrt 2)
+nlinarith [Real.pi_pos, hπ_ub, hs2_lb]
+```
+
+5 lines of tactic; `nlinarith` closes the goal in one step because
+all relevant bounds are linear in `π` and `√2` (after `Real.lt_sqrt`
+discharges the quadratic step for `√2`).
+
+### Why we skipped the squaring approach
+
+The S1 plan suggested squaring both sides to land in a polynomial
+inequality `21_818_241 · π² < 288_000_000`, which would then be
+closed via `Real.pi_lt_315` and `(√2)² = 2`. This works but requires:
+
+1. A lemma to "unsquare" (`lt_of_pow_lt_pow_left` or `sq_lt_sq`)
+   — added complexity for a degree-2 → degree-1 step.
+2. A `nlinarith` call with several auxiliary `sq_nonneg` hints —
+   slower compile time, more brittle.
+
+The linear-margin chain avoids both. The 12.4% margin is generous
+enough that no quadratic refinement is needed.
+
+### S4 — `PackingDensity` instance
+
+```lean
+noncomputable def tetrahedronDimerPacking : PackingDensity where
+  density := tetrahedronDimerDensity
+  nonneg  := tetrahedronDimerDensity_pos.le
+  le_one  := tetrahedronDimerDensity_lt_one.le
+
+theorem exists_packingDensity_gt_fcc :
+    ∃ p : PackingDensity, fccDensity < p.density :=
+  ⟨tetrahedronDimerPacking, tetrahedronDimerDensity_gt_fccDensity⟩
+```
+
+`PackingDensity` is defined in the parent `Proofs.KeplerConjecture`
+as a structure carrying `density : ℝ`, `nonneg : 0 ≤ density`,
+`le_one : density ≤ 1`. The `tetrahedronDimerPacking` instance plugs
+in `tetrahedronDimerDensity := 4000/4671` with the S2 positivity /
+`< 1` bounds, giving a first-class `PackingDensity` witness.
+
+The existential `exists_packingDensity_gt_fcc` then formalises "the
+parent's `PackingDensity` type admits values above `fccDensity`",
+which is the bottom-line OQ-04 result.
+
+### What S3+S4 closes
+
+* **OQ-04 in its strongest axiom-free decidable form**: a
+  type-level witness that `PackingDensity > fccDensity` is achievable
+  in ℝ³, refuting any naive shape-universality reading of the
+  Kepler-Hales upper bound.
+* **Sets up S5/S6 as STATEMENT-only additions**: the remaining
+  ellipsoid (Bezdek–Kuperberg) and Ulam (1972) axioms are about
+  *other* convex body classes — they don't depend on the tetrahedral
+  result and can be added independently in later iterations.
+
+### Risk notes (carried forward)
+
+* `proofs/.lake` symlink trap → expect ~30–45 min build time per
+  Docker invocation.
+* S3 inequality is sharp enough that `nlinarith` succeeds with
+  exactly the three hypotheses given; if Mathlib v4.26+ deprecates
+  `Real.lt_sqrt` (renamed `Real.lt_sqrt_of_sq_lt` or similar in
+  some future versions), the proof would need 1 line of
+  conversion. As of 2026-05-12 pinned revision, `Real.lt_sqrt`
+  is the canonical name (cf. `Erdos44Problem.lean:160`,
+  `Erdos131Problem.lean:204`).
+

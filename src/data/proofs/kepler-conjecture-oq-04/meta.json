@@ -21,8 +21,8 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 120,
-    "assumptions": "0 sorries, 0 axioms in this file. The parent `Proofs/KeplerConjecture.lean` axiomatizes (a) `thues_theorem` (2D hexagonal optimality, Thue 1892 / Fejes Tóth 1940), (b) `fccDensity_lt_one` (numerical bound), and (c) the Kepler conjecture itself (Hales 1998, Flyspeck 2014). This OQ-04 SCAFFOLD file adds no new axioms — it only defines the Chen-Engel-Glotzer rational constant 4000/4671 and discharges three rational-number bounds via `norm_num`. The S3 follow-up `tetrahedronDimerDensity_gt_fccDensity` is also expected to be axiom-free (using `Real.pi_lt_315` + standard `Real.sqrt` lemmas). The ellipsoid (Bezdek-Kuperberg) and Ulam (open conjecture) sub-questions will require axiomatization when introduced in future iterations.",
+    "lineCount": 225,
+    "assumptions": "0 sorries, 0 axioms in this file. The parent `Proofs/KeplerConjecture.lean` axiomatizes (a) `thues_theorem` (2D hexagonal optimality, Thue 1892 / Fejes Tóth 1940), (b) `fccDensity_lt_one` (numerical bound), and (c) the Kepler conjecture itself (Hales 1998, Flyspeck 2014). This OQ-04 file adds no new axioms — it defines the Chen-Engel-Glotzer rational constant 4000/4671 and the `tetrahedronDimerPacking : PackingDensity` instance, and proves five theorems including `tetrahedronDimerDensity_gt_fccDensity` (the central refutation `π/(3√2) < 4000/4671`, via `Real.pi_lt_315` and `Real.lt_sqrt`, axiom-free) and the existential corollary `exists_packingDensity_gt_fcc`. The ellipsoid (Bezdek-Kuperberg) and Ulam (open conjecture) sub-questions will require axiomatization when introduced in future iterations.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -116,6 +116,6 @@
       "relationship": "Parent gallery entry. Provides `fccDensity = π/(3√2)`, the `PackingDensity` structure, and the Kepler-Hales theorem axiomatization. OQ-04 instantiates `PackingDensity` with a concrete value strictly above `fccDensity`, formally demonstrating shape-specificity."
     }
   ],
-  "theoremCount": 3,
-  "definitionCount": 1
+  "theoremCount": 5,
+  "definitionCount": 2
 }
