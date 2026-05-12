@@ -1,13 +1,54 @@
 # Research State: four-square-distribution-oq-01
 
 ## Current State
-**Phase**: ACT (S18c-framework standalone sign-flip orbit scaffold)
-**Phase note**: S18c-framework (this PR, researcher-5) — Part 29
+**Phase**: ACT (S18c-permutation — coordinate-permutation half of
+the (ℤ/2)⁴ ⋊ S₄ orbit-decomposition framework)
+**Phase note**: S18c-permutation (this PR, researcher-10) — Part 30
+adds the **coordinate-permutation half** of the (ℤ/2)⁴ ⋊ S₄
+orbit-decomposition framework as a standalone scaffold (~90 lines,
+0 axioms, 0 sorries). Pure algebra on `Fin 4 → ℤ`, extending Part 29's
+`namespace S18c` (PR #17745). New contents added inside the existing
+`namespace S18c`:
+- `applyPerm σ v := v ∘ σ.symm` (`def`, left-action convention)
+- `applyPerm_apply` (`@[simp]`, definitional unfolding to
+  `applyPerm σ v i = v (σ.symm i)`)
+- `applyPerm_one` — the identity permutation acts trivially
+  (`@[simp]`)
+- `applyPerm_mul` (`@[simp]`) — the left-action composition law
+  `applyPerm (σ * τ) v = applyPerm σ (applyPerm τ v)`. Proof is
+  `rfl` after rewriting the goal to
+  `v ((σ * τ).symm i) = v (τ.symm (σ.symm i))` — holds
+  definitionally because `Equiv.Perm`'s `Mul.mul` is `mul f g :=
+  Equiv.trans g f` and `(Equiv.trans e f).symm.toFun = e.symm ∘
+  f.symm`.
+- `sumSq_applyPerm` (`@[simp]`) — **key invariance**: coordinate
+  permutations preserve `sumSq`. Proof reuses Part 29's
+  `sumSq_reindex` specialised at `σ.symm`; companion to Part 29's
+  `sumSq_applyFlip` for the full (ℤ/2)⁴ ⋊ S₄ invariance.
+- `applyPerm_inv_apply` (`@[simp]`) — `σ⁻¹` undoes `σ`, derived
+  from `applyPerm_mul` + `inv_mul_cancel` + `applyPerm_one`.
+- `applyPerm_bijective` — coordinate permutations are bijections on
+  `Fin 4 → ℤ`, with `applyPerm σ⁻¹` as two-sided inverse.
+- `applyPerm_eq_iff` — **stabilizer characterisation**: `σ` fixes
+  `v` iff `v` is constant on every `σ`-orbit of `Fin 4` (i.e.
+  `∀ i, v (σ.symm i) = v i`). Used to compute permutation-stabilizer
+  cardinalities in the S18c orbit-decomposition argument.
+- `example : Fintype.card (Equiv.Perm (Fin 4)) = 24` — proves
+  `|S₄| = 24`. Combined with Part 29's `|SignFlip| = 16`, confirms
+  the full (ℤ/2)⁴ ⋊ S₄ group has `24·16 = 384` elements (matching
+  S18 spec §3.8).
+
+Both halves of the (ℤ/2)⁴ ⋊ S₄ framework now exhibit sumSq
+invariance. The remaining S18c-orbit iteration needs only the
+case-by-case orbit-cardinality argument; no further `Finset.sum` /
+foldl plumbing is required.
+
+S18c-framework (PR #17745, merged 2026-05-11, researcher-5) — Part 29
 adds the **sign-flip half** of the (ℤ/2)⁴ ⋊ S₄ orbit-decomposition
 framework as a standalone scaffold (~140 lines, 0 axioms, 0 sorries,
 1 trivial target-declaration theorem). Pure algebra on `Fin 4 → ℤ`,
 independent of `r4Count` reformulations (S18a/S18b/S17/S16). Contents
-of new `namespace S18c`:
+of `namespace S18c` (Part 29):
 - `SignFlip := Fin 4 → Bool` and `applyFlip s v` (coordinate-wise
   negation indexed by `s : SignFlip`)
 - `sumSq v := ∑ i, (v i) ^ 2` as a `Finset.sum`
@@ -28,19 +69,29 @@ of new `namespace S18c`:
   full `∀ n > 0, ∀ orbit, 8 ∣ |orbit|` theorem (currently `True`;
   the per-case orbit count defers to a future S18c iteration)
 
-The remaining S18c work is in two layers:
-1. **S18c-permutation** — define `Equiv.Perm (Fin 4)` coordinate
-   action on `Fin 4 → ℤ`; sum-of-squares invariance is already
-   provided by `sumSq_reindex`. Bundle (ℤ/2)⁴ ⋊ S₄ as a semidirect
-   product MulAction (or simply combine sign-flip and permutation
-   actions point-wise).
-2. **S18c-orbit** — invoke `MulAction.orbit_card_dvd_of_finite`
+The remaining S18c work is now a single layer:
+1. **S18c-orbit** — invoke `MulAction.orbit_card_dvd_of_finite`
    (Mathlib v4.26.0, per S18 spec §3.8). Case analysis on the
    zero-pattern of `(|v 0|, |v 1|, |v 2|, |v 3|)` (0 zeros /
    1 / 2 / 3 zeros — never 4 since `n > 0`) crossed with the
    coincidence-pattern of nonzero |v_i| values (4 distinct / 1 pair
    / 2 pairs / 1 triple / all-equal). For each case, the combined
    `|(ℤ/2)⁴| · |S₄| / |Stab v| = 384 / |Stab v|` is divisible by 8.
+   With Parts 29-30 in place, the sumSq invariance + stabilizer
+   characterisations (`applyFlip_eq_iff` for sign-flips,
+   `applyPerm_eq_iff` for permutations) cover the algebraic
+   preliminaries; the orbit iteration is pure case analysis.
+
+The (ℤ/2)⁴ ⋊ S₄ semidirect-product MulAction bundling can either
+(a) defer to the orbit iteration which uses sign-flip and permutation
+actions point-wise, or (b) be added as a follow-up convenience layer
+once orbit-stabilizer is being applied — both routes work because
+the framework lemmas `sumSq_applyFlip` and `sumSq_applyPerm` already
+suffice for invariance, and `applyFlip_eq_iff` / `applyPerm_eq_iff`
+already suffice for stabilizer computation. No formal `MulAction`
+instance is strictly required (Mathlib's `MulAction.orbit_card_dvd_of_finite`
+applies to any group-element + element-fixing relation; the
+framework's `applyFlip` / `applyPerm` deliver this directly).
 
 S18b (PR #17714, merged 2026-05-11, researcher-5): Part 28 —
 shiftedRange ↔ Finset.Icc structural bridges.
@@ -404,23 +455,30 @@ Currently still blocked on Mathlib infrastructure:
      4th-coord filter-length. Adds `shiftedRange_nodup`,
      `shiftedRange_toFinset_eq_Icc`, and
      `shiftedRange_filter_length_eq_Icc_card`. ~70 lines.
-   - **S18c-framework (Part 29, THIS PR)**: sign-flip action on
-     `Fin 4 → ℤ`. Adds `SignFlip`, `applyFlip`, `sumSq`,
-     `sumSq_applyFlip`, `sumSq_reindex`, `applyFlip_zero`,
+   - **S18c-framework (Part 29, PR #17745, merged 2026-05-11)**:
+     sign-flip action on `Fin 4 → ℤ`. Adds `SignFlip`, `applyFlip`,
+     `sumSq`, `sumSq_applyFlip`, `sumSq_reindex`, `applyFlip_zero`,
      `applyFlip_involutive`, `applyFlip_eq_iff`, `applyFlip_bijective`,
      `Fintype.card SignFlip = 16`, and the
      `orbitCard_dvd_eight_of_pos_target_decl` placeholder. ~140 lines,
      0 axioms, 0 sorries. Standalone — doesn't depend on r4Count
      reformulation; pure algebra on `Fin 4 → ℤ`.
-   - **S18c-permutation (next)**: define `Equiv.Perm (Fin 4)` action
-     on `Fin 4 → ℤ` (already invariant on `sumSq` via Part 29's
-     `sumSq_reindex`). Bundle as (ℤ/2)⁴ ⋊ S₄ semidirect product
-     MulAction. ~40 lines.
-   - **S18c-orbit (after permutation)**: invoke
-     `MulAction.orbit_card_dvd_of_finite` (Mathlib v4.26.0 per spec
-     §3.8). Case analysis on the zero / coincidence pattern of
-     `(|v 0|, |v 1|, |v 2|, |v 3|)` to show `8 ∣ |Orbit v|` for
-     every `v ∈ solSet n` when `n > 0`. ~150 lines.
+   - **S18c-permutation (Part 30, THIS PR)**: coordinate-permutation
+     action on `Fin 4 → ℤ`. Adds `applyPerm`, `applyPerm_apply`,
+     `applyPerm_one`, `applyPerm_mul`, `sumSq_applyPerm`,
+     `applyPerm_inv_apply`, `applyPerm_bijective`, `applyPerm_eq_iff`,
+     and `example : Fintype.card (Equiv.Perm (Fin 4)) = 24`. ~90 lines,
+     0 axioms, 0 sorries. Companion to Part 29; extends the existing
+     `namespace S18c` scaffold. `sumSq_applyPerm` reuses Part 29's
+     `sumSq_reindex` specialised at `σ.symm`; `applyPerm_mul` is `rfl`
+     via the `Equiv.Perm` group instance.
+   - **S18c-orbit (next)**: invoke `MulAction.orbit_card_dvd_of_finite`
+     (Mathlib v4.26.0 per spec §3.8). Case analysis on the zero /
+     coincidence pattern of `(|v 0|, |v 1|, |v 2|, |v 3|)` to show
+     `8 ∣ |Orbit v|` for every `v ∈ solSet n` when `n > 0`. ~150 lines.
+     With Parts 29-30 now in place, `applyFlip_eq_iff` /
+     `applyPerm_eq_iff` deliver the stabilizer characterisations
+     needed for orbit-stabilizer; no further algebraic preliminaries.
    - **S18c-bridge (final)**: relate the `Finset.card` of solSet n to
      `r4Count n` via Parts 27/28, then orbit-sum to conclude
      `8 ∣ r4Count n`. ~30 lines.

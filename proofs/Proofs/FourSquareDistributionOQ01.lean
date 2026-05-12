@@ -2532,6 +2532,98 @@ lemma sumSq_reindex (σ : Equiv.Perm (Fin 4)) (v : Fin 4 → ℤ) :
   simp only [Function.comp_apply]
   exact Equiv.sum_comp σ (fun i => (v i) ^ 2)
 
+-- =====================================================================
+-- PART 30 (S18c-PERMUTATION): coordinate-permutation action on (Fin 4 → ℤ)
+-- =====================================================================
+-- Permutation half of the (ℤ/2)⁴ ⋊ S₄ orbit-decomposition framework
+-- (companion to Part 29's sign-flip half). Defines a left action of
+-- `Equiv.Perm (Fin 4)` on `Fin 4 → ℤ` and records the group-action laws
+-- plus the sum-of-squares invariance already supplied by `sumSq_reindex`.
+--
+-- Action convention: `applyPerm σ v := v ∘ σ.symm`. With `σ.symm = σ⁻¹`,
+-- this satisfies the left-action laws
+--   `applyPerm 1 v = v`,
+--   `applyPerm (σ * τ) v = applyPerm σ (applyPerm τ v)`,
+-- so `(σ ↦ applyPerm σ)` is a group homomorphism from `Equiv.Perm (Fin 4)`
+-- into bijections of `Fin 4 → ℤ`. Combined with Part 29's `applyFlip`,
+-- this is the S₄ half of the (ℤ/2)⁴ ⋊ S₄ semidirect-product action.
+
+/-- Apply a coordinate-permutation `σ : Equiv.Perm (Fin 4)` to a 4-tuple
+    `v : Fin 4 → ℤ`. The convention `v ∘ σ.symm` is the left-action one:
+    `applyPerm (σ * τ) v = applyPerm σ (applyPerm τ v)`. -/
+def applyPerm (σ : Equiv.Perm (Fin 4)) (v : Fin 4 → ℤ) : Fin 4 → ℤ :=
+  v ∘ σ.symm
+
+@[simp] lemma applyPerm_apply
+    (σ : Equiv.Perm (Fin 4)) (v : Fin 4 → ℤ) (i : Fin 4) :
+    applyPerm σ v i = v (σ.symm i) := rfl
+
+/-- The identity permutation acts trivially. -/
+@[simp] lemma applyPerm_one (v : Fin 4 → ℤ) :
+    applyPerm (1 : Equiv.Perm (Fin 4)) v = v := by
+  funext i
+  simp [applyPerm]
+
+/-- Left-action composition: `(σ * τ) • v = σ • (τ • v)`. -/
+@[simp] lemma applyPerm_mul (σ τ : Equiv.Perm (Fin 4)) (v : Fin 4 → ℤ) :
+    applyPerm (σ * τ) v = applyPerm σ (applyPerm τ v) := by
+  funext i
+  -- `(σ * τ) = τ.trans σ` and `(τ.trans σ).symm i = τ.symm (σ.symm i)`
+  -- both hold definitionally for `Equiv.Perm`, so this is `rfl`.
+  rfl
+
+/-- **Key invariance:** coordinate permutations preserve `sumSq`.
+
+    Companion to Part 29's `sumSq_applyFlip`. Together they give full
+    invariance of `sumSq` under the (ℤ/2)⁴ ⋊ S₄ semidirect-product
+    action used in the S18c orbit-decomposition argument. -/
+@[simp] lemma sumSq_applyPerm
+    (σ : Equiv.Perm (Fin 4)) (v : Fin 4 → ℤ) :
+    sumSq (applyPerm σ v) = sumSq v := by
+  -- `applyPerm σ v = v ∘ σ.symm`, and `sumSq_reindex` covers `v ∘ τ`
+  -- for any permutation `τ`; specialise at `τ := σ.symm`.
+  unfold applyPerm
+  exact sumSq_reindex σ.symm v
+
+/-- The inverse permutation undoes the action: `σ⁻¹ • (σ • v) = v`. -/
+@[simp] lemma applyPerm_inv_apply (σ : Equiv.Perm (Fin 4)) (v : Fin 4 → ℤ) :
+    applyPerm σ⁻¹ (applyPerm σ v) = v := by
+  rw [← applyPerm_mul, inv_mul_cancel, applyPerm_one]
+
+/-- Coordinate-permutation action is a bijection on `Fin 4 → ℤ`,
+    with `applyPerm σ⁻¹` as its two-sided inverse. -/
+lemma applyPerm_bijective (σ : Equiv.Perm (Fin 4)) :
+    Function.Bijective (applyPerm σ) := by
+  refine ⟨?_, ?_⟩
+  · intro v w h
+    have := congrArg (applyPerm σ⁻¹) h
+    simpa [applyPerm_inv_apply] using this
+  · intro w
+    refine ⟨applyPerm σ⁻¹ w, ?_⟩
+    rw [← applyPerm_mul, mul_inv_cancel, applyPerm_one]
+
+/-- **Stabilizer characterisation** of the coordinate-permutation action:
+    `σ` fixes `v` iff `v` is constant on every `σ`-orbit of `Fin 4`.
+    Used to compute permutation-stabilizer cardinalities in the
+    S18c orbit-decomposition argument. -/
+lemma applyPerm_eq_iff (σ : Equiv.Perm (Fin 4)) (v : Fin 4 → ℤ) :
+    applyPerm σ v = v ↔ ∀ i, v (σ.symm i) = v i := by
+  constructor
+  · intro h i
+    have hi := congrFun h i
+    simpa [applyPerm] using hi
+  · intro h
+    funext i
+    simpa [applyPerm] using h i
+
+/-- The coordinate-permutation type `Equiv.Perm (Fin 4)` has cardinality
+    `4! = 24` (i.e. the S₄ subgroup has order 24). Together with
+    `Fintype.card SignFlip = 16` (Part 29), this confirms the full
+    (ℤ/2)⁴ ⋊ S₄ group has `16 * 24 = 384` elements. -/
+example : Fintype.card (Equiv.Perm (Fin 4)) = 24 := by
+  rw [Fintype.card_perm, Fintype.card_fin]
+  decide
+
 /-- **(S18c-orbit, TARGET DECLARATION, deferred)** Every orbit of the
     (ℤ/2)⁴ ⋊ S₄ action on the four-square solution set has cardinality
     divisible by 8 when `n > 0`.
