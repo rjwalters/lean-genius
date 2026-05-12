@@ -29,19 +29,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T08:30:00Z",
-    "iteration": 4,
-    "focus": "S3 ACT (this PR, researcher-6) — added three unconditional helpers to MinpolyCharpolyOQ03.lean: prodFactors_ne_zero, prodFactors_natDegree (with private list_prod_natDegree_of_all_monic), and chain_natDegree_le. File now 297 lines (was 223), 1 sorry unchanged, 7 theorems (was 4), 3 definitions, 2 private aux lemmas. In parallel: PR #17995 (researcher-1) opened S1 OQ-03-OQ-01 SCAFFOLD adding MinpolyCharpolyOQ03OQ01.lean (xModule M, Module.Finite proved, Module.IsTorsion stated).",
+    "since": "2026-05-12T11:50:00Z",
+    "iteration": 5,
+    "focus": "S4 ACT (this PR, researcher-1) — added three lastFactor-side helpers to MinpolyCharpolyOQ03.lean: lastFactor_mem, lastFactor_monic, lastFactor_natDegree_maximal (S3's option 4). Internal bridge lemma lastFactor_eq_getElem_pred packages getLast?.getD 1 = factors[length-1] for nonempty lists. File now 377 lines (was 297), 1 sorry unchanged on rational_canonical_form_exists, 10 public theorems (was 7), 3 definitions, 3 private auxiliary lemmas (was 2). PR #17995 (S1 OQ-03-OQ-01 SCAFFOLD) merged 2026-05-12T09:57Z; option 1 from S3's next-action list advanced under a different agent.",
     "blockers": [],
-    "nextAction": "S4 options (one of): (1) Discharge xModule_isTorsionBy_charpoly in PR #17995 file (route through Matrix.aeval_self_charpoly + Matrix.toLinAlgEquiv); (2) Strong-form upgrade of rational_canonical_form_exists adding c.lastFactor = M.minpoly (~5 lines, sorry-preserved); (3) OQ-03-OQ-02 SCAFFOLD applying Module.equiv_directSum_of_isTorsion to extract invariant-factor decomposition (~300 lines); (4) More structural helpers (lastFactor_mem, lastFactor_monic, lastFactor_natDegree_maximal as a chain_natDegree_le application).",
+    "nextAction": "S5 options (one of): (1) OQ-03-OQ-01 S2 — discharge xModule_isTorsionBy_charpoly in PR #17995's now-merged MinpolyCharpolyOQ03OQ01.lean (Matrix.aeval_self_charpoly + Matrix.toLinAlgEquiv + naturality of aeval); (2) Strong-form upgrade of rational_canonical_form_exists adding c.lastFactor = M.minpoly (~5 lines, sorry-preserved) — with S4 lastFactor helpers available, a downstream lastFactor_natDegree_le_charpoly_natDegree corollary becomes 1 line; (3) OQ-03-OQ-02 SCAFFOLD applying Module.equiv_directSum_of_isTorsion (~300 lines); (4) Further structural helpers — prodFactors_natDegree_le_lastFactor_natDegree_mul combines S3 prodFactors_natDegree with S4 lastFactor_natDegree_maximal.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
+      "total": 4,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S3 ACT (researcher-6, 2026-05-12, this PR) — added three unconditional helpers extending S2: prodFactors_ne_zero (corollary), prodFactors_natDegree (with private list_prod_natDegree_of_all_monic), and chain_natDegree_le. File now 297 lines (was 223), 1 sorry unchanged, 7 theorems (was 4), 3 definitions, 2 private aux lemmas. Builds the dimensional-bookkeeping toolkit needed for OQ-03-OQ-04 (∑ deg pᵢ = n) and the eventual lastFactor = minpoly assertion. Parallel work: PR #17995 (researcher-1) opened S1 OQ-03-OQ-01 SCAFFOLD on a new file.",
+    "progressSummary": "S4 ACT (researcher-1, 2026-05-12, this PR) — added three unconditional lastFactor-side helpers (S3's option 4): lastFactor_mem (via List.getLast?_eq_getLast + List.getElem_mem), lastFactor_monic (one-liner via the chain's monic field), and lastFactor_natDegree_maximal (one-line application of S3's chain_natDegree_le with the last index). Internal bridge lemma lastFactor_eq_getElem_pred packages getLast?.getD 1 = factors[length-1] for nonempty lists. File now 377 lines (was 297), 1 sorry unchanged, 10 public theorems (was 7), 3 definitions, 3 private auxiliary lemmas (was 2). Builds the lastFactor-side toolkit needed to identify c.lastFactor with M.minpoly in the eventual matrix instantiation. PR #17995 (S1 OQ-03-OQ-01 SCAFFOLD) merged 2026-05-12T09:57Z.",
     "builtItems": [
       "InvariantFactorChain F (structure): bundles factors + monic + posDegree + divisibility chain as a first-class invariant.",
       "InvariantFactorChain.prodFactors (noncomputable def): the product ∏ p_i — target value charpoly(M).",
@@ -50,7 +50,11 @@
       "prodFactors_empty (theorem, unconditional): empty invariant-factor chain has product 1.",
       "prodFactors_ne_zero (theorem, S3, unconditional): the product of the invariant factors is nonzero. Direct corollary of prodFactors_monic via Monic.ne_zero.",
       "prodFactors_natDegree (theorem, S3, unconditional): the natDegree of the product equals the sum of factor natDegrees. Uses private list_prod_natDegree_of_all_monic auxiliary, which inducts via Polynomial.natDegree_mul on monic factors (monic ⇒ nonzero).",
-      "chain_natDegree_le (theorem, S3, unconditional): divisibility chain ⇒ natDegree chain. For i ≤ j, factors[i].natDegree ≤ factors[j].natDegree. Uses the structure chain field + Polynomial.natDegree_le_of_dvd + List.getElem_mem + Monic.ne_zero."
+      "chain_natDegree_le (theorem, S3, unconditional): divisibility chain ⇒ natDegree chain. For i ≤ j, factors[i].natDegree ≤ factors[j].natDegree. Uses the structure chain field + Polynomial.natDegree_le_of_dvd + List.getElem_mem + Monic.ne_zero.",
+      "lastFactor_mem (theorem, S4, unconditional): when c.factors ≠ [], c.lastFactor ∈ c.factors. Direct via List.getLast?_eq_getLast + List.getElem_mem (through bridging lemma).",
+      "lastFactor_monic (theorem, S4, unconditional): when c.factors ≠ [], c.lastFactor is monic. One-liner: c.monic _ (lastFactor_mem c h).",
+      "lastFactor_natDegree_maximal (theorem, S4, unconditional): every p ∈ c.factors has p.natDegree ≤ c.lastFactor.natDegree (when c.factors ≠ []). One-line application of chain_natDegree_le with j = length-1. Abstract counterpart of 'pₖ = minpoly M has maximal degree among invariant factors'.",
+      "lastFactor_eq_getElem_pred (private theorem, S4, unconditional): when c.factors ≠ [], c.lastFactor = c.factors[c.factors.length - 1]'(_). Bridges the getLast?.getD 1 definition to Fin-indexed access used by chain_natDegree_le."
     ],
     "insights": [
       "**Three-ingredient resolution**: companion matrices in-tree + Mathlib `Module.equiv_directSum_of_isTorsion` + cyclic-summand-to-companion correspondence. No genuine Mathlib gap; only integrative work remains (~900 lines via four sub-OQs).",
@@ -59,17 +63,19 @@
       "**Weak vs strong RCF**: S1 statement asserts only `prodFactors = charpoly M`, omitting the full similarity claim and `lastFactor = minpoly M` equality. Both deferred to S2+ to keep the scaffold minimal.",
       "**Routing via PID structure theorem beats Smith normal form**: the ~900-line roadmap is significantly shorter than the ~1800-line SNF route documented in `CayleyHamiltonReductionOQ02OQ01.lean`'s gap assessment, because Mathlib's `Module.equiv_directSum_of_isTorsion` already encapsulates the SNF-equivalent reduction.",
       "**natDegree-sum identity for monic chains**: prodFactors_natDegree gives c.prodFactors.natDegree = (c.factors.map natDegree).sum, which is what makes the dimensional bookkeeping in OQ-03-OQ-04 (∑ deg pᵢ = n) statable and discharable from the abstract chain alone, without circling back through matrix-level facts.",
-      "**Divisibility chain bounds last-factor degree**: chain_natDegree_le packages the structure's divisibility chain into a natDegree-monotone form. Once OQ-03-OQ-02 lands and produces a chain with prodFactors = charpoly M, lastFactor_natDegree_maximal becomes a 1-line application — and combined with prodFactors_natDegree this yields the bound lastFactor.natDegree ≤ n (matrix dimension) for free."
+      "**Divisibility chain bounds last-factor degree**: chain_natDegree_le packages the structure's divisibility chain into a natDegree-monotone form. Once OQ-03-OQ-02 lands and produces a chain with prodFactors = charpoly M, lastFactor_natDegree_maximal becomes a 1-line application — and combined with prodFactors_natDegree this yields the bound lastFactor.natDegree ≤ n (matrix dimension) for free.",
+      "**lastFactor identification trick**: bridging `getLast?.getD 1` with `factors[length-1]` via a single private lemma `lastFactor_eq_getElem_pred` keeps every public `lastFactor`-side fact a one-liner. The trick: rewrite `getLast?` to `some (getLast h)` using `List.getLast?_eq_getLast`, then `Option.getD some` reduces by rfl, and `List.getLast_eq_getElem` finishes the indexed identification.",
+      "**Degree-maximality bookkeeping is structure-only**: lastFactor_natDegree_maximal needs no matrix machinery — it follows purely from the divisibility chain field. Combined with prodFactors_natDegree (S3) this gives `prodFactors.natDegree ≤ factors.length · lastFactor.natDegree` as a 1-line corollary; combined with `prodFactors = charpoly M` (eventual matrix instantiation) it gives `lastFactor.natDegree ≤ n` (matrix dimension) directly, no separate degree-chase needed."
     ],
     "mathlibGaps": [
       "Module.equiv_directSum_of_isTorsion — referenced from `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean` line 240. API surface in use; minor S2 verification task to confirm exact signature.",
       "No genuine gaps identified — all required Mathlib lemmas are either confirmed in-tree-use or documented in `Mathlib.Algebra.Module.PID`."
     ],
     "nextSteps": [
-      "OQ-03-OQ-01 S2: discharge xModule_isTorsionBy_charpoly in PR #17995's file (Matrix.aeval_self_charpoly + Matrix.toLinAlgEquiv + naturality of aeval).",
-      "Strong-form upgrade (~5 lines): extend rational_canonical_form_exists to also assert c.lastFactor = M.minpoly. With chain_natDegree_le available, lastFactor_natDegree_maximal becomes a 1-line corollary.",
+      "OQ-03-OQ-01 S2: discharge xModule_isTorsionBy_charpoly in PR #17995's now-merged MinpolyCharpolyOQ03OQ01.lean (Matrix.aeval_self_charpoly + Matrix.toLinAlgEquiv + naturality of aeval).",
+      "Strong-form upgrade (~5 lines): extend rational_canonical_form_exists to also assert c.lastFactor = M.minpoly. With S4 lastFactor_mem/_monic/_natDegree_maximal available, a downstream lastFactor_natDegree_le_charpoly_natDegree corollary becomes a 1-line combination of S3 prodFactors_natDegree and S4 lastFactor_natDegree_maximal.",
       "OQ-03-OQ-02 SCAFFOLD (~300 lines): apply Module.equiv_directSum_of_isTorsion to extract the invariant-factor decomposition; can run in parallel with OQ-03-OQ-01 S2.",
-      "More structural helpers on InvariantFactorChain: lastFactor_mem (factors ≠ []), lastFactor_monic, lastFactor_natDegree_maximal (1-line use of chain_natDegree_le), prodFactors_natDegree_le_n (matrix-level instantiation once OQ-03-OQ-02 lands).",
+      "Further structural helpers on InvariantFactorChain: prodFactors_natDegree_le_lastFactor_natDegree_mul (combines S3 + S4), prodFactors_natDegree_le_n (matrix-level instantiation once OQ-03-OQ-02 lands).",
       "Audit: confirm Module.equiv_directSum_of_isTorsion signature pinned at v4.26.0 before OQ-03-OQ-02 SCAFFOLD writes the application call.",
       "Build verification: ./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ03 (~45 min Docker cold per proofs/.lake self-symlink trap)."
     ]
@@ -108,7 +114,7 @@
     ]
   },
   "started": "2026-05-12T04:48:16.449Z",
-  "lastUpdate": "2026-05-12T07:00:00Z",
+  "lastUpdate": "2026-05-12T11:55:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -126,8 +132,8 @@
     {
       "path": "Proofs/MinpolyCharpolyOQ03.lean",
       "filename": "MinpolyCharpolyOQ03.lean",
-      "lineCount": 191,
-      "theoremCount": 2,
+      "lineCount": 377,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 1,
