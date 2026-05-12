@@ -8,15 +8,16 @@
 
   Claude Shannon (1948)
 
-  Axioms: 4 (fano_inequality, channel_coding_achievability,
-    channel_coding_converse, bsc_capacity_eq)
-  Theorems: 8 (jointDist_nonneg, jointDist_sum_one, channelMI_nonneg,
+  Axioms: 3 (channel_coding_achievability, channel_coding_converse,
+    bsc_capacity_eq)
+  Theorems: 9 (jointDist_nonneg, jointDist_sum_one, channelMI_nonneg,
     channelMI_le_log_card, capacity_nonneg, rate_of_code_pos,
-    bsc_capacity_le_one, bsc_capacity_nonneg)
+    fano_inequality, bsc_capacity_le_one, bsc_capacity_nonneg)
   Sorries: 0
 -/
 import Mathlib
 import Proofs.ShannonEntropy
+import Proofs.ShannonChannelCodingOQ02OQ01
 
 open Real Finset InformationTheory
 
@@ -149,15 +150,19 @@ theorem rate_of_code_pos {α : Type*} {n : ℕ} (hn : 0 < n)
     where h is binary entropy and P_e is the error probability.
 
     This bounds conditional entropy in terms of error probability,
-    and is the key tool for the converse of the channel coding theorem. -/
-axiom fano_inequality {α β : Type*} [Fintype α] [Fintype β]
+    and is the key tool for the converse of the channel coding theorem.
+
+    Discharged via `FanoFromConditionalEntropy.fano_inequality_proved` in
+    `Proofs.ShannonChannelCodingOQ02OQ01`. -/
+theorem fano_inequality {α β : Type*} [Fintype α] [Fintype β]
     [DecidableEq α] [DecidableEq β]
     (pXY : α × β → ℝ) (hp : ∀ x, 0 ≤ pXY x) (hsum : ∑ x, pXY x = 1) :
     let pX : α → ℝ := fun x => ∑ y : β, pXY (x, y)
     let P_e := 1 - ∑ y : β, ∑ x : α, pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y))
     conditionalEntropy pXY ≤
       InformationTheory.BinaryEntropy.h P_e +
-        P_e * Real.log (Fintype.card α - 1)
+        P_e * Real.log (Fintype.card α - 1) :=
+  FanoFromConditionalEntropy.fano_inequality_proved pXY hp hsum
 
 /- ## Main theorems -/
 
