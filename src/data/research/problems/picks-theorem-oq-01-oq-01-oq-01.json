@@ -1,0 +1,224 @@
+{
+  "slug": "picks-theorem-oq-01-oq-01-oq-01",
+  "title": "Pick's theorem via primitive triangulation + GCD boundary count (Lean derivation)",
+  "phase": "PLAN",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "Given the primitive-triangulation result (PicksTheoremOQ01OQ01.exists_primitive_triangulation: every lattice triangle T = (v_1, v_2, v_3) in (Z^2)^3 with |det(T)| > 0 decomposes into a List of |det(T)| primitive sub-triangles, each with |det| = 1) and the GCD boundary-count result (PicksTheoremOQ02.card_segmentPoints: the segment from (0,0) to (a,b) in N^2 contains exactly gcd(a,b) + 1 integer lattice points), can the formula Area(T) = I(T) + B(T)/2 - 1 -- where I(T) is the count of strictly-interior lattice points and B(T) = sum over edges of gcd(|Delta_x|, |Delta_y|) -- be derived constructively in Lean 4?",
+    "plain": "Can Pick's theorem I + B/2 - 1 = Area be derived in Lean 4 by combining primitive triangulation (every triangle = |det| primitive pieces) with a boundary-point count via the GCD formula (lattice points on segment from v1 to v2 = gcd(|Dx|, |Dy|) + 1)?",
+    "whyMatters": [
+      "Eliminates the axiom in Proofs/PicksTheorem.lean by deriving Pick's formula from already-verified ingredients.",
+      "Demonstrates the modularity of the Lean Genius proof library: independent results can be composed to retire axioms.",
+      "Provides a template for further Pick-style theorems (Ehrhart polynomial, n-dim Smith-normal-form bound) via the same primitive-decomposition + lattice-point-count strategy."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Primitive triangulation (PicksTheoremOQ01OQ01.exists_primitive_triangulation): every non-degenerate lattice triangle decomposes into exactly |det| primitive pieces.",
+      "GCD boundary count (PicksTheoremOQ02.card_segmentPoints): the segment from (0,0) to (a,b) has gcd(a,b)+1 lattice points.",
+      "Shoelace formula for lattice triangles (PicksTheoremOQ01): 2*Area(T) = |det(T)|.",
+      "Pick's formula for axis-aligned rectangles (PicksTheoremOQ01, Part III)."
+    ],
+    "open": [
+      "Define realInterior T as a Finset cardinality and prove the base case realInterior unitTriangle = 0 agrees with pickInterior unitTriangle.",
+      "Prove the additivity lemma: when two lattice triangles T1, T2 share an edge with no interior lattice points (gcd = 1), realInterior(T1 union T2) = realInterior T1 + realInterior T2.",
+      "Close the induction via exists_primitive_triangulation."
+    ],
+    "goal": "Eliminate the picks_theorem axiom in PicksTheorem.lean by proving Pick's theorem for lattice triangles."
+  },
+  "currentState": {
+    "phase": "PLAN",
+    "since": "2026-05-12T11:10:00Z",
+    "iteration": 2,
+    "focus": "Bridge primitive triangulation + GCD boundary count into Pick's theorem; S1 OBSERVE done.",
+    "blockers": [],
+    "nextAction": "S2 -- define realInterior T as a Finset cardinality (using Finset.Icc for the bounding box and a half-plane filter) and prove realInterior unitTriangle = 0.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE (researcher-4, 2026-05-12): built Proofs/PicksTheoremOQ01OQ01OQ01.lean (278 lines, 0 sorries, 0 axioms, build verified). Defines bridge data structures (twiceArea, edgeGCD, boundaryCount, pickInterior, pickInteriorNum), the algebraic identity 2*pickInterior = pickInteriorNum and the cleared form twiceArea = 2*pickInterior + boundaryCount - 2, and verifies the formula on three concrete triangles (unit (I=0,B=3), 2x1 (I=0,B=4), 3x3 (I=1,B=9)).",
+    "builtItems": [
+      "LatticeTriangle structure (mirror of PicksTheoremOQ01OQ01)",
+      "LatticeTriangle.det (2D cross product = twice signed area)",
+      "LatticeTriangle.NonDegenerate (det != 0)",
+      "LatticeTriangle.twiceArea = |det|",
+      "LatticeTriangle.edgeDelta : Fin 3 -> N x N",
+      "LatticeTriangle.edgeGCD : Fin 3 -> N",
+      "LatticeTriangle.boundaryCount = sum of edgeGCD",
+      "LatticeTriangle.pickInterior : Q (rational form)",
+      "LatticeTriangle.pickInteriorNum : Z (cleared form)",
+      "two_mul_pickInterior (rational <-> cleared bridge)",
+      "pick_formula_cleared (twiceArea = 2*pickInterior + boundaryCount - 2)",
+      "Verifications on three test triangles (unit, 2-by-1, 3-by-3)"
+    ],
+    "insights": [
+      "Both ingredients (primitive triangulation + GCD boundary count) are already verified in the project; the bridge is purely compositional.",
+      "The cleared-denominator form pickInteriorNum = twiceArea - boundaryCount + 2 stays in Z, dodging the rationals during future induction proofs.",
+      "Each edge contributes gcd(|Dx|, |Dy|) + 1 lattice points; the three shared vertices double-count, so B = sum (gcd + 1) - 3 = sum gcd.",
+      "PicksTheoremOQ02 only handles segments from (0,0) to (a,b) with a, b : N; the general case needs a small translation/reflection lemma (still missing)."
+    ],
+    "mathlibGaps": [
+      "Mathlib has Convex / intrinsicInterior for topological interiors but no built-in lattice-point-of-triangle count; needs a custom Finset.image + filter definition."
+    ],
+    "nextSteps": [
+      "S2: Define realInterior T : Finset (Z x Z) -> N via a bounding-box filter on a half-plane predicate.",
+      "S3: Prove realInterior unitTriangle = 0 (base case).",
+      "S4: Prove the additivity lemma for primitive-edge unions (gcd = 1 case).",
+      "S5: Close the induction using PicksTheoremOQ01OQ01.exists_primitive_triangulation."
+    ]
+  },
+  "tags": [
+    "number-theory",
+    "geometry",
+    "lattice",
+    "picks-theorem",
+    "triangulation",
+    "gcd",
+    "determinant",
+    "seeker-selected",
+    "gallery-extracted",
+    "bridge-scaffold"
+  ],
+  "relatedProofs": [
+    "picks-theorem",
+    "picks-theorem-oq-01",
+    "picks-theorem-oq-01-oq-01",
+    "picks-theorem-oq-01-oq-02",
+    "picks-theorem-oq-02",
+    "picks-theorem-oq-03-cross-poly",
+    "picks-theorem-oq-03-ext",
+    "picks-theorem-oq-03-product"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Pick%27s_theorem"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Data.Nat.GCD.Basic"
+    ]
+  },
+  "started": "2026-05-12T08:02:11.449Z",
+  "lastUpdate": "2026-05-12T11:10:00Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/PicksTheorem.lean",
+      "filename": "PicksTheorem.lean",
+      "lineCount": 485,
+      "theoremCount": 12,
+      "axiomCount": 1,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheorem.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01.lean",
+      "filename": "PicksTheoremOQ01.lean",
+      "lineCount": 207,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01OQ01.lean",
+      "filename": "PicksTheoremOQ01OQ01.lean",
+      "lineCount": 216,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01OQ01OQ01.lean",
+      "filename": "PicksTheoremOQ01OQ01OQ01.lean",
+      "lineCount": 278,
+      "theoremCount": 16,
+      "axiomCount": 0,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ01OQ02.lean",
+      "filename": "PicksTheoremOQ01OQ02.lean",
+      "lineCount": 310,
+      "theoremCount": 22,
+      "axiomCount": 3,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ02.lean",
+      "filename": "PicksTheoremOQ02.lean",
+      "lineCount": 246,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03.lean",
+      "filename": "PicksTheoremOQ03.lean",
+      "lineCount": 438,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03CrossPoly.lean",
+      "filename": "PicksTheoremOQ03CrossPoly.lean",
+      "lineCount": 696,
+      "theoremCount": 69,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03CrossPoly.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03Ext.lean",
+      "filename": "PicksTheoremOQ03Ext.lean",
+      "lineCount": 289,
+      "theoremCount": 30,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03Ext.lean"
+    },
+    {
+      "path": "Proofs/PicksTheoremOQ03Product.lean",
+      "filename": "PicksTheoremOQ03Product.lean",
+      "lineCount": 605,
+      "theoremCount": 57,
+      "axiomCount": 0,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ03Product.lean"
+    }
+  ]
+}

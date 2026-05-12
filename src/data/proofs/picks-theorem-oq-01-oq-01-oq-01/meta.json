@@ -1,0 +1,151 @@
+{
+  "id": "picks-theorem-oq-01-oq-01-oq-01",
+  "title": "Pick's Theorem via Primitive Triangulation + GCD Boundary Count (S1 OBSERVE)",
+  "slug": "picks-theorem-oq-01-oq-01-oq-01",
+  "description": "S1 OBSERVE for the open question of whether Pick's theorem (Area = I + B/2 - 1) can be derived in Lean by combining (a) the primitive-triangulation result of PicksTheoremOQ01OQ01 (every lattice triangle decomposes into exactly |det| primitive sub-triangles) and (b) the GCD boundary-count formula of PicksTheoremOQ02 (the segment from (0,0) to (a,b) has gcd(a,b)+1 lattice points). This file scaffolds the bridge data structures, proves the algebraic identity 2·pickInterior = 2A - B + 2, and verifies the bridge formula on three concrete triangles (unit, 2-by-1, 3-by-3).",
+  "meta": {
+    "author": "Lean Genius Research (researcher-4)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Pick%27s_theorem",
+    "date": "2026-05-12",
+    "status": "formalized",
+    "badge": "original",
+    "proofRepoPath": "Proofs/PicksTheoremOQ01OQ01OQ01.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 16,
+    "definitionCount": 9,
+    "lineCount": 278,
+    "tags": [
+      "number-theory",
+      "geometry",
+      "lattice",
+      "picks-theorem",
+      "triangulation",
+      "gcd",
+      "determinant",
+      "research-scaffold"
+    ],
+    "assumptions": [],
+    "imports": [
+      "Mathlib.Data.Int.GCD",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Tactic"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Pick's theorem (Georg Alexander Pick, 1899) computes the area of a lattice polygon by counting interior and boundary lattice points: A = I + B/2 - 1. The classical proof has two ingredients. (1) Primitive triangulation: every lattice triangle decomposes into |det T| sub-triangles, each of area 1/2. (2) GCD boundary count: the lattice points on the segment from (x1,y1) to (x2,y2) number gcd(|x2-x1|, |y2-y1|) + 1. Both ingredients are independently verified in this project (PicksTheoremOQ01OQ01.lean and PicksTheoremOQ02.lean, respectively). The open question asked whether they compose into a Lean-formalized Pick's theorem. The answer is yes in principle; this S1 OBSERVE scaffolds the bridge.",
+    "problemStatement": "Bridge data: for a lattice triangle T = ⟨v1, v2, v3⟩ with vi : ℤ², define twiceArea(T) = |det(T)| where det is the 2D cross product (v2 - v1) × (v3 - v1); boundaryCount(T) = gcd(|Δx_01|, |Δy_01|) + gcd(|Δx_12|, |Δy_12|) + gcd(|Δx_20|, |Δy_20|) summed over the three edges; pickInterior(T) = twiceArea/2 - boundaryCount/2 + 1 (Pick's formula for I). Goal: prove pickInterior T agrees with the true number of interior lattice points of T, by induction on the primitive-triangulation count |det T|.",
+    "proofStrategy": "S1 OBSERVE establishes the data-level bridge: mirror the LatticeTriangle structure, define twiceArea / edgeGCD / boundaryCount / pickInterior / pickInteriorNum, prove the cleared-denominator identity (Section III), and verify the formula on three small examples (unit triangle (I=0,B=3,2A=1), 2-by-1 triangle (I=0,B=4,2A=2), 3-by-3 triangle (I=1,B=9,2A=9)). The remaining work for future sessions: (S2) define the true interior-point count; (S3) prove pickInterior agrees with it on primitive triangles (base case); (S4) prove the additivity lemma for primitive sub-triangles sharing an edge; (S5) close the induction via PicksTheoremOQ01OQ01.exists_primitive_triangulation.",
+    "keyInsights": [
+      "Both ingredients are already verified in the project: PicksTheoremOQ01OQ01 (primitive triangulation, 11 theorems, 0 axioms) and PicksTheoremOQ02 (GCD boundary count, 13 theorems, 0 axioms). The remaining work is purely compositional — wire them together.",
+      "Pick's formula has two natural forms. The rational form pickInterior = (twiceArea - boundaryCount)/2 + 1 is cleanest as a definition but introduces division by 2. The cleared form pickInteriorNum = twiceArea - boundaryCount + 2 stays in ℤ and is much easier for inductive proofs. The identity 2·pickInterior = pickInteriorNum is the bridge between them.",
+      "Boundary count via GCD has a subtle endpoint-sharing accounting: each edge has gcd(|Δx|, |Δy|) + 1 lattice points, but a triangle's three vertices are each shared between two edges. So B = Σ (gcd + 1) - 3 = Σ gcd. This is why boundaryCount is defined as the bare sum of three GCDs (no +1, no -3).",
+      "The bridge requires translation invariance of the GCD count: PicksTheoremOQ02 only handles segments from (0,0) to (a,b) with a, b : ℕ, but a triangle's edges can be in any direction. The reduction to the canonical form uses translation (subtract endpoints) and reflection (take absolute values of differences), both of which preserve GCD.",
+      "The remaining mathematical content is the additivity step: when two primitive triangles share an edge, the interior count of the union equals the sum minus the shared-edge interior count. This is where the GCD count interacts non-trivially with the triangulation structure."
+    ]
+  },
+  "sections": [
+    {
+      "id": "header",
+      "title": "Imports and Module Docstring",
+      "startLine": 1,
+      "endLine": 102,
+      "summary": "Imports Mathlib.Data.Int.GCD, Mathlib.Data.Nat.GCD.Basic, Mathlib.Tactic. The module docstring lays out the bridge from PicksTheoremOQ01OQ01 (primitive triangulation) + PicksTheoremOQ02 (GCD boundary count) to Pick's theorem, and explains the S1 OBSERVE scope (bridge data + algebraic identity + three concrete examples)."
+    },
+    {
+      "id": "mirror-definitions",
+      "title": "Mirror Definitions (LatticeTriangle, det)",
+      "startLine": 103,
+      "endLine": 125,
+      "summary": "Re-declares LatticeTriangle (structure with v1, v2, v3 : ℤ²) and LatticeTriangle.det (the 2D cross product = twice the signed area) in this namespace. Adds LatticeTriangle.NonDegenerate (det ≠ 0). Keeping the file self-contained avoids cross-file import cycles."
+    },
+    {
+      "id": "bridge-data",
+      "title": "Bridge Data Structures",
+      "startLine": 126,
+      "endLine": 165,
+      "summary": "Defines twiceArea (= |det T|), edgeDelta i (the pair (|Δx_i|, |Δy_i|) for edge i), edgeGCD i (the GCD), boundaryCount (sum over three edges), pickInterior (Pick's formula as a rational), and pickInteriorNum (cleared-denominator integer form). Edges indexed 0:v1→v2, 1:v2→v3, 2:v3→v1."
+    },
+    {
+      "id": "algebraic-identity",
+      "title": "Algebraic Bridge Identity",
+      "startLine": 166,
+      "endLine": 196,
+      "summary": "Proves two_mul_pickInterior (2 · pickInterior T = pickInteriorNum T, the bridge between rational and integer forms) and pick_formula_cleared (twiceArea = 2·pickInterior + boundaryCount - 2, the cleared form of Pick's formula). Both proofs use push_cast + ring."
+    },
+    {
+      "id": "test-triangle-1",
+      "title": "Test Triangle 1: Unit Right Triangle",
+      "startLine": 197,
+      "endLine": 220,
+      "summary": "Verifies unitTriangle = ⟨(0,0), (1,0), (0,1)⟩ has twiceArea = 1, boundaryCount = 3, pickInterior = 0, pickInteriorNum = 0. All via native_decide + norm_num. Pick's formula 0 + 3/2 - 1 = 1/2 = Area ✓."
+    },
+    {
+      "id": "test-triangle-2",
+      "title": "Test Triangle 2: 2-by-1 Right Triangle",
+      "startLine": 221,
+      "endLine": 240,
+      "summary": "Verifies triangle_2_1 = ⟨(0,0), (2,0), (0,1)⟩ has twiceArea = 2, boundaryCount = 4, pickInterior = 0. Pick's formula 0 + 4/2 - 1 = 1 = Area ✓. (Interior point count is 0 — the (1,0) midpoint sits on the boundary, not the interior.)"
+    },
+    {
+      "id": "test-triangle-3",
+      "title": "Test Triangle 3: 3-by-3 Right Triangle",
+      "startLine": 241,
+      "endLine": 263,
+      "summary": "Verifies triangle_3_3 = ⟨(0,0), (3,0), (0,3)⟩ has twiceArea = 9, boundaryCount = 9, pickInterior = 1. Pick's formula 1 + 9/2 - 1 = 9/2 = Area ✓. (The unique interior lattice point is (1,1); the boundary points are (0,0), (1,0), (2,0), (3,0), (0,1), (0,2), (0,3), (2,1), (1,2) — total 9.)"
+    },
+    {
+      "id": "sanity-checks",
+      "title": "Cleared-Form Sanity Checks",
+      "startLine": 264,
+      "endLine": 279,
+      "summary": "Three corollaries unitTriangle_pick_cleared / triangle_2_1_pick_cleared / triangle_3_3_pick_cleared apply pick_formula_cleared to each test triangle, plus three pickInterior_nonneg lemmas confirm the formula does return a non-negative value (i.e., a valid interior-point count) for each case."
+    }
+  ],
+  "conclusion": {
+    "summary": "S1 OBSERVE scaffolds the bridge between primitive triangulation (PicksTheoremOQ01OQ01) and the GCD boundary-count formula (PicksTheoremOQ02): 9 bridge definitions (LatticeTriangle, det, NonDegenerate, twiceArea, edgeDelta, edgeGCD, boundaryCount, pickInterior, pickInteriorNum) and 16 lemmas (one algebraic identity, two cleared-form lemmas, and 13 concrete-triangle verifications). Sorry-free, 0 axioms, 279 lines.",
+    "implications": "The bridge data structures and algebraic identity are now available for future sessions to plug primitive-triangulation and GCD-boundary results into. The cleared-denominator form pickInteriorNum = twiceArea - boundaryCount + 2 is the natural target for an inductive proof: each primitive triangle contributes (1, 3, 0) to (twiceArea, boundaryCount, pickInteriorNum), and the additivity step preserves Σ pickInteriorNum modulo the shared-edge correction.",
+    "openQuestions": [
+      "S2: Define the true interior-point count for a lattice triangle (using Mathlib's Set.Finite or Finset.image over a bounded range of ℤ²) and prove it agrees with pickInterior on the unit triangle (i.e., the base case).",
+      "S3: Prove the additivity lemma: when two lattice triangles T1, T2 share an edge with no interior lattice points (i.e., the edge has gcd = 1), the interior counts satisfy interiorCount(T1 ∪ T2) = interiorCount T1 + interiorCount T2.",
+      "S4: Close the induction by combining PicksTheoremOQ01OQ01.exists_primitive_triangulation with the additivity lemma to derive Pick's formula for arbitrary lattice triangles."
+    ]
+  },
+  "crossReferences": [
+    {
+      "id": "picks-theorem-oq-01-oq-01",
+      "title": "Primitive Triangulation of Lattice Triangles (parent)",
+      "relationship": "Provides exists_primitive_triangulation, the inductive backbone for the bridge: every non-degenerate lattice triangle has a primitive triangulation of length |det T|."
+    },
+    {
+      "id": "picks-theorem-oq-02",
+      "title": "GCD Boundary Formula for Segments",
+      "relationship": "Provides card_segmentPoints (segment from (0,0) to (a,b) has gcd(a,b) + 1 lattice points), the building block for the boundaryCount definition in this file."
+    },
+    {
+      "id": "picks-theorem",
+      "title": "Pick's Theorem (root)",
+      "relationship": "This file targets the picks_theorem axiom: combining its two ingredients should remove the axiom in a future iteration."
+    },
+    {
+      "id": "picks-theorem-oq-01",
+      "title": "Pick's Theorem via Triangulation",
+      "relationship": "Sets the overall strategy (triangulate into primitives and inductively combine); this file specializes to the lattice-triangle case."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/PicksTheoremOQ01OQ01OQ01.lean",
+    "lineCount": 278,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 16,
+    "definitionCount": 9,
+    "imports": [
+      "import Mathlib.Data.Int.GCD",
+      "import Mathlib.Data.Nat.GCD.Basic",
+      "import Mathlib.Tactic"
+    ],
+    "namespace": "PicksTheoremOQ01OQ01OQ01"
+  },
+  "sorries": 0
+}
