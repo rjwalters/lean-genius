@@ -89,3 +89,76 @@ and the trivial support lemma; defer the harder D4 invariance to S3.
 - Zero axioms anticipated for the structural lemmas (support, D4-mod-8,
   reversal-mod-2, winding-parity). All are derivable from parent's
   existing infrastructure.
+
+## Iteration 2 (researcher-8, 2026-05-12) — S2 ORIENT/ACT
+
+**Outcome**: Lean changes shipped — built the `Fintype` instance, the
+distribution definition, and the support lower bound. 0 sorries, 0 new
+axioms.
+
+### What got built (concrete file deltas)
+
+`proofs/Proofs/KnightsTourObliqueOQ02.lean` (new, ~130 lines):
+
+- `def toFn (t : ClosedTour) : Fin 64 → Square` — indexing function
+  `fun i => t.squares.get ⟨i.val, by rw [t.length_eq]; exact i.isLt⟩`.
+- `theorem toFn_injective` — destructure both tours, extract
+  `s1 = s2` via `List.ext_get` from the pointwise function equality,
+  then collapse the propositional fields via `subst` + `rfl` (proof
+  irrelevance).
+- `instance : Fintype ClosedTour := Fintype.ofInjective toFn
+  toFn_injective` — the prerequisite for the histogram definition.
+- `def obliqueDistribution (k : ℕ) : ℕ` —
+  `(Finset.univ.filter (fun t => obliqueCount t = k)).card`.
+- `theorem obliqueDistribution_zero_below_four` — `k < 4` →
+  `obliqueDistribution k = 0`. Proof: `Finset.card_eq_zero` +
+  `Finset.eq_empty_of_forall_not_mem` + the parent's
+  `oblique_lower_bound`.
+- `theorem obliqueDistribution_support_le_three` — restatement in the
+  `k ≤ 3` form.
+
+`proofs/Proofs.lean` — registered the new module.
+
+### Why this matches the S1 plan
+
+S1 flagged the `Fintype ClosedTour` gap and identified
+`Fin 64 → Square` as the natural injection target. The S2 deliverable
+does exactly that — no surprises, no rework of S1's framing. The S1
+sorries / axioms anticipated table holds: 0 new axioms, the histogram
+is defined parametrically without committing to a concrete total.
+
+### What did NOT need to change in the parent
+
+The parent file `Proofs/KnightsTourOblique.lean` is untouched. The
+injection `ClosedTour ↪ (Fin 64 → Square)` is built externally without
+adding new fields to the structure or changing the `obliqueCount`
+definition. This isolates the OQ02 work from any risk of breaking the
+parent's existing proof of `oblique_lower_bound`.
+
+### Honest contribution assessment
+
+The Fintype instance is straightforward Lean engineering (an
+`ofInjective` + a `List.ext_get` argument), not deep mathematics. The
+support lower bound is a one-line lift. The substantive mathematical
+content (D4 invariance, reversal symmetry, winding-parity) is **all
+deferred to S3+**. That said, without the Fintype instance, the
+distribution cannot be defined at all in Lean — so this S2 is the
+necessary prerequisite work, not a stopping point.
+
+### Anticipated S3 work
+
+The D4 action requires lifting the 8 generators of D4 from `Square` to
+`ClosedTour`. The key technical step is showing that each generator
+preserves the closed-tour structure (path / closure / nodup). Once we
+have the action, `obliqueCount`-invariance is a one-step calculation
+because `isOblique` is symmetric and rotation-invariant on
+`MoveVector × MoveVector`. The orbit-stabilizer mod-8 divisibility is a
+direct corollary, with the self-symmetric exceptions deferred to S4.
+
+### Build verification
+
+Build pending — Docker build is queued. The file uses only the parent's
+public API (`ClosedTour`, `obliqueCount`, `oblique_lower_bound`) plus
+standard Mathlib (`Finset.filter`, `Fintype.ofInjective`,
+`List.ext_get`, `Finset.card_eq_zero`,
+`Finset.eq_empty_of_forall_not_mem`, `Finset.mem_filter`). No new axioms.

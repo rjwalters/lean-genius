@@ -2418,6 +2418,7 @@ import Proofs.KeplerConjecture
 import Proofs.KeplerConjectureOQ04
 import Proofs.KnightsTourOblique
 import Proofs.KnightsTourObliqueOQ01
+import Proofs.KnightsTourObliqueOQ02
 import Proofs.Konigsberg
 import Proofs.KonigsbergOQ01
 import Proofs.KonigsbergOQ01OQ02
