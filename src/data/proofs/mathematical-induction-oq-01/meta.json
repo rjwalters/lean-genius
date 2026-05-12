@@ -24,7 +24,42 @@
     {
       "targetId": "mathematical-induction",
       "relationship": "extends",
-      "description": "Extends the mathematical induction framework to the transfinite, connecting Lean's WellFounded recursion to classical ordinal induction principles"
+      "description": "Parent — classical mathematical induction on $\\mathbb{N}$ (zero + successor). This entry extends to the transfinite via Cantor's ordinal hierarchy, recovering classical induction as the special case for the ordinal $\\omega$. The `Part III` recovery theorems (`course_of_values`, `weak_from_strong`) show the two inductions agree on $\\mathbb{N}$ — only the limit-ordinal case is genuinely new at the transfinite level."
+    },
+    {
+      "targetId": "cantor-diagonalization",
+      "relationship": "related",
+      "description": "Cantor's diagonal argument — the historical origin of ordinal theory. Cantor introduced ordinals in 1883 precisely to extend his counting-the-uncountable diagonal technique past $\\omega$; transfinite induction is the proof principle that makes ordinal-indexed constructions (e.g. the cumulative hierarchy $V_\\alpha$, the constructible universe $L_\\alpha$) rigorous. The well-ordering principle proved here in `nat_well_ordering` is the finite shadow of Cantor's well-ordering theorem for arbitrary sets."
+    },
+    {
+      "targetId": "cantors-theorem",
+      "relationship": "related",
+      "description": "Cantor's theorem $|X| < |\\mathcal{P}(X)|$ — the source of the *uncountable* ordinals this file is designed to reason about. Iterating Cantor's theorem along the ordinals yields $\\beth_0 < \\beth_1 < \\beth_2 < \\ldots$, the beth hierarchy, whose existence proof is a transfinite-induction argument with one of the case-splits proved here (`transfinite_induction_cases`). The limit-ordinal case in particular is what makes $\\beth_\\omega$ well-defined."
+    },
+    {
+      "targetId": "schroeder-bernstein",
+      "relationship": "related",
+      "description": "Schröder-Bernstein theorem ($A \\hookrightarrow B$ and $B \\hookrightarrow A$ $\\Rightarrow$ $A \\cong B$) — the classical companion theorem of the well-ordering principle in cardinality arithmetic. Both results are pillars of Cantor-style set theory: well-ordering gives ordinal comparison, Schröder-Bernstein gives cardinal comparison without choice. The well-ordering proof here (`nat_well_ordering` via `Nat.find`) and a Schröder-Bernstein proof share the constructive flavour: both extract witnesses from existential hypotheses without invoking AC."
+    },
+    {
+      "targetId": "halting-problem",
+      "relationship": "context",
+      "description": "Undecidability of the halting problem — the canonical *failure* of well-founded recursion. The halting problem shows that not every computable function admits a well-founded ranking (one that would let Lean accept the recursive definition); diagonalisation against any candidate ranking produces a non-terminating program. The principle proved here (`wf_induction`) is the constructive flipside: *when* a well-founded relation exists, induction succeeds. Together they delimit the boundary of constructive recursion."
+    },
+    {
+      "targetId": "godel-incompleteness",
+      "relationship": "context",
+      "description": "Gödel's first incompleteness theorem — the foundational limitation that motivates studying induction principles at all. Gödel's argument essentially asserts: *no* recursive axiom system for arithmetic captures all true statements about $\\mathbb{N}$, but transfinite induction up to suitable ordinals (Gentzen's $\\varepsilon_0$ for PA, Bachmann-Howard for $\\Pi^1_1$-CA$_0$, etc.) *does* prove consistency. This entry's `WellFounded.fix` infrastructure is the type-theoretic kernel of the proof-theoretic ordinal analyses initiated by Gentzen (1936)."
+    },
+    {
+      "targetId": "russell-1-plus-1",
+      "relationship": "context",
+      "description": "Russell's $1 + 1 = 2$ — the iconic example of foundational rigour: a 379-page Principia Mathematica derivation of an arithmetic fact from set-theoretic axioms. The present entry sits in the same lineage: it derives all five classical forms of induction (weak, strong/course-of-values, well-ordering, transfinite, Cantor-trichotomy) from a single primitive `WellFounded.fix`, exemplifying the same reductionist 'derive everything from minimal axioms' methodology in Lean 4."
+    },
+    {
+      "targetId": "four-color-theorem",
+      "relationship": "context",
+      "description": "Four-colour theorem — a famous application of strong (course-of-values) induction. Appel & Haken's 1976 computer-assisted proof reduces the problem to checking ~1500 reducible configurations; the inductive structure ('a minimal counterexample contains one of the configurations') is precisely the strong-induction principle proved here in `course_of_values`. The case-explosion is what made the proof computer-assisted; the underlying logical schema is what this entry formalises."
     }
   ],
   "leanFile": {
