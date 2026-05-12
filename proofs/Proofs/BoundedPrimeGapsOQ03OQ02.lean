@@ -354,4 +354,264 @@ theorem engelsma_analogue_nonvacuous_6_17 :
       ∀ (h0 : 0 ∈ H), IsAdmissible H → 16 ≤ H.max' ⟨0, h0⟩ := by
   native_decide
 
+/-! ## S8: Translation invariance + bridge lemma `engelsma_lower_bound_of_finitary`
+
+This section discharges `knowledge.md` §2.4. The goal is to reduce the
+unbounded form of `engelsma_lower_bound` to its finitary form
+
+```
+∀ H ∈ (Finset.range 246).powersetCard 50, 0 ∈ H → ¬ IsAdmissible H
+```
+
+via the three-step plan recorded in `state.md`:
+
+* **(a) Translation invariance**: if `m ≤ a` for every `a ∈ H`, then
+  `IsAdmissible (H.image (· - m)) ↔ IsAdmissible H`. The proof reduces
+  per-prime residue cardinalities through the Z/pZ-translate
+  `r ↦ (r + m) % p`.
+* **(b) 50-subset extraction**: any `H'` with `H'.card ≥ 50` and
+  `0 ∈ H'` contains a 50-element subset `H₀ ⊆ H'` with `0 ∈ H₀`.
+* **(c) Wiring**: combine (a) and (b) to derive the contradiction.
+
+The deliverable is the standalone bridge lemma
+`engelsma_lower_bound_of_finitary`, which (together with a future
+`(50, 246)` `native_decide` or verified-backtracking proof of the
+finitary form) replaces the `engelsma_lower_bound` axiom in
+`BoundedPrimeGapsOQ03.lean`.
+
+All proofs in this section are pure-Lean combinatorics —
+`native_decide` is not used. The §S4 `Lean.ofReduceBool` axiom is
+unaffected; `axiomCount` stays at `1`. -/
+
+/-- The key modular identity: if `m ≤ a` and `0 < p`, then the
+residue of `a - m` mod `p` equals the residue of `a % p + (p - m % p)`
+mod `p`. This lets us realize the per-prime translate
+`r ↦ (r + (p - m % p)) % p` as a bijection on residues, which is the
+core of the `IsAdmissible` translation invariance.
+
+Proof strategy: equivalent to `(a - m) ≡ a % p + (p - m % p) [MOD p]`
+(the goal IS this congruence, by `Nat.ModEq`'s definitional unfolding
+to mod equality). We add `m % p` to both sides:
+
+* `(a - m) + m % p ≡ (a - m) + m = a [MOD p]`
+* `(a % p + (p - m % p)) + m % p = a % p + p ≡ a % p ≡ a [MOD p]`
+
+then cancel `m % p` via `Nat.ModEq.add_right_cancel'`. -/
+private lemma sub_mod_eq_mod_add_sub_mod {a m p : ℕ} (hp : 0 < p) (hma : m ≤ a) :
+    (a - m) % p = ((a % p) + (p - m % p)) % p := by
+  have hmp_lt : m % p < p := Nat.mod_lt _ hp
+  have h_a_modeq : a ≡ a % p [MOD p] := (Nat.mod_mod a p).symm
+  have h_m_modeq : m ≡ m % p [MOD p] := (Nat.mod_mod m p).symm
+  -- (a) (a - m) + m % p ≡ a [MOD p]
+  have ha : (a - m) + m % p ≡ a [MOD p] := by
+    have hstep : (a - m) + m % p ≡ (a - m) + m [MOD p] :=
+      Nat.ModEq.add_left _ h_m_modeq.symm
+    rwa [Nat.sub_add_cancel hma] at hstep
+  -- (b) (a % p + (p - m % p)) + m % p ≡ a [MOD p]
+  have hb : (a % p + (p - m % p)) + m % p ≡ a [MOD p] := by
+    have h_arith : a % p + (p - m % p) + m % p = a % p + p := by
+      have h_pmp_add : (p - m % p) + m % p = p :=
+        Nat.sub_add_cancel (le_of_lt hmp_lt)
+      omega
+    rw [h_arith]
+    have h_p_zero : p ≡ 0 [MOD p] := Nat.modEq_zero_iff_dvd.mpr (dvd_refl p)
+    have hadd : a % p + p ≡ a % p + 0 [MOD p] :=
+      Nat.ModEq.add_left _ h_p_zero
+    rw [Nat.add_zero] at hadd
+    exact hadd.trans h_a_modeq.symm
+  -- Combine and cancel m % p.
+  have h_combine : (a - m) + m % p ≡ (a % p + (p - m % p)) + m % p [MOD p] :=
+    ha.trans hb.symm
+  exact Nat.ModEq.add_right_cancel' (m % p) h_combine
+
+/-- For each prime `p`, the residue-image of `H.image (· - m)` mod `p`
+has the same cardinality as `H.image (· % p)`, provided `m ≤ a` for
+every `a ∈ H`. The proof exhibits the bijection
+`r ↦ (r + m) % p` between the two residue-images and applies
+`Finset.card_image_of_injOn`.
+
+This is the per-prime building block of
+`isAdmissible_image_sub_iff` below. The hypothesis `hp : 0 < p` is
+needed for `Nat.mod_lt`; we will only apply this lemma at prime
+moduli, where `0 < p` follows from `Nat.Prime.pos`. -/
+private lemma card_image_image_sub_mod_eq
+    {H : Finset ℕ} {m p : ℕ} (hp : 0 < p) (hm : ∀ a ∈ H, m ≤ a) :
+    ((H.image (· - m)).image (· % p)).card = (H.image (· % p)).card := by
+  -- Step 1: rewrite the LHS image-of-image into a single image
+  -- under the shift `r ↦ (r + (p - m % p)) % p` of `H.image (· % p)`.
+  have heq : (H.image (· - m)).image (· % p) =
+      (H.image (· % p)).image (fun r => (r + (p - m % p)) % p) := by
+    ext k
+    simp only [Finset.mem_image]
+    constructor
+    · rintro ⟨b, ⟨a, ha, rfl⟩, rfl⟩
+      exact ⟨a % p, ⟨a, ha, rfl⟩,
+        (sub_mod_eq_mod_add_sub_mod hp (hm a ha)).symm⟩
+    · rintro ⟨r, ⟨a, ha, rfl⟩, rfl⟩
+      exact ⟨a - m, ⟨a, ha, rfl⟩,
+        (sub_mod_eq_mod_add_sub_mod hp (hm a ha))⟩
+  rw [heq]
+  -- Step 2: the addition-shift is injective on `H.image (· % p)`.
+  apply Finset.card_image_of_injOn
+  intro r hr r' hr' hrr'
+  -- `hr, hr' : r, r' ∈ ↑(H.image (· % p))`. Unfold:
+  rw [Finset.mem_coe, Finset.mem_image] at hr hr'
+  obtain ⟨a, _, rfl⟩ := hr
+  obtain ⟨a', _, rfl⟩ := hr'
+  -- hrr' : (a % p + (p - m % p)) % p = (a' % p + (p - m % p)) % p
+  -- Add `m % p` to both sides and use that `(p - m % p) + m % p = p`.
+  have h_amod : a % p < p := Nat.mod_lt _ hp
+  have h_a'mod : a' % p < p := Nat.mod_lt _ hp
+  have h_mmod : m % p < p := Nat.mod_lt _ hp
+  have h1 : (a % p + (p - m % p) + m % p) % p = a % p := by
+    have heq1 : a % p + (p - m % p) + m % p = a % p + p := by omega
+    rw [heq1, Nat.add_mod_right, Nat.mod_eq_of_lt h_amod]
+  have h2 : (a' % p + (p - m % p) + m % p) % p = a' % p := by
+    have heq2 : a' % p + (p - m % p) + m % p = a' % p + p := by omega
+    rw [heq2, Nat.add_mod_right, Nat.mod_eq_of_lt h_a'mod]
+  have h3 : (a % p + (p - m % p) + m % p) % p =
+      (a' % p + (p - m % p) + m % p) % p := by
+    rw [Nat.add_mod (a % p + (p - m % p)) (m % p) p,
+        Nat.add_mod (a' % p + (p - m % p)) (m % p) p, hrr']
+  rw [h1, h2] at h3
+  exact h3
+
+/-- Cardinality is preserved by translation `(· - m)` when `m ≤ a` for
+every `a ∈ H`. The map is injective on `H` because subtraction by a
+common shift is injective on `[m, ∞)`. -/
+lemma card_image_sub_eq {H : Finset ℕ} {m : ℕ} (hm : ∀ a ∈ H, m ≤ a) :
+    (H.image (· - m)).card = H.card := by
+  apply Finset.card_image_of_injOn
+  intro a ha b hb hab
+  have hma := hm a ha
+  have hmb := hm b hb
+  omega
+
+/-- `H.image (· - m)` is nonempty iff `H` is. The translation lemma. -/
+lemma image_sub_nonempty {H : Finset ℕ} {m : ℕ} :
+    (H.image (· - m)).Nonempty ↔ H.Nonempty :=
+  Finset.image_nonempty
+
+/-- The translated set has maximum `H.max' - m` when `m ≤` everything in `H`.
+Both directions: `H.max' - m ∈ image` (witnessed by `H.max'` itself), and
+every image element is `≤ H.max' - m` (since each `a ≤ H.max'`). -/
+lemma image_sub_max'_eq {H : Finset ℕ} {m : ℕ} (hne : H.Nonempty)
+    (hm : ∀ a ∈ H, m ≤ a) :
+    (H.image (· - m)).max' (image_sub_nonempty.mpr hne) = H.max' hne - m := by
+  apply le_antisymm
+  · apply Finset.max'_le
+    intro x hx
+    rw [Finset.mem_image] at hx
+    obtain ⟨a, ha, rfl⟩ := hx
+    have hma := hm a ha
+    have hamax : a ≤ H.max' hne := Finset.le_max' _ _ ha
+    omega
+  · have h_max_mem : H.max' hne ∈ H := Finset.max'_mem _ _
+    have h_image_mem : H.max' hne - m ∈ H.image (· - m) :=
+      Finset.mem_image.mpr ⟨H.max' hne, h_max_mem, rfl⟩
+    exact Finset.le_max' _ _ h_image_mem
+
+/-- The translated set has minimum `0` when `m = H.min'`. -/
+lemma image_sub_min'_eq_zero {H : Finset ℕ} (hne : H.Nonempty) :
+    (H.image (· - H.min' hne)).min' (image_sub_nonempty.mpr hne) = 0 := by
+  apply le_antisymm
+  · have h_min_mem : H.min' hne ∈ H := Finset.min'_mem _ _
+    have h_image_mem : 0 ∈ H.image (· - H.min' hne) :=
+      Finset.mem_image.mpr ⟨H.min' hne, h_min_mem, Nat.sub_self _⟩
+    exact Finset.min'_le _ _ h_image_mem
+  · exact Nat.zero_le _
+
+/-- **(a) Translation invariance**: `IsAdmissible (H.image (· - m))` iff
+`IsAdmissible H`, provided `m ≤ a` for every `a ∈ H`. Both directions
+reduce to `card_image_image_sub_mod_eq` (per-prime residue
+cardinality preservation under the translate). -/
+theorem isAdmissible_image_sub_iff {H : Finset ℕ} {m : ℕ}
+    (hm : ∀ a ∈ H, m ≤ a) :
+    IsAdmissible (H.image (· - m)) ↔ IsAdmissible H := by
+  unfold IsAdmissible
+  constructor
+  · intro h p hp
+    rw [← card_image_image_sub_mod_eq hp.pos hm]
+    exact h p hp
+  · intro h p hp
+    rw [card_image_image_sub_mod_eq hp.pos hm]
+    exact h p hp
+
+/-- **(b) 50-subset extraction**: if `H'` has at least 50 elements and
+contains `0`, we can extract a 50-element subset `H₀ ⊆ H'` with `0 ∈ H₀`
+and `H₀ ⊆ Finset.range w` whenever `H' ⊆ Finset.range w`. Construction:
+take a 49-element subset of `H'.erase 0`, then re-insert `0`. -/
+private lemma exists_subset_card_50_containing_zero
+    {H' : Finset ℕ} (h0 : 0 ∈ H') (hcard : 50 ≤ H'.card) :
+    ∃ H₀ ⊆ H', H₀.card = 50 ∧ 0 ∈ H₀ := by
+  have h_erase_card : 49 ≤ (H'.erase 0).card := by
+    have : (H'.erase 0).card = H'.card - 1 := Finset.card_erase_of_mem h0
+    omega
+  obtain ⟨S, hS_sub, hS_card⟩ := Finset.exists_subset_card_eq h_erase_card
+  refine ⟨insert 0 S, ?_, ?_, Finset.mem_insert_self _ _⟩
+  · intro x hx
+    rcases Finset.mem_insert.mp hx with rfl | hxS
+    · exact h0
+    · exact Finset.mem_of_mem_erase (hS_sub hxS)
+  · have h0_notin : 0 ∉ S := fun h =>
+      (Finset.not_mem_erase 0 H') (hS_sub h)
+    rw [Finset.card_insert_of_not_mem h0_notin, hS_card]
+
+/-- **(c) The bridge lemma**: the finitary form of the Engelsma lower
+bound implies the unbounded form. Given any admissible `H : Finset ℕ`
+with `H.card ≥ 50`, we translate `H` to start at `0` (preserving
+admissibility and cardinality by (a)), extract a 50-subset `H₀`
+containing `0` (by (b)), observe `H₀ ⊆ Finset.range 246` since the
+translated max is `< 246` under the contradictory hypothesis, then
+invoke `hfin` to derive a contradiction.
+
+This is the §2.4 reduction promised in `knowledge.md` and the S8
+deliverable per `state.md`. Combined with a future `(50, 246)`
+verified-backtracking or `native_decide` proof of `hfin`, this
+replaces the `engelsma_lower_bound` axiom in
+`BoundedPrimeGapsOQ03.lean`. -/
+theorem engelsma_lower_bound_of_finitary
+    (hfin : ∀ H ∈ (Finset.range 246).powersetCard 50, 0 ∈ H →
+      ¬ IsAdmissible H) :
+    ∀ H : Finset ℕ, IsAdmissible H → H.card ≥ 50 →
+    ∀ hne : H.Nonempty, 246 ≤ H.max' hne - H.min' hne := by
+  intro H hadm hcard hne
+  by_contra hlt
+  push_neg at hlt
+  -- hlt : H.max' hne - H.min' hne < 246
+  set m := H.min' hne with hm_def
+  have hm_le : ∀ a ∈ H, m ≤ a := fun a ha => Finset.min'_le _ a ha
+  set H' := H.image (· - m) with hH'_def
+  have hH'_ne : H'.Nonempty := image_sub_nonempty.mpr hne
+  have hH'_adm : IsAdmissible H' := (isAdmissible_image_sub_iff hm_le).mpr hadm
+  have hH'_card : H'.card = H.card := card_image_sub_eq hm_le
+  have h0_mem : 0 ∈ H' := by
+    rw [hH'_def, Finset.mem_image]
+    exact ⟨m, Finset.min'_mem _ _, Nat.sub_self _⟩
+  -- The translated maximum equals `H.max' - m < 246`.
+  have hH'_max : H'.max' hH'_ne = H.max' hne - m := by
+    rw [hH'_def]
+    exact image_sub_max'_eq hne hm_le
+  have hH'_max_lt : H'.max' hH'_ne < 246 := by
+    rw [hH'_max]; exact hlt
+  -- Cardinality lifts.
+  have hH'_card_ge : 50 ≤ H'.card := by rw [hH'_card]; exact hcard
+  -- Extract a 50-subset H₀ ⊆ H' containing 0.
+  obtain ⟨H₀, hH₀_sub, hH₀_card, hH₀_zero⟩ :=
+    exists_subset_card_50_containing_zero h0_mem hH'_card_ge
+  -- H₀ is admissible (as a subset of an admissible set).
+  have hH₀_adm : IsAdmissible H₀ :=
+    BoundedPrimeGaps.admissible_subset hH₀_sub hH'_adm
+  -- H₀ ⊆ Finset.range 246: each element of H₀ is ≤ H'.max' < 246.
+  have hH₀_in_range : H₀ ⊆ Finset.range 246 := by
+    intro x hx
+    have hxH' : x ∈ H' := hH₀_sub hx
+    have hx_le : x ≤ H'.max' hH'_ne := Finset.le_max' _ _ hxH'
+    exact Finset.mem_range.mpr (lt_of_le_of_lt hx_le hH'_max_lt)
+  -- H₀ ∈ powersetCard 50 of Finset.range 246.
+  have hH₀_in_powersetCard : H₀ ∈ (Finset.range 246).powersetCard 50 :=
+    Finset.mem_powersetCard.mpr ⟨hH₀_in_range, hH₀_card⟩
+  -- Apply hfin to derive ¬ IsAdmissible H₀ — contradiction.
+  exact hfin H₀ hH₀_in_powersetCard hH₀_zero hH₀_adm
+
 end BoundedPrimeGapsOQ03OQ02

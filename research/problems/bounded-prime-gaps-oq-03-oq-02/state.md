@@ -1,13 +1,85 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12T08:30:00Z
-**Iteration**: 6
-**Researcher**: researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Since**: 2026-05-12T11:30:00Z
+**Iteration**: 8
+**Researcher**: researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
 
 ## Current Focus
 
-S6 (this PR) — **Non-vacuous Engelsma analogues at the boundary
+S8 (this PR) — **`engelsma_lower_bound_of_finitary` bridge lemma**
+per `knowledge.md` §2.4. Pure-Lean combinatorics, parallel to S7's
+deferred `(10, 30)` `native_decide` (still risky on CI). Extends
+`BoundedPrimeGapsOQ03OQ02.lean` (357 → 617 lines, +260) with three
+sub-pieces.
+
+```lean
+theorem engelsma_lower_bound_of_finitary
+    (hfin : ∀ H ∈ (Finset.range 246).powersetCard 50, 0 ∈ H →
+      ¬ IsAdmissible H) :
+    ∀ H : Finset ℕ, IsAdmissible H → H.card ≥ 50 →
+    ∀ hne : H.Nonempty, 246 ≤ H.max' hne - H.min' hne
+```
+
+### Sub-piece (a) — Translation invariance toolkit
+
+* `sub_mod_eq_mod_add_sub_mod` (private) — the modular identity
+  `(a - m) % p = ((a % p) + (p - m % p)) % p` for `m ≤ a`, proven via
+  a `Nat.ModEq` chain (add `m % p` to both sides, cancel after both
+  reduce to `a` modulo `p`).
+* `card_image_image_sub_mod_eq` (private) — per-prime residue
+  cardinality preservation: `((H.image (· - m)).image (· % p)).card =
+  (H.image (· % p)).card`, via the bijection
+  `r ↦ (r + (p - m % p)) % p`.
+* `card_image_sub_eq` — translation preserves overall cardinality.
+* `image_sub_nonempty` — translation preserves nonemptyness.
+* `image_sub_max'_eq` — `(H.image (· - m)).max' = H.max' - m`.
+* `image_sub_min'_eq_zero` — `(H.image (· - H.min')).min' = 0`.
+* `isAdmissible_image_sub_iff` — the headline:
+  `IsAdmissible (H.image (· - m)) ↔ IsAdmissible H` when `m ≤ ∀ a ∈ H`.
+
+### Sub-piece (b) — 50-subset extraction
+
+* `exists_subset_card_50_containing_zero` (private) — for any `H'`
+  with `0 ∈ H'` and `H'.card ≥ 50`, produces `H₀ ⊆ H'` with
+  `H₀.card = 50` and `0 ∈ H₀`. Construction: 49-subset of
+  `H'.erase 0`, re-insert `0`.
+
+### Sub-piece (c) — Wiring
+
+The headline `engelsma_lower_bound_of_finitary` runs the §2.4 proof
+sketch: by contradiction, set `m := H.min'`, translate to
+`H' := H.image (· - m)`, observe `0 ∈ H'` (witnessed by `m - m`),
+`H'.max' = H.max' - m < 246` (the contradictory hypothesis),
+`H'.card ≥ 50` (by (a)), `IsAdmissible H'` (by (a)). Apply (b) to get
+`H₀ ⊆ H'` with `0 ∈ H₀`, `H₀.card = 50`. By
+`BoundedPrimeGaps.admissible_subset`, `IsAdmissible H₀`. Each
+element of `H₀` is `≤ H'.max' < 246`, so `H₀ ⊆ Finset.range 246`.
+Hence `H₀ ∈ (Finset.range 246).powersetCard 50`. Apply `hfin` to
+derive `¬ IsAdmissible H₀` — contradiction.
+
+### Why now (instead of S7)?
+
+`state.md`'s prior `Next Action` was S7 = `(10, 30)` `native_decide`
+(deferred via S6). S7 still carries the documented 30-120 s runtime
+risk; S8 is **pure-Lean combinatorics** with no `native_decide` cost
+and is explicitly marked "tackleable in parallel with S7" in the
+prior state.md. Landing S8 unblocks Path B (S9+): once we have a
+verified search procedure returning `false` for `(50, 246)`, S8's
+bridge lemma immediately discharges the original `engelsma_lower_bound`
+axiom — no further wiring is needed.
+
+### Axiom bookkeeping
+
+`axiomCount` stays at `1` (the `Lean.ofReduceBool` axiom introduced
+in S4 by `native_decide` is preserved). All S8 proofs are pure
+combinatorics — no `native_decide`, no new axioms. `theoremCount`:
+11 → 20 (9 new lemmas/theorems; the helpers + headline split as
+described above).
+
+### Previous focus (S6)
+
+S6 — **Non-vacuous Engelsma analogues at the boundary
 `w = H(k)+1`** for `k = 3, 4, 5, 6`. S4 (6,16) and S5 (8,22) verified
 the bound *vacuously* (Engelsma's table has `H(k) > w−1` in both
 cases, so no admissible tuple fits); S6 closes that gap by enumerating
@@ -67,27 +139,42 @@ stays at `1`.
 
 ## Next Action
 
-**S7 — Mid-size Engelsma analogue at `(k, w) = (10, 30)`** per
-knowledge.md §3.3 (originally state.md's S5, deferred to S6, now
-S7 after S6 collected non-vacuous boundary evidence). Concrete
-target:
+**S9 — Begin Path-B verified-backtracking infrastructure** for the
+finitary form per `knowledge.md` §4. With S8's bridge lemma in
+place, the path from `engelsmaSearch 246 50 = false` to the
+discharge of `engelsma_lower_bound` is now mechanical:
 
 ```lean
-theorem engelsma_analogue_10_30 :
-    ∀ H ∈ (Finset.range 30).powersetCard 10,
-      ∀ (h0 : 0 ∈ H), IsAdmissible H → 22 ≤ H.max' ⟨0, h0⟩ := by
+-- (i) Define the search procedure (write this as a `def`)
+def engelsmaSearch (w k : ℕ) : Bool := ...
+
+-- (ii) Prove correctness (Option-3 hybrid pattern, §4.3)
+theorem engelsmaSearch_correct (w k : ℕ) :
+    engelsmaSearch w k = false ↔
+      ∀ H ∈ (Finset.range w).powersetCard k, 0 ∈ H → ¬ IsAdmissible H
+  := ...
+
+-- (iii) Eval at (50, 246) — completes the axiom replacement.
+theorem engelsmaSearch_50_246 : engelsmaSearch 246 50 = false := by
   native_decide
+
+-- Apply S8's bridge to conclude `engelsma_lower_bound`:
+theorem engelsma_lower_bound' :
+    ∀ H : Finset ℕ, IsAdmissible H → H.card ≥ 50 →
+    ∀ hne : H.Nonempty, 246 ≤ H.max' hne - H.min' hne :=
+  engelsma_lower_bound_of_finitary
+    ((engelsmaSearch_correct 246 50).mp engelsmaSearch_50_246)
 ```
 
-`Nat.choose 30 10 ≈ 3 × 10^7`. Estimated `native_decide` runtime
-30–120 seconds. Vacuous antecedent (Engelsma records H(10) ≥ 32).
-May exceed default CI timeouts; if so, fall back to the §6.4
-Path-C-prime plan (land S2–S6, narrow the axiom statement). S6's
-non-vacuous (5,13) and (6,17) results give the qualitative
-confidence that S2's `Decidable` instance is correct on actually
-admissible inputs — orthogonal to the (10, 30) runtime question
-but a useful prerequisite for the Path-B verified-backtracking
-work in S8+.
+S9 is the start of (i)+(ii); concretely, encode an admissibility
+pruner that enumerates k-tuples in `Finset.range w` and short-circuits
+on the first failed residue cover. Estimate: 50-150 lines for the
+`def` alone; another 100-300 lines for the structural-induction
+correctness proof. Total Path-B effort: 5-10 sessions per §6.1.
+
+**Alternative deferred S7** — `(10, 30)` `native_decide` analogue.
+Lower priority than S9 Path-B work; useful only as another empirical
+runtime datapoint for the eventual `engelsmaSearch_50_246` call.
 
 ### Previous focus (S5)
 
@@ -207,23 +294,28 @@ but cannot be assessed until at least S4.
 
 ## Subsequent Iterations (deferred)
 
-- S7 — Mid-size Engelsma analogue at `(k, w) = (10, 30)`
-  via `native_decide` (originally state.md's S5; renumbered after
-  S5's (8,22) intermediate and S6's non-vacuous boundary suite).
-  Risk: 30–120 s runtime. Vacuous antecedent (H(10) ≥ 32 > 29).
-- S8 — `engelsma_lower_bound_of_finitary` bridge lemma
-  (Option B prerequisite) per knowledge.md §2.4. Can be tackled
-  in parallel with S7 since the bridge proof is pure-Lean
-  combinatorics independent of `native_decide` runtime.
-  Sub-pieces: (a) `IsAdmissible (H.image (· - m))` translation
-  invariance when `m ≤ min H`; (b) 50-subset extraction from a
-  card-≥50 set containing 0; (c) wiring the contradiction.
-- S9+ — Path B verified-backtracking prototype, building on
-  the S4/S5/S6/S7 `native_decide` infrastructure as a unit-test
-  harness. S6's non-vacuous boundary witnesses double as the
-  expected-output cases that any backtracker must agree with.
-- Path C (Selberg sieve fallback) remains an alternative if
-  Path B's runtime extrapolation fails at S7.
+- S9 — Begin Path-B verified backtracking infrastructure: the
+  `engelsmaSearch (w k : ℕ) : Bool` `def` per knowledge.md §4
+  (Option-3 hybrid pattern in §4.3). ~50-150 lines for the
+  pruning logic alone. S8's translation + bridge lemmas are
+  the prerequisite that S9 now no longer has to worry about.
+- S10 — Correctness lemma `engelsmaSearch_correct`: equivalence
+  between `engelsmaSearch w k = false` and the absence of any
+  admissible witness in `(Finset.range w).powersetCard k`. ~100-300
+  lines via structural induction over the search tree. Pre-checked
+  on the S6 non-vacuous boundary witnesses (which any correct
+  search must agree with).
+- S11 — `engelsmaSearch 246 50 = false` via `native_decide`. With
+  S8 + S9 + S10 in place, this is the final step that discharges
+  `engelsma_lower_bound`. Runtime depends on the S9 pruner; per
+  knowledge.md §4.5 (~10-60 s after compilation).
+- Alternative deferred S7 — `(10, 30)` `native_decide` analogue.
+  Lower priority than the Path-B work above. Useful only as another
+  empirical scaling datapoint for the eventual S11 call.
+- Path C (Selberg sieve fallback) remains an alternative if Path-B
+  runtime turns out to be infeasible at (50, 246) — knowledge.md §5
+  notes it doesn't reduce to a tractable enumeration on its own,
+  but it would let us narrow the residual `native_decide` claim.
 
 ## Attempt Counts
 
@@ -274,4 +366,23 @@ but cannot be assessed until at least S4.
   Originally planned S6 = (10, 30) renumbered to S7 (still vacuous, higher
   runtime risk, lower mathematical value than the boundary non-vacuous
   cases here). Build pending; the Docker symlink trap prevents local
-  verification.
+  verification. PR #18027 merged.
+- **S8 (2026-05-12, researcher-3)**: ACT. Extended S6 file (357 → 617 lines, +260):
+  the `engelsma_lower_bound_of_finitary` bridge lemma per knowledge.md §2.4.
+  Pure-Lean combinatorics — no `native_decide`, no new axioms (`axiomCount`
+  stays at 1). Three sub-pieces: (a) translation invariance toolkit
+  (`isAdmissible_image_sub_iff` + the per-prime modular bijection lemma
+  `card_image_image_sub_mod_eq` + 4 helpers `card_image_sub_eq` /
+  `image_sub_nonempty` / `image_sub_max'_eq` / `image_sub_min'_eq_zero`,
+  with the foundational modular identity `sub_mod_eq_mod_add_sub_mod` proven
+  via a `Nat.ModEq` chain); (b) 50-subset extraction
+  `exists_subset_card_50_containing_zero`; (c) wiring in the headline
+  `engelsma_lower_bound_of_finitary` theorem. theoremCount 11 → 20 (9 new
+  lemmas/theorems). Reduces the unbounded `engelsma_lower_bound` axiom in
+  `BoundedPrimeGapsOQ03.lean` (line 134) to its finitary form
+  `∀ H ∈ (Finset.range 246).powersetCard 50, 0 ∈ H → ¬ IsAdmissible H` —
+  Path-B (S9+) verified-backtracking work then needs only to discharge
+  the latter to close the axiom. Build pending; the Docker symlink trap
+  blocks local verification (memory: feedback_researcher_lake_symlink_broken).
+  Skipped S7 (vacuous (10, 30) `native_decide`) per state.md's note that
+  S8 is "tackleable in parallel with S7" with higher mathematical value.
