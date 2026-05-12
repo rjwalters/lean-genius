@@ -1,7 +1,7 @@
 {
   "slug": "inverse-galois-a5-oq-01",
   "title": "Eliminate three_dvd_gal_card via Dedekind's theorem on Frobenius elements",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -38,25 +38,27 @@
     "goal": "Eliminate the axiom three_dvd_gal_card in Proofs/InverseGaloisA5.lean by replacing it with a theorem three_dvd_gal_card_proved discharged from Mathlib's ramification-inertia infrastructure. Phased approach: R1 (specialised Dedekind at p=7) is the recommended S2-S4 plan, delivering the gallery-status upgrade (axiomatized -> verified) in ~3-4 sessions and ~490 Lean lines. R3 (resolvent sextic) is a safety-valve alternative if R1 stalls on prime-ideal construction. R2 (full Mathlib Dedekind) is deferred to a long-term Mathlib contribution roadmap."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T12:55:00.000Z",
-    "iteration": 1,
-    "focus": "S1 (researcher-12, 2026-05-12): OBSERVE survey only. Identified the lone axiom three_dvd_gal_card (line 309 of Proofs/InverseGaloisA5.lean), classified three discharge routes (R1 specialised Dedekind / R2 full Mathlib Dedekind / R3 resolvent sextic), mapped Mathlib's ramification-inertia API surface, and drafted a Lean skeleton for the recommended R1 path. Parent file Part XII (lines 715-884) already contains the decidable verification q_root_mod7_at_5, q_root_mod7_at_6, cubic_factor_no_roots_mod7 — only the Frobenius-construction-and-cycle-type bridge remains.",
+    "phase": "ORIENT",
+    "since": "2026-05-12T14:24:00.000Z",
+    "iteration": 2,
+    "focus": "S2 (researcher-5, 2026-05-12): R1 ORIENT — created proofs/Proofs/InverseGaloisA5Dedekind.lean (76 lines, 1 substantive sorry). Encoded: seven_nondiv_disc (¬ (7:ℤ) ∣ 1024000000, proved with omega), exists_gal_order_three (sole sorry, to be discharged in S3 via the Frobenius construction at p=7), and three_dvd_gal_card_proved (trivial bridge via orderOf_dvd_card). The 4-sorry plan in S1's state.md was compressed into 1 sorry by lumping the prime-ideal/inertia-degree/Frobenius-generator construction into a single existence-of-order-3-element statement. Added the new module to proofs/Proofs.lean. Parent file unchanged (axiom replacement deferred to S4).",
     "blockers": [],
-    "nextAction": "S2 (any researcher): R1 ORIENT — create proofs/Proofs/InverseGaloisA5Dedekind.lean (~80 lines, 4 sorries) with the Frobenius bridge: seven_unramified (disc(q) coprime to 7), p3 : Ideal (O_K) above 7 with inertia degree 3, frob3 : q.Gal as the Frobenius generator at p3, frob3_order_eq_three, and three_dvd_gal_card_proved : 3 | Fintype.card q.Gal via orderOf_dvd_card. Update proofs/Proofs.lean to include the new file. Parent file unchanged in S2; axiom replacement deferred to S4.",
+    "nextAction": "S3 (any researcher): R1 ACT — discharge exists_gal_order_three : ∃ σ : q.Gal, orderOf σ = 3. Construction: (1) find some prime ideal 𝔭 ⊂ 𝒪_K above 7 with inertia degree 3 using Mathlib.NumberTheory.RamificationInertia.Galois; (2) extract its Frobenius generator frob₃ ∈ q.Gal; (3) prove orderOf frob₃ = 3 from the decomposition-group-order = inertia-degree identity at unramified primes. Estimated ~300-500 Lean lines. If the explicit prime-ideal construction stalls, fall back to R3 (resolvent sextic) per problem.md Q3.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-12, 2026-05-12): OBSERVE survey on the lone axiom of the parent inverse-galois-a5 proof. 0 Lean changes; 4 doc files produced (problem.md ~280 lines, knowledge.md ~200 lines, state.md ~150 lines, this JSON). Three discharge routes catalogued (R1 specialised Dedekind ~250-500 lines, R2 full Mathlib Dedekind ~1500-2000 lines, R3 resolvent sextic ~600 lines). R1 recommended for S2-S4. Mathlib API surface mapped: NumberField.Basic, RamificationInertia.Galois, Perm.Cycle.Type. Parent Part XII evidence inventory: 5 supporting decidable theorems already in place. No axiom delta in S1.",
+    "progressSummary": "S2 (researcher-5, 2026-05-12): R1 ORIENT — created proofs/Proofs/InverseGaloisA5Dedekind.lean (76 lines), added to proofs/Proofs.lean import list. The scaffold provides three theorems: seven_nondiv_disc (¬ (7:ℤ) ∣ 1024000000, proved with omega), exists_gal_order_three (sole substantive sorry — discharged in S3 via the Frobenius construction), and three_dvd_gal_card_proved : 3 ∣ Fintype.card q.Gal (trivial bridge via orderOf_dvd_card). Compressed S1's 4-sorry plan into a single existence-of-order-3-element sorry, isolating S3's task to one purely Mathlib-API question. Parent InverseGaloisA5.lean unchanged. No axiom delta yet (axiom replacement deferred to S4). Build verification deferred to deployer/auditor (parent is 2067 lines + 84 theorems and rebuilds slowly). Sorry delta: 0 → 1 (new file). Axiom delta: 0. S1 (researcher-12, 2026-05-12): OBSERVE survey on the lone axiom of the parent inverse-galois-a5 proof. Three discharge routes catalogued (R1 specialised Dedekind ~250-500 lines, R2 full Mathlib Dedekind ~1500-2000 lines, R3 resolvent sextic ~600 lines). R1 recommended for S2-S4. Mathlib API surface mapped: NumberField.Basic, RamificationInertia.Galois, Perm.Cycle.Type. Parent Part XII evidence inventory: 5 supporting decidable theorems already in place.",
     "builtItems": [
-      "research/problems/inverse-galois-a5-oq-01/problem.md (new, ~280 lines): full statement of three_dvd_gal_card, three-route classification (R1/R2/R3) with effort estimates, Mathlib gap map, reference reading list (Dummit-Foote, Neukirch, Lang, Cohen), five-session decomposition (S1 OBSERVE -> S2 ORIENT -> S3 ACT -> S4 CLOSE -> optional S5 alternative).",
-      "research/problems/inverse-galois-a5-oq-01/knowledge.md (new, ~200 lines): parent file inventory (the relevant decls at lines 207-309-511-779-787-791-796), specialised Dedekind theorem statement, Mathlib API survey by module, Lean skeleton for R1 ORIENT, decomposition plan with effort estimates, mathlib gap analysis, sibling cross-impact table.",
-      "research/problems/inverse-galois-a5-oq-01/state.md (new, ~150 lines): OBSERVE phase, S2 next-action sketch with concrete Lean code skeleton, session log, honest calibration.",
-      "src/data/research/problems/inverse-galois-a5-oq-01.json (this file, new): research index entry."
+      "proofs/Proofs/InverseGaloisA5Dedekind.lean (S2, new, 76 lines, 1 sorry): scaffold with seven_nondiv_disc (omega-closed), exists_gal_order_three (substantive sorry), and three_dvd_gal_card_proved (trivial bridge via orderOf_dvd_card).",
+      "proofs/Proofs.lean (S2, +1 line): added 'import Proofs.InverseGaloisA5Dedekind' to the auto-import list.",
+      "research/problems/inverse-galois-a5-oq-01/problem.md (S1, new, ~280 lines): full statement of three_dvd_gal_card, three-route classification (R1/R2/R3) with effort estimates, Mathlib gap map, reference reading list (Dummit-Foote, Neukirch, Lang, Cohen), five-session decomposition (S1 OBSERVE -> S2 ORIENT -> S3 ACT -> S4 CLOSE -> optional S5 alternative).",
+      "research/problems/inverse-galois-a5-oq-01/knowledge.md (S1, new, ~200 lines): parent file inventory (the relevant decls at lines 207-309-511-779-787-791-796), specialised Dedekind theorem statement, Mathlib API survey by module, Lean skeleton for R1 ORIENT, decomposition plan with effort estimates, mathlib gap analysis, sibling cross-impact table.",
+      "research/problems/inverse-galois-a5-oq-01/state.md (S1, new, ~150 lines): OBSERVE phase, S2 next-action sketch with concrete Lean code skeleton, session log, honest calibration.",
+      "src/data/research/problems/inverse-galois-a5-oq-01.json (S1, new; S2-updated): research index entry."
     ],
     "insights": [
       "The parent's three_dvd_gal_card (line 309) is the ONLY axiom in Proofs/InverseGaloisA5.lean. All four prior axioms (A discriminant-square, C and D complex-conjugation-based, original q_gal_card) have been eliminated in earlier sessions. Closing this axiom is the single-step path to the parent's verified status.",
@@ -74,8 +76,7 @@
       "Explicit Frobenius generator from inertia data of an unramified prime: partial coverage in Mathlib.NumberTheory.RamificationInertia.Galois; the surface for extracting an element of q.Gal from a prime ideal of O_K needs verification at v4.26.0."
     ],
     "nextSteps": [
-      "S2 ORIENT (~80 Lean lines, 4 sorries): create proofs/Proofs/InverseGaloisA5Dedekind.lean with the Frobenius bridge skeleton. Add to proofs/Proofs.lean auto-import list. No parent-file changes.",
-      "S3 ACT (~400 Lean lines, -4 sorries): discharge the Frobenius construction. Construct p3 : Ideal (O_K) above 7 with inertia degree 3; extract frob3 : q.Gal from its decomposition group; prove orderOf frob3 = 3 by linking decomposition group order to inertia degree (since 7 is unramified). The hardest step is the explicit p3 construction; the rest is API plumbing.",
+      "S3 ACT (~300-500 Lean lines, -1 sorry): discharge exists_gal_order_three. (1) Construct or non-constructively exhibit a prime ideal 𝔭 ⊂ 𝒪_K above 7 with inertia degree 3 using Mathlib.NumberTheory.RamificationInertia (API exploration needed). (2) Extract its Frobenius generator frob₃ ∈ q.Gal via the Galois-Frobenius framework. (3) Prove orderOf frob₃ = 3 from decomposition-group-order = inertia-degree at unramified primes.",
       "S4 CLOSE (~10 Lean diff + ~30 meta.json): in InverseGaloisA5.lean, replace axiom three_dvd_gal_card with theorem three_dvd_gal_card := InverseGaloisA5Dedekind.three_dvd_gal_card_proved. Update src/data/proofs/inverse-galois-a5/meta.json: status axiomatized -> verified, badge axiom -> original, axiomCount 1 -> 0. Build verify via docker.",
       "S5 ALTERNATIVE (only if R1 stalls in S3): switch to R3 — define the resolvent sextic of q (~200 lines via norm_num on coefficients); prove it has no rational root (~50 lines, decide on a bounded search); construct the surjection Gal(q) -> Gal(R(q)) (~300 lines, Galois correspondence); conclude 3 | |Gal(q)| from |S3| | |Gal(R(q))|."
     ]
@@ -107,7 +108,7 @@
     "seeker-selected"
   ],
   "createdAt": "2026-05-12T12:55:00.000Z",
-  "updatedAt": "2026-05-12T12:55:00.000Z",
+  "updatedAt": "2026-05-12T14:24:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -121,6 +122,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5Dedekind.lean",
+      "filename": "InverseGaloisA5Dedekind.lean",
+      "lineCount": 76,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5Dedekind.lean"
     }
   ]
 }
