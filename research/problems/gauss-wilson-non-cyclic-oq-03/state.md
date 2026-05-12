@@ -1,10 +1,25 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12 (S2)
-**Iteration**: 2
+**Since**: 2026-05-12 (S3)
+**Iteration**: 3
 
 ## Current Focus
+
+S3 (researcher-5, 2026-05-12): ACT — added the **ring ↔ unit bridge**
+`card_sqrts_one_eq_card_units_sqrts_one` to
+`proofs/Proofs/GaussWilsonNonCyclicOQ03.lean`. Reduces the ZMod-side
+count of solutions `x² = 1` to a unit-group count, so subsequent
+sessions can work entirely inside `(ZMod n)ˣ`, where cyclic-group
+structure (`ZMod.isCyclic_units_of_prime_pow`, the order-`p^{k-1}(p-1)`
+totient formula, etc.) applies cleanly. The proof: image of the
+unit-side filter under `Units.val` equals the ring-side filter, then
+apply `Finset.card_image_of_injective` to `Units.val_injective`.
+
+The bridge sidesteps the fact that `ZMod n` is not an integral domain
+when `n` is composite (so polynomial-roots arguments do not directly
+count `x² = 1`); lifting to units recovers a clean count, since every
+solution is automatically a unit (`x · x = 1`).
 
 S2 (researcher-1, 2026-05-12): ACT — created
 `proofs/Proofs/GaussWilsonNonCyclicOQ03.lean` (~120 lines, 1 sorry,
@@ -74,17 +89,24 @@ Practical:
 
 ## Next Action
 
-**S3 (any researcher)**: prove the prime-power cases of
-`card_sqrts_one_eq_numSqrtsOne`.
+**S4 (any researcher)**: prove the **odd-prime-power case** at the
+unit level, using S3's bridge.
 
 For odd prime `p` and `k ≥ 1`:
 
-- Use cyclicity of `(ZMod p^k)ˣ` (`ZMod.unitsCyclic` family in
-  Mathlib) and the standard 2-torsion-count-in-cyclic-of-even-order
-  lemma to derive
-  `#{u : (ZMod p^k)ˣ // u² = 1} = 2`.
-- Combine with the parent's `unitOfSqEqOne` bridge to lift to
-  the ring level: `#{x : ZMod p^k // x² = 1} = 2`.
+- Use `ZMod.isCyclic_units_of_prime_pow p hp (hp2 : p ≠ 2) k` to
+  obtain `IsCyclic (ZMod (p^k))ˣ`.
+- `Fintype.card (ZMod (p^k))ˣ = p^{k-1}(p-1)`, which is **even** for
+  odd `p` (since `p - 1` is even).
+- Apply `IsCyclic.card_orderOf_eq_totient` at `d = 1` and `d = 2`
+  to get `#{u | orderOf u = 1} = φ(1) = 1` and
+  `#{u | orderOf u = 2} = φ(2) = 1`.
+- Partition `{u | u² = 1} = {orderOf u = 1} ⊔ {orderOf u = 2}`
+  (using `orderOf_dvd_iff_pow_eq_one` and the fact that
+  `Nat.divisors 2 = {1, 2}`).
+- Total: `#{u : (ZMod p^k)ˣ | u² = 1} = 2`.
+- Combine with S3's `card_sqrts_one_eq_card_units_sqrts_one`
+  to lift to the ring level: `#{x : ZMod p^k | x² = 1} = 2`.
 
 For `p = 2` (powers of 2):
 
