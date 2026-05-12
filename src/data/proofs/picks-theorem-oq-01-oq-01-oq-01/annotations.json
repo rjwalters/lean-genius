@@ -1,1 +1,86 @@
-[]
+[
+  {
+    "id": "ann-imports",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 105, "endLine": 109 },
+    "type": "context",
+    "title": "Imports: Int.GCD, Int.Interval, Nat.GCD, Finset.Prod",
+    "content": "Four Mathlib imports + `Tactic`. `Mathlib.Data.Int.GCD` supplies `Int.natAbs` and the integer-GCD lemmas used to define `edgeGCD`. `Mathlib.Data.Int.Interval` provides `Finset.Icc : ℤ → ℤ → Finset ℤ`, the decidable closed-interval `Finset` over `ℤ` that powers the `boundingBox` definition for the S2 strictly-interior count. `Mathlib.Data.Nat.GCD.Basic` is the workhorse for `Nat.gcd` semantics. `Mathlib.Data.Finset.Prod` exposes `×ˢ` (`Finset.product`), the Cartesian product of `Finset`s needed to lift the 1D bounding intervals into a 2D bounding rectangle. Notably absent: any of `Mathlib.LinearAlgebra` — this file works at the discrete-arithmetic level, never touching real-valued areas. Pick's formula is computed entirely in ℚ.",
+    "mathContext": "Toolkit: $\\gcd : \\mathbb{N} \\times \\mathbb{N} \\to \\mathbb{N}$, $\\mathrm{Icc} : \\mathbb{Z}^2 \\to \\mathrm{Finset}\\, \\mathbb{Z}$, $\\times^{\\mathrm{s}} : \\mathrm{Finset}\\, \\alpha \\to \\mathrm{Finset}\\, \\beta \\to \\mathrm{Finset}(\\alpha \\times \\beta)$. No real-valued geometry — everything decidable.",
+    "significance": "context",
+    "relatedConcepts": ["Int.natAbs", "Nat.gcd", "Finset.Icc on ℤ", "Finset.product", "decidability for native_decide"],
+    "prerequisites": ["Mathlib namespaces", "Lean 4 import resolution"]
+  },
+  {
+    "id": "ann-lattice-triangle-struct",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 117, "endLine": 130 },
+    "type": "definition",
+    "title": "LatticeTriangle: three ℤ² vertices, with signed determinant",
+    "content": "The mirror `LatticeTriangle` structure is **deliberately redeclared** rather than imported from `PicksTheoremOQ01OQ01`: keeping this file self-contained avoids the import cycle that would arise from depending on both companion files simultaneously. `LatticeTriangle.det` is the 2D cross product `(v2 − v1) × (v3 − v1)`, equal to the **signed** double area by the shoelace formula. The sign encodes orientation (positive ⇔ vertices in counter-clockwise order). The companion `NonDegenerate` predicate `T.det ≠ 0` rules out collinear vertices — necessary for a triangle to have an interior at all.",
+    "mathContext": "$\\det T := (v_2{-}v_1) \\times (v_3{-}v_1) = (v_2.1 - v_1.1)(v_3.2 - v_1.2) - (v_3.1 - v_1.1)(v_2.2 - v_1.2) = \\pm 2\\, \\mathrm{Area}(T)$. NonDegenerate iff $\\det T \\neq 0$.",
+    "significance": "key",
+    "relatedConcepts": ["shoelace formula", "signed area", "cross product in ℤ²", "lattice geometry", "import cycles in Lean"],
+    "prerequisites": ["2D cross product", "lattice polygons"]
+  },
+  {
+    "id": "ann-bridge-data",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 137, "endLine": 169 },
+    "type": "definition",
+    "title": "Bridge data: twiceArea / edgeDelta / edgeGCD / boundaryCount / pickInterior(Num)",
+    "content": "Six definitions assemble the Pick-formula machinery without ever leaving the rationals. `twiceArea` is `|det|` (`Int.natAbs`), throwing away orientation. `edgeDelta i` returns `(|Δx_i|, |Δy_i|)` for the three cyclic edges 0:v1→v2, 1:v2→v3, 2:v3→v1; taking `natAbs` lets the GCD formula apply regardless of edge direction (`gcd` is symmetric under sign flips). `edgeGCD i = gcd(|Δx_i|, |Δy_i|)` is exactly the bare-lattice-point count of edge i (excluding the shared endpoint), by `PicksTheoremOQ02.card_segmentPoints`. `boundaryCount = Σ_{i=0}^2 edgeGCD i` totals the boundary lattice points: each edge contributes `gcd + 1` points, the three shared vertices are double-counted, so B = Σ(gcd + 1) − 3 = Σ gcd. Two equivalent forms of Pick's interior count: `pickInterior : ℚ = twiceArea/2 − boundaryCount/2 + 1` (rational, definitionally close to the classical statement) and `pickInteriorNum : ℤ = twiceArea − boundaryCount + 2` (cleared denominator, ideal for inductive proofs in ℤ).",
+    "mathContext": "$\\mathrm{twiceArea}(T) = |\\det T|$. $\\mathrm{boundaryCount}(T) = \\sum_{i} \\gcd(|\\Delta x_i|, |\\Delta y_i|)$. $\\mathrm{pickInterior}(T) = \\frac{|\\det T|}{2} - \\frac{B(T)}{2} + 1 \\in \\mathbb{Q}$; $\\mathrm{pickInteriorNum}(T) = |\\det T| - B(T) + 2 \\in \\mathbb{Z}$. Identity: $2 \\cdot \\mathrm{pickInterior}(T) = \\mathrm{pickInteriorNum}(T)$.",
+    "significance": "key",
+    "relatedConcepts": ["Pick's formula", "GCD lattice-point count", "endpoint-sharing accounting", "cleared-denominator form", "natAbs"],
+    "prerequisites": ["PicksTheoremOQ02.card_segmentPoints", "Int.natAbs basics", "Nat.gcd symmetry"]
+  },
+  {
+    "id": "ann-bridge-identity",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 175, "endLine": 192 },
+    "type": "technique",
+    "title": "Algebraic bridge identity: 2·pickInterior = pickInteriorNum",
+    "content": "Two cleared-form identities, both proved by `unfold` + `push_cast` + `ring`. `two_mul_pickInterior` exhibits the bridge between rational and integer forms: doubling the rational `pickInterior` cancels the `/2` factors and produces the integer `pickInteriorNum`. `pick_formula_cleared` is the rearrangement that will drive every induction step: `2A = 2I + B − 2`. The proofs are mechanical — `push_cast` migrates the ℕ → ℚ casts inward, `ring` closes the polynomial identity. The mathematical content is zero (just algebra); the engineering content is huge (this is the move that lets S3+ stay in ℤ while reasoning about half-integer Pick statements).",
+    "mathContext": "**Identity 1**: $2 \\cdot \\mathrm{pickInterior}(T) = \\mathrm{pickInteriorNum}(T)$ — cross-multiplying clears the $\\tfrac{1}{2}$ factors. **Identity 2** (Pick's formula in cleared form): $2A = 2I + B - 2$ where $A = |\\det|/2$, $I = \\mathrm{pickInterior}$, $B = \\mathrm{boundaryCount}$. Equivalently, $A = I + B/2 - 1$ after dividing by 2.",
+    "significance": "key",
+    "relatedConcepts": ["push_cast", "ring tactic", "cleared-denominator identities", "Pick's formula"],
+    "prerequisites": ["Lean 4 push_cast / ring", "rational-vs-integer arithmetic"]
+  },
+  {
+    "id": "ann-test-triangles-1-4",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 206, "endLine": 281 },
+    "type": "technique",
+    "title": "Section IV: Pick's formula on three test triangles via native_decide",
+    "content": "Three concrete LatticeTriangles (unit (0,0)-(1,0)-(0,1) → 2A=1, B=3, I=0; 2-by-1 right (0,0)-(2,0)-(0,1) → 2A=2, B=4, I=0; 3-by-3 right (0,0)-(3,0)-(0,3) → 2A=9, B=9, I=1) get hammered open by `native_decide` for the boundary/area numerals, then `norm_num` closes the rational `pickInterior` equalities. The 3-by-3 case is the most interesting: $B = 3 + 3 + 3 = 9$ (each leg has 4 lattice points, hypotenuse has 4, vertices double-counted), so I = 9/2 − 9/2 + 1 = 1 — and indeed (1,1) is the unique strictly-interior lattice point. The 2-by-1 case is the **diagnostic** showing that the midpoint (1,0) sits on the boundary, not the interior — so I = 0 even though the bounding box contains a non-vertex lattice point.",
+    "mathContext": "$T_1 = \\langle(0,0),(1,0),(0,1)\\rangle \\Rightarrow (2A, B, I) = (1, 3, 0)$; $T_2 = \\langle(0,0),(2,0),(0,1)\\rangle \\Rightarrow (2, 4, 0)$; $T_3 = \\langle(0,0),(3,0),(0,3)\\rangle \\Rightarrow (9, 9, 1)$. All satisfy $A = I + B/2 - 1$.",
+    "significance": "supporting",
+    "relatedConcepts": ["native_decide", "norm_num", "concrete verification", "unit primitive triangle", "interior vs boundary"],
+    "prerequisites": ["Lean 4 native_decide / norm_num tactics"]
+  },
+  {
+    "id": "ann-strict-interior",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 303, "endLine": 350 },
+    "type": "definition",
+    "title": "S2 Section VI: real strictly-interior count via decidable cross-product test",
+    "content": "The S2 substance: a decidable definition of when a lattice point `p` is **strictly interior** to a triangle T. The trick is the **same-sign cross-product test**: for the cyclic edges (v1,v2,p), (v2,v3,p), (v3,v1,p), all three cross products `cross2 = (b-a) × (p-a)` share the same strict sign (all > 0 ⇔ counter-clockwise, all < 0 ⇔ clockwise). Vertices and edge points fail strict positivity on at least one cross product. The two disjuncts in `StrictInterior` handle both orientations of T — this is essential because `LatticeTriangle` doesn't require a canonical orientation. The `Decidable` instance fires from `infer_instance` (cross products are decidable, ∨ and ∧ are decidable, so the whole predicate is). `boundingBox = Icc xmin xmax ×ˢ Icc ymin ymax` (Finset of all lattice points in the axis-aligned bounding box) makes the interior-finding a finite filter problem, which `realInterior = boundingBox.filter StrictInterior` solves; `realInteriorCount = card` is the geometric quantity Pick's formula targets.",
+    "mathContext": "$\\mathrm{StrictInterior}(T, p) := \\bigl(\\forall i,\\ (v_{i+1} - v_i) \\times (p - v_i) > 0\\bigr) \\vee \\bigl(\\forall i,\\ (v_{i+1} - v_i) \\times (p - v_i) < 0\\bigr)$. $\\mathrm{realInteriorCount}(T) = |\\{p \\in \\mathrm{boundingBox}(T) : \\mathrm{StrictInterior}(T, p)\\}|$. By the cross-product orientation theorem, this equals the geometric count of lattice points in the open interior of the triangle $T$.",
+    "significance": "key",
+    "relatedConcepts": ["cross-product point-in-triangle test", "same-sign orientation", "Finset.filter", "bounding-box reduction", "decidable predicates"],
+    "prerequisites": ["2D cross product orientation", "Finset.Icc on ℤ", "Decidable typeclass"]
+  },
+  {
+    "id": "ann-base-case-agreement",
+    "proofId": "picks-theorem-oq-01-oq-01-oq-01",
+    "range": { "startLine": 363, "endLine": 398 },
+    "type": "insight",
+    "title": "S2 Section VII: base-case agreement realInteriorCount = pickInterior",
+    "content": "The S2 deliverable: three agreement theorems `unitTriangle_pick_agrees`, `triangle_2_1_pick_agrees`, `triangle_3_3_pick_agrees` showing the bounding-box-filter count exactly matches the Pick-formula rational on each test triangle. Each is closed by `native_decide` for the count + `norm_num` for the rational identity. The unit triangle is the **base case of the future Pick induction**: every primitive (|det| = 1) lattice triangle has `pickInterior = 0` (by the I + B/2 − 1 = 0 + 3/2 − 1 = 1/2 = A computation), and `realInteriorCount = 0` follows by direct enumeration. The 3-by-3 case is the first non-trivial agreement: the unique interior lattice point (1,1) satisfies all three cross-product positivity conditions, and no other point in [0,3]² does. Together these three witnesses bound the bridge: S3 must lift this agreement from concrete triangles to all primitive triangles, and S4 must propagate it across primitive-triangulation joins via an additivity lemma.",
+    "mathContext": "**Base case**: $\\forall T$ with $|\\det T| = 1$, $\\mathrm{realInteriorCount}(T) = \\mathrm{pickInterior}(T) = 0$. **Inductive step (S3+ open)**: if $T$ triangulates into primitives $T_1, \\dots, T_k$ ($k = |\\det T|$) joined at shared edges, then $\\mathrm{realInteriorCount}(T) = \\sum_i \\mathrm{realInteriorCount}(T_i) + (\\text{shared-edge interior points})$, with the same identity for $\\mathrm{pickInterior}$ via `pick_formula_cleared`.",
+    "significance": "key",
+    "relatedConcepts": ["base case of induction", "primitive triangulation", "additivity lemma (S3 deferred)", "interior-boundary classification"],
+    "prerequisites": ["Section VI definitions", "native_decide on Finset.card"]
+  }
+]
