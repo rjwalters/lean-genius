@@ -100,11 +100,20 @@
       "summary": "Two theorems. `esymm_zero_tail` (lines 81–115): if a nonneg list's e_j vanishes, so does e_{j+1}, by recursive list induction over List.cons. `esymm_log_concave` (lines 117–213): the unnormalized Newton inequality e_k² ≥ e_{k-1}·e_{k+1}, proved by induction on the list length with k=1 and k=n boundary cases via quadratic-nonneg arguments using 2·C(n+1, k) = n·(n+1) from Pascal's rule."
     },
     {
-      "id": "cleared-denominator-newton",
-      "title": "Part III — Normalized Newton Inequality (Cleared-Denominator Form)",
+      "id": "cross-condition-helper",
+      "title": "Part III.A — Cross-Condition Helper (esymm_cross_condition)",
       "startLine": 214,
+      "endLine": 253,
+      "summary": "Part III header docstring (lines 214–217) and the private helper `esymm_cross_condition` (lines 220–253). Given the unnormalized Newton inequality at consecutive indices k and k−1, this lemma derives the cross-product form e_k · e_{k−1} ≥ e_{k−2} · e_{k+1} via `NewtonLogConcavity.cross_product_of_log_concave`. The proof first reindexes via `obtain ⟨p, rfl⟩ : ∃ p, k = p + 2` (using hk : 2 ≤ k) and `simp only` rewrites so that the indices match the cross-product API, then supplies four nonnegativity proofs plus two log-concavity facts (one at p+1, one at p+2, with zero-tail fallbacks when the list is too short), and a zero-propagation case via `esymm_zero_tail` applied twice.",
+      "mathContext": "Cross-condition: for a log-concave sequence $(a_p, a_{p+1}, a_{p+2}, a_{p+3})$ with $a_i \\ge 0$ and $a_{p+1}^2 \\ge a_p a_{p+2}$, $a_{p+2}^2 \\ge a_{p+1} a_{p+3}$, the cross-product $a_{p+1} a_{p+2} \\ge a_p a_{p+3}$ follows. The proof is multiplicative: $(a_{p+1} a_{p+2})^2 \\ge a_p a_{p+2} \\cdot a_{p+1} a_{p+3} = a_p a_{p+1} a_{p+2} a_{p+3}$, then taking square roots (with the zero-propagation case handled separately). This is the missing 'cross' direction needed to descend from the unnormalized Newton inequality to its cleared-denominator analogue."
+    },
+    {
+      "id": "headline-newton-binomial",
+      "title": "Part III.B — Headline Theorem: Cleared-Denominator Newton Inequality",
+      "startLine": 254,
       "endLine": 611,
-      "summary": "The headline result. `esymm_cross_condition` (lines 220–252, private): given the unnormalized Newton inequality at k and k-1, the cross-product e_k · e_{k-1} ≥ e_{k-2} · e_{k+1} follows via NewtonLogConcavity.cross_product_of_log_concave with zero-tail handling. `newton_inequality_binomial` (lines 261–611): C(n,k-1)·C(n,k+1)·e_k² ≥ C(n,k)²·e_{k-1}·e_{k+1} by induction on the list length, with k=1 base via linear_combination and k≥2 inductive step delegating to newton_cleared_denom_inductive_step from the AMGM file."
+      "summary": "`newton_inequality_binomial` (lines 254–611, ~350 lines): the headline result $\\binom{n}{k-1} \\binom{n}{k+1} e_k(\\mathbf{x})^2 \\ge \\binom{n}{k}^2 e_{k-1}(\\mathbf{x}) e_{k+1}(\\mathbf{x})$ for all nonneg lists $\\mathbf{x}$ and all $1 \\le k \\le |\\mathbf{x}| - 1$. Induction on the list length (`xs`, `cons` case): k = 1 base case is a direct quadratic-nonneg argument using `linear_combination` and the Pascal-rule identity $2 \\binom{n+1}{2} = n(n+1)$; the k ≥ 2 inductive step packages the unnormalized Newton inequality (via `esymm_log_concave`) and the cross condition (via `esymm_cross_condition`) as inputs to the pre-packaged combinatorial identity `newton_cleared_denom_inductive_step` from `Proofs/AmgmInequalityOQ02OQ02.lean`. Multiple sub-cases handle whether $k$, $k-1$, $k+1$ overflow the list length (RHS = 0 in those branches via `esymm_eq_zero_of_gt` and `esymm_zero_tail`).",
+      "mathContext": "Inductive descent: writing $\\mathbf{x} = x :: \\mathbf{xs}$ and $n = |\\mathbf{xs}|$, the cons-recurrence $e_k(x :: \\mathbf{xs}) = e_k(\\mathbf{xs}) + x \\cdot e_{k-1}(\\mathbf{xs})$ expands $e_k(\\mathbf{x})^2$ as a polynomial in $x$ with coefficients in $e_*(\\mathbf{xs})$. The inductive hypothesis gives the analogous inequality on $\\mathbf{xs}$ for various $(k-1, k, k+1)$ triples; the binomial coefficients are reindexed via Pascal's rule $\\binom{n+1}{k} = \\binom{n}{k-1} + \\binom{n}{k}$. The result is a quadratic in $x$ that is shown nonneg either by linear_combination (k=1) or by the pre-packaged `newton_cleared_denom_inductive_step` (k ≥ 2)."
     }
   ],
   "conclusion": {
