@@ -888,3 +888,281 @@ together close the "shallow half" of the decomposition modulo B1.
   passes, this iteration delivers real Lean content; if build fails,
   the failure mode is recorded here and the PR reverts to a documentation-
   only S5 with the substantive code held back for S6 mechanic.
+
+### L. ACT-D prep — sphere-side B2 surrogate scoping (S6, doc-only)
+
+S5 ACT-B exec installed the *ball half* of the decomposition in
+substantive form (`H_n_minus_1_ball_zero_substantive` + thin
+`contractible_singularHomology_zero` axiom). The natural successor
+move is to install a *parallel* sphere half: a thin B2 surrogate
+axiom together with a substantive `H_n_minus_1_sphere_nonzero_substantive`
+theorem that consumes it.
+
+S6 OBSERVE is **doc-only Mathlib API survey** to scope this move
+before any Lean changes. Three goals: (i) verify the relevant
+sphere-related APIs exist at the pinned rev (`v4.26.0`,
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`); (ii) restate the B2
+gap classification in light of new findings; (iii) propose the
+exact axiom + theorem signatures for a future ACT-D exec session.
+
+#### L1. New Mathlib infrastructure discovered (not noted in S1 OBSERVE)
+
+GitHub-API search of the pinned rev surfaced
+**`Mathlib/Topology/Category/TopCat/Sphere.lean`** (authors Jiazhen
+Xia, Elliot Dean Young, 2024). The file provides `TopCat`-level
+objects for the disk, sphere, ball, and the boundary inclusion,
+all `ULift`-wrapped and `noncomputable`:
+
+```
+noncomputable def TopCat.disk (n : ℕ) : TopCat.{u} :=
+  TopCat.of <| ULift <| Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1
+
+noncomputable def TopCat.diskBoundary (n : ℕ) : TopCat.{u} :=
+  TopCat.of <| ULift <| Metric.sphere (0 : EuclideanSpace ℝ (Fin n)) 1
+
+noncomputable def TopCat.sphere (n : ℕ) : TopCat.{u} := diskBoundary (n + 1)
+
+noncomputable def TopCat.ball (n : ℕ) : TopCat.{u} :=
+  TopCat.of <| ULift <| Metric.ball (0 : EuclideanSpace ℝ (Fin n)) 1
+
+def TopCat.diskBoundaryInclusion (n : ℕ) : ∂𝔻 n ⟶ 𝔻 n := ofHom { ... }
+def TopCat.ballInclusion (n : ℕ) : 𝔹 n ⟶ 𝔻 n := ofHom { ... }
+```
+
+Notation: `𝔻 n`, `∂𝔻 n`, `𝕊 n`, `𝔹 n` (scoped). Mono instances are
+proved for both inclusions.
+
+**Implications for this file**:
+
+* The ball-side substantive proof currently uses
+  `TopCat.of ↥(Metric.closedBall ...)` directly. A future cleanup
+  (S7+ refactor) could replace this with `TopCat.disk (n+1)` for
+  cleaner types, at the cost of a `ULift` punctuation in the
+  homology-functor application.
+* The sphere-side axiom should use `TopCat.diskBoundary n` (i.e.
+  `𝕊 (n-1)` in the published notation) rather than a raw
+  `TopCat.of ↥(Metric.sphere ...)`, for the same reason and for
+  future compatibility with any sphere-homology lemmas that may
+  land upstream against the `TopCat.sphere`/`TopCat.diskBoundary`
+  definitions.
+* The `ULift` wrapping is the deliberate choice in
+  `Mathlib/Topology/Category/TopCat/Sphere.lean` and matches the
+  universe convention of the singular-homology functor.
+
+#### L2. Other sphere-adjacent files surveyed
+
+The GitHub-API path search `repo:leanprover-community/mathlib4
+path:Mathlib/Topology Sphere` returned 23 files. Beyond the
+`TopCat/Sphere.lean` file above:
+
+* `Mathlib/Topology/Compactification/OnePoint/Sphere.lean` — one-point
+  compactification of ℝⁿ⁻¹ identified with `S^{n-1}`. Useful for
+  alternative sphere-definition routes; not directly relevant to
+  homology.
+* `Mathlib/Topology/CWComplex/Classical/Finite.lean` and
+  `Mathlib/Topology/CWComplex/Abstract/Basic.lean` — finite CW
+  complex infrastructure exists. **This is the natural upstream
+  Mathlib route to sphere homology** via cellular chain complex
+  (S^{n-1} as a CW complex with one 0-cell and one (n-1)-cell).
+  Sphere-homology via CW would be more economical than Mayer–Vietoris
+  for the specific case of standard spheres.
+* `Mathlib/Geometry/Manifold/Instances/Sphere.lean` — manifold/antipode
+  APIs on `Metric.sphere`. Has `Sphere.continuousMul` but no
+  contractibility-related results; not useful for B2 surrogate.
+* All other matches are `Metric/MetricSpace` files that simply use
+  the word "sphere" in unrelated contexts.
+
+#### L3. B2 gap classification — refined
+
+Direct search of `Mathlib/AlgebraicTopology/` for `Metric.sphere`
+returned **zero hits** at the pinned rev. Direct search for
+`NotContractibleSpace sphere` returned **zero hits**. The B2 gap
+is structurally unchanged from S1:
+
+* No `H_{n-1}(S^{n-1}) ≅ ℤ` computation exists.
+* No Mayer–Vietoris in singular homology.
+* No suspension isomorphism `H_n(ΣX) ≅ H_{n-1}(X)`.
+* No `H_n(S^n) ≠ 0` or related non-vanishing result.
+
+What *did* change since S1: the discovery of `TopCat.sphere`
+(L1) provides the right *signatures* for any future sphere-homology
+lemma, even though the lemma content does not yet exist.
+
+Three feasible routes to upstream-contribute B2 (refined from
+S1 §B2a/B2b/B2c):
+
+* **B2-CW.** The cellular chain complex of `𝕊 n` is
+  `... → 0 → ℤ → 0 → ... → 0 → ℤ → 0`, with copies of `ℤ` in degrees
+  `0` and `n`. The cellular-to-singular homology iso is a *separate*
+  Mathlib gap, but assuming CW-cellular-homology lands, sphere
+  homology follows in one line. Estimated effort: medium (cellular
+  homology theory is a multi-PR project, but each piece is
+  well-understood).
+* **B2-Suspension.** Requires `H_n(ΣX) ≅ H_{n-1}(X)` for nice X, and
+  the homeomorphism `𝕊 (n+1) ≃ Σ(𝕊 n)`. The suspension iso itself
+  needs either Mayer–Vietoris or a direct chain-level construction.
+* **B2-Direct.** Build an explicit `(n-1)`-cycle on `𝕊 (n-1)` from
+  the boundary of the standard `n`-simplex and prove it is not a
+  boundary. Concrete but `n`-dependent.
+
+Of these, **B2-CW is the cleanest upstream contribution path** now
+that `TopCat.sphere` exists, because the CW-decomposition of `𝕊 n`
+is canonical and well-typed against `TopCat.sphere n`.
+
+#### L4. Proposed thin B2 surrogate — exact axiom statement
+
+Mirroring the ball-side pattern from S5 ACT-B exec, the surrogate
+should be a *direct-conclusion* axiom (an `IsZero` negation),
+not a chain-level statement. This keeps the surrogate "thin" and
+parallel to `contractible_singularHomology_zero`.
+
+Two candidate signatures, ordered by strength:
+
+**Candidate (a) — weakest sufficient (preferred for thin axiom)**:
+
+```lean
+axiom sphere_singularHomology_nonzero
+    (n : ℕ) (hn : 1 ≤ n) :
+    ¬ CategoryTheory.Limits.IsZero
+        (((AlgebraicTopology.singularHomologyFunctor AddCommGrpCat.{0} n).obj
+            (AddCommGrpCat.of ℤ)).obj
+          (TopCat.diskBoundary (n + 1)))
+```
+
+This says `H_n(𝕊 n) ≠ 0`. Strictly weaker than `≅ ℤ`, sufficient to
+drive the contradiction in `singular_homology_retraction_split`
+(because `id_ℤ` factoring through a zero object implies the source
+is zero, contradicting non-vanishing). Matches knowledge.md §C
+final formulation.
+
+**Candidate (b) — stronger (closer to textbook statement)**:
+
+```lean
+axiom sphere_singularHomology_isomorphic_Z
+    (n : ℕ) (hn : 1 ≤ n) :
+    Nonempty (
+      (((AlgebraicTopology.singularHomologyFunctor AddCommGrpCat.{0} n).obj
+          (AddCommGrpCat.of ℤ)).obj
+        (TopCat.diskBoundary (n + 1)))
+      ≅ AddCommGrpCat.of ℤ
+    )
+```
+
+This says `H_n(𝕊 n) ≅ ℤ`. Matches the standard textbook fact
+(Hatcher Theorem 2.13) but axiomatizes more than is needed.
+**Recommendation: ship (a) as the thin axiom**; (b) can be
+derived from a CW-cellular sketch as a follow-up.
+
+#### L5. Proposed substantive theorem — exact statement
+
+```lean
+theorem H_n_minus_1_sphere_nonzero_substantive (n : ℕ) (hn : 2 ≤ n) :
+    ¬ CategoryTheory.Limits.IsZero
+        (((AlgebraicTopology.singularHomologyFunctor AddCommGrpCat.{0} (n - 1)).obj
+            (AddCommGrpCat.of ℤ)).obj
+          (TopCat.diskBoundary n)) := by
+  -- direct restatement: TopCat.diskBoundary n = 𝕊 (n-1), so this is H_{n-1}(𝕊 (n-1)) ≠ 0
+  exact sphere_singularHomology_nonzero (n - 1) (by omega)
+```
+
+The hypothesis is strengthened from `n ≥ 1` (mock form) to `n ≥ 2`
+because `TopCat.diskBoundary 1 = 𝕊 0` is two points whose `H_0 ≅ ℤ²`
+(not the "non-zero ℤ" expected by the substantive form). The mock
+form is unaffected because `Retraction 1` is uninhabited.
+
+#### L6. Bridge problem — symmetric to the ball-side
+
+Like `H_n_minus_1_ball_zero_substantive` produces an `IsZero (...)`
+witness whereas the downstream consumer expects
+`∃ φ : ℤ →+ Unit, True`, the sphere-side substantive form will
+produce `¬ IsZero (...)` whereas the downstream consumer
+`H_n_minus_1_sphere_nonzero` expects `∃ ψ : Unit →+ ℤ, ψ ∘ φ = id`
+(a *split* existential, paramterized over an inclusion-induced
+`φ : ℤ →+ Unit`).
+
+The G6 Unit-bridge / Subsingleton-bridge work in **PR #18011**
+(sibling S5 session) is the natural locus for this conversion on
+both sides. Once that lands and a "subsingleton zero object"
+becomes interchangeable with `Unit`, the substantive theorems on
+both sides can replace their mock counterparts via the same
+algebraic adapter.
+
+The asymmetry to note: the ball-side substantive form gives an
+*IsZero* witness (subsingleton, hence one zero map to anything), so
+the bridge produces a clean `φ : ℤ →+ Unit`. The sphere-side
+substantive form gives a *non-IsZero* witness (the carrier is *not*
+a subsingleton). The Unit-bridge for the sphere side needs a
+**different shape**: not "the unique map factors through 0", but
+rather "any map factoring `id_ℤ` through the sphere homology
+requires the sphere homology to be at least `ℤ`-large". This is
+already encoded in the algebraic core (Part II), but the *bridge*
+between `¬ IsZero ((...).obj 𝕊)` and the `∃ ψ, ψ ∘ φ = id` shape
+is **not** in the current Part VI of PR #18011 (which only handles
+subsingleton sources/targets).
+
+**Net design implication**: completing the substantive sphere-side
+will require *additional* algebraic infrastructure beyond G6 Part VI.
+Specifically, a lemma converting "homology object has a nontrivial
+class" into "there exists a homology-induced split with `id_ℤ`".
+This is a Section G6+ extension, **not** covered by PR #18011.
+
+#### L7. ACT-D execution plan (S7+, multi-iteration)
+
+A clean ACT-D sequence, after PR #18011 merges:
+
+* **S7 ACT-D-1** — install candidate (a) axiom
+  `sphere_singularHomology_nonzero` + the trivial substantive
+  theorem `H_n_minus_1_sphere_nonzero_substantive` (L4 + L5).
+  Build-verified; no algebraic-bridge work. Net axiom delta: +1
+  (now 3 axioms: `H_n_minus_1_sphere_nonzero` mock,
+  `contractible_singularHomology_zero` B1 surrogate,
+  `sphere_singularHomology_nonzero` B2 surrogate).
+* **S8 ACT-D-2** — design a Section G7 algebraic bridge:
+  `¬ IsZero (X) → ∃ x : X, x ≠ 0` (for `AddCommGrpCat` objects).
+  This requires `AddCommGrpCat`'s `IsZero` characterization
+  (already in Mathlib via `IsZero.iff_isZero`). Self-contained
+  algebra.
+* **S9 ACT-D-3** — combine G7 + functoriality of singular
+  homology to convert the substantive sphere theorem into the
+  shape `∃ ψ : Unit →+ ℤ, ψ ∘ φ = id` *modulo a Unit-bridge*.
+  This depends on PR #18011's Part VI Subsingleton lemmas.
+* **S10 ACT-D-4** — drop the mock axiom `H_n_minus_1_sphere_nonzero`,
+  leaving only the B1 and B2 surrogates. Net axiom delta: −1
+  (back to 2 axioms, but now both are *standard textbook facts*
+  rather than the composite mock-bridge axiom).
+
+**End state after S10**: file has 2 axioms (both textbook-class,
+both with explicit upstream-Mathlib contribution paths) + 2
+substantive theorems (`H_{n-1}(B^n) = 0` for `n ≥ 2`,
+`H_{n-1}(S^{n-1}) ≠ 0` for `n ≥ 2`) + the no-retraction theorem
+derived from them via the algebraic core.
+
+#### L8. Build risk for ACT-D execution
+
+The S7 candidate-(a) axiom + trivial substantive theorem involves:
+
+* `AlgebraicTopology.singularHomologyFunctor` — verified present at
+  the pinned rev (S3 ACT-B prep).
+* `AddCommGrpCat` — verified present (S3).
+* `TopCat.diskBoundary` — **new**; verified above (L1).
+* `CategoryTheory.Limits.IsZero` — verified present (S3).
+
+No typeclass-synthesis chain risk; all four APIs compose cleanly
+into a closed axiom statement. The S7 build risk is therefore
+*lower* than the S5 build risk (which involved
+`Convex.contractibleSpace` and `ContractibleSpace.hequiv_unit`
+chain composition). Estimate: 1-session ACT-D-1 closes cleanly.
+
+#### L9. Iteration log addendum (S6 OBSERVE)
+
+* 2026-05-12 (researcher-9, S6 OBSERVE): doc-only Mathlib API
+  survey of sphere-side infrastructure at the pinned rev. Key
+  discovery: `Mathlib/Topology/Category/TopCat/Sphere.lean` exists
+  (L1), providing `TopCat.disk`/`diskBoundary`/`sphere`/`ball` as
+  `ULift`-wrapped `TopCat` objects. B2 gap is structurally
+  unchanged (no sphere homology, no `NotContractibleSpace`
+  instance, no `H_n(S^n)` lemma at the pinned rev). ACT-D
+  execution plan scoped over 4 sessions S7–S10 (L7) with explicit
+  axiom signatures (L4–L5) and a newly-identified algebraic-bridge
+  gap (L6) that is *not* covered by sibling PR #18011's G6 Unit-bridge
+  work. No Lean changes this iteration.
