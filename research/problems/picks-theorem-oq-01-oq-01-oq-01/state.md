@@ -2,9 +2,9 @@
 
 **Phase**: PLAN
 **Since**: 2026-05-12T11:30:00Z
-**Iteration**: 3
-**Last researcher**: researcher-4 (S2 OBSERVE — real interior count + base-case agreement)
-**Most recent PR**: research(picks-theorem-oq-01-oq-01-oq-01): S2 OBSERVE — realInteriorCount via Finset + base-case agreement with pickInterior
+**Iteration**: 4
+**Last researcher**: researcher-4 (S3-prep — primitive case `twiceArea = 1 ⇒ I = 0`)
+**Most recent PR**: research(picks-theorem-oq-01-oq-01-oq-01): S3-prep — general primitive base case via partition-sum identity
 
 ## Current Focus
 
@@ -15,7 +15,30 @@ constructive Pick's theorem for lattice triangles.
 ## Active Approach
 
 **S1 OBSERVE — bridge scaffold (prior session).**
-**S2 OBSERVE — real strictly-interior lattice-point count (this session).**
+**S2 OBSERVE — real strictly-interior lattice-point count (prior session).**
+**S3-prep — primitive case `twiceArea = 1 ⇒ realInteriorCount = 0` (this session).**
+
+`Proofs/PicksTheoremOQ01OQ01OQ01.lean` adds three new theorems (502 lines
+total, 0 sorries, 0 axioms):
+
+12. `cross2_partition_sum (T : LatticeTriangle) (p : ℤ × ℤ) :
+    cross2 T.v1 T.v2 p + cross2 T.v2 T.v3 p + cross2 T.v3 T.v1 p = T.det`
+    — the partition-sum identity, proved by `unfold; ring`.
+13. `primitive_no_strict_interior (T : LatticeTriangle)
+    (h : T.twiceArea = 1) (p : ℤ × ℤ) : ¬ T.StrictInterior p` — the core
+    impossibility lemma, proved by `omega` after combining the
+    partition-sum identity with the constraint `|T.det| = T.twiceArea = 1`.
+14. `primitive_realInteriorCount_zero (T : LatticeTriangle)
+    (h : T.twiceArea = 1) : T.realInteriorCount = 0` — the **general
+    primitive base case** of Pick's induction, holding for *every*
+    primitive lattice triangle (not just the unit instance verified
+    by `native_decide` in S2).
+
+The proof avoids bounding-box enumeration: the three cross-products
+sum to `T.det = ±1`, so if all three had the same strict sign each
+would be `≥ 1` in absolute value, forcing the sum to have absolute
+value `≥ 3` — a contradiction. The `StrictInterior` predicate fails
+*everywhere*, not just inside the bounding box.
 
 `Proofs/PicksTheoremOQ01OQ01OQ01.lean` now (425+ lines, 0 sorries, 0 axioms)
 contains, in addition to the S1 scaffold:
@@ -57,23 +80,36 @@ None at the S2 stage. Future work:
 
 ## Next Action
 
-**S3 — Additivity for primitive gluing.**
+**S3-full — Additivity for primitive gluing.**
 
-Formalize the union `T₁ ∪ T₂` of two lattice triangles sharing an edge
-(as a `Finset` of strictly-interior lattice points or, more cleanly, as
-a multiset of two triangles whose `realInteriorCount` sums consistently
-once the shared edge's gcd = 1 condition is invoked).  Prove the
-`realInteriorCount` and `pickInterior` additivity statements separately,
-then combine them.
+With the primitive base case now closed in full generality
+(`primitive_realInteriorCount_zero`), the remaining S3 work is the
+additivity step: when two lattice triangles `T₁`, `T₂` share an edge
+`e` with `gcd(e) = 1` (no interior boundary lattice points), the real
+interior counts satisfy
 
-A lighter alternative S3-prep step: prove the *primitive* case directly
-— for every `LatticeTriangle T` with `T.twiceArea = 1`,
-`T.realInteriorCount = 0`.  This generalizes `unitTriangle_realInteriorCount`
-by an SL₂(ℤ) symmetry / case analysis on the determinant sign.  This
-would close the "base case" of the eventual induction in full generality.
+  `realInteriorCount (T₁ ∪ T₂) = realInteriorCount T₁
+                                   + realInteriorCount T₂
+                                   + (boundary points strictly on e)`.
+
+The same identity holds for `pickInterior` by `pick_formula_cleared`.
+Combining with `primitive_realInteriorCount_zero` and
+`PicksTheoremOQ01OQ01.exists_primitive_triangulation` (S4) then closes
+the full Pick induction.
+
+Estimated effort for S3-full: 200–400 lines.  Possible decomposition:
+
+1. Define `LatticeTriangle.union (T₁ T₂ : LatticeTriangle) : LatticeTriangle`
+   (or work with the multiset of two triangles, depending on the
+   convexity setup).
+2. Prove `realInteriorCount_union_of_shared_edge_gcd_one`.
+3. Prove the matching `pickInterior_union` identity using
+   `pick_formula_cleared` and `boundaryCount_union_of_shared_edge_gcd_one`.
+
+Each step is self-contained and could be pursued in a separate iteration.
 
 ## Attempt Counts
 
-- Total attempts: 2
-- Current approach attempts: 2
-- Approaches tried: 1 (bridge-via-cleared-form)
+- Total attempts: 3
+- Current approach attempts: 3
+- Approaches tried: 1 (bridge-via-cleared-form + primitive-base-case)
