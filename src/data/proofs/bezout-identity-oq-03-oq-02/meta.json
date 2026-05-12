@@ -95,7 +95,8 @@
       "The empty-product base case (k = 0) is non-trivial in form but trivial in content: ∏ over Fin 0 = 1, and ZMOD 1 is the universal congruence",
       "**CRT as a Ring Isomorphism**: The sister entry `bezout-identity-oq-03-oq-01-oq-01` gives the abstract perspective: ℤ/∏mᵢℤ ≅ ∏ℤ/mᵢℤ as rings when mᵢ are pairwise coprime. This file gives the complementary explicit-witness perspective: for any target residues aᵢ, the isomorphism is constructive — the inductive combination of `crt_iscop` applications actually computes the preimage. Both views are needed: the isomorphism gives structural insight (e.g. idempotents, group units), the witness gives algorithmic content.",
       "**Algorithmic Applications — RSA and Garner's Algorithm**: The CRT is the engine behind RSA decryption speedup via CRT (computing m^d mod n by working mod p and mod q separately and recombining, halving the exponent size). Garner's mixed-radix representation x = a₀ + m₀(a₁ + m₁(a₂ + ...)) gives an O(k²) sequential algorithm avoiding multi-precision arithmetic entirely — the open question in this file about a `crtListInt` computable definition points directly at this. Formally verified CRT implementations underpin cryptographic proof systems (e.g. Lean-based RSA verification).",
-      "**Euler Totient Multiplicativity**: A direct consequence of this k-moduli CRT is that φ(∏mᵢ) = ∏φ(mᵢ) when m₁, ..., mₖ are pairwise coprime. The isomorphism (ℤ/∏mᵢ)× ≅ ∏(ℤ/mᵢ)× (units of a product ring are a product of unit groups) follows from the CRT ring isomorphism, and taking cardinalities gives the multiplicativity formula. This connects the present file to `euler-totient` and explains why Euler's theorem a^φ(n) ≡ 1 (mod n) has the multiplicative structure it does."
+      "**Euler Totient Multiplicativity**: A direct consequence of this k-moduli CRT is that φ(∏mᵢ) = ∏φ(mᵢ) when m₁, ..., mₖ are pairwise coprime. The isomorphism (ℤ/∏mᵢ)× ≅ ∏(ℤ/mᵢ)× (units of a product ring are a product of unit groups) follows from the CRT ring isomorphism, and taking cardinalities gives the multiplicativity formula. This connects the present file to `euler-totient` and explains why Euler's theorem a^φ(n) ≡ 1 (mod n) has the multiplicative structure it does.",
+      "**Categorical Perspective — Comaximal Ideals in Commutative Rings**: The IsCoprime predicate over ℤ generalizes to *comaximal ideals* I + J = R in any commutative ring R. The k-moduli CRT then becomes the statement R/⋂Iⱼ ≅ ∏ R/Iⱼ when the Iⱼ are pairwise comaximal — a special case being R = ℤ, Iⱼ = (mⱼ). The induction pattern used here transfers verbatim: pairwise comaximality restricts (the analog of `pairwise_castSucc`), and Iₖ + ⋂_{j<k} Iⱼ = R follows from pairwise comaximality (the analog of `isCoprime_last_prod`). This abstraction makes the same proof apply to polynomial rings, rings of integers in number fields, sheaves of rings on locally ringed spaces, and the étale-cohomological glueing in algebraic geometry — all share the same skeleton with `R`, `Pairwise comaximal`, `crt_iscop` filled in appropriately."
     ],
     "prerequisites": [
       "Number theory (modular arithmetic, Bézout's identity, divisibility)",
@@ -103,6 +104,14 @@
     ]
   },
   "sections": [
+    {
+      "id": "header",
+      "title": "File Header: Problem Statement, Approach, and Imports",
+      "summary": "Imports (Mathlib coprime + tactic + parent `BezoutIdentityOQ03`), docstring stating the open question (lift 2-moduli CRT to Fin k pairwise-coprime moduli), the inductive approach, and `set_option maxHeartbeats 400000` required by the Fin-induction elaboration weight.",
+      "startLine": 1,
+      "endLine": 32,
+      "mathContext": "Sets the stage for the $k$-moduli CRT: given pairwise coprime $m : \\mathrm{Fin}\\, k \\to \\mathbb{Z}$ and arbitrary residues $a : \\mathrm{Fin}\\, k \\to \\mathbb{Z}$, find $x \\in \\mathbb{Z}$ with $x \\equiv a_i \\pmod{m_i}$ for all $i$. The approach is induction on $k$: combine the IH on $\\mathrm{Fin}\\, k$ with one new modulus via `crt_iscop` from the parent module."
+    },
     {
       "id": "lifting-lemma",
       "title": "Lifting Congruences to Coarser Moduli",
@@ -150,6 +159,14 @@
       "startLine": 156,
       "endLine": 176,
       "mathContext": "Sun Tzu's original 3rd-century problem: find $x$ with $x \\equiv 2 \\pmod{3}$, $x \\equiv 3 \\pmod{5}$, $x \\equiv 2 \\pmod{7}$. Solution $x = 23$, verified by `decide`. Uniqueness modulo $105 = 3 \\cdot 5 \\cdot 7$: e.g. $128 = 23 + 105$ also works, and $128 \\equiv 23 \\pmod{105}$."
+    },
+    {
+      "id": "summary",
+      "title": "Summary Docstring",
+      "summary": "Closing docstring enumerating the three main theorems (`crt_finitely_many_exists`, `crt_finitely_many_unique`, `crt_finitely_many`), their dependency on `BezoutIdentityOQ03.crt_iscop`, and the key Mathlib API used.",
+      "startLine": 177,
+      "endLine": 187,
+      "mathContext": "Recaps the file's deliverables: existence (constructive, by induction), uniqueness (modulo the product), the packaged combined statement, and the Mathlib toolkit (`IsCoprime.prod_right`, `IsCoprime.mul_dvd`, `Finset.dvd_prod_of_mem`, `Fin.prod_univ_castSucc`, `Fin.lastCases`) that makes the Fin-induction tractable."
     }
   ],
   "conclusion": {
@@ -157,8 +174,9 @@
     "implications": "**Mathematical Significance**\n\n1. **Inductive CRT pattern**: The proof exhibits a clean pattern that generalizes to any indexed family — Fin k, Lists, Finsets, even general filtered colimits in ring theory.\n2. **Algorithmic content**: Combined with `crtInt` from the parent, this gives an executable algorithm that returns explicit integer solutions for any finite system of pairwise-coprime congruences.\n3. **Modularity**: By staying in ℤ and using IsCoprime (rather than ZMod), the proof composes with broader algebraic frameworks (e.g. localization, completions, ideal arithmetic).\n4. **Bridge to ZMod**: This entry complements the ring-isomorphism perspective in `bezout-identity-oq-03-oq-01-oq-01` by giving an explicit pointwise solution rather than an abstract iso.",
     "openQuestions": [
       "Can the constructed solution x be made `def`-level computable (rather than existential), giving an explicit `crtListInt : (m a : Fin k → ℤ) → ℤ`?",
-      "Can the same induction be lifted to general commutative rings R with pairwise comaximal ideals I_1, ..., I_k?",
-      "Is there a Garner-mixed-radix formulation that gives a more efficient sequential algorithm using only single-precision arithmetic?"
+      "Can the same induction be lifted to general commutative rings R with pairwise comaximal ideals I_1, ..., I_k? The skeleton (pairwise restriction + `lastCases` + `mul_dvd` via comaximality) transfers verbatim — what's the minimal Mathlib API needed to abstract the existing proof to `Ideal.Quotient.chineseRemainder`-style statements?",
+      "Is there a Garner-mixed-radix formulation that gives a more efficient sequential algorithm using only single-precision arithmetic?",
+      "Can the proof be made `decidable`-friendly so that `decide` discharges concrete-instance corollaries (small Fin k, small integer moduli) automatically, without manually unfolding into per-index `decide` calls as in the worked example?"
     ]
   },
   "crossReferences": [
