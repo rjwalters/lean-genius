@@ -1,0 +1,68 @@
+{
+  "slug": "minkowski-theorem-oq-02-oq-03",
+  "title": "Simultaneous Dirichlet approximation for n real numbers via Minkowski",
+  "phase": "OBSERVE",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall n \\in \\mathbb{N}, \\forall \\alpha : \\mathrm{Fin}\\,n \\to \\mathbb{R}, \\forall Q \\in \\mathbb{N}^+, \\exists q \\in \\mathbb{Z}, \\exists p : \\mathrm{Fin}\\,n \\to \\mathbb{Z},\\ 1 \\le q \\le Q^n \\wedge \\forall i, |q\\,\\alpha_i - p_i| < 1/Q",
+    "plain": "Generalize MinkowskiTheoremOQ02.lean (1D Dirichlet approximation) to the n-dim simultaneous version: for any reals α₁,…,αₙ and any positive integer Q, there is a common integer denominator q with 1 ≤ q ≤ Qⁿ and integer numerators p₁,…,pₙ such that |qαᵢ - pᵢ| < 1/Q for all i.",
+    "whyMatters": [
+      "n-dim Minkowski is already proved (MinkowskiFundamentalTheorem.lean:638, 0 axioms, 0 sorries) but is currently only used for the 2x2 fermat_from_minkowski toy example",
+      "Simultaneous Dirichlet approximation is the canonical application of n-dim geometry of numbers (Cassels 1957, Theorem I.II.A) and the gateway to metric Diophantine approximation (Khintchine, Schmidt subspace theorem)",
+      "No Mathlib library packages the simultaneous theorem at the theorem level; this OQ creates a reusable companion to the 1D parent"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "1D Dirichlet (MinkowskiTheoremOQ02.lean, 284 lines, 0 sorries, 3 axioms): dirichlet_approximation_from_minkowski via parallelogram + Minkowski",
+      "1D axiom-free (MinkowskiTheoremOQ02OQ01.lean, 267 lines, 0 sorries, 0 axioms): all 3 parallelogram axioms eliminated using IsOpen.measurableSet / Convex.linear_preimage / map_matrix_volume_pi_eq_smul_volume_pi",
+      "n-dim Minkowski (MinkowskiFundamentalTheorem.lean:638): MinkowskiProved.minkowski_integer_lattice_proved stated for arbitrary n with hypothesis (2 : ENNReal)^n < volume s"
+    ],
+    "open": [
+      "dirichletSetN α Q : Set (Fin (n+1) → ℝ) definition with v 0 = common-denominator, v i.succ = i-th approximation",
+      "dirichletSetN_symmetric / _measurable / _convex / _volume (4 supporting lemmas, all sorry-free targets)",
+      "simultaneous_dirichlet_from_minkowski: assembly via minkowski_integer_lattice_proved + integer extraction"
+    ],
+    "goal": "Create proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean as an axiom-free companion to MinkowskiTheoremOQ02OQ01.lean, generalizing to n real numbers via Cassels 1957's lower-triangular shear map and the (n+1)-dim parallelepiped."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12",
+    "iteration": 1,
+    "focus": "S1 OBSERVE doc-only deliverable complete (sessions/2026-05-12-s01-observe.md). Three S2 ACT targets shortlisted, narrowest first: S2-A dirichletSetN_symmetric (~10 lines), S2-B _measurable (~30 lines), S2-C _convex (~30 lines). All required Mathlib API confirmed available; no new module imports needed beyond what MinkowskiTheoremOQ02OQ01.lean uses.",
+    "blockers": [],
+    "nextAction": "S2-A ACT: create proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean with imports, namespace, and dirichletSetN_symmetric only. Build-verify before proceeding to S3+.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE: filled seeker-stub problem.md, surveyed Mathlib for n-dim Minkowski + shear-map + measurability/convexity APIs, confirmed all infrastructure is in place. Three S2 ACT targets shortlisted, narrowest first. Cassels 1957 (§I.2.A) parallelepiped construction selected: dirichletSetN α Q = {v : Fin (n+1) → ℝ | |v 0| < Qⁿ+1 ∧ ∀ i, |αᵢ v 0 - v i.succ| < 1/Q}, sheared by lower-triangular M with |det M| = 1 to a product of Ioo's with volume 2^(n+1)(Qⁿ+1)/Qⁿ > 2^(n+1). No Lean changes in S1.",
+    "builtItems": [
+      "research/problems/minkowski-theorem-oq-02-oq-03/problem.md: full template fill-in with formal statement, two approaches, references",
+      "research/problems/minkowski-theorem-oq-02-oq-03/state.md: Session 1 entry + S2-A next action",
+      "research/problems/minkowski-theorem-oq-02-oq-03/knowledge.md: Mathlib API map (3 key lemmas) + three-axiom analog table + volume identity",
+      "research/problems/minkowski-theorem-oq-02-oq-03/sessions/2026-05-12-s01-observe.md: full S1 OBSERVE report with shear-map analysis and S2 shortlist"
+    ],
+    "insights": [
+      "MinkowskiProved.minkowski_integer_lattice_proved (MinkowskiFundamentalTheorem.lean:638) is already stated for arbitrary n; the n-dim Minkowski step is free.",
+      "All three measure-theoretic axioms in MinkowskiTheoremOQ02.lean have axiom-free analogs in MinkowskiTheoremOQ02OQ01.lean (IsOpen.measurableSet / Convex.linear_preimage / map_matrix_volume_pi_eq_smul_volume_pi) whose proof patterns lift to arbitrary n.",
+      "The Cassels 1957 shear map T v = (v 0, α 0 · v 0 - v 1, …, α (n-1) · v 0 - v n) is lower-triangular with diagonal (1, -1, …, -1), so M.det = (-1)ⁿ and |M.det| = 1 — the sign is irrelevant since volume uses |det|.",
+      "Indexing as Fin (n+1) with v 0 = common-denominator and v i.succ = i-th approximation matches both MinkowskiProved.minkowski_integer_lattice_proved's lattice signature and Mathlib's Fin.prod_univ_succ ergonomics; alternative Sum Unit (Fin n) encoding is rejected.",
+      "The conclusion bound q ≤ Qⁿ (vs. 1D's q ≤ Q) matches a parallelepiped of width 2(Qⁿ + 1) in coordinate 0, pushing volume past 2^(n+1) while keeping each approximation width at 2/Q."
+    ],
+    "techniques": [
+      "Lower-triangular Matrix.det via Matrix.det_of_lowerTriangular (or cofactor expansion fallback)",
+      "Convex.iInter over Fintype (Fin n) for finite-intersection convexity",
+      "IsOpen.measurableSet preceded by rewriting predicate as Set.iInter of preimages of Ioo under continuous maps",
+      "map_matrix_volume_pi_eq_smul_volume_pi for linear-map volume change of variables",
+      "Submodule.mem_span_range_iff_exists_fun for integer-coordinate extraction"
+    ]
+  },
+  "createdAt": "2026-05-12",
+  "updatedAt": "2026-05-12"
+}
