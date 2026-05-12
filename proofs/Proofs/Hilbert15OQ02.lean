@@ -77,8 +77,8 @@ def size (p : Partition2) : ℕ := p.a + p.b
 /-- Containment: μ ⊆ ν iff each row of μ fits in ν -/
 def contains (ν μ : Partition2) : Prop := μ.a ≤ ν.a ∧ μ.b ≤ ν.b
 
-instance (ν μ : Partition2) : Decidable (contains ν μ) :=
-  And.decidable
+instance (ν μ : Partition2) : Decidable (contains ν μ) := by
+  unfold contains; infer_instance
 
 end Partition2
 
@@ -128,16 +128,16 @@ The remaining conditions are:
 
     Returns 0 if μ ⊄ ν, sizes are incompatible, or the unique candidate
     tableau violates column-strict or ballot conditions. Returns 1 otherwise. -/
-def lrCoeff2 (ν λ μ : Partition2) : ℕ :=
+def lrCoeff2 (ν lam μ : Partition2) : ℕ :=
   if ¬(μ.a ≤ ν.a ∧ μ.b ≤ ν.b) then 0
-  else if ν.size ≠ λ.size + μ.size then 0
+  else if ν.size ≠ lam.size + μ.size then 0
   else
     let r₁ := ν.a - μ.a  -- cells in row 1 of skew shape
     let r₂ := ν.b - μ.b  -- cells in row 2 of skew shape
-    -- Ballot forces k₁ = r₁. Check k₂ = λ.a - r₁ ≥ 0.
-    if λ.a < r₁ then 0
+    -- Ballot forces k₁ = r₁. Check k₂ = lam.a - r₁ ≥ 0.
+    if lam.a < r₁ then 0
     else
-      let k₂ := λ.a - r₁
+      let k₂ := lam.a - r₁
       -- k₂ ≤ r₂ (always true under size constraint, but check for robustness)
       if k₂ > r₂ then 0
       else
@@ -145,8 +145,8 @@ def lrCoeff2 (ν λ μ : Partition2) : ℕ :=
         let ov := if μ.a < min ν.a ν.b then min ν.a ν.b - μ.a else 0
         if ov > 0 ∧ k₂ > μ.a - μ.b then 0
         -- Ballot from row 2: after r₁ ones from row 1, reading twos from row 2
-        -- requires r₁ ≥ r₂ - k₂, which simplifies to r₁ ≥ λ.b
-        else if r₁ < λ.b then 0
+        -- requires r₁ ≥ r₂ - k₂, which simplifies to r₁ ≥ lam.b
+        else if r₁ < lam.b then 0
         else 1
 
 /-! ## Part III: Verified Values for Gr(2,4)
@@ -226,8 +226,8 @@ private def gr24_classes : List Partition2 :=
 /-- All LR coefficients among Gr(2,4) classes are 0 or 1 (multiplicity-free).
     Proved by checking all 6³ = 216 combinations. -/
 theorem gr24_multiplicity_free :
-    ∀ ν ∈ gr24_classes, ∀ λ ∈ gr24_classes, ∀ μ ∈ gr24_classes,
-      lrCoeff2 ν λ μ ≤ 1 := by
+    ∀ ν ∈ gr24_classes, ∀ lam ∈ gr24_classes, ∀ μ ∈ gr24_classes,
+      lrCoeff2 ν lam μ ≤ 1 := by
   native_decide
 
 /-- The full Gr(2,4) multiplication table via LR coefficients (explicit) -/
@@ -255,7 +255,7 @@ result that Gr(2,n) Schubert structure constants are multiplicity-free. -/
 /-- **General multiplicity-free theorem**: All 2-row LR coefficients are 0 or 1.
     This follows structurally from the definition: every branch returns 0 or 1.
     Generalizes `gr24_multiplicity_free` from Gr(2,4) to all Gr(2,n). -/
-theorem lrCoeff2_le_one (ν λ μ : Partition2) : lrCoeff2 ν λ μ ≤ 1 := by
+theorem lrCoeff2_le_one (ν lam μ : Partition2) : lrCoeff2 ν lam μ ≤ 1 := by
   unfold lrCoeff2
   simp only [Partition2.size]
   split_ifs <;> omega
@@ -289,18 +289,18 @@ Nat comparisons). This is fundamental: it shows the problem is in P for
 the 2-row case (constant-time for fixed inputs). -/
 
 /-- The LR coefficient for any specific input is decidable and computable. -/
-example (ν λ μ : Partition2) (k : ℕ) : Decidable (lrCoeff2 ν λ μ = k) :=
+example (ν lam μ : Partition2) (k : ℕ) : Decidable (lrCoeff2 ν lam μ = k) :=
   inferInstance
 
 /-- LR positivity for 2-row partitions is decidable. -/
-example (ν λ μ : Partition2) : Decidable (0 < lrCoeff2 ν λ μ) :=
+example (ν lam μ : Partition2) : Decidable (0 < lrCoeff2 ν lam μ) :=
   inferInstance
 
 /-- For the 2-row case, the LR coefficient is computable in O(1) steps
     (a fixed number of comparisons). This is constant-time. -/
-theorem lr_2row_polytime (ν λ μ : Partition2) :
+theorem lr_2row_polytime (ν lam μ : Partition2) :
     ∃ (algo : Partition2 → Partition2 → Partition2 → ℕ),
-      (∀ ν' λ' μ', algo ν' λ' μ' = lrCoeff2 ν' λ' μ') ∧
+      (∀ ν' lam' μ', algo ν' lam' μ' = lrCoeff2 ν' lam' μ') ∧
       True := by
   exact ⟨lrCoeff2, fun _ _ _ => rfl, trivial⟩
 
@@ -323,8 +323,8 @@ They are kept as theorems (not axioms) for documentation purposes.
     **Why this matters for complexity**: Saturation means positivity
     reduces to feasibility of a linear program (Klyachko's inequalities),
     which is solvable in polynomial time. -/
-theorem lr_saturation_theorem (λ μ ν : List ℕ) (N : ℕ) (hN : 0 < N) :
-    -- Formal statement: lrCoeff(N*ν, N*λ, N*μ) > 0 ↔ lrCoeff(ν, λ, μ) > 0
+theorem lr_saturation_theorem (lam μ ν : List ℕ) (N : ℕ) (hN : 0 < N) :
+    -- Formal statement: lrCoeff(N*ν, N*lam, N*μ) > 0 ↔ lrCoeff(ν, lam, μ) > 0
     -- (Left as True since general lrCoeff not yet defined for arbitrary row count)
     True := trivial
 
@@ -384,9 +384,9 @@ theorem lr_complexity_witness :
     This is why the counting problem is hard: the combinatorial structure
     of the partitions (not just their sizes) determines the coefficient. -/
 theorem lr_value_depends_on_shape :
-    ∃ (ν λ₁ λ₂ μ : Partition2),
-      λ₁.size = λ₂.size ∧
-      lrCoeff2 ν λ₁ μ ≠ lrCoeff2 ν λ₂ μ :=
+    ∃ (ν lam1 lam2 μ : Partition2),
+      lam1.size = lam2.size ∧
+      lrCoeff2 ν lam1 μ ≠ lrCoeff2 ν lam2 μ :=
   ⟨⟨2,2,le_refl _⟩, ⟨1,1,le_refl _⟩, ⟨2,0,Nat.zero_le _⟩, ⟨1,1,le_refl _⟩,
    by native_decide, by native_decide⟩
 
@@ -419,17 +419,17 @@ theorem lr_right_identity (p : Partition2) :
 
     Conditions 4 and 5 swap under `λ ↔ μ`, giving symmetry. The containment
     `λ ⊆ ν` (needed for the swapped direction) is derivable from 1–5. -/
-theorem lrCoeff2_comm (ν λ μ : Partition2) :
-    lrCoeff2 ν λ μ = lrCoeff2 ν μ λ := by
-  have hλ := λ.dec; have hμ := μ.dec; have hν := ν.dec
-  have h1 := lrCoeff2_le_one ν λ μ
-  have h2 := lrCoeff2_le_one ν μ λ
+theorem lrCoeff2_comm (ν lam μ : Partition2) :
+    lrCoeff2 ν lam μ = lrCoeff2 ν μ lam := by
+  have hlam := lam.dec; have hμ := μ.dec; have hν := ν.dec
+  have h1 := lrCoeff2_le_one ν lam μ
+  have h2 := lrCoeff2_le_one ν μ lam
   -- Both values are 0 or 1; suffices to show (= 1) ↔ (= 1)
-  suffices lrCoeff2 ν λ μ = 1 ↔ lrCoeff2 ν μ λ = 1 by omega
+  suffices lrCoeff2 ν lam μ = 1 ↔ lrCoeff2 ν μ lam = 1 by omega
   -- Factor out the forward direction and apply it both ways
   suffices hfwd : ∀ (a b c : Partition2), b.b ≤ b.a → c.b ≤ c.a → a.b ≤ a.a →
       lrCoeff2 a b c = 1 → lrCoeff2 a c b = 1 by
-    exact ⟨hfwd ν λ μ hλ hμ hν, hfwd ν μ λ hμ hλ hν⟩
+    exact ⟨hfwd ν lam μ hlam hμ hν, hfwd ν μ lam hμ hlam hν⟩
   intro a b c hb hc ha h
   unfold lrCoeff2 at h ⊢
   simp only [Partition2.size, min_def] at h ⊢
