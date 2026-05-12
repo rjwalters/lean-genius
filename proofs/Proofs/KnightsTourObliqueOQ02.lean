@@ -136,4 +136,77 @@ theorem obliqueDistribution_support_le_three :
     most 8 — but the exact value depends on Knuth's classification of
     self-symmetric tours, which is deferred to S3. -/
 
+/-!
+## Support upper bound
+
+`obliqueCount` is the length of a filtered list of move-pair adjacencies in
+a tour of length 64, so it is bounded by 64. Combined with the support
+lower bound this confines the distribution's support to `[4, 64]`. -/
+
+/-- Pointwise upper bound: every tour has at most 64 oblique turns
+    (one per move-pair adjacency in a 64-move closed tour). -/
+theorem obliqueCount_le_64 (t : ClosedTour) : obliqueCount t ≤ 64 := by
+  -- `obliqueCount` filters a list of length 64 (=`(tourMoves t).length`).
+  -- Use a definitional unfolding via `rfl` to avoid `let`-binding issues.
+  have heq : obliqueCount t =
+      ((tourMoves t).zip ((tourMoves t).tail ++ [(tourMoves t).head!])
+        |>.filter fun (v1, v2) => isOblique v1 v2).length := rfl
+  rw [heq]
+  refine le_trans (List.length_filter_le _ _) ?_
+  simp [List.length_zip, List.length_tail, List.length_append, tourMoves_length]
+
+/-- Support upper bound: no tour has more than 64 oblique turns, so the
+    distribution vanishes above 64. -/
+theorem obliqueDistribution_zero_above_64 (k : ℕ) (hk : 64 < k) :
+    obliqueDistribution k = 0 := by
+  unfold obliqueDistribution
+  rw [Finset.card_eq_zero]
+  apply Finset.eq_empty_of_forall_not_mem
+  intro t ht
+  rw [Finset.mem_filter] at ht
+  obtain ⟨_, hcount⟩ := ht
+  have hbound : obliqueCount t ≤ 64 := obliqueCount_le_64 t
+  rw [hcount] at hbound
+  omega
+
+/-!
+## Normalization: histogram sums to total tour count
+
+Combining the lower bound (`k ≥ 4`) and upper bound (`k ≤ 64`), the
+distribution is supported on the finite interval `[4, 64]`. Its sum over
+`Finset.range 65` (which covers the support) equals the cardinality of
+`ClosedTour`. This is the histogram-completeness statement: every closed
+tour contributes to exactly one bucket. -/
+
+/-- The histogram sums to the total number of closed tours. The sum is
+    taken over `Finset.range 65` since `obliqueCount t ≤ 64` for every
+    tour (`obliqueCount_le_64`). -/
+theorem obliqueDistribution_sum_eq_card :
+    (∑ k ∈ Finset.range 65, obliqueDistribution k) = Fintype.card ClosedTour := by
+  unfold obliqueDistribution
+  rw [← Finset.card_univ]
+  exact (Finset.card_eq_sum_card_fiberwise (f := obliqueCount) (s := Finset.univ)
+    (t := Finset.range 65)
+    (fun t _ => Finset.mem_range.mpr (Nat.lt_succ_of_le (obliqueCount_le_64 t)))).symm
+
+/-- Equivalent normalisation taking the sum over the actual support
+    `Finset.Icc 4 64`: the histogram restricted to `[4, 64]` already
+    accounts for every closed tour, since `obliqueDistribution` vanishes
+    on `{0, 1, 2, 3}` by the parent's lower bound. -/
+theorem obliqueDistribution_sum_Icc_eq_card :
+    (∑ k ∈ Finset.Icc 4 64, obliqueDistribution k) = Fintype.card ClosedTour := by
+  rw [← obliqueDistribution_sum_eq_card]
+  -- The terms in `range 65 \ Icc 4 64 = {0,1,2,3}` are all zero by
+  -- `obliqueDistribution_zero_below_four`.
+  apply Finset.sum_subset
+  · intro k hk
+    simp only [Finset.mem_Icc] at hk
+    simp only [Finset.mem_range]
+    omega
+  · intro k _ hkn
+    simp only [Finset.mem_Icc, not_and_or, not_le] at hkn
+    rcases hkn with hlt | h
+    · exact obliqueDistribution_zero_below_four k hlt
+    · exact obliqueDistribution_zero_above_64 k h
+
 end KnightsTourOblique
