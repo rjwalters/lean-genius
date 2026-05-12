@@ -1,7 +1,7 @@
 {
   "slug": "lagrange-four-squares-waring-g2-oq-01",
   "title": "Waring's problem for k ≥ 3 — determine g(k)",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -31,21 +31,24 @@
     "goal": "Formalize in Lean: (1) IsSumOfPowers s k n definition; (2) lower bound g(3) ≥ 9 via decide-based 23-search; (3) lower bound g(4) ≥ 19 via mod-16; (4) optional g(5), g(6) lower bounds; (5) axiomatize the Wieferich-Kempner / BDD / Hilbert-Waring upper bounds and combine to obtain g(k) = X (axiomatized) for small k."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T14:05:00.000Z",
-    "iteration": 1,
-    "focus": "S1 (researcher-3, 2026-05-12): OBSERVE survey for the Waring g(k) family. Wrote problem.md (~3.2K words) with formal Lean targets + Mathlib gap analysis; knowledge.md (~2.5K words) with historical table (1770 Lagrange, 1909 Hilbert/Wieferich, 1912 Kempner, 1940 Pillai, 1964 Chen, 1986 BDD, 1957 Mahler, 1990 Kubina-Wunderlich); bibliography (Hardy & Wright §21, Vaughan 'The Hardy-Littlewood Method', OEIS A002804). No Lean changes — pure OBSERVE phase.",
+    "phase": "ACT",
+    "since": "2026-05-12T15:10:00.000Z",
+    "iteration": 2,
+    "focus": "S2 (researcher-3, 2026-05-12): ACT iteration delivering the g(3) lower bound. Added proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean (~110 lines): IsSumOfCubes definition, representations23_empty finite-search lemma (decide on Fin 8 → Fin 3, 6561 tuples), twenty_three_needs_nine_cubes : ¬ IsSumOfCubes 8 23 (the main theorem, 0 sorries 0 axioms), and a concrete IsSumOfCubes 9 23 witness via ![2,2,1,1,1,1,1,1,1]. Umbrella Proofs.lean updated.",
     "blockers": [],
-    "nextAction": "S2: prove twenty_three_needs_nine_cubes : ¬ IsSumOfCubes 8 23 in proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean. Approach: define IsSumOfCubes s n := ∃ f : Fin s → ℕ, ∑ i, (f i)^3 = n; bound each summand by 2 (since 3^3 = 27 > 23); reduce to decide on the 3^8 = 6561 tuples in Fin 8 → Fin 3. Expected ~80 Lean lines, sorry-free, no axioms; this is the lower-bound side of g(3) ≥ 9.",
+    "nextAction": "S3: prove ¬ IsSumOfFourthPowers 18 79 (g(4) lower bound) via mod-16 argument. Pure decide on 3^18 is infeasible. Approach: fourth_pow_mod_sixteen : x^4 % 16 ∈ {0, 1} (interval_cases on x % 16 + decide); sum of 18 such mod 16 ≤ 18 mod 16 = 2; but 79 % 16 = 15. Expected ~150 Lean lines.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-3, 2026-05-12): inaugural OBSERVE survey for Waring's problem extension k ≥ 3. Established the formalization architecture: (1) lower bounds are mod-arithmetic exercises (mod-9 for k=3, mod-16 for k=4, mod-32 for k=5) tractable in single Lean sessions; (2) upper bounds (Wieferich-Kempner, BDD, Chen, Pillai) are research-level and must be axiomatized; (3) Hilbert-Waring existence theorem is itself a Mathlib gap requiring the Hardy-Littlewood circle method (or Linnik's 1943 elementary version). Documented all g(k) values for k ∈ [1, 8], the conjectural formula g(k) = 2^k + floor((3/2)^k) - 2, and the citation graph (Hardy & Wright §21 as the canonical textbook reference). No Lean changes.",
-    "builtItems": [],
+    "progressSummary": "S2 (researcher-3, 2026-05-12): ACT — first Lean deliverable. Proved twenty_three_needs_nine_cubes : ¬ IsSumOfCubes 8 23 (g(3) ≥ 9 lower-bound side) in proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean. The proof uses the finite-search route from the S1 alternative plan: bound each f i < 3 via Nat.pow_le_pow_left + omega (since (f i)^3 ≤ 23 < 27 = 3^3), lift Fin 8 → ℕ to Fin 8 → Fin 3, and discharge representations23_empty by decide on 3^8 = 6561 tuples. 0 sorries, 0 axioms, ~110 lines including docstrings. Concrete witness 23 = 2^3 + 2^3 + 7·1^3 verified by decide. S1 (2026-05-12): inaugural OBSERVE survey establishing two-tier formalization architecture (lower bounds elementary; upper bounds axiomatized via Wieferich-Kempner / BDD / Hardy-Littlewood).",
+    "builtItems": [
+      "proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean — IsSumOfCubes definition + representations23_empty (decide-discharged finite search over 6561 tuples) + twenty_three_needs_nine_cubes (g(3) ≥ 9 lower bound, 0 sorries 0 axioms) + IsSumOfCubes 9 23 example.",
+      "proofs/Proofs.lean — umbrella updated to import Proofs.LagrangeFourSquaresWaringG2OQ01."
+    ],
     "insights": [
       "Two-tier formalization: lower bounds (mod-arithmetic, decide-based, ~80 Lean lines each) are tractable; upper bounds (Wieferich-Kempner polynomial identities, BDD analytic argument) require axiomatization. The parent file demonstrates this split for g(2): Mathlib's Nat.sum_four_squares for the upper bound; mod-8 descent (sq_mod_eight + sum_three_sq_mod_eight_ne_seven) for the lower bound.",
       "Mod-arithmetic recipe generalizes per k: every a^k mod m takes restricted values; sums of (g(k) - 1) k-th powers cover a strict subset of residues, missing one residue that the witness n hits. For k=2, m=8, missing residue is 7 (parent). For k=3, m=9, a^3 ∈ {0,1,8} but the witness n=23 needs a sharper direct enumeration. For k=4, m=16, a^4 ∈ {0,1} and witness n=79 ≡ 15 mod 16 ≠ ≤18 mod 16 = {0,1,2,…,18 mod 16}.",
@@ -60,9 +63,8 @@
       "No Mathlib infrastructure for the Hardy-Littlewood circle method (major arcs / minor arcs / exponential sum estimates). This is the canonical proof technique for Hilbert-Waring (g(k) finite) and Waring-style problems generally. A Mathlib pipeline would be a multi-year effort."
     ],
     "nextSteps": [
-      "S2: prove twenty_three_needs_nine_cubes : ¬ IsSumOfCubes 8 23 in proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean. Use bounded decide over Fin 8 → Fin 3 (6561 tuples). Expected ~80 lines, 0 sorries, 0 axioms.",
-      "S3: prove seventy_nine_needs_nineteen_fourth_powers : ¬ IsSumOfFourthPowers 18 79 via mod-16 argument (every a^4 ≡ 0 or 1 mod 16, so 18 fourth-powers sum to ≤ 18 mod 16, missing 15 = 79 mod 16). Expected ~50 lines.",
-      "S4: prove 239 is the second witness for g(3) ≥ 9 (analogously to S2 with extended search range a ≤ 6 since 7^3 = 343 > 239). Or skip and proceed to S5.",
+      "S3: prove seventy_nine_needs_nineteen_fourth_powers : ¬ IsSumOfFourthPowers 18 79 via mod-16 argument (every a^4 ≡ 0 or 1 mod 16, so 18 fourth-powers sum to ≤ 18 mod 16, missing 15 = 79 mod 16). Expected ~150 lines.",
+      "S4: prove 239 is the second witness for g(3) ≥ 9 (analogously to S2 but with extended search range a ≤ 6 since 7^3 = 343 > 239, giving 7^9 ≈ 4×10^7 — borderline for kernel decide, likely native_decide).",
       "S5+: introduce axioms wieferich_kempner_g3 : ∀ n, IsSumOfCubes 9 n and balasubramanian_g4 : ∀ n, IsSumOfFourthPowers 19 n, plus hilbert_waring : ∀ k ≥ 1, ∃ s, ∀ n, IsSumOf s k n. Combine with S2-S4 lower bounds to obtain explicit waringG_three : waringG 3 = 9 (axiomatized) and waringG_four : waringG 4 = 19 (axiomatized). Update meta.json to status=axiomatized, badge=axiom."
     ]
   },
@@ -112,8 +114,10 @@
     ]
   },
   "started": "2026-05-12T14:05:00.000Z",
-  "lastUpdate": "2026-05-12T14:05:00.000Z",
+  "lastUpdate": "2026-05-12T15:30:00.000Z",
   "significance": 7,
   "tractability": 4,
-  "leanFiles": []
+  "leanFiles": [
+    "proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean"
+  ]
 }
