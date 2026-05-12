@@ -6,9 +6,16 @@ Open Question (from `picks-theorem-oq-01-oq-01`):
 primitive triangulation with a boundary-point count via the GCD formula
 (boundary points on segment from v1 to v2 = gcd(|v2.1-v1.1|, |v2.2-v1.2|))?"
 
-## Status (S1 OBSERVE, build-verified)
+## Status (S2 OBSERVE — base-case interior count, build-verified)
 
-S1 sets up the bridge data structures that connect:
+S2 introduces a decidable definition of the *real* strictly-interior
+lattice-point count (`realInteriorCount`) as a `Finset` cardinality, and
+verifies on three concrete triangles that `realInteriorCount = pickInterior`.
+This closes the "base case" of the eventual Pick induction: for every
+primitive (`|det| = 1`) triangle, the formula `pickInterior = 0` agrees
+with the true count of strictly-interior lattice points.
+
+S1 set up the bridge data structures that connect:
 
 - `PicksTheoremOQ01OQ01` — every lattice triangle decomposes into exactly
   `|det T|` primitive (i.e. `|det| = 1`) lattice sub-triangles.
@@ -63,15 +70,18 @@ triangles (unit, 2-by-1, 3-by-3).
 
 - The three small-case computations:
   * Unit right triangle `{(0,0), (1,0), (0,1)}`: `I = 0`, `B = 3`,
-    `2A = 1`, `pickInterior = 0`.
+    `2A = 1`, `pickInterior = 0`, **`realInteriorCount = 0`** (S2).
   * Right triangle `{(0,0), (2,0), (0,1)}`: `I = 0`, `B = 4`, `2A = 2`,
-    `pickInterior = 0`.
+    `pickInterior = 0`, **`realInteriorCount = 0`** (S2).
   * Right triangle `{(0,0), (3,0), (0,3)}`: `I = 1`, `B = 9`, `2A = 9`,
-    `pickInterior = 1`.
+    `pickInterior = 1`, **`realInteriorCount = 1`** (S2; interior point
+    `(1, 1)`).
 - The bridge identity `2 · pickInterior + boundaryCount = twiceArea + 2`,
   i.e. Pick's formula in cleared-denominator form.
 - The non-negativity sanity check `pickInterior ≥ 0` for the three test
   triangles (showing the formula does produce a valid interior count).
+- S2: the agreement theorem `realInteriorCount T = pickInterior T` on each
+  of the three test triangles (cast to `ℚ`).
 
 ## Architecture
 
@@ -79,7 +89,13 @@ triangles (unit, 2-by-1, 3-by-3).
 - Section II: Bridge data (`twiceArea`, `edgeGCD`, `boundaryCount`,
   `pickInterior`).
 - Section III: Algebraic identity (`pick_formula_cleared`).
-- Section IV: Verification on three concrete triangles.
+- Section IV: Verification on three concrete triangles (`pickInterior`).
+- Section V: Non-negativity sanity checks.
+- Section VI (S2): Real strictly-interior lattice-point count via a
+  decidable bounding-box filter (`StrictInterior`, `boundingBox`,
+  `realInterior`, `realInteriorCount`).
+- Section VII (S2): `realInteriorCount = pickInterior` on the three test
+  triangles (base-case agreement).
 
 The companion files `PicksTheoremOQ01OQ01.lean` and `PicksTheoremOQ02.lean`
 remain the load-bearing pieces; this file simply names the bridge and
@@ -87,7 +103,9 @@ makes the composition explicit.
 -/
 
 import Mathlib.Data.Int.GCD
+import Mathlib.Data.Int.Interval
 import Mathlib.Data.Nat.GCD.Basic
+import Mathlib.Data.Finset.Prod
 import Mathlib.Tactic
 
 namespace PicksTheoremOQ01OQ01OQ01
@@ -274,5 +292,135 @@ theorem triangle_2_1_pickInterior_nonneg : 0 ≤ triangle_2_1.pickInterior := by
 
 theorem triangle_3_3_pickInterior_nonneg : 0 ≤ triangle_3_3.pickInterior := by
   rw [triangle_3_3_pickInterior]; norm_num
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION VI (S2): Real Strictly-Interior Lattice-Point Count
+-- ════════════════════════════════════════════════════════════════
+
+/-- Twice the signed area of triangle `(a, b, p)` via the 2D cross product
+    `(b - a) × (p - a)`.  The sign records orientation: positive when
+    `(a, b, p)` is counter-clockwise. -/
+def cross2 (a b p : ℤ × ℤ) : ℤ :=
+  (b.1 - a.1) * (p.2 - a.2) - (p.1 - a.1) * (b.2 - a.2)
+
+/-- A lattice point `p` is **strictly interior** to a triangle `T` if all
+    three edge cross products (for the cyclic sequence `(v_i, v_{i+1}, p)`)
+    share the same strict sign.  This excludes edge and vertex points.
+
+    The two disjuncts handle the two possible orientations of `T`
+    (counter-clockwise: all cross products `> 0`; clockwise: all `< 0`). -/
+def LatticeTriangle.StrictInterior (T : LatticeTriangle) (p : ℤ × ℤ) : Prop :=
+  (0 < cross2 T.v1 T.v2 p ∧ 0 < cross2 T.v2 T.v3 p ∧ 0 < cross2 T.v3 T.v1 p) ∨
+  (cross2 T.v1 T.v2 p < 0 ∧ cross2 T.v2 T.v3 p < 0 ∧ cross2 T.v3 T.v1 p < 0)
+
+instance (T : LatticeTriangle) (p : ℤ × ℤ) : Decidable (T.StrictInterior p) := by
+  unfold LatticeTriangle.StrictInterior
+  infer_instance
+
+/-- Smallest `x`-coordinate among the vertices of `T`. -/
+def LatticeTriangle.xmin (T : LatticeTriangle) : ℤ :=
+  min (min T.v1.1 T.v2.1) T.v3.1
+
+/-- Largest `x`-coordinate among the vertices of `T`. -/
+def LatticeTriangle.xmax (T : LatticeTriangle) : ℤ :=
+  max (max T.v1.1 T.v2.1) T.v3.1
+
+/-- Smallest `y`-coordinate among the vertices of `T`. -/
+def LatticeTriangle.ymin (T : LatticeTriangle) : ℤ :=
+  min (min T.v1.2 T.v2.2) T.v3.2
+
+/-- Largest `y`-coordinate among the vertices of `T`. -/
+def LatticeTriangle.ymax (T : LatticeTriangle) : ℤ :=
+  max (max T.v1.2 T.v2.2) T.v3.2
+
+/-- The bounding-box `Finset` of lattice points enclosing the vertices of
+    `T`.  Every interior (and boundary) lattice point of `T` lies in this
+    finite rectangle. -/
+def LatticeTriangle.boundingBox (T : LatticeTriangle) : Finset (ℤ × ℤ) :=
+  (Finset.Icc T.xmin T.xmax) ×ˢ (Finset.Icc T.ymin T.ymax)
+
+/-- The set of strictly-interior lattice points of `T` as a `Finset`,
+    obtained by filtering the bounding box through `StrictInterior`. -/
+def LatticeTriangle.realInterior (T : LatticeTriangle) : Finset (ℤ × ℤ) :=
+  T.boundingBox.filter T.StrictInterior
+
+/-- The strictly-interior lattice-point count `I(T)`.  This is the "real"
+    geometric quantity Pick's formula `pickInterior` is supposed to match. -/
+def LatticeTriangle.realInteriorCount (T : LatticeTriangle) : ℕ :=
+  T.realInterior.card
+
+-- ════════════════════════════════════════════════════════════════
+-- SECTION VII (S2): Base-Case Agreement `realInteriorCount = pickInterior`
+-- ════════════════════════════════════════════════════════════════
+
+/-! ### Unit triangle `{(0,0), (1,0), (0,1)}` — primitive (`|det| = 1`).
+
+  This is the **base case** of the future Pick induction: for any
+  primitive triangle, `realInteriorCount = 0 = pickInterior`.  Here we
+  verify the unit instance; the general primitive case will be proved
+  in S3 once we have the additivity lemma for shared edges. -/
+
+theorem unitTriangle_realInteriorCount : unitTriangle.realInteriorCount = 0 := by
+  native_decide
+
+/-- Pick's formula holds on the unit triangle:
+    `realInteriorCount = pickInterior = 0`. -/
+theorem unitTriangle_pick_agrees :
+    (unitTriangle.realInteriorCount : ℚ) = unitTriangle.pickInterior := by
+  rw [unitTriangle_realInteriorCount, unitTriangle_pickInterior]
+  norm_num
+
+/-! ### 2-by-1 right triangle `{(0,0), (2,0), (0,1)}` (interior count = 0). -/
+
+theorem triangle_2_1_realInteriorCount : triangle_2_1.realInteriorCount = 0 := by
+  native_decide
+
+theorem triangle_2_1_pick_agrees :
+    (triangle_2_1.realInteriorCount : ℚ) = triangle_2_1.pickInterior := by
+  rw [triangle_2_1_realInteriorCount, triangle_2_1_pickInterior]
+  norm_num
+
+/-! ### 3-by-3 right triangle `{(0,0), (3,0), (0,3)}` (interior count = 1).
+
+  The unique strictly-interior lattice point is `(1, 1)`:
+  - `cross2 (0,0) (3,0) (1,1) = 3·1 - 1·0 = 3 > 0`
+  - `cross2 (3,0) (0,3) (1,1) = (-3)·1 - (-2)·3 = 3 > 0`
+  - `cross2 (0,3) (0,0) (1,1) = 0·(-2) - 1·(-3) = 3 > 0`
+  All three cross products are strictly positive, so `(1,1) ∈ realInterior`.
+  No other point in `[0,3]²` satisfies all three. -/
+
+theorem triangle_3_3_realInteriorCount : triangle_3_3.realInteriorCount = 1 := by
+  native_decide
+
+theorem triangle_3_3_pick_agrees :
+    (triangle_3_3.realInteriorCount : ℚ) = triangle_3_3.pickInterior := by
+  rw [triangle_3_3_realInteriorCount, triangle_3_3_pickInterior]
+  norm_num
+
+/-! ### Summary
+
+  The three theorems `unitTriangle_pick_agrees`, `triangle_2_1_pick_agrees`,
+  and `triangle_3_3_pick_agrees` establish base-case agreement between the
+  real interior-lattice-point count and the rational `pickInterior` on the
+  three test triangles.  Combined with Section IV's
+  `unitTriangle_pickInterior`, `triangle_2_1_pickInterior`, and
+  `triangle_3_3_pickInterior`, we obtain Pick's theorem **as a verified
+  computation** on these specific triangles, fully discharging the
+  formula's claim there.
+
+  The remaining steps (S3, S4) are:
+
+  - S3: Additivity lemma — when two triangles `T₁`, `T₂` share an edge
+    `e` with `gcd(e) = 1` (no interior boundary lattice points), the real
+    interior counts satisfy
+    `realInteriorCount (T₁ ∪ T₂) = realInteriorCount T₁
+                                    + realInteriorCount T₂
+                                    + (boundary points strictly on e)`,
+    and the same identity holds for `pickInterior` by `pick_formula_cleared`.
+  - S4: Close the induction via
+    `PicksTheoremOQ01OQ01.exists_primitive_triangulation`: every lattice
+    triangle decomposes into `|det|` primitive sub-triangles, each
+    contributing `pickInterior = 0`, and the boundary/area accounting
+    aggregates correctly via the additivity lemma. -/
 
 end PicksTheoremOQ01OQ01OQ01

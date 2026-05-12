@@ -61,7 +61,9 @@ interior-point count `realInterior T`, which decomposes into:
     edge with `gcd = 1` adds `pickInterior(T1) + pickInterior(T2)` and
     preserves `realInterior(T1 ∪ T2) = realInterior T1 + realInterior T2`.
 
-## Built Items (this session)
+## Built Items (cumulative S1 + S2)
+
+**S1 (prior session) — bridge scaffold:**
 
 - `LatticeTriangle` (mirror structure)
 - `LatticeTriangle.det` (signed determinant)
@@ -74,7 +76,22 @@ interior-point count `realInterior T`, which decomposes into:
 - `LatticeTriangle.pickInteriorNum` (cleared-integer form)
 - `two_mul_pickInterior` (identity 2·pickInterior = pickInteriorNum)
 - `pick_formula_cleared` (twiceArea = 2·pickInterior + boundaryCount - 2)
-- Three test-triangle verifications (unit, 2-by-1, 3-by-3).
+- Three test-triangle `pickInterior` verifications (unit, 2-by-1, 3-by-3).
+
+**S2 (this session) — real interior-point count and base-case agreement:**
+
+- `cross2 : ℤ² → ℤ² → ℤ² → ℤ` (2D cross product, twice the signed area
+  of triangle `(a, b, p)`)
+- `LatticeTriangle.StrictInterior` (Prop) with `Decidable` instance
+  (three edge cross products share the same strict sign)
+- `LatticeTriangle.xmin / xmax / ymin / ymax` (bounding-box extremes)
+- `LatticeTriangle.boundingBox : Finset (ℤ × ℤ)`
+  (= `Finset.Icc xmin xmax ×ˢ Finset.Icc ymin ymax`)
+- `LatticeTriangle.realInterior` (= `boundingBox.filter StrictInterior`)
+- `LatticeTriangle.realInteriorCount : ℕ` (= `realInterior.card`)
+- `unitTriangle_realInteriorCount` (= 0), `unitTriangle_pick_agrees`
+- `triangle_2_1_realInteriorCount` (= 0), `triangle_2_1_pick_agrees`
+- `triangle_3_3_realInteriorCount` (= 1), `triangle_3_3_pick_agrees`
 
 ## Insights
 
@@ -89,6 +106,21 @@ interior-point count `realInterior T`, which decomposes into:
    segments from `(0,0)` to `(a, b)` with `a, b : ℕ`. The general case
    needs a small lemma (`gcd` invariance under translation and reflection),
    straightforward but missing from the project.
+5. **Decidable cross-product test** (S2) — the strictly-interior predicate
+   `(0 < c0 ∧ 0 < c1 ∧ 0 < c2) ∨ (c0 < 0 ∧ c1 < 0 ∧ c2 < 0)` is
+   automatically `Decidable` via `Int.decLt`.  Combined with `Finset.Icc`
+   on `ℤ` (from `Mathlib.Data.Int.Interval`), this lets `native_decide`
+   reduce `realInteriorCount T` for any concrete triangle.
+6. **Bounding-box `Finset.product`** (S2) — `boundingBox = Finset.Icc xmin
+   xmax ×ˢ Finset.Icc ymin ymax` requires `Mathlib.Data.Finset.Prod` for
+   the product notation.  Both factors must be `Finset (ℤ)`, which gives
+   a `Finset (ℤ × ℤ)` with the obvious `Mem` semantics.
+7. **Two orientation cases handled in one definition** (S2) — by allowing
+   either all three cross products `> 0` *or* all three `< 0`, the
+   `StrictInterior` predicate is correct regardless of whether `(v1, v2, v3)`
+   is given in counter-clockwise or clockwise order; this matches the
+   existing `LatticeTriangle` structure, which does not normalize
+   orientation.
 
 ## Mathlib Gaps
 
@@ -104,8 +136,12 @@ None for the S1 OBSERVE scope. Future sessions may need:
 
 ## Next Steps
 
-- **S2** — formalize `realInterior T` as a `Finset` cardinality and verify
-  `realInterior unitTriangle = 0` agrees with `pickInterior`.
+- **~~S2~~** — done in this session.  Defined `realInteriorCount` as a
+  `Finset` cardinality and proved agreement with `pickInterior` on the
+  three concrete triangles.
 - **S3** — prove the additivity lemma for primitive sub-triangles sharing
-  a `gcd = 1` edge.
+  a `gcd = 1` edge.  A lighter S3-prep step: prove the *primitive* case
+  in general — for every `LatticeTriangle T` with `T.twiceArea = 1`,
+  `T.realInteriorCount = 0`.  This closes the base case of the eventual
+  induction.
 - **S4** — close the induction via `exists_primitive_triangulation`.

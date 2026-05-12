@@ -22,55 +22,59 @@
       "Pick's formula for axis-aligned rectangles (PicksTheoremOQ01, Part III)."
     ],
     "open": [
-      "Define realInterior T as a Finset cardinality and prove the base case realInterior unitTriangle = 0 agrees with pickInterior unitTriangle.",
-      "Prove the additivity lemma: when two lattice triangles T1, T2 share an edge with no interior lattice points (gcd = 1), realInterior(T1 union T2) = realInterior T1 + realInterior T2.",
+      "Prove that EVERY primitive triangle (|det| = 1) has realInteriorCount = 0 (general base case, beyond the three test instances now verified in S2).",
+      "Prove the additivity lemma: when two lattice triangles T1, T2 share an edge with no interior lattice points (gcd = 1), realInteriorCount(T1 union T2) = realInteriorCount T1 + realInteriorCount T2.",
       "Close the induction via exists_primitive_triangulation."
     ],
     "goal": "Eliminate the picks_theorem axiom in PicksTheorem.lean by proving Pick's theorem for lattice triangles."
   },
   "currentState": {
     "phase": "PLAN",
-    "since": "2026-05-12T11:10:00Z",
-    "iteration": 2,
-    "focus": "Bridge primitive triangulation + GCD boundary count into Pick's theorem; S1 OBSERVE done.",
+    "since": "2026-05-12T11:30:00Z",
+    "iteration": 3,
+    "focus": "Bridge primitive triangulation + GCD boundary count; S1 scaffold + S2 real-interior count + base-case agreement done.",
     "blockers": [],
-    "nextAction": "S2 -- define realInterior T as a Finset cardinality (using Finset.Icc for the bounding box and a half-plane filter) and prove realInterior unitTriangle = 0.",
+    "nextAction": "S3 -- prove the additivity lemma for primitive sub-triangles sharing a gcd=1 edge, or first the general primitive case (every twiceArea=1 triangle has realInteriorCount=0).",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE (researcher-4, 2026-05-12): built Proofs/PicksTheoremOQ01OQ01OQ01.lean (278 lines, 0 sorries, 0 axioms, build verified). Defines bridge data structures (twiceArea, edgeGCD, boundaryCount, pickInterior, pickInteriorNum), the algebraic identity 2*pickInterior = pickInteriorNum and the cleared form twiceArea = 2*pickInterior + boundaryCount - 2, and verifies the formula on three concrete triangles (unit (I=0,B=3), 2x1 (I=0,B=4), 3x3 (I=1,B=9)).",
+    "progressSummary": "S2 OBSERVE (researcher-4, 2026-05-12): extended Proofs/PicksTheoremOQ01OQ01OQ01.lean to 425+ lines (0 sorries, 0 axioms, build verified). Added cross2 (signed area cross product), LatticeTriangle.StrictInterior (Prop + Decidable instance), boundingBox (Finset.Icc x Finset.Icc), realInterior (filter on StrictInterior), realInteriorCount (the Finset cardinality), and proved by native_decide that realInteriorCount = pickInterior on the three test triangles (unit=0, 2x1=0, 3x3=1 with interior point (1,1)).",
     "builtItems": [
-      "LatticeTriangle structure (mirror of PicksTheoremOQ01OQ01)",
-      "LatticeTriangle.det (2D cross product = twice signed area)",
-      "LatticeTriangle.NonDegenerate (det != 0)",
-      "LatticeTriangle.twiceArea = |det|",
-      "LatticeTriangle.edgeDelta : Fin 3 -> N x N",
-      "LatticeTriangle.edgeGCD : Fin 3 -> N",
-      "LatticeTriangle.boundaryCount = sum of edgeGCD",
-      "LatticeTriangle.pickInterior : Q (rational form)",
-      "LatticeTriangle.pickInteriorNum : Z (cleared form)",
-      "two_mul_pickInterior (rational <-> cleared bridge)",
-      "pick_formula_cleared (twiceArea = 2*pickInterior + boundaryCount - 2)",
-      "Verifications on three test triangles (unit, 2-by-1, 3-by-3)"
+      "LatticeTriangle structure (S1: mirror of PicksTheoremOQ01OQ01)",
+      "LatticeTriangle.det / NonDegenerate / twiceArea (S1)",
+      "LatticeTriangle.edgeDelta / edgeGCD / boundaryCount (S1)",
+      "LatticeTriangle.pickInterior (rational) / pickInteriorNum (cleared) (S1)",
+      "two_mul_pickInterior / pick_formula_cleared identities (S1)",
+      "Three test-triangle pickInterior verifications (S1)",
+      "cross2 (S2): twice the signed area of triangle (a, b, p) via the 2D cross product",
+      "LatticeTriangle.StrictInterior (S2): disjunction of two orientation cases on three edge cross products",
+      "Decidable instance for StrictInterior (S2)",
+      "LatticeTriangle.xmin / xmax / ymin / ymax / boundingBox (S2)",
+      "LatticeTriangle.realInterior (S2): boundingBox filtered by StrictInterior",
+      "LatticeTriangle.realInteriorCount (S2): the Finset cardinality",
+      "Three test-triangle realInteriorCount theorems (S2): unitTriangle=0, triangle_2_1=0, triangle_3_3=1",
+      "Three test-triangle pick_agrees theorems (S2): (realInteriorCount : Q) = pickInterior"
     ],
     "insights": [
       "Both ingredients (primitive triangulation + GCD boundary count) are already verified in the project; the bridge is purely compositional.",
       "The cleared-denominator form pickInteriorNum = twiceArea - boundaryCount + 2 stays in Z, dodging the rationals during future induction proofs.",
       "Each edge contributes gcd(|Dx|, |Dy|) + 1 lattice points; the three shared vertices double-count, so B = sum (gcd + 1) - 3 = sum gcd.",
-      "PicksTheoremOQ02 only handles segments from (0,0) to (a,b) with a, b : N; the general case needs a small translation/reflection lemma (still missing)."
+      "PicksTheoremOQ02 only handles segments from (0,0) to (a,b) with a, b : N; the general case needs a small translation/reflection lemma (still missing).",
+      "S2: The disjunction `(all > 0) OR (all < 0)` in StrictInterior covers both orientations of (v1, v2, v3), so we do not need to normalize the triangle's winding order.",
+      "S2: native_decide reduces realInteriorCount on any concrete triangle because Finset.Icc on Z, Finset.product, and the strict-interior predicate all compile to decidable computations."
     ],
     "mathlibGaps": [
-      "Mathlib has Convex / intrinsicInterior for topological interiors but no built-in lattice-point-of-triangle count; needs a custom Finset.image + filter definition."
+      "Mathlib has Convex / intrinsicInterior for topological interiors but no built-in lattice-point-of-triangle count; we use a custom Finset.Icc + filter definition (S2).",
+      "Mathlib.Data.Int.Interval is required for Finset.Icc on Z (LocallyFiniteOrder Z); Mathlib.Data.Finset.Prod for Finset.product."
     ],
     "nextSteps": [
-      "S2: Define realInterior T : Finset (Z x Z) -> N via a bounding-box filter on a half-plane predicate.",
-      "S3: Prove realInterior unitTriangle = 0 (base case).",
-      "S4: Prove the additivity lemma for primitive-edge unions (gcd = 1 case).",
-      "S5: Close the induction using PicksTheoremOQ01OQ01.exists_primitive_triangulation."
+      "S3a (prep): Prove the GENERAL primitive case -- every LatticeTriangle T with T.twiceArea = 1 has T.realInteriorCount = 0 (closes the base case beyond the three test instances).",
+      "S3b: Prove the additivity lemma for primitive-edge unions (gcd = 1 case): realInteriorCount(T1 ∪ T2) = realInteriorCount T1 + realInteriorCount T2 + (boundary points on the shared edge).",
+      "S4: Close the induction using PicksTheoremOQ01OQ01.exists_primitive_triangulation."
     ]
   },
   "tags": [
@@ -102,11 +106,13 @@
     ],
     "mathlib": [
       "Mathlib.Data.Int.GCD",
-      "Mathlib.Data.Nat.GCD.Basic"
+      "Mathlib.Data.Int.Interval",
+      "Mathlib.Data.Nat.GCD.Basic",
+      "Mathlib.Data.Finset.Prod"
     ]
   },
   "started": "2026-05-12T08:02:11.449Z",
-  "lastUpdate": "2026-05-12T11:10:00Z",
+  "lastUpdate": "2026-05-12T11:30:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -146,10 +152,10 @@
     {
       "path": "Proofs/PicksTheoremOQ01OQ01OQ01.lean",
       "filename": "PicksTheoremOQ01OQ01OQ01.lean",
-      "lineCount": 278,
-      "theoremCount": 16,
+      "lineCount": 426,
+      "theoremCount": 24,
       "axiomCount": 0,
-      "defCount": 9,
+      "defCount": 20,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ01OQ01.lean"
