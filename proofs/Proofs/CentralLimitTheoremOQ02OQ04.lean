@@ -48,6 +48,7 @@ Per the S1/S2 plan, this file builds on the parent
 -/
 
 import Mathlib.MeasureTheory.Function.LpSpace.Basic
+import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.Probability.IdentDistrib
 import Mathlib.Probability.Variance
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
@@ -173,6 +174,48 @@ theorem ibragimov_threshold_summable (δ r : ℝ)
   linarith
 
 /-! ## Part III: Davydov's covariance inequality (S4 target, stated as sorry) -/
+
+/-- **Indicator-pair covariance identity** (S4 stepping-stone helper).
+
+For 0-1 indicators of measurable sets `A` and `B` in a probability space, the
+covariance simplifies to a difference of joint and product measures:
+$$
+\int \mathbf 1_A \cdot \mathbf 1_B \, d\mu
+   - \Bigl(\int \mathbf 1_A \, d\mu\Bigr) \cdot \Bigl(\int \mathbf 1_B \, d\mu\Bigr)
+ = \mu(A \cap B) - \mu(A) \cdot \mu(B).
+$$
+
+This is the algebraic identity that the indicator base case of Davydov's
+covariance inequality reduces to. The RHS is precisely the form bounded by
+the α-mixing coefficient `alphaMixingCoeff` (defined as the supremum of `|RHS|`
+over measurable pairs in the two σ-algebras), so combined with `le_ciSup`-type
+reasoning, it yields the constant-1 indicator-pair Davydov bound. The
+truncation + Hölder amplification step then promotes this base case to the
+sharp-constant general L^p inequality with constant 12 (the S4 deliverable).
+
+The proof is purely measure-theoretic: case analysis on `Set.indicator_apply`
+identifies the pointwise product `1_A · 1_B = 1_{A ∩ B}`, then
+`MeasureTheory.integral_indicator_one` evaluates each indicator integral as
+`μ.real`. No supremum machinery is invoked at this layer. -/
+theorem indicator_pair_covariance_eq
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {A B : Set Ω} (hA : MeasurableSet A) (hB : MeasurableSet B) :
+    ∫ ω, A.indicator (1 : Ω → ℝ) ω * B.indicator (1 : Ω → ℝ) ω ∂μ
+      - (∫ ω, A.indicator (1 : Ω → ℝ) ω ∂μ)
+        * (∫ ω, B.indicator (1 : Ω → ℝ) ω ∂μ)
+    = μ.real (A ∩ B) - μ.real A * μ.real B := by
+  have hAB : MeasurableSet (A ∩ B) := hA.inter hB
+  -- Pointwise: `1_A(ω) · 1_B(ω) = 1_{A ∩ B}(ω)`, by case analysis on
+  -- `Set.indicator_apply` (no nested-supremum machinery is invoked).
+  have hprod :
+      (fun ω : Ω => A.indicator (1 : Ω → ℝ) ω * B.indicator (1 : Ω → ℝ) ω)
+        = (A ∩ B).indicator (1 : Ω → ℝ) := by
+    funext ω
+    simp only [Set.indicator_apply, Pi.one_apply, Set.mem_inter_iff]
+    by_cases hωA : ω ∈ A <;> by_cases hωB : ω ∈ B <;>
+      simp [hωA, hωB]
+  rw [hprod, integral_indicator_one hAB, integral_indicator_one hA,
+      integral_indicator_one hB]
 
 /-- **Davydov's covariance inequality** (Davydov 1968).
 
