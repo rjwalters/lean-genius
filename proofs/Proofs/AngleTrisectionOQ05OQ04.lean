@@ -656,4 +656,159 @@ theorem hh4_existence : ∀ (p : Point) (ℓ : Line),
   intro q hq
   exact reflectAcross_perpThroughPoint_preserves p ℓ q hq
 
+
+-- ============================================================
+-- PART 8: Constructive HH-7 (Non-Parallel Case) — Hatori Fold (S6)
+-- ============================================================
+
+/-
+### S6 partial discharge: HH-7 standalone construction (non-parallel case)
+
+After S3 (HH-1), S4 (HH-2), and S5 (HH-4), this S6 section discharges
+HH-7 for the **non-degenerate non-parallel case**: given a point `P` and
+two lines `ℓ₁`, `ℓ₂` whose normals are not parallel (`crossDet ≠ 0`,
+where `crossDet ℓ₁ ℓ₂ = ℓ₁.b · ℓ₂.a − ℓ₁.a · ℓ₂.b`), the *Hatori fold*
+through `P` is the explicit fold line perpendicular to `ℓ₂` whose
+reflection sends `P` onto `ℓ₁`.
+
+Concretely we exhibit `hatoriFold p ℓ₁ ℓ₂ h_nonpar : Line` and prove:
+
+1. `reflectAcross_hatoriFold_preserves_ℓ₂` — reflection across the fold
+   preserves `ℓ₂` as a set (the fold is perpendicular to `ℓ₂`);
+2. `reflectAcross_hatoriFold_to_ℓ₁` — reflection across the fold sends
+   `P` to a point of `ℓ₁`;
+3. `hh7_existence_nonparallel` — the existence form for the non-parallel
+   case, providing four-of-seven HH ingredients now constructive.
+
+### Why the non-parallel restriction
+
+The classical HH-7 (Hatori 2001) is stated unconditionally in
+`AngleTrisectionOQ05.HHAxioms.hh7`. As stated, the parent's `hh7`
+existence claim is actually *false* when `ℓ₁ ∥ ℓ₂` and `P ∉ ℓ₁`: any
+fold perpendicular to `ℓ₂` moves points parallel to `ℓ₂` (hence parallel
+to `ℓ₁`), so the perpendicular distance from `P` to `ℓ₁` is invariant
+under such reflections. If `P` is not already on `ℓ₁`, no perpendicular-
+to-`ℓ₂` fold can land it on `ℓ₁`. The classical Hatori statement
+therefore tacitly assumes either `ℓ₁ ∦ ℓ₂` or `P ∈ ℓ₁`; we make the
+former explicit via `h_nonpar`. The degenerate parallel case is
+deferred to a later iteration: if `P ∈ ℓ₁` the identity fold (any
+perpendicular-to-`ℓ₂` line through `P`) works trivially, while
+`P ∉ ℓ₁ ∧ ℓ₁ ∥ ℓ₂` is genuinely unsolvable and corresponds to a real
+geometric obstruction in Hatori's axiom.
+
+### Construction
+
+For the fold to be perpendicular to `ℓ₂`, its normal must be perpendicular
+to `ℓ₂`'s normal: take `(α, β) := (-ℓ₂.b, ℓ₂.a)` — a 90° rotation of
+`(ℓ₂.a, ℓ₂.b)`. For the reflection of `P` to land on `ℓ₁` we choose the
+constant term `γ` so that the reflection parameter
+`t = 2 (α · P.1 + β · P.2 + γ) / (α² + β²)` simultaneously satisfies
+`P' ∈ ℓ₁`, which (after the algebra) forces
+
+  γ = (ℓ₁.a · P.1 + ℓ₁.b · P.2 + ℓ₁.c) · (ℓ₂.a² + ℓ₂.b²)
+      / (2 · (ℓ₁.b · ℓ₂.a − ℓ₁.a · ℓ₂.b))
+    + ℓ₂.b · P.1 − ℓ₂.a · P.2.
+
+The denominator is exactly `crossDet ℓ₁ ℓ₂`, hence the non-parallel
+hypothesis. No new `sorry` is introduced; the file's sorry count is
+unchanged at 3.
+
+Combined with S3 (HH-1), S4 (HH-2), and S5 (HH-4), four of the seven HH
+ingredients are now constructive. The remaining three are HH-3 (angle
+bisector), HH-5 (fold through `P₂` placing `P₁` on `ℓ`), and HH-6
+(Beloch fold — the cubic-solving one).
+-/
+
+/-- The cross-determinant of two lines' normals: `ℓ₁.b · ℓ₂.a − ℓ₁.a · ℓ₂.b`.
+Vanishes iff `ℓ₁` and `ℓ₂` are parallel (their normals are collinear).
+This determinant appears as the denominator of the Hatori fold's
+constant term. -/
+def crossDet (ℓ₁ ℓ₂ : Line) : ℝ := ℓ₁.b * ℓ₂.a - ℓ₁.a * ℓ₂.b
+
+/-- The squared norm `ℓ₂.a² + ℓ₂.b²` is strictly positive. (Repeats
+`perpThroughPoint_normSq_pos` specialised to `ℓ₂`; included locally for
+proof legibility.) -/
+theorem hatoriFold_normSq_pos (ℓ₂ : Line) :
+    0 < ℓ₂.a^2 + ℓ₂.b^2 := perpThroughPoint_normSq_pos ℓ₂
+
+/-- The **Hatori fold** through `P` perpendicular to `ℓ₂` that sends `P`
+onto `ℓ₁`, defined only when `crossDet ℓ₁ ℓ₂ ≠ 0` (non-parallel case).
+
+The fold's normal `(-ℓ₂.b, ℓ₂.a)` is a 90° rotation of `ℓ₂.normal`, so
+the fold is perpendicular to `ℓ₂`. The constant term is chosen so that
+reflection across the fold sends `P` to a point of `ℓ₁`. -/
+noncomputable def hatoriFold (p : Point) (ℓ₁ ℓ₂ : Line)
+    (_h_nonpar : crossDet ℓ₁ ℓ₂ ≠ 0) : Line where
+  a := -ℓ₂.b
+  b := ℓ₂.a
+  c := (ℓ₁.a * p.1 + ℓ₁.b * p.2 + ℓ₁.c) * (ℓ₂.a^2 + ℓ₂.b^2) /
+         (2 * crossDet ℓ₁ ℓ₂) + ℓ₂.b * p.1 - ℓ₂.a * p.2
+  nondeg := by
+    rcases ℓ₂.nondeg with ha | hb
+    · exact Or.inr ha
+    · exact Or.inl (neg_ne_zero.mpr hb)
+  -- The hypothesis `_h_nonpar` is consumed by downstream theorems that
+  -- depend on `2 * crossDet ℓ₁ ℓ₂ ≠ 0`; the structure itself is
+  -- well-defined for any `crossDet` (the `c` field is just real
+  -- division, which Lean treats as 0 when the divisor is 0), but the
+  -- geometric guarantees (sending `P` to `ℓ₁`) hold only when
+  -- `crossDet ≠ 0`.
+
+/-- The Hatori fold preserves `ℓ₂` as a set: any point of `ℓ₂` reflects
+to a point of `ℓ₂`. Proof structure mirrors
+`reflectAcross_perpThroughPoint_preserves` from PART 7: the fold's
+normal `(-ℓ₂.b, ℓ₂.a)` is perpendicular to `ℓ₂.normal`, so the cross-
+term in the reflection identity vanishes. -/
+theorem reflectAcross_hatoriFold_preserves_ℓ₂
+    (p : Point) (ℓ₁ ℓ₂ : Line) (h_nonpar : crossDet ℓ₁ ℓ₂ ≠ 0)
+    (q : Point) (hq : ℓ₂.contains q) :
+    ℓ₂.contains (reflectAcross (hatoriFold p ℓ₁ ℓ₂ h_nonpar) q) := by
+  have hPos : 0 < ℓ₂.a^2 + ℓ₂.b^2 := hatoriFold_normSq_pos ℓ₂
+  have hD : (-ℓ₂.b)^2 + ℓ₂.a^2 ≠ 0 := by
+    have hEq : (-ℓ₂.b)^2 + ℓ₂.a^2 = ℓ₂.a^2 + ℓ₂.b^2 := by ring
+    rw [hEq]; exact ne_of_gt hPos
+  simp only [Line.contains, reflectAcross, hatoriFold] at hq ⊢
+  field_simp
+  linear_combination ((-ℓ₂.b)^2 + ℓ₂.a^2) * hq
+
+/-- The Hatori fold sends `P` onto `ℓ₁`: reflecting `P` across the fold
+yields a point of `ℓ₁`. Proof: substitute the fold's `(a, b, c)` into
+`reflectAcross` and verify the polynomial identity. The cross-term that
+fails to vanish in PART 7's HH-4 here cancels exactly the deviation
+`ℓ₁.a · P.1 + ℓ₁.b · P.2 + ℓ₁.c` of `P` from `ℓ₁`, by construction of
+the fold's constant term. -/
+theorem reflectAcross_hatoriFold_to_ℓ₁
+    (p : Point) (ℓ₁ ℓ₂ : Line) (h_nonpar : crossDet ℓ₁ ℓ₂ ≠ 0) :
+    ℓ₁.contains (reflectAcross (hatoriFold p ℓ₁ ℓ₂ h_nonpar) p) := by
+  have hPos : 0 < ℓ₂.a^2 + ℓ₂.b^2 := hatoriFold_normSq_pos ℓ₂
+  have hD : (-ℓ₂.b)^2 + ℓ₂.a^2 ≠ 0 := by
+    have hEq : (-ℓ₂.b)^2 + ℓ₂.a^2 = ℓ₂.a^2 + ℓ₂.b^2 := by ring
+    rw [hEq]; exact ne_of_gt hPos
+  have hDpos : ℓ₂.a^2 + ℓ₂.b^2 ≠ 0 := ne_of_gt hPos
+  simp only [Line.contains, reflectAcross, hatoriFold, crossDet] at h_nonpar ⊢
+  field_simp
+  ring
+
+/-- **HH-7 (existence form, non-parallel case, standalone).** Given a
+point `P` and two lines `ℓ₁`, `ℓ₂` whose normals are not parallel
+(`crossDet ℓ₁ ℓ₂ ≠ 0`), there exists a fold line perpendicular to `ℓ₂`
+that places `P` onto `ℓ₁`. This is the non-degenerate case of the HH-7
+field of `HHAxioms`; the explicit witness is the Hatori fold.
+
+Combined with `hh1_existence` (S3), `hh2_existence` (S4), and
+`hh4_existence` (S5), this provides four of the seven HH ingredients
+required by `straight_fold_recovers_HH`. The fully unconditional HH-7
+(matching the parent structure's signature) requires a separate case
+analysis on `crossDet ℓ₁ ℓ₂ = 0`; see the section docstring for the
+geometric obstruction in the parallel case. -/
+theorem hh7_existence_nonparallel :
+    ∀ (p : Point) (ℓ₁ ℓ₂ : Line), crossDet ℓ₁ ℓ₂ ≠ 0 →
+    ∃ l : Line, ℓ₁.contains (reflectAcross l p) ∧
+      ∀ q : Point, ℓ₂.contains q → ℓ₂.contains (reflectAcross l q) := by
+  intro p ℓ₁ ℓ₂ h_nonpar
+  refine ⟨hatoriFold p ℓ₁ ℓ₂ h_nonpar,
+          reflectAcross_hatoriFold_to_ℓ₁ p ℓ₁ ℓ₂ h_nonpar, ?_⟩
+  intro q hq
+  exact reflectAcross_hatoriFold_preserves_ℓ₂ p ℓ₁ ℓ₂ h_nonpar q hq
+
 end AngleTrisectionOQ05OQ04
