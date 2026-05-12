@@ -43,7 +43,8 @@
       "**Divisibility Telescope**: M(a) | M(b) when a | b follows from the algebraic identity 2^b - 1 = (2^a)^(b/a) - 1 = (2^a - 1)·((2^a)^(b/a-1) + ... + 1). In Lean: `mersenne_dvd_of_dvd` via `Nat.pow_sub_one_dvd`.",
       "**Order-Theoretic Approach**: The factor congruence proof uses ZMod order theory: (ZMod q)* has order q-1 (Fermat), and ord_q(2) divides both p (since 2^p≡1) and q-1. Primality of p forces ord=p.",
       "**LPWConjecture as Def**: The conjecture is formalized as `def LPWConjecture : Prop := ∀ ε > 0, ∃ N₀, ∀ N ≥ N₀, ...` using Filter.atTop asymptotics. This is a definition, not an axiom — correctly giving axiomCount = 0.",
-      "**Sparsity Evidence**: M(11) = 2047 = 23 × 89 shows that even when p is prime, M(p) may be composite (the factor 23 ≡ 1 (mod 11) per the Lucas congruence)."
+      "**Sparsity Evidence**: M(11) = 2047 = 23 × 89 shows that even when p is prime, M(p) may be composite (the factor 23 ≡ 1 (mod 11) per the Lucas congruence).",
+      "**Lucas-Lehmer's Provenance**: The Lucas factor congruence p | q − 1 is the load-bearing fact behind the Lucas-Lehmer primality test: testing $M(p)$ for primality reduces to checking the LL sequence $s_{k+1} = s_k^2 - 2 \\pmod{M(p)}$ converges, whose correctness depends on the multiplicative-order argument formalized here. Every Mersenne prime discovered by GIMPS (51 as of 2024) was certified via Lucas-Lehmer, so the `factor_cong_one_mod_p` theorem is the gateway result for the entire computational-Mersenne enterprise. The constructive content of the theorem (the order argument) doubles as a *factoring sieve* for $M(p)$: candidate prime divisors are searched only among $q \\equiv 1 \\pmod{p}$, cutting the trial-division space by a factor of $p$ — this is exactly the optimization used by every Mersenne factorer since Lucas's 1876 paper."
     ],
     "prerequisites": [
       "Mersenne primes and the Euclid–Euler theorem (perfect numbers ↔ Mersenne primes)",
