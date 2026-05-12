@@ -614,4 +614,148 @@ theorem engelsma_lower_bound_of_finitary
   -- Apply hfin to derive ¬ IsAdmissible H₀ — contradiction.
   exact hfin H₀ hH₀_in_powersetCard hH₀_zero hH₀_adm
 
+/-! ## S9: Path-B scaffold — `engelsmaSearch` Bool/Prop bridge
+
+The §S8 bridge lemma `engelsma_lower_bound_of_finitary` reduces the
+unbounded `engelsma_lower_bound` axiom to the finitary statement
+
+```
+∀ H ∈ (Finset.range 246).powersetCard 50, 0 ∈ H → ¬ IsAdmissible H
+```
+
+S9 begins the Path-B verified-backtracking infrastructure
+(`knowledge.md` §4) by establishing the **Option-3 hybrid scaffold**
+(§4.3) that future iterations will hang their pruned backtracking
+off of:
+
+* A `Bool`-valued search procedure
+  `engelsmaSearch (w k : ℕ) : Bool` whose `false` return witnesses
+  the finitary statement at `(w, k)`.
+* A correctness lemma
+  `engelsmaSearch_eq_false_iff (w k : ℕ) : engelsmaSearch w k = false ↔
+  (the finitary form at (w, k))`.
+* A reduction
+  `engelsma_lower_bound_of_engelsmaSearch_false (h : engelsmaSearch 246 50 = false)`
+  that consumes the `Bool` equation and produces the
+  unbounded-axiom-style conclusion (composing through `engelsma_lower_bound_of_finitary`).
+
+The `engelsmaSearch` definition shipped in S9 is the **naive
+enumeration** over `(Finset.range w).powersetCard k`. It is *not* the
+pruned Engelsma backtracking: enumeration is feasible only for small
+`(w, k)` (e.g. `(10, 30)` and below — see §S4–S6 above for the
+analogous direct `native_decide` checks). At `(50, 246)` the naive
+enumeration is unusable (`Nat.choose 246 50 ≈ 1.7 × 10^54`, see
+`knowledge.md` §3.2). What it *does* provide is a single, fixed
+correctness contract (`engelsmaSearch_eq_false_iff`) that any future
+*pruned* implementation `engelsmaSearch'` can be plugged into as a
+drop-in replacement: prove `engelsmaSearch' w k = engelsmaSearch w k`
+(or, more practically, the same `_eq_false_iff` lemma with the same
+RHS) and the entire downstream wiring through
+`engelsma_lower_bound_of_engelsmaSearch_false` is reused.
+
+This pattern is the canonical certified-computation idiom in Lean 4
+(cf. `Mathlib.Tactic.NormNum.Prime` for `Nat.Prime` via reflected
+small-number arithmetic): the *interface* between the Bool-valued
+implementation and the high-level theorem is established once, and
+then optimization work proceeds at the implementation layer without
+touching the surface API.
+
+The S9 deliverable is therefore three small declarations:
+
+1. `engelsmaSearch` — the naive `Bool` search (uses kernel
+   `decide` on a bounded existential).
+2. `engelsmaSearch_eq_false_iff` — the Bool/Prop bridge,
+   proven by unfolding `decide` and pushing negation.
+3. `engelsma_lower_bound_of_engelsmaSearch_false` — the
+   composition with `engelsma_lower_bound_of_finitary` that
+   gives the unbounded-axiom statement from the Bool equation.
+
+Plus a small positive unit test:
+
+4. `engelsmaSearch_7_3_eq_true` — at the smallest non-trivial case
+   `(w, k) = (7, 3)` the naive search returns `true`, witnessed by
+   `{0, 2, 6}` (cf. `admissible_triple_via_S2` above). This validates
+   that the search returns the right answer when an admissible
+   witness *does* exist, complementing the §S4–S6 negative cases.
+
+Axiom bookkeeping: `engelsmaSearch_7_3_eq_true` uses kernel `decide`
+(35 subsets), so no `Lean.ofReduceBool` invocation. `axiomCount`
+stays at `1` (reused from S4). No new sorries.
+
+This S9 scaffold is independently useful even if the full S10+
+pruned backtracking is never implemented: it formalizes the
+exact statement that any future certified-computation proof of
+`engelsma_lower_bound` would have to discharge. -/
+
+/-- The naive admissibility search.
+
+`engelsmaSearch w k = true` iff there exists `H ∈ (Finset.range w).powersetCard k`
+with `0 ∈ H` and `IsAdmissible H`. The implementation is a plain
+existential decide over the powerset; the search space is
+`Nat.choose w k`. Feasible only for very small `(w, k)` — see the
+S4–S6 native_decide analogues for the existing tractable cases.
+
+The point of even shipping the naive form is to provide a fixed
+correctness contract (`engelsmaSearch_eq_false_iff` below) that future
+pruned variants of `engelsmaSearch` can target without touching the
+downstream consumers of the search. -/
+def engelsmaSearch (w k : ℕ) : Bool :=
+  decide (∃ H ∈ (Finset.range w).powersetCard k, 0 ∈ H ∧ IsAdmissible H)
+
+/-- **Bool/Prop bridge** for `engelsmaSearch`. `engelsmaSearch w k = false`
+is exactly the finitary statement of the Engelsma lower bound at
+parameters `(w, k)`: no admissible `k`-element subset of
+`{0, …, w−1}` contains `0`.
+
+This is the single bridge through which the verified-backtracking
+framework hangs onto the surface API. Proven by unfolding `decide`
+and pushing negation through the bounded existential. -/
+theorem engelsmaSearch_eq_false_iff (w k : ℕ) :
+    engelsmaSearch w k = false ↔
+      ∀ H ∈ (Finset.range w).powersetCard k, 0 ∈ H → ¬ IsAdmissible H := by
+  unfold engelsmaSearch
+  rw [decide_eq_false_iff_not]
+  simp only [not_exists, not_and]
+
+/-- **The S9 deliverable**: a `Bool`-equation reduction of the
+`engelsma_lower_bound` axiom. Given a proof that
+`engelsmaSearch 246 50 = false` (which a future
+pruned-backtracking iteration will discharge via `native_decide` —
+the naive search shipped here is intractable at these parameters),
+this theorem produces the unbounded-axiom statement directly.
+
+The reduction route is: `engelsmaSearch 246 50 = false`
+  ↔ (`engelsmaSearch_eq_false_iff`) the finitary form
+  ⟹ (`engelsma_lower_bound_of_finitary`, S8 bridge) the unbounded form.
+
+A future PR `engelsmaSearch 246 50 = false := by native_decide`
+would, combined with this theorem, close the
+`engelsma_lower_bound` axiom in `BoundedPrimeGapsOQ03.lean`. -/
+theorem engelsma_lower_bound_of_engelsmaSearch_false
+    (h : engelsmaSearch 246 50 = false) :
+    ∀ H : Finset ℕ, IsAdmissible H → H.card ≥ 50 →
+    ∀ hne : H.Nonempty, 246 ≤ H.max' hne - H.min' hne :=
+  engelsma_lower_bound_of_finitary
+    ((engelsmaSearch_eq_false_iff 246 50).mp h)
+
+/-- **Positive unit test**: at the smallest non-trivial parameters
+`(w, k) = (7, 3)` the naive search returns `true`, witnessed by the
+admissible triple `{0, 2, 6}` (cf. `admissible_triple_via_S2` above
+and `BoundedPrimeGaps.admissible_triple_0_2_6` in the parent file).
+
+The S4/S5/S6 `native_decide` analogues all witness the *absence* of
+admissible witnesses (either vacuously by virtue of the search range
+being too narrow, or non-vacuously at the boundary `w = H(k)+1`).
+This S9 test complements those by verifying that the search returns
+the right answer when an admissible witness *does* exist — a basic
+soundness check on the naive enumeration before S10+ optimization.
+
+Search space `Nat.choose 7 3 = 35`. We use `native_decide` for the
+35-subset enumeration to stay uniform with the §S4–S6 native_decide
+analogues (kernel `decide` would also work but is slower on
+multi-layer `Decidable` reductions). The `Lean.ofReduceBool`
+axiom from S4 is reused; `axiomCount` stays at `1`. -/
+theorem engelsmaSearch_7_3_eq_true : engelsmaSearch 7 3 = true := by
+  native_decide
+
 end BoundedPrimeGapsOQ03OQ02
