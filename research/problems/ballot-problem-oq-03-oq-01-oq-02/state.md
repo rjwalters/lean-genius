@@ -1,11 +1,82 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**, replanned to sum-level δ_arm-correction identity)
+**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 then refutes S66's "off-spine filter" replanning** and pins the target at the unfiltered `F_side_identity_aligned` exactly as stated in Helpers.lean line 15670)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-12 (Session 66 / S57.7 plan refutation researcher-8)
-**Iteration**: 66
+**Last Updated**: 2026-05-12 (Session 67 / filter ablation researcher-5)
+**Iteration**: 67
+
+## Session 67 — Filter ablation: off-spine-restricted S57.7 fails on (3,2,1) and (4,2); unfiltered `F_side_identity_aligned` holds (researcher-5, 2026-05-12)
+
+**Mode.** ANALYSIS-ONLY (no `.lean` edits).
+
+**Outcome.**  Concrete `(3,2,1)`-shape and `(4,2)`-shape computations
+refute S66's "off-spine restricted" S57.7 reformulation and
+corroborate the **unfiltered** `F_side_identity_aligned` as
+already stated in Helpers.lean line 15670.
+
+S66's `sessions/2026-05-12-s05.md` "Suggested replacement Next Action"
+section (lines ~239–256) writes S57.7 as
+
+```
+∑ x ∈ (μ\c').cells.filter (off-spine of c'),
+    [gnwProb μ c (h_μ x) x · (h_d-1)² − gnwProb (μ\c') c (h_{μ\c'} x) x · h_d·(h_d-2)] = 0
+```
+
+This **filtered** identity yields **+1** on `(3,2)` (recomputable
+from S66's own table), **+1** on `(3,2,1)`, and **+2** on `(4,2)`.
+The filtered statement is strictly stronger than what we need
+and false.
+
+The **actual** `F_side_identity_aligned` lemma at Helpers.lean
+line 15670 sums over **all** of `(removeCorner μ c' hc').cells`
+with **no off-spine filter**.  This unfiltered identity yields
+`LHS = RHS = 8` on `(3,2)` (S66), `LHS = RHS = 15/2` on
+`(3,2,1)` (this session), and `LHS = RHS = 30` on `(4,2)` (this
+session).  No counter-example found.
+
+**Residual decomposition.**  In case 1 (`c.1 < c'.1`), the
+residuals are concentrated as follows:
+
+| μ       | h_d | (h_d-1)² | h_d(h_d-2) | off-spine | c'-col on-spine | c'-row on-spine | total |
+|---------|-----|----------|------------|-----------|-----------------|-----------------|-------|
+| (3,2)   | 3   | 4        | 3          | +1        | −1              | 0               | 0     |
+| (3,2,1) | 3   | 4        | 3          | +1        | −1              | 0               | 0     |
+| (4,2)   | 4   | 9        | 8          | +2        | −2              | 0               | 0     |
+
+The c'-row residual is **always 0**: case-1 c'-row cells
+`(c'.1, s)` with `s < c'.2` become corners of `μ\c'` and their
+`gnwProb` is 0 on both sides (S57.3a + dual fact for `μ\c'`).
+
+The c'-column on-spine residual concentrates at non-vanishing
+crossing cells `(i, c'.2)` with `i < c'.1` ∈ `(μ\c').cells`.
+
+The off-spine residual concentrates at cells in `c`'s arm
+strictly to the right of column `c'.2`, i.e.
+`{(c.1, j) : c'.2 < j ≤ c.2}` in `(μ\c').cells`.
+
+In all three test cases the weighted off-spine residual equals
+`+(h_d − 2)` and the weighted c'-column residual equals
+`−(h_d − 2)`.  Whether this `+(h_d − 2)` constancy generalizes
+beyond single-non-vanishing-crossing diagrams (e.g. on
+`(3,2,2)` where the c'-column has two non-vanishing crossings)
+is the recommended Session 68 follow-up.
+
+**Implication.**  S57.7 must target the unfiltered statement at
+line 15670 verbatim.  The off-spine filter must be dropped from
+state.md's Next Action.  A clean proof path is the c'-row +
+c'-column + off-spine decomposition with the c'-column residual
+identified via S65's `hookLength_at_arm_class_case1` divisor
+shift.
+
+**Files modified.**
+* `research/problems/ballot-problem-oq-03-oq-01-oq-02/state.md` — this entry; Next Action corrected (drop filter).
+* `research/problems/ballot-problem-oq-03-oq-01-oq-02/sessions/2026-05-12-s06.md` — full (3,2,1) and (4,2) data tables + cross-test summary + structural diagnosis.
+* `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` — iteration 66 → 67, progressSummary update.
+
+**Build status.** No `.lean` changes; no build attempted.  Parent
+`BallotProblemOQ03OQ02.lean` remains broken on `origin/main`.
 
 ## Session 66 — S57.7 plan refutation: pointwise equality fails (researcher-8, 2026-05-12)
 
@@ -601,68 +672,104 @@ in place:
 
 ## Next Action
 
-**S57.7 — sum-level F-side aligned residual identity for non-vanishing
-crossings** (replaces S65's refuted naive pointwise plan; see Session 66
-above + `sessions/2026-05-12-s05.md`).
+**S57.7 — `F_side_identity_aligned` (unfiltered, full-domain) via
+case-1 c'-row/c'-column/off-spine decomposition.**  Targets the
+lemma at Helpers.lean line 15670 verbatim, with sums over the
+full `(removeCorner μ c' hc').cells` and **no off-spine filter**.
+
+S66's "off-spine-restricted" reformulation (in
+`sessions/2026-05-12-s05.md` lines ~239–256) is **refuted** by
+Session 67's `(3,2,1)` and `(4,2)` computations: filtered residuals
+are +1, +1, +2 (on `(3,2)`, `(3,2,1)`, `(4,2)`), not 0.  The
+unfiltered identity *does* hold on all three test diagrams.
 
 The S57.6 prep 1/2/3 chain (PRs #17747 / #17817 / #17865) reduces
 `F_side_identity_aligned` modulo two remaining contributions: the
-non-vanishing arm-class summands (case 1, `y = (x.1, c'.2)`) and the
-non-vanishing leg-class summands (case 2, `y = (c'.1, x.2)`).
+non-vanishing arm-class summands (case 1, `y = (x.1, c'.2)`) and
+the non-vanishing leg-class summands (case 2, `y = (c'.1, x.2)`).
 *Per-cell* equality `gnwProb μ c K y = gnwProb (μ\c') c K y` is
-**false** on these cells (Session 66 counter-example), because
-`c' ∈ H*(y) \ H*'(y)` causes the K+1 step's divisor and summands to
-mismatch by mass that is not recoverable from the IH.
+**false** on these cells (Session 66 counter-example).  S67 shows
+the right framing: a **three-way regional decomposition** of the
+sum.
 
-The correct target is at the **summed** level:
+**Approach (regional decomposition, case 1).**
+
+1. **Sub-lemma S57.7-row — c'-row contribution vanishes.**
+   For cells `(c'.1, s) ∈ (μ\c').cells` (necessarily `s < c'.2`
+   in case 1), `gnwProb μ c K (c'.1, s) = 0` (S57.3a
+   `gnwProb_zero_of_row_eq_c'_case1`) and
+   `gnwProb (μ\c') c K (c'.1, s) = 0` (need: dual fact for
+   `(μ\c')`; likely follows from `(c'.1, s)` becoming a corner
+   of `μ\c'` since `c'` was its sole right-obstacle and column
+   `s`'s row-`c'.1+1` cell vanishes — to verify in general).
+
+2. **Sub-lemma S57.7-col — c'-column residual formula.**
+   For cells `(i, c'.2) ∈ (μ\c').cells` with `i < c'.1` (case-1
+   arm-class non-vanishing crossings), use S65's
+   `hookLength_at_arm_class_case1` to relate the K-step
+   recurrences on both sides.  Identify the weighted residual
+   `∑_{i < c'.1, (i,c'.2) ∈ μ\c'} (gnwProb μ c h_μ(i,c'.2) (i,c'.2) · (h_d-1)²
+   − gnwProb (μ\c') c h'(i,c'.2) (i,c'.2) · h_d(h_d-2))`
+   as a closed form.  Test-case data: `−1` on `(3,2)` and
+   `(3,2,1)` (h_d=3, one c'-column non-vanishing crossing),
+   `−2` on `(4,2)` (h_d=4, one crossing).  **Conjecture:**
+   c'-column residual = `−(h_d − 2) · |{i < c'.1 : (i,c'.2) ∈ μ\c'}|`
+   — to be tested on `(3,2,2)` and `(4,3)` in S68 analysis.
+
+3. **Sub-lemma S57.7-off — off-spine residual formula.**
+   For cells off both spines of `c'`, identify the residual via
+   S57.4's `gnwProb_succ_eq_off_spine_of_c'` K-step lift.
+   Test-case data: `+1` on `(3,2)` and `(3,2,1)`, `+2` on `(4,2)` —
+   each equal in magnitude to the c'-column residual.
+
+4. **Assembly.**  c'-row contribution (0) + c'-column (−R) +
+   off-spine (+R) = 0.  No `δ_arm`-style global integration
+   needed; the cancellation is regional and finite.
+
+**Recommended Session 68: c'-column residual generalization.**
+Compute the c'-column residual on `(3,2,2)` (two c'-column
+non-vanishing crossings) and `(4,3)` to test the
+`−(h_d − 2) · #(crossings)` conjecture above.  If it holds, S57.7
+decomposes cleanly along regional boundaries with no global
+δ_arm correction.
+
+**Estimated (after S68 confirms the c'-column formula).**
+150–250 lines for the c'-column residual lemma + ~80 lines for
+the off-spine residual lemma + ~40 lines assembly.  Total likely
+exceeds the ~15500-line Helpers.lean ceiling, forcing the
+Option E3 extraction into `BallotProblemOQ03OQ01OQ02DoubleRemove.lean`
+to land first.
+
+**Risk.**  Medium.  Step 2's c'-column residual formula is the
+crux; if the `−(h_d − 2) · #(crossings)` conjecture fails on a
+larger test diagram, the framing needs adjustment but the
+fundamental structure (regional decomposition with case-1
+c'-row vanishing) should survive.
+
+## Historical Next Action (S57.7 off-spine filter, refuted by Session 67)
+
+S66's "Suggested replacement Next Action" (`sessions/2026-05-12-s05.md`
+lines ~239–256) proposed targeting the **off-spine-restricted**
+sum identity
 
 ```
 ∑ x ∈ (μ\c').cells.filter (off-spine of c'),
-    [ gnwProb μ      c (hookLength μ      x.1 x.2) x · (h_d - 1)²
-    − gnwProb (μ\c') c (hookLength (μ\c') x.1 x.2) x · h_d · (h_d - 2) ]
-= 0
+    [ gnwProb μ c (h_μ x) x · (h_d - 1)²
+    − gnwProb (μ\c') c (h_{μ\c'} x) x · h_d · (h_d - 2) ] = 0
 ```
 
-with the discrepancy `(h_d − 1)² − h_d · (h_d − 2) = +1` absorbing the
-missing `c'`-step mass uniformly across the off-spine arm/leg cells.
-Equivalently, S57.7 introduces a `δ_arm`-style per-cell correction
-term that integrates to zero against the off-spine sum.
+with the rationale that the discrepancy `(h_d − 1)² − h_d · (h_d − 2) = +1`
+would absorb the missing `c'`-step mass via a `δ_arm`-style
+per-cell correction integrating to zero across the off-spine sum.
 
-**Approach.**
-
-1. **Sub-lemma S57.7a — partial sums on the case-1 arm class.**  For
-   the non-vanishing arm-class strict-hook contributions of off-spine
-   cells `x = (r, c) ∈ (μ\c').cells` with `r ≠ c'.1`, write the
-   K-step residual `gnwProb μ c (K+1) x − gnwProb (μ\c') c (K+1) x`
-   as `(1/(K+1)) · gnwProb μ c K c'` plus a divisor-mismatch term
-   that recombines as a *fraction* of `gnwProb (μ\c') c K x` with
-   coefficient `+1/(|H*'(x)| · (|H*'(x)| + 1))`.
-   (S65's `hookLength_at_arm_class_case1` gives `|H*(x)| = |H*'(x)| + 1`.)
-
-2. **Sub-lemma S57.7b — case-2 leg-class mirror.**  Reduce to S57.7a
-   via S58 (PR #17650, transpose-equivariance of `strictHookCells`
-   and `gnwProb`).
-
-3. **Sub-lemma S57.7c — `δ_arm` integration to zero.**  Sum the
-   per-cell `δ_arm` correction over the off-spine arm/leg sub-domain
-   and show it cancels the `+1` discrepancy weighted by the
-   off-spine cell count.
-
-   Tools: S57.5's `sum_gnwProb_arm_of_c'_reduce_*` /
-   `sum_gnwProb_leg_of_c'_reduce_*` (PR #17734) for the sum reductions;
-   `sum_gnwProb_strictHookCells_eq_removeCorner` (line 15405) for the
-   strict-hook domain bridge.
-
-**Estimated.**  150–250 lines (sub-lemmas) + 40–80 lines for the
-final `F_side_identity_aligned` assembly.  Total likely exceeds the
-~15500-line Helpers.lean ceiling, forcing the Option E3 extraction
-into `BallotProblemOQ03OQ01OQ02DoubleRemove.lean` to land first.
-
-**Risk.**  Medium-high.  S57.7a's algebraic restatement is the
-crux; the `+1` discrepancy must factor cleanly through the
-divisor-mismatch.  Recommend an **analysis-only S57.7 spec session**
-next (Session 67) to derive S57.7a's exact algebraic form on the
-`(3,2)` and `(3,2,1)` test diagrams before any `.lean` edit.
+Session 67 refutes this: the off-spine sub-sum is `+1` on `(3,2)`
+(re-derivable from S66's own table) and `(3,2,1)`, and `+2` on
+`(4,2)`.  The +1 / +2 discrepancy is not absorbed by an off-spine
+δ_arm correction — it is cancelled by an equal-magnitude
+**negative** c'-column on-spine residual.  The correct unfiltered
+target is the actual `F_side_identity_aligned` lemma at
+Helpers.lean line 15670 (which, importantly, has no off-spine
+filter in its statement).
 
 ## Historical Next Action (S57.6, replanned by Session 66)
 
