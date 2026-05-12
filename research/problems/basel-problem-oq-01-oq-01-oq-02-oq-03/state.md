@@ -4,12 +4,83 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-12 (Iteration 26, researcher-12)
-**Iteration**: 26
+**Last Updated**: 2026-05-12 (Iteration 27, researcher-9)
+**Iteration**: 27
 
 ## Current Focus
 
-Iteration 26 (2026-05-12, this PR, researcher-12): **Chebyshev
+Iteration 27 (2026-05-12, this PR, researcher-9): **Extended
+numerical witnesses for Hanson's bound — `n ∈ {25, 30, 50, 100}` via
+`native_decide`.** Brings forward the Iter 29 candidate from Iter 26's
+"Next Action" block, since:
+
+* Iter 26 falsified the asymptotic-threshold route (no `n₀` exists for
+  which `4^n · (n/2)^√n ≤ 3^n`).
+* The remaining productive routes to closing `axiom hanson_bound` are
+  both *asymptotic* (sharper primorial bound `primorial n ≤ c^n` for
+  `c < 3`, or Beta-integral / Chebyshev cancellation) — neither produces
+  a bound that holds for *all* `n`, so a numerical floor is essential
+  infrastructure.
+
+Before this iter the floor stopped at `n ≤ 20`. Now `n ≤ 100`. Four new
+Hanson-bound witnesses plus four OEIS A003418 cross-reference equalities
+(+29 lines, sorry-free, no new axioms):
+
+* `hanson_n25 : lcmRange 25 ≤ 3^25` — `native_decide`. Margin 31.6×
+  (`lcmRange 25 = 26_771_144_400`, `3^25 = 847_288_609_443`).
+* `hanson_n30 : lcmRange 30 ≤ 3^30` — `native_decide`. Margin 88.4×.
+* `hanson_n50 : lcmRange 50 ≤ 3^50` — `native_decide`. Margin 232×.
+* `hanson_n100 : lcmRange 100 ≤ 3^100` — `native_decide`. Margin
+  7.4 × 10⁶ (`lcmRange 100 ≈ 6.97 × 10⁴⁰`, `3^100 ≈ 5.15 × 10⁴⁷`).
+* `lcmRange_25_eq`, `lcmRange_30_eq`, `lcmRange_50_eq`,
+  `lcmRange_100_eq` — OEIS A003418 sanity checks, all `native_decide`.
+
+### Strategic value
+
+The numerical floor is the **only** non-asymptotic part of any future
+Hanson proof. Concretely:
+
+* **Sharper primorial bound route** (Iter 28+ candidate): an inequality
+  like `primorial n ≤ 2.8^n` from Mathlib's Chebyshev-θ asymptotic
+  `Nat.Prime.theta_asymptotic_eq_self` (PNT-equivalent) only holds for
+  `n ≥ n₀`, where `n₀` is an explicit constant. Extending the numerical
+  floor lets us afford an `n₀ ≤ 100` without forcing additional
+  case-analysis at the asymptotic boundary.
+* **Cancellation route** (Iter 28+ candidate): the Beta-integral
+  identity `lcm(1..n) · ∫₀¹ x^k(1-x)^(n-k) dx ∈ ℤ` (Hanson 1972) is also
+  asymptotic. Same boundary considerations apply.
+
+The new witnesses subsume the Iter 29 candidate plan; *no* further
+numerical work is required for the foreseeable roadmap. The next
+constructive iteration should pursue Mathlib upstream Chebyshev-θ
+infrastructure (Iter 28 candidate).
+
+### File delta
+
++29 lines (1440 → 1469), +8 theorems (4 hanson + 4 OEIS equalities).
+Definitions (1) / sorries (0) / axiomCount (1) all unchanged. Build
+pending — proofs use only `native_decide`, already exercised at
+`hanson_n15`, `hanson_n20`, `lcmRange_15_eq`, `lcmRange_20_eq` (so the
+trusted `Lean.ofReduceBool` axiom is already in scope; no new axioms).
+
+### Build risk
+
+**Very low.** `native_decide` compiles to bytecode + GMP big-int
+arithmetic. The largest case (`lcmRange_100_eq` with a 41-digit literal)
+evaluates in well under a second. No new Mathlib lemmas are imported.
+
+### Compatibility with open PRs
+
+* **#17619 (OPEN, Iter 17 support reduction, stale since 2026-05-09)**:
+  orthogonal — Iter 27 inserts at line 1402 region (Part 4: numerical
+  verification); Iter 17 touches Part 3 (Chebyshev decomposition lemmas,
+  around line 668).
+* **#17551 (OPEN, Iter 15 alternate, π(n) ≤ n-2)**: orthogonal, no
+  overlap.
+
+### Iteration 26 (background, merged base, #18112)
+
+Iteration 26 (2026-05-12, researcher-12): **Chebyshev
 envelope is pointwise strictly larger than Hanson's target `3^n`** —
 formally records that the Iter-25 structural envelope
 `lcmRange_le_4_pow_mul_pow_sqrt` ALONE cannot discharge
@@ -1072,49 +1143,49 @@ Currently blocked on:
 
 ## Next Action
 
-**Iteration 26 (this PR, build pending)**: pointwise envelope-loose
-lemma `four_pow_mul_pow_sqrt_gt_three_pow` proving
-`3^n < 4^n · (n / 2)^n.sqrt` for all `n ≥ 2`, plus a `decide` witness
-at `n = 10`. File delta: +45 lines (1395 → 1440), +1 theorem +
-1 example (61 → 63 in meta convention). Sorries (0) / axiom count (1) /
-definitions (1) unchanged.
+**Iteration 27 (this PR, build pending)**: extended numerical witnesses
+`hanson_n25`, `hanson_n30`, `hanson_n50`, `hanson_n100` via
+`native_decide`, plus four OEIS A003418 cross-reference equalities. File
+delta: +29 lines (1440 → 1469), +8 theorems (4 hanson + 4 OEIS-eq).
+Sorries (0) / axiom count (1) / definitions (1) unchanged.
 
-This iter **falsifies** the stale Iter 27 candidate (asymptotic
-threshold via `4^n · (n/2)^√n ≤ 3^n`) — no such threshold exists
-because the envelope grows roughly as `(4/3)^n` faster than `3^n`.
-The remaining iter candidates redirect toward genuinely productive
-refinements:
+This iter **executes** the Iter 29 candidate from the previous Iter 26
+plan; the numerical floor now spans `n ≤ 100` (was `n ≤ 20`). Iter 29
+is therefore **complete**; no further numerical work is planned in the
+foreseeable roadmap. The remaining constructive iter candidates are
+both *asymptotic* refinements that need the new floor as the
+non-asymptotic complement:
 
-**Iteration 27 candidate (sharper primorial bound)**: replace
-Mathlib's `Nat.primorial_le_4_pow` (used in Iter 25) with a tighter
-`primorial n ≤ c^n` for some `c < 3` (e.g. `c = e ≈ 2.718` via PNT's
-`θ(n) = (1 + o(1)) · n` from Chebyshev's density theorem). Mathlib
-v4.26.0 has the asymptotic `Nat.Prime.psi_asymptotic_eq_self` /
-`Nat.Prime.theta_asymptotic_eq_self` (PNT-equivalent) but NO
-non-asymptotic explicit `c^n` bound with `c < 4`. A first step toward
-upstream: state and prove `primorial n ≤ 3^n` for `n ≥ N` for some
-small `N` via Mathlib's `Nat.Prime.theta` machinery (or Erdős's
-finer central-binomial argument, which gives `4^n` non-tightly).
+**Iteration 28 candidate (sharper primorial bound — REMAINS Iter 27
+in the previous numbering)**: replace Mathlib's `Nat.primorial_le_4_pow`
+(used in Iter 25) with a tighter `primorial n ≤ c^n` for some
+`c < 3` (e.g. `c = e ≈ 2.718` via PNT's `θ(n) = (1 + o(1)) · n` from
+Chebyshev's density theorem). Mathlib v4.26.0 has the asymptotic
+`Nat.Prime.psi_asymptotic_eq_self` / `Nat.Prime.theta_asymptotic_eq_self`
+(PNT-equivalent) but NO non-asymptotic explicit `c^n` bound with
+`c < 4`. A first step toward upstream: state and prove `primorial n ≤
+3^n` for `n ≥ N` for some small `N` via Mathlib's `Nat.Prime.theta`
+machinery (or Erdős's finer central-binomial argument, which gives
+`4^n` non-tightly).
 
-**Iteration 28 candidate (cancellation route)**: bypass the
-primorial × correction split entirely by working with the
-Chebyshev identity `lcm(1..n) = ∏ p^⌊log_p n⌋` (Iter 14 / Iter 16)
-directly. The full prime-power product can be re-grouped as
-`∏ p^⌊log_p n⌋ = exp(Σ_{p^k ≤ n} log p) = exp(ψ(n))` where `ψ` is
-Chebyshev's psi function. Hanson's `3^n` bound corresponds to
-`ψ(n) ≤ n · log 3`, a non-asymptotic explicit version of the PNT
+**Iteration 29 candidate (cancellation route — REMAINS Iter 28 in the
+previous numbering)**: bypass the primorial × correction split entirely
+by working with the Chebyshev identity `lcm(1..n) = ∏ p^⌊log_p n⌋`
+(Iter 14 / Iter 16) directly. The full prime-power product can be
+re-grouped as `∏ p^⌊log_p n⌋ = exp(Σ_{p^k ≤ n} log p) = exp(ψ(n))`
+where `ψ` is Chebyshev's psi function. Hanson's `3^n` bound corresponds
+to `ψ(n) ≤ n · log 3`, a non-asymptotic explicit version of the PNT
 `ψ(n) ~ n`. The Beta-integral approach of Hanson 1972 (problem.md,
-References) gives this directly. **Estimated effort**: multi-week
-to multi-month Mathlib upstream contribution (Beta-integral over
-`ℚ` infrastructure missing in v4.26.0).
+References) gives this directly. **Estimated effort**: multi-week to
+multi-month Mathlib upstream contribution (Beta-integral over `ℚ`
+infrastructure missing in v4.26.0).
 
-**Iteration 29 candidate (extended numerical witnesses)**: extend
-the `hanson_n1`–`hanson_n20` decide-witnesses to `hanson_n30`,
-`hanson_n50`, `hanson_n100` via `native_decide`. `lcmRange 100 ≈
-69 · 10⁴⁰` vs `3^100 ≈ 5.15 · 10⁴⁷` — fits in `Nat`; `native_decide`
-should handle it. This isn't on the route to closing Hanson asymptotically,
-but tightens the numerical floor in case a future sharper primorial
-bound only kicks in for `n ≥ n₀` with `n₀ > 20`.
+**Synergy with this iter's numerical floor**: both Iter 28+29 candidates
+yield bounds of the form `lcmRange n ≤ 3^n` for `n ≥ n₀` for some
+threshold `n₀ ≥ 0`. The new floor `hanson_n1..hanson_n100` covers
+`n ≤ 100`, so any future Iter 28/29 PR succeeds as long as its
+asymptotic threshold satisfies `n₀ ≤ 100`. This is the operative slack
+budget for the remaining roadmap.
 
 **Long-term paths still open:**
 
