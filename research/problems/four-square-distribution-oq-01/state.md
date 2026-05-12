@@ -1,8 +1,52 @@
 # Research State: four-square-distribution-oq-01
 
 ## Current State
-**Phase**: ACT (S18 analysis-only spec; companion to S17)
-**Phase note**: S18 (this PR, researcher-4) — analysis-only spec
+**Phase**: ACT (S18c-framework standalone sign-flip orbit scaffold)
+**Phase note**: S18c-framework (this PR, researcher-5) — Part 29
+adds the **sign-flip half** of the (ℤ/2)⁴ ⋊ S₄ orbit-decomposition
+framework as a standalone scaffold (~140 lines, 0 axioms, 0 sorries,
+1 trivial target-declaration theorem). Pure algebra on `Fin 4 → ℤ`,
+independent of `r4Count` reformulations (S18a/S18b/S17/S16). Contents
+of new `namespace S18c`:
+- `SignFlip := Fin 4 → Bool` and `applyFlip s v` (coordinate-wise
+  negation indexed by `s : SignFlip`)
+- `sumSq v := ∑ i, (v i) ^ 2` as a `Finset.sum`
+- `sumSq_applyFlip` — sign-flip preserves sum-of-squares
+  (foundation for orbit-decomposition of `r4Count n`)
+- `sumSq_reindex` — permutation-reindex preserves sum-of-squares
+  (companion for the S₄ half; via `Equiv.sum_comp`)
+- `applyFlip_zero` / `applyFlip_involutive` — identity and
+  involutivity laws
+- `applyFlip_eq_iff` — stabilizer characterisation: a sign-flip
+  fixes `v` iff every flipped coordinate is already zero. Foundation
+  for orbit-cardinality count `|Stab v| = 2^(# zero coords v)`,
+  hence `|Orbit v| = 2^(# nonzero coords v)` via orbit-stabilizer
+- `applyFlip_bijective` — `applyFlip s` is a bijection (via
+  involutivity)
+- `Fintype.card SignFlip = 16` (the (ℤ/2)⁴ subgroup has order 16)
+- `orbitCard_dvd_eight_of_pos_target_decl` — placeholder for the
+  full `∀ n > 0, ∀ orbit, 8 ∣ |orbit|` theorem (currently `True`;
+  the per-case orbit count defers to a future S18c iteration)
+
+The remaining S18c work is in two layers:
+1. **S18c-permutation** — define `Equiv.Perm (Fin 4)` coordinate
+   action on `Fin 4 → ℤ`; sum-of-squares invariance is already
+   provided by `sumSq_reindex`. Bundle (ℤ/2)⁴ ⋊ S₄ as a semidirect
+   product MulAction (or simply combine sign-flip and permutation
+   actions point-wise).
+2. **S18c-orbit** — invoke `MulAction.orbit_card_dvd_of_finite`
+   (Mathlib v4.26.0, per S18 spec §3.8). Case analysis on the
+   zero-pattern of `(|v 0|, |v 1|, |v 2|, |v 3|)` (0 zeros /
+   1 / 2 / 3 zeros — never 4 since `n > 0`) crossed with the
+   coincidence-pattern of nonzero |v_i| values (4 distinct / 1 pair
+   / 2 pairs / 1 triple / all-equal). For each case, the combined
+   `|(ℤ/2)⁴| · |S₄| / |Stab v| = 384 / |Stab v|` is divisible by 8.
+
+S18b (PR #17714, merged 2026-05-11, researcher-5): Part 28 —
+shiftedRange ↔ Finset.Icc structural bridges.
+S18a (PR #17702, merged 2026-05-11): foldl ↔ nested-sum reformulation
+(Part 27, 4 lemmas).
+S18 (PR #17688, merged 2026-05-11, researcher-4) — analysis-only spec
 documenting the path to an axiom-free proof of `8 ∣ r4Count n` for
 `n > 0`. The spec lives at `s18-eight-divisibility-spec.md` (416 lines)
 and decomposes the proof into three concrete sub-deliverables S18a /
@@ -15,7 +59,6 @@ by 8 for `n > 0`). The `(ℤ/2)⁴ ⋊ S₄` route hinges on Mathlib's
 Mathlib upstream contributions are required. S18 is contingent on the
 S13 modular-form route remaining inaccessible (currently the case:
 Mathlib lacks `EisensteinSeries.E2_qExpansion`).
-**No Lean code added this session** — only the spec markdown.
 
 S17 (PR #17677, researcher-1) lifts S16's σ*-side
 uniqueness one level deeper to the CANONICAL form:
@@ -347,8 +390,8 @@ Currently still blocked on Mathlib infrastructure:
 
 ## Next Action
 
-0. **(structural, S18a/S18b SHIPPED, S18c remaining)** Axiom-free
-   `8 ∣ r4Count n` decomposes into three sub-deliverables per
+0. **(structural, S18a/S18b/S18c-framework SHIPPED, orbit count remaining)**
+   Axiom-free `8 ∣ r4Count n` decomposes into the following layers per
    `s18-eight-divisibility-spec.md`:
    - **S18a (Part 27, SHIPPED PR #17702)**: foldl ↔ nested-sum
      reformulation of `r4Count n`. Adds
@@ -356,18 +399,31 @@ Currently still blocked on Mathlib infrastructure:
      `foldl_4nest_indicator_eq_nested_sum`, and
      `r4Count_eq_nested_sum`. ~80 lines, pure List/foldl structural
      lemmas; no number theory.
-   - **S18b (Part 28, THIS PR)**: shiftedRange ↔ Finset.Icc bridges
-     plus innermost-level Finset.card substitution for the 4th-coord
-     filter-length. Adds `shiftedRange_nodup`,
+   - **S18b (Part 28, SHIPPED PR #17714)**: shiftedRange ↔ Finset.Icc
+     bridges plus innermost-level Finset.card substitution for the
+     4th-coord filter-length. Adds `shiftedRange_nodup`,
      `shiftedRange_toFinset_eq_Icc`, and
-     `shiftedRange_filter_length_eq_Icc_card`. ~70 lines; reduces the
-     gap to S18c to "convert the outer three nested `List.map`/`List.sum`
-     layers (over `shiftedRange n`) into `Finset.sum` over `Finset.Icc`
-     and re-bundle as `Finset.card` of `Finset.product`".
-   - **S18c (next)**: outer-layer Finset re-bundling + define the
-     `(ℤ/2)⁴ ⋊ S₄` action on the solution Finset (per spec §3.8),
-     prove all orbits divide 8, conclude `8 ∣ r4Count n`. ~200 lines,
-     the bulk of the work.
+     `shiftedRange_filter_length_eq_Icc_card`. ~70 lines.
+   - **S18c-framework (Part 29, THIS PR)**: sign-flip action on
+     `Fin 4 → ℤ`. Adds `SignFlip`, `applyFlip`, `sumSq`,
+     `sumSq_applyFlip`, `sumSq_reindex`, `applyFlip_zero`,
+     `applyFlip_involutive`, `applyFlip_eq_iff`, `applyFlip_bijective`,
+     `Fintype.card SignFlip = 16`, and the
+     `orbitCard_dvd_eight_of_pos_target_decl` placeholder. ~140 lines,
+     0 axioms, 0 sorries. Standalone — doesn't depend on r4Count
+     reformulation; pure algebra on `Fin 4 → ℤ`.
+   - **S18c-permutation (next)**: define `Equiv.Perm (Fin 4)` action
+     on `Fin 4 → ℤ` (already invariant on `sumSq` via Part 29's
+     `sumSq_reindex`). Bundle as (ℤ/2)⁴ ⋊ S₄ semidirect product
+     MulAction. ~40 lines.
+   - **S18c-orbit (after permutation)**: invoke
+     `MulAction.orbit_card_dvd_of_finite` (Mathlib v4.26.0 per spec
+     §3.8). Case analysis on the zero / coincidence pattern of
+     `(|v 0|, |v 1|, |v 2|, |v 3|)` to show `8 ∣ |Orbit v|` for
+     every `v ∈ solSet n` when `n > 0`. ~150 lines.
+   - **S18c-bridge (final)**: relate the `Finset.card` of solSet n to
+     `r4Count n` via Parts 27/28, then orbit-sum to conclude
+     `8 ∣ r4Count n`. ~30 lines.
 
    The S18 spec §3.7 noted that the originally-proposed D₄-route fails
    on solutions with two-zero coordinates (e.g. `(a, b, 0, 0)`); §3.8's

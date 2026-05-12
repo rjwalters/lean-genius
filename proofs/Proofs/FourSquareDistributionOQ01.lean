@@ -2416,4 +2416,145 @@ private lemma shiftedRange_filter_length_eq_Icc_card (n : ℕ)
   simp only [List.mem_toFinset, List.mem_filter, Finset.mem_filter,
     decide_eq_true_eq, ← shiftedRange_toFinset_eq_Icc]
 
+-- =====================================================================
+-- PART 29 (S18c-FRAMEWORK): sign-flip action on (Fin 4 → ℤ)
+-- =====================================================================
+-- Standalone scaffold for the (ℤ/2)⁴ ⋊ S₄ orbit-decomposition route to
+-- axiom-free `8 ∣ r4Count n`. Per the S18 spec
+-- (`research/problems/four-square-distribution-oq-01/s18-eight-divisibility-spec.md`
+-- §3.8), the 384-element group (ℤ/2)⁴ ⋊ S₄ acts on integer 4-tuples by
+-- coordinate sign-flips and permutations, preserving `a^2 + b^2 + c^2 + d^2`.
+--
+-- This part adds the sign-flip half of the framework — pure algebra on
+-- `Fin 4 → ℤ`, independent of `r4Count` reformulations (S18a/S18b/S17/S16):
+--
+--   1. `applyFlip` — coordinate-wise negation indexed by `Fin 4 → Bool`
+--   2. `sumSq`     — sum-of-squares as a `Finset.sum`
+--   3. `sumSq_applyFlip` — sign-flip preserves `sumSq`
+--   4. `sumSq_reindex`   — permutation-reindex preserves `sumSq`
+--   5. `applyFlip_zero` / `applyFlip_involutive` — group-action laws
+--      (identity, involutivity)
+--   6. `applyFlip_eq_iff` — stabilizer characterisation
+--      (sign-flip fixes `v` iff every flipped coordinate is zero)
+--   7. `applyFlip_bijective` — `applyFlip s` is a bijection on `Fin 4 → ℤ`
+--
+-- The full orbit-cardinality argument (`orbitCard_dvd_eight_of_pos`)
+-- defers to the next S18c iteration; the per-case orbit count requires
+-- the S₄ action and case analysis on the zero/coincidence pattern of
+-- `(|v 0|, |v 1|, |v 2|, |v 3|)`.
+
+namespace S18c
+
+/-- Sign-flip parameter: a Bool for each of the 4 coordinates.
+    Identified with the (ℤ/2)⁴ group element `s = (s_0, s_1, s_2, s_3)`. -/
+abbrev SignFlip : Type := Fin 4 → Bool
+
+/-- Apply a sign-flip to a 4-tuple `v : Fin 4 → ℤ`: negate the
+    `i`-th coordinate iff `s i = true`. -/
+def applyFlip (s : SignFlip) (v : Fin 4 → ℤ) : Fin 4 → ℤ :=
+  fun i => if s i = true then -(v i) else v i
+
+/-- Sum-of-squares of a 4-tuple, as a `Finset.sum` over `Fin 4`. -/
+def sumSq (v : Fin 4 → ℤ) : ℤ := ∑ i, (v i) ^ 2
+
+/-- The identity sign-flip (all-`false`) leaves every tuple fixed. -/
+@[simp] lemma applyFlip_zero (v : Fin 4 → ℤ) :
+    applyFlip (fun _ => false) v = v := by
+  funext i
+  unfold applyFlip
+  simp
+
+/-- Sign-flips are involutions: flipping twice returns the original tuple. -/
+@[simp] lemma applyFlip_involutive (s : SignFlip) (v : Fin 4 → ℤ) :
+    applyFlip s (applyFlip s v) = v := by
+  funext i
+  unfold applyFlip
+  by_cases hi : s i = true
+  · rw [if_pos hi, if_pos hi, neg_neg]
+  · rw [if_neg hi, if_neg hi]
+
+/-- **Key invariance:** sign-flips preserve sum-of-squares.
+
+    Foundation for the orbit-decomposition argument: since every
+    `s ∈ (ℤ/2)⁴` carries the four-square solution set to itself,
+    `r4Count n` decomposes into a sum over orbits. -/
+@[simp] lemma sumSq_applyFlip (s : SignFlip) (v : Fin 4 → ℤ) :
+    sumSq (applyFlip s v) = sumSq v := by
+  unfold sumSq applyFlip
+  refine Finset.sum_congr rfl (fun i _ => ?_)
+  by_cases hi : s i = true
+  · rw [if_pos hi]; ring
+  · rw [if_neg hi]
+
+/-- A sign-flip `s` lies in the **stabilizer** of `v` iff every
+    coordinate flagged by `s` is already zero.
+
+    Used to count stabilizer cardinality: |Stab v| = 2^(# zero coords). -/
+lemma applyFlip_eq_iff (s : SignFlip) (v : Fin 4 → ℤ) :
+    applyFlip s v = v ↔ ∀ i, s i = true → v i = 0 := by
+  constructor
+  · intro h i hsi
+    have hi := congrFun h i
+    unfold applyFlip at hi
+    rw [if_pos hsi] at hi
+    omega
+  · intro h
+    funext i
+    unfold applyFlip
+    by_cases hsi : s i = true
+    · rw [if_pos hsi, h i hsi]; ring
+    · rw [if_neg hsi]
+
+/-- Sign-flip action is a bijection on `Fin 4 → ℤ`, with itself as inverse
+    (by involutivity). -/
+lemma applyFlip_bijective (s : SignFlip) :
+    Function.Bijective (applyFlip s) := by
+  refine ⟨?_, ?_⟩
+  · intro v w h
+    have := congrArg (applyFlip s) h
+    rwa [applyFlip_involutive, applyFlip_involutive] at this
+  · intro w
+    exact ⟨applyFlip s w, applyFlip_involutive s w⟩
+
+/-- The sign-flip type `SignFlip = Fin 4 → Bool` has cardinality 16
+    (i.e. the (ℤ/2)⁴ subgroup has order 16). -/
+example : Fintype.card SignFlip = 16 := by
+  simp [SignFlip, Fintype.card_fun, Fintype.card_bool, Fintype.card_fin]
+
+/-- **Permutation-reindex invariance:** sum-of-squares is invariant
+    under any reindexing of `Fin 4`.
+
+    Companion to `sumSq_applyFlip`: combined with sign-flip invariance,
+    these give the full (ℤ/2)⁴ ⋊ S₄ invariance of `sumSq`. -/
+lemma sumSq_reindex (σ : Equiv.Perm (Fin 4)) (v : Fin 4 → ℤ) :
+    sumSq (v ∘ σ) = sumSq v := by
+  show ∑ i, ((v ∘ σ) i) ^ 2 = ∑ i, (v i) ^ 2
+  simp only [Function.comp_apply]
+  exact Equiv.sum_comp σ (fun i => (v i) ^ 2)
+
+/-- **(S18c-orbit, TARGET DECLARATION, deferred)** Every orbit of the
+    (ℤ/2)⁴ ⋊ S₄ action on the four-square solution set has cardinality
+    divisible by 8 when `n > 0`.
+
+    Decomposition strategy:
+    - Sign-flip subgroup (ℤ/2)⁴ contributes a factor `2^(# nonzero coords)`
+      to each orbit (by `applyFlip_eq_iff`, the sign-flip stabilizer of
+      `v` has exactly `2^(# zero coords v)` elements).
+    - Coordinate-permutation subgroup S₄ contributes a factor that
+      counts orderings of the multiset `{|v 0|, |v 1|, |v 2|, |v 3|}`.
+    - Case analysis on the zero/coincidence pattern of
+      `(|v 0|, |v 1|, |v 2|, |v 3|)` shows the combined factor is always
+      divisible by 8 for `n > 0` (no all-zero tuple, since `0 ≠ n`).
+
+    Spec: `s18-eight-divisibility-spec.md` §3.8.
+    Status: framework above provides sumSq-invariance under sign-flips
+    (`sumSq_applyFlip`) and permutations (`sumSq_reindex`), plus the
+    stabilizer characterisation (`applyFlip_eq_iff`). The per-case
+    orbit-cardinality argument defers to a future S18c iteration. -/
+theorem orbitCard_dvd_eight_of_pos_target_decl :
+    ∀ n : ℕ, n > 0 → True := by
+  intro _ _; trivial
+
+end S18c
+
 end FourSquareDistributionOQ01
