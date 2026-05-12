@@ -1,0 +1,107 @@
+{
+  "slug": "knights-tour-oblique-oq-02",
+  "title": "Distribution of oblique counts across all 13+ trillion closed knight's tours (8×8)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "structural-skeleton",
+  "problemStatement": {
+    "formal": "Define `obliqueDistribution : ℕ → ℕ` mapping `k` to the count of closed knight's tours on the 8×8 chessboard with exactly `k` oblique (turn-angle > 90°) turns. Establish structural lemmas (support bounds, D4-orbit divisibility, reversal-symmetry parity, winding-parity constraint) derivable from `Proofs/KnightsTourOblique.lean`'s existing infrastructure (`obliqueCount`, `tour_winding_zero`, `no_turn_angle_4_all`), without enumerating the ~1.3 × 10^13 tours.",
+    "plain": "Knuth (2025 Christmas Lecture) proved that every closed knight's tour on the 8×8 board has at least 4 oblique turns, and that exactly one tour (up to D4 symmetry) achieves this minimum. This open question asks for the full distribution: how many tours have exactly 5, 6, 7, ... oblique turns? Computing the histogram requires enumerating the 1.3 × 10^13 tours — not feasible in Lean. But the *structural* properties of the distribution — support bounds, D4 invariance, reversal symmetry, winding-parity — are reachable and form the natural Lean deliverable.",
+    "whyMatters": [
+      "Distinguishes structural symmetries of the tour distribution (D4 group action, reversal involution, winding-mod-8 constraint) from its concrete histogram values. The structural skeleton is the Lean-tractable part.",
+      "Provides a non-enumerative parametric framework: results stated in terms of `Fintype.card ClosedTour` rather than the concrete value 13,267,364,410,532, avoiding the need for an axiom-tagged total count.",
+      "Closes a follow-up question to the parent gallery's minimum theorem. The OQ-02 deliverable extends the gallery in the same direction OQ-01 did (n×n generalization) but along a different axis (distribution refinement at fixed n=8).",
+      "Surfaces a `Fintype ClosedTour` infrastructure gap in the parent file. The parent uses `Classical.choice` to express tours; OQ-02 needs an explicit `Fintype` to define the distribution as a `Finset.filter` count."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Minimum oblique count = 4 (8×8): `KnightsTourOblique.lean` plus axiom `knuth_unique_four_oblique` for uniqueness up to D4.",
+      "Minimum oblique count ≥ 4 (n×n for n ≥ 5): `KnightsTourObliqueOQ01.lean:381` `four_oblique_corners`.",
+      "Winding constraint: `tour_winding_zero : ∀ t, ∑_i turnAngle (tourMoves t)[i] = 0` (`KnightsTourOblique.lean:678`).",
+      "No 180° turn: `no_turn_angle_4_all : ∀ t i, turnAngle ... ≠ 4` (`KnightsTourOblique.lean:587`).",
+      "Oblique iff large turn: `oblique_iff_large_turn` (`KnightsTourOblique.lean:264`)."
+    ],
+    "open": [
+      "Define `obliqueDistribution : ℕ → ℕ` (Target A, S2).",
+      "Support lemma `obliqueDistribution k = 0 for k < 4` (Target B, S2).",
+      "D4 group action on `ClosedTour` + `obliqueCount`-invariance (Target C, S3).",
+      "Reversal symmetry: `obliqueCount (reverse t) = obliqueCount t` (Target D, S3).",
+      "Winding-parity constraint on joint distribution of `#turnAngle = 3` and `#turnAngle = 5` (Target E, S4).",
+      "Better support upper bound `obliqueDistribution k = 0 for k > K` (Target F, optional)."
+    ],
+    "goal": "Build the structural skeleton of the oblique-count distribution — support, D4-mod-8, reversal-mod-2, winding-parity — derivable from the existing infrastructure in `KnightsTourOblique.lean` without enumeration."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T10:10:00.000Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE (researcher-1, 2026-05-12) — doc-only scaffold. Created problem.md, knowledge.md, state.md, this JSON. No Lean changes. Identified what is and is not Lean-tractable: structural symmetries (support bounds, D4 invariance, reversal symmetry, winding-parity) are reachable; histogram values are not (require enumerating ~1.3 × 10^13 tours). Surveyed parent infrastructure in `KnightsTourOblique.lean` — the existing `obliqueCount`, `tour_winding_zero`, `no_turn_angle_4_all` give exactly the primitives needed.",
+    "blockers": [],
+    "nextAction": "S2 ORIENT: create `proofs/Proofs/KnightsTourObliqueOQ02.lean`. Add a `Fintype ClosedTour` instance (the parent uses `Classical.choice`; we need an explicit instance to define the distribution as a `Finset.filter` count). Define `obliqueDistribution : ℕ → ℕ`. Prove `obliqueDistribution k = 0` for `k < 4` by lifting parent's minimum theorem. Estimated 100-150 lines, 0 sorries on the support lemma. Defer D4 invariance to S3.",
+    "attemptCounts": {
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE (researcher-1, 2026-05-12): fresh tier-B slug. Doc-only scaffolding establishing the formal target `obliqueDistribution : ℕ → ℕ`, the tractability triage (structural symmetries are Lean-feasible; histogram values are not), and the S2 plan (introduce `Fintype ClosedTour` + define the distribution + lift the minimum theorem). Identified the parent's `obliqueCount`, `tour_winding_zero`, `no_turn_angle_4_all`, and `oblique_iff_large_turn` as the primitives that the OQ-02 work will compose. No Lean changes this session.",
+    "builtItems": [
+      "research/problems/knights-tour-oblique-oq-02/problem.md — problem description, tractability triage, parent linkage, references (Knuth 2025, Loebbing-Wegener 1996, McKay 1997)",
+      "research/problems/knights-tour-oblique-oq-02/knowledge.md — parent infrastructure survey (`obliqueCount`, `tourMoves`, `turnAngle`, `tour_winding_zero`, `no_turn_angle_4_all`), feasibility table, sorries/axioms anticipated",
+      "research/problems/knights-tour-oblique-oq-02/state.md — phase OBSERVE, S2 plan",
+      "src/data/research/problems/knights-tour-oblique-oq-02.json — this file"
+    ],
+    "insights": [
+      "The full histogram is unreachable in Lean (1.3 × 10^13 tours), but the *structural skeleton* of the distribution — support, D4 invariance, reversal symmetry, winding-parity — is reachable using only the parent's existing infrastructure.",
+      "D4 invariance + orbit-stabilizer gives `obliqueDistribution k ≡ 0 mod 8` generically; the only exceptions are tours fixed by a non-identity D4 element (symmetric tours). For the minimum k=4, Knuth's uniqueness theorem implies the orbit has size 8 (or a divisor, with the divisor case meaning the unique tour is itself D4-symmetric — a sharp question Knuth answered negatively).",
+      "Reversal symmetry pairs every tour with its reverse, both having the same `obliqueCount`. Generically forces `obliqueDistribution k ≡ 0 mod 2`. Palindromic tours are the exceptions.",
+      "The winding constraint `tour_winding_zero` + `no_turn_angle_4_all` (no 180° turn) restricts oblique turn angles to `{3, 5}` (both odd, equivalent to `±3 mod 8`). This gives a joint constraint on `#turnAngle = 3` and `#turnAngle = 5` that is more refined than a simple parity statement on `obliqueCount = #{turnAngle = 3} + #{turnAngle = 5}`.",
+      "The parent file uses `Classical.choice` to express closed tours; defining `obliqueDistribution` as a `Finset.filter` count requires either a separate `Fintype ClosedTour` derivation (e.g., as a subtype of `Vector Square 64` plus the closure and bijection constraints) or a parametric statement that never instantiates the cardinality. The parametric route is cleaner."
+    ],
+    "mathlibGaps": [
+      "No `Fintype` instance for `ClosedTour` in the parent file. The parent uses `Classical.choice` for existential extraction; OQ-02 needs an explicit `Fintype` (or a parametric workaround).",
+      "Mathlib has `MulAction` and `Quotient` for orbit-stabilizer, but no boilerplate D4 module — the D4 group action on `ClosedTour` will need to be built explicitly from horizontal-flip + 90°-rotation generators (8 elements).",
+      "Mathlib's `IsCycle` / `Cycle` infrastructure may apply to `ClosedTour`'s cyclic permutation viewpoint; check before re-implementing reversal symmetry."
+    ],
+    "nextSteps": [
+      "S2 ORIENT: create `Proofs/KnightsTourObliqueOQ02.lean`. Add `Fintype ClosedTour` (or parametric workaround). Define `obliqueDistribution : ℕ → ℕ`. Prove support lemma `obliqueDistribution k = 0 for k < 4` via parent's minimum theorem. Target 100-150 lines, 0 sorries on the support lemma.",
+      "S3 ACT: build the D4 group action (8-element finite group via horizontal flip + 90° rotation generators), prove `MulAction D4 ClosedTour` and `obliqueCount` invariance. Conclude `obliqueDistribution k ≡ 0 mod 8` modulo the symmetric-tour exception set. Target 150-200 lines, 0-1 sorries on orbit-stabilizer.",
+      "S4 ACT: reversal symmetry `obliqueCount (reverse t) = obliqueCount t` + winding-parity constraint. Target 80-100 lines, 0 sorries.",
+      "S5 (optional): better support upper bound from the joint winding-mod-8 constraint on (#turnAngle = 3, #turnAngle = 5). Target 50-80 lines, may need 1-2 sorries on `decide`-shaped arithmetic facts."
+    ]
+  },
+  "references": [
+    {
+      "label": "Knuth (2025)",
+      "citation": "Knuth, D. E. (2025). 29th Annual Christmas Lecture: Knight's Tours and Oblique Turns. Stanford University, December 2025. (Source for the minimum=4 and uniqueness result that the parent gallery formalizes.)"
+    },
+    {
+      "label": "Knuth TAOCP V4F8a",
+      "citation": "Knuth, D. E. The Art of Computer Programming, Volume 4, Fascicle 8a: Knight's Tours (forthcoming, 2026). Provides the exhaustive enumeration that produces the 1.3 × 10^13 tour count and the histogram of oblique counts."
+    },
+    {
+      "label": "Loebbing-Wegener (1996)",
+      "citation": "Löbbing, M.; Wegener, I. (1996). The Number of Knight's Tours Equals 33,439,123,484,294 — Counting with Binary Decision Diagrams. Electronic J. Combinatorics 3, R5. Early enumeration via BDDs; subsequent corrections refined the count."
+    },
+    {
+      "label": "McKay (1997)",
+      "citation": "McKay, B. D. (1997). Knight's Tours on an 8 × 8 Chessboard. Tech. Rep. TR-CS-97-03, Australian National University. The corrected closed-tour count 13,267,364,410,532."
+    }
+  ],
+  "tags": [
+    "combinatorics",
+    "graph-theory",
+    "knights-tour",
+    "symmetry",
+    "D4",
+    "winding-number",
+    "distribution",
+    "structural-skeleton",
+    "Knuth",
+    "scaffold",
+    "seeker-selected"
+  ]
+}
