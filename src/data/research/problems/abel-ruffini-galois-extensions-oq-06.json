@@ -1,7 +1,7 @@
 {
   "slug": "abel-ruffini-galois-extensions-oq-06",
   "title": "Primitive solvable permutation groups of prime degree: Galois's AGL(1,p) classification",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "forward-direction",
@@ -35,16 +35,16 @@
     "goal": "First Lean formalization of AGL(1, p) as a primitive solvable permutation group of prime degree, with Galois's structure theorem stating these are the only primitive solvable groups of prime degree. Forward direction is gallery-ready; Galois direction may warrant a sub-OQ for the structure theorem."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T11:55:00.000Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE (researcher-8, 2026-05-12) — doc-only scaffold. Created problem.md, knowledge.md, state.md, this JSON. No Lean changes. Identified what is and is not Lean-tractable: forward direction (define AGL, prove solvability + faithfulness + primitivity) is feasible in 3-4 sessions using Mathlib's SemidirectProduct, IsSolvable, MulAction.IsPrimitive; Galois direction (every primitive solvable subgroup of S_p embeds into AGL) requires substantial new Mathlib infrastructure for primitive-permutation-group structure theorems (~300-500 lines) and may warrant splitting into a sub-OQ. Surveyed parent's qualitative threshold theorem (parent S_n solvable iff n ≤ 4) and sibling OQ-04 / OQ-07 patterns (Jordan-Hölder typeclass instantiation, Sylow reductions).",
+    "phase": "ACT",
+    "since": "2026-05-12T16:30:00.000Z",
+    "iteration": 2,
+    "focus": "S2 ACT (researcher-10, 2026-05-12) — created proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean (~165 lines): structure AGL1Z (trans : ZMod p, scale : (ZMod p)ˣ), explicit Group instance (mul/one/inv axioms proved by `ext` + `simp` + `ring`), order theorem `card_eq : Fintype.card (AGL1Z p) = p * (p - 1)` and Nat.card restatement, both axiom-free. Two S3 stubs (sorried): `AGL1Z_isSolvable`, `AGL1Z_faithful_action`. Chose explicit structure over Mathlib SemidirectProduct because Mathlib's `MulAut (ZMod p)` would refer to the ring multiplication, not the additive automorphisms we need — using `Multiplicative (ZMod p)` would work but adds typeclass noise.",
     "blockers": [],
-    "nextAction": "S2 ORIENT: create proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean. Define affineHom : (ZMod p)ˣ →* MulAut (ZMod p) (multiplication action of units on the additive group), then AGL1Z (p : ℕ) [Fact p.Prime] := SemidirectProduct (ZMod p) (ZMod p)ˣ (affineHom p). Prove Nat.card (AGL1Z p) = p * (p - 1) via Nat.card_semidirectProduct (or unroll if needed). Define the natural action AGL1Z p →* Equiv.Perm (ZMod p). Estimated 80 lines, 0 sorries on definitions and order calculation, 2 sorries on solvability / faithfulness stubs (deferred to S3). Verify Mathlib's SemidirectProduct surface at v4.26.0 before committing to the construction; have a fallback explicit-prod definition ready if SemidirectProduct's API has drifted.",
+    "nextAction": "S3 — discharge the two sorries: (a) `AGL1Z_isSolvable` via the derived series argument (commutator of two affine maps is a pure translation, then commutator of two translations is the identity, so derived length is 2); (b) `AGL1Z_faithful_action` by constructing the action map `(a, u) ↦ (x ↦ a + u·x)` as a Perm via explicit inverse `(y ↦ u⁻¹·(y - a))`, then proving injectivity via `(a, u) ∈ ker ↔ a = 0 ∧ u = 1`. Estimated S3 size: ~100 lines.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
