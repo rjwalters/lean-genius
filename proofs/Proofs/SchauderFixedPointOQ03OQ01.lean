@@ -72,6 +72,43 @@ def IsUpperHemicontinuous {X Y : Type*} [TopologicalSpace X]
     [TopologicalSpace Y] (F : SetValuedMap X Y) : Prop :=
   ∀ V : Set Y, IsOpen V → IsOpen {x | F x ⊆ V}
 
+/-- **S17 scaffold helper for `approx_selection_exists` (Cellina–Browder
+    Step 1):** For any upper-hemicontinuous set-valued map `F : X → 2^Y`
+    with `Y` a pseudo-metric space, at every basepoint `x₀ : X` and every
+    `ε > 0` there is an open neighborhood `U ∋ x₀` on which `F` is contained
+    in the `ε`-thickening of `F(x₀)`.
+
+    This unpacks the abstract UHC definition (`{x | F x ⊆ V}` open for
+    every open `V`) into the metric form used in the cover-by-thickening
+    step of the PartitionOfUnity proof outlined in the
+    `approx_selection_exists` docstring (Axiom 2 below). It introduces no
+    new axioms and no new definitions; the proof is a one-line application
+    of UHC at `V = Metric.thickening ε (F x₀)` together with the standard
+    `Metric.self_subset_thickening`. Building this scaffold helper up
+    front lets the eventual S12+ Cellina–Browder construction reuse a
+    typechecked Step-1 lemma instead of re-deriving it inline.
+
+    **Cellina–Browder construction outline** (for reference; Steps 2–5
+    are the unrealized S12+ work):
+
+    1. ✓ (this lemma) — for each `x ∈ S`, pick `y_x ∈ F(x)` and obtain an
+       open `U_x ∋ x` with `F(U_x) ⊆ ε`-thickening of `F(x)`.
+    2. Compactness extracts a finite subcover `U_{x_1}, …, U_{x_k}`.
+    3. Subordinate partition of unity `{φ_i}` with `supp φ_i ⊆ U_{x_i}`.
+    4. Define `f(x) := Σ φ_i(x) · y_{x_i}`. Convexity of `S` gives `f x ∈ S`.
+    5. Graph bound: at any `x`, pick `i` with `φ_i(x) > 0`; then
+       `x ∈ U_{x_i}` and `(x_i, y_{x_i})` witnesses graph-distance `< ε`. -/
+lemma uhc_local_thickening {X Y : Type*} [TopologicalSpace X]
+    [PseudoMetricSpace Y]
+    {F : SetValuedMap X Y} (hF : IsUpperHemicontinuous F)
+    (x₀ : X) (ε : ℝ) (hε : 0 < ε) :
+    ∃ U : Set X, IsOpen U ∧ x₀ ∈ U ∧
+      ∀ x ∈ U, F x ⊆ Metric.thickening ε (F x₀) := by
+  refine ⟨{x | F x ⊆ Metric.thickening ε (F x₀)},
+          hF _ Metric.isOpen_thickening,
+          ?_, fun _ hx => hx⟩
+  exact Metric.self_subset_thickening hε _
+
 -- ============================================================
 -- Part II: Key Axioms
 -- ============================================================
