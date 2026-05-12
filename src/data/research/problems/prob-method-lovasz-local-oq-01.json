@@ -1,0 +1,119 @@
+{
+  "slug": "prob-method-lovasz-local-oq-01",
+  "title": "Full Moser-Tardos resampling algorithm with termination proof",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{Define the Moser-Tardos resampling algorithm } \\mathcal{A} \\text{ on bad events } A_1, \\dots, A_m \\text{ over independent variables } V_1, \\dots, V_n. \\text{ Prove: if } \\exists x_i \\in [0,1) \\text{ with } \\Pr[A_i] \\le x_i \\prod_{k \\sim i} (1-x_k), \\text{ then } \\mathbb{E}[\\#\\text{resamplings of } A_i] \\le x_i/(1-x_i).",
+    "plain": "Currently `Proofs/LovaszLocalLemma.lean` only states the non-negativity of the Moser–Tardos bound Σ x_i/(1-x_i) (theorem `moser_tardos_termination`). The actual Moser–Tardos theorem says this is an *upper bound on the expected number of resamplings* of the constructive algorithm. OQ-01 defines the algorithm, the probability space, and proves the bound.",
+    "whyMatters": [
+      "Crown jewel of the constructive probabilistic method: turns the LLL from a pure-existence theorem into a polynomial-time randomised algorithm",
+      "Bridges the symmetric/general LLL (already formalised) with explicit algorithm design (k-SAT, Latin squares, hypergraph colouring)",
+      "First-ever machine-checked construction of an LLL avoidance procedure would be a marquee result"
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Moser & Tardos (2010) — J. ACM 57(2) — the canonical published proof via the witness-tree construction",
+      "Moser (2009, STOC) — original entropy-compression argument for the symmetric case",
+      "Symmetric / general LLL itself (parent `prob-method-lovasz-local`) — 364 lines, 0 sorries"
+    ],
+    "open": [
+      "No Lean formalisation of the Moser–Tardos algorithm or its termination proof exists in Mathlib4 or any visible gallery (as of 2026-05-12)",
+      "Galton–Watson branching processes are not in Mathlib (workaround: direct generating-function calculation)"
+    ],
+    "goal": "Define the algorithm as a PMF-based Markov chain on configurations and prove the witness-tree-based bound E[#resamplings of A_i] ≤ x_i/(1-x_i)."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T11:50:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE complete — three-part decomposition (OQ-01-A algorithm skeleton / OQ-01-B witness trees / OQ-01-C Galton-Watson sum). Mathlib survey: PMF.Monad + Independence.Basic ready; rooted-labelled-tree type and GW branching process must be built.",
+    "blockers": [],
+    "nextAction": "S2 ACT — create Proofs/MoserTardos.lean with algorithm skeleton (MTProblem, MTState, step, run) and sorry-listed statements of mt_expected_step_bound and mt_terminates_as. Build-verify under Docker.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE: problem statement, three-approach analysis (specialise-symmetric / direct-witness-tree / entropy-compression), three-part decomposition (OQ-01-A/B/C), Mathlib API survey, sibling-overlap analysis with lovasz-local-lemma-oq-03.",
+    "builtItems": [
+      "problem.md (~250 lines) — full open question statement, algorithm definition, termination theorem, three approaches, three-part decomposition, Mathlib survey",
+      "knowledge.md (~150 lines) — sibling-overlap analysis, Mathlib readiness table, OQ-01-A skeleton plan",
+      "state.md — S1 phase complete, S2 next action = OQ-01-A skeleton"
+    ],
+    "insights": [
+      "Algorithm + bound is a separable layer above the existing LLL — zero changes needed to LovaszLocalLemma.lean; new file Proofs/MoserTardos.lean is the right home",
+      "Variable-version dependency graph (i ~ k ⇔ vbl(A_i) ∩ vbl(A_k) ≠ ∅) is required, NOT the abstract probabilistic-dependence graph",
+      "Witness trees are the technically hardest piece — need a new inductive type with Finset-valued children; SimpleGraph.Path is inadequate",
+      "PMF-based finite-alphabet model is sufficient for all known marquee applications; measure-theoretic extension deferred to lovasz-local-lemma-oq-01",
+      "Sibling lovasz-local-lemma-oq-03 (‘Formalize Moser-Tardos’) is effectively a duplicate; coordinate at S2 ACT"
+    ],
+    "mathlibGaps": [
+      "No rooted-labelled-tree type with Finset children (witness trees must be built from scratch)",
+      "No Galton–Watson branching-process API (workaround: direct generating-function sum bound)",
+      "Stopping/hitting times exist but the witness-tree extraction is a custom partial recursion not covered by Mathlib's stopping-time framework"
+    ],
+    "nextSteps": [
+      "S2 ACT: create Proofs/MoserTardos.lean with algorithm skeleton + statement-only of expected-step bound and a.s.-termination",
+      "S2 ACT: build-verify under Docker before push",
+      "S2 ACT: open PR with title `research(prob-method-lovasz-local-oq-01): S2 ACT — algorithm skeleton + sorry-listed bound`",
+      "S3+ ACT (OQ-01-B): WitnessTree inductive type + isProper + validity lemma + tree-probability bound",
+      "S6+ ACT (OQ-01-C): Galton–Watson coupling or direct generating-function calculation, yielding x_i/(1-x_i) bound"
+    ]
+  },
+  "tags": [
+    "probabilistic-method",
+    "combinatorics",
+    "graph-theory",
+    "lovasz-local-lemma",
+    "moser-tardos",
+    "constructive-algorithm",
+    "marquee-phase-1",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "prob-method-lovasz-local",
+    "prob-method-expectation",
+    "prob-method-alteration",
+    "lovasz-local-lemma-oq-01",
+    "lovasz-local-lemma-oq-03",
+    "lovasz-local-lemma-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Moser & Tardos (2010) — A constructive proof of the general Lovász Local Lemma — J. ACM 57(2)",
+      "Moser (2009) — A constructive proof of the Lovász Local Lemma — STOC",
+      "Spencer (2011) — Asymptopia §4",
+      "Alon & Spencer — The Probabilistic Method (3rd ed.) §5.7"
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.MeasureTheory.Measure.Pi",
+      "Mathlib.Probability.Independence.Basic",
+      "Mathlib.Probability.ProbabilityMassFunction.Monad",
+      "Mathlib.Combinatorics.SimpleGraph.Basic"
+    ]
+  },
+  "started": "2026-05-12T11:50:00Z",
+  "lastUpdate": "2026-05-12T11:50:00Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/LovaszLocalLemma.lean",
+      "filename": "LovaszLocalLemma.lean",
+      "lineCount": 364,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LovaszLocalLemma.lean"
+    }
+  ]
+}
