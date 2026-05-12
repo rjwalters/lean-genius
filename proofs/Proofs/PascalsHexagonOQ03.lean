@@ -270,6 +270,67 @@ theorem hexRev_hexRot_pow_hexRev (n : ℕ) :
   rw [hexRev_semiconj_hexRot_pow n, mul_assoc, hexRev_mul_self, mul_one]
 
 -- ============================================================
+-- PART 2e: ZMod-Indexed Power Helpers (S3c-prep-2)
+-- ============================================================
+-- The S3c homomorphism `φ : DihedralGroup 6 →* Equiv.Perm (Fin 6)`
+-- will map `r i ↦ hexRot ^ i.val` and
+-- `sr i ↦ hexRev * hexRot ^ i.val`. Its four `map_mul'` cases each
+-- reduce to a single rewrite of the form `hexRot ^ (i ± j).val = …`
+-- where the `±` and `.val` interact via the `ZMod 6` modular
+-- wraparound (`hexRot ^ 6 = 1` plus `(i + j).val ≡ i.val + j.val [MOD 6]`).
+-- The three lemmas below package the additive, negation, and
+-- subtractive forms once, so that S3d can discharge each
+-- `map_mul'` case in a single `rw` chain.
+--
+-- Mechanism: combine `ZMod.val_add` (which gives
+-- `(i + j).val = (i.val + j.val) % 6` at `n = 6`) with
+-- `pow_mod_orderOf hexRot _` (which collapses `hexRot ^ (k % 6) = hexRot ^ k`
+-- using `orderOf_hexRot = 6`, S3a).
+--
+-- No new Mathlib dependencies beyond what S2/S3a/S3b-prep already
+-- pull in: `pow_add`, `pow_zero`, `pow_mod_orderOf`
+-- (`Mathlib/GroupTheory/OrderOfElement.lean:252` at pinned rev
+-- `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`), `ZMod.val_add`,
+-- `ZMod.val_zero`, `add_neg_cancel`, and `eq_inv_of_mul_eq_one_left`.
+
+/-- **Additive form**: the `ZMod 6` sum of exponents commutes with
+    `hexRot ^ _.val`. Equivalent to saying that the map
+    `ZMod 6 → Equiv.Perm (Fin 6)`, `i ↦ hexRot ^ i.val`, respects
+    addition; this is the `r i * r j = r (i + j)` reduction in the
+    S3c homomorphism. -/
+private lemma hexRot_pow_zmod_val_add (i j : ZMod 6) :
+    hexRot ^ (i + j).val = hexRot ^ i.val * hexRot ^ j.val := by
+  rw [← pow_add]
+  -- `ZMod.val_add` gives `(i + j).val = (i.val + j.val) % 6`; then
+  -- `pow_mod_orderOf` with `orderOf_hexRot = 6` collapses the `% 6`.
+  rw [ZMod.val_add i j, ← orderOf_hexRot, pow_mod_orderOf]
+
+/-- **Negation form**: `(hexRot ^ i.val)⁻¹ = hexRot ^ (-i).val`.
+    Equivalent to saying that the map `i ↦ hexRot ^ i.val` respects
+    additive inversion. Derived from `hexRot_pow_zmod_val_add` at
+    `j = -i` via `add_neg_cancel` + `ZMod.val_zero` + `pow_zero`. -/
+private lemma hexRot_pow_zmod_val_neg (i : ZMod 6) :
+    (hexRot ^ i.val)⁻¹ = hexRot ^ (-i).val := by
+  have h := hexRot_pow_zmod_val_add i (-i)
+  rw [add_neg_cancel, ZMod.val_zero, pow_zero] at h
+  -- `h : 1 = hexRot ^ i.val * hexRot ^ (-i).val`
+  exact (eq_inv_of_mul_eq_one_left h.symm).symm
+
+/-- **Subtractive form**:
+    `(hexRot ^ i.val)⁻¹ * hexRot ^ j.val = hexRot ^ (j - i).val`.
+    Combines `hexRot_pow_zmod_val_neg` (replace the inverse with a
+    negated `.val`) with `hexRot_pow_zmod_val_add` (collapse the
+    additive form) and `neg_add_eq_sub` (rewrite `(-i) + j` as
+    `j - i`). This is the rewrite that lets the `sr i * sr j` case
+    of the S3c homomorphism's `map_mul'` collapse after applying
+    `hexRev_hexRot_pow_hexRev` to the central
+    `hexRev * hexRot ^ i.val * hexRev` triple. -/
+private lemma hexRot_pow_zmod_val_sub (j i : ZMod 6) :
+    (hexRot ^ i.val)⁻¹ * hexRot ^ j.val = hexRot ^ (j - i).val := by
+  rw [hexRot_pow_zmod_val_neg]
+  rw [← hexRot_pow_zmod_val_add (-i) j, neg_add_eq_sub]
+
+-- ============================================================
 -- PART 3: Hexagon Labelings as Sym(6) ⧸ D_6
 -- ============================================================
 
