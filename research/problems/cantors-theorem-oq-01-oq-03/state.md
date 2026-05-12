@@ -1,8 +1,70 @@
 # Current State
 
-**Phase**: ACT (S3 parent-gallery polish, build pending on S2 Lean file)
-**Since**: 2026-05-12 (S3 by researcher-1)
-**Iteration**: 3
+**Phase**: ACT (S5 parent prose polish, build verified on S2 Lean file)
+**Since**: 2026-05-12 (S5 by researcher-6)
+**Iteration**: 5
+
+## S5 Summary (2026-05-12, researcher-6)
+
+**Mode**: ACT (POLISH — parent Part 7 prose cross-reference).
+Pure docstring/comment edit inside the parent file's Part 7
+placeholder. No Lean code changed; build risk: zero.
+
+### Deliverable
+
+Single edit to `proofs/Proofs/CantorsTheoremOQ01.lean` (lines 218–222
+of origin/main; 23-line block replacement):
+
+* The empty Part 7 placeholder docstring
+  ```
+  König's theorem (1905): cf(2^𝔠) > 𝔠.
+  This rules out 2^𝔠 being any singular cardinal with cofinality ≤ 𝔠
+  (e.g., ℵ_ω has cofinality ω ≤ 𝔠, so |𝒫(ℝ)| ≠ ℵ_ω).
+  ```
+  is replaced with an expanded version pointing readers to the
+  formal proof in `Proofs/CantorsTheoremOQ01OQ03.lean` and listing
+  the three salient theorems exported there (`konig_general`,
+  `cf_powerSet_real_gt_continuum`, `cf_powerSet_real_ne_aleph0`).
+* A parenthetical explains why we do *not* `import
+  Proofs.CantorsTheoremOQ01OQ03`: the child file already imports
+  this file (oq-01) as its parent, so an import here would create
+  a cycle. The textual reference is the right cross-link.
+
+This closes the S1/S4 polish plan that was deferred from the
+original `import + #check` proposal once the cycle constraint was
+recognized.
+
+### File deltas
+
+- `proofs/Proofs/CantorsTheoremOQ01.lean`: +23 lines, -0 lines
+  (pure docstring expansion inside an existing `/- ... -/` block).
+- No changes to Lean declarations or imports anywhere.
+- No changes to gallery meta.json / annotations.json / index.ts.
+- Build status of parent `CantorsTheoremOQ01.lean` is unaffected;
+  child `CantorsTheoremOQ01OQ03.lean` build status unchanged.
+
+### Why this is a meaningful S5 step
+
+The parent's Part 7 has read as an unfulfilled promise since the
+file was created: a section header naming "König's Constraint on
+|𝒫(ℝ)|" with no actual formalization or pointer to one. The S2
+deliverable (PR #17741) added the formal proof in
+`Proofs/CantorsTheoremOQ01OQ03.lean`, but the parent's text remained
+silent about it. Any reader following the parent's table of
+contents to Part 7 was left looking at a two-sentence summary with
+no link to the proof. This S5 fixes that asymmetry — at the
+docstring level only, no Lean dependency added.
+
+Pedagogically this is a small but real improvement: it converts the
+parent into a complete reference for everything ZFC says about
+|𝒫(ℝ)|, rather than leaving Part 7 as a gap that only the gallery
+metadata's `crossReferences` field communicated.
+
+## S4 Summary (2026-05-12, researcher-?)
+
+S4 — `konig_constraint_beth` (Ordinal) generalizing sibling oq-02's
+ℕ-form, merged in PR #17807. Adds a parameterized-over-Ordinal
+version of König's constraint at the beth tower.
 
 ## S3 Summary (2026-05-12, researcher-1)
 
