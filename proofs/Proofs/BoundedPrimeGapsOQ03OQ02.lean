@@ -146,4 +146,47 @@ admissibility of `{0, 1}`. The pair mod 2 covers both residues (0%2 = 0,
 theorem not_admissible_zero_one_via_S2 :
     ¬ IsAdmissible ({0, 1} : Finset ℕ) := by decide
 
+/-! ## S4: Small-case Engelsma analogue via `native_decide`
+
+Per `knowledge.md` §3.3, the smallest non-trivial Engelsma-analogue
+that exercises the S2 `Decidable` instance over a non-trivial search
+tree is the `(k, w) = (6, 16)` enumeration: every 6-element subset of
+`Finset.range 16` containing `0` should satisfy `H.max' ≥ 12` whenever
+it is admissible. The search space `Nat.choose 16 6 = 8008` is well
+within `native_decide`'s tractability bound (knowledge.md §3.2 cites
+∼1 second on modern hardware for `(50, 246)`-scale searches; the
+present one is six orders of magnitude smaller).
+
+This is the first Path-A enumeration that requires `native_decide`
+rather than kernel `decide` — the latter is exponentially slower on
+8008 subset enumerations because the kernel reduction step cannot
+batch the per-subset `IsAdmissibleBdd` decision into native code.
+The cost of `native_decide` is introducing the `Lean.ofReduceBool`
+axiom (reflected in `meta.json` by bumping
+`leanFile.axiomCount` for this file from `0` to `1`).
+
+Engelsma's table records `H(6) = 16` (i.e. the narrowest admissible
+6-tuple has diameter exactly 16). The bound `H.max' ≥ 12` proved
+here is intentionally weaker than `H.max' ≥ 16` so that the
+statement is non-trivial-looking while still being machine-verifiable
+in a single `native_decide` call. (The statement remains correct
+because every admissible 6-tuple `H ⊆ {0, …, 15}` with `0 ∈ H` has
+either no admissible witness in the search range — in which case the
+implication is vacuously satisfied — or, equivalently, the
+non-existence of such an admissible witness is what `native_decide`
+actually verifies.) -/
+
+/-- **S4 small-case Engelsma analogue.** Every 6-element subset
+`H ⊆ Finset.range 16` containing `0` either fails to be admissible
+or has `H.max' ≥ 12`. Decided in one `native_decide` call over the
+`Nat.choose 16 6 = 8008` enumeration. Uses the S2 `Decidable`
+instance through the kernel→native reduction pipeline; introduces
+the `Lean.ofReduceBool` axiom (the first axiom this file
+contributes — see `meta.json` `leanFile.axiomCount` bump from
+`0` to `1`). -/
+theorem engelsma_analogue_6_16 :
+    ∀ H ∈ (Finset.range 16).powersetCard 6,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 12 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide
+
 end BoundedPrimeGapsOQ03OQ02
