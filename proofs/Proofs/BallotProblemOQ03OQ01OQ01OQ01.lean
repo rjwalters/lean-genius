@@ -1299,6 +1299,42 @@ private lemma rotateSortedListSuffixSym_val_eq_sub_take {n c : ℕ}
   show ((rotateSortedList M k).drop j : Multiset (Fin n)) = _
   rw [← h, add_tsub_cancel_left]
 
+/-! #### S41 — Complement form for `rotateSortedListPrefixSym`
+
+Symmetric counterpart of S38's `rotateSortedListSuffixSym_val_eq_sub_take`:
+the underlying multiset of the `Sym`-packaged prefix equals `M.1` minus the
+`drop`-suffix multiset. Closes the "complement form" half of the prefix /
+suffix toolkit (the suffix complement-form was provided by S38), so every
+piece of the prefix / suffix decomposition now has matching subtraction,
+inequality, and addition-form descriptions at the `Sym` level. -/
+
+/-- **`rotateSortedListPrefixSym` as the complement of the `drop`-suffix**
+    (S41).
+
+    The underlying multiset of the `Sym`-packaged prefix equals `M.1` minus
+    the `drop`-suffix multiset. Direct consequence of S34's
+    `rotateSortedList_take_add_drop` (`take + drop = M.1`) via
+    `add_tsub_cancel_right` (`a + b - b = a` in any `OrderedAddCommMonoid`
+    with truncated subtraction, including `Multiset (Fin n)`). Symmetric
+    counterpart of S38's `rotateSortedListSuffixSym_val_eq_sub_take`.
+
+    Together with `rotateSortedListPrefixSym_le` (S37), this gives the two
+    equivalent descriptions of the prefix multiset: as a literal
+    `(rotateSortedList M k).take j` and as the canonical complement
+    `M.1 - ((rotateSortedList M k).drop j)`. With S38's suffix
+    complement-form, the cycle-lemma inverse direction now has
+    complement-form descriptions for **both** halves of the rotation
+    decomposition; given a `P' : Sym (Fin n) (a + 1)` with `P'.1 ≤ M.1`,
+    either half can be obtained from the other via complementation
+    against `M.1`. -/
+private lemma rotateSortedListPrefixSym_val_eq_sub_drop {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) (hj : j ≤ c) :
+    (rotateSortedListPrefixSym M k j hj).1
+      = M.1 - ((rotateSortedList M k).drop j : Multiset (Fin n)) := by
+  have h := rotateSortedList_take_add_drop M k j
+  show ((rotateSortedList M k).take j : Multiset (Fin n)) = _
+  rw [← h, add_tsub_cancel_right]
+
 /-- **Total multiset of a Sym pair (as a `Sym`).**
 
     The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in
