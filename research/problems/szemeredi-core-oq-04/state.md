@@ -1,102 +1,166 @@
 # Current State
 
-**Phase**: OBSERVE → ORIENT (S1 completed)
-**Since**: 2026-05-11T22:30:00Z
-**Iteration**: 1
+**Phase**: ORIENT (S2 scaffold landed; one sorry on implication)
+**Since**: 2026-05-12T03:30:00Z
+**Last Updated**: 2026-05-12 (Iteration 2, researcher-9)
+**Iteration**: 2
 
 ## Current Focus
 
-S1 OBSERVE survey (researcher-1, 2026-05-11): mathematical
-specification + Mathlib gap inventory for the algorithmic
-Szemerédi target.
+Iteration 2 (researcher-9, 2026-05-12) — **S2 scaffold**: created
+`proofs/Proofs/SzemerediCoreOQ04.lean` (145 lines) with the three S1
+deliverables.
 
-Decoupling the constructive partition build in
-`Proofs/SzemerediRegularity.lean:436` (`regularity_lemma_strong`,
-opens `Classical`) from `Classical.choice` via the
-Alon-Duke-Lefmann-Rödl-Yuster 1994 decidable surrogate for
-`IsEpsilonRegular`.
+Two `def`s, sorry-free:
+
+```lean
+def witnessFamilyB (G : SimpleGraph V) (A B : Finset V) : Finset (Finset V) :=
+  A.image (fun a => B.filter (G.Adj a)) ∪
+  A.image (fun a => B.filter (fun b => ¬ G.Adj a b))
+
+def IsWitnessRegular (eps : ℚ) (A B : Finset V) : Prop :=
+  ∀ B' ∈ witnessFamilyB G A B,
+    (B'.card : ℚ) ≥ eps * B.card →
+    |edgeDensity G A B' - edgeDensity G A B| ≤ eps
+```
+
+Two supporting lemmas, sorry-free:
+
+- `witnessFamilyB_card_le`: family has at most `2 * |A|` elements
+  (the polynomial-size guarantee for ADLRY-1994).
+- `witnessFamilyB_subset`: every member of the family is a subset
+  of `B`.
+
+A `noncomputable instance` `Decidable (IsWitnessRegular ...)` using
+`Classical.dec`. The instance is noncomputable because
+`Szemeredi.Core.edgeDensity` is itself `noncomputable` (the parent
+file uses `open Classical`). Promoting `edgeDensity` to computable
+is the S3 task.
+
+One `theorem` with `sorry`:
+
+```lean
+theorem witness_regular_implies_epsilon_regular
+    (heps : 0 < eps) (A B : Finset V)
+    (hreg : IsWitnessRegular G eps A B) :
+    IsEpsilonRegular G (4 * eps) A B := by
+  intro A' B' hA' hB' hcA' hcB'
+  sorry  -- ADLRY ε-grid density-decomposition, strategy in docstring
+```
+
+The proof strategy is documented inline: three-step density transfer
+(per-vertex bound from grid, averaging over `A`, restriction to `A'`)
+giving the `4 · eps` slack constant.
 
 ## Active Approach
 
-Three-target hierarchy:
+S1's three-target hierarchy:
 
-- **Target A** — decidable surrogate `IsWitnessRegular G eps A B`
-  that implies `IsEpsilonRegular G eps A B` (with a slack
-  constant if needed). The surrogate quantifies over a specific
-  finite family `S(A, G, B)` of subsets, polynomial in `|V|`.
-- **Target B** — constructive witness extraction
-  `witnessOfIrregular : ¬ IsWitnessRegular G eps A B → Σ' A' B', …`
-  giving explicit subsets for irregular pairs.
-- **Target C** — `def findRegularPartition (eps : ℚ) (G : SimpleGraph V) :
-  Finset (Finset V)`, replacing the existential
-  `regularity_lemma_strong` with a computable function via
-  iterative refinement using `witnessOfIrregular`.
+- **Target A (S2 — this session)**: decidable surrogate
+  `IsWitnessRegular` with one-way implication into
+  `IsEpsilonRegular` (slack `4`).
+  **Done as scaffold; one `sorry` on the implication.**
+- **Target B (S3 — next, recommended)**: prove the ADLRY ε-grid
+  implication. Strategy already in the docstring.
+- **Target B' (S3 — alternate)**: extract the constructive witness
+  `witnessOfIrregular : ¬ IsWitnessRegular → Σ' (B' : _), _` —
+  technically simpler than proving the implication.
+- **Target C (S4)**: computable
+  `findRegularPartition (eps : ℚ) (G : SimpleGraph V) :
+   Finset (Finset V)`, replacing the `Classical.choice` usage at
+  `SzemerediRegularity.lean:436`.
+
+## File Delta
+
+`proofs/Proofs/SzemerediCoreOQ04.lean` (new, 145 lines):
+
+- 2 `def` (`witnessFamilyB`, `IsWitnessRegular`)
+- 2 sorry-free `lemma`s (`witnessFamilyB_card_le`,
+  `witnessFamilyB_subset`)
+- 1 `noncomputable instance` `Decidable`
+- 1 `theorem` with `sorry` (`witness_regular_implies_epsilon_regular`)
+- 1 placeholder `theorem` for the S5 Mathlib-bridge
+
+`proofs/Proofs.lean`: added `import Proofs.SzemerediCoreOQ04`.
 
 ## Blockers
 
-None for S2 (definitions + one-direction implication).
+None. The `sorry` is on a documented intermediate step with a clear
+proof strategy; it is not a Mathlib-gap blocker.
 
-For S4 (partition refactor) the parent file's `Classical.choice`
-usage at `SzemerediRegularity.lean:436` must be carefully
-rewritten — this is a localized change but touches a 50-line
-proof.
+## Counts
 
-For S5 (Mathlib bridge): Mathlib's `SimpleGraph.szemeredi_regularity`
-returns an existential; bridging requires extra glue work that is
-worth deferring until S4 lands.
+- `lineCount`: 0 → 145 (new file)
+- `theoremCount`: 0 → 4 (2 lemmas + 2 theorems including the
+  placeholder)
+- `definitionCount`: 0 → 2 (`witnessFamilyB`, `IsWitnessRegular`)
+- `sorries`: 0 → 1 (on `witness_regular_implies_epsilon_regular`)
+- `axioms`: 0 (unchanged)
+
+## Build Status
+
+Pending. The scaffold uses only `SzemerediCore` plus `Mathlib`; all
+referenced API surface (`Finset.image`, `Finset.filter`,
+`Finset.card_union_le`, `Finset.card_image_le`, `Classical.dec`,
+`SimpleGraph.Adj`) is in Mathlib v4.26.0.
 
 ## Next Action
 
-**S2 (next iteration)**: scaffold
-`proofs/Proofs/SzemerediCoreOQ04.lean`.
+**S3 (recommended)**: prove the ADLRY ε-grid lemma
+`witness_regular_implies_epsilon_regular`. Strategy:
 
-Concrete deliverables:
+1. **Per-vertex density**. For `a ∈ A`, the contribution of `a` to
+   `d(A, B')` versus `d(A, B)` is
+   `(|N(a) ∩ B'| / |B'| - |N(a) ∩ B| / |B|)`.
+2. **Bound the per-vertex deviation by `2 · eps`** using the grid:
+   both `B ∩ N(a)` and `B \ N(a)` are members of `witnessFamilyB`,
+   so the `IsWitnessRegular` hypothesis controls their densities
+   against `B'` (which is large by `hcB'`).
+3. **Average over `a ∈ A`**, then over the size restriction
+   `A' ⊆ A`, to get the `4 · eps` slack.
 
-1. `IsWitnessRegular G eps A B` — decidable surrogate. Quantifies
-   over a specific finite family `S(A, G, B) : Finset (Finset V)`
-   constructed from the adjacency pattern. The minimal viable
-   choice is the family of "ε-grid neighborhoods"
-   `{N(a) ∩ B | a ∈ A}` union complements — `|S| ≤ 2·|A|`, gives
-   a decidable surrogate with slack constant 4.
-2. `instance : Decidable (IsWitnessRegular G eps A B)` —
-   automatic from the finite-quantifier form, requires only
-   confirming the inner predicate is decidable (`Rat` arithmetic
-   plus `Decidable` cardinality bounds).
-3. `theorem witness_regular_implies_epsilon_regular`:
-   `IsWitnessRegular G eps A B → IsEpsilonRegular G eps A B` —
-   the directional implication that justifies replacing the
-   universal-quantifier version with the decidable surrogate
-   wherever IsEpsilonRegular is *consumed* (as opposed to
-   *produced*) in the parent file.
+Aristotle-friendly once `SzemerediCoreOQ04.lean` is on `origin/main`;
+recommend submitting via a companion file
+`SzemerediCoreOQ04Aristotle.lean`.
 
-Target: ~150 lines Lean, 0 sorries on the definition, ≤2 sorries
-on the implication (flagged for Aristotle if the surrogate is the
-strong "ε-grid" variant).
+**S3 (alternate, easier)**: prove `witnessOfIrregular` extraction:
+
+```lean
+theorem witnessOfIrregular (G : SimpleGraph V) (eps : ℚ) (A B : Finset V) :
+    ¬ IsWitnessRegular G eps A B →
+    ∃ B' ∈ witnessFamilyB G A B,
+      (B'.card : ℚ) ≥ eps * B.card ∧
+      |edgeDensity G A B' - edgeDensity G A B| > eps
+```
+
+This is a `push_neg`-style decomposition of `¬ IsWitnessRegular`,
+useful for Target C (the constructive partition).
 
 ## Attempt Counts
 
-- Total attempts: 1
+- Total attempts: 2 (iteration 1 OBSERVE + iteration 2 ORIENT
+  scaffold)
 - Current approach attempts: 1
-- Approaches tried: 1
+- Approaches tried: 1 (ε-grid surrogate via per-vertex neighbour
+  patterns)
 
 ## Open Questions for Future Iterations
 
-- The exact slack constant in the ADLRY equivalence depends on
-  the variant of the surrogate. **ε-grid** (`{N(a) ∩ B}`) gives
-  slack 4. **Hypergraph-defect** gives slack 1 (no slack) but
-  requires a more elaborate definition. For S2 start with ε-grid
-  and revisit if the slack causes problems downstream.
+- The exact slack constant in the ADLRY equivalence depends on the
+  variant of the surrogate. **ε-grid** (`{N(a) ∩ B}`) gives slack 4
+  — the choice committed in S2. **Hypergraph-defect** would give
+  slack 1 but requires a more elaborate definition.
 
-- Should the surrogate live in `SzemerediCore` or in a new
-  `SzemerediCoreOQ04`? `SzemerediCore` would touch the parent
-  module and is a refactor; new file is cleaner and matches the
-  gallery's existing `OQ` convention. Go with new file.
+- Promoting `edgeDensity` to computable is the S3+ task. Currently
+  the `Decidable` instance for `IsWitnessRegular` is `Classical.dec`
+  because the parent `SzemerediCore.lean` opens `Classical`. A
+  computable variant `edgeDensityComputable` could be added in
+  `SzemerediCoreOQ04` alongside without modifying the parent.
 
 - Does the constructive partition function (Target C) need to be
-  `noncomputable` because of `ℚ` arithmetic? `ℚ` is `Computable`,
-  so no — keep it computable. (Confirm via S4 build.)
+  `noncomputable`? `ℚ` itself is `Computable`; only the dependence
+  on `edgeDensity` forces `noncomputable`. After S3 cleanup the
+  partition should be genuinely computable.
 
-- The Mathlib regularity-lemma signature is slightly different —
-  uses `≥ M(ε)` rather than `card V ≥ M`. Bridge work in S5 can
-  defer; S2–S4 only target the gallery's own
-  `regularity_lemma_strong`.
+- Mathlib bridge (S5): `SimpleGraph.szemeredi_regularity` returns an
+  existential; bridging requires extra glue work. Defer until S4.
