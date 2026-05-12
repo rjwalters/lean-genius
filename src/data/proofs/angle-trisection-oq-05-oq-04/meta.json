@@ -1,8 +1,8 @@
 {
   "id": "angle-trisection-oq-05-oq-04",
-  "title": "Curved-Crease Origami: Strengthening Huzita-Hatori (S4 — constructive HH-2)",
+  "title": "Curved-Crease Origami: Strengthening Huzita-Hatori (S5 — constructive HH-4)",
   "slug": "angle-trisection-oq-05-oq-04",
-  "description": "S2 ORIENT scaffold + S4 constructive HH-2 (perpendicular bisector) for the open question: can the seven straight-crease Huzita-Hatori axioms (`AngleTrisectionOQ05.HHAxioms`) be strengthened to capture curved-crease origami constructibility? Introduces a `CurvedCrease` structure (γ, θ, κ_g, κ_n) with the Fuchs-Tabachnikov compatibility identity `κ_n = κ_g · cot(θ/2)` encoded as a structure field; proves the straight-fold normal-curvature vanishing lemma; states three sorry-bearing theorems: conservativity over `HHAxioms` (S3 target), algebraic-curve sharpness (S4 target), and the OQ-A open conjecture `K_curved = K_origami` (S5, open mathematics dating to Huffman 1976). S4 (Part 6) adds the explicit `perpBisector` line construction together with the proved reflection law `reflectAcross (perpBisector p₁ p₂ h) p₁ = p₂` and the standalone `hh2_existence` theorem — the second of the seven HH ingredients (after S3's standalone `hh1_existence`) required by the eventual full `HHAxioms` witness consumed by `straight_fold_recovers_HH`.",
+  "description": "S2 ORIENT scaffold + S4 constructive HH-2 (perpendicular bisector) + S5 constructive HH-4 (perpendicular through a point) for the open question: can the seven straight-crease Huzita-Hatori axioms (`AngleTrisectionOQ05.HHAxioms`) be strengthened to capture curved-crease origami constructibility? Introduces a `CurvedCrease` structure (γ, θ, κ_g, κ_n) with the Fuchs-Tabachnikov compatibility identity `κ_n = κ_g · cot(θ/2)` encoded as a structure field; proves the straight-fold normal-curvature vanishing lemma; states three sorry-bearing theorems: conservativity over `HHAxioms` (S3 target), algebraic-curve sharpness (S4 target), and the OQ-A open conjecture `K_curved = K_origami` (S5, open mathematics dating to Huffman 1976). S4 (Part 6) adds the explicit `perpBisector` line construction together with the proved reflection law `reflectAcross (perpBisector p₁ p₂ h) p₁ = p₂` and the standalone `hh2_existence` theorem. S5 (Part 7) adds the explicit `perpThroughPoint p ℓ` line construction (fold through `p` perpendicular to `ℓ`) and proves `perpThroughPoint_contains` (the fold passes through `p`) and `reflectAcross_perpThroughPoint_preserves` (reflection across the fold preserves `ℓ` as a set), combining to a standalone `hh4_existence` theorem — three of the seven HH ingredients (HH-1 via S3, HH-2 via S4, HH-4 via S5) required by the eventual full `HHAxioms` witness consumed by `straight_fold_recovers_HH` are now constructive.",
   "meta": {
     "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Curved_origami",
@@ -57,15 +57,20 @@
       "perpBisector (S4 def): explicit noncomputable Line construction of the perpendicular bisector of two distinct planar points, in the (a, b, c) ax+by+c=0 normalisation",
       "perpBisector_dirSq_pos (S4 proved): squared chord length is strictly positive when endpoints differ — discharges the reflectAcross denominator",
       "reflectAcross_perpBisector (S4 proved): the perpendicular bisector reflects p₁ onto p₂ — the HH-2 reflection law in explicit form",
-      "hh2_existence (S4 proved): standalone HH-2 existence — for any two distinct points, there is a fold line whose reflection sends the first onto the second; matches the HH-2 field of HHAxioms in isolation"
+      "hh2_existence (S4 proved): standalone HH-2 existence — for any two distinct points, there is a fold line whose reflection sends the first onto the second; matches the HH-2 field of HHAxioms in isolation",
+      "perpThroughPoint_normSq_pos (S5 proved): squared norm `ℓ.a² + ℓ.b²` of a line's normal vector is strictly positive — discharges the reflectAcross denominator for HH-4",
+      "perpThroughPoint (S5 def): explicit noncomputable Line construction of the fold through `p` perpendicular to `ℓ`, with coefficients `(-ℓ.b, ℓ.a, ℓ.b · p.1 - ℓ.a · p.2)` (normal rotated 90° from `ℓ`, constant chosen to pass through `p`)",
+      "perpThroughPoint_contains (S5 proved): the perpendicular fold passes through its anchor point — routine algebra",
+      "reflectAcross_perpThroughPoint_preserves (S5 proved): reflection across the perpendicular fold through `p` maps every point of `ℓ` back onto `ℓ` — the HH-4 line-preservation law, via `field_simp` + `linear_combination` exploiting the cancellation `ℓ.a · ℓ.b − ℓ.b · ℓ.a = 0`",
+      "hh4_existence (S5 proved): standalone HH-4 existence — for any point `P` and line `ℓ`, there is a fold through `P` whose reflection preserves `ℓ` setwise; matches the HH-4 field of HHAxioms in isolation"
     ],
     "dateAdded": "2026-05-12",
     "axiomCount": 1,
-    "lineCount": 448,
+    "lineCount": 573,
     "assumptions": "1 structure-encoded assumption: ftCompatible — the Fuchs-Tabachnikov compatibility identity κ_n(s) = κ_g(s) · cot(θ(s)/2) along the crease. This is the single differential-geometric constraint distinguishing valid smooth curved folds from arbitrary (γ, θ) pairs (Fuchs-Tabachnikov 1999, Theorem 1). Encoded as a field of the `CurvedCrease` structure rather than proved internally because the differential-geometric derivation would require ~350 lines of Darboux-frame curve-on-surface API absent from Mathlib at the pinned revision. Counted as +1 toward axiomCount per the axiom-integrity policy. 0 `axiom` declarations. 3 intentional sorries: S3 straight_fold_recovers_HH conservativity, S4 curved_fold_algebraic_implies_origami partial sharpness, S5 K_curved_eq_K_origami the OQ-A open conjecture (Huffman 1976 / Demaine et al. 2011).",
     "mathlib_version": "4.26.0",
-    "theoremCount": 7,
-    "definitionCount": 6
+    "theoremCount": 11,
+    "definitionCount": 7
   },
   "overview": {
     "historicalContext": "Curved-crease origami was initiated by D. A. Huffman in 1976 (*Curvature and creases: A primer on paper*) and given its modern differential-geometric form by Fuchs and Tabachnikov in 1999 (*More on paperfolding*, Amer. Math. Monthly). The Demaine-Demaine-Hart-Price-Tachi 2011 paper proved that curved-crease origami can trace transcendental crease CURVES (e.g. the elastica family), so the set of curved-fold-constructible curves strictly contains the algebraic curves. Whether the field of curved-fold-constructible POINT COORDINATES strictly contains the origami-constructible field K_origami (characterised by Alperin 2000 / Alperin-Lang 2006 as the field generated by tower extensions of degrees in {2, 3}) is open. The OQ-04 question asks for an axiomatic / algebraic characterisation of K_curved that mirrors the parent file's `origami_degree_classification` (line 575 of `AngleTrisectionOQ05.lean`).",
@@ -143,6 +148,14 @@
       "endLine": 448,
       "summary": "Defines `perpBisector p₁ p₂ h : Line` for distinct points with coefficients `(p₂.1 - p₁.1, p₂.2 - p₁.2, -((p₂.1² - p₁.1²) + (p₂.2² - p₁.2²))/2)`. Proves `perpBisector_dirSq_pos` (chord length positive), `reflectAcross_perpBisector` (the HH-2 reflection law `reflectAcross l p₁ = p₂` via `field_simp` + `ring` after Prod.ext split), and `hh2_existence` (standalone HH-2 existence: ∀ p₁ ≠ p₂, ∃ l, reflectAcross l p₁ = p₂). No new sorry is introduced.",
       "mathContext": "The perpendicular bisector of two points p₁ ≠ p₂ is the locus of points equidistant from both, equivalently the line through the midpoint perpendicular to the segment p₁p₂. Plugging the (a, b, c) coefficients into the reflection formula `reflectAcross l p = p - 2 (l.a p.1 + l.b p.2 + l.c)/(l.a² + l.b²) · (l.a, l.b)` yields the parameter `t = -1` at p₁, so the reflection adds the direction vector `(p₂.1 - p₁.1, p₂.2 - p₁.2)` to p₁ and lands at p₂. This is the HH-2 axiom of the Huzita-Hatori system in standalone form. Combined with S3's standalone `hh1_existence` (line through two distinct points), two of the seven HH ingredients required by `straight_fold_recovers_HH` are now constructive."
+    },
+    {
+      "id": "perp-through-point-s5",
+      "title": "Constructive HH-4 — Perpendicular Through a Point (S5)",
+      "startLine": 450,
+      "endLine": 572,
+      "summary": "Defines `perpThroughPoint p ℓ : Line` with coefficients `(-ℓ.b, ℓ.a, ℓ.b · p.1 − ℓ.a · p.2)` (fold's normal is a 90° rotation of `ℓ`'s, constant chosen so the fold passes through `p`). Proves `perpThroughPoint_normSq_pos` (denominator non-vanishing via `ℓ`'s `nondeg` and `sq_pos_of_ne_zero`), `perpThroughPoint_contains` (the fold passes through `p` via `simp` + `ring`), `reflectAcross_perpThroughPoint_preserves` (reflection across the fold preserves `ℓ` setwise, proved by `simp only` unfolding + `field_simp` + `linear_combination`), and `hh4_existence` (standalone HH-4 existence: ∀ p ℓ, ∃ l, l.contains p ∧ ∀ q ∈ ℓ, ℓ.contains (reflectAcross l q)). No new sorry is introduced.",
+      "mathContext": "The perpendicular fold through `P` orthogonal to a line `ℓ : a x + b y + c = 0` has its own normal vector parallel to `ℓ`'s direction (a 90° rotation of `(ℓ.a, ℓ.b)` gives `(-ℓ.b, ℓ.a)`). Reflection across this fold acts on `ℓ` by reversing direction along `ℓ` while preserving the locus, because the cross-term `ℓ.a · ℓ.b − ℓ.b · ℓ.a` vanishes in the expansion of `ℓ.a · q'.1 + ℓ.b · q'.2 + ℓ.c`. This is the HH-4 axiom of the Huzita-Hatori system in standalone form. Combined with S3's standalone `hh1_existence` (line through two points) and S4's `hh2_existence` (perpendicular bisector), three of the seven HH ingredients required by `straight_fold_recovers_HH` are now constructive; the remaining four are HH-3 (angle bisector), HH-5 (point-on-line via fold through second point), HH-6 (Beloch fold, the cubic-solving one), and HH-7 (Hatori)."
     }
   ],
   "conclusion": {
@@ -187,10 +200,10 @@
       "AngleTrisectionOQ05"
     ],
     "namespace": "AngleTrisectionOQ05OQ04",
-    "lineCount": 448,
+    "lineCount": 573,
     "axiomCount": 1,
-    "theoremCount": 7,
-    "definitionCount": 6,
+    "theoremCount": 11,
+    "definitionCount": 7,
     "path": "Proofs/AngleTrisectionOQ05OQ04.lean",
     "sorries": 3
   },
