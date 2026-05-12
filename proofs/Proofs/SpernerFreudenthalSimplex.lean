@@ -3050,4 +3050,96 @@ private lemma satDiagBases_endpoints_pair_face2_path_form
 
 end N2DiagonalEndpointForm
 
+-- ============================================================
+-- (S27-prep) Face-2 and color characterizations at the
+-- `(k, N - k)` diagonal vertices of `face2_path_odd`.
+--
+-- The eventual S25/S27 bijection assembly between the
+-- `_hLastFace` filter and `(Finset.range N).filter
+-- (fun k => g k ≠ g (k + 1))` will need, for each `k ≤ N`, the
+-- face-2 condition and the color-side `cN2 ... (k, N - k) ≠ 2`
+-- predicate on the diagonal vertex of `face2_path_odd`. S26-prep
+-- (`N2DiagonalEndpointForm`) translated `satDiagBases` endpoints
+-- into the `(k, N - k)` parametrization; this section packages
+-- the matching face/color facts on that side, so the bijection
+-- consumer can stay entirely in `face2_path_odd`'s index form
+-- without re-deriving the face/Sperner-condition glue.
+--
+--   * `onFaceΔ2_diag` — `(k, N - k)` is on geometric face 2.
+--   * `onFaceΔ2_strict_diag` — strict version (with in-range
+--     witness `k + (N - k) ≤ N`).
+--   * `cN2_total_diag_eq` — `cN2_total` agrees with `cN2` at the
+--     diagonal vertex (the `dif_pos` rewrite specialised).
+--   * `cN2_diag_ne_two` — Sperner condition forbids color 2 at
+--     the diagonal vertex (direct `cN2_ne_of_onFace`).
+--   * `cN2_total_diag_ne_two` — wrapper-level corollary, the
+--     shape consumed by S22's `h_no2` hypothesis when the
+--     `_hLastFace` consumer carries `cN2_total` rather than the
+--     in-range `cN2`.
+--
+-- Each is a one-line corollary of existing N2Grid lemmas
+-- (`onFaceΔ2_two_iff`, `cN2_ne_of_onFace`, `cN2_total_eq`).
+-- Independent of the in-flight S23 (`N2LastFaceColors`,
+-- PR #17571) which packages the analogous color facts in the
+-- `(b.1, b.2 + 1)`-endpoint form rather than the
+-- `(k, N - k)`-diagonal form. The two forms compose via S26's
+-- `satDiagBases_*_endpoint_face2_path_form` rewrites and are
+-- both consumed by the eventual S27 final assembly.
+-- ============================================================
+
+section N2DiagFaceCondition
+
+variable (N : ℕ) (hN : 0 < N)
+variable (f : (Fin 3 → ℝ) → Fin 3 → ℝ)
+variable (hf_map : ∀ v, InSimplex v → InSimplex (f v))
+
+/-- For `k ≤ N`, the diagonal vertex `(k, N - k)` lies on
+geometric face 2 of `Δ²`: its coordinate sum equals `N`. -/
+private lemma onFaceΔ2_diag (k : ℕ) (hk : k ≤ N) :
+    onFaceΔ2 N (k, N - k) 2 := by
+  rw [onFaceΔ2_two_iff]
+  omega
+
+/-- Strict version of `onFaceΔ2_diag`: bundles the in-range
+witness `k + (N - k) ≤ N` (an equality in this case) with the
+face-2 condition. This is the precise shape consumed by
+`cN2_total_face2_color_ne_two`-style face/Sperner-condition
+bridges. -/
+private lemma onFaceΔ2_strict_diag (k : ℕ) (hk : k ≤ N) :
+    onFaceΔ2_strict N (k, N - k) 2 :=
+  ⟨by omega, onFaceΔ2_diag N k hk⟩
+
+/-- `cN2_total` agrees with `cN2` at every `face2_path_odd`
+diagonal vertex `(k, N - k)` for `k ≤ N`: the wrapper's
+`dif_pos` branch fires because `k + (N - k) = N ≤ N`. This is the
+`dif_pos`-specialised companion of `cN2_total_eq` for the S27
+assembly's `g k`-evaluation. -/
+private lemma cN2_total_diag_eq (k : ℕ) (hk : k ≤ N) :
+    cN2_total N hN f hf_map (k, N - k) =
+      cN2 N hN f hf_map (k, N - k) (by omega) :=
+  cN2_total_eq N hN f hf_map (k, N - k) (by omega)
+
+/-- Sperner condition at the diagonal: for `k ≤ N`, the in-range
+coloring `cN2` cannot return color `2` at the `face2_path_odd`
+vertex `(k, N - k)`, because that vertex lies on geometric face 2
+(`onFaceΔ2_diag`). -/
+private lemma cN2_diag_ne_two (k : ℕ) (hk : k ≤ N) :
+    cN2 N hN f hf_map (k, N - k) (by omega) ≠ (2 : Fin 3) :=
+  cN2_ne_of_onFace N hN f hf_map (k, N - k) (by omega) 2
+    (onFaceΔ2_diag N k hk)
+
+/-- Wrapper-level Sperner condition at the diagonal: for `k ≤ N`,
+`cN2_total` cannot return color `2` at the `face2_path_odd`
+vertex `(k, N - k)`. Direct composition of `cN2_total_diag_eq`
+with `cN2_diag_ne_two`; the form consumed by `h_no2` hypotheses
+of S22's `isDoor_dim_two_iff_color_change_of_no_color_two` when
+the `_hLastFace` discharge carries `cN2_total` rather than the
+in-range `cN2`. -/
+private lemma cN2_total_diag_ne_two (k : ℕ) (hk : k ≤ N) :
+    cN2_total N hN f hf_map (k, N - k) ≠ (2 : Fin 3) := by
+  rw [cN2_total_diag_eq N hN f hf_map k hk]
+  exact cN2_diag_ne_two N hN f hf_map k hk
+
+end N2DiagFaceCondition
+
 end SpernerFreudSimp
