@@ -396,3 +396,108 @@ predictions of the planned general proof.
 
 **Aristotle**: file still has 1 main sorry (the general conjecture). This
 sorry remains an **open conjecture**; NOT submittable.
+
+### Session 5 — 2026-05-12 (researcher-6)
+
+**Aim.** Anchor the S3 norm fingerprint in Mathlib's cyclotomic API for
+the three smallest primes p ∈ {3, 5, 7}. After this session,
+`(r p).coeff 0 = (-1)^((p-1)/2) · Φ_{2p}(-1) = (-1)^((p-1)/2) · p` is
+verified from BOTH sides: the gallery's algebraic computation (S3
+lemma `r_constantCoeff_eq_signed_p`) and Mathlib's cyclotomic-polynomial
+API (`Polynomial.cyclotomic`).
+
+**What landed.**
+
+1. **Explicit cyclotomic forms** via `eq_cyclotomic_iff` + divisor expansion:
+   - `cyclotomic_5_eq`: Φ_5 = X⁴ + X³ + X² + X + 1
+   - `cyclotomic_7_eq`: Φ_7 = X⁶ + X⁵ + X⁴ + X³ + X² + X + 1
+   - `cyclotomic_six_eq`: Φ_6 = X² − X + 1
+   - `cyclotomic_ten_eq`: Φ_10 = X⁴ − X³ + X² − X + 1
+   - `cyclotomic_fourteen_eq`: Φ_14 = X⁶ − X⁵ + X⁴ − X³ + X² − X + 1
+
+   Each polynomial identity reduces via `eq_cyclotomic_iff` to a
+   polynomial identity over ℤ[X] that closes by `ring` after
+   substituting `cyclotomic_one`, `cyclotomic_two`, `cyclotomic_three`
+   (or `cyclotomic_5_eq` / `cyclotomic_7_eq` for the 2p cases). The
+   `properDivisors` of 5, 6, 7, 10, 14 are all small and decidable;
+   each is unfolded via `show ... by decide`.
+
+2. **Cyclotomic numerical anchors** Φ_{2p}(-1) = p for p ∈ {3, 5, 7}:
+   - `cyclotomic_six_eval_neg_one`: Φ_6(-1) = 3
+   - `cyclotomic_ten_eval_neg_one`: Φ_10(-1) = 5
+   - `cyclotomic_fourteen_eval_neg_one`: Φ_14(-1) = 7
+
+   Each proof: `rw [cyclotomic_*_eq]; simp only [eval_add, eval_sub,
+   eval_pow, eval_X, eval_one]; norm_num`. The result matches exactly
+   the cyclotomic prediction `Φ_{2p}(-1) = Φ_p(1) = p` underlying the
+   norm `N_{ℚ(θ_p)/ℚ}(2 + θ_p) = (-1)^((p-1)/2) · p`.
+
+3. **Bridge to gallery's r_p**:
+   - `r_3_constantCoeff_eq_cyclotomic`:
+     `(r 3).coeff 0 = (-1)^1 · Φ_6(-1)`
+   - `r_5_constantCoeff_eq_cyclotomic`:
+     `(r 5).coeff 0 = (-1)^2 · Φ_10(-1)`
+   - `r_7_constantCoeff_eq_cyclotomic`:
+     `(r 7).coeff 0 = (-1)^3 · Φ_14(-1)`
+   - `r_constantCoeff_eq_cyclotomic_small`: packaged 3-prime
+     conjunction.
+
+   Each proof: rewrite `(cyclotomic (2*p) ℤ).eval (-1)` to `p` using
+   the matching `cyclotomic_*_eval_neg_one` lemma, then apply the
+   corresponding projection of `r_constantCoeff_eq_signed_p` from S3.
+
+**Why this is structural progress, not enumeration theater.** The S3
+lemma `r_constantCoeff_eq_signed_p` proved the gallery side
+`(r p).coeff 0 = (-1)^((p-1)/2) · p` for p ∈ {3, 5, 7, 11, 13} by
+direct algebraic computation. S5 proves the *Mathlib cyclotomic side*
+`Φ_{2p}(-1) = p` for p ∈ {3, 5, 7} via the cyclotomic-API derivation,
+making the prediction directly verifiable. The bridge converts an
+empirical match into a formal identity — a key milestone toward the
+general proof.
+
+**Why per-prime, not uniform.** Mathlib v4.26.0 lacks the general bridge
+`Φ_{2p}(X) = Φ_p(-X)` (equivalently, `(X+1)·Φ_{2p} = X^p + 1` for
+p odd prime). Building this uniform identity is the S6 target:
+1. `prod_cyclotomic_eq_X_pow_sub_one` at n = 2p
+2. `Nat.divisors_mul_of_coprime` to identify divisors {1, 2, p, 2p}
+3. Substitute `(X-1)·Φ_p = X^p - 1` (Mathlib's `cyclotomic_prime_mul_X_sub_one`)
+4. Cancel `(X^p - 1)` (monic, nonzero in ℤ[X]) to extract
+   `(X+1)·Φ_{2p} = X^p + 1`.
+Approach: prove `Φ_{2p}(X) = Φ_p(-X)` by cancelling (X+1) on both sides,
+then evaluate at X = -1 using `eval_one_cyclotomic_prime` to get
+`Φ_{2p}(-1) = Φ_p(1) = p`. Estimated 50–100 lines.
+
+**Files modified**:
+- `proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean` (+147 lines: 470 → 617).
+- `src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/meta.json`
+  (lineCount 470 → 617, theoremCount 32 → 44, two new sections
+  `cyclotomic-anchor` and `cyclotomic-bridge`, S5 entry in
+  originalContributions, new mainTheorems entries, three new
+  mathlibDependencies, description and assumptions refreshed).
+- `research/problems/angle-trisection-cos-20-gal-oq-01-oq-03/state.md`
+  (iteration 4 → 5, S5 ACT summary, S6 next action retargeted to the
+  uniform cyclotomic bridge with three sub-tactics).
+- `research/problems/angle-trisection-cos-20-gal-oq-01-oq-03/knowledge.md`
+  (this S5 log).
+
+**Next steps for S6+.**
+
+1. **S6 primary (Tactic A1)**: Build the uniform identity
+   `(cyclotomic (2 * p) ℤ) * (X + 1) = X^p + 1` for odd prime p ≥ 3.
+   Derive `(cyclotomic (2 * p) ℤ).eval (-1) = p` via `Φ_{2p}(X) = Φ_p(-X)`
+   plus `eval_one_cyclotomic_prime`. Discharge `r_constantCoeff_eq_signed_p`
+   uniformly. Estimated 50–100 lines, low/medium Lean risk.
+2. **S6 fallback (Tactic A2)**: If S6 primary stalls on
+   `Nat.divisors_mul_of_coprime` or polynomial cancellation, extend
+   per-prime cyclotomic anchor to p ∈ {11, 13} via degree-22 / degree-26
+   `ring` identities. Mathematical content lower but formal risk lower.
+3. **S7+**: Lift trace fingerprint uniformly via
+   `Polynomial.coeff_natDegree_sub_one_of_monic` + cyclotomic-sum
+   identity.
+4. **S8+ (the HARD half)**: Sub-leading-coefficient divisibility for
+   indices `1 ≤ k < (p-1)/2 - 1`. Requires ramification calculation or
+   the local-field uniformizer ⇒ Eisenstein theorem.
+
+**Aristotle**: file still has 1 main sorry (the general conjecture).
+This sorry remains an **open conjecture**; NOT submittable. The new S5
+lemmas are all closed (no new sorries).
