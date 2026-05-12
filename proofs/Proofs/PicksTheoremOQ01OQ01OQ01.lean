@@ -423,4 +423,80 @@ theorem triangle_3_3_pick_agrees :
     contributing `pickInterior = 0`, and the boundary/area accounting
     aggregates correctly via the additivity lemma. -/
 
+-- ════════════════════════════════════════════════════════════════
+-- SECTION VIII (S3-prep): Primitive Case `twiceArea = 1` ⇒ `I = 0`
+-- ════════════════════════════════════════════════════════════════
+
+/-! ### The partition-sum identity
+
+For any test point `p`, the three edge cross-products of `T` against
+`p` sum to the signed determinant `T.det`.  Geometrically: the three
+sub-triangles `(v_i, v_{i+1}, p)` tile `T` (with signs), so twice
+their signed areas sum to twice the signed area of `T`. -/
+
+/-- **Partition-sum identity**: the three edge cross-products of `T`
+    against any lattice point `p` sum to `T.det` (= twice the signed
+    area of `T`).  Discrete analogue of the additivity of signed
+    area under triangulation: the three sub-triangles `(vᵢ, vᵢ₊₁, p)`
+    tile `T` with appropriate signs. -/
+theorem cross2_partition_sum (T : LatticeTriangle) (p : ℤ × ℤ) :
+    cross2 T.v1 T.v2 p + cross2 T.v2 T.v3 p + cross2 T.v3 T.v1 p = T.det := by
+  unfold cross2 LatticeTriangle.det
+  ring
+
+/-! ### No strict-interior lattice points in a primitive triangle
+
+If `T.twiceArea = 1`, the `StrictInterior` predicate fails at every
+lattice point.  This is the general primitive base case of the
+Pick induction. -/
+
+/-- **Primitive case — no strict interior points**: for a primitive
+    lattice triangle (`twiceArea = 1`), no lattice point is strictly
+    interior.
+
+    *Proof idea.* The three cross-products `cross2 vᵢ vᵢ₊₁ p` sum to
+    `T.det` (`cross2_partition_sum`), whose absolute value is
+    `T.twiceArea = 1`.  If all three were of the same strict sign
+    (the `StrictInterior` condition), each would have absolute value
+    `≥ 1`, so the sum would have absolute value `≥ 3`, contradicting
+    `|sum| = 1`.  `omega` discharges the integer-arithmetic
+    contradiction in both orientations. -/
+theorem primitive_no_strict_interior (T : LatticeTriangle)
+    (h : T.twiceArea = 1) (p : ℤ × ℤ) : ¬ T.StrictInterior p := by
+  intro hsi
+  have hsum := cross2_partition_sum T p
+  unfold LatticeTriangle.twiceArea at h
+  unfold LatticeTriangle.StrictInterior at hsi
+  rcases hsi with ⟨h1, h2, h3⟩ | ⟨h1, h2, h3⟩ <;> omega
+
+/-- **Primitive case (S3-prep): `twiceArea = 1` ⇒ `realInteriorCount = 0`**.
+
+    For every lattice triangle `T` with `|det T| = 1`, the strictly-
+    interior lattice-point count is zero.  This is the **general
+    primitive base case** of the Pick induction.
+
+    The lemma strictly generalises `unitTriangle_realInteriorCount`
+    (which handled the specific triangle `{(0,0), (1,0), (0,1)}` via
+    `native_decide`) to *every* primitive triangle in `ℤ²`,
+    independent of orientation, vertex labelling, or position.
+
+    The proof is purely algebraic: combining `cross2_partition_sum`
+    with `|T.det| = T.twiceArea = 1` forces the three cross-products
+    not to all share the same strict sign, which is exactly the
+    failure of `StrictInterior p`.  No bounding-box enumeration is
+    required; the conclusion holds at every lattice point. -/
+theorem primitive_realInteriorCount_zero (T : LatticeTriangle)
+    (h : T.twiceArea = 1) : T.realInteriorCount = 0 := by
+  unfold LatticeTriangle.realInteriorCount LatticeTriangle.realInterior
+  rw [Finset.card_eq_zero, Finset.filter_eq_empty_iff]
+  exact fun p _ => primitive_no_strict_interior T h p
+
+/-- **Sanity check**: the unit-triangle base case `unitTriangle_realInteriorCount`
+    is now recovered as a *uniform* corollary of the general primitive
+    lemma — not relying on `native_decide` on the specific vertex
+    coordinates.  This proves that the S3-prep generalisation is
+    consistent with the S2 base-case computation. -/
+example : unitTriangle.realInteriorCount = 0 :=
+  primitive_realInteriorCount_zero unitTriangle unitTriangle_twiceArea
+
 end PicksTheoremOQ01OQ01OQ01
