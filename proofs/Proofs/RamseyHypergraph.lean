@@ -1,5 +1,6 @@
 import Mathlib.Data.Finset.Powerset
 import Mathlib.Data.Finset.Card
+import Mathlib.Data.Finset.Map
 import Mathlib.Data.Fintype.Card
 import Mathlib.Data.Fin.Basic
 import Mathlib.Order.ConditionallyCompleteLattice.Basic
@@ -463,6 +464,89 @@ lemma is_ramsey_self_right (k t : ℕ) (hk : 1 ≤ k) (hkt : k ≤ t) :
 lemma is_ramsey_self_left (k s : ℕ) (hk : 1 ≤ k) (hks : k ≤ s) :
     IsRamsey s k s k :=
   IsRamsey.swap.mpr (is_ramsey_self_right k s hk hks)
+
+/-! ### S5-prep: monotonicity infrastructure for `ramsey_existence`'s inductive step
+
+The S5 target (the genuinely-inductive case `s > k ∧ t > k` of
+`ramsey_existence`) is the Ramsey 1930 two-layer induction on `k` and `s + t`.
+It needs three monotonicity facts that are independent of `ramsey_existence`
+itself and clean to state from the S2/S4-prep API:
+
+* `IsMonochromatic.mono` — monochromaticity is preserved by passing to a
+  subset (every `k`-subset of the smaller set is a `k`-subset of the larger
+  one).
+* `IsRamsey.mono_n` — the Ramsey condition is monotone in `n`. Restricting
+  any coloring of `[m]^{(k)}` along the embedding `Fin n ↪ Fin m` produces a
+  clique on the smaller side, which lifts back unchanged.
+* `ramseyNumber_swap` — `ramseyNumber k s t = ramseyNumber k t s`, immediate
+  corollary of `IsRamsey.swap` since both `sInf`-defining sets agree
+  pointwise.
+-/
+
+/-- **Monochromaticity is preserved by passing to a subset.** Every
+`k`-subset of `S'` is a `k`-subset of `S` (because `S' ⊆ S`), so the
+defining quantifier of `IsMonochromatic χ k S' c` is implied by that of
+`IsMonochromatic χ k S c`. -/
+lemma IsMonochromatic.mono {n k : ℕ} {χ : kColoring n} {c : Bool}
+    {S S' : Finset (Fin n)} (hSub : S' ⊆ S)
+    (hMono : IsMonochromatic χ k S c) : IsMonochromatic χ k S' c := by
+  intro T hT
+  rw [Finset.mem_powersetCard] at hT
+  obtain ⟨hTS', hTcard⟩ := hT
+  exact hMono T (Finset.mem_powersetCard.mpr ⟨hTS'.trans hSub, hTcard⟩)
+
+/-- **`IsRamsey` is monotone in `n`.** If `IsRamsey n k s t` and `n ≤ m`,
+restricting any coloring of `[m]^{(k)}` along the canonical embedding
+`Fin n ↪ Fin m` (built from `Fin.castLE` and its injectivity) produces a
+clique on the `Fin n` side, which then lifts back along the same embedding
+to a clique of the same size in `Fin m`. The lift uses `Finset.subset_map_iff`
+to recognise every `k`-subset of the lifted clique as itself the image of a
+unique `k`-subset on the smaller side, where monochromaticity is known by
+hypothesis. -/
+lemma IsRamsey.mono_n {n m k s t : ℕ} (h : n ≤ m)
+    (hR : IsRamsey n k s t) : IsRamsey m k s t := by
+  intro χ
+  let f : Fin n ↪ Fin m := ⟨Fin.castLE h, Fin.castLE_injective h⟩
+  let χ' : kColoring n := fun S => χ (S.map f)
+  rcases hR χ' with ⟨S, hSc, hSm⟩ | ⟨S, hSc, hSm⟩
+  · refine Or.inl ⟨S.map f, ?_, ?_⟩
+    · rw [Finset.card_map]; exact hSc
+    · intro T hT
+      rw [Finset.mem_powersetCard] at hT
+      obtain ⟨hTsub, hTcard⟩ := hT
+      obtain ⟨T₀, hT₀sub, hT₀eq⟩ := Finset.subset_map_iff.mp hTsub
+      have hT₀card : T₀.card = k := by
+        have hcard := congrArg Finset.card hT₀eq
+        rw [Finset.card_map] at hcard
+        omega
+      have key : χ' T₀ = false :=
+        hSm T₀ (Finset.mem_powersetCard.mpr ⟨hT₀sub, hT₀card⟩)
+      rw [hT₀eq]
+      exact key
+  · refine Or.inr ⟨S.map f, ?_, ?_⟩
+    · rw [Finset.card_map]; exact hSc
+    · intro T hT
+      rw [Finset.mem_powersetCard] at hT
+      obtain ⟨hTsub, hTcard⟩ := hT
+      obtain ⟨T₀, hT₀sub, hT₀eq⟩ := Finset.subset_map_iff.mp hTsub
+      have hT₀card : T₀.card = k := by
+        have hcard := congrArg Finset.card hT₀eq
+        rw [Finset.card_map] at hcard
+        omega
+      have key : χ' T₀ = true :=
+        hSm T₀ (Finset.mem_powersetCard.mpr ⟨hT₀sub, hT₀card⟩)
+      rw [hT₀eq]
+      exact key
+
+/-- **`ramseyNumber` is symmetric in the two color targets.** Immediate
+corollary of `IsRamsey.swap`: the defining `sInf` sets agree pointwise under
+exchanging `s` and `t`. -/
+lemma ramseyNumber_swap (k s t : ℕ) :
+    ramseyNumber k s t = ramseyNumber k t s := by
+  unfold ramseyNumber
+  congr 1
+  ext n
+  exact IsRamsey.swap
 
 /-- (OQ-03a) **Ramsey's hypergraph theorem.** For every uniformity `k ≥ 2`
 and every pair of target sizes `s, t ≥ k`, there is a finite `n` such that
