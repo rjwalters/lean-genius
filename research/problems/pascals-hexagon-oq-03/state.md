@@ -2,9 +2,27 @@
 
 ## Current phase
 
-**S2 ACT (partial)** — three dihedral defining relations on `hexRot`, `hexRev` proved; full `card_hexagonalGroup = 12` deferred to S3 (homomorphism construction).
+**S3a ACT** — exact orders proved: `orderOf hexRot = 6`, `orderOf hexRev = 2`. Full `card_hexagonalGroup = 12` deferred to S3b (homomorphism construction).
 
 ## Latest iteration
+
+**Iteration 3** (2026-05-12, researcher-3)
+
+**Outcome**: S3a complete — three new lemmas added to `proofs/Proofs/PascalsHexagonOQ03.lean` (PART 2c, ~30 lines):
+
+| Lemma | Statement | Tactic |
+|---|---|---|
+| `hexRot_pow_lt_six_ne_one` | `∀ m, m < 6 → 0 < m → hexRot ^ m ≠ 1` (matches Mathlib `orderOf_eq_iff` arg order) | `interval_cases` + `congrArg (·.toFun 0)` + `native_decide` |
+| `orderOf_hexRot` | `orderOf hexRot = 6` | `orderOf_eq_iff` + `hexRot_pow_six` + `hexRot_pow_lt_six_ne_one` |
+| `orderOf_hexRev` | `orderOf hexRev = 2` | `orderOf_eq_iff` + `pow_two; hexRev_mul_self` + `pow_one; hexRev_ne_one` |
+
+Together with the S2 dihedral relations, these are the standard injectivity prerequisites for the S3b homomorphism `DihedralGroup 6 →* Equiv.Perm (Fin 6)`: the 12 elements `{hexRot^i, hexRev * hexRot^i : i ∈ Fin 6}` are pairwise distinct precisely because `orderOf hexRot = 6` and `hexRev_hexRot_hexRev` gives the dihedral splitting.
+
+**Sorry delta**: unchanged at 5 (`card_hexagonalGroup` still sorry pending the hom).
+
+**Build status**: pending. Parent `Proofs/PascalsHexagon.lean` is broken on origin/main (memory: ~40 Mathlib drift errors lines 360–1153). S1 PR #17916 and S2 PR #17983 both merged "(build pending)"; this PR follows the same precedent.
+
+**Honest scope note**: S3a does NOT discharge OQ-03-OQ-01. It is a clean atomic step. The homomorphism construction (S3b) is the substantial part and remains for the next iteration.
 
 **Iteration 2** (2026-05-12, researcher-9)
 
@@ -57,7 +75,7 @@ Together these are precisely the defining relations of `DihedralGroup 6`. Refine
 - ACT: chose to prove the three dihedral defining relations first, rather than attempting the full `card_hexagonalGroup = 12` in one PR. Rationale: the S1 plan to use a homomorphism `DihedralGroup 6 → Sym(6)` reduces to checking the three defining relations on `(hexRot, hexRev)`. Proving them as standalone lemmas decouples the hard part (homomorphism + range + injectivity) from the easy part (concrete relations), and makes the relations reusable by other PRs (e.g., a future direct subgroup enumeration argument).
 - Verification: each lemma reduces to a finite case-split via `ext i; fin_cases i <;> decide`. Concrete on `Equiv.Perm (Fin 6)` with `Fin.rev` and `finRotate 6` as the underlying functions.
 
-**Next action (S3)**: construct `hexHom : DihedralGroup 6 →* Equiv.Perm (Fin 6)` via:
+**Next action (S3b)**: construct `hexHom : DihedralGroup 6 →* Equiv.Perm (Fin 6)` via:
 - `toFun (r i) := hexRot ^ i.val`, `toFun (sr i) := hexRev * hexRot ^ i.val` (i : ZMod 6).
 - `map_one' = rfl` (since `r 0 ↦ hexRot^0 = 1`).
 - `map_mul'`: 4 cases via the dihedral table (`r*r`, `r*sr`, `sr*r`, `sr*sr`); the `sr*sr` case uses `hexRev_mul_self`, the `r*sr` case uses `hexRev_hexRot_hexRev` (or its `ZMod 6`-iterated form). The `i.val` of `i + j : ZMod 6` may not equal `i.val + j.val` (modular reduction); use `hexRot_pow_six` to discharge the modular wraparound.
@@ -68,6 +86,14 @@ Together these are precisely the defining relations of `DihedralGroup 6`. Refine
 - Conclude: `Nat.card hexagonalGroup = Nat.card (DihedralGroup 6) = 12` via `DihedralGroup.nat_card`.
 
 Estimated S3 size: ~80–150 lines, mostly the `map_mul'` case-split and the range/injectivity proofs.
+
+### S3a (2026-05-12, researcher-3)
+
+- ORIENT: claim-random selected pascals-hexagon-oq-03 (knowledge score 28, RICH). Pre-claim checks: only open PRs on slug are non-research (#17953 enrichment, #18006/#18007 meta drift); no parallel S3 PR; `git log origin/main` confirms last research-side merge was S2 (#17983, ~5h ago). Memory flags `pascals-hexagon-oq-03*` parent broken — verified by reading state.md; followed S1/S2 "build pending" precedent.
+- ACT: chose to ship `orderOf hexRot = 6` and `orderOf hexRev = 2` as S3a, decoupling the easy "exact orders" part from the substantial homomorphism construction (S3b). Rationale: the injectivity step of S3b reduces cleanly once these orders are pinned (standard dihedral argument), so S3a is a genuine prerequisite. New lemma `hexRot_pow_lt_six_ne_one` discharges the five non-trivial powers via `interval_cases m` + `congrArg (·.toFun 0)` + `native_decide` per case — avoids the fragile `simp [hexRot, finRotate]` approach used in the existing `hexRot_ne_one`/`hexRev_ne_one` sanity lemmas.
+- Verification: each `orderOf X = n` proof uses Mathlib's `orderOf_eq_iff` with positivity precondition. The 5-case `interval_cases` produces concrete goals `(hexRot ^ k) 0 = (1 : Equiv.Perm (Fin 6)) 0 → False` for k=1..5, each settled by `native_decide` after specializing the equality at 0 via `congrArg`. The `hexRev` case is one-line: `pow_one` + `hexRev_ne_one`.
+
+**Next action (S3b)**: same as listed above the S3a log — construct `hexHom : DihedralGroup 6 →* Equiv.Perm (Fin 6)` using the S2 dihedral relations and the S3a order facts for injectivity.
 
 ## Notes
 

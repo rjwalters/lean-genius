@@ -48,7 +48,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 ACT (researcher-4, 2026-05-12, PR pending) — SCAFFOLD: created `Proofs/PascalsHexagonOQ03.lean` with hexagonal dihedral subgroup, hexagon-labeling quotient type, Pascal-line map signature, and Steiner/Kirkman point structures. 5 sorries spread over 4 sub-OQs. Gallery entry + research markdown + manifest import included. Combinatorial backbone is clean (`Sym(6) ⧸ D_6` of order 60); the concurrence proofs for Steiner and Kirkman points can either route through the Cayley-Bacharach axiom (already used in the parent file) or via direct coordinate computation in `(x, y, z)` with `ring` / `polyrith`.",
+    "progressSummary": "S3a (researcher-3, 2026-05-12) — Added orderOf_hexRot = 6 and orderOf_hexRev = 2 with supporting `hexRot_pow_lt_six_ne_one`. These are the standard injectivity prerequisites for the S3b homomorphism DihedralGroup 6 → Sym(6). Build pending — parent PascalsHexagon broken on origin/main. Sorry count unchanged at 5.",
     "builtItems": [
       "hexRot (def): cyclic rotation `finRotate 6` on `Fin 6`.",
       "hexRev (def): reversal `i ↦ 5 - i` using `Fin.rev`.",
@@ -64,26 +64,31 @@
       "pascalLine (sorry, OQ-03-OQ-02): Pascal-line map from labeling to line.",
       "hexagrammum_mysticum_pascal_lines (theorem, unconditional): existence of the Pascal-line map (trivial since it's `pascalLine` itself).",
       "steiner_count_eq_20 (sorry, OQ-03-OQ-03).",
-      "kirkman_count_eq_60 (sorry, OQ-03-OQ-04)."
+      "kirkman_count_eq_60 (sorry, OQ-03-OQ-04).",
+      "hexRot_pow_lt_six_ne_one (theorem, S3a researcher-3): ∀ m, 0<m<6 → hexRot^m ≠ 1; interval_cases + congrArg + native_decide.",
+      "orderOf_hexRot = 6 (theorem, S3a researcher-3): exact order via orderOf_eq_iff + hexRot_pow_six + the new <6 lemma.",
+      "orderOf_hexRev = 2 (theorem, S3a researcher-3): exact order via orderOf_eq_iff + pow_two/hexRev_mul_self + pow_one/hexRev_ne_one."
     ],
     "insights": [
       "**Quotient-by-D_6 formulation**: framing `HexagonLabeling := Sym(6) ⧸ ⟨hexRot, hexRev⟩` makes the 60 count fall out of Lagrange directly. Avoids ad-hoc Finset enumeration of 60 orderings.",
       "**Concrete generators via Mathlib primitives**: `hexRot = finRotate 6` and `hexRev = ⟨Fin.rev, Fin.rev, Fin.rev_rev, Fin.rev_rev⟩`. Both definitions are sorry-free, so the dihedral subgroup is fully constructive (modulo `Subgroup.closure` being noncomputable).",
       "**Structure-encoded triples**: `SteinerPoint` and `KirkmanPoint` bundle the concurrence point with a 3-element `Finset HexagonLabeling` + a card-3 proof + concurrence-on-each-Pascal-line proof. The structures are statement-only in S1 but constrain S2+ to produce concrete witnesses.",
       "**Concurrence routes via Cayley-Bacharach**: each Steiner / Kirkman triple corresponds to a pair of degenerate cubics that share 9 intersection points, 6 of them on the conic. The Cayley-Bacharach axiom (`conic_implies_pascal_constraint` in the parent file) extends naturally to give concurrence — but each triple requires its own algebraic setup.",
-      "**S_6 outer automorphism (Conway-Ryba 2012)**: a deeper insight is that the 20 Steiner triples form the orbits of the outer automorphism of S_6 on the 6 'syntheme totals'. This combinatorial frame would massively shorten the S2 enumeration but requires `S_6` outer-automorphism infrastructure not yet in Mathlib."
+      "**S_6 outer automorphism (Conway-Ryba 2012)**: a deeper insight is that the 20 Steiner triples form the orbits of the outer automorphism of S_6 on the 6 'syntheme totals'. This combinatorial frame would massively shorten the S2 enumeration but requires `S_6` outer-automorphism infrastructure not yet in Mathlib.",
+      "**orderOf_eq_iff is the cleanest path to exact-order proofs on small finite perm groups**: avoids manually constructing the cyclic subgroup; just exhibit the n-th power = 1 + that all smaller powers ≠ 1. The latter unrolls via `interval_cases` to native_decide per case."
     ],
     "mathlibGaps": [
       "No fundamental gaps — `Subgroup.closure`, `QuotientGroup`, `finRotate`, `Fin.rev`, `Subgroup.card_eq_card_quotient_mul_card_subgroup` (Lagrange) are all available.",
       "`S_6` outer automorphism is NOT in Mathlib. The Conway-Ryba combinatorial framework for Steiner triples is therefore not available as a Mathlib shortcut; OQ-03-OQ-03 must either re-derive it or fall back to direct enumeration."
     ],
     "nextSteps": [
-      "S2 SCAFFOLD: `card_hexagonalGroup = 12` via direct relations + `Fintype.card` of an explicit Finset of 12 perm elements.",
-      "S2 alt: `card_hexagon_labelings = 60` as a one-shot Lagrange computation conditional on `card_hexagonalGroup`.",
-      "S2 alt: `pascalLine` definition + well-definedness via `Quotient.lift` and the Pascal theorem permutation lemma.",
+      "S3b: construct hexHom : DihedralGroup 6 →* Equiv.Perm (Fin 6); use orderOf_hexRot + hexRev_hexRot_hexRev for injectivity; ~80-150 lines.",
+      "S3b: show MonoidHom.range hexHom = hexagonalGroup; ≤ by induction on DihedralGroup case, ≥ by hexRot = hexHom (r 1) and hexRev = hexHom (sr 0).",
+      "S3b: conclude card_hexagonalGroup = 12 via DihedralGroup.nat_card.",
+      "S2 alt: pascalLine definition + well-definedness via Quotient.lift and the Pascal theorem permutation lemma.",
       "S3: OQ-03-OQ-03 SCAFFOLD — explicit 20-element Finset of Steiner triples + concurrence proof for one representative.",
-      "Audit: confirm `Mathlib.Logic.Equiv.Fin.finRotate` signature in 4.26.0; confirm `Fin.rev_rev` exists with this name.",
-      "Build verification: run `./proofs/scripts/docker-build.sh Proofs.PascalsHexagonOQ03` — ~45 min Docker cold per `proofs/.lake` self-symlink trap."
+      "Audit: confirm Mathlib.Logic.Equiv.Fin.finRotate signature in 4.26.0; confirm Fin.rev_rev exists with this name.",
+      "Build verification: parent PascalsHexagon.lean is broken on origin/main; needs separate mechanic drift-fix PR before OQ-03 children can build."
     ]
   },
   "tags": [
