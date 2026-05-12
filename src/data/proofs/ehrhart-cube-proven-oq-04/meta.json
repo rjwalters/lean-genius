@@ -115,48 +115,48 @@
     {
       "id": "section-i-recurrence",
       "title": "Section I: Eulerian Numbers via Recurrence",
-      "startLine": 49,
-      "endLine": 95,
+      "startLine": 76,
+      "endLine": 156,
       "summary": "Defines `eulerianNumber d k : ℕ → ℕ → ℕ` via the standard recurrence A(d+1, k+1) = (k+2)A(d, k+1) + (d-k)A(d, k). Concrete values A(d, k) for d ≤ 4 proved by `rfl`: A(3, 1) = 4, A(4, 1) = A(4, 2) = 11.",
       "mathContext": "$A(d+1, k+1) = (k+2) A(d, k+1) + (d-k) A(d, k)$ with $A(0, 0) = 1$, $A(0, k+1) = 0$, $A(d+1, 0) = A(d, 0) = 1$."
     },
     {
       "id": "section-ii-row-sum",
       "title": "Section II: Row-Sum Identity",
-      "startLine": 96,
-      "endLine": 121,
+      "startLine": 157,
+      "endLine": 261,
       "summary": "Proves `eulerian_row_sum_factorial`: Σ_{k < d} A(d, k) = d! (S3, by induction on d). Concrete row-sum checks at d ≤ 4 proved by `rfl`.",
       "mathContext": "$\\sum_{k=0}^{d-1} A(d, k) = d!$ — descent-count partition of $S_d$."
     },
     {
       "id": "section-iii-palindrome",
       "title": "Section III: Palindromic Symmetry",
-      "startLine": 122,
-      "endLine": 144,
+      "startLine": 262,
+      "endLine": 371,
       "summary": "Proves `eulerian_palindrome`: A(d, k) = A(d, d-1-k) for k < d (S5, by algebraic induction on d via the recurrence — descent-reversal involution not required). Concrete checks at (3, 0)↔(3, 2), (4, 0)↔(4, 3), (4, 1)↔(4, 2) by `rfl`.",
       "mathContext": "$A(d, k) = A(d, d-1-k)$ — descent-reversal involution on $S_d$."
     },
     {
       "id": "section-iv-worpitzky",
       "title": "Section IV: Worpitzky's Identity (Main Theorem)",
-      "startLine": 145,
-      "endLine": 224,
+      "startLine": 372,
+      "endLine": 620,
       "summary": "Proves the main theorem `worpitzky_identity_cube`: (n+1)^d = Σ_{k < d} A(d, k) · C(n+1+k, d) (S4, by induction on d using `worpitzky_step` and the Eulerian recurrence). The d = 1 and d = 2 cases are proved explicitly and seven concrete (d, n) instances are verified by `decide`.",
       "mathContext": "$(n+1)^d = \\sum_{k=0}^{d-1} A(d, k) \\binom{n+1+k}{d}$ — the Worpitzky identity, equivalent statement of the Eulerian-number h*-vector."
     },
     {
       "id": "section-v-hstar",
       "title": "Section V: h*-Polynomial of the Cube",
-      "startLine": 225,
-      "endLine": 250,
+      "startLine": 621,
+      "endLine": 655,
       "summary": "Defines `cubeHStarPoly d : Polynomial ℕ` as Σ_{k < d} A(d, k) · X^k. Proves `cube_h_star_eulerian`: the k-th coefficient equals A(d, k) (S2, definitional reduction).",
       "mathContext": "$h^*([0,1]^d, t) = \\sum_{k=0}^{d-1} A(d, k) t^k$ — the Eulerian polynomial of degree d."
     },
     {
       "id": "section-vi-coherence",
       "title": "Section VI: Coherence with EhrhartCubeProven",
-      "startLine": 280,
-      "endLine": 300,
+      "startLine": 656,
+      "endLine": 677,
       "summary": "Combines Worpitzky with `EhrhartCubeProven.cube_lattice_count` to prove `cube_lattice_count_eulerian`: |n·[0,1]^d ∩ ℤ^d| = Σ A(d, k) C(n+1+k, d) (S2).",
       "mathContext": "Bridging corollary: cube lattice count = Eulerian h*-vector convolution against binomials."
     }
