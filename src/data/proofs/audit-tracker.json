@@ -2162,10 +2162,10 @@
       "result": "clean"
     },
     "combinations-formula-oq-02": {
-      "auditCount": 5,
+      "auditCount": 7,
       "issues": [],
-      "lastAudited": "2026-05-12T05:52:27Z",
-      "result": "clean"
+      "lastAudited": "2026-05-12T07:26:52Z",
+      "result": "issues-found"
     },
     "continuum-hypothesis": {
       "agentId": "auditor-cycle-20-batch",
@@ -15116,6 +15116,42 @@
     "angle-trisection-oq-05-oq-04": {
       "auditCount": 1,
       "lastAudited": "2026-05-12T06:48:56Z",
+      "result": "clean",
+      "issues": []
+    },
+    "cantors-theorem-oq-01-oq-03-oq-04": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-12T07:27:39Z",
+      "result": "clean",
+      "issues": []
+    },
+    "lagrange-theorem-oq-02-oq-02-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-12T07:28:01Z",
+      "result": "clean",
+      "issues": []
+    },
+    "mean-value-theorem-oq-02-oq-04-oq-01": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-12T07:28:40Z",
+      "result": "clean",
+      "issues": []
+    },
+    "minpoly-charpoly-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-12T07:28:58Z",
+      "result": "clean",
+      "issues": []
+    },
+    "pascals-hexagon-oq-03": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-12T07:29:19Z",
+      "result": "clean",
+      "issues": []
+    },
+    "spherical-law-of-cosines-oq-05": {
+      "auditCount": 1,
+      "lastAudited": "2026-05-12T07:30:05Z",
       "result": "clean",
       "issues": []
     }
