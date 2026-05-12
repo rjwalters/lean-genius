@@ -548,6 +548,76 @@ lemma ramseyNumber_swap (k s t : ℕ) :
   ext n
   exact IsRamsey.swap
 
+/-! ### S6 ACT-D: link coloring (neighborhood-collapse infrastructure)
+
+For the Ramsey 1930 recursive bound (the genuine inductive case
+`s > k ∧ t > k` of `ramsey_existence`), the key construction is the
+**link** of a vertex `v`: given a `k`-uniform 2-coloring `χ`, the link
+at `v` is the `(k-1)`-uniform coloring on `[n] \ {v}` that sends each
+`(k-1)`-subset `T` (disjoint from `v`) to `χ (insert v T)`. By
+induction on uniformity, the link finds a large `(k-1)`-monochromatic
+clique `S ⊆ [n] \ {v}`; the lift `insert v S` is then `k`-monochromatic
+on every `k`-subset *containing* `v`, by the very definition of the
+link.
+
+We encode the link as a coloring on the full `Fin n` since
+`kColoring n` is type-uniform (the uniformity is supplied by
+`IsRamsey`'s `k` parameter). The two declarations below give the link's
+defining `simp` rule and the `(k-1) → k` monochromaticity transfer
+used by the recursion. -/
+
+/-- The **link coloring** at vertex `v`: on a finset `T`, return the
+`χ`-color of `insert v T`. When `v ∉ T`, this is precisely the
+neighborhood coloring used in the Ramsey 1930 induction; when `v ∈ T`
+(so `insert v T = T`), the link agrees with `χ` and the value is
+inert for the recursion's purposes. -/
+def kColoring.link {n : ℕ} (χ : kColoring n) (v : Fin n) : kColoring n :=
+  fun T => χ (insert v T)
+
+@[simp] lemma kColoring.link_apply {n : ℕ} (χ : kColoring n) (v : Fin n)
+    (T : Finset (Fin n)) :
+    (kColoring.link χ v) T = χ (insert v T) := rfl
+
+/-- **Link lift (vertex side).** If `S ⊆ Fin n \ {v}` is a
+`(k-1)`-monochromatic clique of colour `c` for the link coloring
+`χ.link v`, then every `k`-subset of `insert v S` that **contains** `v`
+is coloured `c` under the original `χ`.
+
+This is the "vertex side" of the Ramsey 1930 neighborhood-collapse
+recursion: combined with a `k`-monochromatic sub-clique `S' ⊆ S` of the
+appropriate target size for `χ` itself (the "non-vertex side"), it
+proves that `insert v S'` is a `k`-monochromatic clique of size
+`|S'| + 1` for `χ`, since every `k`-subset of `insert v S'` either
+lies in `S'` (handled by the sub-clique's monochromaticity) or contains
+`v` (handled here). -/
+lemma IsMonochromatic.link_lifts {n k : ℕ} (χ : kColoring n) (v : Fin n)
+    (c : Bool) (S : Finset (Fin n)) (hvS : v ∉ S)
+    (hSm : IsMonochromatic (kColoring.link χ v) (k - 1) S c) :
+    ∀ T ∈ (insert v S).powersetCard k, v ∈ T → χ T = c := by
+  intro T hT hvT
+  rw [Finset.mem_powersetCard] at hT
+  obtain ⟨hTsub, hTcard⟩ := hT
+  -- Decompose `T = insert v T'` with `T' = T.erase v ⊆ S`, `|T'| = k - 1`.
+  have hT_eq : T = insert v (T.erase v) := (Finset.insert_erase hvT).symm
+  set T' := T.erase v with hT'def
+  have hT'_sub : T' ⊆ S := by
+    intro x hx
+    obtain ⟨hxv, hxT⟩ := Finset.mem_erase.mp hx
+    have hxInsert : x ∈ insert v S := hTsub hxT
+    rcases Finset.mem_insert.mp hxInsert with hxv' | hxS
+    · exact absurd hxv' hxv
+    · exact hxS
+  have hT'_card : T'.card = k - 1 := by
+    have hcard_erase : (T.erase v).card = T.card - 1 :=
+      Finset.card_erase_of_mem hvT
+    rw [hT'def, hcard_erase, hTcard]
+  have hT'_mem : T' ∈ S.powersetCard (k - 1) :=
+    Finset.mem_powersetCard.mpr ⟨hT'_sub, hT'_card⟩
+  have hlink : (kColoring.link χ v) T' = c := hSm T' hT'_mem
+  rw [kColoring.link_apply] at hlink
+  rw [hT_eq]
+  exact hlink
+
 /-- (OQ-03a) **Ramsey's hypergraph theorem.** For every uniformity `k ≥ 2`
 and every pair of target sizes `s, t ≥ k`, there is a finite `n` such that
 every 2-coloring of `[n]^{(k)}` contains a monochromatic `s`- or `t`-clique.
