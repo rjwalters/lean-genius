@@ -452,4 +452,61 @@ theorem lrCoeffN_def_two_eq_lrCoeff2 (ν lam μ : Partition 2) :
   · rw [lrCoeffN_def_eq_zero_of_not_support _ _ _ hsupp]
     exact (lrCoeff2_eq_zero_of_not_support ν lam μ hsupp).symm
 
+/-! ## Part X: S3c-Prep — `reverseRowWord` Decomposition (`n = 2`)
+
+The remaining S3c sorry in `lrCoeffN_def_two_eq_lrCoeff2_of_support`
+needs an explicit bijection between the lattice-word `SkewSSYTFin`
+subtype and the unique candidate prescribed by `lrCoeff2`'s
+`if`-cascade. The first sub-step of the proof sketch (Part VIII) —
+"row 0 is forced to all zeros" — requires unpacking the
+`reverseRowWord` `flatMap` over `Fin 2` and computing prefixes by
+hand. We establish here the two clean structural lemmas that this
+unpacking rests on; the lattice-forcing argument itself is deferred
+to a follow-up iteration that builds on them.
+
+* `reverseRowWord_two_eq` unfolds the `flatMap` over `Fin 2` into a
+  concrete concatenation of row-0 and row-1 reverse-mapped lists.
+  Closes by `rfl` after a `show` step rephrasing the `flatMap` over
+  the literal `List.finRange 2 = [0, 1]`.
+* `reverseRowWord_two_length` evaluates the word length to
+  `r₀ + r₁` directly from the decomposition. Useful both for the
+  row-0 forcing argument (where the lattice condition is applied at
+  prefix length `≤ r₀`) and for the eventual `Fintype.card`
+  bijection (where the content equation gives
+  `r₀ + r₁ = lam.weight`).
+-/
+
+/-- **Decomposition of `reverseRowWord` for `n = 2`.** The reverse
+    row reading word over a `Fin 2`-indexed row index unfolds via
+    the `flatMap`-on-`Fin 2` identity into the concatenation of row
+    0's reverse mapping and row 1's reverse mapping. Closed by
+    `rfl` after a `show` step that rephrases the `flatMap` on the
+    literal `List.finRange 2 = [(0 : Fin 2), 1]`. -/
+theorem reverseRowWord_two_eq {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ) :
+    T.reverseRowWord =
+      ((List.finRange (ν.parts 0 - μ.parts 0)).reverse.map
+          (fun j => T.1 ⟨0, j⟩)) ++
+      ((List.finRange (ν.parts 1 - μ.parts 1)).reverse.map
+          (fun j => T.1 ⟨1, j⟩)) := by
+  show (List.finRange 2).flatMap (fun i =>
+      ((List.finRange (ν.parts i - μ.parts i)).reverse).map
+        (fun j => T.1 ⟨i, j⟩)) = _
+  -- `List.finRange 2 = [(0 : Fin 2), (1 : Fin 2)]`, then `flatMap` on two
+  -- elements unfolds to `f 0 ++ f 1 ++ []`; the trailing `[]` is absorbed
+  -- by `List.append_nil`.
+  rw [show (List.finRange 2 : List (Fin 2)) = [(0 : Fin 2), 1] from by decide]
+  simp [List.flatMap_cons, List.flatMap_nil, List.append_nil]
+
+/-- **Length of `reverseRowWord` for `n = 2`.** A direct consequence
+    of `reverseRowWord_two_eq` plus `List.length_append`,
+    `List.length_map`, and `List.length_reverse`. -/
+theorem reverseRowWord_two_length {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ) :
+    T.reverseRowWord.length =
+      (ν.parts 0 - μ.parts 0) + (ν.parts 1 - μ.parts 1) := by
+  rw [reverseRowWord_two_eq]
+  simp [List.length_append, List.length_map, List.length_reverse,
+        List.length_finRange]
+
 end Hilbert15OQ02OQ03OQ01
