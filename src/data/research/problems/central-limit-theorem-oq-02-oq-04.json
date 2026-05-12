@@ -1,0 +1,277 @@
+{
+  "slug": "central-limit-theorem-oq-02-oq-04",
+  "title": "Mixing CLT with Ibragimov 1962 Polynomial Mixing Rates",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "S_n/\\sqrt{n} \\Rightarrow \\mathcal N(0,\\sigma^2) \\text{ for strictly stationary mean-zero } \\{X_n\\} \\text{ with } \\mathbb E|X_1|^{2+\\delta}<\\infty \\text{ and } \\alpha(n) \\le C n^{-r}, \\; r > (2+\\delta)/\\delta, \\; \\sigma^2 = \\operatorname{Var}(X_1) + 2\\sum_{k\\ge 1}\\operatorname{Cov}(X_1, X_{1+k}) > 0.",
+    "plain": "Mixing CLT with explicit Ibragimov 1962 assumptions and polynomial mixing rate alpha(n) <= C n^-r, where r > (2+delta)/delta is the sharp threshold making the long-run variance series absolutely convergent via Davydov's covariance inequality.",
+    "whyMatters": [
+      "Quantitative dependent-variable CLT — practitioners need explicit polynomial rates, not just abstract decay assumptions.",
+      "Bridge to Mathlib: Mathlib has no alpha-mixing API at all (2026-05-11 check); this is the smallest concrete extension that forces the right primitives.",
+      "Closes parent OQ-02 gap: parent file axiomatizes Ibragimov's CLT in a docstring; OQ-02-OQ-04 produces a theorem-shaped statement that can later be discharged."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Davydov 1968 covariance inequality |Cov(X,Y)| <= 8 alpha^{1-1/p-1/q} ||X||_p ||Y||_q (classical, not in Mathlib).",
+      "Polynomial rate alpha(n) <= C n^{-r} gives sum_k alpha(k)^{delta/(2+delta)} < infty iff r > (2+delta)/delta (classical real-analysis arithmetic).",
+      "Ibragimov 1962 mixing CLT under abstract summability ||X||_{2+delta} < infty and sum alpha^{delta/(2+delta)} < infty (Theorem 1.7 in Bradley 2005 survey)."
+    ],
+    "open": [
+      "OQ-A: Is r > (2+delta)/delta necessary, or do slowly-varying logs push the threshold to r = (2+delta)/delta + epsilon? Bradley 1981 has saturating examples.",
+      "OQ-B: Quantitative Berry-Esseen rate sup_x |F_n - Phi| <= C n^{-gamma(delta, r)} (Rio 1996, Tikhomirov 1980).",
+      "OQ-C: HAC-style long-run variance estimation under polynomial mixing (Newey-West 1987, Andrews 1991)."
+    ],
+    "goal": "Formalize Ibragimov 1962 mixing CLT with explicit polynomial mixing rate alpha(n) <= C n^-r, sharp threshold r > (2+delta)/delta, and positive long-run variance, building on the AlphaMixingSequence / alphaMixingCoeff / longRunVariance definitions in parent CentralLimitTheoremOQ02.lean."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-11T19:53:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE: scaffold problem statement, identify sharp threshold r > (2+delta)/delta, inventory Mathlib gaps. No Lean code this session.",
+    "blockers": [],
+    "nextAction": "S2 ORIENT: create proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean importing parent. Introduce Stationary, PolynomialMixingRate, MomentBound, IbragimovHypotheses defs and the theorem statement mixing_clt_ibragimov := by sorry. Plus tractable sub-result longrun_variance_absolutely_convergent := by sorry.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE complete. Sharp threshold r > (2+delta)/delta identified as exactly the Davydov-inequality summability condition. Parent file CentralLimitTheoremOQ02.lean (lines 419, 427, 462) already provides alphaMixingCoeff, AlphaMixingSequence, longRunVariance — OQ-02-OQ-04 will build on these. Mathlib has no alpha-mixing API.",
+    "builtItems": [
+      "research/problems/central-limit-theorem-oq-02-oq-04/problem.md — full problem statement, threshold derivation, Bernstein-block proof outline",
+      "research/problems/central-limit-theorem-oq-02-oq-04/knowledge.md — parent-file inventory, Mathlib gap analysis, 6-session decomposition plan",
+      "research/problems/central-limit-theorem-oq-02-oq-04/state.md — OBSERVE phase, S2 next-action sketch"
+    ],
+    "insights": [
+      "Sharp threshold: r > (2+delta)/delta comes directly from sum_n n^{-r delta/(2+delta)} < infty, which requires r delta/(2+delta) > 1. This is exact, not a rough bound.",
+      "Parent file already defines alphaMixingCoeff and AlphaMixingSequence — OQ-02-OQ-04 should import and extend, not redefine.",
+      "longRunVariance is already defined in parent (line 462) using tsum of covariances; under polynomial mixing the tsum is absolutely convergent (Davydov ⇒ |Cov| summable).",
+      "Bernstein block sizing p_n = floor(n^{1-1/r}), q_n = floor(n^{1-1/r-epsilon}) satisfies all four asymptotic constraints (p_n + q_n << n, q_n/p_n -> 0, n alpha(q_n) -> 0, large-block Lindeberg) precisely under r > (2+delta)/delta.",
+      "The most tractable standalone sub-result for S3 ACT is longrun_variance_absolutely_convergent — it isolates the Davydov inequality and avoids the full block decomposition."
+    ],
+    "mathlibGaps": [
+      "No alpha-mixing primitive (StronglyMixing, MixingCoefficient, alphaMixingCoeff) anywhere in Mathlib.Probability.",
+      "No Davydov / Ibragimov covariance inequality |Cov(X,Y)| <= 8 alpha^{1-1/p-1/q} ||X||_p ||Y||_q (would naturally live in Mathlib.Probability.Covariance or a new Mathlib.Probability.Mixing file).",
+      "No Bernstein block decomposition lemma for stationary sequences.",
+      "No quantitative variance-of-partial-sum bound for stationary sequences (the parent's variance_sum_bounded_of_converges handles independent / triangular-array case only)."
+    ],
+    "nextSteps": [
+      "S2 ORIENT (~200 lines): create proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean with 5 defs + 2 theorem stubs (mixing_clt_ibragimov + longrun_variance_absolutely_convergent).",
+      "S3 ACT (~100 lines): prove threshold arithmetic sum_n n^{-r delta/(2+delta)} < infty <=> r > (2+delta)/delta using Real.summable_one_div_nat_rpow.",
+      "S4 ACT (~150 lines): Davydov covariance bound via Holder + alpha-mixing coefficient — natural Aristotle companion-file target.",
+      "S5 ACT (~80 lines): combine S3 + S4 to discharge longrun_variance_absolutely_convergent.",
+      "S6+ ACT (~400 lines): Bernstein blocks, Lindeberg for large-block sum, characteristic-function convergence (Lévy continuity), full mixing CLT."
+    ]
+  },
+  "tags": [
+    "probability",
+    "mixing",
+    "clt",
+    "ibragimov",
+    "polynomial-rate",
+    "extension",
+    "seeker-selected"
+  ],
+  "relatedProofs": [
+    "central-limit-theorem",
+    "central-limit-theorem-oq-01",
+    "central-limit-theorem-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-01-oq-04",
+    "central-limit-theorem-oq-01-oq-02",
+    "central-limit-theorem-oq-01-oq-02-oq-01",
+    "central-limit-theorem-oq-01-oq-02-oq-01-oq-01",
+    "central-limit-theorem-oq-01-oq-03",
+    "central-limit-theorem-oq-02",
+    "central-limit-theorem-oq-03",
+    "central-limit-theorem-oq-04"
+  ],
+  "references": {
+    "papers": [
+      "Ibragimov, I. A. (1962). Some limit theorems for stationary processes. Theory Probab. Appl. 7(4), 349-382.",
+      "Davydov, Yu. A. (1968). Convergence of distributions generated by stationary stochastic processes. Theory Probab. Appl. 13(4), 691-696.",
+      "Rio, E. (1993). Covariance inequalities for strongly mixing processes. Ann. Inst. H. Poincaré Probab. Statist. 29(4), 587-597.",
+      "Bradley, R. C. (2005). Basic properties of strong mixing conditions: a survey and some open questions. Probability Surveys 2, 107-144.",
+      "Doukhan, P. (1994). Mixing: Properties and Examples. Lecture Notes in Statistics 85, Springer.",
+      "Bradley, R. C. (1981). A sufficient condition for linear growth of variances in a stationary random sequence. Proc. Amer. Math. Soc. 83, 586-589.",
+      "Rio, E. (1996). Sur le théorème de Berry-Esseen pour les suites faiblement dépendantes. Probab. Theory Related Fields 104, 255-282."
+    ],
+    "urls": [],
+    "mathlib": []
+  },
+  "started": "2026-05-08T19:09:00.562Z",
+  "lastUpdate": "2026-05-11T19:53:00Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": [
+    {
+      "path": "Proofs/CentralLimitTheorem.lean",
+      "filename": "CentralLimitTheorem.lean",
+      "lineCount": 621,
+      "theoremCount": 16,
+      "axiomCount": 12,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheorem.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01.lean",
+      "filename": "CentralLimitTheoremOQ01.lean",
+      "lineCount": 314,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ01.lean",
+      "lineCount": 1131,
+      "theoremCount": 54,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean",
+      "filename": "CentralLimitTheoremOQ01OQ01OQ04.lean",
+      "lineCount": 358,
+      "theoremCount": 15,
+      "axiomCount": 2,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02.lean",
+      "lineCount": 323,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 13,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02OQ01.lean",
+      "lineCount": 113,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean",
+      "filename": "CentralLimitTheoremOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 177,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ02OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ01OQ03.lean",
+      "filename": "CentralLimitTheoremOQ01OQ03.lean",
+      "lineCount": 147,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ01OQ03.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02.lean",
+      "filename": "CentralLimitTheoremOQ02.lean",
+      "lineCount": 730,
+      "theoremCount": 19,
+      "axiomCount": 1,
+      "defCount": 11,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02Aristotle.lean",
+      "filename": "CentralLimitTheoremOQ02Aristotle.lean",
+      "lineCount": 137,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03.lean",
+      "filename": "CentralLimitTheoremOQ03.lean",
+      "lineCount": 242,
+      "theoremCount": 8,
+      "axiomCount": 14,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03OQ01.lean",
+      "filename": "CentralLimitTheoremOQ03OQ01.lean",
+      "lineCount": 199,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03OQ01Aristotle.lean",
+      "filename": "CentralLimitTheoremOQ03OQ01Aristotle.lean",
+      "lineCount": 85,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ03OQ02.lean",
+      "filename": "CentralLimitTheoremOQ03OQ02.lean",
+      "lineCount": 292,
+      "theoremCount": 13,
+      "axiomCount": 11,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ04.lean",
+      "filename": "CentralLimitTheoremOQ04.lean",
+      "lineCount": 650,
+      "theoremCount": 21,
+      "axiomCount": 9,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ04.lean"
+    }
+  ]
+}
