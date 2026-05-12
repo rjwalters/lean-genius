@@ -1,11 +1,115 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12T00:30:00Z
-**Iteration**: 21 (S21 ingredient 5 — Subsingleton step under conditional cardinality hypothesis)
-**Last Updated**: 2026-05-12 (researcher-12)
+**Since**: 2026-05-12T03:30:00Z
+**Iteration**: 22 (S22 cardinality bridge — `12 − 9 = 3` complement-side ncard)
+**Last Updated**: 2026-05-12 (researcher-11)
 
-## S21 (researcher-12, 2026-05-12, this PR)
+## S22 (researcher-11, 2026-05-12, this PR)
+
+Cardinality bridge step (Step 2 of S22-next per the S21 spec), one
+new private lemma plus one composition corollary, both axiom-free,
+build pending:
+
+`cube_id_complement_ncard_eq_three_of_card_nine` (private):
+given `Nat.card G = 12` and the S16 target form
+`Set.ncard {g : G | g^3 = 1} = 9`, concludes the complement form
+```
+Set.ncard ((Set.univ : Set G) \ {g | g^3 = 1}) = 3
+```
+via elementary `Set.subset_univ` + `Set.ncard_univ` + `Set.ncard_diff`
+arithmetic (`12 − 9 = 3` closes by `rfl` on closed `Nat` literals).
+
+`sylow_two_subsingleton_of_cube_id_card_nine` (private, corollary):
+composes the bridge with S21's `sylow_two_subsingleton_of_compl_ncard`
+to derive `Subsingleton (Sylow 2 G)` *directly* from the S16 target
+form `Set.ncard {g | g^3 = 1} = 9`, eliminating the need for downstream
+consumers to thread `hncard_compl` manually.
+
+### Strategic positioning
+
+S22 is the *cardinality bridge* identified in `state.md` §"Next
+iteration (S22)" Step 2 (researcher-12, 2026-05-12). It is fully
+**independent of in-flight S16 PRs #17586 and #17587**: those target
+the cube-id count `Set.ncard {g | g^3 = 1} = 9` directly (Sylow-3
+disjointness + per-fiber cardinality + disjoint-union arithmetic);
+S22 takes that count as a *hypothesis* and bridges to the complement
+form S20/S21 consume. The bridge composes via the cube-id count
+without depending on its derivation path.
+
+With S22 in hand, closing the S10 sorry in
+`sylow_two_unique_when_n3_four` reduces to **one** discharge:
+deriving `Set.ncard {g | g^3 = 1} = 9` from `Nat.card (Sylow 3 G) = 4`.
+That is exactly the composition target `cube_id_card_eq_nine` that
+the in-flight S16 PRs are building toward (via S15's set-decomposition
+`{g | g^3 = 1} = {1} ∪ ⋃ Q, (Q \ {1})` plus the `1 + 4·2 = 9`
+disjoint-union arithmetic).
+
+**Non-overlap with in-flight PRs**:
+* #17586 + #17587 target the cube-id count (ingredient 3); S22 takes
+  that count as a hypothesis and bridges to the complement form.
+  Strictly downstream — no content overlap.
+* #17685 (S19) provides the bare forward subset
+  `(P \ {1}) ⊆ {g | g^3 ≠ 1}` form of ingredient 4 (Sylow-2 side);
+  S22 sits on the *complement-side cardinality* axis, not on
+  ingredient 4 at all.
+* #17528 (old S14 PR) predates the merged S14 #17536; unrelated.
+* No content overlap with any open PR for this slug.
+
+**Carries no hypothesis on `n_3 = 4`** directly: the `n_3 = 4`
+dependency is fully encapsulated in the cube-id count hypothesis
+(the same shape S16 PRs aim to discharge). S22 is a pure
+"cube-id count + total-order ⇒ complement count" argument.
+
+### Counts
+
+* `lineCount`: 1584 → 1649 (+65, including ~45 lines of docstring +
+  ~20 lines of proof body across the two new lemmas)
+* `theoremCount`: 33 → 35 (+2 private lemmas)
+* `substantiveTheoremCount`: 18 (unchanged — both new lemmas are
+  private supporting ingredients, not user-facing API)
+* `axiomCount`: 1 (unchanged)
+* `sorries`: 1 (unchanged — `sylow_two_unique_when_n3_four` remains
+  the S10 closure target; S22 prepares the final cardinality bridge
+  without closing it, since the cube-id count hypothesis is still
+  conditional pending S16)
+
+### Build status
+
+**[BUILD UNVERIFIED]** Same caveat as S9–S21: worktree's
+`proofs/.lake` is a recursive self-symlink, so local Docker builds
+re-fresh-clone Mathlib (~30–45 min cold). The new lemmas use only
+Mathlib API already exercised in this same file:
+
+* `Set.subset_univ` — `Mathlib.Data.Set.Basic`, transitively imported.
+* `Set.ncard_univ` — `Mathlib.Data.Set.Card`, transitively imported
+  (used at line 891 of this file via `Nat.card_coe_set_eq`).
+* `Set.ncard_diff` — `Mathlib.Data.Set.Card`, used at line 893 of
+  this file via `Set.ncard_diff_singleton_of_mem` (sibling lemma).
+* `rfl` on `12 - 9 = 3` — Nat literal arithmetic.
+
+No new imports, no new Mathlib lemmas beyond what S11.5–S21 already
+exercise.
+
+### Next iteration (S23)
+
+After this PR lands, the remaining work for closing
+`sylow_two_unique_when_n3_four`:
+
+1. **Compose `cube_id_card_eq_nine`** from in-flight S16 PRs (#17586
+   + #17587) plus S15's `cube_id_set_eq_disjoint_union` and the
+   `1 + 4·2 = 9` disjoint-union arithmetic. Estimated ~15 lines once
+   both S16 PRs land.
+2. **Close S10**: feed `cube_id_card_eq_nine` output into S22's
+   `sylow_two_subsingleton_of_cube_id_card_nine`. ~3 lines, replacing
+   the single `sorry` in `sylow_two_unique_when_n3_four`.
+
+Total ~18 lines once #17586 + #17587 land. S22 makes the final
+closure mechanical given the S16 composition.
+
+---
+
+## S21 (researcher-12, 2026-05-12, merged via #17713)
 
 Final ingredient (5/5) of the S10 element-counting closure
 `sylow_two_unique_when_n3_four`, per

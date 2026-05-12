@@ -1072,6 +1072,71 @@ private lemma sylow_two_subsingleton_of_compl_ncard
   -- Lift Set-equality to Subgroup-equality, then to Sylow-equality.
   exact Sylow.ext (SetLike.coe_injective hset)
 
+/-- **S22 cardinality bridge** (private, axiom-free).
+
+    From the cube-identity element count
+    `Set.ncard {g : G | g^3 = 1} = 9` (the S16 target, in flight via
+    PRs #17586 + #17587) together with `Nat.card G = 12`, derives the
+    complement-side cardinality
+    `Set.ncard ((Set.univ : Set G) \ {g | g^3 = 1}) = 3`
+    via elementary `Set.ncard_diff` + `Set.ncard_univ` arithmetic
+    (`12 − 9 = 3`).
+
+    This is exactly the `hncard_compl` hypothesis taken by S20's
+    `sylow_two_set_diff_one_eq_compl_cube_id` /
+    `sylow_two_set_eq_one_union_compl_cube_id` and S21's
+    `sylow_two_subsingleton_of_compl_ncard`, expressed in terms of
+    the S16 target. With this bridge in hand, the S10 closure of
+    `sylow_two_unique_when_n3_four` reduces to deriving the cube-id
+    count `= 9` from `Nat.card (Sylow 3 G) = 4` (the in-flight S16
+    composition target `cube_id_card_eq_nine`).
+
+    **Non-overlap with in-flight PRs**:
+    * #17586 / #17587 target the *cube-id count* (S16 ingredient 3);
+      this lemma takes that count as a hypothesis and bridges to the
+      complement form. No content overlap.
+    * #17685 (S19) and the merged S17/S18/S20/S21 lemmas all operate
+      on the Sylow-2 side under the *already-derived* `hncard_compl`
+      hypothesis; this lemma supplies the derivation, not a refactor
+      of consumers.
+
+    **Proof skeleton**: `{g | g^3 = 1} ⊆ Set.univ` is `Set.subset_univ`,
+    `Set.ncard (Set.univ : Set G) = Nat.card G = 12` via `Set.ncard_univ`
+    + `hcard`, then `Set.ncard_diff` gives
+    `Set.ncard (univ \ S) = Set.ncard univ − Set.ncard S`. Closing
+    `12 − 9 = 3` is `rfl` for closed `Nat` literals. -/
+private lemma cube_id_complement_ncard_eq_three_of_card_nine
+    {G : Type*} [Group G] [Finite G]
+    (hcard : Nat.card G = 12)
+    (hcube_card : Set.ncard {g : G | g ^ 3 = 1} = 9) :
+    Set.ncard ((Set.univ : Set G) \ {g : G | g ^ 3 = 1}) = 3 := by
+  have hsubset : {g : G | g ^ 3 = 1} ⊆ (Set.univ : Set G) := Set.subset_univ _
+  have hncard_univ : Set.ncard (Set.univ : Set G) = 12 := by
+    rw [Set.ncard_univ]; exact hcard
+  rw [Set.ncard_diff hsubset, hncard_univ, hcube_card]
+
+/-- **S22 Subsingleton composition** (private, axiom-free): composes
+    the cardinality bridge `cube_id_complement_ncard_eq_three_of_card_nine`
+    with S21's `sylow_two_subsingleton_of_compl_ncard` to derive
+    `Subsingleton (Sylow 2 G)` directly from the S16 target form
+    (`Set.ncard {g | g^3 = 1} = 9`) without the user needing to thread
+    the complement-cardinality hypothesis manually.
+
+    With this corollary in hand, closing the S10 sorry in
+    `sylow_two_unique_when_n3_four` reduces to a *single* discharge —
+    deriving `Set.ncard {g : G | g^3 = 1} = 9` from
+    `Nat.card (Sylow 3 G) = 4`, which is the composition of the
+    in-flight S16 PRs #17586 + #17587 plus the `1 + 4·2 = 9`
+    disjoint-union arithmetic (S15 supplies the set decomposition). -/
+private lemma sylow_two_subsingleton_of_cube_id_card_nine
+    {G : Type*} [Group G] [Finite G]
+    [Fact (Nat.Prime 2)]
+    (hcard : Nat.card G = 12)
+    (hcube_card : Set.ncard {g : G | g ^ 3 = 1} = 9) :
+    Subsingleton (Sylow 2 G) :=
+  sylow_two_subsingleton_of_compl_ncard hcard
+    (cube_id_complement_ncard_eq_three_of_card_nine hcard hcube_card)
+
 /-- **S10 placeholder**: when `|G| = 12` has 4 Sylow 3-subgroups, the
     Sylow 2-subgroup is unique. Proof via element counting:
     `|{g : G | g^3 = 1}| = 1 + 4 · 2 = 9` (using pairwise trivial

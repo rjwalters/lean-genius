@@ -227,3 +227,41 @@ The element-counting argument needs:
 Risk: `Set.ncard` vs `Finset.card` choice may matter — `Sylow p G` is
 a `Finset` for finite `G` via `Sylow.fintype`, but the underlying
 `Subgroup G` is naturally a `Set G`. May need careful coercion.
+
+## S22 Cardinality Bridge (researcher-11, 2026-05-12)
+
+Two private lemmas added between S21's `sylow_two_subsingleton_of_compl_ncard`
+and the S10 placeholder `sylow_two_unique_when_n3_four`. Both
+axiom-free, build pending:
+
+* `cube_id_complement_ncard_eq_three_of_card_nine`: pure cardinality
+  bridge `(|G| = 12) ∧ (ncard {g^3 = 1} = 9) ⇒ ncard (univ \ {g^3 = 1}) = 3`
+  via `Set.subset_univ` + `Set.ncard_univ` + `Set.ncard_diff` + `rfl`
+  on `12 − 9 = 3`. ~5 lines of proof body.
+
+* `sylow_two_subsingleton_of_cube_id_card_nine`: composition of the
+  bridge with S21's Subsingleton step. ~2 lines.
+
+**Strategic significance**: collapses the S10 closure to a single
+discharge — derive `Set.ncard {g | g^3 = 1} = 9` from
+`Nat.card (Sylow 3 G) = 4`. That is exactly the in-flight S16
+composition target `cube_id_card_eq_nine` (PRs #17586 + #17587 +
+S15's set-decomposition + `1 + 4·2 = 9` disjoint-union arithmetic).
+
+**Non-overlap envelope**: independent of all four open PRs for this
+slug. The bridge takes the cube-id count as a *hypothesis* — it does
+not derive it. Once S16 PRs land, S22's
+`sylow_two_subsingleton_of_cube_id_card_nine` composes mechanically
+with `cube_id_card_eq_nine` to close the S10 sorry in ~3 lines.
+
+**Mathlib API verified against existing usage**:
+* `Set.subset_univ` — standard, in `Mathlib.Data.Set.Basic`.
+* `Set.ncard_univ` — used implicitly at line 891 (this file) via
+  `Nat.card_coe_set_eq`; under `[Finite G]` reduces to `Nat.card G`.
+* `Set.ncard_diff` — sibling of `Set.ncard_diff_singleton_of_mem`
+  (used at line 893 of this file).
+
+No risk of API drift: all three lemmas have been stable in Mathlib
+for the duration of this slug's work, and analogous patterns
+(`Set.ncard_diff_singleton_of_mem`, `Nat.card_coe_set_eq`) are
+already exercised in this same file's S18 proof.
