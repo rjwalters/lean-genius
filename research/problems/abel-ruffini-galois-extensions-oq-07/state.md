@@ -1,11 +1,121 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-09T03:00:00Z
-**Iteration**: 17 (S17 ingredient 4 forward fragment — Sylow-2 ∩ cube-id = {1})
-**Last Updated**: 2026-05-09 (researcher-13)
+**Since**: 2026-05-11T00:30:00Z
+**Iteration**: 20 (S20 ingredient 4 reverse containment — set-equality via cardinality, conditional on S16 cube-id ncard)
+**Last Updated**: 2026-05-11 (researcher-5)
 
-## S17 (researcher-13, 2026-05-09, this PR)
+## S20 (researcher-5, 2026-05-11, this PR)
+
+Fifth atomic ingredient for closing S10's `sylow_two_unique_when_n3_four`
+sorry, per `session-13-s10-element-count-spec.md` §4. Two new private
+lemmas (both axiom-free, build pending):
+
+1. `sylow_two_set_diff_one_eq_compl_cube_id` (private, conditional):
+   given `|G| = 12` and the cardinality hypothesis
+   `Set.ncard ((Set.univ : Set G) \ {g | g^3 = 1}) = 3`, concludes the
+   set equality
+   ```
+   (P : Set G) \ {1} = (Set.univ : Set G) \ {g | g^3 = 1}
+   ```
+   for any `P : Sylow 2 G`. Composes:
+   * S17 `sylow_two_inter_cube_id_eq_singleton_one` (#17630, merged) —
+     forward containment via Boolean rearrangement.
+   * S18 `sylow_two_set_diff_one_ncard_eq_three` (#17648, merged) —
+     LHS cardinality `= 3`.
+   * Hypothesis `hncard_compl` — RHS cardinality `= 3`.
+   * `Set.eq_of_subset_of_ncard_le` — subset + ncard match → equality.
+2. `sylow_two_set_eq_one_union_compl_cube_id` (private, conditional):
+   full set-equality form
+   ```
+   (P : Set G) = {1} ∪ ((Set.univ : Set G) \ {g | g^3 = 1}).
+   ```
+   The RHS is *P-independent* — exactly the ingredient-5 form needed
+   for the `Subsingleton (Sylow 2 G)` closure. Proof via
+   `Set.union_diff_cancel` + the main S20 lemma.
+
+### Strategic positioning
+
+S20 supplies the *cardinality-driven set EQUALITY* form of ingredient
+4 (the merged S17/S18 PRs supplied the forward intersection form and
+the LHS cardinality respectively; the in-flight S19 PR #17685 supplies
+the bare forward subset `(P \ {1}) ⊆ {g | g^3 ≠ 1}` in named-lemma
+form). The `hncard_compl` hypothesis is the cardinality corollary of
+S16's `cube_id_card_eq_nine` (in flight via PRs #17586 + #17587),
+since for `|G| = 12`: `12 - 9 = 3`. Once S16 lands, the hypothesis is
+dischargeable by elementary `Set.ncard_diff` / `Set.ncard_univ`
+arithmetic, and S20's full-set-equality corollary inlines into the
+closure of `sylow_two_unique_when_n3_four` (the S10 placeholder).
+
+**Carries no hypothesis on `n_3 = 4`**: the `n_3 = 4` dependency is
+fully encapsulated in the cube-id complement cardinality hypothesis.
+S20 is a pure "subset + cardinality match → equality" argument.
+
+**Non-overlap with in-flight PRs**:
+* #17586 (Sylow-3 set-level disjointness) and #17587 (Sylow-3 per-fiber
+  cardinality) target ingredient 3 (`cube_id_card_eq_nine` for the
+  Sylow-3 disjoint union); S20 targets ingredient 4 (Sylow-2 / cube-id
+  complement). No content overlap.
+* #17685 (S19, researcher-3) provides the bare *forward subset*
+  `(P \ {1}) ⊆ {g | g^3 ≠ 1}` as a named lemma — equivalent in content
+  to the inline subset step of S20's main lemma (re-derived in 8 lines
+  here for self-containment). Once #17685 lands, S20's Step 1 can be
+  refactored to invoke the #17685 lemma (mod a `Set.univ \ {g | g^3 = 1} =
+  {g | g^3 ≠ 1}` syntactic bridge), but the equality + corollary
+  contribution of S20 is independent of that refactor.
+* #17528 (S14) predates the merged S14 #17536; no relation.
+
+### Counts
+
+* `lineCount`: 1404 → 1531 (+127, including ~70 lines of docstring +
+  ~57 lines of proof body across the two new lemmas)
+* `theoremCount`: 30 → 32 (+2 private lemmas)
+* `substantiveTheoremCount`: 18 (unchanged — both new lemmas are
+  private supporting ingredients, not user-facing API)
+* `axiomCount`: 1 (unchanged)
+* `sorries`: 1 (unchanged — `sylow_two_unique_when_n3_four` remains
+  the S10 closure target; S20 prepares ingredient 4's reverse
+  containment without closing it)
+
+### Build status
+
+**[BUILD UNVERIFIED]** Same caveat as S9–S18: worktree's
+`proofs/.lake` is a recursive self-symlink, so local Docker builds
+re-fresh-clone Mathlib (~30–45 min cold). The two new lemmas use only
+Mathlib API verified against the file's existing patterns:
+
+* `Set.eq_of_subset_of_ncard_le` — `Mathlib.Data.Set.Card`,
+  transitively imported via `Mathlib.Tactic` and explicitly exercised
+  by S18 (line 893).
+* `Set.toFinite` — implicit auto-finiteness from `[Finite G]`,
+  identical pattern to S18's `Nat.card_coe_set_eq` step.
+* `Set.union_diff_cancel`, `Set.singleton_subset_iff`,
+  `Set.mem_diff`, `Set.mem_singleton_iff`, `Set.mem_inter`,
+  `Set.mem_univ` — `Mathlib.Data.Set.Basic` (transitively imported).
+* `omega` — used once for the trivial `3 ≤ 3` discharge after
+  rewriting both ncards.
+
+No new imports, no new Mathlib lemmas beyond what S13–S18 already
+exercise.
+
+### Next iteration (S21 / S22)
+
+After this PR lands, the remaining work for closing
+`sylow_two_unique_when_n3_four`:
+
+1. **Discharge `hncard_compl`** from S16's `cube_id_card_eq_nine` (in
+   flight). Once #17586 + #17587 land and the S16 cardinality lemma is
+   composed from them, `hncard_compl` reduces to one or two lines via
+   `Set.ncard_diff` (`(univ \ S).ncard = |univ| - |S|` when both
+   finite) and `Set.ncard_univ` (`|univ| = Nat.card G = 12`).
+2. **Close the `Subsingleton` step** via `Sylow.ext` +
+   `SetLike.coe_injective` applied to the P-independent set-equality
+   form of S20's corollary `sylow_two_set_eq_one_union_compl_cube_id`.
+   Estimated ~10-15 lines.
+
+---
+
+## S17 (researcher-13, 2026-05-09, merged via #17630)
 
 Fourth of five ingredients (forward containment fragment) for closing
 S10's `sylow_two_unique_when_n3_four` sorry, per
