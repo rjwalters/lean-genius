@@ -40,18 +40,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE complete (researcher-10). The axiom engelsma_lower_bound from BoundedPrimeGapsOQ03.lean was located and shown to be logically equivalent to the finitary statement '∀ H ∈ (Finset.range 246).powersetCard 50, 0 ∈ H → ¬ IsAdmissible H' via translation invariance. Three approach paths were surveyed: Path A (direct native_decide on $\\binom{246}{50}\\approx 1.7\\times 10^{54}$ subsets) is infeasible; Path B (verified backtracking with prime-residue pruning, reifying Engelsma's algorithm) is the target; Path C (sieve + residual decide) does not reduce the certified-search cost. No Lean changes in S1 — doc-only iteration with problem.md / knowledge.md / state.md created. Feasibility checkpoint deferred to S4 (small-scale Path-B prototype).",
+    "progressSummary": "S4: native_decide Engelsma analogue at (k,w)=(6,16). leanFile.axiomCount bumped 0→1 (Lean.ofReduceBool). 6 theorems, 192 lines.",
     "builtItems": [
       "research/problems/bounded-prime-gaps-oq-03-oq-02/problem.md — formal statement, classification, approach menu, related-proof table.",
       "research/problems/bounded-prime-gaps-oq-03-oq-02/knowledge.md — full S1 survey: §1 target, §2 reduction to finitary form (with bridge-lemma proof sketch), §3 decidability and direct-enumeration cost, §4 Engelsma's algorithm and Path-B representation choice, §5 sieve-based fallback Path C (eliminated), §6 risk register, §7 Mathlib API survey, §8 sibling lessons, §9 next-action menu.",
-      "research/problems/bounded-prime-gaps-oq-03-oq-02/state.md — S1 conclusion + S2 next-action recipe."
+      "research/problems/bounded-prime-gaps-oq-03-oq-02/state.md — S1 conclusion + S2 next-action recipe.",
+      "theorem engelsma_analogue_6_16 in BoundedPrimeGapsOQ03OQ02.lean (native_decide over 8008 subsets)"
     ],
     "insights": [
       "Translation invariance reduces the unbounded `∀ H : Finset ℕ` axiom to a finitary `∀ H ∈ Finset.range 246` quantification — this is the *only* way certified computation is even relevant.",
       "Decidability of IsAdmissible H is straightforward (~40 lines) — the `∀ p Prime` quantifier is automatically bounded by `p ≤ H.card` since for larger primes card_image_le forces the inequality.",
       "Path A's direct `native_decide` is infeasible by ~50 orders of magnitude; the only viable certified-computation strategy is to implement Engelsma's pruning in Lean and prove its correctness, then native_decide the search-returns-empty equation.",
       "Path C (sieve-based lower bound + residual enumeration) does not help because the sieve gives min_diam ≥ 207, leaving $\\binom{207}{50}$ subsets to enumerate — still infeasible without pruning. So C does not remove the need for B.",
-      "The hard work is concentrated in S5+ (verified backtracking, ~500-1500 lines). S2 (Decidable instance) and S3 (finitary-form bridge) are well-scoped and independent of the feasibility question."
+      "The hard work is concentrated in S5+ (verified backtracking, ~500-1500 lines). S2 (Decidable instance) and S3 (finitary-form bridge) are well-scoped and independent of the feasibility question.",
+      "S4 (researcher-10, 2026-05-12, build pending): native_decide Engelsma analogue at (k,w)=(6,16) over 8008 subsets — first axiom contribution (Lean.ofReduceBool)."
     ],
     "mathlibGaps": [
       "Decidable (IsAdmissible H) — not in Mathlib (admissible-tuple theory is absent from Mathlib entirely).",
@@ -164,9 +166,9 @@
     {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
       "filename": "BoundedPrimeGapsOQ03OQ02.lean",
-      "lineCount": 149,
-      "theoremCount": 5,
-      "axiomCount": 0,
+      "lineCount": 192,
+      "theoremCount": 6,
+      "axiomCount": 1,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,

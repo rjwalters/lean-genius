@@ -2,12 +2,56 @@
 
 **Phase**: ACT
 **Since**: 2026-05-12T05:35:00Z
-**Iteration**: 3
-**Researcher**: researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Iteration**: 4
+**Researcher**: researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
 
 ## Current Focus
 
-S3 (this PR) — Kernel-`decide` regression checks for the S2 `Decidable`
+S4 (this PR) — Small-case Engelsma analogue via `native_decide` at
+`(k, w) = (6, 16)`, exercising the S2 `Decidable` instance over the
+$\binom{16}{6} = 8008$ subset enumeration:
+
+```
+theorem engelsma_analogue_6_16 :
+    ∀ H ∈ (Finset.range 16).powersetCard 6,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 12 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide
+```
+
+This is the **first Path-A enumeration that requires `native_decide`**
+(kernel `decide` is exponentially slower over 8008 subset enumerations
+because the kernel reduction cannot batch the per-subset
+`IsAdmissibleBdd` decision into native code).
+
+**Axiom bookkeeping**: `native_decide` introduces the
+`Lean.ofReduceBool` axiom. `leanFile.axiomCount` for
+`BoundedPrimeGapsOQ03OQ02.lean` is bumped from `0` to `1` in
+`src/data/research/problems/bounded-prime-gaps-oq-03-oq-02.json`.
+This is the first axiom this file contributes. Other files in the
+project chain remain unchanged.
+
+**theoremCount**: 5 → 6 (the new `engelsma_analogue_6_16`).
+**lineCount**: 149 → 192.
+
+## Next Action
+
+**S5 — Mid-size Engelsma analogue at `(k, w) = (10, 30)`** per
+knowledge.md §3.3. Concrete target:
+
+```lean
+theorem engelsma_analogue_10_30 :
+    ∀ H ∈ (Finset.range 30).powersetCard 10,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 22 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide
+```
+
+`Nat.choose 30 10 ≈ 3 × 10^7`. Estimated `native_decide` runtime
+30–120 seconds. May exceed default CI timeouts; defer to S6+ if
+build-time becomes a problem.
+
+### Previous focus (S3)
+
+S3 — Kernel-`decide` regression checks for the S2 `Decidable`
 instance: four theorems demonstrating correct reduction on small tuples.
 
 * `admissible_twin_via_S2`         — `IsAdmissible {0, 2}` via S2 instance.
@@ -78,29 +122,8 @@ None at S2. Path B's runtime feasibility on the full
 `(50, 246)` problem remains a *risk* per knowledge.md §6.4
 but cannot be assessed until at least S4.
 
-## Next Action
+## Subsequent Iterations (deferred)
 
-**S4 — `native_decide` Engelsma-analogue at `(k, w) = (6, 16)`** per
-knowledge.md §3.3. Concrete target:
-
-```lean
-theorem engelsma_analogue_6_16 :
-    ∀ H ∈ (Finset.range 16).powersetCard 6,
-      0 ∈ H → IsAdmissible H → 12 ≤ Finset.max' H ⟨0, ‹_›⟩ := by
-  native_decide
-```
-
-`Nat.choose 16 6 = 8008` subsets — tractable for `native_decide`. The
-`Lean.ofReduceBool` axiom introduced by `native_decide` must be reflected
-in meta.json (`axiomCount` 0 → 1).
-
-**S5 onward (deferred)**:
-
-- S5 — `(k, w) = (10, 30)` or larger small-case Engelsma
-  analogue. `Nat.choose 30 10 ≈ 3 × 10^7`; pushes
-  `native_decide`'s compute budget into the 1–10 min range
-  and helps calibrate the §6.4 runtime extrapolation toward
-  `(50, 246)`.
 - S6 — `engelsma_lower_bound_of_finitary` bridge lemma
   (Option B prerequisite) per knowledge.md §2.4.
 - S7+ — Path B verified-backtracking prototype, building on
