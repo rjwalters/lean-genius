@@ -75,6 +75,32 @@
     ]
   },
   {
+    "id": "euler-criterion-cyclic-group",
+    "proofId": "infinitude-primes-4k3-oq-03",
+    "range": {
+      "startLine": 55,
+      "endLine": 66
+    },
+    "type": "insight",
+    "title": "Why Euler's Criterion Holds: Cyclicity of (ℤ/pℤ)×",
+    "content": "The underlying reason Euler's criterion forces $p \\equiv 1 \\pmod 4$ when $-1$ is a square mod $p$ is purely group-theoretic: $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ is cyclic of order $p - 1$ (Fermat's little theorem + primitive-root existence). If $k^2 \\equiv -1 \\pmod p$ then $k$ has order exactly $4$ in this group — $k^4 = (k^2)^2 = (-1)^2 = 1$, but $k^2 = -1 \\neq 1$ and $k$ itself is not $\\pm 1$. By Lagrange's theorem applied to the cyclic group, $4 \\mid p - 1$, i.e. $p \\equiv 1 \\pmod 4$. The Mathlib lemma `Nat.Prime.mod_four_ne_three_of_dvd_isSquare_neg_one` packages this argument; this annotation surfaces *why* the criterion is true, not just *that* it is used. The same reasoning extends to higher cyclotomic cases: $-1$ is an $n$-th power mod $p$ iff $2n \\mid p - 1$, which is the elementary input for primes ≡ 1 (mod 2n).",
+    "mathContext": "Group-theoretic core: $|\\mathrm{ord}_p(k)|$ divides $|(\\mathbb{Z}/p\\mathbb{Z})^\\times| = p - 1$. If $k^2 = -1$ in $(\\mathbb{Z}/p\\mathbb{Z})^\\times$ then $\\mathrm{ord}_p(k) = 4$, so $4 \\mid p - 1$, i.e. $p \\equiv 1 \\pmod 4$. Compactly: $\\left(\\frac{-1}{p}\\right) = 1 \\iff 4 \\mid p - 1$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclic group",
+      "order of element",
+      "Lagrange's theorem",
+      "Fermat's little theorem",
+      "primitive root mod p",
+      "multiplicative group of finite field"
+    ],
+    "prerequisites": [
+      "(ℤ/pℤ)× is cyclic of order p−1",
+      "Lagrange's theorem (subgroup order divides group order)",
+      "order of an element in a cyclic group"
+    ]
+  },
+  {
     "id": "main-theorem",
     "proofId": "infinitude-primes-4k3-oq-03",
     "range": {
