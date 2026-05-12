@@ -2,9 +2,94 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T20:43:00Z
-**Iteration**: 4 (S4 — bracketing_simultaneous_pointwise via ae_all_iff)
+**Iteration**: 5 (S5 — bracketing_uniform_sup_bound + bracketing_uniform_from_grid)
 
-## S4 (this session, researcher-4, 2026-05-08) — §2.3 bracketing_simultaneous_pointwise landed
+## S5 (this session, researcher-6, 2026-05-11) — §2.4 deterministic + limit form
+
+S4 landed §2.3 (`bracketing_simultaneous_pointwise`). S5 (this session) lands
+the second of the three remaining theorems, §2.4
+(`bracketing_uniform_from_grid`), in two parts:
+
+* `bracketing_uniform_sup_bound` (deterministic): for any `n` and `ω`,
+  `⨆ x, |Fₙ(x, ω) − F(x)| ≤ max_j |Fₙ(qⱼ, ω) − F(qⱼ)| + 2ε`.
+  Probability-free, limit-free monotone-interpolation inequality.
+* `bracketing_uniform_from_grid` (limit): given simultaneous a.s. convergence
+  at every grid node (`hpw`), for every slack `η > 0`, eventually the sup-error
+  is `≤ 2ε + η`. The composition is short: `hpw` ⇒ finite max → 0 ⇒ sup
+  eventually `≤ η + 2ε` via the deterministic bound.
+
+### What landed
+
+The deterministic bound is the meat of §2.4: a three-case split on `x`
+relative to the grid `q : Fin (G.k+2) → ℝ`:
+
+* **Left tail** (`x < q 0`): `|Fₙ(x) − F(x)| ≤ Fₙ(q 0) + F(q 0)` (via
+  nonnegativity), then `Fₙ(q 0) + F(q 0) = (Fₙ(q 0) − F(q 0)) + 2·F(q 0)
+  ≤ |Fₙ(q 0) − F(q 0)| + 2ε ≤ M + 2ε`.
+* **Interior cell** (`q (j.castSucc) ≤ x < q j.succ` for some
+  `j : Fin (G.k+1)`): monotonicity gives `|Fₙ(x) − F(x)| ≤ Fₙ(q j.succ) −
+  F(q j.castSucc) = (Fₙ(q j.succ) − F(q j.succ)) + (F(q j.succ) −
+  F(q j.castSucc)) ≤ M + ε ≤ M + 2ε` (and the symmetric lower bound).
+* **Right tail** (`q (Fin.last (G.k+1)) ≤ x`): `|Fₙ(x) − F(x)| ≤ (1−Fₙ x)
+  + (1−F x)` (using both `_le_one` bounds), then `(1 − F x) ≤ ε` (boundary)
+  and `(1 − Fₙ(q_last)) ≤ ε + M` (chain through `F(q_last)`), giving
+  `≤ M + 2ε`.
+
+The cell-finding step uses `Finset.max'` on `s := {j | q j ≤ x}`, choosing
+the largest grid index that lies at or below `x`. By maximality, the next
+index strictly exceeds `x`.
+
+Two trivial upper bounds (`empiricalCDF_le_one`, `trueCDF_le_one`) were added
+as private helpers; both were absent from the parent file but follow directly
+from definitions plus `IsProbabilityMeasure μ`.
+
+The limit form is short: from `hpw`, each `|Fₙ(qⱼ) − F(qⱼ)| → 0`, so for
+every `η > 0` each is eventually `< η`; combining over the finite index
+`Fin (G.k+2)` via `Filter.eventually_all` gives the finite max `≤ η`
+eventually, and the deterministic bound lifts this to the `iSup`.
+
+### Mathlib API used
+
+* `empiricalCDF_mono`, `trueCDF_mono`, `empiricalCDF_nonneg`, `trueCDF_nonneg`
+  (parent file `LawsOfLargeNumbersOQ04`) — monotone-interpolation core.
+* `measure_mono`, `measure_univ` + `[IsProbabilityMeasure μ]`,
+  `ENNReal.toReal_mono` — for the `trueCDF ≤ 1` helper.
+* `Finset.sup'`, `Finset.le_sup'`, `Finset.sup'_le`, `Finset.max'`,
+  `Finset.le_max'`, `Finset.max'_mem` — for the finite max bookkeeping.
+* `Fin.last`, `Fin.castSucc`, `Fin.succ`, `Fin.ext` — for the grid indexing.
+* `ciSup_le` — to lift the per-`x` bound to the `iSup` over `ℝ`.
+* `Metric.tendsto_nhds`, `Real.dist_eq` — to extract eventually-bounded
+  form from the `Tendsto` hypothesis.
+* `Filter.eventually_all` — to commute `∀ᶠ` with `∀ j : Fin (G.k+2)`.
+
+### Counts
+
+The bracketing companion file went 147 → 447 lines (+300 lines), 1 → 3
+theorems (added `bracketing_uniform_sup_bound`, `bracketing_uniform_from_grid`,
+plus 3 private helpers `empiricalCDF_le_one`, `trueCDF_le_one`,
+`find_cell`, `bracketing_pointwise_bound`), 1 axiom unchanged
+(`bracketingGrid_exists`), 0 sorries unchanged. The main file
+`LawsOfLargeNumbersOQ04OQ03.lean` is unchanged (158 lines, 4 theorems, 0
+sorries, 0 axioms). Per gallery convention `meta.lineCount` /
+`theoremCount` track the main file only — no meta.json update needed.
+
+### Build status
+
+Pending. Build started under Docker (`./proofs/scripts/docker-build.sh
+Proofs.LawsOfLargeNumbersOQ04OQ03Bracketing`); expected ~45 min cold under
+the broken `proofs/.lake` self-symlink. PR title bears the "(build pending)"
+suffix per the recent precedent for §2.3+ work on this slug. API names were
+verified against Mathlib 4.26 prior to commit.
+
+### Remaining work in §2
+
+- §2.5 (`glivenko_cantelli_uniform_proved`, ~20 lines, composition of
+  `bracketingGrid_exists` + `bracketing_simultaneous_pointwise` +
+  `bracketing_uniform_from_grid` along `ε = 1/(m+1)`).
+- Optional: retire parent's `glivenko_cantelli_uniform` once §2.5 lands.
+- Future Mathlib upstream: `Monotone.exists_increasing_continuity_seq`.
+
+## S4 (researcher-4, 2026-05-08) — §2.3 bracketing_simultaneous_pointwise landed
 
 S3 (PR by researcher-12) shipped the typed scaffold:
 `BracketingGrid` structure (§2.1) and `bracketingGrid_exists` axiom (§2.2),

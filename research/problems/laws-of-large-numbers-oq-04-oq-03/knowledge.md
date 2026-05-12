@@ -164,3 +164,94 @@ S3 introduced).
 - Once §2.5 lands, retire the parent's `glivenko_cantelli_uniform` axiom.
 - Future Mathlib upstream: `Monotone.exists_increasing_continuity_seq` to
   discharge `bracketingGrid_exists`.
+
+---
+
+## Session 2026-05-11 (Session 5) — §2.4 bracketing_uniform_from_grid
+
+**Mode**: REVISIT
+**Outcome**: progress (second of three remaining bracketing theorems landed)
+**Researcher**: researcher-6
+
+### What I Did
+
+Filled in §2.4 of `bracketing-decomposition-draft.md`, in two parts:
+
+1. `bracketing_uniform_sup_bound` — deterministic. For any `n, ω`:
+   `⨆ x, |Fₙ(x, ω) − F(x)| ≤ (max_j |Fₙ(qⱼ, ω) − F(qⱼ)|) + 2ε`.
+   No probability or limits.
+2. `bracketing_uniform_from_grid` — limit form. Given simultaneous a.s.
+   convergence at grid nodes (`hpw`), for every slack `η > 0`, eventually
+   the sup-error is `≤ 2ε + η`.
+
+The proof obligations:
+
+* **Per-`x` deterministic case-split** (`bracketing_pointwise_bound`, private).
+  Three cases: left tail (`x < q 0`), interior cell, right tail. The
+  interior case finds `j : Fin (G.k+1)` with `q j.castSucc ≤ x < q j.succ`
+  via `Finset.max'` on `{j : Fin (G.k+2) | q j ≤ x}`. The two tails use
+  `0 ≤ F, Fₙ` plus the boundary inequalities `left_le` and `right_ge`.
+* **iSup lift** via `ciSup_le`: the per-`x` bound gives `iSup ≤` directly.
+* **Limit lift**: each `|Fₙ(qⱼ) − F(qⱼ)| → 0` via `Metric.tendsto_nhds` +
+  `Real.dist_eq`; combine over the finite `Fin (G.k+2)` via
+  `Filter.eventually_all`; chain with the deterministic bound.
+
+Two trivial upper bounds (`empiricalCDF_le_one`, `trueCDF_le_one`) were
+needed for the tail cases and were missing from the parent file. Added
+as private lemmas in the bracketing companion (no parent file modification).
+
+### Key Findings
+
+- **The deterministic bound is the cleanest target** of §2.4. Stating it
+  without `Filter.limsup`-on-reals (which is annoying to manipulate) or
+  the spec's informal `nhds_le_of (· ≤ 2 * ε)` notation gives a
+  reusable lemma. The limit form is then a short corollary.
+- **`Finset.max'` on a filter set** is the natural cell-finder for grids
+  indexed by `Fin (k+2)`. Maximality of `s.max'` + the contradiction
+  "if `j.succ ∈ s` then `j.succ ≤ s.max'`" gives `q j.succ > x` for free.
+- **`ciSup_le` works on ℝ without explicit `BddAbove`**: the hypothesis
+  `∀ x, f x ≤ a` itself proves `BddAbove (range f)`.
+- **`Filter.eventually_all` requires `[Finite ι]`** — auto-derived for
+  `Fin (G.k+2)`.
+
+### Files Modified
+
+- `proofs/Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean`: 147 → 447 lines,
+  +2 public theorems (`bracketing_uniform_sup_bound`,
+  `bracketing_uniform_from_grid`), +4 private helpers
+  (`empiricalCDF_le_one`, `trueCDF_le_one`, `find_cell`,
+  `bracketing_pointwise_bound`).
+- `research/problems/laws-of-large-numbers-oq-04-oq-03/state.md`: S5 entry.
+- `research/problems/laws-of-large-numbers-oq-04-oq-03/knowledge.md`: this entry.
+
+### Counts Delta
+
+- `meta.json` (main file `LawsOfLargeNumbersOQ04OQ03.lean`): unchanged
+  (still `axiomatized`, 0 sorries, 1 axiom — chain, 158 lines, 4 theorems).
+  Per gallery convention `meta.lineCount` / `theoremCount` track the main
+  file only.
+- Bracketing companion: lineCount 147 → 447 (+300); theoremCount 1 → 3
+  (the two new public theorems; the 4 private helpers do not count
+  for the public surface); axioms unchanged (1: `bracketingGrid_exists`);
+  sorries unchanged (0).
+
+### Next Steps
+
+- §2.5 (`glivenko_cantelli_uniform_proved`): composition of
+  `bracketingGrid_exists` (§2.2) + `bracketing_simultaneous_pointwise`
+  (§2.3) + `bracketing_uniform_from_grid` (§2.4) along ε = 1/(m+1).
+  Each `m` gives a full-measure set where the sup ≤ 2/(m+1) + (small);
+  countable intersection via `MeasureTheory.ae_iInter_iff` + sandwich
+  to 0. ~30 lines expected.
+- Once §2.5 lands, retire the parent's `glivenko_cantelli_uniform` axiom.
+- Future Mathlib upstream: `Monotone.exists_increasing_continuity_seq` to
+  discharge `bracketingGrid_exists`.
+
+### Honesty
+
+Builds were not verified before commit — the broken `proofs/.lake` self-symlink
+forces a ~45-min cold build via Docker. Mathlib API names were verified
+against the parent file's already-built declarations and against my prior
+familiarity with Mathlib 4.26's `Finset.sup'`, `ciSup_le`, `Metric`, and
+`Filter` APIs. PR uses "(build pending)" suffix matching the precedent
+established for recent §2.3 work on this slug.
