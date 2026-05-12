@@ -90,9 +90,44 @@
     },
     "crossReferences": [
         {
-            "proofId": "infinitude-primes",
+            "proofId": "bezout-identity",
+            "relationship": "foundational",
+            "description": "Bézout's identity is the algebraic engine behind Sylvester's proof. The Frobenius theorem reduces to: for coprime $a, b$ and $n > ab - a - b$, find $k \\in [0, a)$ with $kb \\equiv n \\pmod{a}$. Existence of such $k$ is *exactly* the surjectivity of $k \\mapsto kb \\bmod a$ on $\\{0, \\ldots, a-1\\}$, which is the multiplicative form of Bézout's identity in $\\mathbb{Z}/a$: $\\gcd(a, b) = 1$ implies $b$ is a unit modulo $a$, so $bk$ ranges over all residues. The Lean proof uses `Finite.injective_iff_surjective`, a categorical reformulation of the same fact."
+        },
+        {
+            "proofId": "gcd-algorithm",
+            "relationship": "foundational",
+            "description": "The Euclidean GCD algorithm is the computational engine that makes the coprimality hypothesis $\\gcd(a, b) = 1$ checkable. The Frobenius formula $g(a, b) = ab - a - b$ is meaningless when $\\gcd > 1$ — in fact there is no largest non-representable number in that case. The Lean file's `native_decide` examples (Chicken McNugget $g(2,3) = 1$, $g(3,4) = 5$, $g(4,5) = 11$, $g(3,5) = 7$) all rely on Mathlib's `Nat.gcd` decision procedure to verify coprimality before the formula applies."
+        },
+        {
+            "proofId": "binary-gcd",
             "relationship": "related",
-            "description": "Both proofs make fundamental use of prime and coprimality properties from Mathlib's Nat.GCD infrastructure"
+            "description": "Stein's binary GCD — an alternative efficient algorithm for the coprimality test that underlies the Frobenius hypothesis. The conceptual link: both this entry and Stein's algorithm exploit the modular-arithmetic structure of $\\mathbb{Z}$ at coprime pairs. The bijection $k \\mapsto kb \\bmod a$ on $\\{0, \\ldots, a-1\\}$ used here is the discrete analogue of the shift/subtract loop in Stein: both transit through residue classes modulo $a$ using only operations that respect the coprime structure."
+        },
+        {
+            "proofId": "chinese-remainder-constructive",
+            "relationship": "related",
+            "description": "Chinese Remainder Theorem — the structural extension of the Frobenius bijection beyond two moduli. The Frobenius proof uses the case $(a, b)$ coprime $\\Rightarrow$ $\\mathbb{Z}/a \\times \\mathbb{Z}/b \\cong \\mathbb{Z}/(ab)$ implicitly: it asserts every residue $r \\pmod a$ has a unique representative in $[0, a)$ that equals $kb$ for some $k$. CRT generalises to $n$ pairwise coprime moduli, opening the door to the (NP-hard) $n$-generator Frobenius problem listed in this entry's open questions."
+        },
+        {
+            "proofId": "wilsons-theorem",
+            "relationship": "related",
+            "description": "Wilson's theorem ($(p-1)! \\equiv -1 \\pmod p$ for prime $p$) — another classical use of the bijection $k \\mapsto kb \\bmod p$ on $\\{1, \\ldots, p-1\\}$. Wilson's proof pairs each $k$ with its inverse $k^{-1} \\bmod p$, which exists by exactly the same coprimality argument used here in `mul_mod_injective`. Both proofs are instances of the meta-pattern *coprimality $\\Rightarrow$ permutation of residues*; the present Frobenius proof uses the permutation's *surjectivity*, while Wilson uses its *pairing structure*."
+        },
+        {
+            "proofId": "partition-theorem",
+            "relationship": "related",
+            "description": "Integer partitions — the closest combinatorial cousin to representability $n = ax + by$. Where partition theory counts *all* ways to express $n$ as a sum of positive parts, the Frobenius problem counts only those expressions using the restricted multiset $\\{a, a, \\ldots, b, b, \\ldots\\}$. The denumerant $r(n) := |\\{(x, y) \\in \\mathbb{N}^2 : ax + by = n\\}|$ studied in classical Frobenius theory connects directly to partition generating functions; this gallery entry's open question on the $(a-1)(b-1)/2$ count is the Frobenius analogue of partition-counting identities."
+        },
+        {
+            "proofId": "infinitude-primes",
+            "relationship": "context",
+            "description": "Euclid's infinitude of primes — the historical and conceptual root of the coprimality-as-tool methodology that drives this entry. Both proofs leverage the same Mathlib `Nat.GCD` infrastructure (`Nat.Coprime`, `Nat.gcd_eq_one`, etc.) and both arrive at existence results via Bézout-style arguments at the level of $\\mathbb{Z}$. Distantly related but conceptually adjacent."
+        },
+        {
+            "proofId": "mathematical-induction",
+            "relationship": "context",
+            "description": "Mathematical induction underlies the closure-based bootstrap in `Representable` (§I of this file): the base cases $0, a, b$ are representable, and the closure properties `n representable $\\Rightarrow$ n+a, n+b representable` propagate representability through induction on $\\mathbb{N}$. The Lean tactics `Nat.rec` and `induction'` are the syntactic surface of this principle in the proofs of `large_representable` and `eventually_all_representable`."
         }
     ],
     "leanFile": {
