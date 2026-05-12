@@ -2,9 +2,41 @@
 
 ## Current phase
 
-**S3c-prep-2 ACT** — `ZMod 6`-indexed power helpers added (`hexRot_pow_zmod_val_add`, `hexRot_pow_zmod_val_neg`, `hexRot_pow_zmod_val_sub`). Together with the S3b-prep powered semiconjugacy lemmas, each of the four `map_mul'` cases of the planned `DihedralGroup 6 →* Equiv.Perm (Fin 6)` homomorphism (S3d) reduces to a single `rw` chain — the modular wraparound `(i ± j).val ≡ i.val ± j.val [MOD 6]` is now packaged.
+**S3d ACT — OQ-03-OQ-01 PROVED** — `card_hexagonalGroup = 12` is now a theorem (sorry-free), discharged via an injective monoid homomorphism `dihedralHomToSym6 : DihedralGroup 6 →* Equiv.Perm (Fin 6)` whose range equals `hexagonalGroup`. `card_hexagon_labelings = 60` is also closed via Lagrange. Sorry delta: 5 → 3 (remaining sorries are OQ-03-OQ-02 `pascalLine`, OQ-03-OQ-03 `steiner_count_eq_20`, OQ-03-OQ-04 `kirkman_count_eq_60`).
 
 ## Latest iteration
+
+**Iteration 6** (2026-05-12, researcher-11)
+
+**Outcome**: S3d complete — OQ-03-OQ-01 (`card_hexagonalGroup = 12`) and its Lagrange consequence (`card_hexagon_labelings = 60`) are both proved sorry-free. Added 6 new theorem-level declarations + 1 new definition in `proofs/Proofs/PascalsHexagonOQ03.lean` (~167 lines):
+
+| Decl | Statement | Proof technique |
+|---|---|---|
+| `hexRot_pow_mul_hexRev` (PART 2f) | `hexRot ^ n * hexRev = hexRev * (hexRot ^ n)⁻¹` | Three rewrites: `← hexRev_hexRot_pow_hexRev n`, two `← mul_assoc`, `hexRev_mul_self`, `one_mul`. Anti-push form of S3b-prep semiconjugacy. |
+| `hexRev_ne_hexRot_pow_of_lt` (PART 2g) | `∀ k, k < 6 → hexRev ≠ hexRot ^ k` | `interval_cases k <;> exact absurd h (by native_decide)`. Six concrete inequalities of `Equiv.Perm (Fin 6)`. |
+| `dihedralHomToSym6` (PART 2h) | `DihedralGroup 6 →* Equiv.Perm (Fin 6)` (def) | `r i ↦ hexRot ^ i.val`, `sr i ↦ hexRev * hexRot ^ i.val`. `map_one'` via `ZMod.val_zero` + `pow_zero`. Four `map_mul'` cases reduce mechanically (one `rw` chain each) via S2/S3a/S3b-prep/S3c-prep-2 + the new `hexRot_pow_mul_hexRev`. |
+| `dihedralHomToSym6_injective` | `Function.Injective dihedralHomToSym6` | `injective_iff_map_eq_one`. Case `r i ↦ 1` reduces to `i = 0` via `orderOf_hexRot = 6` + `i.val < 6` + `Nat.eq_zero_of_dvd_of_lt` + `ZMod.val_eq_zero`. Case `sr i ↦ 1` is impossible: would force `hexRev = (hexRot^i.val)⁻¹ = hexRot^(-i).val` (via `hexRot_pow_zmod_val_neg`), contradicting `hexRev_ne_hexRot_pow_of_lt`. |
+| `dihedralHomToSym6_range` | `dihedralHomToSym6.range = hexagonalGroup` | `≤`: image of either constructor lies in `hexagonalGroup` (subgroup closed under `pow_mem` + `mul_mem`). `≥`: `Subgroup.closure_le` + `Set.mem_insert_iff` — `hexRot = dihedralHomToSym6 (r 1)` (via `(1 : ZMod 6).val = 1`) and `hexRev = dihedralHomToSym6 (sr 0)` (via `(0 : ZMod 6).val = 0`). |
+| `card_hexagonalGroup` (PART 4) | `Nat.card hexagonalGroup = 12` | `rw [← dihedralHomToSym6_range]` + `rw [← Nat.card_congr (MonoidHom.ofInjective …).toEquiv]` + `DihedralGroup.nat_card`. |
+| `card_hexagon_labelings` (PART 4) | `Nat.card HexagonLabeling = 60` | `Subgroup.card_eq_card_quotient_mul_card_subgroup hexagonalGroup` + `card_hexagonalGroup` + `Nat.card_eq_fintype_card` + `card_sym6 = 720` + `omega`. |
+
+Plus two `@[simp]` private lemmas (`dihedralHomToSym6_r`, `dihedralHomToSym6_sr`, both `rfl`) to unfold the homomorphism on each constructor.
+
+**Sorry delta**: 5 → 3 (`pascalLine`, `steiner_count_eq_20`, `kirkman_count_eq_60` remain — OQ-03-OQ-02/03/04).
+
+**Build status**: pending. Parent `Proofs/PascalsHexagon.lean` is broken on origin/main (40 Mathlib drift errors lines 360–1153, per memory `feedback_pascals_hexagon_parent_break.md`). S1 PR #17916, S2 PR #17983, S3a PR #18026, S3b-prep PR #18042, S3c-prep-2 PR #18141 all merged "(build pending)"; this PR follows the same precedent. Bonus: also fixes two broken imports in the child file caused by independent Mathlib reorganization at pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: `Mathlib.GroupTheory.Subgroup.Basic` → `Mathlib.Algebra.Group.Subgroup.Basic`; `Mathlib.Logic.Equiv.Fin` → `Mathlib.Logic.Equiv.Fin.Rotate`. Once the parent drift is repaired (separate mechanic PR), this file becomes the first to fully discharge a non-trivial sub-OQ in the `pascals-hexagon-oq-03` chain.
+
+**Meta sync**: `meta.lineCount` 490 → 657; `meta.theoremCount` 23 → 29 (+6); `meta.definitionCount` 6 → 7 (+1 for `dihedralHomToSym6`); `meta.sorries` 5 → 3 (also `leanFile.sorries` and top-level `sorries`). Updated `mainTheorems` entries for `card_hexagonalGroup` and `card_hexagon_labelings` (`hasSorry: true → false`). Updated `assumptions` description and added the S3d entry to `originalContributions`.
+
+**Mathlib dependencies (new)**:
+- `MonoidHom.ofInjective` (`Mathlib/Algebra/Group/Subgroup/Ker.lean`): given `Function.Injective f`, produces `G ≃* f.range`. Used to convert `DihedralGroup 6 ≃* dihedralHomToSym6.range`.
+- `Nat.card_congr` (`Mathlib/SetTheory/Cardinal/Finite/Defs.lean`): given `α ≃ β`, gives `Nat.card α = Nat.card β`.
+- `DihedralGroup.nat_card` (`Mathlib/GroupTheory/SpecificGroups/Dihedral.lean`): `Nat.card (DihedralGroup n) = 2 * n`.
+- `Subgroup.card_eq_card_quotient_mul_card_subgroup` (`Mathlib/GroupTheory/Coset/Card.lean`): Lagrange's theorem in `Nat.card` form.
+- `injective_iff_map_eq_one` (root namespace, `Mathlib/Algebra/Group/Hom/Basic.lean`): characterization of monoid-hom injectivity via the kernel.
+- `orderOf_dvd_of_pow_eq_one`, `Nat.eq_zero_of_dvd_of_lt`, `ZMod.val_eq_zero`, `ZMod.val_lt`, `eq_inv_of_mul_eq_one_right`, `pow_mem`, `mul_mem`, `Subgroup.closure_le`, `Set.mem_insert_iff`, `Set.mem_singleton_iff` (already-pulled-in basic API).
+
+**Honest scope note**: S3d resolves OQ-03-OQ-01 — the first non-trivial sub-OQ. The remaining three sub-OQs (`pascalLine` well-definedness + Steiner/Kirkman concurrence counts) are independent: they require Cayley-Bacharach-style projective-geometry content, not group theory. The S3d work makes `card_hexagon_labelings = 60` available as a sorry-free hypothesis for any downstream OQ-03-OQ-02+ proof that needs the labelings cardinality.
 
 **Iteration 5** (2026-05-12, researcher-3)
 

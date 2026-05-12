@@ -3,8 +3,8 @@ import Mathlib.Data.Fintype.Perm
 import Mathlib.Data.Fin.Basic
 import Mathlib.GroupTheory.QuotientGroup.Basic
 import Mathlib.GroupTheory.SpecificGroups.Dihedral
-import Mathlib.GroupTheory.Subgroup.Basic
-import Mathlib.Logic.Equiv.Fin
+import Mathlib.Algebra.Group.Subgroup.Basic
+import Mathlib.Logic.Equiv.Fin.Rotate
 import Mathlib.Tactic
 
 import Proofs.PascalsHexagon
@@ -59,9 +59,10 @@ Mysticum):
 * `HexagonLabeling := Sym(6) ⧸ hexagonalGroup` — the type of hexagonal
   labelings.
 * `card_sym6 = 720` — proved by `native_decide`.
-* `card_hexagonalGroup = 12` — **OQ-03-OQ-01** (sorry).
+* `card_hexagonalGroup = 12` — **OQ-03-OQ-01** (S3d, proved via the
+  dihedral homomorphism `dihedralHomToSym6`).
 * `card_hexagon_labelings = 60` — follows from the previous two by
-  Lagrange (sorry).
+  Lagrange (proved).
 * `pascalLine` — Pascal-line map from labelings, **OQ-03-OQ-02** (sorry).
 * `SteinerPoint`, `KirkmanPoint` — structures encoding the
   concurrence-triple data.
@@ -70,11 +71,16 @@ Mysticum):
 
 ## Sub-OQ decomposition
 
-* **OQ-03-OQ-01** (~150 lines): `card_hexagonalGroup = 12`. Strategy:
-  enumerate the 12 elements of `Subgroup.closure {hexRot, hexRev}` as
-  `{ρ^k σ^ε : k ∈ Fin 6, ε ∈ Fin 2}`, check `hexRev * hexRot * hexRev =
-  hexRot⁻¹` (dihedral relation), and apply `Subgroup.card_closure_eq`
-  / direct `Fintype` instance.
+* **OQ-03-OQ-01** (**PROVED — S3d**): `card_hexagonalGroup = 12`.
+  Constructed the homomorphism
+  `dihedralHomToSym6 : DihedralGroup 6 →* Equiv.Perm (Fin 6)` sending
+  `r i ↦ hexRot ^ i.val` and `sr i ↦ hexRev * hexRot ^ i.val`, proved
+  injectivity (via `orderOf_hexRot = 6` and `hexRev_ne_hexRot_pow_of_lt`),
+  proved the range equals `hexagonalGroup`, and concluded
+  `Nat.card hexagonalGroup = Nat.card (DihedralGroup 6) = 12` via
+  `MonoidHom.ofInjective` + `Nat.card_congr` + `DihedralGroup.nat_card`.
+  The dependent claim `card_hexagon_labelings = 60` follows by Lagrange
+  (`Subgroup.card_eq_card_quotient_mul_card_subgroup`).
 
 * **OQ-03-OQ-02** (~100 lines): `pascalLine` definition and
   well-definedness on the quotient. Given `lbl : HexagonLabeling`,
@@ -331,6 +337,160 @@ private lemma hexRot_pow_zmod_val_sub (j i : ZMod 6) :
   rw [← hexRot_pow_zmod_val_add (-i) j, neg_add_eq_sub]
 
 -- ============================================================
+-- PART 2f: Anti-Push of `hexRev` Past `hexRot ^ n` (S3d-prep)
+-- ============================================================
+-- The S3b-prep `hexRev_semiconj_hexRot_pow` gives the "push-from-left"
+-- form `hexRev * hexRot^n = (hexRot^n)⁻¹ * hexRev`. The S3d `map_mul'`
+-- case `r i * sr j ↦ sr (j - i)` also needs the "push-from-right" form
+-- `hexRot^n * hexRev = hexRev * (hexRot^n)⁻¹`, derived below in three
+-- rewrites from `hexRev_hexRot_pow_hexRev` (S3b-prep) and
+-- `hexRev_mul_self` (S2).
+
+/-- **Anti-push form**: `hexRot ^ n * hexRev = hexRev * (hexRot ^ n)⁻¹`.
+    Companion to `hexRev_semiconj_hexRot_pow` for the `r * sr`
+    `map_mul'` case of the S3d homomorphism. Proved by left-multiplying
+    `hexRev_hexRot_pow_hexRev` by `hexRev` and collapsing
+    `hexRev * hexRev` via `hexRev_mul_self`. -/
+private theorem hexRot_pow_mul_hexRev (n : ℕ) :
+    hexRot ^ n * hexRev = hexRev * (hexRot ^ n)⁻¹ := by
+  rw [← hexRev_hexRot_pow_hexRev n, ← mul_assoc, ← mul_assoc, hexRev_mul_self, one_mul]
+
+-- ============================================================
+-- PART 2g: `hexRev` Is Not a Power of `hexRot` (S3d-prep)
+-- ============================================================
+-- For injectivity of the S3d homomorphism, the only non-trivial case
+-- is `sr i ↦ 1`: this would force `hexRev = (hexRot ^ i.val)⁻¹`, which
+-- via `hexRot_pow_zmod_val_neg` equals `hexRot ^ (-i).val` — a power
+-- of `hexRot` with exponent in `[0, 6)`. The lemma below rules out
+-- this case by explicit enumeration over the six possible exponents.
+
+/-- **Disjointness of rotations and reflections**: `hexRev` is not equal
+    to any of the six powers `hexRot ^ 0, …, hexRot ^ 5`.
+    Verified by `native_decide` on each explicit exponent. -/
+private lemma hexRev_ne_hexRot_pow_of_lt (k : ℕ) (hk : k < 6) :
+    hexRev ≠ hexRot ^ k := by
+  intro h
+  interval_cases k <;> exact absurd h (by native_decide)
+
+-- ============================================================
+-- PART 2h: The Dihedral Homomorphism (S3d)
+-- ============================================================
+-- Build `dihedralHomToSym6 : DihedralGroup 6 →* Equiv.Perm (Fin 6)`
+-- sending `r i ↦ hexRot ^ i.val` and `sr i ↦ hexRev * hexRot ^ i.val`.
+-- All four `map_mul'` cases close mechanically using the S2/S3a/S3b-prep/
+-- S3c-prep-2 + S3d-prep lemmas (no new computation on `Equiv.Perm`):
+--   • `r * r`:  `hexRot_pow_zmod_val_add`
+--   • `r * sr`: `hexRot_pow_mul_hexRev` + `hexRot_pow_zmod_val_sub`
+--   • `sr * r`: `hexRot_pow_zmod_val_add` (after a single `mul_assoc`)
+--   • `sr * sr`: `hexRev_hexRot_pow_hexRev` + `hexRot_pow_zmod_val_sub`
+
+/-- The monoid homomorphism `DihedralGroup 6 →* Equiv.Perm (Fin 6)`
+    realising `hexagonalGroup` as the image of the abstract dihedral
+    group of order 12. Rotations `r i` map to powers of `hexRot`;
+    reflections `sr i` map to `hexRev` composed with a power of `hexRot`. -/
+def dihedralHomToSym6 : DihedralGroup 6 →* Equiv.Perm (Fin 6) where
+  toFun
+    | DihedralGroup.r i => hexRot ^ i.val
+    | DihedralGroup.sr i => hexRev * hexRot ^ i.val
+  map_one' := by
+    show hexRot ^ (0 : ZMod 6).val = 1
+    rw [ZMod.val_zero, pow_zero]
+  map_mul' := by
+    intro x y
+    cases x with
+    | r i =>
+      cases y with
+      | r j =>
+        show hexRot ^ (i + j).val = hexRot ^ i.val * hexRot ^ j.val
+        exact hexRot_pow_zmod_val_add i j
+      | sr j =>
+        show hexRev * hexRot ^ (j - i).val = hexRot ^ i.val * (hexRev * hexRot ^ j.val)
+        rw [← mul_assoc, hexRot_pow_mul_hexRev, mul_assoc, hexRot_pow_zmod_val_sub]
+    | sr i =>
+      cases y with
+      | r j =>
+        show hexRev * hexRot ^ (i + j).val = hexRev * hexRot ^ i.val * hexRot ^ j.val
+        rw [mul_assoc, ← hexRot_pow_zmod_val_add]
+      | sr j =>
+        show hexRot ^ (j - i).val = hexRev * hexRot ^ i.val * (hexRev * hexRot ^ j.val)
+        rw [← mul_assoc, hexRev_hexRot_pow_hexRev, hexRot_pow_zmod_val_sub]
+
+@[simp] private lemma dihedralHomToSym6_r (i : ZMod 6) :
+    dihedralHomToSym6 (DihedralGroup.r i) = hexRot ^ i.val := rfl
+
+@[simp] private lemma dihedralHomToSym6_sr (i : ZMod 6) :
+    dihedralHomToSym6 (DihedralGroup.sr i) = hexRev * hexRot ^ i.val := rfl
+
+/-- **Injectivity of `dihedralHomToSym6`**.
+
+    * `r i ↦ 1`: forces `hexRot ^ i.val = 1`; by `orderOf_hexRot = 6`
+      and `i.val < 6`, conclude `i.val = 0`, hence `i = 0` and
+      `r i = r 0 = 1`.
+    * `sr i ↦ 1`: forces `hexRev = (hexRot ^ i.val)⁻¹`; the inverse
+      rewrites via `hexRot_pow_zmod_val_neg` to a power of `hexRot`
+      with exponent `< 6`, contradicting
+      `hexRev_ne_hexRot_pow_of_lt`. -/
+theorem dihedralHomToSym6_injective :
+    Function.Injective dihedralHomToSym6 := by
+  rw [injective_iff_map_eq_one]
+  intro g hg
+  cases g with
+  | r i =>
+    -- `hg : hexRot ^ i.val = 1`; conclude `i = 0`.
+    have hi_lt : i.val < 6 := ZMod.val_lt i
+    have hi_dvd : orderOf hexRot ∣ i.val := orderOf_dvd_of_pow_eq_one hg
+    rw [orderOf_hexRot] at hi_dvd
+    have hi_val_zero : i.val = 0 := Nat.eq_zero_of_dvd_of_lt hi_dvd hi_lt
+    have : i = 0 := (ZMod.val_eq_zero i).mp hi_val_zero
+    rw [this]; rfl
+  | sr i =>
+    -- `hg : hexRev * hexRot ^ i.val = 1` ⇒ contradiction.
+    exfalso
+    have h1 : hexRev = (hexRot ^ i.val)⁻¹ :=
+      eq_inv_of_mul_eq_one_right hg
+    rw [hexRot_pow_zmod_val_neg] at h1
+    exact hexRev_ne_hexRot_pow_of_lt (-i).val (ZMod.val_lt _) h1
+
+/-- **Range equals `hexagonalGroup`**.
+
+    `≤`: both `hexRot ^ i.val` and `hexRev * hexRot ^ i.val` lie in
+    `hexagonalGroup` (a subgroup containing the two generators).
+
+    `≥`: `hexagonalGroup = closure {hexRot, hexRev}` and both
+    generators are images: `hexRot = dihedralHomToSym6 (r 1)` (via
+    `(1 : ZMod 6).val = 1`) and `hexRev = dihedralHomToSym6 (sr 0)`
+    (via `(0 : ZMod 6).val = 0`). -/
+theorem dihedralHomToSym6_range :
+    dihedralHomToSym6.range = hexagonalGroup := by
+  apply le_antisymm
+  · -- `≤`: every image lies in `hexagonalGroup`.
+    rintro _ ⟨g, rfl⟩
+    cases g with
+    | r i =>
+      show hexRot ^ i.val ∈ hexagonalGroup
+      exact pow_mem hexRot_mem_hexagonalGroup _
+    | sr i =>
+      show hexRev * hexRot ^ i.val ∈ hexagonalGroup
+      exact mul_mem hexRev_mem_hexagonalGroup
+              (pow_mem hexRot_mem_hexagonalGroup _)
+  · -- `≥`: closure of two generators contained in range.
+    show hexagonalGroup ≤ dihedralHomToSym6.range
+    unfold hexagonalGroup
+    rw [Subgroup.closure_le]
+    intro x hx
+    rcases (Set.mem_insert_iff.mp hx) with rfl | hx'
+    · refine ⟨DihedralGroup.r 1, ?_⟩
+      show hexRot ^ (1 : ZMod 6).val = hexRot
+      have : (1 : ZMod 6).val = 1 := by decide
+      rw [this, pow_one]
+    · -- `x ∈ {hexRev}` ⇒ `x = hexRev`.
+      rw [Set.mem_singleton_iff] at hx'
+      subst hx'
+      refine ⟨DihedralGroup.sr 0, ?_⟩
+      show hexRev * hexRot ^ (0 : ZMod 6).val = hexRev
+      rw [ZMod.val_zero, pow_zero, mul_one]
+
+-- ============================================================
 -- PART 3: Hexagon Labelings as Sym(6) ⧸ D_6
 -- ============================================================
 
@@ -366,17 +526,15 @@ theorem card_sym6 : Fintype.card (Equiv.Perm (Fin 6)) = 720 := by
     DihedralGroup-into-Sym(6) hom rewrite mechanically using these
     lemmas.
 
-    Remaining (S3c): (i) define
-    `φ : DihedralGroup 6 →* Equiv.Perm (Fin 6)` by
-    `φ (r i) = hexRot ^ i.val`, `φ (sr i) = hexRev * hexRot ^ i.val`,
-    using S3b-prep for the `r * sr`, `sr * r`, `sr * sr` cases and
-    `hexRot_pow_six` for the `ZMod 6` modular wraparound; (ii) show
-    `φ.range = hexagonalGroup`; (iii) show `φ` is injective using
-    `orderOf_hexRot` plus the conjugation relation; then
-    `Nat.card hexagonalGroup = Nat.card (DihedralGroup 6) = 12` via
-    `DihedralGroup.nat_card`. -/
+    **S3d completes** the program: `dihedralHomToSym6` (PART 2h) is the
+    homomorphism, `dihedralHomToSym6_injective` gives injectivity, and
+    `dihedralHomToSym6_range` shows the image equals `hexagonalGroup`.
+    Together with `DihedralGroup.nat_card`, this yields
+    `Nat.card hexagonalGroup = 2 * 6 = 12`. -/
 theorem card_hexagonalGroup : Nat.card hexagonalGroup = 12 := by
-  sorry
+  rw [← dihedralHomToSym6_range]
+  rw [← Nat.card_congr (MonoidHom.ofInjective dihedralHomToSym6_injective).toEquiv]
+  exact DihedralGroup.nat_card
 
 /-- **Hexagrammum Mysticum count**: six points on a conic determine
     exactly 60 distinct hexagonal labelings, hence at most 60 Pascal lines.
@@ -384,9 +542,18 @@ theorem card_hexagonalGroup : Nat.card hexagonalGroup = 12 := by
     By Lagrange: `|Sym(6) ⧸ D_6| · |D_6| = |Sym(6)|`, so
     `|Sym(6) ⧸ D_6| = 720 / 12 = 60`.
 
-    (Follows from `card_sym6` and `card_hexagonalGroup`.) -/
+    Follows from `card_sym6`, `card_hexagonalGroup`, and
+    `Subgroup.card_eq_card_quotient_mul_card_subgroup`. -/
 theorem card_hexagon_labelings : Nat.card HexagonLabeling = 60 := by
-  sorry
+  have h_total :
+      Nat.card (Equiv.Perm (Fin 6)) =
+        Nat.card HexagonLabeling * Nat.card hexagonalGroup :=
+    Subgroup.card_eq_card_quotient_mul_card_subgroup hexagonalGroup
+  rw [card_hexagonalGroup] at h_total
+  have h_sym : Nat.card (Equiv.Perm (Fin 6)) = 720 := by
+    rw [Nat.card_eq_fintype_card]; exact card_sym6
+  rw [h_sym] at h_total
+  omega
 
 -- ============================================================
 -- PART 5: Pascal-Line Map
