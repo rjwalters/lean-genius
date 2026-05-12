@@ -1,0 +1,119 @@
+{
+  "slug": "fodor-pressing-down-oq-04",
+  "title": "Solovay splitting: every stationary subset of a regular uncountable κ admits a partition into κ pairwise-disjoint stationary subsets",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall \\kappa\\,\\text{regular uncountable},\\,\\forall S \\subseteq \\kappa\\,\\text{stationary},\\,\\exists \\langle S_\\beta : \\beta < \\kappa \\rangle\\,\\text{pairwise disjoint}\\;\\text{with each}\\;S_\\beta \\subseteq S\\;\\text{stationary}.",
+    "plain": "Formalize Solovay's 1971 splitting theorem in the framework of Proofs/FodorPressingDown.lean: every stationary subset of a regular uncountable cardinal can be partitioned into κ pairwise-disjoint stationary subsets, using the existing Fodor pressing-down infrastructure.",
+    "whyMatters": [
+      "Canonical demonstration that stationarity is genuinely κ-fat, not merely nonempty.",
+      "First non-trivial corollary of Fodor — the paradigm pressing-down application.",
+      "Foundation for ω₁-combinatorics (club guessing, ◇, Σ-products) and forcing-theoretic results.",
+      "Mathlib currently has no stationary-set theory beyond the OQ-file's own infrastructure."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Fodor's pressing-down lemma (FodorPressingDown.lean:259) is the load-bearing hammer for the regressive auxiliary step.",
+      "diagInter_isClubBelow (line 240) provides closure of clubs under κ-indexed intersection.",
+      "IsStationaryBelow.of_subset (line 343) supports the WLOG reductions in Step 1."
+    ],
+    "open": [
+      "S2-α: successor ordinals (or equivalently, non-limit ordinals) below κ.ord form a non-stationary set (limit ordinals form a club).",
+      "S2-β: binary Solovay splitting — any stationary S splits into 2 disjoint stationary subsets.",
+      "S2-γ: full Solovay splitting — κ pairwise-disjoint stationary subsets, requiring Classical.skolem for κ-indexed regressive choices."
+    ],
+    "goal": "Reach a build-verified Lean 4 proof of Solovay splitting in the FodorPressingDown.lean framework. Decompose into three milestones: limit-reduction lemma (S2-α), binary splitting (S2-β/S3), full κ-splitting (S2-γ/S4+)."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T16:40:00Z",
+    "iteration": 1,
+    "focus": "Survey the standard three-step proof structure of Solovay splitting (limit-reduction, regressive-auxiliary + Fodor, diagonal κ-intersection) and identify reusable lemmas from the existing FodorPressingDown.lean file.",
+    "blockers": [],
+    "nextAction": "S2-α: Prove isLimitOrdinals_isClubBelow (or equivalently successor_ordinals_nonStationary) in FodorPressingDown.lean or a companion file. ~40-80 lines, 0 sorries, 0 new axioms.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE: doc-only survey establishing the three-step Jech-style proof of Solovay splitting (limit-reduction, regressive auxiliary via Fodor, diagonal κ-intersection + counting), with a reusable-lemma table from FodorPressingDown.lean and three S2 candidates ranked by tractability. The full theorem is well within reach of the existing infrastructure plus Mathlib's Ordinal.cof / Classical.skolem.",
+    "builtItems": [
+      "research/problems/fodor-pressing-down-oq-04/problem.md (S1 OBSERVE — theorem statement, scope, anchors)",
+      "research/problems/fodor-pressing-down-oq-04/knowledge.md (S1 OBSERVE — three-step proof breakdown, reusable-lemma table, Mathlib API survey, S2 candidates)",
+      "research/problems/fodor-pressing-down-oq-04/state.md (S1 OBSERVE — session log and S2-α sketch)"
+    ],
+    "insights": [
+      "Step 1 (limit-reduction) is fully independent of Fodor and is the natural S2 starting point.",
+      "Step 2 (regressive auxiliary) is a single direct application of fodor (line 259) once a cofinal-sequence assignment is fixed.",
+      "Step 3 (κ-tuple bookkeeping) is the only step requiring iterated choice (Classical.skolem) — this is the hard one and best deferred to S4+.",
+      "All required Mathlib API (Ordinal.cof, Cardinal.IsRegular, IsSuccLimit) is already imported by FodorPressingDown.lean.",
+      "No new axioms required at any stage; classical choice (already used in fodor at line 279) is sufficient."
+    ],
+    "mathlibGaps": [
+      "Mathlib.SetTheory.Ordinal.Cofinality provides Ordinal.cof and related lemmas but no native stationary-set theory.",
+      "Mathlib.Logic.Equiv.Defs / Classical.skolem provides the κ-indexed choice needed for Step 3.",
+      "No new Mathlib dependencies needed for S2-α or S2-β; S2-γ may benefit from Classical.skolem unfoldings."
+    ],
+    "nextSteps": [
+      "S2-α: isLimitOrdinals_isClubBelow / successor_ordinals_nonStationary (recommended start, ~40-80 lines).",
+      "S2-β: Binary splitting via single Fodor application (~120-250 lines).",
+      "S2-γ: Full Solovay splitting via iterated Fodor + Skolem (~400+ lines, decompose into companions).",
+      "S5+: Corollaries — club guessing, ◇_{ω₁}, Σ-products of ω₁."
+    ]
+  },
+  "tags": [
+    "set-theory",
+    "ordinals",
+    "cardinals",
+    "clubs",
+    "stationary",
+    "fodor",
+    "seeker-selected",
+    "solovay-splitting"
+  ],
+  "relatedProofs": [
+    "fodor-pressing-down",
+    "cantor-diagonalization"
+  ],
+  "references": {
+    "papers": [
+      "Fodor, G. (1956), 'Eine Bemerkung zur Theorie der regressiven Funktionen', Acta Sci. Math. — the original Fodor paper.",
+      "Solovay, R. M. (1971), 'Real-valued measurable cardinals', Axiomatic Set Theory I — original appearance of the splitting theorem.",
+      "Jech, T., Set Theory (3rd ed.), Theorem 8.10 — the textbook reference for the three-step proof structure.",
+      "Kunen, K., Set Theory: An Introduction to Independence Proofs — alternative presentation."
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/SetTheory/Ordinal/Cofinality.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/SetTheory/Cardinal/Cofinality.html"
+    ],
+    "mathlib": [
+      "Mathlib.SetTheory.Ordinal.Cofinality",
+      "Mathlib.SetTheory.Cardinal.Cofinality",
+      "Mathlib.SetTheory.Ordinal.Arithmetic",
+      "Mathlib.Logic.Equiv.Defs"
+    ]
+  },
+  "started": "2026-05-12T14:35:20.231Z",
+  "lastUpdate": "2026-05-12T16:40:00Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/FodorPressingDown.lean",
+      "filename": "FodorPressingDown.lean",
+      "lineCount": 386,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FodorPressingDown.lean"
+    }
+  ]
+}
