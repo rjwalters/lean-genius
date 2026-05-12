@@ -2452,6 +2452,7 @@ import Proofs.LagrangeFourSquaresOQ01OQ01
 import Proofs.LagrangeFourSquaresOQ02
 import Proofs.LagrangeFourSquaresOQ04
 import Proofs.LagrangeFourSquaresWaringG2
+import Proofs.LagrangeFourSquaresWaringG2OQ01
 import Proofs.LagrangeTheorem
 import Proofs.LagrangeTheoremOQ01
 import Proofs.LagrangeTheoremOQ01OQ01
