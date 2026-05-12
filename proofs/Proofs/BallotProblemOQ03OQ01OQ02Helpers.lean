@@ -14746,6 +14746,81 @@ private lemma gnwProb_zero_of_col_eq_c'_case2
   apply gnwProb_unreachable_zero K x
   exact Or.inr (by omega)
 
+/-- **(S57.3, S4) Arm-of-c' summand vanishes — case 1.**
+
+In case 1 of `distinct_corners_dichotomy` (i.e., `c.1 < c'.1`), the summand
+`gnwProb μ c K (c'.1, s)` is identically zero for every `s ∈ Finset.range c'.2`,
+because the cell `(c'.1, s)` satisfies `c.1 < c'.1 = (c'.1, s).1`, so
+`gnwProb_unreachable_zero` applies via the `Or.inl` (row-disjunct) branch.
+
+**Geometric content.** The index set `{(c'.1, s) | s < c'.2}` is exactly the
+arm-of-c' cells of `(μ\c').cells` — i.e. cells in the row `c'.1` of `μ\c'`,
+which has length `c'.2` (since c' = (c'.1, c'.2) was a corner of μ and got
+removed, leaving the prefix `(c'.1, 0), …, (c'.1, c'.2 − 1)`).
+
+**Role in S57.0's K-induction plan for `F_side_identity_aligned`.**  This is
+the (S4) summand vanishing.  When the joint K-induction case-splits the sum
+domain `(μ\c').cells` into off-spine / arm-of-c / leg-of-c / arm-of-c' /
+leg-of-c' subsets, the case-1 arm-of-c' contribution to both LHS and RHS
+sums of `F_side_identity_aligned` collapses to `0 · α² = 0 · ((α − 1)² + 0)`,
+sidestepping the `δ_arm` correction-term design problem flagged in S57.0.
+
+**Genericity in `μ`.**  The lemma is universal in its `μ` argument, so it
+applies equally to the LHS sum (`gnwProb μ c (h_μ x) x` over `(μ\c').cells`)
+and to the RHS sum (`gnwProb (μ\c') c (h_{μ\c'} x) x`).  Specializing
+`K := hookLength μ x.1 x.2` for the LHS or `K := hookLength (μ\c') x.1 x.2`
+for the RHS gives the integrand-level vanishing used in (S4) of the K-induction.
+
+**Relation to S57.3a per-cell variant.**  The per-cell sibling
+`gnwProb_zero_of_row_eq_c'_case1` (above) takes an arbitrary `x : ℕ × ℕ`
+with `hx : x.1 = c'.1`; this lemma is the literal-pair-summand counterpart
+indexed over a concrete `Finset.range c'.2`. -/
+private lemma sum_gnwProb_arm_of_c'_eq_zero_case1
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc1 : c.1 < c'.1) (K : ℕ) :
+    ∑ s ∈ Finset.range c'.2, gnwProb μ c K (c'.1, s) = 0 := by
+  apply Finset.sum_eq_zero
+  intro s _
+  exact gnwProb_unreachable_zero K (c'.1, s) (Or.inl hc1)
+
+/-- **(S57.3, S5) Leg-of-c' summand vanishes — case 2.**
+
+In case 2 of `distinct_corners_dichotomy` (i.e., `c'.1 < c.1`, equivalently
+`c.2 < c'.2` by `corner_row_lt_of_col_lt`), the summand
+`gnwProb μ c K (r, c'.2)` is identically zero for every
+`r ∈ Finset.range c'.1`, because the cell `(r, c'.2)` satisfies
+`c.2 < c'.2 = (r, c'.2).2`, so `gnwProb_unreachable_zero` applies via the
+`Or.inr` (column-disjunct) branch.
+
+**Geometric content.** The index set `{(r, c'.2) | r < c'.1}` is exactly the
+leg-of-c' cells of `(μ\c').cells` — i.e. cells in the column `c'.2` of `μ\c'`,
+which has length `c'.1` (since c' = (c'.1, c'.2) was a corner of μ and got
+removed, leaving the prefix `(0, c'.2), …, (c'.1 − 1, c'.2)`).
+
+**Role in S57.0's K-induction plan for `F_side_identity_aligned`.**  This is
+the mirror of (S4): the (S5) summand vanishing for case 2.  Combined with
+`sum_gnwProb_arm_of_c'_eq_zero_case1`, both `c'`-coboundary contributions
+to `F_side_identity_aligned` are now handled by direct vanishing rather than
+genuine pointwise comparison, completing the cleanup of the "easy" branches
+of S57.0's cell partition.  The remaining work for S57.5+ targets the
+"hard" off-spine branch (S6), where genuine K-induction is required.
+
+**Genericity in `μ`.**  Universal in its `μ` argument, so it applies to both
+LHS (`gnwProb μ c (h_μ x) x`) and RHS (`gnwProb (μ\c') c (h_{μ\c'} x) x`)
+forms appearing in `F_side_identity_aligned`.
+
+**Relation to S57.3a per-cell variant.**  The per-cell sibling
+`gnwProb_zero_of_col_eq_c'_case2` (above) takes an arbitrary `x : ℕ × ℕ`
+with `hx : x.2 = c'.2`; this lemma is the literal-pair-summand counterpart
+indexed over a concrete `Finset.range c'.1`. -/
+private lemma sum_gnwProb_leg_of_c'_eq_zero_case2
+    {μ : YoungDiagram} {c c' : ℕ × ℕ}
+    (hc2 : c.2 < c'.2) (K : ℕ) :
+    ∑ r ∈ Finset.range c'.1, gnwProb μ c K (r, c'.2) = 0 := by
+  apply Finset.sum_eq_zero
+  intro r _
+  exact gnwProb_unreachable_zero K (r, c'.2) (Or.inr hc2)
+
 -- ============================================================
 -- Transpose-equivariance of `strictHookCells` and `gnwProb`
 -- (Session 58 — S57.4 reduction infrastructure)
