@@ -36,6 +36,7 @@ bounding the step count by 2*(M(a,b)+1) = 2*(log₂ a + log₂ b) + 2.
 
 import Mathlib.Data.Nat.GCD.Basic
 import Mathlib.Data.Nat.Log
+import Mathlib.Data.Nat.Size
 import Mathlib.Tactic
 import Proofs.BezoutIdentityOQ01OQ01
 
@@ -178,18 +179,57 @@ theorem binaryGcdSteps_le_log (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
 -- PART IV: BIT COMPLEXITY MODEL
 -- ============================================================
 
-/-- **AXIOM**: Each recursive step of binaryGcd performs at most
-    C * (Nat.log 2 (max a b) + 1) elementary bit operations.
+/-- The bit length of `n` equals `Nat.log 2 n + 1` for `n ≥ 1`.
 
-    Informal proof: Each step performs at most:
-    - 1 comparison of a and b: O(log(max a b)) bit ops
-    - 1 subtraction or right shift: O(log(max a b)) bit ops
-    - 1 even-check (LSB test): O(1) bit ops
+    Two definitions of "bit length" exist in Mathlib:
+    - `Nat.size n` counts the position of the highest set bit
+      (so `size 1 = 1`, `size 2 = 2`, `size 8 = 4`);
+    - `Nat.log 2 n` is the exponent of the largest power of `2 ≤ n`
+      (so `log 1 = 0`, `log 2 = 1`, `log 8 = 3`).
 
-    The constant C can be taken as 3 (comparison + operation + check). -/
-axiom stepBitOps (a b : ℕ) : ℕ
-axiom stepBitOps_le (a b : ℕ) :
-    stepBitOps a b ≤ 3 * (Nat.log 2 (max a b) + 1)
+    They differ by `+1` exactly for `n ≥ 1`; both collapse to `0`
+    at `n = 0`. This identity is not stated at the pinned Mathlib
+    revision but follows from the standard pair
+    `Nat.lt_pow_succ_log_self` / `Nat.pow_log_le_self`. -/
+private lemma size_eq_succ_log {n : ℕ} (hn : 0 < n) :
+    Nat.size n = Nat.log 2 n + 1 := by
+  refine le_antisymm ?_ ?_
+  · rw [Nat.size_le]
+    exact Nat.lt_pow_succ_log_self (by decide : 1 < 2) n
+  · have hlt : Nat.log 2 n < Nat.size n :=
+      Nat.lt_size.mpr (Nat.pow_log_le_self 2 hn.ne')
+    omega
+
+/-- **Concrete per-step bit-operation cost** for the binary GCD recursion.
+
+    Each step performs at most:
+    - 1 comparison `a ≤ b`     — up to `Nat.size (max a b)` bit reads
+    - 1 subtraction or shift   — up to `Nat.size (max a b)` bit operations
+    - 1 even-check (LSB test)  — 1 bit read
+
+    Summing the three: `2 · size (max a b) + 1`. Strictly tighter than
+    the asymptotic envelope `3 · (log₂ (max a b) + 1) = 3 · size` (for
+    `n ≥ 1`), and `1 ≤ 3` at `max a b = 0`. -/
+def stepBitOps (a b : ℕ) : ℕ := 2 * Nat.size (max a b) + 1
+
+/-- **Per-step bit-cost bound** — formerly an axiom (now eliminated).
+    The concrete model `stepBitOps a b := 2 · size (max a b) + 1`
+    satisfies the parent envelope `3 · (log₂ (max a b) + 1)`.
+
+    Split on `max a b = 0`:
+    - `max a b = 0`: LHS = `2·0 + 1 = 1`, RHS = `3·(0 + 1) = 3`,
+      `1 ≤ 3` ✓ by `omega`.
+    - `max a b ≥ 1`: `size_eq_succ_log` rewrites size as `log + 1`,
+      and `2·(log + 1) + 1 = 2·log + 3 ≤ 3·log + 3 = 3·(log + 1)`
+      reduces to `0 ≤ log` ✓ by `omega`. -/
+theorem stepBitOps_le (a b : ℕ) :
+    stepBitOps a b ≤ 3 * (Nat.log 2 (max a b) + 1) := by
+  unfold stepBitOps
+  by_cases h : max a b = 0
+  · simp [h, Nat.size_zero, Nat.log_zero_right]
+  · have hpos : 0 < max a b := Nat.pos_of_ne_zero h
+    rw [size_eq_succ_log hpos]
+    omega
 
 -- ============================================================
 -- PART V: TOTAL BIT COMPLEXITY
