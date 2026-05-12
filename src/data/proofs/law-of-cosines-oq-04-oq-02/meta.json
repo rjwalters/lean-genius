@@ -108,6 +108,85 @@
       "relationship": "parent"
     }
   ],
+  "mainTheorems": [
+    {
+      "name": "bisector_ratio_m",
+      "statement": "(ha : m + n = a) (hbis : m * b = n * c) → m * (b + c) = a * c",
+      "description": "From the angle-bisector ratio $m \\cdot b = n \\cdot c$ (BD/DC = AB/AC) and $m + n = a$, derive $m(b+c) = a c$. One-line proof: `linear_combination c * ha + hbis`. First of three algebraic stepping-stones to the main result."
+    },
+    {
+      "name": "bisector_ratio_n",
+      "statement": "(ha : m + n = a) (hbis : m * b = n * c) → n * (b + c) = a * b",
+      "description": "Symmetric companion to `bisector_ratio_m`: $n(b+c) = a b$. Proved by `linear_combination b * ha - hbis`. Together with `bisector_ratio_m`, these give the cleared-denominator expressions for the bisector foot's signed lengths."
+    },
+    {
+      "name": "bisector_product",
+      "statement": "(ha : m + n = a) (hbis : m * b = n * c) → m * n * (b + c)^2 = a^2 * b * c",
+      "description": "The product identity: $m \\cdot n \\cdot (b+c)^2 = a^2 \\cdot b \\cdot c$. Derived by multiplying `bisector_ratio_m` and `bisector_ratio_n`, formalized via a single `linear_combination` step. Supplies the $mn$ term that appears in Stewart's theorem after canceling."
+    },
+    {
+      "name": "angle_bisector_squared",
+      "statement": "(ha : m + n = a) (hbis : m * b = n * c) (ha_pos : 0 < a) (hstewart : b^2 * m + c^2 * n = a * (t^2 + m * n)) → t^2 * (b + c)^2 = b * c * ((b + c)^2 - a^2)",
+      "description": "**Main result.** Cleared-denominator form of the angle-bisector length formula. The proof constructs $a \\cdot (\\text{goal})$ via a polynomial witness `linear_combination` of `hstewart`, `bisector_ratio_m`, `bisector_ratio_n`, and `bisector_product`, then cancels $a$ via `mul_left_cancel₀ ha_pos`. The polynomial witness $-(b+c)^2 \\cdot h_{\\text{stewart}} + b^2(b+c) h_m + c^2(b+c) h_n - a h_{mn}$ is degree 4 — non-obvious by hand but discoverable via Gröbner-basis tooling."
+    },
+    {
+      "name": "angle_bisector_ratio",
+      "statement": "... (hbc_pos : 0 < b + c) ... → t^2 = b * c * ((b + c)^2 - a^2) / (b + c)^2",
+      "description": "Divided form: the classical $t^2 = bc \\cdot ((b+c)^2 - a^2) / (b+c)^2$. Obtained from `angle_bisector_squared` by `field_simp` + `linarith` after asserting $(b+c)^2 \\neq 0$ via `positivity`."
+    },
+    {
+      "name": "angle_bisector_length",
+      "statement": "(law-of-cosines hypotheses h_ABD, h_ACD) → t^2 * (b + c)^2 = b * c * ((b + c)^2 - a^2)",
+      "description": "**Full geometric version.** Inputs the law-of-cosines hypotheses for the sub-triangles ABD and ACD (with cosine $u$), invokes `stewarts_theorem` from the parent file `LawOfCosinesOQ04`, then closes via `angle_bisector_squared`. Bridges the algebraic and geometric layers."
+    },
+    {
+      "name": "angle_bisector_equilateral",
+      "statement": "(hs : 0 < s) (h : t^2 * (s + s)^2 = s * s * ((s + s)^2 - s^2)) → 4 * t^2 * s^2 = 3 * s^4",
+      "description": "**Special case — equilateral triangle.** When $a = b = c = s$, the formula reduces to $4 t^2 s^2 = 3 s^4$, equivalently $t = s\\sqrt{3}/2$ (after dividing by $s^2 > 0$). Proved by `nlinarith` with positivity hints. Sanity check that the algebraic formula matches the well-known geometric value."
+    },
+    {
+      "name": "angle_bisector_3_4_5",
+      "statement": "(h : t^2 * (3 + 4)^2 = 3 * 4 * ((3 + 4)^2 - 5^2)) → 49 * t^2 = 288",
+      "description": "**Numerical check — 3-4-5 right triangle.** For $a=5, b=4, c=3$, the bisector from the right angle has length $t = \\sqrt{288/49} = (12\\sqrt{2})/7$. Concrete instantiation closed by `nlinarith`."
+    },
+    {
+      "name": "angle_bisector_isoceles",
+      "statement": "(ha : 0 < a) (hb : 0 < b) (h : t^2 * (b + b)^2 = b * b * ((b + b)^2 - a^2)) → 4 * t^2 * b^2 = b^2 * (4 * b^2 - a^2)",
+      "description": "**Special case — isoceles triangle.** When $b = c$, the formula collapses to $4 t^2 b^2 = b^2 (4 b^2 - a^2)$, or $t^2 = b^2 - a^2/4$ after dividing — the median-from-apex formula. Proved by `nlinarith` with positivity hints."
+    }
+  ],
+  "references": [
+    {
+      "type": "research-paper",
+      "citation": "Stewart, M. (1746). *Some General Theorems of Considerable Use in the Higher Parts of Mathematics*. Edinburgh.",
+      "relevance": "The original 1746 statement of Stewart's theorem, $b^2 m + c^2 n = a(t^2 + mn)$, on which this entire derivation depends. The angle bisector formula is the special-case corollary obtained by combining Stewart with the angle-bisector ratio $mb = nc$."
+    },
+    {
+      "type": "textbook",
+      "citation": "Coxeter, H.S.M. (1969). *Introduction to Geometry* (2nd ed.). Wiley.",
+      "relevance": "Classic graduate reference covering Stewart's theorem, the angle-bisector theorem, and the bisector length formula in the chapter on triangle geometry. The treatment is the textbook source for the geometric setup used in `angle_bisector_length`."
+    },
+    {
+      "type": "textbook",
+      "citation": "Coxeter, H.S.M. & Greitzer, S.L. (1967). *Geometry Revisited*. New Mathematical Library 19, Mathematical Association of America.",
+      "relevance": "Accessible exposition of cevian length formulas (median, altitude, angle bisector, symmedian) as instances of Stewart's theorem. Section 1.2 derives the angle bisector formula by hand, which this file mechanizes."
+    },
+    {
+      "type": "research-paper",
+      "citation": "Heron of Alexandria (~60 AD). *Metrica*. Recovered Greek manuscript (Schöne edition, 1903).",
+      "relevance": "Earliest extant source for the area-of-triangle formula $\\sqrt{s(s-a)(s-b)(s-c)}$ used in alternative derivations of the angle-bisector length. Underlines that the underlying geometry is pre-Euclidean in spirit."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. *Mathlib.Tactic.LinearCombination*. Accessed 2026.",
+      "relevance": "Provides the `linear_combination` tactic used in every nontrivial proof of this file. The tactic takes a polynomial witness and discharges the resulting `Eq` goal via `ring` — the engine that makes the degree-4 main-theorem witness mechanically verifiable."
+    },
+    {
+      "type": "library",
+      "citation": "The mathlib Community. *Mathlib.Tactic.Polyrith*. Accessed 2026.",
+      "relevance": "Automated Gröbner-basis search for `linear_combination` witnesses. The polynomial witness $-(b+c)^2 h_{\\text{stewart}} + b^2(b+c)h_m + c^2(b+c)h_n - a h_{mn}$ in `angle_bisector_squared` is the kind of degree-4 expression `polyrith` can discover from a set of hypotheses."
+    }
+  ],
   "meta": {
     "author": "Lean Genius Research",
     "date": "2026-05-04",
