@@ -46,7 +46,15 @@
     "assumptions": "None. Fully machine-verified.",
     "lineCount": 611,
     "theoremCount": 6,
-    "definitionCount": 0
+    "definitionCount": 0,
+    "prerequisites": [
+      "Elementary symmetric polynomials on lists",
+      "Binomial coefficients and Pascal's rule",
+      "Log-concavity of binomial coefficients (parent OQ-01)",
+      "List induction in Lean 4 (cons-decomposition)",
+      "Quadratic discriminant ≥ 0 arguments",
+      "Real arithmetic via linarith / nlinarith / linear_combination"
+    ]
   },
   "overview": {
     "historicalContext": "Newton's inequalities first appeared in his *Arithmetica Universalis* (1707) as a tool for analyzing polynomial roots. For a degree-$n$ real polynomial $\\prod_i (x - r_i)$ with all real roots, the elementary symmetric polynomials $e_k(r_1, \\ldots, r_n)$ satisfy $e_k^2 \\geq e_{k-1} \\cdot e_{k+1}$ (log-concavity) and the stronger normalized form involving binomial coefficients. The classical reference is Hardy, Littlewood, and Pólya's *Inequalities* (1934/1952, Ch. 2). The inequality is the prototype 'log-concavity' result, generalizing to a vast literature on log-concave sequences in combinatorics (matroid theory, Hodge theory of polytopes, the Heron-Rota-Welsh conjecture solved by June Huh, Adiprasito, and Katz in 2018). Ultra-log-concavity ($a_{k-1} \\cdot a_{k+1} \\leq a_k^2 (k+1)k / ((k+1) \\cdot k) \\cdot (1 - 1/k - 1/(k+1))$ in some conventions; here taken as the squared form $C(n,k)^4 \\geq C(n,k-1)^2 C(n,k+1)^2$) is a strengthening that often suggests deeper combinatorial structure — total positivity, real-rootedness, or Schubert-calculus interpretations.",
@@ -59,6 +67,14 @@
       "The 350-line bulk of Layer 3 is a careful case split on whether each of $k$, $k-1$, $k+1$ exceeds the list length; when an esymm is zero by overflow, the inequality becomes trivial (RHS = 0); when all three are nonzero, the inductive hypothesis applies via the AMGM file's pre-packaged combinatorial identity",
       "The `linear_combination` tactic is doing essential work in the boundary cases: it produces a single algebraic identity with rational coefficients that, when added to the hypotheses, gives the goal — manually expanding out $C(n+1,2) = n(n+1)/2$ and the resulting quadratic discriminant would balloon the proof to many hundreds of lines",
       "The cleared-denominator form is the *normalized* one used in applications: dividing both sides by $\\binom{n}{k-1}\\binom{n}{k+1}\\binom{n}{k}^2$ and using ultra-log-concavity, one obtains the Maclaurin inequality $S_k^{1/k} \\geq S_{k+1}^{1/(k+1)}$ where $S_k = e_k / \\binom{n}{k}$, which is the form Newton's inequality takes in textbooks"
+    ],
+    "prerequisites": [
+      "Elementary symmetric polynomials and their cons-recurrence $e_k(x :: xs) = e_k(xs) + x \\cdot e_{k-1}(xs)$",
+      "Binomial coefficients, Pascal's rule, and the identity $2\\binom{n+1}{p+1} = n(n+1)$",
+      "Parent result: log-concavity of binomial coefficients $\\binom{n}{k}^2 \\geq \\binom{n}{k-1}\\binom{n}{k+1}$",
+      "Difference-of-squares factorization $a^4 - b^2c^2 = (a^2-bc)(a^2+bc)$",
+      "Quadratic discriminant arguments for the boundary cases $k = 1$ and $k = n$",
+      "Lean tactics: `linarith`, `nlinarith`, `linear_combination`, `ring`, `omega`"
     ]
   },
   "sections": [
@@ -123,7 +139,10 @@
       "Proofs.NewtonInductiveStepOQ01",
       "Proofs.AmgmInequalityOQ02OQ02"
     ],
-    "opens": ["List", "Nat"],
+    "opens": [
+      "List",
+      "Nat"
+    ],
     "namespace": "NewtonInductiveStepOQ02",
     "lineCount": 611,
     "axiomCount": 0,
@@ -132,6 +151,41 @@
     "path": "Proofs/NewtonInductiveStepOQ02.lean",
     "sorries": 0
   },
-  "openQuestions": null,
-  "sorries": 0
+  "sorries": 0,
+  "references": [
+    {
+      "title": "Arithmetica Universalis",
+      "author": "Isaac Newton",
+      "year": "1707",
+      "description": "Original statement of Newton's inequalities for polynomials with all real roots"
+    },
+    {
+      "title": "Inequalities",
+      "author": "G. H. Hardy, J. E. Littlewood, G. Pólya",
+      "year": "1952",
+      "venue": "Cambridge University Press (2nd ed.)",
+      "description": "Chapter 2 is the canonical modern treatment of symmetric means, Newton's inequalities, and Maclaurin's inequality"
+    },
+    {
+      "title": "A new look at Newton's inequalities",
+      "author": "Constantin P. Niculescu",
+      "year": "2000",
+      "venue": "Journal of Inequalities in Pure and Applied Mathematics, 1(2)",
+      "description": "Elementary proofs avoiding root-counting; in the same spirit as the boundary cases proved here via quadratic discriminant"
+    },
+    {
+      "title": "Hodge theory for combinatorial geometries",
+      "author": "Karim Adiprasito, June Huh, Eric Katz",
+      "year": "2018",
+      "venue": "Annals of Mathematics, 188(2)",
+      "description": "Settles the Heron–Rota–Welsh conjecture: characteristic polynomials of matroids have log-concave coefficients, placing Newton-style log-concavity in a Hodge-theoretic frame"
+    },
+    {
+      "title": "Lorentzian polynomials",
+      "author": "Petter Brändén, June Huh",
+      "year": "2020",
+      "venue": "Annals of Mathematics, 192(3)",
+      "description": "Develops the theory of completely log-concave polynomials; the squared form $C(n,k)^4 \\geq C(n,k-1)^2 C(n,k+1)^2$ proved here is the linear-algebraic shadow of these stronger positivity properties"
+    }
+  ]
 }
