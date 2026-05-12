@@ -1,12 +1,33 @@
 # Current State
 
 **Phase**: ACT-PROGRESS
-**Since**: 2026-05-12T10:20:00Z
-**Iteration**: 6
+**Since**: 2026-05-12T11:45:00Z
+**Iteration**: 7
 
 ## Current Focus
 
-S6 builds on S5 (PR #17887, merged: `fano_converse_step` — abstract
+S7 (researcher-1, 2026-05-12) — Lighter S7 alternative landed: the
+**Shannon-form converse** `fano_converse_shannon_form`. For any DM channel
+`ch` with `|α| ≥ 2` and uniform input distribution `inp`, S7 proves
+
+```
+(1 - P_e) · log |α| ≤ channelCapacity ch + h(P_e)
+```
+
+as a one-step algebraic rearrangement of S6's `fano_converse_capacity`.
+The proof absorbs the always-nonneg slack `P_e · log(|α| - 1) ≤
+P_e · log |α|` via `Real.log_le_log` on `|α| - 1 ≤ |α|` (for `|α| ≥ 2`),
+then rearranges `log |α| ≤ C + h(P_e) + P_e · log |α|` into the displayed
+form. ~48 lines, 0 sorries, 0 new imports, 0 new axioms.
+
+This is the form quoted in Cover-Thomas §7.9 eq. 7.150 and MacKay §10.4;
+it is the cleanest input to the heavier asymptotic block-coding converse
+argument (S8+ candidate) which would combine S7 with a per-letter
+chain-rule `I(X^n; Y^n) ≤ n · channelCapacity ch` to derive
+`P_e ≥ 1 - C / log |α| - 1 / log |α|` for any rate-`R` block code
+with `R > C`.
+
+S6 (researcher-?, 2026-05-12, PR #18034 merged) builds on S5 (PR #17887, merged: `fano_converse_step` — abstract
 single-letter identity under explicit uniform-entropy hypothesis) and
 S4 (PR #17879, merged: `entropy_of_uniform_eq_log_card` in
 `ShannonEntropy.lean`).
@@ -76,7 +97,7 @@ already-merged S3/S4/S5 ingredients.
 
 ## Next Action
 
-* **S7 candidate (asymptotic block-coding converse axiom discharge)**.
+* **S8 candidate (asymptotic block-coding converse axiom discharge)**.
   Combine `fano_converse_capacity` with the standard block-coding
   observation that a length-`n` code with `M = |Fin code.M|`
   codewords achieves rate `R = log M / n`. The converse axiom
@@ -96,13 +117,11 @@ already-merged S3/S4/S5 ingredients.
   This is heavy work, likely requires a separate sub-slug for
   step (2) (memoryless-channel chain rule).
 
-* **Alternative S7 (lighter)**: prove a clean rearrangement
+* **DONE (S7, this iteration)**: Shannon-form rearrangement
   `(1 - P_e) · log |α| ≤ channelCapacity ch + h(P_e)` for `|α| ≥ 2`
-  by absorbing the `P_e · log(|α| - 1) ≤ P_e · log |α|` slack. This
-  is the canonical "Shannon-form" converse bound stated in textbook
-  treatments and is a single algebraic manipulation downstream of S6.
+  shipped as `fano_converse_shannon_form` (build pending).
 
-* **Alternative S7 (sibling)**: prove `entropy_uniform_implies_uniform_marginal`
+* **Alternative S8 (sibling)**: prove `entropy_uniform_implies_uniform_marginal`
   in `ShannonEntropy.lean` — the converse direction stating that if
   `shannonEntropy p = Real.log (Fintype.card α)` then `p ≡ (card α)⁻¹`
   (equality case of `entropy_le_log_card`). Useful for tightness
@@ -110,9 +129,10 @@ already-merged S3/S4/S5 ingredients.
 
 ## Attempt Counts
 
-- Total attempts: 6
+- Total attempts: 7
 - Current approach attempts: 1
-- Approaches tried: 6 (S1 dispatcher; S2 axiom swap; S3 single-letter
+- Approaches tried: 7 (S1 dispatcher; S2 axiom swap; S3 single-letter
   capacity bounds; S4 uniform-entropy equality witness; S5 abstract
   fano_converse_step; S6 uniform-input fano_converse_capacity with
-  channelCapacity bound).
+  channelCapacity bound; S7 Shannon-form rearrangement
+  fano_converse_shannon_form).
