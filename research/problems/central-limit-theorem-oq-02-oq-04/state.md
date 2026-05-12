@@ -1,85 +1,105 @@
 # Current State
 
-**Phase**: ORIENT (S2 scaffold complete; theorem statements + summability helpers proven)
-**Since**: 2026-05-12T03:30:00Z
-**Iteration**: 2
+**Phase**: ACT (S3 — Davydov reduction + longrun_variance proof shipped)
+**Since**: 2026-05-12T04:00:00Z
+**Iteration**: 3
 
 ## Current Focus
 
-S2 ORIENT — Scaffold the Ibragimov-CLT formalization:
-- 4 predicate/structure definitions (`Stationary`, `PolynomialMixingRate`,
-  `MomentBound2δ`, `IbragimovHypotheses`).
-- 2 main theorem statements with sorries (`mixing_clt_ibragimov`,
-  `longrun_variance_absolutely_convergent`).
-- 2 fully-proven summability helpers (`polynomial_summable_of_exponent_gt_one`,
-  `ibragimov_threshold_summable`).
+S3 ACT — Discharge `longrun_variance_absolutely_convergent` by reducing it
+to a single named Davydov sorry. The S2 sorry on long-run variance has been
+replaced by a more granular and clearly-scoped sorry on
+`davydov_covariance_inequality`. Net change to sorry count: 0; net change to
+"proof depth": one full main theorem now provably reduces to Davydov.
+
+Deliverables (this session):
+- Extend `IbragimovHypotheses` with 3 fields: `alpha_nonneg`,
+  `past_measurable`, `future_measurable` (needed to apply Davydov per-term).
+- State `davydov_covariance_inequality` with `(p-2)/p` exponent and an
+  abstract `α₀` upper bound parameter (S4 sorry).
+- Prove `stationary_eLpNorm_eq` via Mathlib's `IdentDistrib.eLpNorm_eq`.
+- Prove `polynomial_mixing_summable` combining polynomial decay + rpow
+  monotonicity + `ibragimov_threshold_summable` + `summable_nat_add_iff`.
+- Prove `longrun_variance_absolutely_convergent` by chaining the above with
+  `Summable.of_nonneg_of_le` for the comparison test.
 
 ## Active Approach
 
 **Sharp-threshold polynomial-mixing CLT** under (2+δ)-th moments. The proof
-strategy (deferred to S4+) follows the standard Bernstein blocks template:
-1. Davydov's covariance inequality (S4) ⇒ covariances are summable.
-2. Long-run variance σ² = Var(X₁) + 2∑_{k≥1} Cov(X₁, X_{k+1}) absolute
-   convergence (S5) follows from S4 + sharp-threshold summability (proven
-   in S2 as `ibragimov_threshold_summable`).
-3. Bernstein blocks p_n, q_n (S6) decompose [1, n] into approximately
+follows the standard Bernstein blocks template:
+1. **Davydov's covariance inequality (S4)** ⇒ covariances are summable.
+   - S3 status: stated cleanly; proof itself deferred to S4 (~150 lines).
+2. **Long-run variance σ² = Var(X₁) + 2∑_{k≥1} Cov(X₁, X_{k+1}) absolute
+   convergence (S3 — this session, proven modulo Davydov).**
+3. Joint tuple stationarity strengthening (S5).
+4. Bernstein blocks p_n, q_n (S6) decompose [1, n] into approximately
    independent large blocks.
-4. Lindeberg condition on large blocks (S8) follows from the (2+δ)-th
+5. Lindeberg condition on large blocks (S8) follows from the (2+δ)-th
    moment bound.
-5. Invoke parent's Lindeberg-Feller CLT (S9) to conclude.
+6. Invoke parent's Lindeberg-Feller CLT (S9) to conclude.
 
 ## Blockers
 
 - **Mathlib has no α-mixing API** (confirmed S1). Continue using parent's
   `alphaMixingCoeff` and `AlphaMixingSequence`. Future upstream contribution
   would consolidate this stack.
-- **Davydov's covariance inequality** is the key missing piece. S4 target.
-- **Bernstein block decomposition** is bespoke; estimated ~150 lines for S6.
+- **Davydov's covariance inequality** is the single open analytic engine.
+  S4 target.
 
 ## Next Action
 
-**Session 3 next action**:
+**Session 4 next action**: Discharge `davydov_covariance_inequality`.
 
-**Option A** — Discharge `longrun_variance_absolutely_convergent` by:
-1. State + prove Davydov's covariance inequality `|Cov(X,Y)| ≤ 12·α^{δ/(2+δ)}·‖X‖_{2+δ}·‖Y‖_{2+δ}` (~150 lines).
-2. Apply Davydov per-term to `|∫ X 0 ω * X (k+1) ω dμ|`.
-3. Multiply by 2 and use `ibragimov_threshold_summable` to bound the sum.
+**Strategy** (Hölder + indicator decomposition):
+1. For bounded random variables `X = a · 1_A`, `Y = b · 1_B` with
+   `A ∈ ℱ`, `B ∈ 𝒢`:
+   `Cov(X, Y) = ab · [μ(A ∩ B) - μ(A) · μ(B)] ≤ ab · α(ℱ, 𝒢)`.
+2. Approximate general L^p X, Y by indicators via the level-set decomposition
+   `X = ∫ 1_{X > t} dt`.
+3. Apply Hölder with `(p, p/(p-1))` to bound the resulting double integral.
+4. Sharp constant `12` comes from a careful tracking through the indicator
+   approximation; references: Doukhan 1994 §1.2.2, Bradley 2007 Vol I Thm 3.7.
 
-**Option B** — Strengthen `Stationary` to full joint stationarity and add
-the `IdentDistrib`-induced cancellations needed downstream.
+Estimate: ~150 lines, no Mathlib gaps beyond Hölder (already there).
 
-**Option C** — Build the Bernstein-block decomposition lemma (size + count
-arithmetic), independent of Davydov.
-
-Recommend **Option A** as it directly attacks the next decomposition step
-and produces an immediately useful corollary.
+Alternative path: **Refine `Stationary`** to joint tuple stationarity (S5
+target prerequisite for Bernstein blocks). Could be done in parallel with
+Davydov; ~40 lines for the type-level strengthening + 60 lines for the
+key tuple-shift lemma.
 
 ## Decomposition Plan
 
 | Session | Phase | Deliverable | Lines | Status |
 |---|---|---|---|---|
 | S1 | OBSERVE | Scaffold (md + json) | 0 Lean | merged #17778 |
-| S2 | ORIENT | 4 def stubs + 2 thm stmts + 2 proven helpers | 231 | **this session** |
-| S3 | ACT | Davydov covariance inequality | ~150 | next |
-| S4 | ACT | Long-run variance abs. convergence (uses S3) | ~80 | |
-| S5 | ACT | Bernstein blocks p_n, q_n + arithmetic | ~150 | |
-| S6 | ACT | Large-block independence approximation | ~120 | |
-| S7 | ACT | Lindeberg condition on blocks | ~100 | |
-| S8 | ACT | Invoke parent's Lindeberg-Feller CLT | ~50 | |
+| S2 | ORIENT | 4 def stubs + 2 thm stmts + 2 proven helpers | 231 | merged #17792 |
+| S3 | ACT | Davydov stmt + 3 new helpers + longrun_variance proof | 402 | **this session** |
+| S4 | ACT | Davydov covariance inequality proof | ~150 | next |
+| S5 | ACT | Refine Stationary to tuple-joint stationarity | ~100 | |
+| S6 | ACT | Bernstein blocks p_n, q_n + arithmetic | ~150 | |
+| S7 | ACT | Large-block independence approximation | ~120 | |
+| S8 | ACT | Lindeberg condition on blocks | ~100 | |
+| S9 | ACT | Invoke parent's Lindeberg-Feller CLT | ~50 | |
 
 ## Attempt Counts
 
-- Total attempts: 2
-- Current approach attempts: 1 (S2 ORIENT scaffold)
+- Total attempts: 3
+- Current approach attempts: 1 (S3 ACT Davydov-reduction)
 - Approaches tried:
   - S1: OBSERVE scaffolding.
   - S2: ORIENT — predicates + structure + main theorem statements + 2 helpers.
+  - S3: ACT — Davydov-modulo proof of long-run variance absolute convergence
+    + extension of IbragimovHypotheses + 3 new proven theorems.
 
 ## Key Files
 
-- `proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean` — **new in S2** (231 lines,
-  2 theorems statements with sorries, 2 proven helpers, 4 definitions, 1 structure).
-- `src/data/proofs/central-limit-theorem-oq-02-oq-04/` — **new in S2** gallery entry.
-- `proofs/Proofs/CentralLimitTheoremOQ02.lean` — parent file, 17 theorems +
-  2 axioms + 3 sorries. Provides `alphaMixingCoeff`, `AlphaMixingSequence`,
-  `longRunVariance`, and martingale/mixing CLT axiom statements.
+- `proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean` — **S3 expanded** (402 lines,
+  7 theorems incl. 2 sorries, 4 proven helpers, 3 definitions, 1 structure with
+  14 fields). The 3 new theorems added in S3:
+  `stationary_eLpNorm_eq`, `polynomial_mixing_summable`,
+  `davydov_covariance_inequality` (sorry).  The S2 sorry
+  `longrun_variance_absolutely_convergent` is now proven.
+- `src/data/proofs/central-limit-theorem-oq-02-oq-04/meta.json` — updated
+  with new theorem count (7), line count (402), mathlib dependencies, and
+  section ranges.
+- `proofs/Proofs/CentralLimitTheoremOQ02.lean` — parent file, unchanged.
