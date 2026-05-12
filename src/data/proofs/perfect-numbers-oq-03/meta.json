@@ -46,17 +46,20 @@
       "**Sparsity Evidence**: M(11) = 2047 = 23 × 89 shows that even when p is prime, M(p) may be composite (the factor 23 ≡ 1 (mod 11) per the Lucas congruence)."
     ],
     "prerequisites": [
-      "Mersenne primes and perfect numbers",
-      "Multiplicative order in ZMod",
-      "Fermat's little theorem",
-      "Divisibility in natural numbers"
+      "Mersenne primes and the Euclid–Euler theorem (perfect numbers ↔ Mersenne primes)",
+      "Multiplicative order of an element in $(\\mathbb{Z}/q\\mathbb{Z})^\\times$",
+      "Fermat's little theorem: $a^{q-1} \\equiv 1 \\pmod q$ for $\\gcd(a, q) = 1$",
+      "Divisibility in $\\mathbb{N}$ and the factoring identity $x^a - 1 \\mid x^b - 1$ when $a \\mid b$",
+      "ZMod and `Nat.Prime` API in Mathlib (`ZMod.orderOf_dvd_of_pow_eq_one`)",
+      "`Filter.atTop` asymptotic notation in Lean 4 (used to state LPWConjecture)",
+      "Euler–Mascheroni constant $\\gamma \\approx 0.5772$ (appears in LPW constant $e^\\gamma/\\log 2$)"
     ]
   },
   "crossReferences": [
     {
-      "targetId": "perfect-numbers",
+      "proofId": "perfect-numbers",
       "relationship": "extends",
-      "description": "Parent formalization proving the Euclid-Euler theorem connecting perfect numbers and Mersenne primes"
+      "description": "Parent formalization proving the Euclid–Euler theorem: an even number is perfect iff it has the form $2^{p-1}(2^p - 1)$ with $2^p - 1$ prime. This file refines the parent's Mersenne-prime side by adding the two necessary conditions (exponent primality, Lucas factor congruence) and the LPW density conjecture."
     }
   ],
   "leanFile": {
