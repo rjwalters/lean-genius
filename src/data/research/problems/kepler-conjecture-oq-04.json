@@ -1,7 +1,7 @@
 {
   "slug": "kepler-conjecture-oq-04",
   "title": "Optimal packing density for non-spherical objects (ellipsoids, tetrahedra) in R^3",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -39,14 +39,14 @@
     "goal": "Formalize the AXIOM-FREE tetrahedral refutation in S2-S4: define tetrahedronDimerDensity := 4000/4671, prove positivity, prove < 1, prove > fccDensity. ~95 lines, 0 new axioms. Then S5-S6 add 2 axiomatized statements: Bezdek-Kuperberg (ellipsoid lattice) and Ulam (convex body lower bound). Total ~150 lines, +2 axioms."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T10:00:00.000Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE: documented three flagship sub-questions (ellipsoids, tetrahedra, general convex bodies) plus the Ulam-vs-Kepler mirror-image duality. Established that the Chen-Engel-Glotzer 4000/4671 > pi/(3*sqrt(2)) inequality is fully axiom-free in Lean (provable via Real.pi_sq_lt with comfortable numerical margin). Identified Mathlib gaps: no IsPacking predicate, no tetrahedron/ellipsoid volume formulas, no Ulam namespace.",
+    "phase": "ACT",
+    "since": "2026-05-12T12:50:00Z",
+    "iteration": 2,
+    "focus": "S2 SCAFFOLD — create Proofs/KeplerConjectureOQ04.lean with the Chen-Engel-Glotzer tetrahedral dimer density `tetrahedronDimerDensity = 4000/4671` (Discrete & Computational Geometry, 2010). Three theorems: positivity (`tetrahedronDimerDensity_pos`), less-than-one (`tetrahedronDimerDensity_lt_one`), and Chen-Engel-Glotzer rational literature anchor (`tetrahedronDimerDensity_gt_8563`: 0.8563 < 4000/4671 numerically). 0 sorries, 0 axioms. 120 lines. Wired into Proofs.lean import list. Gallery entry created in src/data/proofs/kepler-conjecture-oq-04/.",
     "blockers": [],
-    "nextAction": "S2: create new file Proofs/KeplerConjectureOQ04.lean and define tetrahedronDimerDensity := 4000/4671 with positivity and < 1 lemmas (~25 lines, both proofs are norm_num).",
+    "nextAction": "S3: prove the structural inequality `tetrahedronDimerDensity > fccDensity` using `Real.pi_lt_315` and `Real.sq_sqrt 2`. The inequality reduces (via squaring of positive quantities) to `pi^2 < 288_000_000 / 21_818_241 ≈ 13.2002`, easily discharged by `Real.pi_lt_315` (pi < 3.15 gives pi^2 < 9.9225 < 13.2002). Estimated ~50 lines. After S3 lands, attention shifts to S4 (ellipsoid axioms — Bezdek-Kuperberg) and S5 (Ulam conjecture statement).",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -105,5 +105,9 @@
       "Mathlib.Data.Real.Sqrt",
       "Mathlib.Analysis.Convex.Basic"
     ]
-  }
+  },
+  "lastUpdate": "2026-05-12T12:50:00Z",
+  "leanFiles": [
+    "proofs/Proofs/KeplerConjectureOQ04.lean"
+  ]
 }
