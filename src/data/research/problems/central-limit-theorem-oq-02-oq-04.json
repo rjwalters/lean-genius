@@ -1,7 +1,7 @@
 {
   "slug": "central-limit-theorem-oq-02-oq-04",
   "title": "Mixing CLT with Ibragimov 1962 Polynomial Mixing Rates",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -9,7 +9,7 @@
     "formal": "S_n/\\sqrt{n} \\Rightarrow \\mathcal N(0,\\sigma^2) \\text{ for strictly stationary mean-zero } \\{X_n\\} \\text{ with } \\mathbb E|X_1|^{2+\\delta}<\\infty \\text{ and } \\alpha(n) \\le C n^{-r}, \\; r > (2+\\delta)/\\delta, \\; \\sigma^2 = \\operatorname{Var}(X_1) + 2\\sum_{k\\ge 1}\\operatorname{Cov}(X_1, X_{1+k}) > 0.",
     "plain": "Mixing CLT with explicit Ibragimov 1962 assumptions and polynomial mixing rate alpha(n) <= C n^-r, where r > (2+delta)/delta is the sharp threshold making the long-run variance series absolutely convergent via Davydov's covariance inequality.",
     "whyMatters": [
-      "Quantitative dependent-variable CLT — practitioners need explicit polynomial rates, not just abstract decay assumptions.",
+      "Quantitative dependent-variable CLT \u2014 practitioners need explicit polynomial rates, not just abstract decay assumptions.",
       "Bridge to Mathlib: Mathlib has no alpha-mixing API at all (2026-05-11 check); this is the smallest concrete extension that forces the right primitives.",
       "Closes parent OQ-02 gap: parent file axiomatizes Ibragimov's CLT in a docstring; OQ-02-OQ-04 produces a theorem-shaped statement that can later be discharged."
     ]
@@ -28,31 +28,33 @@
     "goal": "Formalize Ibragimov 1962 mixing CLT with explicit polynomial mixing rate alpha(n) <= C n^-r, sharp threshold r > (2+delta)/delta, and positive long-run variance, building on the AlphaMixingSequence / alphaMixingCoeff / longRunVariance definitions in parent CentralLimitTheoremOQ02.lean."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-11T19:53:00Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE: scaffold problem statement, identify sharp threshold r > (2+delta)/delta, inventory Mathlib gaps. No Lean code this session.",
+    "phase": "ORIENT",
+    "since": "2026-05-12T03:30:00Z",
+    "iteration": 2,
+    "focus": "S2 ORIENT scaffold: 4 def stubs + IbragimovHypotheses struct + 2 thm stmts (sorries) + 2 proven summability helpers.",
     "blockers": [],
-    "nextAction": "S2 ORIENT: create proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean importing parent. Introduce Stationary, PolynomialMixingRate, MomentBound, IbragimovHypotheses defs and the theorem statement mixing_clt_ibragimov := by sorry. Plus tractable sub-result longrun_variance_absolutely_convergent := by sorry.",
+    "nextAction": "S3 ACT: prove Davydov covariance inequality |Cov(X,Y)| <= 12 * alpha^(delta/(2+delta)) * ||X||_(2+delta) * ||Y||_(2+delta) (~150 lines).",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE complete. Sharp threshold r > (2+delta)/delta identified as exactly the Davydov-inequality summability condition. Parent file CentralLimitTheoremOQ02.lean (lines 419, 427, 462) already provides alphaMixingCoeff, AlphaMixingSequence, longRunVariance — OQ-02-OQ-04 will build on these. Mathlib has no alpha-mixing API.",
+    "progressSummary": "ORIENT - S2 implemented Level-1 scaffold: parametric predicates (Stationary, PolynomialMixingRate, MomentBound2\u03b4), IbragimovHypotheses structure encoding the sharp threshold r > (2+\u03b4)/\u03b4, main CLT statement (sorry, S6+ target), longrun_variance_absolutely_convergent statement (sorry, S5 target), two proven summability helpers (polynomial_summable_of_exponent_gt_one + ibragimov_threshold_summable). 2 sorries, 0 axioms, 231 lines.",
     "builtItems": [
-      "research/problems/central-limit-theorem-oq-02-oq-04/problem.md — full problem statement, threshold derivation, Bernstein-block proof outline",
-      "research/problems/central-limit-theorem-oq-02-oq-04/knowledge.md — parent-file inventory, Mathlib gap analysis, 6-session decomposition plan",
-      "research/problems/central-limit-theorem-oq-02-oq-04/state.md — OBSERVE phase, S2 next-action sketch"
+      "research/problems/central-limit-theorem-oq-02-oq-04/problem.md \u2014 full problem statement, threshold derivation, Bernstein-block proof outline",
+      "research/problems/central-limit-theorem-oq-02-oq-04/knowledge.md \u2014 parent-file inventory, Mathlib gap analysis, 6-session decomposition plan",
+      "research/problems/central-limit-theorem-oq-02-oq-04/state.md \u2014 OBSERVE phase, S2 next-action sketch",
+      "Created proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean (S2): 4 defs + IbragimovHypotheses struct + 2 thm stmts (sorries) + 2 proven helpers (polynomial_summable_of_exponent_gt_one + ibragimov_threshold_summable).",
+      "Created src/data/proofs/central-limit-theorem-oq-02-oq-04/ (S2): meta.json status axiomatized, sorries 2, axioms 0; annotations.json empty; index.ts."
     ],
     "insights": [
       "Sharp threshold: r > (2+delta)/delta comes directly from sum_n n^{-r delta/(2+delta)} < infty, which requires r delta/(2+delta) > 1. This is exact, not a rough bound.",
-      "Parent file already defines alphaMixingCoeff and AlphaMixingSequence — OQ-02-OQ-04 should import and extend, not redefine.",
-      "longRunVariance is already defined in parent (line 462) using tsum of covariances; under polynomial mixing the tsum is absolutely convergent (Davydov ⇒ |Cov| summable).",
+      "Parent file already defines alphaMixingCoeff and AlphaMixingSequence \u2014 OQ-02-OQ-04 should import and extend, not redefine.",
+      "longRunVariance is already defined in parent (line 462) using tsum of covariances; under polynomial mixing the tsum is absolutely convergent (Davydov \u21d2 |Cov| summable).",
       "Bernstein block sizing p_n = floor(n^{1-1/r}), q_n = floor(n^{1-1/r-epsilon}) satisfies all four asymptotic constraints (p_n + q_n << n, q_n/p_n -> 0, n alpha(q_n) -> 0, large-block Lindeberg) precisely under r > (2+delta)/delta.",
-      "The most tractable standalone sub-result for S3 ACT is longrun_variance_absolutely_convergent — it isolates the Davydov inequality and avoids the full block decomposition."
+      "The most tractable standalone sub-result for S3 ACT is longrun_variance_absolutely_convergent \u2014 it isolates the Davydov inequality and avoids the full block decomposition."
     ],
     "mathlibGaps": [
       "No alpha-mixing primitive (StronglyMixing, MixingCoefficient, alphaMixingCoeff) anywhere in Mathlib.Probability.",
@@ -63,9 +65,9 @@
     "nextSteps": [
       "S2 ORIENT (~200 lines): create proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean with 5 defs + 2 theorem stubs (mixing_clt_ibragimov + longrun_variance_absolutely_convergent).",
       "S3 ACT (~100 lines): prove threshold arithmetic sum_n n^{-r delta/(2+delta)} < infty <=> r > (2+delta)/delta using Real.summable_one_div_nat_rpow.",
-      "S4 ACT (~150 lines): Davydov covariance bound via Holder + alpha-mixing coefficient — natural Aristotle companion-file target.",
+      "S4 ACT (~150 lines): Davydov covariance bound via Holder + alpha-mixing coefficient \u2014 natural Aristotle companion-file target.",
       "S5 ACT (~80 lines): combine S3 + S4 to discharge longrun_variance_absolutely_convergent.",
-      "S6+ ACT (~400 lines): Bernstein blocks, Lindeberg for large-block sum, characteristic-function convergence (Lévy continuity), full mixing CLT."
+      "S6+ ACT (~400 lines): Bernstein blocks, Lindeberg for large-block sum, characteristic-function convergence (L\u00e9vy continuity), full mixing CLT."
     ]
   },
   "tags": [
@@ -94,17 +96,17 @@
     "papers": [
       "Ibragimov, I. A. (1962). Some limit theorems for stationary processes. Theory Probab. Appl. 7(4), 349-382.",
       "Davydov, Yu. A. (1968). Convergence of distributions generated by stationary stochastic processes. Theory Probab. Appl. 13(4), 691-696.",
-      "Rio, E. (1993). Covariance inequalities for strongly mixing processes. Ann. Inst. H. Poincaré Probab. Statist. 29(4), 587-597.",
+      "Rio, E. (1993). Covariance inequalities for strongly mixing processes. Ann. Inst. H. Poincar\u00e9 Probab. Statist. 29(4), 587-597.",
       "Bradley, R. C. (2005). Basic properties of strong mixing conditions: a survey and some open questions. Probability Surveys 2, 107-144.",
       "Doukhan, P. (1994). Mixing: Properties and Examples. Lecture Notes in Statistics 85, Springer.",
       "Bradley, R. C. (1981). A sufficient condition for linear growth of variances in a stationary random sequence. Proc. Amer. Math. Soc. 83, 586-589.",
-      "Rio, E. (1996). Sur le théorème de Berry-Esseen pour les suites faiblement dépendantes. Probab. Theory Related Fields 104, 255-282."
+      "Rio, E. (1996). Sur le th\u00e9or\u00e8me de Berry-Esseen pour les suites faiblement d\u00e9pendantes. Probab. Theory Related Fields 104, 255-282."
     ],
     "urls": [],
     "mathlib": []
   },
   "started": "2026-05-08T19:09:00.562Z",
-  "lastUpdate": "2026-05-11T19:53:00Z",
+  "lastUpdate": "2026-05-12T03:35:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -272,6 +274,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ04.lean"
+    },
+    {
+      "path": "Proofs/CentralLimitTheoremOQ02OQ04.lean",
+      "filename": "CentralLimitTheoremOQ02OQ04.lean",
+      "lineCount": 231,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean"
     }
   ]
 }

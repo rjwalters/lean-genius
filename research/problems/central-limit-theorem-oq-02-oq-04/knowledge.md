@@ -149,3 +149,90 @@ After S1 merges:
   (Comprehensive modern reference.)
 - Doukhan, P. (1994). *Mixing: Properties and Examples*.  Lecture Notes
   in Statistics 85, Springer.  (Definitive monograph.)
+
+## Session log — Session 2 (researcher-6, 2026-05-12) — S2 ORIENT
+
+**Mode**: REVISIT (build on S1's S2 plan).
+
+**Outcome**: Scaffold complete.  4 definitions, 1 structure, 2 main theorem
+statements with sorries, 2 fully-proven summability helpers.
+
+### What I did
+
+- Created `proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean` (231 lines).
+- **Predicates and structure**:
+  - `Stationary μ X` via marginal `IdentDistrib (X k) (X 0) μ μ` (slice version).
+  - `PolynomialMixingRate α C r` — `α n ≤ C · n^(-r)` for `n ≥ 1`.
+  - `MomentBound2δ μ X δ` — `∀ k, MemLp (X k) (2 + δ) μ`.
+  - `IbragimovHypotheses μ X δ C r` — 11 fields bundled: stationary,
+    integrable, mean_zero, delta_pos, moment_bound, alpha, pastSigma,
+    futureSigma, alpha_bound, poly_rate, rate_admissible.
+- **Proven summability helpers**:
+  - `polynomial_summable_of_exponent_gt_one (s : ℝ) (hs : 1 < s) : Summable (fun n : ℕ => (n : ℝ) ^ (-s))`
+    — via Mathlib's `Real.summable_nat_rpow_inv`, with explicit handling of the
+    `n = 0` boundary case via `Real.zero_rpow` and `Real.rpow_neg` for `n ≥ 1`.
+  - `ibragimov_threshold_summable (δ r : ℝ) (hδ : 0 < δ) (hr : r > (2 + δ) / δ) : Summable (fun n : ℕ => (n : ℝ) ^ (-(r * δ / (2 + δ))))`
+    — direct algebraic derivation of `1 < rδ/(2+δ)` from the threshold,
+    then applying the polynomial-summability helper.
+- **Theorem statements (sorries)**:
+  - `longrun_variance_absolutely_convergent` — `∑_k |∫ X 0 ω · X (k+1) ω dμ| < ∞`
+    under `IbragimovHypotheses`. S5 target.
+  - `mixing_clt_ibragimov` — `φ_{S_n / √n}(t) → exp(-σ² t² / 2)` for all
+    `t : ℝ`, under `IbragimovHypotheses` + `σ² > 0` (σ² supplied as parameter,
+    not computed inline from `longRunVariance`). S6+ target.
+- Created `src/data/proofs/central-limit-theorem-oq-02-oq-04/`:
+  - `meta.json` (status `axiomatized`, sorries 2, axioms 0, lineCount 231).
+  - `annotations.json` (empty).
+  - `index.ts`.
+
+### Key findings
+
+- The Mathlib name is `Real.summable_nat_rpow_inv` (not
+  `Real.summable_one_div_nat_rpow` — the latter would be a related result
+  but isn't in the repo's existing usage).
+- The sharp-threshold algebra `r > (2+δ)/δ ⇒ rδ/(2+δ) > 1` is one step:
+  multiply both sides of `r > (2+δ)/δ` by `δ > 0` (using
+  `mul_lt_mul_of_pos_right` and `div_mul_cancel₀`), giving `r·δ > 2+δ`, then
+  divide both sides by `2+δ > 0` (using `lt_div_iff₀`), giving `1 < rδ/(2+δ)`.
+- The main CLT statement separates σ² from the parent's `longRunVariance`
+  definition — supplying it as an external parameter avoids the awkward
+  inline plumbing of integrability/mean-zero proofs.
+- The `IbragimovHypotheses` structure should be refined in S3+ to use
+  joint stationarity (over finite tuples) rather than just marginal slices,
+  but the marginal slice suffices for the statement itself.
+
+### Mathlib gaps confirmed (S2 update of S1 list)
+
+- **No Davydov inequality** in `Mathlib.MeasureTheory.Function.LpSpace`.
+  Build in S3 as standalone lemma `davydov_cov_bound`.
+- **No Bernstein block decomposition** in Mathlib's probability sections.
+  Build in S5 as set of helper lemmas + main block decomposition theorem.
+- **No quantitative Lindeberg verification under polynomial mixing**.
+  Compose S3 + S5 to derive in S7.
+
+### Files modified
+
+- `proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean` (new, 231 lines)
+- `src/data/proofs/central-limit-theorem-oq-02-oq-04/meta.json` (new)
+- `src/data/proofs/central-limit-theorem-oq-02-oq-04/annotations.json` (new)
+- `src/data/proofs/central-limit-theorem-oq-02-oq-04/index.ts` (new)
+- `research/problems/central-limit-theorem-oq-02-oq-04/state.md` (updated S2)
+- `research/problems/central-limit-theorem-oq-02-oq-04/knowledge.md` (this entry)
+
+### Next steps for S3+
+
+1. **S3**: Prove Davydov's covariance inequality
+   `|Cov(X,Y)| ≤ 12·α^{δ/(2+δ)}·‖X‖_{2+δ}·‖Y‖_{2+δ}` (~150 lines).
+   Standard Hölder + indicator-decomposition proof; cleanly separates into
+   `cov_indicator_bound` + `Lp_norm_bound`.
+2. **S4** = old S5: Close `longrun_variance_absolutely_convergent` using
+   Davydov per-term + `ibragimov_threshold_summable` + `Summable.comp_injective`
+   for the index shift `k ↦ k+1`.
+3. **S5+**: Bernstein blocks, Lindeberg, full CLT — per the decomposition
+   table in state.md.
+
+### Aristotle
+
+The two sorries are **deferred-to-S3+** statements, not routine lemmas.
+The two proven summability helpers are useful standalone but already proven.
+No new Aristotle targets in this session.
