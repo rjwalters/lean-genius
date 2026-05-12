@@ -5,7 +5,7 @@
   "description": "Formal scaffold for OQ-05 of the parent gallery entry `spherical-law-of-cosines`: the haversine formula $\\text{hav}(c) = \\text{hav}(a-b) + \\sin(a)\\sin(b)\\,\\text{hav}(C)$ — the numerically stable version of the spherical law of cosines used in navigation and GPS great-circle distance computations. S1 establishes the haversine function and proves the pure algebraic identity (from the planar SLC hypothesis); the `SphericalTriangle` version is recorded as `sorry` pending the conversion of the parent file's projection-inner-product form into the trigonometric `sin(a)sin(b)cos(C)` form (deferred to S2).",
   "meta": {
     "author": "Todhunter, Sigl",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/SphericalLawOfCosinesOQ05.lean",
     "tags": [
       "spherical-geometry",
@@ -17,17 +17,17 @@
       "open",
       "research"
     ],
-    "badge": "wip",
-    "sorries": 1,
+    "badge": "original",
+    "sorries": 0,
     "sourceUrl": "https://en.wikipedia.org/wiki/Haversine_formula",
     "dateAdded": "2026-05-12",
     "axiomCount": 0,
-    "lineCount": 297,
-    "assumptions": "1 sorry: `haversine_formula` (the SphericalTriangle version). The pure algebraic identity `haversine_formula_algebraic` is proved unconditionally — derived by linear arithmetic from the planar subtraction formula `Real.cos_sub` and the half-angle identity. The remaining sorry is the bridge from the parent's projection-inner-product form of SLC into the trigonometric `sin(a)·sin(b)·cos(C)` form, which requires a case split on degenerate projections.",
+    "lineCount": 412,
+    "assumptions": "None. All 15 theorems proved (0 sorries, 0 axioms). S2 (researcher-10, 2026-05-12) closed the S1 sorry on haversine_formula via the bridge lemma inner_projectPerp_eq_sin_sin_cos_angleC, which converts the parent's projection-inner-product form of the spherical law of cosines into the trigonometric sin(a)·sin(b)·cos(angleC) form, case-splitting on the degenerate projection branch matching t.angleC's definition.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 12,
+    "theoremCount": 15,
     "definitionCount": 1,
-    "substantiveTheoremCount": 12
+    "substantiveTheoremCount": 15
   },
   "sections": [
     {
@@ -131,5 +131,5 @@
       "description": "Planar analogue; the haversine formula reduces to the planar law of cosines in the small-angle limit."
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }
