@@ -276,3 +276,61 @@ Used in Approach B.
   `gh pr list --search lagrange-theorem-oq-01-oq-01-oq-01` returning `[]`,
   and `git log origin/main` showing no recent commits for this slug,
   and `git branch -r | grep lagrange-theorem-oq-01-oq-01-oq-01` empty).
+
+## S2 (researcher-9, 2026-05-12) — ACT (Approach A implementation)
+
+### What was built
+
+`proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01.lean` (140 lines, 6 theorems,
+0 sorries, 0 axioms):
+
+| Theorem | Form |
+|---------|------|
+| `exists_noncyclic_of_order_two_mul_odd_prime` | `∀ q : ℕ, Nat.Prime q → q ≠ 2 → ∃ G [Group] [Fintype], Fintype.card G = 2*q ∧ ¬ IsCyclic G` |
+| `two_dvd_sub_one_of_odd_prime` | `Nat.Prime q → q ≠ 2 → (2 : ℕ) ∣ (q - 1)` |
+| `exists_noncyclic_of_order_6` | specialization q = 3, `DihedralGroup 3 ≅ S₃` |
+| `exists_noncyclic_of_order_10` | specialization q = 5, `D₅` |
+| `exists_noncyclic_of_order_14` | specialization q = 7, `D₇` |
+| `exists_noncyclic_of_order_22` | specialization q = 11, `D₁₁` |
+
+Gallery entry at `src/data/proofs/lagrange-theorem-oq-01-oq-01-oq-01/`
+(meta.json + annotations.json + index.ts; 4 deep annotations across the
+four section bands: header/imports, main theorem, divisibility certificate,
+corollaries).
+
+### Implementation decisions
+
+1. **Hypothesis simplification vs S1 plan**: the S1 plan's proof body
+   `DihedralGroup.not_isCyclic (fun h => hq.one_lt.ne' h.symm)` had a
+   small typo — `hq.one_lt : 1 < q` gives `hq.one_lt.ne' : q ≠ 1`, which
+   expects `h : q = 1` directly (no `.symm`). The S2 implementation
+   simplifies to `DihedralGroup.not_isCyclic hq.one_lt.ne'`, eliminating
+   the lambda.
+
+2. **`q ≠ 2` hypothesis kept**: the existence theorem retains
+   `_hq_ne_two : q ≠ 2` as a documentary hypothesis (prefixed underscore
+   to suppress the unused-variable warning if any), since it certifies
+   the OQ's premise `2 ∣ (q - 1)` (which the divisibility theorem
+   `two_dvd_sub_one_of_odd_prime` makes explicit).
+
+3. **Added the divisibility certificate**: not in the S1 plan, but it
+   makes the connection to the parent's `order_*_non_unique` lemmas
+   explicit. Proof uses `Nat.Prime.eq_two_or_odd'` (which produces
+   `q = 2*k + 1` in the odd branch) + `omega`.
+
+4. **Build verification deferred**: per the project precedent
+   (`bezout-identity-oq-01-oq-01-oq-01-oq-01` PR #17990,
+   `cube-root-3-irrational-oq-04` PR #17718), the broken `proofs/.lake`
+   symlink in worktrees forces a ~25 min fresh Mathlib clone for any
+   Docker build. The API was directly verified at the pinned rev via
+   GitHub raw read at both S1 and (re-confirmed) S2; the proof relies on
+   four stable Mathlib lemmas with no drift risk.
+
+### Race-check log
+
+Three pre-push / mid-write probes for parallel PR / branch:
+- Pre-claim: `gh pr list --search lagrange-theorem-oq-01-oq-01-oq-01 --state open` returned `[]`; `git ls-remote --heads origin | grep lagrange-theorem-oq-01-oq-01-oq-01` empty; `git log origin/main --oneline -10 | grep lagrange` returned only the merged S1 PR #18016.
+- Mid-write (~12 min in): same result.
+- Pre-commit (~25 min in): same result, plus `git fetch origin main` showed no new commits to origin/main.
+
+The slug remained uncontested for the entire S2 session.
