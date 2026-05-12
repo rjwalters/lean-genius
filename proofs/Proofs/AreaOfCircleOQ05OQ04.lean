@@ -1,13 +1,20 @@
 /-
-Area of Circle OQ-05-OQ-04 (S2a): The Complex Gaussian Integral
+Area of Circle OQ-05-OQ-04 (S2a + S3): The Complex Gaussian Integral
 
-Proves the complex Gaussian identity
+Proves the complex Gaussian identities
 
-    ∫_ℂ exp(-π · ‖z‖²) dz = 1
+    ∫_ℂ exp(-π · ‖z‖²) dz = 1               (S2a, b = π specialisation)
+    ∫_ℂ exp(-(b · ‖z‖²)) dz = π / b         (S3, parametric in b > 0)
 
-i.e. the indicator that the Gaussian density `e^{-π |z|²}` on ℂ integrates
-to 1 against the standard Lebesgue measure on ℂ (induced by the canonical
-identification ℂ ≃ ℝ²).
+and the natural corollaries `∫_ℂ exp(-‖z‖²) dz = π` (unit weight,
+"complex Gaussian = area of unit disc") and the probability density
+`∫_ℂ (1/π) · exp(-‖z‖²) dz = 1`.
+
+The S2a results assert that the Gaussian density `e^{-π |z|²}` on ℂ
+integrates to 1 against the standard Lebesgue measure on ℂ (induced
+by the canonical identification ℂ ≃ ℝ²). The S3 additions generalise
+to arbitrary positive weights, completing the complex analogue of the
+parent file's scalar `scaled_gaussian` (`∫ exp(-(a · x²)) = √(π/a)`).
 
 ## Context (from `research/area-of-circle-oq-05-oq-04/problem.md`)
 
@@ -165,11 +172,132 @@ theorem complex_gaussian_integral_norm :
   simp_rw [h_eq]
   exact complex_gaussian_integral
 
+/-! ## Part 2: Parametric complex Gaussian (S3)
+
+The S2a deliverable specialised the integrand to `b = π`. The natural
+strict generalisation is parametric in `b > 0`:
+
+    ∫_ℂ exp(-(b · normSq z)) dz = π / b.
+
+This is the complex analogue of the parent file's `scaled_gaussian`
+(`∫ exp(-(a · x²)) dx = √(π/a)`): the complex-plane factor is
+`(√(π/b))² = π/b`. The earlier theorem `complex_gaussian_integral`
+becomes the special case `b = π`, with `π / π = 1`. -/
+
+/-- The general `b`-scaled scalar Gaussian: `∫ exp(-(b · x²)) = √(π/b)`.
+
+This is simply a re-export of `GaussianIntegralCircle.scaled_gaussian`
+to live in the same namespace as the complex variants below, so that
+all `b`-parametric Gaussians sit side-by-side. -/
+theorem integral_b_gaussian (b : ℝ) (hb : 0 < b) :
+    ∫ x : ℝ, Real.exp (-(b * x ^ 2)) = √(Real.pi / b) :=
+  GaussianIntegralCircle.scaled_gaussian b hb
+
+/-- Helper: the integrand factors as a product under the `ℂ ≃ᵐ ℝ × ℝ`
+identification, with a general weight `b`.
+
+For `p : ℝ × ℝ`, `exp(-(b · (p.1² + p.2²))) = exp(-(b · p.1²)) · exp(-(b · p.2²))`.
+This is the `b`-parameterised counterpart of `exp_factor`. -/
+private lemma exp_factor_b (b : ℝ) (p : ℝ × ℝ) :
+    Real.exp (-(b * (p.1 ^ 2 + p.2 ^ 2))) =
+      Real.exp (-(b * p.1 ^ 2)) * Real.exp (-(b * p.2 ^ 2)) := by
+  rw [← Real.exp_add]
+  congr 1
+  ring
+
+/-- **Parametric complex Gaussian integral**: for any `b > 0`,
+
+    ∫_ℂ exp(-(b · normSq z)) dz = π / b.
+
+This is the strict generalisation of `complex_gaussian_integral`
+(`b = π`) and the complex analogue of `scaled_gaussian` (`√(π/b)` per
+axis, squared by Fubini to `π / b`).
+
+Proof: same skeleton as `complex_gaussian_integral` — pull back along
+`Complex.measurableEquivRealProd`, factor the integrand via
+`exp_factor_b`, apply Fubini (`integral_prod_mul`), and combine the
+two scalar factors `√(π/b) · √(π/b) = π/b` via `Real.mul_self_sqrt`. -/
+theorem complex_gaussian_integral_scaled (b : ℝ) (hb : 0 < b) :
+    ∫ z : ℂ, Real.exp (-(b * Complex.normSq z)) = Real.pi / b := by
+  -- Step 1: rewrite `normSq z` as `z.re² + z.im²` to expose product structure.
+  have h_re_im : ∀ z : ℂ,
+      Real.exp (-(b * Complex.normSq z)) =
+        Real.exp (-(b * (z.re ^ 2 + z.im ^ 2))) := by
+    intro z
+    congr 2
+    rw [Complex.normSq_apply, sq, sq]
+  simp_rw [h_re_im]
+  -- Step 2: transport ∫_ℂ to ∫_{ℝ × ℝ} via measurableEquivRealProd.
+  have h_pull :
+      ∫ z : ℂ, Real.exp (-(b * (z.re ^ 2 + z.im ^ 2))) =
+        ∫ p : ℝ × ℝ, Real.exp (-(b * (p.1 ^ 2 + p.2 ^ 2))) := by
+    have := Complex.volume_preserving_equiv_real_prod.integral_comp'
+      (g := fun p : ℝ × ℝ => Real.exp (-(b * (p.1 ^ 2 + p.2 ^ 2))))
+    simpa using this
+  rw [h_pull]
+  -- Step 3: factor the integrand into a product.
+  simp_rw [exp_factor_b b]
+  -- Step 4: Fubini.
+  rw [volume_eq_prod ℝ ℝ, integral_prod_mul (μ := volume) (ν := volume)
+      (fun x => Real.exp (-(b * x ^ 2)))
+      (fun y => Real.exp (-(b * y ^ 2)))]
+  -- Step 5: each factor is √(π/b); the product is π/b.
+  simp_rw [integral_b_gaussian b hb]
+  -- √(π/b) * √(π/b) = π/b for π/b ≥ 0.
+  exact Real.mul_self_sqrt (div_nonneg Real.pi_nonneg hb.le)
+
+/-- `‖z‖²` form of `complex_gaussian_integral_scaled`:
+
+    ∫_ℂ exp(-(b · ‖z‖²)) dz = π / b.
+
+Useful for downstream consumers that prefer the analytic norm to
+`Complex.normSq`. -/
+theorem complex_gaussian_integral_scaled_norm (b : ℝ) (hb : 0 < b) :
+    ∫ z : ℂ, Real.exp (-(b * ‖z‖ ^ 2)) = Real.pi / b := by
+  have h_eq : ∀ z : ℂ,
+      Real.exp (-(b * ‖z‖ ^ 2)) = Real.exp (-(b * Complex.normSq z)) := by
+    intro z
+    rw [Complex.normSq_eq_norm_sq]
+  simp_rw [h_eq]
+  exact complex_gaussian_integral_scaled b hb
+
+/-- **Standard complex Gaussian (unit weight)**: `∫_ℂ exp(-‖z‖²) dz = π`.
+
+    The unit-weight complex Gaussian integrates exactly to π — the area
+    of the unit disc on `ℂ`. This is the canonical statement linking
+    the complex Gaussian to the "circle area" theme of the slug:
+    the Gaussian density `exp(-‖z‖²)` has total mass π, exactly the
+    area enclosed by the unit circle. -/
+theorem complex_gaussian_integral_unit_norm :
+    ∫ z : ℂ, Real.exp (-‖z‖ ^ 2) = Real.pi := by
+  have h := complex_gaussian_integral_scaled_norm 1 one_pos
+  -- `h : ∫ z, exp(-(1 * ‖z‖^2)) = π / 1`; simp normalises `1 * x = x` and `π / 1 = π`.
+  simp only [one_mul, div_one] at h
+  exact h
+
+/-- **Normalised complex Gaussian density**: the complex-plane density
+    `(1/π) · exp(-‖z‖²)` integrates to 1.
+
+    This is the complex analogue of the parent file's standard normal
+    normalisation `∫ (1/√(2π)) · exp(-x²/2) dx = 1`
+    (`GaussianIntegralCircle.standard_normal_normalization`). It says
+    that the unit-weight complex Gaussian, divided by π, is a
+    probability density on ℂ. -/
+theorem complex_gaussian_integral_normalised :
+    ∫ z : ℂ, (1 / Real.pi) * Real.exp (-‖z‖ ^ 2) = 1 := by
+  rw [integral_const_mul, complex_gaussian_integral_unit_norm, one_div,
+      inv_mul_cancel₀ Real.pi_ne_zero]
+
 /-! ## Status
 
 - `integral_pi_gaussian` : proved (direct from `scaled_gaussian`).
 - `complex_gaussian_integral` : proved (Fubini + measure-preserving equiv).
 - `complex_gaussian_integral_norm` : proved (corollary of the above).
+- `integral_b_gaussian` : proved (re-export of `scaled_gaussian`).
+- `complex_gaussian_integral_scaled` : proved (parametric Fubini).
+- `complex_gaussian_integral_scaled_norm` : proved (`‖z‖²` form).
+- `complex_gaussian_integral_unit_norm` : proved (`b = 1` corollary).
+- `complex_gaussian_integral_normalised` : proved (`1/π` density).
 
 All theorems above are sorry-free and axiom-free.
 
