@@ -20,13 +20,14 @@ diagonal hypergraph Ramsey number `R_k(s,t)` as the least `n` such that every
 monochromatic `s`-clique of one color or a monochromatic `t`-clique of the
 other.
 
-After **S3** (this revision) the `k = 1` pigeonhole sanity check
-`ramseyNumber_one s t = s + t - 1` is proved — the simplest instance of the
-hypergraph Ramsey theorem and a unit test for the API introduced in S2.
-The general existence theorem `ramsey_existence` (OQ-03a, two-layer Ramsey
-1930 induction) and the Erdős–Rado tower upper bound (OQ-03b) remain
-`sorry`-marked, deferred to S4+ per
-`research/problems/erdos-szekeres-oq-03/state.md`.
+After **S4 ACT-C** (this revision) the structural foundations of
+`ramsey_existence` are in place: anti-monotonicity of the Ramsey condition
+in both target sizes, and the `s = k` / `t = k` boundary cases proved at
+`n = t` / `n = s` via a direct case-split on whether some `k`-subset is
+colored `false`. `ramsey_existence` itself is rewritten to discharge both
+boundaries; only the genuine inductive case `s > k ∧ t > k` (the Ramsey 1930
+recursive bound through uniformity `k-1`) remains `sorry`-marked, deferred to
+S5+ per `research/problems/erdos-szekeres-oq-03/state.md`.
 
 ## Status
 
@@ -37,8 +38,14 @@ The general existence theorem `ramsey_existence` (OQ-03a, two-layer Ramsey
   `t = 0` base cases (the empty set witnesses both).
 - [x] **`isRamsey_one_iff` and `ramseyNumber_one` (S3)**: the `k = 1` case
   is the pigeonhole `s + t - 1` bound, by partitioning singletons.
-- [ ] `ramsey_existence` (OQ-03a): the general result, stated as `sorry`.
-  Proof strategy in `state.md`.
+- [x] **`IsRamsey.swap` and `ramseyNumber_zero_*` (S4-prep)**: color symmetry
+  and degenerate-`ramseyNumber` collapses.
+- [x] **`IsRamsey.anti_s` / `IsRamsey.anti_t` (S4 ACT-C)**: anti-monotonicity
+  in the target sizes, by extracting a sub-clique of the desired smaller size.
+- [x] **`is_ramsey_self_right` / `is_ramsey_self_left` (S4 ACT-C)**: the
+  `s = k` and `t = k` boundary cases at `n = t` and `n = s`, respectively.
+- [ ] `ramsey_existence` (OQ-03a): boundaries closed; the genuine inductive
+  case `s > k ∧ t > k` is `sorry`. Proof strategy in `state.md` (S5+).
 
 ## Approach
 
@@ -102,18 +109,6 @@ lemma isMonochromatic_of_card_lt {n k : ℕ} (χ : kColoring n)
   have hTle : T.card ≤ S.card := Finset.card_le_card hTsub
   exfalso
   omega
-
-/-- (OQ-03a) **Ramsey's hypergraph theorem.** For every uniformity `k ≥ 2`
-and every pair of target sizes `s, t ≥ k`, there is a finite `n` such that
-every 2-coloring of `[n]^{(k)}` contains a monochromatic `s`- or `t`-clique.
-
-This is the main result of the OQ-03 entry. The proof (Ramsey 1930) is by
-two-layer induction on `k` and `s + t`; see `state.md` for the strategy.
-Deferred to S4+ (S3 closed the `k = 1` sanity check; the `k ≥ 2` induction
-needs the additional neighborhood-collapse machinery). -/
-theorem ramsey_existence (k s t : ℕ) (hk : 2 ≤ k) (hs : k ≤ s) (ht : k ≤ t) :
-    ∃ n, IsRamsey n k s t := by
-  sorry
 
 /-- The empty set is a `0`-clique, monochromatic of every color. -/
 lemma isMonochromatic_empty_zero {n k : ℕ} (χ : kColoring n) (c : Bool)
@@ -369,5 +364,137 @@ lemma ramseyNumber_zero_true (k s : ℕ) (hk : 1 ≤ k) :
   unfold ramseyNumber
   have h0 : (0 : ℕ) ∈ {n | IsRamsey n k s 0} := is_ramsey_zero_true 0 k s hk
   exact Nat.le_zero.mp (Nat.sInf_le h0)
+
+/-! ### S4 ACT-C: structural lemmas and boundary cases of `ramsey_existence`
+
+The four lemmas below are the structural foundation for the S5 two-layer
+Ramsey-1930 induction:
+
+* `IsRamsey.anti_s`, `IsRamsey.anti_t` — anti-monotonicity in the target sizes.
+  A larger `s`-target is strictly harder to satisfy, so shrinking it preserves
+  the Ramsey condition. Needed in S5 to lift the recursive bound (which only
+  produces an `(s-1)`- or `(t-1)`-clique on a sub-coloring) up to the
+  outer `s`- or `t`-clique.
+* `is_ramsey_self_right`, `is_ramsey_self_left` — the `s = k` (resp. `t = k`)
+  boundary case: at uniformity `k`, target sizes `(k, t)` are settled by
+  `n = t`. Either some `k`-subset is colored `false` (giving a `k`-clique
+  monochromatic-`false`) or every `k`-subset is colored `true` (giving the
+  full `t`-vertex set as a monochromatic-`true` `t`-clique).
+
+With these in hand, `ramsey_existence` (below) is reduced to its
+genuinely-inductive case `s > k ∧ t > k` (the S5 target).
+-/
+
+/-- **Anti-monotonicity of `IsRamsey` in the `s`-target.** A larger `s` is
+strictly harder to satisfy — shrinking it preserves the Ramsey condition. The
+proof: any `s`-clique contains an `s'`-sub-clique (via
+`Finset.exists_subset_card_eq`), and monochromaticity descends to subsets. -/
+lemma IsRamsey.anti_s {n k s s' t : ℕ} (hss' : s' ≤ s)
+    (h : IsRamsey n k s t) : IsRamsey n k s' t := by
+  intro χ
+  rcases h χ with ⟨S, hSc, hSm⟩ | ⟨S, hSc, hSm⟩
+  · -- false-clique S of size s; extract an s'-sized sub-clique.
+    have hs'S : s' ≤ S.card := hSc ▸ hss'
+    obtain ⟨S', hS'sub, hS'card⟩ := Finset.exists_subset_card_eq hs'S
+    refine Or.inl ⟨S', hS'card, ?_⟩
+    intro T hT
+    rw [Finset.mem_powersetCard] at hT
+    obtain ⟨hTsub, hTcard⟩ := hT
+    exact hSm T (Finset.mem_powersetCard.mpr ⟨hTsub.trans hS'sub, hTcard⟩)
+  · -- t-clique branch: pass through unchanged.
+    exact Or.inr ⟨S, hSc, hSm⟩
+
+/-- **Anti-monotonicity of `IsRamsey` in the `t`-target.** Symmetric to
+`IsRamsey.anti_s`. -/
+lemma IsRamsey.anti_t {n k s t t' : ℕ} (htt' : t' ≤ t)
+    (h : IsRamsey n k s t) : IsRamsey n k s t' := by
+  intro χ
+  rcases h χ with ⟨S, hSc, hSm⟩ | ⟨S, hSc, hSm⟩
+  · exact Or.inl ⟨S, hSc, hSm⟩
+  · have ht'S : t' ≤ S.card := hSc ▸ htt'
+    obtain ⟨S', hS'sub, hS'card⟩ := Finset.exists_subset_card_eq ht'S
+    refine Or.inr ⟨S', hS'card, ?_⟩
+    intro T hT
+    rw [Finset.mem_powersetCard] at hT
+    obtain ⟨hTsub, hTcard⟩ := hT
+    exact hSm T (Finset.mem_powersetCard.mpr ⟨hTsub.trans hS'sub, hTcard⟩)
+
+/-- **Boundary case `s = k`.** At uniformity `k` and target sizes `(k, t)` with
+`k ≤ t`, the Ramsey condition holds at `n = t`.
+
+Proof: case-split on whether some `k`-subset is colored `false`.
+
+* **Case A.** If some `S` with `|S| = k` has `χ S = false`, then `S` itself is
+  a `k`-clique with monochromatic-`false` `k`-subsets — its only `k`-subset is
+  `S`, by `Finset.eq_of_subset_of_card_le` applied to the inclusion.
+* **Case B.** If no `k`-subset is colored `false`, then every `k`-subset of
+  `Finset.univ : Finset (Fin t)` is colored `true`, and `Finset.univ` is a
+  `t`-clique with `card = t` (by `Fintype.card_fin`). -/
+lemma is_ramsey_self_right (k t : ℕ) (hk : 1 ≤ k) (hkt : k ≤ t) :
+    IsRamsey t k k t := by
+  classical
+  intro χ
+  by_cases h : ∃ S : Finset (Fin t), S.card = k ∧ χ S = false
+  · -- Case A: a false-colored k-subset is itself the mono-false k-clique.
+    obtain ⟨S, hScard, hSχ⟩ := h
+    refine Or.inl ⟨S, hScard, ?_⟩
+    intro T hT
+    rw [Finset.mem_powersetCard] at hT
+    obtain ⟨hTsub, hTcard⟩ := hT
+    -- |T| = k = |S| with T ⊆ S ⇒ T = S.
+    have hT_eq : T = S := Finset.eq_of_subset_of_card_le hTsub (by omega)
+    rw [hT_eq]
+    exact hSχ
+  · -- Case B: every k-subset is colored true; Finset.univ is the mono-true t-clique.
+    push_neg at h
+    refine Or.inr ⟨Finset.univ, ?_, ?_⟩
+    · rw [Finset.card_univ, Fintype.card_fin]
+    · intro T hT
+      rw [Finset.mem_powersetCard] at hT
+      obtain ⟨_, hTcard⟩ := hT
+      -- From `h`, χ T ≠ false; in `Bool`, this forces χ T = true.
+      have hχ_ne : χ T ≠ false := fun hχ => h T hTcard hχ
+      cases hT_color : χ T with
+      | false => exact absurd hT_color hχ_ne
+      | true => exact hT_color
+
+/-- **Boundary case `t = k`.** Symmetric to `is_ramsey_self_right` via
+`IsRamsey.swap`. -/
+lemma is_ramsey_self_left (k s : ℕ) (hk : 1 ≤ k) (hks : k ≤ s) :
+    IsRamsey s k s k :=
+  IsRamsey.swap.mpr (is_ramsey_self_right k s hk hks)
+
+/-- (OQ-03a) **Ramsey's hypergraph theorem.** For every uniformity `k ≥ 2`
+and every pair of target sizes `s, t ≥ k`, there is a finite `n` such that
+every 2-coloring of `[n]^{(k)}` contains a monochromatic `s`- or `t`-clique.
+
+This is the main result of the OQ-03 entry. The proof is the classical Ramsey
+1930 two-layer induction on `k` (uniformity) and `s + t` (target sizes), with
+the two boundary cases `s = k` and `t = k` discharged by `is_ramsey_self_right`
+and `is_ramsey_self_left`, respectively. The genuine inductive case
+`s > k ∧ t > k` (which requires the neighborhood-collapse construction of
+Ramsey 1930) is deferred to S5+.
+
+Status after S4 ACT-C:
+* `s = k`: closed via `is_ramsey_self_right`, take `n = t`.
+* `t = k`: closed via `is_ramsey_self_left`, take `n = s`.
+* `s > k ∧ t > k`: `sorry` (S5 target — the recursive Ramsey bound). -/
+theorem ramsey_existence (k s t : ℕ) (hk : 2 ≤ k) (hs : k ≤ s) (ht : k ≤ t) :
+    ∃ n, IsRamsey n k s t := by
+  rcases eq_or_lt_of_le hs with hs_eq | hs_lt
+  · -- s = k boundary: n = t suffices by `is_ramsey_self_right`.
+    refine ⟨t, ?_⟩
+    rw [← hs_eq]
+    exact is_ramsey_self_right k t (by omega) ht
+  · rcases eq_or_lt_of_le ht with ht_eq | ht_lt
+    · -- t = k boundary: n = s suffices by `is_ramsey_self_left`.
+      refine ⟨s, ?_⟩
+      rw [← ht_eq]
+      exact is_ramsey_self_left k s (by omega) hs
+    · -- s > k ∧ t > k: the genuine inductive case (Ramsey 1930 recursive
+      -- bound). Deferred to S5+: the neighborhood-collapse construction
+      -- reduces uniformity `k` to `k-1` on a `(k-1)`-uniform induced
+      -- coloring, then recurses on `s + t`.
+      sorry
 
 end RamseyK

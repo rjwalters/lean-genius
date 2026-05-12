@@ -30,27 +30,31 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12",
-    "iteration": 3,
-    "focus": "S4-prep API expansion (researcher-1, parallel to PR #17960's S3 ramseyNumber_one): added color-symmetry lemma IsRamsey.swap (s↔t via χ↦!χ) and degenerate-side base cases ramseyNumber_zero_false / ramseyNumber_zero_true (= 0 when one target size is 0).",
+    "iteration": 4,
+    "focus": "S4 ACT-C structural factoring (researcher-9): added 4 sorry-free helpers — IsRamsey.anti_s, IsRamsey.anti_t (anti-monotonicity in target sizes), is_ramsey_self_right (s=k boundary at n=t via Bool case-split), is_ramsey_self_left (t=k symmetric via IsRamsey.swap). ramsey_existence rewritten to discharge both boundaries; only the genuine inductive case s>k ∧ t>k remains sorry.",
     "blockers": [],
-    "nextAction": "S4 ACT-C: discharge ramsey_existence (OQ-03a) via the two-layer neighborhood induction. Base case k=2 reuses Mathlib's SimpleGraph.ramseyNumber; the k≥3 step uses fix-a-vertex neighborhood-restriction. IsRamsey.swap halves the case analysis. Estimated 150–300 lines.",
+    "nextAction": "S5 ACT-D: discharge the remaining s>k ∧ t>k inductive case of ramsey_existence via the Ramsey 1930 recursive bound R_k(s,t) ≤ R_{k-1}(R_k(s-1,t)+1, R_k(s,t-1)+1) + 1. With the boundary cases now sorry-free, the induction on s+t for fixed k bottoms out cleanly on is_ramsey_self_right / is_ramsey_self_left, leaving only the inductive step's neighborhood-restriction construction to prove. Estimated 150–250 lines for the step alone.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
-      "approachesTried": 3
+      "total": 4,
+      "currentApproach": 4,
+      "approachesTried": 4
     }
   },
   "knowledge": {
-    "progressSummary": "S4-prep API (researcher-1 2026-05-12, parallel to PR #17960): added 3 sorry-free lemmas to RamseyHypergraph.lean — IsRamsey.swap (color symmetry under χ↦!χ, halves S4 case analysis), ramseyNumber_zero_false, ramseyNumber_zero_true (= 0 when either target size is 0; complement ramseyNumber_one on the s=0/t=0 end of the parameter range). Lines 147→209 (+62), sorries unchanged at 2. S3 ACT-B (researcher-11, PR #17960 open, build pending): discharged ramseyNumber_one s t = s+t-1 via isRamsey_one_iff (pigeonhole forward + min-singleton bad coloring backward) and standard sInf computation. S2 ACT-A scaffold (researcher-9 2026-05-12): created RamseyK API surface with 4 sorry-free supporting lemmas + 2 sorry-bearing main theorems. S1 ORIENT (researcher-8 2026-05-12): Decomposed OQ-03 into three sub-goals.",
+    "progressSummary": "S4 ACT-C structural factoring (researcher-9 2026-05-12): added 4 sorry-free lemmas — IsRamsey.anti_s, IsRamsey.anti_t (anti-monotonicity in target sizes via Finset.exists_subset_card_eq sub-clique extraction), is_ramsey_self_right (s=k boundary case, IsRamsey t k k t at n=t via Bool case-split on existence of a false k-subset), is_ramsey_self_left (t=k via IsRamsey.swap). ramsey_existence rewritten: boundary cases s=k / t=k discharged via the two self-Ramsey lemmas; only the genuine inductive case s>k ∧ t>k remains sorry. Lines 373→500 (+127), theorems 10→14 (+4), sorries unchanged at 1. S4-prep API (researcher-1, PR #17977): added 3 sorry-free lemmas — IsRamsey.swap (color symmetry under χ↦!χ), ramseyNumber_zero_false, ramseyNumber_zero_true. S3 ACT-B (researcher-11, PR #17960 build verified): discharged ramseyNumber_one s t = s+t-1 via isRamsey_one_iff (pigeonhole forward + min-singleton bad coloring backward). S2 ACT-A scaffold (researcher-9 2026-05-12): RamseyK API surface. S1 ORIENT (researcher-8 2026-05-12): decomposed OQ-03 into three sub-goals.",
     "builtItems": [
+      "proofs/Proofs/RamseyHypergraph.lean — IsRamsey.anti_s, IsRamsey.anti_t, is_ramsey_self_right, is_ramsey_self_left + boundary-discharging ramsey_existence (S4 ACT-C, researcher-9).",
       "proofs/Proofs/RamseyHypergraph.lean — IsRamsey.swap (color symmetry), ramseyNumber_zero_false, ramseyNumber_zero_true (S4-prep, researcher-1).",
       "proofs/Proofs/RamseyHypergraph.lean — isRamsey_one_iff and proved ramseyNumber_one = s+t-1 (S3, researcher-11, PR #17960 build pending).",
       "proofs/Proofs/RamseyHypergraph.lean — RamseyK API + 4 sorry-free degenerate-case lemmas + 2 sorry-bearing theorems (S2, researcher-9).",
       "research/problems/erdos-szekeres-oq-03/problem.md — formal statement of OQ-03 as three sub-goals (S1).",
       "research/problems/erdos-szekeres-oq-03/knowledge.md — literature survey + Mathlib API audit + suggested API surface (S1).",
-      "research/problems/erdos-szekeres-oq-03/state.md — phase advanced ORIENT → ACT (S2); S3 next-action pinned."
+      "research/problems/erdos-szekeres-oq-03/state.md — phase advanced ORIENT → ACT (S2); S5 next-action pinned (S4 ACT-C closes boundaries)."
     ],
     "insights": [
+      "The s=k boundary case is settled at n=t by a direct Bool case-split: either some k-subset is colored false (it IS the mono-false k-clique, since |S|=k forces |T|=|S| ⇒ T=S for any k-sub-subset T ⊆ S, via Finset.eq_of_subset_of_card_le), or every k-subset is colored true (and Finset.univ : Finset (Fin t) is the mono-true t-clique).",
+      "Anti-monotonicity of IsRamsey in s/t falls out of Finset.exists_subset_card_eq: shrink an s-clique to an s'-clique by extracting any s'-sized subset; monochromaticity descends to subsets since powersetCard k is closed under taking subsets through Finset.subset.trans.",
+      "After S4 ACT-C, ramsey_existence has exactly one sorry — the s>k ∧ t>k case — which is the genuine inductive content of Ramsey 1930. The induction on s+t now bottoms out cleanly on is_ramsey_self_right / is_ramsey_self_left rather than requiring separate ad-hoc base cases.",
       "OQ-03 cleanly factors into existence + upper + lower bounds; the existence and upper bound share the same two-layer neighborhood induction.",
       "The k=1 case ramseyNumber 1 s t = s + t - 1 is direct pigeonhole and serves as a clean sanity-check theorem for the new API (~30 lines).",
       "The lower-bound half (OQ-03c) is the harder direction and likely warrants its own sub-OQ once OQ-03a/b land.",
@@ -63,9 +67,9 @@
       "Tower function (iterated 2^·) is not packaged but can be obtained via Nat.iterate."
     ],
     "nextSteps": [
-      "S4 ACT-C: discharge ramsey_existence (OQ-03a). Two-layer Ramsey 1930 induction; base case k=2 from Mathlib SimpleGraph.ramseyNumber; inductive step (k≥3) by fix-a-vertex neighborhood restriction (~150–300 lines).",
-      "S5: state erdos_rado_upper as ramseyNumber k s s ≤ tower (k-1) (c_k * s) and prove by unwinding the recursive R_k ≤ R_{k-1}(R_k(s-1,t), R_k(s,t-1)) + 1 inequality.",
-      "S6+: spawn the Erdős–Hajnal stepping-up lower bound (OQ-03c) as a separate sub-OQ if S5 lands cleanly."
+      "S5 ACT-D: discharge the s>k ∧ t>k inductive case of ramsey_existence via the Ramsey 1930 recursive bound R_k(s,t) ≤ R_{k-1}(R_k(s-1,t)+1, R_k(s,t-1)+1) + 1, with induction on s+t for fixed k. The boundary base cases (s=k or t=k) are sorry-free as of S4 ACT-C; only the neighborhood-restriction construction at the inductive step needs proof (~150–250 lines).",
+      "S6: state erdos_rado_upper as ramseyNumber k s s ≤ tower (k-1) (c_k * s) and prove by unwinding the recursive inequality above.",
+      "S7+: spawn the Erdős–Hajnal stepping-up lower bound (OQ-03c) as a separate sub-OQ if S6 lands cleanly."
     ]
   },
   "tags": [
@@ -98,18 +102,18 @@
     ]
   },
   "started": "2026-05-12T04:48:16.447Z",
-  "lastUpdate": "2026-05-12T08:00:00.000Z",
+  "lastUpdate": "2026-05-12T11:35:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/RamseyHypergraph.lean",
       "filename": "RamseyHypergraph.lean",
-      "lineCount": 209,
-      "theoremCount": 9,
+      "lineCount": 500,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 4,
-      "sorryCount": 2,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RamseyHypergraph.lean"
     },
