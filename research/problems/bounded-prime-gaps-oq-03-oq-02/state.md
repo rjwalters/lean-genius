@@ -1,15 +1,75 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12T07:08:00Z
-**Iteration**: 5
-**Researcher**: researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Since**: 2026-05-12T08:58:00Z
+**Iteration**: 6
+**Researcher**: researcher-4 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
 
 ## Current Focus
 
-S5 (this PR) — Intermediate-scale Engelsma analogue via `native_decide`
+S6 (this PR) — Intermediate-scale Engelsma analogue via `native_decide`
+at `(k, w) = (9, 26)`, a **second cautious scaling checkpoint** between
+S5's $\binom{22}{8} = 319,770$ search and the deferred S7 case
+$\binom{30}{10} \approx 3 \times 10^7$:
+
+```
+theorem engelsma_analogue_9_26 :
+    ∀ H ∈ (Finset.range 26).powersetCard 9,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 22 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide
+```
+
+Search space `Nat.choose 26 9 = 3,124,550` ≈ `3.1 × 10⁶` — roughly
+**10× the S5 case (319,770)** and one order of magnitude below
+the deferred S7 case. The implication is vacuously satisfied at
+every enumerated subset since Engelsma's table records `H(9) = 30`
+> 25, so no admissible 9-tuple fits in `Finset.range 26`. The
+threshold `22 ≤ H.max'` mirrors the S4/S5 `w - 4` convention (S4
+used `12 ≤ H.max'` with `w = 16`; S5 used `18 ≤ H.max'` with
+`w = 22`; here `w = 26` gives `22`).
+
+**Why insert another intermediate?** The S5 jump from S4's 8008
+to 319,770 was 40×; the planned (10, 30) jump from S5's 319,770
+to ~3 × 10⁷ would be ~100×, a much larger gap in the scaling
+curve. Splitting it into two 10× steps (319,770 → 3.1M → 31M)
+gives a finer empirical CI-runtime curve before committing to the
+deferred S7 case. If S6 builds in ~tens of seconds, the (10, 30)
+extrapolation is principled (~10× slow-down → tens of seconds to
+low minutes, within generous CI limits). The originally planned
+`(10, 30)` case is **renumbered to S7** below.
+
+**Axiom bookkeeping**: `native_decide` reuses the `Lean.ofReduceBool`
+axiom introduced in S4; `leanFile.axiomCount` stays at `1` (each
+additional `native_decide` requires the axiom once per file, not
+once per use).
+
+**theoremCount**: 7 → 8 (the new `engelsma_analogue_9_26`).
+**lineCount**: 245 → 301.
+
+## Next Action
+
+**S7 — Mid-size Engelsma analogue at `(k, w) = (10, 30)`** per
+knowledge.md §3.3 (originally state.md's S5, deferred again after
+S5 introduced the (8, 22) intermediate and S6 introduced the
+(9, 26) intermediate). Concrete target:
+
+```lean
+theorem engelsma_analogue_10_30 :
+    ∀ H ∈ (Finset.range 30).powersetCard 10,
+      ∀ (h0 : 0 ∈ H), IsAdmissible H → 26 ≤ H.max' ⟨0, h0⟩ := by
+  native_decide
+```
+
+`Nat.choose 30 10 ≈ 3 × 10^7`. Estimated `native_decide` runtime
+30–120 seconds. May exceed default CI timeouts; if S6's runtime
+extrapolates poorly, fall back to the §6.4 Path-C-prime plan
+(land what we have, narrow the axiom statement).
+
+### Previous focus (S5)
+
+S5 — Intermediate-scale Engelsma analogue via `native_decide`
 at `(k, w) = (8, 22)`, a **cautious scaling checkpoint** between
-S4's $\binom{16}{6} = 8008$ search and the originally planned S6
+S4's $\binom{16}{6} = 8008$ search and the (then) planned S6
 case $\binom{30}{10} \approx 3 \times 10^7$:
 
 ```
@@ -48,24 +108,8 @@ once per use).
 **theoremCount**: 6 → 7 (the new `engelsma_analogue_8_22`).
 **lineCount**: 192 → 245.
 
-## Next Action
-
-**S6 — Mid-size Engelsma analogue at `(k, w) = (10, 30)`** per
-knowledge.md §3.3 (originally planned as S5; deferred after S5
-introduced the (8, 22) intermediate scaling step). Concrete
-target:
-
-```lean
-theorem engelsma_analogue_10_30 :
-    ∀ H ∈ (Finset.range 30).powersetCard 10,
-      ∀ (h0 : 0 ∈ H), IsAdmissible H → 22 ≤ H.max' ⟨0, h0⟩ := by
-  native_decide
-```
-
-`Nat.choose 30 10 ≈ 3 × 10^7`. Estimated `native_decide` runtime
-30–120 seconds. May exceed default CI timeouts; if S5's runtime
-extrapolates poorly, fall back to the §6.4 Path-C-prime plan
-(land what we have, narrow the axiom statement).
+S5's recorded next action (`S6: (10, 30)`) is renumbered to `S7`
+in this S6 iteration; see the top "Next Action" block.
 
 ### Previous focus (S3)
 
@@ -142,18 +186,20 @@ but cannot be assessed until at least S4.
 
 ## Subsequent Iterations (deferred)
 
-- S6 — Mid-size Engelsma analogue at `(k, w) = (10, 30)`
-  via `native_decide` (originally state.md's S5; deferred to S6
-  after the (8, 22) intermediate). Risk: 30–120 s runtime.
-- S7 — `engelsma_lower_bound_of_finitary` bridge lemma
+- S7 — Mid-size Engelsma analogue at `(k, w) = (10, 30)`
+  via `native_decide` (originally state.md's S5; renumbered to
+  S6 after S5 added the (8, 22) intermediate; renumbered to
+  S7 after S6 added the (9, 26) intermediate). Risk: 30–120 s
+  runtime.
+- S8 — `engelsma_lower_bound_of_finitary` bridge lemma
   (Option B prerequisite) per knowledge.md §2.4. Can be tackled
-  in parallel with S6 since the bridge proof is pure-Lean
+  in parallel with S7 since the bridge proof is pure-Lean
   combinatorics independent of `native_decide` runtime.
-- S8+ — Path B verified-backtracking prototype, building on
-  the S4/S5/S6 `native_decide` infrastructure as a unit-test
+- S9+ — Path B verified-backtracking prototype, building on
+  the S4/S5/S6/S7 `native_decide` infrastructure as a unit-test
   harness.
 - Path C (Selberg sieve fallback) remains an alternative if
-  Path B's runtime extrapolation fails at S6.
+  Path B's runtime extrapolation fails at S7.
 
 ## Attempt Counts
 
@@ -191,3 +237,14 @@ but cannot be assessed until at least S4.
   (10, 30) case is deferred to S6, pending evidence on S5's `native_decide`
   runtime to extrapolate the (10, 30) feasibility. Build pending; the
   Docker symlink trap prevents local verification.
+- **S6 (2026-05-12, researcher-4)**: ACT. Extended S5 file (245 → 301 lines, +56):
+  `engelsma_analogue_9_26` via `native_decide` over the 3,124,550 subsets of
+  `(Finset.range 26).powersetCard 9`. Second intermediate scaling checkpoint
+  (~10× S5 search), reuses the `Lean.ofReduceBool` axiom from S4
+  (`axiomCount` stays at 1). Vacuous antecedent (Engelsma records H(9)=30
+  > 25, so no admissible 9-tuple fits in range 26). Threshold `22 ≤ H.max'`
+  follows the S4/S5 `w − 4` convention (w = 26 → 22). The originally
+  planned (10, 30) case is deferred again to S7; splitting the
+  (319K → 31M) scaling jump into two 10× steps (319K → 3.1M → 31M) gives
+  a finer empirical CI-runtime curve. Build pending; the Docker symlink
+  trap prevents local verification.
