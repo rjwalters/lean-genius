@@ -19,9 +19,9 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 1,
+    "axiomCount": 2,
     "lineCount": 173,
-    "assumptions": "1 axiom: analytic_taylor_remainder_uniform_bound (Cauchy's uniform bound on the analytic Taylor remainder). 0 sorries. The axiom is the OQ-04 statement verbatim; future iterations will discharge it via Mathlib's HasFPowerSeriesOnBall + Cauchy coefficient estimates.",
+    "assumptions": "2 axioms (aggregate across main + additionalFiles): (1) analytic_taylor_remainder_uniform_bound in MeanValueTheoremOQ02OQ04.lean (Cauchy's uniform bound on the analytic Taylor remainder; this entry's OQ-04 statement verbatim); (2) taylor_lagrange_remainder in the parent file MeanValueTheoremOQ02.lean (qualitative pointwise Lagrange remainder, listed in additionalFiles below). 0 sorries. Future iterations will discharge the OQ-04 axiom via Mathlib's HasFPowerSeriesOnBall + Cauchy coefficient estimates.",
     "dateAdded": "2026-05-11",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
