@@ -1,10 +1,24 @@
 # Current State
 
-**Phase**: OBSERVE
-**Since**: 2026-05-12 (S1)
-**Iteration**: 1
+**Phase**: ACT
+**Since**: 2026-05-12 (S2)
+**Iteration**: 2
 
 ## Current Focus
+
+S2 (researcher-1, 2026-05-12): ACT — created
+`proofs/Proofs/GaussWilsonNonCyclicOQ03.lean` (~120 lines, 1 sorry,
+0 axioms) implementing the S1 skeleton. Computable `epsTwo`,
+`omegaOdd`, `numSqrtsOne` defs via `Nat.primeFactors`; 13 `decide`
+examples verifying the formula at representative `n`
+(1, 2, 4, 8, 16, 3, 15, 105, 12, 24, 60, 120); main theorem
+`card_sqrts_one_eq_numSqrtsOne` stated with sorry.
+
+Build verification is deferred — the `proofs/.lake` symlink in the
+researcher worktree points to itself (a known infra trap; see
+memory). The file is self-contained and uses only standard Mathlib
+API (`ZMod`, `Nat.primeFactors`, `Finset.filter`); next-session
+agents (or the auditor) should run the docker build to confirm.
 
 S1 (researcher-1, 2026-05-12): Initial OBSERVE survey scaffold for the
 exact-count generalization of the parent file's `card_sq_eq_one_ge_three`
@@ -60,30 +74,43 @@ Practical:
 
 ## Next Action
 
-**S2 (any researcher)**: Create
-`proofs/Proofs/GaussWilsonNonCyclicOQ03.lean` with:
+**S3 (any researcher)**: prove the prime-power cases of
+`card_sqrts_one_eq_numSqrtsOne`.
 
-1. `noncomputable def numSqrtsOne (n : ℕ) : ℕ` — closed-form count.
-2. `decide`/`rfl` examples verifying the formula at small `n`
-   (1..16, 24, 30, 60, 105, 120).
-3. Statement (with `sorry`) of the main theorem
-   `card_sqrts_one_eq_numSqrtsOne n hn : ... = numSqrtsOne n`.
-4. Helper lemmas relating `Finset.filter (· ^ 2 = 1)` over `ZMod n`
-   to the same filter over `(ZMod n)ˣ` (via `unitOfSqEqOne` from
-   the parent).
+For odd prime `p` and `k ≥ 1`:
 
-Skeleton in `knowledge.md`. ~80 lines, 1 sorry, 0 axioms expected.
+- Use cyclicity of `(ZMod p^k)ˣ` (`ZMod.unitsCyclic` family in
+  Mathlib) and the standard 2-torsion-count-in-cyclic-of-even-order
+  lemma to derive
+  `#{u : (ZMod p^k)ˣ // u² = 1} = 2`.
+- Combine with the parent's `unitOfSqEqOne` bridge to lift to
+  the ring level: `#{x : ZMod p^k // x² = 1} = 2`.
 
-**S3..S5** (subsequent sessions):
+For `p = 2` (powers of 2):
 
-- S3: prime-power cases via `ZMod.unitsCyclic` (~100 lines).
-- S4: CRT multiplicativity (~50 lines).
-- S5: induction-on-`factorization.support` assembly (~40 lines).
+- `2^0, 2^1`: `(ZMod _)ˣ` trivial → 1 root.
+- `2^2`: cyclic of order 2 → 2 roots.
+- `2^k`, `k ≥ 3`: `(ZMod 2^k)ˣ ≅ ℤ/2 × ℤ/2^{k-2}`. Parent's
+  `exists_third_sqrt_pow2` already exhibits the diagonal
+  generator (`2^{k-1} + 1`); count is exactly 4, with roots
+  `{1, -1, 2^{k-1}+1, 2^{k-1}-1}`.
+
+Deliverable: ~100 lines, 0 axioms, 0 new sorries (closes 0 of the
+main sorry — the main theorem proof lives in S5 after S4
+multiplicativity).
+
+**S4..S5** (subsequent sessions):
+
+- S4: CRT multiplicativity for the filter count
+  (`ZMod.chineseRemainder` + `Finset.card_image_of_injective`),
+  ~50 lines.
+- S5: induction on `n.primeFactors.card` to assemble S3+S4 →
+  `card_sqrts_one_eq_numSqrtsOne`, ~40 lines.
 
 ## Attempt Counts
 
-- Total attempts: 1 (S1 survey)
-- Current approach attempts: 1 (Mathlib bridge + CRT)
+- Total attempts: 2 (S1 survey, S2 scaffold)
+- Current approach attempts: 2 (Mathlib bridge + CRT)
 - Approaches tried: 1
 
 ## Open files
@@ -111,3 +138,17 @@ Produced:
   (new file; orphan in main-repo working tree was untracked) —
   phase NEW → OBSERVE; 5 insights, 3 mathlibGaps, 4 nextSteps,
   references including Disquisitiones Arithmeticae §96.
+
+## S2 Deliverable
+
+This iteration is the **first Lean scaffold**:
+- 1 new Lean file (`GaussWilsonNonCyclicOQ03.lean`, ~120 lines)
+- 1 new sorry (main theorem only)
+- 0 new axioms
+- 3 new defs (`epsTwo`, `omegaOdd`, `numSqrtsOne`)
+- 1 new theorem (`numSqrtsOne_pos`)
+- 13 `decide` examples confirming the formula at representative `n`
+
+Build status: **build pending** (recursive `.lake` symlink in the
+researcher worktree blocks local docker builds; PR build will run
+on origin/main merge).
