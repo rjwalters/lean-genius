@@ -65,3 +65,51 @@
 - **S2**: Discharge `analytic_taylor_remainder_uniform_bound_complex` via the documented Mathlib chain (`HasFPowerSeriesOnBall.uniform_geometric_approx'` + `FormalMultilinearSeries.norm_mul_pow_le_mul_pow_of_lt_radius` + geometric tail summation). Estimated proof length: 100-200 lines.
 - **S3 (optional)**: Add a comment in the parent file `MeanValueTheoremOQ02OQ04.lean` referencing this OQ-01 refutation, so downstream readers see the obstruction without searching.
 - **Architectural**: Consider generalizing the Prop-encoding refutation pattern (`def AxiomStatement : Prop := ...; theorem ¬ AxiomStatement`) as a gallery template for axiom-validity audits.
+
+## Session 2026-05-12 (Session 2, narrow scope) — Add proven existential form via Mathlib's uniform_geometric_approx'
+
+**Mode**: REVISIT (S2 continuation of S1)
+**Outcome**: progress (existential form proven and build-verified; explicit form unchanged in this PR)
+
+### Coordination with PR #17904 (parallel S2)
+
+During this session researcher-1 also opened a S2 PR (#17904, created ~18 min before this session). That parallel PR refutes the S1 explicit-form statement as a Prop (`CauchyCorrectedFormV1`) on the basis of an off-by-one bug (`partialSum n` should be `partialSum (n+1)`), restates the explicit form with corrected indexing, and decomposes the proof into named sub-lemmas (`geometric_tail_identity` proven; `cauchy_diag_norm_bound` and the combined explicit-form theorem sorry'd).
+
+To avoid duplication / merge collisions, **this S2 PR is narrowed to one unique deliverable: the proven existential form** (`analytic_taylor_remainder_uniform_geometric_complex`). The off-by-one fix on the explicit form is left to PR #17904.
+
+### What I Did (narrow scope)
+
+1. **Read Mathlib's `HasFPowerSeriesOnBall.uniform_geometric_approx'`** (Mathlib/Analysis/Analytic/Basic.lean:622). The lemma gives an *existential* bound, not the explicit `M·r^(n+1)/(R^n·(R-r))` form from S1's §3 docstring. Constants `C, K` depend on the formal multilinear series `p`, not on a user-supplied sup bound `M`.
+
+2. **Independently noted the S1 §3 explicit-form off-by-one bug** (also flagged by PR #17904). **This PR does NOT fix the off-by-one** (deferred to PR #17904).
+
+3. **Wrote a new proven theorem** `analytic_taylor_remainder_uniform_geometric_complex` (§3a, 16-line proof): Mathlib-native translation of `uniform_geometric_approx'` from y-centered (`f(a+y)`) to z-centered (`f z`) coordinates. The proof is `obtain` + `refine` + change-of-variables, applying `hp (z-a)` and simplifying `a + (z-a) = z`.
+
+4. **Build verified** via `./proofs/scripts/docker-build.sh Proofs.MeanValueTheoremOQ02OQ04OQ01` (worktree-local script): build succeeded with only the pre-existing sorry on §3b.
+
+5. **Updated metadata narrowly**: lineCount 330 → 397; theoremCount 7 → 9 (also fixed S1 undercount); added one mainTheorems entry.
+
+### Key Findings (S2, narrow)
+
+- **`uniform_geometric_approx'` is a translation-of-coordinates between y-form and z-form**. The substantive content is purely the change of variables `z = a + y`. No new mathematics, but a clean "Mathlib bridge" lemma for downstream consumers.
+
+- **The Mathlib chain for the explicit form is deeper than S1 estimated**. `norm_mul_pow_le_mul_pow_of_lt_radius` is also existential, not `M/R^n`. To get `M/R^n`, you need the Cauchy integral formula via `cauchyPowerSeries` and `norm_cauchyPowerSeries_le`.
+
+- **`ℝ≥0` and `ℝ≥0∞` notation requires `open scoped NNReal ENNReal`**. S1 didn't open these scopes (it used `ENNReal.ofReal` directly without the notation). Added in this PR.
+
+### Files Modified (S2, narrow)
+
+- **Modified**: `proofs/Proofs/MeanValueTheoremOQ02OQ04OQ01.lean` — added `open scoped NNReal ENNReal`; added `analytic_taylor_remainder_uniform_geometric_complex` (proven, §3a) with docstring; added one `#check` line. Explicit-form theorem (§3b) **unchanged**.
+- **Modified**: `src/data/proofs/mean-value-theorem-oq-02-oq-04-oq-01/meta.json` — sorries stays 1, lineCount 330→397, theoremCount 7→9, mainTheorems gains one entry.
+- **Modified**: `research/problems/mean-value-theorem-oq-02-oq-04-oq-01/{knowledge.md, state.md}` — narrow S2 entry.
+- **Modified**: `src/data/research/problems/mean-value-theorem-oq-02-oq-04-oq-01.json` — synced.
+
+### Next Steps (S3+)
+
+- **Merge-order coordination with PR #17904**: If this PR merges first, #17904 rebases. If #17904 merges first, this PR rebases — only the §3a addition is needed (the off-by-one fix from #17904 lives in §3b independently).
+
+- **Discharge the explicit form** via the Cauchy integral chain (Complex.norm_cauchyPowerSeries_le + DifferentiableOn.hasFPowerSeriesOnBall + geometric tail). Estimated 150–200 lines.
+
+- **Audit other gallery files** that import `MeanValueTheoremOQ02OQ04` for similar OQ-04-axiom-dependence.
+
+- **Generalize the off-by-one pattern**: search the gallery for other "partial sum residual" bounds that may have the same indexing bug.

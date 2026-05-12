@@ -22,53 +22,61 @@
       "runge_zero: runge 0 = 1; runge_one: runge 1 = 1/2",
       "runge_analyticOn_R: AnalyticOn ℝ runge (Set.Ioo (-100) 100)",
       "oq04_axiom_is_false: ¬ OQ04_AxiomStatement (constructive refutation)",
-      "oq04_parent_axiom_is_false_in_principle: corollary restating refutation for the parent axiom by name"
+      "oq04_parent_axiom_is_false_in_principle: corollary restating refutation for the parent axiom by name",
+      "analytic_taylor_remainder_uniform_geometric_complex (S2): existential Cauchy-style geometric approximation in z-centered coordinates, proven via HasFPowerSeriesOnBall.uniform_geometric_approx'"
     ],
     "open": [
-      "analytic_taylor_remainder_uniform_bound_complex (corrected statement, sorry, deferred to S2)"
+      "analytic_taylor_remainder_uniform_bound_complex (S2 restated with corrected partialSum (n+1) indexing; explicit M·r^(n+1)/(R^n·(R-r)) form; sorry retained, deferred to S3 via Cauchy integral formula chain)"
     ],
     "goal": "Refute the parent OQ-04 axiom by constructive counterexample, identify the root cause (Runge phenomenon: real-analyticity + real sup bound does not control complex Cauchy coefficient bounds), and state the corrected complex-disk version with explicit Mathlib chain for S2 discharge."
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T00:00:00.000Z",
-    "iteration": 1,
-    "focus": "Constructive refutation of the parent OQ-04 axiom via Runge counterexample; corrected complex-disk statement deferred to S2.",
+    "iteration": 2,
+    "focus": "S2: existential-form corrected statement proven via Mathlib's uniform_geometric_approx'; explicit-form retained as sorry but indexing corrected (partialSum n → partialSum (n+1)); honest re-assessment of the Mathlib chain needed for the explicit form.",
     "blockers": [],
-    "nextAction": "S2: discharge analytic_taylor_remainder_uniform_bound_complex by chaining HasFPowerSeriesOnBall.uniform_geometric_approx' + FormalMultilinearSeries.norm_mul_pow_le_mul_pow_of_lt_radius + tsum_geometric_of_lt_one. Estimated proof length: 100-200 lines.",
+    "nextAction": "S3+: discharge analytic_taylor_remainder_uniform_bound_complex (explicit form) via the Cauchy integral chain — Complex.norm_cauchyPowerSeries_le + DifferentiableOn.hasFPowerSeriesOnBall to derive ‖p k‖ ≤ M/R^k from sup bound, then geometric tail summation. Estimated 150-200 lines.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "REFUTED: parent OQ-04 axiom is mathematically false; corrected complex-disk version stated as a sorry-proof for S2 to discharge.",
+    "progressSummary": "REFUTED (S1) + EXISTENTIAL CORRECTED FORM PROVEN (S2): parent OQ-04 axiom refuted by Runge counterexample; existential Cauchy-style geometric approximation in z-centered coordinates proven via Mathlib's HasFPowerSeriesOnBall.uniform_geometric_approx'; explicit Cauchy form retained as sorry with corrected partialSum (n+1) indexing (Iter-1 was off-by-one).",
     "builtItems": [
-      "Definition runge in Proofs/MeanValueTheoremOQ02OQ04OQ01.lean (~120) — the Runge function 1/(1+x²)",
-      "Theorem runge_one_add_sq_pos (~125) — 1 + x² > 0",
-      "Theorem runge_abs_le_one (~135) — uniform sup bound",
-      "Theorems runge_zero, runge_one (~155) — numerical values",
-      "Theorem runge_analyticOn_R (~165) — analyticity via Mathlib composition",
-      "Definition OQ04_AxiomStatement (~190) — Prop encoding of parent axiom",
-      "Theorem oq04_axiom_is_false (~210) — constructive refutation",
-      "Theorem analytic_taylor_remainder_uniform_bound_complex (~270) — corrected statement (sorry, deferred S2)"
+      "Definition runge in Proofs/MeanValueTheoremOQ02OQ04OQ01.lean (~137) — the Runge function 1/(1+x²)",
+      "Theorem runge_one_add_sq_pos (~142) — 1 + x² > 0",
+      "Theorem runge_abs_le_one (~148) — uniform sup bound",
+      "Theorems runge_zero, runge_one (~162, ~166) — numerical values",
+      "Theorem runge_analyticOn_R (~173) — analyticity via Mathlib composition",
+      "Definition OQ04_AxiomStatement (~197) — Prop encoding of parent axiom",
+      "Theorem oq04_axiom_is_false (~226) — constructive refutation",
+      "Theorem oq04_parent_axiom_is_false_in_principle (~270) — corollary",
+      "**(S2 NEW)** Theorem analytic_taylor_remainder_uniform_geometric_complex (~319) — existential corrected form, PROVEN via Mathlib's uniform_geometric_approx' (16-line proof)",
+      "Theorem analytic_taylor_remainder_uniform_bound_complex (~376) — explicit corrected form, sorry retained, indexing fixed to partialSum (n+1)"
     ],
     "insights": [
       "The parent OQ-04 axiom is mathematically false: real-analyticity + real sup bound does not control complex Cauchy coefficient estimates, which require a complex sup bound on a complex disk.",
       "The Runge function 1/(1+x²) at (a,R,M,r,n,x) = (0, 100, 1, 1, 0, 1) gives an explicit counterexample with a 50× gap (1/2 vs 1/99).",
       "The corrected statement requires HasFPowerSeriesOnBall on Metric.ball a R (complex) and an explicit R^n factor in the denominator (M·r^(n+1)/(R^n·(R-r))), not (R-r).",
       "Mathlib's AnalyticOn.div + analyticOn_id ℝ + analyticOn_const + AnalyticOn.pow + AnalyticOn.add provides a clean cookbook recipe for proving rational functions analytic.",
-      "The Prop-encoding pattern (def Statement : Prop := ...; theorem ¬ Statement) keeps refutations independent of whether the original axiom remains declared."
+      "The Prop-encoding pattern (def Statement : Prop := ...; theorem ¬ Statement) keeps refutations independent of whether the original axiom remains declared.",
+      "**(S2 finding)** The S1 explicit-form statement had an off-by-one bug: it used partialSum n where the classical Cauchy bound (M·r^(n+1)/(R^n·(R-r))) requires partialSum (n+1). Witness: f ≡ 1 at n=0 has residual 1 but Iter-1 bound = M·r/(R-r) < 1 for small r. Iter-2 fixes this.",
+      "**(S2 finding)** Mathlib's HasFPowerSeriesOnBall.uniform_geometric_approx' and FormalMultilinearSeries.norm_mul_pow_le_mul_pow_of_lt_radius both give *existential* constants (C, K), not explicit (M, R). The explicit M/R^n Cauchy coefficient bound requires the Cauchy integral formula via Complex.norm_cauchyPowerSeries_le + DifferentiableOn.hasFPowerSeriesOnBall (a deeper Mathlib chain than S1 anticipated).",
+      "**(S2 finding)** Mathlib's lemma `uniform_geometric_approx'` is in y-centered form (f(a+y), y ∈ ball 0 r'); a z-centered version (f z, z ∈ ball a r) is useful for downstream applications. The translation is purely change-of-variables but worth packaging as a named theorem."
     ],
     "mathlibGaps": [
       "Bridge from AnalyticOn ℝ (real-analytic on a real interval) to HasFPowerSeriesOnBall on Metric.ball (a:ℂ) R for some complex extension — not directly available; would need real-to-complex analytic continuation lemmas.",
-      "Explicit Cauchy coefficient bound for real-analytic f from a real sup bound: cannot exist (refuted by Runge); the correct bound requires complex hypotheses."
+      "Explicit Cauchy coefficient bound for real-analytic f from a real sup bound: cannot exist (refuted by Runge); the correct bound requires complex hypotheses.",
+      "No high-level Mathlib lemma `cauchyEstimate : ‖p k‖ ≤ M/R^k from sup bound on the circle` — must be derived from `Complex.norm_cauchyPowerSeries_le` + `DifferentiableOn.hasFPowerSeriesOnBall` manually. Could be a Mathlib contribution opportunity."
     ],
     "nextSteps": [
-      "S2: discharge analytic_taylor_remainder_uniform_bound_complex via the documented Mathlib chain.",
+      "S3+: discharge analytic_taylor_remainder_uniform_bound_complex (explicit form) via the Cauchy integral chain: norm_cauchyPowerSeries_le → ‖p k‖ ≤ M/R^k → term-by-term bound → geometric tail. Estimated 150-200 lines.",
       "Consider scope-creep: add a comment to the parent OQ-04 file referencing this refutation, so future readers see the obstruction without searching.",
-      "Generalize the Prop-encoding refutation pattern as a gallery template for axiom-validity audits."
+      "Generalize the Prop-encoding refutation pattern as a gallery template for axiom-validity audits.",
+      "Audit the gallery for other partialSum-indexing-off-by-one bugs: search for theorem statements involving `partialSum n` + Cauchy-style `r^(n+1)/R^n` bounds; verify the indexing matches the convention `range N = {0, ..., N-1}` (n+1 terms for degree-n Taylor polynomial)."
     ]
   },
   "tags": [
@@ -113,8 +121,8 @@
     {
       "path": "Proofs/MeanValueTheoremOQ02OQ04OQ01.lean",
       "filename": "MeanValueTheoremOQ02OQ04OQ01.lean",
-      "lineCount": 280,
-      "theoremCount": 6,
+      "lineCount": 400,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 1,
