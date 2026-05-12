@@ -1,0 +1,80 @@
+{
+  "slug": "spherical-law-of-cosines-oq-05",
+  "title": "Spherical Law of Cosines OQ-05: the Haversine Formula",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "significance": 6,
+  "tractability": 7,
+  "started": "2026-05-12T04:50:00Z",
+  "lastUpdate": "2026-05-12T05:30:00Z",
+  "problemStatement": {
+    "formal": "\\forall t : \\text{SphericalTriangle},\\ \\text{hav}(t.\\text{sideC}) = \\text{hav}(t.\\text{sideB} - t.\\text{sideA}) + \\sin(t.\\text{sideB}) \\cdot \\sin(t.\\text{sideA}) \\cdot \\text{hav}(t.\\text{angleC})",
+    "plain": "Formalise the haversine formula $\\text{hav}(c) = \\text{hav}(a-b) + \\sin(a)\\sin(b)\\text{hav}(C)$, where $\\text{hav}(\\theta) = \\sin^2(\\theta/2)$, which is the numerically stable version of the spherical law of cosines for computing great-circle distances. Applications to navigation and GPS coordinate systems make this a practically important variant to formalize.",
+    "whyMatters": [
+      "Numerically stable for small great-circle distances (avoids catastrophic cancellation in the arccos form).",
+      "Foundational formula in navigation, geodesy, and GPS coordinate computations.",
+      "Closes a non-trivial open question of the parent `spherical-law-of-cosines` gallery entry.",
+      "Provides a model for converting projection-inner-product forms into trigonometric forms across spherical trigonometry."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent: spherical law of cosines `cos(sideC) = cos(sideB)·cos(sideA) + ⟨projectPerp A C, projectPerp B C⟩` (`spherical_law_of_cosines_trig`).",
+      "Parent: `‖projectPerp u n‖ = sin(arcLength u n)` for unit vectors (`norm_projectPerp_eq_sin`).",
+      "This file: half-angle identity `haversine θ = (1 - cos θ) / 2` (`haversine_eq_one_sub_cos_div_two`).",
+      "This file: algebraic haversine formula `haversine_formula_algebraic` — given the real-valued SLC hypothesis, the haversine identity follows by linear arithmetic.",
+      "This file: range/sign lemmas (`haversine_nonneg`, `haversine_le_one`, `haversine_zero`, `haversine_pi`, `haversine_neg`).",
+      "This file: converse `cos_form_of_haversine_formula` and the swap-symmetry `haversine_sub_comm`."
+    ],
+    "open": [
+      "`haversine_formula` for a `SphericalTriangle` — recorded as 1 sorry pending the projection-to-trigonometric-angle conversion (deferred to S2)."
+    ],
+    "goal": "Prove `haversine_formula` for every `SphericalTriangle`, axiom-free, deriving the trigonometric form `sin(sideB)·sin(sideA)·cos(angleC)` from the parent's projection-inner-product form via a case split on the degenerate `angleC` branch."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T04:50:00Z",
+    "iteration": 1,
+    "focus": "S1 scaffold: define `haversine`, prove the half-angle identity, prove the algebraic haversine formula unconditionally, record the SphericalTriangle version as the open sorry.",
+    "blockers": [],
+    "nextAction": "S2: discharge `haversine_formula` from `haversine_formula_algebraic` by case-splitting on `‖projectPerp t.A t.C‖ = 0 ∨ ‖projectPerp t.B t.C‖ = 0`. Non-degenerate branch uses `norm_projectPerp_eq_sin` + `Real.cos_arccos`. Degenerate branch uses `sin sideA · sin sideB = 0` to vanish the cross-term and `cos sideA = ±1` to identify `cos sideC = cos(sideB ± sideA)`.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 0
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-5, 2026-05-12) — OBSERVE: scaffold for OQ-05 of `spherical-law-of-cosines`. New file `proofs/Proofs/SphericalLawOfCosinesOQ05.lean` (297 lines, 12 proved theorems + 1 sorry on `haversine_formula`, 1 definition, 0 axioms). The pure algebraic haversine formula is proved unconditionally; the `SphericalTriangle` version is recorded as the open sorry pending projection-to-trigonometric-angle conversion.",
+    "builtItems": [
+      "proofs/Proofs/SphericalLawOfCosinesOQ05.lean: haversine (def)",
+      "proofs/Proofs/SphericalLawOfCosinesOQ05.lean: haversine_eq_one_sub_cos_div_two (half-angle identity)",
+      "proofs/Proofs/SphericalLawOfCosinesOQ05.lean: two_haversine_eq, cos_eq_one_sub_two_haversine (restatements)",
+      "proofs/Proofs/SphericalLawOfCosinesOQ05.lean: haversine_nonneg, haversine_le_one, haversine_zero, haversine_pi, haversine_neg (range/sign)",
+      "proofs/Proofs/SphericalLawOfCosinesOQ05.lean: haversine_formula_algebraic (pure-algebra version, proved)",
+      "proofs/Proofs/SphericalLawOfCosinesOQ05.lean: cos_form_of_haversine_formula (converse, proved)",
+      "proofs/Proofs/SphericalLawOfCosinesOQ05.lean: haversine_formula (SphericalTriangle version, 1 sorry, deferred to S2)",
+      "proofs/Proofs/SphericalLawOfCosinesOQ05.lean: haversine_formula_holds_when_sin_sideA_zero, haversine_sub_comm (corollaries)",
+      "src/data/proofs/spherical-law-of-cosines-oq-05/: gallery entry (meta.json + 6 annotations + index.ts)",
+      "research/problems/spherical-law-of-cosines-oq-05/: problem.md + knowledge.md + state.md"
+    ],
+    "insights": [
+      "The haversine formula is algebraically equivalent to the spherical law of cosines via the half-angle identity; the conversion is pure linear arithmetic.",
+      "The half-angle identity $\\sin^2(\\theta/2) = (1 - \\cos\\theta)/2$ is derived in Mathlib via `Real.cos_two_mul` + `Real.sin_sq_add_cos_sq`; no direct `Real.sin_sq_half` lemma exists at v4.26.0.",
+      "The S1 split into `haversine_formula_algebraic` (proved) + `haversine_formula` (sorry) cleanly factors the open content: only the parent's `arccos`-with-fallback `angleC` definition requires case analysis.",
+      "The non-degenerate branch of `angleC` (both perpendicular projections nonzero) coincides exactly with `sin(sideA) · sin(sideB) ≠ 0`, so the conversion case-split is forced by the same dichotomy.",
+      "Numerical-stability advantage of the haversine form is content-free symbolically but crucial for floating-point geodesy."
+    ],
+    "mathlibGaps": [
+      "No `Real.haversine` function or `Real.sin_sq_half` lemma at v4.26.0. The half-angle identity must be derived from `Real.cos_two_mul` + Pythagoras.",
+      "No general projection-inner-product-to-trigonometric-angle conversion lemma; the parent's `norm_projectPerp_eq_sin` is the closest available primitive."
+    ],
+    "nextSteps": [
+      "S2: discharge `haversine_formula` from `haversine_formula_algebraic` (case-split on degenerate-projection branch, use `norm_projectPerp_eq_sin` + `Real.cos_arccos` on non-degenerate side).",
+      "S3: inverse formula `sideC = 2 · arcsin(√(haversine sideC))` for the canonical great-circle distance computation.",
+      "S4: numerical-stability application — explicit error bound for the haversine vs arccos evaluation paths."
+    ]
+  }
+}

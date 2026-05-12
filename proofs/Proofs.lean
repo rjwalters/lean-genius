@@ -2688,6 +2688,7 @@ import Proofs.SpernerNDimOQ04
 import Proofs.SpernerSimplicialBridge
 import Proofs.SpernerSimplicialInstance
 import Proofs.SphericalLawOfCosines
+import Proofs.SphericalLawOfCosinesOQ05
 import Proofs.SphericalLawOfSines
 import Proofs.Sqrt2
 import Proofs.Sqrt2FromAxiomsOQ01
