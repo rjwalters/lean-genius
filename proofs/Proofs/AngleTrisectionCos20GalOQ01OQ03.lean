@@ -928,6 +928,133 @@ theorem cyclotomic_two_mul_prime_mul_X_add_one_uniform
   rw [mul_comm]
   exact h_cancel
 
+/-! ## S9: Uniform numerical anchor `Φ_{2p}(-1) = p` for odd primes `p ≥ 3`
+
+S8 (PR #18066) established the uniform cyclotomic bridge identity
+`cyclotomic (2 * p) ℤ * (X + 1) = X ^ p + 1` for every odd prime `p`.
+This S9 iteration **lifts** the per-prime cyclotomic evaluation lemmas
+`cyclotomic_{6, 10, 14, 22, 26}_eval_neg_one = {3, 5, 7, 11, 13}` of
+S5+S6 to a single uniform statement holding for *every* odd prime:
+
+  `(cyclotomic (2 * p) ℤ).eval (-1) = p`     in `ℤ`,    for all odd prime `p`.
+
+Together with the S5+S6 per-prime gallery bridges
+`r_{3,5,7,11,13}_constantCoeff_eq_cyclotomic`, this collapses the
+constant-coefficient sign pattern
+`(r p).coeff 0 = (-1)^((p-1)/2) · Φ_{2p}(-1) = (-1)^((p-1)/2) · p`
+into a one-line corollary applicable to **all** odd primes — not just
+the five verified gallery primes.
+
+**Proof outline.** Two steps:
+
+1. **Geometric-series identification.** The geometric-series identity
+   `geom_sum_mul (-X) p` reads
+     `(∑ i ∈ Finset.range p, (-X)^i) * (-X - 1) = (-X)^p - 1`     in `ℤ[X]`.
+   For `p` odd, `Odd.neg_pow` gives `(-X)^p = -X^p`. Rearranging signs
+   (`(-X - 1) = -(X + 1)` and `(-X)^p - 1 = -(X^p + 1)`) yields
+     `(∑ i ∈ Finset.range p, (-X)^i) * (X + 1) = X^p + 1`.
+   Combining with the S8 bridge `cyclotomic (2*p) ℤ · (X + 1) = X^p + 1`
+   and cancelling the nonzero factor `(X + 1)` (monic, hence ≠ 0)
+   via `mul_right_cancel₀` gives the structural identity
+     `cyclotomic (2 * p) ℤ = ∑ i ∈ Finset.range p, (-X)^i`     in `ℤ[X]`,
+   the **S9 structural lemma** `cyclotomic_two_mul_prime_eq_geom_neg_series`.
+   This is the explicit polynomial formula `Φ_{2p}(X) = ∑_{i<p} (-X)^i`
+   for odd prime `p`, also known as `Φ_{2p}(X) = Φ_p(-X)` informally —
+   now proved as a ring identity in `ℤ[X]`.
+
+2. **Numerical evaluation.** Evaluate the structural lemma at `X = -1`.
+   Each term `((-X)^i).eval (-1) = (-(-1))^i = 1^i = 1`, so the sum
+   collapses to `∑ i ∈ Finset.range p, 1 = p`.
+
+**Mathlib status (v4.26.0).** All ingredients are in
+`Mathlib.Algebra.GeomSum` (`geom_sum_mul`),
+`Mathlib.Algebra.GroupPower.Basic` (`Odd.neg_pow`),
+`Mathlib.Algebra.Polynomial.Monic` (`monic_X_add_C`, `Monic.ne_zero`),
+and the standard `eval_*` simp set (`eval_finset_sum`, `eval_pow`,
+`eval_neg`, `eval_X`).
+
+**Axiom bookkeeping.** No new axioms, no new sorries; two new theorems
+(the S9 structural lemma and the S9 numerical anchor). The
+constant-coefficient sign-pattern corollary
+`r_constantCoeff_eq_signed_p_uniform`
+(deferred to S10) is now a one-line consequence: combine
+`r_constantCoeff_eq_signed_p` with `cyclotomic_two_mul_prime_eval_neg_one_uniform`.
+-/
+
+/--
+**S9 structural lemma: Φ_{2p}(X) = ∑_{i<p} (-X)^i for odd prime p.**
+
+For every odd prime `p`,
+  `cyclotomic (2 * p) ℤ = ∑ i ∈ Finset.range p, (-X)^i`     in `ℤ[X]`.
+
+This is the uniform geometric-series formula for `Φ_{2p}` over odd
+primes, derived from the S8 bridge identity by cancelling the nonzero
+factor `(X + 1)`. The classical informal identity `Φ_{2p}(X) = Φ_p(-X)`
+is now a ring identity in `ℤ[X]`.
+
+**Proof.** Apply `geom_sum_mul (-X) p` and `Odd.neg_pow` to obtain
+`(∑ i ∈ range p, (-X)^i) * (X + 1) = X^p + 1`. Combine with the S8
+uniform bridge `cyclotomic_two_mul_prime_mul_X_add_one_uniform` and
+cancel `(X + 1)` (monic, hence nonzero in `ℤ[X]`) via `mul_right_cancel₀`.
+-/
+theorem cyclotomic_two_mul_prime_eq_geom_neg_series
+    {p : ℕ} (hp : p.Prime) (hpodd : Odd p) :
+    cyclotomic (2 * p) ℤ = ∑ i ∈ Finset.range p, (-X : ℤ[X]) ^ i := by
+  -- Step 1: geometric-series identity at `x = -X`.
+  have h_geom_raw : (∑ i ∈ Finset.range p, (-X : ℤ[X]) ^ i) * ((-X) - 1)
+                  = (-X : ℤ[X]) ^ p - 1 :=
+    geom_sum_mul (-X : ℤ[X]) p
+  -- Rewrite `(-X)^p = -X^p` using `Odd.neg_pow`.
+  have h_negXp : ((-X : ℤ[X])) ^ p = -(X : ℤ[X]) ^ p := hpodd.neg_pow X
+  rw [h_negXp] at h_geom_raw
+  -- Now `h_geom_raw : (∑ …) * (-X - 1) = -X^p - 1`. Push the signs.
+  have h_geom : (∑ i ∈ Finset.range p, (-X : ℤ[X]) ^ i) * (X + 1) = X ^ p + 1 := by
+    have h_rearr_lhs :
+        (∑ i ∈ Finset.range p, (-X : ℤ[X]) ^ i) * ((-X) - 1)
+          = -((∑ i ∈ Finset.range p, (-X : ℤ[X]) ^ i) * (X + 1)) := by ring
+    have h_rearr_rhs : -(X : ℤ[X]) ^ p - 1 = -((X : ℤ[X]) ^ p + 1) := by ring
+    rw [h_rearr_lhs, h_rearr_rhs] at h_geom_raw
+    exact neg_injective h_geom_raw
+  -- Step 2: combine with the S8 bridge and cancel `(X + 1)`.
+  have h_bridge :
+      cyclotomic (2 * p) ℤ * (X + 1) = (X : ℤ[X]) ^ p + 1 :=
+    cyclotomic_two_mul_prime_mul_X_add_one_uniform hp hpodd
+  have h_eq :
+      cyclotomic (2 * p) ℤ * (X + 1)
+        = (∑ i ∈ Finset.range p, (-X : ℤ[X]) ^ i) * (X + 1) := by
+    rw [h_bridge, h_geom]
+  -- `X + 1` is monic, hence nonzero, so `mul_right_cancel₀` applies.
+  have h_xp1_monic : Monic ((X : ℤ[X]) + C (1 : ℤ)) := monic_X_add_C (1 : ℤ)
+  have h_xp1_ne : ((X : ℤ[X]) + 1) ≠ 0 := by
+    have := h_xp1_monic.ne_zero
+    simpa using this
+  exact mul_right_cancel₀ h_xp1_ne h_eq
+
+/--
+**S9 numerical anchor: uniform `Φ_{2p}(-1) = p` for odd prime p.**
+
+For every odd prime `p`,
+  `(cyclotomic (2 * p) ℤ).eval (-1) = p`     in `ℤ`.
+
+This is the uniform lift of the per-prime evaluations
+`cyclotomic_{six, ten, fourteen, twentytwo, twentysix}_eval_neg_one = {3, 5, 7, 11, 13}`
+of S5+S6, now holding for **every** odd prime — not just the five
+verified gallery primes.
+
+**Proof.** Substitute the S9 structural lemma
+`cyclotomic_two_mul_prime_eq_geom_neg_series` to rewrite the cyclotomic
+as a geometric series in `(-X)`. Distribute `eval (-1)` over the sum.
+Each term `((-X)^i).eval (-1) = (-(-1))^i = 1^i = 1`. The sum of `p`
+ones is `p`.
+-/
+theorem cyclotomic_two_mul_prime_eval_neg_one_uniform
+    {p : ℕ} (hp : p.Prime) (hpodd : Odd p) :
+    (cyclotomic (2 * p) ℤ).eval (-1) = (p : ℤ) := by
+  rw [cyclotomic_two_mul_prime_eq_geom_neg_series hp hpodd]
+  rw [eval_finset_sum]
+  simp only [eval_pow, eval_neg, eval_X, neg_neg, one_pow]
+  rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul, mul_one]
+
 /-! ## Uniform conjecture (general odd prime p ≥ 3) -/
 
 /--

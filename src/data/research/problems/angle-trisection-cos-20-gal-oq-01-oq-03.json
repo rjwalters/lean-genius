@@ -17,15 +17,15 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T09:25:00Z",
-    "iteration": 6,
-    "focus": "S6 ACT — cyclotomic anchor extension to p in {11, 13} via Tactic A2 (per-prime). Explicit Phi_{11,13,22,26} forms via eq_cyclotomic_iff + ring; eval-at-(-1) anchors Phi_{22}(-1)=11 and Phi_{26}(-1)=13; bridge r_{11,13}_constantCoeff_eq_cyclotomic + packaged 5-prime r_constantCoeff_eq_cyclotomic_full.",
+    "since": "2026-05-12T12:30:00Z",
+    "iteration": 9,
+    "focus": "S9 ACT — uniform numerical anchor `Phi_{2p}(-1) = p` for all odd primes p >= 3. Lifts the per-prime evaluations cyclotomic_{six,ten,fourteen,twentytwo,twentysix}_eval_neg_one = {3,5,7,11,13} (S5+S6) into one statement holding for every odd prime. Two new theorems: cyclotomic_two_mul_prime_eq_geom_neg_series (structural lemma identifying Phi_{2p} = sum_{i<p} (-X)^i) and cyclotomic_two_mul_prime_eval_neg_one_uniform (numerical anchor). Proof: combine geom_sum_mul (-X) p with Odd.neg_pow to derive (sum_{i<p} (-X)^i)*(X+1) = X^p+1, combine with the S8 bridge cyclotomic_two_mul_prime_mul_X_add_one_uniform, cancel (X+1) via mul_right_cancel0, then evaluate at X=-1. 0 new sorries, 0 new axioms, +127 lines, 57 -> 59 theorems.",
     "blockers": [],
-    "nextAction": "S7: Build the uniform cyclotomic bridge (Tactic A1) for all odd primes — prove (cyclotomic (2*p) Z) * (X + 1) = X^p + 1 via prod_cyclotomic_eq_X_pow_sub_one + cancellation; uses Nat.divisors (2*p) = {1,2,p,2*p} for p odd prime.",
+    "nextAction": "S10: Lift the constant-coefficient sign-pattern corollary (r p).coeff 0 = (-1)^((p-1)/2) * p to all odd primes — one-liner combining r_constantCoeff_eq_signed_p (already general) with the S9 numerical anchor. Then start Tactic B (trace fingerprint, sub-leading-coefficient cyclotomic-sum identity Sum primitive 2p-th roots = 1 / Mobius mu(2p) = -mu(p) = 1) for the uniform r_subLeadingCoeff_eq_neg_p.",
     "attemptCounts": {
-      "total": 6,
-      "currentApproach": 5,
-      "approachesTried": 6
+      "total": 9,
+      "currentApproach": 8,
+      "approachesTried": 9
     }
   },
   "knowledge": {
@@ -82,7 +82,7 @@
     "mathlib": []
   },
   "started": "2026-05-08T19:09:00.559Z",
-  "lastUpdate": "2026-05-12T09:25:00Z",
+  "lastUpdate": "2026-05-12T12:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
