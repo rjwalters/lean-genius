@@ -114,6 +114,21 @@
       "id": "kepler-conjecture",
       "title": "Kepler Conjecture: Sphere Packing (parent)",
       "relationship": "Parent gallery entry. Provides `fccDensity = π/(3√2)`, the `PackingDensity` structure, and the Kepler-Hales theorem axiomatization. OQ-04 instantiates `PackingDensity` with a concrete value strictly above `fccDensity`, formally demonstrating shape-specificity."
+    },
+    {
+      "id": "minkowski-fundamental-theorem",
+      "title": "Minkowski's Fundamental Theorem (lattice / convex body)",
+      "relationship": "Cousin result in lattice convex geometry. Minkowski's theorem gives a sufficient *volume* condition for a centrally symmetric convex body to contain a non-zero lattice point — a foundational tool for *lattice* packings. Bezdek–Kuperberg (2007), cited in this file's docstring, prove that the optimal *lattice* ellipsoid density in ℝ³ equals π/(3√2) exactly, leveraging the same lattice-symmetry framework. OQ-04 highlights the gap between lattice-constrained density (which preserves the FCC bound for ellipsoids) and unconstrained density (where Donev et al. achieve 0.7707 and Chen-Engel-Glotzer achieve 4000/4671 with dimer crystals)."
+    },
+    {
+      "id": "minkowski-theorem",
+      "title": "Minkowski's Theorem on Successive Minima",
+      "relationship": "Provides the asymptotic counting tool for *lattice* point estimates on convex bodies — the prerequisite framework for any density argument in the lattice-packing literature (Bezdek–Kuperberg 2007 belongs to this tradition). The strict separation between Minkowski-type lattice bounds and Chen–Engel–Glotzer's non-lattice 4000/4671 record motivates OQ-04's central observation: the FCC bound is rigid under lattice symmetry but breaks under non-lattice crystalline arrangements."
+    },
+    {
+      "id": "ehrhart-cube-proven",
+      "title": "Ehrhart Theory: Lattice-Point Counting in the Cube",
+      "relationship": "Adjacent discrete-geometric machinery. Ehrhart theory counts lattice points in dilations of a convex polytope, complementing the *volumetric* density theory of Kepler/Hales. Both frameworks share the convex-body-in-ℝᵈ setting, and Ehrhart's `tDilateLatticePoints` polynomial encodes (in the limit) the same kind of asymptotic density information that packing arguments exploit. The 4000/4671 dimer construction is itself a polytopal arrangement — its unit cell counts naturally interface with Ehrhart-style techniques."
     }
   ],
   "theoremCount": 3,
