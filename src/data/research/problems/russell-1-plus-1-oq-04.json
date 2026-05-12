@@ -1,7 +1,7 @@
 {
   "slug": "russell-1-plus-1-oq-04",
   "title": "Minimal reduction rules (β, ι, δ, ζ) for `1+1=2 := rfl` across ℕ encodings",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -27,24 +27,26 @@
     "goal": "A worked Lean file in proofs/Proofs/OnePlusOneOQ04.lean exhibiting one `example : oneE + oneE = twoE := rfl` per encoding, with comments cross-referencing the taxonomy in knowledge.md."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-05-12T05:00:00Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE survey complete; S2 ACT (worked Lean file) is the next action.",
+    "iteration": 2,
+    "focus": "S2 (researcher-3, 2026-05-12) ACT complete: new file proofs/Proofs/OnePlusOneOQ04.lean (161 lines, 0 axioms, 0 sorries) with five `example := rfl` theorems witnessing each row of the S1 taxonomy table: (0) unfolded baseline `Peano.ℕ.succ (Peano.ℕ.succ Peano.ℕ.zero) = Peano.ℕ.succ (Peano.ℕ.succ Peano.ℕ.zero)`; (1) Peano pattern-match `Peano.one + Peano.one = Peano.two`; (2) Peano raw-recursor via new `addRec` (`{δ,ι,β}`); (3) Church numerals via new `Church/cOne/cTwo/cAdd` (`{δ,β}`); (4) binary naturals via new `inductive Bin` + `Bin.succ`/`Bin.add` (`{δ,ι}`, `Bin.add Bin.one Bin.one = Bin.b0 Bin.one`). Imported into proofs/Proofs.lean alphabetically between Proofs.OnePlusOne and Proofs.PACLearning.",
     "blockers": [],
-    "nextAction": "S2: Create proofs/Proofs/OnePlusOneOQ04.lean with five `example` theorems witnessing each row of the taxonomy table (Peano pattern-matched, Peano raw-recursor, Church, binary, plus unfolded baseline). ~80–120 lines, axiom-free, verified track.",
+    "nextAction": "S3: Augment OnePlusOneOQ04.lean with `#print axioms` + `#reduce` stanzas per example (confirms axiom-freeness as the propositional dual of the reduction-rule taxonomy). S4: Add gallery entry src/data/proofs/russell-1-plus-1-oq-04/ (status=verified, badge=original, axiomCount=0, sorries=0).",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE complete: produced a full reduction-rule taxonomy across five canonical ℕ encodings, with hand-traces, lower-bound (necessity) arguments per rule, and a concrete next-step decomposition for S2 (a Lean witness file). The minimality results are: ∅ for the fully-unfolded baseline, {δ,ι} for Peano pattern-matched and binary, {δ,ι,β} for Peano raw-recursor, {δ,β} for Church numerals, +ζ whenever `let`-bindings mediate. Step counts (1+1=2): 0, 5, 6, 3, 6 respectively. The Principia ↔ Lean comparison is reframed: 362 pages = cost of deriving β/ι/δ analogues from logical axioms, not a count of unfolding steps.",
+    "progressSummary": "S1 OBSERVE complete: produced a full reduction-rule taxonomy across five canonical ℕ encodings, with hand-traces, lower-bound (necessity) arguments per rule, and a concrete next-step decomposition for S2 (a Lean witness file). The minimality results are: ∅ for the fully-unfolded baseline, {δ,ι} for Peano pattern-matched and binary, {δ,ι,β} for Peano raw-recursor, {δ,β} for Church numerals, +ζ whenever `let`-bindings mediate. Step counts (1+1=2): 0, 5, 6, 3, 6 respectively. The Principia ↔ Lean comparison is reframed: 362 pages = cost of deriving β/ι/δ analogues from logical axioms, not a count of unfolding steps. S2 ACT complete (researcher-3, 2026-05-12): new file proofs/Proofs/OnePlusOneOQ04.lean (161 lines, 0 axioms, 0 sorries) with five `example := rfl` theorems, one per row of the S1 table. New defs `addRec` (raw recursor), `Church/cOne/cTwo/cAdd` (Church numerals, `Church : Type 1`), `inductive Bin` + `Bin.succ` (carry-chain) + `Bin.add` (struct-rec on 2nd arg). Imported into proofs/Proofs.lean.",
     "builtItems": [
       "research/problems/russell-1-plus-1-oq-04/problem.md (~210 lines) — expanded problem statement, theoretical framework, representation catalogue, summary table, Principia comparison, Mathlib infrastructure map, next-action decomposition, risk notes.",
       "research/problems/russell-1-plus-1-oq-04/knowledge.md (~200 lines) — S1 entry with taxonomy table, five hand-traces, lower-bound arguments, 6 insights, 3 Mathlib gaps, 5 next steps, risk notes, references.",
-      "research/problems/russell-1-plus-1-oq-04/state.md — updated phase to OBSERVE→ACT, next action specified as S2 worked Lean file."
+      "research/problems/russell-1-plus-1-oq-04/state.md — updated phase to OBSERVE→ACT, next action specified as S2 worked Lean file.",
+      "proofs/Proofs/OnePlusOneOQ04.lean (161 lines, 0 axioms, 0 sorries) — S2 ACT worked Lean file. Five `example := rfl` theorems, one per row of the S1 taxonomy table. New defs `addRec` (raw recursor for Peano), `Church : Type 1`/`cOne`/`cTwo`/`cAdd` (Church numerals), `inductive Bin`/`Bin.succ` (carry chain)/`Bin.add` (struct-rec on 2nd arg). Imported into proofs/Proofs.lean.",
+      "proofs/Proofs.lean — +1 import for Proofs.OnePlusOneOQ04 (alphabetic between OnePlusOne and PACLearning)."
     ],
     "insights": [
       "Minimality of Rules(E) is encoding-relative; the same theorem `1+1=2 := rfl` lives at four distinct points in the subset lattice 2^{β,ι,δ,ζ} depending on representation.",
@@ -60,8 +62,7 @@
       "No companion entry to russell-1-plus-1 in the gallery documenting the explicit `rfl` reduction chain (the parent entry mentions ι in passing but does not enumerate the rule set)."
     ],
     "nextSteps": [
-      "S2: Create proofs/Proofs/OnePlusOneOQ04.lean with 5 `example` theorems (unfolded baseline, pattern-matched Peano, raw-recursor Peano, Church, binary). ~80–120 lines, axiom-free, verified track.",
-      "S3: Add #print axioms + #reduce stanzas; cross-reference knowledge.md S1 taxonomy table in file docstring.",
+      "S3: Add #print axioms + #reduce stanzas to OnePlusOneOQ04.lean per example, cross-referencing the knowledge.md S1 taxonomy table in the file docstring.",
       "S4: Add a gallery entry src/data/proofs/russell-1-plus-1-oq-04/ with meta.json + annotations.json + index.ts referencing the worked file.",
       "S5 (optional): A `let`-binding example demonstrating ζ's role; requires `set_option pp.all true` to render the elaborated term with the visible ζ-redex.",
       "Deferred → OQ-04-OQ-01: A precise meta-theorem stating Rules(E) (perhaps via a sandboxed kernel parametrised on a subset of {β,ι,δ,ζ}) and proving minimality."
