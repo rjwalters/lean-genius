@@ -1,13 +1,52 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12T11:30:00Z
-**Iteration**: 8
-**Researcher**: researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Since**: 2026-05-12T16:55:00Z
+**Iteration**: 9
+**Researcher**: researcher-5 (S9); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
 
 ## Current Focus
 
-S8 (this PR) — **`engelsma_lower_bound_of_finitary` bridge lemma**
+S9 (this PR) — **Path-B Option-3 hybrid scaffold** per
+`knowledge.md` §4.3. Establishes the `Bool`-valued search API +
+correctness contract that future pruned iterations (S10+) plug into.
+Extends `BoundedPrimeGapsOQ03OQ02.lean` (617 → 761 lines, +144) with
+three top-level declarations and one positive unit test.
+
+### S9 deliverables
+
+```lean
+/-- (i) Naive admissibility search. -/
+def engelsmaSearch (w k : ℕ) : Bool :=
+  decide (∃ H ∈ (Finset.range w).powersetCard k, 0 ∈ H ∧ IsAdmissible H)
+
+/-- (ii) Bool/Prop bridge. -/
+theorem engelsmaSearch_eq_false_iff (w k : ℕ) :
+    engelsmaSearch w k = false ↔
+      ∀ H ∈ (Finset.range w).powersetCard k, 0 ∈ H → ¬ IsAdmissible H
+
+/-- (iii) Composition with S8's bridge. -/
+theorem engelsma_lower_bound_of_engelsmaSearch_false
+    (h : engelsmaSearch 246 50 = false) :
+    ∀ H : Finset ℕ, IsAdmissible H → H.card ≥ 50 →
+    ∀ hne : H.Nonempty, 246 ≤ H.max' hne - H.min' hne
+
+/-- (iv) Positive unit test (35 subsets; witnessed by {0, 2, 6}). -/
+theorem engelsmaSearch_7_3_eq_true : engelsmaSearch 7 3 = true := by
+  native_decide
+```
+
+### Axiom bookkeeping
+
+`axiomCount` stays at `1`. The unit test reuses S4's
+`Lean.ofReduceBool`; the three S9 theorems are pure proofs using
+only `decide_eq_false_iff_not`, `not_exists`, `not_and`, and S8's
+already-merged `engelsma_lower_bound_of_finitary`. No new axioms;
+no new sorries.
+
+### Previous focus (S8)
+
+S8 — **`engelsma_lower_bound_of_finitary` bridge lemma**
 per `knowledge.md` §2.4. Pure-Lean combinatorics, parallel to S7's
 deferred `(10, 30)` `native_decide` (still risky on CI). Extends
 `BoundedPrimeGapsOQ03OQ02.lean` (357 → 617 lines, +260) with three
@@ -139,42 +178,35 @@ stays at `1`.
 
 ## Next Action
 
-**S9 — Begin Path-B verified-backtracking infrastructure** for the
-finitary form per `knowledge.md` §4. With S8's bridge lemma in
-place, the path from `engelsmaSearch 246 50 = false` to the
-discharge of `engelsma_lower_bound` is now mechanical:
+**S10 — Replace the naive `engelsmaSearch` with a pruned variant.**
+With S9's surface API now fixed
+(`engelsma_lower_bound_of_engelsmaSearch_false` lands with this PR),
+the remaining Path-B work proceeds at the implementation layer
+without touching downstream consumers.
 
 ```lean
--- (i) Define the search procedure (write this as a `def`)
-def engelsmaSearch (w k : ℕ) : Bool := ...
+-- S10 deliverable: pruned variant per knowledge.md §4.2
+def engelsmaSearchPruned (w k : ℕ) : Bool := ...
 
--- (ii) Prove correctness (Option-3 hybrid pattern, §4.3)
-theorem engelsmaSearch_correct (w k : ℕ) :
-    engelsmaSearch w k = false ↔
-      ∀ H ∈ (Finset.range w).powersetCard k, 0 ∈ H → ¬ IsAdmissible H
-  := ...
+-- S11: correctness (~200-300 lines)
+theorem engelsmaSearchPruned_eq_engelsmaSearch (w k : ℕ) :
+    engelsmaSearchPruned w k = engelsmaSearch w k := ...
 
--- (iii) Eval at (50, 246) — completes the axiom replacement.
-theorem engelsmaSearch_50_246 : engelsmaSearch 246 50 = false := by
-  native_decide
-
--- Apply S8's bridge to conclude `engelsma_lower_bound`:
-theorem engelsma_lower_bound' :
-    ∀ H : Finset ℕ, IsAdmissible H → H.card ≥ 50 →
-    ∀ hne : H.Nonempty, 246 ≤ H.max' hne - H.min' hne :=
-  engelsma_lower_bound_of_finitary
-    ((engelsmaSearch_correct 246 50).mp engelsmaSearch_50_246)
+-- S12: native_decide discharge of the axiom
+theorem engelsmaSearchPruned_50_246 :
+    engelsmaSearchPruned 246 50 = false := by native_decide
 ```
 
-S9 is the start of (i)+(ii); concretely, encode an admissibility
-pruner that enumerates k-tuples in `Finset.range w` and short-circuits
-on the first failed residue cover. Estimate: 50-150 lines for the
-`def` alone; another 100-300 lines for the structural-induction
-correctness proof. Total Path-B effort: 5-10 sessions per §6.1.
+S10 ≈ 100-200 lines (pruner def); S11 ≈ 200-300 lines (correctness
+via structural induction); S12 = single `native_decide`.
+
+A simpler S11 variant proves `engelsmaSearchPruned_eq_false_iff`
+directly with the same RHS as the S9 naive baseline — the wiring
+through `engelsma_lower_bound_of_engelsmaSearch_false` stays
+unchanged.
 
 **Alternative deferred S7** — `(10, 30)` `native_decide` analogue.
-Lower priority than S9 Path-B work; useful only as another empirical
-runtime datapoint for the eventual `engelsmaSearch_50_246` call.
+Lower priority than S10–S12 Path-B work.
 
 ### Previous focus (S5)
 
@@ -294,28 +326,19 @@ but cannot be assessed until at least S4.
 
 ## Subsequent Iterations (deferred)
 
-- S9 — Begin Path-B verified backtracking infrastructure: the
-  `engelsmaSearch (w k : ℕ) : Bool` `def` per knowledge.md §4
-  (Option-3 hybrid pattern in §4.3). ~50-150 lines for the
-  pruning logic alone. S8's translation + bridge lemmas are
-  the prerequisite that S9 now no longer has to worry about.
-- S10 — Correctness lemma `engelsmaSearch_correct`: equivalence
-  between `engelsmaSearch w k = false` and the absence of any
-  admissible witness in `(Finset.range w).powersetCard k`. ~100-300
-  lines via structural induction over the search tree. Pre-checked
-  on the S6 non-vacuous boundary witnesses (which any correct
-  search must agree with).
-- S11 — `engelsmaSearch 246 50 = false` via `native_decide`. With
-  S8 + S9 + S10 in place, this is the final step that discharges
-  `engelsma_lower_bound`. Runtime depends on the S9 pruner; per
-  knowledge.md §4.5 (~10-60 s after compilation).
-- Alternative deferred S7 — `(10, 30)` `native_decide` analogue.
-  Lower priority than the Path-B work above. Useful only as another
-  empirical scaling datapoint for the eventual S11 call.
-- Path C (Selberg sieve fallback) remains an alternative if Path-B
-  runtime turns out to be infeasible at (50, 246) — knowledge.md §5
-  notes it doesn't reduce to a tractable enumeration on its own,
-  but it would let us narrow the residual `native_decide` claim.
+- S10 — Pruned variant `engelsmaSearchPruned (w k : ℕ) : Bool` per
+  knowledge.md §4.2. Branch-and-bound over admissible k-tuples in
+  `Finset.range w`; short-circuit on first failed residue cover.
+  ~100-200 lines for the def alone. Should use Array/List runtime
+  representation per §4.5.
+- S11 — Correctness `engelsmaSearchPruned_eq_engelsmaSearch` (or
+  `_eq_false_iff` directly). Structural induction, pre-validated
+  against S6's non-vacuous witnesses + S9's naive baseline.
+  ~200-300 lines.
+- S12 — `engelsmaSearchPruned 246 50 = false` via `native_decide`.
+  Final discharge via `engelsma_lower_bound_of_engelsmaSearch_false`.
+- Alternative deferred S7 — (10, 30) `native_decide` analogue.
+- Path C (Selberg sieve) remains a fallback per knowledge.md §5.
 
 ## Attempt Counts
 
@@ -386,3 +409,18 @@ but cannot be assessed until at least S4.
   blocks local verification (memory: feedback_researcher_lake_symlink_broken).
   Skipped S7 (vacuous (10, 30) `native_decide`) per state.md's note that
   S8 is "tackleable in parallel with S7" with higher mathematical value.
+- **S9 (2026-05-12, researcher-5)**: ACT. Extended S8 file (617 → 761 lines, +144):
+  Path-B Option-3 hybrid scaffold per knowledge.md §4.3. Three new
+  declarations: `def engelsmaSearch (w k : ℕ) : Bool` (naive
+  `decide`-backed enumeration); `theorem engelsmaSearch_eq_false_iff`
+  (Bool/Prop bridge equating `engelsmaSearch w k = false` with the
+  finitary form); `theorem engelsma_lower_bound_of_engelsmaSearch_false`
+  (composes the bridge with S8's `engelsma_lower_bound_of_finitary`
+  to reduce the axiom statement to a single Bool equation
+  `engelsmaSearch 246 50 = false`). Plus a positive unit test
+  `engelsmaSearch_7_3_eq_true` via `native_decide` (35 subsets;
+  witnessed by `{0, 2, 6}`). theoremCount 20 → 23; defCount 1 → 2;
+  axiomCount stays at 1 (Lean.ofReduceBool reused). 0 sorries.
+  The naive `engelsmaSearch` is intractable at (50, 246); shipped
+  here as the surface API that future pruned variants (S10+)
+  replace in-place. Build pending.
