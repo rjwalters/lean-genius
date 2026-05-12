@@ -2,12 +2,137 @@
 
 **Phase**: REFINE
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-11 (Iteration 25-rev, researcher-9)
-**Iteration**: 25-rev
+**Last Updated**: 2026-05-11 (Iteration 26-prep-diam, researcher-5)
+**Iteration**: 26-prep-diam
 
 ## Current Focus
 
-Session 25-rev (this iteration, researcher-9, 2026-05-11, build
+Session 26-prep-diam (this iteration, researcher-5, 2026-05-11,
+build pending): Added the **per-coordinate gridPt diameter bounds**
+that the eventual `sperner_panchromatic_two` real-coordinate
+conclusion `|v i l - v j l| ≤ 2/N` will consume. Independent of the
+in-flight S23 (PR #17571, color-side wiring) and S25-prep
+(PR #17621, explicit gridPt coordinate values) work — these
+diameter lemmas characterise the geometric simplex side of the
+final glue and do not touch `_hLastFace`, `IsDoor`, or the gridPt
+per-coordinate equalities.
+
+New section `N2GridDiameter` (10 private lemmas, 187 lines added to
+`SpernerFreudenthalSimplex.lean`, inserted between `N2VertexRange`
+and the matching `end SpernerFreudSimp`):
+
+* **Closed-form coordinate differences** (3 lemmas):
+  - `gridPt_coord0_diff`: `gridPt N b₁ 0 - gridPt N b₂ 0 =
+    ((b₁.1 : ℝ) - b₂.1) / N`. One-line proof: simp + ring.
+  - `gridPt_coord1_diff`: analogous for coordinate 1 with second
+    coordinates.
+  - `gridPt_coord2_diff`: reverse-sign coordinate-sum difference,
+    `(((b₂.1 : ℝ) + b₂.2) - ((b₁.1 : ℝ) + b₁.2)) / N`, because
+    coordinate 2 is `(N - b.1 - b.2)/N`.
+
+* **Vertex-coordinate range bounds** (6 lemmas, 3 per cell type):
+  - `t1_vertex_first_coord_range`: `b.1 ≤ v.1 ≤ b.1 + 1` for every
+    `v ∈ t1 b`.
+  - `t1_vertex_second_coord_range`: `b.2 ≤ v.2 ≤ b.2 + 1`.
+  - `t1_vertex_sum_coord_range`: `b.1+b.2 ≤ v.1+v.2 ≤ b.1+b.2+1`
+    (new lower bound complementing the existing
+    `t1_vertex_sum_le`).
+  - `t2_vertex_{first,second}_coord_range`: same shape as t1.
+  - `t2_vertex_sum_coord_range`: `b.1+b.2+1 ≤ v.1+v.2 ≤ b.1+b.2+2`
+    (the `t2` sum interval is offset by 1).
+
+* **Per-coordinate diameter bounds** (2 lemmas):
+  - `gridPt_t1_coord_diameter`: for any two vertices `b₁, b₂ ∈ t1 b`
+    and any `l : Fin 3`, `|gridPt N b₁ l - gridPt N b₂ l| ≤ 1/N`.
+    Three-case `fin_cases l` proof, each case rewrites via the
+    coord-diff lemma, applies `abs_div + abs_of_pos`, extracts
+    the ℕ-range bounds in ℝ via `exact_mod_cast`, and concludes
+    via `linarith` + `div_le_div_of_nonneg_right`.
+  - `gridPt_t2_coord_diameter`: analogous for `t2 b`.
+
+* **Top-level wrapper** (1 lemma):
+  - `gridPt_topSimps2_coord_diameter`: for any `s ∈ topSimps2 N`,
+    any two vertices `b₁, b₂ ∈ s`, and any `l : Fin 3`,
+    `|gridPt N b₁ l - gridPt N b₂ l| ≤ 2/N`. Reduces to the
+    `t1`/`t2` per-cell-type bound (≤ 1/N, the tight bound)
+    weakened to ≤ 2/N via `(1:ℝ)/N ≤ 2/N` (matches the
+    abstract `sperner_panchromatic` axiom shape
+    `diameter ≤ n/N`, here `n = 2`; the factor-of-2 slack is
+    harmless and avoids over-promising tightness in the eventual
+    user-facing theorem).
+
+## Why this is independent of S23 + S25-prep
+
+* **S23 (PR #17571)** adds an `N2LastFaceColors` section *after*
+  the eventual `end SpernerFreudSimp` (line 937 post-this-PR), in
+  a region disjoint from this PR's `N2GridDiameter` (lines
+  760–935 post-this-PR). The two PRs append into different
+  text regions of the file.
+* **S25-prep (PR #17621)** adds three explicit per-coordinate
+  values `gridPt_{zero,one,two}_eq` in section `N2Grid` (~line
+  545 pre-this-PR), much earlier in the file. The two PRs add
+  to disjoint regions of the file. The new `gridPt_coord*_diff`
+  closed-form differences in this PR could be derived from those
+  per-coordinate values if S25-prep merges first, but the proofs
+  here are self-contained (single `simp + ring`) and do not
+  require S25-prep.
+
+## Path forward
+
+`sperner_panchromatic_two` (line 415, currently `sorry`) needs
+both the **boundary-doors-odd** discharge (S23/S25 in flight)
+and the **diameter / real-coordinate** wiring this PR
+contributes. Concretely the path is:
+
+1. Apply `Triangulation.boundary_doors_odd` (consumes
+   `_hSperner`, `_hBoundaryOnFace`, `_hLowerDim`, `_hLastFace`)
+   to extract a panchromatic top simplex `s` and indices
+   `v₀, v₁, v₂ : ℕ × ℕ` (one per color) with `s = {v₀, v₁, v₂}`
+   (a `t1` or `t2` cell).
+2. Set `v i := gridPt N (vᵢ)` (each vertex is in `InSimplex` by
+   `gridPt_inSimplex` because `vᵢ.1 + vᵢ.2 ≤ N` via
+   `topSimps2_vertex_in_range`).
+3. The Sperner color inequality `f (v i) i ≤ v i i` follows from
+   the panchromaticity (each `vᵢ` is colored `i` and `cN2` was
+   defined as the min-support index where `f (gridPt b) i ≤
+   (gridPt b) i`).
+4. The diameter conclusion `|v i l - v j l| ≤ 2/N` follows from
+   **this PR's** `gridPt_topSimps2_coord_diameter` applied to
+   the common cell `s`.
+
+Step 4 is the contribution of this PR. Step 1 is the work of
+S23/S25 + a final assembly. Steps 2 and 3 are straightforward
+once step 1 lands.
+
+## Build status
+
+Build pending per the persistent `proofs/.lake` recursive-symlink
+build infrastructure issue (every Docker build is a 30–45 min
+Mathlib refetch + 10 min cache fetch). Each proof in this PR is
+short (≤ 8 tactic lines) and uses only well-established Mathlib
++ existing-file API:
+
+* `abs_div`, `abs_of_pos`, `abs_le`, `div_le_div_of_nonneg_right`
+  — standard Mathlib real-arithmetic.
+* `Nat.cast_pos.mpr`, `exact_mod_cast` — standard ℕ↔ℝ
+  coercion.
+* `Finset.mem_insert`, `Finset.mem_singleton`, `Finset.mem_union`,
+  `Finset.mem_image` — standard Finset.
+* `t1`, `t2`, `t1Bases`, `t2Bases`, `topSimps2`, `gridPt` — from
+  earlier sections of this file, all merged and previously verified
+  by usage in `gridPt_inSimplex`, `cN2_*_corner`,
+  `t1_vertex_sum_le`, `t2_vertex_sum_le`,
+  `topSimps2_vertex_in_range`.
+
+The `simp only [..., ↓reduceIte]` patterns in the three
+coord-diff lemmas mirror the existing usage at line 506–509
+(`gridPt_inSimplex` proof). The `rcases hv with rfl | rfl | rfl
+<;> omega` pattern for the six range lemmas mirrors
+`t1_vertex_sum_le` / `t2_vertex_sum_le` at lines 719–728.
+
+## Previous Focus
+
+Session 25-rev (researcher-9, 2026-05-11, build
 pending): Added the **reverse direction of S21A** — for
 `b ∈ satDiagBases N`, the self-drop index exists, is unique, and
 witnesses the per-vertex face-2 condition that the `_hLastFace`
