@@ -2419,6 +2419,74 @@ theorem hgcdMatrixSafe_zero_natAbs_max_le (a b : ℕ) :
       ≤ max a b :=
   (hgcdMatrixSafe_zero_natAbs_max_eq a b).le
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XXVIII: MUL-IDENTITY APPLY COROLLARIES (Session 40)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Mul-identity corollaries of `cofactor_mul_apply`
+
+    S39's `cofactor_id_apply` docstring (line 2366–2369) flagged
+    `(M.mul id)` and `(id.mul N)` apply corollaries as natural
+    follow-ups: any reasoning that produces a composed cofactor
+    matrix with `CofactorMatrix.id` on one side can collapse the
+    spurious identity factor via `cofactor_mul_apply` +
+    `cofactor_id_apply`.
+
+    Two named theorems are exposed here:
+
+    * `cofactor_mul_id_apply` — `(M.mul CofactorMatrix.id).apply
+      a b = M.apply a b`. Right-identity form. Proof: rewrite via
+      `cofactor_mul_apply` (PART XX) to expose
+      `M.apply (CofactorMatrix.id.apply a b).1 (CofactorMatrix.id.apply a b).2`,
+      then rewrite via `cofactor_id_apply` (PART XXVII) to
+      collapse the inner `.apply` to the pair `(a, b)`. The
+      remaining projection reduction is definitional.
+
+    * `cofactor_id_mul_apply` — `(CofactorMatrix.id.mul N).apply
+      a b = N.apply a b`. Left-identity form. Same `rw` chain;
+      after the rewrites, the goal reduces by `Prod` structure
+      eta (`((N.apply a b).1, (N.apply a b).2) = N.apply a b`).
+
+    **Why useful.** The fuel-zero unfoldings introduced in PART
+    XXVII (S39) produce `CofactorMatrix.id`-factors via
+    `hgcdMatrixSafe_zero`. When such an `id` factor appears
+    multiplied with another cofactor matrix — e.g. inside a
+    fuel-step unfolding where one of the recursive calls hits
+    the `f = 0` base case — these corollaries let downstream
+    sessions collapse the spurious factor in one line, instead
+    of unfolding `CofactorMatrix.mul` + `CofactorMatrix.apply`
+    every time.
+
+    No new axioms, no new sorries, no new definitions, no
+    `native_decide`. Both proofs are single-line `rw` chains
+    against already-merged S20/S39 lemmas. -/
+
+/-- **Right `CofactorMatrix.id` collapse for `cofactor_mul_apply`.**
+
+    `(M.mul CofactorMatrix.id).apply a b = M.apply a b`. Proof:
+    `cofactor_mul_apply` (PART XX) rewrites the LHS to
+    `M.apply (CofactorMatrix.id.apply a b).1 (CofactorMatrix.id.apply a b).2`;
+    `cofactor_id_apply` (PART XXVII) rewrites the inner
+    `CofactorMatrix.id.apply a b` to the pair `(a, b)`; the
+    surrounding `Prod` projections then reduce definitionally
+    to give `M.apply a b`. -/
+theorem cofactor_mul_id_apply (M : CofactorMatrix) (a b : ℤ) :
+    (M.mul CofactorMatrix.id).apply a b = M.apply a b := by
+  rw [cofactor_mul_apply, cofactor_id_apply]
+
+/-- **Left `CofactorMatrix.id` collapse for `cofactor_mul_apply`.**
+
+    `(CofactorMatrix.id.mul N).apply a b = N.apply a b`. Proof:
+    `cofactor_mul_apply` (PART XX) rewrites the LHS to
+    `CofactorMatrix.id.apply (N.apply a b).1 (N.apply a b).2`;
+    `cofactor_id_apply` (PART XXVII) rewrites this to the pair
+    `((N.apply a b).1, (N.apply a b).2)`; Lean 4's structure
+    eta for `Prod` makes this definitionally equal to
+    `N.apply a b`. -/
+theorem cofactor_id_mul_apply (N : CofactorMatrix) (a b : ℤ) :
+    (CofactorMatrix.id.mul N).apply a b = N.apply a b := by
+  rw [cofactor_mul_apply, cofactor_id_apply]
+
 end HGcdSafe
 
 /-! ## Summary
