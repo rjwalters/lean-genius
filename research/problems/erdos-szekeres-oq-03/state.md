@@ -1,15 +1,49 @@
 # Current State
 
-**Phase**: ACT (S4 ACT-C closes the `s = k` / `t = k` boundary cases; the
-genuine inductive case `s > k ∧ t > k` remains the sole `ramsey_existence`
-sorry)
-**Since**: 2026-05-12 (S4 ACT-C, researcher-9)
-**Iteration**: 4
-**Researcher**: researcher-9 (S4 ACT-C, S2); researcher-1 (S4-prep); researcher-11 (S3); researcher-8 (S1)
+**Phase**: ACT (S5-prep adds three sorry-free monotonicity helpers; the
+genuine inductive case `s > k ∧ t > k` of `ramsey_existence` remains the
+sole `sorry`)
+**Since**: 2026-05-12 (S5-prep, researcher-1)
+**Iteration**: 5
+**Researcher**: researcher-1 (S5-prep, S4-prep); researcher-9 (S4 ACT-C, S2); researcher-11 (S3); researcher-8 (S1)
 
 ## Current Focus
 
-Session 4 (S4 ACT-C, researcher-9, 2026-05-12): factor `ramsey_existence`
+Session 5 (S5-prep, researcher-1, 2026-05-12): widen the `ramsey_existence`
+inductive-step toolkit with three monotonicity facts independent of the
+deferred sorry. Reconstructs the orphan branch
+`research/erdos-szekeres-oq-03-s5-mono-helpers-1778575256` (authored
+2026-05-12 01:46 UTC, PR never created) on top of the post-S4-ACT-C state.
+
+Output of this session (build pending; the local worktree shares the broken
+`proofs/.lake` symlink per memory `feedback_researcher_lake_symlink_broken.md`):
+
+* `proofs/Proofs/RamseyHypergraph.lean` — 500 → 584 lines, +84.
+  New sorry-free lemmas, placed between `is_ramsey_self_left` and
+  `ramsey_existence` so that all monotonicity helpers precede the S5 target:
+  - `IsMonochromatic.mono {n k} {χ : kColoring n} {c} {S S'} :
+    S' ⊆ S → IsMonochromatic χ k S c → IsMonochromatic χ k S' c`
+    — subset closure: every `k`-subset of `S'` is a `k`-subset of `S` via
+    `Finset.mem_powersetCard` + `Finset.subset.trans`.
+  - `IsRamsey.mono_n {n m k s t} (h : n ≤ m) : IsRamsey n k s t →
+    IsRamsey m k s t` — monotonicity in `n` via the canonical embedding
+    `Fin n ↪ Fin m` built as `⟨Fin.castLE h, Fin.castLE_injective h⟩`.
+    Restrict any coloring of `[m]^{(k)}` to `χ' := fun S ↦ χ (S.map f)`
+    on `[n]^{(k)}`; obtain a clique `S ⊆ Fin n` by hypothesis; lift to
+    `S.map f` and use `Finset.subset_map_iff` to recognise each
+    `k`-subset of `S.map f` as `T₀.map f` for some `T₀ ⊆ S` of card `k`,
+    where monochromaticity of `T₀` under `χ'` is already known.
+  - `ramseyNumber_swap (k s t : ℕ) : ramseyNumber k s t = ramseyNumber k t s`
+    — direct corollary of `IsRamsey.swap`: the two `sInf`-defining sets
+    agree pointwise.
+* New import: `Mathlib.Data.Finset.Map` (for `Finset.subset_map_iff`).
+* `leanFile` counts (this file): lineCount 500 → 584 (+84), theoremCount
+  14 → 17 (+3), defCount 4 (unchanged), sorryCount 1 (unchanged),
+  axiomCount 0 (unchanged).
+
+## Prior Session Outputs (S4 ACT-C, researcher-9)
+
+Session 4 (S4 ACT-C, researcher-9, 2026-05-12): factored `ramsey_existence`
 through the two boundary cases (`s = k` and `t = k`) and the
 anti-monotonicity of `IsRamsey` in both target sizes. The remaining sorry
 is now restricted to the genuine inductive content `s > k ∧ t > k`.
@@ -103,34 +137,37 @@ adequate but verbose.
 
 ## Next Action
 
-**S5 ACT-D — Discharge the genuine inductive case of `ramsey_existence`.**
+**S6 ACT-D — Discharge the genuine inductive case of `ramsey_existence`.**
 
-After S4 ACT-C the boundaries `s = k` and `t = k` are sorry-free via
-`is_ramsey_self_right` / `is_ramsey_self_left`; the surviving sorry sits
-inside `ramsey_existence` under `s > k ∧ t > k`. S5 should establish the
-classical Ramsey 1930 recursive bound
+After S4 ACT-C + S5-prep the inductive-step toolkit comprises seven
+sorry-free monotonicity facts: `anti_s` / `anti_t` (shrink the
+target-clique side), `is_ramsey_self_right` / `_left` (boundary cases at
+`s = k` / `t = k`), and the new `IsMonochromatic.mono` / `IsRamsey.mono_n`
+/ `ramseyNumber_swap`. S6 should establish the classical Ramsey 1930
+recursive bound
 
     R_k(s, t) ≤ R_{k-1}(R_k(s-1, t) + 1, R_k(s, t-1) + 1) + 1   (k ≥ 2, s, t > k)
 
-and run the induction on `s + t` for fixed `k`. The induction bottoms out
-cleanly on `is_ramsey_self_right` (`s = k+1` step ultimately calls back to
-`s' = k`) and `is_ramsey_self_left` (symmetric) — the four S4-ACT-C
-helpers (`anti_s`, `anti_t`, plus the two boundary lemmas) are precisely
-the API needed to "shrink" cliques produced at lower `s + t` back to the
-target size.
+and run the induction on `s + t` for fixed `k`. The induction bottoms
+out cleanly on `is_ramsey_self_right` / `_left`; `IsRamsey.mono_n` is
+needed to lift the recursive bound from "some `n`" to "all `m ≥ n`" so
+that the chosen Ramsey number can absorb the +1 in the recursive bound,
+and `IsMonochromatic.mono` is needed to shrink the lifted-`(k-1)`-clique
+of monochromatic neighborhood vertices back to the `s − 1` or `t − 1`
+sub-clique demanded by the recursion.
 
 Estimated 150–250 lines for the step alone (neighborhood-restriction
 construction at uniformity `k − 1`).
 
-S6 will state the Erdős–Rado tower upper bound `erdos_rado_upper`.
+S7 will state the Erdős–Rado tower upper bound `erdos_rado_upper`.
 
 ## Attempt Counts
 
-- Total attempts: 4
-- Current approach attempts: 4
-- Approaches tried: 4 (literature survey + Lean API design; S2 scaffold;
+- Total attempts: 5
+- Current approach attempts: 5
+- Approaches tried: 5 (literature survey + Lean API design; S2 scaffold;
   S3 `ramseyNumber_one` via pigeonhole iff helper; S4 ACT-C boundary
-  factoring + anti-monotonicity)
+  factoring + anti-monotonicity; S5-prep monotonicity helpers)
 
 ## Outcome of S1
 
@@ -183,3 +220,19 @@ to the genuine inductive case `s > k ∧ t > k` (the S5 target). Build
 pending (worktree shares the broken `proofs/.lake` symlink); proof
 patterns mirror the S3 idioms (`cases hχ : χ T with`, `Finset.mem_powersetCard`
 membership unfold) so build risk is low.
+
+## Outcome of S5-prep
+
+Three sorry-free monotonicity helpers land (build pending; worktree shares
+the broken `proofs/.lake` symlink): `IsMonochromatic.mono` (subset
+closure), `IsRamsey.mono_n` (monotonicity in `n` via the canonical
+`Fin n ↪ Fin m` embedding `⟨Fin.castLE h, Fin.castLE_injective h⟩`, with
+`χ' := fun S ↦ χ (S.map f)` as the restricted coloring and
+`Finset.subset_map_iff` to recognise lifted clique-subsets), and
+`ramseyNumber_swap` (corollary of `IsRamsey.swap` via congruence on the
+`sInf`-defining set). File grows 500 → 584 lines (+84); theorem count
+14 → 17 (+3); sorries / axioms unchanged at 1 / 0. New import:
+`Mathlib.Data.Finset.Map`. Reconstructs the orphan branch
+`research/erdos-szekeres-oq-03-s5-mono-helpers-1778575256` (authored
+2026-05-12 01:46 UTC by a prior `researcher-1` session, PR never
+created) on top of the post-S4-ACT-C state.
