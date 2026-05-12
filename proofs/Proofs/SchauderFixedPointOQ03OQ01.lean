@@ -109,20 +109,22 @@ axiom brouwer_unit_ball {n : ℕ}
     (hf : Continuous f) :
     ∃ x, f x = x
 
-/-- **LOOKUP-2 helper (S11.B work item, currently `sorry`-stubbed):**
+/-- **LOOKUP-2 helper (S11.B work item, landed in S14):**
     Nearest-point retraction onto a nonempty compact convex set in
     `EuclideanSpace ℝ (Fin n)`, packaged as a continuous map that is the
     identity on the set.
 
-    **Proof outline (deferred to S11.B):** existence and uniqueness of
-    the nearest point come from
+    **Proof structure (landed in S14, researcher-3, 2026-05-09;
+    Mathlib API drift fixed in S15, PR #17654):** existence and
+    uniqueness of the nearest point come from
     `exists_norm_eq_iInf_of_complete_convex`
     (`Mathlib.Analysis.InnerProductSpace.Projection`) combined with
-    strict convexity of the Euclidean norm; continuity comes from the
-    variational inequality (`norm_eq_iInf_iff_real_inner_le_zero`
-    family); idempotency on `↥S` follows from `dist_self` plus the
-    uniqueness clause. The full proof is ~30–80 Lean lines and is the
-    isolated dependency of the S11.A retraction reduction below. -/
+    strict convexity of the Euclidean norm; continuity is derived from
+    1-Lipschitz, obtained from the variational inequality
+    (`norm_eq_iInf_iff_real_inner_le_zero`) plus the Cauchy–Schwarz
+    bound on the inner product; idempotency on `↥S` follows from
+    `dist_self` and `norm_eq_zero`. With this helper, `theorem
+    brouwer_fpt` below is end-to-end sorry-free. -/
 lemma exists_continuous_proj_convex {n : ℕ}
     (S : Set (EuclideanSpace ℝ (Fin n)))
     (hS_ne : S.Nonempty) (hS_compact : IsCompact S) (hS_convex : Convex ℝ S) :
@@ -236,12 +238,12 @@ lemma exists_continuous_proj_convex {n : ℕ}
     `s10-mathlib-v426-lookup3-resolved.md` Option A).
 
     **S11.A.body landed (S13, researcher-10, 2026-05-09; see
-    `s11-strict-weakening-spec.md` and `s12-s11a-body-step6-refinement.md`).**
-    The body still depends on the `sorry`-stubbed
-    `exists_continuous_proj_convex` helper (S11.B work item), so this
-    theorem is not yet end-to-end sorry-free; once S11.B lands, the
-    file's only remaining assumption on the Brouwer side will be the
-    closed-unit-ball axiom.
+    `s11-strict-weakening-spec.md` and `s12-s11a-body-step6-refinement.md`).
+    S11.B helper (`exists_continuous_proj_convex`) landed in S14
+    (researcher-3, PR #17601), with Mathlib API drift fixes in S15
+    (PR #17654).** The theorem is now end-to-end sorry-free; the file's
+    only remaining assumption on the Brouwer side is the closed-unit-ball
+    axiom (`brouwer_unit_ball`).
 
     **Proof structure:**
 
@@ -249,8 +251,8 @@ lemma exists_continuous_proj_convex {n : ℕ}
        (`IsCompact.isBounded`); pick `R > 0` with
        `S ⊆ Metric.closedBall 0 R` via `Bornology.IsBounded.subset_closedBall_lt`.
     2. Build the nearest-point retraction `r : E → ↥S` from
-       `exists_continuous_proj_convex` (LOOKUP-2 helper, S11.B; currently
-       `sorry`-stubbed).
+       `exists_continuous_proj_convex` (LOOKUP-2 helper, S11.B; landed
+       in S14).
     3. Compose `F : ↥(closedBall 0 R) → ↥(closedBall 0 R)` via
        `b ↦ ⟨f (r b), …⟩`, well-defined since `f (r b) ∈ ↥S ⊆ closedBall 0 R`;
        continuity from `continuous_subtype_val`/`Continuous.subtype_mk`.
@@ -736,24 +738,35 @@ infrastructure can produce via the Cellina averaging argument.
 - `brouwer_fpt` — Brouwer's FPT for general compact convex `S`,
   derived from `axiom brouwer_unit_ball` via the elementwise rescaling
   retraction reduction (S11.A.body landed S13, researcher-10,
-  2026-05-09). The body still depends on the `sorry`-stubbed helper
-  `exists_continuous_proj_convex`, so it is not yet end-to-end
-  sorry-free.
+  2026-05-09; S11.B helper landed S14, researcher-3, 2026-05-09;
+  Mathlib API drift fix in S15, PR #17654). End-to-end sorry-free.
 - `exists_continuous_proj_convex` — Continuous nearest-point retraction
-  onto a compact convex set, used by the `brouwer_fpt` body.
-  **Currently `sorry`-stubbed** (S11.B work item, ~30–80 Lean lines via
-  `exists_norm_eq_iInf_of_complete_convex` + variational inequality).
+  onto a compact convex set, used by the `brouwer_fpt` body. Landed
+  in S14 (~100 Lean lines via `exists_norm_eq_iInf_of_complete_convex`
+  + variational inequality + Cauchy–Schwarz 1-Lipschitz argument).
 
-### Path to Full Verification
-1. **S11.B (next)**: prove `exists_continuous_proj_convex` from
-   `Mathlib.Analysis.InnerProductSpace.Projection` API. After this
-   lands, `theorem brouwer_fpt` is end-to-end sorry-free and the file's
-   only remaining axiom on the Brouwer side is the closed-unit-ball
-   form.
-2. **S12+**: prove `approx_selection_exists` (graph form) using
-   `PartitionOfUnity` plus the Cellina averaging argument.
-3. **(Optional, far future)**: in-house Brouwer FPT proof to eliminate
-   `brouwer_unit_ball` (Option B from S10's note).
+### Path to Axiom Elimination
+1. **(S12+, prerequisite work)**: prove `approx_selection_exists`
+   (graph form, Cellina–Browder) using
+   `Mathlib.Topology.PartitionOfUnity` plus the averaging argument.
+   Estimated 200–500 Lean lines; the construction is standard
+   (cover-by-UHC-neighborhoods + subordinate partition of unity +
+   convex average; graph bound from neighborhood membership). Reduces
+   axiom count from 2 to 1.
+2. **(Optional, far future)**: in-house Brouwer FPT proof to eliminate
+   `brouwer_unit_ball` (Option B from S10's note). Standard routes are
+   (a) simplicial approximation + Sperner (the gallery has a Sperner
+   formalization), or (b) degree theory in `Mathlib.Topology.Algebra.
+   Module.Multilinear`. Either route is several thousand Lean lines.
+   Reduces axiom count from 1 to 0.
+
+### Current Status (S16, 2026-05-11)
+
+- 0 sorries (entire file).
+- 2 axioms (`brouwer_unit_ball`, `approx_selection_exists`).
+- 5 theorems + 1 lemma, all axiom-dependent only via the 2 axioms above.
+- End-to-end formalization of Kakutani-from-Brouwer-via-graph-form-
+  approximate-selections is complete modulo the 2 axioms.
 -/
 
 #check @brouwer_unit_ball
