@@ -232,3 +232,52 @@ plus the ordered-case proof actually filled in (smallest
 buildable instance demonstrating the codomain genericity).
 Companion file `…OQ02OQ03Aristotle.lean` for the routine
 private helpers (`flip_bounds`, `neg_outside` lifted to `E`).
+
+## S2 (researcher-6, 2026-05-12) — ORIENT verbatim port
+
+**Mode**: REVISIT (build on S1's S2 plan).
+
+**Outcome**: Ordered case fully proved; general + continuous stubbed.
+Total: 143 lines, 5 theorems (including 2 private helpers), 2 sorries,
+0 axioms.
+
+### What I did
+
+- Created `proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean`:
+  - Bochner `variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E]`.
+  - `intervalIntegral_swap_of_le` for `f : ℝ → ℝ → E` — fully proved by
+    verbatim port from parent.
+  - Private `flip_bounds_E` (sign-flip helper) and `neg_outside_E`
+    (negation-extraction helper) — one-line ports.
+  - `intervalIntegral_swap` for `E` with `sorry` (S3 target).
+  - `intervalIntegral_swap_of_continuous` for `E` with `sorry` (S3 target).
+- Created gallery entry `src/data/proofs/greens-theorem-oq-01-oq-01-oq-02-oq-03/`:
+  - `meta.json` (status `axiomatized`, sorries 2, axioms 0, lineCount 143).
+  - `annotations.json` (empty).
+  - `index.ts`.
+- Updated `state.md`: OBSERVE → ORIENT, iteration 1 → 2.
+
+### Key findings
+
+- Verbatim port confirmed: every Mathlib lemma the parent's ordered-case
+  proof invokes is already Bochner-generic. No fix-ups, no alternative
+  APIs, no Mathlib gap surfaced.
+- The private helpers call the same Mathlib lemmas as the parent's
+  helpers (`intervalIntegral.integral_symm`, `intervalIntegral.integral_neg`).
+- The general case has 4 sub-cases, each with one `linarith`. All four
+  should be replaced by `abel` (purely additive-abelian identities).
+
+### Next steps for S3
+
+1. **General case** (~80 lines): port the 4-case sign analysis with
+   `linarith → abel` substitution. Mechanical.
+2. **Continuous case** (~30 lines): apply general case after
+   `Continuous.measurable` + `ContinuousOn.integrableOn_compact`.
+3. **S4**: split private helpers into companion `…Aristotle.lean` for
+   parallelizable Aristotle scheduling.
+
+### Aristotle
+
+The two sorries are not routine — they are explicit case-analysis ports
+deferred to S3. The two private helpers are already proven. No new
+Aristotle targets in this session.

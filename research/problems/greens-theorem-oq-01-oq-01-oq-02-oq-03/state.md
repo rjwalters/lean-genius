@@ -1,84 +1,85 @@
 # Current State
 
-**Phase**: OBSERVE
-**Since**: 2026-05-11 (S1)
-**Iteration**: 1
-**Owner**: researcher-1
+**Phase**: ORIENT (S2 SCAFFOLD complete: ordered case fully proved, general + continuous deferred)
+**Since**: 2026-05-12T03:45:00Z
+**Iteration**: 2
+**Owner**: researcher-6
 
 ## Current Focus
 
-S1 (researcher-1): Audit the parent
-`Proofs/GreensTheoremOQ01OQ01OQ02.lean` against Mathlib's Bochner
-integration API to determine whether the three real-valued
-`intervalIntegral_swap` theorems generalize verbatim to a Banach
-codomain `E`. Documentation-only iteration; **no Lean
-changes.**
+S2 SCAFFOLD per S1 OBSERVE plan: port the parent file's three real-valued
+`intervalIntegral_swap` theorems to Banach codomain `E`. The ordered case
+is fully proved (verbatim port); general + continuous cases are stubbed
+for S3.
 
 ## Active Approach
 
-**Mathlib API audit, no Lean changes (S1 OBSERVE fallback variant
-per memory).**
+**Verbatim port from real-valued parent + linarith → abel for general case.**
 
-The parent file is `verified` (0 sorries, 0 axioms) so the
-question reduces to a codomain-genericity audit of each Mathlib
-lemma the parent invokes. The audit (see `knowledge.md` § "Mathlib
-API audit") finds:
-
-- Every Mathlib lemma the parent uses is already stated for
-  Bochner-valued integrands (`E : NormedAddCommGroup`,
-  `NormedSpace ℝ E`, `CompleteSpace E`).
-- The only ℝ-specific element of the parent's proof is four
-  `linarith` invocations in the general-case sign analysis,
-  which `abel` replaces directly (the underlying identity is
-  additive-abelian-group, not order-theoretic).
-
-**Conclusion**: The Bochner generalization is "free" — port the
-parent's three theorems with `f : ℝ → ℝ → E`, replace
-`linarith → abel`, ship.
+The S1 audit (PR #17769) confirmed every Mathlib lemma the parent invokes
+is already Bochner-generic. The S2 ordered-case proof is therefore a literal
+character-for-character port with `f : ℝ → ℝ → E` substituted for
+`f : ℝ → ℝ → ℝ`. The general-case proof requires four `linarith → abel`
+substitutions in the sign analysis (the underlying identities are
+additive-abelian, not order-theoretic).
 
 ## Blockers
 
 None mathematical.
 
-Practical (build): the `proofs/.lake` symlink in the researcher
-worktree points to itself (memory note
-[feedback_researcher_lake_symlink_broken.md]), so any Docker
-build will be a fresh ~25-minute clone. Strict text-only
-iterations (this S1) are unaffected; S2+ should plan
-≥45 min Docker timeouts.
+Practical (build): the `proofs/.lake` symlink in the researcher worktree
+points to itself (memory `feedback_researcher_lake_symlink_broken.md`),
+so Docker build will be a fresh ~25-minute clone. This S2 SCAFFOLD only
+adds ~143 lines with verbatim ports, so build risk is low.
 
 ## Next Action
 
-**S2 SCAFFOLD** (next iteration): Create
-`proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean` containing:
+**S3 ACT**: close the two sorries (`intervalIntegral_swap`,
+`intervalIntegral_swap_of_continuous`).
 
-1. `variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
-    [CompleteSpace E]` block (Bochner setup).
-2. `theorem intervalIntegral_swap_of_le` for `f : ℝ → ℝ → E` —
-   **fully proved** (smallest buildable instance demonstrating
-   the codomain genericity), since the parent's ordered-case
-   script is already codomain-agnostic.
-3. `theorem intervalIntegral_swap` for `f : ℝ → ℝ → E` —
-   `:= by sorry` (defer the 4-case sign analysis to S3, where
-   `linarith → abel` substitution is exercised).
-4. `theorem intervalIntegral_swap_of_continuous` for
-   `f : ℝ → ℝ → E` — `:= by sorry` (depends on the general case).
-5. Companion file
-   `proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ03Aristotle.lean`
-   for routine helpers (`flip_bounds_E`, `neg_outside_E`) so
-   Aristotle can attempt them in parallel.
+### General case (sorry 1)
+Port the parent's 4-case sign analysis verbatim. The four sub-cases are
+- `a ≤ b ∧ c ≤ d`: direct from ordered case (no sign-flip).
+- `a ≤ b ∧ c > d`: one flip on the y-axis via `flip_bounds_E`.
+- `a > b ∧ c ≤ d`: one flip on the x-axis via `flip_bounds_E`.
+- `a > b ∧ c > d`: two flips combining via `neg_outside_E`.
 
-Include sibling-style header docstring summarizing the
-generalization claim and the `linarith → abel` rationale.
+Each sub-case has one `linarith` invocation in the parent's proof, all
+four replaced by `abel` in the port. Estimated ~80 lines.
 
-**S3** (after S2 build-verifies): port the general 4-case proof
-using `abel`. **S4**: continuous case + gallery entry +
-`src/data/proofs/<slug>/{meta.json, index.ts, annotations.json}`.
+### Continuous case (sorry 2)
+Apply the general case after extracting measurability + integrability
+from continuity via `Continuous.measurable` and
+`ContinuousOn.integrableOn_compact` (both codomain-generic). Estimated
+~30 lines.
 
-## Session log
+### S4 (post-S3)
+Companion file `…Aristotle.lean` exposing `flip_bounds_E` and
+`neg_outside_E` as parallelizable Aristotle targets (already private-proven
+here, but a public companion enables independent Aristotle scheduling).
 
-- **S1** (researcher-1, 2026-05-11): OBSERVE — Mathlib API
-  audit, codomain-genericity classification, `linarith → abel`
-  identification. Documentation-only; no Lean changes.
-  Deliverables: `problem.md`, `knowledge.md`, `state.md`,
-  `src/data/research/problems/<slug>.json`.
+## Decomposition Plan
+
+| Session | Phase | Deliverable | Lines | Status |
+|---|---|---|---|---|
+| S1 | OBSERVE | Audit + documentation | 0 Lean | merged #17769 |
+| S2 | ORIENT | Ordered case proved; general + cont. sorry | 143 | **this session** |
+| S3 | ACT | Close general + continuous sorries | ~110 | next |
+| S4 | ACT | Aristotle companion file | ~30 | |
+
+## Attempt Counts
+
+- Total attempts: 2
+- Current approach attempts: 1 (S2 ORIENT verbatim port)
+- Approaches tried:
+  - S1 (researcher-1): OBSERVE audit confirming codomain genericity.
+  - S2 (researcher-6): ORIENT — port ordered case + stub general/continuous.
+
+## Key Files
+
+- `proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean` — **new in S2** (143 lines,
+  5 theorems including 2 private helpers, 0 axioms, 2 sorries).
+- `src/data/proofs/greens-theorem-oq-01-oq-01-oq-02-oq-03/` — **new in S2**
+  gallery entry (status `axiomatized`, sorries 2).
+- `proofs/Proofs/GreensTheoremOQ01OQ01OQ02.lean` — parent file, 231 lines,
+  3 theorems (ordered/general/continuous), 0 sorries, 0 axioms. Verified.

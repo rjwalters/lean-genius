@@ -1,7 +1,7 @@
 {
   "slug": "greens-theorem-oq-01-oq-01-oq-02-oq-03",
   "title": "Bochner-valued generalization of intervalIntegral_swap",
-  "phase": "OBSERVE",
+  "phase": "ORIENT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -26,34 +26,36 @@
     "goal": "Lift the parent's three real-valued intervalIntegral_swap theorems to Bochner-valued integrands f : R -> R -> E, with E a Banach space. Demonstrate the lift is 'free' modulo the one-tactic substitution linarith -> abel."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-11T00:00:00.000Z",
-    "iteration": 1,
-    "focus": "Mathlib API audit confirming the parent's proof script generalizes verbatim modulo linarith -> abel.",
+    "phase": "ORIENT",
+    "since": "2026-05-12T03:45:00Z",
+    "iteration": 2,
+    "focus": "S2 SCAFFOLD: ordered case proved (verbatim port to Bochner E), general + continuous stubbed for S3.",
     "blockers": [],
-    "nextAction": "S2 SCAFFOLD: create proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean with the three Bochner-valued theorem statements (ordered case fully proved; general and continuous cases as : = by sorry) plus companion Aristotle file for routine helpers.",
+    "nextAction": "S3 ACT: close intervalIntegral_swap (general case, 4-case sign analysis with linarith->abel) + intervalIntegral_swap_of_continuous.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE 2026-05-11: Mathlib API audit complete. Every Mathlib lemma the parent invokes (integral_integral_swap, integral_of_le, integral_symm, integral_neg, restrict_mono, prod_mono, restrict_prod_eq_prod_restrict, ContinuousOn.integrableOn_compact) is already stated for Bochner-valued integrands. The only adjustment needed for the Bochner port is replacing four `linarith` invocations in the general-case sign analysis with `abel` (the underlying identity is additive-abelian-group, not order-theoretic). No Lean changes this iteration.",
+    "progressSummary": "ORIENT - S2 SCAFFOLD complete: Bochner port of intervalIntegral_swap_of_le fully proved, general + continuous cases stubbed (S3 target). 143 lines, 5 theorems incl. 2 private helpers, 2 sorries, 0 axioms. Gallery entry created.",
     "builtItems": [
       "research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-03/problem.md (problem statement, decomposition, references)",
       "research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-03/knowledge.md (Mathlib API audit table, linarith->abel rationale, S2 statement template)",
       "research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-03/state.md (S1 session log, S2/S3/S4 plan)",
-      "src/data/research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-03.json (this file: gallery candidate entry)"
+      "src/data/research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-03.json (this file: gallery candidate entry)",
+      "Created proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ03.lean (S2): Bochner port of intervalIntegral_swap_of_le (proven); general + continuous stubbed.",
+      "Created src/data/proofs/greens-theorem-oq-01-oq-01-oq-02-oq-03/ (S2): meta.json status axiomatized, sorries 2, axioms 0; annotations.json empty; index.ts."
     ],
     "insights": [
       "The Bochner generalization is 'free': every Mathlib lemma the parent invokes is already Bochner-valued. The codomain hypothesis [NormedAddCommGroup E] [NormedSpace R E] [CompleteSpace E] flows through unchanged.",
-      "The only ℝ-specific element of the parent's proof is four `linarith` invocations in the general-case 4-branch sign analysis. `linarith` does not act on a general additive group, but the underlying combinations (A = -B, B = C, C = -D ⊢ A = D) are pure additive-abelian-group identities — `abel` closes them directly.",
+      "The only \u211d-specific element of the parent's proof is four `linarith` invocations in the general-case 4-branch sign analysis. `linarith` does not act on a general additive group, but the underlying combinations (A = -B, B = C, C = -D \u22a2 A = D) are pure additive-abelian-group identities \u2014 `abel` closes them directly.",
       "The cleanest Mathlib-contribution path is to upstream the Bochner version directly; the real case becomes a one-line specialization. This is a stronger contribution than the real-only parent and consolidates the lemma's API surface.",
       "The hypothesis `Measurable (fun p => f p.1 p.2)` may be borderline for general Banach E without second-countability; `AEStronglyMeasurable` is the more idiomatic Bochner choice. Both formulations should close on standard examples."
     ],
     "mathlibGaps": [
-      "intervalIntegral.swap (Bochner-valued) does not exist in Mathlib — neither the real version (parent finding) nor the Bochner version. Headline contribution candidate for Mathlib.MeasureTheory.Integral.IntervalIntegral.",
+      "intervalIntegral.swap (Bochner-valued) does not exist in Mathlib \u2014 neither the real version (parent finding) nor the Bochner version. Headline contribution candidate for Mathlib.MeasureTheory.Integral.IntervalIntegral.",
       "intervalIntegral.swap_of_continuous (Bochner-valued) for hypothesis-light vector-valued continuous integrands; useful for vector-field calculus."
     ],
     "nextSteps": [
