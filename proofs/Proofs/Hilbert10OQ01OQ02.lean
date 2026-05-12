@@ -2279,6 +2279,89 @@ theorem pi2_unionFinset_isUniversalExistentialDefinition
     (pi2_unionList_isUniversalExistentialDefinition s.toList h_list)
 
 -- ============================================================
+-- Part VIII.27 (iter 23, Path B): the level-2 OPEN question
+--   `Σ₂(ℤ) ⟺ Π₂(ℚ \ ℤ)` — symmetric companion of iter 0's
+--   `Σ₁(ℤ) ⟺ Π₁(ℚ \ ℤ)` (`integers_diophantine_iff_complement_codiophantine`)
+-- ============================================================
+
+/-- **Iteration 23 — level-2 OPEN question, Prop form**:
+
+    The Σ₂-definability of ℤ ⊂ ℚ, exposed as a named `Prop`.
+
+    Currently OPEN (2026). This is the level-2 analog of the central
+    Σ₁-definability question (`IntegersAreDiophantineOverQ`,
+    equivalently `IntegersDiophantineOverQ` from `Hilbert10OQ01.lean`):
+    Koenigsmann places ℤ in Π₂, and Σ₂(ℚ \ ℤ) follows by the Σ₂/Π₂
+    duality (`koenigsmann_implies_complement_existentialUniversal`),
+    but Σ₂(ℤ) itself is not currently known.
+
+    Significance:
+    - A *positive* Σ₂(ℤ) answer would NOT directly imply H10/ℚ
+      undecidability the way Σ₁(ℤ) does (Σ₂ does not carry the MRDP
+      transfer); it *would*, however, place ℤ in `Δ₂ := Σ₂ ∩ Π₂`,
+      yielding a strict refinement of Koenigsmann's Π₂ result.
+    - A *negative* Σ₂(ℤ) answer would imply Π₂ \ Σ₂ is non-empty at
+      this level — a level-2 analog of the conjectured Π₁ \ Σ₁
+      separation at level 1 (the central problem).
+    - The status is sensitive to model-theoretic content beyond
+      MRDP: it asks whether the Koenigsmann construction can be
+      "reflected" through Σ₂ rather than (only) Π₂. -/
+def IntegersAreExistentialUniversalOverQ : Prop :=
+  IsExistentialUniversalDefinition IntSubset
+
+/-- **Iteration 23 — level-2 complement duality, specialized**:
+
+    `Σ₂(ℤ ⊂ ℚ) ⟺ Π₂(ℚ \ ℤ)`. Both sides are currently OPEN, but the
+    duality is provable as a one-line specialization of
+    `existentialUniversal_iff_universalExistential_complement` (the
+    general symmetric Σ₂/Π₂ duality, iter 5) at `S := IntSubset`.
+
+    This completes the symmetric pair of complement-dualities for the
+    two OPEN questions tracked in this file:
+
+    | Level | Theorem                                                         | Predicate     | Dual on `NotIntSubset` |
+    |-------|-----------------------------------------------------------------|---------------|------------------------|
+    | 1     | `integers_diophantine_iff_complement_codiophantine` (iter 0)    | `Σ₁(ℤ)`       | `Π₁(ℚ \ ℤ)`            |
+    | 2     | `integers_existentialUniversal_iff_complement_universalExistential` (this iter) | `Σ₂(ℤ)`       | `Π₂(ℚ \ ℤ)`            |
+
+    The level-1 row is the CENTRAL OPEN problem of this file
+    (`IntegersAreDiophantineOverQ`); the level-2 row is the
+    second-level analog (`IntegersAreExistentialUniversalOverQ`),
+    independently OPEN.
+
+    Asymmetry across the two rows: Π₂(ℤ) is PROVED (Koenigsmann), so
+    the level-2 dual Σ₂(ℚ \ ℤ) is also PROVED
+    (`koenigsmann_implies_complement_existentialUniversal`); by
+    contrast, neither direction at level 1 is currently known.
+
+    This is NOT a new axiom — pure logical glue specializing iter 5's
+    duality. NO new Mathlib API; uses only
+    `existentialUniversal_iff_universalExistential_complement` at the
+    instance `S := IntSubset`. -/
+theorem integers_existentialUniversal_iff_complement_universalExistential :
+    IntegersAreExistentialUniversalOverQ ↔
+      IsUniversalExistentialDefinition NotIntSubset :=
+  existentialUniversal_iff_universalExistential_complement IntSubset
+
+/-- **Iteration 23 — Π₂(ℤ) ⟹ Π₂(¬¬ ℤ) via class congruence**:
+
+    Π₂-definability of ℤ ⊂ ℚ is invariant under the classical
+    double-negation rewrite. Specialization of iter 7's
+    `universalExistentialDefinition_doubleNeg_iff` to `S := IntSubset`
+    combined with `koenigsmann_2016_universal`. NOT a new axiom and
+    NOT a new theorem statement (the doubleNeg form is recoverable
+    from iter 7 + Koenigsmann), but exposes the form that the level-2
+    dual `koenigsmann_implies_complement_existentialUniversal` uses
+    internally. Useful as a re-export when a downstream argument
+    needs the `¬¬ IntSubset` form directly. -/
+theorem koenigsmann_2016_universal_doubleNeg :
+    IsUniversalExistentialDefinition (fun q : Rat => ¬ ¬ IntSubset q) := by
+  have hbridge : ∀ q : Rat, IntSubset q ↔ ¬ ¬ IntSubset q :=
+    fun q => ⟨fun hZ hnZ => hnZ hZ, fun hnnZ => Classical.byContradiction hnnZ⟩
+  exact (universalExistentialDefinition_iff_of_pred_iff hbridge).mp
+    koenigsmann_2016_universal
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -2391,6 +2474,30 @@ open gap is Σ₁ vs Π₂ (equivalently, Π₁(complement) vs Σ₂(complement)
   2 — a level-2 analog of the OPEN Σ₁ vs Π₁ question, currently OPEN
   at level 2 as well (Koenigsmann places ℤ in Π₂ but Σ₂(ℤ) is not
   known).
+- **The level-2 Σ₂(ℤ) question is named and dualized** (iter 23,
+  Part VIII.27): `IntegersAreExistentialUniversalOverQ` exposes the
+  Σ₂-definability of ℤ ⊂ ℚ as a top-level `Prop` (mirroring the
+  level-1 `IntegersAreDiophantineOverQ`), and
+  `integers_existentialUniversal_iff_complement_universalExistential`
+  is the one-line specialization of iter 5's
+  `existentialUniversal_iff_universalExistential_complement` at
+  `S := IntSubset`. Both sides are OPEN, completing the symmetric
+  pair of complement-dualities for the OPEN content of this file:
+
+  | Level | Theorem on `IntSubset`                                                  | OPEN dual on `NotIntSubset`           |
+  |-------|-------------------------------------------------------------------------|---------------------------------------|
+  | 1     | `integers_diophantine_iff_complement_codiophantine`                     | `IsCoDiophantineDefinition NotIntSubset` |
+  | 2     | `integers_existentialUniversal_iff_complement_universalExistential`     | `IsUniversalExistentialDefinition NotIntSubset` |
+
+  Asymmetry across rows: at level 2, the *other* side
+  (`koenigsmann_implies_complement_existentialUniversal`) is
+  PROVED via Koenigsmann + iter 5 duality, so the level-2 OPEN
+  content collapses to the single Σ₂(ℤ) question; at level 1,
+  neither side is currently known. Iter 23 also exposes the
+  doubleNeg form of Koenigsmann (`koenigsmann_2016_universal_doubleNeg`)
+  via iter 7's Π₂ doubleNeg invariance — useful when a downstream
+  argument naturally produces `¬¬ IntSubset` (e.g. via
+  `Classical.byContradiction` on a Π₁ counter-witness).
 
 ## Axioms in THIS file (1 net new)
 
@@ -2465,6 +2572,9 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `pi2_unionList_isUniversalExistentialDefinition` (Π₂ closed under finite list union via iter 20 + list induction, iter 21)
   - `sigma2_intersectionFinset_isExistentialUniversalDefinition` (Σ₂ closed under Finset-indexed intersection via iter 21 + `Finset.mem_toList`, iter 22)
   - `pi2_unionFinset_isUniversalExistentialDefinition` (Π₂ closed under Finset-indexed union via iter 21 + `Finset.mem_toList`, iter 22)
+  - `IntegersAreExistentialUniversalOverQ` (Σ₂(ℤ) as named Prop — level-2 OPEN analog of `IntegersAreDiophantineOverQ`, iter 23)
+  - `integers_existentialUniversal_iff_complement_universalExistential` (Σ₂(ℤ) ⟺ Π₂(ℚ\ℤ), iter 23)
+  - `koenigsmann_2016_universal_doubleNeg` (Π₂(¬¬ ℤ) re-export of Koenigsmann via iter 7 doubleNeg invariance, iter 23)
 -/
 
 #check @IsDiophantineDefinition
@@ -2535,5 +2645,8 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @pi2_unionList_isUniversalExistentialDefinition
 #check @sigma2_intersectionFinset_isExistentialUniversalDefinition
 #check @pi2_unionFinset_isUniversalExistentialDefinition
+#check @IntegersAreExistentialUniversalOverQ
+#check @integers_existentialUniversal_iff_complement_universalExistential
+#check @koenigsmann_2016_universal_doubleNeg
 
 end Hilbert10Rationals
