@@ -125,6 +125,30 @@
       "endLine": 343,
       "summary": "Proves Minkowski's theorem from `blichfeldt_basic` via the half-scaling T = (1/2)\u00b7s. **0 sorries** (was 2). Measurability of T proved by rewriting as preimage of s under the doubling map; volume identity vol(T) = vol(s)/2\u207f proved via `Measure.addHaar_smul` + ENNReal arithmetic on `(2\u207b\u00b9)\u207f \u00b7 2\u207f = 1`. The structural reduction \u2014 central symmetry + convexity giving (a \u2212 b) \u2208 s \u2014 was already proved cleanly.",
       "mathContext": "Central symmetry gives \u2212y\u2080 \u2208 S; convexity then gives the midpoint (x\u2080 + (\u2212y\u2080))/2 = a \u2212 b \u2208 S. The lattice membership a \u2212 b \u2208 \u2124\u207f is the Blichfeldt output. Nonzero-ness comes from a \u2260 b."
+    },
+    {
+      "id": "concrete-points",
+      "title": "Concrete-Named Corollaries (k = 2, 3)",
+      "startLine": 387,
+      "endLine": 450,
+      "summary": "`blichfeldt_three_points` (k=2: vol(S) > 2 \u21d2 three \u2124\u207f-congruent points) and `blichfeldt_four_points` (k=3: vol(S) > 3 \u21d2 four points) \u2014 concrete-named specializations of the general theorem. Each rebrands the `Fin (k+1) \u2192 \u211d\u207f` output as a tuple `(x, y, z[, w])` with explicit injectivity and pairwise-difference clauses.",
+      "mathContext": "Specializations of `blichfeldt_general` at $k = 2, 3$: produce $3$ or $4$ distinct points whose pairwise differences all lie in $\\mathbb{Z}^n$. Concrete-named to ease downstream use."
+    },
+    {
+      "id": "pairwise-finset",
+      "title": "Pairwise-Nonzero and Finset Forms of Blichfeldt",
+      "startLine": 451,
+      "endLine": 535,
+      "summary": "`blichfeldt_general_pairwise`: strengthens the conclusion by guaranteeing pairwise differences are *nonzero* lattice elements (matches the classical statement). `blichfeldt_general_finset`: rephrases the output as a `Finset` of cardinality k+1 with all elements in S and all pairwise differences in \u2124\u207f \u2014 the form most convenient for combinatorial applications.",
+      "mathContext": "The injective $\\mathrm{Fin}(k+1)\\to S$ output is reshaped two ways: (i) emit a `Finset` of size $k+1$ via `Finset.image` + `Finset.card_image_of_injective`; (ii) extract nonzero pairwise differences via $i \\ne j \\Rightarrow \\mathrm{pts}\\ i \\ne \\mathrm{pts}\\ j \\Rightarrow \\mathrm{pts}\\ i - \\mathrm{pts}\\ j \\ne 0$."
+    },
+    {
+      "id": "minkowski-general",
+      "title": "Generalized Minkowski (k+1-Point Forms)",
+      "startLine": 536,
+      "endLine": 920,
+      "summary": "Five Minkowski generalizations derived from Blichfeldt-general. `minkowski_general_k`: vol(S) > k\u00b72\u207f \u21d2 k+1 lattice points in S (with convexity + symmetry). `minkowski_general_k_pairwise`: same with explicitly-nonzero pairwise differences. `minkowski_general_k_finset`: Finset-output form. `minkowski_four_points`: concrete k=3 specialization. The closing `#check` lines verify all four theorem types.",
+      "mathContext": "The half-scaling lifts from Blichfeldt: $\\mathrm{vol}(S) > k \\cdot 2^n \\Rightarrow \\mathrm{vol}(T) > k$ for $T = \\tfrac{1}{2}S$. Apply `blichfeldt_general` to get $k+1$ pairwise $\\mathbb{Z}^n$-congruent points in $T$; convexity + central symmetry of $S$ converts each pairwise difference into a lattice point of $S$."
     }
   ],
   "conclusion": {
@@ -228,8 +252,45 @@
     {
       "name": "blichfeldt_basic",
       "type": "core",
-      "description": "Blichfeldt's theorem (k=1): vol(S) > 1 implies S contains two \u2124\u207f-congruent points",
+      "statement": "$\\mathrm{vol}(S) > 1 \\Rightarrow \\exists\\, x \\ne y \\in S,\\; x - y \\in \\mathbb{Z}^n$",
+      "significance": "Blichfeldt's 1914 theorem, k=1 case: no convexity or symmetry, only Lebesgue measurability. The current proof is axiom-free, reducing directly to Mathlib's `MeasureTheory.IsAddFundamentalDomain.exists_ne_zero_vadd_eq` on the standard fundamental domain F = [0,1)\u207f with covolume 1. The `g +\u1d65 x = y` AddSubgroup action is bridged to the additive equation `(g : \u211d\u207f) + x = y` via `AddSubgroup.vadd_def` + `vadd_eq_add`.",
+      "description": "Blichfeldt's theorem (k=1): vol(S) > 1 implies S contains two \u2124\u207f-congruent points.",
       "leanType": "{n : \u2115} [NeZero n] (s : Set (Fin n \u2192 \u211d)) (h_meas : MeasurableSet s) (h_vol : (1 : ENNReal) < volume s) \u2192 \u2203 x y, x \u2208 s \u2227 y \u2208 s \u2227 x \u2260 y \u2227 x \u2212 y \u2208 stdLattice n"
+    },
+    {
+      "name": "volume_eq_setLIntegral_indicator_tsum",
+      "type": "supporting",
+      "statement": "$\\int^-_{F}\\!\\Bigl(\\sum'_{g \\in \\mathbb{Z}^n} \\mathbf{1}_S\\bigl((g : \\mathbb{R}^n) + x\\bigr)\\Bigr)\\,dx = \\mathrm{vol}(S)$",
+      "significance": "Covering-count integral identity, the analytic engine of the general-k proof. Combines `IsAddFundamentalDomain.lintegral_eq_tsum''` (the additive form obtained via `to_additive` from the multiplicative `lintegral_eq_tsum`) with Tonelli's theorem (`lintegral_tsum`) to swap the integral and the unconditional sum. S9 milestone (PR #16995).",
+      "description": "Covering-count integral: \u222b_F \u03a3' v, 1_S((v:\u211d\u207f)+x) dx = vol(S). The analytic core of Path A."
+    },
+    {
+      "name": "blichfeldt_general",
+      "type": "core",
+      "statement": "$\\mathrm{vol}(S) > k \\Rightarrow \\exists\\, \\mathrm{pts} : \\mathrm{Fin}(k{+}1) \\hookrightarrow S,\\;\\; \\forall i, j,\\; \\mathrm{pts}\\,i - \\mathrm{pts}\\,j \\in \\mathbb{Z}^n$",
+      "significance": "Path A contrapose proof (S13/S14, PRs #17298 + #17329). Move A reuses `volume_eq_setLIntegral_indicator_tsum` (S9 analytic core). Move B contraposes \u00ac\u2203 Fin(k+1)-injection \u21d2 pointwise c(z) \u2264 k via `tsum_subtype` + `ENNReal.tsum_set_one`. Move C integrates the pointwise bound via `setLIntegral_mono_ae` + `setLIntegral_const` + `stdLattice_covolume = 1` to derive `volume s \u2264 k`, contradicting `k < volume s`.",
+      "description": "Blichfeldt's general k+1-point theorem (Path A contrapose proof)."
+    },
+    {
+      "name": "minkowski_from_blichfeldt",
+      "type": "core",
+      "statement": "$S$ measurable + centrally symmetric + convex + $\\mathrm{vol}(S) > 2^n \\Rightarrow \\exists\\, p \\in S \\cap \\mathbb{Z}^n,\\; p \\ne 0$",
+      "significance": "Recovers Minkowski's classical lattice point theorem via the half-scaling T = (1/2)\u00b7s. Two former sorries closed: measurability of T via preimage rewriting + `measurable_const_smul`; volume identity vol(T) = vol(s)/2\u207f via `Measure.addHaar_smul` and ENNReal arithmetic on $(2^{-1})^n \\cdot 2^n = 1$. Central symmetry gives $-y_0 \\in S$ and convexity gives the midpoint $(x_0 + (-y_0))/2 = a - b \\in S$.",
+      "description": "Minkowski recovered as a corollary via half-scaling T = (1/2)\u00b7s."
+    },
+    {
+      "name": "blichfeldt_general_pairwise",
+      "type": "supporting",
+      "statement": "$\\mathrm{vol}(S) > k \\Rightarrow \\exists\\, k{+}1$ distinct points in $S$ with *nonzero* pairwise differences in $\\mathbb{Z}^n$",
+      "significance": "Strengthens `blichfeldt_general` by tracking nonzero-ness: $i \\ne j \\Rightarrow \\mathrm{pts}\\,i \\ne \\mathrm{pts}\\,j \\Rightarrow \\mathrm{pts}\\,i - \\mathrm{pts}\\,j \\ne 0$. Matches the classical statement and is the form most useful for downstream Diophantine-approximation arguments.",
+      "description": "Blichfeldt's general theorem with explicit nonzero pairwise differences."
+    },
+    {
+      "name": "minkowski_general_k",
+      "type": "supporting",
+      "statement": "$S$ convex, centrally symmetric, $\\mathrm{vol}(S) > k \\cdot 2^n \\Rightarrow \\exists\\, k$ nonzero lattice points $p_1, \\ldots, p_k \\in S$",
+      "significance": "Minkowski's k-fold lattice point theorem: derived from `blichfeldt_general` via half-scaling + central symmetry + convexity. The threshold $k \\cdot 2^n$ replaces Minkowski's classical $2^n$; sharp for the family of $k$ disjoint translates of $[-1,1]^n$.",
+      "description": "Generalized Minkowski (k+1-point form) from Blichfeldt-general."
     }
   ],
   "sorries": 0
