@@ -165,11 +165,19 @@
     },
     {
       "id": "both-classes-infinite",
-      "title": "both_classes_infinite and odd_prime_mod_four_classification",
+      "title": "both_classes_infinite: Set-Level Conjunction",
       "startLine": 68,
+      "endLine": 76,
+      "summary": "Combines InfinitudePrimes4k1.primes_1_mod_4_infinite and InfinitudePrimes4k3.primes_3_mod_4_infinite via the anonymous constructor ⟨_, _⟩ to produce a single proof that both residue classes are Set.Infinite. The proof term is one line — no tactics — making it maximally transparent at the cost of zero new mathematical work; the substantive content lives in the two imported lemmas.",
+      "mathContext": "$\\mathrm{Set.Infinite}\\,\\{p : \\mathbb{N} \\mid \\mathrm{Nat.Prime}\\,p \\wedge p \\bmod 4 = 1\\}\\;\\wedge\\;\\mathrm{Set.Infinite}\\,\\{p : \\mathbb{N} \\mid \\mathrm{Nat.Prime}\\,p \\wedge p \\bmod 4 = 3\\}$. Proof term: $\\langle\\, \\mathrm{InfinitudePrimes4k1.primes\\_1\\_mod\\_4\\_infinite},\\, \\mathrm{InfinitudePrimes4k3.primes\\_3\\_mod\\_4\\_infinite} \\,\\rangle$."
+    },
+    {
+      "id": "odd-prime-mod-four-classification",
+      "title": "odd_prime_mod_four_classification: Basic Modular Fact",
+      "startLine": 78,
       "endLine": 82,
-      "summary": "Two results: (1) both Set.Infinite {p | p ≡ 1 mod 4} and Set.Infinite {p | p ≡ 3 mod 4} — proved by combining InfinitudePrimes4k1 and InfinitudePrimes4k3; (2) every odd prime is ≡ 1 or ≡ 3 mod 4 — a basic modular arithmetic fact.",
-      "mathContext": "$\\{p \\text{ prime} \\mid p \\equiv 1 \\pmod 4\\}$ and $\\{p \\text{ prime} \\mid p \\equiv 3 \\pmod 4\\}$ are both Set.Infinite. Every odd prime $p$ has $p \\% 4 \\in \\{1, 3\\}$ since $p$ odd $\\Rightarrow$ $p \\% 2 = 1$ $\\Rightarrow$ $p \\% 4 \\neq 0, 2$."
+      "summary": "States that every odd prime p satisfies p % 4 = 1 ∨ p % 4 = 3. Re-exported from InfinitudePrimes4k3.prime_mod_four. Proof is purely modular arithmetic: p odd ⇒ p % 2 = 1 ⇒ p % 4 ∈ {1, 3} (since values 0 and 2 are even). Together with both_classes_infinite, this is the disjunctive complement: the two classes are *the* classes for odd primes — not just two nonempty infinite subsets among many.",
+      "mathContext": "$\\forall p, \\mathrm{Nat.Prime}\\,p \\wedge p \\neq 2 \\Rightarrow p \\bmod 4 = 1 \\vee p \\bmod 4 = 3$. Reasoning: $p$ odd $\\Rightarrow p \\bmod 2 = 1 \\Rightarrow p \\bmod 4 \\in \\{1, 3\\}$ (since $p \\bmod 4 \\in \\{0, 2\\}$ forces $2 \\mid p$). The classification is *exhaustive* over odd primes, not just a pair of infinite subclasses — this is what makes the partition together with 2 a complete classification of all primes."
     },
     {
       "id": "constructions-cover",
