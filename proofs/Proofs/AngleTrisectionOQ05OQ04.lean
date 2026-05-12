@@ -445,4 +445,129 @@ theorem hh2_existence : ∀ (p₁ p₂ : Point), p₁ ≠ p₂ →
   intro p₁ p₂ h
   exact ⟨perpBisector p₁ p₂ h, reflectAcross_perpBisector p₁ p₂ h⟩
 
+
+-- ============================================================
+-- PART 7: Constructive HH-4 — Perpendicular Through a Point (S5)
+-- ============================================================
+
+/-
+### S5 partial discharge: HH-4 standalone construction
+
+After S3 (HH-1: `lineThrough` / `hh1_existence`) and S4 (HH-2:
+`perpBisector` / `hh2_existence`), this S5 section discharges HH-4:
+given any point `P` and line `ℓ`, the perpendicular fold through `P`
+preserves `ℓ` as a set under reflection.
+
+Concretely we exhibit `perpThroughPoint p ℓ : Line` and prove:
+
+1. `perpThroughPoint_normSq_pos` — denominator non-vanishing (chord
+   length of the fold's direction vector is positive);
+2. `perpThroughPoint_contains` — the fold passes through `P`;
+3. `reflectAcross_perpThroughPoint_preserves` — reflection across the
+   fold maps every point of `ℓ` to a point of `ℓ`.
+
+These combine into a standalone `hh4_existence` theorem matching the
+`hh4` field of `AngleTrisectionOQ05.HHAxioms` in isolation.
+
+### Geometric content of HH-4
+
+For a line `ℓ : a x + b y + c = 0` (normal vector `(a, b)`) and a point
+`P`, the perpendicular fold through `P` has its OWN normal parallel to
+the DIRECTION of `ℓ`. Take the fold's normal to be `(-ℓ.b, ℓ.a)` (a 90°
+rotation of `(ℓ.a, ℓ.b)`) and choose the constant term to force the
+fold to pass through `P`:
+
+  a' = -ℓ.b
+  b' =  ℓ.a
+  c' =  ℓ.b · P.1 - ℓ.a · P.2
+
+Under reflection across this fold, every point `q ∈ ℓ` satisfies
+
+  ℓ.a · q'.1 + ℓ.b · q'.2 + ℓ.c
+    = ℓ.a · (q.1 - t · (-ℓ.b)) + ℓ.b · (q.2 - t · ℓ.a) + ℓ.c
+    = (ℓ.a · q.1 + ℓ.b · q.2 + ℓ.c) + t · (ℓ.a · ℓ.b - ℓ.b · ℓ.a)
+    = 0 + t · 0 = 0,
+
+so `q' ∈ ℓ` as required.
+
+After this section the geometric content of HH-4 is constructive:
+the perpendicular fold is computable from `(P, ℓ)` and provably
+preserves `ℓ` setwise. No new `sorry` is introduced; the file's
+sorry count is unchanged at 3.
+
+Combined with S3 (HH-1) and S4 (HH-2), three of the seven HH
+ingredients are now constructive. The remaining four are HH-3 (angle
+bisector), HH-5 (fold through `P₂` placing `P₁` on `ℓ`), HH-6 (Beloch
+fold — the cubic one), and HH-7 (Hatori).
+-/
+
+/-- The squared norm `ℓ.a² + ℓ.b²` is strictly positive. This is the
+denominator that appears in `reflectAcross` and must be non-vanishing
+for the reflection to be well-defined. -/
+theorem perpThroughPoint_normSq_pos (ℓ : Line) :
+    0 < ℓ.a^2 + ℓ.b^2 := by
+  rcases ℓ.nondeg with ha | hb
+  · nlinarith [sq_pos_of_ne_zero _ ha, sq_nonneg ℓ.b]
+  · nlinarith [sq_pos_of_ne_zero _ hb, sq_nonneg ℓ.a]
+
+/-- The **perpendicular fold through `P` orthogonal to `ℓ`**. The
+fold's normal vector `(-ℓ.b, ℓ.a)` is a 90° rotation of `ℓ`'s normal
+`(ℓ.a, ℓ.b)`, so the fold is perpendicular to `ℓ`. The constant term
+`ℓ.b · P.1 - ℓ.a · P.2` makes the fold pass through `P`.
+
+Non-degeneracy follows from `ℓ`'s non-degeneracy: at least one of
+`ℓ.a`, `ℓ.b` is nonzero, hence at least one of the fold's coefficients
+`(-ℓ.b, ℓ.a)` is nonzero. -/
+noncomputable def perpThroughPoint (p : Point) (ℓ : Line) : Line where
+  a := -ℓ.b
+  b := ℓ.a
+  c := ℓ.b * p.1 - ℓ.a * p.2
+  nondeg := by
+    rcases ℓ.nondeg with ha | hb
+    · exact Or.inr ha
+    · exact Or.inl (neg_ne_zero.mpr hb)
+
+/-- The perpendicular fold passes through its anchor point. Routine
+algebra: the fold's defining equation evaluated at `p` yields
+`-ℓ.b · p.1 + ℓ.a · p.2 + (ℓ.b · p.1 - ℓ.a · p.2) = 0`. -/
+theorem perpThroughPoint_contains (p : Point) (ℓ : Line) :
+    (perpThroughPoint p ℓ).contains p := by
+  simp only [Line.contains, perpThroughPoint]
+  ring
+
+/-- **HH-4 line-preservation law.** Reflection across the
+perpendicular fold through `p` (orthogonal to `ℓ`) maps every point of
+`ℓ` to a point of `ℓ`. Geometrically, the fold is parallel to `ℓ`'s
+normal, so it acts on `ℓ` by reversing direction while preserving the
+locus.
+
+Algebraically: writing the fold as `(-ℓ.b, ℓ.a, ℓ.b · p.1 - ℓ.a · p.2)`
+and applying `reflectAcross`, the cross-term `ℓ.a · ℓ.b - ℓ.b · ℓ.a`
+vanishes, so the image satisfies `ℓ`'s equation iff `q` did. -/
+theorem reflectAcross_perpThroughPoint_preserves
+    (p : Point) (ℓ : Line) (q : Point) (hq : ℓ.contains q) :
+    ℓ.contains (reflectAcross (perpThroughPoint p ℓ) q) := by
+  have hPos : 0 < ℓ.a^2 + ℓ.b^2 := perpThroughPoint_normSq_pos ℓ
+  have hD : (-ℓ.b)^2 + ℓ.a^2 ≠ 0 := by
+    have hEq : (-ℓ.b)^2 + ℓ.a^2 = ℓ.a^2 + ℓ.b^2 := by ring
+    rw [hEq]; exact ne_of_gt hPos
+  simp only [Line.contains, reflectAcross, perpThroughPoint] at hq ⊢
+  field_simp
+  linear_combination ((-ℓ.b)^2 + ℓ.a^2) * hq
+
+/-- **HH-4 (existence form, standalone).** Given any point `P` and any
+line `ℓ`, there exists a fold line that passes through `P` and
+preserves `ℓ` as a set under reflection. This is the geometric content
+of the HH-4 field of `HHAxioms`; the explicit witness is the
+perpendicular fold through `P`. Together with `hh1_existence` (S3) and
+`hh2_existence` (S4) this provides three of the seven HH ingredients
+required by `straight_fold_recovers_HH`. -/
+theorem hh4_existence : ∀ (p : Point) (ℓ : Line),
+    ∃ l : Line, l.contains p ∧
+      ∀ q : Point, ℓ.contains q → ℓ.contains (reflectAcross l q) := by
+  intro p ℓ
+  refine ⟨perpThroughPoint p ℓ, perpThroughPoint_contains p ℓ, ?_⟩
+  intro q hq
+  exact reflectAcross_perpThroughPoint_preserves p ℓ q hq
+
 end AngleTrisectionOQ05OQ04
