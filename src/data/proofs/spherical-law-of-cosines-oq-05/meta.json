@@ -108,12 +108,46 @@
   },
   "conclusion": {
     "summary": "S1 scaffolds OQ-05 with the haversine function, the half-angle bridge, range/sign lemmas, and the algebraic form of the haversine identity (proved unconditionally). The `SphericalTriangle` version is the open `sorry`, deferred to S2.",
+    "implications": "The haversine form is the only stable way to compute small great-circle distances in floating-point: at 1 km on Earth's surface ($R \\approx 6371$ km), the standard SLC argument $\\cos a \\cos b + \\sin a \\sin b \\cos C$ differs from 1 by $\\sim 10^{-8}$ — below the resolution of `Real.arccos` near 1 — while $\\text{hav}(c) = \\sin^2(c/2)$ stays well-conditioned because $\\sin^2$ vanishes quadratically rather than $\\cos$ saturating. Formalising the algebraic equivalence (this file's `haversine_formula_algebraic` + `cos_form_of_haversine_formula`) means any Mathlib-formalised algorithm built on the cosine form can be refactored into the haversine form without re-proving correctness. Once S2 discharges the projection-form conversion, the formalisation closes the loop with Mathlib's `Real.arccos`-based metric API for spheres and enables verified great-circle distance routines for navigation/GPS code. Methodologically, the file demonstrates a useful S1 pattern: prove the **algebraic identity** (no geometry) unconditionally, then defer the projection-to-trig conversion to a separate session — this isolates the analytic content from the geometric content and lets reviewers audit the algebra without paging in the parent's `projectPerp` infrastructure.",
     "openQuestions": [
       "S2: discharge `haversine_formula` by case-splitting on `angleC`'s degenerate branch and applying `norm_projectPerp_eq_sin` on the non-degenerate side.",
-      "S3: navigation/GPS applications — Mercator and ECEF conversion lemmas, great-circle distance computation in haversine form, with explicit numerical-stability bounds.",
-      "Connect to the spherical law of sines (companion gallery entry `spherical-law-of-sines`) for a unified spherical trigonometry library."
+      "S3: navigation/GPS applications — Mercator and ECEF conversion lemmas, great-circle distance computation in haversine form, with explicit numerical-stability bounds (e.g. relative error $\\le \\varepsilon_{\\text{machine}}$ uniformly on the sphere).",
+      "Connect to the spherical law of sines (companion gallery entry `spherical-law-of-sines`) for a unified spherical trigonometry library.",
+      "Can the half-angle pattern be packaged as a general Mathlib lemma `numerically_stable_form_of_cos_identity` that, given any identity $\\cos f = g$, produces $\\text{hav}\\,f = (1-g)/2$ automatically?"
     ]
   },
+  "references": [
+    {
+      "type": "research-paper",
+      "citation": "Inman, J. (1835). \"Navigation and Nautical Astronomy, for the Use of British Seamen\" (3rd ed.). London: W. Woodward, C. & J. Rivington. Reprinted with the haversine tables that gave the formula its name.",
+      "relevance": "The historical origin of the haversine tables and the popularisation of the half-angle form for navigation. Inman's tables made the haversine formulation computationally practical with paper logarithms, an early example of choosing a mathematically equivalent form for numerical reasons — the same motivation that drives modern floating-point implementations."
+    },
+    {
+      "type": "textbook",
+      "citation": "Todhunter, I. (1886). \"Spherical Trigonometry, for the Use of Colleges and Schools,\" 5th ed. London: Macmillan. §§37–42 (spherical law of cosines and half-angle forms).",
+      "relevance": "Classical reference cited explicitly in the meta `author` field. Todhunter derives the spherical law of cosines and its half-angle/Napier's-analogy variants from first principles, providing the textbook chain that this file formalises (modulo the open projection-form conversion in S2)."
+    },
+    {
+      "type": "textbook",
+      "citation": "Sigl, R. (1977). \"Geodätische Astronomie und Astronomische Geodäsie\" (German). Berlin: Walter de Gruyter.",
+      "relevance": "Modern geodesy reference cited in the meta `author` field; treats the haversine form as the canonical stable variant for terrestrial-scale great-circle calculations and connects it to the WGS-84 ellipsoidal corrections used in real GPS."
+    },
+    {
+      "type": "library",
+      "citation": "The Mathlib Community. \"Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic\" — `Real.cos_two_mul`, `Real.sin_sq_add_cos_sq`, `Real.cos_sub`, `Real.cos_neg`, `Real.neg_one_le_cos`. (accessed 2026)",
+      "relevance": "Provides every analytic lemma the file consumes: the double-angle and Pythagorean identities used in `haversine_eq_one_sub_cos_div_two`, the planar subtraction formula `Real.cos_sub` driving `haversine_formula_algebraic`, and the range bounds for `haversine_le_one`."
+    },
+    {
+      "type": "library",
+      "citation": "Proofs.SphericalLawOfCosines — parent gallery entry providing `SphericalTriangle`, `sideA/B/C`, `angleC`, `arcLength`, `projectPerp`, and `spherical_law_of_cosines_trig`. (this repository, accessed 2026)",
+      "relevance": "The parent file whose OQ-05 this entry answers. The `SphericalTriangle` API and the projection-inner-product form of SLC are the entry points; S2 will consume `norm_projectPerp_eq_sin` from this file to close `haversine_formula`."
+    },
+    {
+      "type": "reference",
+      "citation": "Wikipedia. \"Haversine formula\" — derivation, numerical stability discussion, and historical notes on Inman (1835) and Sinnott's 1984 Sky & Telescope article. (accessed 2026)",
+      "relevance": "Convenient overview cited in the meta `sourceUrl` field. Useful for the connection between the algebraic identity (proved here) and the floating-point numerical analysis that motivates choosing this form over the standard SLC for navigation."
+    }
+  ],
   "crossReferences": [
     {
       "type": "uses",
