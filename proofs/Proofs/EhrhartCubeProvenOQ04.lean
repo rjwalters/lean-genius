@@ -2,18 +2,19 @@
   Eulerian Numbers and the h*-Vector of the Unit Cube
   (ehrhart-cube-proven-oq-04)
 
-  S1 SCAFFOLD + S2 STRUCTURAL + S3 ROW-SUM + S4 WORPITZKY. The companion
-  file `EhrhartCubeProven.lean` proves `L([0,1]^d, n) = (n+1)^d` axiom-free.
-  The Ehrhart h*-vector of the unit d-cube is conjecturally (and classically)
-  equal to the sequence of Eulerian numbers (A(d, 0), A(d, 1), …, A(d, d-1)).
+  S1 SCAFFOLD + S2 STRUCTURAL + S3 ROW-SUM + S4 WORPITZKY + S5 PALINDROME.
+  The companion file `EhrhartCubeProven.lean` proves `L([0,1]^d, n) = (n+1)^d`
+  axiom-free. The Ehrhart h*-vector of the unit d-cube is now machine-checked
+  to equal the sequence of Eulerian numbers (A(d, 0), A(d, 1), …, A(d, d-1)).
 
   S2 closed the two *structural* sorries (`cube_h_star_eulerian` and
   `cube_lattice_count_eulerian`). S3 added helper lemmas
   (`eulerian_zero_eq_one`, `eulerian_eq_zero_of_le`) and closed
-  `eulerian_row_sum_factorial` (Σ A(d, k) = d!). S4 adds the algebraic step
-  identity `worpitzky_step` and closes `worpitzky_identity_cube` by induction
-  on `d`. The single remaining combinatorial sorry (`eulerian_palindrome`)
-  requires the descent-bijection machinery and is deferred to S5+.
+  `eulerian_row_sum_factorial` (Σ A(d, k) = d!). S4 added `worpitzky_step` and
+  closed `worpitzky_identity_cube` by induction on `d`. S5 closes the last
+  remaining sorry `eulerian_palindrome` (A(d,k) = A(d,d-1-k) for k<d) by
+  algebraic induction on `d` — the combinatorial descent-reversal involution
+  is not required.
 
   Concretely, Worpitzky's identity states:
 
@@ -46,7 +47,7 @@
   • `worpitzky_identity_cube`               — Σ A(d,k) C(n+1+k, d) = (n+1)^d   (S4: PROVED)
   • `cube_h_star_eulerian`                  — h_k*([0,1]^d) = A(d, k)          (S2: PROVED)
   • `eulerian_row_sum_factorial`            — Σ_{k=0}^{d-1} A(d, k) = d!       (S3: PROVED)
-  • `eulerian_palindrome`                   — A(d, k) = A(d, d-1-k) for k < d  (deferred)
+  • `eulerian_palindrome`                   — A(d, k) = A(d, d-1-k) for k < d  (S5: PROVED)
   • `cube_lattice_count_eulerian`           — bridge to `EhrhartCubeProven`    (S2: PROVED)
 
   Helper lemmas (S3):
@@ -55,6 +56,9 @@
 
   Helper lemmas (S4):
   • `worpitzky_step`                         — (k+1)·C(n+1+k,d+1) + (d-k)·C(n+2+k,d+1) = (n+1)·C(n+1+k,d)
+
+  Helper lemmas (S5):
+  • `eulerianNumber_recurrence`              — A(d+1, k+1) = (k+2)·A(d, k+1) + (d-k)·A(d, k)  (definitional rfl)
 
   Concrete (proven, no sorry):
   • `eulerian_1_0`, `eulerian_2_*`, `eulerian_3_*`, `eulerian_4_*` — values by rfl
@@ -260,16 +264,105 @@ example : eulerianNumber 4 0 + eulerianNumber 4 1 + eulerianNumber 4 2 + euleria
 -- ============================================================
 
 /--
-  **Palindromic symmetry** of Eulerian numbers (deferred):
-      A(d, k) = A(d, d - 1 - k)         for 0 ≤ k < d, d ≥ 1.
-  Proof strategy: the map σ ↦ σ ∘ reverse on `Equiv.Perm (Fin d)`
-  is an involution that bijects descents with non-descents, hence
-  permutations with `k` descents biject with permutations with
-  `(d-1) - k` descents.
+  **Recurrence-unfolding lemma** (S5 helper): direct unfolding of the
+  Eulerian recurrence as a rewrite. By definition,
+      A(d+1, k+1) = (k+2) A(d, k+1) + (d-k) A(d, k).
+  Provided as a named lemma so that `rw` can fire it cleanly without
+  requiring an explicit `show` at every use site.
 -/
-theorem eulerian_palindrome (d k : ℕ) (hd : 0 < d) (hk : k < d) :
+lemma eulerianNumber_recurrence (d k : ℕ) :
+    eulerianNumber (d + 1) (k + 1)
+      = (k + 2) * eulerianNumber d (k + 1) + (d - k) * eulerianNumber d k := rfl
+
+/--
+  **Palindromic symmetry** of Eulerian numbers (S5, PROVED):
+      A(d, k) = A(d, d - 1 - k)         for 0 ≤ k < d, d ≥ 1.
+
+  Proved by induction on `d` using only the recurrence and the two S3
+  helpers (`eulerian_zero_eq_one`, `eulerian_eq_zero_of_le`). The
+  combinatorial descent-reversal involution is not needed.
+
+  Inductive step: assume the palindrome at row `d` (hypothesis `ih`). To
+  prove it at row `d+1` we case-split on `k`:
+
+  - `k = 0` (and dually `k = d`): the boundary value `A(d+1, 0) = 1` by
+    `eulerian_zero_eq_one`. For the other side, write `d = d' + 1`
+    (using `hd_pos : 0 < d`), unfold the recurrence at `A(d'+2, d'+1)`,
+    use `eulerian_eq_zero_of_le` to discard `A(d'+1, d'+1) = 0`, then
+    apply `ih` at `j = d'` to convert `A(d'+1, d') = A(d'+1, 0) = 1`.
+
+  - `1 ≤ k < d`: write `k = k' + 1`. The right-hand index is then
+    `d - k' - 1 = (d - k' - 2) + 1`. Unfold the recurrence on both
+    sides, then apply `ih` at `j = k' + 1` (giving `A(d, k'+1) =
+    A(d, d - k' - 2)`) and at `j = k'` (giving `A(d, k') = A(d, d - k' - 1)`).
+    The two recurrence expansions are equal term by term modulo `ring`.
+-/
+theorem eulerian_palindrome : ∀ d k : ℕ, 0 < d → k < d →
     eulerianNumber d k = eulerianNumber d (d - 1 - k) := by
-  sorry
+  intro d
+  induction d with
+  | zero => intros _ hd _; exact absurd hd (lt_irrefl 0)
+  | succ d ih =>
+    intros k _ hk
+    -- Goal: A(d+1, k) = A(d+1, (d+1) - 1 - k)
+    have hidx : (d + 1 : ℕ) - 1 - k = d - k := by omega
+    rw [hidx]
+    rcases Nat.eq_zero_or_pos d with rfl | hd_pos
+    · -- d = 0: hk : k < 1, so k = 0
+      interval_cases k
+      rfl
+    · -- d ≥ 1
+      have ih' : ∀ j, j < d → eulerianNumber d j = eulerianNumber d (d - 1 - j) :=
+        fun j hj => ih j hd_pos hj
+      -- The boundary value A(d+1, d) = 1, via the recurrence and ih' at j = d-1.
+      have hboundary : eulerianNumber (d + 1) d = 1 := by
+        obtain ⟨d', rfl⟩ : ∃ d', d = d' + 1 := ⟨d - 1, (Nat.sub_add_cancel hd_pos).symm⟩
+        -- Goal: eulerianNumber ((d'+1) + 1) (d' + 1) = 1
+        -- Unfold the recurrence by definitional equality (pattern match on (D+1, K+1))
+        show (d' + 2) * eulerianNumber (d' + 1) (d' + 1)
+             + ((d' + 1) - d') * eulerianNumber (d' + 1) d' = 1
+        rw [eulerian_eq_zero_of_le (d' + 1) (d' + 1) (by omega) (le_refl _),
+            show (d' + 1 : ℕ) - d' = 1 from by omega]
+        -- (d'+2) * 0 + 1 * A(d'+1, d') = 1
+        -- Apply ih' at j = d': A(d'+1, d') = A(d'+1, 0)
+        have hpd' : eulerianNumber (d' + 1) d' = 1 := by
+          rw [ih' d' (Nat.lt_succ_self d')]
+          rw [show (d' + 1 : ℕ) - 1 - d' = 0 from by omega]
+          exact eulerian_zero_eq_one (d' + 1)
+        rw [hpd']
+        ring
+      -- Now case-split on k
+      rcases Nat.lt_or_ge k 1 with hk0 | hk1
+      · -- k = 0: A(d+1, 0) = A(d+1, d - 0) = A(d+1, d)
+        interval_cases k
+        rw [show (d : ℕ) - 0 = d from by omega, hboundary,
+            eulerian_zero_eq_one (d + 1)]
+      · rcases Nat.lt_or_ge k d with hk_lt_d | hk_ge_d
+        · -- 1 ≤ k < d: interior case
+          obtain ⟨k', rfl⟩ : ∃ k', k = k' + 1 := ⟨k - 1, by omega⟩
+          -- Now k = k' + 1, and k' + 1 < d
+          have hk'_lt : k' + 1 < d := hk_lt_d
+          -- Goal: A(d+1, k'+1) = A(d+1, d - (k'+1)) = A(d+1, d - k' - 1)
+          rw [show (d : ℕ) - (k' + 1) = (d - k' - 2) + 1 from by omega]
+          rw [eulerianNumber_recurrence d k', eulerianNumber_recurrence d (d - k' - 2)]
+          rw [show (d - k' - 2 + 2 : ℕ) = d - k' from by omega,
+              show (d - k' - 2 + 1 : ℕ) = d - k' - 1 from by omega,
+              show (d - (d - k' - 2) : ℕ) = k' + 2 from by omega]
+          -- LHS: (k'+2) * A(d, k'+1) + (d - k') * A(d, k')
+          -- RHS: (d - k') * A(d, d - k' - 1) + (k' + 2) * A(d, d - k' - 2)
+          have hp1 : eulerianNumber d (k' + 1) = eulerianNumber d (d - k' - 2) := by
+            rw [ih' (k' + 1) hk'_lt]
+            congr 1; omega
+          have hp2 : eulerianNumber d k' = eulerianNumber d (d - k' - 1) := by
+            rw [ih' k' (by omega)]
+            congr 1; omega
+          rw [hp1, hp2]
+          ring
+        · -- k = d: A(d+1, d) = A(d+1, d - d) = A(d+1, 0)
+          have hkd : k = d := by omega
+          subst hkd
+          -- After subst, the goal is A(d+1, d) = A(d+1, d - d)
+          rw [Nat.sub_self d, hboundary, eulerian_zero_eq_one (d + 1)]
 
 -- Concrete checks
 example : eulerianNumber 3 0 = eulerianNumber 3 2 := rfl
