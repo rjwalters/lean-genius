@@ -27,11 +27,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12",
-    "iteration": 4,
-    "focus": "S4 (researcher-4, 2026-05-12) — minor extension: added `konig_constraint_beth (α : Ordinal)` (6 → 7 theorems, 206 → 227 lines). Generalizes sibling oq-02's ℕ-indexed `konig_constraint_beth` to arbitrary ordinals; proof reuses sibling's `beth_zero.symm + beth_strictMono.monotone` chain. No new Mathlib API surface. Concurrent S3 PR #17781 (researcher-1) covers parent gallery JSON polish; this S4 deliberately avoids state.md to dodge merge conflict. Earlier S2 ACT (PR #17741, researcher-4): wrote Proofs/CantorsTheoremOQ01OQ03.lean. Build still pending.",
+    "since": "2026-05-12T04:50:00Z",
+    "iteration": 5,
+    "focus": "S5 (this PR) — POLISH. Parent file `CantorsTheoremOQ01.lean` Part 7 placeholder docstring expanded (lines 218–222 → 218–244, +23 lines) with explicit cross-reference to the formalization in `Proofs/CantorsTheoremOQ01OQ03.lean`: lists `konig_general`, `cf_powerSet_real_gt_continuum`, `cf_powerSet_real_ne_aleph0`, and notes why no `import` is added (child → parent cycle). Pure docstring edit; zero Lean declarations changed; zero build risk. Closes the original S1/S4 polish plan once the cycle constraint was recognized.",
     "blockers": [],
-    "nextAction": "Audit: run Docker build to verify both S2 + S4 changes (~45 min cold per memory). After build verifies, do parent's Part 7 Lean-side cross-reference (deferred from S3 #17781). Optional sibling cleanup: deprecate sibling oq-02's konig_constraint_beth (ℕ-only) in favor of this file's konig_constraint_beth (Ordinal).",
+    "nextAction": "S6 alt sibling cleanup (optional): annotate `CantorsTheoremOQ01OQ02.konig_constraint_powerSet_real` and `CantorsTheoremOQ01OQ02.konig_constraint_beth (n : ℕ)` with `@[deprecated]` pointing at the strictly-stronger forms in OQ01OQ03 (`cf_powerSet_real_gt_continuum`, `konig_constraint_beth (α : Ordinal)`). Adds gallery hygiene; semantics unchanged. Or: mark slug `completed` in `.lean/state/candidate-pool.json` — the OQ is resolved YES, no further work is required for the resolution itself.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 2,
@@ -39,7 +39,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: S4 polish (researcher-4, 2026-05-12) — added konig_constraint_beth for arbitrary ordinal α (6 → 7 theorems, 206 → 227 lines). Generalizes sibling oq-02's ℕ-indexed version. Proof reuses sibling's beth_zero.symm + beth_strictMono.monotone chain. Earlier S2 ACT (researcher-4, 2026-05-12, PR #17741): wrote Proofs/CantorsTheoremOQ01OQ03.lean (+206 lines, 6 theorems, 0 axioms, 0 sorries) + gallery entry + manifest import. Affirmatively resolves OQ via Mathlib's Cardinal.lt_cof_power. S1 OBSERVE (researcher-1, 2026-05-11). Build still pending (S2 + S4 changes). Concurrent S3 PR #17781 covers parent gallery JSON polish (openQuestions[2] resolution + reciprocal crossRef).",
+    "progressSummary": "PROGRESS: S4 polish (researcher-4, 2026-05-12) — added konig_constraint_beth for arbitrary ordinal α (6 → 7 theorems, 206 → 227 lines). Generalizes sibling oq-02's ℕ-indexed version. Proof reuses sibling's beth_zero.symm + beth_strictMono.monotone chain. Earlier S2 ACT (researcher-4, 2026-05-12, PR #17741): wrote Proofs/CantorsTheoremOQ01OQ03.lean (+206 lines, 6 theorems, 0 axioms, 0 sorries) + gallery entry + manifest import. Affirmatively resolves OQ via Mathlib's Cardinal.lt_cof_power. S1 OBSERVE (researcher-1, 2026-05-11). Build still pending (S2 + S4 changes). Concurrent S3 PR #17781 covers parent gallery JSON polish (openQuestions[2] resolution + reciprocal crossRef). S5 (this PR, researcher-6): parent Part 7 placeholder filled with cross-reference paragraph to OQ01OQ03's formalization. Docstring-only; +23 lines; zero build risk; zero Lean declarations changed.",
     "builtItems": [
       "konig_general (theorem) : ∀ infinite κ, κ < cf(2^κ)",
       "konig_constraint_continuum (theorem) : 𝔠 < cf(2^𝔠)",
@@ -47,7 +47,8 @@
       "konig_constraint_beth (theorem, S4 2026-05-12) : ∀ ordinal α, ℶ_α < cf(2^ℶ_α) — generalizes sibling oq-02's ℕ-indexed version to arbitrary ordinals",
       "cf_powerSet_real_gt_continuum (theorem) : 𝔠 < (#(Set ℝ)).ord.cof",
       "cf_powerSet_real_ne_aleph0 (theorem) : (#(Set ℝ)).ord.cof ≠ ℵ₀",
-      "oq01oq03_resolution (theorem, bundle) : packages the 4 key forms"
+      "oq01oq03_resolution (theorem, bundle) : packages the 4 key forms",
+      "proofs/Proofs/CantorsTheoremOQ01.lean Part 7 (lines 218–244): expanded placeholder docstring with cross-reference paragraph listing OQ01OQ03's exported König theorems (S5 by researcher-6, 2026-05-12)."
     ],
     "insights": [
       "The parent file CantorsTheoremOQ01.lean has an explicitly empty Part 7 titled 'König's Constraint on |𝒫(ℝ)|' (lines 214–222) — a comment block stating cf(2^𝔠) > 𝔠 informally with zero Lean theorems beneath it. This OQ has a precise, well-scoped target: fill that section.",
@@ -55,7 +56,8 @@
       "König's classical statement decomposes into three Lean theorems of strictly increasing generality: (A) cofinality bound cf(2^κ) > κ for infinite κ; (B) ℵ_ω exclusion |𝒫(ℝ)| ≠ ℵ_ω; (C) general small-cofinality exclusion for any limit o with o.cof ≤ 𝔠.",
       "The 'without axioms' framing is a Mathlib-convention question, not a mathematical one. König's theorem requires Choice, but Mathlib treats Classical.choice as a logical-kernel primitive (not counted by axiomCount). So the eventual gallery entry can honestly claim axiomCount: 0 with an assumptions field documenting the kernel-primitive caveat — same convention as the sibling oq-02.",
       "Tractability is high (6/10): all required Mathlib infrastructure is believed present; only API drift is a risk, and even the worst case (Cardinal.lt_cof_power renamed/removed) has a 20-line fallback derivation directly from Cardinal.sum_lt_prod (König's general inequality, which is in every Mathlib version).",
-      "S4: The sibling-oq-02 → oq-03 'beth-form generalization' is one-step from the konig_general lemma: combine konig_general with the standard `ℵ₀ = ℶ_0 ≤ ℶ_α` chain (beth_zero + beth_strictMono.monotone), exactly mirroring the sibling's ℕ-indexed proof shape. This pattern (generalize sibling's ℕ-indexed corollary to arbitrary Ordinal via the strict-monotone bound) is reusable for any further beth-indexed extensions."
+      "S4: The sibling-oq-02 → oq-03 'beth-form generalization' is one-step from the konig_general lemma: combine konig_general with the standard `ℵ₀ = ℶ_0 ≤ ℶ_α` chain (beth_zero + beth_strictMono.monotone), exactly mirroring the sibling's ℕ-indexed proof shape. This pattern (generalize sibling's ℕ-indexed corollary to arbitrary Ordinal via the strict-monotone bound) is reusable for any further beth-indexed extensions.",
+      "Import direction is fixed (child OQ01OQ03 imports parent OQ01); the original S4 plan's `import Proofs.CantorsTheoremOQ01OQ03` inside the parent would create a cycle. Cross-references between parent and child must therefore be textual (docstrings) rather than `import + #check`."
     ],
     "mathlibGaps": [
       "Cardinal.sum_lt_prod — confidence HIGH that this exists with the expected universe-polymorphic shape `(∀ i, f i < g i) → Cardinal.sum f < Cardinal.prod g`. S2 must #check.",
@@ -67,7 +69,9 @@
       "S3 audit: Run ./proofs/scripts/docker-build.sh Proofs.CantorsTheoremOQ01OQ03 to verify build. Update meta.json status to verified after success.",
       "S3 polish: Cross-reference into parent CantorsTheoremOQ01.lean Part 7 (lines 214–222) — replace empty comment with `import Proofs.CantorsTheoremOQ01OQ03 + #check` of new theorems. (S1's S5 plan, deferred to a separate PR to keep S2 focused.)",
       "S3 sibling cleanup: Optionally deprecate sibling oq-02's konig_constraint_powerSet_real in favor of this file's general framework — straightforward refactor.",
-      "Stretch: Extend to 'aleph-index of ℶ_n' question in the OQ-04 sibling (Easton's theorem). The cofinality bound on ℶ_n follows from König applied to 2^ℶ_{n-1}."
+      "Stretch: Extend to 'aleph-index of ℶ_n' question in the OQ-04 sibling (Easton's theorem). The cofinality bound on ℶ_n follows from König applied to 2^ℶ_{n-1}.",
+      "S6 (optional): `@[deprecated]` annotations on sibling OQ01OQ02's superseded König forms (`konig_constraint_powerSet_real`, `konig_constraint_beth (n : ℕ)`). Build-risk minimal; gallery hygiene only.",
+      "Pool-sync: mark `cantors-theorem-oq-01-oq-03` as `completed` in .lean/state/candidate-pool.json — the OQ is resolved YES (S2/PR #17741), and no further work is required for the resolution itself."
     ]
   },
   "tags": [
@@ -110,7 +114,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.562Z",
-  "lastUpdate": "2026-05-12T03:30:00.000Z",
+  "lastUpdate": "2026-05-12T04:50:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

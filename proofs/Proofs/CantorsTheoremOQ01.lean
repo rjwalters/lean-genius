@@ -217,8 +217,31 @@ theorem not_gch_at_continuum_implies_gt_aleph_two
 
 /-
   König's theorem (1905): cf(2^𝔠) > 𝔠.
+
   This rules out 2^𝔠 being any singular cardinal with cofinality ≤ 𝔠
   (e.g., ℵ_ω has cofinality ω ≤ 𝔠, so |𝒫(ℝ)| ≠ ℵ_ω).
+
+  **Formalized in** `Proofs/CantorsTheoremOQ01OQ03.lean` (open question
+  `cantors-theorem-oq-01-oq-03`, resolved YES on 2026-05-12). Key
+  theorems available there:
+
+  * `CantorsTheoremOQ01OQ03.konig_general` —
+    `∀ {κ : Cardinal.{0}}, ℵ₀ ≤ κ → κ < (2 ^ κ).ord.cof`,
+    König's cofinality bound in full generality, proved as an
+    immediate corollary of Mathlib's `Cardinal.lt_cof_power`.
+
+  * `CantorsTheoremOQ01OQ03.cf_powerSet_real_gt_continuum` —
+    `𝔠 < (#(Set ℝ)).ord.cof`, the application to |𝒫(ℝ)|.
+
+  * `CantorsTheoremOQ01OQ03.cf_powerSet_real_ne_aleph0` —
+    `(#(Set ℝ)).ord.cof ≠ ℵ₀`, the singular-ruling-out corollary
+    that justifies the `|𝒫(ℝ)| ≠ ℵ_ω` slogan above (any ZFC model
+    with `|𝒫(ℝ)| = ℵ_ω` would force the cofinality to be ℵ₀).
+
+  We deliberately do *not* `import Proofs.CantorsTheoremOQ01OQ03`
+  here: that file imports *this* file as its parent, so the import
+  direction is fixed (child → parent). Readers wanting the
+  machine-checked statement should open the child file directly.
 -/
 
 -- ============================================================
