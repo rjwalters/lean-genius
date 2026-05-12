@@ -108,10 +108,12 @@
     "summary": "This formalization completes Cantor's original 1874 proof that the algebraic reals are countable, using the height function H(p) = deg(p) + ∑|aᵢ| to stratify algebraic reals into finite (not just countable) strata. All 13 theorems are proved with 0 sorries and 0 axioms, making this a fully verified formalization. The key innovation over the main gallery proof (`AlgebraicNumbersCountable.lean`) is the HEIGHT STRATIFICATION producing finite strata, which is more constructive and historically accurate.",
     "implications": "The height function proof has two advantages over degree stratification: (1) it gives finite strata (stronger than countable), and (2) it is constructive — for each h, the finitely many height-h algebraic reals can in principle be enumerated. This connects to computational algebra: height bounds appear in algorithms for root isolation, algebraic number arithmetic, and determining algebraic independence.\n\nThe finiteness of height strata has applications beyond algebraic numbers: any mathematical object that can be 'measured' by a height function with finite level sets can be enumerated. This principle appears in Diophantine geometry (Weil heights for rational points on varieties), algebraic combinatorics (graded algebras), and coding theory.",
     "openQuestions": [
-      "Can we make the height enumeration explicit? That is, can we produce a computable bijection ℕ ↔ algebraic reals using the height function?",
-      "Can we bound the size of each height stratum? Specifically, how many real algebraic numbers have Cantor height exactly h?",
-      "The Cantor height H(p) = n + ∑|aᵢ| is one choice. Other heights (Mahler measure, naive height, projective height) have different finiteness properties — can we formalize the equivalence of different height functions for countability?",
-      "Does the proof generalize to algebraic numbers over other fields? For example, algebraic numbers over ℚ(√2) or algebraic p-adic numbers?"
+      "Can we make the height enumeration explicit? That is, can we produce a computable bijection $\\mathbb{N} \\leftrightarrow$ algebraic reals using the height function? The construction: at height $h$ there are finitely many polynomials $p \\in \\mathbb{Z}[X]$ with $\\deg(p) + \\sum|a_i| = h$, each with at most $\\deg(p) \\leq h - 1$ real roots; ordering by height and within each height by lexicographic-coefficient-and-root-position gives a computable enumeration. Companion entry `algebraic-numbers-countable-oq-02-oq-04` formalizes the general computable-real countability that this would specialize.",
+      "Can we bound the size of each height stratum? Specifically, how many real algebraic numbers have Cantor height exactly $h$? **Upper bound**: at height $h$ there are at most $C \\cdot h^h$ polynomials (by the $\\ell^1$ ball cardinality in $\\mathbb{Z}^h$); each contributes $\\leq h$ roots, so $|\\text{height-}h\\text{-stratum}| \\leq C \\cdot h^{h+1}$. **Asymptotic**: $|\\text{height} \\leq H| \\sim H^{n+1} / n!$ for fixed degree $n$ (Schmidt's theorem on counting algebraic numbers by height). The exact count for Cantor height is open in closed form but can be computed numerically for small $h$.",
+      "The Cantor height $H(p) = n + \\sum|a_i|$ is one choice. Other heights (Mahler measure $M(p) = |a_n| \\cdot \\prod |\\alpha_i|^+$, naive height $H_{\\text{nv}}(p) = \\max|a_i|$, projective height $H_{\\text{proj}}([\\alpha_0 : \\cdots : \\alpha_n]) = \\max|a_i|/\\gcd$) have different finiteness properties — formalize the equivalence of different height functions for countability. **Northcott's theorem**: the set of algebraic numbers of bounded height AND bounded degree is finite for any of these height functions — this is the key finiteness theorem that drives the entire height-enumeration approach.",
+      "Does the proof generalize to algebraic numbers over other fields? For example, algebraic numbers over $\\mathbb{Q}(\\sqrt{2})$ or algebraic $p$-adic numbers? **Yes**: any countable field $K$ has countable polynomial ring $K[X]$, and the algebraic closure $\\overline{K}$ inherits countability via the same height-stratification argument. **No** for $\\mathbb{R}$ or $\\mathbb{C}$ as base fields: $\\mathbb{R}[X]$ is uncountable, so the union of polynomial roots is uncountable (it includes $\\mathbb{R}$ itself trivially). The countability of $\\overline{\\mathbb{Q}}$ formalized here generalizes to: $\\overline{K}$ countable iff $K$ countable (Mathlib's `Algebraic.countable` with countable base ring).",
+      "Formalize Northcott's 1949 theorem in Lean: the set of algebraic numbers of bounded height AND bounded degree is FINITE. This is the foundational finiteness theorem of Diophantine geometry, used throughout Faltings's proof of the Mordell conjecture and Vojta's height-based proof refinements. The present entry's height-stratum-finiteness lemma (height-$h$ stratum is FINITE) is a special case of Northcott when applied with degree bound coming from the height.",
+      "Compare Cantor's 1874 height-function proof with Mathlib's `Algebraic.countable` (used in the parent entry `algebraic-numbers-countable`). Mathlib's proof uses: (a) the polynomial ring $\\mathbb{Q}[X]$ is countable since $\\mathbb{Q}$ is, (b) each polynomial has finitely many roots, (c) the union of countably-many finite sets is countable. Cantor's proof uses: (a') stratify polynomials by height, (b') each height stratum is FINITE, (c') $\\bigcup_h \\{\\text{height-}h\\text{-roots}\\}$ is a countable union of finite sets. The proofs are structurally identical modulo the finer FINITE-vs-FINITE-OR-COUNTABLE distinction at the height-stratum level."
     ]
   },
   "crossReferences": [
@@ -133,7 +135,37 @@
     {
       "targetId": "algebraic-numbers-countable-oq-02-oq-02",
       "relationship": "related",
-      "description": "Cantor-Bernstein-Schroeder theorem, foundational for comparing infinite cardinalities. Provides the infrastructure for cardinal arithmetic used in `card_algebraic_reals_eq_aleph0` — showing the algebraic reals have the same cardinality as ℕ (ℵ₀). CBS shows two sets are equicardinal if each injects into the other; here we use it implicitly via Mathlib's `Algebraic.cardinalMk_of_countable_of_charZero`."
+      "description": "Cantor's 1874 nested-interval proof of $\\mathbb{R}$ uncountability — the complementary half of the same paper. Where this entry enumerates the algebraic reals via finite height strata, oq-02-oq-02 constructs a real missing from any enumeration via nested intervals. Together they give the complete 1874 picture: explicit countable enumeration of algebraics + explicit construction of a missing real $\\implies$ transcendentals exist. Both proofs are constructive and avoid the more abstract cardinal-arithmetic machinery of oq-02."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-02-oq-03",
+      "relationship": "complementary",
+      "description": "Exact cardinality of the transcendental reals: $\\#\\text{transcendentalReals} = \\mathfrak{c} = 2^{\\aleph_0}$. Where this entry enumerates algebraic reals constructively (finite per height stratum), oq-02-oq-03 proves the transcendental complement has the FULL continuum cardinality. The two together give the asymmetry: $\\aleph_0$ constructively-enumerable algebraics vs. $\\mathfrak{c}$ unenumerable transcendentals — the most extreme cardinality split possible inside $\\mathbb{R}$."
+    },
+    {
+      "targetId": "algebraic-numbers-countable-oq-02-oq-04",
+      "relationship": "complementary",
+      "description": "Adds the computable-reals layer to the height-enumeration picture: every algebraic real is computable (Cantor's height-bounded enumeration is itself a computable process given the height bound), so $\\text{Alg}(\\mathbb{R}) \\subseteq \\text{Computable}(\\mathbb{R})$. Both layers are countable ($\\aleph_0$), but the computable layer is STRICTLY LARGER (contains $e, \\pi$, etc.). This entry's height function is the prototype for computability-theoretic enumerations of algebraic reals; oq-02-oq-04 generalizes to the full computable-reals enumeration via $\\texttt{Nat.Partrec.Code}$."
+    },
+    {
+      "targetId": "e-transcendental",
+      "relationship": "complementary",
+      "description": "Transcendence of $e$ — the first concrete real outside this entry's height-enumeration. The Cantor 1874 height function enumerates ALL algebraic reals; $e$ is provably outside that enumeration (Hermite 1873, one year before Cantor). The contrast: this entry's height-based proof gives existence of transcendentals by cardinality without naming any, while Hermite's proof identifies $e$ specifically without using cardinality. Both arguments are needed for the complete classical picture."
+    },
+    {
+      "targetId": "liouville-theorem",
+      "relationship": "complementary",
+      "description": "Liouville's 1844 constructive transcendence criterion: numbers approximated by rationals beyond Liouville order $d$ cannot be algebraic of degree $\\leq d$. Liouville's argument uses degree (the relevant 'height' in Liouville's framework is $q$, the rational denominator), this entry uses Cantor's height $H(p) = \\deg(p) + \\sum|a_i|$. Both give constructive results about algebraic reals — Liouville EXCLUDING reals from the algebraic enumeration, this entry ENUMERATING the algebraic reals — and combine to the complete constructive picture of algebraic vs. transcendental."
+    },
+    {
+      "targetId": "denumerability-rationals",
+      "relationship": "foundational",
+      "description": "Denumerability of $\\mathbb{Q}$ is the base case of this entry's height-stratification: degree-1 algebraic reals are exactly the rationals (roots of $aX + b$ for $a, b \\in \\mathbb{Z}$), and each height $h$ has finitely many degree-1 polynomials. The countability of $\\mathbb{Q}$ via the height-1 stratum is the conceptual prototype for the full Cantor height-function enumeration — both are 'pair-and-enumerate' arguments scaling from $\\mathbb{Z}^2$ to $\\mathbb{Z}^{n+1}$."
+    },
+    {
+      "targetId": "hermite-lindemann",
+      "relationship": "complementary",
+      "description": "Lindemann-Weierstrass theorem: $e^{\\alpha_1}, \\ldots, e^{\\alpha_n}$ are algebraically independent for distinct algebraic $\\alpha_i$. Generates infinitely many EXPLICIT transcendentals (including $e$ and $\\pi$ via $\\alpha = 1$ and $e^{i\\pi} = -1$). All Lindemann-Weierstrass transcendentals are countable, so they form a countable subset of $\\mathbb{R} \\setminus$ (this entry's height enumeration). The contrast: this entry's height function enumerates the algebraic reals via $\\mathbb{N}$-indexed strata; Lindemann-Weierstrass produces transcendentals via the COUNTABLE codomain $\\overline{\\mathbb{Q}}^n \\xrightarrow{e^{\\bullet}}\\, \\mathbb{C}$, a different countable construction inside the uncountable $\\mathbb{R}$."
     }
   ],
   "leanFile": {
