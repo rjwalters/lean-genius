@@ -1,8 +1,35 @@
 [
   {
+    "id": "ann-mvt02oq04-header-background",
+    "proofId": "mean-value-theorem-oq-02-oq-04",
+    "type": "concept",
+    "range": {
+      "startLine": 4,
+      "endLine": 88
+    },
+    "title": "Mathematical Background: Cauchy's Estimates and the Geometric Tail",
+    "content": "The file's module docstring records the standard derivation of the OQ-04 bound from Cauchy's integral formula. For f analytic on the complex disk D(a, R) with sup bound M, Cauchy's coefficient estimate |f^(k)(a)/k!| ≤ M / R^k controls each Taylor coefficient; summing the geometric tail Σ_{k>n} (M / R^k) · r^k = M · (r/R)^(n+1) / (1 - r/R) = M · r^(n+1) / (R^n (R-r)) yields the uniform remainder bound. OQ-04 absorbs the R^n into the constant M, presenting the dominant geometric factor M·r^(n+1)/(R-r). The docstring also enumerates the Mathlib hooks that S2 will use to discharge the axiom: HasFPowerSeriesOnBall.hasSum (qualitative convergence), the FormalMultilinearSeries Cauchy-coefficient bound, and tsum_geometric_of_lt_one (closed-form geometric tail).",
+    "mathContext": "Cauchy's estimates: $\\bigl|\\tfrac{f^{(k)}(a)}{k!}\\bigr| \\le \\dfrac{M}{R^k}$ for $f$ analytic on $D(a, R)$ with $|f| \\le M$. Geometric tail: $\\displaystyle\\sum_{k > n} \\left(\\dfrac{r}{R}\\right)^k = \\dfrac{(r/R)^{n+1}}{1 - r/R} = \\dfrac{r^{n+1}}{R^n (R - r)}$. Combined: $|R_n(x)| \\le M \\cdot r^{n+1} / (R^n (R - r))$, which OQ-04 simplifies to $M \\cdot r^{n+1} / (R - r)$ (the dominant factor; the $R^{-n}$ is absorbed into the bound constant).",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "Cauchy's integral formula",
+      "Cauchy's coefficient estimates",
+      "geometric series",
+      "HasFPowerSeriesOnBall",
+      "FormalMultilinearSeries",
+      "tsum_geometric_of_lt_one"
+    ],
+    "prerequisites": [
+      "complex analysis",
+      "analytic functions",
+      "power series",
+      "Mathlib.Analysis.Analytic.Basic"
+    ]
+  },
+  {
     "id": "ann-mvt02oq04-uniform-axiom",
     "proofId": "mean-value-theorem-oq-02-oq-04",
-    "type": "axiom",
+    "type": "theorem",
     "range": {
       "startLine": 95,
       "endLine": 134
@@ -46,6 +73,29 @@
     "prerequisites": [
       "MeanValueTheoremOQ02.taylorPolynomial_zero",
       "analytic_taylor_remainder_uniform_bound"
+    ]
+  },
+  {
+    "id": "ann-mvt02oq04-verification",
+    "proofId": "mean-value-theorem-oq-02-oq-04",
+    "type": "tactic",
+    "range": {
+      "startLine": 168,
+      "endLine": 173
+    },
+    "title": "Verification Block: Sanity-Check #check Commands",
+    "content": "Two `#check` commands certify that the two top-level declarations have the expected types after elaboration: `@analytic_taylor_remainder_uniform_bound` (the axiom signature with all explicit arguments) and `@analytic_remainder_zero_bound` (the corollary). This is a lightweight regression guard: any drift in the parent file's `taylorPolynomial` type or in Mathlib's `AnalyticOn` / `Set.Ioo` / `Set.Icc` signatures would surface as an elaboration error here long before downstream consumers notice. The `end MeanValueTheoremOQ02OQ04` closes the namespace opened on line 94.",
+    "mathContext": "No new mathematical content; the verification block confirms the elaborated types of the two declarations match the file docstring's stated signatures.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "#check command",
+      "Lean elaboration",
+      "namespace scoping",
+      "regression testing"
+    ],
+    "prerequisites": [
+      "Lean 4 syntax",
+      "namespaces"
     ]
   }
 ]
