@@ -1,7 +1,7 @@
 {
   "slug": "general-quartic-oq-02",
   "title": "Numerical Instabilities in Ferrari's Quartic Formula",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -28,30 +28,36 @@
     "goal": "S2: scaffold and state ferrari_biquad_limit (OQ-02.c) in proofs/Proofs/GeneralQuartic.lean; S3+: discharge it. OQ-02.a and OQ-02.b are deferred indefinitely."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-05-12T08:30Z",
-    "iteration": 2,
-    "focus": "S1 OBSERVE complete: three-part decomposition (OQ-02.a/.b/.c) established, three approach families surveyed, Approach A (OQ-02.c biquadratic-limit identity) selected as S2 target. No Lean changes in S1.",
+    "phase": "ACT",
+    "since": "2026-05-12T12:30Z",
+    "iteration": 3,
+    "focus": "S2 SCAFFOLD complete: added Part VI.5 to GeneralQuartic.lean with resolvent_cubic_q_zero (sorry-free, ring), resolvent_root_neg_p_half_at_q_zero (sorry-free, simp+ring), and ferrari_biquad_limit (sorry-marked, deferred to S3). +68 LOC, theoremCount 9 -> 12, sorryCount 0 -> 1.",
     "blockers": [],
-    "nextAction": "S2 SCAFFOLD: add resolvent_cubic_q_zero (provable by ring_nf) and ferrari_biquad_limit (with sorry) to proofs/Proofs/GeneralQuartic.lean. Target <= 100 LOC.",
+    "nextAction": "S3 DISCHARGE: prove ferrari_biquad_limit. Sub-step A: non-degenerate resolvent root exists (degree/coefficient argument). Sub-step B: algebraic root-matching at non-degenerate m (either explicit-formula expansion or via biquadratic_simple + ferrari_roots_are_roots). See knowledge.md S2 ACT - SCAFFOLD section for full decomposition.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE (markdown-only, no Lean changes): surveyed Pan 1997, Bini-Pan 1996, Kahan 2004, Press et al. Numerical Recipes. Isolated three distinct instability mechanisms in Ferrari's formula (resolvent-cubic cancellation, beta = q/(2 alpha) divide-by-near-zero, wrong-root-pairing). Decomposed the original vague OQ-02 into three formal sub-questions (a/b/c). Mapped three formalization approaches and selected the biquadratic-limit symbolic identity (OQ-02.c) as the most tractable S2 target on the basis of (i) being a pure C-symbolic identity provable without numerical-analysis infrastructure, (ii) closing the alpha = 0 boundary case of the parent's axiomatized ferrariRoots, (iii) requiring no new Mathlib imports beyond those already used in the parent file.",
+    "progressSummary": "S2 SCAFFOLD (2026-05-12): scaffolded Approach A in proofs/Proofs/GeneralQuartic.lean Part VI.5. Two helper lemmas proved sorry-free (resolvent_cubic_q_zero by ring; resolvent_root_neg_p_half_at_q_zero by simp+ring). Main ferrari_biquad_limit statement scaffolded with sorry, deferred to S3 with explicit two-sub-step decomposition (resolvent-root existence + algebraic root-matching). Hypothesis p != 0 OR r != 0 isolates the (p, r) = (0, 0) edge case where the depressed quartic is trivially y^4 = 0.",
     "builtItems": [
       "research/problems/general-quartic-oq-02/problem.md — formal three-part decomposition (OQ-02.a, .b, .c) with statement, classification, motivation, related-proof table, and reference list.",
       "research/problems/general-quartic-oq-02/knowledge.md — survey of prior art (Pan, Bini-Pan, Kahan, Press), three classical instability mechanisms identified, three approach families mapped, S2 target selected with stated Lean snippet, three Mathlib gaps surfaced.",
-      "research/problems/general-quartic-oq-02/state.md — phase advanced NEW -> ORIENT, iteration 1 -> 2, S2 next-action specified with line-budget."
+      "research/problems/general-quartic-oq-02/state.md — phase advanced NEW -> ORIENT, iteration 1 -> 2, S2 next-action specified with line-budget.",
+      "proofs/Proofs/GeneralQuartic.lean Part VI.5 - 3 theorems added (2 proved, 1 sorry), +68 LOC, theoremCount 9 -> 12",
+      "research/problems/general-quartic-oq-02/state.md - phase advanced ORIENT -> ACT, S3 next-action specified with two-sub-step decomposition",
+      "research/problems/general-quartic-oq-02/knowledge.md - S2 ACT SCAFFOLD section added with S3 decomposition strategy"
     ],
     "insights": [
       "Three distinct instability mechanisms separate cleanly: (1) upstream resolvent-cubic catastrophic cancellation, (2) quartic-specific divide-by-near-zero in beta = q/(2 alpha), (3) discrete wrong-root-pairing with no analytic remedy. Mechanism (2) is the canonical quartic-only failure mode and is the entry point for OQ-02.a / .c.",
       "OQ-02.c (the q -> 0 limit) is a pure symbolic identity over C, not a floating-point statement. It can therefore be proved with Mathlib's existing polynomial / cpow API; no numerical-analysis infrastructure is required.",
       "At q = 0, the resolvent cubic has m = -p/2 as a 'trivial' root that gives alpha = 0 (degenerate Ferrari branch). For OQ-02.c we choose a non-trivial resolvent root; existence follows from polynomial-degree counting + FTA.",
-      "Mechanism (3) is *fundamental*, not a fixable bug: any single fixed branch policy for the square root in alpha is unstable in some region of parameter space. This means OQ-02.b cannot have a uniform constant C for all (p, q, r); the bound must allow C to depend on the branch policy."
+      "Mechanism (3) is *fundamental*, not a fixable bug: any single fixed branch policy for the square root in alpha is unstable in some region of parameter space. This means OQ-02.b cannot have a uniform constant C for all (p, q, r); the bound must allow C to depend on the branch policy.",
+      "At q = 0 the resolvent cubic constant term simplifies from (4p^3 - 4pr - q^2) to (4p^3 - 4pr); the -q^2 contribution drops cleanly. Useful normalization for downstream manipulation.",
+      "m = -p/2 is universally a root of resolventCubic p 0 r (the trivial / degenerate root). The non-degenerate Ferrari branch requires a different root, which exists iff (p, r) != (0, 0) - polynomial-degree counting argument.",
+      "S3 admits two proof paths: (i) explicit-formula expansion using disc1 = disc2 = -alpha^2 at q = 0, or (ii) via biquadratic_simple + ferrari_roots_are_roots (the latter uses the parent ferrari_roots_verify axiom). S3 should attempt (i) first."
     ],
     "mathlibGaps": [
       "Polynomial.discriminant : Polynomial R -> R — not defined in named form for general R-coefficient polynomials. Needed for OQ-02.b.",
@@ -59,9 +65,10 @@
       "Multi-parameter big-O / big-Theta comparison via Filter.Tendsto exists but is unwieldy for the asymptotic-rate inequalities OQ-02.a needs."
     ],
     "nextSteps": [
-      "S2 SCAFFOLD: add resolvent_cubic_q_zero (provable by ring_nf) and ferrari_biquad_limit (sorry-marked) to proofs/Proofs/GeneralQuartic.lean.",
-      "S3: discharge ferrari_biquad_limit by: (a) prove resolvent_root_at_biquad — for every (p, r) there is an m with (resolventCubic p 0 r).eval m = 0 and 2*m + p ≠ 0; (b) prove the algebraic root-matching identity.",
-      "Eventual session: open Mathlib gap issue for Polynomial.discriminant if absent."
+      "S3 (highest priority): prove ferrari_biquad_limit. Two-sub-step decomposition documented in knowledge.md S2 ACT section.",
+      "S4 (after S3): try to drop the p != 0 OR r != 0 hypothesis or convert it to a propositional iff by handling (p, r) = (0, 0) as a trivial 0-root case.",
+      "Eventually: open Mathlib gap issue for Polynomial.discriminant if absent.",
+      "Indefinitely deferred: OQ-02.a (witness family) and OQ-02.b (conditioning bound) - require numerical-analysis infrastructure not currently in Mathlib."
     ]
   },
   "tags": [
@@ -94,18 +101,18 @@
     ]
   },
   "started": "2026-05-12T04:48:16.448Z",
-  "lastUpdate": "2026-05-12T08:30Z",
+  "lastUpdate": "2026-05-12T12:35Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/GeneralQuartic.lean",
       "filename": "GeneralQuartic.lean",
-      "lineCount": 361,
-      "theoremCount": 9,
+      "lineCount": 428,
+      "theoremCount": 12,
       "axiomCount": 6,
       "defCount": 5,
-      "sorryCount": 0,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GeneralQuartic.lean"
     }
