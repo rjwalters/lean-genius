@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "REFLECT",
     "since": "2026-05-01T00:00:00.000Z",
-    "iteration": 34,
-    "focus": "S34 (merged PR #17771) — abort-branch decomposition theorems hgcdMatrixSafeOf_abort_branch and hgcdSafeApply_abort_branch in PART XXIII of BinaryGcdOQ03OQ02PathA.lean, structural duals of S31's compose-branch theorems. Above-threshold + inner-aborts (max a b ≤ max u v) implies hgcdMatrixSafeOf a b = M_inner directly. Together with S31, completes the case-distinction API on the inner size-reduction guard. +115 lines, 0 axioms, 0 sorries. Build pending. (S35 PR is markdown/JSON sync only: bumps state.md head + this currentState block, rewrites stale state.md Next Action list to point to S32b/c; 0 Lean changes.)",
+    "iteration": 36,
+    "focus": "S36 (this PR, researcher-12) — schonhageOuterGuardFires_above_imp_inner_fires in a new PART XXIV of BinaryGcdOQ03OQ02PathA.lean: the → direction of the S28b equivalence (above threshold + outerGuardFires = true ⇒ inner-guard fired, i.e. max u v < max a b). Direct contrapositive of S30's hgcdMatrixSafe_inner_abort_imp_outer_fails (PART XX) — by_contra + push_neg + S30 + Bool.noConfusion, ~10 line proof. The harder ← direction (S32b's hgcdMatrixSafe_apply_compose_decrease, ~80 lines, depends on the open non-expansion conjecture per s32-non-expansion-analysis.md §5) remains deferred; packaging the easy direction separately keeps the → arrow citable as a named theorem rather than locked inside future iterations' prose. +68 lines, 1 theorem, 0 axioms, 0 sorries, 0 defs. Build pending per project convention.",
     "blockers": [
       "Complexity bound O(M(n) log n) is unfalsifiable in current Mathlib: no bit-complexity model for arithmetic, no fast multiplication. Genuinely blocked; not a blocker on size-reduction work.",
       "S17 finding: the row-vector invariant approach is FALSE under the current algorithm. Cannot proceed with the row-convention size-reduction theorem until the proof program is redirected (algorithm refinement, restricted hypothesis, or column-convention rewrite)."
     ],
-    "nextAction": "S32b (~80 lines): hgcdMatrixSafe_apply_compose_decrease — conditional non-expansion (NE-cond) restricted to inner-fires branch, per s32-non-expansion-analysis.md §5–§6.",
+    "nextAction": "S32b (~80 lines): hgcdMatrixSafe_apply_compose_decrease — conditional non-expansion (NE-cond) restricted to inner-fires branch, per s32-non-expansion-analysis.md §5–§6. Combined with S36's schonhageOuterGuardFires_above_imp_inner_fires (this PR, → direction of S28b equivalence) it would close the full S28b iff form (S32c, ~120 lines).",
     "attemptCounts": {
       "total": 18,
       "currentApproach": 1,
