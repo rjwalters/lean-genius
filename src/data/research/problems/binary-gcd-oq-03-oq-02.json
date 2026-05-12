@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "REFLECT",
     "since": "2026-05-01T00:00:00.000Z",
-    "iteration": 37,
-    "focus": "S37 (this PR, researcher-3) — hgcdMatrixSafeOf_of_outerFires and hgcdSafeApply_of_outerFires in a new PART XXV of BinaryGcdOQ03OQ02PathA.lean: packages S36's → direction (above-threshold + outerFires ⇒ inner-fires) with S31's compose-branch decompositions into single named theorems. Above threshold + outerFires now directly yields hgcdMatrixSafeOf a b = (hgcdMatrixSafe (a + b) u v).mul M_inner and hgcdSafeApply a b = M_outer.apply (M_inner.apply (a, b)) without requiring a manual inner-fires step at the use site. Pure forward composition: apply S36, then S31. Removes redundancy from any future iteration that case-splits on schonhageOuterGuardFires. +95 lines, 2 theorems, 0 axioms, 0 sorries, 0 defs. Build pending per project convention (broken .lake symlink).",
+    "iteration": 38,
+    "focus": "S38 (this PR, researcher-3) — compose_apply_natAbs_strict_decrease_of_outerFires and schonhageGcd_succ_recurse_via_compose in a new PART XXVI of BinaryGcdOQ03OQ02PathA.lean: rewrites S23's _strict_decrease and _recurse_of_fires lemmas via S37's hgcdSafeApply_of_outerFires to expose the strict-decrease bound and recursion equation in the structurally explicit M_outer.apply (M_inner.apply (a, b)) compose coordinates, removing the intermediate hgcdSafeApply abstraction. Direct rewrites against already-proved S23 + S37; pure forward composition. +175 lines, 2 theorems, 0 axioms, 0 sorries, 0 defs. Build pending per project convention (broken .lake symlink).",
     "blockers": [
       "Complexity bound O(M(n) log n) is unfalsifiable in current Mathlib: no bit-complexity model for arithmetic, no fast multiplication. Genuinely blocked; not a blocker on size-reduction work.",
       "S17 finding: the row-vector invariant approach is FALSE under the current algorithm. Cannot proceed with the row-convention size-reduction theorem until the proof program is redirected (algorithm refinement, restricted hypothesis, or column-convention rewrite)."
     ],
-    "nextAction": "S32b (~80 lines): hgcdMatrixSafe_apply_compose_decrease — conditional non-expansion (NE-cond) restricted to inner-fires branch, per s32-non-expansion-analysis.md §5–§6. Combined with S36's schonhageOuterGuardFires_above_imp_inner_fires (→ direction of S28b equivalence) and S37's outer-fires packaging (this PR, removing the manual inner-fires step), it would close the full S28b iff form (S32c, ~120 lines).",
+    "nextAction": "S32b (~80 lines): hgcdMatrixSafe_apply_compose_decrease — conditional non-expansion (NE-cond) restricted to inner-fires branch, per s32-non-expansion-analysis.md §5–§6. Combined with S36's schonhageOuterGuardFires_above_imp_inner_fires (→ direction of S28b equivalence), S37's outer-fires packaging, and S38's compose-coordinate forms (this PR), it would close the full S28b iff form (S32c, ~120 lines). With S38 the per-step decrease is now stated directly on M_outer.apply (M_inner.apply (a, b)), which is the same expression S32b would need to bound.",
     "attemptCounts": {
       "total": 18,
       "currentApproach": 1,

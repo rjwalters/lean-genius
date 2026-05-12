@@ -12,21 +12,104 @@ general non-expansion lemma (S32, PR #17720), its Lean witness
 (S33, PR #17750), the dual abort-branch decomposition (S34,
 PR #17771), the markdown/JSON sync (S35, PR #17785), the
 contrapositive packaging of S30 as the `→` direction of the S28b
-equivalence (S36, PR #17846), and now the outer-fires packaging
-that fuses S36 with S31 into single named theorems (S37, this PR)
-are all in place. The above-threshold behaviour of
-`hgcdMatrixSafeOf` admits a clean two-way partition by the inner
-size-reduction guard via PART XXI (compose-branch) ⊕ PART XXIII
-(abort-branch), and PART XXIV's `→` direction together with PART
-XXV (this section) lets above-threshold + outer-fires unfold the
-column output to the compose form in one step.
+equivalence (S36, PR #17846), the outer-fires packaging that
+fuses S36 with S31 into single named theorems (S37, PR #17867),
+and now the compose-coordinate forms that rewrite S23's per-step
+strict-decrease and recursion-equation lemmas via S37 to expose
+the structurally explicit `M_outer.apply (M_inner.apply (a, b))`
+coordinates (S38, this PR) are all in place. The above-threshold
+behaviour of `hgcdMatrixSafeOf` admits a clean two-way partition
+by the inner size-reduction guard via PART XXI (compose-branch) ⊕
+PART XXIII (abort-branch); PART XXIV's `→` direction together
+with PART XXV lets above-threshold + outer-fires unfold the
+column output to the compose form in one step; and PART XXVI
+(this section) re-expresses S23's per-step decrease bound and
+`schonhageGcd` recursion equation in the compose coordinates.
 
 **Since**: 2026-05-01
-**Iteration**: 37 (S37, this PR, researcher-3 — `hgcdMatrixSafeOf_of_outerFires` and `hgcdSafeApply_of_outerFires` in a new PART XXV of `BinaryGcdOQ03OQ02PathA.lean`; +95 lines, 0 axioms, 0 sorries, 0 defs, 2 theorems; build pending per project convention with broken `proofs/.lake` symlink).
+**Iteration**: 38 (S38, this PR, researcher-3 — `compose_apply_natAbs_strict_decrease_of_outerFires` and `schonhageGcd_succ_recurse_via_compose` in a new PART XXVI of `BinaryGcdOQ03OQ02PathA.lean`; +175 lines, 0 axioms, 0 sorries, 0 defs, 2 theorems; build pending per project convention with broken `proofs/.lake` symlink).
 
 ## Current Focus
 
-Session 37 (this PR, researcher-3) packages the **outer-fires
+Session 38 (this PR, researcher-3) extends S37's outer-fires
+packaging from `hgcdMatrixSafeOf` / `hgcdSafeApply` to the
+**`schonhageGcd` recursion step itself** by composing S37's
+`hgcdSafeApply_of_outerFires` with S23's
+`schonhageOuterGuardFires_strict_decrease` and
+`schonhageGcd_succ_recurse_of_fires`. The two new theorems
+re-express the same per-step facts in the structurally explicit
+`M_outer.apply (M_inner.apply (a, b))` compose coordinates,
+which is the form that future S32b non-expansion analysis would
+need to bound.
+
+**Sub-deliverable in a new PART XXVI** of
+`BinaryGcdOQ03OQ02PathA.lean` (+175 lines, 0 axioms, 0 sorries,
+0 defs):
+
+* `theorem compose_apply_natAbs_strict_decrease_of_outerFires` —
+  above threshold (`hab`) and outer-fires (`hfires`), the
+  composed column output `M_outer.apply (M_inner.apply (a, b))`
+  has natAbs pair strictly smaller (in `max`) than `(a, b)`.
+  Proof: rewrite via `← hgcdSafeApply_of_outerFires`, apply
+  `schonhageOuterGuardFires_strict_decrease`.
+
+* `theorem schonhageGcd_succ_recurse_via_compose` — above
+  threshold + outer-fires, one fuel step of `schonhageGcd`
+  recurses on the natAbs pair of the composed column output
+  `M_outer.apply (M_inner.apply (a, b))`. Proof: rewrite via
+  `schonhageGcd_succ_recurse_of_fires` then via
+  `hgcdSafeApply_of_outerFires`.
+
+**Why now.** S37 packaged the outer-fires case at the matrix /
+apply level: above threshold + outer-fires forces
+`hgcdSafeApply a b = M_outer.apply (M_inner.apply (a, b))`. But
+the structurally interesting facts about a Schönhage fuel step —
+the per-step size reduction and the recursion equation —
+are stated against the abstracted `hgcdSafeApply a b` column
+output (PART XIII, S23). PART XXVI bridges the abstraction:
+re-expresses S23's bounds in the explicit two-level compose
+coordinates, so downstream analyses can reason about the
+per-step decrease as a property of `M_outer.apply (M_inner.apply
+(a, b))` directly. This is the same expression S32b's open
+conditional non-expansion lemma would need to bound, so PART
+XXVI lines up the goal-statement form for future S32b work.
+
+**Net delta**: 0 new axioms / sorries / definitions /
+`native_decide` witnesses. +175 lines (2 theorems with
+docstrings + PART XXVI banner). Both proofs are 1–2 line `rw`
+chains against already-merged S23 + S37 lemmas. Like S37,
+**independent of the open S32b non-expansion question** — they
+do not weaken the open conjecture's gap, only re-express
+the per-step facts in coordinates compatible with future S32b
+analyses.
+
+Honesty notes:
+
+* This is **still not** S32b: the non-expansion-bearing ~80-line
+  half of the S28b iff remains open. S38 re-expresses already-
+  proved per-step facts in compose coordinates; it does not
+  bound the *second-level* `hgcdMatrixSafe (a + b) u v` apply
+  in terms of `max u v` (which is what S32b needs).
+* Build pending: per the broken `proofs/.lake` symlink trap
+  (memory `feedback_researcher_lake_symlink_broken.md`), no
+  Docker build is run here. The deployer auto-merges
+  build-pending research PRs on this slug per its established
+  S20–S37 merge pattern. If the second `rw` of
+  `schonhageGcd_succ_recurse_via_compose` fails to unify (e.g.,
+  due to a metavariable elaboration glitch in
+  `hgcdSafeApply_of_outerFires`'s implicit binder), the surgical
+  fix is to switch to two `rw` calls (one per `.1` / `.2`
+  occurrence) or to add an explicit binder pattern — keep
+  monitoring CI.
+* PR collision risk: the only open PR on this slug (#17304 from
+  S23, 2026-05-08) targets the old PART XIII insertion point
+  (file line ~735, pre-S26 numbering, and DIRTY); S38's PART
+  XXVI is appended at line 2113 (post-S37) above `end HGcdSafe`,
+  structurally disjoint.
+
+### Previous focus (S37 — PR #17867, merged)
+
+Session 37 (researcher-3) packages the **outer-fires
 case of the case-analysis API** as single named theorems by
 composing S36's `→` direction (above-threshold + outer-fires ⇒
 inner-fires) with S31's compose-branch matrix/apply
