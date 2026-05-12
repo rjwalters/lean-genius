@@ -4,12 +4,83 @@
 **Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-12 (Iteration 22, researcher-5)
-**Iteration**: 22
+**Last Updated**: 2026-05-12 (Iteration 23, researcher-1)
+**Iteration**: 23
 
 ## Current Focus
 
-Iteration 22 (2026-05-12, this PR, researcher-5): **`(n/2)^√n`
+Iteration 23 (2026-05-12, this PR, researcher-1): **Small-prime
+power-product envelope (LHS half of the Hanson bridge, without
+PR #17619)** — bypasses the long-stale Iter-17 support-reduction PR
+(#17619, OPEN since 2026-05-09) by working directly on the small-prime
+filter `{p ≤ n+1 : p.Prime ∧ p² ≤ n}` for both factors of Iter 19's
+pointwise inequality. Two new theorems + one decide-witness example
+(+107 lines, sorry-free, axiom-free):
+
+* `prod_prime_pow_pred_le_prod_div_prime_small (n : ℕ)` — filtered
+  Iter 19. Statement: `∏_{p² ≤ n} p^(Nat.log p n - 1) ≤ ∏_{p² ≤ n} (n/p)`.
+  Proof: `Finset.prod_le_prod` applied pointwise to Iter 18's
+  `prime_pow_pred_le_div`. The hypothesis `p ≤ n` (needed by Iter 18)
+  is recovered from `p ∈ Finset.range (n + 1)` by `omega`. The
+  `p ^ 2 ≤ n` clause from the filter is unused in this proof; it
+  defines the index set and matches the small-prime filter shape
+  used pervasively in Iters 20–22.
+* `prod_prime_pow_pred_small_le_pow_sqrt {n : ℕ} (hn : 2 ≤ n)` —
+  **main lemma** of this iter. Statement:
+  `∏_{p² ≤ n} p^(Nat.log p n - 1) ≤ (n / 2) ^ √n`. Proof: composition
+  of the filtered Iter 19 above with Iter 22's
+  `prod_div_small_prime_le_pow_sqrt`. Three-line term-mode proof.
+* `example` (decide-witness at `n = 10`): LHS = `2² · 3¹ = 12`,
+  `Nat.sqrt 10 = 3`, RHS = `5³ = 125`.
+
+### Strategic value
+
+Iter 23 is the **LHS half of the Hanson bridge**, expressed entirely
+on the small-prime filter. The full Hanson assembly reduces to:
+
+1. **Full-filter → small-filter collapse** on Iter 19's LHS (Iter 17's
+   support-reduction lemma, PR #17619 OPEN since 2026-05-09): once
+   available, `prod_prime_pow_pred_le_prod_div_prime_small` becomes
+   equivalent to `prod_prime_pow_pred_le_prod_div_prime`, and Iter 23's
+   envelope upgrades to the **full correction-factor envelope**
+   `∏_{p ≤ n, p.Prime} p^(Nat.log p n - 1) ≤ (n/2)^√n`. Chained with
+   Iter 16's `lcmRange_eq_primorial_mul_prod_prime_pow_pred` gives the
+   structural Chebyshev envelope `lcmRange n ≤ primorial n · (n/2)^√n`.
+2. **Primorial bound** `primorial n ≤ 4^n` (Mathlib's
+   `Nat.primorial_le_4_pow`) yields `lcmRange n ≤ 4^n · (n/2)^√n`.
+3. **Asymptotic threshold** for `4^n · (n/2)^√n ≤ 3^n` (small `n`
+   handled by `hanson_n1`–`hanson_n20`).
+
+This iter is **orthogonal to PR #17619** and lands the small-prime
+half of the bridge regardless of whether #17619 ever lands. If #17619
+remains stalled, a future iter can pursue a direct in-file proof of
+the support reduction (modelled after #17619's outline).
+
+### File delta
+
++107 lines (1140 → 1247), +2 theorems + 1 decide-witness example
+(57 → 59 by convention regex). Definitions (1) / sorries (0) /
+axiomCount (1) unchanged. Build pending — proof bodies use only
+Mathlib API already exercised in this file:
+
+* `Finset.prod_le_prod` (Iter 19, line 791).
+* `Finset.mem_filter`, `Finset.mem_range`, `omega` (used throughout).
+* `prime_pow_pred_le_div` (Iter 18, line 740).
+* `prod_div_small_prime_le_pow_sqrt` (Iter 22, line 996).
+
+### Compatibility with open PRs
+
+* **#17619 (OPEN, Iter 17 support reduction, own prior session)**:
+  **compatible** — Iter 23 deliberately bypasses #17619 by working on
+  the small-prime side directly. Once #17619 lands, the new
+  `prod_prime_pow_pred_le_prod_div_prime_small` is provably equal to
+  `prod_prime_pow_pred_le_prod_div_prime` (its full-filter
+  counterpart), so the envelope upgrades automatically.
+* **#17551 (OPEN, Iter 15 alternate)**: orthogonal, no overlap.
+
+### Iteration 22 (background, merged base, #17861)
+
+Iteration 22 (2026-05-12, researcher-5): **`(n/2)^√n`
 correction-factor envelope** — chains Iter 20's cardinality bound
 `small_prime_card_le_sqrt` (`|{p prime : p² ≤ n}| ≤ √n`) with Iter 21's
 multiplicative combination `prod_div_small_prime_le_pow_card`
@@ -782,36 +853,30 @@ Currently blocked on:
 
 ## Next Action
 
-**Iteration 22 (this PR, build pending)**: `(n/2)^√n` correction-factor
-envelope — `prod_div_small_prime_le_pow_sqrt` chains Iter 20 (cardinality
-bound) + Iter 21 (pow_card bound) via `Nat.pow_le_pow_right` under the
-hypothesis `2 ≤ n`. File delta: +58 lines (1082 → 1140), +1 theorem +
-1 decide-witness example (56 → 57 via convention regex). Sorries (0) /
-axiom count (1) / definitions (1) unchanged.
+**Iteration 23 (this PR, build pending)**: small-prime power-product
+envelope (LHS half of the Hanson bridge, without PR #17619). New
+theorems `prod_prime_pow_pred_le_prod_div_prime_small` (filtered
+Iter 19) and `prod_prime_pow_pred_small_le_pow_sqrt` (chained envelope
+under `2 ≤ n`), plus a decide-witness example at `n = 10`. File delta:
++107 lines (1140 → 1247), +2 theorems + 1 example (57 → 59 via
+convention regex). Sorries (0) / axiom count (1) / definitions (1)
+unchanged.
 
-**Iteration 23 candidate (large-prime support assembly)**: assuming
-PR #17619 (Iter 17 support reduction, OPEN since 2026-05-09) lands,
-combine its `lcmRange_correction_supported_on_small_primes` with the
-new `prod_div_small_prime_le_pow_sqrt` to get the **full correction-
-factor envelope**
+**Iteration 24 candidate (direct support-reduction lemma)**: if
+PR #17619 (Iter 17, OPEN since 2026-05-09) remains stalled, replicate
+its `lcmRange_correction_supported_on_small_primes` directly in-file,
+following the outline in #17619's PR body: `Finset.prod_subset` with
+the small-prime filter as the smaller index; "complement is 1" uses
+`Nat.log_lt_iff_lt_pow` to derive `Nat.log p n - 1 = 0` for `p² > n`.
+Once this lands, Iter 23's `prod_prime_pow_pred_small_le_pow_sqrt`
+auto-upgrades to the full correction-factor envelope
+`∏_{p ≤ n, p.Prime} p^(Nat.log p n - 1) ≤ (n/2)^√n` over all primes.
 
-```
-∏_{p prime, p ≤ n} p ^ (log_p n - 1) ≤ (n / 2) ^ √n   (n ≥ 2)
-```
-
-over **all** primes (not just small ones). The support-reduction step
-collapses `p² > n → p^(log_p n - 1) = 1`, so the full product equals
-the small-prime product, whose bound is precisely the new Iter 22 lemma.
-
-If #17619 doesn't land, this Iter-23 candidate can instead pursue a
-direct proof of the support-reduction (modelled after Iter 17's outline
-in PR #17619's description) for closure within this OQ.
-
-**Iteration 24 candidate (4^n · (n/2)^√n assembly)**: combine
+**Iteration 26 candidate (4^n · (n/2)^√n assembly)**: combine
 `Nat.primorial_le_4_pow` (Mathlib, exists) with Iter 16's factorisation
-`lcmRange n = primorial n · ∏ p^(log_p n - 1)` (#17578) and Iter 23's
-full correction-factor envelope to obtain the **structural Chebyshev
-envelope**
+`lcmRange n = primorial n · ∏ p^(log_p n - 1)` (#17578) and the
+full correction-factor envelope (Iter 24 once support-reduction lands)
+to obtain the **structural Chebyshev envelope**
 
 ```
 lcmRange n ≤ 4^n · (n / 2) ^ √n  (n ≥ 2)
@@ -825,7 +890,7 @@ For small `n`, the existing direct numerical Hanson lemmas
 (`hanson_n1`–`hanson_n20`) suffice. The asymptotic-threshold computation
 is the remaining gap.
 
-**Iteration 25 candidate (asymptotic threshold)**: identify the
+**Iteration 27 candidate (asymptotic threshold)**: identify the
 smallest `n₀` for which `4^n · (n/2)^√n ≤ 3^n` holds for all `n ≥ n₀`,
 and verify the boundary case `n₀` numerically. Likely `n₀ ∈ {30, 50}`
 range based on the `(4/3)^n` vs `(2/n)^√n` crossover analysis. Could
