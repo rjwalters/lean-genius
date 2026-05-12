@@ -4,8 +4,136 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-11 (S34 — researcher-10, drop-suffix + take/drop split helpers)
-**Iteration**: 34
+**Last Updated**: 2026-05-11 (S35 — researcher-10, suffix-as-`Sym` packaging)
+**Iteration**: 35
+
+## S35 Summary (2026-05-11, researcher-10)
+
+**Mode**: ACT (rotation infrastructure packaging — bundle the S34
+`_drop_card` / `_drop_le` lemmas (PR #17695, merged) into a single
+`Sym (Fin n) (c - j)` def + `_le` lemma. Symmetric counterpart of the
+in-flight PR #17680 `rotateSortedListPrefixSym` packaging (which bundles
+the `_take_*` block at the analogous `j ≤ c`-conditioned anchor). The
+two `Sym`-level packagings land independently in either order — each
+references already-merged S34 lemmas at its own anchor point.).
+
+### Deliverable
+
+Two new private declarations in
+`proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`, inserted right after
+`rotateSortedList_take_add_drop` (S34, line 1019) and before the
+`totalSym` block (line 1027 pre-edit):
+
+```lean
+private def rotateSortedListSuffixSym {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) : Sym (Fin n) (c - j) :=
+  ⟨((rotateSortedList M k).drop j : Multiset (Fin n)),
+   rotateSortedList_drop_card M k j⟩
+
+private lemma rotateSortedListSuffixSym_le {n c : ℕ} (M : Sym (Fin n) c)
+    (k j : ℕ) :
+    (rotateSortedListSuffixSym M k j).1 ≤ M.1 :=
+  rotateSortedList_drop_le M k j
+```
+
+### Why this completes the suffix side
+
+S34 (PR #17695, merged) added the two raw multiset facts
+`rotateSortedList_drop_card` (cardinality `c - j`) and
+`rotateSortedList_drop_le` (`≤ M.1`). The `Sym (Fin n) (c - j)`
+packaging is the natural value-level wrapper: it carries the
+cardinality witness in the `.2` field of the `Sym` record, so any
+downstream consumer holding a `rotateSortedListSuffixSym M k j` value
+gets both the correct typed length and the submultiset witness for free.
+
+Concretely, in the 2B.4' refined-codomain bijection the inverse map
+must produce a `(P', Q') : Sym (Fin n) (a + 1) × Sym (Fin n) (b - 1)`
+pair from a rotation index `k` and split index `j = a + 1`. The
+prefix half is packaged by PR #17680's `rotateSortedListPrefixSym`
+(under `hj : a + 1 ≤ a + b`, i.e. `1 ≤ b`); this PR's
+`rotateSortedListSuffixSym` packages the suffix half (no precondition
+needed — the `c - j` natural-subtraction collapses to `b - 1` when
+`j = a + 1, c = a + b, b ≥ 1`).
+
+No precondition `j ≤ c` is needed here because `c - j = 0` when
+`j ≥ c`, and `Sym (Fin n) 0` is canonically the empty
+`⟨∅, by simp⟩`. This contrasts with PR #17680's `_PrefixSym` which
+*does* require `hj : j ≤ c` to ensure `min j c = j` matches the
+declared `Sym (Fin n) j` cardinality.
+
+### File deltas
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 2031 → 2081 lines
+  (+50: 1 new private def + 1 new private lemma with full docstrings +
+  S35 section sub-header).
+- Theorems / lemmas (canonical PR #17518/#17569 convention,
+  `@[simp]`-prefixed excluded): +1 (`rotateSortedListSuffixSym_le`).
+  No `@[simp]` declarations added.
+- Definitions: +1 (`rotateSortedListSuffixSym`); 10 → 11.
+- Sorry count: 2 (unchanged).
+- Axiom count: 0 (unchanged).
+- meta.json: `lineCount` 2031 → 2081; `theoremCount` 44 → 45;
+  `definitionCount` 10 → 11; both `meta.*` and `leanFile.*` fields
+  updated.
+
+### Coexistence with PR #17680 (prefix packaging)
+
+PR #17680 (researcher-9, opened 2026-05-11 17:54Z, OPEN with `_take_*`
++ `rotateSortedListPrefixSym` def at the post-`_mod` (line 950)
+anchor). This PR (S35) inserts at the post-`_take_add_drop` (line 1019)
+anchor, ~70 lines after #17680's anchor. The two PRs touch disjoint
+line ranges, depend on already-merged S34 lemmas (PR #17695), and
+introduce different declaration names — both can land in any order
+without rebase conflict.
+
+### Build status
+
+Pending. The parent file `BallotProblemOQ03OQ02.lean` is broken on
+origin/main (~24 errors lines 1911–2386 per
+`feedback_researcher_ballot_oq03oq02_parent_break.md` 2026-05-09), so
+`BallotProblemOQ03OQ01OQ01OQ01.lean` (which transitively imports
+through the OQ03OQ01 / OQ03 chain) cannot be Docker-built until that
+parent break is repaired by a mechanic PR. Title precedent: S25–S34
+PRs all merged with `(build pending — parent OQ03OQ02 break)` modifier.
+
+Each new declaration was verified by inspection against the same
+Mathlib v4.26.0 API surface used by the existing `rotateSortedList`
+family:
+
+* `Sym` constructor `⟨multiset, card_witness⟩` — the standard subtype
+  pattern used by `totalSym` (line 1027 pre-edit) and
+  `rotateSortedListPrefixSym` (PR #17680).
+* `rotateSortedList_drop_card` (S34, PR #17695, line 978 in current
+  origin/main file) — the cardinality witness folded into the def's
+  `.2` field.
+* `rotateSortedList_drop_le` (S34, PR #17695, line 992 in current
+  origin/main file) — re-exposed as the `_le` lemma's body via
+  reference (no proof transformation needed; `Sym.1` projects through
+  the constructor).
+
+Build risk: very low. The def is a pure structural wrapper with no
+new tactics or imports; the lemma is a one-line projection through
+`.1`.
+
+### Next action (S36+)
+
+Pick one of (unchanged from S34, modulo the now-complete prefix +
+suffix `Sym`-packaging):
+
+* **2B.4' refined-codomain bijection (~50 lines)**: standing on the
+  complete prefix + suffix + split-identity `Sym`-level packaging
+  (S31 + S32 + S33 + S34 + PR #17680 + this PR), define
+  `firstDescentRotation : Sym (Fin n) (a + b) → Sym (Fin n) (a + 1) →
+  Fin (a + b)` (or analogous canonical rotation index for any `P' :
+  Sym (Fin n) (a + 1)` with `P'.1 ≤ M.1`) and the bijection between
+  `{bad P}` and the refined `(P', k)` codomain. Heaviest step;
+  commits to the cycle-lemma proof shape.
+* **Mathlib-side cycle lemma (~200 lines, mathlib4 PR)**: implement the
+  Lyndon / Dvoretzky-Motzkin Cycle Lemma for sorted multiset prefixes
+  as a Mathlib contribution. Independent of this proof; reusable
+  across other gallery work.
+* **Punt to k=3 SSYT** (the other open sorry, ~300 lines RSK /
+  algebraic LGV); independent of the cycle-lemma chain.
 
 ## S34 Summary (2026-05-11, researcher-10)
 
