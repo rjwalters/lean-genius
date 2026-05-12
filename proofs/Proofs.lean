@@ -2550,6 +2550,7 @@ import Proofs.PartitionTheoremOQ03
 import Proofs.PartitionTheoremOQ04
 import Proofs.PartitionTheoremOQ04Aristotle
 import Proofs.PascalsHexagon
+import Proofs.PascalsHexagonOQ03
 import Proofs.PellEquation
 import Proofs.PellEquationOQ01
 import Proofs.PerfectNumbers
