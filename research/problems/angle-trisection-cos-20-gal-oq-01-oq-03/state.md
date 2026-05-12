@@ -1,10 +1,39 @@
 # Current State
 
-**Phase**: ACT (cyclotomic anchor verified per-prime across full {3, 5, 7, 11, 13} set; general lift pending)
-**Since**: 2026-05-12T09:25:00Z
-**Iteration**: 6
+**Phase**: ACT (S7 SCAFFOLD landed — divisor enumeration for uniform bridge)
+**Since**: 2026-05-12T10:55:00Z
+**Iteration**: 7
 
 ## Current Focus
+
+S7 SCAFFOLD — Combinatorial backbone (step 1 of 6) for the uniform
+cyclotomic bridge identity `cyclotomic (2 * p) ℤ * (X + 1) = X ^ p + 1`
+(odd prime `p`). Lands `divisors_two_mul_odd_prime`:
+
+  `Nat.divisors (2 * p) = {1, 2, p, 2 * p}` for `p` odd prime, 0 sorries.
+
+Proof: `ext k`, parity-split on `k`. Even branch: `k = 2 * m`, cancel `2`
+via `Nat.eq_of_mul_eq_mul_left` to extract `m ∣ p`, then primality
+(`Nat.Prime.eq_one_or_self_of_dvd`) gives `m ∈ {1, p}` hence `k ∈ {2, 2*p}`.
+Odd branch: `Nat.Coprime k 2` (from `¬ 2 ∣ k`), then
+`Nat.Coprime.dvd_of_dvd_mul_left` extracts `k ∣ p`, primality closes.
+
+This enables the next session (S8) to apply
+`Polynomial.prod_cyclotomic_eq_X_pow_sub_one` at `n = 2 * p` and substitute
+the divisor enumeration, completing steps 2–6 of the uniform bridge:
+
+  3. `Φ_1 = X - 1`, `Φ_2 = X + 1` ⇒ product becomes
+     `(X-1)(X+1) Φ_p Φ_{2p} = X^{2p} - 1`.
+  4. `prod_cyclotomic_eq_X_pow_sub_one` at `n = p` ⇒
+     `(X-1) Φ_p = X^p - 1`.
+  5. Algebraic identity `X^{2p} - 1 = (X^p-1)(X^p+1)`.
+  6. Cancel `(X-1) Φ_p` (monic, nonzero in ℤ[X], an ID).
+
+File grows: 750 → 835 lines (+85), 55 → 56 theorems (+1 lemma).
+Sorries: 1 (unchanged — the general conjecture).
+Axioms: 0 (unchanged).
+
+## Previous focus (S6 — `cyclotomic_{22,26}_eq` + 5-prime bridge)
 
 S6 ACT — Cyclotomic anchor extension via Tactic A2 (per-prime). S5 covered
 p ∈ {3, 5, 7}; S6 extends the same template to p ∈ {11, 13}, giving the
@@ -80,23 +109,28 @@ remains the deeper gap (~200–400 lines).
 
 ## Next Action
 
-**S7 next action**: Build the uniform cyclotomic bridge for odd primes
-(now that the per-prime range matches the gallery's explicit `r` definition).
+**S8 next action**: Finish the uniform cyclotomic bridge using
+`divisors_two_mul_odd_prime` (S7) as the combinatorial input.
 
-### Tactic A1 (primary): The (X+1) factorization identity
+### Tactic A1 (primary): The (X+1) factorization identity — S8
 Prove the general identity
   `(cyclotomic (2 * p) ℤ) * (X + 1) = X^p + 1`
-for odd prime p ≥ 3. Derivation:
-1. `prod_cyclotomic_eq_X_pow_sub_one` at n = 2p gives
-   `Φ_1 · Φ_2 · Φ_p · Φ_{2p} = X^{2p} - 1`.
-2. Substitute `Φ_1·Φ_p = (X-1)·Φ_p = X^p - 1`
-   (`cyclotomic_prime_mul_X_sub_one`).
-3. Result: `(X+1) · Φ_{2p} · (X^p - 1) = (X^p-1)(X^p+1)`.
-4. Cancel (X^p - 1) (monic, nonzero in ℤ[X], an ID).
+for odd prime p ≥ 3. Derivation now uses the S7 helper directly:
+1. `Polynomial.prod_cyclotomic_eq_X_pow_sub_one` at n = 2p gives
+   `∏ d ∈ Nat.divisors (2*p), Φ_d = X^{2p} - 1`.
+2. Rewrite using `divisors_two_mul_odd_prime` (S7) to get the four-term
+   product `Φ_1 · Φ_2 · Φ_p · Φ_{2p} = X^{2p} - 1`.
+3. Substitute `Φ_1 = X - 1`, `Φ_2 = X + 1`, then
+   `(X-1) · Φ_p = X^p - 1` (via `prod_cyclotomic_eq_X_pow_sub_one` at
+   n = p, using `Nat.divisors_prime hp = {1, p}`).
+4. Result: `(X+1) · Φ_{2p} · (X^p - 1) = X^{2p} - 1 = (X^p - 1)(X^p + 1)`.
+5. Cancel `(X^p - 1)` (monic, nonzero in ℤ[X], an ID).
 
-This needs `Nat.divisors (2*p) = {1, 2, p, 2*p}` for p odd prime,
-provable via `Nat.divisors_mul_of_coprime` (gcd(2,p)=1 for odd p)
-plus `Nat.divisors_prime`. Estimated ~50–80 lines.
+Estimated ~50 lines on top of the S7 SCAFFOLD.
+
+### S7 DONE: Combinatorial backbone
+Lemma `divisors_two_mul_odd_prime : Nat.divisors (2*p) = {1, 2, p, 2*p}`
+for `p` odd prime. Parity-split proof, 0 sorries.
 
 ### Tactic A2 (DONE in S6): Per-prime extension to {11, 13}
 Completed. Both `cyclotomic_22_eq` (degree-22 ring identity) and
@@ -117,11 +151,12 @@ calculation or the local-field uniformizer theorem.
 
 ## Attempt Counts
 
-- Total attempts: 6 (S1 OBSERVE, S2 ACT Level-2, S3 ACT norm-Vieta,
+- Total attempts: 7 (S1 OBSERVE, S2 ACT Level-2, S3 ACT norm-Vieta,
   S4 ACT trace-Vieta, S5 ACT cyclotomic anchor {3,5,7},
-  S6 ACT cyclotomic anchor extension {11,13}).
-- Current approach attempts: 5 (Level-2 + S3 norm + S4 trace +
-  S5 cyclotomic anchor + S6 cyclotomic extension).
+  S6 ACT cyclotomic anchor extension {11,13},
+  S7 SCAFFOLD divisor enumeration for uniform bridge).
+- Current approach attempts: 6 (Level-2 + S3 norm + S4 trace +
+  S5 cyclotomic anchor + S6 cyclotomic extension + S7 SCAFFOLD).
 - Approaches tried:
   - S1: cyclotomic ramification, surveyed only.
   - S2: per-prime explicit verification + uniform statement (sorry on general case).
@@ -129,10 +164,11 @@ calculation or the local-field uniformizer theorem.
   - S4: `r_subLeadingCoeff_eq_neg_p` + `r_3_traceCoeff` (trace-Vieta).
   - S5: cyclotomic anchor Φ_{2p}(-1) = p for p ∈ {3, 5, 7} (per-prime) + bridge to `r p` constant.
   - S6: cyclotomic anchor extension Φ_{2p}(-1) = p for p ∈ {11, 13} (per-prime) + bridge + packaged 5-prime conjunction.
+  - S7: combinatorial backbone `divisors_two_mul_odd_prime` (parity-split, 0 sorries) — step 1 of 6 for uniform bridge.
 
 ## Key Files
 
-- `proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean` — **extended in S6** (750 lines, +133 vs S5).
+- `proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean` — **extended in S7** (835 lines, +85 vs S6).
   Parametric `r : ℕ → ℤ[X]` covers p ∈ {3, 5, 7, 11, 13}.
   Eisenstein verification for all five primes. Irreducibility for p ∈ {11, 13}.
   Two structural Vieta lemmas (`r_constantCoeff_eq_signed_p` for the norm,
@@ -144,6 +180,10 @@ calculation or the local-field uniformizer theorem.
   via explicit `cyclotomic_{11,13,22,26}_eq` + `cyclotomic_{twentytwo,twentysix}_eval_neg_one`,
   plus bridge `r_{11,13}_constantCoeff_eq_cyclotomic` and packaged
   5-prime conjunction `r_constantCoeff_eq_cyclotomic_full`.
+  **S7**: combinatorial backbone `divisors_two_mul_odd_prime`
+  (`Nat.divisors (2*p) = {1, 2, p, 2*p}` for `p` odd prime; 0 sorries)
+  — step 1 of 6 for the uniform bridge identity. Detailed proof outline
+  in module docstring for the S7 section.
   General conjecture sorry (unchanged).
 - `src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/` — **refreshed in S6**.
   Gallery entry: meta.json (status: axiomatized, sorries: 1, lineCount 750, theoremCount 55,
