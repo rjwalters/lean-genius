@@ -42,7 +42,7 @@
     "assumptions": "3 axioms: channel_coding_achievability, channel_coding_converse, bsc_capacity_eq. 11 theorems proved (jointDist properties, channelMI_le_log_card, capacity_nonneg, channelMI_le_capacity, capacity_le_log_card, rate/BSC bounds, fano_inequality discharged via Proofs.ShannonChannelCodingOQ02OQ01). 0 sorries.",
     "dateAdded": "2026-03-21",
     "axiomCount": 3,
-    "lineCount": 275,
+    "lineCount": 276,
     "prerequisites": [
       "Shannon entropy and mutual information",
       "Discrete memoryless channels and capacity",
@@ -172,7 +172,7 @@
     ],
     "opens": [],
     "namespace": "InformationTheory.ChannelCoding",
-    "lineCount": 275,
+    "lineCount": 276,
     "axiomCount": 3,
     "theoremCount": 11,
     "definitionCount": 8,
