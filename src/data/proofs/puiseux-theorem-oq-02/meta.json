@@ -49,16 +49,101 @@
       "**Mathlib Gap**: The main algebraic closure theorem requires HahnSeries ℚ K to be IsAlgClosed when K is — this instance is not yet in Mathlib 4.26, blocking full formalization of the structural theorem."
     ],
     "prerequisites": [
-      "Formal power series and Hahn series",
-      "Algebraic closure and algebraically closed fields",
-      "Typeclass inheritance in Lean 4"
+      "Formal power series and Hahn series (Mathlib `RingTheory.HahnSeries.Basic`)",
+      "Algebraic closure and algebraically closed fields (`IsAlgClosed`)",
+      "Typeclass inheritance and `haveI`/`inferInstance` patterns in Lean 4",
+      "Univariate Puiseux's theorem (the parent gallery entry `puiseux-theorem`)",
+      "Well-ordered support of Hahn series (lex order on $\\mathbb{Q}^n$)",
+      "Recursive definitions on $\\mathbb{N}$ in Lean 4 (`Nat.rec`)",
+      "Characteristic-zero hypothesis and its role in Puiseux's theorem"
     ]
   },
+  "mainTheorems": [
+    {
+      "name": "MultiHahnSeries",
+      "type": "definition",
+      "statement": "$\\text{MultiHahnSeries}(0, K) = K$ and $\\text{MultiHahnSeries}(n+1, K) = \\text{HahnSeries}(\\mathbb{Q}, \\text{MultiHahnSeries}(n, K))$",
+      "significance": "Models the iterated Puiseux series tower $K \\subset K\\{\\{x_1\\}\\} \\subset K\\{\\{x_1\\}\\}\\{\\{x_2\\}\\} \\subset \\cdots$ as a type-level recursion on depth.",
+      "description": "The n-fold iterated Hahn series construction, defined by recursion on n. Each step adds one variable with rational exponents."
+    },
+    {
+      "name": "instCommRingMultiHahn",
+      "type": "instance",
+      "statement": "$\\forall K\\text{ CommRing},\\; \\forall n \\in \\mathbb{N},\\; \\text{CommRing}(\\text{MultiHahnSeries}(n, K))$",
+      "significance": "Establishes that the iterated Puiseux series construction stays inside the category of commutative rings. The proof uses `haveI : CommRing ... := ih; exact inferInstance` — Mathlib's existing `HahnSeries.instCommRing` propagates through the recursion without manual hand-rolling.",
+      "description": "CommRing instance for MultiHahnSeries n K, proved by induction on n. Base case is K; inductive step uses Mathlib's HahnSeries CommRing instance."
+    },
+    {
+      "name": "IsMultiPuiseuxSeries",
+      "type": "definition",
+      "statement": "$\\text{IsMultiPuiseux}(0, a) := \\top$; $\\text{IsMultiPuiseux}(n+1, f) := (\\exists d \\in \\mathbb{N}^+, \\text{supp}(f) \\subseteq d^{-1}\\mathbb{Z}) \\wedge (\\forall q,\\, \\text{IsMultiPuiseux}(n, f_q))$",
+      "significance": "The levelwise common-denominator predicate distinguishing genuine Puiseux series from general Hahn series. Required to express the eventual algebraic closure statement (an element of $\\text{MultiHahnSeries}(n,K)$ that is *not* multi-Puiseux is a Hahn series of unbounded denominator and may live outside the iterated Puiseux subfield).",
+      "description": "Recursive predicate: at level 0 vacuous; at level n+1, common-denominator on outer exponents plus recursive predicate on each coefficient."
+    },
+    {
+      "name": "isMultiPuiseux_base",
+      "type": "supporting",
+      "statement": "$\\forall a \\in K,\\; \\text{IsMultiPuiseux}(0, a)$",
+      "significance": "Base case of the predicate; proof is `trivial`. Anchors the recursion so that the predicate terminates cleanly at depth 0.",
+      "description": "Base field elements vacuously satisfy IsMultiPuiseuxSeries."
+    },
+    {
+      "name": "isMultiPuiseux_zero",
+      "type": "supporting",
+      "statement": "$\\forall n \\in \\mathbb{N},\\; \\text{IsMultiPuiseux}(n, 0)$",
+      "significance": "The zero element of every iterated Puiseux ring is itself multi-Puiseux — the predicate is well-defined on the additive identity. Crucial for ring-theoretic arguments that would treat the multi-Puiseux subset as a sub-CommRing.",
+      "description": "The zero series satisfies the multi-Puiseux predicate at every level. Witness: d = 1 (vacuous since support is empty)."
+    },
+    {
+      "name": "multiHahn_succ",
+      "type": "supporting",
+      "statement": "$\\text{MultiHahnSeries}(n+1, K) = \\text{HahnSeries}(\\mathbb{Q}, \\text{MultiHahnSeries}(n, K))$",
+      "significance": "Definitional equality serving as a rewrite lemma for inductive proofs over the iterated construction. Together with `multiHahn_zero` and `multiHahn_one`, gives explicit names to the recursion's pattern-match cases.",
+      "description": "Recursive case equality, proved by rfl. Helper for rewriting in subsequent proofs."
+    }
+  ],
+  "references": [
+    {
+      "author": "Puiseux, V.",
+      "year": 1850,
+      "title": "Recherches sur les fonctions algébriques",
+      "venue": "Journal de Mathématiques Pures et Appliquées 15: 365–480",
+      "note": "Original proof that the field of fractional-power formal series is algebraically closed (univariate case). The parent `puiseux-theorem` gallery entry formalizes a Lean version of this."
+    },
+    {
+      "author": "McDonald, J.",
+      "year": 1995,
+      "title": "Fiber polytopes and fractional power series",
+      "venue": "Journal of Pure and Applied Algebra 104(2): 213–233",
+      "note": "Established the algebraic closure of the multivariate Laurent series field via iterated Puiseux series in $n$ variables. The construction modeled by `MultiHahnSeries` in this file follows McDonald's iteration scheme."
+    },
+    {
+      "author": "Aroca, F., Cano, J., and Jung, F.",
+      "year": 2003,
+      "title": "Power series solutions for non-linear PDEs",
+      "venue": "Proceedings of the International Symposium on Symbolic and Algebraic Computation (ISSAC), 15–22",
+      "note": "Refined McDonald's iterated Puiseux series and developed effective algorithms. Clarified that the lexicographic ordering on $\\mathbb{Q}^n$ obtained from the iterated construction is essential — naive Hahn series over $\\mathbb{Q}^n$ with the product order are *not* algebraically closed."
+    },
+    {
+      "author": "The Mathlib Community",
+      "year": 2026,
+      "title": "Mathlib.RingTheory.HahnSeries.Basic",
+      "venue": "Mathlib4 (accessed 2026)",
+      "note": "Provides `HahnSeries Γ R` for ordered group $\\Gamma$ and ring $R$, with `CommRing`, `Zero`, and supporting instances. This file uses the specialization $\\Gamma = \\mathbb{Q}$ to model one Puiseux variable per iteration depth."
+    },
+    {
+      "author": "Newman, M.",
+      "year": 2001,
+      "title": "Algebraic Number Theory",
+      "venue": "Springer GTM 322, Chapter 9 (Valued fields)",
+      "note": "Standard graduate reference for the connection between Puiseux series and the algebraic closure of local fields. Useful for understanding *why* the iterated Hahn series construction gives algebraic closure in the multivariate case."
+    }
+  ],
   "crossReferences": [
     {
-      "targetId": "puiseux-theorem",
+      "proofId": "puiseux-theorem",
       "relationship": "extends",
-      "description": "Parent formalization proving the univariate Puiseux theorem structure; this file generalizes it to n variables via iterated HahnSeries"
+      "description": "Parent formalization proving the univariate Puiseux theorem structure (algebraic closure of $K\\{\\{x\\}\\}$ for alg-closed $K$ of char 0). This file generalizes it to $n$ variables via iterated HahnSeries, recovering the parent's setting at depth $n = 1$ (`single_variable_is_univariate`)."
     }
   ],
   "leanFile": {
