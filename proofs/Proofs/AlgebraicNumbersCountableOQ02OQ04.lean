@@ -78,13 +78,22 @@ The proof rests on the Mathlib infrastructure for partial recursive functions:
 - **S2** (researcher-1, #17759): unconditional lower bound `ℵ₀ ≤ #(computable reals)`
   via rational embedding; five concrete computable witnesses (rat/int/nat/0/1);
   exact equality stated (contingent on the S1 sorry).
-- **S3** (this PR): full proof of `computable_reals_countable` via `decodeReal` +
+- **S3** (#17768): full proof of `computable_reals_countable` via `decodeReal` +
   `Nat.Partrec.Code.exists_code` pipeline. **Build pending** — verification
   relies on the named Mathlib API (`Computable.encode`, `Computable.comp`,
   `Partrec.nat_iff`, `Nat.Partrec.Code.exists_code`, `Set.countable_range`,
   `Set.Countable.mono`, `tendsto_nhds_unique`, `Encodable.encode_injective`,
   `Part.some_injective`). With S3 landed, `card_computable_reals_le_aleph0`
   and `card_computable_reals_eq_aleph0` (from S2) become unconditional.
+- **S4** (#17806): strict-inclusion + `#(non-computable) = 𝔠` via partition +
+  ℵ₀-absorption mirroring the OQ02OQ03 transcendental cardinality argument.
+- **S5** (#17860): cross-cardinal consolidation (`card_computable_reals_eq_card_algebraic_reals`,
+  `card_nonComputableReals_eq_card_reals`, `cardinality_trichotomy`).
+- **S6** (this PR): Set-level structural API derived from the S2-S4 cardinal
+  results — `computable_reals_nonempty/_infinite` and
+  `nonComputableReals_nonempty/_uncountable/_infinite`. Five short corollaries,
+  no new Mathlib API dependencies beyond `Set.infinite_range_of_injective`,
+  `Rat.cast_injective`, and `Set.Finite.countable`.
 
 ## References
 
@@ -566,5 +575,75 @@ theorem cardinality_trichotomy :
   ⟨AlgebraicNumbersCountable.card_algebraic_reals_eq_aleph0,
    card_computable_reals_eq_aleph0,
    card_nonComputableReals_eq_continuum⟩
+
+/-! ## S6 — Set-theoretic structural API: nonempty, infinite, uncountable
+
+The cardinal results of S2-S4 (`ℵ₀ ≤ #computable`, `#(non-computable) = 𝔠`)
+immediately yield Set-level structural facts that are the natural form for
+downstream consumers (e.g. measure theory, descriptive set theory, dense subset
+constructions). This deliverable extracts the four standard predicates —
+`Nonempty`, `Infinite`, `Countable`/`Uncountable` — across the partition,
+keeping each proof as a one-liner that cites the corresponding S2-S4 cardinal
+result.
+
+* **Computable side** (cardinality ℵ₀):
+  - `computable_reals_nonempty` — 0 is computable, so the set is inhabited.
+  - `computable_reals_infinite` — every rational is computable and ℚ is infinite,
+    so the set contains an infinite subset.
+
+* **Non-computable side** (cardinality 𝔠):
+  - `nonComputableReals_nonempty` — direct from `exists_non_computable_real`.
+  - `nonComputableReals_uncountable` — from `#(non-computable) = 𝔠 > ℵ₀`.
+  - `nonComputableReals_infinite` — every uncountable set is infinite.
+
+These results round out the API and make the strict-inclusion structure of
+`{r | IsComputable r} ⊊ ℝ` available in Set-level form without forcing callers
+to round-trip through `Cardinal.mk`. -/
+
+/-- **S6 — computable reals are nonempty**: 0 is a witness (via `zero_isComputable`). -/
+theorem computable_reals_nonempty :
+    ({r : ℝ | IsComputable r} : Set ℝ).Nonempty :=
+  ⟨0, zero_isComputable⟩
+
+/-- **S6 — computable reals are infinite**.
+
+    The image of `Rat.cast : ℚ → ℝ` lies inside the computable reals (every
+    rational is computable, by `rat_isComputable`), and the cast is injective,
+    so its range is infinite. The computable reals then dominate an infinite
+    subset and are themselves infinite. -/
+theorem computable_reals_infinite :
+    ({r : ℝ | IsComputable r} : Set ℝ).Infinite := by
+  have h_subset : Set.range ((↑) : ℚ → ℝ) ⊆ {r : ℝ | IsComputable r} := by
+    rintro x ⟨q, rfl⟩
+    exact rat_isComputable q
+  exact (Set.infinite_range_of_injective Rat.cast_injective).mono h_subset
+
+/-- **S6 — non-computable reals are nonempty**, formalising Turing's negative
+    observation in the Set-level form. Direct restatement of
+    `exists_non_computable_real`. -/
+theorem nonComputableReals_nonempty : nonComputableReals.Nonempty :=
+  exists_non_computable_real
+
+/-- **S6 — non-computable reals are uncountable**.
+
+    From `card_nonComputableReals_eq_continuum` and `Cardinal.aleph0_lt_continuum`
+    we get `ℵ₀ < #(non-computable)`, which by `le_aleph0_iff_set_countable`
+    refutes countability.
+
+    This is the strongest classical statement that "almost all reals are
+    non-computable": no enumeration `ℕ → ℝ` can list them all. -/
+theorem nonComputableReals_uncountable : ¬ nonComputableReals.Countable := by
+  intro h
+  have h_le : (#(↑nonComputableReals : Set ℝ) : Cardinal) ≤ ℵ₀ :=
+    le_aleph0_iff_set_countable.mpr h
+  rw [card_nonComputableReals_eq_continuum] at h_le
+  exact absurd h_le (not_le.mpr Cardinal.aleph0_lt_continuum)
+
+/-- **S6 — non-computable reals are infinite**.
+
+    Direct from `nonComputableReals_uncountable`: every finite set is countable,
+    so an uncountable set is infinite. -/
+theorem nonComputableReals_infinite : nonComputableReals.Infinite := fun h =>
+  nonComputableReals_uncountable h.countable
 
 end AlgebraicNumbersCountableOQ02OQ04
