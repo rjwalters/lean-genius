@@ -2487,6 +2487,167 @@ theorem cofactor_id_mul_apply (N : CofactorMatrix) (a b : ℤ) :
     (CofactorMatrix.id.mul N).apply a b = N.apply a b := by
   rw [cofactor_mul_apply, cofactor_id_apply]
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XXIX: FUEL-ONE ABOVE-THRESHOLD COLLAPSE (Session 41)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Fuel-one above-threshold collapse for `hgcdMatrixSafe`
+
+    PART XXVII (S39) established the fuel-zero base case
+    (`hgcdMatrixSafe 0 a b = CofactorMatrix.id`, plus `apply` and
+    natAbs-max forms). PART XXVIII (S40) added
+    `cofactor_mul_id_apply` and `cofactor_id_mul_apply` for
+    collapsing spurious identity factors produced by
+    `cofactor_mul_apply` rewriting.
+
+    This PART chains both into a clean fuel-one above-threshold
+    collapse: at `f = 1` with `max a b ≥ hgcdThresholdSafe`
+    (the recursive case of `hgcdMatrixSafe_succ`), the recursion
+    bottoms out immediately:
+
+    1. `M_inner := hgcdMatrixSafe 0 (a / 2^s) (b / 2^s) =
+       CofactorMatrix.id` (by `hgcdMatrixSafe_zero`).
+    2. `(M_inner.apply ↑a ↑b) = (↑a, ↑b)` (by S39
+       `cofactor_id_apply`).
+    3. `(u, v) := ((↑a, ↑b).1.natAbs, (↑a, ↑b).2.natAbs) =
+       (a, b)` (by `Int.natAbs_natCast`).
+    4. The inner size-reduction guard `max u v < max a b`
+       becomes `max a b < max a b`, which is FALSE by
+       `lt_irrefl`.
+    5. The abort branch fires, returning `M_inner =
+       CofactorMatrix.id`.
+
+    Hence `hgcdMatrixSafe 1 a b = CofactorMatrix.id` whenever
+    `max a b ≥ hgcdThresholdSafe`.
+
+    Four named theorems are exposed:
+
+    * `hgcdMatrixSafe_one_above_threshold` — the matrix-level
+      collapse: `hgcdMatrixSafe 1 a b = CofactorMatrix.id` for
+      `max a b ≥ hgcdThresholdSafe`. Direct combination of
+      `hgcdMatrixSafe_succ`, `if_neg hab`, `hgcdMatrixSafe_zero`,
+      `cofactor_id_apply`, `Int.natAbs_natCast`, and
+      `lt_irrefl`.
+
+    * `hgcdMatrixSafe_one_above_threshold_apply` — apply form,
+      `(hgcdMatrixSafe 1 a b).apply ↑a ↑b = (↑a, ↑b)`. Direct
+      composition of the matrix collapse with
+      `cofactor_id_apply`.
+
+    * `hgcdMatrixSafe_one_above_threshold_natAbs_max_eq` —
+      natAbs-max equality, the strongest non-expansion statement
+      at fuel `1` above threshold (equality, not just `≤`).
+      Matches the strength of the S39 fuel-zero analogue.
+
+    * `hgcdMatrixSafe_one_above_threshold_natAbs_max_le` — `≤`
+      corollary, the NE-cond form at fuel `1` above threshold.
+      Provided in the same packaging convention as PART XXVII's
+      `hgcdMatrixSafe_zero_natAbs_max_le`.
+
+    **What this does NOT prove.** Fuel-one BELOW threshold
+    (`max a b < hgcdThresholdSafe`) reduces via
+    `hgcdMatrixSafe_small` (PART V) to
+    `lehmerCofactors hgcdThresholdSafe a b CofactorMatrix.id`;
+    that case is handled by the parent file's
+    `lehmerCofactors_id_apply_le` (PART V.5) machinery in
+    `BinaryGcdOQ03OQ02.lean`. Fuel ≥ 2 above threshold remains
+    the open S32b inductive step
+    (`s32-non-expansion-analysis.md` §6).
+
+    **Why useful.** This is the smallest non-trivial fuel level
+    at which the above-threshold abort branch fires. Together
+    with the fuel-zero base case (PART XXVII), it provides
+    closed-form evaluation of `hgcdMatrixSafe` on every input
+    `(a, b)` for which the recursion bottoms out within one
+    above-threshold step. As a side benefit, the apply form
+    `(hgcdMatrixSafe 1 a b).apply ↑a ↑b = (↑a, ↑b)` is the
+    fuel-1 analogue of `hgcdMatrixSafe_zero_apply` and slots
+    into the same induction template the S32b proof program
+    expects for the f → f + 1 step.
+
+    Build: pure unfolds + `cofactor_id_apply` +
+    `Int.natAbs_natCast` + `lt_irrefl`. No `native_decide`, no
+    recursion, no new axioms, no new sorries, no new
+    definitions. -/
+
+/-- **Fuel-one above-threshold matrix collapse.**
+
+    At fuel `1` with `max a b ≥ hgcdThresholdSafe` (i.e.
+    `¬ max a b < hgcdThresholdSafe`), `hgcdMatrixSafe 1 a b`
+    enters the recursive branch, the inner recursion bottoms
+    out at fuel `0` (giving `CofactorMatrix.id`), the inner
+    guard fails (`max a b < max a b` is false), and the abort
+    branch returns `M_inner = CofactorMatrix.id`.
+
+    Proof: unfold via `hgcdMatrixSafe_succ` + `if_neg hab`,
+    reduce the inner `hgcdMatrixSafe 0` via
+    `hgcdMatrixSafe_zero`, reduce the `id.apply ↑a ↑b` via
+    `cofactor_id_apply`, collapse `natAbs ∘ Nat.cast` via
+    `Int.natAbs_natCast`, then `if_neg (lt_irrefl _)` discharges
+    the inner guard. -/
+theorem hgcdMatrixSafe_one_above_threshold (a b : ℕ)
+    (hab : ¬ max a b < hgcdThresholdSafe) :
+    hgcdMatrixSafe 1 a b = CofactorMatrix.id := by
+  show hgcdMatrixSafe (0 + 1) a b = CofactorMatrix.id
+  rw [hgcdMatrixSafe_succ, if_neg hab]
+  dsimp only
+  simp only [hgcdMatrixSafe_zero, cofactor_id_apply]
+  simp [Int.natAbs_natCast]
+
+/-- **Fuel-one above-threshold `apply` equation.**
+
+    At fuel `1` with `max a b ≥ hgcdThresholdSafe`,
+    `hgcdMatrixSafe 1 a b` collapses to `CofactorMatrix.id`
+    (`hgcdMatrixSafe_one_above_threshold`), so its `apply`
+    action on `(a : ℤ, b : ℤ)` returns `((a : ℤ), (b : ℤ))`
+    unchanged. Direct composition of
+    `hgcdMatrixSafe_one_above_threshold` with
+    `cofactor_id_apply`. -/
+theorem hgcdMatrixSafe_one_above_threshold_apply (a b : ℕ)
+    (hab : ¬ max a b < hgcdThresholdSafe) :
+    (hgcdMatrixSafe 1 a b).apply (a : ℤ) (b : ℤ) = ((a : ℤ), (b : ℤ)) := by
+  rw [hgcdMatrixSafe_one_above_threshold a b hab]
+  exact cofactor_id_apply (a : ℤ) (b : ℤ)
+
+/-- **Fuel-one above-threshold natAbs-max equality.**
+
+    At fuel `1` above threshold, the natAbs max of the apply
+    output equals `max a b` exactly. (Equality, not just `≤` —
+    the apply collapses to the identity function on the input
+    pair, and the natAbs of a natural-number cast to ℤ is the
+    original natural by `Int.natAbs_natCast`.)
+
+    This is the NE-self statement in its strongest form at
+    fuel `1` above threshold, suitable as the `induction.succ`
+    step at `f = 0` for any successor proof of NE-self / NE-cond
+    by induction on fuel. -/
+theorem hgcdMatrixSafe_one_above_threshold_natAbs_max_eq (a b : ℕ)
+    (hab : ¬ max a b < hgcdThresholdSafe) :
+    max ((hgcdMatrixSafe 1 a b).apply (a : ℤ) (b : ℤ)).1.natAbs
+        ((hgcdMatrixSafe 1 a b).apply (a : ℤ) (b : ℤ)).2.natAbs
+      = max a b := by
+  rw [hgcdMatrixSafe_one_above_threshold_apply a b hab]
+  simp [Int.natAbs_natCast]
+
+/-- **Fuel-one above-threshold non-expansion (`≤` corollary).**
+
+    The `≤` form of
+    `hgcdMatrixSafe_one_above_threshold_natAbs_max_eq`,
+    packaged separately so callers needing the inequality
+    directly do not have to rewrite through equality. This is
+    the literal NE-self statement at fuel `1` above threshold.
+
+    Trivially equivalent to the equality form; exposed
+    separately because the NE-self / NE-cond induction
+    framework (`s32-non-expansion-analysis.md` §3–§5) phrases
+    its goal as `≤`, not equality. -/
+theorem hgcdMatrixSafe_one_above_threshold_natAbs_max_le (a b : ℕ)
+    (hab : ¬ max a b < hgcdThresholdSafe) :
+    max ((hgcdMatrixSafe 1 a b).apply (a : ℤ) (b : ℤ)).1.natAbs
+        ((hgcdMatrixSafe 1 a b).apply (a : ℤ) (b : ℤ)).2.natAbs
+      ≤ max a b :=
+  (hgcdMatrixSafe_one_above_threshold_natAbs_max_eq a b hab).le
+
 end HGcdSafe
 
 /-! ## Summary
