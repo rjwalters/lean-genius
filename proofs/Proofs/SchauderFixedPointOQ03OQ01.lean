@@ -708,6 +708,110 @@ private lemma exists_partition_subordinate_to_uhc_cover {n : ℕ}
       isClosed_univ U hU_open hU_cover
   exact ⟨U, ρ, hU_open, hU_mem, hU_sub, hρ_sub⟩
 
+/-- **S18e scaffold (Cellina–Browder Step 4, continuous selection from
+    subordinate partition of unity):**
+
+    Given a compact convex `S ⊆ EuclideanSpace ℝ (Fin n)` and an
+    upper-hemicontinuous set-valued map `F : ↥S → 2^↥S` with nonempty
+    values, package the candidate continuous selection of Step 4 of the
+    Cellina–Browder construction together with all witness data needed
+    by the eventual S18f graph-bound proof.
+
+    Concretely, for any `ε > 0`, this lemma produces a continuous map
+    `f : C(↥S, ↥S)` together with the four S18d outputs
+    (`U`, `ρ`, the three open-cover/subordinate-partition clauses) and a
+    pointwise selector `ysel : ↥S → ↥S` with `ysel x ∈ F x`. The
+    final clause certifies the explicit formula
+    `(f x : EuclideanSpace ℝ (Fin n)) = ∑ᶠ i, ρ i x • (ysel i)` so the
+    S18f graph-bound argument can compute `dist (f x) (ysel i)` at any
+    `i ∈ ρ.finsupport x` directly from this representation.
+
+    **Proof structure** (mirrors Cellina–Browder Step 4):
+    1. `choose ysel hysel_in_F using hF_ne` selects one `ysel x ∈ F x`
+       per `x : ↥S` (axiom of choice; the selector need not be
+       continuous — continuity comes from averaging via `ρ`).
+    2. `exists_partition_subordinate_to_uhc_cover` (S18d, PR #17993)
+       supplies the open cover `U : ↥S → Set ↥S` and the subordinate
+       partition `ρ : PartitionOfUnity (↥S) (↥S) Set.univ`.
+    3. The candidate selection in `EuclideanSpace ℝ (Fin n)` is
+       `f0 x := ∑ᶠ i, ρ i x • (ysel i : EuclideanSpace ℝ (Fin n))`.
+       Continuity of `f0` is `ρ.IsSubordinate.continuous_finsum_smul`
+       (`Mathlib.Topology.PartitionOfUnity` line 313 at pinned rev
+       `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) applied to the
+       constant-in-`x` family `g i _ := (ysel i : EuclideanSpace ℝ (Fin n))`,
+       which is `continuousOn_const` on every `U i`.
+    4. Membership `f0 x ∈ S` follows from
+       `convex_combination_of_partition_in_S` (S18a, PR #17755) at
+       `K = S`, using `(ysel i).property : (ysel i : ...) ∈ S` for the
+       point-in-K hypothesis and `ρ.sum_finsupport_smul_eq_finsum`
+       (`PartitionOfUnity.lean` line 212 at pinned rev) to bridge the
+       finsum form to the `Finset`-sum form expected by the helper.
+    5. Lift `f0` to `f : C(↥S, ↥S)` via
+       `Continuous.subtype_mk` (the membership witnesses `f0 x ∈ S`
+       come from the previous step).
+
+    The full witness bundle (including `ysel`, `ρ`, the cover `U`, and
+    the explicit formula) is intentionally exposed in the result type
+    so that the eventual S18f graph-bound proof can extract any `i ∈
+    ρ.finsupport x` (with `ρ i x > 0`), conclude `x ∈ U i` from the
+    `tsupport ⊆ U i` clause of `hρ_sub`, then invoke S18d's
+    `F z ⊆ Metric.thickening ε (F i)` clause at `z = x` to bound
+    `dist (f x) (ysel i)` via `ysel i ∈ F i ⊆ ε`-thickening of `F x`.
+
+    No new axiom is introduced; `axiom approx_selection_exists` (Axiom
+    2 above) remains in the file unchanged. The remaining work to
+    fully discharge the axiom is the S18f graph-bound proof, which
+    consumes the witnesses produced here. -/
+private lemma exists_continuous_selection_with_witnesses {n : ℕ}
+    (S : Set (EuclideanSpace ℝ (Fin n)))
+    (hS_compact : IsCompact S) (hS_convex : Convex ℝ S)
+    (F : SetValuedMap (↥S) (↥S))
+    (hF_ne : ∀ x, (F x).Nonempty) (hF_uhc : IsUpperHemicontinuous F)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ f : C(↥S, ↥S),
+      ∃ U : ↥S → Set ↥S,
+      ∃ ρ : PartitionOfUnity (↥S) (↥S) (Set.univ : Set ↥S),
+      ∃ ysel : ↥S → ↥S,
+        (∀ x : ↥S, IsOpen (U x)) ∧
+        (∀ x : ↥S, x ∈ U x) ∧
+        (∀ x z : ↥S, z ∈ U x → F z ⊆ Metric.thickening ε (F x)) ∧
+        ρ.IsSubordinate U ∧
+        (∀ x, ysel x ∈ F x) ∧
+        (∀ x : ↥S, (f x : EuclideanSpace ℝ (Fin n))
+            = ∑ᶠ i, ρ i x • (ysel i : EuclideanSpace ℝ (Fin n))) := by
+  -- Step 4a: pointwise selector ysel : ↥S → ↥S with ysel x ∈ F x.
+  choose ysel hysel_in_F using hF_ne
+  -- Step 4b: open cover U and subordinate partition ρ from S18d.
+  obtain ⟨U, ρ, hU_open, hU_mem, hU_sub, hρ_sub⟩ :=
+    exists_partition_subordinate_to_uhc_cover S hS_compact F hF_uhc ε hε
+  -- Step 4c: candidate selection in EuclideanSpace ℝ (Fin n) and its continuity.
+  let f0 : ↥S → EuclideanSpace ℝ (Fin n) :=
+    fun x => ∑ᶠ i, ρ i x • (ysel i : EuclideanSpace ℝ (Fin n))
+  have hf0_cont : Continuous f0 :=
+    hρ_sub.continuous_finsum_smul (g := fun i _ => (ysel i : EuclideanSpace ℝ (Fin n)))
+      hU_open (fun _ => continuousOn_const)
+  -- Step 4d: f0 x ∈ S via convex combination of partition values (S18a helper).
+  have hf0_in_S : ∀ x : ↥S, f0 x ∈ S := by
+    intro x
+    have hysel_in_S :
+        ∀ i ∈ ρ.finsupport x, (ysel i : EuclideanSpace ℝ (Fin n)) ∈ S :=
+      fun i _ => (ysel i).property
+    have hsum_mem :
+        (∑ i ∈ ρ.finsupport x, ρ i x • (ysel i : EuclideanSpace ℝ (Fin n))) ∈ S :=
+      convex_combination_of_partition_in_S ρ hS_convex (Set.mem_univ x) hysel_in_S
+    have hsum_eq :
+        (∑ i ∈ ρ.finsupport x, ρ i x • (ysel i : EuclideanSpace ℝ (Fin n)))
+        = ∑ᶠ i, ρ i x • (ysel i : EuclideanSpace ℝ (Fin n)) :=
+      ρ.sum_finsupport_smul_eq_finsum
+        (fun (i : ↥S) (_ : ↥S) => (ysel i : EuclideanSpace ℝ (Fin n)))
+    show (∑ᶠ i, ρ i x • (ysel i : EuclideanSpace ℝ (Fin n))) ∈ S
+    rw [← hsum_eq]; exact hsum_mem
+  -- Step 4e: lift f0 to f : C(↥S, ↥S).
+  refine ⟨⟨fun x => ⟨f0 x, hf0_in_S x⟩, hf0_cont.subtype_mk hf0_in_S⟩,
+          U, ρ, ysel, hU_open, hU_mem, hU_sub, hρ_sub, hysel_in_F, ?_⟩
+  intro _
+  rfl
+
 /-- **Sequential Compactness in Metric Spaces**
 
     In a compact metric space, every sequence has a convergent subsequence.
