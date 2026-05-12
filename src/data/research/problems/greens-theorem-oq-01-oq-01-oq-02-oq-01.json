@@ -1,0 +1,104 @@
+{
+  "slug": "greens-theorem-oq-01-oq-01-oq-02-oq-01",
+  "title": "n-dimensional intervalIntegral_swap via Measure.pi",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall n,\\ \\forall \\sigma \\in \\mathrm{Sym}(n),\\ \\int_{a_0}^{b_0} \\cdots \\int_{a_{n-1}}^{b_{n-1}} f(x)\\,\\mathrm{d}x_{n-1}\\cdots\\mathrm{d}x_0 = \\int_{a_{\\sigma(0)}}^{b_{\\sigma(0)}} \\cdots \\int_{a_{\\sigma(n-1)}}^{b_{\\sigma(n-1)}} f(x)\\,\\mathrm{d}x_{\\sigma(n-1)}\\cdots\\mathrm{d}x_{\\sigma(0)}",
+    "plain": "Lift the 2D intervalIntegral_swap to an n-dim iterated interval integral and prove invariance under any permutation σ ∈ Equiv.Perm (Fin n), with integrability stated against Measure.pi (fun i => volume.restrict (uIcc (a i) (b i))).",
+    "whyMatters": [
+      "Mathlib contribution surface: a clean iteratedIntervalIntegral_perm closes a structural gap that affects every multi-variable calculus formalisation (Fubini for higher-dim Stokes, coordinate-permutation change-of-variables).",
+      "Successor to the gallery's existing 2D anchor (greens-theorem-oq-01-oq-01-oq-02, 231 lines, 0 sorries) and to FundamentalTheoremCalculusStokes.",
+      "The algorithmic-by-induction template (factor σ into adjacent transpositions, induct on the factor length) is reusable for many permutation-invariance lemmas in measure theory."
+    ]
+  },
+  "knownResults": {
+    "proven": [],
+    "open": [],
+    "goal": "Prove iteratedIntervalIntegral_perm : iteratedIntervalIntegral a b f = iteratedIntervalIntegral (a ∘ σ) (b ∘ σ) (f ∘ Equiv.piCongrLeft' _ σ.symm) for every σ : Equiv.Perm (Fin n) and integrable f."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-11T19:00:00.000Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE: parent 2D file map (231 lines, 0 sorries), three n-dim obstacles (recursive definition, adjacent-swap decomposition, integrability transport via measurePreserving_piCongrLeft), Mathlib API surface for S2+.",
+    "blockers": [],
+    "nextAction": "S2: define iteratedIntervalIntegral by Fin.induction in new Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean and prove the n=2 reduction lemma against the parent's intervalIntegral_swap.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-8, 2026-05-11): OBSERVE survey for the n-dim lift of the parent's 2D intervalIntegral_swap (Proofs/GreensTheoremOQ01OQ01OQ02.lean). The parent has 3 variants (ordered, general uIcc, continuous) plus a Green's-theorem discharge corollary, all reducing to MeasureTheory.integral_integral_swap. The n-dim lift has three independent obstacles: (1) defining the n-fold iterated interval integral (proposed: Fin.cons-driven recursion); (2) permutation invariance (proposed: adjacent-transposition decomposition of Equiv.Perm (Fin n), reducing each adjacent swap to the parent's 2D lemma); (3) integrability transport along Measure.pi (proposed: MeasureTheory.measurePreserving_piCongrLeft + Integrable.comp_measurePreserving). Identified the Measure.pi_restrict identity as a likely Mathlib gap and a uIcc-symmetric reformulation that avoids 2^n case analysis. No Lean changes this iteration — pure documentation S1.",
+    "builtItems": [],
+    "insights": [
+      "The 2D parent's 4-case sign analysis is exponential in n: a direct n-dim port would do 2^n. Mitigation: prove the uIcc-symmetric statement directly (integrability on Set.uIoc) and recover the standard form for any ordering at extraction. Single uIcc-form proof ~80 lines.",
+      "Adjacent transpositions Equiv.swap i.castSucc i.succ generate Equiv.Perm (Fin n) (standard bubble-sort generation). Each adjacent swap is a 2D intervalIntegral_swap applied to two consecutive axes after peeling the first i integrals via Fin.consEquiv. Same induction as Equiv.Perm.sign.",
+      "Measure.pi and Measure.prod agree on Fin 2 via MeasurableEquiv.piFinTwo, so the S2 n=2 reduction lemma is a pull-along identity. The parent's 2D Fubini drops in directly.",
+      "Measure.pi (fun i => μ.restrict (uIcc …)) = (Measure.pi μ).restrict (Set.pi univ (fun i => uIcc …)) is a likely Mathlib gap (Mathlib has pi_pi for the unrestricted product but no restrict analogue in the parent's import set or any gallery grep). If unavailable, ~30 lines hand proof from rectangle generators.",
+      "Bochner generalisation (OQ-02 sibling) is decoupled — every helper in the chain (integral_of_le, integral_symm, integral_integral_swap, measurePreserving_piCongrLeft) is already Bochner-polymorphic in Mathlib, so an S5+ uniform type-class lift suffices."
+    ],
+    "mathlibGaps": [
+      "No Mathlib lemma of the form Measure.pi_restrict : Measure.pi (fun i => μ i |>.restrict (S i)) = (Measure.pi μ) |>.restrict (Set.pi univ S) under [∀ i, SigmaFinite (μ i)]. The Measure.pi–restrict interaction does not appear in the parent file's imports or any gallery grep; every existing proof hand-coerces. Candidate one-line Measure.ext + pi_pi.",
+      "No Mathlib-level def for an n-fold iteratedIntervalIntegral. The 1D intervalIntegral exists and the n-fold Bochner integral exists, but the iterated form (the standard textbook page-level notation) is absent. Closing OQ-04 sets up a natural Mathlib PR targeting Mathlib.MeasureTheory.Integral.IntervalIntegral.",
+      "intervalIntegral.integral_comm (the 2D parent's natural Mathlib name) is still absent (parent file's Part IV documentation flagged this in its mathlib4 rev 2df2f015 survey). OQ-04 S2+ work should be additive to whatever future PR closes the 2D parent."
+    ],
+    "nextSteps": [
+      "S2: define iteratedIntervalIntegral by Fin.induction (Fin.cons-driven recursion) in new Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean and prove the n=2 reduction lemma (specialisation to ∫ x .. ∫ y .. f form). ~40 lines, 0–1 transient sorries.",
+      "S3: prove the adjacent-swap lemma: iteratedIntervalIntegral a b f = iteratedIntervalIntegral (a ∘ Equiv.swap k.castSucc k.succ) … (f ∘ …) for k : Fin n. Peel the first k integrals; apply parent's 2D intervalIntegral_swap to axes (k, k+1). ~80 lines.",
+      "S4: prove the main permutation theorem iteratedIntervalIntegral_perm via Equiv.Perm.swap_induction_on' (or manual factorisation into adjacent swaps). ~50 lines plus lemma-finding overhead.",
+      "S5 (deferred): Bochner generalisation (~20 lines, uniform type-class lift); Measure.pi_restrict Mathlib-contribution PR (~30 lines + Mathlib PR formatting)."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "gallery-extracted",
+    "analysis",
+    "measure-theory",
+    "fubini",
+    "interval-integral",
+    "n-dimensional",
+    "mathlib-gap"
+  ],
+  "relatedProofs": [
+    "greens-theorem-oq-01",
+    "greens-theorem-oq-01-oq-01",
+    "greens-theorem-oq-01-oq-01-oq-02",
+    "greens-theorem-oq-01-oq-01-oq-03",
+    "fundamental-theorem-calculus-stokes",
+    "erdos-1001-oq-03"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.MeasureTheory.Integral.IntervalIntegral",
+      "Mathlib.MeasureTheory.Integral.Prod",
+      "Mathlib.MeasureTheory.Measure.Prod",
+      "Mathlib.MeasureTheory.Constructions.Pi",
+      "Mathlib.Logic.Equiv.Fin",
+      "Mathlib.GroupTheory.Perm.Sign"
+    ]
+  },
+  "started": "2026-05-11T19:00:00.000Z",
+  "lastUpdate": "2026-05-11T19:00:00.000Z",
+  "significance": 6,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/GreensTheoremOQ01OQ01OQ02.lean",
+      "filename": "GreensTheoremOQ01OQ01OQ02.lean",
+      "lineCount": 231,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ02.lean"
+    }
+  ]
+}
