@@ -313,6 +313,23 @@ Currently still blocked on Mathlib infrastructure:
   three-hypothesis structure is internally complete; only the bridge
   from `r4Count` to `jacobiR4` remains. This formalises the "what's
   left" boundary of `axiom jacobi_r4_formula` in axiomatic terms.
+- S18b (researcher-5, 2026-05-11, this PR): Part 28 — `shiftedRange ↔
+  Finset.Icc` structural bridges. Three private lemmas (+71 lines, 0
+  axioms, 0 sorries): `shiftedRange_nodup` (the integer range
+  `[-n, …, n]` is `Nodup`, via `List.Nodup.map` + `List.nodup_range`),
+  `shiftedRange_toFinset_eq_Icc` (the `List.toFinset` of `shiftedRange
+  n` equals `Finset.Icc (-(n:ℤ)) n` — forward direction casts
+  `k ∈ [0, 2n+1) ↦ k - n`; backward witnesses any `x ∈ [-n, n]` by
+  `(x+n).toNat` via `Int.toNat_of_nonneg`), and
+  `shiftedRange_filter_length_eq_Icc_card` (the innermost-level
+  bridge: for any decidable `q : ℤ → Prop`, the `List.filter`-length
+  factor in `r4Count_eq_nested_sum` over `decide ∘ q` equals the
+  `Finset.card` of `Finset.Icc (-n) n` filtered by `q`). Plugs the
+  innermost level of Part 27's (S18a) `r4Count_eq_nested_sum` into the
+  Finset.card form; the nested-sum-to-`Finset.product` reformulation
+  of the outer three levels (full Sublemma 3.1) defers to S18c. Pure
+  structural content; no number theory; reuses only `omega`, `linarith`,
+  `Int.toNat_of_nonneg`, and `List.toFinset_card_of_nodup`.
 - Approaches tried: 1 (Approach A — modular form bridge).
 
 ## Blockers
@@ -330,26 +347,33 @@ Currently still blocked on Mathlib infrastructure:
 
 ## Next Action
 
-0. **(structural, S18a SHIPPED, S18b/c remaining)** Axiom-free
+0. **(structural, S18a/S18b SHIPPED, S18c remaining)** Axiom-free
    `8 ∣ r4Count n` decomposes into three sub-deliverables per
    `s18-eight-divisibility-spec.md`:
-   - **S18a (THIS PR, Part 27)**: foldl ↔ nested-sum reformulation of
-     `r4Count n`. Adds `foldl_indicator_eq_add_filter_length`,
-     `foldl_constant_shift_eq`, `foldl_4nest_indicator_eq_nested_sum`,
-     and `r4Count_eq_nested_sum`. ~80 lines, pure List/foldl structural
+   - **S18a (Part 27, SHIPPED PR #17702)**: foldl ↔ nested-sum
+     reformulation of `r4Count n`. Adds
+     `foldl_indicator_eq_add_filter_length`, `foldl_constant_shift_eq`,
+     `foldl_4nest_indicator_eq_nested_sum`, and
+     `r4Count_eq_nested_sum`. ~80 lines, pure List/foldl structural
      lemmas; no number theory.
-   - **S18b (next)**: convert the triple-nested `List.map ... .sum`
-     form to `Finset.product`-based `Finset.card` via `List.toFinset`
-     + nodup on `shiftedRange n`. ~50 lines.
-   - **S18c**: define the `(ℤ/2)⁴ ⋊ S₄` action on the solution Finset
-     (per spec §3.8), prove all orbits divide 8, conclude
-     `8 ∣ r4Count n`. ~200 lines, the bulk of the work.
+   - **S18b (Part 28, THIS PR)**: shiftedRange ↔ Finset.Icc bridges
+     plus innermost-level Finset.card substitution for the 4th-coord
+     filter-length. Adds `shiftedRange_nodup`,
+     `shiftedRange_toFinset_eq_Icc`, and
+     `shiftedRange_filter_length_eq_Icc_card`. ~70 lines; reduces the
+     gap to S18c to "convert the outer three nested `List.map`/`List.sum`
+     layers (over `shiftedRange n`) into `Finset.sum` over `Finset.Icc`
+     and re-bundle as `Finset.card` of `Finset.product`".
+   - **S18c (next)**: outer-layer Finset re-bundling + define the
+     `(ℤ/2)⁴ ⋊ S₄` action on the solution Finset (per spec §3.8),
+     prove all orbits divide 8, conclude `8 ∣ r4Count n`. ~200 lines,
+     the bulk of the work.
 
    The S18 spec §3.7 noted that the originally-proposed D₄-route fails
    on solutions with two-zero coordinates (e.g. `(a, b, 0, 0)`); §3.8's
    `(ℤ/2)⁴ ⋊ S₄` 384-element route does work but requires deeper case
-   analysis. S18a's foldl ↔ sum bridge is route-agnostic and reusable
-   for either approach.
+   analysis. S18a's foldl ↔ sum bridge and S18b's Finset.Icc bridges
+   are route-agnostic and reusable for either approach.
 1. **(opportunistic, σ*-side AND r4Count-side closed)** When Mathlib
    gains q-expansion for `jacobiTheta` / `EisensteinSeries.E₂`, apply
    `r4Count_factorization_form` (S9) directly — the LHS of the
