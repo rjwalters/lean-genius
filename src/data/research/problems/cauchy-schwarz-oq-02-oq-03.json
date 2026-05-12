@@ -1,0 +1,65 @@
+{
+  "slug": "cauchy-schwarz-oq-02-oq-03",
+  "title": "Complex Polarization Identity",
+  "phase": "OBSERVE",
+  "status": "in-progress",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall (E : \\mathrm{InnerProductSpace}\\ \\mathbb{C}) (f\\, g : E),\\ \\langle f,\\, g\\rangle = (\\|f+g\\|^{2} - \\|f-g\\|^{2} + i\\,\\|f+ig\\|^{2} - i\\,\\|f-ig\\|^{2})/4",
+    "plain": "Formalize the complex polarization identity: the inner product on a complex Hilbert space is determined by four squared-norm values via ⟨f,g⟩ = (‖f+g‖² - ‖f-g‖² + i‖f+ig‖² - i‖f-ig‖²)/4.",
+    "whyMatters": [
+      "Together with the (real) polarization identity already in the gallery, this lemma shows that the norm completely determines the inner product on every complex Hilbert space.",
+      "Many uniqueness arguments for unitary operators (polar decomposition, Mazur-Ulam, GNS construction) start from polarization, so a typed Mathlib-ready proof gives the gallery a clean entry point.",
+      "Completes the OQ-02 inner-product-from-norm program for the field ℂ; the OQ-02 parent already contains the ℝ-version."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Mathlib upstream: inner_eq_sum_norm_sq_div_four in Mathlib.Analysis.InnerProductSpace.Basic — the identical statement over RCLike 𝕜 (specializes to both ℝ and ℂ via RCLike.I).",
+      "Gallery (cauchy-schwarz-oq-02 parent file CauchySchwarzOQ02.lean:161): polarization_identity (real case) ⟨f,g⟩_ℝ = (‖f+g‖² - ‖f-g‖²)/4, proven by norm_add_sq_real + norm_sub_sq_real + ring."
+    ],
+    "open": [
+      "Gallery exposure of the complex case as a typed companion file CauchySchwarzOQ02OQ03.lean (S2 deliverable)."
+    ],
+    "goal": "Ship a verified (0 sorries, 0 axioms) gallery entry with the complex polarization identity, proven by a one-line wrapper of Mathlib's inner_eq_sum_norm_sq_div_four."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T17:46:00Z",
+    "iteration": 1,
+    "focus": "Mathlib API audit + S2 plan (no Lean changes this iteration).",
+    "blockers": [],
+    "nextAction": "S2 ACT: ship CauchySchwarzOQ02OQ03.lean (typed wrapper ~5 LOC) + gallery entry (~120 LOC) + Docker build verification.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE — confirmed Mathlib's inner_eq_sum_norm_sq_div_four is the correct upstream lemma; identified the existing real-case polarization_identity in CauchySchwarzOQ02.lean (a hand proof, not a wrapper of the Mathlib lemma); planned single-session S2 deliverable (~60 lines Lean + gallery entry).",
+    "builtItems": [
+      "S1 documents: problem.md, knowledge.md, state.md, src/data/research/problems/cauchy-schwarz-oq-02-oq-03.json (this file)."
+    ],
+    "mathlibGaps": [],
+    "nextSteps": [
+      "S2 ACT: create proofs/Proofs/CauchySchwarzOQ02OQ03.lean wrapping inner_eq_sum_norm_sq_div_four for the complex case; create gallery entry; Docker build verify.",
+      "S3 (optional): expose ℂ-parallelogram-law and Pythagorean-ℂ as additional gallery wrappers if not already covered by Mathlib's RCLike-generic versions."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "gallery-extracted",
+    "analysis",
+    "cauchy-schwarz",
+    "polarization",
+    "complex-hilbert-space",
+    "inner-product-space",
+    "phase-observe"
+  ],
+  "relatedProofs": [
+    "cauchy-schwarz",
+    "cauchy-schwarz-oq-02"
+  ]
+}
