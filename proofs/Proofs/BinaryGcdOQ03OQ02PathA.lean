@@ -1947,6 +1947,74 @@ theorem hgcdSafeApply_abort_branch (a b : ℕ)
   unfold hgcdSafeApply
   rw [hgcdMatrixSafeOf_abort_branch a b hab hge]
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XXIV: OUTER-FIRES ⇒ INNER-FIRES (Session 36, → direction of S32c)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Outer-guard fires ⇒ inner-guard fires (above threshold)
+
+    Direct contrapositive packaging of S30's
+    `hgcdMatrixSafe_inner_abort_imp_outer_fails` (PART XX):
+
+    * S30 (`inner-aborts ⇒ outer-fails`): above threshold, if the
+      inner-guard abort branch is taken (`max a b ≤ max u v`),
+      then `schonhageOuterGuardFires a b = false`.
+    * Contrapositive (`outer-fires ⇒ inner-fires`, this section):
+      above threshold, if `schonhageOuterGuardFires a b = true`,
+      then the inner-guard fires (`max u v < max a b`).
+
+    This is the **`→` direction of the S28b equivalence**
+    `schonhageOuterGuardFires_above_iff_inner_fires` referenced
+    in `s32-non-expansion-analysis.md` §6 / state.md's S32c
+    next-action item. The harder converse direction
+    (`← inner-fires ⇒ outer-fires`) is the non-expansion-bearing
+    half (= S32b deliverable, deferred per state.md), so we
+    package the easy direction separately rather than waiting for
+    both halves.
+
+    Significance. With this packaging, the iff form's `→`
+    direction can be cited as a single named theorem, without
+    re-deriving the contrapositive at each use site. Combined
+    with the S31 `_compose_branch` and S34 `_abort_branch`
+    decompositions, this completes the **outer-fires case** of
+    the case-analysis API: above threshold + outer-fires forces
+    the inner-fires hypothesis, which in turn lets one apply
+    `hgcdSafeApply_compose_branch` to unfold `hgcdSafeApply a b`
+    as the outer matrix's action on the inner column output.
+
+    Build: pure forward reasoning from S30 by `by_contra` +
+    `push_neg`; no `native_decide`, no recursion. -/
+
+/-- **Outer-guard fires ⇒ inner-guard fires** (above threshold).
+
+    Above threshold (`hab`), if the outer guard
+    `schonhageOuterGuardFires a b` returns `true`, then the inner
+    guard must have fired — i.e., the natAbs-pair `(u, v)` of
+    `M_inner.apply (a, b)` (where `M_inner := hgcdMatrixSafe
+    (a + b) (a / 2^s) (b / 2^s)`) satisfies `max u v < max a b`.
+
+    Direct contrapositive of S30's
+    `hgcdMatrixSafe_inner_abort_imp_outer_fails`: if instead
+    `max a b ≤ max u v` (inner-aborts hypothesis), S30 forces
+    `outerGuardFires = false`, contradicting `hfires`. -/
+theorem schonhageOuterGuardFires_above_imp_inner_fires {a b : ℕ}
+    (hab : ¬ max a b < hgcdThresholdSafe)
+    (hfires : schonhageOuterGuardFires a b = true) :
+    max
+      ((hgcdMatrixSafe (a + b)
+          (a / 2 ^ hgcdShiftSafe a b)
+          (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).1.natAbs
+      ((hgcdMatrixSafe (a + b)
+          (a / 2 ^ hgcdShiftSafe a b)
+          (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ)).2.natAbs
+      < max a b := by
+  by_contra hge
+  push_neg at hge
+  have hfails :=
+    hgcdMatrixSafe_inner_abort_imp_outer_fails a b hab hge
+  rw [hfails] at hfires
+  exact Bool.noConfusion hfires
+
 end HGcdSafe
 
 /-! ## Summary
