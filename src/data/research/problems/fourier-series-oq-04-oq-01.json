@@ -29,24 +29,24 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T14:30:00.000Z",
-    "iteration": 2,
-    "focus": "S2a (researcher-8, 2026-05-12): ACT scaffold for the 2D Carleson spherical-summation conjecture (axiomatized) + unconditional L^2-norm-convergence companion (sorried) + gallery entry. Lean file Proofs/FourierSeriesOQ04OQ01.lean (179 lines, 5 defs, 3 theorems, 1 axiom, 1 sorry). Gallery entry src/data/proofs/fourier-series-oq-04-oq-01/meta.json (status=axiomatized, badge=axiom, sorries=1, axiomCount=1). Build pending (worktree .lake symlink recursive).",
+    "since": "2026-05-12T17:50:00.000Z",
+    "iteration": 3,
+    "focus": "S2c (researcher-1, 2026-05-12): added two sorry-free helper lemmas advancing Gauss-circle prep — latticeDisc_subset_bbox (the lattice disc is a subset of the integer bounding box [-⌈|R|⌉, ⌈|R|⌉]², 1-line proof) and latticeDisc_card_le_bbox (corollary cardinality bound). Lean file 179 → 204 lines, 3 → 5 theorems. Build still pending (worktree .lake symlink recursive); both proofs are direct applications of stable Mathlib lemmas (Finset.filter_subset, Finset.card_le_card). Earlier: S2a (researcher-8, PR #18165 merged) — ACT scaffold for the conjecture.",
     "blockers": [
       "Mathlib gap: Plancherel_ntorus not exposed as a named identity. Blocks closing the sphPartialSum_L2_norm_converge sorry. Future contribution: ~30-50 line Mathlib PR specialising the lp 2 orthonormal-basis tensor product on Fin n -> AddCircle T.",
       "Mathlib gap: no BochnerRiesz / ballMultiplier API. Required for S2b (delta > 1/2 a.e. convergence) and S3 (Fefferman counterexample)."
     ],
-    "nextAction": "S2b (any researcher) — ACT, slower: formalise Bochner-Riesz a.e. convergence for delta > 1/2 in n=2 (Stein 1958, ~300-500 lines, 2-3 iterations). Define bochnerRieszMultiplier, bochnerRieszPartialSum, kernel decomposition (K_R^delta * f)(x), a.e. convergence via Hardy-Littlewood maximal function. ALTERNATIVE S2b: close the L^2-norm sorry in sphPartialSum_L2_norm_converge by building Plancherel_ntorus directly in this file (~80-150 lines, candidate for future Mathlib contribution). S2c (parallel, easier): add latticeDisc_card_le_R_sq (Gauss circle bound, 5-10 lines).",
+    "nextAction": "S2b (any researcher) — ACT, slower: formalise Bochner-Riesz a.e. convergence for delta > 1/2 in n=2 (Stein 1958, ~300-500 lines, 2-3 iterations). ALTERNATIVE S2b: close the L^2-norm sorry in sphPartialSum_L2_norm_converge by building Plancherel_ntorus directly in this file (~80-150 lines, candidate for future Mathlib contribution). S2d (refinement of S2c): sharper Gauss-circle bound (latticeDisc R).card ≤ ⌈π·R²⌉ + O(R) — requires explicit boundary lattice-point count via integer Pythagorean representations (~30-60 lines). Done at this iteration (S2c): subset of bounding box + crude card_le bound.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S2a (researcher-8, 2026-05-12) — ACT scaffold. Created proofs/Proofs/FourierSeriesOQ04OQ01.lean (179 lines) with rigorous definitions (T2 := Fin 2 -> AddCircle 1; haarT2 = Measure.pi haarAddCircle; multiFourierCoeff f k as iterated integral against fourier (-(k 0)) (x 0) * fourier (-(k 1)) (x 1); latticeDisc R as Finset.Icc bounding box filtered by k_0^2 + k_1^2 <= R^2; sphPartialSum f R x as Finset.sum over latticeDisc R), 1 axiom `carleson_2d_sph` (the open conjecture), 1 sorried companion theorem `sphPartialSum_L2_norm_converge` (Plancherel-direct L^2-norm convergence, sorry pending Mathlib Plancherel_ntorus gap), and 2 definitional sanity-check lemmas (multiFourierCoeff_zero, sphPartialSum_zero) with full proofs. Gallery entry src/data/proofs/fourier-series-oq-04-oq-01/{meta.json, index.ts, annotations.json} registered with status=axiomatized, badge=axiom, sorries=1, axiomCount=1. Build status: pending (worktree .lake symlink recursive; docker build would be ~25 min fresh Mathlib clone). Earlier: S1 (researcher-6, 2026-05-12) — OBSERVE survey, established that the conjecture is open in mathematics (Stein 1971 ICM; Tao 2002 survey; no progress as of 2024) and laid out the formalisation plan now executed in S2a.",
+    "progressSummary": "S2c (researcher-1, 2026-05-12) — ACT parallel mini-task. Added two sorry-free helper lemmas to FourierSeriesOQ04OQ01.lean (179 → 204 lines): latticeDisc_subset_bbox (the lattice disc is a subset of the integer bounding box [-⌈|R|⌉, ⌈|R|⌉]², 1-line proof via Finset.filter_subset) and latticeDisc_card_le_bbox (corollary cardinality bound via Finset.card_le_card). Together they give the trivial pre-Gauss bound (latticeDisc R).card ≤ (2·⌈|R|⌉+1)² useful for crude ℓ¹ majorisation of the spherical partial sum. Build pending (worktree .lake symlink recursive). Earlier: S2a (researcher-8, PR #18165 merged) — ACT scaffold (rigorous definitions on T^2, 1 axiom carleson_2d_sph, 1 sorried companion theorem sphPartialSum_L2_norm_converge, gallery entry). S1 (researcher-6, PR #18062 merged) — OBSERVE survey establishing the conjecture is open (Stein 1971 ICM; Tao 2002 survey).",
     "builtItems": [
-      "proofs/Proofs/FourierSeriesOQ04OQ01.lean (NEW, 179 lines, S2a): 5 defs (T2 abbrev, haarT2, multiFourierCoeff, latticeDisc, sphPartialSum), 1 axiom (carleson_2d_sph), 3 theorems (sphPartialSum_L2_norm_converge with sorry; multiFourierCoeff_zero, sphPartialSum_zero with full proofs). Build pending.",
+      "proofs/Proofs/FourierSeriesOQ04OQ01.lean (UPDATED, 204 lines, S2c): 5 defs, 1 axiom (carleson_2d_sph), 5 theorems (S2a sphPartialSum_L2_norm_converge sorry, S2a multiFourierCoeff_zero, S2a sphPartialSum_zero with full proofs; S2c latticeDisc_subset_bbox, S2c latticeDisc_card_le_bbox sorry-free). Build pending.",
       "proofs/Proofs.lean (MODIFIED, S2a): registered new file in umbrella.",
       "src/data/proofs/fourier-series-oq-04-oq-01/meta.json (NEW, S2a): gallery entry with status=axiomatized, badge=axiom, sorries=1, axiomCount=1, lineCount=179, theoremCount=3, definitionCount=5. Full sections (4) with line ranges, overview, conclusion, crossReferences (parent fourier-series-oq-04, sibling fourier-series-oq-01).",
       "src/data/proofs/fourier-series-oq-04-oq-01/index.ts (NEW, S2a): Vite glob-import entry point.",
@@ -123,15 +123,15 @@
     ]
   },
   "started": "2026-05-12T08:38:00.000Z",
-  "lastUpdate": "2026-05-12T14:35:00.000Z",
+  "lastUpdate": "2026-05-12T17:50:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/FourierSeriesOQ04OQ01.lean",
       "filename": "FourierSeriesOQ04OQ01.lean",
-      "lineCount": 179,
-      "theoremCount": 3,
+      "lineCount": 204,
+      "theoremCount": 5,
       "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 1,
