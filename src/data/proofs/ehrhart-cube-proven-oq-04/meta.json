@@ -24,15 +24,14 @@
       "seeker-selected"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 300,
+    "lineCount": 422,
     "assumptions": "",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-11",
     "openQuestions": [
-      "Prove `worpitzky_identity_cube`: (n+1)^d = Σ_{k=0}^{d-1} A(d, k) · C(n+1+k, d) for all d ≥ 1 and n ≥ 0. The proof can proceed by induction on d via Pascal's identity and the Eulerian recurrence, or via a combinatorial bijection between (n+1)^d colour-sequences and (descent-pattern, position-pattern) pairs.",
-      "Prove `eulerian_row_sum_factorial`: Σ_{k=0}^{d-1} A(d, k) = d!. The standard argument inducts on d using the recurrence A(d+1, k) = (k+1) A(d, k) + (d+1-k) A(d, k-1) and the identity Σ_k [(k+1) + (d+1-k)] A(d, k) = (d+2) Σ_k A(d, k).",
+      "Prove `worpitzky_identity_cube`: (n+1)^d = Σ_{k=0}^{d-1} A(d, k) · C(n+1+k, d) for all d ≥ 1 and n ≥ 0. The proof can proceed by induction on d via Pascal's identity and the Eulerian recurrence, or via a combinatorial bijection between (n+1)^d colour-sequences and (descent-pattern, position-pattern) pairs. S3 helpers (`eulerian_zero_eq_one`, `eulerian_eq_zero_of_le`) discharge the standard boundary terms.",
       "Prove `eulerian_palindrome`: A(d, k) = A(d, d-1-k) for k < d, by exhibiting the involution σ ↦ σ ∘ reverse on `Equiv.Perm (Fin d)` which bijects k-descent permutations with (d-1-k)-descent permutations."
     ],
     "originalContributions": [
@@ -41,7 +40,10 @@
       "Worpitzky's identity proved explicitly for d = 1 (trivial) and d = 2 (by induction on n)",
       "Five concrete Worpitzky verifications at (d, n) ∈ {(2,0), (2,1), (3,0), (3,1), (3,2), (4,1), (4,2)} by `decide`",
       "Row-sum and palindrome consistency checks at d ≤ 4 by `rfl`",
-      "Definition `cubeHStarPoly d : Polynomial ℕ` as the Eulerian generating polynomial"
+      "Definition `cubeHStarPoly d : Polynomial ℕ` as the Eulerian generating polynomial",
+      "Helper lemma `eulerian_zero_eq_one`: A(d, 0) = 1 for all d (S3, proven by Nat recursion)",
+      "Helper lemma `eulerian_eq_zero_of_le`: A(d, k) = 0 for d ≥ 1, k ≥ d (S3, proven by double Nat recursion)",
+      "Row-sum identity `eulerian_row_sum_factorial`: Σ_{k<d} A(d, k) = d! for d ≥ 1 (S3, proven by induction on d via sum reorganisation and `A(d, d) = 0`)"
     ],
     "prerequisites": [
       "EhrhartCubeProven: `cube_lattice_count` — L([0,1]^d, n) = (n+1)^d, axiom-free (companion file)",
@@ -76,7 +78,7 @@
         "module": "Mathlib.Algebra.BigOperators.Basic"
       }
     ],
-    "theoremCount": 23,
+    "theoremCount": 25,
     "definitionCount": 2,
     "relatedProblems": [
       {
@@ -175,12 +177,12 @@
       "Finset"
     ],
     "namespace": "EhrhartCubeProvenOQ04",
-    "lineCount": 300,
+    "lineCount": 422,
     "axiomCount": 0,
-    "theoremCount": 23,
+    "theoremCount": 25,
     "definitionCount": 2,
     "path": "Proofs/EhrhartCubeProvenOQ04.lean",
-    "sorries": 3
+    "sorries": 2
   },
   "crossReferences": [
     {
@@ -243,5 +245,5 @@
       "significance": "Connects the axiom-free Ehrhart count to the Eulerian interpretation"
     }
   ],
-  "sorries": 5
+  "sorries": 2
 }

@@ -2,15 +2,16 @@
   Eulerian Numbers and the h*-Vector of the Unit Cube
   (ehrhart-cube-proven-oq-04)
 
-  S1 SCAFFOLD + S2 STRUCTURAL. The companion file `EhrhartCubeProven.lean`
-  proves `L([0,1]^d, n) = (n+1)^d` axiom-free. The Ehrhart h*-vector of the
-  unit d-cube is conjecturally (and classically) equal to the sequence
-  of Eulerian numbers (A(d, 0), A(d, 1), …, A(d, d-1)).
+  S1 SCAFFOLD + S2 STRUCTURAL + S3 ROW-SUM. The companion file
+  `EhrhartCubeProven.lean` proves `L([0,1]^d, n) = (n+1)^d` axiom-free.
+  The Ehrhart h*-vector of the unit d-cube is conjecturally (and classically)
+  equal to the sequence of Eulerian numbers (A(d, 0), A(d, 1), …, A(d, d-1)).
 
-  S2 closes the two *structural* sorries (`cube_h_star_eulerian` and
-  `cube_lattice_count_eulerian`); the *combinatorial* sorries
-  (`worpitzky_identity_cube`, `eulerian_row_sum_factorial`,
-  `eulerian_palindrome`) remain for S3+.
+  S2 closed the two *structural* sorries (`cube_h_star_eulerian` and
+  `cube_lattice_count_eulerian`); S3 adds helper lemmas
+  (`eulerian_zero_eq_one`, `eulerian_eq_zero_of_le`) and closes
+  `eulerian_row_sum_factorial` (Σ A(d, k) = d!). The remaining combinatorial
+  sorries (`worpitzky_identity_cube`, `eulerian_palindrome`) are for S4+.
 
   Concretely, Worpitzky's identity states:
 
@@ -42,9 +43,13 @@
   Main theorems:
   • `worpitzky_identity_cube`               — Σ A(d,k) C(n+1+k, d) = (n+1)^d   (deferred)
   • `cube_h_star_eulerian`                  — h_k*([0,1]^d) = A(d, k)          (S2: PROVED)
-  • `eulerian_row_sum_factorial`            — Σ_{k=0}^{d-1} A(d, k) = d!       (deferred)
+  • `eulerian_row_sum_factorial`            — Σ_{k=0}^{d-1} A(d, k) = d!       (S3: PROVED)
   • `eulerian_palindrome`                   — A(d, k) = A(d, d-1-k) for k < d  (deferred)
   • `cube_lattice_count_eulerian`           — bridge to `EhrhartCubeProven`    (S2: PROVED)
+
+  Helper lemmas (S3):
+  • `eulerian_zero_eq_one`                  — A(d, 0) = 1 for all d ≥ 0
+  • `eulerian_eq_zero_of_le`                — A(d, k) = 0 for d ≥ 1, k ≥ d
 
   Concrete (proven, no sorry):
   • `eulerian_1_0`, `eulerian_2_*`, `eulerian_3_*`, `eulerian_4_*` — values by rfl
@@ -105,21 +110,138 @@ theorem eulerian_4_2 : eulerianNumber 4 2 = 11 := rfl
 theorem eulerian_4_3 : eulerianNumber 4 3 = 1 := rfl
 theorem eulerian_4_4 : eulerianNumber 4 4 = 0 := rfl
 
+-- ----- Structural helpers (S3) -----
+
+/--
+  **Leftmost column** (S3): for every `d`, the leftmost Eulerian number is `1`.
+  Combinatorially, the unique permutation of `{1,…,d}` with `0` descents is the
+  identity. The proof follows by induction on `d` directly from the recurrence
+  `A(d+1, 0) = A(d, 0)` and the base case `A(0, 0) = 1`.
+-/
+theorem eulerian_zero_eq_one : ∀ d : ℕ, eulerianNumber d 0 = 1
+  | 0     => rfl
+  | _ + 1 => eulerian_zero_eq_one _
+
+/--
+  **Out-of-range vanishing** (S3): for `d ≥ 1` and `k ≥ d`, `A(d, k) = 0`.
+  Combinatorially, a permutation of `d` elements has at most `d-1` descents.
+  The proof is a double induction on `d` and `k` using the recurrence and the
+  Nat-subtraction truncation `0 - k = 0`. Used in `eulerian_row_sum_factorial`
+  below to discard the boundary term `(d+1)·A(d, d)`.
+-/
+theorem eulerian_eq_zero_of_le : ∀ d k : ℕ, 0 < d → d ≤ k → eulerianNumber d k = 0
+  | 0,     _,     hd, _  => absurd hd (lt_irrefl 0)
+  | _ + 1, 0,     _,  hk => absurd hk (by omega)
+  | d + 1, k + 1, _,  hk => by
+    have hdk : d ≤ k := Nat.succ_le_succ_iff.mp hk
+    show (k + 2) * eulerianNumber d (k + 1) + (d - k) * eulerianNumber d k = 0
+    rcases Nat.eq_zero_or_pos d with rfl | hd_pos
+    · -- d = 0: both factors vanish — `A(0, k+1) = 0` by def and `0 - k = 0`
+      have h1 : eulerianNumber 0 (k + 1) = 0 := rfl
+      have h2 : (0 : ℕ) - k = 0 := by omega
+      rw [h1, h2]; ring
+    · -- d ≥ 1: apply IH to both `A(d, k+1)` and `A(d, k)`
+      rw [eulerian_eq_zero_of_le d (k + 1) hd_pos (Nat.le_succ_of_le hdk),
+          eulerian_eq_zero_of_le d k hd_pos hdk]
+      ring
+
 -- ============================================================
 -- SECTION II: Row-Sum Identity (Eulerian numbers sum to d!)
 -- ============================================================
 
 /--
-  **Row-sum identity** (deferred): the Eulerian numbers on row `d`
+  **Row-sum identity** (S3: PROVED): the Eulerian numbers on row `d`
   partition the symmetric group `S_d` by descent count:
       Σ_{k=0}^{d-1} A(d, k) = d!
   This is the structural sanity check that Eulerian numbers count permutations.
-  Proof strategy: induct on `d`, using the recurrence and the identity
-  `(k+1)! + ... = (k+2)·k! ...` to telescope.
+
+  Proof outline (induction on `d`):
+  * Base `d = 1`: `Σ_{k<1} A(1, k) = A(1, 0) = 1 = 1!`.
+  * Step (`d ≥ 1`, assume IH `Σ_{k<d} A(d, k) = d!`): rewrite
+    `Σ_{k<d+1} A(d+1, k) = (d+1) · Σ_{k<d} A(d, k)` by extending both sums
+    to `range (d+1)` (using `A(d, d) = 0` to drop the boundary term),
+    unfolding the recurrence inside the LHS sum, and combining via the
+    pointwise identity `(k+1)·A(d, k) + (d-k)·A(d, k) = (d+1)·A(d, k)`
+    (valid for `k < d`; for `k = d` both sides are `0` by `A(d, d) = 0`).
+    Then `(d+1) · d! = (d+1)!` by `Nat.factorial_succ`.
 -/
 theorem eulerian_row_sum_factorial (d : ℕ) (hd : 0 < d) :
     ∑ k ∈ Finset.range d, eulerianNumber d k = d.factorial := by
-  sorry
+  induction d with
+  | zero => exact absurd hd (lt_irrefl 0)
+  | succ d ih =>
+    rcases Nat.eq_zero_or_pos d with rfl | hd_pos
+    · -- `d = 0`, so `d + 1 = 1` and the sum has the single term `A(1, 0) = 1 = 1!`
+      simp [Finset.sum_range_succ, Finset.sum_range_zero, eulerian_zero_eq_one,
+            Nat.factorial]
+    · -- `d ≥ 1`, apply IH and recurrence
+      have IH : ∑ k ∈ Finset.range d, eulerianNumber d k = d.factorial := ih hd_pos
+      -- Reduce the goal to `(d+1) · Σ_{k<d} A(d, k) = (d+1)!` via a closed-form rewrite.
+      have lhs_eq : ∑ k ∈ Finset.range (d + 1), eulerianNumber (d + 1) k
+                  = (d + 1) * ∑ k ∈ Finset.range d, eulerianNumber d k := by
+        rw [Finset.mul_sum]
+        -- Extend the RHS sum to `range (d + 1)` using `A(d, d) = 0`.
+        have rhs_extend :
+            ∑ k ∈ Finset.range d, (d + 1) * eulerianNumber d k
+              = ∑ k ∈ Finset.range (d + 1), (d + 1) * eulerianNumber d k := by
+          rw [Finset.sum_range_succ
+                (fun k => (d + 1) * eulerianNumber d k) d,
+              eulerian_eq_zero_of_le d d hd_pos (le_refl d), Nat.mul_zero,
+              Nat.add_zero]
+        rw [rhs_extend]
+        -- Peel off the `k = 0` term on both sides.
+        rw [Finset.sum_range_succ' (fun k => eulerianNumber (d + 1) k) d,
+            eulerian_zero_eq_one (d + 1)]
+        rw [Finset.sum_range_succ' (fun k => (d + 1) * eulerianNumber d k) d,
+            eulerian_zero_eq_one d, Nat.mul_one]
+        -- Unfold the recurrence inside the LHS sum.
+        have lhs_recur : ∀ k ∈ Finset.range d,
+            eulerianNumber (d + 1) (k + 1)
+              = (k + 2) * eulerianNumber d (k + 1) + (d - k) * eulerianNumber d k :=
+          fun k _ => rfl
+        rw [Finset.sum_congr rfl lhs_recur, Finset.sum_add_distrib]
+        -- Re-pack `(∑ k, (k+2)·A(d, k+1)) + 1 = ∑ k ∈ range (d+1), (k+1)·A(d, k)`
+        -- (running `Finset.sum_range_succ'` "backwards" on the indexed form).
+        have lhs_rewrap :
+            (∑ k ∈ Finset.range d, (k + 2) * eulerianNumber d (k + 1)) + 1
+              = ∑ k ∈ Finset.range (d + 1), (k + 1) * eulerianNumber d k := by
+          rw [Finset.sum_range_succ' (fun k => (k + 1) * eulerianNumber d k) d,
+              eulerian_zero_eq_one d, Nat.mul_one]
+        -- Symmetric re-pack on the RHS.
+        have rhs_rewrap :
+            (∑ k ∈ Finset.range d, (d + 1) * eulerianNumber d (k + 1)) + (d + 1)
+              = ∑ k ∈ Finset.range (d + 1), (d + 1) * eulerianNumber d k := by
+          rw [Finset.sum_range_succ' (fun k => (d + 1) * eulerianNumber d k) d,
+              eulerian_zero_eq_one d, Nat.mul_one]
+        -- Rearrange terms on the LHS to expose `(∑ (k+2)·A(d, k+1)) + 1`.
+        have lhs_assoc :
+            (∑ k ∈ Finset.range d, (k + 2) * eulerianNumber d (k + 1))
+              + (∑ k ∈ Finset.range d, (d - k) * eulerianNumber d k) + 1
+            = ((∑ k ∈ Finset.range d, (k + 2) * eulerianNumber d (k + 1)) + 1)
+              + (∑ k ∈ Finset.range d, (d - k) * eulerianNumber d k) := by ring
+        rw [lhs_assoc, lhs_rewrap, rhs_rewrap]
+        -- Extend the remaining `range d` sum to `range (d+1)` (its k=d term vanishes).
+        have rhs_extend2 :
+            ∑ k ∈ Finset.range d, (d - k) * eulerianNumber d k
+              = ∑ k ∈ Finset.range (d + 1), (d - k) * eulerianNumber d k := by
+          rw [Finset.sum_range_succ
+                (fun k => (d - k) * eulerianNumber d k) d,
+              eulerian_eq_zero_of_le d d hd_pos (le_refl d), Nat.mul_zero,
+              Nat.add_zero]
+        rw [rhs_extend2, ← Finset.sum_add_distrib]
+        apply Finset.sum_congr rfl
+        intro k hk
+        have hk' : k < d + 1 := Finset.mem_range.mp hk
+        rcases Nat.lt_or_ge k d with hkd | hkd
+        · -- k < d: combine coefficients cleanly.
+          have hsum : (k + 1) + (d - k) = d + 1 := by omega
+          calc (k + 1) * eulerianNumber d k + (d - k) * eulerianNumber d k
+              = ((k + 1) + (d - k)) * eulerianNumber d k := by ring
+            _ = (d + 1) * eulerianNumber d k := by rw [hsum]
+        · -- k = d: `A(d, d) = 0` makes both sides 0.
+          have hkd' : k = d := by omega
+          rw [hkd', eulerian_eq_zero_of_le d d hd_pos (le_refl d)]; ring
+      rw [lhs_eq, IH, Nat.factorial_succ]
 
 -- Concrete checks (proven by rfl)
 example : eulerianNumber 1 0 = Nat.factorial 1 := rfl
