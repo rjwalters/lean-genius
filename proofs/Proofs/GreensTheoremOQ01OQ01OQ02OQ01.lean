@@ -14,19 +14,16 @@
   for any permutation `σ : Equiv.Perm (Fin n)`, integrating against
   `MeasureTheory.Measure.pi (fun i => volume.restrict (Set.uIcc (a i) (b i)))`.
 
-  ## S2 (this iteration)
+  ## Status
 
-  Lay the foundation:
-  * Define `iteratedIntervalIntegral` recursively on `Fin n` via the
-    natural-number induction principle on `n`.  Total definition,
-    0 sorries.
-  * State the `n = 2` specialisation that recovers the parent's
-    iterated form.  Sorry-bearing — proof deferred to S3.
+  * S2 (researcher-4): Define `iteratedIntervalIntegral` recursively on
+    `Fin n` via the natural-number induction principle on `n`.  Total
+    definition, 0 sorries.  State `iteratedIntervalIntegral_two`.
+  * S3 (researcher-4): Close `iteratedIntervalIntegral_two` via
+    structural-recursion unfolding plus a `Fin.cons` ↔ indicator-form
+    bridge on `Fin 2`.
 
-  Per `research/problems/greens-theorem-oq-01-oq-01-oq-02-oq-01/state.md`
-  S2 next-action specification.
-
-  Sorries: 1 (`iteratedIntervalIntegral_two`)
+  Sorries: 0
   Axioms: 0
 -/
 
@@ -65,20 +62,33 @@ Unfolding `iteratedIntervalIntegral` for `n = 2` twice yields
 
   `∫ x in a 0..b 0, ∫ y in a 1..b 1, f (Fin.cons x (Fin.cons y Fin.elim0))`.
 
-The Fin-vector form `Fin.cons x (Fin.cons y Fin.elim0)` is canonically
-equal to `fun i => if i = 0 then x else y` for `i : Fin 2`, since
-`Fin 2` has only the two values `0` and `1` and the two forms agree
-on each.  The proof bridges these forms via `funext` + case analysis
-on `i : Fin 2`.
+The Fin-vector form `Fin.cons x (Fin.cons y Fin.elim0)` is pointwise
+equal to `fun i => if i = 0 then x else y` for `i : Fin 2`: `fin_cases`
+on `i` reduces both sides to the same scalar on each branch.
 
-Proof deferred to S3 — the recursive `simp` unfolding plus the
-`Fin.cons` ↔ indicator-form bridge is straightforward but several
-lines; S2's job is to fix the statement.  S3 will close this. -/
+The two `∫` bounds line up by reduction: `(a ∘ Fin.succ) 0 = a 1`
+and `(b ∘ Fin.succ) 0 = b 1` hold by `rfl` (function composition plus
+`Fin.succ (0 : Fin 1) = (1 : Fin 2)`).  Hence the LHS is
+definitionally the iterated form above, and the two integrals are
+equal by `intervalIntegral.integral_congr` applied twice. -/
 theorem iteratedIntervalIntegral_two
     (a b : Fin 2 → ℝ) (f : (Fin 2 → ℝ) → ℝ) :
     iteratedIntervalIntegral a b f
       = ∫ x in a 0 .. b 0, ∫ y in a 1 .. b 1,
           f (fun i => if i = 0 then x else y) := by
-  sorry
+  -- Reduce LHS by structural recursion at `n = 2`, `n = 1`, `n = 0`.
+  show ∫ x in a 0 .. b 0, ∫ y in a 1 .. b 1,
+         f (Fin.cons x (Fin.cons y Fin.elim0))
+       = _
+  -- Two interval-integrals agree if the integrands agree pointwise on
+  -- their respective `uIcc`s; here in fact they agree everywhere.
+  refine intervalIntegral.integral_congr ?_
+  intro x _
+  refine intervalIntegral.integral_congr ?_
+  intro y _
+  -- Reduce to equality of the two integrand functions on `Fin 2 → ℝ`.
+  congr 1
+  funext i
+  fin_cases i <;> simp
 
 end GreensTheoremOQ01OQ01OQ02OQ01

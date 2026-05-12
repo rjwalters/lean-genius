@@ -21,20 +21,23 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T04:00:00.000Z",
-    "iteration": 2,
-    "focus": "S2 ACT: iteratedIntervalIntegral defined (Fin-induction; total definition, 0 sorries on the def) + iteratedIntervalIntegral_two skeleton stated (1 sorry, proof deferred to S3). File registered in Proofs.lean.",
+    "since": "2026-05-12T04:30:00.000Z",
+    "iteration": 3,
+    "focus": "S3 ACT: closed the iteratedIntervalIntegral_two sorry. Proof = show (structural-recursion unfold to n=2 iterated form) + intervalIntegral.integral_congr ×2 + congr 1 + funext i + fin_cases i <;> simp. File now 0 sorries / 0 axioms.",
     "blockers": [],
-    "nextAction": "S3: close the iteratedIntervalIntegral_two sorry via simp [iteratedIntervalIntegral, Function.comp] unfolding + Fin.cons ↔ indicator-form bridge by funext + case analysis on Fin 2. Then begin the adjacent-swap lemma for k : Fin n peeling the first k integrals and applying parent's 2D intervalIntegral_swap to axes (k, k+1).",
+    "nextAction": "S4: state and partially prove the adjacent-swap lemma iteratedIntervalIntegral_swap_succ at i : Fin n for transposition Equiv.swap i.castSucc i.succ. Reduces via Fin.induction on i to the parent's 2D intervalIntegral_swap. Then S5: chain via Equiv.Perm.swap_induction_on' to obtain the full permutation invariance theorem.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-8, 2026-05-11): OBSERVE survey for the n-dim lift of the parent's 2D intervalIntegral_swap (Proofs/GreensTheoremOQ01OQ01OQ02.lean). The parent has 3 variants (ordered, general uIcc, continuous) plus a Green's-theorem discharge corollary, all reducing to MeasureTheory.integral_integral_swap. The n-dim lift has three independent obstacles: (1) defining the n-fold iterated interval integral (proposed: Fin.cons-driven recursion); (2) permutation invariance (proposed: adjacent-transposition decomposition of Equiv.Perm (Fin n), reducing each adjacent swap to the parent's 2D lemma); (3) integrability transport along Measure.pi (proposed: MeasureTheory.measurePreserving_piCongrLeft + Integrable.comp_measurePreserving). Identified the Measure.pi_restrict identity as a likely Mathlib gap and a uIcc-symmetric reformulation that avoids 2^n case analysis. No Lean changes this iteration — pure documentation S1.",
-    "builtItems": [],
+    "progressSummary": "S3 (researcher-4, 2026-05-12): closed the iteratedIntervalIntegral_two sorry left open by S2. Proof: `show` rewrites the LHS to its fully-unfolded `∫ x in a 0..b 0, ∫ y in a 1..b 1, f (Fin.cons x (Fin.cons y Fin.elim0))` form by structural-recursion reduction (definitional, since `(a ∘ Fin.succ) 0 = a 1` by rfl); two applications of `intervalIntegral.integral_congr` reduce the integral equality to pointwise equality of integrands; `congr 1; funext i; fin_cases i <;> simp` bridges `Fin.cons x (Fin.cons y Fin.elim0)` ↔ `fun i => if i = 0 then x else y` on Fin 2. File now 0 sorries / 0 axioms. n=2 anchor closed. S2 (researcher-4, 2026-05-12): created Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean with iteratedIntervalIntegral (noncomputable, Fin-cons recursion, 0 sorries) + iteratedIntervalIntegral_two skeleton (1 sorry). S1 (researcher-8, 2026-05-11): OBSERVE survey establishing the three independent obstacles (definition / permutation invariance / integrability transport) and the adjacent-transposition decomposition strategy.",
+    "builtItems": [
+      "iteratedIntervalIntegral in Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean:51 — noncomputable n-fold iterated interval integral, structural recursion on n : ℕ via Fin.cons.",
+      "iteratedIntervalIntegral_two in Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean:74 — n=2 specialisation, FULLY PROVED (0 sorries). Proof: show + intervalIntegral.integral_congr ×2 + congr 1 + funext i + fin_cases i <;> simp."
+    ],
     "insights": [
       "The 2D parent's 4-case sign analysis is exponential in n: a direct n-dim port would do 2^n. Mitigation: prove the uIcc-symmetric statement directly (integrability on Set.uIoc) and recover the standard form for any ordering at extraction. Single uIcc-form proof ~80 lines.",
       "Adjacent transpositions Equiv.swap i.castSucc i.succ generate Equiv.Perm (Fin n) (standard bubble-sort generation). Each adjacent swap is a 2D intervalIntegral_swap applied to two consecutive axes after peeling the first i integrals via Fin.consEquiv. Same induction as Equiv.Perm.sign.",
@@ -48,10 +51,9 @@
       "intervalIntegral.integral_comm (the 2D parent's natural Mathlib name) is still absent (parent file's Part IV documentation flagged this in its mathlib4 rev 2df2f015 survey). OQ-04 S2+ work should be additive to whatever future PR closes the 2D parent."
     ],
     "nextSteps": [
-      "S2: define iteratedIntervalIntegral by Fin.induction (Fin.cons-driven recursion) in new Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean and prove the n=2 reduction lemma (specialisation to ∫ x .. ∫ y .. f form). ~40 lines, 0–1 transient sorries.",
-      "S3: prove the adjacent-swap lemma: iteratedIntervalIntegral a b f = iteratedIntervalIntegral (a ∘ Equiv.swap k.castSucc k.succ) … (f ∘ …) for k : Fin n. Peel the first k integrals; apply parent's 2D intervalIntegral_swap to axes (k, k+1). ~80 lines.",
-      "S4: prove the main permutation theorem iteratedIntervalIntegral_perm via Equiv.Perm.swap_induction_on' (or manual factorisation into adjacent swaps). ~50 lines plus lemma-finding overhead.",
-      "S5 (deferred): Bochner generalisation (~20 lines, uniform type-class lift); Measure.pi_restrict Mathlib-contribution PR (~30 lines + Mathlib PR formatting)."
+      "S4: state and prove the adjacent-swap lemma iteratedIntervalIntegral_swap_succ at i : Fin n for transposition Equiv.swap i.castSucc i.succ. Reduce via Fin.induction on i to the parent's 2D intervalIntegral_swap on axes (i.castSucc, i.succ). ~80 lines, 0–1 transient sorries.",
+      "S5: prove the main permutation theorem iteratedIntervalIntegral_perm via Equiv.Perm.swap_induction_on' (or manual factorisation of σ into adjacent transpositions). ~50 lines plus lemma-finding overhead.",
+      "S6 (deferred): Bochner generalisation (~20 lines, uniform type-class lift); Measure.pi_restrict Mathlib-contribution PR (~30 lines + Mathlib PR formatting)."
     ]
   },
   "tags": [
@@ -85,7 +87,7 @@
     ]
   },
   "started": "2026-05-11T19:00:00.000Z",
-  "lastUpdate": "2026-05-12T04:00:00.000Z",
+  "lastUpdate": "2026-05-12T04:30:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -103,11 +105,11 @@
     {
       "path": "Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean",
       "filename": "GreensTheoremOQ01OQ01OQ02OQ01.lean",
-      "lineCount": 84,
+      "lineCount": 94,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean"
     }

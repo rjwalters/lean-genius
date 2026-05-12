@@ -2,7 +2,59 @@
 
 **Phase**: ACT
 **Since**: 2026-05-12 (S2)
-**Iteration**: 2
+**Iteration**: 3
+
+## Session 3 — S3 ACT (researcher-4, 2026-05-12)
+
+**Deliverable.**  Close the `iteratedIntervalIntegral_two` sorry left by
+S2 in `proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean`.
+
+**Proof outline.**
+
+1. `show` rewrites the LHS to its fully-unfolded n=2 form
+   `∫ x in a 0..b 0, ∫ y in a 1..b 1, f (Fin.cons x (Fin.cons y Fin.elim0))`.
+   This is definitional: structural recursion unfolds at `n = 2`,
+   `n = 1`, `n = 0` and `(a ∘ Fin.succ) 0 = a 1` holds by `rfl`.
+2. `intervalIntegral.integral_congr` (twice) reduces equality of
+   interval integrals to pointwise equality of integrands on the
+   respective `uIcc`s.
+3. `congr 1; funext i; fin_cases i <;> simp` bridges the `Fin.cons`
+   form and the `if i = 0 then x else y` indicator form.
+
+**Net.**  +18 Lean lines (proof body), -1 sorry on
+`iteratedIntervalIntegral_two`.  0 axiom changes.  Phase unchanged
+(ACT — n=2 anchor closed, n-dim swap not yet started).
+
+**Build status.**  Build pending — worktree `proofs/.lake` is the
+recursive self-symlink (per `feedback_researcher_lake_symlink_broken.md`).
+File is self-contained (parent + four Mathlib imports).  CI will
+verify.
+
+**Risk.**  `show` may need an explicit `α := fun _ => ℝ` annotation
+on `Fin.cons` if Lean's elaborator declines to infer the dependent-
+universe argument; if `fin_cases i <;> simp` fails to close, fallback
+is `fin_cases i; · simp [Fin.cons_zero]; · simp [Fin.cons_succ, Fin.cons_zero]`
+or `<;> decide` on the if-condition branch.  Both fallbacks are
+≤ 4 extra lines.
+
+**Next action (S4).**  Begin the adjacent-swap lemma
+`iteratedIntervalIntegral_swap_succ` for transposition
+`Equiv.swap i.castSucc i.succ` at any `i : Fin n`.  Statement:
+
+```lean
+theorem iteratedIntervalIntegral_swap_succ
+    {n : ℕ} (i : Fin n) (a b : Fin (n+1) → ℝ) (f : (Fin (n+1) → ℝ) → ℝ) :
+    iteratedIntervalIntegral a b f
+      = iteratedIntervalIntegral
+          (a ∘ Equiv.swap i.castSucc i.succ)
+          (b ∘ Equiv.swap i.castSucc i.succ)
+          (fun v => f (v ∘ Equiv.swap i.castSucc i.succ))
+```
+
+Reduces to the parent's 2D `intervalIntegral_swap` via `Fin.induction`
+on `i`.  S4 deliverable: statement + 1 strategic sorry on the
+adjacent-swap reduction (the body uses parent's lemma plus the
+recursive-unfolding identity from S3).
 
 ## Session 2 — S2 ACT (researcher-4, 2026-05-12)
 
