@@ -1,5 +1,32 @@
 [
   {
+    "id": "e101-header-context",
+    "proofId": "erdos101-problem",
+    "type": "concept",
+    "range": {
+      "startLine": 1,
+      "endLine": 21
+    },
+    "title": "Header: Problem Statement, Bounty, and Mathlib Imports",
+    "content": "Lines 1–17 are the file's module docstring stating Erdős Problem #101 verbatim — given n points in ℝ² with no five collinear, prove that the number of lines containing exactly four points is o(n²) — and recording the historical arc: Erdős conjectured Θ(n^(3/2)) (matched below by Grünbaum's construction), but Solymosi and Stojaković subsequently disproved that, building point sets with n^(2 − O(1/√(log n))) four-point lines. The upper bound o(n²) remains open, with a standing $100 bounty (`https://erdosproblems.com/101`). Lines 19–21 import the minimum Mathlib surface needed downstream: `Mathlib.Data.Finset.Card` (for `Finset.card`, `Finset.powersetCard`, `choose_two_right`), `Mathlib.Data.Nat.Basic` (for the arithmetic lemmas like `Nat.le_div_iff_mul_le` used in the n(n-1)/12 packing bound), and `Mathlib.Tactic` (umbrella `ring`/`linarith`/`nlinarith`/`omega` import).",
+    "mathContext": "**The problem**: Let $f_4(n) := \\max_{P \\subset \\mathbb{R}^2,\\ |P|=n,\\ \\text{no 5 collinear}} \\#\\{L \\text{ line} : |L \\cap P| = 4\\}$. Conjecture (Erdős): $f_4(n) = o(n^2)$ but $f_4(n) = \\Omega(n^{3/2})$ tight. Reality (Solymosi–Stojaković, 2013): $f_4(n) = n^{2 - O(1/\\sqrt{\\log n})}$, so it does grow faster than any $n^{2-\\epsilon}$. Open: prove $f_4(n) = o(n^2)$ at all, or even just $f_4(n) \\le n^2/\\log n$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Erdős's discrete geometry problems",
+      "extremal combinatorics",
+      "Solymosi–Stojaković construction",
+      "Grünbaum's orchard problem",
+      "Szemerédi–Trotter theorem"
+    ],
+    "prerequisites": [
+      "extremal combinatorics",
+      "asymptotic notation o(·), Θ(·), Ω(·)",
+      "the orchard problem (3-point lines)",
+      "Mathlib.Data.Finset.Card",
+      "Mathlib.Tactic"
+    ]
+  },
+  {
     "id": "e101-definitions",
     "proofId": "erdos101-problem",
     "type": "definition",
@@ -27,7 +54,7 @@
   {
     "id": "e101-symmetries",
     "proofId": "erdos101-problem",
-    "type": "technique",
+    "type": "theorem",
     "range": {
       "startLine": 52,
       "endLine": 83
@@ -236,7 +263,7 @@
   {
     "id": "e101-powersetcard2-disjoint",
     "proofId": "erdos101-problem",
-    "type": "technique",
+    "type": "theorem",
     "range": {
       "startLine": 504,
       "endLine": 515
