@@ -1226,6 +1226,46 @@ example :
       ≤ (10 / 2) ^ Nat.sqrt 10 := by
   native_decide
 
+/-- **Chebyshev envelope assembly** (Iter 25): for `n ≥ 2`,
+    `lcmRange n ≤ 4^n · (n / 2)^√n`.
+
+    Combines Iter 16's primorial × correction-factor decomposition
+    (`lcmRange_eq_primorial_mul_prod_prime_pow_pred`) with Mathlib's
+    `primorial_le_4_pow` (the classical Erdős primorial bound) and
+    Iter 24's full correction-factor envelope
+    (`prod_prime_pow_pred_le_pow_sqrt`). The proof is a single
+    `Nat.mul_le_mul` after rewriting `lcmRange n` as the product of
+    the two factors.
+
+    Strategic significance: this is the FIRST end-to-end asymptotic
+    envelope on `lcmRange n` derived from prime-power structure
+    (rather than the trivial `≤ n^n` factorial route of Part 3). The
+    bound is asymptotically `4^n · 2^O(√n · log n)`, hence strictly
+    weaker than Hanson's target `3^n` but capturing the right `O(4^n)`
+    leading factor that any prime-power-based proof must produce.
+    Closing the remaining `(4/3)^n vs (n/2)^√n` gap requires a
+    sharper Chebyshev-style bound on the correction factor (or a
+    cancellation between primorial and correction that exploits the
+    Chebyshev `θ(n) ~ n` density — out of scope of this file).
+
+    Concrete numerics (sanity check):
+    * `n = 10`: LHS = `lcmRange 10 = 2520`, RHS = `4^10 · 5^3 =
+      1048576 · 125 ≈ 1.31 · 10⁸`. ✓ (2520 ≤ 131072000)
+    * `n = 20`: LHS = `232792560 ≈ 2.33 · 10⁸`,
+      RHS = `4^20 · 10^4 ≈ 1.10 · 10¹⁶`. ✓ -/
+theorem lcmRange_le_4_pow_mul_pow_sqrt {n : ℕ} (hn : 2 ≤ n) :
+    lcmRange n ≤ 4 ^ n * (n / 2) ^ n.sqrt := by
+  rw [lcmRange_eq_primorial_mul_prod_prime_pow_pred]
+  exact Nat.mul_le_mul (primorial_le_4_pow n)
+    (prod_prime_pow_pred_le_pow_sqrt hn)
+
+/-- **Concrete numerical witness** (Iter 25): at `n = 10`,
+    `lcmRange 10 = 2520 ≤ 4^10 · 5^3 = 131072000`.
+
+    Sanity check for `lcmRange_le_4_pow_mul_pow_sqrt`. -/
+example : lcmRange 10 ≤ 4 ^ 10 * (10 / 2) ^ Nat.sqrt 10 := by
+  native_decide
+
 /-- **Recursive structure**: lcm(1,...,n+1) = lcm(lcm(1,...,n), n+1).
 
     The inductive step that any inductive proof of Hanson's bound
