@@ -1719,6 +1719,209 @@ theorem selmer_padic_solubility_extended_caseB_primes :
    selmer_padic_solubility_p67_hensel,
    selmer_padic_solubility_p79_hensel⟩
 
+/-! ## Section 27: Universal Case-A Theorem (cube-root parametric closure)
+
+Sections 22-25 enumerated specific Case-A primes
+(`p ∈ {41, 47, 53, 59, 71, 83, 89, 101, 107, 113}`) by hand, each with
+an explicit `z₀` satisfying `5·z₀^3 ≡ -4 (mod p)`. Section 27 codifies
+the parametric existence-of-`z₀` step, eliminating per-prime enumeration:
+
+> **Theorem (universal Case-A).** For every prime `p ≡ 2 (mod 3)` with
+> `p ≠ 2` and `p ≠ 5`, the Selmer cubic `3x³ + 4y³ + 5z³ = 0` is
+> `ℚ_[p]`-soluble, axiom-free.
+
+The key fact: when `p ≡ 2 (mod 3)`, the cube map `x ↦ x³` on `(ZMod p)ˣ`
+is bijective. The explicit cube-root inverse is `x ↦ x^m` where
+`m := (2(p-1) + 1) / 3`: indeed `3m = 2(p-1) + 1`, so by Fermat's
+little theorem `(a^m)^3 = a^{2(p-1)+1} = a · (a^{p-1})^2 = a · 1 = a`
+for any nonzero `a : ZMod p`. Combined with `5 ≠ 0` in `ZMod p` (using
+`p ≠ 5`), this gives a cube root `z` of `-4/5`. Lifting `z` to `ℤ` via
+`(z.val : ℤ)` produces the integer witness consumed by
+`selmer_padic_solubility_caseA` (Section 13). The result subsumes
+all of Sections 11 (z-side), 17 (z-side), 22, 23, 24, 25 — every
+Case-A prime there satisfies the hypotheses.
+
+The per-prime corollaries `selmer_padic_solubility_p{11,41,...,113}_hensel`
+are **not** removed (they remain for downstream consumers and the bundled
+discharge theorems `_extended_caseA_primes_v{1..4}`); Section 27 is an
+orthogonal extension showing the underlying parametric closure. -/
+
+namespace UniversalCaseA
+
+/-- Cube-root inverse exponent: `m := (2(p-1) + 1) / 3`. When
+    `p ≡ 2 (mod 3)` and `p ≠ 2`, this satisfies
+    `3m = 2(p-1) + 1`, so `3m ≡ 1 (mod p-1)`. -/
+def cubeInverseExp (p : ℕ) : ℕ := (2 * (p - 1) + 1) / 3
+
+/-- For primes `p ≡ 2 (mod 3)` with `p ≠ 2`,
+    `3 · cubeInverseExp p = 2(p-1) + 1` exactly (the division is exact
+    since `2(p-1) + 1 ≡ 0 (mod 3)` when `p ≡ 2 (mod 3)`). -/
+lemma three_mul_cubeInverseExp_eq {p : ℕ} [Fact (Nat.Prime p)]
+    (hp_mod3 : p % 3 = 2) (hp_ne_2 : p ≠ 2) :
+    3 * cubeInverseExp p = 2 * (p - 1) + 1 := by
+  have hp_two : 2 ≤ p := Nat.Prime.two_le (Fact.out : Nat.Prime p)
+  unfold cubeInverseExp
+  omega
+
+/-- For any nonzero `a : ZMod p` (with `p` prime, `p ≡ 2 (mod 3)`,
+    `p ≠ 2`), `(a^m)^3 = a` where `m := cubeInverseExp p`. Proof:
+    `a^{3m} = a^{2(p-1)+1} = (a^{p-1})^2 · a = 1 · a = a` by Fermat. -/
+lemma pow_cubeInverseExp_pow_three {p : ℕ} [Fact (Nat.Prime p)]
+    (hp_mod3 : p % 3 = 2) (hp_ne_2 : p ≠ 2)
+    {a : ZMod p} (ha : a ≠ 0) :
+    (a ^ cubeInverseExp p) ^ 3 = a := by
+  have h_fermat : a ^ (p - 1) = 1 := ZMod.pow_card_sub_one_eq_one ha
+  rw [← pow_mul, mul_comm, three_mul_cubeInverseExp_eq hp_mod3 hp_ne_2]
+  rw [show 2 * (p - 1) + 1 = (p - 1) + ((p - 1) + 1) from by ring,
+      pow_add, pow_add, pow_one, h_fermat, one_mul, h_fermat, one_mul]
+
+/-- Helper: `p` prime and `p ≠ q` (for `q` prime) imply `¬ p ∣ q`. -/
+private lemma prime_not_dvd_of_prime_ne {p q : ℕ}
+    (hp : Nat.Prime p) (hq : Nat.Prime q) (hne : p ≠ q) :
+    ¬ p ∣ q := by
+  intro h
+  rcases hq.eq_one_or_self_of_dvd p h with h1 | hq'
+  · exact hp.one_lt.ne' h1.symm
+  · exact hne hq'
+
+/-- `(5 : ZMod p) ≠ 0` for `p` prime with `p ≠ 5`. -/
+lemma cast_five_ne_zero {p : ℕ} [Fact (Nat.Prime p)] (hp_ne_5 : p ≠ 5) :
+    (5 : ZMod p) ≠ 0 := by
+  have hp_prime : Nat.Prime p := Fact.out
+  have h_cast : ((5 : ℕ) : ZMod p) = (5 : ZMod p) := by norm_cast
+  rw [← h_cast, Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+  exact prime_not_dvd_of_prime_ne hp_prime (by decide) hp_ne_5
+
+/-- `(4 : ZMod p) ≠ 0` for `p` prime with `p ≠ 2`. -/
+lemma cast_four_ne_zero {p : ℕ} [Fact (Nat.Prime p)] (hp_ne_2 : p ≠ 2) :
+    (4 : ZMod p) ≠ 0 := by
+  have hp_prime : Nat.Prime p := Fact.out
+  have h_cast : ((4 : ℕ) : ZMod p) = (4 : ZMod p) := by norm_cast
+  rw [← h_cast, Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+  intro h
+  -- p ∣ 4 = 2^2, p prime, so p ∣ 2, so p = 2
+  have hp_dvd_2 : p ∣ 2 :=
+    hp_prime.dvd_of_dvd_pow (show p ∣ (2 : ℕ) ^ 2 from by exact_mod_cast h)
+  exact prime_not_dvd_of_prime_ne hp_prime (by decide) hp_ne_2 hp_dvd_2
+
+/-- `(3 : ZMod p) ≠ 0` for `p` prime with `p ≠ 3`. -/
+lemma cast_three_ne_zero {p : ℕ} [Fact (Nat.Prime p)] (hp_ne_3 : p ≠ 3) :
+    (3 : ZMod p) ≠ 0 := by
+  have hp_prime : Nat.Prime p := Fact.out
+  have h_cast : ((3 : ℕ) : ZMod p) = (3 : ZMod p) := by norm_cast
+  rw [← h_cast, Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+  exact prime_not_dvd_of_prime_ne hp_prime (by decide) hp_ne_3
+
+/-- Existence of cube-root of `-4/5` in `ZMod p` for Case-A primes:
+    `∃ z, 5z³ + 4 = 0`. -/
+lemma exists_cube_root_neg_four_fifths {p : ℕ} [Fact (Nat.Prime p)]
+    (hp_mod3 : p % 3 = 2) (hp_ne_2 : p ≠ 2) (hp_ne_5 : p ≠ 5) :
+    ∃ z : ZMod p, 5 * z ^ 3 + 4 = 0 := by
+  have h5_ne_0 : (5 : ZMod p) ≠ 0 := cast_five_ne_zero hp_ne_5
+  have h4_ne_0 : (4 : ZMod p) ≠ 0 := cast_four_ne_zero hp_ne_2
+  -- a := -4 / 5 = -4 * 5⁻¹
+  set a : ZMod p := -4 * (5 : ZMod p)⁻¹ with ha_def
+  have h_5a_eq : 5 * a = -4 := by
+    show 5 * (-4 * (5 : ZMod p)⁻¹) = -4
+    rw [show (5 : ZMod p) * (-4 * (5 : ZMod p)⁻¹)
+          = -4 * (5 * (5 : ZMod p)⁻¹) from by ring,
+        mul_inv_cancel₀ h5_ne_0, mul_one]
+  have ha_ne_0 : a ≠ 0 := by
+    intro ha0
+    have h0 : 5 * a = 0 := by rw [ha0]; ring
+    rw [h_5a_eq] at h0
+    have : (4 : ZMod p) = 0 := by linear_combination -h0
+    exact h4_ne_0 this
+  refine ⟨a ^ cubeInverseExp p, ?_⟩
+  have h_cube : (a ^ cubeInverseExp p) ^ 3 = a :=
+    pow_cubeInverseExp_pow_three hp_mod3 hp_ne_2 ha_ne_0
+  rw [h_cube]
+  linear_combination h_5a_eq
+
+/-- **Universal Case-A theorem.** ℚ_[p]-solubility of the Selmer cubic
+    `3x³ + 4y³ + 5z³ = 0` for every prime `p ≡ 2 (mod 3)` with `p ≠ 2`
+    and `p ≠ 5`, axiom-free. Subsumes the per-prime corollaries of
+    Sections 11/17 (z-side) and Sections 22/23/24/25.
+
+    **Proof outline.**
+    1. By `exists_cube_root_neg_four_fifths`, there is `z : ZMod p` with
+       `5z³ + 4 = 0`.
+    2. Lift `z` to `z₀ : ℤ` via `(z.val : ℤ)`. Then `(z₀ : ZMod p) = z`.
+    3. `(p : ℤ) ∣ (4 + 5·z₀³)` follows from step 1 by
+       `ZMod.intCast_zmod_eq_zero_iff_dvd`.
+    4. `IsCoprime (15·z₀² : ℤ) (p : ℤ)` from
+       `(15·z₀² : ZMod p) = 15·z² ≠ 0` (since `p ∉ {3, 5}` and `z ≠ 0`).
+    5. Apply Section 13's `selmer_padic_solubility_caseA z₀`. -/
+theorem selmer_padic_solubility_caseA_universal {p : ℕ} [hp : Fact (Nat.Prime p)]
+    (hp_mod3 : p % 3 = 2) (hp_ne_2 : p ≠ 2) (hp_ne_5 : p ≠ 5) :
+    ∃ (x y z : ℚ_[p]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 := by
+  obtain ⟨z, hz⟩ := exists_cube_root_neg_four_fifths hp_mod3 hp_ne_2 hp_ne_5
+  -- Lift z : ZMod p to z₀ : ℤ via z.val
+  set z₀ : ℤ := (z.val : ℤ) with hz₀_def
+  have hp_prime : Nat.Prime p := Fact.out
+  have hp_ne_3 : p ≠ 3 := by intro h; rw [h] at hp_mod3; norm_num at hp_mod3
+  -- Cast: ((z₀ : ℤ) : ZMod p) = z
+  have h_cast : ((z₀ : ℤ) : ZMod p) = z := by
+    show ((z.val : ℤ) : ZMod p) = z
+    push_cast
+    exact ZMod.natCast_zmod_val z
+  -- z ≠ 0 in ZMod p (else 0 + 4 = 4 ≠ 0 contradicts hz)
+  have hz_ne_0 : z ≠ 0 := by
+    intro h0
+    rw [h0] at hz
+    simp at hz
+    exact cast_four_ne_zero hp_ne_2 hz
+  -- p ∣ (4 + 5 z₀³) in ℤ
+  have h_root : (p : ℤ) ∣ (4 + 5 * z₀ ^ 3) := by
+    rw [← ZMod.intCast_zmod_eq_zero_iff_dvd]
+    push_cast
+    rw [h_cast]
+    linear_combination hz
+  -- IsCoprime (15 z₀²) p in ℤ
+  have h_coprime : IsCoprime (15 * z₀ ^ 2 : ℤ) (p : ℤ) := by
+    have hp_int_prime : Prime (p : ℤ) := by exact_mod_cast hp_prime.prime
+    refine (hp_int_prime.coprime_iff_not_dvd.mpr ?_).symm
+    intro hd
+    have hzmod : ((15 * z₀ ^ 2 : ℤ) : ZMod p) = 0 :=
+      (ZMod.intCast_zmod_eq_zero_iff_dvd _ p).mpr hd
+    push_cast at hzmod
+    rw [h_cast] at hzmod
+    rcases mul_eq_zero.mp hzmod with h15 | hz2
+    · -- (15 : ZMod p) = 0; but 15 = 3*5 with both nonzero
+      have h3_ne : (3 : ZMod p) ≠ 0 := cast_three_ne_zero hp_ne_3
+      have h5_ne : (5 : ZMod p) ≠ 0 := cast_five_ne_zero hp_ne_5
+      have h_split : (15 : ZMod p) = (3 : ZMod p) * (5 : ZMod p) := by norm_num
+      rw [h_split] at h15
+      rcases mul_eq_zero.mp h15 with h3 | h5
+      · exact h3_ne h3
+      · exact h5_ne h5
+    · exact hz_ne_0 (pow_eq_zero_iff (by norm_num : (2 : ℕ) ≠ 0) |>.mp hz2)
+  exact selmer_padic_solubility_caseA z₀ h_root h_coprime
+
+/-! ### Universal-Case-A subsumption examples
+
+The universal theorem `selmer_padic_solubility_caseA_universal` recovers
+the per-prime Hensel-lifted solubility of every Case-A prime as a
+one-line corollary, without any explicit witness arithmetic. We exhibit
+two illustrative corollaries (`p = 11`, `p = 41`); the same one-liner
+works for every prime `p ≡ 2 (mod 3)`, `p ∉ {2, 5}`. -/
+
+/-- Universal-Case-A corollary at `p = 11`: matches Section 11's
+    `selmer_padic_solubility_p11_hensel` without invoking the witness
+    `z₀ = 2`. -/
+theorem selmer_padic_solubility_p11_universal :
+    ∃ (x y z : ℚ_[11]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_caseA_universal (by decide) (by decide) (by decide)
+
+/-- Universal-Case-A corollary at `p = 41`: matches Section 22's
+    `selmer_padic_solubility_p41_hensel` without invoking the witness
+    `z₀ = 9`. -/
+theorem selmer_padic_solubility_p41_universal :
+    ∃ (x y z : ℚ_[41]), (x ≠ 0 ∨ y ≠ 0 ∨ z ≠ 0) ∧ selmerPoly x y z = 0 :=
+  selmer_padic_solubility_caseA_universal (by decide) (by decide) (by decide)
+
+end UniversalCaseA
+
 #check @selmerCubic_real_solution
 #check @selmer_rat_implies_real
 #check @selmer_rat_implies_padic
@@ -1760,5 +1963,8 @@ theorem selmer_padic_solubility_extended_caseB_primes :
 #check @selmer_padic_solubility_p67_hensel
 #check @selmer_padic_solubility_p79_hensel
 #check @selmer_padic_solubility_extended_caseB_primes
+#check @UniversalCaseA.selmer_padic_solubility_caseA_universal
+#check @UniversalCaseA.selmer_padic_solubility_p11_universal
+#check @UniversalCaseA.selmer_padic_solubility_p41_universal
 
 end Hilbert11OQ02

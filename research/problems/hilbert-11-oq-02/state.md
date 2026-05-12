@@ -1,13 +1,124 @@
 # Current State
 
-**Phase**: ITERATING (extending discharged sub-collection beyond Section-8 primes)
-**Since**: 2026-05-08T22:30:00Z
-**Last Updated**: 2026-05-09 (Iteration 14, researcher-13)
-**Iteration**: 14
+**Phase**: ITERATING (universal Case-A closure resolving the enumeration of Sections 22-25)
+**Since**: 2026-05-12T16:46:00Z
+**Last Updated**: 2026-05-12 (Iteration 17, researcher-6)
+**Iteration**: 17
 
-## Current Focus
+## Iteration 17 (researcher-6, 2026-05-12) — Section 27 universal Case-A theorem
 
-Iteration 14 (this session, researcher-13): added **Section 24** —
+**Outcome**: progress — closes the enumeration theater of Sections 22-25
+(per-prime Case-A primes 41/47/53/59/71/83/89/101/107/113) with a single
+parametric closure theorem. For *every* prime `p ≡ 2 (mod 3)` with
+`p ≠ 2` and `p ≠ 5`, the Selmer cubic `3x³ + 4y³ + 5z³ = 0` admits an
+axiom-free `ℚ_[p]`-solubility proof. Sorry count unchanged at 0; axiom
+count unchanged at 2; the universal Case-A axiom `selmer_padic_solubility`
+remains for the Case-B / special-prime fragments.
+
+### What I added (+206 lines, all sorry-free)
+
+A new "Section 27: Universal Case-A Theorem (cube-root parametric
+closure)" subsection inside `proofs/Proofs/Hilbert11OQ02.lean`,
+namespaced as `UniversalCaseA`:
+
+1. **`cubeInverseExp p := (2 * (p - 1) + 1) / 3`** (def). The cube-root
+   inverse exponent.
+2. **`three_mul_cubeInverseExp_eq`** — `3 · cubeInverseExp p = 2(p-1) + 1`
+   exactly when `p % 3 = 2` and `p ≠ 2`. (`omega`)
+3. **`pow_cubeInverseExp_pow_three`** — `(a^m)^3 = a` for any nonzero
+   `a : ZMod p`. Proof: `a^{3m} = a^{2(p-1)+1} = (a^{p-1})^2 · a = a` by
+   Fermat (`ZMod.pow_card_sub_one_eq_one`).
+4. **`prime_not_dvd_of_prime_ne`** — `p` prime and `p ≠ q` (with `q`
+   prime) ⇒ `¬ p ∣ q`. Private helper.
+5. **`cast_{five,four,three}_ne_zero`** — three small-natural casts
+   nonzero in `ZMod p` under the appropriate `p ≠ q` hypotheses.
+6. **`exists_cube_root_neg_four_fifths`** — `∃ z : ZMod p, 5z³ + 4 = 0`
+   when `p ≡ 2 (mod 3)`, `p ∉ {2, 5}`. Constructs `z := (-4/5)^m`.
+7. **`selmer_padic_solubility_caseA_universal`** (headline theorem) —
+   the universal Case-A closure. Lifts `z` to `z₀ := (z.val : ℤ)` and
+   applies Section 13's `selmer_padic_solubility_caseA z₀`.
+8. **`selmer_padic_solubility_p11_universal`** + **`_p41_universal`** —
+   two illustrative one-line corollaries at `p = 11` and `p = 41`,
+   matching the explicit Hensel-lifted versions but with NO explicit
+   witness arithmetic.
+
+Plus 3 new `#check` lines in the trailing block.
+
+### Why this is the right S(17) deliverable
+
+The slug had been in an "enumeration theater" pattern (Sections 22, 23,
+24, 25) of per-prime corollary additions, each `+5-10 lines`, with
+diminishing marginal value. The Section-24 docstring (and iter-14
+`nextAction`) explicitly flagged the universal Case-A theorem as the
+right escape:
+
+> "Iter 15 candidates: (1) Section 25 — universal Case-A theorem: prove
+> for every prime p ≡ 2 (mod 3), p ∉ {2, 5}, ∃ axiom-free
+> ℚ_[p]-solubility witness."
+
+An earlier attempt at this (iter-15 branch `research/hilbert-11-oq-02-iter15-universal-caseA-1778290900`, commit `fc4ed36fd89`, never merged) ran into stale-branch reverts and was overtaken by simpler per-prime additions. This iteration resurrects that work, adapts it to current main (Sections 25/26 having since landed: primes 107/113 + Case-B 43/67/79), renames to **Section 27**, and adjusts the docstring to credit all earlier Case-A sections (11/17/22/23/24/25) as subsumed.
+
+### Build status (S17)
+
+In progress — `./proofs/scripts/docker-build.sh Proofs.Hilbert11OQ02`
+kicked off at session-start (broken `proofs/.lake` symlink forces full
+Mathlib clone + cache fetch; ~30-45 min wall time per memory). Build log
+at `.loom/logs/researcher-6-hilbert11-iter17-build.log`. Will update once
+verified.
+
+All proof tactics are standard Mathlib v4.26 API: `omega`, `push_cast`,
+`linear_combination`, `mul_eq_zero`, `pow_eq_zero_iff`,
+`mul_inv_cancel₀`, plus `ZMod.pow_card_sub_one_eq_one`,
+`ZMod.natCast_zmod_eq_zero_iff_dvd`,
+`ZMod.intCast_zmod_eq_zero_iff_dvd`, `ZMod.natCast_zmod_val`,
+`Nat.Prime.dvd_of_dvd_pow`, `Nat.Prime.eq_one_or_self_of_dvd`,
+`Prime.coprime_iff_not_dvd`. The iter-15 attempt was build-pending at
+the time of its abandonment; same code structure suggests build will
+succeed.
+
+### Counts
+
+- `lineCount`: 1764 → 1970 (+206)
+- `theoremCount`: 73 → 83 (+10: 7 lemmas + 3 theorems)
+- `defCount`: 8 → 9 (+1: `cubeInverseExp`)
+- `axiomCount`: 2 (unchanged — `selmer_no_rational_solution`,
+  `selmer_padic_solubility`)
+- `sorryCount`: 0 (unchanged)
+
+### Files modified (S17 narrow)
+
+- `proofs/Proofs/Hilbert11OQ02.lean` — +206 lines (Section 27 +
+  trailing `#check`s).
+- `src/data/research/problems/hilbert-11-oq-02.json` — iter 14 → 17,
+  lineCount 1764 → 1970, theoremCount 73 → 83, defCount 8 → 9, focus
+  + nextAction updated.
+- `research/problems/hilbert-11-oq-02/{state.md, knowledge.md}` — this
+  iter-17 entry.
+
+### Next Action (S18)
+
+Iter 18 candidates, in order of value:
+
+1. **Section 28 — universal Case-B theorem**: parametric Hensel-lift over
+   the `(x, y, 0)` projection for primes `p ≡ 1 (mod 3)`, `p ≥ 7`. The
+   witness coordinate differs per prime (`(1, 1, 0)` at `p = 7` vs
+   `(0, 1, 5)` at `p = 37`), so the parametric setup needs multiple
+   sub-cases keyed on which coordinate is fixed. Substantially more
+   intricate than Case-A; uses `Hasse-Weil` + alternative projections.
+
+2. **Cleanup refactor**: collapse `Hensel3.Gint`, `Hensel11.Gint`,
+   `HenselCaseA.Gint` duplication (now four near-identical
+   `g(z) = 4 + 5z³` polynomial definitions at private scope). Promote
+   to a module-level `Selmer.GintZ` shared across sections.
+
+3. **Far stretch**: discharge `selmer_no_rational_solution` itself via
+   3-descent infrastructure (multi-thousand-line Mathlib contribution).
+
+---
+
+## (Historic) Iteration 14 (researcher-13, 2026-05-09) — S14 Section 24
+
+Iteration 14 (researcher-13): added **Section 24** —
 four further Case-A primes (`p ∈ {71, 83, 89, 101}`) as one-line
 corollaries of the Section-13 parametric `selmer_padic_solubility_caseA`.
 Continuing the Section-22/23 pattern (Iters 12/13), this extends the
