@@ -209,6 +209,92 @@ theorem straight_fold_recovers_HH (c : CurvedCrease)
     (_h_distinct : c.γ 0 ≠ c.γ c.L) :
     c.ExistsHHFold := by
   sorry  -- S3 ACT: reduce κ_g ≡ 0 case to HHAxioms.hh1 / line characterisation.
+         -- S3 partial discharge (this file): the *geometric* line-through-
+         -- two-distinct-points content is now constructive via
+         -- `lineThrough`, `hh1_existence`, and
+         -- `straight_fold_endpoints_collinear` below. The remaining gap
+         -- is the construction of a full `HHAxioms` witness (HH-2..HH-7).
+
+-- ============================================================
+-- PART 3b: Constructive HH-1 — line through two distinct points (S3)
+-- ============================================================
+
+/-
+### S3 partial discharge: HH-1 standalone construction
+
+The S3 conservativity target `straight_fold_recovers_HH` decomposes into
+two ingredients:
+
+1. **Geometric**: given two distinct points in the plane, produce a line
+   through both. This is the content of HH-1 (`HHAxioms.hh1`).
+2. **Axiomatic**: produce a full `HHAxioms` witness (HH-1 through HH-7).
+
+Ingredient 1 is finite and self-contained; this section discharges it.
+Ingredient 2 requires proving each of the remaining six HH axioms (HH-2
+through HH-7), which is a separate undertaking (HH-6 alone requires the
+Beloch-fold cubic-solving construction). Future iterations should attack
+these in turn.
+
+After this section the geometric core of S3 is constructive: a straight
+curved crease with distinct endpoints does admit a line through both
+endpoints, and that line is computable from the endpoint coordinates.
+-/
+
+/-- The line through two points `p₁ ≠ p₂` in ℝ². Coefficients
+`(a, b, c) = (y₂ - y₁, x₁ - x₂, x₂·y₁ - x₁·y₂)` cast the standard
+two-point form into the `ax + by + c = 0` normalisation. The
+non-degeneracy clause `(a, b) ≠ (0, 0)` follows because `p₁ ≠ p₂`
+forces at least one coordinate to differ. -/
+noncomputable def lineThrough (p₁ p₂ : Point) (h : p₁ ≠ p₂) : Line where
+  a := p₂.2 - p₁.2
+  b := p₁.1 - p₂.1
+  c := p₂.1 * p₁.2 - p₁.1 * p₂.2
+  nondeg := by
+    by_contra hcontra
+    push_neg at hcontra
+    obtain ⟨ha, hb⟩ := hcontra
+    apply h
+    have hx : p₁.1 = p₂.1 := by linarith [sub_eq_zero.mp hb]
+    have hy : p₁.2 = p₂.2 := by linarith [sub_eq_zero.mp ha]
+    exact Prod.ext hx hy
+
+/-- The line `lineThrough p₁ p₂ h` contains `p₁`. -/
+theorem lineThrough_contains_left (p₁ p₂ : Point) (h : p₁ ≠ p₂) :
+    (lineThrough p₁ p₂ h).contains p₁ := by
+  simp only [lineThrough, Line.contains]
+  ring
+
+/-- The line `lineThrough p₁ p₂ h` contains `p₂`. -/
+theorem lineThrough_contains_right (p₁ p₂ : Point) (h : p₁ ≠ p₂) :
+    (lineThrough p₁ p₂ h).contains p₂ := by
+  simp only [lineThrough, Line.contains]
+  ring
+
+/-- **HH-1 (existence form, standalone).** Given two distinct points in
+the plane, there exists a line containing both. This is the geometric
+content of the HH-1 field of `HHAxioms`; proving it independently is
+the first ingredient of the eventual full `HHAxioms` instance and the
+witness consumed by `straight_fold_endpoints_collinear`. -/
+theorem hh1_existence : ∀ (p₁ p₂ : Point), p₁ ≠ p₂ →
+    ∃ l : Line, l.contains p₁ ∧ l.contains p₂ := by
+  intro p₁ p₂ h
+  exact ⟨lineThrough p₁ p₂ h,
+         lineThrough_contains_left p₁ p₂ h,
+         lineThrough_contains_right p₁ p₂ h⟩
+
+/-- **Geometric core of S3.** For a curved crease whose endpoints are
+distinct, there exists a line through both endpoints. This is the
+content of `straight_fold_recovers_HH` modulo the `HHAxioms` wrapper;
+the straightness hypothesis is unused for this fragment because the
+two-point form of a line does not depend on the curvature data along
+`γ`. The straightness hypothesis re-enters in the full theorem when it
+witnesses that `γ` actually traces a line segment between the
+endpoints (rather than a more general curve happening to share the
+endpoints), which is needed for the full reduction to an HH-1 fold. -/
+theorem straight_fold_endpoints_collinear (c : CurvedCrease)
+    (h_distinct : c.γ 0 ≠ c.γ c.L) :
+    ∃ l : Line, l.contains (c.γ 0) ∧ l.contains (c.γ c.L) :=
+  hh1_existence (c.γ 0) (c.γ c.L) h_distinct
 
 -- ============================================================
 -- PART 4: S4 Target — Algebraic-Curve Sharpness
