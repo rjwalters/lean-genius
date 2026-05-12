@@ -2663,6 +2663,7 @@ import Proofs.SchauderFixedPointOQ01
 import Proofs.SchauderFixedPointOQ03
 import Proofs.SchauderFixedPointOQ03OQ01
 import Proofs.SchroederBernstein
+import Proofs.SchroederBernsteinOQ01
 import Proofs.SchroederBernsteinOQ02
 import Proofs.SchroederBernsteinOQ03
 import Proofs.SchroederBernsteinOQ03Aristotle

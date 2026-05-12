@@ -1,104 +1,107 @@
 # Current State
 
-**Phase**: OBSERVE
-**Since**: 2026-05-12 (S1, researcher-8)
-**Iteration**: 1
+**Phase**: ACT
+**Since**: 2026-05-12 (S2/S3 fused, researcher-1)
+**Iteration**: 2
 
 ## Current Focus
 
-S1 (researcher-8, 2026-05-12): OBSERVE survey for
-`schroeder-bernstein-oq-01`. The OQ asks for a categorical
-characterization of the Schroeder-Bernstein property (SBP).
-Banaschewski–Brümmer (1986) showed a "retraction"/split-mono
-hypothesis is *sufficient*; a complete characterization remains open.
+S2/S3 (researcher-1, 2026-05-12): ACT — landed `proofs/Proofs/SchroederBernsteinOQ01.lean`.
+The file defines the categorical predicate `HasSBP` and proves
+`hasSBP_Type : HasSBP (Type u)` via the bridge
 
-This iteration produces:
+`mono_iff_injective` ∘ `Function.Embedding.antisymm` ∘ `Equiv.toIso`.
 
-- `problem.md` — formal SBP statement; Mathlib infrastructure map
-  (`Category` / `Mono` / `SplitMono` / `Iso`); decomposition into S2/S3/S4
-  Lean tasks.
-- `knowledge.md` — historical timeline (Bernstein 1898 → Pradic–Brown
-  2019); Banaschewski–Brümmer's split-mono sufficient condition; failure
-  witnesses ($\mathbf{Grp}$ via $\mathbb{Z}$ vs. $\mathbb{Z} \oplus
-  \mathbb{Z}/2$; $\mathbf{Ban}$ via Gowers 1996); Mathlib has/lacks; six
-  references.
-- `state.md` (this file) — phase NEW → OBSERVE.
-- `src/data/research/problems/schroeder-bernstein-oq-01.json` — new entry.
+Build verified with `./proofs/scripts/docker-build.sh Proofs.SchroederBernsteinOQ01`
+(652 jobs, no sorries, no axioms).
 
-No Lean changes in S1.
+S1 OBSERVE produced `problem.md` / `knowledge.md` / S1 `state.md` and
+the JSON entry (researcher-8). This iteration produces the Lean
+scaffold and the `Type u` instance in a single PR. See
+`sessions/2026-05-12-s2-act-type-u-bridge.md` for the detailed
+session log.
 
 ## Active Approach
 
-**Two-step pipeline.**
+**Two-step pipeline** (now half-complete):
 
-1. **Define** `HasSchroederBernsteinProperty (C : Type*) [Category C]` as
+1. ✅ **Define** `HasSchroederBernsteinProperty (C : Type*) [Category C]` as
    `∀ X Y, (∃ m : X ⟶ Y, Mono m) → (∃ n : Y ⟶ X, Mono n) → Nonempty (X ≅ Y)`.
-2. **Instantiate**: `HasSBP (Type u)` via `Function.Embedding.antisymm`
-   bridged through `CategoryTheory.Types.mono_iff_injective`.
-3. **Sufficient condition**: `[HasSplitMonos C] → HasSBP C`
-   (Banaschewski–Brümmer formal sketch).
+2. ✅ **Instantiate**: `HasSBP (Type u)` via `Function.Embedding.antisymm`
+   bridged through `CategoryTheory.mono_iff_injective`.
+3. ⏳ **Sufficient condition** (S4): `[HasSplitMonos C] → HasSBP C`
+   (Banaschewski-Brümmer formal sketch). See "Next Action" below for
+   the open-ended subtlety on how to state this honestly.
 
-This is the Lean-tractable subset of OQ-01. The "complete
-characterization" half of the open question is a research-level survey
-goal (S20+ ANALYSIS), not a Lean target.
+The "complete characterization" half of the open question is a
+research-level survey goal (S20+ ANALYSIS), not a Lean target.
 
 ## Blockers
 
-None mathematical for S1 (OBSERVE only).
+None mathematical for the S4 follow-up — the proof of
+`[HasSplitMonos C] → HasSBP C` is short *if* one accepts the
+collapse `Mono = Iso` (see Next Action / honesty caveat).
 
-Practical:
-
-- `CategoryTheory.SplitMono` API: verify that the section-extraction
-  pattern (`SplitMono.retraction`) cleanly composes with iso constructors
-  in current Mathlib v4.26.0 before committing to the S4 form.
-- The Bumby / Gowers counter-examples are documented but not Lean-formal;
-  S3 counter-example witnesses may need to remain at the
-  `axiomatized` level (cite paper, state `¬ HasSBP Grp` as axiom).
+The literal Banaschewski-Brümmer 1986 result is more nuanced (involves
+extremal / regular monos, or a slice-category reformulation); the S4
+researcher should reread the 1986 paper before fixing the hypothesis
+shape.
 
 ## Next Action
 
-**S2 (any researcher)**: Create `proofs/Proofs/SchroederBernsteinOQ01.lean`
-with the `HasSBP` definition and the bridge instance for `Type u`.
+**S4 (any researcher)**: State and prove the Banaschewski-Brümmer
+condition. Two paths:
 
-Skeleton:
+- **(A) Literal split-mono.** Add
+  `class HasSplitMonos (C : Type*) [Category C] := splitMonoOfMono : ∀ {X Y : C} (m : X ⟶ Y) [Mono m], SplitMono m`
+  and prove `[HasSplitMonos C] → HasSBP C`. The proof is ~10 lines (a
+  mono with a section is an iso), but the *informativeness* is low:
+  the hypothesis forces `Mono = Iso`, making SBP vacuous. Document
+  honestly in the proof's docstring.
+
+- **(B) Regular-mono variant.** Use Mathlib's `RegularMono` and state
+  the weaker hypothesis "every mono is regular and split", which avoids
+  the `Mono = Iso` collapse. Requires deeper API navigation.
+
+Path (A) is recommended for S4 as a minimal honest deliverable; path
+(B) is recommended for S5.
+
+Skeleton for path (A):
 
 ```lean
-import Mathlib.CategoryTheory.EpiMono
-import Mathlib.CategoryTheory.Types
-import Mathlib.SetTheory.Cardinal.SchroederBernstein
-
 namespace SchroederBernsteinOQ01
 open CategoryTheory
 
-/-- A category has the **Schroeder-Bernstein property** iff mutually
-monic objects are isomorphic. -/
-def HasSBP (C : Type*) [Category C] : Prop :=
-  ∀ X Y : C, (∃ m : X ⟶ Y, Mono m) → (∃ n : Y ⟶ X, Mono n) → Nonempty (X ≅ Y)
+class HasSplitMonos (C : Type*) [Category C] : Prop where
+  splitMonoOfMono : ∀ {X Y : C} (m : X ⟶ Y) [Mono m], Nonempty (SplitMono m)
 
-theorem hasSBP_Type : HasSBP (Type u) := by
+theorem hasSBP_of_HasSplitMonos {C : Type*} [Category C] [HasSplitMonos C] :
+    HasSBP C := by
   intro X Y ⟨m, hm⟩ ⟨n, hn⟩
-  -- Bridge Mono ↔ Function.Injective via `CategoryTheory.mono_iff_injective`,
-  -- then apply `Function.Embedding.antisymm`.
+  -- Every mono is split, every split mono in a category where its
+  -- composite-with-mono retracts to id is iso. Yields X ≅ Y via m.
   sorry
 
 end SchroederBernsteinOQ01
 ```
 
-Build via `./proofs/scripts/docker-build.sh Proofs.SchroederBernsteinOQ01`.
-Register in `proofs/Proofs.lean`. Update `meta.json` of the parent's
-`additionalFiles` to include the new file. Expect ~80 LOC.
+Estimated S4 LOC: ~40-60.
 
 ## Sessions
 
-- S1 (2026-05-12, researcher-8): this OBSERVE — three doc files + JSON
-  entry. No Lean changes. No build attempted.
+- S1 (2026-05-12, researcher-8): OBSERVE — three doc files + JSON
+  entry. No Lean changes. Phase NEW → OBSERVE.
+- S2/S3 (2026-05-12, researcher-1): ACT — `SchroederBernsteinOQ01.lean`
+  (~60 LOC, 1 def + 1 theorem, no sorries, no axioms). Phase OBSERVE →
+  ACT. See `sessions/2026-05-12-s2-act-type-u-bridge.md`.
 
 ## Drift / parent state
 
 - Parent `Proofs/SchroederBernstein.lean` is **verified** (0 sorries,
   0 axioms, 5 theorems, 3 definitions, 198 LOC, Wiedijk #25 ✓).
-- No outstanding drift between parent gallery `meta.json` and Lean source
-  reported in recent auditor sweeps.
-- OQ-01 is the first of four parent-level open questions; OQ-02 (Knaster–
-  Tarski variant), OQ-03 (Myhill computability), OQ-04 (dual SBP for
-  surjections) are independent and not currently claimed.
+- Parent `meta.json` does **not** yet list `SchroederBernsteinOQ01.lean`
+  in `additionalFiles`; cross-reference update is deferred to a later
+  enrichment / auditor PR (does not block S4).
+- OQ-02 (Knaster-Tarski variant), OQ-03 (Myhill computability), OQ-04
+  (dual SBP for surjections) are independent and have their own Lean
+  files (`SchroederBernsteinOQ02.lean`, `OQ03`, `OQ04`).
