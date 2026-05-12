@@ -86,7 +86,42 @@
     {
       "proofId": "fundamental-theorem-calculus",
       "relationship": "uses",
-      "description": "The area-circumference duality A(r) = integral of C is an application of the Fundamental Theorem of Calculus (differentiating recovers C)"
+      "description": "The area-circumference duality A(r) = ∫₀ʳ C(t) dt is an application of the Fundamental Theorem of Calculus: differentiating ∫₀ʳ 2πt dt recovers C(r) = 2πr, and conversely the antiderivative of C is A."
+    },
+    {
+      "proofId": "area-of-circle",
+      "relationship": "prerequisite",
+      "description": "Establishes A(r) = πr² as the Lebesgue measure of a disk in ℂ. This proof takes that as the definition of areaFn and differentiates it; the bridge theorem `measure_disk_eq_areaFn` here connects to the same `Complex.volume_ball` lemma used in the area-of-circle entry."
+    },
+    {
+      "proofId": "isoperimetric-theorem",
+      "relationship": "complementary",
+      "description": "The isoperimetric inequality 4πA ≤ L² states that among curves of given perimeter, the circle maximizes area. This proof exhibits the equality case from the calculus side: for the circle, C(r) = dA/dr exactly, so 4πA(r) = L(r)² ⇔ 4π·πr² = (2πr)². The two viewpoints — extremal optimization and pointwise differentiation — meet at the disk."
+    },
+    {
+      "proofId": "mean-value-theorem",
+      "relationship": "uses",
+      "description": "MVT underpins the connection between `HasDerivAt` (pointwise derivative) and integration: the increment A(r+h) − A(r) equals h·A'(c) for some c ∈ (r, r+h), which in the limit gives the geometric statement dA = C(r)·dr used to justify C = dA/dr."
+    },
+    {
+      "proofId": "pi-transcendental",
+      "relationship": "context",
+      "description": "Establishes that Real.pi is transcendental over ℚ, which is why areaFn and circumferenceFn must be declared `noncomputable` in Lean 4 — the kernel cannot decide equalities involving π, even though all the calculus theorems proved here remain valid."
+    },
+    {
+      "proofId": "leibniz-pi-oq-01",
+      "relationship": "complementary",
+      "description": "Provides an alternative route to π via the arctangent series π/4 = 1 − 1/3 + 1/5 − …, with Θ(1/N) convergence. Both this entry and the Leibniz route compute the same constant π, but via differentiation of polynomial area vs. integration of 1/(1+x²); the multiplicity of derivations is itself a hallmark of π's centrality."
+    },
+    {
+      "proofId": "basel-problem",
+      "relationship": "complementary",
+      "description": "Another appearance of π² in calculus: ∑ 1/n² = π²/6 contrasts with A(r) = π·r² where π enters linearly via the second derivative A''(r) = 2π. Together these illustrate that π emerges from both discrete (series) and continuous (geometric) limits."
+    },
+    {
+      "proofId": "geometric-series",
+      "relationship": "context",
+      "description": "Geometric series provides the basic example of a function defined as a power series (1/(1−r) = ∑ rⁿ for |r|<1) whose derivative can be obtained termwise — the same `hasDerivAt_pow` and `HasDerivAt.const_mul` machinery used here for the polynomial r² extends to power series."
     }
   ],
   "leanFile": {
