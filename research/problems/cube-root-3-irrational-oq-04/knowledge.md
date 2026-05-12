@@ -147,3 +147,77 @@ IntFractPair.b = some 1` rather than going via `GenContFract.of`.
   proof of `aᵢ` is a direct floor-bound, not a CF recursion). So
   S2–S6 can be parallelized cleanly.
 - No axioms required. Each lemma stays in the `verified` track.
+
+## S2 (researcher-10, 2026-05-11) — ACT first partial quotient
+
+### Result
+
+Established the leading partial quotient `a₀ = 1`:
+
+```lean
+theorem cbrt3_floor_eq_one : ⌊cbrt3⌋ = (1 : ℤ)
+```
+
+in a new file `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`. The proof
+factors as three supporting lemmas:
+
+| Lemma | Statement | Proof strategy |
+|---|---|---|
+| `cbrt3_nonneg` | `0 ≤ cbrt3` | `Real.rpow_nonneg` (immediate) |
+| `one_le_cbrt3` | `1 ≤ cbrt3` | by-contra; cube → `cbrt3^3 < 1`, but `= 3` |
+| `cbrt3_lt_two` | `cbrt3 < 2` | by-contra; cube → `cbrt3^3 ≥ 8`, but `= 3` |
+| `cbrt3_floor_eq_one` | `⌊cbrt3⌋ = 1` | `Int.le_floor` + `Int.floor_lt` |
+
+Both monotonicity steps avoid the drift-prone `pow_le_pow_left` /
+`pow_lt_pow_left` family. Instead, the cube `x^3` is unfolded via
+`ring` to `x * x * x` and `nlinarith` discharges the cubic bound from
+the linear hypothesis on `x` plus `0 ≤ x`.
+
+### Why the `nlinarith` step works
+
+For `1 ≤ cbrt3`: the contradiction hypothesis `cbrt3 < 1` together
+with `0 ≤ cbrt3` gives, via the pairwise product `cbrt3 * cbrt3 ≤
+cbrt3 * 1 = cbrt3 < 1`, the cubic bound `cbrt3 * cbrt3 * cbrt3 < 1`.
+This is a chain of two pairwise multiplications, so we pre-compute the
+intermediate `cbrt3 * cbrt3 ≤ cbrt3` as a separate `nlinarith` call
+and feed it back.
+
+For `cbrt3 < 2`: symmetric with `2 ≤ cbrt3` and `cbrt3 * cbrt3 ≥ 4`.
+
+### Insights (cumulative)
+
+1. **Cubing-by-`ring`-then-`nlinarith` is drift-robust.** The
+   `pow_le_pow_left` lemma name has shifted at least once in recent
+   Mathlib bumps (see `feedback_researcher_mathlib_descpochhammer_drift.md`
+   for the general pattern of API drift). Unfolding to `x * x * x`
+   sidesteps the issue.
+2. **The "by_contra + cube" template generalizes** to all subsequent
+   `aᵢ` lemmas: for `4/3 < cbrt3 < 3/2` we replace the cube targets
+   `64/27` and `27/8`. S3 inherits this scaffolding.
+3. **`Int.le_floor` / `Int.floor_lt` are the right floor lemmas,**
+   not `Int.floor_eq_iff` (which requires a packed `∧`-pair).
+   `le_antisymm` + the two halves keeps the proof readable.
+
+### Mathlib gaps (cumulative)
+
+(No new gaps surfaced in S2. Items 1–3 from S1 remain.)
+
+### Next Steps (priority order, post-S2)
+
+1. **(S3)** `cbrt3_a1 : ⌊1/(cbrt3 - 1)⌋ = (2 : ℤ)`. Needs auxiliary
+   lemmas `four_thirds_lt_cbrt3` and `cbrt3_lt_three_halves` — both
+   use the same cubing template (cube targets `64/27` and `27/8`).
+   Algebra to go from `4/3 < cbrt3 < 3/2` to `2 < 1/(cbrt3 - 1) < 3`
+   uses `div_lt_iff_lt_mul` / `lt_div_iff_mul_lt` (likely under
+   slightly different names in current Mathlib — verify).
+2. **(S4)** Decide A-vs-B formalization (chain of `⌊…⌋ = aᵢ` lemmas
+   vs single `IntFractPair.stream` statement).
+3. **(S5+)** Convergent lemmas.
+
+### Risk Notes
+
+- S2 file is sorry-free and axiom-free. Build is **pending** in
+  this worktree (Docker symlink broken; not researcher-specific).
+- The `nlinarith` cubic strategy may need its product hint augmented
+  for S3's tighter bounds (`64/27 < 3` is a softer gap than `1 < 3`,
+  but the structure is identical, so it should hold).
