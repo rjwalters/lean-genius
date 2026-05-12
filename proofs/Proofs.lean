@@ -505,6 +505,7 @@ import Proofs.CircumferenceFromArea
 import Proofs.CircumferenceViaDifferentiation
 import Proofs.CircumferenceViaDifferentiationOQ01
 import Proofs.CollatzCycles
+import Proofs.CollatzCyclesOQ03
 import Proofs.CollatzCyclesOQ04
 import Proofs.CollatzStructured
 import Proofs.CollatzStructuredOQ02OQ01

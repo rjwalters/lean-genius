@@ -2,24 +2,30 @@
 
 ## Current Phase
 
-**OBSERVE → ORIENT bridge.** S1 OBSERVE survey complete (this PR).
-S2 ACT is mechanically derivable from the Lean skeleton in `knowledge.md`.
+**COMPLETED.** S1 OBSERVE survey + S2 ACT Lean file + S3 GALLERY entry
+all delivered in this PR. Build verified via Docker (`Proofs.CollatzCyclesOQ03`
+compiled cleanly, exit 0, 3.7s, 80 lines, 0 sorries, 0 axioms).
 
 ## Summary
 
 The OQ seeks the parity-intersection corollary for Collatz cycles:
-every cycle visits at least one even number. The argument is a 2-line
-parity contradiction using only parent's `collatz_odd` lemma. S1 has
-produced the four-file scaffold; S2 should add a ~50-line Lean
-companion file `Proofs/CollatzCyclesOQ03.lean` with three theorems
-(`collatz_of_odd_is_even`, `no_all_odd_cycle`, `cycle_contains_even`)
-and 0 sorries.
+every cycle visits at least one even number. The argument is a short
+parity contradiction using only parent's `collatz_odd` lemma. This PR
+delivers all three stages:
 
-## What S1 Delivered (this PR)
+- **S1 OBSERVE** — four-file research scaffold + Lean skeleton draft.
+- **S2 ACT** — `proofs/Proofs/CollatzCyclesOQ03.lean` (80 lines, 1
+  lemma + 4 theorems, 0 sorries, 0 axioms), registered in
+  `proofs/Proofs.lean`. Build verified.
+- **S3 GALLERY** — `src/data/proofs/collatz-cycles-oq-03/` with
+  `meta.json`, `index.ts`, `annotations.json` (5 annotations).
+
+## What This PR Delivers
+
+### Research scaffold (S1 OBSERVE)
 
 - `research/problems/collatz-cycles-oq-03/problem.md` — formal
-  statement, equivalent phrasings, recommended Lean skeleton,
-  decomposition table.
+  statement, equivalent phrasings, Lean skeleton, decomposition.
 - `research/problems/collatz-cycles-oq-03/knowledge.md` — parent
   inventory, Lean skeleton with proof, Mathlib gap analysis (none),
   Aristotle non-submission rationale.
@@ -27,38 +33,32 @@ and 0 sorries.
 - `src/data/research/problems/collatz-cycles-oq-03.json` — research
   index entry.
 
-**No Lean changes** in S1.
+### Lean proof (S2 ACT)
 
-## What S1 Did NOT Do
+- `proofs/Proofs/CollatzCyclesOQ03.lean` (80 lines, 1 lemma + 4
+  theorems, 0 sorries, 0 axioms):
+  - `three_n_plus_one_even`: `n % 2 = 1 → (3*n+1) % 2 = 0` (omega).
+  - `collatz_of_odd_is_even`: `n % 2 = 1 → (collatz n) % 2 = 0`.
+  - `no_all_odd_cycle`: contradiction proof (case k=1 vs k≥2).
+  - `cycle_contains_even`: positive form via `by_contra`.
+  - `isPeriodic_contains_even`: `IsPeriodic`-packaged version.
+- `proofs/Proofs.lean` — registered `import Proofs.CollatzCyclesOQ03`.
+- Build verified: `./proofs/scripts/docker-build.sh Proofs.CollatzCyclesOQ03`
+  exits 0; `Built Proofs.CollatzCyclesOQ03 (3.7s)`; full umbrella
+  `Build completed successfully (3059 jobs)`.
 
-- Did NOT add `Proofs/CollatzCyclesOQ03.lean`.
-- Did NOT register a new file in `proofs/Proofs.lean`.
-- Did NOT modify the parent (`CollatzCycles.lean`).
-- Did NOT create a gallery entry (`src/data/proofs/collatz-cycles-oq-03/`).
+### Gallery entry (S3)
 
-These are all S2 / S3 deliverables.
+- `src/data/proofs/collatz-cycles-oq-03/meta.json` — status `verified`,
+  badge `original`, 0 axioms, 5 theorems, 0 defs, lineCount 80.
+- `src/data/proofs/collatz-cycles-oq-03/index.ts` — standard
+  glob-discovered loader.
+- `src/data/proofs/collatz-cycles-oq-03/annotations.json` — 5
+  annotations, one per theorem.
 
-## Next Action: S2 ACT (any researcher)
+## OQ Status
 
-**Goal**: deliver the Lean companion file with the three parity theorems.
-
-1. Branch off fresh `origin/main`.
-2. Race-probe `gh pr list --search "collatz-cycles-oq-03" --state open`
-   (mid-write and pre-push). Memory's seeker-fresh-slug saturation
-   window does not apply here since the slug is now 4h+ old, but a
-   second-actor probe is still wise.
-3. Create `proofs/Proofs/CollatzCyclesOQ03.lean` with the body in
-   `knowledge.md`'s skeleton section (50 lines total, 0 sorries).
-4. Add `import Proofs.CollatzCyclesOQ03` to `proofs/Proofs.lean` (or
-   confirm the auto-glob picks it up — check the file's pattern).
-5. `./proofs/scripts/docker-build.sh Proofs.CollatzCyclesOQ03` — should
-   build in 5-10 minutes after Mathlib cache is warm.
-6. Commit + push + PR.
-
-S3 GALLERY (optional, can be combined with S2): create
-`src/data/proofs/collatz-cycles-oq-03/` with `meta.json` (status
-`verified`, badge `original`, 0 axioms, 3 theorems, 1 def, line count
-from the new file), `index.ts`, `annotations.json`.
+**Closed.** All deliverables present and build-verified.
 
 ## Session Log
 
@@ -71,28 +71,39 @@ from the new file), `index.ts`, `annotations.json`.
 | S1.5 | Read parent `Proofs/CollatzCycles.lean` (256 lines) | identified API surface and gap |
 | S1.6 | Classified problem: TRIVIAL (2-line omega proof from `collatz_odd`) | S1 OBSERVE doc-only is the right scope |
 | S1.7 | Wrote `problem.md`, `knowledge.md`, `state.md`, and the JSON gallery entry | S1 deliverables complete |
-| S1.8 | (pending) Pre-push race probe + commit + push + PR | next |
+| S1.8 | Pre-push race probe + commit + push + PR (S1 doc-only) | branch pushed at 14:48Z, no PR yet — superseded by S2 bundling |
+| S2.1 | Re-acquired worktree mid-session; race-probed `gh pr list --search collatz` | empty, safe to bundle S2 into same branch |
+| S2.2 | Wrote `proofs/Proofs/CollatzCyclesOQ03.lean` from `knowledge.md` skeleton; tweaked `simp [collatzIter, Function.iterate_one]` to explicit `Function.iterate_one` rewrite for robustness | 80 lines, 5 decls |
+| S2.3 | Registered `import Proofs.CollatzCyclesOQ03` in `proofs/Proofs.lean` between `CollatzCycles` and `CollatzCyclesOQ04` | alphabetical |
+| S2.4 | `LEAN_BUILD_TIMEOUT=45m ./proofs/scripts/docker-build.sh Proofs.CollatzCyclesOQ03` | ✔ build exit 0, `Built Proofs.CollatzCyclesOQ03 (3.7s)`, 3059 jobs |
+| S3.1 | Wrote `src/data/proofs/collatz-cycles-oq-03/{meta.json,index.ts,annotations.json}` matching the `collatz-cycles-oq-04` pattern | gallery entry ready |
+| S3.2 | Pre-push race probe (TBD) + commit + push + PR | next |
 
 ## Honest Calibration
 
-S1 produces:
+This PR delivers:
 
-- Four documentation files.
+- Research scaffold (S1) + Lean proof file (S2) + gallery entry (S3).
 - **No new mathematical content**: the proof is a one-line corollary of
-  the existing `collatz_odd` parent lemma; what S1 contributes is the
-  *explicit statement* of a fact that the parent currently leaves
+  the existing `collatz_odd` parent lemma; what this PR contributes is
+  the *explicit statement* of a fact that the parent currently leaves
   implicit.
-- A drop-in S2 Lean skeleton that should compile in one shot.
+- 80-line Lean file with 5 declarations (1 lemma + 4 theorems), 0
+  sorries, 0 axioms, build verified.
+- Gallery entry (`status: "verified"`, `badge: "original"`,
+  `lineCount: 80`, `theoremCount: 5`, `axiomCount: 0`).
 
-S1 does **not**:
+This PR does **not**:
 
-- Touch any `.lean` file.
-- Change the parent's axiom count or status (already `verified`, 0 axioms).
-- Discharge any sorry (the slug has no Lean file yet).
+- Touch any existing `.lean` file (only adds the new companion).
+- Change the parent's axiom count or status (already `verified`).
+- Make any progress on the Collatz conjecture itself or on the deeper
+  halving-constraint machinery — that's `collatz-cycles-oq-04`.
 
-The realistic estimate for **closing the OQ** is **1 additional session**
-(S2 = Lean file + S3 gallery, easily combinable), delivering a clean
-`verified` gallery entry with 0 axioms, 0 sorries, 3 theorems, 1 def.
+**Difficulty**: trivial (2-line omega proof from `collatz_odd`).
+**Novelty**: zero — standard textbook parity argument.
+**Gallery value**: low-medium — fills an obvious explicit-statement
+gap in a `verified` parent.
 
 ## References Captured
 

@@ -1,0 +1,111 @@
+[
+  {
+    "id": "ann-collatz-oq03-three-n-plus-one-even",
+    "proofId": "collatz-cycles-oq-03",
+    "range": {
+      "startLine": 26,
+      "endLine": 28
+    },
+    "type": "lemma",
+    "title": "Parity flip: 3n+1 is even when n is odd",
+    "content": "The microscopic content of Part I. For an odd natural `n`, `3*n + 1` is even. `omega` closes this directly: knowing `n % 2 = 1`, the goal `(3*n + 1) % 2 = 0` is a linear arithmetic statement decidable by Presburger.",
+    "mathContext": "This is the first half of the Collatz step's parity behavior: applying `3n+1` to an odd input always produces an even output. The companion fact — applying `n/2` to an even input — is more obvious and lives implicitly in `Nat.div_two_le`. Together they imply that the parity sequence under iterated `collatz` cannot stay constant, hence cannot be entirely odd on a cycle.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "parity",
+      "omega",
+      "Collatz function"
+    ],
+    "prerequisites": [
+      "Modular arithmetic (% 2)",
+      "Presburger arithmetic (omega tactic)"
+    ]
+  },
+  {
+    "id": "ann-collatz-oq03-collatz-of-odd-is-even",
+    "proofId": "collatz-cycles-oq-03",
+    "range": {
+      "startLine": 30,
+      "endLine": 34
+    },
+    "type": "theorem",
+    "title": "Single-step parity: collatz n is even when n is odd",
+    "content": "Apply the parent's `collatz_odd : n % 2 = 1 → collatz n = 3*n + 1` (line 40 of `CollatzCycles.lean`) to rewrite the goal, then apply `three_n_plus_one_even`. This is the bridge from the function's definitional case-split to the parity flip.",
+    "mathContext": "The parent file proves `collatz_odd` but never combines it with the parity flip to obtain this corollary. Stating `collatz_of_odd_is_even` explicitly makes the all-odd-cycle contradiction (next theorem) a one-step move rather than a multi-step rewrite chain.",
+    "significance": "key",
+    "relatedConcepts": [
+      "collatz_odd",
+      "collatz function",
+      "parity flip"
+    ],
+    "prerequisites": [
+      "Parent's `collatz_odd` lemma",
+      "three_n_plus_one_even"
+    ]
+  },
+  {
+    "id": "ann-collatz-oq03-no-all-odd-cycle",
+    "proofId": "collatz-cycles-oq-03",
+    "range": {
+      "startLine": 36,
+      "endLine": 56
+    },
+    "type": "theorem",
+    "title": "No all-odd Collatz cycle: contradiction proof",
+    "content": "**Setup.** Assume `k ≥ 1`, `collatz^[k] n = n`, and every iterate `collatz^[i] n` for `i < k` is odd. We derive `False`.\n\n**Step 1.** From `hodd_all 0 hk`, the iterate at step 0 (= n) is odd: `n % 2 = 1`.\n\n**Step 2.** By `collatz_of_odd_is_even`, the iterate at step 1 is even: `(collatz^[1] n) % 2 = 0`. We unfold `collatzIter 1 n` via `Function.iterate_one`.\n\n**Step 3.** Case split on `1 < k` vs `1 ≥ k`:\n - If `k ≥ 2`: `hodd_all 1 hk2` says step-1 iterate is odd, contradicting step 2; `omega` closes it.\n - If `k = 1`: `interval_cases k` reduces; `hper` becomes `collatz^[1] n = n`, so n is even by step 2 but odd by step 1 — `omega` closes.",
+    "mathContext": "The case split `k = 1` vs `k ≥ 2` is forced by the fact that for k = 1, the assumption `hodd_all 1 _` is vacuous (no `i < 1` satisfies `i = 1`), so we can't reuse the same contradiction trick. Instead we use `hper : collatzIter k n = n` directly.",
+    "significance": "key",
+    "relatedConcepts": [
+      "by_contra",
+      "interval_cases",
+      "iterated function parity"
+    ],
+    "prerequisites": [
+      "collatz_of_odd_is_even",
+      "Function.iterate_one",
+      "Function.iterate_zero"
+    ]
+  },
+  {
+    "id": "ann-collatz-oq03-cycle-contains-even",
+    "proofId": "collatz-cycles-oq-03",
+    "range": {
+      "startLine": 58,
+      "endLine": 68
+    },
+    "type": "theorem",
+    "title": "Positive form: every cycle visits an even number",
+    "content": "Contrapositive of `no_all_odd_cycle`. Assume the conclusion fails: every iterate `i < k` has `(collatz^[i] n) % 2 ≠ 0`. By `omega`, parity ≠ 0 over ℕ % 2 forces parity = 1. Then `no_all_odd_cycle` applies, contradiction.",
+    "mathContext": "Whenever a structural-fact theorem has a `False`-form negation lemma, the user-facing form is typically the existential. The `by_contra + push_neg` idiom converts the existential statement into the universal negation, which matches the form of `no_all_odd_cycle`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "contrapositive",
+      "by_contra",
+      "push_neg"
+    ],
+    "prerequisites": [
+      "no_all_odd_cycle"
+    ]
+  },
+  {
+    "id": "ann-collatz-oq03-isperiodic-contains-even",
+    "proofId": "collatz-cycles-oq-03",
+    "range": {
+      "startLine": 70,
+      "endLine": 74
+    },
+    "type": "theorem",
+    "title": "Repackaged with IsPeriodic",
+    "content": "The parent's `IsPeriodic n k := k ≥ 1 ∧ collatzIter k n = n` is the standard packaging. This theorem unpacks the conjunction and applies `cycle_contains_even`.",
+    "mathContext": "Provides API parity with the parent's `IsPeriodic`-using theorems (like `collatz_no_fixpoint` and `collatz_no_two_cycle`). Downstream callers can quote whichever form is more convenient.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "IsPeriodic",
+      "API ergonomics"
+    ],
+    "prerequisites": [
+      "cycle_contains_even",
+      "Parent's IsPeriodic predicate"
+    ]
+  }
+]

@@ -1,8 +1,8 @@
 {
   "slug": "collatz-cycles-oq-03",
   "title": "No all-odd Collatz cycle: every cycle visits at least one even number",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "narrow",
   "problemStatement": {
@@ -31,12 +31,12 @@
     "goal": "Deliver a verified Lean companion file Proofs/CollatzCyclesOQ03.lean (~50 lines, 3 theorems, 1 auxiliary lemma, 0 sorries, 0 axioms) plus a gallery entry, closing the OQ in one additional session (S2 + S3 combinable). No Mathlib gaps; no Aristotle submission needed; honesty calibration: TRIVIAL parity argument, infill rather than novel result."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T14:18:00.000Z",
-    "iteration": 1,
-    "focus": "S1 (researcher-5, 2026-05-12): OBSERVE survey only. Parent file Proofs/CollatzCycles.lean inventoried (256 lines, 4 defs, 27 theorems, 0 axioms, 0 sorries, status verified). Lean skeleton drafted for S2: 3 theorems built on collatz_odd via omega case-split. Classified as TRIVIAL difficulty (2 omega steps after one rewrite); honesty calibration recorded.",
+    "phase": "COMPLETED",
+    "since": "2026-05-12T14:58:00.000Z",
+    "iteration": 2,
+    "focus": "S2 ACT + S3 GALLERY (researcher-5, 2026-05-12): bundled with the S1 OBSERVE scaffold from earlier this session. Lean file Proofs/CollatzCyclesOQ03.lean delivered (80 lines, 1 lemma + 4 theorems, 0 sorries, 0 axioms). Docker build verified: ./proofs/scripts/docker-build.sh Proofs.CollatzCyclesOQ03 exits 0, Built Proofs.CollatzCyclesOQ03 (3.7s), 3059 jobs. Gallery entry under src/data/proofs/collatz-cycles-oq-03/ (meta+index+annotations) matching the collatz-cycles-oq-04 pattern.",
     "blockers": [],
-    "nextAction": "S2 ACT (any researcher): create proofs/Proofs/CollatzCyclesOQ03.lean (~50 lines, 0 sorries) implementing three_n_plus_one_even, collatz_of_odd_is_even, no_all_odd_cycle, cycle_contains_even, and isPeriodic_contains_even per the knowledge.md skeleton. Update proofs/Proofs.lean (or confirm auto-glob). Docker build verify. S3 gallery entry can be combined.",
+    "nextAction": "OQ closed. Optional follow-up: edit CollatzCycles.lean Part VIII docstring to cross-link to the new corollary (5 lines, defer).",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -44,12 +44,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-5, 2026-05-12): OBSERVE survey on the cycle-contains-even corollary of CollatzCycles. 0 Lean changes; 4 doc files produced. Lean skeleton drafted (50 lines, 3 theorems, 0 sorries). Classified TRIVIAL — 2-line omega proof from parent's collatz_odd. No Mathlib gap. No Aristotle submission needed. Recommended S2 ACT next; S3 gallery combinable.",
+    "progressSummary": "S1 OBSERVE + S2 ACT + S3 GALLERY bundled (researcher-5, 2026-05-12). Delivered: Proofs/CollatzCyclesOQ03.lean (80 lines, 1 lemma + 4 theorems, 0 sorries, 0 axioms, build verified via Docker), src/data/proofs/collatz-cycles-oq-03/ (meta+index+annotations, status verified, badge original). OQ closed in a single PR. Difficulty TRIVIAL — 2-line omega proof from parent's collatz_odd. No Mathlib gap; no Aristotle.",
     "builtItems": [
-      "research/problems/collatz-cycles-oq-03/problem.md (new, ~180 lines): problem statement (negative and positive forms), why-matters, related-gallery table, Lean skeleton, decomposition table (S1/S2/S3), references.",
-      "research/problems/collatz-cycles-oq-03/knowledge.md (new, ~140 lines): parent inventory at line precision, full Lean skeleton with proof body, Mathlib API survey (no gaps), Aristotle non-submission rationale, honesty calibration.",
-      "research/problems/collatz-cycles-oq-03/state.md (new, ~70 lines): OBSERVE phase, S2 next-action checklist, session log, honest calibration.",
-      "src/data/research/problems/collatz-cycles-oq-03.json (this file, new): research index entry."
+      "research/problems/collatz-cycles-oq-03/problem.md (new): problem statement (negative and positive forms), why-matters, related-gallery table, Lean skeleton, decomposition table, references.",
+      "research/problems/collatz-cycles-oq-03/knowledge.md (new): parent inventory at line precision, full Lean skeleton with proof body, Mathlib API survey (no gaps), Aristotle non-submission rationale, honesty calibration.",
+      "research/problems/collatz-cycles-oq-03/state.md (new): COMPLETED phase, full session log including S2 build verification.",
+      "src/data/research/problems/collatz-cycles-oq-03.json (this file): research index entry, status completed.",
+      "proofs/Proofs/CollatzCyclesOQ03.lean (new, 80 lines): three_n_plus_one_even (lemma), collatz_of_odd_is_even, no_all_odd_cycle, cycle_contains_even, isPeriodic_contains_even. 0 sorries, 0 axioms. Build verified.",
+      "proofs/Proofs.lean: added `import Proofs.CollatzCyclesOQ03` (alphabetical between CollatzCycles and CollatzCyclesOQ04).",
+      "src/data/proofs/collatz-cycles-oq-03/meta.json (new): gallery metadata — status verified, badge original, lineCount 80, theoremCount 5, axiomCount 0, sorries 0.",
+      "src/data/proofs/collatz-cycles-oq-03/index.ts (new): standard glob-discovered loader.",
+      "src/data/proofs/collatz-cycles-oq-03/annotations.json (new): 5 annotations, one per theorem."
     ],
     "insights": [
       "The parent Proofs/CollatzCycles.lean (verified, 0 axioms, 27 theorems) does NOT explicitly state the cycle-contains-even corollary. The fact is implicit in Part VI's halving bound (M = 0 ⇒ j = 0) but never extracted as a lemma. OQ-03 closes this explicit-statement gap.",
@@ -61,9 +66,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "S2 ACT (~50 Lean lines, 0 sorries, single session): create proofs/Proofs/CollatzCyclesOQ03.lean per knowledge.md's skeleton with three_n_plus_one_even (omega), collatz_of_odd_is_even (rw + omega), no_all_odd_cycle (case-split on k = 1 vs k ≥ 2, omega), cycle_contains_even (contrapositive), isPeriodic_contains_even (1-line wrapper). Register in proofs/Proofs.lean. Docker build verify Proofs.CollatzCyclesOQ03.",
-      "S3 GALLERY (~20 lines + 1 dir, can be combined with S2): create src/data/proofs/collatz-cycles-oq-03/{meta.json, index.ts, annotations.json}. status verified, badge original, axiomCount 0, sorries 0, theoremCount 3, definitionCount 0, lineCount from the new file. Cross-reference parent in relatedProofs.",
-      "Optional S4 (cross-impact): mention the new lemma in CollatzCycles.lean's Part VIII summary docstring so future readers find it from the parent. ~5 line edit; can be deferred."
+      "OPTIONAL S4 cross-impact (deferred): mention the new corollary in CollatzCycles.lean's Part VIII summary docstring so future readers find it from the parent. ~5-line edit; not blocking OQ closure."
     ]
   },
   "relatedProofs": [
@@ -86,7 +89,7 @@
     "trivial-corollary"
   ],
   "createdAt": "2026-05-12T14:18:00.000Z",
-  "updatedAt": "2026-05-12T14:18:00.000Z",
+  "updatedAt": "2026-05-12T14:58:00.000Z",
   "significance": 4,
   "tractability": 9,
   "leanFiles": [
@@ -100,6 +103,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzCycles.lean"
+    },
+    {
+      "path": "Proofs/CollatzCyclesOQ03.lean",
+      "filename": "CollatzCyclesOQ03.lean",
+      "lineCount": 80,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzCyclesOQ03.lean"
     }
   ]
 }
