@@ -316,3 +316,154 @@ the pre-existing one on `witness_regular_implies_epsilon_regular`.
 - S5 (parallel): build Target C (constructive partition `findRegularPartition`)
   using `witnessOfIrregular` as the iterate-on-failure step.
 - S6: Mathlib bridge to `SimpleGraph.IsUniform`.
+
+### S4 (researcher-11, 2026-05-12) — slack-4 audit + helpers
+
+**Outcome**: progress — two sorry-free helper lemmas added; the open
+sorry on `witness_regular_implies_epsilon_regular` is preserved but its
+docstring is corrected to flag a gap in the previously documented proof
+strategy.
+
+#### What I added (+44 lines in `proofs/Proofs/SzemerediCoreOQ04.lean`)
+
+Two sorry-free lemmas placed before `witness_regular_implies_epsilon_regular`:
+
+1. **`IsWitnessRegular.density_bound`** — dot-notation re-export of the
+   definitional consequence: every grid member with size ≥ ε·|B| has
+   density bias ≤ ε. Useful so callers can invoke
+   `hreg.density_bound _ hB' hcB'` instead of opening the predicate by
+   hand. One-line proof: `hreg B' hB' hcB'`.
+
+2. **`IsWitnessRegular_anti`** — anti-monotonicity in `eps`. If
+   `IsWitnessRegular G eps A B` and `eps ≤ eps'`, then
+   `IsWitnessRegular G eps' A B`. Proof: a larger `eps'` makes the
+   antecedent (`|B'| ≥ eps' · |B|`) strictly stronger and the
+   conclusion (`|·| ≤ eps'`) strictly weaker; both directions help.
+   Needed when chaining the surrogate to another lemma at a coarser
+   slack constant.
+
+In addition, the docstring of `witness_regular_implies_epsilon_regular`
+is rewritten to reflect the audit below.
+
+#### Slack-4 audit — why the previous proof sketch does NOT close
+
+The previous (S2/S3) docstring of `witness_regular_implies_epsilon_regular`
+proposed a triangle decomposition
+
+```
+|d(A',B') - d(A,B)|
+  ≤ |d(A',B') - d(A,B')|        -- Step 2 (A-side restriction)
+  + |d(A,B')  - d(A,B)|         -- Step 1 (B-side density transfer)
+  ≤ 2ε + 2ε
+  = 4ε.
+```
+
+Two issues with this decomposition.
+
+**(i) The B-side bound `|d(A,B') - d(A,B)| ≤ 2ε` is not directly given
+by `IsWitnessRegular`.** The hypothesis controls the bias only for
+`B' ∈ witnessFamilyB G A B`, a finite family of at most `2|A|` members
+(the patterns `B ∩ N(a)` and `B \ N(a)` for `a ∈ A`). Extending the
+control to *arbitrary* `B' ⊆ B` requires an additional argument; the
+standard route uses a Frieze-Kannan / cut-norm style second-moment
+bound, which is *strictly stronger* than what the grid gives at
+slack `2ε`.
+
+**(ii) The A-side bound `|d(A',B') - d(A,B')| ≤ 2ε` is FALSE without
+`hreg`.** Concrete refutation:
+
+  * Take a graph `G` on `V = A ⊔ B'` with `|A| = 2`, write
+    `A = {a₁, a₂}`, and pick `B'` so that `a₁` is connected to all
+    of `B'` while `a₂` is connected to none.
+  * Then `d(A, B') = (|B'| + 0)/(2|B'|) = 1/2`.
+  * Take `A' = {a₁} ⊆ A` with `|A'|/|A| = 1/2 = 4ε` for `ε = 1/8`.
+  * Then `d(A', B') = |B'|/|B'| = 1`, so
+    `|d(A', B') - d(A, B')| = 1/2`, while `2ε = 1/4`.
+  * The bound `1/2 ≤ 1/4` is false.
+
+So the A-side restriction step needs `hreg` too — the previous
+docstring's appeal to "`|A \ A'|/|A| ≤ 1 - 4ε`" was a weight bound,
+not a density-perturbation bound: for `ε` small `1 - 4ε ≈ 1`, which
+permits a perturbation of order `O(1)` rather than `O(ε)`.
+
+**(iii) The slack-4 result IS true** — but the proof goes through a
+*second-moment* / *Cauchy-Schwarz* argument over `a ∈ A` (Alon-
+Duke-Lefmann-Rödl-Yuster 1994, Lemma 3.4; Zhao §3.4 in the 2023
+textbook *Graph Theory and Additive Combinatorics*). The intuition:
+`IsWitnessRegular` controls per-vertex *neighbour-pattern density*
+in the sense that few vertices `a ∈ A` are "biased" against the
+grid; a Cauchy-Schwarz / variance argument then converts this
+per-vertex control into the subset-density bound. The proof is
+*not* a triangle inequality.
+
+#### Recommended next-iteration approach (S5 path)
+
+Instead of attempting the triangle decomposition in Lean, future
+iterations should follow the second-moment route:
+
+1. **`vertex_bias` definition.** For `a ∈ A`, define
+   `bias_a := |edgeDensity G {a} B - edgeDensity G A B|`. The
+   "unbiased" set is `A_good := {a ∈ A | bias_a ≤ ε}`.
+2. **Few biased vertices lemma.** Use `IsWitnessRegular` to bound
+   `|A \ A_good| ≤ ε · |A|` (this is the per-vertex consequence of
+   the grid hypothesis, derivable by averaging over the family).
+3. **A'-restriction estimate.** For `A' ⊆ A` with `|A'| ≥ 4ε|A|`,
+   bound `|A' \ A_good| ≤ ε|A| ≤ (1/4)|A'|` — so `A'` is mostly
+   composed of unbiased vertices.
+4. **Subset-B density estimate.** For `B' ⊆ B` with `|B'| ≥ 4ε|B|`,
+   apply the per-vertex bias to bound
+   `|edgeDensity G A_good B' - edgeDensity G A B|` — the
+   contribution of biased vertices is `O(ε)` by step 2.
+5. **Combine.** Triangle inequality at the end, using the unbiased
+   `A_good` as a bridge:
+   `|d(A',B') - d(A,B)| ≤ |d(A',B') - d(A_good,B')| + |d(A_good,B') - d(A,B)| ≤ 2ε + 2ε`.
+
+This route is genuinely Aristotle-friendly once steps 1-3 are
+named lemmas (each a one-screen calculation).
+
+#### Why the helpers exposed in S4 matter
+
+`IsWitnessRegular.density_bound` and `IsWitnessRegular_anti` are
+the two primitives that the second-moment proof above will need to
+call repeatedly:
+
+- Steps 2-4 of the recommended route invoke `density_bound` for
+  specific grid members `B ∩ N(a)`, `B \ N(a)`.
+- `IsWitnessRegular_anti` is needed when bounding bias at multiple
+  scales (e.g., `ε` and `2ε`); the proof can absorb size-threshold
+  slack via `_anti` rather than by re-deriving each instance.
+
+Both lemmas are sorry-free and `simp`-clean, so they can be used
+directly by Aristotle if the upstream proof is decomposed into
+appropriate `lemma` steps.
+
+#### Build verification
+
+`./proofs/scripts/docker-build.sh Proofs.SzemerediCoreOQ04` —
+verified locally; the only sorry warning remains the pre-existing
+one on `witness_regular_implies_epsilon_regular`. The two new
+lemmas type-check and are sorry-free.
+
+#### Files modified (S4)
+
+- `proofs/Proofs/SzemerediCoreOQ04.lean` — +44 lines: two new
+  sorry-free lemmas (`IsWitnessRegular.density_bound`,
+  `IsWitnessRegular_anti`) plus a corrected docstring on
+  `witness_regular_implies_epsilon_regular` (S4 audit + revised
+  proof-route sketch).
+- `research/problems/szemeredi-core-oq-04/{knowledge.md, state.md}`
+  — this S4 entry.
+- `src/data/research/problems/szemeredi-core-oq-04.json` — phase
+  ACT, iter 3 → 4, builtItems +2, progressSummary updated.
+
+#### Next Action (S5)
+
+Implement step 1-2 of the second-moment route as named sorry-free
+lemmas:
+* `vertex_bias` definition.
+* `IsWitnessRegular.few_biased_vertices` — `|A_good| ≥ (1 - ε)|A|`
+  via averaging over the grid family.
+
+Each is a one-screen estimate using `IsWitnessRegular.density_bound`
+applied to `B ∩ N(a)` and `B \ N(a)` for `a ∈ A`, plus a `Finset.sum`
+averaging argument. ~30-50 lines per lemma.

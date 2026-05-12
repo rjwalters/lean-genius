@@ -126,45 +126,89 @@ noncomputable instance instDecidableIsWitnessRegular
 
 /-! ## Part 3: ADLRY implication (one-way, with slack constant 4) -/
 
+/-- **Direct consequence of `IsWitnessRegular`**: every grid member with size
+at least `eps · |B|` has edge-density bias at most `eps` against `(A, B)`.
+
+This is a one-step unfolding of the definition, exposed as a dot-notation
+helper so callers can avoid re-deriving the bound from scratch (and to make
+the surrogate's quantitative content explicit at the type level). -/
+lemma IsWitnessRegular.density_bound (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (A B : Finset V) (hreg : IsWitnessRegular G eps A B)
+    (B' : Finset V) (hB' : B' ∈ witnessFamilyB G A B)
+    (hcB' : (B'.card : ℚ) ≥ eps * B.card) :
+    |edgeDensity G A B' - edgeDensity G A B| ≤ eps :=
+  hreg B' hB' hcB'
+
+/-- **Anti-monotonicity in `eps`**: weakening the regularity parameter
+preserves the witness-regular property. Useful when chaining the surrogate
+with an `IsEpsilonRegular`-style implication that only holds at a larger
+slack constant.
+
+Proof: a larger `eps'` makes the size-threshold antecedent
+`|B'| ≥ eps' · |B|` stronger and the deviation conclusion
+`|·| ≤ eps'` weaker. Both directions help. -/
+lemma IsWitnessRegular_anti (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps eps' : ℚ} (h : eps ≤ eps')
+    (A B : Finset V) (hreg : IsWitnessRegular G eps A B) :
+    IsWitnessRegular G eps' A B := by
+  intro B' hB' hcB'
+  have hBcard : (0 : ℚ) ≤ (B.card : ℚ) := Nat.cast_nonneg _
+  have hcB'_eps : (B'.card : ℚ) ≥ eps * B.card := by
+    have hmul : eps * (B.card : ℚ) ≤ eps' * (B.card : ℚ) :=
+      mul_le_mul_of_nonneg_right h hBcard
+    linarith
+  have hbound : |edgeDensity G A B' - edgeDensity G A B| ≤ eps :=
+    hreg B' hB' hcB'_eps
+  linarith
+
 /-- **ADLRY 1994 ε-grid lemma (one direction)**: if the pair `(A, B)`
     satisfies the witness-regular surrogate at parameter `ε`, then it
     is ε-regular at parameter `4 · ε`.
 
-    **Proof strategy** (deferred to S3/S4):
+    **Status (S4 audit)**: the slack-4 claim follows from a
+    *second-moment / Cauchy-Schwarz* argument (Alon-Duke-Lefmann-
+    Rödl-Yuster 1994, Lemma 3.4; Zhao §3.4). The proof is non-trivial
+    and is deferred to a future iteration.
 
-    Suppose `(A', B')` with `A' ⊆ A`, `B' ⊆ B`, `|A'| ≥ 4ε·|A|`,
-    `|B'| ≥ 4ε·|B|`. We must show
-        `|d(A', B') - d(A, B)| ≤ 4 · ε`.
+    **Audit of the previous proof sketch** (see
+    `research/problems/szemeredi-core-oq-04/knowledge.md` §S4):
 
-    *Step 1 (B-side density transfer).* For each `a ∈ A`, the
-    neighbour-pattern `B' ∩ N(a)` differs from the unbiased estimate
-    `d(A, B) · |B'|` by an amount controlled by the grid: since both
-    `B ∩ N(a)` and `B \ N(a)` are tested by `IsWitnessRegular` and
-    `B'` is large, the density of `B'` against `N(a)` is within `ε`
-    of `d(A, B)` for "most" `a ∈ A`.
+    The earlier docstring proposed a triangle-inequality decomposition
+    `|d(A',B') - d(A,B)| ≤ |d(A',B') - d(A,B')| + |d(A,B') - d(A,B)|`
+    with each term bounded by `2ε`. Closer inspection shows that this
+    decomposition does NOT yield slack `4ε` from the grid hypothesis
+    alone:
 
-    *Step 2 (A-side averaging).* Averaging the per-vertex bounds from
-    Step 1 over `a ∈ A'`, the total deviation is bounded by
-    `2ε + 2ε = 4ε` — the first `2ε` from the density transfer onto
-    `B'`, the second from the restriction `A → A'` losing at most
-    `|A \ A'|/|A| ≤ 1 - 4ε ≤ 1` worth of mass (i.e., the
-    `|A'| ≥ 4ε·|A|` lower bound).
+    *B-side step* (`|d(A,B') - d(A,B)| ≤ 2ε` for arbitrary `B' ⊆ B`):
+    `IsWitnessRegular` controls the deviation only for `B' ∈ witnessFamilyB`,
+    which has at most `2|A|` members. Extending to arbitrary `B'` requires
+    an additional argument — typically a Frieze-Kannan / cut-norm style
+    second-moment bound, which is stronger than the grid hypothesis
+    provides at slack `2ε`.
 
-    *Step 3 (combining).* The combined bound `4ε` is the slack constant.
-    Tighter analyses (Alon-Duke-Lefmann-Rödl-Yuster 1994, Lemma 3.4)
-    achieve `O(ε^{1/2})` slack; the present `4ε` bound is the strong
-    variant and matches Zhao's textbook exposition.
+    *A-side step* (`|d(A',B') - d(A,B')| ≤ 2ε` for `A' ⊆ A` with
+    `|A'| ≥ 4ε|A|`): false in general without `hreg`. The previous
+    sketch claimed this followed from `|A \ A'|/|A| ≤ 1 - 4ε`, but
+    `1 - 4ε` is the *upper* bound on the loss-fraction (close to `1`
+    when `ε` is small), not a `2ε` bound on the density perturbation.
 
-    For S2 this is left as `sorry`; the proof is `Aristotle`-friendly
-    once the surrogate is fully spelled out, since each step is a
-    routine density manipulation. -/
+    The CORRECT proof route uses a second-moment (variance) decomposition
+    over `a ∈ A` with the grid family providing per-vertex deviation
+    estimates; see knowledge.md §S4 for the literature pointer.
+
+    **Helpers exposed (S4)**:
+    * `IsWitnessRegular.density_bound` — direct grid-member application.
+    * `IsWitnessRegular_anti` — anti-monotonicity in `eps`.
+
+    These are sorry-free and intended as primitives for the future
+    second-moment proof. -/
 theorem witness_regular_implies_epsilon_regular
     (G : SimpleGraph V) [DecidableRel G.Adj]
     {eps : ℚ} (heps : 0 < eps) (A B : Finset V)
     (hreg : IsWitnessRegular G eps A B) :
     IsEpsilonRegular G (4 * eps) A B := by
   intro A' B' hA' hB' hcA' hcB'
-  -- See proof strategy in the docstring above.
+  -- See docstring above for the S4 audit and proof-route discussion.
   sorry
 
 /-! ## Part 3b: Constructive witness extraction (S3, sorry-free)
