@@ -2,9 +2,80 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T20:43:00Z
-**Iteration**: 6 (S6 — `glivenko_cantelli_uniform_proved` via diagonal ε = 1/(m+1))
+**Iteration**: 7 (S7 — retire parent's `glivenko_cantelli_uniform` axiom; rename proved variant to canonical name)
 
-## S6 (this session, researcher-5, 2026-05-12) — §2.5 diagonal composition
+## S7 (this session, researcher-3, 2026-05-12) — Axiom retirement
+
+After S6 landed §2.5 (`glivenko_cantelli_uniform_proved`, identical signature
+to the parent's axiom), the parent's monolithic axiom was logically redundant.
+S7 (this session) retires it.
+
+### Changes
+
+1. **`proofs/Proofs/LawsOfLargeNumbersOQ04.lean`**: deleted `axiom
+   glivenko_cantelli_uniform` (~20-line block) and replaced the section
+   header with a docstring pointing readers to the bracketing companion.
+   New line count: 228 (was 231). The axiom is the only thing removed;
+   all 13 theorems + 3 defs are preserved.
+2. **`proofs/Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean`**: renamed
+   `glivenko_cantelli_uniform_proved` → `glivenko_cantelli_uniform` (at the
+   §2.5 theorem) to make it the canonical statement. Updated 3 docstrings
+   (top-of-file overview, `bracketingGrid_exists` docstring, §2.5 docstring).
+3. **`proofs/Proofs/LawsOfLargeNumbersOQ04OQ03.lean`**: updated top-of-file
+   docstring + summary block to reflect that the parent's axiom was proved
+   (not just listed as remaining).
+4. **`src/data/proofs/laws-of-large-numbers-oq-04/meta.json`** (parent slug):
+   `lineCount` 231 → 228; `theoremCount` 14 → 13; `leanFile.axiomCount`
+   1 → 0; outer `axiomCount` stays 1 (in `additionalFiles`). Added
+   `additionalFiles: ["Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean"]`
+   at meta and leanFile levels. Rewrote `assumptions`, appended new
+   `originalContributions` entry, updated uniform-convergence section
+   ranges and summary, shifted all sections by +9 lines (header grew).
+5. **`src/data/proofs/laws-of-large-numbers-oq-04-oq-03/meta.json`** (this
+   slug, unchanged main file): updated three text fields
+   (`originalContributions[3]`, `keyInsights[4]`, `openQuestions[0]`) to
+   name `bracketingGrid_exists` as the chain's sole remaining axiom.
+6. **`research/problems/laws-of-large-numbers-oq-04-oq-03/state.md`**: this
+   block.
+
+### No cycle, no cross-slug breakage
+
+The bracketing companion imports the parent; the parent does NOT import the
+companion. Renaming + deleting in this direction is cycle-free. The only
+places the deleted axiom name `glivenko_cantelli_uniform` was referenced
+are docstrings (verified by `grep glivenko_cantelli_uniform` over `proofs/`:
+all hits in docstrings, none in tactic positions).
+
+### Counts after S7
+
+| File | Lines | Theorems | Axioms | Defs | Sorries |
+|------|-------|----------|--------|------|---------|
+| `LawsOfLargeNumbersOQ04.lean` | 228 | 13 | 0 | 3 | 0 |
+| `LawsOfLargeNumbersOQ04OQ03.lean` | 163 | 4 | 0 | 0 | 0 |
+| `LawsOfLargeNumbersOQ04OQ03Bracketing.lean` | 521 | 8 | 1 | 0 | 0 |
+
+The chain's sole remaining axiom is `bracketingGrid_exists` in the bracketing
+companion; both gallery slugs (`laws-of-large-numbers-oq-04` and
+`laws-of-large-numbers-oq-04-oq-03`) reflect this through `axiomCount=1`
++ `additionalFiles`.
+
+### Build status
+
+Pending. The `proofs/.lake` recursive self-symlink in this repo forces a
+~45-min cold-cache Mathlib clone on every Docker build. S7 makes only
+mechanical changes (one deletion, one rename, docstring + meta.json edits);
+no new proof obligations were introduced.
+
+### Remaining work
+
+- **S8+ (future Mathlib upstream)**: discharge `bracketingGrid_exists` itself
+  by formalising `Monotone.exists_increasing_continuity_seq` (purely
+  real-analytic; the only Mathlib gap remaining in the entire
+  Glivenko-Cantelli chain). Once that lemma lands upstream, the bracketing
+  companion's sole axiom can be retired, leaving the entire chain
+  axiom-free.
+
+## S6 (researcher-5, 2026-05-12) — §2.5 diagonal composition
 
 S5 landed §2.4 (`bracketing_uniform_sup_bound` + `bracketing_uniform_from_grid`).
 S6 (this session) lands the last theorem of the bracketing decomposition, §2.5
@@ -316,30 +387,29 @@ verification deferred to S4 alongside the §2.3–§2.5 theorem additions.
 
 ## Next Action
 
-1. **(S4)** Prove `bracketing_simultaneous_pointwise` (§2.3 of
-   `bracketing-decomposition-draft.md`). Routine: apply
-   `empiricalCDF_pointwise_convergence` (parent line 144) for each
-   `j : Fin (k + 2)` to get a per-grid-point a.s. convergence statement,
-   then commute the universal-over-`Fin (k + 2)` with the a.s. quantifier
-   via `MeasureTheory.ae_all_iff`. Estimated 10–25 lines.
-2. **(S5)** Prove `bracketing_uniform_from_grid` (§2.4). Deterministic
-   case-split (interior cell, left tail, right tail) using the parent's
-   `empiricalCDF_mono` / `trueCDF_mono` plus elementary `abs_le_iff` /
-   `max_le_iff`. Estimated ~50 lines, the longest of the three.
-3. **(S6)** Prove `glivenko_cantelli_uniform_proved` (§2.5). Composition:
-   for each `m`, set `ε := 1 / (m + 1)`, apply `bracketingGrid_exists` →
-   `bracketing_simultaneous_pointwise` → `bracketing_uniform_from_grid`,
-   then countable intersection of full-measure sets via
-   `MeasureTheory.ae_iInter_iff`, then "non-negative limsup ≤ 2 / (m + 1)
-   for every `m`" ⇒ "limit = 0". Estimated ~20 lines.
-4. **(S7+, optional)** Once §2.5 lands, retire the parent's
-   `glivenko_cantelli_uniform` axiom: either replace it textually with
-   the new `glivenko_cantelli_uniform_proved`, or update gallery
-   conventions to recognise the proved variant as the canonical statement.
-5. **(future, upstream)** Mathlib PR for
-   `Monotone.exists_increasing_continuity_seq`. Once accepted upstream,
-   the bracketing companion's `bracketingGrid_exists` axiom can be
-   discharged and the entry becomes fully axiom-free.
+The bracketing decomposition §2.1–§2.5 of `bracketing-decomposition-draft.md`
+is now complete (S3–S6), and S7 (this session) retired the parent's
+`glivenko_cantelli_uniform` axiom. The chain's sole remaining axiom is
+`bracketingGrid_exists` in the bracketing companion.
+
+1. **(S8, future Mathlib upstream)** Mathlib PR for
+   `Monotone.exists_increasing_continuity_seq`: for any monotone $F : \mathbb{R} \to \mathbb{R}$
+   with bounded range and any $\varepsilon > 0$, there exist finitely many
+   continuity points $q_0 < q_1 < \cdots < q_{k+1}$ of $F$ such that
+   $F(q_{j+1}) - F(q_j^-) < \varepsilon$ for each cell, and $F(q_0) < \varepsilon$,
+   $1 - F(q_{k+1}) < \varepsilon$ on the boundary. Mathematical content
+   reduces to: (i) discontinuity set of monotone real function is countable
+   (Mathlib's `Monotone.countable_setOf_not_continuousAt`); (ii) complement
+   of countable set is dense in $\mathbb{R}$ (Mathlib's `Set.Countable.dense_compl`
+   or equivalent); (iii) greedy ε-cover induction on $[0,1]$ to pick the
+   grid. Once landed upstream and pulled into our `Mathlib` dependency,
+   `bracketingGrid_exists` can be discharged and the bracketing companion
+   becomes axiom-free, making the entire Glivenko-Cantelli chain
+   fully verified.
+2. **(alternate path, in-tree)** Prove `bracketingGrid_exists` directly in
+   the bracketing companion without upstreaming first, using the same
+   three-step structure as (1). Roughly ~80-150 lines, primarily real-
+   analysis bookkeeping (no probability).
 
 ## Active Approach
 
@@ -358,9 +428,9 @@ piece (`Monotone.exists_increasing_continuity_seq`) is encapsulated as the
 
 ## Attempt Counts
 
-- Total attempts: 3
-- Current approach attempts: 1 (S3 scaffold)
-- Approaches tried: 1 (bracketing decomposition per S2 spec)
+- Total attempts: 7
+- Current approach attempts: 5 (S3 scaffold, S4 §2.3, S5 §2.4, S6 §2.5, S7 axiom retirement)
+- Approaches tried: 1 (bracketing decomposition per S2 spec — fully landed)
 
 ## Previous Iterations
 

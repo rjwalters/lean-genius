@@ -12,8 +12,11 @@ integration facts as axioms:
     E[1_{X₀(ω) ≤ x}] = F(x), i.e., the integral of the indicator equals the CDF.
 
 Both are provable from Mathlib's integration API. We prove them here, eliminating
-two of the three axioms in the Glivenko-Cantelli formalization. The third axiom
-(`glivenko_cantelli_uniform` — the finite bracketing uniformity step) remains open.
+two of the three axioms in the Glivenko-Cantelli formalization. The third
+assumption (the finite bracketing uniformity step) was originally declared as
+axiom `glivenko_cantelli_uniform` in the parent; S6 proved it in the bracketing
+companion (`LawsOfLargeNumbersOQ04OQ03Bracketing.lean`) from the smaller
+real-analytic axiom `bracketingGrid_exists`, and S7 retired the parent's axiom.
 
 ## Key Mathlib Lemmas Used
 
@@ -24,7 +27,8 @@ two of the three axioms in the Glivenko-Cantelli formalization. The third axiom
 
 ## Result
 
-Axiom count reduced: 3 → 1 (only the hard bracketing step remains axiomatic).
+Axiom count reduced: 3 → 1 (only the real-analytic `bracketingGrid_exists`
+remains axiomatic; lives in the bracketing companion).
 
 ## Axiom Count: 0
 ## Sorry Count: 0
@@ -106,7 +110,8 @@ theorem integral_thresholdIndicator_eq_cdf_proved
 -- ============================================================================
 
 /-- **Corollary**: Pointwise convergence of empirical CDF using only proved lemmas
-    (no integration axioms — only `glivenko_cantelli_uniform` remains axiomatic). -/
+    (no integration axioms; the chain's sole remaining axiom is the real-analytic
+    `bracketingGrid_exists` in the bracketing companion). -/
 theorem empiricalCDF_pointwise_convergence_no_axiom
     [IsProbabilityMeasure μ]
     {X : ℕ → Ω → ℝ}
@@ -142,13 +147,14 @@ Summary: the Glivenko-Cantelli axiom count has been reduced from 3 to 1.
 
   - ✓ `thresholdIndicator_integrable` → proved as `thresholdIndicator_integrable_proved`
   - ✓ `integral_thresholdIndicator_eq_cdf` → proved as `integral_thresholdIndicator_eq_cdf_proved`
-  - ✗ `glivenko_cantelli_uniform` → remains axiomatic (finite bracketing argument,
-        not yet in Mathlib 4.26)
+  - ✓ `glivenko_cantelli_uniform` → proved in `LawsOfLargeNumbersOQ04OQ03Bracketing`
+        from the smaller real-analytic axiom `bracketingGrid_exists` (S4–S6),
+        and the parent's axiom was retired in S7.
 
-The one remaining axiom is mathematically genuine: the uniformity step requires
-choosing finitely many continuity points of F with controlled jump sizes, then
-applying finite intersection of pointwise convergence events. This requires
-infrastructure for CDF continuity points that Mathlib 4.26 does not yet provide.
+The chain's sole remaining axiom is `bracketingGrid_exists`: the existence of
+finitely many continuity points of F with controlled jump sizes (purely real-
+analytic). Its content reduces to the upstream-target lemma
+`Monotone.exists_increasing_continuity_seq`, the natural Mathlib home.
 
 The pointwise convergence theorem (`empiricalCDF_pointwise_convergence_no_axiom`)
 is now fully proved from Mathlib without any integration axioms.
