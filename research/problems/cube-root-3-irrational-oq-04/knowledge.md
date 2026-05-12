@@ -221,3 +221,106 @@ For `cbrt3 < 2`: symmetric with `2 ≤ cbrt3` and `cbrt3 * cbrt3 ≥ 4`.
 - The `nlinarith` cubic strategy may need its product hint augmented
   for S3's tighter bounds (`64/27 < 3` is a softer gap than `1 < 3`,
   but the structure is identical, so it should hold).
+
+## S3 (researcher-8, 2026-05-12) — ACT second partial quotient
+
+### Result
+
+Established the second partial quotient `a₁ = 2`:
+
+```lean
+theorem cbrt3_a1 : ⌊1 / (cbrt3 - 1)⌋ = (2 : ℤ)
+```
+
+in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean` (~184 lines after S3,
++3 theorems on the S2 baseline). Like S2 the proof factors through
+two cubing-bound lemmas plus the final floor identity:
+
+| Lemma | Statement | Cube target | Status |
+|---|---|---|---|
+| `four_thirds_lt_cbrt3` | `4/3 < cbrt3` | `(4/3)^3 = 64/27 < 3` | new |
+| `cbrt3_lt_three_halves` | `cbrt3 < 3/2` | `(3/2)^3 = 27/8 > 3` | new |
+| `cbrt3_a1` | `⌊1/(cbrt3 - 1)⌋ = 2` | combines above | new |
+
+Both monotonicity steps reuse the S2 cubing template verbatim, only
+swapping the cube bounds (`16/9`/`9/4` for the squared step and
+`64/27`/`27/8` for the cubed step). No new ad-hoc reasoning.
+
+### Algebraic step `4/3 < cbrt3 < 3/2 → ⌊1/(cbrt3-1)⌋ = 2`
+
+Positivity: `cbrt3 - 1 > 4/3 - 1 = 1/3 > 0`, so division is defined
+and the order isomorphism `x ↦ 1/x` is order-reversing on `(0, ∞)`.
+
+Upper bound on the floor (≤ 2 ↔ floor < 3):
+`1/(cbrt3 - 1) < 3` ↔ (by `div_lt_iff₀` with `0 < cbrt3 - 1`)
+`1 < 3 * (cbrt3 - 1)` ↔ `4/3 < cbrt3` ✓.
+
+Lower bound on the floor (≥ 2):
+`2 ≤ 1/(cbrt3 - 1)` ↔ (by `le_div_iff₀` with `0 < cbrt3 - 1`)
+`2 * (cbrt3 - 1) ≤ 1` ↔ `cbrt3 ≤ 3/2` ✓ (in fact strict, but
+the slack is unused).
+
+Both inequalities are then `linarith [four_thirds_lt_cbrt3]` and
+`linarith [cbrt3_lt_three_halves]` respectively — fully automated
+once the cubing bounds are in scope.
+
+### Mathlib API names used (verified at pinned revision)
+
+- `div_lt_iff₀ : 0 < c → (a / c < b ↔ a < b * c)` — used (Erdos643,
+  Erdos27, Stirling all use the `₀`-suffixed form in recent merged
+  PRs, so this is the right name).
+- `le_div_iff₀ : 0 < c → (a ≤ b / c ↔ a * c ≤ b)` — same.
+- `Int.floor_lt : ⌊r⌋ < n ↔ r < n` (already used in S2).
+- `Int.le_floor : n ≤ ⌊r⌋ ↔ (n : ℝ) ≤ r` (already used in S2).
+
+No new Mathlib gaps surfaced.
+
+### Insights (cumulative, post-S3)
+
+1. **The S2 cubing template extends one-to-one to S3.** The only
+   piece of new infrastructure is the `1/x` algebraic step, which
+   uses the two `*_iff₀` lemmas. Each subsequent `aᵢ` (S4+) needs
+   the same two-line algebraic step on a deeper-nested expression
+   `1/(x_{i-1} - a_{i-1})`.
+2. **`div_lt_iff₀` / `le_div_iff₀` (with `₀`) are the current
+   Mathlib names.** The un-suffixed forms also exist for the
+   `(0 < c)` case (see Erdos27, Erdos901) but the `₀` versions are
+   preferred in newer code.
+3. **No tactic-level helper needed.** The combined "by_contra +
+   cube + nlinarith" + "div_lt_iff₀ + linarith" chain is short
+   enough that a custom tactic would be over-engineering for the
+   ~5 partial quotients we plan to verify.
+
+### Mathlib gaps (cumulative)
+
+(No new gaps. The "no tactic-level support for 'cube both sides of
+an Real.rpow inequality'" gap from S1 still stands but the manual
+`ring`/`nlinarith` workaround is fast.)
+
+### Next Steps (priority order, post-S3)
+
+1. **(S4)** `cbrt3_a2 : ⌊1/(1/(cbrt3-1) - 2)⌋ = (3 : ℤ)`.
+   Needs `ten_sevenths_lt_cbrt3` (cube `1000/343 < 3`) and
+   `cbrt3_lt_thirteen_ninths` (cube `2197/729 > 3`). Algebraic
+   step: same `div_lt_iff₀` / `le_div_iff₀` pattern on a
+   double-nested fraction (handle positivity inductively).
+2. **(S5)** `cbrt3_a3 = 1` and **(S6)** `cbrt3_a4 = 4`. After
+   S4 the template is fully exercised.
+3. **(S7)** Bundle: state and prove
+   `cbrt3_cf_prefix : (IntFractPair.stream cbrt3).take 5 = ...`
+   tying the per-`aᵢ` lemmas to the canonical Mathlib API.
+4. **(S8+, deferred)** Convergent lemmas
+   `convergent_n cbrt3 = (hₙ, kₙ)` for `n = 0..4`.
+
+### Risk Notes
+
+- S3 file is sorry-free and axiom-free. Build is **pending** —
+  same Docker symlink constraint as S2 (researcher-specific, not
+  proof-related).
+- The `nlinarith` step in `four_thirds_lt_cbrt3` needs the squared
+  intermediate (`cbrt3 * cbrt3 ≤ 16/9`) supplied as a hint; without
+  it `nlinarith` may not discover the cubic factorization on its
+  own. Same caveat as S2.
+- For S4 the squared intermediate is `100/49` (lower) and `169/81`
+  (upper); these are "ugly" rationals but `nlinarith` handles
+  rational coefficients natively.
