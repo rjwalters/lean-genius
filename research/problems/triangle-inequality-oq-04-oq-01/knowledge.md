@@ -1,0 +1,158 @@
+# Knowledge Base: triangle-inequality-oq-04-oq-01
+
+Insights accumulated during research on this problem.
+
+---
+
+## Problem Understanding
+
+The parent slug `triangle-inequality-oq-04` (Triangle Inequality for Geodesic/Path Metrics)
+is **COMPLETE** for the general metric-space case. Its `intrinsicDist_triangle` (in
+`proofs/Proofs/TriangleInequalityOQ04.lean:220`) uses `eVariationOn` as the universal arc
+length proxy.
+
+`triangle-inequality-oq-04-oq-01` asks to **extend** that result to **Riemannian manifolds
+specifically** — i.e., with the Riemannian arc length
+
+$$L_g(\gamma) = \int_0^1 \sqrt{g_{\gamma(t)}(\gamma'(t), \gamma'(t))} \, dt$$
+
+and the geodesic distance $d_g(p, q) = \inf_\gamma L_g(\gamma)$.
+
+The mathematical content **beyond OQ-04** is:
+1. The integral formulation (vs. `eVariationOn` total-variation formulation), and
+2. The dependence on the Riemannian metric $g$ (vs. the ambient metric of the metric space).
+
+---
+
+## Insights (S1 OBSERVE)
+
+### Insight 1 — Mathlib v4.26.0 has no Riemannian infrastructure
+
+A direct search of `Mathlib/Geometry/` and `Mathlib/Analysis/InnerProductSpace/` at the
+pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` returns **zero** matches for
+"Riemannian" outside graph-theoretic uses of "geodesic" (in
+`Mathlib/Combinatorics/Quiver/Arborescence.lean` and
+`Mathlib/GroupTheory/FreeGroup/NielsenSchreier.lean`, both meaning *graph geodesics*, not
+manifold geodesics).
+
+The natural typeclass `RiemannianMetric I M` (smoothly-varying inner product on
+`TangentSpace I x` for `x : M`) does **not** exist.
+
+### Insight 2 — The hook for an eventual Riemannian metric is `TangentSpace I x = E`
+
+In `Mathlib/Geometry/Manifold/VectorBundle/Tangent.lean:172`:
+
+```lean
+def TangentSpace {𝕜} [NontriviallyNormedField 𝕜] {E} [NormedAddCommGroup E] [NormedSpace 𝕜 E]
+    {H} [TopologicalSpace H] (I : ModelWithCorners 𝕜 E H) {M} [TopologicalSpace M]
+    [ChartedSpace H M] [SmoothManifoldWithCorners I M] (_x : M) : Type* := E
+```
+
+The tangent space at every point is **definitionally** the model vector space `E`. This is
+a deliberate design choice: the topology, additive structure, and `NormedSpace` structure
+all transport from `E` without per-point gymnastics. **It also means** an `InnerProductSpace ℝ E`
+instance gives every tangent space the *same* inner product — a "flat" Riemannian metric
+$g_p \equiv \langle \cdot, \cdot \rangle_E$. This is **not** a general Riemannian metric
+(which varies with $p$), but it's a starting point.
+
+### Insight 3 — Whitney embedding gives a smooth (not isometric) embedding
+
+`Mathlib/Geometry/Manifold/WhitneyEmbedding.lean` provides
+`theorem exists_embedding_euclidean_of_compact` for compact T2 manifolds, embedding
+$M \hookrightarrow \mathbb{R}^n$ smoothly. **The embedding is not isometric** in any
+canonical sense — Mathlib has no `IsIsometricEmbedding` for manifold embeddings, and the
+pulled-back inner product on $T_pM$ depends on the embedding.
+
+This means Path B (pull-back via Whitney) gives **some** Riemannian metric, but the
+choice is non-canonical.
+
+### Insight 4 — `intervalIntegral` exists and supports continuous integrands
+
+For Path A (chart-local), the arc length integral
+$\int_0^1 \|\mathrm{D}\gamma(t)\|_E \, dt$ is well-typed because:
+- `MFDeriv` gives $\mathrm{D}\gamma(t) : E$ via `mfderiv I 𝓘(ℝ) γ t (1 : ℝ)` (the
+  pushforward of the standard basis $1 \in T_t\mathbb{R}$).
+- `‖·‖_E` is `Norm.norm` from `[NormedAddCommGroup E] [NormedSpace ℝ E]`.
+- `Continuous (fun t => ‖mfderiv I 𝓘(ℝ) γ t (1 : ℝ)‖)` follows from `Continuous mfderiv`
+  for $\gamma \in C^1$, and `MeasureTheory.Integral.IntervalIntegral.intervalIntegral`
+  applies.
+
+### Insight 5 — Path C (metrization) is mathematically vacuous
+
+`ManifoldWithCorners.metrizableSpace` makes $M$ a `MetrizableSpace`. *Any* compatible
+metric satisfies the triangle inequality by definition — `dist_triangle` is part of the
+`PseudoMetricSpace` axioms. Applying the parent OQ-04's `intrinsicDist_triangle` to such a
+metric gives the triangle inequality for the *intrinsic* metric of the metrization, which
+is **not** the Riemannian distance.
+
+The result would be a 5-line Lean theorem with zero Riemannian content. Honest "axiom-free"
+but mathematically uninteresting.
+
+### Insight 6 — The four paths are not mutually exclusive
+
+The S2 implementer can land **Path A first** (chart-local, ~150 LOC) as the foundation,
+**then add Path B** as a corollary (~80 LOC) for compact manifolds via Whitney
+embedding, **then add Path C** as a trivial application (~30 LOC) for cosmetic API parity.
+Path D (waiting for upstream `RiemannianMetric`) is the strategic horizon — when Mathlib
+lands `RiemannianMetric`, the chart-local Path A result generalizes to a chart-invariant
+Riemannian arc length by partition-of-unity gluing.
+
+### Insight 7 — Parent OQ-04 uses `eVariationOn`, not `intervalIntegral`
+
+The parent's `pathLength` (`TriangleInequalityOQ04.lean:71`) is
+
+```lean
+noncomputable def pathLength {X : Type*} [PseudoMetricSpace X] (γ : Path x y) : ℝ≥0∞ :=
+  eVariationOn (fun t : ℝ => γ.extend t) (Set.Icc 0 1)
+```
+
+This is the **total variation** (a metric-space concept), not an integral. The Riemannian
+extension naturally uses an integral. The bridge is:
+
+> For a $C^1$ curve $\gamma : [a, b] \to E$ in a normed space,
+> $\mathrm{eVariationOn}(\gamma, [a, b]) = \int_a^b \|\gamma'(t)\|_E \, dt$.
+
+This identity is **not currently in Mathlib v4.26.0** in a directly-citable form; it would
+need a helper lemma (~30 LOC) to bridge the two arc-length notions in the chart-local
+setting.
+
+---
+
+## Dead Ends
+
+### Dead End 1 — Try to use `eVariationOn` directly on $\gamma : [0, 1] \to M$
+
+`eVariationOn` requires $M$ to be a `PseudoMetricSpace`. Mathlib gives us
+`ManifoldWithCorners.metrizableSpace` but not a *canonical* metric on $M$ matching the
+Riemannian distance. So `eVariationOn` of $\gamma$ on $[0, 1]$ computes the
+total variation w.r.t. the metrization metric, which is **not** the Riemannian arc length.
+
+Conclusion: cannot reuse the parent OQ-04 verbatim without first installing a Riemannian
+metric (the very thing we lack).
+
+### Dead End 2 — Try to use `Mathlib.Analysis.InnerProductSpace.*` on `TangentSpace I x`
+
+`TangentSpace I x = E` definitionally, so any `InnerProductSpace ℝ E` instance applies.
+But this gives every tangent space the **same** inner product — a flat metric. A true
+Riemannian metric varies with $x$. Inducing variation requires either:
+- A bundled `RiemannianMetric` typeclass (does not exist in Mathlib), or
+- A chart-local construction with explicit pull-back at chart transitions (this is **Path A**).
+
+Conclusion: flat metrics work in a single chart; variation needs more machinery.
+
+---
+
+## References
+
+- **Parent slug**: `triangle-inequality-oq-04` (`Proofs.TriangleInequalityOQ04`, 245 LOC,
+  COMPLETED 2026-04-05). Triangle inequality for `intrinsicDist` on any
+  `PseudoMetricSpace`.
+- **Mathlib v4.26.0 modules**: `Geometry/Manifold/SmoothManifoldWithCorners.lean`,
+  `Geometry/Manifold/MFDeriv/*`, `Geometry/Manifold/VectorBundle/Tangent.lean`,
+  `Geometry/Manifold/WhitneyEmbedding.lean`, `Geometry/Manifold/Metrizable.lean`,
+  `MeasureTheory/Integral/IntervalIntegral.lean`.
+- **Survey session note**: `sessions/2026-05-12-s1-observe-riemannian-mathlib-survey.md`
+  (created by S1 OBSERVE iteration, this PR).
+- **External**: do Carmo, *Riemannian Geometry* §3 (arc length, geodesic distance);
+  Lee, *Introduction to Riemannian Manifolds* §6 (the triangle inequality is
+  Proposition 6.10 there).
