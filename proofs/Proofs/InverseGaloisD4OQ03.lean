@@ -71,6 +71,13 @@ open Polynomial
 /-- The polynomial `X^n − a` over `ℚ`. -/
 noncomputable def xPowSub (n : ℕ) (a : ℚ) : ℚ[X] := X ^ n - C a
 
+/-- **Definitional unfolding (S3a)**: `xPowSub n a` is by definition
+    `X^n − C a`. Useful for bridging to lemmas about the explicit
+    polynomial form (e.g., the parent's `x4_sub_2_*` family, which is
+    stated on `(X : ℚ[X])^4 - C 2` directly). -/
+theorem xPowSub_def (n : ℕ) (a : ℚ) :
+    xPowSub n a = X ^ n - C a := rfl
+
 /-- **Abstract criterion (S2 statement, no proofs)**: the Galois group
     of `X^n − a` over `ℚ` is dihedral.
 
@@ -96,32 +103,51 @@ def IsDihedralGaloisOfXnMinusA (n : ℕ) (a : ℚ) : Prop :=
     The sorry is the bridge — the underlying mathematical content is
     classical and established (see Cox, *Galois Theory* (2nd ed., 2012),
     §13.3), but the Lean formalization requires more work than fits in
-    an S2 scaffold. -/
+    an S2 scaffold. S3a (this iteration) supplies the cardinality lift
+    `gal_card_xPowSub_4_2` toward this discharge; the remaining task is
+    the order-8-transitive-S₄-subgroup classification. -/
 theorem dihedral_galois_xPow4_sub_2 :
     IsDihedralGaloisOfXnMinusA 4 2 := by
   sorry
 
-/-- **Schinzel–Velez characterization (S2 statement, sorry)**.
+/-- **Cardinality lift (S3a, no sorry)**: the Galois group of
+    `xPowSub 4 2 = X^4 − C 2` over `ℚ` has cardinality `8`. This is
+    the parent's `x4_sub_2_gal_card` reused under the local
+    `xPowSub` definition.
 
-    The Schinzel–Velez classification asserts that
-    `IsDihedralGaloisOfXnMinusA n a` is equivalent to a finite-case
-    predicate on `n mod 8` and the `p`-adic valuations of `a` (full
-    statement in Schinzel 2000, §III.2).
+    This isolates the cardinality-input piece of the S3+ bridge from
+    the harder "order-8 transitive S₄-subgroup is D₄" classification
+    step. -/
+theorem gal_card_xPowSub_4_2 :
+    Fintype.card (xPowSub 4 2).Gal = 8 := by
+  show Fintype.card ((X : ℚ[X]) ^ 4 - C 2).Gal = 8
+  exact InverseGaloisExtensions.x4_sub_2_gal_card
 
-    This theorem **states** the existence of such a characterization
-    abstractly — i.e., the criterion is equivalent to *some* predicate
-    on `(n, a)`. The explicit predicate is left as `True` until
-    Capelli's irreducibility theorem (the key prerequisite, currently
-    absent from Mathlib `v4.26.0`) is formalized.
+/-- **Schinzel–Velez characterization (existential form, S3a audit fix)**.
 
-    Future iterations should:
-    1. Formalize Capelli's theorem (~200 lines of new infrastructure;
-       worth a separate Mathlib contribution PR).
-    2. Replace the `True` placeholder with the explicit Schinzel–Velez
-       predicate.
-    3. Discharge the iff using Velez (1979) and Schinzel (2000). -/
-theorem dihedral_iff_schinzel_velez (n : ℕ) (a : ℚ) :
-    IsDihedralGaloisOfXnMinusA n a ↔ True := by
-  sorry
+    The Schinzel–Velez classification asserts that there exists a
+    predicate `P : ℕ → ℚ → Prop` such that
+    `IsDihedralGaloisOfXnMinusA n a ↔ P n a` for all `n, a`. The
+    *content* of Schinzel–Velez is that `P` is explicit, finite-case,
+    and decidable on `(n mod 8)` and the `p`-adic valuations of `a`
+    (Schinzel 2000, §III.2). The existence-of-a-predicate statement
+    is vacuously true (take `P` to be the predicate itself); the
+    explicit form requires Capelli's irreducibility theorem, which
+    is not present in Mathlib `v4.26.0`.
+
+    **Audit fix (S3a).** This replaces the prior `S2` statement
+    `dihedral_iff_schinzel_velez (n a) : IsDihedralGaloisOfXnMinusA n a
+    ↔ True`, which was unprovable as written — the iff fails for any
+    `(n, a)` outside the dihedral case (e.g., `n = 1`, or
+    `n = 5, a = 2` with Galois group `F₂₀`). The original sorry hid
+    a falsity rather than a deferred-but-true bridge.
+
+    Future iterations should replace this existential with the
+    explicit Schinzel–Velez predicate once Capelli's theorem is
+    formalized (~200 lines of upstream infrastructure). -/
+theorem schinzel_velez_characterization_exists :
+    ∃ P : ℕ → ℚ → Prop,
+      ∀ n a, IsDihedralGaloisOfXnMinusA n a ↔ P n a :=
+  ⟨IsDihedralGaloisOfXnMinusA, fun _ _ => Iff.rfl⟩
 
 end InverseGaloisD4OQ03

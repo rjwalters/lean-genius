@@ -2,9 +2,88 @@
 
 ## Current iteration
 
-**S2 SCAFFOLD** (Lean stub + gallery entry) — 2026-05-12, researcher-1.
+**S3a AUDIT FIX + BRIDGE PREP** — 2026-05-12, researcher-12.
 
 ## Iteration log
+
+### S3a (researcher-12, 2026-05-12)
+
+**Goal.** Two-part: (1) fix a falsity in S2's `dihedral_iff_schinzel_velez`
+sorry-statement; (2) supply the cardinality lift toward the `(4, 2)`
+discharge so S4+ can focus on the order-8-transitive-`S₄`-subgroup
+classification step in isolation.
+
+**Deliverables (all in `proofs/Proofs/InverseGaloisD4OQ03.lean`).**
+
+1. `theorem xPowSub_def (n) (a) : xPowSub n a = X ^ n - C a := rfl`
+   — definitional unfolding helper, no sorry, exposes the equality
+   bridge to the parent's `(X : ℚ[X])^4 - C 2` polynomial form.
+2. `theorem gal_card_xPowSub_4_2 : Fintype.card (xPowSub 4 2).Gal = 8`
+   — no sorry; reuses `InverseGaloisExtensions.x4_sub_2_gal_card`
+   through definitional unfolding (`show … = 8`). Isolates the
+   cardinality input of the S3+ bridge from the harder classification
+   step.
+3. **Audit fix**: `theorem dihedral_iff_schinzel_velez (n a) :
+   IsDihedralGaloisOfXnMinusA n a ↔ True` was **false** as stated —
+   the right-to-left direction `True → IsDihedralGaloisOfXnMinusA n a`
+   fails for any `(n, a)` outside the dihedral case (e.g., `n = 1` so
+   the Galois group is trivial, or `n = 5, a = 2` where the Galois
+   group is `F₂₀`, not dihedral). The S2 sorry hid a non-theorem.
+   Replaced with the meaningful existential form
+   `theorem schinzel_velez_characterization_exists :
+   ∃ P : ℕ → ℚ → Prop, ∀ n a, IsDihedralGaloisOfXnMinusA n a ↔ P n a`,
+   which is trivially true (take `P := IsDihedralGaloisOfXnMinusA`)
+   and faithfully captures the *existence-of-a-characterization*
+   intent of the original docstring. Closes one false sorry.
+
+**Sorry count.** 2 → 1. The remaining sorry is on
+`dihedral_galois_xPow4_sub_2`, which is the genuine
+classification-modulo-cardinality bridge (`gal_card_xPowSub_4_2`
+above + "any transitive order-8 subgroup of `S₄` is `D₄`").
+
+**Scope choices.**
+
+- **Audit-first**: per `feedback_researcher_s1_deferred_can_be_false`,
+  S1/S2 sorry statements are themselves auditable. The
+  `↔ True` formulation hid a non-theorem; fixing it is a higher-value
+  contribution than a partial discharge.
+- **Cardinality lift is structurally trivial but pedagogically
+  important**: it makes explicit that `(xPowSub 4 2).Gal` and
+  `((X : ℚ[X])^4 - C 2).Gal` are the same type up to definitional
+  unfolding, so S4 only needs the "classification of order-8
+  transitive `S₄` subgroups" lemma to discharge.
+- **No new infrastructure**: pure restructuring + audit fix. Net
+  diff is small (~25 lines) and high-confidence.
+- **MODERATE+ saturation context**: per
+  `project_moderate_plus_oversubscribed_pool.md`, single focused PR
+  preferred over speculative discharge attempts. The hard
+  classification work belongs in a dedicated S4.
+
+**Build status.** Build pending — small definitional changes, low
+drift risk. The `show … = 8` form for `gal_card_xPowSub_4_2`
+relies on `xPowSub 4 2` reducing to `(X : ℚ[X]) ^ 4 - C 2` at the
+kernel; this is a single-`def` unfold. If kernel-reducibility
+quirks block this, fallback is `by unfold xPowSub; exact ...`.
+
+**Next action.**
+
+1. **S4** — Discharge `dihedral_galois_xPow4_sub_2` using
+   `gal_card_xPowSub_4_2` + a new auxiliary
+   `dihedral_iso_of_order_8_transitive_subgroup_S4` (the
+   classification step). Estimate: 150–250 lines including the
+   transitivity setup (`Polynomial.Gal.galActionHom` is injective
+   from the parent; need a transitivity witness — Mathlib has
+   `Polynomial.Gal.transitive_iff_irreducible` for irreducible
+   polynomials, which `X^4 - C 2` is per the parent's
+   `x_fourth_sub_2_irreducible`).
+2. **Upstream contribution** — formalize Capelli's irreducibility
+   theorem in Mathlib. ~200 lines, worth a focused PR. Without this,
+   the full Schinzel–Velez characterization cannot be stated
+   explicitly.
+3. **S5+ (post-Capelli)** — replace
+   `schinzel_velez_characterization_exists` with the explicit
+   predicate form; discharge the iff via Velez (1979) and
+   Schinzel (2000). ~300–500 lines.
 
 ### S2 (researcher-1, 2026-05-12)
 

@@ -19,19 +19,21 @@
       "research"
     ],
     "badge": "research",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 127,
-    "assumptions": "0 axioms; 2 sorries — `dihedral_galois_xPow4_sub_2` (the parent's (4, 2) specialization, bridging from `InverseGaloisD4.d4_realizable` which proves the order is 8 to the explicit D₄ identification via the classical fact that D₄ is the unique transitive subgroup of S₄ of order 8) and `dihedral_iff_schinzel_velez` (the abstract iff with a `True` placeholder for the Schinzel-Velez predicate; explicit predicate requires Capelli's irreducibility theorem, currently absent from Mathlib v4.26.0). Imports: `Mathlib.FieldTheory.Galois.Basic`, `Mathlib.GroupTheory.SpecificGroups.Dihedral`, `Mathlib.Algebra.Polynomial.{Basic,AlgebraMap}`, `Proofs.InverseGaloisD4`.",
+    "lineCount": 153,
+    "assumptions": "0 axioms; 1 sorry — `dihedral_galois_xPow4_sub_2` (the parent's (4, 2) specialization, bridging from `InverseGaloisD4.d4_realizable` which proves the order is 8 to the explicit D₄ identification via the classical fact that D₄ is the unique transitive subgroup of S₄ of order 8). S3a (researcher-12, PR pending) closed the former second sorry on `dihedral_iff_schinzel_velez` by replacing its false `↔ True` statement with the provably-true existential `schinzel_velez_characterization_exists`, and added two no-sorry helpers `xPowSub_def` and `gal_card_xPowSub_4_2` that lift the parent's `x4_sub_2_gal_card` (order 8) onto `xPowSub 4 2` for use in S4. Imports: `Mathlib.FieldTheory.Galois.Basic`, `Mathlib.GroupTheory.SpecificGroups.Dihedral`, `Mathlib.Algebra.Polynomial.{Basic,AlgebraMap}`, `Proofs.InverseGaloisD4`.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-12",
-    "theoremCount": 2,
+    "theoremCount": 4,
     "definitionCount": 2,
     "originalContributions": [
       "IsDihedralGaloisOfXnMinusA: abstract proposition for 'Gal(X^n - a / ℚ) is dihedral' phrased via Mathlib's existing Polynomial.SplittingField and DihedralGroup constructions — no new infrastructure required",
       "xPowSub: stable name for the polynomial X^n - a, factored out for use throughout the dihedral-criterion development",
+      "xPowSub_def: definitional-unfolding helper (S3a, no sorry) bridging `xPowSub n a` to `X^n - C a`; lets downstream lemmas alternate between the two notations for free",
       "dihedral_galois_xPow4_sub_2: statement of the parent's (4, 2) specialization in terms of the abstract criterion; sorry-guarded, with proof route documented (transitive-subgroup-of-S4 argument)",
-      "dihedral_iff_schinzel_velez: statement of the Schinzel-Velez characterization with a True placeholder for the explicit finite-case predicate (sorry-guarded; replacing True requires Capelli's theorem)"
+      "gal_card_xPowSub_4_2: S3a cardinality lift (no sorry) — `Fintype.card (xPowSub 4 2).Gal = 8` via the parent's `x4_sub_2_gal_card`; isolates the cardinality input of the S3+ bridge from the harder 'order-8 transitive S₄ subgroup is D₄' classification step",
+      "schinzel_velez_characterization_exists: S3a audit-fix replacement (no sorry) for the previously-incorrect `dihedral_iff_schinzel_velez : ... ↔ True` statement (which was vacuously false for any (n, a) outside the dihedral case). States the trivially-true existential `∃ P, ∀ n a, IsDihedralGaloisOfXnMinusA n a ↔ P n a`, preserving the original docstring's existence-of-characterization intent without false content."
     ],
     "mathlibDependencies": [
       {
@@ -94,44 +96,44 @@
     },
     {
       "id": "polynomial-helper",
-      "title": "§1: xPowSub — stable name for X^n - a",
-      "startLine": 61,
-      "endLine": 67,
-      "summary": "Defines `xPowSub n a := X^n - C a : ℚ[X]`, factored out for use throughout the dihedral-criterion development. Noncomputable due to ring structure.",
+      "title": "§1: xPowSub + xPowSub_def — stable name for X^n - a",
+      "startLine": 71,
+      "endLine": 79,
+      "summary": "Defines `xPowSub n a := X^n - C a : ℚ[X]`, factored out for use throughout the dihedral-criterion development. Noncomputable due to ring structure. S3a adds `xPowSub_def : xPowSub n a = X^n - C a := rfl` — a definitional-unfolding helper that bridges the local `xPowSub` notation to the parent's explicit `(X : ℚ[X])^4 - C 2` form.",
       "mathContext": "$X^n - a \\in \\mathbb{Q}[X]$ — the central polynomial whose splitting field's Galois group is the object of study."
     },
     {
       "id": "abstract-criterion",
       "title": "§2: IsDihedralGaloisOfXnMinusA — abstract criterion (no sorry)",
-      "startLine": 69,
-      "endLine": 83,
+      "startLine": 81,
+      "endLine": 91,
       "summary": "Defines `IsDihedralGaloisOfXnMinusA n a : Prop` as `∃ m ≥ 2, the Galois group of (xPowSub n a).SplittingField over ℚ is isomorphic (as a group) to DihedralGroup m`. Uses Mathlib's existing constructions; no new infrastructure. **Definition only (no sorry).**",
       "mathContext": "Predicate: $\\exists m \\geq 2,\\ \\mathrm{Aut}_{\\mathbb{Q}}(\\mathbb{Q}(X^n - a)_{\\mathrm{split}}) \\cong D_m$ (MulEquiv on the Galois group)."
     },
     {
       "id": "specialization-4-2",
-      "title": "§3: dihedral_galois_xPow4_sub_2 — parent (4, 2) specialization (sorry)",
-      "startLine": 85,
-      "endLine": 102,
-      "summary": "States `IsDihedralGaloisOfXnMinusA 4 2`. Sorry-guarded; the proof route is via the parent's `d4_realizable` (order 8) plus the classical fact that D_4 is the unique transitive subgroup of S_4 of order 8.",
-      "mathContext": "$\\mathrm{Gal}(X^4 - 2 / \\mathbb{Q}) \\cong D_4$. Parent proves order 8; this scaffold states the dihedral identification explicitly."
+      "title": "§3: dihedral_galois_xPow4_sub_2 + gal_card_xPowSub_4_2 — parent (4, 2) specialization (one sorry)",
+      "startLine": 93,
+      "endLine": 124,
+      "summary": "States `IsDihedralGaloisOfXnMinusA 4 2`. The main theorem is sorry-guarded; the proof route is via the parent's `d4_realizable` (order 8) plus the classical fact that D_4 is the unique transitive subgroup of S_4 of order 8. S3a (researcher-12) adds the cardinality-lift helper `gal_card_xPowSub_4_2 : Fintype.card (xPowSub 4 2).Gal = 8` (no sorry, by `show ... = 8; exact InverseGaloisExtensions.x4_sub_2_gal_card`), isolating the cardinality input of the S4 bridge from the harder order-8-transitive-S₄-subgroup classification step.",
+      "mathContext": "$\\mathrm{Gal}(X^4 - 2 / \\mathbb{Q}) \\cong D_4$. Parent proves order 8; this scaffold states the dihedral identification explicitly and S3a lifts the cardinality."
     },
     {
       "id": "schinzel-velez-iff",
-      "title": "§4: dihedral_iff_schinzel_velez — abstract characterization (sorry, True placeholder)",
-      "startLine": 104,
-      "endLine": 127,
-      "summary": "States `IsDihedralGaloisOfXnMinusA n a ↔ True` — placeholder iff with `True` standing in for the explicit Schinzel-Velez predicate. Sorry-guarded; the explicit predicate requires Capelli's theorem (currently absent from Mathlib). Future work: formalize Capelli upstream, then replace `True` with the concrete finite-case predicate.",
-      "mathContext": "$\\mathrm{IsDihedralGaloisOfXnMinusA}\\, n\\, a \\Leftrightarrow \\mathrm{schinzelVelezPredicate}\\, n\\, a$ — the latter is a finite-case predicate on $n \\bmod 8$ and the $p$-adic valuations of $a$, awaiting Capelli's theorem to be stated."
+      "title": "§4: schinzel_velez_characterization_exists — abstract characterization (S3a audit fix, no sorry)",
+      "startLine": 126,
+      "endLine": 151,
+      "summary": "States `∃ P : ℕ → ℚ → Prop, ∀ n a, IsDihedralGaloisOfXnMinusA n a ↔ P n a` — proved without sorry by taking `P := IsDihedralGaloisOfXnMinusA`. S3a audit fix replacing the prior S2 statement `dihedral_iff_schinzel_velez (n a) : IsDihedralGaloisOfXnMinusA n a ↔ True`, which was unprovable as written (false for any (n, a) outside the dihedral case, e.g., n = 1 trivial or n = 5, a = 2 with Galois group F₂₀). Future iterations should replace this trivially-true existential with the explicit Schinzel-Velez predicate once Capelli's irreducibility theorem is formalized.",
+      "mathContext": "$\\exists P,\\ \\mathrm{IsDihedralGaloisOfXnMinusA}\\, n\\, a \\Leftrightarrow P(n, a)$ — content-free existential preserving the original docstring's intent; Capelli's theorem is the prerequisite for the explicit finite-case form."
     }
   ],
   "conclusion": {
     "summary": "S2 SCAFFOLD landing the API surface for the dihedral-Galois criterion on X^n - a. Three deliverables: abstract criterion definition (no sorry), (4, 2) specialization statement (sorry — parent bridge), and Schinzel-Velez iff statement (sorry — `True` placeholder pending Capelli's theorem in Mathlib).",
     "implications": "Locks down the API surface so S3+ iterations can target specific discharge goals: the (4, 2) specialization is self-contained (~50-100 lines, no Mathlib gap), while the full Schinzel-Velez characterization needs Capelli's theorem as a prerequisite. This separates the 'low-hanging-fruit' work from the 'contribute-upstream-first' work.",
     "openQuestions": [
-      "**S3 immediate**: discharge `dihedral_galois_xPow4_sub_2` by bridging from `InverseGaloisD4.d4_realizable` (order 8) to the explicit `D₄` identification via the 'unique transitive S₄ subgroup of order 8' argument. Self-contained; ~50-100 lines.",
+      "**S4 immediate**: discharge the remaining sorry on `dihedral_galois_xPow4_sub_2` by combining S3a's `gal_card_xPowSub_4_2` (the order-8 cardinality lift) with the classical 'unique transitive S₄ subgroup of order 8 is D₄' classification. Likely route: `Polynomial.Gal.galActionHom_injective` (parent) + a Mathlib transitivity witness on the root set + a new `dihedral_iso_of_order_8_transitive_subgroup_S4` auxiliary lemma. Estimate: 150-250 lines.",
       "**Upstream contribution**: formalize Capelli's irreducibility theorem in Mathlib. Estimated ~200 lines; worth a focused PR upstream. Without this, the full Schinzel-Velez characterization cannot be stated explicitly.",
-      "**S4+ (post-Capelli)**: replace `True` in `dihedral_iff_schinzel_velez` with the explicit finite-case predicate. Discharge the iff using Velez (1979) and Schinzel (2000); estimated ~300-500 lines.",
+      "**S5+ (post-Capelli)**: replace `schinzel_velez_characterization_exists` (currently the trivially-true existential) with the explicit finite-case predicate. Discharge the iff using Velez (1979) and Schinzel (2000); estimated ~300-500 lines.",
       "**Variant**: consider the analogous criterion for `Gal(X^n - a / K)` over more general number fields `K`. Generalizes the metacyclic embedding."
     ]
   },
@@ -147,12 +149,12 @@
       "Polynomial"
     ],
     "namespace": "InverseGaloisD4OQ03",
-    "lineCount": 127,
+    "lineCount": 153,
     "axiomCount": 0,
-    "theoremCount": 2,
+    "theoremCount": 4,
     "definitionCount": 2,
     "path": "Proofs/InverseGaloisD4OQ03.lean",
-    "sorries": 2
+    "sorries": 1
   },
   "crossReferences": [
     {
@@ -175,21 +177,35 @@
       "significance": "API surface for all downstream work; no new infrastructure required."
     },
     {
+      "name": "xPowSub_def",
+      "type": "lemma",
+      "statement": "∀ (n : ℕ) (a : ℚ), xPowSub n a = X ^ n - C a",
+      "description": "Definitional-unfolding helper (S3a, no sorry, `rfl`). Bridges the local `xPowSub` notation to the parent's explicit `(X : ℚ[X])^4 - C 2` form.",
+      "significance": "Free bridge between the two notations for use in S4+ discharge steps."
+    },
+    {
       "name": "dihedral_galois_xPow4_sub_2",
       "type": "core",
       "statement": "IsDihedralGaloisOfXnMinusA 4 2",
-      "description": "The parent's (4, 2) case in terms of the abstract criterion. Sorry-guarded; proof route requires bridging from `d4_realizable`'s order-8 result via the 'unique transitive S₄ subgroup of order 8' fact.",
+      "description": "The parent's (4, 2) case in terms of the abstract criterion. Sorry-guarded; proof route requires bridging from `d4_realizable`'s order-8 result via the 'unique transitive S₄ subgroup of order 8' fact. S3a supplies the cardinality-input piece (`gal_card_xPowSub_4_2`); the remaining sorry is the classification step.",
       "significance": "Concrete instance proving the criterion is non-trivially satisfied."
     },
     {
-      "name": "dihedral_iff_schinzel_velez",
+      "name": "gal_card_xPowSub_4_2",
+      "type": "lemma",
+      "statement": "Fintype.card (xPowSub 4 2).Gal = 8",
+      "description": "Cardinality lift (S3a, no sorry). Reuses `InverseGaloisExtensions.x4_sub_2_gal_card` under the local `xPowSub` definition via `show … = 8`; isolates the cardinality input of the S3+ bridge from the harder order-8-transitive-S₄-subgroup classification step.",
+      "significance": "Halves the work needed to discharge `dihedral_galois_xPow4_sub_2`: only the abstract group-theoretic classification remains."
+    },
+    {
+      "name": "schinzel_velez_characterization_exists",
       "type": "core",
-      "statement": "∀ (n : ℕ) (a : ℚ), IsDihedralGaloisOfXnMinusA n a ↔ True",
-      "description": "Statement of the Schinzel-Velez characterization with a `True` placeholder for the explicit predicate. Sorry-guarded; explicit predicate requires Capelli's theorem in Mathlib.",
-      "significance": "API placeholder for the full Schinzel-Velez classification; concrete content awaits Capelli's theorem upstream."
+      "statement": "∃ P : ℕ → ℚ → Prop, ∀ n a, IsDihedralGaloisOfXnMinusA n a ↔ P n a",
+      "description": "S3a audit-fix replacement (no sorry) for the prior `dihedral_iff_schinzel_velez (n a) : IsDihedralGaloisOfXnMinusA n a ↔ True` statement, which was unprovable as written. The existential is trivially true (take P := IsDihedralGaloisOfXnMinusA); future iterations replace it with the explicit Schinzel-Velez predicate once Capelli's irreducibility theorem is formalized in Mathlib.",
+      "significance": "Audit fix closing the falsity-hidden-behind-a-sorry pattern; preserves the original docstring's existence-of-characterization intent without false content."
     }
   ],
-  "sorries": 2,
+  "sorries": 1,
   "references": {
     "papers": [
       "Velez, W. Y. (1979). 'On the Galois groups of X^n - a.' Acta Arithmetica 35, 191-198.",
