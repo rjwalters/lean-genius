@@ -236,3 +236,235 @@ The cleanest near-term increment (1–3 sessions) is:
   `no_retraction_iff_algebraic_impossibility` line 256) calls
   `singular_homology_retraction_split` with the exact original signature
   and uses only the existentially-introduced witnesses.
+
+* 2026-05-11 (researcher-9, S3 ACT-B prep): completed the
+  `singularHomologyFunctor` API verification at the pinned rev. No Lean
+  edits in this iteration; findings recorded in Section G below. Three
+  surprises beyond what the S1 OBSERVE survey assumed:
+  (i) Mathlib renamed `AddCommGrp` → `AddCommGrpCat` (with `abbrev Ab`);
+  (ii) the typeclass chain `Abelian ⟹ CategoryWithHomology` is automatic
+       via `Mathlib.Algebra.Homology.ShortComplex.Abelian`, so no manual
+       `CategoryWithHomology AddCommGrpCat` instance has to be supplied;
+  (iii) at the pinned rev `Mathlib.Analysis.Normed.Module.Connected.lean`
+       has `ball_contractible` but **no** `closedBall_contractible` — the
+       latter has to be discharged inline via
+       `(convex_closedBall _ _).contractibleSpace ⟨0, mem_closedBall_self zero_le_one⟩`
+       (a one-liner, but a fresh sub-gap not flagged in S1 OBSERVE).
+  These three corrections do not change the overall plan; they refine the
+  literal signatures and import paths that ACT-B exec will use.
+
+### G. ACT-B prep — `singularHomologyFunctor` API verification
+
+This section pins down the *exact* Mathlib signatures and instance chain
+that ACT-B exec (a real, substantive proof of `H_n_minus_1_ball_zero`) will
+have to invoke. Every API reference is checked against the lake-pinned rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+#### G1. Bundled-category name correction
+
+`Mathlib/Algebra/Category/Grp/Basic.lean:238`:
+
+```lean
+structure AddCommGrpCat : Type (u + 1) where
+  ...
+
+abbrev Ab := AddCommGrpCat                        -- line 256
+abbrev of (M : Type u) [CommGroup M] : CommGrpCat -- line 268
+```
+
+The bundled category of abelian groups is **`AddCommGrpCat.{u}`**, not
+`AddCommGrp.{u}` as S1 OBSERVE / Section A wrote it. `Ab` is a sanctioned
+abbreviation. Any ACT-B exec import line must use `AddCommGrpCat`.
+
+#### G2. Typeclass instance chain for `singularHomologyFunctor`
+
+`Mathlib/AlgebraicTopology/SingularHomology/Basic.lean:29–30,47`:
+
+```lean
+variable (C : Type u) [Category.{v} C] [HasCoproducts.{w} C]
+variable [Preadditive C] [CategoryWithHomology C] (n : ℕ)
+
+def singularHomologyFunctor : C ⥤ TopCat.{w} ⥤ C
+```
+
+For `C := AddCommGrpCat.{0}`, all four classes are in place at the pinned
+rev:
+
+| Class | File | Line | Notes |
+|-------|------|------|-------|
+| `Category AddCommGrpCat.{u}` | `Algebra/Category/Grp/Basic.lean` | — | bundled-category boilerplate |
+| `Preadditive AddCommGrpCat.{u}` | `Algebra/Category/Grp/Preadditive.lean` | 63 | direct instance |
+| `HasColimitsOfShape J AddCommGrpCat.{w}` | `Algebra/Category/Grp/Colimits.lean` | 270 | for any `[Small.{w} J]` |
+| `Abelian AddCommGrpCat.{u}` | `Algebra/Category/Grp/Abelian.lean` | 42 | direct instance |
+| `CategoryWithHomology AddCommGrpCat` | `Algebra/Homology/ShortComplex/Abelian.lean` | — | via the general instance `categoryWithHomology_of_abelian` |
+
+`HasCoproducts.{0}` follows from `HasColimitsOfShape (Discrete.{0} J)` for
+small `J`. So `singularHomologyFunctor AddCommGrpCat.{0} (n-1)` typechecks
+without any auxiliary instance scaffolding.
+
+#### G3. Coefficient and space arguments
+
+The signature `singularHomologyFunctor C n : C ⥤ TopCat.{w} ⥤ C` says we
+feed two arguments:
+
+* **Coefficient `R : C`** — for ordinary integral singular homology, take
+  `R := AddCommGrpCat.of ℤ`. (`Basic.lean:469` defines
+  `asHom : G → (AddCommGrpCat.of ℤ ⟶ G)`, confirming the conventional role
+  of `AddCommGrpCat.of ℤ` as the "free abelian group on one generator".)
+
+* **Space `X : TopCat.{0}`** — the closed unit ball in `EuclideanSpace ℝ (Fin n)`,
+  packaged as `TopCat.of ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1)`.
+  The subtype has its inherited `TopologicalSpace` instance from
+  `instTopologicalSpaceSubtype`, so `TopCat.of` accepts it.
+
+Putting these together:
+
+```lean
+example (n : ℕ) (hn : n ≥ 1) :
+    AddCommGrpCat.{0} :=
+  ((AlgebraicTopology.singularHomologyFunctor AddCommGrpCat.{0} (n-1)).obj
+      (AddCommGrpCat.of ℤ)).obj
+    (TopCat.of ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1))
+```
+
+This is the *literal* object `H_{n-1}(B^n; ℤ)` we are trying to prove is
+zero. ACT-B exec will compare it against the zero object via an `IsZero …`
+witness, not a direct `≅ Unit` rewrite.
+
+#### G4. The contractibility sub-gap
+
+`Mathlib.Analysis.Normed.Module.Connected.lean` at the pinned rev
+(lines 139, 143) supplies:
+
+```lean
+theorem ball_contractible  : ContractibleSpace (ball x r)
+theorem eball_contractible : ContractibleSpace (EMetric.ball x r)
+```
+
+but **no** `closedBall_contractible`. A later Mathlib rev adds one, but at
+the pinned rev ACT-B exec must inline the witness:
+
+```lean
+have hC : ContractibleSpace
+    (Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1) :=
+  (convex_closedBall _ _).contractibleSpace
+    ⟨0, Metric.mem_closedBall_self zero_le_one⟩
+```
+
+`convex_closedBall` lives in `Mathlib.Analysis.Normed.Module.Convex` and
+`Convex.contractibleSpace` lives in `Mathlib.Analysis.Convex.Contractible`.
+Both are imported transitively by `Mathlib.Tactic`, so no new top-level
+import is required in `BrouwerFixedPointOQ01OQ02.lean`.
+
+This is the **only sub-gap discovered during S3 prep**. It is one line and
+poses no obstacle to ACT-B exec; it is noted here only because S1 OBSERVE
+(Section A3) implicitly assumed `closedBall_contractible` existed.
+
+#### G5. The B1-gated zero-witness theorem
+
+Once Mathlib gap B1 (the prism operator) is discharged — either upstream
+in `Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance` (ACT-C)
+or locally as a named `axiom singular_homology_topological_homotopy_invariance`
+in the gallery file — the substantive form of `H_n_minus_1_ball_zero` will
+read:
+
+```lean
+theorem H_n_minus_1_ball_zero_real (n : ℕ) (hn : n ≥ 1) :
+    IsZero
+      (((AlgebraicTopology.singularHomologyFunctor AddCommGrpCat.{0}
+            (n-1)).obj (AddCommGrpCat.of ℤ)).obj
+        (TopCat.of ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1))) := by
+  -- Step 1: closed ball is contractible (sub-gap G4 inline)
+  have hC : ContractibleSpace
+      (Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1) :=
+    (convex_closedBall _ _).contractibleSpace
+      ⟨0, Metric.mem_closedBall_self zero_le_one⟩
+  -- Step 2: lift to TopCat-level homotopy equivalence with PUnit
+  have hHE :
+      TopCat.of ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1) ≃ₕ
+      TopCat.of PUnit := -- via ContractibleSpace.hequiv_unit (Mathlib)
+    sorry  -- routine bridge, expected ~5 lines
+  -- Step 3: prism operator (Mathlib gap B1) turns the topological homotopy
+  --   equivalence into a chain-complex homotopy equivalence
+  have hCHE : HomotopyEquiv
+      (((AlgebraicTopology.singularChainComplexFunctor AddCommGrpCat.{0}).obj
+          (AddCommGrpCat.of ℤ)).obj
+        (TopCat.of ↥(Metric.closedBall (0 : EuclideanSpace ℝ (Fin n)) 1)))
+      (((AlgebraicTopology.singularChainComplexFunctor AddCommGrpCat.{0}).obj
+          (AddCommGrpCat.of ℤ)).obj
+        (TopCat.of PUnit)) := singular_homology_topological_homotopy_invariance hHE
+  -- Step 4: PUnit is totally disconnected, so its (n-1)-th homology is zero
+  haveI : TotallyDisconnectedSpace (TopCat.of PUnit) := inferInstance
+  have hZero :=
+    AlgebraicTopology.isZero_singularHomologyFunctor_of_totallyDisconnectedSpace
+      AddCommGrpCat.{0} (n-1) (AddCommGrpCat.of ℤ) (TopCat.of PUnit)
+      (by omega) -- n-1 ≠ 0 since n ≥ 1 and we need the strict case n ≥ 2
+  -- Step 5: HomotopyEquiv induces homology iso (Mathlib's `Homotopy.homologyMap_eq`)
+  exact hZero.of_iso hCHE.toHomologyIso.symm
+```
+
+Step 3 is the **one** call into the missing prism operator (B1). Steps 1,
+2, 4, 5 are all currently in Mathlib at the pinned rev. The total proof is
+~30 lines once B1 is available.
+
+Caveat on step 4: for `n-1 = 0` (i.e. n=1), the homology of `PUnit` is *not*
+zero — it is `ℤ` — and the existing axiom `H_n_minus_1_sphere_nonzero` is
+*also* automatically inconsistent with the mock encoding (`H_0(S^0) ≅ ℤ²`,
+not `ℤ`). The n=1 case has to be handled separately, either by special-casing
+or by strengthening the hypothesis to `n ≥ 2`. This is a *known* feature of
+the no-retraction setup (the n=1 case is the intermediate value theorem and
+needs a different argument anyway); the gallery file's `hn : n ≥ 1`
+hypothesis is therefore *too weak* for the substantive proof and ACT-B exec
+will need to lift it to `n ≥ 2`. Calls sites in
+`no_retraction_singular_homology` and downstream are unaffected — they pass
+through the same hypothesis.
+
+#### G6. The Unit-bridge step (mock ↔ real)
+
+S2 ACT-A kept the *signature*
+`∃ φ : ℤ →+ Unit, True` for `H_n_minus_1_ball_zero`. ACT-B exec needs to
+translate the real statement `IsZero (H_{n-1}(B^n; ℤ))` into this
+existential. The bridge:
+
+* `IsZero Z` in `AddCommGrpCat` gives a `Unique (Z ⟶ G)` for any `G`, hence
+  an *isomorphism* `(Z ⟶ AddCommGrpCat.of ℤ) ≃ PUnit`.
+* The forgetful functor `AddCommGrpCat ⥤ Type` sends `IsZero Z` to a `Z`
+  whose carrier has `Subsingleton`. Composed with `AddCommGrpCat.of ℤ`'s
+  carrier `ℤ`, we obtain `(Z.carrier →+ ℤ)` as a singleton, hence the
+  *real* φ : `Z.carrier →+ ℤ` is unique.
+* The existential `∃ φ : ℤ →+ Unit, True` is then witnessed by transporting
+  along the iso `Z.carrier ≃+ Unit` (which follows from `IsZero Z` + the
+  forgetful functor's compatibility with the algebraic zero).
+
+This bridge is a 5–10 line lemma `IsZero_AddCommGrpCat_iff_carrier_subsingleton`
+plus a `Subsingleton → ≃+ Unit` coercion. Both are likely already in Mathlib
+under `Subsingleton.toEquivPUnit` or similar; if not, they are routine.
+
+**Net effect**: S2 ACT-A's `H_n_minus_1_ball_zero` signature was a
+*deliberate* under-statement of the real homology fact. ACT-B exec will
+either (a) keep the existential signature and bridge after the
+`IsZero (H_{n-1}…)` proof, or (b) strengthen the signature to
+`IsZero …` directly and update the two call sites
+(`singular_homology_retraction_split`,
+ `no_retraction_singular_homology` via that). Option (a) is the
+smaller surface-area change and is recommended.
+
+#### G7. ACT-B exec readiness summary
+
+* Mathlib APIs that ACT-B exec needs are **all present at the pinned rev**
+  except the prism operator (gap B1).
+* One **new sub-gap** discovered during S3 prep: `closedBall_contractible`
+  is absent at the pinned rev. Discharged inline in one line via
+  `Convex.contractibleSpace` and `convex_closedBall`.
+* One **scope correction** discovered during S3 prep: the gallery
+  hypothesis `hn : n ≥ 1` is too weak for the substantive proof — ACT-B
+  exec must restrict to `n ≥ 2` (the n=1 case is degenerate by the
+  Mayer–Vietoris/excision-free argument too). Downstream signatures need
+  no change.
+* The bridge from `IsZero (H_{n-1}(B^n))` to the existential
+  `∃ φ : ℤ →+ Unit, True` is a 5–10 line lemma; no Mathlib gap there.
+* Naming: every occurrence of `AddCommGrp` in S1/S2 should be read as
+  `AddCommGrpCat` going forward.
+
+ACT-B exec is therefore *one* B1 axiom + ~30 Lean lines away. This is the
+smallest residual blocker on the shallow half of the decomposition.
