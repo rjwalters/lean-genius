@@ -1,0 +1,120 @@
+{
+  "slug": "angle-trisection-oq-05-oq-04",
+  "title": "Strengthening Huzita-Hatori to capture curved-crease origami",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\exists\\ \\text{axiom system}\\ \\Sigma\\ \\supseteq\\ \\text{HHAxioms}\\ \\text{such that}\\ K_\\Sigma\\ =\\ K_{\\text{curved}}\\ :=\\ \\{\\alpha \\in \\mathbb R\\ :\\ \\alpha\\ \\text{constructible from}\\ \\mathbb Q\\ \\text{by H-H operations}\\ +\\ \\text{single curved fold}\\ (\\gamma, \\theta)\\ \\text{satisfying}\\ \\kappa_n = \\kappa_g \\cdot \\cot(\\theta/2) \\}",
+    "plain": "Can the seven straight-crease Huzita-Hatori axioms be strengthened by a finite extension to capture curved-crease origami? Equivalently, give an axiomatic / algebraic characterisation of the curved-fold-constructible field K_curved that mirrors the existing 'd divides 2^a * 3^b' classification for K_origami.",
+    "whyMatters": [
+      "First differential-geometric extension of the Huzita-Hatori axioms: the seven HH axioms are algebraic / incidence-based; curved-crease origami requires geodesic-curvature and fold-angle-profile primitives absent from both the gallery and Mathlib.",
+      "Bridges the single-fold-vs-multi-fold hierarchy: the sibling proofs AngleTrisectionOQ05OQ01 / OQ02 / OQ03 establish a strict k-fold straight hierarchy reaching algebraic completeness; OQ-04 asks where curved single-fold sits in this hierarchy.",
+      "Strictness of the extension is open: Demaine-Demaine-Hart-Price-Tachi 2011 prove curved-crease origami can trace transcendental curves (elastica), but whether the field of CURVED-FOLD-CONSTRUCTIBLE COORDINATES strictly contains K_origami is open mathematics dating to Huffman 1976.",
+      "Mathlib gap: no developable-surface API, no folding/crease primitive, no Fuchs-Tabachnikov compatibility identity. A gallery-side axiomatic formalisation has standalone value and may propagate upstream as Mathlib.Geometry.Origami.Curved once the API stabilises."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Huffman 1976: rule-line / developable framework for a single curved fold; geodesic curvature equals planar curvature of the unfolded crease.",
+      "Fuchs-Tabachnikov 1999, Theorem 1: compatibility identity kappa_n(s) = kappa_g(s) * cot(theta(s)/2) characterises the smooth-fold dihedral profile.",
+      "Demaine-Demaine-Hart-Price-Tachi 2011, Section 5: curved-crease origami can trace transcendental crease curves (elastica family), so the set of curved-fold-constructible CURVES strictly contains the algebraic curves.",
+      "Alperin 2000, Geretschläger 1995: K_origami = K_neusis = {alpha : [Q(alpha):Q] divides 2^a * 3^b}, the algebraic ceiling formalised in AngleTrisectionOQ05.origami_degree_classification (line 575)."
+    ],
+    "open": [
+      "OQ-A: Is K_curved strictly larger than K_origami? Conjectured FALSE by Demaine et al. 2011 (curved crease yields no new constructible POINTS, only new constructible CURVES); strict-inclusion proof open.",
+      "OQ-B: Is K_curved contained in K_(omega-fold) straight (i.e. algebraic)? Folklore YES; no proof.",
+      "OQ-C (the OQ-04 question itself): Does any of the three candidate axiom schemata — (P1) single curved axiom O8 parametrised by (gamma, theta); (P2) Beloch-style finite degree-bounded restriction; (P3) algebraic-closure-only — generate K_curved? Open whether (P1), (P2), (P3) all give the same field."
+    ],
+    "goal": "Formalise a CurvedCrease structure with the Fuchs-Tabachnikov identity as a field, prove the conservativity lemma straight_fold_recovers_HH (kappa_g identically zero implies the fold reduces to a single HHAxioms axiom), partial sharpness for algebraic gamma (curved_fold_implies_origami in the algebraic-curve case), and a sorry-bearing statement of OQ-A as an open Lean conjecture. ~450 Lean lines over S2-S5; 1 intentional open sorry, 0 axioms."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T04:25:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE survey: literature inventory (Huffman 1976; Fuchs-Tabachnikov 1999; Demaine et al. 2011; Tachi 2010; Mitani 2009; Geretschläger 1995); three-strand theory classification (smooth local DG / algorithmic / constructibility-field); three candidate axiom strengthenings; Mathlib gap analysis (4 missing primitives, all sidestepped by postulating FT as a structure field). No Lean changes this iteration -- pure documentation.",
+    "blockers": [],
+    "nextAction": "S2 ORIENT: create proofs/Proofs/AngleTrisectionOQ05OQ04.lean with a CurvedCrease structure (L, gamma, theta, kappa_g, kappa_n, ftCompatible), CurvedCrease.IsStraight predicate, and statement-only theorem straight_fold_recovers_HH (sorry; S3 target). Estimated ~180 Lean lines.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-12, 2026-05-12): OBSERVE survey for strengthening the Huzita-Hatori axiom system to capture curved-crease origami. Established the Fuchs-Tabachnikov identity kappa_n = kappa_g * cot(theta/2) as the single mathematical compatibility constraint on a smooth curved fold; identified three candidate axiom schemata (P1 single parametric curved axiom, P2 Beloch-style finite-degree restriction, P3 algebraic-closure-only); mapped the four missing Mathlib primitives (geodesic curvature for parametric curves, developable ruled surface, fold-angle profile, FT identity); proposed sidestepping all four by encoding FT as a structure field. Decomposition over S2-S5 totals ~450 Lean lines and exactly 1 intentional open sorry (OQ-A formal conjecture statement) with 0 axioms. No Lean changes this iteration -- pure documentation S1.",
+    "builtItems": [
+      "research/problems/angle-trisection-oq-05-oq-04/problem.md -- full problem statement, Fuchs-Tabachnikov identity, three candidate axiomatic strengthenings (P1/P2/P3), Mathlib gap map.",
+      "research/problems/angle-trisection-oq-05-oq-04/knowledge.md -- parent file inventory (HHAxioms structure at AngleTrisectionOQ05:108), three-strand theory classification, Fuchs-Tabachnikov derivation sketch, five-session decomposition with effort estimates, S2 Lean skeleton.",
+      "research/problems/angle-trisection-oq-05-oq-04/state.md -- OBSERVE phase, S2 next-action sketch with full CurvedCrease structure definition."
+    ],
+    "insights": [
+      "The Fuchs-Tabachnikov compatibility identity kappa_n(s) = kappa_g(s) * cot(theta(s)/2) is the SINGLE mathematical constraint distinguishing valid smooth curved folds from arbitrary (gamma, theta) pairs. Encoding FT as a structure field of CurvedCrease (rather than as a derived theorem) sidesteps ~350 lines of Darboux-frame differential geometry that is currently absent from Mathlib.",
+      "Straight-fold limit kappa_g identically zero forces kappa_n identically zero and recovers exactly one of the seven HHAxioms axioms (depending on the incidence conditions on the crease endpoints). This is the conservativity statement straight_fold_recovers_HH and is the minimum useful S2-S3 deliverable.",
+      "Three candidate axiom strengthenings have substantially different formal characters: (P1) single curved axiom O8 is the most natural but parametrised by infinite-dimensional smooth-function data; (P2) Beloch-style finite degree-bounded restriction is finitary but schema-of-axioms; (P3) algebraic-closure-only loses the geometric primitive entirely. OQ-04 asks whether they all generate the same field.",
+      "Demaine et al. 2011 separate the constructibility of CURVES (strictly larger under curved crease) from the constructibility of POINTS (open). The OQ-04 question is precisely about the latter; the former is settled by the elastica witness.",
+      "Sibling AngleTrisectionOQ05OQ01 (k-fold via p-smooth degrees) + OQ02 (omega-fold algebraic completeness) provide the natural ALGEBRAIC ceiling against which K_curved must be compared. The conjectured pinning K_origami subset K_curved subset K_(omega-fold) gives a clean two-direction question."
+    ],
+    "mathlibGaps": [
+      "Geodesic / planar curvature kappa_g(s) for a smooth parametric curve gamma : R -> R^2: Mathlib.Geometry.Euclidean.Curvature.Plane covers only graph curves y = f(x); extending to unit-speed parametric requires ~80 lines.",
+      "Developable ruled surface from a planar curve and a rulings field: no Mathlib API; ~200 lines to define a parametrised ruled surface and prove the Gaussian-curvature-identically-zero characterisation.",
+      "Dihedral fold angle as a function on a curve: trivial (smooth (0, pi)-valued function on [0, L]); ~30 lines.",
+      "Fuchs-Tabachnikov compatibility identity kappa_n = kappa_g * cot(theta/2): no Mathlib API; ~150 lines of Darboux-frame differential geometry. SIDESTEPPED in S2 by encoding as a CurvedCrease structure field."
+    ],
+    "nextSteps": [
+      "S2 ORIENT (~180 Lean lines): create proofs/Proofs/AngleTrisectionOQ05OQ04.lean with CurvedCrease structure (L, hL, gamma, theta, kappa_g, kappa_n, hTheta_pos, ftCompatible), CurvedCrease.IsStraight predicate (kappa_g identically zero on [0, L]), and statement-only theorem straight_fold_recovers_HH (sorry; S3 target).",
+      "S3 ACT (~120 Lean lines): prove straight_fold_recovers_HH by case analysis on endpoint incidence (uses HHAxioms.HH1 / HH2 / HH3 / HH4 / HH5 / HH6 / HH7); kappa_g zero implies kappa_n zero by ftCompatible.",
+      "S4 ACT (~100 Lean lines): partial sharpness: for algebraic gamma of degree at most d, every point at unit-speed-parameter s in Q intersect [0, L] lies in K_origami. Theorem curved_fold_algebraic_implies_origami.",
+      "S5 ACT (~50 Lean lines): state OQ-A as a sorry-bearing Lean theorem K_curved_eq_K_origami (sorry, open mathematics). This is intentionally a NON-PROVABLE statement for the current iteration; the value is the formal language for the open question.",
+      "Gallery integration S2: src/data/proofs/angle-trisection-oq-05-oq-04/{meta.json, annotations.json, index.ts}. meta.json status axiomatized (ftCompatible is a structure-encoded assumption), sorries 1 (after S2), axioms 0."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "origami",
+    "huzita-hatori",
+    "curved-crease",
+    "differential-geometry",
+    "developable-surface",
+    "fuchs-tabachnikov",
+    "constructibility",
+    "open-conjecture",
+    "extension"
+  ],
+  "relatedProofs": [
+    "angle-trisection",
+    "angle-trisection-oq-01",
+    "angle-trisection-oq-02",
+    "angle-trisection-oq-03",
+    "angle-trisection-oq-04",
+    "angle-trisection-oq-05",
+    "angle-trisection-oq-05-oq-01",
+    "angle-trisection-oq-05-oq-02",
+    "angle-trisection-oq-05-oq-03"
+  ],
+  "references": {
+    "papers": [
+      "Huffman, D. A. (1976). Curvature and creases: A primer on paper. IEEE Trans. Comput. C-25(10), 1010-1019.",
+      "Fuchs, D.; Tabachnikov, S. (1999). More on paperfolding. Amer. Math. Monthly 106(1), 27-35.",
+      "Demaine, E. D.; Demaine, M. L.; Hart, V.; Price, G. N.; Tachi, T. (2011). (Non)existence of pleated folds: How paper folds between creases. Graphs Combin. 27(3), 377-397.",
+      "Tachi, T. (2010). Origamizing polyhedral surfaces. IEEE Trans. Vis. Comput. Graph. 16(2), 298-311.",
+      "Alperin, R. C. (2000). A mathematical theory of origami constructions and numbers. New York J. Math. 6, 119-133.",
+      "Alperin, R. C.; Lang, R. J. (2006). One-, two-, and multi-fold origami axioms. 4OSME, 371-393.",
+      "Mitani, J. (2009). A design method for 3D origami based on rotational sweep. CAD Appl. 6(1), 69-79.",
+      "Geretschläger, R. (1995). Euclidean constructions and the geometry of origami. Math. Mag. 68, 357-371.",
+      "Huzita, H. (1989). Axiomatic development of flat origami. 1OSME, 143-158."
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Geometry.Euclidean.Curvature.Plane",
+      "Mathlib.Analysis.Calculus.ContDiff.Basic",
+      "Mathlib.Analysis.Analytic.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic"
+    ]
+  },
+  "started": "2026-05-12T04:25:00Z",
+  "lastUpdate": "2026-05-12T04:25:00Z",
+  "significance": 6,
+  "tractability": 6
+}
