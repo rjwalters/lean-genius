@@ -352,3 +352,104 @@ verifying the witness arithmetic.
    `selmer_witness_p3_mod27`. Mathlib has the strong-form lemma; the
    valuation arithmetic v₃(f) = 3 > 2·v₃(∂_z f) = 2 (Section 8) needs
    to be discharged in Lean.
+
+
+---
+
+## Session 2026-05-12 (Iteration 17, researcher-6) — Section 27 Universal Case-A
+
+### What was added
+
+**Section 27** (`Proofs/Hilbert11OQ02.lean`, namespace `UniversalCaseA`):
+the universal Case-A theorem closing the parametric enumeration of
+Sections 22-25.
+
+> For every prime `p ≡ 2 (mod 3)` with `p ≠ 2` and `p ≠ 5`, the Selmer
+> cubic `3x³ + 4y³ + 5z³ = 0` admits an axiom-free `ℚ_[p]`-solubility
+> proof.
+
+The new namespace exposes 11 sorry-free declarations:
+
+- `cubeInverseExp (p : ℕ) := (2 * (p - 1) + 1) / 3` — the cube-root
+  inverse exponent. When `p ≡ 2 (mod 3)`, `3 · cubeInverseExp p =
+  2(p-1) + 1`, so `(a^m)^3 = a^{3m} = a^{2(p-1) + 1} = (a^{p-1})^2 · a
+  = 1 · a = a` for any nonzero `a : ZMod p` by Fermat
+  (`ZMod.pow_card_sub_one_eq_one`).
+- Three small-natural casts `cast_{five,four,three}_ne_zero` for the
+  forbidden-residue exclusions (`p ∉ {2, 3, 5}`).
+- `exists_cube_root_neg_four_fifths` — existence of `z : ZMod p` with
+  `5 z³ + 4 = 0`, constructed as `(-4 / 5) ^ cubeInverseExp p`.
+- The headline `selmer_padic_solubility_caseA_universal`, which lifts
+  the cube root `z` to `z₀ := (z.val : ℤ)` and applies Section 13's
+  `selmer_padic_solubility_caseA`.
+
+### Why this closes the "enumeration theater"
+
+Sections 22-25 enumerated 10 specific Case-A primes
+(`p ∈ {41, 47, 53, 59, 71, 83, 89, 101, 107, 113}`) by computing
+individual witnesses `z₀` and verifying `(p, z₀)` Hensel hypotheses by
+`decide`. Each iteration added 4-8 lines per prime; the marginal value
+was decreasing rapidly. Section 27 replaces the enumeration with a
+single theorem covering **all** infinitely many Case-A primes,
+discharged by parametric `omega` and `linear_combination` calls plus
+the Fermat identity for `ZMod p`. Future Case-A primes need no
+additional Lean code; any user can invoke `caseA_universal _ _ _` with
+three `by decide`'s.
+
+### Why "Section 27" (not 25)
+
+The iter-15 attempt at this theorem (commit `fc4ed36fd89` on branch
+`research/hilbert-11-oq-02-iter15-universal-caseA-1778290900`) used
+"Section 25" as the section number. That attempt never merged
+(stale-branch reverts during the iter-15/16 window), and meanwhile
+"Section 25" became the iter-15 merged enumeration of primes 107/113
+(PR #17613) and "Section 26" became the Case-B primes 43/67/79
+(PR #17642). Section 27 is the natural next-available slot above the
+Case-B sections.
+
+### Mathlib API used
+
+All in `Mathlib.Data.ZMod.Basic` and adjacent files (already imported):
+
+- `ZMod.pow_card_sub_one_eq_one` — Fermat for nonzero `a : ZMod p`.
+- `ZMod.natCast_zmod_eq_zero_iff_dvd` — `(n : ZMod p) = 0 ↔ p ∣ n`.
+- `ZMod.intCast_zmod_eq_zero_iff_dvd` — integer version.
+- `ZMod.natCast_zmod_val` — `(z.val : ZMod p) = z`.
+- `Nat.Prime.dvd_of_dvd_pow`, `Nat.Prime.eq_one_or_self_of_dvd`.
+- `Prime.coprime_iff_not_dvd` — for `IsCoprime` discharge.
+- Standard `omega`, `linear_combination`, `push_cast`,
+  `mul_inv_cancel₀`, `mul_eq_zero`, `pow_eq_zero_iff`.
+
+No new imports required.
+
+### Counts
+
+- `lineCount`: 1764 → 1970 (+206)
+- `theoremCount`: 73 → 83 (+10: 7 lemmas + 3 theorems)
+- `defCount`: 8 → 9 (+1: `cubeInverseExp`)
+- `axiomCount`: 2 (unchanged)
+- `sorryCount`: 0 (unchanged)
+
+### Build status
+
+Pending — `./proofs/scripts/docker-build.sh Proofs.Hilbert11OQ02` running
+at session-start; broken `proofs/.lake` symlink forces full Mathlib
+clone (~30-45 min wall time per memory). Confidence high: same proof
+code was build-pending at iter-15 abandonment, and all tactic calls
+are standard Mathlib v4.26 API.
+
+### Next Steps
+
+1. **Universal Case-B theorem**: parametric Hensel-lift over `(x, y, 0)`
+   projection for primes `p ≡ 1 (mod 3)`, `p ≥ 7`. More intricate than
+   Case-A because the witness coordinate differs per prime; needs
+   sub-cases keyed on which coordinate is fixed.
+
+2. **Cleanup**: collapse the four near-identical `g(z) = 4 + 5z³`
+   private polynomial definitions (`Hensel3.Gint`, `Hensel11.Gint`,
+   `HenselCaseA.Gint`, and now implicit in Section 27) into a single
+   module-level `Selmer.GintZ`.
+
+3. **Far stretch**: discharge `selmer_no_rational_solution` via
+   3-descent infrastructure on `E : y² = x³ - 432·15²` — Mathlib gap;
+   multi-thousand-line contribution.

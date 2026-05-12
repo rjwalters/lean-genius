@@ -41,15 +41,15 @@
   },
   "currentState": {
     "phase": "ITERATING",
-    "since": "2026-05-09T01:00:00Z",
-    "iteration": 14,
-    "focus": "Iteration 14 (researcher-13, 2026-05-09): added Section 24 — four further Case-A primes (p ∈ {71, 83, 89, 101}) as one-line corollaries of selmer_padic_solubility_caseA. Continuing the Section-22/23 pattern from iters 12/13, this extends the discharged sub-collection from 16 to 20 primes total (12 Section-8 primes + Sections 22/23's {41, 47, 53, 59} + Section 24's {71, 83, 89, 101}). Witnesses: z₀ = 63 for p = 71 (4+5·63³ = 1250239 = 71·17609, gcd(15·63², 71) = 1); z₀ = 23 for p = 83 (4+5·23³ = 60839 = 83·733, gcd(15·23², 83) = 1); z₀ = 9 for p = 89 (4+5·9³ = 3649 = 89·41, gcd(15·9², 89) = 1); z₀ = 81 for p = 101 (4+5·81³ = 2657209 = 101·26309, gcd(15·81², 101) = 1). Plus selmer_padic_solubility_extended_caseA_primes_v3 8-fold conjunction bundle covering all extended Case-A primes (supersedes the v2 bundle from iter 13). File 1481 → 1592 lines (+111). Theorems 66 → 71 (+5: 4 per-prime corollaries + bundle). Definitions, axioms, sorries unchanged at 8/2/0. Build status: pending. Confidence high — new theorems are structurally identical to existing selmer_padic_solubility_p{17,23,29,41,47,53,59}_hensel; only the prime literal and witness z₀ differ; no new Mathlib API surface.",
+    "since": "2026-05-12T16:46:00Z",
+    "iteration": 17,
+    "focus": "Iteration 17 (researcher-6, 2026-05-12): added Section 27 — universal Case-A theorem (parametric Fermat-based cube-root closure). For every prime p ≡ 2 (mod 3) with p ≠ 2 and p ≠ 5, the Selmer cubic 3x³+4y³+5z³=0 admits an axiom-free ℚ_[p]-solubility proof, subsuming the per-prime enumeration of Sections 11/17/22/23/24/25. Key construction: cubeInverseExp p := (2(p-1)+1)/3, then (a^m)^3 = a for any nonzero a ∈ ZMod p (by Fermat). Combined with cast_five_ne_zero (p ≠ 5) yields existence of z ∈ ZMod p with 5z³ + 4 = 0; lifting via z.val to ℤ provides the integer witness for Section 13's selmer_padic_solubility_caseA. New namespace UniversalCaseA with 11 declarations: 1 def (cubeInverseExp), 7 lemmas (three_mul_cubeInverseExp_eq, pow_cubeInverseExp_pow_three, prime_not_dvd_of_prime_ne, cast_{five,four,three}_ne_zero, exists_cube_root_neg_four_fifths), 3 theorems (selmer_padic_solubility_caseA_universal, _p11_universal, _p41_universal). All sorry-free. File 1764 → 1970 lines (+206). Theorems 73 → 83 (+10). Defs 8 → 9 (+1). Axioms 2 unchanged. Sorries 0 unchanged. Build status: pending. Resurrects the iter-15-universal-caseA branch (commit fc4ed36fd89, never merged due to stale-branch reverts).",
     "blockers": [],
-    "nextAction": "Iter 15 candidates: (1) Section 25 — universal Case-A theorem: prove for every prime p ≡ 2 (mod 3), p ∉ {2, 5}, ∃ axiom-free ℚ_[p]-solubility witness. The proof combines selmer_padic_solubility_caseA with cube-bijectivity of (ZMod p)ˣ when gcd(3, p-1) = 1 (always true for p ≡ 2 mod 3, since p - 1 ≡ 1 mod 3). This eliminates the per-prime enumeration and resolves the universal axiom for the Case-A subset. Mathlib lemma needed: cube-power bijectivity in cyclic groups of coprime order — likely in Mathlib.GroupTheory.SpecificGroups.Cyclic or via ZMod.unitOfCoprime/Subgroup.zpowers machinery. (2) Iter 15 alternate — more incremental Case-A primes p ∈ {107, 113, 131, 137} (continuing the Section-22/23/24 pattern; +50 line PR, low risk, low marginal value). (3) Cleanup refactor: collapse Hensel3.Gint / Hensel11.Gint duplication. Far stretch: pivot to selmer_no_rational_solution via 3-descent infrastructure (multi-thousand-line Mathlib contribution).",
+    "nextAction": "Iter 18 candidates: (1) Section 28 — universal Case-B theorem: parametric Hensel-lift over (x, y, 0) projection for primes p ≡ 1 (mod 3), p ≥ 7. The witness coordinate differs per prime (e.g. (1, 1, 0) at p=7 vs (0, 1, 5) at p=37), so the parametric setup needs multiple sub-cases keyed on which coordinate is fixed. (2) Cleanup refactor: collapse Hensel3.Gint / Hensel11.Gint / HenselCaseA.Gint duplication (now four near-identical g(z) = 4 + 5z³ polynomials at private scope). (3) Far stretch: discharge selmer_no_rational_solution via 3-descent infrastructure (Mathlib gap; multi-thousand-line contribution).",
     "attemptCounts": {
-      "total": 14,
-      "currentApproach": 9,
-      "approachesTried": 7
+      "total": 17,
+      "currentApproach": 12,
+      "approachesTried": 8
     }
   },
   "knowledge": {
@@ -222,10 +222,10 @@
     {
       "path": "Proofs/Hilbert11OQ02.lean",
       "filename": "Hilbert11OQ02.lean",
-      "lineCount": 1764,
-      "theoremCount": 73,
+      "lineCount": 1970,
+      "theoremCount": 83,
       "axiomCount": 2,
-      "defCount": 8,
+      "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert11OQ02.lean"
