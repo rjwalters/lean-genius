@@ -471,6 +471,112 @@ theorem jumpIter_step_stable_of_self_disagree (H : RelativizedHaltingPredictor)
     · rfl
     · exact absurd (hH.trans hJ.symm) h
 
+/-! ### Section 11. Non-degeneracy certificates and explicit instantiation
+(S7-light)
+
+The S6 step dichotomy and flip characterization are packaged here into a
+reusable *strict-chain certificate* at a code `c`, witnessed by a level
+`n` at which the predictor's self-application matches the current
+oracle's diagonal value (which by `jumpIter_step_flip_iff` is exactly
+the condition forcing `jumpIter (n+1) c ≠ jumpIter n c`).
+
+The abstraction lets downstream existence results refer to a single
+`NonDegenerateAt` witness rather than re-deriving the iff each time.
+The same certificate is then instantiated for an *explicit* small
+example — the trivially-false predictor paired with the constantly-
+false starting oracle — verifying the abstraction is non-vacuous and
+providing a concrete sanity instance for the Mathlib-bridge sub-OQ. -/
+
+/-- **Strict-step witness at code `c` and level `n`.** The chain
+`jumpIter H o₀` is non-degenerate at code `c` between levels `n` and
+`n + 1` iff the predictor `H` agrees with the current oracle's value
+at the `c`-diagonal. By `jumpIter_step_flip_iff`, this is the exact
+characterization of `jumpIter (n+1) c ≠ jumpIter n c`. -/
+def NonDegenerateAt (H : RelativizedHaltingPredictor) (o₀ : Nat → Bool)
+    (c n : Nat) : Prop :=
+  H (jumpIter H o₀ n) c c = jumpIter H o₀ n c
+
+/-- A `NonDegenerateAt` witness yields the strict-step inequality at
+the same code and level. Direct consequence of
+`jumpIter_step_flip_iff`. -/
+theorem strict_step_of_nonDegenerateAt
+    (H : RelativizedHaltingPredictor) (o₀ : Nat → Bool) (c n : Nat)
+    (h : NonDegenerateAt H o₀ c n) :
+    jumpIter H o₀ (n + 1) c ≠ jumpIter H o₀ n c :=
+  (jumpIter_step_flip_iff H o₀ n c).mpr h
+
+/-- Conversely, a strict-step inequality at code `c` between levels `n`
+and `n + 1` yields a `NonDegenerateAt` witness at the same code and
+level. The two formulations are mutually derivable, packaged as
+`nonDegenerateAt_iff_strict_step` below. -/
+theorem nonDegenerateAt_of_strict_step
+    (H : RelativizedHaltingPredictor) (o₀ : Nat → Bool) (c n : Nat)
+    (h : jumpIter H o₀ (n + 1) c ≠ jumpIter H o₀ n c) :
+    NonDegenerateAt H o₀ c n :=
+  (jumpIter_step_flip_iff H o₀ n c).mp h
+
+/-- **`NonDegenerateAt` iff strict-step inequality.** Direct repackage
+of `jumpIter_step_flip_iff` under the new abstraction. -/
+theorem nonDegenerateAt_iff_strict_step
+    (H : RelativizedHaltingPredictor) (o₀ : Nat → Bool) (c n : Nat) :
+    NonDegenerateAt H o₀ c n
+      ↔ jumpIter H o₀ (n + 1) c ≠ jumpIter H o₀ n c :=
+  (jumpIter_step_flip_iff H o₀ n c).symm
+
+/-- The chain `jumpIter H o₀` is *eventually non-degenerate at code `c`*
+iff some level admits a `NonDegenerateAt` witness at `c`. Existential
+form of the per-level predicate. -/
+def IsEventuallyNonDegenerateAt (H : RelativizedHaltingPredictor)
+    (o₀ : Nat → Bool) (c : Nat) : Prop :=
+  ∃ n, NonDegenerateAt H o₀ c n
+
+/-- An eventually non-degenerate chain at code `c` exhibits a strict
+step at `c` between some pair of consecutive levels. -/
+theorem strict_step_of_eventually_nonDegenerateAt
+    (H : RelativizedHaltingPredictor) (o₀ : Nat → Bool) (c : Nat)
+    (h : IsEventuallyNonDegenerateAt H o₀ c) :
+    ∃ n, jumpIter H o₀ (n + 1) c ≠ jumpIter H o₀ n c :=
+  match h with
+  | ⟨n, hn⟩ => ⟨n, strict_step_of_nonDegenerateAt H o₀ c n hn⟩
+
+/-! #### Concrete witness: the trivially-false predictor
+
+The explicit predictor `trivialPredictor : RelativizedHaltingPredictor`
+defined as `fun _ _ _ ↦ false` paired with the constantly-false starting
+oracle `falseOracle := fun _ ↦ false` yields a `NonDegenerateAt`
+witness at *every* code `c` at level `0`. A small, fully-verified
+instance of the certificate framework demonstrating non-vacuity. -/
+
+/-- The trivially-false predictor: returns `false` regardless of oracle,
+code, or input. The simplest non-trivial `RelativizedHaltingPredictor`. -/
+def trivialPredictor : RelativizedHaltingPredictor :=
+  fun _ _ _ => false
+
+/-- The constantly-false starting oracle: returns `false` on every code. -/
+def falseOracle : Nat → Bool := fun _ => false
+
+/-- **Concrete witness**: at level `0` and every code `c`, the
+`trivialPredictor`-`falseOracle` chain is non-degenerate at `c`. By
+the definitional unfolding of both, the certificate reduces to
+`false = false`, discharged by `rfl`. This verifies that the
+`NonDegenerateAt` framework admits a small fully-instantiated example. -/
+theorem nonDegenerateAt_trivialPredictor_zero (c : Nat) :
+    NonDegenerateAt trivialPredictor falseOracle c 0 := rfl
+
+/-- The `trivialPredictor`-`falseOracle` chain is eventually
+non-degenerate at every code, via the level-`0` certificate. -/
+theorem isEventuallyNonDegenerateAt_trivialPredictor (c : Nat) :
+    IsEventuallyNonDegenerateAt trivialPredictor falseOracle c :=
+  ⟨0, nonDegenerateAt_trivialPredictor_zero c⟩
+
+/-- **Strict-step instantiation**: between levels `0` and `1`, the
+`trivialPredictor`-`falseOracle` chain differs at every code `c`. -/
+theorem strict_step_trivialPredictor_zero (c : Nat) :
+    jumpIter trivialPredictor falseOracle 1 c ≠
+    jumpIter trivialPredictor falseOracle 0 c :=
+  strict_step_of_nonDegenerateAt trivialPredictor falseOracle c 0
+    (nonDegenerateAt_trivialPredictor_zero c)
+
 #check relativized_diagonal_differs
 #check no_relativized_halting_oracle
 #check relativized_halting_undecidable
@@ -490,5 +596,16 @@ theorem jumpIter_step_stable_of_self_disagree (H : RelativizedHaltingPredictor)
 #check jumpIter_step_dichotomy
 #check jumpIter_step_flip_iff
 #check jumpIter_step_stable_of_self_disagree
+#check NonDegenerateAt
+#check strict_step_of_nonDegenerateAt
+#check nonDegenerateAt_of_strict_step
+#check nonDegenerateAt_iff_strict_step
+#check IsEventuallyNonDegenerateAt
+#check strict_step_of_eventually_nonDegenerateAt
+#check trivialPredictor
+#check falseOracle
+#check nonDegenerateAt_trivialPredictor_zero
+#check isEventuallyNonDegenerateAt_trivialPredictor
+#check strict_step_trivialPredictor_zero
 
 end RelativizedHalting
