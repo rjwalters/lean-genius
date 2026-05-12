@@ -1,8 +1,8 @@
 # Current State
 
 **Phase**: ORIENT
-**Since**: 2026-05-09T03:30:00Z
-**Iteration**: 15
+**Since**: 2026-05-12T13:25:00Z
+**Iteration**: 16
 
 ## Current Focus
 
@@ -753,4 +753,91 @@ proof-side risk is minimal. CI is the ground truth.
 3. Stretch (unchanged): n=3 case directly via `symBUDim_three`-style
    axiom, or n=4 case via Klein-4 V₄ ≤ S₄ structure.
 4. Stretch (unchanged): falsification target `buDim 3 3` via
+   equivariant cohomology of Z/3 on simple S²-actions.
+
+## Iteration 16 Builds (researcher-3, 2026-05-12)
+
+Focus: **Bertrand-window monotonicity packaging** — execute Path Forward
+Item 2 from Iter 15. Combine the parent's `symBUDim_le_of_le` (axiom-free
+up to parent's `sym_has_smaller_sym`) with this file's axiom
+`symBUDim_eq_largestPrime` (PART X) to transfer monotonicity in `n` to
+monotonicity of `buDim (largestPrimeBelow n) d` in `n`, then combine
+with PART VI's Bertrand–Chebyshev bound to give a selector-free
+existential packaging.
+
+### Part XXIII additions (axiom-using)
+
+- `buDim_largestPrime_mono` (uses file's axiom): for `2 ≤ n ≤ m` and
+  any `d`,
+  `buDim (largestPrimeBelow n) d ≤ buDim (largestPrimeBelow m) d`.
+  One-line rewrite proof: cast both sides back through the axiom and
+  apply parent's `symBUDim_le_of_le`. The conjecture's monotonicity
+  prediction at the `buDim ∘ largestPrimeBelow` level.
+
+- `exists_bertrand_window_primes_mono` (uses file's axiom): for
+  `2 ≤ n ≤ m` and any `d`, there exist primes `p` in the Bertrand
+  window `(n/2, n]` and `q` in `(m/2, m]` with `buDim p d ≤ buDim q d`.
+  Combines `buDim_largestPrime_mono` with PART VI's
+  `n_div_two_lt_largestPrimeBelow` + `largestPrimeBelow_le`. The
+  internal selector `largestPrimeBelow` is hidden behind two
+  existentials — useful for downstream applications that want to think
+  of the conjecture's monotonicity prediction as "Bertrand-window primes
+  have monotonically non-decreasing buDim".
+
+### Part XXIII additions (hypothesis-form)
+
+- `buDim_largestPrime_mono_of` (axiom-free under `ConjectureLPB`):
+  same monotonicity as `buDim_largestPrime_mono` with the
+  conjecture-dependence encoded via a `ConjectureLPB` hypothesis.
+
+- `exists_bertrand_window_primes_mono_of` (axiom-free under
+  `ConjectureLPB`): same Bertrand-window monotonicity packaging
+  under a hypothesis.
+
+**Counts**: lineCount 1567 → 1652 (+85), theoremCount 98 → 102 (+4,
+substantive 96 → 100), definitionCount 2 (unchanged), axiomCount 1
+(unchanged), sorries 0 (unchanged).
+
+**Significance**: closes Path Forward Item 2 from Iter 15. The
+Bertrand-window form combines the conjecture's monotonicity prediction
+with the parent file's unconditional Bertrand bound to give a
+*selector-free* monotone existential: as `n` grows, there are primes in
+the Bertrand windows whose `buDim` is monotonically non-decreasing.
+This complements iter 15's `symBUDim_eq_buDim_in_bertrand_window`
+(static existential: there is *a* Bertrand-window prime fixing
+`symBUDim n d`) with a *family* existential: there are
+Bertrand-window primes whose `buDim` is monotonically non-decreasing
+as the index grows. The hypothesis-form variants
+(`*_of` siblings) track conjecture-dependence at the type level.
+
+**Build**: verified via Docker — `Build completed successfully (3068
+jobs)`. All new content reuses only in-file infrastructure exercised by
+earlier iterations (`symBUDim_le_of_le` from parent,
+`symBUDim_eq_largestPrime`, `symBUDim_eq_largestPrime_of`,
+`largestPrimeBelow_isPrime`, `n_div_two_lt_largestPrimeBelow`,
+`largestPrimeBelow_le`, `ConjectureLPB`).
+
+**Path forward** (revised post-iter-16):
+1. **symBUDim-side biconditional** (still pending, unchanged from
+   iter 14–15): forward direction is
+   `symBUDim_const_in_unordered_no_prime_range`; reverse direction
+   needs `symBUDim_cyc` injectivity-across-primes which is not
+   currently axiomatized.
+2. **Concrete-pair monotonicity instances** (new follow-up): apply
+   `exists_bertrand_window_primes_mono` (or its `_of` variant) to
+   specific small-`n` pairs to give concrete monotonicity witnesses,
+   e.g., for `n = 8, m = 89`: there exist primes `p ∈ (4, 8]`,
+   `q ∈ (44, 89]` with `buDim p d ≤ buDim q d`. Likely incremental;
+   gauge value before committing.
+3. **Strict-monotonicity packaging** (new follow-up): when `n < m`
+   and a prime lies in `(n, m]` (PART XIX's strict-monotonicity
+   condition for `largestPrimeBelow`), can we strengthen
+   `buDim_largestPrime_mono` to strict `<`? The conjecture predicts
+   `buDim (lpb n) d < buDim (lpb m) d` precisely when the
+   Bertrand-window primes differ, but proving strict `<` of `buDim`
+   in its prime argument needs parent infrastructure that may not
+   exist.
+4. Stretch (unchanged): n=3 case directly via `symBUDim_three`-style
+   axiom, or n=4 case via Klein-4 V₄ ≤ S₄ structure.
+5. Stretch (unchanged): falsification target `buDim 3 3` via
    equivariant cohomology of Z/3 on simple S²-actions.
