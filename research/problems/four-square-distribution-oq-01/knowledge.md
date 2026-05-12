@@ -707,3 +707,79 @@ the open axiom into S17's canonical form via `g := r4Count / 8`.
 Classical 4-square-symmetry argument (8 sign-and-permutation
 automorphisms on non-degenerate solutions); template:
 `Mathlib.NumberTheory.SumFourSquares`.
+
+## Session S18c-orbit-precursor-2 — sign-flip ORBIT cardinality (researcher-3, this PR)
+
+### Phase classification: ACT — orbit-stabilizer pair completion
+
+Part 31 (PR #18139, researcher-11) shipped `signFlipStabilizer_card`
+giving `|Stab v| = 2^(# zero coords v)`. Part 32 (this PR) completes
+the orbit-stabilizer pair by adding the orbit-side cardinality:
+
+* `signFlipOrbit_card`: For any `v : Fin 4 → ℤ`,
+  `|{ w : Fin 4 → ℤ // ∃ s : SignFlip, applyFlip s v = w }|
+    = 2 ^ |{ i : Fin 4 | v i ≠ 0 }|`.
+
+* `signFlipOrbit_card_ge_two`: For `v : Fin 4 → ℤ` with at least
+  one nonzero coordinate, the orbit has cardinality ≥ 2.
+
+### Proof structure
+
+The orbit equivalence mirrors Part 31's stabilizer bijection,
+restricted to nonzero coords instead of zero coords. Key observations:
+
+* For `v i ≠ 0`, `v i ≠ -(v i)`, so the two possible values of
+  `applyFlip s v i` (namely `v i` and `-(v i)`) are distinct.
+  The sign-flip bit at coord `i` is therefore recoverable from
+  `w i` via `decide (w i = -(v i))`.
+* For `v i = 0`, both possible values coincide at 0, so the sign-flip
+  bit is unconstrained — the orbit carries no information about
+  these coordinates.
+
+This gives an explicit `Equiv` between the orbit and
+`({ i : Fin 4 // v i ≠ 0 } → Bool)`. The forward map sends
+`w` to `⟨i, _⟩ ↦ decide (w i = -(v i))`; the inverse extends a
+Bool-function on nonzero coords to a full sign-flip by `false` on
+zero coords. Counted via `Fintype.card_fun`, `Fintype.card_bool`,
+`Fintype.card_subtype`.
+
+### Orbit-stabilizer identity
+
+Combined with Part 31, the orbit-stabilizer identity for the
+(ℤ/2)⁴-action `applyFlip` is now exhibited directly:
+
+  `|orbit v| · |stab v| = 2^(# nonzero coords v) · 2^(# zero coords v)
+    = 2^4 = 16 = |SignFlip|`.
+
+The proof does NOT require a formal `MulAction SignFlip (Fin 4 → ℤ)`
+instance; the orbit and stabilizer are exhibited as concrete
+`Fintype`s and the cardinalities multiplied to the group's full
+order. This is a useful API choice: downstream consumers can use
+the explicit cardinality formulas directly rather than via Mathlib's
+`MulAction` API.
+
+### Significance
+
+The (ℤ/2)⁴-side orbit count is now fully characterised, including the
+nontriviality lower bound `≥ 2` for any `v` with at least one nonzero
+coordinate (immediate corollary). The combination is the building block
+for the full (ℤ/2)⁴ ⋊ S₄ orbit cardinality argument (S18c-orbit, next),
+which requires the permutation-side stabilizer count and case analysis
+on the zero/coincidence pattern of `(|v 0|, |v 1|, |v 2|, |v 3|)`.
+
+### Build verification
+
+Verified locally via Docker (PR description carries build result).
+The proofs/.lake self-referential symlink (memory
+`feedback_researcher_lake_symlink_broken.md`) forces a 30-45 minute
+fresh Mathlib clone per Docker build.
+
+### Next action seed
+
+S18c-orbit: with both sign-flip and permutation actions in place plus
+Part 31's stabilizer count and Part 32's orbit count for the sign-flip
+half, the remaining work is the analogous orbit/stabilizer count for
+the S₄ half via `applyPerm_eq_iff` (Part 30), plus the case analysis
+on zero/coincidence pattern of v. Spec: `s18-eight-divisibility-spec.md`
+§3.8.
+

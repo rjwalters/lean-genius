@@ -1,9 +1,32 @@
 # Research State: four-square-distribution-oq-01
 
 ## Current State
-**Phase**: ACT (S18c-orbit-precursor — sign-flip stabilizer cardinality
-`|Stab v| = 2^(# zero coords v)`, this PR)
-**Phase note**: S18c-orbit-precursor (this PR, researcher-11) — Part 31
+**Phase**: ACT (S18c-orbit-precursor-2 — sign-flip ORBIT cardinality
+`|Orbit v| = 2^(# nonzero coords v)`, this PR)
+**Phase note**: S18c-orbit-precursor-2 (this PR, researcher-3) — Part 32
+adds `signFlipOrbit_card` and `signFlipOrbit_card_ge_two` inside
+`namespace S18c`. For any `v : Fin 4 → ℤ`,
+
+  `|{ w : Fin 4 → ℤ // ∃ s : SignFlip, applyFlip s v = w }| =
+     2 ^ |{ i : Fin 4 | v i ≠ 0 }|`.
+
+The proof builds an explicit equivalence between the orbit and
+`({ i : Fin 4 // v i ≠ 0 } → Bool)` via `decide (w i = -(v i))`
+(well-defined because `v i ≠ -(v i)` whenever `v i ≠ 0`). The inverse
+extends a Bool-function on nonzero coords to a full sign-flip by `false`
+on zero coords. Counted via `Fintype.card_fun`, `Fintype.card_bool`,
+`Fintype.card_subtype`.
+
+Combined with Part 31's `signFlipStabilizer_card`
+(`|Stab v| = 2^(# zero coords v)`), the orbit-stabilizer identity
+`|orbit| · |stab| = 2^4 = 16 = |SignFlip|` is now exhibited directly
+for the (ℤ/2)⁴-action `applyFlip` — no formal `MulAction` instance
+required. The follow-on `signFlipOrbit_card_ge_two` immediately gives
+the nontriviality lower bound used in the 8-divisibility argument: any
+`v` with `sumSq v > 0` has at least one nonzero coordinate, so its
+sign-flip orbit has cardinality ≥ 2.
+
+S18c-orbit-precursor (PR #18139, merged 2026-05-12, researcher-11) — Part 31
 adds `signFlipStabilizer_card` inside the existing `namespace S18c`,
 the first concrete step in the deferred S18c-orbit cardinality
 argument. For any `v : Fin 4 → ℤ`,
@@ -215,7 +238,7 @@ S12 (PR #17490, merged): Part 22 — `jacobiR4(p^k) = 8·σ(p^k)` and
 **Path**: full
 **Since**: 2026-05-08T21:33:45+03:00
 **Last Updated**: 2026-05-09 (S16, researcher-9; Part 25 σ*-side atomic-axiom uniqueness theorem)
-**Iteration**: 16
+**Iteration**: 17
 
 ## Current Focus
 S13 (this session, analysis-only) adds
@@ -444,7 +467,7 @@ Currently still blocked on Mathlib infrastructure:
   of the outer three levels (full Sublemma 3.1) defers to S18c. Pure
   structural content; no number theory; reuses only `omega`, `linarith`,
   `Int.toNat_of_nonneg`, and `List.toFinset_card_of_nodup`.
-- S18c-orbit-precursor (researcher-11, 2026-05-12, this PR): Part 31 —
+- S18c-orbit-precursor (researcher-11, 2026-05-12, PR #18139): Part 31 —
   `signFlipStabilizer_card`. AXIOM-FREE: for any `v : Fin 4 → ℤ`,
   the sign-flip stabilizer has cardinality `2 ^ k` where
   `k = (Finset.univ.filter (fun i => v i = 0)).card`. Proof builds an
@@ -457,6 +480,25 @@ Currently still blocked on Mathlib infrastructure:
   new sorries. Standalone (uses only Part 29's `applyFlip_eq_iff`);
   precursor to the deferred S18c-orbit cardinality argument
   (`orbitCard_dvd_eight_of_pos_target_decl`).
+- S18c-orbit-precursor-2 (researcher-3, 2026-05-12, this PR): Part 32 —
+  `signFlipOrbit_card` and `signFlipOrbit_card_ge_two`. AXIOM-FREE:
+  for any `v : Fin 4 → ℤ`, the sign-flip ORBIT has cardinality
+  `|{ w : Fin 4 → ℤ // ∃ s : SignFlip, applyFlip s v = w }|
+    = 2 ^ (Finset.univ.filter (fun i => v i ≠ 0)).card`.
+  Proof builds an explicit `Equiv` between the orbit and
+  `({ i : Fin 4 // v i ≠ 0 } → Bool)` via `decide (w i = -(v i))`
+  (forward) and `false`-extension at zero coords (inverse). The forward
+  map is well-defined because `v i ≠ -(v i)` whenever `v i ≠ 0`, so
+  `decide` cleanly recovers the sign-flip bit from `w i`. Counted via
+  the same `Fintype.card_fun` / `Fintype.card_bool` / `Fintype.card_subtype`
+  pipeline as Part 31. Companion `signFlipOrbit_card_ge_two` records the
+  nontriviality lower bound used in the 8-divisibility argument: any
+  `v : Fin 4 → ℤ` with at least one nonzero coordinate has orbit
+  cardinality ≥ 2. Combined with Part 31, the orbit-stabilizer identity
+  `|orbit| · |stab| = 2 ^ 4 = 16 = |SignFlip|` is now exhibited directly
+  — no formal `MulAction` instance required. +133 lines (2732 → 2865),
+  +2 theorems (145 → 147), 0 new axioms, 0 new sorries. Standalone
+  (uses only Part 29's `applyFlip`, plus standard Mathlib `Fintype.card_*`).
 - Approaches tried: 1 (Approach A — modular form bridge).
 
 ## Blockers
@@ -506,15 +548,20 @@ Currently still blocked on Mathlib infrastructure:
      `namespace S18c` scaffold. `sumSq_applyPerm` reuses Part 29's
      `sumSq_reindex` specialised at `σ.symm`; `applyPerm_mul` is `rfl`
      via the `Equiv.Perm` group instance.
-   - **S18c-orbit-precursor (Part 31, THIS PR)**: sign-flip stabilizer
-     cardinality `|Stab v| = 2^(# zero coords v)` via an explicit
-     equivalence to `({ i : Fin 4 // v i = 0 } → Bool)`. Adds
+   - **S18c-orbit-precursor (Part 31, SHIPPED PR #18139)**: sign-flip
+     stabilizer cardinality `|Stab v| = 2^(# zero coords v)` via an
+     explicit equivalence to `({ i : Fin 4 // v i = 0 } → Bool)`. Adds
      `signFlipStabilizer_card` inside `namespace S18c`, +~70 lines,
-     0 axioms, 0 sorries. This is the (ℤ/2)⁴-side contribution to
-     the orbit-stabilizer count: by `MulAction.orbit_card_dvd_of_finite`,
-     `|Orbit_(ℤ/2)⁴ v| = 16 / 2^k = 2^(4-k) = 2^(# nonzero coords)`.
-     For `n > 0`, at least one coordinate is nonzero, so the orbit
-     has size ≥ 2.
+     0 axioms, 0 sorries.
+   - **S18c-orbit-precursor-2 (Part 32, THIS PR)**: sign-flip ORBIT
+     cardinality `|Orbit_(ℤ/2)⁴ v| = 2^(# nonzero coords v)` via an
+     explicit equivalence to `({ i : Fin 4 // v i ≠ 0 } → Bool)`. Adds
+     `signFlipOrbit_card` (the cardinality identity) and
+     `signFlipOrbit_card_ge_two` (the nontriviality lower bound, for
+     `v` with at least one nonzero coordinate) inside `namespace S18c`,
+     +~133 lines, 0 axioms, 0 sorries. Combined with Part 31, exhibits
+     the orbit-stabilizer identity `|orbit| · |stab| = 16` directly,
+     without needing a formal `MulAction` instance on `SignFlip`.
    - **S18c-orbit (next)**: invoke `MulAction.orbit_card_dvd_of_finite`
      (Mathlib v4.26.0 per spec §3.8). Case analysis on the zero /
      coincidence pattern of `(|v 0|, |v 1|, |v 2|, |v 3|)` to show
