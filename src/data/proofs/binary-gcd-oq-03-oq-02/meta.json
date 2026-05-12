@@ -231,5 +231,47 @@
       "Once Mathlib includes a formal model of fast multiplication (FFT-based or Karatsuba), can the $O(M(n)\\log n)$ bit-complexity bound be formally stated and proved? This would require defining 'arithmetic circuit complexity' or a comparable cost model in Lean 4, connecting `hgcdMatrix_joint_bound` to a recursion tree analysis.",
       "Can the verified GCD algorithm be connected to applications? E.g., a formally verified RSA key generation procedure that relies on `hgcdMatrixOf_preserves_gcd` for its correctness guarantee."
     ]
-  }
+  },
+  "crossReferences": [
+    {
+      "targetId": "binary-gcd-oq-03",
+      "relationship": "parent",
+      "description": "Parent entry — the Lehmer–Schönhage hybrid GCD that supplies the single-level cofactor infrastructure (`CofactorMatrix`, `lehmerCofactors`, `gcd_cofactor_eq`) reused throughout this file. Where the parent runs a *single* Lehmer approximation on the top bits and falls back to ordinary Euclidean reduction, this file lifts the approach to the full *recursive* Schönhage HGCD: the cofactor matrix is itself computed by recursion on the top half of the input. The composition law `cofactor_mul_apply` and the determinant invariant inherited from the parent are precisely the pieces that let the two-level recursion compose."
+    },
+    {
+      "targetId": "binary-gcd",
+      "relationship": "foundational",
+      "description": "Stein's binary GCD algorithm (1967) — the historical and conceptual predecessor of every subsequent fast GCD. Stein replaced Euclid's costly division with shift/subtract operations, achieving $O(n^2 / \\log n)$ bit complexity (faster than schoolbook Euclidean's $O(n^2)$ but still quadratic). Schönhage's HGCD formalized here pushes the chain further to $O(M(n)\\log n)$, exploiting fast multiplication to break the quadratic barrier. The shift-by-$s$ idea is shared: binary GCD shifts out factors of 2 to maintain odd operands, while HGCD shifts the input down by half its bitlength to extract a top-half approximation."
+    },
+    {
+      "targetId": "binary-gcd-oq-02-oq-02",
+      "relationship": "related",
+      "description": "Lehmer's GCD for integers — the 1938 algorithm Schönhage generalised. Lehmer (1938) observed that the *first* Euclidean quotient depends only on the top bits, so one can compute many Euclidean steps cheaply in single-word arithmetic, then re-validate with a multi-precision multiplication. Schönhage's insight (1971) was that this trick is itself recursive: replacing the single-word top-bit computation with a recursive HGCD on a half-size input gives the optimal $O(M(n)\\log n)$ recursion analysed here. The `lehmerCofactors` infrastructure used at the threshold-case leaves is exactly the single-level Lehmer step formalised in this OQ branch."
+    },
+    {
+      "targetId": "binary-gcd-oq-01",
+      "relationship": "related",
+      "description": "Step-count comparison between binary GCD and the Euclidean algorithm — quantifies *how many* reduction steps each variant requires. Where OQ-01 measures the operation count of single-step reductions, the recursive HGCD studied here aims at the *bit-complexity* improvement that comes from doing multiple steps in a single matrix multiplication. Both branches share the underlying observation that the dominant cost is multi-precision arithmetic, not the loop structure."
+    },
+    {
+      "targetId": "binary-gcd-oq-01-oq-04",
+      "relationship": "related",
+      "description": "Tight lower bound for binary GCD — proves that the input family $(1, 2^n - 1)$ requires exactly $n$ binary-GCD steps. The lower-bound technique (find an adversarial input family) is the same shape as the S17 counterexample in this file: the pair $(130, 89)$ at $\\mathrm{fuel} = 5$ refutes the proposed unguarded row-vector invariant. Both results illustrate that worst-case analysis of GCD algorithms is sensitive to concrete arithmetic, not just asymptotic bounds."
+    },
+    {
+      "targetId": "bezout-identity",
+      "relationship": "foundational",
+      "description": "Bézout's identity ($\\gcd(a, b) = a x + b y$ for integers $x, y$) — the algebraic content of every GCD algorithm's cofactor output. The cofactor matrix $M$ that this file's HGCD produces *is* the Bézout-coefficient certificate: writing $M \\cdot (a, b)^T = (g, 0)$ (after sufficient reduction) gives $g = M_\\alpha \\cdot a + M_\\beta \\cdot b$, exhibiting the Bézout pair $(x, y) = (M_\\alpha, M_\\beta)$. The unimodularity invariant $\\det M = \\pm 1$ proved here is precisely the integrality condition that makes the Bézout coefficients live in $\\mathbb{Z}$."
+    },
+    {
+      "targetId": "cramers-rule",
+      "relationship": "supporting",
+      "description": "Cramer's rule for $2 \\times 2$ matrix inversion — invoked directly in `row_vec_cramer` (PART VI) to derive the entry bounds on `lehmerCofactors`. The Cramer identity $a_0 \\cdot \\det M = \\hat{a} \\cdot M_\\delta - \\hat{b} \\cdot M_\\gamma$ for $(a_0, b_0) \\cdot M = (\\hat{a}, \\hat{b})$ is the key linear-algebraic step that converts the row-convention invariant into a bound on individual matrix entries. Without Cramer, the alternation argument $|M_{ij}| \\le \\max(a_0, b_0)$ would have no algebraic anchor."
+    },
+    {
+      "targetId": "chinese-remainder-constructive",
+      "relationship": "context",
+      "description": "Constructive Chinese Remainder Theorem — the most direct downstream consumer of fast GCD algorithms. Given pairwise coprime moduli $m_1, \\ldots, m_k$, the CRT isomorphism $\\mathbb{Z}/m_1 \\cdots m_k \\cong \\prod_i \\mathbb{Z}/m_i$ is computed by repeatedly invoking extended-GCD to produce Bézout coefficients (cf. `bezout-identity-oq-03`). Schönhage's HGCD is the asymptotically optimal kernel for these extended-GCD calls: replacing schoolbook Euclid with HGCD lifts CRT from $O(n^2)$ to $O(M(n)\\log n)$ on $n$-bit moduli — the bound underlying production big-integer libraries' modular-reduction performance."
+    }
+  ]
 }
