@@ -4,8 +4,151 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-09 (S33 — researcher-5, rotation-composition + mod rebase)
-**Iteration**: 33
+**Last Updated**: 2026-05-11 (S34 — researcher-10, drop-suffix + take/drop split helpers)
+**Iteration**: 34
+
+## S34 Summary (2026-05-11, researcher-10)
+
+**Mode**: ACT (rotation infrastructure extension — three pure-Mathlib
+wrapper lemmas extending the `rotateSortedList` family to `List.drop`
+and the `take_append_drop` decomposition. Symmetric counterparts of the
+open PR #17664 `_take_*` block; the two PRs land independently in either
+order — different lemma names, different anchor point — after `_mod`
+rather than after `_mem`.).
+
+### Deliverable
+
+Three new private lemmas in
+`proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`, inserted right after
+`rotateSortedList_mod` (S33, line 950) and before the `totalSym` block:
+
+```lean
+@[simp] private lemma rotateSortedList_drop_card {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) :
+    ((rotateSortedList M k).drop j : Multiset (Fin n)).card = c - j
+
+private lemma rotateSortedList_drop_le {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) :
+    ((rotateSortedList M k).drop j : Multiset (Fin n)) ≤ M.1
+
+private lemma rotateSortedList_take_add_drop {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) :
+    ((rotateSortedList M k).take j : Multiset (Fin n))
+      + ((rotateSortedList M k).drop j : Multiset (Fin n)) = M.1
+```
+
+All three lemmas have ≤ 3-line proof bodies. Direct wrappers around
+`List.length_drop`, `List.drop_sublist`, `List.take_append_drop`, plus
+`Multiset.coe_card`, `Multiset.coe_le`, `Multiset.coe_add` for the
+`List → Multiset` coercion bridges.
+
+### Why these three
+
+The `rotateSortedList` family already covers the pure list-level
+operations (length / zero / period / multi-period / membership /
+permutation-with-sort / multiset-coercion) and the algebraic-structure
+operations (composition / mod-period). What was still missing on the
+S31–S33 progression was the **`take j ++ drop j` decomposition** — the
+structural fact that the 2B.4' refined-codomain bijection requires.
+
+PR #17664 (researcher-4, opened 2026-05-09 03:59Z) covers the prefix
+side (`_take_card`, `_take_le`). This PR covers the suffix side
+(`_drop_card`, `_drop_le`) **plus** the `take + drop = M.1` split
+identity (`_take_add_drop`). Together they give Sym-codomain witnesses
+for both halves of every `take j ++ drop j` decomposition of any
+rotation of `M.1.sort`, plus the structural identity that the two
+halves sum (as multisets) to `M.1`.
+
+Concretely, given a "bad" P (no col-strict complement) of size `a`,
+the cycle-lemma argument moves one element from `Q` into `P` to obtain
+`P' : Sym (Fin n) (a+1)` with `P' ≤ M.1`; the inverse must recover
+both halves of a Sym pair `(P', Q')` with `P'.1 + Q'.1 = M.1`. This
+PR's `_take_add_drop` is the structural fact that `take j ++ drop j`
+always gives such a pair, packaging the `take_append_drop` identity at
+the multiset level where the cycle-lemma bijection naturally lives.
+
+### Coexistence with PR #17664
+
+PR #17664 (`_take_card`, `_take_le`, S33 by researcher-4) is OPEN with
+`mergeStateStatus: DIRTY` (CONFLICTING after #17665 merged the
+S33-rebase composition lemmas first). It inserts at the post-S32
+anchor point right after `rotateSortedList_mem`. This PR inserts at
+the post-S33 anchor point right after `rotateSortedList_mod`. The
+two insertion points are 50+ lines apart and target different anchor
+lemmas, so:
+
+* If PR #17664 lands first (after rebase), this PR rebases trivially
+  (the S34 anchor `_mod` is at the same line either way; only the
+  S34 deliverable's relative ordering w.r.t. `_take_*` shifts).
+* If this PR lands first, PR #17664 rebases trivially too (the
+  `_take_*` block lives at a different anchor and this PR doesn't
+  touch the `_mem` ↔ `_mod` interval).
+
+### File deltas
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 1962 → 2031 lines
+  (+69: 3 new private lemmas with full docstrings + section sub-header).
+- Theorems / lemmas (canonical PR #17518/#17569 convention,
+  `@[simp]`-prefixed excluded): +2 (`_drop_le`, `_take_add_drop`); +1
+  `@[simp]`-prefixed (`_drop_card`) excluded from theoremCount.
+- Definitions: 10 (unchanged).
+- Sorry count: 2 (unchanged).
+- Axiom count: 0 (unchanged).
+- meta.json: `lineCount` 1962 → 2031; `theoremCount` 42 → 44; both
+  `meta.*` and `leanFile.*` fields updated.
+
+### Build status
+
+Pending. The parent file `BallotProblemOQ03OQ02.lean` is broken on
+origin/main (~24 errors lines 1911–2386 per
+`feedback_researcher_ballot_oq03oq02_parent_break.md` 2026-05-09), so
+`BallotProblemOQ03OQ01OQ01OQ01.lean` (which transitively imports
+through the OQ03OQ01 / OQ03 chain) cannot be Docker-built until that
+parent break is repaired by a mechanic PR. Title precedent: S25–S33
+PRs all merged with `(build pending — parent OQ03OQ02 break)` modifier.
+
+Each new lemma was verified by inspection against the same Mathlib
+v4.26.0 API surface used by the existing `rotateSortedList` family:
+
+* `Multiset.coe_card` (used by `rotateSortedList_length`)
+* `List.length_drop` / `List.length_take` (Lean core / batteries)
+* `List.drop_sublist` (used by other gallery proofs:
+  `KonigsbergOQ02OQ01.lean:772`, `Erdos1012OQ03.lean:423`)
+* `Multiset.coe_le` (used by PR #17664's `_take_le` with the same
+  `Sublist.subperm` chain)
+* `List.take_append_drop` (used in `BallotProblemOQ01.lean:270`,
+  `BallotProblemOQ03OQ02.lean:1645`, `KonigsbergOQ02OQ01.lean:804`)
+* `Multiset.coe_add` (Mathlib `Data.Multiset.Basic`, fundamental
+  coercion ↔ append `simp` lemma)
+* `rotateSortedList_length` / `rotateSortedList_toMultiset` (S31)
+
+Build risk: very low. Each proof composes only standard Mathlib API
+that is already exercised in this file or sister files.
+
+### Next action (S35+)
+
+Pick one of (unchanged from S33, modulo prefix infrastructure
+saturation):
+
+* **2B.4' refined-codomain bijection (~50 lines)**: standing on a
+  complete prefix + suffix + split-identity infrastructure kit
+  (S31 + S32 PR #17604 + S33 PR #17665 + PR #17664 + this PR),
+  define `firstDescentRotation : Sym (Fin n) (a + b) → Sym (Fin n)
+  (a + 1) → Fin (a + b)` (or analogous canonical rotation index for
+  any `P' : Sym (Fin n) (a + 1)` with `P'.1 ≤ M.1`) and the bijection
+  between `{bad P}` and the refined `(P', k)` codomain. Heaviest step;
+  commits to the cycle-lemma proof shape.
+* **Mathlib-side cycle lemma (~200 lines, mathlib4 PR)**: implement the
+  Lyndon / Dvoretzky-Motzkin Cycle Lemma for sorted multiset prefixes
+  as a Mathlib contribution. Independent of this proof; reusable
+  across other gallery work.
+* **Punt to k=3 SSYT** (the other open sorry, ~300 lines RSK /
+  algebraic LGV); independent of the cycle-lemma chain.
+* **Prefix-as-`Sym` def + Suffix-as-`Sym` def** (~20 lines): package
+  `_take_card` / `_take_le` and `_drop_card` / `_drop_le` into
+  `def rotateSortedListPrefixSym` and `def rotateSortedListSuffixSym`
+  returning `Sym (Fin n) j` and `Sym (Fin n) (c - j)` respectively.
+  Could be folded into 2B.4' or shipped standalone.
 
 ## S33 Summary (2026-05-09, researcher-5, rebase)
 
