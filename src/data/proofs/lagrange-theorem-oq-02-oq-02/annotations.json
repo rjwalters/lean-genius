@@ -96,6 +96,18 @@
     "prerequisites": ["alternatingGroup in Mathlib", "Fintype.card for permutation groups", "decide tactic", "native_decide tactic"]
   },
   {
+    "id": "ann-rep-theory-bridge",
+    "proofId": "lagrange-theorem-oq-02-oq-02",
+    "range": { "startLine": 49, "endLine": 66 },
+    "type": "insight",
+    "title": "The Class Equation as the Bridge to Character Theory",
+    "content": "The class equation has a much deeper structural meaning than the cardinality identity proved here: it is the **conjugacy-class side of Brauer's permutation lemma**, which states that for a finite group $G$ over an algebraically closed field of characteristic zero, the number of irreducible representations equals the number of conjugacy classes. The class function $\\chi: G \\to \\mathbb{C}$ assigning to each $g$ the trace of its representation matrix is constant on conjugacy classes (by trace-invariance under conjugation), so the space of class functions has dimension equal to $|\\text{ConjClasses}(G)|$. Character orthogonality then identifies this dimension with the number of irreducible characters. The orbit-centralizer identity $|[x]| = [G:C_G(x)]$ also reappears in this setting as the formula $|G| = \\sum_\\chi (\\chi(1))^2$ (sum of squared dimensions of irreducible representations equals group order) when paired with the second orthogonality relation. The fact that this file proves the class equation cleanly via `index_comap_of_surjective` provides the cardinality foundation that any future Mathlib formalization of character theory will build on.",
+    "mathContext": "**Class functions**: $\\{f: G \\to \\mathbb{C} \\mid f(gxg^{-1}) = f(x)\\}$ form a $\\mathbb{C}$-vector space of dimension $|\\text{ConjClasses}(G)|$. **Brauer's permutation lemma**: $|\\text{Irr}(G)| = |\\text{ConjClasses}(G)|$. **Class equation in rep-theory form**: $|G| = \\sum_{\\chi \\in \\text{Irr}(G)} \\chi(1)^2 = \\sum_{[x]} [G : C_G(x)] \\cdot |[x]|^{-1} \\cdot |[x]| = \\sum_{[x]} [G : C_G(x)]$ when grouped by representative — the two sides agree term-by-term. **For p-groups**: every irreducible representation has dimension a power of $p$ (because $\\chi(1) \\mid |G|$ for any $\\chi$). Combined with $\\sum \\chi(1)^2 = p^k$, this gives strong constraints on the representation theory of p-groups that mirror the class-equation argument for center nontriviality.",
+    "significance": "context",
+    "relatedConcepts": ["character theory", "Brauer's permutation lemma", "irreducible representations", "class functions", "sum of squares formula |G| = Σ χ(1)²", "character orthogonality", "Burnside's lemma"],
+    "prerequisites": ["representation theory of finite groups", "trace and conjugation invariance", "Maschke's theorem (semisimplicity in char 0)", "Schur's lemma"]
+  },
+  {
     "id": "ann-results-summary",
     "proofId": "lagrange-theorem-oq-02-oq-02",
     "range": { "startLine": 239, "endLine": 262 },
