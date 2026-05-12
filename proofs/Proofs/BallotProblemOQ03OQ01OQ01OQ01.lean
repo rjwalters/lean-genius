@@ -1299,6 +1299,97 @@ private lemma rotateSortedListSuffixSym_val_eq_sub_take {n c : ℕ}
   show ((rotateSortedList M k).drop j : Multiset (Fin n)) = _
   rw [← h, add_tsub_cancel_left]
 
+
+/-! #### S39 — Degenerate cases + period for `rotateSortedListPrefixSym`
+
+Three `Sym`-level structural lemmas for `rotateSortedListPrefixSym`
+(S37, line 1021), symmetric counterparts of the merged S36
+(`_zero_val`, `_self_val`) and S38 (`_mod`) lemmas for
+`rotateSortedListSuffixSym`:
+
+* `rotateSortedListPrefixSym_zero_val` — boundary at `j = 0`. The
+  zero-length prefix has empty underlying multiset. Proof:
+  `List.take_zero` reduces the `take 0` to `[]`, whose coercion to
+  `Multiset (Fin n)` is `0` definitionally.
+
+* `rotateSortedListPrefixSym_self_val` — boundary at `j = c`. The
+  full-length prefix has underlying multiset `M.1`. Proof:
+  `List.take_of_length_le` (via `rotateSortedList_length`) collapses
+  `take c` to the whole rotated list, then `rotateSortedList_toMultiset`
+  identifies that list's multiset with `M.1`.
+
+* `rotateSortedListPrefixSym_mod` — periodicity. The `Sym`-packaged
+  prefix at rotation index `k % c` equals the prefix at index `k`.
+  Lifts S33's `rotateSortedList_mod` through the `.1` projection via
+  `Subtype.ext`.
+
+Together with the previously-merged S35/S36/S38 suffix-side block,
+both halves of every `take j ++ drop j` decomposition of any rotation
+now have the same structural API: codomain witness (`_le`), two
+boundary identities (`_zero_val`, `_self_val`), and `mod`-periodicity.
+The 2B.4' refined-codomain bijection's domain can therefore be taken
+as `Fin c × Sym (Fin n) (a + 1)` (canonical rotation index in `Fin c`)
+without re-deriving these wrappers at call sites.
+
+Both `_zero_val` and `_self_val` are `@[simp]`-marked (analogous to
+their S36 suffix counterparts); `_mod` is left un-marked (analogous
+to S38's `rotateSortedListSuffixSym_mod`). Neither changes the file's
+sorry count (still 2) or axiom count (still 0). Insertion point: just
+after `rotateSortedListSuffixSym_val_eq_sub_take` (S38, line 1294) and
+before `totalSym` (line 1308). -/
+
+/-- **`rotateSortedListPrefixSym` at `j = 0` is empty** (`.1`-projection
+    form). The take-zero prefix has empty underlying multiset since
+    `List.take 0 l = []` for any `l`, and the coercion `↑[]` reduces
+    to `(0 : Multiset (Fin n))` definitionally. Symmetric counterpart
+    of S36's `rotateSortedListSuffixSym_zero_val`. -/
+@[simp] private lemma rotateSortedListPrefixSym_zero_val {n c : ℕ}
+    (M : Sym (Fin n) c) (k : ℕ) :
+    (rotateSortedListPrefixSym M k 0 (Nat.zero_le c)).1
+      = (0 : Multiset (Fin n)) := by
+  show ((rotateSortedList M k).take 0 : Multiset (Fin n)) = 0
+  rw [List.take_zero]
+  rfl
+
+/-- **`rotateSortedListPrefixSym` at `j = c` is `M`** (`.1`-projection
+    form). At the upper boundary, the prefix retains every element of
+    the length-`c` rotation: `List.take_of_length_le` (combined with
+    `rotateSortedList_length`) collapses `take c` to the whole rotated
+    list, whose underlying multiset is `M.1` by
+    `rotateSortedList_toMultiset` (S31). Symmetric counterpart of
+    S36's `rotateSortedListSuffixSym_self_val`. -/
+@[simp] private lemma rotateSortedListPrefixSym_self_val {n c : ℕ}
+    (M : Sym (Fin n) c) (k : ℕ) :
+    (rotateSortedListPrefixSym M k c (le_refl c)).1 = M.1 := by
+  show ((rotateSortedList M k).take c : Multiset (Fin n)) = M.1
+  rw [List.take_of_length_le (le_of_eq (rotateSortedList_length M k))]
+  exact rotateSortedList_toMultiset M k
+
+/-- **`rotateSortedListPrefixSym` is periodic in `k` with period `c`**.
+
+    The `Sym`-packaged prefix at rotation index `k % c` equals the
+    `Sym`-packaged prefix at rotation index `k`. Lifts S33's
+    `rotateSortedList_mod` (the analogous identity at the underlying
+    `List` level) through the `.1` projection via `Subtype.ext`.
+
+    Together with `rotateSortedListPrefixSym_zero_val` /
+    `_self_val` and S37's codomain witness
+    `rotateSortedListPrefixSym_le`, this completes the basic
+    structural toolkit for the `Sym`-packaged prefix: every rotation
+    index `k` is equivalent (mod `c`) to a canonical representative
+    in `Fin c`. The 2B.4' refined-codomain bijection's domain can
+    therefore be taken as `Fin c × Sym (Fin n) (a + 1)` instead of
+    `ℕ × Sym (Fin n) (a + 1)`. Symmetric counterpart of S38's
+    `rotateSortedListSuffixSym_mod`. -/
+private lemma rotateSortedListPrefixSym_mod {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) (hj : j ≤ c) :
+    rotateSortedListPrefixSym M (k % c) j hj
+      = rotateSortedListPrefixSym M k j hj := by
+  apply Subtype.ext
+  show ((rotateSortedList M (k % c)).take j : Multiset (Fin n))
+       = ((rotateSortedList M k).take j : Multiset (Fin n))
+  rw [rotateSortedList_mod]
+
 /-- **Total multiset of a Sym pair (as a `Sym`).**
 
     The map `(P, Q) ↦ P.1 + Q.1`, repackaged so the result lives in

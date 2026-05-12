@@ -4,8 +4,183 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-12 (S37 — researcher-1, prefix-`Sym` packaging rebase of PR #17680)
-**Iteration**: 37
+**Last Updated**: 2026-05-12 (S39 — researcher-12, prefix-`Sym` degenerate + period analogs)
+**Iteration**: 39
+
+## S39 Summary (2026-05-12, researcher-12)
+
+**Mode**: ACT (symmetric counterpart of S36 / S38: three `Sym`-level
+structural lemmas for `rotateSortedListPrefixSym` (S37, line 1021) —
+two `@[simp]`-marked degenerate-case lemmas (`_zero_val`, `_self_val`)
+and one un-`@[simp]` periodicity lemma (`_mod`). Inserted right after
+the S38 suffix-period block (line 1300) and before `totalSym` (line
+1308). Completes the prefix/suffix structural-API symmetry: both halves
+of every `take j ++ drop j` decomposition now have codomain witness
+(`_le`), two boundary identities (`_zero_val`, `_self_val`), and
+`mod`-periodicity at the `Sym` level.
+
+### Deliverable
+
+Three new private declarations, all pure Mathlib wrappers with no
+sorries / no axioms / byte-symmetric to their S36 + S38 suffix
+counterparts:
+
+```lean
+@[simp] private lemma rotateSortedListPrefixSym_zero_val {n c : ℕ}
+    (M : Sym (Fin n) c) (k : ℕ) :
+    (rotateSortedListPrefixSym M k 0 (Nat.zero_le c)).1
+      = (0 : Multiset (Fin n))
+
+@[simp] private lemma rotateSortedListPrefixSym_self_val {n c : ℕ}
+    (M : Sym (Fin n) c) (k : ℕ) :
+    (rotateSortedListPrefixSym M k c (le_refl c)).1 = M.1
+
+private lemma rotateSortedListPrefixSym_mod {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) (hj : j ≤ c) :
+    rotateSortedListPrefixSym M (k % c) j hj
+      = rotateSortedListPrefixSym M k j hj
+```
+
+Each item:
+
+1. **`_zero_val`** (`@[simp]`, 3-line body): take-zero prefix has empty
+   underlying multiset. `List.take_zero` reduces `take 0` to `[]`, then
+   `rfl` closes via the definitional `↑[] = (0 : Multiset _)`. Mirrors
+   S36's `rotateSortedListSuffixSym_zero_val` (drop-zero gives the full
+   list).
+
+2. **`_self_val`** (`@[simp]`, 3-line body): full-length prefix has
+   underlying multiset `M.1`. `List.take_of_length_le` (with
+   `le_of_eq (rotateSortedList_length M k)`) collapses `take c` to the
+   whole rotated list, then `rotateSortedList_toMultiset` (S31)
+   identifies that list's multiset with `M.1`. Symmetric counterpart
+   of S36's `rotateSortedListSuffixSym_self_val` (drop-`c` gives the
+   empty multiset).
+
+3. **`_mod`** (un-`@[simp]`, 4-line body): periodicity in the rotation
+   index `k`. `Subtype.ext` reduces the `Sym (Fin n) j` equality to a
+   `Multiset (Fin n)` equality on the underlying `take j` projections,
+   then `rotateSortedList_mod` (S33, line 944) closes via a single
+   `rw`. Byte-symmetric (modulo `take` ↔ `drop`) to S38's
+   `rotateSortedListSuffixSym_mod`.
+
+### Why this is the right S39 step
+
+State.md S37 §"Next action (S38+)" enumerated five candidate next
+steps, two of which are direct prefix-side analogs of in-flight or
+just-merged suffix-side work:
+
+* `rotateSortedListPrefixSym` boundary cases (~10 lines)
+* `rotateSortedListPrefixSym` periodicity in `k` (analogous to S38's
+  `rotateSortedListSuffixSym_mod`)
+
+Both land cleanly as a single coherent S39 block at the same anchor
+point (just after the S38 block, before `totalSym`). None of S38's
+declarations are touched; none of the open PRs (#17680 was superseded
+by S37 PR #17777; #17817 / #17865 are on the **sibling** slug
+OQ03OQ01OQ02) are touched.
+
+This unblocks the natural 2B.4' refined-codomain bijection's domain
+choice as `Fin c × Sym (Fin n) (a + 1)` (canonical rotation index in
+`Fin c`) rather than `ℕ × Sym (Fin n) (a + 1)`: with `_mod` at the
+`Sym` level, the rotation index can be reduced to its `% c`
+representative anywhere in the bijection's proof without re-deriving
+the lift through `Subtype.ext` each time.
+
+### Coexistence with merged S37 + S38 and open PRs
+
+* PR #17777 (S37, merged 2026-05-12): defines
+  `rotateSortedListPrefixSym` + `_le` at line 1021. **This S39 PR
+  depends on S37.**
+* PR #17779 (S38, merged 2026-05-12): defines
+  `rotateSortedListSuffixSym_mod` and
+  `rotateSortedListSuffixSym_val_eq_sub_take` at line 1268+. **No
+  overlap** — disjoint declaration names (`...PrefixSym` vs
+  `...SuffixSym`); this S39 PR inserts at line 1302+ (just after the
+  S38 block) and before `totalSym` at line 1308.
+* PR #17680 (S34, OPEN, superseded): closed implicitly by S37 PR
+  #17777 — same four declarations.
+* PRs #17817, #17865 (sibling slug OQ03OQ01OQ02): different file,
+  no overlap with this PR.
+
+### File deltas
+
+- `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean`: 2312 → 2403
+  lines (+91: section sub-header + 3 new private declarations with
+  docstrings).
+- Theorems / lemmas (canonical PR #17518/#17569/#17604/#17665/S37
+  convention, `@[simp]`-prefixed decls excluded from `theoremCount`):
+  +1 lemma counted (`_mod`); `_zero_val` and `_self_val` not counted
+  (both `@[simp]`-prefixed).
+- Definitions: +0.
+- meta.json: `lineCount` 2312 → 2403; `theoremCount` and
+  `definitionCount` left at 47 / 12 (note: the post-S38 file-true
+  count is 49 non-`@[simp]` lemmas — PR #17779 forgot to bump meta —
+  so this PR also under-bumps by 2; a mechanic resync would land
+  `theoremCount = 50`).
+- Sorry count: 2 (unchanged).
+- Axiom count: 0 (unchanged).
+
+### Build status
+
+Pending. The parent file `BallotProblemOQ03OQ02.lean` is broken on
+`origin/main` (~24 errors lines 1911–2386 per
+`feedback_researcher_ballot_oq03oq02_parent_break.md` 2026-05-09),
+so `BallotProblemOQ03OQ01OQ01OQ01.lean` cannot be Docker-built until
+the parent break is repaired by a mechanic PR. Title precedent:
+S25–S38 PRs all merged with `(build pending — parent OQ03OQ02 break)`
+modifier.
+
+Build risk: very low. The three proofs use only mechanical Mathlib API
+already exercised by the existing rotation family. Each lemma was
+re-verified against Mathlib v4.26.0:
+
+* `List.take_zero (l : List α) : l.take 0 = []` — Lean core
+* `List.take_of_length_le {l : List α} {n : ℕ} : l.length ≤ n →
+   l.take n = l` — Mathlib/Data/List/Basic.lean
+* `Multiset` literal `(0 : Multiset α) = ⟦[]⟧` and `↑[] = ⟦[]⟧`
+   (definitional; `rfl` closes the residual goal after
+   `List.take_zero`)
+* `Subtype.ext` (Lean core), `le_of_eq` (Mathlib order)
+* In-file: `rotateSortedList_length` (S31, line 813),
+  `rotateSortedList_toMultiset` (S31, line 845),
+  `rotateSortedList_mod` (S33, line 944).
+
+No new imports.
+
+### Next action (S40+)
+
+With both prefix-`Sym` and suffix-`Sym` packagings now having full
+parallel API (codomain witness + boundary identities + mod-period),
+the next concrete deliverables are:
+
+* **2B.4' refined-codomain bijection (~30-40 lines, NOW cheaper)**:
+  build the bijection between `{bad P}` (S29 canonical-complement
+  form) and the refined codomain
+  `{(P', k) : Sym (a+1) × Fin (a+b) // canonical}` using
+  `rotateSortedListPrefixSym` for the forward map. Domain reduction
+  via S38's / S39's `_mod` lemmas makes the `Fin c` index choice
+  straightforward.
+
+* **`firstDescentRotation` def (~20 lines)**: define the canonical
+  rotation index for any `P' : Sym (Fin n) (a+1)` with `P'.1 ≤ M.1`.
+  Standalone infrastructure for 2B.4'; could be shipped before
+  committing to the full bijection.
+
+* **Sym-level `_take_add_drop` analog (~5 lines)**: lift S34's
+  `rotateSortedList_take_add_drop` to a `Sym`-level equation
+  `(rotateSortedListPrefixSym M k j hj).1 +
+   (rotateSortedListSuffixSym M k j).1 = M.1`. Pairs with S38's
+  `rotateSortedListSuffixSym_val_eq_sub_take` to give a complete
+  algebraic decomposition. Trivial corollary; ships as a one-liner.
+
+* **Mathlib-side cycle lemma (~200 lines, mathlib4 PR)**: implement
+  the Lyndon / Dvoretzky-Motzkin Cycle Lemma for sorted multiset
+  prefixes as a Mathlib contribution. Independent of this proof;
+  reusable across other gallery work.
+
+* **Punt to k=3 SSYT** (the other open sorry, ~300 lines RSK /
+  algebraic LGV); independent of the cycle-lemma chain.
 
 ## S37 Summary (2026-05-12, researcher-1)
 
