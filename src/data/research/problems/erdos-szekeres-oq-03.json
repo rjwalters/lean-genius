@@ -30,18 +30,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12",
-    "iteration": 5,
-    "focus": "S5-prep monotonicity helpers (researcher-1): added 3 sorry-free lemmas — IsMonochromatic.mono (subset closure), IsRamsey.mono_n (monotonicity in n via the canonical Fin n ↪ Fin m embedding + Finset.subset_map_iff to recognise lifted clique-subsets), ramseyNumber_swap (sInf-set congruence corollary of IsRamsey.swap). Reconstructs orphan branch research/erdos-szekeres-oq-03-s5-mono-helpers-1778575256 (authored 2026-05-12 01:46 UTC, PR never created) on the post-S4-ACT-C state.",
+    "iteration": 6,
+    "focus": "S6 ACT-D scaffolding (researcher-9): added 2 sorry-free declarations — kColoring.link (link/neighborhood coloring at a vertex v: T ↦ χ (insert v T)) with a defining simp lemma, and IsMonochromatic.link_lifts (the (k-1) → k monochromaticity transfer: a (k-1)-mono clique S ⊆ Fin n \\ {v} for χ.link v forces every k-subset of insert v S containing v to be χ-coloured c). Together these are the neighborhood-collapse infrastructure for the genuine inductive case of ramsey_existence; lines 584 → 654 (+70), sorries unchanged at 1, axioms 0.",
     "blockers": [],
-    "nextAction": "S6 ACT-D: discharge the remaining s>k ∧ t>k inductive case of ramsey_existence via the Ramsey 1930 recursive bound R_k(s,t) ≤ R_{k-1}(R_k(s-1,t)+1, R_k(s,t-1)+1) + 1. IsRamsey.mono_n absorbs the +1 by lifting any witness n upward; IsMonochromatic.mono shrinks the lifted-(k-1)-clique of monochromatic neighborhood vertices to the s-1 or t-1 sub-clique demanded by the recursion.",
+    "nextAction": "S7 ACT-E: prove IsMonochromatic.insert_vertex — given S' ⊆ S with both (a) S' a k-monochromatic clique for χ at colour c (anti-chain from the inductive hypothesis on s+t inside S) and (b) S link-monochromatic for χ.link v at colour c with v ∉ S, conclude insert v S' is k-monochromatic for χ at colour c by case-splitting each k-subset on v-membership: v ∈ T uses link_lifts, v ∉ T uses S'.mono. This is the splice point that combines the two-layer Ramsey 1930 induction with the existing anti_s / anti_t / mono_n / link infrastructure.",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 5,
-      "approachesTried": 5
+      "total": 6,
+      "currentApproach": 6,
+      "approachesTried": 6
     }
   },
   "knowledge": {
-    "progressSummary": "S5-prep monotonicity helpers (researcher-1 2026-05-12): added 3 sorry-free lemmas to RamseyHypergraph.lean — IsMonochromatic.mono (subset closure of monochromaticity), IsRamsey.mono_n (Ramsey condition monotone in n via Fin n ↪ Fin m embedding ⟨Fin.castLE h, Fin.castLE_injective h⟩, restricting any [m]-coloring to [n] then lifting cliques back through Finset.subset_map_iff), ramseyNumber_swap (sInf-set congruence corollary of IsRamsey.swap). Lines 500→584 (+84), new import Mathlib.Data.Finset.Map, sorries 1 (unchanged), axioms 0 (unchanged). Reconstructs orphan branch authored 2026-05-12 01:46 UTC (PR never created).",
+    "progressSummary": "S6 ACT-D scaffolding (researcher-9 2026-05-12): added 2 sorry-free declarations to RamseyHypergraph.lean — kColoring.link (the link/neighborhood coloring at a vertex v, χ.link v T = χ (insert v T), with a defining simp lemma kColoring.link_apply) and IsMonochromatic.link_lifts (the vertex-side (k-1) → k monochromaticity transfer: if S ⊆ Fin n \\ {v} is (k-1)-mono for χ.link v at colour c, then every k-subset T ⊆ insert v S containing v has χ T = c). Proof of link_lifts: decompose T = insert v T' where T' = T.erase v, show T' ⊆ S and |T'| = k-1, then evaluate hSm on T' through kColoring.link_apply. Lines 584→654 (+70), sorries unchanged at 1, axioms 0. Previous S5-prep monotonicity helpers (researcher-1 PR #18122) provided IsMonochromatic.mono, IsRamsey.mono_n, ramseyNumber_swap.",
     "builtItems": [
       "proofs/Proofs/RamseyHypergraph.lean — IsRamsey.anti_s, IsRamsey.anti_t, is_ramsey_self_right, is_ramsey_self_left + boundary-discharging ramsey_existence (S4 ACT-C, researcher-9).",
       "proofs/Proofs/RamseyHypergraph.lean — IsRamsey.swap (color symmetry), ramseyNumber_zero_false, ramseyNumber_zero_true (S4-prep, researcher-1).",
@@ -52,7 +52,9 @@
       "research/problems/erdos-szekeres-oq-03/state.md — phase advanced ORIENT → ACT (S2); S5 next-action pinned (S4 ACT-C closes boundaries).",
       "proofs/Proofs/RamseyHypergraph.lean — IsMonochromatic.mono (S5-prep: monochromaticity is preserved under passing to a subset; researcher-1).",
       "proofs/Proofs/RamseyHypergraph.lean — IsRamsey.mono_n (S5-prep: Ramsey condition monotone in n via Fin.castLE embedding + Finset.subset_map_iff lift; researcher-1).",
-      "proofs/Proofs/RamseyHypergraph.lean — ramseyNumber_swap (S5-prep: sInf-set congruence corollary of IsRamsey.swap; researcher-1)."
+      "proofs/Proofs/RamseyHypergraph.lean — ramseyNumber_swap (S5-prep: sInf-set congruence corollary of IsRamsey.swap; researcher-1).",
+      "proofs/Proofs/RamseyHypergraph.lean — kColoring.link + kColoring.link_apply (S6 ACT-D: link/neighborhood coloring at a vertex with defining simp lemma; researcher-9).",
+      "proofs/Proofs/RamseyHypergraph.lean — IsMonochromatic.link_lifts (S6 ACT-D: vertex-side (k-1) → k monochromaticity transfer for the Ramsey 1930 recursion; researcher-9)."
     ],
     "insights": [
       "The s=k boundary case is settled at n=t by a direct Bool case-split: either some k-subset is colored false (it IS the mono-false k-clique, since |S|=k forces |T|=|S| ⇒ T=S for any k-sub-subset T ⊆ S, via Finset.eq_of_subset_of_card_le), or every k-subset is colored true (and Finset.univ : Finset (Fin t) is the mono-true t-clique).",
@@ -64,7 +66,9 @@
       "erdos_szekeres_tight_axiom in Proofs/ErdosSzekeres.lean is precisely R_2(s,s)'s diagonal lower bound; it could be discharged as a corollary of the k=2 specialization of OQ-03c.",
       "Color symmetry IsRamsey n k s t ↔ IsRamsey n k t s holds via χ ↦ !χ (false-cliques under !χ become true-cliques under χ and vice versa); this halves the S4 two-layer induction's case analysis since one direction of the recursive bound transfers to the other by swap.",
       "IsRamsey.mono_n is the bridge that turns the recursive bound R_k(s,t) ≤ R_{k-1}(R_k(s-1,t)+1, R_k(s,t-1)+1) + 1 (S6 target) from a pointwise inequality into a usable upper bound: applied to an inductive-hypothesis witness n, it lifts to every m ≥ n, so the +1 in the recursion can be absorbed without re-running the inductive construction.",
-      "Finset.subset_map_iff is the cleanest way to lift k-subsets of S.map f back to k-subsets of S along an injective embedding f, avoiding ad-hoc preimage definitions; combined with Finset.card_map it gives a one-step monochromaticity transfer."
+      "Finset.subset_map_iff is the cleanest way to lift k-subsets of S.map f back to k-subsets of S along an injective embedding f, avoiding ad-hoc preimage definitions; combined with Finset.card_map it gives a one-step monochromaticity transfer.",
+      "The link coloring χ.link v : kColoring n can be defined type-uniformly on the full Fin n (rather than on Fin n \\ {v}) since kColoring n's uniformity is supplied by IsRamsey's k parameter; the v-membership case-split happens entirely inside link_lifts via Finset.mem_insert and Finset.erase. This avoids carrying an explicit Equiv between Fin (n-1) and Fin n \\ {v}.",
+      "The link_lifts proof relies on the Finset.insert_erase + Finset.card_erase_of_mem decomposition: every k-subset T ⊆ insert v S containing v factors uniquely as insert v T' where T' = T.erase v ⊆ S has card k-1, so monochromaticity of S for the link at uniformity k-1 transfers to χ-monochromaticity of T."
     ],
     "mathlibGaps": [
       "No general hypergraph Ramsey number — only SimpleGraph.ramseyNumber (k=2).",
@@ -72,9 +76,9 @@
       "Tower function (iterated 2^·) is not packaged but can be obtained via Nat.iterate."
     ],
     "nextSteps": [
-      "S6 ACT-D: discharge the genuine inductive case s>k ∧ t>k of ramsey_existence via the Ramsey 1930 recursive bound. Use anti_s/anti_t to shrink the target side, mono_n to lift the inductive-hypothesis n upward, and is_ramsey_self_right / _left as the s+t induction base.",
-      "S7: state erdos_rado_upper as ramseyNumber k s s ≤ tower (k-1) (c_k * s) and unwind R_k(s,t) ≤ R_{k-1}(R_k(s-1,t), R_k(s,t-1)) + 1.",
-      "S8+: spawn the Erdős–Hajnal stepping-up lower bound (OQ-03c) as a separate sub-OQ if S7 lands cleanly."
+      "S7 ACT-E: combine kColoring.link / link_lifts (S6) with anti_s / anti_t / mono_n (S4-S5) to discharge the genuine inductive case s>k ∧ t>k of ramsey_existence. Build IsMonochromatic.insert_vertex first (splice lemma: a k-mono sub-clique S' ⊆ S plus link-monochromaticity of S at colour c imply insert v S' is k-mono at c), then double-induct on k and s+t with is_ramsey_self_* as base.",
+      "S8: state erdos_rado_upper as ramseyNumber k s s ≤ tower (k-1) (c_k * s) and unwind R_k(s,t) ≤ R_{k-1}(R_k(s-1,t), R_k(s,t-1)) + 1.",
+      "S9+: spawn the Erdős–Hajnal stepping-up lower bound (OQ-03c) as a separate sub-OQ if S8 lands cleanly."
     ]
   },
   "tags": [
