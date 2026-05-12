@@ -2637,6 +2637,7 @@ import Proofs.RiemannHypothesis
 import Proofs.RiemannHypothesisConsequences
 import Proofs.RothTheorem
 import Proofs.RothTheoremAristotle
+import Proofs.RothTheoremOQ02
 import Proofs.RothTheoremOQ03
 import Proofs.RothTheoremQuantitative
 import Proofs.RothTheoremQuantitativeAristotle
