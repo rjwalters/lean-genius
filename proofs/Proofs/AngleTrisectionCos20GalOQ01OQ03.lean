@@ -716,6 +716,91 @@ theorem r_constantCoeff_eq_cyclotomic_full :
    r_11_constantCoeff_eq_cyclotomic,
    r_13_constantCoeff_eq_cyclotomic⟩
 
+/-! ## S7 SCAFFOLD: Combinatorial backbone for the uniform cyclotomic bridge
+
+The S6 cyclotomic anchor relied on **per-prime** factorizations of
+`cyclotomic (2 * p) ℤ` for `p ∈ {3, 5, 7, 11, 13}` via `eq_cyclotomic_iff`.
+The next structural step (S7) is the **uniform** bridge identity
+
+  `cyclotomic (2 * p) ℤ * (X + 1) = X ^ p + 1`    (for `p` odd prime).
+
+Once available, this collapses the per-prime ring identities
+`cyclotomic_{6,10,14,22,26}_eq` into a single uniform statement, eliminates
+the per-prime evaluation lemmas `cyclotomic_*_eval_neg_one`, and turns the
+constant-coefficient sign pattern (already verified via
+`r_constantCoeff_eq_signed_p`) into a clean cyclotomic fingerprint
+applicable to all odd primes — not just the verified five.
+
+**Proof outline (cyclotomic factorization route).**
+
+1. `Nat.divisors (2 * p) = {1, 2, p, 2 * p}` for `p` odd prime
+   (lemma `divisors_two_mul_odd_prime` below — completed in this S7
+   SCAFFOLD, 0 sorries).
+2. `∏ d ∈ {1, 2, p, 2 * p}, cyclotomic d ℤ = X ^ (2 * p) - 1`
+   (via `Polynomial.prod_cyclotomic_eq_X_pow_sub_one` at `n = 2 * p`,
+   substituting step 1 for the divisor enumeration).
+3. `cyclotomic 1 ℤ = X - 1`, `cyclotomic 2 ℤ = X + 1`, so the product
+   becomes `(X - 1) * (X + 1) * cyclotomic p ℤ * cyclotomic (2*p) ℤ
+   = X ^ (2 * p) - 1`.
+4. `(X - 1) * cyclotomic p ℤ = X ^ p - 1` (via
+   `Polynomial.prod_cyclotomic_eq_X_pow_sub_one` at `n = p`, since
+   `Nat.divisors p = {1, p}` for prime `p`).
+5. `X ^ (2 * p) - 1 = (X ^ p - 1) * (X ^ p + 1)` (algebraic identity:
+   `a ^ 2 - 1 = (a - 1)(a + 1)` with `a = X ^ p`).
+6. Combining 3–5 and cancelling the monic factor `(X - 1) * cyclotomic p ℤ`
+   (nonzero in the integral domain `ℤ[X]`):
+   `(X + 1) * cyclotomic (2 * p) ℤ = X ^ p + 1`.
+
+This S7 SCAFFOLD lands **step 1**; steps 2–6 are deferred to a follow-up
+session (`S8`). The downstream payoff (lifting `r_constantCoeff_eq_signed_p`
+to all odd primes) is sketched in `state.md` and `knowledge.md`.
+-/
+
+/-- For `p` an odd prime, the divisors of `2 * p` are exactly `{1, 2, p, 2 * p}`.
+
+Combinatorial backbone for the uniform cyclotomic bridge identity
+`cyclotomic (2 * p) ℤ * (X + 1) = X ^ p + 1`. The forward direction
+(`k ∣ 2 * p ⇒ k ∈ {1, 2, p, 2 * p}`) splits on parity of `k`:
+
+* If `2 ∣ k`, write `k = 2 * m`; then `2 * m ∣ 2 * p ⇒ m ∣ p`, so by
+  primality `m ∈ {1, p}`, giving `k ∈ {2, 2 * p}`.
+* If `2 ∤ k`, then `Nat.Coprime k 2`, so `k ∣ 2 * p ⇒ k ∣ p`, giving
+  `k ∈ {1, p}` by primality.
+
+For `p = 2` the divisor set degenerates to `{1, 2, 4}`; the lemma excludes
+this case via `Odd p`. -/
+lemma divisors_two_mul_odd_prime {p : ℕ} (hp : p.Prime) (hpodd : Odd p) :
+    Nat.divisors (2 * p) = {1, 2, p, 2 * p} := by
+  have h2p_pos : 0 < 2 * p := Nat.mul_pos (by norm_num) hp.pos
+  have h2p_ne : 2 * p ≠ 0 := h2p_pos.ne'
+  ext k
+  simp only [Nat.mem_divisors, Finset.mem_insert, Finset.mem_singleton]
+  refine ⟨fun ⟨hk_dvd, _⟩ => ?_, ?_⟩
+  · by_cases h2 : 2 ∣ k
+    · obtain ⟨m, rfl⟩ := h2
+      -- `hk_dvd : 2 * m ∣ 2 * p`; cancel the `2` to get `m ∣ p`.
+      have hm_dvd : m ∣ p := by
+        obtain ⟨q, hq⟩ := hk_dvd
+        refine ⟨q, ?_⟩
+        have hassoc : 2 * m * q = 2 * (m * q) := by ring
+        rw [hassoc] at hq
+        exact Nat.eq_of_mul_eq_mul_left (by norm_num : 0 < 2) hq
+      rcases hp.eq_one_or_self_of_dvd m hm_dvd with rfl | rfl
+      · exact Or.inr (Or.inl (by norm_num))
+      · exact Or.inr (Or.inr (Or.inr rfl))
+    · -- `¬ 2 ∣ k` ⇒ `Nat.Coprime k 2`, so `k ∣ 2 * p ⇒ k ∣ p`.
+      have hcop : Nat.Coprime k 2 :=
+        ((Nat.prime_two.coprime_iff_not_dvd).mpr h2).symm
+      have hk_p : k ∣ p := hcop.dvd_of_dvd_mul_left hk_dvd
+      rcases hp.eq_one_or_self_of_dvd k hk_p with rfl | rfl
+      · exact Or.inl rfl
+      · exact Or.inr (Or.inr (Or.inl rfl))
+  · rintro (rfl | rfl | rfl | rfl)
+    · exact ⟨one_dvd _, h2p_ne⟩
+    · exact ⟨dvd_mul_right _ _, h2p_ne⟩
+    · exact ⟨dvd_mul_left _ _, h2p_ne⟩
+    · exact ⟨dvd_refl _, h2p_ne⟩
+
 /-! ## Uniform conjecture (general odd prime p ≥ 3) -/
 
 /--
