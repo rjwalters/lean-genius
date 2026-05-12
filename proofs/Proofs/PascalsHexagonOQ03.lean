@@ -181,6 +181,46 @@ theorem hexRev_hexRot_hexRev : hexRev * hexRot * hexRev = hexRot⁻¹ := by
   fin_cases i <;> decide
 
 -- ============================================================
+-- PART 2c: Order of `hexRot` and `hexRev` (S3a)
+-- ============================================================
+-- Sharpens `hexRot_pow_six` and `hexRev_mul_self` to exact orders.
+-- These two facts plus `hexRev_hexRot_hexRev` give the standard injectivity
+-- argument for the dihedral homomorphism `DihedralGroup 6 →* Sym(6)` (S3b).
+-- (Reason: `orderOf hexRot = 6` and `orderOf hexRev = 2` together with the
+-- conjugation relation force the 12 elements `{hexRot^i, hexRev * hexRot^i :
+-- i ∈ Fin 6}` to be pairwise distinct.)
+
+/-- The non-trivial powers of `hexRot` below the 6th are not the identity.
+    Combined with `hexRot_pow_six`, this pins `orderOf hexRot` to exactly 6.
+
+    Argument order matches `Mathlib.GroupTheory.OrderOfElement.orderOf_eq_iff`:
+    `m < n` first, then `0 < m`. -/
+theorem hexRot_pow_lt_six_ne_one :
+    ∀ m, m < 6 → 0 < m → hexRot ^ m ≠ 1 := by
+  intro m hlt hm h
+  interval_cases m
+  all_goals
+    exact absurd (congrArg (fun (e : Equiv.Perm (Fin 6)) => e 0) h)
+      (by native_decide)
+
+/-- **`orderOf hexRot = 6`** — the rotation has order exactly 6.
+    Direct upgrade of `hexRot_pow_six` using `hexRot_pow_lt_six_ne_one`. -/
+theorem orderOf_hexRot : orderOf hexRot = 6 := by
+  apply (orderOf_eq_iff (by norm_num)).mpr
+  exact ⟨hexRot_pow_six, hexRot_pow_lt_six_ne_one⟩
+
+/-- **`orderOf hexRev = 2`** — the reversal is an involution distinct from 1.
+    Uses `hexRev_mul_self` (from `pow_two`) and `hexRev_ne_one`. -/
+theorem orderOf_hexRev : orderOf hexRev = 2 := by
+  apply (orderOf_eq_iff (by norm_num)).mpr
+  refine ⟨?_, ?_⟩
+  · rw [pow_two]; exact hexRev_mul_self
+  · intro m hlt hm
+    interval_cases m
+    rw [pow_one]
+    exact hexRev_ne_one
+
+-- ============================================================
 -- PART 3: Hexagon Labelings as Sym(6) ⧸ D_6
 -- ============================================================
 
@@ -200,17 +240,22 @@ theorem card_sym6 : Fintype.card (Equiv.Perm (Fin 6)) = 720 := by
 
 /-- **OQ-03-OQ-01**: the dihedral subgroup `hexagonalGroup` has order 12.
 
-    S3 plan: the three dihedral defining relations are now in hand
-    (`hexRot_pow_six`, `hexRev_mul_self`, `hexRev_hexRot_hexRev`).
-    The remaining work is to (i) define a homomorphism
+    Progress (S3a, this PR): the dihedral defining relations and the exact
+    orders of the two generators are now in hand —
+    `hexRot_pow_six`, `hexRev_mul_self`, `hexRev_hexRot_hexRev`,
+    `orderOf_hexRot` (= 6), and `orderOf_hexRev` (= 2). These pin the
+    twelve elements `{hexRot ^ i, hexRev * hexRot ^ i : i ∈ Fin 6}` to be
+    pairwise distinct (standard dihedral argument).
+
+    Remaining (S3b): (i) define a homomorphism
     `φ : DihedralGroup 6 →* Equiv.Perm (Fin 6)` by
     `φ (r i) = hexRot ^ i.val`, `φ (sr i) = hexRev * hexRot ^ i.val`,
-    using the three relations for the `map_mul'` proof; (ii) show
-    `φ.range = hexagonalGroup`; (iii) show `φ` is injective (e.g.,
-    via `orderOf hexRot = 6`, leveraging `hexRot_pow_six` + that
-    `hexRot ^ k ≠ 1` for `1 ≤ k ≤ 5` by `native_decide`); then
-    `Nat.card hexagonalGroup = Nat.card (DihedralGroup 6) = 12` by
-    `DihedralGroup.nat_card`. -/
+    using the three relations for the `map_mul'` proof (the
+    modular-wraparound `i + j : ZMod 6` is discharged via
+    `hexRot_pow_six`); (ii) show `φ.range = hexagonalGroup`; (iii)
+    show `φ` is injective using `orderOf_hexRot` plus the conjugation
+    relation; then `Nat.card hexagonalGroup = Nat.card (DihedralGroup 6)
+    = 12` via `DihedralGroup.nat_card`. -/
 theorem card_hexagonalGroup : Nat.card hexagonalGroup = 12 := by
   sorry
 
