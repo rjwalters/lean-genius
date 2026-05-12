@@ -22,8 +22,15 @@
   * S3 (researcher-4): Close `iteratedIntervalIntegral_two` via
     structural-recursion unfolding plus a `Fin.cons` ↔ indicator-form
     bridge on `Fin 2`.
+  * S4 (researcher-10): State `iteratedIntervalIntegral_swap_succ`, the
+    adjacent-coordinate swap invariance theorem.  This is the inductive
+    building block for the general permutation invariance — every
+    `σ : Equiv.Perm (Fin n)` is a product of adjacent transpositions,
+    so `swap_succ` lifts to `_perm` (S5+).  Strategic `sorry`; proof
+    strategy documented inline (Fin.induction on i; base case reduces
+    to parent's 2D `intervalIntegral_swap`).
 
-  Sorries: 0
+  Sorries: 1 (on `iteratedIntervalIntegral_swap_succ`, S4 SCAFFOLD)
   Axioms: 0
 -/
 
@@ -90,5 +97,56 @@ theorem iteratedIntervalIntegral_two
   congr 1
   funext i
   fin_cases i <;> simp
+
+/-- **S4 SCAFFOLD: Adjacent-coordinate swap invariance.**
+
+For an integrand `f : (Fin (n+1) → ℝ) → ℝ` and any `i : Fin n`, swapping
+the `i`-th and `(i+1)`-th coordinates — i.e. transposing `i.castSucc`
+with `i.succ` in `Fin (n+1)` — preserves the iterated interval integral,
+provided we relabel the bounds `a` and `b` and permute the input to `f`
+accordingly.
+
+This is the inductive building block for the eventual general
+permutation invariance: every `σ : Equiv.Perm (Fin (n+1))` is a product
+of adjacent transpositions (the simple-reflection generators of the
+symmetric group; cf. `Equiv.Perm.swap_induction_on'`), so
+`iteratedIntervalIntegral_swap_succ` lifts to the full
+`iteratedIntervalIntegral_perm` (deferred to S5+).
+
+The continuity hypothesis `_hf : Continuous f` is a clean sufficient
+condition that subsumes the measurability and integrability obligations
+of the parent's 2D `intervalIntegral_swap` after restriction to the
+compact box `∏ i, Set.uIcc (a i) (b i)`.  Weaker hypotheses
+(only joint measurability + product-measure integrability) are possible
+but obscure the inductive structure; S5 may refine.
+
+**Proof strategy (deferred to S5/S6).** `Fin.induction` on `i`:
+
+* **Base case** (`i = 0`): two structural-recursion unfoldings of
+  `iteratedIntervalIntegral` at the outermost coordinates rewrite both
+  sides into the curried form
+  `∫ x in a 0..b 0, ∫ y in a 1..b 1, F x y rest` (LHS) versus the
+  variable-swapped curried form (RHS).  Apply the parent's
+  `Proofs.GreensTheoremOQ01OQ01OQ02.intervalIntegral_swap` after a
+  `Fin.cons` ↔ pair-projection bridge analogous to the one in
+  `iteratedIntervalIntegral_two`.
+* **Inductive step** (`i = j.succ`): the outermost integral over
+  `a 0 .. b 0` is untouched by the swap (the transposed indices
+  `j.succ.castSucc` and `j.succ.succ` are both ≥ 1 in `Fin (n+1)`); a
+  single application of `intervalIntegral.integral_congr` brings the
+  swap inside the outer integral, and the IH at `j` (one dimension
+  smaller) closes the inner integral.
+
+Estimated S5 size to discharge: ~80-120 lines including the
+`Fin.cons`-pair bridge in the base case. -/
+theorem iteratedIntervalIntegral_swap_succ
+    {n : ℕ} (i : Fin n) (a b : Fin (n+1) → ℝ) (f : (Fin (n+1) → ℝ) → ℝ)
+    (_hf : Continuous f) :
+    iteratedIntervalIntegral a b f
+      = iteratedIntervalIntegral
+          (a ∘ Equiv.swap i.castSucc i.succ)
+          (b ∘ Equiv.swap i.castSucc i.succ)
+          (fun v => f (v ∘ Equiv.swap i.castSucc i.succ)) := by
+  sorry
 
 end GreensTheoremOQ01OQ01OQ02OQ01

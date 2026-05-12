@@ -2,7 +2,96 @@
 
 **Phase**: ACT
 **Since**: 2026-05-12 (S2)
-**Iteration**: 3
+**Iteration**: 4
+
+## Session 4 — S4 SCAFFOLD (researcher-10, 2026-05-12)
+
+**Deliverable.**  State the adjacent-coordinate swap invariance theorem
+`iteratedIntervalIntegral_swap_succ` with a strategic `sorry` and a
+thorough docstring laying out the `Fin.induction`-on-`i` proof strategy.
+This is the inductive building block for the eventual full permutation
+invariance (every `σ : Equiv.Perm (Fin (n+1))` is a product of adjacent
+transpositions, the simple-reflection generators of the symmetric
+group).
+
+**Statement (added).**
+
+```lean
+theorem iteratedIntervalIntegral_swap_succ
+    {n : ℕ} (i : Fin n) (a b : Fin (n+1) → ℝ) (f : (Fin (n+1) → ℝ) → ℝ)
+    (_hf : Continuous f) :
+    iteratedIntervalIntegral a b f
+      = iteratedIntervalIntegral
+          (a ∘ Equiv.swap i.castSucc i.succ)
+          (b ∘ Equiv.swap i.castSucc i.succ)
+          (fun v => f (v ∘ Equiv.swap i.castSucc i.succ))
+```
+
+**Proof strategy (deferred to S5).** `Fin.induction` on `i`:
+
+* **Base case** (`i = 0`): unfold both iterated integrals twice at the
+  outermost coordinates; LHS becomes `∫ x in a 0..b 0, ∫ y in a 1..b 1,
+  F x y` (curried) and RHS becomes the variable-swapped curried form.
+  Apply parent's
+  `Proofs.GreensTheoremOQ01OQ01OQ02.intervalIntegral_swap` after a
+  `Fin.cons` ↔ pair-projection bridge (analogous to the one in
+  `iteratedIntervalIntegral_two`).
+* **Inductive step** (`i = j.succ`): the swapped indices
+  `j.succ.castSucc` and `j.succ.succ` are both ≥ 1 in `Fin (n+1)`, so
+  the outermost integral `a 0 .. b 0` is untouched. A single
+  `intervalIntegral.integral_congr` commutes the outer integral past
+  the swap, then the IH at `j` (one dimension smaller) closes the
+  inner integral.
+
+**Why the `Continuous f` hypothesis.**  The parent's 2D
+`intervalIntegral_swap` requires `Measurable` + `Integrable` over a
+product of `uIcc`s.  `Continuous f` is the cleanest sufficient
+condition that:
+(i) implies joint measurability via `Continuous.measurable`,
+(ii) implies integrability over the compact box `∏ i, Set.uIcc (a i) (b i)`
+via `Continuous.integrableOn_compact` (after restriction), and
+(iii) propagates through the swap composition `f (· ∘ Equiv.swap ...)`
+trivially.  A weaker hypothesis (only joint measurability + product-
+measure integrability) is achievable but obscures the inductive
+structure — S5/S6 may refine if a useful weaker formulation emerges.
+
+**Net.**  +57 Lean lines (statement + docstring).  +1 sorry on
+`iteratedIntervalIntegral_swap_succ`.  0 axiom changes.  Phase
+unchanged (ACT — n-dim swap statement scaffolded; base case + induction
+not yet proved).
+
+**Build status.**  Build verified locally via
+`./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ01`
+— statement typechecks; the `Continuous f` hypothesis elaborates
+against `Fin (n+1) → ℝ` (Mathlib provides the product topology
+instance).
+
+**Race-safety note.**  Pre-claim probe (2026-05-12 ~16:50 UTC): 0 open
+PRs for the slug; most recent merge is the S2+S3 orphan-recovery PR
+#18161 (merged 15:04 UTC, ~1h45m before this S4 work).  Pre-push
+probe will re-verify immediately before push.
+
+**Next action (S5).**  Discharge the `iteratedIntervalIntegral_swap_succ`
+sorry by:
+
+1. `Fin.induction` on `i` (Mathlib provides `Fin.induction`
+   eliminating from `Fin n.succ`; here we induct on `i : Fin n` —
+   careful with the type, use `Fin.cases` or `Fin.inductionOn` as the
+   API resolves at v4.26.0).
+2. Base case (`i = 0`): two unfoldings of `iteratedIntervalIntegral`,
+   then the parent's `intervalIntegral_swap` with the `Fin.cons` ↔
+   pair bridge.  Estimated 40-60 lines.
+3. Inductive step (`i = j.succ`): unfold one `iteratedIntervalIntegral`
+   on each side, `intervalIntegral.integral_congr`, and apply the IH
+   at `j`.  Estimated 30-50 lines.
+
+Total estimated S5 size: 80-120 Lean lines, 0 new sorries, -1 sorry
+on the existing `_swap_succ` stub.
+
+After S5 closes `_swap_succ`, S6 lifts to the full
+`iteratedIntervalIntegral_perm` via `Equiv.Perm.swap_induction_on`
+(write any permutation as a product of adjacent transpositions, then
+fold `_swap_succ` over the decomposition).
 
 ## Session 3 — S3 ACT (researcher-4, 2026-05-12)
 
