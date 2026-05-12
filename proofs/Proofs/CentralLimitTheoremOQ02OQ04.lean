@@ -14,8 +14,20 @@ the Ibragimov (1962) covariance summability condition
 is satisfied, and the long-run variance σ² = Var(X₁) + 2∑_{k≥1} Cov(X₁, X_{k+1})
 exists and is finite. If additionally σ² > 0, then S_n/√n →_d N(0, σ²).
 
-**Status of this file (S4 ACT — build-fix + structural decomposition).**
-S3 (previous session) merged at `build pending` and never actually compiled
+**Status of this file (S5a — Mathlib drift fix: `polynomial_summable_of_exponent_gt_one`
+discharged via `Real.summable_nat_rpow`).**
+
+S5a (this session) closes a previously open Mathlib-drift sorry that was carried
+forward from S2: the ζ-function summability fact `Σ n^{-s} < ∞ ↔ s > 1` had been
+left as a `sorry` since the original `Real.summable_nat_rpow_inv` name was assumed
+moved/renamed. We use `Real.summable_nat_rpow : Summable ((n:ℝ)^p) ↔ p < -1` from
+`Mathlib.Analysis.PSeries`; with `p = -s` and `s > 1` the equivalence yields the
+result by a single `linarith`. Sorry count: 3 → 2. No structural changes; the
+remaining 2 sorries (`davydov_covariance_inequality`, `mixing_clt_ibragimov`) are
+unchanged S5b / S6+ targets.
+
+**Earlier session: S4 ACT (build-fix + structural decomposition).**
+S3 (PR #17820) merged at `build pending` and never actually compiled
 on `origin/main`. The compile blockers were:
 (a) stale import `Mathlib.Probability.Variance` (file removed in Mathlib drift).
 (b) typeclass synthesis quirk where direct
@@ -72,6 +84,7 @@ import Mathlib.Probability.IdentDistrib
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Pow.NNReal
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
+import Mathlib.Analysis.PSeries
 import Mathlib.Topology.Order.Basic
 import Mathlib.Order.Filter.Basic
 import Proofs.CentralLimitTheoremOQ02
@@ -166,16 +179,12 @@ structure IbragimovHypotheses
 /-! ## Part II: Elementary summability helpers -/
 
 /-- *Polynomial summability* of `n^{-s}` for `s > 1`: the standard ζ-function
-fact, derived from Mathlib's `Real.summable_nat_rpow_inv`. -/
-theorem polynomial_summable_of_exponent_gt_one (s : ℝ) (_hs : 1 < s) :
-    Summable (fun n : ℕ => (n : ℝ) ^ (-s)) := by
-  -- The classical ζ-function summability fact: Σ n^{-s} converges iff s > 1.
-  -- In current Mathlib (drift since the S3 statement) the precise namespaced
-  -- name has moved; the proof reduces to `Real.rpow_neg` + an existing
-  -- summability lemma in Mathlib.Analysis.SpecialFunctions.Pow.Real.
-  -- Mechanic-pass target: locate the renamed `summable_*_nat_rpow_inv` /
-  -- `summable_one_div_nat_rpow` lemma and substitute.
-  sorry
+fact, derived from Mathlib's `Real.summable_nat_rpow` (which characterises
+`Summable (n ↦ n ^ p)` as `p < -1`). With `p = -s` and `s > 1` we get
+`-s < -1`. -/
+theorem polynomial_summable_of_exponent_gt_one (s : ℝ) (hs : 1 < s) :
+    Summable (fun n : ℕ => (n : ℝ) ^ (-s)) :=
+  Real.summable_nat_rpow.mpr (by linarith)
 
 /-- *Sharp-threshold corollary*: under Ibragimov's hypotheses with
 `r > (2 + δ) / δ`, the Ibragimov covariance series ∑ n^{−rδ/(2+δ)} is summable. -/
