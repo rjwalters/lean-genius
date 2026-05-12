@@ -86,12 +86,20 @@
       "mathContext": "Lean 4 dot-notation lookup: `x.foo` desugars to `<HeadType>.foo x`, with fallback via the open-namespace stack. Reopening the parent namespace places `angleA`/`angleB`/`angleC` into the lookup path used during elaboration of the theorem statement below."
     },
     {
-      "id": "main-theorem",
-      "title": "Main Theorem: Angle-over-Side Form",
+      "id": "main-theorem-statement",
+      "title": "Main Theorem: Statement and Hypothesis Destructuring",
       "startLine": 34,
+      "endLine": 46,
+      "summary": "Theorem docstring (lines 34–37) and signature (lines 38–42) of spherical_law_of_sines_angle_over_side, declaring the conjunction sin(A)/sin(a) = sin(B)/sin(b) ∧ sin(A)/sin(a) = sin(C)/sin(c) over six positive-sine hypotheses (one per side and one per angle of a non-degenerate spherical triangle). The proof opens by destructuring the side-over-angle conjunction obtained from the parent: `obtain ⟨h1, h2⟩ := spherical_law_of_sines_all t ha hb hc hA hB hC` (line 43) — single destructuring move exposes h1 : sin(a)/sin(A) = sin(b)/sin(B) and h2 : sin(a)/sin(A) = sin(c)/sin(C) for use in both constructor branches below.",
+      "mathContext": "The six positive-sine hypotheses are exactly the *nondegeneracy* conditions for a spherical triangle: $0 < \\sin a, \\sin b, \\sin c < 1$ and $0 < \\sin A, \\sin B, \\sin C < 1$, equivalently no side or angle is $0$ or $\\pi$. These make all denominators of $\\sin(\\cdot)/\\sin(\\cdot)$ nonzero. The conjunctive form (A/a = B/b ∧ A/a = C/c) is *minimal* — it lets transitivity recover the third equality (handled in the sibling theorem below), avoiding redundant tactic work."
+    },
+    {
+      "id": "algebraic-inversion",
+      "title": "Algebraic Inversion: Cross-Multiply, Then linear_combination",
+      "startLine": 47,
       "endLine": 54,
-      "summary": "spherical_law_of_sines_angle_over_side: sin(A)/sin(a) = sin(B)/sin(b) ∧ sin(A)/sin(a) = sin(C)/sin(c). Proof obtains the side-over-angle conjunction from `spherical_law_of_sines_all`, then for each part rewrites both goal and hypothesis via `div_eq_div_iff` (using positive-sine ⇒ nonzero) to clear denominators, and closes with `linear_combination -h`.",
-      "mathContext": "$\\frac{a}{b} = \\frac{c}{d} \\iff a \\cdot d = c \\cdot b$ (when $b, d \\ne 0$). After clearing denominators on both sides of the equation, the goal becomes a polynomial identity of degree 1 in the hypothesis, closed by `linear_combination -h` (verifies $0 = \\mathrm{LHS} - \\mathrm{RHS} - (-1) \\cdot h$ as a polynomial identity)."
+      "summary": "Body of the constructor: for each conjunct the proof rewrites both goal and parent hypothesis via div_eq_div_iff (using ne_of_gt to convert each `0 < sin(·)` into a nonzero side-condition), then discharges the resulting polynomial identity in commutative reals with `linear_combination -h`. First branch (A/a = B/b, lines 47–50) uses hA, hB on the goal and ha, hb on h1; second branch (A/a = C/c, lines 51–54) uses hA, hC on the goal and ha, hc on h2. Both branches are structurally identical — only the index of the side and angle differs.",
+      "mathContext": "$\\texttt{div\\_eq\\_div\\_iff}$: $b, d \\ne 0 \\Rightarrow (\\frac{a}{b} = \\frac{c}{d} \\iff a \\cdot d = c \\cdot b)$. After cross-multiplying both goal and hypothesis, the goal becomes $\\sin A \\cdot \\sin b = \\sin B \\cdot \\sin a$ while h1 becomes $\\sin a \\cdot \\sin B = \\sin b \\cdot \\sin A$. These differ by transposition of two factors — i.e. by a sign. `linear_combination -h1` is the tactic asking `ring` to verify $0 = (\\sin A \\cdot \\sin b - \\sin B \\cdot \\sin a) - (-1)(\\sin a \\cdot \\sin B - \\sin b \\cdot \\sin A)$, which simplifies to $0 = 0$ over $\\mathbb{R}[\\sin A, \\sin a, \\sin B, \\sin b]$. The scalar choice of $-1$ (not $+1$) is what makes the tactic close in one step rather than fail."
     },
     {
       "id": "transitivity-corollary",
