@@ -69,32 +69,60 @@
   },
   "sections": [
     {
+      "id": "preamble",
+      "title": "Preamble: Module Docstring and Imports",
+      "startLine": 1,
+      "endLine": 36,
+      "summary": "Module-level docstring stating the open question (greens-theorem-oq-01-oq-01 OQ-02), the answer (Mathlib lacks the lemma), and the three-version plan (ordered, general, continuous). Imports three Mathlib measure-theory modules (IntervalIntegral, Integral.Prod, Measure.Prod) plus Tactic. The maxHeartbeats 800000 directive accommodates the 4-case general version where each case threads multiple sign-flip rewrites through linarith.",
+      "mathContext": "Three layers of integration API: signed interval integral (calculus convention), unsigned Lebesgue integral over a Set, and the Fubini bridge MeasureTheory.integral_integral_swap that connects them."
+    },
+    {
       "id": "ordered",
       "title": "Part I: Ordered Case",
-      "startLine": 50,
-      "endLine": 75,
-      "summary": "intervalIntegral_swap_of_le: proves Fubini for a ≤ b, c ≤ d. Converts to Lebesgue integrals via integral_of_le, downgrades integrability from Icc to Ioc via restrict_mono, applies integral_integral_swap."
+      "startLine": 37,
+      "endLine": 60,
+      "summary": "intervalIntegral_swap_of_le: proves Fubini for a ≤ b, c ≤ d. Converts to Lebesgue integrals via integral_of_le, downgrades integrability from Icc to Ioc via restrict_mono, applies integral_integral_swap.",
+      "mathContext": "$\\int_a^b f \\, dx = \\int_{(a,b]} f \\, d\\mu$ when $a \\le b$ (integral_of_le). Fubini swaps Lebesgue iterated integrals (integral_integral_swap)."
+    },
+    {
+      "id": "helpers",
+      "title": "Part II Helpers: flip_bounds and neg_outside",
+      "startLine": 62,
+      "endLine": 72,
+      "summary": "Two private lemmas used by the general 4-case proof: flip_bounds (sign-flip identity ∫ x in a..b = -∫ x in b..a, wrapping intervalIntegral.integral_symm) and neg_outside (negation linearity, wrapping intervalIntegral.integral_neg). Extracted as named helpers so the 4-case proof body remains readable rather than re-deriving these identities inline.",
+      "mathContext": "$\\int_a^b f \\, dx = -\\int_b^a f \\, dx$ (sign convention) and $\\int_a^b (-g) \\, dx = -\\int_a^b g \\, dx$ (linearity). These two identities are what make the 4-case sign analysis collapse to the ordered case."
     },
     {
       "id": "general",
       "title": "Part II: General Version",
-      "startLine": 78,
-      "endLine": 175,
-      "summary": "intervalIntegral_swap: general Fubini for any a,b,c,d. Helpers flip_bounds and neg_outside encapsulate the sign-flip identities. The 4-case proof (Case 1: ordered, Case 2: c>d flip outer, Case 3: a>b flip inner, Case 4: both) uses linarith with explicit sign-flip hypotheses."
+      "startLine": 74,
+      "endLine": 174,
+      "summary": "intervalIntegral_swap: general Fubini for any a,b,c,d. The 4-case proof (Case 1: ordered, Case 2: d<c flip outer, Case 3: b<a flip inner, Case 4: both reversed) chains flip_bounds and neg_outside with the ordered lemma; linarith closes each case from the sign-flip equality chain.",
+      "mathContext": "$\\int_c^d \\int_a^b f = \\int_a^b \\int_c^d f$ for ALL orderings of $(a, b, c, d)$. Sign flips on each side cancel symmetrically — even number of reversals preserves equality."
     },
     {
       "id": "continuous",
       "title": "Part III: Continuous Case",
-      "startLine": 178,
-      "endLine": 200,
-      "summary": "intervalIntegral_swap_of_continuous: for continuous f, no measurability or integrability hypotheses needed. ContinuousOn.integrableOn_compact handles the compact rectangle uIcc a b × uIcc c d."
+      "startLine": 176,
+      "endLine": 192,
+      "summary": "intervalIntegral_swap_of_continuous: for continuous f, no measurability or integrability hypotheses needed. ContinuousOn.integrableOn_compact handles the compact rectangle uIcc a b × uIcc c d.",
+      "mathContext": "$f$ continuous $\\implies$ $f$ integrable on any compact set $\\implies$ Fubini auto-applies on the compact rectangle $\\overline{[a,b]} \\times \\overline{[c,d]}$ (uIcc form)."
     },
     {
       "id": "application",
       "title": "Part IV: Application",
-      "startLine": 202,
-      "endLine": 215,
-      "summary": "greens_theorem_fubini_discharged: applies the continuous version to show ∫ y, ∫ x dPdy = ∫ x, ∫ y dPdy for continuous dPdy. Eliminates the hFubini hypothesis from Green's theorem for C¹ vector fields."
+      "startLine": 195,
+      "endLine": 201,
+      "summary": "greens_theorem_fubini_discharged: applies the continuous version to show ∫ y, ∫ x dPdy = ∫ x, ∫ y dPdy for continuous dPdy. Eliminates the hFubini hypothesis from Green's theorem for C¹ vector fields.",
+      "mathContext": "$\\partial P / \\partial y$ continuous $\\implies$ Fubini swap holds, discharging the hFubini hypothesis required by greens-theorem-oq-01."
+    },
+    {
+      "id": "summary",
+      "title": "Summary: Research Finding and Mathlib Contribution Target",
+      "startLine": 203,
+      "endLine": 229,
+      "summary": "Closing docstring documenting the research finding (Mathlib rev 2df2f015 lacks intervalIntegral_swap), tabulating the six theorems proved with their hypotheses and notes (which are absent from Mathlib), describing the key technique (sign-flip reduction to the ordered case), and naming the Mathlib contribution target — Mathlib.MeasureTheory.Integral.IntervalIntegral with suggested name intervalIntegral.swap or intervalIntegral.integral_comm.",
+      "mathContext": "Mathlib gap analysis: the signed interval-integral Fubini is absent at rev 2df2f015 — every gallery application reinvents the Ioc/Icc bridge. This file's general-and-continuous versions are the proposed reusable replacement."
     }
   ],
   "crossReferences": [
