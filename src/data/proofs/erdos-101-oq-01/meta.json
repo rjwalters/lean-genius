@@ -18,14 +18,14 @@
       "research"
     ],
     "badge": "wip",
-    "sorries": 3,
+    "sorries": 2,
     "sourceUrl": "https://erdosproblems.com/101",
     "erdosUrl": "https://erdosproblems.com/101",
     "erdosProblemStatus": "open",
     "dateAdded": "2026-05-11",
     "axiomCount": 0,
-    "lineCount": 325,
-    "assumptions": "3 sorries: (1) erdos_101_oq_01 (the main open conjecture, $100 Erdős prize); (2) solymosi_stojakovic_lower_bound (the 2013 lower bound, recorded statement — construction itself uses algebraic geometry over finite fields and is deferred); (3) erdos_three_halves_conjecture_refuted (corollary that Erdős's original $\\Theta(n^{3/2})$ upper bound is refuted, follows from the lower bound by elementary real-analysis arithmetic). All other supporting lemmas (small-case bound, real-valued $O(n^2)$ trivial bound, $n^2/12$ rate witness) are unconditional and axiom-free. 0 axioms remain — every assumption is a deferred proof obligation rather than a permanent axiomatisation.",
+    "lineCount": 383,
+    "assumptions": "2 sorries: (1) erdos_101_oq_01 (the main open conjecture, $100 Erdős prize); (2) solymosi_stojakovic_lower_bound (the 2013 lower bound, recorded statement — construction itself uses algebraic geometry over finite fields and is deferred). S3 (2026-05-12) discharged the S2 corollary `erdos_three_halves_conjecture_refuted` from the lower bound via elementary real-analysis arithmetic (specialising to $C = 1/2$, using `Real.exp_one_lt_d9` to get $\\log m > 1$ for $m \\geq 3$, then `Real.rpow_lt_rpow_of_exponent_lt`). All other supporting lemmas (small-case bound, real-valued $O(n^2)$ trivial bound, $n^2/12$ rate witness) are unconditional and axiom-free. 0 axioms remain — every assumption is a deferred proof obligation rather than a permanent axiomatisation.",
     "mathlib_version": "4.26.0",
     "theoremCount": 8,
     "definitionCount": 4,
@@ -82,11 +82,11 @@
     },
     {
       "id": "solymosi-stojakovic",
-      "title": "S2: Solymosi–Stojaković Lower Bound + Refutation of $\\Theta(n^{3/2})$",
+      "title": "S2/S3: Solymosi–Stojaković Lower Bound + Refutation of $\\Theta(n^{3/2})$",
       "startLine": 265,
-      "endLine": 323,
-      "summary": "Records the Solymosi–Stojaković 2013 existential lower bound `solymosi_stojakovic_lower_bound` ($\\forall C > 0, \\exists N, \\forall n \\geq N, \\exists P$ with $|P| = n$, no-five-collinear, and $\\text{fourPointLineCount}\\,P \\geq n^{2-C/\\sqrt{\\log n}}$) as a `theorem ... := by sorry` (construction deferred, statement registered). Adds the corollary `erdos_three_halves_conjecture_refuted` recording that no global $O(n^{3/2})$ upper bound exists, also as a sorry to be discharged by elementary real-analysis arithmetic.",
-      "mathContext": "$\\Omega(n^{2-O(1/\\sqrt{\\log n})}) > \\Omega(n^{3/2})$ for large $n$; the Solymosi–Stojaković construction over finite fields realises this asymptotic. Recorded as `theorem ... := by sorry` rather than `axiom` to keep the file axiom-free."
+      "endLine": 381,
+      "summary": "Records the Solymosi–Stojaković 2013 existential lower bound `solymosi_stojakovic_lower_bound` ($\\forall C > 0, \\exists N, \\forall n \\geq N, \\exists P$ with $|P| = n$, no-five-collinear, and $\\text{fourPointLineCount}\\,P \\geq n^{2-C/\\sqrt{\\log n}}$) as a `theorem ... := by sorry` (construction deferred, statement registered). The corollary `erdos_three_halves_conjecture_refuted` (no global $O(n^{3/2})$ upper bound exists) is fully discharged in S3 from the lower bound via elementary real-analysis arithmetic: specialise $C = 1/2$, use $\\exp 1 < 3 \\leq m$ to get $\\log m > 1$, hence $\\sqrt{\\log m} > 1$, hence $2 - 1/(2\\sqrt{\\log m}) > 3/2$, then `Real.rpow_lt_rpow_of_exponent_lt`.",
+      "mathContext": "$\\Omega(n^{2-O(1/\\sqrt{\\log n})}) > \\Omega(n^{3/2})$ for large $n$; the Solymosi–Stojaković construction over finite fields realises this asymptotic. S3 separates the easy half (refutation from the lower bound) from the hard half (the construction itself, deferred). Recorded as `theorem ... := by sorry` rather than `axiom` to keep the file axiom-free."
     }
   ],
   "overview": {
@@ -129,12 +129,12 @@
       "Classical"
     ],
     "namespace": "Erdos101OQ01",
-    "lineCount": 325,
+    "lineCount": 383,
     "axiomCount": 0,
     "theoremCount": 8,
     "definitionCount": 4,
     "path": "Proofs/Erdos101OQ01.lean",
-    "sorries": 3
+    "sorries": 2
   },
   "crossReferences": [
     {

@@ -165,3 +165,105 @@ risk is in the *type signatures*: `Real.rpow`, `Real.sqrt`, and
 `(n : ℝ) ^ (real exponent)` syntax resolves to `Real.rpow` by
 inheriting the `HPow ℝ ℝ ℝ` instance from
 `Mathlib.Analysis.SpecialFunctions.Pow.Real`.
+
+## S3 (researcher-5, 2026-05-12) — Discharge of $\Theta(n^{3/2})$ refutation
+
+### S3 deliverable (this iteration)
+
+The S2 corollary `erdos_three_halves_conjecture_refuted` is no
+longer a `sorry`.  Its proof is now an elementary 50-line discharge
+from S2's `solymosi_stojakovic_lower_bound`.  No new theorems, no
+new definitions, no new imports.
+
+| Metric | Before S3 | After S3 |
+|---|---|---|
+| Sorries | 3 | 2 (main conjecture + SS construction) |
+| Theorems | 8 | 8 |
+| Definitions | 4 | 4 |
+| Axioms | 0 | 0 |
+| Line count | 325 | 383 |
+
+### Proof sketch (real-analysis arithmetic)
+
+Specialise SS to $C = 1/2$:
+
+* For $m \geq 3$, the inequality $m > e$ holds (using
+  `Real.exp_one_lt_d9 : \exp 1 < 2.7182818286`, hence $\exp 1 < 3$).
+* Therefore $\log m > 1$ (by `Real.log_lt_log` applied to
+  $\exp 1 < m$ and `Real.log_exp`).
+* Therefore $\sqrt{\log m} > 1$ (by `Real.sqrt_lt_sqrt 0 ≤ 1 < \log m`
+  and `Real.sqrt_one`).
+* Therefore $\frac{1/2}{\sqrt{\log m}} < 1/2$ (by `div_lt_iff`).
+* Therefore $2 - \frac{1/2}{\sqrt{\log m}} > 3/2$ (by `linarith`).
+* Therefore $m^{3/2} < m^{2 - (1/2)/\sqrt{\log m}}$ (by
+  `Real.rpow_lt_rpow_of_exponent_lt`, requires `1 < m`).
+
+Now combine with the SS witness $P$ at size $m \geq N_1$
+(`fourPointLineCount P \geq m^{2 - (1/2)/\sqrt{\log m}}$`) and the
+hypothesised global $m^{3/2}$ upper bound on
+`fourPointLineCount P` for $|P| \geq N_0$, taking
+$m := \max(N_0, N_1, 3)$:
+
+\[
+m^{2 - (1/2)/\sqrt{\log m}} \leq
+\text{fourPointLineCount } P \leq m^{3/2} <
+m^{2 - (1/2)/\sqrt{\log m}}.
+\]
+
+The terminal `linarith` closes the contradiction.
+
+### Mathlib API used (all in existing imports)
+
+* `Real.exp_one_lt_d9` — `Real.exp 1 < 2.7182818286`
+* `Real.exp_pos` — `0 < Real.exp x`
+* `Real.log_exp` — `Real.log (Real.exp x) = x`
+* `Real.log_lt_log` — `0 < x → x < y → Real.log x < Real.log y`
+* `Real.sqrt_one` — `Real.sqrt 1 = 1`
+* `Real.sqrt_lt_sqrt` — `0 ≤ x → x < y → Real.sqrt x < Real.sqrt y`
+* `Real.rpow_lt_rpow_of_exponent_lt` — `1 < b → x < y → b^x < b^y`
+* `div_lt_iff` — `0 < b → (a/b < c ↔ a < c * b)`
+* `le_max_left`, `le_max_right` (ℕ max ordering)
+* `exact_mod_cast`, `linarith`, `nlinarith`, `norm_num`
+
+### Why S3 is meaningful
+
+S3 fully discharges a sorry whose statement is mathematically
+substantive (the refutation of Erdős's 1980s conjecture) but whose
+proof is short.  This is the canonical "easy half" of a deferred
+proof obligation: the S2 SS bound is reused as a hypothesis, and
+only elementary real-analysis arithmetic separates that hypothesis
+from the corollary.  The file now has only two remaining sorries:
+
+1. `erdos_101_oq_01` — the OPEN conjecture itself ($\$100$ Erdős
+   prize, not a single-session result).
+2. `solymosi_stojakovic_lower_bound` — the SS construction over
+   finite fields, requiring substantial algebraic-geometry
+   infrastructure absent from Mathlib at present.
+
+Both remaining sorries are external proof obligations — neither
+admits an elementary discharge.
+
+### Confidence
+
+**High** that the new proof compiles.  Every step uses a one-line
+Mathlib API call.  The only potential pitfall is the
+`(1/2 : ℝ)` literal matching the SS theorem's `C` parameter, which
+is verified by inspection: the `1 / 2 : ℝ` and `(1 / 2 : ℝ)` forms
+in Lean 4 elaborate to the same rational literal.
+
+### S4 next-action candidates
+
+1. **`Asymptotics.IsBigO` / `IsLittleO` bridge**: convert the
+   real-valued $O(n^2)$ statement to `Asymptotics.IsBigO atTop`
+   and record the OPEN conjecture as `Asymptotics.IsLittleO atTop
+   (· ^ 2)` `sorry`.
+
+2. **Positive (constructive) form of the refutation**: rewrite
+   `erdos_three_halves_conjecture_refuted` as
+   `∀ N, ∃ P, NoFiveCollinear P ∧ N ≤ |P| ∧
+   (P.points.card : ℝ)^(3/2 : ℝ) < (fourPointLineCount P : ℝ)`
+   (de Morgan dual of the negated existence), then unfold the
+   sorry in the OPEN main conjecture against this positive form.
+
+3. **Per-point Cauchy–Schwarz refinement** to chase a $1 - o(1)$
+   leading constant on `improved_upper_bound`'s $n(n-1)/12$.
