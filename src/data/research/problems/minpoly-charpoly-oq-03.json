@@ -29,44 +29,49 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T07:00:00Z",
-    "iteration": 2,
-    "focus": "S1 ACT (this PR, researcher-4) — SCAFFOLD: created `Proofs/MinpolyCharpolyOQ03.lean` (191 lines, 1 sorry, 2 theorems, 3 definitions) with the InvariantFactorChain data structure, the main RCF existence theorem statement (weak form, sorry-guarded), and one unconditional sanity lemma. Gallery entry (meta.json, annotations.json, index.ts) + research markdown + manifest import all included. Resolution at strategy level: AFFIRMATIVE — three-ingredient plan (in-tree companion matrices + Mathlib PID structure theorem + cyclic-summand-to-companion correspondence) has no genuine Mathlib gap.",
+    "since": "2026-05-12T08:30:00Z",
+    "iteration": 4,
+    "focus": "S3 ACT (this PR, researcher-6) — added three unconditional helpers to MinpolyCharpolyOQ03.lean: prodFactors_ne_zero, prodFactors_natDegree (with private list_prod_natDegree_of_all_monic), and chain_natDegree_le. File now 297 lines (was 223), 1 sorry unchanged, 7 theorems (was 4), 3 definitions, 2 private aux lemmas. In parallel: PR #17995 (researcher-1) opened S1 OQ-03-OQ-01 SCAFFOLD adding MinpolyCharpolyOQ03OQ01.lean (xModule M, Module.Finite proved, Module.IsTorsion stated).",
     "blockers": [],
-    "nextAction": "S2 should pick OQ-03-OQ-01 SCAFFOLD (create `MinpolyCharpolyOQ03OQ01.lean` with F[X]-module structure on K^n via M-action; prove `Module.Finite` and `Module.IsTorsion`, ~150 lines, most self-contained of the four sub-OQs). Alternatively: extend `rational_canonical_form_exists` to the strong form with `c.lastFactor = M.minpoly`; or add unconditional `prodFactors_monic` + `factor_dvd_prodFactors` helpers using standard List/Monic API.",
+    "nextAction": "S4 options (one of): (1) Discharge xModule_isTorsionBy_charpoly in PR #17995 file (route through Matrix.aeval_self_charpoly + Matrix.toLinAlgEquiv); (2) Strong-form upgrade of rational_canonical_form_exists adding c.lastFactor = M.minpoly (~5 lines, sorry-preserved); (3) OQ-03-OQ-02 SCAFFOLD applying Module.equiv_directSum_of_isTorsion to extract invariant-factor decomposition (~300 lines); (4) More structural helpers (lastFactor_mem, lastFactor_monic, lastFactor_natDegree_maximal as a chain_natDegree_le application).",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 ACT (researcher-4, 2026-05-12, PR pending) — SCAFFOLD: created `Proofs/MinpolyCharpolyOQ03.lean` with InvariantFactorChain structure, main RCF existence theorem statement (1 sorry, weak form), and `prodFactors_empty` unconditional sanity lemma. Gallery entry (meta.json + annotations.json + index.ts) + research markdown + manifest import included. Three-ingredient resolution documented: companion matrices in-tree + Mathlib PID structure theorem + cyclic-summand correspondence. Sub-OQ decomposition (OQ-03-OQ-01 .. OQ-03-OQ-04) sized at ~900 lines total for the full RCF formalization.",
+    "progressSummary": "S3 ACT (researcher-6, 2026-05-12, this PR) — added three unconditional helpers extending S2: prodFactors_ne_zero (corollary), prodFactors_natDegree (with private list_prod_natDegree_of_all_monic), and chain_natDegree_le. File now 297 lines (was 223), 1 sorry unchanged, 7 theorems (was 4), 3 definitions, 2 private aux lemmas. Builds the dimensional-bookkeeping toolkit needed for OQ-03-OQ-04 (∑ deg pᵢ = n) and the eventual lastFactor = minpoly assertion. Parallel work: PR #17995 (researcher-1) opened S1 OQ-03-OQ-01 SCAFFOLD on a new file.",
     "builtItems": [
       "InvariantFactorChain F (structure): bundles factors + monic + posDegree + divisibility chain as a first-class invariant.",
       "InvariantFactorChain.prodFactors (noncomputable def): the product ∏ p_i — target value charpoly(M).",
       "InvariantFactorChain.lastFactor (noncomputable def): the last factor p_k — target value minpoly(M).",
       "rational_canonical_form_exists (theorem, sorry-guarded): the S1 statement of Frobenius's RCF existence theorem in weak form (prodFactors = charpoly, similarity claim and lastFactor = minpoly equality deferred).",
-      "prodFactors_empty (theorem, unconditional): empty invariant-factor chain has product 1."
+      "prodFactors_empty (theorem, unconditional): empty invariant-factor chain has product 1.",
+      "prodFactors_ne_zero (theorem, S3, unconditional): the product of the invariant factors is nonzero. Direct corollary of prodFactors_monic via Monic.ne_zero.",
+      "prodFactors_natDegree (theorem, S3, unconditional): the natDegree of the product equals the sum of factor natDegrees. Uses private list_prod_natDegree_of_all_monic auxiliary, which inducts via Polynomial.natDegree_mul on monic factors (monic ⇒ nonzero).",
+      "chain_natDegree_le (theorem, S3, unconditional): divisibility chain ⇒ natDegree chain. For i ≤ j, factors[i].natDegree ≤ factors[j].natDegree. Uses the structure chain field + Polynomial.natDegree_le_of_dvd + List.getElem_mem + Monic.ne_zero."
     ],
     "insights": [
       "**Three-ingredient resolution**: companion matrices in-tree + Mathlib `Module.equiv_directSum_of_isTorsion` + cyclic-summand-to-companion correspondence. No genuine Mathlib gap; only integrative work remains (~900 lines via four sub-OQs).",
       "**Structure-encoded divisibility chain**: bundling `factors`, `monic`, `posDegree`, and `chain` as a single `InvariantFactorChain` structure makes the divisibility invariant first-class — downstream lemmas can use it without re-deriving.",
       "**Companion matrix double duty**: each `companionMatrix p_i` simultaneously realises (a) the block on a cyclic F[X]-summand, (b) the characteristic polynomial p_i of that block, and (c) the minimal polynomial of that block (companion is non-derogatory). All three are already proved in `Proofs/CayleyHamiltonReductionOQ02OQ01.lean`.",
       "**Weak vs strong RCF**: S1 statement asserts only `prodFactors = charpoly M`, omitting the full similarity claim and `lastFactor = minpoly M` equality. Both deferred to S2+ to keep the scaffold minimal.",
-      "**Routing via PID structure theorem beats Smith normal form**: the ~900-line roadmap is significantly shorter than the ~1800-line SNF route documented in `CayleyHamiltonReductionOQ02OQ01.lean`'s gap assessment, because Mathlib's `Module.equiv_directSum_of_isTorsion` already encapsulates the SNF-equivalent reduction."
+      "**Routing via PID structure theorem beats Smith normal form**: the ~900-line roadmap is significantly shorter than the ~1800-line SNF route documented in `CayleyHamiltonReductionOQ02OQ01.lean`'s gap assessment, because Mathlib's `Module.equiv_directSum_of_isTorsion` already encapsulates the SNF-equivalent reduction.",
+      "**natDegree-sum identity for monic chains**: prodFactors_natDegree gives c.prodFactors.natDegree = (c.factors.map natDegree).sum, which is what makes the dimensional bookkeeping in OQ-03-OQ-04 (∑ deg pᵢ = n) statable and discharable from the abstract chain alone, without circling back through matrix-level facts.",
+      "**Divisibility chain bounds last-factor degree**: chain_natDegree_le packages the structure's divisibility chain into a natDegree-monotone form. Once OQ-03-OQ-02 lands and produces a chain with prodFactors = charpoly M, lastFactor_natDegree_maximal becomes a 1-line application — and combined with prodFactors_natDegree this yields the bound lastFactor.natDegree ≤ n (matrix dimension) for free."
     ],
     "mathlibGaps": [
       "Module.equiv_directSum_of_isTorsion — referenced from `CayleyHamiltonMinpolyOQ05OQ01OQ04WIP01.lean` line 240. API surface in use; minor S2 verification task to confirm exact signature.",
       "No genuine gaps identified — all required Mathlib lemmas are either confirmed in-tree-use or documented in `Mathlib.Algebra.Module.PID`."
     ],
     "nextSteps": [
-      "S2 SCAFFOLD: `MinpolyCharpolyOQ03OQ01.lean` (F[X]-module structure on K^n via M-action) — ~150 lines, most self-contained sub-OQ.",
-      "S2 alt: Strong-form upgrade — extend `rational_canonical_form_exists` to assert `c.lastFactor = M.minpoly`. Statement-only edit (~5 lines), proof remains sorry.",
-      "S2 alt: Add unconditional helpers `prodFactors_monic` (uses `Polynomial.monic_prod_of_monic` analogue for List) and `factor_dvd_prodFactors` (uses `List.dvd_prod_of_mem`). ~30 lines each.",
-      "S3+: discharge the four sub-OQs sequentially to land the full RCF existence theorem.",
-      "Audit: confirm `Module.equiv_directSum_of_isTorsion` signature in current Mathlib (4.26.0); confirm `List.prod_nil` definitional reduction for `F[X]`.",
-      "Build verification: run `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ03` — ~45 min Docker cold per `proofs/.lake` self-symlink trap."
+      "OQ-03-OQ-01 S2: discharge xModule_isTorsionBy_charpoly in PR #17995's file (Matrix.aeval_self_charpoly + Matrix.toLinAlgEquiv + naturality of aeval).",
+      "Strong-form upgrade (~5 lines): extend rational_canonical_form_exists to also assert c.lastFactor = M.minpoly. With chain_natDegree_le available, lastFactor_natDegree_maximal becomes a 1-line corollary.",
+      "OQ-03-OQ-02 SCAFFOLD (~300 lines): apply Module.equiv_directSum_of_isTorsion to extract the invariant-factor decomposition; can run in parallel with OQ-03-OQ-01 S2.",
+      "More structural helpers on InvariantFactorChain: lastFactor_mem (factors ≠ []), lastFactor_monic, lastFactor_natDegree_maximal (1-line use of chain_natDegree_le), prodFactors_natDegree_le_n (matrix-level instantiation once OQ-03-OQ-02 lands).",
+      "Audit: confirm Module.equiv_directSum_of_isTorsion signature pinned at v4.26.0 before OQ-03-OQ-02 SCAFFOLD writes the application call.",
+      "Build verification: ./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ03 (~45 min Docker cold per proofs/.lake self-symlink trap)."
     ]
   },
   "tags": [
