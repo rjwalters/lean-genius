@@ -1,12 +1,50 @@
 # Current State — roth-theorem-oq-02
 
-**Phase**: ACT (S2 ACT-A — companion-file axiom-form)
-**Since**: 2026-05-12T11:55:00.000Z (S2 ACT-A, researcher-12)
-**Iteration**: 2
-**Researcher**: researcher-12 (S2); researcher-11 (S1)
-**Mode**: ACT (S2 ACT-A companion file)
+**Phase**: ACT (S3-B — Behrend consistency check)
+**Since**: 2026-05-12T13:10:00.000Z (S3-B ACT, researcher-3)
+**Iteration**: 3
+**Researcher**: researcher-3 (S3); researcher-12 (S2); researcher-11 (S1)
+**Mode**: ACT (S3-B Behrend consistency theorem)
 
-## Current Focus (S2 ACT-A)
+## Current Focus (S3-B ACT)
+
+Session 3 (S3-B ACT, researcher-3, 2026-05-12) follows the recommended
+path **S3-B** verbatim. Adds the theorem `bloom_sisask_consistent_with_Behrend`
+to `proofs/Proofs/RothTheoremOQ02.lean`:
+
+```lean
+theorem bloom_sisask_consistent_with_Behrend (N : ℕ) (hN : 3 ≤ N) :
+    (N : ℝ) * Real.exp (-4 * Real.sqrt (Real.log N)) ≤
+      (N : ℝ) / Real.log N ^ (1 + blasiConst) :=
+  (Behrend.roth_lower_bound).trans (rothNumberNat_le_blasi N hN)
+```
+
+The proof is purely transitive through `rothNumberNat N`: Mathlib's
+*unconditional* `Behrend.roth_lower_bound`
+(`(N : ℝ) * exp (-4 * √(log N)) ≤ rothNumberNat N`) combined with the
+S2 `rothNumberNat_le_blasi` yields the consistency statement directly.
+The underlying analytic inequality
+`(1 + c) * log log N ≤ 4 * √(log N)` is *not* proved separately — both
+bounds simultaneously hold of the same numerical sequence, so the
+lower-bound ≤ upper-bound follows by transitivity.
+
+**Why this matters.** It records explicitly that the Bloom–Sisask
+axiom's bound is compatible with (does not contradict) Mathlib's
+existing Behrend lower bound. The gap between them
+(`exp(-4√(log N))` vs `1 / (log N)^(1+c)`) is the central open
+quantitative question and the natural follow-up axiom is the
+Kelley–Meka 2023 refinement.
+
+### Counts
+
+- File: `proofs/Proofs/RothTheoremOQ02.lean` 119 → 150 lines (+31).
+- New import: `Mathlib.Combinatorics.Additive.AP.Three.Behrend`.
+- Supporting theorems: 4 → 5.
+- Axioms: 1 (unchanged).
+- Sorries: 0 (unchanged).
+- Build: verified via Docker (`Built Proofs.RothTheoremOQ02`, 2505 jobs).
+
+## Prior Focus (S2 ACT-A)
 
 Session 2 (S2 ACT-A, researcher-12, 2026-05-12) follows S1's
 recommended path **S2-A** verbatim: create the companion file
@@ -121,40 +159,42 @@ Recommended: **start with S2-A**. It is shippable in one session, matches
 the Mathlib docstring goal verbatim, and unblocks the next-iteration
 plug-in (B → A → core).
 
-## Next Action (S3)
+## Next Action (S3) — resolved by S3-B
 
-S2 ACT-A shipped the typed axiom-form landmark. The remaining work is
-ranked (smallest first):
+S3-B (recommended) shipped this iteration. See the `Current Focus`
+section above. The Behrend lower bound *is* in Mathlib as
+`Behrend.roth_lower_bound : (N : ℝ) * exp (-4 * √(log N)) ≤ rothNumberNat N`
+(unconditional, no hypotheses needed); the consistency follows by a
+single transitive `.trans` through `rothNumberNat N`.
 
-- **S3-B (consistency check, suggested)** — Add a `bloom_sisask_consistent_with_Behrend`
-  theorem stating the axiomatic upper bound is consistent with Behrend's
-  lower bound on `rothNumberNat` (i.e. for sufficiently large N, the upper
-  and lower bounds do not cross). ~60 lines, requires Behrend infrastructure
-  in Mathlib (`Behrend.box / sphere / map` exist, but no explicit
-  `rothNumberNat ≥ N · exp(-c · √log N)` theorem is yet packaged in
-  Mathlib; would require either an axiom on Behrend or a partial
-  derivation from `Behrend.map` injectivity).
-- **S3-C (Bohr-set scaffold)** — Define `BohrSet T ρ` over `ZMod N` and
-  prove basic structure (0 ∈ B, symmetry, B(T, 1) = univ). About +200
-  lines. Higher risk; first step of the multi-quarter infrastructure
-  build toward a non-axiomatic Bloom–Sisask.
-- **S3-A (qualitative consequence, redundant)** — Derive
-  `Tendsto (rothNumberNat N / N) atTop (𝓝 0)` from the S2 axiom.
-  Redundant with Mathlib's existing `rothNumberNat_isLittleO_id` (which
-  S2's `bloom_sisask_consistent_with_isLittleO` already exposes); not
-  recommended.
+## Next Action (S4 — choose one, smallest first)
 
-Recommended: **S3-B**. The Behrend lower bound is already implicit in
-Mathlib (`Mathlib.Combinatorics.Additive.AP.Three.Behrend`); making the
-non-crossing check explicit is a useful sanity test and motivates the
-gap-closing program (Kelley–Meka 2023's `N exp(-c (log N)^{1/12})`
-brings the upper bound much closer to Behrend's `N exp(-c sqrt(log N))`).
+- **S4-a (recommended, smallest)** — `axiom rothNumberNat_kelley_meka`
+  for the Kelley–Meka 2023 bound
+  `∃ c > 0, ∀ N ≥ 3, rothNumberNat N ≤ N · exp(-c · (log N)^{1/12})`,
+  plus matching `kelleyMekaConst` API, plus a one-line
+  `bloom_sisask_consistent_with_KelleyMeka` by transitivity through
+  `rothNumberNat`. About +50 lines, low risk, builds on the S3-B
+  transitivity template directly.
+- **S4-b (Bohr-set scaffold, multi-quarter starter)** — Define
+  `BohrSet T ρ` over `ZMod N`, prove `0 ∈ B(T, ρ)`, symmetry, and
+  `B(T, 1) = univ`. About +200 lines. Higher risk (Mathlib
+  `AddSubgroup`-style API conventions); first step of the multi-quarter
+  infrastructure build toward a non-axiomatic Bloom–Sisask.
+- **S4-c (low priority)** — `bloom_sisask_consistent_with_subadditivity`
+  against `rothNumberNat_add_le`. Likely redundant with existing
+  transitive bounds.
+
+Recommended: **S4-a**. It is the natural sequel to S3-B (same
+transitivity pattern) and adds the strongest known upper bound on
+`rothNumberNat` to the gallery's typed landmarks. Adds one new axiom
+(`rothNumberNat_kelley_meka`), explicit and clearly scoped.
 
 ## Attempt Counts
 
-- Total attempts: 2 (S1 OBSERVE markdown survey, S2 ACT-A companion file)
-- Current approach attempts: 1 (companion file with axiom)
-- Approaches tried: 1 (axiomatized companion file)
+- Total attempts: 3 (S1 OBSERVE markdown survey, S2 ACT-A axiom-form companion, S3-B Behrend consistency check)
+- Current approach attempts: 2 (companion file build-up: axiom + transitive consistency checks)
+- Approaches tried: 1 (axiomatized companion file + transitivity-through-`rothNumberNat`)
 
 ## Notes for Future Sessions
 

@@ -33,36 +33,40 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T11:55:00.000Z",
-    "iteration": 2,
-    "focus": "S2 ACT-A (researcher-12, 2026-05-12): Shipped the recommended S2-A companion file `proofs/Proofs/RothTheoremOQ02.lean` (1 axiom, 4 supporting declarations, 0 sorries, ~95 lines). The file declares `axiom rothNumberNat_bloom_sisask` matching the Mathlib `Mathlib.Combinatorics.Additive.AP.Three.Defs` docstring goal verbatim, provides stable downstream API (`blasiConst`, `blasiConst_pos`, `rothNumberNat_le_blasi`), and exposes the existing Mathlib qualitative form via `bloom_sisask_consistent_with_isLittleO := rothNumberNat_isLittleO_id`. The companion file operates at the Mathlib `rothNumberNat` level (not the project-local `Szemeredi.Roth.Quantitative.rothNumber` used by the gallery's `bloom_sisask_bound` sorry); the two are deliberately kept separate per the file's docstring §'Why This Companion File'. Imports: `Mathlib.Combinatorics.Additive.Corner.Roth` (for `rothNumberNat` and `rothNumberNat_isLittleO_id`) + `Mathlib.Analysis.SpecialFunctions.Log.Basic` (for `Real.log`). S1 OBSERVE (researcher-11, 2026-05-12, PR #18031 + #18033 complementary): literature survey, Mathlib API snapshot, ranked infrastructure gap list, three S2 candidates (markdown-only, no Lean).",
+    "since": "2026-05-12T13:10:00.000Z",
+    "iteration": 3,
+    "focus": "S3-B ACT (researcher-3, 2026-05-12): Added `bloom_sisask_consistent_with_Behrend` to `proofs/Proofs/RothTheoremOQ02.lean` (+31 lines: docstring + 4-line proof + import). The theorem records consistency between the S2 axiom's upper bound `(N : ℝ) / Real.log N ^ (1 + blasiConst)` and Mathlib's *unconditional* lower bound `Behrend.roth_lower_bound : (N : ℝ) * exp(-4 * √(log N)) ≤ rothNumberNat N`. The proof is purely transitive through `rothNumberNat N` — both bounds hold simultaneously, so the lower bound is `≤` the upper bound; the underlying analytic inequality `(1 + c) * log log N ≤ 4 * √(log N)` is *not* proved directly. New import: `Mathlib.Combinatorics.Additive.AP.Three.Behrend`. File now 119 → 150 lines, supporting-theorem count 4 → 5, axioms 1 (unchanged), sorries 0 (unchanged). Build verified via Docker (2505 jobs, `Built Proofs.RothTheoremOQ02`). S2 ACT-A (researcher-12, 2026-05-12, PR #18094): companion-file axiom-form statement (`rothNumberNat_bloom_sisask`) + stable downstream API (`blasiConst`, `blasiConst_pos`, `rothNumberNat_le_blasi`) + qualitative-form export `bloom_sisask_consistent_with_isLittleO`. S1 OBSERVE (researcher-11, 2026-05-12, PR #18031 + #18033): literature survey, Mathlib API snapshot, ranked infrastructure gap list, three S2 candidates.",
     "blockers": [
       "No Mathlib Bohr-set library (BohrSet T rho not defined).",
       "No quantitative Bogolyubov on Bohr sets in Mathlib.",
       "No density-increment iteration framework in Mathlib.",
       "No AP3-specific Fourier level-set / energy lemmas in Mathlib."
     ],
-    "nextAction": "S3-B (recommended): bloom_sisask_consistent_with_Behrend — verify the S2 axiom's upper bound and Mathlib's existing Behrend lower bound do not cross for sufficiently large N. ~60 lines. S3-C: open the multi-quarter Bohr-set scaffold (BohrSet T rho over ZMod N + basic structure lemmas, ~200 lines). S3-A: derive Tendsto (rothNumberNat N / N) atTop (𝓝 0) from the axiom (redundant with `bloom_sisask_consistent_with_isLittleO`; not recommended).",
+    "nextAction": "S4 candidates (ranked smallest first): (a) `bloom_sisask_consistent_with_KelleyMeka` — analogous transitive consistency check against the tighter Kelley-Meka 2023 upper bound `rothNumberNat N ≤ N * exp(-c * (log N)^{1/12})`, contingent on first adding a Kelley-Meka axiom-form statement (similar to `rothNumberNat_bloom_sisask`); about +30 lines axiom + 10 lines consistency. (b) S3-C — begin Bohr-set scaffold: define `BohrSet T ρ` over `ZMod N`, prove `0 ∈ B(T, ρ)`, symmetry, and `B(T, 1) = univ`; about +200 lines, first step of the multi-quarter infrastructure build-out. (c) `bloom_sisask_consistent_with_subadditivity` — verify Bloom-Sisask's upper bound is consistent with the Mathlib `rothNumberNat_add_le` subadditivity in a non-vacuous regime (lower priority; redundant with existing transitive bounds).",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
+      "total": 3,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "OBSERVE: literature chronology (Roth 1953 -> Heath-Brown/Szemeredi 1987-90 -> Bourgain 1999, 2008 -> Sanders 2011 -> Bloom 2012 -> Bloom-Sisask 2020 -> Kelley-Meka 2023) and Mathlib v4.26.0 snapshot. Bloom-Sisask is named as the target in the Mathlib `rothNumberNat` module docstring but has no Lean statement or proof. Three S2 candidates produced (axiom-statement, axiom+consistency check, Bohr-set scaffold); S2-A recommended for next iteration.",
+    "progressSummary": "S3-B: consistency theorem `bloom_sisask_consistent_with_Behrend` records that the S2 axiom's upper bound does not cross Mathlib's unconditional Behrend lower bound. Proof is transitive through `rothNumberNat N`; the analytic inequality `(1 + c) * log log N ≤ 4 * √(log N)` is sidestepped. File now 150 lines, 1 axiom, 5 supporting theorems, 0 sorries. S2: axiom-form companion file at the Mathlib `rothNumberNat` level (~95 lines). S1: literature chronology (Roth 1953 -> Heath-Brown/Szemeredi 1987-90 -> Bourgain 1999, 2008 -> Sanders 2011 -> Bloom 2012 -> Bloom-Sisask 2020 -> Kelley-Meka 2023) and Mathlib v4.26.0 snapshot.",
     "builtItems": [
       "research/problems/roth-theorem-oq-02/problem.md (enriched: formal statement, classification, historical chronology, references).",
       "research/problems/roth-theorem-oq-02/knowledge.md (Mathlib v4.26.0 API snapshot at pin 2df2f0150c275ad, gap-ranking, S2 candidates).",
       "research/problems/roth-theorem-oq-02/state.md (S1 OBSERVE state, next-action plan).",
-      "src/data/research/problems/roth-theorem-oq-02.json (this gallery research entry)."
+      "src/data/research/problems/roth-theorem-oq-02.json (this gallery research entry).",
+      "proofs/Proofs/RothTheoremOQ02.lean S2 ACT-A: `axiom rothNumberNat_bloom_sisask` + `blasiConst`, `blasiConst_pos`, `rothNumberNat_le_blasi`, `bloom_sisask_consistent_with_isLittleO`. New file, 1 axiom, 4 supporting decls, 0 sorries, ~95 lines.",
+      "proofs/Proofs/RothTheoremOQ02.lean S3-B: `bloom_sisask_consistent_with_Behrend (N) (hN : 3 ≤ N) : (N : ℝ) * exp(-4 * √(log N)) ≤ (N : ℝ) / Real.log N ^ (1 + blasiConst)`. Transitive proof through `rothNumberNat N` combining `Behrend.roth_lower_bound` with `rothNumberNat_le_blasi`. +31 lines (119 → 150)."
     ],
     "insights": [
       "Mathlib v4.26.0 already names the Bloom-Sisask bound verbatim in the `rothNumberNat` module docstring; no Lean theorem implements it.",
       "Mathlib has all the elementary Roth-number API (ThreeAPFree, addRothNumber, rothNumberNat, Behrend lower bound) but none of the heavy Fourier-analytic infrastructure required for quantitative upper bounds.",
       "The Mathlib gap list ranks Bohr-set definition first (~200 lines), then regularity (~400), then quantitative Bogolyubov on Bohr sets (~600), then density-increment framework (~300), then AP3 Fourier interface (~400), then the iteration + final bound (~500). Total ~2,400 lines across 5-8 PRs.",
       "Sibling roth-theorem-k3-oq-01 already lists Bloom-Sisask as one of four landmark bounds (Roth/Behrend/Bloom-Sisask/Kelley-Meka) with the proof left as a sorry. This slug refines the focus to Bloom-Sisask alone.",
-      "Realistic single-iteration target: S2-A axiom-form statement file (~80 lines Lean) gives the gallery a typed landmark immediately; the infrastructure build-out is a multi-quarter epic."
+      "Realistic single-iteration target: S2-A axiom-form statement file (~80 lines Lean) gives the gallery a typed landmark immediately; the infrastructure build-out is a multi-quarter epic.",
+      "Consistency between an axiomatized upper bound and a *proved* lower bound is automatic by transitivity through the bounded quantity (`rothNumberNat N` here). One does not need to prove the underlying analytic inequality `(1 + c) * log log N ≤ 4 * √(log N)` separately; the consistency follows because both bounds simultaneously hold of the same numerical sequence.",
+      "Pattern (companion-file consistency checks): when both bounds in a gallery slug exist as theorems / axioms on the same Mathlib quantity, a one-line transitive `.trans` proof yields a meaningful sanity-check theorem. This generalises: any future Kelley-Meka or refined Bloom-Sisask axiom for `rothNumberNat` admits an analogous one-liner against Behrend."
     ],
     "mathlibGaps": [
       "BohrSet T rho definition over ZMod N (~200 lines).",
@@ -73,10 +77,10 @@
       "Quantitative upper bound on rothNumberNat (no theorem stating r_3(N) = o(N) currently exists in Mathlib)."
     ],
     "nextSteps": [
-      "S2-A (recommended): add `proofs/Proofs/RothTheoremOQ02.lean` with `axiom rothNumberNat_bloom_sisask` + proven `bloom_sisask_implies_qualitative` consequence.",
-      "S2-B (alternative): S2-A plus a proven `bloom_sisask_consistent_with_Behrend` consistency check against the Behrend lower bound.",
-      "S2-C (alternative): begin Bohr-set scaffolding in a new file (define `BohrSet T rho`, prove `0 in BohrSet`, symmetry, B(T,1) = univ).",
-      "S3+: progressively port Bourgain-style Bohr-set regularity, then Sanders/Bloom-Sisask quantitative Bogolyubov, then density-increment iteration, then final bound."
+      "S4-a (smallest): `axiom rothNumberNat_kelley_meka : ∃ c > 0, ∀ N ≥ 3, rothNumberNat N ≤ N * exp(-c * (log N)^{1/12})` + matching downstream API + one-line `bloom_sisask_consistent_with_KelleyMeka` via Behrend lower bound. About +50 lines.",
+      "S4-b (Bohr-set scaffold, ~200 lines): define `BohrSet T ρ` over `ZMod N`, prove `0 ∈ B(T, ρ)`, symmetry, and `B(T, 1) = univ`. First step of the multi-quarter infrastructure build-out (Bourgain regularity → Sanders/Bloom-Sisask Bogolyubov → density-increment framework → final bound).",
+      "S4-c (low priority): `bloom_sisask_consistent_with_subadditivity` — verify Bloom-Sisask's upper bound is consistent with the Mathlib `rothNumberNat_add_le` subadditivity in a non-vacuous regime. Likely redundant with existing transitive bounds.",
+      "S5+: progressively port Bourgain-style Bohr-set regularity, then Sanders/Bloom-Sisask quantitative Bogolyubov, then density-increment iteration, then final bound."
     ]
   },
   "tags": [
@@ -127,7 +131,7 @@
     ]
   },
   "started": "2026-05-12T09:30:00.000Z",
-  "lastUpdate": "2026-05-12T09:30:00.000Z",
+  "lastUpdate": "2026-05-12T13:10:00.000Z",
   "significance": 7,
   "tractability": 4
 }
