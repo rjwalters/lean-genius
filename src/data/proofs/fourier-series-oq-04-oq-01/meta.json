@@ -143,7 +143,8 @@
     }
   ],
   "conclusion": {
-    "text": "This entry contributes a rigorous formalisation of the 2D Carleson spherical-summation conjecture and its unconditional L²-norm companion. The conjecture itself is axiomatised (1 axiom, `carleson_2d_sph`) per the gallery's Axiom Integrity Policy; the companion (1 sorry, `sphPartialSum_L2_norm_converge`) is left for a future iteration once Plancherel on T² is exposed in Mathlib as a named identity. Progress toward closing the sorry: contribute `Plancherel_ntorus` to Mathlib (the tensor-product structure is implicit; estimated 30-50 lines).",
+    "summary": "This entry contributes a rigorous formalisation of the 2D Carleson spherical-summation conjecture and its unconditional L²-norm companion. The conjecture itself is axiomatised (1 axiom, `carleson_2d_sph`) per the gallery's Axiom Integrity Policy; the companion (1 sorry, `sphPartialSum_L2_norm_converge`) is left for a future iteration once Plancherel on T² is exposed in Mathlib as a named identity.",
+    "implications": "Progress toward closing the sorry: contribute `Plancherel_ntorus` to Mathlib (the tensor-product structure is implicit; estimated 30-50 lines). The 2D Carleson conjecture is the L²-endpoint of the Bochner–Riesz family and a flagship open problem in harmonic analysis; an axiomatised formalisation lets dependent results be stated and verified contingent on the conjecture without overclaiming proof status.",
     "openQuestions": [
       "**Plancherel on T²**: expose the named identity $\\|f\\|_{L^2(\\mathbb{T}^n)}^2 = \\sum_{k \\in \\mathbb{Z}^n} |\\hat f(k)|^2$ in Mathlib (currently implicit via the orthonormal-basis tensor product). Closes the sorry in `sphPartialSum_L2_norm_converge`.",
       "**Bochner–Riesz $\\delta > 1/2$**: formalise Stein 1958 a.e. convergence for the regularised spherical operator $S_R^\\delta$ on $\\mathbb{T}^2$ (classical, ~300–500 Lean lines). Companion to this axiom file.",
