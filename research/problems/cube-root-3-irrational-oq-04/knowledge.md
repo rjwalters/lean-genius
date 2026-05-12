@@ -324,3 +324,150 @@ an Real.rpow inequality'" gap from S1 still stands but the manual
 - For S4 the squared intermediate is `100/49` (lower) and `169/81`
   (upper); these are "ugly" rationals but `nlinarith` handles
   rational coefficients natively.
+
+## S5-prep (researcher-1, 2026-05-12) — Helper file extraction
+
+### Motivation
+
+S2/S3/S4 (and the deferred S5/S6/…) all share a single proof
+template: "to show `p/q < cbrt3`, by-contra; cube; `nlinarith` with a
+squared-intermediate hint; substitute `cbrt3³ = 3`; `linarith`." Each
+instance is ~14 lines. For five partial quotients the boilerplate
+totals ~70 lines per `aᵢ` (two cubing bounds + one algebraic step),
+i.e. ~350 lines across the prefix.
+
+This iteration extracts the cubing-bound pattern as **two
+biconditional helpers** in a new file
+`proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean`:
+
+```lean
+lt_cbrt3_iff_cube_lt        : 0 ≤ q → (q < cbrt3 ↔ q^3 < 3)
+cbrt3_lt_iff_three_lt_cube  : 0 ≤ q → (cbrt3 < q ↔ 3 < q^3)
+```
+
+After the iff rewrite each partial-quotient cubing bound becomes a
+**two-line** proof:
+
+```lean
+theorem twenty_three_sixteenths_lt_cbrt3 : (23/16 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+```
+
+vs. the ~14-line by-contra template.
+
+### File layout
+
+- New file: `proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean`
+  (~190 lines including docstrings).
+- New namespace `Cbrt3Helpers` (deliberately separate from
+  `CubeRoot3IrrationalOQ04` to avoid `cbrt3_nonneg` /
+  `four_thirds_lt_cbrt3` collisions on future co-import).
+- Independent of `CubeRoot3IrrationalOQ04.lean`: only imports
+  `Proofs.CubeRoot3Irrational` (for `cbrt3` and `cbrt3_cubed`).
+  This prevents the circular dependency that would arise if S5+
+  rewrote `CubeRoot3IrrationalOQ04.lean` to use the helpers.
+
+### Proof technique
+
+Both biconditionals are proved via the polynomial factorization
+
+```
+b³ − a³ = (b − a) · (b² + b·a + a²).
+```
+
+The forward (strict) direction uses `mul_pos` on the factorization,
+which requires the second factor `> 0`. This holds because
+`cbrt3 > 0` (proved as `Cbrt3Helpers.cbrt3_pos` from `cbrt3³ = 3 ≠ 0`).
+The backward direction is by contradiction with the same
+factorization weakened to `mul_nonneg` (no `cbrt3_pos` needed).
+
+Crucially, the factorization sidesteps the `pow_lt_pow_left` /
+`pow_le_pow_left` API drift documented in
+`feedback_researcher_mathlib_descpochhammer_drift.md`: only `ring`,
+`linarith`, `mul_pos`, `mul_nonneg`, `sub_pos`, `sub_nonneg`,
+`pow_pos`, and `sq_nonneg` are used. All are stable names in
+Mathlib v4.26.
+
+### Demonstration
+
+A single new bound — the S5 lower bound
+
+```
+twenty_three_sixteenths_lt_cbrt3 : (23/16 : ℝ) < cbrt3
+```
+
+(cube target `(23/16)³ = 12167/4096 < 12288/4096 = 3`) is proved
+in two lines, exercising `lt_cbrt3_iff_cube_lt`. The S2/S3/S4
+bounds (`four_thirds_lt_cbrt3`, `cbrt3_lt_three_halves`,
+`ten_sevenths_lt_cbrt3`, `cbrt3_lt_thirteen_ninths`) are left intact
+in `CubeRoot3IrrationalOQ04.lean`; this iteration does not refactor
+them.
+
+### Insights (cumulative, post-S5-prep)
+
+1. **Iff-form helpers compress the partial-quotient template by
+   ~7x per cubing bound**: 14 lines (manual) → 2 lines (helper).
+   For S5+ the file growth rate drops from ~70 lines/`aᵢ` to
+   ~35 lines/`aᵢ` (the algebraic inverse-chain step is unchanged).
+
+2. **`cbrt3_pos` is a load-bearing micro-lemma** for the *strict*
+   direction of the iff. The corresponding *non-strict* direction
+   only needs `cbrt3_nonneg`. Future helpers (e.g. for `∛n` with
+   `n ≥ 2`) should follow the same pattern: a `_nonneg` and a
+   `_pos` lemma at the top of the helper file.
+
+3. **Namespace isolation matters**: putting helpers in
+   `Cbrt3Helpers` (not `CubeRoot3IrrationalOQ04`) means a future
+   `open Cbrt3Helpers in …` block can be used inside
+   `CubeRoot3IrrationalOQ04.lean` without name clashes with the
+   existing `cbrt3_nonneg` therein.
+
+### Mathlib gaps (cumulative)
+
+(No new gaps. The "no tactic-level support for 'cube both sides of
+an `Real.rpow` inequality'" gap from S1 is now *closed at the
+proof-engineering level* for `∛3` specifically — the iff-helpers
+serve as a domain-specific tactic-replacement. Closing the gap
+generically (for `∛n` with `n` not a perfect cube) would be a
+genuine Mathlib contribution candidate, but is out of scope here.)
+
+### Next Steps (priority order, post-S5-prep)
+
+1. **(S5)** `cbrt3_a3 : ⌊1/(1/(1/(cbrt3-1) - 2) - 3)⌋ = (1 : ℤ)`.
+   Now needs only:
+   - `twenty_three_sixteenths_lt_cbrt3` (already proved in this
+     helper file — directly importable).
+   - `cbrt3_lt_thirteen_ninths` (already proved in S4 — directly
+     importable from `CubeRoot3IrrationalOQ04`).
+   - The four-level algebraic chain
+     `23/16 < cbrt3 < 13/9 → 7/16 < cbrt3-1 < 4/9 →
+      9/4 < 1/(cbrt3-1) < 16/7 → 1/4 < 1/(cbrt3-1) − 2 < 2/7 →
+      7/2 < 1/(1/(cbrt3-1) − 2) < 4 → 1/2 < x₃ < 1 → 1 ≤ 1/x₃ < 2`.
+2. **(S6)** `cbrt3_a4 = 4`. Needs one more cubing bound, e.g.
+   `cbrt3 < some_tighter_upper_bound`. Helper makes it 2-line.
+3. **(S7+)** Bundle: `cbrt3_cf_prefix : IntFractPair.stream cbrt3
+   takes [1,2,3,1,4]`. Ties per-`aᵢ` lemmas to the canonical
+   Mathlib `IntFractPair` API. No new cubing bounds needed.
+
+### Risk Notes
+
+- Helper file is sorry-free and axiom-free. Build is **pending**
+  (Docker symlink constraint per
+  `feedback_researcher_lake_symlink_broken.md`; not
+  researcher-specific).
+- Proof technique uses only stable Mathlib names
+  (`Real.rpow_nonneg`, `pow_pos`, `sq_nonneg`, `mul_pos`,
+  `mul_nonneg`, `sub_pos`, `sub_nonneg`, `lt_or_eq_of_le`,
+  `le_antisymm`, plus the local lemma `cbrt3_cubed`). API drift
+  risk is minimal.
+- One concurrent PR (#17832) is open against `CubeRoot3IrrationalOQ04.lean`
+  proving `cbrt3_a2 = 3`. The helper file does **not** modify
+  `CubeRoot3IrrationalOQ04.lean`, so the two PRs are conflict-free
+  on the `proofs/` tree.
+- The `Proofs.lean` auto-import file is regenerated in this PR
+  (5 file additions, all real); also picks up three
+  orphan files (`AngleTrisectionCos20GalOQ01OQ03`,
+  `CentralLimitTheoremOQ02OQ04`, `GreensTheoremOQ01OQ01OQ02OQ03`)
+  added by recent PRs that skipped regeneration — pure cleanup, no
+  semantic conflict.
