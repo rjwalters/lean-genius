@@ -1,0 +1,119 @@
+{
+  "slug": "lagrange-four-squares-waring-g2-oq-01",
+  "title": "Waring's problem for k ≥ 3 — determine g(k)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\forall k \\geq 1, \\; g(k) = \\min\\{s : \\forall n \\in \\mathbb{N}, \\exists a_1, \\ldots, a_s \\in \\mathbb{N}, \\sum_{i=1}^s a_i^k = n\\}. \\text{ Determine } g(k) \\text{ for } k \\geq 3.",
+    "plain": "Waring's problem: for each integer k ≥ 1, determine g(k) — the smallest s such that every natural number is a sum of at most s perfect k-th powers. The parent gallery entry proves g(2) = 4 (Lagrange 1770). This OQ asks: what is g(k) for k ≥ 3? Classical values: g(3) = 9 (Wieferich-Kempner 1909/1912), g(4) = 19 (Balasubramanian-Deshouillers-Dress 1986), g(5) = 37 (Chen 1964), g(6) = 73 (Pillai 1940). General formula (conjectural, verified up to k ~ 5×10^8): g(k) = 2^k + floor((3/2)^k) - 2.",
+    "whyMatters": [
+      "Mathlib coverage: zero infrastructure for Waring beyond Nat.sum_four_squares (Lagrange). No g(k) definition, no Wieferich-Kempner, no Hilbert-Waring existence theorem. First Lean formalization in any major library would be a meaningful contribution.",
+      "Wiedijk #109: Hilbert-Waring is item 109 on the 'Formalizing 100 Theorems' tracker; only g(2) has been historically formalized. Partial progress (lower bounds for k = 3, 4, 5, 6 + axiomatized upper bounds) would be the first major step.",
+      "Pedagogical: surfaces the universal pattern 'lower bounds are elementary, upper bounds are deep' present throughout additive number theory. The parent demonstrates this for k = 2 via mod-8; this OQ extends to k ≥ 3 via mod-9, mod-16, mod-32."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "g(2) = 4 (parent, fully verified): Lagrange's theorem (upper) + mod-8 descent (lower).",
+      "Hilbert-Waring 1909: g(k) is finite for every k ≥ 1 (existence, integral-representation proof).",
+      "g(3) = 9 (Wieferich 1909, Kempner 1912 correction): research-level polynomial-identity decomposition.",
+      "g(4) = 19 (Balasubramanian-Deshouillers-Dress 1986).",
+      "g(5) = 37 (Chen Jingrun 1964).",
+      "g(6) = 73 (Pillai 1940).",
+      "g(k) for k ≥ 7: equals 2^k + floor((3/2)^k) - 2 conditional on Mahler 1957's fractional-part hypothesis; verified computationally for k ≤ 4.7×10^8 (Kubina-Wunderlich 1990)."
+    ],
+    "open": [
+      "Is g(k) = 2^k + floor((3/2)^k) - 2 for ALL k (not just all but finitely many)?",
+      "Big-G(k) values: G(3) is known to be in [4, 7]; G(4) = 16; G(k) for k ≥ 5 has wide gaps. Conjecturally G(3) = 4."
+    ],
+    "goal": "Formalize in Lean: (1) IsSumOfPowers s k n definition; (2) lower bound g(3) ≥ 9 via decide-based 23-search; (3) lower bound g(4) ≥ 19 via mod-16; (4) optional g(5), g(6) lower bounds; (5) axiomatize the Wieferich-Kempner / BDD / Hilbert-Waring upper bounds and combine to obtain g(k) = X (axiomatized) for small k."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T14:05:00.000Z",
+    "iteration": 1,
+    "focus": "S1 (researcher-3, 2026-05-12): OBSERVE survey for the Waring g(k) family. Wrote problem.md (~3.2K words) with formal Lean targets + Mathlib gap analysis; knowledge.md (~2.5K words) with historical table (1770 Lagrange, 1909 Hilbert/Wieferich, 1912 Kempner, 1940 Pillai, 1964 Chen, 1986 BDD, 1957 Mahler, 1990 Kubina-Wunderlich); bibliography (Hardy & Wright §21, Vaughan 'The Hardy-Littlewood Method', OEIS A002804). No Lean changes — pure OBSERVE phase.",
+    "blockers": [],
+    "nextAction": "S2: prove twenty_three_needs_nine_cubes : ¬ IsSumOfCubes 8 23 in proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean. Approach: define IsSumOfCubes s n := ∃ f : Fin s → ℕ, ∑ i, (f i)^3 = n; bound each summand by 2 (since 3^3 = 27 > 23); reduce to decide on the 3^8 = 6561 tuples in Fin 8 → Fin 3. Expected ~80 Lean lines, sorry-free, no axioms; this is the lower-bound side of g(3) ≥ 9.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-3, 2026-05-12): inaugural OBSERVE survey for Waring's problem extension k ≥ 3. Established the formalization architecture: (1) lower bounds are mod-arithmetic exercises (mod-9 for k=3, mod-16 for k=4, mod-32 for k=5) tractable in single Lean sessions; (2) upper bounds (Wieferich-Kempner, BDD, Chen, Pillai) are research-level and must be axiomatized; (3) Hilbert-Waring existence theorem is itself a Mathlib gap requiring the Hardy-Littlewood circle method (or Linnik's 1943 elementary version). Documented all g(k) values for k ∈ [1, 8], the conjectural formula g(k) = 2^k + floor((3/2)^k) - 2, and the citation graph (Hardy & Wright §21 as the canonical textbook reference). No Lean changes.",
+    "builtItems": [],
+    "insights": [
+      "Two-tier formalization: lower bounds (mod-arithmetic, decide-based, ~80 Lean lines each) are tractable; upper bounds (Wieferich-Kempner polynomial identities, BDD analytic argument) require axiomatization. The parent file demonstrates this split for g(2): Mathlib's Nat.sum_four_squares for the upper bound; mod-8 descent (sq_mod_eight + sum_three_sq_mod_eight_ne_seven) for the lower bound.",
+      "Mod-arithmetic recipe generalizes per k: every a^k mod m takes restricted values; sums of (g(k) - 1) k-th powers cover a strict subset of residues, missing one residue that the witness n hits. For k=2, m=8, missing residue is 7 (parent). For k=3, m=9, a^3 ∈ {0,1,8} but the witness n=23 needs a sharper direct enumeration. For k=4, m=16, a^4 ∈ {0,1} and witness n=79 ≡ 15 mod 16 ≠ ≤18 mod 16 = {0,1,2,…,18 mod 16}.",
+      "Decidability blowup: for g(3) ≥ 9, search space is 3^8 = 6561 tuples — feasible. For g(4) ≥ 19, naive search is 3^18 ≈ 4×10^8 tuples — infeasible; mod-16 argument is mandatory. For g(5) ≥ 37, mod-32 argument is mandatory.",
+      "Hilbert-Waring (1909): proves g(k) finite for all k via integral representation. Mathlib has zero infrastructure for Hardy-Littlewood circle method, and any Lean proof of Hilbert-Waring is a multi-year effort. The pragmatic path is to axiomatize g(k) existence and prove specific values for small k under the axiom.",
+      "Conjectural formula g(k) = 2^k + floor((3/2)^k) - 2 (Mahler 1957): proved for all but finitely many k; verified up to k ≤ 4.7×10^8 (Kubina-Wunderlich 1990). For k=3: 2^3 + floor(3.375) - 2 = 8 + 3 - 2 = 9 ✓. For k=4: 16 + floor(5.0625) - 2 = 19 ✓. For k=5: 32 + floor(7.59...) - 2 = 37 ✓. For k=6: 64 + floor(11.39) - 2 = 73 ✓. The formula's failure for any k would be a major number-theory result.",
+      "OEIS A002804 lists g(k) = 1, 4, 9, 19, 37, 73, 143, 279, 548, 1079, 2132, 4223, ... — exponential growth in k. A079611 lists numbers requiring exactly g(3) = 9 cubes: just {23, 239}; this finite list (proved by Wieferich-Kempner) makes the g(3) story particularly clean. Other-k families are conjecturally finite but unproved."
+    ],
+    "mathlibGaps": [
+      "No Mathlib lemma defining waringG (k : ℕ) : ℕ; only g(2) = 4 (via Nat.sum_four_squares) is accessible. Would need a new file Mathlib.NumberTheory.Waring.Basic.",
+      "No Mathlib lemma for Wieferich-Kempner g(3) ≤ 9 (the upper-bound side). The proof uses a polynomial identity decomposition specific to cubes; no analogous infrastructure exists.",
+      "No Mathlib infrastructure for the Hardy-Littlewood circle method (major arcs / minor arcs / exponential sum estimates). This is the canonical proof technique for Hilbert-Waring (g(k) finite) and Waring-style problems generally. A Mathlib pipeline would be a multi-year effort."
+    ],
+    "nextSteps": [
+      "S2: prove twenty_three_needs_nine_cubes : ¬ IsSumOfCubes 8 23 in proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean. Use bounded decide over Fin 8 → Fin 3 (6561 tuples). Expected ~80 lines, 0 sorries, 0 axioms.",
+      "S3: prove seventy_nine_needs_nineteen_fourth_powers : ¬ IsSumOfFourthPowers 18 79 via mod-16 argument (every a^4 ≡ 0 or 1 mod 16, so 18 fourth-powers sum to ≤ 18 mod 16, missing 15 = 79 mod 16). Expected ~50 lines.",
+      "S4: prove 239 is the second witness for g(3) ≥ 9 (analogously to S2 with extended search range a ≤ 6 since 7^3 = 343 > 239). Or skip and proceed to S5.",
+      "S5+: introduce axioms wieferich_kempner_g3 : ∀ n, IsSumOfCubes 9 n and balasubramanian_g4 : ∀ n, IsSumOfFourthPowers 19 n, plus hilbert_waring : ∀ k ≥ 1, ∃ s, ∀ n, IsSumOf s k n. Combine with S2-S4 lower bounds to obtain explicit waringG_three : waringG 3 = 9 (axiomatized) and waringG_four : waringG 4 = 19 (axiomatized). Update meta.json to status=axiomatized, badge=axiom."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "waring-problem",
+    "number-theory",
+    "sums-of-powers",
+    "hilbert-waring",
+    "mathlib-gap",
+    "classical"
+  ],
+  "relatedProofs": [
+    "lagrange-four-squares-waring-g2",
+    "lagrange-four-squares",
+    "lagrange-four-squares-oq-01",
+    "lagrange-four-squares-oq-01-oq-01",
+    "four-square-distribution",
+    "four-square-representations",
+    "fermat-two-squares-oq-01",
+    "fermat-last-theorem"
+  ],
+  "references": {
+    "papers": [
+      "Wieferich, K. 'Über das Waringsche Problem.' Math. Ann. 66 (1909): 95-101.",
+      "Kempner, A. 'Bemerkungen zum Waringschen Problem.' Math. Ann. 72 (1912): 387-399.",
+      "Pillai, S. S. 'On Waring's problem g(6) = 73.' Bull. Calcutta Math. Soc. 32 (1940): 30.",
+      "Chen, J. R. 'Waring's problem for g(5) = 37.' Sci. Sinica 13 (1964): 1547-1568.",
+      "Balasubramanian, R.; Deshouillers, J.-M.; Dress, F. 'Problème de Waring pour les bicarrés. I, II.' C. R. Acad. Sci. Paris Sér. I Math. 303 (1986): 85-88, 161-163.",
+      "Mahler, K. 'On the fractional parts of the powers of a rational number, II.' Mathematika 4 (1957): 122-124.",
+      "Kubina, J. M.; Wunderlich, M. C. 'Extending Waring's conjecture to 471,600,000.' Math. Comp. 55 (1990): 815-820.",
+      "Hardy, G. H.; Wright, E. M. An Introduction to the Theory of Numbers, 5th ed., Oxford 1979, §21.",
+      "Vaughan, R. C. The Hardy-Littlewood Method, 2nd ed., Cambridge 1997."
+    ],
+    "urls": [
+      "https://oeis.org/A002804",
+      "https://oeis.org/A079611",
+      "https://oeis.org/A046045",
+      "https://www.cs.ru.nl/~freek/100/"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.SumFourSquares",
+      "Mathlib.NumberTheory.SumTwoSquares",
+      "Mathlib.Algebra.BigOperators.Fin",
+      "Mathlib.Data.Finset.Lattice",
+      "Mathlib.Tactic.Decide"
+    ]
+  },
+  "started": "2026-05-12T14:05:00.000Z",
+  "lastUpdate": "2026-05-12T14:05:00.000Z",
+  "significance": 7,
+  "tractability": 4,
+  "leanFiles": []
+}
