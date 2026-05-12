@@ -391,10 +391,11 @@ lemma schnirelmannDensity_primes_eq_zero :
     schnirelmannDensity {n : ℕ | Nat.Prime n} = 0 :=
   _root_.schnirelmannDensity_eq_zero_of_one_notMem (fun h => Nat.not_prime_one h)
 
-/-- Schnirelmann's result on primes: the set P + P (sums of two primes)
+/- Schnirelmann's result on primes: the set P + P (sums of two primes)
     has positive Schnirelmann density. Combined with his basis theorem,
-    this shows every large integer is a bounded sum of primes. -/
-/- primes_sumset_positive_density (Schnirelmann): σ(P + P) > 0;
+    this shows every large integer is a bounded sum of primes.
+
+    primes_sumset_positive_density (Schnirelmann): σ(P + P) > 0;
     the set of sums of two primes has positive Schnirelmann density. -/
 
 /-- Tao's theorem (2014): every odd integer > 1 is a sum of at most 5 primes.
@@ -560,9 +561,10 @@ theorem binary_goldbach_verified_small :
   intro n h4 hEven h30
   interval_cases n <;> revert hEven <;> decide
 
-/-- Under GRH, binary Goldbach holds for all odd n > some explicit bound
-    (Deshouillers, Effinger, te Riele, Zinoviev, 1997) -/
-/- deshouillers_grh_goldbach (1997): under GRH, every odd n > 10^20
+/- Under GRH, binary Goldbach holds for all odd n > some explicit bound
+    (Deshouillers, Effinger, te Riele, Zinoviev, 1997).
+
+    deshouillers_grh_goldbach (1997): under GRH, every odd n > 10^20
     is a sum of three primes (key step before Helfgott's unconditional proof). -/
 
 /-- Linnik's theorem on Goldbach representations:
@@ -591,9 +593,10 @@ theorem linnik_goldbach_representations :
     where C₂ = Π_{p>2} (1 - 1/(p-1)²) ≈ 0.6601618... is the twin prime constant -/
 def twinPrimeConstant : ℝ := 0.6601618158
 
-/-- The Hardy-Littlewood Goldbach asymptotic:
-    G(n) ∼ 2C₂ · Π_{p|n, p>2} (p-1)/(p-2) · n/(log n)² -/
-/- hardy_littlewood_goldbach_asymptotic: G(n) ∼ 2C₂ · Π_{p|n,p>2} (p-1)/(p-2) · n/(log n)²
+/- The Hardy-Littlewood Goldbach asymptotic:
+    G(n) ∼ 2C₂ · Π_{p|n, p>2} (p-1)/(p-2) · n/(log n)²
+
+    hardy_littlewood_goldbach_asymptotic: G(n) ∼ 2C₂ · Π_{p|n,p>2} (p-1)/(p-2) · n/(log n)²
     where C₂ ≈ 0.6601618 is the twin prime constant. -/
 
 /-- Helfgott's explicit bound: all odd n > 5 are sums of three primes.
