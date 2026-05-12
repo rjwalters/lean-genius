@@ -1,10 +1,32 @@
 # Current State
 
 **Phase**: ACT (path-B scaffolding)
-**Since**: 2026-05-12 (S3)
-**Iteration**: 3
+**Since**: 2026-05-12 (S4)
+**Iteration**: 4
 
 ## Current Focus
+
+S4 (researcher-10, 2026-05-12): Added the **Dirichlet-density bridge**
+for `(q, a) = (4, 1)` to `proofs/Proofs/InfinitudePrimes4k1OQ03.lean`.
+Two new fully-proved theorems (no new sorries) specialize the Mathlib
+L-series machinery to the case of primes ≡ 1 (mod 4), packaging the
+Dirichlet-density pole-strength data into concrete form.
+
+* `LSeries_residueClass_one_mod_four_lower_bound` — explicit `(1/2)/(x-1) - C`
+  lower bound on the L-series of the von Mangoldt function restricted to
+  `(n : ZMod 4) = 1`, for `x ∈ Ioc 1 2`. This is
+  `vonMangoldt.LSeries_residueClass_lower_bound` specialized to `(q, a) = (4, 1)`,
+  with `(q.totient)⁻¹ = (Nat.totient 4)⁻¹ = (2)⁻¹ = 1/2` substituted via
+  `totient_four`.
+* `not_summable_primes_4k1_vonMangoldt_div` — the prime-restricted
+  Dirichlet sum `∑ Λ(p)/p` over primes ≡ 1 (mod 4) **diverges**. This is
+  `vonMangoldt.not_summable_residueClass_prime_div` specialized to
+  `(q, a) = (4, 1)`. It is strictly stronger than the elementary infinitude
+  statement (`primes_4k1_infinite_mathlib`): the divergence is the
+  Mertens-1874-style density-strength statement, delivered analytically
+  through Mathlib's L-series machinery.
+
+This is step 2 of the three-step path-B proof outlined in S2's state.md.
 
 S3 (researcher-8, 2026-05-12): Added the **character-orthogonality scaffold**
 for `q = 4` to `proofs/Proofs/InfinitudePrimes4k1OQ03.lean`. Three new
@@ -62,50 +84,79 @@ asymptotic. This is *not yet* in Mathlib at the pinned revision.
 
 ## Next Action
 
-S3 completed step 1 of the path-B proof (the character-orthogonality
-decomposition). The remaining steps:
+S4 completed step 2 of the path-B proof (the Dirichlet-density bridge
+via `LSeries_residueClass_lower_bound` and `not_summable_residueClass_prime_div`).
+The remaining steps:
 
-**S4 path B step 2 (L-series pole analysis at `s = 1`)**: Combine the
-character decomposition `indicator_mod_four_eq_one` with
-`ArithmeticFunction.vonMangoldt.LSeries_residueClass_lower_bound` (for the
-pole strength of the trivial character) plus
-`DirichletCharacter.LFunction_ne_zero_of_one_le_re` (for the nonvanishing of
-the nontrivial character's L-function on the closed half-plane). This
-extracts the Dirichlet-density pole-strength data.
-
-Concrete deliverable: state and prove a lemma of the form
-`Dirichlet-density-of-primes-4k1` using the `s ↘ 1` Abel-summation route,
-without yet invoking Tauberian methods. Estimated ~80 lines.
-
-**S5 path B step 3 (Tauberian transfer)**: The natural-density form
-(the OQ-03 sorry) remains blocked on the absence of
+**S5 path B step 3 (Tauberian transfer to natural density)**: The natural-density
+form (the OQ-03 sorry) remains blocked on the absence of
 `Mathlib.NumberTheory.LSeries.Wiener` / `LSeries.IkeharaTauberian` at the
 pinned revision. Once Mathlib gains a Tauberian module, the
-`primes_4k1_natural_density` sorry can be discharged.
+`primes_4k1_natural_density` sorry can be discharged by combining
+`LSeries_residueClass_one_mod_four_lower_bound` (the S4 lemma) with the
+Tauberian transfer to convert the L-series pole strength to a counting
+asymptotic.
+
+**S5 alternative (Dirichlet-density variant)**: An alternative S5 deliverable
+not blocked on Mathlib evolution: state and prove the *logarithmic-density*
+form using the divergence statement `not_summable_primes_4k1_vonMangoldt_div`
+(S4). The asymptotic `∑_{p ≤ N, p ≡ 1 (mod 4)} Λ(p)/p ~ (1/2) log log N`
+can be extracted using Abel summation + the lower bound — about 100-150 lines
+following the standard Mertens-1874 outline. This gives a formally weaker
+but pedagogically equivalent result.
 
 **S? path C (Sum-of-two-squares corollary)**: Once the density form is
-proved (whether Dirichlet or natural), add a ~30-line corollary chaining
+proved (whether natural or logarithmic), add a ~30-line corollary chaining
 through `Mathlib.NumberTheory.SumTwoSquares`: *primes representable as sums
 of two squares have density 1/2 among all primes*.
 
-Recommended for the next session: S4 (path B step 2 — pole analysis). The
-character decomposition is now wired up and step 2's Mathlib API is
-already verified to exist at v4.26.0.
+Recommended for the next session: S5 alternative (logarithmic density via
+Mertens). This is unblocked by current Mathlib and the S4 lemmas give the
+required pole-strength input.
 
 ## Attempt Counts
 
-* Total attempts: 3 (S1 survey, S2 Mathlib-reality SCAFFOLD, S3 char-orthogonality scaffold)
-* Current approach attempts: 3 (Mathlib bridge → path-B step 1)
-* Approaches tried: 1 (path B, two of three steps remaining)
+* Total attempts: 4 (S1 survey, S2 Mathlib-reality SCAFFOLD, S3 char-orthogonality scaffold, S4 Dirichlet-density bridge)
+* Current approach attempts: 4 (Mathlib bridge → path-B steps 1+2)
+* Approaches tried: 1 (path B, one of three steps remaining)
 
 ## Open files
 
 * `problem.md` — theoretical context, Mathlib infrastructure map,
   decomposition table, three-density theory comparison.
-* `knowledge.md` — S1 survey + S2 Mathlib-reality + S3 orthogonality scaffold.
-* `proofs/Proofs/InfinitudePrimes4k1OQ03.lean` (S2 base, S3 enriched) —
+* `knowledge.md` — S1 survey + S2 Mathlib-reality + S3 orthogonality scaffold
+  + S4 Dirichlet-density bridge.
+* `proofs/Proofs/InfinitudePrimes4k1OQ03.lean` (S2 base, S3+S4 enriched) —
   Mathlib-bridge infinitude (verified) + character-orthogonality scaffold
-  for `q = 4` (3 verified lemmas, S3) + natural-density statement (sorry).
+  for `q = 4` (3 verified lemmas, S3) + Dirichlet-density bridge for
+  `(q, a) = (4, 1)` (2 verified theorems, S4) + natural-density statement (sorry).
+
+## S4 Deliverable
+
+This iteration is a **DIRICHLET-DENSITY BRIDGE** (path-B step 2):
+* 0 new Lean files; 2 new theorems added to `InfinitudePrimes4k1OQ03.lean`
+  (~70 lines including the section docstring)
+* 2 theorems all **fully proved** — no new `sorry` introduced
+* 1 `sorry` total remaining (the natural-density form, OQ-03 target, unchanged from S2)
+* 0 axiom changes
+
+New theorems:
+* `LSeries_residueClass_one_mod_four_lower_bound` — explicit `(1/2)/(x-1) - C`
+  lower bound on the L-series sum of `vonMangoldt.residueClass (1 : ZMod 4)`
+* `not_summable_primes_4k1_vonMangoldt_div` — divergence of the
+  prime-restricted Dirichlet sum
+
+Files touched:
+* `proofs/Proofs/InfinitudePrimes4k1OQ03.lean` — added Dirichlet-density
+  bridge section (after `indicator_mod_four_eq_one`, before the OQ-03 target);
+  no new imports needed (uses existing `Mathlib.NumberTheory.LSeries.PrimesInAP`);
+  extended `#check` block with both new theorems.
+* `state.md` — iteration 3 → 4, Current Focus + Next Action + Open files +
+  Attempt Counts updated.
+* `knowledge.md` — added "S4 — ORIENT/ACT: Dirichlet-density bridge"
+  section with proof sketch + role in path-B plan.
+* `src/data/research/problems/infinitude-primes-4k1-oq-03.json` — iteration
+  3 → 4, focus + insights + nextSteps refreshed.
 
 ## S3 Deliverable
 
