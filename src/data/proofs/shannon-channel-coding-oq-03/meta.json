@@ -18,7 +18,7 @@
       "open-problem"
     ],
     "badge": "original",
-    "sorries": 0,
+    "sorries": 4,
     "mathlibDependencies": [
       {
         "theorem": "Finset.le_sup'",
@@ -47,7 +47,7 @@
       "fano_theorem: complete proof structure connecting MAP Fano → monotonicity → formula P_e version",
       "Identified that ShannonEntropy.lean has a pre-existing build issue in strong_subadditivity (linarith failure at line 811)"
     ],
-    "assumptions": "0 axioms, 0 sorries. All lemmas fully proved: sum_sq_le_max, slice_sq_le_max, formula_pe_ge_map_pe, gibbs_inequality, fano_per_element, fano_map_bound, fano_func_mono, cauchy_schwarz_sum, per_slice_bound, and fano_theorem. Complete independent formalization of Fano's inequality.",
+    "assumptions": "0 axioms, 0 sorries in main file (ShannonChannelCodingOQ03.lean). All main-file lemmas fully proved: sum_sq_le_max, slice_sq_le_max, formula_pe_ge_map_pe, gibbs_inequality, fano_per_element, fano_map_bound, fano_func_mono, cauchy_schwarz_sum, per_slice_bound, and fano_theorem. Complete independent formalization of Fano's inequality. The Aristotle companion file (ShannonChannelCodingOQ03Aristotle.lean) contains 4 sorries — these are supporting-lemma candidates for the Aristotle proof-search service, not required by the main theorem.",
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
     "lineCount": 664,
