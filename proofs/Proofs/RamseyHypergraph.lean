@@ -548,6 +548,80 @@ lemma ramseyNumber_swap (k s t : ℕ) :
   ext n
   exact IsRamsey.swap
 
+/-! ### S5b: `sInf` characterisations of `ramseyNumber`
+
+Four sorry-free lemmas that translate `IsRamsey n k s t` witnesses into
+`ramseyNumber k s t ≤ …` bounds (and conversely extract a witness at
+`ramseyNumber k s t` when one exists). They form the bridge between the
+existential `IsRamsey` predicate and the numerical `ramseyNumber` used in
+the Ramsey-1930 recursive bound. Specifically, the recursion
+
+    R_k(s, t) ≤ R_{k-1}(R_k(s-1, t) + 1, R_k(s, t-1) + 1) + 1
+
+needs `IsRamsey.ramseyNumber_le` (to bound `R_k(s, t)` once an explicit
+`n` is exhibited) and `isRamsey_ramseyNumber` (to use the recursive
+hypothesis `R_k(s-1, t)` as an `IsRamsey`-witness at exactly that index).
+The `_anti_s` / `_anti_t` variants combine `IsRamsey.anti_s` /
+`IsRamsey.anti_t` with `ramseyNumber_le` so a single witness suffices to
+bound `R_k` for any shrunken target. All four are direct `Nat.sInf_le`
+/ `Nat.sInf_mem` applications. -/
+
+/-- **`IsRamsey → ramseyNumber ≤ n`.** Direct `Nat.sInf_le` on the defining
+set. The main use is bounding `ramseyNumber` once an explicit `n` witnessing
+`IsRamsey n k s t` is constructed (e.g., the `n = R_{k-1}(…) + 1` of the
+Ramsey 1930 recursion). -/
+lemma IsRamsey.ramseyNumber_le {n k s t : ℕ} (h : IsRamsey n k s t) :
+    ramseyNumber k s t ≤ n := by
+  unfold ramseyNumber
+  exact Nat.sInf_le h
+
+/-- **`ramseyNumber` itself witnesses the Ramsey condition, given existence.**
+Direct `Nat.sInf_mem` on the (assumed-nonempty) defining set. Used in the
+Ramsey-1930 step to apply the recursive hypothesis `IsRamsey (R_{k-1}(…))
+(k-1) (R_k(s-1, t) + 1) (R_k(s, t-1) + 1)` after `ramsey_existence (k-1) …`
+provides the existence. -/
+lemma isRamsey_ramseyNumber {k s t : ℕ} (h : ∃ n, IsRamsey n k s t) :
+    IsRamsey (ramseyNumber k s t) k s t := by
+  unfold ramseyNumber
+  exact Nat.sInf_mem h
+
+/-- **Anti-monotonicity of `ramseyNumber` in the `s`-target, conditional on a
+witness.** From `IsRamsey n k s t` (which gives a witness for the larger
+target) and `s' ≤ s`, the same `n` witnesses the easier `(s', t)` problem
+via `IsRamsey.anti_s`, so `ramseyNumber k s' t ≤ n`. The witness hypothesis
+is needed because `ramseyNumber` is `0` on the empty `sInf` set, where
+unconditional anti-monotonicity would fail. -/
+lemma IsRamsey.ramseyNumber_le_anti_s
+    {n k s s' t : ℕ} (hss' : s' ≤ s) (h : IsRamsey n k s t) :
+    ramseyNumber k s' t ≤ n :=
+  (h.anti_s hss').ramseyNumber_le
+
+/-- **Anti-monotonicity of `ramseyNumber` in the `t`-target, conditional on a
+witness.** Symmetric to `IsRamsey.ramseyNumber_le_anti_s`. -/
+lemma IsRamsey.ramseyNumber_le_anti_t
+    {n k s t t' : ℕ} (htt' : t' ≤ t) (h : IsRamsey n k s t) :
+    ramseyNumber k s t' ≤ n :=
+  (h.anti_t htt').ramseyNumber_le
+
+/-- **`ramseyNumber` is anti-monotone in `s` under the `swap`-conjugate
+witness.** This is the `ramseyNumber`-to-`ramseyNumber` form of
+`IsRamsey.ramseyNumber_le_anti_s`: an `IsRamsey`-witness at the larger
+`(s, t)` problem upgrades to a `ramseyNumber k s' t ≤ ramseyNumber k s t`
+comparison once we combine `isRamsey_ramseyNumber` and
+`IsRamsey.ramseyNumber_le_anti_s`. Useful when chaining recursive bounds
+via inductive hypotheses on `s` (rather than on explicit `n`-witnesses). -/
+lemma ramseyNumber_anti_s
+    {k s s' t : ℕ} (hss' : s' ≤ s) (h : ∃ n, IsRamsey n k s t) :
+    ramseyNumber k s' t ≤ ramseyNumber k s t :=
+  (isRamsey_ramseyNumber h).ramseyNumber_le_anti_s hss'
+
+/-- **`ramseyNumber` is anti-monotone in `t`.** Symmetric to
+`ramseyNumber_anti_s`. -/
+lemma ramseyNumber_anti_t
+    {k s t t' : ℕ} (htt' : t' ≤ t) (h : ∃ n, IsRamsey n k s t) :
+    ramseyNumber k s t' ≤ ramseyNumber k s t :=
+  (isRamsey_ramseyNumber h).ramseyNumber_le_anti_t htt'
+
 /-- (OQ-03a) **Ramsey's hypergraph theorem.** For every uniformity `k ≥ 2`
 and every pair of target sizes `s, t ≥ k`, there is a finite `n` such that
 every 2-coloring of `[n]^{(k)}` contains a monochromatic `s`- or `t`-clique.

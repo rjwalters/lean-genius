@@ -1,13 +1,59 @@
 # Current State
 
-**Phase**: ACT (S5-prep adds three sorry-free monotonicity helpers; the
-genuine inductive case `s > k ∧ t > k` of `ramsey_existence` remains the
-sole `sorry`)
-**Since**: 2026-05-12 (S5-prep, researcher-1)
-**Iteration**: 5
-**Researcher**: researcher-1 (S5-prep, S4-prep); researcher-9 (S4 ACT-C, S2); researcher-11 (S3); researcher-8 (S1)
+**Phase**: ACT (S5b adds six sorry-free `sInf`-characterisation helpers
+for `ramseyNumber`; the genuine inductive case `s > k ∧ t > k` of
+`ramsey_existence` remains the sole `sorry`)
+**Since**: 2026-05-12 (S5b, researcher-8)
+**Iteration**: 6
+**Researcher**: researcher-8 (S5b, S1); researcher-1 (S5-prep, S4-prep); researcher-9 (S4 ACT-C, S2); researcher-11 (S3)
 
 ## Current Focus
+
+Session 5b (S5b, researcher-8, 2026-05-12): bridge `IsRamsey` (existential
+predicate) and `ramseyNumber` (numerical `sInf`) so the Ramsey-1930
+recursive bound
+
+    R_k(s, t) ≤ R_{k-1}(R_k(s-1, t) + 1, R_k(s, t-1) + 1) + 1
+
+can be stated and discharged purely in terms of `ramseyNumber` once the
+recursive hypotheses on `(k-1)` are obtained. Six new sorry-free lemmas,
+all direct `Nat.sInf_le` / `Nat.sInf_mem` applications, are inserted
+between `ramseyNumber_swap` and `ramsey_existence`:
+
+* `IsRamsey.ramseyNumber_le {n k s t} : IsRamsey n k s t →
+  ramseyNumber k s t ≤ n` — `Nat.sInf_le` on the defining set.
+* `isRamsey_ramseyNumber {k s t} : (∃ n, IsRamsey n k s t) →
+  IsRamsey (ramseyNumber k s t) k s t` — `Nat.sInf_mem` for
+  nonempty subsets of ℕ; used to upgrade `ramsey_existence (k-1) …`
+  into a concrete `IsRamsey`-witness at exactly `ramseyNumber (k-1) …`.
+* `IsRamsey.ramseyNumber_le_anti_s {n k s s' t} : s' ≤ s →
+  IsRamsey n k s t → ramseyNumber k s' t ≤ n` — combines
+  `IsRamsey.anti_s` and `IsRamsey.ramseyNumber_le`.
+* `IsRamsey.ramseyNumber_le_anti_t {n k s t t'} : t' ≤ t →
+  IsRamsey n k s t → ramseyNumber k s t' ≤ n` — symmetric.
+* `ramseyNumber_anti_s {k s s' t} : s' ≤ s →
+  (∃ n, IsRamsey n k s t) → ramseyNumber k s' t ≤ ramseyNumber k s t`
+  — `ramseyNumber`-to-`ramseyNumber` monotonicity via
+  `isRamsey_ramseyNumber` + `ramseyNumber_le_anti_s`.
+* `ramseyNumber_anti_t {k s t t'} : t' ≤ t →
+  (∃ n, IsRamsey n k s t) → ramseyNumber k s t' ≤ ramseyNumber k s t`
+  — symmetric.
+
+The witness hypothesis `∃ n, IsRamsey n k s t` is required in the two
+`ramseyNumber`-to-`ramseyNumber` lemmas because `ramseyNumber` collapses
+to `0` on empty `sInf` sets, where unconditional anti-monotonicity would
+fail (e.g. trivially: shrinking a target on an unprovable-existence
+problem could increase, not decrease, the resulting `ramseyNumber`).
+
+Output of this session (build pending; the local worktree shares the broken
+`proofs/.lake` symlink per memory `feedback_researcher_lake_symlink_broken.md`):
+
+* `proofs/Proofs/RamseyHypergraph.lean` — 584 → 658 lines, +74.
+  `leanFile` counts (this file): lineCount 584 → 658, theoremCount
+  17 → 23 (+6), defCount 4 (unchanged), sorryCount 1 (unchanged),
+  axiomCount 0 (unchanged).
+
+## Prior Session Outputs (S5-prep, researcher-1)
 
 Session 5 (S5-prep, researcher-1, 2026-05-12): widen the `ramsey_existence`
 inductive-step toolkit with three monotonicity facts independent of the
@@ -139,22 +185,37 @@ adequate but verbose.
 
 **S6 ACT-D — Discharge the genuine inductive case of `ramsey_existence`.**
 
-After S4 ACT-C + S5-prep the inductive-step toolkit comprises seven
-sorry-free monotonicity facts: `anti_s` / `anti_t` (shrink the
-target-clique side), `is_ramsey_self_right` / `_left` (boundary cases at
-`s = k` / `t = k`), and the new `IsMonochromatic.mono` / `IsRamsey.mono_n`
-/ `ramseyNumber_swap`. S6 should establish the classical Ramsey 1930
-recursive bound
+After S4 ACT-C + S5-prep + S5b the inductive-step toolkit comprises 13
+sorry-free helpers spread over three groups:
+
+* **Existential predicate level (`IsRamsey`):** `anti_s` / `anti_t`
+  (shrink the target-clique side), `is_ramsey_self_right` / `_left`
+  (boundary cases at `s = k` / `t = k`), `IsMonochromatic.mono` /
+  `IsRamsey.mono_n` (subset / index closure).
+* **Numerical level (`ramseyNumber`, sInf):** `ramseyNumber_swap`,
+  `IsRamsey.ramseyNumber_le`, `isRamsey_ramseyNumber`,
+  `IsRamsey.ramseyNumber_le_anti_s` / `_anti_t`, `ramseyNumber_anti_s`
+  / `_anti_t` — all `Nat.sInf_le` / `Nat.sInf_mem`-based, no sorries.
+* **Symmetry:** `IsRamsey.swap`, `ramseyNumber_swap`.
+
+S6 should establish the classical Ramsey 1930 recursive bound
 
     R_k(s, t) ≤ R_{k-1}(R_k(s-1, t) + 1, R_k(s, t-1) + 1) + 1   (k ≥ 2, s, t > k)
 
 and run the induction on `s + t` for fixed `k`. The induction bottoms
-out cleanly on `is_ramsey_self_right` / `_left`; `IsRamsey.mono_n` is
-needed to lift the recursive bound from "some `n`" to "all `m ≥ n`" so
-that the chosen Ramsey number can absorb the +1 in the recursive bound,
-and `IsMonochromatic.mono` is needed to shrink the lifted-`(k-1)`-clique
-of monochromatic neighborhood vertices back to the `s − 1` or `t − 1`
-sub-clique demanded by the recursion.
+out cleanly on `is_ramsey_self_right` / `_left`. The S5b numerical
+helpers let S6 state the recursive bound in terms of `ramseyNumber`
+itself (rather than ad-hoc `IsRamsey`-witnesses): chain
+`isRamsey_ramseyNumber (ramsey_existence (k-1) …)` to get the
+inductive-hypothesis witness at exactly the right index, run the
+neighborhood-collapse construction at uniformity `k − 1`, and conclude
+with `IsRamsey.ramseyNumber_le`.
+
+`IsRamsey.mono_n` is needed to lift the recursive bound from "some `n`"
+to "all `m ≥ n`" so that the chosen Ramsey number can absorb the +1 in
+the recursive bound, and `IsMonochromatic.mono` is needed to shrink the
+lifted-`(k-1)`-clique of monochromatic neighborhood vertices back to
+the `s − 1` or `t − 1` sub-clique demanded by the recursion.
 
 Estimated 150–250 lines for the step alone (neighborhood-restriction
 construction at uniformity `k − 1`).
