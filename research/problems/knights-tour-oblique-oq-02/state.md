@@ -1,71 +1,83 @@
 # Current State
 
-**Phase**: OBSERVE (S1 scaffold complete; no Lean changes yet)
-**Since**: 2026-05-12T10:10:00Z
-**Last Updated**: 2026-05-12 (Iteration 1, researcher-1)
-**Iteration**: 1
+**Phase**: ORIENT (S2 ACT — Fintype + distribution + support lemma)
+**Since**: 2026-05-12T11:35:00Z
+**Last Updated**: 2026-05-12 (Iteration 2, researcher-8)
+**Iteration**: 2
 
-## Iteration 1 (researcher-1, 2026-05-12) — S1 OBSERVE
+## Iteration 2 (researcher-8, 2026-05-12) — S2 ORIENT / ACT
 
-**Outcome**: scaffold — created `problem.md`, `knowledge.md`, `state.md`,
-and `src/data/research/problems/knights-tour-oblique-oq-02.json`. No Lean
-changes.
+**Outcome**: built — created `proofs/Proofs/KnightsTourObliqueOQ02.lean`
+with the `Fintype ClosedTour` instance, the histogram definition
+`obliqueDistribution : ℕ → ℕ`, and the support lower bound
+(`obliqueDistribution k = 0` for `k < 4`). 0 sorries. Defers D4
+invariance and reversal symmetry to S3 as planned in S1.
 
 ### What I added
 
-Doc-only scaffolding for a fresh tier-B slug. The deliverable is:
+- `proofs/Proofs/KnightsTourObliqueOQ02.lean` (~130 lines, 0 sorries)
+  - `def toFn : ClosedTour → (Fin 64 → Square)` — indexing function
+  - `theorem toFn_injective` — by `List.ext_get` on the underlying
+    `squares` list + proof irrelevance for the propositional fields
+  - `instance : Fintype ClosedTour` — `Fintype.ofInjective toFn`
+  - `def obliqueDistribution (k : ℕ) : ℕ` —
+    `(Finset.univ.filter (obliqueCount · = k)).card`
+  - `theorem obliqueDistribution_zero_below_four` — lifts parent's
+    `oblique_lower_bound` to the histogram
+  - `theorem obliqueDistribution_support_le_three` — restatement
+- Registered the module in `proofs/Proofs.lean`.
 
-- A precise framing of "what is the distribution of oblique counts" as a
-  function `obliqueDistribution : ℕ → ℕ` that maps `k` to the number of
-  closed knight's tours with exactly `k` oblique turns.
-- A tractability triage that distinguishes the **histogram values** (not
-  feasible in Lean — requires enumerating ~1.3 × 10^13 tours) from the
-  **structural symmetries** (feasible — D4 invariance, reversal symmetry,
-  winding-parity, support bounds).
-- A survey of the parent infrastructure (`Proofs/KnightsTourOblique.lean`,
-  2469 lines, 1 axiom) that the OQ-02 work can directly re-use:
-  `obliqueCount`, `tourMoves`, `turnAngle`, `tour_winding_zero`,
-  `no_turn_angle_4_all`.
-- A concrete S2 plan: build a new `Proofs/KnightsTourObliqueOQ02.lean`,
-  define `obliqueDistribution`, re-export the minimum theorem as a
-  support lemma, defer D4 invariance to S3.
+### Why these pieces, in this order
 
-### Why not S2 in this session
+S1's plan flagged the `Fintype ClosedTour` gap as the prerequisite
+blocker for defining the distribution. With `ClosedTour` constructed via
+a `Classical.choice`-style structure (proof-irrelevant fields after
+`squares : List Square`), the cleanest injection is into
+`Fin 64 → Square` via the indexing function: this target is a `Fintype`
+since `Square = Fin 8 × Fin 8` is, and the injection is straightforward
+to verify (`List.ext_get` on the data, proof irrelevance on the props).
 
-S2 ORIENT requires resolving the `Fintype ClosedTour` instance question
-(the parent file uses `Classical.choice` to express tours; an explicit
-`Fintype` instance needs `ClosedTour` recast as a subtype of `Vector
-Square 64`). That refactor touches the parent file and is best done as a
-focused S2 PR rather than bundled with the OBSERVE scaffold.
+The support lower bound is a one-line lift of the parent's
+`oblique_lower_bound : obliqueCount t ≥ 4`. Combining the two gives the
+first non-trivial structural fact about the distribution.
 
-### Files added (S1)
+### What this does NOT do (deferred to S3+)
 
-- `research/problems/knights-tour-oblique-oq-02/problem.md` — problem
-  description with tractability triage, references, parent linkage
-- `research/problems/knights-tour-oblique-oq-02/knowledge.md` — parent
-  infrastructure survey, feasibility table, S2 plan
-- `research/problems/knights-tour-oblique-oq-02/state.md` — this file
-- `src/data/research/problems/knights-tour-oblique-oq-02.json` — phase
-  OBSERVE, iter 1, references, knowledge surface
+- **D4 group action on `ClosedTour`** (Target C) — the 8-element
+  dihedral group acts by board symmetries, and `obliqueCount` is
+  invariant. This is the main S3 deliverable (~80-line lemma).
+- **Reversal symmetry** (Target D) — `obliqueCount (reverse t) =
+  obliqueCount t`. Roughly 30 lines once we have a `reverse : ClosedTour
+  → ClosedTour` definition.
+- **Winding-parity joint constraint** (Target E) — uses
+  `tour_winding_zero` + `no_turn_angle_4_all` to constrain `#turnAngle =
+  3` and `#turnAngle = 5` modulo 8.
 
-### Next action (S2 ORIENT)
+### Next action (S3 ORIENT)
 
-Create `proofs/Proofs/KnightsTourObliqueOQ02.lean` with:
+Define the D4 group action on `ClosedTour`:
 
-1. A `Fintype` instance for `ClosedTour` (either as a `decEq` subtype of
-   `Vector Square 64`, or via a separate definition aligning with the
-   parent's structure).
-2. `def obliqueDistribution : ℕ → ℕ`.
-3. `theorem obliqueDistribution_zero_below_four : ∀ k < 4,
-   obliqueDistribution k = 0` (one-line lift from parent's minimum
-   theorem).
-4. Stubs for the D4 invariance and reversal-symmetry theorems to be
-   filled in S3.
+1. Implement the 8-element generator set on `Square` (horizontal
+   reflection, vertical reflection, 90° rotation, and compositions).
+2. Lift each generator to a map `ClosedTour → ClosedTour` by mapping the
+   `squares` list pointwise. Verify path/closure/nodup preservation.
+3. Prove `obliqueCount`-invariance: the dot products of consecutive move
+   vectors are preserved by each symmetry generator.
+4. State the D4-mod-8 divisibility consequence, leaving the
+   self-symmetric-tour exception set as a sorried lemma for S4.
 
-Estimated S2 ACT size: ~100-150 lines, 0 sorries on the support lemma,
-1-2 sorries on the D4 / reversal stubs (deferred to S3).
+Estimated S3 size: ~150-200 lines, with possibly 1 sorry for the
+self-symmetric-tour exception (which Knuth's classification needs).
+
+### Build status
+
+Build pending. The parent `Proofs/KnightsTourOblique.lean` builds clean
+on origin/main, and the OQ02 file uses only its public surface
+(`ClosedTour`, `obliqueCount`, `oblique_lower_bound`) plus standard
+Mathlib (`Finset.filter`, `Fintype.ofInjective`, `List.ext_get`). No new
+axioms.
 
 ### Blockers
 
-None for the structural-skeleton portion. The histogram values are
-out-of-scope (require external enumeration).
+None. The D4 action and reversal symmetry are next-iteration work, not
+blockers.
