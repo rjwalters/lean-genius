@@ -15317,6 +15317,81 @@ private lemma strictHookCells_off_spine_class_at_c'
     · -- y = (r, x.2) with r ≠ c'.1: off-spine.
       exact Or.inl ⟨hrc', hx_off_col⟩
 
+/-- **(S57.6 prep 2) Crossing-class IH discharge — case 1.**
+
+In case 1 of `distinct_corners_dichotomy` (i.e., `c.1 < c'.1`), every
+cell `y` lying on `c'`'s row (`y.1 = c'.1`) satisfies both
+`gnwProb μ c K y = 0` and `gnwProb (μ\c') c K y = 0`, so the
+joint K-induction's pointwise IH equality
+`gnwProb μ c K y = gnwProb (μ\c') c K y` holds *trivially* on this
+branch.
+
+**Role in S57.0's K-induction plan.**  Within the recurrence step
+`gnwProb_succ_eq_off_spine_of_c'` (S57.4, line ~15043), strict-hook
+cells `y` of an off-spine `x` are partitioned by PR #17747's S57.6
+prep `strictHookCells_off_spine_class_at_c'` (line 15243) into three
+classes: fully off-spine, arm-on-`c'`-col, leg-on-`c'`-row.  This
+lemma discharges the *leg-on-c'-row* class (`y.1 = c'.1`) — the
+case-1 "vanishing crossing" branch — as an IH equality between
+`gnwProb μ` and `gnwProb (μ\c')`.  The dual case-2 lemma
+`gnwProb_eq_on_arm_class_case2` discharges the arm-on-c'-col branch.
+
+**Genericity in `μ`.**  S57.3a's `gnwProb_zero_of_row_eq_c'_case1`
+(line 14722) is universal in its first `μ` argument, so the same
+row-disjunct vanishing applies to both `gnwProb μ c K y` and
+`gnwProb (μ\c') c K y`, giving the IH equality by congruence of
+vanishings.
+
+**Status.** Sorry-free.  Two applications of S57.3a's universal-`μ`
+per-cell vanishing. -/
+private lemma gnwProb_eq_on_leg_class_case1
+    {μ : YoungDiagram} {c c' : ℕ × ℕ} (hc' : isCorner μ c')
+    (h_case : c.1 < c'.1) {y : ℕ × ℕ} (h_cross : y.1 = c'.1) (K : ℕ) :
+    gnwProb μ c K y = gnwProb (removeCorner μ c' hc') c K y := by
+  have h1 : gnwProb μ c K y = 0 :=
+    gnwProb_zero_of_row_eq_c'_case1 h_case y h_cross K
+  have h2 : gnwProb (removeCorner μ c' hc') c K y = 0 :=
+    gnwProb_zero_of_row_eq_c'_case1 h_case y h_cross K
+  rw [h1, h2]
+
+/-- **(S57.6 prep 2) Crossing-class IH discharge — case 2.**
+
+Mirror of `gnwProb_eq_on_leg_class_case1` for case 2.  In case 2 of
+`distinct_corners_dichotomy` (i.e., `c.2 < c'.2`), every cell `y`
+lying on `c'`'s column (`y.2 = c'.2`) satisfies both
+`gnwProb μ c K y = 0` and `gnwProb (μ\c') c K y = 0`, so the joint
+K-induction's pointwise IH equality
+`gnwProb μ c K y = gnwProb (μ\c') c K y` holds *trivially* on this
+branch.
+
+**Combined coverage of the S57.6 prep 3-way partition.**  Together with
+`gnwProb_eq_on_leg_class_case1`, this lemma discharges the two
+*vanishing* crossing classes of PR #17747's
+`strictHookCells_off_spine_class_at_c'` partition:
+
+|        | leg-on-c'-row class (`y.1 = c'.1`)              | arm-on-c'-col class (`y.2 = c'.2`)              |
+|--------|--------------------------------------------------|--------------------------------------------------|
+| Case 1 | **Vanishes** (`..._leg_class_case1`, this PR)    | non-vanishing — `y.2 = c'.2 < c.2` reachable    |
+| Case 2 | non-vanishing — `y.1 = c'.1 < c.1` reachable     | **Vanishes** (`..._arm_class_case2`, this PR)    |
+
+The non-vanishing diagonal entries (case-1 arm-class, case-2 leg-class)
+each pin down a single strict-hook cell `y = (x.1, c'.2)` or
+`(c'.1, x.2)` — the off-spine analog of the doubly-affected cell `d`,
+requiring genuine pointwise comparison between `gnwProb μ` and
+`gnwProb (μ\c')` in S57.7+.
+
+**Status.** Sorry-free.  Two applications of S57.3a's universal-`μ`
+per-cell vanishing `gnwProb_zero_of_col_eq_c'_case2` (line 14742). -/
+private lemma gnwProb_eq_on_arm_class_case2
+    {μ : YoungDiagram} {c c' : ℕ × ℕ} (hc' : isCorner μ c')
+    (h_case : c.2 < c'.2) {y : ℕ × ℕ} (h_cross : y.2 = c'.2) (K : ℕ) :
+    gnwProb μ c K y = gnwProb (removeCorner μ c' hc') c K y := by
+  have h1 : gnwProb μ c K y = 0 :=
+    gnwProb_zero_of_col_eq_c'_case2 h_case y h_cross K
+  have h2 : gnwProb (removeCorner μ c' hc') c K y = 0 :=
+    gnwProb_zero_of_col_eq_c'_case2 h_case y h_cross K
+  rw [h1, h2]
+
 /-- Bridge lemma: for distinct corners `c ≠ c'` of `μ`, summing `gnwProb μ c K` over the
     strict hook of any cell `(i, j)` is the same as summing it over the strict hook of
     that cell in `μ \ c'`.  This is because the two strict-hook sets differ at most by
