@@ -1,67 +1,83 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-11T20:25:00Z
-**Iteration**: 2
+**Since**: 2026-05-12T07:15:00Z
+**Iteration**: 4
 
 ## Current Focus
 
-S2 ACT-A — structurally separate `singular_homology_retraction_split` into a
-provable scaffold theorem `H_n_minus_1_ball_zero` and a residual deep axiom
-`H_n_minus_1_sphere_nonzero`, while preserving the original composite as a
-derived theorem so every downstream consumer keeps working.
+S4 ACT-C prep — blueprint the upstream Mathlib contribution that closes
+gap **B1** (topological-homotopy → chain-homotopy bridge / prism operator).
+This iteration produces no Lean edits; deliverable is Section H of
+`knowledge.md` (~250 lines) detailing the construction path, recommended
+Mathlib placement, complexity estimates, and a near-term local-axiom
+fallback.
 
 ## Active Approach
 
-Mock-model decomposition in `BrouwerFixedPointOQ01OQ02.lean`:
+Three-layer factoring of the B1 contribution (Section H3 of knowledge.md):
 
-  1. `H_n_minus_1_ball_zero (n : ℕ) (hn : n ≥ 1) (r : Retraction n) :
-     ∃ φ : ℤ →+ Unit, True` — *theorem* in the mock model, witnessed by
-     `⟨0, trivial⟩`. Becomes the substantive `H_{n-1}(B^n) = 0` once
-     Mathlib gains the prism operator (B1).
-  2. `H_n_minus_1_sphere_nonzero (n : ℕ) (hn : n ≥ 1) (r : Retraction n)
-     (φ : ℤ →+ Unit) : ∃ ψ : Unit →+ ℤ, ψ.comp φ = AddMonoidHom.id ℤ` —
-     *axiom*, encoding the sphere-homology fact `H_{n-1}(S^{n-1}) ≅ ℤ`
-     (Mathlib gap B2) combined with retraction-functoriality (already
-     functorial in Mathlib's `singularHomologyFunctor`).
-  3. `singular_homology_retraction_split` — *derived theorem* with the
-     original signature, combining the two above. All downstream proofs
-     (`no_retraction_singular_homology`,
-     `no_retraction_iff_algebraic_impossibility`) unchanged.
+  1. **Lemma 1** — `AlternatingFaceMapComplex.mapHomotopy` (the only
+     genuinely new construction): simplicial homotopy → chain homotopy via
+     the existing alternating-face-map functor. Estimated 40–80 Lean lines.
+  2. **Lemma 2** — `TopCat.toSSet.mapHomotopy`: routine simplicial-bridge
+     unwinding of `TopCat.toSSet`. Estimated 30–60 lines.
+  3. **Theorem** — `singularChainHomotopyOfTopHomotopy`: 10–20-line
+     composition of Lemma 1 and Lemma 2.
 
-Net axiom count for this file: 1 → 1 (same).
-Theorem count: 10 → 12.
-Line count: 233 → 295.
+Plus standard corollaries (`HomotopyEquiv`, `singularHomologyMap_eq_of_topHomotopy`)
+for ~20–40 additional lines. **Total upstream contribution: 100–200 lines,
+~3–6 sessions.**
+
+Strategic recommendation (Section H9): pursue a **local axiom**
+`singular_chain_homotopy_of_top_homotopy` in
+`BrouwerFixedPointOQ01OQ02.lean` as the immediate ACT-B exec route. This
+costs +1 named axiom in the gallery file but unblocks substantive
+`H_n_minus_1_ball_zero` proof in a single session, and the new axiom is
+*strictly tighter* than the existing sphere-nonzero residual axiom (which
+remains separately).
 
 ## Blockers
 
-* **B1** (prism operator) still missing from Mathlib v4.26.0; needed to make
-  `H_n_minus_1_ball_zero` substantive (currently trivial in mock).
-* **B2** (sphere-homology computation) still missing; the deep residual
-  obstruction, isolated in `H_n_minus_1_sphere_nonzero`.
-* Docker daemon not running in this worktree — no fresh local build
-  verification. Change is mechanical (signature-preserving), so committed
-  "build pending" per established precedent for Brouwer/Ballot/Basel
-  iterations.
+* **B1 (Mathlib gap)** — prism operator still missing. ACT-C blueprint
+  (Section H) maps the contribution; pending Mathlib PR or local axiom.
+* **B2 (Mathlib gap)** — `H_{n-1}(S^{n-1}) ≅ ℤ` still missing; the deep
+  residual obstruction isolated in `H_n_minus_1_sphere_nonzero`. Not
+  blocking the next session's work.
+* Docker daemon status in this worktree unverified; this iteration is
+  markdown-only so no build risk.
 
 ## Next Action
 
-Session 3 next action: **ACT-B prep** — survey Mathlib's
-`singularHomologyFunctor` at `C := AddCommGrp.{0}` to verify that the mock
-encoding (`Unit` as `H_{n-1}(B^n)`) can be replaced by a concrete homology
-group expression once B1 lands. Specifically, identify the canonical map
-`AddCommGrp.{0} → Type` so that we can write
-`H_{n-1}(closedBall) ≃ Unit ↔ Trivial(H_{n-1}(closedBall))`. No Lean edits
-yet — produce a feasibility note in `knowledge.md`.
+Session 5 next action: **ACT-B exec via local axiom (H9 route)** —
+substantively prove `H_n_minus_1_ball_zero` in
+`proofs/Proofs/BrouwerFixedPointOQ01OQ02.lean`. Concretely:
 
-Alternative if Mathlib API survey is contested: defer to **ACT-C
-preparation** — sketch the prism operator construction in a markdown note
-(no Lean edits), focusing on which `SimplicialObject` /
-`AlternatingFaceMapComplex` lemmas in Mathlib v4.26.0 already suffice and
-which need to be added.
+  1. Introduce local axiom `singular_chain_homotopy_of_top_homotopy`
+     (Section H9 signature).
+  2. Strengthen hypothesis of `H_n_minus_1_ball_zero` to `n ≥ 2`
+     (per Section G5 / H7); leave `singular_homology_retraction_split` and
+     `no_retraction_singular_homology` signatures unchanged but route
+     them through the strengthened lemma.
+  3. Prove `H_n_minus_1_ball_zero` using the 5-step sketch from G5
+     (closedBall contractibility via `convex_closedBall` + inline witness,
+     `ContractibleSpace.hequiv_unit`, `singular_chain_homotopy_of_top_homotopy`,
+     `isZero_singularHomologyFunctor_of_totallyDisconnectedSpace`,
+     `HomotopyEquiv.toHomologyIso`).
+  4. Add the Unit-bridge step (G6) to translate `IsZero` back into the
+     existing `∃ φ : ℤ →+ Unit, True` signature.
+  5. Net axiom count: 1 → 2 (sphere-nonzero + B1 surrogate), but
+     `H_n_minus_1_ball_zero` becomes substantive (no longer mock).
+
+Alternative if Mathlib API import path turns out to drift between worktree
+and pinned rev: defer ACT-B exec to a follow-up; instead carry out the
+*Unit-bridge lemma* (Section G6, ~5–10 lines) as a self-contained Lean
+addition.
 
 ## Attempt Counts
 
-- Total attempts: 2
-- Current approach attempts: 1 (ACT-A first attempt)
-- Approaches tried: 2 (S1 Mathlib feasibility survey; S2 ACT-A scaffold)
+- Total attempts: 4
+- Current approach attempts: 1 (ACT-C prep first attempt)
+- Approaches tried: 4 (S1 OBSERVE feasibility; S2 ACT-A scaffold;
+  S3 ACT-B prep `singularHomologyFunctor` API verification;
+  S4 ACT-C prep prism-operator construction blueprint)

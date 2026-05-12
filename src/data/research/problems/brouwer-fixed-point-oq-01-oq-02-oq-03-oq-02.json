@@ -17,26 +17,31 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-11T20:25:00Z",
-    "iteration": 2,
-    "focus": "S2 ACT-A — structurally split singular_homology_retraction_split into provable scaffold theorem H_n_minus_1_ball_zero + residual deep axiom H_n_minus_1_sphere_nonzero. Composite preserved as derived theorem; all downstream consumers unchanged. Net axiom count 1 → 1 (same).",
-    "activeApproach": "Mock-model decomposition. H_n_minus_1_ball_zero proves the existence of the inclusion-induced φ : ℤ →+ Unit (trivially in mock; becomes H_{n-1}(B^n) = 0 once Mathlib's prism operator B1 lands). H_n_minus_1_sphere_nonzero is the deep residual axiom encoding H_{n-1}(S^{n-1}) ≠ 0 (Mathlib gap B2) + retraction-functoriality. singular_homology_retraction_split is preserved as a derived theorem.",
+    "since": "2026-05-12T07:15:00Z",
+    "iteration": 4,
+    "focus": "S4 ACT-C prep — blueprint upstream Mathlib contribution that closes gap B1 (topological-homotopy → chain-homotopy bridge / prism operator). No Lean edits in this iteration. Deliverable: Section H of knowledge.md (~250 lines) detailing the three-layer construction (simplicial homotopy → chain homotopy via alternatingFaceMapComplex → singular chains via TopCat.toSSet), recommended Mathlib placement, complexity estimates, risk register, and a near-term local-axiom fallback (Section H9).",
+    "activeApproach": "Three-layer factoring of B1: (1) Lemma 1 = AlternatingFaceMapComplex.mapHomotopy (~40–80 lines, the only genuinely new construction); (2) Lemma 2 = TopCat.toSSet.mapHomotopy (~30–60 lines, routine bridge); (3) Theorem = singularChainHomotopyOfTopHomotopy (~10–20 lines, composition). Plus standard corollaries (HomotopyEquiv, homologyMap_eq) for ~20–40 lines. Total upstream contribution 100–200 lines, ~3–6 sessions. Strategic recommendation: pursue a local axiom singular_chain_homotopy_of_top_homotopy in the gallery file (Section H9 route) as the immediate ACT-B exec next step — costs +1 named axiom but unblocks substantive H_n_minus_1_ball_zero in a single session, and the new axiom is strictly tighter than the current sphere-nonzero residual axiom.",
     "blockers": [
-      "Mathlib v4.26.0 has no prism operator / topological homotopy invariance (B1).",
-      "Mathlib v4.26.0 has no computation of H_{n-1}(S^{n-1}) (B2 — the deep residual obstruction isolated in H_n_minus_1_sphere_nonzero).",
-      "Docker daemon not running in this worktree — committed 'build pending' per Brouwer/Ballot/Basel precedent."
+      "B1 (Mathlib gap) — prism operator / topological-homotopy → chain-homotopy bridge still missing. ACT-C blueprint (Section H of knowledge.md) maps the contribution; pending Mathlib PR or a local axiom.",
+      "B2 (Mathlib gap) — H_{n-1}(S^{n-1}) ≅ ℤ still missing; the deep residual obstruction isolated in H_n_minus_1_sphere_nonzero. Not blocking the next session's work.",
+      "Docker daemon status in this worktree unverified; this iteration is markdown-only so no build risk."
     ],
-    "nextAction": "Session 3 next action: ACT-B prep — survey Mathlib's singularHomologyFunctor at C := AddCommGrp.{0} to verify that the mock encoding (Unit as H_{n-1}(B^n)) can be replaced by a concrete homology group expression once B1 lands. No Lean edits yet — produce a feasibility note in knowledge.md. Alternative if API survey is contested: defer to ACT-C prep — sketch the prism operator construction in markdown (no Lean edits).",
+    "nextAction": "Session 5 next action: ACT-B exec via local-axiom route (Section H9). (1) Introduce local axiom singular_chain_homotopy_of_top_homotopy in BrouwerFixedPointOQ01OQ02.lean. (2) Strengthen hypothesis of H_n_minus_1_ball_zero to n ≥ 2 (per Section G5/H7). (3) Prove H_n_minus_1_ball_zero substantively using the 5-step sketch from G5 (closedBall contractibility, ContractibleSpace.hequiv_unit, the new local axiom, isZero_singularHomologyFunctor_of_totallyDisconnectedSpace, HomotopyEquiv.toHomologyIso). (4) Unit-bridge step (G6) translates IsZero back into the existing ∃ φ : ℤ →+ Unit, True signature. Net axiom count: 1 → 2 (sphere-nonzero + B1 surrogate), but H_n_minus_1_ball_zero becomes substantive. Alternative if Mathlib API import drift is detected: defer ACT-B exec and instead carry out the Unit-bridge lemma (Section G6) as a self-contained Lean addition.",
     "attemptCounts": {
-      "total": 2,
+      "total": 4,
       "currentApproach": 1,
-      "approachesTried": 2
+      "approachesTried": 4
     }
   },
   "knowledge": {
-    "progressSummary": "S3 ACT-B prep complete: singularHomologyFunctor API verified at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. Section G of knowledge.md adds 7 sub-findings: (G1) bundled category renamed AddCommGrp → AddCommGrpCat; (G2) all typeclass instances confirmed for AddCommGrpCat.{0}; (G3) literal Lean signature for ((singularHomologyFunctor AddCommGrpCat (n-1)).obj (AddCommGrpCat.of ℤ)).obj (TopCat.of …closedBall…); (G4) sub-gap closedBall_contractible absent at pinned rev, inline 1-liner discharges it; (G5) ACT-B exec proof sketch in 5 steps, ~30 Lean lines, single B1 dependency; (G6) Unit-bridge mock↔real translation routine; (G7) readiness summary. Two corrections to S1 OBSERVE: (i) n ≥ 1 hypothesis is too weak — substantive proof needs n ≥ 2; (ii) AddCommGrp namespace name. No Lean changes in this iteration (per the ACT-B prep next-step spec). axiomCount unchanged at 1.",
+    "progressSummary": "S4 ACT-C prep complete: Section H of knowledge.md (~250 lines) blueprints the upstream Mathlib contribution closing gap B1 (topological-homotopy → chain-homotopy bridge). Construction factors into three layers: (H3) simplicial-homotopy → chain-homotopy via alternatingFaceMapComplex (existing Mathlib), (H3) topological-homotopy → simplicial-homotopy via TopCat.toSSet (existing Mathlib), (H3) composition gives the missing theorem. Key finding (H4): the simplicial route avoids Hatcher's geometric α_i staircase and forces the sign convention automatically — estimated 100–200 Lean lines (vs 300–500 for the geometric proof). Recommended Mathlib placement (H6): three new files — Mathlib/AlgebraicTopology/SimplicialObject/Homotopy.lean (Lemma 1), Mathlib/AlgebraicTopology/TopologicalToSimplicial/Homotopy.lean (Lemma 2), Mathlib/AlgebraicTopology/SingularHomology/HomotopyInvariance.lean (Theorem + corollaries). Strategic recommendation (H9): pursue a local axiom singular_chain_homotopy_of_top_homotopy in BrouwerFixedPointOQ01OQ02.lean as the immediate ACT-B exec route — costs +1 named axiom but unblocks substantive H_n_minus_1_ball_zero in a single session. No Lean changes in this iteration. axiomCount unchanged at 1. S3 ACT-B prep findings (Section G) carried forward.",
     "builtItems": [],
     "insights": [
+      "B1 (the topological-homotopy → chain-homotopy bridge) factors cleanly into three layers via Mathlib's existing simplicial framework: (i) simplicial-homotopy → chain-homotopy via the alternating-face-map functor, (ii) topological-homotopy → simplicial-homotopy via TopCat.toSSet, (iii) composition gives the singular-chain version. Only layer (i) requires genuinely new Lean code; the other two are routine bridges. (Section H3 of knowledge.md.)",
+      "Hatcher's geometric prism-operator formula (Section H2) — sum over staircase simplices α_i : Δ^{n+1} → Δ^n × I with alternating signs — is *not* the recommended Mathlib path. The simplicial route (Section H3) absorbs all the geometric content into existing scaffolding and forces the sign convention automatically from alternatingFaceMapComplex's Σ (-1)^i ∂_i. Estimated 60–80% line-count savings (100–200 lines vs 300–500). (Section H4.)",
+      "The single new Mathlib lemma to write is AlternatingFaceMapComplex.mapHomotopy : SimplicialObject.Homotopy φ ψ → Homotopy ((alternatingFaceMapComplex C).map φ) ((alternatingFaceMapComplex C).map ψ). Estimated 40–80 Lean lines. Heavy reuse of the existing AlternatingFaceMapComplex API. (Section H3 Lemma 1.)",
+      "Strategic alternative (Section H9): rather than waiting for the upstream Mathlib contribution, ACT-B exec can introduce a local axiom singular_chain_homotopy_of_top_homotopy in the gallery file. Costs +1 named axiom (axiom count 1 → 2) but unblocks substantive H_n_minus_1_ball_zero in a single session. The new axiom is *strictly tighter* than the current sphere-nonzero residual axiom because it is a standard textbook fact rather than a composite of three.",
+      "Risk register (Section H8) identifies SimplicialObject.Homotopy as the highest-likelihood medium risk — at the pinned rev there is no top-level SimplicialObject.Homotopy structure, so Lemma 1 may need to introduce this notion (adds ~30 lines to the estimate). All other risks are low.",
       "Mathlib v4.26.0 has singularChainComplexFunctor and singularHomologyFunctor on TopCat (Andrew Yang, 2025), with totally-disconnected homology computed; specializing to PUnit gives H_n(*) = 0 for n ≥ 1.",
       "Mathlib's Homotopy.homologyMap_eq already gives chain-homotopy → homology equivalence; no need to reprove this.",
       "Convex.contractibleSpace + convex_ball provide ContractibleSpace for the closed metric ball, so the topological half of H_n(B^n) = 0 is in hand.",
@@ -57,9 +62,9 @@
       "No excision theorem in Mathlib.AlgebraicTopology.SingularHomology."
     ],
     "nextSteps": [
-      "ACT-B exec: substantively prove H_n_minus_1_ball_zero. With S3 prep complete, the proof is now a known ~30-line sequence: (1) closedBall contractibility via convex_closedBall, (2) ContractibleSpace.hequiv_unit lift to TopCat, (3) one prism-operator (B1) call as either an upstream Mathlib contribution or a local axiom singular_homology_topological_homotopy_invariance, (4) isZero_singularHomologyFunctor_of_totallyDisconnectedSpace on PUnit for n-1 ≠ 0, (5) HomotopyEquiv.toHomologyIso to transport zero across. Hypothesis must be strengthened to n ≥ 2.",
+      "ACT-B exec via local-axiom route (Section H9, recommended near-term): introduce singular_chain_homotopy_of_top_homotopy axiom in BrouwerFixedPointOQ01OQ02.lean, then substantively prove H_n_minus_1_ball_zero in the 5-step sequence (G5/H5). Strengthen hypothesis to n ≥ 2. Add Unit-bridge step (G6) to translate IsZero back into the existing ∃ φ : ℤ →+ Unit, True signature. Net axiom count 1 → 2 (sphere-nonzero + B1 surrogate); ~30 Lean lines.",
+      "ACT-C (upstream Mathlib, long-term): implement the simplicial-route prism construction across three new files (Section H6). Single new lemma AlternatingFaceMapComplex.mapHomotopy (~40–80 lines) plus routine TopCat.toSSet bridge (~30–60 lines) plus theorem (~10–20 lines) plus corollaries (~20–40 lines). Total 100–200 lines, ~3–6 sessions. Self-contained, no upstream-of-Mathlib dependencies. Once landed, the H9 local axiom is discharged automatically.",
       "Unit-bridge lemma: prove IsZero (Z : AddCommGrpCat) → Z.carrier ≃+ Unit (or equivalent route via Subsingleton). 5–10 lines. Standalone; can be done in parallel with ACT-B exec.",
-      "ACT-C (upstream Mathlib): implement the prism operator in a new Mathlib.AlgebraicTopology.SingularHomology.HomotopyInvariance file. ~100–300 Lean lines per the Hatcher §2.1 standard formula P_n(σ) = Σ_i (-1)^i · (H ∘ (σ × id) ∘ Δ_i^n). Self-contained, no upstream dependencies. Once landed, ACT-B exec discharges automatically.",
       "Long-term: only H_n_minus_1_sphere_nonzero remains, awaiting a sphere-homology computation route. The three feasible routes (Mayer–Vietoris/excision; suspension iso + H_0(S^0); direct simplicial) are all multi-month projects."
     ]
   },
@@ -100,7 +105,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.561Z",
-  "lastUpdate": "2026-05-11T20:25:00Z",
+  "lastUpdate": "2026-05-12T07:15:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
