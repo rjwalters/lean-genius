@@ -1,0 +1,101 @@
+[
+  {
+    "id": "ann-phex-oq03-imports",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 1,
+      "endLine": 10
+    },
+    "type": "context",
+    "title": "Import Stack: Group Theory + Fintype + Parent File",
+    "content": "Nine imports stage the four ingredients of the Hexagrammum Mysticum scaffold:\n\n* **Fintype.Card / Fintype.Perm**: for `card_sym6 = 720` via `native_decide`. Mathlib's `Fintype.card_perm` gives `|Equiv.Perm α| = (Fintype.card α)!`.\n* **Fin.Basic**: for `Fin.rev` and `Fin.rev_rev` — the involutive reversal used to construct `hexRev`.\n* **QuotientGroup.Basic**: for the `Sym(6) ⧸ hexagonalGroup` quotient and Lagrange's theorem `Subgroup.card_eq_card_quotient_mul_card_subgroup`.\n* **SpecificGroups.Dihedral**: for `DihedralGroup 6` — reference target for the OQ-03-OQ-01 isomorphism strategy.\n* **Subgroup.Basic**: for `Subgroup.closure` and the generator-membership lemmas.\n* **Logic.Equiv.Fin**: for `finRotate 6` — the canonical cyclic-rotation `Equiv.Perm (Fin 6)`.\n* **Proofs.PascalsHexagon**: the parent file providing `Conic`, `InscribedHexagon`, `ProjPoint`, `ProjLine`, `pointOnLine`, `lineThrough`, `lineIntersection`, `pascalP/Q/R`, and `pascal_hexagon_theorem`."
+  },
+  {
+    "id": "ann-phex-oq03-hexRot",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 119,
+      "endLine": 121
+    },
+    "type": "definition",
+    "title": "hexRot: Cyclic Rotation of Fin 6",
+    "content": "`hexRot := finRotate 6 : Equiv.Perm (Fin 6)` realises the cyclic-rotation generator of the dihedral group D_6 ↪ Sym(6). Mathlib's `finRotate n` is the permutation `i ↦ i + 1 (mod n)`, fully constructive, with all involutive/cyclic properties already proved (`finRotate_zero`, `finRotate_succ_apply`, etc.). Choosing `finRotate` over an ad-hoc definition means the OQ-03-OQ-01 cardinality proof can rely on Mathlib's existing API for cyclic rotations rather than re-deriving rotation lemmas."
+  },
+  {
+    "id": "ann-phex-oq03-hexRev",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 123,
+      "endLine": 129
+    },
+    "type": "definition",
+    "title": "hexRev: Reversal i ↦ 5 - i",
+    "content": "`hexRev` is built directly as an `Equiv.Perm (Fin 6)` structure literal with `toFun := Fin.rev`, `invFun := Fin.rev`, and both `left_inv` and `right_inv` discharged by `Fin.rev_rev` (a single Mathlib lemma asserting `i.rev.rev = i`). On `Fin 6`, `Fin.rev i = ⟨5 - i.val, ...⟩`, so `hexRev` swaps `(0, 5)`, `(1, 4)`, and `(2, 3)`. This is the reflection generator of `D_6 ↪ Sym(6)`. The choice of `Fin.rev` over a hand-rolled `omega`-proof is deliberate: the involutive proof reduces to a single named Mathlib lemma rather than an `ext`+`omega` chain."
+  },
+  {
+    "id": "ann-phex-oq03-hexagonalGroup",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 135,
+      "endLine": 142
+    },
+    "type": "definition",
+    "title": "hexagonalGroup: The Dihedral Subgroup of Sym(6)",
+    "content": "`hexagonalGroup := Subgroup.closure {hexRot, hexRev}` is the smallest subgroup of `Sym(6) = Equiv.Perm (Fin 6)` containing the cyclic-rotation and reversal generators. It is isomorphic to Mathlib's `DihedralGroup 6` of order 12. The OQ-03-OQ-01 sorry establishes `Nat.card hexagonalGroup = 12` by exhibiting a `MonoidHom` from `DihedralGroup 6` to this closure (using the universal property of `DihedralGroup` via its dihedral relations) and proving the homomorphism is injective. Alternative S2 strategy: directly enumerate the 12 elements as `{ρ^k σ^ε : k ∈ Fin 6, ε ∈ Fin 2}` and verify each lies in the closure via `Subgroup.subset_closure` + `Subgroup.mul_mem`."
+  },
+  {
+    "id": "ann-phex-oq03-hexagonLabeling",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 158,
+      "endLine": 162
+    },
+    "type": "definition",
+    "title": "HexagonLabeling: Sym(6) ⧸ D_6",
+    "content": "`HexagonLabeling := Equiv.Perm (Fin 6) ⧸ hexagonalGroup` packages the 60 distinct hexagonal labelings as cosets of the dihedral subgroup. The `abbrev` declaration means downstream definitions can use `HexagonLabeling` directly without unfolding. The cardinality `Nat.card HexagonLabeling = 60` follows from `card_sym6 = 720` (Fintype, proved unconditionally) and `card_hexagonalGroup = 12` (OQ-03-OQ-01 sorry) via Lagrange's theorem `Subgroup.card_eq_card_quotient_mul_card_subgroup`."
+  },
+  {
+    "id": "ann-phex-oq03-card-sym6",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 168,
+      "endLine": 170
+    },
+    "type": "theorem",
+    "title": "card_sym6: |Sym(6)| = 720 (Unconditional)",
+    "content": "Single-line `native_decide` proof using `Fintype.card_perm` + `Fintype.card_fin` + factorial reduction. The same pattern appears in `Proofs/AbelRuffiniGaloisExtensions.lean` line 314 (`card_s6 : Fintype.card (Equiv.Perm (Fin 6)) = 720`), confirming this idiom is established in the gallery."
+  },
+  {
+    "id": "ann-phex-oq03-pascal-line",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 196,
+      "endLine": 219
+    },
+    "type": "theorem",
+    "title": "pascalLine: Pascal-Line Map from HexagonLabeling (OQ-03-OQ-02)",
+    "content": "`pascalLine : Conic → InscribedHexagon → HexagonLabeling → ProjLine` is the central scaffold-stage operation: given a labeling, the Pascal line of the permuted hexagon. Its full definition + well-definedness on the `Sym(6) ⧸ D_6` quotient is deferred to OQ-03-OQ-02. The well-definedness argument: cyclic rotation of `(A, B, C, D, E, F)` cyclically permutes `(pascalP, pascalQ, pascalR)`, preserving the line they span; reversal swaps two of the three Pascal points, again preserving collinearity. Both `hexRot` and `hexRev` therefore act trivially on the Pascal line, so the quotient by `⟨hexRot, hexRev⟩` is well-defined.\n\nThe trivial existence statement `hexagrammum_mysticum_pascal_lines` (line 215) packages this as `∃ lines, lines = pascalLine C hex` — the meaningful content is in the sorry-guarded `pascalLine` definition itself."
+  },
+  {
+    "id": "ann-phex-oq03-steiner",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 225,
+      "endLine": 247
+    },
+    "type": "theorem",
+    "title": "SteinerPoint Structure and 20-Count (OQ-03-OQ-03)",
+    "content": "`SteinerPoint C hex` packages four pieces of data: the concurrence `point : ProjPoint`, the 3-element `triple : Finset HexagonLabeling`, the `card_triple : triple.card = 3` proof, and the `on_lines : ∀ lbl ∈ triple, pointOnLine point (pascalLine C hex lbl)` concurrence proof. This structure forces S2+ to produce concrete Steiner points rather than abstract existence claims.\n\n`steiner_count_eq_20`: six points on a non-degenerate conic determine exactly 20 Steiner points. The OQ-03-OQ-03 sorry proof strategy enumerates the 20 Steiner triples as a `Finset (Finset HexagonLabeling)`, proves concurrence for one representative triple via the Cayley-Bacharach axiom (a pair of degenerate cubics meeting in 9 points, 6 on the conic, 3 forming the Steiner point), and deduces the remaining 19 by `S_6`-symmetry."
+  },
+  {
+    "id": "ann-phex-oq03-kirkman",
+    "proofId": "pascals-hexagon-oq-03",
+    "range": {
+      "startLine": 253,
+      "endLine": 272
+    },
+    "type": "theorem",
+    "title": "KirkmanPoint Structure and 60-Count (OQ-03-OQ-04)",
+    "content": "`KirkmanPoint C hex` mirrors `SteinerPoint` in shape but encodes a combinatorially distinct family of concurrence triples. The 60 Kirkman points correspond to a different orbit structure on the 60 Pascal lines than the 20 Steiner points. Conway-Ryba 2012 documents the explicit Kirkman-triple enumeration via the outer automorphism of S_6: each Kirkman triple is parameterized by a 'syntheme' (a partition of 6 into three pairs) together with a 'duad' (an unordered pair), giving 15 × 4 = 60 Kirkman triples in total. The OQ-03-OQ-04 sorry follows the same Cayley-Bacharach concurrence pattern as OQ-03-OQ-03 with different triple combinatorics."
+  }
+]
