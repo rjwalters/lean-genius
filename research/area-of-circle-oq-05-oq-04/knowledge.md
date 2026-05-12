@@ -120,3 +120,51 @@ formal statements in `problem.md`. All paths below are verified by direct
   `Mathlib.MeasureTheory.Measure.Haar.Basic` with `μ(ℤ_[p]) = 1`. Likely target
   file: `Mathlib/NumberTheory/Padics/HaarMeasure.lean`.
 - Prove `𝟙_{ℤ_[p]}` is self-Fourier under those data.
+
+---
+
+## S2a (2026-05-12) — Complex case proved
+
+Status of the four candidates:
+
+| Candidate | Status after S2a |
+| --- | --- |
+| (C1) trivial character on ℤ_[p] | Still blocked — needs `ψ_p` |
+| (C2) self-Fourier of `𝟙_{ℤ_[p]}` | Still blocked — needs `ψ_p` + Haar on ℚ_[p] |
+| (C3) Tate / Igusa local zeta | Still far |
+| Complex Gaussian (bonus) | **PROVED** in `Proofs/AreaOfCircleOQ05OQ04.lean` |
+
+### Mathlib API confirmed at v4.26.0 (rev `2df2f015`)
+
+* `Complex.measurableEquivRealProd : ℂ ≃ᵐ ℝ × ℝ` and its `_symm_apply`
+  simp lemma. Source: `Mathlib/MeasureTheory/Measure/Lebesgue/Complex.lean`.
+* `Complex.volume_preserving_equiv_real_prod : MeasurePreserving …` — the
+  push-forward of `volume : Measure ℂ` along the equiv is the product
+  measure on `ℝ × ℝ`. Same file.
+* `MeasureTheory.volume_eq_prod (α β) [MeasureSpace α] [MeasureSpace β] :
+  (volume : Measure (α × β)) = (volume : Measure α).prod (volume : Measure β)`.
+  Source: `Mathlib/MeasureTheory/Measure/Prod.lean`.
+* `integral_prod_mul {L : Type*} [RCLike L] (f : α → L) (g : β → L) :
+  ∫ z, f z.1 * g z.2 ∂(μ.prod ν) = (∫ x, f x ∂μ) * ∫ y, g y ∂ν`. Source:
+  `Mathlib/MeasureTheory/Integral/Prod.lean`. Works for `L = ℝ` (used here).
+* `MeasurePreserving.integral_comp' {β} {ν} {f : α ≃ᵐ β} (h : ...)
+  (g : β → G) : ∫ x, g (f x) ∂μ = ∫ y, g y ∂ν`. Source:
+  `Mathlib/MeasureTheory/Integral/Bochner/Basic.lean`.
+
+### Mathlib API still missing (unchanged from S1)
+
+1. `ψ_p : ℚ_[p] → ℂ` standard additive character — needed for (C1)/(C2).
+2. Explicit `MeasureTheory.Measure ℚ_[p]` with `μ(ℤ_[p]) = 1` — needed
+   for any integral identity on `ℚ_[p]` /`ℤ_[p]`.
+
+### Lessons recorded
+
+* The `Complex.normSq z = z.re² + z.im²` identity is via
+  `Complex.normSq_apply`, *not* `Complex.normSq_def`; `sq` simp-collapses
+  `x * x` to `x ^ 2`.
+* The integrand `exp(-(π · (p.1² + p.2²)))` factors cleanly via
+  `← Real.exp_add` + `ring` after the appropriate `congr 1` step.
+* `integral_prod_mul` requires the codomain to be `RCLike`, which `ℝ`
+  satisfies, but Lean needs explicit `(μ := volume)` `(ν := volume)`
+  annotations to pick up the right product measure when both factors
+  are `volume : Measure ℝ`.

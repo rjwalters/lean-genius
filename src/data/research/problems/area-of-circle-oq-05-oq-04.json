@@ -18,7 +18,7 @@
     "proven": [
       "Real Gaussian integral: integral over R of exp(-x^2) dx = sqrt(pi) (Mathlib integral_gaussian; already used in Proofs/AreaOfCircleOQ05.lean).",
       "Multivariate Gaussian via spectral theorem (Proofs/AreaOfCircleOQ05OQ02.lean).",
-      "Complex Gaussian: integral over C of exp(-pi |z|^2) dA(z) = 1 - accessible from existing Mathlib; to be added in S2a.",
+      "Complex Gaussian: integral over C of exp(-pi · normSq z) dz = 1 — PROVED in Proofs/AreaOfCircleOQ05OQ04.lean (S2a).",
       "Z_p is compact, Q_p is a proper metric space (Mathlib PadicInt.compactSpace, Padic.instProperSpace)."
     ],
     "open": [
@@ -30,11 +30,11 @@
   },
   "currentState": {
     "phase": "RESEARCH",
-    "since": "2026-05-12T08:03:22.732Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE: surface that the source formula is malformed; identify three well-defined candidate p-adic Gaussian/Fourier identities and audit Mathlib readiness. Next: S2 writes a small Lean file with the complex Gaussian identity (provable) plus a sorry-bearing scaffold for the p-adic self-Fourier statement (axiomatised).",
+    "since": "2026-05-12T09:21:46.000Z",
+    "iteration": 2,
+    "focus": "S2a ACT-A: proved complex Gaussian integral ∫_ℂ exp(-π · normSq z) dz = 1 via Fubini reduction to product of real Gaussians. New file Proofs/AreaOfCircleOQ05OQ04.lean (~200 LOC, 3 theorems + 1 private lemma, 0 sorries, 0 axioms). p-adic case (C2) remains deferred pending two Mathlib milestones (standard psi_p, Haar on Q_p).",
     "blockers": [],
-    "nextAction": "S2: create proofs/Proofs/AreaOfCircleOQ05OQ04.lean with (a) the complex Gaussian integral over the plane, proved via Fubini + integral_gaussian, and (b) axiom padicAddChar / sorry-stub for the self-Fourier identity 1_{Z_p} fixed by Fourier transform. See research/area-of-circle-oq-05-oq-04/{problem,knowledge,state}.md.",
+    "nextAction": "S2b or S3: state (C2) p-adic self-Fourier as a sorry-bearing theorem with axiom padicAddChar : Q_p → ℂ and a Haar-measure stub; record proof outline (character-sum vanishing on Z/p^k Z for k ≥ 1, packaged ultrametrically). Alternative: contribute the standard psi_p and Haar-on-Q_p as Mathlib PRs first.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -42,7 +42,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE complete. The candidate-pool slug's source formula is malformed; three well-defined alternatives stated. Mathlib has PadicInt/ProperSpace/AddChar but lacks the standard C-valued additive character on Q_p and an explicit Haar measure on Q_p. Complex Gaussian companion identity is immediate; recommended as S2a target.",
+    "progressSummary": "S1 OBSERVE complete + S2a ACT-A complete with build verified. Complex Gaussian integral ∫_ℂ exp(-π · ‖z‖²) dz = 1 proven in new file AreaOfCircleOQ05OQ04.lean (3 theorems, 0 sorries, 0 axioms). Docker build passed (3122/3122 jobs). p-adic case (C2) blocked on two Mathlib milestones (ψ_p : ℚ_p → ℂ and explicit Haar measure on ℚ_p).",
     "builtItems": [
       {
         "item": "S1 OBSERVE markdown set (problem.md, knowledge.md, state.md)",
@@ -55,13 +55,20 @@
       {
         "item": "Mathlib readiness audit (PadicInt/Padic/AddChar/Haar)",
         "session": "S1"
+      },
+      {
+        "item": "Proofs/AreaOfCircleOQ05OQ04.lean: integral_pi_gaussian (scalar π-Gaussian = 1), complex_gaussian_integral (∫_ℂ exp(-π · normSq z) = 1), complex_gaussian_integral_norm (the ‖z‖² form) — proven via Complex.volume_preserving_equiv_real_prod + integral_prod_mul (Fubini) + scaled_gaussian",
+        "session": "S2a"
       }
     ],
     "insights": [
       "||.||_p is real-valued, so e^{2*pi*i * ||x||_p} is a complex exponential of a real number and does not encode p-adic data - the source OQ formula is malformed.",
       "The 'right' p-adic Gaussian is 1_{Z_p}: it is the unique (up to scaling) fixed point of the p-adic Fourier transform under the self-dual choice of additive character and Haar measure, exactly as exp(-pi x^2) is the Fourier eigenfunction in the archimedean case.",
       "The polar-coordinates / area-of-circle derivation of integral over R of exp(-x^2) dx = sqrt(pi) has no direct p-adic analogue because there is no continuous rotation group on Q_p; the corresponding p-adic statement is the character-sum identity sum over a in Z/p^k Z of e^{2*pi*i a / p^k} = 0 for k >= 1, packaged ultrametrically.",
-      "Mathlib's PadicInt.AddChar covers Z_p -> R characters for Z_p-algebras R - this is the Cartier dual direction. The standard psi_p : Q_p -> C is in the opposite direction and absent from Mathlib v4.26.0."
+      "Mathlib's PadicInt.AddChar covers Z_p -> R characters for Z_p-algebras R - this is the Cartier dual direction. The standard psi_p : Q_p -> C is in the opposite direction and absent from Mathlib v4.26.0.",
+      "Complex.volume_preserving_equiv_real_prod (Mathlib v4.26.0, Mathlib.MeasureTheory.Measure.Lebesgue.Complex) gives a MeasurePreserving map ℂ ≃ᵐ ℝ × ℝ, so any (ℝ-valued) integral over ℂ can be transported to the product space and factored via integral_prod_mul.",
+      "The scalar π-weighted Gaussian ∫ exp(-π · x²) dx = √(π/π) = 1 specialises scaled_gaussian at a = π; this gives a clean unit factor on each axis of the complex factorisation.",
+      "The proof of the complex Gaussian = 1 needs zero new analysis - it is purely a transport + Fubini composition on top of existing real Gaussian / measure-preserving machinery already in Mathlib."
     ],
     "mathlibGaps": [
       "No padicAddChar : Q_p -> C (standard additive character with psi_p|_{Z_p} = 1, psi_p(p^{-n}) = e^{2*pi*i/p^n}).",
@@ -158,7 +165,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.560Z",
-  "lastUpdate": "2026-05-12T08:03:22.732Z",
+  "lastUpdate": "2026-05-12T09:21:46.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -458,6 +465,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05OQ02.lean"
+    },
+    {
+      "path": "Proofs/AreaOfCircleOQ05OQ04.lean",
+      "filename": "AreaOfCircleOQ05OQ04.lean",
+      "lineCount": 204,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AreaOfCircleOQ05OQ04.lean"
     }
   ]
 }
