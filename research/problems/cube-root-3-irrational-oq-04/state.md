@@ -1,16 +1,16 @@
 # Current State
 
-**Phase**: OBSERVE
-**Since**: 2026-05-11 (S1)
-**Iteration**: 1
+**Phase**: ACT
+**Since**: 2026-05-11 (S2)
+**Iteration**: 2
 
 ## Current Focus
 
-S1 (researcher-1): Initial survey of the simple continued fraction
-expansion of `cbrt3 = (3 : ℝ) ^ (1/3 : ℝ)`. Establishes the
-theoretical obstacle (Lagrange's theorem rules out periodicity),
-identifies the relevant Mathlib infrastructure, and lays out a
-concrete prefix-by-prefix S2+ decomposition.
+S2 (researcher-10): First Lean iteration. Established
+`cbrt3_floor_eq_one : ⌊cbrt3⌋ = (1 : ℤ)` — the leading partial
+quotient `a₀ = 1` of the simple continued fraction `[1; 2, 3, 1, 4, …]`.
+Proof is real-arithmetic only (cubing bounds + `Int.le_floor` /
+`Int.floor_lt`); no axioms; depends on `cbrt3_cubed` only.
 
 ## Active Approach
 
@@ -39,42 +39,43 @@ clone. Strict text-only iterations (this S1) are unaffected.
 
 ## Next Action
 
-**S2 (any researcher)**: Open `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`
-(new file). Add:
+**S3 (any researcher)**: Prove the second partial quotient,
+`cbrt3_a1 : ⌊1 / (cbrt3 - 1)⌋ = (2 : ℤ)` in
+`proofs/Proofs/CubeRoot3IrrationalOQ04.lean`.
+
+Equivalent to `2 ≤ 1/(cbrt3 - 1) < 3`, i.e.
+`1/3 < cbrt3 - 1 ≤ 1/2`, i.e. `4/3 < cbrt3 ≤ 3/2`. After cubing
+and substituting `cbrt3 ^ 3 = 3`: `64/27 < 3 ≤ 27/8`. Both
+inequalities hold strictly (`64/27 ≈ 2.37`, `27/8 = 3.375`), so the
+`≤ 3/2` is in fact strict, giving `2 < 1/(cbrt3 - 1) < 3` and the
+floor identity.
+
+Provability sketch (analogous to S2 — `nlinarith` after cubing):
 
 ```lean
-import Mathlib.Algebra.ContinuedFractions.Computation.Basic
-import Proofs.CubeRoot3Irrational
+theorem four_thirds_lt_cbrt3 : (4/3 : ℝ) < cbrt3 := by
+  by_contra h; push_neg at h
+  have h2 : cbrt3 ^ 3 ≤ 64/27 := by
+    have eq : cbrt3 ^ 3 = cbrt3 * cbrt3 * cbrt3 := by ring
+    rw [eq]; nlinarith [h, cbrt3_nonneg]
+  rw [cbrt3_cubed] at h2; linarith
 
-open CubeRoot3Irrational
-
-theorem cbrt3_floor_eq_one : ⌊cbrt3⌋ = (1 : ℤ) := by
-  -- 1 ≤ cbrt3 < 2 ⟷ 1 ≤ 3 < 8
-  sorry
+theorem cbrt3_lt_three_halves : cbrt3 < (3/2 : ℝ) := by
+  by_contra h; push_neg at h
+  have h2 : (27/8 : ℝ) ≤ cbrt3 ^ 3 := by
+    have eq : cbrt3 ^ 3 = cbrt3 * cbrt3 * cbrt3 := by ring
+    rw [eq]; nlinarith [h, cbrt3_nonneg]
+  rw [cbrt3_cubed] at h2; linarith
 ```
 
-Provability sketch:
-
-```
-have h_pos : (0 : ℝ) ≤ 3 := by norm_num
-have h1 : (1 : ℝ) ≤ cbrt3 := by
-  have : (1 : ℝ) ^ 3 ≤ cbrt3 ^ 3 := by simp [cbrt3_cubed]; norm_num
-  -- monotonicity of `x ↦ x^3` on `[0, ∞)`
-  exact (pow_le_pow_iff_left (by norm_num) (by positivity) (by decide)).1 this
-have h2 : cbrt3 < 2 := by
-  have : cbrt3 ^ 3 < (2 : ℝ) ^ 3 := by simp [cbrt3_cubed]; norm_num
-  exact (pow_lt_pow_iff_left (by norm_num) (by positivity) (by decide)).1 this
-exact (Int.floor_eq_iff (by norm_num)).2 ⟨by exact_mod_cast h1, by exact_mod_cast h2⟩
-```
-
-(The exact `pow_le_pow_iff_left` / `pow_lt_pow_iff_left` API names
-should be confirmed against the pinned Mathlib revision; if drifted,
-`one_le_rpow_iff_of_pos` is an equivalent rpow-form starting point.)
+Then combine with `Int.floor_eq_iff` and `div_lt_iff_lt_mul` /
+`lt_div_iff_mul_lt` style algebra (or shortcut via
+`Int.floor_div_one_sub` if such a lemma exists in Mathlib).
 
 ## Attempt Counts
 
-- Total attempts: 1 (S1 survey)
-- Current approach attempts: 1
+- Total attempts: 2 (S1 survey, S2 first-partial-quotient lemma)
+- Current approach attempts: 2 (cubing + nlinarith)
 - Approaches tried: 1
 
 ## Open files
@@ -100,4 +101,16 @@ Produced:
 - `src/data/research/problems/cube-root-3-irrational-oq-04.json`
   updated: 4 insights, 3 mathlibGaps, 4 nextSteps, progressSummary.
 
-S2+ will touch the Lean tree once the prefix targets are agreed.
+## S2 Deliverable
+
+First Lean iteration on this slug. Phase OBSERVE → ACT.
+
+- **4 new theorems**, all sorry-free, no axioms:
+  - `cbrt3_nonneg : 0 ≤ cbrt3`
+  - `one_le_cbrt3 : 1 ≤ cbrt3`
+  - `cbrt3_lt_two : cbrt3 < 2`
+  - `cbrt3_floor_eq_one : ⌊cbrt3⌋ = (1 : ℤ)` — main result, `a₀ = 1`.
+- 0 axioms; 0 sorries.
+- Lean file: `proofs/Proofs/CubeRoot3IrrationalOQ04.lean` (~110 lines).
+- Build pending (researcher Docker symlink broken per
+  `feedback_researcher_lake_symlink_broken.md`).

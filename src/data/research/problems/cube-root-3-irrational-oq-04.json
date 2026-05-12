@@ -1,7 +1,7 @@
 {
   "slug": "cube-root-3-irrational-oq-04",
   "title": "Continued fraction expansion of cube root of 3",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -10,7 +10,7 @@
     "plain": "Formal mathematical investigation: Continued fraction expansion of cube root of 3.",
     "whyMatters": [
       "Mathlib coverage: first worked example of GenContFract.of applied to a cubic irrational in the project gallery.",
-      "Diophantine approximation: pairs with cube-root-3-irrational (the existence proof) to give a 'how irrational' deepening \u2014 CF prefix data.",
+      "Diophantine approximation: pairs with cube-root-3-irrational (the existence proof) to give a 'how irrational' deepening — CF prefix data.",
       "Companion to the Lagrange theorem family in the gallery (eventual-periodicity iff quadratic-irrational)."
     ]
   },
@@ -20,27 +20,31 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-08T19:09:00.563Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE: documented theoretical obstacle (Lagrange) + Mathlib API map + finite-prefix decomposition for [1; 2, 3, 1, 4, ...]",
+    "phase": "ACT",
+    "since": "2026-05-11T18:55:00.000Z",
+    "iteration": 2,
+    "focus": "S2 (researcher-10, 2026-05-11): proved cbrt3_floor_eq_one : Int.floor cbrt3 = (1:Int) — the first partial quotient a_0=1 of the simple CF [1;2,3,1,4,...]. Supporting lemmas: cbrt3_nonneg, one_le_cbrt3, cbrt3_lt_two. Strategy: cube the bounds via ring + nlinarith (drift-robust over pow_le_pow_left), then Int.le_floor / Int.floor_lt. 0 sorries, 0 axioms. New Lean file: Proofs/CubeRoot3IrrationalOQ04.lean ~110 lines.",
     "blockers": [],
-    "nextAction": "S2: prove cbrt3_floor_eq_one : Int.floor cbrt3 = (1:Int) in new Proofs/CubeRoot3IrrationalOQ04.lean",
+    "nextAction": "S3: prove cbrt3_a1 : Int.floor (1/(cbrt3 - 1)) = (2:Int). Needs aux lemmas four_thirds_lt_cbrt3 (cube target 64/27 < 3) and cbrt3_lt_three_halves (cube target 27/8 > 3), then div_lt_iff_lt_mul / lt_div_iff_mul_lt algebra. Reuse S2 cubing-by-ring scaffolding.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-1, 2026-05-11): OBSERVE survey for the simple continued fraction expansion of cbrt3 := (3:\u211d)^(1/3:\u211d). Established theoretical obstacle (Lagrange 1770: CF eventually periodic \u27fa quadratic irrational; \u221b3 has degree 3, so CF is non-periodic \u2014 no finite-description theorem possible). Computed the first five partial quotients explicitly: [a0,a1,a2,a3,a4] = [1, 2, 3, 1, 4] (OEIS A002945) and the first five convergents [1/1, 3/2, 10/7, 13/9, 62/43]. Mapped Mathlib infrastructure: GenContFract.of, IntFractPair.stream, GenContFract.convergents. Identified 3 Mathlib gaps and a 4-step S2+ decomposition (one lemma per a_i). No Lean changes this iteration \u2014 pure documentation S1.",
-    "builtItems": [],
+    "progressSummary": "S2 (researcher-10, 2026-05-11): first Lean iteration on cube-root-3-irrational-oq-04. Established cbrt3_floor_eq_one : Int.floor cbrt3 = (1:Int) — the leading partial quotient a_0 of the non-periodic simple CF [1;2,3,1,4,...] — via three supporting lemmas (cbrt3_nonneg, one_le_cbrt3, cbrt3_lt_two). Proof avoids the drift-prone pow_le_pow_left family by unfolding cubing via ring + nlinarith. 0 sorries; 0 axioms; depends only on parent's cbrt3_cubed. S3 (a_1=2) inherits the same cubing template. S1 prior (researcher-1, 2026-05-11): OBSERVE survey establishing Lagrange theoretical obstacle + Mathlib API map.",
+    "builtItems": [
+      "Proofs/CubeRoot3IrrationalOQ04.lean (new, ~110 lines, 4 theorems): cbrt3_nonneg, one_le_cbrt3, cbrt3_lt_two, cbrt3_floor_eq_one — first partial quotient a_0 = 1 of the simple CF of cbrt3. 0 sorries, 0 axioms."
+    ],
     "insights": [
-      "Lagrange (1770): CF eventually periodic iff quadratic irrational. cbrt3 has minimal polynomial X^3-3 (degree 3 over Q, irreducible by Eisenstein at p=3), so its CF is non-periodic \u2014 no finite-description theorem about all a_i is possible.",
-      "First five partial quotients computed: a0=1, a1=2, a2=3, a3=1, a4=4 (matches OEIS A002945). First five convergents: 1/1, 3/2, 10/7, 13/9, 62/43 \u2014 alternate above/below cbrt3 as expected for any irrational CF.",
+      "Lagrange (1770): CF eventually periodic iff quadratic irrational. cbrt3 has minimal polynomial X^3-3 (degree 3 over Q, irreducible by Eisenstein at p=3), so its CF is non-periodic — no finite-description theorem about all a_i is possible.",
+      "First five partial quotients computed: a0=1, a1=2, a2=3, a3=1, a4=4 (matches OEIS A002945). First five convergents: 1/1, 3/2, 10/7, 13/9, 62/43 — alternate above/below cbrt3 as expected for any irrational CF.",
       "IntFractPair.stream is the right interface for single-a_i extraction; GenContFract.of adds a structural layer that is overkill for prefix verification. Use IntFractPair.b directly.",
       "Each a_i lemma is independent (direct floor-bound, not a CF recursion), so S2 through S6 can be parallelized.",
-      "Roth's theorem (mu(cbrt3)=2) constrains a_i growth (sub-polynomial in q_{i-1}) but is not a prerequisite for finite-prefix lemmas; Roth is its own deep target in the gallery."
+      "Roth's theorem (mu(cbrt3)=2) constrains a_i growth (sub-polynomial in q_{i-1}) but is not a prerequisite for finite-prefix lemmas; Roth is its own deep target in the gallery.",
+      "Cubing-by-ring-then-nlinarith is drift-robust over pow_le_pow_left / pow_lt_pow_left. Unfold cbrt3^3 to cbrt3*cbrt3*cbrt3 via ring; nlinarith then closes the cubic bound from the linear contradiction hypothesis + cbrt3_nonneg, without naming any monotonicity lemma. Generalizes cleanly to all subsequent a_i bounds.",
+      "Int.le_floor / Int.floor_lt are preferable to the packed Int.floor_eq_iff for two-sided floor identities — le_antisymm + the two halves keeps the proof readable and isolates which bound is failing."
     ],
     "mathlibGaps": [
       "No worked example of GenContFract.of applied to a cubic irrational anywhere in Mathlib at the pinned revision; only sqrt(n) and golden_ratio CF examples exist.",
@@ -48,10 +52,10 @@
       "No tactic-level support for \"cube both sides of an inequality involving Real.rpow\"; nlinarith handles polynomial inequalities once cbrt3 ^ 3 = 3 is substituted, but the substitution is manual."
     ],
     "nextSteps": [
-      "S2: state and prove cbrt3_floor_eq_one : Int.floor cbrt3 = (1:Int) in a new Proofs/CubeRoot3IrrationalOQ04.lean (~30 lines, monotonicity of x -> x^3 on [0, infty) after substituting cbrt3_cubed).",
-      "S3: prove cbrt3_a1 : Int.floor (1/(cbrt3 - 1)) = (2:Int) \u2014 needs the bound 4/3 < cbrt3 < 3/2 (cube to 64/27 < 3 < 27/8) (~60 lines).",
-      "S4: decide between (A) a chain of floor(...) = a_i lemmas or (B) a single statement about IntFractPair.stream cbrt3 at indices 0..4. Recommendation: B \u2014 more compact, single Mathlib API surface.",
-      "S5+: convergent lemmas (convergent_0=(1,1), convergent_1=(3,2), ...) combined with the a_i lemmas to populate a small 'CF prefix' theorem bundle for the gallery."
+      "S3: prove cbrt3_a1 : Int.floor (1/(cbrt3 - 1)) = (2:Int). Auxiliary lemmas four_thirds_lt_cbrt3 (cube target 64/27 < 3) and cbrt3_lt_three_halves (cube target 27/8 > 3) reuse the S2 cubing template directly. Algebra step uses div_lt_iff_lt_mul / lt_div_iff_mul_lt (verify exact Mathlib names at pinned revision).",
+      "S4: decide between (A) chain of floor(...) = a_i lemmas or (B) single IntFractPair.stream statement at indices 0..4. Tentative recommendation: A for transparency (each a_i has an isolated cubing bound), B as a final wrap-up corollary.",
+      "S5+: convergent lemmas — state and prove convergent_0=(1,1), convergent_1=(3,2), ... combine with the a_i lemmas for a 'CF prefix' bundle.",
+      "S6 (deferred): study whether the cubing template can be packaged as a tactic-level helper. The 'cube an inequality involving cbrt3' pattern (item 3 of S1 mathlibGaps) is now exemplified by S2 and could be elaborated into a reusable lemma family."
     ]
   },
   "tags": [
@@ -80,7 +84,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.562Z",
-  "lastUpdate": "2026-05-11T01:30:00.000Z",
+  "lastUpdate": "2026-05-11T18:55:00.000Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [
@@ -127,6 +131,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot3IrrationalOQ04.lean",
+      "filename": "CubeRoot3IrrationalOQ04.lean",
+      "lineCount": 108,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot3IrrationalOQ04.lean"
     }
   ]
 }
