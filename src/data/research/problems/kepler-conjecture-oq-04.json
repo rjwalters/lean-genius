@@ -1,0 +1,109 @@
+{
+  "slug": "kepler-conjecture-oq-04",
+  "title": "Optimal packing density for non-spherical objects (ellipsoids, tetrahedra) in R^3",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\sup \\{\\delta(P) : P\\text{ a packing of congruent copies of }K \\subset \\mathbb{R}^3\\}\\text{ for }K \\in \\{\\text{ellipsoid},\\ \\text{regular tetrahedron},\\ \\text{general convex body}\\}",
+    "plain": "The parent gallery proof axiomatizes Kepler-Hales for congruent spheres (delta <= pi/(3*sqrt(2)) ~ 0.7405). OQ-04 asks the analogous question for non-spherical convex bodies. Three flagship sub-questions: (1) regular tetrahedra: best known delta >= 4000/4671 ~ 0.85638 (Chen-Engel-Glotzer 2010 dimer packing), STRICTLY above the sphere FCC bound -- so tetrahedra pack denser than spheres in R^3; (2) ellipsoids: delta ~ 0.7707 at aspect ratio sqrt(2) (Donev-Stillinger-Chaikin-Torquato 2004), with lattice-only ellipsoid packings exactly equal to pi/(3*sqrt(2)) (Bezdek-Kuperberg 2007); (3) general convex bodies: Ulam's conjecture (1972, OPEN) says every symmetric convex body in R^3 packs delta >= pi/(3*sqrt(2)) -- the unit ball would be the LEAST dense convex body to pack.",
+    "whyMatters": [
+      "Generalizes the gallery's flagship Hilbert-18 result: the parent kepler-conjecture is for spheres only; OQ-04 covers the natural ellipsoid/tetrahedral/convex-body extensions.",
+      "Permits an AXIOM-FREE refutation of the sphere upper bound: 4000/4671 > pi/(3*sqrt(2)) is a finite numerical computation provable using Real.pi_sq_lt (no new axioms required, ~50 lines).",
+      "Ulam's packing conjecture is the mirror image of Kepler -- Kepler proves spheres are bounded ABOVE by pi/(3*sqrt(2)), Ulam (open) says every convex body is bounded BELOW by pi/(3*sqrt(2)). Together they say the sphere is exactly the convex body whose density equals the threshold pi/(3*sqrt(2)).",
+      "Mathlib has Convex/ConvexHull but no PackingDensity for non-spherical bodies, no tetrahedron volume formula, no Ulam statement. Gallery-side formalization has pedagogical and potentially upstream value.",
+      "Demonstrates a rare 'open question with a partial formal answer': S2-S4 (~95 lines, 0 new axioms) deliver the axiom-free tetrahedral refutation; S5-S6 (~45 lines, 2 new axioms) document the heavier ellipsoid/Ulam landscape."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Aristotle (350 BCE) was wrong: regular tetrahedra do NOT tile R^3. Refuted in writing by Mueller (1429) and Regiomontanus (15th c).",
+      "Gauss (1831): FCC is optimal among LATTICE sphere packings, density pi/(3*sqrt(2)).",
+      "Thue (1892), Fejes Toth (1940): hexagonal disk packing is optimal in R^2, density pi/(2*sqrt(3)) ~ 0.9069.",
+      "Hales (1998), Flyspeck (2014): full Kepler conjecture for spheres in R^3, delta <= pi/(3*sqrt(2)).",
+      "Bezdek-Kuperberg (1990 ms / 2007 publ): the densest LATTICE packing of any ellipsoid in R^3 has density exactly pi/(3*sqrt(2)) (affine image of FCC).",
+      "Conway-Torquato (2006): regular tetrahedra pack with density >= 0.717.",
+      "Chen (2008): regular tetrahedra pack with density >= 0.778.",
+      "Kallus-Elser-Gravel (2010): regular tetrahedra pack with density >= 0.8226.",
+      "Chen-Engel-Glotzer (2010): regular tetrahedra pack with density >= 4000/4671 ~ 0.85638 (current best, the 'dimer packing').",
+      "Donev-Stillinger-Chaikin-Torquato (2004): near-spheroidal ellipsoids at aspect ratio sqrt(2) pack with density ~ 0.7707 (4.1% gain over FCC), via non-lattice periodic packings.",
+      "Numerical: 4000/4671 > pi/(3*sqrt(2)) holds with comfortable margin (~11.6 percentage points) -- AXIOM-FREE formalizable in Lean."
+    ],
+    "open": [
+      "Exact supremum of tetrahedral packing density: known >= 4000/4671 ~ 0.8564, conjectured but not proven optimal. Whether the dimer packing is the densest is open.",
+      "Exact supremum of ellipsoid packing density: known >= 0.7707 at aspect ratio sqrt(2), conjectured but not proven optimal.",
+      "Ulam's packing conjecture (1972): every symmetric convex body in R^3 packs delta >= pi/(3*sqrt(2)). Equivalently, the unit ball is the LEAST dense convex body to pack. Open in general; proven for near-spherical bodies (Bezdek-Kuperberg, Kuperberg).",
+      "Densest packing of other Platonic solids: cube tiles trivially (delta = 1); octahedron unknown; dodecahedron known >= 0.904; icosahedron known >= 0.836. Open in general."
+    ],
+    "goal": "Formalize the AXIOM-FREE tetrahedral refutation in S2-S4: define tetrahedronDimerDensity := 4000/4671, prove positivity, prove < 1, prove > fccDensity. ~95 lines, 0 new axioms. Then S5-S6 add 2 axiomatized statements: Bezdek-Kuperberg (ellipsoid lattice) and Ulam (convex body lower bound). Total ~150 lines, +2 axioms."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-12T10:00:00.000Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE: documented three flagship sub-questions (ellipsoids, tetrahedra, general convex bodies) plus the Ulam-vs-Kepler mirror-image duality. Established that the Chen-Engel-Glotzer 4000/4671 > pi/(3*sqrt(2)) inequality is fully axiom-free in Lean (provable via Real.pi_sq_lt with comfortable numerical margin). Identified Mathlib gaps: no IsPacking predicate, no tetrahedron/ellipsoid volume formulas, no Ulam namespace.",
+    "blockers": [],
+    "nextAction": "S2: create new file Proofs/KeplerConjectureOQ04.lean and define tetrahedronDimerDensity := 4000/4671 with positivity and < 1 lemmas (~25 lines, both proofs are norm_num).",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 (researcher-5, 2026-05-12): OBSERVE survey for kepler-conjecture-oq-04, the natural extension of the parent Kepler-Hales theorem (axiomatized in the parent for congruent spheres) to non-spherical convex bodies in R^3. Surveyed three flagship sub-questions: (a) regular tetrahedra, with the Chen-Engel-Glotzer (2010) dimer packing achieving delta = 4000/4671 ~ 0.85638, strictly above the sphere FCC density pi/(3*sqrt(2)) ~ 0.7405; (b) ellipsoids, with Donev-Stillinger-Chaikin-Torquato (2004) reaching ~ 0.7707 via non-lattice periodic packings, and Bezdek-Kuperberg (2007) proving the LATTICE bound is exactly pi/(3*sqrt(2)); (c) general convex bodies, with Ulam's packing conjecture (1972, open) asserting the sphere is the LEAST dense convex body to pack. Established that the tetrahedral refutation 4000/4671 > pi/(3*sqrt(2)) is fully axiom-free in Lean: cross-multiplication + squaring gives 288_000_000 > 21_818_241 * pi^2, and using Real.pi_sq_lt (pi^2 < 9.8696) leaves comfortable margin ~ 72_651_855 (about 25% of LHS). Worked numerics: pi/(3*sqrt(2)) ~ 0.74048, 4000/4671 ~ 0.85638, gap ~ 0.11590. Identified Mathlib v4.26.0 gaps: no IsPacking/LatticePacking predicate, no explicit tetrahedron volume sqrt(2)/12 * a^3 or ellipsoid volume (4/3)*pi*abc, no Ulam namespace. The Aristotle (350 BCE) myth that tetrahedra tile R^3 was refuted in writing by Mueller (1429) and Regiomontanus (15th c) -- the gap 1 - 4000/4671 = 671/4671 ~ 14.4% is the 'unfilled volume' in the densest known tetrahedral packing. No Lean changes this iteration -- pure documentation S1.",
+    "builtItems": [],
+    "insights": [
+      "The tetrahedral refutation 4000/4671 > pi/(3*sqrt(2)) is AXIOM-FREE in Lean: pure real-number arithmetic provable via Real.pi_sq_lt (pi^2 < 9.8696). Squared form: 288_000_000 > 21_818_241 * pi^2, margin ~ 25% even with the loosest Mathlib pi bound.",
+      "The parent's PackingDensity structure (just a real in [0,1]) is shape-agnostic, so OQ-04 extends without modifying the parent: simply construct new PackingDensity instances tagged by shape (tetrahedron, ellipsoid).",
+      "Ulam's conjecture is the MIRROR IMAGE of Kepler: Kepler (proven) says spheres are bounded ABOVE by pi/(3*sqrt(2)); Ulam (open since 1972) says every convex body is bounded BELOW by pi/(3*sqrt(2)). Together they say the unit ball is exactly the threshold-density convex body.",
+      "Bezdek-Kuperberg's ellipsoid lattice bound is EQUAL to FCC, but Donev et al.'s non-lattice ellipsoid packing strictly exceeds FCC at aspect ratio sqrt(2). The non-lattice gain is genuine geometric content and not a contradiction with Kepler (Kepler is for spheres, not ellipsoids).",
+      "Three difficulty levels in the formalization: (i) AXIOM-FREE tetrahedral refutation S2-S4 (~95 lines, 0 axioms); (ii) AXIOMATIZED Bezdek-Kuperberg lattice bound S5 (1 axiom, ~30 lines); (iii) AXIOMATIZED Ulam conjecture S6 (1 axiom, ~15 lines). Total ~150 lines, +2 axioms."
+    ],
+    "mathlibGaps": [
+      "No IsPacking / LatticePacking predicate in Mathlib v4.26.0. Mathlib has Convex and ConvexHull infrastructure for general convex sets, but no abstract notion of 'a packing of congruent copies of a shape K' with associated density.",
+      "No tetrahedron volume formula sqrt(2)/12 * a^3 or regular tetrahedron geometric definition in Mathlib. Real.ball volume exists, but tetrahedron/ellipsoid volume requires affine change-of-variables.",
+      "No Ulam packing-conjecture statement in Mathlib's probability/measure-theory namespaces. A gallery-side formalization documents the open landscape around Kepler."
+    ],
+    "nextSteps": [
+      "S2: create Proofs/KeplerConjectureOQ04.lean with tetrahedronDimerDensity := 4000/4671, positivity, and < 1 (~25 lines, both proofs norm_num).",
+      "S3: prove tetrahedronDimerDensity > fccDensity using cross-multiplication + squaring + Real.pi_sq_lt + nlinarith (~50 lines, axiom-free).",
+      "S4: construct tetrahedronDimerPacking : PackingDensity and prove exists_packing_density_gt_fcc corollary (~20 lines).",
+      "S5: state and axiomatize Bezdek-Kuperberg ellipsoid lattice bound (+1 axiom, ~30 lines).",
+      "S6: state and axiomatize Ulam packing conjecture (+1 axiom, ~15 lines)."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "geometry",
+    "combinatorics",
+    "hilbert-problems",
+    "kepler-conjecture",
+    "ulam-packing-conjecture",
+    "tetrahedra",
+    "ellipsoids"
+  ],
+  "relatedProofs": [
+    "kepler-conjecture"
+  ],
+  "references": {
+    "papers": [
+      "Hales, T.C. (2005). A proof of the Kepler conjecture. Annals of Mathematics 162(3), 1065-1185.",
+      "Donev, A., Stillinger, F.H., Chaikin, P.M., Torquato, S. (2004). Unusually dense crystal packings of ellipsoids. Physical Review Letters 92(25), 255506.",
+      "Bezdek, A., Kuperberg, W. (2007). Maximum density space packings with congruent body of revolution. (1990 manuscript.)",
+      "Conway, J.H., Torquato, S. (2006). Packing, tiling, and covering with tetrahedra. PNAS 103(28), 10612-10617.",
+      "Chen, E.R. (2008). A dense packing of regular tetrahedra. Discrete Comput. Geom. 40(2), 214-240.",
+      "Chen, E.R., Engel, M., Glotzer, S.C. (2010). Dense crystalline dimer packings of regular tetrahedra. Discrete Comput. Geom. 44(2), 253-280.",
+      "Kallus, Y., Elser, V., Gravel, S. (2010). Dense periodic packings of tetrahedra with small repeating units. Discrete Comput. Geom. 44(2), 245-252.",
+      "Gardner, M. (2001). The Colossal Book of Mathematics, Ch. 17 (Packings of Tetrahedra)."
+    ],
+    "urls": [],
+    "mathlib": [
+      "Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Pi.Bounds",
+      "Mathlib.Data.Real.Sqrt",
+      "Mathlib.Analysis.Convex.Basic"
+    ]
+  }
+}
