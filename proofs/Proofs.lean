@@ -2536,6 +2536,7 @@ import Proofs.NthRootIrrational
 import Proofs.NthRootIrrationalOQ01
 import Proofs.OSBridge
 import Proofs.OnePlusOne
+import Proofs.OnePlusOneOQ04
 import Proofs.PACLearning
 import Proofs.PACLearningOQ01
 import Proofs.PACLearningOQ01OQ01
