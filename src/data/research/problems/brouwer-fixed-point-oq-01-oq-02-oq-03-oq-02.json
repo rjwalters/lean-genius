@@ -16,26 +16,26 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT (S8 ACT-D-2 DESIGN complete, doc-only; S8 EXEC pending)",
-    "since": "2026-05-13T00:30:00Z",
-    "iteration": 8,
-    "focus": "S8 ACT-D-2 DESIGN (researcher-4, 2026-05-13, doc-only) — fixes exact Lean signature, import list (4 lines), Mathlib API survey, two-stage proof sketch, companion-file layout, S9/S10 integration plan, build-risk analysis, and 8-step EXEC checklist for the G7 algebraic bridge `¬ IsZero (X : AddCommGrpCat) → ∃ x : X, x ≠ 0`. Full design in knowledge.md §N (N1–N9). Lean changes this iteration: none. Net axiom delta: 0. Net theorem delta: 0. File-level counts unchanged at 14 theorems / 4 axioms / 0 sorries. S8 ACT-D-2 EXEC (follow-on session) can install proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean (target 20-30 lines, 2 theorems) directly from §N4 / §N8 prescriptions.",
-    "activeApproach": "Doc-only DESIGN PR adding §N to knowledge.md + advancing state.md Phase. Bridge lemma signature pinned to AddCommGrpCat.{0} (universe-monomorphic) to match call sites on lines 291/312/354/377 of main file. Proof routes through `IsZero X ↔ Subsingleton X.carrier` (1-min API verification flag at EXEC start) + `not_subsingleton_iff_nontrivial` (verified) + `Nontrivial.exists_ne` -> `sub_ne_zero` (verified). Companion-file install (§N5 Option A) preferred over inline-in-main (Option B) for build-risk isolation. All 3 §N7 build-risks have ≤ 10-line inline fallbacks.",
+    "phase": "ACT (S8 ACT-D-2 EXEC complete, build pending; S9 ACT-D-3 next — gated on sibling PR #18011)",
+    "since": "2026-05-13T23:30:00Z",
+    "iteration": 9,
+    "focus": "S8 ACT-D-2 EXEC (researcher-10, 2026-05-13) — installed companion file proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean (94 lines, 2 theorems, 0 axioms, 0 sorries) per knowledge.md §N5 Option A. The G7 algebraic bridge `¬ IsZero (X : AddCommGrpCat) → ∃ x : X, x ≠ 0` is now in place at universe `Type 0` (matching the call sites in BrouwerFixedPointOQ01OQ02.lean at lines 291/312/354/377). Two theorems exposed: `AddCommGrpCat.not_isZero_iff_nontrivial` (iff form) and `AddCommGrpCat.exists_ne_zero_of_not_isZero` (existential corollary). Proof routes through the verified-at-pinned-SHA `AddCommGrpCat.isZero_iff_subsingleton` (`Mathlib/Algebra/Category/Grp/Zero.lean`, generated via `@[to_additive]` from `CommGrpCat.isZero_iff_subsingleton`) + `not_subsingleton_iff_nontrivial` + `Nontrivial.exists_pair_ne` + `sub_ne_zero.mpr`. Companion file builds independently of the main `BrouwerFixedPointOQ01OQ02.lean` (no `Topology.*` / `AlgebraicTopology.*` imports). Build status: pending (local Docker daemon unavailable at the time of this PR); the §N3 Mathlib API verification was performed via `gh api .../contents/...?ref=<pinned-sha>` and confirmed `AddCommGrpCat.isZero_iff_subsingleton` exists by the `@[to_additive]` attribute on `CommGrpCat.isZero_iff_subsingleton` at the pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.",
+    "activeApproach": "Per §N8 EXEC checklist: (1) companion file created at proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean — strict subset of main file's imports (Algebra.Category.Grp.{Basic,Zero}, CategoryTheory.Limits.Shapes.ZeroObjects, Logic.Nontrivial.Basic). (2) §N7 risk-1 API check executed via gh api against pinned SHA — `AddCommGrpCat.isZero_iff_subsingleton` exists. (3) Stage 1 `not_isZero_iff_nontrivial` installed (2-step rw proof). (4) Stage 2 `exists_ne_zero_of_not_isZero` installed (3-line obtain + sub_ne_zero.mpr). (5) Main-file import wiring deferred to S9 (gated on PR #18011); the G7 bridge lives in a fresh namespace `AddCommGrpCat` that can be imported by the main file without touching its existing API surface. Net Lean delta: +1 file (94 lines, 2 theorems, 0 axioms, 0 sorries). Net axiom delta: 0. Net theorem delta: +2 (companion file only; main-file counts unchanged at 14 theorems / 4 axioms).",
     "blockers": [
       "B1 (Mathlib gap) — prism operator / topological-homotopy → chain-homotopy bridge. Encoded as thin local axiom `contractible_singularHomology_zero` (S5 ACT-B exec).",
-      "B2 (Mathlib gap) — sphere homology non-vanishing `H_n(𝕊 n) ≠ 0`. Encoded as thin local axiom `sphere_singularHomology_nonzero` (this iteration).",
-      "G7 (algebraic bridge, sphere side) — `¬ IsZero (X) → ∃ x : X, x ≠ 0` for `AddCommGrpCat`. Planned for S8 ACT-D-2.",
-      "Sibling PR #18011 (G6 Unit-bridge) still OPEN. S9 ACT-D-3 gated on its merge."
+      "B2 (Mathlib gap) — sphere homology non-vanishing `H_n(𝕊 n) ≠ 0`. Encoded as thin local axiom `sphere_singularHomology_nonzero` (S7 ACT-D-1 exec).",
+      "Sibling PR #18011 (G6 Unit-bridge) still OPEN. S9 ACT-D-3 gated on its merge for the subsingleton-bridge half on the ball side.",
+      "Local Docker daemon unavailable at the time of this PR — build verification deferred to CI / deployer; lemma chain is shallow and uses verified APIs (§N3 + §N7 risk-mitigation paths all stable since 2021)."
     ],
-    "nextAction": "S8 ACT-D-2 EXEC (immediate next, recommended): install companion file proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean per knowledge.md §N5 Option A, executing the 8-step §N8 checklist. Target delta: +1 file, +2 theorems, +0 axioms, +0 sorries. Build-risk: comparable to S7 ACT-D-1 (single API verification step). Estimate: 1 session. Then S9 ACT-D-3 (gated on sibling PR #18011 merge) combines G7 + functoriality + G6 to bridge `¬ IsZero (H_{n-1}(𝕊 (n-1)))` -> `∃ ψ, ψ ∘ φ = id`. Then S10 ACT-D-4 drops mock axiom H_n_minus_1_sphere_nonzero, net axiom delta −1 (file 4 → 3 axioms, all textbook-class).",
+    "nextAction": "S9 ACT-D-3 (gated on sibling PR #18011 merge): combine the new G7 bridge `AddCommGrpCat.exists_ne_zero_of_not_isZero` with `singularHomologyFunctor` functoriality + the G6 Subsingleton-bridge from PR #18011's Part VI to produce a substantive derivation of `∃ ψ : Unit →+ ℤ, ψ ∘ φ = id` from `¬ IsZero (H_{n-1}(𝕊 (n-1)))` (the conclusion of `H_n_minus_1_sphere_nonzero_substantive` from S7). This is the step that *replaces* the mock composite axiom `H_n_minus_1_sphere_nonzero` (line 261 of main file) with a substantive theorem. Then S10 ACT-D-4 drops the mock axiom entirely; net axiom delta −1 (file-level count 4 → 3, back to a regime where all surrogates are textbook facts). Deferred to S11+: full Mathlib B1/B2 upstream contributions (Section H for B1; §L3 / B2-CW for B2). Build verification for the S8 companion file: rerun `./proofs/scripts/docker-build.sh Proofs.BrouwerFixedPointOQ01OQ02G7` once Docker is available; expected build time ≲ 30 s on top of cached Mathlib.",
     "attemptCounts": {
-      "total": 8,
+      "total": 9,
       "currentApproach": 1,
-      "approachesTried": 8
+      "approachesTried": 9
     }
   },
   "knowledge": {
-    "progressSummary": "S8 ACT-D-2 DESIGN (2026-05-13, researcher-4, doc-only): added knowledge.md §N (N1–N9) — exact Lean signature for the G7 bridge `¬ IsZero (X : AddCommGrpCat) → ∃ x : X, x ≠ 0` (plus stronger `iff` form `not_isZero_iff_nontrivial`), 4-import list (strict subset of main file), 3-row Mathlib API survey with 10-line inline fallbacks per risk factor, two-stage proof sketch (20–30 Lean lines total), companion-file installation (Option A recommended for build-risk isolation), S9/S10 integration plan with no cyclic-import risk, 8-step EXEC checklist. Lean changes: none. File-level counts unchanged at 14 theorems / 4 axioms / 0 sorries. Iteration 7 → 8. Next: S8 ACT-D-2 EXEC follow-on session installs proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean directly from §N4 / §N8 prescriptions; estimate 1 session, build risk comparable to S7. S7 ACT-D-1 EXEC (2026-05-12): Installed thin B2 surrogate axiom `sphere_singularHomology_nonzero` + trivial substantive theorem `H_n_minus_1_sphere_nonzero_substantive` in BrouwerFixedPointOQ01OQ02.lean. Mirrors the ball-side pair from S5 ACT-B exec. File-level axiom count: 3 → 4 (all four with explicit Mathlib contribution paths). Theorem count: 13 → 14. Mock composite axiom `H_n_minus_1_sphere_nonzero` remains in place; will be dropped in S10 after S8 (G7 algebraic bridge) and S9 (G6 functoriality bridge, gated on PR #18011) land. Build risk: lower than S5 (no typeclass-synthesis chain; only `IsZero` + `TopCat.diskBoundary` + `singularHomologyFunctor`, all verified at pinned rev). Iteration 6 → 7.",
+    "progressSummary": "S8 ACT-D-2 EXEC (2026-05-13, researcher-10): installed companion file proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean (94 lines, 2 theorems, 0 axioms, 0 sorries) implementing the G7 algebraic bridge `¬ IsZero (X : AddCommGrpCat.{0}) → ∃ x : X, x ≠ 0` per knowledge.md §N4 / §N8 prescriptions. Two theorems: (a) `AddCommGrpCat.not_isZero_iff_nontrivial` — the iff form, 2-line rw proof composing `AddCommGrpCat.isZero_iff_subsingleton` (`Mathlib/Algebra/Category/Grp/Zero.lean`, via `@[to_additive]`) with `not_subsingleton_iff_nontrivial`. (b) `AddCommGrpCat.exists_ne_zero_of_not_isZero` — the existential corollary, 3-line `obtain ⟨a, b, hab⟩ := hX.exists_pair_ne; exact ⟨a - b, sub_ne_zero.mpr hab⟩`. §N7 risk-1 API verification executed via `gh api .../contents/Mathlib/Algebra/Category/Grp/Zero.lean?ref=2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` — `AddCommGrpCat.isZero_iff_subsingleton` confirmed present at the pinned rev. Net deltas: +1 file, +2 theorems, +0 axioms, +0 sorries. Main file `BrouwerFixedPointOQ01OQ02.lean` unchanged at 14 theorems / 4 axioms (deferred to S9 ACT-D-3 import wiring). Companion-file (Option A from §N5) for build-risk isolation: imports strict subset of main file (no `Topology.*` / `AlgebraicTopology.*` deps). Build status: pending — local Docker daemon unavailable at PR time; lemma chain is shallow and uses APIs stable since 2021. Iteration 8 → 9. Next: S9 ACT-D-3 (gated on sibling PR #18011 merge) combines G7 + G6 + functoriality to substantively replace mock axiom `H_n_minus_1_sphere_nonzero`. S8 ACT-D-2 DESIGN (2026-05-13, researcher-4, doc-only): added knowledge.md §N (N1–N9) — exact Lean signature for the G7 bridge `¬ IsZero (X : AddCommGrpCat) → ∃ x : X, x ≠ 0` (plus stronger `iff` form `not_isZero_iff_nontrivial`), 4-import list (strict subset of main file), 3-row Mathlib API survey with 10-line inline fallbacks per risk factor, two-stage proof sketch (20–30 Lean lines total), companion-file installation (Option A recommended for build-risk isolation), S9/S10 integration plan with no cyclic-import risk, 8-step EXEC checklist. Lean changes: none. File-level counts unchanged at 14 theorems / 4 axioms / 0 sorries. Iteration 7 → 8. Next: S8 ACT-D-2 EXEC follow-on session installs proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean directly from §N4 / §N8 prescriptions; estimate 1 session, build risk comparable to S7. S7 ACT-D-1 EXEC (2026-05-12): Installed thin B2 surrogate axiom `sphere_singularHomology_nonzero` + trivial substantive theorem `H_n_minus_1_sphere_nonzero_substantive` in BrouwerFixedPointOQ01OQ02.lean. Mirrors the ball-side pair from S5 ACT-B exec. File-level axiom count: 3 → 4 (all four with explicit Mathlib contribution paths). Theorem count: 13 → 14. Mock composite axiom `H_n_minus_1_sphere_nonzero` remains in place; will be dropped in S10 after S8 (G7 algebraic bridge) and S9 (G6 functoriality bridge, gated on PR #18011) land. Build risk: lower than S5 (no typeclass-synthesis chain; only `IsZero` + `TopCat.diskBoundary` + `singularHomologyFunctor`, all verified at pinned rev). Iteration 6 → 7.",
     "builtItems": [
       "Local axiom contractible_singularHomology_zero in BrouwerFixedPointOQ01OQ02.lean:266 — thin B1 surrogate.",
       "Substantive theorem H_n_minus_1_ball_zero_substantive in BrouwerFixedPointOQ01OQ02.lean:290 — real-homology proof for n ≥ 2 via convex_closedBall + Convex.contractibleSpace + the new local axiom.",
@@ -148,7 +148,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.561Z",
-  "lastUpdate": "2026-05-13T00:30:00Z",
+  "lastUpdate": "2026-05-13T23:30:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -184,6 +184,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02G7.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02G7.lean",
+      "lineCount": 94,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean"
     },
     {
       "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03.lean",
