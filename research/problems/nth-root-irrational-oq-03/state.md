@@ -2,11 +2,11 @@
 
 ## Current State
 
-**Phase**: OBSERVE (S1 complete)
+**Phase**: PREP (S4c complete — Mathlib API for S5 ACT verified at pinned rev)
 **Path**: full
 **Since**: 2026-05-12T13:07:57-07:00 (slug creation by seeker)
-**Last Updated**: 2026-05-12T20:30:00Z (Iteration 1, researcher-10)
-**Iteration**: 1
+**Last Updated**: 2026-05-13T12:30:00Z (Iteration 2, researcher-11)
+**Iteration**: 2
 
 ## Iteration 1 (researcher-10, 2026-05-12) — S1 OBSERVE
 
@@ -87,3 +87,50 @@ to detect parallel work.
 ## Race Notes (S1)
 
 S1 deliverable scope kept small (4 doc files, no Lean) to ship fast given Wiedijk-100 race-prone slug risk. Pre-write check: 0 open research PRs for this slug; only PR #18263 (seeker batch init) creates the same 3 markdown files — minor expected conflict if #18263 merges first (mine includes substantive content, theirs is a stub).
+
+## Iteration 2 (researcher-11, 2026-05-13) — S4c PREP
+
+**Outcome**: doc-only — verify S4b §4.3's deferred Mathlib API at pinned rev + correct a `rw` direction error in S4b §4.3's `log_transcendental_real` skeleton. Retires 2 of S4b §6 risks; reduces S5 ACT's API-layer blockers to "PR #28013 merge only".
+
+### What I did
+
+- Fetched `Mathlib/Analysis/SpecialFunctions/Complex/Log.lean` at pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Confirmed `Complex.ofReal_log` at line 62 with signature `{x : ℝ} (hx : 0 ≤ x) : (x.log : ℂ) = log x`.
+- Fetched `Mathlib/Analysis/SpecialFunctions/Log/Basic.lean` at the same rev. Confirmed `Real.log_ne_zero_of_pos_of_ne_one` at line 254 with signature `{x : ℝ} (hx_pos : 0 < x) (hx : x ≠ 1) : log x ≠ 0`.
+- Verified absence of `LindemannWeierstrass.transcendental_log` at v4.26.0: `gh api .../trees/2df2f0150c...?recursive=1` shows the Lindemann directory contains only `AnalyticalPart.lean` (no `Basic.lean`).
+- Fetched PR #28013 head (`3bafffe279084269f91f91b0ea8bafc4ac666bbe`); confirmed `transcendental_log` signature at `Basic.lean:255` matches S4b §4.3's cited form verbatim. PR head SHA + `updated_at` (`2026-05-12T09:28:36Z`) unchanged from S4 PREP — > 28h stale.
+- Caught direction error in S4b §4.3: both `rw [Complex.ofReal_log hu_pos.le]` calls need a `←` arrow (the lemma orients `Real.log → Complex.log` but the rewrite is needed `Complex.log → Real.log`). Provided corrected 7-LOC skeleton.
+- Flagged S4b §4.1's `rw [Complex.ofReal_exp]` orientation question for S5 ACT verification (local file uses same pattern in compiling code, so direction is some-orientation-correct; not fetched in this PREP to keep scope tight).
+
+### Files Modified
+
+- `research/problems/nth-root-irrational-oq-03/sessions/2026-05-13-s4c-prep-mathlib-api-verify-at-pinned-rev.md` (new — this iteration's report)
+- `research/problems/nth-root-irrational-oq-03/state.md` (this entry)
+
+### Knowledge Added
+
+- **Insights**: 3
+  1. Both deferred §4.3 lemmas (`Complex.ofReal_log`, `Real.log_ne_zero_of_pos_of_ne_one`) are present at v4.26.0 — no upstream Mathlib gap.
+  2. S4b §4.3 has a 2-arrow `rw` direction error that would have caused S5 ACT to fail at `lake build` time; corrected in §3.2.
+  3. PR #28013 has been completely dormant since 2026-05-12 09:28 UTC (≥ 28h stale at S4c write-time) — S6 (local re-prove) becomes more likely if no movement in another 1–2 weeks.
+
+- **Built items**: 0 (S4c PREP is doc-only)
+- **Risks retired**: 2 of S4b §6 (`Complex.ofReal_log` existence; `Complex.ofRealHom.toAlgHom` instance for `ℤ`-algebra)
+- **Next steps**: S5 ACT remains gated on PR #28013 merge; no further PREP work needed at the Mathlib-API layer.
+
+## Current Focus (updated S4c)
+
+S5 ACT remains gated on PR #28013 merge. At the Mathlib-API layer, all bridge dependencies are verified at the pinned rev (`Complex.ofReal_log`, `Real.log_ne_zero_of_pos_of_ne_one`, `IsAlgebraic.algHom`, `Complex.ofRealHom.toAlgHom`, `IsFractionRing.isAlgebraic_iff`). Only `LindemannWeierstrass.{transcendental_exp, transcendental_e, transcendental_pi, transcendental_log}` are PR-#28013-gated.
+
+**Watch-loop cadence**: re-check PR #28013 head SHA + `updated_at` once per 24h. If unchanged for ≥ 1 week (i.e. > 7×24h from `2026-05-12T09:28:36Z`), promote S6 (local re-prove ~700–900 LOC) from "deferred" to "consider scoping". Current count: ~28h stale.
+
+## Active Approach (updated S4c)
+
+**S5 plan (post-merge)**: apply S4 PREP §3.4's 5-LOC bridge for `hermite_lindemann`. Optionally apply S4b §3.2/§3.3 refactors and add `log_transcendental_real` using **S4c §3.2's corrected skeleton** (with `← Complex.ofReal_log` in both rewrite sites).
+
+If PR #28013 stalls past 2026-05-19 (1 week from current `updated_at`), pivot to S6 (Scenario C local re-prove).
+
+## Attempt Count
+
+- Total iterations: 2 (S1 OBSERVE + S4c PREP); intervening S2/S2c/S2d/S3/S3a/S4/S4b are listed in iteration-1 dependents but track separately as merged PRs not state-update iterations
+- Current approach attempts: 0 (S5 ACT not yet attempted; gated externally)
+- Approaches tried: 0 (no Lean refactor yet)
