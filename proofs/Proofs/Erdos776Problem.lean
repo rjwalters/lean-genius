@@ -484,4 +484,75 @@ theorem maxDistinctSizes_4_1_ge_two : maxDistinctSizes 4 1 ≥ 4 - 2 := by
 theorem erdos_trotter_r1_achievable_n4 : maxDistinctSizes 4 1 ≥ 4 - 2 :=
   maxDistinctSizes_4_1_ge_two
 
+/-- A three-set family is an antichain iff all three pairs are incomparable.
+    Helper for verified achievability witnesses with three distinct sizes. -/
+lemma isAntichainFamily_triple {n : ℕ} {A B C : Finset (Fin n)}
+    (hAB_sub : ¬(A ⊆ B)) (hBA_sub : ¬(B ⊆ A))
+    (hAC_sub : ¬(A ⊆ C)) (hCA_sub : ¬(C ⊆ A))
+    (hBC_sub : ¬(B ⊆ C)) (hCB_sub : ¬(C ⊆ B)) :
+    IsAntichainFamily ({A, B, C} : Finset (Finset (Fin n))) := by
+  intro X hX Y hY hXY
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hX hY
+  rcases hX with rfl | rfl | rfl
+  all_goals rcases hY with rfl | rfl | rfl
+  all_goals first | exact (hXY rfl).elim | assumption
+
+/-- Concrete witness for n = 5: F₅ = {{0, 1}, {0, 2, 3}, {1, 2, 3, 4}}.
+    Sizes are 2, 3, 4 (three distinct), pairwise incomparable. -/
+def witness5 : SubsetFamily 5 :=
+  ({({0, 1} : Finset (Fin 5)),
+    ({0, 2, 3} : Finset (Fin 5)),
+    ({1, 2, 3, 4} : Finset (Fin 5))} :
+    Finset (Finset (Fin 5)))
+
+/-- The witness family is an antichain over Fin 5. -/
+theorem witness5_antichain : IsAntichainFamily witness5 := by
+  unfold witness5
+  apply isAntichainFamily_triple
+  all_goals decide
+
+/-- The witness family has exactly 3 distinct set sizes. -/
+theorem witness5_distinct_three : numDistinctSizes witness5 = 3 := by
+  unfold numDistinctSizes distinctSizes witness5
+  decide
+
+/-- **Concrete achievability for n = 5**:
+    `maxDistinctSizes 5 1 ≥ 5 − 2`, witnessed by F₅. This is a verified
+    instance of `erdos_trotter_r1_achievable` for n = 5. -/
+theorem maxDistinctSizes_5_1_ge_three : maxDistinctSizes 5 1 ≥ 5 - 2 := by
+  show maxDistinctSizes 5 1 ≥ 3
+  unfold maxDistinctSizes
+  have hF_in : witness5 ∈ Finset.univ.filter
+      (fun (G : SubsetFamily 5) => IsAntichainFamily G ∧ HasMultiplicity G 1) :=
+    Finset.mem_filter.mpr
+      ⟨Finset.mem_univ _, witness5_antichain, hasMultiplicity_one _⟩
+  calc 3 = numDistinctSizes witness5 := witness5_distinct_three.symm
+    _ ≤ Finset.sup _ numDistinctSizes := Finset.le_sup hF_in
+
+/-- Erdős–Trotter r = 1 achievability for n = 5 (matching the axiom shape). -/
+theorem erdos_trotter_r1_achievable_n5 : maxDistinctSizes 5 1 ≥ 5 - 2 :=
+  maxDistinctSizes_5_1_ge_three
+
+/- ## Concrete Equality Instances
+
+Combining the proved upper bound (`maxDistinctSizes_le_n_sub_two`) with the
+verified achievability witnesses at n = 4 and n = 5 yields the exact value
+`maxDistinctSizes n 1 = n − 2` at each concrete n, fully verified without
+appealing to `erdos_trotter_r1_achievable`. These are instance witnesses of
+`erdos_trotter_r1` for specific n. -/
+
+/-- **Erdős–Trotter r = 1 at n = 4** (fully verified, no axioms used):
+    `maxDistinctSizes 4 1 = 2`. -/
+theorem erdos_trotter_r1_n4 : maxDistinctSizes 4 1 = 4 - 2 :=
+  le_antisymm
+    (maxDistinctSizes_le_n_sub_two 4 (by omega))
+    maxDistinctSizes_4_1_ge_two
+
+/-- **Erdős–Trotter r = 1 at n = 5** (fully verified, no axioms used):
+    `maxDistinctSizes 5 1 = 3`. -/
+theorem erdos_trotter_r1_n5 : maxDistinctSizes 5 1 = 5 - 2 :=
+  le_antisymm
+    (maxDistinctSizes_le_n_sub_two 5 (by omega))
+    maxDistinctSizes_5_1_ge_three
+
 end Erdos776Achievability

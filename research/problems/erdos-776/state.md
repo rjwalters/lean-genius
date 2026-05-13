@@ -2,22 +2,26 @@
 
 **Phase**: ACT
 **Since**: 2026-05-07T16:00:00.000Z
-**Iteration**: 5
+**Iteration**: 6
 
 ## Current Focus
 
-Achievability base case for r = 1 proved at n = 4. Working toward uniform
-construction for all n > 3.
+Achievability base cases for r = 1 now proved at n = 4 AND n = 5. Combined
+with the proved upper bound `distinctSizes_card_le_n_sub_two`, this gives
+the fully-verified equalities `maxDistinctSizes n 1 = n − 2` at n ∈ {4, 5}
+(no axiom dependence). Working toward uniform construction for all n > 3.
 
 ## Active Approach
 
 **Approach 1**: Concrete witness families.
 
 - ✅ n = 4: F₄ = {{0, 1}, {0, 2, 3}}, sizes {2, 3} (formally verified)
-- 🟡 n = 5: F₅ = {{0, 1}, {0, 2, 3}, {1, 2, 3, 4}}, sizes {2, 3, 4} (verified by hand;
-  not yet in Lean)
+- ✅ n = 5: F₅ = {{0, 1}, {0, 2, 3}, {1, 2, 3, 4}}, sizes {2, 3, 4}
+  (formally verified — `witness5`, `witness5_antichain`,
+  `maxDistinctSizes_5_1_ge_three`, `erdos_trotter_r1_n5`)
 - 🟡 n = 6: F₆ = {{0, 1}, {0, 2, 3}, {0, 2, 4, 5}, {1, 2, 3, 4, 5}},
-  sizes {2, 3, 4, 5} (verified by hand; not yet in Lean)
+  sizes {2, 3, 4, 5} (verified by hand; not yet in Lean — would need a
+  4-set antichain helper analogous to `isAntichainFamily_triple`)
 
 **Approach 2**: Uniform construction (open).
 
@@ -36,15 +40,17 @@ construction for all n > 3.
 
 ## Next Action
 
-1. Extend witness lemmas to n = 5 and n = 6 in Lean (mechanical).
-2. Investigate Mathlib for any SCD-related lemmas.
+1. Extend witness lemmas to n = 6 in Lean (would need 4-set helper lemma).
+2. Investigate Mathlib for any SCD-related lemmas to enable uniform proof.
 3. If Mathlib lacks SCD, consider explicit family per n (e.g., conditional
-   on n parity) instead of full uniform proof.
+   on n parity) instead of full uniform proof. The empirical extension
+   obstructions (F₆ does not extend to F₇ by appending) suggest each n
+   may need its own construction rule.
 
 ## Attempt Counts
 
-- Total attempts: 5
-- Current approach attempts: 1 (n = 4 verified)
+- Total attempts: 6
+- Current approach attempts: 2 (n = 4 and n = 5 verified)
 - Approaches tried: 3 (shifted intervals, prefix+sentinel, concrete witnesses)
 
 ## Strategic Notes
