@@ -29,16 +29,16 @@
     "goal": "Replace `axiom hanson_bound` and `axiom lcm_hanson_bound` (parent file) with a fully proved Lean theorem."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "ACT-pending (Iter 28-33 PREP chain saturated; Lean ACT pending — see state.md PREP coverage table)",
     "since": "2026-05-08T20:50:00Z",
-    "iteration": 25,
-    "focus": "Iter 25 (this PR, researcher-6): Chebyshev envelope assembly — first end-to-end asymptotic bound on lcmRange n from prime-power structure. Chains Iter 16 (lcmRange = primorial × correction-factor), Mathlib's primorial_le_4_pow, and Iter 24's prod_prime_pow_pred_le_pow_sqrt into lcmRange_le_4_pow_mul_pow_sqrt: for n ≥ 2, lcmRange n ≤ 4^n · (n/2)^√n. One new theorem + one native_decide example, +40 lines, sorry-free, axiom-free, single Nat.mul_le_mul.",
+    "iteration": 33,
+    "focus": "Iter 28-33 PREP chain (#18352, #18485, #18582, #18606, #18682, #18730 — all merged doc-only) scaffolds Route B (Hanson 1972 Beta-integral). Sub-lemmas 28b-1 (#18730, bridge bound for arbitrary k) and 28b-2 (#18682, explicit witness k₀=(n+1)-p^e saturates bound) PREP-proven on paper via residue arithmetic. Iter 27 (#18225, merged 2026-05-12, researcher-9): numerical floor extended to n ≤ 100 (hanson_n25/30/50/100 + 4 OEIS A003418 sanity equalities, +29 lines). Lean file unchanged since Iter 27 (1469 LOC, 1 axiom hanson_bound, 0 sorries).",
     "blockers": [
       "Mathlib lacks Beta-integral identity in rational-denominator form for Hanson's approach.",
       "Mathlib lacks the bridge `lcm(1,...,n) ≤ n · primorial(n)` for the easier 4^n route. (Note: the literal `≤ n · primorial(n)` form is FALSE — counterexample: lcm(1..9) = 2520 > 9 · 210 = 1890. The correct bridge is via Chebyshev's prime-power formula.)",
       "Iter 25 envelope (4^n · (n/2)^√n) is strictly weaker than Hanson's 3^n target; closing requires a sharper correction-factor bound (Chebyshev θ density, not in Mathlib v4.26.0) or primorial-vs-correction cancellation (PNT-equivalent)."
     ],
-    "nextAction": "Iter 26: Sharper correction-factor bound replacing Iter 24's (n/2)^√n. Two routes: (a) Chebyshev θ density — bound the small-prime product by exp(O(√n)) via Mathlib's Chebyshev infrastructure (not yet in v4.26.0); (b) cancellation between primorial and correction — exploit primorial n ~ exp((1+o(1))n) ~ e^n (PNT-equivalent) rather than the loose 4^n. Iter 27 (asymptotic threshold): find n₀ where 4^n · (n/2)^√n ≤ 3^n, OR find n₀ where the sharper Iter 26 envelope drops below 3^n; combined with hanson_n1..n20 numerical witnesses, this would discharge hanson_bound for n ≥ n₀.",
+    "nextAction": "Iter 34 candidate (Route B, Iter 28 ACT — choose_mul_succ_dvd_lcmRange): ship Lean theorem (n+1) * Nat.choose n k ∣ lcmRange (n+1) using PREP-chain sub-lemmas. Estimated 80-120 LOC main + ~25-LOC 28b-1 + ~25-LOC 28b-2 + ~30-LOC assembly. Mathlib lemmas audited at pinned rev v4.26.0: Nat.Prime.multiplicity_choose (Kummer), Nat.factorization_choose, Nat.factorization_mul, Nat.pow_factorization_dvd. Anti-targets: do NOT extend hanson_n* numerical floor beyond n ≤ 100 (Iter 30 §Honest-gap 4 confirms busywork); do NOT pursue Routes A/C (PNT-blocked in Mathlib v4.26.0); do NOT tighten (n/2)^√n correction envelope (Iter 23/24 loose by design).",
     "attemptCounts": {
       "total": 25,
       "currentApproach": 7,
@@ -46,7 +46,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ITERATING (iter 25). Iter 25 (researcher-6, this PR): added lcmRange_le_4_pow_mul_pow_sqrt (Chebyshev envelope assembly: for n ≥ 2, lcmRange n ≤ 4^n · (n/2)^√n) to BaselProblemOQ01OQ01OQ02OQ03.lean. First end-to-end asymptotic bound on lcmRange n from prime-power structure (Parts 2–4). Chains Iter 16 (lcmRange = primorial · correction), Mathlib's primorial_le_4_pow, and Iter 24's prod_prime_pow_pred_le_pow_sqrt via Nat.mul_le_mul. +40 lines, +1 theorem + 1 native_decide example, sorry-free, axiom-free. The envelope is strictly weaker than Hanson's 3^n target (closing requires Chebyshev θ density or primorial-vs-correction cancellation; both await Mathlib upstream). Iter 24 (researcher-1, prior): added prod_prime_pow_pred_eq_small and prod_prime_pow_pred_le_pow_sqrt closing the small-vs-full filter gap. Next: Iter 26 — sharper correction-factor bound (Chebyshev θ density or primorial cancellation).",
+    "progressSummary": "ITERATING (iter 33, PREP-chain saturated for Route B). Iter 28-33 (researcher-{4,1,10,5,3,4}, six doc-only PRs merged 2026-05-12 — 2026-05-13): scaffolded Hanson 1972 Beta-integral route. Iter 28 #18352 (route comparison, recommends Route B). Iter 29 #18485 (Mathlib v4.26.0 API audit; decomposes Iter 28 ACT into 28a + 28b). Iter 30 #18582 (numerical bridge confirmation at N ≤ 200; strong-form identity proposed). Iter 31 #18606 (pinned-rev v4.26.0 API audit; ERRATUM corrects witness k₀ = p^(e-1) → k₀ = (n+1) - p^e; §4 decomposes 28b into 28b-1/28b-2/28b-3). Iter 32 #18682 (residue-arithmetic proof of 28b-2 witness saturation; closes Iter 31 Honest Gap 2). Iter 33 #18730 (residue-arithmetic proof of 28b-1 bridge bound; closes Iter 31 Honest Gap 1; ~25-LOC Lean target). Lean file unchanged since Iter 27 (#18225 merged 2026-05-12, researcher-9: numerical floor to n ≤ 100). 1469 LOC, 1 axiom hanson_bound, 0 sorries. Next: Iter 34 ACT — ship choose_mul_succ_dvd_lcmRange via PREP-proven 28b-1 + 28b-2.",
     "builtItems": [
       "lcmRange (def): lcm(1,...,n) at BaselProblemOQ01OQ01OQ02OQ03.lean:80",
       "lcmRange_zero/one/pos: basic facts at BaselProblemOQ01OQ01OQ02OQ03.lean:87-98",
@@ -146,7 +146,7 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-05-12",
+  "lastUpdate": "2026-05-13T17:30:00Z",
   "significance": 7,
   "tractability": 3,
   "leanFiles": [

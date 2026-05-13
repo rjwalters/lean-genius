@@ -1,15 +1,41 @@
 # Research State: basel-problem-oq-01-oq-01-oq-02-oq-03
 
 ## Current State
-**Phase**: ACT (structural infrastructure being added; full proof requires Mathlib upstream)
+**Phase**: ACT-pending (Iter 28-33 PREP chain saturated; Lean ACT pending — see PREP coverage table below)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-12 (Iteration 27, researcher-9)
-**Iteration**: 27
+**Last Updated**: 2026-05-13 (Iter 28-33 PREP-chain STATE-SYNC, researcher-1)
+**Iteration**: 33
+
+## PREP coverage table (Iter 28-33, Route B Beta-Integral chain)
+
+The six PREP iters below are all **doc-only, merged** session logs under
+`sessions/`. They scaffold the next constructive ACT (Iter 34 candidate)
+by decomposing the Hanson 1972 Beta-integral route into Lean-amenable
+sub-lemmas, performing pinned-rev Mathlib v4.26.0 API audits, and
+producing residue-arithmetic proofs of two key sub-lemmas (28b-1 and
+28b-2) at the paper level. No edits to `BaselProblemOQ01OQ01OQ02OQ03.lean`
+since Iter 27 (still 1469 LOC, 1 axiom, 0 sorries).
+
+| Iter | PR | Researcher | Session file (`sessions/...`) | Topic | Lean status |
+|---:|---:|------------|-------------------------------|-------|-------------|
+| 28  | #18352 | researcher-4  | `2026-05-12-iter28-prep-hanson-routes-survey.md`                       | Three-route comparison (A/B/C); recommends **Route B**, decomposes into Iter 28 ACT (`choose_mul_succ_dvd_lcmRange`) + Iter 29 ACT (Beta-integral identity)                | PREP (ACT pending) |
+| 29  | #18485 | researcher-1  | `2026-05-12-iter29-prep-route-b-mathlib-api-audit.md`                  | Mathlib v4.26.0 API audit for Route B; decomposes Iter 28 ACT into 28a (binomial expansion) + 28b (integer-squeeze); flags "naive sum" identity tightness at n=15        | PREP (ACT pending) |
+| 30  | #18582 | researcher-10 | `2026-05-13-iter30-prep-numerical-bridge-confirmation-N200.md`         | Full-search numerical confirmation of the 28b bridge at N ≤ 200 (twice requested scope); strong-form identity `max_k v_p(C(n,k)) = ⌊log_p(n+1)⌋ - v_p(n+1)` proposed     | PREP (ACT pending) |
+| 31  | #18606 | researcher-5  | `2026-05-13-iter31-prep-mathlib-api-audit-and-witness-correction.md`   | Pinned-rev (`v4.26.0`) Mathlib API audit; ERRATUM 1 (phantom `Multiplicity.lean`); ERRATUM 2 (corrects witness `k₀ = p^(e-1)` → `k₀ = (n+1) - p^e`); §4 28b-1/28b-2/28b-3 | PREP (ACT pending) |
+| 32  | #18682 | researcher-3  | `2026-05-13-iter32-prep-witness-saturation-residue-arithmetic.md`      | Residue-arithmetic proof of **28b-2** (witness `k₀ = (n+1) - p^e` saturates the bound); closes Iter 31 Honest Gap 2 without `Nat.digits` machinery                       | PREP (ACT pending) |
+| 33  | #18730 | researcher-4  | `2026-05-13-iter33-prep-28b1-bound-residue-arithmetic.md`              | Residue-arithmetic proof of **28b-1** (bridge bound for arbitrary k); closes Iter 31 Honest Gap 1; ~25-LOC Lean target                                                   | PREP (ACT pending) |
+
+**Net effect**: Iter 28-33 transform Iter 28 ACT's recommended target
+`choose_mul_succ_dvd_lcmRange` from a "go probe Mathlib" sketch (Iter 28)
+into a paper-rigorous proof with pinned-rev API references, corrected
+explicit witness, and residue-arithmetic sub-lemmas. **Iter 34 candidate**
+(see Next Action below) is to ship the Lean ACT, building on the PREP
+chain's hand-proofs of 28b-1 and 28b-2.
 
 ## Current Focus
 
-Iteration 27 (2026-05-12, this PR, researcher-9): **Extended
+Iteration 27 (2026-05-12, merged #18225, researcher-9): **Extended
 numerical witnesses for Hanson's bound — `n ∈ {25, 30, 50, 100}` via
 `native_decide`.** Brings forward the Iter 29 candidate from Iter 26's
 "Next Action" block, since:
@@ -1143,49 +1169,65 @@ Currently blocked on:
 
 ## Next Action
 
-**Iteration 27 (this PR, build pending)**: extended numerical witnesses
-`hanson_n25`, `hanson_n30`, `hanson_n50`, `hanson_n100` via
-`native_decide`, plus four OEIS A003418 cross-reference equalities. File
-delta: +29 lines (1440 → 1469), +8 theorems (4 hanson + 4 OEIS-eq).
-Sorries (0) / axiom count (1) / definitions (1) unchanged.
+**Iteration 34 candidate (Route B, Iter 28 ACT — `choose_mul_succ_dvd_lcmRange`)**:
+ship the Lean theorem
 
-This iter **executes** the Iter 29 candidate from the previous Iter 26
-plan; the numerical floor now spans `n ≤ 100` (was `n ≤ 20`). Iter 29
-is therefore **complete**; no further numerical work is planned in the
-foreseeable roadmap. The remaining constructive iter candidates are
-both *asymptotic* refinements that need the new floor as the
-non-asymptotic complement:
+```lean
+theorem choose_mul_succ_dvd_lcmRange (n k : ℕ) (hk : k ≤ n) :
+    (n + 1) * Nat.choose n k ∣ lcmRange (n + 1)
+```
 
-**Iteration 28 candidate (sharper primorial bound — REMAINS Iter 27
-in the previous numbering)**: replace Mathlib's `Nat.primorial_le_4_pow`
-(used in Iter 25) with a tighter `primorial n ≤ c^n` for some
-`c < 3` (e.g. `c = e ≈ 2.718` via PNT's `θ(n) = (1 + o(1)) · n` from
-Chebyshev's density theorem). Mathlib v4.26.0 has the asymptotic
-`Nat.Prime.psi_asymptotic_eq_self` / `Nat.Prime.theta_asymptotic_eq_self`
-(PNT-equivalent) but NO non-asymptotic explicit `c^n` bound with
-`c < 4`. A first step toward upstream: state and prove `primorial n ≤
-3^n` for `n ≥ N` for some small `N` via Mathlib's `Nat.Prime.theta`
-machinery (or Erdős's finer central-binomial argument, which gives
-`4^n` non-tightly).
+The Iter 28-33 PREP chain reduces this to two key sub-lemmas (Iter 31 §4
+decomposition), both PREP-proven on paper:
 
-**Iteration 29 candidate (cancellation route — REMAINS Iter 28 in the
-previous numbering)**: bypass the primorial × correction split entirely
-by working with the Chebyshev identity `lcm(1..n) = ∏ p^⌊log_p n⌋`
-(Iter 14 / Iter 16) directly. The full prime-power product can be
-re-grouped as `∏ p^⌊log_p n⌋ = exp(Σ_{p^k ≤ n} log p) = exp(ψ(n))`
-where `ψ` is Chebyshev's psi function. Hanson's `3^n` bound corresponds
-to `ψ(n) ≤ n · log 3`, a non-asymptotic explicit version of the PNT
-`ψ(n) ~ n`. The Beta-integral approach of Hanson 1972 (problem.md,
-References) gives this directly. **Estimated effort**: multi-week to
-multi-month Mathlib upstream contribution (Beta-integral over `ℚ`
-infrastructure missing in v4.26.0).
+* **28b-1** (Iter 33 PREP, #18730): for any `n ≥ 1`, `0 ≤ k ≤ n`, and
+  prime `p`, `v_p((n+1) · C(n,k)) ≤ ⌊log_p(n+1)⌋`. Residue-arithmetic
+  proof; ~25-LOC Lean target.
+* **28b-2** (Iter 32 PREP, #18682): the explicit witness
+  `k₀ = (n+1) - p^e` (with `e = ⌊log_p(n+1)⌋`) saturates the 28b-1 bound
+  for any prime `p ≤ n+1`. Residue-arithmetic proof (no `Nat.digits`).
+* **28b-3** (assembly): combine 28b-1 with **Iter 5's**
+  `prime_pow_dvd_lcmRange` (file line 133) and **Iter 16's**
+  `lcmRange_eq_prod_prime_powers` to obtain the divisibility statement
+  via unique factorization. Pen-and-paper sketch in Iter 31 §4.3.
 
-**Synergy with this iter's numerical floor**: both Iter 28+29 candidates
-yield bounds of the form `lcmRange n ≤ 3^n` for `n ≥ n₀` for some
-threshold `n₀ ≥ 0`. The new floor `hanson_n1..hanson_n100` covers
-`n ≤ 100`, so any future Iter 28/29 PR succeeds as long as its
-asymptotic threshold satisfies `n₀ ≤ 100`. This is the operative slack
-budget for the remaining roadmap.
+**Estimated cost**: 80-120 Lean lines (Iter 28 PREP estimate) +
+~25-LOC 28b-1 + ~25-LOC 28b-2 + ~30-LOC assembly. **Mathlib lemmas
+needed** (audited at pinned rev `2df2f0150c2` = `v4.26.0` in Iter 31):
+
+* `Nat.Prime.multiplicity_choose` (Kummer's theorem) at
+  `Mathlib/Data/Nat/Choose/Factorization.lean:131`.
+* `Nat.factorization_choose` (`v_p(C(n,k)) = #carries`).
+* `Nat.factorization_mul` (`v_p(a·b) = v_p(a) + v_p(b)`).
+* `Nat.pow_factorization_dvd` / `Nat.factorization_le_iff_dvd`.
+
+**Iteration 35+ candidate (Iter 29 ACT — Beta-integral identity)**:
+
+```lean
+theorem betaIntegral_kn (n k : ℕ) (hk : k ≤ n) :
+    ∫ x in (0 : ℝ)..1, x ^ k * (1 - x) ^ (n - k) =
+      1 / ((n + 1) * Nat.choose n k)
+```
+
+via `Real.betaIntegral` + `Real.Gamma_nat`. Combined with Iter 34's
+divisibility statement, this gives Hanson's bridge identity directly.
+Subsequent ACT iters ship Hanson's polynomial-choice step
+(`P(x) ∈ ℤ[x]` of degree `n`) and the analytic bound.
+
+**Synergy with the numerical floor**: any Iter 34+ Lean ACT yields
+`lcmRange n ≤ 3^n` for `n ≥ n₀` for some threshold `n₀ ≥ 0`. The
+existing floor `hanson_n1..hanson_n100` covers `n ≤ 100`, so the
+operative slack budget for the remaining roadmap is `n₀ ≤ 100`.
+
+**Anti-targets** (carried over from Iter 28 PREP §"Anti-targets"):
+
+* ❌ Don't upstream Mathlib's tighter `θ`-bound from this slug
+  (Routes A and C are PNT-blocked in Mathlib v4.26.0).
+* ❌ Don't tighten the `(n/2)^√n` correction envelope (Iter 23/24 are
+  loose by design; Iter 26 falsifies the asymptotic-threshold route).
+* ❌ Don't extend `hanson_n*` numerical floor beyond `n ≤ 100`
+  (Iter 27 margin already 7.4 × 10⁶; further numerical work is
+  busywork — Iter 30 §"Honest gap 4" confirms).
 
 **Long-term paths still open:**
 
@@ -1199,7 +1241,10 @@ budget for the remaining roadmap.
    for `n ≥ 2`), so this envelope ALSO does not close the `≤ 4^n`
    intermediate without further refinement.
 
-2. **Full Hanson `3^n`** (Beta-integral + Chebyshev): months.
+2. **Full Hanson `3^n`** (Beta-integral + Chebyshev, Route B): Iter
+   28-33 PREP chain (Route B, this slug) reduces this to a ~250-LOC
+   Lean ACT split across Iter 34-37+; the integer-squeeze bridge
+   (Iter 34) is the first Lean-amenable target.
 
 Either result discharges the parent file's `lcm_hanson_bound` axiom.
 
