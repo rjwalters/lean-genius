@@ -1,7 +1,7 @@
 {
   "slug": "arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02",
   "title": "(q,t)-deformation (Macdonald-type) of qMultichoose",
-  "phase": "OBSERVE",
+  "phase": "PREP (S1 OBSERVE merged; S2/S3/S4/S5/S6 PREP chain complete; S2 ACT pending — no Lean file yet). After 5 doc-only PREP iterations the S2-ACT skeleton has pivoted from Pascal-style recurrence (S2 PREP Option α — falsified at 4 data points by S6) to k-direction telescoping (S6 Option γ-refined), plus the Path A vs Path C split (S4 PREP Field R 0/0 trap, S5 PREP RatFunc.eval rescue).",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -32,12 +32,12 @@
     "goal": "Formalize in Lean: (1) qtBinom and qtMultichoose definitions in Field R. (2) Boundary cases zero/one. (3) Specialization at t = 1 to qMultichoose. (4) Interpolating (q,t)-Pascal recurrence. (5) Specialization at q = t = 1 to Nat.multichoose. (6) Optional: axiomatise Macdonald polynomial connection. Each step yields a Lean theorem; the entry will be `verified` if S5 ships clean, else `axiomatized`."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "PREP",
     "since": "2026-05-12T21:50:00.000Z",
-    "iteration": 1,
-    "focus": "S1 (researcher-10, 2026-05-12): OBSERVE survey for the (q,t)-deformation sub-OQ. Wrote problem.md (~4.0K words) with full Lean target signatures + S2-S7 decomposition; knowledge.md (~3.0K words) with Macdonald historical timeline (1973-2001), specialization table, computational verification for (n,k) = (2,2) showing t-independence, Mathlib gap analysis (no Macdonald polynomials in Mathlib); state.md with conjectural interpolating Pascal form. No Lean changes.",
+    "iteration": 6,
+    "focus": "After S1 OBSERVE merge (PR #18327, 2026-05-12T23:18Z), five doc-only PREP iterations have pre-flighted the S2 ACT skeleton without writing the Lean file: S2 PREP (#18382, researcher-6, 2026-05-13T02:10Z) falsifies S1's two conjectural Pascal forms at small cases; S3 PREP (#18558, researcher-12, 2026-05-13T05:07Z) proves qtMC is genuinely rational over Q(q,t), not polynomial, characterizes the polynomial sub-lattice as {k≤1} ∪ {(2,2)}, and retires the joint (q,t)→(1,1) limit; S4 PREP (#18616, researcher-5, 2026-05-13T07:02Z) surfaces the Lean Field R 0/0=0 convention trap (qtMC 1 1 n k = 0 under naïve [Field R]) and proposes three rescues (Path A: hq hypothesis; Path B: piecewise redef; Path C: RatFunc); S5 PREP (#18639, researcher-9, 2026-05-13T08:10Z) flips S4's Path C dismissal — RatFunc.eval makes Path C viable and uniquely eliminates the q≠1 hypothesis for the t=1 substitution under iterated RatFunc (RatFunc Q); S6 PREP (#18734, researcher-6, 2026-05-13T10:16Z) closes S2 PREP §6.4's ??? on Option α — the conjectural Pascal coefficient form is falsified at 4 data points; recommends a structural pivot to the k-direction telescoping ratio (Option γ-refined), which the product formula factorizes natively along k.",
     "blockers": [],
-    "nextAction": "S2: define qtBinom (Macdonald product formula) and qtMultichoose := qtBinom(_, _, n+k-1, k) in proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean over Field R. Prove zero/one boundary cases (zero_right, zero_left, one_left, one_right). Expected ~40 Lean lines, 3-5 sorries (real boundary-case proofs). S3-S5 specialize at t=1 and q=t=1; S4 is the deep open question (interpolating (q,t)-Pascal).",
+    "nextAction": "S2 ACT (any researcher) — first Lean skeleton, post-PREP-cascade: write proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean defining qtBinom and qtMultichoose, and prove four boundary cases. Pick Path A (cheapest, hq : ∀ i, q^{i+1} ≠ 1 hypothesis on every value-substitution theorem) or Path C (per S5 PREP, switch ambient ring to RatFunc (RatFunc Q) and use RatFunc.eval for substitutions, no hq needed). Recurrence target has pivoted from Pascal (S2 PREP Option α, falsified by S6) to k-direction telescope per S6 PREP: qtBinom q t n (k+1) · (1 - q^(k+1) t^k) = qtBinom q t n k · (1 - q^(n-k) t^k). Expected ~40 LOC, ~3-5 sorries on boundary cases. Build via ./proofs/scripts/docker-build.sh Proofs.ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02 (never lake build directly). Anti-pattern note: 5 PREP iterations without a Lean file is at the upper edge — ship the S2 ACT skeleton before any 7th PREP.",
     "attemptCounts": {
       "S1_observe": 1,
       "S2_definitions": 0,
@@ -61,7 +61,15 @@
       "Wrote research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02/state.md (phase OBSERVE).",
       "Created src/data/research/problems/arithmetic-series-oq-02-oq-04-oq-01-oq-03-oq-02-oq-03-oq-02.json (this file)."
     ],
-    "progressSummary": "S1 OBSERVE complete. Candidate Macdonald (q,t)-deformation qtMultichoose := qtBinom(_, _, n+k-1, k) defined. Three specialization theorems and one Pascal recurrence identified as S2-S5 deliverables. Key surprise: Macdonald's standard (q,t)-Pascal does NOT specialise to parent's q-Pascal — S4 requires deriving an interpolating form."
+    "progressSummary": "S1 OBSERVE merged (PR #18327, 2026-05-12T23:18Z, researcher-10): Macdonald-type qtBinom/qtMultichoose candidate with two Pascal conjectures (A) and (B); a(n,k) exponent for (A) flagged as open S4 task. Five doc-only PREP iterations have since pre-flighted the S2 ACT skeleton. S2 PREP (#18382, researcher-6): small-case falsification of (A) and (B); §6.4 enumerates options α/β/γ with ??? for α. S3 PREP (#18558, researcher-12): qtMC is rational over Q(q,t), not polynomial; sub-lattice = {k≤1}∪{(2,2)}; joint (1,1) limit retired in favour of iterated limits. S4 PREP (#18616, researcher-5): Lean Field R 0/0=0 trap falsifies S3's planned qtMC q 1 n k = qMC q n k at q=1; three rescues (Path A hq hypothesis recommended for S2 ACT, Path B piecewise redef, Path C RatFunc dismissed); rigorous polynomial sub-lattice = {k≤1}∪{(2,2)}. S5 PREP (#18639, researcher-9): flips S4's Path C dismissal — Mathlib's RatFunc.eval makes Path C viable and uniquely eliminates q≠1 hypothesis for t=1 substitution under iterated RatFunc (RatFunc Q). S6 PREP (#18734, researcher-6): closes §6.4's ??? — Option α conjectural Pascal coefficient form falsified at 4 data points; recommends pivot to k-direction telescoping ratio (Option γ-refined). Cumulative state: 0 Lean theorems, 0 sorries, 0 axioms; 9 markdown files; 1 gallery JSON. S2 ACT skeleton is now well-scoped (Path A or C, k-direction not Pascal) — ship the Lean file before any 7th PREP.",
+    "nextSteps": [
+      "S2 ACT: define qtBinom and qtMultichoose in proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean with the Macdonald product formula; pick Path A (hq : ∀ i, q^{i+1} ≠ 1 on value-substitutions) or Path C (RatFunc ambient + RatFunc.eval). Prove the four boundary cases (zero_right, zero_left, one_left, one_right). ~40 LOC, ~3-5 sorries.",
+      "S3 ACT (after S2): qtMultichoose_at_t_eq_one : qtMultichoose q 1 n k = qMultichoose q n k. Under Path A needs hq; under Path C no hypothesis needed per S5 PREP. ~25 LOC, 0 sorries.",
+      "S4 ACT (pivoted from Pascal to k-direction per S6 PREP): prove qtBinom q t n (k+1) · (1 - q^(k+1) t^k) = qtBinom q t n k · (1 - q^(n-k) t^k) — single-direction induction on k replaces the failed Option α Pascal. ~30 LOC, 0 sorries.",
+      "S5 ACT (after S4): qtMultichoose_at_one_one specialization via k-direction telescope + polynomial sub-lattice (S3 PREP) + RatFunc.eval (S5 PREP) — NOT via joint (q,t)→(1,1) limit (S3 retired). ~30-50 LOC, possibly 1-2 axioms.",
+      "S6 ACT (optional): axiomatise Macdonald polynomial principal-specialization identity (unchanged from S1).",
+      "S7: gallery JSON meta.json integration with status: 'verified' if S5 ships clean, else 'axiomatized'."
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -78,5 +86,6 @@
   ],
   "significance": 5,
   "tractability": 4,
-  "lastUpdated": "2026-05-12T21:50:00.000Z"
+  "lastUpdated": "2026-05-12T21:50:00.000Z",
+  "lastUpdate": "2026-05-13T22:44:52.828Z"
 }
