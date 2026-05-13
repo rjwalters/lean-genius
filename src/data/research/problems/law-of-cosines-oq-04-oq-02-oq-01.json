@@ -1,7 +1,7 @@
 {
   "slug": "law-of-cosines-oq-04-oq-02-oq-01",
   "title": "Deriving the angle-bisector identity m·b = n·c from Mathlib's Euclidean-geometry API",
-  "phase": "OBSERVE",
+  "phase": "PREP",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -27,12 +27,12 @@
     "goal": "Prove angle_bisector_ratio_from_geometry in a new file Proofs/LawOfCosinesOQ04OQ02OQ01.lean, then chain into the parent's angle_bisector_length to produce a fully-geometric angle-bisector-length formula. Zero axioms, zero sorries."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "PREP",
     "since": "2026-05-11T20:30:00Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE — hbis premise located in 3 theorems of LawOfCosinesOQ04OQ02.lean; reduced to single algebraic equation in barycentric parameter s; three approach paths surveyed; Path A (inner-product factorization) selected as S2 target.",
+    "iteration": 2,
+    "focus": "S2-PREP (researcher-4, 2026-05-13) — Mathlib bearer audit at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (`v4.26.0`) re-grounds knowledge.md §4 against the actual pinned ref. Findings: (a) `InnerProductGeometry.angle/cos_angle` live in `Geometry/Euclidean/Angle/Unoriented/Basic.lean` L40/L65, NOT `Analysis/InnerProductSpace/Basic.lean` as knowledge.md cited (wrong file path); (b) `Sbtw.mem_image_Ioo` + 4-lemma `Sbtw.{ne,left,right}_ne` cluster drifted +138 lines (L203-215 → L341-353); (c) smaller drift in `Affine.lean` angle lemmas (+2 to +3 lines); (d) Path A Step 1 cosine-equality sketch added (~15-25 LOC). Doc-only PREP, no .lean diff. S2 OBSERVE (researcher-8, 2026-05-11, PR #17833) recommended Path A (inner-product factorization), scoped at ~250-350 lines.",
     "blockers": [],
-    "nextAction": "S2 — implement Path A: from Sbtw, extract s ∈ Ioo 0 1 with D-A = (1-s)·u + s·v; from ∠BAD = ∠DAC, derive cosine equality and factor as ((1-s)·c - s·b)·(b·c - ⟪u,v⟫) = 0; exclude the second factor via ¬ Collinear; conclude s = c/(b+c) and m·b = n·c. ~250-350 lines in new file Proofs/LawOfCosinesOQ04OQ02OQ01.lean. See knowledge.md §3.A and §8.",
+    "nextAction": "S2-implement: create `proofs/Proofs/LawOfCosinesOQ04OQ02OQ01.lean` per `knowledge.md §8` outline. Use `s2-prep-bearer-audit.md §2.1-§2.4` for pinned-SHA-correct file paths and line numbers (especially the corrected `Geometry/Euclidean/Angle/Unoriented/Basic.lean` path for `InnerProductGeometry.angle/cos_angle`). Use §4 of audit doc for Step 1 cosine-equality sketch (~15-25 LOC). Expand into factorization (Steps 2-4 of `knowledge.md §3.A`) for total ~250-350 LOC. Build via `./proofs/scripts/docker-build.sh Proofs.LawOfCosinesOQ04OQ02OQ01`. Spot-checks needed during build: `real_inner_eq_norm_mul_iff` (§4.4 row not exhaustively verified) + `inner_smul_left` potential `starRingEnd ℝ` artefacts on real inner products.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE complete (researcher-8, 2026-05-11). The hypothesis hbis : m·b = n·c is parametric in the parent's three angle-bisector theorems. Placing the triangle in V = NormedAddCommGroup ℝ-InnerProductSpace and writing D = A + (1-s)·u + s·v (where u = B-A, v = C-A, s extracted from Sbtw.mem_image_Ioo), the goal m·b = n·c reduces to s = c/(b+c). Three derivation paths surveyed: Path A inner-product factorization yields ((1-s)·c - s·b)·(b·c - ⟪u,v⟫) = 0, with the second factor excluded by non-collinearity (strict Cauchy-Schwarz); Path B (double law-of-cosines at A) under-determines the conclusion; Path C (parallel-line construction) requires building substantial Mathlib infrastructure not currently present. Path A selected for S2 with seven-lemma outline (~250-350 lines). No Lean changes in S1 — doc-only iteration with problem.md / knowledge.md / state.md created.",
+    "progressSummary": "S2-PREP complete (researcher-4, 2026-05-13): Mathlib bearer audit at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (`v4.26.0`) re-grounding knowledge.md §4 against the actual pinned ref. Doc `s2-prep-bearer-audit.md` (~210 LOC). Findings: (a) `InnerProductGeometry.angle/cos_angle` live in `Geometry/Euclidean/Angle/Unoriented/Basic.lean` L40/L65 — NOT `InnerProductSpace/Basic.lean` as knowledge.md cited (wrong file path; a naive contents lookup would miss them entirely); (b) `Convex/Between.lean` line drift +138 — `Sbtw.mem_image_Ioo` L215→L353, `Sbtw.{ne,left,right}_ne` cluster L203-212→L341-350; (c) smaller drift in `Affine.lean` angle lemmas (+2 to +3 lines); names + signatures stable across the drift window. Path A Step 1 cosine-equality sketch added (~15-25 LOC) using `unfold EuclideanGeometry.angle` → `rw [InnerProductGeometry.cos_angle]` → `Real.arccos_inj` (preferred over `arccos_injOn` since the two-sided iff form is cleaner). Refined risk register: `Sbtw.mem_image_Ioo` signature surprise + arccos-injectivity bound derivability are confirmed; potential `starRingEnd ℝ` artefact from `inner_smul_left` flagged for S2-build spot-check. Doc-only PREP, no .lean diff. Parent `LawOfCosinesOQ04OQ02.lean` unchanged (174 LOC, 9 theorems, 0 axioms, 0 sorries). | S1 OBSERVE complete (researcher-8, 2026-05-11). The hypothesis hbis : m·b = n·c is parametric in the parent's three angle-bisector theorems. Placing the triangle in V = NormedAddCommGroup ℝ-InnerProductSpace and writing D = A + (1-s)·u + s·v (where u = B-A, v = C-A, s extracted from Sbtw.mem_image_Ioo), the goal m·b = n·c reduces to s = c/(b+c). Three derivation paths surveyed: Path A inner-product factorization yields ((1-s)·c - s·b)·(b·c - ⟪u,v⟫) = 0, with the second factor excluded by non-collinearity (strict Cauchy-Schwarz); Path B (double law-of-cosines at A) under-determines the conclusion; Path C (parallel-line construction) requires building substantial Mathlib infrastructure not currently present. Path A selected for S2 with seven-lemma outline (~250-350 lines). No Lean changes in S1 — doc-only iteration with problem.md / knowledge.md / state.md created.",
     "builtItems": [
       "research/problems/law-of-cosines-oq-04-oq-02-oq-01/problem.md — formal statement, classification, approach menu, related-proofs table.",
       "research/problems/law-of-cosines-oq-04-oq-02-oq-01/knowledge.md — §1 target identification; §2 vector reformulation; §3 three approach paths with hand derivation for Path A; §4 Mathlib API survey (affine/between, angles, distances/norms, non-degeneracy, parent); §5 risk register; §6 sibling-proof lessons; §7 S1 outcome; §8 seven-lemma S2 outline.",
@@ -108,7 +108,7 @@
     ]
   },
   "started": "2026-05-12T03:16:39.895Z",
-  "lastUpdate": "2026-05-12T03:30:00.000Z",
+  "lastUpdate": "2026-05-13T17:50:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
