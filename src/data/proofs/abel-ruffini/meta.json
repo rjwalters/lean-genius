@@ -137,6 +137,10 @@
       {
         "id": "sylow-theorem-oq-01",
         "relationship": "Classification of groups of order pq via Sylow's theorems: for distinct primes p < q with p ∤ q − 1, every group of order pq is cyclic. This is the simplest non-trivial Sylow classification — all such groups are abelian, hence solvable, and the corresponding polynomials of degree pq have solvable Galois groups whenever realized. Concrete examples of orders 6, 15, 21, 35 are all solvable, in agreement with the converse of `not_solvable_by_rad_of_not_solvable_gal`. The first non-solvable group |A₅| = 60 = 2² · 3 · 5 has three prime factors — outside the pq-classification reach, consistent with A₅ being the minimal Abel-Ruffini obstruction."
+      },
+      {
+        "id": "algebraic-numbers-countable",
+        "relationship": "Cantor's 1874 theorem that the algebraic closure ℚ̄ is countable (|ℚ̄| = ℵ₀) via degree-by-degree enumeration of ℚ[X], each polynomial having finitely many roots. Sits one tier above Abel-Ruffini in the algebraic-vs-radical-vs-transcendental hierarchy: ℚ̄ is countable, but the *radically expressible* sub-subset is a strict (still countable) subset, and Abel-Ruffini exhibits explicit elements of ℚ̄ (roots of x⁵ − 4x + 2) that escape it. Combined with |ℝ| = 2^ℵ₀, Cantor's countability gives the existence of transcendentals (cf. `liouville-theorem`); Abel-Ruffini delivers a parallel impossibility one tier down — algebraic non-radicals exist among the countable ℚ̄. The implications section's 'impossibility paradigm' (#7) and 'transcendence hierarchy' (#8) place both results on the same Galois-(1832)–Cantor-(1874)–Lindemann-(1882) lineage of cardinality- and expressibility-based barriers."
       }
     ],
     "lineCount": 187,
@@ -628,6 +632,11 @@
       "targetId": "sylow-theorem-oq-01",
       "relationship": "complementary",
       "description": "Classification of groups of order $pq$ via Sylow's theorems: for distinct primes $p < q$ with $p \\nmid q - 1$, every group of order $pq$ is cyclic. This is the simplest non-trivial Sylow classification — all such groups are abelian, hence solvable, and any polynomial whose Galois group has order $pq$ (with $p \\nmid q - 1$) is solvable by radicals. Concrete cyclic instances at orders 6 ($p=2, q=3$, $2 \\nmid 2$ fails — both $\\mathbb{Z}/6$ and $S_3$ exist), 15 ($p=3, q=5$, $3 \\nmid 4$ holds — only $\\mathbb{Z}/15$), 21 ($p=3, q=7$, $3 \\mid 6$ fails — both $\\mathbb{Z}/21$ and the Frobenius group of order 21 exist), 35 ($p=5, q=7$, $5 \\nmid 6$ holds — only $\\mathbb{Z}/35$). The first non-solvable group $|A_5| = 60 = 2^2 \\cdot 3 \\cdot 5$ has three prime factors — outside the $pq$-classification reach, consistent with Abel-Ruffini's threshold at $A_5$ being the minimal obstruction"
+    },
+    {
+      "targetId": "algebraic-numbers-countable",
+      "relationship": "complementary",
+      "description": "Cantor's 1874 theorem that the algebraic closure $\\overline{\\mathbb{Q}}$ is countable: $|\\overline{\\mathbb{Q}}| = \\aleph_0$ via degree-by-degree enumeration of polynomials in $\\mathbb{Q}[X]$ (each with finitely many roots), formalized in the gallery using Mathlib's `Polynomial.card_roots_le_degree`, `Set.Countable.iUnion`, and the bijection $\\mathbb{Q}[X] \\simeq \\bigcup_{n} \\mathbb{Q}^{n+1}$. Places Abel-Ruffini in the cardinality-and-expressibility hierarchy made explicit in the implications section's 'impossibility paradigm' (#7) and 'transcendence hierarchy' (#8): although $\\overline{\\mathbb{Q}}$ itself is countable, the *radically expressible* subset is a strict (still countable) sub-subset. Abel-Ruffini exhibits concrete elements of $\\overline{\\mathbb{Q}}$ — roots of $x^5 - 4x + 2$ formalized in `abel-ruffini-oq-04-oq-01` — that escape this sub-subset. Combined with $|\\mathbb{R}| = 2^{\\aleph_0}$, Cantor's countability yields the existence of transcendentals (whose first explicit witnesses are Liouville numbers, formalized in `liouville-theorem`); Abel-Ruffini delivers a parallel impossibility one tier *down* — algebraic non-radicals exist among the countable $\\overline{\\mathbb{Q}}$. The two theorems are sibling instances on the Galois-(1832)–Cantor-(1874)–Lindemann-(1882) lineage of expressibility barriers, each obstructing a different inclusion: $\\overline{\\mathbb{Q}} \\subsetneq \\mathbb{R}$ (Cantor: countable in uncountable) and $\\{\\text{radically expressible}\\} \\subsetneq \\overline{\\mathbb{Q}}$ (Abel-Ruffini: non-radical algebraic numbers exist)"
     }
   ],
   "references": [
