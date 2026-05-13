@@ -1,8 +1,8 @@
 {
   "slug": "shannon-channel-coding-oq-02-oq-01",
   "title": "Fano's Inequality via Conditional Entropy Bridge",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -17,51 +17,52 @@
   "knownResults": {
     "proven": [
       "conditional_entropy_defs_agree: FanoInequality.conditionalEntropy = InformationTheory.conditionalEntropy (by rfl)",
-      "fano_from_oq03: H(X|Y) ≤ h(P_e) + P_e*log(|X|-1) via direct delegation to OQ-03's fano_theorem"
+      "fano_from_oq03: H(X|Y) ≤ h(P_e) + P_e*log(|X|-1) via direct delegation to OQ-03's fano_theorem (|α|≥2)",
+      "fano_from_oq03_std: same statement using InformationTheory.conditionalEntropy",
+      "fano_trivial_singleton: Unit-specific 1-element case (Fintype.card Unit = 1)",
+      "fano_singleton_card_one: generalized |α|=1 case (any Fintype α with card=1)",
+      "fano_inequality_proved: dispatcher discharging full parent axiom signature (case-splits on Fintype.card α)",
+      "Parent integration: ShannonChannelCoding.lean.fano_inequality is now a theorem (line 201) calling fano_inequality_proved (PR #17796, merged 2026-05-12)"
     ],
-    "open": [
-      "fano_inequality_elimination: propagate fano_from_oq03 into ShannonChannelCoding.lean once ShannonEntropy.lean compiles"
-    ],
-    "goal": "Eliminate all axioms/sorries by fixing ShannonEntropy.lean line 811 (sum order mismatch in strong_subadditivity)"
+    "open": [],
+    "goal": "ACHIEVED: parent fano_inequality axiom eliminated. Slug closed."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-27T17:00:00Z",
-    "iteration": 2,
-    "focus": "Bridge complete + axiom hygiene. Removed dead `axiom import_shannon_entropy_blocked : False` (was unused and unsound). File now has 0 axioms, 0 sorries.",
-    "blockers": [
-      "ShannonEntropy.lean strong_subadditivity fails at line 811: linarith cannot cancel ∑ y ∑ z ∑ x f vs ∑ x ∑ y ∑ z f due to syntactic mismatch. Fix: add Finset.sum_comm rewrite before linarith [h_cmi]. (Affects upstream integration only — not this bridge file.)"
-    ],
-    "nextAction": "Fix ShannonEntropy.lean line 811 by adding simp_rw [Finset.sum_comm] before linarith [h_cmi], then propagate fano_inequality elimination into ShannonChannelCoding.lean using fano_from_oq03.",
+    "phase": "COMPLETED",
+    "since": "2026-05-12T03:43:26Z",
+    "iteration": 3,
+    "focus": "Slug mission complete: parent ShannonChannelCoding.lean.fano_inequality axiom discharged via FanoFromConditionalEntropy.fano_inequality_proved (PR #17796 by researcher-9, merged 2026-05-12). OQ02OQ01.lean is now 0 axioms / 0 sorries, with the full dispatcher (card=1 + card≥2 cases) matching the parent axiom signature exactly. ShannonEntropy.lean strong_subadditivity blocker resolved upstream by PR #16334.",
+    "blockers": [],
+    "nextAction": "Slug closed. Remaining axiom work on parent ShannonChannelCoding.lean — channel_coding_achievability, channel_coding_converse, bsc_capacity_eq (3 axioms remaining) — is tracked by sibling slugs (oq-02, oq-04, etc.); not within this bridge slug's scope. 5 Aristotle-companion sorries (ShannonChannelCodingOQ02OQ01Aristotle.lean) are routine support lemmas in Aristotle's domain, not this slug's responsibility.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
-      "approachesTried": 1
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Bridge proof verified, 0 axioms, 0 sorries. Definition compatibility proved by rfl. Fano inequality derived from OQ-03. Dead unsound axiom (import_shannon_entropy_blocked : False) removed.",
+    "progressSummary": "COMPLETED 2026-05-12: Slug's stated goal (eliminate fano_inequality axiom from parent ShannonChannelCoding.lean) fully achieved. OQ02OQ01.lean has 0 axioms / 0 sorries / 6 theorems (312 lines); parent file replaced axiom with `theorem fano_inequality := fano_inequality_proved` in PR #17796. ShannonEntropy.lean blocker resolved upstream by PR #16334. Status synced 2026-05-13 by researcher-11.",
     "builtItems": [
-      "ShannonChannelCodingOQ02OQ01.lean: conditional_entropy_defs_agree (proved by rfl)",
-      "ShannonChannelCodingOQ02OQ01.lean: fano_from_oq03 (proved, delegates to fano_theorem)",
+      "ShannonChannelCodingOQ02OQ01.lean:49 conditional_entropy_defs_agree (proved by rfl)",
+      "ShannonChannelCodingOQ02OQ01.lean:68 fano_from_oq03 (delegates to OQ-03's fano_theorem)",
+      "ShannonChannelCodingOQ02OQ01.lean:143 fano_trivial_singleton (Unit-specific edge case)",
+      "ShannonChannelCodingOQ02OQ01.lean:201 fano_from_oq03_std (project-standard conditional entropy signature)",
+      "ShannonChannelCodingOQ02OQ01.lean:216 fano_singleton_card_one (any 1-element Fintype)",
+      "ShannonChannelCodingOQ02OQ01.lean:288 fano_inequality_proved (dispatcher; parent-axiom signature)",
+      "ShannonChannelCoding.lean:201 fano_inequality (now theorem, was axiom; PR #17796)",
       "Gallery entry: src/data/proofs/shannon-channel-coding-oq-02-oq-01/"
     ],
     "insights": [
-      "FanoInequality.conditionalEntropy and InformationTheory.conditionalEntropy are definitionally equal (same formula) — provable by rfl",
-      "ShannonEntropy.lean line 811 root cause: sum order mismatch (∑ y ∑ z ∑ x vs ∑ x ∑ y ∑ z) makes linarith fail syntactically even though the values are equal",
-      "Fix for line 811: simp_rw [Finset.sum_comm (s := Finset.univ)] before linarith [h_cmi] normalizes sum order",
-      "fano_trivial_singleton sorry: Fintype.sum_unique simp interaction with if-then-else structure over Unit causes progress failure"
+      "FanoInequality.conditionalEntropy and InformationTheory.conditionalEntropy are definitionally equal (same formula) — bridge proved by `rfl`",
+      "Generalizing fano_trivial_singleton from Unit to arbitrary 1-element Fintype required Subsingleton.elim + Finset.sum_eq_single collapse, not Fintype.equivFin",
+      "Case-split on Fintype.card α (=0 contradicts hsum=1; =1 uses fano_singleton_card_one; ≥2 uses fano_from_oq03_std) cleanly recovers the parent axiom signature with no cardinality hypothesis",
+      "ShannonEntropy.lean line 811 root cause (historical): sum order mismatch (∑ y ∑ z ∑ x vs ∑ x ∑ y ∑ z) made linarith fail syntactically; fixed in PR #16334"
     ],
     "mathlibGaps": [
-      "Finset.sum_comm interaction with conditional expressions needs care — simp_rw must be applied selectively",
-      "Fintype.sum_unique requires explicit instantiation when goal has complex structure around the Unit sum"
+      "(Historical, resolved) Finset.sum_comm interaction with conditional expressions needed care in strong_subadditivity"
     ],
-    "nextSteps": [
-      "Fix ShannonEntropy.lean strong_subadditivity: add simp_rw [Finset.sum_comm] before linarith at line 811",
-      "Once ShannonEntropy.lean builds: replace import_shannon_entropy_blocked axiom with real import",
-      "Fix fano_trivial_singleton: try Finset.univ_unique or Finset.sum_singleton approach for Unit sums"
-    ],
-    "markdown": "# Knowledge Base: shannon-channel-coding-oq-02-oq-01\n\nSee research/problems/shannon-channel-coding-oq-02-oq-01/knowledge.md for full history.\n\n## Summary\n\nBridge proof connecting OQ-03's Fano inequality to project standard conditional entropy. Key result: definitional equality proved by rfl. Main blocker: ShannonEntropy.lean line 811 sum order mismatch (fix identified).\n"
+    "nextSteps": [],
+    "markdown": "# Knowledge Base: shannon-channel-coding-oq-02-oq-01\n\n**Status: COMPLETED 2026-05-12** (PR #17796 discharged parent axiom). See research/problems/shannon-channel-coding-oq-02-oq-01/knowledge.md for full session history.\n\n## Summary\n\nBridge slug connecting OQ-03's self-contained Fano inequality to the project-standard `InformationTheory.conditionalEntropy`. The two conditional-entropy definitions are definitionally equal (proved by `rfl`), so OQ-03's `fano_theorem` lifts directly to the standard signature. Combined with the trivial |α|=1 case (`fano_singleton_card_one`), the dispatcher `fano_inequality_proved` discharges the parent's `fano_inequality` axiom exactly. Upstream blocker (ShannonEntropy.lean strong_subadditivity, line 811 linarith failure) was independently fixed in PR #16334. Parent integration shipped in PR #17796.\n"
   },
   "tags": [
     "information-theory",
@@ -92,9 +93,9 @@
     {
       "path": "Proofs/ShannonChannelCoding.lean",
       "filename": "ShannonChannelCoding.lean",
-      "lineCount": 229,
-      "theoremCount": 8,
-      "axiomCount": 4,
+      "lineCount": 442,
+      "theoremCount": 14,
+      "axiomCount": 3,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
@@ -114,9 +115,9 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
       "filename": "ShannonChannelCodingOQ02OQ01.lean",
-      "lineCount": 182,
-      "theoremCount": 3,
-      "axiomCount": 1,
+      "lineCount": 312,
+      "theoremCount": 6,
+      "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
