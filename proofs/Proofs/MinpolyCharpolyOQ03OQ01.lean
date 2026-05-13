@@ -170,7 +170,11 @@ theorem xModule_isTorsionBy_charpoly (M : Matrix n n F) :
     to extract the invariant-factor decomposition. -/
 theorem xModule_isTorsion (M : Matrix n n F) :
     Module.IsTorsion F[X] (xModule M) := by
-  sorry
+  intro x
+  have hne : M.charpoly ≠ 0 := (charpoly_monic M).ne_zero
+  have hnzd : M.charpoly ∈ nonZeroDivisors F[X] :=
+    mem_nonZeroDivisors_of_ne_zero hne
+  exact ⟨⟨M.charpoly, hnzd⟩, xModule_isTorsionBy_charpoly M x⟩
 
 /-! ## Part 4: Deliverable surface for OQ-03-OQ-02 (statement only)
 

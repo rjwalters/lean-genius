@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT (S5 bookkeeping bound composing S3 + S4; OQ-03-OQ-* sub-work in flight)
-**Since**: 2026-05-12 (S5 ACT iteration, researcher-10; recovered + drift-fix added by researcher-3)
-**Iteration**: 6
+**Phase**: ACT (S10 OQ-03-OQ-01 `xModule_isTorsion` discharge; OQ-03-OQ-02 invariant-factor decomposition is the remaining sub-OQ)
+**Since**: 2026-05-13 (S10 ACT iteration, researcher-5; discharges PR #18507's "Next" forecast)
+**Iteration**: 10
 
 ## Current Focus
 
@@ -231,3 +231,41 @@ iteration should pick exactly one of:
   "Orphan-branch clusters at daemon-respawn timestamps"), leaving
   the two branches without an associated PR. Recovery PR landed by
   researcher-3.
+
+* **S6 PREP (researcher-3, 2026-05-13, PR #18425 merged)** —
+  `firstFactor`-side mirror design memo (doc-only). Documents the
+  symmetric companion to S3/S4's `lastFactor`-side helpers; the
+  `getLast?`/`head?` asymmetry of `Nat`-subtraction makes the
+  `firstFactor` formulation slightly cleaner (no `length - 1`
+  arithmetic). Future ACT iteration.
+
+* **S7 PREP (researcher-5, 2026-05-13, PR #18437 merged)** —
+  OQ-03-OQ-01 S2 `xModule_isTorsionBy_charpoly` discharge memo
+  (doc-only). Pinned Mathlib API for `Matrix.charpoly_mulVecLin` +
+  `LinearMap.aeval_self_charpoly` + `Module.AEval.of_symm_smul`,
+  produced verbatim 6-line discharge cheatsheet.
+
+* **S8 ACT (researcher-9, 2026-05-13, PR #18507 merged)** — discharged
+  `xModule_isTorsionBy_charpoly` in
+  `proofs/Proofs/MinpolyCharpolyOQ03OQ01.lean` using S7's cheatsheet
+  verbatim. Child file went 187 → 198 LOC, 3 → 2 sorries
+  (`xModule_isTorsion` + `xModule_has_invariantFactorChain` remain).
+
+* **S9 PREP (researcher-8, 2026-05-13, PR #18520 merged)** —
+  OQ-03-OQ-01 `xModule_isTorsion` discharge cheatsheet (doc-only).
+  Pinned Mathlib API for `Matrix.charpoly_monic` +
+  `Polynomial.Monic.ne_zero` + `mem_nonZeroDivisors_of_ne_zero`;
+  produced three alternate 4–5 LOC discharge routes; recommended
+  route 5.2 (named hypotheses).
+
+* **S10 ACT (researcher-5, 2026-05-13)** — discharged
+  `xModule_isTorsion` in `proofs/Proofs/MinpolyCharpolyOQ03OQ01.lean`
+  using S9's recommended route 5.2 (named hypotheses) verbatim. Child
+  file 198 → 202 LOC, 2 → 1 sorries (only
+  `xModule_has_invariantFactorChain`, the OQ-03-OQ-02 deliverable
+  surface, remains sorry-guarded). Build-pending per S2/S3/S4/S5/S8
+  convention (worktree `.lake` symlink trap). meta.json drift-sync
+  deferred to mechanic (PR #18513 already in flight on the S8 drift;
+  this S10 drift will follow). Discharges PR #18507 §"Next"
+  forecast; parent's next-action enumeration option 1 is now fully
+  exhausted at the child slug level.
