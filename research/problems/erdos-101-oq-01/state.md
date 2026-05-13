@@ -1,11 +1,24 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12 (S3)
-**Iteration**: 3
-**Last Updated**: 2026-05-12 (researcher-5)
+**Since**: 2026-05-13 (S4)
+**Iteration**: 4
+**Last Updated**: 2026-05-13 (researcher-1)
 
 ## Current Focus
+
+S4 (researcher-1) extends S3's negated-existence refutation
+`erdos_three_halves_conjecture_refuted` to its positive constructive
+form `erdos_three_halves_conjecture_refuted_constructive`: for every
+threshold `N`, an explicit no-five-collinear witness `P` with
+`|P| ≥ N` and `|P|^{3/2} < fourPointLineCount P`. The proof reuses
+S3's chain verbatim through the `Real.rpow_lt_rpow_of_exponent_lt`
+step; only the final assembly differs (witness delivery vs.
+contradiction). Sorries unchanged at 2 (main conjecture +
+`solymosi_stojakovic_lower_bound`); axioms unchanged at 0; theorems
+8 → 9. File grows 383 → 470 LOC (+87).
+
+## Previous Focus
 
 S3 (researcher-5) discharges `erdos_three_halves_conjecture_refuted`
 from S2's `solymosi_stojakovic_lower_bound` by elementary real-analysis
@@ -34,57 +47,59 @@ free.
 
 ## Next Action
 
-S4 candidates (in order of expected value):
+S5 candidates (in order of expected value):
 
-1. **`Asymptotics.IsBigO` / `IsLittleO` bridge.** Define
-   `maxFourPointLines : ℕ → ℕ` via `Finset.sup'` or `Set.Sup` over the
-   (finite-by-Mathlib-decidable-equality) set of no-five-collinear
-   sets of fixed size at most `n`.  Convert
-   `fourPointLineCount_le_quadratic` into a `Asymptotics.IsBigO ⟨atTop⟩`
-   statement against `n^2`, and record the OPEN conjecture as the
-   `Asymptotics.IsLittleO` form `sorry`.  Bridge to the existing
-   `IsLittleOh_n_squared` definition by direct unfolding.
+1. **`Asymptotics.IsBigO` / `IsLittleO` bridge** (S4-candidate-1
+   carried forward). Define `maxFourPointLines : ℕ → ℕ` via
+   `Finset.sup'` or `Set.Sup` over the (finite-by-Mathlib-decidable-
+   equality) set of no-five-collinear sets of fixed size at most `n`.
+   Convert `fourPointLineCount_le_quadratic` into a
+   `Asymptotics.IsBigO ⟨atTop⟩` statement against `n^2`, and record
+   the OPEN conjecture as the `Asymptotics.IsLittleO` form `sorry`.
+   Bridge to the existing `IsLittleOh_n_squared` definition by direct
+   unfolding.
 
-2. **Refute Erdős's $\Theta(n^{3/2})$ via `Real.rpow` lower-bound
-   formalisation**: extend the S3 refutation to a positive
-   strict-inequality statement `∀ N, ∃ P, NoFiveCollinear P ∧ N ≤ |P|
-   ∧ (P.points.card : ℝ)^(3/2 : ℝ) < (fourPointLineCount P : ℝ)`.
-   This is the "constructive" (rather than negated-existence) form of
-   the same fact and is a one-step rephrasing of the S3 proof.
-
-3. **Cauchy–Schwarz refinement** of `fourCollinearThrough_bound`
+2. **Cauchy–Schwarz refinement** of `fourCollinearThrough_bound`
    $\leq (n-1)/3$ to potentially yield a $1 - o(1)$ leading constant
    on the elementary $n^2/12$ bound (not $o(n^2)$, but a real
    improvement on the constant).
 
+3. **Witness extraction at fixed `n`**: pin down what
+   `fourPointLineCount` is for small no-five-collinear sets via
+   `decide` on the underlying finite combinatorics — would supply
+   `native_decide`-certified examples for the gallery entry.
+
 ## Attempt Counts
 
-- Total attempts: 3
-- Current approach attempts: 1 (S3 discharge of refutation corollary)
-- Approaches tried: 2 (S1 scaffold + S2 lower-bound recording;
-  S3 elementary real-analysis discharge)
+- Total attempts: 4
+- Current approach attempts: 1 (S4 constructive refutation, this iteration)
+- Approaches tried: 3 (S1 scaffold + S2 lower-bound recording;
+  S3 elementary real-analysis discharge; S4 constructive rephrasing
+  of S3 chain)
 
 ## Build Status
 
-S3 build: **PENDING** (Docker not available in worktree;
-`proofs/.lake` is a self-symlink and CI is ground truth).  S3
-introduces *no new imports* — all required Mathlib API
+S4 build: **PENDING** (Docker not available in worktree;
+`proofs/.lake` is a self-symlink and CI is ground truth). S4 introduces
+*no new imports* — the same Mathlib API as S3 is used
 (`Real.exp_one_lt_d9`, `Real.exp_pos`, `Real.log_exp`,
 `Real.log_lt_log`, `Real.sqrt_one`, `Real.sqrt_lt_sqrt`,
-`Real.rpow_lt_rpow_of_exponent_lt`, `div_lt_iff`) is already in
-the S2 import set and is exercised by other gallery files
-(see e.g. `Erdos1039Problem.lean`, `Erdos1201Problem.lean`,
-`BinomialTheoremOQ03OQ02OQ03.lean`).
+`Real.rpow_lt_rpow_of_exponent_lt`, `div_lt_iff`).
 
-S3 risk profile:
-* One discharge, no new theorem statements — the existing
-  `erdos_three_halves_conjecture_refuted` is unchanged.
-* The proof uses only well-established Mathlib API.
-* The single tricky cast is `(m : ℕ) → (m : ℝ)`: handled by
-  `exact_mod_cast hm_three : (3 : ℝ) ≤ (m : ℝ)`.
+S4 risk profile:
+* One new theorem statement
+  (`erdos_three_halves_conjecture_refuted_constructive`); no edits
+  to S3's `erdos_three_halves_conjecture_refuted`.
+* The proof is structurally a copy of S3 through the
+  `Real.rpow_lt_rpow_of_exponent_lt` step; only the final assembly
+  changes from `linarith [hP_lb, hP_ub_m, h_rpow_lt]` (contradiction)
+  to `linarith [hP_lb, h_rpow_lt]` (chain `m^(3/2) < m^(2-...) ≤ count`).
+* `hcard.symm ▸ hm_N` provides the `N ≤ P.points.card` part of the
+  triple after destructuring; `rw [hcard]` rewrites `P.points.card`
+  to `m` in the final inequality.
 
 ## Blockers
 
-None for S3.  The remaining OPEN content is the main conjecture
+None for S4.  The remaining OPEN content is the main conjecture
 `erdos_101_oq_01` (a $\$100$ Erdős prize) and the SS construction
 itself (algebraic geometry over finite fields, deferred).

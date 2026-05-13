@@ -380,4 +380,91 @@ theorem erdos_three_halves_conjecture_refuted :
   -- `m^(3/2) < m^(2-1/2/sqrt log m)` — contradiction.
   linarith [hP_lb, hP_ub_m, h_rpow_lt]
 
+/-! ## S4 ACT: constructive refutation
+
+The S3 negated-existence refutation `erdos_three_halves_conjecture_refuted`
+proves *no global $O(n^{3/2})$ upper bound exists*. The constructive form
+below provides, for every threshold `N`, an explicit no-five-collinear
+witness `P` with `|P| ≥ N` and `|P|^{3/2} < fourPointLineCount(P)`.
+
+The two forms are mutually derivable, but the positive form is more
+useful downstream: it directly produces witnesses rather than refuting
+a hypothetical bound. Both forms depend on the same axiom-free
+deferred theorem `solymosi_stojakovic_lower_bound` (still sorry).
+
+The proof reuses the S3 chain verbatim through the `Real.rpow_lt_rpow_of_exponent_lt`
+step; the only structural change is the final assembly — instead of
+deriving a contradiction from a hypothetical upper bound, we deliver
+the witness directly.
+
+Sorry count: unchanged (still 2: `erdos_101_oq_01` and
+`solymosi_stojakovic_lower_bound`). Axiom count: unchanged (still 0).
+Theorem count: +1 (`erdos_three_halves_conjecture_refuted_constructive`). -/
+
+/-- **Constructive refutation of Erdős's $\Theta(n^{3/2})$ conjecture.**
+
+For every threshold `N`, there exists a no-five-collinear planar point
+set `P` with `|P| ≥ N` and *strictly more* than $|P|^{3/2}$ four-point
+lines. This is the positive form of the S3 negated-existence
+refutation `erdos_three_halves_conjecture_refuted`.
+
+The proof specializes `solymosi_stojakovic_lower_bound` to `C = 1/2`
+and uses the same `m ≥ 3 ⟹ log m > 1 ⟹ sqrt(log m) > 1 ⟹
+(1/2)/sqrt(log m) < 1/2 ⟹ 2 - (1/2)/sqrt(log m) > 3/2` chain as S3,
+then applies the strict monotonicity of `Real.rpow` in the exponent
+for base `> 1`.
+
+Sorry-free; axiom-free; depends only on the S2-recorded
+`solymosi_stojakovic_lower_bound` (which itself remains a deferred
+proof obligation, `theorem ... := by sorry`). -/
+theorem erdos_three_halves_conjecture_refuted_constructive :
+    ∀ N : ℕ, ∃ P : PlanarPointSet, NoFiveCollinear P ∧ N ≤ P.points.card ∧
+      (P.points.card : ℝ) ^ (3 / 2 : ℝ) < (fourPointLineCount P : ℝ) := by
+  intro N
+  -- Apply the Solymosi–Stojaković lower bound with `C = 1/2`.
+  obtain ⟨N₁, hN₁⟩ :=
+    solymosi_stojakovic_lower_bound (1 / 2 : ℝ) (by norm_num)
+  -- Pick a single `m` that simultaneously beats `N`, `N₁`, and `3`.
+  set m : ℕ := max N (max N₁ 3) with hm_def
+  have hm_N : N ≤ m := le_max_left _ _
+  have hm_N₁ : N₁ ≤ m :=
+    (le_max_left N₁ 3).trans (le_max_right _ _)
+  have hm_three : (3 : ℕ) ≤ m :=
+    (le_max_right N₁ 3).trans (le_max_right _ _)
+  -- Solymosi–Stojaković witness at size `m`.
+  obtain ⟨P, hcard, hP_no5, hP_lb⟩ := hN₁ m hm_N₁
+  refine ⟨P, hP_no5, hcard.symm ▸ hm_N, ?_⟩
+  -- Real coercions for `m`.
+  have hm_real_ge_three : (3 : ℝ) ≤ (m : ℝ) := by exact_mod_cast hm_three
+  have hm_gt_one : (1 : ℝ) < (m : ℝ) := by linarith
+  -- `Real.log m > 1` since `m ≥ 3 > exp 1`.
+  have h_exp_lt_three : Real.exp 1 < (3 : ℝ) := by
+    linarith [Real.exp_one_lt_d9]
+  have h_exp_lt_m : Real.exp 1 < (m : ℝ) := by linarith
+  have hlog_gt_one : (1 : ℝ) < Real.log (m : ℝ) := by
+    have h := Real.log_lt_log (Real.exp_pos 1) h_exp_lt_m
+    rwa [Real.log_exp] at h
+  -- `Real.sqrt (Real.log m) > 1`.
+  have hsqrt_gt_one : (1 : ℝ) < Real.sqrt (Real.log (m : ℝ)) := by
+    have h := Real.sqrt_lt_sqrt (by norm_num : (0 : ℝ) ≤ 1) hlog_gt_one
+    rwa [Real.sqrt_one] at h
+  have hsqrt_pos : (0 : ℝ) < Real.sqrt (Real.log (m : ℝ)) := by linarith
+  -- `(1/2) / sqrt (log m) < 1/2` and hence `2 - … > 3/2`.
+  have h_frac_lt_half :
+      (1 / 2 : ℝ) / Real.sqrt (Real.log (m : ℝ)) < 1 / 2 := by
+    rw [div_lt_iff hsqrt_pos]
+    nlinarith [hsqrt_gt_one]
+  have h_exp_gt :
+      (3 / 2 : ℝ) < 2 - (1 / 2 : ℝ) / Real.sqrt (Real.log (m : ℝ)) := by
+    linarith
+  -- Strict monotonicity of `Real.rpow` in the exponent (base `> 1`).
+  have h_rpow_lt :
+      (m : ℝ) ^ (3 / 2 : ℝ) <
+        (m : ℝ) ^ (2 - (1 / 2 : ℝ) / Real.sqrt (Real.log (m : ℝ))) :=
+    Real.rpow_lt_rpow_of_exponent_lt hm_gt_one h_exp_gt
+  -- Goal: `(P.points.card : ℝ) ^ (3/2) < (fourPointLineCount P : ℝ)`.
+  -- Rewrite `P.points.card` as `m` and chain through `h_rpow_lt` + `hP_lb`.
+  rw [hcard]
+  linarith [hP_lb, h_rpow_lt]
+
 end Erdos101OQ01
