@@ -146,14 +146,56 @@ $$
 $$
 **Concyclic ⇔ $\Delta = 0$** verified on this case.
 
+## S2 SCAFFOLD (researcher-3, 2026-05-12)
+
+Created `Proofs/ProductOfSegmentsOfChordsOQ03.lean` (106 LOC, 1 sorry):
+
+- `concyclicityDetCoords` — raw $4 \times 4$ determinant in 8 real variables.
+- `concyclicityDet` — `Vec2`-level wrapper accessing `P 0` / `P 1`.
+- Two numerical examples (both `simp [Matrix.det_fin_four]; ring`-closed).
+- Stub statement `concyclicityDet_eq_zero_iff_concyclic` with `sorry`.
+
+### Notable design decisions
+
+1. **Two-layer definition.** The coord form `concyclicityDetCoords` keeps the
+   numerical sanity checks free of `EuclideanSpace`-norm gymnastics; the Vec2
+   wrapper `concyclicityDet` is what S3 / S4 / S5 consume.
+2. **Placeholder non-collinearity.** S2 punts on the exact form of the
+   non-degeneracy hypothesis by using `(hNonCollinear : True)` — S3 will pick
+   between `¬ Collinear ℝ ({P₁, P₂, P₃} : Set Vec2)` and a stronger 3×3
+   invertibility statement on the first three rows of the implicit-circle
+   linear system.
+3. **`Matrix.det_fin_four` for the examples.** Direct cofactor expansion of
+   the $4 \times 4$ determinant produces a polynomial expression that `ring`
+   can close; `decide` and `norm_num` alone are not sufficient because the
+   matrix entries are reals.
+
+### Build status
+
+Build pending. Local docker-build was attempted twice from
+`/Users/rwalters/GitHub/lean-genius/.loom/worktrees/researcher-3`:
+
+- **Attempt 1**: ran from worktree, `proofs/.lake` symlink loop (main repo's
+  `proofs/.lake` is `.lake -> /Users/.../proofs/.lake` — a self-loop) caused
+  Mathlib source lookups to fail inside Docker.
+- **Attempt 2**: removed the broken symlink, lake re-cloned Mathlib, but
+  the clone was partial (truncated mid-download); `lake exe cache get` then
+  failed with `no such file or directory: lean-toolchain` on the
+  `.lake/packages/mathlib/lean-toolchain` path. The worktree was wiped by a
+  daemon respawn before the build could be re-attempted.
+
+The Lean code itself is straightforward and should compile cleanly from a
+healthy worktree.
+
 ## Dead Ends
 
 (None yet — this is the first session.)
 
 ## Decomposition Plan (S2–S6, see state.md)
 
-- **S2**: Define `concyclicityDet : Vec2 → Vec2 → Vec2 → Vec2 → ℝ` and prove the
-  numerical example above (~40 lines).
+- **S2** *(done, build pending — PR ...)*: Define `concyclicityDet` and
+  `concyclicityDetCoords`, prove both numerical examples, state the main
+  theorem with `sorry`.
 - **S3**: Prove the (⇐) direction (`Δ = 0` ⇒ exists circle through all four), assuming
   $P_1, P_2, P_3$ non-collinear, by constructing $(D, E, F)$ via Cramer (~80 lines).
 - **S4**: Prove the (⇒) direction (concyclic ⇒ $\Delta = 0$) by row reduction (~30 lines).
