@@ -44,9 +44,26 @@ in `Triangulation.sperner`.
 - S2 PREP C3 (cascade audit): PR #18392.
 - S2 PREP C2-1d: PR #18489.
 - S2 PREP-D (Mathlib API audit + bridge): PR #18534.
+- S3 PREP (SHA-pin audit): PR #18712.
 - PREP-D §4.1 supplies the verified Mathlib-name corrections applied below
   (`Finset.toList_eq_nil`, `Finset.Nonempty.toList_ne_nil`,
   `Finset.nonempty_iff_ne_empty`), replacing the PREP-C1 fallback chain.
+
+## Mathlib bearer lines (at the build-pinned SHAs)
+
+PREP-D #18534 and S2 ACT #18648 cited bearer lines against Mathlib HEAD
+(2026-05-13). PR #18712 re-verified each lemma at the `lake-manifest.json`
+pinned SHA `2df2f015...` (Mathlib v4.26.0, 2025-12-13) and the
+`lean-toolchain` tag `v4.26.0` (Lean commit `d8204c9f...`). Lemma **names**
+resolve at both SHAs, so this file builds correctly at the pinned SHAs;
+only the **line citations** in the merged PREP-D / ACT memos drifted.
+The bearer lines below are verified-correct at the SHAs this proof
+actually compiles against:
+
+- `Mathlib/Data/Finset/Basic.lean:512` — `Finset.toList_eq_nil`
+- `Mathlib/Data/Finset/Basic.lean:521` — `Finset.Nonempty.toList_ne_nil`
+- `Mathlib/Data/Finset/Empty.lean:148`  — `Finset.nonempty_iff_ne_empty`
+- `Init/Data/List/Lemmas.lean:937`       — `List.mem_of_head?`
 -/
 
 namespace SpernerSimplicialInstanceOQ05
