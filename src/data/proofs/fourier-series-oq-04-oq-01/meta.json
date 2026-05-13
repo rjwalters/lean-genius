@@ -8,11 +8,11 @@
     "imports": ["Mathlib"],
     "opens": ["MeasureTheory", "Complex", "Filter", "Topology"],
     "namespace": "FourierSeriesOQ04OQ01",
-    "lineCount": 204,
+    "lineCount": 234,
     "axiomCount": 1,
     "sorries": 1,
     "definitionCount": 5,
-    "theoremCount": 5
+    "theoremCount": 7
   },
   "meta": {
     "author": "Open in mathematics (Stein 1971 ICM; Tao 2002 survey). Formalized statement: Lean Genius contributors.",
@@ -33,8 +33,8 @@
     "sorries": 1,
     "dateAdded": "2026-05-12",
     "axiomCount": 1,
-    "lineCount": 204,
-    "theoremCount": 5,
+    "lineCount": 234,
+    "theoremCount": 7,
     "definitionCount": 5,
     "assumptions": "1 axiom: `carleson_2d_sph` — the open 2D Carleson spherical-summation conjecture on T². 1 sorry: `sphPartialSum_L2_norm_converge` — the unconditional L²-norm convergence statement; provable from Plancherel on T² (Mathlib gap; the orthonormal basis tensor-product structure is implicit but not exposed as a named identity). No other assumptions.",
     "mathlibDependencies": [
@@ -78,7 +78,8 @@
       "carleson_2d_sph: the open 2D Carleson conjecture axiomatized with full quantifiers",
       "sphPartialSum_L2_norm_converge: unconditional L²-norm convergence statement (Plancherel-direct; sorried)",
       "multiFourierCoeff_zero, sphPartialSum_zero: sanity-check lemmas (zero function in / zero coefficient out)",
-      "latticeDisc_subset_bbox, latticeDisc_card_le_bbox (S2c): trivial pre-Gauss bounding-box cardinality bound for the lattice disc"
+      "latticeDisc_subset_bbox, latticeDisc_card_le_bbox (S2c): trivial pre-Gauss bounding-box cardinality bound for the lattice disc",
+      "bbox_card, latticeDisc_card_le_explicit (S2d): explicit bounding-box cardinality (2⌈|R|⌉+1)² via Pi.card_Icc + Int.card_Icc, yielding the closed-form O(R²) Gauss-circle upper bound for the lattice disc"
     ]
   },
   "overview": {
@@ -137,9 +138,17 @@
       "id": "lattice-disc-bbox",
       "title": "S2c — `latticeDisc` bounding-box cardinality bound",
       "startLine": 177,
-      "endLine": 202,
+      "endLine": 200,
       "summary": "`latticeDisc_subset_bbox` and `latticeDisc_card_le_bbox`: the lattice disc embeds in the integer bounding box `[-⌈|R|⌉, ⌈|R|⌉]²`, and its cardinality is bounded above by the box cardinality. Trivial pre-Gauss bound; sharper Gauss-circle estimate deferred.",
       "mathContext": "The crude bound `(latticeDisc R).card ≤ (2·⌈|R|⌉+1)²` suffices for ℓ¹ majorisation of the spherical partial sum and other quantitative arguments that do not require the sharper $\\sim \\pi R^2$ count. The sharper Gauss circle problem bound $\\lceil \\pi R^2 \\rceil + O(R)$ is a separate substantive subtask; this S2c contribution gives the structural foundation (subset of an explicit bounding box) on which any cardinality estimate is built."
+    },
+    {
+      "id": "lattice-disc-explicit-card",
+      "title": "S2d — Explicit cardinality `(2⌈|R|⌉+1)²` via `Pi.card_Icc`",
+      "startLine": 202,
+      "endLine": 230,
+      "summary": "`bbox_card` and `latticeDisc_card_le_explicit`: evaluate the integer bounding box cardinality as `(2⌈|R|⌉+1).toNat ^ 2`, then chain with the S2c subset bound to obtain a closed-form `(latticeDisc R).card ≤ (2⌈|R|⌉+1)²`. Sorry-free, axiom-free, and uses only stable Mathlib API (`Pi.card_Icc` + `Int.card_Icc`).",
+      "mathContext": "The integer interval `Icc (-⌈|R|⌉) ⌈|R|⌉ ⊂ ℤ` has cardinality `(⌈|R|⌉ + 1 - (-⌈|R|⌉)).toNat = (2⌈|R|⌉+1).toNat` by `Int.card_Icc`; the product over `Fin 2` raises this to the square (`Pi.card_Icc` + `Finset.prod_const` + `Fintype.card_fin`). Composing with S2c's `latticeDisc_card_le_bbox` yields the explicit Gauss-circle upper bound, bridging the qualitative subset bound to a numerical estimate usable for ℓ¹ majorisation of `sphPartialSum`. The sharp constant `π` (Gauss circle problem proper) requires boundary-lattice analysis and is deferred."
     }
   ],
   "conclusion": {

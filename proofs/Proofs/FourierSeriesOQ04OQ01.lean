@@ -199,6 +199,36 @@ theorem latticeDisc_card_le_bbox (R : ℝ) :
       (Finset.Icc (fun _ : Fin 2 => -⌈|R|⌉) (fun _ : Fin 2 => ⌈|R|⌉)).card :=
   Finset.card_le_card (latticeDisc_subset_bbox R)
 
+/-! ## S2d — Explicit bounding-box cardinality `(2⌈|R|⌉+1)²`
+
+Sharpen `latticeDisc_card_le_bbox` to the explicit numerical bound
+`card ≤ (2⌈|R|⌉+1)²` via `Pi.card_Icc` (which expands the bounding box's
+cardinality as a product over `Fin 2` of the 1D `Int.card_Icc` formula).
+This bridges the qualitative S2c subset bound to a numerical estimate
+usable for ℓ¹ majorisation of `sphPartialSum`. The sharper Gauss-circle
+bound `card ≤ ⌈π·R²⌉ + O(R)` remains deferred (separate boundary-lattice
+analysis required).
+-/
+
+/-- The integer bounding box `[-⌈|R|⌉, ⌈|R|⌉]² ⊂ ℤ²` has cardinality
+    `(2⌈|R|⌉+1).toNat ^ 2`. Direct from `Pi.card_Icc` + `Int.card_Icc`. -/
+theorem bbox_card (R : ℝ) :
+    (Finset.Icc (fun _ : Fin 2 => -⌈|R|⌉) (fun _ : Fin 2 => ⌈|R|⌉)).card
+      = ((2 * ⌈|R|⌉ + 1).toNat) ^ 2 := by
+  rw [Pi.card_Icc]
+  simp only [Int.card_Icc]
+  have h : (⌈|R|⌉ + 1 - -⌈|R|⌉ : ℤ) = 2 * ⌈|R|⌉ + 1 := by ring
+  simp [h, Finset.prod_const, Fintype.card_fin]
+
+/-- Explicit upper bound on the lattice-disc cardinality:
+    `(latticeDisc R).card ≤ (2⌈|R|⌉+1)²`. Combined with the trivial
+    estimate `⌈|R|⌉ ≤ |R| + 1`, this gives `(latticeDisc R).card = O(R²)`,
+    the qualitative Gauss-circle bound. The sharp constant `π` requires
+    boundary-lattice analysis (separate session). -/
+theorem latticeDisc_card_le_explicit (R : ℝ) :
+    (latticeDisc R).card ≤ ((2 * ⌈|R|⌉ + 1).toNat) ^ 2 :=
+  (latticeDisc_card_le_bbox R).trans_eq (bbox_card R)
+
 end
 
 end FourierSeriesOQ04OQ01
