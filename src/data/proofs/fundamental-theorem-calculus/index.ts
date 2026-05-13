@@ -1,6 +1,7 @@
-import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
+import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference, TacticState } from '@/types/proof'
 import metaJson from './meta.json'
 import annotationsJson from './annotations.json'
+import tacticStatesJson from './tacticStates.json'
 import sourceRaw from '../../../../proofs/Proofs/FundamentalTheoremCalculus.lean?raw'
 
 const meta = metaJson as {
@@ -29,8 +30,10 @@ export const fundamentalTheoremCalculusProof: Proof = {
 }
 
 export const fundamentalTheoremCalculusAnnotations: Annotation[] = annotationsJson as unknown as Annotation[]
+export const fundamentalTheoremCalculusTacticStates: TacticState[] = tacticStatesJson as TacticState[]
 
 export const fundamentalTheoremCalculusData: ProofData = {
   proof: fundamentalTheoremCalculusProof,
   annotations: fundamentalTheoremCalculusAnnotations,
+  tacticStates: fundamentalTheoremCalculusTacticStates,
 }
