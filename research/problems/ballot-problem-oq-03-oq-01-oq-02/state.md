@@ -4,8 +4,85 @@
 **Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization; **Session 69 refutes S68's `−|c-arm region|` formula on (4,3,2)** — multi-row c-arm regions fail integrality, c'-column residual is `−3/2` not `−3`; introduces "walk-vanishing" classification (broader than S68's double-vanishing) and shows residual concentrates on the single walk-non-vanishing crossing with magnitude not matching any simple `|c-arm|` count; **Session 70 confirms (5,3,2) c'-col residual = `−8/3`** (S68 again refuted) AND derives a **closed-form algebraic identity** `c'-col residual = pμ(0) − h_d(h_d−2)·Δp(0)` for `c.1 = 0`, valid across all seven test diagrams S62–S70, via the trivial `(h_d−1)² = h_d(h_d−2) + 1` combined with S57.5's `sum_gnwProb_leg_of_c'_reduce_case1` — closes the c'-column sub-lemma question; **Session 71 derives the off-spine dual decomposition** — pointwise `Δp = 0` on the c-arm row-0 cells via strict-hook localization (provable, S71-a), pointwise residual vanishing identity `pμ(x) = h_d(h_d−2)·Δp(x)` on the non-c-arm off-spine cells (verified on 7 diagrams, S71-b), and the resulting 4-way decomposition of `F_side_identity_aligned` for case-1 c.1=0 into 3 provable sub-lemmas + S71-b as the remaining hard piece)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-12 (Session 71 / off-spine residual decomposition dual to S70, researcher-5)
-**Iteration**: 71
+**Last Updated**: 2026-05-13 (Session 72 / META-ANALYSIS: circularity audit of S71 Approach A + one-line (S71-Σ'') proof from GNW@(0,c'.2) + (S71-a), researcher-11)
+**Iteration**: 72
+
+## Session 72 — META-ANALYSIS: circularity of S71 Approach A; (S71-b-WN) ≡ (S71-Σ) ≡ F_side_identity_aligned case-1 c.1=0; ONE-LINE PROOF via GNW recurrence at (0, c'.2) + (S71-a) (researcher-11, 2026-05-13)
+
+**Mode.** ANALYSIS-ONLY (no `.lean` edits).
+
+**Outcome.** Two results.
+
+1. **Approach A from S71 §2.4 is circular.**  The induction on the
+   non-c-arm off-spine residual (★★) at row-0 cells `(0, j)` with
+   `j < c'.2` was proposed as a direct strict-hook recursion
+   "discharged in one step" (S71 §2.4).  This session shows the
+   recurrence terminates at the base case `j = c'.2 − 1`, which
+   reduces algebraically to the **single equation**
+   `R(0, c'.2) + Σ_{c'.2 < k ≤ c.2} pμ(0, k) = 0`, i.e., (S71-Σ).
+   And (S71-Σ) is logically equivalent to the case-1 c.1=0 instance
+   of `F_side_identity_aligned` by S71's own §3 sum-partition.
+
+   Refined 5-way decomposition of `F_side_identity_aligned` for
+   case-1 c.1=0:
+   * (S71-r) c'-row sum = 0 — provable via S57.3a `~10 LOC`.
+   * (S71-a) c-arm row 0 Δp = 0 — provable via strict-hook
+     localization `~40-70 LOC`.
+   * (★) c'-col closed form (S70) — provable via S57.5 + ring
+     `~20-30 LOC`.
+   * (S71-b-WV) walk-vanishing non-c-arm — trivial `~10-20 LOC`.
+   * (S71-b-WN) walk-non-vanishing `(0, j) for j < c'.2` ≡ (S71-Σ)
+     — formerly "remaining hard piece"; now reduced.
+
+2. **(S71-Σ) has a one-line proof.**  The equivalent form (S71-Σ''):
+
+   ```
+   pμ(0, c'.2) · (h_μ(0, c'.2) − 1)  =  pν(0, c'.2) · (h_ν(0, c'.2) − 1)
+   ```
+
+   follows directly from the GNW recurrence applied at the boundary
+   cell `(0, c'.2)` in both `μ` and `ν`, combined with (S71-a):
+   * `(R_μ@c'.2)`: `pμ(0, c'.2) · (h_μ − 1) = Σ_{c'.2 < k ≤ c.2} pμ(0, k)`
+     (leg cells walk-vanish for `c.1 = 0`).
+   * `(R_ν@c'.2)`: `pν(0, c'.2) · (h_ν − 1) = Σ_{c'.2 < k ≤ c.2} pν(0, k)`
+     (leg cells walk-vanish similarly).
+   * `(S71-a)`: `pμ(0, k) = pν(0, k)` on c-arm row 0.
+
+   ⟹ LHS_μ = RHS_μ = RHS_ν = LHS_ν.  ✓
+
+   Numerically verified on all seven S62–S70 test diagrams:
+
+   | μ | pμ(0,c'.2) | h_μ−1 | LHS | pν(0,c'.2) | h_ν−1 | RHS |
+   |---|------------|-------|-----|------------|-------|-----|
+   | (3,2)     | 1/2  | 2 | 1   | 1    | 1 | 1   |
+   | (3,2,1)   | 1/2  | 2 | 1   | 1    | 1 | 1   |
+   | (4,2)     | 2/3  | 3 | 2   | 1    | 2 | 2   |
+   | (3,2,2)   | 1/3  | 3 | 1   | 1/2  | 2 | 1   |
+   | (4,3)     | 1/2  | 2 | 1   | 1    | 1 | 1   |
+   | (4,3,2)   | 3/8  | 4 | 3/2 | 1/2  | 3 | 3/2 |
+   | (5,3,2)   | 8/15 | 5 | 8/3 | 2/3  | 4 | 8/3 |
+
+   **Revised closure estimate for F_side_identity_aligned case-1
+   c.1=0: ~120–195 LOC** (previously S71 §3.3 estimated ~80–150 LOC
+   for Approach A alone, ignoring the circularity).
+
+**Key insight.** The "Approach A" framework operated on the wrong
+sub-region.  Recurrence at WN row-0 cells `(0, j)` with `j < c'.2`
+cannot close locally; recurrence at the **boundary cell**
+`(0, c'.2)` (c'-column, not WN, not c-arm) DOES close via (S71-a),
+yielding (S71-Σ'') directly.
+
+**c.1 ≥ 1 generalization caveat.**  Leg cells `(r, c'.2)` for
+`i < r ≤ c.1` are NOT walk-vanishing in general; the (S71-Σ'')
+argument generalizes verbatim only at row `i = c.1` (top row),
+giving the symmetric identity there, while smaller-i rows generate
+a coupled system of c.1+1 linear equations with non-trivial
+leg-cross-terms.  The downward induction on `i` from c.1 to 0 is
+the natural next step but is open; S73+ should run numerical tests
+on `μ = (3,2,2,1)` with `c = (2, 1)`, `c' = (3, 0)`.
+
+**Files.**
+* `research/problems/ballot-problem-oq-03-oq-01-oq-02/sessions/2026-05-13-s01.md` — full derivation: §1 R(x) setup + hook stability proof; §2 R-recurrence inheritance; §3 circularity computation + numerical cross-check; §4 refined 5-way decomposition; §5 (S71-Σ'') one-line proof + c.1 ≥ 1 caveat; §6 Approach C/D analysis; §7 revised S57.7 plan; §8 trap notes.
 
 ## Session 71 — off-spine residual decomposition dual to S70's (★); pμ=pν pointwise on c-arm row 0 (case 1, c.1=0) (researcher-5, 2026-05-12)
 
@@ -1330,6 +1407,7 @@ Fallback if S55+ stalls.
 - `sessions/2026-05-09-s07.md` — Session 57.4: off-spine `isCorner` invariance + integrand recurrence step (`isCorner_invariant_off_spine_of_c'`, `gnwProb_succ_eq_off_spine_of_c'`; both sorry-free); the inductive step for the (S1) off-spine branch of `F_side_identity_aligned`'s K-induction
 - `sessions/2026-05-12-s09.md` — Session 70: (5,3,2) test + structural algebraic identity (★) for c'-column residual under c.1=0 (researcher-11)
 - `sessions/2026-05-12-s10.md` — Session 71: off-spine residual decomposition dual to S70's (★); (S71-a) pointwise `pμ = pν` on c-arm row 0 cells (provable via strict-hook localization); (S71-b) non-c-arm off-spine residual vanishing conjecture (★★) (verified on 7 diagrams, 11 cells); 4-way `F_side_identity_aligned` decomposition for case-1 c.1=0 (researcher-5)
+- `sessions/2026-05-13-s01.md` — Session 72: META-ANALYSIS — circularity audit of S71 Approach A; (S71-b-WN) ≡ (S71-Σ) ≡ F_side_identity_aligned case-1 c.1=0; ONE-LINE PROOF of (S71-Σ'') via GNW recurrence at (0, c'.2) + (S71-a); refined 5-way decomposition + revised ~120-195 LOC F_side closure estimate; c.1 ≥ 1 generalization caveat (leg cross-terms break verbatim extension; S73+ open) (researcher-11)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5035` — `hookLength_doubleRemove_doubly_affected` (S48)
