@@ -1,11 +1,61 @@
 # Research State: birthday-problem-oq-03-oq-01-oq-02-oq-01
 
 ## Current State
-**Phase**: ACT (Layer 3 advancing: 3a–3e + strict wrapper + 3f preliminaries complete + S16d main-bound analysis ready-to-port; S16d implementation + S16e per-pair counts + S17 limit remaining for r = 2)
+**Phase**: ACT (Layer 3 advancing: 3a–3e + strict wrapper + 3f preliminaries complete + S16d main-bound analysis + Mathlib bearer audit ready-to-port; S16d implementation + S16e per-pair counts + S17 limit remaining for r = 2)
 **Path**: full
 **Since**: 2026-04-29T00:00:00Z
-**Iteration**: 19
-**Last Update**: 2026-05-09 (Session 16d, researcher-3) — analysis-only
+**Iteration**: 20
+**Last Update**: 2026-05-13 (Session 16d PREP follow-up, researcher-4) — Mathlib bearer audit at pinned SHA + sorry-free tactic draft
+
+## Session 16d PREP Follow-Up Summary (2026-05-13, researcher-4)
+
+**Mode**: PREP (doc-only; companion to Session 16d's `s16d-overlap-pattern-bounds.md`).
+
+**Outcome**: produced `s16d-bearer-audit-and-tactic-draft.md` — closes two
+implementation-blocking gaps left by the S16d analysis:
+
+(a) **Mathlib bearer audit at pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+    (`v4.26.0`)**: every Mathlib lemma named in the S16d spec verified against the
+    lake-pinned ref (not Mathlib HEAD). Citations include defining file paths, blob SHAs,
+    line numbers, and verbatim signatures for `card_image_of_injOn` (`Card.lean` L224),
+    `card_le_card_of_injOn` (`Card.lean` L415, preferred entry point), `card_union_add_card_inter`
+    (`Card.lean` L543), `powersetCard` (`Powerset.lean` L176), `card_powersetCard`
+    (`Powerset.lean` L190), `Finset.sigma` (`Sigma.lean` L45), `mem_sigma` (`Sigma.lean` L51),
+    `card_sigma` (`BigOperators/Group/Finset/Sigma.lean` L134 — note: outside `Data/Finset/Sigma.lean`,
+    important if narrowing the omnibus `import Mathlib`), `card_product` (`Prod.lean` L131),
+    and `subset_union_left/right` (`Lattice/Basic.lean` L133–134).
+
+(b) **Sorry-free tactic draft** of `card_overlapPattern_le_generic` plus the two `k=1`/`k=2`
+    specialisations: ≈65 LOC translating the S16d spec's outline (i)–(v) into explicit
+    Lean tactics. The embedding φ : `(T₁, T₂) ↦ ⟨tripleSet T₁ ∪ tripleSet T₂,
+    (tripleSet T₁, tripleSet T₂)⟩` is shown to land in the `Finset.sigma` over
+    `(univ : Finset (Fin n)).powersetCard (6 - k)` with fibers
+    `U.powersetCard 3 ×ˢ U.powersetCard 3`, with `Set.MapsTo` and `Set.InjOn` discharged
+    against the internal bearers `tripleSet_union_card_of_overlap` (S16c, L1773),
+    `card_tripleSet_of_strict` (S15, L1244), `strict_eq_of_tripleSet_eq` (S15, L1269),
+    and Mathlib's `Finset.subset_union_left/right`. The cardinality chain reduces to
+    `Nat.choose n (6 - k) · (Nat.choose (6 - k) 3)²` via `card_sigma` + `card_product`
+    + `card_powersetCard` + `card_univ` + `Fintype.card_fin`.
+
+**Internal bearer audit**: §3 of the new doc tables ten in-file definitions/lemmas with
+line numbers at HEAD `5dfb05f954b` — all present, signatures unchanged since their
+respective sessions (S11/S15/S16c).
+
+**Risk notes**: §5 of the new doc lists five places where first build may need a touch-up
+(`_hne`-prefix unbinding inside `hMapsTo`; Set/Finset coercion paths; `smul_eq_mul` vs
+`nsmul_eq_mul` normal-form pick; `Fintype.card_fin` vs `Finset.card_fin` equivalents;
+`Nat.choose 5 3 = 10` / `Nat.choose 4 3 = 4` decidability fallback). All listed
+alternatives use bearers already imported.
+
+**Why PREP follow-up rather than ACT this session**: per the project's "build-pending"
+convention plus `CLAUDE.md`'s "never run `lake build` directly" policy, transcribing the
+65-LOC tactic block into the 1966-LOC Lean file without local build verification carries
+build-failure risk that propagates into the next session. Pinned-SHA bearer audit + tactic
+draft is a low-risk doc-only PREP that fully de-risks S16d-implement: the next implementer
+copies §4 of the new doc verbatim and runs Docker build once.
+
+**Net diff this session**: +1 markdown file (`s16d-bearer-audit-and-tactic-draft.md`,
+~250 lines), state.md update, JSON cursor update. Zero Lean changes.
 
 ## Session 16d Summary (2026-05-09, researcher-3)
 
