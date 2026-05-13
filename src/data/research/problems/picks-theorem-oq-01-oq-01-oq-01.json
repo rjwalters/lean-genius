@@ -22,7 +22,8 @@
       "Pick's formula for axis-aligned rectangles (PicksTheoremOQ01, Part III)."
     ],
     "open": [
-      "Prove that EVERY primitive triangle (|det| = 1) has realInteriorCount = 0 (general base case, beyond the three test instances now verified in S2).",
+      "[DONE in S3-prep #18158] Prove that EVERY primitive triangle (|det| = 1) has realInteriorCount = 0 (general base case, beyond the three test instances).",
+      "Prove primitive_pickInterior_zero (every primitive triangle has pickInterior = 0) via primitive_edgeGCD_eq_one + the cleared Pick identity. This closes the dual side of the base case agreement.",
       "Prove the additivity lemma: when two lattice triangles T1, T2 share an edge with no interior lattice points (gcd = 1), realInteriorCount(T1 union T2) = realInteriorCount T1 + realInteriorCount T2.",
       "Close the induction via exists_primitive_triangulation."
     ],
@@ -30,19 +31,19 @@
   },
   "currentState": {
     "phase": "PLAN",
-    "since": "2026-05-12T11:30:00Z",
-    "iteration": 3,
-    "focus": "Bridge primitive triangulation + GCD boundary count; S1 scaffold + S2 real-interior count + base-case agreement done.",
+    "since": "2026-05-13T11:55:00Z",
+    "iteration": 5,
+    "focus": "S3-prep done (general primitive realInteriorCount = 0). Asymmetric base case remains: pickInterior = 0 is only proved on three test triangles, not for every primitive T.",
     "blockers": [],
-    "nextAction": "S3 -- prove the additivity lemma for primitive sub-triangles sharing a gcd=1 edge, or first the general primitive case (every twiceArea=1 triangle has realInteriorCount=0).",
+    "nextAction": "S3a-plus -- prove primitive_pickInterior_zero (every primitive triangle has pickInterior = 0) by first proving primitive_edgeGCD_eq_one (each edge gcd divides det, det = +-1 forces each gcd = 1, hence boundaryCount = 3 and pickInterior = 1/2 - 3/2 + 1 = 0). Then S3b additivity + S4 induction close the full Pick formula.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S2 OBSERVE (researcher-4, 2026-05-12): extended Proofs/PicksTheoremOQ01OQ01OQ01.lean to 425+ lines (0 sorries, 0 axioms, build verified). Added cross2 (signed area cross product), LatticeTriangle.StrictInterior (Prop + Decidable instance), boundingBox (Finset.Icc x Finset.Icc), realInterior (filter on StrictInterior), realInteriorCount (the Finset cardinality), and proved by native_decide that realInteriorCount = pickInterior on the three test triangles (unit=0, 2x1=0, 3x3=1 with interior point (1,1)).",
+    "progressSummary": "S3-prep done, JSON sync pending (researcher-8, 2026-05-13): PicksTheoremOQ01OQ01OQ01.lean now 502 lines (0 sorries, 0 axioms). S3-prep (#18158, merged 2026-05-12) added cross2_partition_sum (signed-area additivity over (v_i, v_{i+1}, p)), primitive_no_strict_interior (sum of three same-sign cross products would be >= 3, contradicting |det| = 1), and primitive_realInteriorCount_zero (general primitive case: realInteriorCount = 0 for every triangle with twiceArea = 1, beyond just the unit instance). The base case is now asymmetric: realInteriorCount = 0 is general, but pickInterior = 0 is still only proved on three test triangles. The next clean intermediate step (S3a-plus) closes that gap before S3b additivity.",
     "builtItems": [
       "LatticeTriangle structure (S1: mirror of PicksTheoremOQ01OQ01)",
       "LatticeTriangle.det / NonDegenerate / twiceArea (S1)",
@@ -57,7 +58,10 @@
       "LatticeTriangle.realInterior (S2): boundingBox filtered by StrictInterior",
       "LatticeTriangle.realInteriorCount (S2): the Finset cardinality",
       "Three test-triangle realInteriorCount theorems (S2): unitTriangle=0, triangle_2_1=0, triangle_3_3=1",
-      "Three test-triangle pick_agrees theorems (S2): (realInteriorCount : Q) = pickInterior"
+      "Three test-triangle pick_agrees theorems (S2): (realInteriorCount : Q) = pickInterior",
+      "cross2_partition_sum (S3-prep, #18158): cross2 v1 v2 p + cross2 v2 v3 p + cross2 v3 v1 p = T.det -- the three sub-triangles (v_i, v_{i+1}, p) tile T with signs, so their signed areas sum to twice the signed area of T (proved by unfold + ring)",
+      "primitive_no_strict_interior (S3-prep, #18158): for T with twiceArea = 1, no lattice point is strictly interior -- if all three cross products had the same strict sign each would have |.| >= 1 forcing |sum| >= 3, contradicting |sum| = |T.det| = 1 (omega in both orientation branches)",
+      "primitive_realInteriorCount_zero (S3-prep, #18158): general primitive base case -- every primitive lattice triangle has realInteriorCount = 0 (no bounding-box enumeration needed; the impossibility holds at every lattice point)"
     ],
     "insights": [
       "Both ingredients (primitive triangulation + GCD boundary count) are already verified in the project; the bridge is purely compositional.",
@@ -65,15 +69,19 @@
       "Each edge contributes gcd(|Dx|, |Dy|) + 1 lattice points; the three shared vertices double-count, so B = sum (gcd + 1) - 3 = sum gcd.",
       "PicksTheoremOQ02 only handles segments from (0,0) to (a,b) with a, b : N; the general case needs a small translation/reflection lemma (still missing).",
       "S2: The disjunction `(all > 0) OR (all < 0)` in StrictInterior covers both orientations of (v1, v2, v3), so we do not need to normalize the triangle's winding order.",
-      "S2: native_decide reduces realInteriorCount on any concrete triangle because Finset.Icc on Z, Finset.product, and the strict-interior predicate all compile to decidable computations."
+      "S2: native_decide reduces realInteriorCount on any concrete triangle because Finset.Icc on Z, Finset.product, and the strict-interior predicate all compile to decidable computations.",
+      "S3-prep: the partition-sum identity sum_i cross2 v_i v_{i+1} p = T.det converts the StrictInterior obstruction into an integer arithmetic contradiction, closed by `omega`. No bounding-box enumeration needed -- the conclusion holds at every lattice point.",
+      "S3a-plus (proposed): primitive triangles have all three edge gcds = 1 (boundaryCount = 3). Proof: let d = edgeGCD i, then (d : Z) | Delta_x_i and (d : Z) | Delta_y_i; T.det expands as a linear combination of (Delta_x_i, Delta_y_i) and the opposite-edge deltas, so (d : Z) | T.det. With |T.det| = 1, this forces d = 1. Combined with pickInterior = (twiceArea - boundaryCount)/2 + 1, we get pickInterior = 0 for every primitive triangle (currently only verified on three test instances).",
+      "Bridge architecture note: closing primitive_pickInterior_zero (S3a-plus) gives the clean primitive base-case pair (realInteriorCount = 0 AND pickInterior = 0), so S3b additivity only needs to preserve agreement under primitive-edge gluing -- the base case is then fully discharged for the eventual Pick induction."
     ],
     "mathlibGaps": [
       "Mathlib has Convex / intrinsicInterior for topological interiors but no built-in lattice-point-of-triangle count; we use a custom Finset.Icc + filter definition (S2).",
       "Mathlib.Data.Int.Interval is required for Finset.Icc on Z (LocallyFiniteOrder Z); Mathlib.Data.Finset.Prod for Finset.product."
     ],
     "nextSteps": [
-      "S3a (prep): Prove the GENERAL primitive case -- every LatticeTriangle T with T.twiceArea = 1 has T.realInteriorCount = 0 (closes the base case beyond the three test instances).",
-      "S3b: Prove the additivity lemma for primitive-edge unions (gcd = 1 case): realInteriorCount(T1 ∪ T2) = realInteriorCount T1 + realInteriorCount T2 + (boundary points on the shared edge).",
+      "[DONE in S3-prep #18158] S3a: Prove general primitive case T.twiceArea = 1 -> T.realInteriorCount = 0.",
+      "S3a-plus (proposed): Prove primitive_edgeGCD_eq_one (each edge gcd of a primitive triangle is 1) and the corollary primitive_pickInterior_zero (pickInterior = 0 for every primitive triangle). Proof outline: (d : Z) | Delta_x and (d : Z) | Delta_y from gcd, then (d : Z) | det via the bilinear det expansion, then |det| = twiceArea = 1 forces d | 1. Closes the pickInterior side of the base-case agreement that is currently only proven on three test triangles. Estimated 50-100 LOC.",
+      "S3b: Prove the additivity lemma for primitive-edge unions (gcd = 1 case): realInteriorCount(T1 union T2) = realInteriorCount T1 + realInteriorCount T2 + (boundary points strictly on the shared edge), and the matching identity for pickInterior via pick_formula_cleared. Estimated 200-400 LOC.",
       "S4: Close the induction using PicksTheoremOQ01OQ01.exists_primitive_triangulation."
     ]
   },
@@ -112,7 +120,7 @@
     ]
   },
   "started": "2026-05-12T08:02:11.449Z",
-  "lastUpdate": "2026-05-12T11:30:00Z",
+  "lastUpdate": "2026-05-13T11:55:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
