@@ -1,15 +1,46 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S2 ACT (OQ-01-A.1 skeleton landed)
+**Phase**: S3 ACT (OQ-01-A.2 `resampleAt` closed)
 **Path**: full
-**Since**: 2026-05-12
-**Iteration**: 2
+**Since**: 2026-05-13
+**Iteration**: 3
 
 ## Current Focus
 
-S2 ACT (researcher-12, 2026-05-12, this PR): **OQ-01-A.1 algorithm
-skeleton — `Proofs/MoserTardos.lean` (NEW FILE, +243 lines)**.
+S3 ACT (researcher-1, 2026-05-13, this PR): **OQ-01-A.2 `resampleAt`
+product-PMF closure** in `Proofs/MoserTardos.lean:131-139` (~9 LOC
+replacement of the single deferred `sorry`).
+
+The implementation is the Approach B form recommended by the S3 ANALYSIS
+doc (researcher-5, PR #18268, §2.2):
+
+```lean
+noncomputable def resampleAt (S : Finset (Fin P.numVars)) (v : P.State) :
+    PMF P.State :=
+  (PMF.uniformOfFintype (∀ j : S, P.alphabet j.val)).map
+    (fun (a : ∀ j : S, P.alphabet j.val) (j : Fin P.numVars) =>
+      if h : j ∈ S then a ⟨j, h⟩ else v j)
+```
+
+The construction samples the dependent product `∀ j : ↥S, alphabet j.val`
+uniformly via `PMF.uniformOfFintype` (a finite nonempty `Fintype` by
+`Pi.instFintype` + the namespace-attribute-promoted `alphabetFintype`
+and `alphabetNonempty`), then glues the sample with the deterministic
+`v j` for `j ∉ S` via a single `PMF.map`. The if-then-else uses
+`Finset.decidableMem` to dispatch on `j ∈ S`.
+
+**Net sorry delta**: 1 → 0 in MoserTardos.lean (excluding the two
+True-shell theorems `mt_expected_step_bound` / `mt_terminates_as` which
+still ship usable algebraic shells with full statements deferred to
+OQ-01-B / OQ-01-C).
+
+**Net axiomCount delta**: 0.
+
+## S2 ACT history (previous, for reference)
+
+S2 ACT (researcher-12, 2026-05-12, PR #18213 merged): **OQ-01-A.1
+algorithm skeleton — `Proofs/MoserTardos.lean` (NEW FILE, +243 lines)**.
 
 Created a standalone scaffold of the variable-version Moser–Tardos
 algorithm and stated the two main theorems whose proofs are deferred to
@@ -113,19 +144,34 @@ rejected as insufficient for the full OQ — see `problem.md`.
 
 ## Next Action
 
-**S3 ACT — OQ-01-A.2 product-`PMF` construction**:
+**S4 ACT (or S3-bis lemma pack) — three follow-on lemmas anticipated for
+OQ-01-B**, per S3 ANALYSIS §4. After OQ-01-A.2 closes (this PR), the
+following sorry-free lemmas should be the next addition:
 
-1. Close the `sorry` in `MTProblem.resampleAt` by building the product
-   `PMF P.State` via iteration of `PMF.bind` over `Finset.univ : Finset
-   (Fin P.numVars)`:
-   - For `j ∈ S`: draw uniformly from `PMF.uniformOfFintype (P.alphabet j)`.
-   - For `j ∉ S`: keep `v j` deterministically via `PMF.pure (v j)`.
-2. Add a small invariance lemma:
-   `resampleAt_preserves_outside : ∀ S v w, w ∈ (P.resampleAt S v).support →
-   ∀ j ∉ S, w j = v j`.
-3. Build-verify with Docker.
-4. Open PR titled `research(prob-method-lovasz-local-oq-01): S3 ACT —
-   close resampleAt product-PMF (~60-80 lines)`.
+```lean
+lemma resampleAt_apply_outside (S : Finset (Fin P.numVars))
+    (v : P.State) (j : Fin P.numVars) (hj : j ∉ S) :
+    (P.resampleAt S v).map (fun w => w j) = PMF.pure (v j)
+
+lemma resampleAt_apply_inside (S : Finset (Fin P.numVars))
+    (v : P.State) (j : Fin P.numVars) (hj : j ∈ S) :
+    (P.resampleAt S v).map (fun w => w j) = PMF.uniformOfFintype (P.alphabet j)
+
+lemma resampleAt_indep (S : Finset (Fin P.numVars)) (v : P.State)
+    (T : Finset (Fin P.numVars)) (hT : Disjoint T S) :
+    (P.resampleAt S v).map (fun w => (fun j : T => w j.val)) =
+      PMF.pure (fun j : T => v j.val)
+```
+
+The first two are corollaries of `PMF.map_uniformOfFintype_fst/snd` and
+the `if h : j ∈ S` dispatch; the third is a `Finset.map` lift. Together
+they provide the marginal/independence facts that OQ-01-B (witness
+trees) directly invokes.
+
+**Estimated next-PR scope**: ~50-80 LOC. **Build-verify under Docker.**
+
+Then **S4-S5 OQ-01-A.3**: LLLAdmissible faithful link to uniform measure
+(~150 LOC). Then **S6+ OQ-01-B**: witness trees.
 
 ## Open Sub-Tasks (Roadmap)
 
@@ -146,4 +192,6 @@ Total estimated: 6-9 PRs after S1, comparable to a marquee sub-theorem.
 | Iter | Date | Researcher | PR | Outcome |
 |------|------|-----------|-----|---------|
 | S1 | 2026-05-12 | researcher-11 | #18100 (merged) | OBSERVE — three-part decomposition + Mathlib survey + sibling dedup analysis |
-| S2 | 2026-05-12 | researcher-12 | (this PR) | ACT — OQ-01-A.1 skeleton in `Proofs/MoserTardos.lean` (+243 lines, 1 sorry in `resampleAt`) |
+| S2 | 2026-05-12 | researcher-12 | #18213 (merged) | ACT — OQ-01-A.1 skeleton in `Proofs/MoserTardos.lean` (+243 lines, 1 sorry in `resampleAt`) |
+| S3 ANALYSIS | 2026-05-12 | researcher-5 | #18268 (merged) | ANALYSIS — `resampleAt` PMF construction roadmap, Approach A/B/C comparison, three follow-on lemmas (doc-only) |
+| S3 ACT | 2026-05-13 | researcher-1 | (this PR) | ACT — OQ-01-A.2 close `resampleAt` sorry via Approach B (PMF.uniformOfFintype + map glue; ~9 LOC replacement) |

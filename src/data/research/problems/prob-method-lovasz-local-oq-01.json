@@ -28,19 +28,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T15:30:00Z",
-    "iteration": 2,
-    "focus": "S2 ACT (OQ-01-A.1) — `Proofs/MoserTardos.lean` skeleton (+243 lines) created and wired into umbrella. Defines `MTProblem` (with field-encoded Fintype/Nonempty/Decidable instances), `State`, `isViolated`, `pickBad`, `resampleAt` (sorry-stubbed product-PMF), `step`, `run`, `LLLAdmissible`, and statement shells for `mt_expected_step_bound` + `mt_terminates_as`. Exactly 1 sorry (in `resampleAt`). Build pending (recursive `.lake` symlink trap matches S18a-e precedent).",
+    "since": "2026-05-13T00:00:00Z",
+    "iteration": 3,
+    "focus": "S3 ACT (OQ-01-A.2) — close the `resampleAt` sorry via Approach B from S3 ANALYSIS doc (PR #18268, §2.2). `Proofs/MoserTardos.lean:131-139` now constructs the product PMF as `(PMF.uniformOfFintype (∀ j : ↥S, alphabet j.val)).map (fun a j => if h : j ∈ S then a ⟨j, h⟩ else v j)`. Net sorry delta: 1 → 0 in MoserTardos.lean (excluding the two True-shell theorems that ship usable inequalities). Build pending.",
     "blockers": [],
-    "nextAction": "S3 ACT — OQ-01-A.2 close the `resampleAt` sorry via product-PMF construction (~60-80 lines): iterate `PMF.bind` over `Finset.univ`, using `PMF.uniformOfFintype` for `j ∈ S` and `PMF.pure (v j)` for `j ∉ S`. Add `resampleAt_preserves_outside` invariance lemma. Build-verify under Docker.",
+    "nextAction": "S4 ACT — OQ-01-A.3 LLLAdmissible faithful link to uniform measure (~150 LOC). Then S6-S8 OQ-01-B witness trees, S9-S11 OQ-01-C Galton-Watson sum. Optional intermediate: add `resampleAt_apply_outside`, `resampleAt_apply_inside`, and `resampleAt_indep` lemmas (per S3 ANALYSIS §4) to support OQ-01-B.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (OBSERVE, #18100) + S2 (ACT OQ-01-A.1, this PR): full three-part decomposition + new Lean file `Proofs/MoserTardos.lean` (+243 lines) containing the algorithm scaffold (MTProblem / State / isViolated / pickBad / resampleAt / step / run), the LLLAdmissible predicate, and statement shells of the expected-step bound + a.s.-termination theorems. Exactly 1 sorry (in `resampleAt`).",
+    "progressSummary": "S1 (OBSERVE, #18100) + S2 (ACT OQ-01-A.1, #18213) + S3 ANALYSIS (#18268) + S3 ACT (OQ-01-A.2, this PR): the `resampleAt` sorry is now closed via Approach B (single `PMF.map` glue of a Pi-uniform sample with the deterministic `v j` for `j ∉ S`). MoserTardos.lean drops from 1 → 0 algorithmic sorries (excluding the two True-shell theorems mt_expected_step_bound / mt_terminates_as which still ship usable algebraic shells with full statements deferred to OQ-01-B/C).",
     "builtItems": [
       "problem.md (~250 lines) — full open question statement, algorithm definition, termination theorem, three approaches, three-part decomposition, Mathlib survey",
       "knowledge.md (~150 lines) — sibling-overlap analysis, Mathlib readiness table, OQ-01-A skeleton plan",
