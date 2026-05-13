@@ -16,16 +16,19 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T16:05:28.188Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "AXIOMATIZED-INFRASTRUCTURE-COMPLETE",
+    "since": "2026-05-13T12:00:00Z",
+    "iteration": 7,
+    "focus": "Lean infrastructure is complete (418 LOC, 0 sorries, 22 theorems, 12 defs). The 2 remaining axioms (erdos_218a, erdos_218b) ARE the open Erdős conjectures themselves — they are at the theoretical floor for this slug and cannot be eliminated without a major number-theory advance.",
+    "blockers": [
+      "erdos_218a (density(gapIncreasingSet) = 1/2) is an open Erdős conjecture (Tao: 'looks difficult'); no Mathlib bearer.",
+      "erdos_218b (density(gapDecreasingSet) = 1/2) is an open Erdős conjecture; not the set-theoretic complement of 218a (both allow gapEqualSet)."
+    ],
+    "nextAction": "Lever C (default for queue management): accept axiomatized status; this slug is in terminal Lean state until a major number-theory breakthrough lands. Lever A (~20 LOC): add explicit erdos_218c axiom for 'gapEqualSet.Infinite' (currently only in docstring) — would increase axiom count 2 → 3 in exchange for explicit statement. Lever B (~100-200 LOC, speculative): partial density bounds (0 < density < 1) without claiming exact 1/2 — would replace erdos_218a with a tightened axiom; unclear Mathlib bearer.",
     "attemptCounts": {
-      "total": 0,
+      "total": 6,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -50,7 +53,7 @@
       "nthPrime 3=7 and nthPrime 4=11 proved via Nat.nth_count + decide",
       "example_ap_1 and ap_357 follow from one_mem_gapEqualSet + gapEqual_iff_ap",
       "hasDensity_iff_upper_lower proved: Tendsto ↔ limsup=d ∧ liminf=d",
-      "Remaining 7 axioms: 3 open conjectures, Green-Tao, 2 PNT-dependent, 1 PNT-dependent",
+      "Remaining 2 axioms (post 2026-03-30): both are open Erdős conjectures themselves — erdos_218a (density(gapIncreasingSet)=1/2) and erdos_218b (density(gapDecreasingSet)=1/2). At theoretical floor.",
       "Finite set counting function bounded by |S.toFinset|, divided by N tends to 0, contradicting positive density"
     ],
     "mathlibGaps": [],
@@ -71,7 +74,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T16:05:28.188Z",
-  "lastUpdate": "2026-03-13T07:52:17.044Z",
+  "lastUpdate": "2026-05-13T12:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
