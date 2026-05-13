@@ -116,15 +116,47 @@ docstring).
 
 ## Priority table (next-action choice)
 
-| Layer | Lines | Build | Difficulty | Value |
-|-------|-------|-------|------------|-------|
-| S2: squareKrylov + recurrence | 35 | 1× | Easy | Anchors all subsequent work |
-| S3: Krylov ⊆ span(squareKrylov) | 60 | 1× | Medium | Key correctness bridge |
-| S4: $2^k \ge n$ bound | 25 | 0× | Trivial | Pure `Nat`-arithmetic |
-| Layer 3 (cost claim) | ?? | n/a | **Blocked** | Needs Mathlib complexity-monad |
+| Layer | Lines | Build | Difficulty | Value | Status |
+|-------|-------|-------|------------|-------|--------|
+| S2: squareKrylov + recurrence | 35 (actual: 104 incl. docstring) | 1× | Easy | Anchors all subsequent work | ✅ **S2 ACT shipped (build pending)** — researcher-10 2026-05-13 |
+| S3: Krylov ⊆ span(squareKrylov) | 60 | 1× | Medium | Key correctness bridge | Next action |
+| S4: $2^k \ge n$ bound | 25 | 0× | Trivial | Pure `Nat`-arithmetic | Pending |
+| Layer 3 (cost claim) | ?? | n/a | **Blocked** | Needs Mathlib complexity-monad | Deferred |
 
-**Recommended next action: S2.** Single Docker build, clean definitional
-recurrence, anchors S3-S5 without committing to any complexity framework.
+## S2 outcome (2026-05-13, researcher-10)
+
+Layer 1 shipped in `proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean`
+(104 LOC, 3 theorems, 0 sorries, 0 axioms).
+
+**Final form of the bridge proof** (replacing the `sorry` in the worked
+stub above):
+
+```lean
+theorem squareKrylov_eq_pow_two (M : Matrix (Fin n) (Fin n) K) (k : ℕ) :
+    squareKrylov M k = M ^ (2 ^ k) := by
+  induction k with
+  | zero =>
+      show M = M ^ (2 ^ 0)
+      rw [Nat.pow_zero, pow_one]
+  | succ k ih =>
+      show squareKrylov M k * squareKrylov M k = M ^ (2 ^ (k + 1))
+      rw [ih, ← pow_add]
+      congr 1
+      ring
+```
+
+After `rw [ih, ← pow_add]` the goal is
+`M ^ (2^k + 2^k) = M ^ (2^(k+1))`, and `congr 1 + ring` discharges the
+exponent identity `2^k + 2^k = 2^(k+1)` in `ℕ` (`ring` normalizes both
+sides to `2 * 2^k`; no special-purpose `pow_succ`/`mul_two` chain
+needed).
+
+Namespace `MinpolyComplexity.SubcubicKrylov` is disjoint from `MinpolyVec`
+(OQ-03-OQ-01) — no collision.
+
+Build verification deferred to doctor / auditor due to the project-wide
+`proofs/.lake` self-referential-symlink trap in this worktree (cf. project
+memory `.lake symlink loop + mid-build worktree wipe`).
 
 ## What to leave for OQ-03-OQ-03 / OQ-03-OQ-04 (sibling slugs)
 
