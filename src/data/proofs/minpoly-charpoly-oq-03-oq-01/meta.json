@@ -22,10 +22,10 @@
       "research"
     ],
     "badge": "research",
-    "sorries": 3,
+    "sorries": 2,
     "axiomCount": 0,
-    "lineCount": 187,
-    "assumptions": "0 axioms; 3 sorries — `xModule_isTorsionBy_charpoly` (Cayley-Hamilton transported across the standard-basis algebra equivalence), `xModule_isTorsion` (follows from IsTorsionBy + charpoly_monic ≠ 0), and `xModule_has_invariantFactorChain` (the OQ-03-OQ-02 deliverable surface, restated here to fix the bridging API). The `Module.Finite F[X]` instance is unconditional (no sorry) — it fires automatically from Mathlib's `Module.AEval.instFinitePolynomial`. Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.{Basic,Minpoly}`, `Mathlib.LinearAlgebra.Matrix.ToLin`, `Mathlib.Algebra.Polynomial.Module.AEval`, `Mathlib.Algebra.Module.Torsion.Basic`, `Mathlib.RingTheory.Finiteness.Defs`, `Mathlib.Tactic`, `Proofs.MinpolyCharpolyOQ03`.",
+    "lineCount": 198,
+    "assumptions": "0 axioms; 2 sorries — `xModule_isTorsion` (follows from IsTorsionBy + charpoly_monic ≠ 0) and `xModule_has_invariantFactorChain` (the OQ-03-OQ-02 deliverable surface, restated here to fix the bridging API). `xModule_isTorsionBy_charpoly` was discharged in S8 ACT (PR #18507) via `charpoly_mulVecLin` + `LinearMap.aeval_self_charpoly` + `Module.AEval.of_symm_smul`. The `Module.Finite F[X]` instance is unconditional (no sorry) — it fires automatically from Mathlib's `Module.AEval.instFinitePolynomial`. Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.{Basic,Minpoly}`, `Mathlib.LinearAlgebra.Matrix.ToLin`, `Mathlib.Algebra.Polynomial.Module.AEval`, `Mathlib.Algebra.Module.Torsion.Basic`, `Mathlib.RingTheory.Finiteness.Defs`, `Mathlib.Tactic`, `Proofs.MinpolyCharpolyOQ03`.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-12",
     "theoremCount": 3,
@@ -166,12 +166,12 @@
       "Module"
     ],
     "namespace": "MinpolyCharpolyOQ03OQ01",
-    "lineCount": 187,
+    "lineCount": 198,
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 3,
     "path": "Proofs/MinpolyCharpolyOQ03OQ01.lean",
-    "sorries": 3
+    "sorries": 2
   },
   "crossReferences": [
     {
@@ -225,7 +225,7 @@
       "significance": "API bridge between this sub-OQ and the parent's rational_canonical_form_exists."
     }
   ],
-  "sorries": 3,
+  "sorries": 2,
   "references": {
     "papers": [
       "Dummit & Foote. *Abstract Algebra* (3rd ed., 2004), §12.2 — K^n as an F[X]-module via M.",
