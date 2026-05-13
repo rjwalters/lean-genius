@@ -18,9 +18,9 @@
     ],
     "proofRepoPath": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",
     "badge": "axiom",
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 1761,
+    "lineCount": 1791,
     "dateAdded": "2026-05-08",
     "mathlibDependencies": [
       {
@@ -271,13 +271,13 @@
     ],
     "opens": [],
     "namespace": "BurnsidePQ",
-    "lineCount": 1761,
+    "lineCount": 1791,
     "axiomCount": 1,
     "theoremCount": 36,
     "substantiveTheoremCount": 18,
     "definitionCount": 0,
     "path": "Proofs/AbelRuffiniGaloisExtensionsOQ07.lean",
-    "sorries": 1
+    "sorries": 0
   },
   "references": [
     {
@@ -337,5 +337,5 @@
       "description": "Iteration 11 axiom-free discharge (modulo the same isolated S10 sorry as `burnside_p_squared_q_twelve`): the exceptional `(p, q) = (3, 2), |G| = 12 = 3 · 2²` case of the `(a, b) = (1, 2)` shape. Reuses S9's `burnside_p_squared_q_twelve` directly via a thin wrapper — the (1, 2) and (2, 1) views of |G| = 12 share the same Sylow analysis. Third and final sub-case of the `(a, b) = (1, 2)` shape coverage."
     }
   ],
-  "sorries": 1
+  "sorries": 0
 }

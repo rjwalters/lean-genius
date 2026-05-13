@@ -2,10 +2,110 @@
 
 **Phase**: ACT
 **Since**: 2026-05-12T03:30:00Z
-**Iteration**: 23 (S23 partition-ingredients composition — cube-id count = 9)
-**Last Updated**: 2026-05-12 (researcher-8)
+**Iteration**: 24 (S24 ACT — S10 sorry closed inline via S11.5/S13/S22/S23 composition)
+**Last Updated**: 2026-05-13 (researcher-10)
 
-## S23 (researcher-8, 2026-05-12, this PR)
+## S24 (researcher-10, 2026-05-13, this PR — build pending)
+
+**S10 closure landed inline**: `sylow_two_unique_when_n3_four` no longer
+carries a `sorry`. The closure body is ~30 LOC of pure composition of
+five already-merged helpers per the S24 PREP §2 plan
+(`research/problems/abel-ruffini-galois-extensions-oq-07/session-24-s10-inline-closure-prep.md`,
+merged 2026-05-13 PR #18591).
+
+### What landed
+
+`proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` lines 1271–1322,
+replacing the lone remaining `  sorry` at the old line 1277 with three
+in-body blocks:
+
+* **(a) `hdisj`** (~13 LOC): for any `Q Q' : Sylow 3 G` with `Q ≠ Q'`,
+  `Disjoint ((Q : Set G) \ {1}) ((Q' : Set G) \ {1})`. Derives
+  `(Q : Subgroup G) ⊓ (Q' : Subgroup G) = ⊥` via S13
+  `sylow_three_card_eq_three_of_card_twelve` + S11.5
+  `sylow_prime_order_disjoint_of_ne`, pushes to Set level via
+  `Subgroup.coe_inf` + `Subgroup.coe_bot`, then closes the disjointness
+  via `Set.disjoint_left.mpr` + `rintro` destructuring of the two `\ {1}`
+  memberships.
+* **(b) `hfiber`** (~8 LOC): for any `Q : Sylow 3 G`,
+  `Set.ncard ((Q : Set G) \ {1}) = 2`. Verbatim mirror of S18's
+  `sylow_two_set_diff_one_ncard_eq_three` template with `(2, 4, 3)`
+  substituted for `(3, 3, 2)`: `Sylow.card` → `1 ∈ (Q : Set G)` from
+  `Subgroup.one_mem` → `Nat.card_coe_set_eq` →
+  `Set.ncard_diff_singleton_of_mem` collapses `3 - 1 = 2`.
+* **(c) Composition** (~2 LOC): S23
+  `cube_id_card_eq_nine_of_partition_ingredients hcard hdisj hfiber hn3`
+  yields `Set.ncard {g | g^3 = 1} = 9`; S22 corollary
+  `sylow_two_subsingleton_of_cube_id_card_nine hcard h9` yields
+  `Subsingleton (Sylow 2 G)`. Done.
+
+### Counts
+
+* `lineCount`: 1761 → 1791 (+30: ~30 LOC closure body + minor docstring
+  edit). Slightly above PREP estimate (1788) due to one additional
+  comment line per block.
+* `theoremCount`: unchanged (36; closure is on an existing `private lemma`).
+* `substantiveTheoremCount`: unchanged (18).
+* `sorries`: **1 → 0**.
+* `axiomCount`: **1** (unchanged — `burnside_pq_nontrivial` for
+  `(a, b) ≥ (2, 2)` is genuinely deep).
+
+### Status of the thread after S24
+
+| Burnside shape | Coverage | Source |
+|---|---|---|
+| `(a, 0)` / `(0, b)` / `p = q` | axiom-free | S2 trivial cases |
+| `(1, 1)` (squarefree `pq`) | axiom-free | S4 via `IsZGroup.of_squarefree` |
+| `(2, 1)`, `p > q` | axiom-free | S7 `burnside_p_squared_q_p_gt_q` |
+| `(2, 1)`, `p < q ≠ p+1` | axiom-free | S7.5 `burnside_p_squared_q_p_lt_q` |
+| `(2, 1)`, `(p, q) = (2, 3)` (|G| = 12) | axiom-free | S9 `burnside_p_squared_q_twelve` + **S24 closure** |
+| `(1, 2)`, `p < q` | axiom-free | S11 `burnside_p_q_squared_p_lt_q` |
+| `(1, 2)`, `q < p ≠ q+1` | axiom-free | S11 `burnside_p_q_squared_q_lt_p` |
+| `(1, 2)`, `(p, q) = (3, 2)` (|G| = 12) | axiom-free | S11 `burnside_p_q_squared_twelve_mirror` + **S24 closure** |
+| `(2, 2)+` | **axiomatized** | `burnside_pq_nontrivial` |
+
+Both |G| = 12 sub-cases (S9 and S11 mirror) inherited the S10 sorry —
+**both are now axiom-free**. The only remaining open content is the
+`(a, b) ≥ (2, 2)` axiom, requiring character theory or
+Goldschmidt-Matsuyama transfer.
+
+### Next iteration (S25)
+
+`burnside_pq` dispatch update per the S24 PREP §7 horizon:
+
+1. **Narrow `burnside_pq_nontrivial` hypothesis** from `2 ≤ a ∨ 2 ≤ b`
+   to `2 ≤ a ∧ 2 ≤ b`. The `(2, 1)` and `(1, 2)` shapes are now
+   axiom-free for ALL primes (S7 + S7.5 + S9+S24 = `(2, 1)` full;
+   S11.1 + S11.2 + S11.3+S24 = `(1, 2)` full).
+2. **Update the `burnside_pq` dispatch** to peel off both `(2, 1)` and
+   `(1, 2)` axiom-free before falling through to the narrowed axiom.
+3. Independent of the four still-open in-flight ingredient PRs
+   (#17528, #17586, #17587, #17685) — those are now formally obsolete
+   per S24 PREP §4, and should be closed by an auditor/doctor sweep.
+
+### Build status
+
+**Build pending**. Per `feedback_researcher_lake_symlink_loop_and_wipe.md`
+and the established pattern in this thread (S15/S17/S18/S20/S21/S22/S23
+all merged "build pending"), the S24 closure ships uncertified-by-CI;
+doctor verifies post-merge from a clean worktree. Risk assessment:
+
+* All seven Mathlib API names used in the closure are pre-verified
+  against pinned commit `2df2f0150c` (see S24 PREP §8). Only
+  `Subgroup.coe_inf` and `Subgroup.coe_bot` are NEW to this file
+  (both stable Lattice.lean lemmas; transitively imported via
+  `Mathlib.GroupTheory.Sylow`).
+* All five composing helpers (`sylow_prime_order_disjoint_of_ne`,
+  `sylow_three_card_eq_three_of_card_twelve`,
+  `cube_id_card_eq_nine_of_partition_ingredients`,
+  `sylow_two_subsingleton_of_cube_id_card_nine`,
+  `Subgroup.one_mem`) are at canonical signatures in `origin/main`
+  (verified pre-edit; see PREP §1 line citations).
+* If R2 (set-diff destructuring shape) fails, the `rintro g ⟨hgQ,
+  hg_ne_one⟩ ⟨hgQ', _⟩` pattern can be replaced by `intro g hgQ_diff
+  hgQ'_diff` + explicit `.1` / `.2` projections.
+
+## S23 (researcher-8, 2026-05-12, PR #18236, MERGED)
 
 Partition-ingredients composition: derives `cube_id_card_eq_nine` (the
 S16 closure target, Step 1 of S23-next per the S22 spec) from the three
