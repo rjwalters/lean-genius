@@ -1,7 +1,7 @@
 {
     "slug": "sperner-simplicial-bridge-oq-01",
     "title": "Sperner's lemma on non-pure simplicial complexes (mixed pseudomanifold)",
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "status": "active",
     "tier": "B",
     "path": "full",
@@ -29,26 +29,28 @@
         "goal": "Create a companion file Proofs/SpernerSimplicialBridgeOQ01.lean (~150-200 LOC total across S2 + S3) with: topCellsOfDim definition, MixedPseudomanifold predicate, MixedPseudomanifold.of_pure (pure → mixed sanity check), and sperner_mixed_panchromatic theorem. 0 axioms, 0 sorries. Gallery entry in S4 (formalized status, cites parent)."
     },
     "currentState": {
-        "phase": "OBSERVE",
-        "since": "2026-05-12T17:55:00.000Z",
-        "iteration": 1,
-        "focus": "S1 (researcher-4, 2026-05-12): OBSERVE survey establishing the stratification framework for the OQ-01 mixed-pseudomanifold extension. Key insight: doors are dimension-pure even in mixed complexes (a door at level d is a (d+1)-cardinality cell paired with a d-cardinality face, partitioned by dimension), so the parent's door-counting argument runs independently per stratum. Definitions topCellsOfDim and MixedPseudomanifold plus the 5-line theorem sketch ready for S2 implementation. No Lean changes; no build needed.",
+        "phase": "ACT",
+        "since": "2026-05-13T22:50:00.000Z",
+        "iteration": 3,
+        "focus": "STATE-SYNC iteration (researcher-1, 2026-05-13): the tracker was last updated at S1 OBSERVE (2026-05-12T17:55Z) but the actual Lean file proofs/Proofs/SpernerSimplicialBridgeOQ01.lean is now at 184 lines / 3 defs (topCellsOfDim, MixedPseudomanifold, boundaryDoorCount) / 6 theorems (incl. sperner_mixed_panchromatic_at_dim) / 0 sorries / 0 axioms, with S2 SCAFFOLD merged via PR #18363 and S3 ACT merged via PR #18537 (both build-pending at merge). This iteration is doc-only: brings state.md + this JSON into agreement with the merged Lean work, populates leanFiles, and lists S4 (gallery entry) as the next action.",
         "blockers": [],
-        "nextAction": "S2 SCAFFOLD: Create new companion file proofs/Proofs/SpernerSimplicialBridgeOQ01.lean (~80 LOC) with: (1) topCellsOfDim definition via K.filter (·.card = d + 1), (2) MixedPseudomanifold predicate, (3) sanity-check MixedPseudomanifold.of_pure (pure pseudomanifold → mixed pseudomanifold), with proof using case-split on d' = d (then topCellsOfDim = topCells via filter_eq_self) vs d' ≠ d (then topCellsOfDim = ∅ via omega-contradiction). Register import in proofs/Proofs.lean. Build cost ~10 min docker build (parent file already cached).",
+        "nextAction": "S4 (next claim, ~30 LOC + meta.json): create the gallery entry src/data/proofs/sperner-simplicial-bridge-oq-01/{meta.json, index.ts, annotations.json} mirroring the canonical index.ts shape, status formalized (badge research) until docker build verifies; cross-reference parent sperner-simplicial-bridge and siblings sperner-mathlib, sperner-simplicial-instance. S4b in parallel: trigger docker build on origin/main HEAD for Proofs.SpernerSimplicialBridgeOQ01 and promote to status verified once green.",
         "attemptCounts": {
-            "total": 1,
-            "currentApproach": 1,
+            "total": 3,
+            "currentApproach": 3,
             "approachesTried": 1
         }
     },
     "knowledge": {
-        "progressSummary": "S1 (researcher-4, 2026-05-12): OBSERVE phase. Survey-only iteration. Established that the parent's door-counting argument naturally partitions by dimension in non-pure complexes (a door at level d has unique cardinality d, and cells of dimension d' ≠ d cannot share such a face). Designed the framework predicates topCellsOfDim and MixedPseudomanifold to capture stratum-wise pseudomanifold structure. Wrote a full S2 implementation sketch (80 LOC) and S3 main-theorem sketch (5 LOC application of parent). 0 Lean files modified, 0 sorries, 0 axioms.",
+        "progressSummary": "PROGRESS S3 ACT merged: companion proofs/Proofs/SpernerSimplicialBridgeOQ01.lean is at 184 lines / 3 defs (topCellsOfDim, MixedPseudomanifold, boundaryDoorCount) / 6 theorems (topCellsOfDim_eq_of_pure, topCellsOfDim_eq_empty_of_pure, MixedPseudomanifold.of_pure, card_of_mem_topCellsOfDim, hpseudo_of_mixed, sperner_mixed_panchromatic_at_dim) / 0 sorries / 0 axioms. S3 ACT (PR #18537) added the per-stratum main theorem sperner_mixed_panchromatic_at_dim; S2 SCAFFOLD (PR #18363) added the predicates and pure-coercion lemmas. Both merged build-pending. Tracker resynced (researcher-1, 2026-05-13). Outstanding: S4 gallery entry + docker build verification. S1 (researcher-4, 2026-05-12): OBSERVE phase established that the parent's door-counting argument naturally partitions by dimension in non-pure complexes; designed the framework predicates and main-theorem sketch.",
         "builtItems": [
-            "research/problems/sperner-simplicial-bridge-oq-01/problem.md (new, ~120 lines): formal statement of MixedPseudomanifold predicate, plain-language explanation of why door-counting respects stratification, 5-step approach plan with Lean signatures, parent-file infrastructure map.",
-            "research/problems/sperner-simplicial-bridge-oq-01/knowledge.md (new, ~150 lines): mathematical analysis of why doors are dimension-pure, edge cases (empty strata, coloring mismatch, decidability), Mathlib API survey, full S2 implementation sketch including MixedPseudomanifold.of_pure proof.",
-            "research/problems/sperner-simplicial-bridge-oq-01/state.md (new, ~115 lines): phase OBSERVE, iteration 1, concrete S2 next-action with the SCAFFOLD file template.",
-            "research/problems/sperner-simplicial-bridge-oq-01/literature/README.md (new, ~25 lines): bibliography placeholder + Mathlib module pointers.",
-            "src/data/research/problems/sperner-simplicial-bridge-oq-01.json (this file, new): seeker-selected slug populated with problem statement, knownResults, currentState, knowledge, references."
+            "research/problems/sperner-simplicial-bridge-oq-01/problem.md (S1, ~120 lines): formal statement of MixedPseudomanifold predicate, plain-language explanation of why door-counting respects stratification, 5-step approach plan with Lean signatures, parent-file infrastructure map.",
+            "research/problems/sperner-simplicial-bridge-oq-01/knowledge.md (S1, ~150 lines): mathematical analysis of why doors are dimension-pure, edge cases (empty strata, coloring mismatch, decidability), Mathlib API survey, full S2 implementation sketch including MixedPseudomanifold.of_pure proof.",
+            "research/problems/sperner-simplicial-bridge-oq-01/literature/README.md (S1, ~25 lines): bibliography placeholder + Mathlib module pointers.",
+            "src/data/research/problems/sperner-simplicial-bridge-oq-01.json (S1, new): seeker-selected slug populated with problem statement, knownResults, currentState, knowledge, references.",
+            "proofs/Proofs/SpernerSimplicialBridgeOQ01.lean (S2 SCAFFOLD #18363, ~80 → 184 lines after S3): defs topCellsOfDim, MixedPseudomanifold; theorems topCellsOfDim_eq_of_pure, topCellsOfDim_eq_empty_of_pure, MixedPseudomanifold.of_pure (pure → mixed coercion chain); register import in proofs/Proofs.lean.",
+            "proofs/Proofs/SpernerSimplicialBridgeOQ01.lean (S3 ACT #18537, augmenting to 184 lines): added card_of_mem_topCellsOfDim, hpseudo_of_mixed, noncomputable def boundaryDoorCount, and the main theorem sperner_mixed_panchromatic_at_dim (per-stratum existence of a panchromatic top-cell under MixedPseudomanifold + odd boundary door count).",
+            "research/problems/sperner-simplicial-bridge-oq-01/state.md (S3-resync, this iteration): phase OBSERVE/iter-1 → ACT/iter-3; iteration history table; Lean file snapshot; S4 next-action sketch."
         ],
         "insights": [
             "Doors in the parent's door-counting argument are dimension-pure: a door at level d is a (d+1)-cardinality top-cell paired with a d-cardinality codim-1 face. In a mixed-dimension complex, doors at different levels share no face, so the parity argument decomposes additively into strata.",
@@ -102,8 +104,17 @@
         ]
     },
     "started": "2026-05-12T17:55:00.000Z",
-    "lastUpdate": "2026-05-12T17:55:00.000Z",
+    "lastUpdate": "2026-05-13T22:50:00.000Z",
     "significance": 6,
     "tractability": 5,
-    "leanFiles": []
+    "leanFiles": [
+        {
+            "path": "proofs/Proofs/SpernerSimplicialBridgeOQ01.lean",
+            "lineCount": 184,
+            "theoremCount": 6,
+            "definitionCount": 3,
+            "sorryCount": 0,
+            "axiomCount": 0
+        }
+    ]
 }
