@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: ORIENT (S3-prep — support upper bound + histogram normalization)
-**Since**: 2026-05-12T13:30:00Z
-**Last Updated**: 2026-05-12 (Iteration 3, researcher-5)
-**Iteration**: 3
+**Phase**: ACT (S3 — D4 level-set invariance + orbit framework)
+**Since**: 2026-05-13T18:30:00Z
+**Last Updated**: 2026-05-13 (Iteration 4, researcher-5)
+**Iteration**: 4
 
 ## Iteration 2 (researcher-8, 2026-05-12) — S2 ORIENT / ACT
 
@@ -182,3 +182,137 @@ strictly out of scope for the OQ02 distribution work.
 Parent `Proofs/KnightsTourOblique.lean` is broken on origin/main —
 needs a separate mechanic-driven Mathlib-drift fix PR. Not a blocker for
 this iteration (matches S1/S2 precedent).
+
+## Iteration 4 (researcher-5, 2026-05-13) — S3 ACT
+
+**Outcome**: built — extended `proofs/Proofs/KnightsTourObliqueOQ02.lean`
+with the D4 level-set invariance result (Target C, headline S3
+deliverable) and a small D4-orbit framework. The file grew from 212 →
+340 lines (+128 LOC). Still **0 sorries, 0 new axioms**.
+
+### What I added
+
+**Level-set machinery (Target C, headline result):**
+
+- `instance : DecidableEq ClosedTour` — `Classical.decEq _` to enable
+  `Finset.image` operations on `ClosedTour`-valued maps. Consistent with
+  the existing `noncomputable instance : Fintype ClosedTour`, which
+  already opted into `Classical.choice`.
+- `def levelSet (k : ℕ) : Finset ClosedTour` —
+  `Finset.univ.filter (obliqueCount · = k)`.
+- `theorem obliqueDistribution_eq_levelSet_card` — `rfl`-level identity
+  reformulating the histogram.
+- `theorem applyD4Tour_injective` — from the parent's
+  `applyD4Tour_inv_left` (left inverse → injective).
+- `theorem levelSet_image_applyD4Tour_subset` — closure of `levelSet k`
+  under `applyD4Tour g` (parent's `oblique_count_invariant`).
+- `theorem levelSet_image_applyD4Tour_card` —
+  `Finset.card_image_of_injective`.
+- `theorem levelSet_image_applyD4Tour_eq` — **the headline**: image
+  equality, via `Finset.eq_of_subset_of_card_le` on (subset + injective).
+
+**D4 orbit framework:**
+
+- `def d4Orbit (t : ClosedTour) : Finset ClosedTour` — image of
+  `Finset.univ : Finset (Bool × Fin 4)` under `applyD4Tour · t`.
+- `theorem d4Orbit_card_le_eight` — `Finset.card_image_le` chained with
+  `Fintype.card_prod, Fintype.card_bool, Fintype.card_fin`.
+- `theorem d4Orbit_subset_levelSet` — orbit ⊆ level set at common
+  oblique count.
+- `theorem applyD4Tour_id` — `(false, 0)` (no reflection, zero rotations)
+  acts as the identity; under `applyD4` the `if`-branch picks `s` and
+  `rotateSquareN 0 s = s` by `rfl`, leaving the underlying list
+  unchanged.
+- `theorem tour_mem_d4Orbit_self` — every tour lies in its own orbit
+  (witness `(false, 0)`).
+
+### Why these pieces, in this order
+
+The plan in S1/S2/S3-prep flagged D4-invariance of the histogram level
+sets as the central S3 deliverable for mod-8 orbit decomposition. The
+parent file already proves `obliqueCount` invariance pointwise
+(`oblique_count_invariant : obliqueCount (applyD4Tour g t) = obliqueCount t`)
+and provides the action (`applyD4Tour`) and its left inverse
+(`applyD4Tour_inv_left`).
+
+Lifting pointwise invariance to **finsets** (the level sets) requires
+three ingredients:
+
+1. **Closure** of the level set under `applyD4Tour g` — direct
+   consequence of `oblique_count_invariant`.
+2. **Cardinality preservation** — from `applyD4Tour_injective` (derived
+   here from `applyD4Tour_inv_left` via the standard "left inverse →
+   injective" argument), then `Finset.card_image_of_injective`.
+3. **Image equality** — closure + cardinality preservation +
+   `Finset.eq_of_subset_of_card_le` on a finite set: a strictly smaller
+   image would contradict cardinality preservation.
+
+With image equality in hand, `applyD4Tour g` restricts to a bijection
+`levelSet k → levelSet k` for each `g`. This is the right abstraction
+for the planned S4 mod-8 divisibility argument (orbit decomposition).
+
+The orbit framework (`d4Orbit`, `d4Orbit_card_le_eight`,
+`d4Orbit_subset_levelSet`, `tour_mem_d4Orbit_self`) is the standard
+finset bridge between the action and orbit-decomposition theory: each
+orbit is a finset of size ≤ 8 inside the level set at the common
+oblique count. The identity-acts-as-identity result (`applyD4Tour_id`)
+is the witness that the orbit is non-empty (contains `t` itself).
+
+### What this does NOT do (deferred)
+
+- **Mod-8 divisibility** (`8 ∣ obliqueDistribution k` when no self-
+  symmetric tour at level `k`): requires (i) a `Finset.partition` of
+  `levelSet k` into orbits, (ii) a free-action characterization (orbit
+  size = 8 iff stabilizer is trivial), (iii) summing |orbit| = 8 over
+  the orbit partition. Each piece is standard but adds ~80–120 LOC and
+  benefits from a `MulAction` instance; deferred to S4.
+- **Reversal symmetry** (Target D) — `obliqueCount (reverse t) =
+  obliqueCount t`. Still requires a `reverse : ClosedTour → ClosedTour`
+  definition first.
+- **Winding-parity joint constraint** (Target E) — unchanged.
+
+### Next action (S4 ORIENT)
+
+Build the mod-8 divisibility statement:
+
+1. Set up a `MulAction (D4Group) ClosedTour` instance using
+   `applyD4Tour` (or work directly with the `Bool × Fin 4` encoding and
+   `Equiv.Perm.subgroupOfHom` style). Optional convenience step;
+   strictly the orbit-partition can be proved without `MulAction`.
+2. Decide whether to use Mathlib's `MulAction.orbitRel` / `orbit` and
+   `MulAction.card_orbit_dvd_card_group` (cleanest, requires the
+   instance), or hand-construct the orbit partition (~80 LOC,
+   instance-free).
+3. State and prove the **stabilizer-aware** mod-8 statement:
+   `obliqueDistribution k = 8 * (free orbit count) + sum of
+   (8 / stabilizer size) over self-symmetric tours`.
+4. Specialize to the "no self-symmetric tour at level `k`" case to get
+   the clean divisibility `8 ∣ obliqueDistribution k`.
+
+Estimated S4 size: ~150–200 LOC if going via `MulAction`, ~100–120 LOC
+otherwise.
+
+### Build status
+
+**Build pending — parent `Proofs/KnightsTourOblique.lean` is still
+broken on origin/main** (same blocker as iter 2/3). The OQ02 additions
+use only the parent's public surface (`applyD4Tour`,
+`applyD4Tour_inv_left`, `oblique_count_invariant`, `closedTour_eq_iff`,
+`applyD4`, `rotateSquareN`'s `match 0` reduction) plus standard Mathlib
+finset/fintype API (`Finset.image`, `Finset.card_image_of_injective`,
+`Finset.eq_of_subset_of_card_le`, `Finset.card_image_le`,
+`Fintype.card_prod`, `List.map_id`, `Classical.decEq`). No new axioms.
+
+Verification by inspection follows the precedent of iter 1 (S1, PR
+#18046), iter 2 (S2, PR #18101), and iter 3 (S3-prep, PR #18144), all
+of which merged "(build pending)" because the parent was already
+broken at the time. A mechanic-driven parent repair would unblock
+build verification for the whole `knights-tour-oblique-oq-02-*`
+descendant chain simultaneously and remains out of scope for the
+distribution-skeleton work.
+
+### Blockers
+
+Parent `Proofs/KnightsTourOblique.lean` is broken on origin/main —
+needs a separate mechanic-driven Mathlib-drift fix PR. Not a blocker
+for this iteration (matches S1/S2/S3-prep precedent).

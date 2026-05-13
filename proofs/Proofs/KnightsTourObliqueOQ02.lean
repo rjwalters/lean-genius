@@ -209,4 +209,132 @@ theorem obliqueDistribution_sum_Icc_eq_card :
     · exact obliqueDistribution_zero_below_four k hlt
     · exact obliqueDistribution_zero_above_64 k h
 
+/-!
+## Section: D4 action on level sets (S3 ACT)
+
+The parent file provides `oblique_count_invariant`: `obliqueCount` is
+preserved pointwise under every D4 transformation. This section lifts
+that pointwise invariance to the **level sets** of `obliqueDistribution`:
+for any `k` and any `g : Bool × Fin 4`, the endomap `applyD4Tour g`
+restricts to a bijection of `levelSet k` onto itself.
+
+Combined with the orbit-size bound `d4Orbit_card_le_eight` (below), this
+is the infrastructure for the mod-8 orbit-decomposition picture: in the
+absence of self-symmetric tours, `8 ∣ obliqueDistribution k`. Classifying
+self-symmetric tours at each level is deferred to S4.
+
+No new axioms are introduced in this section; every result reduces to
+the parent's public surface (`applyD4Tour`, `applyD4Tour_inv_left`,
+`oblique_count_invariant`, `closedTour_eq_iff`).
+-/
+
+/-- `Finset.image` over a `ClosedTour`-valued function requires
+    `DecidableEq ClosedTour`. The classical instance is consistent with
+    the existing `noncomputable instance : Fintype ClosedTour`, which
+    already opted into `Classical.choice`. -/
+noncomputable instance : DecidableEq ClosedTour := Classical.decEq _
+
+/-- The level set of `obliqueCount` at value `k`: closed tours with
+    exactly `k` oblique turns. Definitionally equal to the underlying
+    filter used in `obliqueDistribution`. -/
+noncomputable def levelSet (k : ℕ) : Finset ClosedTour :=
+  Finset.univ.filter (fun t => obliqueCount t = k)
+
+/-- Reformulation of the histogram in terms of the level set: a direct
+    cardinality identity (true by `rfl`). -/
+theorem obliqueDistribution_eq_levelSet_card (k : ℕ) :
+    obliqueDistribution k = (levelSet k).card := rfl
+
+/-- `applyD4Tour g` is injective on `ClosedTour`: the parent's
+    `applyD4Tour_inv_left` exhibits `applyD4Tour (d4Inv g)` as a left
+    inverse, so any function with a left inverse is injective. -/
+theorem applyD4Tour_injective (g : Bool × Fin 4) :
+    Function.Injective (applyD4Tour g) := by
+  intro t1 t2 h
+  have e1 := applyD4Tour_inv_left g t1
+  have e2 := applyD4Tour_inv_left g t2
+  rw [h] at e1
+  exact e1.symm.trans e2
+
+/-- Closure of the level set under D4: applying `applyD4Tour g` to a
+    tour in `levelSet k` keeps the oblique count at `k`, so the image
+    lies in the same level set (parent's `oblique_count_invariant`). -/
+theorem levelSet_image_applyD4Tour_subset (g : Bool × Fin 4) (k : ℕ) :
+    (levelSet k).image (applyD4Tour g) ⊆ levelSet k := by
+  intro u hu
+  simp only [Finset.mem_image, levelSet, Finset.mem_filter, Finset.mem_univ,
+    true_and] at hu ⊢
+  obtain ⟨t, htk, hgu⟩ := hu
+  rw [← hgu, oblique_count_invariant]
+  exact htk
+
+/-- The image of the level set under `applyD4Tour g` has the same
+    cardinality as the level set itself (injectivity). -/
+theorem levelSet_image_applyD4Tour_card (g : Bool × Fin 4) (k : ℕ) :
+    ((levelSet k).image (applyD4Tour g)).card = (levelSet k).card :=
+  Finset.card_image_of_injective _ (applyD4Tour_injective g)
+
+/-- **Level-set invariance** (headline S3 result): every D4 element
+    `g` induces a bijection of `levelSet k` onto itself. Image equality
+    follows from closure (subset) + cardinality preservation
+    (injectivity) + finiteness, via `Finset.eq_of_subset_of_card_le`. -/
+theorem levelSet_image_applyD4Tour_eq (g : Bool × Fin 4) (k : ℕ) :
+    (levelSet k).image (applyD4Tour g) = levelSet k := by
+  apply Finset.eq_of_subset_of_card_le (levelSet_image_applyD4Tour_subset g k)
+  rw [levelSet_image_applyD4Tour_card]
+
+/-!
+## Section: D4 orbits
+
+The 8-element D4 group acts on `ClosedTour` via `applyD4Tour`. Each tour
+`t` generates a D4-orbit `d4Orbit t : Finset ClosedTour` of size at most
+`|D4| = 8`, with equality iff the D4-stabilizer of `t` is trivial (i.e.,
+`t` is not self-symmetric). By the level-set invariance above, the orbit
+of `t` is contained in `levelSet (obliqueCount t)`.
+
+Downstream (S4): partition `levelSet k` into D4 orbits, classify
+orbit-size divisors of 8, and conclude `obliqueDistribution k ≡ s_k (mod 8)`
+where `s_k` is the count of self-symmetric tours with oblique count `k`. -/
+
+/-- The D4 orbit of a tour: image of the 8-element finset
+    `Finset.univ : Finset (Bool × Fin 4)` under `applyD4Tour · t`. -/
+noncomputable def d4Orbit (t : ClosedTour) : Finset ClosedTour :=
+  (Finset.univ : Finset (Bool × Fin 4)).image (fun g => applyD4Tour g t)
+
+/-- A D4 orbit has at most `|D4| = 8` elements (the bound is achieved
+    iff the tour's D4-stabilizer is trivial). -/
+theorem d4Orbit_card_le_eight (t : ClosedTour) : (d4Orbit t).card ≤ 8 := by
+  unfold d4Orbit
+  refine le_trans (Finset.card_image_le) ?_
+  simp [Fintype.card_prod, Fintype.card_bool, Fintype.card_fin]
+
+/-- Every D4 orbit is contained in the level set at its common oblique
+    count: `oblique_count_invariant` forces every element of `d4Orbit t`
+    to share `obliqueCount t`. -/
+theorem d4Orbit_subset_levelSet (t : ClosedTour) :
+    d4Orbit t ⊆ levelSet (obliqueCount t) := by
+  intro u hu
+  unfold d4Orbit at hu
+  simp only [Finset.mem_image, Finset.mem_univ, true_and] at hu
+  obtain ⟨g, hgu⟩ := hu
+  simp only [levelSet, Finset.mem_filter, Finset.mem_univ, true_and]
+  rw [← hgu, oblique_count_invariant]
+
+/-- The identity element of D4 maps a tour to itself: `(false, 0)`
+    encodes no reflection (`false`) and zero rotations (`0`), and acts
+    as the identity on every `Square`. -/
+theorem applyD4Tour_id (t : ClosedTour) : applyD4Tour (false, 0) t = t := by
+  rw [closedTour_eq_iff]
+  show t.squares.map (applyD4 (false, 0)) = t.squares
+  have h : (applyD4 (false, 0) : Square → Square) = id := by
+    funext s; rfl
+  rw [h, List.map_id]
+
+/-- Every tour lies in its own D4 orbit (witness: the identity
+    `(false, 0)` paired with `applyD4Tour_id`). -/
+theorem tour_mem_d4Orbit_self (t : ClosedTour) : t ∈ d4Orbit t := by
+  unfold d4Orbit
+  simp only [Finset.mem_image, Finset.mem_univ, true_and]
+  exact ⟨(false, 0), applyD4Tour_id t⟩
+
 end KnightsTourOblique
