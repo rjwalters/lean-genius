@@ -1,37 +1,78 @@
 # Current State
 
-**Phase**: OBSERVE
-**Since**: 2026-05-12T20:30:00Z
-**Iteration**: 1
-**Last update**: 2026-05-12 (S1 OBSERVE by researcher-1)
+**Phase**: ACT (S2 ACT shipped; S3/S4 PREP saturated; S3/S4 ACT pending)
+**Since**: 2026-05-13T09:29:11Z (S4d PREP, latest merge)
+**Iteration**: 7
+**Last update**: 2026-05-13 (STATE-SYNC by researcher-10)
 
 ## Current Focus
 
-S1 OBSERVE — survey of the local `IsClubBelow` / `IsStationaryBelow` /
-`diagInter` infrastructure in `proofs/Proofs/FodorPressingDown.lean`,
-alignment with Mathlib's existing ordinal-topology API
-(`Mathlib.SetTheory.Ordinal.Topology`, `Cardinal.Cofinality`,
-`Cardinal.Regular`), naming convention lock, and a four-phase
-refactor plan to lift the infrastructure into a standalone
-`Proofs/Club/Basic.lean` module.
+The slug's S1 OBSERVE design lock (Ordinal namespace,
+`proofs/Proofs/Club/Basic.lean` placement, structure-vs-Prop split)
+was fully discharged at S2 ACT: `proofs/Proofs/Club/Basic.lean` is on
+`origin/main` at 98 LOC, 4 defs + 1 structure + 5 theorems, 0 sorries,
+0 axioms.
+
+The four PREP iterations after S2 ACT (S3, S4, S4b, S4c, S4d) have
+**fully saturated the parent-trim recipe** for the eventual S4 ACT
+cut: a 649-LOC consumer audit + corrected re-anchoring plan + line-
+drift audit + audit-correction. **The S3 and S4 ACT cuts have not
+yet been executed**: parent `Proofs/FodorPressingDown.lean` retains
+duplicate definitions (12 theorems, 4 defs/structs, 385 LOC).
+
+### Per-stage status
+
+| Stage | Type | Anchor PR | Status |
+|---|---|---|---|
+| S1 OBSERVE  | doc-only | #18280 | ✅ merged |
+| S2 ACT      | Lean     | #18367 | ✅ merged (98 LOC, 0 sorries, 0 axioms, build pending) |
+| S3 PREP     | doc-only | #18412 | ✅ merged |
+| S3 ACT      | Lean     | —      | ⏳ pending (~28 LOC migration of `diagInter_isClosedBelow`) |
+| S4 PREP     | doc-only | #18441 | ✅ merged |
+| S4b PREP    | doc-only | #18519 | ✅ merged |
+| S4c PREP    | doc-only | #18585 | ✅ merged |
+| S4d PREP    | doc-only | #18733 | ✅ merged (audit-correction of S4c §2/§3/§7.1) |
+| S4 ACT      | Lean     | —      | ⏳ pending (parent –150 LOC trim per S4c §12.2, corrected by S4d §9) |
 
 ## Active Approach
 
-**Doc-only S1 OBSERVE.** No Lean changes in this iteration. The
-deliverable is three markdown files + one JSON gallery entry:
+**Four-phase library refactor**, three PREP iterations into S4 saturation.
 
-- `problem.md` — formal signature targets (5 defs + 3 theorems),
-  acceptance criteria, related slugs.
-- `knowledge.md` — inventory of current local API, Mathlib alignment
-  survey, naming-convention decision lock (Option A: `Ordinal`
-  namespace), file-path decision lock (Option 1: `proofs/Proofs/Club/
-  Basic.lean`), four-phase migration plan, risk register, sister-slug
-  compatibility design (`fodor-pressing-down-oq-04` Solovay
-  splitting).
-- `state.md` (this file).
-- `src/data/research/problems/fodor-pressing-down-oq-01.json` —
-  gallery entry, status `in-progress`, phase `OBSERVE`, knowledge
-  payload summarising the survey.
+1. ✅ **S1 OBSERVE** — locked naming (`Ordinal` namespace), path
+   (`Proofs/Club/Basic.lean`), structure-vs-Prop split, universe
+   policy.
+2. ✅ **S2 ACT** — shipped `Proofs/Club/Basic.lean` with 4 defs +
+   1 structure (`IsUnboundedBelow`, `IsClubBelow`, `IsStationaryBelow`,
+   `diagInter`, `IsRegressive`) + 5 mechanical theorems
+   (`IsClubBelow.mem_lt`, `IsClubBelow.mem_of_isAcc`, `mem_diagInter`,
+   `diagInter_subset_Iio`, `isClubBelow_Iio_of_isSuccLimit`). Module is
+   strictly additive: parent untouched.
+3. ⏳ **S3 ACT** — migrate `diagInter_isClosedBelow` from parent into
+   the new module. Plan locked in S3 PREP (PR #18412); ~28 LOC,
+   cofinality-free, no new Mathlib dependencies.
+4. ⏳ **S4 ACT** — trim parent. Cut the five S2-duplicate definitions
+   plus the moved `diagInter_isClosedBelow`. Update internal cite
+   paths per S4c PREP (PR #18585) §12.2 cheat-sheet, with S4d PREP
+   (PR #18733) §9 corrections folded in. Net parent delta ≈ −150 LOC;
+   `meta.json` `lineCount`/`theoremCount` for the parent slug
+   (`fodor-pressing-down`) and any downstream
+   (`fodor-pressing-down-oq-04`) updated as a bookkeeping step.
+
+The PREP saturation is intentional: the parent file is a Wiedijk-100
+verified entry, so the S4 cut must not regress the build and must
+not break annotation re-anchoring. The S4b/S4c/S4d sequence verified
+all call-sites and gave the mechanic a verbatim drop-in.
+
+## S1 historical context
+
+The original S1 OBSERVE deliverable was three markdown files + one
+JSON gallery entry, covering the formal signature targets,
+acceptance criteria, related slugs, Mathlib alignment survey,
+migration plan, risk register, and sister-slug compatibility design
+(`fodor-pressing-down-oq-04` Solovay splitting). Those documents
+remain authoritative for design intent; the per-stage table above
+supersedes the original "S1 → S2 → S3 → S4 → S5" outline now that
+two ACT and five PREP iterations have shipped.
 
 ## S1 Summary
 
@@ -89,104 +130,126 @@ lands.
 
 ## Blockers
 
-None mathematical. The refactor is mechanical; the only operational
-risk is parent-file `build pending` during the S2 → S4 sequence,
-mitigated by ordering the commits as additive-first
-(S2 introduces, S3 moves trivia, S4 cuts parent).
+None mathematical. The refactor is mechanical; remaining risk is the
+S4 ACT parent-cut, mitigated by the S4c (PR #18585) verbatim
+re-anchoring recipe and the S4d (PR #18733) audit-correction.
+
+**Build verification pending** for S2 ACT (PR #18367). The PR shipped
+build-pending because of the worktree `proofs/.lake` recursive
+symlink trap; docker-build verification is deferred to the auditor /
+mechanic. No build failure has been reported.
 
 **Operational:** worktree `proofs/.lake` symlink is recursive
 (`feedback_researcher_lake_symlink_broken.md`); local docker build is
-~25–45 min. S1 OBSERVE is doc-only — no build needed.
+~25–45 min. PREP iterations are doc-only and need no build.
 
 ## Next Action
 
-**S2 ACT — any researcher.** Create `proofs/Proofs/Club/Basic.lean`
-with the locked-naming API:
+**S3 ACT — any researcher.** Migrate `diagInter_isClosedBelow` from
+`proofs/Proofs/FodorPressingDown.lean` (lines 102–124, ~23 LOC body)
+into `proofs/Proofs/Club/Basic.lean` per the S3 PREP (PR #18412) plan.
+After the move:
 
-```lean
-import Mathlib.SetTheory.Ordinal.Topology
-import Mathlib.Tactic
+- Parent `FodorPressingDown.lean` decreases by ~28 LOC (the lemma plus
+  its docstring); cite the lemma as `Ordinal.diagInter_isClosedBelow`.
+- `Proofs/Club/Basic.lean` gains the lemma; net +28 LOC.
+- `meta.json` `lineCount` / `theoremCount` for `fodor-pressing-down`
+  parent decreases; for `fodor-pressing-down-oq-01` it stays at S2's
+  Basic.lean count.
+- Run `docker-build.sh Proofs.FodorPressingDown` and
+  `docker-build.sh Proofs.Club.Basic` to verify.
 
-namespace Ordinal
+**S4 ACT — any researcher (sequential after S3 ACT).** Trim parent
+per the S4c PREP (PR #18585) §12.2 cheat-sheet, corrected by S4d PREP
+(PR #18733) §9:
 
-open Set Order
+- Delete the five S2-duplicate definitions from
+  `proofs/Proofs/FodorPressingDown.lean` (`IsUnboundedBelow`,
+  `IsClubBelow`, `IsStationaryBelow`, `diagInter`, `IsRegressive`).
+- Re-anchor downstream theorem signatures to use
+  `Ordinal.IsClubBelow`, etc. (S4b PREP §3 verified
+  `IsStationaryBelow.{nonempty,of_subset}` bodies stay sound under
+  the rename; S4c PREP §7 verified annotation re-anchoring).
+- Update `src/data/proofs/fodor-pressing-down/meta.json` and
+  `annotations.json` per S4c §7 recipe (lineCount, theoremCount,
+  annotation line offsets).
+- Net parent delta ≈ −150 LOC; preserves Wiedijk-100 entry; build
+  must remain green.
 
-/-- A set S is unbounded below ordinal o. -/
-def IsUnboundedBelow (S : Set Ordinal) (o : Ordinal) : Prop :=
-  ∀ α < o, ∃ β ∈ S, α < β ∧ β < o
-
-/-- A club (closed unbounded) set below ordinal o. -/
-structure IsClubBelow (S : Set Ordinal) (o : Ordinal) : Prop where
-  subset_Iio : S ⊆ Iio o
-  closed     : IsClosedBelow S o
-  unbounded  : IsUnboundedBelow S o
-
-/-- A set S is stationary below o if it meets every club below o. -/
-def IsStationaryBelow (S : Set Ordinal) (o : Ordinal) : Prop :=
-  ∀ C : Set Ordinal, IsClubBelow C o → (S ∩ C).Nonempty
-
-/-- Diagonal intersection of an ordinal-indexed family below o. -/
-def diagInter (f : Ordinal → Set Ordinal) (o : Ordinal) : Set Ordinal :=
-  {γ | γ < o ∧ ∀ β < γ, γ ∈ f β}
-
-/-- Regressiveness: f α < α for every nonzero α ∈ S. -/
-def IsRegressive (f : Ordinal → Ordinal) (S : Set Ordinal) : Prop :=
-  ∀ ⦃α⦄, α ∈ S → α ≠ 0 → f α < α
-
-theorem IsClubBelow.mem_lt {S : Set Ordinal} {o : Ordinal}
-    (hS : IsClubBelow S o) {α : Ordinal} (hα : α ∈ S) : α < o :=
-  hS.subset_Iio hα
-
-theorem IsClubBelow.mem_of_isAcc {S : Set Ordinal} {o : Ordinal}
-    (hS : IsClubBelow S o) {α : Ordinal} (hα : α < o) (hAcc : α.IsAcc S) : α ∈ S :=
-  hS.closed.forall_lt α hα hAcc
-
-theorem mem_diagInter {f : Ordinal → Set Ordinal} {o γ : Ordinal} :
-    γ ∈ diagInter f o ↔ γ < o ∧ ∀ β < γ, γ ∈ f β := Iff.rfl
-
-theorem diagInter_subset_Iio (f : Ordinal → Set Ordinal) (o : Ordinal) :
-    diagInter f o ⊆ Iio o :=
-  fun _ h => h.1
-
-theorem isClubBelow_Iio_of_isSuccLimit {o : Ordinal} (ho : IsSuccLimit o) :
-    IsClubBelow (Iio o) o where
-  subset_Iio := fun _ h => h
-  closed := by rw [isClosedBelow_iff]; intro p pltq _hacc; exact pltq
-  unbounded := fun α hα => by
-    have h1 : α + 1 < o := ho.succ_lt hα
-    exact ⟨α + 1, h1, lt_add_one α, h1⟩
-
-end Ordinal
-```
-
-Then update `proofs/Proofs.lean` with the alphabetical `import
-Proofs.Club.Basic` line. Build-pending acceptable.
+S5 (optional doc-only) once S4 ACT lands: update sister oq-04's
+`problem.md` to point at the new Basic.lean dependency.
 
 ## Attempt Counts
 
-- Total attempts: 1 (S1 OBSERVE)
-- Current approach attempts: 1
+- Total attempts: 7 (S1 OBSERVE, S2 ACT, S3 PREP, S4 PREP, S4b PREP,
+  S4c PREP, S4d PREP — all merged).
+- Current approach attempts: 7.
 - Approaches tried: 1 (library refactor with `Ordinal`-namespace
-  naming and `Proofs/Club/Basic.lean` placement)
+  naming and `Proofs/Club/Basic.lean` placement, design decisions
+  unchanged since S1).
+
+## Sessions
+
+- **S1 OBSERVE** (2026-05-12, researcher-1): doc-only — `problem.md`,
+  `knowledge.md`, `state.md`, JSON entry. Locked design. PR #18280.
+- **S2 ACT** (2026-05-12, researcher-?): ACT — shipped
+  `Proofs/Club/Basic.lean` (98 LOC, 4 defs + 1 structure + 5 theorems,
+  0 sorries, 0 axioms; build pending). PR #18367. See
+  `sessions/2026-05-12-s02-act-club-basic.md`.
+- **S3 PREP** (2026-05-12, researcher-?): doc-only — migration plan
+  for `diagInter_isClosedBelow`. PR #18412. See
+  `sessions/2026-05-12-s03-prep-diagInter-isClosedBelow-migration.md`.
+- **S4 PREP** (2026-05-12, researcher-?): doc-only — parent-trim
+  call-site audit. PR #18441. See
+  `sessions/2026-05-12-s04-prep-parent-trim-audit.md`.
+- **S4b PREP** (2026-05-13, researcher-?): doc-only — Route A body
+  audit for `IsStationaryBelow.{nonempty,of_subset}` (+468 LOC).
+  PR #18519. See
+  `sessions/2026-05-13-s04b-prep-route-a-IsStationaryBelow-bodies.md`.
+- **S4c PREP** (2026-05-13, researcher-?): doc-only — full consumer
+  audit + annotation re-anchoring recipe (+649 LOC). PR #18585. See
+  `sessions/2026-05-13-s04c-prep-full-consumer-audit-and-annotation-recipe.md`.
+- **S4d PREP** (2026-05-13, researcher-?): doc-only — audit-correction
+  of S4c §2/§3/§7.1 (IsRegressive parent-cite + LOC + count
+  discrepancies). PR #18733. See
+  `sessions/2026-05-13-s04d-prep-audit-correction-IsRegressive-and-definitionCount.md`.
 
 ## Open files
 
-- `problem.md` — formal scope and signature targets (this PR).
-- `knowledge.md` — Mathlib alignment survey and migration plan (this PR).
+- `problem.md` — formal scope and signature targets (S1 OBSERVE).
+- `knowledge.md` — Mathlib alignment survey and migration plan
+  (S1 OBSERVE, supplemented by S3 PREP's migration detail).
 - `state.md` (this file).
-- (downstream) `proofs/Proofs/FodorPressingDown.lean` — the source
-  file from which definitions will be lifted; **not touched** in S1.
+- `proofs/Proofs/Club/Basic.lean` — new module shipped at S2 ACT;
+  awaits S3 ACT (gain `diagInter_isClosedBelow`).
+- `proofs/Proofs/FodorPressingDown.lean` — parent file; **not yet
+  touched** by any ACT after S2. Awaits S3 ACT (lose
+  `diagInter_isClosedBelow`) then S4 ACT (lose five duplicates).
+
+## Drift / parent state
+
+- Parent `Proofs/FodorPressingDown.lean` is **verified** (Wiedijk #25)
+  on `origin/main`: 12 theorems, 4 defs/structs, 385 LOC, 0 sorries,
+  0 axioms. Retains DUPLICATE definitions (the same 5 names that S2
+  ACT placed in `Proofs/Club/Basic.lean`); these duplicates stay
+  until S4 ACT cuts them.
+- `proofs/Proofs.lean` registers `Proofs.Club.Basic` from S2 ACT
+  (verified in PR #18367).
+- Parent `src/data/proofs/fodor-pressing-down/meta.json` reports
+  `theoremCount=12`, `definitionCount=4`, matching the on-main parent
+  file. Both will shift after S3 ACT (theoremCount → 11) and S4 ACT
+  (definitionCount → 0 if duplicates fully cut, plus parent →LOC
+  ~235).
+- Sister slug `fodor-pressing-down-oq-04` (Solovay splitting) is
+  the primary downstream consumer of `Proofs.Club.Basic`; it is
+  expected to `import Proofs.Club.Basic` on its first commit.
 
 ## Race awareness
 
-OQ-01 has zero open PRs at S1 push time (verified 2026-05-12 20:30
-UTC via `gh pr list --search "fodor-pressing-down-oq-01 in:title"`).
-The slug was seeker-selected (added 2026-05-12 14:35 UTC same batch
-as oq-04) and currently has 0 prior merges (no `Enrich
-fodor-pressing-down-oq-01`, no `audit`-tracker line). The sister slug
-`fodor-pressing-down-oq-04` is NEW and has zero recent PR activity
-either. Re-entry risk: a parallel researcher attempting the same S1
-OBSERVE during the ~5 min between PR draft and PR creation. Mitigated
-by writing a doc-only PR with full migration plan locked in; any
-parallel attempt would either duplicate the survey (waste) or
-disagree on naming (rejected at review).
+OQ-01 has six merged PRs (S1 OBSERVE through S4d PREP) and zero
+open PRs at this STATE-SYNC's push time. The sister slug
+`fodor-pressing-down-oq-04` was NEW at S1 OBSERVE and is expected
+to enter ACT once S4 ACT lands. Re-entry risk for this STATE-SYNC
+is low: any parallel researcher would observe the JSON OBSERVE/iter-1
+drift before this PR merges, but the new branch off `origin/main`
+ensures no PR scope contamination.
