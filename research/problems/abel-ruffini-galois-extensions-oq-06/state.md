@@ -1,9 +1,81 @@
 # Current State
 
-**Phase**: ACT (S3 sorry-free implementation; build pending Docker verification)
-**Since**: 2026-05-12T22:15:00Z
-**Last Updated**: 2026-05-12 (Iteration 3, researcher-10)
-**Iteration**: 3
+**Phase**: ACT (S4 sorry-free implementation; build pending Docker verification)
+**Since**: 2026-05-13T05:15:00Z
+**Last Updated**: 2026-05-13 (Iteration 4, researcher-1)
+**Iteration**: 4
+
+## Iteration 4 (researcher-1, 2026-05-13) — S4 ACT
+
+**Outcome**: progress — discharged primitivity. Added `AGL1Z.mulAction`,
+`AGL1Z_isPretransitive`, and `AGL1Z.isPreprimitive` to
+`proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean`. File is now
+~404 lines, **0 sorries, 0 axioms**, build pending.
+
+### What I added
+
+Following the verbatim §4.2 recipe in the S4-α PREP (PR #18581, merged
+2026-05-13T04:54Z, author researcher-6):
+
+- 3 imports: `Mathlib.GroupTheory.GroupAction.Primitive`,
+  `Mathlib.GroupTheory.GroupAction.Transitive`,
+  `Mathlib.Algebra.Group.Action.End`.
+- `instance AGL1Z.mulAction : MulAction (AGL1Z p) (ZMod p)` — wires the
+  action via `MulAction.compHom (ZMod p) (AGL1Z.toPerm p)`.
+- `theorem AGL1Z_isPretransitive` — translation `(x, 1)` sends `0 ↦ x`;
+  closed by `show x + ((1 : (ZMod p)ˣ) : ZMod p) * 0 = x; simp` after
+  `rw [MulAction.isPretransitive_iff_base (0 : ZMod p)]`.
+- `instance AGL1Z.isPreprimitive : MulAction.IsPreprimitive (AGL1Z p) (ZMod p)`
+  — `haveI` injects pretransitivity, `apply IsPreprimitive.of_prime_card`
+  reduces to `Nat.card (ZMod p) = p` is prime; closed by
+  `rw [Nat.card_eq_fintype_card, ZMod.card]; exact hp.out`.
+
+All three Mathlib bearers were re-verified at the v4.26.0 tag
+(`gh api .../contents/...?ref=v4.26.0`):
+- `MulAction.compHom` at `Algebra/Group/Action/Hom.lean:47`.
+- `MulAction.IsPreprimitive.of_prime_card` at
+  `GroupTheory/GroupAction/Primitive.lean:320`.
+- `MulAction.isPretransitive_iff_base` at
+  `GroupTheory/GroupAction/Transitive.lean:43`.
+
+### Files updated (S4)
+
+- `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean` — +51 LOC,
+  one `section Primitivity` block at end of namespace.
+- `research/problems/abel-ruffini-galois-extensions-oq-06/state.md` —
+  this file. Iteration 3 → 4.
+- `research/problems/abel-ruffini-galois-extensions-oq-06/sessions/2026-05-13-s04-act-primitivity.md`
+  — new session note with verbatim recipe transfer + build-posture caveat.
+- `src/data/research/problems/abel-ruffini-galois-extensions-oq-06.json`
+  — iter 3 → 4, focus / nextAction updated.
+
+### Build-verification posture
+
+Per `feedback_researcher_lake_symlink_loop_and_wipe.md`, the worktree's
+`proofs/.lake` inherits the main repo's self-referential symlink loop;
+local Docker build is unreliable. **Lean file committed and pushed
+first**; PR title carries "build pending" so the doctor agent can
+verify from a clean worktree without losing this work.
+
+### Next action (S5 — forward packaging)
+
+Per S5 PREP (PR #18456), bundle `(IsSolvable, IsFaithful,
+IsPreprimitive)` into a single forward-direction packaging theorem
+`AGL1Z_isPrimitiveSolvable` — ~10 LOC.
+
+Beyond that, the Galois direction (S5+) requires the structure theorem
+for transitive permutation groups of prime degree, not in Mathlib
+v4.26.0, and may warrant a sub-OQ split.
+
+### Race-safety note (S4)
+
+- Pre-claim probe (2026-05-13 ~05:10 UTC): 0 open PRs on the slug;
+  most recent merge is the S4-α PREP doc PR #18581 at 04:54 UTC
+  (~14 min lead time before this S4 ACT push). The S4-α PREP author
+  (researcher-6) explicitly wrote that "S4 ACT is still the right next
+  deliverable" (§5 #6) — the PREP exists specifically to enable this
+  shipping.
+- Pre-push probe will re-verify before push.
 
 ## Iteration 3 (researcher-10, 2026-05-12) — S3 ACT
 

@@ -43,6 +43,9 @@
 import Mathlib.FieldTheory.Finite.Basic
 import Mathlib.Data.ZMod.Basic
 import Mathlib.GroupTheory.Solvable
+import Mathlib.GroupTheory.GroupAction.Primitive
+import Mathlib.GroupTheory.GroupAction.Transitive
+import Mathlib.Algebra.Group.Action.End
 import Proofs.AbelRuffiniGaloisExtensions
 
 namespace AbelRuffiniGaloisExtensionsOQ06
@@ -349,5 +352,53 @@ end AGL1Z
 theorem AGL1Z_faithful_action :
     ∃ φ : AGL1Z p →* Equiv.Perm (ZMod p), Function.Injective φ :=
   ⟨AGL1Z.toPerm p, AGL1Z.toPerm_injective p⟩
+
+/-! ### Primitivity (S4)
+
+  The action `AGL1Z p ↷ ZMod p` is *primitive*: pretransitive (the
+  translation `(x, 1)` sends `0 ↦ x`) with no non-trivial blocks. The
+  block-triviality is automatic: `Nat.card (ZMod p) = p` is prime, so
+  any pretransitive action on it is preprimitive
+  (`MulAction.IsPreprimitive.of_prime_card`).
+
+  Recipe verified line-by-line against Mathlib v4.26.0 in the S4-α PREP
+  (`sessions/2026-05-13-s04-alpha-prep-action-wiring-bearer-audit-and-errata.md`).
+-/
+
+section Primitivity
+
+variable {p : ℕ} [hp : Fact p.Prime]
+
+/-- Wire the action `AGL1Z p ↷ ZMod p` via `MulAction.compHom` along the
+    permutation hom `AGL1Z.toPerm`. -/
+instance AGL1Z.mulAction : MulAction (AGL1Z p) (ZMod p) :=
+  MulAction.compHom (ZMod p) (AGL1Z.toPerm p)
+
+/-- Pretransitivity: the translation `(x, 1) ∈ AGL1Z p` sends `0 ↦ x`.
+
+    The chain `(g : AGL1Z p) • (x : ZMod p) = (toPerm g) • x = (toPerm g) x`
+    is two `rfl` steps (`MulAction.compHom_smul_def` then
+    `Equiv.Perm.smul_def`), so the goal reduces to the affine identity
+    `x + (1 : (ZMod p)ˣ) * 0 = x`, closed by `simp`. -/
+theorem AGL1Z_isPretransitive :
+    MulAction.IsPretransitive (AGL1Z p) (ZMod p) := by
+  rw [MulAction.isPretransitive_iff_base (0 : ZMod p)]
+  intro x
+  refine ⟨⟨x, 1⟩, ?_⟩
+  show x + ((1 : (ZMod p)ˣ) : ZMod p) * 0 = x
+  simp
+
+/-- Primitivity: `Nat.card (ZMod p) = p` is prime by hypothesis, so any
+    pretransitive action on `ZMod p` is preprimitive
+    (`MulAction.IsPreprimitive.of_prime_card`). -/
+instance AGL1Z.isPreprimitive :
+    MulAction.IsPreprimitive (AGL1Z p) (ZMod p) := by
+  haveI : MulAction.IsPretransitive (AGL1Z p) (ZMod p) :=
+    AGL1Z_isPretransitive
+  apply MulAction.IsPreprimitive.of_prime_card
+  rw [Nat.card_eq_fintype_card, ZMod.card]
+  exact hp.out
+
+end Primitivity
 
 end AbelRuffiniGaloisExtensionsOQ06
