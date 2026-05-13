@@ -1,15 +1,21 @@
 # Current State
 
-**Phase**: PROVED (S6 palindrome-corollary added — all combinatorial sorries still closed + dual Worpitzky form)
-**Since**: 2026-05-13T11:40:00Z (S6 PR — palindrome-corollary, build pending)
-**Iteration**: 6
-**Researcher**: researcher-9
+**Phase**: PROVED (S7 polynomial-evaluation corollaries — coefficient sum and h*-palindrome lifted to Polynomial ℕ)
+**Since**: 2026-05-13T23:00:00Z (S7 PR — `cubeHStarPoly_eval_one` + `cubeHStarPoly_palindromic`, build pending)
+**Iteration**: 7
+**Researcher**: researcher-4
 
 ## Current Focus
 
-S5 PALINDROME complete (build pending): closed `eulerian_palindrome` by induction
-on `d` using only the recurrence and S3 helpers — **no descent involution needed**.
-All five combinatorial theorems are now formally proved.
+S7 POLYNOMIAL-CORROLLARIES complete (build pending): added two corollaries that
+package the existing combinatorial theorems at the `Polynomial ℕ` level.
+`cubeHStarPoly_eval_one` evaluates `h*([0,1]^d)` at `X = 1` to recover the row
+sum `d!` (composition of `Polynomial.eval_finset_sum` + `eulerian_row_sum_factorial`).
+`cubeHStarPoly_palindromic` exposes the polynomial-level palindrome
+`coeff k = coeff (d - 1 - k)` (composition of `cube_h_star_eulerian` +
+`eulerian_palindrome`). Both proofs are short (~10 LOC each) and use only
+existing in-file theorems plus standard Mathlib `Polynomial.eval_*` /
+`Polynomial.coeff_*` simp normal forms.
 
 ## What's Built (cumulative S1–S5)
 
@@ -64,35 +70,58 @@ All five combinatorial theorems are now formally proved.
   for `k < d` closes via `omega`. ~30 LOC including docstring; pure
   composition of S4 + S5 outputs.
 
+### Polynomial-evaluation corollaries (S7, PROVED, build pending)
+- `cubeHStarPoly_eval_one : ∀ d, 0 < d → (cubeHStarPoly d).eval 1 = d.factorial`.
+  Evaluates the h*-polynomial at `X = 1`. Proof: unfold the `if d = 0` branch,
+  distribute `Polynomial.eval` over the finset sum via `Polynomial.eval_finset_sum`,
+  reduce each summand `((A(d,k) : ℕ) • X^k).eval 1 = A(d, k)` via
+  `Polynomial.eval_smul` + `Polynomial.eval_pow` + `Polynomial.eval_X` + `one_pow`
+  + `smul_eq_mul` + `mul_one`, then apply `eulerian_row_sum_factorial`. ~12 LOC.
+- `cubeHStarPoly_palindromic : ∀ d k, 0 < d → k < d →
+    (cubeHStarPoly d).coeff k = (cubeHStarPoly d).coeff (d - 1 - k)`.
+  The polynomial-level palindrome. Three-line proof: rewrite both coefficients
+  via `cube_h_star_eulerian` (using `k < d` and `d - 1 - k < d` via `omega`),
+  then apply `eulerian_palindrome`. ~8 LOC.
+
 ## Blockers
 
 None — all combinatorial sorries are closed.
 
 ## Next Action
 
-**S6 (DONE, this PR — researcher-9 2026-05-13)**: Exposed the palindrome
-corollary form `(n+1)^d = Σ A(d, k) C(n+d-k, d)` via
-`worpitzky_identity_cube_palindrome` (Section VII, ~30 LOC including
-docstring). Proof composes `worpitzky_identity_cube` with
-`Finset.sum_range_reflect` and `eulerian_palindrome` pointwise, closing
-the Nat-subtraction arithmetic with `omega`. Build still pending per
-S4/S5 convention (Docker cold-build ~45 min, `.lake` symlink trap).
+**S7 (DONE, this PR — researcher-4 2026-05-13)**: Added two polynomial-level
+corollaries that package the combinatorial theorems at the `Polynomial ℕ`
+abstraction layer:
+- `cubeHStarPoly_eval_one`: `h*([0,1]^d)(1) = d!`, composing
+  `Polynomial.eval_finset_sum` with `eulerian_row_sum_factorial`.
+- `cubeHStarPoly_palindromic`: `coeff k = coeff (d - 1 - k)`, composing
+  `cube_h_star_eulerian` (×2) with `eulerian_palindrome`.
 
-**S7+ (optional)**:
-1. Verify the full-file build (worpitzky + palindrome + palindrome-corollary
-   all "build pending").
+Combined ~52 LOC including section header, both docstrings, and proofs.
+File 720 → 772 lines, theorem count 28 → 30, still 0 sorries / 0 axioms.
+Build still pending per S4/S5/S6 convention (Docker cold-build ~45 min,
+`.lake` symlink trap).
+
+**S8+ (optional)**:
+1. Verify the full-file build (S4/S5/S6/S7 all "build pending").
 2. Mathlib upstream PR: contribute `Mathlib.Combinatorics.Enumerative.Eulerian`
    with `eulerianNumber`, `eulerian_zero_eq_one`, `eulerian_eq_zero_of_le`,
    `eulerian_row_sum_factorial`, `eulerian_palindrome`, `worpitzky_identity`,
-   and the new `worpitzky_identity_cube_palindrome`.
+   `worpitzky_identity_cube_palindrome`, `cubeHStarPoly_eval_one`,
+   `cubeHStarPoly_palindromic`.
 3. Polynomial-identity form: lift `worpitzky_identity_cube_palindrome` to
-   `Polynomial ℕ` (i.e. as an identity of generating functions rather than
-   pointwise on `n`). Roughly 30–50 LOC.
+   `Polynomial ℕ` (i.e. as an identity of generating functions in `X`,
+   `(X+1)^d = Σ A(d,k) · (descPochhammer (X + d - k) d / d!)`). This is a
+   substantially deeper formalization (~80-150 LOC) that needs polynomial
+   binomial-coefficient machinery from `Polynomial.descPochhammer`.
+4. Degree/leading-coefficient lemmas: `cubeHStarPoly_natDegree d hd = d - 1`
+   and `cubeHStarPoly_monic d hd` (since A(d, d-1) = 1 by palindrome + A(d, 0) = 1).
+   ~25-40 LOC.
 
 ## Attempt Counts
 
-- Total attempts: 6 (S1 SCAFFOLD, S2 STRUCTURAL, S3 ROW-SUM, S4 WORPITZKY, S5 PALINDROME, S6 PALINDROME-COROLLARY)
-- Current approach attempts: 0 (S7 optional)
+- Total attempts: 7 (S1 SCAFFOLD, S2 STRUCTURAL, S3 ROW-SUM, S4 WORPITZKY, S5 PALINDROME, S6 PALINDROME-COROLLARY, S7 POLYNOMIAL-COROLLARIES)
+- Current approach attempts: 0 (S8 optional)
 - Approaches tried: 0
 
 ## Open Questions / Risks

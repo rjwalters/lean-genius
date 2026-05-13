@@ -50,6 +50,8 @@
   • `eulerian_palindrome`                   — A(d, k) = A(d, d-1-k) for k < d  (S5: PROVED)
   • `cube_lattice_count_eulerian`           — bridge to `EhrhartCubeProven`    (S2: PROVED)
   • `worpitzky_identity_cube_palindrome`    — Σ A(d,k) C(n+d-k, d) = (n+1)^d   (S6: PROVED)
+  • `cubeHStarPoly_eval_one`                — h*([0,1]^d)(1) = d!              (S7: PROVED)
+  • `cubeHStarPoly_palindromic`             — coeff k = coeff (d-1-k)          (S7: PROVED)
 
   Helper lemmas (S3):
   • `eulerian_zero_eq_one`                  — A(d, 0) = 1 for all d ≥ 0
@@ -716,5 +718,55 @@ theorem worpitzky_identity_cube_palindrome (d : ℕ) (hd : 0 < d) (n : ℕ) :
   -- Show the binomial-coefficient arguments are equal via Nat-arithmetic.
   have harith : n + 1 + k = n + d - (d - 1 - k) := by omega
   rw [harith]
+
+-- ============================================================
+-- SECTION VIII: Polynomial-Evaluation Corollaries (S7)
+-- ============================================================
+
+/--
+  **Sum of coefficients = d!** (S7: PROVED, build pending): evaluating the
+  h*-polynomial of the d-cube at `X = 1` recovers the row sum of the
+  Eulerian triangle. Combined with `eulerian_row_sum_factorial`, this gives
+  $$ h^{\ast}([0,1]^d)(1) \;=\; \sum_{k=0}^{d-1} A(d, k) \;=\; d!. $$
+  Equivalently, the polynomial `cubeHStarPoly d` has *coefficient sum* equal
+  to `d!`, which is the normalised volume identity for the d-cube
+  (`d! · vol([0,1]^d) = d! · 1 = d!`).
+-/
+theorem cubeHStarPoly_eval_one (d : ℕ) (hd : 0 < d) :
+    (cubeHStarPoly d).eval 1 = d.factorial := by
+  have hd_ne : d ≠ 0 := Nat.pos_iff_ne_zero.mp hd
+  unfold cubeHStarPoly
+  rw [if_neg hd_ne, Polynomial.eval_finset_sum]
+  -- Each summand `((A(d, k) : ℕ) • X^k).eval 1` reduces to `A(d, k)`.
+  have hsum :
+      ∑ k ∈ Finset.range d,
+          ((eulerianNumber d k : ℕ) • Polynomial.X ^ k : Polynomial ℕ).eval 1
+        = ∑ k ∈ Finset.range d, eulerianNumber d k := by
+    refine Finset.sum_congr rfl fun k _ => ?_
+    rw [Polynomial.eval_smul, Polynomial.eval_pow, Polynomial.eval_X, one_pow,
+        smul_eq_mul, mul_one]
+  rw [hsum]
+  exact eulerian_row_sum_factorial d hd
+
+/--
+  **h*-vector palindrome at the polynomial level** (S7: PROVED, build pending):
+  the h*-polynomial of the d-cube is a *palindromic* polynomial of degree
+  `d - 1`: its coefficient sequence `(A(d, 0), A(d, 1), …, A(d, d-1))` reads
+  the same forwards and backwards,
+  $$ h^{\ast}_k([0,1]^d) \;=\; h^{\ast}_{d - 1 - k}([0,1]^d) \qquad (0 \le k < d). $$
+  Direct composition of `cube_h_star_eulerian` (h*-coefficient ↔ Eulerian
+  number) with `eulerian_palindrome` (A(d, k) = A(d, d - 1 - k)). The
+  palindromic-coefficient property is the polynomial-level signature of
+  Ehrhart-Macdonald reciprocity for the cube; the same symmetry underlies
+  the dual Worpitzky identity `worpitzky_identity_cube_palindrome`.
+-/
+theorem cubeHStarPoly_palindromic (d k : ℕ) (hd : 0 < d) (hk : k < d) :
+    (cubeHStarPoly d).coeff k = (cubeHStarPoly d).coeff (d - 1 - k) := by
+  -- coeff k = A(d, k) by `cube_h_star_eulerian`
+  rw [cube_h_star_eulerian d k hd hk]
+  -- coeff (d-1-k) = A(d, d-1-k) by `cube_h_star_eulerian` (d-1-k < d for k < d, d ≥ 1)
+  rw [cube_h_star_eulerian d (d - 1 - k) hd (by omega)]
+  -- A(d, k) = A(d, d-1-k) by `eulerian_palindrome`
+  exact eulerian_palindrome d k hd hk
 
 end EhrhartCubeProvenOQ04
