@@ -155,19 +155,19 @@ This follows directly from the von Mangoldt sum identity.
 theorem transition_sum_eq_one (n : ℕ) (hn : 2 ≤ n) :
     (Finset.filter (· ∣ n) (Finset.range (n + 1))).sum
       (fun q => transitionProb n q) = 1 := by
-  simp only [transitionProb]
-  have hlog : log (n : ℝ) ≠ 0 := by
-    apply ne_of_gt
-    exact Real.log_pos (by exact_mod_cast Nat.lt_of_lt_pred hn)
-  conv_lhs =>
-    arg 2
-    ext q
-    rw [if_pos]
-    · ring_nf
-    · constructor
-      · exact Finset.mem_filter.mp ‹_› |>.2
-      · exact hn
-  sorry
+  have h1n : (1 : ℝ) < (n : ℝ) := by
+    have : (1 : ℕ) < n := hn
+    exact_mod_cast this
+  have hlog : log (n : ℝ) ≠ 0 := ne_of_gt (Real.log_pos h1n)
+  have hsum :
+      (Finset.filter (· ∣ n) (Finset.range (n + 1))).sum
+          (fun q => transitionProb n q) =
+        (Finset.filter (· ∣ n) (Finset.range (n + 1))).sum
+          (fun q => (vonMangoldt q : ℝ) / log (n : ℝ)) := by
+    refine Finset.sum_congr rfl (fun q hq => ?_)
+    have hqn : q ∣ n := (Finset.mem_filter.mp hq).2
+    simp only [transitionProb, if_pos (And.intro hqn hn)]
+  rw [hsum, ← Finset.sum_div, vonMangoldt_sum_eq_log n hn, div_self hlog]
 
 /-
 ## Part IV: The Adjoint Chain and Sub-Markov Property (Lemma 4)
