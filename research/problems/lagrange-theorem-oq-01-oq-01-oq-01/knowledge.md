@@ -334,3 +334,145 @@ Three pre-push / mid-write probes for parallel PR / branch:
 - Pre-commit (~25 min in): same result, plus `git fetch origin main` showed no new commits to origin/main.
 
 The slug remained uncontested for the entire S2 session.
+
+## S3c-API-audit (researcher-3, 2026-05-13) — Mathlib bridge pinned for Approach B
+
+### What was audited
+
+Mathlib API surface for the next substantive Approach-B step (lifting
+the order-`p` unit `g ∈ (ZMod q)ˣ` to a homomorphism into an
+automorphism group of the semidirect product's normal factor). All
+references pinned to SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+### Two latent API-shape errors in the previous Next Action
+
+**Error 1 — `SemidirectProduct` requires `MulAut N`, not `AddAut N`.**
+
+The previous Iteration-5 state.md `Next Action` outlined
+`unitToAddAut : (ZMod q)ˣ →* AddAut (ZMod q)` and then suggested packing
+into `ZMod p →* AddAut (ZMod q)`. But Mathlib's `SemidirectProduct`
+constructor (in `Mathlib/GroupTheory/SemidirectProduct.lean` lines
+37–47) has signature
+`structure SemidirectProduct (N G : Type*) [Group N] [Group G] (φ : G →* MulAut N)`
+— so `φ` must land in `MulAut N`, where `N` is multiplicative. Two
+issues:
+
+  (a) `ZMod q` is not a `Group` — it's an `AddCommGroup` with a
+      `MulZeroClass` (zero divisor at `q = q ≡ 0 mod q`, so the
+      multiplicative monoid is not a group).
+  (b) Even if we shimmed it to a `Group`, `MulAut (ZMod q)` would be
+      the multiplicative-monoid automorphisms (with zero), which is
+      *not* the addition-by-multiplication-by-unit action we want.
+
+**Error 2 — `ZMod.lift` is additive, not multiplicative.**
+
+`Mathlib/Data/ZMod/Basic.lean` line 1140 defines
+`ZMod.lift n : { f : ℤ →+ A // f n = 0 } ≃ (ZMod n →+ A)` — both
+arrows are `→+` (`AddMonoidHom`). To produce a `Multiplicative (ZMod p)
+→* X` for some multiplicative target `X`, must factor through
+`Multiplicative` or use `zpowersHom` (`Mathlib/Data/Int/Cast/Lemmas.lean`
+line 287).
+
+### Resolution: `Multiplicative` wrapper + `MulAutMultiplicative`
+
+`Mathlib/Algebra/Group/End.lean` lines 887–890:
+
+```lean
+/-- `Multiplicative G` and `G` have isomorphic automorphism groups. -/
+def MulAutMultiplicative [AddGroup G] : MulAut (Multiplicative G) ≃* AddAut G :=
+  { AddEquiv.toMultiplicative.symm with map_mul' := fun _ _ ↦ rfl }
+```
+
+The corrected types:
+
+| Symbol | Type |
+|--------|------|
+| `unitToAddAut` | `(ZMod q)ˣ →* AddAut (ZMod q)` (= `DistribMulAction.toAddAut`) |
+| `MulAutMultiplicative.symm` | `AddAut (ZMod q) ≃* MulAut (Multiplicative (ZMod q))` |
+| `φ` | `Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))` |
+| Semidirect product | `Multiplicative (ZMod q) ⋊[φ] Multiplicative (ZMod p)` |
+
+### Mathlib API pin reference
+
+All file paths and line numbers verified at SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` via raw GitHub API:
+
+| Symbol | File | Line |
+|--------|------|------|
+| `SemidirectProduct (N G) [Group N] [Group G] (φ : G →* MulAut N)` | `Mathlib/GroupTheory/SemidirectProduct.lean` | 37–47 |
+| `SemidirectProduct.card : Nat.card (N ⋊[φ] G) = Nat.card N * Nat.card G` | `Mathlib/GroupTheory/SemidirectProduct.lean` | 311–312 |
+| `def MulAut (M : Type*) [Mul M] := M ≃* M` | `Mathlib/Algebra/Group/End.lean` | 648–651 |
+| `def AddAut (A : Type*) [Add A] := A ≃+ A` | `Mathlib/Algebra/Group/End.lean` | (via `to_additive`) |
+| `MulAutMultiplicative : MulAut (Multiplicative G) ≃* AddAut G` | `Mathlib/Algebra/Group/End.lean` | 887–890 |
+| `DistribMulAction.toAddEquiv [DistribMulAction G A] (x : G) : A ≃+ A` | `Mathlib/Algebra/GroupWithZero/Action/Basic.lean` | 79–82 |
+| `DistribMulAction.toAddAut [DistribMulAction G A] : G →* AddAut A` | `Mathlib/Algebra/GroupWithZero/Action/Basic.lean` | 89–93 |
+| `ZMod.lift n : { f : ℤ →+ A // f n = 0 } ≃ (ZMod n →+ A)` | `Mathlib/Data/ZMod/Basic.lean` | 1140 |
+| `zpowersHom α : α ≃ (Multiplicative ℤ →* α)` | `Mathlib/Data/Int/Cast/Lemmas.lean` | 287 |
+| `zmultiplesHom β : β ≃ (ℤ →+ β)` | `Mathlib/Data/Int/Cast/Lemmas.lean` | 276 |
+
+### Insights
+
+1. **The `Multiplicative` wrapper is mandatory, not optional.** Earlier
+   Approach-B sketches in `problem.md` and `state.md` Iteration-5
+   omitted it; the type system rules out direct
+   `φ : ZMod p →* MulAut (ZMod q)` even ignoring `ZMod q` not being a
+   `Group`. This is the single biggest invisible blocker to a correct
+   S3c implementation.
+
+2. **`DistribMulAction.toAddAut` makes Step 1 a one-liner.** The
+   `(ZMod q)ˣ ↷ ZMod q` distributive action is inherited from
+   `Units.instDistribMulAction` on any `Monoid` (which `ZMod q`
+   provides). The function `DistribMulAction.toAddAut : (ZMod q)ˣ →*
+   AddAut (ZMod q)` is then a direct named-lemma invocation — no
+   extension/glue code required.
+
+3. **The faithful-action ⇒ injective-hom ⇒ preserves-order chain is the
+   cleanest path to `orderOf θ = p`.** For prime `q`, the action of
+   units on `ZMod q` is faithful (because `u • 1 = u.val`, which
+   determines `u` up to equality of units). Therefore
+   `DistribMulAction.toAddAut` is injective, and
+   `orderOf_injective : Function.Injective f → orderOf (f x) = orderOf x`
+   transports `orderOf g = p` from the source to `orderOf (toAddAut g) = p`
+   in `AddAut (ZMod q)`.
+
+4. **The hard step is genuinely Step 5: building
+   `Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))`.**
+   Steps 1–4 of the audit's skeleton compile independently and give the
+   weaker statement `∃ ψ : MulAut (Multiplicative (ZMod q)), orderOf ψ = p`.
+   The hom-from-cyclic step (5) is best deferred to a dedicated S3d-i
+   iteration to keep PR sizes small (per the suggested ACT
+   decomposition table in the audit).
+
+5. **`Multiplicative (ZMod q)` does not auto-inherit `Fintype`.**
+   Mathlib's `Multiplicative.fintype` instance does exist
+   (via `inferInstanceAs (Fintype (ZMod q))`), but instance synthesis
+   may need an explicit `haveI` in the assembly step if a `Fintype G`
+   parameter is needed; see Build-risk row 4 in the audit.
+
+### Race-check log
+
+Pre-write probe (2026-05-13 ~11:39 UTC):
+
+```
+gh pr list --repo rjwalters/lean-genius \
+  --search "lagrange-theorem-oq-01-oq-01-oq-01 in:title" --state open
+```
+
+returned empty. Nearest open mechanic PRs are for unrelated slugs
+(`triangle-angle-sum-oq-01`, `bezout-identity-oq-03-oq-04-oq-01`,
+`konigsberg-oq-03-oq-02`, `lebesgue-measure-oq-01-oq-01`,
+`sum-of-kth-powers-oq-02`, `harmonic-divergence-oq-02`,
+`erdos-152-oq-01`, `laws-of-large-numbers-oq-03`). No `audit/*` or
+`enrich/*` PR open for this slug.
+
+### Why this PR is doc-only
+
+* Audit work is fundamentally documentation: read Mathlib at pinned
+  SHA, write down what was found, point the next agent at it.
+* The substantive S3c-i sub-iteration (~25 LOC: `unitToAddAut` +
+  `unitToAddAut_injective` + `exists_addAut_of_order_p`) is split out
+  as a follow-up to keep the doc-only PR's build risk at zero and to
+  let *any* researcher (not specifically researcher-3) take the ACT
+  in one shot via verbatim copy-paste.
+* `gh api search/code` rate-limit was monitored throughout: ~7 calls
+  used (well within the 30/hr budget).

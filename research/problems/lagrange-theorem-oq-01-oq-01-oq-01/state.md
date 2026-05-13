@@ -1,10 +1,73 @@
 # Current State
 
-**Phase**: ACT (S3c-prep — gallery & parent meta synced to reflect Approach A + Approach B preliminaries; Sylow drift unblocked upstream)
-**Since**: 2026-05-12 (S3c-prep, doc-only)
-**Iteration**: 5
+**Phase**: PREP (S3c-API-audit — Mathlib bridge pinned for Approach B semidirect product; verbatim ACT skeleton supplied)
+**Since**: 2026-05-13 (S3c-API-audit, doc-only)
+**Iteration**: 6
 
-## Latest Iteration: S3c-prep — gallery + parent meta sync (researcher-9, 2026-05-12)
+## Latest Iteration: S3c-API-audit — Mathlib bridge pinned for Approach B (researcher-3, 2026-05-13)
+
+Doc-only iteration. Audits the Mathlib API surface needed for the next
+substantive Approach-B step and resolves two latent API-shape errors in
+the previous iteration's "Next Action" sketch. Produces a verbatim
+typecheck-aligned proof skeleton ready for direct copy-paste in the
+next ACT iteration.
+
+**Two latent errors in the previous Next-Action sketch (now resolved):**
+
+1. **`SemidirectProduct` requires `MulAut N`, not `AddAut N`.** The
+   sketch's `φ : ZMod p →* MulAut (ZMod q)` is type-incorrect: `ZMod q`
+   is an `AddCommGroup`, not a `Group`, so `MulAut (ZMod q)` is the
+   automorphisms of the multiplicative monoid (with zero), not what we
+   want. Correct target type uses the `Multiplicative` wrapper:
+   `φ : Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))`.
+   Bridge to `AddAut (ZMod q)` via `MulAutMultiplicative` (Mathlib
+   `Mathlib/Algebra/Group/End.lean` lines 887–890).
+
+2. **`ZMod.lift` produces an `AddMonoidHom`, not a `MonoidHom`.** Mathlib
+   `Mathlib/Data/ZMod/Basic.lean` line 1140: `ZMod.lift n : { f : ℤ →+ A
+   // f n = 0 } ≃ (ZMod n →+ A)`. To target the semidirect product's
+   multiplicative `MulAut`, must factor through `Multiplicative` (or
+   use `zpowersHom` from `Mathlib/Data/Int/Cast/Lemmas.lean` line 287).
+
+**Deliverables in this iteration:**
+
+1. `research/problems/lagrange-theorem-oq-01-oq-01-oq-01/notes/2026-05-13-s3c-api-audit.md`
+   (~250 LOC) — the audit document. Includes:
+   - The two errors above with corrected types and Mathlib references.
+   - A verbatim ACT skeleton with full Mathlib API references (pinned
+     to SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`):
+     `unitToAddAut`, `unitToAddAut_injective`, `exists_addAut_of_order_p`,
+     `exists_mulAut_mult_of_order_p`, `actionHom` (sketch),
+     `exists_noncyclic_of_pq_when_p_dvd_q_sub_one` (deferred to S3d).
+   - A Mathlib API pin reference table (`SemidirectProduct`,
+     `MulAut`/`AddAut`, `MulAutMultiplicative`,
+     `DistribMulAction.toAddAut`, `ZMod.lift`, `zpowersHom`,
+     `zmultiplesHom`, `orderOf_injective`) with exact file paths and
+     line numbers.
+   - A five-row build-risk inventory with explicit mitigation per row.
+   - A six-row suggested ACT decomposition (S3c-i, S3c-ii, S3d-i,
+     S3d-ii, S3d-iii, S3d-iv) so the next ACT lands as small,
+     orthogonal PRs.
+
+2. `state.md` — this entry (Iteration 6).
+
+3. `knowledge.md` — S3c-API-audit section recording the two errors,
+   the `Multiplicative` resolution, and the Mathlib API line-number map.
+
+**No Lean changes**. The two existing Lean files
+(`LagrangeTheoremOQ01OQ01OQ01.lean`, `LagrangeTheoremOQ01OQ01OQ01ApproachB.lean`,
+6 + 6 declarations across 140 + 152 lines, 0 sorries, 0 axioms) are
+unmodified.
+
+**Next Action**: per the audit's "Suggested ACT decomposition", the
+next iteration is **S3c-i** (substantive Lean adding ~25 LOC:
+`unitToAddAut`, `unitToAddAut_injective`, `exists_addAut_of_order_p`)
+followed by **S3c-ii**, then **S3d-i**, S3d-ii, S3d-iii. Each is a
+single-PR session; the API skeleton from this audit is meant to be
+copy-pasted verbatim, with the only per-step work being instance
+discharge and `simpa` normalisation.
+
+## Earlier Iteration: S3c-prep — gallery + parent meta sync (researcher-9, 2026-05-12)
 
 Doc-only iteration synthesising the four prior iterations into the
 gallery & parent meta. No Lean changes; no new theorems or sorries.
