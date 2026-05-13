@@ -54,6 +54,7 @@ build verification deferred to S4 alongside the §2.3–§2.5 theorem additions.
 import Proofs.LawsOfLargeNumbersOQ04OQ03
 import Mathlib.Topology.Algebra.Module.Cardinality
 import Mathlib.Topology.Order.Monotone
+import Mathlib.Probability.CDF
 
 namespace GlivenkoCantelli
 
@@ -190,6 +191,72 @@ theorem trueCDF_continuityPoint_in_Ioo [IsProbabilityMeasure μ]
   have h_ne : (Set.Ioo a b).Nonempty := Set.nonempty_Ioo.mpr hab
   obtain ⟨x, hx_cont, hx_in⟩ := h_dense.exists_mem_open h_open h_ne
   exact ⟨x, hx_in, hx_cont⟩
+
+-- ============================================================================
+-- §2.2.6: CDF tails — item (iv) on the discharge roadmap of
+-- `bracketingGrid_exists`. Routed through Mathlib's `ProbabilityTheory.cdf`
+-- to avoid duplicating the work of `tendsto_cdf_atBot`/`atTop`.
+--
+-- Ships the S9b OBSERVE (#18372) drop-in patch §3.2 verbatim. Builds the
+-- bridge `trueCDF X μ = ProbabilityTheory.cdf (Measure.map (X 0) μ)` and
+-- derives the two `Tendsto` results as one-line compositions.
+-- ============================================================================
+
+/-! ### CDF tails (S9 ACT, via Mathlib `ProbabilityTheory.cdf` bridge)
+
+Item (iv) on the discharge roadmap of `bracketingGrid_exists`: the true CDF
+tends to 0 at -∞ and 1 at +∞.
+
+Rather than re-derive these limits from first principles using
+`tendsto_measure_iUnion_atTop` / `tendsto_measure_iInter_atBot` (the ~25-line
+route sketched in `sessions/2026-05-12-s9a-cdf-limits-at-infinity.md`),
+this block uses Mathlib's `ProbabilityTheory.cdf : Measure ℝ →
+StieltjesFunction ℝ` (in `Mathlib/Probability/CDF.lean`). That construction
+already packages the limits as `ProbabilityTheory.tendsto_cdf_atBot` and
+`ProbabilityTheory.tendsto_cdf_atTop`.
+
+The bridge lemma `trueCDF_eq_cdf_map` identifies the parent's `trueCDF X μ`
+with `cdf (Measure.map (X 0) μ)`. After this bridge, items (iv-atBot) and
+(iv-atTop) follow by one-line composition. -/
+
+/-- The parent file's `trueCDF X μ` agrees pointwise with Mathlib's
+    `ProbabilityTheory.cdf` applied to the pushforward `Measure.map (X 0) μ`. -/
+theorem trueCDF_eq_cdf_map [IsProbabilityMeasure μ]
+    {X : ℕ → Ω → ℝ} (hX_meas : Measurable (X 0)) (x : ℝ) :
+    trueCDF X μ x = ProbabilityTheory.cdf (Measure.map (X 0) μ) x := by
+  haveI : IsProbabilityMeasure (Measure.map (X 0) μ) :=
+    Measure.isProbabilityMeasure_map hX_meas.aemeasurable
+  rw [ProbabilityTheory.cdf_eq_real]
+  show (μ {ω | X 0 ω ≤ x}).toReal =
+       ((Measure.map (X 0) μ) (Set.Iic x)).toReal
+  rw [Measure.map_apply hX_meas measurableSet_Iic]
+  rfl
+
+/-- **Item (iv) — atBot direction.** The true CDF tends to 0 at -∞.
+    One-line composition: identify `trueCDF X μ` with
+    `cdf (Measure.map (X 0) μ)` via `trueCDF_eq_cdf_map`, then quote
+    Mathlib's `ProbabilityTheory.tendsto_cdf_atBot`. -/
+theorem trueCDF_atBot [IsProbabilityMeasure μ]
+    {X : ℕ → Ω → ℝ} (hX_meas : Measurable (X 0)) :
+    Filter.Tendsto (trueCDF X μ) Filter.atBot (nhds 0) := by
+  haveI : IsProbabilityMeasure (Measure.map (X 0) μ) :=
+    Measure.isProbabilityMeasure_map hX_meas.aemeasurable
+  have h_eq : trueCDF X μ = ProbabilityTheory.cdf (Measure.map (X 0) μ) := by
+    funext x; exact trueCDF_eq_cdf_map hX_meas x
+  rw [h_eq]
+  exact ProbabilityTheory.tendsto_cdf_atBot _
+
+/-- **Item (iv) — atTop direction.** The true CDF tends to 1 at +∞.
+    Mirror of `trueCDF_atBot`, using `ProbabilityTheory.tendsto_cdf_atTop`. -/
+theorem trueCDF_atTop [IsProbabilityMeasure μ]
+    {X : ℕ → Ω → ℝ} (hX_meas : Measurable (X 0)) :
+    Filter.Tendsto (trueCDF X μ) Filter.atTop (nhds 1) := by
+  haveI : IsProbabilityMeasure (Measure.map (X 0) μ) :=
+    Measure.isProbabilityMeasure_map hX_meas.aemeasurable
+  have h_eq : trueCDF X μ = ProbabilityTheory.cdf (Measure.map (X 0) μ) := by
+    funext x; exact trueCDF_eq_cdf_map hX_meas x
+  rw [h_eq]
+  exact ProbabilityTheory.tendsto_cdf_atTop _
 
 -- ============================================================================
 -- §2.3: Simultaneous pointwise convergence at all grid points

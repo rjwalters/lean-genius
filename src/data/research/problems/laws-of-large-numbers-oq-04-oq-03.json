@@ -16,22 +16,23 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-05-04T17:47:35.846Z",
+    "phase": "ACT",
+    "since": "2026-05-13T22:50:00.000Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "S9 ACT (researcher-10, 2026-05-13): shipped the §2.2.6 block in LawsOfLargeNumbersOQ04OQ03Bracketing.lean — the bridge lemma trueCDF_eq_cdf_map identifying trueCDF X μ with ProbabilityTheory.cdf (Measure.map (X 0) μ), plus the two Tendsto theorems trueCDF_atBot and trueCDF_atTop for item (iv) on the discharge roadmap of bracketingGrid_exists. The bridge proof uses ProbabilityTheory.cdf_eq_real + Measure.map_apply + Measure.isProbabilityMeasure_map (11 LOC after `show` coercion to .toReal form). The two Tendsto theorems are one-line compositions: `rw [h_eq]; exact ProbabilityTheory.tendsto_cdf_atBot _` (resp. atTop). Adds 1 new import (Mathlib.Probability.CDF; not transitively imported by Mathlib.Probability.StrongLaw per S9b OBSERVE §3.1 verification). +62 LOC (3 theorems + 1 import + 1 section header + docstrings). 0 axioms added; 0 sorries added. Items (i)-(iii) from PR #18208 remain valid first-principle proofs; coexist with the bridge form. Patch is the verbatim §3.2 drop-in from S9b OBSERVE #18372 (researcher-10, 2026-05-12), with every named Mathlib lemma verified against Mathlib HEAD via gh api at that time. Build pending (researcher worktree Docker symlink loop; S3-S8 all merged build-pending).",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "S10 ACT (sequential after S9 ACT lands): the greedy ε-cover induction. PR #18499 (S10 PREP) and PR #18528 (S10 PREP-2) jointly design this — function-side approach from PR #18292 (~150-250 LOC) or measure-side reformulation from S9b OBSERVE §5 (~80 LOC). After S10 ACT lands, the sole remaining axiom (bracketingGrid_exists) is discharged and the entire Glivenko-Cantelli chain becomes axiom-free.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
+      "total": 9,
+      "currentApproach": 9,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "S8 (2026-05-12, PR #18208): Added §2.2.5 continuity-point density infrastructure to LawsOfLargeNumbersOQ04OQ03Bracketing.lean (+73 lines, 4 theorems): trueCDF_monotone, trueCDF_countable_discontinuities, trueCDF_continuityPoints_dense, trueCDF_continuityPoint_in_Ioo. Between S8 and 2026-05-13 STATE-SYNC, FIVE doc-only PREP/OBSERVE memos landed: PR #18292 (S9 OBSERVE — greedy ε-cover upstream design), PR #18313 (S9a OBSERVE — CDF limits at ±∞ blueprint), PR #18372 (S9b OBSERVE — Mathlib `ProbabilityTheory.cdf` API discovery, items (i)–(iv) for free via Measure.map (X 0) μ bridge), PR #18499 (S10 PREP — Stieltjes partition design), PR #18528 (S10 PREP-2 — Mathlib API audit). The 2026-05-13 STATE-SYNC propagates these into state.md without new Lean changes. Revised next-action: S9 ACT now ~30-50 LOC (bridge to Mathlib cdf) rather than ~80 LOC from-scratch; S10 ACT (greedy ε-cover ~150-250 LOC) remains the genuinely-new mathematical work.",
+    "progressSummary": "S9 ACT (researcher-10, 2026-05-13): ninth-iteration ACT. Shipped the §2.2.6 block in LawsOfLargeNumbersOQ04OQ03Bracketing.lean: bridge lemma trueCDF_eq_cdf_map (trueCDF X μ = ProbabilityTheory.cdf (Measure.map (X 0) μ)) + trueCDF_atBot/atTop one-line Tendsto compositions via Mathlib's ProbabilityTheory.tendsto_cdf_atBot/tendsto_cdf_atTop. Discharges item (iv) on the bracketingGrid_exists roadmap. Adds 1 new import (Mathlib.Probability.CDF); +62 LOC; 0 axioms added; 0 sorries added; the file's sole axiom bracketingGrid_exists is untouched. Patch is the verbatim §3.2 drop-in from S9b OBSERVE #18372 (also researcher-10, 1 day prior). Items (i)-(iii) from PR #18208 (S8) remain valid first-principle proofs and coexist with the bridge form. Only S10 ACT (greedy ε-cover induction) remains for the bracketing companion to become axiom-free. Build pending (researcher worktree Docker symlink). S8 (2026-05-12, PR #18208): Added §2.2.5 continuity-point density infrastructure to LawsOfLargeNumbersOQ04OQ03Bracketing.lean (+73 lines, 4 theorems): trueCDF_monotone, trueCDF_countable_discontinuities, trueCDF_continuityPoints_dense, trueCDF_continuityPoint_in_Ioo. Between S8 and 2026-05-13 STATE-SYNC, FIVE doc-only PREP/OBSERVE memos landed: PR #18292 (S9 OBSERVE — greedy ε-cover upstream design), PR #18313 (S9a OBSERVE — CDF limits at ±∞ blueprint), PR #18372 (S9b OBSERVE — Mathlib `ProbabilityTheory.cdf` API discovery, items (i)–(iv) for free via Measure.map (X 0) μ bridge), PR #18499 (S10 PREP — Stieltjes partition design), PR #18528 (S10 PREP-2 — Mathlib API audit). The 2026-05-13 STATE-SYNC propagates these into state.md without new Lean changes. Revised next-action: S9 ACT now ~30-50 LOC (bridge to Mathlib cdf) rather than ~80 LOC from-scratch; S10 ACT (greedy ε-cover ~150-250 LOC) remains the genuinely-new mathematical work.",
     "builtItems": [
-      "S8: §2.2.5 N2ContinuityDensity section in LawsOfLargeNumbersOQ04OQ03Bracketing.lean — 4 theorems (trueCDF_monotone, trueCDF_countable_discontinuities, trueCDF_continuityPoints_dense, trueCDF_continuityPoint_in_Ioo), +73 lines (521→594), 2 added imports (Mathlib.Topology.Algebra.Module.Cardinality, Mathlib.Topology.Order.Monotone)."
+      "S8: §2.2.5 N2ContinuityDensity section in LawsOfLargeNumbersOQ04OQ03Bracketing.lean — 4 theorems (trueCDF_monotone, trueCDF_countable_discontinuities, trueCDF_continuityPoints_dense, trueCDF_continuityPoint_in_Ioo), +73 lines (521→594), 2 added imports (Mathlib.Topology.Algebra.Module.Cardinality, Mathlib.Topology.Order.Monotone).",
+      "Proofs/LawsOfLargeNumbersOQ04OQ03Bracketing.lean — §2.2.6 block: trueCDF_eq_cdf_map bridge + trueCDF_atBot/atTop Tendsto theorems via Mathlib ProbabilityTheory.cdf (S9 ACT, verbatim §3.2 drop-in from S9b OBSERVE #18372). +62 LOC, +1 import (Mathlib.Probability.CDF), 0 axioms added, 0 sorries added."
     ],
     "insights": [
       "Basic Glivenko-Cantelli is in LawsOfLargeNumbersOQ04.lean with 3 axioms (indicator_integrable, indicator_integral_eq_cdf, glivenko_cantelli_uniform)",
@@ -40,7 +41,8 @@
       "The basic case (one-parameter threshold indicators) has ~3x fewer axioms needed than the full VC case",
       "S8: bundled trueCDF_mono ({x y} ≤-shape) into Monotone (trueCDF X μ) so Mathlib's Monotone.* API (countable_not_continuousAt, etc.) applies directly.",
       "S8: discontinuity set of a monotone ℝ→ℝ is countable (Mathlib Monotone.countable_not_continuousAt in 2nd-countable spaces); complement is dense in ℝ via Set.Countable.dense_compl (𝕜 := ℝ).",
-      "S8 forward-ref: greedy ε-cover for bracketingGrid_exists will consume trueCDF_continuityPoint_in_Ioo (continuity point inside any open Ioo) — picked the Ioo-shape exact-form so the eventual proof can chain ContinuousAt witnesses without re-deriving density at each step."
+      "S8 forward-ref: greedy ε-cover for bracketingGrid_exists will consume trueCDF_continuityPoint_in_Ioo (continuity point inside any open Ioo) — picked the Ioo-shape exact-form so the eventual proof can chain ContinuousAt witnesses without re-deriving density at each step.",
+      "S9 ACT (researcher-10, 2026-05-13): same-author cross-session shipping (S9b OBSERVE #18372 authored by researcher-10 on 2026-05-12; S9 ACT #18932-equivalent authored by researcher-10 on 2026-05-13) demonstrates the value of pre-verified drop-in patches. The §3.2 block specified verbatim Lean syntax with every named Mathlib lemma cross-checked via gh api against Mathlib HEAD; one day later the same author ships the patch unchanged. This is faster and lower-risk than re-deriving from scratch."
     ],
     "mathlibGaps": [
       "Mathlib lacks: VCDimension type class, SauerShelah lemma (|F∩S| ≤ sum(n,k) for VC dim k), Rademacher complexity bounds, symmetrization lemma for VC classes"
@@ -73,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-05-04T17:47:35.846Z",
-  "lastUpdate": "2026-05-04T17:47:35.846Z",
+  "lastUpdate": "2026-05-13T22:50:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [

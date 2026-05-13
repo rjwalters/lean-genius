@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT (S8 last ACT; S9 + S10 PREP backlog saturated, S9b API discovery shifts S9 ACT shape)
-**Since**: 2026-05-08T20:43:00Z
-**Iteration**: 8 ACT + 5 doc-only PREP/OBSERVE (this STATE-SYNC propagates the PREP-backlog)
+**Phase**: ACT (S9 ACT shipped: cdf-bridge + items (iv-atBot/atTop); S10 ACT pending)
+**Since**: 2026-05-13T22:50:00Z
+**Iteration**: 9 ACT + 5 doc-only PREP/OBSERVE (S9 ACT ships the §3.2 drop-in patch from S9b OBSERVE #18372)
 
 ## STATE-SYNC (researcher-5, 2026-05-13) — propagate S9/S10 PREP backlog into state
 
@@ -53,22 +53,58 @@ theorem trueCDF_eq_cdf [IsProbabilityMeasure μ]
 **No new sorries are introduced into the chain by this STATE-SYNC** — the sketch above
 lives in this memo only, not in any `.lean` file.)
 
-### Next Action (revised post-S9b)
+### Next Action (revised post-S9 ACT)
 
-**S9 ACT (any researcher)**: ship the `cdf-bridge` lemma above + use it to derive
-items (i)–(iv) as ~5 LOC corollaries each. Total expected diff: ~30–50 LOC in
-`LawsOfLargeNumbersOQ04OQ03Bracketing.lean`, 1 new import
-(`Mathlib.Probability.CDF`). The previous S8 theorems
-(`trueCDF_monotone`, `trueCDF_countable_discontinuities`, etc.) remain valid
-proofs from first principles; they can either coexist as alternative formulations
-or be refactored to bridge-form (refactor optional, not required).
+**S9 ACT** is now shipped (this iteration): the §2.2.6 block in
+`LawsOfLargeNumbersOQ04OQ03Bracketing.lean` adds the bridge lemma
+`trueCDF_eq_cdf_map` + the two `Tendsto` theorems `trueCDF_atBot`,
+`trueCDF_atTop` for item (iv). Added 1 import
+(`Mathlib.Probability.CDF`). Build pending (researcher worktree
+Docker symlink loop; following the S3-S8 build-pending precedent).
+The previous S8 theorems
+(`trueCDF_monotone`, `trueCDF_countable_discontinuities`, etc.) remain
+in place as proofs from first principles; per S9b OBSERVE §4, the S8
+packaging is no shorter than the bridge form for items (i)-(iii), so
+they coexist as alternative formulations (no refactor planned).
 
-**S10 ACT (sequential after S9 ACT)**: the greedy ε-cover induction. PR #18499 and
-PR #18528 (S10 PREP / PREP-2) jointly design this; the latter audits the
-Mathlib API used. Approximate scope: ~150–250 LOC in the bracketing companion.
+**S10 ACT (sequential after S9 ACT)**: the greedy ε-cover induction.
+PR #18499 and PR #18528 (S10 PREP / PREP-2) jointly design this; the
+latter audits the Mathlib API used. Approximate scope: ~150–250 LOC in
+the bracketing companion.
 
-After S10 ACT lands, the bracketing companion's sole axiom (`bracketingGrid_exists`)
-is discharged; the entire Glivenko-Cantelli chain becomes axiom-free.
+After S10 ACT lands, the bracketing companion's sole axiom
+(`bracketingGrid_exists`) is discharged; the entire Glivenko-Cantelli
+chain becomes axiom-free.
+
+### S9 ACT Deliverable
+
+Ninth ACT iteration on this slug. Phase ACT.
+
+- **3 new theorems** in `LawsOfLargeNumbersOQ04OQ03Bracketing.lean`, all
+  sorry-free, no axioms (the file's only axiom `bracketingGrid_exists`
+  is unchanged):
+  - `trueCDF_eq_cdf_map`: bridge between the parent's `trueCDF X μ` and
+    Mathlib's `ProbabilityTheory.cdf (Measure.map (X 0) μ)`.
+  - `trueCDF_atBot`: `Filter.Tendsto (trueCDF X μ) Filter.atBot (nhds 0)`.
+    One-line composition: `rw [h_eq]; exact ProbabilityTheory.tendsto_cdf_atBot _`.
+  - `trueCDF_atTop`: `Filter.Tendsto (trueCDF X μ) Filter.atTop (nhds 1)`.
+    Mirror.
+- **1 new import**: `Mathlib.Probability.CDF` (verified-stable Mathlib
+  module; not transitively imported by `Mathlib.Probability.StrongLaw`
+  per S9b OBSERVE §3.1).
+- Lean file grown ~594 → ~660 lines (1 section header + 3 theorems +
+  docstrings).
+- 0 axioms added; 0 sorries added across the bracketing companion.
+- The patch is the verbatim drop-in §3.2 of S9b OBSERVE (#18372,
+  authored 2026-05-12 by researcher-10), with every named Mathlib lemma
+  verified against Mathlib HEAD via `gh api` at that time.
+- Build pending (researcher worktree Docker symlink loop; the chain's
+  S3-S8 PRs were all merged build-pending).
+- Items (i)-(iii) from PR #18208 remain valid first-principle proofs;
+  they coexist with the bridge-form derivation, per S9b OBSERVE §4.
+- After S9 ACT, the only remaining work on the bracketing companion is
+  S10 ACT (greedy ε-cover induction, ~150-250 LOC discharging the
+  `bracketingGrid_exists` axiom).
 
 ### Honesty
 
