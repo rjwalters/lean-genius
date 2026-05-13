@@ -1,11 +1,56 @@
 # Research State: binomial-theorem-oq-02-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: PREP (Phase-4 blocked pending Mathlib v4.26 sorry-site repair)
+**Phase**: ACT (Phase-4 unblocking — 5/5 S10 repair templates transcribed, build-pending)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-13 (Session 10, researcher-6)
-**Iteration**: 10
+**Last Updated**: 2026-05-13 (Session 11, researcher-1)
+**Iteration**: 11
+
+## Session 11 Focus (2026-05-13, researcher-1) — S10 repair templates transcribed (build-pending ACT)
+
+S11 ACT transcribes the five repair templates produced in S10 (researcher-6)
+into `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean`, taking the file
+from `544 lines / 5 sorries / 1 axiom` to `~658 lines / 0 sorries / 1 axiom`.
+Net change: -5 sorries, +114 LOC, unchanged axiom count. The single
+remaining axiom is `binomial_clt_pointwise` (de Moivre–Laplace), preserved
+as the Phase-4 elimination target.
+
+**Status: BUILD-PENDING.** S11 did not run `./proofs/scripts/docker-build.sh
+Proofs.BinomialTheoremOQ02OQ01OQ01OQ03` due to session-time budget
+(Docker bootstrap + Mathlib cache fetch is 1–2 hours; templates carry
+forensic-certainty caveats noted in S10 knowledge.md). The repair-template
+"risk notes" identify the most likely failure modes per sorry:
+
+| # | Theorem | Risk note (from S10) |
+|---|---|---|
+| 1 | `standardNormalCDF_tendsto_atBot` | `simpa using hsub` final step may need explicit `linarith` fallback or named `have` for the `1 - 1 = 0` identity. |
+| 2 | `multinomialMarginalCDF_eq_binomialCDF` | The `Finset.sum_fiberwise_of_maps_to` `with`-filter syntax may not unify literally with `.filter (...)`; `simp_rw` fallback or hand-rolled `disjUnion`. |
+| 3 | `binomialCDF_mono` | If `Application type mismatch` reappears at `mul_nonneg`, may be `Finset.sum_le_sum` signature drift; companion `binomialCDF_zero_le` uses same syntax and works. |
+| 4 | `binomialCDF_eq_one` | `unfold binomialCDF` may produce `dite` instead of `ite` requiring `conv_lhs` adjustment; mirror is `binomialCDF_le_one` (working idiom). |
+| 5 | `multinomial_marginal_clt` | Clean composition; requires #2 to build. |
+
+If Docker build fails on any of the five, Doctor / Mechanic can refine
+the closing tactic in isolation (each repair is local). If multiple
+templates regress simultaneously the safe fallback is to selectively
+revert and re-demote the problematic sorries to `sorry` while keeping
+the successfully-transcribed ones.
+
+### After build is green
+1. `meta.json`: `status: "formalized" → "axiomatized"`, `badge: "wip" → "axiom"`, `sorryCount: 5 → 0` (Mechanic territory).
+2. Phase-4 Portmanteau axiom-elimination work (S9's `cdf_tendsto_of_inDistribution` bridge lemma) can resume.
+3. The CDF-tail saturation library (`standardNormalCDF_tendsto_atBot` + S8's `_atTop`) is now complete on a green file.
+
+### Files modified (S11)
+- `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean` (5 sorry bodies replaced, +114 LOC, doc string "Honest Reporting" section updated)
+- `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/state.md` (this entry)
+- `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03.json` (`currentState`, `lastUpdate`, `progressSummary`, `insights`, `nextSteps`)
+
+Build status: PENDING Docker verification. Status field intentionally
+NOT changed to `axiomatized` until build is green; meta `sorryCount`
+intentionally NOT decremented for the same reason.
+
+---
 
 ## Session 10 Focus (2026-05-13, researcher-6) — Sorry-site forensics + Mathlib v4.26 repair templates (doc-only PREP)
 
