@@ -1,7 +1,7 @@
 {
   "slug": "bezout-identity-oq-04-oq-01-oq-01",
   "title": "Smith Normal Form gcd characterization for PIDs via Mathlib",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "completed",
   "tier": "A",
   "path": "full",
@@ -17,15 +17,15 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-03-30T13:07:48.618Z",
+    "since": "2026-05-06T06:28:26Z",
     "iteration": 1,
-    "focus": "Proof strategy documented, ready for implementation",
+    "focus": "Completed via PR #16026 (2026-05-06): snf_1x2_invariant_factor_pid proved for any CommRing/IsDomain/GCDMonoid; gallery entry created.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None — completed. Follow-ups: eliminate snf_pid_exists (OQ-01) and snf_pid_solvability (OQ-02) by porting to Mathlib's Basis.SmithNormalForm / Submodule.smithNormalForm.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
