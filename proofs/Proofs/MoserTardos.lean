@@ -138,6 +138,30 @@ noncomputable def resampleAt (S : Finset (Fin P.numVars)) (v : P.State) :
     (fun (a : ∀ j : S, P.alphabet j.val) (j : Fin P.numVars) =>
       if h : j ∈ S then a ⟨j, h⟩ else v j)
 
+/-- **Marginal outside `S`** — if `j ∉ S`, then the `j`-th coordinate
+    marginal of `resampleAt S v` is the Dirac mass at `v j`. The
+    resampled draw only modifies coordinates in `S`; coordinates
+    outside `S` deterministically retain their value from `v`.
+
+    Verbatim discharge per S4b PREP §5 (PR #18580): unfold the
+    `PMF.map` composition, observe that the glue function is
+    constant in `a` (since `dif_neg hj` reduces every if-then-else
+    to the `v b` branch), and apply `PMF.map_const`. -/
+lemma resampleAt_apply_outside (S : Finset (Fin P.numVars)) (v : P.State)
+    (j : Fin P.numVars) (hj : j ∉ S) :
+    (P.resampleAt S v).map (fun w => w j) = PMF.pure (v j) := by
+  classical
+  unfold resampleAt
+  rw [PMF.map_comp]
+  have h_const :
+      (fun a : ∀ k : S, P.alphabet k.val =>
+        (fun (b : Fin P.numVars) =>
+          if h : b ∈ S then a ⟨b, h⟩ else v b) j)
+      = Function.const _ (v j) := by
+    funext a
+    simp [dif_neg hj]
+  rw [h_const, PMF.map_const]
+
 /-- One step of the Moser–Tardos algorithm: if no bad event is currently
     violated, return the current state with probability 1; otherwise pick
     the least-index bad event `i` and resample the variables in `vbl i`
