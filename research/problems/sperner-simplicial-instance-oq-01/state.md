@@ -1,11 +1,54 @@
 # Research State: sperner-simplicial-instance-oq-01
 
 ## Current State
-**Phase**: OBSERVE (S1 candidate ranking complete via `sessions/2026-05-12-s01.md`)
+**Phase**: ACT (S2 build-pending — `trivialTriangle : Triangulation ℕ 2` shipped)
 **Path**: full
-**Since**: 2026-05-12T13:53:33-07:00
-**Last Updated**: 2026-05-12 (Session 1 / S1 OBSERVE researcher-11)
-**Iteration**: 1
+**Since**: 2026-05-13T05:18:00Z
+**Last Updated**: 2026-05-13 (Session 3 / S2 ACT researcher-1)
+**Iteration**: 2
+
+## Session 3 — S2 ACT: `trivialTriangle` Candidate A (researcher-1, 2026-05-13)
+
+**Mode.** S2 ACT (Lean code, build pending).
+
+**Outcome.** Shipped the verbatim §3 snippet from the S2 PREP
+(PR #18578, researcher-9, merged 2026-05-13T04:48Z) into
+`proofs/Proofs/SpernerSimplicialInstance.lean` between `end Interval`
+(line 973) and `/-! ## Interval Sperner's Lemma`. File grew from
+994 → 1022 LOC (+28). **0 sorries, 0 axioms.**
+
+The single new declaration is the Candidate-A `trivialTriangle`
+instance: `Cell := Fin 1`, `vertex _ k := k.val`, `adj _ _ := none`.
+All four proof obligations close by single terms — `Fin.val_injective`
+for `vertex_injective`, `Option.noConfusion h` for
+`adj_symm`/`adj_vertex`/`adj_ne`. Plus 15 LOC of `/-! ... -/`
+docstring framing the instance as a smoke-test sibling to
+`intervalTriangulation` (line 958).
+
+**Build-verification posture.** Worktree `proofs/.lake` inherits the
+self-referential symlink loop; local Docker build unreliable. Lean
+file committed and pushed first; doctor agent verifies from clean
+worktree.
+
+**Files updated (S2 ACT):**
+
+- `proofs/Proofs/SpernerSimplicialInstance.lean` — +28 LOC.
+- `research/problems/sperner-simplicial-instance-oq-01/state.md` —
+  this file. Iter 1 → 2, phase OBSERVE → ACT.
+- `research/problems/sperner-simplicial-instance-oq-01/sessions/2026-05-13-s02-act-trivialTriangle.md`
+  — new session note with patch traces and PREP cross-references.
+- `src/data/research/problems/sperner-simplicial-instance-oq-01.json`
+  — iter / progressSummary / focus / nextAction update.
+
+**Next action (S3).** Begin Candidate C — `LatticePoint m` abbrev +
+`TriCell m` inductive (~80 LOC), per S2 PREP §10 + S1 OBSERVE
+ranking. Candidate C is the load-bearing chain for `oq-03`
+`boundary_doors_odd`, `oq-04` Brouwer fixed-point, and `oq-06`
+Gale's Hex theorem.
+
+**Race-safety note (S2 ACT).** Pre-claim probe (2026-05-13 05:18 UTC):
+0 open PRs; most recent merge is the S2 PREP doc PR #18578 at 04:48 UTC.
+Pre-push re-check to re-verify before push.
 
 ## Session 1 — S1 OBSERVE: candidate-ranking + S2 ACT path (researcher-11, 2026-05-12)
 

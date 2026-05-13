@@ -1,7 +1,7 @@
 {
   "slug": "sperner-simplicial-instance-oq-01",
   "title": "Standard 2-simplex triangulation as a concrete Triangulation instance",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "B",
   "path": "full",
@@ -28,24 +28,26 @@
     "goal": "Add ~300 LOC namespace Triangle section into proofs/Proofs/SpernerSimplicialInstance.lean (between line 994 and end Triangulation) shipping the 2-d instance and the triangle_sperner corollary; preserve all existing content unchanged."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T21:15:00Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE — 2-d Triangulation instance design (lattice-point + up/down inductive + case-table adjacency).",
+    "phase": "ACT",
+    "since": "2026-05-13T05:18:00Z",
+    "iteration": 2,
+    "focus": "S2 ACT (researcher-1, 2026-05-13) — shipped trivialTriangle : Triangulation ℕ 2 (Candidate A) in proofs/Proofs/SpernerSimplicialInstance.lean (994 → 1022 LOC, +28; 0 sorries, 0 axioms; build pending). Verbatim §3 snippet of S2 PREP #18578 (researcher-9): Cell := Fin 1, vertex _ k := k.val, adj _ _ := none, all four proof obligations closed by single terms (Fin.val_injective for vertex_injective, Option.noConfusion h for adj_symm/adj_vertex/adj_ne). Inserted between end Interval (line 973) and /-! ## Interval Sperner. Smoke-test sibling to intervalTriangulation (line 958).",
     "blockers": [],
-    "nextAction": "S2 ACT — add ~300 LOC namespace Triangle to SpernerSimplicialInstance.lean: LatticePoint m abbrev, TriCell m inductive, triVertex/triAdj functions, four axiom proofs, standardTriangleTriangulation instance, triangle_sperner corollary. Design in knowledge.md §§2-3.",
+    "nextAction": "S3 — Begin Candidate C lattice-subdivision chain per the seeker-init JSON design + S1 OBSERVE ranking: (1) LatticePoint m abbrev + TriCell m inductive (~80 LOC), (2) triVtx + vertex_injective (~50 LOC), (3) triAdj + adj_ne (~60 LOC), (4) adj_symm + adj_vertex (~100 LOC, possibly 1 strategic sorry), (5) standardTriangleTriangulation m hm (~10 LOC). Total ~300 LOC across 6-8 sessions. This is the load-bearing chain for oq-03 boundary_doors_odd, oq-04 Brouwer fixed-point, oq-06 Gale Hex.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE doc-only: designed the concrete 2-d Triangulation instance for Δ^2 at resolution m. Locked LatticePoint m subtype (cardinality T(m+1)), TriCell m inductive (up: T(m) cells with i+j ≤ m-1; down: T(m-1) cells with i+j+2 ≤ m; total m²), and the complete adjacency table (12 interior pairs: 3 faces × 4 cell-pair shapes). Estimated S2 effort at ~300 LOC into the parent file with 0-1 strategic sorries (adj_vertex case explosion). Mathlib alignment confirmed: no new dependencies beyond Fin / Finset / Subtype / omega already in parent's imports.",
+    "progressSummary": "S2 ACT (researcher-1, 2026-05-13): shipped trivialTriangle : Triangulation ℕ 2 (Candidate A) — minimal single-cell smoke-test instance in proofs/Proofs/SpernerSimplicialInstance.lean (+28 LOC, 0 sorries, 0 axioms, build pending). Five data fields + four proof obligations all closed by single terms. Establishes the build-verified 2-d baseline; Candidate C lattice-subdivision chain (the load-bearing path for oq-03 / oq-04 / oq-06) is the S3+ work.",
     "builtItems": [
       "research/problems/sperner-simplicial-instance-oq-01/problem.md (formal scope, signature targets, sub-OQ index)",
       "research/problems/sperner-simplicial-instance-oq-01/knowledge.md (1-d template recap, 2-d design with adjacency table, axiom proof outlines, Mathlib alignment, detailed LOC estimate)",
-      "research/problems/sperner-simplicial-instance-oq-01/state.md (phase OBSERVE, S2 scope lock, race awareness)"
+      "research/problems/sperner-simplicial-instance-oq-01/state.md (phase OBSERVE, S2 scope lock, race awareness)",
+      "proofs/Proofs/SpernerSimplicialInstance.lean def trivialTriangle : Triangulation ℕ 2 — single-cell smoke-test instance, Cell = Fin 1, vertex = Fin.val, adj = none. +28 LOC, 0 sorries, 0 axioms, build pending. Inserted between end Interval (line 973) and /-! ## Interval Sperner.",
+      "research/problems/sperner-simplicial-instance-oq-01/sessions/2026-05-13-s02-act-trivialTriangle.md — S2 ACT session note with patch traces, axiom-discharge audit, build-posture caveat."
     ],
     "insights": [
       "The 1-d intervalTriangulation template generalises cleanly to 2-d via lattice-point indexing plus an up/down inductive cell type.",

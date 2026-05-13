@@ -972,6 +972,34 @@ def intervalTriangulation (m : ℕ) (hm : 0 < m) :
 
 end Interval
 
+/-! ## Trivial 2-Simplex Triangulation
+
+The minimal `Triangulation ℕ 2` instance: a single 2-simplex with
+ordered vertices `(0, 1, 2)` and three boundary faces. This is the
+2-d analogue of the singleton case `intervalTriangulation 1` and
+serves three purposes:
+
+* Smoke-test for the abstract bridge `toCellComplex` at `n = 2`.
+* Fixture for `boundary_doors_odd` work on the standard 2-simplex
+  (open question `sperner-simplicial-instance-oq-03`).
+* Prerequisite check for any downstream `Triangulation ℕ 2`-valued
+  construction (e.g. the `m × m` subdivision in Candidate C). -/
+
+/-- A single 2-simplex with vertices `(0, 1, 2)` and three
+boundary faces. All four proof obligations discharge by
+`Fin.val_injective` (vertex map is `Fin.val` up to eta) or
+by `Option.noConfusion` (every adjacency is `none`). -/
+def trivialTriangle : Triangulation ℕ 2 where
+  Cell := Fin 1
+  cellDecEq := inferInstance
+  cellFintype := inferInstance
+  vertex := fun _ k => k.val
+  vertex_injective := fun _ => Fin.val_injective
+  adj := fun _ _ => none
+  adj_symm := fun _ _ _ _ h => Option.noConfusion h
+  adj_vertex := fun _ _ _ _ h => Option.noConfusion h
+  adj_ne := fun _ _ _ _ h => Option.noConfusion h
+
 /-! ## Interval Sperner's Lemma
 
 As a sanity check, we state the 1-d Sperner theorem for the
