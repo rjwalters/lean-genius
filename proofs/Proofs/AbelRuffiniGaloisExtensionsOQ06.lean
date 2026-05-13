@@ -157,30 +157,197 @@ theorem nat_card_eq : Nat.card (AGL1Z p) = p * (p - 1) := by
 end AGL1Z
 
 /-!
-  ## Deferred (S3+ stubs)
+  ## S3 — Solvability via short exact sequence
 
-  The following are placeholders for the next iteration. Each is replaced
-  by a sorry-free proof in S3 (solvability + faithfulness) or S4 (primitivity).
+  Both ends `(Multiplicative (ZMod p), +)` and `(ZMod p)ˣ` are abelian and
+  hence solvable (`CommGroup.isSolvable`); the middle term `AGL1Z p` is then
+  solvable via `solvable_of_ker_le_range` applied to the translation
+  inclusion and the scaling projection.
 -/
+
+namespace AGL1Z
+
+variable {p : ℕ} [hp : Fact p.Prime]
+
+/--
+  The "scale" projection `AGL1Z p →* (ZMod p)ˣ`. The translation kernel of
+  this map is the abelian normal subgroup of pure translations.
+-/
+def scaleHom (p : ℕ) [Fact p.Prime] : AGL1Z p →* (ZMod p)ˣ where
+  toFun g := g.scale
+  map_one' := AGL1Z.one_scale
+  map_mul' g h := AGL1Z.mul_scale g h
+
+/--
+  The "translation" inclusion `Multiplicative (ZMod p) →* AGL1Z p`.
+  Sends the `Multiplicative`-encoded `a` to the pure translation `(a, 1)`.
+  `Multiplicative` is the standard way to view the additive group `ZMod p`
+  as a multiplicative group so that we can build a `MonoidHom` into the
+  multiplicative `AGL1Z p`.
+-/
+def transHom (p : ℕ) [Fact p.Prime] :
+    Multiplicative (ZMod p) →* AGL1Z p where
+  toFun a := ⟨Multiplicative.toAdd a, 1⟩
+  map_one' := by
+    apply AGL1Z.ext
+    · rfl
+    · rfl
+  map_mul' a b := by
+    apply AGL1Z.ext
+    · -- `(a * b).toAdd = a.toAdd + b.toAdd` definitionally
+      show (Multiplicative.toAdd (a * b) : ZMod p)
+          = Multiplicative.toAdd a + ((1 : (ZMod p)ˣ) : ZMod p)
+              * Multiplicative.toAdd b
+      push_cast
+      ring
+    · -- 1 = 1 * 1 in `(ZMod p)ˣ`
+      show (1 : (ZMod p)ˣ) = 1 * 1
+      simp
+
+/--
+  The kernel of the scale projection is contained in the range of the
+  translation inclusion: every `(a, u)` with `u = 1` is the image of
+  `Multiplicative.ofAdd a` under `transHom`.
+-/
+theorem ker_scaleHom_le_range_transHom (p : ℕ) [Fact p.Prime] :
+    (scaleHom p).ker ≤ (transHom p).range := by
+  intro g hg
+  rw [MonoidHom.mem_ker] at hg
+  -- `hg : g.scale = 1`. Witness: `Multiplicative.ofAdd g.trans`.
+  refine ⟨Multiplicative.ofAdd g.trans, ?_⟩
+  apply AGL1Z.ext
+  · rfl
+  · -- Goal becomes `1 = g.scale`; close with `hg.symm`.
+    exact hg.symm
+
+end AGL1Z
 
 variable (p : ℕ) [Fact p.Prime]
 
 /--
-  **S3 stub.** The affine group is solvable: the short exact sequence
-  `1 → ZMod p → AGL1Z p → (ZMod p)ˣ → 1` exhibits `AGL1Z p` as an
-  abelian-by-abelian extension, so the derived length is at most 2.
+  **Solvability of `AGL(1, p)`.** The short exact sequence
+  `1 → Multiplicative (ZMod p) → AGL1Z p → (ZMod p)ˣ → 1` exhibits
+  `AGL1Z p` as an abelian-by-abelian extension. Both ends are solvable
+  (via `CommGroup.isSolvable`), so `solvable_of_ker_le_range` gives
+  solvability of `AGL1Z p` with derived length at most 2.
 -/
-theorem AGL1Z_isSolvable : IsSolvable (AGL1Z p) := by
-  sorry
+theorem AGL1Z_isSolvable : IsSolvable (AGL1Z p) :=
+  solvable_of_ker_le_range (AGL1Z.transHom p) (AGL1Z.scaleHom p)
+    (AGL1Z.ker_scaleHom_le_range_transHom p)
+
+/-!
+  ## S3 — Faithful permutation action
+
+  The natural affine action `(a, u) · x = a + u · x` packages as a
+  monoid homomorphism `AGL1Z p →* Equiv.Perm (ZMod p)`. We verify
+  injectivity by evaluating at `x = 0` (forces `g.trans = 0`) and `x = 1`
+  (forces `g.scale = 1`).
+-/
+
+namespace AGL1Z
+
+variable {p : ℕ} [hp : Fact p.Prime]
 
 /--
-  **S3 stub.** The natural action `AGL1Z p → Equiv.Perm (ZMod p)`
-  given by `(a, u) · x = a + u · x` is faithful (an injective group
-  homomorphism). The proof requires defining the action map and verifying
-  injectivity via `(a, u) ∈ ker ↔ a = 0 ∧ u = 1`.
+  The action of `g = ⟨a, u⟩` on `ZMod p` packaged as an `Equiv.Perm`.
+  Forward direction `x ↦ a + u·x`; inverse `y ↦ u⁻¹·(y - a)`.
+-/
+def toPermEquiv (g : AGL1Z p) : Equiv.Perm (ZMod p) where
+  toFun x := g.trans + (g.scale : ZMod p) * x
+  invFun y := ((g.scale⁻¹ : (ZMod p)ˣ) : ZMod p) * (y - g.trans)
+  left_inv := by
+    intro x
+    show ((g.scale⁻¹ : (ZMod p)ˣ) : ZMod p)
+        * ((g.trans + (g.scale : ZMod p) * x) - g.trans) = x
+    have hu : ((g.scale⁻¹ : (ZMod p)ˣ) : ZMod p)
+        * ((g.scale : ZMod p)) = 1 := by
+      rw [← Units.val_mul, inv_mul_cancel]
+      rfl
+    -- Distribute and cancel using `hu`.
+    have : ((g.scale⁻¹ : (ZMod p)ˣ) : ZMod p)
+        * ((g.trans + (g.scale : ZMod p) * x) - g.trans)
+        = ((g.scale⁻¹ : (ZMod p)ˣ) : ZMod p) * (g.scale : ZMod p) * x := by
+      ring
+    rw [this, hu, one_mul]
+  right_inv := by
+    intro y
+    show g.trans + (g.scale : ZMod p)
+          * (((g.scale⁻¹ : (ZMod p)ˣ) : ZMod p) * (y - g.trans)) = y
+    have hu : ((g.scale : ZMod p))
+        * ((g.scale⁻¹ : (ZMod p)ˣ) : ZMod p) = 1 := by
+      rw [← Units.val_mul, mul_inv_cancel]
+      rfl
+    have : g.trans + (g.scale : ZMod p)
+            * (((g.scale⁻¹ : (ZMod p)ˣ) : ZMod p) * (y - g.trans))
+        = g.trans + (g.scale : ZMod p)
+            * ((g.scale⁻¹ : (ZMod p)ˣ) : ZMod p) * (y - g.trans) := by
+      ring
+    rw [this, hu, one_mul]
+    ring
+
+/--
+  The action packaged as a `MonoidHom AGL1Z p →* Equiv.Perm (ZMod p)`.
+  Multiplicativity follows from the semidirect product law
+  `(g * h).trans = g.trans + g.scale · h.trans` and
+  `(g * h).scale = g.scale · h.scale`.
+-/
+def toPerm (p : ℕ) [Fact p.Prime] :
+    AGL1Z p →* Equiv.Perm (ZMod p) where
+  toFun := toPermEquiv
+  map_one' := by
+    apply Equiv.ext
+    intro x
+    show (1 : AGL1Z p).trans + ((1 : AGL1Z p).scale : ZMod p) * x = x
+    rw [AGL1Z.one_trans, AGL1Z.one_scale]
+    push_cast
+    ring
+  map_mul' g h := by
+    apply Equiv.ext
+    intro x
+    show (g * h).trans + ((g * h).scale : ZMod p) * x
+        = g.trans + (g.scale : ZMod p)
+            * (h.trans + (h.scale : ZMod p) * x)
+    rw [AGL1Z.mul_trans, AGL1Z.mul_scale]
+    push_cast
+    ring
+
+/-- The action is faithful: only the identity element acts trivially. -/
+theorem toPerm_injective (p : ℕ) [Fact p.Prime] :
+    Function.Injective (toPerm p) := by
+  intro g₁ g₂ hg
+  apply AGL1Z.ext
+  · -- Evaluate both sides at `x = 0`.
+    have h0 := Equiv.ext_iff.mp hg 0
+    -- `toPermEquiv gᵢ 0 = gᵢ.trans + gᵢ.scale * 0 = gᵢ.trans`.
+    have : g₁.trans + (g₁.scale : ZMod p) * 0
+        = g₂.trans + (g₂.scale : ZMod p) * 0 := h0
+    simpa using this
+  · -- From `x = 0` get `g₁.trans = g₂.trans`; from `x = 1` get scale-equality.
+    have h0 := Equiv.ext_iff.mp hg 0
+    have h1 := Equiv.ext_iff.mp hg 1
+    have htrans : g₁.trans = g₂.trans := by
+      have : g₁.trans + (g₁.scale : ZMod p) * 0
+          = g₂.trans + (g₂.scale : ZMod p) * 0 := h0
+      simpa using this
+    have heq1 : g₁.trans + (g₁.scale : ZMod p) * 1
+        = g₂.trans + (g₂.scale : ZMod p) * 1 := h1
+    have hscale_val : (g₁.scale : ZMod p) = (g₂.scale : ZMod p) := by
+      have : g₁.trans + (g₁.scale : ZMod p)
+          = g₂.trans + (g₂.scale : ZMod p) := by simpa using heq1
+      rw [htrans] at this
+      exact add_left_cancel this
+    -- Lift `(g₁.scale : ZMod p) = (g₂.scale : ZMod p)` to `g₁.scale = g₂.scale`.
+    exact Units.ext hscale_val
+
+end AGL1Z
+
+/--
+  **Faithful action of `AGL(1, p)` on `ZMod p`.** The map
+  `toPerm : AGL1Z p →* Equiv.Perm (ZMod p)` sending `(a, u)` to the
+  affine permutation `x ↦ a + u·x` is an injective group homomorphism.
 -/
 theorem AGL1Z_faithful_action :
-    ∃ φ : AGL1Z p →* Equiv.Perm (ZMod p), Function.Injective φ := by
-  sorry
+    ∃ φ : AGL1Z p →* Equiv.Perm (ZMod p), Function.Injective φ :=
+  ⟨AGL1Z.toPerm p, AGL1Z.toPerm_injective p⟩
 
 end AbelRuffiniGaloisExtensionsOQ06

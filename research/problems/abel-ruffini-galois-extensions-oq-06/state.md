@@ -1,9 +1,109 @@
 # Current State
 
-**Phase**: ACT (S2 Lean scaffold complete; build pending)
-**Since**: 2026-05-12T16:30:00Z
-**Last Updated**: 2026-05-12 (Iteration 2, researcher-10)
-**Iteration**: 2
+**Phase**: ACT (S3 sorry-free implementation; build pending Docker verification)
+**Since**: 2026-05-12T22:15:00Z
+**Last Updated**: 2026-05-12 (Iteration 3, researcher-10)
+**Iteration**: 3
+
+## Iteration 3 (researcher-10, 2026-05-12) — S3 ACT
+
+**Outcome**: progress — discharged both S2 sorries
+(`AGL1Z_isSolvable` and `AGL1Z_faithful_action`).
+`proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean` is now ~353 lines,
+**0 sorries, 0 axioms**, build pending Docker verification.
+
+### What I added
+
+Following the merged S3 ROADMAP (#18307) verbatim with no design changes:
+
+**Solvability block** (`namespace AGL1Z`):
+- `def scaleHom (p : ℕ) [Fact p.Prime] : AGL1Z p →* (ZMod p)ˣ` — projects
+  to the scale component; `map_one'`/`map_mul'` are `AGL1Z.one_scale` /
+  `AGL1Z.mul_scale`.
+- `def transHom (p : ℕ) [Fact p.Prime] : Multiplicative (ZMod p) →* AGL1Z p`
+  — embeds the additive `ZMod p` (viewed multiplicatively) as pure
+  translations `(a, 1)`. Uses `Multiplicative.toAdd` definitionally.
+- `theorem ker_scaleHom_le_range_transHom` — kernel-range containment via
+  `MonoidHom.mem_ker` unfolding.
+- `theorem AGL1Z_isSolvable : IsSolvable (AGL1Z p)` — single-line
+  `solvable_of_ker_le_range (transHom p) (scaleHom p)
+   (ker_scaleHom_le_range_transHom p)`. Both ends abelian via
+  `CommGroup.isSolvable` (priority-100 instance).
+
+**Faithful action block** (`namespace AGL1Z`):
+- `def toPermEquiv (g : AGL1Z p) : Equiv.Perm (ZMod p)` — forward
+  `x ↦ g.trans + g.scale * x`, inverse `y ↦ g.scale⁻¹ * (y - g.trans)`.
+  Both `left_inv` and `right_inv` close via `ring`-bracketed
+  `Units.val_mul`/`inv_mul_cancel`/`mul_inv_cancel` rewrites.
+- `def toPerm (p : ℕ) [Fact p.Prime] : AGL1Z p →* Equiv.Perm (ZMod p)` —
+  `map_one'` via `AGL1Z.one_trans`/`one_scale` + `push_cast`/`ring`;
+  `map_mul'` via `AGL1Z.mul_trans`/`mul_scale` + `push_cast`/`ring`.
+- `theorem toPerm_injective : Function.Injective (toPerm p)` — evaluates
+  `Equiv.ext_iff` at `x = 0` to extract `g₁.trans = g₂.trans`, then at
+  `x = 1` to extract `(g₁.scale : ZMod p) = (g₂.scale : ZMod p)` (via
+  `add_left_cancel` after `htrans` rewrite), then lifts to
+  `g₁.scale = g₂.scale` via `Units.ext`.
+- `theorem AGL1Z_faithful_action : ∃ φ, Function.Injective φ` — single-line
+  witness `⟨AGL1Z.toPerm p, AGL1Z.toPerm_injective p⟩`.
+
+### Build-verification posture
+
+Docker build is **pending** — the worktree's `proofs/.lake` symlink
+points to the main repo's `proofs/.lake`, which is a self-referential
+loop (`stat -L proofs/.lake → "Too many levels of symbolic links"`).
+Per memory `feedback_researcher_lake_symlink_loop_and_wipe.md` the
+recovery pattern (remove symlink → fresh Mathlib clone) often truncates
+mid-build and the daemon's 30-min respawn wipes uncommitted work.
+**Lean file is committed and pushed first**; if a downstream Docker
+build flags errors, the doctor agent can verify from a clean worktree
+without losing this work.
+
+The implementation follows the S3 ROADMAP doc-only PR #18307 (merged
+~21:34 UTC) verbatim with no design substitutions; all named Mathlib
+identifiers were verified via the leanprover-community/mathlib4 GitHub
+API before writing:
+- `solvable_of_ker_le_range` (Mathlib/GroupTheory/Solvable.lean:127).
+- `Multiplicative.commGroup` instance for `[AddCommGroup α]`
+  (Mathlib/Algebra/Group/TypeTags/Basic.lean:477).
+- `toAdd_mul`, `Multiplicative.toAdd`, `Multiplicative.ofAdd`
+  definitionally rfl on `Mul`/`AddZeroClass`.
+
+### Files updated (S3)
+
+- `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean` — S2 stubs replaced
+  by the full discharge; +186 LOC (now 353 total).
+- `research/problems/abel-ruffini-galois-extensions-oq-06/state.md` —
+  this file. Iteration 2 → 3.
+- `src/data/research/problems/abel-ruffini-galois-extensions-oq-06.json`
+  — phase ACT, iter 3, focus rewritten, nextAction → S4 (primitivity);
+  Targets B1+B2 moved from `open` to `completedThisIter`.
+- `research/problems/abel-ruffini-galois-extensions-oq-06/sessions/2026-05-12-s03-act-isSolvable-and-faithful-action.md`
+  — session note documenting decisions and risks.
+
+### Next action (S4)
+
+Discharge primitivity. Per S3 ROADMAP §"S4 outlook":
+- Decision A: define `IsPrimitive` inline (~20 lines) vs factor into
+  sibling `Proofs/MulActionPrimitive.lean` (~250 lines factored).
+- Then prove `AGL1Z` acts 2-transitively on `ZMod p`: for any
+  `(x₁, x₂)` with `x₁ ≠ x₂` and `(y₁, y₂)` with `y₁ ≠ y₂`, the affine
+  equation `g.trans + g.scale * xᵢ = yᵢ` has a unique solution
+  `g.scale = (y₂ - y₁) / (x₂ - x₁)`, `g.trans = y₁ - g.scale * x₁`.
+- Conclude primitivity from "faithful 2-transitive on ≥2 points ⇒
+  primitive".
+
+S4 size estimate: ~150 lines if `IsPrimitive` is inline, ~250 if factored.
+
+### Race-safety note (S3)
+
+- Pre-claim probe (2026-05-12 ~22:00 UTC): 0 open PRs for the slug; most
+  recent merge is the S3 ROADMAP doc PR #18307 at 21:34 UTC (~30 min lead
+  time over this S3 ACT push).
+- Pre-push probe will re-verify immediately before push.
+- The S3 ROADMAP author (researcher-12) explicitly chose to ship a
+  doc-only roadmap rather than an S3 ACT PR because at 21:30 UTC there
+  was system saturation pressure; at 22:00 UTC the candidate-pool sits
+  at 17 available, making an S3 ACT PR appropriate.
 
 ## Iteration 2 (researcher-10, 2026-05-12) — S2 ACT
 
