@@ -841,3 +841,91 @@ earlier iterations (`symBUDim_le_of_le` from parent,
    axiom, or n=4 case via Klein-4 V₄ ≤ S₄ structure.
 5. Stretch (unchanged): falsification target `buDim 3 3` via
    equivariant cohomology of Z/3 on simple S²-actions.
+
+## Iteration 17 Builds (researcher-3, 2026-05-13)
+
+Focus: **even-d / odd-d asymmetry of the conjecture's content** — settle
+Path Forward Item 3 from Iter 16 in the negative.  The strict-monotonicity
+variant of `buDim_largestPrime_mono` cannot hold at any even `d` under the
+file's existing axioms, because parent's `buDim_prime` already pins
+`buDim p (2k) = 2k − 1` for *every* prime `p` (and hence for every
+`largestPrimeBelow n`).  The conjecture's non-trivial content therefore
+lives strictly at odd `d` where the parent's cyclic Yang-Borsuk axiom is
+silent for primes `p ≥ 3`.
+
+### Part XXIV additions (axiom-free)
+
+- `buDim_largestPrime_even_eq`: for `n ≥ 2` and `k ≥ 1`,
+  `buDim (largestPrimeBelow n) (2 * k) = 2 * k − 1`.  One-line reduction
+  of parent's `buDim_prime` along `largestPrimeBelow_isPrime`.  Notable:
+  the file's `symBUDim_eq_largestPrime` axiom is *not* required on this
+  side of the bridge — the value is pinned purely by the parent.
+- `buDim_largestPrime_even_const`: constancy in `n` of
+  `buDim ∘ largestPrimeBelow` at every fixed even `d`.  Direct
+  composition of `buDim_largestPrime_even_eq` on each side.
+- `buDim_largestPrime_even_no_strict_mono`: formal refutation of strict
+  `<` for `buDim_largestPrime_mono` (PART XXIII) at every even `d`.  The
+  Iter 16 Path Forward Item 3 strict-monotonicity follow-up is therefore
+  impossible at every even `d` under the file's existing axioms — the
+  result is a fixed point of the parent's cyclic axiom.
+
+### Part XXIV additions (conditional on `symBUDim_eq_largestPrime`)
+
+- `symBUDim_even_const_across_n`: under the file's axiom, for `n, m ≥ 2`
+  and `k ≥ 1`, `symBUDim n (2 * k) = symBUDim m (2 * k)`.  Composition of
+  PART III's `symBUDim_even_formula` on each side.  Restates the
+  conjecture's even-`d` prediction as constancy in `n`, not strict
+  monotonicity.
+- `symBUDim_even_no_strict_mono`: symBUDim-side companion of the
+  no-strict-mono result.  Under the file's axiom, strict `<` between any
+  two `n, m ≥ 2` at any even `d` is impossible.
+
+### Part XXIV additions (hypothesis-form variants)
+
+- `symBUDim_even_const_across_n_of`,
+  `symBUDim_even_no_strict_mono_of`: same statements under
+  `ConjectureLPB`.  Matches the existing hypothesis-form layer for
+  downstream code that tracks conjecture-dependence at the type level.
+
+**Counts**: lineCount 1652 → 1788 (+136), theoremCount 102 → 109 (+7,
+substantive 100 → 107), definitionCount 2 (unchanged), axiomCount 1
+(unchanged), sorries 0 (unchanged).
+
+**Significance**: closes the strict-monotonicity follow-up from Iter 16
+in the negative at every even `d`.  The result is *axiom-free* for the
+`buDim ∘ largestPrimeBelow` side — parent's `buDim_prime` pins both
+sides of any comparison to `2k − 1`.  This sharpens the proven/open
+boundary: the conjecture's non-trivial content collapses to a constant
+at even `d` and lives genuinely at odd `d` only (where the parent's
+cyclic axiom is silent for primes `p ≥ 3`).
+
+The conditional symBUDim-side results give the matching even-`d`
+constancy in terms of the file's primary axiom, mirroring the
+existing parts-XVI/XX `symBUDim_eq_of_lpb_eq` family.  At even `d`, the
+conjecture predicts symBUDim is constant in `n` — directly visible by
+composing the file's axiom with the parent's even-`d` cyclic axiom.
+
+**Build**: not yet verified at iteration close (worktree was reset to
+origin/main mid-iter; new content uses only in-file infrastructure
+exercised by earlier iterations — `symBUDim_even_formula`,
+`symBUDim_even_formula_of`, `largestPrimeBelow_isPrime`, parent's
+`buDim_prime`, `lt_irrefl`).  CI is the ground truth.
+
+**Path forward** (revised post-iter-17):
+1. **Strict monotonicity at odd `d`** (new, narrowed scope): with Path
+   Forward Item 3 (Iter 16) now refuted at even `d`, the natural
+   strict-mono follow-up is restricted to odd `d`.  This direction
+   requires a **new** axiom about `buDim p (·)` for primes `p ≥ 3` at
+   odd `d`, which the parent does not currently carry.  Out of scope
+   without parent-side enrichment.
+2. **symBUDim-side biconditional** (still pending, unchanged from
+   iters 14–16): forward direction is
+   `symBUDim_const_in_unordered_no_prime_range`; reverse direction
+   needs `symBUDim_cyc` injectivity-across-primes which is not
+   currently axiomatized.
+3. **Concrete-pair monotonicity instances** (unchanged from Iter 16
+   Path Forward Item 2): incremental, gauge value before committing.
+4. Stretch (unchanged): n=3 case directly via `symBUDim_three`-style
+   axiom, or n=4 case via Klein-4 V₄ ≤ S₄ structure.
+5. Stretch (unchanged): falsification target `buDim 3 3` via
+   equivariant cohomology of Z/3 on simple S²-actions.
