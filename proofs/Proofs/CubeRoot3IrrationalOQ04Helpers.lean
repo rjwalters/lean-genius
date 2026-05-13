@@ -242,4 +242,34 @@ theorem cbrt3_lt_seventy_five_over_fifty_two : cbrt3 < (75 / 52 : ℝ) := by
   rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
   norm_num
 
+/-! ## S7 prep: new lower bound for `a₅ = 1`
+
+The sixth partial-quotient identity `cbrt3_a5 = 1` requires the
+two-sided sandwich
+
+  `437/303 < cbrt3 < 75/52`
+
+— the upper bound is the S6 helper `cbrt3_lt_seventy_five_over_fifty_two`
+above; the new lower bound `437/303 < cbrt3` is the sixth convergent
+`p₆/q₆ = 437/303` of the simple CF `[1; 2, 3, 1, 4, 1, …]` of OEIS
+A002945 (here `a₅ = 1`). After cubing, the sandwich
+
+  `(437/303)³ = 83453453/27818127 < 3 = 83454381/27818127`
+  `(75/52)³  =  421875/140608   > 3 =  421824/140608`
+
+is tighter than S6's `62/43 < cbrt3 < 75/52` (gap `2.4·10⁻³`) on the
+lower side: the new lower cube gap `928/27818127 ≈ 3.3·10⁻⁵` is about
+two orders of magnitude tighter, consistent with `437/303` being the
+sixth convergent.
+
+Two-line proof via the cubing-iff helper. -/
+
+/-- `437/303 < ∛3`. Cube target: `(437/303)³ = 83453453/27818127
+< 83454381/27818127 = 3` (strict: `3 · 27818127 = 83454381 > 83453453`,
+gap `928`). The sixth convergent of the simple CF of `∛3`. -/
+theorem four_thirty_seven_over_three_oh_three_lt_cbrt3 :
+    (437 / 303 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
