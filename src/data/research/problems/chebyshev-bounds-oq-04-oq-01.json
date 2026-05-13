@@ -1,7 +1,7 @@
 {
   "slug": "chebyshev-bounds-oq-04-oq-01",
   "title": "Elementary Proof of Full PNT from Chebyshev Bounds",
-  "phase": "OBSERVE",
+  "phase": "ACT (Iter 2 prime-value lemmas merged)",
   "status": "in-progress",
   "tier": "S",
   "path": "full",
@@ -33,29 +33,30 @@
     "goal": "Replace the axiom ChebyshevBoundsOQ04.chebyshevPsi_asymptotic with a Lean 4 proof following Selberg-Erdős 1949 elementary methods (no complex analysis)."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-09T03:50:00.000Z",
-    "iteration": 2,
-    "focus": "Iter 1 (researcher-12, 2026-05-09) scaffolds the Selberg auxiliary function Λ₂(n) and the partial sum S₂(N), with routine non-negativity, base-value, and monotonicity lemmas — all axiom-free, sorry-free. Iter 2 will target the Möbius–log identity Λ₂ = μ ∗ log² and the prime-base lemmas vonMangoldtConv_prime, selbergLambda2_prime.",
+    "phase": "ACT (Iter 2 prime-value lemmas merged)",
+    "since": "2026-05-13T22:50:00.000Z",
+    "iteration": 3,
+    "focus": "Iter 1 (researcher-12, 2026-05-09, PR #17658) scaffolds the Selberg auxiliary function Λ₂(n) and the partial sum S₂(N), with routine non-negativity, base-value, and monotonicity lemmas — all axiom-free, sorry-free. Iter 2 (PR #17690 merged 2026-05-12T00:48Z) closes the documented next-iteration deliverables #1 and #2: vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0 via Nat.divisors_prime + Finset.sum_pair) and selbergLambda2_prime (Λ₂(p) = (log p)² via vonMangoldt_apply_prime). Proofs/ChebyshevBoundsOQ04OQ01.lean now 230 LOC, 12 theorems, 3 noncomputable defs, 0 sorries, 0 axioms. Note: PR #17689 (same title 'Iter 2 — prime values', different branch) is OPEN, CONFLICTING, and stale since 2026-05-12T22:13Z — it was superseded by the merged #17690 but never closed; downstream maintainer cleanup may be appropriate.",
     "blockers": [],
-    "nextAction": "Iter 2: prove vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0 for prime p), selbergLambda2_prime (Λ₂(p) = (log p)²), and the Möbius–log identity Σ_{d ∣ n} μ(d) · log²(n/d) = Λ₂(n) using Mathlib's moebius_mul_coe_zeta and the standard Λ = μ ∗ log decomposition.",
+    "nextAction": "Iter 3: prove the Möbius–log identity Λ₂(n) = Σ_{d ∣ n} μ(d) · log²(n/d) for n ≥ 1, using Mathlib's moebius_mul_coe_zeta machinery and Λ = μ ∗ log. This is the central algebraic identity that converts Selberg's elementary PNT strategy into a Möbius-function manipulation problem; downstream Iter 4-6 (Selberg's symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N log N + O(N)) then becomes summation-by-parts plus Möbius hyperbola bounds.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "Iter 1 (2026-05-09, researcher-12, OBSERVE phase): scaffolded the Selberg-Erdős 1949 elementary PNT strategy in Proofs/ChebyshevBoundsOQ04OQ01.lean (209 lines, 10 theorems, 3 noncomputable defs, 0 sorries, 0 axioms). Defined Λ₂(n) := Λ(n)·log n + (Λ ∗ Λ)(n) and S₂(N) := Σ_{n ≤ N} Λ₂(n); proved vonMangoldtConv_zero, vonMangoldtConv_one, vonMangoldtConv_nonneg, selbergLambda2_zero, selbergLambda2_one, selbergLambda2_nonneg, selbergSum2_zero, selbergSum2_succ, selbergSum2_nonneg, selbergSum2_mono. Created gallery entry chebyshev-bounds-oq-04-oq-01 with status formalized / badge wip. The Selberg symmetry formula and Erdős finishing argument are documented in the file's roadmap and Future Work sections, and the chebyshevPsi_asymptotic axiom (parent's) remains the open target.",
+    "progressSummary": "Iter 2 (2026-05-12T00:48Z, PR #17690 merged) closes the documented Iter 1 next-iteration deliverables #1-2: added vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0 for prime p via Nat.divisors_prime + Finset.sum_pair + vonMangoldt_apply_one) and selbergLambda2_prime (Λ₂(p) = (log p)² via vonMangoldt_apply_prime). Proofs/ChebyshevBoundsOQ04OQ01.lean grows 206 → 230 LOC, 10 → 12 theorems, 0 sorries, 0 axioms maintained. PR #17690 also updated the gallery meta.json description + originalContributions to mention Iter 2; this research tracker JSON had been stale since 2026-05-09 and is now resynced (Iter 1 statement preserved below for history). Iter 1 (2026-05-09, researcher-12, OBSERVE phase, PR #17658): scaffolded the Selberg-Erdős 1949 elementary PNT strategy in Proofs/ChebyshevBoundsOQ04OQ01.lean (209 lines, 10 theorems, 3 noncomputable defs, 0 sorries, 0 axioms). Defined Λ₂(n) := Λ(n)·log n + (Λ ∗ Λ)(n) and S₂(N) := Σ_{n ≤ N} Λ₂(n); proved vonMangoldtConv_zero, vonMangoldtConv_one, vonMangoldtConv_nonneg, selbergLambda2_zero, selbergLambda2_one, selbergLambda2_nonneg, selbergSum2_zero, selbergSum2_succ, selbergSum2_nonneg, selbergSum2_mono. Created gallery entry chebyshev-bounds-oq-04-oq-01 with status formalized / badge wip. The Selberg symmetry formula and Erdős finishing argument are documented in the file's roadmap and Future Work sections, and the chebyshevPsi_asymptotic axiom (parent's) remains the open target.",
     "builtItems": [
-      "Proofs/ChebyshevBoundsOQ04OQ01.lean (206 lines, 10 theorems, 3 defs, 0 sorries, 0 axioms)",
-      "vonMangoldtConv : ℕ → ℝ — Dirichlet convolution Λ ∗ Λ as explicit divisor sum",
-      "selbergLambda2 : ℕ → ℝ — Selberg's Λ₂(n) := Λ(n)·log n + (Λ ∗ Λ)(n)",
-      "selbergSum2 : ℕ → ℝ — partial Selberg sum S₂(N) := Σ_{n ≤ N} Λ₂(n)",
-      "Lemmas: vonMangoldtConv_zero, vonMangoldtConv_one, vonMangoldtConv_nonneg",
-      "Lemmas: selbergLambda2_zero, selbergLambda2_one, selbergLambda2_nonneg",
-      "Lemmas: selbergSum2_zero, selbergSum2_succ, selbergSum2_nonneg, selbergSum2_mono",
-      "Gallery entry src/data/proofs/chebyshev-bounds-oq-04-oq-01/ (meta.json, index.ts, annotations.json)"
+      "Proofs/ChebyshevBoundsOQ04OQ01.lean — Iter 1 (PR #17658) + Iter 2 (PR #17690): 230 lines, 12 theorems, 3 noncomputable defs, 0 sorries, 0 axioms",
+      "vonMangoldtConv : ℕ → ℝ — Dirichlet convolution Λ ∗ Λ as explicit divisor sum (Iter 1)",
+      "selbergLambda2 : ℕ → ℝ — Selberg's Λ₂(n) := Λ(n)·log n + (Λ ∗ Λ)(n) (Iter 1)",
+      "selbergSum2 : ℕ → ℝ — partial Selberg sum S₂(N) := Σ_{n ≤ N} Λ₂(n) (Iter 1)",
+      "Iter 1 lemmas: vonMangoldtConv_zero, vonMangoldtConv_one, vonMangoldtConv_nonneg",
+      "Iter 1 lemmas: selbergLambda2_zero, selbergLambda2_one, selbergLambda2_nonneg",
+      "Iter 1 lemmas: selbergSum2_zero, selbergSum2_succ, selbergSum2_nonneg, selbergSum2_mono",
+      "Iter 2 lemmas (PR #17690): vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0 via Nat.divisors_prime + Finset.sum_pair) and selbergLambda2_prime (Λ₂(p) = (log p)² via vonMangoldt_apply_prime) — both axiom-free, sorry-free; closes documented Iter 1 Future Work items #1 and #2",
+      "Gallery entry src/data/proofs/chebyshev-bounds-oq-04-oq-01/ (meta.json, index.ts, annotations.json); meta.json description + originalContributions extended by PR #17690 to mention Iter 2"
     ],
     "insights": [
       "Selberg's Λ₂ identity Λ_2 = μ ∗ log² (where ∗ is Dirichlet convolution and μ is Möbius) reduces the elementary PNT proof to Möbius-function manipulations of log² — this is the dimensional reduction that bypasses complex analysis entirely.",
@@ -71,11 +72,11 @@
       "No formalization of Erdős's combinatorial finishing argument that derives lim sup |ψ(x)/x − 1| = 0 from a Tauberian-type oscillation inequality."
     ],
     "nextSteps": [
-      "Iter 2: prove vonMangoldtConv_prime ((Λ ∗ Λ)(p) = 0 for prime p) using Nat.Prime.divisors = {1, p} and vonMangoldt_apply_one.",
-      "Iter 2: prove selbergLambda2_prime (Λ₂(p) = (log p)²) — direct corollary.",
-      "Iter 3: prove the Möbius–log identity Λ₂(n) = Σ_{d ∣ n} μ(d) · log²(n/d) for n ≥ 1, using Mathlib's moebius_mul_coe_zeta machinery and Λ = μ ∗ log.",
+      "Iter 2 — DONE (PR #17690 merged 2026-05-12T00:48Z): vonMangoldtConv_prime + selbergLambda2_prime.",
+      "Iter 3 (next): prove the Möbius–log identity Λ₂(n) = Σ_{d ∣ n} μ(d) · log²(n/d) for n ≥ 1, using Mathlib's moebius_mul_coe_zeta machinery and Λ = μ ∗ log.",
       "Iter 4–6: prove Selberg's symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N log N + O(N). Decomposes as: (a) Σ_{n ≤ N} log²n = N log²N − 2N log N + O(log²N), (b) Möbius hyperbola summation to bound the error term.",
-      "Iter 7+: formalize the Tauberian inequality and Erdős's combinatorial finishing argument (lim sup V(x) = 0 ⇒ ψ(x)/x → 1)."
+      "Iter 7+: formalize the Tauberian inequality and Erdős's combinatorial finishing argument (lim sup V(x) = 0 ⇒ ψ(x)/x → 1).",
+      "Maintenance — open stale PR #17689 ('Iter 2 — prime values', CONFLICTING, last touched 2026-05-12T22:13Z) is superseded by merged #17690 with identical scope; downstream maintainer may close it."
     ]
   },
   "tags": [
@@ -134,7 +135,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.340Z",
-  "lastUpdate": "2026-05-09T03:55:00.000Z",
+  "lastUpdate": "2026-05-13T22:50:00.000Z",
   "significance": 9,
   "tractability": 3,
   "leanFiles": [
