@@ -319,6 +319,59 @@ theorem steinerberger_eq_n94 :
   native_decide
 
 /-
+## Section VI.b: Additional Cambie l=1 Doubling Solutions
+
+Cambie's conjecture predicts that every r=2 doubling solution has the
+form n = 2^l · p with l ≥ 1 and p ∈ {2, 3, 5, 7, 35, 47}. The l=1
+specialization gives six candidates: n ∈ {4, 6, 10, 14, 70, 94}.
+The cases n = 10 and n = 94 are recorded above; we now formalize the
+remaining four (n = 4, 6, 14, 70) using the Steinerberger sufficient
+direction.
+-/
+
+/-- p=2 case (l=1, n=4): φ(4) + φ(4 + φ(4)) = 2 + φ(6) = 2 + 2 = 4. -/
+theorem steinerberger_eq_n4 :
+    (4 : ℕ).totient + (4 + (4 : ℕ).totient).totient = 4 := by
+  native_decide
+
+/-- **Cambie l=1, p=2**: g_{k+2}(4) = 2·g_k(4) for all k.
+    n = 2^2 is a doubling solution via the Steinerberger reduction. -/
+theorem doubling_r2_n4 : DoublingRelation 4 2 :=
+  steinerberger_r2_sufficient (by norm_num) (by omega) steinerberger_eq_n4
+
+/-- p=3 case (l=1, n=6): φ(6) + φ(6 + φ(6)) = 2 + φ(8) = 2 + 4 = 6. -/
+theorem steinerberger_eq_n6 :
+    (6 : ℕ).totient + (6 + (6 : ℕ).totient).totient = 6 := by
+  native_decide
+
+/-- **Cambie l=1, p=3**: g_{k+2}(6) = 2·g_k(6) for all k.
+    n = 2·3 is a doubling solution. -/
+theorem doubling_r2_n6 : DoublingRelation 6 2 :=
+  steinerberger_r2_sufficient (by norm_num) (by omega) steinerberger_eq_n6
+
+/-- p=7 case (l=1, n=14): φ(14) + φ(14 + φ(14)) = 6 + φ(20) = 6 + 8 = 14. -/
+theorem steinerberger_eq_n14 :
+    (14 : ℕ).totient + (14 + (14 : ℕ).totient).totient = 14 := by
+  native_decide
+
+/-- **Cambie l=1, p=7**: g_{k+2}(14) = 2·g_k(14) for all k.
+    n = 2·7 is a doubling solution. -/
+theorem doubling_r2_n14 : DoublingRelation 14 2 :=
+  steinerberger_r2_sufficient (by norm_num) (by omega) steinerberger_eq_n14
+
+/-- p=35 case (l=1, n=70): φ(70) + φ(70 + φ(70)) = 24 + φ(94) = 24 + 46 = 70. -/
+theorem steinerberger_eq_n70 :
+    (70 : ℕ).totient + (70 + (70 : ℕ).totient).totient = 70 := by
+  native_decide
+
+/-- **Cambie l=1, p=35**: g_{k+2}(70) = 2·g_k(70) for all k.
+    n = 2·35 is a doubling solution. Together with `doubling_r2_n4`,
+    `doubling_r2_n6`, `doubling_r2_n10`, `doubling_r2_n14`, `doubling_r2_n94`
+    this exhausts the l=1 layer of Cambie's conjectured family. -/
+theorem doubling_r2_n70 : DoublingRelation 70 2 :=
+  steinerberger_r2_sufficient (by norm_num) (by omega) steinerberger_eq_n70
+
+/-
 ## Section VII: Structural Properties
 -/
 

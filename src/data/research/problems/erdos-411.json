@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-28T00:00:00.000Z",
-    "iteration": 4,
-    "focus": "All known cases (n=10, n=94, n=738, n=148646, n=4325798) PROVED as axiom-free theorems. Main characterization (ErdosProblem411) remains OPEN.",
+    "iteration": 9,
+    "focus": "Extended Cambie l=1 family with 4 new doubling solutions (n=4, 6, 14, 70) via Steinerberger sufficient direction. All 6 minimal l=1 candidates of Cambie family now proved.",
     "blockers": [
       "ErdosProblem411 (full characterization of all solutions) is the open question; not provable without major advance",
       "CambieConjecture (n=2^l·p with p∈{2,3,5,7,35,47}) is conjectural — no proof strategy known"
     ],
-    "nextAction": "Submit PR for ratio-4 additions. No further sorry/axiom elimination possible.",
+    "nextAction": "Optional: parametric power-of-2 case (n = 2^l, l>=2) via Mathlib totient_prime_pow; or Selfridge-Weintraub r=9 family.",
     "attemptCounts": {
       "total": 4,
       "currentApproach": 0,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM-FREE: Erdos411Problem.lean has 0 axioms and 0 sorries (303 lines). All known cases proved as theorems: doubling_r2_n10, doubling_r2_n94 (via native_decide + doubling_propagation), cambie_ratio3 (g_{k+4}(738)=3·g_k(738)), cambie_ratio4_148646 (g_{k+4}(148646)=4·g_k(148646) for k≥1), cambie_ratio4_4325798 (g_{k+4}(4325798)=4·g_k(4325798) for k≥1). The main conjecture ErdosProblem411 (full characterization) remains an open `def : Prop`, as does CambieConjecture; these are stated, not assumed.",
+    "progressSummary": "AXIOM-FREE / SORRY-FREE: Erdos411Problem.lean has 0 axioms and 0 sorries (397 lines, 30 theorems). All 6 l=1 candidates of Cambies conjectured family are proved (n=4, 6, 10, 14, 70, 94 via steinerberger_r2_sufficient + native_decide). Cambies ratio-3 (n=738) and both ratio-4 cases (n=148646, n=4325798) also proved. Open: full characterization (ErdosProblem411) and Cambies structural conjecture (CambieConjecture) remain as defs. Steinerberger reduction converse direction still open.",
     "builtItems": [
       "Survey: identified proof strategy for steinerberger_r2_equiv and downstream axioms",
       "totient_double_even: φ(2m)=2φ(m) for even m (from Mathlib)",
@@ -44,7 +44,12 @@
       "PROVED doubling_r2_n94: axiom→theorem (5A→4A)",
       "totientStep_quadruple: g(4m)=4·g(m) for 4|m (double-prime-totient identity)",
       "PROVED cambie_ratio4_148646: g_{k+4}(148646)=4·g_k(148646) for k≥1 (strong induction + native_decide base cases k=1..4)",
-      "PROVED cambie_ratio4_4325798: g_{k+4}(4325798)=4·g_k(4325798) for k≥1 (same proof structure)"
+      "PROVED cambie_ratio4_4325798: g_{k+4}(4325798)=4·g_k(4325798) for k≥1 (same proof structure)",
+      "PROVED steinerberger_eq_n4: phi(4)+phi(6)=4 (native_decide)",
+      "PROVED steinerberger_eq_n6: phi(6)+phi(8)=6 (native_decide)",
+      "PROVED steinerberger_eq_n14: phi(14)+phi(20)=14 (native_decide)",
+      "PROVED steinerberger_eq_n70: phi(70)+phi(94)=70 (native_decide)",
+      "PROVED doubling_r2_n4 / n6 / n14 / n70 (Cambie l=1 cases for p in {2,3,7,35}) via steinerberger_r2_sufficient"
     ],
     "insights": [
       "φ(2m) = 2φ(m) for even m — key identity enabling the scaling argument",
@@ -54,7 +59,9 @@
       "steinerberger_r2_equiv is the key enabler — proving it unlocks all r=2 axiom eliminations",
       "totient_double_even proved via Nat.totient_mul_of_prime_of_dvd (Mathlib). Key: φ(2m)=2φ(m) when 2|m.",
       "doubling_propagation: once g_2(n) = 2n verified computationally, the relation g_{k+2}=2·g_k propagates forever via g(2m)=2g(m).",
-      "Both r=2 solutions (n=10, n=94) proved: native_decide for base case, structural induction for propagation."
+      "Both r=2 solutions (n=10, n=94) proved: native_decide for base case, structural induction for propagation.",
+      "All six l=1 minimal Cambie candidates {4, 6, 10, 14, 70, 94} are now proved doubling solutions; consistent with Cambies structural conjecture",
+      "steinerberger_r2_sufficient (S8) is the key enabler — once available, each verified instance phi(n)+phi(n+phi(n))=n is a 1-line doubling theorem via native_decide"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -76,15 +83,15 @@
     "mathlib": []
   },
   "started": "2026-01-13T02:38:27.587Z",
-  "lastUpdate": "2026-04-28T00:00:00.000Z",
+  "lastUpdate": "2026-05-13T00:00:00.000Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "Proofs/Erdos411Problem.lean",
       "filename": "Erdos411Problem.lean",
-      "lineCount": 303,
-      "theoremCount": 17,
+      "lineCount": 397,
+      "theoremCount": 30,
       "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 0,
