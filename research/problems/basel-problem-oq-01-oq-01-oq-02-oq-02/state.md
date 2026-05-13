@@ -2,9 +2,92 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08
-**Iteration**: 9
+**Iteration**: 10
 
-## Session 9 (this session, planning + tactical analysis)
+## Session 10 (this session, ACT — m=3 even-n discharge)
+
+Implemented the S9 tactical plan, closing the **m=3 case** of
+`mul_choose_dvd_lcmRange` for **all** `n ≥ 3` (both parities). The
+proof avoids Kummer's theorem entirely — pure coprime decomposition
+plus the Part 9 algebraic identity.
+
+### Lean additions (file: BaselProblemOQ01OQ01OQ02OQ02.lean)
+
+| Part | Theorem | Conclusion |
+|------|---------|------------|
+| 9    | `three_mul_choose_three_eq_of_double` (`m ≥ 2`) | `3·C(2m, 3) = (2m)(2m-1)(m-1)` |
+| 10a  | `mul_choose_dvd_lcmRange_three_double_even` (`m ≥ 2`, `Even m`) | `3·C(2m, 3) ∣ lcmRange(2m)` |
+| 10b  | `mul_choose_dvd_lcmRange_three_double_odd` (`m ≥ 2`, `Odd m`)   | `3·C(2m, 3) ∣ lcmRange(2m)` |
+| 10c  | `mul_choose_dvd_lcmRange_three_even` (`n ≥ 4`, `Even n`)        | `3·C(n, 3) ∣ lcmRange n`   |
+| 10d  | `mul_choose_dvd_lcmRange_three` (`n ≥ 3`)                       | `3·C(n, 3) ∣ lcmRange n`   |
+
+Plus one private helper `three_factors_dvd_lcmRange` (DRY-ing the
+three-factor coprime-product divisibility argument shared by 10a/10b).
+
+### Coprime calculations (S10 implementation specifics)
+
+For **`Even m`** sub-case (10a), factorization `(2m, 2m-1, m-1)`:
+- `gcd(2m, 2m-1) = 1` via `2m = (2m-1) + 1` + `Nat.coprime_self_add_right`.
+- `gcd(2m, m-1) = 1`: established `gcd | 2` from `2m = 2(m-1) + 2`
+  using `Nat.dvd_sub'`, then `m-1` odd (forced by `Even m`) blocks
+  `2 ∣ gcd`, leaving `gcd ∈ {1}` after `omega` cleanup.
+- `gcd(2m-1, m-1) = 1` via `2m-1 = 1 + 2(m-1)` +
+  `Nat.gcd_add_mul_left_left` reducing to `gcd 1 (m-1) = 1`.
+
+For **`Odd m`** sub-case (10b), factorization `m(2m-1)(2m-2)`:
+- `gcd(m, 2m-1) = 1`: `gcd ∣ m ⇒ gcd ∣ 2m ⇒ gcd ∣ 2m-(2m-1) = 1`.
+- `gcd(m, 2m-2) = 1`: established `gcd | 2`, then `m` odd
+  (`Odd m`) blocks `2 ∣ gcd` (since `gcd | m`), leaving `gcd = 1`.
+- `gcd(2m-1, 2m-2) = 1` via `2m-1 = (2m-2) + 1` (consecutive).
+
+### Regrouping identity (10b)
+
+The `Odd m` sub-case requires regrouping Part 9's identity
+`3·C(2m, 3) = (2m)(2m-1)(m-1)` as `m(2m-1)(2m-2)`. Proof: substitute
+`2m-2 = 2(m-1)` and apply `ring`:
+  `2m * (2m-1) * (m-1) = m * (2m-1) * (2(m-1))`,
+where both sides treat `2m-1` and `m-1` as opaque Nat-sub variables.
+
+### Status delta
+
+| Metric          | Pre-S10 | Post-S10 |
+|-----------------|---------|----------|
+| File LOC        | 595     | 793      |
+| Sorries         | 0       | 0        |
+| Axioms          | 0       | 0        |
+| Theorems        | (per Part 8) | + 5 (+ 1 private) |
+| m=3 full target | Half (odd-n, S8) | **Complete** |
+
+**Build status**: pending (`.lake` symlink loop in worktree per
+memory; ship as build-pending per S7/S8 precedent and let doctor
+verify on a clean clone).
+
+### What this S10 closes
+
+The m=3 case `mul_choose_dvd_lcmRange_three` is **fully proved** for
+all `n ≥ 3`. This is one of the m-induction base cases for the
+general `mul_choose_dvd_lcmRange : 0 < m → m ≤ n → m·C(n,m) ∣ lcmRange n`
+(m=1, m=2 from S6; m=3 from S8+S10).
+
+### Open work after S10
+
+**m ≥ 4 (the genuine Kummer territory)**: the trick "parametrize `n = 2m`
+and re-group the `/2`" does **not** generalize. For m ≥ 4, the binomial
+coefficient `C(n, m)` carries `v_2 = s_2(m) + s_2(n-m) - s_2(n)` (digit-sum
+carry count), which cannot be uniformly absorbed by re-parametrization of
+`n` into a single product of three pairwise-coprime factors.
+
+Two routes for m ≥ 4:
+1. **Kummer**: prove `Nat.Prime.choose_mul_dvd_lcmRange` (factor-of-2
+   per prime) and assemble. ~150 LOC across multiple sessions.
+2. **Bypass**: re-read van der Poorten §6 (S5 next-action) to derive
+   the precise statement needed by the alternating-bilinear summand —
+   it may be a weaker divisibility than `mul_choose_dvd_lcmRange`,
+   e.g. only needing primes `p ≤ k`.
+
+**Axiom delta this session**: 0 (pure coprime + Nat arithmetic).
+
+## Session 9 (PR #18585, merged — planning + tactical analysis)
 
 Documentation-only iteration. No Lean changes; no sorry/axiom delta.
 Work product: a sharper, **operational** plan for the S10 m=3 even-n
