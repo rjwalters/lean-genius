@@ -1319,6 +1319,106 @@ theorem exists_bertrand_window_primes_mono_of (h : ConjectureLPB)
     largestPrimeBelow_le m,
     buDim_largestPrime_mono_of h hn hnm d⟩
 
+-- ═══════════════════════════════════════════════════════════════════════
+-- PART XXIV: Even-d / odd-d asymmetry of the conjecture's content
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-! ### Strict monotonicity at even d is *impossible*
+
+Iter 16 (Part XXIII) packaged `buDim ∘ largestPrimeBelow` as monotone in
+`n` under the file's axiom.  Its Path Forward Item 3 raised the natural
+follow-up: can the inequality be strengthened to a strict `<` across
+prime gaps?
+
+This iteration documents that the strict form is **impossible at every
+even `d`** under the file's existing axioms — independently of the
+conjecture:
+
+- Parent's `buDim_prime` (Yang-Borsuk) gives `buDim p (2 * k) = 2 * k - 1`
+  for **every** prime `p` and `k ≥ 1`.
+- Consequently `buDim (largestPrimeBelow n) (2 * k) = 2 * k - 1` for every
+  `n ≥ 2`, **axiom-free** (the file's `symBUDim_eq_largestPrime` is not
+  required for this side of the bridge).
+- Hence `buDim (largestPrimeBelow n) (2 * k)` is constant in `n`, and
+  no strict `<` can hold between any two `n, m ≥ 2`.
+
+The conjecture's genuine non-trivial content therefore lives at **odd
+`d`**, where the parent's `buDim p (·)` axiom is silent for primes
+`p ≥ 3`.  This sharpens the boundary between proven and open content
+established by earlier iterations.
+-/
+
+/-- **Axiom-free even-d value of `buDim ∘ largestPrimeBelow`**.
+    For `n ≥ 2` and `k ≥ 1`,
+    `buDim (largestPrimeBelow n) (2 * k) = 2 * k - 1`.
+
+    Uses only parent's `buDim_prime` (Yang-Borsuk for prime cyclic groups)
+    plus `largestPrimeBelow_isPrime` — the file's
+    `symBUDim_eq_largestPrime` axiom is **not** required. -/
+theorem buDim_largestPrime_even_eq (n k : ℕ) (hn : 2 ≤ n) (hk : 0 < k) :
+    buDim (largestPrimeBelow n) (2 * k) = 2 * k - 1 :=
+  buDim_prime (largestPrimeBelow n) k (largestPrimeBelow_isPrime n hn) hk
+
+/-- **Axiom-free even-d constancy of `buDim ∘ largestPrimeBelow` across n**.
+    For `n, m ≥ 2` and `k ≥ 1`,
+    `buDim (largestPrimeBelow n) (2 * k) = buDim (largestPrimeBelow m) (2 * k)`.
+
+    The prediction at even `d` is independent of the choice of `n` — both
+    sides reduce to `2 * k - 1` by `buDim_prime`. -/
+theorem buDim_largestPrime_even_const (n m k : ℕ) (hn : 2 ≤ n) (hm : 2 ≤ m)
+    (hk : 0 < k) :
+    buDim (largestPrimeBelow n) (2 * k) = buDim (largestPrimeBelow m) (2 * k) := by
+  rw [buDim_largestPrime_even_eq n k hn hk,
+      buDim_largestPrime_even_eq m k hm hk]
+
+/-- **No strict monotonicity at even d (axiom-free)**. For `n, m ≥ 2` and
+    `k ≥ 1`, `buDim (largestPrimeBelow n) (2 * k) <
+    buDim (largestPrimeBelow m) (2 * k)` is impossible.
+
+    Formal refutation of Iter 16 Path Forward Item 3's strict variant at
+    every even `d`: parent's `buDim_prime` pins both sides to `2 * k - 1`
+    regardless of which prime appears. -/
+theorem buDim_largestPrime_even_no_strict_mono
+    (n m k : ℕ) (hn : 2 ≤ n) (hm : 2 ≤ m) (hk : 0 < k) :
+    ¬ buDim (largestPrimeBelow n) (2 * k) < buDim (largestPrimeBelow m) (2 * k) := by
+  rw [buDim_largestPrime_even_const n m k hn hm hk]
+  exact lt_irrefl _
+
+/-- **Even-d constancy of `symBUDim` across `n`** (uses file's axiom).
+    For `n, m ≥ 2` and `k ≥ 1`, `symBUDim n (2 * k) = symBUDim m (2 * k)`.
+
+    Combines PART III's `symBUDim_even_formula` on each side.  The
+    conjecture's even-`d` content is constancy in `n`, not strict
+    monotonicity. -/
+theorem symBUDim_even_const_across_n (n m k : ℕ) (hn : 2 ≤ n) (hm : 2 ≤ m)
+    (hk : 0 < k) :
+    symBUDim n (2 * k) = symBUDim m (2 * k) := by
+  rw [symBUDim_even_formula n k hn hk, symBUDim_even_formula m k hm hk]
+
+/-- **Hypothesis-form** of `symBUDim_even_const_across_n`: same constancy
+    under `ConjectureLPB`. -/
+theorem symBUDim_even_const_across_n_of (h : ConjectureLPB)
+    (n m k : ℕ) (hn : 2 ≤ n) (hm : 2 ≤ m) (hk : 0 < k) :
+    symBUDim n (2 * k) = symBUDim m (2 * k) := by
+  rw [symBUDim_even_formula_of h n k hn hk,
+      symBUDim_even_formula_of h m k hm hk]
+
+/-- **No strict monotonicity of `symBUDim` at even `d`** (uses file's
+    axiom).  For `n, m ≥ 2` and `k ≥ 1`,
+    `symBUDim n (2 * k) < symBUDim m (2 * k)` is impossible. -/
+theorem symBUDim_even_no_strict_mono
+    (n m k : ℕ) (hn : 2 ≤ n) (hm : 2 ≤ m) (hk : 0 < k) :
+    ¬ symBUDim n (2 * k) < symBUDim m (2 * k) := by
+  rw [symBUDim_even_const_across_n n m k hn hm hk]
+  exact lt_irrefl _
+
+/-- **Hypothesis-form** of `symBUDim_even_no_strict_mono`. -/
+theorem symBUDim_even_no_strict_mono_of (h : ConjectureLPB)
+    (n m k : ℕ) (hn : 2 ≤ n) (hm : 2 ≤ m) (hk : 0 < k) :
+    ¬ symBUDim n (2 * k) < symBUDim m (2 * k) := by
+  rw [symBUDim_even_const_across_n_of h n m k hn hm hk]
+  exact lt_irrefl _
+
 /-
 ## Summary
 
@@ -1563,6 +1663,34 @@ theorem exists_bertrand_window_primes_mono_of (h : ConjectureLPB)
   `Eq.symm` of the existing `largestPrimeBelow_eight_eq_ten`.  Verifies
   `min`/`max` reduce as expected at concrete values.
 
+### Iteration 17 additions (even-d/odd-d asymmetry — Part XXIV)
+- `buDim_largestPrime_even_eq` — **axiom-free**: for `n ≥ 2` and `k ≥ 1`,
+  `buDim (largestPrimeBelow n) (2 * k) = 2 * k - 1`.  Reduces parent's
+  `buDim_prime` along `largestPrimeBelow_isPrime`.  Notable: the file's
+  `symBUDim_eq_largestPrime` axiom is **not** required for this side of
+  the bridge.
+- `buDim_largestPrime_even_const` — **axiom-free**: constancy of
+  `buDim ∘ largestPrimeBelow` across `n` at every even `d`.  Direct
+  composition of `buDim_largestPrime_even_eq` on each side.
+- `buDim_largestPrime_even_no_strict_mono` — **axiom-free**: formal
+  refutation of strict `<` for `buDim_largestPrime_mono` (PART XXIII) at
+  every even `d`.  Iter 16 Path Forward Item 3 raised the natural
+  strict-monotonicity follow-up; this theorem shows the strict form is
+  *impossible* at even `d` under the file's existing axioms.
+- `symBUDim_even_const_across_n` (conditional on `symBUDim_eq_largestPrime`)
+  and `_of` (hypothesis form): the conjecture's even-`d` content is
+  constancy of `symBUDim` in `n` at every fixed even `d` — not strict
+  monotonicity.  Compositions of PART III's `symBUDim_even_formula` on
+  each side.
+- `symBUDim_even_no_strict_mono` (conditional) and `_of` (hypothesis
+  form): symBUDim-side companion of the no-strict-mono result.
+
+**Significance**.  Sharpens the boundary between proven and open content:
+the conjecture's even-`d` content reduces to a constant `2 * k - 1`
+independent of `n` (parent's `buDim_prime` does all the work), so the
+genuine non-trivial prediction lives at **odd `d`** where the parent's
+`buDim p (·)` axiom is silent for primes `p ≥ 3`.
+
 ### Path forward
 - Stretch: prove the n=3 case (next-easiest after n=2) — would require
   axiomatizing or proving `symBUDim 3 d ≤ buDim 3 d`; n=3 is *not*
@@ -1649,4 +1777,12 @@ theorem exists_bertrand_window_primes_mono_of (h : ConjectureLPB)
 #check @buDim_largestPrime_mono_of
 #check @exists_bertrand_window_primes_mono
 #check @exists_bertrand_window_primes_mono_of
+
+#check @buDim_largestPrime_even_eq
+#check @buDim_largestPrime_even_const
+#check @buDim_largestPrime_even_no_strict_mono
+#check @symBUDim_even_const_across_n
+#check @symBUDim_even_const_across_n_of
+#check @symBUDim_even_no_strict_mono
+#check @symBUDim_even_no_strict_mono_of
 end BorsukUlamSymPrime
