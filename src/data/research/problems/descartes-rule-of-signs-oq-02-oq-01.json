@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-03-28T20:58:08-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "iteration": 2,
+    "focus": "S2 PREP complete (doc-only). Base cases pre-staged; architectural bridge identified; honest scope of remaining inductive step.",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "S2 ACT: add import + d=0 theorem + d=1 sub-lemmas + _natDegree_ge_two residual axiom to DescartesRuleOfSignsOQ02OQ01.lean",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,23 +29,40 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 2 of 3 building blocks proved (rolle_polynomial, root_of_sign_change). 1 sorry remains (linear_at_most_one_root). Full Budan proof still needs sign-change accounting (~200+ lines).",
+    "progressSummary": "PROGRESS: S1 (#17193) added 5 iterDeriv structural lemmas; OQ02OQ01 now 192 LOC, 9 thms, 0 sorries, 0 axioms. S2 PREP (this session): bootstrapped problem.md / state.md / knowledge.md + session note with concrete d=0 base-case proof (4 lines) + d=1 skeleton (40-60 LOC) + Mathlib bearer audit + Rolle-vs-factor-out-root strategy comparison + architectural bridge (OQ02OQ01 must import OQ02 to access budanCount/rootsInInterval). Next: S2 ACT — add import + d=0 theorem + d=1 sub-lemmas, declaring _natDegree_ge_two as honest residual axiom.",
     "builtItems": [
       "Created DescartesRuleOfSignsOQ02OQ01.lean: proof scaffold with 5 theorems, 3 sorries",
       "Proved constant_no_roots base case",
       "Documented proof completion roadmap with line estimates",
       "Proved rolle_polynomial from Mathlib exists_deriv_eq_zero",
-      "Proved root_of_sign_change from IVT (intermediate_value_Icc)"
+      "Proved root_of_sign_change from IVT (intermediate_value_Icc)",
+      "S2 PREP: bootstrapped research/problems/descartes-rule-of-signs-oq-02-oq-01/{problem.md,state.md,knowledge.md} (slug previously had no research dir)",
+      "S2 PREP: 2026-05-13-s2-prep-base-case-bridge.md — concrete d=0 base case proof, d=1 skeleton, Mathlib audit, strategy comparison (~400 LOC doc-only)",
+      "S2 PREP: Mathlib bearer audit confirmed no Polynomial.budanCount/budanSequence/half-open-interval-root-counting API exists; OQ-02 locals are genuinely necessary",
+      "S2 PREP: small-case falsification of (X-r)*q sign-change conjecture on (X-1)(X+1) and (X-1)(X-3) — both consistent"
     ],
     "insights": [
       "Proof by strong induction on deg(p): base deg≤1 trivial, inductive step uses Rolle",
       "Rolle theorem (Mathlib: exists_deriv_eq_zero) gives derivative roots between consecutive polynomial roots",
       "Sign-change accounting across derivative levels is the hardest part (~100-200 lines)",
       "Building blocks needed: constant_no_roots, rolle_polynomial, root_of_sign_change (IVT)",
-      "Full proof estimated at 240-410 lines using existing OQ-02 infrastructure"
+      "Full proof estimated at 240-410 lines using existing OQ-02 infrastructure",
+      "Mathlib RuleOfSigns proves Descartes via factor-out-positive-root induction on root count, NOT via Rolle — uses succ_signVariations_le_X_sub_C_mul",
+      "Lifting Mathlib factor-out-root pattern to Budan requires a sign-change-preservation lemma for (X-r) * q at arbitrary evaluation points, NOT in Mathlib; difficulty profile equivalent to Rolle path",
+      "OQ-02-OQ-01 architectural bridge: file must import Proofs.DescartesRuleOfSignsOQ02 to discharge axiom (currently does not); existing BudanUpperBound-namespace helpers parallel to OQ-02 lemmas",
+      "Axiom-elimination strategy: split budan_upper_bound_axiom into _natDegree_zero (proved), _natDegree_one (proved), _natDegree_ge_two (honest residual axiom); narrows unproved mathematical content"
     ],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "No Polynomial.budanCount / budanSequence / signChangesAtPoint API",
+      "No (X-r) * q sign-change-preservation lemma at arbitrary evaluation points; Mathlib only has succ_signVariations_le_X_sub_C_mul which is coefficient-based"
+    ],
+    "nextSteps": [
+      "S2 ACT: add import Proofs.DescartesRuleOfSignsOQ02 to DescartesRuleOfSignsOQ02OQ01.lean",
+      "S2 ACT: paste verbatim 4-line budan_upper_bound_natDegree_zero proof (from session note §3)",
+      "S2 ACT: prove three d=1 sub-lemmas (polyDegOne_eq_X_aff, rootsInInterval_polyDegOne_eq_ite, budanCount_polyDegOne_eq_ite), then budan_upper_bound_natDegree_one (40-60 LOC)",
+      "S2 ACT: declare budan_upper_bound_natDegree_ge_two as honest residual axiom",
+      "S3 ACT (deferred): prove _natDegree_ge_two via Rolle induction + sign-change accounting (~100-200 LOC)"
+    ],
     "markdown": "# Knowledge Base: descartes-rule-of-signs-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
@@ -66,7 +83,7 @@
     "mathlib": []
   },
   "started": "2026-03-29T04:28:18.977Z",
-  "lastUpdate": "2026-03-29T04:28:18.986Z",
+  "lastUpdate": "2026-05-13T10:50:00Z",
   "leanFiles": [
     {
       "path": "Proofs/DescartesRuleOfSigns.lean",
