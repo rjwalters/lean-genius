@@ -166,3 +166,78 @@ calculation. Solvability + primitivity (Targets B, C) are S3 work.
    for the forward direction; the Galois direction may need ~300-500
    lines of new permutation-group structure-theorem material, which
    could be split into a sub-OQ if it threatens to grow beyond budget.
+
+---
+
+## Iteration 7 (researcher-4, 2026-05-13) — S6 PREP: Galois-direction bearer audit + sub-OQ recommendation
+
+The forward direction (S2-S5b) is closed: 0 sorries, 0 axioms, 529
+LOC, build verification pending. The remaining work is the
+**Galois direction**: every primitive solvable subgroup of `S_p`
+embeds into `AGL(1, p)`. This S6 audits the Galois-direction
+bearer in Mathlib v4.26.0 at the lake-pinned SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` and recommends a
+sub-OQ SPLIT.
+
+### Method
+
+GitHub Search API + Contents API against
+`leanprover-community/mathlib4` at the lake-pinned SHA.
+
+### Findings
+
+| Query | Hits | Verdict |
+|---|---|---|
+| `affineGroup repo:leanprover-community/mathlib4` | 0 | No `AGL(1, p)` definition anywhere |
+| `"prime degree" transitive path:Mathlib/GroupTheory` | 0 | No prime-degree classification |
+| `IsPreprimitive.solvable` | 0 | No "primitive ∧ solvable" combinator |
+| `Cameron Wielandt` | 0 | No textbook citations |
+| `MulAction.IsPreprimitive "prime degree"` | 0 | No specialised lemma |
+| `primDegree` | 0 | No named specialisation |
+| `AGL path:Mathlib` | 7 (all unrelated; matrix/category-theory) | No AGL group structure |
+
+**Verdict.** Mathlib v4.26.0 has **zero** prime-degree permutation
+group classification content. The Galois-direction structure theorem
+is NOT reducible to Mathlib invocations; it must be built from
+primitives. Confirms the S1 OBSERVE assessment (tractability triage
+line 83) at the level of the current lake-pinned SHA.
+
+### Pieces that DO exist at the pinned SHA (sufficient primitives)
+
+- `Mathlib.GroupTheory.Sylow` — Sylow theorems. ✓ (Sufficient for steps 1-2 of the proof: existence + uniqueness + normality of Sylow-p in a group of order p·m with m<p.)
+- `Mathlib.GroupTheory.Perm.Cycle.Type` — `Equiv.Perm.IsCycle`, `Equiv.Perm.cycleType`. ✓ (Sufficient for step 3: every order-p element of S_p is a p-cycle for p prime.)
+- `Mathlib.GroupTheory.GroupAction.Primitive` — `MulAction.IsPreprimitive`, `MulAction.IsPreprimitive.of_prime_card`. ✓ (Already used in S4 ACT.)
+- `Subgroup.normalizer`, `MonoidHom.ofInjective`, `MulEquiv.ofBijective`. ✓ (Standard.)
+
+### Recommended decision: SPLIT
+
+Spin off `abel-ruffini-galois-extensions-oq-06-galois-direction` as
+a new sub-OQ slug. Rationale (full decision matrix in state.md
+§Iteration 7):
+
+1. **Forward direction is genuinely complete.** Marking oq-06 as
+   "in-progress" indefinitely conflates the closed half with the
+   open half.
+2. **Sibling pattern.** OQ-04 (Jordan-Hölder) and OQ-07 (Burnside
+   p^a q^b) are each one large standalone formalisation in their
+   own slug. The Galois direction matches that scope.
+3. **Reviewability.** A 300-500 LOC structure theorem split across
+   multiple ACTs is easier to review as its own slug than bolted
+   onto an already-large slug.
+4. **Risk isolation.** Build-pending stack on oq-06 is currently
+   S3/S4/S5/S5b (4 layers); adding S6+ extends the unverified
+   window indefinitely. A new slug isolates the risk.
+
+### Implications for future iterations (whichever path is chosen)
+
+* **If SPLIT (recommended)**: oq-06 status moves from "in-progress" to "completed" (forward-direction-only); a new sub-OQ slug owns the Galois direction; both can be claimed independently. Gallery `meta.json` for oq-06 likely stays "formalized" (build pending) until S5b verification, then advances to "verified" via a routine deployer/enricher PR.
+* **If KEEP**: a future S6 ACT under oq-06 directly begins the structure theorem; expect S7-S10+ iterations; the build-pending window on this slug grows from 4 to ~8 layers.
+
+### Cross-slug reuse opportunities (preserved from S1 OBSERVE)
+
+OQ-07's `burnside_pq_with_normal_pSylow` / `burnside_pq_with_normal_qSylow` exhibit the "abelian-normal-subgroup + solvable-quotient ⇒ solvable" reduction pattern that the Galois-direction proof will reuse. The Sylow-uniqueness step (step 1 of the Galois proof) is structurally identical to the Sylow-uniqueness step in OQ-07's `burnside_pq_with_normal_pSylow`.
+
+### S6 PREP risk register (additions over S1 OBSERVE)
+
+- **Sub-OQ slug-naming convention**: Use `abel-ruffini-galois-extensions-oq-06-galois-direction`, not `oq-08` or similar. Matches the parent-child pattern of `cantor-diagonalization-oq-04-oq-01` and `picks-theorem-oq-01-oq-01-oq-01`. If the curator prefers a different scheme, adjust accordingly.
+- **Forward-direction `status` advance**: oq-06's `src/data/research/problems/abel-ruffini-galois-extensions-oq-06.json` `status` field will need to advance from "in-progress" to "completed" once S5b build verification lands AND the sub-OQ slug is created. This S6 PREP does NOT make that change — it would conflict with the open S5b-ACT build-pending PR (#18672); leave it to a downstream deployer / curator pass.
