@@ -99,6 +99,81 @@ theorem formA_decomposition_unique {p k₁ k₂ q₁ q₂ : ℕ}
     rw [hv1, hv2] at hpv; exact hpv
   exact ⟨hk, Nat.eq_of_mul_eq_mul_left (pow_pos (by norm_num : 0 < 2) k₂) (hk ▸ heq)⟩
 
+/-- **Full uniqueness of the (k, q) decomposition.** Strengthens
+    `formA_decomposition_unique` by removing the side conditions `q₁ ≠ 2`,
+    `q₂ ≠ 2`: the (k, q) decomposition of a Form A prime is unique without
+    any parity hypothesis. The q = 2 case (Fermat-like form p = 2^(k+1) + 1)
+    still has a unique witness because every other prime is odd and odd
+    primes do not divide powers of 2.
+
+    Proof strategy: case-split on whether each of q₁, q₂ equals 2.
+    - Both = 2: the equation 2^(k₁+1) = 2^(k₂+1) gives k₁ = k₂.
+    - One = 2, other odd: the odd prime would have to divide a power of 2,
+      contradicting its primality.
+    - Both odd: defer to `formA_decomposition_unique`. -/
+theorem formA_decomposition_unique_full {p k₁ k₂ q₁ q₂ : ℕ}
+    (hq1 : q₁.Prime) (hq2 : q₂.Prime)
+    (h1 : p = 2 ^ k₁ * q₁ + 1) (h2 : p = 2 ^ k₂ * q₂ + 1) :
+    k₁ = k₂ ∧ q₁ = q₂ := by
+  -- Common equation on predecessors
+  have heq : 2 ^ k₁ * q₁ = 2 ^ k₂ * q₂ := by omega
+  by_cases hq1_eq : q₁ = 2
+  · by_cases hq2_eq : q₂ = 2
+    · -- Both q's = 2: reduce to 2^(k₁+1) = 2^(k₂+1)
+      refine ⟨?_, hq1_eq.trans hq2_eq.symm⟩
+      subst hq1_eq; subst hq2_eq
+      have hpow : (2 : ℕ) ^ (k₁ + 1) = 2 ^ (k₂ + 1) := by
+        rw [pow_succ, pow_succ]; linarith
+      have hk_succ : k₁ + 1 = k₂ + 1 :=
+        Nat.pow_right_injective (by norm_num) hpow
+      omega
+    · -- q₁ = 2, q₂ odd prime → q₂ ∣ 2^(k₁+1) → q₂ = 2, contradiction
+      exfalso
+      subst hq1_eq
+      have hpow : (2 : ℕ) ^ (k₁ + 1) = 2 ^ k₂ * q₂ := by
+        rw [pow_succ]; linarith
+      have hdvd : q₂ ∣ 2 ^ (k₁ + 1) := ⟨2 ^ k₂, by rw [mul_comm]; exact hpow⟩
+      have hdvd2 : q₂ ∣ 2 := hq2.dvd_of_dvd_pow hdvd
+      have hq2_le : q₂ ≤ 2 := Nat.le_of_dvd (by norm_num) hdvd2
+      have hq2_ge : 2 ≤ q₂ := hq2.two_le
+      exact hq2_eq (by omega)
+  · by_cases hq2_eq : q₂ = 2
+    · -- q₂ = 2, q₁ odd prime: symmetric to previous case
+      exfalso
+      subst hq2_eq
+      have hpow : (2 : ℕ) ^ k₁ * q₁ = 2 ^ (k₂ + 1) := by
+        rw [pow_succ]; linarith
+      have hdvd : q₁ ∣ 2 ^ (k₂ + 1) := ⟨2 ^ k₁, by rw [mul_comm]; exact hpow.symm⟩
+      have hdvd2 : q₁ ∣ 2 := hq1.dvd_of_dvd_pow hdvd
+      have hq1_le : q₁ ≤ 2 := Nat.le_of_dvd (by norm_num) hdvd2
+      have hq1_ge : 2 ≤ q₁ := hq1.two_le
+      exact hq1_eq (by omega)
+    · -- Both q's odd: defer to existing partial uniqueness
+      exact formA_decomposition_unique hq1 hq2 hq1_eq hq2_eq h1 h2
+
+/-- **Witness agreement (Prod form).** Any two (k, q) witnesses of a Form A
+    decomposition for the same prime p coincide as ordered pairs. -/
+theorem formA_witnesses_agree {p k₁ k₂ q₁ q₂ : ℕ}
+    (hq1 : q₁.Prime) (hq2 : q₂.Prime)
+    (h1 : p = 2 ^ k₁ * q₁ + 1) (h2 : p = 2 ^ k₂ * q₂ + 1) :
+    (k₁, q₁) = (k₂, q₂) := by
+  obtain ⟨hk, hq⟩ := formA_decomposition_unique_full hq1 hq2 h1 h2
+  exact Prod.ext hk hq
+
+/-- **Disjoint decomposition by k-value** (file header claim §3 made formal).
+    For distinct k₁ ≠ k₂, the k-layers `{p | IsFormAWithK k₁ p}` and
+    `{p | IsFormAWithK k₂ p}` are disjoint as sets of primes.
+
+    Consequence: Form A primes partition (modulo the k = 0 singleton {3})
+    into pairwise-disjoint layers indexed by k ≥ 0. The full uniqueness
+    theorem `formA_decomposition_unique_full` is the load-bearing input. -/
+theorem formAWithK_disjoint {k₁ k₂ : ℕ} (h : k₁ ≠ k₂) :
+    Disjoint {p : ℕ | IsFormAWithK k₁ p} {p : ℕ | IsFormAWithK k₂ p} := by
+  rw [Set.disjoint_left]
+  rintro p ⟨_, q₁, hq1, heq1⟩ ⟨_, q₂, hq2, heq2⟩
+  obtain ⟨hk, _⟩ := formA_decomposition_unique_full hq1 hq2 heq1 heq2
+  exact h hk
+
 -- ## Verified Examples: Form A with specific k values
 
 -- k = 0 examples
