@@ -31,26 +31,29 @@
       "worpitzky_step: (k+1)·C(n+1+k, d+1) + (d-k)·C(n+2+k, d+1) = (n+1)·C(n+1+k, d) for k ≤ d — S4, Pascal + choose_succ_right_eq",
       "worpitzky_identity_cube: (n+1)^d = Σ A(d, k) C(n+1+k, d) for d ≥ 1 — S4, induction on d via worpitzky_step + sum_range_succ' reindex (build pending)",
       "eulerianNumber_recurrence: A(d+1, k+1) = (k+2)·A(d, k+1) + (d-k)·A(d, k) — S5 helper, definitional rfl",
-      "eulerian_palindrome: A(d, k) = A(d, d-1-k) for k < d — S5, induction on d with case-split on k (k = 0 / 1 ≤ k < d / k = d), uses ih + eulerian_zero_eq_one + eulerian_eq_zero_of_le; descent involution not required (build pending)"
+      "eulerian_palindrome: A(d, k) = A(d, d-1-k) for k < d — S5, induction on d with case-split on k (k = 0 / 1 ≤ k < d / k = d), uses ih + eulerian_zero_eq_one + eulerian_eq_zero_of_le; descent involution not required (build pending)",
+      "worpitzky_identity_cube_palindrome: (n+1)^d = Σ A(d, k) C(n+d-k, d) for d ≥ 1 — S6, composes S4 worpitzky_identity_cube + S5 eulerian_palindrome via Finset.sum_range_reflect (build pending)",
+      "cubeHStarPoly_eval_one: (cubeHStarPoly d).eval 1 = d.factorial for d ≥ 1 — S7, Polynomial.eval_finset_sum + eulerian_row_sum_factorial composition (build pending)",
+      "cubeHStarPoly_palindromic: (cubeHStarPoly d).coeff k = (cubeHStarPoly d).coeff (d - 1 - k) for k < d, d ≥ 1 — S7, cube_h_star_eulerian + eulerian_palindrome composition (build pending)"
     ],
     "open": [],
     "goal": "Connect cube_h_star_eulerian + cube_lattice_count_eulerian to EhrhartCubeProven via Polytope.cube parametrisation"
   },
   "currentState": {
     "phase": "PROVED",
-    "since": "2026-05-12T05:00:00Z",
-    "iteration": 6,
-    "focus": "S6 PALINDROME-COROLLARY complete (build pending, researcher-9, 2026-05-13): composed worpitzky_identity_cube + Finset.sum_range_reflect + eulerian_palindrome into the dual Worpitzky form worpitzky_identity_cube_palindrome. ~30 LOC including docstring; one new section VII added; 1 new public theorem; file lineCount 677 → 720, theoremCount 27 → 28. No new imports; no axioms; no sorries.",
+    "since": "2026-05-13T23:00:00Z",
+    "iteration": 7,
+    "focus": "S7 POLYNOMIAL-COROLLARIES complete (build pending, researcher-4, 2026-05-13): added two Polynomial ℕ-level corollaries packaging existing combinatorial theorems. cubeHStarPoly_eval_one: h*([0,1]^d)(1) = d! by Polynomial.eval_finset_sum + eulerian_row_sum_factorial; ~12 LOC. cubeHStarPoly_palindromic: coeff k = coeff (d-1-k) by cube_h_star_eulerian (×2) + eulerian_palindrome; ~8 LOC. New Section VIII added. File lineCount 720 → 772, theoremCount 28 → 30. No new imports; no axioms; no sorries.",
     "blockers": [],
-    "nextAction": "S7 (optional): (1) verify the full-file Docker build (S4 worpitzky + S5 palindrome + S6 palindrome-corollary all build-pending; ~45 min cold per .lake symlink trap); (2) Mathlib upstream PR contributing Mathlib.Combinatorics.Enumerative.Eulerian with eulerianNumber, eulerian_zero_eq_one, eulerian_eq_zero_of_le, eulerian_row_sum_factorial, eulerian_palindrome, worpitzky_identity, worpitzky_identity_cube_palindrome; (3) Polynomial-identity form: lift worpitzky_identity_cube_palindrome to Polynomial ℕ as a generating-function identity rather than pointwise on n (~30-50 LOC).",
+    "nextAction": "S8+ (optional): (1) verify the full-file Docker build (S4/S5/S6/S7 all build-pending; ~45 min cold per .lake symlink trap); (2) Mathlib upstream PR contributing Mathlib.Combinatorics.Enumerative.Eulerian with all S1-S7 theorems; (3) Polynomial-identity form: lift worpitzky_identity_cube_palindrome to a Polynomial ℕ generating-function identity (X+1)^d = Σ A(d,k) · descPochhammer-binomial via Polynomial.descPochhammer — substantially deeper (~80-150 LOC); (4) Degree/leading-coefficient lemmas: cubeHStarPoly_natDegree = d-1 and cubeHStarPoly_monic for d ≥ 1, ~25-40 LOC.",
     "attemptCounts": {
-      "total": 6,
+      "total": 7,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS S6 (PALINDROME-COROLLARY, build pending): worpitzky_identity_cube_palindrome — (n+1)^d = Σ A(d, k) C(n+d-k, d) — the dual (palindrome-reflected) Worpitzky form. Pure composition of S4 worpitzky_identity_cube + S5 eulerian_palindrome via Finset.sum_range_reflect; ~30 LOC. File 677 → 720 lines, 27 → 28 public theorems, still 0 sorries / 0 axioms.",
+    "progressSummary": "PROGRESS S7 (POLYNOMIAL-COROLLARIES, build pending): two Polynomial ℕ-level corollaries — cubeHStarPoly_eval_one: h*([0,1]^d)(1) = d! (Polynomial.eval_finset_sum + eulerian_row_sum_factorial composition, ~12 LOC); cubeHStarPoly_palindromic: coeff k = coeff (d-1-k) (cube_h_star_eulerian ×2 + eulerian_palindrome composition, ~8 LOC). New Section VIII. File 720 → 772 lines, 28 → 30 public theorems, still 0 sorries / 0 axioms.",
     "builtItems": [
       "eulerianNumber : ℕ → ℕ → ℕ (def)",
       "cubeHStarPoly : ℕ → Polynomial ℕ (def)",
@@ -68,7 +71,9 @@
       "worpitzky_identity_cube (S4, proved modulo build verification — induction on d with worpitzky_step + Finset.sum_range_succ' reindex)",
       "eulerianNumber_recurrence (S5 helper, definitional rfl — A(d+1, k+1) recurrence equation as a named lemma)",
       "eulerian_palindrome (S5, proved modulo build verification — induction on d with k = 0 / 1 ≤ k < d / k = d case-split)",
-      "worpitzky_identity_cube_palindrome (S6, proved modulo build verification — (n+1)^d = Σ_{k=0}^{d-1} A(d, k) C(n+d-k, d), the dual/palindrome-reflected Worpitzky form). Proof composes S4 worpitzky_identity_cube + S5 eulerian_palindrome via Finset.sum_range_reflect on the RHS (reindex k ↦ d-1-k), then substitutes A(d,k) = A(d,d-1-k) pointwise and closes the Nat-arithmetic identity n+1+k = n+d-(d-1-k) for k<d via omega. ~15 LOC of tactic + ~15 LOC docstring; new Section VII."
+      "worpitzky_identity_cube_palindrome (S6, proved modulo build verification — (n+1)^d = Σ_{k=0}^{d-1} A(d, k) C(n+d-k, d), the dual/palindrome-reflected Worpitzky form). Proof composes S4 worpitzky_identity_cube + S5 eulerian_palindrome via Finset.sum_range_reflect on the RHS (reindex k ↦ d-1-k), then substitutes A(d,k) = A(d,d-1-k) pointwise and closes the Nat-arithmetic identity n+1+k = n+d-(d-1-k) for k<d via omega. ~15 LOC of tactic + ~15 LOC docstring; new Section VII.",
+      "cubeHStarPoly_eval_one (S7, proved modulo build verification — (cubeHStarPoly d).eval 1 = d.factorial for d ≥ 1). Polynomial-level row-sum identity: evaluating the h*-polynomial at X = 1 sums all coefficients, recovering eulerian_row_sum_factorial. Proof unfolds the d ≠ 0 branch of cubeHStarPoly, distributes eval over the Finset.sum via Polynomial.eval_finset_sum, reduces each summand ((A(d,k) : ℕ) • X^k).eval 1 to A(d,k) via Polynomial.eval_smul + eval_pow + eval_X + smul_eq_mul + mul_one + one_pow, then applies eulerian_row_sum_factorial. ~12 LOC (Section VIII).",
+      "cubeHStarPoly_palindromic (S7, proved modulo build verification — coefficient symmetry (cubeHStarPoly d).coeff k = (cubeHStarPoly d).coeff (d - 1 - k) for k < d, d ≥ 1). Polynomial-level expression of eulerian_palindrome. Three-line proof: rewrite both coefficients via cube_h_star_eulerian (with k < d and d-1-k < d discharged by omega), then apply eulerian_palindrome. ~8 LOC (Section VIII)."
     ],
     "insights": [
       "Nat-subtraction in the eulerianNumber recurrence handles the boundary k ≥ d cleanly: both branches collapse to 0 automatically",
@@ -78,7 +83,9 @@
       "cubeHStarPoly's k-th coefficient is definitional (Σ A(d,j) • X^j → coeff_smul + coeff_X_pow + Finset.sum_ite_eq') — the substantive content lives entirely in worpitzky_identity_cube",
       "S3 row-sum technique: extend both row sums to a common `range (d+1)` index set using `A(d, d) = 0`, then combine pointwise via `(k+1) + (d-k) = d+1` (for k < d) and direct A(d, d) = 0 cancellation (for k = d). Avoids `Finset.sum_Ico_eq_sum_range` reindexing.",
       "Helper `eulerian_eq_zero_of_le` carries the recursion on the FIRST argument (d), with case-split on whether d = 0 or d ≥ 1 for the inner recursion call. Required to discharge `(d - k) * A(d, k) = 0` boundary contributions.",
-      "**Palindrome-reflected Worpitzky form composes from S4 + S5 directly**: once worpitzky_identity_cube (S4) and eulerian_palindrome (S5) are both in hand, the dual form (n+1)^d = Σ A(d,k) C(n+d-k, d) requires only Finset.sum_range_reflect + a Nat-arithmetic omega step — no new combinatorial content. The pedagogical takeaway: the palindromic symmetry of Eulerian numbers does not yield new identities at the level of (n+1)^d itself, but reindexes the existing identity from forward (exceedance) to descent parametrisation. Useful when downstream consumers prefer one parametrisation over the other (e.g. counting by descents vs. ascents in the symmetric group)."
+      "**Palindrome-reflected Worpitzky form composes from S4 + S5 directly**: once worpitzky_identity_cube (S4) and eulerian_palindrome (S5) are both in hand, the dual form (n+1)^d = Σ A(d,k) C(n+d-k, d) requires only Finset.sum_range_reflect + a Nat-arithmetic omega step — no new combinatorial content. The pedagogical takeaway: the palindromic symmetry of Eulerian numbers does not yield new identities at the level of (n+1)^d itself, but reindexes the existing identity from forward (exceedance) to descent parametrisation. Useful when downstream consumers prefer one parametrisation over the other (e.g. counting by descents vs. ascents in the symmetric group).",
+      "**Polynomial.eval_finset_sum + smul handling at the cubeHStarPoly level**: the h*-polynomial is defined `∑ k ∈ range d, (A(d,k) : ℕ) • X^k`, with a Nat-scalar action on Polynomial ℕ. Eval distributes via `Polynomial.eval_finset_sum`, and per-summand reduction `((c : ℕ) • X^k).eval x = c * x^k` decomposes as `Polynomial.eval_smul → c • (X^k).eval x → smul_eq_mul → c * x^k`. The structure mirrors the S2 `Polynomial.finset_sum_coeff + Polynomial.coeff_smul` pattern used in `cube_h_star_eulerian` — same `simp only` building blocks, dual to `coeff_X_pow` vs `eval_pow + eval_X`.",
+      "**S7 corollaries demonstrate the value of having both `coeff` and `eval` abstractions**: `cubeHStarPoly_palindromic` is the *coefficient-side* manifestation of `eulerian_palindrome`, while `cubeHStarPoly_eval_one` is the *evaluation-side* manifestation of `eulerian_row_sum_factorial`. Together they show that the h*-polynomial is (i) palindromic (degree-d-1 polynomial with coefficient symmetry) and (ii) sums to d! at X=1 — two of the three classical h*-vector invariants for the cube (the third being natDegree = d-1, a tractable S8 follow-up requiring `Polynomial.natDegree_eq_of_coeff_ne_zero_of_le` + the leading-coefficient computation A(d, d-1) = A(d, 0) = 1)."
     ],
     "mathlibGaps": [
       "No Eulerian numbers (`Nat.eulerianNumber` or similar)",
@@ -125,7 +132,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.563Z",
-  "lastUpdate": "2026-05-13T11:45:00Z",
+  "lastUpdate": "2026-05-13T23:00:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -143,8 +150,8 @@
     {
       "path": "Proofs/EhrhartCubeProvenOQ04.lean",
       "filename": "EhrhartCubeProvenOQ04.lean",
-      "lineCount": 720,
-      "theoremCount": 28,
+      "lineCount": 772,
+      "theoremCount": 30,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
