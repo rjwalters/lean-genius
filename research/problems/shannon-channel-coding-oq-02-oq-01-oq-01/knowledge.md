@@ -146,3 +146,93 @@ line 80–89) proofs.
 * `leanFile.lineCount`: 901 → 929
 * `leanFile.theoremCount`: 23 → 24
 
+## Session 9 (researcher-4, 2026-05-13) — Strict bi-implication
+
+### Context
+
+S8 (PR shipped 2026-05-12) added the equality case
+`entropy_eq_log_card_iff_uniform`. Session 79 (researcher-4,
+2026-05-13 ~02:25 UTC) released this slug without shipping because the
+three named S9 candidates either needed sub-slug spawns (S9-heavy:
+`channel_coding_converse` axiom discharge) or out-of-file API surface
+(S9-medium: symmetric-channel uniform-marginal lemma) or were redundant
+with S8 (S9-light as literally stated: `@[simp]` bi-implication of
+`entropy_of_uniform_eq_log_card` — that IS S8).
+
+This session re-interpreted S9-light as the missing **strict-inequality**
+bi-implication: the strict slack of the max-entropy bound is bi-equivalent
+to non-uniformity. It is a 1-step corollary of S4 + S8 with zero external
+machinery.
+
+### What got added
+
+`proofs/Proofs/ShannonEntropy.lean` (+26 lines incl. 8-line docstring,
+0 sorries, 0 axioms, 0 new imports):
+
+| Theorem | Role |
+|---------|------|
+| `entropy_lt_log_card_iff_non_uniform` | `shannonEntropy p < log \|α\| ↔ ∃ x, p x ≠ (card α)⁻¹` |
+
+Inserted after `entropy_eq_log_card_iff_uniform` (line 428) and before
+the `Log-Sum Inequality` block.
+
+### Key technical observations
+
+* `lt_or_eq_of_le` is the cleaner upgrade path than the `le_iff_lt_or_eq`
+  formulation: it returns the disjunction directly and avoids an
+  `Iff.mp` rewrite at the same depth.
+* `push_neg` on `¬ ∃ x, p x ≠ c` correctly collapses the `≠` to `=` in
+  one tactic step (Mathlib's `push_neg` knows `¬ (a ≠ b) ↔ a = b`).
+* The proof uses `absurd : a → ¬ a → b` (Mathlib's standard form) which
+  is significantly cleaner than `exact (hx ((hiff.mp heq) x)).elim`.
+
+### Why this lemma (not the S9 heavy/medium)
+
+The state.md `## Next Action` block named three S9 candidates after S8:
+
+* **heavy** — discharge `channel_coding_converse` axiom via per-letter
+  chain rule `I(X^n; Y^n) ≤ n · channelCapacity ch`. Likely needs a
+  separate sub-slug for the chain rule (memoryless channels).
+* **medium** — symmetric DMC + uniform output marginal → uniform input
+  marginal. 1–2 lemma extension in `ShannonChannelCoding.lean`, but
+  outside this file (different namespace) and outside the strict S2–S8
+  chain in `ShannonEntropy.lean`.
+* **light (as literally stated)** — `@[simp]` bi-implication of
+  `entropy_of_uniform_eq_log_card`. Redundant: S8
+  (`entropy_eq_log_card_iff_uniform`) IS the bi-implication of the
+  equality witness.
+
+The strict-inequality form is the natural fourth corollary missing from
+the file (Mathlib elsewhere systematically pairs `_le_` + `_lt_iff_`
+forms; `grep` returns 0 hits for `entropy_lt_log_card` in either
+`ShannonEntropy.lean` or `ShannonChannelCoding.lean`). It is genuinely
+new mathematical content, not a re-statement.
+
+### Build status
+
+Not yet built (host `.lake` recursive self-symlink issue persists per
+`feedback_researcher_lake_symlink_broken.md`). Following the established
+S2–S8 convention, PR title carries "(build pending)". The proof uses
+only stable Mathlib v4.26.0 API:
+
+* `lt_or_eq_of_le : a ≤ b → a < b ∨ a = b` (Mathlib `Mathlib.Order.Basic`)
+* `push_neg`, `by_contra`, `rcases`, `rintro`, `linarith`, `absurd`
+  (all standard tactics, already used 50+ times in this file)
+
+No new dependencies. Type-check by inspection: the two ambient lemma
+applications (`hle := entropy_le_log_card hp hsum` and
+`hiff := entropy_eq_log_card_iff_uniform hp hsum`) match signature
+exactly, then propositional/`linarith` work closes both directions.
+
+### Gallery sync
+
+`src/data/proofs/shannon-entropy/meta.json`:
+* `meta.lineCount`: 1111 → 1137
+* `meta.theoremCount`: 28 → 29
+* `leanFile.lineCount`: 1111 → 1137
+* `leanFile.theoremCount`: 28 → 29
+
+(Counts in main pre-PR are 28 theorems incl. private lemmas — `grep -cE
+"^(theorem|lemma|private theorem|private lemma) " proofs/Proofs/ShannonEntropy.lean`
+returns 29 after the addition.)
+
