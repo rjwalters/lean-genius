@@ -1,7 +1,7 @@
 {
   "slug": "shapley-folkman-oq-01",
   "title": "Shapley–Folkman extension to infinite-dim Hilbert spaces",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "B",
   "path": "full",
@@ -28,27 +28,35 @@
     "goal": "Create proofs/Proofs/ShapleyFolkmanOQ01.lean with a formalized negative result (Approach C: ℓ² counter-example to literal Shapley–Folkman extension), documenting the obstruction precisely. Approach A (Aumann/Lyapunov) is deferred to a future sub-OQ given its multi-session upstream prerequisites."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-05-12",
-    "iteration": 1,
-    "focus": "S1 OBSERVE doc-only deliverable complete. Key finding: Module.finrank ℝ E = 0 in infinite-dim collapses the bound; affine-dependence step at ShapleyFolkman.lean:151 is provably false for ω-sized independent families. Three viable infinite-dim analogs identified (Aumann/Lyapunov/Ekeland), only Approach C (explicit counter-example) is single-session-feasible. S2-A (40 lines) shortlisted: shapley_folkman_no_uniform_bound in EuclideanSpace ℝ (Fin n).",
+    "iteration": 8,
+    "focus": "S2-A ACT-1 scaffold landed in proofs/Proofs/ShapleyFolkmanOQ01.lean (~130 LOC, 0 axioms, 2 sorries). Three named results: (a) convexHull_pair_zero_basis_extract helper lemma with attempted tactic body (5-line proof per S3 PREP §3.1); (b) mem_convexHull_finset_sum membership claim (sorry-stubbed, skeleton in S2b PREP §2); (c) tight_excess_count main tightness theorem (sorry-stubbed, skeleton in S3 PREP §4 coordinate-eval route). First Lean discharge after 7 doc-only PREPs (S1, S1b, S2, S2b, S3, S3b, S4). Build verification pending (paper-correct per S3 PREP + S3b PREP audits; not Lake-verified per docker-build risk policy).",
     "blockers": [
       "Lyapunov's convexity theorem (Approach A prerequisite): not in Mathlib; multi-session formalization project."
     ],
-    "nextAction": "S2-A ACT: create proofs/Proofs/ShapleyFolkmanOQ01.lean with shapley_folkman_no_uniform_bound (~40 lines). Defer S2-B (lp 2 lift) until S2-A is build-verified.",
+    "nextAction": "S2-A ACT-2: build-verify the helper lemma via docker-build.sh; if convexHull_pair rw fails, fall back to S3 PREP §3.2 segment_eq_image' route. Then discharge sorries in mem_convexHull_finset_sum (midpoint of 0 and ∑ e_i in ∑ S_i) and tight_excess_count (coordinate-eval per S3 PREP §4). Defer S2-B (lp 2 / EuclideanSpace ℝ ℕ truncation lift) until S2-A is fully build-verified.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 8,
+      "currentApproach": 8,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE: filled seeker-stub problem.md, surveyed Mathlib for upstream API. Key finding: NO drop-in numerical replacement for Module.finrank exists in infinite-dim. The correct analog (Aumann set-valued integrals via Lyapunov vector-measure convexity) requires multi-session upstream work not feasible at OQ-01 scope. Shortlisted Approach C — explicit ℓ² counter-example — as the narrowest viable S2 ACT (~40 lines in EuclideanSpace ℝ (Fin n), parameterized in n to give 'no uniform bound' force). No Lean changes in S1.",
+    "progressSummary": "S2-A ACT-1 (Session 8, 2026-05-13): first .lean discharge after 7 doc-only PREPs. Landed proofs/Proofs/ShapleyFolkmanOQ01.lean (~130 LOC, 0 axioms, 2 sorries) with imports, namespace, attribute [local instance] Classical.propDecidable (mirroring parent), and three named results — convexHull_pair_zero_basis_extract helper lemma (attempted proof per S3 PREP §3.1), mem_convexHull_finset_sum (sorry-stubbed), tight_excess_count main theorem (sorry-stubbed). Registered in proofs/Proofs.lean (alphabetical between Aristotle and OQ03). Build verification deferred. Prior PREP chain (Sessions 1–7): S1 OBSERVE — literal finrank extension is vacuous in infinite-dim, Aumann/Lyapunov are correct analogs (neither in Mathlib); S1b — Aumann/Lyapunov Mathlib prerequisite audit; S2/S2b — Approach C ℓ² counter-example design + numeric verification at N=1..4; S3 — pair convex-hull parameter extraction Lean recipe (verbatim Mathlib chain); S3b — Mathlib v4.26.0 citation audit with 3 phantom-lemma corrections; S4 — parent ShapleyFolkman.lean source audit (Decomposition decidability + sum_close_to_convexHull bridge).",
     "builtItems": [
       "research/problems/shapley-folkman-oq-01/problem.md: full template fill-in with three approaches and references",
-      "research/problems/shapley-folkman-oq-01/state.md: Session 1 entry + S2-A next action",
+      "research/problems/shapley-folkman-oq-01/state.md: Session 1–8 entries with iteration history table",
       "research/problems/shapley-folkman-oq-01/knowledge.md: parent file map (4 finite-dim-essential steps) + three analogs (Aumann/Lyapunov/Ekeland) + counter-example sketch",
-      "research/problems/shapley-folkman-oq-01/sessions/2026-05-12-s01-observe.md: full S1 OBSERVE report with vacuity argument and S2 shortlist"
+      "research/problems/shapley-folkman-oq-01/sessions/2026-05-12-s01-observe.md: S1 OBSERVE report",
+      "research/problems/shapley-folkman-oq-01/sessions/2026-05-12-s01b-aumann-lyapunov-prereq-audit.md: S1b Mathlib prereq audit",
+      "research/problems/shapley-folkman-oq-01/sessions/2026-05-12-s2-prep-approach-c-ell2-counterexample-design.md: S2 Approach C design (342 LOC)",
+      "research/problems/shapley-folkman-oq-01/sessions/2026-05-12-s2b-prep-construction-verification.md: S2b numeric verification at N=1..4",
+      "research/problems/shapley-folkman-oq-01/sessions/2026-05-12-s3-prep-pair-convexhull-extraction-recipe.md: S3 pair-convex-hull Lean recipe",
+      "research/problems/shapley-folkman-oq-01/sessions/2026-05-12-s3b-prep-mathlib-citation-audit.md: S3b v4.26.0 phantom-lemma corrections",
+      "research/problems/shapley-folkman-oq-01/sessions/2026-05-13-s4-prep-parent-decomposition-source-audit.md: S4 parent file audit (decidability, sum_close_to_convexHull bridge)",
+      "proofs/Proofs/ShapleyFolkmanOQ01.lean: S2-A ACT-1 scaffold (~130 LOC, 0 axioms, 2 sorries) — helper lemma with attempted proof + 2 stubbed theorems",
+      "proofs/Proofs.lean: registered import Proofs.ShapleyFolkmanOQ01 alphabetically"
     ],
     "insights": [
       "Module.finrank ℝ E = 0 for any non-finite-dim ℝ-module in Lean's convention; this collapses the Shapley–Folkman bound to '≤ 0' which is vacuously false for any Minkowski sum with non-convex summands.",
@@ -63,5 +71,5 @@
     ]
   },
   "createdAt": "2026-05-12",
-  "updatedAt": "2026-05-12"
+  "updatedAt": "2026-05-13"
 }
