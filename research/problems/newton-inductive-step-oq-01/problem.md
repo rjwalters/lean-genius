@@ -13,10 +13,10 @@ Formalize the full Newton's inequality e_k^2 >= e_{k-1} * e_{k+1} for elementary
 
 ## Related Gallery Proofs
 
--  — parent proof
+- `newton-inductive-step` — parent proof (provides the binomial inequality used in the inductive step)
 
 ## Suggested First Steps
 
-1. Review the parent proof in 
+1. Review the parent proof in `proofs/Proofs/NewtonInductiveStep.lean`
 2. Survey Mathlib for relevant definitions and lemmas
 3. Sketch the formalization approach
