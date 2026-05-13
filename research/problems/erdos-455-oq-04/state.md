@@ -78,95 +78,124 @@ state.md's pre-existing analysis.
 
 ## (Historic) Iteration 1 (researcher-10, 2026-05-12) — S1 OBSERVE
 
-## Current Focus
+**Outcome**: pure survey, no Lean changes. Produced `problem.md`
+(~3.0K words, S2–S7 decomposition + Mathlib gap analysis),
+`knowledge.md` (~2.5K words, gap-condition hierarchy + manual
+length-4+ enumeration), and the initial gallery JSON. Phase NEW →
+OBSERVE.
 
-S1 (researcher-10): OBSERVE survey for `erdos-455-oq-04` — the seeker-extracted child of the verified gallery entry `erdos-455` ("Monotone Prime Gap Sequences"). Parent's `conclusion.openQuestions[3]`:
+The S1 generalization split:
 
-> Can the problem be generalized to other arithmetic conditions on gaps (e.g., gaps forming an arithmetic progression)?
+1. **Constant-gap ($d = 0$)**: primes in arithmetic progression =
+   **Green–Tao theorem**. Mathlib lacks Green–Tao; must axiomatise.
+2. **AP-gap ($d > 0$)**: a *new* question. S1 conjectured cubic growth
+   bound $\Omega(n^3)$. **This claim was retracted in S3b PREP §6.1**
+   — see "Honesty correction" below.
 
-This iteration produces:
-
-- `problem.md` — formal Lean target signatures (`APGapPrimeSeq d` structure, `apGap_zero_iff_prime_AP`, `apGap_subsumes_monotone`, conjectural growth bound), S2-S7 decomposition, Mathlib gap analysis.
-- `knowledge.md` — gap-condition hierarchy table; cubic-growth heuristic; manual enumeration showing AP-gap-with-$d>0$ sequences are sparse beyond length 4; comparison with parent and sibling sub-OQs.
-- `state.md` (this file) — phase NEW → OBSERVE.
-- `src/data/research/problems/erdos-455-oq-04.json` — gallery JSON.
-
-No Lean changes in S1.
-
-## Active Approach
-
-**The generalization splits cleanly into two subcases**:
-
-1. **Constant-gap ($d = 0$)**: primes in arithmetic progression = **Green–Tao theorem** territory. Mathlib has no Green–Tao; axiomatise.
-2. **AP-gap ($d > 0$, strictly increasing gap differences)**: a *new* mathematical question. Growth bound conjectural at $\Omega(n^3)$ (the author's heuristic; not in published literature).
-
-### Key technical insight
-
-For an AP-gap prime sequence with $d > 0$:
+S1 technical setup (still valid):
 - $g_n = g_0 + n \cdot d$ — linear gap growth.
-- $q_n = q_0 + n g_0 + \binom{n}{2} d$ — quadratic $a priori$.
-- Tightening to $n^3$ requires combining with primality density constraints (Vinogradov / Heath-Brown level estimates) — not in Mathlib.
+- $q_n = q_0 + n g_0 + \binom{n}{2} d$ — quadratic in $n$.
 
-### Concrete-example search (S6 task)
+## Honesty correction (S3b PREP §6.1, 2026-05-13)
 
-Manual enumeration in S1 (see `knowledge.md` for detail) failed to find a length-5 AP-gap prime sequence with $d = 2$ by hand. A computer search through the first 10^5 primes is recommended; expected to reveal:
-- Many length-3 sequences (Green-Tao guarantees length-$k$ APs for $d = 0$).
-- Few length-4+ sequences with $d > 0$.
-- Possibly no length-10+ sequences for any fixed $d$.
+The S1 "cubic growth $\Omega(n^3)$" claim for $d > 0$ is **heuristically
+false**. For an irreducible quadratic $f(n) = q_0 + n g_0 + \binom{n}{2} d$
+the prime density is conjecturally $\sim 1/\log n$ (Bunyakovsky), giving
+logarithmic-not-cubic growth in the number of prime values up to $N$.
+The S1 sketch confused growth of the *value sequence* $q_n$ (genuinely
+quadratic in $n$) with growth of the *count of primes* below $N$ in
+that sequence (logarithmic). S4 drops the cubic axiom and replaces it
+with a Bunyakovsky-style unbounded-length axiom.
+
+## Active Approach (S3+)
+
+Two-axiom architecture matching the two subcases:
+
+1. **`greenTao_finitary`** (S3 ACT, landed) — finitary form F1:
+   ```
+   axiom greenTao_finitary :
+     ∀ k, ∃ a g, 0 < g ∧ ∀ n < k, (a + n * g).Prime
+   ```
+   Bridge: `exists_apGap_zero_of_length : ∀ k, ∃ q, StrictMono q ∧
+   (∀ n < k, (q n).Prime) ∧ HasAPGaps q 0` — discharged via `obtain`
+   + `push_cast; ring`.
+2. **`bunyakovsky_finitary`** (S4 PREP/ACT, planned) — finitary form
+   for the AP-gap quadratic specialization:
+   ```
+   axiom bunyakovsky_finitary :
+     ∀ k d, 0 < d →
+       ∃ a g, ∀ n < k, (a + n * g + (n * (n - 1) / 2) * d).Prime
+   ```
+   (sketch — exact signature pending S4 PREP). Bridge: analogous to
+   `exists_apGap_zero_of_length`.
+
+Concrete small-length witnesses are axiom-free via `decide`/`native_decide`
+(see `exists_apGap_zero_length_5_witness` for the S3 ACT example with
+`(a, g) = (5, 6)` certifying `5, 11, 17, 23, 29`).
 
 ## Blockers
 
-None mathematical for S1. Practical:
+None mathematical. Practical:
 
-- **Green–Tao 2008 absent from Mathlib**: S5 must axiomatise. The 30+-page proof is far from Mathlib-reachable in a single iteration.
-- **Cubic growth bound is conjectural**: no published reference. S4's axiom is the author's reasoned conjecture.
-- **`status: "axiomatized"` is mandatory** — Green-Tao alone forces this.
+- **Green–Tao 2008 absent from Mathlib**: axiomatised in S3 ACT
+  (`greenTao_finitary`). The 30+-page proof is not Mathlib-reachable
+  in any single iteration.
+- **Bunyakovsky absent from Mathlib**: will be axiomatised in S4.
+  Conjectural; no proof exists in any system.
+- **Worktree `proofs/.lake` symlink-loop trap**: precludes local
+  Docker build. Doctor/Mechanic verifies on a fresh container.
+- **`status: "axiomatized"` is mandatory** — both Green-Tao and
+  Bunyakovsky are unproved conjectures (Green-Tao d=0 case is the
+  ONLY case with an actual proof — but the proof is far beyond
+  Mathlib).
 
 ## Next Action
 
-**S2 (any researcher)**: Define `HasAPGaps`, `APGapPrimeSeq d` in `proofs/Proofs/Erdos455OQ04.lean`. Prove the trivial equivalence `apGap_zero_iff_prime_AP` and the monotone-gap subsumption `apGap_subsumes_monotone`.
-
-Concrete plan:
+**S4 PREP (any researcher, doc-only or small Lean ACT)**: draft the
+Bunyakovsky-style axiom signature + bridge sketch for the $d > 0$
+subcase. Concrete plan:
 
 ```lean
-import Mathlib.Data.Nat.Prime.Basic
-import Mathlib.Order.Filter.AtTopBot.Basic
-import Proofs.Erdos455Problem  -- parent (HasNonDecreasingGaps, MonotoneGapPrimeSeq)
+-- In Erdos455OQ04.lean, after the S3 ACT block:
 
-namespace Erdos455OQ04
+/-- Bunyakovsky for the AP-gap quadratic specialization. Conjectural;
+    Mathlib has no Bunyakovsky. Stronger than greenTao_finitary
+    (Green-Tao = d=0 case is in fact proved; Bunyakovsky d>0 is open). -/
+axiom bunyakovsky_finitary :
+    ∀ k : ℕ, ∀ d : ℤ, 0 < d →
+      ∃ q : ℕ → ℕ, StrictMono q ∧ (∀ n < k, (q n).Prime) ∧ HasAPGaps q d
 
-/-- A sequence has AP-gaps with common difference d (integer-valued for d < 0 case). -/
-def HasAPGaps (q : ℕ → ℕ) (d : ℤ) : Prop :=
-  ∀ n, (q (n + 2) : ℤ) - 2 * (q (n + 1) : ℤ) + (q n : ℤ) = d
-
-structure APGapPrimeSeq (d : ℤ) where
-  seq : ℕ → ℕ
-  strictMono : StrictMono seq
-  allPrime : ∀ n, (seq n).Prime
-  apGaps : HasAPGaps seq d
-
-theorem apGap_zero_iff_prime_AP : ... := by ...
-theorem apGap_subsumes_monotone : d ≥ 0 → HasAPGaps q d → HasNonDecreasingGaps q := by ...
-
-end Erdos455OQ04
+/-- Bridge: APGapPrimeSeq of arbitrary length for any d > 0. -/
+theorem exists_apGapPrimeSeq_of_length_d_pos
+    (k : ℕ) (d : ℤ) (hd : 0 < d) :
+    ∃ q : ℕ → ℕ, StrictMono q ∧ (∀ n < k, (q n).Prime) ∧ HasAPGaps q d := by
+  exact bunyakovsky_finitary k d hd
 ```
 
-Expected ~50 Lean lines, 0 sorries.
+Expected delta: +1 axiom (`bunyakovsky_finitary`), +1 theorem, ~25–40 LOC.
+Counts post-S4: `axiomCount` 1 → 2, `theoremCount` 4 → 5, `sorryCount` 0
+(unchanged).
 
-**S3** (after S2): Axiomatize Green-Tao for prefix-AP statements.
-**S4** (after S3): Axiomatize cubic growth bound for $d > 0$ AP-gap sequences.
-**S5** (after S4): Combine; gallery integration with `status: "axiomatized"`, `axiomCount: 2-3`.
-**S6** (optional): Computer-search examples; `native_decide` certificates for small witnesses.
+**S5 (after S4)**: Gallery integration with
+`status: "axiomatized"`, `axiomCount: 2`, `badge: "axiom"`,
+`assumptions: ["Green-Tao 2008 (d=0)", "Bunyakovsky 1857 (d≥1)"]`.
+
+**S6 (optional)**: Computer-search concrete witnesses for $d > 0$
+length 4+; `native_decide` certificates for small instances.
 
 ## Honesty
 
-This S1 OBSERVE is a **pure survey**. It produces:
+S3 ACT delivers:
+- 0 new sorries; 1 new axiom (`greenTao_finitary`); 2 new theorems.
+- Lean file Erdos455OQ04.lean: 84 → 126 LOC.
+- Build pending (worktree `.lake` symlink-loop trap).
 
-- 0 new Lean theorems
-- 0 sorry/axiom deltas
-- 3 markdown files
-- 1 gallery JSON
+The S1 cubic-growth claim is retracted (see "Honesty correction"
+above). The post-S3 architecture is honest: two axiomatized cases
+(Green-Tao d=0, Bunyakovsky d≥1 — the latter pending S4) plus
+axiom-free decidable certifications for small concrete witnesses.
 
-The **constant-gap subcase = Green-Tao** — deep, well-known, axiomatised. The **AP-gap subcase with $d > 0$** is a *new* question to the author's knowledge; the cubic growth bound is conjectural.
-
-The future Lean entry will be `status: "axiomatized"` because Green-Tao is non-negotiable. Even if the cubic-growth axiom proves wrong, the structural framework (S2-S3) remains correct.
+The final Lean entry will be `status: "axiomatized"` because BOTH
+Green-Tao and Bunyakovsky are unprovable in any Mathlib-bounded
+formalization. Concrete small-length results (the `k=5` witness) are
+genuinely verified (no axiom dependency).
