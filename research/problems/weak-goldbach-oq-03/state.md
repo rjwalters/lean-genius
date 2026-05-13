@@ -1,10 +1,40 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12 (S2)
-**Iteration**: 2
+**Since**: 2026-05-12 (S4)
+**Iteration**: 4
 
 ## Current Focus
+
+S4 (researcher-1, 2026-05-12): Approach C — small-range kernel-verified
+binary Goldbach. Added `binary_goldbach_verified_small` theorem covering
+`n ≤ 30` via `interval_cases + decide`, sitting alongside the existing
+axiom `binary_goldbach_verified` (Oliveira e Silva 2013 verification up
+to `4 × 10^18`). Genuine kernel verification of 14 even cases
+(n ∈ {4, 6, …, 30}); odd cases discharged by `Even n` being False. ~22
+lines (theorem + docstring) added; 0 new axioms; 0 new sorries; axiom
+count unchanged at 9 (the new theorem is companion content, not an axiom
+replacement).
+
+## Session History
+
+- S1 (researcher-5): Survey of 9 axioms + 2 True-stubs + 1 placeholder
+  definition. Settled on Approach A. Merged #18035.
+- S2 (researcher-8): Approach A — Mathlib Schnirelmann integration.
+  Removed placeholder `schnirelmannDensity := 0`; added noncomputable
+  abbrev re-exporting Mathlib's real definition; added
+  `schnirelmannDensity_primes_eq_zero` proof. Merged #18068
+  (build pending due to slow Mathlib cache fetch).
+- S3 (researcher-1): Approach B — True-stub upgrades. Upgraded
+  `vinogradov_minor_arc_bound` and `linnik_goldbach_representations`
+  from `True` to typed `Nat.primeCounting`-bound statements; added
+  `primeCounting_le_succ` helper. Merged #18108 (build pending).
+- S4 (researcher-1): Approach C — small-range kernel-verified binary
+  Goldbach for `n ≤ 30`. Theorem `binary_goldbach_verified_small`
+  proves the same claim shape as the axiom but for the kernel-tractable
+  initial segment. Build pending.
+
+## Earlier Plan (S1, kept for context)
 
 S1 (researcher-5): Survey the 9 axioms + 2 `True`-stub theorems +
 1 placeholder definition in `Proofs/WeakGoldbach.lean`; classify each by
@@ -56,7 +86,45 @@ None mathematical.
   must be removed when adding the Mathlib import, OR renamed to avoid
   clash. Removal is cleaner.
 
-## Next Action
+## Next Action (S5)
+
+After S4 (Approach C, this iteration), the remaining tractable directions are:
+
+- **S5 (Approach D-phase-1)** — *Begin Schnirelmann's theorem proper*.
+  The Mathlib module `Mathlib.Combinatorics.Schnirelmann` provides only
+  the **definition** of `schnirelmannDensity` (and a handful of trivial
+  evaluation lemmas like `schnirelmannDensity_eq_zero_of_one_notMem`);
+  the **theorem** that `0 ∈ A` plus `σ(A) > 0` ⟹ `A` is an additive basis
+  is *not* in Mathlib yet — that is the open Mathlib TODO that
+  `axiom schnirelmann_basis_theorem` records. Phase D1 (this S5) would
+  formalize the **Schnirelmann sumset inequality**
+  `σ(A + B) ≥ σ A + σ B − σ A · σ B`,
+  which is the standard first step. Estimated ~150 lines Lean,
+  single session, build-pending tolerable. This is a *Mathlib
+  contribution candidate*: if it lands cleanly, the natural follow-on is
+  to upstream the lemma to `Mathlib.Combinatorics.Schnirelmann`.
+
+- **S5-alt (Approach C-extension)** — *Bump S4's small range from 30 to
+  300 using `native_decide`*. The cost is one additional kernel-trust
+  axiom (`Lean.ofReduceBool`); the gain is two orders of magnitude in
+  range coverage. Estimated ~5 lines of edit, single session. Lower
+  research value than D1 but lower risk.
+
+- **S5-alt-2 (Approach B-extension)** — *Upgrade
+  `circle_method_asymptotic` (line 336) and `helfgott_explicit_bound`
+  (line 488) from True-stubs to modest typed content.* Same pattern as
+  S3 (Approach B). Estimated ~40 lines Lean. Lower research value than
+  D1; complements S3's existing primeCounting-bound work.
+
+Recommended: **S5 = Approach D-phase-1** (Schnirelmann sumset
+inequality). This is the only direction that produces *new mathematics*
+rather than range or scope extensions of existing material; it is also
+the gateway to closing the largest single assumption
+(`schnirelmann_basis_theorem`).
+
+---
+
+## Earlier Next-Action Notes (S2 plan, kept for context)
 
 **S2 (any researcher): Approach A — Mathlib Schnirelmann integration**
 

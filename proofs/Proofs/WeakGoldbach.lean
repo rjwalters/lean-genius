@@ -391,10 +391,11 @@ lemma schnirelmannDensity_primes_eq_zero :
     schnirelmannDensity {n : ℕ | Nat.Prime n} = 0 :=
   _root_.schnirelmannDensity_eq_zero_of_one_notMem (fun h => Nat.not_prime_one h)
 
-/-- Schnirelmann's result on primes: the set P + P (sums of two primes)
+/- Schnirelmann's result on primes: the set P + P (sums of two primes)
     has positive Schnirelmann density. Combined with his basis theorem,
-    this shows every large integer is a bounded sum of primes. -/
-/- primes_sumset_positive_density (Schnirelmann): σ(P + P) > 0;
+    this shows every large integer is a bounded sum of primes.
+
+    primes_sumset_positive_density (Schnirelmann): σ(P + P) > 0;
     the set of sums of two primes has positive Schnirelmann density. -/
 
 /-- Tao's theorem (2014): every odd integer > 1 is a sum of at most 5 primes.
@@ -535,9 +536,35 @@ axiom chen_theorem :
 axiom binary_goldbach_verified :
     ∀ n : ℕ, 4 ≤ n → Even n → n ≤ 4 * 10^18 → IsSumOfTwoPrimes n
 
-/-- Under GRH, binary Goldbach holds for all odd n > some explicit bound
-    (Deshouillers, Effinger, te Riele, Zinoviev, 1997) -/
-/- deshouillers_grh_goldbach (1997): under GRH, every odd n > 10^20
+/-- Small-range, *kernel-verified* binary Goldbach for `n ≤ 30`.
+
+    This is a modest, exhaustively-checked companion to the axiom
+    `binary_goldbach_verified` (which records the full computational
+    verification up to `4 × 10^18` due to Oliveira e Silva, 2013).
+
+    The Oliveira e Silva range is far beyond what `decide` can evaluate
+    inside Lean's kernel, but the smallest cases are tractable: for each
+    even `n` in `{4, 6, 8, …, 30}`, the brute-force witness search
+    `isSumOfTwoPrimesDecide` (defined above) terminates in a few hundred
+    iterations, and `decidableIsSumOfTwoPrimes` then exhibits a concrete
+    prime pair.
+
+    **Honest scope.** This does *not* eliminate the axiom — it only
+    replaces the trivial-by-`decide` cases (which are already present
+    above as `example : IsSumOfTwoPrimes 4 := by decide`, etc.) with a
+    single universally-quantified statement of the same shape as the
+    axiom. The genuine content is range coverage, not new mathematics.
+    Larger ranges (say `n ≤ 1000`) would require either `native_decide`
+    (an additional kernel-trust axiom) or off-line verified search. -/
+theorem binary_goldbach_verified_small :
+    ∀ n : ℕ, 4 ≤ n → Even n → n ≤ 30 → IsSumOfTwoPrimes n := by
+  intro n h4 hEven h30
+  interval_cases n <;> revert hEven <;> decide
+
+/- Under GRH, binary Goldbach holds for all odd n > some explicit bound
+    (Deshouillers, Effinger, te Riele, Zinoviev, 1997).
+
+    deshouillers_grh_goldbach (1997): under GRH, every odd n > 10^20
     is a sum of three primes (key step before Helfgott's unconditional proof). -/
 
 /-- Linnik's theorem on Goldbach representations:
@@ -566,9 +593,10 @@ theorem linnik_goldbach_representations :
     where C₂ = Π_{p>2} (1 - 1/(p-1)²) ≈ 0.6601618... is the twin prime constant -/
 def twinPrimeConstant : ℝ := 0.6601618158
 
-/-- The Hardy-Littlewood Goldbach asymptotic:
-    G(n) ∼ 2C₂ · Π_{p|n, p>2} (p-1)/(p-2) · n/(log n)² -/
-/- hardy_littlewood_goldbach_asymptotic: G(n) ∼ 2C₂ · Π_{p|n,p>2} (p-1)/(p-2) · n/(log n)²
+/- The Hardy-Littlewood Goldbach asymptotic:
+    G(n) ∼ 2C₂ · Π_{p|n, p>2} (p-1)/(p-2) · n/(log n)²
+
+    hardy_littlewood_goldbach_asymptotic: G(n) ∼ 2C₂ · Π_{p|n,p>2} (p-1)/(p-2) · n/(log n)²
     where C₂ ≈ 0.6601618 is the twin prime constant. -/
 
 /-- Helfgott's explicit bound: all odd n > 5 are sums of three primes.
@@ -626,6 +654,7 @@ theorem levy_11 : ∃ p q : ℕ, Nat.Prime p ∧ Nat.Prime q ∧ 11 = p + 2 * q 
 #check IsP2
 #check chen_theorem
 #check binary_goldbach_verified
+#check binary_goldbach_verified_small
 #check LevyConjecture
 #check levy_implies_weak_goldbach
 
