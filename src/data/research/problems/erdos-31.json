@@ -18,13 +18,13 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-01-14T00:00:00Z",
-    "iteration": 2,
-    "focus": "Complete - 1 axiom (main theorem), 0 sorries",
+    "iteration": 4,
+    "focus": "S4: extended axiom-free coverage. lorentz_theorem axiom unchanged. Added multiples_have_sparse_complement (parametric) and even_numbers_have_sparse_complement axiom-free corollaries of erdos31_bounded_gaps.",
     "activeApproach": "Full formalization with axiomatized main theorem (Lorentz 1954).",
     "blockers": [
       "None - remaining axioms are \"deep\" mathematical results:"
     ],
-    "nextAction": "Consider submitting to Aristotle for prime density proof, or accept axioms as published results.",
+    "nextAction": "Reduce axiom by formalizing Lorentz greedy construction (research-level: requires well-founded recursion for lorentzB + D-free counting argument).",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 2,
@@ -32,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1A appropriate (lorentz_theorem — solved by Lorentz, deep combinatorial construction), 22T proved, 0S in main file.",
+    "progressSummary": "COMPLETE main theorem axiomatized (1A lorentz_theorem). 24 supporting theorems proved (0 sorries) including primes_density_zero, erdos31_bounded_gaps, multiples_have_sparse_complement (S4 axiom-free parametric special case), and even_numbers_have_sparse_complement (S4 corollary).",
     "builtItems": [
       "primeCounting_le_chebyshev: π(N) ≤ 2N·log(4)/log(N) + √N + 1 (Chebyshev splitting argument, ~70 lines)",
       "theorem sumset_comm: A+B = B+A (proved via omega)",
@@ -44,7 +44,9 @@
       "partialHarmonicSum_split_last: split off last term of Icc sum",
       "epsilon_le_inv_m: overshoot bounded by last term",
       "partialHarmonicSum_as_difference: proved H_m - H_{n-1} identity",
-      "epsilon_upper_bound: proved ε(n) ≤ 1/n"
+      "epsilon_upper_bound: proved ε(n) ≤ 1/n",
+      "S4: multiples_have_sparse_complement (k : ℕ) (hk : 0 < k) — axiom-free instance for any bounded-gap family {n | k ∣ n}",
+      "S4: even_numbers_have_sparse_complement — corollary at k = 2"
     ],
     "insights": [
       "Proved primeCounting_le_chebyshev via small/large prime splitting — completing the full proof of primes have density zero",
@@ -56,7 +58,9 @@
       "m_of_n_ge derived from axioms: if m<n then Icc empty giving sum=0, contradicting ≥1",
       "epsilon_upper_bound: split last term + minimality gives ε(n) ≤ 1/m(n) ≤ 1/n",
       "lorentz_theorem: Lorentz proved Erdős #31 — the proof is a constructive combinatorial argument too deep to formalize",
-      "Main file Erdos31Problem.lean is clean: 22 theorems, 1 appropriate axiom, 0 sorries"
+      "Main file Erdos31Problem.lean is clean: 22 theorems, 1 appropriate axiom, 0 sorries",
+      "Any A with bounded gaps (M) admits the trivial B = {0, ..., M-1} from erdos31_bounded_gaps, independent of Lorentz. This covers multiples of any positive k, eventually periodic sets, and finite-union APs.",
+      "lorentz_theorem axiom is genuinely load-bearing only for A with UNBOUNDED gaps (e.g. primes, powers of 2)."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -88,7 +92,7 @@
     "mathlib": []
   },
   "started": "2026-01-14T00:00:00.000Z",
-  "lastUpdate": "2026-01-14T00:00:00.000Z",
+  "lastUpdate": "2026-05-13T00:00:00.000Z",
   "significance": 7,
   "tractability": 7,
   "leanFiles": [
@@ -227,8 +231,8 @@
     {
       "path": "Proofs/Erdos31Problem.lean",
       "filename": "Erdos31Problem.lean",
-      "lineCount": 787,
-      "theoremCount": 22,
+      "lineCount": 820,
+      "theoremCount": 24,
       "axiomCount": 1,
       "defCount": 12,
       "sorryCount": 0,
