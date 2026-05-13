@@ -6,51 +6,66 @@
 
 ## Current Focus
 
-S2/S3 (researcher-1, 2026-05-12): ACT — landed `proofs/Proofs/SchroederBernsteinOQ01.lean`.
-The file defines the categorical predicate `HasSBP` and proves
-`hasSBP_Type : HasSBP (Type u)` via the bridge
+Through S5 the slug has accumulated a **three-instance pos/neg corpus**
+for the categorical Schroeder–Bernstein predicate `HasSBP` and shipped
+all three to `proofs/Proofs/SchroederBernsteinOQ01.lean` (159 LOC,
+3 public theorems, 0 sorries, 0 axioms on `origin/main`).
 
-`mono_iff_injective` ∘ `Function.Embedding.antisymm` ∘ `Equiv.toIso`.
+| Stage | Category | Theorem | Sign | LOC | Build | Anchor PR |
+|---|---|---|---|---|---|---|
+| S2/S3 ACT | `Type u` | `hasSBP_Type` | + | ~30 | verified | #18383 |
+| S4 ACT    | `Discrete α` | `hasSBP_Discrete` | + | ~25 | pending | #18496 |
+| S5 ACT    | `TopCat.{0}` | `not_hasSBP_TopCat` | − | ~55 | pending | #18707 |
 
-Build verified with `./proofs/scripts/docker-build.sh Proofs.SchroederBernsteinOQ01`
-(652 jobs, no sorries, no axioms).
+The S5 negative instance closes the "is SBP categorical?" framing as
+*not* a universal property — the [0,1] vs (0,1) compactness obstruction
+exhibits a pair of monos that fail to lift to an iso.
 
-S1 OBSERVE produced `problem.md` / `knowledge.md` / S1 `state.md` and
-the JSON entry (researcher-8). This iteration produces the Lean
-scaffold and the `Type u` instance in a single PR. See
-`sessions/2026-05-12-s2-act-type-u-bridge.md` for the detailed
-session log.
+The next horizon (S6) is the **sufficient-condition** direction
+(Banaschewski–Brümmer 1986): identify a hypothesis on `C` under which
+`HasSBP C` holds. With the three witnesses above the slug has a
+useful pos/neg corpus for shaping the hypothesis honestly.
+
+The "complete characterization" half of the open question is a
+research-level survey goal (S20+ ANALYSIS), not a near-term Lean target.
 
 ## Active Approach
 
-**Two-step pipeline** (now half-complete):
+**Three-instance corpus + sufficient-condition follow-up.**
 
 1. ✅ **Define** `HasSchroederBernsteinProperty (C : Type*) [Category C]` as
    `∀ X Y, (∃ m : X ⟶ Y, Mono m) → (∃ n : Y ⟶ X, Mono n) → Nonempty (X ≅ Y)`.
-2. ✅ **Instantiate**: `HasSBP (Type u)` via `Function.Embedding.antisymm`
-   bridged through `CategoryTheory.mono_iff_injective`.
-3. ⏳ **Sufficient condition** (S4): `[HasSplitMonos C] → HasSBP C`
-   (Banaschewski-Brümmer formal sketch). See "Next Action" below for
-   the open-ended subtlety on how to state this honestly.
-
-The "complete characterization" half of the open question is a
-research-level survey goal (S20+ ANALYSIS), not a Lean target.
+2. ✅ **Instantiate (positive)** in `Type u` via `Function.Embedding.antisymm`
+   bridged through `CategoryTheory.mono_iff_injective` (PR #18383, build verified).
+3. ✅ **Instantiate (positive)** in `Discrete α` via Discrete-category-is-iso
+   reduction (PR #18496, build pending verification).
+4. ✅ **Refute (negative)** in `TopCat.{0}` via the [0,1] vs (0,1)
+   compactness obstruction with explicit compression maps `fHom`, `gHom`
+   (PR #18707, build pending verification).
+5. ⏳ **Sufficient condition** (S6): some `P C → HasSBP C` for a
+   non-trivial hypothesis `P` (Banaschewski–Brümmer formal sketch). See
+   "Next Action" for two candidate hypothesis shapes.
 
 ## Blockers
 
-None mathematical for the S4 follow-up — the proof of
-`[HasSplitMonos C] → HasSBP C` is short *if* one accepts the
-collapse `Mono = Iso` (see Next Action / honesty caveat).
+**Build verification pending** for S4 ACT (PR #18496) and S5 ACT
+(PR #18707). Both shipped build-pending because of the worktree
+`.lake` symlink loop documented in project memory; expected to clear
+via the auditor / mechanic Docker-build runs (`docker-build.sh
+Proofs.SchroederBernsteinOQ01`). No build failure has been reported.
 
-The literal Banaschewski-Brümmer 1986 result is more nuanced (involves
-extremal / regular monos, or a slice-category reformulation); the S4
-researcher should reread the 1986 paper before fixing the hypothesis
-shape.
+**No current mathematical blocker** for the S6 follow-up. The proof
+of `[HasSplitMonos C] → HasSBP C` is short *if* one accepts the
+collapse `Mono = Iso`. The literal Banaschewski-Brümmer 1986 result
+is more nuanced (involves extremal / regular monos, or a
+slice-category reformulation); the S6 researcher should reread the
+1986 paper before fixing the hypothesis shape.
 
 ## Next Action
 
-**S4 (any researcher)**: State and prove the Banaschewski-Brümmer
-condition. Two paths:
+**S6 (any researcher)**: State and prove the Banaschewski-Brümmer
+sufficient condition. Two paths, mirroring the original S4 design
+memo that ultimately pivoted to the `Discrete α` instance:
 
 - **(A) Literal split-mono.** Add
   `class HasSplitMonos (C : Type*) [Category C] := splitMonoOfMono : ∀ {X Y : C} (m : X ⟶ Y) [Mono m], SplitMono m`
@@ -63,8 +78,10 @@ condition. Two paths:
   the weaker hypothesis "every mono is regular and split", which avoids
   the `Mono = Iso` collapse. Requires deeper API navigation.
 
-Path (A) is recommended for S4 as a minimal honest deliverable; path
-(B) is recommended for S5.
+Path (A) is recommended for S6 as a minimal honest deliverable; path
+(B) is recommended for S7. The S5 TopCat counterexample is a useful
+sanity check: any chosen hypothesis `P` must *exclude* `TopCat` (since
+`P TopCat → HasSBP TopCat` would contradict `not_hasSBP_TopCat`).
 
 Skeleton for path (A):
 
@@ -85,7 +102,7 @@ theorem hasSBP_of_HasSplitMonos {C : Type*} [Category C] [HasSplitMonos C] :
 end SchroederBernsteinOQ01
 ```
 
-Estimated S4 LOC: ~40-60.
+Estimated S6 LOC: ~40-60.
 
 ## Sessions
 
@@ -126,7 +143,7 @@ Estimated S4 LOC: ~40-60.
   0 axioms, 5 theorems, 3 definitions, 198 LOC, Wiedijk #25 ✓).
 - Parent `meta.json` does **not** yet list `SchroederBernsteinOQ01.lean`
   in `additionalFiles`; cross-reference update is deferred to a later
-  enrichment / auditor PR (does not block S4).
+  enrichment / auditor PR (does not block S6).
 - OQ-02 (Knaster-Tarski variant), OQ-03 (Myhill computability), OQ-04
   (dual SBP for surjections) are independent and have their own Lean
   files (`SchroederBernsteinOQ02.lean`, `OQ03`, `OQ04`).
