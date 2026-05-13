@@ -47,22 +47,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE: Refuted parent openQuestions[0] via 2-element counterexample family l = [-m, m+S]. Identified m-jump downward IVT (conjecture D) as the genuine m-generalization of the parent unit-decrement IVT, with mirroring leftmost-crossing proof template. No Mathlib gap.",
+    "progressSummary": "S1 OBSERVE refuted naive ⌈S/m⌉ bound (PR #18253). S2 ACT proved D = m_jump_downward_ivt (PR #18381). S3 PREP designed E discharge (PR #18424). S1b OBSERVE refuted B and C (PR #18480 open). S1c PREP designed B′ discharge plan (PR #18487). S4 ACT D′ = m_jump_upward_ivt in flight (PR #18693 open). S5 PREP (PR #18703) audited S1c §3.2 discharge sketch — surfaced 3 issues, mapped parent machinery transfer, sketched Path A (~200 LOC, new mathematics) vs Path B (~80 LOC, scope-down). C′ tight case [2,2,2,2,2,-2,-2,-2,1] observed. S5 ACT deferred pending S5b/S5c PREP grounding.",
     "builtItems": [
       "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/problem.md — full restatement with refutation and 5 refined conjectures A-E",
-      "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/knowledge.md — worked verification, mechanism analysis, Mathlib audit, next-steps roadmap"
+      "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/knowledge.md — worked verification, mechanism analysis, Mathlib audit, next-steps roadmap",
+      "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/sessions/2026-05-13-s5-prep-discharge-sketch-audit.md — S5 PREP doc-only audit of S1c discharge sketch; identifies 3 issues, maps parent BallotProblemOQ01.lean machinery transfer table, sketches Path A (~200 LOC) vs Path B (~80 LOC), 11 new small-case verifications including first C′-tight witness (PR #18703)"
     ],
     "insights": [
       "Two-element counterexample suffices: l = [-m, m+S] with S = m+1 gives |goodRotations| = 1 < 2 = ⌈S/m⌉ for all m ≥ 2.",
       "The IVT in the m = 1 case derives its power from the level-visitation guarantee (consecutive prefix sums differ by ≤ 1). For m ≥ 2, a single -m step can skip m-1 integer levels.",
       "The {+1,-k} cycle lemma works because BOTH the up-climbs (every level visited via +1 steps) AND the down-drops are constrained. The refuted conjecture controlled only the down-drops.",
-      "The right m-generalization places the witness in a window [v-m+1, v] of width m (D), not at exact level v."
+      "The right m-generalization places the witness in a window [v-m+1, v] of width m (D), not at exact level v.",
+      "S5 PREP (PR #18703): S1c §3.2 has three discharge-sketch issues — arithmetic typo, structural gap (silently borrows parent {+1,-k} levelPos_eq + rightmostAtLevel_good machinery that fails under two-sided alphabet), and inverted injectivity direction. Parent BallotProblemOQ01.lean:703 levelPos_eq pins prefix sum to minPrefixSum+n via helem hypothesis x = 1 ∨ x = -k; under -m ≤ x ≤ m with m ≥ 2, positive steps ∈ {1,...,m} break this pin and D′ (PR #18693) only yields m-window positions.",
+      "S5 PREP §4.4 found first observed C′-tight small case: l = [2,2,2,2,2,-2,-2,-2,1] satisfies l.sum = m·|gR| + (m-1)·|negatives| as exact equality (LHS = RHS = 5, m=2). C′ tightness across cases suggests it is the correct sharper slack form to target after B′ is settled.",
+      "S5 PREP §3 identifies two B′ recovery paths: Path A (relaxed bridge via new windowPos_eq + windowPos_good, ~200 LOC genuinely new mathematics — windowPos_good is NOT a sign-flip of rightmostAtLevel_good because window slack must be re-absorbed in good-rotation predicate); Path B (scope down to alphabet {+1} ∪ {-1,...,-m}, ~80 LOC, parent levelPos machinery transfers verbatim, but result is enlargement of conjecture E rather than full B′)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
+      "Decide between Path A and Path B before any S5 ACT Lean code is written.",
       "S2 ACT: prove conjecture D (m-jump downward IVT) ~50 LOC in new file BallotProblemOQ01OQ01OQ02OQ01.lean.",
       "S3 ACT (optional): prove conjecture E (restricted alphabet {+1, -m}) using the existing {+1, -k} infrastructure.",
-      "S4 GALLERY: create src/data/proofs/ballot-problem-oq-01-oq-01-oq-02-oq-01/ with meta.json describing the refuted conjecture and the recovered m-jump IVT."
+      "S4 GALLERY: create src/data/proofs/ballot-problem-oq-01-oq-01-oq-02-oq-01/ with meta.json describing the refuted conjecture and the recovered m-jump IVT.",
+      "S5b PREP: detail Path A windowPos_good proof obligation; stress-test (m-1)·l.length slack absorption against tight cases.",
+      "S5c PREP: verify Path B transfer line-by-line (levelPos_max, levelPos_eq, rightmostAtLevel_good) with hmem weakened to {+1} ∪ {-1,...,-m}."
     ]
   },
   "tags": [
