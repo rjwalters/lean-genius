@@ -1,8 +1,64 @@
 # State: `law-of-cosines-oq-04-oq-02-oq-01`
 
 **Tier**: B (Significance 6 / Tractability 5)
-**Phase**: OBSERVE (S1) → PREP (S2-prep)
-**Last update**: 2026-05-13 (researcher-4) — S2-PREP Mathlib bearer audit at pinned SHA
+**Phase**: OBSERVE (S1) → PREP (S2-prep) → ACT (S2-skeleton, build pending)
+**Last update**: 2026-05-13 (researcher-10) — S2 ACT skeleton, build pending
+
+## Session N=3 — S2 ACT skeleton (2026-05-13, researcher-10)
+
+**Mode**: ACT (skeleton/scaffold; build pending — no `docker-build` this session).
+
+**Outcome**: created `proofs/Proofs/LawOfCosinesOQ04OQ02OQ01.lean` (145 LOC), establishing
+the Path A scaffold per `knowledge.md §8`'s seven-lemma plan:
+
+* Module header with strategy summary, bearer references (using S2-PREP audit's
+  re-grounded paths/line numbers at SHA `2df2f01`), and explicit "Build: pending" note.
+* Namespace `LawOfCosinesOQ04OQ02OQ01` with standard
+  `InnerProductSpace ℝ V` + `NormedAddTorsor V P` variable block.
+* `bisector_param_exists`: stated — Sbtw → `s ∈ Ioo 0 1` with affine combination.
+  Proof: `sorry` (S3 will discharge via `Sbtw.mem_image_Ioo` + `AffineMap.lineMap_apply`
+  + vsub rewriting, ~20-30 LOC per audit doc §4).
+* `bisector_dist_BD` and `bisector_dist_DC`: stated — segment-length lemmas
+  parametric in `s`. Proofs: `sorry` (S3, ~10-15 LOC each via `dist_eq_norm_vsub`
+  + `norm_smul` + `abs_of_pos`).
+* `angle_bisector_ratio_from_geometry`: stated — the OQ's main theorem, with full
+  geometric hypotheses (`Sbtw ℝ B D C`, `∠ B A D = ∠ D A C`,
+  `¬ Collinear ℝ ({A,B,C} : Set P)`). Proof: `sorry` with explicit 6-step skeleton
+  in docstring (S3 will discharge via Path A steps 2-5, ~150-200 LOC).
+* Tail comment block sketches the S4 chained statement `angle_bisector_length_geometric`
+  (target: re-state parent's `angle_bisector_length` purely in geometric terms,
+  closing the OQ).
+
+**Net diff this session**:
+* +1 Lean file (`LawOfCosinesOQ04OQ02OQ01.lean`, 145 LOC, **4 sorries**, 0 axioms).
+* state.md update (this session entry + Next-action update).
+* JSON cursor update (`currentState.phase` → ACT, `progressSummary` append, `lastUpdate`).
+
+**Build status**: pending. Per CLAUDE.md never-run-`lake build`-directly rule, this is a
+"build pending" PR; downstream verification (S3 first lemma discharge OR docker-build run)
+will confirm Mathlib bearers resolve and namespace/imports are clean. The file is small
+(145 LOC, mostly comments + signatures) and all bearers are re-grounded to the pinned
+SHA `2df2f01` via the S2-PREP audit, so build risk is concentrated at the imports
+line and namespace opens — not at the proof body.
+
+**Why ACT-skeleton vs full ACT**: per `knowledge.md §8`, full Path A is ~250-350 LOC
+across 7 lemmas. Discharging all 7 in one session without local `docker-build` verification
+would compound bearer/syntax risk. Shipping the scaffold first (a) creates a stable
+file landmark in `proofs/Proofs/` so S3 can iterate per-lemma against actual `lake build`
+output, (b) locks in the namespace/imports/variable block (the lowest-confidence parts
+for a researcher-only-iteration session), (c) makes the theorem statements citable from
+sibling work (e.g. `CevasTheoremOQ02OQ01OQ03.lean` for the parallel geometric Ceva OQ).
+
+**Risks deferred to S3**:
+* `Sbtw.mem_image_Ioo` unpacking gives `D = lineMap B C s` not `D -ᵥ A = (1-s)•u + s•v`
+  directly; rewriting via `AffineMap.lineMap_apply` (`lineMap a b t = a + t • (b -ᵥ a)`)
+  + `vsub_sub_vsub_cancel_right` is the path. ~10 LOC.
+* `Real.arccos_inj` requires explicit `[-1, 1]` bounds on both cosines; derivable from
+  `abs_real_inner_le_norm` + non-zero `‖u‖`, `‖v‖`, `‖D -ᵥ A‖`.
+* `inner_smul_left` returns `r† * ⟪x, y⟫` (general 𝕜); for ℝ the conjugate is identity,
+  but `simp` may need `RCLike.star_def` / `Complex.conj_ofReal` hints. Confirmed by audit.
+
+---
 
 ## Session N=2 — S2-PREP (2026-05-13, researcher-4)
 
@@ -109,16 +165,37 @@ the identity `m · b = n · c` follows immediately.
 * **Files touched**: 3 markdown + 1 JSON (this iteration); no Lean file modifications.
 * **Build status**: unchanged.
 
-## Next action (Session N=2)
+## Next action (Session N=4)
 
-Implement S2 Path A in a new file `proofs/Proofs/LawOfCosinesOQ04OQ02OQ01.lean`.
-Order of lemmas as listed in `knowledge.md §8`. Target: ~250-350 lines, 0 axioms,
-0 sorries, builds against current Mathlib via `proofs/scripts/docker-build.sh
-Proofs.LawOfCosinesOQ04OQ02OQ01`.
+S3: discharge sorries in `LawOfCosinesOQ04OQ02OQ01.lean` per S2 skeleton, in order:
 
-A successful S2 unblocks S3 (gallery `meta.json`/`index.ts` + parent
-`openQuestions` update) and the Mathlib-upstream candidate
-`Mathlib.Geometry.Euclidean.AngleBisector`.
+1. **`bisector_param_exists`** (~25 LOC): unpack `Sbtw.mem_image_Ioo` →
+   `⟨s, hs, hLineMap⟩`; rewrite via `AffineMap.lineMap_apply` to
+   `D = B + s • (C -ᵥ B)`; then `D -ᵥ A = (B -ᵥ A) + s • (C -ᵥ B)`; rewrite
+   `C -ᵥ B = (C -ᵥ A) - (B -ᵥ A)`; algebra to `(1-s) • (B -ᵥ A) + s • (C -ᵥ A)`.
+   Run `docker-build` to confirm before continuing.
+
+2. **`bisector_dist_BD` / `bisector_dist_DC`** (~15 LOC each): `dist_eq_norm_vsub` +
+   `norm_smul` + `abs_of_pos` (from `s ∈ Ioo 0 1`).
+
+3. **`angle_bisector_ratio_from_geometry`** (~150-200 LOC, in order):
+   * Apply `bisector_param_exists` to get `s`.
+   * Cosine equality via `Real.arccos_inj` + `InnerProductGeometry.cos_angle` (Step 1
+     of strategy, §4 of `s2-prep-bearer-audit.md`).
+   * Inner-product bilinearity expansion (Step 2-3 of strategy).
+   * `linear_combination` to factorize as `((1-s)c − sb) · (bc − ⟪u,v⟫) = 0`
+     (fallback to hand-witnessed `nlinarith` if `ring` fails).
+   * Exclude `bc − ⟪u,v⟫ = 0` via `abs_real_inner_le_norm` strict form + non-collinearity
+     (`collinear_iff_eq_or_eq_or_angle_eq_zero_or_angle_eq_pi` from `Affine.lean:378`).
+   * Conclude `s · (b + c) = c`; multiply by `dist B C` to get `m · b = n · c`.
+
+4. **(S4) `angle_bisector_length_geometric`** (~50 LOC): chain into parent's
+   `angle_bisector_length` with `hbis := angle_bisector_ratio_from_geometry`,
+   `ha := Sbtw.dist_add_dist`, and the two sub-triangle law-of-cosines from
+   `EuclideanGeometry.dist_sq_eq_dist_sq_add_dist_sq_sub_two_mul_dist_mul_dist_mul_cos_angle`.
+
+S5+: gallery wiring (`meta.json`, `index.ts`) + parent's `openQuestions` update +
+Mathlib-upstream candidate extraction.
 
 ## Blockers
 
