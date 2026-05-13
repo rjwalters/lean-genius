@@ -1,5 +1,6 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
+import annotationsJson from './annotations.json'
 
 const meta = metaJson as unknown as {
   id: string; title: string; slug: string; description: string
@@ -18,7 +19,7 @@ export const proof: Proof = {
   crossReferences: meta.crossReferences,
 }
 
-export const annotations: Annotation[] = []
+export const annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 export const proofData: ProofData = { proof, annotations }
 
 export async function getProofSource(): Promise<string> {
