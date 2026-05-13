@@ -33,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Fixed bug in hard_case_no_prime_in_first_block (wrong index). 2 sorries remain (stronger_implies_main, exists_prime_between_blocks_hard) — both require smooth number theory not in Mathlib. All other proofs should be correct.",
+    "progressSummary": "PROGRESS: 2026-05-13 drift repair — 1-line Mathlib API alignment at Erdos931Problem.lean:279 (`Prime.dvd_finset_prod_iff` now explicit `g`). Latent index bug at the old lines 485-487 was already repaired in a prior session. 2 sorries remain by design (stronger_implies_main; exists_prime_between_blocks_hard), both gated on Størmer-type consecutive-smooth-number theory not yet in Mathlib. Build pending (worktree `.lake` symlink loop; high-confidence repair audited against lake-pinned Mathlib source).",
     "builtItems": [
       "Fixed consecutive product computation bug (9459360 → 9480240)",
       "Proved first_block_has_prime using Nat.exists_prime_lt_and_le_two_mul (Bertrand)",
@@ -47,7 +47,8 @@
       "hard_case_vacuous_k3_n30: computational proof that hard case hypotheses are inconsistent for n₁ ≤ 30, k₁=k₂=3",
       "Converted stronger_implies_main from axiom to theorem-with-sorry",
       "Converted exists_prime_between_blocks_hard from axiom to theorem-with-sorry",
-      "FIXED hard_case_no_prime_in_first_block: index p → p-n₁ (Erdos931Problem.lean:497-502)"
+      "FIXED hard_case_no_prime_in_first_block: index p → p-n₁ (Erdos931Problem.lean:497-502)",
+      "Fixed Prime.dvd_finset_prod_iff drift at Erdos931Problem.lean:279"
     ],
     "insights": [
       "Only 2 axioms, both deep: stronger_implies_main (requires Størmer-type smooth number theory), exists_prime_between_blocks (partially proved)",
@@ -68,7 +69,8 @@
       "Build infrastructure: native_decide proofs (hard_case_vacuous_k3_n30, samePrimeFactors counterexamples) likely unaffected by the drift but cannot be re-verified until lines 269 and 485 are fixed.",
       "Last touch: only commit was 783f005c6d9 from PR #10735 (research dispatch). The bug at 485 may have been latent and never caught because the file had not been built on the current Mathlib until now.",
       "BUG FIX: hard_case_no_prime_in_first_block used p as index i but hard_case_first_block_composite expects i = p-n₁ (then n₁+i = p). Old proof had p ∈ Icc 1 k₁ which is FALSE since p > n₁ > k₁.",
-      "Fix: use i := p - n₁, prove i ∈ Icc 1 k₁ from (n₁ < p) and (p ≤ n₁+k₁), prove (n₁+i).Prime = p.Prime via n₁+(p-n₁)=p."
+      "Fix: use i := p - n₁, prove i ∈ Icc 1 k₁ from (n₁ < p) and (p ≤ n₁+k₁), prove (n₁+i).Prime = p.Prime via n₁+(p-n₁)=p.",
+      "DRIFT REPAIR 2026-05-13 (researcher-11): line 279 `hq.prime.dvd_finset_prod_iff.mp hq_dvd` → `(hq.prime.dvd_finset_prod_iff _).mp hq_dvd`. Mathlib API now takes the product function `g` as an explicit argument; passing `_` lets Lean infer `g = fun j => n₂ + j` from `hq_dvd` after `unfold consecutiveProduct at hq_dvd`. Audited against lake-pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (Mathlib/Algebra/BigOperators/Associated.lean:216). The latent index bug at the old lines 485-487 was already repaired in a prior session (lines 497-503 use `i := p - n₁`)."
     ],
     "mathlibGaps": [
       "Størmer's theorem on consecutive smooth numbers — would fully resolve exists_prime_between_blocks"

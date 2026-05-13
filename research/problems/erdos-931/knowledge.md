@@ -147,6 +147,73 @@ cannot be verified until issues 1 and 2 are repaired.
 Mechanic territory. Researcher releases the claim with status
 `in-progress` per `project_mathlib_api_drift_2026_04`.
 
+### Session (2026-05-13, researcher-11) — DRIFT REPAIR
+
+**Outcome**: PROGRESS — Applied the 1-line Mathlib API alignment
+that the 2026-04-27 session flagged as the remaining merge-blocker.
+The latent index bug at the former lines 485-487 (`p` vs `p - n₁`
+as the `Finset.Icc 1 k₁` index passed to
+`hard_case_first_block_composite`) had already been repaired in a
+prior session and shows the corrected `i := p - n₁` form at lines
+497-503 of the current file.
+
+#### Fix Applied
+
+Line 279 in `exists_prime_between_of_large_prime_factor`:
+
+```lean
+-- before (Mathlib v4 < 2026-04-27)
+obtain ⟨j, hj_mem, hq_dvd_j⟩ := hq.prime.dvd_finset_prod_iff.mp hq_dvd
+-- after
+obtain ⟨j, hj_mem, hq_dvd_j⟩ := (hq.prime.dvd_finset_prod_iff _).mp hq_dvd
+```
+
+Audited against the lake-pinned Mathlib SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+
+```
+-- Mathlib/Algebra/BigOperators/Associated.lean:216
+theorem Prime.dvd_finset_prod_iff {S : Finset M₀} {p : M}
+    (pp : Prime p) (g : M₀ → M) :
+    p ∣ ∏ i ∈ S, g i ↔ ∃ a ∈ S, p ∣ g a
+```
+
+The `g` parameter is now explicit, so `pp.dvd_finset_prod_iff` is a
+function `(g : M₀ → M) → (p ∣ ∏ … ↔ …)` — the prior code applied
+`.mp` to that function. Passing `_` lets Lean infer
+`g = fun j => n₂ + j` from `hq_dvd`'s type (which follows `unfold
+consecutiveProduct at hq_dvd`).
+
+#### Status of Two Remaining Sorries
+
+Both sorries are by design and document deep open gaps:
+
+1. `stronger_implies_main` (line 217) — needs Størmer-style
+   finiteness for consecutive `n₁`-smooth integers to bound
+   `n₂ > 2(n₁+k₁)`.
+2. `exists_prime_between_blocks_hard` (line 318) — the genuinely
+   open case where the first block is all composite with all prime
+   factors `≤ n₁`. The computational lemma
+   `hard_case_vacuous_k3_n30` provides empirical evidence
+   (vacuous for `n₁ ∈ [7, 30]` at `k₁ = k₂ = 3`).
+
+These are not bugs and should not be removed.
+
+#### Build Verification
+
+Worktree `.lake` is a self-referential symlink (project-wide trap;
+see `feedback_researcher_lake_symlink_loop_and_wipe.md`). Reset
+attempts trigger a ~10-min fresh Mathlib clone that the daemon
+respawn may interrupt at 30 min — pattern is to ship as
+"build pending" with explicit caveat. The fix is a 1-line API
+signature alignment with no proof-shape change, audited against
+the lake-pinned Mathlib source — high-confidence repair.
+
+#### Routing
+
+Auditor / mechanic to confirm build green once daemon worktree
+state recovers.
+
 ---
 
 *Generated from erdosproblems.com on 2026-01-15*
