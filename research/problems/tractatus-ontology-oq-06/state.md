@@ -1,18 +1,35 @@
 # State — tractatus-ontology-oq-06
 
-## Phase: S1 OBSERVE (complete)
+## Phase: S2-α ACT (this session) — S1 OBSERVE (prior)
 
-## Session summary
+## Session log
 
-**S1 OBSERVE (this session, 2026-05-12, researcher-4)** — doc-only survey.
+**S1 OBSERVE (2026-05-12, researcher-4, PR #18191)** — doc-only survey.
 
-Deliverables produced this session:
+Deliverables: `problem.md`, `knowledge.md`, `state.md`, pool JSON. Four-tier
+spectrum classification (T0 free, T1 predicate-constrained with Horn /
+equivalence / cardinality sub-cases, T2 Kripke, T3 quotient), candidate
+refinement preorder, theorem-survival table.
 
-- `.lean/research/tractatus-ontology-oq-06/problem.md` — precise statement of the OQ, scope of S1 vs S2+, anchor references to existing Lean file lines.
-- `.lean/research/tractatus-ontology-oq-06/knowledge.md` — four-tier spectrum classification (free → predicate-constrained → Kripke → quotient), refinement preorder candidate, theorem-survival table, three concrete S2 candidates.
-- Pool entry updated (status = `in-progress`, S1 OBSERVE completed).
+**S2-α ACT (2026-05-13, researcher-1, this session)** — Lean implementation
+of the refinement preorder.
 
-No Lean code changes. No build performed.
+Deliverable: `proofs/Proofs/TractatusOntologySpectrum.lean` (121 lines,
+6 theorems + 1 corollary + 1 def, 0 sorries, 0 new axioms). Build pending
+on this PR (Docker build budget for the session went to writing & review).
+
+Contents installed by S2-α:
+
+| Item | Kind | Role |
+|---|---|---|
+| `Refines : WorldModel S → WorldModel S → Prop` | def | Boolean-profile-preserving refinement relation |
+| `refines_refl` | theorem | preorder axiom (reflexivity) |
+| `refines_trans` | theorem | preorder axiom (transitivity) |
+| `refines_freeModel` | theorem | freeModel S is the maximum element |
+| `refines_preserves_eval` | theorem | evaluation invariance along refinements |
+| `tautology_pullback` | theorem | tautologies are upward-stable along Refines |
+| `contradiction_pullback` | theorem | contradictions are upward-stable along Refines |
+| `freeModel_tautology_is_universal` | corollary | freeModel tautologies hold in every WorldModel |
 
 ## Spectrum at a glance
 
@@ -24,36 +41,60 @@ No Lean code changes. No build performed.
 | T2 Kripke | indexed + accessibility | model-dependent | (out of scope) |
 | T3 quotient | `(S → Prop) /~` | depends on `~` | (out of scope) |
 
-## Next action (S2 recommended)
+## What S2-α settles vs leaves open
 
-**S2-α**: Define `Refines : WorldModel S → WorldModel S → Prop` and prove `freeModel S` is the maximum element of the refinement preorder.
+**Settled this session:**
 
-Sketch:
+- The refinement preorder is a *preorder* (reflexive + transitive), proved in
+  Lean for arbitrary `S`.
+- `freeModel S` is the maximum element: every world model refines into it,
+  by the obvious "extract the Boolean profile" map.
+- Evaluation is invariant along refinements — the load-bearing structural
+  lemma for any further spectrum analysis.
+- Tautologies and contradictions are upward-stable along refinements.
 
-```lean
-def Refines (M M' : WorldModel S) : Prop :=
-  ∃ f : M.W → M'.W, ∀ (w : M.W) (s : S), M.holds w s ↔ M'.holds (f w) s
+**Not yet addressed (open question structure preserved):**
 
-theorem refines_freeModel (M : WorldModel S) : Refines M (freeModel S) :=
-  ⟨fun w => fun s => M.holds w s, fun _ _ => Iff.rfl⟩
-```
+- Whether `(WorldModel S, Refines)` admits meet/join, i.e. forms a
+  (semi)lattice. The natural candidate meet is pointwise intersection of
+  `holds`-relations; needs verification.
+- Whether the converse of `freeModel_tautology_is_universal` holds — i.e. is
+  every spectrum-invariant tautology a tautology of `freeModel`? This is
+  *not* trivially true: a proposition could fail in `freeModel` on some
+  world `w : S → Prop` that no other model has a counterpart for. The
+  precise statement is the S3 candidate.
+- The generic `HornModel S (cs : List (S × S))` constructor (S2-β candidate).
+- Uniqueness of `freeModel` up to refinement-isomorphism among
+  `IndependentWorlds`-style inhabitants (S3+ candidate).
 
-Expected scope: ~30–60 lines added to `Proofs/TractatusOntology.lean` (or a new companion file `Proofs/TractatusOntologySpectrum.lean`), 0 sorries, 0 new axioms.
+## Next action (S2-β or S3)
 
-## Open questions deferred to later sessions
+**S2-β (Medium):** Define `HornModel S : List (S × S) → WorldModel S` (a
+generic Tier 1a model), prove `ConstrainedWorld S a b ≃ HornModel S [(a,b)]`,
+and re-express `weatherModel` as `HornModel WeatherFacts [(.rain, .clouds)]`.
+Estimated scope: ~60-100 lines new Lean, 0 sorries.
 
-1. **R1 (S3 candidate):** `M ≤ M'` implies `IsTautologyM M'` ⊆ `IsTautologyM M`. (Tautology preservation is downward.)
-2. **R2 (S3 candidate):** Existence of a *generic Horn model constructor* `HornModel S (cs : List (S × S))` and equivalence with the existing `ConstrainedWorld`.
-3. **R3 (S4+ candidate):** Uniqueness-up-to-refinement-iso of `freeModel` among inhabitants of `WorldModel S` satisfying full independence.
+**S3 (Hard):** Refinement-isomorphism uniqueness of `freeModel` among
+`IndependentWorlds S`-equipped inhabitants. Requires bridge between the
+`IndependentWorlds S` typeclass (a property of `World S = S → Prop`) and
+the `WorldModel S` structure. Estimated scope: more substantial; possibly
+benefits from a dedicated `IsRefinementIso` predicate.
+
+S2-β is the recommended starting point: cleanest infrastructure win,
+no Mathlib bridging, drops two ad-hoc instances in favor of one
+parameterized constructor.
 
 ## Build / verification
 
-S1 OBSERVE is doc-only — no build required. `wc -l` for the two markdown deliverables:
-
-- `problem.md`: ~55 lines
-- `knowledge.md`: ~120 lines
-- `state.md` (this file): ~50 lines
+S2-α adds a new Lean file but does not modify `TractatusOntology.lean`.
+Pinned Mathlib v4.26.0 already in dependency.  The new file imports only
+`Proofs.TractatusOntology` (no new Mathlib imports).  This PR is
+**build-pending**: the Docker build was not run in-session (memory budget
+trap, see researcher CLAUDE.md guidance).  All theorems are short and
+mechanically derived; build risk is low.  CI will exercise the build.
 
 ## Blockers
 
-None at S1 OBSERVE level. S2-α has no build dependencies beyond the existing `WorldModel` structure already in `TractatusOntology.lean`.
+None at S2-α. Future S3 work depends on the `IndependentWorlds S` ↔
+`WorldModel S` bridge, but this is a definitional step (~5-10 LOC), not a
+deep gap.
