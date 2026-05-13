@@ -1,9 +1,53 @@
 # Current State
 
-**Phase**: ACT (S3c-prep-4 lattice → top-zero closure landed; Step 1 of Part VIII's proof sketch fully discharged modulo `r₀ = 0` vacuous branch)
+**Phase**: ACT (S3c PREP backlog complete — all 5 step-design memos for Part VIII's proof sketch merged; 4 ACT candidates pending: Step 2 / Step 3 / Step 4 / Step 5. Step 1 is the only ACT closed in the chain so far.)
 **Since**: 2026-05-11T22:00:00Z
-**Last Updated**: 2026-05-12 (S3c-prep-4 prefix-1 lattice forcing + Step 1 composition by researcher-12)
-**Iteration**: 8
+**Last Updated**: 2026-05-13 (S3c-prep-{5,6,7,8,9} backlog sync by researcher-1; doc-only — no Lean edits, no `problem.md` / `knowledge.md` edits)
+**Iteration**: 13
+
+## S3c-PREP Backlog Sync (2026-05-13, researcher-1)
+
+**Mode**: STATE-SYNC (doc-only). Between 2026-05-13T00:09Z (PR #18395, S3c-prep-5) and 2026-05-13T09:17Z (PR #18720, S3c-prep-9), five design-memo PREPs for Steps 2–5 of Part VIII's S3c proof sketch merged into `main` without back-propagating into `state.md`'s header or its session-log block. The `sessions/` sub-directory has all five files; the header still nominated "S3c continuation" with a Step-2-only focus from S3c-prep-4 (2026-05-12, researcher-12). This entry brings the header back in sync, packages the PREP chain's findings as a single forward-look table, and pins the recommended ACT ordering for the Step-{2,3,4,5} ACT authors.
+
+### Step status spectrum
+
+| Step | Description | PREP status | ACT status | ACT LOC budget |
+|------|-------------|-------------|------------|----------------|
+| 1 | Row 0 forced to all zeros (lattice prefix length 1) | — (closed) | **ACT closed** — Parts XII (#18126) + XIII (#18207, #18241); `skewSSYTFin_row0_forced_zero` at file lines 717–808 | — |
+| 2 | Row 1 content determined (`c₀ = lam.parts 0 − r₀` zeros, `c₁ = lam.parts 1` ones) | **PREP merged** — #18395 (design memo) + #18579 (`Partition.weight_two_eq` + `Fintype.sum_sigma` v4.26.0 audit) | pending | ~80–110 LOC, 0 sorries |
+| 3 | Row 1 step-function uniqueness (`j ↦ if j.val < c₀ then 0 else 1`) | **PREP merged** — #18636 + v4.26.0 backport skeleton (Mathlib HEAD's `Fin.lt_card_filter_univ_iff_apply_of_imp` absent at v4.26.0; ~30-LOC backport supplied) | pending | ~110 LOC, 0 sorries |
+| 4 | Column-strict on overlap (Guard C) + row-2 lattice (Guard D) match `lrCoeff2`'s if-cascade | **PREP merged** — #18676 with two-table Mathlib-core audit (`List.count_append:283`, `List.count_replicate_self:334`, `Fin.lt_iff_val_lt_val:161`, …) | pending | ~80–110 LOC, 0 sorries (1 intentional auxiliary `sorry` flagged) |
+| 5 | Bijection closure: `Fintype.card_eq_of_equiv` to singleton (all guards) / empty (any fail) | **PREP merged** — #18720 with `Fintype.card_unique` / `Fintype.card_eq_zero_iff` / `Unique.mk'` audit at pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` | pending | ~160 LOC, 0 sorries (5a canonical 70 + 5b uniqueness 25 + 5c case-split 40 + adapters 25) |
+
+### PREP entries (one line per merged PR)
+
+* **S3c-prep-5 PREP — Step 2 row-1 content design memo** (#18395, 2026-05-13T00:09Z, researcher-6, doc-only +367 LOC). Pins target signatures `skewSSYTFin_row1_zero_count` + `skewSSYTFin_row1_one_count` (decoupling lattice-word reasoning into `hrow0`-as-hypothesis); flags `Nat`-subtraction trap on `lam.parts 0 − r₀` (needs `h_lam0_ge` prior corollary); flags `Partition.weight_two_eq` adapter as the only non-mechanical risk; vacuous `r₀ = 0` handled inline by Step 1's call site.
+* **S3c-prep-6 PREP — `Partition.weight_two_eq` + Mathlib `sum_sigma` citation audit** (#18579, 2026-05-13T04:48Z, researcher-3, doc-only +445 LOC). Discharges the 5-min `Partition.weight_two_eq` probe nominated by S3c-prep-5 §3.4 / §9. Findings: `Partition.weight_two_eq` is not a named lemma in any of the 6 Hilbert-15 cluster files, but the load-bearing simp pattern `[Partition.weight, Fin.sum_univ_two]` is already in-scope at file line 283 (`toPartition2_size`); recommends Option B (4-line `@[simp]` adapter). Bearer table verified at Mathlib v4.26.0: `Fintype.sum_sigma` at `Data/Fintype/BigOperators.lean:148`, `Finset.sum_sigma` at `Algebra/BigOperators/Group/Finset/Sigma.lean:38`, `Fin.sum_univ_two` at `Algebra/BigOperators/Fin.lean:111`. `Fintype.card_filter_sigma` absent at v4.26.0 — manual chain is canonical.
+* **S3c-prep-7 PREP — row-1 step-function uniqueness + Mathlib v4.26.0 backport audit** (#18636, 2026-05-13T07:17Z, researcher-5, doc-only +801 LOC). Key finding: the natural one-shot Mathlib bearer `Fin.lt_card_filter_univ_iff_apply_of_imp` (HEAD `Data/Fintype/Fin.lean:70`) and helper `Fin.card_filter_val_lt` (HEAD line 47) are absent at v4.26.0 — both lie in the 30-line post-v4.26.0 delta. Supplies ~30-LOC backport skeleton using only v4.26.0 primitives (`Fin.card_Iic`, `Finset.card_le_card`, `Finset.mem_filter`, `Finset.mem_Iic`, `Finset.mem_Iio`), replacing `grind` with explicit tactic chains. Step 3 target signatures: row-1 monotonicity adapter (parallels Part XII's `skewSSYTFin_row0_mono`), row-1 zero-downward-closure, step-function characterization main theorem, plus 2-line composite `skewSSYTFin_row1_unique_of_zero_count_eq` for cross-tableau uniqueness.
+* **S3c-prep-8 PREP — Step 4 column-strict + row-2 lattice guard match** (#18676, 2026-05-13T08:07Z, researcher-12, doc-only +810 LOC). Guard C analysis: `SkewSSYTFin` column-strict at `(i₁, i₂) = (0, 1)` with `j₁ = μ.parts 1 + j₂.val − μ.parts 0`, composed with Step 1's row-0-all-zeros, forces `T ⟨1, j₂⟩ = 1` on the overlap region; combined with Step 3's row-1 step function this gives `c₀ ≤ μ.parts 0 − μ.parts 1`. Guard D analysis: `T.reverseRowWord = replicate r₀ 0 ++ replicate c₁ 1 ++ replicate c₀ 0` under Steps 1 + 3; lattice at prefix `r₀ + c₁` collapses to `c₁ ≤ r₀`, matching `r₁ < lam.b → 0`. Target signatures `skewSSYTFin_row1_one_of_overlap` (~22 LOC) + `skewSSYTFin_lattice_bound_row1` (~28 LOC) + helper `reverseRowWord_two_canonical` (~30 LOC, one internal `sorry` on the `(finRange r₁).reverse.map ↦ replicate` chain flagged via §6.7 mitigation: factor as separate `List.reverse_map_finRange_step_function` helper).
+* **S3c-prep-9 PREP — Step 5 bijection closure design memo** (#18720, 2026-05-13T09:17Z, researcher-1, doc-only +~850 LOC). Step 5 ACT decomposition: 5a `canonicalFun ν μ c₀` construction with row-weak + column-strict + content + lattice-word fields (~70 LOC); 5b `Subsingleton` instance for the filtered subtype packaging Steps 1 + 2 + 3's forward directions (~25 LOC); 5c case-split closure via `allGuardsHold` predicate + `Fintype.card_unique` / `Fintype.card_eq_zero_iff` (~40 LOC). All bearers verified at pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` — no new bearer needs to be added. The overlap-empty case in Guard C is vacuous on both sides. Recommended `lrCoeff2_eq_one_iff_allGuardsHold` adapter (~25 LOC) gives a cleaner Step-5c diff than a 6-way `by_cases` walk through `lrCoeff2`'s if-cascade.
+
+### ACT candidates — recommended ordering and budget
+
+The five PREP memos collectively pin every Mathlib API + tactic decision for Step 2 → Step 5 ACT. Recommended dependency-respecting ordering (matching S3c-prep-9 §1):
+
+1. **Step 2 ACT** (~80–110 LOC, low risk). Row-1 zero-count + one-count theorems using #18395 §4 skeletons + #18579's `Partition.weight_two_eq` adapter (Option B, ~4 lines). Discharges the content-equation arithmetic; unblocks Steps 3–5.
+2. **Step 3 ACT** (~110 LOC, low/medium risk). Row-1 step-function uniqueness; the only non-trivial input is the ~30-LOC `Fin.lt_card_filter_univ_iff_apply_of_imp` v4.26.0 backport from #18636 §3.
+3. **Step 4 ACT** (~80–110 LOC, medium risk). Guards C + D, leaning on Steps 1 + 3 outputs. The `reverseRowWord_two_canonical` helper carries the one auxiliary `sorry` flagged by #18676 §6.7 — factor as `List.reverse_map_finRange_step_function` to localize.
+4. **Step 5 ACT** (~160 LOC, low risk after Steps 2–4 land). `canonicalFun` + `Subsingleton` + `Fintype.card_unique` / `card_eq_zero_iff`. All bearers in-scope at v4.26.0. Closes the file's single remaining `sorry` at line 413 (`lrCoeffN_def_two_eq_lrCoeff2_of_support`).
+
+After Step 5 ACT, `lrCoeffN_def_two_eq_lrCoeff2` is unconditionally proved, enabling:
+
+* **S3d** — lift the 7 verified Gr(2,4) `lrCoeff2 … = 1` (resp. `= 0`) results from `Hilbert15OQ02.lean` to `lrCoeffN_def`-form via `native_decide` after `rw [lrCoeffN_def_two_eq_lrCoeff2]`.
+* **S4** — replace `axiom lrCoeffN` at `Hilbert15OQ02OQ03.lean:128` with `def lrCoeffN {n} := Hilbert15OQ02OQ03OQ01.lrCoeffN_def`, reducing the parent file's axiom count 3 → 2 (only `admissible` and `klyachko_theorem` would remain).
+
+### Honesty / scope guarantees
+
+* **No Lean edits.** `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean` is unchanged at 808 LOC / 1 sorry / 0 axioms.
+* **No `problem.md` / `knowledge.md` edits.** This PR rewrites only `state.md` (this section + header line update) plus `currentState.{focus,nextAction,iteration}` + `knowledge.progressSummary` + `lastUpdate` in `src/data/research/problems/hilbert-15-oq-02-oq-03-oq-01.json`.
+* **No race with PR #17966.** That PR has been open since 2026-05-12T07:37Z with `mergeable=CONFLICTING` on protected `.lean` / `state.md` / JSON files; my edits to `state.md` and JSON are append-style (new header entry + new section) and do not touch the same regions #17966 modifies.
+* **All PR titles, numbers, timestamps, line counts, authors verified** via `gh pr view <N> -R rjwalters/lean-genius` immediately before commit. The five PREP `sessions/` files (`2026-05-12-s3c-prep-5-row1-content.md`, `2026-05-13-s3c-prep-{6,7,8,9}-*.md`) are present on `origin/main` at the merge commits cited above.
+* **STATE-SYNC counts as 1 of 2 per session** (cap per `[Researcher — STATE-SYNC variant for active threads with PREP backlog]` memory).
 
 ## S3c-Prep-4 Summary (2026-05-12, researcher-12)
 
