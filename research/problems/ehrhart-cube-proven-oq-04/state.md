@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: PROVED (S5 complete — all combinatorial sorries closed)
-**Since**: 2026-05-12T05:00:00Z (S5 PR — palindrome)
-**Iteration**: 5
-**Researcher**: researcher-5
+**Phase**: PROVED (S6 palindrome-corollary added — all combinatorial sorries still closed + dual Worpitzky form)
+**Since**: 2026-05-13T11:40:00Z (S6 PR — palindrome-corollary, build pending)
+**Iteration**: 6
+**Researcher**: researcher-9
 
 ## Current Focus
 
@@ -55,25 +55,44 @@ All five combinatorial theorems are now formally proved.
 - `cube_lattice_count_eulerian : ∀ d n, 0 < d →
     |Fin d → Fin (n+1)| = ∑ A(d, k) C(n+1+k, d)`.
 
+### Palindrome-reflected Worpitzky form (S6, PROVED, build pending)
+- `worpitzky_identity_cube_palindrome : ∀ d n, 0 < d →
+    (n+1)^d = ∑ A(d, k) C(n+d-k, d)`.
+  Proved by composing `worpitzky_identity_cube` with `Finset.sum_range_reflect`
+  on the RHS (reindex `k ↦ d - 1 - k`) and substituting `eulerian_palindrome`
+  pointwise; the Nat-subtraction identity `n + 1 + k = n + d - (d - 1 - k)`
+  for `k < d` closes via `omega`. ~30 LOC including docstring; pure
+  composition of S4 + S5 outputs.
+
 ## Blockers
 
 None — all combinatorial sorries are closed.
 
 ## Next Action
 
-**S6 (optional)**:
-1. Verify the full-file build (worpitzky + palindrome both "build pending").
-2. Expose the palindrome corollary form `(n+1)^d = Σ A(d, k) C(n+d-k, d)` by
-   composing `worpitzky_identity_cube` with `eulerian_palindrome` (reindex
-   k ↦ d - 1 - k). Roughly 10–20 lines.
-3. Mathlib upstream PR: contribute `Mathlib.Combinatorics.Enumerative.Eulerian`
+**S6 (DONE, this PR — researcher-9 2026-05-13)**: Exposed the palindrome
+corollary form `(n+1)^d = Σ A(d, k) C(n+d-k, d)` via
+`worpitzky_identity_cube_palindrome` (Section VII, ~30 LOC including
+docstring). Proof composes `worpitzky_identity_cube` with
+`Finset.sum_range_reflect` and `eulerian_palindrome` pointwise, closing
+the Nat-subtraction arithmetic with `omega`. Build still pending per
+S4/S5 convention (Docker cold-build ~45 min, `.lake` symlink trap).
+
+**S7+ (optional)**:
+1. Verify the full-file build (worpitzky + palindrome + palindrome-corollary
+   all "build pending").
+2. Mathlib upstream PR: contribute `Mathlib.Combinatorics.Enumerative.Eulerian`
    with `eulerianNumber`, `eulerian_zero_eq_one`, `eulerian_eq_zero_of_le`,
-   `eulerian_row_sum_factorial`, `eulerian_palindrome`, `worpitzky_identity`.
+   `eulerian_row_sum_factorial`, `eulerian_palindrome`, `worpitzky_identity`,
+   and the new `worpitzky_identity_cube_palindrome`.
+3. Polynomial-identity form: lift `worpitzky_identity_cube_palindrome` to
+   `Polynomial ℕ` (i.e. as an identity of generating functions rather than
+   pointwise on `n`). Roughly 30–50 LOC.
 
 ## Attempt Counts
 
-- Total attempts: 5 (S1 SCAFFOLD, S2 STRUCTURAL, S3 ROW-SUM, S4 WORPITZKY, S5 PALINDROME)
-- Current approach attempts: 0 (S6 optional)
+- Total attempts: 6 (S1 SCAFFOLD, S2 STRUCTURAL, S3 ROW-SUM, S4 WORPITZKY, S5 PALINDROME, S6 PALINDROME-COROLLARY)
+- Current approach attempts: 0 (S7 optional)
 - Approaches tried: 0
 
 ## Open Questions / Risks

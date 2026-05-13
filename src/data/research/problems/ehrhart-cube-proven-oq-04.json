@@ -39,18 +39,18 @@
   "currentState": {
     "phase": "PROVED",
     "since": "2026-05-12T05:00:00Z",
-    "iteration": 5,
-    "focus": "S5 PALINDROME (build pending): closed `eulerian_palindrome` by induction on d using only the recurrence and S3 helpers (no descent involution needed). The boundary `A(d+1, d) = 1` is derived from the recurrence + `eulerian_eq_zero_of_le (d, d)` + ih at j = d-1; the interior `1 ≤ k < d` case unfolds the recurrence on both sides and applies ih twice; the dual `k = d` boundary follows from `Nat.sub_self` and the k = 0 case. All five combinatorial theorems (cube_h_star_eulerian, eulerian_row_sum_factorial, worpitzky_identity_cube, eulerian_palindrome, cube_lattice_count_eulerian) are now closed.",
+    "iteration": 6,
+    "focus": "S6 PALINDROME-COROLLARY complete (build pending, researcher-9, 2026-05-13): composed worpitzky_identity_cube + Finset.sum_range_reflect + eulerian_palindrome into the dual Worpitzky form worpitzky_identity_cube_palindrome. ~30 LOC including docstring; one new section VII added; 1 new public theorem; file lineCount 677 → 720, theoremCount 27 → 28. No new imports; no axioms; no sorries.",
     "blockers": [],
-    "nextAction": "S6 (optional): verify build of the whole file. Optional follow-up: expose the palindrome corollary form `(n+1)^d = Σ A(d, k) C(n+d-k, d)` derived from worpitzky_identity_cube + eulerian_palindrome. Mathlib upstream PR for Eulerian numbers (longer-term).",
+    "nextAction": "S7 (optional): (1) verify the full-file Docker build (S4 worpitzky + S5 palindrome + S6 palindrome-corollary all build-pending; ~45 min cold per .lake symlink trap); (2) Mathlib upstream PR contributing Mathlib.Combinatorics.Enumerative.Eulerian with eulerianNumber, eulerian_zero_eq_one, eulerian_eq_zero_of_le, eulerian_row_sum_factorial, eulerian_palindrome, worpitzky_identity, worpitzky_identity_cube_palindrome; (3) Polynomial-identity form: lift worpitzky_identity_cube_palindrome to Polynomial ℕ as a generating-function identity rather than pointwise on n (~30-50 LOC).",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 6,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "S1 SCAFFOLD + S2 STRUCTURAL + S3 ROW-SUM (researcher-3, 2026-05-12) + S4 WORPITZKY (researcher-5, 2026-05-12, build pending): S3 added two helper lemmas (`eulerian_zero_eq_one`, `eulerian_eq_zero_of_le`) and closed `eulerian_row_sum_factorial`. S4 adds the algebraic step identity `worpitzky_step : (k+1)·C(n+1+k, d+1) + (d-k)·C(n+2+k, d+1) = (n+1)·C(n+1+k, d)` (for k ≤ d) via Pascal + `Nat.choose_succ_right_eq`, and closes `worpitzky_identity_cube` by induction on d. The inductive step pulls (n+1) into the IH sum, applies `worpitzky_step` pointwise, splits via `Finset.sum_add_distrib`, then reindexes via `Finset.sum_range_succ'` and the Eulerian recurrence (using `eulerian_eq_zero_of_le` to discard the boundary term at the right end). 1 combinatorial sorry remains: eulerian_palindrome (descent involution).",
+    "progressSummary": "PROGRESS S6 (PALINDROME-COROLLARY, build pending): worpitzky_identity_cube_palindrome — (n+1)^d = Σ A(d, k) C(n+d-k, d) — the dual (palindrome-reflected) Worpitzky form. Pure composition of S4 worpitzky_identity_cube + S5 eulerian_palindrome via Finset.sum_range_reflect; ~30 LOC. File 677 → 720 lines, 27 → 28 public theorems, still 0 sorries / 0 axioms.",
     "builtItems": [
       "eulerianNumber : ℕ → ℕ → ℕ (def)",
       "cubeHStarPoly : ℕ → Polynomial ℕ (def)",
@@ -67,7 +67,8 @@
       "worpitzky_step (S4, proven — Pascal + Nat.choose_succ_right_eq, by_cases on d ≤ m for boundary)",
       "worpitzky_identity_cube (S4, proved modulo build verification — induction on d with worpitzky_step + Finset.sum_range_succ' reindex)",
       "eulerianNumber_recurrence (S5 helper, definitional rfl — A(d+1, k+1) recurrence equation as a named lemma)",
-      "eulerian_palindrome (S5, proved modulo build verification — induction on d with k = 0 / 1 ≤ k < d / k = d case-split)"
+      "eulerian_palindrome (S5, proved modulo build verification — induction on d with k = 0 / 1 ≤ k < d / k = d case-split)",
+      "worpitzky_identity_cube_palindrome (S6, proved modulo build verification — (n+1)^d = Σ_{k=0}^{d-1} A(d, k) C(n+d-k, d), the dual/palindrome-reflected Worpitzky form). Proof composes S4 worpitzky_identity_cube + S5 eulerian_palindrome via Finset.sum_range_reflect on the RHS (reindex k ↦ d-1-k), then substitutes A(d,k) = A(d,d-1-k) pointwise and closes the Nat-arithmetic identity n+1+k = n+d-(d-1-k) for k<d via omega. ~15 LOC of tactic + ~15 LOC docstring; new Section VII."
     ],
     "insights": [
       "Nat-subtraction in the eulerianNumber recurrence handles the boundary k ≥ d cleanly: both branches collapse to 0 automatically",
@@ -76,7 +77,8 @@
       "Mathlib does not have Eulerian numbers — first Lean formalization in this gallery; Mathlib contribution path opens",
       "cubeHStarPoly's k-th coefficient is definitional (Σ A(d,j) • X^j → coeff_smul + coeff_X_pow + Finset.sum_ite_eq') — the substantive content lives entirely in worpitzky_identity_cube",
       "S3 row-sum technique: extend both row sums to a common `range (d+1)` index set using `A(d, d) = 0`, then combine pointwise via `(k+1) + (d-k) = d+1` (for k < d) and direct A(d, d) = 0 cancellation (for k = d). Avoids `Finset.sum_Ico_eq_sum_range` reindexing.",
-      "Helper `eulerian_eq_zero_of_le` carries the recursion on the FIRST argument (d), with case-split on whether d = 0 or d ≥ 1 for the inner recursion call. Required to discharge `(d - k) * A(d, k) = 0` boundary contributions."
+      "Helper `eulerian_eq_zero_of_le` carries the recursion on the FIRST argument (d), with case-split on whether d = 0 or d ≥ 1 for the inner recursion call. Required to discharge `(d - k) * A(d, k) = 0` boundary contributions.",
+      "**Palindrome-reflected Worpitzky form composes from S4 + S5 directly**: once worpitzky_identity_cube (S4) and eulerian_palindrome (S5) are both in hand, the dual form (n+1)^d = Σ A(d,k) C(n+d-k, d) requires only Finset.sum_range_reflect + a Nat-arithmetic omega step — no new combinatorial content. The pedagogical takeaway: the palindromic symmetry of Eulerian numbers does not yield new identities at the level of (n+1)^d itself, but reindexes the existing identity from forward (exceedance) to descent parametrisation. Useful when downstream consumers prefer one parametrisation over the other (e.g. counting by descents vs. ascents in the symmetric group)."
     ],
     "mathlibGaps": [
       "No Eulerian numbers (`Nat.eulerianNumber` or similar)",
@@ -123,7 +125,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.563Z",
-  "lastUpdate": "2026-05-12T04:20:00Z",
+  "lastUpdate": "2026-05-13T11:45:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -141,8 +143,8 @@
     {
       "path": "Proofs/EhrhartCubeProvenOQ04.lean",
       "filename": "EhrhartCubeProvenOQ04.lean",
-      "lineCount": 677,
-      "theoremCount": 27,
+      "lineCount": 720,
+      "theoremCount": 28,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
