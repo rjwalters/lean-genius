@@ -1,40 +1,41 @@
 # Current State
 
-**Phase**: OBSERVE
+**Phase**: OBSERVE — S6 PREP partially shipped; S2 ACT pending
 **Since**: 2026-05-12 (S1)
-**Iteration**: 1
+**Iteration**: 3 (S1 OBSERVE → S6a PREP → S6b PREP)
 
 ## Current Focus
 
-S1 (researcher-10): OBSERVE survey for `erdos-735-oq-04` — the seeker-extracted child of the verified gallery entry `erdos-735` ("Magic Configurations"). Parent's `conclusion.openQuestions[3]`:
+S1 (researcher-10, 2026-05-12, PR #18336): OBSERVE survey for `erdos-735-oq-04` — the seeker-extracted child of the verified gallery entry `erdos-735` ("Magic Configurations"). Parent's `conclusion.openQuestions[3]`:
 
 > Does the classification extend to configurations where the equal-sum constraint is imposed on k-flats instead of lines?
 
-This iteration produces:
+Three iterations have shipped, all doc-only:
 
-- `problem.md` — formal Lean target signatures (`PointConfigD`, `WeightingD`, `ConfigKFlat`, `IsKFlatMagic`); S2-S7 decomposition; hierarchy table of cases by $(d, k)$.
-- `knowledge.md` — recap of ABKPR's 4 classes; concrete tetrahedron/octahedron/cube examples for $k=2, d=3$; combinatorial counting (general position is always $k$-flat magic via uniform weights); Mathlib gap analysis.
-- `state.md` (this file) — phase NEW → OBSERVE.
-- `src/data/research/problems/erdos-735-oq-04.json` — gallery JSON.
+| # | Date | Researcher | PR | Mode | Summary |
+|--:|------|------------|----|------|---------|
+| S1 | 2026-05-12 | researcher-10 | #18336 | OBSERVE | problem.md + knowledge.md + state.md + gallery JSON |
+| S6a | 2026-05-13 | researcher-9 | #18486 | PREP | Tetrahedron 2-flat-magic certificate (uniform weights, magic constant 3) |
+| S6b | 2026-05-13 | researcher-5 | #18541 | PREP | Refutation: octahedron + cube are NOT 2-flat magic (vertex-transitive O_h obstruction) |
+| (STATE-SYNC) | 2026-05-13 | researcher-5 | (this PR) | STATE-SYNC | Propagate S6a + S6b corrections into state.md / knowledge.md / gallery JSON |
 
-No Lean changes.
+S2 ACT (the Lean scaffold for `PointConfigD` / `WeightingD` / `ConfigKFlat` / `IsKFlatMagic`) **has not yet shipped**; `proofs/Proofs/Erdos735OQ04.lean` does not exist on `origin/main`.
 
 ## Active Approach
 
-**The $k$-flat extension is structurally richer than the parent**:
+**The $k$-flat extension is structurally richer than the parent — but the regular-polytope examples are narrower than S1 OBSERVE claimed**:
 
 - **Trivial limits**: $k = 0$ (every config is 0-flat magic) and $k = d$ (single ambient flat is trivially magic).
 - **Parent reduction**: $d = 2, k = 1$ recovers exactly the parent's `IsMagic` (definitional).
 - **Higher ambient dim $d \ge 3$, $k = 1$**: extends parent's 4 classes; conjecturally similar form.
-- **Higher flats $k \ge 2$**: introduces **new magic configurations** — regular convex polytopes (tetra, octa, cube) are $(d-1)$-flat magic via uniform weighting. This was NOT a class in the parent's 4-fold classification.
+- **Higher flats $k \ge 2$**: introduces a possibly new "regular-polytope" magic family. The **tetrahedron** at alternate-cube-vertices is 2-flat magic in $\mathbb{R}^3$ with magic constant 3 (uniform weighting; see S6a PREP). The **octahedron and cube are NOT** 2-flat magic — they have 2-flats of two distinct sizes (3 and 4 vertices, per S6b PREP). Their vertex-transitive symmetry group $O_h$ obstructs any positive weighting. The conjectural new magic class is therefore *not* "regular polytopes" but a smaller subfamily (precise characterisation: open).
 
 ### Concrete polytope examples (S6 deliverable)
 
-- **Tetrahedron** ($n = 4, d = 3, k = 2$): 4 triangular faces × 3 vertices each = 12 incidences; uniform $w_i = 1$ gives each face-sum = 3.
-- **Octahedron** ($n = 6, d = 3, k = 2$): 8 triangular faces × 3 vertices each = 24 incidences; uniform $w_i = 1$ gives face-sum = 3.
-- **Cube** ($n = 8, d = 3, k = 2$): 6 face planes × 4 vertices each = 24 incidences; uniform $w_i = 1$ gives face-sum = 4.
-
-These are all $(d-1)$-flat-magic and provide a *new* class beyond the parent's 4.
+- **Tetrahedron** ($n = 4, d = 3, k = 2$): 4 triangular faces × 3 vertices each = 12 incidences; uniform $w_i = 1$ gives each face-sum = 3. **MAGIC** (S6a PREP, PR #18486).
+- **Octahedron** ($n = 6, d = 3, k = 2$): 8 triangular faces × 3 vertices + 3 coordinate planes × 4 vertices. **NOT magic** — sums $\{3, 4\}$ under uniform weighting; vertex-transitive symmetry prevents non-uniform fix (S6b PREP, PR #18541).
+- **Cube** ($n = 8, d = 3, k = 2$): 12 rectangular flats × 4 vertices + 8 corner flats × 3 vertices. **NOT magic** — sums $\{3, 4\}$ under uniform weighting; vertex-transitive symmetry prevents non-uniform fix (S6b PREP, PR #18541).
+- **Dodecahedron / icosahedron** ($n \in \{12, 20\}, d = 3, k = 2$): **not analysed** — S6d candidate sibling PREP (deferred).
 
 ### Higher-dim classification (S5 conjecture)
 
@@ -44,21 +45,36 @@ The author's conjecture: for $\mathbb{R}^d$ with $k = 1$, the parent's 4 classes
 3. Near-pencil ($n - 1$ on a 1-flat, 1 off).
 4. Some $d$-dimensional analogue of "triangle + bisectors + incenter".
 
-For $k \ge 2$, the classification likely has 4–6 classes including the new "regular polytope" family.
+For $k \ge 2$, the conjectural new family is a **narrow subfamily of regular polytopes** — at minimum, the tetrahedron survives; the octahedron and cube provably do not. The dodecahedron and icosahedron have not been analysed (S6d, deferred). The general position case in $\mathbb{R}^d$ is *always* $k$-flat magic via uniform weights (every minimal-spanning $k$-flat has exactly $k+1$ points), so the parent's "general position" class extends directly to $1 \le k \le d - 1$.
+
+## Open questions — PREP coverage status
+
+| Sub-step | Topic | Status | PR |
+|---|---|---|---|
+| S2 | Lean definitions (`PointConfigD`, `ConfigKFlat`, `IsKFlatMagic`) | not shipped | — |
+| S3 | Trivial cases $k = 0$, $k = d$ | not shipped | — |
+| S4 | Parent reduction $d = 2, k = 1$ | not shipped | — |
+| S5 | Higher-dim classification axiom (extension of ABKPR) | not shipped | — |
+| S6a | Tetrahedron certificate | PREP shipped | #18486 |
+| S6b/c | Octahedron + cube refutations | PREP shipped | #18541 |
+| S6d | Dodec/icosa analysis | not shipped | — |
+| S6e | General-position uniform-weight theorem | not shipped | — |
+| S7 | Gallery JSON `status: "axiomatized"` | not shipped | — |
 
 ## Blockers
 
-None mathematical for S1. Practical:
+None mathematical for the S2 ACT scaffold. Practical:
 
 - **ABKPR 2008 absent from Mathlib**: parent axiomatises; reuse for this OQ.
 - **Higher-flat classification absent from published literature**: S5 axiom is genuinely open.
-- **`status: "axiomatized"` mandatory**: ABKPR alone forces this.
+- **`status: "axiomatized"` mandatory**: ABKPR alone forces this; not overcoming-able by this OQ.
+- **`native_decide` route not viable**: per S6a PREP § 1, the tetrahedron certificate uses explicit proof terms, not `decide`. The S1 OBSERVE's S6 plan ("`native_decide` certificates") needs revising during S2 ACT.
 
 ## Next Action
 
-**S2 (any researcher)**: Define `PointConfigD`, `WeightingD`, `ConfigKFlat`, `IsKFlatMagic` in `proofs/Proofs/Erdos735OQ04.lean`. Approach: parameterise parent's definitions on $(d, k)$, using `EuclideanSpace ℝ (Fin d)` and `AffineSubspace`. Prove trivial cases $k = 0, k = d$.
+**S2 (any researcher)**: Define `PointConfigD`, `WeightingD`, `ConfigKFlat`, `IsKFlatMagic` in `proofs/Proofs/Erdos735OQ04.lean`. Approach: parameterise parent's definitions on $(d, k)$, using `EuclideanSpace ℝ (Fin d)` and `AffineSubspace`. Prove trivial cases $k = 0$, $k = d$.
 
-Concrete plan:
+Concrete plan (unchanged from S1):
 
 ```lean
 import Mathlib.Analysis.InnerProductSpace.PiL2
@@ -90,19 +106,25 @@ end Erdos735OQ04
 Expected ~50 Lean lines, ~3 sorries on the trivial-case theorems (mechanical to discharge).
 
 **S3** — S4: prove trivial cases and parent reduction.
-**S5** — axiomatise the conjectured higher-dim classification.
-**S6** — `native_decide` certificates for tetrahedron / octahedron / cube examples.
+**S5** — axiomatise the conjectured higher-dim classification (NB: narrow the "regular-polytope" family to the tetrahedron + dodec/icosa-pending; do NOT include octa/cube).
+**S6a-c** — already designed (PREPs #18486, #18541); ACT (Lean certificates) pending.
+**S6d** — dodec/icosa analysis (Python script in PR #18541 § 3 generalises).
+**S6e** — general-position uniform-weight theorem in $\mathbb{R}^d$ for $1 \le k \le d-1$.
 **S7** — gallery JSON with `status: "axiomatized"`.
 
 ## Honesty
 
-This S1 OBSERVE is a **pure survey**. It produces:
+This STATE-SYNC iteration is **doc-only**. It produces:
 
 - 0 new Lean theorems
 - 0 sorry/axiom deltas
-- 3 markdown files
-- 1 gallery JSON
+- 0 new design memos
+- Updated `state.md` (this file) reflecting S6a (PR #18486) + S6b (PR #18541) corrections
+- Updated `knowledge.md` retracting octahedron + cube magic claims
+- Updated `src/data/research/problems/erdos-735-oq-04.json` `currentState.focus`, `attemptCounts`, `knowledge.progressSummary`, and first insight
 
-The higher-flat extension is **research-level open**. The polytope examples (S6) show the higher-dim classification has MORE classes than the parent's 4-fold theorem, suggesting the question is genuinely richer.
+It applies the "corrections owed to upstream text" listed in PR #18541 § 6, which were explicitly deferred to "a future doctor/curator/researcher pass".
+
+The higher-flat extension is **research-level open**. After S6a + S6b, the situation is: the *existence* of a new $k \ge 2$ magic class beyond ABKPR's 4 is confirmed (tetrahedron is a witness), but the *shape* of that class is narrower than S1 OBSERVE conjectured — octahedron and cube provably do not belong. The S5 axiom should target a refined subfamily.
 
 Future Lean entry: `status: "axiomatized"`.

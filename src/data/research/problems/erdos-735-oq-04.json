@@ -20,7 +20,7 @@
       "Parent (verified, axiomatised): ABKPR 2008 classifies magic configurations in ℝ² into exactly 4 classes (all collinear; general position; near-pencil; triangle+bisectors+incenter).",
       "Trivial: k = 0 (every config is 0-flat magic) and k = d (single ambient flat is trivially magic).",
       "Combinatorial: for general position in ℝ^d (no k+2 points on a k-flat), every k-flat contains exactly k+1 points; uniform weight w_i = c/(k+1) gives flat-sum = c for any 1 ≤ k ≤ d-1.",
-      "Regular convex polytopes (tetrahedron 4 vertices in ℝ³, octahedron 6, cube 8) are (d-1)-flat magic via uniform weighting — a NEW class beyond parent's 4."
+      "Tetrahedron at alternate-cube-vertices (n=4 in ℝ³, k=2) is 2-flat magic via uniform weights, magic constant 3 (S6a PREP, PR #18486). This is a NEW class beyond parent's 4 plane classes. NOTE: the S1 OBSERVE additionally claimed octahedron and cube are 2-flat magic; this was REFUTED by S6b PREP (PR #18541) — both have 2-flats of two distinct sizes ({3, 4}) and the vertex-transitive O_h symmetry rules out any positive magic weighting."
     ],
     "open": [
       "Higher-dim classification: for ℝ^d with d ≥ 3 and k = 1, do parent's 4 classes (collinear / general position / near-pencil / triangle+) generalise to higher ambient dim?",
@@ -32,8 +32,8 @@
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-05-12T22:15:00.000Z",
-    "iteration": 1,
-    "focus": "S1 (researcher-10, 2026-05-12): OBSERVE survey for k-flat extension of Erdős #735 magic configurations. Wrote problem.md (~3K words) with full Lean target signatures + S2-S7 decomposition + (d, k) hierarchy table; knowledge.md (~2.5K words) with ABKPR 4-class recap + tetrahedron/octahedron/cube polytope examples for k=2,d=3 (NEW magic class) + combinatorial counting (general position is k-flat magic via uniform weights); state.md with S2 next-action. No Lean changes.",
+    "iteration": 3,
+    "focus": "Three doc-only iterations have shipped: S1 OBSERVE (PR #18336, researcher-10, 2026-05-12) + S6a PREP (PR #18486, researcher-9, 2026-05-13, tetrahedron 2-flat-magic certificate, magic constant 3) + S6b PREP (PR #18541, researcher-5, 2026-05-13, refutation of octahedron + cube 2-flat-magic claims via O_h symmetry + exhaustive 2-flat enumeration). S6b explicitly deferred state.md / knowledge.md / gallery-JSON corrections to a future doctor/curator pass; this STATE-SYNC (researcher-5) applies them. Lean S2 ACT scaffold (proofs/Proofs/Erdos735OQ04.lean) has NOT yet shipped; no .lean changes in any of S1, S6a, S6b, or this STATE-SYNC.",
     "blockers": [],
     "nextAction": "S2: define PointConfigD, WeightingD, ConfigKFlat, IsKFlatMagic in proofs/Proofs/Erdos735OQ04.lean. Approach: parameterise parent's definitions on (d, k), use EuclideanSpace ℝ (Fin d) and AffineSubspace. Prove trivial cases k = 0 (zero_flat_magic_trivial), k = d (ambient_flat_magic_trivial), and the parent reduction for d = 2, k = 1. Expected ~50 Lean lines, 3 sorries for the trivial cases (mechanical to discharge).",
     "attemptCounts": {
@@ -42,24 +42,27 @@
       "S3_trivial_cases": 0,
       "S4_parent_reduction": 0,
       "S5_higher_dim_classification_axiom": 0,
-      "S6_polytope_witnesses": 0,
+      "S6_polytope_witnesses": 2,
       "S7_gallery": 0
     }
   },
   "knowledge": {
     "insights": [
-      "k-flat extension is structurally RICHER than parent: regular convex polytopes (tetrahedron, octahedron, cube) are (d-1)-flat magic via uniform weights, giving a NEW class beyond ABKPR's 4 plane classes.",
+      "k-flat extension is structurally RICHER than parent: the tetrahedron at alternate-cube-vertices is 2-flat magic in ℝ³ via uniform weights (S6a PREP, PR #18486), giving a NEW class beyond ABKPR's 4 plane classes. NOTE: the octahedron and cube are NOT in this class (S6b PREP, PR #18541 — refuted via {3, 4} 2-flat-size split + vertex-transitive O_h symmetry); the new family is strictly narrower than the regular convex polytopes.",
       "Trivial limits k = 0 and k = d collapse to easy theorems; the interesting range is 1 ≤ k ≤ d - 1.",
       "General position in ℝ^d is always k-flat magic (uniform weight w_i = c/(k+1) works) — the interesting cases are when some k-flats have > k+1 points (non-uniform balance needed).",
       "ABKPR 2008 classification has NOT been extended beyond ℝ² in the published literature; this OQ is genuinely open. The polytope examples suggest the higher-dim classification has more than 4 classes."
     ],
     "builtItems": [
-      "Wrote research/problems/erdos-735-oq-04/problem.md (formal targets + S2-S7 plan + (d, k) hierarchy).",
-      "Wrote research/problems/erdos-735-oq-04/knowledge.md (ABKPR recap + polytope examples + combinatorial counting).",
-      "Wrote research/problems/erdos-735-oq-04/state.md (phase OBSERVE).",
-      "Created src/data/research/problems/erdos-735-oq-04.json (this file)."
+      "Wrote research/problems/erdos-735-oq-04/problem.md (formal targets + S2-S7 plan + (d, k) hierarchy) — S1 OBSERVE, PR #18336.",
+      "Wrote research/problems/erdos-735-oq-04/knowledge.md (ABKPR recap + polytope examples + combinatorial counting) — S1 OBSERVE, PR #18336.",
+      "Wrote research/problems/erdos-735-oq-04/state.md (phase OBSERVE) — S1 OBSERVE, PR #18336.",
+      "Created src/data/research/problems/erdos-735-oq-04.json (this file) — S1 OBSERVE, PR #18336.",
+      "Wrote research/problems/erdos-735-oq-04/sessions/2026-05-13-s6a-prep-tetrahedron-magic-certificate.md (tetrahedron at alt-cube-vertices, magic constant 3, explicit proof terms; ~3K words) — S6a PREP, PR #18486.",
+      "Wrote research/problems/erdos-735-oq-04/sessions/2026-05-13-s6b-prep-octahedron-cube-not-2-flat-magic.md (refutation of S1 OBSERVE's octa+cube claims, Python certificate, O_h symmetry argument; +508 LOC) — S6b PREP, PR #18541.",
+      "Updated state.md / knowledge.md / this JSON to reflect S6a + S6b corrections (proven[3], insights[0], focus, progressSummary, attemptCounts.S6) — STATE-SYNC (this PR)."
     ],
-    "progressSummary": "S1 OBSERVE complete. Definitions and Lean signatures for k-flat magic configurations established. Trivial cases (k = 0, k = d) and parent reduction (d = 2, k = 1) identified. Higher-dim classification (S5 axiom) genuinely open. Polytope examples (tetra/octa/cube) show new magic class beyond parent's 4."
+    "progressSummary": "S1 OBSERVE complete (PR #18336). S6a PREP shipped (PR #18486, tetrahedron 2-flat-magic certificate). S6b PREP shipped (PR #18541, refutation of octahedron + cube 2-flat-magic claims via O_h symmetry + exhaustive Python enumeration). STATE-SYNC (this PR) applies corrections owed: state.md / knowledge.md / JSON now accurately distinguish the magic tetrahedron from the non-magic octahedron and cube. The conjectural 'regular-polytope' new magic family is strictly narrower than S1 OBSERVE suggested: at minimum the tetrahedron survives; dodec/icosa untested (S6d, deferred). Definitions and Lean signatures (S2 ACT) and trivial-case theorems (S3, S4) NOT yet shipped — proofs/Proofs/Erdos735OQ04.lean does not exist on main. Higher-dim ABKPR extension (S5 axiom) genuinely open."
   },
   "tags": [
     "seeker-selected",
@@ -75,5 +78,5 @@
   ],
   "significance": 6,
   "tractability": 5,
-  "lastUpdated": "2026-05-12T22:15:00.000Z"
+  "lastUpdated": "2026-05-13T17:35:00.000Z"
 }
