@@ -210,4 +210,36 @@ theorem twenty_three_sixteenths_lt_cbrt3 : (23 / 16 : ℝ) < cbrt3 := by
   rw [lt_cbrt3_iff_cube_lt (by norm_num)]
   norm_num
 
+/-! ## S6 prep: new bounds for `a₄ = 4`
+
+The fifth partial-quotient identity `cbrt3_a4 = 4` requires the
+two-sided tight sandwich
+
+  `62/43 < cbrt3 < 75/52`
+
+— the fifth and (semi-)sixth convergents of the simple CF
+`[1; 2, 3, 1, 4, …]` of OEIS A002945. Both boundaries are within
+~10⁻³ of `3` after cubing.
+
+Cube targets:
+
+  `(62/43)³ = 238328/79507 < 238521/79507 = 3`   (strict, diff 193).
+  `(75/52)³ = 421875/140608 > 421824/140608 = 3` (strict, diff 51).
+
+Two-line proofs each via the cubing-iff helpers. -/
+
+/-- `62/43 < ∛3`. Cube target: `(62/43)³ = 238328/79507 < 238521/79507 = 3`
+(strict: `238328 < 3 · 79507 = 238521`). The fifth convergent of the
+simple CF of `∛3`. -/
+theorem sixty_two_over_forty_three_lt_cbrt3 : (62 / 43 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
+/-- `∛3 < 75/52`. Cube target: `(75/52)³ = 421875/140608 > 421824/140608 = 3`
+(strict: `3 · 140608 = 421824 < 421875`). The semi-convergent of the
+simple CF of `∛3` corresponding to `a₄ = 4`. -/
+theorem cbrt3_lt_seventy_five_over_fifty_two : cbrt3 < (75 / 52 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers

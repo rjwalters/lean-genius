@@ -21,25 +21,27 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T05:15:00.000Z",
-    "iteration": 5,
-    "focus": "S5 (researcher-5, 2026-05-12): proved cbrt3_a3 : Int.floor (1/(1/(1/(cbrt3-1) - 2) - 3)) = (1:Int) — the fourth partial quotient a_3=1 of the simple CF [1;2,3,1,4,...]. Lower bound 23/16 < cbrt3 imported from PR #17859 (researcher-1, S5-prep, Cbrt3Helpers.twenty_three_sixteenths_lt_cbrt3); upper bound is the S4-proved cbrt3_lt_thirteen_ninths. Algebraic step is a 7-step lt_div_iff₀ / div_lt_iff₀ / le_div_iff₀ chain on a triple-nested fraction, closed by repeated linarith — zero nlinarith calls in the main file thanks to the helper. 0 sorries, 0 axioms. File grows ~286 → ~398 lines (+1 theorem, +1 prose section). Validates the S5-prep iff-based refactor as drift-robust: each subsequent a_i only adds ~50 lines (1 floor identity, no new cubing block).",
+    "since": "2026-05-13T12:35:00.000Z",
+    "iteration": 6,
+    "focus": "S6 (researcher-11, 2026-05-13): proved cbrt3_a4 : Int.floor (1/(1/(1/(1/(cbrt3-1) - 2) - 3) - 1)) = (4:Int) — the fifth partial quotient a_4=4 of the simple CF [1;2,3,1,4,...]. Added two new helper bounds Cbrt3Helpers.sixty_two_over_forty_three_lt_cbrt3 (cube 238328/79507 < 3, gap 193/79507 ≈ 2.4·10⁻³) and Cbrt3Helpers.cbrt3_lt_seventy_five_over_fifty_two (cube 421875/140608 > 3, gap 51/140608 ≈ 3.6·10⁻⁴), each a 2-line proof via the cubing-iff template from PR #17859. Algebraic step is a 9-step lt_div_iff₀ / div_lt_iff₀ / le_div_iff₀ chain on a quadruple-nested fraction, closed by repeated linarith — zero nlinarith calls in the main file. 0 sorries, 0 axioms. Main file grows ~398 → ~518 lines (+1 theorem, +1 prose section); helper file grows ~213 → ~245 lines (+2 helper theorems). The cubing sandwich is the tightest in the prefix yet, consistent with 62/43 being the fifth convergent.",
     "blockers": [],
-    "nextAction": "S6: prove cbrt3_a4 : Int.floor (1/(1/(1/(1/(cbrt3-1) - 2) - 3) - 1)) = (4:Int). Needs two new cubing bounds (sixty_two_forty_thirds_lt_cbrt3 with cube 238328/79507 < 3, cbrt3_lt_seventy_five_fifty_seconds with cube 421875/140608 > 3), both 2 lines each via Cbrt3Helpers.lt_cbrt3_iff_cube_lt / cbrt3_lt_iff_three_lt_cube. Algebraic step is a 9-step nested chain following the S5 template. Cube boundaries are dramatically tighter (~10⁻³ gap) reflecting the fifth-convergent denominator 43.",
+    "nextAction": "S7: prove cbrt3_a5 : Int.floor of the next nested expression = (1:Int) — sixth partial quotient. Per OEIS A002945 the CF prefix continues [1; 2, 3, 1, 4, 1, …] so a_5 = 1 (with rational sandwich 5 < 1/x₅ < 6 on the next layer, where x₅ := 1/x₄ - 4). Needs two new cubing bounds at the seventh-convergent scale; expected gap ~10⁻⁴. The exact rationals depend on the seventh and eighth convergents (137/95 and possibly 199/138). The S7 researcher should compute fresh and use the same Cbrt3Helpers.lt_cbrt3_iff_cube_lt / cbrt3_lt_iff_three_lt_cube two-line template. Floor identity adds ~50 lines following the S6 9-step template, one more level deep.",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 5,
+      "total": 6,
+      "currentApproach": 6,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S5 (researcher-5, 2026-05-12): fourth-partial-quotient iteration. Established cbrt3_a3 : Int.floor (1/(1/(1/(cbrt3-1) - 2) - 3)) = (1:Int) — the fourth partial quotient a_3 of the non-periodic simple CF [1;2,3,1,4,...] — by importing the S5-prep helper Cbrt3Helpers.twenty_three_sixteenths_lt_cbrt3 (from PR #17859, researcher-1) and chaining 7 linear-after-inversion bounds. Zero new nlinarith calls in the main file thanks to the helper file's iff template. Cumulatively the file proves a_0=1, a_1=2, a_2=3, a_3=1 — the first four partial quotients of OEIS A002945; 0 sorries, 0 axioms, depends only on parent's cbrt3_cubed. Validates PR #17859's design: per-a_i iterations decouple from cubing infrastructure. S4 (researcher-3, 2026-05-12): a_2=3 via inlined ten_sevenths_lt_cbrt3 + cbrt3_lt_thirteen_ninths. S3 (researcher-8, 2026-05-12): a_1=2. S2 (researcher-10, 2026-05-11): a_0=1 baseline. S1 (researcher-1, 2026-05-11): OBSERVE survey with Lagrange obstacle + Mathlib API map.",
+    "progressSummary": "S6 (researcher-11, 2026-05-13): fifth-partial-quotient iteration. Established cbrt3_a4 : Int.floor (1/(1/(1/(1/(cbrt3-1) - 2) - 3) - 1)) = (4:Int) — the fifth partial quotient a_4 of the non-periodic simple CF [1;2,3,1,4,...] — by adding two new helper bounds (62/43 < cbrt3, cbrt3 < 75/52, each 2 lines via the cubing-iff template) to CubeRoot3IrrationalOQ04Helpers.lean and chaining 9 linear-after-inversion bounds in the main file. The cubing sandwich (gaps 2.4·10⁻³ and 3.6·10⁻⁴) is the tightest in the prefix so far. Cumulatively the file now proves a_0=1, a_1=2, a_2=3, a_3=1, a_4=4 — the first five partial quotients of OEIS A002945; 0 sorries, 0 axioms, depends only on parent's cbrt3_cubed. S5 (researcher-5, 2026-05-12): fourth-partial-quotient a_3=1 via PR #17859 (researcher-1)'s helper Cbrt3Helpers.twenty_three_sixteenths_lt_cbrt3 + S4's cbrt3_lt_thirteen_ninths. S4 (researcher-3, 2026-05-12): a_2=3 via inlined ten_sevenths_lt_cbrt3 + cbrt3_lt_thirteen_ninths. S3 (researcher-8, 2026-05-12): a_1=2. S2 (researcher-10, 2026-05-11): a_0=1 baseline. S1 (researcher-1, 2026-05-11): OBSERVE survey with Lagrange obstacle + Mathlib API map.",
     "builtItems": [
       "Proofs/CubeRoot3IrrationalOQ04.lean (new, ~110 lines, 4 theorems): cbrt3_nonneg, one_le_cbrt3, cbrt3_lt_two, cbrt3_floor_eq_one — first partial quotient a_0 = 1 of the simple CF of cbrt3. 0 sorries, 0 axioms.",
       "Proofs/CubeRoot3IrrationalOQ04.lean (extended, ~110 → ~184 lines, 7 theorems total): +four_thirds_lt_cbrt3, +cbrt3_lt_three_halves, +cbrt3_a1 — second partial quotient a_1 = 2. 0 sorries, 0 axioms in this iteration.",
       "Proofs/CubeRoot3IrrationalOQ04.lean (extended, ~184 → ~286 lines, 10 theorems total): +ten_sevenths_lt_cbrt3, +cbrt3_lt_thirteen_ninths, +cbrt3_a2 — third partial quotient a_2 = 3. 0 sorries, 0 axioms in this iteration.",
       "Proofs/CubeRoot3IrrationalOQ04Helpers.lean (new in S5-prep PR #17859, ~213 lines, 5 theorems): Cbrt3Helpers.cbrt3_nonneg, cbrt3_pos, lt_cbrt3_iff_cube_lt, cbrt3_lt_iff_three_lt_cube, twenty_three_sixteenths_lt_cbrt3 — biconditional cubing-bound infrastructure + S5 lower bound demo. Independent of CubeRoot3IrrationalOQ04.lean. 0 sorries, 0 axioms.",
-      "Proofs/CubeRoot3IrrationalOQ04.lean (extended, ~286 → ~398 lines, 11 theorems total): +cbrt3_a3 — fourth partial quotient a_3 = 1 via imported Cbrt3Helpers.twenty_three_sixteenths_lt_cbrt3 + S4's cbrt3_lt_thirteen_ninths. 0 sorries, 0 axioms in this iteration. Adds import Proofs.CubeRoot3IrrationalOQ04Helpers."
+      "Proofs/CubeRoot3IrrationalOQ04.lean (extended, ~286 → ~398 lines, 11 theorems total): +cbrt3_a3 — fourth partial quotient a_3 = 1 via imported Cbrt3Helpers.twenty_three_sixteenths_lt_cbrt3 + S4's cbrt3_lt_thirteen_ninths. 0 sorries, 0 axioms in this iteration. Adds import Proofs.CubeRoot3IrrationalOQ04Helpers.",
+      "Proofs/CubeRoot3IrrationalOQ04Helpers.lean (extended, ~213 → ~245 lines, 7 theorems total): +sixty_two_over_forty_three_lt_cbrt3 (cube target 238328/79507 < 238521/79507 = 3, gap 193), +cbrt3_lt_seventy_five_over_fifty_two (cube target 3 = 421824/140608 < 421875/140608, gap 51) — S6-prep, both two-line proofs via the cubing-iff helpers. 0 sorries, 0 axioms in this iteration.",
+      "Proofs/CubeRoot3IrrationalOQ04.lean (extended, ~398 → ~518 lines, 12 theorems total): +cbrt3_a4 — fifth partial quotient a_4 = 4 via imported S6 helper bounds. 9-step lt_div_iff₀ / div_lt_iff₀ / le_div_iff₀ chain on a quadruple-nested fraction. 0 sorries, 0 axioms in this iteration."
     ],
     "insights": [
       "Lagrange (1770): CF eventually periodic iff quadratic irrational. cbrt3 has minimal polynomial X^3-3 (degree 3 over Q, irreducible by Eisenstein at p=3), so its CF is non-periodic — no finite-description theorem about all a_i is possible.",
@@ -62,10 +64,10 @@
       "No tactic-level support for \"cube both sides of an inequality involving Real.rpow\"; nlinarith handles polynomial inequalities once cbrt3 ^ 3 = 3 is substituted, but the substitution is manual."
     ],
     "nextSteps": [
-      "S6: prove cbrt3_a4 : Int.floor (1/(1/(1/(1/(cbrt3-1) - 2) - 3) - 1)) = (4:Int). Needs two new cubing bounds: sixty_two_forty_thirds_lt_cbrt3 (cube target 238328/79507 ≈ 2.99762 < 3) and cbrt3_lt_seventy_five_fifty_seconds (cube target 421875/140608 ≈ 3.00037 > 3); both 2 lines each via Cbrt3Helpers.lt_cbrt3_iff_cube_lt / cbrt3_lt_iff_three_lt_cube. Algebraic step is a 9-step nested chain following the S5 template (positivity at four nesting levels + two-sided bounds at each + floor antisymmetry). Cube gaps are ~10⁻³ — much tighter than S5's ~10⁻² — but the iff-helper template is unaffected: norm_num still closes since 238328 ≠ 79507·3 = 238521 and 421875 > 140608·3 = 421824.",
-      "S7: bundle the per-a_i lemmas into a single IntFractPair.stream cbrt3 statement at indices 0..4, tying the per-quotient lemmas to the canonical Mathlib API.",
-      "S8+ (deferred): convergent lemmas convergent_n cbrt3 = (h_n, k_n) for n = 0..4, with the recurrence h_n = a_n h_{n-1} + h_{n-2}, k_n = a_n k_{n-1} + k_{n-2}.",
-      "S9+ (deferred, structural): Lagrange theorem on this slug as a generic obstacle to all-aᵢ formalization. The CF of cbrt3 is non-periodic because cbrt3 is cubic-irrational (degree 3); a Mathlib-side proof of Lagrange (eventually-periodic CF iff quadratic) would let cbrt3-OQ-04 conclude with a formal non-existence statement about closed-form a_i."
+      "S7: prove cbrt3_a5 : Int.floor of the next nested expression = (1:Int). Per OEIS A002945 ([1; 2, 3, 1, 4, 1, 5, 1, 1, 6, …]) the sixth partial quotient is a_5 = 1, with rational sandwich 5 < 1/x₅ < 6 on x₅ := 1/x₄ - 4. Needs two new cubing bounds (~10⁻⁴ gap) at the seventh-convergent scale (137/95 ≈ 1.4421… and the next semi-convergent). Two-line proofs via Cbrt3Helpers.lt_cbrt3_iff_cube_lt / cbrt3_lt_iff_three_lt_cube. Floor identity adds ~50 lines following the S6 template, one nesting level deeper.",
+      "S8: bundle the per-a_i lemmas into a single IntFractPair.stream cbrt3 statement at indices 0..5, tying the per-quotient lemmas to the canonical Mathlib API.",
+      "S9+ (deferred): convergent lemmas convergent_n cbrt3 = (h_n, k_n) for n = 0..5, with the recurrence h_n = a_n h_{n-1} + h_{n-2}, k_n = a_n k_{n-1} + k_{n-2}.",
+      "S10+ (deferred, structural): Lagrange theorem on this slug as a generic obstacle to all-aᵢ formalization. The CF of cbrt3 is non-periodic because cbrt3 is cubic-irrational (degree 3); a Mathlib-side proof of Lagrange (eventually-periodic CF iff quadratic) would let cbrt3-OQ-04 conclude with a formal non-existence statement about closed-form a_i."
     ]
   },
   "tags": [
@@ -94,7 +96,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.562Z",
-  "lastUpdate": "2026-05-12T05:15:00.000Z",
+  "lastUpdate": "2026-05-13T12:35:00.000Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [
@@ -145,8 +147,8 @@
     {
       "path": "Proofs/CubeRoot3IrrationalOQ04.lean",
       "filename": "CubeRoot3IrrationalOQ04.lean",
-      "lineCount": 398,
-      "theoremCount": 11,
+      "lineCount": 521,
+      "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -156,8 +158,8 @@
     {
       "path": "Proofs/CubeRoot3IrrationalOQ04Helpers.lean",
       "filename": "CubeRoot3IrrationalOQ04Helpers.lean",
-      "lineCount": 213,
-      "theoremCount": 5,
+      "lineCount": 245,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,

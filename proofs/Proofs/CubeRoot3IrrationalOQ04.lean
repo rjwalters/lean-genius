@@ -1,8 +1,8 @@
 /-
-Proof: First four partial quotients of the simple continued fraction of cbrt3.
-Date: 2026-05-11 (S2), 2026-05-12 (S3, S4, S5)
+Proof: First five partial quotients of the simple continued fraction of cbrt3.
+Date: 2026-05-11 (S2), 2026-05-12 (S3, S4, S5), 2026-05-13 (S6)
 Research: cube-root-3-irrational-oq-04, S2 (researcher-10) → S3 (researcher-8)
-          → S4 (researcher-3) → S5 (researcher-5)
+          → S4 (researcher-3) → S5 (researcher-5) → S6 (researcher-11)
 
 This file develops the leading partial quotients of the simple continued
 fraction of `∛3`:
@@ -10,16 +10,19 @@ fraction of `∛3`:
   `⌊∛3⌋ = 1`                                          — `a₀` (S2)
   `⌊1/(∛3 - 1)⌋ = 2`                                  — `a₁` (S3)
   `⌊1/(1/(∛3 - 1) - 2)⌋ = 3`                          — `a₂` (S4)
-  `⌊1/(1/(1/(∛3 - 1) - 2) - 3)⌋ = 1`                  — `a₃` (S5, this iteration)
+  `⌊1/(1/(1/(∛3 - 1) - 2) - 3)⌋ = 1`                  — `a₃` (S5)
+  `⌊1/(1/(1/(1/(∛3 - 1) - 2) - 3) - 1)⌋ = 4`          — `a₄` (S6, this iteration)
 
 corresponding to the prefix `[1; 2, 3, 1, 4, …]` of OEIS A002945.
-The remaining partial quotient (`a₄ = 4`) is left to future sessions (S6+).
+The next partial quotient (`a₅`, currently believed to be `1`) is left
+to future sessions (S7+).
 
 The S5 lower bound `23/16 < cbrt3` is imported from
-`Proofs/CubeRoot3IrrationalOQ04Helpers.lean` (S5-prep, researcher-1), where
-it is proved in two lines via the cubing-iff helper
-`Cbrt3Helpers.lt_cbrt3_iff_cube_lt`. The upper bound `cbrt3 < 13/9` is the
-S4 `cbrt3_lt_thirteen_ninths` already in this file.
+`Proofs/CubeRoot3IrrationalOQ04Helpers.lean` (S5-prep, researcher-1).
+The S6 bounds `62/43 < cbrt3 < 75/52` are imported from the same helper
+file (S6-prep, researcher-11), each proved in two lines via the
+cubing-iff helpers `Cbrt3Helpers.lt_cbrt3_iff_cube_lt` /
+`Cbrt3Helpers.cbrt3_lt_iff_three_lt_cube`.
 -/
 
 import Proofs.CubeRoot3Irrational
@@ -392,6 +395,126 @@ theorem cbrt3_a3 :
       rw [le_div_iff₀ hpos3]
       -- Goal: `1 * x₃ ≤ 1`, i.e. `x₃ ≤ 1` (from the strict `x₃ < 1`).
       linarith [hx3_lt]
+    rw [Int.le_floor]
+    exact_mod_cast hge
+
+/-! ## Step S6: fifth partial quotient
+
+The fifth partial quotient of the simple CF is
+
+  `a₄ = ⌊1/(1/(1/(1/(∛3 - 1) - 2) - 3) - 1)⌋`,
+
+which we show equals `4`.
+
+The two strict bounds needed are
+
+  `62/43 < cbrt3`   and   `cbrt3 < 75/52`,
+
+each proved by cubing in `CubeRoot3IrrationalOQ04Helpers.lean`
+(`sixty_two_over_forty_three_lt_cbrt3` / `cbrt3_lt_seventy_five_over_fifty_two`).
+The two cube targets `238328/79507 < 3` and `3 < 421875/140608` differ
+from `3` by only `193/79507 ≈ 2.4·10⁻³` and `51/140608 ≈ 3.6·10⁻⁴`
+respectively — the tightest cubing sandwich in the prefix so far,
+consistent with `62/43` being the fifth convergent.
+
+Algebraic chain (`x₂ := 1/(cbrt3-1) - 2`, `x₃ := 1/x₂ - 3`,
+`x₄ := 1/x₃ - 1`):
+
+```
+  62/43 < cbrt3 < 75/52
+  19/43 < cbrt3-1 < 23/52
+  52/23 < 1/(cbrt3-1) < 43/19
+  6/23  < x₂    < 5/19
+  19/5  < 1/x₂  < 23/6
+  4/5   < x₃    < 5/6
+  6/5   < 1/x₃  < 5/4
+  1/5   < x₄    < 1/4
+  4     < 1/x₄  < 5      (this gives ⌊1/x₄⌋ = 4)
+```
+
+All nine reciprocation/subtraction steps are linear after inverting
+strictly-positive denominators (each `hposᵢ` follows by `linarith`
+from the previous strict lower bound), so the proof is the same
+`lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀` chain as S5, one step
+deeper. The final floor identity uses `Int.le_floor` / `Int.floor_lt`. -/
+
+/-- **Fifth partial quotient of the simple CF of `∛3`.**
+
+  `⌊1/(1/(1/(1/(∛3 - 1) - 2) - 3) - 1)⌋ = 4`.
+
+This is `a₄ = 4` in the prefix `[1; 2, 3, 1, 4, …]` of OEIS A002945.
+
+Proof: from `62/43 < cbrt3 < 75/52` derive successively
+`52/23 < 1/(cbrt3-1) < 43/19`, `6/23 < x₂ < 5/19`,
+`19/5 < 1/x₂ < 23/6`, `4/5 < x₃ < 5/6`,
+`6/5 < 1/x₃ < 5/4`, `1/5 < x₄ < 1/4`, and finally
+`4 < 1/x₄ < 5`. The floor identity follows by `le_antisymm` using
+`Int.le_floor` / `Int.floor_lt`. -/
+theorem cbrt3_a4 :
+    ⌊1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1)⌋ = (4 : ℤ) := by
+  -- Step 1: `cbrt3 - 1 > 0` (from the S3 bound `4/3 < cbrt3`).
+  have hpos1 : (0 : ℝ) < cbrt3 - 1 := by linarith [four_thirds_lt_cbrt3]
+  -- S6 cubing bounds: `62/43 < cbrt3 < 75/52` (from the cubing-iff helpers).
+  have h_lo : (62/43 : ℝ) < cbrt3 :=
+    Cbrt3Helpers.sixty_two_over_forty_three_lt_cbrt3
+  have h_hi : cbrt3 < (75/52 : ℝ) :=
+    Cbrt3Helpers.cbrt3_lt_seventy_five_over_fifty_two
+  -- Step 2: `52/23 < 1/(cbrt3-1)` from `cbrt3 < 75/52`.
+  have hy1_gt : (52/23 : ℝ) < 1 / (cbrt3 - 1) := by
+    rw [lt_div_iff₀ hpos1]
+    -- Goal: `(52/23) * (cbrt3 - 1) < 1`, i.e. `cbrt3 < 75/52`.
+    linarith [h_hi]
+  -- Step 3: `1/(cbrt3-1) < 43/19` from `62/43 < cbrt3`.
+  have hy1_lt : 1 / (cbrt3 - 1) < (43/19 : ℝ) := by
+    rw [div_lt_iff₀ hpos1]
+    -- Goal: `1 < (43/19) * (cbrt3 - 1)`, i.e. `62/43 < cbrt3`.
+    linarith [h_lo]
+  -- Step 4: `x₂ := 1/(cbrt3-1) - 2` satisfies `6/23 < x₂ < 5/19`.
+  have hx2_gt : (6/23 : ℝ) < 1 / (cbrt3 - 1) - 2 := by linarith
+  have hx2_lt : 1 / (cbrt3 - 1) - 2 < (5/19 : ℝ) := by linarith
+  have hpos2 : (0 : ℝ) < 1 / (cbrt3 - 1) - 2 := by linarith
+  -- Step 5: `1/x₂` satisfies `19/5 < 1/x₂ < 23/6`.
+  have hy2_gt : (19/5 : ℝ) < 1 / (1 / (cbrt3 - 1) - 2) := by
+    rw [lt_div_iff₀ hpos2]
+    -- Goal: `(19/5) * x₂ < 1`, i.e. `x₂ < 5/19`.
+    linarith [hx2_lt]
+  have hy2_lt : 1 / (1 / (cbrt3 - 1) - 2) < (23/6 : ℝ) := by
+    rw [div_lt_iff₀ hpos2]
+    -- Goal: `1 < (23/6) * x₂`, i.e. `6/23 < x₂`.
+    linarith [hx2_gt]
+  -- Step 6: `x₃ := 1/x₂ - 3` satisfies `4/5 < x₃ < 5/6`.
+  have hx3_gt : (4/5 : ℝ) < 1 / (1 / (cbrt3 - 1) - 2) - 3 := by linarith
+  have hx3_lt : 1 / (1 / (cbrt3 - 1) - 2) - 3 < (5/6 : ℝ) := by linarith
+  have hpos3 : (0 : ℝ) < 1 / (1 / (cbrt3 - 1) - 2) - 3 := by linarith
+  -- Step 7: `1/x₃` satisfies `6/5 < 1/x₃ < 5/4`.
+  have hy3_gt : (6/5 : ℝ) < 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) := by
+    rw [lt_div_iff₀ hpos3]
+    -- Goal: `(6/5) * x₃ < 1`, i.e. `x₃ < 5/6`.
+    linarith [hx3_lt]
+  have hy3_lt : 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) < (5/4 : ℝ) := by
+    rw [div_lt_iff₀ hpos3]
+    -- Goal: `1 < (5/4) * x₃`, i.e. `4/5 < x₃`.
+    linarith [hx3_gt]
+  -- Step 8: `x₄ := 1/x₃ - 1` satisfies `1/5 < x₄ < 1/4`.
+  have hx4_gt : (1/5 : ℝ) < 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1 := by linarith
+  have hx4_lt : 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1 < (1/4 : ℝ) := by linarith
+  have hpos4 : (0 : ℝ) < 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1 := by linarith
+  -- Step 9: floor antisymmetry on `1/x₄ ∈ (4, 5)`.
+  apply le_antisymm
+  · -- `⌊1/x₄⌋ ≤ 4`: from `1/x₄ < 5`.
+    have hlt : 1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) < (5 : ℝ) := by
+      rw [div_lt_iff₀ hpos4]
+      -- Goal: `1 < 5 * x₄`, i.e. `1/5 < x₄`.
+      linarith [hx4_gt]
+    have hflt : ⌊1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1)⌋ < (5 : ℤ) := by
+      rw [Int.floor_lt]
+      exact_mod_cast hlt
+    omega
+  · -- `4 ≤ ⌊1/x₄⌋`: from `4 ≤ 1/x₄` (in fact `4 < 1/x₄` strictly).
+    have hge : (4 : ℝ) ≤ 1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) := by
+      rw [le_div_iff₀ hpos4]
+      -- Goal: `4 * x₄ ≤ 1`, i.e. `x₄ ≤ 1/4` (from the strict `x₄ < 1/4`).
+      linarith [hx4_lt]
     rw [Int.le_floor]
     exact_mod_cast hge
 
