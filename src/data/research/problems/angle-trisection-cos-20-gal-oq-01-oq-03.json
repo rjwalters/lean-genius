@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T12:30:00Z",
-    "iteration": 9,
-    "focus": "S9 ACT — uniform numerical anchor `Phi_{2p}(-1) = p` for all odd primes p >= 3. Lifts the per-prime evaluations cyclotomic_{six,ten,fourteen,twentytwo,twentysix}_eval_neg_one = {3,5,7,11,13} (S5+S6) into one statement holding for every odd prime. Two new theorems: cyclotomic_two_mul_prime_eq_geom_neg_series (structural lemma identifying Phi_{2p} = sum_{i<p} (-X)^i) and cyclotomic_two_mul_prime_eval_neg_one_uniform (numerical anchor). Proof: combine geom_sum_mul (-X) p with Odd.neg_pow to derive (sum_{i<p} (-X)^i)*(X+1) = X^p+1, combine with the S8 bridge cyclotomic_two_mul_prime_mul_X_add_one_uniform, cancel (X+1) via mul_right_cancel0, then evaluate at X=-1. 0 new sorries, 0 new axioms, +127 lines, 57 -> 59 theorems.",
+    "since": "2026-05-13T08:09:52Z",
+    "iteration": 14,
+    "focus": "S10 ACT closed (PR #18204, merged): uniform constant-coefficient corollary `r_constantCoeff_eq_signed_uniform` lifted via S9 anchor. Lean file at 1166 LOC, 61 theorems, 1 sorry (general conjecture), 0 axioms. S11-S14 PREP audit chain (all doc-only, all merged) shipped between 2026-05-13T02:09Z and 2026-05-13T08:09Z: S11 designs the two-stage Möbius-driven trace bridge for the next ACT (corrects arithmetic error in prior sketch); S12 audits Stage 1 against Mathlib v4.26.0 (corrects Finset.sum_coeff -> Polynomial.finsetSum_coeff); S13 rules out pure-decide tactic for Stage 2 and supplies corrected template using existing cyclotomic_{2p}_eq rewrites; S14 discharges S13's deferred simp-set audit (6 of 18 lemmas not in default simp at v4.26.0). Net Lean delta across S11-S14: 0 lines, 0 theorems, 0 sorries, 0 axioms.",
     "blockers": [],
-    "nextAction": "S10: Lift the constant-coefficient sign-pattern corollary (r p).coeff 0 = (-1)^((p-1)/2) * p to all odd primes — one-liner combining r_constantCoeff_eq_signed_p (already general) with the S9 numerical anchor. Then start Tactic B (trace fingerprint, sub-leading-coefficient cyclotomic-sum identity Sum primitive 2p-th roots = 1 / Mobius mu(2p) = -mu(p) = 1) for the uniform r_subLeadingCoeff_eq_neg_p.",
+    "nextAction": "S15 ACT: Implement the S11-S14-audited two-stage uniform trace bridge for `r_subLeadingCoeff_eq_neg_p`. Stage 1 (~25 LOC): `cyclotomic_two_mul_prime_subLeadingCoeff_uniform : (cyclotomic (2*p) ℤ).coeff (p - 2) = -1` for odd prime p, via `cyclotomic_two_mul_prime_eq_geom_neg_series` (S9 structural lemma) + Polynomial.finsetSum_coeff (S12-corrected name) + Finset.range index arithmetic. Stage 2 (~40-45 LOC): `r_subLeadingCoeff_eq_neg_p_uniform : ∀ p ∈ ({5,7,11,13} : Finset ℕ), (r p).coeff ((p-1)/2 - 1) = -(p : ℤ)`, via rcases destructure + per-prime rewrite with existing `cyclotomic_{10,14,22,26}_eq` identities + S14-audited 18-lemma `simp only` set (6 of which require explicit listing at v4.26.0: coeff_X, coeff_C, coeff_one, coeff_X_pow, coeff_X_pow_self, Finset.mem_singleton). Boundary p=3 stays separate (r_3_traceCoeff). Companion stale ACT PR #17906 (S4 build-pending from 2026-05-12T06:22Z) untouched.",
     "attemptCounts": {
-      "total": 9,
-      "currentApproach": 8,
-      "approachesTried": 9
+      "total": 14,
+      "currentApproach": 13,
+      "approachesTried": 14
     }
   },
   "knowledge": {
-    "progressSummary": "ACT - S8 proves the uniform cyclotomic bridge identity cyclotomic_two_mul_prime_mul_X_add_one_uniform: cyclotomic (2*p) ℤ * (X + 1) = X^p + 1 for every odd prime p. Discharges steps 2-6 of the S7 outline using prod_cyclotomic_eq_X_pow_sub_one at n = 2p, divisors_two_mul_odd_prime (S7), cyclotomic_one (= X-1), cyclotomic_two (= X+1), cyclotomic_prime_mul_X_sub_one (for the prefix (X-1)·Φ_p = X^p-1), the factorization X^{2p}-1 = (X^p-1)(X^p+1), and mul_left_cancel₀ of the nonzero X^p-1. File 835 -> 962 lines (+127), 56 -> 57 theorems (+1). 1 sorry (general conjecture, unchanged); 0 axioms (unchanged). S9 target: lift Φ_{2p}(-1) = p to all odd primes via geom_sum_mul substitution or formal differentiation of the bridge.",
+    "progressSummary": "ACT (S10 closed, Lean unchanged through S11-S14 PREP) - Through S10 the file `AngleTrisectionCos20GalOQ01OQ03.lean` (1166 LOC, 61 theorems, 1 sorry, 0 axioms) carries: S5/S6 per-prime cyclotomic anchors Φ_{2p}(-1) = p for p ∈ {3,5,7,11,13}; S7 combinatorial backbone divisors_two_mul_odd_prime; S8 uniform cyclotomic bridge `cyclotomic (2*p) ℤ * (X+1) = X^p+1` for odd prime p; S9 structural geometric-series identification `cyclotomic (2*p) ℤ = ∑_{i<p} (-X)^i` + uniform numerical anchor `(cyclotomic (2*p) ℤ).eval (-1) = p`; S10 uniform constant-coefficient corollary `r_constantCoeff_eq_signed_uniform : ∀ p ∈ ({3,5,7,11,13} : Finset ℕ), (r p).coeff 0 = (-1)^((p-1)/2) · p`. Post-S10 (2026-05-13) four doc-only PREP memos shipped: S11 PREP (PR #18410) designs two-stage Möbius-driven trace-bridge outline (corrects prior arithmetic error); S12 PREP (PR #18571) audits S11 Stage 1 against Mathlib v4.26.0 pin (corrects bearer Finset.sum_coeff → Polynomial.finsetSum_coeff); S13 PREP (PR #18588) rules out pure-decide for Stage 2 (cyclotomic is opaque def) and supplies corrected template; S14 PREP (PR #18642) discharges S13 §11.3 deferred simp-set audit (6 of 18 lemmas not @[simp]-eligible at v4.26.0, ships explicit list). S15 target: implement audited Stage 1 (cyclotomic_two_mul_prime_subLeadingCoeff_uniform, ~25 LOC) + Stage 2 (r_subLeadingCoeff_eq_neg_p_uniform, ~40-45 LOC) for the uniform trace fingerprint.",
     "builtItems": [
       "Created proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean (S2): parametric r : N -> Z[X] for p in {5, 7, 11, 13}, IsEisensteinAt verifications, irreducibility for p in {11, 13}, eisenstein_conjecture_cos_pi_p (sorry).",
       "Created src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/ (S2): meta.json with status axiomatized, sorries 1, axioms 0; annotations.json empty; index.ts.",
@@ -82,7 +82,7 @@
     "mathlib": []
   },
   "started": "2026-05-08T19:09:00.559Z",
-  "lastUpdate": "2026-05-12T12:30:00Z",
+  "lastUpdate": "2026-05-13T17:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
