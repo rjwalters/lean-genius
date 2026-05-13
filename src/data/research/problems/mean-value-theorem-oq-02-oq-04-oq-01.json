@@ -1,7 +1,7 @@
 {
   "slug": "mean-value-theorem-oq-02-oq-04-oq-01",
   "title": "Refutation of the OQ-04 axiom: Cauchy uniform bound fails on real-only hypotheses (Runge phenomenon)",
-  "phase": "ACT (S5: cauchy_diag_norm_bound is now PROVEN by limit-extraction from a new finite-radius sub-lemma cauchy_diag_norm_bound_at_radius; sorry shifts to the strict-r form which directly matches Mathlibs Cauchy-integral chain on sphere a r)",
+  "phase": "ACT (S5 merged; S6 → S6e PREP chain complete; S7 ACT pending). MeanValueTheoremOQ02OQ04OQ01.lean unchanged since S5 (706 LOC, 0 axioms, 1 sorry). Sorry on cauchy_diag_norm_bound_at_radius; complete drop-in tactic chain with v4.26.0 lemma names pinned by S6e (PR #18536) — paste step bounded to ~60-90 LOC plus a ~5-10 LOC DiffContOnCl bridge (R-? in S6e).",
   "status": "progress",
   "tier": "B",
   "path": "full",
@@ -33,10 +33,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T00:00:00.000Z",
-    "iteration": 5,
-    "focus": "S5: refactor sorry locality from boundary form to strict-intermediate-radius form. Adds cauchy_diag_norm_bound_at_radius (new sorry, S6 deferral) and proves cauchy_diag_norm_bound by ContinuousAt + Filter.Tendsto along nhdsWithin Iio R + le_of_tendsto. Sorry count stays at 1 but the limit-extraction step (r prime to R from below) is now fully formalized.",
+    "iteration": 13,
+    "focus": "After S5 ACT (PR #18197, merged 2026-05-12T23:20Z), five doc-only PREP iterations (S6 #18309, S6b #18386, S6c #18396, S6d #18464, S6e #18536) have produced a complete drop-in tactic chain for the single residual sorry on cauchy_diag_norm_bound_at_radius: S6b pinned 7 of 8 candidate Mathlib v4.26.0 lemma names (replacing the drifted ...factorial_smul_apply_iteratedFDeriv with HasFPowerSeriesOnBall.factorial_smul); S6c resolved S6b's three placeholders (sphere→ball membership, closedBall ⊂ EMetric.ball, norm equivalence); S6d built a 10-item S7-ACT pre-flight risk register; S6e pinned R-1 and R-4 at v4.26.0 SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (Complex.norm_natCast via RCLike.norm_natCast @ RCLike/Basic.lean:633 @[simp 1100], iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod @ IteratedDeriv/Defs.lean:246) and surfaced a new R-? DiffContOnCl bridge (+5-10 LOC, since Mathlib's Cauchy estimate at Liouville.lean:44 requires DiffContOnCl).",
     "blockers": [],
-    "nextAction": "S6: discharge cauchy_diag_norm_bound_at_radius via Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le + HasFPowerSeriesOnBall.factorial_smul + iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod. Limit step already closed; only finite-radius Cauchy estimate remains. Estimated 60-100 lines.",
+    "nextAction": "S7 ACT: paste the S6c drop-in tactic chain (PR #18396) with S6b/S6e v4.26.0 lemma-name pins and add the +5-10 LOC R-? DiffContOnCl bridge surfaced by S6e. Lemma table fully verified at v4.26.0 SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: HasFPowerSeriesOnBall.factorial_smul @ FDeriv/Analytic.lean:840, iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod @ IteratedDeriv/Defs.lean:246, Complex.norm_natCast via RCLike.norm_natCast @ RCLike/Basic.lean:633. Open risks: R-?, plus the 7 S6d risks (R-2/R-3/R-5..R-10) not yet audited at v4.26.0 by S6e — review each before paste. Build via ./proofs/scripts/docker-build.sh Proofs.MeanValueTheoremOQ02OQ04OQ01 (never lake build directly). Estimated S7 ACT diff: 60-90 LOC net new sorry-free content.",
     "attemptCounts": {
       "total": 4,
       "currentApproach": 1,
@@ -44,7 +44,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S5 (2026-05-12, researcher-3) — cauchy_diag_norm_bound is now PROVEN by limit-extraction from a new finite-radius sub-lemma cauchy_diag_norm_bound_at_radius. The boundary form (with ‖w‖/R) follows from the strict-intermediate form (with ‖w‖/r prime) by ContinuousAt at R + Filter.Tendsto along nhdsWithin Iio R + le_of_tendsto. Sorry count unchanged (1 → 1) but the residual gap is now the finite-radius Cauchy estimate (directly matching Mathlibs sphere-based Cauchy-integral chain) rather than the boundary form. The S5 contribution is the ~50-line limit-extraction proof; S6 only needs the finite-radius Cauchy bound + iterated-derivative bridge (no further limit step required).",
+    "progressSummary": "S5 ACT merged (PR #18197, 2026-05-12T23:20Z, researcher-3): cauchy_diag_norm_bound is PROVEN by limit-extraction from a new finite-radius sub-lemma cauchy_diag_norm_bound_at_radius. Five doc-only PREP iterations have since pre-flighted the S7 ACT discharge of the residual sorry. S6 (#18309, researcher-8): Mathlib hooks survey + 4 candidate lemma cross-refs. S6b (#18386, researcher-3): v4.26.0 #check probes against pinned SHA 2df2f01… — 7 of 8 names correct; replacement HasFPowerSeriesOnBall.factorial_smul for the drifted ...factorial_smul_apply_iteratedFDeriv. S6c (#18396, researcher-1): resolved S6b's three unresolved placeholders, providing a complete drop-in tactic chain. S6d (#18464, researcher-10): 10-item S7 ACT pre-flight risk register. S6e (#18536, researcher-5): pinned R-1 (Complex.norm_natCast via RCLike.norm_natCast @ RCLike/Basic.lean:633, refuting S6d's PHANTOM Complex.abs_natCast claim) and R-4 (iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod @ IteratedDeriv/Defs.lean:246); surfaced new R-? DiffContOnCl bridge requiring +5-10 LOC. Sorry count unchanged across S6 → S6e (1 → 1). Next iteration is S7 ACT: 60-90 LOC paste of the pinned chain + DiffContOnCl bridge, verified by docker-build.",
     "builtItems": [
       "Definition runge in Proofs/MeanValueTheoremOQ02OQ04OQ01.lean (~137) — the Runge function 1/(1+x²)",
       "Theorem runge_one_add_sq_pos (~142) — 1 + x² > 0",
@@ -88,10 +88,10 @@
       "No high-level Mathlib lemma `cauchyEstimate : ‖p k‖ ≤ M/R^k from sup bound on the circle` — must be derived from `Complex.norm_cauchyPowerSeries_le` + `DifferentiableOn.hasFPowerSeriesOnBall` manually. Could be a Mathlib contribution opportunity."
     ],
     "nextSteps": [
-      "S5: Discharge cauchy_diag_norm_bound via the Mathlib Cauchy-integral chain (Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le + HasFPowerSeriesOnBall.factorial_smul + iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod + r'→R⁻ limit). Estimated 100-150 lines.",
-      "S5 alternative: cauchyPowerSeries + Complex.norm_cauchyPowerSeries_le + DifferentiableOn.hasFPowerSeriesOnBall + power-series uniqueness on closed disk of radius r' < R.",
-      "Audit sibling gallery files that import MeanValueTheoremOQ02OQ04 for similar OQ-04-axiom-dependence.",
-      "S6: discharge cauchy_diag_norm_bound_at_radius via Mathlibs Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le (finite-radius Cauchy estimate on sphere a r prime, where r prime < R so closedBall a r prime is a strict subset of ball a R) + HasFPowerSeriesOnBall.factorial_smul (formal-series / iterated-derivative bridge) + iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod (1D collapse). Reference template: TaylorTheoremOQ02.fps_coeff_eq_taylor_coeff for the ℝ-analogue of the bridge."
+      "S7 ACT: discharge cauchy_diag_norm_bound_at_radius by pasting the S6c drop-in tactic chain (PR #18396) with v4.26.0 lemma-name pins from S6b (#18386) and S6e (#18536). Estimated 60-90 LOC net new sorry-free content, including a +5-10 LOC DiffContOnCl bridge (R-? in S6e) since Mathlib's Cauchy estimate at Liouville.lean:44 requires DiffContOnCl, not HasFPowerSeriesOnBall.",
+      "Pre-S7-ACT: audit the 7 remaining S6d risks (R-2/R-3/R-5..R-10) against Mathlib v4.26.0 SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67, mirroring the S6e pattern for R-1/R-4.",
+      "Audit sibling gallery files that import MeanValueTheoremOQ02OQ04 for similar OQ-04-axiom-dependence (carried over from prior nextSteps).",
+      "Post-S7-ACT: if docker-build verifies the paste, status flips to completed; update knowledge.progressSummary + this slug's status to completed in src/data/research/problems/<slug>.json."
     ]
   },
   "tags": [
@@ -129,7 +129,7 @@
     ]
   },
   "started": "2026-05-12T00:00:00.000Z",
-  "lastUpdate": "2026-05-12T12:00:23.926270Z",
+  "lastUpdate": "2026-05-13T22:39:00.566Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
