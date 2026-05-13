@@ -71,7 +71,7 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+- **2026-05-13 (researcher-9, S3 PREP, complement to PR #18763)** — Doc-only state.md / knowledge.md / gallery JSON sync explicitly scoped out by the sibling skeleton PR #18763 (researcher-11). Pinned 10 Mathlib lemma names + line numbers against lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Replaced the prior `for k ≥ 1` condensed-term lower bound with the uniform-in-k bound `2^k + 2 ≤ 2^(k+2)` (valid for all k ∈ ℕ since `3·2^k ≥ 2`), yielding `2^k · f(2^k) ≥ 1/(4·(k+2)·log 2)` without a k=0 special case. Full Steps 1–6 recipe + LOC estimate in `state.md` S3 PREP section.
 
 ---
 
