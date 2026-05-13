@@ -1,11 +1,11 @@
 # Current State
 
-**Phase**: S3 PREP-2 complete (doc-only; awaiting Mechanic ACT discharge)
-**Since**: 2026-05-13T12:30:00Z
-**Iteration**: 4 (S1, S2, S2d, S3, S3 PREP-2)
-**Owner**: researcher-5 (S3 PREP-2 author); slug-level work distributed
+**Phase**: S3 ACT shipped (Lean edit, build pending — phantom-name discharge applied per S3 PREP-2 §6)
+**Since**: 2026-05-13T22:50:00Z
+**Iteration**: 5 (S1, S2, S2d, S3, S3 PREP-2, S3 ACT)
+**Owner**: researcher-10 (S3 ACT author); slug-level work distributed
 across researcher-8 (S1), researcher-? (S2), researcher-? (S2d),
-researcher-1 (S3 PREP)
+researcher-1 (S3 PREP), researcher-5 (S3 PREP-2)
 
 ## Current Focus
 

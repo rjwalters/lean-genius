@@ -33,7 +33,7 @@ Write `μ := volume` on ℝ × ℝ (= product Lebesgue).
 | Hypothesis | What it says | Relation to parent |
 |---|---|---|
 | Parent: `Integrable f ((volume.restrict (uIcc a b)).prod (volume.restrict (uIcc c d)))` | f is L¹ against the product of one-dim restricted volumes | baseline |
-| Equivalent form: `IntegrableOn f K μ` | f is L¹ on the rectangle K | ↔ parent (via `restrict_prod_eq_prod_restrict measurableSet_uIcc measurableSet_uIcc`) |
+| Equivalent form: `IntegrableOn f K μ` | f is L¹ on the rectangle K | ↔ parent (via `IntegrableOn` def + `volume_eq_prod ℝ ℝ` + `← Measure.prod_restrict`; the phantom `restrict_prod_eq_prod_restrict` originally cited in S2 SCAFFOLD #18364 does not exist in Mathlib v4.26.0 — see S3 PREP #18711 §1.1) |
 | `LocallyIntegrable f μ` | every point of ℝ² has an open neighborhood on which f is L¹ | strictly stronger than parent (gives IntegrableOn on **every** compact, not just K) |
 | `LocallyIntegrable f μ` ∧ `Measurable f` | (joint condition the wrapper takes) | strictly stronger, but the canonical Mathlib idiom |
 
@@ -59,14 +59,19 @@ For the proposed S2 wrapper we additionally need:
 | `MeasureTheory.LocallyIntegrable` | `Mathlib.MeasureTheory.Function.LocallyIntegrable` | `def LocallyIntegrable (f : X → E) (μ : Measure X) : Prop` |
 | `LocallyIntegrable.integrableOn_isCompact` | same file | `LocallyIntegrable f μ → IsCompact K → IntegrableOn f K μ` |
 | `IsCompact.prod` / `isCompact_uIcc` | `Mathlib.Topology.Order.Bounded` / `Mathlib.MeasureTheory.Integral.IntervalIntegral` | `IsCompact A → IsCompact B → IsCompact (A ×ˢ B)`; `IsCompact (uIcc a b)` |
-| `restrict_prod_eq_prod_restrict` | `Mathlib.MeasureTheory.Measure.Prod` | `MeasurableSet s → MeasurableSet t → (μ.restrict s).prod (ν.restrict t) = (μ.prod ν).restrict (s ×ˢ t)` |
-| `measurableSet_uIcc` | `Mathlib.MeasureTheory.Integral.IntervalIntegral` | `MeasurableSet (uIcc a b)` |
+| `volume_eq_prod` | `Mathlib.MeasureTheory.Measure.Prod` (`:181`, `rfl`) | `(volume : Measure (α × β)) = (volume : Measure α).prod (volume : Measure β)` — explicit `(α β)` args required |
+| `Measure.prod_restrict` | `Mathlib.MeasureTheory.Measure.Prod` (`:720`) | `[SFinite μ] [SFinite ν] : (μ.restrict s).prod (ν.restrict t) = (μ.prod ν).restrict (s ×ˢ t)` — used via `←` to fold back |
+| `IntegrableOn` (def) | `Mathlib.MeasureTheory.Function.L1Space.Integrable` | `IntegrableOn f s μ := Integrable f (μ.restrict s)` — `rw [IntegrableOn]` unfolds |
+| `measurableSet_uIcc` | `Mathlib.MeasureTheory.Integral.IntervalIntegral` | `MeasurableSet (uIcc a b)` (no longer needed — `Measure.prod_restrict` does not take measurability hypotheses) |
 
-All five entries are already imported (transitively) by the
-parent file. **No new imports needed.** The parent's
-continuous-case proof already uses `restrict_prod_eq_prod_restrict
-measurableSet_uIcc measurableSet_uIcc` and the `IsCompact`
-ingredients (`isCompact_uIcc.prod isCompact_uIcc`); the only new
+All entries are already imported (transitively) by the
+parent file. **No new imports needed.** The parent's continuous-case
+proof's `restrict_prod_eq_prod_restrict` citation was a **phantom**
+name (S3 PREP #18711 confirmed it does not exist in Mathlib v4.26.0
+at pin `2df2f015...`); the corrected discharge uses
+`volume_eq_prod ℝ ℝ` + `← Measure.prod_restrict` as verified in
+PREP-2 §§1–4 against the same pin. The `IsCompact` ingredients
+(`isCompact_uIcc.prod isCompact_uIcc`) are unchanged; the only new
 ingredient is `LocallyIntegrable.integrableOn_isCompact`.
 
 ### Proof sketch (S2)
@@ -83,7 +88,11 @@ theorem intervalIntegral_swap_of_locallyIntegrable {f : ℝ → ℝ → ℝ}
   have hint : IntegrableOn (fun p : ℝ × ℝ => f p.1 p.2)
       (uIcc a b ×ˢ uIcc c d) volume :=
     hf_loc.integrableOn_isCompact hcpt
-  rwa [restrict_prod_eq_prod_restrict measurableSet_uIcc measurableSet_uIcc] at hint
+  -- (Original S2 SCAFFOLD: the next line cited the phantom
+  -- `restrict_prod_eq_prod_restrict measurableSet_uIcc measurableSet_uIcc`;
+  -- S3 ACT replaced with `volume_eq_prod` + `Measure.prod_restrict` bridge.)
+  rw [IntegrableOn, volume_eq_prod ℝ ℝ, ← Measure.prod_restrict] at hint
+  exact hint
 ```
 
 This is a **5-line modification** of the parent's
