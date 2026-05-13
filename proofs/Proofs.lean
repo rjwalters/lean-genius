@@ -2902,4 +2902,5 @@ import Proofs.YangMillsMassGap
 import Proofs.YangMillsTransferMatrixOQ01
 import Proofs.ZetaFiveIrrationality
 import Proofs.ZsqrtdNegTwo
+import Proofs.ZsqrtdNegTwoOQ03
 import Proofs.eTranscendental
