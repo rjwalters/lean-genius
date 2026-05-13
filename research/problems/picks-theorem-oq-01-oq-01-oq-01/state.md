@@ -1,10 +1,10 @@
 # Current State
 
 **Phase**: PLAN
-**Since**: 2026-05-13T11:55:00Z
-**Iteration**: 5
-**Last researcher**: researcher-8 (S3-prep JSON sync + S3a-plus identification — doc-only)
-**Most recent PR**: research(picks-theorem-oq-01-oq-01-oq-01): S3-prep JSON sync + identify primitive_pickInterior_zero gap (this PR, doc-only)
+**Since**: 2026-05-13T18:30:00Z
+**Iteration**: 6
+**Last researcher**: researcher-5 (S3a-prep — Mathlib v4.26.0 bearer audit for `primitive_edgeGCD_eq_one`, doc-only)
+**Most recent PR**: research(picks-theorem-oq-01-oq-01-oq-01): S3a-prep — Mathlib v4.26.0 bearer audit + cyclic-symmetric det rewrite refinement (this PR, doc-only)
 **Most recent Lean change**: research(picks-theorem-oq-01-oq-01-oq-01): S3-prep — general primitive base case via partition-sum identity (#18158, merged 2026-05-12)
 
 ## Current Focus
@@ -137,6 +137,25 @@ S3-prep already established.  The hardest fragment is the `(d : ℤ) ∣ Δx`
 lift, which is a one-step `Int.gcd_dvd_left` invocation once the
 `Int.gcd ↔ Nat.gcd` definitional equality is used.
 
+**S3a-prep refinement (researcher-5, 2026-05-13)** — see
+`sessions/2026-05-13-s3a-prep-edge-gcd-bearer-audit.md`.  Bearer-audited
+all eight Mathlib v4.26.0 / Lean-core API points the blueprint depends
+on against the lockfile pin (`mathlib rev 2df2f015…`, `lean v4.26.0`):
+`Nat.gcd_dvd_left/right`, `Nat.eq_one_of_dvd_one`, `Nat.dvd_one (@[simp])`,
+`Int.gcd_def`, `Int.gcd_eq_natAbs_gcd_natAbs`, `Int.natAbs_dvd`,
+`Int.dvd_natAbs` — all present with the names used above.  The audit
+also flags a per-edge wrinkle: `LatticeTriangle.det` is defined relative
+to `v1`, so edges 1 and 2 don't appear literally in the `det`
+expression.  Resolution: a small `signedDelta : Fin 3 → ℤ × ℤ` helper
+(or three inline `have`s) plus a `det_factors` lemma proved by
+`fin_cases + ring` that exhibits the per-edge ℤ-linear combination
+uniformly.  Refined LOC estimate: ~62 LOC with the helper, ~50 LOC
+without.  The hardest fragment after refinement is the **cast-direction
+checkpoint** — relying on `(edgeDelta i).1 = (signedDelta i).1.natAbs`
+being `rfl` — for which the audit also supplies a fall-back chain
+(`Int.natAbs_dvd ↔ Int.natCast_dvd_natCast` + `Int.dvd_natAbs`) if the
+`rfl` fails at ACT.
+
 **Why before S3b (additivity).**  S3b is the genuinely large
 combinatorial step (200–400 LOC, requiring a union/glue definition and
 careful boundary accounting).  Closing S3a-plus first means S3b only
@@ -170,6 +189,6 @@ Each step is self-contained and could be pursued in a separate iteration.
 
 ## Attempt Counts
 
-- Total attempts: 4
-- Current approach attempts: 4
+- Total attempts: 5
+- Current approach attempts: 5
 - Approaches tried: 1 (bridge-via-cleared-form + primitive-base-case)
