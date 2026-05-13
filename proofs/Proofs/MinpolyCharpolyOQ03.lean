@@ -44,20 +44,43 @@ available either in the in-tree gallery or in Mathlib:
 
    Apply this to `K^n` viewed as an `F[X]`-module via the action of `M`:
    the module is finitely generated and torsion (annihilated by
-   `charpoly M`), hence splits as
-   `K^n  ≅_{F[X]}  ⊕ᵢ  F[X] / (pᵢ)`
-   with the divisibility chain `p₁ ∣ p₂ ∣ ⋯ ∣ pₖ`, where
-   `pₖ = minpoly M` and `∏ᵢ pᵢ = charpoly M`.
+   `charpoly M`), hence splits as a direct sum of **primary cyclic
+   summands**
+   `K^n  ≅_{F[X]}  ⊕ᵢ  F[X] / (pᵢ^{eᵢ})`
+   where each `pᵢ ∈ F[X]` is **irreducible**. A second *regrouping*
+   step (not provided by Mathlib v4.26.0) converts these elementary
+   divisors into the invariant-factor chain
+   `d₁ ∣ d₂ ∣ ⋯ ∣ dₖ`, where each `dⱼ` is a product of certain
+   `pᵢ^{eᵢ}`. The chain then satisfies `dₖ = minpoly M` and
+   `∏ⱼ dⱼ = charpoly M`. See sub-OQ OQ-03-OQ-02 for the regrouping
+   bookkeeping (~290 LOC over Multiset/Finset/List structures;
+   substantive Mathlib gap). The S11 PREP audit
+   (`research/problems/minpoly-charpoly-oq-03/sessions/
+   2026-05-13-s11-prep-oq03-oq02-elementary-divisors-erratum.md`)
+   pinned the exact `Module.equiv_directSum_of_isTorsion` signature
+   at Mathlib v4.26.0 `Mathlib/Algebra/Module/PID.lean:233`:
+   the witness `p : ι → R` satisfies `Irreducible (p i)` (not a
+   chain), so the cyclic summands are `R ⧸ R ∙ p i ^ e i` —
+   *prime powers*, not invariant factors.
 
-3. **Cyclic summand ↔ companion block.** On the cyclic `F[X]`-module
-   `F[X] / (pᵢ)`, the basis `{1, X, X², ..., X^{dᵢ-1}}`
-   (with `dᵢ = deg pᵢ`) realises multiplication-by-`X` as the
-   companion matrix `companionMatrix pᵢ`. Reassembling these blocks
-   gives the global similarity
-   `M  ~  blockDiag (companionMatrix p₁) ⋯ (companionMatrix pₖ)`.
+3. **Cyclic summand ↔ companion block.** On each cyclic `F[X]`-module
+   `F[X] / (dⱼ)` of the invariant-factor decomposition, the basis
+   `{1, X, X², ..., X^{cⱼ-1}}` (with `cⱼ = deg dⱼ`) realises
+   multiplication-by-`X` as the companion matrix `companionMatrix dⱼ`.
+   Reassembling these blocks gives the global similarity
+   `M  ~  blockDiag (companionMatrix d₁) ⋯ (companionMatrix dₖ)`.
 
-**No genuine Mathlib gap or axiomatic assumption is required.** The
-remaining work is purely integrative: glue these three pieces together.
+**Mathlib gap status (post-S11 audit, 2026-05-13).** Exactly **one
+genuine Mathlib gap** is required: the **elementary-divisors →
+invariant-factors regrouping** algorithm (sub-OQ OQ-03-OQ-02,
+~290 LOC of `Multiset`/`Finset`/`List` bookkeeping). Mathlib v4.26.0
+provides only the primary form via `Module.equiv_directSum_of_isTorsion`
+(`p i` irreducible, no chain). A potential alternative — Smith
+normal form on `X·I − M` (`Submodule.smithNormalForm` at
+`Mathlib/LinearAlgebra/FreeModule/PID.lean:541`) — has its own gap
+(the diagonal entries are not certified to satisfy `a 0 ∣ a 1 ∣ ⋯ ∣
+a (n-1)`). Both gaps are upstreamable as Mathlib contributions. The
+rest of the OQ-03 work is integrative.
 
 ## Decomposition into Sub-OQs (proposed)
 
@@ -66,14 +89,16 @@ For follow-up iterations / child OQs, the work decomposes naturally:
 | Sub-OQ | Content | Estimated lines |
 |--------|---------|-----------------|
 | **OQ-03-OQ-01** | `F[X]`-module structure on `K^n` via `M`; show finitely generated and torsion. | ~150 |
-| **OQ-03-OQ-02** | Apply `Module.equiv_directSum_of_isTorsion` to get the invariant-factor decomposition with divisibility chain. | ~300 |
+| **OQ-03-OQ-02** | Apply `Module.equiv_directSum_of_isTorsion` (primary form) **then regroup elementary divisors into invariant factors**. The regrouping is the substantive Mathlib gap (~290 LOC bookkeeping + ~50 LOC API plumbing ≈ 340 LOC; see S11 PREP §6 for full skeleton). | ~340 |
 | **OQ-03-OQ-03** | Cyclic-summand ↔ companion-block correspondence. | ~250 |
 | **OQ-03-OQ-04** | Global assembly of the similarity transform. | ~200 |
 
-Total roadmap: ≈ 900 lines (smaller than the file-level estimate in
-`CayleyHamiltonReductionOQ02OQ01.lean`'s gap assessment, which routed
-through a separate Smith-normal-form pass; here we use the Mathlib
-structure theorem directly).
+Total roadmap: ≈ 940 lines (slightly larger than the original
+~900-line estimate after the S11 PREP audit revised OQ-03-OQ-02
+upward to account for the elementary→invariant regrouping; still
+smaller than the alternative ~1800-line SNF-via-`X·I − M` route
+mentioned in `CayleyHamiltonReductionOQ02OQ01.lean`'s gap
+assessment).
 
 ## What This File Contributes (S1 scaffold + S2 helpers)
 

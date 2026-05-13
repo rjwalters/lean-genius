@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT (S10 OQ-03-OQ-01 `xModule_isTorsion` discharge; OQ-03-OQ-02 invariant-factor decomposition is the remaining sub-OQ)
-**Since**: 2026-05-13 (S10 ACT iteration, researcher-5; discharges PR #18507's "Next" forecast)
-**Iteration**: 10
+**Phase**: ACT (S10 OQ-03-OQ-01 `xModule_isTorsion` discharge; OQ-03-OQ-02 invariant-factor decomposition is the remaining sub-OQ; S11 PREP audit + S12 ERRATUM-APPLY now propagated)
+**Since**: 2026-05-13 (S12 doc-only erratum-apply, researcher-9; applies §8 corrections from S11 PREP PR #18668)
+**Iteration**: 12
 
 ## Current Focus
 
@@ -85,18 +85,29 @@ option 1 from S3's next-action list has therefore advanced.
 
 ## Active Approach
 
-Same three-ingredient plan from S1 OBSERVE:
+Same three-ingredient plan from S1 OBSERVE, refined by the S11 PREP
+audit (PR #18668) on the OQ-03-OQ-02 substep:
 
 1. In-tree companion-matrix infrastructure (`CayleyHamiltonReductionOQ02OQ01`).
-2. Mathlib's `Module.equiv_directSum_of_isTorsion`.
+2. Mathlib's `Module.equiv_directSum_of_isTorsion` (yields the
+   **primary cyclic decomposition** `⊕ᵢ F[X] / (pᵢ^{eᵢ})` with each
+   `pᵢ` irreducible) **plus a ~290-LOC regrouping bookkeeping pass**
+   (S11 PREP §6 Route B) converting elementary divisors to invariant
+   factors with divisibility chain. The regrouping is the substantive
+   Mathlib gap.
 3. Cyclic-summand-to-companion-block correspondence.
 
-S4+ work still decomposes into four sub-OQs:
+S4+ work decomposes into four sub-OQs:
 
 * **OQ-03-OQ-01** (~150 lines): F[X]-module structure on K^n via M-action;
-  prove finitely generated + torsion.  *(SCAFFOLD landed in PR #17995.)*
-* **OQ-03-OQ-02** (~300 lines): apply `Module.equiv_directSum_of_isTorsion`
-  to obtain the invariant-factor decomposition with divisibility chain.
+  prove finitely generated + torsion.  *(SCAFFOLD landed in PR #17995;
+  S8 + S10 ACT discharges merged in PR #18507 + #18583; only
+  `xModule_has_invariantFactorChain` sorry remains, owned by OQ-03-OQ-02.)*
+* **OQ-03-OQ-02** (~340 lines): apply `Module.equiv_directSum_of_isTorsion`
+  for primary form, **then regroup elementary divisors into invariant
+  factors** (~290 LOC bookkeeping + ~50 LOC API plumbing). See S11 PREP §6
+  for the Route B structural skeleton; the regrouping is the only
+  substantive Mathlib gap on the OQ-03 critical path.
 * **OQ-03-OQ-03** (~250 lines): cyclic summand ↔ companion block.
 * **OQ-03-OQ-04** (~200 lines): global similarity transform assembly.
 
@@ -117,33 +128,40 @@ None at the strategy level. Two minor verification tasks remain
 
 ## Next Action
 
-S5 discharged the first bullet of S4's option-4 enumeration
-(`prodFactors_natDegree_le_lastFactor_natDegree_mul`). The next
-iteration should pick exactly one of:
+After the S8/S10 OQ-03-OQ-01 ACT discharges (PRs #18507/#18583), the
+S11 PREP audit (PR #18668), and this S12 ERRATUM-APPLY pass, the OQ-03
+critical path narrows to exactly one substantive piece of work plus a
+few orthogonal follow-ups. The next iteration should pick exactly one of:
 
-1. **OQ-03-OQ-01 S2** — discharge `xModule_isTorsionBy_charpoly` in
-   PR #17995's now-merged `MinpolyCharpolyOQ03OQ01.lean` (route through
-   `Matrix.aeval_self_charpoly` + `Matrix.toLinAlgEquiv` + naturality
-   of `aeval`).
+1. **OQ-03-OQ-02 ACT (Route B)** — implement the elementary-divisors →
+   invariant-factors regrouping algorithm sketched in S11 PREP §6.
+   Lives in a **new file** `proofs/Proofs/MinpolyCharpolyOQ03OQ02.lean`
+   (~290 LOC bookkeeping + ~50 LOC API plumbing ≈ 340 LOC). On
+   completion, the `xModule_has_invariantFactorChain` sorry in
+   `MinpolyCharpolyOQ03OQ01.lean:195-199` collapses to a ~5-line glue
+   import. Build via Docker (~45 min cold per `.lake` symlink trap).
+   **Cheat-sheet** in S11 PREP §10 has the implementer's checklist.
 
-2. **Strong-form upgrade** — extend `rational_canonical_form_exists` to
-   additionally assert `c.lastFactor = M.minpoly`. Statement-only edit
-   (~5 lines), proof remains sorry. Prepares the deliverable surface
-   for OQ-03-OQ-02. With S4's `lastFactor_mem`/`lastFactor_monic`/
-   `lastFactor_natDegree_maximal` and S5's
-   `prodFactors_natDegree_le_lastFactor_natDegree_mul` available, a
-   downstream `lastFactor_natDegree_le_charpoly_natDegree` corollary
-   is now a short combination of S3's `prodFactors_natDegree` and
-   S4's `lastFactor_natDegree_maximal` — or even shorter using the
-   S5 coarse bound directly.
+2. **`c.lastFactor = M.minpoly` follow-up** — independent ~15-30 LOC
+   ACT on `MinpolyCharpolyOQ03.lean` itself (S11 PREP §7). Requires
+   *some* invariant-factor chain `c` (so optimally runs after option 1)
+   but does NOT require the regrouping infrastructure of S11 PREP §6.
+   Uses `annihilator_top_eq_ker_aeval`
+   (`Mathlib/Algebra/Polynomial/Module/AEval.lean:124`) to identify
+   `ann(xModule M) = (M.minpoly)`; the structural fact that
+   `ann (⊕ R/(d_j)) = (d_K) = (c.lastFactor)` plus monic-uniqueness
+   forces `c.lastFactor = M.minpoly`.
 
-3. **OQ-03-OQ-02 SCAFFOLD** — apply `Module.equiv_directSum_of_isTorsion`
-   to extract the invariant-factor decomposition (~300 lines). Can run
-   in parallel with OQ-03-OQ-01 S2 because statements are fixed in
-   PR #17995's file.
+3. **Strong-form statement upgrade** — extend
+   `rational_canonical_form_exists` to additionally state
+   `c.lastFactor = M.minpoly`. Sorry-preserved (~5 lines, no proof
+   change). Sets up the deliverable surface for option 2 to fill.
+   Can run in parallel with option 1.
 
 4. **More structural helpers on `InvariantFactorChain`** — remaining
-   S4-option-4 candidates beyond S5:
+   S4-option-4 candidates beyond S5 (NB: S6 PREP already covered the
+   `firstFactor`-side design in PR #18425, so this option has lower
+   priority post-S6):
    * `prodFactors_natDegree_eq_sum_natDegree_lastFactor_le_n` — combines
      sum-of-degrees with chain-max to bound `lastFactor.natDegree ≤ n`
      in the eventual matrix-level instantiation (requires
@@ -151,15 +169,19 @@ iteration should pick exactly one of:
    * `firstFactor`-side mirror lemmas (`firstFactor_mem`,
      `firstFactor_monic`, `firstFactor_natDegree_minimal`,
      `factors.length * firstFactor.natDegree ≤ prodFactors.natDegree`)
-     — the dual structural pass; the `getLast?`/`head?` asymmetry of
-     `Nat`-subtraction makes the `firstFactor` formulation slightly
-     cleaner since no `length - 1` arithmetic is needed.
+     — the dual structural pass; design sketched in S6 PREP (#18425).
+
+**Strongly recommended ordering**: option 1 (regrouping ACT) **then**
+option 3 (statement-only upgrade) **then** option 2 (lastFactor =
+minpoly proof). This keeps each PR diff bounded and reviewable, and
+ensures the regrouping is sorry-free *before* anyone tries to consume
+its output in stronger lemmas.
 
 ## Attempt Counts
 
-- Total attempts: 5 (S1 OBSERVE scaffold, S2 auditor follow-through, S3 natDegree+ne_zero helpers, S4 lastFactor helpers, S5 length-times-last bookkeeping bound)
-- Current approach attempts: 5
-- Approaches tried: 1 (three-ingredient plan via Mathlib's PID structure theorem)
+- Total attempts: 12 (S1 OBSERVE scaffold, S2 auditor follow-through, S3 natDegree+ne_zero helpers, S4 lastFactor helpers, S5 length-times-last bookkeeping bound, S6 PREP firstFactor design, S7 PREP isTorsionBy cheatsheet, S8 ACT isTorsionBy discharge, S9 PREP isTorsion cheatsheet, S10 ACT isTorsion discharge, S11 PREP elementary-divisors erratum + Route B design, S12 ERRATUM-APPLY)
+- Current approach attempts: 12
+- Approaches tried: 1 (three-ingredient plan via Mathlib's PID structure theorem, with S11 PREP refining OQ-03-OQ-02 from "direct invariant-factor decomposition" to "primary form + ~290-LOC regrouping bookkeeping")
 
 ## Session Log
 
@@ -269,3 +291,39 @@ iteration should pick exactly one of:
   this S10 drift will follow). Discharges PR #18507 §"Next"
   forecast; parent's next-action enumeration option 1 is now fully
   exhausted at the child slug level.
+
+* **S11 PREP (researcher-11, 2026-05-13, PR #18668 merged)** —
+  OQ-03-OQ-02 `xModule_has_invariantFactorChain` audit-correction
+  + forward design (doc-only). **Load-bearing finding**: the
+  parent's prior claim that `Module.equiv_directSum_of_isTorsion`
+  yields the invariant-factor chain directly was incorrect; the
+  Mathlib lemma at `Mathlib/Algebra/Module/PID.lean:233` outputs
+  the **primary cyclic decomposition** with each `p i` irreducible,
+  not a divisibility chain. PREP §4 pinned the API signature at
+  Mathlib v4.26.0; §5 compared two routes (Route A: SNF on `X·I − M`
+  with its own divisibility-chain gap; Route B: regrouping from
+  primary form); §6 sketched the Route B implementer's structural
+  skeleton (~290 LOC across 7 steps over Multiset/Finset/List); §8
+  flagged the erratum corrections needed for state.md, file
+  docstring, and knowledge JSON. **Outcome**: roadmap revised from
+  ~900 LOC to ~940 LOC; "no Mathlib gap" claim retracted in favour
+  of "exactly one substantive Mathlib gap (regrouping bookkeeping)".
+
+* **S12 ERRATUM-APPLY (researcher-9, 2026-05-13)** — doc-only
+  audit-trail propagation: applies the §8 erratum corrections from
+  S11 PREP (PR #18668). Touches three files: (a) the parent Lean file
+  docstring (`MinpolyCharpolyOQ03.lean` lines ~36-65) corrects the
+  "direct chain via `equiv_directSum_of_isTorsion`" misclassification
+  to "primary form + regrouping", and adds a forward-reference to the
+  S11 PREP session-note; (b) the sub-OQ table updates OQ-03-OQ-02
+  budget from ~300 to ~340 LOC and labels the regrouping as
+  "substantive Mathlib gap"; (c) `state.md` "Active Approach" and
+  "Next Action" sections incorporate the same correction and revise
+  the next-action enumeration to reflect the post-S10 sorry-status
+  (only one OQ-03-OQ-02 sorry remains on the critical path); (d) the
+  knowledge JSON (`src/data/research/problems/minpoly-charpoly-oq-03.json`)
+  has `insights[0]`, `mathlibGaps`, and `currentState.nextAction`
+  similarly corrected. **No Lean code changes; no sorry changes; no
+  axiom changes; no theorem additions.** Build-pending status of the
+  S4/S5 work is unaffected (no Lean tactics touched). Iteration
+  counter bumped 5 → 12.
