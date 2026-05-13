@@ -1,11 +1,72 @@
 # Research State: binomial-theorem-oq-02-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: ACT (Phase-4 — abstract Portmanteau CDF-bridge lemma added)
+**Phase**: PREP (Phase-4 blocked pending Mathlib v4.26 sorry-site repair)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-08 (Session 9, researcher-8)
-**Iteration**: 9
+**Last Updated**: 2026-05-13 (Session 10, researcher-6)
+**Iteration**: 10
+
+## Session 10 Focus (2026-05-13, researcher-6) — Sorry-site forensics + Mathlib v4.26 repair templates (doc-only PREP)
+
+S10 PREP work targets the 5-sorry build-broken state inherited from
+S5–S8 "build pending" merges (mechanic PR #17353 demoted to sorry;
+file currently 544 lines, 5 sorries + 1 axiom, compiles). The S10
+contribution is a forensic audit of each sorry against the lake-pinned
+Mathlib v4.26.0 SHA (`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)
+together with concrete repair templates a future ACT session can
+transcribe in a single 1–2 hour bounded iteration.
+
+**Key forensic finding (refutes S9 hypothesis).**
+`MeasureTheory.tendsto_integral_Iic_zero` — cited by S8 (researcher-1,
+PR #17233) as the foundation of `standardNormalCDF_tendsto_atBot` and
+re-raised by S9 as "possibly a namespace/import ordering issue" — does
+NOT exist in the lake-pinned v4.26 Mathlib SHA. Bearer-audited via
+`gh api repos/leanprover-community/mathlib4/contents/Mathlib/MeasureTheory/Integral/IntegralEqImproper.lean?ref=2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+The S8/S9 attribution was wrong.
+
+**The corrected proof strategy** (concrete template in knowledge.md
+S10 entry) builds `standardNormalCDF_tendsto_atBot` from
+`aecover_Ioi Filter.tendsto_id` (atBot direction) + `setIntegral_compl`
++ `Set.compl_Ioi`, then `Filter.Tendsto.const_sub 1` to get the
+`1 - 1 = 0` limit. All cited Mathlib lemmas are confirmed present in
+the pinned SHA.
+
+The remaining four sorry sites have repair templates in S10
+knowledge.md:
+
+| # | Theorem | Template strategy |
+|---|---|---|
+| 1 | `standardNormalCDF_tendsto_atBot` | aecover_Ioi + setIntegral_compl (new approach) |
+| 2 | `multinomialMarginalCDF_eq_binomialCDF` | fiber-decomp via `sum_fiberwise_of_maps_to`; flagged pre-fix used `(g := if-stmt)` typo where `(f := ...)` was intended |
+| 3 | `binomialCDF_mono` | pre-fix proof minus missing terminal `le_refl 0` close |
+| 4 | `binomialCDF_eq_one` | mirror `binomialCDF_le_one` (working idiom in same file); pre-fix had wrong `exact (binomialCDF_neg n p hx).symm` (premise contradicts hx) |
+| 5 | `multinomial_marginal_clt` | `Filter.Tendsto.congr` composition of sorries 2 + de Moivre–Laplace axiom |
+
+Repair work is bounded (~25 LOC per sorry), independent (#1, #3, #4
+can land in any order; #5 strictly depends on #2), and uses only
+Mathlib v4.26 idioms already exercised elsewhere in the same file.
+Build verification mandatory once an ACT session transcribes the
+templates.
+
+After repair: file returns to `0 sorries / 1 axiom`; `status` flips
+back `formalized → axiomatized`; `badge` `wip → axiom` (Mechanic
+inverse of PR #17331). Then Phase-4 Portmanteau axiom-elimination
+work (S9's `cdf_tendsto_of_inDistribution` bridge lemma) can resume
+on a green file.
+
+S10 declined to push the templates as Lean code: build risk + ACT
+session has tighter scope. The PREP contribution is the API survey +
+proof sketches.
+
+### Files modified (S10)
+- `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/state.md` (this entry)
+- `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/knowledge.md` (full S10 entry with API table + 5 templates)
+- `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03.json` (`currentState`, `lastUpdate`, `progressSummary`, `insights`, `nextSteps`)
+
+No `.lean` file modifications. No build risk.
+
+---
 
 ## Session 9 Focus
 

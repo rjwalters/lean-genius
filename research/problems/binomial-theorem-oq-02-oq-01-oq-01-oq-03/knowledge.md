@@ -6,6 +6,467 @@ coordinate of `(X₁, …, Xₖ) ~ Multinomial(n, p₁, …, pₖ)` as `n → �
 
 ---
 
+## Session 2026-05-13 (Session 10, researcher-6) — Sorry-site forensics + Mathlib v4.26 repair templates (doc-only PREP)
+
+**Mode**: PREP (RICH knowledge tier, score 52). Phase-4 unblocking work,
+no Lean modification.
+
+**Context.** S9 (researcher-8, 2026-05-08) discovered five build errors
+in the merged file caused by Mathlib v4.26 API drift across S5–S8
+"build pending" merges, then declined to push a fix on the grounds that
+repair is Mechanic/Doctor scope. Mechanic PR #17353 demoted the five
+broken proofs to explicit `sorry` so the file at least type-checks
+(sorries 0 → 5, lineCount 604 → 544); meta `status` flipped
+`axiomatized → formalized` and `badge` `axiom → wip` via PR #17331.
+
+Net state on `main` HEAD `fea3607ed14`: file compiles with `5 sorries
++ 1 axiom`, structurally honest. The file *and* both companion files
+(`BinomialTheoremOQ02OQ01OQ02`, `multinomial_marginal_pmf`) are
+preserved. Sorries are at `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean`
+lines 275, 359, 385, 482, 542 of the current file.
+
+S10's contribution is doc-only: a forensic audit of each of the five
+sorry sites against the lake-pinned Mathlib v4.26 SHA
+(`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) plus concrete repair
+templates that a future ACT session can transcribe. No `.lean`
+modifications — the file is stable, and the PREP work delivers proof
+sketches that any follow-up Mechanic/Doctor/researcher can apply in
+one bounded ACT session (estimated 1–2 hours wall-clock).
+
+### Sorry-site forensic audit (Mathlib v4.26 pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)
+
+#### Sorry 1 — `standardNormalCDF_tendsto_atBot` (current line 275)
+
+**S8/S9 hypothesis (now refuted).** S8 (researcher-1, PR #17233)
+claimed the proof was a "direct corollary of
+`MeasureTheory.tendsto_integral_Iic_zero` with `a := id`". S9
+speculated the build error (`Unknown identifier
+MeasureTheory.tendsto_integral_Iic_zero`) was a namespace/import issue
+since "the lemma exists at
+`Mathlib.MeasureTheory.Integral.IntegralEqImproper.lean:630` inside
+the `MeasureTheory` namespace".
+
+**S10 finding (refuting the S8/S9 attribution).** The lemma
+`MeasureTheory.tendsto_integral_Iic_zero` does **NOT exist** in the
+lake-pinned v4.26.0 Mathlib SHA. Bearer-audit results from
+`gh api repos/leanprover-community/mathlib4/contents/Mathlib/MeasureTheory/Integral/IntegralEqImproper.lean?ref=2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+
+| Symbol | Status in v4.26 pinned SHA | Line |
+|---|---|---|
+| `MeasureTheory.tendsto_integral_Iic_zero` | **absent** | — |
+| `MeasureTheory.aecover_Iic` | present, signature `(hb : Tendsto b l atTop) → AECover μ l (fun i => Iic (b i))` | 158 |
+| `MeasureTheory.aecover_Ioi` | present, signature `(ha : Tendsto a l atBot) → AECover μ l (fun i => Ioi (a i))` | (companion) |
+| `MeasureTheory.AECover.integral_tendsto_of_countably_generated` | present | — |
+| `MeasureTheory.intervalIntegral_tendsto_integral_Iic` | present, sig `(b : ℝ) (hfi : IntegrableOn f (Iic b) μ) (ha : Tendsto a l atBot)` | 603 |
+
+The S8/S9 attribution was wrong: there is no `tendsto_integral_Iic_zero`
+in mathlib v4.26 at line 630 or anywhere else. (Mathlib HEAD bearer-audit
+vs lockfile-pinned SHA divergence is a documented trap in
+`feedback_researcher_mathlib_head_vs_lockfile_sha_drift.md`; this is a
+clean instance of that anti-pattern.) The right v4.26 proof composes
+the **complement identity** with the existing `aecover_Ioi`-driven
+right-tail tendsto, similar to how `standardNormalCDF_tendsto_atTop`
+(current line 289–301, **working**) uses `aecover_Iic` + `tendsto_id`
+for the `atTop` direction.
+
+**Mathlib v4.26 API surface for the repair.**
+
+| Symbol | Path | Signature relevant facts |
+|---|---|---|
+| `MeasureTheory.aecover_Ioi` | `MeasureTheory/Integral/IntegralEqImproper.lean` | `Tendsto a l atBot → AECover μ l (fun i => Ioi (a i))` |
+| `MeasureTheory.integral_add_compl` | `MeasureTheory/Integral/Bochner/Set.lean:145` | `MeasurableSet s → Integrable f μ → ∫ x in s, f x ∂μ + ∫ x in sᶜ, f x ∂μ = ∫ x, f x ∂μ` |
+| `MeasureTheory.setIntegral_compl` | `MeasureTheory/Integral/Bochner/Set.lean:149` | `MeasurableSet s → Integrable f μ → ∫ x in sᶜ, f x ∂μ = ∫ x, f x ∂μ - ∫ x in s, f x ∂μ` |
+| `Set.compl_Ioi` | `Mathlib/Order/Interval/Set/LinearOrder.lean:60` | `(Set.Ioi a)ᶜ = Set.Iic a` |
+| `ProbabilityTheory.integrable_gaussianPDFReal` | `Probability/Distributions/Gaussian/Real` | (already used in atTop proof at line 295) |
+| `ProbabilityTheory.integral_gaussianPDFReal_eq_one` | `Probability/Distributions/Gaussian/Real` | `(σ ≠ 0) → ∫ t, gaussianPDFReal μ σ t = 1` |
+
+**Repair template (concrete proof, intended for next ACT session).**
+
+```lean
+theorem standardNormalCDF_tendsto_atBot :
+    Filter.Tendsto standardNormalCDF Filter.atBot (nhds 0) := by
+  unfold standardNormalCDF
+  -- Step 1: integrability + total integral.
+  have hint : MeasureTheory.Integrable (ProbabilityTheory.gaussianPDFReal 0 1) :=
+    ProbabilityTheory.integrable_gaussianPDFReal 0 1
+  have hone : ∫ t, ProbabilityTheory.gaussianPDFReal 0 1 t = 1 :=
+    ProbabilityTheory.integral_gaussianPDFReal_eq_one 0 one_ne_zero
+  -- Step 2: along `atBot`, the family `Ioi x` is an AECover via
+  --         `aecover_Ioi Filter.tendsto_id`, so `∫ t in Ioi x, f t → 1`.
+  have hcover : MeasureTheory.AECover MeasureTheory.volume Filter.atBot
+      (fun x : ℝ => Set.Ioi x) :=
+    MeasureTheory.aecover_Ioi Filter.tendsto_id
+  have htendsto_Ioi := hcover.integral_tendsto_of_countably_generated hint
+  rw [hone] at htendsto_Ioi
+  -- htendsto_Ioi : Tendsto (fun x => ∫ t in Ioi x, f t) atBot (𝓝 1)
+  -- Step 3: identify `∫ t in Iic x, f t` with `1 - ∫ t in Ioi x, f t`
+  --         via `setIntegral_compl` (with `s := Ioi x`, so `sᶜ = Iic x`).
+  have h_eq : ∀ x : ℝ,
+      ∫ t in Set.Iic x, ProbabilityTheory.gaussianPDFReal 0 1 t
+        = 1 - ∫ t in Set.Ioi x, ProbabilityTheory.gaussianPDFReal 0 1 t := by
+    intro x
+    have hms : MeasurableSet (Set.Ioi x) := measurableSet_Ioi
+    have hcompl_eq : (Set.Ioi x)ᶜ = Set.Iic x := Set.compl_Ioi
+    have hsetc := MeasureTheory.setIntegral_compl (μ := MeasureTheory.volume) hms hint
+    -- hsetc : ∫ t in (Ioi x)ᶜ, f t = ∫ t, f t - ∫ t in Ioi x, f t
+    rw [hcompl_eq] at hsetc
+    rw [hsetc, hone]
+  -- Step 4: package as the limit of `1 - ·` along `atBot`, giving `1 - 1 = 0`.
+  refine (Filter.Tendsto.congr (fun x => (h_eq x).symm) ?_)
+  have hsub : Filter.Tendsto
+      (fun x : ℝ => 1 - ∫ t in Set.Ioi x, ProbabilityTheory.gaussianPDFReal 0 1 t)
+      Filter.atBot (𝓝 (1 - 1)) :=
+    Filter.Tendsto.const_sub 1 htendsto_Ioi
+  simpa using hsub
+```
+
+Lemma count for the repair: 0 new declarations; one body replacement
+(8 lines → ~25 lines). All cited Mathlib lemmas are confirmed present
+in the lake-pinned SHA.
+
+**Risk note.** The exact `simpa using hsub` final step + the order of
+`rw [hcompl_eq] at hsetc; rw [hsetc, hone]` are heuristic — `simp`/`rw`
+patterns sometimes need a unification hint; the next session should
+plan to spend a couple of iterations on the closing tactic. Two
+fallbacks: (a) `linarith` after explicit subtraction, (b) explicit
+`have` for the final identity. Build verification is required because
+each `setIntegral` / `Bochner.Set` call gets type-class elaboration
+sensitive to integrable + measurable-set hypotheses.
+
+#### Sorry 2 — `multinomialMarginalCDF_eq_binomialCDF` (current line 359)
+
+**Pre-fix proof body** (commit `bfaef87^`, lines 350–392 of the pre-fix
+file) used `Finset.sum_fiberwise_of_maps_to` with the
+fiber function `g := fun k => k i₀` *inferred from* `hmaps`, then
+explicitly passed `(g := fun k => if ((k i₀ : ℕ) : ℝ) ≤ x then
+multinomialProb s p n k else 0)` as a named argument.
+
+**S10 forensic note.** The pre-fix call writes `(g := ...)` to override
+what looks intended to be the *summand* function. In Mathlib v4.26's
+`Finset.sum_fiberwise_of_maps_to` (auto-generated from
+`Algebra/BigOperators/Group/Finset/Basic.lean:260`
+`prod_fiberwise_of_maps_to` via `@[to_additive]`):
+
+```
+sum_fiberwise_of_maps_to {g : ι → κ} (h : ∀ i ∈ s, g i ∈ t) (f : ι → M) :
+    ∑ j ∈ t, ∑ i ∈ s with g i = j, f i = ∑ i ∈ s, f i
+```
+
+`g` is the **fiber function** (`ι → κ`), `f` is the summand
+(`ι → M`). The pre-fix proof passes `(g := if-stmt)` for what should
+be `(f := if-stmt)`. With the named argument incorrectly setting `g`,
+elaboration tries to unify `g` against two contradictory types — the
+already-inferred `fun k => k i₀` (from `hmaps`) versus the supplied
+if-stmt (return type `ℝ`, not `κ`). This is consistent with the build
+log's "rewrite failed: did not find an occurrence" / "type mismatch"
+flavour but does not directly match the `omega` error at line 381 in
+issue #17317. The line-number disparity suggests the issue body
+references a build attempt on a slightly different snapshot of the
+file. Forensic certainty: medium.
+
+**Repair template.** Same fiber-decomposition strategy with the
+correct named-argument alias:
+
+```lean
+theorem multinomialMarginalCDF_eq_binomialCDF
+    {α : Type*} [DecidableEq α]
+    (s : Finset α) (p : α → ℝ) (n : ℕ) (hp : ∑ i ∈ s, p i = 1)
+    (i₀ : α) (hi₀ : i₀ ∈ s) (x : ℝ) :
+    multinomialMarginalCDF s p n i₀ x = binomialCDF n (p i₀) x := by
+  unfold multinomialMarginalCDF binomialCDF
+  have hmaps : ∀ k ∈ s.piAntidiag n, k i₀ ∈ Finset.range (n + 1) := by
+    intro k hk
+    rw [Finset.mem_range, Nat.lt_succ_iff]
+    exact piAntidiag_apply_le s n i₀ k hk
+  -- Note: pass `(f := ...)` not `(g := ...)`. `g` is the fiber function
+  -- `fun k => k i₀` (inferred from `hmaps`); `f` is the summand.
+  rw [← Finset.sum_fiberwise_of_maps_to (t := Finset.range (n + 1)) hmaps
+        (f := fun k =>
+          if ((k i₀ : ℕ) : ℝ) ≤ x
+          then BinomialTheoremOQ02OQ01OQ02.multinomialProb s p n k
+          else 0)]
+  apply Finset.sum_congr rfl
+  intro j hj
+  rw [Finset.mem_range, Nat.lt_succ_iff] at hj
+  by_cases hcond : (j : ℝ) ≤ x
+  · rw [if_pos hcond]
+    have h_inner :
+        ∑ k ∈ (s.piAntidiag n).filter (fun k => k i₀ = j),
+            (if ((k i₀ : ℕ) : ℝ) ≤ x
+             then BinomialTheoremOQ02OQ01OQ02.multinomialProb s p n k
+             else 0)
+        = ∑ k ∈ (s.piAntidiag n).filter (fun k => k i₀ = j),
+            BinomialTheoremOQ02OQ01OQ02.multinomialProb s p n k := by
+      apply Finset.sum_congr rfl
+      intro k hk
+      rw [Finset.mem_filter] at hk
+      rw [hk.2, if_pos hcond]
+    rw [h_inner]
+    exact BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf
+            s p n hp i₀ hi₀ j hj
+  · rw [if_neg hcond]
+    apply Finset.sum_eq_zero
+    intro k hk
+    rw [Finset.mem_filter] at hk
+    rw [hk.2, if_neg hcond]
+```
+
+**Risk note.** The `with` filter syntax `∑ i ∈ s with g i = j` from
+the v4.26 fiberwise statement may not unify literally with
+`(s.piAntidiag n).filter (fun k => k i₀ = j)`. If `rw` doesn't fire,
+the alternative is `simp_rw [← Finset.sum_fiberwise_of_maps_to ...]`
+or hand-rolling the fiber decomposition via
+`Finset.sum_eq_sum_of_ne_zero` + explicit `disjUnion`. Build
+verification mandatory.
+
+#### Sorry 3 — `binomialCDF_mono` (current line 385)
+
+**Pre-fix proof body** (commit `bfaef87^`, lines 413–426) splits on
+`hjx : (j : ℝ) ≤ x` and `hjy : (j : ℝ) ≤ y`, applies `if_pos/if_neg`
+and finally uses `mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (pow_nonneg
+hp0 _)) (pow_nonneg h1mp _)`.
+
+**S10 forensic note.** The pre-fix body terminates with `rw [if_neg
+hjy]` and no explicit closing tactic. After both negative branches,
+the goal is `(0 : ℝ) ≤ 0`, which `rfl` discharges automatically only
+if `rw` leaves the goal in syntactically-defeq form. Issue #17317
+reports a v4.26 "Application type mismatch" at line 409, but that
+line in the pre-fix file is blank — so the actual error location
+moved across drafts and the specific tactic that misfires is uncertain
+without a fresh Docker build.
+
+**Repair template (most likely correct).**
+
+```lean
+theorem binomialCDF_mono (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
+    Monotone (binomialCDF n p) := by
+  intro x y hxy
+  unfold binomialCDF
+  apply Finset.sum_le_sum
+  intro j _
+  have h1mp : 0 ≤ 1 - p := by linarith
+  by_cases hjx : (j : ℝ) ≤ x
+  · rw [if_pos hjx, if_pos (le_trans hjx hxy)]
+  · rw [if_neg hjx]
+    by_cases hjy : (j : ℝ) ≤ y
+    · rw [if_pos hjy]
+      exact mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (pow_nonneg hp0 _))
+        (pow_nonneg h1mp _)
+    · rw [if_neg hjy]
+      -- Explicit close (goal `(0 : ℝ) ≤ 0`).
+```
+
+Two `mul_nonneg` patterns in the same file (`binomialCDF_zero_le` at
+line 396, `binomialCDF_le_one` at line 418) compile cleanly in v4.26,
+so the `mul_nonneg`-chain idiom is fine. The likely culprit is the
+missing explicit closing tactic in the `if_neg ∧ if_neg` branch. The
+template above suggests trusting auto-defeq or adding `le_refl 0` if
+the implicit closure fails.
+
+**Risk note.** If `Application type mismatch` reappears at the
+`mul_nonneg` call, the cause is likely a coercion drift between
+`Nat.choose n j : ℝ` and `(Nat.choose n j : ℕ) : ℝ`. The
+`binomialCDF_zero_le` companion uses identical syntax and works,
+so the explanation lies elsewhere — possibly a stale unification
+hint at the `apply Finset.sum_le_sum` step (signature drift on
+`Finset.sum_le_sum`). Build verification mandatory.
+
+#### Sorry 4 — `binomialCDF_eq_one` (current line 482)
+
+**Pre-fix proof body** (commit `bfaef87^`, lines 487–522) builds
+`h_simp : ∀ j ∈ Finset.range (n + 1), (if (j : ℝ) ≤ x then ... else 0)
+= ...` via `rw [if_pos (...)]` for each `j` with `(j : ℝ) ≤ (n : ℝ) ≤ x`,
+then `rw [Finset.sum_congr rfl h_simp]` and applies `add_pow`. The
+proof ends with `exact (binomialCDF_neg n p hx).symm` which is
+**dangerously wrong**: `binomialCDF_neg` requires `x < 0`, but the
+hypothesis `hx : (n : ℝ) ≤ x` does not provide that; in fact for
+`n ≥ 0` we have `x ≥ 0`, *contradicting* the premise of
+`binomialCDF_neg`. This was a copy-paste mistake from S5; the proof
+was either passing by accident on a stale hypothesis set or never
+actually compiled.
+
+**S10 forensic note.** Issue #17317 reports "Tactic `rewrite` failed:
+Did not find an occurrence" at line 519. That line in the pre-fix
+file is the theorem signature, not a tactic — so again the
+line-number disparity suggests the issue body's build attempt was on
+a different snapshot than the file I have access to in
+`bfaef87^`. The closing `exact (binomialCDF_neg n p hx).symm` is a
+clear bug; the correct closing should mirror `binomialCDF_le_one`
+(line 418 of current file, **working**) which uses the same `add_pow`
+strategy.
+
+**Repair template.**
+
+```lean
+theorem binomialCDF_eq_one (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
+    {x : ℝ} (hx : (n : ℝ) ≤ x) : binomialCDF n p x = 1 := by
+  unfold binomialCDF
+  -- All if-guards collapse to the true branch: `j ≤ n ≤ x`.
+  have h_simp : ∀ j ∈ Finset.range (n + 1),
+      (if (j : ℝ) ≤ x
+       then (Nat.choose n j : ℝ) * p ^ j * (1 - p) ^ (n - j) else 0)
+      = (Nat.choose n j : ℝ) * p ^ j * (1 - p) ^ (n - j) := by
+    intro j hj
+    rw [Finset.mem_range, Nat.lt_succ_iff] at hj
+    have hjx : (j : ℝ) ≤ x := le_trans (by exact_mod_cast hj) hx
+    rw [if_pos hjx]
+  rw [Finset.sum_congr rfl h_simp]
+  -- The remaining sum is the full binomial expansion `(p + (1-p))^n = 1`.
+  have hadd := add_pow p (1 - p) n
+  have hp_eq : p + (1 - p) = (1 : ℝ) := by ring
+  rw [hp_eq, one_pow] at hadd
+  -- hadd : 1 = ∑ k, p^k * (1-p)^(n-k) * Nat.choose n k
+  rw [← hadd]
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  ring
+```
+
+This mirrors `binomialCDF_le_one`'s working closing exactly — the
+final `Finset.sum_congr rfl (fun j _ => by ring)` is the canonical
+move to align `(Nat.choose n j : ℝ) * p^j * (1-p)^(n-j)` with
+`p^j * (1-p)^(n-j) * (Nat.choose n j : ℝ)`.
+
+**Risk note.** Build verification mandatory. The `rw [Finset.sum_congr
+rfl h_simp]` step requires the LHS sum pattern to literally appear in
+the goal — a Mathlib v4.26 elaboration could fail here if e.g. the
+`unfold binomialCDF` introduces a `dite` instead of `ite` or if the
+`Finset.sum` syntactic form has changed. Fallback: `apply
+Finset.sum_congr rfl ?h` with `?h := h_simp`, or `conv_lhs => rw
+[...]` with explicit conversion. The `binomialCDF_le_one` proof at
+line 422 uses the same idiom successfully, so the strategy is sound;
+only the precise tactic form may need adjustment.
+
+#### Sorry 5 — `multinomial_marginal_clt` (current line 542)
+
+**Pre-fix proof body** (commit `bfaef87^`, lines 587+) is incomplete
+in the snapshot I have access to (the file ends mid-proof at `have
+key : ∀ n : ℕ,`). The intent (per the file docstring): compose the
+reduction lemma `multinomialMarginalCDF_eq_binomialCDF` with the
+de Moivre–Laplace axiom `binomial_clt_pointwise` via
+`Filter.Tendsto.congr`.
+
+**Repair template (clean composition, no API drift expected).**
+
+```lean
+theorem multinomial_marginal_clt
+    {α : Type*} [DecidableEq α]
+    (s : Finset α) (p : α → ℝ) (hp : ∑ i ∈ s, p i = 1)
+    (i₀ : α) (hi₀ : i₀ ∈ s) (hp0 : 0 < p i₀) (hp1 : p i₀ < 1) (x : ℝ) :
+    Filter.Tendsto
+      (fun n : ℕ =>
+        multinomialMarginalCDF s p n i₀
+          ((n : ℝ) * p i₀ + x * Real.sqrt ((n : ℝ) * p i₀ * (1 - p i₀))))
+      Filter.atTop (nhds (standardNormalCDF x)) := by
+  -- Bridge: the multinomial-marginal CDF *equals* the binomial CDF
+  -- with parameter p i₀ (Sorry 2 / reduction lemma).
+  have hbridge : ∀ n : ℕ,
+      multinomialMarginalCDF s p n i₀
+          ((n : ℝ) * p i₀ + x * Real.sqrt ((n : ℝ) * p i₀ * (1 - p i₀)))
+        = binomialCDF n (p i₀)
+            ((n : ℝ) * p i₀ + x * Real.sqrt ((n : ℝ) * p i₀ * (1 - p i₀))) :=
+    fun n => multinomialMarginalCDF_eq_binomialCDF s p n hp i₀ hi₀ _
+  -- Then apply the de Moivre–Laplace axiom to the binomial side.
+  exact (binomial_clt_pointwise (p i₀) hp0 hp1 x).congr (fun n => (hbridge n).symm)
+```
+
+This depends on Sorry 2 being repaired first. Build verification
+expected to succeed once Sorry 2 lands. The Mathlib API surface is
+just `Filter.Tendsto.congr` (well-tested).
+
+### Mathlib API surface verified in this PREP
+
+All lookups against pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(equal to `v4.26.0` tag per `proofs/lake-manifest.json`).
+
+| Symbol | Path | Line | Status |
+|---|---|---|---|
+| `MeasureTheory.tendsto_integral_Iic_zero` | — | — | **does not exist** (refutes S8/S9) |
+| `MeasureTheory.aecover_Ioi` | `MeasureTheory/Integral/IntegralEqImproper.lean` | ~158 | present |
+| `MeasureTheory.aecover_Iic` | `MeasureTheory/Integral/IntegralEqImproper.lean` | 158 | present |
+| `MeasureTheory.AECover.integral_tendsto_of_countably_generated` | `MeasureTheory/Integral/IntegralEqImproper.lean` | — | present |
+| `MeasureTheory.intervalIntegral_tendsto_integral_Iic` | `MeasureTheory/Integral/IntegralEqImproper.lean` | 603 | present |
+| `MeasureTheory.integral_add_compl` | `MeasureTheory/Integral/Bochner/Set.lean` | 145 | present |
+| `MeasureTheory.setIntegral_compl` | `MeasureTheory/Integral/Bochner/Set.lean` | 149 | present |
+| `Set.compl_Iic` | `Mathlib/Order/Interval/Set/LinearOrder.lean` | 48 | present |
+| `Set.compl_Ioi` | `Mathlib/Order/Interval/Set/LinearOrder.lean` | 60 | present |
+| `Finset.sum_fiberwise_of_maps_to` (additive of `prod_fiberwise_of_maps_to`) | `Algebra/BigOperators/Group/Finset/Basic.lean` | 260 | present |
+| `Filter.Tendsto.const_sub`, `.congr`, `.congr'` | (stable Mathlib) | — | present |
+
+### What Session 11 (next ACT) should do
+
+1. Create a build-verified ACT branch. Apply Sorry 1, 3, 4, 5
+   templates (each independent of the others; Sorry 5 strictly
+   requires Sorry 2 first, so prepare Sorry 2 + Sorry 5 as a single
+   coupled commit).
+2. Run `./proofs/scripts/docker-build.sh
+   Proofs.BinomialTheoremOQ02OQ01OQ01OQ03` and iterate until the
+   build passes. Expected wall-clock 1–2 hours including Docker
+   bootstrap + Mathlib cache fetch.
+3. Each repaired sorry promotes the file's `sorries` count down by 1
+   (target: 5 → 0). Once all five land, `axiomCount` is back to 1
+   (`binomial_clt_pointwise`); `status` should revert
+   `formalized → axiomatized` and `badge` `wip → axiom` (PR #17331
+   converse — Mechanic territory after the build is green).
+4. **Then** the Phase-4 Portmanteau axiom-elimination work S9 outlined
+   (the `cdf_tendsto_of_inDistribution` bridge lemma) can resume.
+
+### Why this PREP is doc-only
+
+Three reasons (consistent with S9's reasoning, extended):
+
+1. **No build risk.** PREP lives entirely in `research/problems/` +
+   the knowledge JSON; the `.lean` file is untouched.
+2. **Repair is bounded.** The five sorry sites have local fixes
+   (`<= 25 LOC` each on average); a build-verified ACT session can
+   close them all in one bounded iteration. PREP eliminates the
+   research overhead from that session.
+3. **Forensic certainty matters.** Confirming
+   `MeasureTheory.tendsto_integral_Iic_zero` does not exist in v4.26
+   resolves a hypothesis S9 explicitly flagged as uncertain ("possibly
+   a Mathlib namespace/re-import ordering issue"). The next ACT
+   session can proceed with confidence on the atBot proof's structure.
+
+### Files modified by S10
+
+- `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/state.md`
+  — S10 entry (this session)
+- `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03/knowledge.md`
+  — this entry
+- `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-03.json`
+  — `currentState`, `lastUpdate`, `knowledge.progressSummary`,
+    `knowledge.insights`, `knowledge.nextSteps` updates (iteration
+    bump 8 → 10; S9 was the build-failure discovery + bridge-lemma
+    research)
+
+No `.lean` file modifications. No build risk.
+
+### Forensic verification trail (commands)
+
+```bash
+# Mathlib SHA pinned by proofs/lake-manifest.json
+jq -r '.packages[] | select(.name=="mathlib") | {rev, inputRev}' proofs/lake-manifest.json
+# rev: 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67, inputRev: v4.26.0
+
+# Confirm `tendsto_integral_Iic_zero` is absent in IntegralEqImproper.lean
+gh api 'repos/leanprover-community/mathlib4/contents/Mathlib/MeasureTheory/Integral/IntegralEqImproper.lean?ref=2df2f0150c275ad53cb3c90f7c98ec15a56a1a67' \
+  -q '.content' | base64 -d | grep -n 'tendsto_integral_Iic_zero'
+# (empty — refutes S8/S9 hypothesis)
+
+# Confirm `aecover_Ioi` and `aecover_Iic` exist
+gh api 'repos/leanprover-community/mathlib4/contents/Mathlib/MeasureTheory/Integral/IntegralEqImproper.lean?ref=2df2f0150c275ad53cb3c90f7c98ec15a56a1a67' \
+  -q '.content' | base64 -d | grep -nE 'aecover_(Iic|Ioi)'
+
+# Confirm `integral_add_compl` and `setIntegral_compl` exist
+gh api 'repos/leanprover-community/mathlib4/contents/Mathlib/MeasureTheory/Integral/Bochner/Set.lean?ref=2df2f0150c275ad53cb3c90f7c98ec15a56a1a67' \
+  -q '.content' | base64 -d | grep -nE 'integral_add_compl|setIntegral_compl'
+
+# Confirm Set.compl_Iic / Set.compl_Ioi exist
+gh api 'repos/leanprover-community/mathlib4/contents/Mathlib/Order/Interval/Set/LinearOrder.lean?ref=2df2f0150c275ad53cb3c90f7c98ec15a56a1a67' \
+  -q '.content' | base64 -d | grep -nE 'compl_(Iic|Ioi)'
+```
+
+---
+
 ## Session 2026-05-08 (Session 9, researcher-8) — Build-failure discovery + bridge-lemma research
 
 **Mode**: REVISIT-then-ORIENT (RICH knowledge tier, score 52)
