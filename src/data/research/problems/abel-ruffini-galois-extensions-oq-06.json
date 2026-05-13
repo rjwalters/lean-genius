@@ -24,25 +24,27 @@
       "Sibling OQ-07 (`Proofs/AbelRuffiniGaloisExtensionsOQ07.lean`) provides Sylow-theoretic reduction patterns (burnside_pq_with_normal_pSylow / _qSylow) that the Galois direction will reuse."
     ],
     "open": [
-      "Forward direction Lean definition of AGL(1, p) as a SemidirectProduct (Target A1, S2).",
-      "Forward direction order calculation Nat.card (AGL1Z p) = p*(p-1) (Target A2, S2).",
-      "Forward direction faithful natural action AGL1Z p →* Equiv.Perm (ZMod p) (Target B1, S3).",
-      "Forward direction solvability IsSolvable (AGL1Z p) (Target B2, S3).",
       "Forward direction primitivity of the AGL action on ZMod p (Target C, S4).",
       "Galois direction: every primitive solvable subgroup of S_p embeds into AGL(1, p) (Target D, S5+ — may require sub-OQ).",
       "Quantitative index [S_p : AGL(1, p)] = (p-2)! corollary (Target E, optional)."
+    ],
+    "completedThisIter": [
+      "Forward direction Lean definition of AGL(1, p) as an explicit structure (Target A1, S2).",
+      "Forward direction order calculation Fintype.card (AGL1Z p) = p*(p-1) and Nat.card variant (Target A2, S2).",
+      "Forward direction faithful natural action AGL1Z p →* Equiv.Perm (ZMod p) (Target B1, S3).",
+      "Forward direction solvability IsSolvable (AGL1Z p) (Target B2, S3)."
     ],
     "goal": "First Lean formalization of AGL(1, p) as a primitive solvable permutation group of prime degree, with Galois's structure theorem stating these are the only primitive solvable groups of prime degree. Forward direction is gallery-ready; Galois direction may warrant a sub-OQ for the structure theorem."
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T16:30:00.000Z",
-    "iteration": 2,
-    "focus": "S2 ACT (researcher-10, 2026-05-12) — created proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean (~165 lines): structure AGL1Z (trans : ZMod p, scale : (ZMod p)ˣ), explicit Group instance (mul/one/inv axioms proved by `ext` + `simp` + `ring`), order theorem `card_eq : Fintype.card (AGL1Z p) = p * (p - 1)` and Nat.card restatement, both axiom-free. Two S3 stubs (sorried): `AGL1Z_isSolvable`, `AGL1Z_faithful_action`. Chose explicit structure over Mathlib SemidirectProduct because Mathlib's `MulAut (ZMod p)` would refer to the ring multiplication, not the additive automorphisms we need — using `Multiplicative (ZMod p)` would work but adds typeclass noise.",
+    "since": "2026-05-12T22:15:00.000Z",
+    "iteration": 3,
+    "focus": "S3 ACT (researcher-10, 2026-05-12) — discharged the two S2 sorries in proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean (now ~353 lines, 0 sorries, 0 axioms; build pending Docker verification). Implementation follows the merged S3 ROADMAP (#18307) verbatim: (a) `AGL1Z_isSolvable` via `solvable_of_ker_le_range` applied to `transHom : Multiplicative (ZMod p) →* AGL1Z p` and `scaleHom : AGL1Z p →* (ZMod p)ˣ`, with both ends abelian via `CommGroup.isSolvable`; (b) `AGL1Z_faithful_action` via `toPerm : AGL1Z p →* Equiv.Perm (ZMod p)` packaged from `toPermEquiv g x = g.trans + g.scale * x` with explicit inverse `y ↦ g.scale⁻¹ * (y - g.trans)`, injectivity from evaluation at x=0 (forces trans equality) and x=1 (forces scale equality via `Units.ext`).",
     "blockers": [],
-    "nextAction": "S3 — discharge the two sorries: (a) `AGL1Z_isSolvable` via the derived series argument (commutator of two affine maps is a pure translation, then commutator of two translations is the identity, so derived length is 2); (b) `AGL1Z_faithful_action` by constructing the action map `(a, u) ↦ (x ↦ a + u·x)` as a Perm via explicit inverse `(y ↦ u⁻¹·(y - a))`, then proving injectivity via `(a, u) ∈ ker ↔ a = 0 ∧ u = 1`. Estimated S3 size: ~100 lines.",
+    "nextAction": "S4 — primitivity of the AGL action on ZMod p. Per S3 roadmap, this is partially blocked: Mathlib v4.26.0 has `Mathlib/GroupTheory/GroupAction/Blocks.lean` (`IsBlock`) but no `IsPrimitive`. Either define `IsPrimitive` inline (~20 lines) or factor into a sibling `Proofs/MulActionPrimitive.lean` for cross-OQ reuse. Then prove primitivity via 2-transitivity of the affine action (any two distinct pairs (x₁≠x₂, y₁≠y₂) admit a unique g with g·xᵢ=yᵢ; faithful 2-transitive action on ≥2 points is primitive). S4 size estimate: ~150 lines if inline, ~250 if factored.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
