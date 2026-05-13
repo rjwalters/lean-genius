@@ -1,0 +1,79 @@
+[
+  {
+    "id": "ann-spc-oq01-stratification",
+    "proofId": "sperner-simplicial-bridge-oq-01",
+    "range": {
+      "startLine": 54,
+      "endLine": 68
+    },
+    "type": "definition",
+    "title": "Stratification: `topCellsOfDim` and `MixedPseudomanifold`",
+    "content": "Two definitions establish the framework for non-pure complexes.\n\n* `topCellsOfDim K d : Finset (Finset E)` (line 60-61) is `K.filter (fun s => s.card = d + 1)` — the dimension-`d` stratum of `K`, i.e. the cells with exactly `d + 1` vertices. As a `Finset`, it inherits all decidability machinery from `K` without new instance arguments.\n* `MixedPseudomanifold K : Prop` (line 66-68) is `∀ d : Nat, ∀ f : Finset E, f.card = d → ((topCellsOfDim K d).filter (fun s => f ⊆ s)).card ≤ 2`. Read: for every dimension `d` and every `d`-element face `f`, at most 2 dimension-`d` cells contain `f`. The dimension-stratification is essential — pseudomanifold conditions across different strata do not couple, because doors at different dimensions cannot pair.\n\nNote that the predicate quantifies over *all* `d`, including dimensions for which `K` has no cells. At an empty stratum the predicate is vacuously true (`Finset.filter ∅ p = ∅`, `card ∅ = 0 ≤ 2`). This is what makes `MixedPseudomanifold.of_pure` (next section) come out cleanly.",
+    "mathContext": "A *mixed-dimension* simplicial complex is one whose facets do not all have the same cardinality. The mathematical observation underpinning OQ-01 is that doors are dimension-graded: a codimension-1 face of a `(d+1)`-simplex has cardinality exactly `d`, so faces of cardinality `d` come from `(d+1)`-cells only. Two cells of different dimensions cannot share a door, so the door-pairing argument that drives Sperner's lemma runs *independently* on each dimensional stratum. The right pseudomanifold condition in the mixed setting is therefore *per-stratum*: every `d`-element face is contained in at most 2 dimension-`d` cells.",
+    "significance": "core",
+    "relatedConcepts": [
+      "dimension stratification",
+      "mixed pseudomanifold",
+      "Finset.filter",
+      "door-counting parity",
+      "graded simplicial complex"
+    ],
+    "prerequisites": [
+      "Finset.filter basics",
+      "pure pseudomanifold (parent slug)",
+      "Sperner's lemma door-counting"
+    ]
+  },
+  {
+    "id": "ann-spc-oq01-pure-to-mixed-coercion",
+    "proofId": "sperner-simplicial-bridge-oq-01",
+    "range": {
+      "startLine": 70,
+      "endLine": 109
+    },
+    "type": "theorem",
+    "title": "Pure → Mixed Coercion (`topCellsOfDim_eq_of_pure`, `topCellsOfDim_eq_empty_of_pure`, `MixedPseudomanifold.of_pure`)",
+    "content": "Three theorems witness that the mixed framework strictly generalises the parent's pure setting.\n\n* `topCellsOfDim_eq_of_pure` (lines 74-79): given `hcard : ∀ s ∈ K, s.card = d + 1`, the dimension-`d` stratum *is* `K`. Proof: `unfold topCellsOfDim`, then apply `Finset.filter_eq_self.mpr hcard`.\n* `topCellsOfDim_eq_empty_of_pure` (lines 83-91): under the same uniform-cardinality hypothesis, strata at other dimensions are empty. Proof: rewrite via `Finset.filter_eq_empty_iff`, then any `s` in the stratum would have cardinality both `d + 1` and `d' + 1`, contradicting `omega`.\n* `MixedPseudomanifold.of_pure` (lines 97-109): a pure pseudomanifold lifts to a mixed pseudomanifold. Proof: `by_cases hd : d' = d`. For `d' = d`, rewrite the stratum to `K` via `topCellsOfDim_eq_of_pure` and apply the parent's `hpseudo`. For `d' ≠ d`, rewrite the stratum to `∅` via `topCellsOfDim_eq_empty_of_pure`, simplify the filter, and conclude `0 ≤ 2` via `Nat.zero_le _`.\n\nThe lift is vacuous at strata of other dimensions — the predicate's universal quantification over `d` is precisely what makes the generalisation a faithful extension rather than a parallel framework.",
+    "mathContext": "A *pure* pseudomanifold is a `MixedPseudomanifold` in which exactly one stratum is non-empty. The coercion `MixedPseudomanifold.of_pure` shows the predicate inclusion `Pure ⊆ Mixed`, which together with the per-stratum main theorem implies that any result derivable from `MixedPseudomanifold` is at least as strong as the parent's. The vacuous behaviour at off-stratum dimensions is essential: without the universal quantification, one would need an explicit disjunction `(∀ d, pseudomanifold on stratum d) ∨ (only stratum d non-empty)`, which is structurally less clean.",
+    "significance": "core",
+    "relatedConcepts": [
+      "predicate lift",
+      "Finset.filter_eq_self",
+      "Finset.filter_eq_empty_iff",
+      "vacuous quantification",
+      "subsumption"
+    ],
+    "prerequisites": [
+      "stratification (previous section)",
+      "Finset.filter_eq_self",
+      "Finset.filter_eq_empty_iff",
+      "by_cases tactic"
+    ]
+  },
+  {
+    "id": "ann-spc-oq01-per-stratum-sperner",
+    "proofId": "sperner-simplicial-bridge-oq-01",
+    "range": {
+      "startLine": 111,
+      "endLine": 180
+    },
+    "type": "theorem",
+    "title": "Per-Stratum Sperner (`sperner_mixed_panchromatic_at_dim`)",
+    "content": "The headline theorem and three supporting helpers, gated behind a `[LinearOrder E]` instance (the parent's `vertexEnum` uses `Finset.sort (· ≤ ·)`).\n\n* `card_of_mem_topCellsOfDim` (lines 128-131) projects `s.card = d + 1` from `s ∈ topCellsOfDim K d` via `(Finset.mem_filter.mp hs).2`.\n* `hpseudo_of_mixed` (lines 134-138) specialises `MixedPseudomanifold K` at a chosen dimension `d`, yielding the parent's pseudomanifold hypothesis `∀ f, f.card = d → ((topCellsOfDim K d).filter (fun s => f ⊆ s)).card ≤ 2`.\n* `boundaryDoorCount` (lines 148-156) is a `noncomputable def` packaging the parent's `hbdry` filter expression for dimension `d`, structurally a copy with `topCellsOfDim K d` substituted for the parent's `topCells` and `card_of_mem_topCellsOfDim` for the per-cell cardinality projection.\n* `sperner_mixed_panchromatic_at_dim` (lines 170-180) is the headline. Hypothesis: `MixedPseudomanifold K` and `Odd (boundaryDoorCount (d := d) K c)`. Conclusion: there exists a panchromatic top cell in `topCellsOfDim K d`. Proof body is a single term-mode application of the parent's `exists_panchromatic` with `topCellsOfDim K d` as `topCells`, `(fun _ hs => card_of_mem_topCellsOfDim hs)` as `hcard`, `hpseudo_of_mixed hmixed` as `hpseudo`, the supplied `c`, and `hbdry`. The `boundaryDoorCount` definition unfolds (via Lean's standard `def`-reducibility) to match the parent's expected `hbdry` shape.",
+    "mathContext": "Sperner's lemma in the mixed-pseudomanifold setting decomposes stratum by stratum. Fixing a target dimension `d`: the dimension-`d` stratum of a `MixedPseudomanifold` is itself a pure pseudomanifold (witnessed by `hpseudo_of_mixed`), the per-cell cardinality is uniform `d + 1` (witnessed by `card_of_mem_topCellsOfDim`), and the parent's `hbdry` filter is recoverable as `boundaryDoorCount K c` after definitional unfolding. The parent's `exists_panchromatic` then produces a panchromatic cell in the stratum. No new combinatorial reasoning is required — all the mathematical content sits in the predicate definitions of the previous two sections. This is the *bridge payoff* for the stratification framework: the proof of the main theorem is mechanical bookkeeping.",
+    "significance": "core",
+    "relatedConcepts": [
+      "exists_panchromatic (parent)",
+      "boundary-door count",
+      "term-mode proof",
+      "LinearOrder instance",
+      "subtype packaging"
+    ],
+    "prerequisites": [
+      "parent slug exists_panchromatic",
+      "stratification + coercion (previous sections)",
+      "Finset.mem_filter",
+      "definitional unfolding"
+    ]
+  }
+]
