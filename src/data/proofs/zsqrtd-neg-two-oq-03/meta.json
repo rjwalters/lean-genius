@@ -125,7 +125,8 @@
       "**Why a fresh structure, not `Zsqrtd (-3)`**: `ℤ[√-3]` is **not** the ring of integers of `ℚ(√-3)`. The maximal order is `ℤ[(1 + √-3)/2] = ℤ[ω]`, strictly larger. The parent file `Proofs/ZsqrtdNegTwo.lean` (for `n = 2`) can use `Zsqrtd (-2)` because `ℤ[√-2]` happens to coincide with the maximal order — that coincidence breaks at `n ≥ 3`.",
       "**Why the `Zsqrtd.commRing` template works for Eisenstein**: the multiplication `(a + bω)(c + dω) = (ac - bd) + (ad + bc - bd)ω` is polynomial in the coordinates, so `<;> intros <;> ext <;> simp <;> ring` closes every ring axiom uniformly — the same way it closes them for the `√d` case.",
       "**The `4 N(z) = (2 re - im)² + 3 im²` identity**: this is the algebraic non-negativity certificate. It is equivalent to `disc(x² - x + 1) = -3 < 0` and shows that `N` is a positive-definite quadratic form. The same identity drives the rounding-error bound `(1/4)² + 3 · (1/4)² = 1/4 < 1` for the EuclideanDomain instance in S3.",
-      "**The norm is multiplicative for free**: because `Eisenstein` is a commutative ring and `norm = self * conjugate` (with `conjugate (a + bω) = a + bω̄ = (a - b) - bω` in our coordinates), multiplicativity follows from associativity + commutativity by `ring`. No analytic argument is needed."
+      "**The norm is multiplicative for free**: because `Eisenstein` is a commutative ring and `norm = self * conjugate` (with `conjugate (a + bω) = a + bω̄ = (a - b) - bω` in our coordinates), multiplicativity follows from associativity + commutativity by `ring`. No analytic argument is needed.",
+      "**Heegner numbers explain why this template stops at $n = 11$**: the imaginary quadratic fields $\\mathbb{Q}(\\sqrt{-n})$ with class number 1 are exactly $n \\in \\{1, 2, 3, 7, 11, 19, 43, 67, 163\\}$ (Heegner 1952, Stark 1967, Baker 1966) — only nine values. The proof template `prime $\\Rightarrow$ non-irreducible in maximal order $\\Rightarrow$ $p = N(\\alpha)$ $\\Rightarrow$ $p = $ quadratic form' relies on the maximal order being a PID, which by the principal-ideal-domain $\\Leftrightarrow$ unique-factorisation $\\Leftrightarrow$ class-number-1 chain is equivalent to $h(\\mathbb{Q}(\\sqrt{-n})) = 1$. The current file unblocks $n = 3$; sessions S6+ extend through $n = 7$ and $n = 11$; beyond that ($n = 19, 43, 67, 163$) requires Gauss's *form class group* and *binary quadratic form composition* machinery (not in Mathlib 2026), and for non-Heegner $n$ requires class field theory (Cox 1989). The threshold $n = 11$ is therefore a structural maximum of this particular elementary proof method, not an arbitrary stopping point."
     ],
     "prerequisites": [
       "Imaginary quadratic number fields (`ℚ(√d)` for `d < 0` squarefree)",
@@ -135,7 +136,7 @@
     ]
   },
   "conclusion": {
-    "summary": "S2 ACT delivers the Eisenstein algebraic-infrastructure layer: structure + CommRing + norm with the four structural identities (`norm_zero`, `norm_one`, `norm_nonneg`, `norm_mul`) plus `norm_eq_zero_iff` and `norm_pos_of_ne_zero`. The file is 175 lines, 13 theorems, 2 definitions, 0 sorries, 0 axioms.",
+    "summary": "S2 ACT delivers the Eisenstein algebraic-infrastructure layer: structure + CommRing + norm with the four structural identities (`norm_zero`, `norm_one`, `norm_nonneg`, `norm_mul`) plus `norm_eq_zero_iff` and `norm_pos_of_ne_zero`. The file is 207 lines, 20 theorems, 2 definitions, 0 sorries, 0 axioms.",
     "implications": "**S3 unblocked**: the `EuclideanDomain Eisenstein` instance can now be built on top of `CommRing` + `norm_mul`. **S4-S5 unblocked**: the splitting argument `(-3/p) = (p/3)` via QR + `4p = (2a - b)² + 3 b²` parity case-split now has a well-defined target ring to work in. **n = 7, 11 (S6+)**: the same template generalizes to `ℤ[(1 + √-n)/2]` with norm form `a² + ab + ((n+1)/4) b²`.",
     "openQuestions": [
       "Build the EuclideanDomain Eisenstein instance via rounding-to-ℤ (S3, ~200 lines): the key step is the rounding-error bound `N(error) ≤ 1/4 < 1`.",
@@ -154,6 +155,16 @@
       "targetId": "fermat-two-squares",
       "relationship": "ancestor",
       "description": "Fermat's two-squares theorem (n = 1 case): `prime p ≡ 1 (mod 4) ⟹ p = a² + b²`. The same proof template extends through n = 2 (parent) and now n = 3 (this file)."
+    },
+    {
+      "targetId": "quadratic-reciprocity",
+      "relationship": "foundational",
+      "description": "Gauss's quadratic reciprocity law supplies the S4 hinge: the splitting argument needs to show $\\bigl(\\tfrac{-3}{p}\\bigr) = 1$ for $p \\equiv 1 \\pmod 3$, which reduces by QR to $\\bigl(\\tfrac{p}{3}\\bigr) = 1$, an elementary mod-3 calculation. The Mathlib import `Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity` at line 1 is staged forward to provide exactly this equivalence in S4."
+    },
+    {
+      "targetId": "fermat-two-squares-oq-01-oq-03",
+      "relationship": "analogous",
+      "description": "The Hurwitz quaternions $\\mathcal{H} = \\mathbb{Z}\\langle 1, i, j, k, (1+i+j+k)/2\\rangle$ are the quaternionic analog of the Eisenstein integers: a maximal order strictly larger than $\\mathbb{Z}\\langle i, j, k\\rangle$, with multiplicative norm $N(a+bi+cj+dk) = a^2+b^2+c^2+d^2$ used to derive Lagrange's four-squares theorem. The same maximal-order phenomenon driving the choice of $\\mathbb{Z}[\\omega]$ over $\\mathbb{Z}[\\sqrt{-3}]$ here drives the choice of Hurwitz quaternions over Lipschitz quaternions there."
     }
   ]
 }
