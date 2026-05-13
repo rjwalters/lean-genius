@@ -1,5 +1,6 @@
 import Proofs.FourSquareDistribution
 import Mathlib.NumberTheory.Divisors
+import Mathlib.GroupTheory.Perm.DomMulAct
 import Mathlib.Tactic
 
 /-
@@ -2772,6 +2773,51 @@ lemma signFlipOrbit_card_ge_two (v : Fin 4 → ℤ) (i₀ : Fin 4) (hi₀ : v i�
     exact ⟨s₁, Finset.mem_univ _, rfl⟩
   exact Finset.one_lt_card.mpr
     ⟨applyFlip s₀ v, hmem0, applyFlip s₁ v, hmem1, hne⟩
+
+/-- **(S18c-orbit-precursor-3, Part 33)** Permutation-stabilizer
+    cardinality formula.
+
+    For any `v : Fin 4 → ℤ`,
+
+      `|Stab_(S₄) v| = ∏ i ∈ image v, (mult i)!`
+
+    where `mult i := |{ j : Fin 4 // v j = i }|` is the number of
+    coordinates of `v` taking the value `i`, and the action is
+    `applyPerm` (Part 30). The stabilizer subtype is
+    `{ σ : Equiv.Perm (Fin 4) // applyPerm σ v = v }`.
+
+    Proof: bridge to Mathlib's `DomMulAct.stabilizer_card'` (which uses
+    the convention `v ∘ g = v`) via the involution `σ ↔ σ.symm` on
+    `Equiv.Perm (Fin 4)`. Locally `applyPerm σ v := v ∘ σ.symm`, so
+    `applyPerm σ v = v ↔ v ∘ σ.symm = v` definitionally, and
+    `σ ↦ σ.symm` is a bijection.
+
+    Combined with Part 31's `signFlipStabilizer_card` (giving
+    `|Stab_(ℤ/2)⁴ v| = 2^(# zero coords v)`), this exhausts the two
+    side stabilizers of the `(ℤ/2)⁴ ⋊ S₄` action. The combined
+    semidirect-product stabilizer (Part 34, follow-up) is genuinely
+    a third lemma — see PREP `s18c-orbit-case-enumeration-prep.md` §2.
+
+    PREP: `s18c-orbit-precursor-perm-stab.md` (PR #18418). -/
+lemma permStabilizer_card (v : Fin 4 → ℤ) :
+    Fintype.card { σ : Equiv.Perm (Fin 4) // applyPerm σ v = v } =
+      ∏ i ∈ Finset.univ.image v, (Fintype.card { j : Fin 4 // v j = i })! := by
+  classical
+  -- Bridge to Mathlib's convention `v ∘ g = v` via the involution
+  -- `σ ↔ σ.symm` on `Equiv.Perm (Fin 4)`. The predicate `applyPerm σ v = v`
+  -- unfolds definitionally to `v ∘ σ.symm = v`.
+  have e :
+      { σ : Equiv.Perm (Fin 4) // applyPerm σ v = v } ≃
+      { g : Equiv.Perm (Fin 4) // v ∘ g = v } :=
+    { toFun := fun s => ⟨s.1.symm, s.2⟩
+      invFun := fun s => ⟨s.1.symm, by
+        show v ∘ s.1.symm.symm = v
+        rw [Equiv.symm_symm]
+        exact s.2⟩
+      left_inv := fun s => Subtype.ext s.1.symm_symm
+      right_inv := fun s => Subtype.ext s.1.symm_symm }
+  rw [Fintype.card_congr e]
+  exact DomMulAct.stabilizer_card' v
 
 /-- **(S18c-orbit, TARGET DECLARATION, deferred)** Every orbit of the
     (ℤ/2)⁴ ⋊ S₄ action on the four-square solution set has cardinality
