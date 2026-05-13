@@ -29,17 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Formal infrastructure analysis. Both conjugate pairing and sign variation analysis needed.",
+    "progressSummary": "COMPLETED: OQ answered. Minimal infrastructure for Descartes parity requires BOTH complex conjugate pairing (degree ≡ real_roots mod 2) AND sign variation parity under root extraction (the hard combinatorial-algebraic ingredient, axiomatized as sign_variation_parity_under_positive_root). 317 LOC, 13 theorems, 1 axiom, 0 sorries. Mathlib provides the inequality version only (succ_signVariations_le_X_sub_C_mul); the parity version is the remaining axiom.",
     "builtItems": [
-      "proofs/Proofs/DescartesRuleOfSignsOQ01OQ02.lean (271 lines, 1 axiom, 0 sorries, 10 theorems)",
-      "src/data/proofs/descartes-rule-of-signs-oq-01-oq-02/ (gallery entry)"
+      "proofs/Proofs/DescartesRuleOfSignsOQ01OQ02.lean (317 lines, 1 axiom, 0 sorries, 13 theorems)",
+      "src/data/proofs/descartes-rule-of-signs-oq-01-oq-02/ (gallery entry, axiomatized)",
+      "Structural answer: minimal infrastructure = conjugate pairing + sign variation parity under root extraction"
     ],
     "insights": [
       "Conjugate pairing alone is NOT sufficient for Descartes parity",
       "Minimal infrastructure: conjugate pairs + sign variation parity under root extraction",
       "The gap: conjugate pairing gives degree=real_roots (mod 2), but parity needs sv=pos_roots (mod 2)",
       "The irreducible hard part: how multiplication by (X - C r) transforms coefficient sign sequences",
-      "Parity chain theorem composes all three ingredients"
+      "Parity chain theorem composes all three ingredients",
+      "Mathlib v4.26.0 has Polynomial.RuleOfSigns with succ_signVariations_le_X_sub_C_mul: multiplying by (X - C η) with η > 0 increases signVariations by at least 1. The PARITY refinement (exact = signVariations(q) + 2k + 1) is missing from Mathlib and would be the natural follow-up.",
+      "Forward path to discharge the axiom: extend Mathlib induction with parity tracking via signVariations_eq_eraseLead_add_ite. Estimated 200-500 LOC; would constitute the full Descartes Rule of Signs parity version, beyond Mathlib current inequality version."
     ],
     "mathlibGaps": [],
     "nextSteps": [
