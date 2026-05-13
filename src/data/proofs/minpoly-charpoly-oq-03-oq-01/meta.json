@@ -2,7 +2,7 @@
   "id": "minpoly-charpoly-oq-03-oq-01",
   "title": "F[X]-Module Structure on K^n via Matrix Action (S1 Scaffold)",
   "slug": "minpoly-charpoly-oq-03-oq-01",
-  "description": "S1 OBSERVE/ACT scaffold for the first of four sub-OQs decomposing the rational canonical form (parent: minpoly-charpoly-oq-03). Packages K^n as an F[X]-module via M.mulVecLin using Mathlib's Module.AEval' synonym; the Module.Finite instance is unconditional (no sorry), and the Cayley–Hamilton annihilation lemma `xModule_isTorsionBy_charpoly` is fully discharged (S8, PR #18507). The IsTorsion upgrade and OQ-03-OQ-02 deliverable surface remain sorry-guarded (2 sorries).",
+  "description": "S1 OBSERVE/ACT scaffold for the first of four sub-OQs decomposing the rational canonical form (parent: minpoly-charpoly-oq-03). Packages K^n as an F[X]-module via M.mulVecLin using Mathlib's Module.AEval' synonym; the Module.Finite instance is unconditional (no sorry), the Cayley–Hamilton annihilation lemma `xModule_isTorsionBy_charpoly` is fully discharged (S8, PR #18507), and `xModule_isTorsion` is fully discharged (S10, PR #18583). Only the OQ-03-OQ-02 deliverable surface `xModule_has_invariantFactorChain` remains sorry-guarded (1 sorry).",
   "meta": {
     "author": "Lean Genius Research",
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/Polynomial/Module/AEval.html",
@@ -22,10 +22,10 @@
       "research"
     ],
     "badge": "research",
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 198,
-    "assumptions": "0 axioms; 2 sorries — `xModule_isTorsion` (follows from IsTorsionBy + charpoly_monic ≠ 0) and `xModule_has_invariantFactorChain` (the OQ-03-OQ-02 deliverable surface, restated here to fix the bridging API). The `xModule_isTorsionBy_charpoly` theorem (Cayley–Hamilton transported via the `Module.AEval'` synonym) is fully discharged in S8 (PR #18507) using `Matrix.charpoly_mulVecLin` + `LinearMap.aeval_self_charpoly` + `Module.AEval.of_symm_smul`. The `Module.Finite F[X]` instance is unconditional (no sorry) — it fires automatically from Mathlib's `Module.AEval.instFinitePolynomial`. Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.{Basic,Minpoly}`, `Mathlib.LinearAlgebra.Matrix.ToLin`, `Mathlib.Algebra.Polynomial.Module.AEval`, `Mathlib.Algebra.Module.Torsion.Basic`, `Mathlib.RingTheory.Finiteness.Defs`, `Mathlib.Tactic`, `Proofs.MinpolyCharpolyOQ03`.",
+    "lineCount": 202,
+    "assumptions": "0 axioms; 1 sorry — `xModule_has_invariantFactorChain` (the OQ-03-OQ-02 deliverable surface, restated here to fix the bridging API). The `xModule_isTorsionBy_charpoly` theorem (Cayley–Hamilton transported via the `Module.AEval'` synonym) is fully discharged in S8 (PR #18507) using `Matrix.charpoly_mulVecLin` + `LinearMap.aeval_self_charpoly` + `Module.AEval.of_symm_smul`. `xModule_isTorsion` is fully discharged in S10 (PR #18583) via `Matrix.charpoly_monic`/`mem_nonZeroDivisors_of_ne_zero` upgrading `IsTorsionBy` to `IsTorsion`. The `Module.Finite F[X]` instance is unconditional (no sorry) — it fires automatically from Mathlib's `Module.AEval.instFinitePolynomial`. Imports: `Mathlib.LinearAlgebra.Matrix.Charpoly.{Basic,Minpoly}`, `Mathlib.LinearAlgebra.Matrix.ToLin`, `Mathlib.Algebra.Polynomial.Module.AEval`, `Mathlib.Algebra.Module.Torsion.Basic`, `Mathlib.RingTheory.Finiteness.Defs`, `Mathlib.Tactic`, `Proofs.MinpolyCharpolyOQ03`.",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-12",
     "theoremCount": 3,
@@ -166,12 +166,12 @@
       "Module"
     ],
     "namespace": "MinpolyCharpolyOQ03OQ01",
-    "lineCount": 187,
+    "lineCount": 202,
     "axiomCount": 0,
     "theoremCount": 3,
     "definitionCount": 3,
     "path": "Proofs/MinpolyCharpolyOQ03OQ01.lean",
-    "sorries": 3
+    "sorries": 1
   },
   "crossReferences": [
     {
@@ -207,14 +207,14 @@
       "name": "xModule_isTorsionBy_charpoly",
       "type": "supporting",
       "statement": "∀ (M : Matrix n n F), Module.IsTorsionBy F[X] (xModule M) M.charpoly",
-      "description": "Cayley-Hamilton restated on the F[X]-module synonym: charpoly M annihilates every element of xModule M. Sorry-guarded in this scaffold; deferred proof routes through Matrix.aeval_self_charpoly + the standard-basis algebra equivalence.",
+      "description": "Cayley-Hamilton restated on the F[X]-module synonym: charpoly M annihilates every element of xModule M. Fully discharged (S8, PR #18507) via Matrix.charpoly_mulVecLin + LinearMap.aeval_self_charpoly + Module.AEval.of_symm_smul.",
       "significance": "Cayley-Hamilton contribution to the torsion proof; converts a matrix-level identity into a module-level annihilation."
     },
     {
       "name": "xModule_isTorsion",
       "type": "core",
       "statement": "∀ (M : Matrix n n F), Module.IsTorsion F[X] (xModule M)",
-      "description": "The deliverable consumed by OQ-03-OQ-02: xModule M is a torsion F[X]-module. Follows from xModule_isTorsionBy_charpoly + charpoly_monic (charpoly nonzero in F[X] ⇒ in F[X]⁰). Sorry-guarded.",
+      "description": "The deliverable consumed by OQ-03-OQ-02: xModule M is a torsion F[X]-module. Follows from xModule_isTorsionBy_charpoly + charpoly_monic (charpoly nonzero in F[X] ⇒ in F[X]⁰). Fully discharged (S10, PR #18583) via `mem_nonZeroDivisors_of_ne_zero` packaging the charpoly witness.",
       "significance": "Second of the two input hypotheses for Module.equiv_directSum_of_isTorsion; final API surface for downstream sub-OQs."
     },
     {
@@ -225,7 +225,7 @@
       "significance": "API bridge between this sub-OQ and the parent's rational_canonical_form_exists."
     }
   ],
-  "sorries": 3,
+  "sorries": 1,
   "references": {
     "papers": [
       "Dummit & Foote. *Abstract Algebra* (3rd ed., 2004), §12.2 — K^n as an F[X]-module via M.",
