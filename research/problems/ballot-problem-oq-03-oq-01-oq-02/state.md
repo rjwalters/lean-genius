@@ -1,11 +1,96 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization; **Session 69 refutes S68's `−|c-arm region|` formula on (4,3,2)** — multi-row c-arm regions fail integrality, c'-column residual is `−3/2` not `−3`; introduces "walk-vanishing" classification (broader than S68's double-vanishing) and shows residual concentrates on the single walk-non-vanishing crossing with magnitude not matching any simple `|c-arm|` count; **Session 70 confirms (5,3,2) c'-col residual = `−8/3`** (S68 again refuted) AND derives a **closed-form algebraic identity** `c'-col residual = pμ(0) − h_d(h_d−2)·Δp(0)` for `c.1 = 0`, valid across all seven test diagrams S62–S70, via the trivial `(h_d−1)² = h_d(h_d−2) + 1` combined with S57.5's `sum_gnwProb_leg_of_c'_reduce_case1` — closes the c'-column sub-lemma question)
+**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization; **Session 69 refutes S68's `−|c-arm region|` formula on (4,3,2)** — multi-row c-arm regions fail integrality, c'-column residual is `−3/2` not `−3`; introduces "walk-vanishing" classification (broader than S68's double-vanishing) and shows residual concentrates on the single walk-non-vanishing crossing with magnitude not matching any simple `|c-arm|` count; **Session 70 confirms (5,3,2) c'-col residual = `−8/3`** (S68 again refuted) AND derives a **closed-form algebraic identity** `c'-col residual = pμ(0) − h_d(h_d−2)·Δp(0)` for `c.1 = 0`, valid across all seven test diagrams S62–S70, via the trivial `(h_d−1)² = h_d(h_d−2) + 1` combined with S57.5's `sum_gnwProb_leg_of_c'_reduce_case1` — closes the c'-column sub-lemma question; **Session 71 derives the off-spine dual decomposition** — pointwise `Δp = 0` on the c-arm row-0 cells via strict-hook localization (provable, S71-a), pointwise residual vanishing identity `pμ(x) = h_d(h_d−2)·Δp(x)` on the non-c-arm off-spine cells (verified on 7 diagrams, S71-b), and the resulting 4-way decomposition of `F_side_identity_aligned` for case-1 c.1=0 into 3 provable sub-lemmas + S71-b as the remaining hard piece)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-12 (Session 70 / (5,3,2) test + structural identity, researcher-11)
-**Iteration**: 70
+**Last Updated**: 2026-05-12 (Session 71 / off-spine residual decomposition dual to S70, researcher-5)
+**Iteration**: 71
+
+## Session 71 — off-spine residual decomposition dual to S70's (★); pμ=pν pointwise on c-arm row 0 (case 1, c.1=0) (researcher-5, 2026-05-12)
+
+**Mode.** ANALYSIS-ONLY (no `.lean` edits).
+
+**Outcome.** Three results.
+
+1. **(S71-a) Pointwise `pμ = pν` lemma on c-arm row-0 cells.** For case 1
+   with `c.1 = 0`, every c-arm row-0 cell `(0, j)` with `c'.2 < j ≤ c.2`
+   satisfies `gnwProb μ c K (0, j) = gnwProb (μ\c') c K (0, j)` at every
+   `K`.  Proof (strict-hook localization): the GNW walk from `(0, j)`
+   stays in `R_j := {(r, s) ∈ μ : s ≥ j}`, and `R_j` contains no cell of
+   row `c'.1` (since `rowLen μ c'.1 = c'.2 + 1 ≤ j`) nor any cell of
+   column `c'.2`.  By S57.1's `hookLength_invariant_off_spine_of_c'` and
+   S57.4's `isCorner_invariant_off_spine_of_c'`, the recursion in `μ`
+   and in `μ\c'` coincide on `R_j`.
+
+2. **(S71-b) Off-spine non-c-arm residual vanishing (conjecture).** For
+   off-spine cells `x` not in c-arm row 0:
+
+   ```
+   gnwProb μ c (h_μ x) x · (h_d−1)²  =  gnwProb (μ\c') c (h_(μ\c') x) x · h_d(h_d−2).
+   ```
+
+   Equivalently `pμ(x) = h_d(h_d−2) · Δp(x)`  (★★).  Verified pointwise
+   on **11 non-c-arm off-spine cells** across the 7 diagrams (3,2),
+   (3,2,1), (4,2), (3,2,2), (4,3), (4,3,2), (5,3,2).  Two sub-regions:
+   walk-vanishing cells (`pμ = pν = 0`, trivial); walk-non-vanishing
+   cells `(0, j)` with `j < c'.2` (where `pμ/pν = h_d(h_d−2)/(h_d−1)²`
+   matches the ratio identity exactly).
+
+3. **F_side_identity_aligned case-1 c.1=0 decomposition.** Combining
+   (S71-a), (S71-b), S70's (★), and S57.3a's c'-row vanishing, the
+   identity factors as:
+
+   ```
+   ∑_{c'.2 < j ≤ c.2} pμ(0, j)  =  h_d(h_d−2)·Δp(0, c'.2) − pμ(0, c'.2)        (S71-Σ)
+   ```
+
+   verified on all 7 diagrams.  Sub-lemma table:
+
+   | Sub-lemma | Region | Status |
+   |-----------|--------|--------|
+   | **(S71-r)** c'-row | row `c'.1` | provable via S57.3a `gnwProb_zero_of_row_eq_c'_case1` (~10 LOC) |
+   | **(S71-a)** c-arm row 0 | `(0, j)`, `c'.2 < j ≤ c.2` | provable via §1.2 strict-hook localization + S57.1+S57.4 (~40-70 LOC) |
+   | **(★)** c'-col on `range c'.1` | `(0, c'.2)` closed form | provable via S57.5 reduction + `ring` (~20-30 LOC) |
+   | **(S71-b)** non-c-arm off-spine | residual = 0 pointwise | **open**: ~80-150 LOC, conjecture verified on 7 diagrams |
+
+   Three of four sub-lemmas are provable now.  (S71-b) is the single
+   remaining hard piece on the GNW route for case-1 c.1=0.
+
+**Verification cross-test of (★★) and (S71-Σ).**
+
+(★★) holds at every non-c-arm off-spine cell across 7 diagrams (11
+cells, 11 checks pass).  (S71-Σ) holds across all 7 diagrams (LHS = RHS
+in each row of the §3.2 table in `sessions/2026-05-12-s10.md`).
+
+**Generalization to c.1 ≥ 1.**  (S71-a)'s localization argument
+generalizes verbatim (R_j still excludes row c'.1 and column c'.2);
+(★) generalizes to a sum on `range (c.1 + 1)`; (S71-b) needs additional
+test diagrams.  Suggested **S73** test: `μ = (3,2,2,1)`, `c = (2,1)`,
+`c' = (3,0)` (case 1, `c.1 = 2 ≥ 1`).
+
+**What remains.**
+* **S57.7 c'-row sub-lemma** (`(S71-r)`): ~10 LOC Lean, off S57.3a.
+* **S57.7 c-arm sub-lemma** (`(S71-a)`): ~40-70 LOC Lean, off S57.1+S57.4
+  + K-induction.  Provable now.
+* **S57.7 c'-column sub-lemma** (`(★)`): ~20-30 LOC Lean, off S57.5
+  + `ring`.  Provable now.
+* **S57.7 non-c-arm off-spine sub-lemma** (`(S71-b)`): the remaining
+  hard piece.  Three candidate proof routes (§2.4: direct strict-hook
+  recursion / indirect via global F-side / localization &
+  change-of-shape).
+* **S57.7 assembly** of the four sub-lemmas + `Finset.sum_partition`
+  + `ring` (~40 LOC).
+* **S73** — test (S71-b) on a `c.1 ≥ 1` diagram.
+
+**Files modified.**
+* `research/problems/ballot-problem-oq-03-oq-01-oq-02/state.md` — this entry; Next Action revised to point at the (S71-r)/(S71-a)/(★) sub-lemmas as immediately provable, with (S71-b) as the remaining hard piece.
+* `research/problems/ballot-problem-oq-03-oq-01-oq-02/sessions/2026-05-12-s10.md` — full S71 derivation: §1 (S71-a) strict-hook localization proof; §2 (S71-b) verification on 7 diagrams + 3 candidate proof routes; §3 combined decomposition; §4 trap notes.
+* `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` — iteration 70 → 71; progressSummary update.
+
+**Build status.** No `.lean` changes; no build attempted.  Parent
+`BallotProblemOQ03OQ02.lean` remains broken on `origin/main`; this
+session's results are independent of that break.
 
 ## Session 70 — (5,3,2) test + structural algebraic identity for c'-column residual under c.1 = 0 (researcher-11, 2026-05-12)
 
@@ -1243,6 +1328,8 @@ Fallback if S55+ stalls.
 - `sessions/2026-05-09-s04.md` — Session 57.2: `gnwProb_unreachable_zero` walk-unreachability lemma (sorry-free)
 - `sessions/2026-05-09-s06.md` — Session 57.3a: per-cell helper variants (`gnwProb_zero_of_row_eq_c'_case1`, `gnwProb_zero_of_col_eq_c'_case2`); companion to PR #17605's S57.3 summand lemmas (sorry-free)
 - `sessions/2026-05-09-s07.md` — Session 57.4: off-spine `isCorner` invariance + integrand recurrence step (`isCorner_invariant_off_spine_of_c'`, `gnwProb_succ_eq_off_spine_of_c'`; both sorry-free); the inductive step for the (S1) off-spine branch of `F_side_identity_aligned`'s K-induction
+- `sessions/2026-05-12-s09.md` — Session 70: (5,3,2) test + structural algebraic identity (★) for c'-column residual under c.1=0 (researcher-11)
+- `sessions/2026-05-12-s10.md` — Session 71: off-spine residual decomposition dual to S70's (★); (S71-a) pointwise `pμ = pν` on c-arm row 0 cells (provable via strict-hook localization); (S71-b) non-c-arm off-spine residual vanishing conjecture (★★) (verified on 7 diagrams, 11 cells); 4-way `F_side_identity_aligned` decomposition for case-1 c.1=0 (researcher-5)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5035` — `hookLength_doubleRemove_doubly_affected` (S48)
