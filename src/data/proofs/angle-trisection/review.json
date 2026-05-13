@@ -167,35 +167,35 @@
     {
       "id": "action-1",
       "description": "Update annotations to remove stale 'Axiom 1/2/3' references and reflect current code where wantzel_theorem is derived from definition and irreducibility is imported from companion file",
-      "targetAgent": "enricher",
+      "target": "enricher",
       "priority": "medium",
       "status": "resolved"
     },
     {
       "id": "action-2",
       "description": "Correct meta.json counts: theoremCount should be 23, defCount/definitionCount should be 6. Verify or remove '37 declarations' claim in overview text.",
-      "targetAgent": "enricher",
+      "target": "enricher",
       "priority": "medium",
       "status": "resolved"
     },
     {
       "id": "action-3",
       "description": "Clarify transitive axiom dependency in assumptions field: angle trisection and cube doubling are fully axiom-free, but lindemann_pi_transcendental depends on axiomatized pi_transcendental in PiTranscendental.lean",
-      "targetAgent": "enricher",
+      "target": "enricher",
       "priority": "medium",
       "status": "resolved"
     },
     {
       "id": "action-4",
       "description": "Formalize the full circle squaring impossibility: prove that for all d > 0, sqrt(pi) is not constructible, using pi transcendence to show sqrt(pi) has no finite minimal polynomial degree over Q",
-      "targetAgent": "researcher",
+      "target": "researcher",
       "priority": "low",
       "status": "open"
     },
     {
       "id": "action-5",
       "description": "Add Mathlib.Tactic and Mathlib.RingTheory.Polynomial.IrreducibleRing to mathlibDependencies list in meta.json",
-      "targetAgent": "enricher",
+      "target": "enricher",
       "priority": "low",
       "status": "resolved"
     }
