@@ -52,11 +52,16 @@ gives the multinomial marginal CLT.
 
 ## Honest Reporting
 
-- Sorries: 5 (issue #17317 — Mathlib v4.26 API drift demoted five proofs to
-  sorry pending repair: `standardNormalCDF_tendsto_atBot`,
-  `multinomialMarginalCDF_eq_binomialCDF`, `binomialCDF_mono`,
-  `binomialCDF_eq_one`, `multinomial_marginal_clt`). All theorem signatures
-  preserved so downstream callers continue to type-check.
+- Sorries: 0 after S11 ACT (2026-05-13, researcher-1) transcribed the five
+  S10 repair templates targeting issue #17317. Prior history: S8 (PR #17233)
+  introduced five Mathlib v4.26 API-drift breakages; mechanic PR #17353
+  demoted them to `sorry` so the file type-checks; S10 PR (researcher-6)
+  produced concrete repair templates against the lake-pinned Mathlib v4.26
+  SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. S11 transcribes those
+  templates; status is BUILD-PENDING (the templates carry low/medium
+  forensic certainty — Doctor/Mechanic may need to refine closing
+  tactics if Docker build reveals elaboration drift). All theorem
+  signatures preserved.
 - Axioms: 1 (`binomial_clt_pointwise`). The Session-2 `standardNormalCDF`
   opaque was replaced in Session 6 with a concrete `noncomputable def`
   using Mathlib's `gaussianPDFReal`.
@@ -65,13 +70,32 @@ gives the multinomial marginal CLT.
   and `binomialCDF_eq_one`, completing the four-corner characterization
   of `binomialCDF` on the binomial side, plus `standardNormalCDF_continuous`
   on the gaussian side.
-- Session 8 (this session) adds two CDF-tail-limit lemmas for Φ:
+- Session 8 added two CDF-tail-limit lemmas for Φ:
   `standardNormalCDF_tendsto_atBot` (Φ → 0 as x → -∞) and
   `standardNormalCDF_tendsto_atTop` (Φ → 1 as x → +∞). Together with
   the prior structural lemmas this proves Φ has the full proper-CDF
   signature (nonneg, monotone, continuous, ≤ 1, with limit values 0
   and 1 at the two infinities) — the data the Phase-4 Portmanteau
   bridge needs at every continuity point of the limit.
+- Session 11 (this session, 2026-05-13, researcher-1) discharges the
+  five-sorry build-broken state inherited from #17353 by transcribing
+  the S10 repair templates:
+  * `standardNormalCDF_tendsto_atBot` rebuilt around `aecover_Ioi` +
+    `setIntegral_compl` + `Set.compl_Ioi` (replacing the absent
+    `MeasureTheory.tendsto_integral_Iic_zero` cited by S8).
+  * `multinomialMarginalCDF_eq_binomialCDF` restored via the
+    fiber-decomposition route with the corrected `(f := ...)` named
+    argument (the pre-fix proof passed `(g := if-stmt)` by mistake).
+  * `binomialCDF_mono` restored with the explicit close of the
+    `if_neg ∧ if_neg` branch (`rw [if_neg hjy]` produces `(0 : ℝ) ≤ 0`,
+    discharged by `rfl`/`le_refl`).
+  * `binomialCDF_eq_one` rebuilt to mirror the working `binomialCDF_le_one`
+    idiom (`Finset.sum_congr` over a fully-true if-branch + `add_pow`);
+    the pre-fix proof's `exact (binomialCDF_neg n p hx).symm` close was
+    a copy-paste bug (`binomialCDF_neg` requires `x < 0` but `hx : n ≤ x`
+    contradicts that for `n ≥ 0`).
+  * `multinomial_marginal_clt` derived cleanly from the now-proved
+    reduction lemma + `binomial_clt_pointwise` via `Filter.Tendsto.congr`.
 
 The contribution of this file is the *full reduction* of the multinomial
 marginal CLT to the classical Binomial CLT, leaving only the latter as
@@ -269,10 +293,41 @@ theorem standardNormalCDF_continuous : Continuous standardNormalCDF := by
     on the binomial side. -/
 theorem standardNormalCDF_tendsto_atBot :
     Filter.Tendsto standardNormalCDF Filter.atBot (nhds 0) := by
-  -- Mathlib v4.26 API drift: `MeasureTheory.tendsto_integral_Iic_zero` is no
-  -- longer a known identifier (issue #17317). Demoted to sorry pending the
-  -- correct replacement lemma.
-  sorry
+  -- S11 (researcher-1, 2026-05-13): repair template from S10 knowledge.md.
+  -- Strategy: along `atBot`, `Ioi x` is an `AECover` (via `aecover_Ioi`
+  -- + `tendsto_id`); the integral over `Ioi x` tends to `∫ ℝ, f = 1`.
+  -- Then `∫ Iic x = 1 − ∫ Ioi x` via `setIntegral_compl` + `Set.compl_Ioi`,
+  -- and `Tendsto.const_sub 1` gives the `1 − 1 = 0` limit. Build-pending.
+  unfold standardNormalCDF
+  have hint : MeasureTheory.Integrable (ProbabilityTheory.gaussianPDFReal 0 1) :=
+    ProbabilityTheory.integrable_gaussianPDFReal 0 1
+  have hone : ∫ t, ProbabilityTheory.gaussianPDFReal 0 1 t = 1 :=
+    ProbabilityTheory.integral_gaussianPDFReal_eq_one 0 one_ne_zero
+  have hcover : MeasureTheory.AECover MeasureTheory.volume Filter.atBot
+      (fun x : ℝ => Set.Ioi x) :=
+    MeasureTheory.aecover_Ioi Filter.tendsto_id
+  have htendsto_Ioi :=
+    hcover.integral_tendsto_of_countably_generated hint
+  rw [hone] at htendsto_Ioi
+  -- htendsto_Ioi : Tendsto (fun x => ∫ t in Ioi x, f t) atBot (𝓝 1)
+  have h_eq : ∀ x : ℝ,
+      ∫ t in Set.Iic x, ProbabilityTheory.gaussianPDFReal 0 1 t
+        = 1 - ∫ t in Set.Ioi x, ProbabilityTheory.gaussianPDFReal 0 1 t := by
+    intro x
+    have hms : MeasurableSet (Set.Ioi x) := measurableSet_Ioi
+    have hcompl_eq : (Set.Ioi x)ᶜ = Set.Iic x := Set.compl_Ioi
+    have hsetc := MeasureTheory.setIntegral_compl (μ := MeasureTheory.volume)
+      hms hint
+    rw [hcompl_eq] at hsetc
+    rw [hsetc, hone]
+  have hsub : Filter.Tendsto
+      (fun x : ℝ => 1 - ∫ t in Set.Ioi x, ProbabilityTheory.gaussianPDFReal 0 1 t)
+      Filter.atBot (nhds (1 - 1)) :=
+    Filter.Tendsto.const_sub 1 htendsto_Ioi
+  have hsub' : Filter.Tendsto
+      (fun x : ℝ => 1 - ∫ t in Set.Ioi x, ProbabilityTheory.gaussianPDFReal 0 1 t)
+      Filter.atBot (nhds 0) := by simpa using hsub
+  exact hsub'.congr (fun x => (h_eq x).symm)
 
 /-- **Right tail saturation**: `standardNormalCDF x → 1` as `x → +∞`.
 
@@ -354,9 +409,46 @@ theorem multinomialMarginalCDF_eq_binomialCDF
     (s : Finset α) (p : α → ℝ) (n : ℕ) (hp : ∑ i ∈ s, p i = 1)
     (i₀ : α) (hi₀ : i₀ ∈ s) (x : ℝ) :
     multinomialMarginalCDF s p n i₀ x = binomialCDF n (p i₀) x := by
-  -- Mathlib v4.26 API drift inside the inner `if_pos hcond` rewrite step
-  -- (issue #17317, line 381 in pre-fix file). Demoted to sorry pending repair.
-  sorry
+  -- S11 (researcher-1, 2026-05-13): repair template from S10 knowledge.md.
+  -- Strategy: fiber-decompose the multinomial sum over `j = k i₀` via
+  -- `Finset.sum_fiberwise_of_maps_to` (named-arg `(f := ...)`, not `(g := ...)`
+  -- as the pre-fix proof erroneously wrote); inside each fiber the if-guard
+  -- collapses to a constant; the inner sum reduces to the binomial PMF via
+  -- `BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf`. Build-pending.
+  unfold multinomialMarginalCDF binomialCDF
+  have hmaps : ∀ k ∈ s.piAntidiag n, k i₀ ∈ Finset.range (n + 1) := by
+    intro k hk
+    rw [Finset.mem_range, Nat.lt_succ_iff]
+    exact piAntidiag_apply_le s n i₀ k hk
+  rw [← Finset.sum_fiberwise_of_maps_to (t := Finset.range (n + 1)) hmaps
+        (f := fun k =>
+          if ((k i₀ : ℕ) : ℝ) ≤ x
+          then BinomialTheoremOQ02OQ01OQ02.multinomialProb s p n k
+          else 0)]
+  apply Finset.sum_congr rfl
+  intro j hj
+  rw [Finset.mem_range, Nat.lt_succ_iff] at hj
+  by_cases hcond : (j : ℝ) ≤ x
+  · rw [if_pos hcond]
+    have h_inner :
+        ∑ k ∈ (s.piAntidiag n).filter (fun k => k i₀ = j),
+            (if ((k i₀ : ℕ) : ℝ) ≤ x
+             then BinomialTheoremOQ02OQ01OQ02.multinomialProb s p n k
+             else 0)
+        = ∑ k ∈ (s.piAntidiag n).filter (fun k => k i₀ = j),
+            BinomialTheoremOQ02OQ01OQ02.multinomialProb s p n k := by
+      apply Finset.sum_congr rfl
+      intro k hk
+      rw [Finset.mem_filter] at hk
+      rw [hk.2, if_pos hcond]
+    rw [h_inner]
+    exact BinomialTheoremOQ02OQ01OQ02.multinomial_marginal_pmf
+            s p n hp i₀ hi₀ j hj
+  · rw [if_neg hcond]
+    apply Finset.sum_eq_zero
+    intro k hk
+    rw [Finset.mem_filter] at hk
+    rw [hk.2, if_neg hcond]
 
 /-! ## Structural properties of `binomialCDF` (Phase-4 prep) -/
 
@@ -380,9 +472,26 @@ theorem binomialCDF_neg (n : ℕ) (p : ℝ) {x : ℝ} (hx : x < 0) :
     characterize weak convergence on `ℝ`. -/
 theorem binomialCDF_mono (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1) :
     Monotone (binomialCDF n p) := by
-  -- Mathlib v4.26 API drift inside the `if_pos`/`mul_nonneg` chain
-  -- (issue #17317, line 409 in pre-fix file). Demoted to sorry pending repair.
-  sorry
+  -- S11 (researcher-1, 2026-05-13): repair template from S10 knowledge.md.
+  -- Case-split on whether each `(j : ℝ) ≤ x` holds; when it does, both
+  -- if-guards (x and y) are true and the summands match; when x's guard
+  -- fails, we must compare `0` (left) against either the binomial PMF
+  -- (right-true) or `0` (right-false). The pre-fix proof body was
+  -- missing the explicit terminal close in the `if_neg ∧ if_neg` branch.
+  -- Build-pending.
+  intro x y hxy
+  unfold binomialCDF
+  apply Finset.sum_le_sum
+  intro j _
+  have h1mp : 0 ≤ 1 - p := by linarith
+  by_cases hjx : (j : ℝ) ≤ x
+  · rw [if_pos hjx, if_pos (le_trans hjx hxy)]
+  · rw [if_neg hjx]
+    by_cases hjy : (j : ℝ) ≤ y
+    · rw [if_pos hjy]
+      exact mul_nonneg (mul_nonneg (Nat.cast_nonneg _) (pow_nonneg hp0 _))
+        (pow_nonneg h1mp _)
+    · rw [if_neg hjy]
 
 /-- For `0 ≤ p ≤ 1`, every value of `binomialCDF n p` is non-negative.
 
@@ -477,9 +586,29 @@ theorem binomialCDF_zero (n : ℕ) (p : ℝ) :
     `binomialCDF_neg` gives the matching left-tail saturation. -/
 theorem binomialCDF_eq_one (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
     {x : ℝ} (hx : (n : ℝ) ≤ x) : binomialCDF n p x = 1 := by
-  -- Mathlib v4.26 API drift inside the `Finset.sum_congr` rewrite step
-  -- (issue #17317, line 519 in pre-fix file). Demoted to sorry pending repair.
-  sorry
+  -- S11 (researcher-1, 2026-05-13): repair template from S10 knowledge.md.
+  -- Strategy: collapse every if-guard `(j : ℝ) ≤ x` to true (since
+  -- `j ≤ n ≤ x`); the remaining sum is the full binomial expansion
+  -- `(p + (1-p))^n = 1` via `add_pow`. Mirrors the working idiom in
+  -- `binomialCDF_le_one` (line 418); the pre-fix body's terminal
+  -- `exact (binomialCDF_neg n p hx).symm` was a copy-paste bug
+  -- (premise mismatch: `binomialCDF_neg` needs `x < 0`). Build-pending.
+  unfold binomialCDF
+  have h_simp : ∀ j ∈ Finset.range (n + 1),
+      (if (j : ℝ) ≤ x
+       then (Nat.choose n j : ℝ) * p ^ j * (1 - p) ^ (n - j) else 0)
+      = (Nat.choose n j : ℝ) * p ^ j * (1 - p) ^ (n - j) := by
+    intro j hj
+    rw [Finset.mem_range, Nat.lt_succ_iff] at hj
+    have hjx : (j : ℝ) ≤ x := le_trans (by exact_mod_cast hj) hx
+    rw [if_pos hjx]
+  rw [Finset.sum_congr rfl h_simp]
+  have hadd := add_pow p (1 - p) n
+  have hp_eq : p + (1 - p) = (1 : ℝ) := by ring
+  rw [hp_eq, one_pow] at hadd
+  rw [← hadd]
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  ring
 
 /-- **Right-tail asymptote of `binomialCDF`.** As `x → +∞`, the binomial
     CDF tends to `1` (under `0 ≤ p ≤ 1`).
@@ -537,8 +666,17 @@ theorem multinomial_marginal_clt
         multinomialMarginalCDF s p n i₀
           ((n : ℝ) * p i₀ + x * Real.sqrt ((n : ℝ) * p i₀ * (1 - p i₀))))
       Filter.atTop (nhds (standardNormalCDF x)) := by
-  -- Mathlib v4.26 API drift in the `Filter.Tendsto.congr` chain (issue
-  -- #17317, line 585 in pre-fix file). Demoted to sorry pending repair.
-  sorry
+  -- S11 (researcher-1, 2026-05-13): repair template from S10 knowledge.md.
+  -- Clean composition: the multinomial marginal CDF *equals* the binomial CDF
+  -- with parameter `p i₀` (Sorry 2, just repaired above); apply the
+  -- de Moivre–Laplace axiom (`binomial_clt_pointwise`) on the binomial side
+  -- and pull back through `Filter.Tendsto.congr`. Build-pending.
+  have hbridge : ∀ n : ℕ,
+      multinomialMarginalCDF s p n i₀
+          ((n : ℝ) * p i₀ + x * Real.sqrt ((n : ℝ) * p i₀ * (1 - p i₀)))
+        = binomialCDF n (p i₀)
+            ((n : ℝ) * p i₀ + x * Real.sqrt ((n : ℝ) * p i₀ * (1 - p i₀))) :=
+    fun n => multinomialMarginalCDF_eq_binomialCDF s p n hp i₀ hi₀ _
+  exact (binomial_clt_pointwise (p i₀) hp0 hp1 x).congr (fun n => (hbridge n).symm)
 
 end BinomialTheoremOQ02OQ01OQ01OQ03

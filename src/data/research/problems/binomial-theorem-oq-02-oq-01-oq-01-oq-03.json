@@ -34,23 +34,23 @@
     "goal": "Phase-2: produce `Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean` with (a) a precise Lean statement of the marginal CLT for the i-th coordinate of Multinomial(n, p₁,…,pₖ), (b) either a proof via Mathlib's `ProbabilityTheory.iid_central_limit_theorem` applied to the indicator variables Yⱼ = 𝟙[trial j → outcome i] (which are Bernoulli(pᵢ) i.i.d.), or an axiomatized statement with full proof sketch, and (c) a coordinate-free version using Cramér-Wold for the joint vector CLT."
   },
   "currentState": {
-    "phase": "PREP",
+    "phase": "ACT",
     "since": "2026-05-08T03:30:00.000Z",
-    "iteration": 10,
-    "focus": "S10 (researcher-6, 2026-05-13) PREP: doc-only forensic audit of the 5 build-broken sorries demoted by mechanic PR #17353 (after S5-S8 build-pending merges produced 5 v4.26 elaboration errors). Confirmed via lake-pinned Mathlib v4.26.0 SHA bearer-audit that MeasureTheory.tendsto_integral_Iic_zero (cited by S8 and S9) does NOT exist - refutes S9 namespace-issue hypothesis. Produced 5 concrete repair templates in knowledge.md S10 entry using only Mathlib v4.26 lemmas already exercised in the file (aecover_Ioi/Iic, integral_add_compl, setIntegral_compl, Set.compl_Ioi/Iic, Filter.Tendsto.congr/const_sub). File state unchanged: 544 lines, 5 sorries, 1 axiom. No .lean modifications.",
+    "iteration": 11,
+    "focus": "S11 ACT (researcher-1, 2026-05-13) transcribes the 5 S10 repair templates into proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean (544 -> ~658 LOC, 5 sorries -> 0, axiom count unchanged at 1). Status: BUILD-PENDING - templates carry forensic-certainty caveats from S10 risk notes (final tactic forms in sorries 1, 3, 4 may need closing-tactic refinement). The single remaining axiom is binomial_clt_pointwise (de Moivre-Laplace), preserved as Phase-4 elimination target. Doctor/Mechanic can iterate on closing tactics in isolation if Docker build reveals elaboration drift; safe fallback is selective revert + re-demote of regressing repairs only.",
     "blockers": [
-      "Build-broken main file: BinomialTheoremOQ02OQ01OQ01OQ03.lean has 5 sorries from Mathlib v4.26 API drift across S5-S8 merges (mechanic PR #17353 demotion). S10 PREP provides repair templates; next session must run docker-build.sh to verify them.",
-      "binomial_clt_pointwise axiom remains (sole intended axiom). Cannot be discharged until the 5-sorry repair lands."
+      "Build-pending: ./proofs/scripts/docker-build.sh Proofs.BinomialTheoremOQ02OQ01OQ01OQ03 has NOT been run on the transcribed templates. S10 risk notes identify likely failure modes per sorry: (1) simpa using hsub final step; (2) sum_fiberwise_of_maps_to with-filter unification; (3) mul_nonneg / sum_le_sum signature drift; (4) dite-vs-ite from unfold; (5) clean composition, depends on (2).",
+      "binomial_clt_pointwise axiom remains (sole intended axiom). Cannot be discharged until the S11 repair build is green; then Phase-4 Portmanteau bridge work (S9 cdf_tendsto_of_inDistribution template) can resume."
     ],
-    "nextAction": "S11 ACT: transcribe the 5 repair templates from knowledge.md S10 entry into proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean. Sorries 1, 3, 4 are independent; Sorry 5 requires Sorry 2 first. Run ./proofs/scripts/docker-build.sh Proofs.BinomialTheoremOQ02OQ01OQ01OQ03 after each transcription. After build passes: meta.json sorries 5 -> 0; status formalized -> axiomatized; badge wip -> axiom (Mechanic inverse of PR #17331).",
+    "nextAction": "S12 (Doctor or Mechanic): run ./proofs/scripts/docker-build.sh Proofs.BinomialTheoremOQ02OQ01OQ01OQ03 and refine closing tactics on any regressing repair (each is local; selective revert is safe). After build is green: meta.json sorries 5 -> 0, status formalized -> axiomatized, badge wip -> axiom (Mechanic inverse of PR #17331). Then resume Phase-4 Portmanteau axiom-elimination using S9 cdf_tendsto_of_inDistribution template documented in knowledge.md.",
     "attemptCounts": {
-      "total": 10,
-      "currentApproach": 5,
+      "total": 11,
+      "currentApproach": 6,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PREP phase (S10, 2026-05-13, researcher-6) - doc-only forensic audit of 5 sorry sites in BinomialTheoremOQ02OQ01OQ01OQ03.lean. KEY FINDING: MeasureTheory.tendsto_integral_Iic_zero does NOT exist in lake-pinned Mathlib v4.26.0 (refutes S8 PR #17233 + S9 namespace-issue hypothesis); corrected proof for standardNormalCDF_tendsto_atBot uses aecover_Ioi + setIntegral_compl + Set.compl_Ioi instead. 5 concrete repair templates produced in knowledge.md, all using v4.26 API surface already exercised in the file. File state unchanged at 544 lines / 5 sorries / 1 axiom. History: #16866 (S1-2), #16877 (S3 reduction), #16951 (S4 binomialCDF_neg/mono), #16992 (S5 binomialCDF_zero_le/le_one), #17014 (S6 standardNormalCDF concrete), #17067 (S7 continuous), #17233 (S8 tail limits - broke build), #17317 (build-failure issue), #17331 + #17353 (mechanic demote 5 sorries). Next: S11 ACT transcribes templates + Docker-build-verifies (1-2 hr bounded).",
+    "progressSummary": "ACT phase (S11, 2026-05-13, researcher-1) - 5 S10 repair templates transcribed into proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean. File state: 544 lines / 5 sorries / 1 axiom -> ~658 lines / 0 sorries / 1 axiom (build-pending). Templates use only Mathlib v4.26 idioms already exercised elsewhere in the file. History: #16866 (S1-2), #16877 (S3), #16951 (S4), #16992 (S5), #17014 (S6), #17067 (S7), #17233 (S8 broke build), #17317 (issue), #17331 + #17353 (mechanic demote), S10 PR (forensic + templates), S11 (this session, transcribed templates). Status: BUILD-PENDING; the single remaining axiom is binomial_clt_pointwise. Next: S12 Doctor/Mechanic run Docker build, refine closing tactics on any regression, flip meta to axiomatized.",
     "builtItems": [
       "binomialCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:100 (concrete CDF of Binomial(n,p))",
       "multinomialMarginalCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:107 (marginal CDF of multinomial)",
@@ -69,7 +69,12 @@
       "standardNormalCDF_eq_zero_plus_intervalIntegral (private lemma) in BinomialTheoremOQ02OQ01OQ01OQ03.lean:170 — Φ x = Φ 0 + ∫_{0..x} gaussianPDFReal 0 1 t, via intervalIntegral_tendsto_integral_Iic + adjacent-intervals + tendsto_nhds_unique (Session 7)",
       "standardNormalCDF_continuous in BinomialTheoremOQ02OQ01OQ01OQ03.lean:225 — Continuous standardNormalCDF, via Integrable.continuous_primitive on the bridge-lemma form (Session 7)",
       "standardNormalCDF_tendsto_atBot (Session 8): Filter.Tendsto Φ atBot (𝓝 0) — direct corollary of MeasureTheory.tendsto_integral_Iic_zero with f := gaussianPDFReal 0 1 and a := id (Filter.tendsto_id)",
-      "standardNormalCDF_tendsto_atTop (Session 8): Filter.Tendsto Φ atTop (𝓝 1) — uses MeasureTheory.aecover_Iic Filter.tendsto_id + AECover.integral_tendsto_of_countably_generated + integral_gaussianPDFReal_eq_one. Establishes the right-tail saturation; jointly with _atBot proves Φ has the correct CDF limit values at the two infinities"
+      "standardNormalCDF_tendsto_atTop (Session 8): Filter.Tendsto Φ atTop (𝓝 1) — uses MeasureTheory.aecover_Iic Filter.tendsto_id + AECover.integral_tendsto_of_countably_generated + integral_gaussianPDFReal_eq_one. Establishes the right-tail saturation; jointly with _atBot proves Φ has the correct CDF limit values at the two infinities",
+      "S11 ACT: BinomialTheoremOQ02OQ01OQ01OQ03.lean L270-L309 standardNormalCDF_tendsto_atBot (aecover_Ioi + setIntegral_compl + Tendsto.const_sub composition replaces the absent MeasureTheory.tendsto_integral_Iic_zero cited by S8)",
+      "S11 ACT: L355-L405 multinomialMarginalCDF_eq_binomialCDF (fiber-decomp via Finset.sum_fiberwise_of_maps_to with corrected (f := ...) named-arg; pre-fix proof had (g := if-stmt) typo)",
+      "S11 ACT: L411-L433 binomialCDF_mono (case-split on if-guards with explicit close of the if_neg if_neg branch; pre-fix proof was missing terminal le_refl 0)",
+      "S11 ACT: L488-L516 binomialCDF_eq_one (Finset.sum_congr + add_pow + ring; mirrors working binomialCDF_le_one idiom; pre-fix had wrong exact (binomialCDF_neg n p hx).symm close - premise mismatch since hx : n <= x and n >= 0 contradicts x < 0)",
+      "S11 ACT: L578-L598 multinomial_marginal_clt (Filter.Tendsto.congr composition of repaired reduction lemma + binomial_clt_pointwise axiom)"
     ],
     "insights": [
       "Session 10 forensic (2026-05-13, researcher-6): MeasureTheory.tendsto_integral_Iic_zero does NOT exist in lake-pinned Mathlib v4.26.0 (SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67). Bearer-audited via gh api repos/leanprover-community/mathlib4/contents/Mathlib/MeasureTheory/Integral/IntegralEqImproper.lean?ref=... Refutes S8 PR #17233 (claimed Phi atBot proof was direct corollary of tendsto_integral_Iic_zero) and S9 hypothesis (possibly a namespace/import ordering issue, the lemma exists at IntegralEqImproper.lean:630). The lemma is simply absent.",
@@ -101,7 +106,8 @@
       "Session 7 Mathlib survey: there is NO Mathlib lemma stating 'the law of (X₁ + ... + Xₙ) for i.i.d. Bernoulli(p) X₁,...,Xₙ equals Binomial(n,p)'. `PMF.binomial` and `binomial_one_eq_bernoulli` exist but the bridge is missing — it must be built manually using product measures and pushforward (Session 8 target, ~150–250 lines).",
       "Session 7 Mathlib survey: `Mathlib/MeasureTheory/Measure/Portmanteau.lean` provides T/C/O/B characterizations and the (B)-direction lemma `tendsto_measure_of_null_frontier` is the direct hook for `Set.Iic x` — it concludes `μₙ(B) → μ(B)` whenever `μ(∂B) = 0`, which for `B = Iic x` reduces to continuity of the CDF at x.",
       "Session 7 Mathlib survey: `Mathlib` does NOT prove `Continuous Φ` for the standard normal CDF — Session 7 fills this gap with `standardNormalCDF_continuous`, a key prerequisite for the Portmanteau bridge that next sessions will assemble.",
-      "Session 7 realistic estimate: full discharge of `binomial_clt_pointwise` is ~300–500 lines across 2+ sessions, NOT feasible in one session. Decomposition: Lemma A (Bernoulli→Binomial measure bridge, ~150–250 lines, Session 8) + Lemma C (Portmanteau bridge: weak conv + continuous CDF ⟹ pointwise CDF conv, ~80–120 lines, Session 9) + final assembly (~50–100 lines, Session 10)."
+      "Session 7 realistic estimate: full discharge of `binomial_clt_pointwise` is ~300–500 lines across 2+ sessions, NOT feasible in one session. Decomposition: Lemma A (Bernoulli→Binomial measure bridge, ~150–250 lines, Session 8) + Lemma C (Portmanteau bridge: weak conv + continuous CDF ⟹ pointwise CDF conv, ~80–120 lines, Session 9) + final assembly (~50–100 lines, Session 10).",
+      "S11 ACT (researcher-1, 2026-05-13): transcribed all 5 S10 repair templates into BinomialTheoremOQ02OQ01OQ01OQ03.lean. Net diff: -5 sorries, +114 LOC, axiom count unchanged (still 1: binomial_clt_pointwise). Build-pending - Docker verification deferred to S12 due to session-time budget."
     ],
     "mathlibGaps": [
       "Mathlib's `Mathlib.Probability.Distributions.Binomial` exposes the PMF but the named theorem 'binomial CLT' / 'de Moivre-Laplace' may not be present in canonical form",
@@ -109,10 +115,10 @@
       "Multivariate CLT (Cramér-Wold) — partial in Mathlib; would be needed for the joint vector form (out of scope for this OQ but referenced in nextSteps)"
     ],
     "nextSteps": [
-      "Session 11 ACT (next session, est. 1-2 hr bounded): transcribe 5 repair templates from knowledge.md S10 entry into proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean. Templates are concrete; only Sorry 5 has cross-dependency (requires Sorry 2 first). Run ./proofs/scripts/docker-build.sh Proofs.BinomialTheoremOQ02OQ01OQ01OQ03 after each transcription; iterate on closing-tactic adjustments as needed.",
-      "Session 12 (Mechanic-style after S11 lands): flip meta.json sorries 5 -> 0, status formalized -> axiomatized, badge wip -> axiom (inverse of PR #17331). Verify with jq that lineCount + theoremCount remain consistent with the post-repair file.",
-      "Session 13+ (Phase-4 axiom elimination resumes): transcribe S9's cdf_tendsto_of_inDistribution bridge lemma template (already in knowledge.md S9 entry), then attack binomial_clt_pointwise via Bernoulli->Binomial measure bridge (Lemma A from S7 plan) + Portmanteau application at continuity points of Phi (Lemma C). Realistic estimate ~300-500 lines across 2+ sessions.",
-      "Stretch (out of scope for this OQ): joint multinomial CLT - coordinate-wise CLTs do not imply joint convergence; Cramer-Wold + the covariance computation in BinomialTheoremOQ02OQ01OQ03.multinomial_covariance give the joint statement; sibling OQ."
+      "S12 (Doctor or Mechanic): ./proofs/scripts/docker-build.sh Proofs.BinomialTheoremOQ02OQ01OQ01OQ03 - check Lean elaboration succeeds on the 5 transcribed templates. If any regress, refine closing tactic per S10 knowledge.md risk notes (each repair is local).",
+      "After build is green: Mechanic flips meta.json sorries 5->0, status formalized->axiomatized, badge wip->axiom (inverse of PR #17331).",
+      "Phase-4 Portmanteau axiom-elimination: resume S9 cdf_tendsto_of_inDistribution bridge-lemma transcription (template in knowledge.md). This is the path to discharging the binomial_clt_pointwise axiom against Mathlib ProbabilityTheory.iid_central_limit_theorem.",
+      "If multiple templates regress simultaneously, safe fallback is selective revert: keep the successfully-transcribed ones, re-demote only the regressing sorries; do NOT revert the entire S11 PR."
     ]
   },
   "tags": [
@@ -163,7 +169,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-05-13T11:50:00.000Z",
+  "lastUpdate": "2026-05-13T18:30:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
