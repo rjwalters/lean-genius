@@ -32,25 +32,33 @@ The parent state.md decomposes this into 5 ACT sessions:
 
 | Session | Deliverable | Status |
 |---|---|---|
-| S2 | `dirichletSetN` def + `dirichletSetN_symmetric` | **this file** |
-| S3 | `dirichletSetN_measurable` (open-set) | future |
-| S4 | `dirichletSetN_convex` (linear-preimage of `Ioo`) | future |
+| S2 | `dirichletSetN` def + `dirichletSetN_symmetric` | **this file (merged)** |
+| S3 | `dirichletSetN_measurable` (open-set) | **this file (this revision)** |
+| S4 | `dirichletSetN_convex` (linear-preimage of `Ioo`) | **this file (this revision)** |
 | S5 | `dirichletSetN_volume` (shear-map computation) | future |
 | S6 | `simultaneous_dirichlet_from_minkowski` (assembly) | future |
 
-This revision ships **S2 ACT only** — the definition + the central
-symmetry lemma, which is the cleanest sorry-free seed for the chain
-and matches the parent OQ-01 file's `dirichletSet_symmetric` proof
-pattern exactly. Sessions S3-S6 have been pre-staged via S5 PREP
+The S2 revision shipped the definition + the central symmetry lemma
+(verbatim n-dim generalisation of the parent OQ-01's
+`dirichletSet_symmetric`). This S3 + S4 revision adds two more
+Minkowski-hypothesis discharges: measurability (S3) and convexity
+(S4), both verbatim n-dim generalisations of the parent's
+`dirichletSet_measurable` and `dirichletSet_convex`. The S5 / S6
+ACTs remain pre-staged via S5 PREP
 (`sessions/2026-05-12-s5-prep-shear-volume-generalization.md`,
-merged) and S6 PREP (`sessions/2026-05-12-s6-prep-minkowski-assembly-roadmap.md`,
-open at the time of S2 ACT).
+merged) and S6 PREP
+(`sessions/2026-05-12-s6-prep-minkowski-assembly-roadmap.md`, merged).
 
 ## Status
 
 - `dirichletSetN`: definition in place.
-- `dirichletSetN_symmetric`: sorry-free, axiom-free (6 LOC, verbatim
-  generalisation of the parent OQ-01's `dirichletSet_symmetric`).
+- `dirichletSetN_symmetric`: sorry-free, axiom-free (S2).
+- `dirichletSetN_measurable`: sorry-free, axiom-free (S3, this
+  revision; ~12 LOC of proof, n-dim generalisation of the parent's
+  `dirichletSet_measurable`).
+- `dirichletSetN_convex`: sorry-free, axiom-free (S4, this revision;
+  ~12 LOC of proof, n-dim generalisation of the parent's
+  `dirichletSet_convex`).
 - `axiomCount`: 0.
 - `sorryCount`: 0.
 
@@ -67,6 +75,7 @@ open at the time of S2 ACT).
 
 import Mathlib.Analysis.Convex.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
 import Mathlib.Tactic
 
 namespace MinkowskiTheoremOQ02OQ03
@@ -113,5 +122,68 @@ theorem dirichletSetN_symmetric (n : ℕ) (α : Fin n → ℝ) (Q : ℕ) :
     simp only [Pi.neg_apply]
     rw [show α i * -v 0 - -v i.succ = -(α i * v 0 - v i.succ) by ring, abs_neg]
     exact hvi i
+
+-- ============================================================
+-- PART 3: Measurability (S3 ACT — this revision)
+-- ============================================================
+
+/-- **Measurability.** `dirichletSetN n α Q` is Lebesgue-measurable.
+It is an *open* set in `Fin (n+1) → ℝ` (with the product topology),
+which the Borel σ-algebra inherits from the topology, so
+`IsOpen.measurableSet` discharges measurability.
+
+Proof structure mirrors the parent OQ-01's `dirichletSet_measurable`
+(`Proofs/MinkowskiTheoremOQ02OQ01.lean:60-71`) with the single
+`v 1` strict-inequality clause generalised to a `⋂ i : Fin n,
+{v | |α i · v 0 − v i.succ| < 1/Q}` indexed intersection. Each
+factor is the preimage of `Set.Ioo` under a continuous linear
+functional in `v`; `isOpen_iInter_of_finite` discharges the
+`Fin n`-indexed intersection. -/
+theorem dirichletSetN_measurable (n : ℕ) (α : Fin n → ℝ) (Q : ℕ) :
+    MeasurableSet (dirichletSetN n α Q) := by
+  apply IsOpen.measurableSet
+  have heq : dirichletSetN n α Q =
+      (fun v : Fin (n + 1) → ℝ => v 0) ⁻¹'
+        Set.Ioo (-((Q : ℝ) ^ n + 1)) ((Q : ℝ) ^ n + 1) ∩
+      ⋂ i : Fin n,
+        (fun v : Fin (n + 1) → ℝ => α i * v 0 - v i.succ) ⁻¹'
+          Set.Ioo (-(1 / (Q : ℝ))) (1 / (Q : ℝ)) := by
+    ext v
+    simp [dirichletSetN, Set.mem_Ioo, abs_lt, Set.mem_iInter]
+  rw [heq]
+  refine (isOpen_Ioo.preimage (continuous_apply 0)).inter
+    (isOpen_iInter_of_finite ?_)
+  intro i
+  exact isOpen_Ioo.preimage
+    ((continuous_const.mul (continuous_apply 0)).sub (continuous_apply i.succ))
+
+-- ============================================================
+-- PART 4: Convexity (S4 ACT — this revision)
+-- ============================================================
+
+/-- **Convexity.** `dirichletSetN n α Q` is convex. Each conjunct
+is the preimage of an open interval `Set.Ioo` under a linear
+functional in `v`, and intersections of convex sets are convex
+(`Convex.inter` for the binary common-denominator step;
+`convex_iInter` for the `Fin n`-indexed approximation residuals).
+
+Proof structure mirrors the parent OQ-01's `dirichletSet_convex`
+(`Proofs/MinkowskiTheoremOQ02OQ01.lean:75-86`) with the single
+linear-functional `α • π₀ − π₁` clause generalised to a `⋂ i,
+α i • π₀ − π_{i.succ}` indexed intersection. -/
+theorem dirichletSetN_convex (n : ℕ) (α : Fin n → ℝ) (Q : ℕ) :
+    Convex ℝ (dirichletSetN n α Q) := by
+  have heq : dirichletSetN n α Q =
+      (LinearMap.proj (R := ℝ) (φ := fun _ : Fin (n + 1) => ℝ) 0) ⁻¹'
+        Set.Ioo (-((Q : ℝ) ^ n + 1)) ((Q : ℝ) ^ n + 1) ∩
+      ⋂ i : Fin n,
+        (α i • LinearMap.proj (R := ℝ) (φ := fun _ : Fin (n + 1) => ℝ) 0 -
+          LinearMap.proj (R := ℝ) (φ := fun _ : Fin (n + 1) => ℝ) i.succ) ⁻¹'
+          Set.Ioo (-(1 / (Q : ℝ))) (1 / (Q : ℝ)) := by
+    ext v
+    simp [dirichletSetN, Set.mem_Ioo, abs_lt, LinearMap.proj_apply, Set.mem_iInter]
+  rw [heq]
+  refine ((convex_Ioo _ _).linear_preimage _).inter ?_
+  exact convex_iInter (fun i => (convex_Ioo _ _).linear_preimage _)
 
 end MinkowskiTheoremOQ02OQ03
