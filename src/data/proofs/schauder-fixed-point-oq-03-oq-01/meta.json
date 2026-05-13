@@ -49,7 +49,8 @@
       "exists_continuous_selection_with_witnesses: S18e Cellina–Browder Step 4 — packages the candidate continuous selection f : C(↥S, ↥S) defined by f x = ∑ᶠ i, ρ i x • (ysel i) for a chosen point selector ysel x ∈ F x, with continuity from PartitionOfUnity.IsSubordinate.continuous_finsum_smul and membership in S from convex_combination_of_partition_in_S; full witness bundle (U, ρ, ysel, the three S18d clauses, the explicit formula) exposed for the eventual S18f graph-bound proof",
       "seq_compact_of_compact: Sequential compactness derived from Mathlib's IsCompact.isSeqCompact",
       "approx_fixedpoint_implies_fixedpoint: Limit argument for approximate fixed points (proved)",
-      "kakutani_from_brouwer: Combines Brouwer + approximate selections to prove Kakutani (proved)"
+      "kakutani_from_brouwer: Combines Brouwer + approximate selections to prove Kakutani (proved)",
+      "image_subtype_isClosed_of_isClosed_of_compact: S19 ACT step (a) closed-image helper for the §4.b Hilbert projection chain — bridges subtype-closedness (hF_closed : ∀ x, IsClosed (F x)) to ambient-space closedness (IsClosed (Subtype.val '' F x)) via Continuous.isClosedMap (Mathlib/Topology/Separation/Hausdorff.lean:664 at pinned rev 2df2f0150c). Generic in the ambient α — directly reusable; precondition for exists_norm_eq_iInf_of_complete_convex in the eventual approx_selection_exists_proof."
     ],
     "dateAdded": "2026-04-12",
     "axiomCount": 2,
@@ -211,9 +212,9 @@
       "Metric"
     ],
     "namespace": "KakutaniFromBrouwer",
-    "lineCount": 1163,
+    "lineCount": 1218,
     "axiomCount": 2,
-    "theoremCount": 12,
+    "theoremCount": 13,
     "definitionCount": 4,
     "path": "Proofs/SchauderFixedPointOQ03OQ01.lean",
     "sorries": 0

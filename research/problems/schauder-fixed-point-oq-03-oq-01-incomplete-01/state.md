@@ -1,13 +1,77 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S18f input-diameter refinement landed; **0 sorries**, 2 axioms remaining)
+**Phase**: ACT (S19 step (a) closed-image helper landed; **0 sorries**, 2 axioms remaining)
 **Path**: full
-**Since**: 2026-05-12T15:30:00Z
-**Iteration**: 18f
+**Since**: 2026-05-13T07:15:00Z
+**Iteration**: 19a-ACT
 
 ## Current Focus
-S18f (researcher-10, 2026-05-12, this iteration): Added `lemma
+S19 ACT step (a) (researcher-11, 2026-05-13, this iteration): Added
+`private lemma image_subtype_isClosed_of_isClosed_of_compact` (file
+lines 859–913) — the closed-image helper for the §4.b Hilbert
+projection chain of the eventual
+`theorem approx_selection_exists_proof`. The lemma is generic in the
+ambient `α` (typeclass parameters: `TopologicalSpace α` + `T2Space α`)
+and takes `hS_compact : IsCompact S` together with
+`hT_closed : IsClosed T` (closedness of `T` in the subtype `↥S`) to
+conclude `IsClosed (Subtype.val '' T)` (closedness of the ambient
+image in `α`). The 2-line tactic body is the verbatim Path A drop-in
+designed by S19d PREP §3 (PR #18624, merged 2026-05-13T06:58Z):
+`haveI : CompactSpace ↥S := isCompact_iff_compactSpace.mp hS_compact`
+materialises the `CompactSpace ↥S` instance (the same one-line
+construction used by S18b at line 641, S18d at line 744, and S18e at
+line 829); then `continuous_subtype_val.isClosedMap T hT_closed`
+invokes the protected theorem `Continuous.isClosedMap` (Mathlib
+`Topology/Separation/Hausdorff.lean:664` at pinned rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) which yields a closed map
+from any continuous map between a `CompactSpace` and a `T2Space`. The
+S19d PREP §1.3 audit confirmed only this variant exists at v4.26.0
+(no `IsCompact.isClosedMap`, `CompactSpace.isClosedMap`, or
+`Continuous.isClosedMap_of_compactSpace`).
+
+This helper is **load-bearing for §4.b** of the eventual
+`approx_selection_exists_proof`: the Hilbert projection theorem
+`exists_norm_eq_iInf_of_complete_convex`
+(`Mathlib.Analysis.InnerProductSpace.Projection`, S14-used at file
+line 226) requires the target set to be closed in the *ambient*
+inner-product space `EuclideanSpace ℝ (Fin n)`, while the planned
+axiom signature update (S19a §0/§1) augments `axiom
+approx_selection_exists`'s hypothesis stack with
+`hF_closed : ∀ x, IsClosed (F x)` (closedness of `F x` only in the
+subtype `↥S`, mirroring the existing
+`kakutani_from_brouwer` caller's hypothesis at line 1030). The §4.b
+chain needs `IsClosed (Subtype.val '' F i)`, which this helper
+produces by application at `α = EuclideanSpace ℝ (Fin n)`,
+`S = ` the ambient compact convex `S`, and `T = F i` — exactly the
+shape required by `exists_norm_eq_iInf_of_complete_convex`. The
+`[T2Space (EuclideanSpace ℝ (Fin n))]` instance is automatic from
+the metric structure (S19d §1.4 derivation chain, confirmed by
+S18b's `typeclass_witnesses_compact_subset` audit).
+
+Net file change: lineCount 1163 → 1218 (+55, dominated by the
+56-line docstring; 7 LOC of signature + body); theoremCount 12 → 13
+(+1); sorry count unchanged at 0; axiom count unchanged at 2.
+**Build pending** — `proofs/.lake` recursive-symlink trap forces
+~45 min cold Docker clone; matches S18a/S18b/S18c/S18d/S18e/S18f
+precedent of "build pending" merges for scaffold-only PRs whose
+Mathlib API references are verified at the pinned rev. The four
+Mathlib lemmas used (`isCompact_iff_compactSpace`,
+`continuous_subtype_val`, `Continuous.isClosedMap`, the
+`Subtype.t2Space` transitive instance chain) are all (i) confirmed
+at exact file:line locations by S19d PREP (PR #18624), and (ii)
+already exercised by the in-file S18b/S18d/S18e helpers at the same
+pinned rev. No new imports required.
+
+The new helper does **not** discharge `axiom approx_selection_exists`
+in this iteration — that requires (i) the signature update
+to add `hF_closed`, (ii) the body proof chaining S18a/S18b/S18c/S18d/S18e
+and this S19 helper through the §4.b nearest-point projection and the
+§5 graph-distance accounting (using S18f's input-diameter clause).
+This step installs only the closed-image precondition for the
+eventual proof body.
+
+S18f (researcher-10, 2026-05-12, PR #18257 merged): Added `lemma
 uhc_local_thickening_with_input_diameter` (file lines 113–162),
 sharpening the S17 helper `uhc_local_thickening` by additionally
 bounding the input-side ball diameter. For any `IsUpperHemicontinuous
@@ -234,16 +298,36 @@ Two axioms remain:
    decomposes implementation into 6 PRs (each ≤ 80 lines).
 
 ## Next Action
-**S19 (next claim, ~60–100 lines)**: Discharge `axiom approx_selection_exists`
-by deriving it from S18e's `exists_continuous_selection_with_witnesses` plus
-S18f's `uhc_local_thickening_with_input_diameter` (Cellina–Browder Step 5:
-graph-distance bound). The S18f input-ball clause now closes the
-`dist x i < ε` half of the graph bound; the remaining work is the
-`dist (f x) (ysel i)` half (the convex-combination accounting and the
-`2ε`-vs-`ε` constant calibration flagged in the S17 survey).
+**S19 step (b) (next claim, ~80–150 lines)**: With the closed-image
+helper now in the file (this iteration's S19 step (a)), the next
+concrete step toward discharging `axiom approx_selection_exists` is
+to write the §4.b nearest-point projection / convex-image
+construction: given `i ∈ ρ.finsupport x`, build the closed convex
+target `Subtype.val '' F i` (now provably `IsClosed` via this
+iteration's helper and `IsClosed.isClosed_isCompact_of_image` chain;
+provably `Convex` via the existing `hF_convex` axiom hypothesis;
+provably `Nonempty` via `hF_ne`), invoke
+`exists_norm_eq_iInf_of_complete_convex`, and connect to the S18e
+witness bundle. This is the §4.b half of the eventual
+`approx_selection_exists_proof` body. Separately:
 
-**S18f (this iteration, landed)**: Input-diameter refinement of S17's
-`uhc_local_thickening` — see Current Focus above.
+**S19 step (c) (~30–60 lines)**: After step (b), the §5 graph-distance
+bound (Cellina–Browder Step 5) chains the S18f input-ball clause,
+the S18e selector formula, and the §4.b nearest-point construction
+to certify `IsGraphApproxSelection F (fun x => (f x : ↥S)) ε`. The
+S18f input-ball clause closes the `dist x i < ε` half; the
+`dist (f x) (ysel i)` half consumes the §4.b projection plus the
+convex-combination accounting (`2ε`-vs-`ε` constant calibration
+flagged in the S17 survey, refined in S19 PREP §6).
+
+**S19 step (d) (~10–20 lines)**: Final packaging — `theorem
+approx_selection_exists_proof` replaces `axiom approx_selection_exists`,
+with the augmented hypothesis stack including `hF_closed` (S19a §1
+signature update). The kakutani caller (line 1066) already passes
+`hF_closed`, so no caller-site patch is needed.
+
+**S19 step (a) (this iteration, landed)**: closed-image helper —
+see Current Focus above.
 
 ### Original S18f outline (now S19; preserved verbatim):
 
@@ -305,7 +389,13 @@ brouwer_unit_ball` (Axiom 1) and is otherwise sorry-free.
 | S18c | 2026-05-12 | researcher-3 | #17910 (merged) | Private helper `exists_finite_subcover_for_uhc` packaging Steps 1–2 (+50 lines, +1 theorem, meta sync 907→957) |
 | S18d | 2026-05-12 | researcher-12 | #17993 (merged) | Private helper `exists_partition_subordinate_to_uhc_cover` packaging Step 3 subordinate partition of unity (+58 lines, +1 theorem, meta sync 957→1015) |
 | S18e | 2026-05-12 | researcher-11 | #18130 (merged) | Private helper `exists_continuous_selection_with_witnesses` packaging Step 4 candidate continuous selection (+104 lines, +1 theorem, meta sync 1015→1119) |
-| S18f | 2026-05-12 | researcher-10 | (this PR) | Helper `uhc_local_thickening_with_input_diameter` (S17 input-ball refinement; closes the S17 survey Step-5 input-diameter gap) (+44 lines, +1 theorem, meta sync 1119→1163) |
+| S18f | 2026-05-12 | researcher-10 | #18177/#18257 (merged) | Helper `uhc_local_thickening_with_input_diameter` (S17 input-ball refinement; closes the S17 survey Step-5 input-diameter gap) (+44 lines, +1 theorem, meta sync 1119→1163) |
+| S19 PREP | 2026-05-12 | researcher-3 | #18318 (merged) | S19 graph-distance bound design memo (doc-only, +523 LOC sessions/) |
+| S19a PREP | 2026-05-12 | researcher-12 | #18361 (merged) | S19a closed-image lemma + axiom signature-update memo (doc-only, sessions/; 3 candidate proof paths, audit flagged) |
+| S19b PREP | 2026-05-13 | researcher-9 | #18521 (merged) | S19b Mathlib v4.26.0 API audit (Path A 4 bearers + Path C 3 bearers; projection drift Projection.lean → Projection.Minimal.lean surfaced; doc-only, sessions/) |
+| S19c PREP | 2026-05-13 | researcher-4 | (merged ~03:30 UTC) | S19c Projection.lean deprecation-stub calibration (no missing-symbol error; only `linter.deprecated` warning at v4.26.0; doc-only, sessions/) |
+| S19d PREP | 2026-05-13 | researcher-12 | #18624 (merged ~06:58 UTC) | S19d Path A bearer audit cleared — `Continuous.isClosedMap` at Hausdorff.lean:664 verbatim drop-in; closes S19a §8 audit (doc-only, sessions/) |
+| S19a-ACT | 2026-05-13 | researcher-11 | (this PR) | Private helper `image_subtype_isClosed_of_isClosed_of_compact` packaging the §4.b closed-image bridge (Path A drop-in from S19d) (+55 lines, +1 theorem, meta sync 1163→1218) |
 
 ## Reference Files (in this directory)
 - `problem.md` — original problem statement

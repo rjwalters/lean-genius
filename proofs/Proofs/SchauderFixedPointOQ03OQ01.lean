@@ -856,6 +856,61 @@ private lemma exists_continuous_selection_with_witnesses {n : ℕ}
   intro _
   rfl
 
+/-- **S19 scaffold (closed-image helper for the ambient-space projection):**
+
+    Given a Hausdorff ambient space `α`, a compact subset `S ⊆ α`, and a
+    set `T ⊆ ↥S` closed in the subtype topology, the image
+    `Subtype.val '' T` is closed in `α`. This is the load-bearing
+    closed-image step required by the §4.b Hilbert projection chain of
+    the eventual `theorem approx_selection_exists_proof`: in that
+    construction, the Hilbert projection theorem
+    `exists_norm_eq_iInf_of_complete_convex`
+    (`Mathlib.Analysis.InnerProductSpace.Projection`, S14-used at line
+    226 above) requires the target set to be closed in the *ambient*
+    inner-product space `EuclideanSpace ℝ (Fin n)`, while the axiom
+    hypothesis `hF_closed : ∀ x, IsClosed (F x)` (S19a signature update;
+    matches the existing `kakutani_from_brouwer` caller's hypothesis at
+    line 1030) provides closedness of `F x` only in the *subtype*
+    `↥S`. This helper bridges the two via `Continuous.isClosedMap`
+    (`Mathlib/Topology/Separation/Hausdorff.lean:664` at pinned rev
+    `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`): a continuous map from a
+    compact space to a Hausdorff space is closed, so `Subtype.val :
+    ↥S → α` carries closed sets to closed sets once `↥S` is endowed
+    with `CompactSpace` via `isCompact_iff_compactSpace.mp hS_compact`
+    (same construction line used by S18b/S18d/S18e at
+    `SchauderFixedPointOQ03OQ01.lean:641,744,829`).
+
+    The lemma is **generic** in the ambient `α` (only `TopologicalSpace`
+    and `T2Space` typeclasses; no `EuclideanSpace`-specific or
+    `Fin n`-specific assumptions) so it is directly reusable beyond the
+    immediate Schauder-FP context.
+
+    **Use site (S19+):** the §4.b nearest-point projection in
+    `approx_selection_exists_proof` calls this helper with
+    `α := EuclideanSpace ℝ (Fin n)` (whose `T2Space` instance is
+    automatic from its metric structure, exactly as audited by
+    `typeclass_witnesses_compact_subset` (S18b, PR #17802)) and
+    `T := F i` (closed in `↥S` via the new `hF_closed` hypothesis) to
+    obtain `IsClosed (Subtype.val '' F i)` — the missing precondition
+    for `exists_norm_eq_iInf_of_complete_convex`.
+
+    Reference: S19a PREP `2026-05-12-s19a-prep-closed-image-and-signature-alignment.md`
+    §3.a Path A draft; S19b PREP `2026-05-13-s19b-prep-mathlib-api-audit-closed-image-and-projection.md`
+    confirmed bearer file/line; S19d PREP `2026-05-13-s19d-prep-path-a-bearer-audit-cleared.md`
+    §3 provides the verbatim Path A drop-in used here (4-LOC body, no
+    new imports beyond the existing `Mathlib.Topology.MetricSpace.Basic`
+    transitive closure).
+
+    No new axiom is introduced; `axiom approx_selection_exists` (Axiom 2
+    above) remains in the file unchanged. -/
+private lemma image_subtype_isClosed_of_isClosed_of_compact
+    {α : Type*} [TopologicalSpace α] [T2Space α]
+    {S : Set α} (hS_compact : IsCompact S)
+    {T : Set ↥S} (hT_closed : IsClosed T) :
+    IsClosed ((Subtype.val '' T : Set α)) := by
+  haveI : CompactSpace ↥S := isCompact_iff_compactSpace.mp hS_compact
+  exact continuous_subtype_val.isClosedMap T hT_closed
+
 /-- **Sequential Compactness in Metric Spaces**
 
     In a compact metric space, every sequence has a convergent subsequence.
