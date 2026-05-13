@@ -1,8 +1,8 @@
 {
   "slug": "erdos-323",
   "title": "Erdős #323",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,16 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T23:55:09.603Z",
+    "phase": "BLOCKED",
+    "since": "2026-05-13T12:44:13Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Survey complete. 1 axiom (landau_two_squares — Landau's 1908 sums-of-two-squares asymptotic), 0 sorries, 3 unproved def-conjectures (ErdosProblem323_part1, _part2, DensityQuestion). Conjectures are 'unattackable by the methods at our disposal' (Erdős–Graham). The single axiom is a deep classical result not in Mathlib.",
+    "blockers": [
+      "landau_two_squares: f_{2,2}(x) lower bound via Landau (1908) — deep analytic number theory (Dirichlet series, Selberg–Delange) not in Mathlib",
+      "Conjecture 1 (f_{k,k}(x) >> x^{1-ε}): open for k ≥ 3; even f_{k,k}(x) = o(x) unknown",
+      "Conjecture 2 (f_{k,m}(x) >> x^{m/k} for m < k): open in general"
+    ],
+    "nextAction": "Wait on Mathlib for Landau-style asymptotics (sums of two squares, sums of k-th powers). Sub-question worth attempting separately: discharge the m=1 case bound powerSumCount_one_lb (already proved) and attempt Conjecture 2 at m=1, which reduces to 'count of perfect k-th powers up to x is floor(x^{1/k})+1'.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -61,15 +65,15 @@
     "mathlib": []
   },
   "started": "2026-01-12T23:55:09.603Z",
-  "lastUpdate": "2026-03-13T07:52:17.046Z",
+  "lastUpdate": "2026-05-13T12:44:13Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos323Problem.lean",
       "filename": "Erdos323Problem.lean",
-      "lineCount": 106,
-      "theoremCount": 2,
+      "lineCount": 139,
+      "theoremCount": 5,
       "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,
