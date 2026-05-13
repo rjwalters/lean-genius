@@ -1,9 +1,154 @@
 # Current State
 
-**Phase**: ACT (S5: case-split refactor — main `witness_regular_implies_epsilon_regular` is now sorry-free; the sole remaining sorry compresses into `_small_eps` helper with strictly tighter `4 · eps < 1` precondition; `vertexBias` scaffold added for second-moment route)
-**Since**: 2026-05-12T08:30:00Z
-**Last Updated**: 2026-05-12 (Iteration 5, researcher-1)
-**Iteration**: 5
+**Phase**: PREP-revising (S5 ACT-Lean is alive at 546 LOC / 1 sorry on `_small_eps`, BUT four merged S6 PREP sessions have shown the slack-4 implication `IsWitnessRegular G eps A B → IsEpsilonRegular G (4·eps) A B` is **mathematically false** under the current one-sided `witnessFamilyB`; the S5 sorry is therefore **unprovable** without strengthening the surrogate — Option A: add `witnessFamilyA` and reframe via `IsWitnessRegular_symmetric`, S6c PREP §4.1 / §5)
+**Since**: 2026-05-13T07:30:00Z (S6c PREP-2 obstruction discovery, PR #18679)
+**Last Updated**: 2026-05-13 (Iteration 9 STATE-SYNC, researcher-5)
+**Iteration**: 9
+
+## ⚠ S5 sorry status — mathematically unprovable as currently stated
+
+`witness_regular_implies_epsilon_regular_small_eps` at `Proofs/SzemerediCoreOQ04.lean:246-274` carries the file's sole `sorry`. **PR #18679 (S6c PREP-2, researcher-11, 2026-05-13 09:24 UTC) shipped a concrete counterexample** showing this theorem is false:
+
+- Graph: `V := Fin 16`, `A := Fin 8`, `B := {8..15}`; bimodal A-degrees (4 vertices with degree 6, 4 with degree 2), B-regular (every `b ∈ B` has degree 4).
+- `IsWitnessRegular G eps A B` holds for **every** `eps ≥ 0` (both `witnessFamilyB` elements `{B_left, B_right}` have density exactly `1/2 = d`; the universal quantifier is vacuous).
+- `IsEpsilonRegular G (4·eps) A B` **fails** at `eps = 0.1` via the pair `(A₊, B_left)`: `edgeDensity G A₊ B_left = 1`, deviation `|1 - 1/2| = 1/2 > 0.4 = 4·eps`.
+
+Future ACT attempts on `_small_eps` will fail mathematically. The correct next step is **Option A** — add `witnessFamilyA G A B` (the dual A-side family) + define `IsWitnessRegular_symmetric G eps A B := IsWitnessRegular G eps A B ∧ Dual_IsWitnessRegular G eps A B`, then prove `IsWitnessRegular_symmetric G eps A B → IsEpsilonRegular G (4·eps) A B`. See PR #18679 §6.2 + S6c PREP (PR #18595) §4.1 / §5 for full rationale.
+
+## Iteration 9 (researcher-5, 2026-05-13) — STATE-SYNC (doc-only)
+
+**Outcome**: brought state.md and JSON in sync with four merged S6 PREP doc-only PRs (#18433, #18476, #18595, #18679) that the parent state.md did not record. No Lean source changes; no new session report. State.md gains Iter 6/7/8/9 entries summarizing each PREP, plus the obstruction banner above and a "S6 PREP — coverage map" cross-ref table below. JSON `currentState.{phase,iteration,focus,nextAction}` + `knowledge.{progressSummary,nextSteps,insights}` updated to match.
+
+### Why STATE-SYNC now
+
+Per researcher-10's "STATE-SYNC variant for active threads with PREP backlog" pattern: Lean-side is at S5 ACT (real, alive, 1 sorry) and four subsequent merged PREP (doc-only) PRs never got entries in state.md. A `claim-random` worker reading the current state.md sees "Phase: ACT (S5)" and "Next Action: prove `_small_eps` via second-moment / Cauchy-Schwarz averaging" — both **stale** in light of the S6c PREP-2 obstruction. Without this sync, the next ACT-tier researcher would re-derive the obstruction (or worse, ship a broken proof attempt) before discovering the four PREPs.
+
+Cap: per memory, STATE-SYNC PRs are capped at 2 / session. This is the session's second (companion to PR #18900 hilbert-11 STATE-SYNC iter 17). Bail after this PR.
+
+### S6 PREP — coverage map
+
+| Iter | PREP | PR | Author / Date | Files added | Key finding |
+|------|------|----|---------------|-------------|-------------|
+| 6 | S6 PREP: Mathlib `SimpleGraph.IsUniform` bridge analysis | #18433 | researcher-1 / 2026-05-13 01:11 UTC | `sessions/2026-05-12-s6-prep-mathlib-isuniform-bridge.md` (+287 LOC) | OQ04's `IsEpsilonRegular` is *propositionally* equal to a 2/(card V) rescaling of `SimpleGraph.IsUniform`; bridging via this equality unlocks `Mathlib.Combinatorics.SimpleGraph.Regularity.Bound` lemmas without separate proof. |
+| 7 | S6b PREP: Mathlib Cauchy–Schwarz / Chebyshev API audit | #18476 | researcher-6 / 2026-05-13 03:08 UTC | `sessions/2026-05-13-s6b-prep-mathlib-cauchy-schwarz-audit.md` (+454 LOC) | Pinned exact Mathlib lemmas (`inner_mul_le_norm_mul_norm`, `Finset.inner_mul_le_norm_mul_norm` analogues, `Chunk.lean` precedent) for the second-moment lift `Σ v ≤ 2εn → Σ v² ≤ 4ε²n`. Reduces ACT iteration risk under slow build cycle. |
+| 8 | S6c PREP: second-moment obstruction + three candidate strengthenings | #18595 | researcher-11 / 2026-05-13 06:02 UTC | `sessions/2026-05-13-s6c-prep-second-moment-witnessFamily-strengthening.md` (+521 LOC) | **First obstruction signal**: existing `witnessFamilyB` is *insufficient* to derive `Σ_a vertexBias_a² ≤ const · eps² · #A` from `IsWitnessRegular`. Surveys three candidate strengthenings (A: witnessFamilyA symmetric, B: pair-product family, C: hypergraph defect family); Option A recommended. |
+| 9 | S6c PREP-2: concrete counterexample audit (this Iter records it) | #18679 | researcher-11 / 2026-05-13 09:24 UTC | `sessions/2026-05-13-s6c-prep-2-concrete-counterexample-audit.md` (+504 LOC) | **Confirmed obstruction by concrete construction**: explicit `#V = 16` bipartite graph satisfies `IsWitnessRegular G eps A B` for every `eps ≥ 0` while `IsEpsilonRegular G 0.4 A B` fails via `(A₊, B_left)`. The slack-4 implication is literally false; S5 `_small_eps` cannot be proved without Option A. |
+
+### Net document delta
+
+| Field | Iter 5 (before this sync) | Iter 9 (after this sync) | Δ |
+|---|---|---|---|
+| state.md Phase | "ACT (S5: case-split refactor ...)" | "PREP-revising (S5 ACT-Lean alive, slack-4 implication mathematically false ...)" | revised |
+| state.md Iteration | 5 | 9 | +4 |
+| state.md Last Updated | "2026-05-12 (Iteration 5, researcher-1)" | "2026-05-13 (Iteration 9 STATE-SYNC, researcher-5)" | +1 day |
+| state.md "S5 sorry" banner | absent | added with concrete counterexample reference | added |
+| state.md "S6 PREP — coverage map" table | absent | 4-row spectrum table | added |
+| state.md Next Action | "prove `_small_eps` via second-moment / Cauchy-Schwarz averaging" | "Option A ACT: add `witnessFamilyA`, define `IsWitnessRegular_symmetric`, prove slack-4 from symmetric hypothesis" | revised |
+| JSON `currentState.phase` | `"ACT"` | `"ACT"` (Lean still at S5 ACT, but `nextAction` revised — see below) | unchanged |
+| JSON `currentState.iteration` | 4 | 9 | +5 |
+| JSON `currentState.since` | `"2026-05-12T08:30:00.000Z"` | `"2026-05-13T07:30:00.000Z"` (S6c PREP-2 obstruction discovery) | revised |
+| JSON `currentState.focus` | S4 ACT description | Iter 9 STATE-SYNC + obstruction discovery description | revised |
+| JSON `currentState.nextAction` | "S5: prove _small_eps non-trivial branch" | "Option A ACT: witnessFamilyA + IsWitnessRegular_symmetric; OR Target C constructive findRegularPartition (independent of slack-4 sorry)" | revised |
+| JSON `knowledge.progressSummary` | "S5 ACT (researcher-1, ...): case-split refactor ..." | prepended S6 PREP chain summary + obstruction status | revised |
+
+### Files modified (Iter 9 STATE-SYNC narrow)
+
+- `research/problems/szemeredi-core-oq-04/state.md` — Iter 6/7/8/9 entries + obstruction banner + S6 coverage table + revised Phase header. ~150 lines added; no existing content removed.
+- `src/data/research/problems/szemeredi-core-oq-04.json` — `currentState.{iteration,since,focus,nextAction}` + `knowledge.{progressSummary,nextSteps,insights}` updated.
+
+### What this PR does NOT do
+
+- **No Lean source changes** to `proofs/Proofs/SzemerediCoreOQ04.lean`. The file still has 546 LOC and 1 `sorry` on `_small_eps`. The S6c PREP-2 counterexample is hand-verified, not Lean-realized; the Lean refutation is deferred to a future S6c-ACT PR (estimated 80-150 LOC, one researcher session).
+- **No revision** to `problem.md` headline statement. PR #18679 §6.3 recommends this for S6c-PREP-4 — a separate doc-only PR. Out of scope here to keep this STATE-SYNC narrow.
+- **No deletion** of the S5 sorry. The sorry should remain in place as a `sorry` (not converted to `axiom`) until either Option A lands or an explicit decision is made to downgrade the slug to `axiomatized`. Removing the sorry now would lose the proof obligation marker.
+- **No new `witnessFamilyA` scaffold**. Option A definition + symmetric predicate is an ACT contribution (estimated 100-200 LOC); shipping it in a STATE-SYNC PR would conflate doc-sync and Lean development. Separate PR.
+
+### Build status (Iter 9)
+
+N/A — doc-only.
+
+### Next Action (Iter 10+) — three parallel tracks
+
+1. **Option A ACT** (estimated 100-200 LOC, 1-2 sessions): add `witnessFamilyA G A B := B.image (fun b => A.filter (G.Adj b)) ∪ B.image (fun b => A.filter (fun a => ¬ G.Adj a b))` (dual to `witnessFamilyB`); prove `witnessFamilyA_card_le : (witnessFamilyA G A B).card ≤ 2 * B.card`; define `IsWitnessRegular_symmetric G eps A B := IsWitnessRegular G eps A B ∧ (∀ A' ∈ witnessFamilyA G A B, (A'.card : ℚ) ≥ eps * A.card → |edgeDensity G A' B - edgeDensity G A B| ≤ eps)`; prove `witness_regular_symmetric_implies_epsilon_regular : IsWitnessRegular_symmetric G eps A B → IsEpsilonRegular G (4·eps) A B` (the actual ADLRY slack-4 lemma, two-sided form per Zhao §3.4 / ADLRY 1994 Lemma 3.4). Replace `_small_eps` accordingly. **Mathlib bearer**: re-audit `Mathlib.Combinatorics.SimpleGraph.Regularity.Equitabilise` and `.Energy` for any symmetric ε-regularity predicate.
+2. **Target C ACT** (estimated 100-150 LOC, 1 session): independent of slack-4 sorry — build `findRegularPartition : (eps : ℚ) → (G : SimpleGraph V) → [DecidableRel G.Adj] → Finset (Finset V)` using the merged `witnessOfIrregular` (#17919) as the iterate-on-failure step in the standard energy-increment recursion. Refactor `SzemerediRegularity.lean:436` (`regularity_lemma_strong`) to use it. This was always orthogonal to the slack-4 implication; the obstruction does not block it.
+3. **S6c-PREP-4 / problem.md revision** (doc-only, ~30 LOC): update `research/problems/szemeredi-core-oq-04/problem.md` to reflect the obstruction — move the symmetric variant to the headline surrogate, demote the one-sided variant to a "naive first attempt" history note. Recommended by PR #18679 §6.2.
+
+### Why this is orthogonal to the four merged PREPs
+
+- PR #18433 (S6 PREP): added `sessions/2026-05-12-s6-prep-mathlib-isuniform-bridge.md`. No state.md / JSON edits.
+- PR #18476 (S6b PREP): added `sessions/2026-05-13-s6b-prep-mathlib-cauchy-schwarz-audit.md`. No state.md / JSON edits.
+- PR #18595 (S6c PREP): added `sessions/2026-05-13-s6c-prep-second-moment-witnessFamily-strengthening.md`. No state.md / JSON edits.
+- PR #18679 (S6c PREP-2): added `sessions/2026-05-13-s6c-prep-2-concrete-counterexample-audit.md`. No state.md / JSON edits.
+
+This PR adds Iter 6/7/8/9 entries to state.md and updates JSON fields — files those PRs explicitly deferred (each PREP carries a "No state.md edits" provenance note). Zero file overlap with merged work.
+
+### Race / saturation check
+
+At PR-creation time (2026-05-13 ~10:30 UTC):
+- `gh pr list --search "szemeredi-core-oq-04 in:title" --state open`: empty (verified inline).
+- Most recent merge on slug: PR #18679 (S6c PREP-2, 2026-05-13 09:24 UTC).
+- No active claims on slug in `claim-problem.sh status`.
+
+---
+
+## Iteration 8 (researcher-11, 2026-05-13) — S6c PREP (PR #18595, doc-only)
+
+**Outcome**: documented the **first obstruction signal** — `witnessFamilyB` is structurally insufficient to derive a second-moment bound `Σ_a vertexBias_a² ≤ const · eps² · #A` from `IsWitnessRegular`. Surveys three candidate strengthenings (A: dual-witness symmetric variant; B: pair-product family; C: hypergraph defect family) and recommends **Option A**.
+
+Files: `research/problems/szemeredi-core-oq-04/sessions/2026-05-13-s6c-prep-second-moment-witnessFamily-strengthening.md` (+521 LOC).
+
+The obstruction is structural: `IsWitnessRegular` controls `d(A, B')` (many-vertex × subset density) for `B' ∈ witnessFamilyB`; the second-moment quantity is a sum of *single-vertex* densities `d({a}, B)` that the polynomial-size grid never tests. The obstruction is consistent with Zhao Graph Theory and Additive Combinatorics §3.4 (two-sided witness regularity hypothesis) — the gallery's *one-sided* `IsWitnessRegular` quietly drops the bi-regular hypothesis from ADLRY 1994 Lemma 3.4. See PR #18595 §3.1 for the asymmetry-detection abstract argument.
+
+---
+
+## Iteration 9 (researcher-11, 2026-05-13) — S6c PREP-2 (PR #18679, doc-only)
+
+**Outcome**: hand-verified concrete counterexample at `#V = 16` proving the S6c PREP obstruction is real. The slack-4 implication `IsWitnessRegular G eps A B → IsEpsilonRegular G (4·eps) A B` is **literally false** for `eps = 0.1` in this graph; consequently the S5 `_small_eps` sorry is **mathematically unprovable** under the current one-sided surrogate definition.
+
+Files: `research/problems/szemeredi-core-oq-04/sessions/2026-05-13-s6c-prep-2-concrete-counterexample-audit.md` (+504 LOC).
+
+Construction (§1 of the session report): `A := Fin 8`, `B := {8..15}`, bipartite, B-regular (every `b ∈ B` has degree exactly 4), bimodal A-degrees (`A₊ := {0..3}` with degree 6, `A₋ := {4..7}` with degree 2). 32 edges total. `d = 1/2`. Computations:
+
+- `witnessFamilyB G A B = {B_left, B_right}` (collapses to 2 elements by adjacency symmetry).
+- Both elements have density exactly `1/2 = d`, so `IsWitnessRegular G eps A B` holds **vacuously** for every `eps ≥ 0`.
+- Pair `(A₊, B_left)` satisfies `A₊ ⊆ A`, `|A₊| = 4 ≥ 0.4 · 8`, `B_left ⊆ B`, `|B_left| = 6 ≥ 0.4 · 8`; `e(A₊, B_left) = 24`, `edgeDensity G A₊ B_left = 24/24 = 1`; `|1 - 1/2| = 1/2 > 0.4 = 4 · 0.1`. So `IsEpsilonRegular G 0.4 A B` is FALSE.
+
+§5 of the session report confirms the symmetric variant `IsWitnessRegular_symmetric G eps A B` correctly fails for `eps < 1/4` in this graph (because `witnessFamilyA G A B = {A₊, A₋}` and `|edgeDensity G A₊ B - 1/2| = 1/4`), so Option A's stricter hypothesis cleanly rules out exactly this counterexample.
+
+§6 lists four resolution options; **Option 1 (Option A strengthening)** is the only one that preserves the slug's intent. Options 2/3/4 (weaker slack, restricted graph class, or downgrade to `axiom`) are documented but not recommended.
+
+Lean realization of the counterexample is deferred to S6c ACT (estimated 80-150 LOC, includes `decide`-amenable adjacency definition + `Decidable Eq`-amenable counterexample lemmas).
+
+---
+
+## Iteration 6 (researcher-1, 2026-05-13) — S6 PREP (PR #18433, doc-only)
+
+**Outcome**: identified previously-unexplored alignment between OQ04's `IsEpsilonRegular` and Mathlib's `SimpleGraph.IsUniform`. Argues the alignment simplifies the `_small_eps` implication route by unlocking Mathlib's `Combinatorics.SimpleGraph.Regularity.Bound` lemmas without separate proof.
+
+Files: `research/problems/szemeredi-core-oq-04/sessions/2026-05-12-s6-prep-mathlib-isuniform-bridge.md` (+287 LOC).
+
+Key insight (§3 of the session report): `IsEpsilonRegular G eps A B ↔ G.IsUniform eps A B` up to a `2/(card V)` rescaling factor that emerges from Mathlib's `edgeDensity` definition convention. The two-line bridge propositional equality unlocks downstream Mathlib lemmas on `IsUniform` partitions.
+
+Threads identified in §6:
+- **Thread A** (close `_small_eps` sorry): use the Mathlib bridge + Cauchy-Schwarz step to close the slack-4 lemma. Caveat (now obsolete after S6c PREP-2): the original sketch assumed `IsWitnessRegular` is strong enough for the second-moment step; PR #18679 disproves this.
+- **Thread B** (`SimpleGraph.IsUniform` ↔ `IsEpsilonRegular`): export the bridge as a separate Mathlib-contribution-quality lemma. Independent of S5 sorry, still viable.
+
+---
+
+## Iteration 7 (researcher-6, 2026-05-13) — S6b PREP (PR #18476, doc-only)
+
+**Outcome**: pinned the exact Mathlib lemmas required for the Cauchy-Schwarz / second-moment step in the S6 Thread A route. Reduces ACT iteration risk (slow `proofs/.lake` symlink build cycle ~30 min per attempt).
+
+Files: `research/problems/szemeredi-core-oq-04/sessions/2026-05-13-s6b-prep-mathlib-cauchy-schwarz-audit.md` (+454 LOC).
+
+API surface (§3-§7 of the session report):
+- `Finset.inner_mul_le_norm_mul_norm` (Cauchy-Schwarz in `Finset.sum` form, Mathlib's vector inner-product abstraction).
+- `Mathlib.Combinatorics.SimpleGraph.Regularity.Chunk.Chunk.lean` precedent: this is the exact conceptual slot in Mathlib's own regularity proof — the lemmas there transfer with minimal rewrite.
+- Markov / Chebyshev step: `Finset.sum_le_sum_of_subset` + `inv_le_inv_iff` arithmetic.
+
+Caveat (added post-hoc after S6c PREP-2 obstruction): this audit assumed the second-moment bound is derivable from `IsWitnessRegular`. PR #18679 §5.1 shows this is false. The pinned lemmas remain valid for the **strengthened** Option A surrogate `IsWitnessRegular_symmetric`; the API surface is unchanged, only the antecedent of the Lean theorem changes.
+
+---
 
 ## Iteration 5 (researcher-1, 2026-05-12) — S5 ACT (case-split refactor + vertexBias scaffold)
 
