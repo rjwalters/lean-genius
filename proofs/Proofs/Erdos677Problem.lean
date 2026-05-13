@@ -311,3 +311,43 @@ theorem erdos677_k3_at_one (m : ℕ) (hm : 4 ≤ m) :
   -- hge : m + 3 ≤ 12, so m ≤ 9
   have hm_le : m ≤ 9 := by omega
   interval_cases m <;> revert heq <;> native_decide
+
+/-- **Structural observation**: `lcmInterval 2 3 = lcmInterval 3 3 = 60`. This is a
+    *near-miss* for Erdős #677 at `k = 3`: two distinct values of `n` (n=2 and n=3) share
+    the same LCM. However the conjecture requires `m ≥ n + k`, which for `n = 2, k = 3`
+    means `m ≥ 5`, excluding the equality at `m = 3`. Likewise `n = 3, k = 3` excludes
+    `m = 2`. So the constraint `m ≥ n + k` is exactly what rules out this near-miss. -/
+theorem lcmInterval_two_three_collision : lcmInterval 2 3 = lcmInterval 3 3 := by
+  native_decide
+
+/-- **Erdős #677 holds for k = 3, n = 2**: `lcmInterval m 3 ≠ lcmInterval 2 3 = 60` for all `m ≥ 5`.
+
+    Proof: `m + 3 ≤ lcmInterval m 3 = 60` forces `m ≤ 57`. The conjecture reduces to a
+    finite check over `m ∈ {5, 6, …, 57}` (53 cases), each dispatched by `native_decide`.
+    Note: at `m = 3` we have `lcmInterval 3 3 = 60 = lcmInterval 2 3`, but the constraint
+    `m ≥ n + k = 5` excludes this near-miss (see `lcmInterval_two_three_collision`). -/
+theorem erdos677_k3_at_two (m : ℕ) (hm : 5 ≤ m) :
+    lcmInterval m 3 ≠ lcmInterval 2 3 := by
+  intro heq
+  have h0 : lcmInterval 2 3 = 60 := by native_decide
+  have hge : m + 3 ≤ lcmInterval m 3 := le_lcmInterval m 3 (by omega)
+  rw [heq, h0] at hge
+  -- hge : m + 3 ≤ 60, so m ≤ 57
+  have hm_le : m ≤ 57 := by omega
+  interval_cases m <;> revert heq <;> native_decide
+
+/-- **Erdős #677 holds for k = 3, n = 3**: `lcmInterval m 3 ≠ lcmInterval 3 3 = 60` for all `m ≥ 6`.
+
+    Proof: `m + 3 ≤ lcmInterval m 3 = 60` forces `m ≤ 57`. The conjecture reduces to a
+    finite check over `m ∈ {6, 7, …, 57}` (52 cases), each dispatched by `native_decide`.
+    Note: at `m = 2` we have `lcmInterval 2 3 = 60 = lcmInterval 3 3`, but the constraint
+    `m ≥ n + k = 6` excludes this near-miss (see `lcmInterval_two_three_collision`). -/
+theorem erdos677_k3_at_three (m : ℕ) (hm : 6 ≤ m) :
+    lcmInterval m 3 ≠ lcmInterval 3 3 := by
+  intro heq
+  have h0 : lcmInterval 3 3 = 60 := by native_decide
+  have hge : m + 3 ≤ lcmInterval m 3 := le_lcmInterval m 3 (by omega)
+  rw [heq, h0] at hge
+  -- hge : m + 3 ≤ 60, so m ≤ 57
+  have hm_le : m ≤ 57 := by omega
+  interval_cases m <;> revert heq <;> native_decide

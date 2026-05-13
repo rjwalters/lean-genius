@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: k=1, k=2 proved. General large-m bound added (25 theorems, 1 axiom=Thue-Siegel). k=3 remains open for small m.",
+    "progressSummary": "PROGRESS: k=1, k=2 proved fully. k=3 proved axiom-free for n ∈ {0, 1, 2, 3}. General large-m bound covers any k when m exceeds the consecutive product (31 theorems, 1 axiom=Thue-Siegel). k=3 small-n cases for n ≥ 4 require a sharper lower bound than n+k ≤ lcmInterval n k (the brute-force interval_cases approach hits 200+ cases for n=4).",
     "builtItems": [
       "Proved lcmInterval_example1/2 by native_decide",
       "Proved lcmInterval_dvd_product by Finset.induction_on",
@@ -48,7 +48,10 @@
       "erdos677_k2: conjecture PROVED for k=2 via lcmInterval_two + nlinarith (Erdos677Problem.lean:223)",
       "factorization_lcmInterval: factorization = Finset.sup of factorizations, induction on k (Erdos677Problem.lean:233)",
       "erdos677_large_m: general axiom-free bound for any k in Erdos677Problem.lean",
-      "erdos677_k3_large_m: k=3 corollary when m+3 > (n+1)(n+2)(n+3)"
+      "erdos677_k3_large_m: k=3 corollary when m+3 > (n+1)(n+2)(n+3)",
+      "erdos677_k3_at_two: k=3, n=2 case proved axiom-free via le_lcmInterval + interval_cases over m ∈ {5..57} (Erdos677Problem.lean:323)",
+      "erdos677_k3_at_three: k=3, n=3 case proved axiom-free via le_lcmInterval + interval_cases over m ∈ {6..57} (Erdos677Problem.lean:342)",
+      "lcmInterval_two_three_collision: structural near-miss M(2,3) = M(3,3) = 60 (Erdos677Problem.lean:316)"
     ],
     "insights": [
       "lcmInterval_example1/2 are pure computations — lcm(5,6,7)=210=lcm(14,15) and lcm(4,5,6,7)=420=lcm(20,21), provable by native_decide",
@@ -64,7 +67,11 @@
       "Lower bound: n+k divides M(n,k), so n+k <= M(n,k) for k > 0 — proved as le_lcmInterval",
       "lcmInterval_ne_zero: M(n,k) != 0 for all n,k — base case 1 != 0, inductive step from pos",
       "General bound: lcmInterval(n,k) ≤ consecutiveProduct(n,k) via divisibility; combined with m+k ≤ lcmInterval(m,k) gives contradiction when consecutiveProduct(n,k) < m+k",
-      "For k=3: Thue-Siegel axiom still needed for small m (m+3 ≤ (n+1)(n+2)(n+3))"
+      "For k=3: Thue-Siegel axiom still needed for small m (m+3 ≤ (n+1)(n+2)(n+3))",
+      "lcmInterval 2 3 = lcmInterval 3 3 = 60 (lcm(3,4,5) = lcm(4,5,6)). The conjecture constraint m ≥ n+k exactly excludes this near-miss: for n=2 we need m≥5 ruling out m=3; for n=3 we need m≥6 ruling out m=2. The constraint is therefore tight at k=3.",
+      "k=3 small-n cases (n ∈ {0, 1, 2, 3}) follow a uniform pattern: target value V = lcmInterval n 3, lower bound m+3 ≤ V from le_lcmInterval forces m ≤ V-3, then interval_cases m <;> native_decide. The case count is V-3 minus the start, which grows linearly in V.",
+      "For n ∈ {2, 3}: target V=60 so 53/52 cases; for n=4: V=210 so 201 cases; for n=5 (odd): V = (6*7*8)/2 = 168 so 161 cases; cases grow like (n+1)(n+2)(n+3)/2 which makes pure interval_cases infeasible for n ≥ 4 without a sharper bound.",
+      "Closed-form structure for k=3: lcmInterval n 3 = (n+1)(n+2)(n+3) when n is even (since both odd factors n+1, n+3 are coprime to n+2 and to each other), and = (n+1)(n+2)(n+3)/2 when n is odd (n+1 and n+3 are both even, sharing exactly the factor 2). This would tighten the lower bound and enable n ≥ 4 cases with manageable enumeration."
     ],
     "mathlibGaps": [],
     "nextSteps": [],

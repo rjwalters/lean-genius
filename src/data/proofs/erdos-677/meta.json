@@ -22,12 +22,14 @@
     "erdosProblemStatus": "open",
     "axiomCount": 1,
     "assumptions": "1 axiom: thue_siegel_finiteness (Thue-Siegel theorem: finitely many solutions for fixed k). Former axioms now proved: lcmInterval_example1/2 (native_decide), lcmInterval_dvd_product (Finset.induction + Nat.lcm_dvd), lcmInterval_pos (dvd + product positivity). Conjecture verified for k=1 and k=2.",
-    "lineCount": 313,
+    "lineCount": 353,
     "mathlib_version": "4.26.0",
-    "theoremCount": 28,
+    "theoremCount": 31,
     "originalContributions": [
       "erdos677_large_m: general bound — for any k, if m+k > consecutiveProduct(n,k) then M(m,k)≠M(n,k)",
-      "erdos677_k3_large_m: k=3 corollary of the large-m bound, axiom-free"
+      "erdos677_k3_large_m: k=3 corollary of the large-m bound, axiom-free",
+      "erdos677_k3_at_two/three: axiom-free k=3 resolution for n ∈ {2, 3} via bounded interval_cases",
+      "lcmInterval_two_three_collision: near-miss observation that M(2,3) = M(3,3) = 60, excluded by m ≥ n+k constraint"
     ],
     "definitionCount": 5
   },
@@ -134,9 +136,9 @@
       "Finset"
     ],
     "namespace": null,
-    "lineCount": 313,
+    "lineCount": 353,
     "axiomCount": 1,
-    "theoremCount": 28,
+    "theoremCount": 31,
     "definitionCount": 5,
     "path": "Proofs/Erdos677Problem.lean",
     "sorries": 0
