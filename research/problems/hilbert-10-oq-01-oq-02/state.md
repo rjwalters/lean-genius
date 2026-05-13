@@ -2,12 +2,82 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T22:00:00Z
-**Iteration**: 23
-**Last Updated**: 2026-05-12 (researcher-1)
+**Iteration**: 25
+**Last Updated**: 2026-05-13 (researcher-12)
 
 ## Current Focus
 
-Iteration 23 (2026-05-12, researcher-1, this PR): **Name the level-2
+Iteration 25 (2026-05-13, researcher-12, this PR): **list-arity versions
+of iter 24a's binary Σ₂ ∪ and Π₂ ∩ closures**.
+
+Two new theorems in two clean sections (Part VIII.29 + VIII.30), all
+axiom-free, using ONLY iter 24a's binary closures (already on main via
+PR #18659) plus iter 5 trivial subsets and iter 4 Σ₂/Π₂ class
+congruence. **No new Mathlib imports, no new helper lemmas.**
+
+- `sigma2_unionList_isExistentialUniversalDefinition (l : List RatSubset)
+  (h : ∀ S ∈ l, IsExistentialUniversalDefinition S) :
+  IsExistentialUniversalDefinition (fun q => ∃ S ∈ l, S q)` — Σ₂ closed
+  under finite list ∪. List induction: empty list → `empty_isExistentialUniversalDefinition`
+  via Σ₂ class congruence; cons step → iter 24a `sigma2_union_isExistentialUniversalDefinition`
+  + iter 4 Σ₂ class congruence + `List.mem_cons` case split.
+- `pi2_intersectionList_isUniversalExistentialDefinition (l : List RatSubset)
+  (h : ∀ S ∈ l, IsUniversalExistentialDefinition S) :
+  IsUniversalExistentialDefinition (fun q => ∀ S ∈ l, S q)` — Π₂ closed
+  under finite list ∩. List induction: empty list → `universe_isUniversalExistentialDefinition`
+  via Π₂ class congruence; cons step → iter 24a `pi2_intersection_isUniversalExistentialDefinition`
+  + iter 4 Π₂ class congruence + `List.mem_cons` case split.
+
+**Significance** — completes the list-arity row of the level-2 Σ₂/Π₂
+binary Boolean closure grid:
+
+| Class | binary ∪          | binary ∩          | list ∪              | list ∩              |
+|-------|-------------------|-------------------|---------------------|---------------------|
+| Σ₁    | iter 9            | iter 12           | iter 15             | iter 14             |
+| Π₁    | iter 13           | iter 9            | iter 14             | iter 15             |
+| Σ₂    | iter 24a (#18659) | iter 20 (#17628)  | **iter 25 (this)**  | iter 21 (#17676)    |
+| Π₂    | iter 20 (#17628)  | iter 24a (#18659) | iter 21 (#17676)    | **iter 25 (this)**  |
+
+After iter 25 lands, every finite list ∪/∩ combination of arbitrary
+Σ₂/Π₂-definable subsets stays in the same class — strictly bigger
+than iter 14's diagonal transports (which only handled Σ₁/Π₁ inputs
+lifted to Σ₂/Π₂ via the trivial inclusions iter 11). Neither Σ₂ nor
+Π₂ is (known to be) closed under complement; that would collapse
+Σ₂ = Π₂ at level 2 — a level-2 analog of the OPEN level-1 question,
+currently OPEN at level 2 as well.
+
+**Orthogonality** to the two open stacked PRs (#17552 iter 18,
+#17602 iter 19): those PRs targeted iter-16-based level-2 cells but
+sit on a stale stack from before iter 16 PR #17456 was CLOSED on
+2026-05-08; iter 25 lifts iter 24a (the live re-implementation of
+iter 16 off current main) to list arity. Iter 25 branches cleanly
+off **origin/main** at iter 24a's HEAD (PR #18659).
+
+**File status**: 2775 → 2942 lines (+167). Theorems 87 → 89 (+2:
+`sigma2_unionList_isExistentialUniversalDefinition`,
+`pi2_intersectionList_isUniversalExistentialDefinition`). Defs 15
+(unchanged). Axioms 1 (unchanged). Sorries 0 (unchanged). **No new
+imports.**
+
+**Build risk**: very low. The two new theorems use only existing
+helpers (iter 24a binary closures, iter 5 trivial subsets, iter 4
+class congruence) and standard Lean-core list helpers
+(`List.mem_cons_self`, `List.mem_cons_of_mem`, `List.mem_cons`). The
+proof skeleton is structurally identical to iter 21's
+`sigma2_intersectionList_isExistentialUniversalDefinition` and
+`pi2_unionList_isUniversalExistentialDefinition` (already CI-verified
+on main via PR #17676) — only the binary-closure ingredient is
+swapped from iter 20 to iter 24a. Worktree's `proofs/.lake` is the
+known recursive self-symlink (per
+`feedback_researcher_lake_symlink_broken.md`), so a local Docker
+build would re-fresh-clone Mathlib (~30-45 min); CI is the ground
+truth, following the slug's iter 14-24a build-pending merge precedent.
+
+---
+
+## Iteration 23 (historical record — merged in PR #18178 / #18256)
+
+Iteration 23 (2026-05-12, researcher-1): **Name the level-2
 OPEN question Σ₂(ℤ) as a top-level `Prop` and prove its complement
 duality Σ₂(ℤ) ⟺ Π₂(ℚ \ ℤ)**.
 

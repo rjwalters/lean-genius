@@ -2483,6 +2483,167 @@ theorem sigma2_union_isExistentialUniversalDefinition
     (fun q => S₁ q ∨ S₂ q)).mpr hd
 
 -- ============================================================
+-- Part VIII.29 (iter 25, Path B): list version of Σ₂ ∪ closure
+-- ============================================================
+
+/-- Iter 25, Path B: **the Σ₂ class is closed under finite list union**.
+
+    Direct list lift of iter 24a's
+    `sigma2_union_isExistentialUniversalDefinition` by induction on the
+    list, with the empty list giving the empty set (vacuous existential
+    `∃ S ∈ [], S q ↔ False`).
+
+    **Strategy** (direct mirror of iter 21's
+    `sigma2_intersectionList_isExistentialUniversalDefinition`, swapping
+    `∀`↔`∃`, `∧`↔`∨`, `universe`↔`empty`, and `iter 20 ∩`↔`iter 24a ∪`):
+    induction on `l : List RatSubset`, base case via
+    `empty_isExistentialUniversalDefinition` + iter-4 Σ₂ class congruence
+    bridge, step case via iter-24a
+    `sigma2_union_isExistentialUniversalDefinition` applied to the head
+    and the inductive hypothesis on the tail.
+
+    **Significance**: lifts iter 24a's binary Σ₂ ∪ closure to arbitrary
+    finite list arity. Combined with iter 21's
+    `sigma2_intersectionList_isExistentialUniversalDefinition` (already
+    on main), this **completes the list-arity row of the Σ₂ binary
+    Boolean closure grid**:
+
+        | Class | binary ∪    | binary ∩    | list ∪      | list ∩      |
+        |-------|-------------|-------------|-------------|-------------|
+        | Σ₂    | iter 24a    | iter 20     | **iter 25** | iter 21     |
+        | Π₂    | iter 20     | iter 24a    | iter 21     | **iter 25** |
+
+    See `pi2_intersectionList_isUniversalExistentialDefinition` (just
+    below) for the Π₂ side.
+
+    **Mathlib API surface**: ZERO new imports, ZERO new lemmas. Uses
+    only iter 24a's binary `sigma2_union_isExistentialUniversalDefinition`
+    (just above, also on origin/main via #18659), iter 5's
+    `empty_isExistentialUniversalDefinition`, iter 4's Σ₂ class
+    congruence helper `existentialUniversalDefinition_iff_of_pred_iff`,
+    and the standard Lean-core list helpers `List.mem_cons_self`,
+    `List.mem_cons_of_mem`, `List.mem_cons`.
+
+    **OPEN content unchanged**: the central Σ₁ question for ℤ ⊂ ℚ is
+    unaffected. Iter 25 only sharpens the level-2 list-arity closure
+    properties at the previously-missing iter-24a cells. -/
+theorem sigma2_unionList_isExistentialUniversalDefinition
+    (l : List RatSubset) (h : ∀ S ∈ l, IsExistentialUniversalDefinition S) :
+    IsExistentialUniversalDefinition (fun q : Rat => ∃ S ∈ l, S q) := by
+  induction l with
+  | nil =>
+    have hbridge : ∀ q : Rat,
+        (fun q : Rat => ∃ S ∈ ([] : List RatSubset), S q) q ↔
+        (fun _ : Rat => False) q := by
+      intro q; simp
+    exact (existentialUniversalDefinition_iff_of_pred_iff hbridge).mpr
+      empty_isExistentialUniversalDefinition
+  | cons a t ih =>
+    have h_head : IsExistentialUniversalDefinition a :=
+      h a (List.mem_cons_self a t)
+    have h_tail : ∀ S ∈ t, IsExistentialUniversalDefinition S :=
+      fun S hS => h S (List.mem_cons_of_mem a hS)
+    have ih_def : IsExistentialUniversalDefinition
+        (fun q : Rat => ∃ S ∈ t, S q) :=
+      ih h_tail
+    have h_union : IsExistentialUniversalDefinition
+        (fun q : Rat => a q ∨ (∃ S ∈ t, S q)) :=
+      sigma2_union_isExistentialUniversalDefinition h_head ih_def
+    have hbridge : ∀ q : Rat,
+        (fun q : Rat => ∃ S ∈ (a :: t), S q) q ↔
+        (fun q : Rat => a q ∨ (∃ S ∈ t, S q)) q := by
+      intro q
+      constructor
+      · rintro ⟨S, hSmem, hSq⟩
+        rcases List.mem_cons.mp hSmem with rfl | hSt
+        · exact Or.inl hSq
+        · exact Or.inr ⟨S, hSt, hSq⟩
+      · rintro (ha | ⟨S, hSt, hSq⟩)
+        · exact ⟨a, List.mem_cons_self a t, ha⟩
+        · exact ⟨S, List.mem_cons_of_mem a hSt, hSq⟩
+    exact (existentialUniversalDefinition_iff_of_pred_iff hbridge).mpr h_union
+
+-- ============================================================
+-- Part VIII.30 (iter 25, Path B): list version of Π₂ ∩ closure
+-- ============================================================
+
+/-- Iter 25, Path B: **the Π₂ class is closed under finite list intersection**.
+
+    Direct list lift of iter 24a's
+    `pi2_intersection_isUniversalExistentialDefinition` by induction on
+    the list, with the empty list giving the universe set (vacuous
+    universal `∀ S ∈ [], S q ↔ True`).
+
+    **Strategy** (direct mirror of iter 21's
+    `pi2_unionList_isUniversalExistentialDefinition`, swapping `∃`↔`∀`,
+    `∨`↔`∧`, `empty`↔`universe`, and `iter 20 ∪`↔`iter 24a ∩`):
+    induction on `l : List RatSubset`, base case via
+    `universe_isUniversalExistentialDefinition` + iter-4 Π₂ class
+    congruence bridge, step case via iter-24a
+    `pi2_intersection_isUniversalExistentialDefinition` applied to the
+    head and the inductive hypothesis on the tail.
+
+    **Significance**: completes the list-arity row of the level-2 Π₂
+    binary Boolean closure grid (alongside
+    `sigma2_unionList_isExistentialUniversalDefinition` above and iter
+    21's list closures on main). Every finite list intersection of
+    Π₂-definable subsets is itself Π₂-definable.
+
+    **Strictly bigger than iter 14's diagonal transports**: iter 14
+    only handles diagonal-input cases (Σ₁ list ∩ → Π₂ via Σ₁ ⊆ Π₂);
+    iter 25 handles arbitrary Π₂ inputs (e.g., a list containing the
+    Π₂ predicate `IntSubset` from `koenigsmann_2016_universal`, or any
+    properly-Π₂ subset arising from iter 24a's binary Π₂ ∩ + this list
+    lift).
+
+    **Mathlib API surface**: ZERO new imports, ZERO new lemmas. Uses
+    only iter 24a's binary `pi2_intersection_isUniversalExistentialDefinition`
+    (already on origin/main via #18659), iter 5's
+    `universe_isUniversalExistentialDefinition`, iter 4's Π₂ class
+    congruence helper `universalExistentialDefinition_iff_of_pred_iff`,
+    and the standard Lean-core list helpers `List.mem_cons_self`,
+    `List.mem_cons_of_mem`, `List.mem_cons`.
+
+    **OPEN content unchanged**: the central Σ₁ question for ℤ ⊂ ℚ is
+    unaffected. Iter 25 only sharpens the level-2 list-arity closure
+    properties at the previously-missing iter-24a cells. -/
+theorem pi2_intersectionList_isUniversalExistentialDefinition
+    (l : List RatSubset) (h : ∀ S ∈ l, IsUniversalExistentialDefinition S) :
+    IsUniversalExistentialDefinition (fun q : Rat => ∀ S ∈ l, S q) := by
+  induction l with
+  | nil =>
+    have hbridge : ∀ q : Rat,
+        (fun q : Rat => ∀ S ∈ ([] : List RatSubset), S q) q ↔
+        (fun _ : Rat => True) q := by
+      intro q; simp
+    exact (universalExistentialDefinition_iff_of_pred_iff hbridge).mpr
+      universe_isUniversalExistentialDefinition
+  | cons a t ih =>
+    have h_head : IsUniversalExistentialDefinition a :=
+      h a (List.mem_cons_self a t)
+    have h_tail : ∀ S ∈ t, IsUniversalExistentialDefinition S :=
+      fun S hS => h S (List.mem_cons_of_mem a hS)
+    have ih_def : IsUniversalExistentialDefinition
+        (fun q : Rat => ∀ S ∈ t, S q) :=
+      ih h_tail
+    have h_inter : IsUniversalExistentialDefinition
+        (fun q : Rat => a q ∧ (∀ S ∈ t, S q)) :=
+      pi2_intersection_isUniversalExistentialDefinition h_head ih_def
+    have hbridge : ∀ q : Rat,
+        (fun q : Rat => ∀ S ∈ (a :: t), S q) q ↔
+        (fun q : Rat => a q ∧ (∀ S ∈ t, S q)) q := by
+      intro q
+      constructor
+      · intro hall
+        refine ⟨hall a (List.mem_cons_self a t),
+          fun S hS => hall S (List.mem_cons_of_mem a hS)⟩
+      · rintro ⟨ha, htail⟩ S hS
+        rcases List.mem_cons.mp hS with rfl | hSt
+        · exact ha
+        · exact htail S hSt
+    exact (universalExistentialDefinition_iff_of_pred_iff hbridge).mpr h_inter
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -2696,6 +2857,10 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
   - `IntegersAreExistentialUniversalOverQ` (Σ₂(ℤ) as named Prop — level-2 OPEN analog of `IntegersAreDiophantineOverQ`, iter 23)
   - `integers_existentialUniversal_iff_complement_universalExistential` (Σ₂(ℤ) ⟺ Π₂(ℚ\ℤ), iter 23)
   - `koenigsmann_2016_universal_doubleNeg` (Π₂(¬¬ ℤ) re-export of Koenigsmann via iter 7 doubleNeg invariance, iter 23)
+  - `pi2_intersection_isUniversalExistentialDefinition` (Π₂ closed under binary intersection via sum-of-squares + interleave on existential block, iter 24a)
+  - `sigma2_union_isExistentialUniversalDefinition` (Σ₂ closed under binary union via iter 5 duality + iter 24a Π₂ ∩ closure, iter 24a)
+  - `sigma2_unionList_isExistentialUniversalDefinition` (Σ₂ closed under finite list union via iter 24a + list induction, iter 25)
+  - `pi2_intersectionList_isUniversalExistentialDefinition` (Π₂ closed under finite list intersection via iter 24a + list induction, iter 25)
 -/
 
 #check @IsDiophantineDefinition
@@ -2771,5 +2936,7 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @koenigsmann_2016_universal_doubleNeg
 #check @pi2_intersection_isUniversalExistentialDefinition
 #check @sigma2_union_isExistentialUniversalDefinition
+#check @sigma2_unionList_isExistentialUniversalDefinition
+#check @pi2_intersectionList_isUniversalExistentialDefinition
 
 end Hilbert10Rationals
