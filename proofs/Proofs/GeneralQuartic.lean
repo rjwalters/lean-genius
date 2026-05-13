@@ -379,6 +379,28 @@ theorem resolvent_cubic_eval_s_form (p q r s : ℂ) :
   simp only [resolventCubic, eval_add, eval_mul, eval_pow, eval_X, eval_C]
   ring
 
+/-- **Pan-witness specialization of the cleaned resolvent** (S5b SCAFFOLD-1).
+
+At the Pan numerical-instability witness `(p, q, r)(t) = (-1, t², 1/4 − t² + t⁴/4)`
+(see `sessions/2026-05-13-s4b-prep-pan-witness-arithmetic-audit.md` §2), the
+cleaned-resolvent identity `resolvent_cubic_eval_s_form` specializes to
+
+`R̃(s; -1, t², 1/4 − t² + t⁴/4) = s³ − 2 s² + (4 t² − t⁴) · s − t⁴`.
+
+The first-order tangency that drives the `α(t) = Θ(t)` cancellation is
+visible from this identity directly: at `t = 0` the RHS is `s²(s − 2)`,
+exhibiting a double root at `s = 0` (i.e., `α² = s = 0` is a double root
+of the cleaned resolvent in `s`). This is the algebraic precursor to the
+`k = 1` tangency proof for a future S5b ACT.
+
+Proof: substitute the witness coordinates into `resolvent_cubic_eval_s_form`
+and close by `ring`. -/
+theorem pan_witness_cleaned_resolvent (t s : ℂ) :
+    (resolventCubic (-1) (t^2) (1/4 - t^2 + t^4/4)).eval ((s - (-1)) / 2) =
+    s^3 - 2 * s^2 + (4 * t^2 - t^4) * s - t^4 := by
+  rw [resolvent_cubic_eval_s_form]
+  ring
+
 /-- **Biquadratic limit (OQ-02.c, S3 DISCHARGE)**
 
 In the biquadratic limit `q = 0`, Ferrari's formula admits a
@@ -521,5 +543,6 @@ end GeneralQuartic
 #check GeneralQuartic.resolvent_cubic_q_zero
 #check GeneralQuartic.resolvent_root_neg_p_half_at_q_zero
 #check GeneralQuartic.resolvent_cubic_eval_s_form
+#check GeneralQuartic.pan_witness_cleaned_resolvent
 #check GeneralQuartic.ferrari_biquad_limit
 #check GeneralQuartic.biquadratic_simple
