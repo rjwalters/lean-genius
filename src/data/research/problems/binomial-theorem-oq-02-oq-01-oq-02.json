@@ -1,8 +1,8 @@
 {
   "slug": "binomial-theorem-oq-02-oq-01-oq-02",
   "title": "Binomial Theorem: Marginal Distributions as Binomials",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,42 +16,43 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-04-04T11:32:56.934745Z",
-    "iteration": 1,
-    "focus": "PGF proof complete; one sorry remains for direct PMF formula",
+    "iteration": 2,
+    "focus": "Completed 2026-04-04 (Session 2): multinomial_marginal_pmf discharged via direct algebraic proof (bijection + Nat.multinomial_insert + Finset.sum_nbij'). proofs/Proofs/BinomialTheoremOQ02OQ01OQ02.lean ships 9 theorems, 338 LOC, 0 sorries, 0 axioms. The Polynomial.funext route was not needed — the PMF formula follows from factoring the multinomial coefficient and reducing to the multinomial theorem on s.erase i₀.",
     "blockers": [],
-    "nextAction": "Complete multinomial_marginal_pmf using polynomial coefficient extraction",
+    "nextAction": "None — proof complete. Possible future extensions (separate sub-OQs): joint distributions of disjoint multinomial subsets; conditional distributions given sum constraint.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved main PGF theorem; marginal of multinomial is Binomial(n, p_i) via PGF. One sorry remains for direct PMF formula (needs polynomial coefficient extraction).",
+    "progressSummary": "COMPLETED (Session 2, 2026-04-04): All 10 theorems in proofs/Proofs/BinomialTheoremOQ02OQ01OQ02.lean fully proved, 0 sorries, 0 axioms, 338 LOC. Marginal-of-multinomial = Binomial(n, p_i) established via two complementary routes: (a) PGF identity via multinomial_mgf_real with g(i) = t if i=i₀ else 1 (Session 1, fully proved); (b) direct PMF formula via Nat.multinomial_insert + Finset.sum_nbij' bijection on s.erase i₀ + multinomial theorem (Session 2, fully proved). The Polynomial.funext route was not needed — direct algebraic manipulation suffices. See research/problems/binomial-theorem-oq-02-oq-01-oq-02/knowledge.md for both session reports.",
     "builtItems": [
       "multinomial_mgf_real: MGF identity (Proofs/BinomialTheoremOQ02OQ01OQ02.lean:57)",
       "multinomialProb_sum_one: normalization (line:67)",
       "multinomial_marginal_pgf: main PGF theorem, fully proved (line:80)",
       "multinomial_marginal_pgf_eq_binomial: PGF = binomial theorem expansion (line:131)",
-      "bernoulli_marginal_pgf: Bool/Bernoulli special case (line:177)"
+      "bernoulli_marginal_pgf: Bool/Bernoulli special case (line:177)",
+      "multinomial_marginal_pmf: direct PMF formula, fully proved Session 2 via Nat.multinomial_insert + Finset.sum_nbij' bijection (no Polynomial.funext needed)"
     ],
     "insights": [
       "PGF approach is the cleanest proof: apply MGF theorem with g(i) = t if i=i₀ else 1",
       "Product simplification: ∏ g(i)^{k(i)} = t^{k(i₀)} via Finset.prod_eq_single",
       "Sum simplification: ∑ p(i)·g(i) = p(i₀)·t + (1-p(i₀)) via Finset.sum_ite_eq' and normalization",
-      "Direct PMF formula requires polynomial coefficient extraction (Polynomial.funext) - left as sorry",
-      "Bool case (Bernoulli marginal) gives concrete instantiation as corollary"
+      "Direct PMF formula CAN be proven without Polynomial.funext: factor multinomial coefficient via Nat.multinomial_insert, then biject (k with k i₀ = j) ↔ (f in (s.erase i₀).piAntidiag (n-j)) via Finset.sum_nbij' and reduce to multinomial theorem on s.erase i₀",
+      "Bool case (Bernoulli marginal) gives concrete instantiation as corollary",
+      "Key lemma chain for PMF: multinomial_insert → bijection Finset.sum_nbij' → sum_pow_eq_sum_piAntidiag"
     ],
     "mathlibGaps": [
-      "Polynomial coefficient extraction from pointwise equality: need Polynomial.funext + coeff ring theory",
-      "Joint independence of disjoint multinomial subsets: no Mathlib support found"
+      "Joint independence of disjoint multinomial subsets: no Mathlib support found (deferred to a sibling sub-OQ if pursued)"
     ],
     "nextSteps": [
-      "Complete multinomial_marginal_pmf by using Polynomial.X and coefficient extraction to formalize the sorry",
-      "Check if Mathlib4 has Polynomial.funext or similar for coefficient extraction",
-      "Consider extending to joint distributions of disjoint subsets"
+      "None — proof complete.",
+      "Possible follow-up sub-OQ (deferred): joint distributions of disjoint multinomial subsets",
+      "Possible follow-up sub-OQ (deferred): conditional distributions given sum constraint"
     ]
   },
   "tags": [
@@ -87,7 +88,7 @@
     "mathlib": []
   },
   "started": "2026-04-04T05:15:05.956Z",
-  "lastUpdate": "2026-04-04T11:32:56.934745Z",
+  "lastUpdate": "2026-05-13T12:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
