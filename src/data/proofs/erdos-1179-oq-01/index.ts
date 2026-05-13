@@ -1,5 +1,6 @@
 import type { Proof, Annotation, ProofData, ProofMeta, ProofSection, ProofOverview, ProofConclusion, CrossReference } from '@/types/proof'
 import metaJson from './meta.json'
+import annotationsJson from './annotations.json'
 
 // Type assertion for JSON import
 const meta = metaJson as unknown as {
@@ -30,7 +31,7 @@ export const proof: Proof = {
   crossReferences: meta.crossReferences,
 }
 
-export const annotations: Annotation[] = []
+export const annotations: Annotation[] = annotationsJson as unknown as Annotation[]
 
 export const proofData: ProofData = {
   proof,
