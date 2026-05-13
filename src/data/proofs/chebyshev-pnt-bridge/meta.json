@@ -32,7 +32,7 @@
     ]
   },
   "overview": {
-    "historicalContext": "Pafnuty Chebyshev (1852) proved the first rigorous bounds on π(x), establishing A·x/log(x) < π(x) < B·x/log(x) with explicit constants A ≈ 0.921 and B ≈ 1.106. His method used two combinatorial ingredients: the primorial n# = ∏_{p≤n} p and the central binomial coefficient C(2n,n). The chain 4^n ≤ (2n+1)·C(2n,n) and n# ≤ 4^n (both elementary) give the bounds via logarithms. Chebyshev's work refuted Legendre's incorrect conjecture that π(x) ~ x/(log(x)−1.08). The Prime Number Theorem (Hadamard and de la Vallée Poussin, 1896) showed the exact limit is 1, requiring deep complex analysis via the Riemann zeta function ζ(s). This file obtains weaker constants (log(2) ≈ 0.693 and 2·log(4) ≈ 2.773) using only Mathlib primitives — a fully machine-verified Chebyshev-type result bridging explicit combinatorial bounds to π(x) = Θ(x/log(x)).",
+    "historicalContext": "Pafnuty Chebyshev (1852, *Mémoire sur les nombres premiers*) proved the first rigorous bounds on π(x), establishing A·x/log(x) < π(x) < B·x/log(x) with explicit constants A ≈ 0.921 and B ≈ 1.106. His method used two combinatorial ingredients: the primorial n# = ∏_{p≤n} p and the central binomial coefficient C(2n,n). The chain 4^n ≤ (2n+1)·C(2n,n) and n# ≤ 4^n (both elementary) give the bounds via logarithms. Chebyshev's work refuted Legendre's incorrect conjecture that π(x) ~ x/(log(x)−1.08), and the same year he used these bounds to prove **Bertrand's postulate** (1845): for every n ≥ 1 there exists a prime p with n < p ≤ 2n. Paul Erdős, at age 19 (1932), gave a celebrated elementary reproof of Bertrand's postulate using the SAME factorization bound p^{v_p(C(2n,n))} ≤ 2n proved in this file — a striking demonstration that the combinatorial machinery here is identical to that of the most famous elementary prime-distribution result. Franz Mertens (1874) used Chebyshev's bounds together with Abel partial summation to derive Σ_{p ≤ x} 1/p = log log x + M + O(1/log x) (Mertens' theorem), making the divergence of the prime harmonic series quantitative. The Prime Number Theorem (Hadamard and de la Vallée Poussin, 1896) showed the exact limit is 1, requiring deep complex analysis via the Riemann zeta function ζ(s); Atle Selberg and Erdős (1948) later gave an elementary (zeta-free) proof using Selberg's symmetry formula Σ_p≤x log²p + Σ_{pq≤x} log p log q = 2x log x + O(x), an analytic descendant of the methods originating with Chebyshev. This file obtains weaker constants (log(2) ≈ 0.693 and 2·log(4) ≈ 2.773) than Chebyshev's original 0.921/1.106, using only Mathlib primitives — a fully machine-verified Chebyshev-type result bridging explicit combinatorial bounds to π(x) = Θ(x/log(x)).",
     "problemStatement": "Prove explicit bounds on π(n) using only verified results from ChebyshevBounds.lean:\n\n**Upper**: (√n)^{π(n)-π(√n)} ≤ 4^n, giving π(n) ≤ √n + 2·log(4)·n/log(n)\n\n**Lower**: 4^n ≤ (2n+1)·(2n)^{π(2n)}, giving π(2n) ≥ log(2)·n/log(2n) - o(1)",
     "proofStrategy": "Upper bound: primes p in (√n, n] each exceed √n, so their product ≥ (√n)^k where k = π(n)-π(√n). This product divides primorial(n) ≤ 4^n (Mathlib). Lower bound: C(2n,n) ≤ (2n)^{π(2n)} from the factorization bound (each prime power dividing C(2n,n) is ≤ 2n), combined with the already-proved 4^n ≤ (2n+1)·C(2n,n).",
     "keyInsights": [
@@ -40,7 +40,11 @@
       "The factorization bound p^{v_p(C(2n,n))} ≤ 2n follows from Kummer's theorem: v_p = #{carries adding n+n in base p} ≤ log_p(2n), and p^{log_p(2n)} ≤ 2n",
       "These bounds are weaker than Chebyshev's original 0.921 and 1.106 but are fully constructive from Mathlib primitives",
       "The trivial bound π(m) ≤ m (excluding 0 from the prime filter) absorbs the π(√n) term in the upper bound — a simple but essential ingredient for the final asymptotic",
-      "**Lean filter-based prime counting**: `Nat.primeCounting n` counts primes ≤ n via `(Finset.range (n+1)).filter Nat.Prime).card`. The bound `numPrimesAbove m n = π(n) - π(m)` requires showing that primes in (m,n] biject to a difference of counted sets — proved via `Finset.filter_sdiff` and the inclusion-exclusion principle on the filtered range. This is a clean example of how Lean handles combinatorial identities for discrete prime sets."
+      "**Lean filter-based prime counting**: `Nat.primeCounting n` counts primes ≤ n via `(Finset.range (n+1)).filter Nat.Prime).card`. The bound `numPrimesAbove m n = π(n) - π(m)` requires showing that primes in (m,n] biject to a difference of counted sets — proved via `Finset.filter_sdiff` and the inclusion-exclusion principle on the filtered range. This is a clean example of how Lean handles combinatorial identities for discrete prime sets.",
+      "**Bertrand's postulate uses the SAME factorization bound.** Erdős's 1932 elementary proof of Bertrand's postulate (∃ prime in (n, 2n] for all n ≥ 1) hinges on exactly $p^{v_p\\binom{2n}{n}} \\leq 2n$ — the lemma `prime_pow_factorization_centralBinom_le` proved here. Erdős additionally splits the factorization of $\\binom{2n}{n}$ into 'small primes' $p \\leq \\sqrt{2n}$, 'medium primes' $\\sqrt{2n} < p \\leq 2n/3$ (which surprisingly contribute 0), and 'large primes' $2n/3 < p \\leq n$ (also 0), forcing a prime in $(n, 2n]$ to appear. So this file's Chebyshev bridge and Bertrand's postulate share the same combinatorial heart; the difference is whether one extracts an asymptotic ($\\pi(x) = \\Theta(x/\\log x)$) or an existence ($\\pi(2n) > \\pi(n)$) from the inequality.",
+      "**Three Chebyshev functions are asymptotically equivalent.** Define $\\theta(x) = \\sum_{p \\leq x} \\log p$ (first Chebyshev function), $\\psi(x) = \\sum_{p^k \\leq x} \\log p = \\sum_{n \\leq x} \\Lambda(n)$ (second Chebyshev function, sums von Mangoldt $\\Lambda$), and $\\pi(x) = |\\{p \\leq x\\}|$. Then $\\psi(x) = \\theta(x) + O(\\sqrt{x})$ (prime powers beyond squares are negligible) and $\\pi(x) \\sim \\theta(x)/\\log x$ via Abel summation. The Prime Number Theorem is equivalent to any of $\\psi(x) \\sim x$, $\\theta(x) \\sim x$, or $\\pi(x) \\sim x/\\log x$. This file proves the explicit lower bound $\\theta(x) \\geq (\\log 2 - o(1)) \\cdot x$ implicitly through the primorial chain.",
+      "**Mertens' theorems follow by partial summation.** From $\\pi(x) = \\Theta(x/\\log x)$ established here, Abel summation gives $\\sum_{p \\leq x} \\frac{\\log p}{p} = \\log x + O(1)$ (Mertens, 1874), and further $\\sum_{p \\leq x} \\frac{1}{p} = \\log \\log x + M + O(1/\\log x)$ where $M \\approx 0.2614$ is the Meissel–Mertens constant. The divergence of $\\sum 1/p$ (Euler, 1737) is quantitatively pinned down by Chebyshev bounds, going far beyond mere infinitude of primes (Euclid).",
+      "**PNT's constant of 1 is genuinely deeper than $\\Theta$-order.** Hadamard and de la Vallée Poussin (1896) proved $\\pi(x) \\sim x/\\log x$ by showing $\\zeta(s) \\neq 0$ on $\\Re(s) = 1$ via the inequality $3 + 4\\cos\\theta + \\cos 2\\theta \\geq 0$ applied to $\\log|\\zeta(\\sigma + it)^3 \\zeta(\\sigma + it + i\\tau)^4 \\zeta(\\sigma + it + 2i\\tau)|$. No purely combinatorial argument is known that closes the gap from $\\log 2 \\leq c_1$ and $c_2 \\leq 2\\log 4$ down to exactly 1; Selberg–Erdős (1948) gave a zeta-free elementary proof using Selberg's symmetry formula $\\sum_{p \\leq x} \\log^2 p + \\sum_{pq \\leq x} \\log p \\log q = 2x \\log x + O(x)$, but it is far longer and more intricate than the bridge here."
     ],
     "prerequisites": [
       "Chebyshev bounds (ChebyshevBounds.lean)",
@@ -49,11 +53,15 @@
     ]
   },
   "conclusion": {
-    "summary": "Establishes that π(x) = Θ(x/log(x)) by proving upper and lower power bounds connecting prime counts to exponential growth. Both bounds are fully verified from Mathlib primitives.",
-    "implications": "These bounds provide the bridge between Chebyshev's elementary methods and the Prime Number Theorem. The factorization bound C(2n,n) ≤ (2n)^{π(2n)} is proved via Mathlib's pow_factorization_choose_le and unique factorization.",
+    "summary": "Establishes that π(x) = Θ(x/log(x)) by proving upper and lower power bounds connecting prime counts to exponential growth. Both bounds are fully verified from Mathlib primitives, with explicit constants log(2) ≈ 0.693 and 2·log(4) ≈ 2.773 bracketing the PNT limit of 1. The combinatorial heart is the factorization inequality p^{v_p(C(2n,n))} ≤ 2n — the same lemma that drives Erdős's 1932 elementary proof of Bertrand's postulate.",
+    "implications": "These bounds provide the bridge between Chebyshev's elementary methods and the Prime Number Theorem. The factorization bound C(2n,n) ≤ (2n)^{π(2n)} is proved via Mathlib's pow_factorization_choose_le and unique factorization, and the upper bound via primorial(n) ≤ 4^n. Three immediate downstream consequences: (1) Mertens' theorems Σ_{p ≤ x} log(p)/p = log x + O(1) and Σ_{p ≤ x} 1/p = log log x + M + O(1/log x) follow by Abel partial summation; (2) Bertrand's postulate (existence of a prime in (n, 2n]) is a structural refinement, using the same factorization machinery to derive existence rather than density; (3) the equivalence π(x) ∼ x/log x ⟺ θ(x) ∼ x ⟺ ψ(x) ∼ x reduces PNT to estimates on Chebyshev's θ- and ψ-functions, the form pursued in Hadamard's complex-analytic proof and Selberg–Erdős's elementary proof.",
     "openQuestions": [
       "Tighten the constants to Chebyshev's original 0.921 and 1.106",
-      "Derive the explicit real-valued bound π(x)·log(x)/x ≤ 2·log(4) from the power bound"
+      "Derive the explicit real-valued bound π(x)·log(x)/x ≤ 2·log(4) from the power bound",
+      "Use this bridge to formalize Bertrand's postulate: the same factorization bound combined with the prime-power dichotomy at √(2n), 2n/3, n yields a prime in (n, 2n] for every n ≥ 1",
+      "Derive Mertens' theorems Σ_{p ≤ x} log(p)/p = log x + O(1) and Σ_{p ≤ x} 1/p = log log x + M + O(1/log x) via Abel partial summation on these bounds",
+      "Extend π(x) bound from π(2n) to arbitrary real x ≥ 1 via monotonicity π(x) ≥ π(2⌊x/2⌋), yielding π(x)·log(x)/x ≥ log(2) − o(1) for all x → ∞ rather than just along the even-integer subsequence",
+      "Formalize the bridge from these Θ-order bounds to the full PNT limit π(x)·log(x)/x → 1, either via the Wiener–Ikehara Tauberian theorem applied to ζ(s) or via Selberg's elementary symmetry formula Σ log²p + Σ log p log q = 2x log x + O(x)"
     ]
   },
   "sections": [
@@ -102,12 +110,57 @@
     {
       "targetId": "chebyshev-bounds",
       "relationship": "extends",
-      "description": "Builds directly on ChebyshevBounds.lean results: primorial bounds, central binomial bounds, and the pow_le_of_prod_primes_dvd lemma"
+      "description": "Builds directly on ChebyshevBounds.lean results: primorial bounds primorial(n) ≤ 4^n, central binomial bounds 4^n/(2n+1) ≤ C(2n,n) ≤ 4^n, and the pow_le_of_prod_primes_dvd lemma. This bridge is the analytical layer on top of those purely combinatorial inequalities."
     },
     {
       "targetId": "prime-number-theorem",
       "relationship": "approaches",
-      "description": "These explicit bounds are stepping stones toward the PNT. The constants 0.693 and 2.773 bracket the PNT limit of 1."
+      "description": "The Prime Number Theorem (Hadamard / de la Vallée Poussin, 1896) states π(x) ∼ x/log x exactly. These explicit Chebyshev-style bounds give π(x) = Θ(x/log x) with explicit constants log(2) ≈ 0.693 and 2·log(4) ≈ 2.773 that bracket the PNT limit of 1. Closing the gap to 1 requires either Hadamard's complex-analytic proof that ζ(s) ≠ 0 on Re(s)=1 or Selberg–Erdős's (1948) elementary proof via Selberg's symmetry formula — neither of which is purely combinatorial in the Chebyshev style."
+    },
+    {
+      "targetId": "bertrands-postulate",
+      "relationship": "complementary",
+      "description": "Bertrand's postulate (Bertrand 1845, Chebyshev 1852, Erdős 1932): for every n ≥ 1, there exists a prime p with n < p ≤ 2n. Erdős's elementary proof at age 19 uses EXACTLY the factorization bound p^{v_p(C(2n,n))} ≤ 2n proved in this file (theorem `prime_pow_factorization_centralBinom_le`), combined with a sharper case analysis dividing the primes dividing C(2n,n) into 'small' (p ≤ √(2n)), 'medium' (√(2n) < p ≤ 2n/3, contribute 0), and 'large' (2n/3 < p ≤ n, also contribute 0). This forces the existence of a prime in (n, 2n] to absorb the 4^n/(2n+1) lower bound. The combinatorial heart of both this entry's bound and Bertrand's postulate is identical — the difference is whether one extracts an asymptotic (here) or an existence statement (Bertrand)."
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge-oq-01",
+      "relationship": "elaborates",
+      "description": "Formalizes the proof of the factorization bound p^{v_p(C(2n,n))} ≤ 2n via Kummer's theorem on carries in base-p addition. Where this entry uses Mathlib's `Nat.pow_factorization_choose_le` as a black-box, oq-01 unpacks the Kummer-carry interpretation: v_p(C(2n,n)) = #{positions where adding n+n in base p carries} ≤ ⌊log_p(2n)⌋, so p^{v_p} ≤ p^{⌊log_p(2n)⌋} ≤ 2n. This is the single most important lemma underlying both Chebyshev's upper bound on π(x) and Bertrand's postulate."
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge-oq-01-oq-02",
+      "relationship": "complementary",
+      "description": "Alternative cleaner proof of C(2n,n) ≤ (2n)^{π(2n)} via Mathlib's specialized identity `Nat.prod_pow_factorization_centralBinom`, bypassing this file's manual Finsupp.prod manipulation. Both routes establish the same lemma `centralBinom_le_pow_primeCounting`; the oq-01-oq-02 version is shorter but more dependent on Mathlib internals. Important for proof robustness — if Mathlib's API changes, the longer manual route in this file survives."
+    },
+    {
+      "targetId": "chebyshev-pnt-bridge-oq-02",
+      "relationship": "extends",
+      "description": "Derives the explicit real-valued lower bound π(2n) ≥ (n·log 4 − log(2n+1)) / log(2n) by taking logarithms of this entry's integer inequality 4^n ≤ (2n+1)·(2n)^{π(2n)}. As n → ∞, this gives π(2n)·log(2n)/(2n) → log(2) ≈ 0.6931, the explicit Chebyshev-style asymptotic constant from this bridge."
+    },
+    {
+      "targetId": "chebyshev-bounds-oq-04",
+      "relationship": "related",
+      "description": "Chebyshev's second function ψ(x) = Σ_{p^k ≤ x} log p = Σ_{n ≤ x} Λ(n) (Λ = von Mangoldt), with bounds ψ(x) = Θ(x) equivalent to those proved here for π(x). The asymptotic equivalences π(x) ∼ θ(x)/log x ∼ ψ(x)/log x reduce all three formulations of PNT to a single statement; ψ(x) is computationally most natural for analytic methods because Σ Λ(n) = log lcm(1,…,n) and ζ'(s)/ζ(s) = −Σ Λ(n) n^{−s}."
+    },
+    {
+      "targetId": "infinitude-primes",
+      "relationship": "strengthens",
+      "description": "Euclid's theorem (c. 300 BCE) proves only π(x) → ∞ as x → ∞ — no rate. This entry strengthens that to the explicit growth rate π(x) = Θ(x/log x), an enormous quantitative improvement separated by two millennia. Euclid's argument 'consider p₁⋯pₙ + 1' is constructive but yields no density information; Chebyshev's bounds are derived non-constructively from combinatorial inequalities on C(2n,n) and primorial(n) but pin down the order of growth."
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "related",
+      "description": "Dirichlet (1837) proved that for any coprime a, q with gcd(a,q) = 1, the arithmetic progression {a, a+q, a+2q, …} contains infinitely many primes. Predates Chebyshev's quantitative bounds by 15 years and uses radically different methods (Dirichlet L-functions L(s, χ) = Σ χ(n) n^{−s}). The quantitative refinement π(x; q, a) ∼ (1/φ(q)) · x/log x (Dirichlet density / PNT in arithmetic progressions, proved by de la Vallée Poussin 1896) extends both this entry and Dirichlet's theorem simultaneously: primes are equidistributed among the φ(q) coprime residue classes mod q, with Chebyshev's overall density."
+    },
+    {
+      "targetId": "bounded-prime-gaps",
+      "relationship": "complementary",
+      "description": "Modern direction: Zhang (2013), Maynard–Tao (2013), Polymath 8b (2014) proved that liminf_{n→∞} (p_{n+1} − p_n) is finite (currently ≤ 246, conjecturally 2 = twin primes). Where this entry's Chebyshev bound π(x) = Θ(x/log x) yields the average gap p_{n+1} − p_n ∼ log p_n, the bounded-prime-gaps result shows the gap distribution has a heavy lower tail — infinitely many gaps stay bounded. Both rely on sieve methods descending from Brun (1919), but bounded-gaps requires the much more refined Bombieri–Vinogradov theorem and weighted sieves."
+    },
+    {
+      "targetId": "binomial-theorem",
+      "relationship": "foundational",
+      "description": "The central binomial coefficient C(2n,n) is the largest of {C(2n, k) : 0 ≤ k ≤ 2n} and appears in (1+1)^{2n} = Σ C(2n,k) = 2^{2n} = 4^n. The lower bound C(2n,n) ≥ 4^n/(2n+1) (proved in chebyshev-bounds) follows from C(2n,n) ≥ (1/(2n+1)) · 4^n, a uniform peak-vs-average estimate. The binomial theorem gives the algebraic identity underlying all combinatorial bounds on C(2n,n) used in this Chebyshev bridge."
     }
   ],
   "leanFile": {
