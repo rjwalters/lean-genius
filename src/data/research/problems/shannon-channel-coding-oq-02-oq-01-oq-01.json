@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S8 (researcher-8, 2026-05-12) — Maximum-entropy equality case entropy_eq_log_card_iff_uniform added to ShannonEntropy.lean (~181 lines, 0 sorries, 0 axioms, 0 new imports). Iff: H(p) = log|α| ↔ p ≡ uniform. Three supporting results: (i) log_lt_sub_one_of_pos_of_ne_one (strict log inequality via Real.add_one_lt_exp); (ii) kl_term_bound_strict (strict KL term lower bound); (iii) klDivergence_eq_zero_iff (KL vanishes iff equality pointwise). Main proof reduces to algebraic identity KL(p||uniform) + H(p) = log|α|. Useful for capacity-achieving-input tightness arguments downstream of S2-S7 Fano chain. Build pending. Prior S7 (researcher-1, 2026-05-12): Shannon-form converse fano_converse_shannon_form: (1 - P_e) · log |α| ≤ channelCapacity ch + h(P_e) for |α| ≥ 2 and uniform input. One-step rearrangement of S6's fano_converse_capacity. Canonical textbook form. ~48 lines, 0 sorries, 0 axioms, 0 new imports. Prior: S6 (researcher-3, 2026-05-12): fano_converse_capacity composite lemma added to ShannonChannelCoding.lean after fano_converse_step. Parent gallery: theoremCount 12→13. Build pending.",
+    "progressSummary": "S9 (researcher-4, 2026-05-13) — Strict-inequality bi-implication entropy_lt_log_card_iff_non_uniform added to ShannonEntropy.lean (+26 LOC incl. 8-line docstring, 0 sorries, 0 axioms, 0 new imports). H(p) < log|α| ↔ ∃ x, p x ≠ (card α)⁻¹. 1-step corollary of S4 (entropy_le_log_card) + S8 (entropy_eq_log_card_iff_uniform): forward by_contra+push_neg+linarith, backward lt_or_eq_of_le+absurd. Builds pending. Prior S8 (researcher-8, 2026-05-12): Maximum-entropy equality case entropy_eq_log_card_iff_uniform added to ShannonEntropy.lean. Prior S7 (researcher-1, 2026-05-12): Shannon-form converse fano_converse_shannon_form. Prior S6 (researcher-3): fano_converse_capacity composite lemma.",
     "builtItems": [
       "proofs/Proofs/ShannonEntropy.lean: added entropy_eq_log_card_iff_uniform (S8, 2026-05-12, +181 lines including 3 supporting lemmas: log_lt_sub_one_of_pos_of_ne_one, kl_term_bound_strict, klDivergence_eq_zero_iff) — converse direction of entropy_le_log_card via algebraic identity KL(p||uniform) + H(p) = log|α|.",
       "proofs/Proofs/ShannonChannelCoding.lean: added fano_converse_shannon_form (S7, 2026-05-12, +48 lines including section docstring) — Shannon-form converse (1 - P_e) · log |α| ≤ channelCapacity ch + h(P_e) for |α| ≥ 2. One-step nlinarith-closed rearrangement of S6 using Real.log_le_log on |α| - 1 ≤ |α|.",
@@ -39,7 +39,8 @@
       "ShannonChannelCoding.lean: `theorem fano_inequality := FanoFromConditionalEntropy.fano_inequality_proved pXY hp hsum` (line 157) + `import Proofs.ShannonChannelCodingOQ02OQ01`",
       "fano_converse_step (ShannonChannelCoding.lean:235 region): abstract single-letter identity log|α| ≤ I(X;Y) + h(P_e) + P_e·log(|α|-1) under explicit h_uniform hypothesis (S5, PR #17887)",
       "entropy_of_uniform_eq_log_card (ShannonEntropy.lean:233): H(uniform) = log|α| equality witness (S4, PR #17879)",
-      "fano_converse_capacity (ShannonChannelCoding.lean:290 region): uniform-input composite log|α| ≤ channelCapacity ch + h(P_e) + P_e·log(|α|-1) for any DM channel with uniform InputDist (S6, this PR)"
+      "fano_converse_capacity (ShannonChannelCoding.lean:290 region): uniform-input composite log|α| ≤ channelCapacity ch + h(P_e) + P_e·log(|α|-1) for any DM channel with uniform InputDist (S6, this PR)",
+      "entropy_lt_log_card_iff_non_uniform in ShannonEntropy.lean: strict max-entropy bound bi-equivalent to non-uniformity (~26 LOC incl. docstring)"
     ],
     "insights": [
       "S8 (2026-05-12): The maximum-entropy equality case `H(p) = log|α| ↔ p ≡ uniform` factors cleanly through the KL-equality case `klDivergence p q = 0 ↔ p ≡ q`. The connecting identity `KL(p||uniform) + H(p) = log|α|` follows term-by-term from `log(p/((card α)⁻¹)) = log(p) + log(card α)`, so the iff reduces to KL vanishing. The strict log inequality `0 < y → y ≠ 1 → log y < y - 1` is derived from `Real.add_one_lt_exp` (which requires `x ≠ 0`) by setting `x = log y` and using `Real.exp_log hy = y`.",
@@ -50,7 +51,8 @@
       "fano_inequality_proved signature matches axiom byte-for-byte modulo the `(Fintype.card α : ℝ)` cast (both files use the same cast form).",
       "Term-mode reference `:= dispatcher pXY hp hsum` suffices for axiom->theorem swap when the dispatcher's body is defeq to the axiom's stated type (unused `let pX` in the axiom unfolds away; Real.log argument elaborates uniformly under expected type ℝ).",
       "S6 bridge: the X-marginal of jointDist ch inp equals inp.p exactly, since each channel row ∑ y, ch.W x y = 1 by the DMChannel structure axiom; one Finset.mul_sum factoring then closes the marginal identity by rfl on inp.p x.",
-      "channelMI ch inp = mutualInformation (jointDist ch inp) is a definitional equality (the `def channelMI`'s body), so a `show channelMI ch inp ≤ channelCapacity ch` redirect on the goal of an inequality stated in terms of `mutualInformation (jointDist ch inp)` suffices to invoke `channelMI_le_capacity` without intermediate manipulation."
+      "channelMI ch inp = mutualInformation (jointDist ch inp) is a definitional equality (the `def channelMI`'s body), so a `show channelMI ch inp ≤ channelCapacity ch` redirect on the goal of an inequality stated in terms of `mutualInformation (jointDist ch inp)` suffices to invoke `channelMI_le_capacity` without intermediate manipulation.",
+      "S9 (2026-05-13): Strict-inequality bi-implication entropy_lt_log_card_iff_non_uniform: H(p) < log |α| ↔ ∃ x, p x ≠ (card α)⁻¹. 1-step corollary of S4+S8; no new imports/axioms/sorries. Forward via by_contra + push_neg + S8.mpr + linarith; backward via lt_or_eq_of_le + S8.mp + absurd."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -59,7 +61,8 @@
       "Verify Docker build of ShannonChannelCoding.lean post-S6; the proof relies on already-merged S3/S4/S5 ingredients but final compilation lives with CI on this PR.",
       "S7 candidate (heavy): discharge channel_coding_converse axiom (asymptotic block-coding regime) via S6 + memoryless-channel chain rule I(X^n;Y^n) ≤ n·channelCapacity ch.",
       "S7 candidate (lighter): prove canonical Shannon-form rearrangement (1-P_e)·log|α| ≤ channelCapacity ch + h(P_e) by absorbing the always-nonneg slack P_e·(log|α| - log(|α|-1)) ≥ 0 for |α| ≥ 2.",
-      "S7 candidate (sibling): prove entropy_uniform_implies_uniform_marginal converse in ShannonEntropy.lean (equality case of entropy_le_log_card)."
+      "S7 candidate (sibling): prove entropy_uniform_implies_uniform_marginal converse in ShannonEntropy.lean (equality case of entropy_le_log_card).",
+      "S10 candidate: derive capacity-achieving distributions strict-slack lemma using entropy_lt_log_card_iff_non_uniform — every non-uniform input strictly under-saturates the Fano-converse upper bound on rate."
     ]
   },
   "tags": [
@@ -82,7 +85,7 @@
     "mathlib": []
   },
   "started": "2026-05-08T19:09:00.565Z",
-  "lastUpdate": "2026-05-12T11:45:00.000Z",
+  "lastUpdate": "2026-05-13T18:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

@@ -1,10 +1,65 @@
 # Current State
 
 **Phase**: ACT-PROGRESS
-**Since**: 2026-05-12T13:15:00Z
-**Iteration**: 8
+**Since**: 2026-05-13T18:00:00Z
+**Iteration**: 9
 
 ## Current Focus
+
+S9 (researcher-4, 2026-05-13) — **Strict-inequality bi-implication of
+`entropy_le_log_card`**: `entropy_lt_log_card_iff_non_uniform`:
+
+```
+shannonEntropy p < Real.log (Fintype.card α)
+  ↔ ∃ x, p x ≠ (Fintype.card α : ℝ)⁻¹
+```
+
+Proven for any distribution `p : α → ℝ` with `0 ≤ p` summing to `1` on
+a nonempty finite alphabet (`[Nonempty α]` inherited from
+`entropy_eq_log_card_iff_uniform`). This is the strict-inequality form
+of the maximum-entropy bound `H(p) ≤ log |α|` and is a direct
+1-step corollary of S4 (`entropy_le_log_card`) and S8
+(`entropy_eq_log_card_iff_uniform`):
+
+* Forward direction: `by_contra` + `push_neg` collapses `¬ ∃ x, p x ≠ q x`
+  to `∀ x, p x = q x`; S8's `.mpr` then gives `H(p) = log |α|`, contradicting
+  the strict inequality via `linarith`.
+* Backward direction: `lt_or_eq_of_le` splits the non-strict bound from
+  S4; the equality branch contradicts the witness via S8's `.mp` applied
+  pointwise.
+
+12 LOC including signature and 4-line header docstring (`+26` net with
+docstring). Zero new Mathlib imports, zero new axioms, zero sorries. The
+proof uses only tactics already firing 50+ times in `ShannonEntropy.lean`
+(`linarith`, `by_contra`, `push_neg`, `rintro`, `rcases`, `absurd`,
+`lt_or_eq_of_le`) plus the two ambient lemmas.
+
+### Why this lemma (not the S9-medium / S9-heavy candidates)
+
+State.md S9 candidates after S8 were:
+
+* **heavy** — discharge `channel_coding_converse` axiom (likely
+  sub-slug).
+* **medium** — capacity-achieving symmetric channel forces uniform input
+  marginal (1–2 lemmas in `ShannonChannelCoding.lean`).
+* **light** — `@[simp]` bi-implication of `entropy_of_uniform_eq_log_card`
+  (redundant: it IS the S8 lemma).
+
+Session 79 (researcher-4, 2026-05-13 ~02:25 UTC) released this slug
+citing "ACT-PROGRESS iter 8 with 3 complex S9 candidates better suited
+to direct ACT; no marginal value from another PREP". S9-heavy needs a
+sub-slug spawn; S9-medium requires `jointDist`/marginal API in
+`ShannonChannelCoding.lean` outside this file. The smallest meaningful
+ACT step that strengthens the S8 → Fano-converse chain *within
+`ShannonEntropy.lean`* and uses **both** S4 and S8 as inputs is the
+strict-inequality bi-implication. It is a genuine new theorem (no
+existing strict-form in the file; `grep` returns 0 matches for
+`entropy_lt_log_card`) and is used downstream wherever "this input
+distribution cannot be capacity-achieving" arguments require a strict
+slack in the entropy bound (e.g. asymptotic-equipartition-property-style
+tightness arguments in the Fano-converse chain).
+
+## Prior S8 Focus (archived)
 
 S8 (researcher-8, 2026-05-12) — **Alternative S8 (sibling) landed**: the
 equality case of `entropy_le_log_card`, namely
@@ -97,11 +152,12 @@ type-check by inspection against Mathlib v4.26.0 surface
 
 ## Attempt Counts
 
-- Total attempts: 8
+- Total attempts: 9
 - Current approach attempts: 1
-- Approaches tried: 8 (S1 dispatcher; S2 axiom swap; S3 single-letter
+- Approaches tried: 9 (S1 dispatcher; S2 axiom swap; S3 single-letter
   capacity bounds; S4 uniform-entropy equality witness; S5 abstract
   fano_converse_step; S6 uniform-input fano_converse_capacity with
   channelCapacity bound; S7 Shannon-form rearrangement
   fano_converse_shannon_form; S8 maximum-entropy equality case
-  entropy_eq_log_card_iff_uniform).
+  entropy_eq_log_card_iff_uniform; S9 strict-inequality bi-implication
+  entropy_lt_log_card_iff_non_uniform).

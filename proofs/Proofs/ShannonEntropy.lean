@@ -427,6 +427,32 @@ theorem entropy_eq_log_card_iff_uniform {α : Type*} [Fintype α] [DecidableEq �
       (klDivergence_eq_zero_iff hp hq_pos hsum hq_sum).mpr hpx
     linarith
 
+-- Strict version of `entropy_le_log_card`: the maximum-entropy bound
+-- `H(p) ≤ log |α|` is strict iff `p` is not the uniform distribution.
+--
+-- Direct corollary of `entropy_le_log_card` (the non-strict bound) and
+-- `entropy_eq_log_card_iff_uniform` (the equality case). Useful for
+-- "this input distribution cannot be capacity-achieving" arguments in
+-- the Fano-converse chain: any non-uniform `p` strictly under-achieves
+-- the entropy bound `log |α|`.
+theorem entropy_lt_log_card_iff_non_uniform {α : Type*} [Fintype α] [DecidableEq α]
+    [Nonempty α] {p : α → ℝ}
+    (hp : ∀ x, 0 ≤ p x) (hsum : ∑ x, p x = 1) :
+    shannonEntropy p < Real.log (Fintype.card α) ↔
+    ∃ x, p x ≠ (Fintype.card α : ℝ)⁻¹ := by
+  have hle := entropy_le_log_card hp hsum
+  have hiff := entropy_eq_log_card_iff_uniform hp hsum
+  constructor
+  · intro hlt
+    by_contra h
+    push_neg at h
+    have hH := hiff.mpr h
+    linarith
+  · rintro ⟨x, hx⟩
+    rcases lt_or_eq_of_le hle with hlt | heq
+    · exact hlt
+    · exact absurd (hiff.mp heq x) hx
+
 -- ============================================================
 -- Log-Sum Inequality
 -- ============================================================
