@@ -426,7 +426,7 @@ variable (p : ℕ) [Fact p.Prime]
 
     This is the conjunctive ("Lite") form of the S5 PREP forward
     packaging; the subgroup-existential ("Full") form
-    `AGL1Z_forward_witness` is deferred. -/
+    `AGL1Z_forward_witness` is in the next section. -/
 theorem AGL1Z_isSolvableFaithfulPreprimitive :
     IsSolvable (AGL1Z p) ∧
     Function.Injective (AGL1Z.toPerm p) ∧
@@ -434,5 +434,96 @@ theorem AGL1Z_isSolvableFaithfulPreprimitive :
   ⟨AGL1Z_isSolvable p, AGL1Z.toPerm_injective p, inferInstance⟩
 
 end ForwardPackaging
+
+/-! ### S5b Full — Forward-direction subgroup-of-S_p packaging
+
+  Promotes the Lite layer (the conjunctive statement
+  `IsSolvable ∧ Injective toPerm ∧ IsPreprimitive`) to the
+  mathematically-faithful subgroup form: there exists a subgroup `H`
+  of `Equiv.Perm (ZMod p)` (namely the image of `AGL1Z p` under its
+  faithful permutation action) that is solvable, acts preprimitively
+  on `ZMod p`, and has order `p · (p - 1)`.
+
+  Mathlib bearers (verified at v4.26.0):
+
+  - `solvable_of_surjective` (`Mathlib.GroupTheory.Solvable:147`)
+    transfers solvability across a surjective `MonoidHom`.
+  - `MonoidHom.rangeRestrict_surjective`
+    (`Mathlib.Algebra.Group.Subgroup.Ker:114`) supplies the
+    surjection `(toPerm p).rangeRestrict`.
+  - `MonoidHom.ofInjective` (`Mathlib.Algebra.Group.Subgroup.Ker:188`)
+    supplies the multiplicative isomorphism
+    `AGL1Z p ≃* (AGL1Z.toPerm p).range` used in cardinality transfer.
+  - `MulAction.IsPreprimitive.of_prime_card`
+    (`Mathlib.GroupTheory.GroupAction.Primitive:320`) closes
+    preprimitivity once `Nat.card (ZMod p) = p` is shown prime.
+  - `MulAction.isPretransitive_iff_base`
+    (`Mathlib.GroupTheory.GroupAction.Transitive:43`) reduces
+    pretransitivity to "every `x` is reached from `0`".
+
+  Design note: the range's pretransitivity is established directly
+  (with the translation `(x, 1)` lifted via `rangeRestrict` as
+  witness), rather than transferring along an equivariant map from
+  the parent `AGL1Z p` action. This keeps the proof in the same
+  definitional shape as the S4 ACT pretransitivity proof above and
+  avoids the `MulActionHom` plumbing that the S5b PREP recipe used.
+-/
+
+section ForwardSubgroupPackaging
+
+variable (p : ℕ) [hp : Fact p.Prime]
+
+/-- Pretransitivity of the range action `(AGL1Z.toPerm p).range ↷ ZMod p`.
+
+    Witness: `(x, 1) ∈ AGL1Z p` lifts via `(AGL1Z.toPerm p).rangeRestrict`
+    to an element of the range whose underlying permutation
+    `AGL1Z.toPerm p ⟨x, 1⟩ = toPermEquiv ⟨x, 1⟩` sends `0 ↦ x + 1 · 0 = x`. -/
+theorem AGL1Z.range_isPretransitive :
+    MulAction.IsPretransitive ((AGL1Z.toPerm p).range) (ZMod p) := by
+  rw [MulAction.isPretransitive_iff_base (0 : ZMod p)]
+  intro x
+  refine ⟨(AGL1Z.toPerm p).rangeRestrict ⟨x, 1⟩, ?_⟩
+  show x + ((1 : (ZMod p)ˣ) : ZMod p) * 0 = x
+  simp
+
+/-- Preprimitivity of the range action via `of_prime_card`, since
+    `Nat.card (ZMod p) = p` is prime by hypothesis. -/
+instance AGL1Z.range_isPreprimitive :
+    MulAction.IsPreprimitive ((AGL1Z.toPerm p).range) (ZMod p) := by
+  haveI : MulAction.IsPretransitive ((AGL1Z.toPerm p).range) (ZMod p) :=
+    AGL1Z.range_isPretransitive p
+  apply MulAction.IsPreprimitive.of_prime_card
+  rw [Nat.card_eq_fintype_card, ZMod.card]
+  exact hp.out
+
+/-- **Forward direction (Full layer).** There exists a subgroup `H`
+    of `Equiv.Perm (ZMod p)` that is solvable, acts preprimitively on
+    `ZMod p`, and has order `p · (p - 1)`. The witness is
+    `H := (AGL1Z.toPerm p).range`, the image of `AGL1Z p` under its
+    faithful permutation action.
+
+    This is the subgroup-of-S_p form of Galois's forward classification,
+    complementing the conjunctive Lite layer
+    `AGL1Z_isSolvableFaithfulPreprimitive`. -/
+theorem AGL1Z_forward_witness :
+    ∃ H : Subgroup (Equiv.Perm (ZMod p)),
+      IsSolvable H ∧
+      MulAction.IsPreprimitive H (ZMod p) ∧
+      Nat.card H = p * (p - 1) := by
+  refine ⟨(AGL1Z.toPerm p).range, ?_, ?_, ?_⟩
+  · -- Solvability of the range: transfer from `IsSolvable (AGL1Z p)` via
+    -- the surjective `rangeRestrict`.
+    haveI : IsSolvable (AGL1Z p) := AGL1Z_isSolvable p
+    exact solvable_of_surjective (AGL1Z.toPerm p).rangeRestrict_surjective
+  · -- Preprimitivity: the instance proved above.
+    exact AGL1Z.range_isPreprimitive p
+  · -- Cardinality: transfer along `MonoidHom.ofInjective (toPerm_injective)`,
+    -- then apply `AGL1Z.card_eq`.
+    rw [Nat.card_eq_fintype_card,
+      Fintype.card_congr
+        (MonoidHom.ofInjective (AGL1Z.toPerm_injective p)).toEquiv.symm]
+    exact AGL1Z.card_eq
+
+end ForwardSubgroupPackaging
 
 end AbelRuffiniGaloisExtensionsOQ06
