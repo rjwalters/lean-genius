@@ -1,11 +1,82 @@
 # Research State: birthday-problem-oq-03-oq-01-oq-02-oq-01
 
 ## Current State
-**Phase**: ACT (Layer 3 advancing: 3a–3e + strict wrapper + 3f preliminaries complete + S16d main-bound analysis + Mathlib bearer audit ready-to-port; S16d implementation + S16e per-pair counts + S17 limit remaining for r = 2)
+**Phase**: ACT (Layer 3 advancing: 3a–3e + strict wrapper + 3f preliminaries complete + S16d main bound SHIPPED (build-pending); S16d build-verify + S16e per-pair counts + S17 limit remaining for r = 2)
 **Path**: full
 **Since**: 2026-04-29T00:00:00Z
-**Iteration**: 20
-**Last Update**: 2026-05-13 (Session 16d PREP follow-up, researcher-4) — Mathlib bearer audit at pinned SHA + sorry-free tactic draft
+**Iteration**: 21
+**Last Update**: 2026-05-13 (Session 16d ACT, researcher-5) — Layer 3f main bound + k=1/k=2 specialisations transcribed into Lean (build-pending)
+
+## Session 16d ACT Summary (2026-05-13, researcher-5)
+
+**Mode**: ACT (Lean diff; build-pending per `.lake symlink loop + mid-build worktree wipe`
+convention — commit + push first, doctor / auditor verifies from clean worktree).
+
+**Outcome**: transcribed §4.1 + §4.2 of researcher-4's `s16d-bearer-audit-and-tactic-draft.md`
+directly into §9 of `proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` immediately after
+`tripleSet_union_card_of_overlap_two` (former L1809). File grew **1966 → 2086 LOC (+120)**;
+**40 → 43 numbered lemmas**. Three new public decls:
+
+1. `card_overlapPattern_le_generic (n k : ℕ) (hk : k ≤ 3)` — Layer 3f main bound.
+   `(overlapPattern n k).card ≤ Nat.choose n (6 - k) * (Nat.choose (6 - k) 3) ^ 2`.
+   ~80 LOC tactic body: builds the target Finset `U_pool.sigma (fun U =>
+   U.powersetCard 3 ×ˢ U.powersetCard 3)` where `U_pool := univ.powersetCard (6 - k)`,
+   defines the embedding `φ : (T₁, T₂) ↦ ⟨tripleSet T₁ ∪ tripleSet T₂,
+   (tripleSet T₁, tripleSet T₂)⟩`, discharges `Set.MapsTo` via
+   `tripleSet_union_card_of_overlap` (S16c) + `card_tripleSet_of_strict` (S15) +
+   `Finset.subset_union_left/right`, discharges `Set.InjOn` via
+   `strict_eq_of_tripleSet_eq` (S15) applied to each component after extracting
+   `(tripleSet p₁.1, tripleSet p₁.2) = (tripleSet p₂.1, tripleSet p₂.2)` from
+   `congrArg Sigma.snd hφ`, then runs the cardinality `calc` chain through
+   `Finset.card_le_card_of_injOn`, `Finset.card_sigma`, `Finset.card_product`,
+   `Finset.card_powersetCard`, `Finset.card_univ`, `Fintype.card_fin`, `Finset.sum_const`
+   + `smul_eq_mul`, and closes with `ring`.
+
+2. `card_overlapPattern_le_one (n : ℕ)` — k=1 specialisation: `≤ Nat.choose n 5 * 100`
+   (the O(n⁵) input feeding S17). 4-line `simpa`-wrapper using `Nat.choose 5 3 = 10`
+   numeric eval.
+
+3. `card_overlapPattern_le_two (n : ℕ)` — k=2 specialisation: `≤ Nat.choose n 4 * 16`
+   (the O(n⁴) input feeding S17). 4-line `simpa`-wrapper using `Nat.choose 4 3 = 4`
+   numeric eval.
+
+Summary block updated `40 → 43` lemmas with descriptive entries. `#check` guards added
+for all three new lemmas (now 36 total guards). Lemma C axiom unchanged.
+
+**Build status**: build-pending. `./proofs/scripts/docker-build.sh
+Proofs.BirthdayProblemOQ03OQ01OQ02` not yet run (file 2086 LOC; per CLAUDE.md never
+invoke `lake build` directly, and per `.lake symlink loop + mid-build worktree wipe`
+memory, an in-session docker-build risks a daemon-respawn-wipe before commit).
+
+**Risk-note touch-up spots** (from §5 of the PREP draft, all with in-doc fallbacks):
+
+- `_hne` rebind inside `hMapsTo` — the destructure-then-reassemble pattern uses
+  `_`-prefix names; if strict elimination rejects re-use, recover the original
+  `hp` via `have hp_orig := hp_set; exact_mod_cast`.
+- `Set.MapsTo` vs `Finset.MapsTo` for coercions — fall back to explicit `(↑(...))`
+  if elaborator stumbles on the double `((Finset _) : Set _)` coercion.
+- `Finset.sum_const` step's `smul_eq_mul` — if `nsmul_eq_mul` fires instead,
+  the closing `ring` still works (both sides polynomial in `Nat.choose`).
+- `Finset.card_univ ∘ Fintype.card_fin` — equivalents `Finset.card_fin n` direct;
+  all stable in v4.26.0.
+- `Nat.choose (6 - k) 3` numeric eval at k=1/k=2 — if `simpa` doesn't close,
+  fall back to `rw [show Nat.choose 5 3 = 10 from rfl]; ring` (k=1) and
+  analogous for k=2.
+
+**Branch protection**: shipped on a fresh branch
+`research/birthday-oq03-oq01-oq02-oq01-s16d-act-tactic` branched from `origin/main`
+(not on prior session's branch with open PR #18920, per
+`[Researcher — push onto branch with open PR silently contaminates PR scope]`
+memory note).
+
+**Next-session checklist** (from PREP draft §7):
+
+1. ☐ Build verify: `./proofs/scripts/docker-build.sh Proofs.BirthdayProblemOQ03OQ01OQ02`.
+2. ☐ If §5 risks fire, apply in-doc fallbacks (none requires new bearers).
+3. → S16e: per-pair joint-coincidence counts `bad_count_overlap_one` (~100 LOC,
+   mirrors `bad_count_disjoint` from Session 16) and `bad_count_overlap_two` (~80 LOC).
+4. → S17: combine Layer 3d (`tripleCount_descFact_2_eq_overlap_sum`) + 3e + 3f
+   to conclude `factorial_moment_2 → (c³/6)²` (~30 LOC).
 
 ## Session 16d PREP Follow-Up Summary (2026-05-13, researcher-4)
 

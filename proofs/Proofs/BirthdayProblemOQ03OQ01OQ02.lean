@@ -1808,10 +1808,112 @@ lemma tripleSet_union_card_of_overlap_two {n : ℕ}
     (tripleSet T₁ ∪ tripleSet T₂).card = 4 :=
   tripleSet_union_card_of_overlap hp
 
+/-- **Layer 3f main bound (generic).** For `k ≤ 3`, the overlap-`k` stratum
+    is bounded polynomially in `n` by `Nat.choose n (6 - k) * (Nat.choose (6 - k) 3) ^ 2`.
+
+    Proof: embed `(T₁, T₂) ↦ ⟨tripleSet T₁ ∪ tripleSet T₂, tripleSet T₁, tripleSet T₂⟩`
+    into the `Finset.sigma` over `powersetCard (6-k)` of `Fin n`, with each fiber being
+    `U.powersetCard 3 ×ˢ U.powersetCard 3`. Injectivity is by `strict_eq_of_tripleSet_eq`.
+    The sigma's cardinality factors as `|powersetCard (6-k) (Fin n)| · (Nat.choose (6-k) 3)²`.
+
+    Transcribed from `s16d-bearer-audit-and-tactic-draft.md` §4.1 (researcher-4, 2026-05-13);
+    Mathlib bearers verified at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+    (`v4.26.0`). -/
+lemma card_overlapPattern_le_generic (n k : ℕ) (hk : k ≤ 3) :
+    (overlapPattern n k).card
+      ≤ Nat.choose n (6 - k) * (Nat.choose (6 - k) 3) ^ 2 := by
+  classical
+  -- Target Finset: U ranges over `(6-k)`-subsets of `Fin n`; for each U, the fiber is
+  -- pairs of 3-subsets of U.
+  set U_pool : Finset (Finset (Fin n)) :=
+    (Finset.univ : Finset (Fin n)).powersetCard (6 - k) with hU_pool
+  set tgt : Finset (Σ _ : Finset (Fin n), Finset (Fin n) × Finset (Fin n)) :=
+    U_pool.sigma (fun U => U.powersetCard 3 ×ˢ U.powersetCard 3) with htgt
+  -- Embedding φ on the underlying Set: (T₁, T₂) ↦ ⟨tripleSet T₁ ∪ tripleSet T₂,
+  --                                              (tripleSet T₁, tripleSet T₂)⟩.
+  let φ : (Fin n × Fin n × Fin n) × (Fin n × Fin n × Fin n) →
+          Σ _ : Finset (Fin n), Finset (Fin n) × Finset (Fin n) :=
+    fun p => ⟨tripleSet p.1 ∪ tripleSet p.2, (tripleSet p.1, tripleSet p.2)⟩
+  -- Step 1: φ maps overlapPattern n k into tgt.
+  have hMapsTo : Set.MapsTo φ
+      ((overlapPattern n k : Finset _) : Set _)
+      ((tgt : Finset _) : Set _) := by
+    intro p hp_set
+    have hp : p ∈ overlapPattern n k := by exact_mod_cast hp_set
+    -- Unpack membership in overlapPattern.
+    simp only [overlapPattern, Finset.mem_filter, Finset.mem_product] at hp
+    obtain ⟨⟨⟨hT₁, hT₂⟩, _hne⟩, _hcap⟩ := hp
+    -- Establish the three membership facts at the φ image.
+    have hUcard : (tripleSet p.1 ∪ tripleSet p.2).card = 6 - k :=
+      tripleSet_union_card_of_overlap (by
+        simp only [overlapPattern, Finset.mem_filter, Finset.mem_product]
+        exact ⟨⟨⟨hT₁, hT₂⟩, _hne⟩, _hcap⟩)
+    have hcard₁ : (tripleSet p.1).card = 3 := card_tripleSet_of_strict hT₁
+    have hcard₂ : (tripleSet p.2).card = 3 := card_tripleSet_of_strict hT₂
+    have hsub₁ : tripleSet p.1 ⊆ tripleSet p.1 ∪ tripleSet p.2 := Finset.subset_union_left
+    have hsub₂ : tripleSet p.2 ⊆ tripleSet p.1 ∪ tripleSet p.2 := Finset.subset_union_right
+    -- Assemble: φ p ∈ tgt.
+    show φ p ∈ tgt
+    simp only [tgt, hU_pool, Finset.mem_sigma, Finset.mem_powersetCard,
+               Finset.mem_product, Finset.subset_univ, true_and]
+    refine ⟨hUcard, ⟨⟨hsub₁, hcard₁⟩, ⟨hsub₂, hcard₂⟩⟩⟩
+  -- Step 2: φ is injective on overlapPattern n k.
+  have hInjOn : Set.InjOn φ ((overlapPattern n k : Finset _) : Set _) := by
+    intro p₁ hp₁_set p₂ hp₂_set hφ
+    have hp₁ : p₁ ∈ overlapPattern n k := by exact_mod_cast hp₁_set
+    have hp₂ : p₂ ∈ overlapPattern n k := by exact_mod_cast hp₂_set
+    -- Extract tripleSet equalities from the Sigma/Product equality φ p₁ = φ p₂.
+    have h_eq2 : (tripleSet p₁.1, tripleSet p₁.2) = (tripleSet p₂.1, tripleSet p₂.2) := by
+      have := congrArg Sigma.snd hφ
+      simpa [φ] using this
+    have hts1 : tripleSet p₁.1 = tripleSet p₂.1 := (Prod.mk.injEq _ _ _ _).mp h_eq2 |>.1
+    have hts2 : tripleSet p₁.2 = tripleSet p₂.2 := (Prod.mk.injEq _ _ _ _).mp h_eq2 |>.2
+    -- Recover strictTriples membership of each component.
+    simp only [overlapPattern, Finset.mem_filter, Finset.mem_product] at hp₁ hp₂
+    obtain ⟨⟨⟨hp₁T₁, hp₁T₂⟩, _⟩, _⟩ := hp₁
+    obtain ⟨⟨⟨hp₂T₁, hp₂T₂⟩, _⟩, _⟩ := hp₂
+    -- Conclude via strict_eq_of_tripleSet_eq on each component.
+    have e1 : p₁.1 = p₂.1 := strict_eq_of_tripleSet_eq hp₁T₁ hp₂T₁ hts1
+    have e2 : p₁.2 = p₂.2 := strict_eq_of_tripleSet_eq hp₁T₂ hp₂T₂ hts2
+    exact Prod.ext e1 e2
+  -- Step 3: combine the embedding into a cardinality chain.
+  calc (overlapPattern n k).card
+      ≤ tgt.card := Finset.card_le_card_of_injOn φ hMapsTo hInjOn
+    _ = ∑ U ∈ U_pool, (U.powersetCard 3 ×ˢ U.powersetCard 3).card := by
+          rw [htgt, Finset.card_sigma]
+    _ = ∑ U ∈ U_pool, (U.powersetCard 3).card * (U.powersetCard 3).card := by
+          refine Finset.sum_congr rfl (fun U _ => ?_); exact Finset.card_product _ _
+    _ ≤ ∑ U ∈ U_pool, (Nat.choose (6 - k) 3) * (Nat.choose (6 - k) 3) := by
+          refine Finset.sum_le_sum (fun U hU => ?_)
+          rw [hU_pool, Finset.mem_powersetCard] at hU
+          obtain ⟨_, hUc⟩ := hU
+          rw [Finset.card_powersetCard, hUc]
+    _ = U_pool.card * ((Nat.choose (6 - k) 3) * (Nat.choose (6 - k) 3)) := by
+          rw [Finset.sum_const, smul_eq_mul]
+    _ = Nat.choose n (6 - k) * (Nat.choose (6 - k) 3) ^ 2 := by
+          rw [hU_pool, Finset.card_powersetCard, Finset.card_univ, Fintype.card_fin]
+          ring
+
+/-- **Layer 3f main bound (k = 1).** `|overlapPattern n 1| ≤ Nat.choose n 5 · 100`.
+    Derived from `card_overlapPattern_le_generic` via `Nat.choose 5 3 = 10`. -/
+lemma card_overlapPattern_le_one (n : ℕ) :
+    (overlapPattern n 1).card ≤ Nat.choose n 5 * 100 := by
+  have h := card_overlapPattern_le_generic n 1 (by norm_num)
+  -- 6 - 1 = 5, Nat.choose 5 3 = 10, 10² = 100.
+  simpa using h
+
+/-- **Layer 3f main bound (k = 2).** `|overlapPattern n 2| ≤ Nat.choose n 4 · 16`.
+    Derived from `card_overlapPattern_le_generic` via `Nat.choose 4 3 = 4`. -/
+lemma card_overlapPattern_le_two (n : ℕ) :
+    (overlapPattern n 2).card ≤ Nat.choose n 4 * 16 := by
+  have h := card_overlapPattern_le_generic n 2 (by norm_num)
+  -- 6 - 2 = 4, Nat.choose 4 3 = 4, 4² = 16.
+  simpa using h
+
 /-
   ## Summary
 
-  **Proved (40 theorems / lemmas, 1 axiom):**
+  **Proved (43 theorems / lemmas, 1 axiom):**
   1. `choose3_ub`/`choose3_lb`: C(n,3) ∈ [(n-2)³/6, n³/6]
   2. `asympThreshold_cubed`: (asympThreshold d)³ = 6d² ln 2 (exact characterization)
   3. `asympThreshold_ratio`: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3} (PROVED)
@@ -1917,6 +2019,21 @@ lemma tripleSet_union_card_of_overlap_two {n : ℕ}
   40. `tripleSet_union_card_of_overlap_two` (S16c, Layer 3f preliminary):
       overlap-2 stratum specialisation — union has 4 elements. Cardinality
       input for the bound `|overlapPattern n 2| = O(n⁴)`.
+  41. `card_overlapPattern_le_generic` (S16d, Layer 3f main bound): for k ≤ 3,
+      `|overlapPattern n k| ≤ Nat.choose n (6-k) · (Nat.choose (6-k) 3)²`.
+      Proved via the embedding `(T₁, T₂) ↦ ⟨tripleSet T₁ ∪ tripleSet T₂,
+      tripleSet T₁, tripleSet T₂⟩` into a `Finset.sigma` over the
+      `(6-k)`-subsets of `Fin n` with fibers `U.powersetCard 3 ×ˢ U.powersetCard 3`.
+      Injectivity via `strict_eq_of_tripleSet_eq` (S15). Tactic block
+      ≈80 LOC transcribed from `s16d-bearer-audit-and-tactic-draft.md` §4.1.
+  42. `card_overlapPattern_le_one` (S16d, Layer 3f, k=1 specialisation):
+      `|overlapPattern n 1| ≤ Nat.choose n 5 · 100`. The O(n⁵) bound used by
+      S17 to verify the non-disjoint contribution to the second factorial
+      moment is vanishing.
+  43. `card_overlapPattern_le_two` (S16d, Layer 3f, k=2 specialisation):
+      `|overlapPattern n 2| ≤ Nat.choose n 4 · 16`. The O(n⁴) bound paired
+      with the joint-coincidence count `bad_count_overlap_two` (S16e) to
+      bound the overlap-2 contribution.
 
   **Axioms (1):** `p_no_triple_tendsto` (Lemma C) — pure Poisson limit:
     P_no_triple(n_c(d), d) → exp(-c³/6) (Lemma A+B proved; `poisson_approx_birthday3` derived from B+C)
@@ -1962,5 +2079,8 @@ lemma tripleSet_union_card_of_overlap_two {n : ℕ}
 #check @tripleSet_union_card_of_overlap_zero
 #check @tripleSet_union_card_of_overlap_one
 #check @tripleSet_union_card_of_overlap_two
+#check @card_overlapPattern_le_generic
+#check @card_overlapPattern_le_one
+#check @card_overlapPattern_le_two
 
 end BirthdayThreshold3
