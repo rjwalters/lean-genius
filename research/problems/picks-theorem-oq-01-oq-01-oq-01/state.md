@@ -1,10 +1,11 @@
 # Current State
 
 **Phase**: PLAN
-**Since**: 2026-05-12T11:30:00Z
-**Iteration**: 4
-**Last researcher**: researcher-4 (S3-prep — primitive case `twiceArea = 1 ⇒ I = 0`)
-**Most recent PR**: research(picks-theorem-oq-01-oq-01-oq-01): S3-prep — general primitive base case via partition-sum identity
+**Since**: 2026-05-13T11:55:00Z
+**Iteration**: 5
+**Last researcher**: researcher-8 (S3-prep JSON sync + S3a-plus identification — doc-only)
+**Most recent PR**: research(picks-theorem-oq-01-oq-01-oq-01): S3-prep JSON sync + identify primitive_pickInterior_zero gap (this PR, doc-only)
+**Most recent Lean change**: research(picks-theorem-oq-01-oq-01-oq-01): S3-prep — general primitive base case via partition-sum identity (#18158, merged 2026-05-12)
 
 ## Current Focus
 
@@ -80,20 +81,79 @@ None at the S2 stage. Future work:
 
 ## Next Action
 
-**S3-full — Additivity for primitive gluing.**
+**S3a-plus — Close the dual side of the primitive base case.**
 
-With the primitive base case now closed in full generality
-(`primitive_realInteriorCount_zero`), the remaining S3 work is the
-additivity step: when two lattice triangles `T₁`, `T₂` share an edge
-`e` with `gcd(e) = 1` (no interior boundary lattice points), the real
-interior counts satisfy
+S3-prep (`#18158`) closed the `realInteriorCount` side of the primitive
+base case: every primitive triangle has `realInteriorCount = 0`.  The
+`pickInterior` side is still asymmetric:
+
+| Triangle | `realInteriorCount` | `pickInterior` |
+|---|---|---|
+| Every primitive `T` (`twiceArea = 1`) | `= 0` (S3-prep, general) | `= 0` only verified on `unitTriangle`, `triangle_2_1`; not general |
+| `unitTriangle`, `triangle_2_1`, `triangle_3_3` | by `native_decide` (S2) | by `unfold + rw + norm_num` (S1) |
+
+The natural intermediate step is **S3a-plus**: prove
+`primitive_pickInterior_zero` for every primitive `T`.  The dependency
+is a small GCD lemma:
+
+```
+primitive_edgeGCD_eq_one (T : LatticeTriangle) (h : T.twiceArea = 1)
+    (i : Fin 3) : T.edgeGCD i = 1
+```
+
+**Proof outline (each edge separately, by symmetry).**  Let
+`d := T.edgeGCD 0 = Nat.gcd (T.v2.1 - T.v1.1).natAbs (T.v2.2 - T.v1.2).natAbs`.
+By `Nat.gcd_dvd_left`/`_right` we have `d ∣ Δx.natAbs` and `d ∣ Δy.natAbs`,
+which lift to `(d : ℤ) ∣ Δx` and `(d : ℤ) ∣ Δy` (via `Int.gcd_dvd_left`
+since `Int.gcd a b = Nat.gcd a.natAbs b.natAbs` by definition).  The
+determinant
+
+```
+T.det = (T.v2.1 - T.v1.1) · (T.v3.2 - T.v1.2)
+      - (T.v3.1 - T.v1.1) · (T.v2.2 - T.v1.2)
+      = Δx · α - β · Δy
+```
+
+is a `ℤ`-linear combination of `Δx` and `Δy`, so `(d : ℤ) ∣ T.det`.
+Since `T.twiceArea = T.det.natAbs = 1`, we get `d ∣ 1`, hence `d = 1`
+by `Nat.eq_one_of_dvd_one`.  The other two edges follow by relabelling
+vertices and applying the same argument.
+
+**Corollary chain.**
+
+1. `primitive_boundaryCount_eq_three`:
+   `boundaryCount T = edgeGCD 0 + edgeGCD 1 + edgeGCD 2 = 1 + 1 + 1 = 3`.
+2. `primitive_pickInterior_zero`:
+   `pickInterior T = (1 : ℚ)/2 - 3/2 + 1 = 0`.  Proved by `unfold` +
+   `rw [primitive_boundaryCount_eq_three, h]` + `norm_num`.
+3. `primitive_pick_agrees` (the clean primitive base case for the
+   induction): `(realInteriorCount T : ℚ) = pickInterior T = 0`
+   for every primitive `T`, by combining
+   `primitive_realInteriorCount_zero` and `primitive_pickInterior_zero`.
+
+**Estimated effort**: 50–100 LOC.  All proofs are bounded by standard
+Mathlib divisibility plumbing; no new mathematical content beyond what
+S3-prep already established.  The hardest fragment is the `(d : ℤ) ∣ Δx`
+lift, which is a one-step `Int.gcd_dvd_left` invocation once the
+`Int.gcd ↔ Nat.gcd` definitional equality is used.
+
+**Why before S3b (additivity).**  S3b is the genuinely large
+combinatorial step (200–400 LOC, requiring a union/glue definition and
+careful boundary accounting).  Closing S3a-plus first means S3b only
+needs to preserve agreement under primitive-edge gluing; the base case
+is then a single clean lemma rather than two coupled obligations.
+
+**S3-full — Additivity for primitive gluing (deferred to follow-up).**
+
+When two lattice triangles `T₁`, `T₂` share an edge `e` with `gcd(e) = 1`
+(no interior boundary lattice points), the real interior counts satisfy
 
   `realInteriorCount (T₁ ∪ T₂) = realInteriorCount T₁
                                    + realInteriorCount T₂
                                    + (boundary points strictly on e)`.
 
 The same identity holds for `pickInterior` by `pick_formula_cleared`.
-Combining with `primitive_realInteriorCount_zero` and
+Combining with `primitive_pick_agrees` (S3a-plus) and
 `PicksTheoremOQ01OQ01.exists_primitive_triangulation` (S4) then closes
 the full Pick induction.
 
@@ -110,6 +170,6 @@ Each step is self-contained and could be pursued in a separate iteration.
 
 ## Attempt Counts
 
-- Total attempts: 3
-- Current approach attempts: 3
+- Total attempts: 4
+- Current approach attempts: 4
 - Approaches tried: 1 (bridge-via-cleared-form + primitive-base-case)
