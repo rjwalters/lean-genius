@@ -4,8 +4,104 @@
 **Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization; **Session 69 refutes S68's `−|c-arm region|` formula on (4,3,2)** — multi-row c-arm regions fail integrality, c'-column residual is `−3/2` not `−3`; introduces "walk-vanishing" classification (broader than S68's double-vanishing) and shows residual concentrates on the single walk-non-vanishing crossing with magnitude not matching any simple `|c-arm|` count; **Session 70 confirms (5,3,2) c'-col residual = `−8/3`** (S68 again refuted) AND derives a **closed-form algebraic identity** `c'-col residual = pμ(0) − h_d(h_d−2)·Δp(0)` for `c.1 = 0`, valid across all seven test diagrams S62–S70, via the trivial `(h_d−1)² = h_d(h_d−2) + 1` combined with S57.5's `sum_gnwProb_leg_of_c'_reduce_case1` — closes the c'-column sub-lemma question; **Session 71 derives the off-spine dual decomposition** — pointwise `Δp = 0` on the c-arm row-0 cells via strict-hook localization (provable, S71-a), pointwise residual vanishing identity `pμ(x) = h_d(h_d−2)·Δp(x)` on the non-c-arm off-spine cells (verified on 7 diagrams, S71-b), and the resulting 4-way decomposition of `F_side_identity_aligned` for case-1 c.1=0 into 3 provable sub-lemmas + S71-b as the remaining hard piece)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-13 (Session 72 / META-ANALYSIS: circularity audit of S71 Approach A + one-line (S71-Σ'') proof from GNW@(0,c'.2) + (S71-a), researcher-11)
-**Iteration**: 72
+**Last Updated**: 2026-05-13 (Session 73 / c.1 ≥ 1 numerical test: (Anchor-c.1) generalization of (S71-Σ'') + walk-vanishing-collapsed (GenEq-Refined) cascade; researcher-5)
+**Iteration**: 73
+
+## Session 73 — c.1 ≥ 1 numerical test: (Anchor-c.1) generalization of (S71-Σ'') + walk-vanishing-collapsed (GenEq-Refined) cascade (researcher-5, 2026-05-13)
+
+**Mode.** ANALYSIS-ONLY (no `.lean` edits).
+
+**Outcome.** Three results, executing S72 §5.3's recommendation.
+
+1. **(Anchor-c.1) holds verbatim.**  At row `i = c.1`,
+   `pμ(c.1, c'.2) · (h_μ(c.1, c'.2) − 1) = pν(c.1, c'.2) · (h_ν(c.1, c'.2) − 1)`
+   for general case-1 `c.1 ≥ 0`.  The S72 §5.1 one-line proof (GNW
+   recurrence at boundary cell + (S71-a)) generalizes from `(0, c'.2)`
+   to `(c.1, c'.2)`: leg cells `(r, c'.2)` for `r > c.1` are
+   walk-vanishing in both μ and ν, so (R_μ@row c.1) and (R_ν@row c.1)
+   reduce to pure row-c.1 arm sums that match by **(S71-a)'** —
+   the strict-hook localization of S71 §1.2 applied at row c.1.
+   Verified on two test diagrams.
+
+2. **Walk-vanishing collapses the leg cross-term range.**  S72 §5.3's
+   cross-term `∑_{r=i+1}^{c'.1−1} Δp(r, c'.2)` simplifies to
+   `∑_{r=i+1}^{c.1} Δp(r, c'.2)` because `Δp(r, c'.2) = 0` for
+   `r > c.1` (both `pμ(r, c'.2) = pν(r, c'.2) = 0` by row-index
+   non-decreasing along the GNW walk).  The `c'.1 − c.1 − 1` "deep"
+   leg rows strictly between c.1 and c'.1 contribute nothing.
+
+3. **(GenEq-Refined) cascade.**  For every `0 ≤ i ≤ c.1`:
+
+   ```
+   pμ(i, c'.2)  =  Δp(i, c'.2) · (h_ν(i, c'.2) − 1)
+                    −  ∑_{r = i+1}^{c.1} Δp(r, c'.2)         (GenEq-Refined)_i
+   ```
+
+   Equivalently `S_i / (h_ν(i, c'.2) − 1) = Δp(i, c'.2)` where
+   `S_i := pμ(i, c'.2) + ∑_{r=i+1}^{c.1} Δp(r, c'.2)`.  A downward
+   recurrence in `i` from `c.1` to `0`, with `c.1 + 1` equations.
+   Verified on both test diagrams: `μ = (3,2,2,1), c=(2,1), c'=(3,0)`
+   (degenerate `c'.1 − c.1 = 1`, vacuous deep cross-terms) and
+   `μ = (3,2,1,1,1), c=(1,1), c'=(4,0)` (deep `c'.1 − c.1 = 3` with
+   rows 2, 3 walk-vanishing in column 0).
+
+**Test diagram 1 numerics** (μ = (3,2,2,1), c = (2,1), c' = (3,0)):
+
+| i | α_i = pμ(i, 0) | β_i = pν(i, 0) | δ_i | h_ν(i, 0) − 1 | δ_i · (h_ν−1) − Σ_{>i} | α_i ✓ |
+|---|----------------|----------------|------|----------------|--------------------------|-------|
+| 0 | 1/3            | 2/3            | 1/3  | 4              | 4/3 − 1 = 1/3            | ✓     |
+| 1 | 1/2            | 1              | 1/2  | 2              | 1 − 1/2 = 1/2            | ✓     |
+| 2 | 1/2 (anchor)   | 1              | 1/2  | 1              | 1/2 − 0 = 1/2            | ✓     |
+
+**Test diagram 2 numerics** (μ = (3,2,1,1,1), c = (1,1), c' = (4,0)):
+
+| i | α_i  | β_i  | δ_i   | h_ν(i, 0) − 1 | δ_i · (h_ν−1) − Σ_{>i} | α_i ✓ |
+|---|------|------|-------|----------------|--------------------------|-------|
+| 0 | 1/8  | 1/6  | 1/24  | 5              | 5/24 − 2/24 = 1/8        | ✓     |
+| 1 | 1/4 (anchor) | 1/3  | 1/12  | 3              | 3/12 − 0 = 1/4          | ✓     |
+| 2 | 0    | 0    | 0     | 1              | (walk-vanishing)         | n/a   |
+| 3 | 0    | 0    | 0     | 0              | (walk-vanishing)         | n/a   |
+
+Both diagrams confirm (Anchor-c.1) at row `i = c.1` (rows 2 and 1
+respectively) and (GenEq-Refined) for all `0 ≤ i ≤ c.1`.
+
+**Structural lemmas (clean restatements).**
+
+* **Δh(i) = 1 on column c'.2 for `0 ≤ i ≤ c.1`.**  Arm at `(i, c'.2)`
+  invariant under c'-removal (row i unchanged for `i < c'.1`); leg
+  drops by exactly 1 (the c' cell removed from column c'.2).  Hence
+  `h_μ(i, c'.2) − 1 = h_ν(i, c'.2)`, generalizing S72 §5.1's
+  `h_d − 1 = h_ν(0, c'.2)`.
+
+* **(S71-a)' c-arm row c.1.**  S71 §1.2's strict-hook localization
+  proof of `pμ = pν` on c-arm row 0 cells generalizes verbatim with
+  row index `c.1` in place of `0`.  Lean cost ~40-70 LOC unchanged.
+
+**Implication for F_side_identity_aligned case-1 c.1 ≥ 1.**  The
+(GenEq-Refined) cascade gives `c.1 + 1` linear relations between
+`{α_i, β_i}_{0 ≤ i ≤ c.1}` — half of the 2(c.1 + 1) unknowns.  The
+remaining `c.1 + 1` constraints come from the arm-side GNW
+recurrences at each `(i, c'.2)` (the `Σ pμ(i, k)` for `k > c'.2`
+terms).  Closure of (FSI-c'-col) (the c'-column contribution to
+F_side_identity_aligned, collapsed by S57.5 to `range (c.1 + 1)`)
+requires reading the explicit `ZW_μ`, `ZW_ν` coefficients from S57.5's
+`sum_gnwProb_leg_of_c'_reduce_case1` at Helpers.lean ~14550 —
+deferred to S74.
+
+**Revised Lean cost estimates.**
+
+* c.1 = 0 closure: ~120-195 LOC (S72's estimate, unchanged).
+* c.1 ≥ 1 closure: **~200-300 LOC** (this session's new estimate).
+  Increment ~80-100 LOC accounts for the (GenEq-Refined) cascade
+  machinery and (FSI-c'-col)'s `range (c.1 + 1)` closure.
+
+**case-2 dual via S58.**  Case-2 with `c.2 ≥ 1` maps under transpose
+to case-1 with `c̃.1 ≥ 1`.  Once c.1 ≥ 1 case-1 closure is done,
+c.2 ≥ 1 case-2 closure follows immediately via S58
+`transpose-equivariance` (Helpers.lean ~15205).
+
+**Files.**
+* `research/problems/ballot-problem-oq-03-oq-01-oq-02/sessions/2026-05-13-s02.md` — full derivation: §1 setup + two test diagrams; §2 notation; §3 diagram 1 numerics (3,2,2,1); §4 diagram 2 numerics (3,2,1,1,1); §5 structural lemmas (Δh = 1, (Anchor-c.1) proof, (GenEq-Refined) proof, S-form); §6 F-side closure implications + revised Lean cost; §7 what remains; §8 trap notes.
 
 ## Session 72 — META-ANALYSIS: circularity of S71 Approach A; (S71-b-WN) ≡ (S71-Σ) ≡ F_side_identity_aligned case-1 c.1=0; ONE-LINE PROOF via GNW recurrence at (0, c'.2) + (S71-a) (researcher-11, 2026-05-13)
 
@@ -1408,6 +1504,7 @@ Fallback if S55+ stalls.
 - `sessions/2026-05-12-s09.md` — Session 70: (5,3,2) test + structural algebraic identity (★) for c'-column residual under c.1=0 (researcher-11)
 - `sessions/2026-05-12-s10.md` — Session 71: off-spine residual decomposition dual to S70's (★); (S71-a) pointwise `pμ = pν` on c-arm row 0 cells (provable via strict-hook localization); (S71-b) non-c-arm off-spine residual vanishing conjecture (★★) (verified on 7 diagrams, 11 cells); 4-way `F_side_identity_aligned` decomposition for case-1 c.1=0 (researcher-5)
 - `sessions/2026-05-13-s01.md` — Session 72: META-ANALYSIS — circularity audit of S71 Approach A; (S71-b-WN) ≡ (S71-Σ) ≡ F_side_identity_aligned case-1 c.1=0; ONE-LINE PROOF of (S71-Σ'') via GNW recurrence at (0, c'.2) + (S71-a); refined 5-way decomposition + revised ~120-195 LOC F_side closure estimate; c.1 ≥ 1 generalization caveat (leg cross-terms break verbatim extension; S73+ open) (researcher-11)
+- `sessions/2026-05-13-s02.md` — Session 73: c.1 ≥ 1 numerical test on `μ=(3,2,2,1) c=(2,1) c'=(3,0)` (c.1=2, c'.1−c.1=1 degenerate) + deep test `μ=(3,2,1,1,1) c=(1,1) c'=(4,0)` (c.1=1, c'.1−c.1=3 with walk-vanishing rows); **(Anchor-c.1)** generalization of (S71-Σ'') verified verbatim at row c.1; **walk-vanishing collapse** δ_r = 0 for r > c.1 simplifies S72 §5.3 cross-term sum; **(GenEq-Refined)** downward cascade with c.1+1 equations on `{α_i, β_i}_{0≤i≤c.1}` proven analytically; Δh(i) = 1 on column c'.2 for 0 ≤ i ≤ c.1; revised c.1 ≥ 1 Lean closure estimate ~200-300 LOC vs ~120-195 LOC for c.1=0; case-2 c.2 ≥ 1 via S58 (researcher-5)
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4397` — `removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:4412` — `hookProd_removeCorner_swap`
 - `proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean:5035` — `hookLength_doubleRemove_doubly_affected` (S48)
