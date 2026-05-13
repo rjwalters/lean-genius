@@ -7,7 +7,7 @@
   "path": "full",
   "problemStatement": {
     "formal": "\\text{Characterize regions of } (p,q,r) \\in \\mathbb{R}^3 \\text{ where Ferrari's explicit root formula loses numerical precision; in particular, give a symbolic ferrariRoots-vs-biquadratic limit identity as } q \\to 0.",
-    "plain": "Ferrari's closed-form solution of the quartic over ℂ is numerically unstable in finite precision. Characterize the instability mechanisms rigorously, isolate a tractable formal sub-question (the biquadratic-limit removable singularity), and scaffold it for the next session.",
+    "plain": "Ferrari's closed-form solution of the quartic over \u2102 is numerically unstable in finite precision. Characterize the instability mechanisms rigorously, isolate a tractable formal sub-question (the biquadratic-limit removable singularity), and scaffold it for the next session.",
     "whyMatters": [
       "Closes the q=0 / alpha=0 boundary case of the parent gallery entry's axiomatized Ferrari formula.",
       "Surfaces a Mathlib gap (no Polynomial.discriminant, no condition-number framework).",
@@ -29,26 +29,27 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T12:30Z",
-    "iteration": 3,
-    "focus": "S2 SCAFFOLD complete: added Part VI.5 to GeneralQuartic.lean with resolvent_cubic_q_zero (sorry-free, ring), resolvent_root_neg_p_half_at_q_zero (sorry-free, simp+ring), and ferrari_biquad_limit (sorry-marked, deferred to S3). +68 LOC, theoremCount 9 -> 12, sorryCount 0 -> 1.",
+    "since": "2026-05-13T04:25Z",
+    "iteration": 5,
+    "focus": "S5a SCAFFOLD complete: ring-discharged `resolvent_cubic_eval_s_form` lemma added to GeneralQuartic.lean Part VI.5 (between resolvent_root_neg_p_half_at_q_zero and the ferrari_biquad_limit docstring). Cleaned resolvent identity R\u0303(s) = s\u00b3 + 2p\u00b7s\u00b2 + (p\u00b2 \u2212 4r)\u00b7s \u2212 q\u00b2. 0 new axioms, 0 sorries, +25 LOC, theoremCount 12 \u2192 13. Build pending.",
     "blockers": [],
-    "nextAction": "S3 DISCHARGE: prove ferrari_biquad_limit. Sub-step A: non-degenerate resolvent root exists (degree/coefficient argument). Sub-step B: algebraic root-matching at non-degenerate m (either explicit-formula expansion or via biquadratic_simple + ferrari_roots_are_roots). See knowledge.md S2 ACT - SCAFFOLD section for full decomposition.",
+    "nextAction": "S5b ACT: Option-C split of OQ-02.a (a.1 dischargeable k \u2265 1, a.2 open k \u2265 2). Discharge `pan_witness_k1_tangency` using the new Lemma 1 + Pan witness (PR #18438). Estimated \u2264 50 LOC Lean. See sessions/2026-05-13-s5a-scaffold-... \u00a710 for forward pointer.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
+      "total": 4,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S2 SCAFFOLD (2026-05-12): scaffolded Approach A in proofs/Proofs/GeneralQuartic.lean Part VI.5. Two helper lemmas proved sorry-free (resolvent_cubic_q_zero by ring; resolvent_root_neg_p_half_at_q_zero by simp+ring). Main ferrari_biquad_limit statement scaffolded with sorry, deferred to S3 with explicit two-sub-step decomposition (resolvent-root existence + algebraic root-matching). Hypothesis p != 0 OR r != 0 isolates the (p, r) = (0, 0) edge case where the depressed quartic is trivially y^4 = 0.",
+    "progressSummary": "S5a SCAFFOLD (2026-05-13): added `resolvent_cubic_eval_s_form` to proofs/Proofs/GeneralQuartic.lean \u2014 the general substitution m \u21a6 (s \u2212 p)/2 transforming the resolvent cubic into the Newton-polygon-cleaned R\u0303(s) = s\u00b3 + 2p\u00b7s\u00b2 + (p\u00b2 \u2212 4r)\u00b7s \u2212 q\u00b2. Ring-discharged, 0 sorries, 0 new axioms. Substrate for OQ-02.a.1 (`k = 1` tangency, Option C per PR #18455 S4c PREP \u00a76) and downstream OQ-02.b conditioning bound (PR #18495 S4d PREP). +25 LOC, theoremCount 12 \u2192 13. Build pending (CI / doctor verification).",
     "builtItems": [
-      "research/problems/general-quartic-oq-02/problem.md — formal three-part decomposition (OQ-02.a, .b, .c) with statement, classification, motivation, related-proof table, and reference list.",
-      "research/problems/general-quartic-oq-02/knowledge.md — survey of prior art (Pan, Bini-Pan, Kahan, Press), three classical instability mechanisms identified, three approach families mapped, S2 target selected with stated Lean snippet, three Mathlib gaps surfaced.",
-      "research/problems/general-quartic-oq-02/state.md — phase advanced NEW -> ORIENT, iteration 1 -> 2, S2 next-action specified with line-budget.",
+      "research/problems/general-quartic-oq-02/problem.md \u2014 formal three-part decomposition (OQ-02.a, .b, .c) with statement, classification, motivation, related-proof table, and reference list.",
+      "research/problems/general-quartic-oq-02/knowledge.md \u2014 survey of prior art (Pan, Bini-Pan, Kahan, Press), three classical instability mechanisms identified, three approach families mapped, S2 target selected with stated Lean snippet, three Mathlib gaps surfaced.",
+      "research/problems/general-quartic-oq-02/state.md \u2014 phase advanced NEW -> ORIENT, iteration 1 -> 2, S2 next-action specified with line-budget.",
       "proofs/Proofs/GeneralQuartic.lean Part VI.5 - 3 theorems added (2 proved, 1 sorry), +68 LOC, theoremCount 9 -> 12",
       "research/problems/general-quartic-oq-02/state.md - phase advanced ORIENT -> ACT, S3 next-action specified with two-sub-step decomposition",
-      "research/problems/general-quartic-oq-02/knowledge.md - S2 ACT SCAFFOLD section added with S3 decomposition strategy"
+      "research/problems/general-quartic-oq-02/knowledge.md - S2 ACT SCAFFOLD section added with S3 decomposition strategy",
+      "proofs/Proofs/GeneralQuartic.lean - 1 new theorem `resolvent_cubic_eval_s_form` (Lemma 1 from PR #18455 S4c PREP), ring-discharged. theoremCount 12 \u2192 13, lineCount 500 \u2192 525, axiom/sorry counts unchanged."
     ],
     "insights": [
       "Three distinct instability mechanisms separate cleanly: (1) upstream resolvent-cubic catastrophic cancellation, (2) quartic-specific divide-by-near-zero in beta = q/(2 alpha), (3) discrete wrong-root-pairing with no analytic remedy. Mechanism (2) is the canonical quartic-only failure mode and is the entry point for OQ-02.a / .c.",
@@ -57,18 +58,20 @@
       "Mechanism (3) is *fundamental*, not a fixable bug: any single fixed branch policy for the square root in alpha is unstable in some region of parameter space. This means OQ-02.b cannot have a uniform constant C for all (p, q, r); the bound must allow C to depend on the branch policy.",
       "At q = 0 the resolvent cubic constant term simplifies from (4p^3 - 4pr - q^2) to (4p^3 - 4pr); the -q^2 contribution drops cleanly. Useful normalization for downstream manipulation.",
       "m = -p/2 is universally a root of resolventCubic p 0 r (the trivial / degenerate root). The non-degenerate Ferrari branch requires a different root, which exists iff (p, r) != (0, 0) - polynomial-degree counting argument.",
-      "S3 admits two proof paths: (i) explicit-formula expansion using disc1 = disc2 = -alpha^2 at q = 0, or (ii) via biquadratic_simple + ferrari_roots_are_roots (the latter uses the parent ferrari_roots_verify axiom). S3 should attempt (i) first."
+      "S3 admits two proof paths: (i) explicit-formula expansion using disc1 = disc2 = -alpha^2 at q = 0, or (ii) via biquadratic_simple + ferrari_roots_are_roots (the latter uses the parent ferrari_roots_verify axiom). S3 should attempt (i) first.",
+      "S5a SCAFFOLD (2026-05-13): the Newton-polygon-cleaned resolvent R\u0303(s) = s\u00b3 + 2p\u00b7s\u00b2 + (p\u00b2 \u2212 4r)\u00b7s \u2212 q\u00b2, obtained via the substitution m \u21a6 (s \u2212 p)/2 (equivalently s := 2m + p = \u03b1\u00b2), is the universal substrate for OQ-02.a discharge. The S4c PREP \u00a72 derivation is now promoted to a parent-file ring-discharged Lean theorem (`resolvent_cubic_eval_s_form`)."
     ],
     "mathlibGaps": [
-      "Polynomial.discriminant : Polynomial R -> R — not defined in named form for general R-coefficient polynomials. Needed for OQ-02.b.",
-      "Condition-number abstraction condNum : (X -> Y) -> X -> Real — no general framework in Mathlib. Numerical-analysis content is sparse.",
+      "Polynomial.discriminant : Polynomial R -> R \u2014 not defined in named form for general R-coefficient polynomials. Needed for OQ-02.b.",
+      "Condition-number abstraction condNum : (X -> Y) -> X -> Real \u2014 no general framework in Mathlib. Numerical-analysis content is sparse.",
       "Multi-parameter big-O / big-Theta comparison via Filter.Tendsto exists but is unwieldy for the asymptotic-rate inequalities OQ-02.a needs."
     ],
     "nextSteps": [
       "S3 (highest priority): prove ferrari_biquad_limit. Two-sub-step decomposition documented in knowledge.md S2 ACT section.",
       "S4 (after S3): try to drop the p != 0 OR r != 0 hypothesis or convert it to a propositional iff by handling (p, r) = (0, 0) as a trivial 0-root case.",
       "Eventually: open Mathlib gap issue for Polynomial.discriminant if absent.",
-      "Indefinitely deferred: OQ-02.a (witness family) and OQ-02.b (conditioning bound) - require numerical-analysis infrastructure not currently in Mathlib."
+      "Indefinitely deferred: OQ-02.a (witness family) and OQ-02.b (conditioning bound) - require numerical-analysis infrastructure not currently in Mathlib.",
+      "S5b ACT (next): edit problem.md to split OQ-02.a into a.1 (k \u2265 1, dischargeable) and a.2 (k \u2265 2, open). Prove `pan_witness_k1_tangency` using `resolvent_cubic_eval_s_form` and the Pan witness from PR #18438. \u2264 50 LOC."
     ]
   },
   "tags": [
