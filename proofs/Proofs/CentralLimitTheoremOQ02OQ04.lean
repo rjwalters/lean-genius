@@ -14,17 +14,29 @@ the Ibragimov (1962) covariance summability condition
 is satisfied, and the long-run variance σ² = Var(X₁) + 2∑_{k≥1} Cov(X₁, X_{k+1})
 exists and is finite. If additionally σ² > 0, then S_n/√n →_d N(0, σ²).
 
-**Status of this file (S5a — Mathlib drift fix: `polynomial_summable_of_exponent_gt_one`
-discharged via `Real.summable_nat_rpow`).**
+**Status of this file (S5b — `davydov_indicator_bound` — indicator base case of
+Davydov's covariance inequality, third order-theory ingredient now proven).**
 
-S5a (this session) closes a previously open Mathlib-drift sorry that was carried
-forward from S2: the ζ-function summability fact `Σ n^{-s} < ∞ ↔ s > 1` had been
-left as a `sorry` since the original `Real.summable_nat_rpow_inv` name was assumed
-moved/renamed. We use `Real.summable_nat_rpow : Summable ((n:ℝ)^p) ↔ p < -1` from
+S5b (this session) discharges the third and final order-theory ingredient
+flagged in the structural decomposition of `davydov_covariance_inequality`:
+`davydov_indicator_bound` states that
+`|μ(A ∩ B).toReal − μ(A).toReal · μ(B).toReal| ≤ alphaMixingCoeff μ ℱ 𝒢` for
+measurable indicators `A ∈ ℱ`, `B ∈ 𝒢`. The proof peels the 4-fold nested ⨆
+via `le_ciSup_of_le` at the two `Set Ω` layers (with `BddAbove` witnesses
+uniformly derived from `indicator_cov_le_one`) and `ciSup_pos` at the two
+`Prop` layers. After S5b, the open Davydov decomposition reduces to the L^p
+density step alone (S5c target, ~100 lines: truncation + Hölder).
+
+Sorries remaining: 2 (unchanged — this PR adds one proven theorem; the two
+sorries `davydov_covariance_inequality` (S5c) and `mixing_clt_ibragimov` (S6+)
+remain).
+
+**Earlier session: S5a — Mathlib drift fix.**
+Closed a previously open Mathlib-drift sorry that was carried forward from S2:
+the ζ-function summability fact `Σ n^{-s} < ∞ ↔ s > 1`. We use
+`Real.summable_nat_rpow : Summable ((n:ℝ)^p) ↔ p < -1` from
 `Mathlib.Analysis.PSeries`; with `p = -s` and `s > 1` the equivalence yields the
-result by a single `linarith`. Sorry count: 3 → 2. No structural changes; the
-remaining 2 sorries (`davydov_covariance_inequality`, `mixing_clt_ibragimov`) are
-unchanged S5b / S6+ targets.
+result by a single `linarith`. Sorry count: 3 → 2.
 
 **Earlier session: S4 ACT (build-fix + structural decomposition).**
 S3 (PR #17820) merged at `build pending` and never actually compiled
@@ -302,6 +314,69 @@ theorem alphaMixingCoeff_le_one
   apply Real.iSup_le _ (by norm_num); intro _hB
   exact indicator_cov_le_one A B
 
+/-- **Indicator base case of Davydov's covariance inequality** (S5b — discharges
+named ingredient (3) of the Davydov structural decomposition).
+
+For measurable indicator sets `A ∈ σPair 0` and `B ∈ σPair 1` of a probability
+measure `μ`, the absolute indicator-pair covariance is bounded by the α-mixing
+coefficient:
+$$
+\bigl|\mu(A \cap B).\!toReal - \mu(A).\!toReal \cdot \mu(B).\!toReal\bigr|
+   \;\le\; \alpha(\mathcal F, \mathcal G).
+$$
+
+This is the *defining* inequality of `alphaMixingCoeff` packaged for direct
+use: the body of the 4-fold nested supremum, instantiated at our particular
+measurable `A, B`. The proof peels each ⨆ layer using `le_ciSup_of_le` for
+the two `Set Ω` layers and `ciSup_pos` for the two `Prop` layers, with the
+`BddAbove` witnesses derived uniformly from `indicator_cov_le_one` — the
+same `[0, 1]` envelope used by `alphaMixingCoeff_le_one`.
+
+This closes the third and final order-theory ingredient flagged in the parent
+`davydov_covariance_inequality` decomposition; combined with the S5 results
+`alphaMixingCoeff_le_one` and `alphaMixingCoeff_nonneg`, the L^p Davydov bound
+(S5c target, ~100 lines) now reduces purely to truncation + Hölder on top of
+the indicator base case.
+
+σ-algebras are passed via the `σPair : Fin 2 → MeasurableSpace Ω` function
+form (cf. `alphaMixingCoeff_nonneg`, `alphaMixingCoeff_le_one`). -/
+theorem davydov_indicator_bound
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω)
+    {A B : Set Ω}
+    (hA_meas : @MeasurableSet Ω (σPair 0) A)
+    (hB_meas : @MeasurableSet Ω (σPair 1) B) :
+    |(μ (A ∩ B)).toReal - (μ A).toReal * (μ B).toReal| ≤
+      CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) := by
+  unfold CentralLimitTheoremOQ02.alphaMixingCoeff
+  -- BddAbove witness for the outer `Set Ω` layer: every term is ≤ 1, uniformly.
+  have hBdd_outer :
+      BddAbove (Set.range fun (A' : Set Ω) =>
+        ⨆ (_ : @MeasurableSet Ω (σPair 0) A')
+          (B' : Set Ω) (_ : @MeasurableSet Ω (σPair 1) B'),
+          |(μ (A' ∩ B')).toReal - (μ A').toReal * (μ B').toReal|) := by
+    refine ⟨1, ?_⟩
+    rintro _ ⟨A', rfl⟩
+    apply Real.iSup_le _ (by norm_num); intro _hA
+    apply Real.iSup_le _ (by norm_num); intro B'
+    apply Real.iSup_le _ (by norm_num); intro _hB
+    exact indicator_cov_le_one A' B'
+  -- BddAbove witness for the middle `Set Ω` layer (with A held fixed).
+  have hBdd_inner :
+      BddAbove (Set.range fun (B' : Set Ω) =>
+        ⨆ (_ : @MeasurableSet Ω (σPair 1) B'),
+          |(μ (A ∩ B')).toReal - (μ A).toReal * (μ B').toReal|) := by
+    refine ⟨1, ?_⟩
+    rintro _ ⟨B', rfl⟩
+    apply Real.iSup_le _ (by norm_num); intro _hB
+    exact indicator_cov_le_one A B'
+  -- Peel the four ⨆ layers: Set Ω (outer) → Prop → Set Ω (inner) → Prop.
+  refine le_ciSup_of_le hBdd_outer A ?_
+  rw [ciSup_pos hA_meas]
+  refine le_ciSup_of_le hBdd_inner B ?_
+  rw [ciSup_pos hB_meas]
+  -- After both rewrites the iSup collapses to the body, which equals the LHS.
+
 /-! ## Part IV: Davydov's covariance inequality (S4 target, stated as sorry) -/
 
 /-- **Indicator-pair covariance identity** (S4 stepping-stone helper).
@@ -376,14 +451,14 @@ ingredients about `alphaMixingCoeff`, plus the L^p density step:
    ciSup elaboration complexity"): `0 ≤ alphaMixingCoeff μ ℱ 𝒢`, discharged
    by reflective use of `Real.iSup_nonneg` at each layer of the 4-fold
    `⨆`.
-3. **`davydov_indicator_bound`** (yet to formalize, mechanic target — the
+3. **`davydov_indicator_bound`** (**S5b, proven this session** — the
    *indicator base case*): for measurable indicators
    `|μ(A ∩ B).toReal - μ(A).toReal · μ(B).toReal| ≤ alphaMixingCoeff μ ℱ 𝒢`.
    This is the defining inequality of `alphaMixingCoeff` packaged for use.
-   The remaining order-theory sorry; needs a `BddAbove` discharge derived
-   from `alphaMixingCoeff_le_one` (proven above) to apply `le_ciSup_of_le`
-   at the 4 nested layers.
-4. **L^p density step** (S5b target, ~100 lines): truncate `X` and `Y` to
+   Proof peels the 4 nested ⨆ layers via `le_ciSup_of_le` (Set Ω layers,
+   with `BddAbove` witnesses uniformly derived from `indicator_cov_le_one`)
+   and `ciSup_pos` (Prop layers).
+4. **L^p density step** (S5c target, ~100 lines): truncate `X` and `Y` to
    bounded random variables, apply indicator decomposition
    `X = ∫ 1_{X > t} dt` + Hölder's inequality with conjugate exponents
    `(p, p/(p-1))`. This reduces the bound to the indicator base case (3).

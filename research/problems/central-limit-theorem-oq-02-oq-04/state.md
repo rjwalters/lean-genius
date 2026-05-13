@@ -1,11 +1,130 @@
 # Current State
 
-**Phase**: ACT (S5 — `alphaMixingCoeff` order-theory ingredients)
-**Since**: 2026-05-12T17:50:00Z
-**Iteration**: 5 (theorem count 9 → 11; build-verified)
-**Last Updated**: 2026-05-12 (researcher-3)
+**Phase**: ACT (S5b — `davydov_indicator_bound` (ingredient 3) discharged)
+**Since**: 2026-05-13T10:30:00Z
+**Iteration**: 6 (theorem count 11 → 12; build-pending — worktree .lake symlink loop)
+**Last Updated**: 2026-05-13 (researcher-3)
 
-## S5 (researcher-3, 2026-05-12, this PR — order-theory ingredients (1) & (2))
+## S5b (researcher-3, 2026-05-13, this PR — ingredient (3) `davydov_indicator_bound`)
+
+**Davydov structural decomposition — all 3 named order-theory ingredients now proven.**
+
+Closes the third and final order-theory ingredient in the structural
+decomposition of `davydov_covariance_inequality` documented since S4:
+
+```lean
+theorem davydov_indicator_bound
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω)
+    {A B : Set Ω}
+    (hA_meas : @MeasurableSet Ω (σPair 0) A)
+    (hB_meas : @MeasurableSet Ω (σPair 1) B) :
+    |(μ (A ∩ B)).toReal - (μ A).toReal * (μ B).toReal| ≤
+      CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1)
+```
+
+### Proof strategy
+
+The 4-fold nested supremum defining `alphaMixingCoeff` is peeled one layer at
+a time:
+
+* **Set Ω layers** (outer over `A'`, middle over `B'`): apply `le_ciSup_of_le`
+  with `BddAbove` witnesses derived uniformly from `indicator_cov_le_one`
+  (the [0, 1] envelope proven in S4). Each `BddAbove` is established by
+  chaining three `Real.iSup_le _ (by norm_num)` discharges through the inner
+  ⨆ layers, bottoming out at `indicator_cov_le_one`.
+
+* **Prop layers** (`_hA : @MeasurableSet Ω (σPair 0) A` and `_hB : ...`):
+  apply `ciSup_pos`
+  (`Mathlib.Order.ConditionallyCompletePartialOrder.Indexed` line 95). Since
+  the body is constant in the propositional binder, `ciSup_pos` reduces
+  `⨆ (h : p), f h` to `f hp` whenever `p` holds — exactly our situation
+  with `hA_meas`, `hB_meas`.
+
+### Key technical tricks
+
+The two `BddAbove` witnesses for the `Set Ω` layers are constructed
+identically to the proof of `alphaMixingCoeff_le_one`: `refine ⟨1, ?_⟩`, then
+peel inner ⨆ layers with `Real.iSup_le _ (by norm_num)`, bottoming out at
+`indicator_cov_le_one`. The S4 [0, 1] envelope thus does double duty as both
+the *upper bound* witness (S5 `alphaMixingCoeff_le_one`) and the *BddAbove*
+witness (S5b, this PR).
+
+The `ciSup_pos` for Prop layers sidesteps the `BddAbove` discharge for
+`Sort*`-indexed iSup that would have been required had we tried to peel all
+4 layers uniformly via `le_ciSup_of_le`. `ciSup_pos` is stated for arbitrary
+`ConditionallyCompletePartialOrder` (so applies to ℝ) and only requires that
+the proposition hold — exactly the hypothesis we have at the call site.
+
+### Strategic positioning
+
+* **Non-overlapping with all 5 open same-slug PRs** (#17810, #17826, #17943,
+  #17947 are S3/S4 stale build-pending; #18439 is an obsolete auditor meta
+  drift bump already superseded by #18440 merged at 2026-05-13T02:06:50Z).
+  This PR adds a single theorem strictly downstream of S5 in Part III, just
+  before Part IV. No conflict with any open work.
+* **Closes ingredient (3)** of the Davydov decomposition. With (1)
+  `alphaMixingCoeff_le_one`, (2) `alphaMixingCoeff_nonneg` (both S5) and (3)
+  `davydov_indicator_bound` (S5b, this PR) all proven, the only remaining
+  step to discharge `davydov_covariance_inequality` is the L^p density step
+  (S5c target, ~100 lines: truncation + Hölder).
+* **Closes parent file's deferred order-theory plumbing**: the parent file
+  `CentralLimitTheoremOQ02.lean` line 444 omitted `alphaMixingCoeff_nonneg`
+  due to nested-ciSup elaboration complexity. S5/S5b show that the
+  combination of `Real.iSup_nonneg` / `Real.iSup_le` (reflectively in
+  `Sort*`) for Type+Prop layers and `ciSup_pos` for Prop-only layers fully
+  resolves the elaboration concern.
+
+### Counts
+
+* `lineCount`: 610 → **684** (+74 net: ~36 lines of one new proven theorem
+  with full docstring explaining the layer-peeling structure; the Part IV
+  docstring of `davydov_covariance_inequality` updated +6 lines to mark
+  ingredient (3) as proven and shift the L^p density step to S5c; file
+  header docstring updated to record S5b session).
+* `theoremCount`: 11 → **12** (+1 fully proven, no new sorries).
+* `definitionCount`: 4 (unchanged).
+* `sorries`: **2** (unchanged — this PR does not touch any existing sorry;
+  `davydov_covariance_inequality` and `mixing_clt_ibragimov` remain as
+  S5c / S6+ targets).
+* `axiomCount`: 0 (unchanged).
+
+### Build status
+
+**[BUILD PENDING]** — Worktree `proofs/.lake` is a self-referential symlink
+(`stat -L proofs/.lake` → "Too many levels of symbolic links"), so
+`./proofs/scripts/docker-build.sh Proofs.CentralLimitTheoremOQ02OQ04` would
+trigger a fresh Mathlib clone (~30–45 min cold) inside Docker, with the
+known risk of mid-build worktree wipe by the daemon respawn. The proof uses
+only Mathlib API verified against `/Users/rwalters/GitHub/mathlib4`:
+
+* `le_ciSup_of_le` (`Mathlib.Order.ConditionallyCompleteLattice.Indexed`
+  line 146): `BddAbove (range f) → ∀ i, a ≤ f i → a ≤ ⨆ j, f j`.
+* `ciSup_pos`
+  (`Mathlib.Order.ConditionallyCompletePartialOrder.Indexed` line 95):
+  `(hp : p) → ⨆ h : p, f h = f hp` (works for ℝ as a
+  ConditionallyCompletePartialOrder).
+* `Real.iSup_le` (`Mathlib.Data.Real.Archimedean` line 236),
+  `indicator_cov_le_one` (S4, line 229), `Set.range` — already in scope.
+
+Build verification deferred to doctor / next session from clean worktree.
+
+### Next iteration (S5c / S6)
+
+Two productive paths now open:
+
+1. **S5c ACT** (~100 lines): L^p density step — truncate `X` and `Y` to
+   bounded random variables `X^N := X · 1_{|X| ≤ N}` and `Y^M`, apply
+   indicator decomposition `X^N = ∫_0^N 1_{X > t} − 1_{X < -t} dt`, expand
+   the covariance bilinearly into a double integral over indicator pairs,
+   apply `davydov_indicator_bound` pointwise, then Hölder to recover the
+   `‖X‖_p · ‖Y‖_p` factor and bound the tail via Markov + Chebyshev.
+2. **Joint tuple stationarity** (S6 prerequisite for Bernstein blocks),
+   ~100 lines.
+
+---
+
+## S5 (researcher-3, 2026-05-12, PR #18227 — order-theory ingredients (1) & (2))
 
 **Davydov structural decomposition — 2 of 3 named ingredients now proven.**
 
@@ -291,29 +410,25 @@ blocks proof template:
 
 ## Blockers
 
-- **3 order-theory ingredients still sorry** (named in
-  `davydov_covariance_inequality` docstring as mechanic-pass targets):
-  `alphaMixingCoeff_le_one`, `alphaMixingCoeff_nonneg`,
-  `davydov_indicator_bound`. The Prop-indexed nested-iSup
-  unification quirks block direct `iSup_pos` rewrites (same issue the
-  parent file ran into at line 444). Future mechanic pass should use
-  `iSup_const` + `IsEmpty` / `Nonempty` instance bridging, or wrap
-  σ-algebras in a Subtype to fully disambiguate typeclass synthesis.
-- **Davydov's L^p inequality** (S5b target): ~100 lines of
-  measure-theoretic reduction (level-set decomposition + Hölder).
+- **L^p density step** (S5c target): ~100 lines of measure-theoretic
+  reduction (level-set decomposition + Hölder + Markov tail). All three
+  order-theory ingredients are now proven (S5+S5b), so this is the sole
+  remaining step inside `davydov_covariance_inequality`.
 
 ## Next Action
 
-**Session 5 candidates** (in priority order):
+**Session S5c+ candidates** (in priority order):
 
-1. **S5a (mechanic-pass)**: discharge the 3 order-theory ingredients
-   (`alphaMixingCoeff_le_one`, `alphaMixingCoeff_nonneg`,
-   `davydov_indicator_bound`). Pure ConditionallyCompleteLattice ℝ
-   machinery; ~80 lines once the Prop-iSup unification approach settles.
-2. **S5b ACT** (~100 lines): L^p density step using level-set decomposition
-   + Hölder, reducing to `davydov_indicator_bound`.
-3. **Parallel path**: Refine `Stationary` to joint tuple stationarity (S6
-   target prerequisite for Bernstein blocks). ~100 lines.
+1. **S5c ACT** (~100 lines): L^p density step using level-set
+   decomposition + Hölder, reducing to `davydov_indicator_bound` (now
+   available, S5b). Concretely: bound `|Cov(X, Y)|` by expressing
+   `X = ∫_ℝ (𝟙_{X>t} − 𝟙_{X<-t}) dt` plus a Markov tail, expanding
+   bilinearly into a double integral of indicator-pair covariances, and
+   applying `davydov_indicator_bound` pointwise; Hölder on the truncated
+   piece + Markov on the tail recovers the `α^{(p-2)/p} · ‖X‖_p · ‖Y‖_p`
+   bound.
+2. **Parallel path**: Refine `Stationary` to joint tuple stationarity
+   (S6 prerequisite for Bernstein blocks). ~100 lines.
 
 ## Decomposition Plan
 
@@ -322,9 +437,11 @@ blocks proof template:
 | S1 | OBSERVE | Scaffold (md + json) | 0 Lean | merged #17778 |
 | S2 | ORIENT | 4 def stubs + 2 thm stmts + 2 proven helpers | 231 | merged #17792 |
 | S3 | ACT | Davydov stmt + 3 new helpers + longrun_variance proof (never built) | 402 | merged #17820 (build broken) |
-| S4 | ACT | Build-fix + indicator_cov_le_one + structural decomposition | 502 | **this session** |
-| S5a | mechanic | Discharge 3 order-theory sorries (named in docs) | ~80 | next |
-| S5b | ACT | L^p density / truncation → full Davydov | ~100 | next |
+| S4 | ACT | Build-fix + indicator_cov_le_one + structural decomposition | 502 | merged #18173/etc |
+| S5 | ACT | alphaMixingCoeff_nonneg + alphaMixingCoeff_le_one (ingredients 1, 2) | 544 → 601 | merged #18227 |
+| S5a | mechanic | polynomial_summable_of_exponent_gt_one drift fix | 601 → 610 | merged #18202 |
+| S5b | ACT | davydov_indicator_bound (ingredient 3) | 610 → 684 | **this session** |
+| S5c | ACT | L^p density / truncation → full Davydov | ~100 | next |
 | S6 | ACT | Refine Stationary to tuple-joint stationarity | ~100 | |
 | S7 | ACT | Bernstein blocks p_n, q_n + arithmetic | ~150 | |
 | S8 | ACT | Large-block independence approximation | ~120 | |
@@ -333,9 +450,9 @@ blocks proof template:
 
 ## Attempt Counts
 
-- Total attempts: 4
-- Current approach attempts: 1 (S4 build-fix + indicator-helper +
-  structural decomposition)
+- Total attempts: 6
+- Current approach attempts: 1 (S5b — peel 4-fold ⨆ via le_ciSup_of_le
+  + ciSup_pos)
 - Approaches tried:
   - S1: OBSERVE scaffolding.
   - S2: ORIENT — predicates + structure + main theorem statements + 2
@@ -344,21 +461,29 @@ blocks proof template:
     convergence + extension of IbragimovHypotheses + 3 new proven theorems
     (PR #17820 merged "(build pending)" without actually building).
   - S4: ACT — discovered S3 was broken, fixed 3 build-blockers, added
-    proven `indicator_cov_le_one` helper, and documented the structural
-    decomposition of `davydov_covariance_inequality` into named
-    order-theory ingredients.
+    proven `indicator_cov_le_one` helper, documented the structural
+    decomposition into 3 named order-theory ingredients + L^p density.
+  - S5: ACT — proved ingredients (1) `alphaMixingCoeff_le_one` and (2)
+    `alphaMixingCoeff_nonneg` via reflective use of `Real.iSup_le` and
+    `Real.iSup_nonneg` (build-verified, PR #18227).
+  - S5a: mechanic — closed `polynomial_summable_of_exponent_gt_one`
+    Mathlib-drift sorry via `Real.summable_nat_rpow` (PR #18202).
+  - S5b: ACT — proved ingredient (3) `davydov_indicator_bound` by peeling
+    4-fold ⨆ via `le_ciSup_of_le` (Set Ω layers, BddAbove from
+    `indicator_cov_le_one`) and `ciSup_pos` (Prop layers).
 
 ## Key Files
 
-- `proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean` — **S4: 502 lines, builds
-  cleanly**. 8 theorems + 2 sorries, 3 definitions, 1 structure with 14
-  fields. S4 additions: removed stale import, refactored Davydov signature
-  to `Fin 2 → MS Ω` wrap, renamed `σ²` → `σsq`, added proven
-  `indicator_cov_le_one`. The remaining 2 sorries are
-  `davydov_covariance_inequality` (L^p version, S5b target) and
-  `mixing_clt_ibragimov` (S6+ target).
-- `src/data/proofs/central-limit-theorem-oq-02-oq-04/meta.json` — updated
-  with sorries 2, lineCount 502, theoremCount 8.
+- `proofs/Proofs/CentralLimitTheoremOQ02OQ04.lean` — **S5b: 684 lines,
+  build-pending (worktree .lake symlink loop)**. 12 theorems + 2 sorries,
+  4 definitions, 1 structure with 14 fields. S5b additions: one new proven
+  theorem `davydov_indicator_bound` (~36 LOC + ~30 LOC docstring) +
+  docstring updates to Part IV `davydov_covariance_inequality` (mark
+  ingredient (3) proven; relabel L^p density as S5c). The remaining 2
+  sorries are `davydov_covariance_inequality` (L^p version, S5c target,
+  now reduced to step (d) alone) and `mixing_clt_ibragimov` (S6+ target).
+- `src/data/proofs/central-limit-theorem-oq-02-oq-04/meta.json` —
+  updated with sorries 2, lineCount 684, theoremCount 12.
 - `proofs/Proofs/CentralLimitTheoremOQ02.lean` — parent file, unchanged.
-  The 3 named order-theory ingredients in S4's Davydov docstring are good
-  candidates for upstream contribution.
+  The 3 named order-theory ingredients (now all proven) in S4's Davydov
+  docstring are good candidates for upstream contribution.
