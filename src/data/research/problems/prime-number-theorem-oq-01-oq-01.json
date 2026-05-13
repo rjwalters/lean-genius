@@ -1,7 +1,7 @@
 {
   "slug": "prime-number-theorem-oq-01-oq-01",
   "title": "Is the Riemann Hypothesis true",
-  "phase": "RESEARCH",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -33,23 +33,23 @@
     "goal": "Recommended S2 path: bridge theorem linking PrimeNumberTheoremOQ01.RiemannHypothesis and Proofs.RiemannHypothesis.RiemannHypothesis (~30 LOC, 0 axioms, 0 sorries). Alternate: discharge the zeta_conj axiom via Schwarz reflection (60-120 LOC)."
   },
   "currentState": {
-    "phase": "RESEARCH",
+    "phase": "ACT",
     "since": "2026-05-12T18:25:00+00:00",
-    "iteration": 1,
-    "focus": "S1 OBSERVE complete: surveyed existing RiemannHypothesis.lean (41 axioms, canonical RH file), PrimeNumberTheoremOQ01.lean (5 axioms, parent slug's Lean file), and Mathlib v4.26.0 RH-relevant API. Identified slug duplication with the 'riemann-hypothesis' parent slug; audited the two coexisting RiemannHypothesis : Prop declarations and shortlisted three tractable S2 candidates plus one deferred.",
+    "iteration": 2,
+    "focus": "S2 ACT (researcher-4, 2026-05-13): Created proofs/Proofs/PrimeNumberTheoremOQ01OQ01.lean (~60 LOC). Implements S1-recommended candidate (A): bridge theorem `rh_canonical_iff_pnt : RiemannHypothesis.RiemannHypothesis ↔ PrimeNumberTheoremOQ01.RiemannHypothesis` via single `Iff.trans` chaining `RiemannHypothesis.RH_alt` (Proofs/RiemannHypothesis.lean:132) and `PrimeNumberTheoremOQ01.rh_iff_re_half` (Proofs/PrimeNumberTheoremOQ01.lean:73), both targeting the same canonical explicit form. Symmetric companion `rh_pnt_iff_canonical` shipped. 0 new axioms, 0 sorries. Build-pending. Slug-duplication concern from S1 OBSERVE resolved at the propositional level.",
     "blockers": [
-      "RH itself is intractable; no full proof can be attempted.",
-      "All three equivalent reformulations (Robin / Mertens / von Koch) are axiomatised in the gallery and would require deep Mathlib infrastructure (Riemann-von Mangoldt explicit formula, Mertens-function API, colossally-abundant-number API) to discharge."
+      "RH itself is intractable; no full proof can be attempted (Millennium Prize).",
+      "Remaining S1 candidates (B/C/D) all require substantial Mathlib infrastructure not yet present at v4.26.0."
     ],
-    "nextAction": "S2 ACT (recommended): add Proofs/PrimeNumberTheoremOQ01OQ01.lean with one bridge theorem proving PrimeNumberTheoremOQ01.RiemannHypothesis ↔ Proofs.RiemannHypothesis.RiemannHypothesis. Both definitions are propositionally identical after unfolding isNonTrivialZero. ~30 LOC, 0 axioms, 0 sorries. Alternate (B): discharge zeta_conj axiom via Schwarz reflection (60-120 LOC, medium difficulty).",
+    "nextAction": "S3 GALLERY-or-AXIOM-DISCHARGE: either (i) integrate the slug-bridge meta in src/data/proofs/prime-number-theorem-oq-01-oq-01/ as an enrichment entry (gallery-side, low risk); or (ii) continue with S1-OBSERVE alternate (B): discharge `Proofs.RiemannHypothesis.zeta_conj` axiom via Schwarz reflection (60-120 LOC, medium difficulty, requires AnalyticOnNhd machinery in Mathlib v4.26.0). Build verification of S2 bridge needed first.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 1
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE complete (markdown/JSON only, no Lean changes). Documented that this slug duplicates the parent 'riemann-hypothesis' gallery slug (status COMPLETED, 41 axioms). The two RiemannHypothesis : Prop declarations in RiemannHypothesis.lean (line 128, via isNonTrivialZero) and PrimeNumberTheoremOQ01.lean (line 69, four-argument form) are propositionally identical but not currently linked; a ~30-LOC bridge theorem is the recommended S2 deliverable. Shortlisted three other tractable candidates: discharging zeta_conj via Schwarz reflection, meta-only audit of parent's axiom counts (deferred to enricher/auditor), and the easy direction of RH ↔ Mertens (deferred behind Mathlib explicit formula gap).",
+    "progressSummary": "S2 ACT complete (researcher-4, 2026-05-13): created `proofs/Proofs/PrimeNumberTheoremOQ01OQ01.lean` (60 LOC, 2 theorems, 0 axioms, 0 sorries). Implements S1-recommended candidate (A) bridge: `rh_canonical_iff_pnt : RiemannHypothesis.RiemannHypothesis ↔ PrimeNumberTheoremOQ01.RiemannHypothesis` via single `Iff.trans` chaining `RiemannHypothesis.RH_alt` and `PrimeNumberTheoremOQ01.rh_iff_re_half`, both targeting the canonical explicit form `∀ s : ℂ, riemannZeta s = 0 → 0 < s.re → s.re < 1 → s.re = 1/2`. Symmetric companion `rh_pnt_iff_canonical` shipped alongside. Build-pending per CLAUDE.md's no-direct-lake-build policy + 4000+ LOC RiemannHypothesis.lean import surface; build risk minimal (3-line proof composes two existing Iff theorems with .trans/.symm, no new Mathlib bearers). Slug-duplication concern from S1 OBSERVE resolved at the propositional level. | S1 OBSERVE complete (markdown/JSON only, no Lean changes). Documented that this slug duplicates the parent 'riemann-hypothesis' gallery slug (status COMPLETED, 41 axioms). The two RiemannHypothesis : Prop declarations in RiemannHypothesis.lean (line 128, via isNonTrivialZero) and PrimeNumberTheoremOQ01.lean (line 69, four-argument form) are propositionally identical but not currently linked; a ~30-LOC bridge theorem is the recommended S2 deliverable. Shortlisted three other tractable candidates: discharging zeta_conj via Schwarz reflection, meta-only audit of parent's axiom counts (deferred to enricher/auditor), and the easy direction of RH ↔ Mertens (deferred behind Mathlib explicit formula gap).",
     "builtItems": [
       {
         "item": "S1 OBSERVE markdown set (problem.md, knowledge.md, state.md)",
@@ -175,7 +175,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.564Z",
-  "lastUpdate": "2026-05-12T18:25:00+00:00",
+  "lastUpdate": "2026-05-13T18:30:00+00:00",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
@@ -200,6 +200,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeNumberTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/PrimeNumberTheoremOQ01OQ01.lean",
+      "filename": "PrimeNumberTheoremOQ01OQ01.lean",
+      "lineCount": 60,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PrimeNumberTheoremOQ01OQ01.lean"
     }
   ]
 }
