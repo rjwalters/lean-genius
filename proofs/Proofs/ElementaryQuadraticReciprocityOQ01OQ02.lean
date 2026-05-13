@@ -452,8 +452,18 @@ theorem quarticChar_kernel_card (h4 : p % 4 = 1) :
 -- PART 8: Cubic Reciprocity (Axiomatized with Strategy)
 -- ============================================================
 
-/- The Eisenstein integers ℤ[ω] are not yet in Mathlib v4.26.0.
-   We describe them and their key properties as axioms. -/
+/- Note (researcher-5, 2026-05-13, S5 OBSERVE bearer audit):
+   Mathlib v4.26.0 (pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67) DOES ship the
+   Eisenstein integers ℤ[ω] — as the ring of integers `𝓞 K` of any number field K with
+   `IsCyclotomicExtension {3} ℚ K` (see Mathlib.NumberTheory.NumberField.Cyclotomic.Three
+   and Mathlib.NumberTheory.NumberField.Cyclotomic.PID.three_pid). The full Jacobi-sum
+   API used in the cubic-reciprocity proof strategy below is also already in Mathlib
+   (Mathlib.NumberTheory.JacobiSum.Basic). The two axioms below are predicated on the
+   local `structure EisensteinPrime` placeholder, and discharging them requires rebasing
+   that structure onto `IsCyclotomicExtension`/`𝓞 K` rather than waiting on an upstream
+   Mathlib feature. See
+   research/problems/elementary-quadratic-reciprocity-oq-01-oq-02/s5-observe-eisenstein-bearer.md
+   for the full bearer catalog and refactor plan. -/
 
 /-- A type representing Eisenstein primes (rational prime p ≡ 1 mod 3, written π ∈ ℤ[ω]). -/
 structure EisensteinPrime where
@@ -486,8 +496,14 @@ axiom cubicResidueSymbol (π : EisensteinPrime) (a : ℤ) : ZMod 3
     Compare with quadratic case: QR needs sign of Gauss sum; CR needs Jacobi sum.
     The Jacobi sum J(χ₃, χ₃) plays the role of the Gauss sum τ in QR.
 
-    Mathlib gap: Eisenstein integer ring ℤ[ω] is not in Mathlib v4.26.0.
-    The proof would require ~300 additional lines of Eisenstein infrastructure. -/
+    Mathlib status (audited by researcher-5, 2026-05-13, pinned SHA 2df2f01...):
+    Eisenstein integer ring ℤ[ω] IS in Mathlib v4.26.0 as `𝓞 K` for
+    `IsCyclotomicExtension {3} ℚ K` (see Mathlib.NumberTheory.NumberField.Cyclotomic.Three
+    and .PID). The Jacobi-sum API (jacobiSum, jacobiSum_mul_nontrivial,
+    gaussSum_pow_eq_prod_jacobiSum, jacobiSum_mem_algebraAdjoin_of_pow_eq_one, …) is in
+    Mathlib.NumberTheory.JacobiSum.Basic. Discharging this axiom requires rebasing the
+    local `structure EisensteinPrime` onto Mathlib's `𝓞 K` and porting Ireland–Rosen
+    Theorem 1 of Chapter 9 (~250 LOC), not waiting on upstream Mathlib. -/
 axiom cubic_reciprocity (π ρ : EisensteinPrime)
     (h_distinct : π.rational_prime ≠ ρ.rational_prime)
     (hπ : π.is_primary = true) (hρ : ρ.is_primary = true) :
