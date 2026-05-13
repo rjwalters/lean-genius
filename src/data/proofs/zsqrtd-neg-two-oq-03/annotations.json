@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-module-header",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 4, "endLine": 48 },
+    "type": "context",
+    "title": "Module docstring: S2 ACT scope and why $\\mathbb{Z}[\\omega]$, not $\\mathbb{Z}[\\sqrt{-3}]$",
+    "content": "The module docstring fixes the long-term target — `sq_add_three_sq_of_prime_one_mod_three : p.Prime → p % 3 = 1 → ∃ a b : ℤ, (p : ℤ) = a^2 + 3*b^2` — and explains why the $n = 3$ case requires a fresh structure rather than reusing Mathlib's `Zsqrtd (-3)`. The maximal order of $\\mathbb{Q}(\\sqrt{-3})$ is $\\mathbb{Z}[\\omega] = \\mathbb{Z}[(1+\\sqrt{-3})/2]$, **strictly larger** than $\\mathbb{Z}[\\sqrt{-3}]$ (index 2). Only the maximal order is a PID, and the splitting argument used in S4-S5 needs the PID property to extract $\\alpha \\in \\mathbb{Z}[\\omega]$ with $N(\\alpha) = p$. The contents list (lines 20-35) explicitly partitions this file (algebraic infrastructure: structure, instances, norm + 4 identities) from S3 (EuclideanDomain instance) and S4-S5 (splitting via QR + parity case-split).",
+    "mathContext": "The index-2 inclusion $\\mathbb{Z}[\\sqrt{-3}] \\subsetneq \\mathbb{Z}[\\omega]$ is witnessed by $\\omega = (1 + \\sqrt{-3})/2 \\notin \\mathbb{Z}[\\sqrt{-3}]$. Algebraically, $\\sqrt{-3} = -1 - 2\\omega$, so $\\mathbb{Z}[\\sqrt{-3}] = \\mathbb{Z} + 2\\mathbb{Z}\\omega \\subset \\mathbb{Z} + \\mathbb{Z}\\omega = \\mathbb{Z}[\\omega]$. The conductor (index) of the non-maximal order is exactly 2.",
+    "significance": "key",
+    "relatedConcepts": ["maximal order", "ring of integers", "conductor", "principal ideal domain", "class number 1"],
+    "prerequisites": ["algebraic number theory (orders in quadratic fields)"]
+  },
+  {
     "id": "ann-eisenstein-structure",
     "proofId": "zsqrtd-neg-two-oq-03",
     "range": { "startLine": 52, "endLine": 61 },
