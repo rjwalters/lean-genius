@@ -22,8 +22,8 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 175,
-    "theoremCount": 13,
+    "lineCount": 207,
+    "theoremCount": 20,
     "definitionCount": 2,
     "assumptions": "None. Fully verified with 0 axioms and 0 sorries. This is an infrastructure-only deliverable (S2 ACT); the EuclideanDomain instance and the main `p = x² + 3y²` theorem will land in S3-S5 follow-up work.",
     "mathlib_version": "4.26.0",
@@ -74,12 +74,12 @@
     ]
   },
   "leanFile": {
-    "lineCount": 175,
+    "lineCount": 207,
     "path": "Proofs/ZsqrtdNegTwoOQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
     "definitionCount": 2,
-    "theoremCount": 13
+    "theoremCount": 20
   },
   "sorries": 0,
   "sections": [
@@ -87,31 +87,31 @@
       "id": "header-imports",
       "title": "Module Header and Imports",
       "startLine": 1,
-      "endLine": 51,
+      "endLine": 48,
       "summary": "File docstring describing the S2 ACT infrastructure target and what is deferred to S3-S5. Imports `Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity` (for later splitting work) and `Mathlib.Tactic` (for `nlinarith`, `ring`, `simp`).",
       "mathContext": "The S2 ACT layer is the algebraic foundation. The QR import is forward-looking — used in S4 when `(-3/p) = (p/3)` arises — and does not affect the present file's content."
     },
     {
       "id": "structure",
       "title": "Structure and Primitive Instances",
-      "startLine": 53,
-      "endLine": 100,
-      "summary": "`structure Eisenstein` with two integer coordinates `re, im`, the `ofInt` coercion, and primitive instances `Zero, One, Add, Neg, Mul` together with eight `@[simp] rfl` projection lemmas for `re/im` on these constructions.",
+      "startLine": 50,
+      "endLine": 103,
+      "summary": "`structure Eisenstein` with two integer coordinates `re, im`, the `ofInt` coercion, and primitive instances `Zero, One, Add, Neg, Mul` together with twelve `@[simp] rfl` projection lemmas for `re/im` on these constructions (zero, one, add, neg, mul) plus the integer-coercion lemmas re_ofInt / im_ofInt.",
       "mathContext": "The multiplication is derived from `ω² + ω + 1 = 0`: `(a + bω)(c + dω) = ac + (ad + bc)ω + bd · ω² = (ac - bd) + (ad + bc - bd)ω`. The projection lemmas expose the constructor form so that `simp` can fire during the ring-axiom proofs."
     },
     {
       "id": "ring-structure",
       "title": "AddCommGroup, AddGroupWithOne, CommRing",
-      "startLine": 102,
-      "endLine": 142,
-      "summary": "Builds the ring structure ladder via the Mathlib `Zsqrtd.commRing` template: `addCommGroup` with explicit `nsmulRec/zsmulRec` and `add_assoc`-style refinements; `addGroupWithOne` with `natCast := ofInt ∘ Int.ofNat` and `intCast := ofInt`; `commRing` with explicit `npowRec` and the ring axioms.",
+      "startLine": 105,
+      "endLine": 149,
+      "summary": "Builds the ring structure ladder via the Mathlib `Zsqrtd.commRing` template: `addCommGroup` with explicit `nsmulRec/zsmulRec` and `add_assoc`-style refinements; `addGroupWithOne` with `natCast := ofInt ∘ Int.ofNat` and `intCast := ofInt`; `commRing` with explicit `npowRec` and the ring axioms. Interleaved are `sub_re` and `sub_im` simp lemmas (derived from `sub_eq_add_neg`).",
       "mathContext": "Each axiom is closed by `intros; ext <;> simp <;> ring` — the simp lemmas unfold the projection-component form so that `ring` can normalize the integer arithmetic. This is the exact pattern used in `Mathlib/NumberTheory/Zsqrtd/Basic.lean` around line 164."
     },
     {
       "id": "norm",
       "title": "The Eisenstein Norm",
-      "startLine": 144,
-      "endLine": 175,
+      "startLine": 151,
+      "endLine": 207,
       "summary": "Defines `Eisenstein.norm z = z.re ^ 2 - z.re * z.im + z.im ^ 2`, proves `norm_zero`, `norm_one`, `norm_nonneg` (via `4 N(z) = (2re - im)² + 3 im²` and `nlinarith`), `norm_mul` (multiplicativity via `simp + ring`), `norm_eq_zero_iff` (`norm z = 0 ↔ z = 0` via the two-square split), and `norm_pos_of_ne_zero` (strict positivity on nonzero elements).",
       "mathContext": "The non-negativity argument uses the algebraic identity `4 · (a² - ab + b²) = (2a - b)² + 3 b²` — the same `discriminant ≥ 0` move used to prove that `x² - x + 1 > 0` over ℝ. The multiplicativity of the norm is the algebraic spine of the eventual splitting argument: if `p` is non-irreducible in `ℤ[ω]`, then `p = N(α)` for some `α ≠ 0, 1`."
     }
