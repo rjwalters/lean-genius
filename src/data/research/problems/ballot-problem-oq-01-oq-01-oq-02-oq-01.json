@@ -1,7 +1,7 @@
 {
   "slug": "ballot-problem-oq-01-oq-01-oq-02-oq-01",
   "title": "Step ≥ -m Cycle Lemma — Refuting the Naive ⌈S/m⌉ Lower Bound",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -34,20 +34,20 @@
     }
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-05-12T19:42:00Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE complete; refutation documented; S2 ACT target (conjecture D, m-jump downward IVT) identified.",
+    "iteration": 8,
+    "focus": "Lean ACT saturation + PREP backlog complete (STATE-SYNC researcher-4, 2026-05-13). Seven sessions merged since the S1 OBSERVE baseline: S1 OBSERVE (#18253) refuted naive ⌈S/m⌉ bound; S1b OBSERVE (#18480) refuted refined Conjectures B and C via [K, -m] family; S2 ACT (#18381) proved D = `m_jump_downward_ivt` (build-pending); S3 PREP (#18424) bridged Conjecture E to parent's `cycle_lemma`; S1c PREP (#18487) sketched Conjecture B′ discharge (two-sided alphabet); S4 ACT (#18693) shipped D′ = `m_jump_upward_ivt` (build-pending); S5 PREP (#18703) audited S1c §3.2 — surfaced 3 issues, sketched Path A (~200 LOC new mathematics) vs Path B (~80 LOC scope-down), observed C′-tight case [2,2,2,2,2,-2,-2,-2,1]. Cumulative Lean state: `BallotProblemOQ01OQ01OQ02OQ01.lean` 228 LOC, 6 theorems, 0 sorries, 0 axioms. S5 ACT deferred pending S5b/S5c PREP grounding.",
     "blockers": [],
-    "nextAction": "S2 ACT: create proofs/Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean (namespace BallotMJumpCycleLemma); prove m_jump_downward_ivt mirroring unit_decrement_downward_ivt with conclusion window [v-m+1, v].",
+    "nextAction": "S6 ACT-E: discharge Conjecture E by chaining D + D′ into parent's `cycle_lemma` bridge per S3 PREP (#18424). ~80-120 LOC. Pre-requisite: confirm S2/S4 build via `./proofs/scripts/docker-build.sh Proofs.BallotProblemOQ01OQ01OQ02OQ01` (or doctor agent if failure). Parallel option: S6 ACT-B′ — implement B′ per S1c §3.2 sketch audited by S5 (~60-100 LOC).",
     "attemptCounts": {
-      "total": 1,
+      "total": 8,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 7
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE refuted naive ⌈S/m⌉ bound (PR #18253). S2 ACT proved D = m_jump_downward_ivt (PR #18381). S3 PREP designed E discharge (PR #18424). S1b OBSERVE refuted B and C (PR #18480 open). S1c PREP designed B′ discharge plan (PR #18487). S4 ACT D′ = m_jump_upward_ivt in flight (PR #18693 open). S5 PREP (PR #18703) audited S1c §3.2 discharge sketch — surfaced 3 issues, mapped parent machinery transfer, sketched Path A (~200 LOC, new mathematics) vs Path B (~80 LOC, scope-down). C′ tight case [2,2,2,2,2,-2,-2,-2,1] observed. S5 ACT deferred pending S5b/S5c PREP grounding.",
+    "progressSummary": "STATE-SYNC complete (researcher-4, 2026-05-13): state.md catch-up after 7 merged sessions of drift. Net diff: state.md +~70 lines (new Session Log + ACT-Readiness sections; original §Current Focus preserved beneath as historical); JSON `currentState.{phase,iteration,focus,nextAction,attemptCounts}` + top-level `phase` + `lastUpdate` + `knowledge.progressSummary` prepend. Zero Lean changes. | S1 OBSERVE refuted naive ⌈S/m⌉ bound (PR #18253). S1b OBSERVE refuted B and C (PR #18480 MERGED). S2 ACT proved D = m_jump_downward_ivt (PR #18381 MERGED, build-pending). S3 PREP designed E discharge (PR #18424 MERGED). S1c PREP designed B′ discharge plan (PR #18487 MERGED). S4 ACT D′ = m_jump_upward_ivt (PR #18693 MERGED, build-pending). S5 PREP (PR #18703 MERGED) audited S1c §3.2 discharge sketch — surfaced 3 issues, mapped parent machinery transfer, sketched Path A (~200 LOC, new mathematics) vs Path B (~80 LOC, scope-down). C′ tight case [2,2,2,2,2,-2,-2,-2,1] observed. S5 ACT deferred pending S5b/S5c PREP grounding. Cumulative Lean state per `leanFiles`: `BallotProblemOQ01OQ01OQ02OQ01.lean` 228 LOC / 6 theorems / 0 sorries / 0 axioms.",
     "builtItems": [
       "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/problem.md — full restatement with refutation and 5 refined conjectures A-E",
       "research/problems/ballot-problem-oq-01-oq-01-oq-02-oq-01/knowledge.md — worked verification, mechanism analysis, Mathlib audit, next-steps roadmap",
@@ -108,7 +108,7 @@
     "mathlib": []
   },
   "started": "2026-05-08T19:09:00.560Z",
-  "lastUpdate": "2026-05-12T19:42:00Z",
+  "lastUpdate": "2026-05-13T18:20:00Z",
   "significance": 6,
   "tractability": 8,
   "leanFiles": [
