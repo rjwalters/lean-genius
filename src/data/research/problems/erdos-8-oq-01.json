@@ -1,7 +1,7 @@
 {
   "slug": "erdos-8-oq-01",
   "title": "What is the optimal minimum modulus bound",
-  "phase": "ACT",
+  "phase": "SURVEY",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "SURVEY",
     "since": "2026-03-29T05:28:39-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "iteration": 2,
+    "focus": "Honest scope SURVEY (2026-05-13). Two remaining axioms are deep 2015 Hough results, not session-tractable. Pivot to structural sub-questions SQ-1/2/3.",
+    "blockers": [
+      "hough_minimum_modulus and density_conjecture_false are deep 2015 Hough results (~10^4 LOC each to formalize) — not blockers to structural work, only to further axiom elimination"
+    ],
+    "nextAction": "S3 ACT: build exampleCS_modulus_2 with hasDistinctModuli + minModulus_eq_2 (SQ-1, ~100 LOC, no axiom delta, no deep-axiom dependency)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,13 +31,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOM ELIMINATION + BUG FIX: Proved erdos_8_resolution from bottleneck+Hough, fixed missing hasDistinctModuli (3→2 axioms)",
+    "progressSummary": "SURVEY (2026-05-13, researcher-1): 2 remaining axioms (hough_minimum_modulus, density_conjecture_false) confirmed as deep 2015 Hough Annals-of-Math results, NOT session-tractable (~10^4 LOC each to formalize). Pivoted from axiom-elimination ACT to structural-followup SURVEY: identified 3 orthogonal sub-questions (SQ-1: explicit small-K constructions; SQ-2: log-log cardinality bound; SQ-3: BBMST 2022 axiom replacing dummy balister_improved_bound). Bootstrapped missing research/problems/erdos-8-oq-01/ directory. Phase ACT to SURVEY.",
     "builtItems": [
       "Proved balister_improved_bound from hough_minimum_modulus (Erdos8Problem.lean:121)",
       "erdos_8_resolution: proved from bottleneck_counterexample + hough_minimum_modulus (was axiom)",
       "Fixed erdos_graham_conjecture to require hasDistinctModuli (math bug)",
       "Fixed erdos_8_disproved to require hasDistinctModuli (math bug)",
-      "Strengthened bottleneck_counterexample to return k >= 2"
+      "Strengthened bottleneck_counterexample to return k >= 2",
+      "S2 SURVEY: bootstrapped research/problems/erdos-8-oq-01/{problem.md,state.md,knowledge.md} (slug had no research dir)",
+      "S2 SURVEY: 2026-05-13-survey-axiom-tractability-and-structural-followups.md — honest effort estimate for both deep axioms + 3 tractable orthogonal sub-questions + phase rationale",
+      "S2 SURVEY: identified that balister_improved_bound is a placeholder (re-states Hough); SQ-3 plan upgrades it to a strictly smaller BBMST 2022 axiom"
     ],
     "insights": [
       "balister_improved_bound is identical to hough_minimum_modulus (same bound 616000) — trivially derivable",
@@ -44,11 +49,19 @@
       "Remaining 4 axioms are deep theorems: Hough min modulus, resolution, density version, bottleneck",
       "Without hasDistinctModuli, erdos_8_disproved is vacuously false: CS {0 mod 2, 1 mod 2} has singleton moduli set {2}, always monochromatic",
       "erdos_8_resolution was asserting something mathematically incorrect — fixed by adding distinct moduli condition",
-      "Remaining 2 axioms (hough_minimum_modulus, density_conjecture_false) are deep published results"
+      "Remaining 2 axioms (hough_minimum_modulus, density_conjecture_false) are deep published results",
+      "Both remaining axioms (hough_minimum_modulus, density_conjecture_false) are deep 2015 Hough Annals results; honest effort estimate is ~10^4 LOC each. Adding more theorems on top is the wrong move; pivot to orthogonal structural work.",
+      "balister_improved_bound currently re-states Hough's bound (placeholder); should be upgraded to strict-improvement BBMST 2022 axiom in SQ-3",
+      "bottleneck_counterexample argument is independent of the exact Hough bound; any future improvement flows directly into the disproof",
+      "Three orthogonal session-tractable sub-questions identified (SQ-1/2/3) that do NOT depend on the deep axioms"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Hough 2015 Fourier-analytic toolkit (truncated Gauss sums, character sum bounds on covering-system moduli) is genuinely not in Mathlib; formalizing hough_minimum_modulus from first principles would require ~3000 LOC of new Fourier-analytic infrastructure"
+    ],
     "nextSteps": [
-      "density_conjecture_false is the only remaining eliminable axiom (but requires significant infrastructure to prove)"
+      "S3 ACT recommended: pick SQ-1 (K=2 example covering system) — ~100 LOC, no axiom delta, no dependency on deep Hough results",
+      "S4 ACT (deferred): SQ-2 log-log cardinality lower bound (Erdős 1950s elementary sieve, ~50-100 LOC)",
+      "S5 ACT (deferred): SQ-3 BBMST 2022 axiom — +1 axiom but strictly smaller bound, makes balister_improved_bound non-trivial"
     ],
     "markdown": "# Knowledge Base: erdos-8-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -174,7 +187,7 @@
     "mathlib": []
   },
   "started": "2026-03-29T12:35:42.849Z",
-  "lastUpdate": "2026-03-29T12:35:42.861Z",
+  "lastUpdate": "2026-05-13T10:55:00Z",
   "leanFiles": [
     {
       "path": "Proofs/Erdos800Problem.lean",
