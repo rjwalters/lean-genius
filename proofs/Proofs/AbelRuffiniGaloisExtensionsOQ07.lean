@@ -1249,35 +1249,65 @@ private lemma cube_id_card_eq_nine_of_partition_ingredients
   -- Final arithmetic: 1 + 4 • 2 = 9.
   decide
 
-/-- **S10 placeholder**: when `|G| = 12` has 4 Sylow 3-subgroups, the
-    Sylow 2-subgroup is unique. Proof via element counting:
+/-- **S10 closure** (S24 inline): when `|G| = 12` has 4 Sylow 3-subgroups,
+    the Sylow 2-subgroup is unique. Proof via element counting:
     `|{g : G | g^3 = 1}| = 1 + 4 · 2 = 9` (using pairwise trivial
     intersection of distinct prime-order Sylow 3-subgroups, now provided
     by `sylow_prime_order_disjoint_of_ne` above), so
     `|G \ {g | g^3 = 1}| = 3 = |P| - 1` for any Sylow 2-subgroup `P`,
     pinning down `P` as `{e} ∪ (G \ {g | g^3 = 1})` independent of choice.
-    The full Lean proof requires set/Finset cardinality machinery;
-    isolated as a single `sorry` for S10. The pointwise membership
-    characterization `g^3 = 1 ↔ ∃ Q, g ∈ Q` is provided by
-    `g_pow_three_iff_mem_some_sylow_three` (S14 ingredient 1, above);
-    the set-decomposition `{g | g^3 = 1} = {1} ∪ ⋃ Q, (Q \ {1})` is
-    provided by `cube_id_set_eq_disjoint_union` (S15 ingredient 2,
-    above). The remaining ingredients (cardinality count of the
-    decomposition, complement-in-Sylow-2 set equality) are deferred.
+    The pointwise membership characterization `g^3 = 1 ↔ ∃ Q, g ∈ Q` is
+    provided by `g_pow_three_iff_mem_some_sylow_three` (S14 ingredient 1,
+    above); the set-decomposition `{g | g^3 = 1} = {1} ∪ ⋃ Q, (Q \ {1})`
+    is provided by `cube_id_set_eq_disjoint_union` (S15 ingredient 2,
+    above). The S24 inline closure composes those with the S22 corollary
+    `sylow_two_subsingleton_of_cube_id_card_nine` and S23
+    `cube_id_card_eq_nine_of_partition_ingredients` after discharging
+    the two atomic partition ingredients (`hdisj`, `hfiber`) in-place.
     See
-    `research/problems/abel-ruffini-galois-extensions-oq-07/session-8-twelve-spec.md` §6–7
-    and the S14 closure spec in
-    `research/problems/abel-ruffini-galois-extensions-oq-07/session-13-s10-element-count-spec.md`. -/
+    `research/problems/abel-ruffini-galois-extensions-oq-07/session-24-s10-inline-closure-prep.md` §2
+    for the detailed line-by-line plan and Mathlib API audit. -/
 private lemma sylow_two_unique_when_n3_four
     {G : Type*} [Group G] [Finite G]
     [Fact (Nat.Prime 2)] [Fact (Nat.Prime 3)]
     (hcard : Nat.card G = 12)
     (hn3 : Nat.card (Sylow 3 G) = 4) :
     Subsingleton (Sylow 2 G) := by
-  sorry
+  -- (a) hdisj: punctured Sylow-3 subgroups are pairwise Set-disjoint.
+  have hdisj : ∀ Q Q' : Sylow 3 G, Q ≠ Q' →
+      Disjoint ((Q : Set G) \ ({1} : Set G))
+               ((Q' : Set G) \ ({1} : Set G)) := by
+    intro Q Q' hne
+    have hQ_card : Nat.card (Q : Subgroup G) = 3 :=
+      sylow_three_card_eq_three_of_card_twelve hcard Q
+    have hQ'_card : Nat.card (Q' : Subgroup G) = 3 :=
+      sylow_three_card_eq_three_of_card_twelve hcard Q'
+    have h_inter_bot : (Q : Subgroup G) ⊓ (Q' : Subgroup G) = ⊥ :=
+      sylow_prime_order_disjoint_of_ne Q Q' hQ_card hQ'_card hne
+    have h_set_inter : (Q : Set G) ∩ (Q' : Set G) = ({1} : Set G) := by
+      rw [← Subgroup.coe_inf, h_inter_bot, Subgroup.coe_bot]
+    refine Set.disjoint_left.mpr ?_
+    rintro g ⟨hgQ, hg_ne_one⟩ ⟨hgQ', _⟩
+    have hg_inter : g ∈ (Q : Set G) ∩ (Q' : Set G) := ⟨hgQ, hgQ'⟩
+    rw [h_set_inter] at hg_inter
+    exact hg_ne_one hg_inter
+  -- (b) hfiber: each punctured Sylow-3 subgroup has Set.ncard 2.
+  have hfiber : ∀ Q : Sylow 3 G,
+      Set.ncard ((Q : Set G) \ ({1} : Set G)) = 2 := by
+    intro Q
+    have h3 : Nat.card (Q : Subgroup G) = 3 :=
+      sylow_three_card_eq_three_of_card_twelve hcard Q
+    have h1mem : (1 : G) ∈ (Q : Set G) := (Q : Subgroup G).one_mem
+    have hncard : Set.ncard ((Q : Set G) : Set G) = 3 := by
+      rw [← Nat.card_coe_set_eq]
+      exact h3
+    rw [Set.ncard_diff_singleton_of_mem h1mem, hncard]
+  -- (c) Composition: S23 partition-ingredients composition + S22 corollary.
+  have h9 := cube_id_card_eq_nine_of_partition_ingredients hcard hdisj hfiber hn3
+  exact sylow_two_subsingleton_of_cube_id_card_nine hcard h9
 
-/-- **Burnside `|G| = 12 = 2² · 3`** (axiom-free, modulo the isolated
-    sorry in `sylow_two_unique_when_n3_four`).
+/-- **Burnside `|G| = 12 = 2² · 3`** (axiom-free post-S24; the S10 closure
+    in `sylow_two_unique_when_n3_four` above is now sorry-free).
 
     Sylow's third theorem (`card_sylow_modEq_one`) and `Sylow.card_dvd_index`
     give `n_3 ≡ 1 [MOD 3]` and `n_3 ∣ 4`, hence `n_3 ∈ {1, 4}` via
@@ -1484,8 +1514,8 @@ theorem burnside_p_q_squared_q_lt_p
   have hcard' : Nat.card G = p ^ 1 * q ^ 2 := by rw [pow_one]; exact hcard
   exact burnside_pq_with_normal_pSylow (a := 1) (b := 2) hcard' (P : Subgroup G) hP_card
 
-/-- **Burnside `|G| = 12 = 3 · 2²`, mirror of S9** (axiom-free, modulo
-    the same isolated S10 sorry as `burnside_p_squared_q_twelve`).
+/-- **Burnside `|G| = 12 = 3 · 2²`, mirror of S9** (axiom-free post-S24;
+    inherits `burnside_p_squared_q_twelve`'s now-closed S10 status).
 
     The exceptional case `(p, q) = (3, 2)` of the `(a, b) = (1, 2)`
     shape: `|G| = p · q² = 3 · 4 = 12`. This is the same group order as
