@@ -108,29 +108,77 @@ theorem MixedPseudomanifold.of_pure {d : Nat}
   · rw [topCellsOfDim_eq_empty_of_pure K hcard hd, Finset.filter_empty]
     exact Nat.zero_le _
 
-/-! ## Main theorem statement (deferred to S3 ACT)
+/-! ## Per-stratum Sperner via the parent's `exists_panchromatic`
 
-The Sperner-mixed theorem statement is placed here so downstream slugs
-can reference it. The proof is deferred to `S3 ACT` (subsequent PR);
-the door-counting argument decomposes stratum by stratum via
-`exists_panchromatic` from the parent file, applied to each
-`topCellsOfDim K d` independently. -/
+The Sperner-mixed theorem decomposes stratum by stratum: fixing a
+dimension `d`, the dimension-`d` stratum `topCellsOfDim K d` is a
+pure pseudomanifold (by `MixedPseudomanifold`), so the parent's
+`exists_panchromatic` applies directly. We package the per-stratum
+hypotheses as three helpers and one boundary-door count abstraction.
+
+The parent's `exists_panchromatic` requires `[LinearOrder E]`
+(its `vertexEnum` uses `Finset.sort (· ≤ ·)`), so the section adds
+that instance to the variable context. -/
+
+section MixedSperner
+
+variable [LinearOrder E]
+
+/-- Every cell in the dimension-`d` stratum has cardinality `d + 1`. -/
+theorem card_of_mem_topCellsOfDim {d : Nat}
+    {K : Finset (Finset E)} {s : Finset E}
+    (hs : s ∈ topCellsOfDim K d) : s.card = d + 1 :=
+  (Finset.mem_filter.mp hs).2
+
+/-- Per-dimension specialisation of the mixed-pseudomanifold predicate. -/
+theorem hpseudo_of_mixed {d : Nat}
+    {K : Finset (Finset E)} (hmixed : MixedPseudomanifold K) :
+    ∀ f : Finset E, f.card = d →
+      ((topCellsOfDim K d).filter (fun s => f ⊆ s)).card ≤ 2 :=
+  fun f hf => hmixed d f hf
+
+/-- The boundary-door count at dimension `d` for a coloring `c`.
+
+A pair `(s, k)` with `s ∈ topCellsOfDim K d` and `k : Fin (d+1)` is a
+boundary door iff `Sperner.IsDoor` holds (the lower colours
+`{0, …, d-1}` are all present on `s \ {vertex k}`) AND
+`adjFn (topCellsOfDim K d) hcard s k = none` (the face `s \ {vertex k}`
+lies in no other cell of dimension `d`). The count of such pairs is
+the input to `exists_panchromatic`'s `Odd …` hypothesis. -/
+noncomputable def boundaryDoorCount {d : Nat}
+    (K : Finset (Finset E)) (c : E → Fin (d + 1)) : ℕ :=
+  (Finset.univ.filter
+    (fun p : { s : Finset E // s ∈ topCellsOfDim K d } × Fin (d + 1) =>
+      Sperner.IsDoor (fun (σ : { s // s ∈ topCellsOfDim K d }) =>
+        vertexEnum σ.1 (card_of_mem_topCellsOfDim σ.2))
+        c p.1 p.2 ∧
+      adjFn (topCellsOfDim K d)
+        (fun _ hs => card_of_mem_topCellsOfDim hs) p.1 p.2 = none)).card
 
 /-- **Sperner's lemma for mixed-dimension simplicial complexes
-(OQ-01 statement, proof deferred to S3 ACT)**.
+(OQ-01, per-stratum version).**
 
 For each dimension `d` such that the boundary-door count at dimension
-`d` is odd, there exists a panchromatic top cell of dimension `d`.
+`d` is odd, the dimension-`d` stratum of a mixed pseudomanifold `K`
+contains a panchromatic top cell.
 
-The full proof reduces to applying the parent's `exists_panchromatic`
-on each stratum `topCellsOfDim K d`, using `MixedPseudomanifold` to
-supply the per-stratum pseudomanifold hypothesis. -/
-theorem sperner_mixed_panchromatic
-    (K : Finset (Finset E)) (_hmixed : MixedPseudomanifold K) :
-    True :=
-  -- Placeholder statement; the actual content (panchromatic existence)
-  -- is deferred to S3 ACT, which will supply the boundary-door
-  -- predicate and the coloring infrastructure.
-  trivial
+The proof is a direct application of the parent file's
+`exists_panchromatic` to `topCells := topCellsOfDim K d`: the
+`hcard` hypothesis is `card_of_mem_topCellsOfDim` and the per-stratum
+`hpseudo` hypothesis is `hpseudo_of_mixed`. `boundaryDoorCount`
+unfolds to the parent's `hbdry` argument by construction. -/
+theorem sperner_mixed_panchromatic_at_dim {d : Nat}
+    (K : Finset (Finset E)) (hmixed : MixedPseudomanifold K)
+    (c : E → Fin (d + 1))
+    (hbdry : Odd (boundaryDoorCount (d := d) K c)) :
+    ∃ s : { s : Finset E // s ∈ topCellsOfDim K d },
+      Sperner.IsPanchromatic
+        (fun (σ : { s // s ∈ topCellsOfDim K d }) =>
+          vertexEnum σ.1 (card_of_mem_topCellsOfDim σ.2)) c s :=
+  exists_panchromatic (topCellsOfDim K d)
+    (fun _ hs => card_of_mem_topCellsOfDim hs)
+    (hpseudo_of_mixed hmixed) c hbdry
+
+end MixedSperner
 
 end Sperner.SimplicialComplex
