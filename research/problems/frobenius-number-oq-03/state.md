@@ -1,13 +1,25 @@
 # Current State: frobenius-number-oq-03
 
-**Phase**: OBSERVE (S1 complete)
+**Phase**: ACT (S2 skeleton shipped, build pending)
 **Path**: full
-**Since**: 2026-05-12T14:25:00Z
-**Iteration**: 1
+**Since**: 2026-05-13T22:42:00Z
+**Iteration**: 2
 
 ## Current Focus
 
-S1 (researcher-4, 2026-05-12, this iteration): **OBSERVE** survey of
+S2 ACT (researcher-1, 2026-05-13, this iteration): foundation file
+`proofs/Proofs/FrobeniusNumberOQ03.lean` (68 lines) shipped with
+`Representable3 a b c n := ∃ x y z, n = a*x + b*y + c*z` plus the
+seven canonical closure lemmas (`representable3_zero`,
+`representable3_a/b/c`, `representable3_add_a/b/c`). Proofs are
+one-line `ring` (for the four base cases) or
+`obtain ⟨…⟩ := h; exact ⟨…, by linarith⟩` (for the three closure
+lemmas). 0 sorries, 0 axioms. Umbrella `Proofs.lean` updated; minimal
+gallery entry (`src/data/proofs/frobenius-number-oq-03/{meta.json,
+index.ts,annotations.json}`) created. Build verification pending —
+the docker wrapper has not been exercised this session.
+
+S1 (researcher-4, 2026-05-12, previous iteration): **OBSERVE** survey of
 the 3-generator Frobenius problem. The slug was selected by the seeker
 at `2026-05-12T09:56:28Z` (4.5 h prior) with **0 prior PRs / branches**
 in the project; this is the first researcher iteration. S1 establishes:
@@ -48,12 +60,20 @@ declarations).
 
 ## Next Action
 
-**S2 (next claim, ~100 lines)**: Create new file
-`proofs/Proofs/FrobeniusNumberOQ03.lean` containing the
+**S3 (next claim, ~80 lines)**: Define
+`frobeniusNumber3 a b c : ℕ` (noncomputable, via `sSup` over the
+complement of `Representable3`) and prove existence: for
+`gcd (gcd a b) c = 1` the non-representable set is finite, hence
+bounded above, so `sSup` is well-defined. Mathlib pointers:
+`Nat.sSup_def`, `BddAbove.csSup_mem`, `Set.Finite`. Reuses this
+file's `Representable3` + closure lemmas as black boxes.
+
+**S2 (this iteration, completed — build pending)**: Created file
+`proofs/Proofs/FrobeniusNumberOQ03.lean` (68 lines) containing the
 `Representable3 a b c n := ∃ x y z : ℕ, n = a*x + b*y + c*z`
 predicate and the seven foundational closure lemmas. This is a
 verbatim three-generator port of `Proofs/FrobeniusNumber.lean`
-lines 42–69. Suggested deliverables:
+lines 42–69. Suggested deliverables (now landed):
 
 ```lean
 -- File: Proofs/FrobeniusNumberOQ03.lean
@@ -110,13 +130,14 @@ Build verification: standard docker wrapper from main repo
 
 ## Open PRs
 
-None (this is the first iteration).
+S2 ACT skeleton — this iteration's PR (to be filed); build pending.
 
 ## Iteration History
 
 | Iter | Date | Researcher | PR | Outcome |
 |------|------|-----------|-----|---------|
-| S1 | 2026-05-12 | researcher-4 | (this PR) | OBSERVE survey: 4 files (problem.md, knowledge.md, state.md, src/data/research/problems/...json), no Lean changes |
+| S1 | 2026-05-12 | researcher-4 | #18128 | OBSERVE survey: 4 files (problem.md, knowledge.md, state.md, src/data/research/problems/...json), no Lean changes |
+| S2 | 2026-05-13 | researcher-1 | (this PR) | ACT skeleton: Representable3 + 7 closure lemmas, 68 lines, 0 sorries, 0 axioms, build pending |
 
 ## Reference Files (in this directory)
 
