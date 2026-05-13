@@ -84,7 +84,9 @@
       "The Lean proof is a one-line invocation of `hasSum_zeta_two`, but this brevity conceals deep Mathlib infrastructure: Bernoulli polynomial theory, Fourier series convergence, and the evaluation of periodic zeta functions — hundreds of lemmas supporting a single `exact`",
       "The Basel identity has a striking probabilistic interpretation: the probability that two independently chosen positive integers are coprime is $\\prod_p (1 - 1/p^2) = 1/\\zeta(2) = 6/\\pi^2 \\approx 0.6079$, connecting the sum over squares to the Euler product and the randomness of prime factorization",
       "**Euler Product as a Prime Constraint:** The identity $\\zeta(2) = \\prod_p (1 - p^{-2})^{-1} = \\pi^2/6$ is a non-trivial constraint on the distribution of primes. Expanding the product gives $\\pi^2/6 = \\prod_p p^2/(p^2-1)$, so the primes collectively determine $\\pi$ — a profound link between the discrete (primes) and the continuous ($\\pi$). This multiplicative structure is the prototype for all Dirichlet series and $L$-functions in analytic number theory",
-      "**Parseval's Identity as a One-Line Proof:** Applying Parseval's theorem to $f(x) = x$ on $[-\\pi,\\pi]$ gives $\\frac{1}{\\pi}\\int_{-\\pi}^{\\pi} x^2\\,dx = \\frac{a_0^2}{2} + \\sum_{n=1}^{\\infty}(a_n^2 + b_n^2)$. Since $f$ is odd, $a_n = 0$ and $b_n = 2(-1)^{n+1}/n$, so $\\frac{2\\pi^2}{3} = 4\\sum 1/n^2$, giving $\\zeta(2) = \\pi^2/6$. This Fourier-analytic proof is the modern rigorous approach that Mathlib's `hasSum_zeta_two` generalizes via Bernoulli polynomial theory"
+      "**Parseval's Identity as a One-Line Proof:** Applying Parseval's theorem to $f(x) = x$ on $[-\\pi,\\pi]$ gives $\\frac{1}{\\pi}\\int_{-\\pi}^{\\pi} x^2\\,dx = \\frac{a_0^2}{2} + \\sum_{n=1}^{\\infty}(a_n^2 + b_n^2)$. Since $f$ is odd, $a_n = 0$ and $b_n = 2(-1)^{n+1}/n$, so $\\frac{2\\pi^2}{3} = 4\\sum 1/n^2$, giving $\\zeta(2) = \\pi^2/6$. This Fourier-analytic proof is the modern rigorous approach that Mathlib's `hasSum_zeta_two` generalizes via Bernoulli polynomial theory",
+      "**Beukers–Calabi–Kolk Double Integral (1993):** A single change of variables proves the Basel identity from scratch. Expanding the integrand as a geometric series gives $J = \\int_0^1\\!\\!\\int_0^1 \\frac{dx\\,dy}{1-x^2 y^2} = \\sum_{n \\geq 0} \\frac{1}{(2n+1)^2}$ (only odd powers survive integration). Under the substitution $x = \\sin u/\\cos v$, $y = \\sin v/\\cos u$, the unit square maps onto the open triangle $T = \\{(u,v) : u,v > 0,\\, u+v < \\pi/2\\}$, the Jacobian equals $1 - \\tan^2 u \\tan^2 v = 1 - x^2 y^2$, and the integrand collapses to the constant $1$. Hence $\\sum_{n \\geq 0} 1/(2n+1)^2 = \\operatorname{Area}(T) = \\pi^2/8$, and the elementary identity $\\zeta(2) = \\sum_{n \\geq 0} 1/(2n+1)^2 + \\tfrac{1}{4}\\zeta(2)$ gives $\\zeta(2) = \\tfrac{4}{3} \\cdot \\pi^2/8 = \\pi^2/6$. This proof — requiring only freshman calculus, no Fourier theory or Weierstrass factorization — appears in \\textit{Proofs from THE BOOK} (Aigner–Ziegler)",
+      "**Apéry's Accelerated Series and the Irrationality of $\\zeta(3)$:** The slow convergence of $\\sum 1/n^2$ (error $\\sim 1/N$) is dramatically improved by Apéry's miraculous identity $\\zeta(2) = 3\\sum_{n=1}^{\\infty} \\frac{1}{n^2 \\binom{2n}{n}}$, which converges geometrically with ratio $1/4$. Apéry's parallel formula $\\zeta(3) = \\tfrac{5}{2}\\sum_{n=1}^{\\infty} \\frac{(-1)^{n-1}}{n^3 \\binom{2n}{n}}$ was the basis of his 1978 irrationality proof for $\\zeta(3)$ — the only odd zeta value yet proved irrational. Both identities can be derived from the same WZ-pair certificate (Wilf–Zeilberger), revealing the Basel sum as one node in a network of hypergeometric zeta evaluations. The binomial $\\binom{2n}{n}$ accelerates convergence by roughly $4^n$ per term"
     ],
     "prerequisites": [
       "Real analysis and series convergence",
@@ -159,7 +161,9 @@
       "Are all odd zeta values ζ(2k+1) transcendental? Their irrationality is known only for infinitely many of them (Rivoal 2000), not individually beyond ζ(3)",
       "What is the relationship between single zeta values and multiple zeta values (MZVs)? The algebra of MZVs connects to knot theory, quantum groups, and motives",
       "Can the Euler product form $\\prod_p (1 - p^{-2})^{-1} = \\pi^2/6$ be formalized in Lean? This would connect the Basel identity to the prime number distribution and require formalizing the convergence of Euler products for $\\Re(s) > 1$",
-      "Can Euler's original proof via the Weierstrass factorization $\\sin(x)/x = \\prod(1 - x^2/n^2\\pi^2)$ be formalized? Mathlib has `Complex.sin_eq_tsum` for the Taylor series, but the infinite product factorization would require the Weierstrass factorization theorem for entire functions of finite order"
+      "Can Euler's original proof via the Weierstrass factorization $\\sin(x)/x = \\prod(1 - x^2/n^2\\pi^2)$ be formalized? Mathlib has `Complex.sin_eq_tsum` for the Taylor series, but the infinite product factorization would require the Weierstrass factorization theorem for entire functions of finite order",
+      "Can Apéry's 1978 irrationality proof of $\\zeta(3)$ be formalized in Lean? The proof builds the accelerated series $\\zeta(3) = \\tfrac{5}{2}\\sum (-1)^{n-1}/(n^3 \\binom{2n}{n})$ from a Padé-approximation argument and uses the prime-counting bound $\\operatorname{lcm}(1,\\ldots,n) \\leq 3^n$ (a consequence of the prime number theorem). Mathlib has Nat.lcm bounds and the binomial coefficients but not the explicit Apéry recurrence — a formalization target estimated at the difficulty of the Sylow theorems or the LTE lemma",
+      "Can the Beukers–Calabi–Kolk double integral proof be formalized in Lean? The proof shows $\\int_0^1\\!\\!\\int_0^1 (1-x^2 y^2)^{-1}\\,dx\\,dy = \\pi^2/8$ via the substitution $(x,y) = (\\sin u/\\cos v, \\sin v/\\cos u)$ whose Jacobian simplifies miraculously to $1 - x^2 y^2$, then deduces $\\zeta(2) = \\pi^2/6$ from the elementary odd/even decomposition. Mathlib has `MeasureTheory.integral_prod` for Fubini and `Real.arctan` derivatives, but the non-trivial Jacobian computation and the geometry of the image triangle $\\{u+v<\\pi/2\\}$ are not yet packaged. This would give Mathlib a second, elementary proof of the Basel identity that bypasses Bernoulli polynomial theory entirely"
     ]
   },
   "references": [
@@ -246,6 +250,13 @@
       "year": "2001",
       "venue": "Russian Mathematical Surveys, vol. 56, no. 4, pp. 774–776",
       "note": "Sharpened Rivoal's 2000 result to show at least one of ζ(5), ζ(7), ζ(9), ζ(11) is irrational — the best known result on individual odd zeta values beyond Apéry's ζ(3), directly relevant to the Basel problem's open questions about odd zeta arithmetic"
+    },
+    {
+      "authors": "Beukers, Frits; Calabi, Eugenio; Kolk, Johan A. C.",
+      "title": "Sums of generalized harmonic series and volumes",
+      "year": "1993",
+      "venue": "Nieuw Archief voor Wiskunde (4), vol. 11, no. 3, pp. 217–224",
+      "note": "Established the elementary double-integral proof $\\int_0^1\\!\\!\\int_0^1 (1-x^2 y^2)^{-1}\\,dx\\,dy = \\pi^2/8$ via the substitution $x = \\sin u/\\cos v$, $y = \\sin v/\\cos u$ that maps the unit square onto the open triangle $u,v > 0$, $u + v < \\pi/2$ (the Jacobian equals the integrand's denominator $1 - x^2 y^2$). Deducing $\\zeta(2) = \\pi^2/6$ then requires only the odd/even split $\\zeta(2) = \\sum 1/(2n+1)^2 + \\zeta(2)/4$. Generalizes to $\\zeta(2k)$ via $2k$-fold integrals and is widely regarded as the most elegant proof of the Basel identity"
     }
   ],
   "crossReferences": [
@@ -253,6 +264,16 @@
       "targetId": "basel-problem-oq-01",
       "relationship": "extended-by",
       "description": "Explores irrationality of $\\zeta(5)$ — extending Basel's $\\zeta(2) = \\pi^2/6$ to odd zeta values, where Apéry proved $\\zeta(3)$ irrational but $\\zeta(5)$ remains unknown"
+    },
+    {
+      "targetId": "basel-problem-oq-04",
+      "relationship": "alternative-proof",
+      "description": "Formalizes the Euler product form $\\prod_p (1-p^{-2})^{-1} = \\pi^2/6$ — the multiplicative dual of Basel's additive sum, encoding the Basel identity as a statement about prime distribution"
+    },
+    {
+      "targetId": "basel-problem-oq-05",
+      "relationship": "alternative-proof",
+      "description": "Formalizes Euler's original 1734 proof via the Weierstrass factorization $\\sin(\\pi x)/(\\pi x) = \\prod(1 - x^2/n^2)$, recovering the historical route that motivated 19th-century complex analysis and Weierstrass's factorization theorem"
     },
     {
       "targetId": "basel-problem-oq-02",
