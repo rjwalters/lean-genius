@@ -102,29 +102,59 @@
     ]
   },
   {
-    "id": "ann-spc-oq01-per-stratum-sperner",
+    "id": "ann-spc-oq01-per-stratum-helpers",
     "proofId": "sperner-simplicial-bridge-oq-01",
     "range": {
-      "startLine": 111,
+      "startLine": 123,
+      "endLine": 138
+    },
+    "type": "theorem",
+    "title": "Per-Stratum Helpers (`card_of_mem_topCellsOfDim`, `hpseudo_of_mixed`)",
+    "content": "Two thin theorems open `section MixedSperner` (line 123) under the added `variable [LinearOrder E]` (line 125, required because the parent's `vertexEnum` uses `Finset.sort (· ≤ ·)`). Both are pure *type adapters* — their proofs have no combinatorial content; their value is the type they project to.\n\n* `card_of_mem_topCellsOfDim` (lines 128-131): `s ∈ topCellsOfDim K d → s.card = d + 1`. Proof body is the single term `(Finset.mem_filter.mp hs).2` — `mem_filter` decomposes membership in a filtered Finset into the conjunction `s ∈ K ∧ p s`, and the second projection extracts the predicate `s.card = d + 1`. The signature is precisely the shape required by the parent's `hcard` argument to `exists_panchromatic`.\n\n* `hpseudo_of_mixed` (lines 134-138): `MixedPseudomanifold K → ∀ f, f.card = d → ((topCellsOfDim K d).filter (fun s => f ⊆ s)).card ≤ 2`. Proof body is `fun f hf => hmixed d f hf` — instantiate the outer universal quantifier of `MixedPseudomanifold` at the chosen `d`, returning the per-stratum pseudomanifold predicate. The function arrow signature matches the parent's `hpseudo` parameter shape exactly.\n\nNo `intro`/`exact`/`rfl` tactics — both proofs are term-mode one-liners. Their role is purely to *re-package* hypotheses so the parent's interface can be invoked unchanged. The implicit dimension parameter `{d : Nat}` makes `hpseudo_of_mixed (d := d)` the canonical invocation pattern when the headline theorem later instantiates the parent.",
+    "mathContext": "These two helpers witness that the dimension-`d` stratum of a `MixedPseudomanifold` is a *pure* pseudomanifold in the parent's sense. The uniformity `s.card = d + 1` (from `card_of_mem_topCellsOfDim`) supplies the missing hypothesis that the parent assumes globally on `topCells`; the stratum-restricted pseudomanifold bound (from `hpseudo_of_mixed`) supplies the parent's `hpseudo` argument. Together they reduce per-stratum Sperner to *exactly* the parent's pure Sperner — no new combinatorial input, only a change of variable from `K` to `topCellsOfDim K d`. This is the *bridge* in `sperner-simplicial-bridge`: the mixed framework supplies its own adapters to ride on the parent's API.",
+    "significance": "supporting",
+    "relatedConcepts": [
+      "type adapter / packaging combinator",
+      "Finset.mem_filter projection",
+      "predicate specialisation",
+      "implicit dimension argument `{d : Nat}`",
+      "parent-API re-packaging",
+      "term-mode one-liner proof"
+    ],
+    "prerequisites": [
+      "MixedPseudomanifold definition",
+      "Finset.mem_filter",
+      "anonymous constructor / function notation `fun f hf => ...`",
+      "Lean 4 universal-quantifier elaboration"
+    ]
+  },
+  {
+    "id": "ann-spc-oq01-headline-theorem",
+    "proofId": "sperner-simplicial-bridge-oq-01",
+    "range": {
+      "startLine": 158,
       "endLine": 180
     },
     "type": "theorem",
-    "title": "Per-Stratum Sperner (`sperner_mixed_panchromatic_at_dim`)",
-    "content": "The headline theorem and three supporting helpers, gated behind a `[LinearOrder E]` instance (the parent's `vertexEnum` uses `Finset.sort (· ≤ ·)`).\n\n* `card_of_mem_topCellsOfDim` (lines 128-131) projects `s.card = d + 1` from `s ∈ topCellsOfDim K d` via `(Finset.mem_filter.mp hs).2`.\n* `hpseudo_of_mixed` (lines 134-138) specialises `MixedPseudomanifold K` at a chosen dimension `d`, yielding the parent's pseudomanifold hypothesis `∀ f, f.card = d → ((topCellsOfDim K d).filter (fun s => f ⊆ s)).card ≤ 2`.\n* `boundaryDoorCount` (lines 148-156) is a `noncomputable def` packaging the parent's `hbdry` filter expression for dimension `d`, structurally a copy with `topCellsOfDim K d` substituted for the parent's `topCells` and `card_of_mem_topCellsOfDim` for the per-cell cardinality projection.\n* `sperner_mixed_panchromatic_at_dim` (lines 170-180) is the headline. Hypothesis: `MixedPseudomanifold K` and `Odd (boundaryDoorCount (d := d) K c)`. Conclusion: there exists a panchromatic top cell in `topCellsOfDim K d`. Proof body is a single term-mode application of the parent's `exists_panchromatic` with `topCellsOfDim K d` as `topCells`, `(fun _ hs => card_of_mem_topCellsOfDim hs)` as `hcard`, `hpseudo_of_mixed hmixed` as `hpseudo`, the supplied `c`, and `hbdry`. The `boundaryDoorCount` definition unfolds (via Lean's standard `def`-reducibility) to match the parent's expected `hbdry` shape.",
-    "mathContext": "Sperner's lemma in the mixed-pseudomanifold setting decomposes stratum by stratum. Fixing a target dimension `d`: the dimension-`d` stratum of a `MixedPseudomanifold` is itself a pure pseudomanifold (witnessed by `hpseudo_of_mixed`), the per-cell cardinality is uniform `d + 1` (witnessed by `card_of_mem_topCellsOfDim`), and the parent's `hbdry` filter is recoverable as `boundaryDoorCount K c` after definitional unfolding. The parent's `exists_panchromatic` then produces a panchromatic cell in the stratum. No new combinatorial reasoning is required — all the mathematical content sits in the predicate definitions of the previous two sections. This is the *bridge payoff* for the stratification framework: the proof of the main theorem is mechanical bookkeeping.",
+    "title": "Headline: `sperner_mixed_panchromatic_at_dim`",
+    "content": "The file's headline result (lines 170-180). Statement: given a `MixedPseudomanifold K` and a colouring `c : E → Fin (d + 1)` whose dimension-`d` boundary-door count is odd, there exists a panchromatic top cell in `topCellsOfDim K d`. Formally, the conclusion is wrapped in a subtype existential:\n\n```\n∃ s : { s : Finset E // s ∈ topCellsOfDim K d },\n  Sperner.IsPanchromatic\n    (fun (σ : { s // s ∈ topCellsOfDim K d }) =>\n      vertexEnum σ.1 (card_of_mem_topCellsOfDim σ.2)) c s\n```\n\nThe per-cell cardinality witness is packaged inside the `vertexEnum` lambda as `card_of_mem_topCellsOfDim σ.2` — so the membership proof `σ.2` doubles as the cardinality certificate, no separate `hcard` hypothesis on the existential is required.\n\nProof body (lines 178-180) is a single term: `exists_panchromatic (topCellsOfDim K d) (fun _ hs => card_of_mem_topCellsOfDim hs) (hpseudo_of_mixed hmixed) c hbdry`. The five arguments match the parent's signature one-for-one:\n\n| parent argument | this invocation |\n|---|---|\n| `topCells : Finset (Finset E)` | `topCellsOfDim K d` |\n| `hcard : ∀ s ∈ topCells, s.card = d + 1` | `fun _ hs => card_of_mem_topCellsOfDim hs` |\n| `hpseudo : ∀ f, f.card = d → …` | `hpseudo_of_mixed hmixed` |\n| `c : E → Fin (d + 1)` | `c` |\n| `hbdry : Odd …` | `hbdry` |\n\nThe `hbdry` argument is typed `Odd (boundaryDoorCount (d := d) K c)`; the parent expects `Odd (Finset.univ.filter (…)).card` with the same body as `boundaryDoorCount`'s definition. Lean's standard `def`-reducibility unfolds `boundaryDoorCount` during elaboration, so no `unfold`, `change`, `show`, or `simp only` is needed to bridge the two shapes. This is the *engineering payoff* of defining `boundaryDoorCount` as a one-for-one copy rather than a wrapper over the parent's expression.",
+    "mathContext": "Per-stratum Sperner: in a `MixedPseudomanifold`, fixing a target dimension `d` and a colouring `c : E → Fin (d + 1)`, the parity of the boundary-door count at dimension `d` is the *only* hypothesis carrying combinatorial content; everything else is type-level repackaging. This matches the geometric picture — Sperner's lemma is a parity statement about the boundary of a single stratum, and the strata of a mixed complex behave independently because doors are dimension-graded. The headline therefore generalises the parent's pure-Sperner conclusion without strengthening, weakening, or adding hypotheses on the door-count side; it merely upgrades the input complex from pure to mixed and exposes the chosen dimension as an explicit parameter.",
     "significance": "core",
     "relatedConcepts": [
-      "exists_panchromatic (parent)",
-      "boundary-door count",
-      "term-mode proof",
-      "LinearOrder instance",
-      "subtype packaging"
+      "`exists_panchromatic` (parent slug)",
+      "subtype-wrapped existential conclusion",
+      "definitional unfolding of `boundaryDoorCount`",
+      "term-mode application",
+      "`vertexEnum σ.1 (card_of_mem_topCellsOfDim σ.2)`",
+      "explicit dimension parameter `{d : Nat}`",
+      "`[LinearOrder E]` scope"
     ],
     "prerequisites": [
-      "parent slug exists_panchromatic",
-      "stratification + coercion (previous sections)",
-      "Finset.mem_filter",
-      "definitional unfolding"
+      "parent slug `exists_panchromatic` signature",
+      "previous annotation: per-stratum helpers",
+      "previous annotation: `boundaryDoorCount`",
+      "subtype `{ s : Finset E // s ∈ … }` semantics",
+      "Lean 4 elaborator's def-reducibility behaviour"
     ]
   }
 ]
