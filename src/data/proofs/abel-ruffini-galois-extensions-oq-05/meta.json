@@ -43,6 +43,46 @@
       {
         "id": "abel-ruffini",
         "relationship": "Foundational file: proves polynomials solvable by radicals ↔ Galois group solvable — Abel-Ruffini's theorem"
+      },
+      {
+        "id": "inverse-galois",
+        "relationship": "Sister entry (Wiedijk #71). The general inverse Galois problem over ℚ. Shafarevich's theorem proven here is the solvable-group case of this problem; the non-solvable case (e.g., realizing the Monster group over ℚ) remains open in full generality."
+      },
+      {
+        "id": "inverse-galois-a5",
+        "relationship": "Concrete realization of A₅ over ℚ — proves Gal(x⁵-4x+2/ℚ) ≅ S₅, with A₅ recovered as the kernel of the sign character. Shows A₅ IS realizable over ℚ (so the inverse-Galois problem is positive for A₅), but NOT via Shafarevich since A₅ is non-solvable."
+      },
+      {
+        "id": "inverse-galois-d4",
+        "relationship": "Concrete realization of the dihedral group D₄ ≅ Gal(X⁴-2/ℚ) over ℚ. D₄ is solvable (derived series D₄ ⊃ ⟨r⟩ ⊃ ⟨r²⟩ ⊃ 1 with cyclic quotients), so its realizability also follows from Shafarevich — but here the witness is given by Eisenstein irreducibility on X⁴-2, an explicit polynomial."
+      },
+      {
+        "id": "inverse-galois-f20",
+        "relationship": "Concrete realization of the Frobenius group F₂₀ = ℤ/5 ⋊ ℤ/4 ≅ Gal(X⁵-2/ℚ) over ℚ. F₂₀ is solvable, so realizable via Shafarevich, but here the witness is the explicit polynomial X⁵-2 (whose roots are ζ₅^k·⁵√2 for k=0..4). Together with `inverse-galois-a5` exhibits the degree-5 solvable/non-solvable dichotomy."
+      },
+      {
+        "id": "inverse-galois-oq-06",
+        "relationship": "Sister entry in the inverse-Galois branch. Alternative S₅ realization via Eisenstein at p=5 + Vandermonde discriminant + Dedekind axiom, complementing the irreducibility-and-galActionHom approach in inverse-galois-a5."
+      },
+      {
+        "id": "kroneckers-jugendtraum",
+        "relationship": "Foundational for the abelian base case of Shafarevich's induction: the Kronecker-Weber theorem (subsumed under the Jugendtraum) realizes every finite abelian group A ⊆ Gal(ℚ(ζ_n)/ℚ) ≅ (ℤ/n)* as a Galois group over ℚ via cyclotomic extensions. Shafarevich's proof bootstraps from this base case using derived-series induction and embedding-problem theory."
+      },
+      {
+        "id": "primitive-roots",
+        "relationship": "Provides the cyclotomic structure underlying the abelian base case of Shafarevich's induction. The Galois group of ℚ(ζ_n)/ℚ is (ℤ/n)* with generators given by primitive roots mod n — the concrete realization of cyclic groups ℤ/n as Galois groups over ℚ that the cyclic-group corollary of Shafarevich asserts in the abstract."
+      },
+      {
+        "id": "sylow-theorems",
+        "relationship": "Sylow theory is the engine of the structure theorems used in Shafarevich's induction. Every finite p-group is nilpotent (hence solvable) with chief factors of order p; the derived series of a general solvable group can be analyzed via Sylow filtrations, and the embedding problems Shafarevich solves at each step decompose along Sylow subgroups."
+      },
+      {
+        "id": "abel-ruffini-oq-04-oq-01",
+        "relationship": "Cousin entry providing the contrast: a concrete unsolvable Galois group over ℚ. Proves Gal(x⁵-4x+2/ℚ) ≅ S₅ (axiom-free, 0 sorries), exhibiting an explicit non-solvable group as a Galois group over ℚ — outside the scope of Shafarevich's solvable-group theorem but within the (open) general inverse-Galois problem."
+      },
+      {
+        "id": "lagrange-theorem",
+        "relationship": "Lagrange's theorem (|H| divides |G|) underlies the closure-under-subgroups-and-quotients corollaries proved here: if H ≤ G with G solvable, then |H| | |G| and H inherits solvability via the induced derived series H^(k) ≤ G^(k); the same applies to quotients."
       }
     ]
   },
@@ -129,6 +169,46 @@
     {
       "proofId": "abel-ruffini",
       "relationship": "Grandparent: proves the polynomial-theoretic side (solvable by radicals ↔ solvable Galois group), completing the bidirectional characterization"
+    },
+    {
+      "proofId": "inverse-galois",
+      "relationship": "Sister entry (Wiedijk #71). The general inverse Galois problem over ℚ. Shafarevich's theorem proven here is the solvable-group case of this problem; the non-solvable case (e.g., realizing the Monster group over ℚ) remains open in full generality."
+    },
+    {
+      "proofId": "inverse-galois-a5",
+      "relationship": "Concrete realization of A₅ over ℚ — proves Gal(x⁵-4x+2/ℚ) ≅ S₅, with A₅ recovered as the kernel of the sign character. Shows A₅ IS realizable over ℚ (so the inverse-Galois problem is positive for A₅), but NOT via Shafarevich since A₅ is non-solvable."
+    },
+    {
+      "proofId": "inverse-galois-d4",
+      "relationship": "Concrete realization of the dihedral group D₄ ≅ Gal(X⁴-2/ℚ) over ℚ. D₄ is solvable (derived series D₄ ⊃ ⟨r⟩ ⊃ ⟨r²⟩ ⊃ 1 with cyclic quotients), so its realizability also follows from Shafarevich — but here the witness is given by Eisenstein irreducibility on X⁴-2, an explicit polynomial."
+    },
+    {
+      "proofId": "inverse-galois-f20",
+      "relationship": "Concrete realization of the Frobenius group F₂₀ = ℤ/5 ⋊ ℤ/4 ≅ Gal(X⁵-2/ℚ) over ℚ. F₂₀ is solvable, so realizable via Shafarevich, but here the witness is the explicit polynomial X⁵-2 (whose roots are ζ₅^k·⁵√2 for k=0..4). Together with `inverse-galois-a5` exhibits the degree-5 solvable/non-solvable dichotomy."
+    },
+    {
+      "proofId": "inverse-galois-oq-06",
+      "relationship": "Sister entry in the inverse-Galois branch. Alternative S₅ realization via Eisenstein at p=5 + Vandermonde discriminant + Dedekind axiom, complementing the irreducibility-and-galActionHom approach in inverse-galois-a5."
+    },
+    {
+      "proofId": "kroneckers-jugendtraum",
+      "relationship": "Foundational for the abelian base case of Shafarevich's induction: the Kronecker-Weber theorem (subsumed under the Jugendtraum) realizes every finite abelian group A ⊆ Gal(ℚ(ζ_n)/ℚ) ≅ (ℤ/n)* as a Galois group over ℚ via cyclotomic extensions. Shafarevich's proof bootstraps from this base case using derived-series induction and embedding-problem theory."
+    },
+    {
+      "proofId": "primitive-roots",
+      "relationship": "Provides the cyclotomic structure underlying the abelian base case of Shafarevich's induction. The Galois group of ℚ(ζ_n)/ℚ is (ℤ/n)* with generators given by primitive roots mod n — the concrete realization of cyclic groups ℤ/n as Galois groups over ℚ that the cyclic-group corollary of Shafarevich asserts in the abstract."
+    },
+    {
+      "proofId": "sylow-theorems",
+      "relationship": "Sylow theory is the engine of the structure theorems used in Shafarevich's induction. Every finite p-group is nilpotent (hence solvable) with chief factors of order p; the derived series of a general solvable group can be analyzed via Sylow filtrations, and the embedding problems Shafarevich solves at each step decompose along Sylow subgroups."
+    },
+    {
+      "proofId": "abel-ruffini-oq-04-oq-01",
+      "relationship": "Cousin entry providing the contrast: a concrete unsolvable Galois group over ℚ. Proves Gal(x⁵-4x+2/ℚ) ≅ S₅ (axiom-free, 0 sorries), exhibiting an explicit non-solvable group as a Galois group over ℚ — outside the scope of Shafarevich's solvable-group theorem but within the (open) general inverse-Galois problem."
+    },
+    {
+      "proofId": "lagrange-theorem",
+      "relationship": "Lagrange's theorem (|H| divides |G|) underlies the closure-under-subgroups-and-quotients corollaries proved here: if H ≤ G with G solvable, then |H| | |G| and H inherits solvability via the induced derived series H^(k) ≤ G^(k); the same applies to quotients."
     }
   ],
   "mainTheorems": [
