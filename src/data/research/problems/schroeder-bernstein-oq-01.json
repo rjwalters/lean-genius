@@ -1,7 +1,7 @@
 {
   "slug": "schroeder-bernstein-oq-01",
   "title": "Categorical characterization of the Schroeder-Bernstein property",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -27,35 +27,42 @@
     "goal": "Define HasSBP in Mathlib's CategoryTheory framework, prove HasSBP (Type u), and formalize Banaschewski–Brümmer's split-mono ⇒ SBP implication."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T20:25:00Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE survey: problem.md, knowledge.md, state.md, this JSON. No Lean changes.",
+    "phase": "ACT",
+    "since": "2026-05-12T23:30:00Z",
+    "iteration": 2,
+    "focus": "S2/S3 ACT (fused): proofs/Proofs/SchroederBernsteinOQ01.lean landed — HasSBP definition + hasSBP_Type proved via Function.Embedding.antisymm bridge. Docker build verified.",
     "blockers": [],
-    "nextAction": "S2 ACT: create proofs/Proofs/SchroederBernsteinOQ01.lean with the HasSBP definition + Type u instance (sorry-bridged via Function.Embedding.antisymm).",
+    "nextAction": "S4: state and prove [HasSplitMonos C] → HasSBP C (Banaschewski-Brümmer). See state.md for the literal-vs-regular-mono honesty caveat.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE complete: open question scoped, Mathlib infrastructure mapped, Banaschewski–Brümmer sufficient condition surveyed, S2/S3/S4 decomposition recorded.",
-    "builtItems": [],
+    "progressSummary": "S2/S3 ACT (fused) complete: SchroederBernsteinOQ01.lean (~60 LOC) defines HasSBP and proves hasSBP_Type via the three-step bridge mono_iff_injective → Embedding.antisymm → Equiv.toIso. Build verified, 0 sorries, 0 axioms. Phase ACT.",
+    "builtItems": [
+      "Defined SchroederBernsteinOQ01.HasSBP (Type*) [Category C] : Prop in proofs/Proofs/SchroederBernsteinOQ01.lean — categorical predicate previously absent from Mathlib.",
+      "Proved hasSBP_Type : HasSBP (Type u) in proofs/Proofs/SchroederBernsteinOQ01.lean — bridges classical Schroeder-Bernstein (Function.Embedding.antisymm) to the categorical statement via CategoryTheory.mono_iff_injective and Equiv.toIso.",
+      "Registered Proofs.SchroederBernsteinOQ01 in proofs/Proofs.lean (line 2666)."
+    ],
     "insights": [
       "SBP fails in concrete categories with structure (Grp, Ban) but holds in pure Set; the categorical 'right hypothesis' isolates the structure-free skeleton.",
       "The split-mono / retraction condition (Banaschewski–Brümmer 1986) is the cleanest known sufficient condition: every mono splits ⇒ SBP, via a short composition argument.",
-      "Mathlib's CategoryTheory.SplitMono cleanly models the hypothesis; the Lean formalization should be ~80 LOC."
+      "Mathlib's CategoryTheory.SplitMono cleanly models the hypothesis; the Lean formalization should be ~80 LOC.",
+      "In Type u (v4.26.0), CategoryTheory.mono_iff_injective lives in Mathlib.CategoryTheory.Types.Basic and reduces categorical SBP to Function.Embedding.antisymm in three lines — no glue needed beyond the Equiv.toIso lift.",
+      "Honesty caveat for S4: the literal statement '[every mono splits] → HasSBP C' collapses Mono = Iso (via the equation m ∘ r ∘ m = m and mono-cancellation), making the conclusion vacuous. The S4 PR should either use regular-mono variants or document the collapse."
     ],
     "mathlibGaps": [
-      "No HasSchroederBernsteinProperty class in Mathlib.",
-      "No instance for Type u (despite Function.Embedding.antisymm existing).",
-      "No formal failure witness in any concrete category."
+      "No HasSchroederBernsteinProperty class in Mathlib upstream (filled locally by SchroederBernsteinOQ01.HasSBP).",
+      "No Mathlib-upstream theorem connecting CategoryTheory.mono_iff_injective directly to Function.Embedding.antisymm; the bridge had to be written by hand.",
+      "No formal failure witness in any concrete category (Bumby's Grp counterexample, Gowers' Ban counterexample) — remain at the literature-citation level."
     ],
     "nextSteps": [
-      "S2: scaffold proofs/Proofs/SchroederBernsteinOQ01.lean with HasSBP + Type u instance (1 sorry).",
-      "S3: discharge the Type u sorry via Function.Embedding.antisymm bridge.",
-      "S4: state and prove [HasSplitMonos C] → HasSBP C (Banaschewski–Brümmer)."
+      "S4: state and prove [HasSplitMonos C] → HasSBP C (Banaschewski-Brümmer literal form); honestly document the Mono = Iso collapse in the docstring.",
+      "S5 (optional): regular-mono variant of S4 that avoids the collapse, using Mathlib's RegularMono.",
+      "S∞ (research-open): characterize necessary + sufficient categorical conditions for HasSBP — not a Lean target.",
+      "Bookkeeping: update parent meta.json additionalFiles to list SchroederBernsteinOQ01.lean (auditor/enricher PR, not blocking S4)."
     ]
   },
   "tags": [
@@ -97,7 +104,7 @@
     ]
   },
   "started": "2026-05-12T20:25:00Z",
-  "lastUpdate": "2026-05-12T20:25:00Z",
+  "lastUpdate": "2026-05-12T23:30:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -111,6 +118,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernstein.lean"
+    },
+    {
+      "path": "Proofs/SchroederBernsteinOQ01.lean",
+      "filename": "SchroederBernsteinOQ01.lean",
+      "lineCount": 60,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernsteinOQ01.lean"
     }
   ]
 }
