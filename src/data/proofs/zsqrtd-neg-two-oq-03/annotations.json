@@ -1,5 +1,17 @@
 [
   {
+    "id": "ann-imports",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 1, "endLine": 2 },
+    "type": "context",
+    "title": "Imports: $\\mathtt{QuadraticReciprocity}$ forward-staged for S4",
+    "content": "Two imports: (1) `Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity` — **not used** in this S2 ACT file, but staged forward for S4 where the splitting argument needs $\\bigl(\\tfrac{-3}{p}\\bigr) = \\bigl(\\tfrac{p}{3}\\bigr)$ to derive $p \\equiv 1 \\pmod 3 \\implies (-3)$ is a square mod $p$; (2) `Mathlib.Tactic` — the kitchen-sink import that brings `ring`, `nlinarith`, `linarith`, `norm_num`, `decide`, and `omega` into scope. The `Mathlib.Tactic` import alone is what makes the `<;> intros <;> ext <;> simp <;> ring` ring-axiom template fire uniformly across 9 axioms in the `commRing` instance. Forward-staging `QuadraticReciprocity` here (rather than at the S4 file boundary) lets S3-S5 build on this file's ring infrastructure without re-importing — a deliberate architectural choice that keeps the Heegner-3 stack a single `import` chain.",
+    "mathContext": "The quadratic-reciprocity instance we will need is `legendreSym_eq_legendreSym_mul_legendreSym` (or equivalently `ZMod.quadraticReciprocity`) applied at $p, 3$. Modulo signs, $\\bigl(\\tfrac{-3}{p}\\bigr) = \\bigl(\\tfrac{-1}{p}\\bigr)\\bigl(\\tfrac{3}{p}\\bigr) = (-1)^{(p-1)/2}\\bigl(\\tfrac{p}{3}\\bigr)(-1)^{(p-1)(3-1)/4}$; the two sign exponents cancel for $p \\equiv 1 \\pmod 4$ and combine for $p \\equiv 3 \\pmod 4$, but in both cases the final equivalence reduces to $\\bigl(\\tfrac{p}{3}\\bigr) = 1 \\iff p \\equiv 1 \\pmod 3$.",
+    "significance": "supporting",
+    "relatedConcepts": ["Mathlib import discipline", "forward-staging imports", "Legendre symbol", "quadratic reciprocity", "Mathlib.Tactic kitchen-sink"],
+    "prerequisites": ["Lean 4 module imports", "Legendre symbol basics"]
+  },
+  {
     "id": "ann-module-header",
     "proofId": "zsqrtd-neg-two-oq-03",
     "range": { "startLine": 4, "endLine": 48 },
