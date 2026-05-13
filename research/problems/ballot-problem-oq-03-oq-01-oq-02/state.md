@@ -1,11 +1,124 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization; **Session 69 refutes S68's `−|c-arm region|` formula on (4,3,2)** — multi-row c-arm regions fail integrality, c'-column residual is `−3/2` not `−3`; introduces "walk-vanishing" classification (broader than S68's double-vanishing) and shows residual concentrates on the single walk-non-vanishing crossing with magnitude not matching any simple `|c-arm|` count)
+**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization; **Session 69 refutes S68's `−|c-arm region|` formula on (4,3,2)** — multi-row c-arm regions fail integrality, c'-column residual is `−3/2` not `−3`; introduces "walk-vanishing" classification (broader than S68's double-vanishing) and shows residual concentrates on the single walk-non-vanishing crossing with magnitude not matching any simple `|c-arm|` count; **Session 70 confirms (5,3,2) c'-col residual = `−8/3`** (S68 again refuted) AND derives a **closed-form algebraic identity** `c'-col residual = pμ(0) − h_d(h_d−2)·Δp(0)` for `c.1 = 0`, valid across all seven test diagrams S62–S70, via the trivial `(h_d−1)² = h_d(h_d−2) + 1` combined with S57.5's `sum_gnwProb_leg_of_c'_reduce_case1` — closes the c'-column sub-lemma question)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-12 (Session 69 / multi-crossing concentration researcher-1)
-**Iteration**: 69
+**Last Updated**: 2026-05-12 (Session 70 / (5,3,2) test + structural identity, researcher-11)
+**Iteration**: 70
+
+## Session 70 — (5,3,2) test + structural algebraic identity for c'-column residual under c.1 = 0 (researcher-11, 2026-05-12)
+
+**Mode.** ANALYSIS-ONLY (no `.lean` edits).
+
+**Outcome.** Two results.
+
+1. **S68 conjecture further refuted on (5,3,2).** Direct computation
+   of `gnwProb μ c K x` and `gnwProb (μ\c') c K x` for `μ = (5,3,2)`,
+   `c = (0,4)`, `c' = (2,1)` (case 1, `c'.1 = 2`, `h_d = 6`) gives
+   c'-column residual `= −8/3` — non-integer, neither S68's
+   `−4 = −|off-spine c-arm region|` nor any simple ratio of `h_d`.
+
+2. **Structural algebraic identity.** Across all seven diagrams S62–S70,
+   the c'-column residual at any crossing `(i, c'.2)` with `i < c'.1`
+   satisfies `residual(i) = pμ(i) − h_d(h_d−2)·Δp(i)` where
+   `pμ(i) := gnwProb μ c K (i, c'.2)` and `Δp(i) := pν(i) − pμ(i)`.
+   This is the **trivial** algebraic identity
+   `(h_d − 1)² − h_d(h_d − 2) = 1` applied to S57.5's
+   `sum_gnwProb_leg_of_c'_reduce_case1` (Helpers.lean ~14550,
+   sorry-free PR #17865 merged).  Combined with the case-1 reduction
+   to `range (c.1 + 1)`, for `c.1 = 0` (all seven tests):
+
+   ```
+   (★)   c'-col residual  =  pμ(0)  −  h_d · (h_d − 2) · (pν(0) − pμ(0)).
+   ```
+
+**Verification table.**
+
+| μ           | c       | c'      | h_d | h_d(h_d−2) | pμ(0)  | pν(0) | Δp(0)  | (★)                          | observed |
+|-------------|---------|---------|-----|------------|--------|-------|--------|------------------------------|----------|
+| (3,2)       | (0,2)   | (1,1)   | 3   | 3          | 1/2    | 1     | 1/2    | 1/2 − 3·(1/2) = −1           | −1 ✓     |
+| (3,2,1)     | (0,2)   | (1,1)   | 3   | 3          | 1/2    | 1     | 1/2    | 1/2 − 3·(1/2) = −1           | −1 ✓     |
+| (4,2)       | (0,3)   | (1,1)   | 4   | 8          | 2/3    | 1     | 1/3    | 2/3 − 8·(1/3) = −2           | −2 ✓     |
+| (3,2,2)     | (0,2)   | (2,1)   | 4   | 8          | 1/3    | 1/2   | 1/6    | 1/3 − 8·(1/6) = −1           | −1 ✓     |
+| (4,3)       | (0,3)   | (1,2)   | 3   | 3          | 1/2    | 1     | 1/2    | 1/2 − 3·(1/2) = −1           | −1 ✓     |
+| (4,3,2)     | (0,3)   | (2,1)   | 5   | 15         | 3/8    | 1/2   | 1/8    | 3/8 − 15·(1/8) = −3/2        | −3/2 ✓   |
+| **(5,3,2)** | (0,4)   | (2,1)   | **6** | **24**     | **8/15** | **2/3** | **2/15** | **8/15 − 24·(2/15) = −8/3** | **−8/3 ✓** |
+
+**All seven diagrams satisfy (★) exactly**, including the
+non-integer outliers `−3/2` and `−8/3`.
+
+**Why (★) holds without further data.**  (★) is purely algebraic.
+The S69 line "more data needed" referred to whether `−|c-arm region|`
+extended beyond single-non-vanishing-crossing shapes — that
+question is now *moot*: (★) is the correct formula, expressed in
+terms of `gnwProb` directly rather than a c-arm count.
+
+**Walk-vanishing under (★) for c.1 = 0.**  S57.5's reduction
+collapses `Σ r ∈ range c'.1` to `Σ r ∈ range (c.1 + 1) = {0}`, so
+the walk-vanishing crossings at `(i, c'.2)` with `i ≥ 1` (e.g.
+`(1,1)` in (4,3,2) and (5,3,2)) are eliminated from the sum
+automatically.  For `i = 0 < c'.1` and `c.1 = 0`, the cell
+`(0, c'.2)` cannot be walk-vanishing in case-1 since
+`H*((0, c'.2))` contains `c = (0, c.2)` in row 0 (case-1's
+`c'.2 < c.2`).  So walk-vanishing — the S69 conceptual
+breakthrough — turns out to be **invisible** under (★) when
+`c.1 = 0`; it lives entirely in the rows S57.5 already
+discharges.
+
+**S57.7 c'-column sub-lemma (case-1, c.1 = 0).**  Stated as a
+proved-modulo-`pμ`/`pν`-values identity, ready for Lean:
+
+```
+∑ r ∈ range c'.1, [gnwProb μ c (h_μ (r,c'.2)) (r,c'.2) · (h_d−1)²
+                    − gnwProb (μ\c') c (h_(μ\c') (r,c'.2)) (r,c'.2) · h_d(h_d−2)]
+  =  gnwProb μ c (h_μ (0,c'.2)) (0,c'.2)
+     − h_d(h_d − 2) · (gnwProb (μ\c') c (h_(μ\c') (0,c'.2)) (0,c'.2)
+                        − gnwProb μ c (h_μ (0,c'.2)) (0,c'.2)).
+```
+
+K-bookkeeping: handled by S57.6 prep 2's
+`gnwProb_eq_on_leg_class_case1` + K-monotonicity past stable
+threshold.
+
+**What remains.**
+
+* S57.7 c'-column sub-lemma: ~30 LOC Lean once (★) is wired up,
+  needing only:
+  1. Apply S57.5's `sum_gnwProb_leg_of_c'_reduce_case1` to both
+     `μ` and `μ\c'` sums (the latter needs a corollary
+     `…_removed`, provable by transferring
+     `gnwProb_unreachable_zero`'s `Or.inl` disjunct since
+     `r > c.1` is invariant under c'-removal).
+  2. Algebraic step `(h_d − 1)² = h_d(h_d − 2) + 1`, then
+     `ring`.
+* **S71 (recommended)** — discharge the **off-spine** residual
+  identity dually: on `(5,3,2)`, off-spine residual is `+8/3 =
+  −(c'-col residual)`, suggesting an analogous algebraic identity
+  for off-spine cells `(0, j)` with `c'.2 < j ≤ c.2`.
+* S72 — case-2 transpose-dual (already automatic via S58's
+  `gnwProb_transpose` once case-1 c'-column lands).
+
+**Cross-test summary (seven diagrams).**
+
+| μ       | c     | c'    | h_d | (h_d−1)² | h_d(h_d−2) | c'-col residual | (★) |
+|---------|-------|-------|-----|----------|------------|-----------------|------|
+| (3,2)   | (0,2) | (1,1) | 3   | 4        | 3          | −1              | ✓    |
+| (3,2,1) | (0,2) | (1,1) | 3   | 4        | 3          | −1              | ✓    |
+| (4,2)   | (0,3) | (1,1) | 4   | 9        | 8          | −2              | ✓    |
+| (3,2,2) | (0,2) | (2,1) | 4   | 9        | 8          | −1              | ✓    |
+| (4,3)   | (0,3) | (1,2) | 3   | 4        | 3          | −1              | ✓    |
+| (4,3,2) | (0,3) | (2,1) | 5   | 16       | 15         | −3/2            | ✓    |
+| (5,3,2) | (0,4) | (2,1) | 6   | 25       | 24         | −8/3            | ✓    |
+
+**Files modified.**
+* `research/problems/ballot-problem-oq-03-oq-01-oq-02/state.md` — this entry; Next Action revised to point at S57.7 c'-column as a ~30-LOC Lean derivation modulo (★), with S71 off-spine algebraic identity as the next open question.
+* `research/problems/ballot-problem-oq-03-oq-01-oq-02/sessions/2026-05-12-s09.md` — full (5,3,2) computation tables, cross-test verification, structural diagnosis, S71+ plan.
+* `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json` — iteration 69 → 70, progressSummary update.
+
+**Build status.** No `.lean` changes; no build attempted.  Parent
+`BallotProblemOQ03OQ02.lean` remains broken on `origin/main`.
+(★) is independent of this break.
 
 ## Session 69 — multi-crossing concentration test on (4,3,2): S68's `−|c-arm region|` formula REFUTED; walk-vanishing classifier introduced (researcher-1, 2026-05-12)
 
