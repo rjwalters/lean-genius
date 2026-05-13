@@ -1,12 +1,66 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S3 ACT (OQ-01-A.2 `resampleAt` closed)
+**Phase**: S5 ACT (OQ-01-A.3 `resampleAt_apply_outside` lemma — build pending)
 **Path**: full
 **Since**: 2026-05-13
-**Iteration**: 3
+**Iteration**: 5
 
-## Current Focus
+## S5 ACT (Outside) — researcher-6, 2026-05-13 ~07:10 UTC
+
+**Outcome**: progress — discharged the first of the three S4b PREP §5-§7 marginal-pack lemmas: `resampleAt_apply_outside`. +24 LOC to `proofs/Proofs/MoserTardos.lean` (245 → 269), 0 new sorries, 0 new axioms, 0 new imports.
+
+### What I added
+
+The S4b PREP §5 verbatim discharge of the disjoint-coordinate marginal:
+
+```lean
+lemma resampleAt_apply_outside (S : Finset (Fin P.numVars)) (v : P.State)
+    (j : Fin P.numVars) (hj : j ∉ S) :
+    (P.resampleAt S v).map (fun w => w j) = PMF.pure (v j) := by
+  classical
+  unfold resampleAt
+  rw [PMF.map_comp]
+  have h_const :
+      (fun a : ∀ k : S, P.alphabet k.val =>
+        (fun (b : Fin P.numVars) =>
+          if h : b ∈ S then a ⟨b, h⟩ else v b) j)
+      = Function.const _ (v j) := by
+    funext a
+    simp [dif_neg hj]
+  rw [h_const, PMF.map_const]
+```
+
+11-LOC proof body + docstring + blank line + section context = 24 LOC. Uses only `PMF.map_comp` (Mathlib v4.26.0 `Probability/ProbabilityMassFunction/Constructions.lean:66`) and `PMF.map_const` (same file, line 79), plus `dif_neg`.
+
+### Why ship only `_outside` (not the full §5-§7 pack)
+
+S4b PREP §6 (`_inside`) and §7 (`_indep`) depend on a new helper `PMF.marginal_uniformOfFintype_pi` (~40 LOC, S4b PREP §3) which uses `Equiv.piSplitAt`, `Fintype.card_congr`, `Fintype.card_pi`, `tsum_fintype`, and ENNReal arithmetic. The helper's proof is the single mathematically-substantive step in the pack; shipping it without local Docker build verification (`.lake symlink loop` trap) is risky for ~40-LOC probability-theory code.
+
+This S5 ACT ships only `_outside` (12 LOC, uses only 2 Mathlib lemmas, mechanical `funext + simp [dif_neg]`). The helper + `_inside` + `_indep` are deferred to a subsequent S5b ACT.
+
+### Files updated (S5)
+
+- `proofs/Proofs/MoserTardos.lean` — +24 LOC, one new lemma `resampleAt_apply_outside` inserted between `def resampleAt` and `def step`. File: 245 → 269 LOC.
+- `research/problems/prob-method-lovasz-local-oq-01/state.md` — this file. Iteration 3 → 5 (jumping S4 since S4/S4a/S4b were PREP-only).
+- `research/problems/prob-method-lovasz-local-oq-01/sessions/2026-05-13-s05-act-outside-marginal.md` — new session note.
+
+### Build-verification posture
+
+Per `feedback_researcher_lake_symlink_loop_and_wipe.md`, the worktree's `proofs/.lake` inherits the main repo's self-referential symlink loop; local Docker build is unreliable. **Lean file committed and pushed first**; PR title carries "build pending" so the doctor agent can verify from a clean worktree.
+
+No new imports (the file already does `import Mathlib`, `open scoped Classical`).
+
+### Race-safety note (S5)
+
+- Pre-claim probe (2026-05-13 ~07:05 UTC): 0 open PRs on the slug; most recent merge is S4b PREP (PR #18580) at 04:50 UTC (~2h15min lead time).
+- Pre-push probe will re-verify before push.
+
+### Next action (S5b — helper + `_inside` + `_indep`)
+
+Per S4b PREP §3 + §6 + §7: ship `PMF.marginal_uniformOfFintype_pi` (~40 LOC) and use it to discharge `resampleAt_apply_inside` (~8 LOC) and `resampleAt_indep` (~18 LOC). The helper's proof is the load-bearing step and warrants a fresh session.
+
+## S3 ACT — researcher-1, 2026-05-13 (pre-S5 history, for reference)
 
 S3 ACT (researcher-1, 2026-05-13, this PR): **OQ-01-A.2 `resampleAt`
 product-PMF closure** in `Proofs/MoserTardos.lean:131-139` (~9 LOC
