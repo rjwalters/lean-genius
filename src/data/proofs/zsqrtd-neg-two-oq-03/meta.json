@@ -108,12 +108,20 @@
       "mathContext": "Each axiom is closed by `intros; ext <;> simp <;> ring` — the simp lemmas unfold the projection-component form so that `ring` can normalize the integer arithmetic. This is the exact pattern used in `Mathlib/NumberTheory/Zsqrtd/Basic.lean` around line 164."
     },
     {
-      "id": "norm",
-      "title": "The Eisenstein Norm",
+      "id": "norm-definition-and-nonneg",
+      "title": "Norm Definition and Non-Negativity",
       "startLine": 151,
+      "endLine": 167,
+      "summary": "Defines the Eisenstein norm `N(a + bω) = a² - ab + b²` together with the trivial `norm_zero`, `norm_one` (closed by `simp [norm]`) and the load-bearing `norm_nonneg` lemma. The latter rests on the algebraic identity `4 · N(z) = (2 re - im)² + 3 · im²` proved by `simp only [norm]; ring`, closed by `nlinarith [sq_nonneg (2 * z.re - z.im), sq_nonneg z.im]`.",
+      "mathContext": "The non-negativity certificate `4 · (a² - ab + b²) = (2a - b)² + 3 b²` is the same `disc(x² - x + 1) = 1 - 4 = -3 < 0` discriminant identity that shows `x² - x + 1 > 0` over ℝ. It establishes that `N` is a positive-definite integral quadratic form of discriminant `-3` — exactly the form whose `SL₂(ℤ)`-equivalence class generates the (trivial) class group of `ℚ(√-3)`."
+    },
+    {
+      "id": "norm-properties",
+      "title": "Norm Multiplicativity and Zero Criterion",
+      "startLine": 169,
       "endLine": 207,
-      "summary": "Defines `Eisenstein.norm z = z.re ^ 2 - z.re * z.im + z.im ^ 2`, proves `norm_zero`, `norm_one`, `norm_nonneg` (via `4 N(z) = (2re - im)² + 3 im²` and `nlinarith`), `norm_mul` (multiplicativity via `simp + ring`), `norm_eq_zero_iff` (`norm z = 0 ↔ z = 0` via the two-square split), and `norm_pos_of_ne_zero` (strict positivity on nonzero elements).",
-      "mathContext": "The non-negativity argument uses the algebraic identity `4 · (a² - ab + b²) = (2a - b)² + 3 b²` — the same `discriminant ≥ 0` move used to prove that `x² - x + 1 > 0` over ℝ. The multiplicativity of the norm is the algebraic spine of the eventual splitting argument: if `p` is non-irreducible in `ℤ[ω]`, then `p = N(α)` for some `α ≠ 0, 1`."
+      "summary": "Establishes the three structural properties of the norm needed downstream: `norm_mul` (multiplicativity `N(xy) = N(x) · N(y)` via `simp only [norm, mul_re, mul_im]; ring`), `norm_eq_zero_iff` (the two-square split — extracting `z.re = z.im = 0` from `(2·re - im)² = im² = 0` using `pow_eq_zero_iff` and `linarith`), and `norm_pos_of_ne_zero` (strict positivity on nonzero elements, derived from `norm_nonneg` + `norm_eq_zero_iff`).",
+      "mathContext": "Multiplicativity is the algebraic spine of the entire downstream proof: it makes `N : Eisenstein → ℤ` a monoid homomorphism, so that primality in `ℤ` reflects irreducibility in `ℤ[ω]`. The zero criterion `N(z) = 0 ↔ z = 0` is what promotes `ℤ[ω]` to a domain (it forbids zero divisors via the norm map). Strict positivity on nonzero elements is then automatic, and provides the well-founded measure required for the S3 EuclideanDomain instance: any valid quotient/remainder pair `(q, r)` with `0 ≤ N(r) < N(divisor)` terminates the division algorithm."
     }
   ],
   "overview": {
