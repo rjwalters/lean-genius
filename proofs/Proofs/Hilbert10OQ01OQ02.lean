@@ -2362,6 +2362,127 @@ theorem koenigsmann_2016_universal_doubleNeg :
     koenigsmann_2016_universal
 
 -- ============================================================
+-- Part VIII.28 (iter 24a, Path B): the missing diagonal at level 2 —
+--                                   Π₂ ∩ Π₂ ⊆ Π₂ binary
+--                                   + Σ₂ ∪ Σ₂ ⊆ Σ₂ binary
+-- ============================================================
+
+/-- **Iter 24a (Π₂ binary intersection closure)**: the Π₂ class is
+    closed under binary intersection.
+
+    Direct level-2 analog of iter 12's
+    `intersection_isDiophantineDefinition`: the existential `x`-block is
+    packed via `evenProj`/`oddProj` while the universal `y`-block is
+    shared between the two Π₂ inputs. The polynomial witness is the
+    same sum-of-squares construction as iter 12, with one outer `∀ y`
+    added uniformly.
+
+    Polynomial witness:
+
+      Q(q, y, x) := P₁(q, y, evenProj x)² + P₂(q, y, oddProj x)²
+
+    Combined with iter 20's `pi2_union_isUniversalExistentialDefinition`,
+    this **completes the Π₂ binary closure grid** (∪ AND ∩). Neither
+    class is (known to be) closed under complement; that would collapse
+    Σ₂ = Π₂ over ℚ, equivalent to the OPEN question via
+    `existentialUniversal_iff_universalExistential_complement`.
+
+    Re-implementation off current `origin/main` of the stale stack
+    PR #17456 (CONFLICTING/DIRTY since 2026-05-08); see PREP
+    `2026-05-13-iter24-prep-iter16-stack-audit.md` for the audit
+    establishing tractability. ZERO new Mathlib imports; ZERO new
+    helper lemmas (uses only iter 12's packing helpers `evenProj`,
+    `oddProj`, `interleave`, `evenProj_interleave`,
+    `oddProj_interleave`; plus `mul_self_nonneg`, `linarith`,
+    `mul_eq_zero`). -/
+theorem pi2_intersection_isUniversalExistentialDefinition
+    {S₁ S₂ : RatSubset}
+    (h₁ : IsUniversalExistentialDefinition S₁)
+    (h₂ : IsUniversalExistentialDefinition S₂) :
+    IsUniversalExistentialDefinition (fun q => S₁ q ∧ S₂ q) := by
+  obtain ⟨P₁, hP₁⟩ := h₁
+  obtain ⟨P₂, hP₂⟩ := h₂
+  refine ⟨fun q y x =>
+    (P₁ q y (evenProj x)) * (P₁ q y (evenProj x)) +
+    (P₂ q y (oddProj x)) * (P₂ q y (oddProj x)), fun q => ?_⟩
+  constructor
+  · rintro ⟨hS₁, hS₂⟩ y
+    -- For each y, peel x_i from each Π₂ witness at SAME y, interleave.
+    obtain ⟨x₁, hx₁⟩ := (hP₁ q).mp hS₁ y
+    obtain ⟨x₂, hx₂⟩ := (hP₂ q).mp hS₂ y
+    refine ⟨interleave x₁ x₂, ?_⟩
+    rw [evenProj_interleave, oddProj_interleave, hx₁, hx₂]
+    ring
+  · intro hAll
+    -- For each y: sum-of-squares = 0 ⇒ each factor = 0 ⇒ S_i witness at that y.
+    have hSep : ∀ y : Nat → Rat,
+        (∃ x : Nat → Rat, P₁ q y x = 0) ∧ (∃ x : Nat → Rat, P₂ q y x = 0) := by
+      intro y
+      obtain ⟨x, hx⟩ := hAll y
+      set a := P₁ q y (evenProj x)
+      set b := P₂ q y (oddProj x)
+      have haa_nn : (0 : Rat) ≤ a * a := mul_self_nonneg a
+      have hbb_nn : (0 : Rat) ≤ b * b := mul_self_nonneg b
+      have haa_zero : a * a = 0 := by linarith
+      have hbb_zero : b * b = 0 := by linarith
+      have ha : a = 0 := (mul_eq_zero.mp haa_zero).elim id id
+      have hb : b = 0 := (mul_eq_zero.mp hbb_zero).elim id id
+      exact ⟨⟨evenProj x, ha⟩, ⟨oddProj x, hb⟩⟩
+    refine ⟨(hP₁ q).mpr fun y => (hSep y).1,
+            (hP₂ q).mpr fun y => (hSep y).2⟩
+
+/-- **Iter 24a (Σ₂ binary union closure)**: the Σ₂ class is closed
+    under binary union.
+
+    Direct level-2 analog of iter 13's `union_isCoDiophantineDefinition`:
+    chain through iter 5's Σ₂/Π₂ duality, iter 24a's Π₂ ∩ closure
+    (above), and iter 7's Π₂ class congruence helper.
+
+      Σ₂(S₁), Σ₂(S₂)
+        →[iter 5 existentialUniversal_iff_universalExistential_complement]  Π₂(¬S₁), Π₂(¬S₂)
+        →[iter 24a pi2_intersection_isUniversalExistentialDefinition]        Π₂(¬S₁ ∧ ¬S₂)
+        →[iter 7 universalExistentialDefinition_iff_of_pred_iff
+           via constructive de Morgan ¬S₁ ∧ ¬S₂ ↔ ¬(S₁ ∨ S₂)]              Π₂(¬(S₁ ∨ S₂))
+        →[iter 5 existentialUniversal_iff_universalExistential_complement]   Σ₂(S₁ ∨ S₂)
+
+    Combined with iter 20's
+    `sigma2_intersection_isExistentialUniversalDefinition`, this
+    **completes the Σ₂ binary closure grid** (∪ AND ∩). The underlying
+    polynomial witness (after unfolding the iter 5 duality, which is
+    identity on the polynomial family P) is the same sum-of-squares
+    construction as the Π₂ ∩ closure above.
+
+    Re-implementation off current `origin/main` of the stale stack
+    PR #17456 (CONFLICTING/DIRTY since 2026-05-08). -/
+theorem sigma2_union_isExistentialUniversalDefinition
+    {S₁ S₂ : RatSubset}
+    (h₁ : IsExistentialUniversalDefinition S₁)
+    (h₂ : IsExistentialUniversalDefinition S₂) :
+    IsExistentialUniversalDefinition (fun q => S₁ q ∨ S₂ q) := by
+  -- Step 1: dualize each Σ₂ to Π₂ on the complement (iter 5 duality).
+  have hd₁ : IsUniversalExistentialDefinition (fun q => ¬ S₁ q) :=
+    (existentialUniversal_iff_universalExistential_complement S₁).mp h₁
+  have hd₂ : IsUniversalExistentialDefinition (fun q => ¬ S₂ q) :=
+    (existentialUniversal_iff_universalExistential_complement S₂).mp h₂
+  -- Step 2: Π₂ closed under binary intersection (iter 24a, this section).
+  have hcap : IsUniversalExistentialDefinition (fun q => ¬ S₁ q ∧ ¬ S₂ q) :=
+    pi2_intersection_isUniversalExistentialDefinition hd₁ hd₂
+  -- Step 3: bridge via constructive de Morgan
+  --     `¬ S₁ q ∧ ¬ S₂ q ↔ ¬ (S₁ q ∨ S₂ q)`.
+  have hbridge : ∀ q : Rat,
+      (fun q : Rat => ¬ S₁ q ∧ ¬ S₂ q) q ↔
+        (fun q : Rat => ¬ (S₁ q ∨ S₂ q)) q := by
+    intro q
+    refine ⟨fun ⟨hn₁, hn₂⟩ hor => hor.elim hn₁ hn₂,
+            fun hnor => ⟨fun h₁q => hnor (Or.inl h₁q),
+                          fun h₂q => hnor (Or.inr h₂q)⟩⟩
+  have hd : IsUniversalExistentialDefinition (fun q : Rat => ¬ (S₁ q ∨ S₂ q)) :=
+    (universalExistentialDefinition_iff_of_pred_iff hbridge).mp hcap
+  -- Step 4: Π₂(¬T) ↔ Σ₂(T) via iter 5 duality, with T = S₁ ∪ S₂.
+  exact (existentialUniversal_iff_universalExistential_complement
+    (fun q => S₁ q ∨ S₂ q)).mpr hd
+
+-- ============================================================
 -- Part IX: The landscape, sharpened
 -- ============================================================
 
@@ -2648,5 +2769,7 @@ consequences of the OQ-01 axioms together with the Σ₁ ↔ existing-formulatio
 #check @IntegersAreExistentialUniversalOverQ
 #check @integers_existentialUniversal_iff_complement_universalExistential
 #check @koenigsmann_2016_universal_doubleNeg
+#check @pi2_intersection_isUniversalExistentialDefinition
+#check @sigma2_union_isExistentialUniversalDefinition
 
 end Hilbert10Rationals
