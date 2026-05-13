@@ -82,23 +82,49 @@ theorem beurling_consec_gap (bp : BeurlingPrimes) (n : ℕ) :
   rw [abs_of_pos (by linarith [bp.strictly_increasing n (n + 1) (by omega)])] at hsep
   linarith
 
+/-- Beurling primes grow at least linearly: aₙ ≥ a₀ + n.
+    Proved by induction using `beurling_consec_gap`. -/
+theorem beurling_linear_growth (bp : BeurlingPrimes) (n : ℕ) :
+    bp.a n ≥ bp.a 0 + n := by
+  induction n with
+  | zero => simp
+  | succ k ih => push_cast at *; linarith [beurling_consec_gap bp k]
+
 /-- The counting set {n | a n <= x} is finite for Beurling prime sequences.
     Since a is strictly increasing with all a_n > 1, only finitely many
     indices satisfy a_n <= x. -/
 theorem beurlingPi_finite (bp : BeurlingPrimes) (x : ℝ) :
     Set.Finite {n : ℕ | bp.a n ≤ x} := by
-  -- Step 1: a_n ≥ a_0 + n (by induction using beurling_consec_gap)
-  have growth : ∀ n : ℕ, bp.a n ≥ bp.a 0 + n := by
-    intro n; induction n with
-    | zero => simp
-    | succ k ih => push_cast at *; linarith [beurling_consec_gap bp k]
-  -- Step 2: the set is a bounded subset of ℕ, hence finite
   apply Set.Finite.subset (Set.finite_Iic ⌊x⌋₊)
   intro n hn
   simp only [Set.mem_setOf_eq] at hn
   simp only [Set.mem_Iic]
-  have : (n : ℝ) < x := by linarith [growth n, bp.all_gt_one 0]
+  have : (n : ℝ) < x := by
+    linarith [beurling_linear_growth bp n, bp.all_gt_one 0]
   exact Nat.le_floor this.le
+
+/-- **Trivial upper bound** (weaker than Erdős 951): for any Beurling prime
+    sequence, `π_a(x) ≤ ⌊x⌋₊`. This follows from the linear growth `aₙ ≥ a₀ + n > n + 1`,
+    so the indices satisfying `aₙ ≤ x` are contained in `{0, 1, …, ⌊x⌋₊ - 1}`.
+
+    The Erdős 951 conjecture asserts the much stronger bound `π_a(x) ≤ π(x)`,
+    which would refine `⌊x⌋₊` (linear in x) down to `π(x)` (sublinear `~ x/log x`).
+    The gap between these bounds is exactly what makes the conjecture nontrivial. -/
+theorem beurlingPi_le_floor (bp : BeurlingPrimes) (x : ℝ) :
+    beurlingPi bp.a x ≤ ⌊x⌋₊ := by
+  unfold beurlingPi
+  have hsub : {n : ℕ | bp.a n ≤ x} ⊆ ↑(Finset.range ⌊x⌋₊) := by
+    intro n hn
+    simp only [Set.mem_setOf_eq] at hn
+    simp only [Finset.coe_range, Set.mem_Iio]
+    have h1 := beurling_linear_growth bp n
+    have h2 := bp.all_gt_one 0
+    have h3 : ((n + 1 : ℕ) : ℝ) ≤ x := by push_cast; linarith
+    exact Nat.lt_of_succ_le (Nat.le_floor h3)
+  calc Set.ncard {n : ℕ | bp.a n ≤ x}
+      ≤ Set.ncard (↑(Finset.range ⌊x⌋₊) : Set ℕ) :=
+        Set.ncard_le_ncard hsub (Finset.range _).finite_toSet
+    _ = ⌊x⌋₊ := by rw [Set.ncard_coe_Finset, Finset.card_range]
 
 /-- The nth prime as a real number. -/
 noncomputable def primeSeq (n : ℕ) : ℝ := Nat.nth Nat.Prime n

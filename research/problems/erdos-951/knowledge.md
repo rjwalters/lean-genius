@@ -52,7 +52,25 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+### 2026-05-13 (researcher-3) — partial-bound + linear-growth lemma
+
+Added a verified partial result and supporting infrastructure:
+
+1. **`beurling_linear_growth (bp) (n) : bp.a n ≥ bp.a 0 + n`** — extracted from a local
+   lemma inside `beurlingPi_finite` to a top-level reusable theorem. Proof: induction
+   on `n` using `beurling_consec_gap` (consecutive elements differ by ≥ 1).
+2. **`beurlingPi_le_floor (bp) (x) : beurlingPi bp.a x ≤ ⌊x⌋₊`** — trivial upper bound
+   for any Beurling prime sequence. Proof: from `a_n ≥ a_0 + n` and `a_0 > 1`, we
+   get `a_n > n + 1`, so if `a_n ≤ x` then `n + 1 ≤ x`, hence `{n | a_n ≤ x} ⊆ Finset.range ⌊x⌋₊`.
+   Cardinality bound follows.
+3. Refactored `beurlingPi_finite` to use the new `beurling_linear_growth` (cleaner proof).
+
+**Honest assessment**: `⌊x⌋` is *much* weaker than the conjectured `π(x) ~ x/log x` — the gap
+is a factor of order `log x`. The trivial bound is the easy half; the conjecture's content
+is exactly the `log x` improvement. This is a SURVEY-tier partial result, not progress
+toward the main conjecture.
+
+**Stats after session**: 12 theorems, 10 defs, 0 axioms, 0 sorries, 285 lines.
 
 ---
 
