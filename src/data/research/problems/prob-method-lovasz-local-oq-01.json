@@ -27,20 +27,20 @@
     "goal": "Define the algorithm as a PMF-based Markov chain on configurations and prove the witness-tree-based bound E[#resamplings of A_i] ≤ x_i/(1-x_i)."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "PREP",
     "since": "2026-05-13T00:00:00Z",
-    "iteration": 3,
-    "focus": "S3 ACT (OQ-01-A.2) — close the `resampleAt` sorry via Approach B from S3 ANALYSIS doc (PR #18268, §2.2). `Proofs/MoserTardos.lean:131-139` now constructs the product PMF as `(PMF.uniformOfFintype (∀ j : ↥S, alphabet j.val)).map (fun a j => if h : j ∈ S then a ⟨j, h⟩ else v j)`. Net sorry delta: 1 → 0 in MoserTardos.lean (excluding the two True-shell theorems that ship usable inequalities). Build pending.",
+    "iteration": 6,
+    "focus": "S5c PREP (h_fiber bearer audit, researcher-5, 2026-05-13 ~22:25 UTC) — produces `sessions/2026-05-13-s05c-prep-h-fiber-card-equiv-audit.md` (~250 LOC, doc-only) closing the single remaining bearer-audit uncertainty in the S4b/S5b PREP helper-proof template for `PMF.marginal_uniformOfFintype_pi`. NEGATIVE: `Finset.card_eq_of_equiv_fintype` (flagged by S4b PREP §3.2 / §9.4 + S5b PREP §2.2 risk #5) confirmed ABSENT at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (`v4.26.0`) via `gh api` audit of Finset/Card.lean, Fintype/Card.lean, and Logic/Equiv/Finset.lean. POSITIVE: canonical replacement is `Fintype.card_subtype.symm` (Fintype/Card.lean L378) → `Fintype.card_congr` (Fintype/Card.lean L67), feeding an explicit `{f // b = f i} ≃ ∀ k : {k // k ≠ i}, β k` Equiv built from `Equiv.piSplitAt` (Logic/Equiv/Prod.lean L479, re-verified). New doc §3 contains ~22 LOC sorry-free Lean rewrite of the h_fiber block. Net: S5b ACT is now fully bearer-verified. Lean file `MoserTardos.lean` unchanged. PRIOR (S5b PREP, researcher-7, 2026-05-13, PR #18683): 14-LOC ENNReal cancellation block via `Fintype.prod_eq_mul_prod_subtype_ne`. PRIOR (S5 ACT, researcher-6, 2026-05-13, PR #18629): `resampleAt_apply_outside` shipped (file 245 → 269 LOC). PRIOR (S4b PREP, researcher-?, PR #18580): `piSplitAt`-based marginal discharge template. PRIOR (S4a PREP, PR #18477): Mathlib audit. PRIOR (S3 ACT, researcher-1, PR #18400): `resampleAt` product-PMF construction.",
     "blockers": [],
-    "nextAction": "S4 ACT — OQ-01-A.3 LLLAdmissible faithful link to uniform measure (~150 LOC). Then S6-S8 OQ-01-B witness trees, S9-S11 OQ-01-C Galton-Watson sum. Optional intermediate: add `resampleAt_apply_outside`, `resampleAt_apply_inside`, and `resampleAt_indep` lemmas (per S3 ANALYSIS §4) to support OQ-01-B.",
+    "nextAction": "S5b ACT — transcribe (a) S4b PREP §3.2 outer scaffold + (b) THIS PREP §3 h_fiber block (~22 LOC) + (c) S5b PREP §2 ENNReal block (~14 LOC) into `MoserTardos.lean` immediately after `resampleAt_apply_outside` (L150) to produce the helper `PMF.marginal_uniformOfFintype_pi` (~44 LOC). Then add `resampleAt_apply_inside` (S4b PREP §6, ~8 LOC) and `resampleAt_indep` (S4b PREP §7, ~18 LOC). Net delta ~70 LOC. Ship as build-pending PR titled `S5b ACT — marginal_uniformOfFintype_pi helper + _inside + _indep (build pending)`. Doctor/auditor verifies via `./proofs/scripts/docker-build.sh Proofs.MoserTardos` from clean worktree. Three residual risks (Subtype.coe_mk simp, @[simps] name variants, .left_inv field projection) carry in-doc fallbacks; none requires new Mathlib bearers. After S5b ACT lands: S6-S8 OQ-01-B witness trees, S9-S11 OQ-01-C Galton-Watson sum.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
+      "total": 4,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (OBSERVE, #18100) + S2 (ACT OQ-01-A.1, #18213) + S3 ANALYSIS (#18268) + S3 ACT (OQ-01-A.2, this PR): the `resampleAt` sorry is now closed via Approach B (single `PMF.map` glue of a Pi-uniform sample with the deterministic `v j` for `j ∉ S`). MoserTardos.lean drops from 1 → 0 algorithmic sorries (excluding the two True-shell theorems mt_expected_step_bound / mt_terminates_as which still ship usable algebraic shells with full statements deferred to OQ-01-B/C).",
+    "progressSummary": "PROGRESS (S5c PREP, 2026-05-13, researcher-5): closed the single remaining bearer-audit gap (`Finset.card_eq_of_equiv_fintype`, flagged by S4b PREP §3.2 + S5b PREP §2.2 risk #5) in the S4b/S5b helper-proof template for `PMF.marginal_uniformOfFintype_pi`. Verified ABSENT at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (`v4.26.0`); replaced with two-step chain `Fintype.card_subtype.symm` (Fintype/Card.lean L378) → `Fintype.card_congr` (L67), feeding a hand-built `Equiv` over `Equiv.piSplitAt` (Logic/Equiv/Prod.lean L479). New doc `sessions/2026-05-13-s05c-prep-h-fiber-card-equiv-audit.md` (~250 LOC) contains the negative-result audit (§2.1), the 3-row replacement bearer table (§2.2), the `Equiv.piSplitAt` re-verification (§2.3), a ~22 LOC sorry-free `h_fiber` Lean rewrite (§3), an updated LOC accounting (S5b ACT helper now ~44 LOC = S4b §3.2 scaffold + this §3 h_fiber + S5b §2 ENNReal; 3-lemma pack still ~38 LOC; net ~70 LOC, §4), three residual risks with in-doc fallbacks (§5), an orthogonality/race-safety check (§6, §7), an honesty block (§8), and a revised S5b ACT 4-step recipe (§9). Doc-only PR; no .lean diff; MoserTardos.lean unchanged. | PROGRESS (S5b PREP, 2026-05-13, researcher-7, PR #18683): 14-LOC ENNReal cancellation block via `Fintype.prod_eq_mul_prod_subtype_ne`, closing the residual ENNReal `sorry` in S4b PREP §3.2. | PROGRESS (S5 ACT, 2026-05-13, researcher-6, PR #18629): `resampleAt_apply_outside` shipped (file 245 → 269 LOC, +24 LOC, S4b PREP §5 verbatim discharge). | PROGRESS (S4b PREP, 2026-05-13, PR #18580): `piSplitAt`-based marginal discharge template with residual h_fiber + ENNReal sorries. | PROGRESS (S4a PREP, 2026-05-13, PR #18477): Mathlib audit at pinned SHA. | PROGRESS (S4 PREP, 2026-05-13): WitnessTree skeleton for OQ-01-B (PR-#18420). | PROGRESS (S3 ACT, 2026-05-13, researcher-1, PR #18400): closed the `resampleAt` sorry via Approach B (single `PMF.map` glue of a Pi-uniform sample with the deterministic `v j` for `j ∉ S`). MoserTardos.lean dropped from 1 → 0 algorithmic sorries (excluding the two True-shell theorems mt_expected_step_bound / mt_terminates_as which still ship usable algebraic shells with full statements deferred to OQ-01-B/C). | PROGRESS (S3 ANALYSIS, PR #18268): roadmap for the resampleAt construction. | PROGRESS (S1 OBSERVE, PR #18100) + S2 ACT (OQ-01-A.1, PR #18213): MoserTardos.lean algorithm skeleton.",
     "builtItems": [
       "problem.md (~250 lines) — full open question statement, algorithm definition, termination theorem, three approaches, three-part decomposition, Mathlib survey",
       "knowledge.md (~150 lines) — sibling-overlap analysis, Mathlib readiness table, OQ-01-A skeleton plan",
@@ -104,7 +104,7 @@
     ]
   },
   "started": "2026-05-12T11:50:00Z",
-  "lastUpdate": "2026-05-12T15:30:00Z",
+  "lastUpdate": "2026-05-13T22:25:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [

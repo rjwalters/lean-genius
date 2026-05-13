@@ -1,10 +1,81 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S5 ACT (OQ-01-A.3 `resampleAt_apply_outside` lemma — build pending)
+**Phase**: S5c PREP (h_fiber bearer audit — closes S4b/S5b PREP uncertainty re `Finset.card_eq_of_equiv_fintype`)
 **Path**: full
 **Since**: 2026-05-13
-**Iteration**: 5
+**Iteration**: 6
+
+## S5c PREP (`h_fiber` audit) — researcher-5, 2026-05-13 ~22:25 UTC
+
+**Mode**: PREP (doc-only; no `.lean` diff).
+
+**Outcome**: produced
+`sessions/2026-05-13-s05c-prep-h-fiber-card-equiv-audit.md` — closes the
+single remaining bearer-audit uncertainty in the S4b PREP / S5b PREP
+helper-proof template for `PMF.marginal_uniformOfFintype_pi`.
+
+### What this resolves
+
+S4b PREP §3.2 / §9.4 + S5b PREP §2.2 risk #5 both flagged
+`Finset.card_eq_of_equiv_fintype` as the bridge from
+`(Finset.univ.filter p).card` to `Fintype.card { x // p x }` but
+explicitly deferred verification ("Verify at S5b ACT time").
+
+This PREP **completes that verification**:
+
+- **Negative**: `Finset.card_eq_of_equiv_fintype` does **not** exist
+  at the pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+  (`v4.26.0`) — verified by `gh api` grep of `Finset/Card.lean`,
+  `Fintype/Card.lean`, `Logic/Equiv/Finset.lean`.
+- **Positive**: canonical replacement is
+  `Fintype.card_subtype.symm` (Card.lean L378) → `Fintype.card_congr`
+  (Card.lean L67), feeding an explicit
+  `{f // b = f i} ≃ ∀ k : {k // k ≠ i}, β k` built from
+  `Equiv.piSplitAt` (Prod.lean L479, re-verified).
+
+### What the doc contains
+
+- §2: pinned-SHA audit table for 3 replacement bearers (Card.lean L378,
+  Fintype/Card.lean L67, Prod.lean L479) — file path, blob context,
+  line number, verbatim signature.
+- §3: **~22 LOC sorry-free Lean rewrite of S4b PREP §3.2's `h_fiber`
+  block** using only the verified bearers. Drops directly into the
+  helper-proof template at the §3 position.
+- §4: updated LOC accounting for S5b ACT — helper now ~44 LOC
+  (S4b §3.2 scaffold + this PREP §3 `h_fiber` block + S5b §2 ENNReal
+  block); 3-lemma pack still ~38 LOC; net S5b ACT delta ~70 LOC.
+- §5: three residual risks (`Subtype.coe_mk` simp, `@[simps]` name
+  variants, `.left_inv` field projection) with in-doc fallbacks.
+- §9: revised S5b ACT 4-step recipe.
+
+### Files updated (S5c)
+
+- `research/problems/prob-method-lovasz-local-oq-01/sessions/2026-05-13-s05c-prep-h-fiber-card-equiv-audit.md`
+  — new doc, ~250 LOC.
+- `research/problems/prob-method-lovasz-local-oq-01/state.md` — this
+  section; iteration 5 → 6.
+- `src/data/research/problems/prob-method-lovasz-local-oq-01.json` —
+  `currentState.iteration` 5 → 6, `focus` / `nextAction` updated,
+  `progressSummary` prepended, `lastUpdate`.
+
+### Build-verification posture
+
+Doc-only PREP; `MoserTardos.lean` unchanged. No build needed.
+
+### Race-safety note (S5c)
+
+- Pre-claim probe (~22:18 UTC): 0 open PRs on the slug;
+  most recent merge is S5b PREP (PR #18683) at 08:19 UTC — 14h lead time,
+  well outside the morning's 4-merges-in-6h saturation burst.
+- Pre-push probe will re-verify before push.
+
+### Next action (S5b ACT — now fully unblocked)
+
+Per the revised recipe in §9 of the new PREP doc + S4b PREP §6/§7 +
+S5b PREP §2 + this PREP §3: ship `PMF.marginal_uniformOfFintype_pi`
+(~44 LOC) + `resampleAt_apply_inside` (~8 LOC, S4b PREP §6) +
+`resampleAt_indep` (~18 LOC, S4b PREP §7). Net delta ~70 LOC.
 
 ## S5 ACT (Outside) — researcher-6, 2026-05-13 ~07:10 UTC
 
