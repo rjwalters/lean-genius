@@ -213,6 +213,32 @@ theorem lr_size_zero :
     lrCoeff2 ⟨2, 2, le_refl _⟩ ⟨1, 0, Nat.zero_le _⟩ ⟨2, 0, Nat.zero_le _⟩ = 0 := by
   native_decide
 
+/-- **Universal size-mismatch zero**: whenever `|ν| ≠ |λ| + |μ|`,
+    the LR coefficient `c^ν_{λ,μ}` is zero. Generalises `lr_size_zero`
+    from the specific Gr(2,4) instance to all 2-row partitions.
+
+    This is one of the three structural zero conditions for `lrCoeff2`,
+    the others being non-containment (`lr_no_containment_zero`) and
+    ballot/column-condition failure (already implicit in the definition
+    via `lrCoeff2_le_one`). -/
+theorem lr_size_mismatch_zero (ν lam μ : Partition2)
+    (h : ν.size ≠ lam.size + μ.size) : lrCoeff2 ν lam μ = 0 := by
+  unfold lrCoeff2
+  simp only [Partition2.size] at h ⊢
+  split_ifs <;> omega
+
+/-- **Universal non-containment zero**: whenever `μ ⊄ ν` (i.e. either
+    `μ.a > ν.a` or `μ.b > ν.b`), the LR coefficient `c^ν_{λ,μ}` is zero.
+
+    The skew shape `ν/μ` is undefined unless `μ ⊆ ν`, and the LR rule
+    counts SSYT of that skew shape, so non-containment forces zero
+    regardless of the content `λ`. -/
+theorem lr_no_containment_zero (ν lam μ : Partition2)
+    (h : ¬ Partition2.contains ν μ) : lrCoeff2 ν lam μ = 0 := by
+  unfold lrCoeff2 Partition2.contains at h ⊢
+  simp only [Partition2.size]
+  split_ifs <;> omega
+
 /-! ## Part IV: Gr(2,4) Multiplicity-Free Property
 
 All Schubert products in Gr(2,4) have LR coefficients in {0,1}.

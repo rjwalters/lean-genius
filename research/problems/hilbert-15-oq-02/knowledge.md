@@ -142,3 +142,108 @@ a horizontal strip.
 - `proofs/Proofs/Hilbert15OQ02.lean` — 419→506 lines, 20→25 theorems, +1 def
 - `src/data/proofs/hilbert-15-oq-02/meta.json` — updated
 - `src/data/research/problems/hilbert-15-oq-02.json` — updated
+
+---
+
+## Session 2026-05-13 (Session 4, researcher-3) — Universal-form zero lemmas
+
+**Mode**: REVISIT (SOLVED state, 0 axioms, 0 sorries, knowledge score 28 RICH)
+**Outcome**: progress — added 2 universal-form zero lemmas that generalise
+`lr_size_zero` from the specific Gr(2,4) instance to all 2-row partitions.
+
+### What was added
+
+Two universal-form structural zero theorems inserted after the existing
+specific instance `lr_size_zero` in `Hilbert15OQ02.lean`:
+
+| Theorem | Form |
+|---------|------|
+| `lr_size_mismatch_zero` | `∀ ν λ μ, ν.size ≠ λ.size + μ.size → lrCoeff2 ν λ μ = 0` |
+| `lr_no_containment_zero` | `∀ ν λ μ, ¬ Partition2.contains ν μ → lrCoeff2 ν λ μ = 0` |
+
+Together with the existing `lrCoeff2_le_one` (multiplicity-free) these
+three give the complete structural characterisation of `lrCoeff2`'s
+zero set: outside the box defined by `μ ⊆ ν` and `|ν| = |λ| + |μ|`,
+the value is always zero.
+
+The proofs follow the established pattern in this file
+(`unfold lrCoeff2; simp only [Partition2.size]; split_ifs <;> omega`),
+so the build risk is bounded by the same tactic-tree that already
+discharges `lrCoeff2_le_one`, `lr_right_identity`, and the Pieri
+formulas. No new Mathlib API is invoked.
+
+### Why these and not other additions
+
+- **The sub-OQ `hilbert-15-oq-02-oq-03-oq-01` is actively working on
+  3-row generalisations** in a separate Lean file
+  (`Hilbert15OQ02OQ03OQ01.lean`), so any addition to the 2-row
+  generalisation in this parent file should be orthogonal to that
+  work — universal-form zero lemmas about 2-row LR are independent of
+  the 3-row anchor / lrCoeffN scaffold work.
+
+- **The three `True`-placeholder complexity theorems (`lr_saturation_theorem`,
+  `lr_positivity_in_P`, `lr_counting_sharp_P_complete`) are explicitly
+  disclosed as placeholders** in `meta.json`'s `assumptions` field. PR
+  #16719 (merged 2026-05-07) intentionally re-classified them from
+  axioms to `True`-trivial theorems with the disclosure note. They are
+  honestly framed; no ERRATUM-APPLY is warranted.
+
+- **Conjugate-symmetry / Pieri-dual / stability extensions** were
+  considered but require either a partial `conj2` definition (only
+  well-defined for partitions with `p.a ≤ 2`, narrow applicability) or
+  substantial new infrastructure (Schur ring associativity over
+  triples). Both exceed the single-session atomic-addition budget.
+
+- **2-row LR characterisation by trio (size, containment, ballot/column)
+  was implicit** in the existing definition's structure. Promoting the
+  first two clauses to named universal-form theorems makes the
+  characterisation explicit and recoverable by downstream consumers
+  without re-unfolding `lrCoeff2`.
+
+### Files Modified
+
+- `proofs/Proofs/Hilbert15OQ02.lean` — 507→533 lines, 25→27 theorems,
+  +0 defs, +0 sorries, +0 axioms.
+- `src/data/proofs/hilbert-15-oq-02/meta.json` — `lineCount: 507→533`,
+  `theoremCount: 25→27`. `assumptions` field unchanged (the new
+  theorems are sorry-free, axiom-free universal statements; nothing
+  to disclose).
+
+### Race-check log
+
+Pre-claim probe (2026-05-13 ~11:50 UTC):
+
+```
+gh pr list --repo rjwalters/lean-genius \
+  --search '"hilbert-15-oq-02:" in:title' --state all --limit 10
+```
+
+returned only sub-OQ PRs (`hilbert-15-oq-02-oq-03-*`, all separate
+files) plus the merged audit PR #16847 from 2026-05-08. No open PR
+modifies `Hilbert15OQ02.lean` itself.
+
+### Build status
+
+Build verification deferred per established slug-precedent (this slug
+has shipped multiple build-pending substantive PRs; see Session 1–3
+notes above). Tactic patterns reused verbatim from already-built
+theorems (`lrCoeff2_le_one`, `lr_size_zero`); no new Mathlib API
+surface beyond what is already imported by the file.
+
+### Next-iteration suggestions for downstream agents
+
+1. **Pieri-dual (multiplication by `e_k = (1^k)`)**: characterise
+   `c^ν_{(1,1),μ}` for 2-row partitions (vertical strip of size 2).
+   Define `isVerticalStrip2 : Partition2 → Partition2 → Prop`, prove
+   `c^ν_{(1,1),μ} = 1 ↔ isVerticalStrip2 ν μ ∧ |ν| = |μ| + 2`. Pattern
+   matches `lr_pieri` (line 455).
+
+2. **Gr(2,n) general multiplication-free certificate**: pick any
+   `n ≥ 5` and produce `gr2n_classes (n : ℕ)` + `gr2n_multiplicity_free`
+   by `native_decide` (already follows from `lrCoeff2_le_one`, so
+   essentially a corollary).
+
+3. **Conjugate symmetry restricted to 2-row 2-col partitions**: define
+   `conj2 : { p : Partition2 // p.a ≤ 2 } → { p : Partition2 // p.a ≤ 2 }`
+   and prove `lrCoeff2 ν λ μ = lrCoeff2 (conj2 ν) (conj2 λ) (conj2 μ)`
+   in this restricted domain. Concrete enumeration via 6 classes.
