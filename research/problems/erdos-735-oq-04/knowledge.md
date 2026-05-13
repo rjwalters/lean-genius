@@ -27,18 +27,21 @@ In $\mathbb{R}^3$ with $k = 2$ (planes containing ≥ 3 configuration points):
 
 **Example 1 — Tetrahedron** ($n = 4$, $d = 3$): 4 triangular faces, each containing exactly 3 vertices. Each pair of vertices determines an edge (a 1-flat). With uniform $w_i = 1$, each face-sum = 3, achieving the magic property for $k = 2$ trivially.
 
-**Example 2 — Octahedron** ($n = 6$): 6 antipodal vertices at $\pm e_i$ for $i = 1, 2, 3$. 8 triangular faces; each face contains exactly 3 vertices (one from each axis). Uniform $w_i = 1 \Rightarrow$ each face-sum = 3. ✓
+**Example 2 — Octahedron** ($n = 6$): 6 antipodal vertices at $\pm e_i$ for $i = 1, 2, 3$. **NOT 2-flat magic** (S6b PREP, PR #18541). The 2-flats split into two families: 8 face-planes × 3 vertices (sum 3 under uniform weights) AND 3 coordinate planes × 4 vertices (sum 4 under uniform weights). The two families give incompatible sums $\{3, 4\}$. By the vertex-transitive symmetry group $O_h$, averaging any candidate magic weighting yields the uniform weighting (which fails), so **no** positive weighting works. ✗
 
-**Example 3 — Cube** ($n = 8$): 6 face planes, each containing 4 vertices. Uniform $w_i = 1 \Rightarrow$ each face-sum = 4. ✓
+**Example 3 — Cube** ($n = 8$): 8 vertices at $(\pm 1, \pm 1, \pm 1)$. **NOT 2-flat magic** (S6b PREP, PR #18541). The 2-flats split into 12 rectangular flats × 4 vertices (sum 4 uniform) and 8 corner-triangle flats × 3 vertices (sum 3 uniform). Same $\{3, 4\}$ split and same $O_h$ symmetry obstruction as the octahedron. ✗
 
 **Example 4 — General position in $\mathbb{R}^3$** ($n$ points, no 4 coplanar): every 3-subset spans a unique plane. By the same Beck-type counting as the 2D case, uniform weights work.
 
-These suggest that for $k = 2, d = 3$, the magic class includes:
+**Update post-S6b (this STATE-SYNC pass)**: the S1 OBSERVE's broader claim — "regular convex polytopes (tetra, octa, cube) are $(d-1)$-flat magic" — survives only for the tetrahedron. For $k = 2, d = 3$, the magic class includes:
 - All coplanar (≡ "all collinear" trivially holds for 2-flats).
 - General position (no 4 coplanar).
 - Near-coplanar ($n - 1$ in a 2-flat).
-- Regular convex polytopes (tetra, octa, cube, icosahedron).
+- **Tetrahedron** (alternate-cube-vertices form) — confirmed by S6a PREP, PR #18486.
+- Dodecahedron / icosahedron — not analysed (S6d, deferred sibling PREP).
 - Likely a "triangle + 3D analogue" Murty-type construction.
+
+Octahedron and cube are **NOT** in this class — their vertex-transitive $O_h$ symmetry plus the $\{3, 4\}$ 2-flat-size split refute any positive magic weighting. The conjectural "regular-polytope" family is thus **strictly narrower** than the S1 OBSERVE survey suggested; precise characterisation is open.
 
 ### Trivial cases
 
