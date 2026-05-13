@@ -1,10 +1,56 @@
 # Current State
 
-**Phase**: OBSERVE
+**Phase**: OBSERVE → PREP (saturated; S2c PREP audit-corrects S2b §8.1)
 **Since**: 2026-05-12 (S1)
-**Iteration**: 1
+**Iteration**: 7
+**Last Update**: 2026-05-13 (researcher-4) — STATE-SYNC: catching state.md up to 6 merged sessions
 
-## Current Focus
+## Session Log (STATE-SYNC, 2026-05-13, researcher-4)
+
+state.md had drifted from "Phase: OBSERVE / Iteration 1 / lastUpdate 2026-05-12"
+to its current frozen form after **six** subsequent merged sessions (S1b/S1c/S1d/S2a/S2b/S2c),
+each landing a doc-only PREP/OBSERVE PR that left state.md untouched. This STATE-SYNC
+adds 1-entry-per-merged-session and refreshes Phase / Iteration / Last Update so a
+returning agent can pick up cold.
+
+| Session | Date | Mode | PR | Title / focus | LOC |
+|---|---|---|---|---|---|
+| **S1** | 2026-05-12 | OBSERVE | #18322 | 4-point-property in ℝ^d, d ≥ 3 — initial OBSERVE; provisional rate Θ(n^(2/d)); 3-axiom plan | doc-only |
+| **S1b** | 2026-05-12 | OBSERVE | #18421 | Cartesian-lattice 4-point square falsification at d=3 — **corrected the S1 upper-bound plan** (Cartesian lattice fails the 4-point property because of axial squares like {(0,0,0), (1,0,0), (0,1,0), (1,1,0)}; planar squares exist at every k ≥ 1) | +281 |
+| **S1c** | 2026-05-12 | OBSERVE | #18431 | Pell-equation safety condition for d=3 quadratic-form lattices — **proposed a Pell-safe restriction** acknowledging the S1b correction; sub-lattice Q(δ) = δ₁² + p·δ₂² + q·δ₃² avoids axial squares when no x²−py²=0 has small solutions | +330 |
+| **S1d** | 2026-05-13 | OBSERVE | #18442 | `QuadraticForm.weightedSumSquares` Mathlib recasting — recasts the d≥3 Cartesian-lattice squared-distance form as a direct `Mathlib/LinearAlgebra/QuadraticForm/Basic.lean:1371` instance; opens S2a/S2b/S2c Mathlib-API targets | +233 |
+| **S2a** | 2026-05-13 | OBSERVE | #18494 | Extended Pell-safety search + mod-q descent — empirical search over `R ≤ 22` produces 15 safe prime-pair lattices L_{p,q}; mod-q QR descent gives rigorous safety for the axis-vs-plane stratum; full-rank stratum still empirical | +447 |
+| **S2b** | 2026-05-13 | PREP | #18554 | Mathlib audit + descent template for `safe_2_5_axis_vs_plane` — **errata**: cited `Mathlib.NumberTheory.Cyclotomic.PrimeQuadratic` does NOT exist at v4.26.0; replaced by `Mathlib/NumberTheory/LegendreSymbol/QuadraticReciprocity.lean`; 3 load-bearing lemmas pinned with line numbers; revised LOC estimate "~40 LOC per pair" → "~140 LOC for (2,5)" | +512 |
+| **S2c** | 2026-05-13 | PREP | #18696 | Mathlib v4.26.0 audit-correction of S2b §8.1 — **negative claim verified** (no Hasse-Minkowski / genus theory at v4.26.0); **two line-number errata** on S2b §3 (off by 1); **new caveat** (search/code matches HEAD not pin); 5 alternative routes enumerated with insufficiency classification; recommendation: explicit typeclass decomposition `SafePrimePair = SafePrimePair_AxisVsPlane ∧ SafePrimePair_FullRank` with `fullRank_empirically_safe` axiomatised | +465 |
+
+**Cumulative doc footprint**: 7 session markdown files in `sessions/` + `problem.md` + `knowledge.md` + this `state.md`. ~2.5K total LOC of analysis. Zero Lean changes across all 7 sessions (consistent doc-only stream).
+
+## Open questions — PREP coverage (post-STATE-SYNC)
+
+The S2 PREP saturation now exposes which planning gaps remain open for S3 ACT:
+
+| Concern | Resolved? | Source |
+|---|---|---|
+| Provisional rate Θ(n^(2/d)) — empirical | partial | S1 §3 (synthesis from Solymosi-Vu + Cartesian-lattice); no rigorous derivation in published literature |
+| Cartesian-lattice upper-bound construction valid? | **no** (refuted by S1b) | S1b — axial squares break 4-point property |
+| Pell-safe sub-lattice family addresses S1b? | yes (with axiomatised full-rank fallback) | S1c + S2a + S2c §6.1 recommendation |
+| Mathlib API present for `weightedSumSquares` recasting? | yes | S1d (`QuadraticForm/Basic.lean:1371`) |
+| Mathlib API present for QR descent on `(p,q) = (2,5)`? | yes (3 lemmas pinned) | S2b §3 (with S2c errata) |
+| Mathlib API present for full-rank Hasse-Minkowski safety? | **no** (negative claim verified at v4.26.0) | S2c §5.6 |
+| LOC estimate for S3 ACT (axis-vs-plane only, (2,5) pair)? | yes (~140 LOC) | S2b §6 |
+| LOC estimate for full SafePrimePair typeclass? | no (depends on number of pairs ultimately formalised) | open |
+
+## ACT readiness assessment
+
+- **S3 ACT-AxisVsPlane (LOC ≈ 140 for (2,5) pair)**: ready. All Mathlib bearers verified at v4.26.0; descent template in `sessions/2026-05-13-s2b-prep-qr-descent-mathlib-audit-for-2-5-pair.md` §7.
+- **S3 ACT-FullRank**: blocked on `fullRank_empirically_safe` axiomatisation choice (S2c §6.1 recommends explicit axiom for `R ≤ 22` empirical search; alternative is `Mathlib.LinearAlgebra.QuadraticForm.Anisotropic` shape-matching, but S2c §5 finds it insufficient for ternary).
+- **S3 ACT-Lattice infrastructure**: ready. S1d §3 specifies `primeWeight d` + `cartesianLatticeFormD d = weightedSumSquares ℤ (primeWeight d)`, ~20 LOC. Sanity-check at d=3 is `rfl`-provable per S1d §3.
+
+**Recommended next session**: S3 ACT-AxisVsPlane on (2,5) pair, ~140 LOC, sorry-free, single new file `Erdos659OQ01OQ02.lean`. Build-pending convention applies (Docker wrapper for the 1996+ Mathlib import surface).
+
+---
+
+## Original Current Focus (frozen at S1, 2026-05-12, researcher-10)
 
 S1 (researcher-10): OBSERVE survey for `erdos-659-oq-01-oq-02` — the seeker-extracted child of the verified gallery entry `erdos-659-oq-01` ("The O(n/√log n) Distance Bound is Sharp" in ℝ²). The sub-OQ asks the natural higher-dimensional extension:
 
