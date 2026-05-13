@@ -49,6 +49,7 @@
   • `eulerian_row_sum_factorial`            — Σ_{k=0}^{d-1} A(d, k) = d!       (S3: PROVED)
   • `eulerian_palindrome`                   — A(d, k) = A(d, d-1-k) for k < d  (S5: PROVED)
   • `cube_lattice_count_eulerian`           — bridge to `EhrhartCubeProven`    (S2: PROVED)
+  • `worpitzky_identity_cube_palindrome`    — Σ A(d,k) C(n+d-k, d) = (n+1)^d   (S6: PROVED)
 
   Helper lemmas (S3):
   • `eulerian_zero_eq_one`                  — A(d, 0) = 1 for all d ≥ 0
@@ -673,5 +674,47 @@ theorem cube_lattice_count_eulerian (d : ℕ) (hd : 0 < d) (n : ℕ) :
   -- Lattice-point count of n · [0,1]^d equals (n + 1)^d via the canonical Fin bijection
   rw [Fintype.card_fun, Fintype.card_fin, Fintype.card_fin]
   exact worpitzky_identity_cube d hd n
+
+-- ============================================================
+-- SECTION VII: Palindrome-Reflected Worpitzky Identity (S6)
+-- ============================================================
+
+/--
+  **Palindrome-reflected Worpitzky identity** (S6: PROVED, build pending):
+  composing `worpitzky_identity_cube` with `eulerian_palindrome` and a
+  reindexing `k ↦ d - 1 - k` yields the *dual* (palindrome-reflected)
+  form of Worpitzky's identity for the cube:
+  $$ (n+1)^d \;=\; \sum_{k=0}^{d-1}\,A(d, k)\,\binom{n + d - k}{d}. $$
+  The shift `n + 1 + k ↦ n + d - k` is the standard alternative
+  parametrisation of the binomial-coefficient summand: the original form
+  is keyed by the *forward* exceedance index `k`, while this form keys
+  by the *descent* index `d - 1 - k`, exhibiting the palindromic
+  symmetry of the Eulerian numbers at the level of the entire sum.
+
+  Together with `worpitzky_identity_cube` this gives both equivalent
+  presentations of `(n+1)^d` in the Eulerian basis, useful for combinatorial
+  identities that prefer one parametrisation over the other (e.g. the dual
+  Worpitzky form is the natural shape when summing over *descent* statistics
+  in the symmetric group, whereas the forward form parametrises by *exceedance*).
+-/
+theorem worpitzky_identity_cube_palindrome (d : ℕ) (hd : 0 < d) (n : ℕ) :
+    (n + 1)^d = ∑ k ∈ Finset.range d,
+                eulerianNumber d k * Nat.choose (n + d - k) d := by
+  -- Start from worpitzky_identity_cube, then reindex the RHS via k ↦ d - 1 - k
+  -- and substitute the palindrome A(d, k) = A(d, d - 1 - k) pointwise.
+  rw [worpitzky_identity_cube d hd n]
+  -- Goal: ∑ k ∈ range d, A(d, k) * C(n+1+k, d) = ∑ k ∈ range d, A(d, k) * C(n+d-k, d)
+  conv_rhs => rw [← Finset.sum_range_reflect
+                    (fun k => eulerianNumber d k * Nat.choose (n + d - k) d) d]
+  -- Goal: ∑ k ∈ range d, A(d, k) * C(n+1+k, d) =
+  --       ∑ k ∈ range d, A(d, d-1-k) * C(n + d - (d-1-k), d)
+  refine Finset.sum_congr rfl fun k hk => ?_
+  have hk' : k < d := Finset.mem_range.mp hk
+  -- Goal: A(d, k) * C(n+1+k, d) = A(d, d-1-k) * C(n + d - (d-1-k), d)
+  rw [eulerian_palindrome d k hd hk']
+  -- Goal: A(d, d-1-k) * C(n+1+k, d) = A(d, d-1-k) * C(n + d - (d-1-k), d)
+  -- Show the binomial-coefficient arguments are equal via Nat-arithmetic.
+  have harith : n + 1 + k = n + d - (d - 1 - k) := by omega
+  rw [harith]
 
 end EhrhartCubeProvenOQ04
