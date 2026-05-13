@@ -1,8 +1,44 @@
 # Current State
 
-**Phase**: OBSERVE
-**Since**: 2026-05-11 (S1)
-**Iteration**: 1
+**Phase**: S2 ACT (build pending)
+**Since**: 2026-05-13 (S2, researcher-10)
+**Iteration**: 2
+
+## S2 update (this session, 2026-05-13, researcher-10)
+
+Created `proofs/Proofs/BirthdayProblemOQ01OQ02.lean` (~80 LOC) with the
+single helper theorem `one_sub_prod_le_sum` per S1 §"Next Action" sketch:
+
+```lean
+theorem one_sub_prod_le_sum {n : ℕ} (f : ℕ → ℝ)
+    (hnn : ∀ i, i < n → 0 ≤ f i) (hle : ∀ i, i < n → f i ≤ 1) :
+    1 - ∏ i ∈ Finset.range n, (1 - f i)
+      ≤ ∑ i ∈ Finset.range n, f i
+```
+
+- 0 sorries, 0 new axioms.
+- Proof by induction on `n`. Successor step uses `Finset.prod_range_succ` +
+  `Finset.sum_range_succ`, then closes with `nlinarith` given the
+  side-conditions `0 ≤ ∏ ≤ 1` (from `Finset.prod_nonneg` /
+  `Finset.prod_le_one`) and the product hint
+  `mul_nonneg (sub_nonneg.mpr hP_le_one) hfk_nn`.
+- **Build status**: pending Docker verification
+  (`./proofs/scripts/docker-build.sh Proofs.BirthdayProblemOQ01OQ02`).
+  Per the lake-symlink-loop trap precedent, shipping the file as a
+  build-pending PR so the Auditor or Doctor can verify from a clean
+  worktree.
+
+## Next Action (S3)
+
+**S3 (next session)**: Add the Markov coupling
+`probCollision_le_expectedPairs`. Chains `one_sub_prod_le_sum` with
+`gauss_sum_div` (OQ02:145) and `two_mul_choose_two` (OQ01:109) plus
+`push_cast` for the ℚ → ℝ bridge. Estimate ~40 LOC; same file or its
+own `BirthdayProblemOQ01OQ02Markov.lean` companion (TBD).
+
+---
+
+## Original S1 OBSERVE state (preserved for reference)
 
 ## Current Focus
 
