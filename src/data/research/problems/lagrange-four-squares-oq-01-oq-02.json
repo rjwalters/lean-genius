@@ -41,18 +41,19 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08T20:30:00Z",
-    "iteration": 10,
-    "focus": "S10A (2026-05-08, researcher-3): **Multiple-of-p identification under bounded range**. Added two `private` lemmas to `ThreeSquares.lean` (after the S9 sublattice helpers, before the `not_excluded_form_is_sum_three_sq` axiom): (1) `multiple_p_eq_p_of_lt_two_mul {N p : ℤ} (hp : 0 < p) (h_pos : 0 < N) (h_lt : N < 2 * p) (h_dvd : p ∣ N) : N = p` — the bare arithmetic kernel: extract `N = p · k`, deduce `0 < k < 2` from `0 < p · k < 2 · p` via `mul_nonpos_iff` + `nlinarith`, conclude `k = 1` via `omega`. (2) `dirichletForm_eq_p_of_lt_two_mul` — package (1) with strict positivity of the Dirichlet quadratic form on non-zero integer triples (inlined variant of S6's `dirichletForm_pos`). Proof is ~50 tactic lines, purely arithmetic, robust to the latent S5-region build issues and any `MeasureTheory.*` API drift. The new lemmas accept exactly the hypotheses the eventual S10/S11 geometric Minkowski step will produce: a non-zero `v ∈ ℤ³`, `form(v) < 2 · p`, and `p ∣ form(v)` (from S9's `exists_dirichletSublattice_dvd_form`) — once the geometric covolume work lands, the form-value identification step is one rewrite away. Axiom count unchanged at 2; S10A is *infrastructure*, complementary to S9's divisibility side.",
+    "iteration": 13,
+    "focus": "S10D-Prep (researcher-1, 2026-05-13): Mathlib v4.26.0 bearer audit for the Module.Basis + ZSpan.volume_fundamentalDomain ACT planned by S10E. Verified four bearers at SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 via direct gh api: Basis.mk in Mathlib/LinearAlgebra/Basis/Basic.lean (companion mk_* simp lemmas at lines 110/113/130/135/141); basisOfLinearIndependentOfCardEqFinrank in Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean:237 (coercion at line 243; recommended for the finrank-matching 3-vector case to skip the explicit spanning obligation); ZSpan.volume_fundamentalDomain in Mathlib/Algebra/Module/ZLattice/Basic.lean:386 with companion measure_fundamentalDomain at line 370; ZLattice.covolume_eq_det in Mathlib/Algebra/Module/ZLattice/Covolume.lean as a higher-level alternative. Target S10D Lean signatures pinned: (1) dirichletSublatticeRealBasisLinearIndependent ~10 LOC; (2) dirichletSublatticeRealBasis ~5 LOC; (3) dirichletSublatticeRealBasis_toMatrix_eq ~15 LOC; (4) dirichletSublatticeRealVolume ~15 LOC. Total S10D ACT budget: +45-60 LOC, 0 sorries, 0 axioms. Doc-only PR: no Lean / problem.md / knowledge.md edits; ThreeSquares.lean unchanged at 1893 LOC / 2 axioms (dirichlet_key_lemma line 615, not_excluded_form_is_sum_three_sq line 1603) / 1 sorry (needs_four_iff_excluded line 1864). Risk register flags S5-region build precondition (latent on origin/main) as canonical /auditor or /mechanic follow-up; orthogonal to S10D ACT itself.",
     "blockers": [
       "Mathlib has Minkowski's theorem (`exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure`) but no closed-form ellipsoid-volume lemma — must be derived from `MeasureTheory.Measure.addHaar_smul` and `volume_ball` of the unit ball in ℝ³. (Discharged in S4.)",
       "Mathlib has Dirichlet's theorem on primes in AP (`Nat.setOf_prime_and_eq_mod_infinite`) but the integer/quadratic-residue compatibility (legendreSym(-d) = 1 for chosen p = dn-1) requires custom case analysis on n mod 8.",
       "S5 region of `ThreeSquares.lean` has latent build errors (Matrix.det_toLin', Matrix.cons_val_succ, EuclideanSpace.real_norm_sq_eq) that surface only when build is run; auto-merge of math PRs without CI masked these. Build-fix PR needed before subsequent sessions can rely on green build."
     ],
-    "nextAction": "(Researcher S10 — ACT) Sublattice covolume. Lift the sublattice predicate `IsInDirichletSublattice p r` (S9, integer level) to a `Submodule ℤ (Fin 3 → ℝ)` via `Submodule.span ℤ (Set.range basisVectors)` where the basis is `(p, 0, 0), (r, 1, 0), (0, 0, p)` cast to ℝ. Compute the covolume as `|det| = p²` via `Matrix.det_fin_three` and `ZSpan.volume_fundamentalDomain`. Apply Mathlib's `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` to the new sublattice with adjusted volume condition `8 · p² < volume(D)`. Combine with `dirichletForm_dvd_of_in_sublattice` (S9) to extract a sublattice point with `0 < form ≤ R` AND `p ∣ form`. Estimated 80–100 lines for S10; S11 then closes the Dirichlet Key Lemma identification (~40 lines).",
+    "nextAction": "S10D ACT (next session): ship the 4 pinned signatures above into proofs/Proofs/ThreeSquares.lean immediately after the S10C dirichletSublatticeRealBasisMatrix_det lemma. Target +45-60 LOC, 0 sorries, 0 axioms. Build-pending acceptable per the established cluster convention (latent S5-region drift orthogonal). After S10D: S11 closes the Dirichlet Key Lemma by applying MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure with the S10D volume value, then composing with S10A's dirichletForm_eq_p_of_lt_two_mul to extract form(v) = p exactly. Eliminates the dirichlet_key_lemma axiom across S10A+B+C+D+S11; opens S12 (not_excluded_form_is_sum_three_sq via case analysis on n mod 8 + Nat.setOf_prime_and_eq_mod_infinite).",
     "attemptCounts": {
-      "total": 9,
+      "total": 13,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 1,
+      "current": 13
     }
   },
   "knowledge": {
@@ -166,7 +167,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.056Z",
-  "lastUpdate": "2026-05-08T18:55:00Z",
+  "lastUpdate": "2026-05-13T22:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

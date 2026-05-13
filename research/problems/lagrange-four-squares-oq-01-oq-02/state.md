@@ -1,9 +1,53 @@
 # Current State
 
-**Phase**: ACT
+**Phase**: ACT (S10D bearer audit landed; ACT for `Module.Basis` + `ZSpan.volume_fundamentalDomain` is unblocked at v4.26.0)
 **Since**: 2026-05-08T22:50:00Z
-**Iteration**: 12
-**Last Updated**: 2026-05-08 (researcher-4)
+**Iteration**: 13
+**Last Updated**: 2026-05-13 (S10D-prep Mathlib v4.26.0 bearer audit by researcher-1; doc-only)
+
+## S10D-Prep: Mathlib v4.26.0 Bearer Audit (2026-05-13, researcher-1)
+
+**Mode**: PREP / doc-only. The S10E session (2026-05-08, researcher-4) closed leaving "Session 11 (S10D): `Module.Basis` construction + `ZSpan` covolume" as the named next action with a 4-step plan but no Mathlib API verification at `proofs/lakefile.toml`'s pinned Mathlib `v4.26.0` (manifest SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`). After a 5-day dormancy, this PREP discharges that verification so an ACT session can ship S10D against confirmed bearers rather than HEAD-tracking guesses.
+
+### Bearer table (verified at v4.26.0)
+
+| Bearer | File | Line | Provenance |
+|---|---|---|---|
+| `Basis.mk : LinearIndependent K v → ⊤ ≤ span K (range v) → Basis ι K M` | `Mathlib/LinearAlgebra/Basis/Basic.lean` | (def near top of `Basis.Mk` block; companion `mk_*` simp lemmas at lines 110, 113, 130, 135, 141) | The classic two-argument constructor. Ergonomic interface via `Basis.coe_mk` / `Basis.mk_apply` / `Basis.mk_repr`. |
+| `basisOfLinearIndependentOfCardEqFinrank` | `Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean` | 237 | `noncomputable def ... : Basis ι K V`; coercion lemma `coe_basisOfLinearIndependentOfCardEqFinrank` at line 243. Takes only `LinearIndependent` + `Fintype.card ι = finrank K V`; avoids the explicit `hsp` obligation entirely for finrank-matching finite families. Recommended over `Basis.mk` for the S10D 3-vector case (`Fintype.card (Fin 3) = 3 = finrank ℝ (Fin 3 → ℝ)`). |
+| `ZSpan.volume_fundamentalDomain (b : Basis ι ℝ (ι → ℝ)) : volume (fundamentalDomain b) = ENNReal.ofReal \|(Matrix.of b).det\|` | `Mathlib/Algebra/Module/ZLattice/Basic.lean` | 386 | One-shot specialised-to-pi-real-space. Companion `measure_fundamentalDomain` for arbitrary `IsAddHaarMeasure` measures at line 370. Both require `[Fintype ι] [DecidableEq ι]` — auto-derivable on `Fin 3`. The `Matrix.of b` is the matrix whose rows are `b i`; the absolute-value det is convention-agnostic. |
+| `ZLattice.covolume_eq_det` (alternative high-level entry point) | `Mathlib/Algebra/Module/ZLattice/Covolume.lean` | named in module docstring at line 27 | For an arbitrary `ℤ`-lattice `L` in `ℝⁿ` with basis `b`, `covolume L = \|(Matrix.of b).det\|`. Higher-level than `volume_fundamentalDomain`; useful if the surrounding code prefers the `covolume` abstraction. Not needed for the direct S10D path. |
+
+All four bearers were verified at v4.26.0 via `gh api repos/leanprover-community/mathlib4/contents/<path>?ref=v4.26.0` immediately before this commit.
+
+### Target Lean signatures for S10D
+
+After S10C's `dirichletSublatticeRealBasisMatrix p r` (matrix of basis vectors `(p, 0, 0), (r, 1, 0), (0, 0, p)`) and `dirichletSublatticeRealBasisMatrix_det = (p : ℝ)²` are in scope, S10D ships **3 lemmas + 1 definition**:
+
+1. `dirichletSublatticeRealBasisLinearIndependent (p r : ℤ) (hp : 0 < p) : LinearIndependent ℝ (dirichletSublatticeRealBasisVec p r)` — derived from `Matrix.linearIndependent_rows_iff_isUnit_det` (or v4.26.0 equivalent: `Matrix.det_ne_zero_iff_isUnit` + the explicit det formula). Pinned by S10C's `dirichletSublatticeRealBasisMatrix_det`. **Target**: ~10 LOC.
+
+2. `dirichletSublatticeRealBasis (p r : ℤ) (hp : 0 < p) : Basis (Fin 3) ℝ (Fin 3 → ℝ)` — via `basisOfLinearIndependentOfCardEqFinrank` with `(1)` and `Module.finrank_fintype_fun_eq_card ℝ` (the latter is `Fintype.card (Fin 3) = finrank ℝ (Fin 3 → ℝ)` for the standard pi-real space; appears as `Module.finrank_pi` or `Module.finrank_fintype_fun_eq_card` in Mathlib v4.26.0). **Target**: ~5 LOC.
+
+3. `dirichletSublatticeRealBasis_toMatrix_eq (p r : ℤ) (hp : 0 < p) : Matrix.of (dirichletSublatticeRealBasis p r hp) = dirichletSublatticeRealBasisMatrix p r` — entry-wise via `Matrix.of_apply` + the `coe_basisOfLinearIndependentOfCardEqFinrank` simp lemma. **Target**: ~15 LOC, all `simp` / `rfl`.
+
+4. `dirichletSublatticeRealVolume (p r : ℤ) (hp : 0 < p) : volume (ZSpan.fundamentalDomain (dirichletSublatticeRealBasis p r hp)) = ENNReal.ofReal ((p : ℝ)^2)` — `rw [ZSpan.volume_fundamentalDomain, dirichletSublatticeRealBasis_toMatrix_eq, dirichletSublatticeRealBasisMatrix_det]` + `abs_of_nonneg (sq_nonneg _)` (or `abs_of_pos` from `hp`). **Target**: ~15 LOC.
+
+**S10D file delta budget**: +45–60 LOC into `proofs/Proofs/ThreeSquares.lean`, 0 sorries, 0 axioms, edit zone immediately after the S10C `dirichletSublatticeRealBasisMatrix_det` lemma.
+
+### Risk register
+
+* **Build precondition: S5-region drift unresolved.** Per the "Build" section below, `ThreeSquares.lean` lines ~676–784 do not currently build on `origin/main` due to Mathlib v4.26.0 API drift (`Matrix.det_toLin'`, `Matrix.cons_val_succ`, `EuclideanSpace.real_norm_sq_eq`). S10D ACT must ship **build-pending** following the established cluster convention. A separate Auditor / Mechanic PR to fix the S5 region is the canonical unblock — flagged for `/auditor` / `/mechanic` follow-up; out of scope here.
+* **`basisOfLinearIndependentOfCardEqFinrank` vs `Basis.mk` choice.** The `basisOf…` helper has a primed variant `basisOfLinearIndependentOfCardEqFinrank'` (same file, near the unprimed) that takes an `Fintype` argument explicitly; the unprimed (S10D path) uses `[Fintype ι] [Nonempty ι]` instance synthesis. Both work; the unprimed is shorter at the call site. If instance-synthesis fails, drop to `Basis.mk` with an explicit `⊤ ≤ Submodule.span ℝ (Set.range ·)` from `finrank_eq_card_basis` reasoning.
+* **Determinant sign / absolute value.** `ZSpan.volume_fundamentalDomain` returns `ENNReal.ofReal |det|`. The matrix as stated has `det = p² > 0`, so `|p²| = p²` is `abs_of_nonneg (sq_nonneg p)` or `abs_of_pos (pow_pos (Int.cast_pos.mpr hp) 2)`. No sign-tracking gymnastics needed.
+* **`Matrix.of b` row vs column convention.** Mathlib's `Matrix.of (b : Basis ι ℝ (ι → ℝ))` puts `b i j` at position `(i, j)`. S10C's `dirichletSublatticeRealBasisMatrix` should match this convention (rows are basis vectors); verify at the call site via a `Matrix.of_apply` / `Matrix.ext` step. If S10C used the transposed convention, an extra `Matrix.det_transpose` (`= det`, no sign change) closes the gap.
+* **`Module.finrank_fintype_fun_eq_card` name drift at v4.26.0.** If this exact name does not resolve, candidate replacements include `Module.finrank_pi` (specialised to `Fin n → K`) or `Module.finrank_fin_fun`. Both compute `finrank ℝ (Fin n → ℝ) = n`. **Mitigation**: the S10D ACT author should `exact?` after `Fintype.card (Fin 3) = 3 := by decide` to locate the correct name; the helper closure is one line either way.
+
+### Honesty / scope guarantees
+
+* **No Lean edits.** `proofs/Proofs/ThreeSquares.lean` and the 6 other `LagrangeFourSquares*.lean` files are unchanged. The 2 remaining axioms (`dirichlet_key_lemma` line 615, `not_excluded_form_is_sum_three_sq` line 1603) and 1 sorry (`needs_four_iff_excluded` line 1864) are unchanged.
+* **No `problem.md` / `knowledge.md` edits.** This PR rewrites only `state.md` (this section + header line update) plus `currentState.{focus, nextAction, iteration}` + `lastUpdate` in `src/data/research/problems/lagrange-four-squares-oq-01-oq-02.json`.
+* **No open PR on this slug at claim time.** `gh pr list --search "lagrange-four-squares-oq-01-oq-02 in:title" --state open -R rjwalters/lean-genius` returned no rows (verified at 2026-05-13T22:00Z); 14 prior PRs are all merged. No race risk.
+* **All Mathlib v4.26.0 bearer line numbers verified via direct `gh api`** at SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (the project's pinned manifest revision; see `proofs/lake-manifest.json`).
 
 ## Current Focus
 
