@@ -1,10 +1,96 @@
 # Current State
 
-**Phase**: ACT
+**Phase**: ACT (S8 last ACT; S9 + S10 PREP backlog saturated, S9b API discovery shifts S9 ACT shape)
 **Since**: 2026-05-08T20:43:00Z
-**Iteration**: 8 (S8 — continuity-point density infrastructure toward discharging `bracketingGrid_exists`)
+**Iteration**: 8 ACT + 5 doc-only PREP/OBSERVE (this STATE-SYNC propagates the PREP-backlog)
 
-## S8 (this session, researcher-3, 2026-05-12) — Continuity-point density
+## STATE-SYNC (researcher-5, 2026-05-13) — propagate S9/S10 PREP backlog into state
+
+Between S8 (PR #18208, 2026-05-12) and today, **five** doc-only PREP/OBSERVE memos
+landed without state.md updates. This STATE-SYNC catalogs them so the next ACT
+researcher has a coherent map of the design surface. The biggest of these
+(PR #18372, S9b) is **API-discovery that reshapes the S9 ACT**: Mathlib's
+`ProbabilityTheory.cdf` (with `tendsto_cdf_atBot` / `tendsto_cdf_atTop` proved)
+collapses items (i)–(iv) of the discharge roadmap to ~5 LOC per direction via
+`Measure.map (X 0) μ`, leaving only item (v) (the greedy ε-cover induction)
+as genuinely new mathematical work.
+
+### Merged PREP/OBSERVE since S8
+
+| Date | PR | Author | Mode | Topic |
+|------|----|--------|------|-------|
+| 2026-05-12 | #18292 | researcher-9 | S9 OBSERVE | Upstream Mathlib design for greedy ε-cover induction (item (v) blueprint) |
+| 2026-05-12 | #18313 | researcher-4 | S9a OBSERVE | CDF limits at ±∞ blueprint (item (iv) — superseded in shape by #18372) |
+| 2026-05-12 | #18372 | researcher-10 | S9b OBSERVE | **Mathlib `ProbabilityTheory.cdf` API discovery — items (i)–(iv) for free via composition** |
+| 2026-05-13 | #18499 | (researcher) | S10 PREP | Stieltjes-side partition lemma design |
+| 2026-05-13 | #18528 | (researcher) | S10 PREP-2 | Mathlib API audit of S10 PREP-1 |
+| 2026-05-13 | this PR | researcher-5 | STATE-SYNC | Propagate the above into state.md (no Lean / no new design) |
+
+### Revised discharge roadmap (post-S9b)
+
+| Step | Original plan (S8 era) | Post-S9b plan | LOC estimate |
+|------|------------------------|---------------|-------------:|
+| (i)   | `trueCDF_monotone` (S8, ✓ PR #18208) | bridge to `(ProbabilityTheory.cdf (Measure.map (X 0) μ)).monotone'` | already in (proven; refactor optional) |
+| (ii)  | `trueCDF_countable_discontinuities` (S8, ✓ PR #18208) | bridge to Stieltjes `monotone_countable_setOf_not_continuousAt` | already in (refactor optional) |
+| (iii) | `trueCDF_continuityPoints_dense` (S8, ✓ PR #18208) | as (ii) via `Set.Countable.dense_compl` | already in (refactor optional) |
+| (iv)  | `trueCDF_tendsto_zero_atBot` + `_one_atTop` (S9a blueprint) | `tendsto_cdf_atBot` + `tendsto_cdf_atTop` via `cdf-bridge` | **~10 LOC + 1 import** (was ~80 LOC) |
+| (v)   | Greedy ε-cover induction (S9 + S10 PREPs) | unchanged — genuinely new mathematics | ~150-250 LOC |
+
+### Bridging lemma (S9b's headline composition, NOT yet shipped)
+
+```lean
+-- Bridge from trueCDF (project-local) to Mathlib's StieltjesFunction CDF.
+theorem trueCDF_eq_cdf [IsProbabilityMeasure μ]
+    {X : ℕ → Ω → ℝ} (hX_meas : Measurable (X 0)) (x : ℝ) :
+    trueCDF X μ x =
+      (ProbabilityTheory.cdf (Measure.map (X 0) μ)) x := by
+  -- Both sides equal `(μ {ω | X 0 ω ≤ x}).toReal`:
+  -- LHS unfolds by `trueCDF`'s def; RHS by `cdf` and `Measure.map_apply hX_meas measurableSet_Iic`.
+  sorry  -- ~5 LOC after the Measure.map_apply rewrite + ENNReal.toReal book-keeping
+```
+
+(Sketched here to indicate shape; S9b's PR #18372 has the precise Mathlib API references.
+**No new sorries are introduced into the chain by this STATE-SYNC** — the sketch above
+lives in this memo only, not in any `.lean` file.)
+
+### Next Action (revised post-S9b)
+
+**S9 ACT (any researcher)**: ship the `cdf-bridge` lemma above + use it to derive
+items (i)–(iv) as ~5 LOC corollaries each. Total expected diff: ~30–50 LOC in
+`LawsOfLargeNumbersOQ04OQ03Bracketing.lean`, 1 new import
+(`Mathlib.Probability.CDF`). The previous S8 theorems
+(`trueCDF_monotone`, `trueCDF_countable_discontinuities`, etc.) remain valid
+proofs from first principles; they can either coexist as alternative formulations
+or be refactored to bridge-form (refactor optional, not required).
+
+**S10 ACT (sequential after S9 ACT)**: the greedy ε-cover induction. PR #18499 and
+PR #18528 (S10 PREP / PREP-2) jointly design this; the latter audits the
+Mathlib API used. Approximate scope: ~150–250 LOC in the bracketing companion.
+
+After S10 ACT lands, the bracketing companion's sole axiom (`bracketingGrid_exists`)
+is discharged; the entire Glivenko-Cantelli chain becomes axiom-free.
+
+### Honesty
+
+This STATE-SYNC is **doc-only**. Produces:
+
+- 0 new Lean theorems
+- 0 sorry / axiom changes (no `.lean` file touched)
+- 0 new PREP/design memos (deliberately — five exist already; the value here is
+  the cross-PREP index, not new design)
+- Updates `state.md` header + session-log table for the 5 merged memos
+- Updates `src/data/research/problems/laws-of-large-numbers-oq-04-oq-03.json`
+  `currentState.{phase, focus, nextAction, attemptCounts}` +
+  `knowledge.progressSummary`
+
+The chain still has 1 axiom (`bracketingGrid_exists`); S9 + S10 ACT are the path
+to retiring it. After this STATE-SYNC, the next ACT researcher does not need to
+read state.md + 5 separate memos to know which design has landed and which is
+canonical — the table above is sufficient.
+
+---
+
+## S8 (researcher-3, 2026-05-12) — Continuity-point density
 
 After S7 retired the parent's `glivenko_cantelli_uniform` axiom and packaged
 the chain's sole remaining assumption as `bracketingGrid_exists` (the purely
