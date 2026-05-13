@@ -1,1 +1,181 @@
-[]
+[
+  {
+    "id": "ann-file-docstring",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 4, "endLine": 48 },
+    "type": "context",
+    "title": "Scope: S2 ACT infrastructure for the n = 3 Heegner case",
+    "content": "The opening Lean docstring fixes the scope of this file: it is the infrastructure layer for `sq_add_three_sq_of_prime_one_mod_three`, the n = 3 analog of the parent's two-squares-style representation theorem. Crucially, the docstring records *why* Mathlib's `Zsqrtd (-3)` cannot be reused: `ℤ[√-3]` is **non-maximal** in `ℚ(√-3)`. The maximal order is `ℤ[ω] = ℤ[(1 + √-3)/2]`, so a fresh concrete structure is needed.",
+    "mathContext": "**Open question:** for prime $p$ with $p \\equiv 1 \\pmod 3$, show $\\exists a, b \\in \\mathbb{Z}.\\ p = a^2 + 3b^2$. **This file delivers:** $\\mathbb{Z}[\\omega]$ as a `CommRing` plus the algebraic norm $N(a + b\\omega) = a^2 - ab + b^2$ with `norm_nonneg`, `norm_mul`, and `norm_eq_zero_iff`. **Deferred:** the `EuclideanDomain` instance (S3), `(-3/p) = (p/3)` via QR (S4), and the parity case-split $4p = (2a - b)^2 + 3b^2 \\Rightarrow p = x^2 + 3y^2$ (S5).",
+    "significance": "context",
+    "relatedConcepts": [
+      "Heegner numbers",
+      "ring of integers of a number field",
+      "maximal order",
+      "imaginary quadratic field"
+    ],
+    "prerequisites": [
+      "algebraic number theory: rings of integers",
+      "Fermat's two-squares theorem"
+    ]
+  },
+  {
+    "id": "ann-eisenstein-structure",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 52, "endLine": 79 },
+    "type": "definition",
+    "title": "The concrete Eisenstein structure on (re, im) ∈ ℤ²",
+    "content": "Defines `Eisenstein` as a two-field structure carrying `re` and `im` integer coordinates representing `re + im · ω`. The primitive instances `Zero, One, Add, Neg` are componentwise on the coordinates, mirroring the standard Mathlib pattern for `Zsqrtd`. The `@[ext]` attribute and `DecidableEq` derivation give equality reasoning for free. `ofInt n = ⟨n, 0⟩` provides the canonical ring embedding ℤ ↪ ℤ[ω].",
+    "mathContext": "Every $z \\in \\mathbb{Z}[\\omega]$ has a **unique** representation $z = a + b\\omega$ with $a, b \\in \\mathbb{Z}$, because $\\{1, \\omega\\}$ is a $\\mathbb{Z}$-basis of $\\mathbb{Z}[\\omega]$ (rank-2 free $\\mathbb{Z}$-module). The structure makes this basis representation the primary data, in contrast with the abstract subring presentation $\\mathbb{Z}[\\omega] \\subset \\mathbb{C}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zsqrtd",
+      "free ℤ-module of rank 2",
+      "Gaussian integers ℤ[i]"
+    ],
+    "prerequisites": [
+      "ring extensions",
+      "free modules over ℤ"
+    ]
+  },
+  {
+    "id": "ann-multiplication-rule",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 80, "endLine": 103 },
+    "type": "concept",
+    "title": "Multiplication derived from ω² + ω + 1 = 0",
+    "content": "The Eisenstein product is the *cyclotomic* multiplication, distinct from the quadratic-integer multiplication used by `Zsqrtd`. Starting from `ω² = -1 - ω` (equivalent to the minimal polynomial `ω² + ω + 1 = 0`), expand `(a + bω)(c + dω) = ac + (ad + bc)ω + bd · ω² = (ac - bd) + (ad + bc - bd)ω`. The `@[simp] rfl` projection lemmas `mul_re`, `mul_im`, etc. are critical: they let `simp` unfold to coordinate form so subsequent `ring` calls can normalize integer polynomial arithmetic.",
+    "mathContext": "**Multiplication formula:** $(a + b\\omega)(c + d\\omega) = (ac - bd) + (ad + bc - bd)\\omega$. **Compare with $\\mathbb{Z}[\\sqrt{-3}]$:** $(a + b\\sqrt{-3})(c + d\\sqrt{-3}) = (ac - 3bd) + (ad + bc)\\sqrt{-3}$, which is what `Zsqrtd (-3)` implements. The two rings agree on a strict subring but $\\mathbb{Z}[\\omega] = \\mathbb{Z}[\\sqrt{-3}] \\cup (\\frac{1}{2} + \\sqrt{-3}/2) \\cdot \\mathbb{Z}[\\sqrt{-3}]$ is strictly larger.",
+    "significance": "key",
+    "relatedConcepts": [
+      "cyclotomic field ℚ(ζ₃)",
+      "minimal polynomial",
+      "primitive root of unity",
+      "Eisenstein primes"
+    ],
+    "prerequisites": [
+      "minimal polynomials over ℤ",
+      "roots of unity"
+    ]
+  },
+  {
+    "id": "ann-addcommgroup-instance",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 105, "endLine": 126 },
+    "type": "technique",
+    "title": "AddCommGroup via the `intros; ext; simp` template",
+    "content": "Build the additive structure by `refine`-ing the record with explicit `nsmul := @nsmulRec ...` and `zsmul := @zsmulRec ...` fields (generic recursive scalar-multiplication constructors from `Mathlib.Algebra.Group.Defs`). The remaining ring-axiom obligations are closed uniformly by `<;> intros <;> ext <;> simp [add_comm, add_left_comm]`. The `sub_re/sub_im` projection lemmas are proved via the `show` tactic plus `simp [sub_eq_add_neg]`, exposing the definitional form `a + -b` so the additive simp set fires.",
+    "mathContext": "The `nsmulRec`/`zsmulRec` boilerplate avoids re-stating the inductive definitions of $n \\cdot x$ for $n \\in \\mathbb{N}$ and $n \\cdot x$ for $n \\in \\mathbb{Z}$. This is the standard Mathlib idiom for constructing additive structures on concrete data types where the algebraic operations are componentwise.",
+    "significance": "technical",
+    "relatedConcepts": [
+      "Mathlib structure refinement",
+      "nsmulRec / zsmulRec",
+      "tactic combinators"
+    ],
+    "prerequisites": [
+      "Lean 4 structure syntax",
+      "Mathlib type class hierarchy"
+    ]
+  },
+  {
+    "id": "ann-commring-template",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 128, "endLine": 149 },
+    "type": "technique",
+    "title": "CommRing via the `Zsqrtd.commRing` template",
+    "content": "The full `CommRing Eisenstein` instance is built on top of `addGroupWithOne` (which extends `addCommGroup` with `natCast` and `intCast` via `ofInt`). The ring axioms — distributivity, associativity of multiplication, commutativity, identity, zero-absorption — are all closed by the single combinator `<;> intros <;> ext <;> simp <;> ring`. This is the exact pattern Mathlib uses for `Zsqrtd.commRing` around `Mathlib/NumberTheory/Zsqrtd/Basic.lean:164`. The `npow := @npowRec ...` field installs the generic recursive power operation.",
+    "mathContext": "The combinator works because: (1) `intros` discharges universally quantified hypotheses; (2) `ext` reduces equality of `Eisenstein` to equality of `re`-components and `im`-components; (3) the `@[simp] rfl` projection lemmas (`mul_re`, `mul_im`, `add_re`, etc.) unfold each side to a polynomial expression in $\\mathbb{Z}$; (4) `ring` normalizes integer polynomial expressions. This works for **any** quadratic extension whose multiplication is a polynomial in the coordinates.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Zsqrtd.commRing",
+      "ring axiom verification",
+      "polynomial identities",
+      "the `ring` tactic"
+    ],
+    "prerequisites": [
+      "commutative ring axioms",
+      "Mathlib tactic library"
+    ]
+  },
+  {
+    "id": "ann-norm-definition",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 151, "endLine": 161 },
+    "type": "definition",
+    "title": "The algebraic norm N(a + bω) = a² − ab + b²",
+    "content": "The norm `N : Eisenstein → ℤ` sends `z = re + im · ω` to `re² - re·im + im²`. This is the **field norm** `N_{ℚ(ω)/ℚ}` restricted to the ring of integers, equivalently `z · z̄` where `z̄ = a + bω̄ = a - b - bω` (since `ω̄ = -1 - ω`). The two structural identities `norm_zero` and `norm_one` are immediate from `simp [norm]`. The mathematical reason: $N(0) = 0$ and $N(1) = 1$ are degree-0 / degree-1 evaluations of a quadratic form.",
+    "mathContext": "**Norm:** $N(a + b\\omega) = a^2 - ab + b^2$. **Equivalent presentations:** (i) $N(z) = z \\bar z$ where $\\bar z$ denotes complex conjugation $\\omega \\mapsto \\omega^2$; (ii) $N(z) = |z|^2$ where $|z|$ is the complex absolute value (since $|\\omega| = 1$); (iii) the determinant of the multiplication-by-$z$ map $\\mathbb{Z}[\\omega] \\to \\mathbb{Z}[\\omega]$ in the basis $\\{1, \\omega\\}$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "field norm",
+      "complex conjugation",
+      "positive-definite quadratic form",
+      "determinant of multiplication"
+    ],
+    "prerequisites": [
+      "field norms",
+      "quadratic forms over ℤ"
+    ]
+  },
+  {
+    "id": "ann-norm-nonneg",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 162, "endLine": 167 },
+    "type": "insight",
+    "title": "Non-negativity via 4N(z) = (2re − im)² + 3·im²",
+    "content": "Non-negativity of `N` reduces to the algebraic identity `4 · N(z) = (2·re − im)² + 3·im²`, proved by `simp only [norm]; ring`. From this identity and the two `sq_nonneg` hints, `nlinarith` finishes. The technique is the **completion of squares** for a positive-definite binary quadratic form: $a^2 - ab + b^2 = ((2a - b)^2 + 3b^2)/4 \\geq 0$.",
+    "mathContext": "**Identity:** $4(a^2 - ab + b^2) = (2a - b)^2 + 3b^2$. This is the **discriminant identity**: for the quadratic form $Q(x, y) = x^2 - xy + y^2$ the discriminant is $b^2 - 4ac = 1 - 4 = -3 < 0$, so $Q$ is **anisotropic** (no nonzero zeros) and **positive-definite**. The factor 4 corresponds to dividing through by the leading coefficient's square in the quadratic formula. **In S3** this same identity drives the rounding-error bound $N(\\text{err}) \\leq (1/4)^2 + 3 \\cdot (1/4)^2 = 1/4 < 1$ needed for the `EuclideanDomain` instance.",
+    "significance": "key",
+    "relatedConcepts": [
+      "discriminant of a quadratic form",
+      "completion of squares",
+      "positive-definite quadratic form",
+      "nlinarith tactic"
+    ],
+    "prerequisites": [
+      "binary quadratic forms",
+      "discriminants"
+    ]
+  },
+  {
+    "id": "ann-norm-mul",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 169, "endLine": 173 },
+    "type": "insight",
+    "title": "Multiplicativity of the norm",
+    "content": "`norm_mul x y : norm (x * y) = norm x * norm y` is the **algebraic spine** of every subsequent argument in the n = 3 representation pipeline. The proof is a one-liner: `simp only [norm, mul_re, mul_im]` unfolds both sides to integer polynomial expressions in `x.re, x.im, y.re, y.im`, and `ring` closes the resulting polynomial identity. Conceptually, multiplicativity of $N$ comes from $N(zw) = (zw)\\overline{(zw)} = z\\bar z \\cdot w\\bar w = N(z) N(w)$ (using commutativity of conjugation with multiplication in any commutative ring extension).",
+    "mathContext": "**Multiplicativity:** $N(xy) = N(x) N(y)$ for all $x, y \\in \\mathbb{Z}[\\omega]$. **Consequence (used in S4-S5):** if $p \\in \\mathbb{Z}$ is prime and *non-irreducible* in $\\mathbb{Z}[\\omega]$, then $p = \\alpha\\beta$ with $1 < N(\\alpha), N(\\beta) < N(p) = p^2$, hence $N(\\alpha) = N(\\beta) = p$ and writing $\\alpha = a + b\\omega$ gives $p = a^2 - ab + b^2$, which converts via $4p = (2a-b)^2 + 3b^2$ to $p = x^2 + 3y^2$.",
+    "significance": "key",
+    "relatedConcepts": [
+      "multiplicative function",
+      "norm of a product",
+      "Euclidean domain norm",
+      "the splitting argument"
+    ],
+    "prerequisites": [
+      "ring homomorphism",
+      "norms in number fields"
+    ]
+  },
+  {
+    "id": "ann-norm-zero-iff-and-pos",
+    "proofId": "zsqrtd-neg-two-oq-03",
+    "range": { "startLine": 175, "endLine": 203 },
+    "type": "insight",
+    "title": "Norm vanishes only at zero; strictly positive elsewhere",
+    "content": "`norm_eq_zero_iff` (`norm z = 0 ↔ z = 0`) is the **anisotropy** of the quadratic form. The forward direction reuses the `4·N(z) = (2·re − im)² + 3·im²` identity: if `N(z) = 0` then the RHS is a sum of two non-negative squares equal to zero, forcing both squares to be zero. From `3·im² = 0` `linarith` extracts `im² = 0`, then `pow_eq_zero_iff` gives `im = 0`. With `im = 0`, the residual `(2·re)² = 0` gives `re = 0`. `ext` finishes. The corollary `norm_pos_of_ne_zero` follows by `lt_or_eq_of_le` on `norm_nonneg z`, ruling out the zero case via `norm_eq_zero_iff`.",
+    "mathContext": "**Anisotropy:** $Q(a, b) = 0 \\Leftrightarrow (a, b) = (0, 0)$ where $Q$ is the Eisenstein norm form. This is equivalent to the discriminant being negative ($-3 < 0$) plus working over $\\mathbb{Z}$ (or any integral domain). **In S3** this lemma is exactly what is needed to define the Euclidean function: the norm is a $\\mathbb{N}$-valued function that vanishes only at zero, so it makes sense as a Euclidean rank.",
+    "significance": "key",
+    "relatedConcepts": [
+      "anisotropic quadratic form",
+      "Euclidean function",
+      "discriminant negative",
+      "pow_eq_zero_iff"
+    ],
+    "prerequisites": [
+      "integer arithmetic",
+      "anisotropy of quadratic forms",
+      "Euclidean domains"
+    ]
+  }
+]
