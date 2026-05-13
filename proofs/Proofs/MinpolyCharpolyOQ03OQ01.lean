@@ -144,10 +144,21 @@ OQ-03-OQ-02. Both are sorry-guarded in this S1 scaffold. -/
 
 /-- The characteristic polynomial of `M` annihilates every element of
     the `F[X]`-module `xModule M`. This is Cayley–Hamilton transported
-    to the `Module.AEval'` synonym. -/
+    to the `Module.AEval'` synonym.
+
+    Proof: route through `Matrix.charpoly_mulVecLin` (identifying
+    `(endo M).charpoly = M.charpoly`) and `LinearMap.aeval_self_charpoly`
+    (the LinearMap-side Cayley–Hamilton). The `Module.AEval.of_symm_smul`
+    `rfl` lemma collapses the smul-tower in one rewrite. See S7 PREP
+    `sessions/2026-05-12-s07-prep-oq03-oq01-s2-isTorsionBy-discharge.md`
+    for the API audit and alternate routes. -/
 theorem xModule_isTorsionBy_charpoly (M : Matrix n n F) :
     Module.IsTorsionBy F[X] (xModule M) M.charpoly := by
-  sorry
+  intro x
+  have hC : (endo M).charpoly = M.charpoly := charpoly_mulVecLin M
+  apply (AEval'.of (endo M)).symm.injective
+  rw [Module.AEval.of_symm_smul, ← hC, LinearMap.aeval_self_charpoly]
+  simp
 
 /-- **The F[X]-module `xModule M` is torsion.**
 
