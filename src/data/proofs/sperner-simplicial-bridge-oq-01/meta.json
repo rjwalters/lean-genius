@@ -94,6 +94,21 @@
       "type": "sibling-of",
       "slug": "sperner-simplicial-instance",
       "rationale": "Both slugs build on `sperner-simplicial-bridge`. `sperner-simplicial-instance` provides concrete Kuhn-style triangulation instances of the parent; this slug extends the parent's framework to non-pure (mixed-dimension) complexes."
+    },
+    {
+      "type": "depends-on",
+      "slug": "sperner-mathlib",
+      "rationale": "The parent's `exists_panchromatic` (which this slug's headline theorem applies stratum-by-stratum) is built on the abstract door-counting parity machinery established in `sperner-mathlib`. Transitively, the mixed-dimension result inherits its combinatorial backbone from the `Sperner.IsDoor` / `Sperner.IsPanchromatic` predicates introduced there."
+    },
+    {
+      "type": "related-to",
+      "slug": "sperner-ndim-mathlib",
+      "rationale": "`sperner-ndim-mathlib` proves Sperner's lemma on the standard `n`-simplex in Mathlib's `CellComplex` setting. The mixed-pseudomanifold framework here is the abstract-`Finset (Finset E)`-of-cells counterpart, with the dimensional stratification playing the role of `CellComplex.facesOfDim`. The two lines of work converge in OQ-02 (`Mathlib.Geometry.SimplicialComplex.facets` bridge)."
+    },
+    {
+      "type": "related-to",
+      "slug": "sperner-ndim-mathlib-oq-01",
+      "rationale": "`sperner-ndim-mathlib-oq-01` lifts Sperner to the Freudenthal `CellComplex` framework — a parallel exercise in extending Sperner beyond its pure-simplicial origins. Both slugs address Open Question 1 of their respective parents; the mixed-dimension generalisation here is to abstract simplicial complexes what the Freudenthal lift is to cell complexes."
     }
   ],
   "overview": {
@@ -105,7 +120,9 @@
       "**`MixedPseudomanifold` is the right predicate.** Quantifying `∀ d, ∀ f : Finset E, f.card = d → ((topCellsOfDim K d).filter (fun s => f ⊆ s)).card ≤ 2` captures exactly the per-stratum pseudomanifold condition without coupling strata. The lift `MixedPseudomanifold.of_pure` proves the predicate subsumes the parent (with the universally-quantified `d` vacuous off the unique stratum).",
       "**The cross-stratum form is a trivial corollary.** Once `sperner_mixed_panchromatic_at_dim` is established, the disjunctive form (`∃ d, ∃ c, odd boundary count` ⇒ `∃ d, ∃ s, panchromatic`) is a 3-line wrapper: `obtain ⟨d, c, hbdry⟩` from the hypothesis, then apply the per-stratum theorem. The per-stratum form is the mathematical content; the cross-stratum form is convenience packaging.",
       "**No new Mathlib dependencies.** The whole file sits on top of `Proofs.SpernerSimplicialBridge` — no imports beyond what the parent already brings. The only Mathlib API exercised is `Finset.filter`, `Finset.mem_filter`, and `Finset.filter_eq_self` / `Finset.filter_eq_empty_iff`, all stock.",
-      "**The parent's `verified` status is preserved.** Adding the mixed predicate and the per-stratum theorem does not touch the parent file's definitions or theorems; OQ-01 is a strict extension that subsumes (not replaces) the parent's `exists_panchromatic`."
+      "**The parent's `verified` status is preserved.** Adding the mixed predicate and the per-stratum theorem does not touch the parent file's definitions or theorems; OQ-01 is a strict extension that subsumes (not replaces) the parent's `exists_panchromatic`.",
+      "**Definitional unfolding does the work.** `boundaryDoorCount` is engineered so that `Odd (boundaryDoorCount K c)` *is* (modulo `def`-reducibility) the parent's `hbdry` predicate after `topCells → topCellsOfDim K d` substitution. The proof of `sperner_mixed_panchromatic_at_dim` is therefore a *single term-mode* application of `exists_panchromatic` — no `unfold`, no `change`, no `show`. The right definition turns a multi-line tactic proof into a 4-line term.",
+      "**Stratification commutes with predicates on subtypes.** The headline theorem's conclusion `∃ s : { s : Finset E // s ∈ topCellsOfDim K d }, IsPanchromatic (fun σ => vertexEnum σ.1 (card_of_mem_topCellsOfDim σ.2)) c s` packages the per-cell cardinality witness as a *function of the membership proof*, not a separate hypothesis. This lets the parent's `IsPanchromatic` predicate (which depends on the `vertexEnum` of each cell) be reused unchanged on the stratum's subtype, with no `Sigma` or `PSigma` repackaging."
     ]
   },
   "conclusion": {
@@ -114,7 +131,9 @@
     "openQuestions": [
       "Can the per-stratum form be packaged into a *cross-stratum existential* (`∃ d, ∃ c, odd boundary count` ⇒ `∃ d, ∃ s, panchromatic in stratum d`) as a 3-line wrapper? The per-stratum form is strictly stronger; this is convenience packaging only.",
       "Does the mixed framework extend to `Mathlib.Geometry.SimplicialComplex.facets` (the Mathlib type that carries non-pure data natively)? The `topCellsOfDim` stratification of a `Finset (Finset E)` corresponds directly to dimension-grading of `K.facets` — but the affine-set encoding of Mathlib's `SimplicialComplex` requires a translation layer.",
-      "Can the cross-stratum disjunctive form `∃ d, stratum d has odd boundary count` be replaced by a *global* boundary-door count `globalBoundaryDoors K c := Σ d, boundaryDoorCount (d := d) K c`, with the hypothesis `Odd globalBoundaryDoors`? The parity reasoning over a sum requires that exactly one stratum has odd boundary count, which is non-trivial in the multi-dimensional setting."
+      "Can the cross-stratum disjunctive form `∃ d, stratum d has odd boundary count` be replaced by a *global* boundary-door count `globalBoundaryDoors K c := Σ d, boundaryDoorCount (d := d) K c`, with the hypothesis `Odd globalBoundaryDoors`? The parity reasoning over a sum requires that exactly one stratum has odd boundary count, which is non-trivial in the multi-dimensional setting.",
+      "Does the mixed framework integrate with `sperner-ndim-mathlib`'s `CellComplex`-based proof on the standard simplex? Mathlib's `CellComplex.facesOfDim` is the closest analogue of `topCellsOfDim`, but the encoding is via abstract `Finset` of face indices rather than `Finset (Finset E)`. A `MixedPseudomanifold`-equivalent predicate on `CellComplex` would unify the two formalisations and reduce one to the other.",
+      "Can the per-stratum theorem be iterated through *barycentric subdivision*? A barycentric subdivision of a mixed-dimension complex preserves the stratification (each dimension-`d` cell subdivides into dimension-`d` sub-cells) but multiplies cell counts and rebases the colouring. Stating the iteration as a fixed-point of a colour-refinement operator would yield a quantitative refinement of OQ-01 — useful for KKM-type fixed-point applications that need fine-grained Sperner statements."
     ]
   },
   "references": [

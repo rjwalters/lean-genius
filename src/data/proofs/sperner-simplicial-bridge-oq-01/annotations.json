@@ -1,5 +1,29 @@
 [
   {
+    "id": "ann-spc-oq01-header",
+    "proofId": "sperner-simplicial-bridge-oq-01",
+    "range": {
+      "startLine": 1,
+      "endLine": 52
+    },
+    "type": "context",
+    "title": "File Header: Mixed-Dimension Sperner",
+    "content": "The module docstring (lines 8-48) names the structural payoff explicitly: *door dimensions are graded*. A codimension-1 face of a `(d+1)`-simplex has cardinality `d`, so faces of different cardinalities cannot pair as doors. The classical pseudomanifold condition therefore decomposes stratum by stratum.\n\nThe single `import` (line 6, `Proofs.SpernerSimplicialBridge`) is the entirety of the dependency surface — no new Mathlib modules are imported beyond what the parent already brings. The `namespace Sperner.SimplicialComplex` opening (line 50) places every new declaration in the parent's namespace, so unqualified references to `vertexEnum`, `exists_panchromatic`, `IsDoor`, `IsPanchromatic`, and `adjFn` resolve against the parent without qualification.\n\nThe `open Finset` directive (line 52) is essential: every use of `filter`, `mem_filter`, `filter_eq_self`, `filter_eq_empty_iff`, and `filter_empty` resolves to the `Finset` namespace without explicit prefixes, keeping the proof bodies compact.",
+    "mathContext": "The mathematical content of the file is concentrated in three predicate-level observations, summarised in the *Main definitions* and *Main results* sections of the docstring: (i) the dimension-graded stratification `topCellsOfDim`; (ii) the per-stratum pseudomanifold predicate `MixedPseudomanifold`; (iii) the pure-to-mixed coercion `MixedPseudomanifold.of_pure` witnessing that the new framework subsumes the parent. The headline theorem `sperner_mixed_panchromatic_at_dim` is then a *bookkeeping* application of the parent's `exists_panchromatic` to the chosen stratum.",
+    "significance": "context",
+    "relatedConcepts": [
+      "module-level docstring conventions",
+      "namespace inheritance",
+      "open Finset",
+      "predicate-level vs proof-level content",
+      "De Longueville mixed-pseudomanifold reference"
+    ],
+    "prerequisites": [
+      "Lean 4 module/namespace basics",
+      "parent slug `sperner-simplicial-bridge` overview"
+    ]
+  },
+  {
     "id": "ann-spc-oq01-stratification",
     "proofId": "sperner-simplicial-bridge-oq-01",
     "range": {
@@ -48,6 +72,33 @@
       "Finset.filter_eq_self",
       "Finset.filter_eq_empty_iff",
       "by_cases tactic"
+    ]
+  },
+  {
+    "id": "ann-spc-oq01-boundary-door-count",
+    "proofId": "sperner-simplicial-bridge-oq-01",
+    "range": {
+      "startLine": 140,
+      "endLine": 156
+    },
+    "type": "definition",
+    "title": "`boundaryDoorCount`: per-stratum boundary-door count",
+    "content": "`boundaryDoorCount K c : ℕ` (a `noncomputable def`) counts the number of *boundary doors* of `topCellsOfDim K d` under colouring `c`. The body is the cardinality of the `Finset.univ.filter (…)` over pairs `p : { s // s ∈ topCellsOfDim K d } × Fin (d + 1)` satisfying two conjuncts:\n\n1. **`Sperner.IsDoor (vertexEnum …) c p.1 p.2`** — the colours `{0, …, d−1}` are all present on `s \\ {vertex k}` (the lower-colour face is panchromatic in dimension `d`).\n2. **`adjFn (topCellsOfDim K d) (fun _ hs => card_of_mem_topCellsOfDim hs) p.1 p.2 = none`** — the face `s \\ {vertex k}` is *not* shared with any other cell of dimension `d`; it lies on the boundary of the stratum.\n\nThe `noncomputable` modifier is necessary because the parent's `adjFn` returns an `Option` via an existential choice that does not produce a decidable witness in general. The signature is parameterised by an implicit `{d : Nat}` and an explicit `c : E → Fin (d + 1)`; the dimension is determined by the codomain of the colouring, which keeps invocation sites concise (`boundaryDoorCount (d := d) K c` only when type inference cannot fix `d`).\n\nMost importantly: by Lean's standard `def`-reducibility, `boundaryDoorCount K c` *is* (syntactically, modulo unfolding) the parent's `hbdry` argument with `topCellsOfDim K d` substituted for `topCells`. So `sperner_mixed_panchromatic_at_dim` can pass `hbdry : Odd (boundaryDoorCount K c)` directly into the parent's `exists_panchromatic` without any explicit `unfold`, `change`, or `show` — the elaborator does the substitution for free.",
+    "mathContext": "The parity of the boundary-door count is the *input* to Sperner's lemma in its door-counting form. Classically, the count of boundary doors of a pseudomanifold is *odd* iff a panchromatic top cell exists (the Brouwer/Sperner reflection of the fact that the boundary of a triangulated disk has odd total panchromatic-face count when the disk is properly coloured). In the mixed-dimension setting, the count specialises to a chosen stratum: only `(d+1)`-cells and their `d`-element subfaces contribute. The cross-stratum *global* count (summed across `d`) would change parity by including faces of all sizes, which is precisely why the per-stratum form is the natural one — see also the third open question.",
+    "significance": "core",
+    "relatedConcepts": [
+      "noncomputable def",
+      "Sperner.IsDoor",
+      "adjFn (parent)",
+      "definitional unfolding",
+      "subtype `{ s // s ∈ topCellsOfDim K d }`",
+      "implicit dimension parameter"
+    ],
+    "prerequisites": [
+      "parent slug `Sperner.IsDoor` definition",
+      "parent slug `adjFn` definition",
+      "Finset.univ on subtype",
+      "Option.none semantics"
     ]
   },
   {
