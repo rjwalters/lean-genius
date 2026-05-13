@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T12:22:36.006Z",
-    "iteration": 2,
-    "focus": "Axiom elimination: proved 2, removed 2 false, corrected definitions",
+    "iteration": 3,
+    "focus": "Added partial-result trivial bound π_a(x) ≤ ⌊x⌋ + extracted linear-growth lemma",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Refine trivial ⌊x⌋ bound toward conjectured π(x); explore integer-valued case",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated ALL axioms (2→0). Proved primeSeq_well_separated via Nat.factorization (FTA). Converted beurlings_conjecture from axiom to def (open conjecture, not asserted). File now fully verified: 0 axioms, 0 sorries.",
+    "progressSummary": "PARTIAL RESULT: Added beurlingPi_le_floor (π_a(x) ≤ ⌊x⌋, verified) — much weaker than open conjecture π(x) but a real partial bound. Extracted beurling_linear_growth (a_n ≥ a_0 + n) as top-level reusable lemma. File: 0 axioms, 0 sorries, 12 theorems, 10 defs, 285 lines. Main conjecture remains OPEN.",
     "builtItems": [
       "Proved primeSeq_isPrime helper theorem (Nat.nth_mem_of_infinite)",
       "Proved primeSeq_strictly_increasing from Nat.nth_strictMono",
@@ -43,7 +43,10 @@
       "Fixed primePi: primeCounting counts ≤ n, so no +1 needed",
       "Proved primeSeq_well_separated via factorization_prod_at helper + FTA injectivity",
       "Converted beurlings_conjecture axiom → def (Prop not asserted)",
-      "factorization_prod_at: Finset.induction + Nat.factorization_mul/pow/prime"
+      "factorization_prod_at: Finset.induction + Nat.factorization_mul/pow/prime",
+      "beurling_linear_growth: a_n ≥ a_0 + n (extracted from local lemma to top-level, by induction on beurling_consec_gap)",
+      "beurlingPi_le_floor: π_a(x) ≤ ⌊x⌋₊ (trivial upper bound, partial result toward erdos951_conjecture; verified via Set.ncard_le_ncard + Finset.range)",
+      "Refactored beurlingPi_finite to use beurling_linear_growth (shorter proof)"
     ],
     "insights": [
       "primeSeq_strictly_increasing proved via Nat.nth_strictMono + Nat.infinite_setOf_prime",
@@ -55,7 +58,10 @@
       "primeCounting n = #{primes ≤ n} = count Prime (n+1). Verified via primeCounting 10 = 4",
       "Galois connection: n < count p m ↔ nth p n < m (Nat.lt_nth_iff_count_lt)",
       "primeSeq_well_separated proof: (1) factor prod at nth prime = exponent via FTA, (2) cast ℕ→ℝ preserving distinctness, (3) distinct naturals have |a-b|≥1",
-      "beurlings_conjecture was never used as a proof term — safe to convert axiom→def without breaking anything"
+      "beurlings_conjecture was never used as a proof term — safe to convert axiom→def without breaking anything",
+      "Trivial bound ⌊x⌋ is achievable from well-separation alone; the gap to conjectured π(x) ~ x/log x is the actual mathematical content of Erdős 951",
+      "Linear growth a_n > 1 + n follows from a_n ≥ a_0 + n (beurling_linear_growth) + a_0 > 1 (all_gt_one 0)",
+      "Set inclusion {n | a_n ≤ x} ⊆ Finset.range ⌊x⌋₊ via Nat.le_floor + Nat.lt_of_succ_le; cardinality from Set.ncard_coe_Finset + Finset.card_range"
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -75,17 +81,17 @@
     "mathlib": []
   },
   "started": "2026-01-15T12:22:36.006Z",
-  "lastUpdate": "2026-03-13T07:52:17.055Z",
+  "lastUpdate": "2026-05-13T11:24:24Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos951Problem.lean",
       "filename": "Erdos951Problem.lean",
-      "lineCount": 260,
-      "theoremCount": 9,
+      "lineCount": 285,
+      "theoremCount": 12,
       "axiomCount": 0,
-      "defCount": 9,
+      "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos951Problem.lean"

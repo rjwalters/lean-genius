@@ -141,6 +141,68 @@ theorem f_of_7 : leastFactorialWilson 7 = 3 := by
       have : k = 1 ∨ k = 2 := by omega
       rcases this with rfl | rfl <;> revert hdvd <;> decide
 
+/-- For p = 11: 5! + 1 = 121 = 11², so f(11) = 5 < 10 = 11 - 1. NOT maximal.
+    The first prime past 7 where the Wilson congruence fires early; here
+    via the algebraic coincidence (p-1)/2 · (p-1)/2! ≡ -1 (mod 11),
+    equivalently 5! = 120 ≡ -1 (mod 11). -/
+theorem f_of_11 : leastFactorialWilson 11 = 5 := by
+  unfold leastFactorialWilson
+  apply le_antisymm
+  · exact Nat.sInf_le ⟨by omega, by decide⟩
+  · exact le_csInf ⟨5, by omega, by decide⟩ fun k ⟨hpos, hdvd⟩ => by
+      by_contra h; push_neg at h
+      have : k = 1 ∨ k = 2 ∨ k = 3 ∨ k = 4 := by omega
+      rcases this with rfl | rfl | rfl | rfl <;> revert hdvd <;> decide
+
+/-- For p = 13: factorials modulo 13 trace the sequence
+    1, 2, 6, 11, 3, 5, 9, 7, 11, 6, 1, 12 (for n = 1, …, 12), so the residue
+    -1 ≡ 12 is hit only at n = 12. Therefore f(13) = 12 = 13 - 1. MAXIMAL.
+    Note: 13 is one of the three known Wilson primes (5, 13, 563), i.e. p
+    with p² ∣ (p-1)!+1; here we use only the weaker p ∣ (p-1)!+1. -/
+theorem f_of_13 : leastFactorialWilson 13 = 12 := by
+  unfold leastFactorialWilson
+  apply le_antisymm
+  · exact Nat.sInf_le ⟨by omega, by decide⟩
+  · exact le_csInf ⟨12, by omega, by decide⟩ fun k ⟨hpos, hdvd⟩ => by
+      by_contra h; push_neg at h
+      have : k = 1 ∨ k = 2 ∨ k = 3 ∨ k = 4 ∨ k = 5 ∨ k = 6 ∨
+             k = 7 ∨ k = 8 ∨ k = 9 ∨ k = 10 ∨ k = 11 := by omega
+      rcases this with rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl|rfl <;>
+        revert hdvd <;> decide
+
+/- ## Known Wilson-Maximal Primes -/
+
+/-- p = 2 is Wilson-maximal: f(2) = 1 = 2 - 1. -/
+theorem isWilsonMaximal_2 : isWilsonMaximal 2 :=
+  ⟨by decide, by rw [f_of_2]⟩
+
+/-- p = 3 is Wilson-maximal: f(3) = 2 = 3 - 1. -/
+theorem isWilsonMaximal_3 : isWilsonMaximal 3 :=
+  ⟨by decide, by rw [f_of_3]⟩
+
+/-- p = 5 is Wilson-maximal: f(5) = 4 = 5 - 1.
+    Also a Wilson prime: 5² = 25 ∣ 4!+1 = 25. -/
+theorem isWilsonMaximal_5 : isWilsonMaximal 5 :=
+  ⟨by decide, by rw [f_of_5]⟩
+
+/-- p = 7 is NOT Wilson-maximal: f(7) = 3 ≠ 6 = 7 - 1. -/
+theorem isNotWilsonMaximal_7 : ¬ isWilsonMaximal 7 := by
+  intro ⟨_, heq⟩
+  rw [f_of_7] at heq
+  omega
+
+/-- p = 11 is NOT Wilson-maximal: f(11) = 5 ≠ 10 = 11 - 1. -/
+theorem isNotWilsonMaximal_11 : ¬ isWilsonMaximal 11 := by
+  intro ⟨_, heq⟩
+  rw [f_of_11] at heq
+  omega
+
+/-- p = 13 is Wilson-maximal: f(13) = 12 = 13 - 1.
+    Together with 2, 3, 5 this yields four explicit Wilson-maximal primes.
+    13 is moreover a Wilson prime, so 13² ∣ 12!+1. -/
+theorem isWilsonMaximal_13 : isWilsonMaximal 13 :=
+  ⟨by decide, by rw [f_of_13]⟩
+
 /- ## Connection to Wilson Primes -/
 
 -- Note: Wilson primes (p with p² | (p-1)!+1) are empirically maximal
@@ -153,7 +215,7 @@ theorem f_of_7 : leastFactorialWilson 7 = 3 := by
 
 **Problem Status: OPEN**
 
-**Proved Theorems (7)**:
+**Proved Theorems (14)**:
 - wilson_theorem: (p-1)! ≡ -1 (mod p) from Mathlib's ZMod.wilsons_lemma [was axiom]
 - f_le_pred: f(p) ≤ p-1 from Wilson's theorem [was axiom]
 - f_pos: f(p) ≥ 1 for p ≥ 3 via le_csInf (every element has 0 < n) [was axiom]
@@ -161,9 +223,19 @@ theorem f_of_7 : leastFactorialWilson 7 = 3 := by
 - f_of_3: f(3) = 2 via sInf + decide [was axiom]
 - f_of_5: f(5) = 4 via sInf + decide (eliminates k=1,2,3) [was axiom]
 - f_of_7: f(7) = 3 via sInf + decide (eliminates k=1,2) [was axiom]
+- f_of_11: f(11) = 5 via sInf + decide (eliminates k=1,2,3,4) [NEW]
+- f_of_13: f(13) = 12 via sInf + decide (eliminates k=1,…,11) [NEW]
+- isWilsonMaximal_2, _3, _5, _13: explicit Wilson-maximal primes [NEW]
+- isNotWilsonMaximal_7, _11: explicit non-maximal primes [NEW]
 
 **Remaining Axioms (3)** — all OPEN conjectures:
 - erdos_1072a: infinitely many maximal primes (OPEN)
 - erdos_1072b: f(p)/p → 0 for almost all primes (OPEN)
 - hardy_subbarao_belief: maximal primes have density 0 (OPEN conjecture)
+
+**Empirical Status of Wilson-Maximality on Small Primes** (newly formal):
+- Maximal: 2, 3, 5, 13
+- Not maximal: 7 (f=3), 11 (f=5)
+This matches OEIS A154554 and isolates 7, 11 as the first two non-maximal
+primes — establishing that maximality is sporadic rather than monotone.
 -/

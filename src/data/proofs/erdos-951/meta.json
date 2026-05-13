@@ -59,12 +59,14 @@
       "IsBeurlingInteger: products of Beurling primes",
       "beurlingN: Beurling integer counting function",
       "beurlings_conjecture: if N_a(x) = x + o(log x), then aᵢ = primes",
-      "separation_implies_distinct theorem: well-separation implies distinctness"
+      "separation_implies_distinct theorem: well-separation implies distinctness",
+      "beurling_linear_growth: aₙ ≥ a₀ + n (linear growth from consecutive gap)",
+      "beurlingPi_le_floor: π_a(x) ≤ ⌊x⌋₊ (trivial upper bound; partial result toward main conjecture)"
     ],
     "axiomCount": 0,
-    "lineCount": 259,
-    "assumptions": "0 axioms. All former axioms eliminated: primeSeq_well_separated proved via FTA (factorization_prod_at), beurlings_conjecture converted to def (Prop, not asserted). File is fully verified. Open conjecture; supporting lemmas fully verified.",
-    "theoremCount": 10,
+    "lineCount": 285,
+    "assumptions": "0 axioms. All former axioms eliminated: primeSeq_well_separated proved via FTA (factorization_prod_at), beurlings_conjecture converted to def (Prop, not asserted). File is fully verified. Open conjecture; supporting lemmas fully verified. Trivial upper bound π_a(x) ≤ ⌊x⌋₊ (`beurlingPi_le_floor`) gives a weaker form of the conjecture as a verified partial result.",
+    "theoremCount": 12,
     "definitionCount": 10
   },
   "overview": {
@@ -77,7 +79,8 @@
       "**Primes achieve equality**: The ordinary primes form a Beurling sequence with $\\pi_a(x) = \\pi(x)$, showing the conjectured bound is tight. This is formalized as `actualPrimes : BeurlingPrimes` with `actualPrimes_counting`",
       "**Sparse examples exist**: Powers of 2 give $\\pi_a(x) = \\lfloor\\log_2 x\\rfloor \\ll \\pi(x) \\sim x/\\ln x$, showing not all Beurling sequences approach the prime density. The gap is enormous: logarithmic vs sublinear growth",
       "**Beurling's rigidity**: If the Beurling integers (products) have counting function $N_a(x) = x + o(\\log x)$, then $a$ must be the actual primes (Diamond 1977 showed this is sharp). This characterizes primes by their products' density",
-      "**Finsupp design choice**: Using `ℕ →₀ ℕ` for exponent tuples is elegant: it avoids fixed-length tuples, handles arbitrary numbers of generators, and integrates with Mathlib's `Finset.prod` over the finite support"
+      "**Finsupp design choice**: Using `ℕ →₀ ℕ` for exponent tuples is elegant: it avoids fixed-length tuples, handles arbitrary numbers of generators, and integrates with Mathlib's `Finset.prod` over the finite support",
+      "**Trivial upper bound vs. conjecture**: Well-separation alone implies the linear bound $\\pi_a(x) \\le \\lfloor x \\rfloor$ (theorem `beurlingPi_le_floor`), since $a_n \\ge a_0 + n > n + 1$. The Erdős 951 conjecture refines this from $\\lfloor x \\rfloor$ (linear) down to $\\pi(x) \\sim x/\\log x$ (sublinear). The factor of $\\log x$ between these bounds is exactly the structural content the conjecture asserts about well-separated sequences"
     ],
     "prerequisites": [
       "Combinatorics and number theory",
@@ -90,66 +93,75 @@
       "title": "Beurling Prime Numbers",
       "summary": "Defines `WellSeparatedProducts a` ($|\\prod a_i^{k_i} - \\prod a_j^{\\ell_j}| \\ge 1$ for distinct `Finsupp` tuples) and `BeurlingPrimes` structure (strictly increasing, all $> 1$, well-separated).",
       "startLine": 44,
-      "endLine": 55,
+      "endLine": 58,
       "mathContext": "Formal definition: Defines `WellSeparatedProducts a` ($|\\prod a_i^{k_i} - \\prod a_j^{\\ell_j}| \\ge 1$ for distinct `Finsupp` tuples) and `BeurlingPrimes` structure (strictly increasing, all $> 1$, well-separated)."
     },
     {
       "id": "counting-functions",
       "title": "Counting Functions",
-      "summary": "Defines `beurlingPi a x := Set.ncard {n : a_n ≤ x}` and `primePi x := Nat.primeCounting(⌊x⌋₊)` (counts primes ≤ x). Proves `beurlingPi_finite` for finiteness of the counting set.",
-      "startLine": 56,
-      "endLine": 73,
-      "mathContext": "Formal definition: Defines `beurlingPi a x := \\text{Set.ncard}\\{n : a_n \\le x\\}$ and `primePi x := \\text{Nat.primeCounting}(\\lfloor x \\rfloor)$. Proves `beurlingPi_finite` for finiteness of the counting set via linear growth bound on the sequence."
+      "summary": "Defines `beurlingPi a x := Set.ncard {n : a_n ≤ x}` and `primePi x := Nat.primeCounting(⌊x⌋₊)` (counts primes ≤ x). Proves `beurling_consec_gap` (a_{n+1} ≥ a_n + 1), `beurling_linear_growth` (a_n ≥ a_0 + n), and `beurlingPi_finite` (finiteness of the counting set).",
+      "startLine": 59,
+      "endLine": 104,
+      "mathContext": "Formal definition: Defines `beurlingPi a x := \\text{Set.ncard}\\{n : a_n \\le x\\}$ and `primePi x := \\text{Nat.primeCounting}(\\lfloor x \\rfloor)$. Proves `beurling_consec_gap` and `beurling_linear_growth` (a_n ≥ a_0 + n by induction from the consecutive gap), then derives `beurlingPi_finite`."
+    },
+    {
+      "id": "trivial-upper-bound",
+      "title": "Trivial Upper Bound π_a(x) ≤ ⌊x⌋",
+      "summary": "Proves `beurlingPi_le_floor`: $\\pi_a(x) \\le \\lfloor x \\rfloor_+$ for any Beurling prime sequence. This is the trivial upper bound from linear growth $a_n > n + 1$. The Erdős 951 conjecture asserts the much stronger $\\pi_a(x) \\le \\pi(x) \\sim x/\\log x$. The gap between the two bounds is the conjecture's content.",
+      "startLine": 106,
+      "endLine": 127,
+      "mathContext": "Proves the trivial bound $\\pi_a(x) \\le \\lfloor x \\rfloor_+$ as a verified partial result. Proof: $a_n \\ge a_0 + n > 1 + n$ from `beurling_linear_growth` and `all_gt_one 0`, so $\\{n : a_n \\le x\\} \\subseteq \\text{Finset.range}\\,\\lfloor x \\rfloor_+$; cardinality bound follows via `Set.ncard_le_ncard`. This is much weaker than the Erdős 951 conjecture: $\\lfloor x \\rfloor_+$ is linear in $x$, while the conjectured $\\pi(x)$ is sublinear ($\\sim x/\\log x$). Refining this gap is the open mathematical content."
     },
     {
       "id": "actual-primes",
       "title": "Actual Primes as Beurling Primes",
       "summary": "Defines `primeSeq n := Nat.nth Prime n`. Proves strict monotonicity and $> 1$ from Mathlib (Nat.nth_strictMono, Nat.Prime.one_lt). Proves `primeSeq_well_separated` from FTA (fully proved theorem, not an axiom). Constructs `actualPrimes : BeurlingPrimes`.",
-      "startLine": 72,
-      "endLine": 93,
+      "startLine": 129,
+      "endLine": 247,
       "mathContext": "Defines `primeSeq n := Nat.nth Prime n`. Proves strict monotonicity (Nat.nth_strictMono) and > 1 (Nat.Prime.one_lt). Proves well-separation via FTA. Constructs `actualPrimes : BeurlingPrimes`. Proves `actualPrimes_counting : π_a(x) = π(x)` via Galois connection between Nat.nth and Nat.count."
     },
     {
       "id": "separation-analysis",
       "title": "Separation Implies Distinctness",
       "summary": "Proves `separation_implies_distinct`: well-separation ($|P_1 - P_2| \\ge 1$) implies $P_1 \\neq P_2$, by contradiction using `abs_zero` and `linarith`.",
-      "startLine": 121,
-      "endLine": 130,
+      "startLine": 248,
+      "endLine": 256,
       "mathContext": "Verified: Proves `separation_implies_distinct`: well-separation ($|P_1 - P_2| \\ge 1$) implies $P_1 \\neq P_2$, by contradiction using `abs_zero` and `linarith`."
     },
     {
       "id": "beurling-integers",
       "title": "Beurling Integers and Beurling's Conjecture",
       "summary": "Defines `IsBeurlingInteger a x` ($x = \\prod a_i^{k_i}$) and `beurlingN a x` (counting function). Defines `beurlings_conjecture` as a `Prop` (def, not axiom): if $|N_a(x) - x| \\le \\varepsilon \\log x$ for all $\\varepsilon > 0$ eventually, then $a = \\text{primeSeq}$. Not asserted — stated as a mathematical claim.",
-      "startLine": 131,
-      "endLine": 148,
+      "startLine": 257,
+      "endLine": 273,
       "mathContext": "Defines `IsBeurlingInteger a x` and `beurlingN a x`. Defines `beurlings_conjecture` as a `def : Prop` (not an axiom — the statement is given but not asserted true). No axiom declarations in this section."
     },
     {
       "id": "main-conjecture",
       "title": "The Main Conjecture (OPEN)",
       "summary": "Defines `erdos951_conjecture`: $\\forall$ bp, $\\forall x > 0$, $\\pi_a(x) \\le \\pi(x)$. NOT axiomatized since it's OPEN.",
-      "startLine": 145,
-      "endLine": 154,
+      "startLine": 274,
+      "endLine": 279,
       "mathContext": "Defines `erdos951_conjecture`: ∀ bp, ∀ x > 0, π_a(x) ≤ π(x). NOT axiomatized since it's OPEN."
     },
     {
       "id": "summary",
       "title": "Summary",
       "summary": "Proves `erdos_951_primes_equality`: actual primes achieve equality in the conjecture bound. Problem remains OPEN.",
-      "startLine": 177,
-      "endLine": 183,
+      "startLine": 280,
+      "endLine": 285,
       "mathContext": "Verified: Proves `erdos_951_primes_equality`: the actual primes achieve equality in the conjectured bound π_a(x) ≤ π(x)."
     }
   ],
   "conclusion": {
-    "summary": "The formalization captures Erdős Problem #951 on Beurling prime numbers: whether π_a(x) ≤ π(x) for any well-separated sequence. Includes WellSeparatedProducts predicate using Finsupp, BeurlingPrimes structure, counting functions, actual primes as a Beurling sequence (`primeSeq_well_separated` proved from FTA), separation_implies_distinct (proved), Beurling integers and `beurlings_conjecture` (`def : Prop`, stated but not axiomatized). 0 axioms, 0 sorries. The main conjecture (erdos951_conjecture) is OPEN and defined only as a `Prop`.",
+    "summary": "The formalization captures Erdős Problem #951 on Beurling prime numbers: whether π_a(x) ≤ π(x) for any well-separated sequence. Includes WellSeparatedProducts predicate using Finsupp, BeurlingPrimes structure, counting functions, actual primes as a Beurling sequence (`primeSeq_well_separated` proved from FTA), separation_implies_distinct (proved), Beurling integers and `beurlings_conjecture` (`def : Prop`, stated but not axiomatized), the linear growth lemma `beurling_linear_growth` (a_n ≥ a_0 + n), and the **trivial upper bound** `beurlingPi_le_floor` (π_a(x) ≤ ⌊x⌋ — a verified weaker form of the main conjecture, refining the conjecture's content to the gap between ⌊x⌋ and π(x)). 0 axioms, 0 sorries. The main conjecture (erdos951_conjecture) is OPEN and defined only as a `Prop`.",
     "implications": "**Theoretical Significance**: **Connections to Number Theory**\n\n1. **Extremality of Primes**: If true, the conjecture characterizes primes as the densest multiplicatively well-separated sequence — a novel extremal property\n2. **Beurling's Theory**: Connects to the broader study of generalized primes and the generalized prime number theorem, initiated by Beurling in 1937\n**3. Multiplicative Structure**: The well-separation condition abstracts the Fundamental Theorem of Arithmetic's consequence that distinct prime products are distinct integers\n4. **Rigidity Results**: Beurling's conjecture (formalized here) shows primes are uniquely determined by the density of their product set\n5. **Diamond's Sharpness**: Diamond (1977) proved the generalized PNT error term cannot be improved, bounding what structural information the Beurling integer count provides.",
     "openQuestions": [
       "Is $\\pi_a(x) \\le \\pi(x)$ for all Beurling prime sequences? (The main conjecture, completely open)",
       "What is the maximum density $\\limsup_{x \\to \\infty} \\pi_a(x) / \\pi(x)$ achievable by a Beurling sequence?",
       "Can the conjecture be proved for Beurling sequences with $a_i \\in \\mathbb{Z}$ (integer-valued)?",
-      "Does weakening the separation condition from $\\ge 1$ to $\\ge \\varepsilon$ for fixed $\\varepsilon > 0$ change the answer?"
+      "Does weakening the separation condition from $\\ge 1$ to $\\ge \\varepsilon$ for fixed $\\varepsilon > 0$ change the answer?",
+      "Refining the trivial bound: between the verified $\\pi_a(x) \\le \\lfloor x \\rfloor$ and the conjectured $\\pi_a(x) \\le \\pi(x)$, can one prove an intermediate sublinear bound $\\pi_a(x) \\le f(x)$ with $\\pi(x) \\le f(x) \\ll x$ (e.g., $f(x) = x/\\log\\log x$)? This would be the first nontrivial step toward Erdős 951."
     ]
   },
   "leanFile": {
@@ -159,7 +171,8 @@
       "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
       "Mathlib.Data.Finsupp.Basic",
       "Mathlib.Analysis.SpecialFunctions.Log.Basic",
-      "Mathlib.Data.Nat.Prime.Nth"
+      "Mathlib.Data.Nat.Prime.Nth",
+      "Mathlib.Data.Nat.Factorization.Basic"
     ],
     "opens": [
       "Nat",
@@ -168,9 +181,9 @@
       "Real"
     ],
     "namespace": "Erdos951",
-    "lineCount": 259,
+    "lineCount": 285,
     "axiomCount": 0,
-    "theoremCount": 10,
+    "theoremCount": 12,
     "definitionCount": 10,
     "path": "Proofs/Erdos951Problem.lean",
     "sorries": 0
