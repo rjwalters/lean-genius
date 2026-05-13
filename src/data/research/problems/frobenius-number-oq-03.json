@@ -1,7 +1,7 @@
 {
     "slug": "frobenius-number-oq-03",
     "title": "Frobenius Number — Three Generators with Explicit Formulas",
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "status": "active",
     "tier": "B",
     "path": "full",
@@ -32,25 +32,28 @@
         "goal": "Add a fully verified Lean proof of at least one explicit-formula case for three generators. Minimum-viable target: three-consecutive integers, g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1) for n ≥ 3. Stretch target: the Roberts 3-AP formula."
     },
     "currentState": {
-        "phase": "OBSERVE",
-        "since": "2026-05-12T14:25:00.000Z",
-        "iteration": 1,
-        "focus": "S1 (researcher-4, 2026-05-12): OBSERVE survey establishing the formal target (Roberts-1956 closed-form for arithmetic-progression triples, specialized to three-consecutive integers as the cleanest sub-target), the literature map (Ramírez Alfonsín OUP 2005 monograph, Rosales–García-Sánchez Springer 2009, Roberts 1956, Brauer 1942, Selmer 1977, Marín–Ramírez Alfonsín–Revuelta 2007), and the Mathlib infrastructure gap (no numerical-semigroup theory in v4.26.0 at pinned rev 2df2f0150c). Direct numerical verification of g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1) for n ∈ {3, 4, 5, 6, 7} (all five match). No Lean code modified.",
+        "phase": "ACT",
+        "since": "2026-05-13T22:42:00.000Z",
+        "iteration": 2,
+        "focus": "S2 ACT skeleton landed (researcher-1, 2026-05-13): Proofs/FrobeniusNumberOQ03.lean (68 lines, 1 def Representable3 + 7 closure lemmas representable3_zero/a/b/c/add_a/add_b/add_c). All proofs one-line ring/linarith. 0 sorries, 0 axioms. Build pending (docker-build.sh Proofs.FrobeniusNumberOQ03). Umbrella Proofs.lean updated + minimal gallery entry created (meta.json, index.ts, annotations.json). Foundation set for S3 (frobeniusNumber3 + existence).",
         "blockers": [],
-        "nextAction": "S2: Create new file proofs/Proofs/FrobeniusNumberOQ03.lean (~100 lines) containing the Representable3 a b c n := ∃ x y z : ℕ, n = a*x + b*y + c*z predicate and seven foundational closure lemmas (representable3_zero, representable3_a/b/c, representable3_add_a/b/c) — verbatim three-generator port of Proofs/FrobeniusNumber.lean lines 42–69. S3+ then introduces frobeniusNumber3 and the main theorem g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1).",
+        "nextAction": "S3: Define `frobeniusNumber3 a b c` (noncomputable via sSup over the complement of Representable3) and prove existence of g(a,b,c) for gcd(a,b,c) = 1 — the non-representable set is finite, hence the sSup is well-defined. ~80 lines. Mathlib API: Nat.sSup_def, BddAbove.csSup_mem. Will reuse this file's Representable3 + closure lemmas as black boxes.",
         "attemptCounts": {
-            "total": 1,
+            "total": 2,
             "currentApproach": 1,
             "approachesTried": 1
         }
     },
     "knowledge": {
-        "progressSummary": "S1 (researcher-4, 2026-05-12): OBSERVE phase. Survey-only iteration establishing problem formalization target, Mathlib infrastructure map, and 6-stage decomposition. Direct numerical sanity table for n ∈ {3, …, 7} confirms the Roberts d=1 formula. Mathlib infrastructure absent (no NumericalSemigroup module); existing two-generator infrastructure in Proofs/FrobeniusNumber.lean ports directly to three generators with a single extra threaded variable. Literature mature (Ramírez Alfonsín 2005 monograph, Rosales–García-Sánchez 2009). 0 Lean files modified, 0 sorries, 0 axioms.",
+        "progressSummary": "PROGRESS S2 ACT (researcher-1, 2026-05-13): foundation file proofs/Proofs/FrobeniusNumberOQ03.lean shipped (68 lines, 1 def + 7 theorems, 0 sorries, 0 axioms, build pending). Representable3 a b c n := ∃ x y z, n = a*x + b*y + c*z plus the seven closure lemmas (representable3_zero/a/b/c, representable3_add_a/b/c) follow the verbatim three-generator port of FrobeniusNumber.lean lines 42–69 outlined in S1. Each proof is one-line ring or one-line linarith inside an `obtain` destructure. Umbrella Proofs.lean updated; minimal gallery entry created. S1 (researcher-4, 2026-05-12): OBSERVE survey established the formal target (Roberts-1956 closed form), the Mathlib infrastructure gap (no NumericalSemigroup module at v4.26.0), and the 6-stage decomposition.",
         "builtItems": [
             "research/problems/frobenius-number-oq-03/problem.md (new, ~200 lines): formal statement, classification, Mathlib infrastructure map, literature and proof structure.",
             "research/problems/frobenius-number-oq-03/knowledge.md (new, ~100 lines): S1 session note with numerical sanity table, Mathlib API checks at pinned rev 2df2f0150c.",
             "research/problems/frobenius-number-oq-03/state.md (new, ~70 lines): phase OBSERVE, S2 next-action sketch with concrete Lean skeleton.",
-            "src/data/research/problems/frobenius-number-oq-03.json (this file, new, ~80 lines): seeker-selected slug populated with insights/mathlibGaps/nextSteps/references."
+            "src/data/research/problems/frobenius-number-oq-03.json (this file, new, ~80 lines): seeker-selected slug populated with insights/mathlibGaps/nextSteps/references.",
+            "proofs/Proofs/FrobeniusNumberOQ03.lean (S2 ACT, 68 lines): Representable3 predicate + 7 closure lemmas representable3_zero/a/b/c/add_a/add_b/add_c. 0 sorries, 0 axioms. Build pending docker-build.sh Proofs.FrobeniusNumberOQ03.",
+            "proofs/Proofs.lean: added `import Proofs.FrobeniusNumberOQ03` after FrobeniusNumberOQ02 (alphabetic insertion).",
+            "src/data/proofs/frobenius-number-oq-03/{meta.json,index.ts,annotations.json}: minimal gallery entry (status formalized, badge research, lineCount 68, theoremCount 7, definitionCount 1, sorries 0, axiomCount 0)."
         ],
         "insights": [
             "The three-consecutive-integers case g(n, n+1, n+2) for n ≥ 3 is the cleanest concrete target: it admits the Roberts d=1 closed form ⌊(n-2)/2⌋·n + (n-1), validated numerically for n ∈ {3, …, 7}.",
@@ -109,8 +112,17 @@
         ]
     },
     "started": "2026-05-12T14:25:00.000Z",
-    "lastUpdate": "2026-05-12T14:25:00.000Z",
+    "lastUpdate": "2026-05-13T22:42:00.000Z",
     "significance": 6,
     "tractability": 6,
-    "leanFiles": []
+    "leanFiles": [
+        {
+            "path": "proofs/Proofs/FrobeniusNumberOQ03.lean",
+            "lineCount": 68,
+            "theoremCount": 7,
+            "definitionCount": 1,
+            "sorryCount": 0,
+            "axiomCount": 0
+        }
+    ]
 }

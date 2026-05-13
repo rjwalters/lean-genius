@@ -1,0 +1,42 @@
+{
+  "id": "frobenius-number-oq-03",
+  "title": "Frobenius Number — Three Generators (Foundation)",
+  "slug": "frobenius-number-oq-03",
+  "description": "S2 ACT skeleton (researcher-1, 2026-05-13): foundation file for the three-generator Frobenius problem. Defines Representable3 a b c n := ∃ x y z, n = a*x + b*y + c*z and seven canonical closure lemmas (representable3_zero, representable3_a/b/c, representable3_add_a/b/c) by direct three-generator port of FrobeniusNumber.lean lines 42–69. All proofs are one-line ring/linarith. Foundation for subsequent stages targeting Roberts-1956 closed form g(n, n+1, n+2) = ⌊(n-2)/2⌋·n + (n-1) for three consecutive integers (S3–S5) and the Roberts 3-AP formula (S6+).",
+  "meta": {
+    "author": "Lean Genius",
+    "status": "formalized",
+    "proofRepoPath": "Proofs/FrobeniusNumberOQ03.lean",
+    "tags": [
+      "number-theory",
+      "frobenius",
+      "coin-problem",
+      "combinatorics",
+      "numerical-semigroups",
+      "three-generators",
+      "research"
+    ],
+    "badge": "research",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 68,
+    "theoremCount": 7,
+    "definitionCount": 1,
+    "assumptions": "None at this stage. The file establishes the Representable3 predicate and seven closure lemmas via ring/linarith; subsequent stages will add frobeniusNumber3 (S3) and the main theorem (S5).",
+    "dateAdded": "2026-05-13",
+    "mathlib_version": "4.26.0"
+  },
+  "sections": [],
+  "crossReferences": [
+    {
+      "slug": "frobenius-number",
+      "title": "Frobenius Number (Two Generators, Sylvester)",
+      "relationship": "parent"
+    },
+    {
+      "slug": "frobenius-number-oq-01",
+      "title": "Frobenius Number: Count of Non-Representable Integers",
+      "relationship": "sibling"
+    }
+  ]
+}

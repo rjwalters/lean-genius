@@ -2280,6 +2280,7 @@ import Proofs.FriendshipTheoremOQ03
 import Proofs.FrobeniusNumber
 import Proofs.FrobeniusNumberOQ01
 import Proofs.FrobeniusNumberOQ02
+import Proofs.FrobeniusNumberOQ03
 import Proofs.FundamentalArithmetic
 import Proofs.FundamentalArithmeticOQ01
 import Proofs.FundamentalArithmeticOQ01OQ01
