@@ -38,7 +38,7 @@
   {
     "id": "ann-hypersimplex-lattice-count",
     "proofId": "ehrhart-cube-proven-oq-03",
-    "range": { "startLine": 55, "endLine": 62 },
+    "range": { "startLine": 56, "endLine": 62 },
     "type": "definition",
     "title": "`hypersimplexLatticeCount`: Slice Cardinality",
     "content": "`hypersimplexLatticeCount d k n` is the cardinality of `Finset.univ.filter (Σ x_i = n · k)` over the finite function space `Fin d → Fin (n + 1)`. Mirrors the parent file's `cube_lattice_count` (which counts the whole cube `(Fin d → Fin (n+1))`) but adds the slice predicate. This is the central object: `L(Δ(d, k), n) = hypersimplexLatticeCount d k n`. The choice to inline the predicate `(∑ i : Fin d, (x i : ℕ)) = n * k` rather than reference `coordSumEq d n (n * k)` is intentional — it gives `decide` direct access to the unfolded form without an extra `unfold` step, which materially reduces the runtime of the four sanity checks in Section III.",
@@ -72,9 +72,21 @@
     "prerequisites": ["`Finset.card_image_of_injective`", "`Finset.sum_sub_distrib`", "`Fin.cast`"]
   },
   {
+    "id": "ann-namespace-scope",
+    "proofId": "ehrhart-cube-proven-oq-03",
+    "range": { "startLine": 35, "endLine": 35 },
+    "type": "context",
+    "title": "Namespace `EhrhartCubeProvenOQ03`",
+    "content": "All definitions and theorems are scoped under `namespace EhrhartCubeProvenOQ03`. This is deliberate: the family's siblings (`EhrhartCubeProven`, `EhrhartSimplexProven`, `EhrhartCrossPolytope`, `EhrhartCubeProvenOQ04`) each take their own namespace, so the S2/S3 proofs of this file can reference (e.g.) `EhrhartSimplexProven.simplex_lattice_count` and `EhrhartCubeProvenOQ04.eulerian` unambiguously without `open`-clashing. The scaffold ends with a matching `end EhrhartCubeProvenOQ03` at line 119, bracketing the entire file's content inside the namespace and producing fully-qualified names like `EhrhartCubeProvenOQ03.hypersimplexLatticeCount` for use by downstream files in the S4+ chain.",
+    "mathContext": "Lean's namespace mechanism is purely lexical and does not affect proof content, but it determines linkage at the import level: downstream files referencing the hypersimplex count by short name must either `open EhrhartCubeProvenOQ03` or use the fully-qualified path.",
+    "significance": "context",
+    "relatedConcepts": ["Lean namespace", "module organisation", "sibling Ehrhart files"],
+    "prerequisites": ["Lean 4 namespace semantics"]
+  },
+  {
     "id": "ann-sanity-checks",
     "proofId": "ehrhart-cube-proven-oq-03",
-    "range": { "startLine": 93, "endLine": 119 },
+    "range": { "startLine": 93, "endLine": 117 },
     "type": "technique",
     "title": "Section III — Four `decide` Sanity Checks",
     "content": "Four concrete numeric verifications closed by `decide`: (i) $L(\\Delta(2,1), 2) = 3$ (the points $(0,2), (1,1), (2,0)$); (ii) $L(\\Delta(3,1), 1) = 3$ (the three standard basis directions $e_1, e_2, e_3$); (iii) $L(\\Delta(3,2), 1) = 3$ (palindrome witness — same value as $\\Delta(3,1)$); (iv) $L(\\Delta(3,1), 2) = \\binom{4}{2} = 6$ (binomial witness for the S2 target with $d = 3$, $n = 2$). These `decide` proofs anchor the definition: any future iteration that breaks them would change the meaning of `hypersimplexLatticeCount`. Cumulatively the four checks cross-validate the *three* pieces of structure stated in Section II: the formula (via the binomial check (iv)), the palindrome (via (ii) vs (iii)), and the base case ($n = 1$ in dimension $d$ gives $d$ standard basis vectors when $k = 1$).",

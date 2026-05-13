@@ -63,7 +63,9 @@
       "**The two reduction identities in this scaffold are *both* corollaries of the same lattice involution** $x \\mapsto n\\mathbf{1} - x$ on $\\mathbb{Z}^d \\cap [0, n]^d$. The palindrome (k ↔ d - k) is the direct statement; the k = 1 reduction follows by composing the involution with the standard-simplex multiset bijection. Once the involution is in place, S2 and S3 become two instances of the same `Finset.card_image_of_injective` lemma.",
       "**The choice to encode lattice points as `Fin d → Fin (n + 1)` rather than as a tuple `Fin d × ℕ` is load-bearing.** The decidable instance for `coordSumEq` only synthesises automatically because `Fin (n + 1)` is itself a `Fintype` with decidable equality — a switch to `ℕ`-valued coordinates would require an external decidability proof and would block the four `decide` sanity checks, which currently anchor the definition against future drift.",
       "**The palindrome identity is the combinatorial shadow of Ehrhart–Macdonald reciprocity** $L(P, -n) = (-1)^d L(P^\\circ, n)$ specialised to hypersimplices. The involution $x \\mapsto n\\mathbf{1} - x$ that proves it is exactly the duality realising $\\Delta(d, k)^\\circ \\cong \\Delta(d, d - k)^\\circ$ on interior lattice points, and it explains why the h*-vector of the hypersimplex is palindromic ($A(d - 1, j) = A(d - 1, d - 1 - j)$) without invoking the full reciprocity theorem.",
-      "**The scaffold deliberately defers the generic Stanley formula to S4+.** Encoding the inclusion–exclusion $\\sum_j (-1)^j \\binom{d}{j} \\binom{n(k - j) + d - 1}{d - 1}$ in Lean requires either signed sums (`Finset.sum_range` with `Int.negSucc`) or a careful $\\mathbb{N}$-truncation argument. The two reduction identities are sufficient to validate the definition empirically (via the four `decide` checks) and to verify the palindrome symmetry, while postponing the harder inclusion–exclusion accounting to a later iteration that can build on `EhrhartCubeProvenOQ04.lean`'s Worpitzky identity."
+      "**The scaffold deliberately defers the generic Stanley formula to S4+.** Encoding the inclusion–exclusion $\\sum_j (-1)^j \\binom{d}{j} \\binom{n(k - j) + d - 1}{d - 1}$ in Lean requires either signed sums (`Finset.sum_range` with `Int.negSucc`) or a careful $\\mathbb{N}$-truncation argument. The two reduction identities are sufficient to validate the definition empirically (via the four `decide` checks) and to verify the palindrome symmetry, while postponing the harder inclusion–exclusion accounting to a later iteration that can build on `EhrhartCubeProvenOQ04.lean`'s Worpitzky identity.",
+      "**The `decide`-cost ceiling sets a hard upper bound on the size of the sanity checks.** Each `decide` proof exhausts the finite function space `Fin d → Fin (n + 1)` of size $(n + 1)^d$. For the four chosen tuples $(d, k, n) \\in \\{(2, 1, 2), (3, 1, 1), (3, 2, 1), (3, 1, 2)\\}$ the search spaces are $3^2 = 9$, $2^3 = 8$, $2^3 = 8$, $3^3 = 27$ — all well within Lean's compile-time evaluator. The binomial witness `hypersimplex_count_3_1_2 = C(4, 2)` is the largest of the four at 27 evaluations; pushing $n$ to 3 or $d$ to 4 would put the enumeration into the hundreds and risk `decide` timeouts, which is why the scaffold stops at $(d, n) \\le (3, 2)$ rather than verifying (say) $L(\\Delta(4, 2), 2)$.",
+      "**The encoding `Fin d → Fin (n+1)` over the bare `Σ x_i = n·k` predicate vs. `Sym (Fin d) (n·k)` is a deliberate trade-off.** The `Sym` approach would have the bijection with multisets baked in (making S2 a single `Sym.card_sym_eq_choose` invocation) but would force the palindrome involution to lift through the quotient by permutations, which is non-trivial because $x \\mapsto n\\mathbf{1} - x$ is a coordinate-wise involution, not a symmetric one. Keeping coordinates ordered makes the palindrome immediate at the cost of one extra step for S2 (re-bridging to `Sym`). The scaffold's choice reflects the trade: S3 (the involution) is the more delicate of the two reductions, so the encoding optimises for it."
     ]
   },
   "conclusion": {
@@ -83,28 +85,24 @@
   },
   "crossReferences": [
     {
-      "type": "parent",
-      "slug": "ehrhart-cube-proven",
-      "title": "Ehrhart Polynomial of the Unit Cube: First-Principles Proof",
-      "relation": "Parent problem; supplies the `(Fin d → Fin (n+1))` lattice-point encoding reused here for the slice Σ x_i = n·k."
+      "targetId": "ehrhart-cube-proven",
+      "relationship": "parent",
+      "description": "Parent problem (Ehrhart Polynomial of the Unit Cube: First-Principles Proof); supplies the `(Fin d → Fin (n+1))` lattice-point encoding reused here for the slice Σ x_i = n·k."
     },
     {
-      "type": "sibling",
-      "slug": "ehrhart-cube-proven-oq-01",
-      "title": "Ehrhart Polynomial of the Standard Simplex: First-Principles Proof",
-      "relation": "Sibling: supplies the multiset bijection `Sym (Fin (d+1)) n` whose specialisation discharges OQ-03's k = 1 case."
+      "targetId": "ehrhart-cube-proven-oq-01",
+      "relationship": "sibling",
+      "description": "Sibling (Ehrhart Polynomial of the Standard Simplex: First-Principles Proof); supplies the multiset bijection `Sym (Fin (d+1)) n` whose specialisation discharges OQ-03's k = 1 case via `Sym.card_sym_eq_choose`."
     },
     {
-      "type": "sibling",
-      "slug": "ehrhart-cube-proven-oq-02",
-      "title": "Ehrhart Polynomial of the Cross-Polytope: Axiom-Free Proof",
-      "relation": "Sibling: parallel hyperplane-slice family; Pascal/hockey-stick algebraic infrastructure reusable for the generic Stanley formula in OQ-03 S4+."
+      "targetId": "ehrhart-cube-proven-oq-02",
+      "relationship": "sibling",
+      "description": "Sibling (Ehrhart Polynomial of the Cross-Polytope: Axiom-Free Proof); parallel hyperplane-slice family. Pascal/hockey-stick algebraic infrastructure reusable for the generic Stanley formula in OQ-03 S4+."
     },
     {
-      "type": "sibling",
-      "slug": "ehrhart-cube-proven-oq-04",
-      "title": "Eulerian-Number Interpretation of the h*-Vector of the Unit Cube",
-      "relation": "Sibling: Stanley's general hypersimplex formula `L(Δ(d, k), n) = Σ_j A(d-1, j) · C(n - j + d - 1, d - 1)` uses the Eulerian numbers `A(d-1, j)` formalised in OQ-04 — the S4+ bridge target."
+      "targetId": "ehrhart-cube-proven-oq-04",
+      "relationship": "sibling",
+      "description": "Sibling (Eulerian-Number Interpretation of the h*-Vector of the Unit Cube); Stanley's general hypersimplex formula `L(Δ(d, k), n) = Σ_j A(d-1, j) · C(n - j + d - 1, d - 1)` uses the Eulerian numbers `A(d-1, j)` formalised in OQ-04 — the S4+ bridge target via the identity h*(Δ(d, k)) = A(d - 1, k - 1)."
     }
   ]
 }
