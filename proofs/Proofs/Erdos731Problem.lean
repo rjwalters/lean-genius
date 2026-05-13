@@ -382,3 +382,58 @@ theorem choose_succ_gt_central (n : ℕ) (hn : n ≥ 1) :
     exact Nat.choose_succ_succ (2 * (m + 1)) m
   have hpos : Nat.choose (2 * n) (n - 1) ≥ 1 := Nat.choose_pos (by omega)
   omega
+
+/-! ## Sharp bound: leastNonDivCentral = 3 when 3 ∤ C(2n, n)
+
+The Erdős–Graham–Ruzsa–Straus conjecture predicts `leastNonDivCentral n ~
+exp((log n)^{1/2+o(1)})`. Below we extract a sharp small-value case: for
+every `n ≥ 1` such that `3 ∤ C(2n, n)`, the value is *exactly* 3.
+
+This refines `upper_bound_trivial` (which gives only `≤ 2n+1`) by a
+considerable margin whenever the 3-non-divisibility hypothesis holds.
+By Kummer's theorem, `3 ∤ C(2n, n)` iff every base-3 digit of `n` is at
+most 1; this is an infinite family of `n` (including 1, 3, 4, 9, 10, 12,
+13, 27, 28, ...).
+-/
+
+/-- Lower bound: if `2 ∣ m`, then `leastNonDivisor m ≥ 3`. Refines
+    `leastNonDivisor_ge_two` by ruling out the value 2 once 2 is known
+    to divide `m`. -/
+private lemma leastNonDivisor_ge_three {m : ℕ} (hm : m ≠ 0) (h2 : 2 ∣ m) :
+    3 ≤ leastNonDivisor m := by
+  unfold leastNonDivisor
+  rw [dif_neg hm, Nat.le_find_iff]
+  rintro k hk3 ⟨hk_pos, hk_ndvd⟩
+  interval_cases k
+  · exact hk_ndvd (one_dvd m)
+  · exact hk_ndvd h2
+
+/-- Upper bound: whenever `3 ∤ C(2n, n)`, `leastNonDivCentral n ≤ 3`.
+    Direct corollary of `leastNonDivisor_le_of_ndvd` at `j = 3`. -/
+theorem leastNonDivCentral_le_three_of_ndvd (n : ℕ)
+    (h : ¬ (3 ∣ centralBinom n)) : leastNonDivCentral n ≤ 3 := by
+  unfold leastNonDivCentral
+  exact leastNonDivisor_le_of_ndvd (by omega : (3 : ℕ) > 0) h
+
+/-- Sharp equality: for every `n ≥ 1` with `3 ∤ C(2n, n)`,
+    `leastNonDivCentral n = 3`. The upper bound is `_le_three_of_ndvd`;
+    the lower bound holds because 1 always divides and 2 divides
+    `C(2n, n)` for any `n ≥ 1` (`two_divides_central`). -/
+theorem leastNonDivCentral_eq_three_of_ndvd (n : ℕ) (hn : n ≥ 1)
+    (h : ¬ (3 ∣ centralBinom n)) : leastNonDivCentral n = 3 := by
+  apply le_antisymm
+  · exact leastNonDivCentral_le_three_of_ndvd n h
+  · unfold leastNonDivCentral
+    exact leastNonDivisor_ge_three (centralBinom_pos n).ne' (two_divides_central n hn)
+
+/-- Concrete witness at `n = 3`: `C(6, 3) = 20`, and `3 ∤ 20`,
+    so `leastNonDivCentral 3 = 3`. -/
+theorem leastNonDivCentral_three_eq_three : leastNonDivCentral 3 = 3 :=
+  leastNonDivCentral_eq_three_of_ndvd 3 (by omega) (by
+    rw [centralBinom_three]; decide)
+
+/-- Concrete witness at `n = 4`: `C(8, 4) = 70`, and `3 ∤ 70`,
+    so `leastNonDivCentral 4 = 3`. -/
+theorem leastNonDivCentral_four_eq_three : leastNonDivCentral 4 = 3 :=
+  leastNonDivCentral_eq_three_of_ndvd 4 (by omega) (by
+    rw [centralBinom_four]; decide)
