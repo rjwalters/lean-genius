@@ -49,6 +49,13 @@
   },
   "sections": [
     {
+      "id": "file-header",
+      "title": "Module Docstring and Namespace Setup",
+      "startLine": 1,
+      "endLine": 52,
+      "summary": "Copyright header (lines 1-5), single dependency import `Proofs.SpernerSimplicialBridge` (line 6), and the module docstring `/-! … -/` (lines 8-48) which names the structural payoff explicitly: *door dimensions are graded* — a codim-1 face of a `(d+1)`-simplex has cardinality `d`, so faces of different cardinalities cannot pair as doors and the pseudomanifold condition decomposes stratum by stratum. The docstring's `## Main definitions` and `## Main results` sections enumerate the four headline declarations (`topCellsOfDim`, `MixedPseudomanifold`, `topCellsOfDim_eq_of_pure`, `MixedPseudomanifold.of_pure`); De Longueville (2013) is cited as the canonical reference. `namespace Sperner.SimplicialComplex` (line 50) places every new declaration in the parent's namespace so unqualified references to `vertexEnum`, `exists_panchromatic`, `IsDoor`, `IsPanchromatic`, and `adjFn` resolve against the parent. `open Finset` (line 52) keeps `filter`/`mem_filter`/`filter_eq_self`/`filter_eq_empty_iff`/`filter_empty` unqualified throughout."
+    },
+    {
       "id": "stratification",
       "title": "Stratification by Dimension",
       "startLine": 54,
@@ -63,11 +70,25 @@
       "summary": "Three theorems showing that pure pseudomanifolds lift to the mixed predicate. `topCellsOfDim_eq_of_pure`: when `∀ s ∈ K, s.card = d + 1`, the stratum at `d` is all of `K`. Proof: unfold `topCellsOfDim` and apply `Finset.filter_eq_self.mpr`. `topCellsOfDim_eq_empty_of_pure`: under the same hypothesis, every other stratum `d' ≠ d` is empty (any cell would have cardinality both `d+1` and `d'+1`, contradicting `omega`). `MixedPseudomanifold.of_pure`: combines both — for the target dimension `d` the bound follows from the parent's `hpseudo`; for other dimensions the filter is over an empty stratum and the cardinality is 0. The lift is vacuous at strata of other dimensions, witnessing that the generalisation genuinely subsumes the parent."
     },
     {
-      "id": "per-stratum-sperner",
-      "title": "Per-Stratum Sperner via the Parent's `exists_panchromatic`",
+      "id": "per-stratum-helpers",
+      "title": "Per-Stratum Helpers (`card_of_mem_topCellsOfDim`, `hpseudo_of_mixed`)",
       "startLine": 111,
-      "endLine": 180,
-      "summary": "Three helpers and the main theorem. `card_of_mem_topCellsOfDim` projects `s.card = d + 1` from membership in the stratum via `Finset.mem_filter.mp`. `hpseudo_of_mixed` specialises `MixedPseudomanifold K` at a chosen dimension `d`, yielding the parent's `hpseudo` hypothesis. `boundaryDoorCount` is a `noncomputable def` that, by construction, copies the parent's `hbdry` filter expression with `topCellsOfDim K d` substituted for the parent's `topCells` — so `Odd (boundaryDoorCount K c)` unfolds to the parent's `hbdry` predicate. `sperner_mixed_panchromatic_at_dim` then applies `exists_panchromatic` directly: pass `topCellsOfDim K d` as `topCells`, `(fun _ hs => card_of_mem_topCellsOfDim hs)` as `hcard`, `hpseudo_of_mixed hmixed` as `hpseudo`, and the unfolded `hbdry`. The proof body is a single term-mode application — no new mathematics is introduced, only the per-stratum bookkeeping."
+      "endLine": 138,
+      "summary": "Section-level docstring (lines 111-121) explains the per-stratum decomposition strategy and opens `section MixedSperner` with a `variable [LinearOrder E]` instance (required by the parent's `vertexEnum`, which uses `Finset.sort (· ≤ ·)`). Two helpers package the per-stratum hypotheses the parent's `exists_panchromatic` expects. `card_of_mem_topCellsOfDim` (lines 128-131) projects `s.card = d + 1` from `s ∈ topCellsOfDim K d` via `(Finset.mem_filter.mp hs).2` — single-line term-mode proof. `hpseudo_of_mixed` (lines 134-138) specialises `MixedPseudomanifold K` at a chosen dimension `d`, yielding `∀ f, f.card = d → ((topCellsOfDim K d).filter (fun s => f ⊆ s)).card ≤ 2` — the exact shape of the parent's `hpseudo` argument."
+    },
+    {
+      "id": "boundary-door-count",
+      "title": "`boundaryDoorCount`: Per-Stratum Boundary-Door Abstraction",
+      "startLine": 140,
+      "endLine": 156,
+      "summary": "`boundaryDoorCount K c : ℕ` is a `noncomputable def` (the parent's `adjFn` returns `Option` via existential choice, so `Decidable` does not propagate) that counts pairs `(s, k)` with `s ∈ topCellsOfDim K d` and `k : Fin (d + 1)` satisfying *both* `Sperner.IsDoor (vertexEnum …) c s k` (lower-colour face is panchromatic) *and* `adjFn (topCellsOfDim K d) (fun _ hs => card_of_mem_topCellsOfDim hs) s k = none` (the codim-1 face lies in no other cell of the stratum, so the pair is a *boundary* door rather than an interior one). The definition is engineered so that — modulo Lean's standard `def`-reducibility — `Odd (boundaryDoorCount K c)` *is* the parent's `hbdry` predicate with `topCellsOfDim K d` substituted for `topCells`. This is what lets `sperner_mixed_panchromatic_at_dim` apply `exists_panchromatic` as a single term-mode application with no `unfold`/`change`/`show` glue."
+    },
+    {
+      "id": "mixed-sperner-main",
+      "title": "`sperner_mixed_panchromatic_at_dim`: Headline Theorem",
+      "startLine": 158,
+      "endLine": 184,
+      "summary": "The file's headline theorem (lines 170-180) and the closing of `section MixedSperner` / `namespace Sperner.SimplicialComplex`. Hypotheses: `K : Finset (Finset E)`, `hmixed : MixedPseudomanifold K`, `c : E → Fin (d + 1)`, and `hbdry : Odd (boundaryDoorCount (d := d) K c)`. Conclusion: there exists a panchromatic cell in the dimension-`d` stratum. The proof body is a 3-line term-mode application of `exists_panchromatic` (the parent file) passing `topCellsOfDim K d` for `topCells`, `(fun _ hs => card_of_mem_topCellsOfDim hs)` for `hcard`, `hpseudo_of_mixed hmixed` for `hpseudo`, `c`, and `hbdry` — `boundaryDoorCount` unfolds definitionally into the parent's expected `hbdry` shape. No new combinatorial argument is needed: the mathematical content is entirely in the predicate-level work of the earlier sections."
     }
   ],
   "mainTheorems": [
