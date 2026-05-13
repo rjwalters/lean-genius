@@ -592,4 +592,202 @@ theorem mul_choose_dvd_lcmRange_three_odd {n : ℕ} (hn : 3 ≤ n) (hodd : Odd n
   -- Step 6: 3 · C(n, 3) divides its own multiple by 2
   exact (dvd_mul_left (3 * Nat.choose n 3) 2).trans h_prod
 
+-- =====================================================================
+-- PART 9 (Session 10): m=3 helper — double-n algebraic identity
+-- =====================================================================
+
+/-- **(Part 9) Double-n m=3 identity**: for `m ≥ 2`,
+    `3 · C(2m, 3) = (2m) · (2m - 1) · (m - 1)`.
+
+    Derived from Part 7 `two_mul_three_mul_choose_three_eq` by
+    instantiating `n := 2m` and absorbing the `2` into the
+    `(2m - 2)` factor (`2m - 2 = 2(m - 1)`).
+
+    This is the uniform algebraic identity used by both
+    `mul_choose_dvd_lcmRange_three_double_even` (Part 10a) and
+    `mul_choose_dvd_lcmRange_three_double_odd` (Part 10b). The two
+    sub-cases differ only in how they regroup these three factors. -/
+theorem three_mul_choose_three_eq_of_double {m : ℕ} (hm : 2 ≤ m) :
+    3 * Nat.choose (2 * m) 3 = 2 * m * (2 * m - 1) * (m - 1) := by
+  have h2m : 3 ≤ 2 * m := by omega
+  have h7 := two_mul_three_mul_choose_three_eq h2m
+  -- h7 : 2 * (3 * C(2m, 3)) = (2 * m) * ((2 * m - 1) * (2 * m - 2))
+  have hsub : (2 * m - 2 : ℕ) = 2 * (m - 1) := by omega
+  rw [hsub] at h7
+  have hrhs : (2 * m) * ((2 * m - 1) * (2 * (m - 1))) =
+              2 * (2 * m * (2 * m - 1) * (m - 1)) := by ring
+  rw [hrhs] at h7
+  exact Nat.eq_of_mul_eq_mul_left (by decide : 0 < 2) h7
+
+-- =====================================================================
+-- PART 10 (Session 10): m=3 divisibility — even-n case + full theorem
+-- =====================================================================
+
+/-! ### Coprime-decomposition strategy (S9 finding, S10 implementation)
+
+For `n` even, write `n = 2m`. Then `3 · C(n, 3) = (2m)(2m-1)(m-1)`
+by Part 9. Dispatch on parity of `m`:
+
+* `m` even (`n ≡ 0 (mod 4)`): factorization `(2m)(2m-1)(m-1)`.
+  Coprime checks: `gcd(2m, 2m-1) = 1` (consecutive);
+  `gcd(2m, m-1) = 1` (`m` even ⇒ `m-1` odd; gcd | 2 forces gcd = 1);
+  `gcd(2m-1, m-1) = 1` (`2m-1 = 1 + 2(m-1)`).
+
+* `m` odd (`n ≡ 2 (mod 4)`): regroup
+  `(2m)(2m-1)(m-1) = m(2m-1)(2m-2)` (via `2m(m-1) = m · 2(m-1)`).
+  Coprime checks: `gcd(m, 2m-1) = 1` (`gcd | 2m - (2m-1) = 1`);
+  `gcd(m, 2m-2) = 1` (`m` odd ⇒ `gcd | 2` and `gcd | m` ⇒ gcd = 1);
+  `gcd(2m-1, 2m-2) = 1` (consecutive).
+
+The S9 plan corrects S8's earlier claim that the `n ≡ 2 (mod 4)`
+case "probably needs Kummer" — the re-grouping closes both
+sub-cases without Kummer. -/
+
+private lemma three_factors_dvd_lcmRange {a b c n : ℕ}
+    (hap : 0 < a) (han : a ≤ n)
+    (hbp : 0 < b) (hbn : b ≤ n)
+    (hcp : 0 < c) (hcn : c ≤ n)
+    (hab : Nat.Coprime a b) (hac : Nat.Coprime a c)
+    (hbc : Nat.Coprime b c) :
+    a * b * c ∣ lcmRange n := by
+  have ha : a ∣ lcmRange n := dvd_lcmRange hap han
+  have hb : b ∣ lcmRange n := dvd_lcmRange hbp hbn
+  have hc : c ∣ lcmRange n := dvd_lcmRange hcp hcn
+  have hab_dvd : a * b ∣ lcmRange n :=
+    hab.mul_dvd_of_dvd_of_dvd ha hb
+  have habc : Nat.Coprime (a * b) c := Nat.Coprime.mul hac hbc
+  exact habc.mul_dvd_of_dvd_of_dvd hab_dvd hc
+
+/-- **(Part 10a) m=3 divisibility, double-of-even**: for `m ≥ 2` and
+    `Even m`, `3 · C(2m, 3) ∣ lcmRange (2m)`.
+
+    Coprime triple `(2m, 2m-1, m-1)`. The crux of "Even m" is
+    `gcd(2m, m-1) = 1`: the gcd divides `2m - 2(m-1) = 2`, and
+    `m - 1` is odd (forced by `Even m`), so the gcd is odd and
+    hence 1. -/
+theorem mul_choose_dvd_lcmRange_three_double_even {m : ℕ}
+    (hm : 2 ≤ m) (heven : Even m) :
+    3 * Nat.choose (2 * m) 3 ∣ lcmRange (2 * m) := by
+  rw [three_mul_choose_three_eq_of_double hm]
+  refine three_factors_dvd_lcmRange (by omega) (le_refl _)
+    (by omega) (by omega) (by omega) (by omega) ?_ ?_ ?_
+  · -- Coprime (2 * m) (2 * m - 1)  (consecutive)
+    have hrw : 2 * m = (2 * m - 1) + 1 := by omega
+    rw [hrw]
+    exact (Nat.coprime_self_add_right.mpr (Nat.coprime_one_right _)).symm
+  · -- Coprime (2 * m) (m - 1)  (needs Even m)
+    show Nat.gcd (2 * m) (m - 1) = 1
+    have h_gcd_dvd_2 : Nat.gcd (2 * m) (m - 1) ∣ 2 := by
+      have h1 := Nat.gcd_dvd_left (2 * m) (m - 1)
+      have h2 := Nat.gcd_dvd_right (2 * m) (m - 1)
+      have h3 : Nat.gcd (2 * m) (m - 1) ∣ 2 * (m - 1) := h2.mul_left 2
+      have heq_2m : 2 * m = 2 * (m - 1) + 2 := by omega
+      rw [heq_2m] at h1
+      exact Nat.dvd_sub' h1 h3
+    have h_not_2_dvd : ¬ (2 ∣ Nat.gcd (2 * m) (m - 1)) := by
+      intro h
+      have hdvd : 2 ∣ m - 1 := h.trans (Nat.gcd_dvd_right _ _)
+      rcases heven with ⟨j, hj⟩
+      rcases hdvd with ⟨k, hk⟩
+      omega
+    have h_pos : 0 < Nat.gcd (2 * m) (m - 1) :=
+      Nat.gcd_pos_of_pos_left _ (by omega)
+    have h_le2 : Nat.gcd (2 * m) (m - 1) ≤ 2 :=
+      Nat.le_of_dvd (by decide) h_gcd_dvd_2
+    by_contra hne
+    have hgcd_eq_2 : Nat.gcd (2 * m) (m - 1) = 2 := by omega
+    exact h_not_2_dvd (hgcd_eq_2 ▸ dvd_refl 2)
+  · -- Coprime (2 * m - 1) (m - 1)  (`2m - 1 = 1 + 2(m - 1)`)
+    show Nat.gcd (2 * m - 1) (m - 1) = 1
+    have hrw : 2 * m - 1 = 1 + 2 * (m - 1) := by omega
+    rw [hrw, Nat.gcd_add_mul_left_left]
+    exact Nat.gcd_one_left _
+
+/-- **(Part 10b) m=3 divisibility, double-of-odd**: for `m ≥ 2` and
+    `Odd m`, `3 · C(2m, 3) ∣ lcmRange (2m)`.
+
+    Regroups Part 9's `(2m)(2m-1)(m-1)` as `m(2m-1)(2m-2)`, then
+    coprime triple checks. The crux of "Odd m" is `gcd(m, 2m-2) = 1`:
+    the gcd divides `2m - (2m-2) = 2`, and `m` is odd, so the gcd
+    is odd and hence 1. -/
+theorem mul_choose_dvd_lcmRange_three_double_odd {m : ℕ}
+    (hm : 2 ≤ m) (hodd : Odd m) :
+    3 * Nat.choose (2 * m) 3 ∣ lcmRange (2 * m) := by
+  rw [three_mul_choose_three_eq_of_double hm]
+  -- Regroup: 2*m * (2*m - 1) * (m - 1) = m * (2*m - 1) * (2*m - 2)
+  have hregroup :
+      2 * m * (2 * m - 1) * (m - 1) = m * (2 * m - 1) * (2 * m - 2) := by
+    have h22 : (2 * m - 2 : ℕ) = 2 * (m - 1) := by omega
+    rw [h22]; ring
+  rw [hregroup]
+  refine three_factors_dvd_lcmRange (by omega) (by omega)
+    (by omega) (by omega) (by omega) (by omega) ?_ ?_ ?_
+  · -- Coprime m (2 * m - 1)  (gcd | m ⇒ gcd | 2m ⇒ gcd | 2m - (2m-1) = 1)
+    show Nat.gcd m (2 * m - 1) = 1
+    have h1 := Nat.gcd_dvd_left m (2 * m - 1)
+    have h2 := Nat.gcd_dvd_right m (2 * m - 1)
+    have h3 : Nat.gcd m (2 * m - 1) ∣ 2 * m := h1.mul_left 2
+    have heq : (2 * m - (2 * m - 1) : ℕ) = 1 := by omega
+    have h4 : Nat.gcd m (2 * m - 1) ∣ 1 := heq ▸ Nat.dvd_sub' h3 h2
+    exact Nat.eq_one_of_dvd_one h4
+  · -- Coprime m (2 * m - 2)  (needs Odd m)
+    show Nat.gcd m (2 * m - 2) = 1
+    have h_gcd_dvd_2 : Nat.gcd m (2 * m - 2) ∣ 2 := by
+      have h1 := Nat.gcd_dvd_left m (2 * m - 2)
+      have h2 := Nat.gcd_dvd_right m (2 * m - 2)
+      have h3 : Nat.gcd m (2 * m - 2) ∣ 2 * m := h1.mul_left 2
+      have heq : 2 * m = (2 * m - 2) + 2 := by omega
+      rw [heq] at h3
+      exact Nat.dvd_sub' h3 h2
+    have h_not_2_dvd : ¬ (2 ∣ Nat.gcd m (2 * m - 2)) := by
+      intro h
+      have hdvd : 2 ∣ m := h.trans (Nat.gcd_dvd_left _ _)
+      rcases hodd with ⟨k, hk⟩
+      rcases hdvd with ⟨l, hl⟩
+      omega
+    have h_pos : 0 < Nat.gcd m (2 * m - 2) :=
+      Nat.gcd_pos_of_pos_left _ (by omega)
+    have h_le2 : Nat.gcd m (2 * m - 2) ≤ 2 :=
+      Nat.le_of_dvd (by decide) h_gcd_dvd_2
+    by_contra hne
+    have hgcd_eq_2 : Nat.gcd m (2 * m - 2) = 2 := by omega
+    exact h_not_2_dvd (hgcd_eq_2 ▸ dvd_refl 2)
+  · -- Coprime (2 * m - 1) (2 * m - 2)  (consecutive)
+    have hrw : 2 * m - 1 = (2 * m - 2) + 1 := by omega
+    rw [hrw]
+    exact (Nat.coprime_self_add_right.mpr (Nat.coprime_one_right _)).symm
+
+/-- **(Part 10c) m=3 divisibility, even-n case**: for `n ≥ 4` and
+    `Even n`, `3 · C(n, 3) ∣ lcmRange n`.
+
+    Dispatches to Part 10a / 10b on parity of `m := n / 2`. -/
+theorem mul_choose_dvd_lcmRange_three_even {n : ℕ}
+    (hn : 4 ≤ n) (heven : Even n) :
+    3 * Nat.choose n 3 ∣ lcmRange n := by
+  rcases heven with ⟨m, hm⟩  -- hm : n = m + m
+  have hn_eq : n = 2 * m := by omega
+  have hm_ge : 2 ≤ m := by omega
+  rw [hn_eq]
+  rcases Nat.even_or_odd m with hm_even | hm_odd
+  · exact mul_choose_dvd_lcmRange_three_double_even hm_ge hm_even
+  · exact mul_choose_dvd_lcmRange_three_double_odd hm_ge hm_odd
+
+/-- **(Part 10d) m=3 divisibility, full theorem**: for `n ≥ 3`,
+    `3 · C(n, 3) ∣ lcmRange n`.
+
+    Combines Part 8b (`mul_choose_dvd_lcmRange_three_odd`, S8) and
+    Part 10c (`mul_choose_dvd_lcmRange_three_even`, S10) on parity
+    of `n`. This is the m=3 case of the general target
+    `mul_choose_dvd_lcmRange`, which remains open for m ≥ 4
+    (genuine Kummer-or-double-induction territory). -/
+theorem mul_choose_dvd_lcmRange_three {n : ℕ} (hn : 3 ≤ n) :
+    3 * Nat.choose n 3 ∣ lcmRange n := by
+  rcases Nat.even_or_odd n with heven | hodd
+  · -- n even, n ≥ 3 ⇒ n ≥ 4
+    have hn_4 : 4 ≤ n := by
+      rcases heven with ⟨k, hk⟩
+      omega
+    exact mul_choose_dvd_lcmRange_three_even hn_4 heven
+  · exact mul_choose_dvd_lcmRange_three_odd hn hodd
+
 end BaselProblemOQ01OQ01OQ02OQ02
