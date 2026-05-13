@@ -401,6 +401,33 @@ theorem pan_witness_cleaned_resolvent (t s : ℂ) :
   rw [resolvent_cubic_eval_s_form]
   ring
 
+/-- **Pan-witness `t = 0` factorisation** (S5b SCAFFOLD-2).
+
+Specialising `pan_witness_cleaned_resolvent` at the boundary value
+`t = 0`, the cleaned-resolvent polynomial in `s` collapses to
+`s³ - 2 s² = s² · (s - 2)`. This **factorised** form exposes:
+
+* a **double root** at `s = 0` (i.e. `α² = 2m + p = 0`, the degenerate
+  Ferrari branch);
+* a **single root** at `s = 2` (the non-degenerate branch).
+
+This is the algebraic substrate for the future `pan_witness_k1_tangency`
+(S5b ACT proper, see `sessions/2026-05-13-s5b-scaffold-1-pan-witness-cleaned-resolvent.md`
+§11). The double root at `s = 0` is what perturbs — under
+`t ≠ 0` — into a `Θ(t)` pair of roots (the `s¹` coefficient `4t² - t⁴`
+of `pan_witness_cleaned_resolvent` is `Θ(t²)`, so by Vieta the two
+near-zero roots are at `s = ±Θ(t)`), giving `α(t) = Θ(√t · √t) = Θ(t)`
+— the `k = 1` tangency of OQ-02.a.1. The third root at `s = 2 + O(t²)`
+is the non-degenerate Ferrari branch and stays a fixed distance away.
+
+Proof: identical `simp only + ring` pattern as `resolvent_cubic_q_zero`
+(line 341), `resolvent_root_neg_p_half_at_q_zero` (line 353), and
+`resolvent_cubic_eval_s_form` (line 376). -/
+theorem pan_witness_t_zero_factorisation (s : ℂ) :
+    (resolventCubic (-1) 0 (1/4 : ℂ)).eval ((s - (-1)) / 2) = s^2 * (s - 2) := by
+  simp only [resolventCubic, eval_add, eval_mul, eval_pow, eval_X, eval_C]
+  ring
+
 /-- **Biquadratic limit (OQ-02.c, S3 DISCHARGE)**
 
 In the biquadratic limit `q = 0`, Ferrari's formula admits a
@@ -544,5 +571,6 @@ end GeneralQuartic
 #check GeneralQuartic.resolvent_root_neg_p_half_at_q_zero
 #check GeneralQuartic.resolvent_cubic_eval_s_form
 #check GeneralQuartic.pan_witness_cleaned_resolvent
+#check GeneralQuartic.pan_witness_t_zero_factorisation
 #check GeneralQuartic.ferrari_biquad_limit
 #check GeneralQuartic.biquadratic_simple
