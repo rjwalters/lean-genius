@@ -33,19 +33,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T13:10:00.000Z",
-    "iteration": 3,
-    "focus": "S3-B ACT (researcher-3, 2026-05-12): Added `bloom_sisask_consistent_with_Behrend` to `proofs/Proofs/RothTheoremOQ02.lean` (+31 lines: docstring + 4-line proof + import). The theorem records consistency between the S2 axiom's upper bound `(N : ℝ) / Real.log N ^ (1 + blasiConst)` and Mathlib's *unconditional* lower bound `Behrend.roth_lower_bound : (N : ℝ) * exp(-4 * √(log N)) ≤ rothNumberNat N`. The proof is purely transitive through `rothNumberNat N` — both bounds hold simultaneously, so the lower bound is `≤` the upper bound; the underlying analytic inequality `(1 + c) * log log N ≤ 4 * √(log N)` is *not* proved directly. New import: `Mathlib.Combinatorics.Additive.AP.Three.Behrend`. File now 119 → 150 lines, supporting-theorem count 4 → 5, axioms 1 (unchanged), sorries 0 (unchanged). Build verified via Docker (2505 jobs, `Built Proofs.RothTheoremOQ02`). S2 ACT-A (researcher-12, 2026-05-12, PR #18094): companion-file axiom-form statement (`rothNumberNat_bloom_sisask`) + stable downstream API (`blasiConst`, `blasiConst_pos`, `rothNumberNat_le_blasi`) + qualitative-form export `bloom_sisask_consistent_with_isLittleO`. S1 OBSERVE (researcher-11, 2026-05-12, PR #18031 + #18033): literature survey, Mathlib API snapshot, ranked infrastructure gap list, three S2 candidates.",
+    "since": "2026-05-13T01:10:00.000Z",
+    "iteration": 4,
+    "focus": "S4-a ACT (researcher-4, 2026-05-13): Extended `proofs/Proofs/RothTheoremOQ02.lean` (+86 LOC, 150 → 236) with the Kelley–Meka 2023 upper bound (arXiv:2302.05537) as `axiom rothNumberNat_kelley_meka : ∃ c > 0, ∀ N ≥ 3, rothNumberNat N ≤ N * exp(-c * (log N)^(1/12))`, plus matching API `kelleyMekaConst`, `kelleyMekaConst_pos`, `rothNumberNat_le_kelley_meka` (parallel to the S2 `blasiConst` chain). Then two transitive consistency theorems: (a) `kelley_meka_consistent_with_Behrend` records `Behrend.roth_lower_bound.trans rothNumberNat_le_kelley_meka` — i.e. the strictly tighter Behrend ≤ Kelley–Meka bracketing (the (log N)^(1/2) vs (log N)^(1/12) gap is the central open quantitative question), and (b) `rothNumberNat_le_min_blasi_kelley_meka` records a `le_min` of the two axiomatized upper bounds, giving downstream consumers a strictly tighter envelope under both axioms. New axiom count: 1 → 2; new theorem count: 5 → 9; new definitions: 0 → 1; sorries: 0 (unchanged); imports: unchanged. Build status: pending (worktree .lake symlink loop; the file uses only the verified `Behrend.roth_lower_bound.trans` + `le_min` patterns from S3-B). S3-B ACT (researcher-3, 2026-05-12, PR #18238): `bloom_sisask_consistent_with_Behrend` via transitivity through `rothNumberNat N`; +31 lines. S2 ACT-A (researcher-12, 2026-05-12, PR #18094): companion-file axiom-form statement (`rothNumberNat_bloom_sisask`) + stable downstream API. S1 OBSERVE (researcher-11, 2026-05-12, PR #18031 + #18033): literature survey, Mathlib API snapshot, ranked infrastructure gap list.",
     "blockers": [
       "No Mathlib Bohr-set library (BohrSet T rho not defined).",
       "No quantitative Bogolyubov on Bohr sets in Mathlib.",
       "No density-increment iteration framework in Mathlib.",
       "No AP3-specific Fourier level-set / energy lemmas in Mathlib."
     ],
-    "nextAction": "S4 candidates (ranked smallest first): (a) `bloom_sisask_consistent_with_KelleyMeka` — analogous transitive consistency check against the tighter Kelley-Meka 2023 upper bound `rothNumberNat N ≤ N * exp(-c * (log N)^{1/12})`, contingent on first adding a Kelley-Meka axiom-form statement (similar to `rothNumberNat_bloom_sisask`); about +30 lines axiom + 10 lines consistency. (b) S3-C — begin Bohr-set scaffold: define `BohrSet T ρ` over `ZMod N`, prove `0 ∈ B(T, ρ)`, symmetry, and `B(T, 1) = univ`; about +200 lines, first step of the multi-quarter infrastructure build-out. (c) `bloom_sisask_consistent_with_subadditivity` — verify Bloom-Sisask's upper bound is consistent with the Mathlib `rothNumberNat_add_le` subadditivity in a non-vacuous regime (lower priority; redundant with existing transitive bounds).",
+    "nextAction": "S5 candidates: (a, ~200 LOC) `BohrSet T ρ` scaffold over `ZMod N` — first step of the multi-quarter Bohr-set infrastructure (regularity → quantitative Bogolyubov → density-increment iteration → final bound). (b, ~100 LOC) Extend the consistency-theorem family with an `IsLittleO`-form export of Kelley–Meka: `rothNumberNat_kelley_meka_isLittleO_id : (rothNumberNat N : ℝ) =o[atTop] (N : ℝ)` proved from the axiom directly. (c, ~50 LOC) `rothNumberNat_le_min_three` — the joint envelope under all three known upper bounds (Bloom–Sisask, Kelley–Meka, the trivial `rothNumberNat N ≤ N`), useful as a stable downstream API. Recommended: (a) when there is a multi-iteration time budget, else (b) as the natural sequel to S4-a's transitivity pattern.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 2,
+      "total": 4,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
@@ -131,7 +131,7 @@
     ]
   },
   "started": "2026-05-12T09:30:00.000Z",
-  "lastUpdate": "2026-05-12T13:10:00.000Z",
+  "lastUpdate": "2026-05-13T01:10:00.000Z",
   "significance": 7,
   "tractability": 4
 }

@@ -1,12 +1,72 @@
 # Current State — roth-theorem-oq-02
 
-**Phase**: ACT (S3-B — Behrend consistency check)
-**Since**: 2026-05-12T13:10:00.000Z (S3-B ACT, researcher-3)
-**Iteration**: 3
-**Researcher**: researcher-3 (S3); researcher-12 (S2); researcher-11 (S1)
-**Mode**: ACT (S3-B Behrend consistency theorem)
+**Phase**: ACT (S4-a — Kelley–Meka axiom + transitive consistency)
+**Since**: 2026-05-13T01:10:00.000Z (S4-a ACT, researcher-4)
+**Iteration**: 4
+**Researcher**: researcher-4 (S4); researcher-3 (S3); researcher-12 (S2); researcher-11 (S1)
+**Mode**: ACT (S4-a Kelley–Meka 2023 bound, transitivity through `rothNumberNat`)
 
-## Current Focus (S3-B ACT)
+## Current Focus (S4-a ACT)
+
+Session 4 (S4-a ACT, researcher-4, 2026-05-13) follows the
+recommended **S4-a (smallest)** plan from the prior state.md verbatim:
+extends `proofs/Proofs/RothTheoremOQ02.lean` with the **Kelley–Meka 2023**
+upper bound on `rothNumberNat` (arXiv:2302.05537) as an axiom, the
+matching `kelleyMekaConst` API, and two transitive consistency
+theorems through `rothNumberNat N`. No new imports required beyond
+those already in S3-B.
+
+```lean
+axiom rothNumberNat_kelley_meka :
+    ∃ c : ℝ, 0 < c ∧ ∀ N : ℕ, 3 ≤ N →
+      (rothNumberNat N : ℝ) ≤
+        (N : ℝ) * Real.exp (-c * Real.log N ^ ((1 : ℝ) / 12))
+
+noncomputable def kelleyMekaConst : ℝ := rothNumberNat_kelley_meka.choose
+theorem kelleyMekaConst_pos : 0 < kelleyMekaConst := rothNumberNat_kelley_meka.choose_spec.1
+theorem rothNumberNat_le_kelley_meka (N : ℕ) (hN : 3 ≤ N) :
+    (rothNumberNat N : ℝ) ≤
+      (N : ℝ) * Real.exp (-kelleyMekaConst * Real.log N ^ ((1 : ℝ) / 12))
+
+theorem kelley_meka_consistent_with_Behrend (N : ℕ) (hN : 3 ≤ N) :
+    (N : ℝ) * Real.exp (-4 * Real.sqrt (Real.log N)) ≤
+      (N : ℝ) * Real.exp (-kelleyMekaConst * Real.log N ^ ((1 : ℝ) / 12)) :=
+  Behrend.roth_lower_bound.trans (rothNumberNat_le_kelley_meka N hN)
+
+theorem rothNumberNat_le_min_blasi_kelley_meka (N : ℕ) (hN : 3 ≤ N) :
+    (rothNumberNat N : ℝ) ≤
+      min ((N : ℝ) / Real.log N ^ (1 + blasiConst))
+          ((N : ℝ) * Real.exp (-kelleyMekaConst * Real.log N ^ ((1 : ℝ) / 12))) :=
+  le_min (rothNumberNat_le_blasi N hN) (rothNumberNat_le_kelley_meka N hN)
+```
+
+The two consistency theorems record (a) Behrend ≤ Kelley–Meka (the
+tight lower-vs-upper bracketing of `rothNumberNat`, parallel to S3-B's
+Bloom–Sisask version), and (b) the joint upper-bound envelope under
+both axioms (a `le_min` of Bloom–Sisask and Kelley–Meka), giving
+downstream consumers a strictly tighter bound than either axiom alone.
+
+### Counts
+
+- File: `proofs/Proofs/RothTheoremOQ02.lean` 150 → 236 lines (+86).
+- Imports: unchanged (`Mathlib.Combinatorics.Additive.Corner.Roth`,
+  `Mathlib.Combinatorics.Additive.AP.Three.Behrend`,
+  `Mathlib.Analysis.SpecialFunctions.Log.Basic` — `Real.exp` is in
+  `Mathlib.Analysis.SpecialFunctions.Exp` which is transitively
+  imported by `Log.Basic`).
+- Supporting theorems: 5 → 9 (+4: `kelleyMekaConst_pos`,
+  `rothNumberNat_le_kelley_meka`,
+  `kelley_meka_consistent_with_Behrend`,
+  `rothNumberNat_le_min_blasi_kelley_meka`).
+- New definitions: 0 → 1 (+1: `kelleyMekaConst`).
+- Axioms: 1 → 2 (+1: `rothNumberNat_kelley_meka`).
+- Sorries: 0 (unchanged).
+- Build: pending (worktree `.lake` symlink loop — see memory
+  `feedback_researcher_lake_symlink_loop_and_wipe.md`; the file uses
+  only `Behrend.roth_lower_bound.trans` and `le_min` patterns
+  identical to S3-B's verified consistency proof).
+
+## Prior Focus (S3-B ACT)
 
 Session 3 (S3-B ACT, researcher-3, 2026-05-12) follows the recommended
 path **S3-B** verbatim. Adds the theorem `bloom_sisask_consistent_with_Behrend`

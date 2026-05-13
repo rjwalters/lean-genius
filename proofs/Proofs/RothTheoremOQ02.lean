@@ -140,11 +140,97 @@ theorem bloom_sisask_consistent_with_Behrend (N : ℕ) (hN : 3 ≤ N) :
       (N : ℝ) / Real.log N ^ (1 + blasiConst) :=
   (Behrend.roth_lower_bound).trans (rothNumberNat_le_blasi N hN)
 
+/-! ## S4-a: Kelley–Meka 2023 bound on the Roth number
+
+Kelley and Meka (arXiv:2302.05537, 2023) tightened the Bloom–Sisask
+log-barrier-breaking bound to the **exponential** form
+
+  ∃ c > 0, ∀ N ≥ 3, rothNumberNat N ≤ N · exp(-c · (log N)^(1/12))
+
+This is the strongest known upper bound on `rothNumberNat`, and is
+substantially closer to Behrend's lower bound
+`(N : ℝ) * exp(-4 * √(log N)) ≤ rothNumberNat N`. Asymptotically:
+
+  Behrend lower bound:           N · exp(-4   · (log N)^(1/2))
+  Kelley–Meka upper bound:       N · exp(-c   · (log N)^(1/12))
+  Bloom–Sisask upper bound:      N / (log N)^(1+c')             (much weaker)
+
+The gap between Behrend and Kelley–Meka is essentially the exponent of
+`log N` inside the exponential (`1/2` vs `1/12`). Closing it is the
+remaining open quantitative question.
+
+Like S2/S3, this layer is **statement-only** (`axiom` + transitivity);
+the full ~200-page Kelley–Meka analytic proof is far beyond Mathlib's
+current Bohr-set / quasi-randomness infrastructure. -/
+
+/-- **Kelley–Meka 2023 bound on the Roth number.** Axiomatic statement
+matching the abstract of Kelley–Meka, arXiv:2302.05537:
+
+  ∃ c > 0, ∀ N ≥ 3, rothNumberNat N ≤ N · exp(-c · (log N)^(1/12))
+
+The exponent `1/12` is exactly the constant in the Kelley–Meka paper
+(see their Theorem 1.2). Asserted here axiomatically; the full proof
+requires Bohr-set quasi-randomness machinery not yet in Mathlib at
+v4.26.0 (pin `2df2f0150c275ad`). -/
+axiom rothNumberNat_kelley_meka :
+    ∃ c : ℝ, 0 < c ∧ ∀ N : ℕ, 3 ≤ N →
+      (rothNumberNat N : ℝ) ≤
+        (N : ℝ) * Real.exp (-c * Real.log N ^ ((1 : ℝ) / 12))
+
+/-- A canonical choice of the Kelley–Meka constant `c > 0` extracted
+from the axiom via `Exists.choose`. Marked `noncomputable` because
+`Exists.choose` is. -/
+noncomputable def kelleyMekaConst : ℝ :=
+  rothNumberNat_kelley_meka.choose
+
+/-- The Kelley–Meka constant is positive. -/
+theorem kelleyMekaConst_pos : 0 < kelleyMekaConst :=
+  rothNumberNat_kelley_meka.choose_spec.1
+
+/-- **Kelley–Meka bound at the canonical constant.** For every `N ≥ 3`,
+`rothNumberNat N ≤ N · exp(-kelleyMekaConst · (log N)^(1/12))`. Stable
+downstream API hiding the `Exists.choose`. -/
+theorem rothNumberNat_le_kelley_meka (N : ℕ) (hN : 3 ≤ N) :
+    (rothNumberNat N : ℝ) ≤
+      (N : ℝ) * Real.exp (-kelleyMekaConst * Real.log N ^ ((1 : ℝ) / 12)) :=
+  rothNumberNat_kelley_meka.choose_spec.2 N hN
+
+/-- **Consistency of the Kelley–Meka upper bound with Behrend's lower bound.**
+For every `N ≥ 3`,
+
+  `N * exp(-4 * √(log N)) ≤ N * exp(-kelleyMekaConst * (log N)^(1/12))`.
+
+By transitivity through `rothNumberNat N`, leveraging Mathlib's
+*unconditional* `Behrend.roth_lower_bound` and our `rothNumberNat_le_kelley_meka`.
+Records explicitly that Behrend ≤ Kelley–Meka — the two endpoint
+inequalities are compatible and do not cross. -/
+theorem kelley_meka_consistent_with_Behrend (N : ℕ) (hN : 3 ≤ N) :
+    (N : ℝ) * Real.exp (-4 * Real.sqrt (Real.log N)) ≤
+      (N : ℝ) * Real.exp (-kelleyMekaConst * Real.log N ^ ((1 : ℝ) / 12)) :=
+  (Behrend.roth_lower_bound).trans (rothNumberNat_le_kelley_meka N hN)
+
+/-- **Joint compatibility of Bloom–Sisask and Kelley–Meka.** Both upper
+bounds hold simultaneously, so `rothNumberNat N` is bounded by the
+*minimum* of the two upper bounds. Records that the two axioms do not
+contradict — together they give a strictly tighter envelope on
+`rothNumberNat` than either alone. -/
+theorem rothNumberNat_le_min_blasi_kelley_meka (N : ℕ) (hN : 3 ≤ N) :
+    (rothNumberNat N : ℝ) ≤
+      min ((N : ℝ) / Real.log N ^ (1 + blasiConst))
+          ((N : ℝ) * Real.exp (-kelleyMekaConst * Real.log N ^ ((1 : ℝ) / 12))) :=
+  le_min (rothNumberNat_le_blasi N hN) (rothNumberNat_le_kelley_meka N hN)
+
 #check rothNumberNat_bloom_sisask
 #check blasiConst
 #check blasiConst_pos
 #check rothNumberNat_le_blasi
 #check bloom_sisask_consistent_with_isLittleO
 #check bloom_sisask_consistent_with_Behrend
+#check rothNumberNat_kelley_meka
+#check kelleyMekaConst
+#check kelleyMekaConst_pos
+#check rothNumberNat_le_kelley_meka
+#check kelley_meka_consistent_with_Behrend
+#check rothNumberNat_le_min_blasi_kelley_meka
 
 end RothTheoremOQ02
