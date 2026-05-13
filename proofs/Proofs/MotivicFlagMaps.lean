@@ -346,6 +346,69 @@ theorem main_theorem_expanded (n : ℕ) (hn : n ≥ 1)
   ring
 
 /-!
+## Part VI-B: Divisibility consequences (S2-C / S2-D for OQ-03)
+
+These four lemmas extract divisibility statements about `[Ω²_β(Fl_{n+1})]`
+directly from `main_theorem_expanded`. They are the algebraic prerequisites
+for the realization-functor consequences pursued in `motivic-flag-maps-oq-03`:
+every ring hom `μ` with `μ K.L = 1` annihilates the class (Euler-characteristic
+vanishing), and every `μ` annihilates `K.L^{(triangular n)+a}` worth of the
+class.
+
+See `research/problems/motivic-flag-maps-oq-03/sessions/`:
+- `2026-05-12-s1-observe-cohomology-roadmap.md` (S1, PR #18299)
+- `2026-05-12-s02-prep-divisibility-decomposition.md` (S2 PREP, PR #18401)
+-/
+
+/-- **S2-C1.** The Bruhat-cell `L`-power divides the based-maps motivic class.
+
+`triangular n = n(n-1)/2` is the dimension of the top Bruhat cell of `GL_n`,
+contributing the `L^{triangular n}` factor in `GLnClass`. β-independent. -/
+theorem L_pow_triangular_dvd_motivicClassBasedMaps
+    (n : ℕ) (hn : n ≥ 1) (β : HomologyClass n) (hβ : β.positive) :
+    K.L ^ triangular n ∣ motivicClassBasedMaps K n β := by
+  refine ⟨(∏ i ∈ Finset.range n, (K.L ^ (i + 1) - 1)) * K.L ^ (computeA β).toNat, ?_⟩
+  rw [main_theorem_expanded K n hn β hβ, pow_add]
+  ring
+
+/-- **S2-C2.** The affine-bundle `L`-power divides the based-maps motivic class.
+
+`(computeA β).toNat = a` is the dimension of the affine bundle in the BEMSV
+identity. Symmetric counterpart of `L_pow_triangular_dvd_motivicClassBasedMaps`. -/
+theorem L_pow_a_dvd_motivicClassBasedMaps
+    (n : ℕ) (hn : n ≥ 1) (β : HomologyClass n) (hβ : β.positive) :
+    K.L ^ (computeA β).toNat ∣ motivicClassBasedMaps K n β := by
+  refine ⟨(∏ i ∈ Finset.range n, (K.L ^ (i + 1) - 1)) * K.L ^ triangular n, ?_⟩
+  rw [main_theorem_expanded K n hn β hβ, pow_add]
+  ring
+
+/-- **S2-C combined.** The full `L`-power divides the based-maps motivic class.
+
+Stronger than `L_pow_triangular_dvd` and `L_pow_a_dvd` taken separately: combines
+both exponents. Witness is the bare GL_n-product `∏ (L^i - 1)`. -/
+theorem L_pow_full_dvd_motivicClassBasedMaps
+    (n : ℕ) (hn : n ≥ 1) (β : HomologyClass n) (hβ : β.positive) :
+    K.L ^ (triangular n + (computeA β).toNat) ∣ motivicClassBasedMaps K n β := by
+  refine ⟨∏ i ∈ Finset.range n, (K.L ^ (i + 1) - 1), ?_⟩
+  rw [main_theorem_expanded K n hn β hβ]
+  ring
+
+/-- **S2-D.** The augmentation element `L - 1` divides the based-maps motivic class.
+
+This is the algebraic skeleton of Euler-characteristic vanishing: any ring hom
+`μ : K.carrier →+* R` with `μ K.L = 1` annihilates `K.L - 1`, hence the entire
+class. The proof exhibits `K.L - 1` as the `i = 0` factor of the GL_n product. -/
+theorem L_minus_one_dvd_motivicClassBasedMaps
+    (n : ℕ) (hn : n ≥ 1) (β : HomologyClass n) (hβ : β.positive) :
+    (K.L - 1) ∣ motivicClassBasedMaps K n β := by
+  rw [main_theorem_expanded K n hn β hβ]
+  refine dvd_mul_of_dvd_left ?_ _
+  have h0 : (0 : ℕ) ∈ Finset.range n := Finset.mem_range.mpr hn
+  have h1 := Finset.dvd_prod_of_mem (fun i => K.L ^ (i + 1) - 1) h0
+  simp only [zero_add, pow_one] at h1
+  exact h1
+
+/-!
 ## Part VII: Additional Structure
 -/
 
