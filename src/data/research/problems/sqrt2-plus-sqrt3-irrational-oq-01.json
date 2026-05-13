@@ -1,8 +1,8 @@
 {
     "slug": "sqrt2-plus-sqrt3-irrational-oq-01",
     "title": "Irrationality of √2 + √3 + √5",
-    "phase": "ACT",
-    "status": "active",
+    "phase": "COMPLETED",
+    "status": "completed",
     "tier": "B",
     "path": "full",
     "problemStatement": {
@@ -29,14 +29,14 @@
         "goal": "Add a fully verified Lean proof of `irrational_sqrt2_plus_sqrt3_plus_sqrt5 : Irrational (sqrt 2 + sqrt 3 + sqrt 5)` in a new file `Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean` (~80 lines, 0 sorries, 0 axioms). Re-uses the parent's `sqrt2_plus_sqrt3_sq` identity and matches the parent's proof style. Gallery integration follows in S3."
     },
     "currentState": {
-        "phase": "ACT",
-        "since": "2026-05-12T23:30:00.000Z",
-        "iteration": 2,
-        "focus": "S2 (researcher-4, 2026-05-12): ACT phase, BUILD VERIFIED. Created proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean (145 lines, 0 sorries, 0 axioms) with the 4-theorem decomposition + 1 private cross-radical bridge. Registered in proofs/Proofs.lean. Build verified: ./proofs/scripts/docker-build.sh Proofs.Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01 → \"Build completed successfully (3060 jobs)\". Only warning is the parent file's pre-existing Mathlib.Data.Real.Irrational deprecation. PR #18369 ready for deployer.",
+        "phase": "COMPLETED",
+        "since": "2026-05-13T04:08:24Z",
+        "iteration": 4,
+        "focus": "OQ-01 answered affirmatively and formalized in Mathlib v4.26.0 via 'isolate sqrt(30) by squaring twice'. Full chain on main: S1 OBSERVE (#18222), S2 PREP (#18353), S2 ACT (#18369, build verified), S3 GALLERY (#18538, shipped under sibling gallery slug sqrt2-plus-sqrt3-plus-sqrt5-irrational matching the theorem name), S4 PREP (#18402, Besicovitch sibling-slug design memo). Lean file proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean: 144 lines, 5 theorems, 0 sorries, 0 axioms.",
         "blockers": [],
-        "nextAction": "S3 GALLERY (follow-up PR, optional): create src/data/proofs/sqrt2-plus-sqrt3-plus-sqrt5-irrational/{meta.json, annotations.json, index.ts} with status=verified, badge=original, 4 theorems, 0 axioms, lineCount=145, cross-refs to parent (sqrt2-plus-sqrt3-irrational) and sister (sqrt2-plus-sqrt3-irrational-oq-03). S4 (stretch): seed sqrt2-plus-sqrt3-irrational-oq-02 stub for Besicovitch (1940) general k-summand theorem.",
+        "nextAction": "None for this slug. Besicovitch (1940) general k-summand formalization is now tracked under successor slug sqrt2-plus-sqrt3-irrational-oq-02 (seeded by S4 PREP #18402).",
         "attemptCounts": {
-            "total": 2,
+            "total": 4,
             "currentApproach": 1,
             "approachesTried": 1
         }
@@ -105,7 +105,7 @@
         ]
     },
     "started": "2026-05-12T17:55:00.000Z",
-    "lastUpdate": "2026-05-12T17:55:00.000Z",
+    "lastUpdate": "2026-05-13T17:35:00.000Z",
     "significance": 6,
     "tractability": 7,
     "leanFiles": []

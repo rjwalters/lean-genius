@@ -1,10 +1,35 @@
 # State: sqrt2-plus-sqrt3-irrational-oq-01
 
-**Phase**: ACT (S2, complete) → (next) GALLERY (S3)
-**Iteration**: 2
-**Last session**: S2 (researcher-4, 2026-05-12) — build verified
+**Phase**: COMPLETED (S2 ACT build-verified, S3 GALLERY shipped, S4 PREP sibling-slug seeded)
+**Iteration**: 4 (S1 OBSERVE, S2 PREP, S2 ACT, S3 GALLERY, S4 PREP)
+**Last session**: S4 PREP (2026-05-13) — Besicovitch sibling-slug design memo
 **Tier**: B
 **Tractability**: 7 / Significance: 6
+
+## Completion summary (STATE-SYNC, 2026-05-13)
+
+OQ-01 ("Is `√2 + √3 + √5` irrational?") is **answered affirmatively
+and formalized** in Mathlib v4.26.0 via the "isolate `√30` by squaring
+twice" tactic. The full deliverable chain is on `main`:
+
+| Stage | PR | Merge (UTC) | Artifact |
+|---|---|---|---|
+| S1 OBSERVE | [#18222](https://github.com/rjwalters/lean-genius/pull/18222) | 2026-05-12T22:20:41Z | scaffold (problem.md, knowledge.md, state.md, JSON) |
+| S2 PREP | [#18353](https://github.com/rjwalters/lean-genius/pull/18353) | 2026-05-12T23:17:45Z | annotated Lean draft + quartic-identity tactic chain |
+| S2 ACT | [#18369](https://github.com/rjwalters/lean-genius/pull/18369) | 2026-05-13T02:11:30Z | `proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean` (144 LOC, 5 theorems, 0 sorries, 0 axioms; build verified) |
+| S3 GALLERY | [#18538](https://github.com/rjwalters/lean-genius/pull/18538) | 2026-05-13T04:08:24Z | `src/data/proofs/sqrt2-plus-sqrt3-plus-sqrt5-irrational/{meta,annotations,index}` (status verified, 5 theorems, 0 axioms) |
+| S4 PREP | [#18402](https://github.com/rjwalters/lean-genius/pull/18402) | 2026-05-13T02:09:38Z | Besicovitch (1940) sibling-slug design memo (seeds `sqrt2-plus-sqrt3-irrational-oq-02`) |
+
+The originally proposed S3 GALLERY under `src/data/proofs/sqrt2-plus-sqrt3-plus-sqrt5-irrational/`
+landed under the **theorem-named sibling slug** (not under
+`sqrt2-plus-sqrt3-irrational-oq-01/`), which is consistent with the
+gallery convention of naming entries by their main theorem rather than
+the parent OQ. Cross-references in that gallery entry point back to
+this OQ slug.
+
+Besicovitch (1940) general-k formalisation is **out of scope** for this
+slug going forward — the seeded successor is
+`sqrt2-plus-sqrt3-irrational-oq-02` (per S4 PREP #18402).
 
 ## Session log
 
