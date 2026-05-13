@@ -355,6 +355,30 @@ theorem resolvent_root_neg_p_half_at_q_zero (p r : ℂ) :
   simp only [resolventCubic, eval_add, eval_mul, eval_pow, eval_X, eval_C]
   ring
 
+/-- **Resolvent cubic in the Newton-polygon-cleaned variable `s = 2m + p`**
+(Lemma 1 from `sessions/2026-05-13-s4c-prep-newton-polygon-obstruction-to-k2-witness.md`,
+§2; S5a SCAFFOLD).
+
+The substitution `m ↦ (s - p) / 2` (equivalently, `s := 2m + p`, which is
+the `α²` of Ferrari's intermediate factor) transforms the resolvent cubic
+into the Newton-polygon-friendly cleaned form
+`R̃(s) = s³ + 2p·s² + (p² − 4r)·s − q²`.
+
+The cleaned form makes the dependence on `q²` explicit as the inhomogeneous
+term and factors out the trivial `α = 0 ⇔ s = 0` degeneracy. It is the
+universal substrate for the Newton-polygon analysis in the S4c PREP
+(which establishes that, in the smooth Pan-witness family, the tangency
+order `k` between `α(t)` and the actual quartic root spread is pinned
+at `k = 1`).
+
+Proof: pure algebraic identity. Discharged by `ring` after unfolding
+`resolventCubic` and polynomial `eval`. -/
+theorem resolvent_cubic_eval_s_form (p q r s : ℂ) :
+    (resolventCubic p q r).eval ((s - p) / 2) =
+    s^3 + 2 * p * s^2 + (p^2 - 4 * r) * s - q^2 := by
+  simp only [resolventCubic, eval_add, eval_mul, eval_pow, eval_X, eval_C]
+  ring
+
 /-- **Biquadratic limit (OQ-02.c, S3 DISCHARGE)**
 
 In the biquadratic limit `q = 0`, Ferrari's formula admits a
@@ -496,5 +520,6 @@ end GeneralQuartic
 #check GeneralQuartic.ferrari_roots_are_roots
 #check GeneralQuartic.resolvent_cubic_q_zero
 #check GeneralQuartic.resolvent_root_neg_p_half_at_q_zero
+#check GeneralQuartic.resolvent_cubic_eval_s_form
 #check GeneralQuartic.ferrari_biquad_limit
 #check GeneralQuartic.biquadratic_simple
