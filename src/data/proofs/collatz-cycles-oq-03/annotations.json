@@ -8,13 +8,15 @@
     },
     "type": "context",
     "title": "OQ Statement and Proof Outline",
-    "content": "The file's docstring states the OQ-03 claim — every Collatz cycle visits at least one even number — and lists the five-theorem chain that delivers it: `three_n_plus_one_even` → `collatz_of_odd_is_even` → `no_all_odd_cycle` → `cycle_contains_even` → `isPeriodic_contains_even`. The proof is two `omega` steps from the parent's `collatz_odd` lemma. The 80-line file is far longer than the mathematical content (≈5 lines of new logic) because each intermediate fact is stated as a named theorem, both for pedagogical clarity and so downstream callers can import the most convenient form.",
+    "content": "The file's docstring states the OQ-03 claim — every Collatz cycle visits at least one even number — and lists the five-theorem chain that delivers it: `three_n_plus_one_even` → `collatz_of_odd_is_even` → `no_all_odd_cycle` → `cycle_contains_even` → `isPeriodic_contains_even`. The proof is two `omega` steps from the parent's `collatz_odd` lemma. The 80-line file is far longer than the mathematical content (≈5 lines of new logic) because each intermediate fact is stated as a named theorem, both for pedagogical clarity and so downstream callers can import the most convenient form. The references in the docstring cite Lagarias's 1985 survey *The 3x+1 problem and its generalizations* — still the canonical reference for cycle-structure questions four decades on — and pin this companion file as the parity-corollary slot in the broader cycle-exclusion programme (Eliahou 1993 quantitative length lower bound, Simons-de Weger 2005 refinements, Tao 2019 logarithmic-density result).",
     "mathContext": "The Collatz function $C : \\mathbb{N} \\to \\mathbb{N}$ is defined as $C(n) = n/2$ if $n$ is even and $C(n) = 3n+1$ if $n$ is odd. A cycle of length $k$ is an $n$ with $C^k(n) = n$ and $k \\geq 1$. The OQ-03 claim: for every cycle, some iterate $C^i(n)$ ($0 \\leq i < k$) is even.",
     "significance": "context",
     "relatedConcepts": [
       "Collatz conjecture (1937)",
       "iterated function dynamics",
       "Lagarias 1985 survey",
+      "Eliahou 1993 cycle-length lower bound (≥ 17,087,915)",
+      "Tao 2019 logarithmic-density result",
       "parent file: Proofs/CollatzCycles.lean"
     ],
     "prerequisites": [
