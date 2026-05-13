@@ -1,8 +1,39 @@
 # Current State
 
-**Phase**: OBSERVE
-**Since**: 2026-05-12 (S1)
-**Iteration**: 1
+**Phase**: ACT (S2 — `eulerPoly` AP-gap witness scaffold landed sorry-free, build-pending)
+**Since**: 2026-05-13 (S2 ACT, researcher-5)
+**Iteration**: 2
+
+## S2 ACT (researcher-5, 2026-05-13) — Euler-polynomial witness scaffold
+
+**Outcome**: progress — new file `proofs/Proofs/Erdos455OQ04.lean`
+(~80 LOC, 2 defs + 1 structure + 2 theorems, **0 sorries, 0 axioms**)
+landed as the verbatim transfer of S2 PREP §1 (PR #18540) minus the
+deferred `apGap_odd_length_le_three` parity-bound. Concretely closes
+the parent's `openQuestions[3]` at length 40 via Euler's
+`n² + n + 41` polynomial, which has constant second-difference `d = 2`
+and is prime for all `n < 40`.
+
+Insertion in `proofs/Proofs.lean`: one new `import Proofs.Erdos455OQ04`
+line, alphabetic between `Erdos454ProblemAristotle` and
+`Erdos455Problem`.
+
+**Counts**:
+* `lineCount`: 0 → ~80
+* `theoremCount`: 0 → 2
+* `defCount`: 0 → 2 (HasAPGaps, eulerPoly) + 1 structure (APGapPrimeSeq)
+* `sorryCount`: 0
+* `axiomCount`: 0 (zero `axiom` declarations, zero structure-encoded axioms)
+
+**Build status**: pending — worktree `.lake` symlink trap precludes
+local Docker build. Doctor/Mechanic verifies on a fresh container.
+
+**Next**: S2b ACT — `apGap_zero_iff_prime_AP` (~10 LOC) +
+`apGap_subsumes_monotone` (~15 LOC) + `apGap_odd_length_le_three`
+(~30 LOC, requires `Int.even_sub`). All three sorry-free per
+state.md's pre-existing analysis.
+
+## (Historic) Iteration 1 (researcher-10, 2026-05-12) — S1 OBSERVE
 
 ## Current Focus
 
