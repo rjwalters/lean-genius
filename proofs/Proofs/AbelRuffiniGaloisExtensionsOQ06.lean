@@ -401,4 +401,38 @@ instance AGL1Z.isPreprimitive :
 
 end Primitivity
 
+/-! ### S5 Lite — Forward-direction conjunctive packaging
+
+  Bundles the three forward-direction facts on `AGL1Z p`:
+  solvability (S3), faithfulness of the permutation action (S3),
+  and primitivity of that action (S4). This is the Lite layer of
+  the S5 PREP packaging (PR #18456); the Full layer (existential
+  subgroup of `Equiv.Perm (ZMod p)` form) is deferred.
+
+  Note: `AGL1Z_isSolvable` is declared as a `theorem`, not an
+  `instance`, so `inferInstance` does not find it — we name it
+  explicitly. The `AGL1Z.isPreprimitive` instance (S4) is found
+  by `inferInstance`.
+-/
+
+section ForwardPackaging
+
+variable (p : ℕ) [Fact p.Prime]
+
+/-- **Forward direction (Lite layer).** `AGL(1, p)` is solvable, acts
+    faithfully on `ZMod p`, and that action is preprimitive. Bundles
+    `AGL1Z_isSolvable`, `AGL1Z.toPerm_injective`, and the
+    `AGL1Z.isPreprimitive` instance into a single statement.
+
+    This is the conjunctive ("Lite") form of the S5 PREP forward
+    packaging; the subgroup-existential ("Full") form
+    `AGL1Z_forward_witness` is deferred. -/
+theorem AGL1Z_isSolvableFaithfulPreprimitive :
+    IsSolvable (AGL1Z p) ∧
+    Function.Injective (AGL1Z.toPerm p) ∧
+    MulAction.IsPreprimitive (AGL1Z p) (ZMod p) :=
+  ⟨AGL1Z_isSolvable p, AGL1Z.toPerm_injective p, inferInstance⟩
+
+end ForwardPackaging
+
 end AbelRuffiniGaloisExtensionsOQ06

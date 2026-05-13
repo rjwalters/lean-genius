@@ -1,9 +1,62 @@
 # Current State
 
-**Phase**: ACT (S4 sorry-free implementation; build pending Docker verification)
-**Since**: 2026-05-13T05:15:00Z
-**Last Updated**: 2026-05-13 (Iteration 4, researcher-1)
-**Iteration**: 4
+**Phase**: ACT (S5 Lite-layer forward-direction packaging; build pending Docker verification)
+**Since**: 2026-05-13T07:00:00Z
+**Last Updated**: 2026-05-13 (Iteration 5, researcher-6)
+**Iteration**: 5
+
+## Iteration 5 (researcher-6, 2026-05-13) — S5 ACT (Lite)
+
+**Outcome**: progress — discharged S5 PREP Lite-layer forward packaging.
+Added `AGL1Z_isSolvableFaithfulPreprimitive` to
+`proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean`. File is now ~438
+lines, **0 sorries, 0 axioms**, build pending.
+
+### What I added
+
+A single conjunctive packaging theorem per S5 PREP §1.1 (PR #18456),
+with a corrected first conjunct:
+
+```lean
+section ForwardPackaging
+
+variable (p : ℕ) [Fact p.Prime]
+
+theorem AGL1Z_isSolvableFaithfulPreprimitive :
+    IsSolvable (AGL1Z p) ∧
+    Function.Injective (AGL1Z.toPerm p) ∧
+    MulAction.IsPreprimitive (AGL1Z p) (ZMod p) :=
+  ⟨AGL1Z_isSolvable p, AGL1Z.toPerm_injective p, inferInstance⟩
+
+end ForwardPackaging
+```
+
+### S5 PREP signature bug — corrected
+
+S5 PREP §1.1 (PR #18456) recommended `⟨inferInstance, AGL1Z.toPerm_injective p, inferInstance⟩`. The **first `inferInstance`** is wrong: `AGL1Z_isSolvable` (line 237) is declared as a `theorem`, not an `instance`, so typeclass synthesis does not find it. This S5 ACT corrects with the explicit name `AGL1Z_isSolvable p`.
+
+The S5b PREP §6 risk table (PR #18517) flagged the analogous issue for `IsPreprimitive` but missed the `IsSolvable` case. The third conjunct `inferInstance` for `MulAction.IsPreprimitive` works correctly (line 394 declares `instance AGL1Z.isPreprimitive`).
+
+### Files updated (S5)
+
+- `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean` — +34 LOC, one `section ForwardPackaging` block at end of namespace (before `end AbelRuffiniGaloisExtensionsOQ06`).
+- `research/problems/abel-ruffini-galois-extensions-oq-06/state.md` — this file. Iteration 4 → 5.
+- `research/problems/abel-ruffini-galois-extensions-oq-06/sessions/2026-05-13-s05-act-forward-lite.md` — new session note documenting the Lite signature, the S5 PREP bug-fix, and build posture.
+
+### Build-verification posture
+
+Per `feedback_researcher_lake_symlink_loop_and_wipe.md`, the worktree's `proofs/.lake` inherits the main repo's self-referential symlink loop; local Docker build is unreliable. **Lean file committed and pushed first**; PR title carries "build pending" so the doctor agent can verify from a clean worktree without losing this work.
+
+No new imports added (all symbols come from existing import block at lines 43-49). No new sorries. No new axioms.
+
+### Next action (S5b — Full layer)
+
+Per S5b PREP (PR #18517) §3 + §4, the Full layer `AGL1Z_forward_witness : ∃ H : Subgroup (Equiv.Perm (ZMod p)), …` is ~20-25 LOC after the bearer audit's tightening. Requires three Mathlib v4.26.0 bearers: `IsPreprimitive.of_surjective` (Primitive.lean:204), `rangeRestrict_surjective` (Ker.lean:114), `MonoidHom.ofInjective` (Ker.lean:188).
+
+### Race-safety note (S5)
+
+- Pre-claim probe (2026-05-13 ~06:55 UTC): 0 open PRs on the slug; most recent merge is the S4 ACT PR #18594 at 05:15 UTC (~1h40min lead time). Slug claim acquired by researcher-6 at 06:41 UTC, TTL 08:11 UTC.
+- Pre-push probe will re-verify before push.
 
 ## Iteration 4 (researcher-1, 2026-05-13) — S4 ACT
 
