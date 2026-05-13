@@ -1,0 +1,159 @@
+{
+  "id": "zsqrtd-neg-two-oq-03",
+  "title": "Eisenstein Integers ℤ[ω]: Bare Ring and Norm (toward x² + 3y²)",
+  "slug": "zsqrtd-neg-two-oq-03",
+  "description": "S2 ACT infrastructure for the third open question of zsqrtd-neg-two: extending the parent's x² + 2y² representation theorem to x² + 3y² via the Eisenstein integers ℤ[ω]. This file lays the algebraic foundation — the concrete structure on (re, im) ∈ ℤ × ℤ representing re + im·ω with ω² + ω + 1 = 0, the full CommRing instance via the Zsqrtd.commRing template, and the algebraic norm N(a + bω) = a² - ab + b² with norm_nonneg (via 4N(z) = (2re - im)² + 3 im²), norm_mul (multiplicativity), norm_eq_zero_iff, and norm_pos_of_ne_zero. The EuclideanDomain instance and the main representation theorem are deferred to S3-S5.",
+  "meta": {
+    "author": "Fermat (1640), Euler (1763), Lagrange (1775)",
+    "sourceUrl": "https://en.wikipedia.org/wiki/Eisenstein_integer",
+    "date": "1763",
+    "status": "verified",
+    "proofRepoPath": "Proofs/ZsqrtdNegTwoOQ03.lean",
+    "tags": [
+      "number-theory",
+      "algebraic-number-theory",
+      "quadratic-forms",
+      "class-number-one",
+      "eisenstein-integers",
+      "heegner-numbers",
+      "research",
+      "infrastructure"
+    ],
+    "badge": "original",
+    "sorries": 0,
+    "axiomCount": 0,
+    "lineCount": 175,
+    "theoremCount": 13,
+    "definitionCount": 2,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. This is an infrastructure-only deliverable (S2 ACT); the EuclideanDomain instance and the main `p = x² + 3y²` theorem will land in S3-S5 follow-up work.",
+    "mathlib_version": "4.26.0",
+    "mathlibDependencies": [
+      {
+        "theorem": "nsmulRec, zsmulRec, npowRec",
+        "description": "Generic recursive scalar-multiplication / power constructors used to fill in the AddCommGroup and CommRing instance fields without separate boilerplate.",
+        "module": "Mathlib.Algebra.Group.Defs"
+      },
+      {
+        "theorem": "sq_nonneg",
+        "description": "Non-negativity of squares of integers, used inside the nlinarith call closing norm_nonneg.",
+        "module": "Mathlib.Algebra.Order.Ring.Lemmas"
+      },
+      {
+        "theorem": "pow_eq_zero_iff",
+        "description": "`x ^ n = 0 ↔ x = 0` for `n ≠ 0` in a NoZeroDivisors monoid, used in norm_eq_zero_iff to extract `z.re = z.im = 0` from `(2·re - im)² = im² = 0`.",
+        "module": "Mathlib.Algebra.GroupPower.Basic"
+      }
+    ],
+    "originalContributions": [
+      "Eisenstein structure: a fresh concrete representation `re, im : ℤ` for `re + im · ω` (parallel to Mathlib's `Zsqrtd` but with the cyclotomic multiplication `(ac - bd) + (ad + bc - bd)ω` derived from `ω² = -1 - ω`)",
+      "Full CommRing instance for Eisenstein via the Mathlib `Zsqrtd.commRing` template (refine `<;> intros <;> ext <;> simp <;> ring` with explicit `nsmulRec`, `zsmulRec`, `npowRec`)",
+      "Eisenstein.norm: `N(a + bω) = a² - ab + b²`",
+      "Eisenstein.norm_nonneg via the algebraic identity `4 · N(z) = (2 re - im)² + 3 im²`",
+      "Eisenstein.norm_mul: multiplicativity of the norm (the algebraic spine of every later argument)",
+      "Eisenstein.norm_eq_zero_iff: the norm vanishes only at zero",
+      "Eisenstein.norm_pos_of_ne_zero: a corollary giving strict positivity of the norm on nonzero elements"
+    ],
+    "prerequisites": [
+      "Basic ring theory (CommRing, refinements via `with`)",
+      "Algebraic number theory background (rings of integers in quadratic number fields, Eisenstein integers, ω = exp(2πi/3))"
+    ],
+    "dateAdded": "2026-05-12",
+    "relatedProblems": [
+      {
+        "id": "zsqrtd-neg-two",
+        "relationship": "Extends: this is the n = 3 analog of the parent's n = 2 representation theorem"
+      },
+      {
+        "id": "zsqrtd-neg-two-oq-01",
+        "relationship": "Sibling: the same Eisenstein construction is one route to the bidirectional characterization the parent's OQ-01 asks for"
+      },
+      {
+        "id": "zsqrtd-neg-two-oq-02",
+        "relationship": "Sibling: the n = 3 case of the bidirectionality sub-question"
+      }
+    ]
+  },
+  "leanFile": {
+    "lineCount": 175,
+    "path": "Proofs/ZsqrtdNegTwoOQ03.lean",
+    "axiomCount": 0,
+    "sorries": 0,
+    "definitionCount": 2,
+    "theoremCount": 13
+  },
+  "sorries": 0,
+  "sections": [
+    {
+      "id": "header-imports",
+      "title": "Module Header and Imports",
+      "startLine": 1,
+      "endLine": 51,
+      "summary": "File docstring describing the S2 ACT infrastructure target and what is deferred to S3-S5. Imports `Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity` (for later splitting work) and `Mathlib.Tactic` (for `nlinarith`, `ring`, `simp`).",
+      "mathContext": "The S2 ACT layer is the algebraic foundation. The QR import is forward-looking — used in S4 when `(-3/p) = (p/3)` arises — and does not affect the present file's content."
+    },
+    {
+      "id": "structure",
+      "title": "Structure and Primitive Instances",
+      "startLine": 53,
+      "endLine": 100,
+      "summary": "`structure Eisenstein` with two integer coordinates `re, im`, the `ofInt` coercion, and primitive instances `Zero, One, Add, Neg, Mul` together with eight `@[simp] rfl` projection lemmas for `re/im` on these constructions.",
+      "mathContext": "The multiplication is derived from `ω² + ω + 1 = 0`: `(a + bω)(c + dω) = ac + (ad + bc)ω + bd · ω² = (ac - bd) + (ad + bc - bd)ω`. The projection lemmas expose the constructor form so that `simp` can fire during the ring-axiom proofs."
+    },
+    {
+      "id": "ring-structure",
+      "title": "AddCommGroup, AddGroupWithOne, CommRing",
+      "startLine": 102,
+      "endLine": 142,
+      "summary": "Builds the ring structure ladder via the Mathlib `Zsqrtd.commRing` template: `addCommGroup` with explicit `nsmulRec/zsmulRec` and `add_assoc`-style refinements; `addGroupWithOne` with `natCast := ofInt ∘ Int.ofNat` and `intCast := ofInt`; `commRing` with explicit `npowRec` and the ring axioms.",
+      "mathContext": "Each axiom is closed by `intros; ext <;> simp <;> ring` — the simp lemmas unfold the projection-component form so that `ring` can normalize the integer arithmetic. This is the exact pattern used in `Mathlib/NumberTheory/Zsqrtd/Basic.lean` around line 164."
+    },
+    {
+      "id": "norm",
+      "title": "The Eisenstein Norm",
+      "startLine": 144,
+      "endLine": 175,
+      "summary": "Defines `Eisenstein.norm z = z.re ^ 2 - z.re * z.im + z.im ^ 2`, proves `norm_zero`, `norm_one`, `norm_nonneg` (via `4 N(z) = (2re - im)² + 3 im²` and `nlinarith`), `norm_mul` (multiplicativity via `simp + ring`), `norm_eq_zero_iff` (`norm z = 0 ↔ z = 0` via the two-square split), and `norm_pos_of_ne_zero` (strict positivity on nonzero elements).",
+      "mathContext": "The non-negativity argument uses the algebraic identity `4 · (a² - ab + b²) = (2a - b)² + 3 b²` — the same `discriminant ≥ 0` move used to prove that `x² - x + 1 > 0` over ℝ. The multiplicativity of the norm is the algebraic spine of the eventual splitting argument: if `p` is non-irreducible in `ℤ[ω]`, then `p = N(α)` for some `α ≠ 0, 1`."
+    }
+  ],
+  "overview": {
+    "historicalContext": "The theorem `prime p ≡ 1 (mod 3) ⟹ p = a² + 3 b²` was first proved by **Leonhard Euler** in 1763 (*De numeris qui sunt aggregata duorum quadratorum multiplicatorum*) as a generalization of Fermat's two-squares theorem. The cleanest modern proof uses the **Eisenstein integers** `ℤ[ω]`, where `ω = exp(2πi/3)`. The ring `ℤ[ω]` is the ring of integers of `ℚ(√-3)`, a Euclidean domain (and hence PID) under the norm `N(a + bω) = a² - ab + b²`; this allows the splitting argument that `prime p ≡ 1 (mod 3)` is non-irreducible in `ℤ[ω]` and hence equals `N(α)` for some `α`, which converts to `4p = (2a - b)² + 3 b²` and after parity analysis to `p = x² + 3 y²`. **Gauss** (*Disquisitiones Arithmeticae*, 1801) generalized this to all imaginary quadratic forms `a x² + b xy + c y²` with discriminant `b² - 4 ac < 0`. The class-number-one cases `n ∈ {1, 2, 3, 7, 11, 19, 43, 67, 163}` (the **Heegner numbers**) admit such direct constructions; for general `n`, **class field theory** (Cox, *Primes of the form x² + n y²*, 1989) is required.",
+    "problemStatement": "**Open Question (zsqrtd-neg-two-oq-03):** Can the parent gallery proof `zsqrtd-neg-two` (which formalizes the `n = 2` case `p ≡ 1, 3 (mod 8) ⟹ p = a² + 2 b²`) be replayed for the next class-number-one Heegner numbers `n ∈ {3, 7, 11}`?\n\n**S2 ACT (this file):** Build the algebraic infrastructure layer — the concrete Eisenstein structure, the full `CommRing` instance, the algebraic norm, and the four key norm properties (non-negativity, multiplicativity, the zero criterion, and strict positivity on nonzero elements) — that the subsequent S3-S5 sessions will build on.",
+    "text": "Infrastructure for the n = 3 Heegner-number case of Fermat's two-squares-style theorem: ℤ[ω] = ℤ[exp(2πi/3)] as a CommRing with multiplicative norm.",
+    "proofStrategy": "Three layers: (1) a fresh concrete structure on (re, im) ∈ ℤ × ℤ representing re + im·ω, with primitive instances and `@[simp] rfl` projections; (2) the ring-axiom ladder (`AddCommGroup` → `AddGroupWithOne` → `CommRing`) discharged uniformly by `refine ... <;> intros <;> ext <;> simp <;> ring`, exactly matching the Mathlib `Zsqrtd.commRing` template; (3) the norm `N(a + bω) = a² - ab + b²` with non-negativity via `4 N(z) = (2 re - im)² + 3 im² ≥ 0` and multiplicativity via direct `ring` expansion after `simp [mul_re, mul_im]`.",
+    "keyInsights": [
+      "**Why a fresh structure, not `Zsqrtd (-3)`**: `ℤ[√-3]` is **not** the ring of integers of `ℚ(√-3)`. The maximal order is `ℤ[(1 + √-3)/2] = ℤ[ω]`, strictly larger. The parent file `Proofs/ZsqrtdNegTwo.lean` (for `n = 2`) can use `Zsqrtd (-2)` because `ℤ[√-2]` happens to coincide with the maximal order — that coincidence breaks at `n ≥ 3`.",
+      "**Why the `Zsqrtd.commRing` template works for Eisenstein**: the multiplication `(a + bω)(c + dω) = (ac - bd) + (ad + bc - bd)ω` is polynomial in the coordinates, so `<;> intros <;> ext <;> simp <;> ring` closes every ring axiom uniformly — the same way it closes them for the `√d` case.",
+      "**The `4 N(z) = (2 re - im)² + 3 im²` identity**: this is the algebraic non-negativity certificate. It is equivalent to `disc(x² - x + 1) = -3 < 0` and shows that `N` is a positive-definite quadratic form. The same identity drives the rounding-error bound `(1/4)² + 3 · (1/4)² = 1/4 < 1` for the EuclideanDomain instance in S3.",
+      "**The norm is multiplicative for free**: because `Eisenstein` is a commutative ring and `norm = self * conjugate` (with `conjugate (a + bω) = a + bω̄ = (a - b) - bω` in our coordinates), multiplicativity follows from associativity + commutativity by `ring`. No analytic argument is needed."
+    ],
+    "prerequisites": [
+      "Imaginary quadratic number fields (`ℚ(√d)` for `d < 0` squarefree)",
+      "Rings of integers (`𝓞_K` for a number field `K`)",
+      "Norm forms (`N : 𝓞_K → ℤ`, the algebraic norm)",
+      "Class number (`ℤ[ω]` has class number 1)"
+    ]
+  },
+  "conclusion": {
+    "summary": "S2 ACT delivers the Eisenstein algebraic-infrastructure layer: structure + CommRing + norm with the four structural identities (`norm_zero`, `norm_one`, `norm_nonneg`, `norm_mul`) plus `norm_eq_zero_iff` and `norm_pos_of_ne_zero`. The file is 175 lines, 13 theorems, 2 definitions, 0 sorries, 0 axioms.",
+    "implications": "**S3 unblocked**: the `EuclideanDomain Eisenstein` instance can now be built on top of `CommRing` + `norm_mul`. **S4-S5 unblocked**: the splitting argument `(-3/p) = (p/3)` via QR + `4p = (2a - b)² + 3 b²` parity case-split now has a well-defined target ring to work in. **n = 7, 11 (S6+)**: the same template generalizes to `ℤ[(1 + √-n)/2]` with norm form `a² + ab + ((n+1)/4) b²`.",
+    "openQuestions": [
+      "Build the EuclideanDomain Eisenstein instance via rounding-to-ℤ (S3, ~200 lines): the key step is the rounding-error bound `N(error) ≤ 1/4 < 1`.",
+      "Verify or derive `ZMod.exists_sq_eq_neg_three_iff` at Mathlib v4.26.0 (S4, ~30-50 lines): the analog of the parent's `exists_sq_eq_neg_two_iff`.",
+      "Prove `sq_add_three_sq_of_prime_one_mod_three` (S5, ~100 lines): the main `p = x² + 3 y²` representation theorem.",
+      "Port to n = 7 and n = 11 (S6+, ~400 lines each): the maximal-order construction `ℤ[(1 + √-n)/2]` with norm form `a² + ab + ((n+1)/4) b²`."
+    ]
+  },
+  "crossReferences": [
+    {
+      "targetId": "zsqrtd-neg-two",
+      "relationship": "parent",
+      "description": "The parent gallery proof formalizes the n = 2 case `p ≡ 1, 3 (mod 8) ⟹ p = a² + 2 b²` via `Zsqrtd (-2)`. This file extends to n = 3 via a fresh Eisenstein structure (Zsqrtd does not apply because ℤ[√-3] is non-maximal)."
+    },
+    {
+      "targetId": "fermat-two-squares",
+      "relationship": "ancestor",
+      "description": "Fermat's two-squares theorem (n = 1 case): `prime p ≡ 1 (mod 4) ⟹ p = a² + b²`. The same proof template extends through n = 2 (parent) and now n = 3 (this file)."
+    }
+  ]
+}

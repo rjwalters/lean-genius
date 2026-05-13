@@ -1,148 +1,114 @@
 # Current State: zsqrtd-neg-two-oq-03
 
-**Phase**: OBSERVE (S1 complete)
+**Phase**: ACT (S2 complete, S3 next)
 **Path**: full
-**Since**: 2026-05-12T17:25:00Z
-**Iteration**: 1
-**Researcher**: researcher-5 (S1)
+**Since**: 2026-05-13T01:00:00Z
+**Iteration**: 2
+**Researcher**: researcher-4 (S2 ACT)
 
 ## Current Focus
 
-S1 (researcher-5, 2026-05-12, this iteration): **OBSERVE** survey on
-the third open question of `zsqrtd-neg-two` — extending the parent
-proof's `x² + 2y²` representation theorem to the next three
-class-number-1 imaginary quadratic discriminants `n ∈ {3, 7, 11}`.
-The slug was seeker-selected via PR #18166 (2026-05-12T15:12:46Z,
-~2h 13m prior to S1 claim) with **0 prior research PRs / branches**;
-this is the first researcher iteration.
+S2 ACT (researcher-4, 2026-05-13, this iteration): **ACT** — built the
+algebraic-infrastructure layer for the Eisenstein integers `ℤ[ω]`.
+Delivered `proofs/Proofs/ZsqrtdNegTwoOQ03.lean` (175 lines, 13
+theorems, 2 definitions, 0 sorries, 0 axioms) on the R1 (concrete
+direct-port) route flagged by S1 OBSERVE (researcher-5, PR #18226)
+and the S2 PREP audit (researcher-6, PR #18349).
 
-S1 establishes:
+S2 establishes:
 
-1. **The maximal-order subtlety**: for `n ≡ 3 (mod 4)`, `ℤ[√-n]` is
-   NOT the ring of integers — the parent's construction does NOT
-   port directly. The Eisenstein integers `ℤ[ω]` (for `n = 3`) and
-   `ℤ[(1+√-n)/2]` (for `n = 7, 11`) are the correct maximal orders.
-2. **Three discharge routes** (R1 direct port via fresh Eisenstein
-   ring, R2 via Mathlib's cyclotomic library, R3 typeclass
-   abstraction over five `n`-cases). R1 recommended for S2-S5 on the
-   `n = 3` sub-case.
-3. **Mathlib API survey**: `Zsqrtd.norm`, `IsPrimitiveRoot.toInteger`,
-   `IsCyclotomicExtension.Three`, and `QuadraticReciprocity` checked
-   as available at v4.26.0; the `ZMod.exists_sq_eq_neg_three_iff`
-   analog of the parent's `exists_sq_eq_neg_two_iff` is **conjectured**
-   and needs S2 verification.
-4. **Numerical sanity**: `p = x² + 3y²` decompositions for the first
-   12 primes `p ≡ 1 (mod 3)` (up to 97) all verified.
+1. **`structure Eisenstein`** — two integer coordinates `re, im`
+   representing `re + im · ω` with `ω² + ω + 1 = 0`, deriving
+   `DecidableEq` via the standard `@[ext] structure ... deriving`
+   pattern. Mathlib's `Zsqrtd` cannot be reused because `ℤ[√-3] ≠
+   ℤ[ω]` — the ring of integers is the strictly larger Eisenstein
+   lattice.
+2. **Primitive instances and projection lemmas** — `Zero`, `One`,
+   `Add`, `Neg`, `Mul` plus eight `@[simp] rfl` lemmas
+   (`zero_re`, ..., `mul_im`) exposing the underlying constructor
+   form so the ring-axiom proofs can fire `simp + ring`. The
+   multiplication is derived from `ω² = -1 - ω` giving
+   `(a + bω)(c + dω) = (ac - bd) + (ad + bc - bd) ω`.
+3. **`AddCommGroup`, `AddGroupWithOne`, `CommRing` instance ladder**
+   discharged uniformly via the Mathlib `Zsqrtd.commRing` template
+   `refine { … with … } <;> intros <;> ext <;> simp <;> ring` with
+   explicit `nsmulRec`, `zsmulRec`, `npowRec` constructors.
+4. **`Eisenstein.norm`** — `N(a + bω) = a² - ab + b²` together with
+   - `norm_zero`, `norm_one` (`@[simp]`),
+   - `norm_nonneg` via `4 N(z) = (2 re - im)² + 3 im²` and `nlinarith`,
+   - `norm_mul` via `simp only [norm, mul_re, mul_im]; ring`,
+   - `norm_eq_zero_iff` via the two-square split (`im² = 0` and
+     `(2re - im)² = 0` together force `re = im = 0`),
+   - `norm_pos_of_ne_zero` as a corollary.
 
-Net file change: **none** (no Lean code modified). Sorry count 0;
-axiom count 0; lineCount 0.
+Net change: **+175 LOC** in `proofs/Proofs/ZsqrtdNegTwoOQ03.lean`,
+**+1 LOC** in `proofs/Proofs.lean` (import line), plus gallery
+integration files (`src/data/proofs/zsqrtd-neg-two-oq-03/{meta,
+index, annotations}.{json,ts}` ≈ +200 LOC config / annotation
+scaffold). 0 sorries, 0 axioms in the Lean file.
 
 ## Path to Verification
 
-The full R1 route to a verified gallery entry for the **n = 3
-sub-case** decomposes into 5 stages:
-
-| Stage | Deliverable | Lines (est.) |
-|-------|-------------|-------------|
-| S1 | This OBSERVE survey (text-only, no Lean) | — |
-| S2 | `Proofs/ZsqrtdNegTwoOQ03.lean` — `Eisenstein` structure + norm | ~150 |
-| S3 | `EuclideanDomain Eisenstein` instance via rounding | ~200 |
-| S4 | Splitting argument via `ZMod.exists_sq_eq_neg_three_iff` | ~100 |
-| S5 | `sq_add_three_sq_of_prime_one_mod_three` (main theorem) | ~100 |
+| Stage | Deliverable | Lines (est.) | Status |
+|-------|-------------|-------------|--------|
+| S1 | OBSERVE survey (text-only, no Lean) | — | ✅ PR #18226 |
+| S2 PREP | Construction audit + skeleton review (text-only) | — | ✅ PR #18349 |
+| S2 ACT | `Eisenstein` structure + `CommRing` + `norm` | ~175 | ✅ THIS PR |
+| S3 | `EuclideanDomain Eisenstein` via rounding | ~200 | TODO |
+| S4 | Splitting via `(-3/p) = (p/3)` and QR | ~100 | TODO |
+| S5 | `sq_add_three_sq_of_prime_one_mod_three` (main) | ~100 | TODO |
 
 Stretch (S6+, optional): port to `n = 7, 11` (each ~400 lines).
 
-Far-future (S∞): R3 typeclass abstraction over `n ∈ {1, 2, 3, 7,
-11}` (~1500-2500 lines, recommended as a Mathlib contribution
-rather than a gallery deliverable).
+Far-future (S∞): R3 typeclass abstraction over `n ∈ {1, 2, 3, 7, 11}`
+(~1500-2500 lines, recommended as a Mathlib contribution rather than
+a gallery deliverable).
 
 ## Next Action
 
-**S2 (next claim, ~150 lines)**: Create a new file
-`proofs/Proofs/ZsqrtdNegTwoOQ03.lean` containing:
+**S3 (next claim, ~200 lines)**: Build the `EuclideanDomain Eisenstein`
+instance. Two ingredients:
 
-1. A concrete `Eisenstein` structure (parallel to the parent's
-   `ZsqrtNegTwo := ℤ√(-2)`), with `re, im : ℤ` and the ring
-   structure derived from `ω² + ω + 1 = 0`. (Alternative:
-   `abbrev Eisenstein := Mathlib.NumberTheory.Cyclotomic.… `
-   if a usable concrete handle exists — see knowledge.md S2 note.)
-2. `Eisenstein.norm (z : Eisenstein) : ℤ := z.re^2 - z.re * z.im + z.im^2`
-   plus `norm_nonneg`, `norm_mul`.
-3. A small unit-group sketch: `units_eq` recovering the 6 units
-   `{±1, ±ω, ±ω²}` (analog of parent's 2-unit case for `ℤ[√-2]`).
-4. The `EuclideanDomain Eisenstein` instance left as a `sorry`
-   (deferred to S3 for clarity).
+1. **Division by rounding**: define `instDiv : Div Eisenstein` by
+   `x / y := round((x · ȳ) / N(y))` where `round : ℚ × ℚ → ℤ × ℤ`
+   rounds each coordinate to the nearest integer. Equivalent
+   `noncomputable instance` style to the parent's
+   `proofs/Proofs/ZsqrtdNegTwo.lean:100`.
+2. **Norm-of-remainder bound**: prove `N(x - y · (x / y)) < N(y)`
+   for `y ≠ 0`, via the geometric fact that the worst-case rounding
+   error in the Eisenstein lattice has `N(error) ≤ 1/4 < 1`. This is
+   *the* technical heart of S3 and depends on the algebraic identity
+   `4 N(re' + im' ω) = (2 re' - im')² + 3 im²` with `|re'|, |im'| ≤
+   1/2`.
 
-Suggested deliverables for S2:
+The S3 PR should land:
 
-```lean
-import Mathlib.NumberTheory.Cyclotomic.Three
-import Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity
-import Mathlib.Tactic
-
-namespace ZsqrtdNegTwoOQ03
-
-/-- The Eisenstein integers: ℤ[ω] with ω² + ω + 1 = 0.
-Concrete representation as pairs (re, im) for z = re + im·ω. -/
-structure Eisenstein where
-  re : ℤ
-  im : ℤ
-
-namespace Eisenstein
-
-instance : Zero Eisenstein := ⟨⟨0, 0⟩⟩
-instance : One Eisenstein := ⟨⟨1, 0⟩⟩
-instance : Add Eisenstein := ⟨fun x y => ⟨x.re + y.re, x.im + y.im⟩⟩
-instance : Neg Eisenstein := ⟨fun x => ⟨-x.re, -x.im⟩⟩
--- (a + bω)·(c + dω) = ac + (ad + bc)ω + bd·ω²
--- = ac + (ad + bc)ω + bd·(-1 - ω)
--- = (ac - bd) + (ad + bc - bd)·ω
-instance : Mul Eisenstein :=
-  ⟨fun x y => ⟨x.re * y.re - x.im * y.im,
-               x.re * y.im + x.im * y.re - x.im * y.im⟩⟩
-
--- Build CommRing instance via the universal Polynomial.aeval approach,
--- OR directly via ext + ring_nf. Pick the simpler one in S2.
-
-/-- Norm: N(a + bω) = a² - ab + b². -/
-def norm (z : Eisenstein) : ℤ := z.re ^ 2 - z.re * z.im + z.im ^ 2
-
-theorem norm_nonneg (z : Eisenstein) : 0 ≤ norm z := by
-  -- 4 * (a² - ab + b²) = (2a - b)² + 3b² ≥ 0
-  have h4 : (4 : ℤ) * norm z = (2 * z.re - z.im) ^ 2 + 3 * z.im ^ 2 := by
-    simp only [norm]; ring
-  nlinarith [sq_nonneg (2 * z.re - z.im), sq_nonneg z.im]
-
-theorem norm_mul (x y : Eisenstein) :
-    norm (x * y) = norm x * norm y := by
-  simp only [norm, instMul, HMul.hMul]; ring
-
-end Eisenstein
-end ZsqrtdNegTwoOQ03
-```
-
-The S2 PR should land:
-
-- `proofs/Proofs/ZsqrtdNegTwoOQ03.lean` (new, ~150-200 lines)
-- `proofs/Proofs.lean` (added entry for the new file)
-- `src/data/proofs/zsqrtd-neg-two-oq-03/meta.json` (new minimal entry)
-- `src/data/proofs/zsqrtd-neg-two-oq-03/index.ts` (new boilerplate)
-- `src/data/research/problems/zsqrtd-neg-two-oq-03.json` (updated:
-  phase `OBSERVE → ACT`, iteration 1 → 2, S2 summary).
+- `proofs/Proofs/ZsqrtdNegTwoOQ03.lean` (extended, +~200 lines for
+  `instDiv`, `instMod`, `quotient_norm_lt`, `EuclideanDomain`
+  instance derivation).
+- Optional: a small `Eisenstein.conj` definition (the conjugate
+  `(a + bω) ↦ (a - b) - b ω`, equivalently `(a + bω)·(a + bω̄) =
+  N(a + bω)`) which is the cleanest route to `x / y` via `(x · ȳ) /
+  N(y)`.
 
 Build verification: standard docker wrapper from main repo
 (`./proofs/scripts/docker-build.sh Proofs.ZsqrtdNegTwoOQ03`).
 
 ## Open PRs
 
-None (this is the first iteration; PR will be created with this
-S1 OBSERVE commit).
+| PR | Phase | Status |
+|----|-------|--------|
+| #18226 | S1 OBSERVE | MERGED |
+| #18349 | S2 PREP | MERGED |
+| (this PR) | S2 ACT | TO BE OPENED |
 
 ## Iteration History
 
 | Iter | Date | Researcher | PR | Outcome |
 |------|------|-----------|-----|---------|
-| S1 | 2026-05-12 | researcher-5 | (this PR) | OBSERVE survey: 4 files (problem.md, knowledge.md, state.md, src/data/research/problems/...json), no Lean changes |
+| S1 | 2026-05-12 | researcher-5 | #18226 | OBSERVE survey: 4 files (problem.md, knowledge.md, state.md, src/data/research/problems/...json), no Lean changes |
+| S2 PREP | 2026-05-12 | researcher-6 | #18349 | PREP audit: 1 file (sessions/s2-prep-eisenstein-construction-audit.md), no Lean changes; flagged `norm_mul` simp pattern and the AddCommGroup/AddGroupWithOne/CommRing instance ladder |
+| S2 ACT | 2026-05-13 | researcher-4 | (this PR) | ACT: +175 LOC Eisenstein scaffold (structure + CommRing + norm), +1 LOC `proofs/Proofs.lean` import line, +gallery integration. 0 sorries, 0 axioms. |
 
 ## Reference Files (in this directory)
 
@@ -155,3 +121,5 @@ S1 OBSERVE commit).
   splitting via `(-3/p) = (p/3)`, conversion `a² - ab + b² →
   x² + 3y²`), Mathlib API surface checks, Lean skeleton sketch
   for S2, parallel-work check.
+- `sessions/2026-05-12-s2-prep-eisenstein-construction-audit.md` —
+  S2 PREP audit (researcher-6).
