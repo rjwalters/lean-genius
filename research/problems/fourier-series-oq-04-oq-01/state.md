@@ -2,10 +2,52 @@
 
 ## Current State
 **Phase**: ACT
-**Since**: 2026-05-12 (S2c)
-**Iteration**: 3
+**Since**: 2026-05-13 (S2d)
+**Iteration**: 4
 
 ## Current Focus
+
+S2d (researcher-4, 2026-05-13) — **ACT Path A** from S2d PREP #18393
+(researcher-5). Adds two sorry-free, axiom-free helper lemmas that
+sharpen S2c's qualitative subset bound to a closed-form numerical
+Gauss-circle upper bound:
+
+- `bbox_card (R : ℝ) : #(Icc (fun _ => -⌈|R|⌉) (fun _ => ⌈|R|⌉))
+                       = (2*⌈|R|⌉+1).toNat ^ 2` — explicit cardinality of the
+  integer bounding box `[-⌈|R|⌉, ⌈|R|⌉]² ⊂ ℤ²` via `Pi.card_Icc` (the
+  product-over-Fin-2 decomposition) + `Int.card_Icc` (the 1D `@[simp]`
+  formula). Proof: `rw [Pi.card_Icc] ; simp only [Int.card_Icc] ;
+  have h : ... = 2⌈|R|⌉+1 := by ring ; simp [h, Finset.prod_const,
+  Fintype.card_fin]` (4 tactic lines).
+- `latticeDisc_card_le_explicit (R : ℝ) : (latticeDisc R).card
+                       ≤ (2*⌈|R|⌉+1).toNat ^ 2` — composition of S2c's
+  `latticeDisc_card_le_bbox R` with `bbox_card R` via `.trans_eq`
+  (1 line; term-mode).
+
+Combined with the trivial estimate `⌈|R|⌉ ≤ |R| + 1`, this gives
+`(latticeDisc R).card = O(R²)` — the qualitative Gauss-circle bound.
+The sharp constant `π` (the genuine Gauss-circle problem
+`card ≤ ⌈π·R²⌉ + O(R)`) requires boundary-lattice / two-squares
+analysis and remains deferred (S2e or later).
+
+Updated Lean file: `proofs/Proofs/FourierSeriesOQ04OQ01.lean` (204 → 234
+lines, 5 → 7 theorems; +2 sorry-free lemmas at the end). Gallery
+meta-json line/theorem counts synced; new `lattice-disc-explicit-card`
+section added (startLine 202, endLine 230); `originalContributions`
+extended.
+
+**Build status**: still **build pending** (worktree `proofs/.lake`
+symlink recursive; companion .lake symlink loop documented in MEMORY.md
+under `.lake symlink loop + mid-build worktree wipe`). Both new lemmas
+are direct applications of stable Mathlib lemmas (`Pi.card_Icc`,
+`Int.card_Icc`, `Finset.prod_const`, `Fintype.card_fin`, `.trans_eq`)
+with API verified at pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(v4.26.0) in the S2d PREP. Build-risk audit (S2d PREP §2.3) flagged
+medium risk on the `simp` step closing the product evaluation; the
+explicit `Fin.prod_univ_succ` + `Fin.prod_univ_zero` fallback is
+documented there if the inline `simp` underspecifies.
+
+## S2c (Previous Iteration)
 
 S2c (researcher-1, 2026-05-12) — **ACT parallel mini-task** adding two
 sorry-free helper lemmas advancing the Gauss-circle prep noted in the
@@ -106,12 +148,21 @@ likely 2–3 iterations. The proof goes through:
 $n=2$. Cleaner and self-contained, and the result is a candidate for a
 future Mathlib contribution. Estimated 80–150 lines.
 
-**S2d (refinement of S2c)**: Sharper Gauss-circle bound
-`(latticeDisc R).card ≤ ⌈π·R²⌉ + O(R)`. Requires explicit counting of
-lattice points strictly inside vs on the boundary of the disc, plus a
-boundary estimate via integer Pythagorean representations. Estimated
-30–60 Lean lines. Done at this iteration: subset of bounding box +
-crude `card_le` bound.
+**S2d (Path A — DONE at this iteration)**: `bbox_card` +
+`latticeDisc_card_le_explicit` (sorry-free, axiom-free, ~17 LOC). The
+explicit closed-form `(2⌈|R|⌉+1)²` cardinality bound is now in the
+file. Combined with `⌈|R|⌉ ≤ |R|+1`, this gives `O(R²)`. The remaining
+"sharp constant `π`" Gauss-circle problem proper — `card ≤ ⌈π·R²⌉ +
+O(R)` — still requires boundary-lattice / two-squares analysis (S2e
+or later, estimated 30–60 Lean lines).
+
+**S2e (audit chain complete; ACT pending)**: The mFourierBasis-based
+discharge of the `sphPartialSum_L2_norm_converge` sorry, with the
+70–95 LOC budget refined across S2e PREP (#18446) → S2f PREP (#18545,
+volume/haarT2 errata) → S2g PREP (Lp coeFn finset-sum + cofinality +
+eLpNorm bridge). Three concrete Mathlib gaps documented; either build
+`Lp.coeFn_finset_sum` inline (~10 LOC) or refactor at the MemLp level.
+Needs docker build verification.
 
 ## Earlier Focus
 
