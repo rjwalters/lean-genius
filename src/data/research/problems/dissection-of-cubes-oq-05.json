@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "ORIENT",
     "since": "2026-03-30T16:34:54.971Z",
-    "iteration": 2,
-    "focus": "Proved 3 lemmas, restructured proof architecture",
+    "iteration": 3,
+    "focus": "S4: ERRATUM-APPLY — global_min_not_reaching_top FALSE-AS-STATED, propagated audit-trail to OQ03 docstrings",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Rewrite descent_chains_from_coverage + dissection_of_cubes_from_coverage to use bottom-floor descent (OQ03OQ02 lemmas)",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved 3 lemmas in prior sessions. 2 sorries remain (smallest_above_is_smaller:390, global_min_not_reaching_top:469). Both require deep geometric formalization. global_min_not_reaching_top needs card≥2 guard (FALSE for 1-cube dissections).",
+    "progressSummary": "PROGRESS (S4 2026-05-13): identified `global_min_not_reaching_top` as structurally FALSE-AS-STATED in two regimes (not just the 1-cube edge case). Propagated the audit-trail into OQ03s docstring + sorry-classification table (doc-only). The corrected formulation (`bottom_floor_min_not_reaching_top`) is already proved sorry-free in OQ03OQ02. Net sorry count unchanged (still 2: `smallest_above_is_smaller` HARD + `global_min_not_reaching_top` SUPERSEDED-but-retained-for-interface-stability). Next session: rewrite the two downstream consumers to descend from the bottom floor.",
     "builtItems": [
       "Assessment: 2 actual sorries at lines 390, 422 of DissectionOfCubesOQ03.lean",
       "Architecture: proves all_different_implies_long_chains from coverage (replacing parent axiom)",
@@ -49,14 +49,14 @@
       "descent_chains_from_coverage proved by deriving contradiction from global min + exists_smaller_cube (exfalso)",
       "dissection_of_cubes_from_coverage now has direct proof: global min + exists_smaller_cube, no chains needed",
       "global_min_not_reaching_top is the new well-scoped sorry: global minimum cube has z + side < 1",
-      "1-cube dissection edge case: allDifferentSizes is vacuously true, theorem statement is technically false for card=1"
+      "1-cube dissection edge case: allDifferentSizes is vacuously true, theorem statement is technically false for card=1",
+      "S4 (2026-05-13): structural-error finding — `global_min_not_reaching_top` is FALSE-AS-STATED in two regimes (1-cube dissection AND multi-cube with global min at the top with z>0). Confirmed by reading OQ03OQ02 sibling file, which proves a formal counterexample (`global_min_false_for_unit_cube`) and a corrected `bottom_floor_min_not_reaching_top`. The prior nextSteps proposing a card-guard FIX address only the 1-cube counterexample, not the multi-cube regime — they were necessary but not sufficient."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "FIX: Add 2 ≤ d.cubes.card to global_min_not_reaching_top (FALSE for 1-cube dissections where side=1, z=0, z+side=1)",
-      "Prove global_min_not_reaching_top (z=0 case): if side=1 then cube=[0,1]³, any other cube has interior in (0,1)³, contradicts pairwise_disjoint. If side<1 then z+side<1 directly.",
-      "Prove global_min_not_reaching_top (z>0 case): cubes below c_min have side > c_min.side (global min). If c_min.z + c_min.side = 1 and z > 0, then side = 1-z < 1. Cubes below at z' with side' > 1-z must have z'+side' > z (since z' ≤ z and side' > 1-z), overlapping c_min's interior, contradiction.",
-      "Prove smallest_above_is_smaller: the smallest cube c on floor z is surrounded by cubes with side > c.side. At height z+c.side, the open region above c's interior is bounded by taller neighbors. Coverage forces a cube c' there with side ≤ c.side, strict by allDifferentSizes."
+      "Rewrite `descent_chains_from_coverage` and `dissection_of_cubes_from_coverage` in OQ03 to descend from the bottom-floor minimum (via OQ03OQ02s `bottom_floor_min_is_descent_ready`) instead of the global minimum. This eliminates the `global_min_not_reaching_top` sorry entirely. Build risk: low — bottom-floor lemmas are already proved sorry-free in OQ03OQ02. Architecture risk: medium — OQ03OQ02 imports OQ03, so the bottom-floor lemmas may need to be moved into OQ03 (or into the base file) to avoid a circular import.",
+      "Prove `smallest_above_is_smaller` (line 390) — this is the remaining genuinely HARD sorry. Needs a 2D tiling argument on the top face of c: all floor neighbors of c are taller, so coverage forces a cube above c whose footprint fits inside cs footprint, hence smaller side by `allDifferentSizes`.",
+      "Consider extracting OQ03OQ02s bottom-floor lemmas (`no_unit_cube_in_multi_dissection`, `all_cubes_side_lt_one`, `bottom_floor_min_side_lt_one`, `bottom_floor_min_not_reaching_top`, `bottom_floor_min_is_descent_ready`) into either OQ03 itself or a new OQ03-base helper file, so OQ03 can use them without the import cycle."
     ]
   },
   "tags": [
@@ -80,7 +80,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T16:34:54.971Z",
-  "lastUpdate": "2026-03-30T16:34:54.971Z",
+  "lastUpdate": "2026-05-13T12:00:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [

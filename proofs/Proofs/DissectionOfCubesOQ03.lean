@@ -449,18 +449,40 @@ one per floor level, contradicting finiteness.
 
 /-- **The global minimum cube doesn't reach the top of the unit cube.**
 
-    In a dissection with coverage and all different sizes, the globally
-    smallest cube must satisfy z + side < 1. The argument:
-    - If c_min.z = 0 (on bottom floor) and c_min.side = 1, then c_min fills
-      [0,1]³ entirely, making it the only cube. But `exists_smaller_cube` would
-      give a strictly smaller cube, contradicting that the dissection has only 1 cube.
-    - If c_min.z > 0, the cubes below c_min (which cover c_min's footprint by
-      coverage) constrain the geometry: the floor at c_min.z is shared with larger
-      cubes whose overlap with c_min forces c_min.z + c_min.side < 1.
+    ⚠ **FALSE-AS-STATED — SUPERSEDED**. See `DissectionOfCubesOQ03OQ02.lean`
+    for the formal counterexample (`global_min_false_for_unit_cube`) and the
+    corrected bottom-floor formulation (`bottom_floor_min_not_reaching_top`,
+    `bottom_floor_min_is_descent_ready`).
 
-    This is the key geometric claim that enables the direct proof.
-    It cannot reach the top because the confinement argument applies
-    recursively from the bottom floor upward. -/
+    Two distinct counterexamples block this lemma as stated:
+
+    1. **1-cube dissection (card = 1)**. Let d = {⟨0,0,0,1⟩}. Then
+       `allDifferentSizes` is vacuously true, `CoversUnitCube` holds, the
+       global minimum is the unit cube itself, and `c_min.z + c_min.side = 1`.
+       Adding `2 ≤ d.cubes.card` (or equivalently `1 < d.cubes.card`) rules
+       this case out — see `no_unit_cube_in_multi_dissection` in OQ03OQ02.
+
+    2. **Multi-cube dissections where the global min reaches the top** (card ≥ 2,
+       `z > 0`). The global minimum is not constrained to the bottom floor; it
+       could in principle sit at the top with `c_min.z + c_min.side = 1` and
+       `c_min.z > 0`, satisfying every other hypothesis of this lemma but
+       violating its conclusion. The "confinement argument applies recursively
+       from the bottom floor upward" sketch in the original docstring presumed
+       (without proof) that the global min sits on the bottom floor — this is
+       exactly the gap the bottom-floor reformulation closes.
+
+    The correct geometric fact (Littlewood's argument) is that the
+    **bottom-floor minimum** has `z + side < 1`. OQ03OQ02 proves this with
+    0 sorries and 0 axioms via `bottom_floor_min_side_lt_one` and
+    `bottom_floor_min_not_reaching_top`. Use those instead.
+
+    This sorry is preserved here (rather than deleted) because the two
+    direct callers — `descent_chains_from_coverage` and
+    `dissection_of_cubes_from_coverage` — still consume it. Both downstream
+    theorems should be rewritten to descend from the bottom-floor minimum
+    (via `bottom_floor_min_is_descent_ready`) rather than the global minimum;
+    such a rewrite is a follow-up session and is tracked in
+    `research/problems/dissection-of-cubes-oq-05/`. -/
 theorem global_min_not_reaching_top (d : CubeDissection) (h_diff : d.allDifferentSizes)
     (hcov : CoversUnitCube d) (h_nonempty : d.cubes.Nonempty)
     (c_min : Cube) (hc_min_mem : c_min ∈ d.cubes)
@@ -590,10 +612,12 @@ theorem dissection_of_cubes_from_coverage (d : CubeDissection)
 | Sorry | Type | Difficulty | Path to Resolution |
 |-------|------|------------|--------------------|
 | `smallest_above_is_smaller` | Geometric confinement | HARD | Needs 2D tiling argument for the top face; all floor neighbors are taller, so cube above fits within the footprint |
-| `global_min_not_reaching_top` | Global geometry | MEDIUM | For bottom-floor mins: filling argument (side=1 → only cube). For non-bottom mins: coverage forces cubes below that constrain the z-range |
+| `global_min_not_reaching_top` | **FALSE-AS-STATED — SUPERSEDED** | n/a | The lemma is provably false in two regimes: (a) the 1-cube dissection (formal counterexample `global_min_false_for_unit_cube` in OQ03OQ02), and (b) multi-cube dissections whose global minimum sits at the top with `z > 0`. The correct fact is `bottom_floor_min_not_reaching_top` (OQ03OQ02), proved with 0 sorries / 0 axioms. The two downstream consumers — `descent_chains_from_coverage` and `dissection_of_cubes_from_coverage` — should be rewritten to descend from the bottom-floor minimum (via `bottom_floor_min_is_descent_ready`). Until that rewrite lands, this sorry is retained for compile-time interface stability. |
 
 ### Axiom count: 0 (down from 3)
-### Sorry count: 2 (geometric confinement + global minimum geometry)
+### Sorry count: 2 (`smallest_above_is_smaller` is genuinely HARD;
+###  `global_min_not_reaching_top` is FALSE-AS-STATED — see OQ03OQ02 for
+###  the corrected bottom-floor reformulation, already proved sorry-free)
 -/
 
 end DissectionOfCubesOQ03
