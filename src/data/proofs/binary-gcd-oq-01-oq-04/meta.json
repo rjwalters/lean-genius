@@ -63,7 +63,7 @@
     "definitionCount": 0
   },
   "overview": {
-    "historicalContext": "Josef Stein introduced the Binary GCD algorithm in 1967 (*Journal of Computational Physics* 1:397–405) as a hardware-friendly alternative to Euclid's algorithm: it replaces division by shifts and subtractions, operations native to binary processors. Stein's original paper analyzed the algorithm's correctness but did not provide a sharp complexity bound. Later analyses established the upper bound of $O(\\log(\\max(a,b)))$ steps — see Knuth, *The Art of Computer Programming* Vol. 2, §4.5.2.\n\nThe *tight lower bound* — proving the algorithm is $\\Omega(\\log b)$ in the worst case and cannot be improved by a constant factor — requires exhibiting an infinite family of inputs that each take $\\Theta(\\log b)$ steps. The family $(1, 2^n - 1)$ is the canonical hard case: since $2^n - 1$ is always odd, every step takes the 'both odd' branch, reducing $(1, 2^n-1) \\to (1, 2^{n-1}-1) \\to \\cdots \\to (1, 0)$ in exactly $n$ steps with no shortcuts.\n\nThis formalization is the first machine-checked proof of the tight lower bound for Binary GCD in Lean 4. It converts the informal $\\Omega(\\log b)$ argument into a verified exact equality $\\text{binaryGcdSteps}(1, 2^n-1) = n$, with a formal connection to $\\lfloor\\log_2(2^n-1)\\rfloor = n-1$.",
+    "historicalContext": "Josef Stein introduced the Binary GCD algorithm in 1967 (*Journal of Computational Physics* 1:397–405) as a hardware-friendly alternative to Euclid's algorithm: it replaces division by shifts and subtractions, operations native to binary processors. Stein's original paper analyzed the algorithm's correctness but did not provide a sharp complexity bound. Later analyses established the upper bound of $O(\\log(\\max(a,b)))$ steps — see Knuth, *The Art of Computer Programming* Vol. 2, §4.5.2.\n\nThe *tight lower bound* — proving the algorithm is $\\Omega(\\log b)$ in the worst case and cannot be improved by a constant factor — requires exhibiting an infinite family of inputs that each take $\\Theta(\\log b)$ steps. The family $(1, 2^n - 1)$ is the canonical hard case: since $2^n - 1$ is always odd, every step takes the 'both odd' branch, reducing $(1, 2^n-1) \\to (1, 2^{n-1}-1) \\to \\cdots \\to (1, 0)$ in exactly $n$ steps with no shortcuts.\n\nThe situation parallels Lamé's 1844 result for Euclid's algorithm (*Comptes Rendus* 19), which showed that consecutive Fibonacci numbers $(F_n, F_{n+1})$ form the worst case for the standard Euclidean algorithm, taking exactly $n$ division steps. Just as Fibonacci pairs witness the tightness of Euclid's $O(\\log_\\varphi b)$ bound, the Mersenne-minus-one family $(1, 2^n - 1)$ witnesses the tightness of Stein's $O(\\log_2 b)$ bound — with the role of $\\varphi = \\frac{1+\\sqrt 5}{2}$ taken by the base $2$. Brent's 1976 *average-case* analysis (*Analysis of the binary Euclidean algorithm*) showed that on random inputs the algorithm performs roughly $0.7050 \\cdot \\log_2 \\max(a,b)$ steps — strictly fewer than the worst case proved here.\n\nThis formalization is the first machine-checked proof of the tight lower bound for Binary GCD in Lean 4. It converts the informal $\\Omega(\\log b)$ argument into a verified exact equality $\\text{binaryGcdSteps}(1, 2^n-1) = n$, with a formal connection to $\\lfloor\\log_2(2^n-1)\\rfloor = n-1$.",
     "problemStatement": "**Open Question OQ-04 from BinaryGcdOQ01**:\n\nProve the tight lower bound for Binary GCD by exhibiting an infinite family of inputs achieving Θ(log b) steps. Specifically, prove:\n$$\\text{binaryGcdSteps}(1, 2^n - 1) = n$$\n\nThis shows the upper bound from BinaryGcdOQ01 (steps ≤ 2·(log₂ a + log₂ b) + 2) is tight up to a constant factor.",
     "text": "The family (1, 2^n - 1) achieves exactly n binary GCD steps, proving the algorithm's O(log b) complexity bound is asymptotically optimal.",
     "proofStrategy": "**One-step lemma**: `binaryGcdSteps 1 (2k+1) = 1 + binaryGcdSteps 1 k`.\n\nBoth 1 and 2k+1 are odd, with 1 ≤ 2k+1, so the algorithm takes the last branch: (1, 2k+1) → (1, (2k+1-1)/2) = (1, k). Proved by unfolding `binaryGcdSteps.eq_3` and resolving three `if-else` conditions via `simp only [if_neg ...]`.\n\n**Recursive decomposition**: `2^(n+1) - 1 = 2·(2^n - 1) + 1` (proved by `ring` + `omega`).\n\n**Main induction**: binaryGcdSteps 1 (2^(n+1) - 1) = binaryGcdSteps 1 (2·(2^n-1)+1) = 1 + binaryGcdSteps 1 (2^n-1) = 1 + n = n+1.\n\n**Log lower bound**: log₂(2^n - 1) < n proved by contradiction: if n ≤ log, then 2^n ≤ 2^(log) ≤ 2^n - 1, a contradiction via `Nat.pow_log_le_self`.",
@@ -72,7 +72,9 @@
       "The recursive identity 2^(n+1)-1 = 2·(2^n-1)+1 perfectly matches binaryGcdSteps_one_odd: one step reduces (1, 2^(n+1)-1) to (1, 2^n-1).",
       "The log lower bound proof avoids Nat.log_lt (unavailable in this Mathlib version) using a by_contra + Nat.pow_log_le_self approach.",
       "For n ≥ 2, binaryGcdSteps 1 (2^n-1) = n = log₂(2^n-1) + 1: the step count exceeds the log by exactly 1.",
-      "The proof demonstrates a 'squeeze' technique for exact logarithm computation: bounding log₂(2^n-1) between n-1 and n via Nat.log_mono_right and log2_pow2_sub_one_lt, then concluding equality. This avoids the unavailable Nat.log_lt and works around a gap in Mathlib's Nat.log API at the time of formalization."
+      "The proof demonstrates a 'squeeze' technique for exact logarithm computation: bounding log₂(2^n-1) between n-1 and n via Nat.log_mono_right and log2_pow2_sub_one_lt, then concluding equality. This avoids the unavailable Nat.log_lt and works around a gap in Mathlib's Nat.log API at the time of formalization.",
+      "The hard input 2^n - 1 = 0b111…1 has maximum Hamming weight n among n-bit numbers — every binary digit is a 1. Each subtract-and-shift step exposes the next 1-bit and never produces a stride-friendly trailing zero, forcing the algorithm into its slowest branch n times in a row. The worst case for Binary GCD is thus the binary-dense analog of the Fibonacci pair (F_n, F_{n+1}) that is worst-case for Euclid.",
+      "Existence of a tight worst-case family is what separates an asymptotic O-bound from a Θ-bound. The proof complements the matching O(log b) upper bound in BinaryGcdOQ01 to upgrade the analysis from 'at most logarithmic' to 'exactly logarithmic up to a constant factor'. Without such a witness, no amount of upper-bound work can rule out a faster algorithm — see Lamé's theorem (1844) for the analogous Euclidean argument with Fibonacci numbers."
     ],
     "prerequisites": [
       "BinaryGcdOQ01.lean (binaryGcdSteps definition, upper bound, binaryGcdSteps.eq_3)"
@@ -125,14 +127,36 @@
       "targetId": "binary-gcd-oq-01",
       "relationship": "extends",
       "description": "BinaryGcdOQ01 proved the upper bound binaryGcdSteps ≤ 2·(log₂ a + log₂ b) + 2. This file provides the matching lower bound, completing the Θ(log b) characterization."
+    },
+    {
+      "targetId": "binary-gcd",
+      "relationship": "depends-on",
+      "description": "Provides the underlying Stein's Binary GCD definition (binaryGcdSteps, the four-branch recursion with binaryGcdSteps.eq_3) that this file analyzes. The 'both odd, a ≤ b' branch invoked by binaryGcdSteps_one_odd is exactly the slow branch identified by Stein (1967)."
+    },
+    {
+      "targetId": "binary-gcd-oq-02",
+      "relationship": "complements",
+      "description": "Binary GCD for Integers extends the ℕ-valued binaryGcdSteps to ℤ via natAbs. The tight lower bound proved here for (1, 2^n - 1) ∈ ℕ × ℕ transports unchanged to ℤ × ℤ since the integer variant is defined to agree on absolute values."
+    },
+    {
+      "targetId": "binary-gcd-oq-03",
+      "relationship": "contrasts",
+      "description": "The Lehmer-Schönhage hybrid GCD algorithm beats this Θ(log b) bound on large inputs by extracting top bits, running Euclid on small approximations, then applying a 2×2 cofactor matrix at full precision. The lower bound here applies only to the un-accelerated Binary GCD — the Lehmer-Schönhage variant breaks the (1, 2^n-1) family by amortizing many bit-shifts into a single cofactor multiplication."
+    },
+    {
+      "targetId": "gcd-algorithm",
+      "relationship": "compares-with",
+      "description": "Euclid's algorithm has its own canonical worst case: consecutive Fibonacci numbers (F_n, F_{n+1}) take exactly n steps (Lamé 1844). The Mersenne-minus-one family (1, 2^n - 1) plays the analogous role for Binary GCD — both are 'maximally non-compressible' inputs forcing the slowest branch at every step, but with base φ = (1+√5)/2 replaced by base 2."
     }
   ],
   "conclusion": {
     "summary": "The exact step count binaryGcdSteps 1 (2^n-1) = n is proved by induction, establishing that the Binary GCD upper bound is asymptotically tight. The proof is clean: 3 lemmas, one induction, no sorry, no axioms.",
-    "implications": "Together with BinaryGcdOQ01 (upper bound), this establishes binaryGcdSteps = Θ(log b) for the worst-case family (1, 2^n-1): the step count n equals log₂(2^n-1) + 1.",
+    "implications": "Together with BinaryGcdOQ01 (upper bound), this establishes binaryGcdSteps = Θ(log b) for the worst-case family (1, 2^n-1): the step count n equals log₂(2^n-1) + 1. In broader complexity terms, the result rules out any constant-factor improvement to Binary GCD without changing the algorithm: any future analysis claiming a better worst-case bound than ≈ log₂ b is contradicted by this verified witness family. The Mersenne-minus-one family thus plays for Stein's algorithm the role Fibonacci pairs play for Euclid's (Lamé 1844) — a canonical 'maximally incompressible' input that exposes the algorithm's intrinsic step-count floor.",
     "openQuestions": [
       "What is the exact worst-case over all inputs (a, b) with a+b ≤ N? Is it always achieved by a member of the family (1, 2^n-1)?",
-      "Can the tight bound be extended to general (a, b): prove binaryGcdSteps a b = Θ(log(a+b)) with explicit constants matching the (1, 2^n-1) family?"
+      "Can the tight bound be extended to general (a, b): prove binaryGcdSteps a b = Θ(log(a+b)) with explicit constants matching the (1, 2^n-1) family?",
+      "Formalize the average-case counterpart: Brent (1976) showed that on random inputs the expected step count grows like ≈ 0.7050 · log₂ max(a,b). Verifying this constant in Lean would require formalizing probabilistic analysis of GCD algorithms — a substantial program now within reach via Mathlib's measure-theoretic foundations.",
+      "Characterize all infinite families that achieve binaryGcdSteps = log₂(b) + O(1). Are (1, 2^n-1) and its translates (2^k, 2^n-1) for k ≪ n the only such families up to symmetry, or is there a richer combinatorial classification?"
     ]
   },
   "leanFile": {
@@ -160,13 +184,25 @@
       "authors": "Stein, J.",
       "title": "Computational problems associated with Racah algebra",
       "year": "1967",
-      "note": "Journal of Computational Physics 1(3), 397-405. Original Binary GCD algorithm."
+      "note": "Journal of Computational Physics 1(3), 397-405. Original Binary GCD algorithm — introduced in a nuclear-physics context for computing 6-j symbols, before being recognized as a general number-theoretic algorithm."
     },
     {
       "authors": "Knuth, D.E.",
       "title": "The Art of Computer Programming, Vol. 2: Seminumerical Algorithms",
       "year": "1998",
       "note": "Section 4.5.2. Analysis of GCD algorithms including Binary GCD step count."
+    },
+    {
+      "authors": "Lamé, G.",
+      "title": "Note sur la limite du nombre des divisions dans la recherche du plus grand commun diviseur entre deux nombres entiers",
+      "year": "1844",
+      "note": "Comptes Rendus de l'Académie des Sciences 19, 867–870. The Euclidean analog: pairs of consecutive Fibonacci numbers (F_n, F_{n+1}) achieve exactly n division steps, witnessing the tightness of Euclid's O(log_φ b) bound — the historical template for the present result with base 2 in place of φ."
+    },
+    {
+      "authors": "Brent, R.P.",
+      "title": "Analysis of the binary Euclidean algorithm",
+      "year": "1976",
+      "note": "In Traub (ed.), Algorithms and Complexity: New Directions and Recent Results, Academic Press, pp. 321–355. Establishes the average-case constant ≈ 0.7050 — the gap between worst case (this proof) and typical inputs."
     }
   ],
   "mainTheorems": [
