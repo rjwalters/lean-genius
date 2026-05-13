@@ -1,10 +1,53 @@
 # Current State
 
-**Phase**: ACT (S2 — `eulerPoly` AP-gap witness scaffold landed sorry-free, build-pending)
-**Since**: 2026-05-13 (S2 ACT, researcher-5)
-**Iteration**: 2
+**Phase**: ACT (S3 — `greenTao_finitary` axiom + bridge theorem + concrete `k = 5` witness landed, build-pending)
+**Since**: 2026-05-13 (S3 ACT, researcher-3)
+**Iteration**: 3
 
-## S2 ACT (researcher-5, 2026-05-13) — Euler-polynomial witness scaffold
+## S3 ACT (researcher-3, 2026-05-13) — Green-Tao axiomatization for `d = 0`
+
+**Outcome**: progress — extended `proofs/Proofs/Erdos455OQ04.lean`
+from 84 → 126 LOC (+42 net). Added:
+* `axiom greenTao_finitary` — finitary Green-Tao 2008 statement
+  (form F1 per S3b PREP §3.1; raw AP triple `∃ a g, 0 < g ∧ ∀ n < k, prime (a + n g)`).
+* `theorem exists_apGap_zero_of_length` — bridge from `greenTao_finitary`
+  to the slug's `HasAPGaps q 0` predicate (~8 LOC, sorry-free).
+* `theorem exists_apGap_zero_length_5_witness` — concrete `(a, g) = (5, 6)`
+  certifying the `k = 5` instance `5, 11, 17, 23, 29` without invoking
+  the axiom (~6 LOC, sorry-free **and** axiom-free, via `decide`).
+
+Implements the S3b PREP §3.2 axiom signature + bridge verbatim (PR #18736)
+plus the §4 optional concrete `k = 5` witness. No edits to the parent's
+`exists_length40_apGapPrimeSeq` (S2 ACT) or to `HasAPGaps` / `APGapPrimeSeq`
+declarations.
+
+**Counts (post-S3 ACT)**:
+* `lineCount`: 84 → 126 (per worktree `wc -l`)
+* `theoremCount`: 2 → 4 (added `exists_apGap_zero_of_length`,
+  `exists_apGap_zero_length_5_witness`)
+* `defCount`: 2 (unchanged — `HasAPGaps`, `eulerPoly`) + 1 structure (`APGapPrimeSeq`)
+* `sorryCount`: 0 (unchanged)
+* `axiomCount`: 0 → 1 (`greenTao_finitary`; no structure-encoded axioms;
+  per §3.1 design, F1 form so no nested-structure axioms)
+
+**Build status**: pending — local Docker build blocked by `.lake` symlink
+trap (memory `[.lake symlink loop + mid-build worktree wipe]`). Doctor/
+Mechanic verifies on a fresh container.
+
+**Tactics used** (all Mathlib-stable):
+* `obtain` for axiom destructuring.
+* `push_cast; ring` for `HasAPGaps q 0` discharge (matches
+  `eulerPoly_hasAPGaps` from S2 ACT).
+* `decide` / `interval_cases` for the `k = 5` concrete witness
+  (`5, 11, 17, 23, 29` primality follows from kernel reduction).
+
+**Next**: S4 PREP — Bunyakovsky-style axiom for `d > 0`. The S3b PREP §6.1
+recommendation is to **drop the cubic-growth claim** (heuristically false:
+prime density for irreducible quadratic `f(n)` is ~`1/log n`, giving
+logarithmic-not-cubic growth) and replace with a Bunyakovsky-conjectural
+unbounded-length axiom. Out of scope for S3 ACT.
+
+## (Historic) S2 ACT (researcher-5, 2026-05-13) — Euler-polynomial witness scaffold
 
 **Outcome**: progress — new file `proofs/Proofs/Erdos455OQ04.lean`
 (~80 LOC, 2 defs + 1 structure + 2 theorems, **0 sorries, 0 axioms**)

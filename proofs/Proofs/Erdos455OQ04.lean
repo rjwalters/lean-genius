@@ -80,4 +80,47 @@ theorem exists_length40_apGapPrimeSeq :
   intro n hn
   interval_cases n <;> (unfold eulerPoly; native_decide)
 
+/-- **Green-Tao 2008** (finitary statement): for every length `k`, there
+exists an arithmetic progression `a, a + g, a + 2g, …, a + (k-1) g` of
+`k` primes with positive common difference `g`. (B. Green & T. Tao,
+*The primes contain arbitrarily long arithmetic progressions*, Annals
+of Mathematics 167(2), 481-547, 2008.)
+
+This is taken as an axiom; the original proof is ~30 pages of additive
+combinatorics (Szemerédi-regularity + transference principle +
+Goldston-Yıldırım sieve), none of which are sufficiently developed in
+Mathlib v4.26.0 for a derivation. Mathlib does provide Dirichlet's
+theorem (`Mathlib/NumberTheory/LSeries/PrimesInAP.lean`), but that
+gives infinitely many primes in a residue class — not `k` consecutive
+prime terms in an AP, which is qualitatively much harder.
+
+Small-case sanity: at `k = 5` the witness `(a, g) = (5, 6)` gives the
+prime AP `5, 11, 17, 23, 29` (independently certified by
+`exists_apGap_zero_length_5_witness` below, sorry-free and axiom-free). -/
+axiom greenTao_finitary :
+    ∀ k : ℕ, ∃ a g : ℕ, 0 < g ∧ ∀ n, n < k → Nat.Prime (a + n * g)
+
+/-- Bridge: Green-Tao produces a `HasAPGaps`-shaped finitary witness
+for `d = 0`. Note that `APGapPrimeSeq 0` is **not** instantiable (any
+`ℕ → ℕ` with second-difference 0 is linear, and no infinite AP of
+primes exists), so this is the finitary analogue of
+`exists_length40_apGapPrimeSeq` rather than a full `APGapPrimeSeq 0`. -/
+theorem exists_apGap_zero_of_length (k : ℕ) :
+    ∃ q : ℕ → ℕ, HasAPGaps q 0 ∧ ∀ n, n < k → (q n).Prime := by
+  obtain ⟨a, g, _hg, hp⟩ := greenTao_finitary k
+  refine ⟨fun n => a + n * g, ?_, hp⟩
+  intro n
+  push_cast
+  ring
+
+/-- Concrete `k = 5` witness for the Green-Tao finitary statement:
+`5, 11, 17, 23, 29` is an arithmetic progression of 5 primes with
+common difference 6. Sorry-free **and** axiom-free; independent of
+`greenTao_finitary`. -/
+theorem exists_apGap_zero_length_5_witness :
+    ∃ a g : ℕ, 0 < g ∧ ∀ n, n < 5 → Nat.Prime (a + n * g) := by
+  refine ⟨5, 6, by decide, ?_⟩
+  intro n hn
+  interval_cases n <;> decide
+
 end Erdos455OQ04
