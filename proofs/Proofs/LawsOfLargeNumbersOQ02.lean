@@ -72,11 +72,11 @@ noncomputable def sampleMean (X : ℕ → Ω → ℝ) (n : ℕ) (ω : Ω) : ℝ 
 
 This requires:
 - Variance of a sum of independent RVs = sum of variances (Mathlib: IndepFun.variance_sum)
-- Variance scales as c²·Var (Mathlib: variance_smul)
+- Variance scales as c²·Var (Mathlib: variance_const_mul)
 - sampleMean is in L² (follows from X being in L²)
 
-The measure-theoretic bookkeeping for these steps is substantial in Lean,
-so we axiomatize the result and its prerequisites.
+Both bearers are present in Mathlib v4.26
+(`Mathlib.Probability.Moments.Variance`), so we discharge the result as a theorem.
 -/
 
 /-- The sample mean of L² random variables is in L².
@@ -108,16 +108,33 @@ theorem integral_sampleMean
 
 /-- **Variance of the sample mean**: Var(X̄ₙ) = σ²/n.
 
-    Proof sketch:
-    1. Var(∑ᵢ Xᵢ) = ∑ᵢ Var(Xᵢ) = nσ²  (independence)
-    2. Var(X̄ₙ) = Var((1/n)·∑ Xᵢ) = (1/n²)·nσ² = σ²/n  (scaling) -/
-axiom variance_sampleMean
+    Proof:
+    1. Var(∑ᵢ Xᵢ) = ∑ᵢ Var(Xᵢ) = nσ²  (independence, via `IndepFun.variance_sum`)
+    2. Var(X̄ₙ) = Var((1/n)·∑ Xᵢ) = (1/n²)·nσ² = σ²/n  (scaling, via `variance_const_mul`)
+
+    Previously axiomatized. S2 ACT 2026-05-13 discharges via Mathlib v4.26 bearers
+    `variance_const_mul` + `IndepFun.variance_sum`. -/
+theorem variance_sampleMean
     (X : ℕ → Ω → ℝ) (n : ℕ) (hn : 0 < n)
     (σ_sq : ℝ) (hσ : σ_sq ≥ 0)
     (h_var : ∀ i, variance (X i) volume = σ_sq)
     (hℒp : ∀ i, MemLp (X i) 2 volume)
     (h_indep : Pairwise fun i j => IndepFun (X i) (X j) volume) :
-    variance (sampleMean X n) volume = σ_sq / n
+    variance (sampleMean X n) volume = σ_sq / n := by
+  have hpair : Set.Pairwise ↑(Finset.range n) fun i j => IndepFun (X i) (X j) volume :=
+    fun i _ j _ hij => h_indep hij
+  have hLp_set : ∀ i ∈ Finset.range n, MemLp (X i) 2 volume := fun i _ => hℒp i
+  have hvar_sum :
+      variance (fun ω => ∑ i ∈ Finset.range n, X i ω) volume
+        = ∑ i ∈ Finset.range n, variance (X i) volume := by
+    simpa [Finset.sum_apply] using IndepFun.variance_sum hLp_set hpair
+  have hn0 : (n : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hn.ne'
+  unfold sampleMean
+  rw [variance_const_mul, hvar_sum]
+  simp_rw [h_var]
+  rw [Finset.sum_const, Finset.card_range, nsmul_eq_mul]
+  field_simp
+  ring
 
 -- ============================================================
 -- SECTION 3: The Chebyshev Convergence Rate
@@ -315,22 +332,23 @@ theorem chebyshev_rate_implies_convergence
 -- SECTION 9: Summary Statistics
 -- ============================================================
 
-/-- Axiom count summary:
-    - 1 technical axiom (variance_sampleMean — independence of variance sum)
-    - 1 axiom for standardNormalCDF (CLT statement scaffolding)
-    - 1 axiom for CLT statement (genuinely beyond Mathlib v4.26)
-    - 1 axiom for berryEsseenConstant (Berry-Esseen scaffolding)
-    Total: 3 axioms, 0 sorries
+/-- Axiom count summary (post-S2 ACT 2026-05-13):
+    - 1 axiom for standardNormalCDF (CLT statement scaffolding; genuinely beyond Mathlib v4.26)
+    - 1 axiom for berryEsseenConstant (Berry-Esseen scaffolding; genuinely beyond Mathlib v4.26)
+    Total: 2 axioms, 0 sorries
 
-    The remaining technical axiom (variance_sampleMean) encodes
-    Var(∑Xᵢ) = ∑Var(Xᵢ) under independence + scaling. Provable from Mathlib's
-    `IndepFun.variance_sum` + `variance_smul` but requires further L²
-    bookkeeping (variance of a sum + variance under linear scaling).
+    The `variance_sampleMean` axiom was discharged to a theorem via Mathlib's
+    `variance_const_mul` + `IndepFun.variance_sum` (S2 ACT 2026-05-13). The remaining
+    axioms (`standardNormalCDF`, `berryEsseenConstant`) encode the CLT and Berry-Esseen
+    constants — these are genuinely beyond Mathlib v4.26 (no `standardNormalCDF : ℝ → ℝ`
+    map and no Berry-Esseen theorem statement exist; Mathlib has Gaussian density and
+    characteristic functions but not the CLT itself).
 
     Proved in this file:
     - integral_sampleMean: linearity of expectation (integral_mul_left + integral_finset_sum)
     - sampleMean_memLp: L² closure via memLp_finset_sum + MemLp.const_mul
-    - chebyshev_convergence_rate: from Chebyshev inequality + variance/integral axioms
+    - variance_sampleMean: Var(X̄ₙ) = σ²/n (S2 ACT 2026-05-13; was axiom)
+    - chebyshev_convergence_rate: from Chebyshev inequality + variance_sampleMean
     - chebyshev_rate_implies_convergence: limit argument (tendsto_const_div + ofReal continuity)
     - chebyshevBound_nonneg, chebyshevBound_antitone: bound properties
     - chebyshev_rate_is_O_inv_n, berry_esseen_rate_involves_sqrt_n: rate computations -/
