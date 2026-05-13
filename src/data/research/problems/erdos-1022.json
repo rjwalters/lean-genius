@@ -1,31 +1,46 @@
 {
   "slug": "erdos-1022",
-  "title": "[Problem Title]",
-  "phase": "OBSERVE",
+  "title": "Erdős #1022 — Property B and Sparse Set Families",
+  "phase": "AXIOMATIZED",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\exists\\, c : \\mathbb{N} \\to \\mathbb{N},\\; (c(t) \\to \\infty) \\;\\wedge\\; \\bigl(\\forall \\mathcal{F}\\;\\forall t,\\; (\\forall f \\in \\mathcal{F},\\, |f| \\geq t) \\;\\wedge\\; \\mathcal{F}\\text{ is }c(t)\\text{-sparse} \\;\\Longrightarrow\\; \\mathcal{F} \\in \\mathrm{PropB}\\bigr).",
+    "plain": "A finite family F of sets has Property B if there is a 2-coloring of the underlying ground set such that no member of F is monochromatic. F is c-sparse if for every finite X, at most c·|X| members of F are subsets of X. Is there c(t) → ∞ such that every c(t)-sparse family of ≥t-sets has Property B? Lovász (1968) showed c(2) = 1 works; the general case is open.",
+    "whyMatters": [
+      "Refines the classical Erdős (1963) first-moment threshold |F| < 2^{t-1} from a global edge-count constraint to a local sparsity constraint — in the spirit of LLL refinements of probabilistic existence.",
+      "Property B is the gateway to k-uniform hypergraph 2-colorability; improvements feed back to Beck (1978) and Radhakrishnan–Srinivasan (2000) thresholds.",
+      "Mathlib has no general hypergraph 2-colorability / Property B API; the formalization here (HasPropertyB, IsSparse, AllSizeAtLeast, IsDegreeBounded, intDegree, monoProb, lllThreshold) opens that programme."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Matching case (Lovász 1968): every degree-1 family of ≥ 2-sets has Property B — formalized as `matching_has_propertyB` (Erdos1022Problem.lean).",
+      "Erdős (1963) first-moment bound: every family of ≥ t-sets with |F| < 2^{t-1} has Property B — formalized as `erdos_first_moment_bound` (Erdos1022Problem.lean).",
+      "Degree-bounded ⇒ sparse (double counting): every degree-d family of ≥ 1-sets is d-sparse — formalized as `degree_bounded_implies_sparse` (PR #13269, merged).",
+      "Property B_k hierarchy: Property B_k → Property B_{k+1}, and Property B = Property B_2 — formalized in Erdos1022OQ01.lean (OQ-01)."
+    ],
+    "open": [
+      "Existence of c(t) → ∞ for the general sparsity conjecture (axiom `erdos_1022_conjecture`).",
+      "Bridging finite-probability LLL to Property B without an axiom: `lll_propertyB` in Erdos1022OQ03.lean awaits Mathlib LLL infrastructure."
+    ],
+    "goal": "Discharge `lll_propertyB` for at least the small cases (t = 3, d = 1) where the numeric LLL threshold is already verified, en route to a partial sparsity-conjecture result for c(3)."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-28T10:58:21-07:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "phase": "AXIOMATIZED",
+    "since": "2026-04-27T16:05:13Z",
+    "iteration": 5,
+    "focus": "Stable axiomatized rest state: 3 Lean files (Problem 600 LOC / OQ01 165 LOC / OQ03 420 LOC), 55 theorems, 2 axioms (`erdos_1022_conjecture`, `lll_propertyB`), 0 sorries. Matching case proved.",
+    "blockers": [
+      "Mathlib lacks finite-probability + Lovász Local Lemma infrastructure needed to discharge `lll_propertyB`.",
+      "The sparsity conjecture itself (`erdos_1022_conjecture`) is open since Erdős–Lovász 1973."
+    ],
+    "nextAction": "See research/problems/erdos-1022/state.md §Forward Levers for three orthogonal next steps (discharge LLL at t=3,d=1; small-case c(3); OQ-01 sparsity-aware hierarchy).",
     "attemptCounts": {
-      "total": 0,
+      "total": 5,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 3
     }
   },
   "knowledge": {
@@ -48,9 +63,12 @@
     "markdown": "# Knowledge Base: erdos-1022\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "erdos",
+    "combinatorics",
+    "hypergraphs",
+    "property-b",
+    "2-coloring",
+    "sparsity"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -60,8 +78,15 @@
     "erdos-1022-oq-01"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Erdős, P., Lovász, L. (1973). Problems and results on 3-chromatic hypergraphs and some related questions. Infinite and finite sets, 609–627.",
+      "Erdős, P. (1963). On a combinatorial problem. Nordisk Mat. Tidskr. 11, 5–10.",
+      "Beck, J. (1978). On 3-chromatic hypergraphs. Discrete Math. 24(2), 127–137.",
+      "Radhakrishnan, J., Srinivasan, A. (2000). Improved bounds and algorithms for hypergraph 2-coloring. Random Structures & Algorithms 16(1), 4–32."
+    ],
+    "urls": [
+      "https://erdosproblems.com/1022"
+    ],
     "mathlib": []
   },
   "started": "2026-03-28T10:58:21-07:00",
@@ -100,5 +125,5 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022Problem.lean"
     }
   ],
-  "lastUpdate": "2026-03-29T20:00:00Z"
+  "lastUpdate": "2026-05-13T13:00:00Z"
 }
