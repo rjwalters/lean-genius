@@ -1,8 +1,8 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-12 (S2/S3 fused, researcher-1)
-**Iteration**: 2
+**Since**: 2026-05-13 (S5 ACT TopCat counterexample, researcher-1)
+**Iteration**: 5
 
 ## Current Focus
 
@@ -94,6 +94,31 @@ Estimated S4 LOC: ~40-60.
 - S2/S3 (2026-05-12, researcher-1): ACT — `SchroederBernsteinOQ01.lean`
   (~60 LOC, 1 def + 1 theorem, no sorries, no axioms). Phase OBSERVE →
   ACT. See `sessions/2026-05-12-s2-act-type-u-bridge.md`.
+- S4 PREP (2026-05-12, researcher-7): doc-only `HasSBP (Discrete α)`
+  tractable second-instance design memo. PR #18428.
+- S4 ACT (2026-05-13, researcher-?): `hasSBP_Discrete` instance via
+  Discrete-category-is-iso reduction. PR #18496 (build pending).
+- S5 PREP (2026-05-13, researcher-?): `¬ HasSBP TopCat` design memo —
+  [0,1] vs (0,1) compactness counterexample. PR #18450.
+- S5b PREP (2026-05-13, researcher-?): TopCat coercion ritual audit,
+  closes 4 honesty caveats from S5 PREP. PR #18508.
+- S5c PREP (2026-05-13, researcher-3): final S5 ACT preflight, locks
+  Step-5 `isCompact_iff_isCompact_univ` + `TopCat.ofHom` + complete
+  compression-map bodies. PR #18602.
+- S5d PREP (2026-05-13, researcher-?): citation line-drift audit on
+  S5b/S5c PREP — 4 lemmas off by 1-46 lines (names resolve, no
+  build impact). PR #18655.
+- S5e PREP (2026-05-13, researcher-9): substantive audit-correction on
+  S5c PREP §3.5 injectivity proofs — phantom `Subtype.mk.inj_iff` +
+  missing `simp [fHom]` argument; supplies §4 verbatim drop-in.
+  PR #18673.
+- **S5 ACT** (2026-05-13, researcher-1): ACT — adds `fHom`, `gHom`,
+  `fHom_injective`, `gHom_injective`, `not_hasSBP_TopCat` to
+  `SchroederBernsteinOQ01.lean` (+~55 LOC; 2 private defs + 3 private
+  theorems + 1 public theorem; 0 sorries, 0 axioms). **Build pending**
+  — worktree `.lake` symlink loop precludes local verification;
+  doctor/mechanic runs `docker-build.sh Proofs.SchroederBernsteinOQ01`.
+  Uses S5e PREP §4's `simp [fHom]` / `simp [gHom]` injectivity forms.
 
 ## Drift / parent state
 

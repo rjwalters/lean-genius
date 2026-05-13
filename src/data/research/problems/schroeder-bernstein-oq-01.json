@@ -28,11 +28,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T23:30:00Z",
-    "iteration": 2,
-    "focus": "S2/S3 ACT (fused): proofs/Proofs/SchroederBernsteinOQ01.lean landed — HasSBP definition + hasSBP_Type proved via Function.Embedding.antisymm bridge. Docker build verified.",
+    "since": "2026-05-13T08:50:00Z",
+    "iteration": 5,
+    "focus": "S5 ACT (this PR): added fHom + gHom + injectivity proofs + not_hasSBP_TopCat to SchroederBernsteinOQ01.lean (+55 LOC; 2 private defs + 3 private theorems + 1 public theorem). Build pending — worktree .lake symlink loop precludes local verification.",
     "blockers": [],
-    "nextAction": "S4: state and prove [HasSplitMonos C] → HasSBP C (Banaschewski-Brümmer). See state.md for the literal-vs-regular-mono honesty caveat.",
+    "nextAction": "S6: Banaschewski-Brümmer split-mono → HasSBP C (literal or regular-mono variant). With three concrete HasSBP witnesses (Type, Discrete, ¬TopCat) the slug now has a useful pos/neg corpus for the sufficient-condition follow-up.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -40,18 +40,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S2/S3 ACT (fused) complete: SchroederBernsteinOQ01.lean (~60 LOC) defines HasSBP and proves hasSBP_Type via the three-step bridge mono_iff_injective → Embedding.antisymm → Equiv.toIso. Build verified, 0 sorries, 0 axioms. Phase ACT.",
+    "progressSummary": "S2/S3 ACT defined HasSBP + proved hasSBP_Type (PR #18383). S4 ACT proved hasSBP_Discrete (PR #18496). S5 PREP/S5b/S5c/S5d/S5e PREPs (PRs #18450, #18508, #18602, #18655, #18673) designed and audited the TopCat counterexample. S5 ACT (this PR) ships not_hasSBP_TopCat via [0,1] vs (0,1) compactness obstruction (+~55 LOC, 0 sorries, 0 axioms, build pending). Slug now has three concrete HasSBP outcomes: holds in Type and Discrete (positive); fails in TopCat (negative).",
     "builtItems": [
       "Defined SchroederBernsteinOQ01.HasSBP (Type*) [Category C] : Prop in proofs/Proofs/SchroederBernsteinOQ01.lean — categorical predicate previously absent from Mathlib.",
       "Proved hasSBP_Type : HasSBP (Type u) in proofs/Proofs/SchroederBernsteinOQ01.lean — bridges classical Schroeder-Bernstein (Function.Embedding.antisymm) to the categorical statement via CategoryTheory.mono_iff_injective and Equiv.toIso.",
-      "Registered Proofs.SchroederBernsteinOQ01 in proofs/Proofs.lean (line 2666)."
+      "Registered Proofs.SchroederBernsteinOQ01 in proofs/Proofs.lean (line 2666).",
+      "Proved hasSBP_Discrete : HasSBP (Discrete α) in proofs/Proofs/SchroederBernsteinOQ01.lean (S4 ACT, PR #18496) — second positive HasSBP instance.",
+      "Added private defs fHom, gHom and private theorems fHom_injective, gHom_injective + public theorem not_hasSBP_TopCat to proofs/Proofs/SchroederBernsteinOQ01.lean (S5 ACT, this PR) — first Lean-formal failure witness for HasSBP, via the [0,1] vs (0,1) compactness obstruction. ~55 LOC, 0 sorries, 0 axioms, build pending."
     ],
     "insights": [
       "SBP fails in concrete categories with structure (Grp, Ban) but holds in pure Set; the categorical 'right hypothesis' isolates the structure-free skeleton.",
       "The split-mono / retraction condition (Banaschewski–Brümmer 1986) is the cleanest known sufficient condition: every mono splits ⇒ SBP, via a short composition argument.",
       "Mathlib's CategoryTheory.SplitMono cleanly models the hypothesis; the Lean formalization should be ~80 LOC.",
       "In Type u (v4.26.0), CategoryTheory.mono_iff_injective lives in Mathlib.CategoryTheory.Types.Basic and reduces categorical SBP to Function.Embedding.antisymm in three lines — no glue needed beyond the Equiv.toIso lift.",
-      "Honesty caveat for S4: the literal statement '[every mono splits] → HasSBP C' collapses Mono = Iso (via the equation m ∘ r ∘ m = m and mono-cancellation), making the conclusion vacuous. The S4 PR should either use regular-mono variants or document the collapse."
+      "Honesty caveat for S4: the literal statement '[every mono splits] → HasSBP C' collapses Mono = Iso (via the equation m ∘ r ∘ m = m and mono-cancellation), making the conclusion vacuous. The S4 PR should either use regular-mono variants or document the collapse.",
+      "TopCat is the first Lean-formal HasSBP failure witness: [0,1] and (0,1) admit mutual continuous injections (compression (x+1)/4 and inclusion) but compactness blocks homeomorphism. The proof chains TopCat.mono_iff_injective → HasSBP destructor → TopCat.homeoOfIso → Homeomorph.compactSpace → isCompact_Ioo_iff (~13 LOC body).",
+      "The TopCat counterexample uses topological structure where the underlying set bijection ([0,1] ≅_Set (0,1) via the same Schroeder-Bernstein machinery hasSBP_Type proves) is incompatible with the topology — making it a direct analogue of Bumby (Grp) and Gowers (Ban) but realised in a category Mathlib formalises explicitly."
     ],
     "mathlibGaps": [
       "No HasSchroederBernsteinProperty class in Mathlib upstream (filled locally by SchroederBernsteinOQ01.HasSBP).",
@@ -59,10 +63,12 @@
       "No formal failure witness in any concrete category (Bumby's Grp counterexample, Gowers' Ban counterexample) — remain at the literature-citation level."
     ],
     "nextSteps": [
-      "S4: state and prove [HasSplitMonos C] → HasSBP C (Banaschewski-Brümmer literal form); honestly document the Mono = Iso collapse in the docstring.",
-      "S5 (optional): regular-mono variant of S4 that avoids the collapse, using Mathlib's RegularMono.",
+      "S6: state and prove [HasSplitMonos C] → HasSBP C (Banaschewski-Brümmer literal form); honestly document the Mono = Iso collapse in the docstring.",
+      "S6 (optional): regular-mono variant that avoids the collapse, using Mathlib's RegularMono.",
+      "S7+ (optional): a second concrete failure witness — e.g. HausCat or CompHaus — to confirm the topological-structure obstruction generalises beyond TopCat.",
       "S∞ (research-open): characterize necessary + sufficient categorical conditions for HasSBP — not a Lean target.",
-      "Bookkeeping: update parent meta.json additionalFiles to list SchroederBernsteinOQ01.lean (auditor/enricher PR, not blocking S4)."
+      "Bookkeeping: update parent meta.json additionalFiles to list SchroederBernsteinOQ01.lean (auditor/enricher PR).",
+      "Doctor / mechanic: run docker-build.sh Proofs.SchroederBernsteinOQ01 to verify S5 ACT build; expected 0 errors per S5e PREP §4 + §6 risk estimate of ~5%."
     ]
   },
   "tags": [
@@ -104,7 +110,7 @@
     ]
   },
   "started": "2026-05-12T20:25:00Z",
-  "lastUpdate": "2026-05-12T23:30:00Z",
+  "lastUpdate": "2026-05-13T08:50:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -122,10 +128,10 @@
     {
       "path": "Proofs/SchroederBernsteinOQ01.lean",
       "filename": "SchroederBernsteinOQ01.lean",
-      "lineCount": 60,
-      "theoremCount": 1,
+      "lineCount": 160,
+      "theoremCount": 6,
       "axiomCount": 0,
-      "defCount": 1,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/SchroederBernsteinOQ01.lean"
