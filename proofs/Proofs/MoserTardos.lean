@@ -123,18 +123,20 @@ noncomputable def pickBad (v : P.State) : Option (Fin P.numEvents) :=
     variables `j ∈ S` are independently re-drawn uniformly from
     `alphabet j`, and the variables `j ∉ S` keep their value `v j`.
 
-    OQ-01-A scaffold: the construction uses a product `PMF` over `S` and
-    is left as a `sorry` here; the full Pi-PMF construction is mechanical
-    via `PMF.bind` over `Finset.attach S` (each variable independently
-    drawn from `PMF.uniformOfFintype (alphabet j)`). Closing this `sorry`
-    is the natural first step of OQ-01-A.2 (a follow-on PR). -/
+    **OQ-01-A.2 implementation** (S3 ACT, this iteration). Construction
+    via Approach B from the S3 ANALYSIS doc (PR #18268, §2.2):
+    sample the dependent product `∀ j : ↥S, alphabet j.val` uniformly
+    (this is a finite nonempty `Fintype` by `Pi.instFintype`), then
+    glue the sample with the deterministic part `v j` for `j ∉ S` via
+    a single `PMF.map`. The resulting `PMF` is the desired product of
+    independent uniforms for `j ∈ S` together with point masses for
+    `j ∉ S` — a faithful encoding of "resample the variables in S,
+    keep everything else fixed". -/
 noncomputable def resampleAt (S : Finset (Fin P.numVars)) (v : P.State) :
-    PMF P.State := by
-  -- Full construction (deferred):
-  --   Let `q j := if j ∈ S then PMF.uniformOfFintype (P.alphabet j) else PMF.pure (v j)`
-  --   and produce the dependent product `PMF ((j : Fin P.numVars) → P.alphabet j)`
-  --   via iteration over `Finset.univ : Finset (Fin P.numVars)`.
-  exact sorry
+    PMF P.State :=
+  (PMF.uniformOfFintype (∀ j : S, P.alphabet j.val)).map
+    (fun (a : ∀ j : S, P.alphabet j.val) (j : Fin P.numVars) =>
+      if h : j ∈ S then a ⟨j, h⟩ else v j)
 
 /-- One step of the Moser–Tardos algorithm: if no bad event is currently
     violated, return the current state with probability 1; otherwise pick
