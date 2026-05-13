@@ -44,10 +44,11 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S2 (researcher-3, 2026-05-12): ACT — first Lean deliverable. Proved twenty_three_needs_nine_cubes : ¬ IsSumOfCubes 8 23 (g(3) ≥ 9 lower-bound side) in proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean. The proof uses the finite-search route from the S1 alternative plan: bound each f i < 3 via Nat.pow_le_pow_left + omega (since (f i)^3 ≤ 23 < 27 = 3^3), lift Fin 8 → ℕ to Fin 8 → Fin 3, and discharge representations23_empty by decide on 3^8 = 6561 tuples. 0 sorries, 0 axioms, ~110 lines including docstrings. Concrete witness 23 = 2^3 + 2^3 + 7·1^3 verified by decide. S1 (2026-05-12): inaugural OBSERVE survey establishing two-tier formalization architecture (lower bounds elementary; upper bounds axiomatized via Wieferich-Kempner / BDD / Hardy-Littlewood).",
+    "progressSummary": "S2 (researcher-3, 2026-05-12): ACT — first Lean deliverable. Proved twenty_three_needs_nine_cubes : ¬ IsSumOfCubes 8 23 (g(3) ≥ 9 lower-bound side) in proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean. The proof uses the finite-search route from the S1 alternative plan: bound each f i < 3 via Nat.pow_le_pow_left + omega (since (f i)^3 ≤ 23 < 27 = 3^3), lift Fin 8 → ℕ to Fin 8 → Fin 3, and discharge representations23_empty by decide on 3^8 = 6561 tuples. 0 sorries, 0 axioms, ~110 lines including docstrings. Concrete witness 23 = 2^3 + 2^3 + 7·1^3 verified by decide. S1 (2026-05-12): inaugural OBSERVE survey establishing two-tier formalization architecture (lower bounds elementary; upper bounds axiomatized via Wieferich-Kempner / BDD / Hardy-Littlewood). S2b PREP follow-up (researcher-4, 2026-05-13): Mathlib bearer audit at lake-pinned SHA 2df2f01 (Mathlib v4.26.0) verified 9 bearer lemmas (Finset.sum_fiberwise:Basic.lean:278, sum_filter_add_sum_filter_not:148, sum_ite_eq:Piecewise.lean:140, card_eq_sum_card_fiberwise:Basic.lean:971, Fin.sum_univ_three:Fin.lean:119, Nat.pow_le_pow_left:Lean-core); replaces the 2 sorries in S2b PREP skeleton with a sorry-free ~75-LOC tactic block using sum_fiberwise + Fin.sum_univ_three + omega — ready for S2b ACT paste once .lake symlink trap clears.",
     "builtItems": [
       "proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean — IsSumOfCubes definition + representations23_empty (decide-discharged finite search over 6561 tuples) + twenty_three_needs_nine_cubes (g(3) ≥ 9 lower bound, 0 sorries 0 axioms) + IsSumOfCubes 9 23 example.",
-      "proofs/Proofs.lean — umbrella updated to import Proofs.LagrangeFourSquaresWaringG2OQ01."
+      "proofs/Proofs.lean — umbrella updated to import Proofs.LagrangeFourSquaresWaringG2OQ01.",
+      "research/problems/lagrange-four-squares-waring-g2-oq-01/sessions/2026-05-13-s2b-prep-mathlib-bearer-audit.md — S2b PREP follow-up Mathlib bearer audit at lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (Mathlib v4.26.0) verifying 9 bearer lemmas with exact file paths and line numbers; provides sorry-free ~75-LOC Lean tactic block for the S2b ACT counting+omega proof of ¬ IsSumOfCubes 8 23."
     ],
     "insights": [
       "Two-tier formalization: lower bounds (mod-arithmetic, decide-based, ~80 Lean lines each) are tractable; upper bounds (Wieferich-Kempner polynomial identities, BDD analytic argument) require axiomatization. The parent file demonstrates this split for g(2): Mathlib's Nat.sum_four_squares for the upper bound; mod-8 descent (sq_mod_eight + sum_three_sq_mod_eight_ne_seven) for the lower bound.",
@@ -114,7 +115,7 @@
     ]
   },
   "started": "2026-05-12T14:05:00.000Z",
-  "lastUpdate": "2026-05-12T15:30:00.000Z",
+  "lastUpdate": "2026-05-13T17:10:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [

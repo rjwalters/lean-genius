@@ -2,7 +2,7 @@
 
 **Phase**: PREP-SATURATED (S1 → S7 PREP designed across `k = 3..7` lower-bound layer + upper-bound axiom inventory + waringG correctness chain; one ACT shipped, six ACTs queued)
 **Since**: 2026-05-13 (S6c PREP audit merged at #18664; S7 PREP drafted but no PR opened — see "Open branches")
-**Iteration**: 11 (S1 OBSERVE, S2 ACT, S2b PREP, S3 PREP, S4 PREP, S5 PREP, S6 PREP, S6b PREP, S6b audit, S6c audit; S7 PREP draft)
+**Iteration**: 12 (S1 OBSERVE, S2 ACT, S2b PREP, S3 PREP, S4 PREP, S5 PREP, S6 PREP, S6b PREP, S6b audit, S6c audit, S2b bearer audit; S7 PREP draft)
 
 ## Current Focus
 
@@ -47,8 +47,9 @@ The S2 ACT shipped instance uses an alternative `native_decide` over `3^8 = 6561
 | S6b audit | researcher-? | 2026-05-13 | PREP | Audit of S6b PREP `{0,1,2}`-trick boundary arithmetic; proves `q_k < (3/2)^k` strictly for all `k ≥ 1`, hence `n_k < 3^k` universally (447-line memo) | [#18555](https://github.com/rjwalters/lean-genius/pull/18555) | MERGED |
 | S6c audit | researcher-? | 2026-05-13 | PREP | Audit of S6 PREP §3 `waringG_2_correct` draft — 4 typing errors (F1–F4) + 1 axiom-integrity finding (F5: hidden `legendre_three_squares` dependency); proposes axiom-free `bound → lift → decide` alternative at `k = 2` (625-line memo) | [#18664](https://github.com/rjwalters/lean-genius/pull/18664) | MERGED |
 | S7 | researcher-4 | 2026-05-13 | PREP | `g(7)` lower bound design via counting+omega; witness `n = 2175 = 16 · 128 + 127`; (828-line memo) | (orphan branch — see below) | DRAFT |
+| S2b audit | researcher-4 | 2026-05-13 | PREP | Mathlib bearer audit for S2b PREP skeleton at lake-pinned SHA `2df2f01` (Mathlib v4.26.0); 9-row bearer table + sorry-free tactic draft (`Finset.sum_fiberwise` route, ~75 LOC) ready for S2b ACT paste | (this PR) | PENDING |
 
-**Total PREP/ACT artifacts on origin/main**: 10 PRs merged, ~3.6k lines of design documentation, 1 verified Lean file (118 LOC, 0 sorries, 0 axioms).
+**Total PREP/ACT artifacts on origin/main**: 10 PRs merged + 1 PENDING, ~3.6k lines of design documentation, 1 verified Lean file (118 LOC, 0 sorries, 0 axioms).
 
 ## Open branches
 
@@ -76,10 +77,11 @@ Per the established pattern, all counting+omega ACTs share the same load-bearing
 
 ## Attempt Counts
 
-- Total iterations: 11 (1 ACT shipped + 9 PREPs merged + 1 PREP draft pending PR)
+- Total iterations: 12 (1 ACT shipped + 9 PREPs merged + 1 PREP draft pending PR + 1 PREP follow-up pending PR)
 - ACT iterations shipped: 1 (S2)
 - PREP iterations merged: 9 (S1, S2b, S3, S4, S5, S6, S6b, S6b audit, S6c audit)
 - PREP iterations drafted (no PR yet): 1 (S7)
+- PREP iterations pending PR (this session): 1 (S2b bearer audit)
 - Approaches: 2 — `native_decide` (S2 ACT only) and counting+omega (all PREPs, future ACTs)
 
 ## Open files
@@ -92,6 +94,7 @@ Per the established pattern, all counting+omega ACTs share the same load-bearing
 - `sessions/2026-05-12-s06-prep-waringG-correctness-chain.md` — S6 PREP (543 LOC).
 - `sessions/2026-05-13-s05-prep-g5-counting-omega.md` — S5 PREP (509 LOC).
 - `sessions/2026-05-13-s2b-prep-g3-lower-counting-omega.md` — S2b PREP (186 LOC).
+- `sessions/2026-05-13-s2b-prep-mathlib-bearer-audit.md` — S2b PREP follow-up bearer audit (this iteration; ~250 LOC).
 - `sessions/2026-05-13-s6b-prep-audit-witness-arithmetic.md` — S6b audit (447 LOC).
 - `sessions/2026-05-13-s6b-prep-g6-counting-omega.md` — S6b PREP (682 LOC).
 - `sessions/2026-05-13-s6c-prep-audit-correctness-chain.md` — S6c audit (625 LOC).
