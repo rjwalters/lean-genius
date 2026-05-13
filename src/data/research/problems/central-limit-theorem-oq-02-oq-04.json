@@ -29,19 +29,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T05:30:00Z",
-    "iteration": 4,
-    "focus": "S4 ACT — Build-fix + structural decomposition. Discovered S3 PR #17820 merged build-pending and never built on origin/main; fixed 3 blockers (stale Mathlib.Probability.Variance import, MS Ω typeclass synthesis collision via Fin 2 → MS Ω wrap, σ² → σsq rename). Proven: indicator_cov_le_one ([0,1] envelope). Documented structural decomposition of davydov_covariance_inequality.",
+    "since": "2026-05-12T14:00:00Z",
+    "iteration": 5,
+    "focus": "S5a ACT — Mathlib drift-fix: `polynomial_summable_of_exponent_gt_one` discharged via `Real.summable_nat_rpow.mpr` (one-line proof). Sorry count 3 → 2. Build verified.",
     "blockers": [],
-    "nextAction": "S5a (mechanic-pass): formalize the 3 order-theory ingredients (alphaMixingCoeff_le_one, alphaMixingCoeff_nonneg, davydov_indicator_bound) using Prop-iSup-unification patterns. S5b: L^p density step via level-set decomposition + Hölder.",
+    "nextAction": "S5b ACT (~100 lines): L^p density step of davydov_covariance_inequality via level-set decomposition + Hölder, reducing to davydov_indicator_bound. Parallel: 3 order-theory ingredients (alphaMixingCoeff_le_one, alphaMixingCoeff_nonneg, davydov_indicator_bound).",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "ACT — S4 BUILD-FIX + structural decomposition. Discovered S3 PR #17820 merged build-pending and never compiled on origin/main. Fixed 3 blockers: stale Mathlib.Probability.Variance import (Mathlib drift), MS Ω typeclass-synthesis collision (refactored davydov_covariance_inequality signature from (ℱ 𝒢 : MS Ω) to (σPair : Fin 2 → MS Ω), the parent file's pattern from σ_k functions), and σ² (invalid Lean ident) → σsq rename. PROVEN: indicator_cov_le_one — the [0,1] envelope for the indicator-cov term, BddAbove witness for the nested suprema. Documented 3-ingredient structural decomposition of davydov_covariance_inequality (alphaMixingCoeff_le_one, alphaMixingCoeff_nonneg, davydov_indicator_bound) + L^p density step in the theorem's docstring. Sorries unchanged at 2 (davydov + main CLT); 0 axioms; 502 lines; 8 theorems.",
+    "progressSummary": "ACT — S5a Mathlib drift-fix: `polynomial_summable_of_exponent_gt_one` discharged via `Real.summable_nat_rpow.mpr (by linarith)` from `Mathlib.Analysis.PSeries`. Sorries 3 → 2 (closes the long-standing ζ-function summability sorry left from S2 awaiting a name-drift resolution). Build verified on Docker (Mathlib v4.26.0). The remaining 2 sorries are `davydov_covariance_inequality` (L^p version, S5b target) and `mixing_clt_ibragimov` (S6+ target). S4 progress carried forward: indicator_cov_le_one, indicator_pair_covariance_eq, build-fix complete, structural decomposition of davydov documented.",
     "builtItems": [
       "research/problems/central-limit-theorem-oq-02-oq-04/problem.md — full problem statement, threshold derivation, Bernstein-block proof outline",
       "research/problems/central-limit-theorem-oq-02-oq-04/knowledge.md — parent-file inventory, Mathlib gap analysis, 6-session decomposition plan",
@@ -126,7 +126,7 @@
     "mathlib": []
   },
   "started": "2026-05-08T19:09:00.562Z",
-  "lastUpdate": "2026-05-12T03:35:00Z",
+  "lastUpdate": "2026-05-12T14:00:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -298,8 +298,8 @@
     {
       "path": "Proofs/CentralLimitTheoremOQ02OQ04.lean",
       "filename": "CentralLimitTheoremOQ02OQ04.lean",
-      "lineCount": 231,
-      "theoremCount": 4,
+      "lineCount": 553,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 2,
