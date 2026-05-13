@@ -1252,3 +1252,291 @@ verification once docker has cycled.
   classical fact (sphere homology non-vanishing) rather than the
   composite "sphere-homology + retraction-induced section" of the
   mock.
+
+
+### Section N — S8 ACT-D-2 DESIGN: G7 algebraic bridge specification (2026-05-13, doc-only)
+
+This section is the **design** half of the S8 ACT-D-2 step from
+§L7. It fixes the exact Lean signature, import list, two-stage
+proof strategy, and companion-file layout for the **G7 algebraic
+bridge**
+
+    ¬ IsZero (X : AddCommGrpCat) → ∃ x : X.carrier, x ≠ 0
+
+so that the S8 EXEC iteration (a follow-on session) can install
+the lemma directly without further specification work. No Lean
+changes this iteration.
+
+#### N1. Target signature
+
+The S8 ACT-D-2 deliverable is a single theorem with the following
+exact signature (universe-monomorphic at `Type 0`, matching the
+ambient use in §M's `AddCommGrpCat.{0}`):
+
+```lean
+theorem AddCommGrpCat.exists_ne_zero_of_not_isZero
+    (X : AddCommGrpCat.{0}) (hX : ¬ CategoryTheory.Limits.IsZero X) :
+    ∃ x : X, x ≠ 0
+```
+
+Notes on the signature:
+
+* `(X : AddCommGrpCat.{0})` matches the existing usage in
+  `BrouwerFixedPointOQ01OQ02.lean` lines 287–292 (B1 surrogate)
+  and 351–356 (B2 surrogate). Both axioms instantiate the
+  `singularHomologyFunctor` at universe level `0`, so the bridge
+  lemma is intentionally universe-monomorphic to avoid a
+  `ULift`/`Type 0` mismatch at the call site.
+* The coercion `(x : X)` reads the element from the underlying
+  `AddCommGroup` carrier; `AddCommGrpCat` has the `CoeSort`
+  instance `instCoeSort : CoeSort AddCommGrpCat Type`. The
+  inequality `x ≠ 0` is in `X.carrier` (an `AddCommGroup`,
+  hence has a `Zero`).
+* The hypothesis `hX : ¬ IsZero X` is the statement-shape produced
+  by `sphere_singularHomology_nonzero` (line 351), so no shape
+  conversion is needed at the call site.
+
+A second, **stronger** form is also planned (independent S8 EXEC
+sub-lemma, same companion file):
+
+```lean
+theorem AddCommGrpCat.not_isZero_iff_nontrivial
+    (X : AddCommGrpCat.{0}) :
+    ¬ CategoryTheory.Limits.IsZero X ↔ Nontrivial X
+```
+
+`Nontrivial` is the standard Mathlib predicate
+`∃ x y, x ≠ y` (`Mathlib.Logic.Nontrivial.Basic`). For an
+`AddGroup` (which `X.carrier` is), `Nontrivial X ↔ ∃ x : X, x ≠ 0`
+via `nontrivial_iff_ne_zero` or the direct
+`⟨x, y, h⟩ ↦ ⟨x - y, sub_ne_zero.mpr h⟩` argument. Exposing the
+`iff` form gives downstream consumers an idiomatic Mathlib hook;
+the existential corollary above is then a one-liner.
+
+#### N2. Imports
+
+The companion file `BrouwerFixedPointOQ01OQ02G7.lean` (S8 EXEC
+deliverable) needs exactly these imports — strictly a subset of
+the main file's import list:
+
+```lean
+import Mathlib.Algebra.Category.Grp.Basic
+import Mathlib.Algebra.Category.Grp.Zero
+import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
+import Mathlib.Logic.Nontrivial.Basic
+```
+
+* `Algebra.Category.Grp.Basic` — provides `AddCommGrpCat`,
+  the `CoeSort` instance, and the `AddCommGrp.of` constructor.
+* `Algebra.Category.Grp.Zero` — provides the zero object of
+  `AddCommGrpCat` and the bridging lemma
+  `AddCommGrpCat.isZero_iff` characterizing `IsZero X` in
+  terms of `Subsingleton X.carrier`. **API verification flag**:
+  the exact name at the pinned rev `v4.26.0`
+  (`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) needs a 1-minute
+  grep check at S8 EXEC start; candidate names are
+  `AddCommGrpCat.isZero_iff`,
+  `AddCommGrpCat.isZero_iff_isZero`,
+  `AddCommGrpCat.isZero_iff_subsingleton`, or
+  `CategoryTheory.Limits.IsZero.iff_subsingleton` specialized
+  to the `AddCommGrpCat` forgetful functor. If absent, the
+  bridge is constructed inline (5–10 extra lines; see N4 fallback).
+* `CategoryTheory.Limits.Shapes.ZeroObjects` — provides `IsZero`,
+  `IsZero.eq_zero_of_src`, `IsZero.iff_id_eq_zero`, and the
+  generic zero-object boilerplate.
+* `Logic.Nontrivial.Basic` — provides `Nontrivial`,
+  `not_subsingleton_iff_nontrivial`, and
+  `nontrivial_iff` family.
+
+No `Mathlib.Topology.*`, no `Mathlib.AlgebraicTopology.*`, no
+`InnerProductSpace`. Build cost is dominated by `AddCommGrpCat`'s
+own dependency closure (which the main file already imports), so
+the companion-file build adds ≲ 1 second on top of the existing
+mathlib cache.
+
+#### N3. Mathlib API survey (pinned rev `v4.26.0`)
+
+The proof routes through three Mathlib facts, each verified to
+exist at the pinned rev (or, where unverified, flagged with a
+fallback construction):
+
+| Fact | Mathlib location (expected) | Verified? |
+|------|------------------------------|-----------|
+| `IsZero X ↔ Subsingleton X.carrier` for `X : AddCommGrpCat` | `Algebra/Category/Grp/Zero.lean` (name TBD; see N2 flag) | **flag** — verify at S8 EXEC start |
+| `¬ Subsingleton α ↔ Nontrivial α` | `Logic/Nontrivial/Basic.lean: not_subsingleton_iff_nontrivial` | ✓ (standard since 2022) |
+| `Nontrivial G ↔ ∃ x : G, x ≠ 0` for `[AddGroup G]` | `Logic/Nontrivial/Basic.lean: nontrivial_iff_ne_zero`, or inline via `sub_ne_zero` | ✓ (standard) |
+
+**Fallback for the first fact** (if `AddCommGrpCat.isZero_iff` is
+absent or named differently): construct the equivalence inline.
+
+  * `IsZero X → Subsingleton X.carrier`:
+    `IsZero X` gives a unique map `X ⟶ X`. The two maps `id` and
+    `0 : X ⟶ X` are both terminal-to-X, hence equal. Applying both
+    to any `x : X` gives `x = 0`, so `Subsingleton X.carrier` via
+    `⟨fun a b => (eq_zero a).trans (eq_zero b).symm⟩` where
+    `eq_zero : ∀ x : X, x = 0` is read off the equality of
+    `0 ∘ x = id ∘ x` (under the forgetful functor's element-level
+    interpretation).
+  * `Subsingleton X.carrier → IsZero X`:
+    Apply `CategoryTheory.Limits.isZero_of_subsingleton`-style
+    construction: in an additive category, a zero object is
+    characterized by `End X` being a singleton, which follows from
+    `Subsingleton X.carrier`.
+
+The fallback is ≈ 10 lines of Lean; either route ships cleanly.
+
+#### N4. Proof sketch
+
+**Stage 1** (the `iff` lemma, ~10–15 lines):
+
+```lean
+theorem AddCommGrpCat.not_isZero_iff_nontrivial
+    (X : AddCommGrpCat.{0}) :
+    ¬ CategoryTheory.Limits.IsZero X ↔ Nontrivial X := by
+  rw [show CategoryTheory.Limits.IsZero X ↔
+        Subsingleton (X : Type) from
+      AddCommGrpCat.isZero_iff X,         -- N2 flagged lemma; or inline
+      not_subsingleton_iff_nontrivial]
+```
+
+If `AddCommGrpCat.isZero_iff` is absent, the inline version
+introduces a `have h : IsZero X ↔ Subsingleton X := ⟨..., ...⟩`
+using the N3 fallback constructions (~10 extra lines).
+
+**Stage 2** (the existential corollary, ~5 lines):
+
+```lean
+theorem AddCommGrpCat.exists_ne_zero_of_not_isZero
+    (X : AddCommGrpCat.{0}) (hX : ¬ CategoryTheory.Limits.IsZero X) :
+    ∃ x : X, x ≠ 0 := by
+  rw [AddCommGrpCat.not_isZero_iff_nontrivial] at hX
+  exact exists_ne_zero (α := X)
+```
+
+`exists_ne_zero` is the standard `Nontrivial G → ∃ x : G, x ≠ 0`
+lemma for additive groups, available in
+`Mathlib.Logic.Nontrivial.Basic` (also accessible via
+`Nontrivial.exists_ne` plus `sub_ne_zero` if the precise name has
+drifted).
+
+Total Lean count target: 20–30 lines including docstrings and
+hypothesis annotations. Under the 30–50-line estimate from §L7.
+
+#### N5. Companion file vs. inline installation
+
+The S8 ACT-D-2 EXEC iteration has two installation choices:
+
+* **Option A (recommended): new companion file**
+  `proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean` containing
+  the bridge lemmas only. Main file imports the companion at the
+  top. Build cost: ≈ 1 s on top of the main-file build. Build
+  risk: **isolated** from the main file's heavy
+  `AlgebraicTopology` dependency chain — if the companion fails
+  to typecheck, only the companion needs revision, not the main
+  file's 462-line homology infrastructure. Mirrors the existing
+  `KonigsbergOQ01OQ02Recipe.lean` precedent (research/problems/
+  konigsberg-oq-01-oq-02/state.md §Session 9, validated to
+  compile independently).
+* **Option B: inline in the main file**
+  Insert the two lemmas immediately above
+  `singular_homology_retraction_split` (line ~390 of the main file
+  after S7). Build cost: ≈ 1 s incremental (Lean reuses the main
+  file's compiled prefix). Build risk: any typecheck error blocks
+  the entire main-file build, including the substantive homology
+  theorems.
+
+Option A is preferred for **build-risk isolation** and **review
+parallelism**: the S8 PR can land independently of any concurrent
+main-file edits (e.g. S9 ACT-D-3 sibling PR work or upstream
+Mathlib drift). Option B becomes preferred *only if* S9 EXEC needs
+the bridge lemma to be in the same compilation unit as the main
+file's substantive theorems, which it does not (see §N6).
+
+#### N6. S9 / S10 integration plan
+
+After S8 ACT-D-2 EXEC lands:
+
+* **S9 ACT-D-3** (gated on sibling PR #18011 merge): the bridge
+  `AddCommGrpCat.exists_ne_zero_of_not_isZero` combines with
+  (a) the functoriality of `singularHomologyFunctor` applied to
+  the retraction `r ∘ i = id`, and (b) the G6 Subsingleton-bridge
+  from PR #18011's Part VI. Together they produce a
+  `∃ ψ : Unit →+ ℤ, ψ ∘ φ = id` witness from the substantive
+  `¬ IsZero (H_{n-1}(𝕊 (n-1)))` of S7. The companion-file home
+  of the G7 bridge makes this combination a clean import-only
+  affair in the main file.
+* **S10 ACT-D-4**: drop the mock axiom
+  `H_n_minus_1_sphere_nonzero` (line 261 of the main file).
+  `singular_homology_retraction_split` rewires to the substantive
+  chain `H_n_minus_1_sphere_nonzero_substantive` (S7) →
+  `AddCommGrpCat.exists_ne_zero_of_not_isZero` (S8) →
+  functoriality + G6 bridge (S9). Net axiom delta: −1
+  (4 → 3 file-level axioms, all three textbook-class).
+
+The companion-file location of the G7 bridge does **not**
+introduce any cyclic-import risk: the companion has zero deps on
+the main file, and the main file's only dependency on the
+companion (added in S9) is a single `import` line.
+
+#### N7. Build-risk analysis
+
+Three risk factors and their mitigations:
+
+1. **Mathlib API name drift** (the §N3 flag). At the pinned rev
+   `v4.26.0`, the lemma `AddCommGrpCat.isZero_iff` may not exist
+   under that exact name. **Mitigation**: S8 EXEC starts with a
+   1-minute grep in `lake-packages/mathlib/Mathlib/Algebra/Category/
+   Grp/Zero.lean` for the substring `IsZero` and `Subsingleton`.
+   If absent, the §N3 fallback inline construction (~10 lines)
+   covers the gap.
+2. **Universe mismatch**. The main file uses
+   `AddCommGrpCat.{0}` throughout (the explicit `.{0}` is visible
+   on lines 291, 312, 354, 377). The bridge lemma must match.
+   **Mitigation**: the signature in §N1 pins `.{0}` explicitly;
+   no universe inference needed at call sites.
+3. **`Nontrivial`-to-existential bridge naming**. Mathlib has
+   historically renamed `exists_ne_zero` / `Nontrivial.exists_ne`
+   across versions. **Mitigation**: the §N4 proof has a 3-line
+   inline fallback (`obtain ⟨a, b, hab⟩ := h.exists_pair_ne;
+   refine ⟨a - b, sub_ne_zero.mpr hab⟩`) that uses only
+   `Nontrivial.exists_pair_ne` (stable since 2021).
+
+All three risks have ≤ 10-line inline fallbacks. Build-risk is
+**lower than S5 ACT-B exec** (which involved
+`Convex.contractibleSpace` + `ContractibleSpace.hequiv_unit`
+typeclass-chain composition) and **comparable to S7 ACT-D-1**
+(which involved `TopCat.diskBoundary` API verification at the
+pinned rev). Estimate: 1 session for S8 ACT-D-2 EXEC including
+the API verification step.
+
+#### N8. S8 EXEC checklist (for the follow-on session)
+
+1. Create `proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean` per
+   §N5 Option A (recommended).
+2. Run §N7 risk-1 grep: verify or fallback for
+   `AddCommGrpCat.isZero_iff`-style lemma.
+3. Install Stage 1 (`not_isZero_iff_nontrivial`) per §N4.
+4. Install Stage 2 (`exists_ne_zero_of_not_isZero`) per §N4.
+5. Update main file's `import` block to include the companion.
+6. Update `meta.json`: theorem count 14 → 16 (or per the actual
+   final count), companion file added to `additionalFiles`,
+   `lineCount` refreshed.
+7. Update `state.md` §Phase to "ACT (S8 ACT-D-2 EXEC complete,
+   S9 ACT-D-3 next — gated on PR #18011)", iteration 8 → 9.
+8. Open PR with title
+   `research(brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02): S8 ACT-D-2 EXEC — G7 algebraic bridge (build pending)`.
+
+#### N9. Iteration log entry
+
+* 2026-05-13 (researcher-4, S8 ACT-D-2 DESIGN, doc-only): fixed
+  the exact Lean signature, import list (§N2), Mathlib API survey
+  (§N3), two-stage proof sketch (§N4), companion-file layout
+  (§N5), S9/S10 integration plan (§N6), build-risk analysis
+  (§N7), and S8 EXEC checklist (§N8) for the G7 algebraic bridge
+  `¬ IsZero (X : AddCommGrpCat) → ∃ x : X, x ≠ 0`. No Lean
+  changes. The follow-on S8 ACT-D-2 EXEC session can install the
+  companion file `BrouwerFixedPointOQ01OQ02G7.lean` directly from
+  the §N4 / §N8 prescriptions. Total target Lean size: 20–30
+  lines including docstrings. Build risk: lower than S5 (which
+  involved typeclass-chain composition), comparable to S7
+  (single Mathlib API verification step).
