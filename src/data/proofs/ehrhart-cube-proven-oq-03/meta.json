@@ -33,6 +33,20 @@
   },
   "sections": [
     {
+      "id": "section-0-preamble",
+      "title": "Preamble — File header and S1 OBSERVE summary",
+      "startLine": 1,
+      "endLine": 29,
+      "summary": "Module-level docstring stating the S1 OBSERVE goal (axiom-free hypersimplex Ehrhart count), enumerating the three deliverables (the `hypersimplexLatticeCount` definition; the two `sorry`'d reference identities `hypersimplex_count_k_one` and `hypersimplex_palindrome_k_d_minus_1`; three `decide`-closed sanity checks), and locating the file within the four-sibling `ehrhart-cube-proven` family (cube / standard simplex OQ-01 / cross-polytope OQ-02 / Eulerian h*-vector OQ-04). The header declares Status: S1 SCAFFOLD with `Sorries: 2`, which the meta.json `sorries: 2` count mirrors verbatim."
+    },
+    {
+      "id": "section-0b-imports-setup",
+      "title": "Imports and namespace setup",
+      "startLine": 30,
+      "endLine": 35,
+      "summary": "`import Mathlib` brings in the full library (required for `Finset.filter`, `Fin (n+1)`, `Sym.card_sym_eq_choose`, and the decidability transfer used by `coordSumEq`'s instance). Two `set_option linter.unusedSimpArgs false` / `linter.unusedTactic false` directives silence the unused-tactic linter that fires on scaffolded `sorry` bodies. Opens `namespace EhrhartCubeProvenOQ03` to localise the four new identifiers (`coordSumEq`, `hypersimplexLatticeCount`, and the two theorem names) so siblings in the family can use the unqualified names without collision."
+    },
+    {
       "id": "section-1-definition",
       "title": "Section I — Hypersimplex Lattice-Point Definition",
       "startLine": 36,
