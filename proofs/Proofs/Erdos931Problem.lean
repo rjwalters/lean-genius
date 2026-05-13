@@ -276,7 +276,8 @@ theorem exists_prime_between_of_large_prime_factor
   have hq_dvd : q ∣ consecutiveProduct n₂ k₂ := Nat.dvd_of_mem_primeFactors hq_mem₂
   -- Since q is prime and divides (n₂+1)·...·(n₂+k₂), q divides some factor n₂+j
   unfold consecutiveProduct at hq_dvd
-  obtain ⟨j, hj_mem, hq_dvd_j⟩ := hq.prime.dvd_finset_prod_iff.mp hq_dvd
+  -- `Prime.dvd_finset_prod_iff` takes the product function explicitly.
+  obtain ⟨j, hj_mem, hq_dvd_j⟩ := (hq.prime.dvd_finset_prod_iff _).mp hq_dvd
   simp only [Finset.mem_Icc] at hj_mem
   calc q ≤ n₂ + j := Nat.le_of_dvd (by omega) hq_dvd_j
     _ ≤ n₂ + k₂ := by omega
