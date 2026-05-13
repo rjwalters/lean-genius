@@ -2701,6 +2701,7 @@ import Proofs.ShannonSourceCodingOQ04
 import Proofs.ShannonSourceCodingOQ04Aristotle
 import Proofs.ShapleyFolkman
 import Proofs.ShapleyFolkmanAristotle
+import Proofs.ShapleyFolkmanOQ01
 import Proofs.ShapleyFolkmanOQ03
 import Proofs.SkolemNoetherCSA
 import Proofs.SkolemNoetherMatrixAut
