@@ -243,6 +243,111 @@
     ]
   },
   {
+    "id": "ann-koe02-maxtrail-closed-proof",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 933,
+      "endLine": 1041
+    },
+    "type": "insight",
+    "title": "maxTrail_closed: Five-Step Balance-Contradiction Proof",
+    "content": "The proof of `maxTrail_closed` is the structural core of Hierholzer's theorem. It is organized into five labelled STEPs (A-E) that compose into a balance contradiction. **STEP A** (`maxTrail_last_exhausted`): every outgoing edge of `last_v` in $G$ appears as some position of the trail, established as a `∀ e ∈ G.edges, e.1 = last_v → ∃ i ...` lemma. **STEP B** (`h_src_eq_out`): bijection between outgoing edges and source positions of `last_v`, proved via `Finset.card_bij` with `Classical.choose` selecting the unique trail position for each edge; surjectivity uses `maxTrail_steps_distinct` to rule out duplicate edges. **STEP C** (`h_tgt_le_in`): target positions of `last_v` inject into incoming edges via the position-to-edge map; uses `Finset.card_le_card_of_injOn`. **STEP D** (`h_count`): applies `open_walk_last_target_excess` to extract `tgt_count = src_count + 1`. **STEP E** (`hbal_last`): substitution of `inDeg = outDeg` followed by `omega` closes the contradiction `outDeg + 1 ≤ outDeg`. The trivial closed case (trail length ≤ 1) is handled by `interval_cases` + `maxTrail_head'` at the top.",
+    "mathContext": "Proof by contradiction. Assume $\\text{last\\_v} \\neq v$. Then: $\\text{outDeg}(\\text{last\\_v}) \\stackrel{A,B}{=} \\text{src\\_count} \\stackrel{D}{=} \\text{tgt\\_count} - 1 \\stackrel{C}{\\leq} \\text{inDeg}(\\text{last\\_v}) - 1 \\stackrel{\\text{bal}}{=} \\text{outDeg}(\\text{last\\_v}) - 1$ — contradiction. The five-step decomposition is what makes the proof modular: each step uses one independent lemma from the infrastructure section, so the dependencies form a directed acyclic graph rather than a single monolithic argument.",
+    "significance": "key",
+    "relatedConcepts": [
+      "balance contradiction",
+      "Finset.card_bij with Classical.choose",
+      "Finset.card_le_card_of_injOn",
+      "open_walk_last_target_excess",
+      "Hierholzer's algorithm correctness",
+      "STEP A-E modular decomposition"
+    ],
+    "prerequisites": [
+      "maxTrail_last_exhausted: every outgoing edge of the last vertex is consumed",
+      "maxTrail_steps_distinct: no edge appears at two positions in the maximal trail",
+      "open_walk_last_target_excess: open-walk counting imbalance",
+      "IsEulerianBalanced: in-degree = out-degree at every vertex"
+    ]
+  },
+  {
+    "id": "ann-koe02-directedcircuit-circuit-exists",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 1052,
+      "endLine": 1078
+    },
+    "type": "definition",
+    "title": "DirectedCircuit Structure and circuit_exists",
+    "content": "`DirectedCircuit G` packages four fields: `walk : List V` (the vertex sequence), `head_eq_last` (closure), `length_ge_2` (non-triviality), and `steps_in_G` (every consecutive pair is a graph edge). This is the minimum data required to state Hierholzer's splicing operation downstream. `circuit_exists` then converts `maxTrail_closed` into a `Nonempty (DirectedCircuit G)`: pick any edge $e_0 \\in G$, start the trail at $v = e_0.1$, use `maxTrail_closed` for closure, and use the presence of $e_0$ to force trail length ≥ 2. This is the first explicit *constructive content* of the file beyond the necessity direction — it builds a concrete circuit from the abstract balance hypothesis.",
+    "mathContext": "$G$ balanced, $G.\\text{edges} \\neq \\emptyset$ $\\Rightarrow$ $\\exists$ directed circuit. Construction: pick $e_0 \\in G$, start `maxTrail` at $e_0.1$; closure by `maxTrail_closed`, length ≥ 2 because $e_0$ provides one step, and `steps_in_G` follows from `maxTrail_steps_in_E`. The `Nonempty (DirectedCircuit G)` wrapper allows the consumer to extract a witness via `Nonempty.some` or `Classical.choice`.",
+    "significance": "key",
+    "relatedConcepts": [
+      "DirectedCircuit structure",
+      "Nonempty wrapper for existence",
+      "maxTrail_closed (closure)",
+      "maxTrail_steps_in_E (graph-edge witness)",
+      "Hierholzer splicing"
+    ],
+    "prerequisites": [
+      "maxTrail_closed: maximal trail is closed in balanced digraph",
+      "Finset.Nonempty.exists witness extraction",
+      "structure with explicit proof fields in Lean 4"
+    ]
+  },
+  {
+    "id": "ann-koe02-remove-circuit-balanced",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 1088,
+      "endLine": 1107
+    },
+    "type": "concept",
+    "title": "walkEdges + DiGraph.removeEdgeSet + remove_circuit_balanced (sorry'd)",
+    "content": "`walkEdges` extracts the edge list of a walk via `List.range (walk.length - 1) |>.filterMap (i ↦ some (walk[i], walk[i+1]))`. `DiGraph.removeEdgeSet` subtracts a `Finset (V×V)` from the edges, with `noSelfLoops` preserved by `Finset.sdiff_subset`. `remove_circuit_balanced` is the **only sorry** in the file: it claims that removing a circuit's edges preserves balance, with proof sketch *circuit_passes_through_each_vertex_same_#times_as_src_and_tgt → inDeg_outDeg_each_decrease_by_same_amount*. The sorry is blocked on the `Finset.sdiff` / `Finset.filter` distributivity API — specifically, an expression of the form $|E \\setminus S \\cap F| = |E \\cap F| - |S \\cap F|$ for $S \\subseteq E$ — which requires `Finset.card_sdiff` with a `disjoint`-or-`subset`-hypothesis chain that the current Lean Genius infrastructure does not have ready.",
+    "mathContext": "Removing circuit $C$ from balanced $G$: for each vertex $v$, $C$ passes through $v$ as source $s_v$ times and as target $t_v$ times. By `closed_walk_balance` on $C$ (which is closed), $s_v = t_v$. Then $\\text{outDeg}_{G'}(v) = \\text{outDeg}_G(v) - s_v = \\text{inDeg}_G(v) - t_v = \\text{inDeg}_{G'}(v)$. The proof needs an explicit injection from circuit-source positions to outgoing edges of $G$ at $v$, then `Finset.card_sdiff` for the degree decrement.",
+    "significance": "key",
+    "relatedConcepts": [
+      "Finset.sdiff distributivity",
+      "walkEdges extraction",
+      "DiGraph.removeEdgeSet subgraph constructor",
+      "closed_walk_balance: source-count equals target-count in closed walks",
+      "Hierholzer splicing: peel circuit, recurse on remainder"
+    ],
+    "prerequisites": [
+      "Finset.sdiff_subset (used in noSelfLoops preservation)",
+      "Finset.card_sdiff (blocked dependency)",
+      "closed_walk_balance for the circuit",
+      "the bijection from walk positions to edges (walk_source_eq_outDegree)"
+    ]
+  },
+  {
+    "id": "ann-koe02-euler-path-degree-balance",
+    "proofId": "konigsberg-oq-01-oq-02",
+    "range": {
+      "startLine": 1125,
+      "endLine": 1198
+    },
+    "type": "theorem",
+    "title": "euler_path_implies_degree_balance: Necessity for Eulerian Paths (Fully Proved)",
+    "content": "`euler_path_implies_degree_balance` is the necessity half of `directed_euler_path_iff` (which itself is still axiomatized in this file). For an Eulerian path from $s \\to t$ ($s \\neq t$), it proves three simultaneous claims: $\\text{outDeg}(s) = \\text{inDeg}(s) + 1$, $\\text{inDeg}(t) = \\text{outDeg}(t) + 1$, and every other vertex is balanced. The proof normalizes `hcov` and `hsteps` from `walk.length - 1` to `n = G.edges.card`, extracts `walk[0] = s` and `walk[n] = t`, then applies the three open-walk counting lemmas: `open_walk_first_source_excess` (source asymmetry at $s$), `open_walk_last_target_excess` (target asymmetry at $t$), `open_walk_interior_balanced` (interior balance for $v \\neq s, t$). Each is composed with the source/target bijections (`walk_source_eq_outDegree`, `walk_target_eq_inDegree`) to translate position counts into in/out degrees. The case $n = 0$ (empty graph, walk = single vertex) is ruled out by contradiction with $s \\neq t$. This theorem is sorry-free and provides the constructive content needed to eventually eliminate the `directed_euler_path_iff` axiom (paired with a path-existence sufficiency proof).",
+    "mathContext": "Open walk $s = w_0 \\to w_1 \\to \\cdots \\to w_n = t$ with $s \\neq t$. Source / target counts: $|\\{i < n : w_i = v\\}| = \\text{outDeg}(v)$, $|\\{i < n : w_{i+1} = v\\}| = \\text{inDeg}(v)$. Then: at $s$: $\\text{outDeg}(s) - \\text{inDeg}(s) = 1$ (extra source at $w_0$); at $t$: $\\text{inDeg}(t) - \\text{outDeg}(t) = 1$ (extra target at $w_n$); at interior $v$: $\\text{outDeg}(v) = \\text{inDeg}(v)$ (no asymmetry).",
+    "significance": "key",
+    "relatedConcepts": [
+      "open_walk_first_source_excess",
+      "open_walk_last_target_excess",
+      "open_walk_interior_balanced",
+      "walk_source_eq_outDegree, walk_target_eq_inDegree",
+      "necessity direction of Eulerian path theorem",
+      "asymmetric degree conditions at endpoints"
+    ],
+    "prerequisites": [
+      "HasEulerianPath: walk with unique-edge-coverage + open endpoints",
+      "open-walk counting trio (first source excess / last target excess / interior balanced)",
+      "walk position bijections to in/out degrees",
+      "Option.some.inj for head?/last? extraction"
+    ]
+  },
+  {
     "id": "ann-koe02-applications",
     "proofId": "konigsberg-oq-01-oq-02",
     "range": {
