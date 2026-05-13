@@ -86,6 +86,19 @@ theorem intervalIntegral_swap_of_locallyIntegrable {f : ℝ → ℝ → ℝ}
   have hint : IntegrableOn (fun p : ℝ × ℝ => f p.1 p.2)
       (uIcc a b ×ˢ uIcc c d) volume :=
     hf_loc.integrableOn_isCompact hcpt
-  rwa [restrict_prod_eq_prod_restrict measurableSet_uIcc measurableSet_uIcc] at hint
+  -- Bridge: `IntegrableOn f s μ` ⇌ `Integrable f (μ.restrict s)`
+  -- (`Mathlib/MeasureTheory/Function/L1Space/Integrable.lean`,
+  -- def `IntegrableOn`); `volume_eq_prod ℝ ℝ : volume = volume.prod volume`
+  -- (`Mathlib/MeasureTheory/Measure/Prod.lean:181`, `rfl`);
+  -- `Measure.prod_restrict` requires `[SFinite μ] [SFinite ν]`
+  -- (`Mathlib/MeasureTheory/Measure/Prod.lean:720`), satisfied
+  -- automatically by `volume` (SigmaFinite ⇒ SFinite). See S3 PREP-2
+  -- (#18711-followup) §§1–4 for the verification chain at pin
+  -- `2df2f015...` and the `AreaOfCircleOQ05OQ04.lean:158` in-repo
+  -- precedent. Replaces phantom-name
+  -- `restrict_prod_eq_prod_restrict measurableSet_uIcc measurableSet_uIcc`
+  -- in S2 SCAFFOLD #18364.
+  rw [IntegrableOn, volume_eq_prod ℝ ℝ, ← Measure.prod_restrict] at hint
+  exact hint
 
 end GreensTheoremOQ01OQ01OQ02OQ02
