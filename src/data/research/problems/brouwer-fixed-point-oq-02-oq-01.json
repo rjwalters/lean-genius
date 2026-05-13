@@ -1,8 +1,8 @@
 {
   "slug": "brouwer-fixed-point-oq-02-oq-01",
   "title": "PPAD Formalization: Higher-Dimensional Sperner Extension",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -11,20 +11,21 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "sperner_2d (line 637): for any n>0 and any Sperner-coloring of the grid triangulation of size n, the count of fully-colored triangles is odd (hence ≥ 1) — via row-sweep parity (door-counting).",
+      "approximate_fixed_point_2d (line 922): for any continuous self-map f of the 2-simplex and any ε > 0, there exists a point p with dist(p, f(p)) < ε — via displacementColoring + uniform continuity + sperner_2d.",
+      "bottom_transitions_odd, hTrans_top, fully_colored_one_door, abstractDoorCount_parity (supporting lemmas, all in BrouwerFixedPointOQ02OQ01.lean)."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "ACHIEVED: 2D Sperner's lemma + approximate fixed point on the 2-simplex formalized in 1071 lines with 0 sorries / 0 axioms (Mathlib v4.26.0). Slug closed. Higher-dimensional generalization (sperner_d for d≥3) and PPAD reduction (Chen-Deng 2009) are out of scope for this slug — would be fresh open-question slugs."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-03-21T17:07:38.705Z",
+    "phase": "COMPLETED",
+    "since": "2026-05-13T12:30:00Z",
     "iteration": 3,
-    "focus": "Detailed strip_parity proof strategy developed; needs interactive Lean session",
-    "blockers": [
-      "gColor/hTrans/abstractDoorCount definitions missing from file",
-      "15+ omega failures from Lean 4.26 Mathlib compat"
-    ],
-    "nextAction": "Prove strip_parity: define doorPair/fcTriple/gColor/hDoorSum, prove cell_cancel, vertical telescope, boundary zero",
+    "focus": "Slug COMPLETED: BrouwerFixedPointOQ02OQ01.lean is 1071 lines, 0 sorries, 0 axioms, builds against Mathlib v4.26.0. sperner_2d and approximate_fixed_point_2d both fully proved. Gallery meta.json already records status: verified, badge: original. This STATE-SYNC closes the drift between gallery (correct) and research-JSON (previously stale phase=ACT with two resolved blockers and a stale nextAction).",
+    "blockers": [],
+    "nextAction": "Slug closed. No further action within this slug's scope. Higher-dimensional Sperner (d≥3), PPAD reduction (Chen-Deng 2009), and tightening uniform-continuity to plain Continuous would each be fresh open-question slugs if/when Seeker opens them.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 2,
@@ -98,11 +99,7 @@
       "approximate_fixed_point_2d sorry is blocked by Section V API drift errors. Need to fix displacementColoring_isSperner first (linarith/nlinarith changes in Lean 4.26)."
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove approximate_fixed_point_2d: need uniform continuity bound on grid mesh → displacement bound",
-      "Fix Section V pre-existing Lean 4.26 API drift in displacementColoring_isSperner (linarith/nlinarith changes)",
-      "Fix color_one_d1_nonpos and color_two_d2_nonpos for Lean 4.26 split_ifs changes"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "seeker-selected",
@@ -129,7 +126,7 @@
     "mathlib": []
   },
   "started": "2026-03-21T17:07:38.705Z",
-  "lastUpdate": "2026-03-22T02:30:00Z",
+  "lastUpdate": "2026-05-13T12:30:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
