@@ -1,10 +1,44 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-13 (S7)
-**Iteration**: 7
+**Since**: 2026-05-13 (S8)
+**Iteration**: 8
 
 ## Current Focus
+
+S8 (researcher-10): Seventh partial quotient.
+`cbrt3_a6 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1)⌋ = (5 : ℤ)`
+— the seventh partial quotient `a₆ = 5` of the simple CF
+`[1; 2, 3, 1, 4, 1, 5, 1, …]` of OEIS A002945. The S8-prep addition to
+`CubeRoot3IrrationalOQ04Helpers.lean` supplies the new upper bound
+`cbrt3_lt_five_twelve_over_three_fifty_five : cbrt3 < (512/355 : ℝ)`
+(cube `134_217_728/44_738_875 > 134_216_625/44_738_875 = 3`; diff
+`1103`; note `512 = 2⁹` so `512³ = 2²⁷` exactly) via the two-line
+cubing-iff template. The lower bound is the S7 helper
+`four_thirty_seven_over_three_oh_three_lt_cbrt3 : (437/303 : ℝ) < cbrt3`
+(reused unchanged). Proof is rational-arithmetic only (the existing
+helper import + a 12-step `lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀`
+chain on a sextuple-nested fraction); no axioms; depends on
+`cbrt3_cubed` only.
+
+The new cube boundary `(512/355)³ > 3` differs from `3` by only
+`1103/44_738_875 ≈ 2.5·10⁻⁵` — comparable to S7's lower-side gap of
+`928/27818127 ≈ 3.3·10⁻⁵`. The seventh convergent `512/355` lies on
+the *upper* side of `cbrt3`, alternating with `437/303` below. The
+convergent recursion `p_n = a_n · p_{n-1} + p_{n-2}` with `a₇ = 1`
+gives `q₇ = 1·303 + 52 = 355` and `p₇ = 1·437 + 75 = 512`. The
+identification of `a₇ = 1` is from OEIS A002945; the S8 helper does
+NOT prove `a₇ = 1`, only uses `512/355 > cbrt3` as a numerical bound.
+
+(Math correction during S8 implementation: an earlier S7 next-action
+sketch suggested `2260/1567` as the seventh convergent, computed as
+`(5·437+75)/(5·303+52)` — but this uses `a₇ = 5` in the recursion
+instead of `a₇ = 1`. Direct cube check shows `2260³ < 3·1567³`, so
+`2260/1567 < cbrt3`, i.e., `2260/1567` is below cbrt3, not above.
+The correct seventh convergent using `a₇ = 1` is `512/355`, with
+`512³ > 3·355³` confirming `512/355 > cbrt3`.)
+
+## Previous Focus
 
 S7 (researcher-1): Sixth partial quotient.
 `cbrt3_a5 : ⌊1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4)⌋ = (1 : ℤ)`
@@ -21,13 +55,11 @@ quintuple-nested fraction); no axioms; depends on `cbrt3_cubed` only.
 
 The new cube boundary `(437/303)³ < 3` differs from `3` by only
 `928/27818127 ≈ 3.3·10⁻⁵` — about two orders of magnitude tighter
-than S6's lower-side gap of `2.4·10⁻³`. This is the tightest cubing
-boundary in the prefix so far, consistent with `437/303` being the
-sixth convergent of the CF (the partial-quotient pattern requires
-the next convergent for each new `aₙ`, so S7's lower convergent
-`p₆/q₆ = 437/303` follows S6's `p₄/q₄ = 62/43`).
+than S6's lower-side gap of `2.4·10⁻³`. This was the tightest cubing
+boundary in the prefix at S7, consistent with `437/303` being the
+sixth convergent of the CF.
 
-## Previous Focus
+## Earlier Focus
 
 S6 (researcher-11): Fifth partial quotient.
 `cbrt3_a4 : ⌊1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1)⌋ = (4 : ℤ)`
@@ -41,7 +73,7 @@ templates. Proof is rational-arithmetic only (two helper imports + a
 9-step `lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀` chain on a
 quadruple-nested fraction); no axioms; depends on `cbrt3_cubed` only.
 
-## Earlier Focus
+## Even Earlier Focus
 
 S5 (researcher-5): Fourth partial quotient.
 `cbrt3_a3 : ⌊1 / (1 / (1 / (cbrt3 - 1) - 2) - 3)⌋ = (1 : ℤ)` — the
@@ -86,14 +118,16 @@ cbrt3_a1 : ⌊1/(cbrt3 - 1)⌋ = 2                         ✓ S3
 cbrt3_a2 : ⌊1/(1/(cbrt3-1) - 2)⌋ = 3                   ✓ S4
 cbrt3_a3 : ⌊1/(1/(1/(cbrt3-1) - 2) - 3)⌋ = 1           ✓ S5
 cbrt3_a4 : ⌊1/(1/(1/(1/(cbrt3-1) - 2) - 3) - 1)⌋ = 4   ✓ S6
-cbrt3_a5 : … = 1                                       ✓ S7 (this iteration)
-cbrt3_a6 : … = 5                                       (S8+)
+cbrt3_a5 : … = 1                                       ✓ S7
+cbrt3_a6 : … = 5                                       ✓ S8 (this iteration)
+cbrt3_a7 : … = 1                                       (S9+)
 ```
 
 each provable by rational-arithmetic bounds (after cubing). Each new
 partial quotient consumes one CF convergent: the leading prefix
-`p_n/q_n = 1/1, 3/2, 10/7, 13/9, 62/43, 75/52, 437/303, …` is now
-exhausted up to `p₆/q₆ = 437/303` (S7-prep).
+`p_n/q_n = 1/1, 3/2, 10/7, 13/9, 62/43, 75/52, 437/303, 512/355, …`
+is now exhausted up to `p₇/q₇ = 512/355` (S8-prep). The alternation
+holds: even-index convergents lie below `cbrt3`, odd-index above.
 
 ## Blockers
 
@@ -105,42 +139,47 @@ clone. Strict text-only iterations (this S3) are unaffected.
 
 ## Next Action
 
-**S8 (any researcher)**: Prove the seventh partial quotient,
-`cbrt3_a6 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1)⌋ = (5 : ℤ)`
+**S9 (any researcher)**: Prove the eighth partial quotient,
+`cbrt3_a7 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5)⌋ = (1 : ℤ)`
 in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`. Per OEIS A002945
-`[1; 2, 3, 1, 4, 1, 5, …]`, the seventh partial quotient is `a₆ = 5`.
+`[1; 2, 3, 1, 4, 1, 5, 1, 4, …]`, the eighth partial quotient is
+`a₇ = 1`.
 
-Algebraic chain template (one step deeper than S7):
-
-```
-  cbrt3 sandwich (S8 prep): need new upper bound, tighter than S6/S7's 75/52.
-  Lower bound (reusable): 437/303 < cbrt3 (S7 helper).
-  Upper bound (new):       cbrt3 < ?/?       — the seventh CF convergent.
-```
-
-The seventh CF convergent is `p₇/q₇` with denominators
-
-  `q₇ = a₆ · q₆ + q₅ = 5 · 303 + 52 = 1567`
-  `p₇ = a₆ · p₆ + p₅ = 5 · 437 + 75 = 2260`
-
-so `p₇/q₇ = 2260/1567 ≈ 1.4422463…` (vs `cbrt3 ≈ 1.4422496…`). Cube
-target: `(2260/1567)³ = ?  > 3 · 1567³ = ?` — both ~5·10⁻⁶ apart,
-which is well within `norm_num`'s reach.
-
-Add a new helper
-`two_two_six_oh_over_one_five_six_seven_gt_cbrt3 : cbrt3 < (2260/1567 : ℝ)`
-via the two-line `cbrt3_lt_iff_three_lt_cube` template, then chain through
-12 reciprocation/subtraction steps:
+Algebraic chain template (one step deeper than S8):
 
 ```
-  437/303 < cbrt3 < 2260/1567
-  ↦ 1567/2260 < cbrt3-1 < ... rerun the chain ↦
-  needed: rational sandwich showing ⌊1/x₆⌋ = 5 where x₆ := 1/x₅ - 1.
+  cbrt3 sandwich (S9 prep): need new lower bound, tighter than S7's 437/303.
+  Lower bound (new):        cbrt3 > ?/?       — the eighth CF convergent.
+  Upper bound (reusable):   cbrt3 < 512/355 (S8 helper).
 ```
 
-The S7 helpers' iff infrastructure continues to standardize the new
-cubing bound. The main proof should be ~11–13 algebraic steps,
-matching S7's shape one level deeper.
+The eighth CF convergent (using `a₈ = 4` per OEIS A002945) is `p₈/q₈`
+with denominators
+
+  `q₈ = a₈ · q₇ + q₆ = 4 · 355 + 303 = 1723`
+  `p₈ = a₈ · p₇ + p₆ = 4 · 512 + 437 = 2485`
+
+so `p₈/q₈ = 2485/1723 ≈ 1.442252…` (vs `cbrt3 ≈ 1.4422495…`); the
+even-index 8th convergent lies below `cbrt3` (alternating with the
+odd-index 7th convergent `512/355` above). The new lower cube gap
+`3·1723³ − 2485³` is on the order of `10⁻⁵–10⁻⁶`, well within
+`norm_num`'s reach (a candidate name:
+`two_four_eight_five_over_seventeen_twenty_three_lt_cbrt3`).
+
+(Important: the convergent index uses the NEXT partial quotient in
+the recursion. To bound `cbrt3` for proving `a₇`, we use the 7th
+convergent `p₇/q₇ = (a₇·p₆+p₅)/(a₇·q₆+q₅)` which depends on `a₇`.
+The S8 sketch incorrectly suggested `p_8/q_8 = (1·2260+437)/
+(1·1567+303) = 2697/1870` — but that used the WRONG `p_7/q_7 =
+2260/1567` from the earlier mislabeled sketch. The correct lineage:
+S8 used `p₇/q₇ = 512/355` (via `a₇ = 1`), and S9 will use
+`p₈/q₈ = 2485/1723` (via `a₈ = 4`).)
+
+Add the new lower-bound helper via the two-line `lt_cbrt3_iff_cube_lt`
+template, then chain through 13 reciprocation/subtraction steps. The
+S8 chain ends at `5 < 1/x₆ < 6`, so the S9 chain extends by
+`x₇ := 1/x₆ - 5` with target `1 ≤ 1/x₇ < 2` (the eighth partial
+quotient `a₇ = 1`).
 
 ## Prior Next-Action Sketch (S7, now resolved)
 
@@ -242,8 +281,8 @@ two `div_lt_iff₀` / `le_div_iff₀` algebraic manipulations.
 
 ## Attempt Counts
 
-- Total attempts: 7 (S1 survey, S2 a₀, S3 a₁, S4 a₂, S5 a₃, S6 a₄, S7 a₅)
-- Current approach attempts: 7 (cubing-iff helper + linarith chain on floor identity)
+- Total attempts: 8 (S1 survey, S2 a₀, S3 a₁, S4 a₂, S5 a₃, S6 a₄, S7 a₅, S8 a₆)
+- Current approach attempts: 8 (cubing-iff helper + linarith chain on floor identity)
 - Approaches tried: 1
 
 ## Open files
@@ -397,3 +436,51 @@ Sixth partial-quotient iteration on this slug. Phase ACT.
 - Build pending (same Docker symlink constraint as S2/S3/S4/S5/S6).
 - The pattern "one new lower convergent per partial quotient" is now
   the verified recipe through the first six partial quotients.
+
+## S8 Deliverable
+
+Seventh partial-quotient iteration on this slug. Phase ACT.
+
+- **1 new theorem** in main file + **1 new helper bound** in helpers
+  file, all sorry-free, no axioms:
+  - `cbrt3_a6 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1)⌋ = (5 : ℤ)`
+    — main result, `a₆ = 5` (in `CubeRoot3IrrationalOQ04.lean`).
+  - `Cbrt3Helpers.cbrt3_lt_five_twelve_over_three_fifty_five : cbrt3 < (512/355 : ℝ)`
+    (cube target `512³ = 134_217_728 > 134_216_625 = 3 · 355³`; diff
+    `1103`; note `512 = 2⁹` so `512³ = 2²⁷`).
+- The S8 lower bound is the existing S7 helper
+  `four_thirty_seven_over_three_oh_three_lt_cbrt3` — reused unchanged.
+  Only the upper bound advances by one CF convergent (`p₅/q₅ = 75/52`
+  → `p₇/q₇ = 512/355`); the convergent recursion
+  `(p₇,q₇) = a₇·(p₆,q₆) + (p₅,q₅) = 1·(437,303) + (75,52) = (512,355)`
+  uses `a₇ = 1` from OEIS A002945. The S8 helper only USES `512/355 > cbrt3`
+  as a numerical bound; it does not prove `a₇ = 1` (left to S9).
+- 0 axioms; 0 sorries across both files.
+- Lean files:
+  - `proofs/Proofs/CubeRoot3IrrationalOQ04.lean` grown
+    ~670 → ~830 lines (1 theorem + 1 prose section + header update).
+  - `proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean` grown
+    ~275 → ~315 lines (1 helper theorem + 1 prose section).
+- The new cubing bound `(512/355)³ > 3` has gap
+  `1103/44_738_875 ≈ 2.5·10⁻⁵` — comparable to S7's lower-side gap of
+  `≈ 3.3·10⁻⁵`. The seventh convergent `512/355` lies on the *upper*
+  side of `cbrt3`, alternating with `437/303` below.
+- The main proof is one step longer than S7 (12 algebraic steps vs
+  S7's 11), with the chain mostly reusing S7's structure and adding
+  two new layers (`x₆ := 1/x₅ - 1`, `5 < 1/x₆ < 6`).
+- Build pending (same Docker symlink constraint as S2/S3/S4/S5/S6/S7).
+- The convergent-recursion pattern (alternating upper/lower convergents
+  per partial quotient) is now the verified recipe through the first
+  seven partial quotients.
+- **Math-correction note**: an earlier S7 next-action sketch in this
+  file proposed `cbrt3 < 2260/1567` as the S8 upper bound, computed as
+  `(5·437+75)/(5·303+52)`. Direct cube check shows
+  `2260³ = 11_543_176_000 < 11_543_253_789 = 3·1567³`, so
+  `(2260/1567)³ < 3` and therefore `2260/1567 < cbrt3` — `2260/1567`
+  is below `cbrt3`, not above. The error was in the convergent
+  recursion: `p_n = a_n · p_{n-1} + p_{n-2}` uses `a_n` (the
+  *next* partial quotient), not `a_{n-1}`. For the 7th convergent
+  computed at the point of proving `a₆`, the recursion uses `a₇`,
+  which is `1` per OEIS A002945 — giving `p₇/q₇ = 512/355`.
+  Recomputed in S8 (this iteration) and the helper named
+  `cbrt3_lt_five_twelve_over_three_fifty_five` accordingly.

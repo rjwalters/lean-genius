@@ -1,23 +1,24 @@
 /-
-Proof: First six partial quotients of the simple continued fraction of cbrt3.
-Date: 2026-05-11 (S2), 2026-05-12 (S3, S4, S5), 2026-05-13 (S6, S7)
+Proof: First seven partial quotients of the simple continued fraction of cbrt3.
+Date: 2026-05-11 (S2), 2026-05-12 (S3, S4, S5), 2026-05-13 (S6, S7, S8)
 Research: cube-root-3-irrational-oq-04, S2 (researcher-10) → S3 (researcher-8)
           → S4 (researcher-3) → S5 (researcher-5) → S6 (researcher-11)
-          → S7 (researcher-1)
+          → S7 (researcher-1) → S8 (researcher-10)
 
 This file develops the leading partial quotients of the simple continued
 fraction of `∛3`:
 
-  `⌊∛3⌋ = 1`                                                  — `a₀` (S2)
-  `⌊1/(∛3 - 1)⌋ = 2`                                          — `a₁` (S3)
-  `⌊1/(1/(∛3 - 1) - 2)⌋ = 3`                                  — `a₂` (S4)
-  `⌊1/(1/(1/(∛3 - 1) - 2) - 3)⌋ = 1`                          — `a₃` (S5)
-  `⌊1/(1/(1/(1/(∛3 - 1) - 2) - 3) - 1)⌋ = 4`                  — `a₄` (S6)
-  `⌊1/(1/(1/(1/(1/(∛3 - 1) - 2) - 3) - 1) - 4)⌋ = 1`          — `a₅` (S7, this iteration)
+  `⌊∛3⌋ = 1`                                                            — `a₀` (S2)
+  `⌊1/(∛3 - 1)⌋ = 2`                                                    — `a₁` (S3)
+  `⌊1/(1/(∛3 - 1) - 2)⌋ = 3`                                            — `a₂` (S4)
+  `⌊1/(1/(1/(∛3 - 1) - 2) - 3)⌋ = 1`                                    — `a₃` (S5)
+  `⌊1/(1/(1/(1/(∛3 - 1) - 2) - 3) - 1)⌋ = 4`                            — `a₄` (S6)
+  `⌊1/(1/(1/(1/(1/(∛3 - 1) - 2) - 3) - 1) - 4)⌋ = 1`                    — `a₅` (S7)
+  `⌊1/(1/(1/(1/(1/(1/(∛3 - 1) - 2) - 3) - 1) - 4) - 1)⌋ = 5`            — `a₆` (S8, this iteration)
 
-corresponding to the prefix `[1; 2, 3, 1, 4, 1, …]` of OEIS A002945.
-The next partial quotient (`a₆`, currently believed to be `5`) is left
-to future sessions (S8+).
+corresponding to the prefix `[1; 2, 3, 1, 4, 1, 5, …]` of OEIS A002945.
+The next partial quotient (`a₇`, currently believed to be `1`) is left
+to future sessions (S9+).
 
 The S5 lower bound `23/16 < cbrt3` is imported from
 `Proofs/CubeRoot3IrrationalOQ04Helpers.lean` (S5-prep, researcher-1).
@@ -26,7 +27,11 @@ file (S6-prep, researcher-11), each proved in two lines via the
 cubing-iff helpers `Cbrt3Helpers.lt_cbrt3_iff_cube_lt` /
 `Cbrt3Helpers.cbrt3_lt_iff_three_lt_cube`. The S7 new lower bound
 `437/303 < cbrt3` (the sixth CF convergent, cube gap `≈ 3.3·10⁻⁵`)
-is added to the same helper file (S7-prep, researcher-1).
+is added to the same helper file (S7-prep, researcher-1). The S8 new
+upper bound `cbrt3 < 512/355` (the seventh CF convergent, cube gap
+`≈ 2.5·10⁻⁵`; the recursion uses `a₇ = 1` per OEIS A002945, giving
+`p₇/q₇ = (1·437+75)/(1·303+52) = 512/355`) is added to the same
+helper file (S8-prep, this iteration).
 -/
 
 import Proofs.CubeRoot3Irrational
@@ -664,6 +669,187 @@ theorem cbrt3_a5 :
       rw [le_div_iff₀ hpos5]
       -- Goal: `1 * x₅ ≤ 1`, i.e. `x₅ ≤ 1` (from the strict `x₅ < 1`).
       linarith [hx5_lt]
+    rw [Int.le_floor]
+    exact_mod_cast hge
+
+/-! ## Step S8: seventh partial quotient
+
+The seventh partial quotient of the simple CF is
+
+  `a₆ = ⌊1/(1/(1/(1/(1/(1/(∛3 - 1) - 2) - 3) - 1) - 4) - 1)⌋`,
+
+which we show equals `5`.
+
+The two strict bounds needed are
+
+  `437/303 < cbrt3`   and   `cbrt3 < 512/355`,
+
+each proved by cubing in `CubeRoot3IrrationalOQ04Helpers.lean`
+(`four_thirty_seven_over_three_oh_three_lt_cbrt3` /
+`cbrt3_lt_five_twelve_over_three_fifty_five`). The lower bound is
+reused from S7; only the upper bound is new (it is the seventh
+convergent `p₇/q₇ = 512/355`, with `a₇ = 1` per OEIS A002945:
+`p₇ = 1·437 + 75 = 512` and `q₇ = 1·303 + 52 = 355`).
+
+The cube target `512³ = 134_217_728 > 134_216_625 = 3 · 355³` has gap
+`1103/44_738_875 ≈ 2.5·10⁻⁵` — comparable to S7's lower-side gap of
+`928/27_818_127 ≈ 3.3·10⁻⁵`. The seventh convergent alternates above
+the value while the sixth convergent `437/303` lies below; the
+sandwich is therefore strictly tight from both sides.
+
+Algebraic chain (`x₂ := 1/(cbrt3-1) - 2`, `x₃ := 1/x₂ - 3`,
+`x₄ := 1/x₃ - 1`, `x₅ := 1/x₄ - 4`, `x₆ := 1/x₅ - 1`):
+
+```
+  437/303   < cbrt3            < 512/355
+  134/303   < cbrt3-1          < 157/355
+  355/157   < 1/(cbrt3-1)      < 303/134
+  41/157    < x₂               < 35/134
+  134/35    < 1/x₂             < 157/41
+  29/35     < x₃               < 34/41
+  41/34     < 1/x₃             < 35/29
+  7/34      < x₄               < 6/29
+  29/6      < 1/x₄             < 34/7
+  5/6       < x₅               < 6/7
+  7/6       < 1/x₅             < 6/5
+  1/6       < x₆               < 1/5
+  5         < 1/x₆             < 6        (this gives ⌊1/x₆⌋ = 5)
+```
+
+All twelve reciprocation/subtraction steps are linear after inverting
+strictly-positive denominators, so the proof is the same
+`lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀` chain as S7, one step
+deeper. The final floor identity uses `Int.le_floor` / `Int.floor_lt`. -/
+
+/-- **Seventh partial quotient of the simple CF of `∛3`.**
+
+  `⌊1/(1/(1/(1/(1/(1/(∛3 - 1) - 2) - 3) - 1) - 4) - 1)⌋ = 5`.
+
+This is `a₆ = 5` in the prefix `[1; 2, 3, 1, 4, 1, 5, 1, …]` of OEIS A002945.
+
+Proof: from `437/303 < cbrt3 < 512/355` derive successively
+`355/157 < 1/(cbrt3-1) < 303/134`, `41/157 < x₂ < 35/134`,
+`134/35 < 1/x₂ < 157/41`, `29/35 < x₃ < 34/41`,
+`41/34 < 1/x₃ < 35/29`, `7/34 < x₄ < 6/29`,
+`29/6 < 1/x₄ < 34/7`, `5/6 < x₅ < 6/7`,
+`7/6 < 1/x₅ < 6/5`, `1/6 < x₆ < 1/5`, and finally
+`5 < 1/x₆ < 6`. The floor identity follows by `le_antisymm` using
+`Int.le_floor` / `Int.floor_lt`. -/
+theorem cbrt3_a6 :
+    ⌊1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1)⌋
+      = (5 : ℤ) := by
+  -- Step 1: `cbrt3 - 1 > 0` (from the S3 bound `4/3 < cbrt3`).
+  have hpos1 : (0 : ℝ) < cbrt3 - 1 := by linarith [four_thirds_lt_cbrt3]
+  -- S8 cubing bounds: `437/303 < cbrt3 < 512/355` (cubing-iff helpers).
+  have h_lo : (437/303 : ℝ) < cbrt3 :=
+    Cbrt3Helpers.four_thirty_seven_over_three_oh_three_lt_cbrt3
+  have h_hi : cbrt3 < (512/355 : ℝ) :=
+    Cbrt3Helpers.cbrt3_lt_five_twelve_over_three_fifty_five
+  -- Step 2: `355/157 < 1/(cbrt3-1) < 303/134`.
+  have hy1_gt : (355/157 : ℝ) < 1 / (cbrt3 - 1) := by
+    rw [lt_div_iff₀ hpos1]
+    -- Goal: `(355/157) * (cbrt3 - 1) < 1`, i.e. `cbrt3 < 512/355`.
+    linarith [h_hi]
+  have hy1_lt : 1 / (cbrt3 - 1) < (303/134 : ℝ) := by
+    rw [div_lt_iff₀ hpos1]
+    -- Goal: `1 < (303/134) * (cbrt3 - 1)`, i.e. `437/303 < cbrt3`.
+    linarith [h_lo]
+  -- Step 3: `x₂ := 1/(cbrt3-1) - 2` satisfies `41/157 < x₂ < 35/134`.
+  have hx2_gt : (41/157 : ℝ) < 1 / (cbrt3 - 1) - 2 := by linarith
+  have hx2_lt : 1 / (cbrt3 - 1) - 2 < (35/134 : ℝ) := by linarith
+  have hpos2 : (0 : ℝ) < 1 / (cbrt3 - 1) - 2 := by linarith
+  -- Step 4: `1/x₂` satisfies `134/35 < 1/x₂ < 157/41`.
+  have hy2_gt : (134/35 : ℝ) < 1 / (1 / (cbrt3 - 1) - 2) := by
+    rw [lt_div_iff₀ hpos2]
+    -- Goal: `(134/35) * x₂ < 1`, i.e. `x₂ < 35/134`.
+    linarith [hx2_lt]
+  have hy2_lt : 1 / (1 / (cbrt3 - 1) - 2) < (157/41 : ℝ) := by
+    rw [div_lt_iff₀ hpos2]
+    -- Goal: `1 < (157/41) * x₂`, i.e. `41/157 < x₂`.
+    linarith [hx2_gt]
+  -- Step 5: `x₃ := 1/x₂ - 3` satisfies `29/35 < x₃ < 34/41`.
+  have hx3_gt : (29/35 : ℝ) < 1 / (1 / (cbrt3 - 1) - 2) - 3 := by linarith
+  have hx3_lt : 1 / (1 / (cbrt3 - 1) - 2) - 3 < (34/41 : ℝ) := by linarith
+  have hpos3 : (0 : ℝ) < 1 / (1 / (cbrt3 - 1) - 2) - 3 := by linarith
+  -- Step 6: `1/x₃` satisfies `41/34 < 1/x₃ < 35/29`.
+  have hy3_gt : (41/34 : ℝ) < 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) := by
+    rw [lt_div_iff₀ hpos3]
+    -- Goal: `(41/34) * x₃ < 1`, i.e. `x₃ < 34/41`.
+    linarith [hx3_lt]
+  have hy3_lt : 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) < (35/29 : ℝ) := by
+    rw [div_lt_iff₀ hpos3]
+    -- Goal: `1 < (35/29) * x₃`, i.e. `29/35 < x₃`.
+    linarith [hx3_gt]
+  -- Step 7: `x₄ := 1/x₃ - 1` satisfies `7/34 < x₄ < 6/29`.
+  have hx4_gt : (7/34 : ℝ) < 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1 := by
+    linarith
+  have hx4_lt : 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1 < (6/29 : ℝ) := by
+    linarith
+  have hpos4 : (0 : ℝ) < 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1 := by linarith
+  -- Step 8: `1/x₄` satisfies `29/6 < 1/x₄ < 34/7`.
+  have hy4_gt : (29/6 : ℝ) < 1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) := by
+    rw [lt_div_iff₀ hpos4]
+    -- Goal: `(29/6) * x₄ < 1`, i.e. `x₄ < 6/29`.
+    linarith [hx4_lt]
+  have hy4_lt :
+      1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) < (34/7 : ℝ) := by
+    rw [div_lt_iff₀ hpos4]
+    -- Goal: `1 < (34/7) * x₄`, i.e. `7/34 < x₄`.
+    linarith [hx4_gt]
+  -- Step 9: `x₅ := 1/x₄ - 4` satisfies `5/6 < x₅ < 6/7`.
+  have hx5_gt :
+      (5/6 : ℝ) < 1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4 := by
+    linarith
+  have hx5_lt :
+      1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4 < (6/7 : ℝ) := by
+    linarith
+  have hpos5 :
+      (0 : ℝ) < 1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4 := by linarith
+  -- Step 10: `1/x₅` satisfies `7/6 < 1/x₅ < 6/5`.
+  have hy5_gt :
+      (7/6 : ℝ) < 1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) := by
+    rw [lt_div_iff₀ hpos5]
+    -- Goal: `(7/6) * x₅ < 1`, i.e. `x₅ < 6/7`.
+    linarith [hx5_lt]
+  have hy5_lt :
+      1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) < (6/5 : ℝ) := by
+    rw [div_lt_iff₀ hpos5]
+    -- Goal: `1 < (6/5) * x₅`, i.e. `5/6 < x₅`.
+    linarith [hx5_gt]
+  -- Step 11: `x₆ := 1/x₅ - 1` satisfies `1/6 < x₆ < 1/5`.
+  have hx6_gt :
+      (1/6 : ℝ)
+        < 1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1 := by
+    linarith
+  have hx6_lt :
+      1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1 < (1/5 : ℝ) := by
+    linarith
+  have hpos6 :
+      (0 : ℝ)
+        < 1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1 := by
+    linarith
+  -- Step 12: floor antisymmetry on `1/x₆ ∈ (5, 6)`.
+  apply le_antisymm
+  · -- `⌊1/x₆⌋ ≤ 5`: from `1/x₆ < 6`.
+    have hlt :
+        1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1)
+          < (6 : ℝ) := by
+      rw [div_lt_iff₀ hpos6]
+      -- Goal: `1 < 6 * x₆`. From `x₆ > 1/6`, immediate.
+      linarith [hx6_gt]
+    have hflt :
+        ⌊1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1)⌋
+          < (6 : ℤ) := by
+      rw [Int.floor_lt]
+      exact_mod_cast hlt
+    omega
+  · -- `5 ≤ ⌊1/x₆⌋`: from `5 ≤ 1/x₆` (in fact `5 < 1/x₆` strictly).
+    have hge :
+        (5 : ℝ)
+          ≤ 1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) := by
+      rw [le_div_iff₀ hpos6]
+      -- Goal: `5 * x₆ ≤ 1`, i.e. `x₆ ≤ 1/5` (from the strict `x₆ < 1/5`).
+      linarith [hx6_lt]
     rw [Int.le_floor]
     exact_mod_cast hge
 

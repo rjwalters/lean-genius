@@ -272,4 +272,47 @@ theorem four_thirty_seven_over_three_oh_three_lt_cbrt3 :
   rw [lt_cbrt3_iff_cube_lt (by norm_num)]
   norm_num
 
+/-! ## S8 prep: new upper bound for `a₆ = 5`
+
+The seventh partial-quotient identity `cbrt3_a6 = 5` requires the
+two-sided sandwich
+
+  `437/303 < cbrt3 < 512/355`
+
+— the lower bound is the S7 helper `four_thirty_seven_over_three_oh_three_lt_cbrt3`
+above (reused unchanged); the new upper bound `cbrt3 < 512/355`
+is the seventh convergent `p₇/q₇ = 512/355` of the simple CF
+`[1; 2, 3, 1, 4, 1, 5, 1, …]` of OEIS A002945. The convergent
+recursion `p_n = a_n · p_{n-1} + p_{n-2}` with `a₇ = 1` gives
+
+  `q₇ = 1 · q₆ + q₅ = 1 · 303 + 52 = 355`
+  `p₇ = 1 · p₆ + p₅ = 1 · 437 + 75 = 512`
+
+(Note: `2260/1567 = (5·437+75)/(5·303+52)` would be a semi-convergent
+testing the value `a₇ = 5`, but the actual `a₇ = 1` per OEIS A002945.
+The seventh convergent is `512/355`, which lies on the *upper* side
+of `cbrt3` alternating with the lower-side `437/303`.)
+
+After cubing,
+
+  `(512/355)³ = 134217728/44738875`
+  `3          = 134216625/44738875`
+
+so `512³ = 134_217_728 > 134_216_625 = 3 · 355³` (strict, diff
+`1103`). Note `512 = 2⁹`, so `512³ = 2²⁷ = 134_217_728` exactly. The
+new cube gap `1103 / 44_738_875 ≈ 2.5·10⁻⁵` is comparable to S7's
+lower-side gap of `928/27818127 ≈ 3.3·10⁻⁵`, both well within
+`norm_num`'s reach.
+
+Two-line proof via the cubing-iff helper. -/
+
+/-- `∛3 < 512/355`. Cube target: `(512/355)³ = 134217728/44738875
+> 134216625/44738875 = 3` (strict: `3 · 355³ = 134216625 < 512³ = 134217728`,
+gap `1103`). Note `512 = 2⁹`, so `512³ = 2²⁷` exactly. The seventh
+convergent of the simple CF of `∛3` (using `a₇ = 1` per OEIS A002945). -/
+theorem cbrt3_lt_five_twelve_over_three_fifty_five :
+    cbrt3 < (512 / 355 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
