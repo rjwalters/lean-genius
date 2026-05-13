@@ -141,5 +141,90 @@ implement Tier 1.
 
 - Barvinok 1994 (canonical algorithm paper).
 - Beck & Robins (2015) ch. 11.
-- Mathlib4 `Mathlib.Combinatorics.Polytope.Ehrhart`.
+- ~~Mathlib4 `Mathlib.Combinatorics.Polytope.Ehrhart`~~ — **does not
+  exist** (see §S2 PREP Mathlib bearer audit below).
 - Lean Genius `Proofs/EhrhartCubeProven.lean` (verified parent).
+
+---
+
+## S2 PREP — Mathlib bearer audit (2026-05-13, researcher-10)
+
+The S1 OBSERVE plan above claims Mathlib v4.26.0 ships
+`Mathlib.Combinatorics.Polytope.Ehrhart` and an Ehrhart-theory toolkit.
+A bearer audit at the lake-pinned Mathlib SHA `2df2f0150c27`
+(`proofs/lake-manifest.json`) shows this is **false**.
+
+### Method
+
+GitHub Search API + Contents API against
+`leanprover-community/mathlib4` at `ref=2df2f0150c27` — the SHA the
+worktree's `lake build` would resolve. Names are stable across Mathlib
+HEAD and the pinned SHA (per project memory
+`Mathlib bearer-audit PREPs frequently cite Mathlib HEAD instead of
+lake-pinned SHA`), so absence at the pinned SHA implies absence on
+HEAD as well; we verified the pinned SHA to be conservative.
+
+### Findings
+
+| Query | Result | Verdict |
+|---|---|---|
+| `q=Ehrhart` (whole repo, lean files) | 0 hits | **No Ehrhart support in Mathlib.** |
+| `q=Polytope in:path` | 0 hits | **No `Polytope` directory in Mathlib.** |
+| `q=LatticePolytope` | 0 hits | **No `LatticePolytope` type in Mathlib.** |
+| `q=hStar` / `q=Eulerian filename:Eulerian` | 0 hits | **No h*-vector or Eulerian-polynomial Polytope link in Mathlib.** |
+| `GET .../contents/Mathlib/Combinatorics/Polytope/Ehrhart.lean?ref=2df2f0150c27` | HTTP 404 | direct fetch confirms absence |
+| `GET .../contents/Mathlib/Combinatorics?ref=2df2f0150c27` | 200, no `Polytope` subdir | confirms absence at the directory level |
+
+The algebraic substrate the Barvinok plan ultimately rests on **does**
+exist, with one path correction:
+
+| Module | Status | Audit |
+|---|---|---|
+| `Mathlib.FieldTheory.RatFunc.Basic` | ✓ exists | 45 125 B, contents-API HTTP 200 |
+| `Mathlib.Algebra.MvPolynomial.Basic` | ✓ exists | 41 370 B, contents-API HTTP 200 |
+| `Mathlib.RingTheory.MvPowerSeries.Basic` | ✓ exists | search HTTP 200 |
+| ~~`Mathlib.RingTheory.PowerSeries.Basic` (S1 plan)~~ | path drift | ✓ exists but the multivariate generating function for [0, n]^d lives in `MvPowerSeries`, not `PowerSeries`; S1 plan cited the univariate path. |
+
+The dead doc-URL
+`leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/Polytope/Ehrhart.html`
+listed in the JSON `references.urls` is removed in this PR (the
+HTML mirrors a module that does not exist).
+
+### Corrected Mathlib gap inventory
+
+The S1 OBSERVE `mathlibGaps` list under-stated the gap. Corrected list:
+
+1. **No Ehrhart-theory toolkit at all** — the S1 plan assumed a
+   `Mathlib.Combinatorics.Polytope.Ehrhart` foundation to build on.
+   There is none. Any retargeted Barvinok work must define its own
+   `EhrhartFn` / `LatticePolytope` / `interiorEhrhartFn` shells from
+   scratch over `MvPolynomial` / `RatFunc` / `MvPowerSeries`.
+2. **No `LatticePolytope` type, no `Polytope` namespace.** The unit
+   d-cube would need to be encoded as `Set (Fin d → ℝ)` or via
+   `Fin d → Set.Icc (0 : ℝ) 1` and the lattice-point condition
+   handled by hand.
+3. **No signed simplicial-cone decomposition.** This is the
+   algorithmic core of Barvinok-1994; defer to S3+ stretch or future
+   sibling slug.
+4. **No formal complexity-class library.** Polytime claim must be
+   axiomatic.
+
+### Slot-drift cross-reference
+
+In parallel with the bearer audit, the S2 PREP also discovered the
+slug slot is **already occupied on main** by an entirely orthogonal
+hypersimplex scaffold (`proofs/Proofs/EhrhartCubeProvenOQ03.lean`,
+119 LOC, 2 sorries, `namespace EhrhartCubeProvenOQ03`, gallery dir
+populated). See `state.md` (§Findings 2–4) for the full description
+of the drift and the deferred scope decision (Option A: continue
+hypersimplex; Option B: spin off Barvinok as a new sibling `oq-05`).
+
+### Implication for any future S2 ACT
+
+Whichever scope option is chosen, the S2 ACT Lean file **cannot**
+import `Mathlib.Combinatorics.Polytope.Ehrhart`. The S1 OBSERVE
+"S2.1 probe" must be replaced with hand-rolled definitions over
+`MvPolynomial` and `RatFunc` (or with `import Mathlib` to bring in
+the full algebra substrate). The bearer audit gives the green list
+of modules that actually work; the Docker probe is no longer
+informational and can be skipped.

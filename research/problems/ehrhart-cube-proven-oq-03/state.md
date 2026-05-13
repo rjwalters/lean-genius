@@ -2,103 +2,159 @@
 
 ## Current State
 
-**Phase**: S1 OBSERVE
+**Phase**: S2 PREP (bearer-audit, doc-only)
 **Path**: full
-**Since**: 2026-05-12T20:55Z
-**Last Updated**: 2026-05-12 (Session 1 researcher-12)
-**Iteration**: 1
+**Since**: 2026-05-13T13:50Z (researcher-10, S2)
+**Last Updated**: 2026-05-13 (Session 2 researcher-10)
+**Iteration**: 2
 
-## Session 1 — S1 OBSERVE: Barvinok algorithm gallery-gap survey (researcher-12, 2026-05-12)
+## Session 2 — S2 PREP: Mathlib bearer audit + slot-drift discovery (researcher-10, 2026-05-13)
 
-**Mode.** ANALYSIS-ONLY (no `.lean` edits).
+**Mode.** ANALYSIS-ONLY (no `.lean` edits; pure doc / JSON sync).
 
-**Outcome.** Workspace created.  Slug retargeted to a **concrete
-gallery gap**: the existing `ehrhart-cube-proven*` family is entirely
-identity-type (cube formula, h*-vector, recursions, Eulerian numbers).
-None of them address **algorithmic / generating-function** lattice
-point counting.  Barvinok-1994 fills exactly that gap.
+**Outcome.** The S1 OBSERVE plan (Session 1, 2026-05-12) is built on
+**verifiably false premises** about Mathlib's Ehrhart-theory content,
+and the slug's on-disk state has **drifted** from the JSON metadata.
+Both must be corrected before any S2 ACT (Lean) iteration.
 
-**Key findings.**
+### Finding 1 — Mathlib has no Ehrhart theory
 
-1. **Gap confirmed.**  The four existing entries
-   (`ehrhart-cube-proven`, `ehrhart-cube-proven-oq-01`,
-   `ehrhart-cube-proven-oq-02`, `ehrhart-cube-proven-oq-04`) prove
-   *identities* and *recursions* about `#([0,1]ᵈ ∩ (1/n)ℤᵈ)` and its
-   Eulerian h*-vector.  None state Barvinok's theorem; none introduce
-   the short rational generating function `f(P; x)`.
+The S1 OBSERVE state.md claims:
 
-2. **Mathlib v4.26.0 has Ehrhart theory** in
-   `Mathlib.Combinatorics.Polytope.Ehrhart` and rational-function /
-   power-series infrastructure (`RatFunc`, `MvPowerSeries`,
-   `MvPolynomial.aeval`).  It does **NOT** have signed simplicial-cone
-   decomposition or polytime-complexity statements.  Barvinok's
-   algorithm itself must be **axiomatised** (or stated as an
-   un-implemented `def`/`theorem` with the polytime claim as an
-   axiom) for the gallery entry.
+> Mathlib v4.26.0 has Ehrhart theory in
+> `Mathlib.Combinatorics.Polytope.Ehrhart` and rational-function /
+> power-series infrastructure (`RatFunc`, `MvPowerSeries`, `MvPolynomial.aeval`).
 
-3. **Tractable corollary**: `f([0,n]ᵈ; x) = ∏ᵢ (1 − xᵢⁿ⁺¹) / (1 − xᵢ)`,
-   the short rational generating function for the unit-cube dilation.
-   This is *first-principles provable* via geometric series and acts
-   as a sanity-test corollary linking OQ-03 to the verified parent
-   `ehrhart-cube-proven`.
+This is **false** at the lake-pinned Mathlib SHA `2df2f0150c27`
+(`proofs/lake-manifest.json`). Bearer audit via the GitHub Search API
+returns:
 
-4. **Naming**: file `Proofs/EhrhartCubeProvenOQ03.lean`, gallery dir
-   `src/data/proofs/ehrhart-cube-proven-oq-03/`.  Consistent with the
-   sibling-naming convention used by OQ-01, OQ-02, OQ-04.
+| Query | Count |
+|---|---|
+| `Ehrhart` (any file, any path) | **0** |
+| `Polytope` (any file, any path) | **0** |
+| `LatticePolytope` (anywhere) | **0** |
+| `hStar` / `h_star` / `Eulerian` (filename:Eulerian) | **0** |
+| `Mathlib.Combinatorics.Polytope.Ehrhart` (direct fetch) | 404 |
 
-**Files modified (this PR).**
-* `research/problems/ehrhart-cube-proven-oq-03/problem.md` — new (anchor doc).
-* `research/problems/ehrhart-cube-proven-oq-03/knowledge.md` — new (Mathlib survey + 3-tier strategy).
-* `research/problems/ehrhart-cube-proven-oq-03/state.md` — new (this file).
-* `research/problems/ehrhart-cube-proven-oq-03/sessions/2026-05-12-s01.md` — new (session log).
-* `src/data/research/problems/ehrhart-cube-proven-oq-03.json` — new (index entry, iteration 1).
+Only the algebra dependencies are real:
 
-**Build status.** No `.lean` changes; no build attempted.  Parent
-`Proofs/EhrhartCubeProven.lean` and siblings
-`Proofs/EhrhartCubeProvenOQ04.lean` both build clean on `origin/main`.
+| Module | Status | Size |
+|---|---|---|
+| `Mathlib.FieldTheory.RatFunc.Basic` | ✓ exists | 45 125 B |
+| `Mathlib.Algebra.MvPolynomial.Basic` | ✓ exists | 41 370 B |
+| `Mathlib.RingTheory.MvPowerSeries.Basic` | ✓ exists (path differs from S1 plan, which said `Mathlib.RingTheory.PowerSeries.Basic`) | n/a |
 
-## Next Action (S2 ACT)
+The S1 OBSERVE plan's "S2.1 Docker probe" would have flagged the
+missing `Mathlib.Combinatorics.Polytope.Ehrhart` import on first
+invocation. The bearer audit catches it without Docker (relevant given
+the project-wide `proofs/.lake` self-referential-symlink trap in this
+worktree).
 
-S2.1 — Probe Mathlib v4.26.0 generating-function API:
+**Implication.** Any retargeted S2 ACT toward Barvinok / generating
+functions must build the Ehrhart support from scratch over Mathlib's
+algebraic substrate (`RatFunc` / `MvPowerSeries` / `MvPolynomial`) —
+there is no pre-existing Ehrhart toolkit to specialise.
 
-```bash
-# In Docker (NEVER use direct lake build):
-./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ03Probe
-```
+### Finding 2 — Slug slot is already taken
 
-with `Proofs/EhrhartCubeProvenOQ03Probe.lean` importing
-`Mathlib.Combinatorics.Polytope.Ehrhart`,
-`Mathlib.Algebra.MvPolynomial.Basic`,
-`Mathlib.FieldTheory.RatFunc.Basic`,
-`Mathlib.RingTheory.PowerSeries.Basic`, and `#check`-ing candidate
-identifiers (`@MvPolynomial`, `@RatFunc`, `@MvPowerSeries`,
-`@Polynomial.geom_series_def`).
+`proofs/Proofs/EhrhartCubeProvenOQ03.lean` is **already on main**:
 
-S2.2 — Implement `Proofs/EhrhartCubeProvenOQ03.lean`:
+* Path `proofs/Proofs/EhrhartCubeProvenOQ03.lean` — 119 LOC, 6
+  theorems, 2 definitions, 2 sorries, 0 axioms.
+* Subject: **Hypersimplex** Δ(d, k) lattice-point counting (the slice
+  of [0, 1]^d by the affine hyperplane Σ x_i = k), NOT Barvinok.
+* `namespace EhrhartCubeProvenOQ03`.
+* First committed in PR #18293 (`research(ehrhart-cube-proven-oq-03):
+  S1 OBSERVE — hypersimplex Δ(d,k) Lean scaffold (build pending)`).
+* `src/data/proofs/ehrhart-cube-proven-oq-03/` gallery directory
+  exists with `meta.json` (title "Ehrhart Polynomial of the
+  Hypersimplex: First-Principles Scaffold", `status: formalized`,
+  `sorries: 2`, `badge: formalized`) + `annotations.json` + `index.ts`.
 
-- `def ShortRationalGenFn` — short rational generating function as a
-  finite signed sum.
-- `axiom barvinok_polytime` — Barvinok's polynomial-time bound (the
-  algorithm's existence is the axiomatised core).
-- `theorem cube_generating_fn_factored` — first-principles
-  `f([0,n]ᵈ; x) = ∏ᵢ (1 − xᵢⁿ⁺¹) / (1 − xᵢ)`.
-- `theorem cube_count_eval_at_one` — bridge to `(n+1)ᵈ` via `x → 1`
-  specialisation, importing `EhrhartCubeProven`.
+### Finding 3 — JSON `leanFiles` is empty despite on-main file
 
-S2.3 — Gallery entry `src/data/proofs/ehrhart-cube-proven-oq-03/meta.json`
-with `status: axiomatized`, `badge: axiom`, `axiomCount: 1` (the
-`barvinok_polytime` axiom).
+`src/data/research/problems/ehrhart-cube-proven-oq-03.json` reports
+`leanFiles: []`. Reality: the hypersimplex file exists with 119 LOC.
+
+### Finding 4 — Title / scope drift
+
+| Field | JSON value | meta.json value (on-main) |
+|---|---|---|
+| `title` | "Barvinok's algorithm for lattice point counting in fixed dimension" | "Ehrhart Polynomial of the Hypersimplex: First-Principles Scaffold" |
+| `tags` includes | `barvinok`, `algorithms` | `hypersimplex`, `open-problem` |
+
+The Session 1 (2026-05-12) iteration **retargeted the slug from
+hypersimplex to Barvinok without touching the on-main scaffold** or
+the gallery entry. The slot now holds two incompatible plans.
+
+## Recommended Continuation Paths
+
+Two clean options, surfaced for seeker / curator / human triage —
+this PR does **not** decide between them:
+
+### Option A — Continue the hypersimplex track (low-risk)
+
+Treat the slug as `ehrhart-cube-proven-oq-03` ⇔ hypersimplex Δ(d, k)
+(matches on-main scaffold + gallery + meta.json). S3 next:
+
+1. Discharge `hypersimplex_count_k_one`: Δ(d, 1) lattice count
+   = C(n + d − 1, d − 1) via the multiset-stars-and-bars bijection.
+2. Discharge `hypersimplex_palindrome_k_d_minus_1`: Δ(d, k) count
+   = Δ(d, d − k) count via the involution x ↦ n − x.
+
+Both proofs are tractable in Mathlib v4.26.0 (use `Fintype.card`,
+`Finset.bij`, `Finset.sum`); ~70 LOC each. Pure combinatorics, no
+algebraic-geometry preliminaries.
+
+### Option B — Retarget to a new sibling slug `oq-05` (Barvinok)
+
+Spin off the Barvinok-1994 plan as **`ehrhart-cube-proven-oq-05`**
+(or `-oq-06`; current siblings end at -04). That slug starts with the
+correct Mathlib substrate awareness from this audit and does not
+collide with the hypersimplex slot. The Session 1 S1 OBSERVE
+documentation (problem.md + knowledge.md + Barvinok plan) becomes the
+new slug's bootstrap; `ehrhart-cube-proven-oq-03` reverts to its
+on-main hypersimplex identity.
+
+## Decision: deferred
+
+This PR ships **bearer-audit findings + JSON drift fixes only**.
+Scope decision (Option A vs B) deferred to seeker / curator / human
+triage.
+
+## Files modified (this PR)
+
+* `research/problems/ehrhart-cube-proven-oq-03/state.md` — this file.
+* `research/problems/ehrhart-cube-proven-oq-03/knowledge.md` — append
+  bearer-audit section.
+* `src/data/research/problems/ehrhart-cube-proven-oq-03.json` — phase
+  S1_OBSERVE → S2_PREP, iteration 1 → 2, `lastUpdate`, `knownResults`
+  (remove false Mathlib claim), `currentState.{focus,nextAction}`,
+  `knowledge.{progressSummary,insights,mathlibGaps,nextSteps}`,
+  `references.mathlib` (correct paths), `references.urls` (remove dead
+  Mathlib doc URL), `leanFiles` (add on-main hypersimplex entry).
+
+## Out of scope (this PR)
+
+* No `.lean` edits. The on-main hypersimplex scaffold is untouched.
+* No retitle of the JSON `title` field — that is the scope-decision
+  question deferred to Option A / B triage.
+* No gallery `meta.json` edits — those describe the on-main scaffold
+  accurately and would be modified by Option B only.
+* No new sibling slug creation — seeker / curator can spin off
+  `oq-05` if Option B is chosen.
 
 ## Decision Log
 
-- **2026-05-12 S1**: Decision to introduce Barvinok via an
-  axiomatised polytime statement + first-principles provable
-  generating-function corollary.  Reason: Mathlib has no complexity
-  class infrastructure, so the polytime claim cannot be formalised
-  without major preliminaries.  The generating-function side is
-  algebra-only and tractable.
-
-- **2026-05-12 S1**: Decision NOT to attempt the signed-cone
-  decomposition in S2.  Reason: even the 2-D case requires
-  continued-fraction-style descent in a context Mathlib doesn't
-  directly support.  Defer to a stretch S3 or future OQ.
+* **2026-05-13 S2 (researcher-10)**: Decision to ship S2 as a
+  doc-only PREP rather than S2 ACT. Reason: the S1 ACT plan
+  ("S2.1 probe + S2.2 implement Barvinok scaffold") is built on the
+  false `Mathlib.Combinatorics.Polytope.Ehrhart` premise AND would
+  collide with the already-committed hypersimplex scaffold; both
+  must be triaged first.
+* **2026-05-13 S2 (researcher-10)**: Decision NOT to decide between
+  Option A (continue hypersimplex) and Option B (spin off `oq-05`).
+  Reason: scope decisions of this magnitude (rewriting the slug
+  subject) should be made by the seeker / curator / human, not by a
+  research iteration.

@@ -1,7 +1,7 @@
 {
   "slug": "ehrhart-cube-proven-oq-03",
   "title": "Barvinok's algorithm for lattice point counting in fixed dimension",
-  "phase": "S1_OBSERVE",
+  "phase": "S2_PREP",
   "status": "in-progress",
   "tier": "B",
   "path": "full",
@@ -20,7 +20,7 @@
       "ehrhart-cube-proven: L([0,1]^d, n) = (n+1)^d (verified, 0 axioms)",
       "ehrhart-cube-proven-oq-02: Ehrhart polynomials without general existence theorem (COMPLETED)",
       "ehrhart-cube-proven-oq-04: Eulerian h*-vector identity for unit cube (PROVED)",
-      "Mathlib v4.26.0 has Mathlib.Combinatorics.Polytope.Ehrhart, MvPolynomial, RatFunc, MvPowerSeries"
+      "Mathlib v4.26.0 (pinned SHA 2df2f0150c27) has MvPolynomial, RatFunc, MvPowerSeries; does NOT have Mathlib.Combinatorics.Polytope.Ehrhart (bearer-audited 2026-05-13, S2 PREP — corrects the S1 OBSERVE claim)"
     ],
     "open": [
       "Algorithmic complexity of lattice point counting for d as part of input is NP-hard (matches integer programming)",
@@ -30,39 +30,48 @@
     "goal": "Add gallery entry for Barvinok-1994 algorithm: axiomatize the polytime claim, define short rational generating function as a Lean type, prove first-principles corollary f([0,n]^d; x) = prod_i (1 - x_i^{n+1}) / (1 - x_i), bridge to ehrhart-cube-proven's (n+1)^d via x -> 1 specialization."
   },
   "currentState": {
-    "phase": "S1_OBSERVE",
-    "since": "2026-05-12T20:55:00Z",
-    "iteration": 1,
-    "focus": "Workspace bootstrap, gallery-gap survey, Mathlib API plan for S2.",
-    "blockers": [],
-    "nextAction": "S2 ACT: probe Mathlib v4.26.0 for MvPolynomial / RatFunc / Polynomial.geom_series via Docker import test, then implement Proofs/EhrhartCubeProvenOQ03.lean (Tier 1: axiomatize barvinok_polytime, define ShortRationalGenFn, prove cube_generating_fn_factored).",
+    "phase": "S2_PREP",
+    "since": "2026-05-13T13:50:00Z",
+    "iteration": 2,
+    "focus": "S2 PREP doc-only — Mathlib bearer audit at lake-pinned SHA 2df2f0150c27 disproves S1's `Mathlib.Combinatorics.Polytope.Ehrhart` premise (0 hits for Ehrhart / Polytope / LatticePolytope / Eulerian anywhere in Mathlib). Slot-drift also discovered: proofs/Proofs/EhrhartCubeProvenOQ03.lean is already on main (119 LOC, 2 sorries) with hypersimplex content (NOT Barvinok); gallery dir exists with corresponding meta.json. Scope decision (continue hypersimplex vs spin off Barvinok as oq-05) deferred to seeker/curator/human triage.",
+    "blockers": [
+      "Bearer audit (2026-05-13): Mathlib has NO Ehrhart-theory toolkit (`Polytope` namespace absent, `LatticePolytope` absent, `Ehrhart` absent). Any retargeted S2 ACT must build from MvPolynomial/RatFunc/MvPowerSeries; no specialisation possible.",
+      "Slot drift: proofs/Proofs/EhrhartCubeProvenOQ03.lean is occupied by hypersimplex Δ(d,k) scaffold from PR #18293; namespace EhrhartCubeProvenOQ03. Any Barvinok retarget collides unless spun off to a new sibling slug."
+    ],
+    "nextAction": "TRIAGE: choose between Option A (continue hypersimplex track on existing on-main scaffold; discharge 2 sorries — tractable ~70 LOC each) and Option B (spin off Barvinok as new sibling slug `ehrhart-cube-proven-oq-05`, leaving oq-03 as hypersimplex). After triage, S3 (Option A) or new-slug S1 (Option B). See state.md §Recommended Continuation Paths.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE doc-only: workspace bootstrap, slug retargeted to algorithmic/generating-function gap (existing ehrhart-cube-proven* siblings are identity-type only). 0 axioms, 0 sorries.",
-    "builtItems": [],
+    "progressSummary": "S2 PREP doc-only (researcher-10, 2026-05-13): Mathlib bearer audit at lake-pinned SHA 2df2f0150c27 disproves S1's `Mathlib.Combinatorics.Polytope.Ehrhart` premise (0 hits for Ehrhart anywhere in Mathlib). Slot-drift discovered: proofs/Proofs/EhrhartCubeProvenOQ03.lean is already on main from PR #18293 with hypersimplex Δ(d,k) content (119 LOC, 2 sorries) — wholly different from this slug's Barvinok plan. Gallery dir + meta.json corroborate hypersimplex identity. Scope decision (Option A continue hypersimplex vs Option B spin off Barvinok as oq-05) deferred to seeker/curator/human triage. 0 .lean edits this iteration.",
+    "builtItems": [
+      "research/problems/ehrhart-cube-proven-oq-03/state.md (rewritten): S2 PREP session log with 4 findings (false Mathlib claim, slot already taken, JSON leanFiles empty drift, title/scope drift) + 2 continuation options.",
+      "research/problems/ehrhart-cube-proven-oq-03/knowledge.md: bearer-audit section appended with method/findings tables, corrected mathlibGaps inventory, dead-doc-URL note."
+    ],
     "insights": [
-      "All four existing ehrhart-cube-proven* slugs cover identity-type results (cube formula, h*-vector, Worpitzky, Eulerian palindrome). None address algorithmic complexity or generating-function representations.",
-      "Mathlib v4.26.0 has the algebraic infrastructure (MvPolynomial, RatFunc, MvPowerSeries) but no formal complexity class library; the polytime claim must be axiomatized.",
-      "The corollary f([0,n]^d; x) = prod_i (1 - x_i^{n+1}) / (1 - x_i) is a tractable first-principles theorem provable via geometric series, providing a sanity bridge to ehrhart-cube-proven's (n+1)^d.",
-      "Signed simplicial-cone decomposition (the algorithm's core) requires continued-fraction-style descent, out of scope for S2; defer to S3 stretch or future OQ."
+      "Mathlib v4.26.0 at the lake-pinned SHA 2df2f0150c27 has ZERO Ehrhart-theory content (0 hits for `Ehrhart`, `Polytope`, `LatticePolytope` anywhere in the repo). The S1 OBSERVE claim 'Mathlib v4.26.0 has Mathlib.Combinatorics.Polytope.Ehrhart' was unverified and is false.",
+      "Algebraic substrate IS present: `Mathlib.FieldTheory.RatFunc.Basic` (45125 B), `Mathlib.Algebra.MvPolynomial.Basic` (41370 B), `Mathlib.RingTheory.MvPowerSeries.Basic` (path drift from S1 plan; multivariate live under MvPowerSeries not PowerSeries).",
+      "Slug slot is already occupied: proofs/Proofs/EhrhartCubeProvenOQ03.lean exists on main with hypersimplex Δ(d,k) scaffold (119 LOC, namespace EhrhartCubeProvenOQ03, 2 sorries on hypersimplex_count_k_one + hypersimplex_palindrome_k_d_minus_1). Gallery dir src/data/proofs/ehrhart-cube-proven-oq-03/ exists with corresponding meta.json. The Session 1 retarget did not account for this.",
+      "Option A (continue hypersimplex): Discharge the 2 on-main sorries — both are tractable in Mathlib v4.26.0 via `Fintype.card` / `Finset.bij` / `Finset.sum`, ~70 LOC each. Low risk, completes existing scaffold.",
+      "Option B (spin off Barvinok as oq-05): Preserves the Session 1 Barvinok plan as a fresh sibling slug; oq-03 reverts to its on-main hypersimplex identity. Clean separation; requires seeker/curator action.",
+      "Whichever option is chosen, the future S2 ACT cannot `import Mathlib.Combinatorics.Polytope.Ehrhart` and the Session 1 'S2.1 Docker probe' is redundant (bearer audit has already done the work). For Option B, S2 ACT would axiomatize Barvinok over `import Mathlib` (heavy) or hand-rolled MvPolynomial / RatFunc imports."
     ],
     "mathlibGaps": [
-      "No signed simplicial-cone decomposition in Mathlib v4.26.0",
-      "No formal complexity-class library; polytime claims must be axiomatized",
-      "No short rational generating function type as a first-class concept"
+      "No Ehrhart-theory toolkit AT ALL in Mathlib v4.26.0 (no `EhrhartFn`, no `LatticePolytope`, no `Polytope` namespace) — bearer-audited 2026-05-13.",
+      "No signed simplicial-cone decomposition (Barvinok algorithmic core).",
+      "No formal complexity-class library; polytime claims must be axiomatized.",
+      "No short rational generating function type as a first-class concept."
     ],
     "nextSteps": [
-      "S2.1 probe: Proofs/EhrhartCubeProvenOQ03Probe.lean with imports of Mathlib.Combinatorics.Polytope.Ehrhart, MvPolynomial, RatFunc, PowerSeries to confirm API surface",
-      "S2.2 implement: Proofs/EhrhartCubeProvenOQ03.lean (axiom barvinok_polytime + def ShortRationalGenFn + theorem cube_generating_fn_factored + theorem cube_count_eval_at_one)",
-      "S2.3 gallery: src/data/proofs/ehrhart-cube-proven-oq-03/{meta.json, annotations.json}",
-      "S3 stretch: 2-D signed cone decomposition (Tier 2)"
+      "TRIAGE (this PR's recommendation): seeker / curator / human picks Option A (continue hypersimplex on-main scaffold) or Option B (spin off Barvinok as ehrhart-cube-proven-oq-05).",
+      "Option A path → S3 ACT: discharge `hypersimplex_count_k_one` (multiset-stars-and-bars bijection, ~70 LOC) and `hypersimplex_palindrome_k_d_minus_1` (involution x ↦ n−x, ~70 LOC). Single Docker build each.",
+      "Option B path → new slug oq-05 S1 OBSERVE: bootstrap fresh workspace for Barvinok with corrected Mathlib substrate awareness; preserve Session 1 problem.md + Barvinok plan; this slug's JSON title/tags revert to hypersimplex.",
+      "Whichever option, the Session 1 S2.1 Docker probe is now redundant (bearer audit has done the work)."
     ],
-    "markdown": "# ehrhart-cube-proven-oq-03: Knowledge\n\n## Slug Mapping\n\nSeeker pool entry name 'Barvinok's algorithm for lattice point counting in fixed dimension' maps to a concrete gap: the gallery's existing ehrhart-cube-proven* family addresses identity-type Ehrhart results; the algorithmic/generating-function angle of Barvinok-1994 is absent.\n\n## Status: S1 OBSERVE doc-only\n\nWorkspace created. Mathlib survey deferred to S2 Docker probe.\n\nSee research/problems/ehrhart-cube-proven-oq-03/ for the full S1 documentation:\n* problem.md - restated goal + gallery survey\n* knowledge.md - Mathlib survey + 3-tier strategy\n* state.md - session anchor\n* sessions/2026-05-12-s01.md - this session log"
+    "markdown": "# ehrhart-cube-proven-oq-03: Knowledge\n\n## Status: S2 PREP doc-only (2026-05-13, researcher-10)\n\nMathlib bearer audit at lake-pinned SHA 2df2f0150c27 disproves S1's `Mathlib.Combinatorics.Polytope.Ehrhart` premise. Slot-drift also found: proofs/Proofs/EhrhartCubeProvenOQ03.lean is already on main with hypersimplex content (not Barvinok). Scope decision deferred to seeker/curator/human triage.\n\nSee research/problems/ehrhart-cube-proven-oq-03/state.md for the 4 findings + 2 continuation options."
   },
   "tags": [
     "seeker-selected",
@@ -87,19 +96,29 @@
       "Beck, M. & Robins, S. (2015) Computing the Continuous Discretely, 2nd ed., Springer UTM, ch. 11."
     ],
     "urls": [
-      "https://en.wikipedia.org/wiki/Barvinok%27s_algorithm",
-      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Combinatorics/Polytope/Ehrhart.html"
+      "https://en.wikipedia.org/wiki/Barvinok%27s_algorithm"
     ],
     "mathlib": [
-      "Mathlib.Combinatorics.Polytope.Ehrhart",
       "Mathlib.Algebra.MvPolynomial.Basic",
       "Mathlib.FieldTheory.RatFunc.Basic",
-      "Mathlib.RingTheory.PowerSeries.Basic"
+      "Mathlib.RingTheory.MvPowerSeries.Basic"
     ]
   },
   "started": "2026-05-12T20:55:00Z",
-  "lastUpdate": "2026-05-12T20:55:00Z",
+  "lastUpdate": "2026-05-13T13:50:00Z",
   "significance": 7,
   "tractability": 4,
-  "leanFiles": []
+  "leanFiles": [
+    {
+      "path": "Proofs/EhrhartCubeProvenOQ03.lean",
+      "filename": "EhrhartCubeProvenOQ03.lean",
+      "lineCount": 119,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProvenOQ03.lean"
+    }
+  ]
 }
