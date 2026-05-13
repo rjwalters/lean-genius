@@ -53,10 +53,11 @@
       "Proof of coverage: every n ≥ sInf A is in A + B",
       "Proof that coverage requires at least one infinite set (from finite sets)",
       "Proof that optimal B-density is 0 (using non-negativity of density)",
-      "Connection to asymptotic additive bases of order 2"
+      "Connection to asymptotic additive bases of order 2",
+      "S4: Added two axiom-free special cases via erdos31_bounded_gaps — multiples_have_sparse_complement (parametric in k) and even_numbers_have_sparse_complement. These do not eliminate lorentz_theorem but extend axiom-free coverage to all bounded-gap families {n : k ∣ n}."
     ],
     "axiomCount": 1,
-    "lineCount": 786,
+    "lineCount": 820,
     "prerequisites": [
       "Additive complements of sets",
       "Asymptotic density",
@@ -64,7 +65,7 @@
       "Analytic number theory"
     ],
     "assumptions": "1 axiom(s) and 0 sorry(s). Axiom: lorentz_theorem (Lorentz's 1954 result axiomatized). No sorries remain.",
-    "theoremCount": 22,
+    "theoremCount": 24,
     "definitionCount": 12
   },
   "overview": {
@@ -157,9 +158,9 @@
       "Filter"
     ],
     "namespace": "Erdos31",
-    "lineCount": 786,
+    "lineCount": 820,
     "axiomCount": 1,
-    "theoremCount": 22,
+    "theoremCount": 24,
     "definitionCount": 12,
     "path": "Proofs/Erdos31Problem.lean",
     "sorries": 0

@@ -547,6 +547,40 @@ theorem erdos31_bounded_gaps (A : Set ℕ) (M : ℕ) (hM : 0 < M)
       obtain ⟨a, haA, hle, hlt⟩ := hgap n hn
       exact ⟨a, haA, n - a, Set.mem_Iio.mpr (by omega), by omega⟩⟩
 
+/- ## Axiom-Free Special Cases via Bounded Gaps
+
+The following instances of Erdős #31 hold unconditionally — they are
+direct applications of `erdos31_bounded_gaps` and do not depend on
+`lorentz_theorem`. They cover the families of sets whose gaps are
+bounded (multiples of any positive `k`, in particular the even
+numbers).
+-/
+
+/-- Multiples of any positive `k` have bounded gaps (= `k`), so
+    `erdos31_bounded_gaps` yields the finite density-0 completion
+    `B = {0, 1, ..., k-1}`. Axiom-free instance of Erdős Problem #31.
+
+    **Proof**: For every `n`, the multiple `k * (n / k)` lies in `[n - k + 1, n]`
+    (using `k * (n / k) ≤ n` from `Nat.div_mul_le_self` and
+    `n < k * (n / k) + k` from `Nat.div_add_mod` together with `n % k < k`).
+    Then apply `erdos31_bounded_gaps` with `M = k`. -/
+theorem multiples_have_sparse_complement (k : ℕ) (hk : 0 < k) :
+    ∃ B : Set ℕ, HasDensityZero B ∧ CoversAllButFinitely {n : ℕ | k ∣ n} B := by
+  refine erdos31_bounded_gaps {n : ℕ | k ∣ n} k hk 0 (dvd_zero k) ?_
+  intro n _
+  refine ⟨k * (n / k), dvd_mul_right k _, ?_, ?_⟩
+  · calc k * (n / k) = n / k * k := by ring
+      _ ≤ n := Nat.div_mul_le_self n k
+  · have hmod : n % k < k := Nat.mod_lt n hk
+    have hdm : k * (n / k) + n % k = n := Nat.div_add_mod n k
+    linarith
+
+/-- Even numbers have the finite density-0 completion `B = {0, 1}`.
+    Direct corollary of `multiples_have_sparse_complement` with `k = 2`. -/
+theorem even_numbers_have_sparse_complement :
+    ∃ B : Set ℕ, HasDensityZero B ∧ CoversAllButFinitely {n : ℕ | 2 ∣ n} B :=
+  multiples_have_sparse_complement 2 (by norm_num)
+
 /-- The Lorentz theorem affirms Erdős Problem #31. -/
 axiom lorentz_theorem : Erdos31Statement
 
