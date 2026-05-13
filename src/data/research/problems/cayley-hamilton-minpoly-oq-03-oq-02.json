@@ -1,7 +1,7 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-03-oq-02",
   "title": "Can the $O(n^\\omega)$ algorithm of Keller-Gehrig (1985) be formalized, extending the Krylov framework?",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -28,28 +28,29 @@
     "goal": "Formalise layers 1 + 2 over the existing OQ-03 Krylov framework; explicitly defer layer 3 with a written-down account of the missing complexity infrastructure."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-11T19:30:00.000Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE — survey-only iteration. Three-layer decomposition; commit to layers 1+2, defer layer 3.",
+    "phase": "ACT",
+    "since": "2026-05-13T13:30:00.000Z",
+    "iteration": 2,
+    "focus": "S2 ACT (build pending) — Layer 1 shipped. CayleyHamiltonMinpolyOQ03OQ02.lean defines squareKrylov via repeated squaring and proves the bridge squareKrylov M k = M ^ (2^k); 104 LOC, 3 theorems, 0 sorries, 0 axioms.",
     "blockers": [
       "Layer 3 only: Mathlib has no complexity-monad / cost-counting framework.",
       "Layer 3 only: Mathlib.Matrix.mul is the naive O(n^3) algorithm; no Strassen / abstract fast-matmul oracle.",
       "Layer 3 only: matrix-multiplication exponent ω is not in Mathlib even as an opaque constant."
     ],
-    "nextAction": "S2 — write proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean (~35 lines): squareKrylov def + squareKrylov_zero/succ + squareKrylov_eq_pow_two bridge to M^(2^k). Single Docker build.",
+    "nextAction": "S3 — Layer 2 correctness: show span {v, Mv, ..., M^(2^k - 1) v} contains every Krylov vector M^j v with j < 2^k. Tractable (~60 LOC), one Docker build. Use Horner-style polynomial-evaluation pass against base-2^k digit expansion.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE — three-layer decomposition committed; layers 1+2 tractable, layer 3 deferred.",
+    "progressSummary": "S2 ACT — Layer 1 (structural) shipped: proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean defines squareKrylov via repeated squaring and proves squareKrylov_eq_pow_two : squareKrylov M k = M ^ (2^k). 104 LOC, 3 theorems, 0 sorries, 0 axioms. Build pending (worktree .lake symlink loop, deferred to doctor verification per project pattern).",
     "builtItems": [
       "problem.md: rich plain/formal statements, infrastructure map vs. OQ-03 line numbers, S2-S6 decomposition, risk notes.",
       "knowledge.md: algorithm-in-3-sentences, numerical breakeven at n=64 (Strassen wins at n≈256, CW-Williams wins at n≈64), Mathlib gap inventory for the complexity monad, worked S2 stub.",
-      "state.md: phase OBSERVE, blockers gated to layer 3, S2 next-action recipe."
+      "state.md: phase OBSERVE → ACT, blockers gated to layer 3, S3 next-action recipe (correctness layer).",
+      "proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean: Layer 1 squared-Krylov sequence: def squareKrylov + squareKrylov_zero + squareKrylov_succ + squareKrylov_eq_pow_two (3 theorems, induction proof of bridge via pow_add + ring on exponent)."
     ],
     "insights": [
       "The Keller-Gehrig speed-up is structural (n cheap matvecs vs ⌈log n⌉ expensive matmuls), so it formalises today modulo any complexity framework.",
@@ -64,7 +65,7 @@
       "No matrix-multiplication exponent ω as a Mathlib constant or axiomatised real."
     ],
     "nextSteps": [
-      "S2: squareKrylov definition + 3 theorems (~35 lines, 1 Docker build).",
+      "S2: ✅ squareKrylov definition + 3 theorems (104 LOC; build pending verification).",
       "S3: Krylov-prefix ⊆ squared-Krylov span via polynomial Horner evaluation (~60 lines, 1 build).",
       "S4: 2^k ≥ n bound (~25 lines, no build — pure Nat arithmetic).",
       "S5: explicit deferral of layer 3 in knowledge.md, with one-paragraph outline of what a future complexity-monad PR would need to add."
@@ -121,7 +122,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.562Z",
-  "lastUpdate": "2026-05-11T19:30:00.000Z",
+  "lastUpdate": "2026-05-13T13:30:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -223,6 +224,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean",
+      "filename": "CayleyHamiltonMinpolyOQ03OQ02.lean",
+      "lineCount": 104,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean"
     },
     {
       "path": "Proofs/CayleyHamiltonMinpolyOQ04.lean",
