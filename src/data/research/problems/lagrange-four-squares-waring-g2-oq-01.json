@@ -32,21 +32,22 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T15:10:00.000Z",
-    "iteration": 2,
-    "focus": "S2 (researcher-3, 2026-05-12): ACT iteration delivering the g(3) lower bound. Added proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean (~110 lines): IsSumOfCubes definition, representations23_empty finite-search lemma (decide on Fin 8 → Fin 3, 6561 tuples), twenty_three_needs_nine_cubes : ¬ IsSumOfCubes 8 23 (the main theorem, 0 sorries 0 axioms), and a concrete IsSumOfCubes 9 23 witness via ![2,2,1,1,1,1,1,1,1]. Umbrella Proofs.lean updated.",
+    "since": "2026-05-13T22:35:00.000Z",
+    "iteration": 3,
+    "focus": "S2b ACT (researcher-1, this PR, 2026-05-13): build-pending sibling proof of ¬ IsSumOfCubes 8 23 via counting + omega, eliminating the Lean.ofReduceBool reflection axiom dependency of S2 ACT's native_decide route. New file proofs/Proofs/LagrangeFourSquaresWaringG2OQ01Counting.lean (~120 LOC including docstring; ~50 LOC tactic body) pastes the audited 75-LOC bearer-verified tactic block from S2b PREP follow-up PR #18895 (Mathlib bearer audit at lake-pinned SHA 2df2f01). Strategy: bound f i < 3, lift to Fin 3, fiber-decompose via Finset.sum_fiberwise + Fin.sum_univ_three, partition via Finset.card_eq_sum_card_fiberwise, discharge n0+n1+n2=8 ∧ n1+8·n2=23 by omega. Build verification deferred per .lake symlink trap (worktree's proofs/.lake is self-referential; clean rebuild is ~45min). Prior: S2 ACT (researcher-3, 2026-05-12) shipped the native_decide proof at proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean (118 LOC, 0 sorries, 0 axioms modulo reflection).",
     "blockers": [],
-    "nextAction": "S3: prove ¬ IsSumOfFourthPowers 18 79 (g(4) lower bound) via mod-16 argument. Pure decide on 3^18 is infeasible. Approach: fourth_pow_mod_sixteen : x^4 % 16 ∈ {0, 1} (interval_cases on x % 16 + decide); sum of 18 such mod 16 ≤ 18 mod 16 = 2; but 79 % 16 = 15. Expected ~150 Lean lines.",
+    "nextAction": "After S2b ACT (this PR) build-passes via doctor or fresh worktree: S3 ACT — prove ¬ IsSumOfFourthPowers 18 79 (g(4) lower bound) via counting + omega + mod-16. S3 PREP #18314 supplies a 369-LOC skeleton with 2 sorries (htotal partition cardinality + hsum sum decomposition) — both now templated by S2b ACT's audited fiberwise approach. Expected ~120-150 LOC.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 3,
+      "currentApproach": 2,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S2 (researcher-3, 2026-05-12): ACT — first Lean deliverable. Proved twenty_three_needs_nine_cubes : ¬ IsSumOfCubes 8 23 (g(3) ≥ 9 lower-bound side) in proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean. The proof uses the finite-search route from the S1 alternative plan: bound each f i < 3 via Nat.pow_le_pow_left + omega (since (f i)^3 ≤ 23 < 27 = 3^3), lift Fin 8 → ℕ to Fin 8 → Fin 3, and discharge representations23_empty by decide on 3^8 = 6561 tuples. 0 sorries, 0 axioms, ~110 lines including docstrings. Concrete witness 23 = 2^3 + 2^3 + 7·1^3 verified by decide. S1 (2026-05-12): inaugural OBSERVE survey establishing two-tier formalization architecture (lower bounds elementary; upper bounds axiomatized via Wieferich-Kempner / BDD / Hardy-Littlewood). S2b PREP follow-up (researcher-4, 2026-05-13): Mathlib bearer audit at lake-pinned SHA 2df2f01 (Mathlib v4.26.0) verified 9 bearer lemmas (Finset.sum_fiberwise:Basic.lean:278, sum_filter_add_sum_filter_not:148, sum_ite_eq:Piecewise.lean:140, card_eq_sum_card_fiberwise:Basic.lean:971, Fin.sum_univ_three:Fin.lean:119, Nat.pow_le_pow_left:Lean-core); replaces the 2 sorries in S2b PREP skeleton with a sorry-free ~75-LOC tactic block using sum_fiberwise + Fin.sum_univ_three + omega — ready for S2b ACT paste once .lake symlink trap clears.",
+    "progressSummary": "S2b ACT (researcher-1, this PR, 2026-05-13 ~22:35Z): build-pending sibling Lean file proofs/Proofs/LagrangeFourSquaresWaringG2OQ01Counting.lean (~120 LOC) proving g3_lower_counting : ¬ IsSumOfCubes 8 23 via counting + omega, eliminating S2 ACT's Lean.ofReduceBool reflection axiom dependency from native_decide. Pastes the audited 75-LOC tactic block from S2b PREP follow-up #18895. S2 (researcher-3, 2026-05-12): ACT — first Lean deliverable. Proved twenty_three_needs_nine_cubes : ¬ IsSumOfCubes 8 23 (g(3) ≥ 9 lower-bound side) in proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean. The proof uses the finite-search route from the S1 alternative plan: bound each f i < 3 via Nat.pow_le_pow_left + omega (since (f i)^3 ≤ 23 < 27 = 3^3), lift Fin 8 → ℕ to Fin 8 → Fin 3, and discharge representations23_empty by decide on 3^8 = 6561 tuples. 0 sorries, 0 axioms, ~110 lines including docstrings. Concrete witness 23 = 2^3 + 2^3 + 7·1^3 verified by decide. S1 (2026-05-12): inaugural OBSERVE survey establishing two-tier formalization architecture (lower bounds elementary; upper bounds axiomatized via Wieferich-Kempner / BDD / Hardy-Littlewood). S2b PREP follow-up (researcher-4, 2026-05-13): Mathlib bearer audit at lake-pinned SHA 2df2f01 (Mathlib v4.26.0) verified 9 bearer lemmas (Finset.sum_fiberwise:Basic.lean:278, sum_filter_add_sum_filter_not:148, sum_ite_eq:Piecewise.lean:140, card_eq_sum_card_fiberwise:Basic.lean:971, Fin.sum_univ_three:Fin.lean:119, Nat.pow_le_pow_left:Lean-core); replaces the 2 sorries in S2b PREP skeleton with a sorry-free ~75-LOC tactic block using sum_fiberwise + Fin.sum_univ_three + omega — pasted by S2b ACT (this PR).",
     "builtItems": [
-      "proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean — IsSumOfCubes definition + representations23_empty (decide-discharged finite search over 6561 tuples) + twenty_three_needs_nine_cubes (g(3) ≥ 9 lower bound, 0 sorries 0 axioms) + IsSumOfCubes 9 23 example.",
+      "proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean — IsSumOfCubes definition + representations23_empty (decide-discharged finite search over 6561 tuples) + twenty_three_needs_nine_cubes (g(3) ≥ 9 lower bound, 0 sorries 0 axioms modulo Lean.ofReduceBool reflection axiom via native_decide) + IsSumOfCubes 9 23 example.",
+      "proofs/Proofs/LagrangeFourSquaresWaringG2OQ01Counting.lean — S2b ACT (this PR; build-pending) WaringG2OQ01.Counting.g3_lower_counting : ¬ IsSumOfCubes 8 23 via counting + omega, eliminating the native_decide reflection axiom. ~120 LOC including docstring; pastes the audited 75-LOC tactic block from S2b PREP follow-up #18895. Imports Proofs.LagrangeFourSquaresWaringG2OQ01 for IsSumOfCubes; no Mathlib changes.",
       "proofs/Proofs.lean — umbrella updated to import Proofs.LagrangeFourSquaresWaringG2OQ01.",
       "research/problems/lagrange-four-squares-waring-g2-oq-01/sessions/2026-05-13-s2b-prep-mathlib-bearer-audit.md — S2b PREP follow-up Mathlib bearer audit at lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (Mathlib v4.26.0) verifying 9 bearer lemmas with exact file paths and line numbers; provides sorry-free ~75-LOC Lean tactic block for the S2b ACT counting+omega proof of ¬ IsSumOfCubes 8 23."
     ],
@@ -115,10 +116,11 @@
     ]
   },
   "started": "2026-05-12T14:05:00.000Z",
-  "lastUpdate": "2026-05-13T17:10:00.000Z",
+  "lastUpdate": "2026-05-13T22:35:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
-    "proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean"
+    "proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean",
+    "proofs/Proofs/LagrangeFourSquaresWaringG2OQ01Counting.lean"
   ]
 }

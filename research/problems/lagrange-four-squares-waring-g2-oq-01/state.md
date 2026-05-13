@@ -1,14 +1,14 @@
 # Current State
 
-**Phase**: PREP-SATURATED (S1 → S7 PREP designed across `k = 3..7` lower-bound layer + upper-bound axiom inventory + waringG correctness chain; one ACT shipped, six ACTs queued)
-**Since**: 2026-05-13 (S6c PREP audit merged at #18664; S7 PREP drafted but no PR opened — see "Open branches")
-**Iteration**: 12 (S1 OBSERVE, S2 ACT, S2b PREP, S3 PREP, S4 PREP, S5 PREP, S6 PREP, S6b PREP, S6b audit, S6c audit, S2b bearer audit; S7 PREP draft)
+**Phase**: ACT-in-flight + PREP-SATURATED (S2 ACT shipped; S2b ACT build-pending; S1 → S7 PREP designed across `k = 3..7` lower-bound layer + upper-bound axiom inventory + waringG correctness chain; five ACTs still queued after S2b)
+**Since**: 2026-05-13 (S2b ACT build-pending PR opened post-S2b bearer audit #18895 merge; S7 PREP drafted but no PR opened — see "Open branches")
+**Iteration**: 13 (S1 OBSERVE, S2 ACT, S2b PREP, S3 PREP, S4 PREP, S5 PREP, S6 PREP, S6b PREP, S6b audit, S6c audit, S2b bearer audit, S2b ACT; S7 PREP draft)
 
 ## Current Focus
 
 Lower-bound layer `g(k) ≥ N` design coverage is **saturated through k = 7** under the parametric "counting + omega" template established by S2b PREP / S3 PREP / S5 PREP / S6b PREP / S7 PREP draft. Upper-bound layer is **fully specified as an axiom inventory** (S4 PREP). The semantic correctness chain bridging local `IsSumOfPowers` predicates to `waringG k = N` is **scoped** (S6 PREP) and **audited** for typing/axiom errors (S6c PREP).
 
-Six ACT iterations are queued for execution (see "Next Action"). No ACT has been shipped since S2 (2026-05-12), so the slug is in a PREP-saturated holding pattern awaiting Lean-level execution.
+S2b ACT (this PR) ships the audited 75-LOC counting+omega tactic block from S2b bearer audit #18895 as a new sibling file `LagrangeFourSquaresWaringG2OQ01Counting.lean`, eliminating the `Lean.ofReduceBool` reflection axiom on the `g(3) ≥ 9` lower bound. **Build pending** per the `.lake` symlink trap; doctor or fresh-worktree verification closes the status. After S2b ACT lands, five ACT iterations (S3, S4, S5, S6, S6b — plus optional S7 once its PREP lands) remain queued.
 
 **Last shipped Lean deliverable** (S2 ACT, [PR #18176](https://github.com/rjwalters/lean-genius/pull/18176), 2026-05-12, researcher-3):
 - `WaringG2OQ01.twenty_three_needs_nine_cubes : ¬ IsSumOfCubes 8 23` (0 sorries, 0 axioms, `native_decide` over `Fin 8 → Fin 3`)
@@ -47,9 +47,10 @@ The S2 ACT shipped instance uses an alternative `native_decide` over `3^8 = 6561
 | S6b audit | researcher-? | 2026-05-13 | PREP | Audit of S6b PREP `{0,1,2}`-trick boundary arithmetic; proves `q_k < (3/2)^k` strictly for all `k ≥ 1`, hence `n_k < 3^k` universally (447-line memo) | [#18555](https://github.com/rjwalters/lean-genius/pull/18555) | MERGED |
 | S6c audit | researcher-? | 2026-05-13 | PREP | Audit of S6 PREP §3 `waringG_2_correct` draft — 4 typing errors (F1–F4) + 1 axiom-integrity finding (F5: hidden `legendre_three_squares` dependency); proposes axiom-free `bound → lift → decide` alternative at `k = 2` (625-line memo) | [#18664](https://github.com/rjwalters/lean-genius/pull/18664) | MERGED |
 | S7 | researcher-4 | 2026-05-13 | PREP | `g(7)` lower bound design via counting+omega; witness `n = 2175 = 16 · 128 + 127`; (828-line memo) | (orphan branch — see below) | DRAFT |
-| S2b audit | researcher-4 | 2026-05-13 | PREP | Mathlib bearer audit for S2b PREP skeleton at lake-pinned SHA `2df2f01` (Mathlib v4.26.0); 9-row bearer table + sorry-free tactic draft (`Finset.sum_fiberwise` route, ~75 LOC) ready for S2b ACT paste | (this PR) | PENDING |
+| S2b audit | researcher-4 | 2026-05-13 | PREP | Mathlib bearer audit for S2b PREP skeleton at lake-pinned SHA `2df2f01` (Mathlib v4.26.0); 9-row bearer table + sorry-free tactic draft (`Finset.sum_fiberwise` route, ~75 LOC) ready for S2b ACT paste | [#18895](https://github.com/rjwalters/lean-genius/pull/18895) | MERGED |
+| S2b ACT | researcher-1 | 2026-05-13 | ACT | `g3_lower_counting : ¬ IsSumOfCubes 8 23` via counting + omega, sibling of S2 ACT's `native_decide`; eliminates `Lean.ofReduceBool` reflection axiom on the `g(3) ≥ 9` lower bound; pastes the audited 75-LOC tactic block from S2b audit #18895 into new file `LagrangeFourSquaresWaringG2OQ01Counting.lean` (~120 LOC including docstring). | (this PR) | BUILD-PENDING |
 
-**Total PREP/ACT artifacts on origin/main**: 10 PRs merged + 1 PENDING, ~3.6k lines of design documentation, 1 verified Lean file (118 LOC, 0 sorries, 0 axioms).
+**Total PREP/ACT artifacts on origin/main**: 11 PRs merged + 1 BUILD-PENDING ACT (S2b ACT), ~3.6k lines of design documentation, 1 verified Lean file (S2 ACT) + 1 build-pending Lean file (S2b ACT, ~120 LOC, 0 sorries, 0 axioms once verified — no `native_decide`).
 
 ## Open branches
 
@@ -77,16 +78,17 @@ Per the established pattern, all counting+omega ACTs share the same load-bearing
 
 ## Attempt Counts
 
-- Total iterations: 12 (1 ACT shipped + 9 PREPs merged + 1 PREP draft pending PR + 1 PREP follow-up pending PR)
-- ACT iterations shipped: 1 (S2)
-- PREP iterations merged: 9 (S1, S2b, S3, S4, S5, S6, S6b, S6b audit, S6c audit)
+- Total iterations: 13 (2 ACTs + 9 PREPs merged + 1 PREP draft pending PR + 1 ACT build-pending)
+- ACT iterations shipped: 1 (S2) + 1 build-pending (S2b ACT, this PR)
+- PREP iterations merged: 10 (S1, S2b, S3, S4, S5, S6, S6b, S6b audit, S6c audit, S2b bearer audit)
 - PREP iterations drafted (no PR yet): 1 (S7)
-- PREP iterations pending PR (this session): 1 (S2b bearer audit)
-- Approaches: 2 — `native_decide` (S2 ACT only) and counting+omega (all PREPs, future ACTs)
+- ACT iterations pending PR (this session): 1 (S2b ACT — counting+omega sibling, build verification deferred per `.lake` symlink trap)
+- Approaches: 2 — `native_decide` (S2 ACT only) and counting+omega (S2b ACT, all PREPs, future ACTs); S2b ACT eliminates the `Lean.ofReduceBool` reflection axiom on the `g(3) ≥ 9` lower bound
 
 ## Open files
 
-- `proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean` — Lean deliverable for S2 (118 LOC, 2 theorems/lemmas, 0 sorries, 0 axioms). Target for S2b ACT (parametric extension) and S3 ACT (new theorem appended).
+- `proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean` — Lean deliverable for S2 (118 LOC, 2 theorems/lemmas, 0 sorries, 0 axioms via `native_decide` reflection axiom). Target for S3 ACT (new theorem appended).
+- `proofs/Proofs/LagrangeFourSquaresWaringG2OQ01Counting.lean` — Lean deliverable for S2b ACT (this PR; ~120 LOC, 1 theorem `g3_lower_counting`, 0 sorries, 0 axioms once verified, no `native_decide`). Imports `Proofs.LagrangeFourSquaresWaringG2OQ01` for `IsSumOfCubes`. Build pending per `.lake` symlink trap; doctor or fresh-worktree verification will close the build-pending status.
 - `problem.md` — formal Lean signature targets, classification, Mathlib gap analysis, `g(k)` historical table.
 - `knowledge.md` — `g(k)` historical table with citations, mod-arithmetic recipes, bibliographic references.
 - `sessions/2026-05-12-s03-prep-g4-counting-omega.md` — S3 PREP (369 LOC).
