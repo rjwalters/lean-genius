@@ -80,8 +80,8 @@ private lemma neg_one_ne_one_units_of_ge_three {n : ℕ} (hn : n ≥ 3) [NeZero 
     exact absurd (Nat.le_of_dvd (by norm_num) hdvd) (by omega))
   exact hv
 
-/-- **(STRATEGIC SORRY — cyclic direction)** For `n ≥ 3` with
-    `(ZMod n)ˣ` cyclic, the product of units equals `-1`.
+/-- **Cyclic direction.** For `n ≥ 3` with `(ZMod n)ˣ` cyclic, the
+    product of units equals `-1`.
 
     Mathematical content: in a finite cyclic group `G`, the 2-torsion
     subset `{x : G | x^2 = 1}` has cardinality `≤ 2` (Mathlib's
@@ -90,17 +90,35 @@ private lemma neg_one_ne_one_units_of_ge_three {n : ℕ} (hn : n ≥ 3) [NeZero 
     distinct (`neg_one_ne_one_units_of_ge_three`), forcing exactly
     `{1, -1}`. Then Phase A reduces `∏ univ` to `∏ {1, -1} = 1 · (-1) = -1`.
 
-    For `n = p` prime, this admits a 1-line shortcut via
-    `prod_univ_units_id_eq_neg_one` (`Mathlib/NumberTheory/Wilson.lean`,
-    via `IsDomain (ZMod p)`). For composite cyclic `n ∈ {4, p^k≥2, 2p^k}`,
-    the manual `G[2] = {1, -1}` argument via `IsCyclic.card_pow_eq_one_le`
-    is required (~30-40 LOC).
-
-    Deferred to S7 ACT. -/
+    Discharged in S7 ACT (this file) following S7 PREP § 3.2 recipe
+    (PR #18700). The uniform `IsCyclic.card_pow_eq_one_le` route works
+    for prime, prime-power, and `2 * p^k` cyclic moduli — no prime
+    case-split needed. -/
 theorem prod_eq_neg_one_of_isCyclic_aux {n : ℕ} (hn : n ≥ 3) [NeZero n]
-    (_hcyc : IsCyclic (ZMod n)ˣ) :
+    (hcyc : IsCyclic (ZMod n)ˣ) :
     (∏ x : (ZMod n)ˣ, x) = -1 := by
-  sorry
+  haveI : IsCyclic (ZMod n)ˣ := hcyc
+  rw [prod_univ_eq_prod_two_torsion (ZMod n)ˣ]
+  set S : Finset (ZMod n)ˣ := univ.filter (fun x => x ^ 2 = 1) with hS_def
+  have h_card_le : S.card ≤ 2 :=
+    IsCyclic.card_pow_eq_one_le (by norm_num : (0 : ℕ) < 2)
+  have h_neq : (1 : (ZMod n)ˣ) ≠ -1 :=
+    fun h => neg_one_ne_one_units_of_ge_three hn h.symm
+  have h_one_mem : (1 : (ZMod n)ˣ) ∈ S := by
+    simp [hS_def, mem_filter]
+  have h_neg_mem : (-1 : (ZMod n)ˣ) ∈ S := by
+    simp [hS_def, mem_filter, neg_one_sq]
+  have h_pair_sub : ({1, -1} : Finset (ZMod n)ˣ) ⊆ S := by
+    intro x hx
+    rcases Finset.mem_insert.mp hx with rfl | hx
+    · exact h_one_mem
+    · rw [Finset.mem_singleton] at hx; rw [hx]; exact h_neg_mem
+  have h_pair_card : ({1, -1} : Finset (ZMod n)ˣ).card = 2 :=
+    Finset.card_pair h_neq
+  have h_S_eq : S = ({1, -1} : Finset (ZMod n)ˣ) :=
+    (Finset.eq_of_subset_of_card_le h_pair_sub
+      (h_pair_card.symm ▸ h_card_le)).symm
+  rw [h_S_eq, Finset.prod_pair h_neq, one_mul]
 
 /-- **(STRATEGIC SORRY — non-cyclic direction)** For `n ≥ 3` with
     `(ZMod n)ˣ` non-cyclic, the product of units equals `1`.
