@@ -24,6 +24,30 @@
     ]
   },
   {
+    "id": "ann-sqrt235-imports-and-parent-reuse",
+    "proofId": "sqrt2-plus-sqrt3-plus-sqrt5-irrational",
+    "range": {
+      "startLine": 44,
+      "endLine": 51
+    },
+    "type": "context",
+    "title": "Imports: Parent Gallery Proof as Black-Box Dependency",
+    "content": "The four-line import block exposes a deliberate gallery-architecture choice. Three imports are standard Mathlib (`Mathlib.Data.Real.Irrational` for the `Irrational` predicate and `irrational_sqrt_natCast_iff`; `Mathlib.Data.Real.Sqrt` for `Real.sqrt`, `sqrt_nonneg`, `sqrt_pos`, `Real.sq_sqrt`, `Real.sqrt_mul`; `Mathlib.Tactic` for `linarith`, `ring`, `norm_num`, `push_cast`, `native_decide`). The fourth, `import Proofs.Sqrt2PlusSqrt3Irrational`, pulls in the parent gallery proof and exposes its public lemma `sqrt2_plus_sqrt3_sq : (sqrt 2 + sqrt 3) ^ 2 = 5 + 2 * sqrt 6` for use in `alpha_quartic_identity` Step 1. The `open Real` then short-circuits `Real.sqrt` to just `sqrt` for readability. This import-and-reuse pattern is the gallery's preferred mechanism for compositional theorem chaining: the parent identity is the natural unit of reuse (not the underlying squaring computation), and re-importing it keeps both gallery entries decoupled from each other's internal proof tactics.",
+    "mathContext": "Compositional reuse across formal libraries follows the same mathematical principle as composing lemmas in pen-and-paper proofs: the cleanest dependency is on the *statement* of a previously proved fact, not on the *proof technique*. Here the parent's $(\\sqrt{2}+\\sqrt{3})^2 = 5 + 2\\sqrt{6}$ is a stable interface — even if the parent's proof is later refactored (e.g., via `nlinarith` cleanup or a different normalisation), this child proof remains valid because it depends only on the exported equality.",
+    "significance": "context",
+    "relatedConcepts": [
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Data.Real.Sqrt",
+      "Proofs.Sqrt2PlusSqrt3Irrational.sqrt2_plus_sqrt3_sq",
+      "open Real (namespace shortening)"
+    ],
+    "prerequisites": [
+      "Lean 4 module imports",
+      "Mathlib's Real.sqrt and Irrational APIs",
+      "namespacing and the `open` declaration"
+    ]
+  },
+  {
     "id": "ann-sqrt235-irrational-sqrt-thirty",
     "proofId": "sqrt2-plus-sqrt3-plus-sqrt5-irrational",
     "range": {
