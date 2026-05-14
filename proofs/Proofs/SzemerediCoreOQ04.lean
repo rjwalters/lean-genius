@@ -862,4 +862,193 @@ theorem witness_regular_symmetric_implies_epsilon_regular
     exact witness_regular_symmetric_implies_epsilon_regular_small_eps
       G heps hlarge A B hreg
 
+/-! ## Part 8: B-side per-vertex bias + biased-vertex Finsets
+    (S7 scaffold for symmetric second-moment route)
+
+Mirroring Part 6 (A-side `vertexBias` over singleton `{a}`), the
+symmetric second-moment proof of
+`witness_regular_symmetric_implies_epsilon_regular_small_eps` needs a
+dual B-side per-vertex bias `|d(A, {b}) - d(A, B)|` for `b ∈ B`. The
+Markov / Chebyshev step then bounds the count of "biased" vertices on
+BOTH sides using `IsWitnessRegular_symmetric`; subsetting `A' ⊆ A` and
+`B' ⊆ B` predominantly to unbiased vertices closes the slack-4
+implication via a final triangle inequality.
+
+The `A_bad` / `A_good` Finsets (and B-side duals) packaged here are the
+exact objects the S6c PREP §5 / §6.2 averaging argument operates on:
+* `A_bad` collects A-vertices whose density bias **exceeds** `eps`;
+* `A_good` collects A-vertices whose bias is `≤ eps`;
+* their cardinalities sum to `|A|` (`A_bad_add_A_good_card_eq`).
+
+All declarations here are sorry-free. The substantive Markov bound
+`|A_bad| ≤ eps · |A|` is **NOT** proved here — it is the deferred ADLRY
+averaging content in `_small_eps`. Part 8 packages only the
+combinatorial primitives needed to **state** that bound and use it
+once obtained. -/
+
+/-- **B-side per-vertex density bias**: the absolute deviation of the
+edge density between `A` and the singleton `{b}` from the bulk edge
+density `d(A, B)`. Dual to `vertexBias`. Always in `[0, 1]` since
+`edgeDensity ∈ [0, 1]`. -/
+noncomputable def vertexBias_B (G : SimpleGraph V) [DecidableRel G.Adj]
+    (b : V) (A B : Finset V) : ℚ :=
+  |edgeDensity G A {b} - edgeDensity G A B|
+
+/-- B-side per-vertex bias is non-negative (absolute value). -/
+lemma vertexBias_B_nonneg (G : SimpleGraph V) [DecidableRel G.Adj]
+    (b : V) (A B : Finset V) :
+    0 ≤ vertexBias_B G b A B :=
+  abs_nonneg _
+
+/-- B-side per-vertex bias is at most `1`, since both densities lie in
+`[0, 1]`. Immediate from `abs_edgeDensity_sub_le_one`. -/
+lemma vertexBias_B_le_one (G : SimpleGraph V) [DecidableRel G.Adj]
+    (b : V) (A B : Finset V) :
+    vertexBias_B G b A B ≤ 1 :=
+  abs_edgeDensity_sub_le_one G A B {b}
+
+/-- **Trivial regime for `vertexBias_B`**: if `1 ≤ eps`, every B-vertex
+is "`eps`-unbiased". Dual of `vertexBias_le_of_one_le`. -/
+lemma vertexBias_B_le_of_one_le (G : SimpleGraph V) [DecidableRel G.Adj]
+    (b : V) (A B : Finset V) {eps : ℚ} (heps : 1 ≤ eps) :
+    vertexBias_B G b A B ≤ eps :=
+  (vertexBias_B_le_one G b A B).trans heps
+
+/-- **A-bad vertex set**: the subset of `A`-vertices whose per-vertex
+bias **exceeds** `eps`. The Markov step in the symmetric second-moment
+proof bounds `|A_bad| ≤ eps · |A|` using `IsWitnessRegular` (the
+B-side grid) — see S6c PREP §5. Packaged here as a Finset primitive. -/
+noncomputable def A_bad (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) : Finset V :=
+  A.filter (fun a => eps < vertexBias G a A B)
+
+/-- **A-good vertex set**: complement of `A_bad` inside `A` — vertices
+whose bias is `≤ eps`. Used directly in the final triangle-inequality
+step: for `A' ⊆ A` with `|A'| ≥ 4·eps·|A|`, the unbiased bulk
+`A' ∩ A_good` dominates by `≥ 3/4` once the Markov bound is applied. -/
+noncomputable def A_good (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) : Finset V :=
+  A.filter (fun a => ¬ (eps < vertexBias G a A B))
+
+/-- **B-bad vertex set**: dual to `A_bad`, indexed by B-vertices. -/
+noncomputable def B_bad (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) : Finset V :=
+  B.filter (fun b => eps < vertexBias_B G b A B)
+
+/-- **B-good vertex set**: dual to `A_good`. -/
+noncomputable def B_good (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) : Finset V :=
+  B.filter (fun b => ¬ (eps < vertexBias_B G b A B))
+
+/-- `A_bad ⊆ A`. -/
+lemma A_bad_subset (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) :
+    A_bad G eps A B ⊆ A :=
+  Finset.filter_subset _ _
+
+/-- `A_good ⊆ A`. -/
+lemma A_good_subset (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) :
+    A_good G eps A B ⊆ A :=
+  Finset.filter_subset _ _
+
+/-- `B_bad ⊆ B`. -/
+lemma B_bad_subset (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) :
+    B_bad G eps A B ⊆ B :=
+  Finset.filter_subset _ _
+
+/-- `B_good ⊆ B`. -/
+lemma B_good_subset (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) :
+    B_good G eps A B ⊆ B :=
+  Finset.filter_subset _ _
+
+/-- **A-bad membership criterion**. -/
+lemma mem_A_bad (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) (a : V) :
+    a ∈ A_bad G eps A B ↔ a ∈ A ∧ eps < vertexBias G a A B := by
+  unfold A_bad
+  exact Finset.mem_filter
+
+/-- **A-good membership criterion** (in the natural `≤` form). -/
+lemma mem_A_good (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) (a : V) :
+    a ∈ A_good G eps A B ↔ a ∈ A ∧ vertexBias G a A B ≤ eps := by
+  unfold A_good
+  rw [Finset.mem_filter]
+  refine ⟨fun ⟨ha, h⟩ => ⟨ha, not_lt.mp h⟩, fun ⟨ha, h⟩ => ⟨ha, not_lt.mpr h⟩⟩
+
+/-- **B-bad membership criterion**. -/
+lemma mem_B_bad (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) (b : V) :
+    b ∈ B_bad G eps A B ↔ b ∈ B ∧ eps < vertexBias_B G b A B := by
+  unfold B_bad
+  exact Finset.mem_filter
+
+/-- **B-good membership criterion** (in the natural `≤` form). -/
+lemma mem_B_good (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) (b : V) :
+    b ∈ B_good G eps A B ↔ b ∈ B ∧ vertexBias_B G b A B ≤ eps := by
+  unfold B_good
+  rw [Finset.mem_filter]
+  refine ⟨fun ⟨hb, h⟩ => ⟨hb, not_lt.mp h⟩, fun ⟨hb, h⟩ => ⟨hb, not_lt.mpr h⟩⟩
+
+/-- **A-bad + A-good partition `A`**: cardinalities sum to `|A|`.
+Directly from `Finset.filter_card_add_filter_neg_card_eq_card`. -/
+lemma A_bad_add_A_good_card_eq (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) :
+    (A_bad G eps A B).card + (A_good G eps A B).card = A.card := by
+  unfold A_bad A_good
+  exact Finset.filter_card_add_filter_neg_card_eq_card _
+
+/-- **B-bad + B-good partition `B`**: dual to `A_bad_add_A_good_card_eq`. -/
+lemma B_bad_add_B_good_card_eq (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) :
+    (B_bad G eps A B).card + (B_good G eps A B).card = B.card := by
+  unfold B_bad B_good
+  exact Finset.filter_card_add_filter_neg_card_eq_card _
+
+/-- **Trivial regime: A-bad collapse**. If `1 ≤ eps`, no vertex can be
+`eps`-biased (every `vertexBias ≤ 1 ≤ eps`), so `A_bad = ∅`. -/
+lemma A_bad_eq_empty_of_one_le_eps (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 1 ≤ eps) (A B : Finset V) :
+    A_bad G eps A B = ∅ := by
+  unfold A_bad
+  apply Finset.filter_eq_empty_iff.mpr
+  intro a _ hbias
+  have hle : vertexBias G a A B ≤ eps := vertexBias_le_of_one_le G a A B heps
+  linarith
+
+/-- **Trivial regime: B-bad collapse**. Dual to `A_bad_eq_empty_of_one_le_eps`. -/
+lemma B_bad_eq_empty_of_one_le_eps (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 1 ≤ eps) (A B : Finset V) :
+    B_bad G eps A B = ∅ := by
+  unfold B_bad
+  apply Finset.filter_eq_empty_iff.mpr
+  intro b _ hbias
+  have hle : vertexBias_B G b A B ≤ eps := vertexBias_B_le_of_one_le G b A B heps
+  linarith
+
+/-- **Trivial regime: A-good is all of `A`** when `1 ≤ eps`. Companion
+to `A_bad_eq_empty_of_one_le_eps`. -/
+lemma A_good_eq_self_of_one_le_eps (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 1 ≤ eps) (A B : Finset V) :
+    A_good G eps A B = A := by
+  unfold A_good
+  apply Finset.filter_eq_self.mpr
+  intro a _
+  have hle : vertexBias G a A B ≤ eps := vertexBias_le_of_one_le G a A B heps
+  linarith
+
+/-- **Trivial regime: B-good is all of `B`** when `1 ≤ eps`. -/
+lemma B_good_eq_self_of_one_le_eps (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 1 ≤ eps) (A B : Finset V) :
+    B_good G eps A B = B := by
+  unfold B_good
+  apply Finset.filter_eq_self.mpr
+  intro b _
+  have hle : vertexBias_B G b A B ≤ eps := vertexBias_B_le_of_one_le G b A B heps
+  linarith
+
 end Szemeredi.OQ04
