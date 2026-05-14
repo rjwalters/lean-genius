@@ -1,9 +1,11 @@
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
+import Mathlib.LinearAlgebra.Matrix.IsDiag
 import Mathlib.LinearAlgebra.Semisimple
+import Mathlib.LinearAlgebra.Eigenspace.Semisimple
+import Mathlib.LinearAlgebra.Eigenspace.Triangularizable
 import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
 import Mathlib.FieldTheory.IsAlgClosed.Basic
-import Mathlib.Algebra.Polynomial.Squarefree
 import Mathlib.Tactic
 import Proofs.MinpolyCharpoly
 
@@ -122,13 +124,46 @@ theorem diagonalizable_iff_squarefree_minpoly
 /-- **Sanity lemma (unconditional).** A diagonal matrix is diagonalizable —
 take `P = 1` as the similarity transform. -/
 theorem _root_.Matrix.IsDiagonalizable.of_isDiag {M : Matrix n n K}
-    (hM : IsDiag M) : M.IsDiagonalizable := by
+    (hM : Matrix.IsDiag M) : M.IsDiagonalizable := by
   refine ⟨1, isUnit_one, ?_⟩
-  simpa [Matrix.inv_one, Matrix.one_mul, Matrix.mul_one] using hM
+  simpa using hM
 
 /-- **Sanity lemma (unconditional).** The zero matrix is diagonalizable. -/
 theorem _root_.Matrix.IsDiagonalizable.zero :
     (0 : Matrix n n K).IsDiagonalizable :=
   Matrix.IsDiagonalizable.of_isDiag Matrix.isDiag_zero
+
+-- ============================================================
+-- S7 ACT helpers: endomorphism-level bridges (Mathlib v4.26.0)
+-- ============================================================
+
+/-- **Bridge B forward** (per S4 PREP #18626 corrected 3-lemma chain).
+Over an algebraically closed field in finite dimensions, semisimplicity
+of an endomorphism implies that its eigenspaces span the whole space.
+
+The chain is: `IsSemisimple → IsFinitelySemisimple → maxGenEigenspace μ =
+eigenspace μ (per μ) → ⨆ eigenspace = ⨆ maxGenEigenspace = ⊤`. -/
+lemma _root_.Module.End.iSup_eigenspace_eq_top_of_isSemisimple
+    {V : Type*} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
+    [IsAlgClosed K] {f : Module.End K V} (hss : f.IsSemisimple) :
+    ⨆ μ : K, f.eigenspace μ = ⊤ := by
+  have hfin : f.IsFinitelySemisimple := hss.isFinitelySemisimple
+  have heq : ∀ μ : K, f.eigenspace μ = f.maxGenEigenspace μ :=
+    fun μ => (hfin.maxGenEigenspace_eq_eigenspace μ).symm
+  calc ⨆ μ : K, f.eigenspace μ
+      = ⨆ μ, f.maxGenEigenspace μ := iSup_congr heq
+    _ = ⊤ := Module.End.iSup_maxGenEigenspace_eq_top f
+
+/-- **Bridge C** (endomorphism-level squarefree iff semisimple). Over a
+finite-dimensional space, an endomorphism is semisimple iff its minimal
+polynomial is squarefree. Forward: `Module.End.IsSemisimple.minpoly_squarefree`.
+Reverse: `Module.End.isSemisimple_of_squarefree_aeval_eq_zero` applied to
+`minpoly.aeval`. -/
+theorem _root_.Module.End.isSemisimple_iff_squarefree_minpoly
+    {V : Type*} [AddCommGroup V] [Module K V] [FiniteDimensional K V]
+    {f : Module.End K V} :
+    f.IsSemisimple ↔ Squarefree (minpoly K f) :=
+  ⟨Module.End.IsSemisimple.minpoly_squarefree,
+   fun h => Module.End.isSemisimple_of_squarefree_aeval_eq_zero h (minpoly.aeval K f)⟩
 
 end Proofs.MinpolyCharpolyOQ02

@@ -1,7 +1,7 @@
 {
   "slug": "minpoly-charpoly-oq-02",
   "title": "Diagonalizable Matrices via Squarefree Minimal Polynomial",
-  "phase": "PREP",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "B",
   "path": "full",
@@ -31,16 +31,16 @@
     "goal": "Statement and proof of `diagonalizable_iff_squarefree_minpoly`: over an algebraically closed field of characteristic zero (and, in OQ-02-OQ-03, over any field with the explicit `splits` hypothesis), `M.IsDiagonalizable ↔ Squarefree (minpoly K M)`."
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-05-13T00:30:00Z",
-    "iteration": 7,
-    "focus": "S6 STATE-SYNC (researcher-9, 2026-05-14, this PR) — doc-only refresh of the PREP backlog after 6 PREP-only PRs merged 2026-05-12 → 2026-05-13 (S2 #18407, S2 PREP-3 #18503, S3 #18481, S4 #18626, S5 #18680, S5b #18715). Lean (`MinpolyCharpolyOQ02.lean`) unchanged at 134 LOC / 1 sorry / 0 axioms since S1 PR #18276. Discharge route fully Mathlib-pinned at v4.26.0 (rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`): six bridges (A fwd/rev, B fwd/rev, C, D) totalling ~62 LOC per S5b PREP §12. Bearer-audit chain caught 3 hallucinated names: `Module.End.IsSemisimple.iSup_eigenspace_eq_top` (S3 → corrected by S4), `Polynomial.squarefree_prod_X_sub_C` (S5 → corrected by S5b), `f.eigenvalues.toFinset` (S5 → corrected by S5b). 12 v4.26.0 bearers verified for Bridge B reverse alone.",
+    "phase": "ACT",
+    "since": "2026-05-14T16:30:00Z",
+    "iteration": 8,
+    "focus": "S7 ACT (researcher-9, 2026-05-14, this PR) — first non-doc-only iteration since S1 PR #18276 (2026-05-12). Pre-claim Docker baseline build surfaced 5 v4.26.0 elaboration errors silently masked by 6 doc-only PREP PRs + 1 STATE-SYNC: (1) broken `Mathlib.Algebra.Polynomial.Squarefree` import (file removed at v4.26.0); (2) `Matrix.IsDiag` not in scope without explicit `Mathlib.LinearAlgebra.Matrix.IsDiag` import; (3) `Matrix.inv_one` reference unknown; (4) `Matrix.isDiag_zero` unknown without the explicit IsDiag import; (5) `congr 1` + `ext μ` calc form on Bridge B fwd produced unexpected goal — replaced with `iSup_congr` cleaner form. All 5 errors resolved. Two endomorphism-level helper lemmas added: `Module.End.iSup_eigenspace_eq_top_of_isSemisimple` (Bridge B fwd, 7 LOC, per S4 PREP #18626 3-lemma chain) and `Module.End.isSemisimple_iff_squarefree_minpoly` (Bridge C, 3 LOC, direct iff via Mathlib `IsSemisimple.minpoly_squarefree` + `isSemisimple_of_squarefree_aeval_eq_zero ∘ minpoly.aeval`). Headline `sorry` at line 120 unchanged; remaining gaps are Bridge A both directions (~20 LOC per S2 PREP-3 #18503) and Bridge B reverse iSup-induction (~33 LOC per S5b PREP #18715 §5).",
     "blockers": [],
-    "nextAction": "S6 ACT (any researcher) — assemble the six bridges per S5 PREP §6 + S5b PREP §5/§12 into a single edit at `proofs/Proofs/MinpolyCharpolyOQ02.lean:120`. Order: (a) `Matrix.IsDiagonalizable.iff_eigenbasis` (Bridge A both directions, ~20 LOC), (b) `iSup_eigenspace_eq_top_iff_isSemisimple_alg_closed` (Bridge B both directions, ~40 LOC; reverse is the 33-LOC body in S5b PREP §5), (c) compose with `isSemisimple_iff_squarefree_minpoly` (Bridge C, in-tree CayleyHamiltonMinpolyOQ01:206-211) + `Matrix.minpoly_toLin'` (Bridge D, Mathlib) for the headline iff. Build via `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ02`. Update JSON `leanFile.lineCount`/`theoremCount` post-ACT. Expected deliverable: ~200 LOC total, 0 sorries, 0 axioms.",
+    "nextAction": "S8 ACT — close the headline `sorry` by composing the four remaining pieces: (a) `Matrix.IsDiagonalizable.iff_eigenbasis` (Bridge A both directions, ~20 LOC per S2 PREP-3 #18503 — needs `Matrix.linearIndependent_cols_of_isUnit` + `basisOfPiSpaceOfLinearIndependent` at v4.26.0); (b) `iSup_eigenspace_eq_top` → `(toLin' M).IsSemisimple` (Bridge B reverse, ~33 LOC per S5b PREP #18715 §5 iSup_induction body with 5 specific v4.26.0 risks); (c) bind to this PR's Bridge B fwd + Bridge C helpers; (d) compose with `Matrix.minpoly_toLin'` (Bridge D, Mathlib). Build via `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ02`. Expected deliverable: ~200 LOC total, 0 sorries, 0 axioms.",
     "attemptCounts": {
-      "total": 7,
-      "currentApproach": 7,
-      "approachesTried": 7
+      "total": 8,
+      "currentApproach": 8,
+      "approachesTried": 8
     }
   },
   "knowledge": {
@@ -111,7 +111,7 @@
     ]
   },
   "started": "2026-05-12T20:35:00Z",
-  "lastUpdate": "2026-05-14T02:32:22Z",
+  "lastUpdate": "2026-05-14T16:30:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -129,8 +129,8 @@
     {
       "path": "Proofs/MinpolyCharpolyOQ02.lean",
       "filename": "MinpolyCharpolyOQ02.lean",
-      "lineCount": 134,
-      "theoremCount": 3,
+      "lineCount": 169,
+      "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 1,
