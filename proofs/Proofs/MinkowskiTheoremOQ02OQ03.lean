@@ -76,9 +76,14 @@ merged) and S6 PREP
 import Mathlib.Analysis.Convex.Basic
 import Mathlib.Data.Real.Basic
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
+import Mathlib.LinearAlgebra.Matrix.Block
+import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
+import Mathlib.Algebra.BigOperators.Fin
 import Mathlib.Tactic
 
 namespace MinkowskiTheoremOQ02OQ03
+
+open OrderDual
 
 -- ============================================================
 -- PART 1: The n-dim Dirichlet Parallelepiped (Cassels 1957)
@@ -185,5 +190,63 @@ theorem dirichletSetN_convex (n : ℕ) (α : Fin n → ℝ) (Q : ℕ) :
   rw [heq]
   refine ((convex_Ioo _ _).linear_preimage _).inter ?_
   exact convex_iInter (fun i => (convex_Ioo _ _).linear_preimage _)
+
+-- ============================================================
+-- PART 5: Shear matrix (S5-a ACT — this revision)
+-- ============================================================
+
+/-- The n-dim shear matrix used to compute `volume (dirichletSetN n α Q)`.
+
+For `α : Fin n → ℝ`, `shearM α : Matrix (Fin (n+1)) (Fin (n+1)) ℝ`
+is the lower-triangular matrix whose nonzero entries are
+
+* `(shearM α) 0 0 = 1`,
+* `(shearM α) k.succ 0 = α k` for `k : Fin n` (column 0 below the diagonal),
+* `(shearM α) i.succ i.succ = -1` for `i : Fin n` (diagonal at positions > 0).
+
+This generalises the 2×2 shear `!![1, 0; α, -1]` used by the parent
+OQ-01 (`Proofs/MinkowskiTheoremOQ02OQ01.lean:101`) to `Fin (n+1)`.
+
+Following the volume route: the linear map `(shearM α).toLin'` carries
+`dirichletSetN n α Q` bijectively onto the open box
+`(-(Qⁿ+1), Qⁿ+1) × (-1/Q, 1/Q)ⁿ` and has `|det| = 1`, so the volumes
+agree. The det = (-1)ⁿ identity proved here is the first of three
+ingredients for `dirichletSetN_volume` (S5 ACT). -/
+def shearM (n : ℕ) (α : Fin n → ℝ) : Matrix (Fin (n + 1)) (Fin (n + 1)) ℝ :=
+  Matrix.of fun i j =>
+    if j = 0 then Fin.cases (1 : ℝ) α i
+    else if i = j then (-1 : ℝ) else 0
+
+/-- **Lower triangularity.** Every entry of `shearM α` strictly above
+the diagonal is zero. Stated as `BlockTriangular toDual` so the Mathlib
+bearer `Matrix.det_of_lowerTriangular` fires directly. -/
+theorem shearM_lowerTriangular (n : ℕ) (α : Fin n → ℝ) :
+    (shearM n α).BlockTriangular (toDual : Fin (n + 1) → (Fin (n + 1))ᵒᵈ) := by
+  intro i j hij
+  rw [toDual_lt_toDual] at hij
+  simp only [shearM, Matrix.of_apply]
+  by_cases hj0 : j = 0
+  · exact absurd hij (hj0 ▸ Fin.not_lt_zero i)
+  · by_cases hij_eq : i = j
+    · exact absurd hij (hij_eq ▸ lt_irrefl _)
+    · simp [hj0, hij_eq]
+
+/-- **Determinant of the shear matrix.** `(shearM α).det = (-1)^n`.
+
+Proof: `det_of_lowerTriangular` (via `shearM_lowerTriangular`) collapses
+the determinant to `∏ i : Fin (n+1), (shearM α) i i`. The diagonal
+splits via `Fin.prod_univ_succ` into `(shearM α) 0 0 = 1` times
+`∏ k : Fin n, (shearM α) k.succ k.succ = ∏ k : Fin n, (-1) = (-1)^n`. -/
+theorem shearM_det (n : ℕ) (α : Fin n → ℝ) :
+    (shearM n α).det = (-1 : ℝ) ^ n := by
+  rw [Matrix.det_of_lowerTriangular (shearM n α) (shearM_lowerTriangular n α)]
+  rw [Fin.prod_univ_succ]
+  have h00 : (shearM n α) 0 0 = 1 := by
+    simp [shearM, Matrix.of_apply]
+  have hkk : ∀ k : Fin n, (shearM n α) k.succ k.succ = -1 := fun k => by
+    simp [shearM, Matrix.of_apply, Fin.succ_ne_zero]
+  rw [h00, one_mul]
+  simp_rw [hkk]
+  rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
 end MinkowskiTheoremOQ02OQ03
