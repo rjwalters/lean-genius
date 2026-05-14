@@ -162,6 +162,119 @@ lemma resampleAt_apply_outside (S : Finset (Fin P.numVars)) (v : P.State)
     simp [dif_neg hj]
   rw [h_const, PMF.map_const]
 
+/-- **Marginal of `PMF.uniformOfFintype` on a dependent product** — the
+    marginal of the uniform distribution on `∀ k, β k` at coordinate `i`
+    is the uniform distribution on `β i`.
+
+    This is the key reusable lemma for the marginal/independence facts on
+    `resampleAt`. The proof unfolds the uniform PMF, applies a bijection
+    via `Equiv.piSplitAt` to compute the fiber cardinality, and finishes
+    with an `ℝ≥0∞` cancellation built on
+    `Fintype.prod_eq_mul_prod_subtype_ne`. See S5c PREP (PR #18930)
+    for the bearer audit at lake-pinned Mathlib v4.26.0. -/
+private lemma marginal_uniformOfFintype_pi
+    {α : Type*} [Fintype α] [DecidableEq α]
+    {β : α → Type*} [∀ a, Fintype (β a)] [∀ a, Nonempty (β a)] (i : α) :
+    (PMF.uniformOfFintype (∀ k, β k)).map (fun f => f i) =
+      PMF.uniformOfFintype (β i) := by
+  classical
+  ext b
+  rw [PMF.map_apply, PMF.uniformOfFintype_apply, tsum_fintype]
+  simp_rw [PMF.uniformOfFintype_apply]
+  rw [← Finset.sum_filter, Finset.sum_const, nsmul_eq_mul]
+  have h_fiber :
+      (Finset.univ.filter (fun f : (∀ k, β k) => b = f i)).card =
+        Fintype.card (∀ k : {k // k ≠ i}, β k.val) := by
+    rw [← Fintype.card_subtype (fun f : (∀ k, β k) => b = f i)]
+    apply Fintype.card_congr
+    refine
+      { toFun := fun f => (Equiv.piSplitAt i β f.val).2
+        invFun := fun g => ⟨(Equiv.piSplitAt i β).symm ⟨b, g⟩, ?_⟩
+        left_inv := ?_
+        right_inv := ?_ }
+    · -- subtype proof: b = ((piSplitAt i β).symm ⟨b, g⟩) i
+      simp [Equiv.piSplitAt]
+    · -- left_inv: (piSplitAt.symm ⟨b, (piSplitAt f).2⟩, _) = ⟨f, hf⟩
+      rintro ⟨f, hf⟩
+      apply Subtype.ext
+      show (Equiv.piSplitAt i β).symm ⟨b, (Equiv.piSplitAt i β f).2⟩ = f
+      have hfi : (Equiv.piSplitAt i β f).1 = f i := rfl
+      rw [hf, ← hfi, Prod.mk.eta]
+      exact (Equiv.piSplitAt i β).left_inv f
+    · -- right_inv: (piSplitAt (piSplitAt.symm ⟨b, g⟩)).2 = g
+      intro g
+      have h := (Equiv.piSplitAt i β).right_inv ⟨b, g⟩
+      exact congrArg Prod.snd h
+  rw [h_fiber]
+  push_cast [Fintype.card_pi]
+  rw [Fintype.prod_eq_mul_prod_subtype_ne
+      (f := fun k => (Fintype.card (β k) : ℝ≥0∞)) i]
+  have h_pi_ne_zero :
+      (∏ k : {k // k ≠ i}, (Fintype.card (β k.1) : ℝ≥0∞)) ≠ 0 := by
+    apply Finset.prod_ne_zero_iff.mpr
+    intro k _
+    exact_mod_cast (Fintype.card_pos (α := β k.1)).ne'
+  have h_pi_ne_top :
+      (∏ k : {k // k ≠ i}, (Fintype.card (β k.1) : ℝ≥0∞)) ≠ ⊤ :=
+    WithTop.prod_ne_top (fun _ _ => ENNReal.natCast_ne_top _)
+  have h_card_i_ne_zero : (Fintype.card (β i) : ℝ≥0∞) ≠ 0 := by
+    exact_mod_cast (Fintype.card_pos (α := β i)).ne'
+  have h_card_i_ne_top : (Fintype.card (β i) : ℝ≥0∞) ≠ ⊤ :=
+    ENNReal.natCast_ne_top _
+  rw [ENNReal.mul_inv (Or.inl h_card_i_ne_zero) (Or.inl h_card_i_ne_top),
+      mul_left_comm,
+      ENNReal.mul_inv_cancel h_pi_ne_zero h_pi_ne_top, mul_one]
+
+/-- **Marginal inside `S`** — if `j ∈ S`, then the `j`-th coordinate
+    marginal of `resampleAt S v` is the uniform distribution on
+    `P.alphabet j`. After unfolding the resample's `PMF.map` and reducing
+    the if-then-else via `dif_pos hj`, the goal collapses to the helper
+    `marginal_uniformOfFintype_pi` instantiated at index `⟨j, hj⟩ : ↥S`. -/
+lemma resampleAt_apply_inside (S : Finset (Fin P.numVars)) (v : P.State)
+    (j : Fin P.numVars) (hj : j ∈ S) :
+    (P.resampleAt S v).map (fun w => w j) =
+      PMF.uniformOfFintype (P.alphabet j) := by
+  classical
+  unfold resampleAt
+  rw [PMF.map_comp]
+  have h_proj :
+      (fun a : ∀ k : S, P.alphabet k.val =>
+        (fun (b : Fin P.numVars) =>
+          if h : b ∈ S then a ⟨b, h⟩ else v b) j)
+      = (fun a => a ⟨j, hj⟩) := by
+    funext a
+    simp [dif_pos hj]
+  rw [h_proj]
+  exact marginal_uniformOfFintype_pi
+    (β := fun k : (S : Finset (Fin P.numVars)) => P.alphabet k.val) ⟨j, hj⟩
+
+/-- **Disjoint-coordinate independence** — if a finset `T ⊆ Fin numVars`
+    is disjoint from `S`, then the joint marginal of `resampleAt S v` on
+    `T` is the Dirac mass at the restriction of `v` to `T`. Same
+    structural pattern as `resampleAt_apply_outside`, lifted from a
+    single coordinate to a `Finset T`: every `k : ↥T` has `k.val ∉ S`
+    (by `Finset.disjoint_left.mp hT`), so the glue function reduces to
+    the constant `v` on all of `T`. -/
+lemma resampleAt_indep (S : Finset (Fin P.numVars)) (v : P.State)
+    (T : Finset (Fin P.numVars)) (hT : Disjoint T S) :
+    (P.resampleAt S v).map (fun w => (fun k : T => w k.val)) =
+      PMF.pure (fun k : T => v k.val) := by
+  classical
+  unfold resampleAt
+  rw [PMF.map_comp]
+  have h_const :
+      (fun a : ∀ k : S, P.alphabet k.val =>
+        (fun (k : T) =>
+          (fun (b : Fin P.numVars) =>
+            if h : b ∈ S then a ⟨b, h⟩ else v b) k.val))
+      = Function.const _ (fun k : T => v k.val) := by
+    funext a
+    funext k
+    have hk : k.val ∉ S := fun hkS =>
+      (Finset.disjoint_left.mp hT) k.property hkS
+    simp [dif_neg hk]
+  rw [h_const, PMF.map_const]
+
 /-- One step of the Moser–Tardos algorithm: if no bad event is currently
     violated, return the current state with probability 1; otherwise pick
     the least-index bad event `i` and resample the variables in `vbl i`

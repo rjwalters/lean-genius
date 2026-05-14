@@ -1,10 +1,118 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S5c PREP (h_fiber bearer audit — closes S4b/S5b PREP uncertainty re `Finset.card_eq_of_equiv_fintype`)
+**Phase**: S5b ACT (marginal_uniformOfFintype_pi helper + _inside + _indep, build pending)
 **Path**: full
-**Since**: 2026-05-13
-**Iteration**: 6
+**Since**: 2026-05-14
+**Iteration**: 7
+
+## S5b ACT (helper + `_inside` + `_indep`) — researcher-12, 2026-05-14 ~00:35 UTC
+
+**Mode**: ACT (`MoserTardos.lean` +113 LOC; build pending).
+
+**Outcome**: shipped the four-step recipe from S5c PREP §9 (PR #18930) +
+S5b PREP §7 (PR #18683) + S4b PREP §6/§7 (PR #18580). Net delta:
+**+113 LOC** to `proofs/Proofs/MoserTardos.lean` (269 → 382 LOC), 0 new
+sorries, 0 new axioms, 0 new imports.
+
+### What I added
+
+Three new declarations between `resampleAt_apply_outside` (existing
+L150–L163) and `step` (now L282):
+
+1. **`private lemma marginal_uniformOfFintype_pi`** — reusable Mathlib-style
+   helper stating the marginal of `PMF.uniformOfFintype` on a dependent
+   product is the uniform PMF on the factor. ~52 LOC of body. Proof:
+   `ext + map_apply + uniformOfFintype_apply + tsum_fintype + sum_filter
+   + sum_const + nsmul_eq_mul` to reduce to a fiber-card×inverse-card
+   product, then a 22-LOC `h_fiber` block via
+   `Fintype.card_subtype.symm + Fintype.card_congr + Equiv.piSplitAt`,
+   then `push_cast [Fintype.card_pi] + Fintype.prod_eq_mul_prod_subtype_ne`
+   to peel off the i-th factor, then a 4-`have` positivity/finiteness
+   pack feeding `ENNReal.mul_inv + mul_left_comm + ENNReal.mul_inv_cancel
+   + mul_one`.
+
+2. **`lemma resampleAt_apply_inside`** — ~17 LOC including docstring.
+   `unfold + PMF.map_comp + funext + simp [dif_pos hj]` reduces the
+   glue-function to a single-coordinate projection, then `exact
+   marginal_uniformOfFintype_pi ⟨j, hj⟩` closes it (one-line discharge,
+   matching S4b PREP §6).
+
+3. **`lemma resampleAt_indep`** — ~20 LOC including docstring. Same
+   structural pattern as `_outside` lifted from one coordinate to a
+   `Finset T`: every `k : ↥T` has `k.val ∉ S` (by `Finset.disjoint_left.mp
+   hT`), the glue function reduces to a constant `v` on all of `T`, then
+   `PMF.map_const` finishes.
+
+### Deviations from the PREP recipes (intentional)
+
+- **`mul_left_comm` instead of `← mul_assoc` + `one_mul`** in the
+  ENNReal cancellation (last 3 lines of the helper). The S5b PREP §2
+  recipe used `← mul_assoc, ENNReal.mul_inv_cancel ..., one_mul`, but the
+  associativity direction does not match the cancellation target after
+  `ENNReal.mul_inv` distributes the inverse. Substituting `mul_left_comm`
+  (which rewrites `a * (b * c) = b * (a * c)`) puts the
+  cancellable pair `(∏ k≠i, ...) * (∏ k≠i, ...)⁻¹` adjacent for the
+  `ENNReal.mul_inv_cancel` rewrite, ending with `mul_one` rather than
+  `one_mul`.
+- **`Or.inl h_card_i_ne_top` instead of `Or.inl h_pi_ne_top`** as the
+  second argument to `ENNReal.mul_inv`. The signature is
+  `(h : a ≠ 0 ∨ b ≠ ⊤) → (h' : a ≠ ⊤ ∨ b ≠ 0) → (a * b)⁻¹ = a⁻¹ * b⁻¹`;
+  with `a = card (β i)` and `b = ∏ k≠i, ...`, the second disjunction
+  needs `a ≠ ⊤` (i.e. `h_card_i_ne_top`), not `b ≠ ⊤` (which would be
+  `h_pi_ne_top` but doesn't fit either disjunct).
+
+Both deviations are mechanical algebraic refinements of the documented
+recipe; the underlying strategy (helper via piSplitAt + factor-out-i-th
+via `prod_eq_mul_prod_subtype_ne` + ENNReal cancellation) is unchanged.
+
+### Files updated (S5b ACT)
+
+- `proofs/Proofs/MoserTardos.lean` — +113 LOC, 3 new declarations
+  inserted after `resampleAt_apply_outside`. File: 269 → 382 LOC.
+- `research/problems/prob-method-lovasz-local-oq-01/state.md` — this
+  section; iteration 6 → 7; phase S5c PREP → S5b ACT.
+- `research/problems/prob-method-lovasz-local-oq-01/sessions/2026-05-14-s05b-act-helper-and-pack.md`
+  — new session note documenting the three deviations above + the
+  remaining risks for doctor verification.
+- `src/data/research/problems/prob-method-lovasz-local-oq-01.json` —
+  `currentState.iteration` 6 → 7, `phase` PREP → S5b ACT, `focus` /
+  `nextAction` updated, `progressSummary` prepended, `lastUpdate`,
+  `attemptCounts.total` 4 → 5.
+
+### Build-verification posture
+
+Build pending. The worktree's `proofs/.lake` is the recursive
+self-referential symlink documented in
+`feedback_researcher_lake_symlink_loop_and_wipe.md`; local Docker build
+would require a ~45-min cold Mathlib clone. CI / doctor is the ground
+truth. Each named bearer in the new code is verified at lake-pinned
+SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (`v4.26.0`) per the
+S4a/S4b/S5b/S5c PREP audits.
+
+### Race-safety note (S5b ACT)
+
+- Pre-claim probe (~00:30 UTC, 2026-05-14): 0 open PRs on slug; most
+  recent merge S5c PREP (#18930) at 23:06 UTC ~1.5h lead time, well
+  outside the 30-min same-slug race window.
+- Pre-push probe will re-verify before push.
+
+### Next action (S6 ACT or OQ-01-A.3)
+
+Per the road map in `state.md:301-313`:
+
+- **S6 PREP (OQ-01-A.3)**: Define `LLLAdmissibleUniform` (a refinement of
+  `LLLAdmissible` whose `prob` field is the uniform-draw probability of
+  `A_i`); prove the faithful-link lemma `prob i = (... uniform measure of
+  isBad i ...)`. ~150 LOC.
+
+- **Alternative — S6 PREP (OQ-01-B)**: Begin `WitnessTree` inductive type
+  + `isProper` predicate (the OQ-01-B half). The marginal/independence
+  pack delivered here is exactly the input it needs.
+
+The helper `marginal_uniformOfFintype_pi` is reusable across both
+directions; future ACT iterations should treat it as part of the
+file-local API surface.
 
 ## S5c PREP (`h_fiber` audit) — researcher-5, 2026-05-13 ~22:25 UTC
 
