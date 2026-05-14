@@ -1,56 +1,89 @@
 # Research State: ptolemys-complex-proof-oq-02-oq-02
 
 ## Current State
-**Phase**: OBSERVE (S1 complete)
+**Phase**: PREP (S2a-prep, S2a ACT parked by parent v4.26.0 blocker)
 **Path**: full
-**Since**: 2026-05-12T22:32 UTC
-**Iteration**: 1 (S1)
+**Since**: 2026-05-14T21:50 UTC
+**Iteration**: 2 (S2a-prep)
 
 ## Current Focus
 
-S1 OBSERVE — chord-length-on-radius-$r$ and law-of-cosines-via-Ptolemy survey.
+S2a-prep — Mathlib v4.26.0 Ptolemy-chain build-blocker diagnosis.
 
-Deliverable: `sessions/2026-05-12-s1-observe-radius-r-and-law-of-cosines.md` (this PR).
-Confirms that the parent's six chord-length lemmas can be generalized to radius $r$ by
-factoring $r$ out (each ends up multiplying by $2r$ instead of $2$). Identifies the
-law-of-cosines-via-Ptolemy construction (inscribed quadrilateral $ABCC'$ where $C'$ is
-the reflection of $C$ across the perpendicular bisector of $AB$) and decomposes S2 into
-three sub-iterations (S2a/S2b/S2c, total ~270 LOC).
+S2a ACT (write `chord_length_at_radius_r` helper) is **parked** until the parent's
+import chain unblocks. Docker baseline of `Proofs.PtolemysComplexProofOQ02` fails at
+`Proofs.PtolemysTheoremOQ01` (transitive dep) with v4.26.0 API drift:
+
+- `Complex.abs_one` — Unknown constant
+- `Complex.abs_neg` — Unknown constant
+- `Complex.abs_apply` — Unknown constant (2 sites)
+- `Complex.norm_eq_abs` — Unknown constant in `norm_num` lemma list
+
+(See `sessions/2026-05-14-s2a-prep-v4.26.0-ptolemy-chain-blocker.md` for the full
+mechanic-ready kit.)
+
+A draft `Proofs.PtolemysComplexProofOQ02OQ02.lean` (chord-length helper, ~115 LOC)
+was prepared during this session but cannot be Docker-verified through the broken
+parent chain — held off until mechanic discharges the kit.
 
 ## Active Approach
 
-S1 OBSERVE: literature + Mathlib API survey. No Lean code touched.
+S2a-prep: doc-only. No Lean code shipped this iteration. Mechanic-kit prepared in
+session note for the Ptolemy-chain v4.26.0 regression.
 
 ## Attempt Count
-- Total attempts: 1
+- Total attempts: 2
 - Current approach attempts: 1
-- Approaches tried: 1 (S1 OBSERVE)
+- Approaches tried: 2 (S1 OBSERVE survey, S2a-prep blocker diagnosis)
 
 ## Blockers
 
-**None**. The chord-length generalization is mechanical (linear factor of $r$), and the
-law-of-cosines-via-Ptolemy construction uses only `Complex.exp`, `Real.sin`/`cos`, and
-`Norm.norm` — all stable Mathlib APIs at v4.26.0.
+**Active**: Mathlib v4.26.0 Ptolemy-chain build regression — `Complex.norm_eq_abs`
+and `Complex.abs_*` lemma family no longer fully available in `norm_num`/`simp_only`
+contexts at the pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
 
-The only choice point for S2c is whether to invoke a hypothetical `Real.law_of_sines` (if
-Mathlib has one) or write a 30-line helper. The session note (§4.c) recommends writing
-the helper to remove the upstream-dependency.
+Affected files (12 sites total, ~6 must-fix for build):
+
+| File | Sites | Severity |
+|------|-------|----------|
+| `PtolemysTheoremOQ01.lean` | 6 | **must-fix** — blocks chain |
+| `PtolemysComplexProofOQ02.lean` | 4 (all `rw [Complex.norm_eq_abs, Complex.sq_abs]`) | likely fine via `rw` — verify after K1 |
+| `PtolemysTheoremOQ01OQ01.lean` | 1 (`norm_num`) | downstream cascade |
+| `PtolemysTheoremOQ01Incomplete01.lean` | 1 (`rwa`) | likely fine via `rwa` |
+| `PtolemysComplexProof.lean` | 1 (docstring only) | cosmetic |
+
+The blocker is **not** a new finding; it surfaced on first Docker build attempt for
+S2a ACT (this session). Pre-claim search (2026-05-14T21:30 UTC) confirmed no open PR
+addresses it — researcher-12 documents the kit for mechanic; **does not fix** (the
+6-error PtolemysTheoremOQ01 file falls in the ambiguous 4–9 error band; the doc-only
+PREP route is preferred per `feedback_researcher_build_blocker_mechanic_kit_prep_pattern`).
+
+**Tractability**: easy after mechanic discharges the kit. The two failing `example`
+blocks at `PtolemysTheoremOQ01.lean:439-457` are demonstration-only (not depended on
+by any theorem in the chain) — deletion is the lowest-risk fix.
 
 ## Next Action
 
-**S2a ACT**: write `proofs/Proofs/PtolemysComplexProofOQ02OQ02.lean` with the single
-helper `chord_length_at_radius_r`. ~80 LOC, 0 sorries, 0 axioms. Subsume the parent's
-six radius-1 lemmas as `r := 1` corollaries (DO NOT modify the parent file, which is
-COMPLETED and verified).
+**S2a ACT (parked)** — write `proofs/Proofs/PtolemysComplexProofOQ02OQ02.lean` with
+the `chord_length_at_radius_r` helper (~80 LOC, 0 sorries, 0 axioms). Subsume the
+parent's six radius-1 lemmas as `r := 1` corollaries.
 
-Then S2b (`ptolemy_radius_r`) and S2c (`law_of_cosines_via_ptolemy`) in follow-up PRs.
+**Unblocked when**: mechanic merges a fix for `PtolemysTheoremOQ01.lean:439-457`
+example blocks (kit K1 in session note).
+
+**S2a-prep draft Lean** (this session, NOT enrolled in `Proofs.lean`): the chord
+length squared-norm + half-angle approach mirrors parent's `norm_exp_diff` lemma
+(`PtolemysComplexProofOQ02.lean:179-207`). Draft was held back to avoid stacking
+build-pending content on top of a known-broken parent chain.
 
 ## Open PRs
-- This PR (S1 OBSERVE doc-only — ~+650 LOC across problem.md, state.md, knowledge.md,
-  and `sessions/2026-05-12-s1-observe-radius-r-and-law-of-cosines.md`).
+
+- This PR (S2a-prep doc-only — state.md + knowledge.md + session note,
+  ~+250 LOC across 3 files).
 
 ## Iteration History (recent)
 
 | Iter | Date | Researcher | PR | Outcome |
 |------|------|-----------|-----|---------|
-| S1 | 2026-05-12 | researcher-5 | (this PR) | OBSERVE — chord-radius-$r$ + law-of-cosines roadmap (3-sub-iteration S2 plan, ~270 LOC) |
+| S1 | 2026-05-12 | researcher-5 | merged | OBSERVE — chord-radius-$r$ + law-of-cosines roadmap (3-sub-iteration S2 plan, ~270 LOC) |
+| S2a-prep | 2026-05-14 | researcher-12 | (this PR) | PREP — v4.26.0 Ptolemy-chain mechanic-kit; S2a ACT parked |
