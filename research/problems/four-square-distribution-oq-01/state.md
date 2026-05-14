@@ -1,10 +1,142 @@
 # Research State: four-square-distribution-oq-01
 
 ## Current State
-**Phase**: ACT (S18c-orbit-precursor-2 — sign-flip ORBIT
-non-triviality `|Orbit v| ≥ 2` for `v` with a nonzero coordinate,
-this PR)
-**Phase note**: S18c-orbit-precursor-2 (this PR, researcher-3) — Part 32
+**Phase**: ACT — three S₄/(ℤ/2)⁴ stabilizer/orbit precursors merged
+(Parts 31–33); combined-stabilizer formula (Part 34) designed in PREP
+PR #18549; **parent-file blocked on Mathlib v4.26.0 `ord_compl` API
+regression** surfaced by docker-build at session 2026-05-13 21:00 UTC
+(87 errors on origin/main; doctor/mechanic-scope fix required before
+further S18c ACT work). See "Build verification (this PR)" §
+below.
+**Iteration**: 26 (S18c-orbit-precursor-3 ACT shipped; this PR is
+STATE-SYNC + build-verification ledger, doc-only)
+**Last Updated**: 2026-05-13 (researcher-10; STATE-SYNC for backlog
+PRs #18418 / #18549 / #18640 / #18695 + docker-build regression
+inventory; no Lean diff)
+
+## Build verification (2026-05-13 21:00 UTC, this PR, researcher-10)
+
+`./proofs/scripts/docker-build.sh Proofs.FourSquareDistributionOQ01`
+against origin/main rev `848db366df8` (commit 848db366 — pre-claim
+fetch & rebase, see CLAUDE.md memory "build-pending slug series can
+hide silent parent-file regressions"). Log:
+`.loom/logs/researcher-10-fsdoq01-s18c-build.log` (746 lines).
+
+**Outcome**: build failed; **87 errors**, **47 unique error lines**.
+Affects S5–S10 σ*-side (lines 1160–1277), S11.alt 3-hypothesis
+decomposition (1411/1472/1482), S15–S17 σ*-side bridges (1963–2001),
+S17 canonical-side (2137–2170), and S18a `shiftedRange ↔ Icc`
+sublemma (2374–2398). The S18c block (Parts 29–33, lines ~2400–2845)
+appears not to be the proximate site of any error (the local error
+list peaks at 2398 inside S18a; downstream warnings at 2603 are
+linter `unusedSimpArgs`, not errors).
+
+**Root cause inventory** (Mathlib v4.26.0 API drift, gh api search
+on `repo:leanprover-community/mathlib4` returns 0 hits for each
+removed symbol):
+
+| Group | Symbol | Count | Site Parts |
+|---|---|---:|---|
+| A | `ord_compl` notation (identifier removed from `Mathlib.NumberTheory.Padics.PadicVal` namespace) | 16 | S6/S8/S15 σ*-side, S11 r4Count side |
+| B | `Nat.ord_proj_mul_ord_compl_eq_self` (lemma removed) | 3 | line 1163, 1967, 2141 |
+| C | `Nat.ord_compl_pos` (lemma removed) | 3 | line 1164, 1968, 2142 |
+| D | `Nat.not_dvd_ord_compl` (lemma removed) | 3 | line 1166, 1970, 2144 |
+| E | `Nat.divisors_prime` (lemma removed/moved) | 1 | line 1482 |
+| F | `exact_mod_cast` regression at `shiftedRange ↔ Finset.Icc` | 1 | line 2398 (S18a sublemma 3.1) |
+| (cascade) | "Function expected at" / "failed to prove index" downstream of A | 45 | follows A's sites |
+
+Groups A–E share a single root cause: Mathlib v4.26.0 retired the
+`ord_compl[p] n` notation along with the four `Nat.ord_*` helper
+lemmas this file relied on (Parts 7–9, 13, 15–18, 22). Replacement
+is `n / p ^ n.factorization p` written out explicitly, plus inline
+re-derivation of the four helpers from `Nat.factorization_div`
+(present) and `Nat.factorization_lt` (present). Group F is an
+unrelated S18a regression — the `(x + n).toNat` cast pattern at
+2398:6 needs a `show … ∈ List.range …` step to satisfy v4.26.0's
+stricter `List.mem_range` shape.
+
+**Scope of fix**: **doctor/mechanic-scope**, NOT this researcher PR
+(per memory "≥ 3 parent-file errors = ship `(build pending — parent-file blocker)` PR with line:col inventory; do NOT bundle multi-error
+fix in research PR"). 87 errors with 5 distinct symbol replacements
+plus 1 unrelated `mod_cast` rewrite — well above the 3-error
+threshold. Estimated fix: ~30–50 LOC of localized symbol
+substitutions; the σ* algebraic content is unchanged. This STATE-SYNC
+PR documents the inventory only.
+
+**Knock-on for S18c-orbit follow-up (Part 34)**: the combined-stabilizer
+formula `z! · ∏ m_k! · 2^z` designed in PR #18549's PREP can be
+written and committed as a *standalone* Lean fragment in
+`namespace S18c` (which is below the regression footprint), but
+will not build verifiably until the parent-file `ord_compl` migration
+ships. Continuing the S18c thread under the "build pending"
+precedent until then is acceptable per the existing cs.blockers
+caveat — but consumers of the gallery entry should treat
+`r4Count_factorization_form` (S9, Part 19), `sigmaStar_factorization_form`
+(S5/S8, Part 18), and `jacobi_r4_formula_from_atomic`
+(S11.alt, Part 21) as currently unverified on origin/main.
+
+## Backlog log (catch-up for entries missing from this state.md)
+
+S18c-orbit Mathlib audit (PR #18695, merged 2026-05-13 09:23 UTC,
+researcher-5) — analysis-only PREP at
+`research/problems/four-square-distribution-oq-01/s18c-orbit-mathlib-audit-prep.md`
+(+706 LOC) catching phantom-Mathlib-citation drift in the merged
+case-enumeration PREP (#18549). Calls out three phantom lemma names
+(`MulAction.orbit_card_dvd_of_finite`, `Fintype.card_eq_of_equiv`,
+`MulAction.orbit_card_eq_card_orbit_smul_card_stab`) and two stale
+file paths (`GroupAction.Basic` → `GroupAction.Quotient`,
+`BigOperators.Basic` → `BigOperators.Group.Finset.Basic`),
+verified by `gh api repos/leanprover-community/mathlib4/contents/...
+?ref=v4.26.0`. Replacement strategy: invoke
+`MulAction.card_orbit_mul_card_stabilizer_eq_card_group` directly
+plus a one-line `Dvd.intro` witness. Zero Lean changes.
+
+S18c-orbit-precursor-3 ACT (PR #18640, merged 2026-05-13 08:10 UTC,
+rjwalters) — Part 33 `permStabilizer_card` inside `namespace S18c`:
+`|{σ // applyPerm σ v = v}| = ∏ i ∈ univ.image v, (mult_v(i))!`,
+via Mathlib's `DomMulAct.stabilizer_card'`
+(`Mathlib/GroupTheory/Perm/DomMulAct.lean:122`) bridged through the
+`σ ↔ σ.symm` convention swap. +46 LOC, +1 import
+(`Mathlib.GroupTheory.Perm.DomMulAct`), +1 lemma, 0 axioms,
+0 sorries. Build status at PR time: pending. *This PR's docker-build
+confirms the Part 33 lemma itself elaborates locally (line 2802 is
+not on the error list); the parent-file errors are upstream of the
+S18c block.*
+
+S18c-orbit PREP — combined-stabilizer + 11-case enumeration
+(PR #18549, merged 2026-05-13 04:07 UTC, researcher-10) — analysis-only
+PREP at
+`research/problems/four-square-distribution-oq-01/s18c-orbit-case-enumeration-prep.md`
+(+580 LOC) deriving the **combined**-stabilizer formula
+`|Stab_{(ℤ/2)⁴ ⋊ S₄}(v)| = z! · ∏ m_k! · 2^z` (z = zero coords,
+{m_k} = multiplicity partition of nonzero |v_i|), with brute-force
+Python verification on 10 representative `v` and an 11-case
+(zero-pattern × abs-value-partition) table confirming
+`v₂(|Stab(v)|) ≤ v₂(384) − 3 = 4` in every case (hence
+`8 ∣ |Orbit(v)|` unconditionally for `v ≠ 0`). Significance: the
+combined stabilizer is **not** the product of the two side
+stabilizers (Parts 31 and 33) — see PR #18549 §2.5 for the worked
+example `v = (1,−1,2,3)` where `|permStab| = 1` (signed) but
+`|combinedStab| = 2` (absolute-value, via the `(s, σ) = ((sign flip
+at coord 1), (swap 0↔1))` mixed pair). Zero Lean changes; Part 34
+ACT plan = ~80 LOC.
+
+S18c-orbit-precursor-3 PREP — perm stabilizer via Mathlib DomMulAct
+(PR #18418, merged 2026-05-13 02:08 UTC) — analysis-only PREP at
+`research/problems/four-square-distribution-oq-01/s18c-orbit-precursor-perm-stab.md`
+(+344 LOC) locking the design that became PR #18640 the next day.
+Verifies `DomMulAct.stabilizer_card'` at
+`Mathlib/GroupTheory/Perm/DomMulAct.lean:122` against rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0), specifies the
+`applyPerm σ v = v ↔ v ∘ σ.symm = v` definitional unfold + the
+10-line `Equiv.mk` bridge, tabulates 5 multiplicity patterns with
+brute-force-verified `|Stab| ∈ {1, 2, 4, 6, 24}`, enumerates 6
+tactical risks, and binds Part 33 ACT to ~30 LOC instead of the
+case-by-case ~100–200 LOC alternative. Zero Lean changes.
+
+## Phase note (historical — S18c-orbit-precursor-2, 2026-05-12, researcher-3)
+
+S18c-orbit-precursor-2 (PR #18216, merged 2026-05-12, researcher-3) — Part 32
 adds `signFlipOrbit_card_ge_two` inside `namespace S18c`. For
 `v : Fin 4 → ℤ` with at least one nonzero coordinate,
 

@@ -31,23 +31,24 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08",
-    "iteration": 20,
-    "focus": "S18c-permutation (2026-05-11, researcher-10, this PR): Part 30 — coordinate-permutation half of the (ℤ/2)⁴ ⋊ S₄ orbit-decomposition framework. Adds 7 lemmas + 1 def + 1 cardinality example inside `namespace S18c` (+~90 lines, 0 axioms, 0 sorries): `applyPerm σ v := v ∘ σ.symm` (left-action convention), `applyPerm_apply` (`@[simp]`, definitional unfolding), `applyPerm_one` (`@[simp]`, identity acts trivially), `applyPerm_mul` (`@[simp]`, left-action composition law `(σ * τ) • v = σ • (τ • v)`, proof by `rfl` on definitional equality of `(σ * τ).symm` and `τ.symm ∘ σ.symm` via the `Equiv.Perm` group instance), `sumSq_applyPerm` (`@[simp]`, key invariance — reuses Part 29's `sumSq_reindex` specialised at `σ.symm`), `applyPerm_inv_apply` (`@[simp]`, σ⁻¹ undoes σ — derived from `applyPerm_mul` + `inv_mul_cancel` + `applyPerm_one`), `applyPerm_bijective` (left+right inverse via `applyPerm_inv_apply`), `applyPerm_eq_iff` (stabilizer characterisation: σ fixes v ↔ v is constant on σ-orbits of `Fin 4`), and an `example : Fintype.card (Equiv.Perm (Fin 4)) = 24` confirming `|S₄| · |SignFlip| = 24·16 = 384` for the full (ℤ/2)⁴ ⋊ S₄ group. Companion to Part 29's sign-flip half (PR #17745, merged 2026-05-11). The S₄ side does NOT depend on r4Count or any List/Finset reformulation — extends Part 29's `namespace S18c` scaffold; the deferred orbit-decomposition argument (`orbitCard_dvd_eight_of_pos_target_decl`) remains the only S18c gap. With sumSq-invariance under sign-flips (Part 29) AND permutations (this PR), the orbit-decomposition iteration now has all sumSq invariants in place to formalise the action of (ℤ/2)⁴ ⋊ S₄ on the four-square solution set. S18c-framework (PR #17745, merged): sign-flip action scaffold (Part 29, ~140 lines). S18b (PR #17714, merged): shiftedRange ↔ Finset.Icc bridges (Part 28). S18a (PR #17702, merged): foldl ↔ nested-sum reformulation (Part 27). S18 (PR #17688, researcher-4, merged): analysis-only spec for axiom-free `8 ∣ r4Count n`. S17 (PR #17677, merged): canonical σ-side uniqueness `sigmaStar_uniqueness_from_canonical_hypotheses`. S16 (PR #17649, merged): σ*-side atomic-axiom UNIQUENESS theorem `jacobiR4_uniqueness_from_atomic_hypotheses` (Part 25). S15 (PR #17635, merged): σ*-side images of (Hodd) and (HtwoPow) as standalone axiom-free theorems on `jacobiR4`. S14 (PR #17524, merged): `jacobi_r4_formula_from_modular_form` axiom-free 2-hypothesis implication theorem.",
+    "iteration": 26,
+    "focus": "S18c-orbit-precursor-3 ACT (Part 33, PR #18640, merged 2026-05-13, rjwalters): permStabilizer_card via Mathlib's DomMulAct.stabilizer_card' + ~10-line σ↔σ.symm bridge; +46 LOC, +1 import, +1 lemma, 0 axioms, 0 sorries. Second of three stabilizer counts for orbitCard_dvd_eight_of_pos. PREP'd by PR #18418 (perm-stab design, 2026-05-13) and PR #18549 (combined-stab + 11-case enumeration, researcher-10, 2026-05-13); Mathlib citations audited by PR #18695 (researcher-5, 2026-05-13) — 3 phantom lemmas and 2 path errors corrected in the case-enumeration PREP. This STATE-SYNC PR catches state.md up to PRs #18418/#18549/#18640/#18695 (no entries previously) AND surfaces a **Mathlib v4.26.0 ord_compl regression** on origin/main via docker-build: 87 errors, 47 unique error lines, 5 distinct removed symbols (`ord_compl` notation; `Nat.ord_proj_mul_ord_compl_eq_self`; `Nat.ord_compl_pos`; `Nat.not_dvd_ord_compl`; `Nat.divisors_prime`) + 1 unrelated `exact_mod_cast` regression at S18a sublemma 3.1 (line 2398). Doctor/mechanic-scope fix; ~30-50 LOC of symbol substitutions. The S18c block (Parts 29-33, lines 2400-2845) is above the regression footprint.",
     "blockers": [
       "Mathlib q-expansion machinery for `jacobiTheta` is absent (no Fourier-coefficient extraction lemma for the upper-half-plane theta function).",
       "Mathlib Eisenstein-coefficient identification absent (needed to identify θ⁴ with E₂(τ) − 4·E₂(4τ) up to normalization).",
       "Hurwitz-quaternion alternative is also blocked upstream — no Hurwitz-integer arithmetic in Mathlib.",
-      "Local Docker build verification: proofs/.lake self-referential symlink in this fork forces a fresh Mathlib clone per build (~45 min cold). S6 commits under the 'build pending' precedent; auditor pipeline carries the build outcome."
+      "**[NEW, surfaced 2026-05-13 21:00 UTC by this PR]** Mathlib v4.26.0 API drift on origin/main: `ord_compl` notation and the four `Nat.ord_*` helper lemmas (`ord_proj_mul_ord_compl_eq_self`, `ord_compl_pos`, `not_dvd_ord_compl`, `divisors_prime`) have been removed; `gh api search/code` returns 0 hits for each across `repo:leanprover-community/mathlib4`. 87 errors affecting Parts 18 (S5/S8), 22 (S12), 25-26 (S15-S16), 27 (S17), 27a (S18a). Doctor/mechanic-scope, not researcher. See state.md '## Build verification' section + `.loom/logs/researcher-10-fsdoq01-s18c-build.log` for line:col inventory.",
+      "Local Docker build verification: the `proofs/.lake` self-referential symlink in this fork forces a fresh Mathlib clone per build (~45 min cold). The 16 build-pending PRs (S5 → S18c-orbit-precursor-3) accumulated under this precedent; this STATE-SYNC PR is the first session to surface the regression."
     ],
-    "nextAction": "(easy, mechanical) S13-implement: transcribe the spec into Part 23 of FourSquareDistributionOQ01.lean — state `theta_pow_four_qCoeff` (Hθ4Coef) and `theta_pow_four_eq_eisenstein` (Hθ4Eis) plus the closure-skeleton theorem `jacobi_r4_formula_from_modular_form` with documented `sorry` body. ~60–80 lines, single session. Defer until file contention subsides (currently 4–5 build-pending PRs). (productive, modular-form route, S13 SPEC) Two atomic axioms targeting Mathlib roadmap; with (Hθ4Coef) + (Hθ4Eis) + Mathlib's `EisensteinSeries.E2_qExpansion`, S9's `r4Count_factorization_form` closes `jacobi_r4_formula`. See `s13-modular-form-atomic-decomposition.md`. Parallel to S11.alt's elementary 3-hypothesis route (PR #17388); closing either discharges the axiom. (elementary, hard) Direct combinatorial proof of `r4Count(2n) = 3·r4Count(n)` for odd n via the pairing bijection (~300–500 lines). Speculative. (speculative) Hurwitz-quaternion route — multi-month upstream. (skip) Brute-force extension beyond n = 10.",
+    "nextAction": "(doctor/mechanic) Migrate FourSquareDistributionOQ01.lean from Mathlib v4.25.x `Nat.ord_*` namespace to v4.26.0 equivalents: (a) replace `ord_compl[2] n` with `n / 2 ^ n.factorization 2` at 16 sites; (b) re-derive `Nat.ord_proj_mul_ord_compl_eq_self`, `Nat.ord_compl_pos`, `Nat.not_dvd_ord_compl` inline from `Nat.factorization_div`, `Nat.factorization_lt`, and `Nat.Prime.factorization_pos`; (c) replace `Nat.divisors_prime` with `Nat.divisors_prime_pow` or the explicit `Finset.insert` form; (d) fix the `exact_mod_cast h_lt` at line 2398 via an intermediate `show … ∈ List.range (2 * n + 1)` step. ~30-50 LOC; algebraic content unchanged. Once verified, the S18c block (Parts 29-33) builds clean. (researcher follow-up, gated on doctor/mechanic) Part 34 `combinedStabilizer_card v = z! · ∏ m_k! · 2^z` per PR #18549's PREP; Mathlib bearers per PR #18695's audit (`DomMulAct.stabilizer_card'` + `Equiv.subtypeProd_equiv_sigmaSubtype` + inline `Dvd.intro` for orbit-stabilizer). (parallel, unaffected by regression) S13-implement: transcribe the modular-form atomic decomposition spec into Part 23 (~60-80 LOC); the modular-form route remains the cleanest path to discharging `axiom jacobi_r4_formula` once Mathlib's `EisensteinSeries.E2_qExpansion` lands. (skip) Brute-force extension beyond n = 10.",
     "attemptCounts": {
-      "total": 18,
-      "currentApproach": 1,
+      "total": 26,
+      "currentApproach": 6,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S17 (PR #17677, merged 2026-05-11): canonical σ*-side uniqueness reduces axiom to needing 3 hypotheses + 8∣r4Count. S18 spec (PR #17688, merged): 3-stage decomposition for axiom-free 8∣r4Count. S18a (PR #17702, merged ~80 lines Part 27): structural foldl ↔ nested-sum bridge for r4Count, route-agnostic between D₄/(ℤ/2)⁴ ⋊ S₄ orbit decompositions. S18b (this PR, ~70 lines Part 28): shiftedRange ↔ Finset.Icc bridges; innermost-level Finset.card substitution for the 4th-coord filter-length of r4Count_eq_nested_sum. Outer-three-layer nested-sum → Finset.product re-bundling + the orbit-decomposition defer to S18c.",
+    "progressSummary": "STATE-SYNC + build-verification (this PR, researcher-10, 2026-05-13): catches state.md up to PRs #18418/#18549/#18640/#18695 (4 missing entries) and surfaces 87-error Mathlib v4.26.0 ord_compl regression on origin/main via docker-build. Doctor/mechanic-scope. S18c-orbit-precursor-3 ACT (PR #18640, 2026-05-13): Part 33 permStabilizer_card via DomMulAct, +46 LOC. S18c-orbit PREP (PR #18549, researcher-10, 2026-05-13): combined-stabilizer `z! · ∏ m_k! · 2^z` + 11-case enumeration confirming v₂(|Stab|) ≤ 4 in every (zero-pattern, partition) class. S18c-orbit-precursor-3 PREP (PR #18418, 2026-05-13): perm-stab design locked to `DomMulAct.stabilizer_card'` bearer. S18c-orbit Mathlib audit (PR #18695, researcher-5, 2026-05-13): phantom-lemma audit catching 3 phantom citations + 2 path errors in #18549. S17 (PR #17677, merged 2026-05-11): canonical σ*-side uniqueness reduces axiom to needing 3 hypotheses + 8∣r4Count. S18 spec (PR #17688, merged): 3-stage decomposition for axiom-free 8∣r4Count. S18a (PR #17702, merged ~80 lines Part 27): structural foldl ↔ nested-sum bridge for r4Count, route-agnostic between D₄/(ℤ/2)⁴ ⋊ S₄ orbit decompositions. S18b (this PR, ~70 lines Part 28): shiftedRange ↔ Finset.Icc bridges; innermost-level Finset.card substitution for the 4th-coord filter-length of r4Count_eq_nested_sum. Outer-three-layer nested-sum → Finset.product re-bundling + the orbit-decomposition defer to S18c.",
     "builtItems": [
       "S18 spec: research/problems/four-square-distribution-oq-01/s18-eight-divisibility-spec.md (416 lines) — analysis-only spec for axiom-free `8 ∣ r4Count n`.",
       "sigmaStar (def): Jacobi's modified divisor sum at FourSquareDistributionOQ01.lean:74",
@@ -227,14 +228,14 @@
     ]
   },
   "started": "2026-05-06T16:07:09+03:00",
-  "lastUpdate": "2026-05-12T04:00:00.000Z",
+  "lastUpdate": "2026-05-13T21:30:00.000Z",
   "significance": 7,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "Proofs/FourSquareDistribution.lean",
       "filename": "FourSquareDistribution.lean",
-      "lineCount": 401,
+      "lineCount": 400,
       "theoremCount": 38,
       "axiomCount": 0,
       "defCount": 21,
@@ -245,10 +246,10 @@
     {
       "path": "Proofs/FourSquareDistributionOQ01.lean",
       "filename": "FourSquareDistributionOQ01.lean",
-      "lineCount": 1562,
-      "theoremCount": 107,
+      "lineCount": 2847,
+      "theoremCount": 125,
       "axiomCount": 1,
-      "defCount": 6,
+      "defCount": 9,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourSquareDistributionOQ01.lean"
