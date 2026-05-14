@@ -416,9 +416,43 @@ theorem indicator_pair_covariance_eq
         = (A ∩ B).indicator (1 : Ω → ℝ) := by
     funext ω
     by_cases hωA : ω ∈ A <;> by_cases hωB : ω ∈ B <;>
-      simp [Set.indicator_apply, Set.mem_inter_iff, hωA, hωB]
+      simp [Set.mem_inter_iff, hωA, hωB]
   rw [hprod, integral_indicator_one hAB, integral_indicator_one hA,
       integral_indicator_one hB]
+
+/-- **Indicator-pair Davydov covariance bound** (S5c-prep, this session).
+
+Combines `indicator_pair_covariance_eq` (S4: the algebraic identity rewriting
+the indicator covariance as `μ(A ∩ B) − μ(A) · μ(B)`) with
+`davydov_indicator_bound` (S5b: the α-mixing bound on that measure-theoretic
+difference) to package the *covariance-form* indicator bound:
+$$
+\Bigl|\!\int 1_A \cdot 1_B \, d\mu - \Bigl(\!\int 1_A \, d\mu\Bigr) \cdot
+   \Bigl(\!\int 1_B \, d\mu\Bigr)\!\Bigr| \;\le\; \alpha(\mathcal F, \mathcal G).
+$$
+
+This is the exact form consumed by the L^p density step (S5c target): inside
+the bilinear expansion of `Cov(X, Y)` over the level-set decompositions
+`X = ∫₀^∞ (𝟙_{X>t} − 𝟙_{X<-t}) dt` (likewise for `Y`), this lemma supplies the
+pointwise α-bound at each `(t, s)`, with the super- and sub-level sets all
+σPair-measurable for the relevant sub-σ-algebras.
+
+The bridge between `indicator_pair_covariance_eq` (whose RHS uses
+`μ.real := (μ ·).toReal`) and `davydov_indicator_bound` (whose LHS uses
+`(μ ·).toReal` directly) is closed by `Measure.real_def`. -/
+theorem indicator_covariance_le_alpha
+    {μ : Measure Ω} [IsProbabilityMeasure μ]
+    (σPair : Fin 2 → MeasurableSpace Ω)
+    {A B : Set Ω}
+    (hA_amb : MeasurableSet A) (hB_amb : MeasurableSet B)
+    (hA : @MeasurableSet Ω (σPair 0) A) (hB : @MeasurableSet Ω (σPair 1) B) :
+    |∫ ω, A.indicator (1 : Ω → ℝ) ω * B.indicator (1 : Ω → ℝ) ω ∂μ
+      - (∫ ω, A.indicator (1 : Ω → ℝ) ω ∂μ)
+        * (∫ ω, B.indicator (1 : Ω → ℝ) ω ∂μ)|
+    ≤ CentralLimitTheoremOQ02.alphaMixingCoeff μ (σPair 0) (σPair 1) := by
+  rw [indicator_pair_covariance_eq hA_amb hB_amb]
+  simp only [Measure.real_def]
+  exact davydov_indicator_bound σPair hA hB
 
 /-- **Davydov's covariance inequality** (Davydov 1968).
 

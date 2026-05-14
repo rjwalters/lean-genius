@@ -1,7 +1,7 @@
 {
   "slug": "central-limit-theorem-oq-02-oq-04",
   "title": "Mixing CLT with Ibragimov 1962 Polynomial Mixing Rates",
-  "phase": "ORIENT",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -29,20 +29,21 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T14:00:00Z",
-    "iteration": 5,
-    "focus": "S5a ACT — Mathlib drift-fix: `polynomial_summable_of_exponent_gt_one` discharged via `Real.summable_nat_rpow.mpr` (one-line proof). Sorry count 3 → 2. Build verified.",
+    "since": "2026-05-14T13:00:00Z",
+    "iteration": 8,
+    "focus": "S5c-prep ACT — indicator_covariance_le_alpha bridge theorem (combines S4 indicator_pair_covariance_eq + S5b davydov_indicator_bound into the covariance-form indicator α-bound). Build verified Docker (3131 jobs, 2 expected sorries unchanged, line-419 unused-simp-arg linter warning resolved). theoremCount 12 → 13. Also pre-shipped fix for Mathlib v4.26.0 standalone -/ docstring parser trap.",
     "blockers": [],
-    "nextAction": "S5b ACT (~100 lines): L^p density step of davydov_covariance_inequality via level-set decomposition + Hölder, reducing to davydov_indicator_bound. Parallel: 3 order-theory ingredients (alphaMixingCoeff_le_one, alphaMixingCoeff_nonneg, davydov_indicator_bound).",
+    "nextAction": "S5c ACT (~100 LOC): L^p density step of davydov_covariance_inequality. With indicator_covariance_le_alpha now packaged in covariance-integral form, the remaining work is purely measure-theoretic: (1) truncation operator X · 𝟙_{|X|≤N}, (2) level-set decomposition X = ∫₀^∞ (𝟙_{X>t} − 𝟙_{X<-t}) dt, (3) bilinear expansion of Cov(X,Y), (4) pointwise application of indicator_covariance_le_alpha at each (t,s), (5) Hölder amplification with exponents (p, p/(p-1)), (6) Markov tail bound. References: Doukhan 1994 §1.2.2, Bradley 2007 Vol I Thm 3.7. Parallel path (unblocked): S6 joint tuple stationarity (~100 LOC).",
     "attemptCounts": {
-      "total": 4,
+      "total": 5,
       "currentApproach": 1,
       "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "ACT — S5a Mathlib drift-fix: `polynomial_summable_of_exponent_gt_one` discharged via `Real.summable_nat_rpow.mpr (by linarith)` from `Mathlib.Analysis.PSeries`. Sorries 3 → 2 (closes the long-standing ζ-function summability sorry left from S2 awaiting a name-drift resolution). Build verified on Docker (Mathlib v4.26.0). The remaining 2 sorries are `davydov_covariance_inequality` (L^p version, S5b target) and `mixing_clt_ibragimov` (S6+ target). S4 progress carried forward: indicator_cov_le_one, indicator_pair_covariance_eq, build-fix complete, structural decomposition of davydov documented.",
+    "progressSummary": "ACT — S5c-prep: indicator_covariance_le_alpha PROVEN (35 LOC w/ docstring) — bridges S4 indicator_pair_covariance_eq + S5b davydov_indicator_bound into the covariance-form indicator α-bound used by S5c. Build verified Docker (3131 jobs). Line-419 unused-simp-arg linter warning resolved (Set.indicator_apply removed). theoremCount 12 → 13; sorries unchanged at 2 (davydov_covariance_inequality S5c, mixing_clt_ibragimov S6+). S5a/S5b status (carried forward): all three named order-theory ingredients of davydov_covariance_inequality now proven and packaged in covariance form. S5c remaining work reduces to truncation + Hölder + Markov tail (~100 LOC). 0 axioms; parent CentralLimitTheoremOQ02.lean carries 1 axiom (martingale_clt) + 3 sorries by reference. Earlier: S5a polynomial_summable_of_exponent_gt_one Mathlib-drift fix (Real.summable_nat_rpow). S4 build-fix (#17820 silent-broken).",
     "builtItems": [
+      "S5c-prep (this session): indicator_covariance_le_alpha PROVEN — 3-line proof composing indicator_pair_covariance_eq + Measure.real_def + davydov_indicator_bound; 35 LOC incl. docstring at lines 423-455. The covariance-form indicator α-bound consumed by S5c's bilinear-expansion step. Also pre-shipped: line-419 unused-simp-arg linter fix (Set.indicator_apply removed from simp set in indicator_pair_covariance_eq; cosmetic, flagged but not bundled in #19030).",
       "research/problems/central-limit-theorem-oq-02-oq-04/problem.md — full problem statement, threshold derivation, Bernstein-block proof outline",
       "research/problems/central-limit-theorem-oq-02-oq-04/knowledge.md — parent-file inventory, Mathlib gap analysis, 6-session decomposition plan",
       "research/problems/central-limit-theorem-oq-02-oq-04/state.md — OBSERVE phase, S2 next-action sketch",
@@ -81,9 +82,8 @@
       "No quantitative variance-of-partial-sum bound for stationary sequences (the parent's variance_sum_bounded_of_converges handles independent / triangular-array case only)."
     ],
     "nextSteps": [
-      "S5a ACT (mechanic-pass): formalize the 3 order-theory ingredients (alphaMixingCoeff_le_one, alphaMixingCoeff_nonneg, davydov_indicator_bound). Pure ConditionallyCompleteLattice ℝ machinery; needs the Prop-iSup-unification approach (iSup_const / iSup_of_empty patterns).",
-      "S5b ACT (~100 lines): discharge the L^p density step of davydov_covariance_inequality via level-set decomposition X = ∫ 1_{X > t} dt + Hölder, reducing to davydov_indicator_bound.",
-      "S6 ACT (~100 lines): refine Stationary to joint tuple stationarity (prerequisite for Bernstein blocks).",
+      "S5c ACT (~100 LOC): discharge L^p density step. With indicator_covariance_le_alpha now in covariance-integral form, remaining work is (1) truncation X · 𝟙_{|X|≤N}, (2) level-set decomposition X = ∫₀^∞ (𝟙_{X>t} − 𝟙_{X<-t}) dt, (3) bilinear expansion of Cov(X,Y), (4) pointwise application of indicator_covariance_le_alpha, (5) Hölder amplification, (6) Markov tail bound. References: Doukhan 1994 §1.2.2, Bradley 2007 Vol I Thm 3.7.",
+      "S6 ACT (~100 lines): refine Stationary to joint tuple stationarity (prerequisite for Bernstein blocks). Parallel path now unblocked since all Davydov ingredients are in place.",
       "S7 ACT (~150 lines): Bernstein blocks p_n, q_n + asymptotic arithmetic.",
       "S8 ACT (~120 lines): large-block independence approximation via mixing.",
       "S9 ACT (~100 lines): Lindeberg condition on blocks.",
@@ -126,7 +126,7 @@
     "mathlib": []
   },
   "started": "2026-05-08T19:09:00.562Z",
-  "lastUpdate": "2026-05-12T14:00:00Z",
+  "lastUpdate": "2026-05-14T13:00:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
