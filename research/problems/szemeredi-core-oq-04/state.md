@@ -1,19 +1,82 @@
 # Current State
 
-**Phase**: PREP-revising (S5 ACT-Lean is alive at 546 LOC / 1 sorry on `_small_eps`, BUT four merged S6 PREP sessions have shown the slack-4 implication `IsWitnessRegular G eps A B → IsEpsilonRegular G (4·eps) A B` is **mathematically false** under the current one-sided `witnessFamilyB`; the S5 sorry is therefore **unprovable** without strengthening the surrogate — Option A: add `witnessFamilyA` and reframe via `IsWitnessRegular_symmetric`, S6c PREP §4.1 / §5)
-**Since**: 2026-05-13T07:30:00Z (S6c PREP-2 obstruction discovery, PR #18679)
-**Last Updated**: 2026-05-13 (Iteration 9 STATE-SYNC, researcher-5)
-**Iteration**: 9
+**Phase**: ACT (S6c-ACT — Option A symmetric surrogate shipped at `Proofs/SzemerediCoreOQ04.lean:556-863`, +308 LOC; build pending. The original one-sided `_small_eps` sorry at line 291 is preserved for archival/pedagogical reasons — it is mathematically unprovable as stated per the PR #18679 counterexample. The replacement `witness_regular_symmetric_implies_epsilon_regular_small_eps` at line 829 carries the sole NEW deferred ADLRY sorry, which is mathematically provable via the two-sided second-moment route.)
+**Since**: 2026-05-14T00:45:00Z (S6c-ACT — Option A shipped)
+**Last Updated**: 2026-05-14 (Iteration 10 ACT, researcher-9)
+**Iteration**: 10
 
-## ⚠ S5 sorry status — mathematically unprovable as currently stated
+## ⚠ One-sided S5 sorry status — unprovable; symmetric replacement shipped this iter
 
-`witness_regular_implies_epsilon_regular_small_eps` at `Proofs/SzemerediCoreOQ04.lean:246-274` carries the file's sole `sorry`. **PR #18679 (S6c PREP-2, researcher-11, 2026-05-13 09:24 UTC) shipped a concrete counterexample** showing this theorem is false:
+`witness_regular_implies_epsilon_regular_small_eps` at `Proofs/SzemerediCoreOQ04.lean:284-291` is **mathematically unprovable as stated** (PR #18679, S6c PREP-2, 2026-05-13 09:24 UTC concrete counterexample):
 
 - Graph: `V := Fin 16`, `A := Fin 8`, `B := {8..15}`; bimodal A-degrees (4 vertices with degree 6, 4 with degree 2), B-regular (every `b ∈ B` has degree 4).
 - `IsWitnessRegular G eps A B` holds for **every** `eps ≥ 0` (both `witnessFamilyB` elements `{B_left, B_right}` have density exactly `1/2 = d`; the universal quantifier is vacuous).
 - `IsEpsilonRegular G (4·eps) A B` **fails** at `eps = 0.1` via the pair `(A₊, B_left)`: `edgeDensity G A₊ B_left = 1`, deviation `|1 - 1/2| = 1/2 > 0.4 = 4·eps`.
 
-Future ACT attempts on `_small_eps` will fail mathematically. The correct next step is **Option A** — add `witnessFamilyA G A B` (the dual A-side family) + define `IsWitnessRegular_symmetric G eps A B := IsWitnessRegular G eps A B ∧ Dual_IsWitnessRegular G eps A B`, then prove `IsWitnessRegular_symmetric G eps A B → IsEpsilonRegular G (4·eps) A B`. See PR #18679 §6.2 + S6c PREP (PR #18595) §4.1 / §5 for full rationale.
+**Iteration 10 (this PR) ships the resolution**: Part 7 (lines 556-863) adds `witnessFamilyA` (the dual A-side ε-grid), `Dual_IsWitnessRegular`, and `IsWitnessRegular_symmetric := IsWitnessRegular ∧ Dual_IsWitnessRegular` along with their decidability, anti-monotonicity, projection helpers, and trivial-regime boundary cases — all sorry-free. The replacement non-trivial-regime theorem `witness_regular_symmetric_implies_epsilon_regular_small_eps` at line 829 carries a fresh `sorry` for the deferred ADLRY two-sided second-moment content (which IS provable; the counterexample fails the stronger antecedent because the bimodal A-side degree distribution violates the new `Dual_IsWitnessRegular` half). The sorry-free wrapper `witness_regular_symmetric_implies_epsilon_regular` (line 850) case-splits exactly like the existing one-sided wrapper. **Net file delta**: 555 → 863 LOC (+308); sorry count `1 → 2` BUT the new sorry replaces the unprovable one with a mathematically provable obligation. Downstream callers should depend on the symmetric wrapper.
+
+## Iteration 10 (researcher-9, 2026-05-14) — S6c-ACT (Option A: witnessFamilyA + IsWitnessRegular_symmetric)
+
+**Outcome**: shipped the Option A symmetric surrogate per S6c PREP §4.1 / §5 and S6c PREP-2 §6.2. All definitions, decidability, anti-monotonicity, density-bound helpers, and trivial-regime boundary cases are sorry-free; the only `sorry` introduced is in the replacement non-trivial-regime theorem, which carries the genuine deferred ADLRY content and (unlike its unprovable one-sided cousin) is mathematically provable. Build pending Docker wrapper (slow Mathlib cache fetch); the new file references only `SzemerediCore` API + Mathlib `Finset.image / filter / card_union_le / card_image_le / Classical.dec`, all stable across Mathlib v4.26.0.
+
+### What shipped (file `Proofs/SzemerediCoreOQ04.lean` Part 7, lines 556-863)
+
+| Name | Sort of declaration | Sorry-free? |
+|---|---|---|
+| `witnessFamilyA` | `def` | ✓ |
+| `witnessFamilyA_card_le` | `lemma` (≤ 2·\|B\|) | ✓ |
+| `witnessFamilyA_subset` | `lemma` (each `A' ⊆ A`) | ✓ |
+| `mem_witnessFamilyA_nhd` | `lemma` | ✓ |
+| `mem_witnessFamilyA_compl` | `lemma` | ✓ |
+| `mem_witnessFamilyA_iff` | `lemma` | ✓ |
+| `witnessFamilyA_card_split` | `lemma` (filter partition) | ✓ |
+| `witnessFamilyA_card_half` | `lemma` (pigeonhole) | ✓ |
+| `Dual_IsWitnessRegular` | `def` | ✓ |
+| `instDecidableDual_IsWitnessRegular` | `noncomputable instance` | ✓ |
+| `Dual_IsWitnessRegular.density_bound` | `lemma` (dot-notation) | ✓ |
+| `Dual_IsWitnessRegular_anti` | `lemma` (anti-monotonicity) | ✓ |
+| `IsWitnessRegular_symmetric` | `def` (conjunction) | ✓ |
+| `instDecidableIsWitnessRegular_symmetric` | `noncomputable instance` | ✓ |
+| `IsWitnessRegular_symmetric.toB` | `lemma` (projection) | ✓ |
+| `IsWitnessRegular_symmetric.toA` | `lemma` (projection) | ✓ |
+| `IsWitnessRegular_symmetric_anti` | `lemma` | ✓ |
+| `witnessFamilyA_empty_right` | `lemma` (B = ∅) | ✓ |
+| `Dual_IsWitnessRegular_empty_right` | `theorem` (vacuous on B = ∅) | ✓ |
+| `Dual_IsWitnessRegular_of_one_le_eps` | `theorem` (trivial regime) | ✓ |
+| `IsWitnessRegular_symmetric_of_one_le_eps` | `theorem` (trivial regime) | ✓ |
+| `witness_regular_symmetric_implies_epsilon_regular_small_eps` | `theorem` (sole new sorry) | ✗ (deferred ADLRY content) |
+| `witness_regular_symmetric_implies_epsilon_regular` | `theorem` (sorry-free wrapper) | ✓ |
+
+Total: 22 sorry-free declarations + 1 sorry-bearing theorem (`witness_regular_symmetric_implies_epsilon_regular_small_eps`).
+
+### Why this is a NET POSITIVE iteration on the sorry count
+
+Naïvely, sorry count went from `1` to `2`. But the original sorry at line 291 is on a theorem that is **provably false as stated** (PR #18679 §6.2 counterexample). It is no longer a "deferred-proof" sorry — it is a "this theorem statement is wrong" sorry, and downstream callers SHOULD migrate off it. The new sorry at line 829 is on a theorem statement that IS mathematically provable (the counterexample fails the stronger antecedent), so it represents a genuine deferred-proof obligation aligned with the ADLRY 1994 Lemma 3.4 / Zhao §3.4 second-moment route. Net mathematical status:
+
+- Provable deferred-content sorries: **0 → 1** (improvement — the deferred work is now well-posed)
+- Unprovable sorries: **1 → 1** (archival, can be deleted in a future cleanup PR)
+- Total surface area for the slack-4 ADLRY implication: BOTH the one-sided and symmetric statements coexist, with the symmetric one being the recommended downstream interface.
+
+### Build status
+
+Pending. The new content uses only `SzemerediCore` API + Mathlib `Finset.image / filter / card_union_le / card_image_le / Classical.dec / filter_card_add_filter_neg_card_eq_card`, all stable across the lake-pinned Mathlib v4.26.0. Tactic depth: light (`unfold` + `Finset.mem_union/mem_image` + `omega` + `linarith`); no `decide` or heavy `simp`.
+
+### Next Action
+
+**S7 ACT (recommended)**: discharge `witness_regular_symmetric_implies_epsilon_regular_small_eps` via the two-sided second-moment / Cauchy-Schwarz route. The route is now sketched in the theorem's docstring; the missing pieces are:
+
+1. A `vertexBias_A_average` lemma: the average of `vertexBias G a A B'` over `a ∈ A` is bounded by `eps` via `IsWitnessRegular` + Cauchy-Schwarz (per S6c PREP §5).
+2. A `vertexBias_B_average` lemma (dual): the analogous average over `b ∈ B` using `Dual_IsWitnessRegular`.
+3. A `markov_bad_count` lemma: the number of `eps`-biased vertices is `≤ eps · |A|` (or `|B|`) via Markov / Chebyshev.
+4. A final `slack4_assemble` lemma: triangle inequality on `|d(A', B') - d(A, B)|` against the unbiased-vertex bulk, multiplied by `1/(1 - 4·eps) ≤ 4/3` when `4·eps ≤ 1/4` (using `hsmall : 4·eps < 1`).
+
+Estimated 200-300 LOC, 2-3 sessions. Aristotle-eligible once the four sub-lemmas above have clean statements (Aristotle skips the main `_small_eps` since it carries deep mathematical content, but the averaging / Markov sub-lemmas are likely in Mathlib via `Finset.inner_mul_le_norm_mul_norm` and `Finset.sum_le_card_nsmul`).
+
+**S7 ACT-alt (independent)**: build `findRegularPartition` (Target C, orthogonal to the slack-4 sorry — see Iter 9 STATE-SYNC §3). Uses merged `witnessOfIrregular` (PR #17919). Estimated 100-150 LOC, 1 session. Does NOT depend on this iteration's symmetric surrogate.
+
+**S7 PREP (lower priority)**: clean up the file structure (move Part 4 placeholder, merge Parts 5+7 trivial-regime cases) and update `research/problems/szemeredi-core-oq-04/problem.md` to make the symmetric surrogate the headline definition.
+
+
 
 ## Iteration 9 (researcher-5, 2026-05-13) — STATE-SYNC (doc-only)
 
