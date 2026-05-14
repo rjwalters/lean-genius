@@ -244,3 +244,174 @@ proof splits at `max a b = 0` to handle this gracefully (LHS = 1, RHS = 3,
   Mathlib v4.x; cross-checked against rev pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
 - No concurrent PR conflict at write-time (verified via `gh pr list
   --search bezout-identity-oq-01-oq-01-oq-01-oq-01` returning `[]`).
+
+## S3 (researcher-3, 2026-05-14) — BUILD-DIAGNOSE post-S2-merge
+
+### First Docker baseline (after S2 PR #18029 merged 2026-05-12)
+
+Ran `./proofs/scripts/docker-build.sh Proofs.BezoutIdentityOQ01OQ01OQ01`
+in `lean4-arm64:v4.26.0` against pinned rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Fresh-clone Mathlib
+(worktree's `proofs/.lake` is a self-symlink per memory
+`feedback_researcher_lake_symlink_broken.md`; Docker mounts the
+parent dir contents so cache-volume `/workspace/proofs/.lake/build`
+takes effect after first clone). `[3060/3060]` jobs attempted;
+final target `Proofs.BezoutIdentityOQ01OQ01OQ01` (6.7s) failed
+with 4 errors.
+
+### Errors found
+
+All 4 errors **pre-existed in commit `978cc5535b6`** (Aristotle
+integration, before any S* iteration). S2's PR #18029 only
+touched PART IV (BIT COMPLEXITY MODEL: lines 178–232 inclusive),
+and PART IV reads clean in the build output (no error in the
+`size_eq_succ_log`, `stepBitOps`, or `stepBitOps_le` zones).
+The 4 errors all live in PART II (line 70: `log_div_two`),
+PART III (line 116: `binaryGcdSteps_le_log` body), PART V (line
+265: `binaryGcd_log_sq_complexity`), and PART VI (line 277:
+`native_decide` example). All inherited from `978cc5535b6`.
+
+#### K1 — `Nat.log_div_base` API drift (line 70)
+
+At pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`,
+`Mathlib/Data/Nat/Log.lean:292`:
+
+```lean
+theorem log_div_base (b n : ℕ) : log b (n / b) = log b n - 1 := by …
+```
+
+Both arguments are `ℕ`; no `1 < b` or `b ≤ n` hypothesis. The
+identity holds unconditionally — `Nat` subtraction returns `0`
+when underflowing, absorbing degenerate cases.
+
+The current `Proofs/BezoutIdentityOQ01OQ01OQ01.lean:70` invocation
+```lean
+simp [Nat.log_div_base (by norm_num : 1 < 2) (by omega : 2 ≤ n)]
+```
+violates the new signature: `(by norm_num : 1 < 2)` synthesizes
+a `Prop`-valued term, but the expected first arg type is `ℕ`.
+Lean v4.26.0 elaborator strictly rejects.
+
+**Fix**: `simp [Nat.log_div_base 2 n]` (drop both hypothesis args).
+
+#### K2 — `simp only [binaryGcdSteps, ...]` loop at v4.26.0 (line 116 + 7 sister sites)
+
+```
+warning: Possibly looping simp theorem: `binaryGcdSteps.eq_1`
+error: maximum recursion depth has been reached
+```
+
+`binaryGcdSteps.eq_1` is the auto-generated unfolding equation
+for `def binaryGcdSteps`. At v4.26.0, the simp engine attempts
+to apply it recursively on the RHS (which itself contains
+`binaryGcdSteps`-calls), looping until max-recursion-depth.
+v4.25.x apparently curated the simp set to break after one
+unfold.
+
+**Fix template**: replace `simp only [binaryGcdSteps, if_neg (...)]`
+with the explicit pair `rw [binaryGcdSteps]; simp only [if_neg (...)]`.
+The `rw` only rewrites the topmost matching occurrence, breaking
+the loop.
+
+Sites in the file (lines: 116, 121, 133, 136, 145, 155, 157, 170)
+— inspect each before applying; some may need only the `rw`
+without surrounding `simp only` adjustments.
+
+#### K3 — `binaryGcd_log_sq_bound` constant 6 is too small (lines 257–269)
+
+Pre-existing semantic bug. In scope at line 265:
+
+```
+hsteps   : binaryGcdSteps a b ≤ 2 · (log₂ a + log₂ b) + 2  (line 252)
+hlog_sum : log₂ a + log₂ b   ≤ 2 · log₂ (max a b)           (line 262)
+```
+
+Composition: `binaryGcdSteps a b ≤ 4 · log₂ (max a b) + 2`,
+NOT `≤ 2 · log₂ (max a b) + 2` as claimed by `hsteps'` on line
+265. `omega` correctly rejects the unprovable tighter form.
+
+Headline `binaryGcd_log_sq_bound (a b) : totalBitOps a b ≤ 6 *
+(Nat.log 2 (max a b) + 1) ^ 2` is therefore mathematically
+unprovable (constant 6 is too small). Correct constant:
+
+```
+totalBitOps a b ≤ (4·log + 2) · (3·(log + 1))
+                = 12·log² + 18·log + 6
+               ≤ 12·(log + 1)² = 12·log² + 24·log + 12
+```
+
+— so constant `12` is the correct minimum. (Asymptotically
+still O(log²); only the constant doubles.)
+
+**Fix**: restate theorem
+```lean
+theorem binaryGcd_log_sq_bound (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
+    totalBitOps a b ≤ 12 * (Nat.log 2 (max a b) + 1) ^ 2
+```
+re-prove body via `hsteps' : binaryGcdSteps a b ≤ 4 * Nat.log 2 (max a b) + 2 := by omega`
+(provable from hsteps + hlog_sum) then close with `nlinarith` against
+`12 * (log + 1)^2`.
+
+#### K4 — `binaryGcdSteps 252 198 = 12` is wrong; actual value is 7 (line 277)
+
+`native_decide` evaluates the algorithm and computes `7`, so the
+literal `= 12` claim is rejected.
+
+Hand-trace verifies 7 (see state.md). The next-line inequality
+example `binaryGcdSteps 252 198 ≤ 30` still holds (7 ≤ 30 ✓),
+so only line 277 needs `12` → `7` substitution.
+
+### Gallery-integrity implication
+
+`src/data/proofs/bezout-identity-oq-01-oq-01-oq-01/meta.json`
+shows `status: "verified"`, `badge: "verified"`, `axiomCount:
+0` for a Lean file that does not compile. Until K1–K4 land in a
+mechanic / doctor PR, the parent gallery's `verified` claim is
+unjustified. Per CLAUDE.md Axiom Integrity Policy, this is the
+exact `verified`-overclaim failure mode.
+
+After the mechanic PR lands, follow-up doctor PR refreshes the
+parent meta.json's quantitative claims:
+- `originalContributions[7]` (the `binaryGcd_log_sq_bound`
+  entry) references `6·(log₂+1)²` — change to `12·(log₂+1)²`.
+- `§bit-complexity {summary, mathContext}` quotes the same;
+  edit similarly.
+- `keyInsights` line on "constant 6 is the product of the two
+  stage constants ($2 \cdot 3$)" — wrong; actual product is
+  `4 · 3 = 12` (since step bound is `4·log + 2` not `2·log + 2`).
+  Re-write to explain the constant doubling.
+- `conclusion.summary` similar update.
+
+### Mechanic kit summary (K1–K4)
+
+| Kit | Lines | LOC | Category |
+|-----|-------|-----|----------|
+| K1 | 70 | 1 | API drift v4.26.0 |
+| K2 | 116, 121, 133, 136, 145, 155, 157, 170 | ~16 | tactic regression v4.26.0 |
+| K3 | 257–269 | ~5 | semantic bug (constant 6 → 12) |
+| K4 | 277 | 1 | semantic bug (`= 12` → `= 7`) |
+| **Total** | — | **~23** | mixed |
+
+Pin-cite for K1 (already verified): Mathlib v4.26.0
+`Mathlib/Data/Nat/Log.lean:292` via
+`gh api repos/leanprover-community/mathlib4/contents/Mathlib/Data/Nat/Log.lean?ref=2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+### Why S2 still counts as a contribution
+
+The S2 PR #18029 did *not* introduce these bugs — they were
+inherited from the file's creation. S2's contribution
+(eliminating the two `stepBitOps` axioms via the concrete
+`2 · Nat.size + 1` model + `size_eq_succ_log` bridge) remains
+mathematically and Lean-syntactically correct. Once the K1–K4
+kit lands, the file's `verified` status is restored on solid
+footing (with the corrected constant 12 in K3).
+
+The lesson here mirrors memory
+`feedback_researcher_kit_verify_follow_up_catches_misdiagnosed_native_decide.md`
+(researcher-9, 2026-05-14, PR #19156 binary-gcd-oq-03-oq-02):
+**`(build pending)` is not the same as `(build OK)`** — when a
+PR ships with that caveat, the next session must Docker-validate
+before claiming completion. Researcher-12's parallel STATE-SYNC
+commit `36ea23b63f8` (branch `research/r12-bezout-oq01x4-1778745613`,
+never PR'd) ran into this same trap — it would have marked the
+slug COMPLETED/graduated without ever running Docker.
