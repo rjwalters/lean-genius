@@ -1,159 +1,127 @@
 # Current State
 
-**Phase**: OBSERVE (S1 scaffold complete; no Lean changes yet)
-**Since**: 2026-05-12T17:30:00Z
-**Last Updated**: 2026-05-12 (Iteration 1, researcher-10)
-**Iteration**: 1
+**Phase**: ACT (S3 ACT SCAFFOLD complete; capstone strategic sorry; Docker-verified 7744 jobs)
+**Since**: 2026-05-14T15:10:00Z
+**Last Updated**: 2026-05-14 (Iteration 11, researcher-8)
+**Iteration**: 11
 
-## Iteration 1 (researcher-10, 2026-05-12) — S1 OBSERVE
+## Iteration 11 (researcher-8, 2026-05-14) — S3 ACT SCAFFOLD
 
-**Outcome**: scaffold — created `problem.md`, `knowledge.md`,
-`state.md`, and `src/data/research/problems/sqrt2-minpoly-oq-03.json`.
-No Lean changes.
+**Outcome**: ACT — created `proofs/Proofs/Sqrt2MinpolyOQ03.lean` (70 LOC,
+1 strategic sorry on capstone, Docker-verified 7744 jobs).
 
 ### What I added
 
-Doc-only scaffolding for a fresh tier-B slug. The deliverable is:
+- `proofs/Proofs/Sqrt2MinpolyOQ03.lean`:
+  - `noncomputable abbrev X_sq_sub_two : ℚ[X] := X ^ 2 - C 2`
+  - `noncomputable abbrev Q_sqrt2 : Type := AdjoinRoot X_sq_sub_two`
+  - `instance : Fact (Irreducible X_sq_sub_two) := ⟨Sqrt2Minpoly.irred_X_sq_sub_two⟩`
+    (re-uses parent gallery's Eisenstein-via-Gauss irreducibility)
+  - `instance : NumberField Q_sqrt2` constructed explicitly via
+    `PowerBasis.finite (AdjoinRoot.powerBasis ...)` for the `to_finiteDimensional`
+    field; `to_charZero := inferInstance` (from `Algebra ℚ`).
+  - `theorem Q_sqrt2_classNumber_eq_one : NumberField.classNumber Q_sqrt2 = 1 := by sorry`
+    (strategic capstone, with PREP-3..8 discharge plan documented inline).
 
-- A precise framing of "class number 1 for $\mathbb{Q}(\sqrt 2)$ via
-  Minkowski's bound" as a follow-up to the parent's minimal-polynomial
-  result. The formal target is
-  `NumberField.classNumber (Q_sqrt2) = 1`, with two strictly stronger
-  optional corollaries: `IsPrincipalIdealRing` and `EuclideanDomain`
-  on the ring of integers.
-- A tractability triage distinguishing the **Minkowski-bound route**
-  (S2-S4: define Q(√2) as a number field, compute discriminant 8,
-  compute Minkowski bound √2, conclude h_K = 1) from the **Euclidean-
-  domain route** (S5 optional: $|N(a + b\sqrt 2)| = |a^2 - 2b^2|$
-  with division-with-remainder verified geometrically).
-- A survey of the Mathlib surface (`NumberField.classNumber`,
-  `NumberField.minkowskiBound`, `NumberField.RingOfIntegers`,
-  `NumberField.discr`, `Zsqrtd 2`) and the parent / sibling re-use
-  opportunities (parent provides irreducibility of $X^2 - 2$ over $\mathbb{Q}$;
-  the Gaussian integer `Mathlib.NumberTheory.Zsqrtd.GaussianInt`
-  provides a Euclidean-domain template).
-- A concrete S2 plan: build
-  `proofs/Proofs/Sqrt2MinpolyOQ03.lean`, construct
-  $\mathbb{Q}(\sqrt 2)$ via
-  `Polynomial.SplittingField (X^2 - C 2 : ℚ[X])`, verify the
-  `NumberField` instance, and stub the main theorem
-  `Q_sqrt2_classNumber_eq_one` with the inline strategy
-  (discriminant 8 → Minkowski bound √2 → h_K = 1).
+### Docker verification
 
-### Why not S2 in this session
+3 Docker iterations:
+1. Build 1: 7744 jobs clean + 1 cosmetic `simpa→simp` linter warning + expected sorry warning.
+2. Build 2: applied `simpa → simp` fix; surfaced an `unused simp arg` warning.
+3. Build 3: removed unused arg; clean 7744 jobs with only the expected
+   strategic-sorry warning at line 69.
 
-S2 ORIENT requires verifying Mathlib's `NumberField.classNumber`,
-`NumberField.discr`, and `NumberField.minkowskiBound` API at the
-pinned v4.26.0 rev — particularly the exact module path
-(`Mathlib.NumberTheory.NumberField.Minkowski` vs
-`Mathlib.NumberTheory.NumberField.CanonicalEmbedding`) and the form
-of the bound (a `Real.toNNReal` or a plain `ℝ`). The recursive
-`proofs/.lake` self-symlink in this worktree (per
-`feedback_researcher_lake_symlink_broken.md`) prevents direct
-Mathlib search; that lookup is best done in S2 ORIENT where the
-build can verify the imports compile.
+### Why S3 ACT SCAFFOLD now (not yet another PREP)
 
-Additionally, the OQ-03 deliverable has a *Minkowski-route* /
-*Euclidean-route* split that benefits from being made explicit in
-the S2 plan — the Minkowski route is the canonical proof in Marcus
-Chapter 5, while the Euclidean route is the canonical proof in
-Stewart-Tall and Hardy-Wright; both are gallery-worthy, but the
-Minkowski route is the more general (it scales to other small
-quadratic fields).
+The slug carried 9 merged S2 PREP sessions (S1 OBSERVE + S2 PREP-1..9), all
+doc-only, accumulating a sorry-free 128-LOC design ready for S3 ACT (per
+PREP-8 §6 / PREP-9 §8). Per memory rule
+`feedback_researcher_docs_only_chain_silent_parent_regression`, ≥4 consecutive
+doc-only PREPs without a Docker build risks silent Mathlib v4.26.0 surface
+drift. Converting the design into Lean code (even with the capstone sorry) is
+the natural next step — the scaffold delivers:
 
-### Files added (S1)
+1. **A Docker-verified instance stack** that downstream sessions can rely on.
+2. **An explicit `NumberField Q_sqrt2` instance** via `AdjoinRoot.powerBasis`,
+   confirming Mathlib's `to_finiteDimensional` field synthesizes from a
+   `PowerBasis` at v4.26.0 (a non-trivial instance derivation that PREP-1
+   implicitly assumed but never compiled).
+3. **The `Fact` discharge pattern** confirms that the parent's
+   `Sqrt2Minpoly.irred_X_sq_sub_two` typechecks against `X^2 - C (2 : ℚ)`
+   without a coercion-glyph mismatch.
+4. **A capstone target** for the next session(s) to incrementally fill in
+   per the PREP-3..8 discharge plan.
 
-- `research/problems/sqrt2-minpoly-oq-03/problem.md` — problem
-  description with tractability triage, references (Marcus,
-  Neukirch, Stewart-Tall, Hardy-Wright), and parent / sibling
-  linkage
-- `research/problems/sqrt2-minpoly-oq-03/knowledge.md` — Mathlib
-  surface inventory, feasibility table, S2 plan, risk register
+### Files modified
+
+- `proofs/Proofs/Sqrt2MinpolyOQ03.lean` — new (70 LOC, 1 sorry, 0 axioms)
 - `research/problems/sqrt2-minpoly-oq-03/state.md` — this file
-- `src/data/research/problems/sqrt2-minpoly-oq-03.json` —
-  phase OBSERVE, iter 1, references, knowledge surface
+- `src/data/research/problems/sqrt2-minpoly-oq-03.json` — phase OBSERVE → ACT,
+  iteration 1 → 11, currentState refresh
+- `research/problems/sqrt2-minpoly-oq-03/sessions/2026-05-14-s03-act-scaffold.md`
+  (this iteration's session log)
 
-### Next action (S2 ORIENT)
+### Anti-targets (this S3 ACT SCAFFOLD explicitly does NOT do)
 
-Create `proofs/Proofs/Sqrt2MinpolyOQ03.lean` with:
+1. **Does not implement the discriminant chain** (PREP-3/4/5/6 territory).
+   The strategic sorry on the capstone defers `disc Q_sqrt2 = 8`,
+   `minkowskiBound`, and `IsTotallyReal` to S4 ACT.
+2. **Does not implement `IsTotallyReal Q_sqrt2`** (PREP-7/8 §4.1 has the
+   25-LOC direct route via `AdjoinRoot.ringHom_ext`). Deferred to S4.
+3. **Does not modify gallery `meta.json`** — slug not yet a gallery entry
+   (no `src/data/proofs/sqrt2-minpoly-oq-03/` directory). Deferred until
+   the capstone sorry is discharged and the proof is verified-with-0-sorries.
+4. **Does not bundle deprecation fixes for unrelated proofs.** Pristine new
+   `proofs/Proofs/Sqrt2MinpolyOQ03.lean`.
 
-1. Imports: parent (`Proofs.Sqrt2Minpoly` for irreducibility) +
-   `Mathlib.NumberTheory.NumberField.Basic` +
-   `Mathlib.NumberTheory.NumberField.ClassNumber` +
-   `Mathlib.NumberTheory.NumberField.Discriminant` +
-   `Mathlib.NumberTheory.NumberField.CanonicalEmbedding` (verify
-   exact module name for Minkowski-bound API at v4.26.0) +
-   `Mathlib.NumberTheory.Zsqrtd.Basic`.
-2. `def Q_sqrt2 : Type := Polynomial.SplittingField (X^2 - C 2 : ℚ[X])`
-   (or via `AdjoinRoot` if the splitting-field instance derivation
-   for `NumberField Q_sqrt2` is friction-heavy at the pin).
-3. `instance : Field Q_sqrt2`, `instance : Algebra ℚ Q_sqrt2`,
-   `instance : NumberField Q_sqrt2` — derive from Mathlib's
-   `SplittingField` instances + the parent's
-   `irred_X_sq_sub_two_rat`.
-4. `theorem Q_sqrt2_classNumber_eq_one :
-        NumberField.classNumber Q_sqrt2 = 1 := by sorry` —
-   strategic sorry, with the inline strategy documented:
-   * Compute `NumberField.discr Q_sqrt2 = 8` (S3 sub-target).
-   * Compute `NumberField.minkowskiBound Q_sqrt2 = √2 ≈ 1.414` (S3
-     sub-target).
-   * Apply `NumberField.exists_ne_zero_lt_minkowskiBound` to extract
-     a non-zero integral element of norm $< \sqrt 2 < 2$ from each
-     ideal class (S4 sub-target).
-   * Conclude every ideal class contains an integer of norm 1,
-     hence the unit ideal, hence $h_K = 1$.
+### Next action (S4 ACT step 1: discriminant chain)
 
-Estimated S2 ACT size: ~40 lines, 1 sorry on the main theorem,
-0 sorries on the field / `NumberField` instance derivation.
+Implement `NumberField.discr Q_sqrt2 = 8` per the PREP-4 verbatim norm chain
+(via `Algebra.discr_powerBasis_eq_norm` applied to the power basis
+`{1, AdjoinRoot.root}`). Estimated ~20 LOC. After that, `IsTotallyReal Q_sqrt2`
+(~25 LOC, PREP-8 §4.1 direct route) and the Minkowski-bound chain
+(~50 LOC, PREP-1).
 
-### Blockers
+### PREP chain consolidated (after S3 ACT SCAFFOLD)
 
-None anticipated. The Mathlib infrastructure is comprehensive at
-v4.26.0 (modulo API-surface drift on module paths). If
-`NumberField.discr` does not directly give `disc Q_sqrt2 = 8`,
-fall back to explicit `Algebra.discr` computation via the basis
-$\{1, \sqrt 2\}$ trace matrix (additional ~40 lines, 0 sorries).
-
-### Race-safety note
-
-This slug was added by the seeker (pool `added_at = null`, but
-seeker's notes timestamp it 2026-05-12). As of S1 submission:
-
-- `gh pr list --search "sqrt2-minpoly-oq-03"` returns 0 open PRs
-- `git branch -r | grep sqrt2-minpoly-oq-03` returns 0 remote
-  branches
-- `research/claims/sqrt2-minpoly-oq-03.lock` was acquired by
-  researcher-10 at the start of this session
-- `research/problems/sqrt2-minpoly-oq-03/` did not exist before
-  this session
-- `src/data/research/problems/sqrt2-minpoly-oq-03.json` did not
-  exist before this session
-
-The race window for fresh tier-B slugs is 5-30 minutes per memory
-pattern (`feedback_researcher_seeker_fresh_slug_window.md`); this
-S1 is being written ~24 hours after the seeker add window, well
-outside the convergent-claim window. Pre-push probe will re-verify
-immediately before push.
+| Iter | PR | Phase | Coverage |
+|---:|---:|---|---|
+| 1 | #18223 | S1 OBSERVE | Problem framing, tractability triage, references |
+| 2 | #18340 | S2 PREP-1 | `isPrincipalIdealRing_of_abs_discr_lt` entry point |
+| 3 | #18371 | S2 PREP-2 | Euclidean route via `Zsqrtd.GaussianInt` template |
+| 4 | #18454 | S2 PREP-3 | `discr_powerBasis_eq_norm` high-level chain |
+| 5 | #18479 | S2 PREP-4 | Verbatim norm chain (disc = 8) |
+| 6 | #18526 | S2 PREP-5 | Integer-basis bridge audit + name correction |
+| 7 | #18600 | S2 PREP-6 | Monogenic-Eisenstein shortcut (𝓞 = ℤ[√2]) |
+| 8 | #18666 | S2 PREP-7 | `IsTotallyReal` API pin + Route C 54-LOC skeleton |
+| 9 | #18710 | S2 PREP-8 | `ringHom_ext` discharge of PREP-7 §3.4; 128-LOC plan |
+| 10 | #18762 | S2 PREP-9 | Lake-pinned SHA verification of PREP-8 §7 risks |
+| **11** | **(this PR)** | **S3 ACT SCAFFOLD** | **70-LOC Lean file: type + instances + capstone sorry; Docker 7744 jobs clean** |
 
 ### Honest assessment
 
-This is **not** a novel mathematical result. Class number 1 for
-$\mathbb{Q}(\sqrt 2)$ is a textbook example (Marcus 1977 Chapter 5,
-Stewart-Tall Section 9.3). The Lean contribution is:
+This S3 ACT SCAFFOLD does not advance the **mathematical** content beyond
+PREP-1..9 — it just commits the design to Lean syntax that compiles. The
+significant value-add is:
 
-1. **First instantiation of Mathlib's `NumberField.classNumber`
-   machinery for a concrete real quadratic field in the gallery.**
-   Mathlib has the abstract API but no specific-field instantiations;
-   this becomes a template for future $\mathbb{Q}(\sqrt 3)$,
-   $\mathbb{Q}(\sqrt 5)$, $\mathbb{Q}(\sqrt 6)$ cases.
-2. **Bridge between `Zsqrtd 2` and the abstract ring of integers
-   of $\mathbb{Q}(\sqrt 2)$.** Mathlib has both but the iso is not
-   packaged at v4.26.0; constructing it makes the bridge reusable.
-3. **Concrete step toward Gauss's class-number-1 conjecture for
-   real quadratic fields.** The general problem is open; gallery
-   coverage of small cases is a valid scaling target.
+- Confirming the `AdjoinRoot.powerBasis` route to `NumberField Q_sqrt2`
+  actually elaborates at v4.26.0.
+- Confirming the parent `Sqrt2Minpoly.irred_X_sq_sub_two` exports
+  with the right namespace + glyph form for `Fact ⟨...⟩`.
+- Producing a Docker-buildable starting point so downstream sessions
+  iterate on the actual capstone proof, not on imports/instance friction.
 
-The novelty is **packaging**, not mathematical content. The
-expected deliverable (S2-S4) is a complete formal proof with 0
-axioms and 0 sorries, suitable for the gallery's `verified` /
-`original` badge tier.
+The capstone strategic sorry remains. The slug is **not yet `verified`**
+(1 sorry, 0 axioms); estimated 3-4 sessions remaining to discharge per
+PREP-8 §6's 128-LOC plan.
+
+### Race-safety note
+
+Pre-claim (2026-05-14 15:00 UTC):
+- `gh pr list --search "sqrt2-minpoly-oq-03 in:title" --state open` returned 0.
+- This iteration follows PREP-9 (#18762, merged 2026-05-13 11:57 UTC) by ~27h
+  — well outside any race window.
+- Pre-push probe will re-verify immediately before push.
+
+Post-claim release: `release sqrt2-minpoly-oq-03` will be invoked from main
+repo cwd per `feedback_researcher_claim_problem_sh_worktree_cwd_footgun.md`.
