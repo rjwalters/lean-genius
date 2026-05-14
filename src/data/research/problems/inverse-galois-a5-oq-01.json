@@ -39,13 +39,13 @@
   },
   "currentState": {
     "phase": "ORIENT",
-    "since": "2026-05-12T16:15:00.000Z",
-    "iteration": 3,
-    "focus": "S3 (researcher-4, 2026-05-12): R1 ORIENT refinement — Mathlib AlgHom.IsArithFrobAt API audit at pinned v4.26.0 (rev 2df2f01...). Replaces S1's hand-waved Mathlib references with concrete declaration names verified against Mathlib source. Key findings: (1) Mathlib.RingTheory.Frobenius (Andrew Yang, 2025) is the canonical Frobenius infrastructure — provides AlgHom.IsArithFrobAt, IsArithFrobAt, IsArithFrobAt.exists_of_isInvariant, arithFrobAt; (2) Mathlib.RingTheory.Invariant.Basic provides stabilizerHom_surjective and Algebra.isInvariant_of_isGalois; (3) Mathlib.NumberTheory.RamificationInertia.Galois provides inertiaDegIn and card_inertia_eq_ramificationIdxIn; (4) the genuine residual Mathlib gap is the single bridge inequality orderOf (arithFrobAt R G Q) ≥ inertiaDegIn (Q.under R) S (equality at unramified primes), the S4 ACT core content (~100-150 Lean lines). S2 scaffold unchanged. S3 is doc-only and adds zero Lean lines; iteration count bumped to 3. Sorry delta: 0. Axiom delta: 0.",
+    "since": "2026-05-13T10:16:58.000Z",
+    "iteration": 4,
+    "focus": "S4 ACT readiness (researcher-9 STATE-SYNC, 2026-05-14): six doc-only PREP/refinement PRs have stacked on the S2 ORIENT Lean scaffold (PR #18155, 76 LOC + 1 sorry): S3 sub-steps (a) #18416, (b) #18315, (c) #18378; then S4 PREP #18482 (Strategy B split-parent choreography to resolve circular-import: split InverseGaloisA5.lean into Base.lean + main.lean importing the Dedekind companion), S4b PREP #18633 (annotations.json migration audit + meta.json lineCount correction for Strategy B), and S4c PREP #18731 (Mathlib bearer audit at pin 2df2f01: 2 phantoms `arithFrobAt_mem_stabilizer` and `card_stabilizer_eq_card_inertia_mul_finrank` + 3 line-drifts; provides ~25-40-LOC drop-in workarounds via local lemmas `IsArithFrobAt.smul_eq_self` and `card_stabilizer_eq_card_inertia_mul_finrank_local`). Post-workaround S4 ACT estimate revised from 235-360 to 270-410 LOC. The parent's axiom three_dvd_gal_card remains the sole obstacle; status remains axiomatized (1 axiom, 0 sorries, 84 theorems, 2067 lines). No Lean changes since S2 (~44h ago); pre-ACT Docker baseline mandatory per doc-only-chain saturation trap.",
     "blockers": [],
-    "nextAction": "S4 (any researcher): R1 ACT — discharge exists_gal_order_three : ∃ σ : q.Gal, orderOf σ = 3 using the pinned API surface. Estimated 230-360 Lean lines per the S3 audit. Steps: (a) typeclass plumbing via Algebra.isInvariant_of_isGalois + IsIntegralClosure.MulSemiringAction (~30-50 lines); (b) exhibit Q : Ideal 𝒪 above 7 with inertiaDegIn = 3 (~100-150 lines); (c) σ := arithFrobAt ℤ q.Gal Q (1 line); (d) orderOf σ = 3 via stabilizerHom_surjective + FiniteField.pow_card + card_inertia_eq_ramificationIdxIn (~100-150 lines); (e) plumbing to exists_gal_order_three (~5-10 lines). If the prime-ideal construction stalls, fall back to R3 (resolvent sextic) per problem.md Q3. After S4 closes the sorry, S5 CLOSE replaces the parent axiom and bumps meta.json.",
+    "nextAction": "S4 ACT (~270-410 Lean lines, -1 sorry) honoring Strategy B post-ACT choreography and S4c phantom workarounds. Pre-flight: docker-build Proofs.InverseGaloisA5Dedekind on origin/main from worktree CWD to establish clean baseline (latent v4.26.0 parent regressions surface as `(build pending - parent-file blocker)` STATE-SYNC, not bundled into ACT). Sub-step plan: (a) typeclass plumbing ~30-50 LOC via Algebra.isInvariant_of_isGalois + IsIntegralClosure.MulSemiringAction; (b) exhibit Q : Ideal 𝒪 above 7 with inertiaDegIn = 3 ~100-150 LOC using parent's cubic_factor_no_roots_mod7; (c) orderOf σ = 3 ~125-190 LOC using arithFrobAt (line 256 at pin, NOT 258), the local lemma IsArithFrobAt.smul_eq_self (~10-15 LOC) for stabilizer-membership since arithFrobAt_mem_stabilizer is phantom, the local lemma card_stabilizer_eq_card_inertia_mul_finrank_local (~15-25 LOC) extracted from ncard_primesOver_mul_card_inertia_mul_finrank's proof body, card_inertia_eq_ramificationIdxIn (line 323 at pin, NOT 333), and IsCyclic.of_FiniteField for residue-side; (d) plumbing ~5-10 LOC via orderOf_dvd_card. Plan 3-5 Docker iterations. If sub-step (b) stalls on prime-ideal construction, fall back to R3 (resolvent sextic ~600 LOC). After S4 ACT closes the sorry, S5 CLOSE executes Strategy B refactor (3-file split: ~+250 LOC new main file + ~+10 LOC theorem replacing axiom) and applies S4b's annotations.json migration + meta.json status axiomatized -> verified.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 3,
       "approachesTried": 0
     }
@@ -112,7 +112,7 @@
     "seeker-selected"
   ],
   "createdAt": "2026-05-12T12:55:00.000Z",
-  "updatedAt": "2026-05-12T19:20:58Z",
+  "updatedAt": "2026-05-14T15:25:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
