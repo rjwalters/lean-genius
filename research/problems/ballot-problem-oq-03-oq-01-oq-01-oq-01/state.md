@@ -4,8 +4,107 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-12 (S41 — researcher-12, prefix-`Sym` complement-form lemma)
-**Iteration**: 41
+**Last Updated**: 2026-05-14 (S42 — researcher-12, STATE-SYNC: research tracker JSON resync after 19-iteration drift)
+**Iteration**: 42
+
+## S42 Summary (2026-05-14, researcher-12)
+
+**Mode**: STATE-SYNC (doc-only). Research tracker JSON
+`src/data/research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01.json`
+had drifted from `state.md` by 19 iterations (cs.iteration = 22 vs
+state.md = 41) and ~1356 lines (leanFiles main entry: lineCount 992 vs
+actual 2348). Six merged sessions (S36 #17758, S37 #17721, S38 #17861,
+S41 #17900, plus the still-OPEN S39 #17884 / S40 #17892) of toolkit
+extension had landed without the tracker reflecting them. Sibling
+slug PR #19005 (researcher-12 S74 PARENT-TRIAGE for
+`ballot-problem-oq-03-oq-01-oq-02`, merged 2026-05-14) documents the
+parent `BallotProblemOQ03OQ02.lean` 23-error inventory blocking Docker
+verification for this slug's `(build pending)` chain.
+
+### Deliverables (doc-only)
+
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01.json`:
+  - `currentState.iteration` 22 → 41
+  - `currentState.focus` rewritten to reflect S41 toolkit-complete state
+    (every form has matching `_le` / `_val_eq_sub_*` / `_val_add_*` /
+    degenerate / period descriptions for both Prefix and Suffix sides)
+  - `currentState.nextAction` rewritten with the S40-derived S42+ menu
+    (`firstDescentRotation` def → 2B.4' refined-codomain bijection →
+    Mathlib cycle-lemma contribution → k=3 SSYT punt) plus OPEN-PR
+    rebase note
+  - `knowledge.progressSummary` appended with concise per-session
+    entries S36 → S42 (was: only S35)
+  - `leanFiles` entry for `BallotProblemOQ03OQ01OQ01OQ01.lean`:
+    lineCount 992 → 2348, theoremCount 20 → 60, defCount 6 → 12 —
+    aligned with `src/data/proofs/.../meta.json` (already accurate)
+  - top-level `lastUpdate` 2026-05-08T09:30:00.000Z → 2026-05-14T...
+  - top-level `phase` unchanged (already `ACT`, matches `cs.phase`)
+  - top-level `lastUpdated` preserved as `null` (existing slug
+    convention; schema normalisation is enrich-research.ts scope per
+    `feedback_researcher_state_sync_misses_top_level_phase.md`)
+- `research/problems/.../state.md`: header `Last Updated` line bumped
+  + S42 Summary block inserted before S41.
+
+### Verification
+
+- `jq -e .` validates JSON parse.
+- All counts cross-verified against the live `.lean` file via `wc -l`
+  + decl pattern grep (60 theorems/lemmas, 12 defs, 2 `sorry`-active
+  sites at lines 1698 + 2346, 0 `axiom` declarations). meta.json
+  (`lineCount: 2348`, `theoremCount: 60`, `definitionCount: 12`,
+  `axiomCount: 0`, `sorries: 2`) is already accurate — no edit needed.
+
+### Scope
+
+- **No `.lean` changes.** This is a tracker resync only.
+- **No `src/data/proofs/.../meta.json` changes** (already accurate).
+- **No annotation, peer-review, or audit changes** — STATE-SYNC scope.
+- One STATE-SYNC PR in this session (within the 2-per-session cap from
+  `feedback_researcher_state_sync_misses_top_level_phase.md`).
+
+### Why this is the right S42 step
+
+The S41 `### Next action (S42+)` menu lists four substantive items:
+`firstDescentRotation` def (~20 lines), 2B.4' refined-codomain
+bijection (~30–40 lines), Mathlib-side cycle lemma (~200 lines), punt
+to k=3 SSYT (~300 lines). Each is structurally larger than a single
+research session and lands as `(build pending — parent OQ03OQ02 break)`
+under the current parent regression.
+
+STATE-SYNC is the cheapest forward-progress unit available: it does
+not add to the (build pending) chain, has zero `.lean`-side regression
+risk, and unblocks downstream agents (auditor, enricher, mechanic)
+that consume the tracker JSON to triage workload. The 19-iteration
+drift means any of those agents reading the tracker would see a
+stale focus (`S22 jdt_weight_sum b≥2`) that has already been closed
+upstream and a stale `nextAction` (`S23 ballot_counting_identity`)
+that was also done long ago.
+
+### Build status
+
+Doc-only PR; no Docker build needed. Parent `BallotProblemOQ03OQ02.lean`
+remains broken on `origin/main` per sibling slug PR #19005 (S74
+PARENT-TRIAGE, Docker-verified, 23-error inventory across 6 clusters
+in lines 1911–2386).
+
+### Next action (S43+)
+
+Pick from the S42+ menu (item (a) `firstDescentRotation` is cheapest).
+Status of OPEN PRs after this STATE-SYNC:
+
+* **#17680 (S34, OPEN, CONFLICTING)** — superseded in spirit by the
+  S37 fresh-rebase of researcher-1 (the lemmas are already in the file
+  via the S37 re-application; the S34 OPEN PR can be closed as
+  superseded).
+* **#17884 (S39, OPEN, CONFLICTING)** — needs fresh-rebase from
+  origin/main; the `_zero_val`/`_self_val`/`_mod` prefix mirror lemmas
+  are still missing from origin/main and the S39 PR is the canonical
+  add point.
+* **#17892 (S40, OPEN, CONFLICTING)** — needs fresh-rebase from
+  origin/main; the `_val_add_SuffixSym_val` lemma is still missing
+  from origin/main and the S40 PR is the canonical add point.
+
+
 
 ## S41 Summary (2026-05-12, researcher-12)
 
