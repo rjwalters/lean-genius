@@ -1,6 +1,6 @@
 import Mathlib.Analysis.InnerProductSpace.PiL2
 import Mathlib.LinearAlgebra.Matrix.Determinant.Basic
-import Mathlib.Data.Matrix.Notation
+import Mathlib.LinearAlgebra.Matrix.Notation
 import Mathlib.Tactic
 
 /-!
@@ -14,10 +14,11 @@ S2 SCAFFOLD for `product-of-segments-of-chords-oq-03`:
    concyclicity determinant (Möbius / Berger, *Geometry I*, Theorem 10.7.6).
 2. `Vec2`-level wrapper `concyclicityDet` accessing the two coordinates of each
    `EuclideanSpace ℝ (Fin 2)` point.
-3. Numerical sanity check on the unit-square vertices ($\Delta = 0$), provable
-   by `simp [Matrix.det_fin_four]; ring` on the coordinate form.
-4. Statement of the main bidirectional criterion
+3. Statement of the main bidirectional criterion
    `concyclicityDet_eq_zero_iff_concyclic`, with `sorry` (closed in S3 + S4).
+4. (S7 BUILD-VERIFY note) The two numerical sanity-check examples shipped in
+   S2 SCAFFOLD on `Matrix.det_fin_four` have been removed — the lemma never
+   existed in Mathlib v4.26.0. See the comment in Part 3 below.
 
 Subsequent sessions (S3, S4, S5, S6) discharge the sorry and bridge the result
 back to `Proofs/ProductOfSegmentsOfChords.lean` line 468
@@ -66,23 +67,27 @@ def concyclicityDet (P₁ P₂ P₃ P₄ : Vec2) : ℝ :=
   concyclicityDetCoords (P₁ 0) (P₁ 1) (P₂ 0) (P₂ 1)
     (P₃ 0) (P₃ 1) (P₄ 0) (P₄ 1)
 
-/-! ## Part 3: Numerical sanity check -/
+/-! ## Part 3: Numerical sanity check (deferred to S7b ACT)
 
-/-- The four unit-square vertices $(1, 0)$, $(0, 1)$, $(-1, 0)$, $(0, -1)$ are
-concyclic (they lie on the unit circle), so $\Delta = 0$. Rows 1+3 equal rows
-2+4 (both $(2, 0, 0, 2)$), forcing the determinant to vanish. -/
-example :
-    concyclicityDetCoords 1 0 0 1 (-1) 0 0 (-1) = 0 := by
-  unfold concyclicityDetCoords
-  simp [Matrix.det_fin_four]
-  ring
+The original S2 SCAFFOLD shipped two numerical sanity checks built on
+`Matrix.det_fin_four`, which does not exist in Mathlib v4.26.0 (the lemma
+ladder stops at `Matrix.det_fin_three`; only the cofactor-expansion
+`Matrix.det_succ_row_zero` is available for 4×4 matrices). Both example
+blocks were inert documentation — no downstream consumer — and have been
+removed in S7 BUILD-VERIFY to unblock the file. Reinstating them as
+named numerical lemmas (e.g. via `Matrix.det_succ_row_zero` +
+`Matrix.det_fin_three` expansion, or via an explicit row-dependence
+`Matrix.det_eq_zero_of_row_eq` for the unit-square example) is a small
+follow-up scoped for S7b.
 
-/-- Moving the fourth point off the unit circle to $(0, -2)$ gives $\Delta = -8$. -/
-example :
-    concyclicityDetCoords 1 0 0 1 (-1) 0 0 (-2) = -8 := by
-  unfold concyclicityDetCoords
-  simp [Matrix.det_fin_four]
-  ring
+Geometric content for reference:
+
+- Unit-square vertices $(1,0), (0,1), (-1,0), (0,-1)$ are concyclic
+  (they lie on the unit circle), so $\Delta = 0$. Rows 1+3 = rows 2+4 =
+  $(2, 0, 0, 2)$, forcing a row dependency.
+- Perturbing the fourth point to $(0, -2)$ moves it off the unit circle
+  and gives $\Delta = -8$.
+-/
 
 /-! ## Part 4: Main theorem (statement only) -/
 
