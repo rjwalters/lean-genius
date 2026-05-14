@@ -30,20 +30,20 @@
     "goal": "Audit the slug for genuine open content (this S1), then ship the narrow bridge corollary S2(a) in a follow-up session. Do NOT attempt the named conjecture — it is fully verified across three gallery entries and is in Mathlib."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-12T20:55:00Z",
-    "iteration": 2,
-    "focus": "S2 ACT(a) shipped: bridge corollary `proofs/Proofs/InfinitudePrimes4k3OQ01.lean` (+101 LOC) with one lemma + three theorems. 0 axioms, 0 sorries. Forward and reverse directions both proved: elementary `% 4 = 3` form ↔ analytic ZMod form.",
+    "phase": "ACT (S2 done; S3 PREP backlog complete, S3 ACT pending)",
+    "since": "2026-05-14T02:35:00Z",
+    "iteration": 5,
+    "focus": "S2 ACT(a) shipped 2026-05-12 (PR #18341): bridge corollary `proofs/Proofs/InfinitudePrimes4k3OQ01.lean` (+101 LOC) with one lemma + three theorems. 0 axioms, 0 sorries. Forward and reverse directions both proved: elementary `% 4 = 3` form ↔ analytic ZMod form. Three S3-tier PREP blueprints subsequently merged 2026-05-13 (each doc-only, single new sessions/ file): #18426 S3 PREP parametric Klein-2 `p ≡ -1 (mod q)` for q ∈ {3, 4, 6} (~180 LOC ACT budget, LOW risk); #18490 S2(c) PREP explicit Nat.log counting bound via tower 4^4^... construction with corollary primes_3_mod_4_count_loglog_bound (~205 LOC ACT budget, LOW-MED risk); #18550 S3b PREP Klein-4 case q=8 via quadratic-residue Euclid refinement N=(4·∏p_i)²-2 (~220 LOC ACT budget, MED risk). Three PREPs cover orthogonal slug-step axes (S3 / S2(c) / S3b); none overlap each other or S2 ACT(a). S3 ACT is the next discharge step; recommended order by readiness is R1 Klein-2 q∈{3,4,6} → R2 Nat.log tower → R3 q=8 → R4 S3c PREP for q ∈ {12, 24}.",
     "blockers": [],
-    "nextAction": "S3: optionally pick S2(b) parametric elementary `p ≡ -1 (mod q)` for `q ∈ {3,4,6,8,12,24}` (~150 LOC per modulus or ~300 LOC parametric) OR S2(c) explicit `Nat.log` counting bound (~80 LOC). Either is followed by S4 gallery graduation.",
+    "nextAction": "S3 ACT — pick exactly one PREP target. Recommended R1: discharge #18426 S3 Klein-2 q ∈ {3, 4, 6} PREP into Lean (~180 LOC, LOWest risk; Euclid-style proofs sharing N = q·∏p_i − 1 with per-modulus small-prime exclusion). Alternative R2: discharge #18490 S2(c) Nat.log tower PREP (split S2(c)-a tower lemma + S2(c)-b loglog corollary). Alternative R3: discharge #18550 S3b q=8 quadratic-residue PREP (heavier Mathlib QR dependency). R4: ship S3c PREP for q ∈ {12, 24} (the remaining Klein-4 + non-cyclic abelian cases, sketched briefly in #18550 §6). After any one S3 ACT lands, the slug graduates at gallery-meta.json per S1's stated promotion criterion.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
-      "approachesTried": 1
+      "total": 5,
+      "currentApproach": 1,
+      "approachesTried": 4
     }
   },
   "knowledge": {
-    "progressSummary": "S2 ACT(a) shipped: bridge corollary `proofs/Proofs/InfinitudePrimes4k3OQ01.lean` proves elementary `p % 4 = 3` form and analytic `(p : ZMod 4) = 3` form describe the same `Set.Infinite`. Forward direction recovers Mathlib's ZMod-Dirichlet without L-functions; reverse direction recovers the elementary set from `dirichlet_zmod (3 : ZMod 4) (by decide)`. 0 axioms, 0 sorries, build pending. S1 OBSERVE prior: duplicate-detection audit (slug duplicates `dirichlets-theorem` mathlib + `infinitude-primes-4k3` parent + `dirichlets-theorem-oq-02`).",
+    "progressSummary": "STATE-SYNC 2026-05-14 (researcher-9): state.md refreshed to reflect 3 merged PREP PRs (2026-05-13) that follow S2 ACT(a). PR #18426 (researcher-10): S3 PREP parametric Klein-2 q ∈ {3, 4, 6}; PR #18490 (researcher-12): S2(c) PREP Nat.log tower counting bound; PR #18550 (researcher-9): S3b PREP Klein-4 q=8 via quadratic-residue. State.md adds PREP backlog table (PR/date/LOC/risk), spectrum coverage table (q vs Lean status), counting-bound table, and R1–R4 recommended next-ACT ordering. Prior S2 ACT(a) (2026-05-12, researcher-12, PR #18341): bridge corollary `proofs/Proofs/InfinitudePrimes4k3OQ01.lean` (+101 LOC) — elementary `p % 4 = 3` form ↔ analytic `(p : ZMod 4) = 3` form, 0 axioms, 0 sorries. Forward direction recovers Mathlib's ZMod-Dirichlet without L-functions; reverse recovers the elementary set from `dirichlet_zmod (3 : ZMod 4) (by decide)`. Prior S1 OBSERVE (researcher-11): duplicate-detection audit (slug duplicates `dirichlets-theorem` mathlib + `infinitude-primes-4k3` parent + `dirichlets-theorem-oq-02`).",
     "builtItems": [
       "proofs/Proofs/InfinitudePrimes4k3OQ01.lean (S2 ACT, researcher-12): zmod_4_eq_three_iff, primes_3_mod_4_set_eq, dirichlet_3_mod_4_via_elementary, elementary_via_dirichlet_zmod"
     ],
@@ -55,9 +55,11 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "S2 ACT(a): bridge corollary (~25 LOC), recommended primary target.",
-      "S2 ACT(b) (alternative): parametric elementary `p ≡ -1 (mod q)` for `q ∈ {3, 4, 6, 8, 12, 24}` (~120 LOC, medium risk, q=8 needs Euler mod-8).",
-      "S2 ACT(c) (alternative): explicit `π_{3 mod 4}(x) ≥ Nat.log` lower bound from the elementary `4(n+1)! - 1` construction (~80 LOC)."
+      "R1 (recommended next ACT, LOWEST risk): S3 ACT for Klein-2 q ∈ {3, 4, 6} PREP (#18426 from researcher-10, 2026-05-13). ~180 LOC budget, 3 Euclid-style proofs sharing N = q·∏p_i − 1 with per-modulus small-prime exclusion. ACT-ready: PREP includes verbatim Mathlib v4.26.0 API audit at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67.",
+      "R2 (alternative ACT, LOW-MED risk): S2(c) ACT for Nat.log tower counting bound PREP (#18490 from researcher-12, 2026-05-13). ~205 LOC budget; defines tower : ℕ → ℕ (tower 0 = 4, tower (k+1) = 4^tower k) and proves primes_3_mod_4_explicit_tower_bound : ∀ k, k+1 ≤ count_primes_3_mod_4_below (tower k), with corollary primes_3_mod_4_count_loglog_bound via Nat.log_lt_iff_lt_pow. 4-stage discharge plan; sub-split S2(c)-a / S2(c)-b for single-session ACT split.",
+      "R3 (alternative ACT, MED risk): S3b ACT for Klein-4 q=8 PREP (#18550 from researcher-9, 2026-05-13). ~220 LOC budget; classical construction N = (4·∏p_i)² − 2 isolates primes ≡ 7 (mod 8) via ZMod.IsSquare + quadratic-residue tools.",
+      "R4 (next PREP): S3c PREP for q ∈ {12, 24} — remaining Klein-4 + non-cyclic abelian cases. Sketched briefly in #18550 §6; full PREP would add CRT for simultaneous-congruences. ~70-90 LOC of sessions/ markdown (doc-only).",
+      "After any single S3 ACT lands: S4 gallery graduation per S1's promotion criterion (slug's purpose is non-duplicative Dirichlet-family contribution; one ACT discharge suffices)."
     ]
   },
   "tags": [
@@ -93,7 +95,7 @@
     ]
   },
   "started": "2026-05-12T20:48:00Z",
-  "lastUpdate": "2026-05-12T20:50:00Z",
+  "lastUpdate": "2026-05-14T02:35:00Z",
   "significance": 8,
   "tractability": 4,
   "leanFiles": [

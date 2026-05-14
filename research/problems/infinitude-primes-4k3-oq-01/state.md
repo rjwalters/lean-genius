@@ -2,10 +2,14 @@
 
 ## Current phase
 
-**S2 ACT(a)** — completed 2026-05-12 by researcher-12 (bridge corollary).
+**S2 ACT(a)** completed 2026-05-12 by researcher-12 (bridge corollary).
+**S3 PREP backlog complete (3 doc-only PREPs merged 2026-05-13)** —
+parametric Klein-2 / Klein-4 / Nat.log-counting blueprints ready for ACT.
+**Phase: S3 ACT pending** — pick a single PREP to discharge into Lean.
+
 S1 OBSERVE completed 2026-05-12 by researcher-11.
 
-## S2 ACT(a) summary (researcher-12)
+## S2 ACT(a) summary (researcher-12, PR #18341)
 
 New file `proofs/Proofs/InfinitudePrimes4k3OQ01.lean` (+101 LOC,
 +1 Proofs.lean import line). One lemma `zmod_4_eq_three_iff` plus three
@@ -24,11 +28,93 @@ See `sessions/2026-05-12-s02-act-bridge.md` for the full ACT writeup.
 
 Build pending (same `.lake` symlink convention as S1).
 
-## Recommended next-session entry point (post-S2)
+## S3 PREP backlog (doc-only, merged 2026-05-13)
 
-**S3**: pick S2(b) parametric elementary `p ≡ -1 (mod q)` for
-`q ∈ {3,4,6,8,12,24}`, or S2(c) explicit `Nat.log` counting bound.
-After either, S4 graduates at gallery-meta.json.
+Three orthogonal PREP blueprints have landed since S2 ACT(a). They
+divide the S3 menu (state.md's prior "Recommended next-session entry
+point" enumerated S2(b) / S2(c) / "S4 graduates") into concrete,
+ACT-ready discharge plans. None modify Lean; each picks a single
+classical sub-case for the next ACT iteration.
+
+| PR     | Date       | Slug-step | Topic                                              | Session log                                                            | LOC budget | Risk     | Status            |
+|--------|------------|-----------|----------------------------------------------------|------------------------------------------------------------------------|------------|----------|-------------------|
+| #18426 | 2026-05-13 | S3 (Klein-2) | parametric `p ≡ -1 (mod q)` for `q ∈ {3, 4, 6}` | `sessions/2026-05-12-s03-prep-parametric-q3q4q6-easy-cases.md`         | ~180 LOC   | LOW      | PREP merged, ACT pending |
+| #18490 | 2026-05-13 | S2(c)     | explicit Nat.log counting bound (tower `4^4^...`) | `sessions/2026-05-13-s2c-prep-natlog-counting-bound.md`                | ~205 LOC   | LOW-MED  | PREP merged, ACT pending |
+| #18550 | 2026-05-13 | S3b (Klein-4) | `q = 8` via quadratic-residue Euclid refinement | `sessions/2026-05-13-s3b-prep-klein-4-q8-via-quadratic-residue.md`     | ~220 LOC   | MED      | PREP merged, ACT pending |
+
+### Spectrum coverage table — `p ≡ a (mod q)` infinitude
+
+| `q`  | `a`              | Group           | Classical proof                           | Lean status                                  |
+|------|------------------|-----------------|-------------------------------------------|----------------------------------------------|
+| 4    | `3` (= -1)       | Klein-2         | Euclid: `N = 4 ∏ p_i - 1`                 | ACT verified in `InfinitudePrimes4k3`        |
+| 4    | `3` (= -1, ZMod) | Klein-2         | Bridge to elementary                       | ACT verified in `InfinitudePrimes4k3OQ01` (S2 ACT(a)) |
+| 3    | `2` (= -1)       | Klein-2         | Euclid: `N = 6 ∏ p_i - 1` (handle prime 2 / 3)  | PREP ready (#18426), ACT pending             |
+| 6    | `5` (= -1)       | Klein-2         | Euclid: `N = 6 ∏ p_i - 1` (handle prime 2 / 3)  | PREP ready (#18426), ACT pending             |
+| 8    | `7` (= -1)       | Klein-4         | QR refinement `N = (4 ∏ p_i)² - 2`        | PREP ready (#18550), ACT pending             |
+| 12   | `11`             | Klein-4         | (sketched in #18550 §6, full PREP TBD)    | PREP gap — S3c PREP target                   |
+| 24   | `23`             | abelian non-cyclic  | (sketched in #18550 §6, full PREP TBD)    | PREP gap — S3c PREP target                   |
+| general | `(a : ZMod q)ˣ` | any            | Dirichlet (L-functions)                    | Mathlib `Nat.infinite_setOf_prime_and_eq_mod` (cited via S2 bridge) |
+
+### Counting-bound table — `π_{3 mod 4}(N)` lower bounds
+
+| Form                                  | Source                                    | Status                              |
+|---------------------------------------|-------------------------------------------|-------------------------------------|
+| Qualitative `Set.Infinite`            | `primes_3_mod_4_infinite` (parent)        | ACT verified                        |
+| Tower `π(tower k) ≥ k+1` (#18490 plan) | S2(c) PREP                                | PREP ready, ACT pending             |
+| Loglog `π_{3 mod 4}(N) ≥ Nat.log 4 (Nat.log 4 N)` | S2(c) PREP corollary                      | PREP ready, ACT pending             |
+| Chebyshev-style `π_{3 mod 4}(N) ≥ N / (2 log N)` | NOT in PREP (would need PNT-style tools) | future deferred           |
+
+## Recommended next-session entry point (post-S3 PREP backlog)
+
+**Pick one S3 ACT target** from the table above. Recommended order
+(lowest-risk first, all delivering new theorems in
+`proofs/Proofs/InfinitudePrimes4k3OQ01.lean` or a sibling sub-slug
+companion file):
+
+* **(R1) S3 ACT for `q ∈ {3, 4, 6}` Klein-2 cases** (#18426 PREP).
+  ~180 LOC, LOW risk. Three Euclid-style proofs sharing the
+  `N = q · ∏ p_i - 1 → ∃ p ≡ -1 (mod q)` argument, distinguished
+  only by the small-prime exclusion list. Most readiness-aligned.
+
+* **(R2) S2(c) ACT — tower + loglog counting bound** (#18490 PREP).
+  ~205 LOC, LOW-MED risk. Builds on `primes_3_mod_4_infinite` to
+  give an explicit construction `tower 0 = 4, tower (k+1) = 4^tower k`
+  with the lemma `primes_3_mod_4_explicit_tower_bound : ∀ k, k+1 ≤
+  (count of primes p ≡ 3 (mod 4) below tower k)`. The corollary
+  `primes_3_mod_4_count_loglog_bound` follows via
+  `Nat.log_lt_iff_lt_pow`. Sub-split into S2(c)-a (tower lemma) and
+  S2(c)-b (loglog corollary).
+
+* **(R3) S3b ACT for `q = 8` Klein-4 case** (#18550 PREP).
+  ~220 LOC, MED risk. Requires `ZMod.IsSquare` API + the classical
+  construction `N = (4 · ∏ p_i)² - 2 → ∃ p ≡ 7 (mod 8)`. Heaviest
+  Mathlib dependency footprint (quadratic-reciprocity tools).
+
+* **(R4) S3c PREP for `q ∈ {12, 24}`** (the remaining Klein-4 +
+  non-cyclic abelian cases). Doc-only. Sketches in #18550 §6 plus
+  simultaneous-congruences via CRT. ~70-90 LOC of sessions/ markdown.
+
+### Race-safety notes
+
+- `gh pr list -R rjwalters/lean-genius --search "infinitude-primes-4k3-oq-01" --state open` returned `[]` at sync time
+  (researcher-9, 2026-05-14 ~02:35 UTC).
+- 3 PREP PRs (#18426 / #18490 / #18550) all merged 2026-05-13, each
+  scoped to a **single new `sessions/<date>-<topic>.md` file** —
+  zero overlap with each other, with the S2 ACT(a) PR (#18341), or
+  with this STATE-SYNC.
+- This STATE-SYNC PR is doc-only (state.md + JSON `currentState`,
+  `lastUpdate`, `knowledge.progressSummary`). Untouched: all `.lean`
+  files, `problem.md`, `knowledge.md`, gallery JSON,
+  `sessions/*.md`.
+
+### After S3 ACT
+
+Per S1 OBSERVE: **S4 graduates** at gallery-meta.json by promoting
+the slug from "active" to "verified/specialized-corollary" once a
+single S3 ACT lands. The slug's strict purpose (per S1 duplicate-
+detection) is to provide non-duplicative Dirichlet-family
+contributions; one ACT discharge is enough to justify the slug's
+existence post-graduation.
 
 ## Original S1 OBSERVE summary (preserved below)
 
