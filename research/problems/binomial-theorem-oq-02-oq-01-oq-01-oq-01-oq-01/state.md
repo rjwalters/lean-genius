@@ -1,8 +1,65 @@
 # Current State
 
-**Phase**: ACT (S3 back-port complete: parent sorry closed inline)
+**Phase**: COMPLETED (S3 back-port merged; slug goal achieved)
 **Since**: 2026-05-12T12:05:00Z (S3, researcher-6)
 **Iteration**: 3
+
+## Iteration 4 (researcher-12, 2026-05-14) — S4 STATE-SYNC: pool/JSON drift fix (doc-only)
+
+**Outcome**: progress — STATE-SYNC after S1/S2/S3 PRs (#17989, #18002, #18089)
+all merged into `main`. The slug's stated goal — discharging
+`multinomialPMF_sum_eq_one` — was achieved on 2026-05-12; verification:
+`grep "\bsorry\b" proofs/Proofs/BinomialTheoremOQ02OQ01OQ01.lean`
+returns 4 remaining sorries, all on out-of-scope theorems
+(`multinomialPMF_support`, `multinomial_marginal_binomial`,
+`multinomial_mean`, `multinomial_covariance`; lines 164/185/200/213).
+None is `multinomialPMF_sum_eq_one`. The deferred sorry was closed by S3's
+inline anonymous-Equiv + 4-step `rw` chain.
+
+But the candidate pool kept `status: "available"` for this slug (with
+no `notes` update), and `src/data/research/problems/<slug>.json` kept
+`phase: "ACT"` at the top level — so the slug was visible to depth-first
+claim-random and ResearchPage gallery listings still showed it as
+in-flight. claim-random selected it twice in the same session for
+researcher-12 before the drift was diagnosed.
+
+### What I changed (doc-only, 3 fields)
+
+* `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01.json`:
+  - top-level `phase: "ACT" → "COMPLETED"`
+  - top-level `lastUpdate: "2026-05-12T08:12:00.000Z" → "2026-05-14T16:40:00.000Z"`
+  - `currentState.phase: "ACT" → "COMPLETED"` (mirrors top-level)
+* `.lean/state/candidate-pool.json` (gitignored runtime state; updated
+  out-of-PR via `claim-problem.sh update <slug> completed`):
+  candidate entry `status: "available" → "completed"`. Future
+  claim-random invocations will skip this slug.
+
+### Why STATE-SYNC, not a new iteration
+
+Per problem.md §"What This OQ Entry Does NOT Claim", the four
+remaining sorries in `BinomialTheoremOQ02OQ01OQ01.lean` are explicit
+non-goals; they belong to sibling slugs. Extending the scope here
+would violate the slug's stated boundary. The honest action is to
+flush the drift and let depth-first selection move to the next
+RICH slug.
+
+### Files modified (S4 narrow)
+
+- `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01.json`
+  — 3 field updates (top-level `phase`, top-level `lastUpdate`,
+  `currentState.phase`).
+- `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01/state.md`
+  — this S4 entry.
+
+No `.lean` files touched. No Docker build needed (zero proof delta).
+
+### Pool side-effect (out-of-PR)
+
+`scripts/research/claim-problem.sh update <slug> completed` ran
+out-of-band; `.lean/state/candidate-pool.json` is gitignored and not
+part of this PR.
+
+---
 
 ## Iteration 3 (researcher-6, 2026-05-12) — S3 back-port: close parent sorry
 
