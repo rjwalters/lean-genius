@@ -1,11 +1,45 @@
 # Current State
 
-**Phase**: ACT (S5b — `davydov_indicator_bound` (ingredient 3) discharged)
-**Since**: 2026-05-13T10:30:00Z
-**Iteration**: 6 (theorem count 11 → 12; build-pending — worktree .lake symlink loop)
-**Last Updated**: 2026-05-13 (researcher-3)
+**Phase**: ACT (S5b verified — all 3 Davydov order-theory ingredients proven; L^p density step (S5c) is the only remaining `davydov_covariance_inequality` sorry)
+**Since**: 2026-05-14T03:50:00Z (build-verify confirmation)
+**Iteration**: 7 (S5b build verified; theorem count 12 stable)
+**Last Updated**: 2026-05-14 (researcher-9)
 
-## S5b (researcher-3, 2026-05-13, this PR — ingredient (3) `davydov_indicator_bound`)
+## S5b build-verify (researcher-9, 2026-05-14, this PR — retire `(build pending)` qualifier)
+
+PR #18728 (S5b ACT, merged 2026-05-13T10:17:09Z) shipped under the `(build pending)` qualifier with the stated reason being the worktree `proofs/.lake` self-referential symlink. That symlink does **not** affect `./proofs/scripts/docker-build.sh`, which mounts its own `/lean/.lake` inside the Docker container — the host worktree's `.lake` is irrelevant. Build re-run from a fresh worktree off `origin/main` (sha `2afb1b79c0a`):
+
+```
+./proofs/scripts/docker-build.sh Proofs.CentralLimitTheoremOQ02OQ04
+⚠ [3130/3131] Replayed Proofs.CentralLimitTheoremOQ02
+⚠ [3131/3131] Built Proofs.CentralLimitTheoremOQ02OQ04 (3.3s)
+Build completed successfully (3131 jobs).
+```
+
+Sorries surfaced (the expected 2; same as `meta.json`):
+
+* `Proofs/CentralLimitTheoremOQ02OQ04.lean:475:8` — `davydov_covariance_inequality` (S5c target, L^p density step).
+* `Proofs/CentralLimitTheoremOQ02OQ04.lean:671:8` — `mixing_clt_ibragimov` (S6+ target).
+
+Parent file `Proofs/CentralLimitTheoremOQ02.lean` carries its own 3 sorries (lines 480, 519, 538), all reused-by-reference and not in scope for this slug.
+
+Doc-only changes:
+* `state.md` — flip `[BUILD PENDING]` to `[BUILD VERIFIED]` in the S5b section header below; refresh top-of-file Phase/Since/Iteration/Last Updated.
+* `src/data/research/problems/central-limit-theorem-oq-02-oq-04.json` — top-level `phase: ORIENT → ACT` (drift fix; gallery listings derived from this), `lastUpdate` advanced; `currentState.{phase,since,iteration,focus,nextAction}` refreshed to post-S5b state; `knowledge.progressSummary` and `knowledge.nextSteps[0]` updated. No Lean changes.
+
+**No Lean changes.** PR #18728 shipped a sound proof; this STATE-SYNC just retires the stale `(build pending)` qualifier and resyncs trackers.
+
+### Linter note (out of scope)
+
+The Docker build surfaced one cosmetic linter warning at line 419 in the pre-existing `indicator_pair_covariance_eq` (S4 contribution, shipped via #17939 — **not** part of S5b's contribution):
+
+```
+Proofs/CentralLimitTheoremOQ02OQ04.lean:419:12: This simp argument is unused: Set.indicator_apply
+```
+
+The `by_cases hωA <;> by_cases hωB <;> simp [Set.indicator_apply, Set.mem_inter_iff, hωA, hωB]` proof closes via `simp [Set.mem_inter_iff, hωA, hωB]` alone (under Mathlib v4.26.0, the four explicit cases unfold the indicator without needing the `indicator_apply` lemma in the simp set). Flagged for a future cleanup pass; **not bundled with this build-verify STATE-SYNC** to keep scope minimal per "(build pending)" retirement template (cf. #19025 cayley-hamilton-minpoly-oq-03-oq-02 S2 build-verify).
+
+## S5b (researcher-3, 2026-05-13, PR #18728 — ingredient (3) `davydov_indicator_bound`)
 
 **Davydov structural decomposition — all 3 named order-theory ingredients now proven.**
 
@@ -91,12 +125,20 @@ the proposition hold — exactly the hypothesis we have at the call site.
 
 ### Build status
 
-**[BUILD PENDING]** — Worktree `proofs/.lake` is a self-referential symlink
-(`stat -L proofs/.lake` → "Too many levels of symbolic links"), so
-`./proofs/scripts/docker-build.sh Proofs.CentralLimitTheoremOQ02OQ04` would
-trigger a fresh Mathlib clone (~30–45 min cold) inside Docker, with the
-known risk of mid-build worktree wipe by the daemon respawn. The proof uses
-only Mathlib API verified against `/Users/rwalters/GitHub/mathlib4`:
+**[BUILD VERIFIED]** — researcher-9, 2026-05-14. The S5b qualifier was a
+false alarm: `./proofs/scripts/docker-build.sh` mounts `/lean/.lake` inside
+the Docker container and ignores the host worktree's self-referential
+`proofs/.lake` symlink. Verified from a fresh worktree off
+`origin/main 2afb1b79c0a`:
+
+```
+./proofs/scripts/docker-build.sh Proofs.CentralLimitTheoremOQ02OQ04
+⚠ [3130/3131] Replayed Proofs.CentralLimitTheoremOQ02
+⚠ [3131/3131] Built Proofs.CentralLimitTheoremOQ02OQ04 (3.3s)
+Build completed successfully (3131 jobs).
+```
+
+The proof uses only Mathlib API surfaced in the build:
 
 * `le_ciSup_of_le` (`Mathlib.Order.ConditionallyCompleteLattice.Indexed`
   line 146): `BddAbove (range f) → ∀ i, a ≤ f i → a ≤ ⨆ j, f j`.
@@ -105,9 +147,10 @@ only Mathlib API verified against `/Users/rwalters/GitHub/mathlib4`:
   `(hp : p) → ⨆ h : p, f h = f hp` (works for ℝ as a
   ConditionallyCompletePartialOrder).
 * `Real.iSup_le` (`Mathlib.Data.Real.Archimedean` line 236),
-  `indicator_cov_le_one` (S4, line 229), `Set.range` — already in scope.
+  `indicator_cov_le_one` (S4, line 229), `Set.range` — in scope.
 
-Build verification deferred to doctor / next session from clean worktree.
+Only the expected 2 sorries (`davydov_covariance_inequality` line 475 and
+`mixing_clt_ibragimov` line 671) remain, matching `meta.json`.
 
 ### Next iteration (S5c / S6)
 
