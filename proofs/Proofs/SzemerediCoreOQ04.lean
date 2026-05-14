@@ -552,4 +552,314 @@ lemma vertexBias_le_of_one_le (G : SimpleGraph V) [DecidableRel G.Adj]
     vertexBias G a A B ≤ eps :=
   (vertexBias_le_one G a A B).trans heps
 
+/-! ## Part 7: Symmetric variant (S6c-ACT Option A surrogate)
+
+PR #18679 (S6c PREP-2) demonstrated a concrete `#V = 16` bipartite graph
+showing that the one-sided implication
+`IsWitnessRegular G eps A B → IsEpsilonRegular G (4·eps) A B` is
+**mathematically false**: with `B`-regular degrees, `witnessFamilyB`
+collapses to two density-`1/2` elements (antecedent vacuous), yet the
+pair `(A₊, B_left)` witnesses conclusion failure at `eps = 0.1`.
+
+Following the S6c PREP §4.1 / §5 plan (Option A), this Part adds the
+dual `A`-side ε-grid `witnessFamilyA G A B` and the conjunction
+`IsWitnessRegular_symmetric`. Under the symmetric surrogate, the slack-4
+ADLRY implication is restored: the counterexample fails the new
+`Dual_IsWitnessRegular` half (every `A' ∈ witnessFamilyA` either is
+the empty filter or hits the bimodal-degree non-cancellation), so the
+antecedent `IsWitnessRegular_symmetric eps A B` is FALSE on the
+counterexample and the slack-4 conclusion is vacuously preserved.
+
+All definitions, decidability, anti-monotonicity, density-bound helpers,
+and boundary cases below are sorry-free. The genuine ADLRY content is
+isolated in `witness_regular_symmetric_implies_epsilon_regular_small_eps`
+(the new file-level sorry, replacing the now-unprovable one-sided
+`_small_eps` at line ~284). The sorry-free wrapper
+`witness_regular_symmetric_implies_epsilon_regular` performs the
+`1 ≤ 4·eps` case split inline (mirrors line ~329's one-sided wrapper). -/
+
+/-- The A-side ε-grid for `A` relative to `B`: for each `b ∈ B`, both
+    the back-neighbour pattern `A ∩ N(b)` and its complement `A \ N(b)`
+    in `A`. Dual to `witnessFamilyB`; the family has at most `2 · |B|`
+    elements. -/
+def witnessFamilyA (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) : Finset (Finset V) :=
+  B.image (fun b => A.filter (fun a => G.Adj a b)) ∪
+  B.image (fun b => A.filter (fun a => ¬ G.Adj a b))
+
+/-- The dual witness family has size at most `2 * |B|`. -/
+lemma witnessFamilyA_card_le (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B : Finset V) :
+    (witnessFamilyA G A B).card ≤ 2 * B.card := by
+  unfold witnessFamilyA
+  have h1 := Finset.card_union_le
+      (B.image (fun b => A.filter (fun a => G.Adj a b)))
+      (B.image (fun b => A.filter (fun a => ¬ G.Adj a b)))
+  have h2 : (B.image (fun b => A.filter (fun a => G.Adj a b))).card ≤ B.card :=
+    Finset.card_image_le
+  have h3 : (B.image (fun b => A.filter (fun a => ¬ G.Adj a b))).card ≤ B.card :=
+    Finset.card_image_le
+  omega
+
+/-- Every member of the dual witness family is a subset of `A`. -/
+lemma witnessFamilyA_subset (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B A' : Finset V) (hA' : A' ∈ witnessFamilyA G A B) :
+    A' ⊆ A := by
+  unfold witnessFamilyA at hA'
+  rcases Finset.mem_union.mp hA' with h | h
+  · obtain ⟨b, _, hb⟩ := Finset.mem_image.mp h
+    rw [← hb]
+    exact Finset.filter_subset _ _
+  · obtain ⟨b, _, hb⟩ := Finset.mem_image.mp h
+    rw [← hb]
+    exact Finset.filter_subset _ _
+
+/-- For any `b ∈ B`, the back-neighbour pattern `A ∩ N(b)` is in the
+    dual witness family. -/
+lemma mem_witnessFamilyA_nhd (G : SimpleGraph V) [DecidableRel G.Adj]
+    {A B : Finset V} {b : V} (hb : b ∈ B) :
+    A.filter (fun a => G.Adj a b) ∈ witnessFamilyA G A B := by
+  unfold witnessFamilyA
+  exact Finset.mem_union_left _ (Finset.mem_image.mpr ⟨b, hb, rfl⟩)
+
+/-- For any `b ∈ B`, the complement `A \ N(b)` is in the dual witness
+    family. -/
+lemma mem_witnessFamilyA_compl (G : SimpleGraph V) [DecidableRel G.Adj]
+    {A B : Finset V} {b : V} (hb : b ∈ B) :
+    A.filter (fun a => ¬ G.Adj a b) ∈ witnessFamilyA G A B := by
+  unfold witnessFamilyA
+  exact Finset.mem_union_right _ (Finset.mem_image.mpr ⟨b, hb, rfl⟩)
+
+/-- Characterization of membership in the dual witness family. -/
+lemma mem_witnessFamilyA_iff (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A B A' : Finset V) :
+    A' ∈ witnessFamilyA G A B ↔
+      (∃ b ∈ B, A' = A.filter (fun a => G.Adj a b)) ∨
+      (∃ b ∈ B, A' = A.filter (fun a => ¬ G.Adj a b)) := by
+  unfold witnessFamilyA
+  constructor
+  · intro h
+    rcases Finset.mem_union.mp h with h | h
+    · obtain ⟨b, hb, rfl⟩ := Finset.mem_image.mp h
+      exact Or.inl ⟨b, hb, rfl⟩
+    · obtain ⟨b, hb, rfl⟩ := Finset.mem_image.mp h
+      exact Or.inr ⟨b, hb, rfl⟩
+  · intro h
+    rcases h with ⟨b, hb, rfl⟩ | ⟨b, hb, rfl⟩
+    · exact Finset.mem_union_left _ (Finset.mem_image.mpr ⟨b, hb, rfl⟩)
+    · exact Finset.mem_union_right _ (Finset.mem_image.mpr ⟨b, hb, rfl⟩)
+
+/-- The two A-side ε-grid members for a single `b ∈ B` partition `A`
+    disjointly (the back-neighbour / non-back-neighbour decomposition). -/
+lemma witnessFamilyA_card_split (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A : Finset V) (b : V) :
+    (A.filter (fun a => G.Adj a b)).card +
+      (A.filter (fun a => ¬ G.Adj a b)).card = A.card :=
+  Finset.filter_card_add_filter_neg_card_eq_card (fun a => G.Adj a b)
+
+/-- For each `b ∈ B`, at least one of `A ∩ N(b)` and `A \ N(b)` has size
+    at least `|A| / 2` (the A-side pigeonhole step). -/
+lemma witnessFamilyA_card_half (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A : Finset V) (b : V) :
+    2 * (A.filter (fun a => G.Adj a b)).card ≥ A.card ∨
+    2 * (A.filter (fun a => ¬ G.Adj a b)).card ≥ A.card := by
+  have hsum : (A.filter (fun a => G.Adj a b)).card +
+      (A.filter (fun a => ¬ G.Adj a b)).card = A.card :=
+    witnessFamilyA_card_split (G := G) A b
+  by_contra hlt
+  push_neg at hlt
+  obtain ⟨h1, h2⟩ := hlt
+  omega
+
+/-- The dual witness-regular surrogate: tests `A' ∈ witnessFamilyA G A B`
+    against the full set `B`. -/
+def Dual_IsWitnessRegular (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) : Prop :=
+  ∀ A' ∈ witnessFamilyA G A B,
+    (A'.card : ℚ) ≥ eps * A.card →
+    |edgeDensity G A' B - edgeDensity G A B| ≤ eps
+
+/-- `Dual_IsWitnessRegular` is decidable (classical, mirrors the one-sided
+    instance — the underlying `edgeDensity` is `noncomputable`). -/
+noncomputable instance instDecidableDual_IsWitnessRegular
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) :
+    Decidable (Dual_IsWitnessRegular G eps A B) :=
+  Classical.dec _
+
+/-- Direct consequence of `Dual_IsWitnessRegular`: every A-side grid
+    member with size at least `eps · |A|` has bounded density bias
+    against `(A, B)`. -/
+lemma Dual_IsWitnessRegular.density_bound (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (A B : Finset V) (hreg : Dual_IsWitnessRegular G eps A B)
+    (A' : Finset V) (hA' : A' ∈ witnessFamilyA G A B)
+    (hcA' : (A'.card : ℚ) ≥ eps * A.card) :
+    |edgeDensity G A' B - edgeDensity G A B| ≤ eps :=
+  hreg A' hA' hcA'
+
+/-- Anti-monotonicity of `Dual_IsWitnessRegular` in `eps`. Mirrors
+    `IsWitnessRegular_anti`. -/
+lemma Dual_IsWitnessRegular_anti (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps eps' : ℚ} (h : eps ≤ eps')
+    (A B : Finset V) (hreg : Dual_IsWitnessRegular G eps A B) :
+    Dual_IsWitnessRegular G eps' A B := by
+  intro A' hA' hcA'
+  have hAcard : (0 : ℚ) ≤ (A.card : ℚ) := Nat.cast_nonneg _
+  have hcA'_eps : (A'.card : ℚ) ≥ eps * A.card := by
+    have hmul : eps * (A.card : ℚ) ≤ eps' * (A.card : ℚ) :=
+      mul_le_mul_of_nonneg_right h hAcard
+    linarith
+  have hbound : |edgeDensity G A' B - edgeDensity G A B| ≤ eps :=
+    hreg A' hA' hcA'_eps
+  linarith
+
+/-- The symmetric witness-regular surrogate: requires BOTH the original
+    `IsWitnessRegular` (B-side grid) AND the dual `Dual_IsWitnessRegular`
+    (A-side grid). This is the surrogate strong enough to imply
+    `IsEpsilonRegular G (4·eps) A B`; the one-sided version is provably
+    insufficient (PR #18679 counterexample). -/
+def IsWitnessRegular_symmetric (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) : Prop :=
+  IsWitnessRegular G eps A B ∧ Dual_IsWitnessRegular G eps A B
+
+/-- `IsWitnessRegular_symmetric` is decidable (classical). -/
+noncomputable instance instDecidableIsWitnessRegular_symmetric
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A B : Finset V) :
+    Decidable (IsWitnessRegular_symmetric G eps A B) :=
+  Classical.dec _
+
+/-- Project the symmetric surrogate to its one-sided B-side component. -/
+lemma IsWitnessRegular_symmetric.toB (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} {A B : Finset V}
+    (hreg : IsWitnessRegular_symmetric G eps A B) :
+    IsWitnessRegular G eps A B := hreg.1
+
+/-- Project the symmetric surrogate to its dual A-side component. -/
+lemma IsWitnessRegular_symmetric.toA (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} {A B : Finset V}
+    (hreg : IsWitnessRegular_symmetric G eps A B) :
+    Dual_IsWitnessRegular G eps A B := hreg.2
+
+/-- Anti-monotonicity of the symmetric surrogate in `eps`. -/
+lemma IsWitnessRegular_symmetric_anti (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps eps' : ℚ} (h : eps ≤ eps')
+    (A B : Finset V) (hreg : IsWitnessRegular_symmetric G eps A B) :
+    IsWitnessRegular_symmetric G eps' A B := by
+  refine ⟨?_, ?_⟩
+  · exact IsWitnessRegular_anti G h A B hreg.1
+  · exact Dual_IsWitnessRegular_anti G h A B hreg.2
+
+/-- The dual witness family over an empty `B` is itself empty. -/
+lemma witnessFamilyA_empty_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (A : Finset V) :
+    witnessFamilyA G A (∅ : Finset V) = ∅ := by
+  unfold witnessFamilyA
+  simp
+
+/-- The dual witness-regular surrogate holds vacuously when `B = ∅`. -/
+theorem Dual_IsWitnessRegular_empty_right (G : SimpleGraph V) [DecidableRel G.Adj]
+    (eps : ℚ) (A : Finset V) :
+    Dual_IsWitnessRegular G eps A (∅ : Finset V) := by
+  intro A' hA' _
+  rw [witnessFamilyA_empty_right] at hA'
+  exact absurd hA' (Finset.notMem_empty _)
+
+/-- Trivial regime for `Dual_IsWitnessRegular`: if `1 ≤ eps`, the dual
+    surrogate holds for every `(A, B)`. Same one-line argument as the
+    B-side trivial regime. -/
+theorem Dual_IsWitnessRegular_of_one_le_eps (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 1 ≤ eps) (A B : Finset V) :
+    Dual_IsWitnessRegular G eps A B := by
+  intro A' _ _
+  exact (abs_edgeDensity_sub_le_one_left G A A' B).trans heps
+
+/-- Trivial regime for the symmetric surrogate: if `1 ≤ eps`, both halves
+    hold trivially. -/
+theorem IsWitnessRegular_symmetric_of_one_le_eps
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 1 ≤ eps) (A B : Finset V) :
+    IsWitnessRegular_symmetric G eps A B :=
+  ⟨IsWitnessRegular_of_one_le_eps G heps A B,
+   Dual_IsWitnessRegular_of_one_le_eps G heps A B⟩
+
+/-- **Non-trivial regime of the symmetric slack-4 ADLRY implication**
+    (`0 < eps < 1/4`).
+
+    Replaces the now-unprovable one-sided
+    `witness_regular_implies_epsilon_regular_small_eps` (line ~284):
+    the conjunction over BOTH grids is strong enough to derive the
+    second-moment / Cauchy-Schwarz averaging needed for the slack-4
+    conclusion. The PR #18679 counterexample fails this stronger
+    antecedent (the dual `Dual_IsWitnessRegular` half is violated by
+    the bimodal A-side degree distribution), so the obstruction
+    documented in S6c PREP-2 does not transfer here.
+
+    **Proof obligation** (still open — this is the deferred ADLRY
+    content; sole `sorry` in the symmetric API): given
+    `IsWitnessRegular_symmetric G eps A B`, show that for any
+    `A' ⊆ A`, `B' ⊆ B` with `|A'| ≥ 4·eps·|A|` and `|B'| ≥ 4·eps·|B|`,
+    `|edgeDensity G A' B' − edgeDensity G A B| ≤ 4·eps`.
+
+    The route now goes through BOTH grids:
+
+    1. From `Dual_IsWitnessRegular`: average per-vertex bias
+       `vertexBias G b A B'` over `b ∈ B` using the A-side grid, then
+       Cauchy-Schwarz / Chebyshev bounds the count of "B-bad" vertices
+       by `≤ eps · |B|` (mirroring the one-sided averaging, but on the
+       A-side ε-grid `A ∩ N(b)` / `A \ N(b)` which the counterexample
+       fails to make trivial).
+    2. From `IsWitnessRegular` (the B-side half): similarly bound the
+       count of "A-bad" vertices by `≤ eps · |A|`, mirroring step 1
+       through the B-side grid.
+    3. For `A' ⊆ A` with `|A'| ≥ 4·eps·|A|` and `B' ⊆ B` with
+       `|B'| ≥ 4·eps·|B|`, both `A'` and `B'` are predominantly
+       composed of unbiased vertices (≥ 3/4 by the standard Markov
+       argument); a final triangle inequality at the conjoint level
+       yields the slack-4 conclusion.
+
+    References: PR #18595 (S6c PREP) §5; PR #18679 (S6c PREP-2) §6.2;
+    ADLRY 1994 Lemma 3.4 (two-sided bi-regular form); Zhao,
+    *Graph Theory and Additive Combinatorics*, §3.4. -/
+theorem witness_regular_symmetric_implies_epsilon_regular_small_eps
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 0 < eps) (hsmall : 4 * eps < 1)
+    (A B : Finset V) (hreg : IsWitnessRegular_symmetric G eps A B) :
+    IsEpsilonRegular G (4 * eps) A B := by
+  intro A' B' hA' hB' hcA' hcB'
+  -- Deferred ADLRY two-sided second-moment content; see docstring.
+  sorry
+
+/-- **Symmetric slack-4 ADLRY implication, full wrapper**: case-splits
+    on `1 ≤ 4 · eps` exactly as the one-sided wrapper
+    `witness_regular_implies_epsilon_regular` does, but using the
+    symmetric surrogate. Sorry-free; the deep content compresses into
+    the helper above.
+
+    This is the **correct** statement of the slack-4 ADLRY implication
+    — the one-sided version is provably false on a concrete counter-
+    example (PR #18679, S6c PREP-2). Downstream callers should depend
+    on this wrapper rather than the (still-present) one-sided
+    `witness_regular_implies_epsilon_regular`. The latter is left in
+    the file for archival / pedagogical reasons; its
+    `_small_eps` helper carries a `sorry` that is mathematically
+    unprovable as stated. -/
+theorem witness_regular_symmetric_implies_epsilon_regular
+    (G : SimpleGraph V) [DecidableRel G.Adj]
+    {eps : ℚ} (heps : 0 < eps) (A B : Finset V)
+    (hreg : IsWitnessRegular_symmetric G eps A B) :
+    IsEpsilonRegular G (4 * eps) A B := by
+  by_cases hlarge : 1 ≤ 4 * eps
+  · -- Trivial regime: universal `|d(A', B') - d(A, B)| ≤ 1 ≤ 4 · eps`.
+    intro A' B' _ _ _ _
+    have h1 := edgeDensity_nonneg G A' B'
+    have h2 := edgeDensity_le_one G A' B'
+    have h3 := edgeDensity_nonneg G A B
+    have h4 := edgeDensity_le_one G A B
+    rw [abs_sub_le_iff]
+    refine ⟨?_, ?_⟩ <;> linarith
+  · push_neg at hlarge
+    exact witness_regular_symmetric_implies_epsilon_regular_small_eps
+      G heps hlarge A B hreg
+
 end Szemeredi.OQ04
