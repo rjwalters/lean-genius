@@ -491,6 +491,116 @@ theorem complex_gaussian_density_shifted (b : ℝ) (hb : 0 < b) (c : ℂ) :
   rw [integral_const_mul, complex_gaussian_integral_scaled_shifted_norm b hb c]
   field_simp
 
+/-! ## Part 5: Translation invariance in n dimensions (S6a)
+
+Lifting S5 (translation invariance on `ℂ`) to `Fin n → ℂ` yields the
+n-dimensional shifted complex Gaussian
+
+    ∫_{ℂⁿ} exp(-(b · ∑ᵢ ‖zᵢ - cᵢ‖²)) dz = (π/b)ⁿ      (for any c : Fin n → ℂ)
+
+and the corresponding probability density
+
+    ∫_{ℂⁿ} (b/π)ⁿ · exp(-(b · ∑ᵢ ‖zᵢ - cᵢ‖²)) dz = 1.
+
+The proof mirrors S4a (n-dim, unshifted) modulo the choice of Fubini
+lemma. S4a used `integral_fintype_prod_volume_eq_pow` because the
+per-axis factor `z ↦ exp(-(b · ‖z‖²))` was uniform in the index `i`.
+Here the per-axis factor `z ↦ exp(-(b · ‖z - cᵢ‖²))` depends on `i`
+through the shift `cᵢ`, so we use the heterogeneous variant
+`integral_fintype_prod_volume_eq_prod`. After Fubini, each per-axis
+integral evaluates to `π/b` via S5 (translation invariance on `ℂ`;
+specifically `complex_gaussian_integral_scaled_shifted_norm`),
+yielding `∏ i : Fin n, (π/b) = (π/b)ⁿ` by `Finset.prod_const`.
+
+See `research/area-of-circle-oq-05-oq-04/s6a-prep-pi-haar-vs-fubini.md`
+for the rejected pi-Haar route (Path A) and the rationale for the
+Fubini route (Path B) used here. -/
+
+/-- **n-dimensional shifted parametric complex Gaussian**: for `b > 0`,
+`n : ℕ`, and any shift vector `c : Fin n → ℂ`,
+
+    ∫_{ℂⁿ} exp(-(b · ∑ᵢ ‖zᵢ - cᵢ‖²)) dz = (π / b)ⁿ.
+
+Strictly generalises `complex_gaussian_integral_scaled_pow` (S4a,
+`c = 0` case) and `complex_gaussian_integral_scaled_shifted_norm`
+(S5, `n = 1` case). The proof mirrors S4a's `_pow` proof but uses
+the heterogeneous Fubini variant `integral_fintype_prod_volume_eq_prod`
+(per-axis factor depends on `i` via `cᵢ`), followed by an S5 collapse
+of each per-axis integral to `π/b` (independent of `cᵢ`). -/
+theorem complex_gaussian_integral_scaled_pow_shifted_norm
+    {n : ℕ} (b : ℝ) (hb : 0 < b) (c : Fin n → ℂ) :
+    ∫ z : Fin n → ℂ, Real.exp (-(b * ∑ i, ‖z i - c i‖ ^ 2)) = (Real.pi / b) ^ n := by
+  -- Step 1: factor exp(-(b · ∑ᵢ ‖zᵢ - cᵢ‖²)) = ∏ᵢ exp(-(b · ‖zᵢ - cᵢ‖²)).
+  -- Same first move as S4a (line 332), with the per-axis squared norm
+  -- now `‖z i - c i‖²` rather than `‖z i‖²`.
+  simp_rw [Finset.mul_sum, ← Finset.sum_neg_distrib, Real.exp_sum]
+  -- Step 2: heterogeneous n-fold Fubini. The integrand
+  -- `∏ᵢ exp(-(b · ‖z i - c i‖²))` has the shape `∏ᵢ f i (z i)` with
+  -- `f i z = exp(-(b · ‖z - c i‖²))`, depending on `i` through `c i`.
+  -- So we use `integral_fintype_prod_volume_eq_prod` (heterogeneous)
+  -- rather than `_eq_pow` (uniform); see `s6a-prep-pi-haar-vs-fubini.md`.
+  rw [integral_fintype_prod_volume_eq_prod
+        (fun (i : Fin n) (z : ℂ) => Real.exp (-(b * ‖z - c i‖ ^ 2)))]
+  -- Step 3: each per-axis integral evaluates to `π/b` via S5
+  -- (the value does not depend on the shift `c i`, only the integrand does).
+  simp_rw [complex_gaussian_integral_scaled_shifted_norm b hb]
+  -- Step 4: collapse the constant product `∏ i : Fin n, (π/b) = (π/b)^n`.
+  rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
+
+/-- `normSq` form of the n-dimensional shifted parametric complex Gaussian:
+
+    ∫_{ℂⁿ} exp(-(b · ∑ᵢ normSq (zᵢ - cᵢ))) dz = (π / b)ⁿ.
+
+Companion form of `complex_gaussian_integral_scaled_pow_shifted_norm`
+expressed via `Complex.normSq` rather than the analytic `‖·‖²`.
+Mirror of `complex_gaussian_integral_scaled_pow_normSq` at line 349. -/
+theorem complex_gaussian_integral_scaled_pow_shifted_normSq
+    {n : ℕ} (b : ℝ) (hb : 0 < b) (c : Fin n → ℂ) :
+    ∫ z : Fin n → ℂ, Real.exp (-(b * ∑ i, Complex.normSq (z i - c i))) =
+      (Real.pi / b) ^ n := by
+  simp_rw [Complex.normSq_eq_norm_sq]
+  exact complex_gaussian_integral_scaled_pow_shifted_norm b hb c
+
+/-- **n-dimensional unit-weight shifted complex Gaussian**: for any
+`n : ℕ` and any shift `c : Fin n → ℂ`,
+
+    ∫_{ℂⁿ} exp(-∑ᵢ ‖zᵢ - cᵢ‖²) dz = πⁿ.
+
+The unit-weight `b = 1` case of
+`complex_gaussian_integral_scaled_pow_shifted_norm`, generalising the
+`c = 0` n-dim corollary `complex_gaussian_integral_pow_unit_norm` and
+the `n = 1` shifted corollary `complex_gaussian_integral_unit_shifted_norm`. -/
+theorem complex_gaussian_integral_pow_unit_shifted_norm
+    {n : ℕ} (c : Fin n → ℂ) :
+    ∫ z : Fin n → ℂ, Real.exp (-∑ i, ‖z i - c i‖ ^ 2) = Real.pi ^ n := by
+  have h := complex_gaussian_integral_scaled_pow_shifted_norm (n := n) 1 one_pos c
+  simp only [one_mul, div_one] at h
+  exact h
+
+/-- **Shifted n-dimensional complex Gaussian probability density**
+(mean `c : Fin n → ℂ`, scale `b > 0`): for any `n : ℕ`,
+
+    ∫_{ℂⁿ} (b/π)ⁿ · exp(-(b · ∑ᵢ ‖zᵢ - cᵢ‖²)) dz = 1.
+
+The canonical two-parameter complex Gaussian probability density on
+`ℂⁿ`, strictly generalising `complex_gaussian_integral_pow_normalised`
+(`c = 0` case) and `complex_gaussian_density_shifted` (`n = 1` case).
+
+Proof: pull `(b/π)ⁿ` outside the integral via `integral_const_mul`,
+apply `complex_gaussian_integral_scaled_pow_shifted_norm` to evaluate
+the integral to `(π/b)ⁿ`, then collapse `(b/π)ⁿ · (π/b)ⁿ = 1` via
+`← mul_pow` and `field_simp`. -/
+theorem complex_gaussian_density_pow_shifted
+    {n : ℕ} (b : ℝ) (hb : 0 < b) (c : Fin n → ℂ) :
+    ∫ z : Fin n → ℂ, (b / Real.pi) ^ n *
+      Real.exp (-(b * ∑ i, ‖z i - c i‖ ^ 2)) = 1 := by
+  rw [integral_const_mul, complex_gaussian_integral_scaled_pow_shifted_norm b hb c,
+      ← mul_pow]
+  have h : (b / Real.pi) * (Real.pi / b) = 1 := by
+    have hb' : b ≠ 0 := ne_of_gt hb
+    field_simp
+  rw [h, one_pow]
+
 /-! ## Status
 
 - `integral_pi_gaussian` : proved (direct from `scaled_gaussian`).
@@ -509,6 +619,10 @@ theorem complex_gaussian_density_shifted (b : ℝ) (hb : 0 < b) (c : ℂ) :
 - `complex_gaussian_integral_scaled_shifted` : proved (`normSq` form of shifted).
 - `complex_gaussian_integral_unit_shifted_norm` : proved (unit-weight shifted).
 - `complex_gaussian_density_shifted` : proved (canonical `(c, b)` density).
+- `complex_gaussian_integral_scaled_pow_shifted_norm` : proved (n-dim shifted, S6a).
+- `complex_gaussian_integral_scaled_pow_shifted_normSq` : proved (`normSq` form of n-dim shifted).
+- `complex_gaussian_integral_pow_unit_shifted_norm` : proved (n-dim unit-weight shifted).
+- `complex_gaussian_density_pow_shifted` : proved (canonical n-dim `(c, b)` density).
 
 All theorems above are sorry-free and axiom-free.
 
