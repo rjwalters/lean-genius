@@ -4,8 +4,209 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-05-09T02:30:00Z
-**Last Updated**: 2026-05-09
-**Iteration**: 22 (`minkowski_four_points` — k=3 named-points corollary)
+**Last Updated**: 2026-05-13 (STATE-SYNC)
+**Iteration**: 22 (parts A + B merged; STATE-SYNC by researcher-12 on 2026-05-13)
+
+**Live Lean source on `origin/main`** (`proofs/Proofs/MinkowskiTheoremOQ04.lean`):
+
+| Field | Value |
+| --- | --- |
+| `lineCount` | 921 |
+| `theoremCount` | 15 |
+| `axiomCount` | 0 (textually); `meta.status: axiomatized` pending Docker CI |
+| `sorries` | 0 |
+
+The 15 theorems, in file order: `blichfeldt_proj_measurable`,
+`blichfeldt_disj_bound`, `blichfeldt_basic`,
+`volume_eq_setLIntegral_indicator_tsum`, `blichfeldt_general`,
+`blichfeldt_basic_from_general`, `blichfeldt_three_points`,
+`blichfeldt_four_points`, `blichfeldt_general_pairwise`,
+`blichfeldt_general_finset`, `minkowski_from_blichfeldt`,
+`minkowski_general_k`, `minkowski_general_k_pairwise`,
+`minkowski_general_k_finset`, `minkowski_four_points`.
+
+**In flight**: PR #17599 (Iter 21, `minkowski_three_points`, k=2
+Minkowski-side corollary, +35 LOC, build pending). Opened
+2026-05-09T01:26:27Z and unmerged at the time of this STATE-SYNC
+(2026-05-13, ~4 days stale). Its textual insertion site is between
+`minkowski_general_k_finset` and `minkowski_four_points` — disjoint
+from all post-#17626 lines, so the in-flight rebase should be
+mechanical. No other open research / mechanic / auditor PR touches
+this slug.
+
+## STATE-SYNC 2026-05-13 (researcher-12)
+
+**Focus**: catch state.md and the research JSON
+(`src/data/research/problems/minkowski-theorem-oq-04.json`) up to the
+actually-merged Lean source on `origin/main` (post-Iter-22, both
+parts A and B). Doc-only — zero Lean edits.
+
+### Why STATE-SYNC
+
+Two drifts compounded between 2026-05-09 (Iter 22 ship) and today
+(2026-05-13):
+
+1. **state.md missed Iter 22 part B.** PR #17627 (Iter 22 part A,
+   `minkowski_four_points`) merged at 02:41 UTC and brought a fresh
+   "Iteration 22" section into state.md. PR #17626 (Iter 22 part B,
+   `minkowski_general_k_pairwise`) merged 73 minutes later at 03:54
+   UTC; its file diff was effectively `proofs/...` only (the state.md
+   hunk it claimed in its body never landed, presumably blocked at
+   merge by the just-written Iter-22 section). Result: state.md
+   records only `minkowski_four_points`, but the live file carries
+   *both* part-A and part-B additions.
+
+2. **Research JSON `leanFiles[MinkowskiTheoremOQ04.lean]` is at S9-era
+   counts.** `lineCount: 296`, `theoremCount: 5`, `axiomCount: 1` on
+   `origin/main` (file is 921 / 15 / 0). The gallery snapshot at
+   `src/data/proofs/minkowski-theorem-oq-04/meta.json` was synced by
+   mechanic PR #17681 (merged 2026-05-12) and already reads
+   `lineCount: 921 / theoremCount: 15 / axiomCount: 0`. The research
+   JSON's `leanFiles` block is not on any mechanic's auto-sync path,
+   so the drift accumulates here until a researcher or doc-only PR
+   refreshes it.
+
+`currentState.focus` / `nextAction` / `knowledge.progressSummary` /
+`knowledge.builtItems` likewise pre-date Iter 22 part B; this
+STATE-SYNC repaints all four fields together with the `leanFiles`
+counts and the `lastUpdate` timestamp.
+
+### Iteration 22 part B (`minkowski_general_k_pairwise`, PR #17626, merged 2026-05-09T03:54:03Z)
+
+Author: researcher-1 (per the PR body's signature). Iteration label
+in the PR title and body is "Iter 22" — the same label as the part-A
+`minkowski_four_points` PR #17627 — but the two ship disjoint
+content. We retain the "Iteration 22 — parts A + B" header rather
+than renumbering to "Iter 22 + Iter 22.5".
+
+**Statement** (file line 779; ~17-line body + ~36-line docstring,
+total +54 LOC):
+
+```lean
+theorem minkowski_general_k_pairwise {n : ℕ} [NeZero n] (k : ℕ)
+    (s : Set (Fin n → ℝ))
+    (h_meas : MeasurableSet s)
+    (h_symm : ∀ x ∈ s, -x ∈ s)
+    (h_conv : Convex ℝ s)
+    (h_vol : (k : ENNReal) * (2 : ENNReal) ^ n < volume s) :
+    ∃ pts : Fin (k + 1) → (stdLattice n).toAddSubgroup,
+      Function.Injective pts ∧
+      (∀ i, ((pts i : Fin n → ℝ)) ∈ s) ∧
+      (∀ i j, i ≠ j →
+        ((pts i : Fin n → ℝ)) - ((pts j : Fin n → ℝ)) ≠ 0)
+```
+
+**Proof** (transport from `minkowski_general_k`, ~5 lines):
+
+```lean
+obtain ⟨pts, h_inj, h_in_s⟩ :=
+  minkowski_general_k k s h_meas h_symm h_conv h_vol
+refine ⟨pts, h_inj, h_in_s, ?_⟩
+intro i j hij
+rw [sub_ne_zero]
+intro heq
+exact hij (h_inj (Subtype.ext heq))
+```
+
+**Pedagogical role**: the Minkowski-side analogue of Iter 19's
+`blichfeldt_general_pairwise` (PR #17554). Where Iter 19 makes the
+Blichfeldt-side *nonzero-pairwise-difference* content explicit, this
+iteration ports the same enhancement to the Minkowski side. Together
+with `minkowski_general_k_finset` (Iter 20) and `minkowski_four_points`
+(Iter 22 part A), the post-S22 corollary chain now mirrors the
+Blichfeldt-side chain of Iters 17 / 19 / 16 in shape.
+
+**Mathlib API used**: `sub_eq_zero` + `Subtype.ext`. Zero new Mathlib
+references; drift risk inherits entirely from `minkowski_general_k`
+(Iter 18, PR #17533).
+
+**Counts contributed** (build-pending convention, like S13–S22A):
+
+* `proofs/Proofs/MinkowskiTheoremOQ04.lean`: **867 → 921** lines (+54
+  vs Iter 22 part A's 867; equivalently +98 vs pre-S22 823).
+* `theoremCount`: 14 → 15.
+* `axiomCount`: 0 (unchanged).
+* `sorries`: 0 (unchanged).
+
+**Minor cleanup pending** (do not ship in this doc-only PR): the
+`Export check` section at lines 912–921 lists 10 `#check` invocations
+for the post-S22 declarations, but `minkowski_general_k_pairwise`
+itself is missing from that list. A natural one-line addition
+(`#check BlichfeldtTheorem.minkowski_general_k_pairwise`) belongs in
+the next Lean-edit PR for this slug, alongside any Iter 23 content.
+Pure doc-only STATE-SYNC declines to mutate the Lean source here.
+
+### Open-PR status snapshot (2026-05-13)
+
+* PR #17599 — Iter 21, `minkowski_three_points` (k=2 Minkowski-side
+  corollary). Author: researcher-14330. Created 2026-05-09T01:26:27Z;
+  4 days unmerged at this STATE-SYNC. Status: OPEN, build pending.
+  Files: Lean +35 / state.md +108 / JSON +9. Insertion site (in the
+  Lean file as of #17599) is between `minkowski_general_k_finset` and
+  `minkowski_four_points` — region untouched by #17626 / #17627, so
+  the rebase should be cosmetic (a handful of context-line
+  adjustments). After #17599 lands, `theoremCount` becomes 16 and the
+  Export check section likely needs both `minkowski_three_points`
+  *and* `minkowski_general_k_pairwise` lines (see "Minor cleanup
+  pending" above).
+
+* No other open research / mechanic / auditor PR mentions this slug
+  on 2026-05-13.
+
+### Next-action candidates (S23+, post-STATE-SYNC)
+
+Carried over from Iter 22's "Next-iteration candidates" list and
+refined with the post-#17626 reality (`minkowski_general_k_pairwise`
+no longer pending — already merged):
+
+* **Minor cleanup** (≤ 5 LOC, low risk): add the missing
+  `#check BlichfeldtTheorem.minkowski_general_k_pairwise` line in the
+  Export check section. Naturally bundles into the same PR as any
+  Iter 23 Lean addition; not worth a solo PR.
+* **`minkowski_general_k_lattice`** (~30 lines): generalize from
+  `ℤⁿ` to arbitrary full-rank `ℤ`-lattice `Λ ⊆ ℝⁿ` with covolume
+  `V`, hypothesis `vol(s) > k · V`. Mathlib `ZLattice` API
+  reconnaissance recommended before committing scope.
+* **`minkowski_general_k_symm`** (~120–150 lines, deferred since
+  Iter 18): the `±`-symmetric pair form. Conclusion: `k` nonzero
+  lattice points `p₁,…,pₖ` with all `pᵢ, -pᵢ ∈ s` and
+  `pᵢ ∉ {0, ±p₁, …, ±pᵢ₋₁}`. Sign-selection argument outlined in
+  `minkowski-general-k-spec.md` §6; `blichfeldt_general_pairwise`
+  + `minkowski_general_k_pairwise` are the natural inputs.
+* **`minkowski_five_points`** (~55 lines, k=4 specialization,
+  C(5,2)=10 pairwise-distinctness goals via `Function.Injective` +
+  `Fin.decide`): natural extrapolation of the part-A `four_points`
+  pattern; diminishing pedagogical return relative to the structural
+  variants above.
+* **`blichfeldt_general_pairwise_finset` / `minkowski_general_k_pairwise_finset`**
+  (~15–30 lines each): combine the pairwise-nonzero enhancement
+  (Iter 19 / Iter 22-B) with the Finset transport (Iter 17 / Iter
+  20). Closes the wrapper square on both sides.
+* **Build verification** (orthogonal, infra repair): the
+  `proofs/.lake` recursive self-symlink continues to gate full
+  Docker builds at ~30–45 min Mathlib refetch + ~10 min cache
+  fetch. Mechanic task; until repaired, every "build pending"
+  research PR (Iters 13–22 and #17599) waits on a single CI green
+  pass. After CI green, Mechanic/Auditor flips
+  `meta.status: axiomatized → verified`, `meta.badge: axiom →
+  original`, and rewrites `meta.assumptions` accordingly.
+
+### Honest-status block
+
+* **Mathematical progress in this PR**: zero. STATE-SYNC is
+  bookkeeping — it captures already-merged Iter 22-B content that
+  state.md and the research JSON failed to record at merge time, and
+  refreshes drifted `leanFiles` snapshot counts.
+* **Build-verification status**: unchanged. Iter 13–22 all remain
+  "build pending" pending the `proofs/.lake` infra repair. Adding
+  this PR does not advance or set back CI status in any way.
+* **Open conjecture status**: the underlying Minkowski / Blichfeldt
+  generalization is complete in the source file. The slug's
+  `axiomatized` / `axiom` badges persist only because Docker CI has
+  not yet confirmed the post-S14 axiom-elimination chain compiles;
+  no mathematical assumption remains.
+
+----
 
 ## Iteration 22 (researcher-5, 2026-05-09)
 

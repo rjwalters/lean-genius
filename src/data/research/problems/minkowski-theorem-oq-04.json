@@ -19,19 +19,19 @@
     "phase": "ACT",
     "since": "2026-05-09T03:00:00Z",
     "iteration": 22,
-    "focus": "S22 (researcher-5, 2026-05-09): minkowski_four_points (k=3 specialization of minkowski_general_k) — Minkowski-side analogue of blichfeldt_four_points, parallel to Iter 21's minkowski_three_points (#17599 in flight). Six C(4,2) pairwise-distinctness goals discharged uniformly via Function.Injective + Fin.decide. File delta: 823 → 867 lines (+44), theoremCount 13 → 14 (+1; mechanic to sync after CI green and after #17599 lands). Build pending; uses no new Mathlib API beyond minkowski_general_k.",
+    "focus": "STATE-SYNC 2026-05-13 (researcher-12): refreshed state.md + JSON to reflect actually-merged Lean source on origin/main (post-Iter-22 parts A and B). Live Lean file is 921 LOC / 15 theorems / 0 textual axioms / 0 sorries; status remains `axiomatized` pending Docker CI verification of the post-S14 axiom→theorem flip. Iter 22 part B (`minkowski_general_k_pairwise`, PR #17626 merged 2026-05-09T03:54:03Z, +54 LOC) had been missing from state.md and from `knowledge.builtItems`; this STATE-SYNC adds an explicit log entry. JSON `leanFiles[MinkowskiTheoremOQ04.lean]` advanced lineCount 296 → 921, theoremCount 5 → 15, axiomCount 1 → 0 to match the gallery `meta.json` already synced by mechanic PR #17681 (2026-05-12). In flight: PR #17599 (Iter 21, `minkowski_three_points`, k=2 corollary, +35 LOC, build pending, 4 days stale).",
     "blockers": [
-      "proofs/.lake recursive self-symlink: every Docker build = ~30-45 min Mathlib clone + ~10 min cache fetch. Blocks build verification of post-S14 axiom→theorem flip and S15 corollary."
+      "proofs/.lake recursive self-symlink: every Docker build = ~30-45 min Mathlib clone + ~10 min cache fetch. Blocks build verification of the post-S14 axiom→theorem flip and every S13–S22 corollary."
     ],
-    "nextAction": "S23 candidates: minkowski_general_k_symm (~120-150 lines, hard sign-selection); minkowski_general_k_lattice (~30 lines, ZLattice recon needed); minkowski_five_points at k=4 (~55 lines, C(5,2)=10 pairwise goals); k=2/k=3 named-points wrappers stating lattice point ≠ 0 cleanly via sub_eq_zero.",
+    "nextAction": "S23 candidates (refined post-STATE-SYNC): minor cleanup +#check BlichfeldtTheorem.minkowski_general_k_pairwise in Export check section (missing in #17626, ≤ 5 LOC, naturally bundled into next Lean-edit PR); minkowski_general_k_lattice (~30 lines, ZLattice API reconnaissance needed for arbitrary full-rank ℤ-lattices Λ ⊆ ℝⁿ); minkowski_general_k_symm (~120–150 lines, hard sign-selection deferred since Iter 18, blichfeldt_general_pairwise + minkowski_general_k_pairwise now both available as inputs); minkowski_five_points (k=4, ~55 lines, C(5,2)=10 pairwise goals); blichfeldt_general_pairwise_finset / minkowski_general_k_pairwise_finset wrapper-square closers (~15–30 lines each). Build verification (orthogonal infra repair) gates graduation of meta.status from `axiomatized` to `verified`.",
     "attemptCounts": {
-      "total": 21,
-      "currentApproach": 7,
+      "total": 22,
+      "currentApproach": 8,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS Iter 22 (researcher-5): Added minkowski_four_points (k=3 specialization of minkowski_general_k), the Minkowski-side analogue of blichfeldt_four_points (Iter 16) and the natural follow-up to Iter 21's minkowski_three_points (#17599 in flight). Same `Function.Injective + Fin.decide` proof pattern; six C(4,2) pairwise-distinctness goals discharged uniformly. File 823 → 867 lines (+44), theorems 13 → 14 (+1). After Iter 21 lands, theorems become 15. Together Iter 21 + Iter 22 close the named-points-corollary chain symmetry across Blichfeldt and Minkowski for k ∈ {2, 3}. Build verification pending Docker CI; uses no new Mathlib API beyond minkowski_general_k (already in file). Iter 20 (researcher-3): Added minkowski_general_k_finset, the Finset transport of minkowski_general_k (S18, #17533).",
+    "progressSummary": "STATE-SYNC 2026-05-13 (researcher-12): doc-only reconciliation. Live Lean source on origin/main carries 15 theorems / 0 textual axioms / 0 sorries across 921 LOC; status remains `axiomatized` pending Docker CI of the post-S14 axiom→theorem flip. Iter 22 (parts A + B both merged 2026-05-09): part A `minkowski_four_points` (PR #17627, +44 LOC, k=3 named-points corollary) + part B `minkowski_general_k_pairwise` (PR #17626, +54 LOC, explicit-nonzero-pairwise-difference wrapper around `minkowski_general_k`). Together with Iter 19's `blichfeldt_general_pairwise` and Iter 20's `minkowski_general_k_finset`, the Iter 17 ↔ Iter 20 (finset) and Iter 19 ↔ Iter 22B (pairwise) Blichfeldt↔Minkowski symmetries are now closed. In flight: PR #17599 (Iter 21, `minkowski_three_points`, 4 days stale build-pending) would push theorem count to 16 and close the k ∈ {2, 3} named-points corollary chain symmetry. Build-verification of Iters 13–22 remains gated on a single CI green pass; the `proofs/.lake` recursive self-symlink (orthogonal mechanic infra task) is the bottleneck. PRIOR Iter 22 part A (researcher-5): minkowski_four_points (k=3 specialization of minkowski_general_k). Iter 20 (researcher-3): Added minkowski_general_k_finset, the Finset transport of minkowski_general_k (S18, #17533).",
     "builtItems": [
       "blichfeldt_three_points in MinkowskiTheoremOQ04.lean:400 (S15, 2026-05-08, researcher-12): k=2 specialization of `blichfeldt_general`. Statement: vol(S) > 2 yields three pairwise-distinct points x, y, z ∈ S with all three pairwise differences in ℤⁿ. 26 lines including docstring; 3-line proof = `blichfeldt_general 2` + `Function.Injective` + `by decide` per pair. Smallest pedagogical witness of `blichfeldt_general`'s strict strengthening over iterated k=1 (no naive iteration of `blichfeldt_basic` yields 3 points in a common ℤⁿ-coset).",
       "research/problems/minkowski-theorem-oq-04/s12-api-verification.md (S12, 2026-05-08): re-verifies S11 prototype's 12 API references against the v4.26.0 pin (`2df2f01`). 11/12 verbatim; `Set.Finite.fintype_coe_eq_toFinset_card` confirmed missing. Provides 2-line drift fix (`← Set.toFinset_card; simp [hF₀_card]`) using only verified v4.26.0 names; explicit `(↑F₀).toFinset = F₀` fallback for simp non-normalization. Re-evaluates all six S11 §4 risks against v4.26.0: rows 2/5/6 fully discharged; rows 1/3/4 confirmed stable. Revised 6-step S13 build plan.",
@@ -44,7 +44,9 @@
       "h_meas_T (line 222 of edited file): MeasurableSet of T = (1/2)·s via preimage rewrite + measurable_const_smul (15 lines).",
       "h_vol_T (line 235 of edited file): 1 < volume T via Measure.addHaar_smul + ENNReal.mul_lt_mul_left + (2⁻¹)^n · 2^n = 1 (~30 lines).",
       "blichfeldt_general_pairwise in MinkowskiTheoremOQ04.lean (Iter 19, build pending): explicit-nonzero-diffs wrapper around blichfeldt_general — k+1 distinct points with pairwise differences in stdLattice n AND nonzero whenever indices differ; ~10-line transport via sub_eq_zero + Function.Injective",
-      "minkowski_general_k_finset (~66 lines, Iter 20): Finset transport of minkowski_general_k. Conclusion: F : Finset (Fin n → ℝ) with F.card = k+1, ↑F ⊆ s, ↑F ⊆ stdLattice n. Five-line transport from minkowski_general_k via Finset.univ.image f where f i = (pts i : Fin n → ℝ); subtype injectivity → ambient injectivity via Subtype.ext."
+      "minkowski_general_k_finset (~66 lines, Iter 20): Finset transport of minkowski_general_k. Conclusion: F : Finset (Fin n → ℝ) with F.card = k+1, ↑F ⊆ s, ↑F ⊆ stdLattice n. Five-line transport from minkowski_general_k via Finset.univ.image f where f i = (pts i : Fin n → ℝ); subtype injectivity → ambient injectivity via Subtype.ext.",
+      "minkowski_four_points in MinkowskiTheoremOQ04.lean:884 (Iter 22 part A, PR #17627 merged 2026-05-09, +44 LOC, build pending): k=3 specialization of `minkowski_general_k`. Statement: for measurable convex centrally-symmetric `s ⊆ ℝⁿ` with `volume s > 3 · 2ⁿ`, four pairwise-distinct lattice points `p, q, r, t ∈ (stdLattice n).toAddSubgroup` each in `s`. Proof: six C(4,2) pairwise-distinctness goals via `Function.Injective` + `Fin.decide`, mirroring `blichfeldt_four_points` (Iter 16). Zero new Mathlib API.",
+      "minkowski_general_k_pairwise in MinkowskiTheoremOQ04.lean:779 (Iter 22 part B, PR #17626 merged 2026-05-09T03:54:03Z, +54 LOC, build pending): Minkowski-side explicit-nonzero-pairwise-difference wrapper around `minkowski_general_k`. Statement: for measurable convex centrally-symmetric `s ⊆ ℝⁿ` with `vol s > k · 2ⁿ`, there exist `pts : Fin (k+1) → (stdLattice n).toAddSubgroup` with `Function.Injective pts`, `pts i ∈ s` for all i, and `(pts i : Fin n → ℝ) − (pts j : Fin n → ℝ) ≠ 0` for `i ≠ j`. Five-line transport: `sub_eq_zero` + `Subtype.ext` lifting subtype injectivity to nonzero ambient differences. Direct Minkowski-side analogue of Iter 19's `blichfeldt_general_pairwise` (PR #17554); together with Iter 17 ↔ Iter 20 (finset), closes the Blichfeldt↔Minkowski wrapper-square. Minor cleanup pending: `#check BlichfeldtTheorem.minkowski_general_k_pairwise` missing from Export check section."
     ],
     "insights": [
       "S15 (researcher-12, 2026-05-08): Once an axiom→theorem flip lands in the Lean source but build verification is pending, a useful next-iteration pattern is to add a small downstream-consumer corollary (here, `blichfeldt_three_points` at k=2). Two benefits: (a) **loud regression detection** — if CI exposes a drift bug in the flipped theorem, the corollary fails alongside it, raising the visibility of the failure; (b) **pedagogical demarcation** — a k=2 specialization is the smallest case where the general theorem strictly strengthens iterated k=1, making the increase in expressive power concrete. Cost: 26 lines for a 3-line proof + docstring; risk: zero (corollary depends only on the flipped theorem, no new Mathlib API).",
@@ -131,14 +133,14 @@
     {
       "path": "Proofs/MinkowskiTheoremOQ04.lean",
       "filename": "MinkowskiTheoremOQ04.lean",
-      "lineCount": 296,
-      "theoremCount": 5,
-      "axiomCount": 1,
+      "lineCount": 921,
+      "theoremCount": 15,
+      "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ04.lean"
     }
   ],
-  "lastUpdate": "2026-05-08T13:50:00Z"
+  "lastUpdate": "2026-05-13T22:30:00Z"
 }
