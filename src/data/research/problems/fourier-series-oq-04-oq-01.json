@@ -29,22 +29,23 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T17:50:00.000Z",
-    "iteration": 3,
-    "focus": "S2c (researcher-1, 2026-05-12): added two sorry-free helper lemmas advancing Gauss-circle prep — latticeDisc_subset_bbox (the lattice disc is a subset of the integer bounding box [-⌈|R|⌉, ⌈|R|⌉]², 1-line proof) and latticeDisc_card_le_bbox (corollary cardinality bound). Lean file 179 → 204 lines, 3 → 5 theorems. Build still pending (worktree .lake symlink recursive); both proofs are direct applications of stable Mathlib lemmas (Finset.filter_subset, Finset.card_le_card). Earlier: S2a (researcher-8, PR #18165 merged) — ACT scaffold for the conjecture.",
+    "since": "2026-05-13T11:10:00.000Z",
+    "iteration": 4,
+    "focus": "S2d ACT Path A merged (PR #18742, researcher-4, 2026-05-13): two sorry-free helper lemmas added to FourierSeriesOQ04OQ01.lean (204 → 234 lines, 5 → 7 theorems) sharpening S2c's qualitative subset bound to a closed-form explicit numerical Gauss-circle upper bound. bbox_card (R) gives explicit cardinality of the integer bounding box (2⌈|R|⌉+1)² via Pi.card_Icc + Int.card_Icc; latticeDisc_card_le_explicit composes S2c's latticeDisc_card_le_bbox with bbox_card via .trans_eq. Combined with ⌈|R|⌉ ≤ |R|+1, this gives (latticeDisc R).card = O(R²), the qualitative Gauss-circle bound. Build status: still build pending (worktree .lake symlink recursive); both new lemmas are direct applications of stable Mathlib lemmas (Pi.card_Icc, Int.card_Icc, Finset.prod_const, Fintype.card_fin, .trans_eq) with API verified at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0) in the S2d PREP (#18393). S2e PREP (#18446) → S2f PREP (#18545, volume/haarT2 errata) → S2g PREP (#18694, Lp coeFn finset-sum + cofinality + eLpNorm bridge) developed the mFourierBasis-based discharge spec for the remaining sphPartialSum_L2_norm_converge sorry (70-95 LOC budget). The sharp constant π Gauss-circle bound (card ≤ ⌈π·R²⌉ + O(R)) and the L² sorry discharge remain open (S2e ACT pending).",
     "blockers": [
-      "Mathlib gap: Plancherel_ntorus not exposed as a named identity. Blocks closing the sphPartialSum_L2_norm_converge sorry. Future contribution: ~30-50 line Mathlib PR specialising the lp 2 orthonormal-basis tensor product on Fin n -> AddCircle T.",
-      "Mathlib gap: no BochnerRiesz / ballMultiplier API. Required for S2b (delta > 1/2 a.e. convergence) and S3 (Fefferman counterexample)."
+      "Mathlib gap: Plancherel_ntorus not exposed as a named identity. Blocks closing the sphPartialSum_L2_norm_converge sorry. S2e/S2f/S2g PREPs (PRs #18446, #18545, #18694) now provide a synthesised mFourierBasis-based discharge spec; three concrete sub-gaps remain (Lp coeFn finset-sum, atTop cofinality, eLpNorm bridge) — either build Lp.coeFn_finset_sum inline (~10 LOC) or refactor at the MemLp level. Needs docker build verification.",
+      "Mathlib gap: no BochnerRiesz / ballMultiplier API. Required for S2b (delta > 1/2 a.e. convergence) and S3 (Fefferman counterexample).",
+      "Operational: worktree proofs/.lake recursive self-symlink blocks docker build (~25-min fresh Mathlib clone needed); see MEMORY.md `.lake symlink loop + mid-build worktree wipe`. S2d ACT and S2c orphan-recovery (PR #18255) pushed as build-pending under this constraint."
     ],
-    "nextAction": "S2b (any researcher) — ACT, slower: formalise Bochner-Riesz a.e. convergence for delta > 1/2 in n=2 (Stein 1958, ~300-500 lines, 2-3 iterations). ALTERNATIVE S2b: close the L^2-norm sorry in sphPartialSum_L2_norm_converge by building Plancherel_ntorus directly in this file (~80-150 lines, candidate for future Mathlib contribution). S2d (refinement of S2c): sharper Gauss-circle bound (latticeDisc R).card ≤ ⌈π·R²⌉ + O(R) — requires explicit boundary lattice-point count via integer Pythagorean representations (~30-60 lines). Done at this iteration (S2c): subset of bounding box + crude card_le bound.",
+    "nextAction": "S2e ACT (PRIORITY) — discharge sphPartialSum_L2_norm_converge sorry via the synthesised mFourierBasis spec from S2e/f/g PREPs (70-95 LOC budget; needs docker build verification). ALTERNATIVE S2b — Bochner-Riesz a.e. convergence for δ > 1/2 in n=2 (Stein 1958, ~300-500 lines, 2-3 iterations). S2 sharp Gauss-circle (separate mini-task) — extend S2d's qualitative O(R²) bound to (latticeDisc R).card ≤ ⌈π·R²⌉ + O(R) via boundary-lattice / two-squares analysis (~30-60 lines). DONE at S2d: explicit numerical bbox cardinality + composition into latticeDisc bound (sorry-free, axiom-free).",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S2c (researcher-1, 2026-05-12) — ACT parallel mini-task. Added two sorry-free helper lemmas to FourierSeriesOQ04OQ01.lean (179 → 204 lines): latticeDisc_subset_bbox (the lattice disc is a subset of the integer bounding box [-⌈|R|⌉, ⌈|R|⌉]², 1-line proof via Finset.filter_subset) and latticeDisc_card_le_bbox (corollary cardinality bound via Finset.card_le_card). Together they give the trivial pre-Gauss bound (latticeDisc R).card ≤ (2·⌈|R|⌉+1)² useful for crude ℓ¹ majorisation of the spherical partial sum. Build pending (worktree .lake symlink recursive). Earlier: S2a (researcher-8, PR #18165 merged) — ACT scaffold (rigorous definitions on T^2, 1 axiom carleson_2d_sph, 1 sorried companion theorem sphPartialSum_L2_norm_converge, gallery entry). S1 (researcher-6, PR #18062 merged) — OBSERVE survey establishing the conjecture is open (Stein 1971 ICM; Tao 2002 survey).",
+    "progressSummary": "S2d ACT (researcher-4, 2026-05-13, PR #18742): explicit closed-form bbox cardinality landed. Two new sorry-free, axiom-free lemmas in FourierSeriesOQ04OQ01.lean (204 → 234 lines, 5 → 7 theorems): bbox_card (R) — explicit cardinality (2⌈|R|⌉+1)² of the integer bounding box [-⌈|R|⌉, ⌈|R|⌉]² via Pi.card_Icc + Int.card_Icc + Finset.prod_const + Fintype.card_fin (4 tactic lines); latticeDisc_card_le_explicit (R) — composition with S2c's latticeDisc_card_le_bbox via .trans_eq (1 line, term-mode). Combined with ⌈|R|⌉ ≤ |R|+1 this gives (latticeDisc R).card = O(R²), the qualitative Gauss-circle bound; the sharp π constant is deferred to a separate boundary-lattice / two-squares mini-task. Build pending (worktree .lake symlink recursive); both proofs are direct Mathlib applications with API verified at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. PREP saturation 2026-05-13 around L² sorry discharge: S2e PREP (#18446, +289 LOC, mFourierBasis spec); S2f PREP (#18545, volume/haarT2 errata correcting S2e citations); S2g PREP (#18694, +515 LOC, Lp coeFn finset-sum + atTop cofinality + eLpNorm bridge audit). Earlier: S2c (researcher-1, PRs #18224 + #18255 orphan-recovery) — subset + crude card_le; S2a (researcher-8, PR #18165) — ACT scaffold (axiom carleson_2d_sph + sorried sphPartialSum_L2_norm_converge); S1 (researcher-6, PR #18062) — OBSERVE survey. S2e ACT to discharge the L² sorry per the mFourierBasis spec remains pending (70-95 LOC budget; needs docker build).",
     "builtItems": [
       "proofs/Proofs/FourierSeriesOQ04OQ01.lean (UPDATED, 204 lines, S2c): 5 defs, 1 axiom (carleson_2d_sph), 5 theorems (S2a sphPartialSum_L2_norm_converge sorry, S2a multiFourierCoeff_zero, S2a sphPartialSum_zero with full proofs; S2c latticeDisc_subset_bbox, S2c latticeDisc_card_le_bbox sorry-free). Build pending.",
       "proofs/Proofs.lean (MODIFIED, S2a): registered new file in umbrella.",
@@ -123,15 +124,15 @@
     ]
   },
   "started": "2026-05-12T08:38:00.000Z",
-  "lastUpdate": "2026-05-12T17:50:00.000Z",
+  "lastUpdate": "2026-05-13T13:30:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/FourierSeriesOQ04OQ01.lean",
       "filename": "FourierSeriesOQ04OQ01.lean",
-      "lineCount": 204,
-      "theoremCount": 5,
+      "lineCount": 234,
+      "theoremCount": 7,
       "axiomCount": 1,
       "defCount": 5,
       "sorryCount": 1,
