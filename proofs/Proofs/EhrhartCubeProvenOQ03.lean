@@ -81,14 +81,64 @@ theorem hypersimplex_count_k_one (d n : ℕ) (hd : 1 ≤ d) :
 
       hypersimplexLatticeCount d (d - 1) n = hypersimplexLatticeCount d 1 n.
 
-    Proof sketch: define `φ : (Fin d → Fin (n + 1)) → (Fin d → Fin (n + 1))`
-    by `φ x i = Fin.mk (n - x i) (by omega)`. `φ` is an involution. Show that
-    `(∑ i, (x i : ℕ)) = n * (d - 1)` iff `(∑ i, (φ x i : ℕ)) = n * 1` by
-    `Finset.sum_sub_distrib` and `n * d - n * (d - 1) = n` (using `1 ≤ d`).
-    Conclude with `Finset.card_image_of_injective`. -/
+    Proof: define the involution `φ x i = ⟨n - x i, _⟩`. The sum-of-complements
+    identity `∑ φ x_i + ∑ x_i = d * n` (from `Finset.sum_add_distrib` and
+    `n - x_i + x_i = n` pointwise) lets us swap the filter predicates, so the
+    `(Fin d → Fin (n+1))`-bundled `Equiv` φ ≃ φ transports the filter
+    cardinality via `Finset.card_equiv`. -/
 theorem hypersimplex_palindrome_k_d_minus_1 (d n : ℕ) (hd : 2 ≤ d) :
     hypersimplexLatticeCount d (d - 1) n = hypersimplexLatticeCount d 1 n := by
-  sorry
+  -- Step 1 — coordinate-bound helper.
+  have hbnd : ∀ (x : Fin d → Fin (n + 1)) (i : Fin d), (x i : ℕ) ≤ n := by
+    intro x i; have := (x i).isLt; omega
+  -- Step 2 — define the involution φ x i = ⟨n - x i, _⟩.
+  let φ : (Fin d → Fin (n + 1)) → (Fin d → Fin (n + 1)) :=
+    fun x i => ⟨n - (x i : ℕ), by have := (x i).isLt; omega⟩
+  -- Step 3 — φ is an involution.
+  have hφφ : ∀ x, φ (φ x) = x := by
+    intro x
+    funext i
+    apply Fin.ext
+    show n - (n - (x i : ℕ)) = (x i : ℕ)
+    have := hbnd x i
+    omega
+  -- Step 4 — sum-of-complements identity ∑ φ x_i + ∑ x_i = d * n.
+  have hsum : ∀ x : Fin d → Fin (n + 1),
+      (∑ i, (φ x i : ℕ)) + (∑ i, (x i : ℕ)) = d * n := by
+    intro x
+    rw [← Finset.sum_add_distrib]
+    have h_pt : ∀ i : Fin d, ((φ x i : ℕ) + (x i : ℕ)) = n := by
+      intro i
+      show (n - (x i : ℕ)) + (x i : ℕ) = n
+      have := hbnd x i
+      omega
+    simp only [h_pt, Finset.sum_const, Finset.card_univ, Fintype.card_fin,
+      smul_eq_mul]
+  -- Step 5 — bundle φ as an Equiv via the involution property.
+  let e : (Fin d → Fin (n + 1)) ≃ (Fin d → Fin (n + 1)) :=
+    { toFun := φ, invFun := φ, left_inv := hφφ, right_inv := hφφ }
+  -- Step 6 — apply Finset.card_equiv on the filter sets.
+  unfold hypersimplexLatticeCount
+  refine Finset.card_equiv e ?_
+  intro x
+  simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+  -- Goal: (∑ x_i) = n * (d - 1) ↔ (∑ (e x)_i) = n * 1
+  -- Unfold e to φ:
+  show (∑ i, (x i : ℕ)) = n * (d - 1) ↔ (∑ i, (φ x i : ℕ)) = n * 1
+  have h_total := hsum x
+  -- h_total : ∑ φ x_i + ∑ x_i = d * n
+  -- Linear-arithmetic bridge: d * n = n * 1 + n * (d - 1) for 1 ≤ d.
+  have h_d1 : d * n = n * 1 + n * (d - 1) := by
+    have hd1 : 1 ≤ d := by omega
+    have : d = 1 + (d - 1) := by omega
+    calc d * n = (1 + (d - 1)) * n := by rw [← this]
+      _ = 1 * n + (d - 1) * n := by rw [Nat.add_mul]
+      _ = n * 1 + n * (d - 1) := by ring
+  constructor
+  · intro hx
+    omega
+  · intro hx
+    omega
 
 /-! ## Section III — Numeric sanity checks (no `sorry`) -/
 
