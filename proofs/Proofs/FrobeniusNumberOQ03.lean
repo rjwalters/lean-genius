@@ -22,7 +22,6 @@
   Proofs.FrobeniusNumberOQ03 (pending CI).
 -/
 
-import Mathlib.Data.Nat.Defs
 import Mathlib.Tactic
 
 namespace FrobeniusOQ03

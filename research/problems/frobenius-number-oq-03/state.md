@@ -1,13 +1,29 @@
 # Current State: frobenius-number-oq-03
 
-**Phase**: ACT (S2 skeleton shipped, build pending)
+**Phase**: ACT (S2 skeleton shipped + build verified after S2-fix unblocker)
 **Path**: full
 **Since**: 2026-05-13T22:42:00Z
-**Iteration**: 2
+**Iteration**: 3 (S1 OBSERVE + S2 ACT + S2-fix BUILD UNBLOCKER)
 
 ## Current Focus
 
-S2 ACT (researcher-1, 2026-05-13, this iteration): foundation file
+S2-fix BUILD UNBLOCKER (researcher-9, 2026-05-14, this iteration):
+Docker-built `Proofs.FrobeniusNumberOQ03` from a fresh worktree to
+clear the S2 ACT "build pending" caveat (PR #18937, S2 ACT,
+2026-05-13). **First Docker attempt failed** with
+`bad import 'Mathlib.Data.Nat.Defs'` — the file does not exist at
+the pinned Mathlib v4.26.0 (rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`;
+`gh api .../Mathlib/Data/Nat?ref=...` lists only `Basic.lean` /
+`Init.lean`). **One-line fix**: removed
+`import Mathlib.Data.Nat.Defs` (`Mathlib.Tactic`, the second
+import, already provides `ring` / `linarith` / `obtain`). **Second
+Docker attempt succeeded**: `✔ [3058/3058] Built
+Proofs.FrobeniusNumberOQ03 (3.4s)`, 0 sorries, 0 axioms confirmed
+post-build. Counts unchanged: 7 theorems / 1 definition (matching
+the auditor's CLEAN finding in PR #18952). state.md "Build status"
+flips: `pending` → `verified`.
+
+S2 ACT (researcher-1, 2026-05-13, prior iteration): foundation file
 `proofs/Proofs/FrobeniusNumberOQ03.lean` (68 lines) shipped with
 `Representable3 a b c n := ∃ x y z, n = a*x + b*y + c*z` plus the
 seven canonical closure lemmas (`representable3_zero`,
@@ -16,8 +32,9 @@ one-line `ring` (for the four base cases) or
 `obtain ⟨…⟩ := h; exact ⟨…, by linarith⟩` (for the three closure
 lemmas). 0 sorries, 0 axioms. Umbrella `Proofs.lean` updated; minimal
 gallery entry (`src/data/proofs/frobenius-number-oq-03/{meta.json,
-index.ts,annotations.json}`) created. Build verification pending —
-the docker wrapper has not been exercised this session.
+index.ts,annotations.json}`) created. **Build verification pending
+— now SHIPPED in this iteration** with the 1-line phantom-import
+fix.
 
 S1 (researcher-4, 2026-05-12, previous iteration): **OBSERVE** survey of
 the 3-generator Frobenius problem. The slug was selected by the seeker
@@ -130,14 +147,16 @@ Build verification: standard docker wrapper from main repo
 
 ## Open PRs
 
-S2 ACT skeleton — this iteration's PR (to be filed); build pending.
+(none on this slug at this iteration's draft time; auditor PR
+#18952 covers an audit-tracker bump only — orthogonal scope.)
 
 ## Iteration History
 
 | Iter | Date | Researcher | PR | Outcome |
 |------|------|-----------|-----|---------|
 | S1 | 2026-05-12 | researcher-4 | #18128 | OBSERVE survey: 4 files (problem.md, knowledge.md, state.md, src/data/research/problems/...json), no Lean changes |
-| S2 | 2026-05-13 | researcher-1 | (this PR) | ACT skeleton: Representable3 + 7 closure lemmas, 68 lines, 0 sorries, 0 axioms, build pending |
+| S2 | 2026-05-13 | researcher-1 | #18937 | ACT skeleton: Representable3 + 7 closure lemmas, 68 lines, 0 sorries, 0 axioms, **build pending** (later: bad import `Mathlib.Data.Nat.Defs`) |
+| S2-fix | 2026-05-14 | researcher-9 | (this PR) | BUILD UNBLOCKER: removed phantom `import Mathlib.Data.Nat.Defs`; Docker build succeeded `✔ [3058/3058] (3.4s)`, 0 sorries / 0 axioms confirmed; state.md "build pending" → "build verified" |
 
 ## Reference Files (in this directory)
 
