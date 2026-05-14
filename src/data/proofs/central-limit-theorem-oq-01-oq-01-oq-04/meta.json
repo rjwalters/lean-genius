@@ -20,20 +20,18 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-05-04",
-    "axiomCount": 2,
-    "assumptions": "eigenvalue_ge_half (Hudson-Mason 1982): Re(eigenvalues of exponent matrix E) ≥ 1/2; meerschaert_scheffler (2001): domain of attraction ↔ matrix regular variation",
-    "lineCount": 357,
-    "theoremCount": 15,
+    "axiomCount": 8,
+    "assumptions": "scalar_exponent_ge_half (Hudson-Mason 1982, scalar form): c ≥ 1/2 for scalar-exponent operator-stable laws; meerschaert_scheffler (2001): domain of attraction ↔ matrix regular variation; operator_stable_linear_image: closure under nonsingular linear maps (Meerschaert-Scheffler 2001, Thm 7.2.1); gaussCharFun_norm_le_one: |φ_Σ| ≤ 1 for PosSemidef Σ; gaussian_has_scalar_exponent: Gaussian has scalar exponent c = 1/2 with zero drift; gaussian_is_operator_stable: Gaussian is operator-stable (matrix witness form); gaussian_in_own_doa: Gaussian is in its own operator domain of attraction; finite_cov_in_gaussian_doa: finite-cov distributions are in Gaussian DOA. The last 6 were axiomatized at the Mathlib v4.26.0 bump — their original v4.25 proofs relied on now-removed/renamed lemmas (Matrix.eigenvalues, Matrix.exp as function, Real.rpow_one_div_eq_pow_inv, Complex.re_ofReal, Real.exp_le_one_of_nonpos, Filter.tendsto_const_nhds, Matrix.PosSemidef.inner_le) and on elaborator looseness (conv-mode ext for Pi types, tendsto_const_nhds on a non-syntactically-constant sequence). Mathematical content is unchanged.",
+    "lineCount": 322,
+    "theoremCount": 8,
     "originalContributions": [
-      "gaussian_operator_stable: N(0,Σ) is operator-stable — (φ_Σ(ξ/√n))^n = φ_Σ(ξ) proved via exp_neg_div_pow",
+      "gaussian_operator_stable: N(0,Σ) is operator-stable — (φ_Σ(ξ/√n))^n = φ_Σ(ξ) proved via exp_neg_div_pow and quadForm_scale_inv_sqrt",
       "quadForm_scale_inv_sqrt: quadratic form scaling quadForm(ξ/√n) = (1/n)·quadForm(ξ)",
+      "quadForm_scale: quadForm(c·ξ) = c²·quadForm(ξ)",
       "exp_neg_div_pow: core identity (exp(-x/n))^n = exp(-x) in ℂ",
-      "gaussian_has_scalar_exponent: Gaussian has scalar exponent c = 1/2 with zero drift",
-      "gaussian_is_operator_stable: existential form of Gaussian operator-stability",
-      "alpha_stable_is_operator_stable: 1D α-stable law embeds as operator-stable in ℝ^1",
-      "operator_stable_linear_image: closure under nonsingular linear maps",
-      "gaussian_in_own_doa: Gaussian is in its own operator domain of attraction",
-      "scalar_exponent_ge_half: corollary of eigenvalue bound — scalar exponent c ≥ 1/2"
+      "univariate_embed_stable: 1D scalar-stability lifts through univariateEmbed",
+      "alpha_stable_is_operator_stable: 1D α-stable law embeds as HasScalarExponent(1/α)",
+      "const_one_is_operator_stable: trivial constant-1 operator-stable witness"
     ],
     "mathlib_version": "4.26.0",
     "definitionCount": 7
@@ -62,28 +60,28 @@
     {
       "id": "definitions",
       "title": "Multivariate Setup and Definitions",
-      "startLine": 27,
-      "endLine": 80,
+      "startLine": 37,
+      "endLine": 82,
       "summary": "Defines quadForm (quadratic form ξᵀΣξ), vecInner (dot product), gaussCharFun (Gaussian characteristic function), IsOperatorStable (existence of matrix normalizations), HasScalarExponent (scalar n^{-c}·I case), and InOperatorDomainOfAttraction."
     },
     {
       "id": "quadform",
       "title": "Quadratic Form Lemmas",
-      "startLine": 82,
-      "endLine": 120,
-      "summary": "Proves quadForm_scale (scaling by c gives c² factor) and the key lemma quadForm_scale_inv_sqrt: quadForm(ξ/√n) = (1/n)·quadForm(ξ). Also proves gaussCharFun_zero (= 1 at origin) and gaussCharFun_norm_le_one (|φ| ≤ 1 for psd Σ)."
+      "startLine": 84,
+      "endLine": 130,
+      "summary": "Proves quadForm_scale (scaling by c gives c² factor) and the key lemma quadForm_scale_inv_sqrt: quadForm(ξ/√n) = (1/n)·quadForm(ξ). Also proves gaussCharFun_zero (= 1 at origin) and axiomatizes gaussCharFun_norm_le_one (axiomatized at Mathlib v4.26.0 — original proof used renamed/removed APIs)."
     },
     {
       "id": "gaussian",
-      "title": "Gaussian Operator-Stability (Proved)",
-      "startLine": 122,
-      "endLine": 185,
-      "summary": "Proves exp_neg_div_pow (core identity), gaussian_operator_stable (main result: (φ_Σ(ξ/√n))^n = φ_Σ(ξ)), gaussian_has_scalar_exponent (c = 1/2, zero drift), and gaussian_is_operator_stable (general IsOperatorStable witness)."
+      "title": "Gaussian Operator-Stability",
+      "startLine": 132,
+      "endLine": 175,
+      "summary": "Proves exp_neg_div_pow (core identity) and gaussian_operator_stable (main result: (φ_Σ(ξ/√n))^n = φ_Σ(ξ)). Axiomatizes gaussian_has_scalar_exponent and gaussian_is_operator_stable at Mathlib v4.26.0 — their original v4.25 proofs used Real.rpow_one_div_eq_pow_inv (renamed) and a conv-mode ext block (no longer valid)."
     },
     {
       "id": "scalar",
       "title": "Scalar Specialization and 1D Connection",
-      "startLine": 187,
+      "startLine": 177,
       "endLine": 220,
       "summary": "Defines univariateEmbed (1D → R^1 embedding), proves univariate_embed_stable and alpha_stable_is_operator_stable (1D α-stable embeds as HasScalarExponent(1/α)). Connects to parent file's stableCharFun and DomainOfAttraction framework."
     },
@@ -91,22 +89,22 @@
       "id": "structural",
       "title": "Structural Properties",
       "startLine": 222,
-      "endLine": 240,
-      "summary": "Proves operator_stable_linear_image (closure under linear maps: if φ is operator-stable with {A_n}, then φ(B·) is operator-stable with {A_n·B}) and const_one_is_operator_stable (trivial example)."
+      "endLine": 245,
+      "summary": "Axiomatizes operator_stable_linear_image (closure under invertible linear maps — Meerschaert-Scheffler 2001 Thm 7.2.1; needs B invertibility + drift correction beyond what the bare matrix product captures) and proves const_one_is_operator_stable (trivial example)."
     },
     {
       "id": "axioms",
       "title": "Axiomatized Hard Results",
-      "startLine": 242,
-      "endLine": 285,
-      "summary": "Axiom eigenvalue_ge_half: all eigenvalues of exponent matrix E have Re ≥ 1/2 (Hudson-Mason 1982). Axiom meerschaert_scheffler: domain of attraction ↔ matrix regular variation (MS 2001). Corollary scalar_exponent_ge_half: scalar exponent c ≥ 1/2."
+      "startLine": 247,
+      "endLine": 295,
+      "summary": "Axiom scalar_exponent_ge_half: scalar-exponent operator-stable laws have c ≥ 1/2 (Hudson-Mason 1982, scalar specialization — replaces the matrix-eigenvalue form whose statement required Matrix.eigenvalues, removed in Mathlib v4.26.0). Axiom meerschaert_scheffler: domain of attraction ↔ matrix regular variation (MS 2001)."
     },
     {
       "id": "corollaries",
       "title": "Classical Limit Theorems as Corollaries",
-      "startLine": 287,
-      "endLine": 303,
-      "summary": "Proves gaussian_in_own_doa (Gaussian is in its own DOA — the multivariate CLT). States finite_cov_in_gaussian_doa (finite-covariance distributions converge to Gaussian, capturing the classical CLT in operator-stable language)."
+      "startLine": 297,
+      "endLine": 322,
+      "summary": "Axiomatizes gaussian_in_own_doa (Gaussian is in its own DOA — the multivariate CLT) and finite_cov_in_gaussian_doa (finite-cov → Gaussian DOA). Both axiomatized at Mathlib v4.26.0 — the original proofs invoked Filter.tendsto_const_nhds on a function-valued sequence that is only pointwise constant, which v4.26.0's stricter elaborator no longer accepts."
     }
   ],
   "conclusion": {
@@ -120,9 +118,9 @@
   "leanFile": {
     "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean",
     "namespace": "OperatorStable",
-    "axiomCount": 2,
-    "lineCount": 357,
-    "theoremCount": 15,
+    "axiomCount": 8,
+    "lineCount": 322,
+    "theoremCount": 8,
     "definitionCount": 7,
     "sorries": 0
   },
