@@ -321,13 +321,11 @@ theorem norm_mod_lt (x : Eisenstein) {y : Eisenstein} (hy : y ≠ 0) :
     show ((A.re - n * q.re : ℤ) : ℚ) = (n : ℚ) * ((A.re : ℚ) / n - q.re)
     push_cast
     field_simp
-    ring
   have hr_conj_im_rat : ((r * conj y).im : ℚ) = n * ε_im := by
     rw [hr_conj_im]
     show ((A.im - n * q.im : ℤ) : ℚ) = (n : ℚ) * ((A.im : ℚ) / n - q.im)
     push_cast
     field_simp
-    ring
   -- The Eisenstein-lattice rounding-error bound: `ε_re² - ε_re·ε_im + ε_im² < 1`.
   have hbound : ε_re ^ 2 - ε_re * ε_im + ε_im ^ 2 < 1 := by
     have h := sq_rounding_error_lt_one ((A.re : ℚ) / n) ((A.im : ℚ) / n)
@@ -344,9 +342,7 @@ theorem norm_mod_lt (x : Eisenstein) {y : Eisenstein} (hy : y ≠ 0) :
       (norm (r * conj y) : ℚ) = n ^ 2 * (ε_re ^ 2 - ε_re * ε_im + ε_im ^ 2) := by
     have hre := hr_conj_re_rat
     have him := hr_conj_im_rat
-    show ((r * conj y).re ^ 2 - (r * conj y).re * (r * conj y).im
-            + (r * conj y).im ^ 2 : ℚ)
-         = (n : ℚ) ^ 2 * (ε_re ^ 2 - ε_re * ε_im + ε_im ^ 2)
+    unfold norm
     push_cast
     calc ((r * conj y).re : ℚ) ^ 2
             - ((r * conj y).re : ℚ) * ((r * conj y).im : ℚ)
@@ -363,7 +359,7 @@ theorem norm_mod_lt (x : Eisenstein) {y : Eisenstein} (hy : y ≠ 0) :
       exact step
     have hbound' : (n : ℚ) ^ 2 * (ε_re ^ 2 - ε_re * ε_im + ε_im ^ 2) < (n : ℚ) ^ 2 * 1 := by
       have hn_sq_pos : 0 < (n : ℚ) ^ 2 := by positivity
-      exact (mul_lt_mul_left hn_sq_pos).mpr (by linarith)
+      nlinarith [hbound, hn_sq_pos]
     rw [hcast, hnorm_r_conj_rat]
     linarith
   have hfinal : (norm r : ℚ) < n := by
