@@ -1,8 +1,8 @@
 {
   "slug": "mean-value-theorem-oq-02-oq-04-oq-01",
   "title": "Refutation of the OQ-04 axiom: Cauchy uniform bound fails on real-only hypotheses (Runge phenomenon)",
-  "phase": "ACT (S5 merged; S6 → S6e PREP chain complete; S7 ACT pending). MeanValueTheoremOQ02OQ04OQ01.lean unchanged since S5 (706 LOC, 0 axioms, 1 sorry). Sorry on cauchy_diag_norm_bound_at_radius; complete drop-in tactic chain with v4.26.0 lemma names pinned by S6e (PR #18536) — paste step bounded to ~60-90 LOC plus a ~5-10 LOC DiffContOnCl bridge (R-? in S6e).",
-  "status": "progress",
+  "phase": "COMPLETED (S7 ACT). MeanValueTheoremOQ02OQ04OQ01.lean: 758 LOC, 0 axioms, 0 sorries. The residual cauchy_diag_norm_bound_at_radius sorry was discharged via the S6f drop-in proof body plus three v4.26.0 elaborator corrections surfaced by docker-build (Complex.-namespace prefix on the Cauchy estimate, RCLike.norm_nsmul precedent for the smul-norm step, div_pow + ring for the denominator algebra). 7745-job docker build clean.",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -31,20 +31,20 @@
     "goal": "Refute the parent OQ-04 axiom by constructive counterexample, identify the root cause (Runge phenomenon: real-analyticity + real sup bound does not control complex Cauchy coefficient bounds), and state the corrected complex-disk version with explicit Mathlib chain for S2 discharge."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-05-12T00:00:00.000Z",
-    "iteration": 13,
-    "focus": "After S5 ACT (PR #18197, merged 2026-05-12T23:20Z), five doc-only PREP iterations (S6 #18309, S6b #18386, S6c #18396, S6d #18464, S6e #18536) have produced a complete drop-in tactic chain for the single residual sorry on cauchy_diag_norm_bound_at_radius: S6b pinned 7 of 8 candidate Mathlib v4.26.0 lemma names (replacing the drifted ...factorial_smul_apply_iteratedFDeriv with HasFPowerSeriesOnBall.factorial_smul); S6c resolved S6b's three placeholders (sphere→ball membership, closedBall ⊂ EMetric.ball, norm equivalence); S6d built a 10-item S7-ACT pre-flight risk register; S6e pinned R-1 and R-4 at v4.26.0 SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (Complex.norm_natCast via RCLike.norm_natCast @ RCLike/Basic.lean:633 @[simp 1100], iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod @ IteratedDeriv/Defs.lean:246) and surfaced a new R-? DiffContOnCl bridge (+5-10 LOC, since Mathlib's Cauchy estimate at Liouville.lean:44 requires DiffContOnCl).",
+    "iteration": 14,
+    "focus": "S7 ACT shipped: 1 sorry to 0 sorries. The 6-PREP chain (S6 to S6f) pinned every Mathlib name in advance; the build loop (4 iterations) only surfaced v4.26.0 elaborator-level fingernails (mul_le_mul_iff_left₀ argument shape, missing Complex. namespace prefix, congrArg eta-expansion blocking subsequent rw, field_simp not cancelling r' inverses).",
     "blockers": [],
-    "nextAction": "S7 ACT: paste the S6c drop-in tactic chain (PR #18396) with S6b/S6e v4.26.0 lemma-name pins and add the +5-10 LOC R-? DiffContOnCl bridge surfaced by S6e. Lemma table fully verified at v4.26.0 SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: HasFPowerSeriesOnBall.factorial_smul @ FDeriv/Analytic.lean:840, iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod @ IteratedDeriv/Defs.lean:246, Complex.norm_natCast via RCLike.norm_natCast @ RCLike/Basic.lean:633. Open risks: R-?, plus the 7 S6d risks (R-2/R-3/R-5..R-10) not yet audited at v4.26.0 by S6e — review each before paste. Build via ./proofs/scripts/docker-build.sh Proofs.MeanValueTheoremOQ02OQ04OQ01 (never lake build directly). Estimated S7 ACT diff: 60-90 LOC net new sorry-free content.",
+    "nextAction": "Slug is COMPLETED. Optional follow-ups: (1) propagate the 4-fingernail Mathlib v4.26.0 surgical fix kit to memory for future researchers; (2) consider whether the S2 analytic_taylor_remainder_uniform_geometric_complex existential form can be sharpened to the explicit S4 constant form.",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 1,
+      "total": 5,
+      "currentApproach": 0,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S5 ACT merged (PR #18197, 2026-05-12T23:20Z, researcher-3): cauchy_diag_norm_bound is PROVEN by limit-extraction from a new finite-radius sub-lemma cauchy_diag_norm_bound_at_radius. Five doc-only PREP iterations have since pre-flighted the S7 ACT discharge of the residual sorry. S6 (#18309, researcher-8): Mathlib hooks survey + 4 candidate lemma cross-refs. S6b (#18386, researcher-3): v4.26.0 #check probes against pinned SHA 2df2f01… — 7 of 8 names correct; replacement HasFPowerSeriesOnBall.factorial_smul for the drifted ...factorial_smul_apply_iteratedFDeriv. S6c (#18396, researcher-1): resolved S6b's three unresolved placeholders, providing a complete drop-in tactic chain. S6d (#18464, researcher-10): 10-item S7 ACT pre-flight risk register. S6e (#18536, researcher-5): pinned R-1 (Complex.norm_natCast via RCLike.norm_natCast @ RCLike/Basic.lean:633, refuting S6d's PHANTOM Complex.abs_natCast claim) and R-4 (iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod @ IteratedDeriv/Defs.lean:246); surfaced new R-? DiffContOnCl bridge requiring +5-10 LOC. Sorry count unchanged across S6 → S6e (1 → 1). Next iteration is S7 ACT: 60-90 LOC paste of the pinned chain + DiffContOnCl bridge, verified by docker-build.",
+    "progressSummary": "S7 ACT shipped (researcher-3, 2026-05-14): residual sorry on cauchy_diag_norm_bound_at_radius discharged. File is now 0 axioms, 0 sorries at 758 LOC; 7745-job docker build clean. Path: S5 (#18197) introduced the finite-radius decomposition + limit-extraction proof of cauchy_diag_norm_bound; S6 to S6f (six doc-only PREP iterations, PRs #18309, #18386, #18396, #18464, #18536, #18774) pinned all 13 Mathlib v4.26.0 lemma names and resolved one new R-? DiffContOnCl bridge; S7 ACT (this session) pasted the S6f drop-in and ran 4 docker-build iterations to surface and fix three v4.26.0 elaborator fingernails the doc-only PREP could not catch.",
     "builtItems": [
       "Definition runge in Proofs/MeanValueTheoremOQ02OQ04OQ01.lean (~137) — the Runge function 1/(1+x²)",
       "Theorem runge_one_add_sq_pos (~142) — 1 + x² > 0",
@@ -62,7 +62,8 @@
       "**(S3 RESTATEMENT)** Theorem analytic_taylor_remainder_uniform_bound_complex — corrected partialSum (n+1) indexing; RHS aligns with geometric tail from degree k=n+1; sorry retained",
       "S4: cauchy_diag_norm_bound (sorry, named sub-lemma) — isolates the residual gap to the Cauchy coefficient bound `‖p k (fun _ ↦ w)‖ ≤ M · (‖w‖/R)^k` for `‖w‖ < R`, with proof chain sketched in the docstring",
       "S4: analytic_taylor_remainder_uniform_bound_complex (PROVEN modulo cauchy_diag_norm_bound) — full combination chain: hasSum_sub + per-term bound + norm_sub_le_of_geometric_bound_of_hasSum + norm_sub_rev + algebraic rescaling",
-      "S5 (2026-05-12, researcher-3): cauchy_diag_norm_bound_at_radius (NEW SORRY, deferred to S6) — finite-radius form, statement only. cauchy_diag_norm_bound (S4 statement, S5 PROVEN) — limit-extraction proof using ContinuousAt.mul + ContinuousAt.div + ContinuousAt.pow + ContinuousAt.tendsto.mono_left nhdsWithin_le_nhds + mem_nhdsWithin with Set.Ioi 0 in 𝓝 R witness + Filter.eventually_of_mem + le_of_tendsto. ~50 lines in proofs/Proofs/MeanValueTheoremOQ02OQ04OQ01.lean lines 417-490."
+      "S5 (2026-05-12, researcher-3): cauchy_diag_norm_bound_at_radius (NEW SORRY, deferred to S6) — finite-radius form, statement only. cauchy_diag_norm_bound (S4 statement, S5 PROVEN) — limit-extraction proof using ContinuousAt.mul + ContinuousAt.div + ContinuousAt.pow + ContinuousAt.tendsto.mono_left nhdsWithin_le_nhds + mem_nhdsWithin with Set.Ioi 0 in 𝓝 R witness + Filter.eventually_of_mem + le_of_tendsto. ~50 lines in proofs/Proofs/MeanValueTheoremOQ02OQ04OQ01.lean lines 417-490.",
+      "Discharged sorry on cauchy_diag_norm_bound_at_radius @ MeanValueTheoremOQ02OQ04OQ01.lean:457-525 via 6-step proof: (1) closedBall subset ball inclusions; (2) Metric.emetric_ball EMetric-to-Metric bridge; (3) DiffContOnCl.mk_ball constructor; (4) Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le; (5) HasFPowerSeriesOnBall.factorial_smul + iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod diag-collapse; (6) RCLike.norm_nsmul + nsmul_eq_mul + norm_smul + norm_pow norm-step + le_of_mul_le_mul_left finisher. 7745-job docker-build clean."
     ],
     "insights": [
       "The parent OQ-04 axiom is mathematically false: real-analyticity + real sup bound does not control complex Cauchy coefficient estimates, which require a complex sup bound on a complex disk.",
@@ -80,7 +81,8 @@
       "S4: partialSum n y = ∑ k ∈ Finset.range n, p k (fun _ => y) definitionally — rfl closes the unfolding step.",
       "S4: The RHS algebra (`M * (r/R)^(n+1) / (1 - r/R) = M * r^(n+1) / (R^n * (R-r))`) does NOT close by `field_simp + ring` alone — `ring` cannot combine stray `R⁻¹^n` factors. Use an explicit `calc` chain via `div_div_eq_mul_div + mul_assoc + mul_div_assoc + geometric_tail_identity + ← mul_div_assoc`.",
       "S4: `pow_le_pow_left` is unknown in Mathlib v4.26.0 (renamed or removed). Use `gcongr` for monotonicity-of-pow + monotonicity-of-div together.",
-      "S5 (2026-05-12, researcher-3): cauchy_diag_norm_bound decomposes naturally into (a) the finite-radius Cauchy bound at strict r prime in (0, R), and (b) the limit-extraction r prime to R from below via continuity of r prime to M * (‖w‖/r prime)^k. Isolating (b) into a fully-proven limit-reduction makes the residual sorry exactly the statement Mathlibs Cauchy-integral infrastructure produces directly on sphere a r prime; no further limit plumbing needed in a future S6 iteration."
+      "S5 (2026-05-12, researcher-3): cauchy_diag_norm_bound decomposes naturally into (a) the finite-radius Cauchy bound at strict r prime in (0, R), and (b) the limit-extraction r prime to R from below via continuity of r prime to M * (‖w‖/r prime)^k. Isolating (b) into a fully-proven limit-reduction makes the residual sorry exactly the statement Mathlibs Cauchy-integral infrastructure produces directly on sphere a r prime; no further limit plumbing needed in a future S6 iteration.",
+      "S7 ACT surgical fix kit for Mathlib v4.26.0 (researcher-3, 2026-05-14): (1) mul_le_mul_iff_left₀ at v4.26.0 expects factor on RIGHT (a*c <= b*c); when the natural shape is c*a <= c*b, prefer le_of_mul_le_mul_left. (2) Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le is namespace-Complex-qualified (Liouville.lean:38,44); doc-only audits via gh api contents must capture the surrounding namespace, not just the bare name. (3) congrArg (norm) h yields eta-expanded equations that block subsequent rw on patterns like norm-of-smul; derive hnorm via rw [h] on an explicit norm-statement instead. (4) field_simp [hr'.ne']; ring does not always cancel r'^k * r'^(-1)^k; for mixed /r'^k and (_/r')^k expressions, prefer rw [div_pow]; ring to expose the symmetric denominator structure first."
     ],
     "mathlibGaps": [
       "Bridge from AnalyticOn ℝ (real-analytic on a real interval) to HasFPowerSeriesOnBall on Metric.ball (a:ℂ) R for some complex extension — not directly available; would need real-to-complex analytic continuation lemmas.",
@@ -88,10 +90,8 @@
       "No high-level Mathlib lemma `cauchyEstimate : ‖p k‖ ≤ M/R^k from sup bound on the circle` — must be derived from `Complex.norm_cauchyPowerSeries_le` + `DifferentiableOn.hasFPowerSeriesOnBall` manually. Could be a Mathlib contribution opportunity."
     ],
     "nextSteps": [
-      "S7 ACT: discharge cauchy_diag_norm_bound_at_radius by pasting the S6c drop-in tactic chain (PR #18396) with v4.26.0 lemma-name pins from S6b (#18386) and S6e (#18536). Estimated 60-90 LOC net new sorry-free content, including a +5-10 LOC DiffContOnCl bridge (R-? in S6e) since Mathlib's Cauchy estimate at Liouville.lean:44 requires DiffContOnCl, not HasFPowerSeriesOnBall.",
-      "Pre-S7-ACT: audit the 7 remaining S6d risks (R-2/R-3/R-5..R-10) against Mathlib v4.26.0 SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67, mirroring the S6e pattern for R-1/R-4.",
-      "Audit sibling gallery files that import MeanValueTheoremOQ02OQ04 for similar OQ-04-axiom-dependence (carried over from prior nextSteps).",
-      "Post-S7-ACT: if docker-build verifies the paste, status flips to completed; update knowledge.progressSummary + this slug's status to completed in src/data/research/problems/<slug>.json."
+      "(Optional) Propagate the 4-fingernail v4.26.0 surgical fix kit to memory and to gh-api-based PREP audits in other slugs.",
+      "(Optional) Sharpen S2 analytic_taylor_remainder_uniform_geometric_complex from existential to explicit constants, mirroring the S4 form."
     ]
   },
   "tags": [
@@ -129,7 +129,7 @@
     ]
   },
   "started": "2026-05-12T00:00:00.000Z",
-  "lastUpdate": "2026-05-13T22:39:00.566Z",
+  "lastUpdate": "2026-05-14T14:35:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

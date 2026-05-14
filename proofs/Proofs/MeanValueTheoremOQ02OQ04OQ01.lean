@@ -458,13 +458,65 @@ theorem cauchy_diag_norm_bound_at_radius
     (f : ℂ → ℂ) (a : ℂ) (R M : ℝ)
     (_hR : 0 < R) (_hM : 0 ≤ M)
     (p : FormalMultilinearSeries ℂ ℂ ℂ)
-    (_hf : HasFPowerSeriesOnBall f p a (ENNReal.ofReal R))
-    (_hbound : ∀ z ∈ Metric.ball a R, ‖f z‖ ≤ M)
-    (k : ℕ) (w : ℂ) (r' : ℝ) (_hr' : 0 < r') (_hr'R : r' < R) :
+    (hf : HasFPowerSeriesOnBall f p a (ENNReal.ofReal R))
+    (hbound : ∀ z ∈ Metric.ball a R, ‖f z‖ ≤ M)
+    (k : ℕ) (w : ℂ) (r' : ℝ) (hr' : 0 < r') (hr'R : r' < R) :
     ‖p k (fun _ ↦ w)‖ ≤ M * (‖w‖ / r') ^ k := by
-  -- Deferred to S6: see docstring for the Mathlib Cauchy-integral chain on
-  -- `sphere a r'` followed by the formal-series / iterated-derivative bridge.
-  sorry
+  -- (1) Inclusions: `closedBall a r' ⊂ ball a R` and `sphere a r' ⊂ closedBall a r'`.
+  have h_cls_sub : Metric.closedBall a r' ⊆ Metric.ball a R := fun z hz =>
+    Metric.mem_ball.mpr (lt_of_le_of_lt (Metric.mem_closedBall.mp hz) hr'R)
+  have h_sphere_bound : ∀ z ∈ Metric.sphere a r', ‖f z‖ ≤ M := fun z hz => by
+    apply hbound
+    exact h_cls_sub (Metric.sphere_subset_closedBall hz)
+  -- (2) Analytic on `Metric.ball a R` via the EMetric ↔ Metric set bridge,
+  -- then `.mono` to `Metric.closedBall a r'`.
+  have h_analyticOn_R : AnalyticOnNhd ℂ f (Metric.ball a R) := by
+    have h := hf.analyticOnNhd
+    rwa [Metric.emetric_ball] at h
+  have h_analyticOn_cls : AnalyticOnNhd ℂ f (Metric.closedBall a r') :=
+    h_analyticOn_R.mono h_cls_sub
+  -- (3) DiffContOnCl on `Metric.ball a r'` via `DiffContOnCl.mk_ball`.
+  have hf_diff_cont : DiffContOnCl ℂ f (Metric.ball a r') :=
+    DiffContOnCl.mk_ball
+      (h_analyticOn_cls.differentiableOn.mono Metric.ball_subset_closedBall)
+      h_analyticOn_cls.continuousOn
+  -- (4) Mathlib's Cauchy estimate on `sphere a r'` (`Liouville.lean:44`).
+  have h_cauchy : ‖iteratedDeriv k f a‖ ≤ k.factorial * M / r' ^ k :=
+    Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le k hr' hf_diff_cont
+      h_sphere_bound
+  -- (5) Bridge `p k` to `iteratedDeriv k f a` via `factorial_smul` +
+  -- diagonal collapse (`iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod`).
+  have h_factor_smul : k.factorial • p k (fun _ ↦ w) =
+      iteratedFDeriv ℂ k f a (fun _ ↦ w) :=
+    hf.factorial_smul w k
+  have h_diag : iteratedFDeriv ℂ k f a (fun _ ↦ w) =
+      w ^ k • iteratedDeriv k f a := by
+    rw [iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod]
+    simp
+  have h_combined : k.factorial • p k (fun _ ↦ w) =
+      w ^ k • iteratedDeriv k f a := h_factor_smul.trans h_diag
+  -- (6) Take norms, divide by `k.factorial > 0`.
+  have h_normed : (k.factorial : ℝ) * ‖p k (fun _ ↦ w)‖ ≤
+      (k.factorial : ℝ) * (M * (‖w‖ / r') ^ k) := by
+    have h1 : (k.factorial : ℝ) * ‖p k (fun _ ↦ w)‖ =
+        ‖w‖ ^ k * ‖iteratedDeriv k f a‖ := by
+      have hnorm : ‖k.factorial • p k (fun _ ↦ w)‖ =
+          ‖w ^ k • iteratedDeriv k f a‖ := by rw [h_combined]
+      rw [RCLike.norm_nsmul (K := ℂ), nsmul_eq_mul, norm_smul, norm_pow] at hnorm
+      exact hnorm
+    rw [h1]
+    have h_pow_nn : 0 ≤ ‖w‖ ^ k := pow_nonneg (norm_nonneg _) _
+    have h2 : ‖w‖ ^ k * ‖iteratedDeriv k f a‖ ≤
+        ‖w‖ ^ k * (k.factorial * M / r' ^ k) :=
+      mul_le_mul_of_nonneg_left h_cauchy h_pow_nn
+    have hr'_pow_pos : (0 : ℝ) < r' ^ k := pow_pos hr' k
+    calc ‖w‖ ^ k * ‖iteratedDeriv k f a‖
+        ≤ ‖w‖ ^ k * (k.factorial * M / r' ^ k) := h2
+      _ = (k.factorial : ℝ) * (M * (‖w‖ / r') ^ k) := by
+          rw [div_pow]; ring
+  have h_factorial_pos : (0 : ℝ) < (k.factorial : ℝ) := by
+    exact_mod_cast k.factorial_pos
+  exact le_of_mul_le_mul_left h_normed h_factorial_pos
 
 /-- **Cauchy diagonal-norm bound** (S4 statement; S5 limit-extraction proof).
 
