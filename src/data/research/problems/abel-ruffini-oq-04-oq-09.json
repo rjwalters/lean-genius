@@ -1,7 +1,7 @@
 {
   "slug": "abel-ruffini-oq-04-oq-09",
   "title": "Shafarevich realizability for solvable subgroups of S_n (n ≤ 4)",
-  "phase": "OBSERVE",
+  "phase": "PREP",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -29,14 +29,14 @@
     "goal": "Build a single Lean file Proofs/AbelRuffiniOQ04OQ09.lean exhibiting explicit Q-realizations of all 9 solvable transitive Galois groups occurring in degrees ≤ 4, with 0 axioms beyond Classical.choice, paired with a gallery entry that completes oq-04's threshold theorem with the constructive direction."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T02:30:00Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE — scope narrowed to axiom-free n ≤ 4 slice; Mathlib API surveyed; 9 target groups catalogued; next-action documented.",
+    "phase": "PREP",
+    "since": "2026-05-14T03:05:23Z",
+    "iteration": 2,
+    "focus": "S2 PREP complete (PR #18946) — per-row Mathlib API path sketches for cyclic (≤10 LOC wrapper of OQ-05-OQ-01.cyclic_realizable), V₄ (40–60 LOC via cyclotomic ζ₁₂ → IsCyclotomicExtension.Rat.aut_equiv_pow), and S₃ (80–120 LOC via X³−2 + Eisenstein + Polynomial.Gal.galActionHom). D₄/A₄/S₄ deferred — each requires resolvent-cubic Mathlib helper namespace not yet packaged.",
     "blockers": [
       "Broken proofs/.lake symlink → ~45 min cold build cycles (feedback_researcher_lake_symlink_broken.md)"
     ],
-    "nextAction": "S2 — choose Option A (Lean #check probe, 1 build cycle) or Option B (expand knowledge.md menu with per-row proof sketches, no build). Recommendation: Option B.",
+    "nextAction": "S3 ACT — implement the cyclic/V₄/S₃ trio in Lean as `proofs/Proofs/AbelRuffiniOQ04OQ09.lean` (~150 LOC, 0 axioms beyond Classical.choice). Recommended order: (1) cyclic wrapper (lowest risk, reuses OQ-05-OQ-01.cyclic_realizable directly); (2) V₄ via ζ₁₂ cyclotomic Galois group; (3) S₃ via X³−2 Eisenstein + cardinality argument. Plan one Docker build cycle per row (~45 min cold + 5 min compile) or batch all three before first build. D₄/A₄/S₄ remain separate scope (resolvent-cubic helper namespace first).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -44,11 +44,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE complete. Scope narrowed to subgroups of S_n with n ≤ 4 (9 distinct group structures). Sibling entries oq-05 and oq-05-oq-01 surveyed: this slug's distinctive contribution is the axiom-free finite menu. No Lean code yet — pure documentation iteration.",
+    "progressSummary": "S1 OBSERVE + S2 PREP complete. Scope narrowed to subgroups of S_n with n ≤ 4 (9 distinct group structures); per-row Mathlib API paths sketched for the three easier rows (cyclic / V₄ / S₃). D₄/A₄/S₄ explicitly deferred to a follow-up scope (need resolvent-cubic Mathlib helper namespace). No Lean code yet — pure documentation iterations.",
     "builtItems": [
       "research/problems/abel-ruffini-oq-04-oq-09/problem.md — full statement + classification",
-      "research/problems/abel-ruffini-oq-04-oq-09/knowledge.md — Mathlib API survey + 9-row realization menu + S2 options",
-      "research/problems/abel-ruffini-oq-04-oq-09/state.md — phase OBSERVE, next-action documented"
+      "research/problems/abel-ruffini-oq-04-oq-09/knowledge.md — Mathlib API survey + 9-row realization menu + §4.5 per-row API paths for cyclic/V₄/S₃ (S2 PREP)",
+      "research/problems/abel-ruffini-oq-04-oq-09/state.md — phase PREP, S2 PREP complete header (body refresh pending in this PR)",
+      "research/problems/abel-ruffini-oq-04-oq-09/sessions/2026-05-13-s2-prep-per-row-mathlib-api-paths.md — S2 PREP memo (PR #18946)"
     ],
     "insights": [
       "Not a duplicate of oq-05: this slug is the axiom-free n ≤ 4 slice; oq-05 is the axiomatized full theorem.",
@@ -61,10 +62,10 @@
       "Compositum disjointness for cyclotomic subfields — already flagged by oq-05-oq-01 as the 'general abelian' gap (~500 lines per its estimate). Does NOT block the n ≤ 4 slice."
     ],
     "nextSteps": [
-      "S2 Option A: 30-line Lean #check probe verifying API surface (1 Docker cycle ~45 min cold).",
-      "S2 Option B: markdown-only per-row proof sketches in knowledge.md (no build, lower risk).",
-      "S3: actual proofs/Proofs/AbelRuffiniOQ04OQ09.lean (estimated 600–800 lines, 4 non-trivial Polynomial.Gal cases).",
-      "S4: gallery entry (meta.json + index.ts + annotations.json) and cross-reference into abel-ruffini-oq-04 conclusion.openQuestions[8]."
+      "S3 ACT: implement the cyclic/V₄/S₃ trio in proofs/Proofs/AbelRuffiniOQ04OQ09.lean (~150 LOC, 0 axioms).",
+      "S4 PREP: resolvent-cubic Mathlib helper namespace blueprint for D₄/A₄/S₄.",
+      "S5 ACT: implement D₄/A₄/S₄ row(s) once resolvent-cubic infrastructure is packaged.",
+      "S6: gallery entry (meta.json + index.ts + annotations.json) and cross-reference into abel-ruffini-oq-04 conclusion.openQuestions[8]."
     ]
   },
   "tags": [
@@ -107,7 +108,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.559Z",
-  "lastUpdate": "2026-05-12T02:30:00Z",
+  "lastUpdate": "2026-05-14T03:05:23Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
