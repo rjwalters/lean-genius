@@ -15,31 +15,28 @@ product of all elements equals `1`:
 
   `∀ x : H, x^2 = 1` ∧ `4 ≤ Fintype.card H`  ⟹  `∏ x : H, x = 1`.
 
-**This iteration ships:**
-- Build-verified helper lemmas
+**Contents (Phase B, complete, 0 sorries):**
+- Helper lemmas
   (`mul_left_self_inv_of_elementary`, `mul_left_ne_self_of_ne_one`,
   `pow_eq_one_of_sq_eq_one`, `pow_eq_self_of_sq_eq_one`,
   `exists_two_distinct_ne_one`).
-- The main Phase B theorem `prod_univ_eq_one_of_elementary_card_ge_four`
-  **derived modulo one strategic sorry**: the transversal-pairing
-  identity
-  `prod_univ_eq_pow_card_div_two_of_elementary` which states
-  `∏ x : H, x = h ^ (Fintype.card H / 2)` for any non-identity `h ∈ H`.
+- The transversal-pairing identity
+  `prod_univ_eq_pow_card_div_two_of_elementary`: for any non-identity
+  `h ∈ H`, `∏ x : H, x = h ^ (Fintype.card H / 2)`.
+- The main Phase B theorem `prod_univ_eq_one_of_elementary_card_ge_four`.
 
-**Strategy for closing the sorry (future S4 iteration).** The map
+**Proof of the transversal-pairing identity.** The map
 `σ_h : H → H`, `σ_h x := h * x`, is a fixed-point-free involution
 (Lemmas `mul_left_self_inv_of_elementary` + `mul_left_ne_self_of_ne_one`).
-Its orbits partition `Finset.univ` into `Fintype.card H / 2` pairs of
-size `2`. The product over a pair `{x, h*x}` is `x * (h*x) = h * x^2 = h`,
-so the total product equals `h ^ (Fintype.card H / 2)`. The Lean
-formalisation requires either (a) a transversal Finset and
-`Finset.prod_image`, or (b) `Finset.prod_pair_of_involution` if added to
-Mathlib, or (c) a `MulAction.Quotient` route through `H ⧸ Subgroup.zpowers h`.
-None of these is mechanical in 30 lines; deferred to S4.
+We prove a stronger fact by strong induction on `Finset H`: any subset
+`S` closed under `(h * ·)` has cardinality `2k` and product `h^k`. The
+step erases one orbit `{x, h*x}` from `S` (their product is
+`x * (h*x) = h * x^2 = h`); the residue is again closed under `(h * ·)`
+by left cancellation. The main statement specializes this to `S = univ`.
 
-**Derivation of Phase B from the sorry (build-verified).** Pick two
-distinct non-identity elements `h₀ ≠ h₁` (possible by `card ≥ 4`). The
-strategic sorry gives `∏ x : H, x = h₀ ^ (N/2)` and `= h₁ ^ (N/2)`
+**Derivation of Phase B (from the transversal-pairing identity).** Pick
+two distinct non-identity elements `h₀ ≠ h₁` (possible by `card ≥ 4`).
+The identity gives `∏ x : H, x = h₀ ^ (N/2)` and `= h₁ ^ (N/2)`
 where `N := Fintype.card H`. Either `N/2` is even (then `h₀ ^ (N/2) = 1`
 by `pow_eq_one_of_sq_eq_one` and we conclude) or `N/2` is odd (then
 `h₀ ^ (N/2) = h₀` and `h₁ ^ (N/2) = h₁`, forcing `h₀ = h₁`,
@@ -115,26 +112,108 @@ theorem exists_two_distinct_ne_one [Fintype H] [DecidableEq H]
   have hh₁_ne_h₀ : h₁ ≠ h₀ := hh₁.1
   exact ⟨h₀, h₁, hh₀_ne_one, hh₁_ne_one, fun heq => hh₁_ne_h₀ heq.symm⟩
 
-/-! ## Strategic sorry: transversal-pairing identity (deferred to S4)
+/-! ## Transversal-pairing identity
 
-The lemma below is the crucial step of Phase B; the proof requires a
-construction of a transversal Finset for the action of `⟨h⟩` on `H` (or
-an equivalent `MulAction.Quotient`-based approach). Once available, the
-main theorem `prod_univ_eq_one_of_elementary_card_ge_four` (next) is
-derived in `≈ 25` lines with no further sorries.
+The lemma below is the load-bearing step of Phase B. We avoid the
+explicit transversal/`MulAction.Quotient` machinery entirely: instead,
+prove the stronger statement that any Finset closed under `(h * ·)` has
+even cardinality `2k` and product `h^k`, by strong induction on `S`
+(erase one orbit `{x, h*x}` per step). Specializing to `S = univ` gives
+the identity.
 -/
 
-/-- **(SORRY — strategic)** For elementary 2-abelian `H` and any
-    non-identity `h ∈ H`, the product over `Finset.univ` factors as
-    `h ^ (Fintype.card H / 2)` via the pairing induced by left
-    translation. -/
+/-- For elementary 2-abelian `H` and any non-identity `h ∈ H`, the
+    product over `Finset.univ` factors as `h ^ (Fintype.card H / 2)`
+    via the pairing induced by left translation. -/
 theorem prod_univ_eq_pow_card_div_two_of_elementary
     [Fintype H] [DecidableEq H]
     (hexp : ∀ x : H, x ^ 2 = 1) {h : H} (hne : h ≠ 1) :
     ∏ x : H, x = h ^ (Fintype.card H / 2) := by
-  -- Deferred to S4: transversal-pairing construction.
-  -- See module docstring for the proof outline.
-  sorry
+  -- Generalize: any Finset closed under left-multiplication by `h` has
+  -- even cardinality `2k`, and its product is `h^k`. Then specialize to
+  -- `S = univ` (closure is automatic).
+  suffices h_aux : ∀ S : Finset H, (∀ x ∈ S, h * x ∈ S) →
+      ∃ k, S.card = 2 * k ∧ ∏ x ∈ S, x = h ^ k by
+    obtain ⟨k, hk_card, hk_prod⟩ :=
+      h_aux Finset.univ (fun _ _ => Finset.mem_univ _)
+    rw [Finset.card_univ] at hk_card
+    rw [hk_prod]
+    congr 1
+    omega
+  -- Strong induction on `S`. Erase one orbit `{x, h*x}` per step.
+  intro S
+  induction S using Finset.strongInduction with
+  | H S ih =>
+    intro hS_closed
+    rcases S.eq_empty_or_nonempty with rfl | ⟨x, hx⟩
+    · exact ⟨0, by simp, by simp⟩
+    have hhx_in : h * x ∈ S := hS_closed x hx
+    have hhx_ne_x : h * x ≠ x := mul_left_ne_self_of_ne_one hne x
+    have hhx_in_erase : h * x ∈ S.erase x :=
+      Finset.mem_erase.mpr ⟨hhx_ne_x, hhx_in⟩
+    set S' : Finset H := (S.erase x).erase (h * x) with hS'_def
+    -- `S'` is a strict subset of `S` (since `x ∈ S \ S'`).
+    have hS'_ssub : S' ⊂ S := by
+      refine ⟨fun y hy => ?_, ?_⟩
+      · simp only [hS'_def, Finset.mem_erase] at hy
+        exact hy.2.2
+      · intro hsub
+        have hx_in_S' : x ∈ S' := hsub hx
+        simp only [hS'_def, Finset.mem_erase] at hx_in_S'
+        exact hx_in_S'.2.1 rfl
+    -- `S'` is also closed under left-multiplication by `h`.
+    have hS'_closed : ∀ y ∈ S', h * y ∈ S' := by
+      intro y hy
+      simp only [hS'_def, Finset.mem_erase] at hy
+      obtain ⟨hy_ne_hx, hy_ne_x, hy_S⟩ := hy
+      simp only [hS'_def, Finset.mem_erase]
+      refine ⟨?_, ?_, hS_closed y hy_S⟩
+      · -- `h * y ≠ h * x` from `y ≠ x` via left cancellation.
+        intro heq
+        exact hy_ne_x (mul_left_cancel heq)
+      · -- `h * y ≠ x`: else `y = h * x` via `h * (h * y) = h * x`.
+        intro heq
+        apply hy_ne_hx
+        have hf : h * (h * y) = h * x := by rw [heq]
+        rwa [mul_left_self_inv_of_elementary hexp h y] at hf
+    -- Apply the induction hypothesis to `S'`.
+    obtain ⟨k, hk_card, hk_prod⟩ := ih S' hS'_ssub hS'_closed
+    refine ⟨k + 1, ?_, ?_⟩
+    · -- Cardinality: `|S| = |S'| + 2 = 2k + 2 = 2(k+1)`.
+      have hpair_sub : ({x, h * x} : Finset H) ⊆ S := by
+        intro y hy
+        rcases Finset.mem_insert.mp hy with rfl | hy
+        · exact hx
+        · rw [Finset.mem_singleton] at hy
+          rw [hy]; exact hhx_in
+      have h_ge : 2 ≤ S.card := by
+        have hpair_card : ({x, h * x} : Finset H).card = 2 :=
+          Finset.card_pair hhx_ne_x.symm
+        have := Finset.card_le_card hpair_sub
+        rwa [hpair_card] at this
+      have h2 : S.card = S'.card + 2 := by
+        rw [hS'_def,
+            Finset.card_erase_of_mem hhx_in_erase,
+            Finset.card_erase_of_mem hx]
+        omega
+      omega
+    · -- Product: `∏ S = x * (h*x) * ∏ S' = h * ∏ S' = h * h^k = h^(k+1)`.
+      have hx_sq : x * x = 1 := by
+        have := hexp x; rwa [sq] at this
+      have pair_id : x * (h * x) = h := by
+        rw [mul_left_comm, hx_sq, mul_one]
+      have e1 : (∏ y ∈ S, y) = x * (∏ y ∈ S.erase x, y) :=
+        (Finset.mul_prod_erase S (fun y => y) hx).symm
+      have e2 : (∏ y ∈ S.erase x, y) = (h * x) * (∏ y ∈ S', y) := by
+        rw [hS'_def]
+        exact (Finset.mul_prod_erase (S.erase x) (fun y => y)
+          hhx_in_erase).symm
+      calc (∏ y ∈ S, y)
+          = x * ((h * x) * (∏ y ∈ S', y)) := by rw [e1, e2]
+        _ = (x * (h * x)) * (∏ y ∈ S', y) := by rw [← mul_assoc]
+        _ = h * (∏ y ∈ S', y) := by rw [pair_id]
+        _ = h * h ^ k := by rw [hk_prod]
+        _ = h ^ (k + 1) := (pow_succ' h k).symm
 
 /-- **Phase B (main).** For an elementary 2-abelian commutative group
     `H` of order at least `4`, the product of all elements equals `1`. -/

@@ -21,11 +21,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T17:55:00.000Z",
-    "iteration": 10,
-    "focus": "S7 ACT shipped (PR #18743, 2026-05-13). Phase C cyclic-direction sorry discharged via the IsCyclic.card_pow_eq_one_le route (S7 PREP recipe, PR #18700). Slug-level state: 3 Lean files (Phase A 0 sorries build-verified; Phase B 1 strategic sorry build-pending; Phase C iff scaffold 1 sorry build-pending), 0 axioms. The two remaining sorries are (i) Phase B prod_univ_eq_pow_card_div_two_of_elementary (transversal-pairing orbit-product identity at GaussWilsonNonCyclicOQ01B.lean:137) and (ii) Phase C prod_eq_one_of_not_isCyclic_aux (non-cyclic direction at GaussWilsonNonCyclicOQ01.lean:149, consumes (i) transitively). PREP work since S3 ACT spans S4 PREP (#18347 route survey), S4b PREP (#18467 Mathlib pin errata), S5 PREP (#18502 OQ-01-C iff design), S5b PREP (#18607 4-bug design audit), S6 ACT (#18652 iff scaffold), S7 PREP (#18700 cyclic recipe), S7 ACT (#18743 cyclic discharge).",
+    "since": "2026-05-13T23:35:00.000Z",
+    "iteration": 11,
+    "focus": "S8 ACT shipped (this session, 2026-05-13 ~23:35 UTC). Phase B strategic sorry prod_univ_eq_pow_card_div_two_of_elementary at GaussWilsonNonCyclicOQ01B.lean:131 discharged via strong induction on Finset H (closure-under-(h*·) + erase-one-orbit-per-step). Build-verified via docker-build.sh. Slug-level sorry count: 2 → 1. Phase A (0 sorries, build-verified, #18147), Phase B (0 sorries, BUILD-VERIFIED in this PR, +78 LOC on top of #18232), Phase C (1 sorry remaining, build-pending, #18652). 0 axioms slug-wide. The remaining Phase C non-cyclic-direction sorry at GaussWilsonNonCyclicOQ01.lean:149 is no longer transitively blocked.",
     "blockers": [],
-    "nextAction": "S8 ACT — close the Phase B strategic sorry prod_univ_eq_pow_card_div_two_of_elementary at GaussWilsonNonCyclicOQ01B.lean:137. Recommended route per S4 PREP #18347 + S4b PREP #18467 erratum: Route B (MulAction.Quotient via Subgroup.zpowers h; MulAction.selfEquivSigmaOrbits at Mathlib/GroupTheory/GroupAction/Defs.lean:482) or Route A (explicit transversal Finset + Finset.prod_union + Finset.prod_image). Estimated 60–100 Lean lines. Once Phase B is closed, the Phase C non-cyclic-direction sorry at GaussWilsonNonCyclicOQ01.lean:149 unblocks via Phase A reduction to 2-torsion + parent card_sq_eq_one_ge_three + power-of-2 upgrade |G[2]| ≥ 4 + Phase B prod_univ_eq_one_of_elementary_card_ge_four. Estimated 30–50 extra lines.",
+    "nextAction": "S9 ACT — close the Phase C non-cyclic-direction sorry prod_eq_one_of_not_isCyclic_aux at GaussWilsonNonCyclicOQ01.lean:149. With Phase B sorry-free post-S8, composition is mechanically tractable per the in-file docstring (lines 133-135): (i) Phase A prod_univ_eq_prod_two_torsion → (ii) parent card_sq_eq_one_ge_three → (iii) power-of-2-cardinality upgrade from |2-torsion| ≥ 3 to ≥ 4 → (iv) Phase B prod_univ_eq_one_of_elementary_card_ge_four. Step (iii) load-bearing; uses IsPGroup typeclass or hand-rolled Lagrange. Estimated 30-50 lines. After S9: S10 final build-verify pass + meta.json + close slug COMPLETED.",
     "attemptCounts": {
       "total": 10,
       "currentApproach": 1,
@@ -33,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S7 ACT shipped (2026-05-13, PR #18743): Phase C cyclic-direction sorry discharged via uniform IsCyclic.card_pow_eq_one_le route, slug-level sorry count 3 → 2. All three phase files landed: A (build-verified, 0 sorries, S2 #18147), B (build-pending, 1 strategic sorry, S3 #18232), C (build-pending iff scaffold, 1 sorry post S7 ACT). Doc PREP chain S4/S4b/S5/S5b/S7 PREP supplied route surveys, Mathlib v4.26.0 errata, design-bug audit, and the verbatim S7 ACT recipe. 0 axioms slug-wide. Remaining work is the Phase B transversal-pairing orbit-product identity (unblocks Phase C transitively).",
+    "progressSummary": "S8 ACT shipped (2026-05-13, this PR): Phase B strategic sorry discharged via strong induction on Finset (not S4 PREPs Route A.2 or Route B). Build-verified. Slug-level sorry count 3 → 1 across the S7-S8 ACT pair. Phase A 0 sorries build-verified (#18147); Phase B 0 sorries BUILD-VERIFIED (#18232 + this PR, +78 LOC); Phase C 1 sorry remaining build-pending (#18652). 0 axioms slug-wide. Only the Phase C non-cyclic-direction auxiliary remains (no longer transitively blocked).",
     "builtItems": [
       "research/problems/gauss-wilson-non-cyclic-oq-01/problem.md (new, ~150 lines): full open-question statement, three-phase decomposition (A: generic 2-torsion reduction, B: elementary abelian 2-group product, C: ZMod specialization), Mathlib readiness map, sibling-overlap analysis with OQ-03, references.",
       "research/problems/gauss-wilson-non-cyclic-oq-01/knowledge.md (new, ~200 lines): 15-row numerical sanity table (n ∈ {1..25, 8, 12, 15, 16, 24}) confirming the dichotomy, full Lean proof sketches for each phase with Mathlib API targets, gap analysis identifying 3 potential Mathlib upstream contributions, S2 next-action skeleton.",
@@ -42,7 +42,8 @@
       "proofs/Proofs/GaussWilsonNonCyclicOQ01B.lean (S3, 165 lines, 1 sorry): Phase B core theorem prod_univ_eq_one_of_elementary_card_ge_four for finite CommGroup H with x² = 1 (∀x ∈ H) and |H| ≥ 4 ⇒ ∏ x : H, x = 1. Derived from one strategic sorry prod_univ_eq_pow_card_div_two_of_elementary via by_cases Even(|H|/2). Ships 5 build-pending sorry-free helpers: mul_left_self_inv_of_elementary, mul_left_ne_self_of_ne_one, pow_eq_one_of_sq_eq_one, pow_eq_self_of_sq_eq_one, exists_two_distinct_ne_one.",
       "proofs/Proofs.lean: alphabetical insertion of import Proofs.GaussWilsonNonCyclicOQ01B.",
       "proofs/Proofs/GaussWilsonNonCyclicOQ01.lean (S6 ACT, PR #18652, 201 lines, 2 strategic sorries shipped → S7 ACT discharged 1): Phase C outer iff prod_univ_units_zmod_eq_neg_one_iff_isCyclic via case-split on IsCyclic following S5b PREP corrected skeleton. Small cases n ∈ {1,2} via decide; n ≥ 3 by_cases on IsCyclic with cyclic branch = prod_eq_neg_one_of_isCyclic_aux and non-cyclic branch = contradiction via prod_eq_one_of_not_isCyclic_aux. Re-derives parent neg_one_ne_one_units´ inline as private neg_one_ne_one_units_of_ge_three.",
-      "proofs/Proofs/GaussWilsonNonCyclicOQ01.lean prod_eq_neg_one_of_isCyclic_aux discharge (S7 ACT, PR #18743, +29/-11 LOC): replaces the cyclic-direction strategic sorry with a 22-LOC proof via Phase A reduction + IsCyclic.card_pow_eq_one_le (k=2, |G[2]| ≤ 2) + neg_one_ne_one_units_of_ge_three distinctness, forcing G[2] = {1, -1} and product = -1. Renames _hcyc → hcyc; refreshes docstring with S7 PREP citation."
+      "proofs/Proofs/GaussWilsonNonCyclicOQ01.lean prod_eq_neg_one_of_isCyclic_aux discharge (S7 ACT, PR #18743, +29/-11 LOC): replaces the cyclic-direction strategic sorry with a 22-LOC proof via Phase A reduction + IsCyclic.card_pow_eq_one_le (k=2, |G[2]| ≤ 2) + neg_one_ne_one_units_of_ge_three distinctness, forcing G[2] = {1, -1} and product = -1. Renames _hcyc → hcyc; refreshes docstring with S7 PREP citation.",
+      "proofs/Proofs/GaussWilsonNonCyclicOQ01B.lean:128 — prod_univ_eq_pow_card_div_two_of_elementary (build-verified, S8 ACT). Discharges the Phase B strategic sorry via Finset.strongInduction on a generalized closure-under-(h*·) statement. No Subgroup.zpowers/MulAction/orderOf needed."
     ],
     "insights": [
       "OQ-01 is strictly easier than OQ-03 (sibling): OQ-01 needs only the cyclic/non-cyclic dichotomy (already in Mathlib as `isCyclic_units_iff`), while OQ-03 needs CRT-based exact 2-torsion cardinalities. OQ-01 can ship without waiting for OQ-03 progress.",
@@ -56,7 +57,8 @@
       "S3 (researcher-1, 2026-05-12): no structure theorem for finite elementary 2-abelian groups is actually needed in the Phase B proof — the contradiction h₀ = h₁ (when |H|/2 is odd) does not require |H| = 2^k. Picking two distinct non-identity elements via Finset.erase suffices, avoiding any IsPGroup / Sylow.card_eq_pow_card machinery.",
       "S5b PREP (PR #18607): the S5 design memo contained 4 concrete Lean-tactic bugs in the iff-theorem skeleton — (1) interval_cases n with only a lower bound, (2) all_goals after decide unreachable, (3) absurd h_cyc h_cyc type-mismatch via shadowing, (4) parent-file neg_one_ne_one_units´ is private. S6 ACT (#18652) ships the corrected skeleton; future PREP-to-ACT transitions on this slug should pre-audit tactic skeletons against the bug catalog.",
       "S7 PREP (PR #18700) + S7 ACT (PR #18743): the cyclic-direction discharge for prod_eq_neg_one_of_isCyclic_aux uses a uniform IsCyclic.card_pow_eq_one_le route (at k = 2, giving |G[2]| ≤ 2) rather than splitting on prime / prime-power / 2·p^k cyclic moduli. Combined with neg_one_ne_one_units_of_ge_three and 1 ≠ -1 distinctness, this forces G[2] = {1, -1} and the product evaluates to -1 in ≈ 22 LOC. The haveI instance-lifting subtlety (IsCyclic must be an instance, not a plain hypothesis) is required for the Mathlib lookup to succeed.",
-      "S4 PREP (PR #18347) + S4b PREP (PR #18467): four candidate routes for the Phase B transversal-pairing sorry — (A) explicit transversal Finset + Finset.prod_union/prod_image, (B) MulAction.Quotient via Subgroup.zpowers h, (C) re-applied Finset.prod_involution, (D) Equiv.Perm decomposition. Route B is preferred (cleanest Mathlib alignment) but cites MulAction.selfEquivSigmaOrbits at Defs.lean:482 (not Basic.lean:476 per S4b erratum). Route A is the safe fallback (no MulAction machinery)."
+      "S4 PREP (PR #18347) + S4b PREP (PR #18467): four candidate routes for the Phase B transversal-pairing sorry — (A) explicit transversal Finset + Finset.prod_union/prod_image, (B) MulAction.Quotient via Subgroup.zpowers h, (C) re-applied Finset.prod_involution, (D) Equiv.Perm decomposition. Route B is preferred (cleanest Mathlib alignment) but cites MulAction.selfEquivSigmaOrbits at Defs.lean:482 (not Basic.lean:476 per S4b erratum). Route A is the safe fallback (no MulAction machinery).",
+      "S8 ACT 2026-05-13: Strong induction on Finset H avoids both Route A.2 (Quot.out transversal) and Route B (MulAction.selfEquivSigmaOrbits) by generalizing to any subset closed under left-mul-by-h; erase one orbit {x, h*x} per recursion. ~78 LOC including helpers, build-verified."
     ],
     "mathlibGaps": [
       "No standalone `Finset.prod_univ_eq_prod_two_torsion` (or `prod_univ_eq_prod_self_inverse`) for finite commutative groups. Phase A would provide this as a gallery-local lemma with potential upstreaming.",
@@ -102,7 +104,7 @@
     ]
   },
   "started": "2026-05-12T13:00:00.000Z",
-  "lastUpdate": "2026-05-13T22:35:00.000Z",
+  "lastUpdate": "2026-05-13T23:35:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

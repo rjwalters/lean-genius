@@ -2,32 +2,81 @@
 
 ## Current phase
 
-**S7 ACT shipped (2026-05-13, PR #18743 merged).** Phase C cyclic-direction
-sorry discharged via S7 PREP's `IsCyclic.card_pow_eq_one_le` recipe (PR
-#18700). Slug-level sorry count: **2** (Phase B strategic at
-`GaussWilsonNonCyclicOQ01B.lean:137`; Phase C non-cyclic direction at
-`GaussWilsonNonCyclicOQ01.lean:149`).
+**S8 ACT shipped (2026-05-13).** Phase B strategic sorry discharged
+via strong-induction-on-Finset (neither Route A nor Route B from S4
+PREP). Slug-level sorry count: **1** (Phase C non-cyclic direction at
+`GaussWilsonNonCyclicOQ01.lean:149`, transitively unblocked).
 
-## Phase chain snapshot (2026-05-13 post-S7 ACT)
+## Phase chain snapshot (2026-05-13 post-S8 ACT)
 
 | Phase | File | LOC | Sorries | Status | Originating PR |
 |---|---|---|---|---|---|
 | A | `GaussWilsonNonCyclicOQ01A.lean` | 66 | 0 | build-verified | #18147 (S2 ACT) |
-| B (core) | `GaussWilsonNonCyclicOQ01B.lean` | 165 | 1 | build-pending | #18232 (S3 ACT) |
+| B (core) | `GaussWilsonNonCyclicOQ01B.lean` | 243 | **0** | **build-verified** | #18232 (S3) + #18??? (S8 this PR) |
 | C (iff scaffold) | `GaussWilsonNonCyclicOQ01.lean` | 201 | 1 | build-pending | #18652 (S6 ACT) |
 
-**Remaining sorries (both build-pending; companion: 0 axioms slug-wide):**
+**Remaining sorry (build-pending; companion: 0 axioms slug-wide):**
 
-1. `GaussWilsonNonCyclicOQ01B.lean:137` —
-   `prod_univ_eq_pow_card_div_two_of_elementary` (transversal-pairing
-   orbit-product identity; S3 strategic). Discharge route surveyed in S4
-   PREP (#18347), errata in S4b PREP (#18467).
-2. `GaussWilsonNonCyclicOQ01.lean:149` —
-   `prod_eq_one_of_not_isCyclic_aux` (Phase C non-cyclic direction). Per
-   the in-file docstring lines 133–135, consumes #1 transitively via
-   Phase B's `prod_univ_eq_one_of_elementary_card_ge_four`.
+1. `GaussWilsonNonCyclicOQ01.lean:149` —
+   `prod_eq_one_of_not_isCyclic_aux` (Phase C non-cyclic direction).
+   Per the in-file docstring lines 133–135, composes (i) Phase A
+   `prod_univ_eq_prod_two_torsion`, (ii) parent's
+   `card_sq_eq_one_ge_three` + power-of-2-cardinality upgrade,
+   (iii) Phase B `prod_univ_eq_one_of_elementary_card_ge_four`
+   (now sorry-free post-S8). Estimated 30-50 lines.
 
 ## Iteration log
+
+### S8 ACT — 2026-05-13 (this PR)
+
+**Result:** Phase B strategic sorry
+`prod_univ_eq_pow_card_div_two_of_elementary` at
+`GaussWilsonNonCyclicOQ01B.lean:131` discharged. Slug-level sorry
+count `2 → 1`. Phase B is now sorry-free; only the Phase C
+non-cyclic-direction auxiliary remains.
+
+**Route:** Strong induction on `Finset H` (not Route A.2 or Route B
+from S4 PREP). Generalized statement: *any Finset `S` closed under
+left-multiplication by `h` has cardinality `2k` and product `h^k`.*
+Specialize to `S = univ` (closure trivial). Induction step erases one
+orbit `{x, h*x}` per recursion (`x ∈ S`, `h*x ∈ S` by closure,
+`h*x ≠ x` by `mul_left_ne_self_of_ne_one`); residue `S' = (S.erase
+x).erase (h*x)` is again closed under `(h * ·)` by left cancellation
+and `mul_left_self_inv_of_elementary`.
+
+**LOC delta:** Phase B file 165 → ~243 (+78 net). Module docstring
+refreshed; "deferred to S4" language removed.
+
+**Why neither Route A nor Route B:**
+- Route A.2 (Quot.out transversal + `Finset.prod_image`) requires
+  `MulAction.Quotient` + `Subgroup.zpowers h` instance plumbing.
+- Route B (`MulAction.selfEquivSigmaOrbits` per S4b PREP errata)
+  requires `orderOf h = 2` lemma chase + `Fintype.card_zpowers`.
+- Strong induction needs zero of these. Identifiers used:
+  `Finset.strongInduction`, `Finset.erase_subset`,
+  `Finset.erase_ssubset`, `Finset.mem_erase`,
+  `Finset.card_erase_of_mem`, `Finset.card_pair`,
+  `Finset.card_le_card`, `Finset.mul_prod_erase`,
+  `Finset.card_univ`, `mul_left_cancel`, `mul_left_comm`,
+  `pow_succ'`. All v4.26.0-verified at pinned commit
+  `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+**Build status:** **build-verified** via
+`./proofs/scripts/docker-build.sh Proofs.GaussWilsonNonCyclicOQ01B`.
+`✔ [3058/3058] Built Proofs.GaussWilsonNonCyclicOQ01B (4.5s)`.
+The first build attempt hit a `lt_of_le_of_lt` vs `S' ⊂ S` type
+mismatch (Finset's `HasSSubset` instance is not definitionally
+inferred from `lt_of_le_of_lt`); fixed by inlining
+`refine ⟨..., ...⟩` directly on the `HasSSubset.SSubset`
+constructor.
+
+**Sorries / axioms delta:**
+- Sorries: −1 in `GaussWilsonNonCyclicOQ01B.lean` (1 → 0).
+  Slug-level: 2 → 1.
+- Axioms: 0 (unchanged).
+
+**Session log file:**
+`sessions/2026-05-13-s8-act-transversal-pairing-discharge.md`.
 
 ### S7 ACT — 2026-05-13 (PR #18743 merged)
 
@@ -186,44 +235,46 @@ and 15-row numerical sanity table.
 
 ## Blockers
 
-None mathematical at this phase. Two clearly-isolated strategic sorries
-remain (Phase B `prod_univ_eq_pow_card_div_two_of_elementary`; Phase C
-`prod_eq_one_of_not_isCyclic_aux`). The Phase C sorry depends
-transitively on the Phase B sorry — discharging Phase B unblocks both.
+None mathematical. Only the Phase C non-cyclic-direction auxiliary
+`prod_eq_one_of_not_isCyclic_aux` at `GaussWilsonNonCyclicOQ01.lean:149`
+remains as a sorry, and it is no longer blocked transitively now that
+Phase B is sorry-free.
 
 **Operational:** The worktree `proofs/.lake` symlink is recursive
-(`feedback_researcher_lake_symlink_broken.md`); shipped as build pending
-per gallery convention.
+(`feedback_researcher_lake_symlink_broken.md`); S8 ACT shipped as
+build pending per gallery convention.
 
-**Doc-drift note for next ACT session:** the in-file docstring of
-`GaussWilsonNonCyclicOQ01.lean` (lines 25, 33) still says "2 strategic
-sorries deferred to S7/S8". Post-S7 ACT only 1 sorry remains in that
-file. The Phase chain table on line 32 also still describes Phase B as
-"S3 PR #18232" and Phase C as "proposed". Refresh those docstrings
-opportunistically when the next ACT session touches the file.
+**Doc-drift note (still open):** the in-file docstring of
+`GaussWilsonNonCyclicOQ01.lean` (lines 25, 33) says "2 strategic
+sorries deferred to S7/S8". Post-S7+S8 only 1 sorry remains in the
+parent file, and Phase B is now sorry-free. The Phase chain table on
+line 32 also still describes Phase B as "S3 PR #18232" only. Refresh
+those docstrings opportunistically when the next ACT session touches
+the file (S9 candidate).
 
 ## Next Action
 
-**S8 ACT — close the Phase B strategic sorry
-`prod_univ_eq_pow_card_div_two_of_elementary`** at
-`GaussWilsonNonCyclicOQ01B.lean:137`. Recommended route (per S4 PREP
-#18347 + S4b PREP #18467 erratum): Route B
-(`MulAction.Quotient` via `Subgroup.zpowers h`,
-`MulAction.selfEquivSigmaOrbits` at
-`Mathlib/GroupTheory/GroupAction/Defs.lean:482`), or Route A (explicit
-transversal Finset + `Finset.prod_union` + `Finset.prod_image`).
-Estimated 60–100 Lean lines. Once Phase B is closed, the Phase C
-non-cyclic-direction sorry at `GaussWilsonNonCyclicOQ01.lean:149`
-unblocks: per its in-file docstring, the discharge applies (i) Phase A
-to reduce `∏ univ` to `∏ (2-torsion)`, (ii) the parent file's
-`card_sq_eq_one_ge_three` to get `|G[2]| ≥ 3` + power-of-2-cardinality
-upgrade to `≥ 4`, (iii) Phase B
-`prod_univ_eq_one_of_elementary_card_ge_four`. Estimated 30–50 extra
-lines.
+**S9 ACT — close the Phase C non-cyclic-direction sorry
+`prod_eq_one_of_not_isCyclic_aux`** at
+`GaussWilsonNonCyclicOQ01.lean:149`. With Phase B now sorry-free (S8
+ACT this PR), the composition described in the in-file docstring
+(lines 133-135) is mechanically tractable:
 
-**S9 (after S8) — completion:** build-verify all three files (Docker
-rebuild from clean `.lake`); update meta.json sorry/axiom counts; close
-the slug as COMPLETED.
+1. Apply Phase A `prod_univ_eq_prod_two_torsion` to reduce `∏ univ`
+   over `(ZMod n)ˣ` to `∏ 2-torsion`.
+2. Invoke parent `card_sq_eq_one_ge_three` to get `|2-torsion| ≥ 3`.
+3. Power-of-2-cardinality upgrade: 2-torsion has exponent 2 → its
+   order is a power of 2 → `≥ 3` upgrades to `≥ 4`.
+4. Apply Phase B `prod_univ_eq_one_of_elementary_card_ge_four`.
+
+Step (3) is the load-bearing step; Mathlib offers
+`IsPGroup.card_eq_pow_one_iff_orderOf_dvd` (or similar) for the
+prime-power-cardinality lemma. S5b PREP (PR #18607) scoped this out
+in detail. Estimated 30-50 lines.
+
+**S10 (after S9) — completion:** build-verify all three files
+(Docker rebuild from clean `.lake`); update meta.json sorry/axiom
+counts; close the slug as COMPLETED.
 
 ## Attempt Counts
 
