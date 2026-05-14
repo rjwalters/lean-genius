@@ -150,4 +150,30 @@ theorem qtBinom_succ (q t : R) (N k : ℕ) :
   unfold qtBinom
   rw [Finset.prod_range_succ]
 
+-- ============================================================
+-- SECTION V: The t = 1 specialisation (S3-α partial toward S3 ACT)
+-- ============================================================
+
+/-- **t = 1 specialisation** of the k-direction multiplicative recurrence.
+
+    At `t = 1`, the `qtBinom_succ` ratio collapses to the clean form
+    `(1 - q^(N-k)) / (1 - q^(k+1))`, since `t^k = 1^k = 1` cancels both
+    occurrences of `t` in the rational factor. This is the recurrence that
+    matches the parent's `qBinom` Pascal-recursive definition under the
+    standard `q ≠ 1`-invertibility hypothesis.
+
+    Companion lemma for the S3 ACT target `qtMultichoose_at_t_eq_one`:
+    given `qtBinom q 1 N (k+1) = qtBinom q 1 N k * (1 - q^(N-k)) / (1 - q^(k+1))`
+    plus the parent's `qBinom_product` and `qNumber_geometric` identities,
+    the inductive step `qtBinom q 1 N (k+1) = qBinom q N (k+1)` reduces to
+    the algebraic identity
+    `qBinom q N k * ((1 - q^(N-k)) / (1 - q^(k+1))) = qBinom q N (k+1)`,
+    which the parent's `qBinom_product` lemma yields after multiplying
+    through by `(1 - q^(k+1)) ≠ 0`. -/
+theorem qtBinom_succ_at_t_one (q : R) (N k : ℕ) :
+    qtBinom q 1 N (k + 1) =
+    qtBinom q 1 N k * ((1 - q ^ (N - k)) / (1 - q ^ (k + 1))) := by
+  have h := qtBinom_succ q 1 N k
+  simpa [one_pow, mul_one] using h
+
 end QtMultichooseCoefficients

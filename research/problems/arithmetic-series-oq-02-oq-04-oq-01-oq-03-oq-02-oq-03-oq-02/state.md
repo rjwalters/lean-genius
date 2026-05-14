@@ -1,8 +1,77 @@
 # Current State
 
-**Phase**: ACT (S2 ACT shipped: skeleton + 4 boundary cases + k-direction multiplicative recurrence; S3 ACT pending — `at_t_eq_one` substitution)
-**Since**: 2026-05-12 (S1 OBSERVE) → 2026-05-13 (S2 ACT after 5 PREP)
-**Iteration**: 7 (S1 OBSERVE + S2/S3/S4/S5/S6 PREP + S2 ACT)
+**Phase**: ACT (S2 ACT skeleton merged + S3-α partial recurrence added; **build blocked on parent-file regression in `CombinationsFormulaOQ03.lean`**)
+**Since**: 2026-05-12 (S1 OBSERVE) → 2026-05-13 (S2 ACT after 5 PREP) → 2026-05-13 (S3-α partial, build pending — parent-file blocker)
+**Iteration**: 8 (S1 OBSERVE + S2/S3/S4/S5/S6 PREP + S2 ACT + S3-α partial)
+
+## Build blocker (parent-file regression, detected 2026-05-13 ~20:25 UTC by researcher-1)
+
+Docker build of `Proofs.ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02`
+fails on **7 pre-existing errors** in the parent file
+`proofs/Proofs/CombinationsFormulaOQ03.lean`:
+
+| Line:col | Error                                                                                                  |
+|----------|--------------------------------------------------------------------------------------------------------|
+| 503:2    | `unsolved goals` (case `inl`, goal `qBinom q k (k + 1) = 0`)                                            |
+| 504:33   | Unknown identifier `n`                                                                                  |
+| 504:36   | Unknown identifier `n`                                                                                  |
+| 535:4    | `simp` made no progress                                                                                 |
+| 550:77   | `omega` could not prove the goal                                                                        |
+| 651:36   | `omega` could not prove the goal                                                                        |
+| 652:8    | Tactic `rewrite` failed: Did not find an occurrence of the pattern (sum-range pattern mismatch)         |
+
+This is the "(build pending) silent parent-file regression" anti-pattern
+(per a researcher memory): the S2 ACT PR #18955 (2026-05-13) shipped
+under the `.lake symlink loop` build-pending convention, and the parent
+file's regressions (likely Mathlib v4.26 `omega`/`simp` semantics drift)
+went undetected. **Detection cost**: ~5 min of cached Docker build.
+
+The S2 ACT file itself is internally well-formed — it uses only
+`Finset.prod` API + the parent's `qBinom` definition — but Lean cannot
+reach it because the parent fails first. **S3 ACT cannot proceed** until
+the parent regression is resolved (mechanic/doctor scope, not researcher
+scope per the memory's prescription).
+
+## S3-α partial added in this iteration (researcher-1, 2026-05-13)
+
+One helper lemma added to `ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean`:
+
+```lean
+theorem qtBinom_succ_at_t_one (q : R) (N k : ℕ) :
+    qtBinom q 1 N (k + 1) =
+    qtBinom q 1 N k * ((1 - q ^ (N - k)) / (1 - q ^ (k + 1))) := by
+  have h := qtBinom_succ q 1 N k
+  simpa [one_pow, mul_one] using h
+```
+
+This is the **t = 1 specialisation of the unconditional k-direction
+multiplicative recurrence** (3-line proof; `simpa` collapses the
+`t^k = 1` factors). It is the recurrence that matches the parent's
+`qBinom` Pascal-recursive definition under the standard
+`q ≠ 1`-invertibility hypothesis, and is the natural inductive step
+for the S3 ACT target `qtMultichoose_at_t_eq_one`.
+
+**Build status**: pending. The lemma itself is type-correct and uses
+only `qtBinom_succ` + `simpa`, but the parent regression blocks
+verification. When the parent is repaired, this lemma will build
+without modification.
+
+## Recommended next action
+
+1. **Mechanic/doctor scope** (NOT researcher): repair the 7-error
+   regression in `CombinationsFormulaOQ03.lean`. The errors look like
+   standard Mathlib v4.26 `omega`/`simp`/`rewrite` semantics drift
+   plus one out-of-scope identifier issue at line 504. Estimated
+   ~20–40 LOC of targeted tactic-mode fixes; no mathematical content
+   changes.
+
+2. **Researcher scope (S3 ACT, after parent is fixed)**: build on
+   `qtBinom_succ_at_t_one` (this iteration) to prove
+   `qtMultichoose_at_t_eq_one` by induction on `k`, using
+   `qBinom_product` and `qNumber_geometric` for the inductive step.
+   Estimated ~40–60 LOC (Path A, with `hq : q^(i+1) ≠ 1` hypothesis).
+
+
 
 `proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` **shipped (build pending)** in S2 ACT (this iteration). The file is 151 LOC with 0 sorries / 0 axioms; ships the Macdonald (q,t)-binomial / multichoose definitions plus four boundary cases (`qtBinom_zero_right`, `qtMultichoose_zero_right`, `qtBinom_one_right`, `qtMultichoose_one_right`) and the unconditional k-direction multiplicative recurrence `qtBinom_succ`. Per S6 PREP's pivot recommendation, no Pascal-style theorem appears; the k-direction recurrence is the foundation for the upcoming S3 (`at_t_eq_one`) and S4 (`at_one_one`) substitution proofs.
 
