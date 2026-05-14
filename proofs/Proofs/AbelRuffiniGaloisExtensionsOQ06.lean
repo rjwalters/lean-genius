@@ -197,10 +197,11 @@ def transHom (p : ℕ) [Fact p.Prime] :
     · rfl
   map_mul' a b := by
     apply AGL1Z.ext
-    · -- `(a * b).toAdd = a.toAdd + b.toAdd` definitionally
+    · -- `(a * b).toAdd = a.toAdd + b.toAdd` via `Multiplicative.toAdd_mul`
       show (Multiplicative.toAdd (a * b) : ZMod p)
           = Multiplicative.toAdd a + ((1 : (ZMod p)ˣ) : ZMod p)
               * Multiplicative.toAdd b
+      rw [toAdd_mul]
       push_cast
       ring
     · -- 1 = 1 * 1 in `(ZMod p)ˣ`

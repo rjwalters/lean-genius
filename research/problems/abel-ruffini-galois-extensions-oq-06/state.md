@@ -1,9 +1,144 @@
 # Current State
 
-**Phase**: S6 PREP (Galois-direction sub-OQ scoping decision; doc-only)
-**Since**: 2026-05-13T22:30:00Z
-**Last Updated**: 2026-05-13 (Iteration 7, researcher-4)
-**Iteration**: 7
+**Phase**: S7 ACT BUILD-VERIFY (forward direction build-verified at v4.26.0)
+**Since**: 2026-05-14T15:30:00Z
+**Last Updated**: 2026-05-14 (Iteration 8, researcher-9)
+**Iteration**: 8
+
+## Iteration 8 (researcher-9, 2026-05-14) — S7 ACT BUILD-VERIFY: 1-line `toAdd_mul` fix retires the S3–S5b "build pending" qualifier (1884 jobs clean)
+
+**Outcome**: progress — Docker-built `Proofs.AbelRuffiniGaloisExtensionsOQ06`
+at Mathlib v4.26.0 from origin/main; surfaced one elaboration regression
+in the S3 `transHom.map_mul'` proof (line 205 `ring` cannot close
+`Multiplicative.toAdd (a * b) = ...` because `toAdd` is not in
+commutative-ring scope); fixed by inserting `rw [toAdd_mul]` before the
+existing `push_cast; ring`. Build now clean at **1884 jobs**. This
+retires the build-pending qualifier across the S3–S5b chain (PRs
+#18399, #18594, #18627, #18672) and validates the entire forward
+direction in one shot.
+
+### What I did
+
+1. **Pre-claim Docker baseline** (worktree CWD per
+   `feedback_researcher_docker_build_cwd_must_be_worktree.md`):
+   `./proofs/scripts/docker-build.sh Proofs.AbelRuffiniGaloisExtensionsOQ06`
+   → `error: Proofs/AbelRuffiniGaloisExtensionsOQ06.lean:200:4: unsolved goals` at
+   `transHom.map_mul'` case `trans`.
+
+2. **Diagnosis**. The original code structure (S3 ACT, PR #18399) was:
+   ```lean
+   · show (Multiplicative.toAdd (a * b) : ZMod p)
+         = Multiplicative.toAdd a + ((1 : (ZMod p)ˣ) : ZMod p) * Multiplicative.toAdd b
+     push_cast
+     ring
+   ```
+   After `push_cast` simplifies `((1 : (ZMod p)ˣ) : ZMod p)` to `1`, the
+   goal becomes `Multiplicative.toAdd (a * b) = Multiplicative.toAdd a +
+   1 * Multiplicative.toAdd b`. `ring` cannot close this because
+   `Multiplicative.toAdd` is not transparent to the commutative-ring
+   tactic — it sees `(a * b)` on `Multiplicative (ZMod p)` and treats it
+   as an opaque operation. The `Multiplicative.toAdd_mul = rfl` identity
+   is a definitional equality but `ring` does not unfold definitions.
+
+3. **Fix**. Insert `rw [toAdd_mul]` immediately after the `show`. This
+   replaces `Multiplicative.toAdd (a * b)` with the additive form
+   `Multiplicative.toAdd a + Multiplicative.toAdd b`, making the
+   resulting goal a pure `ZMod p`-ring identity that `push_cast; ring`
+   discharges.
+
+4. **Bearer-pin note**. The lemma is **`toAdd_mul`** (top-level), NOT
+   `Multiplicative.toAdd_mul`. It lives at
+   `Mathlib/Algebra/Group/TypeTags/Basic.lean:166` at v4.26.0 and is
+   defined **outside** the `namespace Multiplicative ... end Multiplicative`
+   block (which spans lines 83–113). The namespace-qualified form
+   raises `Unknown constant Multiplicative.toAdd_mul` — confirmed by
+   build iteration 2.
+
+5. **Diff** (proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean):
+   ```diff
+   -    · -- `(a * b).toAdd = a.toAdd + b.toAdd` definitionally
+   +    · -- `(a * b).toAdd = a.toAdd + b.toAdd` via `Multiplicative.toAdd_mul`
+        show (Multiplicative.toAdd (a * b) : ZMod p)
+            = Multiplicative.toAdd a + ((1 : (ZMod p)ˣ) : ZMod p)
+                * Multiplicative.toAdd b
+   +    rw [toAdd_mul]
+        push_cast
+        ring
+   ```
+   +1 line, no new sorries, no new axioms, no new imports.
+
+6. **Post-fix Docker rebuild** (worktree CWD, build iter 3):
+   `Build completed successfully (1884 jobs).` Single-file target;
+   confirms the S3 (`AGL1Z_isSolvable`, `AGL1Z_faithful_action`), S4
+   (primitivity), S5 (Lite packaging), and S5b (Full packaging)
+   layers all compile together on origin/main.
+
+### What this retires
+
+| PR | Iter | Layer | Status before this PR |
+|---|---|---|---|
+| #18399 | S3 | Solvability + faithful action | build pending |
+| #18594 | S4 | Primitivity (`of_prime_card`) | build pending |
+| #18627 | S5 Lite | Conjunctive packaging | build pending |
+| #18672 | S5b Full | Subgroup-of-S_p packaging | build pending |
+
+All four are now build-verified at v4.26.0 via this S7 fix. The
+forward direction is no longer build-pending: **529 LOC, 0 sorries,
+0 axioms, build clean (1884 jobs)**.
+
+### Decision-matrix update (S6 PREP recommendation, Iteration 7)
+
+The S6 PREP SPLIT recommendation (researcher-4, PR #18926) is now
+unblocked. The S6 PREP "Action items for downstream" §2 condition —
+"oq-06's status moves from 'in-progress' to 'completed' (forward
+direction only)" — required S5b ACT build verification before
+advancing. That condition is now met by this S7 ACT BUILD-VERIFY.
+Curator/seeker decision on SPLIT vs KEEP remains pending; this PR
+does not preempt that decision.
+
+### Files modified (S7)
+
+- `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ06.lean` — +1 line
+  (`rw [toAdd_mul]` before existing `push_cast; ring`), 1-character
+  comment touch-up. No new sorries, no new axioms.
+- `research/problems/abel-ruffini-galois-extensions-oq-06/state.md` —
+  this iteration 8 section. Header advanced ACT → S7 ACT
+  BUILD-VERIFY / iteration 7 → 8.
+- `src/data/research/problems/abel-ruffini-galois-extensions-oq-06.json` —
+  phase `S6_PREP` → `S7_ACT_BUILD_VERIFY`, iter 7 → 8, `lastUpdate`,
+  `currentState.{since, focus, blockers, nextAction}`,
+  `knowledge.{progressSummary, insights, builtItems}`. Top-level
+  `phase` synced per
+  `feedback_researcher_state_sync_misses_top_level_phase.md`.
+
+### Build-verification posture
+
+Docker build run from worktree CWD per
+`feedback_researcher_docker_build_cwd_must_be_worktree.md`:
+3 iterations (initial diagnosis, intermediate `Multiplicative.`-
+namespace-qualified false start, final fix). Final iteration:
+`✔ [1884/1884] Built Proofs.AbelRuffiniGaloisExtensionsOQ06 (3.0s)`.
+
+### Open-PR pre-claim probe
+
+`gh pr list --search "abel-ruffini-galois-extensions-oq-06 in:title" --state open`
+returns 0 open PRs on the slug at claim time. (The closest matching
+slug `abel-ruffini-galois-extensions-oq-05` is distinct; this S7 is
+race-safe.)
+
+### Next action (curator/seeker decision territory)
+
+Per the S6 PREP §"Action items for downstream":
+
+1. **Curator** decides SPLIT vs KEEP on the Galois direction.
+2. **If SPLIT**: seeker scaffolds `abel-ruffini-galois-extensions-oq-06-galois-direction`
+   using the S6 PREP §"Sub-OQ bootstrap template"; oq-06 status moves
+   to `"completed"` (forward direction only).
+3. **If KEEP**: a future S8 ACT begins the ~300-500 LOC Galois-direction
+   structure theorem on the oq-06 slug itself; expect S9-S12+ iterations.
+
+Either path: the S5b build-verification blocker that pinned the
+decision is now cleared.
 
 ## Iteration 7 (researcher-4, 2026-05-13) — S6 PREP: Galois-direction sub-OQ scoping decision (doc-only)
 
