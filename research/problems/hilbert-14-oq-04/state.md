@@ -1,183 +1,167 @@
 # Current State
 
-**Phase**: OBSERVE (S1 closed — Mathlib-gap audit + shortlist of Lean-formalizable adjacent targets)
-**Since**: 2026-05-12T19:30:00Z
-**Iteration**: 1
+**Phase**: ACT (S2-finite ACT shipped — `hilbert_finiteness` verified)
+**Since**: 2026-05-13T20:18:00Z
+**Iteration**: 2
 
 ## Current Focus
 
-S1 OBSERVE — **Algorithmic landscape for non-reductive invariant theory
-surveyed**. OQ-04 (effective algorithms for finite generation of
-non-reductive invariant rings) is a meta-mathematical conjecture about
-the existence of uniform algorithms; it cannot be formalized as a single
-Lean theorem. Identified the tractable adjacent target hierarchy and
-selected the S2 entry point.
+S2-finite ACT — **`hilbert_finiteness` theorem verified by Docker build
+(7743/7743 jobs)**. The qualitative half of Emmy Noether's 1916 theorem
+(invariant ring of a finite-group linear action on `MvPolynomial` is
+finitely generated as a `k`-algebra) is now formalized in
+`proofs/Proofs/Hilbert14OQ04.lean`.
 
-## Active Approach
+The quantitative half — Noether's degree bound
+`generators ⊆ degree ≤ |G|` — is deferred to a separate S3-bound ACT
+iteration.
 
-**S2 target: Noether's degree bound (1916) — algorithmic refinement.**
+## What landed in this iteration (S2-finite ACT)
 
-For a finite group `G` acting linearly on `k[V] = k[x_1, …, x_n]` over a
-field `k` with `char k ∤ |G|`, the invariant ring `k[V]^G` is generated,
-as a `k`-algebra, by invariants of **degree at most `|G|`**. Noether's
-bound is the *quantitative* refinement of the OQ-01-side qualitative
-finiteness statement; it converts the existence theorem into an explicit
-algorithm (enumerate monomials of degree `≤ |G|`, apply Reynolds, perform
-Gauss elimination).
+**File**: `proofs/Proofs/Hilbert14OQ04.lean` (NEW, 102 LOC).
 
-Crucially, the sibling slug `hilbert-14-oq-01` already provides the
-**structural** infrastructure (`InvariantSubset`, `ReynoldsOperator`,
-`invariantSubring`, `reynoldsSum` plus seven basic properties) but has
-**no degree-bound machinery**. OQ-04's S2 ACT therefore picks up where
-OQ-01 leaves off, with no duplication.
+**Theorem**:
+```lean
+theorem hilbert_finiteness :
+    Algebra.FiniteType k
+      (FixedPoints.subalgebra k (MvPolynomial (Fin n) k) G)
+```
+with hypotheses `[Field k]`, `[Group G]`, `[Fintype G]`,
+`[MulSemiringAction G (MvPolynomial (Fin n) k)]`,
+`[SMulCommClass G k (MvPolynomial (Fin n) k)]`.
 
-**Proof outline (5 steps)**:
-1. For each `v ∈ V`, the orbit polynomial
-   `P_v(T) = ∏_{w ∈ Orbit(v)} (T - w)` is `G`-invariant; its coefficients
-   live in `k[V]^G` and have degree `≤ |G|`.
-2. Each `v ∈ V` is integral over `k[V]^G` of degree `|Orbit(v)| ≤ |G|`.
-3. Hence `k[V]` is integral over the subalgebra
-   `S := k[ \text{orbit-polynomial coefficients} ] ⊆ k[V]^G_{≤ |G|}`.
-4. Atiyah-Macdonald 5.1 (integral + finitely-generated-as-algebra ⇒
-   finitely-generated-as-module): `k[V]` is f.g. as an `S`-module.
-5. Hence `k[V]^G` is sandwiched between `S` and `k[V]`, and Noetherian
-   intersection arguments give `S ⊆ k[V]^G` is the full degree-bounded
-   generator set.
+**Two supporting instances** (definitional, both `instance` declarations):
+- `Algebra.IsInvariant (FixedPoints.subalgebra k R G) R G`
+- `Algebra.IsIntegral (FixedPoints.subalgebra k R G) R`
+
+**Proof strategy**: five-step chain through Mathlib v4.26.0 bearers
+(all pinned by the S2g PREP audit, PR #18750):
+
+| Step | Mathlib bearer                                       | File:line                                                           |
+|:-----|:-----------------------------------------------------|:--------------------------------------------------------------------|
+| 1    | `Algebra.IsInvariant` instance (membership defn)     | `Mathlib/RingTheory/Invariant/Defs.lean:31`                          |
+| 2    | `Algebra.IsInvariant.isIntegral`                     | `Mathlib/RingTheory/Invariant/Basic.lean:174`                        |
+| 3    | `Algebra.FiniteType.of_restrictScalars_finiteType`   | `Mathlib/RingTheory/FiniteType.lean:77`                              |
+| 4    | `Algebra.IsIntegral.finite`                          | `Mathlib/RingTheory/IntegralClosure/IsIntegralClosure/Basic.lean:93` |
+| 5a   | `Algebra.FiniteType.out` (top-FG projection)         | `Mathlib/RingTheory/FiniteType.lean:38`                              |
+| 5b   | `Module.Finite.fg_top`                               | `Mathlib/RingTheory/Finiteness/Defs.lean:123`                        |
+| 5c   | `Subtype.val_injective` (subalgebra inclusion)        | Mathlib core                                                         |
+| 5d   | `fg_of_fg_of_fg` (Artin-Tate)                         | `Mathlib/RingTheory/Adjoin/Tower.lean:150`                           |
+| 5e   | `⟨h_kB_fg⟩` (FiniteType constructor)                  | `Mathlib/RingTheory/FiniteType.lean:39`                              |
+
+## Trail of build-attempts in this iteration
+
+Three Docker build attempts (`./proofs/scripts/docker-build.sh
+Proofs.Hilbert14OQ04`), each yielding actionable diagnostics:
+
+1. **Build #1** (failed): `Algebra.FiniteType.of_restrictScalars_finiteType`
+   required explicit `R`, `S`, `A` Type-level args (the surrounding
+   `variable` block in `FiniteType.lean` declares them explicit, not
+   implicit). Also `Subalgebra.fg_iff_finiteType.mpr`/`mp` rejected as
+   unknown constants — but the theorem takes `(S : Subalgebra R A)` as
+   an explicit argument, so it cannot be projected directly; the
+   apply-first pattern `(Subalgebra.fg_iff_finiteType _).mpr` is needed.
+
+2. **Build #2** (failed): instance-search timeout at
+   `Algebra.FiniteType k ↥(⊤ : Subalgebra k R)` — typeclass search
+   couldn't bridge the `↥⊤` coercion. Replaced with the direct
+   projection `(inferInstance : Algebra.FiniteType k R).out` which
+   bypasses the synthesis problem. Also fixed a type mismatch on the
+   final `(Subalgebra.fg_iff_finiteType _).mp h_kB_fg` invocation
+   (LHS resolved to `B.FG` not `(⊤ : Subalgebra k B).FG`); replaced
+   with the constructor `⟨h_kB_fg⟩` (since
+   `Algebra.FiniteType` definitionally unfolds to `(⊤ ...).FG`).
+
+3. **Build #3** (succeeded, 7743/7743 jobs): all three corrections
+   applied; build green.
 
 ## Blockers
 
-None firm. The Mathlib prerequisites for the degree-bound proof are:
-- `IsIntegral` / `Algebra.IsIntegral` (present);
-- `Polynomial` and root-product factorizations (`Polynomial.prod_X_sub`,
-  present);
-- `Algebra.adjoin` (present);
-- `Subalgebra.FG ↔ Algebra.FiniteType` (present in
-  `Mathlib.RingTheory.FiniteType`).
-
-The deeper non-reductive program (Weitzenboeck, LND theory, Nagata's
-counterexample) is *bounded by Mathlib's absence of any locally
-nilpotent derivation framework*. Deferred to S5+ once
-`IsLocallyNilpotent` is introduced.
+None firm for the qualitative half. For the quantitative half (S3-bound
+ACT — Noether's degree bound), the main Mathlib gap is the explicit
+link between `MulSemiringAction.charpoly` and the polynomial-ring orbit
+coefficient map (Vieta/Newton-identity bridge); see S2g PREP §2.4 for
+the bearer audit.
 
 ## Next Action
 
-**S2 ACT**: Scaffold `proofs/Proofs/Hilbert14OQ04.lean` with:
+**S3-bound ACT** (separate iteration): prove
+`(⊤ : Subalgebra k (FixedPoints.subalgebra k R G)) ⊆ degree-bound by |G|`.
+Plan:
 
-1. **Setup**:
-   ```lean
-   variable {k : Type*} [Field k] {n : ℕ} {G : Type*}
-     [Group G] [Fintype G] [MulAction G (MvPolynomial (Fin n) k)]
-     [Invertible (Fintype.card G : k)]
-   ```
-
-2. **Orbit-polynomial definition** (the algorithmic primitive):
-   ```lean
-   noncomputable def orbitPolynomial (v : MvPolynomial (Fin n) k) :
-       Polynomial (MvPolynomial (Fin n) k) :=
-     ∏ g : G, (Polynomial.X - Polynomial.C (g • v))
-   ```
-
-3. **Key lemmas** (scaffolded):
-   - `orbit_polynomial_invariant`: each coefficient of `orbitPolynomial v`
-     lies in `MulAction.fixedPoints G (MvPolynomial (Fin n) k)`.
-   - `orbit_polynomial_degree`: `(orbitPolynomial v).natDegree ≤ |G|`.
-   - `vanishes_at_v`: `(orbitPolynomial v).eval v = 0`, so `v` is
-     integral over `k[V]^G` of degree `≤ |G|`.
-
-4. **Main theorem (statement, sorried)**:
-   ```lean
-   theorem noether_degree_bound :
-       (MulAction.fixedPoints G (MvPolynomial (Fin n) k) :
-           Subalgebra k (MvPolynomial (Fin n) k)) =
-       Algebra.adjoin k
-         { f : MulAction.fixedPoints G (MvPolynomial (Fin n) k) |
-           (f : MvPolynomial (Fin n) k).totalDegree ≤ Fintype.card G }
-     := sorry
-   ```
-   (The discharge of this `sorry` is the deeper S3 ACT step.)
-
-5. **Cross-reference**: Re-export OQ-01's `reynoldsSum` and
-   `InvariantSubset` via Lean `open Hilbert14.NonReductive` for use in
-   the S2 file. (No duplicate definitions.)
-
-6. **Gallery entry**: `src/data/research/problems/hilbert-14-oq-04.json`
-   describing the algorithmic refinement, citing the parent `hilbert-14`
-   and sibling `hilbert-14-oq-01`.
+1. Define the orbit polynomial
+   `orbitPoly (v : R) := ∏ g : G, (Polynomial.X - C (g • v))`,
+   reusing `MulSemiringAction.charpoly` from Invariant/Basic.lean:138.
+2. Show its coefficients are `G`-invariant, hence members of
+   `FixedPoints.subalgebra k R G`.
+3. Prove each coefficient has `totalDegree ≤ |G|` using `Polynomial`
+   degree bounds and the multinomial expansion.
+4. Apply `Vieta's formulas` and `Newton's identities`
+   (`MvPolynomial.mul_esymm_eq_sum` at `Symmetric/NewtonIdentities.lean:223`,
+   pinned in S2g PREP §2.4) to express power sums in terms of elementary
+   symmetric polynomials.
+5. Conclude the orbit-coefficient subalgebra generates the invariant
+   ring in degrees `≤ |G|`.
 
 ## Attempt Counts
 
-- Total attempts: 1 (S1 OBSERVE).
-- Current approach attempts: 1.
+- Total attempts (across all iterations): 2.
+- Current approach attempts: 1 S1 OBSERVE + 7 S2 PREPs + 1 S2 ACT.
 - Approaches tried:
-  - S1: classical-resolution survey, Mathlib-gap audit, shortlist of
-    Lean-formalizable adjacent targets.
+  - S1: algorithmic landscape, Mathlib-gap audit.
+  - S2/S2b–S2g: Mathlib bearer audit (7 PREP PRs over 14h on
+    2026-05-12 → 2026-05-13).
+  - S2-finite ACT (this iteration): scaffold + 5-step proof of
+    `hilbert_finiteness`.
+
+## Predecessor PREP chain (all merged before this ACT)
+
+| PR     | Phase       | Contribution                                                                                          |
+|--------|-------------|-------------------------------------------------------------------------------------------------------|
+| #18248 | S1 OBSERVE  | Algorithmic landscape; Hilbert–Noether (1916) selected as S2 target; 5-step proof outline.            |
+| #18435 | S2 PREP     | Mathlib orbit-polynomial API audit (`prodXSubSMul`, `esymmAlgHom_fin_bijective`, `IsIntegral.finite`). |
+| #18501 | S2b PREP    | Artin–Tate canonical bearer `fg_of_fg_of_fg` (Adjoin/Tower.lean); 4-piece chain.                      |
+| #18562 | S2c PREP    | `IsScalarTower` / `IsNoetherianRing` traps auto-resolved; `Algebra.IsIntegral` assembly.              |
+| #18589 | S2d PREP    | Sibling slug OQ-01 integration; `[MulSemiringAction G R]` typeclass bridge.                            |
+| #18667 | S2e PREP    | `Algebra.IsInvariant.isIntegral` bearer collapses S2b+S2c to 4 LOC.                                    |
+| #18714 | S2f PREP    | Scope clarification: S2 ACT plan proves Hilbert **finiteness**, NOT Noether **degree bound**; two-tier ACT proposed; **§8 lists 4 assumed-name bearers** as TODO. |
+| #18750 | S2g PREP    | Mathlib bearer re-pin: 4 caveats audited, `of_finite_of_finiteType_top` confirmed phantom; corrected 3-step `fg_of_fg_of_fg` chain; full S2-finite ACT skeleton drafted. |
 
 ## Key Files
 
-- `research/problems/hilbert-14-oq-04/problem.md` — **created in S1**
-  (problem statement, sub-problem decomposition, decision: S2 target =
-  Hilbert-Noether for finite groups).
-- `research/problems/hilbert-14-oq-04/knowledge.md` — **created in S1**
-  (algorithmic landscape, Reynolds operator background, LND background,
-  counterexamples, Mathlib API gap inventory).
-- `research/problems/hilbert-14-oq-04/state.md` — **this file**.
-- `src/data/research/problems/hilbert-14-oq-04.json` — **created in S1**
-  (gallery entry for the open question).
-- `proofs/Proofs/Hilbert14OQ04.lean` — **planned for S2**.
-- `src/data/proofs/hilbert-14/meta.json` — parent gallery entry; not
-  modified in S1.
+- `research/problems/hilbert-14-oq-04/problem.md` — created in S1.
+- `research/problems/hilbert-14-oq-04/knowledge.md` — created in S1.
+- `research/problems/hilbert-14-oq-04/state.md` — **this file, refreshed
+  in S2-finite ACT**.
+- `src/data/research/problems/hilbert-14-oq-04.json` — phase advanced
+  to ACT in this iteration.
+- `proofs/Proofs/Hilbert14OQ04.lean` — **created in S2-finite ACT**.
+- `proofs/Proofs.lean` — `import Proofs.Hilbert14OQ04` added.
 
-## Pedagogical anchor: parent gallery entry's openQuestions
+## Honesty notes
 
-The parent `hilbert-14/meta.json` lists three open questions in its
-`openQuestions` field:
-1. "Can we characterize exactly which non-reductive groups have finitely
-   generated invariants?"
-2. "What is the optimal bound on degrees of generators for reductive
-   groups?"
-3. "Are there effective algorithms to decide finite generation for
-   specific non-reductive groups?"
+- This proof closes the **qualitative** half of Noether's theorem (1916):
+  `R^G` is finitely generated. It does NOT prove the **quantitative**
+  half (Noether's degree bound `generators ⊆ deg ≤ |G|`), which remains
+  S3-bound.
+- The five Mathlib bearers do the heavy lifting; the file is essentially
+  a 1916 fact stated and a five-step composition of pre-existing Mathlib
+  results. It is not a novel theorem; it is a clean Lean statement of a
+  classical result, made possible by recent Mathlib infrastructure
+  (`Algebra.IsInvariant` was added in Mathlib v4.20+ by T. Browning;
+  pinned at v4.26.0 here).
+- The OQ-04 problem itself (effective algorithms for non-reductive
+  invariant rings) remains open and is not directly formalizable.
+- No `axiom` declarations or structure-encoded assumptions in the new
+  file. The `Field k`, `Group G`, `Fintype G`, `MulSemiringAction`,
+  `SMulCommClass` typeclass hypotheses are the standard finite-group
+  linear-action setup, not assumptions about the open question.
 
-OQ-04 = the *algorithmic* version of #1 ∩ #3. The S2 ACT positive-result
-baseline (Hilbert-Noether) gives us the affirmative answer in the
-finite-group case (the simplest reductive setting), against which both
-the optimal-bound question (#2: Noether 1916: `≤ |G|`) and the
-non-reductive failure questions (#1, #3) acquire force.
+## Build status (S2-finite ACT)
 
-## Tactic A (S2 target): Reynolds-operator scaffold
-
-A scaffold of the Reynolds operator + statement of Hilbert-Noether
-finiteness. Discharge of the Noether-bound proof of finiteness deferred
-to S3.
-
-## Tactic B (followup S3-S5): Noether bound + degree-stable algorithm
-
-After S2 ACT lands the Reynolds operator and the finiteness statement,
-S3 ACT proves the **Noether degree bound**:
-`generators(k[V]^G) ⊆ k[V]^G_{≤ |G|}` — every minimal generating set of
-the invariant ring lies in degrees bounded by `|G|`. This makes the
-algorithm explicit: enumerate monomials up to degree `|G|`, average each
-via Reynolds, perform Gauss elimination.
-
-## Tactic C (much later, possibly out of scope): LND framework + Weitzenboeck
-
-S5+ would introduce `IsLocallyNilpotent` and the slice theorem,
-formalizing the simplest case of Weitzenboeck (`G_a` on `k[x, y]` via
-`D = ∂/∂y`) and stating the general Weitzenboeck theorem as an axiom
-pending the van-den-Essen algorithm.
-
-## Tactic D (out of scope for Lean): Nagata's counterexample
-
-Axiom-only statement for pedagogical completeness; full Lean proof is
-many thousands of lines (would require formalizing Nagata's symbolic
-blow-up of a smooth surface).
-
-## Build status (S1)
-
-S1 deliverable is **documentation-only**: four files (`problem.md`,
-`knowledge.md`, `state.md`, `src/data/research/problems/hilbert-14-oq-04.json`).
-No Lean changes. Per the seeker-fresh-slug S1 OBSERVE precedent (e.g.
-`cube-root-3-irrational-oq-04` PR #17718, `birthday-problem-oq-01-oq-02`
-PR #17735), this is the conventional S1 ACT-deferred deliverable.
-
-Build verification not applicable.
+Verified by `./proofs/scripts/docker-build.sh Proofs.Hilbert14OQ04`
+(2026-05-13 ~20:18 UTC). Output:
+```
+✔ [7743/7743] Built Proofs.Hilbert14OQ04 (9.8s)
+Build completed successfully (7743 jobs).
+```

@@ -1,7 +1,7 @@
 {
   "slug": "hilbert-14-oq-04",
   "title": "Effective algorithms for finite generation of non-reductive invariant rings",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -31,31 +31,38 @@
     "goal": "Formalize Noether's degree bound (1916) as the algorithmic refinement of Hilbert's positive finiteness theorem for finite-group invariants, plus an Mathlib-tractable framework for locally nilpotent derivations sufficient to state Weitzenboeck's theorem and (axiom-form) Nagata's counterexample."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T19:30:00.000Z",
-    "iteration": 1,
-    "focus": "Algorithmic landscape survey + Mathlib gap audit + sibling-slug differentiation",
+    "phase": "ACT",
+    "since": "2026-05-13T20:18:00.000Z",
+    "iteration": 2,
+    "focus": "S2-finite ACT shipped: hilbert_finiteness verified by Docker build (7743/7743 jobs). Qualitative half of Noether 1916 formalized in proofs/Proofs/Hilbert14OQ04.lean (102 LOC). Next: S3-bound ACT for degree-bound generators ⊆ deg ≤ |G|.",
     "blockers": [],
-    "nextAction": "S2 ACT: scaffold proofs/Proofs/Hilbert14OQ04.lean with orbit polynomial definition, integrality lemmas (degree ≤ |G|), and the Noether degree-bound theorem statement (sorried). Cross-reference OQ-01's Reynolds operator infrastructure to avoid duplication.",
+    "nextAction": "S3-bound ACT: prove Noether degree bound — orbit-polynomial coefficients of v ∈ R generate an invariant-subalgebra in degrees ≤ |G|, using MulSemiringAction.charpoly (Invariant/Basic.lean:138) and MvPolynomial.mul_esymm_eq_sum (Symmetric/NewtonIdentities.lean:223).",
     "attemptCounts": {
-      "total": 1,
+      "total": 9,
       "currentApproach": 1,
-      "approachesTried": 1
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE complete (doc-only): surveyed the algorithmic landscape (Derksen for reductive, Noether bound for finite, van den Essen for LNDs, Nagata/Roberts counterexamples). Audited Mathlib for relevant primitives; identified that OQ-01's existing Lean development (Hilbert14NonReductive.lean, Hilbert14InvariantsOQ01.lean) already provides the structural Reynolds operator + invariant subring infrastructure (`InvariantSubset`, `ReynoldsOperator`, `reynoldsSum` + 7 properties) but has no degree-bound machinery. OQ-04 picks up where OQ-01 leaves off, on the algorithmic axis.",
+    "progressSummary": "S2-finite ACT shipped (PR pending): hilbert_finiteness theorem verified by Docker build (7743/7743). The qualitative half of Noether 1916 — invariant ring of a finite-group linear action on MvPolynomial is finitely generated as a k-algebra — is now formalized in proofs/Proofs/Hilbert14OQ04.lean (102 LOC). Five-step proof chains through Algebra.IsInvariant → Algebra.IsInvariant.isIntegral → Algebra.FiniteType.of_restrictScalars_finiteType → Algebra.IsIntegral.finite → Artin-Tate fg_of_fg_of_fg, all pinned at Mathlib v4.26.0. Two supporting instances (Algebra.IsInvariant and Algebra.IsIntegral) discharged definitionally via FixedPoints.subalgebra membership. The quantitative half (Noether degree bound) is deferred to S3-bound ACT. Predecessor PREP chain: PRs #18248 (S1) + #18435/18501/18562/18589/18667/18714/18750 (S2-S2g).",
     "builtItems": [
       "research/problems/hilbert-14-oq-04/problem.md (S1, 5K) — problem statement, sub-problem decomposition, OQ-01 vs OQ-04 differentiation.",
       "research/problems/hilbert-14-oq-04/knowledge.md (S1, 8K) — Reynolds operator and LND background, Noether degree bound proof outline, counterexample summaries, Mathlib API gap inventory.",
-      "research/problems/hilbert-14-oq-04/state.md (S1) — phase tracker, S2 next-action plan."
+      "research/problems/hilbert-14-oq-04/state.md (S1) — phase tracker, S2 next-action plan.",
+      "proofs/Proofs/Hilbert14OQ04.lean (S2-finite ACT, 102 LOC) — hilbert_finiteness theorem + Algebra.IsInvariant/IsIntegral instances. Verified by Docker build 7743/7743 jobs.",
+      "proofs/Proofs.lean — added import Proofs.Hilbert14OQ04."
     ],
     "insights": [
       "OQ-04 is a meta-mathematical conjecture about algorithm existence; it cannot be formalized as a single Lean theorem. Lean progress must instead anchor on specific algorithmic refinements (Noether degree bound, slice theorem, etc.).",
       "Noether's bound (deg ≤ |G|) is the highest-leverage S2 target: distinct from OQ-01's structural Reynolds infrastructure, provable from Mathlib primitives, foundational algorithmically.",
       "OQ-01's `reynoldsSum` and `InvariantSubset` are directly reusable; the S2 OQ-04 file should cross-reference rather than redefine.",
       "Mathlib has no locally nilpotent derivation framework. Weitzenboeck's theorem and the slice theorem are tier-2 axioms until `IsLocallyNilpotent` is defined.",
-      "Nagata's and Roberts' counterexamples are pedagogically essential but Lean-unprovable in any reasonable scope; they will live as axioms."
+      "Nagata's and Roberts' counterexamples are pedagogically essential but Lean-unprovable in any reasonable scope; they will live as axioms.",
+      "Algebra.FiniteType.of_restrictScalars_finiteType requires explicit R/S/A type-level args (the surrounding variable block declares them explicit, not implicit) — failed in build attempts 1 and 2 before discovery.",
+      "Subalgebra.fg_iff_finiteType takes (S : Subalgebra R A) as explicit arg; cannot project .mp / .mpr directly. Use either (Subalgebra.fg_iff_finiteType _).mpr or the FiniteType.out projection / ⟨_⟩ constructor.",
+      "Algebra.FiniteType k ↥(⊤ : Subalgebra k R) does NOT typeclass-synthesize cheaply (heartbeat timeout); use (inferInstance : Algebra.FiniteType k R).out for the direct FG projection.",
+      "⟨h_fg⟩ as Algebra.FiniteType constructor: the class is a Prop with one field (out : (⊤ : Subalgebra R A).FG), so anonymous-constructor pack-up suffices.",
+      "Subtype.val_injective serves as algebraMap (FixedPoints.subalgebra k R G) R injectivity in fg_of_fg_of_fg invocation — Subalgebra.toAlgebra (line 822) is definitionally Subtype.val on the underlying function."
     ],
     "mathlibGaps": [
       "No Noether degree bound for finite-group invariants",
@@ -65,10 +72,9 @@
       "No Derksen-algorithm-style invariant computation API"
     ],
     "nextSteps": [
-      "S2 ACT: scaffold orbit-polynomial definition + integrality lemmas + Noether degree-bound theorem statement.",
-      "S3 ACT: discharge the Noether degree-bound theorem via the Atiyah-Macdonald 5.1 integral-finite-extension argument.",
-      "S5+ ACT: introduce `IsLocallyNilpotent` for derivations; state Weitzenboeck (axiom) and slice theorem (Lean).",
-      "S7+ ACT: state Nagata's counterexample (axiom-only) and Roberts' 7-variable counterexample (axiom-only) for pedagogical completeness."
+      "S3-bound ACT: prove Noether degree bound (generators ⊆ deg ≤ |G|) via orbit polynomial Vieta + Newton identities.",
+      "S5+ ACT (long horizon): introduce Mathlib IsLocallyNilpotent for derivations; state Weitzenboeck (axiom) and slice theorem (Lean).",
+      "S7+ ACT (long horizon): state Nagata counterexample (axiom-only) and Roberts 7-variable counterexample (axiom-only) for pedagogical completeness."
     ]
   },
   "tags": [
@@ -154,7 +160,7 @@
     ]
   },
   "started": "2026-05-12T19:30:00.000Z",
-  "lastUpdate": "2026-05-12T19:30:00.000Z",
+  "lastUpdate": "2026-05-13T20:18:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": []
