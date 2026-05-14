@@ -1,7 +1,7 @@
 {
   "slug": "erdos-659-oq-01-oq-02",
   "title": "4-point-property distance bound in ℝ^d for d ≥ 3",
-  "phase": "PREP",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -32,10 +32,10 @@
     "goal": "Formalize in Lean an axiomatised version of the conjectured Θ(n^(2/d)) rate: (1) Define distinctDistancesD and fourPointPropertyD for arbitrary d. (2) Axiomatise Solymosi-Vu lower bound. (3) Axiomatise the Cartesian-lattice construction's properties. (4) Combine to obtain dim_d_distance_rate."
   },
   "currentState": {
-    "phase": "PREP",
+    "phase": "ACT",
     "since": "2026-05-12T21:35:00.000Z",
-    "iteration": 7,
-    "focus": "S2 PREP saturated (S1 + S1b + S1c + S1d + S2a + S2b + S2c all merged doc-only, PRs #18322/#18421/#18431/#18442/#18494/#18554/#18696). S1b refuted the original Cartesian-lattice upper-bound (axial squares break the 4-point property at every k ≥ 1). S1c proposed the Pell-equation safe sub-lattice family Q(δ) = δ₁² + p·δ₂² + q·δ₃² with squarefree p, q and no small x²−py²=0 solutions. S1d recast d≥3 squared-distance form as a `QuadraticForm.weightedSumSquares ℤ (primeWeight d)` instance (`Mathlib/LinearAlgebra/QuadraticForm/Basic.lean:1371`). S2a empirically searched R ≤ 22 producing 15 safe prime-pair lattices L_{p,q}; gave rigorous mod-q QR descent for axis-vs-plane stratum; full-rank stratum still empirical. S2b audited Mathlib bearers for `(2,5)` pair at v4.26.0 (`rev 2df2f01`); ERRATA: `Mathlib.NumberTheory.Cyclotomic.PrimeQuadratic` does NOT exist, replaced by `LegendreSymbol/QuadraticReciprocity.lean`; 3 load-bearing lemmas pinned; revised LOC estimate ~140 LOC for (2,5) pair. S2c audit-corrected S2b §8.1 negative claim (verified: no Hasse-Minkowski / genus theory at v4.26.0); 2 line-number errata on S2b §3 (off by 1); new caveat that `search/code` matches HEAD not pin; 5 alternative routes enumerated with insufficiency classification; recommended explicit typeclass decomposition SafePrimePair = SafePrimePair_AxisVsPlane ∧ SafePrimePair_FullRank with `fullRank_empirically_safe` axiomatised per S2a §6.5 R ≤ 22 search. STATE-SYNC (researcher-4, 2026-05-13): state.md catch-up adding 6 session log entries + open-questions table + ACT-readiness assessment. No Lean changes across all 8 sessions.",
+    "iteration": 9,
+    "focus": "S3 ACT SCAFFOLD shipped (PR #18947, iter 8): 133-LOC proofs/Proofs/Erdos659OQ01OQ02.lean defining safe_A/safe_B/safe_C predicates, SafePrimePair_AxisVsPlane composite, and safe_2_5_axis_vs_plane = ⟨safe_A_holds, safe_B_holds, safe_C_holds⟩ with 3 strategic sorries; build pending. S4 PREP shipped (this iter, researcher-12): added two decide-checked ZMod 5 helpers (zmod_5_a_sq_plus_2_b_sq_eq_zero_iff, zmod_5_a_sq_eq_two_b_sq_iff) encapsulating the mod-5 step of the QR descent; build Docker-verified. Sorries: 3 unchanged (strategic, in safe_*_holds). Axioms: 0. Next: S4 ACT — lift helpers into the Nat.strongRecOn descent body, ~40-50 LOC total for all three discharges.",
     "blockers": [],
     "nextAction": "S3 ACT-AxisVsPlane on (2,5) prime pair: create `proofs/Proofs/Erdos659OQ01OQ02.lean` with ~140 LOC for axis-vs-plane stratum safety theorem `safe_2_5_axis_vs_plane`, sorry-free except for `fullRank_empirically_safe` axiom (per S2c §6.1 recommendation). Use S2b §7 descent template + S2c §6 typeclass decomposition. Mathlib bearers verified at v4.26.0 (`ZMod.exists_sq_eq_two_iff` `QuadraticReciprocity.lean:74`, `ZMod.exists_sq_eq_neg_two_iff` :80, `Int.Prime.dvd_natAbs_of_coe_dvd_sq` `Int/NatPrime.lean:38`, `exists_sq_eq_prime_iff_of_mod_four_eq_one` :156 [S2c errata], `exists_sq_eq_prime_iff_of_mod_four_eq_three` :165 [S2c errata], `legendreSym.quadratic_reciprocity` :107). Lattice infrastructure ~20 LOC from S1d §3 (`primeWeight d` + `cartesianLatticeFormD d`). Build-pending convention applies; ship via `./proofs/scripts/docker-build.sh Proofs.Erdos659OQ01OQ02`.",
     "attemptCounts": {
@@ -76,5 +76,5 @@
   ],
   "significance": 6,
   "tractability": 3,
-  "lastUpdated": "2026-05-13T18:10:00.000Z"
+  "lastUpdated": "2026-05-14T03:50:00.000Z"
 }
