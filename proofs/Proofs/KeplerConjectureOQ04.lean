@@ -60,14 +60,26 @@
   restates the bound in terms of the named `fccPacking` instance
   (no new axiom). Closes the lattice arm of the OQ-04 hierarchy.
 
+  **S6 ACT — Ulam's conjecture (1972, open).** Introduce the marker
+  structure `SymmetricConvexBody3DPacking` (extends `PackingDensity`)
+  plus the **+1 STATEMENT axiom** `ulam_conjecture`: every centrally
+  symmetric convex body packing in ℝ³ achieves density at least
+  `fccDensity`. Open since 1972 (Stanislaw Ulam, in conversation with
+  Martin Gardner): if proven, the unit ball would be the LEAST dense
+  centrally symmetric convex body to pack — a striking inversion of
+  the Kepler optimality intuition. Companion derived theorem
+  `ulam_le_fccPacking_density` (no new axiom). Closes the
+  non-lattice / open-conjecture arm of the OQ-04 hierarchy.
+
   **Status of this file.**
-  - 0 sorries, 1 axiom (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`).
-  - Three definitions (`tetrahedronDimerDensity`,
-    `tetrahedronDimerPacking`, `EllipsoidLatticePacking`).
-  - Six theorems: positivity, less-than-one, rational anchor
+  - 0 sorries, 2 axioms (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`,
+    `ulam_conjecture`).
+  - Four definitions (`tetrahedronDimerDensity`,
+    `tetrahedronDimerPacking`, `EllipsoidLatticePacking`,
+    `SymmetricConvexBody3DPacking`).
+  - Seven theorems: positivity, less-than-one, rational anchor
     (`> 0.8563`), inequality vs. `fccDensity`, existential
-    corollary, and ellipsoid-lattice ≤ FCC.
-  - S6 deferred (Ulam conjecture statement).
+    corollary, ellipsoid-lattice ≤ FCC, and Ulam ≥ FCC.
 -/
 
 import Mathlib
@@ -317,5 +329,71 @@ theorem ellipsoid_lattice_le_fccPacking
     (e : EllipsoidLatticePacking) :
     e.density ≤ fccPacking.density :=
   bezdek_kuperberg_ellipsoid_lattice_upper_bound e
+
+/--
+**Marker structure: a centrally symmetric convex body packing in ℝ³.**
+
+Wraps a `PackingDensity` value with the implicit understanding that
+it arises from a packing of congruent copies of a centrally symmetric
+convex body `K ⊂ ℝ³` (i.e., `K = -K`). Definitional only — no axiom.
+Mathlib v4.26.0 has no native `ConvexBody3D` / centrally-symmetric
+abstraction at the level of `PackingDensity`, so the structure
+records the geometric intent without committing to a particular
+choice of formalisation. The Ulam conjecture
+(`ulam_conjecture`, axiom below) supplies the density constraint
+for inhabitants of this type.
+
+A future iteration that formalises `Convex ℝ K` + central symmetry
++ "packing density of `K`" can refine this marker to a structure
+carrying the underlying body `K` and a proof
+`∀ x, x ∈ K ↔ -x ∈ K`; the axiom `ulam_conjecture` would survive
+the refactor as a STATEMENT axiom on the refined type.
+-/
+structure SymmetricConvexBody3DPacking extends PackingDensity
+
+/--
+**Ulam's conjecture (1972, OPEN).**
+
+Stanislaw Ulam conjectured (in conversation with Martin Gardner)
+that every centrally symmetric convex body `K ⊂ ℝ³` satisfies the
+optimal packing-density bound
+
+  `δ_K ≥ π / (3 √ 2)`
+
+with equality if and only if `K` is a Euclidean ball. If true, the
+unit ball would be the LEAST dense centrally symmetric convex body
+to pack — a striking inversion of the Kepler optimality intuition.
+
+The conjecture has been **open since 1972**. Partial results exist
+for specific bodies (e.g. the rhombic dodecahedron achieves density
+`1`, the regular octahedron achieves `18/19 ≈ 0.9474`), but the
+general statement has resisted both proof and disproof for over
+half a century.
+
+This is a **STATEMENT axiom** (the conjecture is currently
+unproven). +1 axiom matches the S6 plan in the prior iteration's
+"Next Action" block.
+
+References:
+- Gardner, M. (1972), "The unexpected hanging and other mathematical
+  diversions", *Scientific American* 226, 117–121.
+- Brass, P., Moser, W., Pach, J. (2005), *Research Problems in
+  Discrete Geometry*, §3.3 — survey of partial results.
+-/
+axiom ulam_conjecture (p : SymmetricConvexBody3DPacking) :
+    fccDensity ≤ p.density
+
+/--
+**Derived corollary: Ulam vs the named `fccPacking` instance.**
+
+Restates `ulam_conjecture` in terms of the named `fccPacking`
+instance from the parent file: every centrally symmetric convex
+body packing in ℝ³ achieves density at least `fccPacking.density`.
+No new axiom — direct application of `ulam_conjecture`.
+-/
+theorem ulam_le_fccPacking_density
+    (p : SymmetricConvexBody3DPacking) :
+    fccPacking.density ≤ p.density :=
+  ulam_conjecture p
 
 end KeplerConjectureOQ04
