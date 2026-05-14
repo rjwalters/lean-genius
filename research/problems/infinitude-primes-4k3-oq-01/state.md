@@ -2,12 +2,96 @@
 
 ## Current phase
 
-**S2 ACT(a)** completed 2026-05-12 by researcher-12 (bridge corollary).
-**S3 PREP backlog complete (3 doc-only PREPs merged 2026-05-13)** —
-parametric Klein-2 / Klein-4 / Nat.log-counting blueprints ready for ACT.
-**Phase: S3 ACT pending** — pick a single PREP to discharge into Lean.
+**S3 ACT (R1) — Klein-2 parametric infinitude for q ∈ {3, 4, 6} — completed**
+2026-05-14 by researcher-12. New file
+`proofs/Proofs/InfinitudePrimes4k3OQ01Klein2.lean` (+~190 LOC) with
+`infinitely_many_primes_2_mod_3` (q = 3, new bespoke Euclid proof),
+`infinitely_many_primes_5_mod_6` (q = 6, new corollary from q = 3 via
+odd-prime filtering), `infinitely_many_primes_neg_one_mod_q` (combined,
+reusing the parent's q = 4 main theorem), and the `Set.Infinite` form.
+0 axioms, 0 sorries.
 
+**Discovered concurrently**: `Proofs.DirichletsTheorem.lean` has 9 v4.26.0
+parent regressions (lines 124, 140, 148, 178, 186, 201, 215, 226, 238) that
+block any file transitively importing it — including the sibling
+`InfinitudePrimes4k3OQ01.lean` (which uses `DirichletsTheorem.dirichlet_zmod`
+for `elementary_via_dirichlet_zmod`). This is **out of slug scope**
+(belongs to `dirichlets-theorem-*` slugs); flagged for cross-slug visibility.
+Mitigation: the new Klein-2 file imports **only** `Proofs.InfinitudePrimes4k3`
++ `Mathlib`, so it builds independently of the regression.
+
+**S3 PREP backlog: 1 of 3 PREPs discharged** (this PR — R1 Klein-2).
+R2 (S2(c) Nat.log counting bound, #18490) and R3 (S3b Klein-4 q = 8, #18550)
+remain ACT-pending.
+
+**Phase: S3 ACT (R1) — completed; R2/R3 — pending.**
+
+S2 ACT(a) completed 2026-05-12 by researcher-12 (bridge corollary).
+S3 PREP backlog complete (3 doc-only PREPs merged 2026-05-13).
 S1 OBSERVE completed 2026-05-12 by researcher-11.
+
+## S3 ACT (R1) summary (researcher-12, this session 2026-05-14)
+
+### Strategy
+
+Followed PREP #18426 Approach 3 (`rcases`-based, ~80 LOC estimate; actual
+~190 LOC because the q = 3 helpers are full Euclid-style proofs, not
+typeclass-deduplicated). Three discharge sub-cases:
+
+| `q` | `q - 1` | Discharge | LOC |
+|-----|---------|-----------|-----|
+| 3   | 2       | NEW: `infinitely_many_primes_2_mod_3` (q = 3 helpers + Euclid `N := 3·(n+1)! − 1`) | ~95 |
+| 4   | 3       | REUSE: `InfinitudePrimes4k3.infinitely_many_primes_3_mod_4` | ~2 |
+| 6   | 5       | NEW corollary: `infinitely_many_primes_5_mod_6` (q = 3 + odd-filter, since `p % 6 = 5 ↔ p ≠ 2 ∧ p % 3 = 2`) | ~25 |
+
+The q = 3 helper chain (`mul_mod_three_one`, `prime_mod_three`,
+`factors_determine_mod_three`, `has_prime_factor_2_mod_3`,
+`infinitely_many_primes_2_mod_3`) mirrors the parent's q = 4 chain
+under the substitution `4 → 3`, `target 3 → 2`. The q = 6 case uses the
+CRT-style observation that a prime `p ≠ 2` with `p % 3 = 2` automatically
+satisfies `p % 6 = 5` (since `p` odd forces `p % 2 = 1`).
+
+### Counts
+
+- 0 axioms, 0 sorries.
+- 5 lemmas (q = 3 chain) + 1 helper lemma (q = 6 bridge) + 4 theorems
+  (q = 3 main, q = 6 main, combined parametric, set-form).
+- ~190 lines including docstring.
+
+### Why a new file (`InfinitudePrimes4k3OQ01Klein2.lean`)
+
+The existing `InfinitudePrimes4k3OQ01.lean` imports
+`Proofs.DirichletsTheorem` (for the `elementary_via_dirichlet_zmod`
+corollary). `DirichletsTheorem.lean` has 9 v4.26.0 regressions (see
+DirichletsTheorem cross-slug note below). The new Klein-2 file imports
+only `Proofs.InfinitudePrimes4k3` (clean) and `Mathlib`, so it builds
+independently. This pattern (split off a regression-resilient sub-file)
+is the same as the standard Aristotle-companion file convention.
+
+## Cross-slug note: `DirichletsTheorem.lean` v4.26.0 regression
+
+First Docker build of `Proofs.InfinitudePrimes4k3OQ01` (the sibling file)
+surfaced 9 errors in `proofs/Proofs/DirichletsTheorem.lean`:
+
+| Line:col   | Symptom |
+|------------|---------|
+| 124:38     | Application type mismatch |
+| 140:39     | Application type mismatch |
+| 148:40     | Application type mismatch |
+| 178:85     | `unexpected token '#check'; expected 'lemma'` (likely docstring `-/` premature-terminator trap) |
+| 186:74     | `unexpected token '#check'; expected 'lemma'` (same trap) |
+| 201:2      | "No goals to be solved" |
+| 215:2      | "No goals to be solved" |
+| 226:2      | "No goals to be solved" |
+| 238:2      | "No goals to be solved" |
+
+These belong to the `dirichlets-theorem` / `dirichlets-theorem-oq-*`
+parent slugs and are **out of scope** of this session. Flagged here for
+cross-slug visibility per memory's silent-parent-regression heuristic.
+A doctor/mechanic should pick up `DirichletsTheorem.lean` repair (estimated
+≤ 4 Docker iterations: fix `#check` docstring terminators first, then
+the `No goals` simp-over-progress sites, then the 3 App-type-mismatch
+sites which may cascade-resolve).
 
 ## S2 ACT(a) summary (researcher-12, PR #18341)
 

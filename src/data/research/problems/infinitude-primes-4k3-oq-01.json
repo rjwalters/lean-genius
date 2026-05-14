@@ -1,7 +1,7 @@
 {
   "slug": "infinitude-primes-4k3-oq-01",
   "title": "Dirichlet's theorem on primes in AP (full generality)",
-  "phase": "OBSERVE",
+  "phase": "S3 ACT (R1) completed",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -30,10 +30,10 @@
     "goal": "Audit the slug for genuine open content (this S1), then ship the narrow bridge corollary S2(a) in a follow-up session. Do NOT attempt the named conjecture — it is fully verified across three gallery entries and is in Mathlib."
   },
   "currentState": {
-    "phase": "ACT (S2 done; S3 PREP backlog complete, S3 ACT pending)",
-    "since": "2026-05-14T02:35:00Z",
-    "iteration": 5,
-    "focus": "S2 ACT(a) shipped 2026-05-12 (PR #18341): bridge corollary `proofs/Proofs/InfinitudePrimes4k3OQ01.lean` (+101 LOC) with one lemma + three theorems. 0 axioms, 0 sorries. Forward and reverse directions both proved: elementary `% 4 = 3` form ↔ analytic ZMod form. Three S3-tier PREP blueprints subsequently merged 2026-05-13 (each doc-only, single new sessions/ file): #18426 S3 PREP parametric Klein-2 `p ≡ -1 (mod q)` for q ∈ {3, 4, 6} (~180 LOC ACT budget, LOW risk); #18490 S2(c) PREP explicit Nat.log counting bound via tower 4^4^... construction with corollary primes_3_mod_4_count_loglog_bound (~205 LOC ACT budget, LOW-MED risk); #18550 S3b PREP Klein-4 case q=8 via quadratic-residue Euclid refinement N=(4·∏p_i)²-2 (~220 LOC ACT budget, MED risk). Three PREPs cover orthogonal slug-step axes (S3 / S2(c) / S3b); none overlap each other or S2 ACT(a). S3 ACT is the next discharge step; recommended order by readiness is R1 Klein-2 q∈{3,4,6} → R2 Nat.log tower → R3 q=8 → R4 S3c PREP for q ∈ {12, 24}.",
+    "phase": "S3 ACT (R1) — Klein-2 q∈{3,4,6} parametric infinitude completed; R2/R3 ACT pending; sibling InfinitudePrimes4k3OQ01.lean blocked by DirichletsTheorem.lean v4.26.0 parent regression (9 errors, cross-slug doctor/mechanic scope)",
+    "since": "2026-05-14T16:00:00Z",
+    "iteration": 4,
+    "focus": "S3 ACT R1 ships Klein-2 parametric infinitude `infinitely_many_primes_neg_one_mod_q` for q∈{3,4,6} in new file proofs/Proofs/InfinitudePrimes4k3OQ01Klein2.lean (~190 LOC, 0 axioms/sorries). Discovered DirichletsTheorem.lean v4.26.0 regression as a side-effect (out-of-slug-scope, flagged for cross-slug doctor/mechanic).",
     "blockers": [],
     "nextAction": "S3 ACT — pick exactly one PREP target. Recommended R1: discharge #18426 S3 Klein-2 q ∈ {3, 4, 6} PREP into Lean (~180 LOC, LOWest risk; Euclid-style proofs sharing N = q·∏p_i − 1 with per-modulus small-prime exclusion). Alternative R2: discharge #18490 S2(c) Nat.log tower PREP (split S2(c)-a tower lemma + S2(c)-b loglog corollary). Alternative R3: discharge #18550 S3b q=8 quadratic-residue PREP (heavier Mathlib QR dependency). R4: ship S3c PREP for q ∈ {12, 24} (the remaining Klein-4 + non-cyclic abelian cases, sketched briefly in #18550 §6). After any one S3 ACT lands, the slug graduates at gallery-meta.json per S1's stated promotion criterion.",
     "attemptCounts": {
@@ -95,7 +95,7 @@
     ]
   },
   "started": "2026-05-12T20:48:00Z",
-  "lastUpdate": "2026-05-14T02:35:00Z",
+  "lastUpdate": "2026-05-14T16:00:00Z",
   "significance": 8,
   "tractability": 4,
   "leanFiles": [
