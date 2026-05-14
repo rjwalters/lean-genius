@@ -24,20 +24,20 @@
     "goal": "Ship proofs/Proofs/SpernerMathlibHyper.lean with the hypergraph-generalised IsDoorHyper, IsPanchromaticHyper, even_card_interior_doors_hyper, sperner_parity_hyper, exists_panchromatic_hyper (~120 Lean LOC, 0–1 sorries); preserve the original SpernerMathlib.lean unchanged."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "PREP",
     "since": "2026-05-12T20:45:00Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE — axiomatic audit + weakening map + S2 hypergraph skeleton.",
+    "iteration": 10,
+    "focus": "PREP saturated (researcher-1, 2026-05-13): 9 follow-on doc-only sessions merged since S1 OBSERVE (S1b #18344, S2 PREP #18360, S1c #18366, S1d #18387, S1e #18411, S2 PREP audit #18638, S2c #18688, S2d #18727, S2e #18788). Cumulative ~1.8K LOC of analysis across 9 session notes. Zero Lean changes — proofs/Proofs/SpernerMathlibHyper.lean (target of S2 ACT) has not yet been created. ACT readiness: (a) S2 PREP file skeleton (#18360); (b) S1e h-iota-size constraint integration (#18411); (c) S2 PREP audit pinned Mathlib bearers at SHA 2df2f01 (#18638); (d) S2c+S2d complete door_count_parity_hyper recipe (#18688 + #18727); (e) S2e even_card_interior_doors_hyper Sigma-pair involution recipe (#18788); (f) S1b top-color asymmetry fix (#18344); (g) S1c+S1d hadj_ne strong/weak + self-loop refinement.",
     "blockers": [],
-    "nextAction": "S2 ACT — create proofs/Proofs/SpernerMathlibHyper.lean with the hypergraph-generalised API (~120 LOC, 0–1 sorries). Skeleton in knowledge.md §4.1.",
+    "nextAction": "S2 ACT — create proofs/Proofs/SpernerMathlibHyper.lean (~120 LOC, 0–1 strategic sorries) with the hypergraph-generalised API: IsDoorHyper (S1b top-color fix), IsPanchromaticHyper, even_card_interior_doors_hyper (S2e Sigma-pair involution recipe), door_count_parity_hyper (S2c+S2d two-case dichotomy with Equiv-transport on the card-equality side), sperner_parity_hyper, exists_panchromatic_hyper. Bearer chains pinned at Mathlib v4.26.0 SHA 2df2f01 per S2 PREP audit #18638. Build-pending convention applies (worktree .lake recursive). Sigma-type ergonomics is highest-risk surface; mitigated by S2 PREP #18360 pre-audited Sigma.casesOn / match translation. After S2 ACT lands, S3 closes any strategic sorries following S2d bearer chains.",
     "attemptCounts": {
-      "total": 1,
+      "total": 10,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE doc-only: tabulated the three explicit hypotheses (hadj_symm, hadj_vertex, hadj_ne) and the implicit Fin (d+1) uniform-arity assumption carried by even_card_interior_doors / door_count_parity / sperner_parity / exists_panchromatic. Mapped each hypothesis to its consuming proof step and identified the minimal weakening admitted. Concluded: (A) hypergraph generalisation is mechanically achievable by parameter substitution to ι : Cell → Type* with a palette P; (B) non-pure generalisation is ill-formed at the type level and reduces to the pure case via restriction; (C) hadj_ne is load-bearing absent vertex-per-cell injectivity. Confirmed Mathlib's AbstractSimplicialComplex does not subsume the indexed-face abstraction.",
+    "progressSummary": "PREP saturated (2026-05-13): 9 follow-on doc-only sessions merged since S1 OBSERVE — S1b/S2 PREP/S1c/S1d/S1e/S2 PREP audit/S2c/S2d/S2e. Cumulative ~1.8K LOC analysis across 9 session notes, zero Lean changes. SpernerMathlibHyper.lean (S2 ACT target) not yet created. Refined plan: hypergraph generalisation via parameter substitution to iota : Cell → Type* + palette P : Type* with h-iota-size : forall s, card (iota s) ≤ card P constraint. door_count_parity_hyper architecture is a two-case dichotomy (card-equality via Equiv-transport, card-strict via per-cell zero-or-even). even_card_interior_doors_hyper uses Sigma-pair involution with pre-audited Sigma-bearers. All Mathlib bearers pinned at SHA 2df2f01. Boundary-axioms minimality (OQ-01-C): hadj_ne remains load-bearing per S1c/S1d analysis.",
     "builtItems": [
       "research/problems/sperner-mathlib-oq-01/problem.md (formal signature targets, three sub-OQs, acceptance criteria)",
       "research/problems/sperner-mathlib-oq-01/knowledge.md (axioms inventory, per-step weakening map, Mathlib alignment, S2 Lean skeleton, non-pure counter-example sketch, risk register)",
@@ -48,7 +48,11 @@
       "Replacing Fin (d+1) with ι : Cell → Type* requires also abstracting the coloring codomain to a palette P of fixed cardinality, so that 'panchromatic' has a dimension-independent meaning.",
       "Sperner's parity fails ill-formedly on non-pure complexes — not because the parity statement is false, but because mixed-dimensional cells cannot share a common notion of 'doors'.",
       "hadj_ne (adjacent cells distinct) is load-bearing because hadj_vertex + hadj_symm alone admit the self-face-loop corner adj s k = some ⟨s, k⟩.",
-      "Sibling sperner-simplicial-bridge-oq-01 (concrete simplicial bridge, PR #18234 merged 2026-05-12) is complementary, not competing: the hypergraph API here is abstract; the simplicial bridge there is concrete."
+      "Sibling sperner-simplicial-bridge-oq-01 (concrete simplicial bridge, PR #18234 merged 2026-05-12) is complementary, not competing: the hypergraph API here is abstract; the simplicial bridge there is concrete.",
+      "S1b OBSERVE (#18344): the proposed IsDoorHyper from knowledge.md § 4.1 lacked a top-color asymmetry needed for the parity argument. Fix: parameterise on a fixed top : P. This is structural — without it, the hypergraph parity claim is ill-typed.",
+      "S1e OBSERVE (#18411): introduces the h-iota-size : forall s, card (iota s) ≤ card P constraint. This is necessary for the per-cell door-parity step to make sense (a door has card (iota s) − 1 colors used; without h-iota-size, the count is unsigned). Refines knowledge.md § 4.1 adjacency abstraction.",
+      "S2c PREP (#18688) + S2d PREP (#18727): door_count_parity_hyper has a clean two-case architecture under h-iota-size. Case card-equality: Equiv-transport to the pure case via Fintype.card_eq.mp. Case card-strict: per-cell zero-or-even count via at-least-one-missing-color argument. S2d ships paste-ready Mathlib bearer chains for both cases.",
+      "S2e PREP (#18788): even_card_interior_doors_hyper uses Sigma-pair involution on the (s, k) Sigma type. New Sigma-bearers cited: Sigma.instFintype, Sigma.instDecidableEq (for the involution well-definedness)."
     ],
     "mathlibGaps": [
       "Mathlib.Combinatorics.AbstractSimplicialComplex represents cells as Finset V, not as indexed Fin n → V — incompatible with the door-counting parity.",
@@ -56,10 +60,10 @@
       "No Mathlib API for cell-dependent dependent-index face complexes."
     ],
     "nextSteps": [
-      "S2 ACT — ship proofs/Proofs/SpernerMathlibHyper.lean (~120 LOC, 0–1 sorries) with IsDoorHyper, IsPanchromaticHyper, even_card_interior_doors_hyper, sperner_parity_hyper, exists_panchromatic_hyper.",
-      "S3 ACT (optional) — restriction-to-pure-sub-complex lemma for non-pure (~30 LOC).",
-      "Sister-slug coordination: the simplicial-bridge sibling (oq-simplicial-bridge-oq-01) provides concrete instances; the hypergraph API consumes them.",
-      "S4 (optional) — Mathlib upstreaming experiment."
+      "S2 ACT (next, any researcher): create proofs/Proofs/SpernerMathlibHyper.lean (~120 LOC, 0–1 strategic sorries) integrating the S2 PREP + S2c + S2d + S2e bearer chains. Build-pending acceptable.",
+      "S3 (after S2 ACT): close any S2 strategic sorries following S2d bearer chains; submit safer sorries to Aristotle via companion file SpernerMathlibHyperAristotle.lean.",
+      "S4 (after S3): OQ-01-B non-pure complex restriction lemma (deferred per S1 §5 + S1e refinement; cosmetically heavy multiplicity-based form).",
+      "S5 (after S4): OQ-01-C boundary-axioms minimality — formal demonstration that hadj_ne cannot be derived from hadj_symm + hadj_vertex alone (per S1c/S1d corner-case classification)."
     ]
   },
   "tags": [
@@ -109,7 +113,7 @@
     ]
   },
   "started": "2026-05-12T20:45:00Z",
-  "lastUpdate": "2026-05-12T20:45:00Z",
+  "lastUpdate": "2026-05-13T22:55:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": []

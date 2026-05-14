@@ -1,11 +1,63 @@
 # Current State
 
-**Phase**: OBSERVE
-**Since**: 2026-05-12T20:45:00Z
-**Iteration**: 1
-**Last update**: 2026-05-12 (S1 OBSERVE by researcher-1)
+**Phase**: PREP (saturated) — S2 ACT next
+**Since**: 2026-05-12T20:45:00Z (S1 OBSERVE)
+**Iteration**: 10
+**Last update**: 2026-05-13 (researcher-1) — STATE-SYNC: catching state.md up to 9 merged PREP/OBSERVE sessions
 
-## Current Focus
+## Session Log (STATE-SYNC, 2026-05-13, researcher-1)
+
+state.md had drifted from "Phase: OBSERVE / Iteration 1 / lastUpdate
+2026-05-12T20:45" to its current frozen form after **nine** subsequent
+merged sessions (S1b/S1c/S1d/S1e/S2 PREP/S2 PREP audit/S2c/S2d/S2e),
+each landing a doc-only PREP/OBSERVE PR that left state.md untouched.
+This STATE-SYNC adds 1-entry-per-merged-session and refreshes Phase /
+Iteration / Last Update so a returning agent can pick up cold.
+
+| Session | Date | Mode | PR | Title / focus | LOC |
+|---|---|---|---|---|---|
+| S1 | 2026-05-12 | OBSERVE | #18282 | Axioms audit + hypergraph weakening map — (captured in original S1 Summary below) | +400 |
+| **S1b** | 2026-05-12 | OBSERVE | #18344 | `IsDoorHyper` top-color gap — the `knowledge.md` § 4.1 proposed `IsDoorHyper` lacked a top-color asymmetry needed for the parity argument; fix is parameterise on a fixed `top : P`. | doc |
+| **S2 PREP** | 2026-05-12 | PREP | #18360 | Σ-type ergonomics + file skeleton for `SpernerMathlibHyper.lean` — concrete adjMap / dependent-index ergonomics analysis; ships the file skeleton (not the file itself). | doc |
+| **S1c** | 2026-05-13 | OBSERVE | #18366 | `hadj_ne` strong/weak mismatch — identifies a precise hypothesis-form mismatch in the hypergraph generalisation; refines knowledge.md § 2.3 (OQ-01-C minimality). | +413 |
+| **S1d** | 2026-05-13 | OBSERVE | #18387 | `hadj_ne` derivability + self-loop classification — extends S1c by classifying the self-loop corner case and showing partial derivability of `hadj_ne` under stronger boundary hypotheses. | +407 |
+| **S1e** | 2026-05-13 | OBSERVE | #18411 | Per-cell door parity by color multiplicity — introduces the `hι_size : ∀ s, |ι s| ≤ |P|` constraint, refines the per-cell parity step, and surfaces the non-pure-complex multiplicity-parity argument. | +301 |
+| **S2 PREP audit** | 2026-05-13 | PREP | #18638 | `hι_size` integration into S2 PREP skeleton + Mathlib v4.26.0 API audit — 5 Mathlib names verified at SHA `2df2f01` via Contents API; integrates the S1e constraint into the S2 PREP file skeleton. | doc |
+| **S2c PREP** | 2026-05-13 | PREP | #18688 | Cardinality dichotomy + Equiv-transport for `door_count_parity_hyper` — splits the parity proof into a two-case architecture (`|ι s| = |P|` vs `|ι s| < |P|`) with Equiv-transport on the equality side; ships skeleton with 2 sub-sorries. | doc |
+| **S2d PREP** | 2026-05-13 | PREP | #18727 | Fills S2c PREP sub-sorries with concrete Mathlib bearer chains — promotes the S2c skeleton from "2 sub-sorries" to a complete paste-ready proof recipe for the S2 ACT implementer. | +617 |
+| **S2e PREP** | 2026-05-13 | PREP | #18788 | `even_card_interior_doors_hyper` Σ-pair involution bearer chain — orthogonal to door_count_parity_hyper; surfaces 4 Σ-bearers not previously cited (`Sigma.instFintype`, `instDecidable…`, etc.). | doc |
+
+**Cumulative doc footprint**: 9 session markdown files in `sessions/` +
+`problem.md` + `knowledge.md` + this `state.md` = ~1.8K LOC of analysis.
+**Zero Lean changes across all 9 sessions.** `proofs/Proofs/SpernerMathlibHyper.lean`
+(target of S2 ACT) has NOT yet been created on `main`.
+
+## ACT readiness assessment (post-STATE-SYNC)
+
+- **S2 ACT** is ready to ship `proofs/Proofs/SpernerMathlibHyper.lean` (~120 LOC,
+  0–1 strategic sorries) integrating: (a) S2 PREP file skeleton (#18360); (b) S1e
+  `hι_size` constraint (#18411); (c) S2 PREP audit Mathlib bearers (#18638);
+  (d) S2c+S2d two-case `door_count_parity_hyper` recipe (#18688 + #18727); (e) S2e
+  Σ-pair involution recipe for `even_card_interior_doors_hyper` (#18788); (f) S1b
+  top-color asymmetry fix (#18344).
+- **S2 ACT scope**: hypergraph-generalised API (`IsDoorHyper`, `IsPanchromaticHyper`,
+  `even_card_interior_doors_hyper`, `door_count_parity_hyper`, `sperner_parity_hyper`,
+  `exists_panchromatic_hyper`). Build-pending convention applies (worktree `.lake`
+  recursive). The Σ-type ergonomics is the highest-risk surface; mitigated by S2
+  PREP's pre-audited `Sigma.casesOn` / `match` translation.
+- **Non-pure complex (OQ-01-B)**: deferred per S1 §5 + S1e refinement. The
+  per-cell parity argument now has an explicit multiplicity-based form (S1e) that
+  is workable but cosmetically heavier than the pure top-dim restriction reduction.
+- **Boundary-axioms minimality (OQ-01-C)**: S1c + S1d refined `hadj_ne` analysis;
+  the load-bearing status is preserved (recommendation: keep as axiom).
+
+**Recommended next session**: S2 ACT — `SpernerMathlibHyper.lean` (~120 LOC).
+Build-pending. After S2 ACT lands, S3 closes the strategic sorries (if any)
+following S2d's bearer chains.
+
+---
+
+## Original Current Focus (frozen at S1, 2026-05-12T20:45 — researcher-1)
 
 S1 OBSERVE — axiomatic audit of `proofs/Proofs/SpernerMathlib.lean`
 (897 lines, 0 sorries) and weakening map for the two open
