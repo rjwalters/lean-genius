@@ -30,12 +30,12 @@
     "goal": "Replace `axiom scarf_approx_fixed_point` in `BrouwerFixedPointOQ04OQ04.lean:244` with a verified Lean term backed by a computable Scarf algorithm."
   },
   "currentState": {
-    "phase": "S3 PREP complete (post-Mathlib-SHA-pin audit)",
-    "since": "2026-05-13T22:30:00Z",
+    "phase": "S3 PREP complete + S3 ACT cosmetic shipped (post-Mathlib-SHA-pin audit)",
+    "since": "2026-05-14T01:05:00Z",
     "iteration": 8,
-    "focus": "Seven merged PRs span S1 OBSERVE through S3 PREP. (C1) brute-force ACT is shipped (proofs/Proofs/SpernerSimplicialInstanceOQ05.lean, 168 LOC, 3 theorems + 1 def + 1 example, 0 sorries, 0 axioms). (C2-1d) is fully PREP-designed but ACT pending. (C3) noncomputable cascade is PREP-audited but ACT pending. S3 PREP #18712 documents the lockfile-pinned-SHA bearer corrections (lemma names build-correct; line citations drift -13 to +18 lines vs HEAD).",
+    "focus": "Nine merged PRs span S1 OBSERVE through S3 ACT cosmetic. (C1) brute-force ACT is shipped (`proofs/Proofs/SpernerSimplicialInstanceOQ05.lean`, 168 LOC, 3 theorems + 1 def + 1 example, 0 sorries, 0 axioms) + S3 ACT cosmetic SHA-pin bearer-line corrections to its docstring (#18941). (C2-1d) is fully PREP-designed but ACT pending. (C3) noncomputable cascade is PREP-audited but ACT pending. S3 PREP #18712 documents the lockfile-pinned-SHA bearer corrections. **Coordination note (Session 9, this PR, researcher-12, 2026-05-14)**: prior STATE-SYNC PR #18927 wrote state.md to non-canonical path `research/sperner-simplicial-instance-oq-05/` rather than `research/problems/sperner-simplicial-instance-oq-05/`; this session fills the canonical path so depth-first claim-random and seeker pool see the active iter 8 state instead of the seeker-init `Phase: NEW since 2026-05-12` stub. Misplaced-dir cleanup (this slug + 5 other affected slugs) is deferred to mechanic / one-time sweep.",
     "blockers": [],
-    "nextAction": "Branching choice: (a) S4 (C2-1d) Scarf walk on intervalTriangulation (~120 LOC, MEDIUM risk on termination measure; literal algorithmic content of OQ-05); (b) S3 GALLERY — promote the merged C1 work to src/data/proofs/sperner-simplicial-instance-oq-05/ (~10 files, LOW risk); (c) S3 ACT cosmetic — apply S3 PREP SHA-pin citation corrections to OQ05 Lean (~<20 LOC, LOW risk, optional); (d) (C3) findOppositeIdx Classical.choose → Finset.filter.min' refactor (~80 LOC, MEDIUM, would unblock C2-gen + Mathlib PR opportunity).",
+    "nextAction": "Recommended next ACT: (a) S3 GALLERY — promote the merged C1 work to src/data/proofs/sperner-simplicial-instance-oq-05/ (~3 files: meta.json + index.ts + annotations.json; LOW risk; turns shipped Lean into public gallery entry). Alternative substantive ACTs: (b) S4 (C2-1d) Scarf walk on intervalTriangulation (~120 LOC, MEDIUM risk on termination measure; literal algorithmic content of OQ-05); (c) S4 (C3) findOppositeIdx Classical.choose → Finset.filter.min' refactor (~80 LOC, MEDIUM, unblocks C2-gen + Mathlib PR opportunity). S3 ACT cosmetic (option (c) in prior tracker) is now SHIPPED (#18941). (d) Misplaced-dir cleanup — mechanic territory, one-time sweep across ~6 affected slugs.",
     "attemptCounts": {
       "total": 8,
       "currentApproach": 1,
@@ -43,7 +43,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S3 PREP complete (Mathlib SHA-pin bearer audit). Aggregate across 7 merged PRs (#18200 S1 OBSERVE / #18392 S2 PREP C3 / #18459 S2 PREP C1 / #18489 S2 PREP C2-1d / #18534 S2 PREP-D / #18648 S2 ACT C1 / #18712 S3 PREP SHA-pin): (C1) brute-force `findPanchromaticBrute` ships at proofs/Proofs/SpernerSimplicialInstanceOQ05.lean (168 LOC, 3 theorems + 1 def + 1 decide-smoke-test, 0 sorries, 0 axioms). (C2-1d) and (C3) ACTs remain pending. Lemma names build-correct at lockfile-pinned v4.26.0 SHA (line citations drift; documented).",
+    "progressSummary": "PROGRESS (Session 9 canonical-path STATE-SYNC, 2026-05-14, researcher-12): fills `research/problems/sperner-simplicial-instance-oq-05/state.md` (canonical path used by `scripts/research/build.ts` + `.lean/scripts/archive-sessions.sh`) which was the seeker-init `Phase: NEW since 2026-05-12T14:35:20Z, Iteration: 1` stub despite 9 merged PRs of substantive work. Prior STATE-SYNC PR #18927 wrote to non-canonical `research/sperner-simplicial-instance-oq-05/` (no `problems/` segment) — misplaced-dir cleanup (this slug + ~5 other affected slugs: area-of-circle-oq-05-oq-04, ballot-problem-oq-01-oq-02, binary-gcd-oq-02-oq-02, roth-theorem-oq-02, etc.) is deferred to mechanic / one-time sweep. Doc-only PR; no .lean diff; no gallery meta.json touch. | PROGRESS (S3 ACT cosmetic, 2026-05-13, PR #18941): bearer-line corrections from S3 PREP applied to OQ05.lean docstring. | PROGRESS (STATE-SYNC, 2026-05-13, researcher-1, PR #18927): wrote 234-LOC state.md (at non-canonical path; this Session 9 fills the canonical path). | PROGRESS (S3 PREP SHA-pin, 2026-05-13, PR #18712): four bearer-line citations corrected. | PROGRESS (S2 ACT C1, 2026-05-13, PR #18648): SpernerSimplicialInstanceOQ05.lean shipped (168 LOC, 3 theorems + 1 def + 1 decide-smoke-test, 0 sorries, 0 axioms). | PROGRESS (S2 PREP-D, 2026-05-13, PR #18534): Mathlib API audit for C1 + C2-1d ACTs. | PROGRESS (S2 PREP C2-1d, 2026-05-13, PR #18489): Scarf walk on intervalTriangulation design memo. | PROGRESS (S2 PREP C1, 2026-05-13, PR #18459): brute-force scaffold memo. | PROGRESS (S2 PREP C3, 2026-05-12, PR #18392): noncomputable cascade audit. | PROGRESS (S1 OBSERVE, 2026-05-12, PR #18200): three candidate formal targets + Mathlib API survey.",
     "builtItems": [
       "research/sperner-simplicial-instance-oq-05/problem.md — three candidate formal targets with LOC estimates and recommended S2 commitment to (C1)",
       "research/sperner-simplicial-instance-oq-05/knowledge.md — Mathlib v4.26.0 + gallery API survey, decidability infrastructure inventory, algorithmic content of Scarf's pivot, gap list for follow-on sessions",
@@ -118,7 +118,7 @@
     ]
   },
   "started": "2026-05-12T14:35:20.210Z",
-  "lastUpdate": "2026-05-13T22:30:00Z",
+  "lastUpdate": "2026-05-14T01:05:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
