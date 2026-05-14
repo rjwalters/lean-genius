@@ -1,14 +1,14 @@
 {
   "slug": "erdos-101-oq-01",
   "title": "Erdős #101 OQ-01: Four-Point Lines are $o(n^2)$",
-  "phase": "ACT",
+  "phase": "BLOCKED",
   "status": "active",
   "tier": "B",
   "path": "full",
   "significance": 7,
   "tractability": 5,
   "started": "2026-05-11T19:00:00Z",
-  "lastUpdate": "2026-05-12T05:00:00Z",
+  "lastUpdate": "2026-05-14T17:10:00.000Z",
   "problemStatement": {
     "formal": "\\forall \\varepsilon > 0,\\ \\exists N,\\ \\forall P : \\text{PlanarPointSet},\\ \\text{NoFiveCollinear}\\ P \\land N \\leq |P| \\Rightarrow \\text{fourPointLineCount}(P) < \\varepsilon \\cdot |P|^2",
     "plain": "Given $n$ points in $\\mathbb{R}^2$ with no five collinear, is the number of lines containing exactly four points $o(n^2)$? Best known: $O(n^2)$ upper (trivial), $\\Omega(n^{2-O(1/\\sqrt{\\log n})})$ lower (Solymosi–Stojaković).",
@@ -33,20 +33,22 @@
     "goal": "Prove $\\text{fourPointLineCount}(P) = o(|P|^2)$ for all `NoFiveCollinear P`, or sharpen the bound to an explicit subquadratic rate."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-13T18:00:00.000Z",
-    "iteration": 4,
-    "focus": "S4 (researcher-1, 2026-05-13): extended S3 negated-existence refutation to its positive constructive form. New theorem erdos_three_halves_conjecture_refuted_constructive : ∀ N, ∃ P, NoFiveCollinear P ∧ N ≤ |P| ∧ (|P| : ℝ)^(3/2 : ℝ) < (fourPointLineCount P : ℝ) — for every threshold N, an explicit no-five-collinear witness with |P| ≥ N and strictly more than |P|^(3/2) four-point lines. Proof reuses S3 chain (Real.exp_one_lt_d9 + Real.log_lt_log + Real.sqrt_lt_sqrt + Real.rpow_lt_rpow_of_exponent_lt) verbatim through h_rpow_lt; only the final assembly differs (witness delivery via refine + rw [hcard] + linarith [hP_lb, h_rpow_lt] instead of contradiction). Sorries unchanged at 2 (main conjecture + solymosi_stojakovic_lower_bound); axioms unchanged at 0; theorems 8 → 9. Lean file 383 → 470 LOC (+87).",
-    "blockers": [],
-    "nextAction": "S5 candidates: (1) Asymptotics.IsBigO/IsLittleO bridge — define maxFourPointLines : ℕ → ℕ, convert fourPointLineCount_le_quadratic to Filter.IsBigO atTop statement; (2) Cauchy–Schwarz refinement of fourCollinearThrough_bound for a 1 - o(1) leading constant on the n^2/12 elementary bound; (3) witness extraction at fixed n via decide on small finite combinatorics for native_decide-certified gallery examples. Main conjecture erdos_101_oq_01 ($100 Erdős prize) and solymosi_stojakovic_lower_bound remain OPEN/deferred.",
+    "phase": "BLOCKED",
+    "since": "2026-05-14T17:10:00.000Z",
+    "iteration": 5,
+    "focus": "S5 (researcher-12, 2026-05-14) — first Docker baseline of Proofs/Erdos101OQ01.lean at v4.26.0 after 4 consecutive (build pending) PRs (S1 #17751 + S2 #17799 + S3 #17844 + S4 #18911, all merged 2026-05-12 to 2026-05-13). Build halts on OUT-OF-SLUG parent Proofs/Erdos101Problem.lean (owned by graduated slug erdos-101) with 2 v4.26.0 parser-strictness errors at lines 593 and 597 — orphan doc-strings (`/-- ... -/` blocks without a following declaration) introduced 2026-05-13 in commit 08ea6265778. The OQ-01 file itself was not reached; its v4.26.0 compilation state remains unverified. Per feedback_researcher_parent_regression_isolation_via_new_file_split.md, research PRs do not bundle out-of-slug parent fixes; new-file split is impossible because the OQ-01 file depends on the parent foundational definitions. This S5 is doc-only: state.md + knowledge.md updated with diagnosis + 2-LOC mechanic patch recipe. Slug is BLOCKED until mechanic / doctor fixes the parent.",
+    "blockers": [
+      "Parent Proofs/Erdos101Problem.lean:593,597 orphan-docstring parser errors (out-of-slug, mechanic/doctor scope)"
+    ],
+    "nextAction": "BLOCK pending mechanic fix of Proofs/Erdos101Problem.lean orphan doc-strings (2 LOC, lines 593+597 — convert /-- ... -/ to /- ... -/). Patch recipe documented in state.md `Parent Regression Inventory` section. Once parent unblocks, S6 ACT IsBigO/IsLittleO bridge per S4 next-action plan (~40-60 LOC, adds Asymptotics import; defines maxFourPointLines via Finset.sup; states fourPointLineCount_le_quadratic as Asymptotics.IsBigO and records OPEN conjecture as IsLittleO sorry).",
     "attemptCounts": {
-      "total": 4,
+      "total": 5,
       "currentApproach": 1,
-      "approachesTried": 3
+      "approachesTried": 4
     }
   },
   "knowledge": {
-    "progressSummary": "S4 (researcher-1, 2026-05-13): constructive refutation of Erdős three-halves conjecture landed. New theorem erdos_three_halves_conjecture_refuted_constructive : ∀ N, ∃ P, NoFiveCollinear P ∧ N ≤ |P| ∧ |P|^(3/2) < fourPointLineCount P — the positive form of S3 negated-existence refutation. Reuses S3 chain (specialise SS lower bound to C = 1/2, exp 1 < 3 ⟹ log m > 1 ⟹ sqrt log m > 1 ⟹ (1/2)/sqrt log m < 1/2 ⟹ 2-(...)>3/2 ⟹ m^(3/2) < m^(2-...) ≤ count) verbatim through h_rpow_lt; final assembly via refine + rw + linarith. Sorries 2 (unchanged: erdos_101_oq_01 + solymosi_stojakovic_lower_bound), axioms 0 (unchanged), theorems 8 → 9. File 383 → 470 LOC. Build pending (.lake symlink trap). S3 (researcher-5, 2026-05-12): discharged erdos_three_halves_conjecture_refuted via elementary real-analysis arithmetic; 50-line proof; sorries 3 → 2. S2 (researcher-1, 2026-05-12): recorded Solymosi–Stojaković 2013 existential lower bound as theorem ... := by sorry plus corollary erdos_three_halves_conjecture_refuted (also sorry). S1 (researcher-3, 2026-05-11): OBSERVE — formal Σ₂ statement, 5 supporting theorems proved unconditionally.",
+    "progressSummary": "S5 (researcher-12, 2026-05-14, doc-only): PARENT-BLOCKED. First v4.26.0 Docker baseline of Proofs/Erdos101OQ01.lean halted on parent Proofs/Erdos101Problem.lean orphan-docstring parser errors (lines 593, 597). Diagnosis + mechanic patch recipe documented in state.md and knowledge.md. No edits to OQ-01 file. Slug awaits mechanic / doctor pickup of parent; S6 ACT (IsBigO/IsLittleO bridge) blocked until parent compiles. Sorry/axiom counts unchanged (2 sorries, 0 axioms, 470 LOC).",
     "builtItems": [
       "proofs/Proofs/Erdos101OQ01.lean: IsLittleOh_n_squared (def)",
       "proofs/Proofs/Erdos101OQ01.lean: BoundsAtRate (def)",
@@ -70,7 +72,8 @@
       "Solymosi–Stojaković (2013) refuted Erdős's $\\Theta(n^{3/2})$ conjecture with $\\Omega(n^{2-O(1/\\sqrt{\\log n})})$ — the open content is the polylog correction, not the leading order.",
       "All known elementary upper bounds are $\\Theta(n^2)$; closing the gap to $o(n^2)$ requires either a multiplicity-aware Szemerédi–Trotter refinement or a non-incidence argument.",
       "The ℕ→ℝ cast in `bounds_at_rate_quadratic_over_twelve` weakens $n(n-1)/12$ to $n^2/12$ to avoid `Nat.sub` truncation; asymptotically equivalent.",
-      "S4 (researcher-1, 2026-05-13): the negated-existence form (S3) and positive constructive form (S4) of the three-halves refutation are interconvertible by simple boolean rephrasing, but the constructive form is more useful downstream — it directly supplies witnesses rather than refuting a hypothetical bound. Both depend on the same axiom-free deferred theorem solymosi_stojakovic_lower_bound (still sorry). The S3 chain is reusable across both forms: chain S3 through Real.rpow_lt_rpow_of_exponent_lt, then choose between contradiction (S3) vs. refine+linarith (S4) at the final assembly step."
+      "S4 (researcher-1, 2026-05-13): the negated-existence form (S3) and positive constructive form (S4) of the three-halves refutation are interconvertible by simple boolean rephrasing, but the constructive form is more useful downstream — it directly supplies witnesses rather than refuting a hypothetical bound. Both depend on the same axiom-free deferred theorem solymosi_stojakovic_lower_bound (still sorry). The S3 chain is reusable across both forms: chain S3 through Real.rpow_lt_rpow_of_exponent_lt, then choose between contradiction (S3) vs. refine+linarith (S4) at the final assembly step.",
+      "S5 (researcher-12, 2026-05-14): First Docker baseline at v4.26.0 surfaced 2 orphan-doc-string parser errors in OUT-OF-SLUG parent Proofs/Erdos101Problem.lean:593,597 (introduced 2026-05-13 commit 08ea6265778; masked by 4 consecutive (build pending) PRs). Mechanic patch is 2 LOC (/-- → /-). OQ-01 file compilation state at v4.26.0 still unverified; expected green retroactively once parent unblocks because all S1-S4 Mathlib API (Real.rpow_lt_rpow_of_exponent_lt, Real.log_lt_log, Real.sqrt_lt_sqrt, Real.exp_one_lt_d9, div_lt_iff) is in no current v4.26.0 regression kit."
     ],
     "mathlibGaps": [
       "No direct Σ₂-style $o(n^2)$ uniform-bound vocabulary; we use an explicit ε–N form. Bridge to `Asymptotics.IsLittleO` deferred to S3.",

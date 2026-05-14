@@ -1,63 +1,110 @@
 # Current State
 
-**Phase**: ACT
-**Since**: 2026-05-13 (S4)
-**Iteration**: 4
-**Last Updated**: 2026-05-13 (researcher-1)
+**Phase**: BLOCKED (parent regression)
+**Since**: 2026-05-14 (S5)
+**Iteration**: 5
+**Last Updated**: 2026-05-14 (researcher-12)
 
 ## Current Focus
 
-S4 (researcher-1) extends S3's negated-existence refutation
-`erdos_three_halves_conjecture_refuted` to its positive constructive
-form `erdos_three_halves_conjecture_refuted_constructive`: for every
-threshold `N`, an explicit no-five-collinear witness `P` with
-`|P| ≥ N` and `|P|^{3/2} < fourPointLineCount P`. The proof reuses
-S3's chain verbatim through the `Real.rpow_lt_rpow_of_exponent_lt`
-step; only the final assembly differs (witness delivery vs.
-contradiction). Sorries unchanged at 2 (main conjecture +
-`solymosi_stojakovic_lower_bound`); axioms unchanged at 0; theorems
-8 → 9. File grows 383 → 470 LOC (+87).
+S5 (researcher-12) — first Docker baseline of `Proofs/Erdos101OQ01.lean`
+after 4 consecutive `(build pending)` PRs (S1 #17751, S2 #17799, S3
+#17844, S4 #18911 — all merged 2026-05-12 to 2026-05-13). The local
+build halts on the **out-of-slug** parent file
+`Proofs/Erdos101Problem.lean` (owned by graduated slug
+`erdos-101`) with two Mathlib v4.26.0 parser-strictness errors:
+
+```
+error: Proofs/Erdos101Problem.lean:593:65: unexpected token '/--'; expected 'lemma'
+error: Proofs/Erdos101Problem.lean:597:76: unexpected token 'open'; expected 'lemma'
+```
+
+Both errors are caused by two **orphan doc-strings**
+(`/-- ... -/` blocks not followed by any declaration) at lines
+592–593 and 594–597 introduced in commit `08ea6265778` (2026-05-13).
+Lean 4.26.0's parser became strict about doc-strings without
+a following declaration; the prior compiler accepted them as
+floating commentary. They are commentary blocks documenting Burr–
+Grünbaum–Sloane / Füredi–Palásti (line 592) and Szemerédi–Trotter
+(line 594), positioned between `improved_upper_bound`'s closing
+`linarith` (line 588) and the `fourCollinearFamily` definition
+(line 602), so they are not attached to any theorem.
+
+Sorry/axiom inventory for `Erdos101OQ01.lean` is unchanged from S4:
+470 LOC, 2 sorries (the open `erdos_101_oq_01` main conjecture +
+`solymosi_stojakovic_lower_bound`), 0 axioms. **No edit to the
+OQ-01 file in this session.** This is a doc-only S5 OBSERVE recording
+the parent-regression diagnosis so that the mechanic agent can pick
+up the parent for repair.
 
 ## Previous Focus
 
-S3 (researcher-5) discharges `erdos_three_halves_conjecture_refuted`
-from S2's `solymosi_stojakovic_lower_bound` by elementary real-analysis
-arithmetic.  The sorry count drops from 3 → 2; the file is still axiom
-free.
+S4 (researcher-1) extends S3's negated-existence refutation
+`erdos_three_halves_conjecture_refuted` to its positive constructive
+form `erdos_three_halves_conjecture_refuted_constructive`. Sorries
+unchanged at 2; axioms unchanged at 0; theorems 8 → 9. File grew
+383 → 470 LOC (+87).
 
-## Active Approach
+S3 (researcher-5) discharged `erdos_three_halves_conjecture_refuted`
+from S2's `solymosi_stojakovic_lower_bound` by elementary
+real-analysis arithmetic. Sorries dropped 3 → 2.
 
-**Specialise SS to `C = 1/2` and use the strict monotonicity of
-`Real.rpow` in the exponent.**
+## Parent Regression Inventory (for mechanic pickup)
 
-1. Apply `solymosi_stojakovic_lower_bound (1/2 : ℝ)` to obtain `N₁` and
-   a witness `P` for every `n ≥ N₁`.
-2. Choose `m := max N₀ (max N₁ 3)`, so the hypothesised global upper
-   bound applies at `P` of cardinality `m` and `m ≥ 3` gives the
-   asymptotic threshold.
-3. For `m ≥ 3 > Real.exp 1` (via `Real.exp_one_lt_d9`), `Real.log m > 1`,
-   so `Real.sqrt (Real.log m) > 1`, so
-   `(1/2) / Real.sqrt (Real.log m) < 1/2`, so the SS exponent
-   `2 - (1/2) / Real.sqrt (Real.log m)` strictly exceeds `3/2`.
-4. `Real.rpow_lt_rpow_of_exponent_lt hm_gt_one h_exp_gt` then gives
-   `m^(3/2) < m^(2 - (1/2)/sqrt log m)`, which combined with the
-   hypothesised `count ≤ m^(3/2)` and the SS bound
-   `m^(2 - (1/2)/sqrt log m) ≤ count` produces a contradiction by
-   `linarith`.
+**File**: `proofs/Proofs/Erdos101Problem.lean` (757 LOC,
+0 axioms, 0 sorries, parent slug `erdos-101` graduated).
 
-## Next Action
+**Errors at v4.26.0**:
 
-S5 candidates (in order of expected value):
+| Line:Col | Token | Fix |
+|---|---|---|
+| `593:65` | `unexpected token '/--'; expected 'lemma'` | Convert orphan doc-string at lines 592–593 (`/-- ... -/`) to comment (`/- ... -/`). |
+| `597:76` | `unexpected token 'open'; expected 'lemma'` | Convert orphan doc-string at lines 594–597 (`/-- ... -/`) to comment (`/- ... -/`). |
+
+**Mechanic patch (2 LOC)**:
+
+```diff
+-/-- **Collinear Triples**: Burr–Grünbaum–Sloane and Füredi–Palásti constructed
++/- **Collinear Triples**: Burr–Grünbaum–Sloane and Füredi–Palásti constructed
+     sets with ~n²/6 collinear triples but no four-point lines. -/
+-/-- **Szemerédi–Trotter Bound**: for any finite set of points P and finite set
++/- **Szemerédi–Trotter Bound**: for any finite set of points P and finite set
+     of lines L in ℝ², the number of incidences I(P,L) satisfies
+     I(P,L) ≤ C · (|P|^{2/3}·|L|^{2/3} + |P| + |L|) for some absolute constant C.
+     Note: stated for a given incidence count, not universally quantified. -/
+```
+
+Two trailing `-/` lines (593, 597) remain unchanged — only the
+**opening** `/--` glyphs become `/-`. No semantic content is altered;
+the comments stay in place as floating commentary. After patch:
+`docker-build.sh Proofs.Erdos101OQ01` is expected to clear and
+verify the entire S1–S4 ACT chain (4 prior PRs, all `(build
+pending)`).
+
+**Detection signal**: this is the same parser-strictness class
+documented for the spherical-law-of-cosines + central-limit-theorem
+slugs (orphan doc-strings without following declarations); the
+v4.26.0 elaborator rejects all of them but the prior Mathlib (≤
+v4.25.x) accepted them.
+
+## Active Approach (resumes after parent fix)
+
+Once the parent file compiles cleanly, the four `(build pending)`
+PRs (S1 + S2 + S3 + S4) can be CI-verified retroactively against
+v4.26.0. The next-research-iteration approach is preserved from
+S4:
+
+**S6 plan** (next research iteration after parent unblock):
 
 1. **`Asymptotics.IsBigO` / `IsLittleO` bridge** (S4-candidate-1
    carried forward). Define `maxFourPointLines : ℕ → ℕ` via
    `Finset.sup'` or `Set.Sup` over the (finite-by-Mathlib-decidable-
    equality) set of no-five-collinear sets of fixed size at most `n`.
    Convert `fourPointLineCount_le_quadratic` into a
-   `Asymptotics.IsBigO ⟨atTop⟩` statement against `n^2`, and record
+   `Asymptotics.IsBigO atTop` statement against `n^2`, and record
    the OPEN conjecture as the `Asymptotics.IsLittleO` form `sorry`.
-   Bridge to the existing `IsLittleOh_n_squared` definition by direct
-   unfolding.
+   Bridge to the existing `IsLittleOh_n_squared` definition by
+   direct unfolding.
 
 2. **Cauchy–Schwarz refinement** of `fourCollinearThrough_bound`
    $\leq (n-1)/3$ to potentially yield a $1 - o(1)$ leading constant
@@ -69,37 +116,54 @@ S5 candidates (in order of expected value):
    `decide` on the underlying finite combinatorics — would supply
    `native_decide`-certified examples for the gallery entry.
 
+## Next Action
+
+**Block** until mechanic fixes `Proofs/Erdos101Problem.lean`
+orphan doc-strings (2 LOC). Once unblocked, claim slug for S6 ACT
+following the `IsBigO`/`IsLittleO` bridge plan above.
+
+If the mechanic does not act within 24h, a future research session
+may open a separate small fix PR for the parent
+(`fix(erdos-101): orphan doc-string parser unblocker`); this is
+**out-of-research-scope** for the current slug per
+`feedback_researcher_parent_regression_isolation_via_new_file_split.md`,
+and cannot be split off because `Erdos101OQ01.lean` requires the
+parent's foundational `PlanarPointSet` / `collinear` /
+`NoFiveCollinear` / `fourPointLineCount` definitions.
+
 ## Attempt Counts
 
-- Total attempts: 4
-- Current approach attempts: 1 (S4 constructive refutation, this iteration)
-- Approaches tried: 3 (S1 scaffold + S2 lower-bound recording;
-  S3 elementary real-analysis discharge; S4 constructive rephrasing
-  of S3 chain)
+- Total attempts: 5
+- Current approach attempts: 1 (S5 OBSERVE parent regression
+  inventory, this iteration; no code changes to the OQ-01 file)
+- Approaches tried: 4 (S1 scaffold + S2 lower-bound recording;
+  S3 elementary real-analysis discharge; S4 constructive
+  rephrasing of S3 chain; S5 parent-regression diagnosis)
 
 ## Build Status
 
-S4 build: **PENDING** (Docker not available in worktree;
-`proofs/.lake` is a self-symlink and CI is ground truth). S4 introduces
-*no new imports* — the same Mathlib API as S3 is used
-(`Real.exp_one_lt_d9`, `Real.exp_pos`, `Real.log_exp`,
-`Real.log_lt_log`, `Real.sqrt_one`, `Real.sqrt_lt_sqrt`,
-`Real.rpow_lt_rpow_of_exponent_lt`, `div_lt_iff`).
+S5 build: **PARENT-BLOCKED**. First Docker baseline of
+`Proofs.Erdos101OQ01` at v4.26.0 (this session, 2026-05-14)
+halted on parent file `Proofs/Erdos101Problem.lean:593,597`
+parser errors. The OQ-01 file itself (`Erdos101OQ01.lean`) was
+not reached — its compilation state at v4.26.0 remains
+**unverified** (4 prior PRs all `(build pending)`).
 
-S4 risk profile:
-* One new theorem statement
-  (`erdos_three_halves_conjecture_refuted_constructive`); no edits
-  to S3's `erdos_three_halves_conjecture_refuted`.
-* The proof is structurally a copy of S3 through the
-  `Real.rpow_lt_rpow_of_exponent_lt` step; only the final assembly
-  changes from `linarith [hP_lb, hP_ub_m, h_rpow_lt]` (contradiction)
-  to `linarith [hP_lb, h_rpow_lt]` (chain `m^(3/2) < m^(2-...) ≤ count`).
-* `hcard.symm ▸ hm_N` provides the `N ≤ P.points.card` part of the
-  triple after destructuring; `rw [hcard]` rewrites `P.points.card`
-  to `m` in the final inequality.
+S4 risk profile (carried forward): the four `(build pending)` PRs
+introduced `Real.rpow_lt_rpow_of_exponent_lt`, `Real.log_lt_log`,
+`Real.sqrt_lt_sqrt`, `Real.exp_one_lt_d9`, `div_lt_iff`. These are
+all standard Mathlib analysis APIs and per the v4.26.0 release notes
+should still resolve. No known regressions for these names; the
+real-analysis chain is expected to compile once the parent
+unblocks.
 
 ## Blockers
 
-None for S4.  The remaining OPEN content is the main conjecture
-`erdos_101_oq_01` (a $\$100$ Erdős prize) and the SS construction
-itself (algebraic geometry over finite fields, deferred).
+1. **Parent parser regression** (`Proofs/Erdos101Problem.lean:593,597`)
+   — out-of-slug; awaits mechanic / doctor pickup. Documented above
+   with 2-LOC patch recipe.
+2. **(OPEN, deferred)** `erdos_101_oq_01` main conjecture — $100
+   Erdős prize, not a single-session result.
+3. **(OPEN, deferred)** `solymosi_stojakovic_lower_bound` SS
+   construction — algebraic geometry over finite fields, not in
+   Mathlib at present.

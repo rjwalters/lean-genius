@@ -267,3 +267,118 @@ in Lean 4 elaborate to the same rational literal.
 
 3. **Per-point Cauchy–Schwarz refinement** to chase a $1 - o(1)$
    leading constant on `improved_upper_bound`'s $n(n-1)/12$.
+
+## S5 (researcher-12, 2026-05-14) — Parent regression OBSERVE (doc-only)
+
+### Result: PARENT-BLOCKED
+
+First Docker baseline of `Proofs.Erdos101OQ01` at v4.26.0 (this
+session, no code changes to the OQ-01 file) halted on the parent
+file `Proofs/Erdos101Problem.lean` with two parser errors:
+
+```
+error: Proofs/Erdos101Problem.lean:593:65: unexpected token '/--'; expected 'lemma'
+error: Proofs/Erdos101Problem.lean:597:76: unexpected token 'open'; expected 'lemma'
+```
+
+The errors are orphan doc-strings (`/-- ... -/` blocks without a
+following declaration) at parent lines 592–593 and 594–597. These
+are commentary on Burr–Grünbaum–Sloane / Füredi–Palásti
+(line 592) and Szemerédi–Trotter (line 594), introduced in
+commit `08ea6265778` (2026-05-13). Lean 4.26.0's parser became
+strict about doc-strings not attached to a declaration; the prior
+elaborator (≤ v4.25.x) accepted them.
+
+### Why this is the first time we are seeing it
+
+The four prior `(build pending)` PRs (S1 #17751, S2 #17799, S3
+#17844, S4 #18911) all reported "Docker not available in worktree"
+in state.md. None ran a local Docker build; the parent regression
+was masked until this session. The OQ-01 file
+(`Proofs/Erdos101OQ01.lean`, 470 LOC) is therefore **unverified
+at v4.26.0** through S4.
+
+### Mechanic patch (2 LOC, out-of-slug)
+
+```diff
+-/-- **Collinear Triples**: Burr–Grünbaum–Sloane and Füredi–Palásti constructed
++/- **Collinear Triples**: Burr–Grünbaum–Sloane and Füredi–Palásti constructed
+     sets with ~n²/6 collinear triples but no four-point lines. -/
+-/-- **Szemerédi–Trotter Bound**: for any finite set of points P and finite set
++/- **Szemerédi–Trotter Bound**: for any finite set of points P and finite set
+     of lines L in ℝ², the number of incidences I(P,L) satisfies
+     I(P,L) ≤ C · (|P|^{2/3}·|L|^{2/3} + |P| + |L|) for some absolute constant C.
+     Note: stated for a given incidence count, not universally quantified. -/
+```
+
+The closing `-/` on lines 593 and 597 is unchanged; only the
+opening `/--` glyphs become `/-`. No semantic content shifts.
+
+### Why this S5 is doc-only
+
+- The parent file `Proofs/Erdos101Problem.lean` is owned by the
+  graduated slug `erdos-101`. Per
+  `feedback_researcher_parent_regression_isolation_via_new_file_split.md`,
+  research PRs must not bundle out-of-slug parent fixes. Mechanic /
+  doctor scope is preferred.
+- A new-file split is **not possible** for this slug: the OQ-01 file
+  depends on the parent's foundational `PlanarPointSet`,
+  `collinear`, `NoFiveCollinear`, `fourPointLineCount`, and
+  `improved_upper_bound` definitions. There is no alternate-parent
+  to pivot toward.
+- Therefore the only research-policy-conforming deliverable is the
+  diagnosis itself (this knowledge.md entry + the state.md
+  Parent Regression Inventory section). The mechanic agent picks
+  the file up next; once the patch merges, the slug returns to
+  ACT phase and the S6 ACT (`IsBigO`/`IsLittleO` bridge) becomes
+  unblocked.
+
+### Why the S4 file is likely still good
+
+The four `(build pending)` PRs introduced only:
+* `Real.rpow_lt_rpow_of_exponent_lt` (still in
+  `Mathlib/Analysis/SpecialFunctions/Pow/Real.lean` at v4.26.0)
+* `Real.log_lt_log`, `Real.log_exp`, `Real.exp_pos`,
+  `Real.exp_one_lt_d9` (still in
+  `Mathlib/Analysis/SpecialFunctions/Log/Basic.lean`)
+* `Real.sqrt_lt_sqrt`, `Real.sqrt_one` (still in
+  `Mathlib/Analysis/SpecialFunctions/Sqrt.lean`)
+* `div_lt_iff`, `linarith`, `nlinarith`
+
+All of these are standard Mathlib analysis APIs that have not been
+reported as regressed in any other 2026-05-12+ research session
+(per memory's v4.26.0 kit list: Matrix-API notation + Squarefree +
+Σ-token + `toAdd_mul` + `set→let` + `divisors_prime` + `4^m = 2^(2m)` +
+`finsetSum_coeff` + `Finset.card_eq_sum_card_fiberwise` — none touch
+`Real.*`). The expected outcome of a re-run of
+`docker-build.sh Proofs.Erdos101OQ01` after the 2-LOC parent
+patch is **green**, retroactively CI-verifying the entire S1–S4 chain.
+
+### S6 next-action (post-parent-unblock)
+
+S5 does not change the next-action ordering from state.md:
+
+1. **`Asymptotics.IsBigO` / `IsLittleO` bridge** — primary target.
+   Adds `import Mathlib.Analysis.Asymptotics.Defs` (or
+   `Asymptotics.Basic` for `IsBigO` / `IsLittleO` themselves);
+   defines `maxFourPointLines : ℕ → ℕ`; states
+   `fourPointLineCount_le_quadratic` in `Asymptotics.IsBigO`
+   form; records the OPEN conjecture as an `Asymptotics.IsLittleO
+   atTop (· ^ 2)` sorry. ~40–60 LOC.
+
+2. **Cauchy–Schwarz refinement** of the per-point bound.
+
+3. **Witness extraction at fixed `n`** for `native_decide`-certified
+   small-set examples.
+
+### Confidence
+
+**High** that the diagnosis is correct: the v4.26.0 parser error
+text is unambiguous and the orphan doc-string pattern matches the
+spherical-law-of-cosines + central-limit-theorem parser-strictness
+class. The 2-LOC patch is mechanical.
+
+**Medium** confidence that S1–S4 ACT compiles green after the
+parent unblocks — predicated on no other Mathlib regression in
+`Real.rpow_lt_rpow_of_exponent_lt`'s neighborhood, which is the
+single most "exotic" Mathlib API used in the file.
