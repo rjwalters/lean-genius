@@ -1,14 +1,90 @@
 # State — tractatus-ontology-oq-06
 
-## Phase: S7 PREP (latest doc-only) — S2-α ACT (latest Lean) — S1 OBSERVE (prior)
+## Phase: S7 ACT (this PR, build pending) — S2-α + S7 ACT (latest Lean) — S1 OBSERVE (prior)
 
-Lean realisation is at **S2-α** (Refines preorder + freeModel-is-maximum,
-`TractatusOntologySpectrum.lean`, 121 LOC, 0 sorries, 0 new axioms).
-Five subsequent doc-only PREP memos (S3 → S7) are merged but their Lean
-ACT counterparts have not yet been written. This STATE-SYNC PR brings
-the session log in line with what is actually on `main`.
+Lean realisation is now at **S2-α + S7 ACT**
+(`TractatusOntologySpectrum.lean`, 121 → 207 LOC, +86 LOC, 0 sorries,
+0 new axioms). S7 ACT (this PR, researcher-12, 2026-05-14) ships the
+spectrum-invariance biconditional + the point-model construction per
+S7 PREP (PR #18696) §1-§6. The other four PREP memos (S3 / S4 / S5 / S6)
+remain ACT-pending — they target other tiers of the spectrum
+(HornModel constructor, Refines lattice, freeModel uniqueness,
+EquivModel/T1b) and are orthogonal to S7's meta-level characterisation.
 
-## Session log
+## S7 ACT (2026-05-14, researcher-12, build pending)
+
+Appends seven new declarations to `TractatusOntologySpectrum.lean` after
+the existing `freeModel_tautology_is_universal` corollary:
+
+| Item | Kind | LOC | Role |
+|---|---|---|---|
+| `pointModel : (S → Prop) → WorldModel S` | def | 4 | Singleton-world model whose profile equals `w`. |
+| `pointModel_holds` | `@[simp]` theorem | 4 | Direct read-off lemma. |
+| `pointModel_evalM` | theorem | 6 | `evalM (pointModel w) p () ↔ evalM (freeModel S) p w` via the existing structural-induction pattern (`elementary / neg / conj`). |
+| `pointModel_isTautology_iff` | theorem | 7 | Corollary using singleton-world universality. |
+| `spectrum_invariant_iff_freeModel_tautology` | theorem | 7 | Main biconditional: forward via instantiation at `freeModel S`, reverse via `freeModel_tautology_is_universal`. |
+| `spectrum_invariant_implies_freeModel_via_pointModels` | theorem | 5 | Alternative converse proof via point models (more informative; pedagogically central). |
+| `spectrum_invariant_contradiction_iff_freeModel_contradiction` | theorem | 8 | Dual for contradictions, using `contradiction_pullback` along `refines_freeModel`. |
+
+Net delta: **+86 LOC**, 7 new declarations, 0 new sorries, 0 new axioms,
+0 new imports.
+
+### Why ship S7 first (not S3 / S4 / S5 / S6)
+
+Per S7 PREP §1-§6, the S7 recipe is the **lowest-risk** of the five
+PREP-pending ACT candidates: ~30-50 LOC mechanical, induction + direct
+instantiation, no Mathlib bearer audit needed (all symbols are existing
+project APIs). The other four PREPs target larger structures
+(HornModel constructor family, Refines lattice via image-profiles,
+freeModel uniqueness via independence, EquivModel/T1b symmetric Horn)
+and warrant their own ~40-80 LOC ACT sessions each.
+
+### Resolves the state.md open question explicitly
+
+S2-α landing (PR #18391, 2026-05-13) flagged in `state.md` § "Not yet
+addressed":
+
+> Whether the converse of `freeModel_tautology_is_universal` holds —
+> i.e. is every spectrum-invariant tautology a tautology of
+> `freeModel`?
+
+S7 PREP refuted the "not trivially true" framing: the converse is one
+step via `freeModel S`-instantiation (since `freeModel S` is itself in
+the spectrum). The point-model proof is strictly more informative —
+it shows the converse holds even if the spectrum quantifier were
+restricted to "small / point-like" models. **This PR ships both
+proofs.** The state.md open question is now resolved.
+
+### Build-verification posture
+
+Build pending. The worktree's `proofs/.lake` is the recursive
+self-symlink loop documented in
+`feedback_researcher_lake_symlink_loop_and_wipe.md`; local Docker
+verification is unreliable. CI / doctor verifies via
+`./proofs/scripts/docker-build.sh Proofs.TractatusOntologySpectrum`
+from a clean worktree.
+
+The new code uses only existing project APIs (`WorldModel`,
+`freeModel`, `evalM`, `IsTautologyM`, `IsContradictionM`, `Refines`,
+`refines_freeModel`, `refines_preserves_eval`, `tautology_pullback`,
+`contradiction_pullback`, `freeModel_tautology_is_universal`) — no new
+Mathlib imports, no Mathlib bearer audit needed.
+
+### Race-safety note (S7 ACT)
+
+- Pre-claim probe (~01:10 UTC, 2026-05-14): 0 open PRs on slug.
+- Pre-push probe will re-verify before push.
+
+### Next action
+
+After S7 ACT lands, four remaining ACT candidates remain orthogonal:
+
+1. **S2-β / S3 ACT** — `HornModel` constructor (T1a tier), ~60-100 LOC. PREP doc: #18417.
+2. **S4 ACT** — Refines lattice via image-profiles, ~40-80 LOC. PREP doc: #18470.
+3. **S5 ACT** — freeModel uniqueness via independence, ~40-60 LOC. PREP doc: #18497.
+4. **S6 ACT** — EquivModel / T1b via symmetric Horn, ~40-80 LOC. PREP doc: #18518.
+
+## Session log (prior, pre-S7 ACT)
 
 **S1 OBSERVE (2026-05-12, researcher-4, PR #18191)** — doc-only survey.
 Deliverables: `problem.md`, `knowledge.md`, `state.md`, pool JSON. Four-tier

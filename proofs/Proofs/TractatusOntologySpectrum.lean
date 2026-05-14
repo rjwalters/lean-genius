@@ -118,4 +118,90 @@ theorem freeModel_tautology_is_universal (p : Proposition S)
     IsTautologyM M p :=
   tautology_pullback (refines_freeModel M) p hp
 
+/-! ## S7 — Spectrum-invariance ↔ freeModel-tautology (point models) -/
+
+/-- The **point model at `w`**: a `WorldModel S` with a single world
+    `Unit`, whose Boolean profile equals `w`. Used as a witness that
+    every Boolean assignment `w : S → Prop` is realised by *some*
+    `WorldModel S` — the converse direction of the spectrum-invariance
+    biconditional. -/
+def pointModel (w : S → Prop) : WorldModel S where
+  W        := Unit
+  holds    := fun _ s => w s
+  nonempty := ⟨()⟩
+
+/-- The single-world `holds` of `pointModel w` reads off `w` directly. -/
+@[simp]
+theorem pointModel_holds (w : S → Prop) (u : Unit) (s : S) :
+    (pointModel w).holds u s ↔ w s :=
+  Iff.rfl
+
+/-- Evaluating a proposition at the unique world of `pointModel w` agrees
+    with evaluating it at `w` in `freeModel S`. The proof is the standard
+    structural induction on `Proposition S`, matching the existing
+    `refines_preserves_eval` pattern. -/
+theorem pointModel_evalM (w : S → Prop) (p : Proposition S) :
+    evalM (pointModel w) p () ↔ evalM (freeModel S) p w := by
+  induction p with
+  | elementary s     => exact Iff.rfl
+  | neg q ih         => simp only [evalM]; exact ih.not
+  | conj q r ihq ihr => simp only [evalM]; exact ihq.and ihr
+
+/-- A proposition is a tautology of `pointModel w` iff it evaluates to
+    true at `w` in `freeModel S`. Corollary of `pointModel_evalM`
+    together with the singleton-world nature of `pointModel w`. -/
+theorem pointModel_isTautology_iff (w : S → Prop) (p : Proposition S) :
+    IsTautologyM (pointModel w) p ↔ evalM (freeModel S) p w := by
+  unfold IsTautologyM
+  constructor
+  · intro h
+    exact (pointModel_evalM w p).mp (h ())
+  · intro h _
+    exact (pointModel_evalM w p).mpr h
+
+/-- **Spectrum-invariance theorem.** A proposition is a tautology of
+    every `WorldModel S` iff it is a tautology of `freeModel S`. This
+    resolves the converse direction of `freeModel_tautology_is_universal`
+    flagged as an open question in `state.md`.
+
+    The forward direction is one step: `freeModel S` is itself a member
+    of the spectrum, so the universal quantifier instantiates at it.
+    The reverse direction is exactly `freeModel_tautology_is_universal`. -/
+theorem spectrum_invariant_iff_freeModel_tautology (p : Proposition S) :
+    (∀ M : WorldModel S, IsTautologyM M p) ↔ IsTautologyM (freeModel S) p := by
+  constructor
+  · intro h
+    exact h (freeModel S)
+  · intro h M
+    exact freeModel_tautology_is_universal p h M
+
+/-- Alternative proof of the converse direction via **point models**,
+    not exploiting that `freeModel S` is itself a member of the spectrum.
+
+    Strictly more informative than the `freeModel S`-instantiation proof:
+    it shows the converse holds even if the spectrum quantifier were
+    restricted to "small / point-like" models. Pedagogically central
+    for the state.md framing of the question. -/
+theorem spectrum_invariant_implies_freeModel_via_pointModels
+    (p : Proposition S) (h : ∀ M : WorldModel S, IsTautologyM M p) :
+    IsTautologyM (freeModel S) p := by
+  intro w
+  have hpoint : IsTautologyM (pointModel w) p := h (pointModel w)
+  exact (pointModel_evalM w p).mp (hpoint ())
+
+/-- **Dual: spectrum-invariance for contradictions.** A proposition is a
+    contradiction of every `WorldModel S` iff it is a contradiction of
+    `freeModel S`. Same structural pattern as
+    `spectrum_invariant_iff_freeModel_tautology` (forward: instantiate at
+    `freeModel S`; backward: pull back along the `refines_freeModel`
+    embedding). -/
+theorem spectrum_invariant_contradiction_iff_freeModel_contradiction
+    (p : Proposition S) :
+    (∀ M : WorldModel S, IsContradictionM M p) ↔ IsContradictionM (freeModel S) p := by
+  constructor
+  · intro h
+    exact h (freeModel S)
+  · intro h M
+    exact contradiction_pullback (refines_freeModel M) p h
+
 end Tractatus
