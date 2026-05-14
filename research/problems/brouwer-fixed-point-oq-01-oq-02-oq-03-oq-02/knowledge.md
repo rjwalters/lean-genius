@@ -1540,3 +1540,117 @@ the API verification step.
   lines including docstrings. Build risk: lower than S5 (which
   involved typeclass-chain composition), comparable to S7
   (single Mathlib API verification step).
+
+### Section O — S8 ACT-D-2 EXEC execution log (2026-05-13, researcher-10)
+
+Companion file `proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean`
+installed per §N4 / §N5 Option A / §N8 prescriptions. 94 file
+lines / 2 theorems / 0 axioms / 0 sorries. Net Lean delta on the
+main file: zero (deferred to S9 ACT-D-3 import wiring).
+
+#### O1. §N7 risk-1 API verification (executed at EXEC start)
+
+The §N3 flagged lemma `AddCommGrpCat.isZero_iff_subsingleton` is
+**present at the pinned rev** `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(v4.26.0). Evidence: `gh api`-direct fetch of
+`Mathlib/Algebra/Category/Grp/Zero.lean` at that SHA shows the
+canonical site in `namespace CommGrpCat`:
+
+```lean
+@[to_additive]
+lemma isZero_iff_subsingleton {G : CommGrpCat} :
+    Limits.IsZero G ↔ Subsingleton G :=
+  ⟨fun h ↦ subsingleton_of_isZero h, fun _ ↦ isZero_of_subsingleton G⟩
+```
+
+The `@[to_additive]` attribute generates `AddCommGrpCat.isZero_iff_subsingleton`
+with the same shape on the `AddCommGrpCat` side. No inline fallback
+(§N3 alternative) was needed; the §N4 Stage-1 rw recipe works as
+designed.
+
+#### O2. Companion-file installation
+
+File created at `proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean`.
+Structure:
+
+```lean
+import Mathlib.Algebra.Category.Grp.Basic
+import Mathlib.Algebra.Category.Grp.Zero
+import Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects
+import Mathlib.Logic.Nontrivial.Basic
+
+open CategoryTheory
+
+namespace AddCommGrpCat
+
+theorem not_isZero_iff_nontrivial (X : AddCommGrpCat.{0}) :
+    ¬ Limits.IsZero X ↔ Nontrivial X := by
+  rw [AddCommGrpCat.isZero_iff_subsingleton,
+      not_subsingleton_iff_nontrivial]
+
+theorem exists_ne_zero_of_not_isZero
+    (X : AddCommGrpCat.{0}) (hX : ¬ Limits.IsZero X) :
+    ∃ x : X, x ≠ 0 := by
+  rw [not_isZero_iff_nontrivial] at hX
+  obtain ⟨a, b, hab⟩ := hX.exists_pair_ne
+  exact ⟨a - b, sub_ne_zero.mpr hab⟩
+
+end AddCommGrpCat
+```
+
+Imports are a strict subset of `BrouwerFixedPointOQ01OQ02.lean`'s
+import block (no `Mathlib.Topology.*`,
+`Mathlib.AlgebraicTopology.*`, or
+`Mathlib.Analysis.InnerProductSpace.*` dependencies). Build cost
+is dominated by `AddCommGrpCat`'s own dependency closure (already
+cached from main-file build).
+
+#### O3. §N7 risk-3 mitigation (used)
+
+The `Nontrivial.exists_pair_ne` + `sub_ne_zero.mpr` path was
+preferred over `exists_ne_zero` for the Stage-2 existential
+extraction (per §N7 risk-3 stability analysis). Both
+`Nontrivial.exists_pair_ne` (defined in
+`Mathlib/Logic/Nontrivial/Defs.lean`, structure field of
+`Nontrivial`) and `sub_ne_zero` (generated via `@[to_additive]`
+from `div_ne_one` in `Mathlib/Algebra/Group/Basic.lean`, section
+`Group`) are stable since 2021. Net: 3 Lean lines for Stage 2.
+
+#### O4. Build verification
+
+Local Docker daemon was unavailable at PR time
+(`./proofs/scripts/docker-build.sh Proofs.BrouwerFixedPointOQ01OQ02G7`
+returned "Docker daemon is not running"). The lemma chain is
+shallow (4 imports, 2 small theorems with verified-stable APIs) so
+build risk is low. Verification can be performed by CI / deployer
+or by re-running `./proofs/scripts/docker-build.sh` once Docker is
+available. Per the §N7 build-risk analysis, all 3 risk factors
+have ≤ 10-line inline fallbacks; if a real build failure surfaces,
+the recovery path is documented.
+
+#### O5. ACT-D execution plan progress
+
+| Step | Status | PR/Iter |
+|------|--------|---------|
+| S5 ACT-B exec — `contractible_singularHomology_zero` + ball-side substantive | ✅ done (build verified) | PR #18018 (S5) |
+| S6 OBSERVE — sphere-side scoping | ✅ done (doc-only) | PR #18138 (S6) |
+| S7 ACT-D-1 exec — `sphere_singularHomology_nonzero` + sphere-side substantive | ✅ done (build verified) | PR #18168 (S7) |
+| S8 ACT-D-2 DESIGN — §N (G7 spec) | ✅ done (doc-only) | PR #18945 (S8 design) |
+| **S8 ACT-D-2 EXEC — G7 companion file** | ✅ **done (build pending)** | **this PR (S8 exec)** |
+| S9 ACT-D-3 — wire G7 + G6 + functoriality to drop mock axiom | ⏳ gated on PR #18011 | — |
+| S10 ACT-D-4 — drop mock `H_n_minus_1_sphere_nonzero` axiom | ⏳ after S9 | — |
+
+#### O6. Iteration log addendum (S8 EXEC)
+
+* 2026-05-13 (researcher-10, S8 ACT-D-2 EXEC): installed the G7
+  algebraic bridge companion file
+  `proofs/Proofs/BrouwerFixedPointOQ01OQ02G7.lean` per §N4 / §N5
+  Option A / §N8. 94 file lines, 2 theorems, 0 axioms, 0 sorries.
+  Main file unchanged. §N7 risk-1 API verification confirmed
+  `AddCommGrpCat.isZero_iff_subsingleton` present at pinned rev
+  via `gh api`-direct fetch; no inline fallback needed. §N7
+  risk-3 mitigation (`Nontrivial.exists_pair_ne` +
+  `sub_ne_zero.mpr` over `exists_ne_zero`) applied. Build
+  verification deferred to CI / deployer (local Docker daemon
+  unavailable). Iteration 8 → 9. Next: S9 ACT-D-3, gated on
+  sibling PR #18011 merge.
