@@ -1,10 +1,85 @@
 # Current State
 
-**Phase**: ACT (S3 + S4 landed — bundled refutation)
-**Since**: 2026-05-12T16:30:00Z
-**Iteration**: 3 (S3 + S4 bundled)
+**Phase**: ACT (S5 landed — Bezdek–Kuperberg ellipsoid lattice axiom)
+**Since**: 2026-05-13T00:00:00Z
+**Iteration**: 4 (S5 — `bezdek_kuperberg_ellipsoid_lattice_upper_bound`)
 
-## Current Focus
+## Iteration 4 (researcher-9, 2026-05-13)
+
+**Focus**: S5 — closes the lattice arm of the OQ-04 hierarchy.
+Where S2–S4 showed the FCC bound is shape-specific *upward*
+(tetrahedral dimer construction strictly exceeds it), Bezdek–
+Kuperberg shows the *lattice* constraint is also shape-specific
+in the opposite direction: even non-spherical (ellipsoid) shapes
+cannot exceed FCC density when restricted to lattice packings.
+
+### Outcome (1 new axiom)
+
+Added to `proofs/Proofs/KeplerConjectureOQ04.lean` (227 → 321 lines,
++94):
+
+* `EllipsoidLatticePacking : Type` — wrapper structure
+  (`extends PackingDensity`); definitional only, no axiom.
+* `axiom bezdek_kuperberg_ellipsoid_lattice_upper_bound`
+  (e : EllipsoidLatticePacking) : `e.density ≤ fccDensity` —
+  the +1 STATEMENT axiom (Bezdek–Kuperberg, *Geometriae Dedicata*
+  132 (2008), 73–85).
+* `theorem ellipsoid_lattice_le_fccPacking` — derived corollary
+  restating the bound in terms of the named `fccPacking` instance
+  (no new axiom, direct application).
+* Header docstring updated: now lists S5 ACT description,
+  `axiomCount` 0 → 1, `theoremCount` 5 → 6, `defCount` 2 → 3.
+
+### Why a STATEMENT axiom
+
+The published Bezdek–Kuperberg proof reduces to an affine
+equivalence (every ellipsoid is the image of a ball under an
+invertible linear map, which preserves density and lattice
+structure) plus Gauss's theorem on the optimal ball lattice
+density (`gauss_lattice_theorem` in the parent file). The affine
+density-invariance step requires lattice-volume rescaling under
+linear maps, which is not formalised in Mathlib v4.26.0 at the
+level of `PackingDensity`. Axiomatising the conclusion is the
+honest and minimal-axiom move; +1 axiom matches the S5 plan in
+the prior iteration's "Next Action" block.
+
+### Hierarchy now formalised
+
+| Side | k = 0 lattice | k > 0 lattice | non-lattice |
+|---|---|---|---|
+| Sphere | `fccDensity = π/(3√2)` (Gauss 1831, parent axiom) | — | `kepler_conjecture` (Hales 1998, parent axiom) |
+| Tetrahedron | — | `tetrahedronDimerDensity > fccDensity` (S3, axiom-free) | construction is non-lattice; gallery records as the bottom-line refutation |
+| Ellipsoid | `bezdek_kuperberg_…_upper_bound` (S5, +1 axiom) | — | Donev et al. δ ≈ 0.7707 (deferred, S6+) |
+| Convex symmetric body | — | — | Ulam 1972, OPEN (deferred, S6) |
+
+### Counts (build status pending)
+
+* `proofs/Proofs/KeplerConjectureOQ04.lean`: **227 → 321** lines
+  (+94).
+* `theoremCount`: 5 → 6 (+1; mechanic to sync after CI green).
+* `axiomCount`: 0 → 1 (+1; mechanic to sync).
+* `defCount` / `lineCount`: deferred to mechanic sync.
+* `sorries`: 0 (unchanged).
+
+**meta.json deliberately unchanged** in this PR, mirroring the
+S3+S4 build-verified convention.
+
+### Build status
+
+**Build verified.** Docker build of `Proofs.KeplerConjectureOQ04`
+ran post-edit:
+
+```
+✔ [7744/7744] Built Proofs.KeplerConjectureOQ04 (9.4s)
+Build completed successfully (7744 jobs).
+```
+
+Mathlib cache-hit; pure-axiom-add delta compiled in 9.4s. Build
+log: `.loom/logs/researcher-9-kepler-s5-build.log`. Ships
+**build verified**, matching slug convention (S2 #18113,
+S3+S4 #18188).
+
+## Previous focus (S3 + S4 — bundled refutation, Iteration 3)
 
 **Bundled S3 + S4 — the bottom-line OQ-04 refutation.** Added two
 content blocks to `proofs/Proofs/KeplerConjectureOQ04.lean`,
@@ -117,38 +192,47 @@ each Docker build costs ~30–45 min.
 
 ## Next Action
 
-**S5 (next iteration)**: introduce a `LatticePacking` axiom and the
-Bezdek–Kuperberg (2007) statement: every ellipsoid lattice packing
-achieves density exactly `π / (3 √ 2)`. This is a STATEMENT axiom
-(the proof is a substantial published theorem). +1 axiom.
-
-**S6 (followup)**: introduce a `Shape3D` / `ConvexBody3D`
+**S6 (next iteration)**: introduce a `Shape3D` / `ConvexBody3D`
 abstraction and the Ulam (1972) conjecture as an axiom: every
 symmetric convex body in ℝ³ packs with density `≥ π / (3 √ 2)`.
-Open since 1972. +1 axiom.
+Open since 1972. +1 axiom (genuinely open conjecture).
 
 **S7 (final)**: combine S2/S3/S4 (`tetrahedronDimer*`) with S5
-(`bezdekKuperberg`) and S6 (`ulamConjecture`) into a final
-hierarchy theorem `density_hierarchy_3d` stating the three
-benchmark densities in order.
+(`bezdek_kuperberg_…`) and S6 (`ulam_conjecture`) into a final
+hierarchy theorem `density_hierarchy_3d` recording the three
+benchmark densities in order:
+- `fccDensity = π/(3√2)` (Gauss / parent axiom; ball lattice)
+- `bezdek_kuperberg…` (ellipsoid lattice; ≤ fccDensity)
+- `tetrahedronDimerDensity > fccDensity` (tetrahedral non-lattice;
+  axiom-free strict inequality)
+- `ulam_conjecture` (symmetric convex; ≥ fccDensity, open)
 
 ## Attempt Counts
 
-- Total attempts: 3 (S1 OBSERVE, S2 SCAFFOLD, S3+S4 bundled).
-- Current approach attempts: 1 (tetrahedral refutation track,
-  linear-margin chain via `Real.pi_lt_315` + `Real.lt_sqrt`).
+- Total attempts: 4 (S1 OBSERVE, S2 SCAFFOLD, S3+S4 bundled,
+  S5 ellipsoid lattice axiom).
+- Current approach attempts: 1 (Bezdek–Kuperberg STATEMENT-axiom
+  pattern via `EllipsoidLatticePacking extends PackingDensity`).
 - Approaches tried:
   - S1: survey-only, no Lean changes (PR #18043, researcher-5).
   - S2: SCAFFOLD — density def + positivity / bound / rational
-    anchor; gallery entry + import wiring (PR #18113, researcher-11).
+    anchor; gallery entry + import wiring (PR #18113,
+    researcher-11).
   - S3+S4: inequality vs `fccDensity` + `PackingDensity` instance
-    + existential corollary (this iteration, researcher-6).
+    + existential corollary (PR #18188, researcher-6).
+  - S5: `EllipsoidLatticePacking` wrapper + Bezdek–Kuperberg
+    upper-bound axiom + derived `ellipsoid_lattice_le_fccPacking`
+    (this iteration, researcher-9).
 
 ## Open files
 
-- `proofs/Proofs/KeplerConjectureOQ04.lean` — **modified in S3+S4**
-  (220 lines): two definitions, five theorems, 0 sorries, 0 axioms.
-- `src/data/proofs/kepler-conjecture-oq-04/` — gallery entry; may
-  need meta.json `theoremCount` / `lineCount` sync after S3+S4.
+- `proofs/Proofs/KeplerConjectureOQ04.lean` — **modified in S5**
+  (227 → 321 lines): three definitions, six theorems, 0 sorries,
+  1 axiom (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`).
+- `src/data/proofs/kepler-conjecture-oq-04/` — gallery entry;
+  meta.json deliberately unchanged in this PR (mechanic to sync
+  `lineCount` / `theoremCount` / `axiomCount` / `defCount` after
+  CI green, mirroring S3+S4 convention).
 - `problem.md` — Plain statement, why-it-matters, decomposition.
-- `knowledge.md` — S1 + S3+S4 session notes.
+- `knowledge.md` — S1 + S3+S4 session notes (S5 entry deferred to
+  knowledge.md update post-build).
