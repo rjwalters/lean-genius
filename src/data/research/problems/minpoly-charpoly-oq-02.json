@@ -1,7 +1,7 @@
 {
   "slug": "minpoly-charpoly-oq-02",
   "title": "Diagonalizable Matrices via Squarefree Minimal Polynomial",
-  "phase": "PREP",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "B",
   "path": "full",
@@ -31,20 +31,20 @@
     "goal": "Statement and proof of `diagonalizable_iff_squarefree_minpoly`: over an algebraically closed field of characteristic zero (and, in OQ-02-OQ-03, over any field with the explicit `splits` hypothesis), `M.IsDiagonalizable ↔ Squarefree (minpoly K M)`."
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-05-13T00:30:00Z",
-    "iteration": 7,
-    "focus": "S6 STATE-SYNC (researcher-9, 2026-05-14, this PR) — doc-only refresh of the PREP backlog after 6 PREP-only PRs merged 2026-05-12 → 2026-05-13 (S2 #18407, S2 PREP-3 #18503, S3 #18481, S4 #18626, S5 #18680, S5b #18715). Lean (`MinpolyCharpolyOQ02.lean`) unchanged at 134 LOC / 1 sorry / 0 axioms since S1 PR #18276. Discharge route fully Mathlib-pinned at v4.26.0 (rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`): six bridges (A fwd/rev, B fwd/rev, C, D) totalling ~62 LOC per S5b PREP §12. Bearer-audit chain caught 3 hallucinated names: `Module.End.IsSemisimple.iSup_eigenspace_eq_top` (S3 → corrected by S4), `Polynomial.squarefree_prod_X_sub_C` (S5 → corrected by S5b), `f.eigenvalues.toFinset` (S5 → corrected by S5b). 12 v4.26.0 bearers verified for Bridge B reverse alone.",
+    "phase": "ACT",
+    "since": "2026-05-14T16:31:56Z",
+    "iteration": 8,
+    "focus": "S7 ACT BUILD-VERIFY (researcher-12, 2026-05-14) — first Docker build of MinpolyCharpolyOQ02.lean since S1 PR #18276 (2026-05-12), hidden by 6 PREP-only PRs + S6 STATE-SYNC. Pre-claim baseline surfaced 4 surface errors at v4.26.0: (1) stale import Mathlib.Algebra.Polynomial.Squarefree (file removed; renamed to Mathlib.Algebra.Squarefree.Basic); (2) IsDiag unknown (added Mathlib.LinearAlgebra.Matrix.IsDiag import); (3) Matrix.inv_one unknown (added Mathlib.LinearAlgebra.Matrix.NonsingularInverse import + renamed identifier to top-level inv_one); (4) Matrix.isDiag_zero unknown (resolved by IsDiag import). Build clean on first retry: 3077 jobs. File 134 → 136 LOC; 1 sorry unchanged; 0 axioms unchanged. The S5b PREP §5 discharge plan is now picker-ready against a compiling parent.",
     "blockers": [],
-    "nextAction": "S6 ACT (any researcher) — assemble the six bridges per S5 PREP §6 + S5b PREP §5/§12 into a single edit at `proofs/Proofs/MinpolyCharpolyOQ02.lean:120`. Order: (a) `Matrix.IsDiagonalizable.iff_eigenbasis` (Bridge A both directions, ~20 LOC), (b) `iSup_eigenspace_eq_top_iff_isSemisimple_alg_closed` (Bridge B both directions, ~40 LOC; reverse is the 33-LOC body in S5b PREP §5), (c) compose with `isSemisimple_iff_squarefree_minpoly` (Bridge C, in-tree CayleyHamiltonMinpolyOQ01:206-211) + `Matrix.minpoly_toLin'` (Bridge D, Mathlib) for the headline iff. Build via `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ02`. Update JSON `leanFile.lineCount`/`theoremCount` post-ACT. Expected deliverable: ~200 LOC total, 0 sorries, 0 axioms.",
+    "nextAction": "S8 ACT (any researcher) — assemble the six bridges per S5 PREP §6 + S5b PREP §5/§12 into a single edit at proofs/Proofs/MinpolyCharpolyOQ02.lean:122 (sorry line; was 120 pre-S7). Order: (a) Matrix.IsDiagonalizable.iff_eigenbasis (Bridge A both directions, ~20 LOC), (b) iSup_eigenspace_eq_top_iff_isSemisimple_alg_closed (Bridge B both directions, ~40 LOC; reverse is the 33-LOC body in S5b PREP §5), (c) compose with isSemisimple_iff_squarefree_minpoly (Bridge C, in-tree CayleyHamiltonMinpolyOQ01:206-211) + Matrix.minpoly_toLin' (Bridge D, Mathlib) for the headline iff. Build via ./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ02. Update JSON leanFile.lineCount/theoremCount post-ACT. Expected deliverable: ~200 LOC total, 0 sorries, 0 axioms. After S7 BUILD-VERIFY, the parent scaffold compiles clean (3077 jobs); the discharge layer may surface additional v4.26.0 elaborator-strictness regressions — budget 2-3 Docker iterations.",
     "attemptCounts": {
-      "total": 7,
-      "currentApproach": 7,
-      "approachesTried": 7
+      "total": 8,
+      "currentApproach": 8,
+      "approachesTried": 8
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE (PR #18276, researcher-9, 2026-05-12) — Lean scaffold: `MinpolyCharpolyOQ02.lean` (134 LOC, 1 sorry, 0 axioms), `Matrix.IsDiagonalizable` predicate, headline `diagonalizable_iff_squarefree_minpoly` over `[IsAlgClosed K] [CharZero K]`, two sanity lemmas. S2 PREP (PR #18407, 2026-05-13) — 4-leg discharge tactical plan; Snags 1 + 2 flagged. S2 PREP-3 (PR #18503, researcher-10) — Leg 1 (matrix↔endo eigenbasis) pinned to verbatim Mathlib chain. S3 PREP (PR #18481, researcher-12) — Snag 2 → phantom `iSup_eigenspace_eq_top` (later corrected). S4 PREP (PR #18626, researcher-3) — audit of S3; correct 3-lemma forward chain `IsFinitelySemisimple.maxGenEigenspace_eq_eigenspace ∘ iSup_maxGenEigenspace_eq_top` pinned. S5 PREP (PR #18680, researcher-1) — discharge consolidation + Bridge B reverse via `aeval f (∏ (X - C μ)) = 0` route. S5b PREP (PR #18715, researcher-8) — audit of S5 §3.3; corrected 2 hallucinated bearers (`squarefree_prod_X_sub_C` phantom → `separable_prod_X_sub_C_iff'.mpr |>.squarefree`; `f.eigenvalues.toFinset` informal → `f.finite_hasEigenvalue.toFinset`); concrete ~33 LOC body for Bridge B reverse with 12 v4.26.0 bearers verified. S6 STATE-SYNC (this PR, researcher-9, 2026-05-14) — doc-only refresh of state.md / JSON / sessions log to reflect S2 → S5b backlog. **Discharge route fully pinned at v4.26.0**; total ACT estimate ~62 LOC across six bridges. **No Mathlib gap.** Lean unchanged at 134 LOC / 1 sorry since S1.",
+    "progressSummary": "S1 OBSERVE (PR #18276, researcher-9, 2026-05-12) — Lean scaffold: MinpolyCharpolyOQ02.lean (134 LOC, 1 sorry, 0 axioms), Matrix.IsDiagonalizable predicate, headline diagonalizable_iff_squarefree_minpoly over [IsAlgClosed K] [CharZero K], two sanity lemmas. S2 PREP (PR #18407, 2026-05-13) — 4-leg discharge tactical plan; Snags 1 + 2 flagged. S2 PREP-3 (PR #18503, researcher-10) — Leg 1 (matrix↔endo eigenbasis) pinned to verbatim Mathlib chain. S3 PREP (PR #18481, researcher-12) — Snag 2 → phantom iSup_eigenspace_eq_top (later corrected). S4 PREP (PR #18626, researcher-3) — audit of S3; correct 3-lemma forward chain pinned. S5 PREP (PR #18680, researcher-1) — discharge consolidation + Bridge B reverse via aeval f (∏ (X - C μ)) = 0 route. S5b PREP (PR #18715, researcher-8) — audit of S5 §3.3; corrected 2 hallucinated bearers; concrete ~33 LOC body for Bridge B reverse with 12 v4.26.0 bearers verified. S6 STATE-SYNC (PR #18976, researcher-9, 2026-05-14) — doc-only refresh of state.md / JSON / sessions log. S7 ACT BUILD-VERIFY (this PR, researcher-12, 2026-05-14) — first Docker invocation of MinpolyCharpolyOQ02.lean since S1; 4 v4.26.0 surface errors retired (2 import additions + 1 import rename + 1 identifier rename); +2 LOC; build clean 3077 jobs. The 6-PREP doc-only chain hid the regression for 2 days. **Parent scaffold is now build-clean**; S5b PREP §5 discharge plan is picker-ready.",
     "builtItems": [
       "Matrix.IsDiagonalizable (def): `∃ P, IsUnit P ∧ IsDiag (P⁻¹ * M * P)` — the matrix-level diagonalizability predicate as an existential over invertible similarity transforms.",
       "diagonalizable_iff_squarefree_minpoly (theorem, sorry-guarded): the S1 statement of the textbook characterisation under `IsAlgClosed K + CharZero K`. Single sorry, to be discharged by OQ-02-OQ-01 .. OQ-02-OQ-04.",
@@ -111,7 +111,7 @@
     ]
   },
   "started": "2026-05-12T20:35:00Z",
-  "lastUpdate": "2026-05-14T02:32:22Z",
+  "lastUpdate": "2026-05-14T16:31:56Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -129,7 +129,7 @@
     {
       "path": "Proofs/MinpolyCharpolyOQ02.lean",
       "filename": "MinpolyCharpolyOQ02.lean",
-      "lineCount": 134,
+      "lineCount": 136,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 1,

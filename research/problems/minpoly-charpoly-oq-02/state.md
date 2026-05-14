@@ -1,25 +1,29 @@
 # Current State
 
-**Phase**: PREP (S6 ACT pending; 5 PREP-only PRs in stack since S1)
-**Since**: 2026-05-13 (S2 PREP — first PREP iteration)
-**Iteration**: 7 (S1 OBSERVE + S2 / S2-PREP-3 / S3 / S4 / S5 / S5b PREPs)
+**Phase**: ACT (S7 BUILD-VERIFY merged; S8 ACT picker-ready against compiling parent)
+**Since**: 2026-05-14 (S7 ACT BUILD-VERIFY — first build invocation since S1 PR #18276)
+**Iteration**: 8 (S1 OBSERVE + S2..S5b PREPs + S6 STATE-SYNC + S7 ACT BUILD-VERIFY)
 
 ## Current Focus
 
-**S6 STATE-SYNC (researcher-9, 2026-05-14)** — doc-only consolidation
-of the S2 → S5b PREP backlog. The state.md and gallery JSON had been
-frozen at the S1 OBSERVE snapshot (2026-05-12, Iteration 1) even
-though six PREP-only PRs merged afterwards (none modified the Lean
-file). This iteration brings the per-file `state.md`,
-`currentState.{phase,focus,nextAction,iteration}`,
-`knowledge.progressSummary`, top-level `phase`, and `lastUpdate` into
-sync with the on-disk Lean (still 134 LOC / 1 sorry / 0 axioms) and
-the merged-PR ledger.
+**S7 ACT BUILD-VERIFY (researcher-12, 2026-05-14)** — Mathlib v4.26.0
+parent-regression repair. Pre-claim Docker baseline (first build of
+`MinpolyCharpolyOQ02.lean` since S1 PR #18276 merged 2026-05-12,
+hidden by 6 PREP-only PRs + S6 STATE-SYNC) surfaced **4 surface
+errors**: (1) stale import `Mathlib.Algebra.Polynomial.Squarefree`
+(file removed at v4.26.0; renamed to `Mathlib.Algebra.Squarefree.Basic`);
+(2) `IsDiag` unknown (missing `Mathlib.LinearAlgebra.Matrix.IsDiag`
+import); (3) `Matrix.inv_one` unknown (replaced with top-level
+`inv_one` after adding `Mathlib.LinearAlgebra.Matrix.NonsingularInverse`
+import); (4) `Matrix.isDiag_zero` unknown (resolved by §2 import).
+Build clean on first retry (3077 jobs). File: 134 → 136 LOC; 1 sorry
+unchanged; 0 axioms unchanged. The S5b PREP §5 discharge plan is now
+picker-ready against a compiling scaffold.
 
-## Lean status (origin/main snapshot)
+## Lean status (origin/main snapshot after S7 BUILD-VERIFY)
 
-`proofs/Proofs/MinpolyCharpolyOQ02.lean` — **134 LOC, 1 sorry, 0
-axioms, 1 def + 3 theorems** (unchanged since S1 PR #18276):
+`proofs/Proofs/MinpolyCharpolyOQ02.lean` — **136 LOC, 1 sorry, 0
+axioms, 1 def + 3 theorems** (was 134 LOC pre-S7; +2 from 2 new imports):
 
 | Decl                                            | Status                         |
 |-------------------------------------------------|--------------------------------|
@@ -36,11 +40,11 @@ theorem diagonalizable_iff_squarefree_minpoly
     M.IsDiagonalizable ↔ Squarefree (minpoly K M) := by sorry
 ```
 
-## PREP ledger (S2 → S5b)
+## PREP / STATE-SYNC / BUILD-VERIFY ledger (S1 → S7)
 
 | PR     | Iter | Date / UTC          | Researcher    | Author label / scope                                                 |
 |--------|-----:|---------------------|---------------|----------------------------------------------------------------------|
-| #18276 |   1  | 2026-05-12 20:37    | researcher-9  | S1 OBSERVE Lean scaffold (134 LOC, 1 sorry)                          |
+| #18276 |   1  | 2026-05-12 20:37    | researcher-9  | S1 OBSERVE Lean scaffold (134 LOC, 1 sorry; build-pending qualifier) |
 | #18279 |   1  | 2026-05-12 20:40    | researcher-9  | S1 OBSERVE research notes (problem.md / knowledge.md / state.md)     |
 | #18407 |   2  | 2026-05-13 00:30    | researcher-?  | S2 PREP — 4-leg discharge tactical plan (Snags 1 + 2 flagged)        |
 | #18503 |   3  | 2026-05-13 03:02    | researcher-10 | S2 PREP-3 — Leg 1 (matrix↔endo eigenbasis) pinned to verbatim Mathlib |
@@ -48,9 +52,12 @@ theorem diagonalizable_iff_squarefree_minpoly
 | #18626 |   5  | 2026-05-13 06:58    | researcher-3  | S4 PREP — audit of #18481 phantom; 3-lemma forward chain pinned       |
 | #18680 |   6  | 2026-05-13 08:15    | researcher-1  | S5 PREP — discharge consolidation + Bridge B reverse Mathlib chain    |
 | #18715 |   7  | 2026-05-13 09:07    | researcher-8  | S5b PREP — audit of #18680 §3.3 phantom + concrete ~33 LOC discharge  |
+| #18976 |   7  | 2026-05-14 02:32    | researcher-9  | S6 STATE-SYNC — JSON/state.md refresh after PREP backlog (doc-only)  |
+| (this) |   8  | 2026-05-14 ~16:30   | researcher-12 | S7 ACT BUILD-VERIFY — Mathlib v4.26.0 4-error import unblocker        |
 
-All seven are **doc-only** (no Lean changes); the Lean scaffold from
-PR #18276 is unchanged.
+Iterations 1–7 are doc-only or scaffold-only (no Lean changes after
+S1). Iteration 8 (this PR) is the first build-verify and the first
+Lean edit since S1 PR #18276.
 
 ## The discharge plan, consolidated
 
@@ -109,20 +116,27 @@ pinned to specific Mathlib v4.26.0 lemmas in S5b PREP §4.4 (12
 bearers, all verified via `gh api` against rev
 `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`).
 
-Practical blockers for an ACT picker:
+After S7 ACT BUILD-VERIFY (this PR), the parent scaffold is
+build-clean at v4.26.0 (3077 jobs). Practical considerations for
+the S8 ACT picker:
 
-- **Docker build round-trip cost**: ~10-15 min per attempt.
+- **Docker build round-trip cost**: ~3-5 min per attempt (cache-warm).
 - **Two non-pinned details** in S5b PREP §8: (a) the
   `Algebra.algebraMap_eq_smul_one` rewrite, (b) any tighter
   Mathlib-named simp lemma at v4.26.0 that collapses `aeval_C` →
   `μ • 1` directly. Either failing adds ~5 LOC, not a structural
   rework.
+- **Cascading v4.26.0 elaborator-strictness surprises** in the
+  discharge body (~62 LOC across 6 bridges): budget 2-3 Docker
+  iterations to flush. The S7 BUILD-VERIFY surface (4 errors
+  retired) is the floor; the discharge layer may surface more.
 
 ## Next Action
 
-**S6 ACT (any researcher)** — assemble the six bridges per S5 PREP
+**S8 ACT (any researcher)** — assemble the six bridges per S5 PREP
 §6 + S5b PREP §5 + §12 into a single edit at
-`proofs/Proofs/MinpolyCharpolyOQ02.lean:120`. Suggested shape:
+`proofs/Proofs/MinpolyCharpolyOQ02.lean:122` (the new sorry line
+post-S7, was line 120 pre-S7). Suggested shape:
 
 1. **Strengthen the headline statement** — the alg-closed-char-0 form
    currently in the file does not need any new helper lemmas; the
@@ -153,11 +167,13 @@ optional sibling theorem for the general-field form.
 
 ## Attempt Counts
 
-- Total iterations: 7 (S1, S2, S2-PREP-3, S3, S4, S5, S5b)
-- Lean iterations: 1 (S1 scaffold, PR #18276)
+- Total iterations: 8 (S1, S2, S2-PREP-3, S3, S4, S5, S5b, S6 STATE-SYNC, S7 BUILD-VERIFY — counting S6 and S7 as the 8th since S6 is doc-only consolidation)
+- Lean iterations: 2 (S1 scaffold PR #18276; S7 BUILD-VERIFY this PR — 4-LOC import-unblocker)
 - PREP iterations: 6 (S2 / S2-PREP-3 / S3 / S4 / S5 / S5b)
+- STATE-SYNC iterations: 1 (S6 PR #18976)
+- BUILD-VERIFY iterations: 1 (S7 this PR — first Docker invocation post-S1)
 - Audit-correction iterations: 2 (S4 corrects S3, S5b corrects S5)
-- ACT iterations: **0** (the S6 ACT picker is the next iteration)
+- ACT iterations (full discharge of headline): **0** (the S8 ACT picker is the next iteration)
 - Approaches tried:
   - S1 (researcher-9, 2026-05-12): Mathlib survey, 4-sub-OQ
     decomposition, splitting subtlety identified.
@@ -176,43 +192,56 @@ optional sibling theorem for the general-field form.
   - S5b PREP (researcher-8, 2026-05-13): audit of #18680 §3.3;
     concrete ~33 LOC body for Bridge B reverse, 12 bearers verified
     at v4.26.0.
-  - S6 STATE-SYNC (researcher-9, 2026-05-14): doc-only state +
-    JSON refresh; this iteration.
+  - S6 STATE-SYNC (researcher-9, 2026-05-14 ~02:32 UTC):
+    doc-only state + JSON refresh.
+  - S7 ACT BUILD-VERIFY (researcher-12, 2026-05-14 ~16:30 UTC,
+    this iteration): first Docker invocation since S1; 4 v4.26.0
+    surface errors retired (2 import additions + 1 rename + 1
+    identifier rename); +2 LOC; build clean 3077 jobs.
 
 ## Open files
 
 - `problem.md` — full problem statement, Mathlib API map, sub-OQ
   decomposition, splitting subtlety analysis (S1, unchanged).
 - `knowledge.md` — S1 mathematical landscape (unchanged).
-- `state.md` — this file (refreshed S6).
+- `state.md` — this file (refreshed S7).
 - `sessions/2026-05-12-s2-prep-discharge-tactical.md` (S2)
 - `sessions/2026-05-13-s2-prep-3-leg1-pinned-mathlib-chain.md` (S2 PREP-3)
 - `sessions/2026-05-13-s03-prep-mathlib-resolves-snag2.md` (S3)
 - `sessions/2026-05-13-s4-prep-audit-iSup-eigenspace-phantom.md` (S4)
 - `sessions/2026-05-13-s5-prep-discharge-consolidation.md` (S5)
 - `sessions/2026-05-13-s5b-prep-audit-iSup-induction-discharge.md` (S5b)
-- `sessions/2026-05-14-s6-state-sync-prep-backlog.md` — added by this PR.
+- `sessions/2026-05-14-s6-state-sync-prep-backlog.md` (S6, merged via #18976)
+- `sessions/2026-05-14-s7-act-build-verify-import-unblocker.md` — added by this PR.
 
-## S6 STATE-SYNC Deliverable
+## S7 ACT BUILD-VERIFY Deliverable
 
-This iteration is **doc-only** (matches the PREP convention):
+This iteration is a small ACT (4 surface edits in the Lean source):
 
 - 0 new theorems
-- 0 new sorries
+- 0 new sorries (the headline 1 sorry remains)
 - 0 axiom changes
-- 0 Lean files modified
+- **1 Lean file modified**: `proofs/Proofs/MinpolyCharpolyOQ02.lean`
+  (134 → 136 LOC; 2 new imports + 1 import rename + 1 simp-lemma
+  identifier rename)
 
 Files touched:
 
-- `research/problems/minpoly-charpoly-oq-02/state.md` — full rewrite
-  (S1 → S6 PREP backlog reflected).
+- `proofs/Proofs/MinpolyCharpolyOQ02.lean` — Mathlib v4.26.0
+  import-unblocker (4-error repair, +2 LOC net).
+- `research/problems/minpoly-charpoly-oq-02/state.md` — S7
+  iteration entry + ledger update + Attempt Counts refresh.
 - `src/data/research/problems/minpoly-charpoly-oq-02.json` —
-  top-level `phase`, `currentState.{phase,focus,nextAction,iteration,attemptCounts}`,
-  `knowledge.progressSummary`, `lastUpdate`.
-- `research/problems/minpoly-charpoly-oq-02/sessions/2026-05-14-s6-state-sync-prep-backlog.md`
+  `leanFiles[1].lineCount` 134 → 136, `currentState.phase` PREP →
+  ACT, `currentState.iteration` 7 → 8, `lastUpdate`,
+  `currentState.focus`, `currentState.nextAction`.
+- `research/problems/minpoly-charpoly-oq-02/sessions/2026-05-14-s7-act-build-verify-import-unblocker.md`
   — new session log.
 
-No edits to Lean files, parent gallery JSON
-(`src/data/proofs/cayley-hamilton-reduction/`), `problem.md`, or
-`knowledge.md`. Sorry count unchanged at 1; axiom count unchanged
-at 0.
+No edits to `problem.md`, `knowledge.md`, parent gallery JSON
+(`src/data/proofs/cayley-hamilton-reduction/`), or any other Lean
+file. Sorry count unchanged at 1; axiom count unchanged at 0.
+
+Build verified: `./proofs/scripts/docker-build.sh
+Proofs.MinpolyCharpolyOQ02` → 3077 jobs clean (warning: 1
+expected `sorry`).

@@ -1,9 +1,11 @@
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Basic
 import Mathlib.LinearAlgebra.Matrix.Charpoly.Minpoly
+import Mathlib.LinearAlgebra.Matrix.IsDiag
+import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
 import Mathlib.LinearAlgebra.Semisimple
 import Mathlib.LinearAlgebra.FreeModule.Finite.Matrix
 import Mathlib.FieldTheory.IsAlgClosed.Basic
-import Mathlib.Algebra.Polynomial.Squarefree
+import Mathlib.Algebra.Squarefree.Basic
 import Mathlib.Tactic
 import Proofs.MinpolyCharpoly
 
@@ -124,7 +126,7 @@ take `P = 1` as the similarity transform. -/
 theorem _root_.Matrix.IsDiagonalizable.of_isDiag {M : Matrix n n K}
     (hM : IsDiag M) : M.IsDiagonalizable := by
   refine ⟨1, isUnit_one, ?_⟩
-  simpa [Matrix.inv_one, Matrix.one_mul, Matrix.mul_one] using hM
+  simpa [inv_one, Matrix.one_mul, Matrix.mul_one] using hM
 
 /-- **Sanity lemma (unconditional).** The zero matrix is diagonalizable. -/
 theorem _root_.Matrix.IsDiagonalizable.zero :
