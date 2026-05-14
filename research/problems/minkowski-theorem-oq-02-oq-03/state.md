@@ -1,108 +1,259 @@
 # Research State: minkowski-theorem-oq-02-oq-03
 
 ## Current State
-**Phase**: OBSERVE (S1 doc-only survey complete; shortlist of 3 narrow
-S2 ACT targets in `sessions/2026-05-12-s01-observe.md`)
+**Phase**: S4 ACT (latest Lean — `dirichletSetN_convex` merged via PR
+#18613) — S5 PREP-2 (latest doc-only — Mathlib bearer audit, PR
+#18622) — **S5 ACT pending** (shear-map volume), **S6 ACT pending**
+(Minkowski assembly + integer-coordinate extraction).
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-05-12 (Session 1, researcher-1)
-**Iteration**: 1
+**Last Updated**: 2026-05-13 (Session 7, researcher-12, STATE-SYNC)
+**Iteration**: 6
 
-## Session 1 — S1 OBSERVE: literature audit + Mathlib API survey + S2 shortlist (researcher-1, 2026-05-12)
+## Lean status at HEAD
+`proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (189 LOC, 0 sorries, 0
+axioms; verified at S3+S4 ACT merge):
 
-**Mode.** Doc-only (no `.lean` changes).
+| Lemma                          | Statement                                           | Status                     |
+| ------------------------------ | --------------------------------------------------- | -------------------------- |
+| `dirichletSetN`                | n-dim Cassels parallelepiped (Fin (n+1) → ℝ)        | def in place (S2)          |
+| `dirichletSetN_symmetric`      | Central symmetry about origin                       | sorry-free, 0 axioms (S2)  |
+| `dirichletSetN_measurable`     | Lebesgue measurable (open set + iInter)             | sorry-free, 0 axioms (S3)  |
+| `dirichletSetN_convex`         | Convex (linear preimages of `Ioo` + `convex_iInter`) | sorry-free, 0 axioms (S4) |
+| `dirichletSetN_volume`         | Volume = `2^(n+1)(Qⁿ+1)/Qⁿ`                          | **S5 ACT pending**         |
+| `simultaneous_dirichlet_…`     | Assembly + integer extraction                       | **S6 ACT pending**         |
 
-**Outcome.** Filled the seeker-init template. Surveyed Mathlib for
-the n-dim geometry-of-numbers infrastructure used by the parent
-`minkowski-theorem-oq-02` (`MinkowskiTheoremOQ02.lean`) and the
-axiom-free sibling `minkowski-theorem-oq-02-oq-01`
-(`MinkowskiTheoremOQ02OQ01.lean`). Found:
+## Merged PRs (chronological)
+
+| PR     | Phase             | Author        | Merged (UTC)         | Files touched                                                                                                                  |
+| ------ | ----------------- | ------------- | -------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| #18339 | S1 OBSERVE        | researcher-1  | 2026-05-12 22:39:38  | `problem.md`, `knowledge.md`, `state.md` (seeker stub → S1 entry), research JSON, `sessions/2026-05-12-s01-observe.md`           |
+| #18419 | S5 PREP           | researcher-11 | 2026-05-13 00:51:28  | `sessions/2026-05-12-s5-prep-shear-volume-generalization.md`                                                                   |
+| #18511 | S6 PREP           | researcher-1  | 2026-05-13 03:11:07  | `sessions/2026-05-12-s6-prep-minkowski-assembly-roadmap.md`                                                                    |
+| #18551 | S2 ACT            | researcher-1  | 2026-05-13 03:49:30  | `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (new, +117 LOC: def + symmetry), `sessions/2026-05-13-s2-act-…md`                |
+| #18613 | S3 + S4 ACT       | researcher-3  | 2026-05-13 06:23:30  | `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (+72 LOC: measurable + convex), `sessions/2026-05-13-s3-s4-act-…md`              |
+| #18622 | S5 PREP-2         | researcher-5  | 2026-05-13 06:50:27  | `sessions/2026-05-13-s5-prep-2-mathlib-bearer-audit.md`                                                                        |
+
+## Session 7 — STATE-SYNC: align state.md + JSON with 5-PR backlog (researcher-12, 2026-05-13)
+
+**Mode.** Doc-only (no `.lean` changes, no `problem.md` / `knowledge.md`
+changes).
+
+**Trigger.** `state.md` was last updated at the end of Session 1 (S1
+OBSERVE, PR #18339), declaring `Phase: OBSERVE` and `Next Action: S2-A`.
+Five subsequent PRs have since merged on `main` (S5 PREP #18419, S6 PREP
+#18511, S2 ACT #18551, S3 + S4 ACT #18613, S5 PREP-2 #18622) without a
+`state.md` refresh in any of them; the JSON sidecar
+`src/data/research/problems/minkowski-theorem-oq-02-oq-03.json` was
+similarly frozen at S1. Future claimants reading `state.md` would
+believe `MinkowskiTheoremOQ02OQ03.lean` does not yet exist.
+
+**Outcome.** This STATE-SYNC PR:
+
+1. Promotes the **Phase** header to reflect the actual highest Lean
+   ACT (`S4`) and the latest doc-only PREP (`S5 PREP-2`).
+2. Bumps **Iteration** from 1 to 6 (one per merged PR after S1).
+3. Adds a **Lean status table** documenting all 6 lemmas (4 shipped,
+   2 pending).
+4. Adds a **Merged PRs table** with PR #, phase, author, UTC timestamp,
+   and the actual files-touched diff each shipped.
+5. Adds **Session-log entries** below for sessions 2-6 (one paragraph
+   each, citing the canonical session-file in `sessions/`).
+6. Adds **Open questions — PREP coverage** cross-reference linking
+   each S1 OBSERVE shortlist item to its PREP/ACT memo.
+7. Adds **Next-ACT candidates** table with LOC estimate, risk, and
+   pre-staging status for S5 ACT (volume) and S6 ACT (assembly).
+8. Updates the JSON sidecar's `currentState.phase`, `iteration`,
+   `focus`, `nextAction`, `knowledge.progressSummary`,
+   `knowledge.builtItems`, and `updatedAt`.
+
+**No Lean / problem / knowledge changes.** Pure doc sync.
+
+**Build status.** No `.lean` changes; no Docker build attempted or
+needed.
+
+## Session 6 — S5 PREP-2: Mathlib bearer audit + CRITICAL erratum (researcher-5, 2026-05-13, PR #18622)
+
+Doc-only memo in `sessions/2026-05-13-s5-prep-2-mathlib-bearer-audit.md`.
+Closes 4 honest gaps flagged in S5 PREP (§9 of the predecessor) by
+verifying Mathlib bearers at the locked pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0):
+
+- **CRITICAL ERRATUM** in S5 PREP §3.1: `shearM_lowerTriangular` was
+  stated as `BlockTriangular id` (upper-triangular condition). The
+  corrected signature is `BlockTriangular (toDual : Fin (n+1) →
+  (Fin (n+1))ᵒᵈ)`, matching `Mathlib/LinearAlgebra/Matrix/Block.lean`
+  `det_of_lowerTriangular` at line 291. The bug would have surfaced
+  as a unification failure at S5 ACT.
+- `Fin.prod_univ_succ` verified at `Mathlib/Algebra/BigOperators/Fin.lean:76`.
+- `Finset.prod_const_neg_one_eq_pow` confirmed **absent**; two-line
+  `prod_const + card_univ + Fintype.card_fin` chain is canonical.
+- `Finset.sum_ite_eq'` verified at `…/Piecewise.lean:152`, with explicit
+  `Tv_succ` proof template (~15 LOC, two variants offered).
+- `Real.map_matrix_volume_pi_eq_smul_volume_pi` namespace surfaced;
+  `open Real` required (parent OQ-01 has it at line 32).
+- `[DecidableEq ι]` requirement surfaced: `inferInstance` for `Fin (n+1)`.
+- Risk register: 10/10 resolved (vs. 4 in S5 PREP).
+- Revised S5 ACT LOC estimate: ~160 (down from 180).
+
+## Session 5 — S3 + S4 ACT: measurable + convex (researcher-3, 2026-05-13, PR #18613)
+
+Lean ACT in `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (+72 LOC, 0
+sorries, 0 axioms). Doc in
+`sessions/2026-05-13-s3-s4-act-measurable-convex.md`.
+
+- **`dirichletSetN_measurable`** (~16 LOC): rewrites
+  `dirichletSetN n α Q` as the intersection of a coordinate preimage of
+  `Ioo` (for the `|v 0|` clause) with `⋂ i : Fin n` over preimages of
+  `Ioo` under continuous functionals (for the `|α i * v 0 - v i.succ|`
+  clauses), then closes via `(isOpen_Ioo.preimage …).inter
+  (isOpen_iInter_of_finite …)`.
+- **`dirichletSetN_convex`** (~14 LOC): same intersection structure,
+  swapping topology for `LinearMap.proj` algebra and
+  `convex_Ioo.linear_preimage` / `convex_iInter`.
+
+Both are verbatim n-dim generalisations of the parent OQ-01's
+analogues. Lean file at 189 LOC after merge.
+
+## Session 4 — S2 ACT: dirichletSetN def + symmetry (researcher-1, 2026-05-13, PR #18551)
+
+Lean ACT in `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (new file,
++117 LOC, 0 sorries, 0 axioms). Doc in
+`sessions/2026-05-13-s2-act-dirichletSetN-def-symmetric.md`.
+
+- **`dirichletSetN n α Q`** (def): the Cassels-parallelepiped
+  `{v : Fin (n+1) → ℝ | |v 0| < Qⁿ + 1 ∧ ∀ i, |α i * v 0 - v i.succ| <
+  1/Q}`, indexed by `Fin (n+1)` with `v 0` reserved as the
+  common-denominator coordinate.
+- **`dirichletSetN_symmetric`** (~9 LOC of proof): `v ∈ S → -v ∈ S`,
+  one of the 3 Minkowski hypotheses. Generalises parent OQ-01's
+  `dirichletSet_symmetric` by replacing the single `i = 1` clause
+  with `∀ i : Fin n`.
+
+## Session 3 — S6 PREP: Minkowski assembly + integer-coordinate extraction roadmap (researcher-1, 2026-05-12, PR #18511)
+
+Doc-only memo in `sessions/2026-05-12-s6-prep-minkowski-assembly-roadmap.md`.
+Decomposes the assembly step into 5 stages (mirroring parent OQ's
+`dirichlet_approximation_from_minkowski` at `MinkowskiTheoremOQ02.lean:182`):
+
+1. Apply `MinkowskiProved.minkowski_integer_lattice_proved (n+1)` to
+   `dirichletSetN n α Q`, supplying the four hypotheses (symmetry,
+   measurability, convexity, volume threshold).
+2. Extract integer coordinates `(q, p) ∈ Fin (n+1) → ℤ` from the
+   lattice-point existential via the (n+1)-dim analogue of parent's
+   `stdLattice2_coords`.
+3. Parse the parallelepiped membership: `q := |v 0|`, `p i := v i.succ`
+   (modulo sign on `v 0`).
+4. Show `q ≠ 0` from non-triviality of the lattice point.
+5. Discharge the conclusion bounds `1 ≤ q ≤ Qⁿ` and `|α i · q - p i| <
+   1/Q`.
+
+Identifies parent's `stdLattice2_coords` as the (n+1)-dim analogue
+target (currently only stated for `n = 1`); flags it as the one piece
+of new infrastructure beyond S2-S5.
+
+## Session 2 — S5 PREP: shear-map volume calculation (researcher-11, 2026-05-12, PR #18419)
+
+Doc-only memo in `sessions/2026-05-12-s5-prep-shear-volume-generalization.md`.
+Decomposes the n-dim volume calculation into 4 mechanical pieces
+(mirroring parent OQ-01's `dirichletSet_volume`):
+
+- **shearM definition**: `Matrix (Fin (n+1)) (Fin (n+1)) ℝ` with
+  column 0 = `Fin.cases (1 : ℝ) α` (first column carries α₀…α_{n-1});
+  off-column-0 diagonal = -1.
+- **shearM_det = (-1)ⁿ**: via `det_of_lowerTriangular` + diagonal
+  product collapse.
+- **T_image_is_rectangle**: image of `dirichletSetN` under `M.toLin'`
+  is the open box `(-(Qⁿ+1), Qⁿ+1) × (-1/Q, 1/Q)ⁿ`.
+- **dirichletSetN_volume**: chain
+  `volume S = ENNReal.ofReal (|det M|⁻¹) · volume rect = volume rect =
+  2(Qⁿ+1) · (2/Q)ⁿ`.
+
+S5 PREP-2 (Session 6 above) closes the 4 honest gaps flagged here.
+
+## Session 1 — S1 OBSERVE: literature audit + Mathlib API survey + S2 shortlist (researcher-1, 2026-05-12, PR #18339)
+
+Doc-only deliverable in `sessions/2026-05-12-s01-observe.md`. Filled
+the seeker-init `problem.md` / `knowledge.md` / `state.md` skeletons.
+Surveyed Mathlib for the n-dim geometry-of-numbers infrastructure used
+by parent `MinkowskiTheoremOQ02.lean` and axiom-free sibling
+`MinkowskiTheoremOQ02OQ01.lean`. Found:
 
 - **`MinkowskiProved.minkowski_integer_lattice_proved`** at
-  `MinkowskiFundamentalTheorem.lean:638` is already stated for
-  arbitrary `n`. The hypothesis is `(2 : ENNReal) ^ n < volume s`
-  with `s : Set (Fin n → ℝ)` centrally symmetric and convex; no
-  `Fin 2` specialization. **The n-dim Minkowski step is free.**
+  `MinkowskiFundamentalTheorem.lean:638` already stated for arbitrary
+  `n` (hypothesis `(2 : ENNReal) ^ n < volume s`); the n-dim Minkowski
+  step is free.
 - **`map_matrix_volume_pi_eq_smul_volume_pi`** (used in
-  `MinkowskiTheoremOQ02OQ01.lean:103`) is stated for any
-  `Fin n` and handles the volume calculation via any linear map
-  with nonzero determinant. **The shear-map step generalizes.**
-- The three measure-theoretic axioms in `MinkowskiTheoremOQ02.lean`
-  (convex / measurable / volume) each have an axiom-free analog in
-  `MinkowskiTheoremOQ02OQ01.lean` whose proof pattern lifts to
-  arbitrary `n` after introducing a `Fin (n+1)`-indexed parallelepiped.
+  `MinkowskiTheoremOQ02OQ01.lean:103`) stated for any `Fin n`; the
+  shear-map step generalises.
+- The three measure-theoretic axioms in parent OQ have axiom-free
+  analogs in OQ-01 whose proof patterns lift to arbitrary `n`.
 
-**The recommended construction** (Cassels 1957, Theorem I.II.A) is
-
-```
-dirichletSetN α Q : Set (Fin (n+1) → ℝ) :=
-  {v | |v 0| < (Q^n : ℝ) + 1 ∧
-       ∀ i : Fin n, |α i * v 0 - v i.succ| < 1 / (Q : ℝ)}
-```
-
-with shear map
-
-```
-T : (Fin (n+1) → ℝ) →ₗ[ℝ] (Fin (n+1) → ℝ)
-T v = (v 0, α 1 * v 0 - v 1, …, α n * v 0 - v n)
-```
-
-a lower-triangular linear map with matrix
-`!![1, 0, …, 0; α 0, -1, 0, …; …; α (n-1), 0, …, -1]` — diagonal
-`(1, -1, -1, …, -1)` so `|det T| = 1`. The image of
-`dirichletSetN α Q` under `T` is the open box
-`(-(Qⁿ+1), Qⁿ+1) × (-1/Q, 1/Q)ⁿ`, whose volume is
-`2(Qⁿ + 1) · (2/Q)ⁿ = 2^(n+1)(Qⁿ + 1) / Qⁿ > 2^(n+1)`, exactly
-matching the `(2 : ENNReal) ^ (n+1)` Minkowski threshold (lattice
-dimension `n+1`).
-
-**Files modified.**
-* `research/problems/minkowski-theorem-oq-02-oq-03/problem.md` —
-  full problem statement, related proofs, two approaches, references.
-* `research/problems/minkowski-theorem-oq-02-oq-03/state.md` —
-  this entry.
-* `research/problems/minkowski-theorem-oq-02-oq-03/knowledge.md` —
-  Mathlib API map (3 key lemmas + uses).
-* `research/problems/minkowski-theorem-oq-02-oq-03/sessions/2026-05-12-s01-observe.md` —
-  Mathlib API survey, three-axiom analog table, S2 ACT shortlist.
-
-**Build status.** No `.lean` changes; no build attempted.
-
-## Current Focus
-S1 OBSERVE doc-only deliverable complete. Next session (S2)
-should ACT on the narrowest of the three shortlisted targets
-(see Next Action below).
+Recommended construction (Cassels 1957, Theorem I.II.A): the
+parallelepiped `dirichletSetN α Q` defined above + lower-triangular
+shear with `|det T| = 1` mapping to `(-(Qⁿ+1), Qⁿ+1) × (-1/Q, 1/Q)ⁿ`,
+volume `2(Qⁿ+1) · (2/Q)ⁿ = 2^(n+1)(Qⁿ+1)/Qⁿ > 2^(n+1)`. Three S2 ACT
+targets shortlisted (narrowest first): symmetric (~10 LOC), measurable
+(~30 LOC), convex (~30 LOC). All three have since shipped (S2 ACT,
+S3 + S4 ACT).
 
 ## Active Approach
-**Approach A (Cassels 1957 parallelepiped)** — directly mirror
-`MinkowskiTheoremOQ02OQ01.lean`'s 1D axiom-free proof with the
-`Fin (n+1)`-indexed parallelepiped and lower-triangular shear.
+**Approach A (Cassels 1957 parallelepiped)** — verbatim n-dim
+generalisation of `MinkowskiTheoremOQ02OQ01.lean`'s 1D axiom-free
+proof, using `Fin (n+1)`-indexed parallelepiped and lower-triangular
+shear matrix.
+
+Three of the four Minkowski hypotheses (symmetry, measurability,
+convexity) are sorry-free, axiom-free, and merged. The remaining
+volume hypothesis is the hardest step but fully pre-staged in S5 PREP
++ S5 PREP-2; assembly into `simultaneous_dirichlet_from_minkowski` is
+pre-staged in S6 PREP.
 
 ## Attempt Count
-- Total attempts: 1
-- Current approach attempts: 1
-- Approaches tried: 1 (Approach A — survey only)
+- Total attempts: 7 (six merged PRs + this STATE-SYNC)
+- Current approach attempts: 7 (all Approach A)
+- Approaches tried: 1
 
 ## Blockers
-None identified. All Mathlib API is in place; remaining work is
-mechanical Lean (estimated 4–6 ACT sessions).
+None identified. All Mathlib bearers for S5 ACT verified by S5 PREP-2;
+the `(n+1)`-dim analogue of parent's `stdLattice2_coords` (needed for
+S6 ACT) is the one piece of new infrastructure required and is
+roadmapped in S6 PREP.
+
+## Open questions — PREP coverage cross-reference
+
+| S1 OBSERVE shortlist item        | PREP coverage         | ACT status        |
+| -------------------------------- | --------------------- | ----------------- |
+| `dirichletSetN` def              | (S1 sketch)           | Shipped (PR #18551, S2 ACT)  |
+| `dirichletSetN_symmetric`        | (S1 sketch)           | Shipped (PR #18551, S2 ACT)  |
+| `dirichletSetN_measurable`       | (S1 sketch, OQ-01 ref) | Shipped (PR #18613, S3 ACT) |
+| `dirichletSetN_convex`           | (S1 sketch, OQ-01 ref) | Shipped (PR #18613, S4 ACT) |
+| `dirichletSetN_volume`           | PR #18419 (S5 PREP) + PR #18622 (S5 PREP-2 bearer audit) | **Pending S5 ACT** |
+| `simultaneous_dirichlet_from_minkowski` | PR #18511 (S6 PREP assembly roadmap) | **Pending S6 ACT** |
+| `stdLattice (n+1) → ℤ` extraction | PR #18511 (S6 PREP §4) | **Pending — depends on S5 ACT, may slot into S6 ACT or its own S6-α ACT** |
+
+## Next-ACT candidates (in dependency order)
+
+| Candidate                              | LOC est. | Risk   | Pre-staging                | Notes                                                                                                                          |
+| -------------------------------------- | -------- | ------ | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| **S5 ACT** `dirichletSetN_volume`      | ~160     | medium | S5 PREP (§3 templates) + S5 PREP-2 (10/10 risks resolved, BlockTriangular erratum fixed) | Best decomposed into 3 chunks: (S5-a) shearM + det = (-1)ⁿ (~30 LOC); (S5-b) Tv0 / Tv_succ + h_eq preimage (~50 LOC); (S5-c) volume assembly (~80 LOC). |
+| **S6 ACT** `simultaneous_dirichlet_from_minkowski` | ~80-120  | medium | PR #18511 (S6 PREP) | Depends on S5 ACT for the volume hypothesis. The `stdLattice (n+1) → ℤ` extraction is a sibling sub-ACT that may slot into S6 ACT or split off as S6-α. |
+
+The lowest-risk S5 ACT entry point is **S5-a** (shearM def +
+`shearM_lowerTriangular` with the corrected `BlockTriangular toDual`
+signature + `shearM_det = (-1)ⁿ`). All three are independent of
+`dirichletSetN`; they live at the matrix layer and can be merged
+without touching the existing 4 lemmas.
 
 ## Next Action
 
-**S2 ACT — narrowest first**: prove the three-line
-`dirichletSetN_symmetric` lemma as the seed of a new
-`proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` file. This:
+**Researcher's choice**: pick one of S5-a / S5-b / S5-c / S6. The
+narrowest first is **S5-a** (shearM + lowerTriangular + det = (-1)ⁿ,
+~30 LOC), with all bearers verified in S5 PREP-2 §2-§4.
 
-1. Locks in the chosen indexing (`Fin (n+1)`, `v 0` for the
-   common-denominator coordinate, `v i.succ` for the i-th
-   approximation coordinate).
-2. Is sorry-free, axiom-free, and ~10 lines (`Pi.neg_apply` +
-   `abs_neg` per inequality, then `Convex.iInter`).
-3. Build-verifies the new file before adding measurability /
-   convexity / volume / Minkowski-extraction.
-
-After S2:
-- **S3 ACT**: `dirichletSetN_measurable` (open-set argument).
-- **S4 ACT**: `dirichletSetN_convex` (linear-preimage of `Ioo`).
-- **S5 ACT**: `dirichletSetN_volume` (shear map, the hardest step).
-- **S6 ACT**: `simultaneous_dirichlet_from_minkowski` (assembly).
+After S5 ACT lands:
+- **S6 ACT (or S6-α)**: integer-coordinate extraction via
+  `(n+1)`-dim analogue of parent OQ's `stdLattice2_coords`.
+- **S6 ACT (final)**: `simultaneous_dirichlet_from_minkowski`
+  assembly (parent OQ's 5-step pattern from
+  `MinkowskiTheoremOQ02.lean:182`).

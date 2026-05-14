@@ -1,7 +1,7 @@
 {
   "slug": "minkowski-theorem-oq-02-oq-03",
   "title": "Simultaneous Dirichlet approximation for n real numbers via Minkowski",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "B",
   "path": "full",
@@ -28,25 +28,31 @@
     "goal": "Create proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean as an axiom-free companion to MinkowskiTheoremOQ02OQ01.lean, generalizing to n real numbers via Cassels 1957's lower-triangular shear map and the (n+1)-dim parallelepiped."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "ACT",
     "since": "2026-05-12",
-    "iteration": 1,
-    "focus": "S1 OBSERVE doc-only deliverable complete (sessions/2026-05-12-s01-observe.md). Three S2 ACT targets shortlisted, narrowest first: S2-A dirichletSetN_symmetric (~10 lines), S2-B _measurable (~30 lines), S2-C _convex (~30 lines). All required Mathlib API confirmed available; no new module imports needed beyond what MinkowskiTheoremOQ02OQ01.lean uses.",
+    "iteration": 6,
+    "focus": "S2 + S3 + S4 ACT all shipped (PRs #18551, #18613); MinkowskiTheoremOQ02OQ03.lean at 189 LOC / 0 sorries / 0 axioms with dirichletSetN + symmetric + measurable + convex. S5 PREP (PR #18419) and S5 PREP-2 (PR #18622, BlockTriangular toDual erratum fix + 10/10 bearer-risk resolution) fully pre-stage the volume calculation. S6 PREP (PR #18511) pre-stages the Minkowski assembly + integer-coordinate extraction. Remaining ACT: dirichletSetN_volume (S5, ~160 LOC) and simultaneous_dirichlet_from_minkowski (S6, ~80-120 LOC).",
     "blockers": [],
-    "nextAction": "S2-A ACT: create proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean with imports, namespace, and dirichletSetN_symmetric only. Build-verify before proceeding to S3+.",
+    "nextAction": "S5 ACT (volume calculation). Narrowest entry point is S5-a: shearM def + shearM_lowerTriangular (BlockTriangular toDual, corrected per S5 PREP-2 §2.4) + shearM_det = (-1)ⁿ (~30 LOC). After S5 lands, S6 ACT assembles via parent OQ's 5-step pattern (MinkowskiTheoremOQ02.lean:182) plus the (n+1)-dim stdLattice2_coords analogue (S6 PREP §4).",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 7,
+      "currentApproach": 7,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE: filled seeker-stub problem.md, surveyed Mathlib for n-dim Minkowski + shear-map + measurability/convexity APIs, confirmed all infrastructure is in place. Three S2 ACT targets shortlisted, narrowest first. Cassels 1957 (§I.2.A) parallelepiped construction selected: dirichletSetN α Q = {v : Fin (n+1) → ℝ | |v 0| < Qⁿ+1 ∧ ∀ i, |αᵢ v 0 - v i.succ| < 1/Q}, sheared by lower-triangular M with |det M| = 1 to a product of Ioo's with volume 2^(n+1)(Qⁿ+1)/Qⁿ > 2^(n+1). No Lean changes in S1.",
+    "progressSummary": "S1 OBSERVE (PR #18339) + S2 ACT (PR #18551) + S3 + S4 ACT (PR #18613) + S5 PREP (PR #18419) + S6 PREP (PR #18511) + S5 PREP-2 (PR #18622) all merged. Lean file MinkowskiTheoremOQ02OQ03.lean at 189 LOC / 0 sorries / 0 axioms contains dirichletSetN (Cassels parallelepiped), dirichletSetN_symmetric, dirichletSetN_measurable, dirichletSetN_convex — three of four Minkowski hypotheses discharged. The remaining volume hypothesis (S5) is fully pre-staged with 10/10 Mathlib bearers verified at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0); the CRITICAL BlockTriangular id→toDual erratum in S5 PREP §3.1 has been corrected. S6 ACT (Minkowski assembly + (n+1)-dim stdLattice2_coords) is the final step.",
     "builtItems": [
-      "research/problems/minkowski-theorem-oq-02-oq-03/problem.md: full template fill-in with formal statement, two approaches, references",
-      "research/problems/minkowski-theorem-oq-02-oq-03/state.md: Session 1 entry + S2-A next action",
-      "research/problems/minkowski-theorem-oq-02-oq-03/knowledge.md: Mathlib API map (3 key lemmas) + three-axiom analog table + volume identity",
-      "research/problems/minkowski-theorem-oq-02-oq-03/sessions/2026-05-12-s01-observe.md: full S1 OBSERVE report with shear-map analysis and S2 shortlist"
+      "research/problems/minkowski-theorem-oq-02-oq-03/problem.md: full template fill-in with formal statement, two approaches, references (S1)",
+      "research/problems/minkowski-theorem-oq-02-oq-03/state.md: Session 1-7 log (this STATE-SYNC PR brings Phase + Iteration + tables current)",
+      "research/problems/minkowski-theorem-oq-02-oq-03/knowledge.md: Mathlib API map (3 key lemmas) + three-axiom analog table + volume identity (S1)",
+      "research/problems/minkowski-theorem-oq-02-oq-03/sessions/2026-05-12-s01-observe.md: S1 OBSERVE report with shear-map analysis and S2 shortlist",
+      "research/problems/minkowski-theorem-oq-02-oq-03/sessions/2026-05-12-s5-prep-shear-volume-generalization.md: S5 PREP volume-calculation 4-piece decomposition",
+      "research/problems/minkowski-theorem-oq-02-oq-03/sessions/2026-05-12-s6-prep-minkowski-assembly-roadmap.md: S6 PREP assembly + integer-extraction roadmap",
+      "research/problems/minkowski-theorem-oq-02-oq-03/sessions/2026-05-13-s2-act-dirichletSetN-def-symmetric.md: S2 ACT (dirichletSetN def + symmetry)",
+      "research/problems/minkowski-theorem-oq-02-oq-03/sessions/2026-05-13-s3-s4-act-measurable-convex.md: S3 + S4 ACT (measurable + convex)",
+      "research/problems/minkowski-theorem-oq-02-oq-03/sessions/2026-05-13-s5-prep-2-mathlib-bearer-audit.md: S5 PREP-2 Mathlib bearer audit + BlockTriangular toDual erratum fix + 10/10 risk resolution",
+      "proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean: 189 LOC, 0 sorries, 0 axioms — dirichletSetN + symmetric + measurable + convex (3 of 4 Minkowski hypotheses)"
     ],
     "insights": [
       "MinkowskiProved.minkowski_integer_lattice_proved (MinkowskiFundamentalTheorem.lean:638) is already stated for arbitrary n; the n-dim Minkowski step is free.",
@@ -64,5 +70,5 @@
     ]
   },
   "createdAt": "2026-05-12",
-  "updatedAt": "2026-05-12"
+  "updatedAt": "2026-05-13"
 }
