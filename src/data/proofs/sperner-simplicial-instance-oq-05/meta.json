@@ -1,0 +1,193 @@
+{
+  "id": "sperner-simplicial-instance-oq-05",
+  "title": "Brute-Force Panchromatic-Cell Extractor for Sperner Triangulations",
+  "slug": "sperner-simplicial-instance-oq-05",
+  "description": "A computable, Decidable-driven brute-force witness extractor that, given any Triangulation V n and any colouring c : V → Fin (n+1), returns Option T.Cell — `some s` exactly when a panchromatic cell exists. The brute-force finder filters T.Cell's Fintype on the Decidable predicate IsPanchromatic and takes the toList head. Three theorems pin down its behaviour: a membership characterisation, witness-extraction from `some _`, and totality under the odd-boundary-door parity hypothesis (via Triangulation.sperner). Includes a `decide`-checked kernel-level smoke test on the 1-d interval triangulation. This is candidate C1 of the sperner-simplicial-instance-oq-05 open-question dossier; candidates C2 (Scarf door-chain walk) and C3 (noncomputable cascade refactor) remain ACT-pending. 0 sorries, 0 axioms, 3 theorems, 1 def, 1 example.",
+  "meta": {
+    "author": "Lean Genius Research Agent (formalized in Lean 4 with Mathlib v4.26.0)",
+    "date": "Formalized 2026-05-13 (S2 ACT PR #18648); gallery entry 2026-05-14",
+    "status": "verified",
+    "badge": "original",
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "lineCount": 186,
+    "imports": [
+      "Proofs.SpernerSimplicialInstance"
+    ],
+    "tags": [
+      "combinatorics",
+      "topology",
+      "sperner-lemma",
+      "computable",
+      "decidable",
+      "witness-extraction",
+      "open-question",
+      "cell-complex"
+    ],
+    "assumptions": "None. Verified at Mathlib v4.26.0 (lake-manifest SHA 2df2f015..., 2025-12-13). Imports Proofs.SpernerSimplicialInstance.lean (also 0 axioms, 0 sorries) which in turn imports Proofs.SpernerMathlib4 (also 0 axioms, 0 sorries). All Decidable instances are inferred — no Classical.choice in the executable pipeline.",
+    "originalContributions": [
+      "findPanchromaticBrute T c : Option T.Cell — Decidable-driven brute-force panchromatic finder",
+      "findPanchromaticBrute_isSome_iff — membership characterisation: returns `some _` iff a panchromatic cell exists",
+      "findPanchromaticBrute_eq_some_imp_panchromatic — if it returns `some s` then s is genuinely panchromatic",
+      "findPanchromaticBrute_isSome_of_boundary_odd — totality: odd boundary doors ⇒ `some _` (via Triangulation.sperner)",
+      "decide-checked kernel-level smoke test on intervalTriangulation 3 with split-at-1 colouring"
+    ],
+    "dateAdded": "2026-05-14",
+    "mathlib_version": "4.26.0",
+    "proofRepoPath": "Proofs/SpernerSimplicialInstanceOQ05.lean",
+    "additionalFiles": [
+      "Proofs/SpernerSimplicialInstance.lean",
+      "Proofs/SpernerMathlib4.lean"
+    ]
+  },
+  "overview": {
+    "historicalContext": "Sperner's lemma (Sperner 1928, *Abh. Math. Sem. Univ. Hamburg* **6**, 265–272) is *constructive* in spirit: the door-counting parity argument exhibits a panchromatic cell rather than merely asserting its existence. Herbert Scarf (1967, *SIAM J. Appl. Math.* **15**, 1328–1343) turned this into the explicit door-following algorithm now standard in computational economics (Lemke–Howson, Eaves). Mathlib's abstract Sperner proof (`SpernerMathlib4.lean`, formalized 2026) is in a *classical* style — the existence statement is `∃ s, IsPanchromatic c s`, with no executable witness extractor exposed. The open-question dossier `sperner-simplicial-instance-oq-05` asks: can the existence statement be upgraded to a `Decidable` / computable finder, supplying a constructive bridge into Scarf-style algorithmic content? Three candidates emerged in S1 OBSERVE (PR #18200, 2026-05-12): (C1) brute-force `Finset.filter` enumeration — *this entry*; (C2) literal Scarf door-chain walk via `Triangulation.adj`; (C3) refactor `AbstractSimplicialData.findOppositeIdx` from `Classical.choose` to `Finset.filter ... .min'`, unblocking general (non 1-d) Scarf walks. C1 is the smallest, lowest-risk candidate; it shipped in S2 ACT PR #18648 (researcher-9, 2026-05-13). C2 and C3 remain ACT-pending at iteration 8.",
+    "problemStatement": "**OQ-05 Candidate C1**: Provide a `def findPanchromaticBrute : Triangulation V n → (V → Fin (n+1)) → Option T.Cell` that:\n\n1. Returns `some s` when a panchromatic cell exists, and `none` otherwise (membership characterisation).\n2. When it returns `some s`, the cell `s` is genuinely panchromatic (witness extraction).\n3. Returns `some _` whenever `Triangulation.sperner`'s odd-boundary-door hypothesis holds (totality).\n\nAll three properties must be machine-checked. The implementation must be `Decidable`-driven (no `Classical.choice` in the executable path) so that `decide` can verify panchromatic-existence on concrete triangulations.",
+    "text": "A 186-line implementation file importing only `Proofs.SpernerSimplicialInstance`. The `def` is one line: filter `Finset.univ : Finset T.Cell` on the Decidable predicate `IsPanchromatic c T.toCellComplex`, convert to a list, take `head?`. The three theorems then verify behaviour. The membership characterisation works in both directions via `Finset.toList_eq_nil`, `Finset.Nonempty.toList_ne_nil`, and `Finset.nonempty_iff_ne_empty`. Witness extraction uses `List.mem_of_head?` and `Finset.mem_toList`. Totality reduces the goal to `Triangulation.sperner` after applying the characterisation. The file closes with a `decide` kernel proof that `intervalTriangulation 3` admits a panchromatic cell under the split-at-1 colouring `c(n) = if n ≤ 1 then 0 else 1`.",
+    "proofStrategy": "**Step 1 (definition)**: `findPanchromaticBrute T c := (Finset.univ.filter (fun s : T.Cell => IsPanchromatic c T.toCellComplex s)).toList.head?`. This is well-defined because:\n- `T.Cell` is `Fintype` via `Triangulation.cellFintype` (parent file).\n- `IsPanchromatic c T.toCellComplex s` is `Decidable` via `CellComplex.decidableIsPanchromatic` (parent file).\n\n**Step 2 (characterisation, `findPanchromaticBrute_isSome_iff`)**: Two directions.\n- (⇒) `head? = some _` implies the toList is non-empty implies the filter Finset is non-empty implies a member exists. Unfold `mem_filter` to extract a panchromatic cell.\n- (⇐) A panchromatic cell `s` gives `s ∈ filter`, hence the filter is nonempty, hence its toList is non-empty (via `Finset.Nonempty.toList_ne_nil`), hence `head?` returns `some _` (by case analysis on `toList`).\n\n**Step 3 (witness extraction, `findPanchromaticBrute_eq_some_imp_panchromatic`)**: If `head? = some s`, then `s ∈ toList` (via `List.mem_of_head?`), so `s ∈ filter` (via `Finset.mem_toList`), so `s` satisfies the filter predicate (via `Finset.mem_filter`).\n\n**Step 4 (totality, `findPanchromaticBrute_isSome_of_boundary_odd`)**: Rewrite goal using the iff from Step 2, then apply `Triangulation.sperner T c hbdry` directly.\n\n**Step 5 (smoke test)**: `decide` evaluates `IsPanchromatic` at cell `s = 1` of `intervalTriangulation 3` under `c(n) = if n ≤ 1 then 0 else 1`. The cell has vertices {1, 2} with colours {0, 1}, so the predicate reduces to `True` and `decide` closes the kernel proof obligation.",
+    "keyInsights": [
+      "**Mathematical content is shallow — every step is forced by parent instances.** The brute-force finder works because the parent file `SpernerSimplicialInstance.lean` already supplied `Fintype T.Cell` and `Decidable (IsPanchromatic c · s)`. No new mathematical structure is introduced; the contribution is exposing a `def` that *names* the witness so downstream code can `decide` panchromatic existence.",
+      "**`Finset.filter |>.toList.head?` is the canonical Decidable-existence-to-Option idiom.** It captures the 'first element under canonical enumeration' pattern that recurs throughout constructive combinatorics. The membership characterisation `isSome ↔ ∃` is the universal way to use such a finder: clients should not depend on the specific enumeration order (which is implementation-defined by `Finset.toList`'s sort).",
+      "**Totality routes through Sperner — the finder *cannot* return `none` when the parity hypothesis holds.** `findPanchromaticBrute_isSome_of_boundary_odd` is a structural witness: if Sperner's lemma applies, brute-force enumeration will find a witness in O(|T.Cell|) steps. This is the asymptotically-correct-but-not-optimal baseline; the eventual Scarf walk (C2) would improve to O(door-path-length), which can be exponentially smaller.",
+      "**This is *not* a Scarf algorithm.** Brute-force enumeration ignores the geometric door structure entirely. The C2 candidate (PR #18489) — Scarf's door-chain walk on `Triangulation.adj` — would be the algorithmically-substantive replacement, with a termination measure based on the injection of visited cells into a finite type. Until C2 lands, this brute-force finder is the only computable Sperner witness extractor in the project.",
+      "**`decide`-driven smoke test exhibits kernel-level correctness on a concrete instance.** The example `∃ s, IsPanchromatic c (intervalTriangulation 3 ...).toCellComplex s := by refine ⟨1, ?_⟩; decide` is a *kernel-level* proof — `decide` produces a proof term that Lean's kernel checks, unlike `#eval` which only runs the evaluator. This guarantees the Decidable plumbing actually works end-to-end."
+    ],
+    "prerequisites": [
+      "Sperner's lemma for triangulations (sperner-simplicial-instance)",
+      "CellComplex and Triangulation framework (sperner-mathlib4, sperner-simplicial-instance)",
+      "Mathlib Decidable / Fintype / Finset.filter pipeline",
+      "Option / List.head? semantics in Lean 4"
+    ]
+  },
+  "sections": [
+    {
+      "id": "sec-def",
+      "title": "Brute-Force Panchromatic Finder (L75–90)",
+      "startLine": 75,
+      "endLine": 90,
+      "summary": "Defines `findPanchromaticBrute : Triangulation V n → (V → Fin (n+1)) → Option T.Cell` as `(Finset.univ.filter IsPanchromatic).toList.head?`. The Decidable + Fintype instances inherited from the parent make this well-typed and computable.",
+      "mathContext": "The canonical Decidable-existence-to-Option idiom: enumerate the Fintype, filter on the Decidable predicate, take the first element via `List.head?`. The choice of 'first' is implementation-defined by `Finset.toList`'s order — downstream consumers should rely on the membership characterisation, not the specific order."
+    },
+    {
+      "id": "sec-isSome-iff",
+      "title": "Membership Characterisation (L92–131)",
+      "startLine": 92,
+      "endLine": 131,
+      "summary": "`findPanchromaticBrute_isSome_iff`: `(findPanchromaticBrute T c).isSome ↔ ∃ s, IsPanchromatic c T.toCellComplex s`. Both directions go through the chain Finset.Nonempty ↔ toList ≠ [] ↔ head? = some _ using Mathlib API `Finset.toList_eq_nil`, `Finset.Nonempty.toList_ne_nil`, `Finset.nonempty_iff_ne_empty`.",
+      "mathContext": "This is the *useful* statement of the finder. Clients should write `findPanchromaticBrute T c |>.isSome ↔ ∃ s, IsPanchromatic …` rather than inspecting `head?` directly, because the iff abstracts over the implementation choice of enumeration order."
+    },
+    {
+      "id": "sec-witness",
+      "title": "Witness Extraction from `some _` (L133–148)",
+      "startLine": 133,
+      "endLine": 148,
+      "summary": "`findPanchromaticBrute_eq_some_imp_panchromatic`: if `findPanchromaticBrute T c = some s`, then `IsPanchromatic c T.toCellComplex s`. Proof: `List.mem_of_head?` extracts `s ∈ toList`, then `Finset.mem_toList` lifts to `s ∈ filter`, then `Finset.mem_filter` extracts the predicate.",
+      "mathContext": "This is what makes the finder *useful as a witness*: not just a Boolean Decidable answer but an extractable cell with a verified property. The supplementary lemma to the iff — needed whenever a client wants to *use* the returned cell, not just check existence."
+    },
+    {
+      "id": "sec-totality",
+      "title": "Totality under Boundary-Door Parity (L150–163)",
+      "startLine": 150,
+      "endLine": 163,
+      "summary": "`findPanchromaticBrute_isSome_of_boundary_odd`: if the boundary doors of T under colouring c are odd, then `findPanchromaticBrute T c` returns `some _`. Proof: rewrite via the iff, then apply `Triangulation.sperner` directly. The boundary-door odd-count hypothesis is the standard Sperner premise; this theorem packages 'Sperner's lemma applies' as 'the brute-force finder succeeds'.",
+      "mathContext": "Structural totality: the finder cannot return `none` when Sperner's premise is satisfied. This bridges the abstract existence theorem `Triangulation.sperner` to the computable finder, in one line of `exact`. Asymptotically O(|T.Cell|) — the eventual Scarf walk (candidate C2) would improve this to O(door-path-length)."
+    },
+    {
+      "id": "sec-smoke",
+      "title": "`decide` Smoke Test on intervalTriangulation 3 (L167–185)",
+      "startLine": 167,
+      "endLine": 185,
+      "summary": "Kernel-level proof that `intervalTriangulation 3` admits a panchromatic cell under the split-at-1 colouring `c(n) = if n ≤ 1 then 0 else 1`. Cell 0 has vertices {0,1}, cell 1 has {1,2}, cell 2 has {2,3}; only cell 1 sees both colours and is panchromatic. The `decide` tactic produces a kernel-checked proof object — stronger than `#eval`, which would only run the evaluator.",
+      "mathContext": "Sanity check that the Decidable plumbing works end-to-end on a concrete triangulation. Confirms the typeclass synthesis path (Fintype T.Cell → Decidable IsPanchromatic → decide) reduces without `Classical.choice` interference."
+    }
+  ],
+  "conclusion": {
+    "summary": "OQ-05 candidate C1 is shipped: a fully verified, computable, Decidable-driven brute-force panchromatic-cell extractor with 0 sorries and 0 axioms. The finder exposes Sperner's existence statement as an Option-returning function suitable for `decide`, with three theorems — membership characterisation, witness extraction, and totality — pinning down its behaviour.",
+    "implications": "This entry is a baseline computable bridge from `Triangulation.sperner` to algorithmic content. It establishes the API surface (the iff characterisation and witness-extraction lemma) that future Scarf-style algorithms (candidate C2) will conform to. The brute-force enumeration is O(|T.Cell|); the eventual Scarf walk would improve to O(door-path-length), but the API contract is now fixed. Downstream, this finder can be used in concrete computational-economics formalisations (Lemke–Howson, Eaves), in Brouwer-fixed-point approximators that need a verified Sperner oracle, and in `decide`-checked unit tests for new triangulation constructions.",
+    "openQuestions": [
+      "**(C2) Scarf door-chain walk** (PR #18489 PREP, ACT pending) — replace brute-force `O(|T.Cell|)` with the literal Scarf walk traversing `Triangulation.adj` for `O(door-path-length)`. Requires a termination measure based on the injection of visited cells into a finite type via `adj_symm` + `isDoor_iff_of_adj`. Estimate ~120 LOC, MEDIUM risk.",
+      "**(C3) noncomputable cascade refactor** (PR #18392 PREP, ACT pending) — replace `AbstractSimplicialData.findOppositeIdx`'s `Classical.choose` with `Finset.filter ... .min'`. Unblocks `(C2-gen)`, the general (non 1-d) Scarf walk on any `Triangulation`. Estimate ~80 LOC, MEDIUM risk (verified-parent re-build).",
+      "**Brouwer-fixed-point bridge** — `BrouwerFixedPointOQ04OQ04.lean:244` currently has `axiom scarf_approx_fixed_point`. The eventual Scarf walk (C2 + C3) would provide a constructive replacement, eliminating that axiom and giving a computable approximate-fixed-point extractor for the Brouwer entry.",
+      "**KKM and Tucker analogues** — the same brute-force pattern (Fintype + Decidable + filter + head?) instantiates trivially for any combinatorial-existence theorem with a Decidable predicate over a Fintype. Candidate slugs: KKM lemma instance, Tucker's lemma (with antipodal colouring), envy-free cake cutting."
+    ]
+  },
+  "crossReferences": [
+    {
+      "proofId": "sperner-simplicial-instance",
+      "relationship": "extends",
+      "description": "Direct parent: this file imports `Proofs.SpernerSimplicialInstance` and uses `Triangulation V n`, `IsPanchromatic`, `Triangulation.cellFintype`, and crucially `Triangulation.sperner` to discharge the totality theorem."
+    },
+    {
+      "proofId": "sperner-mathlib4",
+      "relationship": "depends-on",
+      "description": "Transitive parent: supplies the abstract `CellComplex.sperner` theorem and `decidableIsPanchromatic` instance, both surfaced via `Triangulation.toCellComplex`."
+    },
+    {
+      "proofId": "sperner-mathlib",
+      "relationship": "sibling",
+      "description": "Companion door-counting Sperner proof on abstract cell complexes. Both share the parity-engine architecture; this entry adds a computable witness extractor on the simplicial-instance layer."
+    },
+    {
+      "proofId": "brouwer-fixed-point",
+      "relationship": "supports",
+      "description": "Sperner's lemma is the constructive route to Brouwer's fixed-point theorem. A future Scarf walk built on this finder's API would supply a computable replacement for `BrouwerFixedPointOQ04OQ04.axiom scarf_approx_fixed_point`."
+    },
+    {
+      "proofId": "sperner-ndim",
+      "relationship": "sibling",
+      "description": "Higher-dimensional Sperner via Freudenthal triangulation — shares the abstract CellComplex framework; would benefit from an analogous Decidable witness extractor."
+    }
+  ],
+  "references": [
+    {
+      "authors": ["Emanuel Sperner"],
+      "title": "Neuer Beweis für die Invarianz der Dimensionszahl und des Gebietes",
+      "year": 1928,
+      "venue": "Abhandlungen aus dem mathematischen Seminar der Universität Hamburg",
+      "volume": "6",
+      "pages": "265–272",
+      "note": "Original combinatorial proof of Sperner's lemma."
+    },
+    {
+      "authors": ["Herbert Scarf"],
+      "title": "The approximation of fixed points of a continuous mapping",
+      "year": 1967,
+      "venue": "SIAM Journal on Applied Mathematics",
+      "volume": "15",
+      "pages": "1328–1343",
+      "doi": "10.1137/0115116",
+      "note": "Door-following algorithm extracted from the Sperner parity argument; computational-economics foundation."
+    },
+    {
+      "authors": ["Mark de Longueville"],
+      "title": "A Course in Topological Combinatorics",
+      "year": 2013,
+      "venue": "Springer Universitext",
+      "doi": "10.1007/978-1-4419-7910-0",
+      "note": "Modern abstract treatment via cell complexes; basis for the SpernerMathlib4 framework."
+    }
+  ],
+  "leanFile": {
+    "path": "Proofs/SpernerSimplicialInstanceOQ05.lean",
+    "lineCount": 186,
+    "axiomCount": 0,
+    "sorries": 0,
+    "theoremCount": 3,
+    "definitionCount": 1,
+    "imports": [
+      "import Proofs.SpernerSimplicialInstance"
+    ],
+    "opens": [
+      "CellComplex",
+      "Triangulation",
+      "Finset"
+    ],
+    "namespace": "SpernerSimplicialInstanceOQ05",
+    "additionalFiles": [
+      "Proofs/SpernerSimplicialInstance.lean",
+      "Proofs/SpernerMathlib4.lean"
+    ]
+  }
+}

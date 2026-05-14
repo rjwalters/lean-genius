@@ -1,0 +1,62 @@
+[
+  {
+    "id": "ann-findPanchromaticBrute",
+    "proofId": "sperner-simplicial-instance-oq-05",
+    "type": "definition",
+    "title": "Brute-Force Panchromatic-Cell Finder",
+    "content": "Defines `findPanchromaticBrute : Triangulation V n → (V → Fin (n+1)) → Option T.Cell` by enumerating `T.Cell` via its `Fintype` instance, filtering on the `Decidable` predicate `IsPanchromatic c T.toCellComplex`, converting the resulting `Finset` to a list, and taking the optional head. Returns `none` when no panchromatic cell exists; returns `some _` otherwise. The order of the 'first' cell is implementation-defined (controlled by `Finset.toList`'s internal sort); the membership characterisation in the next annotation abstracts over this detail.",
+    "range": { "startLine": 86, "endLine": 90 },
+    "mathContext": "The canonical Decidable-existence-to-Option idiom: $\\mathrm{findPanchromaticBrute}(T, c) := \\mathrm{head?}\\big(\\mathrm{toList}(\\{s \\in T.\\mathrm{Cell} : \\mathrm{IsPanchromatic}(c, T, s)\\})\\big)$. The implicit Decidable instance comes from the parent `CellComplex.decidableIsPanchromatic`, and the Fintype on `T.Cell` from `Triangulation.cellFintype`. Both are supplied by `Proofs.SpernerSimplicialInstance` — this entry contributes only the Option-wrapper.",
+    "significance": "key",
+    "relatedConcepts": ["Decidable", "Fintype", "Finset.filter", "Option.head?", "constructive existence", "witness extractor"],
+    "prerequisites": ["Triangulation.cellFintype", "CellComplex.decidableIsPanchromatic", "Finset.univ", "List.head?"]
+  },
+  {
+    "id": "ann-isSome-iff",
+    "proofId": "sperner-simplicial-instance-oq-05",
+    "type": "theorem",
+    "title": "Membership Characterisation: `isSome ↔ ∃`",
+    "content": "`findPanchromaticBrute_isSome_iff` says: `(findPanchromaticBrute T c).isSome ↔ ∃ s : T.Cell, IsPanchromatic c T.toCellComplex s`. The forward direction goes head? = some _ → toList ≠ [] → filter.Nonempty → ∃, unfolding `mem_filter`. The backward direction goes ∃ → filter.Nonempty → toList ≠ [] → head? = some _, with the final step a `cases` on `toList` to dispatch the `head?` reduction.",
+    "range": { "startLine": 97, "endLine": 131 },
+    "mathContext": "$\\big(\\mathrm{findPanchromaticBrute}(T, c)\\big)\\mathrm{.isSome} \\iff \\exists s \\in T.\\mathrm{Cell},\\ \\mathrm{IsPanchromatic}(c, T, s)$. The proof uses the chain $\\mathrm{Finset.Nonempty} \\iff \\mathrm{toList} \\neq [] \\iff \\mathrm{head?} = \\mathrm{some\\ \\_}$ via three Mathlib lemmas: `Finset.toList_eq_nil`, `Finset.Nonempty.toList_ne_nil`, and `Finset.nonempty_iff_ne_empty`. PREP-D PR #18534 (researcher-6, 2026-05-13) pre-resolved these names; PR #18712 verified them at the v4.26.0-pinned Mathlib SHA `2df2f015...`.",
+    "significance": "key",
+    "relatedConcepts": ["Decidable existence", "iff characterisation", "Option semantics", "Finset.toList"],
+    "prerequisites": ["Finset.toList_eq_nil", "Finset.Nonempty.toList_ne_nil", "Finset.nonempty_iff_ne_empty", "Finset.mem_filter"]
+  },
+  {
+    "id": "ann-witness-extraction",
+    "proofId": "sperner-simplicial-instance-oq-05",
+    "type": "theorem",
+    "title": "Witness Extraction: `some s ⇒ IsPanchromatic s`",
+    "content": "`findPanchromaticBrute_eq_some_imp_panchromatic` says: if `findPanchromaticBrute T c = some s`, then `s` is genuinely panchromatic. The proof is three rewrites: `List.mem_of_head?` lifts the equality to `s ∈ toList`, `Finset.mem_toList` lifts further to `s ∈ filter`, and `Finset.mem_filter` extracts the predicate. This is the *useful-as-witness* statement: a client can use the returned cell, not just check existence.",
+    "range": { "startLine": 139, "endLine": 148 },
+    "mathContext": "$\\mathrm{findPanchromaticBrute}(T, c) = \\mathrm{some}\\ s \\implies \\mathrm{IsPanchromatic}(c, T, s)$. Distinct from the iff characterisation in two ways: (1) consumes the equality `= some s` rather than only `isSome`; (2) extracts the panchromaticity property of the *specific* returned cell. Bearer line `Init/Data/List/Lemmas.lean:937` for `List.mem_of_head?`, verified at the pinned Mathlib SHA in S3 PREP PR #18712.",
+    "significance": "key",
+    "relatedConcepts": ["witness extraction", "List.mem_of_head?", "Finset.mem_toList", "specification proof"],
+    "prerequisites": ["List.mem_of_head?", "Finset.mem_toList", "Finset.mem_filter"]
+  },
+  {
+    "id": "ann-totality",
+    "proofId": "sperner-simplicial-instance-oq-05",
+    "type": "theorem",
+    "title": "Totality under Boundary-Door Parity",
+    "content": "`findPanchromaticBrute_isSome_of_boundary_odd` says: if the boundary doors of T under colouring c form a set of odd cardinality, then `findPanchromaticBrute T c` returns `some _`. The proof rewrites the goal using `findPanchromaticBrute_isSome_iff`, reducing it to the existence statement of Sperner's lemma; that existence is then `Triangulation.sperner T c hbdry`, the headline theorem of the parent file. Two lines.",
+    "range": { "startLine": 155, "endLine": 163 },
+    "mathContext": "$\\mathrm{Odd}\\big|\\{(s, k) : \\mathrm{IsDoor}(c, T, s, k) \\wedge T.\\mathrm{adj}(s, k) = \\mathrm{none}\\}\\big| \\implies \\big(\\mathrm{findPanchromaticBrute}(T, c)\\big)\\mathrm{.isSome}$. Structural totality: the brute-force finder *cannot* return `none` when Sperner's premise holds. Asymptotically O(|T.Cell|) under the implementation. Bridges the abstract existence theorem to the computable finder in one application; the eventual Scarf walk (candidate C2) would improve the runtime to O(door-path-length).",
+    "significance": "key",
+    "relatedConcepts": ["Sperner's lemma", "boundary door parity", "totality proof", "computational complexity"],
+    "prerequisites": ["Triangulation.sperner", "findPanchromaticBrute_isSome_iff"]
+  },
+  {
+    "id": "ann-decide-smoke-test",
+    "proofId": "sperner-simplicial-instance-oq-05",
+    "type": "example",
+    "title": "Kernel-Level Smoke Test on intervalTriangulation 3",
+    "content": "An `example` shows that `intervalTriangulation 3 (by norm_num)` admits a panchromatic cell under the split-at-1 colouring `c(n) = if n ≤ 1 then 0 else 1`. Cell 0 has vertices {0, 1} (both colour 0); cell 1 has {1, 2} (colours {0, 1}, panchromatic); cell 2 has {2, 3} (both colour 1). The proof is `refine ⟨1, ?_⟩; decide` — a kernel-level proof object via the Decidable instance pipeline.",
+    "range": { "startLine": 181, "endLine": 185 },
+    "mathContext": "Confirms the Decidable plumbing works end-to-end on a concrete triangulation. The `decide` tactic differs essentially from `#eval`: `decide` produces a proof term that Lean's kernel type-checks, whereas `#eval` only runs the evaluator with no proof obligation. The kernel-level guarantee here implies that `findPanchromaticBrute` would in fact return `some 1` if called on this instance — though the example uses `decide` directly on the `∃ s, IsPanchromatic …` goal rather than calling the finder, which would be equivalent up to the iff characterisation.",
+    "significance": "supporting",
+    "relatedConcepts": ["decide tactic", "kernel proof", "interval triangulation", "Sperner coloring", "concrete instantiation"],
+    "prerequisites": ["intervalTriangulation", "Decidable.decide", "Fin"]
+  }
+]
