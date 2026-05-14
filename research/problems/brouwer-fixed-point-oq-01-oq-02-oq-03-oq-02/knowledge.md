@@ -1654,3 +1654,179 @@ the recovery path is documented.
   verification deferred to CI / deployer (local Docker daemon
   unavailable). Iteration 8 → 9. Next: S9 ACT-D-3, gated on
   sibling PR #18011 merge.
+
+### Section Q — S9 ACT-D-3 PREP: G8 functoriality + G9 retract-of-zero bridges (2026-05-14, researcher-8, build verified)
+
+Parallel companion file `proofs/Proofs/BrouwerFixedPointOQ01OQ02G8.lean`
+installed alongside the existing G7 companion (PR #18951). 134 file
+lines / 2 theorems / 0 axioms / 0 sorries. Pre-stages the **third
+and fourth categorical legs** of the forthcoming S9 ACT-D-3 substantive
+derivation: the *functoriality* lemma (G8) and the *retract-of-zero is
+zero* lemma (G9). Both are **pure category theory** — no singular
+homology, no topology, no abelian-category machinery — so build risk
+is strictly lower than even the G7 companion.
+
+Net Lean deltas relative to main: +1 file (G8 companion), +2 theorems
+(`map_section_of_section`, `isZero_of_section_into_isZero`), +0 axioms,
++0 sorries. Main file `BrouwerFixedPointOQ01OQ02.lean` unchanged at
+14 theorems / 4 axioms (deferred to S9 ACT-D-3 EXEC import wiring).
+
+#### Q1. Purpose & decomposition of S9 ACT-D-3
+
+S9 ACT-D-3, as scoped in §N6 and the O5 execution-plan table, will
+replace the **mock composite axiom** `H_n_minus_1_sphere_nonzero`
+(main file line 261) with a substantive derivation that combines:
+
+1. **`H_n_minus_1_ball_zero_substantive`** (S5 ACT-B exec, main file
+   line 310) — yields `IsZero (H_{n-1}(B^n))` for `n ≥ 2`.
+2. **Functoriality of `singularHomologyFunctor`** applied to the
+   inclusion `i : 𝕊^{n-1} ⟶ B^n` and the retraction `r : B^n ⟶ 𝕊^{n-1}`
+   in `TopCat`, given `i ≫ r = 𝟙 𝕊^{n-1}` (built from the `Retraction n`
+   structure's `fixes_sphere` field). The conclusion is a section
+   `H_{n-1}(i) ≫ H_{n-1}(r) = 𝟙 (H_{n-1}(𝕊^{n-1}))` on homology.
+3. **Retract of zero is zero**: combining step 1 (`IsZero (H_{n-1}(B^n))`)
+   with step 2's section yields `IsZero (H_{n-1}(𝕊^{n-1}))`.
+4. **`H_n_minus_1_sphere_nonzero_substantive`** (S7 ACT-D-1 exec, main
+   file line 375) — contradicts step 3.
+5. From the contradiction, extract the existential
+   `∃ ψ : Unit →+ ℤ, ψ.comp φ = AddMonoidHom.id ℤ` shape consumed by
+   the existing `singular_homology_retraction_split` theorem (main file
+   line 395), via the **G7** existential bridge
+   (`AddCommGrpCat.exists_ne_zero_of_not_isZero`, S8 ACT-D-2 EXEC) and
+   the **G6** Subsingleton-bridge (`no_split_through_subsingleton`,
+   sibling PR #18011 Part VI).
+
+Sections G7 and G6 deliver step 5; the present Section Q delivers
+steps 2 and 3 in advance. After PR #18011 merges, S9 ACT-D-3 EXEC
+becomes a clean import-and-wire affair in the main file: one
+`import Proofs.BrouwerFixedPointOQ01OQ02G7` line, one
+`import Proofs.BrouwerFixedPointOQ01OQ02G8` line, and a single
+substantive theorem body that chains G7 / G8 / G9 / G6 together.
+
+#### Q2. G8 functoriality bridge: signature and proof
+
+```lean
+theorem map_section_of_section {C : Type*} [Category C]
+    {D : Type*} [Category D] (F : C ⥤ D)
+    {X Y : C} (i : X ⟶ Y) (r : Y ⟶ X) (h : i ≫ r = 𝟙 X) :
+    F.map i ≫ F.map r = 𝟙 (F.obj X) := by
+  rw [← F.map_comp, h, F.map_id]
+```
+
+Single-line proof via two rewrites: `Functor.map_comp` (rewriting
+`F.map i ≫ F.map r` to `F.map (i ≫ r)`) followed by substitution of
+the hypothesis `h : i ≫ r = 𝟙 X` and finally `Functor.map_id`.
+
+The lemma is universe-polymorphic and **functor-generic** — any
+functor `F : C ⥤ D` is preserved. At the S9 ACT-D-3 EXEC call site,
+`F` will be instantiated as
+`(AlgebraicTopology.singularHomologyFunctor AddCommGrpCat.{0} (n - 1)).obj
+    (AddCommGrpCat.of ℤ)`,
+matching the universe choice from the existing call sites
+(`H_n_minus_1_ball_zero_substantive`, `H_n_minus_1_sphere_nonzero_substantive`).
+
+#### Q3. G9 retract-of-zero bridge: signature and proof
+
+```lean
+theorem isZero_of_section_into_isZero {C : Type*} [Category C]
+    {X Y : C} (hY : Limits.IsZero Y) (i : X ⟶ Y) (r : Y ⟶ X)
+    (h : i ≫ r = 𝟙 X) :
+    Limits.IsZero X := by
+  refine ⟨fun Z => ⟨⟨⟨i ≫ hY.to_ Z⟩, fun f => ?_⟩⟩,
+          fun Z => ⟨⟨⟨hY.from_ Z ≫ r⟩, fun f => ?_⟩⟩⟩
+  · calc f = 𝟙 X ≫ f := (Category.id_comp f).symm
+      _ = (i ≫ r) ≫ f := by rw [h]
+      _ = i ≫ (r ≫ f) := Category.assoc i r f
+      _ = i ≫ hY.to_ Z := by rw [hY.eq_of_src (r ≫ f) (hY.to_ Z)]
+  · calc f = f ≫ 𝟙 X := (Category.comp_id f).symm
+      _ = f ≫ (i ≫ r) := by rw [h]
+      _ = (f ≫ i) ≫ r := (Category.assoc f i r).symm
+      _ = hY.from_ Z ≫ r := by rw [hY.eq_of_tgt (f ≫ i) (hY.from_ Z)]
+```
+
+Two symmetric `calc` blocks discharging the two `Unique` payloads in
+the `IsZero X` structure. The first block establishes that any
+`f : X ⟶ Z` equals `i ≫ hY.to_ Z` by routing through
+`𝟙 X = i ≫ r` (the section hypothesis) and exploiting
+`IsZero.eq_of_src` to collapse `r ≫ f` to the unique morphism
+`hY.to_ Z : Y ⟶ Z`. The second block is the dual, using
+`IsZero.eq_of_tgt` on `f ≫ i`.
+
+The lemma mirrors the in-Mathlib `IsZero.of_iso` shape (same
+`refine ⟨fun Z => ⟨⟨⟨..⟩, fun f => ?_⟩⟩, ..⟩` structure), but
+substitutes a one-sided retraction `(i, r, h)` for the two-sided
+isomorphism `(e.hom, e.inv, ...)`.
+
+#### Q4. Mathlib API usage and stability
+
+Both lemmas depend only on:
+
+* `Mathlib.CategoryTheory.Functor.Basic` — `Functor.map_comp`,
+  `Functor.map_id`, `Category.assoc`, `Category.id_comp`,
+  `Category.comp_id`. All five lemmas are present and stable since
+  Lean 4 / Mathlib 4 initialization (`Mathlib/CategoryTheory/Category/Basic.lean`
+  and `Mathlib/CategoryTheory/Functor/Basic.lean`); no v4.26.0 drift
+  risk.
+* `Mathlib.CategoryTheory.Limits.Shapes.ZeroObjects` — `Limits.IsZero`,
+  `IsZero.to_`, `IsZero.from_`, `IsZero.eq_of_src`, `IsZero.eq_of_tgt`.
+  All five present at the pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`,
+  verified by reading the file directly via `gh api`.
+
+No new imports; both companion files (G7 and G8) live below the
+main file's import surface. Imports for the G8 file (`Functor.Basic`
++ `Limits.Shapes.ZeroObjects`) are a strict subset of the imports
+already pulled by the main file (which imports `AlgebraicTopology.*`
+transitively into both). Build-cost increment: 3.3 s on top of the
+warm Mathlib cache (measured below).
+
+#### Q5. Build verification
+
+```bash
+./proofs/scripts/docker-build.sh Proofs.BrouwerFixedPointOQ01OQ02G8
+# Build completed successfully (627 jobs)
+# Built Proofs.BrouwerFixedPointOQ01OQ02G8 (3.3s)
+```
+
+627 jobs total (lower than the 718-job G7 build — G8's import surface
+is smaller because it does not pull `Mathlib.Algebra.Category.Grp.*`).
+Build time on warm Mathlib cache: 3.3 s. No errors, no warnings.
+
+#### Q6. Why both G8 and G9 in one companion file
+
+Both lemmas are categorical and consumed jointly by the S9 ACT-D-3
+EXEC step 3 derivation. Splitting them into separate companion files
+would not reduce review surface (each is < 20 Lean lines including
+docstrings) and would introduce an unnecessary dependency edge for
+S9 ACT-D-3 EXEC. Co-locating them in a single G8-named file follows
+the §N5 Option A precedent (single-purpose companion file per
+forthcoming ACT step), with G8 dedicated to the categorical-side
+preparation for S9 ACT-D-3 the same way G7 was dedicated to the
+algebraic-side preparation for S9 ACT-D-3.
+
+#### Q7. ACT-D execution plan progress
+
+| Step | Status | PR/Iter |
+|------|--------|---------|
+| S5 ACT-B exec — `contractible_singularHomology_zero` + ball-side substantive | ✅ done (build verified) | PR #18018 (S5) |
+| S6 OBSERVE — sphere-side scoping | ✅ done (doc-only) | PR #18138 (S6) |
+| S7 ACT-D-1 exec — `sphere_singularHomology_nonzero` + sphere-side substantive | ✅ done (build verified) | PR #18168 (S7) |
+| S8 ACT-D-2 DESIGN — §N (G7 spec) | ✅ done (doc-only) | PR #18945 (S8 design) |
+| S8 ACT-D-2 EXEC — G7 companion file | ✅ done (merged build pending; build-verify pending in #19013/#19058) | PR #18951 (S8 exec) |
+| **S9 ACT-D-3 PREP — G8/G9 companion file** | ✅ **done (build verified, 627 jobs)** | **this PR (S9 prep)** |
+| S9 ACT-D-3 EXEC — wire G7 + G6 + G8 + G9 to drop mock axiom | ⏳ gated on PR #18011 (G6) | — |
+| S10 ACT-D-4 — drop mock `H_n_minus_1_sphere_nonzero` axiom | ⏳ after S9 | — |
+
+#### Q8. Iteration log addendum (S9 PREP)
+
+* 2026-05-14 (researcher-8, S9 ACT-D-3 PREP): installed the G8/G9
+  categorical-bridge companion file
+  `proofs/Proofs/BrouwerFixedPointOQ01OQ02G8.lean`. 134 file lines,
+  2 theorems, 0 axioms, 0 sorries. Main file unchanged. Both lemmas
+  are pure category theory — no homology, no topology — and depend
+  only on `Functor.Basic` + `Limits.Shapes.ZeroObjects`. Build
+  verified locally via `./proofs/scripts/docker-build.sh
+  Proofs.BrouwerFixedPointOQ01OQ02G8` → `Build completed
+  successfully (627 jobs)` in 3.3 s on warm Mathlib cache.
+  Iteration 9 → 10. Next: S9 ACT-D-3 EXEC (wiring all four bridges
+  G6 + G7 + G8 + G9 into the main file's substantive theorem), still
+  gated on sibling PR #18011 merge.
