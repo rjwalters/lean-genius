@@ -1,10 +1,64 @@
 # Current State
 
-**Phase**: PREP (S6 latest, post-S1 OBSERVE; S2 ACT pending — no Lean file yet)
-**Since**: 2026-05-12 (S1 OBSERVE) → 2026-05-13 (5 doc-only PREPs through S6)
-**Iteration**: 6 (S1 OBSERVE + S2/S3/S4/S5/S6 PREP)
+**Phase**: ACT (S2 ACT shipped: skeleton + 4 boundary cases + k-direction multiplicative recurrence; S3 ACT pending — `at_t_eq_one` substitution)
+**Since**: 2026-05-12 (S1 OBSERVE) → 2026-05-13 (S2 ACT after 5 PREP)
+**Iteration**: 7 (S1 OBSERVE + S2/S3/S4/S5/S6 PREP + S2 ACT)
 
-`proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` **does not yet exist**. After 5 doc-only PREP iterations the recommended S2-ACT skeleton has pivoted: from Pascal-style recurrence (S2 PREP Option α — falsified at 4 data points by S6) to **k-direction telescoping** (S6 Option γ-refined), plus the **Path A vs Path C** split that S4 PREP (`Field R` 0/0 trap) and S5 PREP (`RatFunc.eval` rescue) crystallized.
+`proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` **shipped (build pending)** in S2 ACT (this iteration). The file is 151 LOC with 0 sorries / 0 axioms; ships the Macdonald (q,t)-binomial / multichoose definitions plus four boundary cases (`qtBinom_zero_right`, `qtMultichoose_zero_right`, `qtBinom_one_right`, `qtMultichoose_one_right`) and the unconditional k-direction multiplicative recurrence `qtBinom_succ`. Per S6 PREP's pivot recommendation, no Pascal-style theorem appears; the k-direction recurrence is the foundation for the upcoming S3 (`at_t_eq_one`) and S4 (`at_one_one`) substitution proofs.
+
+## S2 ACT (2026-05-13, researcher-9) — first Lean skeleton + boundary cases + k-direction recurrence
+
+**Mode**: ACT (Lean diff; build-pending per `.lake symlink loop` convention — commit + push first, doctor / auditor verifies from clean worktree).
+
+**Outcome**: Created `proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` (151 LOC, 0 sorries, 0 axioms). Discharges the long-standing "S2 ACT pending — no Lean file yet" status that was at the upper edge of the doc-only-PREP-backlog anti-pattern (5 PREPs without a Lean file).
+
+### What landed
+
+1. **Definitions** (Section I):
+   - `qtBinom (q t : R) (N k : ℕ) : R := ∏ i ∈ Finset.range k, (1 - q^(N-i) * t^i) / (1 - q^(i+1) * t^i)` — the Macdonald (q,t)-binomial in 0-indexed `Finset.range k` form.
+   - `qtMultichoose (q t : R) (n k : ℕ) : R := qtBinom q t (n + k - 1) k`.
+   - Uses `[Field R]` per S4 PREP's Path A recommendation (cheapest of the three rescues).
+
+2. **Boundary cases — k = 0** (Section II):
+   - `qtBinom_zero_right` (@[simp]): `qtBinom q t N 0 = 1` (empty product).
+   - `qtMultichoose_zero_right` (@[simp]): `qtMultichoose q t n 0 = 1` (follows by simp).
+
+3. **Boundary cases — k = 1** (Section III):
+   - `qtBinom_one_right`: `qtBinom q t N 1 = (1 - q^N) / (1 - q)` (single-factor product; result independent of `t` because `t^0 = 1`).
+   - `qtMultichoose_one_right`: `qtMultichoose q t n 1 = (1 - q^n) / (1 - q)` (follows from the above after `omega`-normalising `n + 1 - 1 = n`).
+
+4. **k-direction multiplicative recurrence** (Section IV):
+   - `qtBinom_succ (q t : R) (N k : ℕ)`: `qtBinom q t N (k+1) = qtBinom q t N k * ((1 - q^(N-k) * t^k) / (1 - q^(k+1) * t^k))`. **Unconditional** — no hypothesis on `q`, `t`, `N`, or `k`. Direct application of `Finset.prod_range_succ`.
+
+### Mathematical content
+
+The k-direction multiplicative recurrence is the unconditional form of the **k-direction telescoping ratio** flagged by S6 PREP (PR #18734, §0) as the clean replacement for the Pascal-style recurrence that S2 PREP's Option α conjectured and S6 PREP falsified at four data points. Dividing both sides by `qtBinom q t N k` (when nonzero) gives the ratio form:
+
+  `qtBinom q t N (k+1) / qtBinom q t N k = (1 - q^(N-k) t^k) / (1 - q^(k+1) t^k)`.
+
+This is the natural foundation for the S3 substitution (`qtMultichoose_at_t_eq_one`) and S4 limit (`qtMultichoose_at_one_one`): both follow by induction on `k`, with the parent's `qBinom_product` identity supplying the inductive step at `t = 1` and Macdonald cancellation supplying it at `q = t = 1`.
+
+### What this file is NOT
+
+- No `at_t_eq_one` substitution theorem (S3 ACT target). The Path A vs Path C decision still stands per S4/S5 PREPs.
+- No `at_one_one` limit theorem (S4 ACT target).
+- No Pascal-style recurrence (S6 PREP: structurally awkward; falsified at four data points).
+
+### Counts after S2 ACT
+
+| File | Lines | Theorems | Axioms | Defs | Sorries |
+|------|-------|----------|--------|------|---------|
+| `ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean` (new) | 151 | 5 | 0 | 2 | 0 |
+
+### Build status
+
+Pending. Per CLAUDE.md never invoke `lake build` directly. The file's five lemmas use only standard `Finset.prod` API (`Finset.prod_range_succ`, `Finset.prod_range_zero` via `@[simp]`), `omega` for ℕ-index normalisation, and unconditional algebraic identities; no novel tactics or hypotheses. Confidence the file type-checks is high; build verification deferred to the doctor / auditor convention.
+
+### Remaining work
+
+- **S3 ACT (next)**: `qtMultichoose_at_t_eq_one` — `qtMultichoose q 1 n k = qMultichoose q n k`. Path A: with hypothesis `hq : ∀ i ≤ k, q^(i+1) ≠ 1` (cheap). Path C: switch ambient ring to `RatFunc (RatFunc ℚ)` per S5 PREP (no `hq` hypothesis). Estimated ~40–60 LOC by induction on `k` using `qtBinom_succ` + the parent's `qBinom_product` form.
+- **S4 ACT**: `qtMultichoose_at_one_one` — `qtMultichoose 1 1 n k = (Nat.multichoose n k : R)`. Requires limit/cancellation (Field 0/0 trap). Estimated ~50 LOC.
+- **S5+**: connection to Macdonald symmetric functions principal specialization (S5 PREP / `knowledge.md` §Hall–Littlewood); out of scope for the present formalisation chain.
 
 ## Session Log (S1 → S6)
 
