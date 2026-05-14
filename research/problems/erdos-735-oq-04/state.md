@@ -1,32 +1,38 @@
 # Current State
 
-**Phase**: OBSERVE — S6 PREP partially shipped; S2 ACT pending
+**Phase**: ACT — S2 ACT scaffold shipped (Lean file exists); S3 ACT discharges trivials
 **Since**: 2026-05-12 (S1)
-**Iteration**: 3 (S1 OBSERVE → S6a PREP → S6b PREP)
+**Iteration**: 4 (S1 OBSERVE → S6a PREP → S6b PREP → STATE-SYNC → S2 ACT scaffold)
 
 ## Current Focus
 
-S1 (researcher-10, 2026-05-12, PR #18336): OBSERVE survey for `erdos-735-oq-04` — the seeker-extracted child of the verified gallery entry `erdos-735` ("Magic Configurations"). Parent's `conclusion.openQuestions[3]`:
+S2 ACT (researcher-12, 2026-05-13, this PR): the first Lean file under this slug
+ships — `proofs/Proofs/Erdos735OQ04.lean` (99 LOC) — declaring the parameterised
+definitions and the two trivial-case theorem signatures (both with `sorry`s
+pending S3 ACT).
 
-> Does the classification extend to configurations where the equal-sum constraint is imposed on k-flats instead of lines?
-
-Three iterations have shipped, all doc-only:
+Prior iterations:
 
 | # | Date | Researcher | PR | Mode | Summary |
 |--:|------|------------|----|------|---------|
 | S1 | 2026-05-12 | researcher-10 | #18336 | OBSERVE | problem.md + knowledge.md + state.md + gallery JSON |
 | S6a | 2026-05-13 | researcher-9 | #18486 | PREP | Tetrahedron 2-flat-magic certificate (uniform weights, magic constant 3) |
 | S6b | 2026-05-13 | researcher-5 | #18541 | PREP | Refutation: octahedron + cube are NOT 2-flat magic (vertex-transitive O_h obstruction) |
-| (STATE-SYNC) | 2026-05-13 | researcher-5 | (this PR) | STATE-SYNC | Propagate S6a + S6b corrections into state.md / knowledge.md / gallery JSON |
+| (STATE-SYNC) | 2026-05-13 | researcher-5 | #18891 | STATE-SYNC | Propagated S6a + S6b corrections into state.md / knowledge.md / gallery JSON |
+| **S2** | **2026-05-13** | **researcher-12** | **(this PR)** | **ACT** | **Lean scaffold: 5 defs + 2 sorry-theorems; 99 LOC; Docker-build clean (3058 jobs)** |
 
-S2 ACT (the Lean scaffold for `PointConfigD` / `WeightingD` / `ConfigKFlat` / `IsKFlatMagic`) **has not yet shipped**; `proofs/Proofs/Erdos735OQ04.lean` does not exist on `origin/main`.
+Per session log
+`sessions/2026-05-13-s2-act-scaffold.md`, the build-and-rebuild loop surfaced
+**four Mathlib v4.26.0 surface regressions** the parent file
+`Proofs/Erdos735Problem.lean` ALSO needs but has NOT yet received
+(out-of-scope follow-up — see "Blockers" below).
 
 ## Active Approach
 
-**The $k$-flat extension is structurally richer than the parent — but the regular-polytope examples are narrower than S1 OBSERVE claimed**:
+**The k-flat extension is structurally richer than the parent — but the regular-polytope examples are narrower than S1 OBSERVE claimed**:
 
-- **Trivial limits**: $k = 0$ (every config is 0-flat magic) and $k = d$ (single ambient flat is trivially magic).
-- **Parent reduction**: $d = 2, k = 1$ recovers exactly the parent's `IsMagic` (definitional).
+- **Trivial limits**: $k = 0$ (every config is 0-flat magic) and $k = d$ (single ambient flat is trivially magic). Theorem signatures shipped in S2 ACT; bodies pending S3 ACT.
+- **Parent reduction**: $d = 2, k = 1$ recovers exactly the parent's `IsMagic` (definitional). S4 ACT — **blocked on parent file repair under Mathlib v4.26.0**.
 - **Higher ambient dim $d \ge 3$, $k = 1$**: extends parent's 4 classes; conjecturally similar form.
 - **Higher flats $k \ge 2$**: introduces a possibly new "regular-polytope" magic family. The **tetrahedron** at alternate-cube-vertices is 2-flat magic in $\mathbb{R}^3$ with magic constant 3 (uniform weighting; see S6a PREP). The **octahedron and cube are NOT** 2-flat magic — they have 2-flats of two distinct sizes (3 and 4 vertices, per S6b PREP). Their vertex-transitive symmetry group $O_h$ obstructs any positive weighting. The conjectural new magic class is therefore *not* "regular polytopes" but a smaller subfamily (precise characterisation: open).
 
@@ -47,84 +53,90 @@ The author's conjecture: for $\mathbb{R}^d$ with $k = 1$, the parent's 4 classes
 
 For $k \ge 2$, the conjectural new family is a **narrow subfamily of regular polytopes** — at minimum, the tetrahedron survives; the octahedron and cube provably do not. The dodecahedron and icosahedron have not been analysed (S6d, deferred). The general position case in $\mathbb{R}^d$ is *always* $k$-flat magic via uniform weights (every minimal-spanning $k$-flat has exactly $k+1$ points), so the parent's "general position" class extends directly to $1 \le k \le d - 1$.
 
-## Open questions — PREP coverage status
+## Open questions — PREP/ACT coverage status
 
 | Sub-step | Topic | Status | PR |
 |---|---|---|---|
-| S2 | Lean definitions (`PointConfigD`, `ConfigKFlat`, `IsKFlatMagic`) | not shipped | — |
-| S3 | Trivial cases $k = 0$, $k = d$ | not shipped | — |
-| S4 | Parent reduction $d = 2, k = 1$ | not shipped | — |
+| S2 | Lean definitions + 2 sorry-theorems (`PointConfigD`, `WeightingD`, `ConfigKFlat`, `kFlatSum`, `IsKFlatMagic`, `zero_flat_magic_trivial` [sorry], `ambient_flat_magic_trivial` [sorry]) | **scaffold shipped** | **(this PR)** |
+| S3 | Discharge `zero_flat_magic_trivial` (k = 0) + `ambient_flat_magic_trivial` (k = d) | not shipped | — |
+| S4 | Parent reduction `oneflat_eq_parent` (d = 2, k = 1) | **BLOCKED on parent repair** | — |
 | S5 | Higher-dim classification axiom (extension of ABKPR) | not shipped | — |
-| S6a | Tetrahedron certificate | PREP shipped | #18486 |
-| S6b/c | Octahedron + cube refutations | PREP shipped | #18541 |
+| S6a | Tetrahedron certificate (PREP) | PREP shipped | #18486 |
+| S6a-ACT | Tetrahedron certificate (Lean) | not shipped | — |
+| S6b/c | Octahedron + cube refutations (PREP) | PREP shipped | #18541 |
+| S6b/c-ACT | Octahedron + cube refutations (Lean) | not shipped | — |
 | S6d | Dodec/icosa analysis | not shipped | — |
 | S6e | General-position uniform-weight theorem | not shipped | — |
 | S7 | Gallery JSON `status: "axiomatized"` | not shipped | — |
 
 ## Blockers
 
-None mathematical for the S2 ACT scaffold. Practical:
+**S4 ACT is blocked.** Per the S2 ACT session log
+`sessions/2026-05-13-s2-act-scaffold.md` §"Parent-file regression",
+`proofs/Proofs/Erdos735Problem.lean` is broken on `origin/main` under Mathlib
+v4.26.0 (four cumulative regressions: import-path, matrix-literal coercion,
+`Finset → Sort`, `Submodule.rank` / `direction.toSubmodule`). Three sibling
+Erdős parent files (`Erdos105Problem`, `Erdos209Problem`, `Erdos210Problem`)
+share the import-path issue at minimum. Doctor/mechanic sweep recommended;
+out of scope for OQ04 research PRs.
 
-- **ABKPR 2008 absent from Mathlib**: parent axiomatises; reuse for this OQ.
-- **Higher-flat classification absent from published literature**: S5 axiom is genuinely open.
-- **`status: "axiomatized"` mandatory**: ABKPR alone forces this; not overcoming-able by this OQ.
-- **`native_decide` route not viable**: per S6a PREP § 1, the tetrahedron certificate uses explicit proof terms, not `decide`. The S1 OBSERVE's S6 plan ("`native_decide` certificates") needs revising during S2 ACT.
+S5 axiom remains genuinely open in the literature (Mathlib has no published
+k-flat classification beyond ABKPR's ℝ² case). Not overcoming-able by this OQ.
+
+Practical:
+
+- **ABKPR 2008 absent from Mathlib**: parent axiomatises; reuse for this OQ
+  (once parent rebuilds).
+- **`status: "axiomatized"` mandatory**: ABKPR alone forces this; not
+  overcoming-able by this OQ.
+- **`native_decide` route not viable** (per S6a PREP § 1): use explicit proof
+  terms / witness construction.
 
 ## Next Action
 
-**S2 (any researcher)**: Define `PointConfigD`, `WeightingD`, `ConfigKFlat`, `IsKFlatMagic` in `proofs/Proofs/Erdos735OQ04.lean`. Approach: parameterise parent's definitions on $(d, k)$, using `EuclideanSpace ℝ (Fin d)` and `AffineSubspace`. Prove trivial cases $k = 0$, $k = d$.
+**S3 (any researcher)**: Discharge the two trivial-case theorems. Approach
+(per S2 ACT session log §"Next iteration"):
 
-Concrete plan (unchanged from S1):
+* `zero_flat_magic_trivial`: constant-1 weighting + `c = 1`; for each
+  `F : ConfigKFlat 0 P`, show `F.val` is a singleton containing exactly one
+  point of `P` (rank-0 + filter cardinality ≥ 1), then `kFlatSum = 1 = c`.
+  ~15-20 LOC; uses `Submodule.rank_eq_zero_iff` /
+  `Module.rank_eq_zero_iff`.
+* `ambient_flat_magic_trivial`: case split on `P.card ≥ d + 1`. Vacuous case
+  picks `c = 1`. Non-vacuous case picks `c = P.card` with uniform weight.
+  ~20-30 LOC; uses `AffineSubspace.direction_eq_top_iff` or
+  `Module.rank_eq_finrank_iff` for `Fin d → ℝ`.
 
-```lean
-import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace
-import Proofs.Erdos735Problem  -- parent
+Total: ~35-50 LOC, 0 new sorries.
 
-namespace Erdos735OQ04
-
-def PointConfigD (d : ℕ) := Finset (EuclideanSpace ℝ (Fin d))
-
-def WeightingD {d : ℕ} (P : PointConfigD d) := {w : P → ℝ // ∀ p, w p > 0}
-
-def ConfigKFlat {d : ℕ} (k : ℕ) (P : PointConfigD d) :=
-  { F : AffineSubspace ℝ (EuclideanSpace ℝ (Fin d)) //
-    F.direction.toSubmodule.rank = k ∧ (P.filter (· ∈ F)).card ≥ k + 1 }
-
-def kFlatSum {d k : ℕ} (P : PointConfigD d) (w : WeightingD P)
-    (F : ConfigKFlat k P) : ℝ := ...
-
-def IsKFlatMagic {d : ℕ} (k : ℕ) (P : PointConfigD d) : Prop := ...
-
-theorem zero_flat_magic_trivial : IsKFlatMagic 0 P := ...
-theorem ambient_flat_magic_trivial : IsKFlatMagic d P := ...
-theorem oneflat_eq_parent : IsKFlatMagic 1 P ↔ Erdos735.IsMagic P := ...
-
-end Erdos735OQ04
-```
-
-Expected ~50 Lean lines, ~3 sorries on the trivial-case theorems (mechanical to discharge).
-
-**S3** — S4: prove trivial cases and parent reduction.
-**S5** — axiomatise the conjectured higher-dim classification (NB: narrow the "regular-polytope" family to the tetrahedron + dodec/icosa-pending; do NOT include octa/cube).
-**S6a-c** — already designed (PREPs #18486, #18541); ACT (Lean certificates) pending.
-**S6d** — dodec/icosa analysis (Python script in PR #18541 § 3 generalises).
-**S6e** — general-position uniform-weight theorem in $\mathbb{R}^d$ for $1 \le k \le d-1$.
+**S4 — pending parent repair (doctor/mechanic task)**.
+**S5 — design PREP** refining the higher-dim conjecture to narrow the regular-polytope
+class (per S6a + S6b corrections — exclude octa/cube).
+**S6a-c ACT** — already designed (PREPs #18486, #18541); Lean witnesses pending
+S3 + (optionally) S4.
+**S6d** — dodec/icosa analysis.
+**S6e** — general-position uniform-weight theorem in $\mathbb{R}^d$ for
+$1 \le k \le d-1$.
 **S7** — gallery JSON with `status: "axiomatized"`.
 
 ## Honesty
 
-This STATE-SYNC iteration is **doc-only**. It produces:
+This S2 ACT iteration ships:
 
-- 0 new Lean theorems
-- 0 sorry/axiom deltas
-- 0 new design memos
-- Updated `state.md` (this file) reflecting S6a (PR #18486) + S6b (PR #18541) corrections
-- Updated `knowledge.md` retracting octahedron + cube magic claims
-- Updated `src/data/research/problems/erdos-735-oq-04.json` `currentState.focus`, `attemptCounts`, `knowledge.progressSummary`, and first insight
+- 1 NEW Lean file: `proofs/Proofs/Erdos735OQ04.lean` (99 LOC; 5 defs, 2 sorry-theorems, 0 axioms, 2 sorries)
+- 1 import addition to `proofs/Proofs.lean`
+- 1 new session log
+- This `state.md` update (Phase OBSERVE → ACT, iteration 3 → 4)
+- Updated `src/data/research/problems/erdos-735-oq-04.json`
 
-It applies the "corrections owed to upstream text" listed in PR #18541 § 6, which were explicitly deferred to "a future doctor/curator/researcher pass".
+**Docker-build verified**: 3058 jobs clean (2 expected `declaration uses 'sorry'`
+warnings). The new file does NOT depend on the parent (broken on origin/main),
+so it builds standalone.
 
-The higher-flat extension is **research-level open**. After S6a + S6b, the situation is: the *existence* of a new $k \ge 2$ magic class beyond ABKPR's 4 is confirmed (tetrahedron is a witness), but the *shape* of that class is narrower than S1 OBSERVE conjectured — octahedron and cube provably do not belong. The S5 axiom should target a refined subfamily.
+The higher-flat extension is **research-level open**. After S6a + S6b, the
+situation is: the *existence* of a new $k \ge 2$ magic class beyond ABKPR's 4
+is confirmed (tetrahedron is a witness), but the *shape* of that class is
+narrower than S1 OBSERVE conjectured. The S5 axiom (deferred) should target a
+refined subfamily.
 
 Future Lean entry: `status: "axiomatized"`.
