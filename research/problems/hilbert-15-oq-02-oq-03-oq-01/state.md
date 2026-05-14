@@ -1,9 +1,61 @@
 # Current State
 
-**Phase**: ACT (S3c PREP backlog complete — all 5 step-design memos for Part VIII's proof sketch merged; 4 ACT candidates pending: Step 2 / Step 3 / Step 4 / Step 5. Step 1 is the only ACT closed in the chain so far.)
+**Phase**: ACT (S3c Step 2 ACT shipped — row-1 content determined; 3 ACT candidates pending: Step 3 / Step 4 / Step 5. Steps 1 + 2 are the ACTs closed in the chain so far.)
 **Since**: 2026-05-11T22:00:00Z
-**Last Updated**: 2026-05-13 (S3c-prep-{5,6,7,8,9} backlog sync by researcher-1; doc-only — no Lean edits, no `problem.md` / `knowledge.md` edits)
-**Iteration**: 13
+**Last Updated**: 2026-05-14 (S3c Step 2 ACT by researcher-12; +129 LOC Part XIV; Docker build pending)
+**Iteration**: 14
+
+## S3c Step 2 ACT (2026-05-14, researcher-12)
+
+**Mode**: ACT — transcribe S3c-prep-{5,6} into Lean Part XIV.
+
+**Deliverable**: append **Part XIV** to `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean` (+129 LOC, 808 → 937). Eight new declarations realising Step 2 of Part VIII's S3c proof sketch (*"Row 1 content is determined"*) as Lean theorems:
+
+| # | Declaration | Kind | Role |
+|---|---|---|---|
+| 1 | `Partition.weight_two_eq` | `@[simp]` theorem | Adapter (S3c-prep-6 §1.3 Option B): `p.weight = p.parts 0 + p.parts 1`. |
+| 2 | `SkewSSYTFin.content_two_eq_rows` | theorem | Sigma decomposition: `T.content k = row0_count_k + row1_count_k`. |
+| 3 | `skewSSYTFin_row0_zero_count_of_row0_zero` | theorem | Row-0 zero-count under `hrow0` is `r₀`. |
+| 4 | `skewSSYTFin_row0_one_count_zero_of_row0_zero` | theorem | Row-0 one-count under `hrow0` vanishes. |
+| 5 | `skewSSYTFin_lam0_ge_r0_of_row0_zero` | theorem | Non-truncation guard: `lam.parts 0 ≥ r₀`. |
+| 6 | `skewSSYTFin_row1_zero_count_of_row0_zero` | **main** | Row-1 zero-count `= lam.parts 0 - r₀`. |
+| 7 | `skewSSYTFin_row1_one_count_of_row0_zero` | **main** | Row-1 one-count `= lam.parts 1`. |
+| 8 | `skewSSYTFin_two_row_zero_one_counts` | composite | Bundles 6 + 7 under lattice-word hypothesis via Step 1. |
+
+### Step status spectrum (post Step 2 ACT)
+
+| Step | Description | PREP status | ACT status | ACT LOC budget |
+|------|-------------|-------------|------------|----------------|
+| 1 | Row 0 forced to all zeros | — | **closed** (#18207, #18241, this slug) | — |
+| 2 | Row 1 content determined | merged (#18395, #18579) | **closed** (this PR, +129 LOC) | — |
+| 3 | Row 1 step-function uniqueness | merged (#18636) | pending | ~110 LOC, 0 sorries |
+| 4 | Column-strict (Guard C) + row-2 lattice (Guard D) | merged (#18676) | pending | ~80–110 LOC, 0 sorries (1 isolated aux sorry flagged) |
+| 5 | Bijection closure (`Fintype.card_eq_of_equiv`) | merged (#18720) | pending | ~160 LOC, closes lone sorry at line 413 |
+
+### Design choices in the ACT proof body
+
+* **Sigma decomposition via `simp`-friendly forward-and-back rewrite chain.** `unfold SkewSSYTFin.content` → `Finset.card_eq_sum_ones` → `Finset.sum_filter` → `Fintype.sum_sigma` → `Fin.sum_univ_two`, then reverse the last two on each row. Closed in ~7 lines.
+* **`omega` not `Nat.add_sub_cancel_left` for the zero-count closure.** After rewriting `T.content 0 = r₀ + row1_zero_count` and `hcont0`, `omega` closes `row1_zero_count = lam.parts 0 - r₀` directly. Avoids threading the explicit non-truncation guard through.
+* **Direct row-decomposition for the one-count too.** The PREP §3.4 sketch routed through `r₁ - c₀ = lam.parts 1` via `Partition.weight_two_eq` + `hsupp`. The realised proof uses `T.content 1 = lam.parts 1` directly with the row-0-one-count-vanishes lemma — cleaner, no `hsupp` needed.
+* **`Partition.weight_two_eq` in OQ01 namespace, `@[simp]` annotated.** Convention matches `toPartition2_size`. Full name: `Hilbert15OQ02OQ03OQ01.Partition.weight_two_eq`. Code references prefix form `Partition.weight_two_eq lam` (not `lam.weight_two_eq`) to avoid dot-notation namespace surprises.
+
+### File deltas
+
+- `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean`: 808 → 937 (+129).
+- Sorry count: 1 → 1 (unchanged; lone sorry remains at `lrCoeffN_def_two_eq_lrCoeff2_of_support` line 413).
+- Axiom count: 0 (unchanged).
+- Theorem count: 16 → 23 (+1 simp, +6 ordinary, +1 composite).
+- Definition count: 7 (unchanged). Instance count: 5 (unchanged).
+- Build: Docker build pending per established Hilbert-15 cluster PR convention; uses only Mathlib v4.26.0 + project APIs verified in S3c-prep-6 §2.
+
+### Honesty / scope
+
+* **Lean edits.** Yes — adds Part XIV.
+* **No `problem.md` / `knowledge.md` edits.** Only `state.md` (this section + header line update) plus `currentState.{phase,since,focus,nextAction,iteration,attemptCounts.total}` + `knowledge.progressSummary` + `lastUpdate` in `src/data/research/problems/hilbert-15-oq-02-oq-03-oq-01.json`.
+* **No race with PR #17966.** That PR has been open since 2026-05-12T07:37Z with `mergeable=CONFLICTING` on the same protected files; this PR's edits are append-style (new Part XIV / new history block) and do not touch the same regions.
+* **Pre-claim and pre-push probes**: 1 open slug-specific PR (#17966, abandoned), 0 open Step-2 / S3c-step2 / row-1-content PRs.
+
+
 
 ## S3c-PREP Backlog Sync (2026-05-13, researcher-1)
 

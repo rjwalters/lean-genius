@@ -805,4 +805,133 @@ theorem skewSSYTFin_row0_forced_zero {ν μ : Partition 2}
   skewSSYTFin_row0_eq_zero_of_top_zero T hpos
     (skewSSYTFin_row0_top_zero_of_lattice T hpos hLW) j
 
+/-! ## Part XIV: Step 2 — Row 1 Content Determined (S3c-prep-5 ACT)
+
+The PREP chain S3c-prep-{5,6} (PRs #18395, #18579) pinned the design and
+Mathlib bearer audit for Step 2 of Part VIII's S3c proof sketch:
+*"Row 1 content is determined."* This Part discharges that step.
+
+Given Step 1's output `hrow0 : ∀ j : Fin r₀, T ⟨0, j⟩ = 0` and the content
+equation `T.content k = lam.parts k`, the row-1 zero-count is forced to
+`lam.parts 0 - r₀` and the row-1 one-count to `lam.parts 1`. The key
+lemma is the sigma decomposition of `T.content k` over the two rows of
+the 2-row skew shape, via `Fintype.sum_sigma` + `Fin.sum_univ_two`.
+
+The vacuous `r₀ = 0` branch is handled at Step 5's call site by the
+Step 1 invocation; this Part takes `hrow0` directly so the API is
+agnostic to how the row-0 zeros were established.
+-/
+
+/-- **Weight on `Partition 2` decomposes into `parts 0 + parts 1`.**
+    Adapter for Step 2's `omega` closure. The proof mirrors the inline
+    chain used at `toPartition2_size`. -/
+@[simp] theorem Partition.weight_two_eq (p : Partition 2) :
+    p.weight = p.parts 0 + p.parts 1 := by
+  simp [Partition.weight, Fin.sum_univ_two]
+
+/-- **Content decomposition over rows (`n = 2`).** For a 2-row skew SSYT,
+    the count of cells with value `k : Fin 2` decomposes as the sum of
+    the row-0 and row-1 counts. Direct from `Fintype.sum_sigma` +
+    `Fin.sum_univ_two`. -/
+theorem SkewSSYTFin.content_two_eq_rows {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ) (k : Fin 2) :
+    T.content k =
+      ((Finset.univ : Finset (Fin (ν.parts 0 - μ.parts 0))).filter
+         (fun j => T.1 ⟨0, j⟩ = k)).card +
+      ((Finset.univ : Finset (Fin (ν.parts 1 - μ.parts 1))).filter
+         (fun j => T.1 ⟨1, j⟩ = k)).card := by
+  unfold SkewSSYTFin.content
+  rw [Finset.card_eq_sum_ones, Finset.sum_filter, Fintype.sum_sigma,
+      Fin.sum_univ_two, ← Finset.sum_filter, ← Finset.sum_filter,
+      ← Finset.card_eq_sum_ones, ← Finset.card_eq_sum_ones]
+
+/-- **Row-0 zero-count under `hrow0`.** Given that every row-0 cell is
+    zero, the row-0 zero-count is the full cardinality `r₀`. Building
+    block for Step 2's content-equation arithmetic. -/
+theorem skewSSYTFin_row0_zero_count_of_row0_zero {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ)
+    (hrow0 : ∀ j : Fin (ν.parts 0 - μ.parts 0), T.1 ⟨0, j⟩ = (0 : Fin 2)) :
+    ((Finset.univ : Finset (Fin (ν.parts 0 - μ.parts 0))).filter
+       (fun j => T.1 ⟨0, j⟩ = (0 : Fin 2))).card = ν.parts 0 - μ.parts 0 := by
+  rw [Finset.filter_true_of_mem (fun j _ => hrow0 j),
+      Finset.card_univ, Fintype.card_fin]
+
+/-- **Row-0 one-count vanishes under `hrow0`.** Every row-0 cell is zero,
+    so the count of row-0 cells with value `1` is `0`. -/
+theorem skewSSYTFin_row0_one_count_zero_of_row0_zero {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ)
+    (hrow0 : ∀ j : Fin (ν.parts 0 - μ.parts 0), T.1 ⟨0, j⟩ = (0 : Fin 2)) :
+    ((Finset.univ : Finset (Fin (ν.parts 0 - μ.parts 0))).filter
+       (fun j => T.1 ⟨0, j⟩ = (1 : Fin 2))).card = 0 := by
+  rw [Finset.filter_false_of_mem, Finset.card_empty]
+  intro j _ hj
+  rw [hrow0 j] at hj
+  exact absurd hj (by decide)
+
+/-- **From `hrow0` + content equation: `lam.parts 0 ≥ r₀`.** The first
+    part of `lam` is at least the row-0 length, since row-0 contributes
+    `r₀` zeros to `T.content 0 = lam.parts 0`. Non-truncation guard for
+    Step 2's `omega` closure on the row-1 zero-count. -/
+theorem skewSSYTFin_lam0_ge_r0_of_row0_zero {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ)
+    (hrow0 : ∀ j : Fin (ν.parts 0 - μ.parts 0), T.1 ⟨0, j⟩ = (0 : Fin 2))
+    (lam : Partition 2)
+    (hcont0 : T.content 0 = lam.parts 0) :
+    ν.parts 0 - μ.parts 0 ≤ lam.parts 0 := by
+  have h := T.content_two_eq_rows 0
+  rw [skewSSYTFin_row0_zero_count_of_row0_zero T hrow0, hcont0] at h
+  omega
+
+/-- **Step 2 (zero-count): row-1 zero-count from row-0 zeros + content.**
+    Under Step 1's output `hrow0` and the content equation on value `0`,
+    the row-1 zero-count equals `lam.parts 0 - r₀`. Closes the first
+    half of Part VIII's Step 2 sketch. -/
+theorem skewSSYTFin_row1_zero_count_of_row0_zero {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ)
+    (hrow0 : ∀ j : Fin (ν.parts 0 - μ.parts 0), T.1 ⟨0, j⟩ = (0 : Fin 2))
+    (lam : Partition 2)
+    (hcont0 : T.content 0 = lam.parts 0) :
+    ((Finset.univ : Finset (Fin (ν.parts 1 - μ.parts 1))).filter
+       (fun j => T.1 ⟨1, j⟩ = (0 : Fin 2))).card =
+      lam.parts 0 - (ν.parts 0 - μ.parts 0) := by
+  have h := T.content_two_eq_rows 0
+  rw [skewSSYTFin_row0_zero_count_of_row0_zero T hrow0, hcont0] at h
+  omega
+
+/-- **Step 2 (one-count): row-1 one-count from row-0 zeros + content.**
+    Under Step 1's output `hrow0` and the content equation on value `1`,
+    the row-1 one-count equals `lam.parts 1`. Direct from the
+    row-decomposition with row-0-one-count vanishing. -/
+theorem skewSSYTFin_row1_one_count_of_row0_zero {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ)
+    (hrow0 : ∀ j : Fin (ν.parts 0 - μ.parts 0), T.1 ⟨0, j⟩ = (0 : Fin 2))
+    (lam : Partition 2)
+    (hcont1 : T.content 1 = lam.parts 1) :
+    ((Finset.univ : Finset (Fin (ν.parts 1 - μ.parts 1))).filter
+       (fun j => T.1 ⟨1, j⟩ = (1 : Fin 2))).card = lam.parts 1 := by
+  have h := T.content_two_eq_rows 1
+  rw [skewSSYTFin_row0_one_count_zero_of_row0_zero T hrow0, hcont1] at h
+  omega
+
+/-- **Composite Step 1 + Step 2.** Bundles the row-1 zero-count and
+    one-count under the lattice-word hypothesis (Step 1's input form)
+    via `skewSSYTFin_row0_forced_zero`. Convenience wrapper for the
+    Step 5 Fintype-card collapse; the vacuous `r₀ = 0` branch is
+    handled by the caller via `Fin.elim0`. -/
+theorem skewSSYTFin_two_row_zero_one_counts {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ)
+    (hLW : isLatticeWord T.reverseRowWord)
+    (lam : Partition 2)
+    (hcont : ∀ k : Fin 2, T.content k = lam.parts k)
+    (hpos : 0 < ν.parts 0 - μ.parts 0) :
+    ((Finset.univ : Finset (Fin (ν.parts 1 - μ.parts 1))).filter
+       (fun j => T.1 ⟨1, j⟩ = (0 : Fin 2))).card =
+        lam.parts 0 - (ν.parts 0 - μ.parts 0)
+    ∧
+    ((Finset.univ : Finset (Fin (ν.parts 1 - μ.parts 1))).filter
+       (fun j => T.1 ⟨1, j⟩ = (1 : Fin 2))).card = lam.parts 1 :=
+  let hrow0 := skewSSYTFin_row0_forced_zero T hpos hLW
+  ⟨skewSSYTFin_row1_zero_count_of_row0_zero T hrow0 lam (hcont 0),
+   skewSSYTFin_row1_one_count_of_row0_zero T hrow0 lam (hcont 1)⟩
+
 end Hilbert15OQ02OQ03OQ01
