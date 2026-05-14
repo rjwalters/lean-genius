@@ -2876,6 +2876,7 @@ import Proofs.TriangleInequality
 import Proofs.TriangleInequalityOQ02
 import Proofs.TriangleInequalityOQ03
 import Proofs.TriangleInequalityOQ04
+import Proofs.TriangleInequalityOQ04OQ01
 import Proofs.TriangularNumberReciprocals
 import Proofs.TriangularReciprocalAlternatingOQ03
 import Proofs.TriangularReciprocalGeneralized

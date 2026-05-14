@@ -118,6 +118,78 @@ setting.
 
 ---
 
+## Insights (S2a ACT, researcher-3, 2026-05-14)
+
+### Insight 8 — `chartArcLength` lives at `ℝ → E`, not on manifolds directly
+
+Following the S1 OBSERVE Path-A plan, the chart-local arc length is naturally
+typed as `(γ : ℝ → E) → (a b : ℝ) → ℝ`, **not** `(γ : ℝ → M) → ...`. The chart
+$\phi : U \to E$ is applied externally, so the definition does not need any
+manifold typeclasses (`ChartedSpace`, `SmoothManifoldWithCorners`, `MFDeriv`,
+etc.). This keeps S2a maximally light:
+
+```lean
+noncomputable def chartArcLength (γ : ℝ → E) (a b : ℝ) : ℝ :=
+  ∫ t in a..b, ‖deriv γ t‖
+```
+
+The price: the user must apply the chart map themselves. The win: only two
+imports (`Deriv.Basic`, `IntervalIntegral.Basic`), and no typeclass-resolution
+gymnastics at definition time.
+
+### Insight 9 — `intervalIntegral.integral_same` is the right `a = a` lemma
+
+At v4.26.0 (`MeasureTheory/Integral/IntervalIntegral/Basic.lean:641`),
+`intervalIntegral.integral_same : ∫ x in a..a, f x ∂μ = 0` is the canonical lemma
+for the degenerate interval. `simp [chartArcLength, intervalIntegral.integral_same]`
+discharges `chartArcLength_self` cleanly.
+
+### Insight 10 — `deriv_const'` is the canonical eta-form deriv lemma
+
+For `chartArcLength_const : chartArcLength (fun _ => c) a b = 0`, the relevant
+Mathlib lemma is `deriv_const' : (deriv fun _ : 𝕜 => c) = fun _ => 0`
+(`Mathlib/Analysis/Calculus/Deriv/Basic.lean:744`, eta form). Using `deriv_const`
+(the pointwise form) requires an explicit `funext`; the eta form lets `simp`
+close the goal directly. Final proof: one-liner
+`simp [chartArcLength, deriv_const']`.
+
+### Insight 11 — `intervalIntegral.integral_nonneg` takes a pointwise hypothesis on `Set.Icc`
+
+Signature at v4.26.0 (`MeasureTheory/Integral/IntervalIntegral/Basic.lean:1246`):
+
+```lean
+theorem integral_nonneg (hab : a ≤ b) (hf : ∀ u, u ∈ Icc a b → 0 ≤ f u) :
+    0 ≤ ∫ u in a..b, f u ∂μ
+```
+
+For `chartArcLength_nonneg`, we discharge with
+`intervalIntegral.integral_nonneg hab (fun _ _ => norm_nonneg _)` — the
+membership hypothesis is irrelevant because `‖·‖ ≥ 0` is pointwise. No
+`AEStronglyMeasurable` or `IntervalIntegrable` hypothesis is needed at this
+level; integration of a non-integrable function returns 0 and 0 ≥ 0 still
+holds.
+
+### Insight 12 — v4.26.0 has `IntervalIntegral` as a directory, not a single file
+
+At v4.26.0, `Mathlib.MeasureTheory.Integral.IntervalIntegral` is a **directory**
+containing `Basic.lean`, `ContDiff.lean`, `DerivIntegrable.lean`,
+`FundThmCalculus.lean`, `IntegrationByParts.lean`,
+`LebesgueDifferentiationThm.lean`, `Periodic.lean`, `Slope.lean`,
+`TrapezoidalRule.lean`. The top-level singleton-file path
+`Mathlib.MeasureTheory.Integral.IntervalIntegral` (which older code may use)
+**does not exist** at v4.26.0 (404 on raw.githubusercontent). All
+`intervalIntegral.*` definitions live in `Basic.lean`; the correct import is
+
+```lean
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+```
+
+This split is a v4.26.0 surface regression — older code with
+`import Mathlib.MeasureTheory.Integral.IntervalIntegral` (no `.Basic` suffix)
+will fail at v4.26.0.
+
+---
+
 ## Dead Ends
 
 ### Dead End 1 — Try to use `eVariationOn` directly on $\gamma : [0, 1] \to M$
