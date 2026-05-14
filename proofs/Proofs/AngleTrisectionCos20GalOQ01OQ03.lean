@@ -1132,6 +1132,220 @@ theorem r_constantCoeff_eq_signed_uniform (p : ℕ)
   rw [r_constantCoeff_eq_signed_cyclotomic_uniform p hp,
       cyclotomic_two_mul_prime_eval_neg_one_uniform h_prime.1 h_prime.2]
 
+/-! ## S15: Uniform trace bridge — `(r p).coeff ((p-1)/2 - 1) = -p`
+
+S10 delivered the **uniform constant-coefficient corollary**
+`r_constantCoeff_eq_signed_uniform`: for each verified prime
+`p ∈ {3, 5, 7, 11, 13}`, `(r p).coeff 0 = (-1)^((p-1)/2) · p`.
+
+S15 delivers the **trace fingerprint** counterpart, completing the second
+of the two Vieta endpoints predicted by the cyclotomic-ramification
+analysis. Three deliverables:
+
+  **Stage 1** (uniform cyclotomic side, all odd primes p ≥ 3):
+    `cyclotomic_two_mul_prime_subLeadingCoeff_uniform`
+    : `(cyclotomic (2 * p) ℤ).coeff (p - 2) = -1`
+
+  **Stage 2a** (per-prime structural bridge, p ∈ {5, 7, 11, 13}):
+    `r_subLeadingCoeff_via_moebius_uniform`
+    : `(r p).coeff ((p-1)/2 - 1) = -((p:ℤ) - 1) + (Φ_{2p}).coeff (p - 2)`
+
+  **Stage 2b** (Finset-quantified corollary, p ∈ {5, 7, 11, 13}):
+    `r_subLeadingCoeff_eq_neg_p_uniform`
+    : `(r p).coeff ((p-1)/2 - 1) = -p`,
+    via Stage 2a + Stage 1.
+
+**Why this matters.** The pair `r_constantCoeff_eq_signed_uniform` (S10)
+and `r_subLeadingCoeff_eq_neg_p_uniform` (S15) packages **both** Vieta
+fingerprints in Finset form, with their cyclotomic-anchor proof routes
+made explicit:
+
+      constant     = (-1)^((p-1)/2) · Φ_{2p}(-1)    via S9 + S10
+      sub-leading  =       -1       · (Φ_{2p}.coeff (p-2) − (p−1))    via S15
+
+Both endpoints reduce to a corresponding cyclotomic identity. The
+Stage 1 lemma (`Φ_{2p}.coeff (p-2) = -1`) is the trace counterpart of
+the S9 norm anchor (`Φ_{2p}(-1) = p`) — both follow from the same
+geometric-series identification `Φ_{2p} = ∑_{i<p} (-X)^i` (S9
+structural lemma `cyclotomic_two_mul_prime_eq_geom_neg_series`).
+
+**Proof structure of Stage 1.**
+1. Rewrite `Φ_{2p}` via the S9 structural lemma to `∑_{i<p} (-X)^i`.
+2. Distribute `coeff (p-2)` over the sum via `Polynomial.finsetSum_coeff`.
+3. Apply `Finset.sum_eq_single (p - 2)`: only the `i = p - 2` term
+   survives because `((-X)^i).coeff (p-2) = 0` for `i ≠ p - 2`.
+4. The surviving term is `((-X)^(p-2)).coeff (p-2) = (-1)^(p-2)`,
+   which equals `-1` because `p - 2` is odd (since `p` is odd ≥ 3).
+
+**Bookkeeping.** Stage 2a is `p ∈ {5, 7, 11, 13}` (excluding `p = 3`,
+which is handled separately by `r_3_traceCoeff` because `(3-1)/2 - 1
+= 0` collides with the constant-coefficient case). Stage 1 is
+**uniform across all odd primes p ≥ 3**, just like the S9 anchor.
+
+**Companion lemma (private).** `neg_X_pow_coeff_eq` distributes
+`coeff k ((-X)^i) = (-1)^i * (if k = i then 1 else 0)` for arbitrary
+`i, k : ℕ`. Used twice in Stage 1's `Finset.sum_eq_single` branches
+(surviving and off-diagonal).
+-/
+
+/-- Helper: distribute `coeff k` over `(-X)^i` in `ℤ[X]`. The result is
+`(-1)^i * (X^i).coeff k`, factoring out the sign through the
+`(-X) = (-1) * X` decomposition + `mul_pow` + `C_pow`. Used in the
+`Finset.sum_eq_single` step of `cyclotomic_two_mul_prime_subLeadingCoeff_uniform`.
+-/
+private lemma neg_X_pow_coeff_eq (i k : ℕ) :
+    ((-X : ℤ[X])^i).coeff k = (-1 : ℤ)^i * (if k = i then 1 else 0) := by
+  have h_neg_X : (-X : ℤ[X]) = -1 * X := by ring
+  rw [h_neg_X, mul_pow]
+  have h_neg1_pow : ((-1 : ℤ[X]))^i = C ((-1 : ℤ)^i) := by
+    rw [show (-1 : ℤ[X]) = C (-1 : ℤ) from by rw [C_neg, C_1]]
+    rw [← C_pow]
+  rw [h_neg1_pow, Polynomial.coeff_C_mul, Polynomial.coeff_X_pow]
+
+/--
+**S15 Stage 1: Uniform sub-leading coefficient of Φ_{2p} for odd prime p.**
+
+For every odd prime `p`, `(cyclotomic (2 * p) ℤ).coeff (p - 2) = -1`.
+
+This is the **trace** counterpart of the S9 norm anchor
+`cyclotomic_two_mul_prime_eval_neg_one_uniform` (`Φ_{2p}(-1) = p`).
+Both follow from the same geometric-series identification
+`Φ_{2p} = ∑_{i<p} (-X)^i` (S9 structural lemma).
+
+**Proof.**
+1. Rewrite `Φ_{2p}` via the S9 structural lemma to `∑ i ∈ range p, (-X)^i`.
+2. Distribute `coeff (p-2)` over the sum via `Polynomial.finsetSum_coeff`.
+3. Apply `Finset.sum_eq_single (p - 2)`: only the `i = p - 2` term
+   contributes nonzero coefficient at index `p - 2`.
+4. The surviving coefficient is `(-1)^(p-2) = -1` (odd exponent since
+   `p` odd ≥ 3 implies `p - 2` odd).
+
+**Index discipline.** For `p` odd prime, `p ≥ 3` (since `p = 2` is the
+only even prime). Hence `p - 2` is well-defined as a natural and equals
+`p - 2` in ℕ. The proof derives `3 ≤ p` from `hp.two_le` + `hp_odd`.
+-/
+theorem cyclotomic_two_mul_prime_subLeadingCoeff_uniform
+    {p : ℕ} (hp : p.Prime) (hp_odd : Odd p) :
+    (cyclotomic (2 * p) ℤ).coeff (p - 2) = -1 := by
+  -- Derive `3 ≤ p` from `p.Prime` and `Odd p`.
+  have hp_ge3 : 3 ≤ p := by
+    have h2 := hp.two_le
+    rcases h2.eq_or_lt with hp2 | hp2
+    · exfalso; subst hp2; exact (by decide : ¬ Odd 2) hp_odd
+    · omega
+  -- Step 1: rewrite cyclotomic as geometric series in `-X` (S9 structural).
+  rw [cyclotomic_two_mul_prime_eq_geom_neg_series hp hp_odd]
+  -- Step 2: distribute `coeff (p - 2)` over the sum.
+  rw [finset_sum_coeff]
+  -- Step 3: only the `i = p - 2` term survives.
+  have hp_minus_two_in : p - 2 ∈ Finset.range p :=
+    Finset.mem_range.mpr (by omega)
+  have h_sum :
+      (∑ i ∈ Finset.range p, ((-X : ℤ[X])^i).coeff (p - 2))
+        = ((-X : ℤ[X])^(p - 2)).coeff (p - 2) := by
+    refine Finset.sum_eq_single (p - 2) ?_ ?_
+    · -- Off-diagonal vanishing: `((-X)^i).coeff (p-2) = 0` for `i ≠ p-2`.
+      intro i _ hi_ne
+      rw [neg_X_pow_coeff_eq i (p - 2), if_neg (Ne.symm hi_ne), mul_zero]
+    · -- `p - 2 ∈ range p` so this branch is unreachable.
+      intro h; exact absurd hp_minus_two_in h
+  rw [h_sum]
+  -- Step 4: surviving term `((-X)^(p-2)).coeff (p-2) = -1`.
+  rw [neg_X_pow_coeff_eq (p - 2) (p - 2), if_pos rfl, mul_one]
+  -- Goal: `(-1 : ℤ)^(p - 2) = -1`. Use `Odd (p - 2)`.
+  have hp2_odd : Odd (p - 2) := by
+    obtain ⟨k, hk⟩ := hp_odd
+    refine ⟨k - 1, ?_⟩
+    omega
+  exact hp2_odd.neg_one_pow
+
+/--
+**S15 Stage 2a: Per-prime structural bridge** (Möbius decomposition).
+
+For each verified prime `p ∈ {5, 7, 11, 13}`, the sub-leading coefficient
+of `r p` decomposes as
+
+  `(r p).coeff ((p-1)/2 - 1) = -((p:ℤ) - 1) + (cyclotomic (2*p) ℤ).coeff (p - 2)`.
+
+The sum splits the trace `Tr_{ℚ(θ_p)/ℚ}(2 + θ_p)` into
+
+  - the contribution `−(p − 1)` of the `+2` shift across the `(p−1)/2`
+    real conjugates, and
+  - the cyclotomic sub-leading `Φ_{2p}.coeff (p - 2)` (which equals `-1`
+    by Stage 1, encoding `μ(2p) = 1` for odd prime `p`).
+
+**Proof.** Per-prime: `rcases` destructure of `p ∈ {5, 7, 11, 13}`;
+each branch unfolds `r p` via `r_p_eq`, normalises the cyclotomic
+index `2 * p → 2p`, rewrites with the explicit `cyclotomic_{2p}_eq`
+form (S5/S6), expands coefficients via the v4.26.0-audited `simp only`
+set (S14), and closes with `decide` on the literal integer arithmetic.
+
+**Excludes `p = 3`** because `(3-1)/2 - 1 = 0` collides with the
+constant-coefficient case (handled separately by `r_3_traceCoeff`).
+-/
+theorem r_subLeadingCoeff_via_moebius_uniform :
+    ∀ p ∈ ({5, 7, 11, 13} : Finset ℕ),
+      (r p).coeff ((p - 1) / 2 - 1)
+        = -((p : ℤ) - 1) + (cyclotomic (2 * p) ℤ).coeff (p - 1 - 1) := by
+  intro p hp
+  simp only [Finset.mem_insert, Finset.mem_singleton] at hp
+  rcases hp with rfl | rfl | rfl | rfl
+  · -- p = 5: (r 5).coeff 1 = -4 + (Φ_10).coeff 3
+    rw [show (2 * 5 : ℕ) = 10 from rfl, cyclotomic_ten_eq, r_5_eq]
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X, coeff_one]
+    decide
+  · -- p = 7: (r 7).coeff 2 = -6 + (Φ_14).coeff 5
+    rw [show (2 * 7 : ℕ) = 14 from rfl, cyclotomic_fourteen_eq, r_7_eq]
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X, coeff_one]
+    decide
+  · -- p = 11: (r 11).coeff 4 = -10 + (Φ_22).coeff 9
+    rw [show (2 * 11 : ℕ) = 22 from rfl, cyclotomic_22_eq, r_11_eq]
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X, coeff_one]
+    decide
+  · -- p = 13: (r 13).coeff 5 = -12 + (Φ_26).coeff 11
+    rw [show (2 * 13 : ℕ) = 26 from rfl, cyclotomic_26_eq, r_13_eq]
+    simp only [coeff_sub, coeff_add, coeff_C_mul, coeff_X_pow, coeff_C, coeff_X, coeff_one]
+    decide
+
+/--
+**S15 Stage 2b: Uniform trace fingerprint corollary.**
+
+For each verified prime `p ∈ {5, 7, 11, 13}`,
+
+  `(r p).coeff ((p - 1) / 2 - 1) = -(p : ℤ)`.
+
+This is the Finset-quantified packaging of the per-prime trace
+fingerprint `r_subLeadingCoeff_eq_neg_p` (S4), now derived through the
+**cyclotomic-anchor route**: combines the per-prime decomposition
+`r_subLeadingCoeff_via_moebius_uniform` (Stage 2a) with the uniform
+sub-leading anchor `cyclotomic_two_mul_prime_subLeadingCoeff_uniform`
+(Stage 1) to recover `−p` without case-bashing on `r p`.
+
+The `p = 3` case is excluded because the index `(3-1)/2 - 1 = 0`
+collides with the constant-coefficient case (handled by
+`r_3_traceCoeff`).
+-/
+theorem r_subLeadingCoeff_eq_neg_p_uniform :
+    ∀ p ∈ ({5, 7, 11, 13} : Finset ℕ),
+      (r p).coeff ((p - 1) / 2 - 1) = -(p : ℤ) := by
+  intro p hp
+  -- Get `Prime p` and `Odd p` from the Finset membership.
+  have h_prime_odd : p.Prime ∧ Odd p := by
+    have hp' := hp
+    simp only [Finset.mem_insert, Finset.mem_singleton] at hp'
+    rcases hp' with rfl | rfl | rfl | rfl
+    all_goals exact ⟨by decide, by decide⟩
+  -- Apply Stage 2a (per-prime decomposition).
+  rw [r_subLeadingCoeff_via_moebius_uniform p hp]
+  -- Reduce `p - 1 - 1` to `p - 2` (definitionally for `p ≥ 2`).
+  have h_idx : p - 1 - 1 = p - 2 := by
+    have := h_prime_odd.1.two_le
+    omega
+  rw [h_idx]
+  -- Apply Stage 1 to rewrite the cyclotomic coefficient as `-1`.
+  rw [cyclotomic_two_mul_prime_subLeadingCoeff_uniform h_prime_odd.1 h_prime_odd.2]
+  ring
+
 /-! ## Uniform conjecture (general odd prime p ≥ 3) -/
 
 /--

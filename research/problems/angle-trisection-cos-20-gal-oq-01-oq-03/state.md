@@ -1,11 +1,77 @@
 # Current State
 
-**Phase**: ACT (S10 closed Lean, 1 sorry; 1166 LOC, 61 theorems, 0 axioms)
-→ S11-S14 PREP audit chain merged (doc-only, no Lean delta) → S15 ACT pending
-**Since**: 2026-05-13T08:09:52Z (S14 PREP merged, PR #18642)
-**Iteration**: 14 (S1-S10 ACT/SCAFFOLD + S11-S14 PREP)
+**Phase**: ACT (S15 closed Lean, 1 sorry; 1383 LOC, 64 theorems, 0 axioms)
+**Since**: 2026-05-14T~06:20Z (S15 ACT — uniform trace bridge, build verified)
+**Iteration**: 15 (S1-S10 ACT/SCAFFOLD + S11-S14 PREP + S15 ACT)
 
 ## Current Focus
+
+S15 ACT — **Uniform trace bridge closed.** Implements the
+S11-S14-audited two-stage proof template for the trace fingerprint of
+`r p`, completing the second uniform Vieta endpoint (S10 closed the
+constant). Three new named theorems (+1 private helper):
+
+  `cyclotomic_two_mul_prime_subLeadingCoeff_uniform`  (Stage 1)
+  : `(cyclotomic (2 * p) ℤ).coeff (p - 2) = -1` for odd prime `p`.
+
+  `r_subLeadingCoeff_via_moebius_uniform`  (Stage 2a, p ∈ {5, 7, 11, 13})
+  : `(r p).coeff ((p-1)/2 - 1) = -((p:ℤ) - 1) + (Φ_{2p}).coeff (p - 2)`.
+
+  `r_subLeadingCoeff_eq_neg_p_uniform`  (Stage 2b, p ∈ {5, 7, 11, 13})
+  : `(r p).coeff ((p-1)/2 - 1) = -p`,  via Stage 2a + Stage 1.
+
+Stage 1 is the **trace counterpart** of the S9 norm anchor
+`cyclotomic_two_mul_prime_eval_neg_one_uniform` (`Φ_{2p}(-1) = p`):
+both follow from the same geometric-series identification
+`Φ_{2p} = ∑_{i<p} (-X)^i` (S9 structural lemma at line 1000), then
+distribute `coeff (p - 2)` over the sum (`finset_sum_coeff`), then
+isolate the surviving term `i = p - 2` via `Finset.sum_eq_single`
++ a private helper `neg_X_pow_coeff_eq` distributing
+`((-X)^i).coeff k = (-1)^i * (if k = i then 1 else 0)`.
+
+Stage 2b combines Stage 2a (per-prime decomposition via
+`r_p_eq` + `cyclotomic_{2p}_eq` + `simp only` + `decide`) with Stage 1
+to derive `-p` through the **cyclotomic-anchor route** — making the
+dependence on `Φ_{2p}.coeff (p-2) = -1` (encoding `μ(2p) = 1` for odd
+prime `p`) explicit in the proof term, not just embedded in
+case-by-case `decide` chains. This mirrors the S10 architectural
+choice for the constant-coefficient corollary.
+
+### S15 stats (this iteration)
+
+- File grows: 1166 → 1383 lines (+217), 61 → 64 theorems (+3 named).
+- Sorries: 1 (unchanged — the general conjecture).
+- Axioms: 0 (unchanged).
+- Private helper: `neg_X_pow_coeff_eq` (10 LOC), used twice in Stage 1.
+- New module-docstring section documenting S15.
+
+### S15 build status
+
+**VERIFIED CLEAN.** Docker build at warm Mathlib cache: `7743 jobs`,
+~90s wall-clock, 0 errors, 0 unused simp args, 0 introduced sorries
+(the existing `eisenstein_conjecture_cos_pi_p` sorry is unchanged).
+Build log: `.loom/logs/researcher-3-s15-build3.log`. Two surgical-fix
+iterations to reach clean (build1 → build2 fixed S12 erratum
+`finsetSum_coeff` → actual v4.26.0 name `finset_sum_coeff` snake_case
++ `C_pow` function-application syntax → `← C_pow` rewrite; build2 →
+build3 trimmed unused simp args `coeff_X_pow_self`, `coeff_one_zero`,
+`coeff_X_one`).
+
+### S12 PREP bearer-name erratum
+
+The S12 PREP audit (PR #18571) cited `Polynomial.finsetSum_coeff`
+(camelCase) at `Mathlib/Algebra/Polynomial/Coeff.lean:89-91` with
+the snake_case alias `finset_sum_coeff` "DEPRECATED since 2026-04-08
+(Coeff.lean:93)". **Both halves are inverted at v4.26.0.** Direct
+verification by `curl https://raw.githubusercontent.com/leanprover-community/mathlib4/v4.26.0/Mathlib/Algebra/Polynomial/Coeff.lean`:
+the canonical name at v4.26.0 is `finset_sum_coeff` (snake_case,
+`@[simp]`-tagged at line 89), and **no** `finsetSum_coeff` (camelCase)
+name exists. Line 93 contains the proof body, not a deprecation tag.
+S15 ACT uses the actual v4.26.0 name; future PREPs should verify
+Mathlib bearers via direct `curl` of the v4.26.0 pin rather than
+relying on memory of HEAD.
+
+## Previous focus (S10 — uniform constant-coefficient corollary)
 
 S10 ACT — **Uniform constant-coefficient corollary closed.** Lifts the
 per-prime cyclotomic-anchor bridges
@@ -303,28 +369,40 @@ divisibility half — Tactic B) remains the deeper gap (~200–400 lines).
 
 ## Next Action
 
-**S15 ACT next action** (post-S14 PREP): Implement the corrected
-**two-stage uniform trace bridge** that the S11-S14 PREP chain has
-designed and audited. Tactic B target unchanged from the S10-era plan,
-but the proof template, bearer names, and `simp only` set are now
-v4.26.0-verified.
+**S16 next action** (post-S15 ACT): Both uniform Vieta endpoints are
+now closed (S10 constant + S15 sub-leading). The remaining gap to
+`eisenstein_conjecture_cos_pi_p` is the **HARD half**: sub-leading
+divisibility for *all* indices `0 ≤ k < (p-1)/2`, not just the two
+extreme endpoints. Two viable paths:
 
-### Stage 1 deliverable (cyclotomic side)
-  `cyclotomic_two_mul_prime_subLeadingCoeff_uniform`
-  : `∀ {p : ℕ}, p.Prime → Odd p →
-      (cyclotomic (2 * p) ℤ).coeff (p - 2) = -1`
-  via `cyclotomic_two_mul_prime_eq_geom_neg_series` (S9 structural lemma)
-  + `Polynomial.finsetSum_coeff` (S12 audit-corrected name) + standard
-  index-arithmetic on `Finset.range p`. **Estimated ~25 LOC.**
+**Path A: Cyclotomic-coefficient uniform divisibility.**
+Show `(cyclotomic (2 * p) ℤ).coeff k ∈ Ideal.span {(p : ℤ)}` for
+`1 ≤ k ≤ p - 2` for odd prime `p`. Combined with the per-prime
+substitution `r_p_eq` and structural identities relating `r p` to
+`Φ_{2p}` (which we currently have only at the two endpoints), this
+would lift Eisenstein-at-p uniformly. **Risk**: the S5-S9 work has
+established the cyclotomic structural identity `Φ_{2p} = ∑_{i<p} (-X)^i`
+which gives `coeff k = (-1)^k` at every k — but the `r_p` to `Φ_{2p}`
+bridge is not yet uniform (the S10/S15 endpoint corollaries depend on
+per-prime `cyclotomic_{2p}_eq` rewrites). Need a uniform structural
+identity `r p ≃ Φ_{2p}` (modulo a known polynomial substitution).
 
-### Stage 2 deliverable (trace bridge)
-  `r_subLeadingCoeff_eq_neg_p_uniform`
-  : `∀ p ∈ ({5, 7, 11, 13} : Finset ℕ),
-      (r p).coeff ((p-1)/2 - 1) = -(p : ℤ)`
-  via `rcases` destructure of `p ∈ {5, 7, 11, 13}` (S13 template) +
-  per-prime rewrite using the existing `cyclotomic_{10, 14, 22, 26}_eq`
-  identities. **Estimated ~40-45 LOC** (after S14's +3-5 LOC for the
-  destructure base-case discipline).
+**Path B: Local-field uniformizer theorem (the deep gap).**
+Prove that `(2 + ζ_{2p} + ζ_{2p}⁻¹) = 2 + 2 cos(π/p)` is a
+uniformizer of the unique prime above `p` in ℤ[2 cos(π/p)]; ramification
+index `(p-1)/2`; minimal polynomial Eisenstein by Neukirch ANT II.6.
+**Risk**: requires importing significant `Mathlib.NumberTheory.Cyclotomic`
++ `Mathlib.NumberTheory.RamificationInertia` machinery; estimated
+200-400 LOC. Mathlib's `IsCyclotomicExtension.Rat.totallyRamified`
+is the closest existing bearer.
+
+S16 PREP-first: survey both paths, identify the lighter-weight bridge.
+
+### S15 deliverables shipped (this iteration)
+  `cyclotomic_two_mul_prime_subLeadingCoeff_uniform` (Stage 1, uniform)
+  `r_subLeadingCoeff_via_moebius_uniform` (Stage 2a, p ∈ {5,7,11,13})
+  `r_subLeadingCoeff_eq_neg_p_uniform` (Stage 2b, p ∈ {5,7,11,13})
+  + private helper `neg_X_pow_coeff_eq`.
 
 ### S14-audited `simp only` set (Stage 2 closure)
 ```lean
@@ -410,7 +488,7 @@ calculation or the local-field uniformizer theorem.
 
 ## Attempt Counts
 
-- Total attempts: 14 (S1 OBSERVE, S2 ACT Level-2, S3 ACT norm-Vieta,
+- Total attempts: 15 (S1 OBSERVE, S2 ACT Level-2, S3 ACT norm-Vieta,
   S4 ACT trace-Vieta, S5 ACT cyclotomic anchor {3,5,7},
   S6 ACT cyclotomic anchor extension {11,13},
   S7 SCAFFOLD divisor enumeration for uniform bridge,
@@ -420,10 +498,12 @@ calculation or the local-field uniformizer theorem.
   S11 PREP trace-Möbius bridge design,
   S12 PREP Stage 1 Mathlib v4.26.0 audit,
   S13 PREP Stage 2 decide-tactic feasibility audit,
-  S14 PREP simp-set audit for Stage 2).
-- Current approach attempts: 13 (Level-2 + S3 norm + S4 trace +
+  S14 PREP simp-set audit for Stage 2,
+  S15 ACT uniform trace bridge — Stage 1 + Stage 2a + Stage 2b).
+- Current approach attempts: 14 (Level-2 + S3 norm + S4 trace +
   S5 cyclotomic anchor + S6 cyclotomic extension + S7 SCAFFOLD + S8 ACT
-  + S9 ACT + S10 ACT + S11 PREP + S12 PREP + S13 PREP + S14 PREP).
+  + S9 ACT + S10 ACT + S11 PREP + S12 PREP + S13 PREP + S14 PREP +
+  S15 ACT).
 - Approaches tried:
   - S1: cyclotomic ramification, surveyed only.
   - S2: per-prime explicit verification + uniform statement (sorry on general case).
@@ -439,6 +519,7 @@ calculation or the local-field uniformizer theorem.
   - S12 PREP (doc-only, PR #18571): Mathlib v4.26.0 audit of S11 Stage 1; corrects `Finset.sum_coeff` → `Polynomial.finsetSum_coeff`, ships verified Lean proof tree.
   - S13 PREP (doc-only, PR #18588): rules out pure-`decide` for Stage 2 (cyclotomic is opaque `def`), supplies corrected template using existing `cyclotomic_{2p}_eq` rewrites.
   - S14 PREP (doc-only, PR #18642): discharges S13 §11.3 deferred simp-set audit; finds 6 of 18 Stage-2 `simp only` lemmas not in default simp at v4.26.0, ships corrected explicit list.
+  - S15 ACT (this PR): uniform trace bridge — Stage 1 (`cyclotomic_two_mul_prime_subLeadingCoeff_uniform`, ~30 LOC), Stage 2a (`r_subLeadingCoeff_via_moebius_uniform`, ~30 LOC, p ∈ {5,7,11,13}), Stage 2b (`r_subLeadingCoeff_eq_neg_p_uniform`, ~12 LOC, corollary). Companion private helper `neg_X_pow_coeff_eq` (~10 LOC). Build verified clean (3 Docker iterations, 7743 jobs final). 217 net LOC, 3 new named theorems, 1 new private lemma, 0 new sorries, 0 new axioms.
 
 ## Key Files
 
