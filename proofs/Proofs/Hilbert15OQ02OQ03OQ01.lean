@@ -934,4 +934,162 @@ theorem skewSSYTFin_two_row_zero_one_counts {ν μ : Partition 2}
   ⟨skewSSYTFin_row1_zero_count_of_row0_zero T hrow0 lam (hcont 0),
    skewSSYTFin_row1_one_count_of_row0_zero T hrow0 lam (hcont 1)⟩
 
+/-! ## Part XV: Step 3 — Row 1 Uniquely Determined (S3c-prep-7 ACT)
+
+The PREP S3c-prep-7 (PR #18636) pinned the design for Step 3 of Part
+VIII's S3c proof sketch: *"Row 1 is uniquely determined."* Concretely,
+a weakly-increasing function `f : Fin r → Fin 2` is determined by the
+location of its "step" — the unique cutoff `k` with `f j = 0` iff
+`j.val < k`. The cutoff is exactly the zero-count
+`#{j : Fin r | f j = 0}`. Two functions sharing the count therefore
+agree pointwise.
+
+The one-shot Mathlib bearer
+`Fin.lt_card_filter_univ_iff_apply_of_imp` (HEAD
+`Data/Fintype/Fin.lean:70`, ~92-line file) is **absent** at the
+project's pinned Mathlib v4.26.0 (62-line file; both the lemma and
+its dependency `Fin.card_filter_val_lt` lie in the post-v4.26.0
+delta). This Part inlines a private ~25-LOC backport using only
+`Finset.card_le_card` + `Fin.card_Iio`/`Iic`, then ships the four
+downstream Step-3 theorems (row-1 monotonicity adapter, zero-cell
+downward closure, step-function characterization, and the composite
+"two tableaux with equal zero-counts agree on row 1" lemma). All
+proofs use only v4.26.0 primitives. -/
+
+/-- **Downward-closed predicate on `Fin n` is determined by its count
+    at every index.** Backport of Mathlib HEAD's
+    `Fin.lt_card_filter_univ_iff_apply_of_imp`
+    (`Data/Fintype/Fin.lean:70` at HEAD; absent at v4.26.0).
+
+    Given a "downward-closed" predicate `p` on `Fin n` (`Antitone p`
+    in the form `∀ i k, k ≤ i → p i → p k`), `p` holds for more than
+    `j` elements iff `p j` itself holds. -/
+private theorem lt_card_filter_univ_iff_apply_of_imp
+    {n : ℕ} {j : Fin n}
+    (p : Fin n → Prop) [DecidablePred p]
+    (hp : ∀ i k, k ≤ i → p i → p k) :
+    j.val < (Finset.univ.filter p).card ↔ p j := by
+  have h1 : ∀ (k : Fin n), ¬ p k →
+      (Finset.univ.filter p).card ≤ k.val := by
+    intro k hk
+    rw [← Fin.card_Iio]
+    apply Finset.card_le_card
+    intro x hx
+    simp only [Finset.mem_filter, Finset.mem_univ, true_and] at hx
+    simp only [Finset.mem_Iio]
+    by_contra hne
+    push_neg at hne
+    exact hk (hp x k hne hx)
+  refine ⟨?_, ?_⟩
+  · intro hlt
+    by_contra hne
+    exact absurd hlt (Nat.not_lt.mpr (h1 j hne))
+  · intro hj
+    have hsub : Finset.Iic j ⊆ Finset.univ.filter p := by
+      intro x hx
+      simp only [Finset.mem_Iic] at hx
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and]
+      exact hp j x hx hj
+    have hcard : (Finset.Iic j).card ≤ (Finset.univ.filter p).card :=
+      Finset.card_le_card hsub
+    rw [Fin.card_Iic] at hcard
+    omega
+
+/-- **Row-1 monotonicity (inclusive form).** Parallels Part XII's
+    `skewSSYTFin_row0_mono`. Row weakness on row 1 of a
+    `SkewSSYTFin 2 ν μ` is stated using the strict `j₁ < j₂` in the
+    structure field; this adapter gives the inclusive `j₁ ≤ j₂` form
+    needed for the downward-closed-predicate argument. -/
+theorem skewSSYTFin_row1_mono {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ)
+    {j₁ j₂ : Fin (ν.parts 1 - μ.parts 1)}
+    (h : j₁ ≤ j₂) : T.1 ⟨1, j₁⟩ ≤ T.1 ⟨1, j₂⟩ := by
+  rcases h.lt_or_eq with hlt | heq
+  · exact T.2.1 1 j₁ j₂ hlt
+  · subst heq
+    exact le_refl _
+
+/-- **`T ⟨1, ·⟩ = 0` is downward-closed on row 1.** For
+    `T : SkewSSYTFin 2 ν μ` and row-1 indices `j ≤ i`, if
+    `T ⟨1, i⟩ = 0` then `T ⟨1, j⟩ = 0`. Direct from row-1
+    monotonicity + the `Fin 2`-side "only `0 ≤ 0`" fact. This is the
+    antitonicity hypothesis fed into
+    `lt_card_filter_univ_iff_apply_of_imp`. -/
+theorem skewSSYTFin_row1_eq_zero_downward_closed
+    {ν μ : Partition 2} (T : SkewSSYTFin 2 ν μ)
+    {i j : Fin (ν.parts 1 - μ.parts 1)}
+    (hle : j ≤ i) (hi : T.1 ⟨1, i⟩ = (0 : Fin 2)) :
+    T.1 ⟨1, j⟩ = (0 : Fin 2) := by
+  have hmono := skewSSYTFin_row1_mono T hle
+  rw [hi] at hmono
+  apply Fin.ext
+  have hle_val : (T.1 ⟨1, j⟩).val ≤ ((0 : Fin 2)).val := hmono
+  have h0 : ((0 : Fin 2)).val = 0 := rfl
+  omega
+
+/-- **Step 3 main: row 1 is the zero-count step function.** Given a
+    `SkewSSYTFin 2 ν μ` and any row-1 index `j`, the cell value
+    `T ⟨1, j⟩` equals `0 : Fin 2` exactly when `j.val` is strictly
+    below the row-1 zero-count; otherwise it equals `1 : Fin 2`.
+    Direct application of
+    `lt_card_filter_univ_iff_apply_of_imp` with the predicate
+    `p k := T ⟨1, k⟩ = 0`; antitonicity is
+    `skewSSYTFin_row1_eq_zero_downward_closed`. The `Fin 2`-side
+    case-split (`val ∈ {0, 1}` since `.isLt < 2`) closes the
+    `if-then-else` shape. -/
+theorem skewSSYTFin_row1_step_function
+    {ν μ : Partition 2} (T : SkewSSYTFin 2 ν μ)
+    (j : Fin (ν.parts 1 - μ.parts 1)) :
+    T.1 ⟨1, j⟩ = if j.val < ((Finset.univ : Finset
+                              (Fin (ν.parts 1 - μ.parts 1))).filter
+                              (fun k => T.1 ⟨1, k⟩ = (0 : Fin 2))).card
+                  then (0 : Fin 2)
+                  else (1 : Fin 2) := by
+  have hkey :
+      j.val < ((Finset.univ : Finset
+                (Fin (ν.parts 1 - μ.parts 1))).filter
+                (fun k => T.1 ⟨1, k⟩ = (0 : Fin 2))).card
+      ↔ T.1 ⟨1, j⟩ = (0 : Fin 2) := by
+    apply lt_card_filter_univ_iff_apply_of_imp
+    intro i k hle hi
+    exact skewSSYTFin_row1_eq_zero_downward_closed T hle hi
+  by_cases hjlt :
+      j.val < ((Finset.univ : Finset
+                (Fin (ν.parts 1 - μ.parts 1))).filter
+                (fun k => T.1 ⟨1, k⟩ = (0 : Fin 2))).card
+  · rw [if_pos hjlt]
+    exact hkey.mp hjlt
+  · rw [if_neg hjlt]
+    have hne : T.1 ⟨1, j⟩ ≠ (0 : Fin 2) := fun h => hjlt (hkey.mpr h)
+    apply Fin.ext
+    have hlt := (T.1 ⟨1, j⟩).isLt
+    have h0 : ((0 : Fin 2)).val = 0 := rfl
+    have h1 : ((1 : Fin 2)).val = 1 := rfl
+    rw [h1]
+    have hne_val : (T.1 ⟨1, j⟩).val ≠ 0 := by
+      intro hv
+      apply hne
+      apply Fin.ext
+      rw [h0]
+      exact hv
+    omega
+
+/-- **Composite: two `SkewSSYTFin 2 ν μ` agree on row 1 if their
+    row-1 zero-counts agree.** Direct from
+    `skewSSYTFin_row1_step_function` applied to each tableau; the
+    common zero-count makes the two step functions definitionally
+    equal at every index. This is the load-bearing
+    `Fintype.card ≤ 1` input for Step 5's bijection closure. -/
+theorem skewSSYTFin_row1_unique_of_zero_count_eq
+    {ν μ : Partition 2} (T₁ T₂ : SkewSSYTFin 2 ν μ)
+    (hcount :
+      ((Finset.univ : Finset (Fin (ν.parts 1 - μ.parts 1))).filter
+        (fun k => T₁.1 ⟨1, k⟩ = (0 : Fin 2))).card =
+      ((Finset.univ : Finset (Fin (ν.parts 1 - μ.parts 1))).filter
+        (fun k => T₂.1 ⟨1, k⟩ = (0 : Fin 2))).card)
+    (j : Fin (ν.parts 1 - μ.parts 1)) :
+    T₁.1 ⟨1, j⟩ = T₂.1 ⟨1, j⟩ := by
+  rw [skewSSYTFin_row1_step_function T₁ j,
+      skewSSYTFin_row1_step_function T₂ j, hcount]
+
 end Hilbert15OQ02OQ03OQ01
