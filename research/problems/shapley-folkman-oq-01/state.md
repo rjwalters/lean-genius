@@ -1,12 +1,78 @@
 # Research State: shapley-folkman-oq-01
 
 ## Current State
-**Phase**: ACT (S2-A ACT-1 scaffold landed; 3 `sorry`-stubbed results
-in `proofs/Proofs/ShapleyFolkmanOQ01.lean`; build pending)
+**Phase**: ACT (S2-A ACT-1 scaffold landed in iter 8; iter 9 ships S5 PREP
+verbatim 5-step recipe — 18 LOC tactic skeleton with named Mathlib v4.26.0
+lemmas — for the `mem_convexHull_finset_sum` sorry. Both surviving sorries
+in `proofs/Proofs/ShapleyFolkmanOQ01.lean` now have explicit Lean recipes
+ready for ACT-2; build still pending.)
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-05-13 (Session 8, researcher-1)
-**Iteration**: 8
+**Last Updated**: 2026-05-14 (Session 9 STATE-SYNC, researcher-12)
+**Iteration**: 9
+
+## Session 9 — S5 PREP STATE-SYNC: record merged S5 PREP recipe; ACT-2 path now backed by verbatim Lean skeletons for both sorries (researcher-12, 2026-05-14)
+
+**Mode.** STATE-SYNC (doc-only).
+
+**Reason.** PR #18929 (S5 PREP, merged 2026-05-13T23:06 UTC, researcher-4)
+landed the verbatim 5-step Lean recipe for the first surviving sorry
+(`mem_convexHull_finset_sum` at `proofs/Proofs/ShapleyFolkmanOQ01.lean:87-93`)
+and explicitly scoped itself doc-only: "No edits to `problem.md`, `state.md`,
+`knowledge.md`, ... `.json`". So state.md and the JSON lagged by one merged
+PREP. This session ships the catch-up entry within the 2-per-session
+STATE-SYNC cap, without touching the Lean source or the S5 PREP session file.
+
+**What S5 PREP supplied** (`sessions/2026-05-13-s5-prep-mem-convexhull-finset-sum-discharge-recipe.md`,
++526 LOC, doc-only):
+
+1. **§2 — Mathlib v4.26.0 lemma inventory** with verbatim source citations,
+   verified at the lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+   * `Set.finset_sum_mem_finset_sum` (n-ary additive Minkowski membership;
+     `Mathlib/Algebra/Group/Pointwise/Set/BigOperators.lean:142` — multiplicative
+     statement with `@[to_additive]`).
+   * `subset_convexHull` (`Mathlib/Analysis/Convex/Hull.lean:50`).
+   * `convex_convexHull` (`Mathlib/Analysis/Convex/Hull.lean:53`).
+   * `Convex` / `StarConvex` two-point unfolding
+     (`Mathlib/Analysis/Convex/Basic.lean:49` +
+     `Mathlib/Analysis/Convex/Star.lean:76`).
+
+2. **§3 — 5-step Lean skeleton** (~18 LOC, mid-proof variables
+   `h0`, `hsum`, `hmid` for `0 ∈ ∑ S_i`, `∑ e_i ∈ ∑ S_i`, midpoint
+   rewrite) closing on `(convex_convexHull ℝ _) (subset_convexHull ℝ _ h0)
+   (subset_convexHull ℝ _ hsum) ...` with three `norm_num` side
+   conditions. (Note: Session 8 §4 "Next Action" §2 had named
+   `Set.add_mem_finset_sum`; S5 PREP §2 supersedes that with the actual
+   Mathlib v4.26.0 name `Set.finset_sum_mem_finset_sum`.)
+
+3. **§4 step-by-step justification**, **§5 failure modes + fallbacks**
+   (segment-route at §5.3 as backup if `convex_convexHull` two-point combo
+   misfires), **§6 decision tree**, **§7** rationale for primary route,
+   **§8 anti-targets** (do NOT prove `convexHull ℝ (∑ S_i) = [0, 1]^N`;
+   do NOT use `centerMass`).
+
+**Effect on ACT-2 readiness.** Combined with the merged S3 PREP §4 + S4
+PREP §3 recipe for the sibling sorry `tight_excess_count` (coordinate-eval
+via `EuclideanSpace.single_apply`), **both surviving sorries in
+`ShapleyFolkmanOQ01.lean` now have verbatim Lean recipes ready for an
+ACT-2 docker-build pass**. The remaining ACT-2 uncertainty is build-side
+(does `rw [convexHull_pair]` succeed on the helper lemma at line 58?
+S3 PREP §3.2 segment-route fallback is documented).
+
+**Files modified this session.**
+* `research/problems/shapley-folkman-oq-01/state.md` — this entry +
+  header bump (iteration 8 → 9, last-updated 2026-05-13 → 2026-05-14).
+* `src/data/research/problems/shapley-folkman-oq-01.json` —
+  `currentState.iteration` 8 → 9, `currentState.focus` extends to note
+  S5 PREP recipe availability, `currentState.nextAction` tightens to
+  reference S5 PREP §3 verbatim (replacing the `Set.add_mem_finset_sum`
+  guess with `Set.finset_sum_mem_finset_sum`), `knowledge.progressSummary`
+  extends, `knowledge.nextSteps` populated, `currentState.attemptCounts.total`
+  8 → 9, top `updatedAt` 2026-05-13 → 2026-05-14.
+
+**No Lean source changes**, no S5 PREP session file edits, no
+`problem.md` / `knowledge.md` / `approaches/` / `lean/` / `literature/`
+edits. STATE-SYNC #1 of 2 for this researcher-12 session.
 
 ## Session 8 — S2-A ACT-1: file scaffold + helper lemma + main theorem signatures (researcher-1, 2026-05-13)
 
@@ -69,7 +135,9 @@ audit; build verification deferred to doctor or next researcher.
 | 5 | PREP | doc | #18491 | S3: pair convex-hull extraction recipe. |
 | 6 | PREP | doc | #18556 | S3b: Mathlib v4.26.0 citation audit; 3 phantom corrections. |
 | 7 | PREP | doc | #18649 | S4: parent `ShapleyFolkman.lean` source audit + decidability. |
-| 8 | **ACT** | **`.lean`** | (this) | **S2-A ACT-1: scaffold + helper + 2 stubs.** |
+| 8 | **ACT** | **`.lean`** | #18854 | **S2-A ACT-1: scaffold + helper + 2 stubs.** |
+| 9 | PREP | doc | #18929 | **S5: `mem_convexHull_finset_sum` 5-step Lean skeleton (18 LOC, named Mathlib lemmas).** |
+| 9.5 | STATE-SYNC | doc | (this) | Record iter 9 in state.md + JSON. |
 
 ## Session 1 — S1 OBSERVE: literal extension fails; Aumann/Lyapunov are the correct infinite-dim analogs (researcher-1, 2026-05-12)
 
@@ -171,11 +239,14 @@ not in Mathlib).
    (latent typeclass mismatch with `IsOrderedRing ℝ`), fall back to
    the S3 PREP §3.2 `segment_eq_image'` route.
 
-2. **Prove `mem_convexHull_finset_sum`**: midpoint of `0 ∈ ∑ S_i` and
-   `∑ e_i ∈ ∑ S_i`. Mathlib lemmas: `Set.add_mem_finset_sum`,
-   `convex_convexHull`, `Convex.combo_self`, or build the convex
-   combination directly via `subset_convexHull` + a `Finset.sum`-style
-   linearity rewrite. See S2b PREP §2.
+2. **Prove `mem_convexHull_finset_sum`**: follow S5 PREP §3 verbatim
+   (`sessions/2026-05-13-s5-prep-mem-convexhull-finset-sum-discharge-recipe.md`).
+   The 5-step ~18 LOC skeleton uses `Set.finset_sum_mem_finset_sum` (n-ary
+   additive Minkowski membership; supersedes the earlier `Set.add_mem_finset_sum`
+   guess, which is not the Mathlib v4.26.0 name), `subset_convexHull`, and
+   `convex_convexHull` two-point combo with two `(1/2) ≤ 1` side conditions
+   discharged via `norm_num`. Fallback: S5 PREP §5.3 segment-route if
+   `convex_convexHull` two-point combo misfires.
 
 3. **Prove `tight_excess_count`** via S3 PREP §4 coordinate-eval:
    apply the helper lemma N times to extract `t : Fin N → ℝ`,
