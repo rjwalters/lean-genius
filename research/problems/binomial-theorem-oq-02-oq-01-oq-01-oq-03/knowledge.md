@@ -6,6 +6,68 @@ coordinate of `(X₁, …, Xₖ) ~ Multinomial(n, p₁, …, pₖ)` as `n → �
 
 ---
 
+## Session 2026-05-14 (Session 14, researcher-3) — PREP: Mathlib v4.26.0 CLT-bearer audit refutes S9 plan
+
+**Mode**: REVISIT (RICH, score 61) **Phase**: PREP (doc-only)
+**Status after S14**: BUILD VERIFIED unchanged (3209 jobs); 0 sorries / 1 axiom.
+
+S14 audits the cited Mathlib bearers for the Phase-4 axiom-elimination plan
+that S9 (researcher-8, 2026-05-08) committed to, against the lake-pinned
+v4.26.0 SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Full session log
+at `sessions/2026-05-14-s14-prep-mathlib-v426-clt-bearer-audit.md`.
+
+### Key findings
+
+| Bearer | Status @ v4.26.0 pin | Location |
+|---|---|---|
+| `ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto` | ✅ Present | `Mathlib/MeasureTheory/Measure/Portmanteau.lean:350` |
+| `frontier_Iic` (requires `[NoMaxOrder α]`) | ✅ Present; ℝ instance auto | `Mathlib/Topology/Order/DenselyOrdered.lean:149` |
+| `HasOuterApproxClosed ℝ` (auto via PseudoMetrizableSpace) | ✅ Auto | `Mathlib/MeasureTheory/Measure/HasOuterApproxClosed.lean:217` |
+| `gaussianReal 0 1` + `IsProbabilityMeasure` + `NoAtoms` | ✅ Present | `Mathlib/Probability/Distributions/Gaussian/Real.lean:200/210/213` |
+| `PMF.binomial` | ✅ Present (PMF form only) | `Mathlib/Probability/ProbabilityMassFunction/Binomial.lean:29` |
+| `Mathlib.Probability.CentralLimitTheorem` | ❌ **Does not exist at pin** | — |
+| `iid_central_limit_theorem` | ❌ **No symbol anywhere in Mathlib at pin** | — |
+| `Mathlib.Probability.Distributions.Binomial` (Measure form) | ❌ Does not exist | — |
+
+### Critical correction
+
+S9's plan referenced `Mathlib.Probability.CentralLimitTheorem` as "Lindeberg–Lévy–style
+CLT scaffolding". **This file does not exist at the v4.26.0 pin.** The
+`Mathlib/Probability/` directory at the pin has `StrongLaw.lean` (with
+`strong_law_ae` and `strong_law_Lp` proved unconditionally) but no CLT
+analogue. Confirmed via:
+
+```
+gh api "repos/leanprover-community/mathlib4/git/trees/$SHA?recursive=true" \
+  --jq '.tree[].path' | grep -i -E 'CentralLimit|iid_central|/CLT'
+# → (empty)
+```
+
+The local `proofs/Proofs/CentralLimitTheorem.lean` provides
+`central_limit_theorem` (line 375) but depends on `clt_general_case_axiom`,
+`levy_continuity_axiom`, `charFun_normalized_sum_limit`,
+`gaussian_fourier_identity`, `stdGaussian`/`stdGaussian_isProbabilityMeasure`,
+`charFun_taylor_remainder`, `charFun_deriv_interchange`, and others.
+Importing it would swap one axiom for ≥7 — not an elimination per the
+Axiom Integrity Policy.
+
+### Phase-4 options (per S14 recommendation)
+
+1. **Defer (recommended).** Keep `binomial_clt_pointwise` honestly; the
+   `axiomatized` classification is correct, BUILD VERIFIED is stable. 0 LOC.
+2. **Local charFun construction.** Build the i.i.d. CLT input directly for
+   the Bernoulli/binomial case via `Mathlib.Probability.Moments.ComplexMGF`
+   + a local Lévy continuity. 200–400 LOC, still axiomatized (smaller axiom).
+3. **Track upstream.** When Mathlib lands a named CLT, the S9 template
+   becomes mechanically viable (50–100 LOC plug-in).
+
+### Verification trail (commands in session log)
+
+All bearers verified at SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` via
+`gh api .../contents/...?ref=<SHA>` and `gh api .../git/trees/<SHA>?recursive=true`.
+
+---
+
 ## Session 2026-05-13 (Session 10, researcher-6) — Sorry-site forensics + Mathlib v4.26 repair templates (doc-only PREP)
 
 **Mode**: PREP (RICH knowledge tier, score 52). Phase-4 unblocking work,
