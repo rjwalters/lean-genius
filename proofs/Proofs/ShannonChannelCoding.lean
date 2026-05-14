@@ -373,6 +373,96 @@ theorem fano_converse_shannon_form {α β : Type*} [Fintype α] [Fintype β]
   -- Rearrange `log |α| ≤ C + h(P_e) + P_e · log |α|` into the displayed form.
   nlinarith [hS6, h_pe_log]
 
+/-- **Fano-form marginal-entropy converse (S10, this iteration).**
+
+    Generalisation of `fano_converse_step` to arbitrary (not necessarily
+    uniform) X-marginals. For any joint distribution `pXY : α × β → ℝ`,
+
+    `H(p_X) ≤ I(X;Y) + h(P_e) + P_e · log(|α| - 1)`
+
+    where `p_X x := ∑ y, pXY (x, y)` is the X-marginal and `P_e` is the
+    Fano error term. The proof drops the `h_uniform` hypothesis from
+    `fano_converse_step`: instead of rewriting `H(p_X) ↦ log |α|`, the
+    chain rule's `H(p_X)` term is carried through directly.
+
+    Specialising via `entropy_of_uniform_eq_log_card` recovers
+    `fano_converse_step` when the X-marginal is uniform. Combined with
+    `entropy_lt_log_card_iff_non_uniform` (S9), it gives a strict-slack
+    interpretation: for any non-uniform X-marginal, `H(p_X) < log |α|`,
+    so this LHS is strictly below the (uniform-input) `log |α|` LHS of
+    `fano_converse_step` — quantifying the entropy gap as a lower bound
+    on the slack in the single-letter converse. -/
+theorem fano_converse_step_marginal {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β]
+    (pXY : α × β → ℝ) (hp : ∀ xy, 0 ≤ pXY xy)
+    (hsum : ∑ xy : α × β, pXY xy = 1) :
+    let P_e := 1 - ∑ y : β, ∑ x : α, pXY (x, y) ^ 2 / (∑ x' : α, pXY (x', y))
+    shannonEntropy (fun x : α => ∑ y : β, pXY (x, y)) ≤
+      mutualInformation pXY +
+      InformationTheory.BinaryEntropy.h P_e +
+      P_e * Real.log ((Fintype.card α : ℝ) - 1) := by
+  intro P_e
+  -- I(X;Y) = H(X-marginal) - H(X|Y); no uniform hypothesis, so H(X-marginal) stays.
+  have hchain : mutualInformation pXY =
+      shannonEntropy (fun x : α => ∑ y : β, pXY (x, y)) -
+        conditionalEntropy pXY := chain_rule hp hsum
+  -- Fano: H(X|Y) ≤ h(P_e) + P_e · log(|α| - 1).
+  have hfano := fano_inequality pXY hp hsum
+  -- Combine algebraically.
+  linarith
+
+/-- **Marginal-entropy single-letter converse with channel capacity (S10).**
+
+    For a channel `ch : DMChannel α β` and any input distribution `inp`,
+
+    `H(inp.p) ≤ channelCapacity ch + h(P_e) + P_e · log(|α| - 1)`
+
+    where `P_e` is the Fano error term for `jointDist ch inp`. This is
+    the non-uniform-input generalisation of `fano_converse_capacity`:
+    `log |α|` on the LHS is replaced by the actual input marginal
+    entropy `H(inp.p)`. Both sides reduce to `fano_converse_capacity`
+    when `inp` is uniform, via `entropy_of_uniform_eq_log_card`.
+
+    The proof composes `fano_converse_step_marginal` (this file,
+    abstract joint-distribution form) with `channelMI_le_capacity` (this
+    file, line 138), using the X-marginal identity
+    `(fun x => ∑ y, jointDist ch inp (x, y)) = inp.p` — which follows
+    from `∑ y, ch.W x y = 1` (channel rows are probability
+    distributions).
+
+    Quantitatively, by S9 (`entropy_lt_log_card_iff_non_uniform`),
+    `H(inp.p) < log |α|` whenever `inp.p` is non-uniform; the gap
+    `log |α| - H(inp.p) > 0` is the strict slack between this
+    non-uniform-input bound and the worst-case uniform-input bound
+    `fano_converse_capacity`. -/
+theorem fano_converse_marginal {α β : Type*} [Fintype α] [Fintype β]
+    [DecidableEq α] [DecidableEq β]
+    (ch : DMChannel α β) (inp : InputDist α) :
+    let P_e := 1 - ∑ y : β, ∑ x : α,
+                 jointDist ch inp (x, y) ^ 2 /
+                   (∑ x' : α, jointDist ch inp (x', y))
+    shannonEntropy inp.p ≤
+      channelCapacity ch +
+      InformationTheory.BinaryEntropy.h P_e +
+      P_e * Real.log ((Fintype.card α : ℝ) - 1) := by
+  intro P_e
+  -- The X-marginal of `jointDist ch inp` equals `inp.p`,
+  -- since `∑ y, ch.W x y = 1` (channel rows are probability distributions).
+  have h_marg : (fun x : α => ∑ y : β, jointDist ch inp (x, y)) = inp.p := by
+    funext x
+    show ∑ y : β, inp.p x * ch.W x y = inp.p x
+    rw [← Finset.mul_sum, ch.sum_one, mul_one]
+  -- Apply the abstract marginal-form converse step to the joint distribution.
+  have hstep := fano_converse_step_marginal (jointDist ch inp)
+    (jointDist_nonneg ch inp) (jointDist_sum_one ch inp)
+  rw [h_marg] at hstep
+  -- Replace mutualInformation with channelCapacity via channelMI_le_capacity.
+  have hcap : mutualInformation (jointDist ch inp) ≤ channelCapacity ch := by
+    show channelMI ch inp ≤ channelCapacity ch
+    exact channelMI_le_capacity ch inp
+  -- Combine the two bounds.
+  linarith
+
 /- ## Main theorems -/
 
 /-- **Channel coding theorem (achievability).**
