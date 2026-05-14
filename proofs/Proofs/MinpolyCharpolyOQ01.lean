@@ -104,6 +104,18 @@ classification, completing the case-by-case coverage of every
   index Jordan block agrees with the zero matrix), useful for
   inductive arguments on block dimension.
 
+The S3 iteration added `JordanBlockShape.eigenvalueMultiset_card_eq_totalDim`
+(Multiset.card of the eigenvalue multiset equals totalDim). The S4-E
+iteration (this PR) adds the `toFinset.card`-side refinement:
+
+* **`JordanBlockShape.eigenvalueMultiset_toFinset_card_le_totalDim`** —
+  the underlying-set cardinality of `eigenvalueMultiset` is at most
+  `totalDim`.
+* **`JordanBlockShape.eigenvalueMultiset_toFinset_card_eq_totalDim_iff`**
+  — the bound is tight iff `eigenvalueMultiset` is `Nodup`, which
+  characterises the "diagonalisable, simple spectrum" boundary of the
+  JNF shape data.
+
 These lemmas do **not** discharge any of OQ-01-OQ-01..04. The single
 sorry on `jordan_normal_form_exists` is the entire JNF assembly. The
 contribution of S1+S2 is the resolution of the OQ at the strategy
@@ -129,6 +141,10 @@ upcoming OQ-01-OQ-01 charpoly identity will consume.
 * [x] Scaffold (JordanBlockShape, jordanBlock, sanity lemmas)
 * [x] Entry-wise classification of `jordanBlock` (S2: `_off_diag_eq`,
   `_zero_dim`)
+* [x] `eigenvalueMultiset` cardinality API (S3:
+  `eigenvalueMultiset_card_eq_totalDim`; S4-E:
+  `eigenvalueMultiset_toFinset_card_le_totalDim` +
+  `_eq_totalDim_iff`)
 * [ ] Discharge `jordan_normal_form_exists` (sorry-guarded — deferred to sub-OQs)
 
 ## Mathlib Dependencies
@@ -251,6 +267,42 @@ theorem JordanBlockShape.eigenvalueMultiset_card_eq_totalDim {K : Type*}
     [DecidableEq K] (S : JordanBlockShape K) :
     Multiset.card S.eigenvalueMultiset = S.totalDim :=
   eigenvalueMultiset_card_aux S.blocks
+
+/-! ## S4-E: distinctness bound on `eigenvalueMultiset.toFinset.card`
+
+A refinement of S3-D: the cardinality of the *underlying set* of eigenvalues
+(`eigenvalueMultiset.toFinset`) is at most `totalDim`, with equality exactly
+when the eigenvalue multiset is `Nodup` — i.e. every eigenvalue appears with
+multiplicity 1, which forces every block to have size 1 and all eigenvalues
+to be pairwise distinct. This is the natural "all-eigenvalues-distinct"
+boundary on the JNF shape data, and the canonical witness for the
+"diagonalisable with simple spectrum" case (where the JNF reduces to a
+diagonal matrix). Pure API, composed from S3-D and the Mathlib lemmas
+`Multiset.toFinset_card_le` and
+`Multiset.toFinset_card_eq_card_iff_nodup`. -/
+
+/-- **S4-E (bound)**: the underlying-set cardinality of `eigenvalueMultiset`
+is at most `totalDim`. Each distinct eigenvalue corresponds to at least one
+block; the bound is tight iff every block has size 1 AND no two blocks
+share an eigenvalue (see `eigenvalueMultiset_toFinset_card_eq_totalDim_iff`). -/
+theorem JordanBlockShape.eigenvalueMultiset_toFinset_card_le_totalDim
+    {K : Type*} [DecidableEq K] (S : JordanBlockShape K) :
+    S.eigenvalueMultiset.toFinset.card ≤ S.totalDim := by
+  rw [← S.eigenvalueMultiset_card_eq_totalDim]
+  exact Multiset.toFinset_card_le (m := S.eigenvalueMultiset)
+
+/-- **S4-E (equality)**: the bound
+`eigenvalueMultiset.toFinset.card ≤ totalDim` is an equality iff
+`eigenvalueMultiset` is `Nodup`. This characterises the
+"simple-spectrum, every-block-size-1" JNFs: their shape data has all
+eigenvalues pairwise distinct AND every block has size 1, so that the
+multiset of eigenvalues is also a set (no repetitions). -/
+theorem JordanBlockShape.eigenvalueMultiset_toFinset_card_eq_totalDim_iff
+    {K : Type*} [DecidableEq K] (S : JordanBlockShape K) :
+    S.eigenvalueMultiset.toFinset.card = S.totalDim ↔
+      S.eigenvalueMultiset.Nodup := by
+  rw [← S.eigenvalueMultiset_card_eq_totalDim]
+  exact Multiset.toFinset_card_eq_card_iff_nodup (m := S.eigenvalueMultiset)
 
 /-
 ## Main JNF Existence Theorem (statement only — proof deferred)

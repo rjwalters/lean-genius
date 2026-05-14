@@ -33,18 +33,19 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T11:55:00Z",
-    "iteration": 2,
-    "focus": "S2 ACT (researcher-6, 2026-05-12) — entry-wise API completion + incidental S1 drift-fix: added two unconditional API lemmas to MinpolyCharpolyOQ01.lean: (a) `jordanBlock_off_diag_eq` — entries (i,j) with i ≠ j and (j : Nat) ≠ (i : Nat) + 1 are 0, completing the three-way entry classification alongside `_diag_eq` (S1) and `_super_diag_eq` (S1); (b) `jordanBlock_zero_dim` — `jordanBlock R λ 0 = 0`, the empty-index Jordan block equals the zero matrix (useful for inductive arguments on block dimension). Build verification also uncovered and fixed a latent Mathlib drift in S1's `totalDim_empty`: the v4.26.0 signature change of `List.not_mem_nil` to `(h : a ∈ []) → False` broke S1's `absurd hp (List.not_mem_nil _)` witness; replaced with the API-independent `nomatch hp`. File 228 → 260 lines (+32 = 27 new lemmas + 5 drift-fix), sorries unchanged at 1 (the load-bearing jordan_normal_form_exists sorry from S1), 0 axioms, theorems 4 → 6. Build verified locally via Docker (Mathlib cache hit).",
+    "iteration": 4,
+    "focus": "S4-E ACT (PR pending, researcher-9, 2026-05-14, build verified 3081 jobs at v4.26.0): added toFinset.card-side cardinality/distinctness API extending S3-D. Two new public theorems: eigenvalueMultiset_toFinset_card_le_totalDim (≤) and _eq_totalDim_iff_nodup (iff). Baseline build of S3 PR #18134 also confirmed clean at v4.26.0 — its (build pending) marker can be retired.",
     "blockers": [],
-    "nextAction": "S3 candidate A (still recommended from S1): open child OQ minpoly-charpoly-oq-01-oq-01 and scaffold MinpolyCharpolyOQ01OQ01.lean with the jordanBlock charpoly identity (jordanBlock R λ d).charpoly = (X - C λ)^d, minpoly identity, nilpotent-shift identity (jordanBlock R 0 d)^d = 0. The three entry-wise lemmas from S1+S2 are the API inputs. Alternative S3 candidate D: add `eigenvalueMultiset_card_eq_totalDim` lemma (`(S.eigenvalueMultiset).card = S.totalDim`) via induction on S.blocks using Multiset.card_replicate — pure API, no Mathlib drift risk.",
+    "nextAction": "S5 candidate A: open child OQ minpoly-charpoly-oq-01-oq-01 and scaffold MinpolyCharpolyOQ01OQ01.lean with jordanBlock.charpoly = (X - C λ)^d identity (~80 lines, fully dischargable, no sorry). S5 candidate B: upgrade jordan_normal_form_exists to strong form (∃ invertible P), still sorry-guarded. S5 candidate C: begin OQ-01-OQ-02 (nilpotent canonical form, ~400 lines, the load-bearing piece).",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 2,
-      "approachesTried": 1
+      "approachesTried": 1,
+      "S4": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE (researcher-12, 2026-05-12, this PR) — SCAFFOLD: created `Proofs/MinpolyCharpolyOQ01.lean` with JordanBlockShape structure, jordanBlock matrix definition, main JNF existence theorem statement (1 sorry, weak form), two unconditional API lemmas on jordanBlock (diagonal and super-diagonal entries), and totalDim_empty sanity lemma. Gallery entry (this JSON) + research markdown + manifest import included. Four-ingredient resolution documented: gen-eigenspace decomposition (Mathlib) + internal direct sum (Mathlib) + Jordan-Chevalley (Mathlib) + nilpotent canonical form (LOCAL GAP). Sub-OQ decomposition (OQ-01-OQ-01 .. OQ-01-OQ-04) sized at ~930 lines total. Comparison with sibling OQ-03 (RCF): same overall size, dual structure (alg-closed vs any field; Jordan block vs companion matrix; Mathlib gap on per-block model vs Mathlib gap-free).",
+    "progressSummary": "S1 OBSERVE (PR #18045) + S2 ACT (PR #18106, entry-wise jordanBlock API + drift-fix) + S3 ACT (PR #18134, eigenvalueMultiset_card_eq_totalDim) + S4-E ACT (this PR, toFinset.card ≤ totalDim + iff-Nodup). Build-verified at v4.26.0 (3081 jobs). 9 theorems, 0 axioms, 1 sorry (jordan_normal_form_exists, load-bearing, deferred to OQ-01-OQ-04). Definitions/structures stable at 4 since S2. The cardinality/distinctness API is now complete on the JordanBlockShape side; remaining work is per-eigenspace and global assembly (OQ-01-OQ-02..04).",
     "builtItems": [
       "JordanBlockShape K (structure): bundles `blocks : List (K × Nat)` and positivity-of-block-sizes proof as a first-class JNF descriptor.",
       "JordanBlockShape.totalDim (def): the sum of all block sizes — the total dimension of the Jordan-form matrix.",
@@ -56,14 +57,16 @@
       "totalDim_empty (theorem, unconditional): the empty JordanBlockShape has totalDim = 0.",
       "**(S2 NEW)** jordanBlock_off_diag_eq (theorem, unconditional): entries (i,j) of jordanBlock R λ d with i ≠ j and (j : Nat) ≠ (i : Nat) + 1 are 0 — the third case of the entry-wise classification, completing the three-way partition of Fin d × Fin d.",
       "**(S2 NEW)** jordanBlock_zero_dim (theorem, unconditional): `jordanBlock R λ 0 = 0` — the empty-index Jordan block equals the zero matrix, useful for inductive arguments on block dimension.",
-      "**(S2 DRIFT-FIX)** totalDim_empty proof updated: replaced S1's `absurd hp (List.not_mem_nil _)` (broken by Mathlib v4.26.0 signature change of `List.not_mem_nil` from `a ∉ ([] : List α)` to `(h : a ∈ []) → False`) with the API-independent `nomatch hp`. The theorem statement is unchanged."
+      "**(S2 DRIFT-FIX)** totalDim_empty proof updated: replaced S1's `absurd hp (List.not_mem_nil _)` (broken by Mathlib v4.26.0 signature change of `List.not_mem_nil` from `a ∉ ([] : List α)` to `(h : a ∈ []) → False`) with the API-independent `nomatch hp`. The theorem statement is unchanged.",
+      "S4-E ACT (PR pending): added JordanBlockShape.eigenvalueMultiset_toFinset_card_le_totalDim + _eq_totalDim_iff_nodup API lemmas in MinpolyCharpolyOQ01.lean (+14 LOC + ~38 doc; 304 → 356 LOC). Build verified 3081 jobs at v4.26.0 — S3 PR #18134 baseline + new lemmas, iter 2 after typeclass-stuck on iter 1 (needed named (m := S.eigenvalueMultiset)). 7 → 9 theorems; sorries 1 unchanged; axioms 0 unchanged."
     ],
     "insights": [
       "**Four-ingredient resolution**: gen-eigenspace decomposition + internal direct sum + Jordan-Chevalley + nilpotent canonical form. Three ingredients confirmed in Mathlib v4.26.0; the fourth (nilpotent canonical form) is a self-contained classical proof (~400 lines), not a genuine obstacle. The OQ resolves AFFIRMATIVELY at the strategy level.",
       "**The Mathlib gap**: a 2026-05-12 search of Mathlib at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 finds no `jordanBlock` definition and no nilpotent-shift-basis theorem. The only `Jordan*` files are JordanChevalley (semisimple+nilpotent split, not blocks), Algebra/Jordan/Basic (Jordan algebras, unrelated), and measure-theory Hahn-Jordan files.",
       "**Comparison with OQ-03 (RCF)**: the two normal forms are dual. JNF requires algebraically closed (or perfect, with caveats) and uses Jordan blocks; RCF works over any field and uses companion matrices. JNF has a Mathlib gap on the per-block model; RCF has its per-block model already in-tree. Estimated effort: ~930 lines (JNF) vs ~900 lines (RCF).",
       "**Structure-encoded shape**: bundling the multiset of (eigenvalue, block size) pairs as a single `JordanBlockShape` structure makes downstream statements concise (the strong-form statement is one line of similarity, not one line per eigenvalue).",
-      "**Weak vs strong JNF**: S1 asserts only existence of a `JordanBlockShape` of the correct total dimension. The strong form (existence of an invertible similarity transform P) is the target of OQ-01-OQ-04 and is a ~5-line statement edit on top of S1's weak form."
+      "**Weak vs strong JNF**: S1 asserts only existence of a `JordanBlockShape` of the correct total dimension. The strong form (existence of an invertible similarity transform P) is the target of OQ-01-OQ-04 and is a ~5-line statement edit on top of S1's weak form.",
+      "S4-E API closes the JNF cardinality/distinctness surface: `Multiset.card eigenvalueMultiset = totalDim` (S3) + `toFinset.card ≤ totalDim` (S4-E bound) + `toFinset.card = totalDim ↔ Nodup` (S4-E equality). The equality case characterises the diagonalisable simple-spectrum boundary (every block size 1 AND all eigenvalues distinct), which is the natural shape predicate the OQ-01-OQ-03 per-eigenspace assembly will consume."
     ],
     "mathlibGaps": [
       "Nilpotent canonical form (Jordan basis for nilpotent operators) — no `jordanBlock` definition and no nilpotent-shift-basis theorem in Mathlib v4.26.0. This is the load-bearing OQ-01-OQ-02 (~400 lines). Standard textbook construction (Axler §8.D) — cyclic-vector chains + linear-independence + dimension count.",
@@ -145,5 +148,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ01.lean"
     }
-  ]
+  ],
+  "lastUpdated": "2026-05-14T20:08:00.000Z"
 }

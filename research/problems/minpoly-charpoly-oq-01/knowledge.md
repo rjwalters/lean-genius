@@ -1,5 +1,61 @@
 # Knowledge — minpoly-charpoly-oq-01
 
+## S4-E (2026-05-14, researcher-9) — toFinset.card / Nodup API
+
+The S3 PR #18134 established `Multiset.card eigenvalueMultiset = totalDim`.
+The natural follow-on is the `toFinset.card` side of the cardinality story.
+Two Mathlib lemmas exist in `Mathlib/Data/Finset/Card.lean` (v4.26.0):
+
+* `Multiset.toFinset_card_le : #m.toFinset ≤ Multiset.card m` (line 183)
+* `Multiset.toFinset_card_eq_card_iff_nodup : #m.toFinset = card m ↔ m.Nodup`
+  (line 194)
+
+Composing these with S3's `eigenvalueMultiset_card_eq_totalDim` gives:
+
+* **`eigenvalueMultiset_toFinset_card_le_totalDim`** — the underlying-set
+  cardinality of `eigenvalueMultiset` is `≤ totalDim`. Each distinct
+  eigenvalue corresponds to at least one block, but a single eigenvalue may
+  contribute multiple blocks (and a single block of size `d ≥ 2` already
+  gives `d > 1` multiset elements).
+* **`eigenvalueMultiset_toFinset_card_eq_totalDim_iff`** — the bound is an
+  equality iff `eigenvalueMultiset.Nodup`. This is the "every-block-size-1
+  AND all-eigenvalues-distinct" boundary: simple-spectrum diagonalisable
+  matrices. The forward direction is exactly the predicate the standard
+  diagonalisability theorem will consume.
+
+### Typeclass note
+
+Both Mathlib lemmas take the underlying multiset `m` implicitly, and the
+elaborator gets stuck on `DecidableEq ?m` after the `rw` step. The fix is
+to supply the named argument `(m := S.eigenvalueMultiset)`; this fully
+determines `m`, and the `DecidableEq K` instance threads through from the
+theorem's typeclass binder. Build iter 1 failed without it
+("typeclass instance problem is stuck"); iter 2 cleared.
+
+### Build status post-S4-E
+
+* `proofs/Proofs/MinpolyCharpolyOQ01.lean`: 304 → 356 LOC, 9 theorems, 0
+  axioms, 1 sorry (`jordan_normal_form_exists` — load-bearing, deferred).
+* Docker-verified at v4.26.0 (3081 jobs).
+* S3 PR #18134's "(build pending)" status is also retired by this PR's
+  baseline build.
+
+### What the API enables
+
+Any future per-eigenspace assembly (OQ-01-OQ-03) will produce a
+`JordanBlockShape K` whose `eigenvalueMultiset` agrees with the
+characteristic-polynomial root multiset of the original matrix. The
+"simple spectrum" case (charpoly has distinct roots, equivalently
+`f` is diagonalisable with `n` distinct eigenvalues) is then characterised
+by `eigenvalueMultiset_toFinset_card_eq_totalDim_iff.mp` —
+i.e. the simple-spectrum diagonalisable matrices are exactly those whose
+shape has `toFinset.card = totalDim`. This bridges OQ-01 with the
+companion sub-OQ **minpoly-charpoly-oq-02** (diagonalisability ↔
+squarefree minpoly), connecting the cardinality story to the
+diagonalisability characterisation.
+
+---
+
 ## Mathlib `v4.26.0` Infrastructure Survey
 
 Pin: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.

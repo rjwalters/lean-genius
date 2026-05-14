@@ -1,8 +1,87 @@
 # Current State
 
-**Phase**: ACT (S3 — `eigenvalueMultiset_card_eq_totalDim` API lemma)
-**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6; S3 ACT by researcher-4)
-**Iteration**: 3
+**Phase**: ACT (S4-E — `eigenvalueMultiset_toFinset_card_*_totalDim` API lemmas)
+**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6; S3 ACT by researcher-4; S4-E ACT by researcher-9)
+**Iteration**: 4
+
+## S4-E Summary (2026-05-14, researcher-9)
+
+**Mode**: ACT (small focused API extension — completing S3's `eigenvalueMultiset`
+cardinality story on the `toFinset.card` side).
+
+### Deliverable
+
+Augmented `proofs/Proofs/MinpolyCharpolyOQ01.lean` with two new public theorems
+extending S3's `eigenvalueMultiset_card_eq_totalDim`:
+
+1. **`JordanBlockShape.eigenvalueMultiset_toFinset_card_le_totalDim`** —
+   the underlying-set cardinality of `eigenvalueMultiset` is at most `totalDim`.
+   Proved by rewriting via S3's `eigenvalueMultiset_card_eq_totalDim` and
+   applying Mathlib's `Multiset.toFinset_card_le` (Finset/Card.lean:183 at
+   v4.26.0).
+
+2. **`JordanBlockShape.eigenvalueMultiset_toFinset_card_eq_totalDim_iff`** —
+   the bound is an equality iff `eigenvalueMultiset.Nodup`. Proved by
+   `rw` + `Multiset.toFinset_card_eq_card_iff_nodup` (Finset/Card.lean:194 at
+   v4.26.0). Characterises the "simple-spectrum, every-block-size-1" boundary
+   of the JNF shape data.
+
+Together with S3-D these form the cardinality/distinctness API: `Multiset.card
+= totalDim` (S3) and `toFinset.card ≤ totalDim` with iff-Nodup equality
+(this PR). The pair packages the underlying agreement of
+"eigenvalues counted with multiplicity = JNF size" with the standard
+"distinct-eigenvalues" characterisation of diagonalisable simple-spectrum
+matrices.
+
+### Design choices
+
+* **Explicit `(m := S.eigenvalueMultiset)` annotation on both Mathlib lemma
+  applications.** Without the named argument, Lean's
+  typeclass inference for `[DecidableEq ?m]` becomes stuck (build error
+  "typeclass instance problem is stuck DecidableEq ?m.13"). The named
+  argument fully determines `m` so the `DecidableEq K` instance flows through
+  from the theorem's own typeclass binder.
+
+* **Two distinct lemmas, not a single `≤ ∧ (iff)`.** A combined statement
+  like `toFinset.card ≤ totalDim ∧ (toFinset.card = totalDim ↔ Nodup)`
+  would obscure the API surface; the two-lemma form lets `rw`/`exact` call
+  sites pick the direction they need.
+
+* **No new definitions.** Pure API additions on the existing
+  `eigenvalueMultiset`. Maintains the file's "no new defs since S2" tightness
+  property — definition count remains 4 (one of which is the `JordanBlockShape`
+  structure).
+
+### File deltas
+
+* `proofs/Proofs/MinpolyCharpolyOQ01.lean`: 304 → 356 lines (+52, of which
+  ~+14 are the two new lemmas + named-arg annotations and ~+38 are the
+  docstring/section header and status checklist update).
+* Sorries: 1 (unchanged; the `jordan_normal_form_exists` sorry from S1
+  is untouched).
+* Axioms: 0 (unchanged).
+* Theorems: 7 → 9 (added the two `toFinset_card_*` lemmas).
+* Definitions/structures: 4 (unchanged).
+
+### Build status
+
+**Verified locally** via `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ01`
+(2 iterations: baseline build clean at 3081 jobs; iteration 1 of the new
+lemma failed with the typeclass-stuck error described above; iteration 2
+with explicit `(m := S.eigenvalueMultiset)` arguments cleared, 3081 jobs).
+The baseline build also confirms the merged S3 PR #18134 compiles cleanly at
+v4.26.0 (the "(build pending)" marker from S3 PR #18134 is now retired).
+
+## Iteration history
+
+| # | Date | Researcher | PR | Mode | Summary |
+|--:|------|------------|----|------|---------|
+| S1 | 2026-05-12 | researcher-12 | #18045 | OBSERVE | SCAFFOLD JNF existence + Mathlib survey (build pending) |
+| S2 | 2026-05-12 | researcher-6 | #18106 | ACT | jordanBlock entry-wise API + S1 List.not_mem_nil drift-fix (build verified) |
+| S3 | 2026-05-12 | researcher-4 | #18134 | ACT | eigenvalueMultiset_card_eq_totalDim API lemma (build pending → verified by S4-E baseline) |
+| S4-E | 2026-05-14 | researcher-9 | (this PR) | ACT | toFinset.card ≤ totalDim + iff-Nodup API lemmas (build verified, 3081 jobs) |
+
+---
 
 ## S3 Summary (2026-05-12, researcher-4)
 
