@@ -387,7 +387,13 @@ private lemma piAntidiag_apply_le {α : Type*} [DecidableEq α]
   · -- i₀ ∈ s: bound by the sum.
     have hle : k i₀ ≤ ∑ i ∈ s, k i :=
       Finset.single_le_sum (s := s) (f := k) (fun i _ => Nat.zero_le _) h
-    omega
+    -- S12 (researcher-9, 2026-05-13): replace bare `omega` with explicit
+    -- chain. Reason: in Mathlib v4.26.0, `Finset.mem_piAntidiag` gives
+    -- `hksum : s.sum k = n` (dot-notation form), which omega's preprocessor
+    -- does NOT unify with `hle`'s `∑ i ∈ s, k i` form, despite definitional
+    -- equality. The calc chain is bulletproof against this notation skew.
+    calc k i₀ ≤ ∑ i ∈ s, k i := hle
+      _       = n             := hksum
   · -- i₀ ∉ s: support condition forces k i₀ = 0.
     by_contra hne
     push_neg at hne
@@ -534,7 +540,16 @@ theorem binomialCDF_le_one (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
     have hp_eq : p + (1 - p) = (1 : ℝ) := by ring
     rw [hp_eq, one_pow] at hadd
     -- hadd : (1 : ℝ) = ∑ k, p^k * (1 − p)^(n−k) * (Nat.choose n k : ℝ)
-    rw [← hadd]
+    -- S12 (researcher-9, 2026-05-13): use targeted `conv_rhs => rw [hadd]`
+    -- to substitute ONLY the goal's RHS `1` with `∑ m, p^m * (1-p)^(n-m)
+    -- * choose`. A bare `rw [hadd]` would also rewrite the inner `1`
+    -- inside `(1 - p)^(n-j)`, mangling the goal. The `← hadd` direction
+    -- can't find the sum-pattern in the LHS because `binomialCDF` uses
+    -- `choose * p^m * (1-p)^(n-m)` order (choose first), but `add_pow`
+    -- in Mathlib v4.26.0 produces `p^m * (1-p)^(n-m) * choose` order
+    -- (choose last). The subsequent `sum_congr + ring` normalises
+    -- per-term multiplication order.
+    conv_rhs => rw [hadd]
     refine Finset.sum_congr rfl (fun j _ => ?_)
     ring
   -- Step 2: replace `1` on the RHS with the equivalent sum.
@@ -606,7 +621,13 @@ theorem binomialCDF_eq_one (n : ℕ) {p : ℝ} (hp0 : 0 ≤ p) (hp1 : p ≤ 1)
   have hadd := add_pow p (1 - p) n
   have hp_eq : p + (1 - p) = (1 : ℝ) := by ring
   rw [hp_eq, one_pow] at hadd
-  rw [← hadd]
+  -- S12 (researcher-9, 2026-05-13): use targeted `conv_rhs => rw [hadd]`
+  -- (same fix as `binomialCDF_le_one` above) — a bare `rw [hadd]` would
+  -- also rewrite the inner `1` inside `(1 - p)^(n-j)`, mangling the goal.
+  -- Multiplication-order mismatch between `add_pow`'s `p^k * (1-p)^(n-k)
+  -- * choose` and `binomialCDF`'s `choose * p^k * (1-p)^(n-k)` is
+  -- normalised by the subsequent sum_congr + ring step.
+  conv_rhs => rw [hadd]
   refine Finset.sum_congr rfl (fun j _ => ?_)
   ring
 

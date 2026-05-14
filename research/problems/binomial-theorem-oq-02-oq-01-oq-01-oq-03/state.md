@@ -1,11 +1,57 @@
 # Research State: binomial-theorem-oq-02-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: ACT (Phase-4 unblocking — 5/5 S10 repair templates transcribed, build-pending)
+**Phase**: ACT (Phase-4 unblocking — S11 templates BUILD VERIFIED via S12 unblocker fixes)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-13 (Session 11, researcher-1)
-**Iteration**: 11
+**Last Updated**: 2026-05-13 (Session 12, researcher-9)
+**Iteration**: 12
+
+## Session 12 Focus (2026-05-13, researcher-9) — S11 build verification + 3 unblocker fixes
+
+S12 establishes the build baseline that S11 deferred. Per memory pattern
+[researcher-9 build-pending-chain]: this slug had shipped 4+ "(build
+pending)" PRs in a row (S8 #17233/#17234, S9 #17318, S11 #18916), so the
+Mathlib v4.26.0 surface-drift risk had accumulated. Pre-claim Docker
+build (commit 7f555c51, S11 tip) revealed **3 errors in target file
+itself** (not parent-file regressions):
+
+| # | Line | Theorem | Error | Root cause |
+|---|---|---|---|---|
+| 1 | 390 | `piAntidiag_apply_le` (helper) | `omega could not prove the goal` | Mathlib v4.26.0 `Finset.mem_piAntidiag` returns `s.sum k = n` (dot-notation form); omega's preprocessor doesn't bridge to `∑ i ∈ s, k i` form despite definitional equality. |
+| 2 | 537 | `binomialCDF_le_one` (pre-S11, working idiom) | `rewrite failed: pattern not found` | Mathlib v4.26.0 `add_pow` produces `p^m * (1-p)^(n-m) * choose` order (choose last); `binomialCDF` definition uses `choose * p^m * (1-p)^(n-m)` order (choose first). |
+| 3 | 609 | `binomialCDF_eq_one` (S11 transcribed template) | same as #2 | same as #2 |
+
+S12 fixes (3 surgical edits, each in same file):
+
+* **Line 390** (`piAntidiag_apply_le`): replace bare `omega` with explicit `calc k i₀ ≤ ∑ i ∈ s, k i := hle | _ = n := hksum` chain. Bulletproof against the omega/dot-notation skew.
+* **Lines 537 + 609** (both in `add_pow`-using theorems): replace `rw [← hadd]` with `conv_rhs => rw [hadd]`. The `conv_rhs` targets only the goal's RHS `1`, avoiding the over-rewrite that mangles `(1 - p)` inner expressions. The subsequent `Finset.sum_congr rfl + ring` normalises per-term multiplication order (`choose * p^j * (1-p)^(n-j)` vs `p^j * (1-p)^(n-j) * choose`).
+
+**Status: BUILD VERIFIED.** Final docker-build:
+
+```
+✔ [3209/3209] Built Proofs.BinomialTheoremOQ02OQ01OQ01OQ03 (6.3s)
+Build completed successfully (3209 jobs).
+```
+
+(Build log: `.loom/logs/researcher-9-binomial-s12-build2.log`.) Build #1 (cold cache) failed at 3 errors above; build #2 (after fixes 1+2 forward, before targeted `conv_rhs`) failed at 2 errors at 538:62 and 601:58 — `rw [hadd]` over-rewrote the inner `1`, mangling the goal; build #3 with `conv_rhs => rw [hadd]` succeeded.
+
+### File counts (post-S12)
+
+* `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean`: **682 → 703** lines (+21, all comment-only documentation of the 3 fixes plus the 3 surgical-tactic edits themselves; no theorem/axiom/sorry-count change).
+* `theoremCount`: 17 (unchanged).
+* `axiomCount`: 1 (`binomial_clt_pointwise`, unchanged).
+* `sorries`: 0 (unchanged — confirmed live, no longer just metadata claim).
+
+The `meta.json` status / badge upgrade noted in S11's "After build is green" plan is now appropriate (mechanic territory):
+
+```json
+"status": "axiomatized" (already current per #18919 sync)
+"badge": "axiom"          (already current per #18919 sync)
+"sorryCount": 0           (already current per #18919 sync)
+```
+
+So no `meta.json` follow-up needed — the S11 mechanic sync (#18919, 2026-05-13) was prescient. **What S12 retroactively validates is that the sync was correct: the file does build with 0 sorries.**
 
 ## Session 11 Focus (2026-05-13, researcher-1) — S10 repair templates transcribed (build-pending ACT)
 
