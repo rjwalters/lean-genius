@@ -36,21 +36,18 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08T03:30:00.000Z",
-    "iteration": 11,
-    "focus": "S11 ACT (researcher-1, 2026-05-13) transcribes the 5 S10 repair templates into proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean (544 -> ~658 LOC, 5 sorries -> 0, axiom count unchanged at 1). Status: BUILD-PENDING - templates carry forensic-certainty caveats from S10 risk notes (final tactic forms in sorries 1, 3, 4 may need closing-tactic refinement). The single remaining axiom is binomial_clt_pointwise (de Moivre-Laplace), preserved as Phase-4 elimination target. Doctor/Mechanic can iterate on closing tactics in isolation if Docker build reveals elaboration drift; safe fallback is selective revert + re-demote of regressing repairs only.",
-    "blockers": [
-      "Build-pending: ./proofs/scripts/docker-build.sh Proofs.BinomialTheoremOQ02OQ01OQ01OQ03 has NOT been run on the transcribed templates. S10 risk notes identify likely failure modes per sorry: (1) simpa using hsub final step; (2) sum_fiberwise_of_maps_to with-filter unification; (3) mul_nonneg / sum_le_sum signature drift; (4) dite-vs-ite from unfold; (5) clean composition, depends on (2).",
-      "binomial_clt_pointwise axiom remains (sole intended axiom). Cannot be discharged until the S11 repair build is green; then Phase-4 Portmanteau bridge work (S9 cdf_tendsto_of_inDistribution template) can resume."
-    ],
-    "nextAction": "S12 (Doctor or Mechanic): run ./proofs/scripts/docker-build.sh Proofs.BinomialTheoremOQ02OQ01OQ01OQ03 and refine closing tactics on any regressing repair (each is local; selective revert is safe). After build is green: meta.json sorries 5 -> 0, status formalized -> axiomatized, badge wip -> axiom (Mechanic inverse of PR #17331). Then resume Phase-4 Portmanteau axiom-elimination using S9 cdf_tendsto_of_inDistribution template documented in knowledge.md.",
+    "iteration": 12,
+    "focus": "S12 ACT (researcher-9, 2026-05-14, PR #18971) shipped 3 build-unblocker fixes to BinomialTheoremOQ02OQ01OQ01OQ03.lean (682 -> 703 LOC) retroactively verifying the S11 repair templates. The Docker-build chain now closes: Fix #1 (line 390) replaces bare omega with explicit calc chain to bridge mem_piAntidiag dot-notation to s.sum form; Fix #2 (line 537) + Fix #3 (line 609) replace `rw [← hadd]` with `conv_rhs => rw [hadd]` to target only the goal RHS without over-rewriting inner `(1 - p)` expressions. BUILD VERIFIED via ./proofs/scripts/docker-build.sh Proofs.BinomialTheoremOQ02OQ01OQ01OQ03: 3209 jobs, 6.3s on target file. Phase-4 axiom-elimination of binomial_clt_pointwise (de Moivre-Laplace) can now resume from a green baseline using the S9 cdf_tendsto_of_inDistribution Portmanteau template documented in knowledge.md.",
+    "blockers": [],
+    "nextAction": "S13 (next researcher): resume Phase-4 axiom-elimination work. Two complementary paths: (A) implement Mathlib.Probability.Distributions.Binomial bridge to ProbabilityTheory.tendsto_central_limit (Lindeberg-Lévy applied to the i.i.d. Bernoulli sum representation) and discharge binomial_clt_pointwise as a theorem; (B) Portmanteau-bridge approach using S9 cdf_tendsto_of_inDistribution template to derive pointwise CDF convergence from in-distribution convergence (the converse direction). Both are well-scoped multi-iteration work; (A) is cleaner because Mathlib's iid_central_limit_theorem is the canonical bearer.",
     "attemptCounts": {
-      "total": 11,
-      "currentApproach": 6,
+      "total": 12,
+      "currentApproach": 7,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "ACT phase (S11, 2026-05-13, researcher-1) - 5 S10 repair templates transcribed into proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean. File state: 544 lines / 5 sorries / 1 axiom -> ~658 lines / 0 sorries / 1 axiom (build-pending). Templates use only Mathlib v4.26 idioms already exercised elsewhere in the file. History: #16866 (S1-2), #16877 (S3), #16951 (S4), #16992 (S5), #17014 (S6), #17067 (S7), #17233 (S8 broke build), #17317 (issue), #17331 + #17353 (mechanic demote), S10 PR (forensic + templates), S11 (this session, transcribed templates). Status: BUILD-PENDING; the single remaining axiom is binomial_clt_pointwise. Next: S12 Doctor/Mechanic run Docker build, refine closing tactics on any regression, flip meta to axiomatized.",
+    "progressSummary": "ACT phase (S12, 2026-05-14, researcher-9, PR #18971) - 3 build-unblocker fixes retroactively verify the 5 S11 repair templates. File state: 682 lines / 0 sorries / 1 axiom -> 703 lines / 0 sorries / 1 axiom (BUILD VERIFIED, 3209 jobs). History: #16866 (S1-2), #16877 (S3), #16951 (S4), #16992 (S5), #17014 (S6), #17067 (S7), #17233 (S8 broke build), #17317 (issue), #17331 + #17353 (mechanic demote), #18812 (S10 forensic + templates), #18916 (S11 transcribed templates), #18919 (mechanic sorries 5->0 sync), #18971 (S12 ACT 3 unblocker fixes, build verified). Status: AXIOMATIZED at 1 axiom (binomial_clt_pointwise de Moivre-Laplace). Next: S13 Phase-4 axiom-elimination via Mathlib.Probability.Distributions.Binomial bridge to ProbabilityTheory.tendsto_central_limit (iid CLT on Bernoulli sum), or Portmanteau bridge via S9 cdf_tendsto_of_inDistribution template.",
     "builtItems": [
       "binomialCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:100 (concrete CDF of Binomial(n,p))",
       "multinomialMarginalCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:107 (marginal CDF of multinomial)",
@@ -169,7 +166,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-05-13T18:30:00.000Z",
+  "lastUpdate": "2026-05-14T07:50:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
