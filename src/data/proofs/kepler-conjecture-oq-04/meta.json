@@ -20,9 +20,9 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "lineCount": 225,
-    "assumptions": "0 sorries, 0 axioms in this file. The parent `Proofs/KeplerConjecture.lean` axiomatizes (a) `thues_theorem` (2D hexagonal optimality, Thue 1892 / Fejes Tóth 1940), (b) `fccDensity_lt_one` (numerical bound), and (c) the Kepler conjecture itself (Hales 1998, Flyspeck 2014). This OQ-04 file adds no new axioms — it defines the Chen-Engel-Glotzer rational constant 4000/4671 and the `tetrahedronDimerPacking : PackingDensity` instance, and proves five theorems including `tetrahedronDimerDensity_gt_fccDensity` (the central refutation `π/(3√2) < 4000/4671`, via `Real.pi_lt_315` and `Real.lt_sqrt`, axiom-free) and the existential corollary `exists_packingDensity_gt_fcc`. The ellipsoid (Bezdek-Kuperberg) and Ulam (open conjecture) sub-questions will require axiomatization when introduced in future iterations.",
+    "axiomCount": 1,
+    "lineCount": 321,
+    "assumptions": "0 sorries, 1 axiom in this file (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`: every `EllipsoidLatticePacking` has density ≤ `fccDensity`; Bezdek–Kuperberg, Geom. Dedicata 2007). The parent `Proofs/KeplerConjecture.lean` separately axiomatizes (a) `thues_theorem` (2D hexagonal optimality, Thue 1892 / Fejes Tóth 1940), (b) `fccDensity_lt_one` (numerical bound), and (c) the Kepler conjecture itself (Hales 1998, Flyspeck 2014). The tetrahedral side is axiom-free: the Chen-Engel-Glotzer rational constant 4000/4671 and the `tetrahedronDimerPacking : PackingDensity` instance, plus `tetrahedronDimerDensity_gt_fccDensity` (the central refutation `π/(3√2) < 4000/4671`, via `Real.pi_lt_315` and `Real.lt_sqrt`) and the existential corollary `exists_packingDensity_gt_fcc`, all `nlinarith`-discharged. The Ulam (open conjecture) sub-question will require additional axiomatization when introduced in a future iteration.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
