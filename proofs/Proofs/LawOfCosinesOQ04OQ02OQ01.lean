@@ -43,10 +43,10 @@ the full audit table and re-grounded line numbers at the pinned SHA.
 
 ## Status
 
-* This file establishes the S2 ACT scaffold (statements + proof skeletons).
-* Sorries: 3 (helper lemmas + main theorem); to be discharged in S3.
+* S3 progress: Steps 1–2 of Path A discharged
+  (`bisector_param_exists`, `bisector_dist_BD`, `bisector_dist_DC`).
+* Sorries: 1 (`angle_bisector_ratio_from_geometry` — the main theorem).
 * Axioms: 0.
-* Build: pending (no `docker-build` run this session).
 -/
 
 open EuclideanGeometry
@@ -71,7 +71,14 @@ Proof outline:
 lemma bisector_param_exists {B C D : P} (hD : Sbtw ℝ B D C) (A : P) :
     ∃ s : ℝ, s ∈ Set.Ioo (0 : ℝ) 1 ∧
       D -ᵥ A = (1 - s) • (B -ᵥ A) + s • (C -ᵥ A) := by
-  sorry
+  obtain ⟨s, hs, hlm⟩ := hD.mem_image_Ioo
+  refine ⟨s, hs, ?_⟩
+  have hDeq : D = AffineMap.lineMap B C s := hlm.symm
+  have hCB : (C -ᵥ B : V) = (C -ᵥ A) - (B -ᵥ A) :=
+    (vsub_sub_vsub_cancel_right C B A).symm
+  rw [hDeq, AffineMap.lineMap_apply, vadd_vsub_assoc, hCB,
+      smul_sub, sub_smul, one_smul]
+  abel
 
 /-! ## Step 2: Cevian segment lengths
 
@@ -85,13 +92,29 @@ lemma bisector_dist_BD {B C D : P} {s : ℝ}
     (hs : s ∈ Set.Ioo (0 : ℝ) 1)
     (hD : D -ᵥ B = s • (C -ᵥ B)) :
     dist B D = s * dist B C := by
-  sorry
+  have hs_nonneg : (0 : ℝ) ≤ s := hs.1.le
+  calc dist B D
+      = dist D B := dist_comm _ _
+    _ = ‖D -ᵥ B‖ := dist_eq_norm_vsub V D B
+    _ = ‖s • (C -ᵥ B)‖ := by rw [hD]
+    _ = ‖s‖ * ‖C -ᵥ B‖ := norm_smul s (C -ᵥ B)
+    _ = s * ‖C -ᵥ B‖ := by rw [Real.norm_of_nonneg hs_nonneg]
+    _ = s * dist C B := by rw [dist_eq_norm_vsub V C B]
+    _ = s * dist B C := by rw [dist_comm]
 
 lemma bisector_dist_DC {B C D : P} {s : ℝ}
     (hs : s ∈ Set.Ioo (0 : ℝ) 1)
     (hD : C -ᵥ D = (1 - s) • (C -ᵥ B)) :
     dist D C = (1 - s) * dist B C := by
-  sorry
+  have h1s_nonneg : (0 : ℝ) ≤ 1 - s := by linarith [hs.2]
+  calc dist D C
+      = dist C D := dist_comm _ _
+    _ = ‖C -ᵥ D‖ := dist_eq_norm_vsub V C D
+    _ = ‖(1 - s) • (C -ᵥ B)‖ := by rw [hD]
+    _ = ‖1 - s‖ * ‖C -ᵥ B‖ := norm_smul (1 - s) (C -ᵥ B)
+    _ = (1 - s) * ‖C -ᵥ B‖ := by rw [Real.norm_of_nonneg h1s_nonneg]
+    _ = (1 - s) * dist C B := by rw [dist_eq_norm_vsub V C B]
+    _ = (1 - s) * dist B C := by rw [dist_comm]
 
 /-! ## Main theorem: geometric angle-bisector identity
 

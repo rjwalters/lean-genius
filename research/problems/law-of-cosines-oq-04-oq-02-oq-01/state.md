@@ -1,8 +1,74 @@
 # State: `law-of-cosines-oq-04-oq-02-oq-01`
 
 **Tier**: B (Significance 6 / Tractability 5)
-**Phase**: OBSERVE (S1) → PREP (S2-prep) → ACT (S2-skeleton, build pending)
-**Last update**: 2026-05-13 (researcher-10) — S2 ACT skeleton, build pending
+**Phase**: OBSERVE (S1) → PREP (S2-prep) → ACT (S2-skeleton) → ACT (S3 partial, build verified)
+**Last update**: 2026-05-14 (researcher-9) — S3 Steps 1–2 discharged; only main theorem sorry remains
+
+## Session N=4 — S3 partial ACT (2026-05-14, researcher-9)
+
+**Mode**: ACT (lemma discharges; `docker-build` verified, 7745/7745 jobs).
+
+**Outcome**: discharged Steps 1–2 of the Path-A plan inside
+`proofs/Proofs/LawOfCosinesOQ04OQ02OQ01.lean`. Net sorry count `4 → 1`.
+
+* `bisector_param_exists` (Step 1, ~10 LOC body): proved via
+  `Sbtw.mem_image_Ioo` → `lineMap`-unpack → `vadd_vsub_assoc` →
+  `vsub_sub_vsub_cancel_right` → `smul_sub` + `sub_smul` + `abel`.
+* `bisector_dist_BD` (Step 2a, ~9 LOC body, calc-block): standard
+  `dist_comm` → `dist_eq_norm_vsub` → `norm_smul` →
+  `Real.norm_of_nonneg` (using `0 < s` from `hs.1`).
+* `bisector_dist_DC` (Step 2b, ~9 LOC body, calc-block): symmetric form
+  with `0 ≤ 1 - s` derived from `hs.2 : s < 1` via `linarith`.
+
+**Pre-existing parent build failure fixed (build unblocker)**.
+
+`proofs/Proofs/LawOfCosinesOQ04.lean:97` (`stewarts_theorem`) failed to build
+at the lake-pinned Mathlib SHA — `linarith` could not bridge a nonlinear
+substitution. The hypothesis chain was
+
+* `this : b^2 * m + c^2 * n = (m + n) * (d^2 + m*n)` (from `stewarts_from_cosines`),
+* `ha : m + n = a`,
+* goal: `b^2 * m + c^2 * n = a * (d^2 + m*n)`.
+
+`linarith` would have to "multiply" `ha` through the nonlinear factor — not
+its job. The fix is a one-line `rw [ha] at h; exact h` direct substitution.
+This file was on origin/main with the broken proof; my dep chain failed at
+job 7743/7745 until I patched it. Fix isolated to one theorem; rest of file
+unchanged. 1 unused-variable warning at `median_length_formula:110:45 (ha)`
+remains (was already present, untouched by this PR).
+
+**Net diff this session**:
+* `LawOfCosinesOQ04OQ02OQ01.lean`: +30 LOC (4 sorries → 1).
+* `LawOfCosinesOQ04.lean`: +2/-1 LOC (parent build unblocker).
+* state.md (this session entry).
+* JSON cursor update.
+
+**Build status**: ✅ `Build completed successfully (7745 jobs)` via
+`./proofs/scripts/docker-build.sh Proofs.LawOfCosinesOQ04OQ02OQ01`. Only the
+target sorry warning remains: the main theorem at
+`LawOfCosinesOQ04OQ02OQ01.lean:132 (angle_bisector_ratio_from_geometry)`.
+
+**Risks resolved this session**:
+
+* `Sbtw.mem_image_Ioo` unpacking — `obtain ⟨s, hs, hlm⟩ := hD.mem_image_Ioo`
+  yielded exactly the `Set.image` destructuring expected; `hlm : lineMap B C s = D`.
+* `AffineMap.lineMap_apply` form — confirmed `lineMap p₀ p₁ c = c • (p₁ -ᵥ p₀) +ᵥ p₀`
+  at the pinned SHA; the `vadd_vsub_assoc` rewrite cleanly produces
+  `s • (C -ᵥ B) + (B -ᵥ A)` for the subsequent algebra.
+* `Real.norm_of_nonneg` was the correct bearer for `‖s‖ = s` when `0 ≤ s`
+  (the `abs_of_nonneg` family doesn't unify with `‖·‖` on `ℝ` without an
+  intermediate `Real.norm_eq_abs`).
+
+**Risks remaining (for `angle_bisector_ratio_from_geometry`)**:
+
+* `Real.arccos_inj` requires explicit `[-1, 1]` bounds on both cosines (derivable
+  from `abs_real_inner_le_norm` + non-zero norms).
+* Inner-product expansion may blow up `ring`; fallback to `linear_combination` or
+  hand-factored `nlinarith` per the original risk register row.
+* Non-collinearity-to-strict-Cauchy-Schwarz: `abs_real_inner_le_norm` plus the
+  `Or.elim` over `collinear_iff_eq_or_eq_or_angle_eq_zero_or_angle_eq_pi`.
+
+---
 
 ## Session N=3 — S2 ACT skeleton (2026-05-13, researcher-10)
 
@@ -165,18 +231,12 @@ the identity `m · b = n · c` follows immediately.
 * **Files touched**: 3 markdown + 1 JSON (this iteration); no Lean file modifications.
 * **Build status**: unchanged.
 
-## Next action (Session N=4)
+## Next action (Session N=5)
 
-S3: discharge sorries in `LawOfCosinesOQ04OQ02OQ01.lean` per S2 skeleton, in order:
+S3 Steps 1–2 are complete (this session). The remaining work:
 
-1. **`bisector_param_exists`** (~25 LOC): unpack `Sbtw.mem_image_Ioo` →
-   `⟨s, hs, hLineMap⟩`; rewrite via `AffineMap.lineMap_apply` to
-   `D = B + s • (C -ᵥ B)`; then `D -ᵥ A = (B -ᵥ A) + s • (C -ᵥ B)`; rewrite
-   `C -ᵥ B = (C -ᵥ A) - (B -ᵥ A)`; algebra to `(1-s) • (B -ᵥ A) + s • (C -ᵥ A)`.
-   Run `docker-build` to confirm before continuing.
-
-2. **`bisector_dist_BD` / `bisector_dist_DC`** (~15 LOC each): `dist_eq_norm_vsub` +
-   `norm_smul` + `abs_of_pos` (from `s ∈ Ioo 0 1`).
+1. ~~**`bisector_param_exists`**~~ ✅ Discharged in N=4.
+2. ~~**`bisector_dist_BD` / `bisector_dist_DC`**~~ ✅ Discharged in N=4.
 
 3. **`angle_bisector_ratio_from_geometry`** (~150-200 LOC, in order):
    * Apply `bisector_param_exists` to get `s`.

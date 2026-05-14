@@ -93,8 +93,9 @@ theorem stewarts_theorem (a b c d m n : ℝ) (ha : m + n = a) (t : ℝ)
     (h_ABD : c ^ 2 = d ^ 2 + m ^ 2 - 2 * d * m * t)
     (h_ACD : b ^ 2 = d ^ 2 + n ^ 2 + 2 * d * n * t) :
     b ^ 2 * m + c ^ 2 * n = a * (d ^ 2 + m * n) := by
-  have := stewarts_from_cosines b c d m n t h_ABD h_ACD
-  linarith
+  have h := stewarts_from_cosines b c d m n t h_ABD h_ACD
+  rw [ha] at h
+  exact h
 
 -- ============================================================
 -- Part III: Special Case: Median Length Formula

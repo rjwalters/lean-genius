@@ -28,11 +28,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-13T22:30:00Z",
-    "iteration": 3,
-    "focus": "S2 ACT skeleton (researcher-10, 2026-05-13, build pending): 145 LOC scaffold file landmark for `LawOfCosinesOQ04OQ02OQ01.lean`. 4 sorries to discharge in S3.",
+    "since": "2026-05-14T01:30:00Z",
+    "iteration": 4,
+    "focus": "S3 partial ACT (researcher-9, 2026-05-14, build verified 7745 jobs): discharged bisector_param_exists + bisector_dist_BD + bisector_dist_DC (Steps 1-2 of Path A). Net 4 → 1 sorries. Only main theorem angle_bisector_ratio_from_geometry remains. Also fixed pre-existing linarith failure in parent stewarts_theorem (LawOfCosinesOQ04.lean:97) — one-line rw [ha]; exact h substitution required as build unblocker.",
     "blockers": [],
-    "nextAction": "S3: discharge sorries in LawOfCosinesOQ04OQ02OQ01.lean lemma-by-lemma via docker-build feedback. Order: (1) bisector_param_exists [~25 LOC], (2) bisector_dist_BD/DC [~15 LOC each], (3) angle_bisector_ratio_from_geometry main proof [~150-200 LOC]. Then S4 chains into parent angle_bisector_length.",
+    "nextAction": "S3 Step 3: discharge angle_bisector_ratio_from_geometry (~150-200 LOC). Order: (a) extract s via bisector_param_exists; (b) cosine equality via Real.arccos_inj + InnerProductGeometry.cos_angle; (c) inner-product expansion using inner_smul_left/right + inner_add_left/right + real_inner_self_eq_norm_mul_norm; (d) algebraic factorization ((1-s)c - sb)(bc - ⟪u,v⟫) = 0 via linear_combination; (e) exclude bc = ⟪u,v⟫ via abs_real_inner_le_norm + collinear_iff_eq_or_eq_or_angle_eq_zero_or_angle_eq_pi + Sbtw non-degeneracy; (f) conclude s(b+c) = c and chain to dist B D * dist A C = dist D C * dist A B.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -40,7 +40,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S2 ACT skeleton (researcher-10, 2026-05-13, build pending): created proofs/Proofs/LawOfCosinesOQ04OQ02OQ01.lean (145 LOC, 4 sorries: bisector_param_exists + bisector_dist_BD + bisector_dist_DC + angle_bisector_ratio_from_geometry; 0 axioms). Module header carries strategy doc + bearer references re-grounded to lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` via researcher-4 S2-PREP audit. Stable file landmark for S3 lemma-by-lemma discharge. Companion to PR #18908 (S2-PREP audit, merged). Next: S3 discharges sorries in order — bisector_param_exists via Sbtw.mem_image_Ioo + AffineMap.lineMap_apply, then distance lemmas via dist_eq_norm_vsub + norm_smul, then main theorem via Real.arccos_inj + inner-product factorization + non-collinearity Cauchy-Schwarz strict form. | S2-PREP complete (researcher-4, 2026-05-13): Mathlib bearer audit at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (`v4.26.0`) re-grounding knowledge.md §4 against the actual pinned ref. Doc `s2-prep-bearer-audit.md` (~210 LOC). Findings: (a) `InnerProductGeometry.angle/cos_angle` live in `Geometry/Euclidean/Angle/Unoriented/Basic.lean` L40/L65 — NOT `InnerProductSpace/Basic.lean` as knowledge.md cited; (b) `Convex/Between.lean` line drift +138; (c) smaller drift in `Affine.lean`. | S1 OBSERVE complete (researcher-8, 2026-05-11). Path A (inner-product factorization) selected for S2 with seven-lemma outline (~250-350 lines).",
+    "progressSummary": "S3 partial ACT (researcher-9, 2026-05-14, build verified): discharged Steps 1-2 of Path A in LawOfCosinesOQ04OQ02OQ01.lean. bisector_param_exists via Sbtw.mem_image_Ioo + AffineMap.lineMap_apply + vadd_vsub_assoc + vsub_sub_vsub_cancel_right + smul_sub/sub_smul/one_smul + abel (10 LOC body). bisector_dist_BD/DC via dist_comm + dist_eq_norm_vsub + norm_smul + Real.norm_of_nonneg (9 LOC each, calc-style). Net 4 → 1 sorries. Build: ✓ docker-build 7745 jobs. Also fixed pre-existing parent failure: LawOfCosinesOQ04.lean:97 stewarts_theorem had linarith failing on nonlinear (m+n)*(d²+m*n) substitution; replaced with rw [ha] at h; exact h. Parent file otherwise untouched; companion to S2-PREP/S2 ACT-skeleton history. | S2 ACT skeleton (researcher-10, 2026-05-13, build pending): created proofs/Proofs/LawOfCosinesOQ04OQ02OQ01.lean (145 LOC, 4 sorries: bisector_param_exists + bisector_dist_BD + bisector_dist_DC + angle_bisector_ratio_from_geometry; 0 axioms). Module header carries strategy doc + bearer references re-grounded to lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` via researcher-4 S2-PREP audit. Stable file landmark for S3 lemma-by-lemma discharge. Companion to PR #18908 (S2-PREP audit, merged). Next: S3 discharges sorries in order — bisector_param_exists via Sbtw.mem_image_Ioo + AffineMap.lineMap_apply, then distance lemmas via dist_eq_norm_vsub + norm_smul, then main theorem via Real.arccos_inj + inner-product factorization + non-collinearity Cauchy-Schwarz strict form. | S2-PREP complete (researcher-4, 2026-05-13): Mathlib bearer audit at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (`v4.26.0`) re-grounding knowledge.md §4 against the actual pinned ref. Doc `s2-prep-bearer-audit.md` (~210 LOC). Findings: (a) `InnerProductGeometry.angle/cos_angle` live in `Geometry/Euclidean/Angle/Unoriented/Basic.lean` L40/L65 — NOT `InnerProductSpace/Basic.lean` as knowledge.md cited; (b) `Convex/Between.lean` line drift +138; (c) smaller drift in `Affine.lean`. | S1 OBSERVE complete (researcher-8, 2026-05-11). Path A (inner-product factorization) selected for S2 with seven-lemma outline (~250-350 lines).",
     "builtItems": [
       "research/problems/law-of-cosines-oq-04-oq-02-oq-01/problem.md — formal statement, classification, approach menu, related-proofs table.",
       "research/problems/law-of-cosines-oq-04-oq-02-oq-01/knowledge.md — §1 target identification; §2 vector reformulation; §3 three approach paths with hand derivation for Path A; §4 Mathlib API survey (affine/between, angles, distances/norms, non-degeneracy, parent); §5 risk register; §6 sibling-proof lessons; §7 S1 outcome; §8 seven-lemma S2 outline.",
@@ -110,7 +110,7 @@
     ]
   },
   "started": "2026-05-12T03:16:39.895Z",
-  "lastUpdate": "2026-05-13T22:30:00.000Z",
+  "lastUpdate": "2026-05-14T01:30:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
