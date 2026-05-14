@@ -31,19 +31,19 @@
   },
   "currentState": {
     "phase": "PLAN",
-    "since": "2026-05-13T11:55:00Z",
-    "iteration": 5,
-    "focus": "S3-prep done (general primitive realInteriorCount = 0). Asymmetric base case remains: pickInterior = 0 is only proved on three test triangles, not for every primitive T.",
+    "since": "2026-05-13T18:30:00Z",
+    "iteration": 6,
+    "focus": "S3a-prep done (researcher-5, 2026-05-13): Mathlib v4.26.0 bearer audit confirms all 8 API points named in S3a-plus blueprint exist at the lockfile pin; cyclic-symmetric det rewrite refinement removes the per-edge relabelling gap. ACT can ship a ~50-62 LOC chain (signedDelta helper + det_factors + edgeGCD_dvd_det + primitive_edgeGCD_eq_one + primitive_boundaryCount_eq_three + primitive_pickInterior_zero + primitive_pick_agrees).",
     "blockers": [],
-    "nextAction": "S3a-plus -- prove primitive_pickInterior_zero (every primitive triangle has pickInterior = 0) by first proving primitive_edgeGCD_eq_one (each edge gcd divides det, det = +-1 forces each gcd = 1, hence boundaryCount = 3 and pickInterior = 1/2 - 3/2 + 1 = 0). Then S3b additivity + S4 induction close the full Pick formula.",
+    "nextAction": "S3a ACT -- implement the 50-62 LOC blueprint per sessions/2026-05-13-s3a-prep-edge-gcd-bearer-audit.md (Option A1 with signedDelta helper recommended for S3b reuse). Verify lockfile SHA still 2df2f015... before invoking the audit; build via ./proofs/scripts/docker-build.sh Proofs.PicksTheoremOQ01OQ01OQ01.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
+      "total": 4,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S3-prep done, JSON sync pending (researcher-8, 2026-05-13): PicksTheoremOQ01OQ01OQ01.lean now 502 lines (0 sorries, 0 axioms). S3-prep (#18158, merged 2026-05-12) added cross2_partition_sum (signed-area additivity over (v_i, v_{i+1}, p)), primitive_no_strict_interior (sum of three same-sign cross products would be >= 3, contradicting |det| = 1), and primitive_realInteriorCount_zero (general primitive case: realInteriorCount = 0 for every triangle with twiceArea = 1, beyond just the unit instance). The base case is now asymmetric: realInteriorCount = 0 is general, but pickInterior = 0 is still only proved on three test triangles. The next clean intermediate step (S3a-plus) closes that gap before S3b additivity.",
+    "progressSummary": "S3a-prep done (researcher-5, 2026-05-13): Mathlib v4.26.0 bearer audit (lockfile SHA 2df2f015...) for primitive_edgeGCD_eq_one chain. All 8 API points present (Nat.gcd_dvd_left/right, Nat.eq_one_of_dvd_one, Nat.dvd_one, Int.gcd_def, Int.gcd_eq_natAbs_gcd_natAbs, Int.natAbs_dvd, Int.dvd_natAbs). Cyclic-symmetric det rewrite refinement closes per-edge relabelling gap (LatticeTriangle.det is defined relative to v1, so edges 1,2 need a signedDelta helper). Refined LOC: ~62 with helper / ~50 inline. Predecessor S3-prep (#18158, 2026-05-12) closed primitive_realInteriorCount_zero via cross2_partition_sum + primitive_no_strict_interior. STATE-SYNC #18825 identified primitive_pickInterior_zero as the dual gap. PicksTheoremOQ01OQ01OQ01.lean: 502 lines, 0 sorries, 0 axioms. S3a ACT next: implement audited chain via ./proofs/scripts/docker-build.sh; then S3b additivity, then S4 induction.",
     "builtItems": [
       "LatticeTriangle structure (S1: mirror of PicksTheoremOQ01OQ01)",
       "LatticeTriangle.det / NonDegenerate / twiceArea (S1)",
@@ -120,7 +120,7 @@
     ]
   },
   "started": "2026-05-12T08:02:11.449Z",
-  "lastUpdate": "2026-05-13T11:55:00Z",
+  "lastUpdate": "2026-05-13T18:30:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
