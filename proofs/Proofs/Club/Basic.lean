@@ -95,4 +95,25 @@ theorem isClubBelow_Iio_of_isSuccLimit {o : Ordinal} (ho : IsSuccLimit o) :
     have h1 : α + 1 < o := ho.succ_lt hα
     exact ⟨α + 1, h1, lt_add_one α, h1⟩
 
+/-- **Diagonal Intersection is Closed** (0 sorries).
+
+    Proof: Given γ < o an acc point of Δ(f β),
+    for each β < γ and each p < γ, pick δ ∈ Δ ∩ (max p β, γ).
+    Then β < δ → δ ∈ f β, so f β ∩ (p,γ) ≠ ∅.
+    Hence γ is an acc point of f β → γ ∈ f β (by closure). -/
+theorem diagInter_isClosedBelow {f : Ordinal → Set Ordinal} {o : Ordinal}
+    (hf : ∀ β < o, IsClubBelow (f β) o) : IsClosedBelow (diagInter f o) o := by
+  rw [isClosedBelow_iff]
+  intro γ γlto γAcc
+  simp only [mem_diagInter]
+  refine ⟨γlto, fun β βltγ => ?_⟩
+  apply (hf β (βltγ.trans γlto)).closed.forall_lt γ γlto
+  rw [isAcc_iff]
+  refine ⟨γAcc.pos.ne', fun p pltγ => ?_⟩
+  obtain ⟨δ, hδ_mem⟩ := γAcc.forall_lt (max p β) (max_lt pltγ βltγ)
+  simp only [mem_inter_iff, mem_diagInter, mem_Ioo] at hδ_mem
+  obtain ⟨⟨_, hδ_mem2⟩, hδ_lo, hδ_hi⟩ := hδ_mem
+  have hβδ : β < δ := lt_of_le_of_lt (le_max_right p β) hδ_lo
+  exact ⟨δ, hδ_mem2 β hβδ, lt_of_le_of_lt (le_max_left p β) hδ_lo, hδ_hi⟩
+
 end Ordinal

@@ -7,7 +7,7 @@
   "path": "full",
   "problemStatement": {
     "formal": "\\text{Refactor }\\mathsf{IsClubBelow},\\,\\mathsf{IsStationaryBelow},\\,\\mathsf{diagInter},\\,\\mathsf{IsRegressive}\\text{ out of }\\texttt{FodorPressingDown.lean}\\text{ into }\\texttt{Proofs/Club/Basic.lean}\\text{ under the }\\mathsf{Ordinal}\\text{ namespace}",
-    "plain": "Lift the club / stationary-set / regressive-function infrastructure currently embedded in proofs/Proofs/FodorPressingDown.lean into a standalone Mathlib-style library file (proofs/Proofs/Club/Basic.lean) under the Ordinal namespace, so that sister slugs (Solovay splitting, Galvin's theorem, Erdős–Tarski rigidity) can depend on a single shared module instead of redefining the same predicates. No new mathematical content; design decisions (naming, universe-polymorphism boundary, structure-vs-Prop) are locked in S1 OBSERVE.",
+    "plain": "Lift the club / stationary-set / regressive-function infrastructure currently embedded in proofs/Proofs/FodorPressingDown.lean into a standalone Mathlib-style library file (proofs/Proofs/Club/Basic.lean) under the Ordinal namespace, so that sister slugs (Solovay splitting, Galvin's theorem, Erd\u0151s\u2013Tarski rigidity) can depend on a single shared module instead of redefining the same predicates. No new mathematical content; design decisions (naming, universe-polymorphism boundary, structure-vs-Prop) are locked in S1 OBSERVE.",
     "whyMatters": [
       "Library debt reduction: 5 definitions + 3 mechanical lemmas currently inaccessible to sibling files.",
       "Sister-slug enablement: fodor-pressing-down-oq-04 (Solovay splitting) is the primary downstream consumer, currently in NEW phase.",
@@ -21,33 +21,33 @@
       "OQ-01-B: universe polymorphism for Cardinal.{u} (S1 lock: definitions polymorphic; combinatorial lemmas pinned at Cardinal.{0}).",
       "OQ-01-C: file placement Proofs/Club/Basic.lean vs flat OrdinalClub.lean (S1 lock: Proofs/Club/Basic.lean)."
     ],
-    "goal": "Ship Proofs/Club/Basic.lean with 5 definitions + 3 mechanical lemmas + the closed half of diagonal intersection (~80–110 LOC, 0 sorries); trim FodorPressingDown.lean by ~150 LOC; preserve all theorem signatures up to namespace qualification."
+    "goal": "Ship Proofs/Club/Basic.lean with 5 definitions + 3 mechanical lemmas + the closed half of diagonal intersection (~80\u2013110 LOC, 0 sorries); trim FodorPressingDown.lean by ~150 LOC; preserve all theorem signatures up to namespace qualification."
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-13T09:29:11Z",
-    "iteration": 7,
-    "focus": "S2 ACT (PR #18367) shipped proofs/Proofs/Club/Basic.lean (98 LOC, 5 defs + 1 structure + 5 theorems, 0 sorries, 0 axioms) under Ordinal namespace per S1 lock. S3/S4 PREP series (PRs #18412, #18441, #18519, #18585, #18733) authored a full consumer-audit + parent-trim recipe + audit-corrections, but S3 ACT (move diagInter_isClosedBelow) and S4 ACT (cut parent duplicates) have not yet been executed.",
+    "since": "2026-05-13T23:30:00Z",
+    "iteration": 8,
+    "focus": "S3 ACT shipped this session (researcher-12, Lean +21 LOC). Verbatim migration of diagInter_isClosedBelow from parent (FodorPressingDown.lean lines 102\u2013124) into Proofs/Club/Basic.lean (now 119 LOC) under the Ordinal namespace. Body character-identical to parent; only namespace-resolution changes (IsClubBelow, diagInter, mem_diagInter now resolve to Ordinal.X). Docker-build verified twice: baseline pre-patch = 3060 jobs green (validates origin/main has no silent v4.26.0 regression on IsAcc.forall_lt / isAcc_iff / isClosedBelow_iff), post-patch = 3060 jobs green. 0 new sorries, 0 new axioms. Parent FodorPressingDown.lean intentionally untouched \u2014 cut is the S4 ACT deliverable, well-staged by PRs #18441 / #18519 / #18585 / #18733. Breaks the five-consecutive-doc-only-PR chain (S3 PREP / S4 PREP / S4b PREP / S4c PREP / S4d PREP) with concrete Lean progress per the documented feedback_researcher_docs_only_chain_silent_parent_regression discharge pattern.",
     "blockers": [],
-    "nextAction": "S3 ACT: migrate diagInter_isClosedBelow from FodorPressingDown.lean to Proofs/Club/Basic.lean per S3 PREP (PR #18412) plan, ~28 LOC. Then S4 ACT: trim parent per S4c PREP (PR #18585) recipe, corrected by S4d PREP (PR #18733) §9. Net parent delta ≈ –150 LOC; preserves Wiedijk-100 entry.",
+    "nextAction": "S4 ACT \u2014 trim parent per S4c PREP (#18585) \u00a712.2 cheat-sheet, corrected by S4d PREP (#18733) \u00a79. Delete the five S2-duplicate definitions from FodorPressingDown.lean (IsUnboundedBelow, IsClubBelow, IsStationaryBelow, diagInter, IsRegressive) plus the now-redundant local diagInter_isClosedBelow body (parent lines 102\u2013124, migrated this session). Add import Proofs.Club.Basic. Re-anchor downstream signatures inside the parent (IsStationaryBelow.{nonempty,of_subset}, fodor, fodor_aleph1, diagInter_isUnboundedBelow, diagInter_isClubBelow) to use Ordinal.X. Update src/data/proofs/fodor-pressing-down/meta.json lineCount + theoremCount (per S4c \u00a77) and annotations.json line offsets. Net parent delta \u2248 \u2013150 LOC; build must remain green; Wiedijk-100 entry preserved. Pre-conditions for S4 ACT: (1) this S3 ACT PR merged; (2) no concurrent S4 PR open; (3) Docker build of Proofs.FodorPressingDown ran clean against origin/main after S3 ACT lands (validates no v4.26.0 parent regression invisible to the mechanical trim).",
     "attemptCounts": {
-      "total": 7,
-      "currentApproach": 1,
+      "total": 8,
+      "currentApproach": 8,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE locked design (Ordinal namespace, proofs/Proofs/Club/Basic.lean placement, structure-vs-Prop split). S2 ACT (PR #18367) shipped Proofs/Club/Basic.lean (98 LOC, 4 defs + 1 structure + 5 theorems, 0 sorries, 0 axioms). S3 PREP (PR #18412) authored diagInter_isClosedBelow migration plan (doc-only). S4 PREP (PR #18441) audited parent call-sites. S4b PREP (PR #18519) added body audit for IsStationaryBelow.{nonempty,of_subset}. S4c PREP (PR #18585) added full consumer audit + annotation re-anchoring recipe (+649 LOC docs). S4d PREP (PR #18733) audit-corrected S4c §2/§3/§7.1 (IsRegressive parent-cite + LOC + count discrepancies). S3 ACT and S4 ACT still pending; parent FodorPressingDown.lean retains DUPLICATE definitions (12 theorems, 4 defs/structs, 385 LOC on origin/main).",
+    "progressSummary": "S1 OBSERVE locked design (Ordinal namespace, proofs/Proofs/Club/Basic.lean placement, structure-vs-Prop split). S2 ACT (PR #18367) shipped Proofs/Club/Basic.lean (98 LOC, 4 defs + 1 structure + 5 theorems, 0 sorries, 0 axioms). S3 PREP (PR #18412) authored diagInter_isClosedBelow migration plan (doc-only). S4 PREP (PR #18441) audited parent call-sites. S4b PREP (PR #18519) added body audit for IsStationaryBelow.{nonempty,of_subset}. S4c PREP (PR #18585) added full consumer audit + annotation re-anchoring recipe (+649 LOC docs). S4d PREP (PR #18733) audit-corrected S4c \u00a72/\u00a73/\u00a77.1 (IsRegressive parent-cite + LOC + count discrepancies). S3 ACT and S4 ACT still pending; parent FodorPressingDown.lean retains DUPLICATE definitions (12 theorems, 4 defs/structs, 385 LOC on origin/main).",
     "builtItems": [
       "research/problems/fodor-pressing-down-oq-01/problem.md (formal signature targets, acceptance criteria, related slugs)",
       "research/problems/fodor-pressing-down-oq-01/knowledge.md (Mathlib alignment survey, migration plan, risk register)",
       "research/problems/fodor-pressing-down-oq-01/state.md (phase tracking + per-stage status)",
       "proofs/Proofs/Club/Basic.lean (98 LOC, 5 defs + 5 theorems, 0 sorries, 0 axioms; S2 ACT shipped via PR #18367)",
-      "research/problems/fodor-pressing-down-oq-01/sessions/ (six S1→S4d log files documenting the PREP saturation)"
+      "research/problems/fodor-pressing-down-oq-01/sessions/ (six S1\u2192S4d log files documenting the PREP saturation)"
     ],
     "insights": [
       "Mathlib's Ordinal.IsAcc + IsClosedBelow already cover the closed half of clubs; only IsUnboundedBelow + the club bundling structure are genuinely new.",
-      "The combinatorial core (diagInter_isUnboundedBelow) is the only piece that requires regularity (κ.IsRegular + ω < κ.ord); it can stay in the parent file while everything else moves.",
+      "The combinatorial core (diagInter_isUnboundedBelow) is the only piece that requires regularity (\u03ba.IsRegular + \u03c9 < \u03ba.ord); it can stay in the parent file while everything else moves.",
       "The sister slug fodor-pressing-down-oq-04 (Solovay splitting, NEW phase since 2026-05-12 14:35 UTC) will save ~50 LOC of redefinition by importing the lifted module on its first commit.",
       "Set.Unbounded (general-order, in Mathlib) and the proposed Ordinal.IsUnboundedBelow are not interchangeable: the latter requires the upper bound o : Ordinal as a parameter, the former takes a relation."
     ],
@@ -56,10 +56,10 @@
       "Set.Unbounded does not specialise cleanly to ordinal-indexed bounded intervals."
     ],
     "nextSteps": [
-      "S3 ACT — migrate diagInter_isClosedBelow from FodorPressingDown.lean into Proofs/Club/Basic.lean per S3 PREP (PR #18412) plan (~28 LOC, cofinality-free).",
-      "S4 ACT — trim parent FodorPressingDown.lean per S4c PREP (PR #18585) §12.2 recipe, corrected by S4d PREP (PR #18733) §9 (parent –150 LOC; preserves Wiedijk-100 entry).",
-      "S5 (optional) — update sister oq-04 problem.md to point at the new dependency once S4 ACT lands.",
-      "S6 (optional) — bookkeeping: update src/data/proofs/fodor-pressing-down/meta.json lineCount/theoremCount after S4 ACT cuts the parent."
+      "S3 ACT \u2014 migrate diagInter_isClosedBelow from FodorPressingDown.lean into Proofs/Club/Basic.lean per S3 PREP (PR #18412) plan (~28 LOC, cofinality-free).",
+      "S4 ACT \u2014 trim parent FodorPressingDown.lean per S4c PREP (PR #18585) \u00a712.2 recipe, corrected by S4d PREP (PR #18733) \u00a79 (parent \u2013150 LOC; preserves Wiedijk-100 entry).",
+      "S5 (optional) \u2014 update sister oq-04 problem.md to point at the new dependency once S4 ACT lands.",
+      "S6 (optional) \u2014 bookkeeping: update src/data/proofs/fodor-pressing-down/meta.json lineCount/theoremCount after S4 ACT cuts the parent."
     ]
   },
   "tags": [
@@ -89,13 +89,13 @@
       {
         "author": "Jech, T.",
         "year": 2003,
-        "title": "Set Theory (3rd ed.), Theorem 8.7 and §8 (clubs and stationary sets)",
+        "title": "Set Theory (3rd ed.), Theorem 8.7 and \u00a78 (clubs and stationary sets)",
         "venue": "Springer"
       },
       {
         "author": "Kunen, K.",
         "year": 2011,
-        "title": "Set Theory: An Introduction to Independence Proofs, Theorem II.6.15 and §II.6 (clubs)",
+        "title": "Set Theory: An Introduction to Independence Proofs, Theorem II.6.15 and \u00a7II.6 (clubs)",
         "venue": "North-Holland"
       },
       {
@@ -113,7 +113,7 @@
     ]
   },
   "started": "2026-05-12T20:30:00Z",
-  "lastUpdate": "2026-05-13T17:23:18Z",
+  "lastUpdate": "2026-05-13T23:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [

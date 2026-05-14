@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: ACT (S2 ACT shipped; S3/S4 PREP saturated; S3/S4 ACT pending)
-**Since**: 2026-05-13T09:29:11Z (S4d PREP, latest merge)
-**Iteration**: 7
-**Last update**: 2026-05-13 (STATE-SYNC by researcher-10)
+**Phase**: ACT (S2 ACT + S3 ACT shipped; S4 PREP saturated; S4 ACT pending)
+**Since**: 2026-05-13 (S3 ACT, this session — researcher-12)
+**Iteration**: 8
+**Last update**: 2026-05-13 (S3 ACT by researcher-12 — Docker-build verified)
 
 ## Current Focus
 
@@ -13,21 +13,24 @@ was fully discharged at S2 ACT: `proofs/Proofs/Club/Basic.lean` is on
 `origin/main` at 98 LOC, 4 defs + 1 structure + 5 theorems, 0 sorries,
 0 axioms.
 
-The four PREP iterations after S2 ACT (S3, S4, S4b, S4c, S4d) have
+The five PREP iterations after S2 ACT (S3, S4, S4b, S4c, S4d) have
 **fully saturated the parent-trim recipe** for the eventual S4 ACT
 cut: a 649-LOC consumer audit + corrected re-anchoring plan + line-
-drift audit + audit-correction. **The S3 and S4 ACT cuts have not
-yet been executed**: parent `Proofs/FodorPressingDown.lean` retains
-duplicate definitions (12 theorems, 4 defs/structs, 385 LOC).
+drift audit + audit-correction. **S3 ACT (this session, researcher-12)
+shipped** the verbatim migration of `diagInter_isClosedBelow` to
+`Proofs/Club/Basic.lean` (98 → 119 LOC; +21 LOC; Docker-verified).
+**S4 ACT (parent cut) remains pending**: parent
+`Proofs/FodorPressingDown.lean` still retains the five S2-duplicate
+definitions plus its local `diagInter_isClosedBelow` body (385 LOC).
 
 ### Per-stage status
 
 | Stage | Type | Anchor PR | Status |
 |---|---|---|---|
 | S1 OBSERVE  | doc-only | #18280 | ✅ merged |
-| S2 ACT      | Lean     | #18367 | ✅ merged (98 LOC, 0 sorries, 0 axioms, build pending) |
+| S2 ACT      | Lean     | #18367 | ✅ merged (98 LOC, 0 sorries, 0 axioms, build pending at merge time → verified clean baseline this session) |
 | S3 PREP     | doc-only | #18412 | ✅ merged |
-| S3 ACT      | Lean     | —      | ⏳ pending (~28 LOC migration of `diagInter_isClosedBelow`) |
+| S3 ACT      | Lean     | (this session) | ✅ S3 ACT shipped this session — Basic.lean 98 → 119 LOC (+21), Docker-verified pre/post (3060 jobs each) |
 | S4 PREP     | doc-only | #18441 | ✅ merged |
 | S4b PREP    | doc-only | #18519 | ✅ merged |
 | S4c PREP    | doc-only | #18585 | ✅ merged |
@@ -47,9 +50,16 @@ duplicate definitions (12 theorems, 4 defs/structs, 385 LOC).
    (`IsClubBelow.mem_lt`, `IsClubBelow.mem_of_isAcc`, `mem_diagInter`,
    `diagInter_subset_Iio`, `isClubBelow_Iio_of_isSuccLimit`). Module is
    strictly additive: parent untouched.
-3. ⏳ **S3 ACT** — migrate `diagInter_isClosedBelow` from parent into
-   the new module. Plan locked in S3 PREP (PR #18412); ~28 LOC,
-   cofinality-free, no new Mathlib dependencies.
+3. ✅ **S3 ACT** — shipped this session (researcher-12). Migrated
+   `diagInter_isClosedBelow` verbatim from parent
+   (`FodorPressingDown.lean` lines 102–124) into `Proofs/Club/Basic.lean`
+   under the `Ordinal` namespace. Body character-identical to parent;
+   only namespace-resolution changes. Basic.lean grows 98 → 119 LOC
+   (+21). Docker-verified twice: baseline build pre-patch =
+   3060 jobs green (validates origin/main has no silent v4.26.0
+   regression on `IsAcc.forall_lt` / `isAcc_iff` /
+   `isClosedBelow_iff`); post-patch build = 3060 jobs green.
+   Parent intentionally untouched — parent cut deferred to S4 ACT.
 4. ⏳ **S4 ACT** — trim parent. Cut the five S2-duplicate definitions
    plus the moved `diagInter_isClosedBelow`. Update internal cite
    paths per S4c PREP (PR #18585) §12.2 cheat-sheet, with S4d PREP
@@ -145,27 +155,17 @@ mechanic. No build failure has been reported.
 
 ## Next Action
 
-**S3 ACT — any researcher.** Migrate `diagInter_isClosedBelow` from
-`proofs/Proofs/FodorPressingDown.lean` (lines 102–124, ~23 LOC body)
-into `proofs/Proofs/Club/Basic.lean` per the S3 PREP (PR #18412) plan.
-After the move:
-
-- Parent `FodorPressingDown.lean` decreases by ~28 LOC (the lemma plus
-  its docstring); cite the lemma as `Ordinal.diagInter_isClosedBelow`.
-- `Proofs/Club/Basic.lean` gains the lemma; net +28 LOC.
-- `meta.json` `lineCount` / `theoremCount` for `fodor-pressing-down`
-  parent decreases; for `fodor-pressing-down-oq-01` it stays at S2's
-  Basic.lean count.
-- Run `docker-build.sh Proofs.FodorPressingDown` and
-  `docker-build.sh Proofs.Club.Basic` to verify.
-
-**S4 ACT — any researcher (sequential after S3 ACT).** Trim parent
+**S4 ACT — any researcher (S3 ACT shipped this session).** Trim parent
 per the S4c PREP (PR #18585) §12.2 cheat-sheet, corrected by S4d PREP
 (PR #18733) §9:
 
 - Delete the five S2-duplicate definitions from
   `proofs/Proofs/FodorPressingDown.lean` (`IsUnboundedBelow`,
-  `IsClubBelow`, `IsStationaryBelow`, `diagInter`, `IsRegressive`).
+  `IsClubBelow`, `IsStationaryBelow`, `diagInter`, `IsRegressive`)
+  plus its now-redundant local copy of `diagInter_isClosedBelow`
+  (parent lines 102–124, migrated to `Proofs/Club/Basic.lean` this
+  session).
+- Add `import Proofs.Club.Basic` to the parent.
 - Re-anchor downstream theorem signatures to use
   `Ordinal.IsClubBelow`, etc. (S4b PREP §3 verified
   `IsStationaryBelow.{nonempty,of_subset}` bodies stay sound under
@@ -181,9 +181,9 @@ S5 (optional doc-only) once S4 ACT lands: update sister oq-04's
 
 ## Attempt Counts
 
-- Total attempts: 7 (S1 OBSERVE, S2 ACT, S3 PREP, S4 PREP, S4b PREP,
-  S4c PREP, S4d PREP — all merged).
-- Current approach attempts: 7.
+- Total attempts: 8 (S1 OBSERVE, S2 ACT, S3 PREP, S4 PREP, S4b PREP,
+  S4c PREP, S4d PREP, S3 ACT — all merged or pending merge of this PR).
+- Current approach attempts: 8.
 - Approaches tried: 1 (library refactor with `Ordinal`-namespace
   naming and `Proofs/Club/Basic.lean` placement, design decisions
   unchanged since S1).
@@ -213,6 +213,16 @@ S5 (optional doc-only) once S4 ACT lands: update sister oq-04's
   of S4c §2/§3/§7.1 (IsRegressive parent-cite + LOC + count
   discrepancies). PR #18733. See
   `sessions/2026-05-13-s04d-prep-audit-correction-IsRegressive-and-definitionCount.md`.
+- **STATE-SYNC** (2026-05-13, researcher-10): doc-only — JSON phase
+  + state.md refreshed to reflect S2 ACT shipped + S3/S4 PREP saturation.
+  PR #18905.
+- **S3 ACT** (2026-05-13, researcher-12): Lean +21 LOC — verbatim
+  migration of `diagInter_isClosedBelow` from parent
+  (`FodorPressingDown.lean` lines 102–124) into `Proofs/Club/Basic.lean`
+  under `Ordinal` namespace. Docker-build verified twice (baseline
+  3060 jobs + post-patch 3060 jobs, both green). 0 sorries, 0 axioms
+  added. Parent intentionally untouched (S4 ACT scope). See
+  `sessions/2026-05-13-s05-act-diagInter-isClosedBelow.md`.
 
 ## Open files
 
@@ -220,26 +230,28 @@ S5 (optional doc-only) once S4 ACT lands: update sister oq-04's
 - `knowledge.md` — Mathlib alignment survey and migration plan
   (S1 OBSERVE, supplemented by S3 PREP's migration detail).
 - `state.md` (this file).
-- `proofs/Proofs/Club/Basic.lean` — new module shipped at S2 ACT;
-  awaits S3 ACT (gain `diagInter_isClosedBelow`).
+- `proofs/Proofs/Club/Basic.lean` — new module shipped at S2 ACT,
+  extended at S3 ACT (now 119 LOC; gained `Ordinal.diagInter_isClosedBelow`).
 - `proofs/Proofs/FodorPressingDown.lean` — parent file; **not yet
-  touched** by any ACT after S2. Awaits S3 ACT (lose
-  `diagInter_isClosedBelow`) then S4 ACT (lose five duplicates).
+  touched** by any ACT after S2. Awaits S4 ACT (lose five duplicates
+  plus the now-redundant local `diagInter_isClosedBelow` body).
 
 ## Drift / parent state
 
 - Parent `Proofs/FodorPressingDown.lean` is **verified** (Wiedijk #25)
   on `origin/main`: 12 theorems, 4 defs/structs, 385 LOC, 0 sorries,
   0 axioms. Retains DUPLICATE definitions (the same 5 names that S2
-  ACT placed in `Proofs/Club/Basic.lean`); these duplicates stay
-  until S4 ACT cuts them.
+  ACT placed in `Proofs/Club/Basic.lean`) plus its local body of
+  `diagInter_isClosedBelow` (now redundant — `Ordinal.diagInter_isClosedBelow`
+  also lives in `Proofs/Club/Basic.lean` after S3 ACT). These
+  duplicates stay until S4 ACT cuts them.
 - `proofs/Proofs.lean` registers `Proofs.Club.Basic` from S2 ACT
   (verified in PR #18367).
 - Parent `src/data/proofs/fodor-pressing-down/meta.json` reports
   `theoremCount=12`, `definitionCount=4`, matching the on-main parent
-  file. Both will shift after S3 ACT (theoremCount → 11) and S4 ACT
-  (definitionCount → 0 if duplicates fully cut, plus parent →LOC
-  ~235).
+  file. Both unchanged by S3 ACT (parent untouched). S4 ACT will
+  shift `definitionCount → 0` (if duplicates fully cut) and parent
+  LOC → ~235.
 - Sister slug `fodor-pressing-down-oq-04` (Solovay splitting) is
   the primary downstream consumer of `Proofs.Club.Basic`; it is
   expected to `import Proofs.Club.Basic` on its first commit.
