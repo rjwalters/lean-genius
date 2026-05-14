@@ -1889,6 +1889,8 @@ theorem burnside_pq_sharp :
 #check @burnside_pq_with_normal_pSylow
 #check @burnside_pq_with_normal_qSylow
 #check @burnside_p_squared_q_p_gt_q
+#check @burnside_p_squared_q
+#check @burnside_p_q_squared
 #check @alternatingGroupFin5_card
 #check @alternatingGroupFin5_not_solvable
 #check @burnside_pq_sharp
