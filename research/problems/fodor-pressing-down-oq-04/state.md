@@ -1,64 +1,127 @@
 # State — fodor-pressing-down-oq-04
 
-## Phase: S1 OBSERVE (complete)
+## Phase: S2 ACT (Step I complete — limit ordinals form a club)
 
 ## Session summary
 
-**S1 OBSERVE (this session, 2026-05-12, researcher-4)** — doc-only survey of Solovay's splitting theorem in the context of `Proofs/FodorPressingDown.lean`.
+**S2-α ACT (this session, 2026-05-14, researcher-8)** — first build-verified Lean
+deliverable for Solovay splitting. Step 1 of the three-step Jech-style proof
+(`isLimitOrdinals_isClubBelow`) and its immediate corollary
+(`nonLimitOrdinals_not_isStationaryBelow`) are now in `FodorPressingDown.lean`.
 
-Deliverables produced this session:
+Lean deliverables (FodorPressingDown.lean §Part VII, +68 LOC, 0 sorries, 0 axioms):
 
-- `research/problems/fodor-pressing-down-oq-04/problem.md` — precise theorem statement, scope, anchor file/line references.
-- `research/problems/fodor-pressing-down-oq-04/knowledge.md` — three-step classical proof breakdown (limit-reduction, regressive-auxiliary, diagonal κ-intersection), reusable-lemma table, Mathlib API survey, three S2 candidates ranked by tractability.
-- Pool entry updated (status = `in-progress`, S1 OBSERVE completed).
-
-No Lean code changes. No build performed.
-
-## Proof structure at a glance
-
-| Step | What | Existing infra | Difficulty |
-|---|---|---|---|
-| 1 | Reduce to limit ordinals | `IsStationaryBelow.of_subset` | Easy |
-| 2 | Regressive auxiliary + Fodor | `fodor` (line 259) | Medium |
-| 3 | Iterated κ-choice + counting | `diagInter_isClubBelow` (line 240) | Hard (Skolem) |
-
-## Next action (S2 recommended)
-
-**S2-α**: Prove `successor_ordinals_nonStationary` — the standalone reduction lemma that the set of successor ordinals below `κ.ord` is non-stationary (equivalently, limit ordinals form a club). Expected scope ~40–80 lines added to `FodorPressingDown.lean` or a companion file, 0 sorries, 0 new axioms.
-
-Sketch:
-
-```lean
+```
 theorem isLimitOrdinals_isClubBelow {κ : Cardinal.{0}}
     (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ) :
-    IsClubBelow {α : Ordinal | α < κ.ord ∧ IsSuccLimit α} κ.ord := by
-  refine ⟨fun a ha => ha.1, ?_, ?_⟩
-  -- closed: a limit of limit-ordinals is a limit-ordinal
-  · intro β hβ hβacc
-    sorry  -- standard: accumulation point of limits is a limit
-  -- unbounded: for any α < κ.ord, the next limit is < κ.ord
-  · intro α hα
-    sorry  -- use Ordinal.add_omega or similar
+    IsClubBelow {α : Ordinal | α < κ.ord ∧ IsSuccLimit α} κ.ord
+
+theorem nonLimitOrdinals_not_isStationaryBelow {κ : Cardinal.{0}}
+    (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ) :
+    ¬ IsStationaryBelow {α : Ordinal | α < κ.ord ∧ ¬ IsSuccLimit α} κ.ord
 ```
 
-The two `sorry`s are the only obligations and both have direct Mathlib counterparts.
+Build verification: `./proofs/scripts/docker-build.sh Proofs.FodorPressingDown`
+→ `Build completed successfully (3062 jobs)`, no new warnings.
 
-## Open questions deferred to later sessions
+## Proof architecture
 
-1. **S2-β (S3 candidate):** Binary Solovay splitting — any stationary set splits into 2 disjoint stationary subsets. Requires one Fodor application, no κ-tuple machinery.
+**Closure branch** (an `IsAcc`-point of limit ordinals is itself a limit):
+* Extract `0 < p` via `IsAcc.pos` and `∀ q < p, ∃ r ∈ S, q < r < p` via `isAcc_iff`.
+* For `¬ IsMin p`: `hmin (0 ≤ p) ⇒ p ≤ 0`, conflict with `0 < p`.
+* For `IsSuccPrelimit p` (`∀ b, ¬ b ⋖ p`): given `hcov : b ⋖ p`, take `r ∈ S` with
+  `b < r < p`; `hcov.2 hbr : ¬ r < p`, contradiction with `r < p`.
 
-2. **S2-γ (S4+ candidate):** Full Solovay splitting (κ-many pairwise-disjoint stationary subsets). Requires `Classical.skolem` for the κ-indexed regressive choices and a careful counting argument.
+**Unboundedness branch** (`α + ω₀` is a limit and `< κ.ord`):
+* `ω₀ < κ.ord` via `Cardinal.ord_lt_ord` and `Cardinal.ord_aleph0`.
+* `α + ω₀ < κ.ord` via `Cardinal.lt_ord ↔ card < κ` + `Ordinal.card_add` +
+  `Cardinal.add_lt_of_lt hκ.aleph0_le` (the regularity-based closure of
+  cardinality under addition). Replaces the S6 PREP §6-projected
+  `Cardinal.isPrincipal_add_ord` citation, which is not present at that name in
+  Mathlib v4.26.0 commit `2df2f0150…` — see §Mathlib surface deltas below.
+* `IsSuccLimit (α + ω₀)` via `Ordinal.isSuccLimit_add α Ordinal.isSuccLimit_omega0`.
+* `α < α + ω₀` via `(Ordinal.isNormal_add_right α).strictMono Ordinal.omega0_pos`
+  applied to `0 < ω₀`, then `rwa [add_zero]`.
 
-3. **Connection to ω₁-combinatorics (S5+):** Once Solovay is proven, derive corollaries: club guessing, ◇_{ω₁}, Σ-products of ω₁ — all foundational forcing-theoretic results.
+## Mathlib v4.26.0 surface deltas vs prior PREP design
+
+| Designed name (S2/S5/S6 PREP) | v4.26.0 actual | Path used |
+|---|---|---|
+| `Cardinal.isPrincipal_add_ord hκ.aleph0_le hα hω_lt` | not present at that name | `Cardinal.lt_ord` + `Ordinal.card_add` + `Cardinal.add_lt_of_lt` (3 lines) |
+| `Ordinal.add_lt_add_left h α` | synthesizes wrong covariant class (`AddRightStrictMono`) | `(Ordinal.isNormal_add_right α).strictMono` |
+| `Ordinal.add_zero α` | not present as `Ordinal.add_zero`; generic `add_zero` works via AddMonoid | generic `add_zero` |
+| `Ordinal.zero_le p` | not present as `Ordinal.zero_le`; use `le_of_lt hpos` | `le_of_lt hpos` |
+| `IsSuccLimit a` field order | `¬IsMin` first, then `IsSuccPrelimit` | matched in refine |
+
+Net LOC: 68 lines for both theorems combined (S6 PREP projected 26–30 LOC just for
+`isLimitOrdinals_isClubBelow` and 6 LOC for the corollary — the cardinality bridge
+adds 3 LOC over the projected `isPrincipal_add_ord` 1-line citation; the IsNormal
+strict-mono path is 2 LOC vs the projected 1; the rest matches projection).
+
+The closure-branch proof was not pre-designed in S2/S5/S6 PREP — those sessions
+only sketched the unboundedness branch. The closure proof (decomposing
+`IsSuccLimit` as `¬IsMin ∧ IsSuccPrelimit` and using `IsAcc` to derive both)
+is original to this session.
+
+## Status after S2-α
+
+| Step | Description | Status |
+|---|---|---|
+| Step 1 | Reduce to limit ordinals (S2-α) | **DONE** — `isLimitOrdinals_isClubBelow` |
+| Step 2 | Regressive auxiliary + Fodor | S2-β / S3 (next target) |
+| Step 3 | Diagonal across ξ-sequences | S2-γ / S4+ (deferred) |
+
+FodorPressingDown.lean stats: 453 LOC, 14 theorems, 3 defs, 0 sorries, 0 axioms.
+
+## Next action (S3 recommended)
+
+**S2-β / S3**: Binary Solovay splitting. Given stationary `S ⊆ κ.ord`, intersect
+with the new club `{α | IsSuccLimit α}` so WLOG `S` consists of limits; fix a
+cofinal-sequence assignment per `α ∈ S` (via `Ordinal.bsup` or `Classical.choose`
+on a witness); apply `fodor` to the regressive auxiliary `α ↦ (first element of
+the cofinal sequence)`. Expected scope: ~120–250 LOC, 0 new axioms (uses
+`Classical.choose` already invoked at line 279 inside `fodor`).
+
+This captures the Fodor pigeonhole idea without the κ-tuple bookkeeping of
+Step 3, providing a build-verified intermediate before the full κ-splitting.
 
 ## Build / verification
 
-S1 OBSERVE is doc-only — no build required. Line counts:
+Docker-build verified on Mathlib v4.26.0 (commit `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`):
 
-- `problem.md`: ~50 lines
-- `knowledge.md`: ~145 lines
-- `state.md` (this file): ~55 lines
+```
+$ ./proofs/scripts/docker-build.sh Proofs.FodorPressingDown
+⚠ [3062/3062] Built Proofs.FodorPressingDown (5.0s)
+warning: Proofs/FodorPressingDown.lean:261:5: unused variable `hS_pos`
+warning: Proofs/FodorPressingDown.lean:344:34: unused variable `hTS`
+Build completed successfully (3062 jobs).
+```
+
+Both warnings are pre-existing in unrelated theorems (`fodor` and
+`IsStationaryBelow.of_subset`); the S2-α additions introduce no new warnings.
 
 ## Blockers
 
-None at S1 OBSERVE level. S2-α has no new Mathlib dependencies beyond the existing `Ordinal.IsSuccLimit` (already imported in `FodorPressingDown.lean`).
+None. S3 (binary splitting) can proceed directly. S4+ (full κ-splitting) will
+need an audit of `Classical.skolem` usage in Mathlib v4.26.0 but no fundamental
+obstruction.
+
+## Open questions deferred to later sessions
+
+1. **S3 / S2-β:** Binary Solovay splitting — any stationary `S` splits into 2
+   disjoint stationary subsets via a single Fodor application.
+
+2. **S4+ / S2-γ:** Full Solovay splitting (κ pairwise-disjoint stationary
+   subsets) requires `Classical.skolem` for the κ-indexed regressive choices and
+   a careful counting argument across the ξ-tuples.
+
+3. **S5+:** Once Solovay is proven, derive corollaries — club guessing,
+   ◇_{ω₁}, Σ-products of ω₁ — all foundational forcing-theoretic results.
+
+## References
+
+* Fodor, G. (1956), "Eine Bemerkung zur Theorie der regressiven Funktionen", *Acta Sci. Math.*
+* Solovay, R. M. (1971), "Real-valued measurable cardinals", *Axiomatic Set Theory* I
+* Jech, T., *Set Theory* (3rd ed.), Theorem 8.10
+* Kunen, K., *Set Theory: An Introduction to Independence Proofs*
+* Mathlib commit `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (Mathlib v4.26.0).

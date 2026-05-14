@@ -1,8 +1,8 @@
 {
   "slug": "fodor-pressing-down-oq-04",
   "title": "Solovay splitting: every stationary subset of a regular uncountable κ admits a partition into κ pairwise-disjoint stationary subsets",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "ACT",
+  "status": "in-progress",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -19,51 +19,55 @@
     "proven": [
       "Fodor's pressing-down lemma (FodorPressingDown.lean:259) is the load-bearing hammer for the regressive auxiliary step.",
       "diagInter_isClubBelow (line 240) provides closure of clubs under κ-indexed intersection.",
-      "IsStationaryBelow.of_subset (line 343) supports the WLOG reductions in Step 1."
+      "IsStationaryBelow.of_subset (line 343) supports the WLOG reductions in Step 1.",
+      "S2-α (this session, PR pending): isLimitOrdinals_isClubBelow — limit ordinals below κ.ord form a club; corollary nonLimitOrdinals_not_isStationaryBelow."
     ],
     "open": [
-      "S2-α: successor ordinals (or equivalently, non-limit ordinals) below κ.ord form a non-stationary set (limit ordinals form a club).",
       "S2-β: binary Solovay splitting — any stationary S splits into 2 disjoint stationary subsets.",
       "S2-γ: full Solovay splitting — κ pairwise-disjoint stationary subsets, requiring Classical.skolem for κ-indexed regressive choices."
     ],
-    "goal": "Reach a build-verified Lean 4 proof of Solovay splitting in the FodorPressingDown.lean framework. Decompose into three milestones: limit-reduction lemma (S2-α), binary splitting (S2-β/S3), full κ-splitting (S2-γ/S4+)."
+    "goal": "Reach a build-verified Lean 4 proof of Solovay splitting in the FodorPressingDown.lean framework. Decompose into three milestones: limit-reduction lemma (S2-α, DONE), binary splitting (S2-β/S3), full κ-splitting (S2-γ/S4+)."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T16:40:00Z",
-    "iteration": 1,
-    "focus": "Survey the standard three-step proof structure of Solovay splitting (limit-reduction, regressive-auxiliary + Fodor, diagonal κ-intersection) and identify reusable lemmas from the existing FodorPressingDown.lean file.",
+    "phase": "ACT",
+    "since": "2026-05-14T13:10:00Z",
+    "iteration": 7,
+    "focus": "S2-α ACT shipped — Step 1 of Solovay splitting (limit ordinals below κ.ord form a club). Build-verified at 3062 jobs on Mathlib v4.26.0. Next: S2-β binary Solovay splitting via single Fodor application.",
     "blockers": [],
-    "nextAction": "S2-α: Prove isLimitOrdinals_isClubBelow (or equivalently successor_ordinals_nonStationary) in FodorPressingDown.lean or a companion file. ~40-80 lines, 0 sorries, 0 new axioms.",
+    "nextAction": "S2-β / S3: Binary Solovay splitting. Given stationary S ⊆ κ.ord, intersect with the new club {α | IsSuccLimit α} so WLOG S consists of limits; fix a cofinal-sequence assignment per α ∈ S (via Ordinal.bsup); apply fodor to the regressive auxiliary α ↦ c_α(0). Expected scope: ~120–250 LOC, 0 new axioms.",
     "attemptCounts": {
-      "total": 1,
+      "total": 7,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE: doc-only survey establishing the three-step Jech-style proof of Solovay splitting (limit-reduction, regressive auxiliary via Fodor, diagonal κ-intersection + counting), with a reusable-lemma table from FodorPressingDown.lean and three S2 candidates ranked by tractability. The full theorem is well within reach of the existing infrastructure plus Mathlib's Ordinal.cof / Classical.skolem.",
+    "progressSummary": "S2-α ACT shipped: isLimitOrdinals_isClubBelow (limit ordinals below κ.ord form a club) and corollary nonLimitOrdinals_not_isStationaryBelow are proved in FodorPressingDown.lean. Closure-branch uses IsAcc → IsSuccPrelimit (no successor can be an accumulation point) + IsAcc.pos → ¬IsMin. Unboundedness-branch uses α + ω₀: limit via Ordinal.isSuccLimit_add (Mathlib v4.26.0 line 511), bound α + ω₀ < κ.ord via cardinality (card_add + Cardinal.add_lt_of_lt + Cardinal.lt_ord), and gap α < α + ω₀ via IsNormal.strictMono. Build-verified at 3062 jobs. Step 1 of the three-step Solovay proof is now complete; Step 2 (binary splitting via single Fodor) is the next target.",
     "builtItems": [
       "research/problems/fodor-pressing-down-oq-04/problem.md (S1 OBSERVE — theorem statement, scope, anchors)",
       "research/problems/fodor-pressing-down-oq-04/knowledge.md (S1 OBSERVE — three-step proof breakdown, reusable-lemma table, Mathlib API survey, S2 candidates)",
-      "research/problems/fodor-pressing-down-oq-04/state.md (S1 OBSERVE — session log and S2-α sketch)"
+      "research/problems/fodor-pressing-down-oq-04/state.md (S1 OBSERVE — session log and S2-α sketch)",
+      "S2-α (this session): proofs/Proofs/FodorPressingDown.lean §Part VII — isLimitOrdinals_isClubBelow + nonLimitOrdinals_not_isStationaryBelow (+68 LOC, 0 sorries, 0 axioms; 3062-job Docker build)"
     ],
     "insights": [
       "Step 1 (limit-reduction) is fully independent of Fodor and is the natural S2 starting point.",
       "Step 2 (regressive auxiliary) is a single direct application of fodor (line 259) once a cofinal-sequence assignment is fixed.",
       "Step 3 (κ-tuple bookkeeping) is the only step requiring iterated choice (Classical.skolem) — this is the hard one and best deferred to S4+.",
       "All required Mathlib API (Ordinal.cof, Cardinal.IsRegular, IsSuccLimit) is already imported by FodorPressingDown.lean.",
-      "No new axioms required at any stage; classical choice (already used in fodor at line 279) is sufficient."
+      "No new axioms required at any stage; classical choice (already used in fodor at line 279) is sufficient.",
+      "S2-α surface: Mathlib v4.26.0 has no Cardinal.isPrincipal_add_ord; the cardinality-bridge α + ω₀ < κ.ord works via card_add + Cardinal.add_lt_of_lt + Cardinal.lt_ord (3 lines instead of the projected 1-line citation).",
+      "S2-α surface: generic add_lt_add_left fails to synthesize AddRightStrictMono on Ordinal; the IsNormal-based path ((Ordinal.isNormal_add_right α).strictMono) gives α + 0 < α + ω₀ in one term.",
+      "S2-α surface: IsSuccLimit's field order is (¬ IsMin, IsSuccPrelimit) — corresponding refine ⟨?_, ?_⟩ goals discharge in that order."
     ],
     "mathlibGaps": [
       "Mathlib.SetTheory.Ordinal.Cofinality provides Ordinal.cof and related lemmas but no native stationary-set theory.",
       "Mathlib.Logic.Equiv.Defs / Classical.skolem provides the κ-indexed choice needed for Step 3.",
-      "No new Mathlib dependencies needed for S2-α or S2-β; S2-γ may benefit from Classical.skolem unfoldings."
+      "Cardinal.isPrincipal_add_ord does NOT exist at this name in Mathlib v4.26.0 commit 2df2f0150... — use card_add + Cardinal.add_lt_of_lt + Cardinal.lt_ord instead.",
+      "Ordinal.add_zero / Ordinal.add_lt_add_left / Ordinal.zero_le are not direct constants — use generic add_zero (from AddMonoid), le_of_lt, and (Ordinal.isNormal_add_right α).strictMono respectively."
     ],
     "nextSteps": [
-      "S2-α: isLimitOrdinals_isClubBelow / successor_ordinals_nonStationary (recommended start, ~40-80 lines).",
-      "S2-β: Binary splitting via single Fodor application (~120-250 lines).",
-      "S2-γ: Full Solovay splitting via iterated Fodor + Skolem (~400+ lines, decompose into companions).",
+      "S2-β / S3: Binary splitting via single Fodor application (~120-250 LOC).",
+      "S2-γ / S4+: Full Solovay splitting via iterated Fodor + Skolem (~400+ LOC, decompose into companions).",
       "S5+: Corollaries — club guessing, ◇_{ω₁}, Σ-products of ω₁."
     ]
   },
@@ -100,15 +104,15 @@
     ]
   },
   "started": "2026-05-12T14:35:20.231Z",
-  "lastUpdate": "2026-05-12T16:40:00Z",
+  "lastUpdate": "2026-05-14T13:10:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/FodorPressingDown.lean",
       "filename": "FodorPressingDown.lean",
-      "lineCount": 386,
-      "theoremCount": 12,
+      "lineCount": 453,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
