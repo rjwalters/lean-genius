@@ -538,7 +538,7 @@ theorem lcmRange_dvd_of_le {m n : ℕ} (hmn : m ≤ n) :
   unfold lcmRange
   apply Finset.lcm_dvd
   intro b hb
-  exact Finset.dvd_lcm (Finset.mem_of_subset (Finset.range_subset.mpr hmn) hb)
+  exact Finset.dvd_lcm (Finset.mem_of_subset (Finset.range_mono hmn) hb)
 
 /-- **(Part 8b) m=3 divisibility, odd-n case**: for `n ≥ 3` odd,
     `3 · C(n, 3) ∣ lcmRange n`.
@@ -655,7 +655,7 @@ private lemma three_factors_dvd_lcmRange {a b c n : ℕ}
   have hc : c ∣ lcmRange n := dvd_lcmRange hcp hcn
   have hab_dvd : a * b ∣ lcmRange n :=
     hab.mul_dvd_of_dvd_of_dvd ha hb
-  have habc : Nat.Coprime (a * b) c := Nat.Coprime.mul hac hbc
+  have habc : Nat.Coprime (a * b) c := (hac.symm.mul_right hbc.symm).symm
   exact habc.mul_dvd_of_dvd_of_dvd hab_dvd hc
 
 /-- **(Part 10a) m=3 divisibility, double-of-even**: for `m ≥ 2` and
@@ -681,9 +681,11 @@ theorem mul_choose_dvd_lcmRange_three_double_even {m : ℕ}
       have h1 := Nat.gcd_dvd_left (2 * m) (m - 1)
       have h2 := Nat.gcd_dvd_right (2 * m) (m - 1)
       have h3 : Nat.gcd (2 * m) (m - 1) ∣ 2 * (m - 1) := h2.mul_left 2
-      have heq_2m : 2 * m = 2 * (m - 1) + 2 := by omega
-      rw [heq_2m] at h1
-      exact Nat.dvd_sub' h1 h3
+      have h_diff : Nat.gcd (2 * m) (m - 1) ∣ (2 * m - 2 * (m - 1)) :=
+        Nat.dvd_sub h1 h3
+      have h_eq : (2 * m - 2 * (m - 1) : ℕ) = 2 := by omega
+      rw [h_eq] at h_diff
+      exact h_diff
     have h_not_2_dvd : ¬ (2 ∣ Nat.gcd (2 * m) (m - 1)) := by
       intro h
       have hdvd : 2 ∣ m - 1 := h.trans (Nat.gcd_dvd_right _ _)
@@ -696,11 +698,11 @@ theorem mul_choose_dvd_lcmRange_three_double_even {m : ℕ}
       Nat.le_of_dvd (by decide) h_gcd_dvd_2
     by_contra hne
     have hgcd_eq_2 : Nat.gcd (2 * m) (m - 1) = 2 := by omega
-    exact h_not_2_dvd (hgcd_eq_2 ▸ dvd_refl 2)
+    exact h_not_2_dvd (by rw [hgcd_eq_2])
   · -- Coprime (2 * m - 1) (m - 1)  (`2m - 1 = 1 + 2(m - 1)`)
     show Nat.gcd (2 * m - 1) (m - 1) = 1
     have hrw : 2 * m - 1 = 1 + 2 * (m - 1) := by omega
-    rw [hrw, Nat.gcd_add_mul_left_left]
+    rw [hrw, Nat.gcd_add_mul_right_left]
     exact Nat.gcd_one_left _
 
 /-- **(Part 10b) m=3 divisibility, double-of-odd**: for `m ≥ 2` and
@@ -727,18 +729,22 @@ theorem mul_choose_dvd_lcmRange_three_double_odd {m : ℕ}
     have h1 := Nat.gcd_dvd_left m (2 * m - 1)
     have h2 := Nat.gcd_dvd_right m (2 * m - 1)
     have h3 : Nat.gcd m (2 * m - 1) ∣ 2 * m := h1.mul_left 2
+    have h_diff : Nat.gcd m (2 * m - 1) ∣ (2 * m - (2 * m - 1)) :=
+      Nat.dvd_sub h3 h2
     have heq : (2 * m - (2 * m - 1) : ℕ) = 1 := by omega
-    have h4 : Nat.gcd m (2 * m - 1) ∣ 1 := heq ▸ Nat.dvd_sub' h3 h2
-    exact Nat.eq_one_of_dvd_one h4
+    rw [heq] at h_diff
+    exact Nat.eq_one_of_dvd_one h_diff
   · -- Coprime m (2 * m - 2)  (needs Odd m)
     show Nat.gcd m (2 * m - 2) = 1
     have h_gcd_dvd_2 : Nat.gcd m (2 * m - 2) ∣ 2 := by
       have h1 := Nat.gcd_dvd_left m (2 * m - 2)
       have h2 := Nat.gcd_dvd_right m (2 * m - 2)
       have h3 : Nat.gcd m (2 * m - 2) ∣ 2 * m := h1.mul_left 2
-      have heq : 2 * m = (2 * m - 2) + 2 := by omega
-      rw [heq] at h3
-      exact Nat.dvd_sub' h3 h2
+      have h_diff : Nat.gcd m (2 * m - 2) ∣ (2 * m - (2 * m - 2)) :=
+        Nat.dvd_sub h3 h2
+      have h_eq : (2 * m - (2 * m - 2) : ℕ) = 2 := by omega
+      rw [h_eq] at h_diff
+      exact h_diff
     have h_not_2_dvd : ¬ (2 ∣ Nat.gcd m (2 * m - 2)) := by
       intro h
       have hdvd : 2 ∣ m := h.trans (Nat.gcd_dvd_left _ _)
@@ -751,7 +757,7 @@ theorem mul_choose_dvd_lcmRange_three_double_odd {m : ℕ}
       Nat.le_of_dvd (by decide) h_gcd_dvd_2
     by_contra hne
     have hgcd_eq_2 : Nat.gcd m (2 * m - 2) = 2 := by omega
-    exact h_not_2_dvd (hgcd_eq_2 ▸ dvd_refl 2)
+    exact h_not_2_dvd (by rw [hgcd_eq_2])
   · -- Coprime (2 * m - 1) (2 * m - 2)  (consecutive)
     have hrw : 2 * m - 1 = (2 * m - 2) + 1 := by omega
     rw [hrw]
