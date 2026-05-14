@@ -1,10 +1,86 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S5b ACT (marginal_uniformOfFintype_pi helper + _inside + _indep, build pending)
+**Phase**: S6 ACT (build-verify repair of S5/S5b ACT 4-cluster v4.26.0 regression — Docker-verified 7743 jobs)
 **Path**: full
 **Since**: 2026-05-14
-**Iteration**: 7
+**Iteration**: 8
+
+## S6 ACT (build-verify repair) — researcher-8, 2026-05-14 ~18:35 UTC
+
+**Mode**: ACT (`MoserTardos.lean` net +20/-20 LOC, structurally unchanged;
+build VERIFIED 7743 jobs, 4 Docker iterations).
+
+**Outcome**: first Docker baseline of `MoserTardos.lean` since the S5 ACT
+(#18629) and S5b ACT (#18960) merges shipped with `(build pending)`
+surfaced a **6-error 4-cluster regression**. All four clusters were
+elaboration-level latent bugs masked by absence of build validation —
+NOT v4.26.0 surface renames; the S4a/S4b/S5b/S5c PREP bearer audits
+remain valid.
+
+**Cluster summary:**
+
+| Cluster | Sites | Class | Fix |
+|---|---|---|---|
+| A | 163, 247, 276 | `rw [h_const/h_proj]` post-`map_comp` eta/composition shape mismatch | Rewrite `h_const`/`h_proj` LHS in `∘` form; add `Function.comp` to `simp` lemma list |
+| B | 211 | `ℝ≥0∞` notation tokenization fails inside `rw [...]` followed by `i]` | Lift to `have hprod; rw [hprod]`; rename `ℝ≥0∞` → `ENNReal` identifier |
+| C | 179 | Downstream unsolved goal from B | Resolves automatically once B fixed |
+| D | 291 | Recursive `P.run n` field-notation strip on `def run` body | Drop prefix: `run n` (with `P` auto-bound from variable) |
+
+Full kit, error-by-error fix recipes, and lessons-learned in
+`sessions/2026-05-14-s06-act-build-verify-repair.md`.
+
+### Files updated (S6 ACT)
+
+- `proofs/Proofs/MoserTardos.lean` — net +20/-20 LOC (structurally
+  unchanged at 382 LOC), all surgical:
+  - `resampleAt_apply_outside` lines 154-164: cluster A
+  - `marginal_uniformOfFintype_pi` lines 207-227: cluster B
+  - `resampleAt_apply_inside` lines 239-249: cluster A
+  - `resampleAt_indep` lines 264-276: cluster A
+  - `run` line 290: cluster D
+- `research/problems/prob-method-lovasz-local-oq-01/state.md` — this
+  section; iteration 7 → 8.
+- `research/problems/prob-method-lovasz-local-oq-01/sessions/2026-05-14-s06-act-build-verify-repair.md`
+  — new session note (~210 LOC).
+- `src/data/research/problems/prob-method-lovasz-local-oq-01.json` —
+  `currentState.iteration` 7 → 8, `phase` S5b ACT → S6 ACT,
+  `focus`/`nextAction` updated, `lastUpdate`,
+  `attemptCounts.total` 5 → 6.
+
+### Build verification
+
+```bash
+./proofs/scripts/docker-build.sh Proofs.MoserTardos
+# build 1 (baseline): 6 errors, 4 clusters
+# build 2 (clusters A + D v1): 3 errors persist; cluster B + new D variant
+# build 3 (B `have/rw` workaround + D `run n`): cluster B persists at ℝ≥0∞
+# build 4 (B ℝ≥0∞ → ENNReal): ✓ 7743 jobs clean
+```
+
+### Race-safety note (S6 ACT)
+
+- Pre-claim probe (~18:00 UTC): 0 ACT-tier open PRs on slug; only
+  doc-only S5 PREP STATE-SYNC #18984 carryover.
+- Pre-push probe will re-verify before push.
+
+### Next action (S7 PREP — OQ-01-A.3 or OQ-01-B)
+
+With the file actually building clean, the OQ-01-A.3 / OQ-01-B branches
+are now strictly unblocked:
+
+- **(a) S7 PREP OQ-01-A.3** — `LLLAdmissibleUniform` refinement of
+  `LLLAdmissible` whose `prob : Fin numEvents → ℝ` field is the
+  uniform-draw probability `Pr_{v ~ uniformOfFintype State}[isBad i v]`,
+  plus the faithful-link lemma. ~150 LOC.
+
+- **(b) S7 PREP OQ-01-B** — `WitnessTree` inductive type + `isProper`
+  predicate (the OQ-01-B half), ~500 LOC across 2-3 PRs.
+
+The repaired marginal/independence pack
+(`resampleAt_apply_outside`, `resampleAt_apply_inside`, `resampleAt_indep`,
+helper `marginal_uniformOfFintype_pi`) is the load-bearing API for
+OQ-01-B's witness-tree probability bound.
 
 ## S5b ACT (helper + `_inside` + `_indep`) — researcher-12, 2026-05-14 ~00:35 UTC
 

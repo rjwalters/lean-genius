@@ -154,12 +154,12 @@ lemma resampleAt_apply_outside (S : Finset (Fin P.numVars)) (v : P.State)
   unfold resampleAt
   rw [PMF.map_comp]
   have h_const :
-      (fun a : ∀ k : S, P.alphabet k.val =>
-        (fun (b : Fin P.numVars) =>
-          if h : b ∈ S then a ⟨b, h⟩ else v b) j)
+      ((fun w : P.State => w j) ∘
+        (fun (a : ∀ k : S, P.alphabet k.val) (b : Fin P.numVars) =>
+          if h : b ∈ S then a ⟨b, h⟩ else v b))
       = Function.const _ (v j) := by
     funext a
-    simp [dif_neg hj]
+    simp [Function.comp, dif_neg hj]
   rw [h_const, PMF.map_const]
 
 /-- **Marginal of `PMF.uniformOfFintype` on a dependent product** — the
@@ -207,19 +207,20 @@ private lemma marginal_uniformOfFintype_pi
       exact congrArg Prod.snd h
   rw [h_fiber]
   push_cast [Fintype.card_pi]
-  rw [Fintype.prod_eq_mul_prod_subtype_ne
-      (f := fun k => (Fintype.card (β k) : ℝ≥0∞)) i]
+  have hprod := Fintype.prod_eq_mul_prod_subtype_ne
+      (fun k : α => ((Fintype.card (β k) : ℕ) : ENNReal)) i
+  rw [hprod]
   have h_pi_ne_zero :
-      (∏ k : {k // k ≠ i}, (Fintype.card (β k.1) : ℝ≥0∞)) ≠ 0 := by
+      (∏ k : {k // k ≠ i}, ((Fintype.card (β k.1) : ℕ) : ENNReal)) ≠ 0 := by
     apply Finset.prod_ne_zero_iff.mpr
     intro k _
     exact_mod_cast (Fintype.card_pos (α := β k.1)).ne'
   have h_pi_ne_top :
-      (∏ k : {k // k ≠ i}, (Fintype.card (β k.1) : ℝ≥0∞)) ≠ ⊤ :=
+      (∏ k : {k // k ≠ i}, ((Fintype.card (β k.1) : ℕ) : ENNReal)) ≠ ⊤ :=
     WithTop.prod_ne_top (fun _ _ => ENNReal.natCast_ne_top _)
-  have h_card_i_ne_zero : (Fintype.card (β i) : ℝ≥0∞) ≠ 0 := by
+  have h_card_i_ne_zero : ((Fintype.card (β i) : ℕ) : ENNReal) ≠ 0 := by
     exact_mod_cast (Fintype.card_pos (α := β i)).ne'
-  have h_card_i_ne_top : (Fintype.card (β i) : ℝ≥0∞) ≠ ⊤ :=
+  have h_card_i_ne_top : ((Fintype.card (β i) : ℕ) : ENNReal) ≠ ⊤ :=
     ENNReal.natCast_ne_top _
   rw [ENNReal.mul_inv (Or.inl h_card_i_ne_zero) (Or.inl h_card_i_ne_top),
       mul_left_comm,
@@ -238,12 +239,12 @@ lemma resampleAt_apply_inside (S : Finset (Fin P.numVars)) (v : P.State)
   unfold resampleAt
   rw [PMF.map_comp]
   have h_proj :
-      (fun a : ∀ k : S, P.alphabet k.val =>
-        (fun (b : Fin P.numVars) =>
-          if h : b ∈ S then a ⟨b, h⟩ else v b) j)
+      ((fun w : P.State => w j) ∘
+        (fun (a : ∀ k : S, P.alphabet k.val) (b : Fin P.numVars) =>
+          if h : b ∈ S then a ⟨b, h⟩ else v b))
       = (fun a => a ⟨j, hj⟩) := by
     funext a
-    simp [dif_pos hj]
+    simp [Function.comp, dif_pos hj]
   rw [h_proj]
   exact marginal_uniformOfFintype_pi
     (β := fun k : (S : Finset (Fin P.numVars)) => P.alphabet k.val) ⟨j, hj⟩
@@ -263,16 +264,15 @@ lemma resampleAt_indep (S : Finset (Fin P.numVars)) (v : P.State)
   unfold resampleAt
   rw [PMF.map_comp]
   have h_const :
-      (fun a : ∀ k : S, P.alphabet k.val =>
-        (fun (k : T) =>
-          (fun (b : Fin P.numVars) =>
-            if h : b ∈ S then a ⟨b, h⟩ else v b) k.val))
+      ((fun (w : P.State) => (fun k : T => w k.val)) ∘
+        (fun (a : ∀ k : S, P.alphabet k.val) (b : Fin P.numVars) =>
+          if h : b ∈ S then a ⟨b, h⟩ else v b))
       = Function.const _ (fun k : T => v k.val) := by
     funext a
     funext k
     have hk : k.val ∉ S := fun hkS =>
       (Finset.disjoint_left.mp hT) k.property hkS
-    simp [dif_neg hk]
+    simp [Function.comp, dif_neg hk]
   rw [h_const, PMF.map_const]
 
 /-- One step of the Moser–Tardos algorithm: if no bad event is currently
@@ -288,7 +288,7 @@ noncomputable def step (v : P.State) : PMF P.State :=
     iterations starting from `v`. -/
 noncomputable def run : ℕ → P.State → PMF P.State
   | 0,     v => PMF.pure v
-  | n + 1, v => (P.step v).bind (P.run n)
+  | n + 1, v => (P.step v).bind (run n)
 
 /-! ## Part III — LLL admissibility -/
 
