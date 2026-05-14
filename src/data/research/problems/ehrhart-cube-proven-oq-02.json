@@ -1,8 +1,8 @@
 {
   "slug": "ehrhart-cube-proven-oq-02",
   "title": "Ehrhart Polynomials Without General Existence Theorem",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S6 (2026-05-08, researcher-1): Mathlib API drift fix restoring origin/main buildability. Three-bug bundle: (1) `Polynomial.descPochhammer` → `descPochhammer` (5 refs) + `Polynomial.descPochhammer_succ_right` → `descPochhammer_succ_right` (2 refs) — Mathlib's `descPochhammer` lives at root namespace after `open Polynomial`, NOT inside `namespace Polynomial`; (2) drop redundant `ring` after `field_simp [hk_ne]` in `crossEhrhart_is_poly` (field_simp now closes); (3) explicit `Fin (2 * M + 1)` / `Fin (2 * n + 1)` annotations on bijection lambdas in `Finset.card_bij'` for `fiber_card_eq_crossBall_card` — without them the elaborator leaves the Fin-bound proof obligation unmaterialized (\"No goals to be solved\" at inner `by`) and a metavariable inside post-`simp only [crossBall, ...]` sum bodies (\"show tactic failed: pattern not definitionally equal\" with `↑?m.56` on target). Build verified via `./proofs/scripts/docker-build.sh Proofs.EhrhartCrossPolytope` after `rm proofs/.lake` (broken self-symlink). Still 1 sorry (`crossBall_card` succ-d) / 0 axioms / 538 lines. S5 slicing spec (`session-5-slicing-spec.md`) and the local-only S6 prototype branch (`4e9853d0510`, ~195 lines) remain valid but deferred — they'll need their own Mathlib-drift fixes when implemented.",
+    "progressSummary": "COMPLETED (S7, researcher-10, 2026-05-08, PR #17362): `crossBall_card` closed via S6 slicing decomposition. Three new private lemmas added — `crossBall_succ_d_fiber_card` (~80 lines via `Finset.card_eq_sum_card_fiberwise` + per-fiber `Fin.snoc`/`Fin.init` bijection), `crossBall_succ_d_slice` (~10 lines), `sum_crossBall_pair` (~55 lines via `Finset.sum_nbij'` for j↔(2n−j) pairing). `crossBall_card` itself closed by `induction d generalizing n` so the IH gives `(crossBall d m).card = crossEhrhart d m` for every m. Build #3 of `Proofs.EhrhartCrossPolytope` exits 0 (only `le_or_lt` deprecation + 2 unused-var warnings — non-blocking). Final file: 720 lines / 22 theorems / 0 sorries / 0 axioms / verified-original. Companion PR #17355 (parallel agent, merged 2026-05-08 22:07Z) addressed 7 pre-existing main compile errors from S2/S4 via `descPochhammer` namespace fix + drop redundant `ring` after `field_simp` + explicit `Fin (2·M+1)` / `Fin (2·n+1)` codomain annotations on bijection lambdas inside `Finset.card_bij'` for `fiber_card_eq_crossBall_card`. S7 (PR #17362) functionally equivalent to #17355's annotation-only fix via `set fwd / bwd with hfwd_def / hbwd_def` + `refine Finset.card_bij' fwd bwd ?_ ?_ ?_ ?_` restructure. Slug graduated; possible follow-up open questions queued in meta.json conclusion.openQuestions (permutohedron/hypersimplex/flow-polytope Ehrhart axiom-free?).",
     "builtItems": [
       "sum_choose_range: hockey-stick Σ C(m,k) = C(n,k+1) at EhrhartCrossPolytope.lean:118",
       "sum_shift_hockey: sum interchange at EhrhartCrossPolytope.lean:130",
@@ -83,18 +83,18 @@
     "mathlib": []
   },
   "started": "2026-05-06T13:49:03.933Z",
-  "lastUpdate": "2026-05-08T21:50:00.000Z",
+  "lastUpdate": "2026-05-13T13:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/EhrhartCrossPolytope.lean",
       "filename": "EhrhartCrossPolytope.lean",
-      "lineCount": 539,
-      "theoremCount": 14,
+      "lineCount": 720,
+      "theoremCount": 22,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCrossPolytope.lean"
     }
