@@ -100,7 +100,8 @@ by inclusion), yet they are not homeomorphic — `[0,1]` is compact while
 The compression `f` is well-defined: for `x ∈ [0,1]`, we have
 `(x+1)/4 ∈ [1/4, 1/2] ⊂ (0,1)`. -/
 
-private def fHom : (TopCat.of ↥(Set.Icc (0 : ℝ) 1)) ⟶ (TopCat.of ↥(Set.Ioo (0 : ℝ) 1)) :=
+private noncomputable def fHom :
+    (TopCat.of ↥(Set.Icc (0 : ℝ) 1)) ⟶ (TopCat.of ↥(Set.Ioo (0 : ℝ) 1)) :=
   TopCat.ofHom
     { toFun := fun ⟨x, hx⟩ => ⟨(x + 1) / 4, by
         rcases hx with ⟨h0, h1⟩
@@ -109,7 +110,8 @@ private def fHom : (TopCat.of ↥(Set.Icc (0 : ℝ) 1)) ⟶ (TopCat.of ↥(Set.I
         · linarith⟩,
       continuous_toFun := by fun_prop }
 
-private def gHom : (TopCat.of ↥(Set.Ioo (0 : ℝ) 1)) ⟶ (TopCat.of ↥(Set.Icc (0 : ℝ) 1)) :=
+private noncomputable def gHom :
+    (TopCat.of ↥(Set.Ioo (0 : ℝ) 1)) ⟶ (TopCat.of ↥(Set.Icc (0 : ℝ) 1)) :=
   TopCat.ofHom
     { toFun := fun ⟨y, hy⟩ => ⟨y, Set.Ioo_subset_Icc_self hy⟩,
       continuous_toFun := by fun_prop }
