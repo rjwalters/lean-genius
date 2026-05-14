@@ -223,7 +223,13 @@ theorem Proposition.evalBool_correct (p : Proposition S) (w : S → Bool) :
     (p.evalBool w = true) ↔ p.eval (fun s => w s = true) := by
   induction p with
   | elementary s => simp [evalBool, eval]
-  | neg q ih     => simp [evalBool, eval, ih]
+  | neg q ih     =>
+    show (!q.evalBool w) = true ↔ ¬ q.eval (fun s => w s = true)
+    have h1 : (!q.evalBool w) = true ↔ q.evalBool w = false := by
+      cases q.evalBool w <;> simp
+    have h2 : q.evalBool w = false ↔ ¬ q.evalBool w = true := by
+      cases q.evalBool w <;> simp
+    rw [h1, h2, ih]
   | conj q r ihq ihr => simp [evalBool, eval, Bool.and_eq_true, ihq, ihr]
 
 -- ═══════════════════════════════════════════════════════════════
@@ -298,8 +304,8 @@ variable {S : Type} (M : WorldModel S)
 def evalM (p : Proposition S) (w : M.W) : Prop :=
   match p with
   | .elementary s => M.holds w s
-  | .neg q        => ¬ (evalM M q w)
-  | .conj q r     => evalM M q w ∧ evalM M r w
+  | .neg q        => ¬ (evalM q w)
+  | .conj q r     => evalM q w ∧ evalM r w
 
 /-- A proposition is a tautology in model `M` when it holds
     in every world of `M`. -/
@@ -326,8 +332,8 @@ theorem truth_functional_compositionality_gen (p : Proposition S)
     evalM M p w₁ ↔ evalM M p w₂ := by
   induction p with
   | elementary s => exact h s
-  | neg q ih     => simp only [evalM]; exact ih.not
-  | conj q r ihq ihr => simp only [evalM]; exact ihq.and ihr
+  | neg q ih     => simp only [evalM, ih]
+  | conj q r ihq ihr => simp only [evalM, ihq, ihr]
 
 end GeneralSemantics
 
@@ -463,11 +469,13 @@ and conjunction, confirming the adequacy of {¬, ∧} as a basis.
 theorem de_morgan_disj (p q : Proposition S) (w : World S) :
     (Proposition.disj p q).eval w ↔ (p.eval w ∨ q.eval w) := by
   simp [Proposition.disj, Proposition.eval, not_and_or, not_not]
+  tauto
 
 theorem de_morgan_conj (p q : Proposition S) (w : World S) :
     (Proposition.neg (Proposition.conj p q)).eval w ↔
     (¬ p.eval w ∨ ¬ q.eval w) := by
   simp [Proposition.eval, not_and_or]
+  tauto
 
 -- ---------------------------------------------------------------
 -- Theorem 8: Excluded middle is a tautology (TLP 4.46)
@@ -482,7 +490,6 @@ theorem excluded_middle_tautology (p : Proposition S) :
     IsTautology (Proposition.disj p (Proposition.neg p)) := by
   intro w
   simp [Proposition.disj, Proposition.eval, not_and_or, not_not]
-  exact Classical.em _
 
 -- ---------------------------------------------------------------
 -- Theorem 9: Conjunction with negation is a contradiction
@@ -508,7 +515,6 @@ Implication, defined as ¬(p ∧ ¬q), has the standard semantics.
 theorem impl_semantics (p q : Proposition S) (w : World S) :
     (Proposition.impl p q).eval w ↔ (p.eval w → q.eval w) := by
   simp [Proposition.impl, Proposition.eval, not_and_or, not_not]
-  tauto
 
 -- ---------------------------------------------------------------
 -- Theorem 11: Biconditional semantics
@@ -550,7 +556,6 @@ negation and conjunction are expressible via NAND.
 theorem nand_expresses_neg (p : Proposition S) (w : World S) :
     (Proposition.nand p p).eval w ↔ (Proposition.neg p).eval w := by
   simp [Proposition.nand, Proposition.eval]
-  tauto
 
 theorem nand_expresses_conj (p q : Proposition S) (w : World S) :
     (Proposition.neg (Proposition.nand p q)).eval w ↔
@@ -601,7 +606,7 @@ theorem constrained_independence_fails (a b : S) (hab : a ≠ b) :
   obtain ⟨⟨w, hw⟩, hmatch⟩ := h bad
   have ha : w a := (hmatch a).mpr rfl
   have hb : w b := hw ha
-  exact hab ((hmatch b).mp hb)
+  exact hab ((hmatch b).mp hb).symm
 
 -- ---------------------------------------------------------------
 -- 11b: Weather model — concrete constrained example
@@ -841,7 +846,7 @@ theorem formEq_trans {p q r : Proposition S}
   -- (e₁.trans e₂) acts as e₂ ∘ e₁ pointwise
   -- By rename_comp: (p.rename e₁).rename e₂ = p.rename (e₂ ∘ e₁)
   calc p.rename ⇑(e₁.trans e₂)
-      = p.rename (⇑e₂ ∘ ⇑e₁) := by congr 1; ext s; simp [Equiv.trans_apply]
+      = p.rename (⇑e₂ ∘ ⇑e₁) := by congr 1
     _ = (p.rename ⇑e₁).rename ⇑e₂ := (rename_comp _ _ _).symm
     _ = q.rename ⇑e₂ := by rw [heq₁]
     _ = r := heq₂
@@ -860,20 +865,19 @@ private theorem eq_of_structEq : ∀ (p q : Proposition S),
     intro q; cases q with
     | elementary s' =>
       simp [structEq]
-      intro h; subst h; rfl
     | _ => simp [structEq]
   | neg p' ih =>
     intro q; cases q with
     | neg q' =>
       simp [structEq]
-      intro h; exact congrArg Proposition.neg (ih q' h)
+      exact ih q'
     | _ => simp [structEq]
   | conj p' p'' ih₁ ih₂ =>
     intro q; cases q with
     | conj q' q'' =>
       simp [structEq]
       intro h₁ h₂
-      exact congr (congrArg Proposition.conj (ih₁ q' h₁)) (ih₂ q'' h₂)
+      exact ⟨ih₁ q' h₁, ih₂ q'' h₂⟩
     | _ => simp [structEq]
 
 /-- `structEq` implies `formEq`: syntactically identical propositions
@@ -881,7 +885,7 @@ private theorem eq_of_structEq : ∀ (p q : Proposition S),
     permutation. -/
 theorem structEq_implies_formEq {p q : Proposition S}
     (h : p.structEq q) : p.formEq q :=
-  ⟨Equiv.refl S, by rw [rename_id]; exact eq_of_structEq p q h⟩
+  ⟨Equiv.refl S, by simp only [Equiv.coe_refl, rename_id]; exact eq_of_structEq p q h⟩
 
 -- ---------------------------------------------------------------
 -- Hierarchy: formEq → truth-table isomorphism
@@ -914,7 +918,7 @@ theorem formEq_implies_truth_table_iso {p q : Proposition S}
   rw [rename_eval]
   -- Goal: p.eval w ↔ p.eval (fun s => (w ∘ ⇑(e.symm)) (e s))
   -- Since e.symm (e s) = s, both sides are equal.
-  suffices hsuff : (fun s => (w ∘ ⇑(e.symm)) (↑e s)) = w by rw [hsuff]
+  suffices hsuff : (fun s => (w ∘ ⇑(e.symm)) (⇑e s)) = w by rw [hsuff]
   ext s
   simp [Function.comp, Equiv.symm_apply_apply]
 
@@ -1116,6 +1120,7 @@ theorem contingent_propositions_vary (q : Proposition S) [Nonempty S]
     (h_not_taut : ¬ IsTautology q)
     (h_not_contra : ¬ IsContradiction q) :
     ∃ w₁ w₂ : World S, q.eval w₁ ∧ ¬ q.eval w₂ := by
+  unfold IsContradiction at h_not_contra
   push_neg at h_not_contra
   obtain ⟨w₁, hw₁⟩ := h_not_contra
   unfold IsTautology at h_not_taut
