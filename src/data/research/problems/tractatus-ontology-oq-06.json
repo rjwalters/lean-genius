@@ -35,20 +35,20 @@
     "goal": "Four-tier classification (free / Horn-constrained / equivalence-constrained / Kripke or quotient), with theorem-survival table and a refinement preorder making freeModel the maximum element."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-13T00:00:00Z",
-    "iteration": 2,
-    "focus": "Five doc-only PREP memos (S3-S7) merged on top of S2-α ACT; Lean realisation remains at S2-α (TractatusOntologySpectrum.lean, 121 LOC, 0 sorries, 0 axioms). Each open question from S1 OBSERVE now has a PREP design but no ACT lift yet.",
+    "phase": "S7 ACT (build pending)",
+    "since": "2026-05-14T01:15:00Z",
+    "iteration": 3,
+    "focus": "S7 ACT shipped (researcher-12, 2026-05-14, build pending): the spectrum-invariance biconditional and point-model construction land in TractatusOntologySpectrum.lean (121 → 207 LOC, +86 LOC, 7 new declarations, 0 sorries, 0 axioms, 0 new imports). Resolves the S2-α open question (converse of freeModel_tautology_is_universal). Lemmas shipped: pointModel (def), pointModel_holds (@[simp]), pointModel_evalM (induction on Proposition), pointModel_isTautology_iff, spectrum_invariant_iff_freeModel_tautology (main biconditional), spectrum_invariant_implies_freeModel_via_pointModels (informative alternate converse), spectrum_invariant_contradiction_iff_freeModel_contradiction (dual for contradictions). The other four S1-listed open questions still have PREP coverage but no ACT yet: S3 (HornModel), S4 (Refines lattice), S5 (freeModel uniqueness), S6 (EquivModel/T1b).",
     "blockers": [],
-    "nextAction": "Pick one of five ACT candidates: S7 ACT (spectrum-invariance, 30-50 LOC, lowest risk) recommended first; then S2-β/S3 ACT (HornModel) or S5 ACT (freeModel uniqueness, 40-60 LOC) in parallel; S6 ACT (EquivModel/T1b) and S4 ACT (Refines lattice) after.",
+    "nextAction": "Four remaining orthogonal ACT candidates per the prior tracker, each ~40-100 LOC: (a) S2-β/S3 ACT — HornModel S (cs : List (S × S)) constructor (T1a tier), ~60-100 LOC, PREP doc #18417; (b) S4 ACT — Refines lattice via image-profiles, ~40-80 LOC, PREP doc #18470; (c) S5 ACT — freeModel uniqueness via HasIndependentProfiles, ~40-60 LOC, PREP doc #18497; (d) S6 ACT — EquivModel/T1b via symmetric Horn closure, ~40-80 LOC, PREP doc #18518. Each is independent of the others. S7 ACT itself (this PR) is build-pending; doctor verifies via docker-build before downstream uses.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
+      "total": 3,
+      "currentApproach": 2,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "S2-α ACT (2026-05-13, PR #18391, MERGED): refinement preorder + freeModel-is-maximum + tautology/contradiction pullback installed in TractatusOntologySpectrum.lean (121 LOC, 0 sorries, 0 new axioms). Five subsequent doc-only PREP memos merged: S3 PREP (#18417 — generic HornModel constructor), S4 PREP (#18470 — Refines lattice via image profiles, corrects S2-α candidate meet), S5 PREP (#18478 — freeModel uniqueness via HasIndependentProfiles), S6 PREP (#18518 — EquivModel/T1b via symmetric Horn closure), S7 PREP (#18548 — spectrum-invariance theorem resolving the converse of freeModel_tautology_is_universal). All four S1-listed open questions now have PREP coverage; Lean ACT for each is pending.",
+    "progressSummary": "S7 ACT (2026-05-14, researcher-12, build pending): the spectrum-invariance biconditional + point-model construction land in TractatusOntologySpectrum.lean (121 → 207 LOC, +86 LOC, 7 new declarations: pointModel def + pointModel_holds + pointModel_evalM + pointModel_isTautology_iff + spectrum_invariant_iff_freeModel_tautology + spectrum_invariant_implies_freeModel_via_pointModels + spectrum_invariant_contradiction_iff_freeModel_contradiction). Resolves the S2-α-landing open question (converse of freeModel_tautology_is_universal). 0 new sorries, 0 new axioms, 0 new imports. Build pending per the lake symlink loop trap; doctor verifies via docker-build. | S2-α ACT (2026-05-13, PR #18391, MERGED): refinement preorder + freeModel-is-maximum + tautology/contradiction pullback installed in TractatusOntologySpectrum.lean (121 LOC, 0 sorries, 0 new axioms). Five subsequent doc-only PREP memos merged: S3 PREP (#18417 — generic HornModel constructor), S4 PREP (#18470 — Refines lattice via image profiles, corrects S2-α candidate meet), S5 PREP (#18478 — freeModel uniqueness via HasIndependentProfiles), S6 PREP (#18518 — EquivModel/T1b via symmetric Horn closure), S7 PREP (#18548 — spectrum-invariance theorem resolving the converse of freeModel_tautology_is_universal). All four S1-listed open questions now have PREP coverage; Lean ACT for each is pending.",
     "builtItems": [
       "research/problems/tractatus-ontology-oq-06/problem.md (S1 OBSERVE — problem statement and scope)",
       "research/problems/tractatus-ontology-oq-06/knowledge.md (S1 OBSERVE — four-tier spectrum, refinement preorder, theorem-survival table, three S2 candidates)",
@@ -107,7 +107,7 @@
     ]
   },
   "started": "2026-05-12T14:35:20.294Z",
-  "lastUpdate": "2026-05-13T12:55:00Z",
+  "lastUpdate": "2026-05-14T01:15:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
