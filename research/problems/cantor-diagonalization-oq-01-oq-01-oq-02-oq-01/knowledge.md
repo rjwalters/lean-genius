@@ -3,9 +3,63 @@
 **Title**: Can Easton's theorem (consistency of 2^ℵ₀ = κ for regular κ ≥ ℵ₁) be formalized in Lean,
 or does it inherently require a meta-theoretic forcing construction?
 
-**Status**: ORIENT (Session 2, 2026-05-07)
+**Status**: AXIOMATIZED — Phase-3b Lever A shipped (S6, 2026-05-14)
 **Tier**: B / significance 6 / tractability 6
 **Parent file**: `Proofs/CantorDiagonalizationOQ01OQ01OQ02.lean` (König's constraint, 16 theorems, 0 axioms)
+**Slug files**:
+- `Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean` (Phase-3a, 257 LOC, 2 True-codomain axioms)
+- `Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean` (Phase-3b, 173 LOC, 4 axioms with non-trivial codomain)
+
+---
+
+## Session 2026-05-14 (Session 6, researcher-8) — ACT (Phase-3b Lever A)
+
+**Mode**: REVISIT (RICH, score 43)
+**Phase change**: AXIOMATIZED (Phase-3a rest) → AXIOMATIZED (Phase-3b Lever A shipped)
+**Outcome**: shipped sibling file `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean` (173 LOC, 4 axioms, 5 theorems, 0 sorries). Build clean on first iteration (3061 jobs, 4.8s for the new file).
+
+### What was built
+
+A Phase-3b sibling that introduces abstract consistency predicates and strong-Easton axioms with non-trivial codomain, replacing the parent's `True`-codomain pattern. Specifically:
+
+**New axioms** (4 total, all in namespace `CantorDiagOQ01OQ01OQ02OQ01`):
+- `ConsistencyOfContinuumValue : Cardinal.{0} → Prop` — abstract "ZFC ∪ {2^ℵ₀ = κ} consistent"
+- `ConsistencyOfContinuumFunction : (Cardinal.{0} → Cardinal.{0}) → Prop` — abstract "ZFC ∪ {∀ regular κ: 2^κ = F κ} consistent"
+- `easton_permitted_realizable_strong : ∀ κ, IsPermittedValue κ → ConsistencyOfContinuumValue κ` — genuine pointwise Easton 1970
+- `easton_consistency_strong : ∀ F, IsEastonFunction F → ConsistencyOfContinuumFunction F` — genuine function-level Easton 1970
+
+**Derived theorems** (5 total):
+- `consistencyOfContinuumFunction_continuum` — `ConsistencyOfContinuumFunction (fun κ => 2^κ)` (via parent's `isEastonFunction_continuum`)
+- `consistencyOfContinuumValue_aleph_one` — ℵ₁ consistent (CH model)
+- `consistencyOfContinuumValue_aleph_two` — ℵ₂ consistent (PFA value)
+- `consistencyOfContinuumValue_aleph_succ (α)` — every successor aleph consistent
+- `consistencyOfContinuumValue_unbounded` — consistent values form a proper class
+
+### Why this is meaningful progress
+
+The parent's `easton_consistency F hF : True` is callable but vacuous — every caller gets `trivial : True`. The Phase-3b sibling's `easton_consistency_strong F hF : ConsistencyOfContinuumFunction F` produces a term of NON-TRIVIAL type that downstream callers can cite as a witness. A future Phase-4 effort (flypitch-style port of class forcing) would discharge `easton_consistency_strong` as a theorem; the target type `ConsistencyOfContinuumFunction F` becomes the well-defined goal of that effort, rather than the meaningless `True`.
+
+### Honest accounting
+
+Total slug axiom count went 2 → 6:
+- Parent's 2 vacuous `True`-codomain axioms unchanged
+- 2 new abstract predicates (`ConsistencyOfContinuumValue`, `ConsistencyOfContinuumFunction`)
+- 2 new strong-Easton axioms (the actual mathematical content)
+
+This is NOT axiom-elimination progress (the role doc prioritizes that). It is **deeper-axiomatization progress**: the mathematical content of Easton 1970 becomes explicit at the type level, at the cost of more axioms. The trade is justified by the state.md Lever-A framing (lifted directly from researcher-12's S5 STATE-SYNC documentation).
+
+### Followup work available
+
+1. **Lever A residual**: rewrite parent's `easton_consistency` / `easton_permitted_realizable` to use `ConsistencyOfContinuumFunction` / `ConsistencyOfContinuumValue` as codomain directly. Would reduce total axiom count 6 → 4 by eliminating the redundant vacuous parent forms. Risk: minor cascading line-count drift in meta.json. Deferred from S6 because the parent file is in a "verified S4 rest state" that other agents may reference; a separate dedicated PR makes the refactor visible.
+2. **Lever B**: bridge with sibling OQ-02-OQ-03 (two-sided characterization).
+3. **Lever C**: flypitch-port scoping document.
+
+### Files modified
+
+- `proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean` (new, 173 LOC)
+- `proofs/Proofs.lean` (1-line import addition)
+- `research/problems/cantor-diagonalization-oq-01-oq-01-oq-02-oq-01/state.md`
+- `research/problems/cantor-diagonalization-oq-01-oq-01-oq-02-oq-01/knowledge.md`
 
 ---
 
