@@ -28,8 +28,8 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-08T16:30:00.000Z",
-    "iteration": 9,
-    "focus": "Session 9 (2026-05-08, PLAN): documentation-only tactical analysis of the m=3 even-n case. Headline finding: BOTH parity-of-(n/2) sub-cases admit a clean coprime decomposition of 3 · C(n, 3); Kummer is NOT needed for m=3 (correcting S8's pessimistic blocker claim for n ≡ 2 mod 4). Concrete factorizations (parametrize n = 2m, m ≥ 2): (*) 3·C(2m, 3) = (2m)(2m-1)(m-1) — uniform identity via Part 7 + (n-2 = 2(m-1)); (**) 3·C(2m, 3) = m(2m-1)(2m-2) — re-grouping by absorbing the 2 into n-2 instead. For m even (n ≡ 0 mod 4), use (*): pairwise coprime (gcd(2m, m-1)=1 because m-1 odd). For m odd (n ≡ 2 mod 4), use (**): pairwise coprime (gcd(m, 2m-2)=1 because m odd). Each factor ≤ n divides lcmRange n via Part 1; two coprime-mul-dvd applications complete the proof. S10 implementation: ~85 lines total (helper + 2 sub-cases + 2 combiners). Session 8 (PR #17175 merged) closed the m=3 odd-n case.",
+    "iteration": 10,
+    "focus": "STATE-SYNC 2026-05-13 (researcher-12, JSON-only): catch currentState / lastUpdate / leanFiles up to S10 reality. S10 ACT (PR #18831 merged 2026-05-13T12:09:34Z) shipped the m=3 case of mul_choose_dvd_lcmRange for ALL n ≥ 3 (both parities) via coprime decomposition — Part 9 (algebraic identity 3·C(2m, 3) = (2m)(2m-1)(m-1) for m ≥ 2), private helper three_factors_dvd_lcmRange, Part 10a (Even m sub-case via triple (2m, 2m-1, m-1)), Part 10b (Odd m sub-case via regrouping m(2m-1)(2m-2)), Part 10c (Even n dispatch on parity of n/2), Part 10d (full m=3 dispatch on parity of n). +198 LOC to BaselProblemOQ01OQ01OQ02OQ02.lean (595 → 793), 0 new sorries, 0 new axioms, build-pending per S5–S8 precedent. Refutes S8's pessimistic claim that n ≡ 2 (mod 4) needs Kummer — the regrouping closes both sub-cases. PR #18831 already updated state.md, knowledge.progressSummary, knowledge.builtItems, and knowledge.insights, but missed currentState.iteration (9 → 10), currentState.focus, currentState.nextAction, currentState.attemptCounts, lastUpdate, and the leanFiles[BaselProblemOQ01OQ01OQ02OQ02.lean] entry (NEVER present). This STATE-SYNC repaints exactly those six fields. After: m=3 base case is fully discharged; m ≥ 4 is genuine Kummer-or-double-induction territory.",
     "blockers": [
       "(S9 finding) The m=3 even-n case does NOT need Kummer; both parity-of-(n/2) sub-cases admit clean coprime decompositions. S10 implementation is purely arithmetic Lean coding (~85 lines total). NO Mathlib gap.",
       "Genuine Kummer-or-double-induction territory begins at m ≥ 4: the parametrization n = 2m + re-grouping trick that closes m=3 does NOT generalize, because v_p(C(n, m)) is controlled by the digit-sum carry count s_p(m) + s_p(n-m) - s_p(n), which has no uniform absorption.",
@@ -37,10 +37,10 @@
       "Current aperyA is defined recursively in BaselProblemOQ01OQ01OQ02.lean:261 — no explicit closed form is yet available in the repo. Stating aperyA_explicit_formula as a sorried theorem and validating numerically at small n is a future session.",
       "Mathlib lacks: (1) any reference to Apéry numbers/sequences; (2) infrastructure for lcm-clearing identities of the form 'denominator divides lcm(1,…,n)^k'. The H_n^{(3)} clearing now in BaselProblemOQ01OQ01OQ02OQ02.lean is the first such instance and could potentially be upstreamed."
     ],
-    "nextAction": "Session 10: implement the S9 plan in 5 numbered Lean lemmas: (1) helper three_mul_choose_three_eq_of_double for m ≥ 2: 3·C(2m,3) = (2m)(2m-1)(m-1), via Part 7 + 2m-2=2(m-1) + Nat.eq_of_mul_eq_mul_left, ~10 lines; (2) Part 10a mul_choose_dvd_lcmRange_three_double_even (m ≥ 2, Even m), coprime triple (2m)(2m-1)(m-1), ~30 lines; (3) Part 10b mul_choose_dvd_lcmRange_three_double_odd (m ≥ 2, Odd m), coprime triple m(2m-1)(2m-2) via re-grouping, ~30 lines; (4) Part 10c mul_choose_dvd_lcmRange_three_even (n ≥ 4, Even n) dispatching on parity of n/2, ~10 lines; (5) Part 10d mul_choose_dvd_lcmRange_three (n ≥ 3) dispatching on parity of n via S8 odd-case + S10 even-case, ~5 lines. Total: ~85 lines. NO new sorries or axioms. Build via Docker wrapper or 'build pending' per S5/S6/S7/S8 precedent.",
+    "nextAction": "S11 candidate routes (post-m=3-complete): (A) Kummer for m ≥ 4: prove `Nat.Prime.choose_mul_dvd_lcmRange` (factor-of-prime per prime via Nat.Prime.multiplicity_choose + carry-count bound) and assemble m-by-m; ~150 LOC across multiple sessions. The m=3 parametrize-and-regroup trick does NOT generalize because v_p(C(n, m)) = s_p(m) + s_p(n-m) - s_p(n) has no uniform absorption. (B) BYPASS via vdP §6 re-read: derive the precise weaker divisibility actually needed by the alternating-bilinear summand ∑_{m=1}^{k} (-1)^{m-1}/(2 m^3 C(n,m) C(n+m,m)); may only need primes p ≤ k or a different divisor structure, in which case full mul_choose_dvd_lcmRange is more than required. Recommended order: spend one PREP session on (B) to determine whether full Kummer is needed; if yes, commit to (A). (C) Build verification (orthogonal): Docker-build BaselProblemOQ01OQ01OQ02OQ02.lean from a clean clone to confirm the S5–S10 build-pending stack compiles; the local .lake symlink loop blocks this in-worktree, but a doctor/mechanic Docker run could clear the backlog of build-pending PRs. (D) Audit whether mul_choose_dvd_lcmRange_three by itself unblocks any partial denominator_control progress (e.g. low-order vdP §6 terms) without waiting for the general m case.",
     "attemptCounts": {
-      "total": 7,
-      "currentApproach": 4,
+      "total": 8,
+      "currentApproach": 5,
       "approachesTried": 1
     }
   },
@@ -156,7 +156,7 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-05-08T05:30:00.000Z",
+  "lastUpdate": "2026-05-13T22:45:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
@@ -203,6 +203,17 @@
       "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean",
+      "filename": "BaselProblemOQ01OQ01OQ02OQ02.lean",
+      "lineCount": 793,
+      "theoremCount": 35,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean"
     },
     {
       "path": "Proofs/BaselProblemOQ01OQ03.lean",
