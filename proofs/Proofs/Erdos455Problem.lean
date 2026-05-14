@@ -51,7 +51,7 @@ The key question is whether such sequences must grow faster than n². Richter pr
 a lower bound on the liminf, but the full conjecture (lim = ∞) remains open.
 -/
 
-/--
+/-!
 **Richter's Lower Bound (1976)**
 
 For any sequence of primes with non-decreasing gaps, we have
@@ -62,8 +62,8 @@ Richter's proof uses careful analysis of the distribution of primes.
 
 Reference: Richter, "Über die Monotonie von Differenzenfolgen", Acta Arith. (1976)
 
-This is stated as an axiom because the proof requires detailed prime distribution
-estimates not yet in Mathlib.
+This was previously stated as an axiom but has been removed; the
+docstring is retained for documentation context.
 -/
 /--
 **Erdős's Conjecture (Open)**
@@ -76,7 +76,7 @@ The conjecture remains open as of 2025.
 -/
 axiom erdos_455_conjecture : Prop
 
-/--
+/-!
 The conjecture is equivalent to: for all monotone-gap prime sequences,
 the ratio q_n / n² tends to infinity.
 -/
@@ -86,7 +86,7 @@ the ratio q_n / n² tends to infinity.
 We derive some immediate consequences of Richter's lower bound.
 -/
 
-/--
+/-!
 **Consequence**: The sequence q_n grows at least as fast as 0.35 · n².
 
 More precisely, for any ε > 0, we have q_n ≥ (0.352 - ε) · n² for sufficiently large n.

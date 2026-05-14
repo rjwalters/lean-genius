@@ -1,8 +1,103 @@
 # Current State
 
-**Phase**: ACT (S3 — `greenTao_finitary` axiom + bridge theorem + concrete `k = 5` witness landed, build-pending)
-**Since**: 2026-05-13 (S3 ACT, researcher-3)
-**Iteration**: 3
+**Phase**: ACT BUILD-VERIFY (S2 + S3 build-verified, parent-file 3-docstring unblocker landed)
+**Since**: 2026-05-14T15:50:00Z (S3 ACT BUILD-VERIFY + parent-file unblocker, researcher-9)
+**Iteration**: 4
+
+## Iteration 4 (researcher-9, 2026-05-14) — S3 ACT BUILD-VERIFY + parent `Erdos455Problem.lean` 3-docstring unblocker
+
+**Outcome**: progress — `Proofs.Erdos455OQ04` is **build-verified at
+Mathlib v4.26.0** (3061 jobs clean from worktree CWD). The S3 ACT
+build-pending qualifier (PRs #18851, #18590) is retired. Surfaced and
+fixed three pre-existing **orphan-`/--` docstring** parser regressions
+in the parent file `proofs/Proofs/Erdos455Problem.lean` (lines 54-67,
+68-76→79-82, 89-94) per the v4.26.0 strict-parser trap
+(`feedback_researcher_mathlib_v426_standalone_docstring_parser_strict.md`).
+
+### What I did
+
+1. **Pre-claim Docker baseline** (worktree CWD per
+   `feedback_researcher_docker_build_cwd_must_be_worktree.md`):
+   `./proofs/scripts/docker-build.sh Proofs.Erdos455OQ04` →
+   `error: Proofs/Erdos455Problem.lean:67:2: unexpected token '/--'; expected 'lemma'`
+   plus two more at 82:2 and 94:2. The blocker was the **parent** file,
+   not the OQ-04 target.
+
+2. **Diagnosis**. The parent had three orphan `/--` docstring blocks
+   that no longer attach to a following declaration:
+   - Lines 54-67: docstring describing "Richter's Lower Bound (1976)"
+     — the Richter axiom this docstring described was removed in a
+     prior commit, leaving the docstring orphan. Now followed by
+     another `/--` (which attaches to the `axiom erdos_455_conjecture`
+     at line 77).
+   - Lines 79-82: docstring "The conjecture is equivalent to..." now
+     followed by a non-docstring `/-` comment (line 83), so orphan.
+   - Lines 89-94: docstring "**Consequence**: The sequence q_n grows..."
+     similarly orphan (next is `/-` at line 95).
+
+3. **Fix**. Three minimal 2-char edits: `/--` → `/-!` on the orphan
+   docstrings (the `/-!` form is a parser-recognized "section comment"
+   that does NOT need to attach to a declaration). Also amended the
+   Richter docstring text to clarify the axiom was removed.
+
+4. **Post-fix Docker rebuild** (worktree CWD, build iter 2):
+   `✔ [3061/3061] Built Proofs.Erdos455OQ04 (4.1s)`. Both parent and
+   target build clean.
+
+5. **Pre-existing residue**. The parent has one unused-variable linter
+   warning at line 129:36 (`unused variable hq`). This pre-dates my
+   changes; not my repair scope. Mechanic/doctor sweep territory.
+
+### What this retires
+
+| PR     | Iter    | Layer                                  | Before        | After          |
+|--------|---------|----------------------------------------|---------------|----------------|
+| #18590 | S2 ACT  | eulerPoly + AP-gap scaffold            | build pending | build verified |
+| #18851 | S3 ACT  | `greenTao_finitary` + bridge + k=5     | build pending | build verified |
+
+OQ-04 target: **126 LOC / 0 sorries / 1 axiom (greenTao_finitary) /
+3061-job Docker build clean at v4.26.0**.
+
+### Files modified (S3 BUILD-VERIFY + parent unblocker)
+
+- `proofs/Proofs/Erdos455Problem.lean` — 3× 2-char `/--` → `/-!` swap
+  at lines 54, 79, 89; +2-LOC clarification on the orphan Richter
+  docstring noting the axiom was removed. **Parent file — bundled as
+  in-PR build unblocker** per `feedback_researcher_parent_file_build_unblocker_inpr_pattern.md`.
+  No declaration-level changes; no semantic shifts.
+- `research/problems/erdos-455-oq-04/state.md` — this iteration 4
+  section. Header advanced ACT → ACT BUILD-VERIFY / iteration 3 → 4.
+- `src/data/research/problems/erdos-455-oq-04.json` — top-level +
+  `currentState.phase` synced to `ACT_BUILD_VERIFY` per
+  `feedback_researcher_state_sync_misses_top_level_phase.md`; iter 3 → 4,
+  `lastUpdated`, focus, blockers, nextAction, builtItems, insights.
+
+### Build-verification posture
+
+Docker build run from worktree CWD per
+`feedback_researcher_docker_build_cwd_must_be_worktree.md`:
+2 iterations (initial diagnosis surfacing the parent-file blocker,
+final fix). Final: `Build completed successfully (3061 jobs).`
+
+### Open-PR pre-claim probe
+
+`gh pr list --search "erdos-455-oq-04 in:title" --state open` returns
+**0 open PRs** at claim time (race-safe).
+
+### Next action (S4 PREP — Bunyakovsky-style axiom for d > 0)
+
+Per the prior S3 ACT JSON `nextAction` (preserved):
+
+* State a Bunyakovsky-style axiom — for any irreducible integer
+  polynomial `f(n)` of degree ≥ 1 with positive leading coefficient
+  and gcd-of-values = 1, infinitely many `n` give prime `f(n)`.
+* Specialize to the AP-gap quadratic `q_n = q_0 + n g_0 + binom(n,2) d`
+  to derive an `APGapPrimeSeq d` existence statement for arbitrary
+  length, conditional on the irreducibility + gcd conditions.
+* Bridge theorem analogous to `exists_apGap_zero_of_length`.
+
+Expected ~30-50 Lean lines, 1 new axiom (`bunyakovsky_finitary`),
+0 new sorries.
 
 ## S3 ACT (researcher-3, 2026-05-13) — Green-Tao axiomatization for `d = 0`
 
