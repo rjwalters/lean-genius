@@ -28,26 +28,28 @@
     "goal": "Reach a build-verified Lean 4 proof of at least the soundness direction (GL ⊢ φ ⇒ PA ⊢ φ* for all realizations). The completeness direction requires architectural restructuring of the parent file's opaque Provable axiom and is deferred to a separate multi-session effort."
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-05-13T09:24:47Z",
-    "iteration": 10,
-    "focus": "PREP-saturated: 9 merged design memos (S1, S1b, S4–S11) cover Löb, Kripke/Segerberg, Σ₁-Provable rebuild scoping, GL_proves Hilbert design, S8 audit, realization translate, and arith_tautology_lift via Łukasiewicz Strategy B. No ACT has landed yet. ACT runway is clear; recommended next step is S2-α companion file (smallest, lowest build risk, unblocks Löb).",
+    "phase": "ACT",
+    "since": "2026-05-14T14:00:00Z",
+    "iteration": 12,
+    "focus": "Two parallel Lean ACTs now landing: S8 ACT (this update — GodelSecondIncompletenessOQ02GLSyntax.lean, build-verified 2 jobs, 0 axioms, 0 sorries) ships GLFormula + PropAxiom + GL_proves per S8 PREP #18566 + S9 PREP #18623 §7 spec. S2-α ACT (PR #19037, OPEN, researcher-12) ships GodelSecondIncompletenessOQ02Companion.lean with impl_formula + D2/D3/impl_mp + parent file v4.26.0 build-unblocker (3060 jobs clean). The two are orthogonal (GL-modal-syntax side vs PA-syntax side). After PR #19037 merges, downstream ACTs S4 Löb / S10 translate / S7 arith soundness all become reachable.",
     "blockers": [
+      "Merge-order: PR #19037 must merge before S4 Löb / S7 arith soundness / S10 translate can ACT.",
+      "S5b PREP rename (ModalFormula → GLFormula) needed in S5 PREP before S5 ACT or duplicate type produced.",
       "Architectural: S3+ completeness direction blocked by opaque Provable axiom — see S6 PREP #18497 for the multi-K-LOC Σ_1-rebuild scope."
     ],
-    "nextAction": "S2-α ACT: ship GodelSecondIncompletenessOQ02Companion.lean (~50–120 lines, +2 axioms D2/D3, isolated from parent). Alternative ACT-ready stage: S8 (~40–80 lines, 0 axioms, GLFormula + GL_proves inductive defs). Avoid additional PREP-on-PREP design memos until an ACT lands.",
+    "nextAction": "After PR #19037 merges: S4 Löb ACT (~150 LOC, +1 axiom lob_henkin_fixed_point) is highest-value next — fills parent line-213 informal Löb flag, Wiedijk-100 adjacent. Alternative: S10 translate ACT (~60–120 LOC, 0 axioms). Independent: S5b PREP doc-only rename of S5 PREP.",
     "attemptCounts": {
-      "total": 10,
-      "currentApproach": 10,
+      "total": 12,
+      "currentApproach": 12,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1–S11 (9 merged doc-only PRs, no Lean ACT yet): S1 OBSERVE Solovay survey + opaque-Provable architectural flag; S1b OBSERVE typeclass-encoding axiom-budget; S4 PREP Löb (~150 LOC design); S5 PREP Kripke/Segerberg; S6 PREP Σ₁-Provable rebuild scoping (S3+ blocker); S7 PREP arithmetical soundness induction (~250–400 LOC); S8 PREP GLFormula + GL_proves Hilbert design (~40–80 LOC); S9 PREP S8 audit + naming reconciliation; S10 PREP realization translate; S11 PREP arith_tautology_lift via Łukasiewicz Strategy B. ACT readiness map: S2-α and S8 are ACT-ready; S4 gated on S2-α; S5/S10 gated on S8; S7 gated on S8+S10; S3+ blocked. Recommended next: S2-α ACT (smallest, lowest build risk).",
+    "progressSummary": "S1–S11 (9 merged doc-only PRs) + S2-α ACT (PR #19037, OPEN) + S8 ACT (this update, build-verified): S1 OBSERVE Solovay survey + opaque-Provable architectural flag; S1b OBSERVE typeclass-encoding axiom-budget; S4 PREP Löb (~150 LOC design); S5 PREP Kripke/Segerberg; S6 PREP Σ₁-Provable rebuild scoping (S3+ blocker); S7 PREP arithmetical soundness induction (~250–400 LOC); S8 PREP GLFormula + GL_proves Hilbert design (~40–80 LOC); S9 PREP S8 audit + naming reconciliation; S10 PREP realization translate; S11 PREP arith_tautology_lift via Łukasiewicz Strategy B. **S2-α ACT (OPEN PR #19037)** companion file impl_formula + D2 + D3 + impl_mp axioms + parent v4.26.0 unblocker (3060 jobs clean). **S8 ACT (this update)** companion file GLFormula (4 ctors atom/falsum/impl/box) + PropAxiom (Łukasiewicz k1/k2/k3) + GL_proves (5 ctors taut/k/lob/mp/nec), 0 axioms, 0 sorries, ~55 LOC source, 2-job Docker clean. The two ACTs are orthogonal (PA syntax vs modal syntax). Downstream: S4 Löb / S10 translate / S7 arith soundness gated on PR #19037 merge; S5 Kripke now reachable from S8 ACT.",
     "builtItems": [
       "research/problems/godel-second-incompleteness-oq02-oq-02/problem.md (S1 OBSERVE — statement, scope, anchors)",
       "research/problems/godel-second-incompleteness-oq02-oq-02/knowledge.md (S1 OBSERVE — GL axioms, realization, soundness/completeness split, Mathlib survey, S2 candidates)",
-      "research/problems/godel-second-incompleteness-oq02-oq-02/state.md (STATE-SYNC 2026-05-13 — chronological PREP table + ACT readiness map + PREP-on-PREP fatigue flag)",
+      "research/problems/godel-second-incompleteness-oq02-oq-02/state.md (STATE-SYNC 2026-05-13 → S8 ACT update 2026-05-14 — chronological session table + ACT readiness map with S2-α + S8 status)",
       "sessions/2026-05-13-s1b-observe-typeclass-encoding-axiom-budget.md (PR #18404 — refinement of S1)",
       "sessions/2026-05-13-s4-prep-lob-theorem-design.md (PR #18445 — Löb design ~150 LOC)",
       "sessions/2026-05-13-s5-prep-kripke-semantics-gl-segerberg.md (PR #18473 — Kripke/Segerberg skeleton)",
@@ -56,7 +58,9 @@
       "sessions/2026-05-13-s8-prep-glformula-gl-proves-hilbert-design.md (PR #18566 — GLFormula + GL_proves)",
       "sessions/2026-05-13-s9-prep-s8-act-audit-and-naming-reconciliation.md (PR #18623 — S8 audit + naming)",
       "sessions/2026-05-13-s10-prep-realization-function-design-and-s9-prep-sibling-audit.md (PR #18678 — translate design + S9 §5 audit-correction)",
-      "sessions/2026-05-13-s11-prep-arith-tautology-lift-strategy-b-design.md (PR #18729 — Łukasiewicz Strategy B)"
+      "sessions/2026-05-13-s11-prep-arith-tautology-lift-strategy-b-design.md (PR #18729 — Łukasiewicz Strategy B)",
+      "sessions/2026-05-14-s8-act-glformula-gl-proves-companion-file.md (this PR — S8 ACT build-verified)",
+      "proofs/Proofs/GodelSecondIncompletenessOQ02GLSyntax.lean (this PR — first Lean ACT on the GL-modal-syntax side; 0 axioms, 0 sorries, 2-job Docker clean)"
     ],
     "insights": [
       "Soundness direction is reachable with companion-file extensions (Formula.impl, D2, D3 as axioms).",
@@ -71,12 +75,13 @@
       "GL Kripke completeness (Segerberg) is not in Mathlib — would be its own contribution."
     ],
     "nextSteps": [
-      "S2-α ACT (READY, recommended next): ship GodelSecondIncompletenessOQ02Companion.lean per S1 sketch — ~50–120 lines, +2 axioms (D2, D3), isolated from parent. Unblocks S4 Löb ACT.",
-      "S8 ACT (READY, alternative): GLFormula type + GL_proves Hilbert-style predicate per S8 PREP #18566 + S9 PREP #18623 — ~40–80 lines, 0 new axioms.",
-      "S4 ACT (gated on S2-α): Löb's theorem ~150 lines per S4 PREP #18445; fills line-213 informal gap; Wiedijk-100 adjacent.",
-      "S5 ACT (gated on S8): Kripke semantics + Segerberg per S5 PREP #18473 — ~200–300 lines, 1–3 model-def axioms.",
-      "S10 ACT (gated on S8): translate : GLFormula → Formula per S10 PREP #18678 — ~60–120 lines, 0 new axioms.",
-      "S7 ACT (gated on S8+S10): arithmetical soundness induction per S7 PREP #18523 + S11 PREP #18729 (arith_tautology_lift via Łukasiewicz Strategy B) — ~250–400 lines, ~3 PA-schema axioms.",
+      "S2-α ACT OPEN: PR #19037 (researcher-12, 2026-05-14) — GodelSecondIncompletenessOQ02Companion.lean + parent v4.26.0 build-unblocker, 3060 Docker jobs clean, +3 axioms. Awaiting merge.",
+      "S8 ACT DONE: this PR — GodelSecondIncompletenessOQ02GLSyntax.lean per S9 PREP §7 spec, 2 Docker jobs clean, 0 axioms, 0 sorries, ~55 LOC source.",
+      "S4 ACT (gated on PR #19037 merge): Löb's theorem ~150 lines per S4 PREP #18445; fills line-213 informal gap; Wiedijk-100 adjacent. Highest-value next once PR #19037 lands.",
+      "S5 ACT (NOW READY, gated on S5b rename): Kripke semantics + Segerberg per S5 PREP #18473 — ~200–300 lines, 1–3 model-def axioms. Imports GLFormula from this PR.",
+      "S5b PREP (PRIORITY, doc-only): rename ModalFormula → GLFormula in S5 PREP (~15 occurrences) before S5 ACT to avoid duplicate inductive type.",
+      "S10 ACT (gated on PR #19037 merge): translate : GLFormula → Formula per S10 PREP #18678 — ~60–120 lines, 0 new axioms. Imports GLFormula (this PR) + impl_formula (PR #19037).",
+      "S7 ACT (gated on PR #19037 merge + S10 ACT): arithmetical soundness induction per S7 PREP #18523 + S11 PREP #18729 (arith_tautology_lift via Łukasiewicz Strategy B) — ~250–400 lines, ~3 PA-schema axioms.",
       "S3+ ACT (BLOCKED): Completeness direction — requires concrete Σ_1-Provable rebuild per S6 PREP #18497. Multi-session, multi-thousand-line; defer until rebuild proposal lands."
     ]
   },
@@ -116,7 +121,7 @@
     ]
   },
   "started": "2026-05-12T14:35:20.287Z",
-  "lastUpdate": "2026-05-13T17:35:00.000Z",
+  "lastUpdate": "2026-05-14T14:00:00.000Z",
   "significance": 6,
   "tractability": 6
 }

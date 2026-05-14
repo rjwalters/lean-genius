@@ -1,15 +1,19 @@
 # State — godel-second-incompleteness-oq02-oq-02
 
-## Phase: PREP-saturated (S11 PREP complete; ACT pending across all stages)
+## Phase: ACT (S8 ACT build-verified; S2-α ACT open in PR #19037)
 
-**Snapshot date**: 2026-05-13 (researcher-10, STATE-SYNC)
+**Snapshot date**: 2026-05-14 (researcher-9, S8 ACT)
 
-The thread has accumulated **nine merged PREP/OBSERVE design memos** (S1 → S11)
-without a single Lean ACT landing yet. This state.md previously only logged
-S1; this STATE-SYNC catches the log up to the present so future researchers
-can see which stages are ready-to-implement vs still under design.
+After nine merged PREP/OBSERVE design memos (S1 → S11), two ACTs are now
+landing in parallel: **S8 ACT** (this update — `GLFormula` + `GL_proves`
+companion file, build-verified, 2 jobs) and **S2-α ACT** (PR #19037, OPEN,
+companion file with `impl_formula` + D2/D3/impl_mp). The two PRs are
+orthogonal: S8 ACT is the GL-modal-syntax side, S2-α ACT is the PA-syntax
+side. Neither needs the other.
 
-No Lean code edits in this STATE-SYNC. No build performed.
+S8 ACT in this update is build-verified via
+`./proofs/scripts/docker-build.sh Proofs.GodelSecondIncompletenessOQ02GLSyntax`
+(2 jobs, 3.0s; log preserved).
 
 ## Session summary (chronological)
 
@@ -26,7 +30,10 @@ No Lean code edits in this STATE-SYNC. No build performed.
 | S10 | #18678 | 2026-05-13 | researcher-8 | PREP | Realization function `translate : GLFormula → Formula` design + S9 §5 sibling-precedent audit-correction |
 | S11 | #18729 | 2026-05-13 | researcher-1 | PREP | `arith_tautology_lift` body design via Strategy B (Łukasiewicz Hilbert schemas) |
 
-**STATE-SYNC** | this commit | 2026-05-13 | researcher-10 | doc-only | refresh state.md + JSON `currentState`/`knowledge` after 9 merged PREPs without log update
+**STATE-SYNC** | #18918 | 2026-05-13 | researcher-10 | doc-only | refresh state.md + JSON `currentState`/`knowledge` after 9 merged PREPs without log update
+
+| S2-α | #19037 | 2026-05-14 | researcher-12 | ACT (OPEN) | `GodelSecondIncompletenessOQ02Companion.lean` — `impl_formula` + D2/D3/impl_mp axioms + parent file v4.26.0 build-unblocker (3060-job Docker clean) |
+| S8 | this PR | 2026-05-14 | researcher-9 | ACT (build-verified) | `GodelSecondIncompletenessOQ02GLSyntax.lean` — `GLFormula` (4 ctors) + `PropAxiom` (Łukasiewicz k1/k2/k3) + `GL_proves` (5 ctors: taut/k/lob/mp/nec); 0 axioms, 0 sorries, ~55 LOC source per S9 PREP §7 spec; 2-job Docker clean |
 
 The numbering jumps S1 → S1b → S4 because S2 and S3 slots were originally
 reserved for the companion-file ACT and Solovay-completeness ACT
@@ -37,18 +44,24 @@ labels were preserved for tracking continuity.
 
 | Stage | Design memo | LOC estimate | New axioms | Build risk | Status |
 |---|---|---|---|---|---|
-| S2-α companion (D2/D3) | S1 sketch (state.md §"Next action") | ~50–120 | 2 (D2, D3) | low (axioms only, no proof tactics) | **READY** — closest to ACT |
-| S8 — `GLFormula` + `GL_proves` | S8 PREP #18566, refined by S9 #18623 | ~40–80 | 0 (inductive defs) | low–medium (Hilbert schema enumeration) | **READY** — narrow, well-scoped |
-| S4 — Löb's theorem | S4 PREP #18445 | ~150 | 0 (uses D2/D3 from S2-α) | medium (depends on S2-α) | gated on S2-α ACT |
-| S5 — Kripke semantics / Segerberg | S5 PREP #18473 | ~200–300 | 1–3 (Kripke model defs) | medium (large structural defs) | gated on S8 ACT |
-| S7 — Arithmetical soundness | S7 PREP #18523 + S11 PREP #18729 | ~250–400 | ~3 (PA Łukasiewicz schemas) | medium–high (induction on `GL_proves`) | gated on S8, S10 ACT |
-| S10 — Realization translate | S10 PREP #18678 | ~60–120 | 0 (function def) | low (structural recursion) | gated on S8 ACT |
+| S2-α companion (D2/D3) | S1 sketch + S2-α ACT memo (PR #19037) | ~50–120 | 3 (impl_mp + D2 + D3) | low | **OPEN** in PR #19037 (researcher-12, 2026-05-14) |
+| S8 — `GLFormula` + `GL_proves` | S8 PREP #18566, refined by S9 #18623 | ~55 (delivered) | 0 (inductive defs) | low | ✅ **DONE** — this PR (researcher-9, 2026-05-14) |
+| S4 — Löb's theorem | S4 PREP #18445 | ~150 | 1 (lob_henkin_fixed_point; uses D2/D3 from S2-α) | medium (depends on S2-α merge) | gated on PR #19037 merge |
+| S5 — Kripke semantics / Segerberg | S5 PREP #18473 | ~200–300 | 1–3 (Kripke model defs) | medium (large structural defs) | **NOW READY** — S8 ACT (this PR) imports cleanly |
+| S5b PREP rename | S5 PREP rename pass (`ModalFormula → GLFormula`) | doc-only | 0 | trivial | **PRIORITY** — should ship before S5 ACT to avoid duplicate type |
+| S7 — Arithmetical soundness | S7 PREP #18523 + S11 PREP #18729 | ~250–400 | ~3 (PA Łukasiewicz schemas) | medium–high (induction on `GL_proves`) | gated on PR #19037 merge + S10 ACT |
+| S10 — Realization translate | S10 PREP #18678 | ~60–120 | 0 (function def) | low (structural recursion) | gated on PR #19037 merge (needs `impl_formula`) |
 | S3+ — Completeness direction | S6 PREP #18497 | multi-K | many | very high | **BLOCKED** by Σ₁-`Provable` rebuild |
 
-**Recommended next ACT**: S2-α companion file. It is the smallest, has
-the lowest build risk, and unblocks S4 (Löb) immediately. The naming
-`GodelSecondIncompletenessOQ02Companion.lean` was settled in S1 and
-preserved through S8/S9; no rename pass required.
+**Recommended next ACT** (after PR #19037 merges): **S4 Löb's theorem**
+(~150 LOC, +1 axiom `lob_henkin_fixed_point`) — fills the parent file's
+line-213 informal flag and is Wiedijk-100 adjacent. Alternative: **S10
+translate** (~60–120 LOC, 0 axioms) — provides the realization bridge
+from `GLFormula` (this PR) to `Formula` (PR #19037's `impl_formula`).
+
+**Independent next**: **S5b PREP** — doc-only rename pass of S5 PREP
+(`ModalFormula → GLFormula`, ~15 occurrences). This must ship before S5
+ACT or S5 will produce a duplicate inductive type.
 
 ## Theorem statement at a glance
 
@@ -97,18 +110,20 @@ with the existing framework.
 
 ## Build / verification
 
-All sessions so far are doc-only; no Lean builds performed. The next ACT
-(S2-α or S8) will be the first Lean change on this slug; recommended
-path is to commit + push the Lean file first, then ship build-pending
-PR (per the lake-symlink-loop / mid-build-wipe trap precedent in earlier
-researcher logs).
+- **S8 ACT (this PR)** — `Proofs.GodelSecondIncompletenessOQ02GLSyntax`
+  Docker-built clean (2 jobs, 3.0s); zero parent imports per S9 PREP §7
+  recommendation, zero Mathlib imports, zero sorries, zero new axioms.
+- **S2-α ACT (PR #19037)** — `Proofs.GodelSecondIncompletenessOQ02Companion`
+  Docker-built clean per PR body (3060 jobs); +3 axioms (impl_mp, D2, D3)
+  + parent file v4.26.0 build-unblocker for orphan-docstring issue.
 
 ## Blockers
 
-- **No code-level blocker** for S2-α, S8, S10 (all isolated companion-file
-  work).
+- **PR #19037 not yet merged**: S4 ACT (Löb) and S7 ACT (arith soundness)
+  and S10 ACT (translate) all need `impl_formula` from PR #19037. Until
+  it merges, downstream ACT progression is gated.
+- **S5b PREP missing**: S5 PREP uses name `ModalFormula`; S7/S8/S9 use
+  `GLFormula`. S8 ACT (this PR) commits `GLFormula` to the codebase, so
+  the rename of S5 PREP can now be safely done.
 - **Architectural blocker for S3+ completeness direction**: opaque
-  `Provable` axiom — see S6 PREP #18497 for the rebuild scope.
-- **PREP-on-PREP fatigue risk**: 9 merged PREPs without an ACT is a
-  signal to land the smallest ready ACT (S2-α) before drafting another
-  design memo on this slug.
+  `Provable` axiom — see S6 PREP #18497 for the rebuild scope. Unchanged.
