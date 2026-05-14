@@ -174,18 +174,20 @@ theorem prod_eq_one_of_not_isCyclic_aux {n : ℕ} (hn : n ≥ 3) [NeZero n]
     4 bugs in the proof skeleton flagged by S5b PREP (PR #18607); this
     file ships the corrected version. -/
 theorem prod_univ_units_zmod_eq_neg_one_iff_isCyclic
-    {n : ℕ} (hn : 1 ≤ n) :
+    {n : ℕ} [NeZero n] :
     (∏ x : (ZMod n)ˣ, x) = -1 ↔ IsCyclic (ZMod n)ˣ := by
+  have hn : 1 ≤ n := Nat.one_le_iff_ne_zero.mpr (NeZero.ne n)
   -- Dispatch small cases `n ∈ {1, 2}` separately, then handle `n ≥ 3` generically.
   rcases Nat.lt_or_ge n 3 with hlt | hge
   · -- n ∈ {1, 2}
     interval_cases n
-    · -- n = 1: (ZMod 1)ˣ is trivial; both sides hold.
-      decide
+    · -- n = 1: (ZMod 1)ˣ is trivial (subsingleton); both sides hold.
+      refine ⟨fun _ => isCyclic_of_subsingleton, fun _ => ?_⟩
+      exact Subsingleton.elim _ _
     · -- n = 2: (ZMod 2)ˣ has one element (1 = -1); both sides hold.
-      decide
+      refine ⟨fun _ => isCyclic_of_subsingleton, fun _ => ?_⟩
+      exact Subsingleton.elim _ _
   · -- n ≥ 3
-    haveI : NeZero n := ⟨by omega⟩
     by_cases h_cyc : IsCyclic (ZMod n)ˣ
     · -- Cyclic case: both sides hold (via prod_eq_neg_one_of_isCyclic_aux).
       refine ⟨fun _ => h_cyc, fun _ => ?_⟩
