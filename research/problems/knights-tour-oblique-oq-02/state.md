@@ -1,9 +1,10 @@
 # Current State
 
-**Phase**: ACT (S3 — D4 level-set invariance + orbit framework)
-**Since**: 2026-05-13T18:30:00Z
-**Last Updated**: 2026-05-13 (Iteration 4, researcher-5)
-**Iteration**: 4
+**Phase**: BLOCKED (parent file `KnightsTourOblique.lean` regression on origin/main)
+**Since**: 2026-05-14T03:30:00Z
+**Last Updated**: 2026-05-14 (Iteration 5, researcher-12)
+**Iteration**: 5
+**Blocker handoff**: mechanic (Mathlib v4.26.0 drift + duplicate decl in parent)
 
 ## Iteration 2 (researcher-8, 2026-05-12) — S2 ORIENT / ACT
 
@@ -316,3 +317,150 @@ distribution-skeleton work.
 Parent `Proofs/KnightsTourOblique.lean` is broken on origin/main —
 needs a separate mechanic-driven Mathlib-drift fix PR. Not a blocker
 for this iteration (matches S1/S2/S3-prep precedent).
+
+## Iteration 5 (researcher-12, 2026-05-14) — STATE-SYNC + parent blocker inventory
+
+**Outcome**: doc-only — no Lean changes. Ran a fresh Docker build of
+`Proofs.KnightsTourOblique` on origin/main
+(`./proofs/scripts/docker-build.sh Proofs.KnightsTourOblique`, 2026-05-14
+~03:15 UTC, log `.loom/logs/researcher-12-knights-parent-build.log`).
+Build aborted at "maximum number of errors (100; from option
+maxHeartbeats…)" — confirming the parent is still broken and producing
+the categorised inventory below for mechanic handoff. The OQ02 file
+(iter 4 work, S3 ACT) is unchanged and remains verifiable by inspection
+against the parent's pre-regression public surface, as documented in
+iters 2–4.
+
+### Why this iteration is doc-only
+
+Across iters 2–4, three consecutive `(build pending)` PRs (#18101 S2,
+#18144 S3-prep, #18920 S3 ACT) shipped under the convention "parent is
+broken on origin/main, OQ02 verifiable by inspection". This iteration
+applies the [`(build pending)` slug series silent parent regression]
+discipline: actually run the Docker build, write down the line:col
+inventory, hand off to mechanic with a categorised plan rather than
+ship a fifth `(build pending)` PR with new Lean content that nobody can
+build-verify.
+
+### Parent error inventory (101 errors total — `maxErrors` cap hit)
+
+Categorised root causes (estimated cascade vs root-cause split: ~66
+cascade / ~35 root-cause):
+
+#### Tier 1: surgical Mathlib v4.26.0 renames (8 sites, all single-line)
+
+1. `List.getLast_eq_get` → `List.getLast_eq_getElem` (6 sites)
+   - Lines 458:20, 482:22, 492:22, 535:22, 552:22, 1967:20
+   - Pattern: `simp only [List.getLast_eq_get, List.get_eq_getElem]` →
+     `simp only [List.getLast_eq_getElem]` (drop the second lemma; the
+     new name folds both directions). Line 906 already uses the
+     correct form — that's the working precedent inside the same file.
+2. `List.map_eq_nil` → `List.map_eq_nil_iff` (1 site)
+   - Line 685:11 (`rw [List.map_eq_nil] at h`)
+3. `List.getElem_cons_succ_eq_getElem_tail` — removed in v4.26.0 (1 site)
+   - Line 1103:24. Replacement likely `List.getElem_tail` or hand-derive
+     from `List.tail_cons`. Needs case-by-case look.
+
+#### Tier 2: structural defects (1 site)
+
+4. Duplicate `tour_consecutive_adj` declaration
+   - First decl: line 342 (`Adj squares[i] squares[i+1]`, proof via
+     `t.path i …`)
+   - Duplicate: line 888 (identical signature, proof via `convert`)
+   - Resolution: delete one. The earlier (line 342) is the simpler
+     proof and is referenced consistently by name throughout the file
+     (e.g., line 488 `tour_consecutive_adj t 62 (by omega)`); the
+     duplicate at 888 is the merge artifact. Confirm by checking that
+     all call sites resolve to the line-342 version after the deletion.
+
+#### Tier 3: v4.26.0 motive / rewrite strictness (6 sites)
+
+5. `motive is not type correct` (lines 981, 987, 1199, 1217, 1233, 1249)
+   - Per the [Mathlib v4.26.0 term-mode `▸` multi-occurrence motive-
+     ambiguity kit] (researcher-12 memory): when LHS/RHS of an equation
+     appears in multiple positions of the result type, the bidirectional
+     motive can substitute into unintended positions. Refactor each
+     `rewrite [eq]`-on-goal to `rw [eq] at <hyp>` plus `exact` (or
+     surgical `congr`); often paired with the surrounding `unsolved
+     goals` / `No goals to be solved` cascade.
+
+#### Tier 4: index / definitional drift (2+ sites)
+
+6. `failed to prove index is valid` (lines 905, 907)
+   - In `tour_cyclic_adj` after `t.squares[63]` reduction. Likely needs
+     an explicit `(by rw [t.length_eq]; omega)` proof of the index
+     bound; the parent uses this idiom elsewhere consistently.
+
+#### Tier 5: deep elaborator / Application type mismatch (~5 sites)
+
+7. `Application type mismatch` (lines 455:54, 1930:18, 1962:54)
+   - In `List.getElem_append_right` argument positions for the
+     tail++head splice. Possibly downstream of the rename in (1) once
+     the simp set normalises differently.
+8. `rcases ... Quot.lift` (line 1015) — `Finset` membership predicate
+   no longer reduces to an inductive shape post-v4.26.0; needs
+   `Finset.mem_…` lemma first or `obtain` over a `simp`-prepared form.
+9. `Function expected at` (lines 1928:65, 2033:57), `rewrite Did not
+   find` (lines 1343/1355/1363/1371), `rfl expected` (2106:8),
+   `Tactic constructor failed` (950:2), `rcases ... Quot.lift`
+   (1015:24), `Invalid rewrite argument` (1080:12). Many likely
+   cascade from Tier 1–3 fixes; re-build after Tiers 1+2+3 land.
+
+#### Tier 6: pure cascade (likely auto-resolves after Tiers 1–5)
+
+- `simp made no progress` (27 sites) — most are directly downstream of
+  the unknown-constant errors in Tier 1.
+- `unsolved goals` (22 sites), `omega could not prove` (13 sites),
+  `No goals to be solved` (4 sites) — symptomatic on lines adjacent to
+  Tier 1–3 root causes.
+
+### Recommended mechanic landing order
+
+1. **Tiers 1 + 2 first** (~8 single-line renames + 1 duplicate-delete,
+   ~10 LOC). Re-Docker-build; expect ~50 cascade errors to vanish.
+2. **Tier 3** (~6 motive-strictness refactors, ~30–50 LOC). Re-build.
+3. **Tier 4** (~2 index-bound fixes, ~10 LOC). Re-build.
+4. **Tier 5** (~5 surgical look-each-up, hopefully <50 LOC). Re-build.
+5. **Tier 6** should be gone after the above; if any remain, they are
+   genuine cascade-from-cascade and need direct attention.
+
+Estimated mechanic-side cost: **3–5 Docker iterations**, ~1–2 hours of
+attention. Apply the [parent-file repair fix-and-rebuild loop] memory:
+each Docker rebuild may surface previously-masked errors (Lean reports
+up to maxErrors per file, so 101 here is a lower bound on total
+errors).
+
+### What this enables (post-unblock)
+
+Once parent builds clean, all four `knights-tour-oblique-oq-02-*`
+descendant PRs (#18101 S2, #18144 S3-prep, #18920 S3 ACT, and any S4
+forward work) become Docker-verifiable in one shot. The OQ02 file
+itself (`Proofs/KnightsTourObliqueOQ02.lean`, 340 LOC, 0 sorries, 0
+new axioms) uses only the parent's public surface and standard Mathlib
+finset/fintype API; verification by inspection has been the precedent.
+
+### Next action (S4 ORIENT — unchanged from iter 4 plan)
+
+Once parent is unblocked:
+
+1. Set up `MulAction (Bool × Fin 4) ClosedTour` instance via
+   `applyD4Tour`, or hand-roll the orbit partition.
+2. Prove `levelSet k = ⋃ orbits`, each orbit-size divides 8 via
+   stabilizer index.
+3. Conclude `obliqueDistribution k = 8 · (#free orbits) + Σ_{self-sym}
+   (8 / stab size)`, then specialise to `8 ∣ obliqueDistribution k`
+   when there are no self-symmetric tours at level `k`.
+
+Estimated S4 size: ~150–200 LOC via `MulAction`, ~100–120 LOC
+otherwise.
+
+### Build status
+
+**Build pending — parent file blocker (Mathlib v4.26.0 drift + 1
+duplicate decl).** Inventory above; build log
+`.loom/logs/researcher-12-knights-parent-build.log`.
+
+### Blockers
+
+Parent `Proofs/KnightsTourOblique.lean` v4.26.0 regression — see
+inventory above. Mechanic-scope; researcher hand-off this iteration.
