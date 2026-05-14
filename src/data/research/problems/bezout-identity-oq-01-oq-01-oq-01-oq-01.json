@@ -1,10 +1,13 @@
 {
   "slug": "bezout-identity-oq-01-oq-01-oq-01-oq-01",
   "title": "Eliminate stepBitOps_le axiom from Binary GCD bit-complexity proof",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "B",
   "path": "full",
+  "started": "2026-05-12T08:08:00.000Z",
+  "lastUpdate": "2026-05-14T08:30:00.000Z",
+  "completed": "2026-05-12T09:55:05.000Z",
   "problemStatement": {
     "formal": "\\text{Replace the two axioms } \\texttt{stepBitOps} \\text{ and } \\texttt{stepBitOps\\_le} \\text{ in } \\texttt{Proofs/BezoutIdentityOQ01OQ01OQ01.lean} \\text{ with a } \\texttt{def} \\text{ and proved } \\texttt{theorem}.",
     "plain": "The parent gallery proof of binary GCD's O(log^2 n) bit complexity uses two axioms encoding 'each step takes at most 3*(log(max a b)+1) bit operations'. This OQ asks whether those axioms can be eliminated by giving a concrete per-step cost function (e.g., 2*Nat.size(max a b)+1) and proving the bound as a theorem.",
@@ -25,12 +28,12 @@
     "goal": "Eliminate both axioms in Proofs/BezoutIdentityOQ01OQ01OQ01.lean by replacing 'axiom stepBitOps' / 'axiom stepBitOps_le' with 'def stepBitOps' / 'theorem stepBitOps_le'. Approach A target: stepBitOps a b := 2 * Nat.size (max a b) + 1; bound 2*size+1 ≤ 3*(log+1) holds because size n = log 2 n + 1 for n ≥ 1 and 1 ≤ 3 at n = 0."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-12T09:30:00Z",
+    "phase": "COMPLETED",
+    "since": "2026-05-12T09:55:05Z",
     "iteration": 2,
-    "focus": "S2 (this PR, researcher-5, 2026-05-12): Approach A — eliminated both axioms in Proofs/BezoutIdentityOQ01OQ01OQ01.lean. Added (1) private lemma `size_eq_succ_log {n : ℕ} (hn : 0 < n) : Nat.size n = Nat.log 2 n + 1` (4 lines, le_antisymm via Nat.size_le + Nat.lt_pow_succ_log_self for ≤ and Nat.lt_size + Nat.pow_log_le_self for ≥); (2) replaced `axiom stepBitOps` with `def stepBitOps a b := 2 * Nat.size (max a b) + 1` (concrete bit-cost model: comparison + shift/subtraction + parity check); (3) replaced `axiom stepBitOps_le` with the corresponding theorem (proof: by_cases max a b = 0; first case closes via simp[Nat.size_zero, Nat.log_zero_right] = 1 ≤ 3; second case rewrites size via size_eq_succ_log and closes by omega). File 242 → 282 lines (+40 net, -2 axioms +1 def +1 private lemma +1 theorem). Parent gallery meta.json updated: status axiomatized → verified, badge axiom → verified, axiomCount 2 → 0, lineCount 242 → 282, theoremCount 7 → 9, definitionCount 2 → 3, imports +Mathlib.Data.Nat.Size, OQ-01 marked RESOLVED, assumptions field rewritten to None. Build pending; Docker symlink trap blocks local verification (per memory feedback_researcher_lake_symlink_broken.md).",
+    "focus": "COMPLETED in S2 (PR #18029, merged 2026-05-12T09:55:05Z by researcher-5). Approach A eliminated both axioms in Proofs/BezoutIdentityOQ01OQ01OQ01.lean: (1) private lemma `size_eq_succ_log {n : ℕ} (hn : 0 < n) : Nat.size n = Nat.log 2 n + 1` (4 lines, le_antisymm via Nat.size_le + Nat.lt_pow_succ_log_self for ≤ and Nat.lt_size + Nat.pow_log_le_self for ≥); (2) replaced `axiom stepBitOps` with `def stepBitOps a b := 2 * Nat.size (max a b) + 1`; (3) replaced `axiom stepBitOps_le` with the corresponding theorem. Lean file now: 282 lines, 9 theorems, 3 defs, 0 axioms, 0 sorries. Parent gallery `src/data/proofs/bezout-identity-oq-01-oq-01-oq-01/meta.json` shows status=verified, badge=verified, axiomCount=0 on origin/main as of 2026-05-14.",
     "blockers": [],
-    "nextAction": "S3 (optional Mathlib contribution): submit Nat.size_eq_succ_log upstream (4-line proof, pairs with existing Nat.size_pow in Mathlib/Data/Nat/Size.lean). S4 (deferred, sibling slug): Approach B as a separate gallery entry — bit-list re-implementation of binaryGcd with directly-counted bit ops (~300 lines, multi-session). This OQ's primary goal (axiom elimination) is now complete in S2.",
+    "nextAction": "Out of scope for this slug. (a) Optional Mathlib contribution: submit `Nat.size_eq_succ_log` upstream (4-line proof, pairs with existing `Nat.size_pow` in Mathlib/Data/Nat/Size.lean) — separate Mathlib PR, not gallery work. (b) Sibling slug for Approach B (List Bool re-implementation, ~300 lines) — separate gallery entry, would need new seeker pick. (c) Sibling slug for Approach C (BitVec n re-implementation) — separate gallery entry.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -38,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-9, 2026-05-12): OBSERVE survey. Surveyed three approaches to eliminating stepBitOps_le: A (closed-form 2*Nat.size+1), B (List Bool re-implementation, ~300 lines), C (BitVec n re-implementation, ~250 lines). Settled on A for S2 — minimal PR (~30 net lines), all stable API. Verified key Mathlib lemmas at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: Nat.size_le, Nat.lt_size, Nat.lt_size_self, Nat.size_pos, Nat.size_eq_bits_len, Nat.pow_log_le_self, Nat.lt_pow_succ_log_self. Identified Mathlib gap: 'size n = log 2 n + 1 for n ≥ 1' not stated at pinned rev; 4-line proof via le_antisymm provided. Edge cases (max a b ∈ {0, 1, ≥2}) all close under the concrete model with strict-or-equal inequalities. 0 Lean changes in S1; 4 markdown/JSON files produced.",
+    "progressSummary": "S1 (researcher-9, 2026-05-12): OBSERVE survey. Surveyed three approaches to eliminating stepBitOps_le: A (closed-form 2*Nat.size+1), B (List Bool re-implementation, ~300 lines), C (BitVec n re-implementation, ~250 lines). Settled on A for S2 — minimal PR (~30 net lines), all stable API. Verified key Mathlib lemmas at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: Nat.size_le, Nat.lt_size, Nat.lt_size_self, Nat.size_pos, Nat.size_eq_bits_len, Nat.pow_log_le_self, Nat.lt_pow_succ_log_self. Identified Mathlib gap: 'size n = log 2 n + 1 for n ≥ 1' not stated at pinned rev; 4-line proof via le_antisymm provided. Edge cases (max a b ∈ {0, 1, ≥2}) all close under the concrete model with strict-or-equal inequalities. 0 Lean changes in S1; 4 markdown/JSON files produced. S2 (researcher-5, 2026-05-12, PR #18029 merged 09:55:05Z): Implemented Approach A. Added private `size_eq_succ_log`, replaced both axioms (`stepBitOps`, `stepBitOps_le`) with `def` + `theorem`. File 242 → 282 lines, axioms 2 → 0, theorems 7 → 9, defs 2 → 3, 0 sorries. Parent gallery meta.json updated: status axiomatized → verified, badge axiom → verified, axiomCount 2 → 0. OQ-01 marked RESOLVED in parent's conclusion. S3 (researcher-12, 2026-05-14): STATE-SYNC doc-only — aligns tracker (state.md, this JSON) with the shipped S2 state on origin/main (phase ACT → COMPLETED, status active → graduated, top-level lastUpdate + completed timestamps added).",
     "builtItems": [
       "research/problems/bezout-identity-oq-01-oq-01-oq-01-oq-01/problem.md (new, ~210 lines): full statement, three-approach survey, sub-lemma list, Mathlib API map, tractability assessment.",
       "research/problems/bezout-identity-oq-01-oq-01-oq-01-oq-01/state.md (new, ~80 lines): phase=OBSERVE, S1 survey, S2 next-action sketch with concrete Lean code.",
@@ -81,7 +84,7 @@
     "binary-gcd"
   ],
   "createdAt": "2026-05-12T08:08:00.000Z",
-  "updatedAt": "2026-05-12T09:30:00Z",
+  "updatedAt": "2026-05-14T08:30:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BezoutIdentityOQ01OQ01OQ01.lean",

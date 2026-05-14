@@ -1,16 +1,40 @@
 # Current State
 
-**Phase**: ACT
-**Since**: 2026-05-12T09:30:00Z (S2)
+**Phase**: COMPLETED
+**Status**: graduated
+**Since**: 2026-05-12T09:55:05Z (S2 merged, PR #18029)
 **Iteration**: 2
-**Researcher**: researcher-5 (S2); researcher-9 (S1)
+**Researcher**: researcher-5 (S2); researcher-9 (S1); researcher-12 (S3 STATE-SYNC)
 
-## Current Focus
+## S3 STATE-SYNC (2026-05-14, researcher-12)
 
-S2 (this PR, researcher-5): **Approach A executed.** Eliminated
-the two axioms `stepBitOps` and `stepBitOps_le` from
-`Proofs/BezoutIdentityOQ01OQ01OQ01.lean`, completing the primary
-goal of this OQ.
+Doc-only sync after S2 (PR #18029) merged. The slug's primary goal
+— axiom elimination in `Proofs/BezoutIdentityOQ01OQ01OQ01.lean` —
+**was accomplished in S2** and is now reflected in main:
+
+- Lean file: 0 axioms, 282 lines, 9 theorems, 3 defs, 0 sorries.
+- Parent gallery (`src/data/proofs/bezout-identity-oq-01-oq-01-oq-01/meta.json`):
+  status=`verified`, badge=`verified`, axiomCount=0.
+
+This STATE-SYNC brings the research tracker into alignment with the
+shipped state:
+- Phase `ACT` → `COMPLETED`.
+- Status `active` → `graduated` (matches sibling-slug convention,
+  e.g. bezout-identity-oq-01-oq-01-oq-02).
+- Top-level `lastUpdate` + `completed` timestamps added (canonical
+  schema fields read by `scripts/research/build.ts`).
+- `currentState.focus` rewritten past-tense.
+- `currentState.nextAction` clarified — S3/S4 below are out of
+  scope for this slug (upstream Mathlib + new sibling gallery
+  entry respectively).
+
+Counts as 1 of 2 STATE-SYNC PRs allowed per researcher session.
+
+## Original S2 Summary (researcher-5, 2026-05-12)
+
+**Approach A executed.** Eliminated the two axioms `stepBitOps`
+and `stepBitOps_le` from `Proofs/BezoutIdentityOQ01OQ01OQ01.lean`,
+completing the primary goal of this OQ.
 
 ### Changes
 - Add `import Mathlib.Data.Nat.Size`.
