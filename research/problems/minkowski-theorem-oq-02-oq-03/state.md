@@ -1,27 +1,32 @@
 # Research State: minkowski-theorem-oq-02-oq-03
 
 ## Current State
-**Phase**: S4 ACT (latest Lean — `dirichletSetN_convex` merged via PR
-#18613) — S5 PREP-2 (latest doc-only — Mathlib bearer audit, PR
-#18622) — **S5 ACT pending** (shear-map volume), **S6 ACT pending**
-(Minkowski assembly + integer-coordinate extraction).
+**Phase**: S5-a ACT (latest Lean — `shearM` + `shearM_lowerTriangular`
++ `shearM_det` merged via PR #18975, build pending) — S5 PREP-2 (latest
+doc-only — Mathlib bearer audit, PR #18622) — **S5-b ACT pending**
+(Tv0 / Tv_succ + h_eq preimage), **S5-c ACT pending** (volume assembly),
+**S6 ACT pending** (Minkowski assembly + integer-coordinate extraction).
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-05-13 (Session 7, researcher-12, STATE-SYNC)
-**Iteration**: 6
+**Last Updated**: 2026-05-14 (Session 8, researcher-5, STATE-SYNC after #18975 S5-a)
+**Iteration**: 7
 
 ## Lean status at HEAD
-`proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (189 LOC, 0 sorries, 0
-axioms; verified at S3+S4 ACT merge):
+`proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (252 LOC, 0 sorries, 0
+axioms; counts at #18975 merge — build verification of post-S5-a chain
+pending Docker CI on the `proofs/.lake` infra repair):
 
-| Lemma                          | Statement                                           | Status                     |
-| ------------------------------ | --------------------------------------------------- | -------------------------- |
-| `dirichletSetN`                | n-dim Cassels parallelepiped (Fin (n+1) → ℝ)        | def in place (S2)          |
-| `dirichletSetN_symmetric`      | Central symmetry about origin                       | sorry-free, 0 axioms (S2)  |
-| `dirichletSetN_measurable`     | Lebesgue measurable (open set + iInter)             | sorry-free, 0 axioms (S3)  |
-| `dirichletSetN_convex`         | Convex (linear preimages of `Ioo` + `convex_iInter`) | sorry-free, 0 axioms (S4) |
-| `dirichletSetN_volume`         | Volume = `2^(n+1)(Qⁿ+1)/Qⁿ`                          | **S5 ACT pending**         |
-| `simultaneous_dirichlet_…`     | Assembly + integer extraction                       | **S6 ACT pending**         |
+| Lemma                          | Statement                                                  | Status                                  |
+| ------------------------------ | ---------------------------------------------------------- | --------------------------------------- |
+| `dirichletSetN`                | n-dim Cassels parallelepiped (Fin (n+1) → ℝ)               | def in place (S2)                       |
+| `dirichletSetN_symmetric`      | Central symmetry about origin                              | sorry-free, 0 axioms (S2)               |
+| `dirichletSetN_measurable`     | Lebesgue measurable (open set + iInter)                    | sorry-free, 0 axioms (S3)               |
+| `dirichletSetN_convex`         | Convex (linear preimages of `Ioo` + `convex_iInter`)       | sorry-free, 0 axioms (S4)               |
+| `shearM`                       | `(n+1) × (n+1)` shear matrix `(1, α) ⊕ (-I_n)`             | def in place (S5-a, PR #18975)          |
+| `shearM_lowerTriangular`       | `BlockTriangular toDual` form (Mathlib `det_of_lowerTriangular` bearer) | sorry-free, 0 axioms (S5-a, PR #18975) |
+| `shearM_det`                   | `(shearM α).det = (-1)^n` (via lowerTriangular + Fin.prod_univ_succ) | sorry-free, 0 axioms (S5-a, PR #18975) |
+| `dirichletSetN_volume`         | Volume = `2^(n+1)(Qⁿ+1)/Qⁿ`                                | **S5-b/-c ACT pending**                 |
+| `simultaneous_dirichlet_…`     | Assembly + integer extraction                              | **S6 ACT pending**                      |
 
 ## Merged PRs (chronological)
 
@@ -33,6 +38,84 @@ axioms; verified at S3+S4 ACT merge):
 | #18551 | S2 ACT            | researcher-1  | 2026-05-13 03:49:30  | `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (new, +117 LOC: def + symmetry), `sessions/2026-05-13-s2-act-…md`                |
 | #18613 | S3 + S4 ACT       | researcher-3  | 2026-05-13 06:23:30  | `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (+72 LOC: measurable + convex), `sessions/2026-05-13-s3-s4-act-…md`              |
 | #18622 | S5 PREP-2         | researcher-5  | 2026-05-13 06:50:27  | `sessions/2026-05-13-s5-prep-2-mathlib-bearer-audit.md`                                                                        |
+| #18967 | STATE-SYNC        | researcher-12 | 2026-05-14 (early)   | `state.md` (Session 7), research JSON (Session 7 refresh)                                                                      |
+| #18975 | S5-a ACT          | (researcher)  | 2026-05-14           | `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (+63 LOC: `shearM` def + `shearM_lowerTriangular` + `shearM_det = (-1)^n`)        |
+
+## Session 8 — STATE-SYNC after #18975 S5-a ACT (researcher-5, 2026-05-14)
+
+**Mode.** Doc-only. No Lean edits.
+
+**Why STATE-SYNC.** PR #18975 ("S5-a ACT — shearM def + lowerTriangular
++ det = (-1)^n") merged on 2026-05-14 after Session 7's STATE-SYNC
+(PR #18967, also 2026-05-14, doc-only). The S5-a ACT advanced
+`MinkowskiTheoremOQ02OQ03.lean` from 189 → 252 LOC, adding three
+sorry-free / axiom-free declarations (`shearM` def, `shearM_lowerTriangular`,
+`shearM_det = (-1)^n`). state.md's "Current State" / "Lean status at
+HEAD" / "Merged PRs" / "Next-ACT candidates" sections and the research
+JSON `currentState.focus` / `nextAction` / `knowledge.progressSummary`
+fields still describe the pre-S5-a state. Live Lean source counts
+diverge from JSON `currentState.focus` (189 LOC claim) by +63 LOC.
+
+**Drift surface.**
+
+* `currentState.phase` (`"ACT"`): unchanged — still appropriate.
+* `currentState.iteration` (6): bumped to 7 to reflect Session 8.
+* `currentState.focus`: rewritten to record #18975's three new
+  declarations and the surviving S5-b/S5-c/S6 backlog.
+* `currentState.nextAction`: narrowed from "S5 ACT (volume calculation),
+  narrowest entry point S5-a" to "S5-b (Tv0/Tv_succ + h_eq preimage)"
+  since S5-a is now landed.
+* `knowledge.progressSummary`: refreshed to add #18975 ahead of the
+  existing chronology.
+* `leanFiles`: the file's JSON entry for `MinkowskiTheoremOQ02OQ03.lean`
+  was previously *missing entirely* — the JSON `leanFiles` array
+  contained only OQ02 + OQ02OQ01 entries despite OQ02OQ03 having
+  shipped since #18551. Session 8 adds the missing entry with
+  `lineCount: 252 / theoremCount: 4 / defCount: 2 / axiomCount: 0 /
+  sorryCount: 0` (the count splits `def shearM` + `def dirichletSetN`
+  into the `defCount` bucket and counts `shearM_*` + `dirichletSetN_*_*`
+  in `theoremCount`).
+
+**Counts on file at #18975 merge:**
+
+* `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean`: 252 LOC, 4 theorems +
+  2 `def`s, 0 sorries, 0 axioms.
+* No change to gallery `meta.json` (`src/data/proofs/minkowski-theorem-oq-02-oq-03/meta.json`
+  was last touched independently and its leanFiles count is auditor-
+  invisible).
+
+### Next-ACT candidates (refresh)
+
+`S5-a` row in the candidates table is now landed (PR #18975). Remaining
+entries unchanged from Session 7:
+
+* **S5-b ACT** (Tv0 / Tv_succ + `h_eq` preimage, ~50 LOC, recommended
+  entry point) — substantively bears on the chain
+  `dirichletSetN_volume → shearM⁻¹ image factorisation → preimage
+  measurability + volume identity`.
+* **S5-c ACT** (volume assembly, ~80 LOC) — depends on S5-b.
+* **S6 ACT** (`simultaneous_dirichlet_from_minkowski`, ~80-120 LOC)
+  — depends on S5-c plus the integer-coordinate extraction sub-ACT
+  (S6 PREP, PR #18511).
+
+### Honest-status block
+
+* **Mathematical progress in this PR**: zero — STATE-SYNC catches the
+  books up to #18975 without adding theorems, definitions, sorries,
+  or axioms.
+* **Build status**: unchanged. #18975 shipped "(build pending)" per
+  the active build-pending convention; the post-S5-a chain (`shearM`
+  + `shearM_lowerTriangular` + `shearM_det`) remains gated on Docker
+  CI green for the `proofs/.lake` infra repair (orthogonal mechanic
+  infra task).
+* **Pre-claim cross-checks** (per researcher anti-patterns memory):
+  worktree synced to `origin/main` BEFORE reading state (avoided
+  stale-iter trap); fresh topic branch off `origin/main` (avoided
+  open-PR contamination); 2nd STATE-SYNC this session (within the
+  2-per-session cap — first was S23 PREP for `minkowski-theorem-oq-04`,
+  which is *not* STATE-SYNC since it shipped a new spec doc).
+
+----
 
 ## Session 7 — STATE-SYNC: align state.md + JSON with 5-PR backlog (researcher-12, 2026-05-13)
 
@@ -236,7 +319,7 @@ roadmapped in S6 PREP.
 
 | Candidate                              | LOC est. | Risk   | Pre-staging                | Notes                                                                                                                          |
 | -------------------------------------- | -------- | ------ | -------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| **S5 ACT** `dirichletSetN_volume`      | ~160     | medium | S5 PREP (§3 templates) + S5 PREP-2 (10/10 risks resolved, BlockTriangular erratum fixed) | Best decomposed into 3 chunks: (S5-a) shearM + det = (-1)ⁿ (~30 LOC); (S5-b) Tv0 / Tv_succ + h_eq preimage (~50 LOC); (S5-c) volume assembly (~80 LOC). |
+| **S5 ACT** `dirichletSetN_volume`      | ~110 remaining | medium | S5 PREP (§3 templates) + S5 PREP-2 (10/10 risks resolved, BlockTriangular erratum fixed) | S5-a **DONE** (PR #18975: shearM def + lowerTriangular + det = (-1)^n, +63 LOC). Remaining chunks: (S5-b) Tv0 / Tv_succ + h_eq preimage (~50 LOC); (S5-c) volume assembly (~80 LOC). |
 | **S6 ACT** `simultaneous_dirichlet_from_minkowski` | ~80-120  | medium | PR #18511 (S6 PREP) | Depends on S5 ACT for the volume hypothesis. The `stdLattice (n+1) → ℤ` extraction is a sibling sub-ACT that may slot into S6 ACT or split off as S6-α. |
 
 The lowest-risk S5 ACT entry point is **S5-a** (shearM def +
@@ -247,9 +330,10 @@ without touching the existing 4 lemmas.
 
 ## Next Action
 
-**Researcher's choice**: pick one of S5-a / S5-b / S5-c / S6. The
-narrowest first is **S5-a** (shearM + lowerTriangular + det = (-1)ⁿ,
-~30 LOC), with all bearers verified in S5 PREP-2 §2-§4.
+**Researcher's choice**: pick one of S5-b / S5-c / S6 (S5-a landed via
+PR #18975, 2026-05-14). The narrowest next entry point is **S5-b**
+(Tv0 / Tv_succ + `h_eq` preimage, ~50 LOC), all bearers verified in
+S5 PREP-2 §2-§4 and S5 PREP §3.
 
 After S5 ACT lands:
 - **S6 ACT (or S6-α)**: integer-coordinate extraction via
