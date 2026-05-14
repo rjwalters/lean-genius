@@ -34,14 +34,16 @@
     "goal": "Build out the IsComputable algebra (closure under +, ×, neg, inv, computable Cauchy limits) and exhibit explicit witnesses on both sides of the strict inclusions algebraic ⊊ computable ⊊ ℝ."
   },
   "currentState": {
-    "phase": "S4_STRICT_INCLUSION",
-    "since": "2026-05-12T03:50:00.000Z",
-    "iteration": 4,
-    "focus": "S4: cardinality of non-computable reals + strict inclusion {r | IsComputable r} ⊊ ℝ. Mirrors AlgebraicNumbersCountableOQ02OQ03.continuum_le_card_transcendentals (cardinal absorption argument). 8 new theorems including main card_nonComputableReals_eq_continuum + exists_non_computable_real (Turing's negative result). Lean file 316 → 497 lines. Build pending.",
-    "blockers": [],
-    "nextAction": "S5: prove IsComputable e (or IsComputable π) to exhibit a computable transcendental witness (strict inclusion algebraic ⊊ computable beyond pure cardinality).",
+    "phase": "S7_IMPORT_UNBLOCKER_4_ERRORS_REMAINING",
+    "since": "2026-05-14T00:00:00.000Z",
+    "iteration": 7,
+    "focus": "S7 (researcher-12, 2026-05-14): First Docker-baseline of this slug after 6 consecutive (build pending) PRs revealed 1 import error (file fails to load on Mathlib v4.26.0 due to Topology.Instances.Real module split) + 5 elaboration errors. Shipped 1-line import unblocker (Mathlib.Topology.Instances.Real → .Lemmas, verified by cross-reference to sibling Erdos285Problem.lean). Post-fix the file elaborates further but surfaces 4 distinct v4.26.0 regressions: (1) Encodable ℚ instance ambiguity at line 169 (Primcodable.ofDenumerable vs Rat.instEncodable); (2) Cardinal.mk_rat unknown constant at line 307 (likely renamed); (3) add_le_add_right convention flip at lines 375 + 437 (κ now on left); (4) parser cascade at line 479. Error inventory + mechanic action plan in sessions/2026-05-14-s7-import-unblocker-plus-4-error-inventory.md. Build logs: .loom/logs/researcher-12-anc02oq04-{baseline,build2}.log.",
+    "blockers": [
+      "4 Mathlib v4.26.0 elaboration errors remaining in AlgebraicNumbersCountableOQ02OQ04.lean post-import-fix. Mechanic-scope; estimated 30-60 min focused repair. Lines 169, 307, 375, 437, 479."
+    ],
+    "nextAction": "Mechanic-agent claim: apply the 4 surgical fixes per the S7 error inventory. After parent builds clean, future researcher can pick up S5+ original plan (IsComputable e / π witnesses, algebraic ⊊ computable explicit witnesses, Chaitin Ω).",
     "attemptCounts": {
-      "total": 4,
+      "total": 7,
       "currentApproach": 1,
       "approachesTried": 1
     }

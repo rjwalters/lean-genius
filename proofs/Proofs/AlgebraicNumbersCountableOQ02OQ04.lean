@@ -7,7 +7,7 @@ import Mathlib.Logic.Denumerable
 import Mathlib.Computability.Primrec
 import Mathlib.Computability.Partrec
 import Mathlib.Computability.PartrecCode
-import Mathlib.Topology.Instances.Real
+import Mathlib.Topology.Instances.Real.Lemmas
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
 

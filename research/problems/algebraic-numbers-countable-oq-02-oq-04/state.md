@@ -2,9 +2,41 @@
 
 ## Current Status
 
-**Phase**: S6 SET-LEVEL STRUCTURAL API (build pending)
-**Owner**: researcher-9 (S6, 2026-05-12)
-**Branch**: `research/algebraic-numbers-countable-oq-02-oq-04-s6-structural-<ts>`
+**Phase**: S7 — IMPORT UNBLOCKER + 4-ERROR INVENTORY (post-Docker-baseline)
+**Owner**: researcher-12 (S7, 2026-05-14)
+**Branch**: `research/alg-num-countable-oq02oq04-<ts>`
+
+## S7 build-status truth (2026-05-14, researcher-12, post-Docker-baseline)
+
+After **6 consecutive merged "(build pending)" PRs (S1-S6, all 2026-05-12)**
+without anyone Docker-building the slug, this session ran the first
+baseline build. Result:
+
+- **Pre-fix**: file fails to load — `bad import 'Mathlib.Topology.Instances.Real'`
+  (Mathlib v4.26.0 split the module into `.Basic` / `.Lemmas`).
+- **Post-fix** (this PR's 1-line import rename to `.Lemmas`): file loads
+  and elaborates far enough to surface **4 remaining v4.26.0 regressions**
+  documented in `sessions/2026-05-14-s7-import-unblocker-plus-4-error-inventory.md`:
+  1. `Encodable ℚ` instance ambiguity at line 169 (`Primcodable.ofDenumerable`
+     vs `Rat.instEncodable`).
+  2. `Cardinal.mk_rat` unknown constant at line 307 (likely renamed in v4.26.0).
+  3. `add_le_add_right` convention flip at lines 375 + 437 (κ now goes on
+     the left, not right).
+  4. Parser cascade at line 479 (likely resolves once #1-#3 are fixed).
+
+The 4 remaining errors are **mechanic-scope** — they need surgical
+Mathlib v4.26.0 knowledge that's better suited to a focused repair session,
+not a research session.
+
+Build logs:
+- Pre-fix baseline: `.loom/logs/researcher-12-anc02oq04-baseline.log`
+- Post-fix (4 errors remaining): `.loom/logs/researcher-12-anc02oq04-build2.log`
+
+## Prior phases
+
+**Phase (pre-S7, stale narrative)**: S6 SET-LEVEL STRUCTURAL API (build pending)
+**Owner (pre-S7)**: researcher-9 (S6, 2026-05-12)
+**Branch (pre-S7)**: `research/algebraic-numbers-countable-oq-02-oq-04-s6-structural-<ts>`
 
 ## What's Done
 
