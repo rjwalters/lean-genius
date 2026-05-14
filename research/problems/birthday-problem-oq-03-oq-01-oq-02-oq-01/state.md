@@ -1,11 +1,87 @@
 # Research State: birthday-problem-oq-03-oq-01-oq-02-oq-01
 
 ## Current State
-**Phase**: BUILD-BLOCKER — accumulated 9-PR build-pending chain (S10–S16d) has 37 errors on Mathlib v4.26.0; doctor-scope handoff
+**Phase**: BUILD-BLOCKER — 37-error v4.26.0 fix kit now mechanic-ready (S18 prep)
 **Path**: full
 **Since**: 2026-04-29T00:00:00Z
-**Iteration**: 22 (S17 build-verify attempt, build-blocker doc-only)
-**Last Update**: 2026-05-13 (Session 17, researcher-9) — Docker-build of S16d tip surfaced 37 errors; doctor-scope handoff per `feedback_researcher_build_pending_slug_series_silent_parent_regression.md` (≥3-error rule)
+**Iteration**: 23 (S18 mechanic kit prep, doc-only)
+**Last Update**: 2026-05-14 (Session 18, researcher-9) — produced `s18-mechanic-kit-prep.md`: 9-cluster (K1–K14) fix plan classifying all 37 S17 errors into surgical-fix categories with Mathlib v4.26.0 API citations, file:line refs, and ~45-LOC mechanic-ready edits
+
+## Session 18 Summary (2026-05-14, researcher-9) — Mechanic kit prep (doc-only)
+
+**Mode**: PREP (doc-only follow-up to S17 build-blocker discovery, mirroring the
+S16d PREP follow-up pattern that produced `s16d-bearer-audit-and-tactic-draft.md`
+to de-risk single-pass implementation).
+
+**Outcome**: produced `s18-mechanic-kit-prep.md` — converts the S17 37-error
+inventory into a mechanic-ready 9-cluster fix plan. Each cluster gets:
+- Root-cause diagnosis (Mathlib v4.26.0 elaborator strictness / API rename /
+  hygiene drift)
+- File:line references
+- Mathlib v4.26.0 API citations (verified at pinned SHA
+  `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)
+- Proposed surgical fix with LOC estimate
+- Risk notes + cascade-resolution heuristics
+
+**Cluster summary** (~45 LOC total across 16 sites):
+
+| ID | Cluster | LOC | Strategy |
+|---|---|---|---|
+| K1 | Forward-ref `exp_lambda_tendsto` | 0 (reorder) | Move `poisson_approx_birthday3` after L468 |
+| K2 | `filter_upwards` `∀ᶠ d : ℕ in atTop` strict typing | +5 | Add `: ℕ` annotation on 2 `have`s |
+| K3 | `subst hmj`/`hmk` direction trap | +6 | Swap to `rw [hmj]`/`rw [hmk]` |
+| K4 | `Nat.descFactorial_two` removed | +4 | Derive via `simp [Nat.descFactorial]` |
+| K5 | Triple-destructure `LT.lt.le` direction | +8 | Explicit `obtain ⟨a,b,c⟩` at top |
+| K6 | `omega` regression on let-projections | +4 | Pre-`obtain`-destructure |
+| K7 | `card_eq_sum_card_fiberwise` → `Set.MapsTo` | +4 | Annotate `hF` as `Set.MapsTo` |
+| K8 | `card_sdiff` → `card_sdiff_of_subset` rename | +2 | Direct rename |
+| K9 | `orderEmbOfFin_unique` arg-order shift | +1 | Add `hcard` as first arg |
+| K10 | `Fin (Fintype.card (Fin d))` vs `Fin d` | +3 | Avoid pre-rewriting `card_fin` |
+| K11 | "No goals to be solved" residue (cascade) | -2 | Delete tail `ring`/`rfl` after K2/K7 |
+| K12 | Hygiene leak `Nat.totient._@.…_hyg.446` | TBD | May auto-resolve after K7 |
+| K13 | `b₁`/`c₁`/`b₂`/`c₂` scope loss | +4 | Re-destructure or hoist `match` |
+| K14 | `unsolved goals` cascade (5 sites) | TBD | Re-evaluate after upstream fixes |
+
+**Mathlib v4.26.0 API citations** (verified at pinned SHA):
+- `Finset.card_sdiff_of_subset` (Data/Finset/Card.lean) ← was
+  `Finset.card_sdiff` at v4.25
+- `Finset.card_sdiff` (now unconditional, `_ ∩ _` RHS)
+- `Finset.card_eq_sum_card_fiberwise` now expects `Set.MapsTo` hyp
+- `Nat.descFactorial_two` REMOVED; only `Nat.cast_descFactorial_two` remains
+- `Finset.orderEmbOfFin_unique`: `h : s.card = k` is FIRST explicit arg
+
+**Cross-cluster patterns identified** (for future researcher/mechanic notes):
+- **Elaborator-strictness root** (K2 + K7): v4.26.0 no longer auto-coerces
+  between `∀ᶠ`/`Set.MapsTo` / `∀ p ∈ s` forms.
+- **Destructure-scope root** (K3 + K5 + K6 + K13): single refactor to
+  explicit `obtain ⟨…⟩ := …` destructures at the top of each block resolves
+  4 clusters via a shared mechanism.
+- **API rename root** (K4 + K8 + K9): straightforward symbol renames; 1-LOC
+  per site.
+
+**Acceptance criteria** spelled out in `s18-mechanic-kit-prep.md`:
+1. Docker build clean (0 errors)
+2. Axiom count unchanged (1: Lemma C `p_no_triple_tendsto`)
+3. Theorem count delta ≤ +2 (allow small destructure helpers)
+4. No new sorries (preserve all 43 numbered lemmas)
+5. JSON sync post-build: phase → "ACT", iteration → 23, focus refresh
+
+**Why kit prep rather than fix-PR**: per
+`feedback_researcher_build_pending_slug_series_silent_parent_regression.md`,
+research PRs are bounded to ≤3 surgical 1-LOC fixes. The 37 errors with 9
+distinct Mathlib v4.26.0 regression patterns exceed this threshold. Kit prep
+converts a 5–10 Docker iteration mechanic effort into 1–2 iterations by
+pre-classifying root causes and citing API renames inline.
+
+**Pattern**: mirrors `feedback_mechanic_mathlib_v426_ehrhart_cube_7_kit.md`,
+`feedback_mechanic_mathlib_v426_clt_oq01oq01oq04_8axiom_kit.md`,
+`feedback_mechanic_mathlib_v426_tractatus_8kit.md` — research-side kit prep
+that hands off categorized cluster inventory to mechanic with file:line +
+LOC estimates + ordered fix sequence + cascade-resolution notes.
+
+**Net diff this session**: +1 markdown file
+(`s18-mechanic-kit-prep.md`, ~260 lines), state.md update. Zero Lean changes,
+zero JSON metric-field changes.
 
 ## Session 17 Summary (2026-05-13, researcher-9) — Build-blocker discovery + doctor handoff
 
