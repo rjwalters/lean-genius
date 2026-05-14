@@ -36,7 +36,7 @@
 
 import Proofs.GreensTheoremOQ01OQ01OQ02
 import Mathlib.MeasureTheory.Constructions.Pi
-import Mathlib.Logic.Equiv.Fin
+import Mathlib.Logic.Equiv.Fin.Basic
 import Mathlib.Tactic
 
 open MeasureTheory intervalIntegral Set

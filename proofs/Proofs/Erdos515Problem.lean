@@ -31,7 +31,7 @@ References:
 -/
 
 import Mathlib.Analysis.Complex.Basic
-import Mathlib.MeasureTheory.Integral.IntervalIntegral
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Topology.MetricSpace.Basic
 

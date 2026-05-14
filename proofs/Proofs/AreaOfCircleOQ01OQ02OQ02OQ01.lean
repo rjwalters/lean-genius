@@ -1,5 +1,5 @@
 import Mathlib.Analysis.SpecialFunctions.Trigonometric.Basic
-import Mathlib.MeasureTheory.Integral.IntervalIntegral
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.Analysis.Calculus.Deriv.Basic
 import Mathlib.Topology.Algebra.Order.LiminfLimsup
 import Mathlib.Tactic
