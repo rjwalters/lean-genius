@@ -1,8 +1,8 @@
 {
   "id": "zsqrtd-neg-two-oq-03",
-  "title": "Eisenstein Integers ℤ[ω]: Bare Ring and Norm (toward x² + 3y²)",
+  "title": "Eisenstein Integers ℤ[ω]: Ring, Norm, and Euclidean Structure (toward x² + 3y²)",
   "slug": "zsqrtd-neg-two-oq-03",
-  "description": "S2 ACT infrastructure for the third open question of zsqrtd-neg-two: extending the parent's x² + 2y² representation theorem to x² + 3y² via the Eisenstein integers ℤ[ω]. This file lays the algebraic foundation — the concrete structure on (re, im) ∈ ℤ × ℤ representing re + im·ω with ω² + ω + 1 = 0, the full CommRing instance via the Zsqrtd.commRing template, and the algebraic norm N(a + bω) = a² - ab + b² with norm_nonneg (via 4N(z) = (2re - im)² + 3 im²), norm_mul (multiplicativity), norm_eq_zero_iff, and norm_pos_of_ne_zero. The EuclideanDomain instance and the main representation theorem are deferred to S3-S5.",
+  "description": "S2 + S3 ACT for the third open question of zsqrtd-neg-two: extending the parent's x² + 2y² representation theorem to x² + 3y² via the Eisenstein integers ℤ[ω]. The S2 layer (~207 LOC) establishes the algebraic foundation — the concrete structure on (re, im) ∈ ℤ × ℤ representing re + im·ω with ω² + ω + 1 = 0, the full CommRing instance via the Zsqrtd.commRing template, and the algebraic norm N(a + bω) = a² - ab + b² with norm_nonneg/norm_mul/norm_eq_zero_iff/norm_pos_of_ne_zero. The S3 layer (+223 LOC, file now 430 LOC) installs the Euclidean structure: the conjugate conj (a + bω) = (a - b) + (-b)·ω, division by rounding (instDiv via round((x·conj y)/N(y))), the geometric core sq_rounding_error_lt_one (rounding error ≤ 3/4 < 1 via 4(a² - ab + b²) = (2a - b)² + 3b²), the central decreasing-norm inequality norm_mod_lt, and the full EuclideanDomain instance with Euclidean function (norm ·).natAbs. By Mathlib's instance chain this makes Eisenstein automatically a UFD. The splitting argument (-3/p) = (p/3) via quadratic reciprocity and the main representation theorem are deferred to S4-S5.",
   "meta": {
     "author": "Fermat (1640), Euler (1763), Lagrange (1775)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Eisenstein_integer",
@@ -22,10 +22,10 @@
     "badge": "original",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 207,
-    "theoremCount": 20,
-    "definitionCount": 2,
-    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. This is an infrastructure-only deliverable (S2 ACT); the EuclideanDomain instance and the main `p = x² + 3y²` theorem will land in S3-S5 follow-up work.",
+    "lineCount": 426,
+    "theoremCount": 24,
+    "definitionCount": 3,
+    "assumptions": "None. Fully verified with 0 axioms and 0 sorries. The S2 + S3 ACT deliverables are present: bare ring, norm, Eisenstein conjugate, division by rounding, and the EuclideanDomain instance. The splitting argument via quadratic reciprocity and the main `p = x² + 3y²` theorem will land in S4-S5 follow-up work.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -51,7 +51,13 @@
       "Eisenstein.norm_nonneg via the algebraic identity `4 · N(z) = (2 re - im)² + 3 im²`",
       "Eisenstein.norm_mul: multiplicativity of the norm (the algebraic spine of every later argument)",
       "Eisenstein.norm_eq_zero_iff: the norm vanishes only at zero",
-      "Eisenstein.norm_pos_of_ne_zero: a corollary giving strict positivity of the norm on nonzero elements"
+      "Eisenstein.norm_pos_of_ne_zero: a corollary giving strict positivity of the norm on nonzero elements",
+      "Eisenstein.conj: the Eisenstein conjugate `(a + bω) ↦ (a - b) + (-b)·ω`, derived from `ω̄ = ω² = -1 - ω`",
+      "Eisenstein.norm_conj and mul_conj: the conjugate preserves the norm, and `z · conj z = ⟨norm z, 0⟩` collapses to an integer (the lattice-projection identity)",
+      "Eisenstein.instDiv via rounding: `x / y := round((x · conj y) / N(y))` componentwise, mirroring `Mathlib.NumberTheory.Zsqrtd.GaussianInt`",
+      "Eisenstein.sq_rounding_error_lt_one: the geometric core of the Euclidean property, proving `ε_re² - ε_re·ε_im + ε_im² < 1` via `4(a² - ab + b²) = (2a - b)² + 3 b²` and nlinarith corner-witnesses",
+      "Eisenstein.norm_mod_lt: the central decreasing-norm inequality `N(x % y) < N(y)` for `y ≠ 0`, ported from the parent `ZsqrtdNegTwo` template with conj/norm_conj/mul_conj substitutions",
+      "Eisenstein.instEuclideanDomain: the EuclideanDomain instance with Euclidean function `(norm ·).natAbs`. By Mathlib's instance chain this makes Eisenstein automatically `IsDomain`, `IsPrincipalIdealRing`, and `UniqueFactorizationMonoid` — the prerequisites for the S4 ACT splitting argument."
     ],
     "prerequisites": [
       "Basic ring theory (CommRing, refinements via `with`)",
@@ -74,12 +80,12 @@
     ]
   },
   "leanFile": {
-    "lineCount": 207,
+    "lineCount": 426,
     "path": "Proofs/ZsqrtdNegTwoOQ03.lean",
     "axiomCount": 0,
     "sorries": 0,
-    "definitionCount": 2,
-    "theoremCount": 20
+    "definitionCount": 3,
+    "theoremCount": 24
   },
   "sorries": 0,
   "sections": [
