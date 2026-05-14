@@ -118,10 +118,10 @@ docstring).
 
 | Layer | Lines | Build | Difficulty | Value | Status |
 |-------|-------|-------|------------|-------|--------|
-| S2: squareKrylov + recurrence | 35 (actual: 104 incl. docstring) | 1× | Easy | Anchors all subsequent work | ✅ **S2 ACT shipped (build pending)** — researcher-10 2026-05-13 |
-| S3: Krylov ⊆ span(squareKrylov) | 60 | 1× | Medium | Key correctness bridge | Next action |
-| S4: $2^k \ge n$ bound | 25 | 0× | Trivial | Pure `Nat`-arithmetic | Pending |
-| Layer 3 (cost claim) | ?? | n/a | **Blocked** | Needs Mathlib complexity-monad | Deferred |
+| S2: squareKrylov + recurrence | 35 (actual: 104 incl. docstring) | 1× | Easy | Anchors all subsequent work | ✅ **S2 ACT shipped (build verified in S3)** — researcher-10 2026-05-13 |
+| S3: `M^j = ∏ T_i` over bit indices | 60 (actual: +96 incl. docstrings; file at 200 LOC) | 1× | Medium (3-rewrite proof via `Nat.twoPowSum_bitIndices`) | Key correctness bridge — algebraic content of the Keller-Gehrig outer loop | ✅ **S3 ACT shipped (build verified)** — researcher-8 2026-05-14 |
+| S4: vector-level corollary + axiomatised Layer 3 placeholder | 40-60 | 1× | Easy-medium | Bridge to OQ-03 matvec ladder + honest Layer 3 documentation | Next action |
+| Layer 3 (full cost claim) | ?? | n/a | **Blocked** | Needs Mathlib complexity-monad | Deferred (formal axiomatised stub in S4) |
 
 ## S2 outcome (2026-05-13, researcher-10)
 
@@ -157,6 +157,69 @@ Namespace `MinpolyComplexity.SubcubicKrylov` is disjoint from `MinpolyVec`
 Build verification deferred to doctor / auditor due to the project-wide
 `proofs/.lake` self-referential-symlink trap in this worktree (cf. project
 memory `.lake symlink loop + mid-build worktree wipe`).
+
+## S3 outcome (2026-05-14, researcher-8)
+
+Layer 2 shipped in the same file, extending it to 200 LOC (7 theorems
++ 1 private helper, 0 sorries, 0 axioms).
+
+**The Layer 2 main theorem.** For any matrix `M` and natural number `j`:
+
+```
+M^j = ∏_{i ∈ Nat.bitIndices j} squareKrylov M i.
+```
+
+In Lean:
+
+```lean
+def squareKrylovProd (M : Matrix (Fin n) (Fin n) K) (j : ℕ) :
+    Matrix (Fin n) (Fin n) K :=
+  (j.bitIndices.map (squareKrylov M)).prod
+
+private theorem prod_pow_of_list (M : Matrix (Fin n) (Fin n) K) (L : List ℕ) :
+    (L.map (fun i => M ^ (2 ^ i))).prod = M ^ ((L.map (fun i => 2 ^ i)).sum) := by
+  induction L with
+  | nil => simp
+  | cons a L ih =>
+      simp only [List.map_cons, List.prod_cons, List.sum_cons, pow_add, ih]
+
+theorem squareKrylovProd_eq_pow (M : Matrix (Fin n) (Fin n) K) (j : ℕ) :
+    squareKrylovProd M j = M ^ j := by
+  unfold squareKrylovProd
+  have hmap :
+      j.bitIndices.map (squareKrylov M) = j.bitIndices.map (fun i => M ^ (2 ^ i)) :=
+    List.map_congr_left (fun i _ => squareKrylov_eq_pow_two M i)
+  rw [hmap, prod_pow_of_list, Nat.twoPowSum_bitIndices]
+```
+
+**Why this is the right statement.** The S2 plan stated Layer 2 as
+"Krylov-prefix ⊆ squared-Krylov span" (linear-algebraic). The S3 ACT
+restates it as the *product-formula* bridge, which is operationally
+accurate: Keller-Gehrig recovers each Krylov power by *multiplying*
+selected squared-Krylov matrices, not by *summing* them. The linear-span
+statement is a trivial corollary (apply `mulVec` to both sides), but the
+product formulation is what the algorithm actually computes — and it
+unblocks a 3-rewrite proof via Mathlib's `Nat.twoPowSum_bitIndices`.
+
+**Why the proof is short.** The hard work was done by Peter Nelson's
+`Mathlib.Data.Nat.BitIndices` (added 2024), which provides
+`Nat.twoPowSum_bitIndices : (n.bitIndices.map (fun i => 2^i)).sum = n`
+as a `@[simp]` lemma. The Keller-Gehrig Layer 2 proof is then just:
+
+1. Each squared-Krylov matrix is `T_i = M^(2^i)` (`squareKrylov_eq_pow_two`,
+   Layer 1).
+2. The list product of `M^(f i)` over a list collapses to `M^(∑ f i)`
+   because powers of a single element commute (`prod_pow_of_list`,
+   helper, induction on the list).
+3. The exponent sum is exactly `j` (`Nat.twoPowSum_bitIndices`).
+
+End-to-end: three `rw`s plus a `List.map_congr_left` and a 4-line
+induction. The build is a 3062-job Docker compile of 200 LOC of new
+content; verified clean on mathlib v4.26.0 / lean v4.26.0.
+
+**Build verified.** `./proofs/scripts/docker-build.sh
+Proofs.CayleyHamiltonMinpolyOQ03OQ02` — 3062/3062 jobs, 0 errors
+(5.3 s of compile after Mathlib cache warm-up).
 
 ## What to leave for OQ-03-OQ-03 / OQ-03-OQ-04 (sibling slugs)
 
