@@ -469,10 +469,15 @@ private lemma card_image_image_sub_mod_eq
   have h2 : (a' % p + (p - m % p) + m % p) % p = a' % p := by
     have heq2 : a' % p + (p - m % p) + m % p = a' % p + p := by omega
     rw [heq2, Nat.add_mod_right, Nat.mod_eq_of_lt h_a'mod]
+  -- Beta-reduce `hrr'` so the `rw` below can find the (beta-normal) pattern
+  -- in the goal. Under Mathlib v4.26.0 the bare `hrr'` from the obtained
+  -- equality retains its `(fun r => …) (a % p)` head, but Lean's `rewrite`
+  -- looks for syntactic occurrences and the goal's RHS is already beta-normal.
+  have hrr_beta : (a % p + (p - m % p)) % p = (a' % p + (p - m % p)) % p := hrr'
   have h3 : (a % p + (p - m % p) + m % p) % p =
       (a' % p + (p - m % p) + m % p) % p := by
     rw [Nat.add_mod (a % p + (p - m % p)) (m % p) p,
-        Nat.add_mod (a' % p + (p - m % p)) (m % p) p, hrr']
+        Nat.add_mod (a' % p + (p - m % p)) (m % p) p, hrr_beta]
   rw [h1, h2] at h3
   exact h3
 
@@ -485,6 +490,9 @@ lemma card_image_sub_eq {H : Finset ℕ} {m : ℕ} (hm : ∀ a ∈ H, m ≤ a) :
   intro a ha b hb hab
   have hma := hm a ha
   have hmb := hm b hb
+  -- Beta-reduce `hab : (fun x => x - m) a = (fun x => x - m) b`
+  -- so `omega` can see the natural-subtraction hypothesis `a - m = b - m`.
+  simp only at hab
   omega
 
 /-- `H.image (· - m)` is nonempty iff `H` is. The translation lemma. -/
@@ -554,8 +562,8 @@ private lemma exists_subset_card_50_containing_zero
     · exact h0
     · exact Finset.mem_of_mem_erase (hS_sub hxS)
   · have h0_notin : 0 ∉ S := fun h =>
-      (Finset.not_mem_erase 0 H') (hS_sub h)
-    rw [Finset.card_insert_of_not_mem h0_notin, hS_card]
+      (Finset.notMem_erase 0 H') (hS_sub h)
+    rw [Finset.card_insert_of_notMem h0_notin, hS_card]
 
 /-- **(c) The bridge lemma**: the finitary form of the Engelsma lower
 bound implies the unbounded form. Given any admissible `H : Finset ℕ`
@@ -589,9 +597,12 @@ theorem engelsma_lower_bound_of_finitary
     rw [hH'_def, Finset.mem_image]
     exact ⟨m, Finset.min'_mem _ _, Nat.sub_self _⟩
   -- The translated maximum equals `H.max' - m < 246`.
-  have hH'_max : H'.max' hH'_ne = H.max' hne - m := by
-    rw [hH'_def]
-    exact image_sub_max'_eq hne hm_le
+  -- Apply `image_sub_max'_eq` directly: `H'` is `set` to `H.image (· - m)`
+  -- and proof-irrelevance unifies the two `.Nonempty` proofs, so no `rw`
+  -- on `hH'_def` (which would trigger a motive-not-type-correct failure
+  -- under Lean v4.26.0 because `hH'_ne` depends on the rewritten term).
+  have hH'_max : H'.max' hH'_ne = H.max' hne - m :=
+    image_sub_max'_eq hne hm_le
   have hH'_max_lt : H'.max' hH'_ne < 246 := by
     rw [hH'_max]; exact hlt
   -- Cardinality lifts.
@@ -756,6 +767,69 @@ analogues (kernel `decide` would also work but is slower on
 multi-layer `Decidable` reductions). The `Lean.ofReduceBool`
 axiom from S4 is reused; `axiomCount` stays at `1`. -/
 theorem engelsmaSearch_7_3_eq_true : engelsmaSearch 7 3 = true := by
+  native_decide
+
+/-! ## S10 ACT pre-flight — `primesUpTo` bearer
+
+This section lands the `primesUpTo` utility scheduled for the larger
+S11+ pruned-search work, per the design pinned in
+`research/problems/bounded-prime-gaps-oq-03-oq-02/sessions/2026-05-13-s10c-prep-primesBelow-termination.md`
+§2.3 (canonical bearer choice) and refined in
+`2026-05-13-s10d-prep-leaf-case-and-initialization.md` §5
+(entrypoint shape).
+
+Shipping `primesUpTo` separately from the (larger) recursive
+`searchAux` definition gives three benefits:
+
+1. **API exercise** — verifies that the `Nat.primesBelow` bearer
+   claim (S10c PREP) and the `Finset.sort` default-relation form
+   both compile and `native_decide` correctly under the v4.26.0
+   `Mathlib` pin currently in `proofs/lake-manifest.json`.
+
+2. **Concrete sanity** — the verified equation
+   `primesUpTo 50 = [2, 3, 5, 7, …, 47]` pins the exact list the
+   pruner will branch on at the target parameter.
+
+3. **Scope discipline** — `searchAux` is non-structural-recursion
+   territory (`termination_by primes.length` per S10c PREP §3.4);
+   landing it requires a multi-piece patch with termination
+   machinery + invariant lemmas. `primesUpTo` is a one-liner with
+   two `native_decide` unit tests, which is the minimal
+   build-verifiable step toward S11.
+
+`axiomCount` stays at `1` (the `Lean.ofReduceBool` from S4); the
+two sanity-test theorems reuse `native_decide`. -/
+
+/-- `primesUpTo k` is the list of primes `p ≤ k`, in ascending order.
+
+Implementation: `(Nat.primesBelow (k + 1)).sort (· ≤ ·)`.
+`Nat.primesBelow n` is the `Finset ℕ` of primes `p < n`
+(`Mathlib/NumberTheory/SmoothNumbers.lean:41`), so
+`Nat.primesBelow (k + 1) = {p : ℕ | p ≤ k ∧ p.Prime}`. `Finset.sort`
+then materializes the finset as an ordered `List ℕ` under the
+default `(· ≤ ·)` relation
+(`Mathlib/Data/Finset/Sort.lean:33`).
+
+For the target parameter `k = 50` this returns the 15 primes
+`p ≤ 47`, witnessed by `primesUpTo_50_eq` below. The S11+ pruner
+will be entered as `searchAux w k (primesUpTo k) candidates chosen`. -/
+def primesUpTo (k : ℕ) : List ℕ :=
+  (Nat.primesBelow (k + 1)).sort (· ≤ ·)
+
+/-- **Sanity test** at `k = 10` — relevant to the deferred S7 case
+`(10, 30)` and to the parent file's `BoundedPrimeGaps.lean` smooth-
+prime helpers. The four primes `p ≤ 10` are `[2, 3, 5, 7]`. -/
+theorem primesUpTo_10_eq : primesUpTo 10 = [2, 3, 5, 7] := by
+  native_decide
+
+/-- **Sanity test** at the target parameter `k = 50`. The 15 primes
+`p ≤ 50` are listed in ascending order; `47` is the largest prime
+≤ 50 (the next is `53`). This is the exact list S11+'s pruned
+`searchAux` will branch on at the `engelsmaSearch 246 50 = false`
+discharge. -/
+theorem primesUpTo_50_eq :
+    primesUpTo 50 =
+      [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47] := by
   native_decide
 
 end BoundedPrimeGapsOQ03OQ02
