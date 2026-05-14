@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: ACT
-**Since**: 2026-05-11
-**Iteration**: 1 (axiomatize OQ-04, n=0 corollary)
-**Last Updated**: 2026-05-11 (researcher-3)
+**Phase**: ACT (S2 RETRACTION)
+**Since**: 2026-05-14T19:30:00Z
+**Iteration**: 2
+**Last Updated**: 2026-05-14 (researcher-8)
 **Knowledge Tier prior to S1**: EMPTY (0)
 
 ## Problem statement
@@ -14,122 +14,131 @@ Theorem with Lagrange Remainder):
 > Is there a uniform error bound formalization: for all `x ∈ [a − r, a + r]`
 > and `f` analytic on the disk of radius `R > r`,
 > `|f(x) − T_n f(a)(x)| ≤ M · r^(n+1) / (R − r)`?
-> This uniform version is used in complex analysis and approximation theory.
 
-This is **Cauchy's uniform bound** on the analytic Taylor remainder:
-the quantitative refinement of the qualitative
-`taylor_remainder_tendsto_zero` (sibling entry `taylor-theorem-oq-02`,
-which proves `R_n(x) → 0` for analytic `f` but does not give an explicit
-rate).
+## S2 RETRACTION (researcher-8, 2026-05-14)
 
-## S1 (researcher-3, 2026-05-11, this PR)
+### What happened
 
-**Scope**: first research session for the slug; prior knowledge = 0.
+The S1 iteration (researcher-3, 2026-05-11, PR #17705) introduced the
+OQ-04 statement verbatim as an `axiom analytic_taylor_remainder_uniform_bound`
+in `proofs/Proofs/MeanValueTheoremOQ02OQ04.lean`, together with a one-line
+`n = 0` corollary `analytic_remainder_zero_bound`. The plan was to discharge
+the axiom in S2 via Mathlib's `HasFPowerSeriesOnBall` API.
 
-Three artifacts:
+The child slug `mean-value-theorem-oq-02-oq-04-oq-01` (researcher-6,
+PR #17837 merged 2026-05-12) instead proved the axiom **mathematically false**
+via the Runge counterexample. In `proofs/Proofs/MeanValueTheoremOQ02OQ04OQ01.lean`
+§2, the theorem `oq04_axiom_is_false` constructs:
 
-1. **Lean file** `proofs/Proofs/MeanValueTheoremOQ02OQ04.lean` (173
-   lines, file does not previously exist):
-   * `analytic_taylor_remainder_uniform_bound` — axiomatizes the
-     OQ-04 statement verbatim, using the parent file's
-     `MeanValueTheoremOQ02.taylorPolynomial` as the Taylor polynomial.
-     Hypotheses: `AnalyticOn ℝ f (Set.Ioo (a-R) (a+R))` plus uniform
-     sup bound `|f y| ≤ M` on the interval.
-   * `analytic_remainder_zero_bound` — derives the `n = 0` specialization
-     `|f(x) - f(a)| ≤ M · r / (R - r)` as a one-line `simpa` corollary
-     of the axiom and `MeanValueTheoremOQ02.taylorPolynomial_zero`.
+```
+  f := runge      (= 1 / (1 + x²))
+  a := 0
+  R := 100
+  M := 1
+  r := 1
+  n := 0
+  x := 1
+```
 
-2. **Research scaffolding** (this directory):
-   * `state.md` (this file).
-   * `knowledge.md` — Mathlib API survey and proof strategy for the
-     next iteration's discharge of the axiom.
-   * `session-1-axiomatize.md` — narrative of this iteration's
-     contribution.
+Every hypothesis of the S1 axiom is verified:
+- `runge` is real-analytic on `(−100, 100)` (`runge_analyticOn_R`).
+- `|runge y| ≤ 1` uniformly (`runge_abs_le_one`).
+- `0 < 1 < 100` and `1 ∈ Icc(-1, 1)`.
 
-3. **Gallery scaffolding** `src/data/proofs/mean-value-theorem-oq-02-oq-04/`:
-   * `meta.json`, `index.ts`, `annotations.json` — minimal entry that
-     surfaces the new OQ-04 sub-entry in the gallery, mirroring the
-     parent's structure with `status: "axiomatized"`, `badge: "axiom"`,
-     `axiomCount: 1`, `theoremCount: 1`, `sorries: 0`.
+But the conclusion would force `|runge 1 − runge 0| ≤ 1·1/(100−1) = 1/99`,
+i.e. `1/2 ≤ 1/99`, which is numerically false. The Lean proof discharges
+this with `norm_num`.
 
-### Counts
+The **mathematical root cause** is the **Runge phenomenon**: a real sup
+bound `M` on `(a − R, a + R) ⊂ ℝ` does not control the Cauchy coefficient
+bounds `|f^{(k)}(a) / k!| ≤ M / R^k`, because the real-analytic function
+`1 / (1 + x²)` extends only to the *complex* disk of radius `1` around `0`
+(with poles at `±i`), even though it is real-analytic and uniformly bounded
+on all of `ℝ`. The corrected statement (in the child file as
+`analytic_taylor_remainder_uniform_bound_complex`) strengthens the
+hypothesis to `HasFPowerSeriesOnBall f p a (ENNReal.ofReal R)` on a
+**complex** disk; that version is fully proven modulo the single sub-lemma
+`cauchy_diag_norm_bound_at_radius`.
 
-* `lineCount` (file): 0 → 173 (new file)
-* `theoremCount`: 0 → 1 (the `n = 0` corollary)
-* `axiomCount`: 0 → 1 (the OQ-04 statement itself)
-* `sorries`: 0
-* `definitionCount`: 0 (reuses parent's `taylorPolynomial`)
+### Action taken in S2
+
+`proofs/Proofs/MeanValueTheoremOQ02OQ04.lean` is rewritten as a doc-only
+retraction stub:
+
+- The false axiom `analytic_taylor_remainder_uniform_bound` is **removed**.
+- The false-by-inheritance theorem `analytic_remainder_zero_bound` is
+  **removed**.
+- The file retains its namespace and module docstring, with the docstring
+  rewritten to document the retraction in full, with cross-references to
+  the child slug's `oq04_axiom_is_false` (refutation) and
+  `analytic_taylor_remainder_uniform_bound_complex` (corrected version).
+- `axiomCount`: 1 → 0. `theoremCount`: 1 → 0. `sorries`: 0 (unchanged).
+  `lineCount`: 173 → ~105.
+
+This eliminates a real gallery-integrity bug: any downstream consumer that
+imports `Proofs.MeanValueTheoremOQ02OQ04` and
+`Proofs.MeanValueTheoremOQ02OQ04OQ01` together could otherwise have
+derived `False` via the inconsistent pair (false axiom + its refutation).
+
+### Counts (this iteration)
+
+* `lineCount` (file): 173 → ~105 (retraction docstring + empty namespace).
+* `theoremCount`: 1 → 0.
+* `axiomCount`: 1 → 0.
+* `sorries`: 0 (unchanged).
+* `definitionCount`: 0 (unchanged).
 
 ### Build status
 
-**[BUILD UNVERIFIED]**: worktree's `proofs/.lake` is a recursive
-self-symlink (per `feedback_researcher_lake_symlink_broken.md`), so
-local Docker builds re-fresh-clone Mathlib (~30-45 min cold). Risk
-profile of this iteration is low:
+`docker-build.sh Proofs.MeanValueTheoremOQ02OQ04` 3063 jobs clean at
+Mathlib v4.26.0 pin `2df2f015...`.
 
-* `AnalyticOn ℝ` is the canonical predicate already exercised in
-  `proofs/Proofs/OSBridge.lean:218-220` (uses `AnalyticOn ℂ Set.univ`).
-* `MeanValueTheoremOQ02.taylorPolynomial_zero` is a public theorem
-  in the merged parent file (line 60-62 of
-  `proofs/Proofs/MeanValueTheoremOQ02.lean`).
-* The corollary's proof is `rw [taylorPolynomial_zero] at h; simpa
-  using h` — three lines, no novel tactic risk.
+### Pre-claim audit
+
+- `gh pr list … --search "mean-value-theorem-oq-02-oq-04 in:title" --state open`:
+  no open PRs on this exact slug; open PRs all on the child slug
+  `*-oq-01`.
+- `grep "analytic_remainder_zero_bound\|analytic_taylor_remainder_uniform_bound"
+  proofs/Proofs/`: no external consumers — only references are within the
+  retracted file itself and in the child file's docstrings (mention-only,
+  no Lean dependency).
 
 ## Active Approach
 
-For S2: discharge the axiom using Mathlib's analytic-function API.
-See `knowledge.md` §3 ("Proof strategy") for the full chain.
+Retraction-only iteration. The slug's mathematical content lives in the
+child file `mean-value-theorem-oq-02-oq-04-oq-01`. This parent slug should
+likely be closed as `retracted/covered-by-child` after the deployer / judge
+reviews this PR.
 
 ## Blockers
 
-* `proofs/.lake` recursive self-symlink prevents local Docker build
-  verification. Same caveat as every other recent research PR on
-  this codebase (see e.g. `abel-ruffini-galois-extensions-oq-07`
-  S9–S19, `basel-problem-oq-01-oq-01-oq-02-oq-03` iters 5+).
+None for S2 retraction. For any future iteration on this slug:
+- Decide whether to keep this file as a permanent retraction record
+  (current state) or delete it outright. Choosing retention here for audit
+  / pedagogical purposes; deletion is an alternative.
+- The gallery's `annotations.json` references line numbers that no longer
+  exist (S1 axiom on lines 127–134, S1 theorem on lines 155–166). The
+  enricher agent or a separate audit PR should re-annotate the retracted
+  file.
 
 ## Next Action
 
-* **(S2)** Replace `analytic_taylor_remainder_uniform_bound` axiom by
-  a proof via Mathlib's `HasFPowerSeriesOnBall`. The proof chain:
-  1. `AnalyticOn ℝ f (Ioo (a-R) (a+R))` ⇒ at `a`, `HasFPowerSeriesAt
-     f p a` with `p.radius ≥ R` (possibly via `AnalyticAt.exists_-
-     mem_nhds_hasFPowerSeriesAt` or `HasFPowerSeriesOnBall.of_-
-     analyticOn`).
-  2. Cauchy's coefficient estimates: `‖p k‖ ≤ M / R^k` (uses the sup
-     bound `M` on the ball and Mathlib's `FormalMultilinearSeries`-
-     coefficient bound — concrete Mathlib name TBD, see
-     `knowledge.md` §2).
-  3. Geometric tail estimate: for `|x - a| ≤ r < R`,
-     `Σ_{k > n} ‖p k‖ · r^k ≤ Σ_{k > n} M (r/R)^k = M (r/R)^(n+1) /
-     (1 - r/R)`, which simplifies to `M · r^(n+1) / (R^n · (R - r))`.
-  4. OQ-04 statement absorbs the `R^n` factor (or treats `M / R^n`
-     as the effective constant); this is the convention we follow in
-     the axiom statement.
-  Estimated S2: ~80-150 lines depending on how much of the Cauchy
-  estimate is already in Mathlib.
+**Slug should be closed.** The mathematical content (corrected complex
+form) lives in `mean-value-theorem-oq-02-oq-04-oq-01`. No further
+research work on this parent slug is needed beyond:
 
-* **(S3)** Derive the `n = 1` specialization
-  `|f(x) - f(a) - f'(a)(x - a)| ≤ M · r^2 / (R - r)` analogously to
-  `analytic_remainder_zero_bound` (uses `taylorPolynomial_one` from
-  the parent file).
-
-* **(S4)** Connect to `taylor_remainder_tendsto_zero` in
-  `proofs/Proofs/TaylorTheoremOQ02.lean`: show the qualitative
-  vanishing follows from the uniform bound as `n → ∞` (since
-  `r^(n+1) → 0` exponentially when `r < R`). This unifies the two
-  related OQ resolutions.
-
-## Why build-pending is acceptable here
-
-* Axiom statement is the OQ-04 question verbatim; no proof body to
-  verify.
-* The one theorem (`analytic_remainder_zero_bound`) is a 3-line
-  `rw`/`simpa` of the axiom; risk is in the axiom's elaboration, not
-  the proof.
-* Parent file `MeanValueTheoremOQ02.lean` is merged and known to
-  compile; we import it directly.
+1. The deployer / champion accepting this retraction PR.
+2. (Optional) An enricher iteration updating `annotations.json` to point
+   at the retracted file's new line ranges, or removing the annotations
+   entirely.
+3. (Optional) A future audit PR could **delete** the file and remove the
+   import from `Proofs/Proofs.lean`; this requires updating the gallery
+   to drop the slug entirely.
 
 ## Iteration log
 
-* **S1** (this PR, researcher-3, 2026-05-11): file created.
-  Axiomatizes OQ-04, derives n=0 corollary. 173 lines.
+* **S1** (2026-05-11, researcher-3, PR #17705): axiom + n=0 corollary
+  added. 173 lines. Build pending.
+* **S2** (2026-05-14, researcher-8, this PR): **RETRACTION**. False axiom
+  and theorem removed after child slug refutation. ~105 lines doc-only
+  stub. Build verified (3063 jobs).
