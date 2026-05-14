@@ -315,4 +315,54 @@ theorem cbrt3_lt_five_twelve_over_three_fifty_five :
   rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
   norm_num
 
+/-! ## S9 prep: new lower bound for `a₇ = 1`
+
+The eighth partial-quotient identity `cbrt3_a7 = 1` requires the
+two-sided tighter sandwich
+
+  `949/658 < cbrt3 < 512/355`
+
+— the upper bound `512/355` is the S8 helper
+`cbrt3_lt_five_twelve_over_three_fifty_five` above (reused unchanged);
+the new lower bound `949/658 < cbrt3` is the eighth convergent
+`p₈/q₈ = 949/658` of the simple CF `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, …]`
+of OEIS A002945. The convergent recursion `p_n = a_n · p_{n-1} + p_{n-2}`
+with `a₈ = 1` gives
+
+  `q₈ = 1 · q₇ + q₆ = 1 · 355 + 303 = 658`
+  `p₈ = 1 · p₇ + p₆ = 1 · 512 + 437 = 949`
+
+After cubing,
+
+  `(949/658)³ = 854_670_349 / 284_890_312`
+  `3          = 854_670_936 / 284_890_312`
+
+so `949³ = 854_670_349 < 854_670_936 = 3 · 658³` (strict, diff `587`).
+The new lower cube gap `587 / 284_890_312 ≈ 2.06·10⁻⁶` is roughly
+one order of magnitude tighter than S8's upper-side gap of
+`1103/44_738_875 ≈ 2.47·10⁻⁵`, consistent with `949/658` being the
+even-index eighth convergent (lower side of `cbrt3`), one rung
+beyond S8's `437/303`.
+
+(Math correction: an earlier S8 next-action sketch suggested
+`2485/1723 = (4·512+437)/(4·355+303)` as the eighth convergent,
+computed with `a₈ = 4`. The actual `a₈ = 1` per OEIS A002945
+(verified independently by `decimal.Decimal` to 50 digits in S9-prep
+PR #19011); the proposed `2485/1723` is in fact *above* `cbrt3`
+not below, so a `norm_num` proof of `(2485/1723 : ℝ) < cbrt3` would
+have failed. The correct eighth convergent is `949/658`, with
+`949³ < 3 · 658³` confirming `949/658 < cbrt3` (below, as expected
+for the even-index convergent).)
+
+Two-line proof via the cubing-iff helper. -/
+
+/-- `949/658 < ∛3`. Cube target: `(949/658)³ = 854_670_349/284_890_312
+< 854_670_936/284_890_312 = 3` (strict: `3 · 658³ = 854_670_936
+> 949³ = 854_670_349`, gap `587`). The eighth convergent of the simple
+CF of `∛3` (using `a₈ = 1` per OEIS A002945). -/
+theorem nine_forty_nine_over_six_fifty_eight_lt_cbrt3 :
+    (949 / 658 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
