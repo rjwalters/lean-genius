@@ -2,10 +2,10 @@ import Mathlib.NumberTheory.LegendreSymbol.QuadraticReciprocity
 import Mathlib.Tactic
 
 /-!
-# The Eisenstein integers ℤ[ω] — bare ring and norm
+# The Eisenstein integers ℤ[ω] — ring, norm, and Euclidean structure
 
-This file is the S2 ACT deliverable for `zsqrtd-neg-two-oq-03`. It is the
-infrastructure layer for the long-term target
+This file is the S2 + S3 ACT deliverable for `zsqrtd-neg-two-oq-03`. It
+builds the algebraic infrastructure for the long-term target
 
   `sq_add_three_sq_of_prime_one_mod_three :`
   `  ∀ {p : ℕ}, p.Prime → p % 3 = 1 → ∃ a b : ℤ, (p : ℤ) = a ^ 2 + 3 * b ^ 2`
@@ -17,7 +17,9 @@ which generalises the parent file `Proofs/ZsqrtdNegTwo.lean` (the case
 Mathlib's `Zsqrtd` therefore does **not** apply directly; we build a
 fresh concrete structure on `re, im : ℤ` representing `re + im · ω`.
 
-## Contents of this file (S2 ACT, infrastructure-only)
+## Contents of this file
+
+S2 ACT — bare ring + norm (lines ≈ 56–207):
 
 * `Eisenstein` — the underlying type, two integer coordinates `re, im`.
 * `Zero`, `One`, `Add`, `Neg`, `Mul` — primitive instances together with
@@ -28,21 +30,36 @@ fresh concrete structure on `re, im : ℤ` representing `re + im · ω`.
   `refine ... <;> intros <;> ext <;> simp <;> ring` template that
   Mathlib uses for `Zsqrtd.commRing` (see
   `Mathlib/NumberTheory/Zsqrtd/Basic.lean` ≈ line 164).
-* `norm` — the algebraic norm `N(a + bω) = a² - ab + b²`, together with
-  the two structural identities
-  - `norm_nonneg`: `0 ≤ norm z`, via `4 · norm z = (2re - im)² + 3 im²`,
-  - `norm_mul`: `norm (x * y) = norm x * norm y`,
-  - `norm_eq_zero_iff`: `norm z = 0 ↔ z = 0`.
+* `norm` — the algebraic norm `N(a + bω) = a² - ab + b²`, with
+  `norm_nonneg` (via `4 · N(z) = (2re - im)² + 3 im²`), `norm_mul`,
+  `norm_eq_zero_iff`, `norm_pos_of_ne_zero`.
+
+S3 ACT — Euclidean structure (lines ≈ 209 onward):
+
+* `conj` — the Eisenstein conjugate `(a + bω) ↦ (a - b) + (-b)ω`,
+  satisfying `z · conj z = N(z)` and `N(conj z) = N(z)`.
+* `instDiv`, `instMod`, `mod_def` — division by rounding the rational
+  quotient `(x · conj y) / N(y)` to the nearest lattice point.
+* `sq_rounding_error_lt_one` — the geometric core: the worst-case
+  rounding error satisfies `ε_re² - ε_re · ε_im + ε_im² ≤ 3/4 < 1`,
+  using the algebraic identity `4(a² - ab + b²) = (2a - b)² + 3b²`.
+* `norm_mod_lt` — `N(x % y) < N(y)` for `y ≠ 0`, the central
+  decreasing-norm inequality.
+* `instEuclideanDomain` — assembled from the above via
+  `EuclideanDomain.r = (norm ·).natAbs <`.
 
 ## What is **not** in this file
 
-The `EuclideanDomain` instance is deferred to S3, and the splitting /
-extraction pipeline (`(-3/p) = (p/3)` via quadratic reciprocity, then
-`4p = (2a - b)² + 3 b²` parity case-split) is deferred to S4-S5.
+The splitting / extraction pipeline (`(-3/p) = (p/3)` via quadratic
+reciprocity, then `4p = (2a - b)² + 3 b²` parity case-split) is
+deferred to S4-S5.
 
-The above is sound foundation for both routes: the EuclideanDomain
-instance is the canonical next step (S3), and the multiplicativity of
-`norm` is the algebraic spine of every later argument.
+The Euclidean structure is the foundation for the splitting argument:
+once `Eisenstein` is a Euclidean domain it is automatically a UFD, so
+non-irreducibility of `(p : Eisenstein)` (which S4 will derive from
+quadratic reciprocity) yields a non-trivial factorisation
+`p = α · β`, hence `N(α) · N(β) = p²` with both norms strictly between
+`1` and `p²`, forcing `N(α) = p`.
 
 This file has 0 axioms, 0 sorries.
 -/
@@ -201,6 +218,212 @@ theorem norm_pos_of_ne_zero {z : Eisenstein} (hz : z ≠ 0) : 0 < norm z := by
   rcases lt_or_eq_of_le hnn with hpos | hzero
   · exact hpos
   · exfalso; exact hz ((norm_eq_zero_iff z).mp hzero.symm)
+
+/-! ## The Eisenstein conjugate and division by rounding (S3) -/
+
+/-- The Eisenstein conjugate. For a primitive cube root of unity `ω`,
+complex conjugation acts as `ω̄ = ω² = -1 - ω`, giving
+`(a + bω)̄ = a + b·(-1 - ω) = (a - b) + (-b)·ω`. -/
+def conj (z : Eisenstein) : Eisenstein := ⟨z.re - z.im, -z.im⟩
+
+@[simp] theorem conj_re (z : Eisenstein) : (conj z).re = z.re - z.im := rfl
+@[simp] theorem conj_im (z : Eisenstein) : (conj z).im = -z.im := rfl
+
+/-- The Eisenstein conjugate preserves the norm:
+`N(conj z) = (a - b)² - (a - b)·(-b) + (-b)² = a² - ab + b² = N(z)`. -/
+theorem norm_conj (z : Eisenstein) : norm (conj z) = norm z := by
+  simp only [norm, conj_re, conj_im]; ring
+
+/-- `z · conj z` collapses to the constant integer `N(z)` (no `ω` part). -/
+theorem mul_conj (z : Eisenstein) : z * conj z = ⟨norm z, 0⟩ := by
+  ext
+  · simp only [mul_re, conj_re, conj_im, norm]; ring
+  · simp only [mul_im, conj_re, conj_im]; ring
+
+/-- Division in `ℤ[ω]` by rounding the rational quotient
+`(x · conj y) / N(y)` componentwise to the nearest integer. -/
+noncomputable instance instDiv : Div Eisenstein :=
+  ⟨fun x y =>
+    let n : ℚ := (norm y : ℚ)⁻¹
+    let c := conj y
+    ⟨round ((x * c).re * n), round ((x * c).im * n)⟩⟩
+
+/-- Modulo derived from division: `x % y := x - y · (x / y)`. -/
+noncomputable instance instMod : Mod Eisenstein :=
+  ⟨fun x y => x - y * (x / y)⟩
+
+theorem mod_def (x y : Eisenstein) : x % y = x - y * (x / y) := rfl
+
+/-- The squared rounding error for the Eisenstein lattice is strictly
+less than one. The algebraic identity
+`4 · (a² - ab + b²) = (2a - b)² + 3 b²`
+plus the per-coordinate bound `|a|, |b| ≤ 1/2` give
+`(2a - b)² ≤ 9/4` and `3 b² ≤ 3/4`, so
+`a² - ab + b² ≤ 3/4 < 1`. -/
+theorem sq_rounding_error_lt_one (r₁ r₂ : ℚ) :
+    (r₁ - round r₁) ^ 2 - (r₁ - round r₁) * (r₂ - round r₂)
+      + (r₂ - round r₂) ^ 2 < 1 := by
+  have h1 : |r₁ - round r₁| ≤ 1 / 2 := abs_sub_round r₁
+  have h2 : |r₂ - round r₂| ≤ 1 / 2 := abs_sub_round r₂
+  have habs1 := abs_le.mp h1
+  have habs2 := abs_le.mp h2
+  have hid : 4 * ((r₁ - round r₁) ^ 2
+                  - (r₁ - round r₁) * (r₂ - round r₂)
+                  + (r₂ - round r₂) ^ 2)
+           = (2 * (r₁ - round r₁) - (r₂ - round r₂)) ^ 2
+             + 3 * (r₂ - round r₂) ^ 2 := by ring
+  have hbound1 : (2 * (r₁ - round r₁) - (r₂ - round r₂)) ^ 2 ≤ 9 / 4 := by
+    nlinarith [habs1.1, habs1.2, habs2.1, habs2.2,
+               sq_nonneg (2 * (r₁ - round r₁) - (r₂ - round r₂))]
+  have hbound2 : 3 * (r₂ - round r₂) ^ 2 ≤ 3 / 4 := by
+    nlinarith [habs2.1, habs2.2, sq_nonneg (r₂ - round r₂)]
+  linarith
+
+/-- The norm of the remainder is strictly less than the norm of the
+divisor. This is the central Euclidean inequality:
+`N(x - y · (x / y)) < N(y)`. -/
+theorem norm_mod_lt (x : Eisenstein) {y : Eisenstein} (hy : y ≠ 0) :
+    norm (x % y) < norm y := by
+  -- Setup: rational reciprocal of `n := N(y)`, conjugate product, errors.
+  let n : ℤ := norm y
+  have hn_pos : 0 < n := norm_pos_of_ne_zero hy
+  have hn_rat_pos : (0 : ℚ) < n := by exact_mod_cast hn_pos
+  let A := x * conj y
+  let q := x / y
+  let r := x % y
+  have hq_re : q.re = round ((A.re : ℚ) / n) := rfl
+  have hq_im : q.im = round ((A.im : ℚ) / n) := rfl
+  -- Rounding errors in ℚ.
+  let ε_re : ℚ := (A.re : ℚ) / n - q.re
+  let ε_im : ℚ := (A.im : ℚ) / n - q.im
+  -- `y · conj y = ⟨n, 0⟩` (the lattice-projection identity).
+  have hy_conj : y * conj y = ⟨n, 0⟩ := mul_conj y
+  -- `r · conj y = A - ⟨n, 0⟩ · q`.
+  have hr_conj : r * conj y = A - ⟨n, 0⟩ * q := by
+    show (x - y * q) * conj y = x * conj y - ⟨n, 0⟩ * q
+    calc (x - y * q) * conj y
+        = x * conj y - y * q * conj y := by ring
+      _ = x * conj y - y * conj y * q := by ring
+      _ = x * conj y - ⟨n, 0⟩ * q := by rw [hy_conj]
+  -- Component-wise: `(r · conj y).re = A.re - n · q.re`, ditto `.im`.
+  have hr_conj_re : (r * conj y).re = A.re - n * q.re := by
+    rw [hr_conj]
+    show A.re - (⟨n, 0⟩ * q).re = A.re - n * q.re
+    simp [mul_re]
+  have hr_conj_im : (r * conj y).im = A.im - n * q.im := by
+    rw [hr_conj]
+    show A.im - (⟨n, 0⟩ * q).im = A.im - n * q.im
+    simp [mul_im]
+  -- Cast to ℚ: `((r · conj y).re : ℚ) = n · ε_re`, ditto `.im`.
+  have hn_rat_ne : (n : ℚ) ≠ 0 := hn_rat_pos.ne'
+  have hr_conj_re_rat : ((r * conj y).re : ℚ) = n * ε_re := by
+    rw [hr_conj_re]
+    show ((A.re - n * q.re : ℤ) : ℚ) = (n : ℚ) * ((A.re : ℚ) / n - q.re)
+    push_cast
+    field_simp
+    ring
+  have hr_conj_im_rat : ((r * conj y).im : ℚ) = n * ε_im := by
+    rw [hr_conj_im]
+    show ((A.im - n * q.im : ℤ) : ℚ) = (n : ℚ) * ((A.im : ℚ) / n - q.im)
+    push_cast
+    field_simp
+    ring
+  -- The Eisenstein-lattice rounding-error bound: `ε_re² - ε_re·ε_im + ε_im² < 1`.
+  have hbound : ε_re ^ 2 - ε_re * ε_im + ε_im ^ 2 < 1 := by
+    have h := sq_rounding_error_lt_one ((A.re : ℚ) / n) ((A.im : ℚ) / n)
+    -- ε_re = (A.re : ℚ) / n - q.re = (A.re : ℚ) / n - round((A.re : ℚ) / n)
+    show ((A.re : ℚ) / n - q.re) ^ 2 - ((A.re : ℚ) / n - q.re) * ((A.im : ℚ) / n - q.im)
+         + ((A.im : ℚ) / n - q.im) ^ 2 < 1
+    rw [hq_re, hq_im]
+    exact h
+  -- Multiplicativity of `norm`: `N(r · conj y) = N(r) · N(conj y) = N(r) · n`.
+  have hnorm_mul_eq : norm (r * conj y) = norm r * n := by
+    rw [norm_mul, norm_conj]
+  -- Compute `N(r · conj y) : ℚ` algebraically in terms of `n` and `ε_re, ε_im`.
+  have hnorm_r_conj_rat :
+      (norm (r * conj y) : ℚ) = n ^ 2 * (ε_re ^ 2 - ε_re * ε_im + ε_im ^ 2) := by
+    have hre := hr_conj_re_rat
+    have him := hr_conj_im_rat
+    show ((r * conj y).re ^ 2 - (r * conj y).re * (r * conj y).im
+            + (r * conj y).im ^ 2 : ℚ)
+         = (n : ℚ) ^ 2 * (ε_re ^ 2 - ε_re * ε_im + ε_im ^ 2)
+    push_cast
+    calc ((r * conj y).re : ℚ) ^ 2
+            - ((r * conj y).re : ℚ) * ((r * conj y).im : ℚ)
+            + ((r * conj y).im : ℚ) ^ 2
+        = (n * ε_re) ^ 2 - (n * ε_re) * (n * ε_im) + (n * ε_im) ^ 2 := by
+              rw [hre, him]
+      _ = (n : ℚ) ^ 2 * (ε_re ^ 2 - ε_re * ε_im + ε_im ^ 2) := by ring
+  -- Conclude `(N(r) : ℚ) < n`, hence `N(r) < n` in ℤ.
+  have hlt : (norm r : ℚ) * n < (n : ℚ) ^ 2 := by
+    have hcast : (norm r : ℚ) * n = (norm (r * conj y) : ℚ) := by
+      have step : ((norm r * n : ℤ) : ℚ) = (norm (r * conj y) : ℚ) := by
+        rw [hnorm_mul_eq]
+      push_cast at step
+      exact step
+    have hbound' : (n : ℚ) ^ 2 * (ε_re ^ 2 - ε_re * ε_im + ε_im ^ 2) < (n : ℚ) ^ 2 * 1 := by
+      have hn_sq_pos : 0 < (n : ℚ) ^ 2 := by positivity
+      exact (mul_lt_mul_left hn_sq_pos).mpr (by linarith)
+    rw [hcast, hnorm_r_conj_rat]
+    linarith
+  have hfinal : (norm r : ℚ) < n := by
+    have hr_nn : (0 : ℚ) ≤ norm r := by exact_mod_cast norm_nonneg r
+    -- `(norm r : ℚ) · n < n²` with `0 < n` gives `(norm r : ℚ) < n`.
+    nlinarith [hlt, hn_rat_pos, hr_nn]
+  exact_mod_cast hfinal
+
+/-- The natural-absolute-value version of `norm_mod_lt`, packaged as the
+strict-decrease witness for the `EuclideanDomain` instance. -/
+theorem natAbs_norm_mod_lt (x : Eisenstein) {y : Eisenstein} (hy : y ≠ 0) :
+    (norm (x % y)).natAbs < (norm y).natAbs := by
+  have h := norm_mod_lt x hy
+  have h1 := norm_nonneg (x % y)
+  have h2 := norm_nonneg y
+  exact Int.natAbs_lt_natAbs_of_nonneg_of_lt h1 h
+
+/-- Multiplying on the right by a non-zero element does not decrease
+the `.natAbs` of the norm. (Used to discharge the
+`mul_left_not_lt` field of `EuclideanDomain`.) -/
+theorem norm_le_norm_mul_left (x : Eisenstein) {y : Eisenstein} (hy : y ≠ 0) :
+    (norm x).natAbs ≤ (norm (x * y)).natAbs := by
+  rw [norm_mul, Int.natAbs_mul]
+  have hy_pos : 0 < norm y := norm_pos_of_ne_zero hy
+  have h : 1 ≤ (norm y).natAbs := by
+    have : 1 ≤ norm y := hy_pos
+    omega
+  exact Nat.le_mul_of_pos_right _ (by omega)
+
+noncomputable instance instNontrivial : Nontrivial Eisenstein :=
+  ⟨⟨0, 1, by decide⟩⟩
+
+/-- Strict ordering on Eisenstein integers via the `.natAbs` of the norm.
+Used to instantiate the well-founded relation `r` in `EuclideanDomain`. -/
+noncomputable instance instLT : LT Eisenstein :=
+  ⟨fun x y => (norm x).natAbs < (norm y).natAbs⟩
+
+/-- `Eisenstein = ℤ[ω]` is a Euclidean domain, with Euclidean function
+`(norm ·).natAbs` and division by rounding. -/
+noncomputable instance instEuclideanDomain : EuclideanDomain Eisenstein :=
+  { inferInstanceAs (CommRing Eisenstein) with
+    quotient := (· / ·)
+    remainder := (· % ·)
+    quotient_zero := by
+      intro a
+      show (a / 0 : Eisenstein) = 0
+      have hzero : (norm (0 : Eisenstein) : ℚ)⁻¹ = 0 := by
+        rw [norm_zero]; simp
+      ext
+      · show round ((a * conj 0).re * (norm (0 : Eisenstein) : ℚ)⁻¹)
+              = (0 : Eisenstein).re
+        rw [hzero, mul_zero, round_zero, zero_re]
+      · show round ((a * conj 0).im * (norm (0 : Eisenstein) : ℚ)⁻¹)
+              = (0 : Eisenstein).im
+        rw [hzero, mul_zero, round_zero, zero_im]
+    quotient_mul_add_remainder_eq := fun x y => by simp only [mod_def]; ring
+    r := (· < ·)
+    r_wellFounded := (measure fun z : Eisenstein => (norm z).natAbs).wf
+    remainder_lt := fun x y hy => natAbs_norm_mod_lt x hy
+    mul_left_not_lt := fun a b hb0 => not_lt_of_ge (norm_le_norm_mul_left a hb0) }
 
 end Eisenstein
 
