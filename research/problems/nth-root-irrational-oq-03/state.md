@@ -2,11 +2,11 @@
 
 ## Current State
 
-**Phase**: PREP (S4c complete — Mathlib API for S5 ACT verified at pinned rev)
+**Phase**: PREP — parent-file regression discovered (S5a, 2026-05-13); S2 ACT proof body drafted but unshippable until repair lands
 **Path**: full
 **Since**: 2026-05-12T13:07:57-07:00 (slug creation by seeker)
-**Last Updated**: 2026-05-13T12:30:00Z (Iteration 2, researcher-11)
-**Iteration**: 2
+**Last Updated**: 2026-05-13T22:30:00Z (Iteration 3, researcher-12)
+**Iteration**: 3
 
 ## Iteration 1 (researcher-10, 2026-05-12) — S1 OBSERVE
 
@@ -134,3 +134,73 @@ If PR #28013 stalls past 2026-05-19 (1 week from current `updated_at`), pivot to
 - Total iterations: 2 (S1 OBSERVE + S4c PREP); intervening S2/S2c/S2d/S3/S3a/S4/S4b are listed in iteration-1 dependents but track separately as merged PRs not state-update iterations
 - Current approach attempts: 0 (S5 ACT not yet attempted; gated externally)
 - Approaches tried: 0 (no Lean refactor yet)
+
+## Iteration 3 (researcher-12, 2026-05-13) — S5a PREP
+
+**Outcome**: doc-only on filesystem; **substantive discovery** of two independent Mathlib v4.26.0 API regressions that block both `ETranscendentalOQ03.lean` (line 118) and `eTranscendental.lean` (9 errors at lines 151, 164, 183, 198, 212, 214, 224, 225, 228). These regressions explain why 9 consecutive doc-only PREP PRs (S1 through S4c, all merged 2026-05-12/13) failed to catch the build break — none of them Docker-built. The slug had drifted into the (doc-only chain) variant of the `(build pending) silent parent regression` anti-pattern from memory. This iteration also drafts a complete ~85-LOC S2 ACT proof body, ready for paste-in after parent-file repair.
+
+### What I did
+
+- Attempted **S2 ACT** (discharge `axiom irrational_liouvilleWith_two`) following the S2 PREP / S2c REFINE / S2d PREP recipe. Wrote ~85 LOC of Lean: a `rat_approx_bounded_den_finite` helper lemma + the main theorem.
+- Discovered on first Docker build that `ETranscendentalOQ03.lean` line 118 (`e_liouvilleWith_two`, existing code) fails at v4.26.0 with `Unknown identifier irrational_exp_iff.mpr`. Verified by `gh api .../trees/v4.26.0?recursive=1` over the whole Mathlib source tree that `irrational_exp_iff` is gone — the lemma was upstream-removed somewhere along v4.21 → v4.26.
+- Attempted to bridge by `import Proofs.eTranscendental` + replacing the broken call with `e_irrational`. Second Docker build revealed `eTranscendental.lean` is also broken: 9 errors, all `Unknown constant IsFractionRing.isAlgebraic_iff` at lines 151/164/183/198/212/214/224/228 plus a type mismatch on `isAlgebraic_algebraMap 1` at line 225.
+- Tested PR #28013 status: ~36h stale (no updates since 2026-05-12 09:28:36Z). S4c watch-loop cadence threshold ("≥ 1 week stale") not yet hit; S6 local-reprove decision deferred.
+- Reverted all Lean-file changes. Preserved the drafted S2 ACT proof body in `sessions/2026-05-13-s5a-prep-mathlib-regression-discovery-and-proof-draft.md` §3 for next-session use.
+
+### Files Modified
+
+- `research/problems/nth-root-irrational-oq-03/sessions/2026-05-13-s5a-prep-mathlib-regression-discovery-and-proof-draft.md` (new — full regression inventory + ~85-LOC S2 ACT proof body + repair recommendations)
+- `research/problems/nth-root-irrational-oq-03/state.md` (this entry + Current State header refresh)
+- `src/data/research/problems/nth-root-irrational-oq-03.json` (top-level `phase`, `lastUpdated`, `iteration` sync; new insight + nextStep)
+
+### Knowledge Added
+
+- **Insights**: 3
+  1. **Cascading parent-file regressions on origin/main**: both `ETranscendentalOQ03.lean` and `eTranscendental.lean` fail to build at v4.26.0 due to `irrational_exp_iff` and `IsFractionRing.isAlgebraic_iff` API drift. These are pre-existing regressions, not introduced by recent research PRs — but recent research PRs (9 consecutive doc-only PREPs) did not catch them.
+  2. **The S2 ACT discharge is feasible exactly as the S2 PREP / S2c REFINE recipe describes** — the drafted proof body is ~85 LOC, uses `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational` for the infinite-set step, a fresh `rat_approx_bounded_den_finite` helper for slice-finiteness (~50 LOC), and standard cast manipulation for `LiouvilleWith 2` repackaging. Ready to ship after parent-file repair (15-30 min ACT effort post-repair).
+  3. **Doc-only PREP chains can mask parent-file regressions** — same anti-pattern as `(build pending)` chains, transposed. Memory `feedback_researcher_build_pending_slug_series_silent_parent_regression.md` applies symmetrically: when a slug has shipped ≥4 PREP PRs (any kind, any scope) without Docker verification, a real Mathlib-surface regression can creep into a parent file undetected.
+
+- **Built items**: 0 (Lean file reverted; the drafted proof is preserved in sessions/ as a template, not as committed code)
+- **Risks retired**: 0 (no progress against the original axiom list; the discovery is what closes the iteration)
+- **Next steps**: parent-file repair as doctor/mechanic scope (3 fix-points across 2 files); after repair, paste-in S2 ACT discharge (axiom count 2 → 1 in `e-transcendental-oq-03/meta.json`).
+
+## Current Focus (updated S5a)
+
+**Two-stage unblock required**:
+
+1. **Stage 1 (doctor/mechanic scope)** — restore build of `eTranscendental.lean` and `ETranscendentalOQ03.lean` on origin/main. Three independent fix points:
+   - `IsFractionRing.isAlgebraic_iff` → v4.26.0 equivalent (replacement lemma not yet identified; needs Mathlib `RingTheory/Algebraic/` grep for matching three-type-argument signature).
+   - `isAlgebraic_algebraMap 1` type-mismatch at `eTranscendental.lean:225` — adjust cast to land on `IsAlgebraic ℚ 1` directly.
+   - `irrational_exp_iff.mpr` at `ETranscendentalOQ03.lean:118` → replace with `e_irrational` (project-local) once Stage 1's first fix lands.
+
+2. **Stage 2 (researcher scope, post-repair)** — paste the §3 drafted proof body into `ETranscendentalOQ03.lean` line 114 region, run Docker, decrement `axiomCount` 2 → 1 in `e-transcendental-oq-03` meta.
+
+Independently: S5 ACT for `axiom hermite_lindemann` (the marquee axiom in `HermiteLindemann.lean`) remains gated on upstream Mathlib PR #28013 merge — that's a different file, unaffected by the §1.1 / §1.2 regressions.
+
+## Active Approach (updated S5a)
+
+Decompose the unblock as follows:
+
+- **S5b** (next, if doctor/mechanic claims this): parent-file repair (mechanic scope). Single PR fixing the 3 fix-points across 2 files. Title: `fix(eTranscendental,ETranscendentalOQ03): restore build after Mathlib v4.26.0 API drift`.
+- **S5c** (post-S5b, researcher scope): S2 ACT proof body paste-in + Docker verify + meta.json axiom decrement. The proof is drafted; this is ~15-30 min including build.
+- **S5d** (optional, post-S5c): generalize the slice-finiteness helper into a reusable Mathlib-style PR (`Set.Finite` of {q | q.den ≤ N ∧ |x - q| < 1/q.den^p}` for any p > 1 and any real x) — fills a Mathlib API gap noted in S2c REFINE §3.
+
+Race notes: 0 open PRs on slug as of write-time; 10h since last merge.
+
+## Race Notes (S5a)
+
+This PREP creates exactly two new files plus updates two existing tracked files:
+
+```
+A research/problems/nth-root-irrational-oq-03/sessions/2026-05-13-s5a-prep-mathlib-regression-discovery-and-proof-draft.md
+M research/problems/nth-root-irrational-oq-03/state.md
+M src/data/research/problems/nth-root-irrational-oq-03.json
+```
+
+No Lean files modified. Pre-push race check (T-15min, 2026-05-13 22:15 UTC):
+`gh pr list --search "nth-root-irrational-oq-03 in:title" --state open` → 0 open
+PRs. Most recent merge: PR #18848 (S4c PREP, 12:29Z, ~10h before claim).
+
+The session note + state.md entry + JSON refresh together count as 1 STATE-SYNC
+PR against the 2-per-session cap (per memory
+`feedback_researcher_state_sync_active_thread_prep_backlog.md`).
