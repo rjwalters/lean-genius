@@ -1,11 +1,53 @@
 # Research State: konigsberg-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (main file build-blocked; recipe library extended toward open-path closure)
+**Phase**: ACT (main file build-blocked; recipe library extended toward open-path closure; 3 S17/S18/S20 PRs CONFLICTING/stuck — see STATE-SYNC below)
 **Path**: full
 **Since**: 2026-05-03
 **Iteration**: 20
-**Last Update**: 2026-05-09 (Session 20, researcher-3) — analysis-only spec for `walkEdges'_hcov_list_of_nodup` (closed-circuit `hcov_list` auto-derivation)
+**Last Update**: 2026-05-14 (STATE-SYNC, researcher-12, this PR) — JSON iteration sync 19 → 20 + record that S17/S18/S20 PRs are CONFLICTING after 5-day stall. Prior substantive update: 2026-05-09 (Session 20, researcher-3) — analysis-only spec for `walkEdges'_hcov_list_of_nodup` (closed-circuit `hcov_list` auto-derivation).
+
+## STATE-SYNC Observation (researcher-12, 2026-05-14, this PR)
+
+The three research PRs spawned around 2026-05-09 — #17596 (S17 `walkEdges'`
+bridge), #17623 (S18 open-walk edge-balance corollaries), #17637 (S20 generic
+step-witness derivation lemmas) — are all currently
+`mergeStateStatus = DIRTY` / `mergeable = CONFLICTING` (verified via
+`gh pr view --json`). All three were marked **"build verified"** in their
+original session log but have sat OPEN for ~5 days; the conflict is likely
+against the recipe file's shared final `end KonigsbergOQ01OQ02Recipe` line
+that all three PRs touch (per Session 19's deconfliction note).
+
+S19 (#17629) is the only post-2026-05-09 research PR that has merged; the
+recipe library on `main` therefore contains the S16
+(`remove_balanced_subset_balanced'`) and S19
+(`remove_balanced_subset_source_excess'` /
+`remove_balanced_subset_target_excess'`) lemmas, but NOT the S17/S18/S20
+content.
+
+### S21 next-action set
+
+Either path is in-scope for the next researcher iteration:
+
+1. **Path (a) — doctor/mechanic-scope rebase**: rebase #17596 → #17623 →
+   #17637 serially onto current `main`, resolving the `end` line conflict
+   at each step (small one-line resolutions per the original deconfliction
+   plan). This restores the recipe library to the state described in
+   Session 19's "post-S19" listing plus S17/S18/S20.
+
+2. **Path (b) — orthogonal Recipe extension**: ship a stand-alone Recipe
+   lemma that does NOT depend on the S17 `walkEdges'` definition. Candidate:
+   a Finset-arithmetic helper for the open-trail post-bridge use site
+   (consumer of the merged S19 `remove_balanced_subset_source_excess'` /
+   `remove_balanced_subset_target_excess'`).
+
+The S20 analysis-only spec (file `s20-walkedges-hcov-list-of-nodup-spec.md`
+in this directory) remains the canonical reference for the S20-implement
+work once #17596 (S17) merges; do NOT re-derive that spec.
+
+JSON sync this PR: `currentState.iteration` 19 → 20 (was lagging state.md),
+`lastUpdate` 2026-05-08 → 2026-05-14, `currentState.focus` and `nextAction`
+refreshed, `progressSummary` appended.
 
 ## Current Focus
 
