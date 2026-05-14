@@ -1,7 +1,7 @@
 {
   "slug": "central-limit-theorem-oq-01-oq-01-oq-04-oq-01",
   "title": "Partial Mathlib formalization of the Meerschaert-Scheffler DOA theorem",
-  "phase": "OBSERVE",
+  "phase": "PARENT-BLOCKED",
   "status": "active",
   "tier": "B",
   "path": "partial",
@@ -30,15 +30,17 @@
     "goal": "Produce a Gaussian-specialised version of the M-S characteristic-function convergence (R1 route, ~80-150 Lean lines)"
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T19:28:00Z",
-    "iteration": 1,
-    "focus": "S1 survey: three-route discharge plan drafted (R1 Gaussian specialised, R2 scalar exponent reduction, R3 full forward direction). R1 is the recommended S2 target.",
+    "phase": "PARENT-BLOCKED",
+    "since": "2026-05-14T15:50:00Z",
+    "iteration": 3,
+    "focus": "S3 BUILD-VERIFY first Docker baseline — 23 surface errors in parent file CentralLimitTheoremOQ01OQ01OQ04.lean (Σ-token parser/12 + removed-constant/3 + latent-elaborator/8). E.1/E.2 ACT blocked until S4 mechanic/doctor parent repair.",
     "blockers": [
-      "Matrix regular variation absent from Mathlib (blocks R3 full M-S forward direction)",
-      "Multivariate Levy continuity theorem absent (blocks general M-S; R1 sidesteps via Gaussian specialisation)"
+      "Parent file Proofs.CentralLimitTheoremOQ01OQ01OQ04 has 23 v4.26.0 surface errors (first Docker baseline 2026-05-14, no prior Docker verification on this slug or parent slug)",
+      "Cluster A: 12 sites failing parser on `Σ` (now reserved for dependent-pair type) — global rename Σ → Σ_cov needed",
+      "Cluster B: 3 removed/renamed Mathlib constants — Matrix.exp (→ NormedSpace.exp ℝ), Matrix.eigenvalues (→ IsHermitian.eigenvalues), Fin.eq_zero_or_pos (latent type confusion: d : ℕ should use Nat.eq_zero_or_pos)",
+      "Cluster C: 8 latent proof-elaborator bugs (likely cascade-resolve after Clusters A+B)"
     ],
-    "nextAction": "S2 ACT: implement R1 Gaussian-specialised Meerschaert-Scheffler theorem in proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04Meerschaert.lean (~80-150 Lean lines, 0 axiom delta on parent).",
+    "nextAction": "S4 (mechanic/doctor scope): pick up the 23-error inventory in state.md and iterate Docker until parent file builds clean — three-cluster strategy A → B → C, ~4 Docker iterations.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -87,5 +89,5 @@
     "gallery-extracted"
   ],
   "createdAt": "2026-05-12T19:28:00Z",
-  "updatedAt": "2026-05-12T19:30:00Z"
+  "updatedAt": "2026-05-14T15:50:00Z"
 }
