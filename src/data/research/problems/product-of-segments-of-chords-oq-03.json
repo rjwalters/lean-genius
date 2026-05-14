@@ -1,7 +1,7 @@
 {
   "slug": "product-of-segments-of-chords-oq-03",
   "title": "Power-of-a-point ↔ four-point concyclicity determinant",
-  "phase": "OBSERVE",
+  "phase": "PREP",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -32,20 +32,20 @@
     "goal": "Build companion file Proofs/ProductOfSegmentsOfChordsOQ03.lean (~210 lines, 4 main theorems + 1 def) that discharges the parent axiom. After all sorries close: parent axiomCount 1 → 0, parent moves toward status verified."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T18:00:00.000Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE: documented the determinant-criterion ↔ power-of-a-point bridge, verified the determinant criterion on the unit-square inscribed-in-unit-circle test case (Δ = 0), surveyed Mathlib's Matrix.det_fin_four + Cramer's rule API, decomposed the goal into S2–S6, and identified the axiom-discharge endpoint.",
+    "phase": "PREP",
+    "since": "2026-05-13T02:19:00.000Z",
+    "iteration": 5,
+    "focus": "S6 STATE-SYNC (researcher-9, 2026-05-14, this PR) — doc-only refresh after 3 PREP-only PRs merged 2026-05-13 (S3 PREP #18466 Cramer (⇐) discharge design; S4 PREP #18474 row-reduction (⇒) design; S5 PREP #18553 chord-product → Δ=0 bridge strategy). Lean (Proofs/ProductOfSegmentsOfChordsOQ03.lean) unchanged at 106 LOC / 1 sorry / 0 axioms since S2 SCAFFOLD PR #18380 (build pending). Discharge route fully designed across 3 PREPs: S3 ACT (~80 LOC Cramer + 2×2 algebraic non-collinearity) + S4 ACT (~30 LOC row reduction) + S5 ACT (~50 LOC chord-product bridge) + S6 ACT (~10 LOC parent axiom discharge). Total ACT estimate: ~170 LOC; closes parent converse_product_implies_concyclic_axiom (axiomCount 1 → 0).",
     "blockers": [],
-    "nextAction": "S2: create Proofs/ProductOfSegmentsOfChordsOQ03.lean with concyclicityDet definition (Matrix.det_fin_four), numerical example (decide), and main theorem statement with 1 sorry (~40 lines, build-verified SCAFFOLD).",
+    "nextAction": "S6 ACT (any researcher) — assemble S3 + S4 + S5 + S6 ACT iterations into a sequential or single-PR discharge of the headline sorry at Proofs/ProductOfSegmentsOfChordsOQ03.lean:106. Order: (a) S3 ACT (~80 LOC) — replace (hNonCollinear : True) placeholder with 2×2 algebraic det hypothesis per S3 PREP §1.b; discharge (⇐) via Matrix.cramer per S3 PREP §2-§3; (b) S4 ACT (~30 LOC) — close (⇒) via row reduction per S4 PREP §3 (Choice A iff packaging recommended); (c) S5 ACT (~50 LOC) — bridge chord_product_equal → Δ=0 per S5 PREP §2-§4; (d) S6 ACT (~10 LOC) — discharge parent converse_product_implies_concyclic_axiom + update parent meta.json axiomCount 1→0 + status. Strongly recommended: Docker-build BEFORE patching to establish baseline (4 consecutive build-pending/doc-only PRs in a row warrants the precaution per feedback_researcher_build_pending_slug_series_silent_parent_regression.md).",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 5,
+      "currentApproach": 5,
+      "approachesTried": 5
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-11, 2026-05-12): OBSERVE survey for the bridge between the parent file's power-of-a-point invariant and the classical 4x4 concyclicity determinant. Verified Δ = 0 on the four unit-circle vertices (1,0), (0,1), (-1,0), (0,-1) (rows 1+3 = rows 2+4) and Δ = -8 when one vertex moves off-circle to (0,-2). Mapped Mathlib v4.26.0 infrastructure (Matrix.det_fin_four, Matrix.cramer, !![...] notation). Identified that the strategy is purely algebraic (Cramer on the implicit-circle equation x^2 + y^2 + Dx + Ey + F = 0), avoiding the need to bridge Vec2 = Fin 2 → ℝ with EuclideanSpace ℝ (Fin 2). Identified 3 Mathlib gaps (no concyclicity-det lemma, no circleThroughThreePoints in parent file, no power-of-a-point ↔ implicit-circle bridge). No Lean changes this iteration -- pure documentation S1.",
+    "progressSummary": "S1 OBSERVE (PR #18231, researcher-11, 2026-05-12): determinant-criterion ↔ power-of-a-point bridge documented; Δ = 0 verified on unit-circle vertices and Δ = -8 on perturbed (0,-2). Mapped Mathlib v4.26.0 (Matrix.det_fin_four, Matrix.cramer). Identified strategy as purely algebraic — Cramer on implicit-circle equation x² + y² + Dx + Ey + F = 0 — avoiding the Vec2 ↔ EuclideanSpace bridge. S2 SCAFFOLD (PR #18380, researcher-3, 2026-05-12, build pending): created Proofs/ProductOfSegmentsOfChordsOQ03.lean (106 LOC, 1 sorry, 0 axioms) with concyclicityDet definition (Matrix.det_fin_four) + Vec2 wrapper + 2 numerical examples. S3 PREP (PR #18466, researcher-9, 2026-05-13): Cramer's rule discharge design for (⇐); recommended algebraic 2×2 det non-collinearity (Choice 1b); 3 friction points anticipated (Vec2 ↔ Fin 2 → ℝ, ‖·‖ on EuclideanSpace, Real.sqrt positivity). S4 PREP (PR #18474, researcher-12, 2026-05-13): (⇒) direction via row reduction; Choice A (iff packaging) recommended over standalone aux theorem. S5 PREP (PR #18553, researcher-5, 2026-05-13): chord-product → Δ = 0 bridge via row-subtract identity + chord_roots_product Vieta on chord quadratic. S6 STATE-SYNC (this PR, researcher-9, 2026-05-14): doc-only refresh of state.md + JSON to reflect S3/S4/S5 PREP backlog. Lean unchanged at 106 LOC / 1 sorry since S2. Total picker-estimated ACT remaining: ~170 LOC across S3-S6, closing parent converse_product_implies_concyclic_axiom (axiomCount 1 → 0).",
     "builtItems": [],
     "insights": [
       "The implicit-circle equation x^2 + y^2 + Dx + Ey + F = 0 gives an immediate translation between power-of-a-point and concyclicity: power(P) = x_P^2 + y_P^2 + D x_P + E y_P + F evaluated against any circle through three reference points.",
@@ -101,5 +101,5 @@
     "seeker-selected"
   ],
   "createdAt": "2026-05-12T15:12:46Z",
-  "lastUpdatedAt": "2026-05-12T18:30:00Z"
+  "lastUpdatedAt": "2026-05-14T02:42:00Z"
 }
