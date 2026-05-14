@@ -1589,6 +1589,78 @@ private lemma cast_int_mem_dirichletSublatticeReal
   rw [hkey]
   exact hsum
 
+/-! ### S10D: Mathlib `Basis` package + covolume `= p²`
+
+The four declarations below close the geometric kernel of `dirichlet_key_lemma`'s
+covolume side: the three real-valued basis vectors of the Dirichlet sublattice
+(rows of `dirichletSublatticeRealBasisMatrix p r`) are linearly independent (over
+ℝ, via S10C's `det = (p:ℝ)²` and `Matrix.linearIndependent_rows_of_det_ne_zero`),
+package as a Mathlib `Basis (Fin 3) ℝ (Fin 3 → ℝ)`, the underlying matrix-of-the-
+basis equals the explicit `dirichletSublatticeRealBasisMatrix`, and finally the
+fundamental-domain covolume equals `ENNReal.ofReal ((p:ℝ)²)` via
+`ZSpan.volume_fundamentalDomain` plus the previous identity.
+
+This is the real-side covolume payload that downstream `dirichlet_key_lemma`
+sessions will plumb through `addHaar_image_linearMap` and Minkowski's lattice-
+point theorem. -/
+
+/-- **S10D (linear independence — real side)**: The three real-valued basis vectors
+of the Dirichlet sublattice are linearly independent over ℝ. Pinned by S10C's
+`dirichletSublatticeRealBasisMatrix_det = (p : ℝ)²` (nonzero whenever `p > 0`)
+combined with `Matrix.linearIndependent_rows_of_det_ne_zero`. -/
+private lemma dirichletSublatticeRealBasisVec_linearIndependent
+    {p r : ℤ} (hp : 0 < p) :
+    LinearIndependent ℝ (dirichletSublatticeRealBasisVec p r) := by
+  have hpR : (0 : ℝ) < (p : ℝ) := by exact_mod_cast hp
+  have hdet : (dirichletSublatticeRealBasisMatrix p r).det ≠ 0 := by
+    rw [dirichletSublatticeRealBasisMatrix_det]
+    positivity
+  -- The basis vectors `dirichletSublatticeRealBasisVec p r i = ... Matrix p r i` are
+  -- definitionally the rows of the matrix, so `linearIndependent_rows_of_det_ne_zero`
+  -- applies directly after the elaborator unfolds `dirichletSublatticeRealBasisVec`.
+  show LinearIndependent ℝ (fun i => dirichletSublatticeRealBasisMatrix p r i)
+  exact Matrix.linearIndependent_rows_of_det_ne_zero hdet
+
+/-- **S10D (real Mathlib `Basis`)**: Package the three linearly-independent vectors as
+a Mathlib `Module.Basis (Fin 3) ℝ (Fin 3 → ℝ)` via the standard
+`basisOfLinearIndependentOfCardEqFinrank` constructor. The cardinality side-condition
+`Fintype.card (Fin 3) = finrank ℝ (Fin 3 → ℝ)` is discharged by
+`Module.finrank_fintype_fun_eq_card`.
+
+(Mathlib v4.26.0 nests `Basis` under the `Module` namespace; we use the fully
+qualified `Module.Basis` in the type since this file does not `open Module`.) -/
+noncomputable def dirichletSublatticeRealBasis (p r : ℤ) (hp : 0 < p) :
+    Module.Basis (Fin 3) ℝ (Fin 3 → ℝ) :=
+  basisOfLinearIndependentOfCardEqFinrank
+    (dirichletSublatticeRealBasisVec_linearIndependent (r := r) hp)
+    (Module.finrank_fintype_fun_eq_card ℝ).symm
+
+/-- **S10D (basis-as-matrix identity)**: The matrix-of-the-basis-as-a-function (used
+by `ZSpan.volume_fundamentalDomain`) equals the explicit S10C basis matrix. Follows
+from `coe_basisOfLinearIndependentOfCardEqFinrank` (a `@[simp]` lemma) reducing
+`⇑(basisOfLinear…)` to the underlying vector family `dirichletSublatticeRealBasisVec`,
+which itself is row-extraction from `dirichletSublatticeRealBasisMatrix`. -/
+private lemma dirichletSublatticeRealBasis_toMatrix_eq
+    (p r : ℤ) (hp : 0 < p) :
+    Matrix.of (dirichletSublatticeRealBasis p r hp) =
+      dirichletSublatticeRealBasisMatrix p r := by
+  ext i j
+  simp [dirichletSublatticeRealBasis, dirichletSublatticeRealBasisVec]
+
+/-- **S10D (real covolume = `(p : ℝ)²`)**: The Lebesgue volume of the fundamental
+domain of `dirichletSublatticeRealBasis p r hp` equals `ENNReal.ofReal ((p : ℝ)²)`.
+This is the covolume payload of the Dirichlet sublattice — the geometric input to
+`dirichlet_key_lemma`'s lattice-point Minkowski step. Proof: chain
+`ZSpan.volume_fundamentalDomain`, `dirichletSublatticeRealBasis_toMatrix_eq`,
+`dirichletSublatticeRealBasisMatrix_det`, and `abs_of_nonneg (sq_nonneg _)`. -/
+private lemma dirichletSublatticeRealVolume
+    (p r : ℤ) (hp : 0 < p) :
+    MeasureTheory.volume
+        (ZSpan.fundamentalDomain (dirichletSublatticeRealBasis p r hp))
+      = ENNReal.ofReal ((p : ℝ) ^ 2) := by
+  rw [ZSpan.volume_fundamentalDomain, dirichletSublatticeRealBasis_toMatrix_eq,
+      dirichletSublatticeRealBasisMatrix_det, abs_of_nonneg (sq_nonneg _)]
+
 /-- **Sufficiency Axiom**: Numbers NOT of excluded form ARE sums of three squares.
 
 **Current status**: All PRIMES are proved. Composites need Dirichlet's Key Lemma above.
@@ -1801,7 +1873,10 @@ private lemma exists_sum_three_sq_int_iff_nat (n : ℕ) :
     `not_excluded_form_is_sum_three_sq` via `r3_count_pos_iff`. -/
 theorem general_r3_formula {n : ℕ} (_hn : n ≥ 1) (hne : ¬IsExcludedForm n) :
     r3_count n > 0 := by
-  rw [r3_count_pos_iff, exists_sum_three_sq_int_iff_nat]
+  -- Mathlib v4.26.0: `rw` no longer auto-flips `_ > 0` ↔ `0 < _` against
+  -- the lemma `r3_count_pos_iff : 0 < r3_count n ↔ ∃ a b c, ...`. Add an
+  -- explicit `gt_iff_lt` to align orientations before the rewrite chain.
+  rw [gt_iff_lt, r3_count_pos_iff, exists_sum_three_sq_int_iff_nat]
   exact not_excluded_form_is_sum_three_sq hne
 
 /-- Class number formula: h(-d) = (√d / π) · L(1, χ_d)

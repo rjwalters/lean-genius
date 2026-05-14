@@ -1,9 +1,79 @@
 # Current State
 
-**Phase**: ACT (S10D bearer audit landed; ACT for `Module.Basis` + `ZSpan.volume_fundamentalDomain` is unblocked at v4.26.0)
+**Phase**: ACT (S11 / S10D shipped — `Module.Basis` package + covolume = (p:ℝ)²; downstream Minkowski step + lattice-point identification still open)
 **Since**: 2026-05-08T22:50:00Z
-**Iteration**: 13
-**Last Updated**: 2026-05-13 (S10D-prep Mathlib v4.26.0 bearer audit by researcher-1; doc-only)
+**Iteration**: 14
+**Last Updated**: 2026-05-14 (S11 / S10D ACT shipped by researcher-9; build pending — pre-existing S5-region blockers unchanged)
+
+## S11 / S10D: `Module.Basis` package + covolume = `(p : ℝ)²` (2026-05-14, researcher-9)
+
+**Mode**: ACT. Discharged the four-step S10D plan from the 2026-05-13 PREP (researcher-1) into `proofs/Proofs/ThreeSquares.lean` lines 1593–1659 (additive: between S10C's `cast_int_mem_dirichletSublatticeReal` and the `not_excluded_form_is_sum_three_sq` axiom). All four declarations elaborate cleanly at Mathlib v4.26.0; build remains pending only because of the **pre-existing** S5-region blockers (lines 760–864) that were diagnosed in S10D-Prep's risk register and are out of scope for this session.
+
+### Net new content (4 declarations, ~70 LOC including docstrings)
+
+```lean
+private lemma dirichletSublatticeRealBasisVec_linearIndependent
+    {p r : ℤ} (hp : 0 < p) :
+    LinearIndependent ℝ (dirichletSublatticeRealBasisVec p r)
+
+noncomputable def dirichletSublatticeRealBasis (p r : ℤ) (hp : 0 < p) :
+    Module.Basis (Fin 3) ℝ (Fin 3 → ℝ)
+
+private lemma dirichletSublatticeRealBasis_toMatrix_eq
+    (p r : ℤ) (hp : 0 < p) :
+    Matrix.of (dirichletSublatticeRealBasis p r hp) = dirichletSublatticeRealBasisMatrix p r
+
+private lemma dirichletSublatticeRealVolume
+    (p r : ℤ) (hp : 0 < p) :
+    MeasureTheory.volume
+        (ZSpan.fundamentalDomain (dirichletSublatticeRealBasis p r hp))
+      = ENNReal.ofReal ((p : ℝ) ^ 2)
+```
+
+### Bearer chain (verified at v4.26.0 via Docker build)
+
+| Bearer | Use site | Notes |
+|---|---|---|
+| `Matrix.linearIndependent_rows_of_det_ne_zero` | `_linearIndependent` | Pinned by S10C `det = (p:ℝ)²` + `positivity` from `0 < p`. |
+| `basisOfLinearIndependentOfCardEqFinrank` | `_Basis` | Top-level (post-`end Submodule`) in `Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean:237`. |
+| `Module.finrank_fintype_fun_eq_card` | `_Basis` (card side-condition) | `Mathlib/LinearAlgebra/Dimension/Constructions.lean:324`. |
+| `coe_basisOfLinearIndependentOfCardEqFinrank` (`@[simp]`) | `_toMatrix_eq` | `simp` reduces `⇑(basisOfLinear…)` to underlying vector family. |
+| `ZSpan.volume_fundamentalDomain` (`@[simp]`) | `_RealVolume` | `Mathlib/Algebra/Module/ZLattice/Basic.lean:386`. |
+
+### Bearer surprise vs PREP
+
+The PREP doc anchored on type `Basis ι R E`. At v4.26.0, the `Basis` structure is nested under `namespace Module` (per `Mathlib/LinearAlgebra/Basis/Defs.lean:76,89`); the file does NOT re-export `Basis` to the top level via `alias`/`export`. Result: **type signatures must use `Module.Basis`**, not `Basis`. The function name `basisOfLinearIndependentOfCardEqFinrank` is *not* in the `Module` namespace (it sits at top-level in `FiniteDimensional/Lemmas.lean` after `end Submodule`); only the *type* in the result signature needs the `Module.` qualifier. First Docker iteration failed with "Function expected at Basis but this term has type ?m.1" → 2-line fix → second Docker iteration clean for the new region. **Memory candidate**: see `feedback_researcher_mathlib_v426_module_basis_namespace.md` (added).
+
+### r3_count `gt_iff_lt` unblocker (in-PR, +3 LOC at line 1804)
+
+The pre-existing `general_r3_formula` proof (PR #17082, S6) opens with
+```lean
+rw [r3_count_pos_iff, exists_sum_three_sq_int_iff_nat]
+```
+on goal `r3_count n > 0`, where `r3_count_pos_iff : 0 < r3_count n ↔ ∃ a b c, …`. Mathlib v4.26.0's `rewrite` tactic no longer auto-flips `_ > 0` ↔ `0 < _` to match the lemma orientation. A 1-keyword surgical fix `rw [gt_iff_lt, …]` aligns the LT direction before the rewrite chain. This is shipped in-PR (per `feedback_researcher_parent_file_build_unblocker_inpr_pattern.md` — the fix is demonstrably one-line, correct, and orthogonal to S10D's geometric kernel).
+
+### Build status & honest scope
+
+* **My new content (lines 1593–1659)**: 0 errors, 0 warnings (verified via Docker build, baseline-build.log + s10d-build2.log).
+* **My in-PR fix at general_r3_formula**: 0 errors at line 1804 area (verified — error inventory dropped from 10 → 9).
+* **Pre-existing S5-region (lines 760–864)**: unchanged at 9 errors:
+  - `760:65` `Real.sqrt_mul_self` argument order mismatch (×3 sites: 760, 790, 792)
+  - `765:13` Unknown constant `Matrix.det_toLin'`
+  - `756:64`, `816:4` cascade unsolved-goals from above
+  - `813:10`, `849:6` `simp` over-rewrite "no goals to be solved"
+  - `864:23` Unknown constant `EuclideanSpace.real_norm_sq_eq`
+* **Build status**: pending. Mechanic / Doctor session needed for the 9 S5-region errors. None of them are in the S10D edit zone.
+
+### Axiom delta
+
+Unchanged at 2 (`dirichlet_key_lemma`, `not_excluded_form_is_sum_three_sq`). S11 / S10D is **infrastructure** — it provides the *covolume payload* `volume(ZSpan.fundamentalDomain (dirichletSublatticeRealBasis)) = ENNReal.ofReal ((p:ℝ)²)` that S12 will plug into Mathlib's Minkowski lattice-point existence theorem (`MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` or analogue) to extract a non-zero integer point of `dirichletSublattice` with form ≤ R. The cast-back to `dirichletSublatticeReal` integer points uses S10C's `cast_int_mem_dirichletSublatticeReal`.
+
+### Honesty / scope guarantees
+
+* No claim of axiom elimination — `dirichlet_key_lemma` and `not_excluded_form_is_sum_three_sq` remain `axiom` declarations; only the geometric covolume kernel is now in place.
+* No "build verified" claim — file does not build because of pre-existing, documented, out-of-scope S5-region failures.
+* No edits to S5-region — would be `mechanic` scope, not `researcher`.
+* JSON `phase` / `lastUpdate` not touched — to avoid merge conflict with researcher-12's open STATE-SYNC PR #19026 (which bumps top-level `phase: OBSERVE → ACT`).
 
 ## S10D-Prep: Mathlib v4.26.0 Bearer Audit (2026-05-13, researcher-1)
 
