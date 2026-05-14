@@ -7,7 +7,7 @@ import Mathlib.Logic.Denumerable
 import Mathlib.Computability.Primrec
 import Mathlib.Computability.Partrec
 import Mathlib.Computability.PartrecCode
-import Mathlib.Topology.Instances.Real
+import Mathlib.Topology.Instances.Real.Lemmas
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
 
@@ -149,7 +149,7 @@ The construction has three pieces:
     limit and witnessing sequence. -/
 noncomputable def decodeReal (c : Nat.Partrec.Code) : ℝ :=
   if h : ∃ r : ℝ, ∃ f : ℕ → ℚ,
-      (∀ n, c.eval n = Part.some (Encodable.encode (f n))) ∧
+      (∀ n, c.eval n = Part.some (@Encodable.encode ℚ Primcodable.toEncodable (f n))) ∧
       Tendsto (fun n => (f n : ℝ)) atTop (nhds r)
   then h.choose
   else 0
@@ -163,13 +163,15 @@ noncomputable def decodeReal (c : Nat.Partrec.Code) : ℝ :=
     (iii) `Partrec.nat_iff` and `Nat.Partrec.Code.exists_code` — every partial
     recursive function on ℕ has an explicit code. -/
 lemma exists_code_of_computable_rat_seq {f : ℕ → ℚ} (hf : Computable f) :
-    ∃ c : Nat.Partrec.Code, ∀ n, c.eval n = Part.some (Encodable.encode (f n)) := by
+    ∃ c : Nat.Partrec.Code, ∀ n,
+      c.eval n = Part.some (@Encodable.encode ℚ Primcodable.toEncodable (f n)) := by
   -- (i) + (ii): The encoded sequence n ↦ encode (f n) is Computable ℕ → ℕ.
-  have hg : Computable (fun n : ℕ => Encodable.encode (f n)) :=
+  have hg : Computable (fun n : ℕ =>
+      @Encodable.encode ℚ Primcodable.toEncodable (f n)) :=
     Computable.encode.comp hf
   -- (iii): As a partial-recursive function ℕ →. ℕ, this is `Nat.Partrec`.
   have h_nat_partrec : Nat.Partrec
-      (fun n : ℕ => Part.some (Encodable.encode (f n))) :=
+      (fun n : ℕ => Part.some (@Encodable.encode ℚ Primcodable.toEncodable (f n))) :=
     Partrec.nat_iff.mp hg.partrec
   obtain ⟨c, hc⟩ := Nat.Partrec.Code.exists_code.mp h_nat_partrec
   -- `hc : c.eval = fun n => Part.some (encode (f n))`.
@@ -188,7 +190,8 @@ lemma computable_real_mem_range_decodeReal {r : ℝ} (hr : IsComputable r) :
   refine ⟨c, ?_⟩
   -- Goal: decodeReal c = r.
   have h_exists : ∃ r' : ℝ, ∃ f' : ℕ → ℚ,
-      (∀ n, c.eval n = Part.some (Encodable.encode (f' n))) ∧
+      (∀ n, c.eval n =
+        Part.some (@Encodable.encode ℚ Primcodable.toEncodable (f' n))) ∧
       Tendsto (fun n => (f' n : ℝ)) atTop (nhds r') :=
     ⟨r, f, hc_eval, hl⟩
   show decodeReal c = r
@@ -201,12 +204,13 @@ lemma computable_real_mem_range_decodeReal {r : ℝ} (hr : IsComputable r) :
   obtain ⟨f_chosen, h_eval_chosen, h_lim_chosen⟩ := h_exists.choose_spec
   have hf_eq : ∀ n, f n = f_chosen n := by
     intro n
-    have hen : Part.some (Encodable.encode (f n)) =
-        Part.some (Encodable.encode (f_chosen n)) := by
+    have hen : Part.some (@Encodable.encode ℚ Primcodable.toEncodable (f n)) =
+        Part.some (@Encodable.encode ℚ Primcodable.toEncodable (f_chosen n)) := by
       rw [← hc_eval n, ← h_eval_chosen n]
-    have he : Encodable.encode (f n) = Encodable.encode (f_chosen n) :=
+    have he : @Encodable.encode ℚ Primcodable.toEncodable (f n) =
+        @Encodable.encode ℚ Primcodable.toEncodable (f_chosen n) :=
       Part.some_injective hen
-    exact Encodable.encode_injective he
+    exact (@Encodable.encode_injective ℚ Primcodable.toEncodable) he
   have h_lim_to_chosen :
       Tendsto (fun n => (f n : ℝ)) atTop (nhds h_exists.choose) := by
     have hfn : (fun n => (f n : ℝ)) = (fun n => (f_chosen n : ℝ)) := by
@@ -304,7 +308,7 @@ theorem aleph0_le_card_computable_reals :
     exact_mod_cast hv
   have hcard : (#ℚ : Cardinal) ≤ #({r : ℝ | IsComputable r} : Set ℝ) :=
     Cardinal.mk_le_of_injective hinj
-  simpa [Cardinal.mk_rat] using hcard
+  simpa [Cardinal.mkRat] using hcard
 
 /-! ## Exact ℵ₀ equality
 
@@ -369,11 +373,10 @@ private theorem computable_nonComputable_disjoint :
     Proof: `ℵ₀ + κ ≤ κ + κ = κ` (by `Cardinal.add_eq_self`); the other direction
     is trivial. Mirrors the helper in
     `AlgebraicNumbersCountableOQ02OQ03.aleph0_add_of_ge`. -/
-private theorem aleph0_add_of_ge {κ : Cardinal} (h : ℵ₀ ≤ κ) : ℵ₀ + κ = κ :=
-  le_antisymm
-    (calc ℵ₀ + κ ≤ κ + κ := add_le_add_right h κ
-              _ = κ := Cardinal.add_eq_self h)
-    (le_add_left κ ℵ₀)
+private theorem aleph0_add_of_ge {κ : Cardinal} (h : ℵ₀ ≤ κ) : ℵ₀ + κ = κ := by
+  refine le_antisymm ?_ (self_le_add_left κ ℵ₀)
+  calc ℵ₀ + κ ≤ κ + κ := add_le_add h le_rfl
+    _ = κ := Cardinal.add_eq_self h
 
 /-- **Upper bound**: the non-computable reals are a subset of `ℝ`, so their
     cardinality is at most 𝔠. -/
@@ -434,7 +437,7 @@ theorem continuum_le_card_nonComputableReals :
           (#(↑nonComputableReals : Set ℝ) : Cardinal) :=
             mk_real_le_computable_add_nonComputable
     _ ≤ ℵ₀ + (#(↑nonComputableReals : Set ℝ) : Cardinal) :=
-          add_le_add_right card_computable_reals_le_aleph0 _
+          add_le_add card_computable_reals_le_aleph0 le_rfl
     _ = (#(↑nonComputableReals : Set ℝ) : Cardinal) := h_absorb
 
 /-- **Main S4 theorem — exact cardinality of non-computable reals**: 𝔠.
@@ -476,7 +479,7 @@ theorem exists_non_computable_real : ∃ r : ℝ, ¬ IsComputable r := by
     Combines `Set.subset_univ` (the non-strict inclusion) with
     `exists_non_computable_real` (a witness in the complement). -/
 theorem computable_reals_strict_ssubset_univ :
-    ({r : ℝ | IsComputable r} : Set ℝ) ⊊ Set.univ := by
+    ({r : ℝ | IsComputable r} : Set ℝ) ⊂ Set.univ := by
   refine ⟨Set.subset_univ _, ?_⟩
   intro h_univ_sub
   obtain ⟨r, hr⟩ := exists_non_computable_real
