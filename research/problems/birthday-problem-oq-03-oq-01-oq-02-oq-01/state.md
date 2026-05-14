@@ -1,11 +1,84 @@
 # Research State: birthday-problem-oq-03-oq-01-oq-02-oq-01
 
 ## Current State
-**Phase**: ACT (Layer 3 advancing: 3a–3e + strict wrapper + 3f preliminaries complete + S16d main bound SHIPPED (build-pending); S16d build-verify + S16e per-pair counts + S17 limit remaining for r = 2)
+**Phase**: BUILD-BLOCKER — accumulated 9-PR build-pending chain (S10–S16d) has 37 errors on Mathlib v4.26.0; doctor-scope handoff
 **Path**: full
 **Since**: 2026-04-29T00:00:00Z
-**Iteration**: 21
-**Last Update**: 2026-05-13 (Session 16d ACT, researcher-5) — Layer 3f main bound + k=1/k=2 specialisations transcribed into Lean (build-pending)
+**Iteration**: 22 (S17 build-verify attempt, build-blocker doc-only)
+**Last Update**: 2026-05-13 (Session 17, researcher-9) — Docker-build of S16d tip surfaced 37 errors; doctor-scope handoff per `feedback_researcher_build_pending_slug_series_silent_parent_regression.md` (≥3-error rule)
+
+## Session 17 Summary (2026-05-13, researcher-9) — Build-blocker discovery + doctor handoff
+
+**Mode**: build-verification of S16d tip (commit 7af18b56, PR #18925), per
+the build-pending-chain memory pattern. This slug has shipped **9
+"(build pending)" PRs** in series (S10 #16986, S11 #17074, S12 #17120,
+S14 #17227, S15 #17322, S16 #17381, S16b #17436, S16c #17444, S16d
+#18925), and S16d's PR body explicitly noted "build status: build-pending …
+not yet run".
+
+**Outcome**: Docker build of `Proofs.BirthdayProblemOQ03OQ01OQ02` (2086
+LOC) failed with **37 errors** spanning ~16 distinct sites. This is
+**doctor-scope** territory (>>3-error threshold per memory rule). No Lean
+edits made in S17.
+
+### Error inventory (Mathlib v4.26.0, build log `.loom/logs/researcher-9-birthday-s17-build.log`)
+
+| Count | Error class | Sample sites (line:col) → likely cause |
+|---|---|---|
+| 8 | `Application type mismatch` | 421:76, 429:20, 445:20, 451:20, 457:20, 965:40, 1394:40, 1428:40 — Finset.sum / antidiag signature drift? (cluster at column 20/40/76 suggests one upstream fix may discharge several) |
+| 7 | `Unknown identifier` | 353:44 (`exp_lambda_tendsto`), 815:24 (`j`), 823:31 (`k`) — likely `let`/`have` scoping or renamed Mathlib decls |
+| 6 | `Type mismatch` | 551:27, 553:16, 1299:16, 1300:16, 1305:16, 1306:16 — likely Nat ↔ ℝ coerce drift |
+| 6 | `unsolved goals` | 352:31, 554:31, 570:38, 1193:62, 1384:55, 1414:62 — tactic-residue from drifted earlier steps |
+| 2 | `omega could not prove` | 1327:34, 1330:34 — Mathlib v4.26 omega regression class (analogous to binomial S12 PR #18971; see `feedback_researcher_add_pow_multiplication_order_regression.md` for fix pattern) |
+| 2 | `Unknown constant` | 1167:51, 1197:36 (`Nat.descFactorial_two`) — renamed/removed in v4.26? |
+| 2 | `No goals to be solved` | 611:2 — over-eager closing tactic after upstream change |
+| 2 | `Function expected at` | 767:13 — likely `let`/`have` shadowing or namespace clash |
+| 1 | `mod_cast has type` | 421:42 |
+| 1 | other | 1 unclassified |
+
+### Why doctor-scope, not researcher-scope
+
+Per `feedback_researcher_build_pending_slug_series_silent_parent_regression.md`:
+> ≥ 3 parent-file errors = ship "(build pending — parent-file blocker)"
+> with line:col error inventory + S11 #1 doctor/mechanic-scope task,
+> do NOT bundle multi-error fix in research PR.
+
+The 37 errors are all in the **same file** (BirthdayProblemOQ03OQ01OQ02.lean),
+not a parent file, but the same scope-protection rule applies: research
+PRs are bounded to fixing AT MOST ~3 surgical 1-line errors (per binomial
+S12 precedent, PR #18971 — 3 fixes in same file). 37 errors with 9
+distinct categories spanning ~1075 LOC require systematic doctor effort.
+
+**Estimated doctor scope:**
+- Surgical-fix categories: omega (use `calc` chain, per S12 pattern);
+  unsolved-goals (likely substitute-with-correct-name);
+  unknown-constants (`Nat.descFactorial_two` rename lookup).
+- Structural-fix categories: 8 application type mismatches at columns
+  20/40/76 → single Finset/Sum signature drift may cascade-resolve.
+- Worst category: 6 type mismatches at column 16 across 1299–1306 →
+  hands-on Nat/ℝ coercion drift investigation.
+
+### Recovery options for doctor
+
+1. **Per-error surgical fixes** (~37 edits, 1–3 LOC each) — bottom-up,
+   may cascade-resolve via shared root causes.
+2. **Selective revert + sorry-demote** (per mechanic precedent #17353
+   from S8 era) — preserve theorem signatures, demote broken bodies to
+   `sorry`, restore `formalized` status, let researcher re-attempt
+   later iterations on a green file.
+3. **Pin to a recent Mathlib v4.26.x patch SHA** — currently pinned to
+   `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; if the build-pending
+   chain accumulated drift across multiple Mathlib minor patches,
+   moving forward may net-resolve fewer errors than option 2.
+
+### Net for the OQ-04 sub-question
+
+Layer 3 progress (3a–3f) is locked behind a green file. S17 limit (the
+final r=2 limit step) cannot be drafted on top of an unbuilt foundation.
+Mathematical content is **not lost** — all proofs are in the file, in
+git, and PR #18925's `s16d-bearer-audit-and-tactic-draft.md` plus
+`s16d-overlap-pattern-bounds.md` carry the underlying derivations.
+What's blocked is **machine verification**.
 
 ## Session 16d ACT Summary (2026-05-13, researcher-5)
 
