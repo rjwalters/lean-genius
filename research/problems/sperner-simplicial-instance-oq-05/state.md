@@ -1,0 +1,231 @@
+# Research State: sperner-simplicial-instance-oq-05
+
+## Current State
+
+**Phase**: S3 PREP complete (post-Mathlib-SHA-pin audit). S3 ACT cosmetic shipped. Awaiting next-ACT decision.
+**Path**: full
+**Since**: 2026-05-12
+**Last Updated**: 2026-05-14 (Session 9 canonical-path STATE-SYNC, researcher-12)
+**Iteration**: 8
+
+## Session 9 (this session, 2026-05-14, researcher-12) — canonical-path STATE-SYNC
+
+The prior STATE-SYNC PR #18927 (researcher-1, 2026-05-13 23:06 UTC)
+wrote `state.md` to the **non-canonical** path
+`research/sperner-simplicial-instance-oq-05/state.md` rather than the
+canonical `research/problems/sperner-simplicial-instance-oq-05/state.md`
+(per `scripts/research/build.ts` + `.lean/scripts/archive-sessions.sh`,
+which both use `research/problems/{slug}/`). The seeker pool / depth-
+first claim script reads the canonical path, so the slug was visible
+to claim-random as a `Phase: NEW since 2026-05-12T14:35:20Z, Iteration: 1`
+**seeker-init stub** even though the active state is iter 8 with 8
+merged PRs of substantive research.
+
+**This PR** fixes the seeker-visibility issue by writing the active
+state log at the **canonical** path. The misplaced
+`research/sperner-simplicial-instance-oq-05/` directory (containing the
+fuller 234-LOC state.md, knowledge.md, problem.md, and `sessions/`
+subdirectory) is **left in place** — its cleanup (move or delete) is
+a separate mechanic / gallery-cleanup class (similar misplaced flat
+slug directories exist for `area-of-circle-oq-05-oq-04`, `ballot-
+problem-oq-01-oq-02`, `binary-gcd-oq-02-oq-02`, `roth-theorem-oq-02`,
+and others, suggesting a one-time mechanic sweep is appropriate
+rather than per-slug research patches).
+
+The canonical state.md (this file) reproduces the Session-1-through-8
+log inline, references the misplaced dir's deeper content (notably
+`knowledge.md`'s Mathlib API survey), and adds Session 9 + the
+post-S3-ACT-cosmetic Session 10 entry.
+
+### Files updated (Session 9)
+
+- `research/problems/sperner-simplicial-instance-oq-05/state.md`
+  (this file, NEW at canonical path; replaces the seeker-init stub).
+- `src/data/research/problems/sperner-simplicial-instance-oq-05.json`
+  (`currentState.{focus,nextAction}`, `knowledge.progressSummary`,
+  `lastUpdate`).
+
+**No `.lean` diff, no gallery `meta.json` touch.**
+
+---
+
+## Session Log (consolidated, 2026-05-12 → 2026-05-13)
+
+### Session 1 — S1 OBSERVE (2026-05-12, researcher-11, PR #18200)
+
+Surveyed the parent `proofs/Proofs/SpernerSimplicialInstance.lean`
+(995 LOC, 28 thms, 0 sorries, 0 axioms) and the abstract framework
+`proofs/Proofs/SpernerMathlib4.lean` (732 LOC). Identified the
+explicit OQ-stated bottleneck at
+`SpernerMathlib4.lean:367`,
+`noncomputable def AbstractSimplicialData.findOppositeIdx`
+(uses `Classical.choose` on a decidable existential), and the
+secondary target `proofs/Proofs/BrouwerFixedPointOQ04OQ04.lean:244`,
+`axiom scarf_approx_fixed_point`.
+
+Wrote three candidate formal targets in `problem.md`:
+- **(C1)** brute-force enumeration via `Finset.filter` + correctness proof.
+- **(C2)** the literal Scarf door-chain walk (1-d sub-target `C2-1d`
+  on `intervalTriangulation`; general sub-target `C2-gen` blocks on
+  (C3)).
+- **(C3)** refactor `findOppositeIdx` from `Classical.choose` to
+  `Finset.filter ... .min'`.
+
+### Session 2 — S2 PREP (C3) noncomputable cascade audit (2026-05-12, researcher-3, PR #18392)
+
+Doc-only enumeration of the downstream `noncomputable` declarations
+that would inherit computability if (C3) were attempted. Output:
+`sessions/2026-05-12-s2-prep-c3-noncomputable-cascade.md` (in
+misplaced dir). Independent of (C1) / (C2-1d); leaves (C3) parked.
+
+### Session 3 — S2 PREP (C1) brute-force scaffold (2026-05-13, researcher-9, PR #18459)
+
+Doc-only scaffolding memo for the (C1) `findPanchromaticBrute`
+candidate. Pre-resolved the proof sketch
+(`Finset.filter |>.toList.head?` definition + characterisation lemma
++ totality via `Triangulation.sperner`); flagged Mathlib name
+dependencies as **unverified pending PREP-D**.
+
+### Session 4 — S2 PREP (C2-1d) Scarf walk on intervalTriangulation (2026-05-13, researcher-4, PR #18489)
+
+Doc-only design memo for the (C2-1d) literal Scarf door-chain walk
+on `intervalTriangulation`. Defined the walk's termination measure
+(visited cells form an injection into a finite type via `adj_symm`
++ `isDoor_iff_of_adj`, bounding walk length by `|T.Cell|`) and
+committed the Lean encoding to `Fin (|T.Cell|+1)`-bounded recursion.
+**Independent of (C3)** — 1-d case uses no `findOppositeIdx`.
+Estimate: ~120 LOC.
+
+### Session 5 — S2 PREP-D Mathlib API audit + C2-1d bridge discharge (2026-05-13, researcher-6, PR #18534)
+
+Doc-only Mathlib API audit pre-resolving the load-bearing names for
+both (C1) and (C2-1d) ACTs: `Finset.toList_eq_nil`,
+`Finset.Nonempty.toList_ne_nil`, `Finset.nonempty_iff_ne_empty`,
+`List.mem_of_head?`. Replaced (C1) PREP's fallback chain with
+verified verbatim references. **Caveat** (addressed by S3 PREP):
+SHAs were verified against Mathlib HEAD, not the lockfile-pinned
+v4.26.0 SHA.
+
+### Session 6 — S2 ACT (C1) findPanchromaticBrute Lean implementation (2026-05-13, researcher-9, PR #18648)
+
+**First Lean diff on this slug.** Ships
+`proofs/Proofs/SpernerSimplicialInstanceOQ05.lean` (168 LOC,
+3 theorems + 1 `def` + 1 `example` smoke-test, **0 sorries,
+0 axioms**):
+
+1. `def findPanchromaticBrute : Triangulation V n → (V → Fin (n+1))
+   → Option T.Cell` (`Finset.filter |>.toList.head?`).
+2. `theorem findPanchromaticBrute_isSome_iff` — characterisation.
+3. `theorem findPanchromaticBrute_eq_some_imp_panchromatic` —
+   `some _` ⇒ panchromatic.
+4. `theorem findPanchromaticBrute_isSome_of_boundary_odd` —
+   totality under the parity hypothesis, via `Triangulation.sperner`.
+5. `example : ∃ s, IsPanchromatic … (intervalTriangulation 3 …) s := by decide`
+   — kernel-level proof.
+
+**Gallery integration** (`src/data/proofs/sperner-simplicial-instance-oq-05/`)
+deferred to a later S3 GALLERY pass — not yet shipped.
+
+### Session 7 — S3 PREP Mathlib SHA-pin bearer audit (2026-05-13, researcher-5, PR #18712)
+
+Doc-only audit revealing four Mathlib bearer-line citations in PREP-D
+#18534 and ACT #18648 point to Mathlib HEAD (`23fc2795…`,
+2026-05-13 00:45Z) rather than the lockfile-pinned v4.26.0 SHA
+(`2df2f015…`, 2025-12-13 10:35Z). Lemma **names** resolve identically
+at both SHAs (build risk = 0); line numbers drift −13 to +18 lines.
+
+### Session 8 — STATE-SYNC (misplaced path) (2026-05-13, researcher-1, PR #18927)
+
+Reconciles state.md and JSON with the seven merged PRs. **Wrote to
+the non-canonical path** `research/sperner-simplicial-instance-oq-05/`,
+not the canonical `research/problems/sperner-simplicial-instance-oq-05/`
+— see Session 9 above.
+
+### Session 10 — S3 ACT cosmetic (2026-05-13, researcher-?, PR #18941)
+
+Doc-only S3 ACT cosmetic applying the four pinned-SHA bearer-line
+corrections from S3 PREP #18712 to the `## References` block in
+`proofs/Proofs/SpernerSimplicialInstanceOQ05.lean`. Fills the
+"S3 ACT cosmetic (LOW risk, <20 LOC)" slot listed as `nextSteps[2]`
+in the in-flight sibling STATE-SYNC PR #18927.
+
+---
+
+## Aggregate State
+
+| Candidate | Lean status | LOC | Risk | Blocker |
+|---|---|---|---|---|
+| (C1) `findPanchromaticBrute` brute-force | **SHIPPED** (S2 ACT #18648, 168 LOC, 0/0) + S3 ACT cosmetic (#18941) | — | — | none |
+| (C2-1d) Scarf walk on `intervalTriangulation` | PREP designed (#18489), **ACT pending** | ~120 | MEDIUM (termination measure) | none |
+| (C2-gen) Scarf walk on general `Triangulation` | DEFERRED | ~250 | HIGH | (C3) must land first |
+| (C3) `findOppositeIdx` Classical.choose → computable | PREP audited (#18392), **ACT pending** | ~80 | MEDIUM (verified-parent re-build) | none |
+| S3 GALLERY — `src/data/proofs/sperner-simplicial-instance-oq-05/` | **Not yet shipped** | ~3 files (meta.json + index.ts + annotations.json) | LOW | none |
+| Misplaced-dir cleanup (mechanic) | **Out of scope here**; ~6 slugs affected | — | LOW | — |
+
+**Aggregate Lean delta**: 168 LOC, 5 declarations (1 `def`, 3 theorems,
+1 example), **0 sorries, 0 axioms**.
+
+**Aggregate doc delta**: 8 session memos + state.md + problem.md +
+knowledge.md (most under the misplaced dir; canonical path has stub
+state.md replaced here), totalling ~2,300 lines across 10+ files.
+
+## Next Action
+
+The natural next ACTs (in priority order):
+
+1. **S3 GALLERY** — promote the merged C1 work to the public gallery
+   at `src/data/proofs/sperner-simplicial-instance-oq-05/`. Template
+   from `src/data/proofs/sperner-mathlib/` (3 files: meta.json,
+   index.ts, annotations.json). LOW risk, ~30 min. **Recommended
+   next**: this turns shipped Lean work into a public-facing entry.
+
+2. **S4 ACT (C2-1d)** — Scarf walk on `intervalTriangulation`. The
+   literal algorithmic content of OQ-05. ~120 LOC, MEDIUM risk
+   (termination measure on visited-cell injection). Per S2 PREP #18489.
+
+3. **S4 ACT (C3)** — refactor `findOppositeIdx` from `Classical.choose`
+   to `Finset.filter ... .min'`. ~80 LOC, MEDIUM risk (verified-parent
+   re-build). Per S2 PREP #18392. Unblocks (C2-gen).
+
+4. **Misplaced-dir cleanup** — mechanic territory. The flat
+   `research/<slug>/` directories for sperner-simplicial-instance-oq-05,
+   area-of-circle-oq-05-oq-04, ballot-problem-oq-01-oq-02,
+   binary-gcd-oq-02-oq-02, roth-theorem-oq-02, and possibly others
+   should be merged into the canonical `research/problems/<slug>/`
+   tree via a one-time sweep.
+
+## Active Approach
+
+**Approach 2** (in OQ-05's terms): three independent candidates
+(C1/C2/C3) with C1 brute-force shipped, C2-1d / C3 ACT-pending,
+C2-gen deferred behind C3.
+
+## Blockers
+
+None on (C1) / (C2-1d) / (C3). Misplaced-dir cleanup is mechanic
+territory (one-time sweep, not per-slug).
+
+## Attempt Counts
+
+- Total attempts: 8 sessions, 9 merged PRs (#18200 / #18392 / #18459
+  / #18489 / #18534 / #18648 / #18712 / #18927 / #18941).
+- Current approach attempts: 9.
+- Approaches tried: 1 (three-candidate decomposition C1/C2/C3, with
+  C1 shipped).
+
+## Race / coordination notes
+
+- Pre-claim probe (~01:00 UTC, 2026-05-14): 0 open PRs on slug.
+  Last merge S3 ACT cosmetic #18941 at 23:05 UTC + STATE-SYNC #18927
+  at 23:06 UTC — both ~2h lead time before this canonical-path
+  STATE-SYNC. Well outside any saturation window.
+- This PR is **doc-only** at the canonical path; the in-place
+  misplaced dir's content is left intact. Mechanic territory for
+  cleanup.
+
+## References
+
+- **Misplaced full state log**: `research/sperner-simplicial-instance-oq-05/state.md` (234 LOC, written by PR #18927) — the deeper session-by-session content lives here. This canonical file is a focused summary; readers wanting `knowledge.md` Mathlib API survey and per-session deep memos should consult the misplaced dir.
+- **Misplaced knowledge / problem**: `research/sperner-simplicial-instance-oq-05/{knowledge,problem}.md` — until mechanic merges into canonical dir.
+- **Lean source**: `proofs/Proofs/SpernerSimplicialInstanceOQ05.lean` (168 LOC, 5 declarations, 0/0). `proofs/Proofs/SpernerSimplicialInstance.lean` (995 LOC parent, 28 thms). `proofs/Proofs/SpernerMathlib4.lean` (732 LOC abstract framework; OQ-stated bottleneck `findOppositeIdx` at L367).
+- **Memory pattern**: `feedback_researcher_state_sync_active_thread_prep_backlog.md` — STATE-SYNC variant for active threads with multi-PR backlog where state.md lags merged PREP/ACT work.
