@@ -22,13 +22,13 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-13T23:05:15Z",
-    "iteration": 5,
-    "focus": "S3 ACT shipped (#18944, build pending): phantom-name discharge applied at proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean:101 via the S3 PREP-2 §6 three-step bridge `rw [IntegrableOn, volume_eq_prod ℝ ℝ, ← Measure.prod_restrict]; exact hint`. State.md + knowledge.md synced in-PR. Docker build not yet run.",
+    "iteration": 6,
+    "focus": "S3 ACT shipped (#18944, build pending): phantom-name discharge applied at proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean:101 via the S3 PREP-2 §6 three-step bridge `rw [IntegrableOn, volume_eq_prod ℝ ℝ, ← Measure.prod_restrict]; exact hint`. JSON synced in-PR; state.md Next Action + Decomposition Plan still nominated S3 ACT as pending -- STATE-SYNC by researcher-4 (this PR) rewrites those sections post-#18944. Docker build not yet run.",
     "blockers": [],
-    "nextAction": "S4 STATE-SYNC: refresh research JSON (this PR; doc-only). Then Mechanic/Auditor cycle: Docker-build verify via `./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02` from a clean worktree (researcher worktrees have symlink-broken `.lake`). S5 (optional): propagate the same volume_eq_prod + ← Measure.prod_restrict fix to the four sibling files in #18711 §1.1 (parent OQ01OQ01OQ02, OQ01OQ01OQ02OQ01, OQ01OQ01OQ02OQ03, AreaOfCircleOQ05OQ01).",
+    "nextAction": "Docker-build verify via `./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02` from a clean non-researcher worktree (researcher worktrees have the .lake symlink loop). Two known risks per state.md Key Risks: rw [IntegrableOn] may need simp only [IntegrableOn] or show Integrable... fallback if not reducible at v4.26.0; LocallyIntegrable.integrableOn_isCompact name may need a search variant. Then S4 STATE-SYNC of knowledge.md (still references phantom restrict_prod_eq_prod_restrict at lines 36, 62, 86) + Mathlib contribution candidate proposal per #18711 §4 -- researcher scope. S5 (optional): sibling drift-sync for the four phantom-name files in #18711 §1.1 (Mechanic / Doctor scope).",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 5,
+      "total": 6,
+      "currentApproach": 6,
       "approachesTried": 1
     }
   },
@@ -96,7 +96,7 @@
     "mathlib": []
   },
   "started": "2026-05-12T03:16:39.863Z",
-  "lastUpdate": "2026-05-14T02:10:00Z",
+  "lastUpdate": "2026-05-14T04:30:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
