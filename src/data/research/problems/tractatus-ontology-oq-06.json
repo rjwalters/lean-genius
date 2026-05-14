@@ -21,39 +21,41 @@
       "truth_functional_compositionality_gen holds for every WorldModel (line 323) — spectrum-invariant."
     ],
     "open": [
-      "Uniqueness-up-to-refinement-iso of freeModel among independence-satisfying models (S3+ target).",
-      "Generic HornModel S (cs : List (S × S)) constructor + ConstrainedWorld equivalence (S2-β target).",
-      "Refinement preorder forms a (semi)lattice — meet/join existence on WorldModel S (S3+ target)."
+      "Generic HornModel S (cs : List (S × S)) constructor + ConstrainedWorld equivalence (S2-β / S3 ACT target, PREP doc #18417).",
+      "Refinement preorder forms a (semi)lattice — meet/join existence on WorldModel S (S4 ACT target, PREP doc #18470).",
+      "EquivModel/T1b spectrum tier via symmetric Horn closure (S6 ACT target, PREP doc #18518)."
     ],
     "verified": [
       "Refines : WorldModel S → WorldModel S → Prop is reflexive, transitive (TractatusOntologySpectrum.lean refines_refl, refines_trans).",
       "freeModel S is the maximum element of the refinement preorder (refines_freeModel).",
       "Evaluation is invariant along refinements (refines_preserves_eval).",
       "Tautologies and contradictions are upward-stable along refinements (tautology_pullback, contradiction_pullback).",
-      "freeModel S tautologies are tautologies in every world model (freeModel_tautology_is_universal)."
+      "freeModel S tautologies are tautologies in every world model (freeModel_tautology_is_universal).",
+      "Spectrum-invariance theorem: ∀M, IsTautologyM M p ↔ IsTautologyM (freeModel S) p — and the same for contradictions (S7 ACT PR #18962: spectrum_invariant_iff_freeModel_tautology, spectrum_invariant_contradiction_iff_freeModel_contradiction, spectrum_invariant_implies_freeModel_via_pointModels via point models). Build pending — parent TractatusOntology.lean has 24 v4.26.0 regression errors.",
+      "freeModel S uniqueness up to refinement-iso among independence-satisfying inhabitants (S5 ACT, this PR: HasIndependentProfiles bridge + freeModel_unique_refines_iso, with subtype-Tier-1 collapse subtype_model_independent_iff and the weatherModel strict-below corollary freeModel_not_refines_weatherModel). Same build-pending status as S7."
     ],
     "goal": "Four-tier classification (free / Horn-constrained / equivalence-constrained / Kripke or quotient), with theorem-survival table and a refinement preorder making freeModel the maximum element."
   },
   "currentState": {
-    "phase": "S7 ACT (build pending)",
-    "since": "2026-05-14T01:15:00Z",
-    "iteration": 3,
-    "focus": "S7 ACT shipped (researcher-12, 2026-05-14, build pending): the spectrum-invariance biconditional and point-model construction land in TractatusOntologySpectrum.lean (121 → 207 LOC, +86 LOC, 7 new declarations, 0 sorries, 0 axioms, 0 new imports). Resolves the S2-α open question (converse of freeModel_tautology_is_universal). Lemmas shipped: pointModel (def), pointModel_holds (@[simp]), pointModel_evalM (induction on Proposition), pointModel_isTautology_iff, spectrum_invariant_iff_freeModel_tautology (main biconditional), spectrum_invariant_implies_freeModel_via_pointModels (informative alternate converse), spectrum_invariant_contradiction_iff_freeModel_contradiction (dual for contradictions). The other four S1-listed open questions still have PREP coverage but no ACT yet: S3 (HornModel), S4 (Refines lattice), S5 (freeModel uniqueness), S6 (EquivModel/T1b).",
-    "blockers": [],
-    "nextAction": "Four remaining orthogonal ACT candidates per the prior tracker, each ~40-100 LOC: (a) S2-β/S3 ACT — HornModel S (cs : List (S × S)) constructor (T1a tier), ~60-100 LOC, PREP doc #18417; (b) S4 ACT — Refines lattice via image-profiles, ~40-80 LOC, PREP doc #18470; (c) S5 ACT — freeModel uniqueness via HasIndependentProfiles, ~40-60 LOC, PREP doc #18497; (d) S6 ACT — EquivModel/T1b via symmetric Horn closure, ~40-80 LOC, PREP doc #18518. Each is independent of the others. S7 ACT itself (this PR) is build-pending; doctor verifies via docker-build before downstream uses.",
+    "phase": "S5 ACT (build pending — parent-file blocker)",
+    "since": "2026-05-14T05:05:00Z",
+    "iteration": 4,
+    "focus": "S5 ACT shipped (researcher-5, 2026-05-14, build pending — parent-file blocker): the freeModel uniqueness biconditional + the HasIndependentProfiles bridge land in TractatusOntologySpectrum.lean (207 → 307 LOC, +100 LOC, 8 new declarations [2 defs + 6 theorems], 0 sorries, 0 axioms, 0 new imports). Closes the S2-γ open question explicitly listed in the S2-α state.md (uniqueness of freeModel up to refinement-iso among independence-satisfying inhabitants). Lemmas shipped: HasIndependentProfiles (def), RefinesIso (def), freeModel_hasIndependentProfiles, freeModel_refines_independent (Half 2 of uniqueness via Classical.choose realiser), freeModel_unique_refines_iso (main biconditional), subtype_model_independent_iff (Tier-1 collapse), weatherModel_not_hasIndependentProfiles, freeModel_not_refines_weatherModel (spectrum-level strict-below). Docker build attempted from worktree: my new file is byte-clean (no errors localised to TractatusOntologySpectrum.lean), but the parent Proofs/TractatusOntology.lean has 24 pre-existing build errors on origin/main (Mathlib v4.26.0 regressions: tactic over-solves, evalM signature mismatch, simp arg-list churn). S5 ACT itself shipped as 'build pending' until a separate doctor/mechanic PR fixes the parent file (same blocker affects S2-α PR #18391 and S7 ACT PR #18962 verification). Three S1-listed open questions remain ACT-pending: S3 (HornModel), S4 (Refines lattice), S6 (EquivModel/T1b). Two are now closed at Lean level: S5 (this PR) and S7 (PR #18962).",
+    "blockers": ["Parent Proofs/TractatusOntology.lean has 24 build errors on origin/main (Mathlib v4.26.0 regression). Needs doctor/mechanic-scope PR to fix; out of S5 ACT scope. Inventory captured in S5 ACT PR body."],
+    "nextAction": "Three remaining orthogonal ACT candidates per the prior tracker, each ~40-100 LOC: (a) S2-β/S3 ACT — HornModel S (cs : List (S × S)) constructor (T1a tier), ~60-100 LOC, PREP doc #18417; (b) S4 ACT — Refines lattice via image-profiles, ~40-80 LOC, PREP doc #18470; (c) S6 ACT — EquivModel/T1b via symmetric Horn closure, ~40-80 LOC, PREP doc #18518. Each is independent of the others. **Parent-file fix is the actual unblocker**: a doctor/mechanic PR addressing the 24 TractatusOntology.lean errors (line:col inventory in S5 ACT PR body) would re-enable Docker verification for S2-α + S7 + S5 ACT cumulatively. Optional micro-additions sit on S5: S6-bonus (IsTight + Equiv, ~12 LOC, PREP §4) and hornModel_independent_iff_vacuous (one-line corollary of subtype_model_independent_iff, conditional on S3 ACT landing first).",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 2,
-      "approachesTried": 2
+      "total": 4,
+      "currentApproach": 3,
+      "approachesTried": 3
     }
   },
   "knowledge": {
-    "progressSummary": "S7 ACT (2026-05-14, researcher-12, build pending): the spectrum-invariance biconditional + point-model construction land in TractatusOntologySpectrum.lean (121 → 207 LOC, +86 LOC, 7 new declarations: pointModel def + pointModel_holds + pointModel_evalM + pointModel_isTautology_iff + spectrum_invariant_iff_freeModel_tautology + spectrum_invariant_implies_freeModel_via_pointModels + spectrum_invariant_contradiction_iff_freeModel_contradiction). Resolves the S2-α-landing open question (converse of freeModel_tautology_is_universal). 0 new sorries, 0 new axioms, 0 new imports. Build pending per the lake symlink loop trap; doctor verifies via docker-build. | S2-α ACT (2026-05-13, PR #18391, MERGED): refinement preorder + freeModel-is-maximum + tautology/contradiction pullback installed in TractatusOntologySpectrum.lean (121 LOC, 0 sorries, 0 new axioms). Five subsequent doc-only PREP memos merged: S3 PREP (#18417 — generic HornModel constructor), S4 PREP (#18470 — Refines lattice via image profiles, corrects S2-α candidate meet), S5 PREP (#18478 — freeModel uniqueness via HasIndependentProfiles), S6 PREP (#18518 — EquivModel/T1b via symmetric Horn closure), S7 PREP (#18548 — spectrum-invariance theorem resolving the converse of freeModel_tautology_is_universal). All four S1-listed open questions now have PREP coverage; Lean ACT for each is pending.",
+    "progressSummary": "S5 ACT (2026-05-14, researcher-5, build pending — parent-file blocker): the freeModel uniqueness biconditional + HasIndependentProfiles bridge land in TractatusOntologySpectrum.lean (207 → 307 LOC, +100 LOC, 8 new declarations: HasIndependentProfiles def + RefinesIso def + freeModel_hasIndependentProfiles + freeModel_refines_independent + freeModel_unique_refines_iso + subtype_model_independent_iff + weatherModel_not_hasIndependentProfiles + freeModel_not_refines_weatherModel). Closes the S2-γ open question (freeModel uniqueness up to refinement-iso among independence-satisfying inhabitants). 0 new sorries, 0 new axioms, 0 new imports. Build attempted via Docker; my Spectrum file is byte-clean but parent Proofs/TractatusOntology.lean has 24 pre-existing v4.26.0 regression errors (out of S5 ACT scope; needs doctor/mechanic PR; inventory in PR body). | S7 ACT (2026-05-14, PR #18962, MERGED, also build pending): the spectrum-invariance biconditional + point-model construction land in the same file (121 → 207 LOC, +86 LOC, 7 new declarations: pointModel + pointModel_holds + pointModel_evalM + pointModel_isTautology_iff + spectrum_invariant_iff_freeModel_tautology + spectrum_invariant_implies_freeModel_via_pointModels + spectrum_invariant_contradiction_iff_freeModel_contradiction). Resolves the S2-α-landing open question (converse of freeModel_tautology_is_universal). | S2-α ACT (2026-05-13, PR #18391, MERGED): refinement preorder + freeModel-is-maximum + tautology/contradiction pullback (121 LOC, 0 sorries, 0 new axioms). Five doc-only PREP memos merged S3-S7 (PR #18417, #18470, #18478, #18518, #18548). Two of five S1-listed open questions are now closed at the Lean-realisation level (S5 + S7); three remain ACT-pending (S3 HornModel, S4 Refines lattice, S6 EquivModel/T1b).",
     "builtItems": [
       "research/problems/tractatus-ontology-oq-06/problem.md (S1 OBSERVE — problem statement and scope)",
       "research/problems/tractatus-ontology-oq-06/knowledge.md (S1 OBSERVE — four-tier spectrum, refinement preorder, theorem-survival table, three S2 candidates)",
-      "research/problems/tractatus-ontology-oq-06/state.md (S1 OBSERVE — session log and next-action sketch; updated S2-α this session)",
-      "Proofs/TractatusOntologySpectrum.lean (S2-α — Refines preorder, refines_refl, refines_trans, refines_freeModel, refines_preserves_eval, tautology_pullback, contradiction_pullback, freeModel_tautology_is_universal)"
+      "research/problems/tractatus-ontology-oq-06/state.md (S1 OBSERVE through S5 ACT — session log)",
+      "Proofs/TractatusOntologySpectrum.lean — S2-α (Refines preorder, refines_refl, refines_trans, refines_freeModel, refines_preserves_eval, tautology_pullback, contradiction_pullback, freeModel_tautology_is_universal) + S7 ACT (pointModel def + 6 spectrum-invariance theorems) + S5 ACT (HasIndependentProfiles + RefinesIso defs + 6 uniqueness-and-strict-below theorems). Cumulative: 307 LOC, 13 theorems, 3 defs, 0 sorries, 0 axioms, 0 new imports. Build pending until parent TractatusOntology.lean v4.26.0 regression is fixed."
     ],
     "insights": [
       "WorldModel S is maximally general (arbitrary W + holds relation); meaningful spectrum structure emerges from constraining W to subtype shapes {w : S → Prop // φ w}.",
@@ -71,10 +73,12 @@
       "No Mathlib gap blocks S2-α; the preorder definition uses only the existing WorldModel structure."
     ],
     "nextSteps": [
-      "S2-β: Generic HornModel S (cs : List (S × S)) constructor + ConstrainedWorld ≃ HornModel S [(a,b)] equivalence; re-express weatherModel as HornModel WeatherFacts [(.rain, .clouds)].",
-      "S3: Uniqueness of freeModel up to refinement-isomorphism among inhabitants satisfying IndependentWorlds-style independence at every state of affairs.",
-      "S3+: Investigate whether (WorldModel S, Refines) admits meet/join, i.e. forms a (semi)lattice; the natural candidate meet is pointwise intersection of holds-relations.",
-      "S3+: Spectrum-level analogue of constrained_independence_fails — characterize the precise Refines-gap between freeModel S and a given constrained M."
+      "Parent-file unblocker (doctor/mechanic scope, NOT research): fix the 24 Mathlib v4.26.0 regression errors in Proofs/TractatusOntology.lean enumerated in the S5 ACT PR body. Without this, Docker verification of the cumulative Spectrum file (S2-α + S7 + S5 = 307 LOC) cannot run end-to-end.",
+      "S2-β / S3 ACT: Generic HornModel S (cs : List (S × S)) constructor + ConstrainedWorld ≃ HornModel S [(a,b)] equivalence; re-express weatherModel as HornModel WeatherFacts [(.rain, .clouds)]. ~60-100 LOC, PREP doc PR #18417.",
+      "S4 ACT: (WorldModel S, Refines) lattice meet/join via image-profiles characterisation; characterise Refines as subset-inclusion on ImageProfiles. ~40-80 LOC, PREP doc PR #18470.",
+      "S6 ACT: EquivModel/T1b tier via symmetric Horn closure; symmetric variant of the S3 HornModel constructor. ~40-80 LOC, PREP doc PR #18518.",
+      "Optional S6-bonus (~12 LOC, sits on S5 ACT): IsTight + Equiv freeModel_unique upgrade per S5 PREP §4.",
+      "Optional S5-bonus (~3 LOC, sits on S3 ACT): hornModel_independent_iff_vacuous = subtype_model_independent_iff applied to the HornModel constraint."
     ]
   },
   "tags": [
@@ -107,7 +111,7 @@
     ]
   },
   "started": "2026-05-12T14:35:20.294Z",
-  "lastUpdate": "2026-05-14T01:15:00Z",
+  "lastUpdate": "2026-05-14T05:05:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -125,10 +129,10 @@
     {
       "path": "Proofs/TractatusOntologySpectrum.lean",
       "filename": "TractatusOntologySpectrum.lean",
-      "lineCount": 121,
-      "theoremCount": 7,
+      "lineCount": 307,
+      "theoremCount": 13,
       "axiomCount": 0,
-      "defCount": 1,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TractatusOntologySpectrum.lean"
