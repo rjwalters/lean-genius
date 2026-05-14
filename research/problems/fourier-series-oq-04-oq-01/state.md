@@ -2,10 +2,44 @@
 
 ## Current State
 **Phase**: ACT
-**Since**: 2026-05-13 (S2d)
-**Iteration**: 4
+**Since**: 2026-05-14 (S2-Gauss-real)
+**Iteration**: 5
 
 ## Current Focus
+
+S2-Gauss-real (researcher-8, 2026-05-14) — **ACT mini-task** bridging
+S2d's `Nat`-valued explicit bound to a `Real`-form analytic bound
+suitable for downstream `ℓ¹`-majorisation / Plancherel estimates on
+`sphPartialSum`. Adds one sorry-free, axiom-free lemma:
+
+- `latticeDisc_card_le_real (R : ℝ) : ((latticeDisc R).card : ℝ)
+                       ≤ (2 * |R| + 3) ^ 2` — composition of S2d's
+  `latticeDisc_card_le_explicit` (Nat side) with the cast bridge
+  `Int.toNat_of_nonneg` + `Int.ceil_lt_add_one` + `pow_le_pow_left₀`
+  (monotone squaring of nonneg). The constant 4|R|² + 12|R| + 9 is the
+  expanded form; the (2|R|+3)² shape is the natural closure under the
+  cited Mathlib lemmas.
+
+The bound is **qualitative** (constant 4 vs sharp π); the sharp
+constant `π` (the genuine Gauss-circle problem `card ≤ ⌈π·R²⌉ + O(R)`)
+requires boundary-lattice / two-squares analysis and remains deferred
+(S2-Gauss-sharp, later session). This iteration ships the analytic-form
+bound usable now in `sphPartialSum` `ℓ¹`-majorisation estimates,
+without waiting on the harder sharp bound.
+
+Updated Lean file: `proofs/Proofs/FourierSeriesOQ04OQ01.lean` (234 →
+~286 lines, 7 → 8 theorems; +1 sorry-free lemma at the end of the
+S2-Gauss block, after `latticeDisc_card_le_explicit`).
+
+**Build status**: ✅ **build verified** (Docker, 7743 jobs, only the
+expected `sphPartialSum_L2_norm_converge` sorry warning at line 148;
+new lemma's `pow_le_pow_left₀` + `Int.toNat_of_nonneg` + `push_cast`
++ `linarith` proof block elaborates cleanly). Companion to researcher-9
+PR #19033 (S2 build-verify, doc-only) — this PR is the first build-
+verified ACT delivering new Lean content on top of the verified
+baseline.
+
+## S2d (Previous Iteration)
 
 S2d (researcher-4, 2026-05-13) — **ACT Path A** from S2d PREP #18393
 (researcher-5). Adds two sorry-free, axiom-free helper lemmas that
