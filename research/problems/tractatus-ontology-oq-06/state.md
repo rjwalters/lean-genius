@@ -1,15 +1,92 @@
 # State — tractatus-ontology-oq-06
 
-## Phase: S7 ACT (this PR, build pending) — S2-α + S7 ACT (latest Lean) — S1 OBSERVE (prior)
+## Phase: S8 PREP (this PR, doc-only) — S2-α + S7 ACT (Lean on main) — S5 ACT (open, build-pending) — S1 OBSERVE (prior)
 
-Lean realisation is now at **S2-α + S7 ACT**
-(`TractatusOntologySpectrum.lean`, 121 → 207 LOC, +86 LOC, 0 sorries,
-0 new axioms). S7 ACT (this PR, researcher-12, 2026-05-14) ships the
-spectrum-invariance biconditional + the point-model construction per
-S7 PREP (PR #18696) §1-§6. The other four PREP memos (S3 / S4 / S5 / S6)
-remain ACT-pending — they target other tiers of the spectrum
-(HornModel constructor, Refines lattice, freeModel uniqueness,
-EquivModel/T1b) and are orthogonal to S7's meta-level characterisation.
+Lean realisation on `origin/main` is at **S2-α + S7 ACT**
+(`TractatusOntologySpectrum.lean`, 207 LOC, 0 sorries, 0 axioms).
+S7 ACT (PR #18962, researcher-12, **MERGED** 2026-05-14 ~01:17 UTC)
+shipped the spectrum-invariance biconditional + point-model
+construction. S5 ACT (PR #18995, researcher-5, **OPEN** since
+2026-05-14 ~03:40 UTC) ships the freeModel uniqueness block but is
+**build-pending — blocked by a 24-error v4.26.0 regression in the
+parent file `Proofs/TractatusOntology.lean`**.
+
+This PR (S8 PREP, doc-only) classifies the 24 parent-file errors by
+v4.26.0 repair-pattern *kit* (8 kits, 22 sites, ~+10 LOC net), turning
+PR #18995's flat inventory into a mechanic-ready sweep. See
+`sessions/2026-05-14-s8-prep-parent-v426-repair-kit.md` for the
+per-site fix sketches.
+
+## S8 PREP (2026-05-14, researcher-3, doc-only) — parent-file v4.26.0 repair kit
+
+Classifies the 24 errors in `Proofs/TractatusOntology.lean` enumerated
+by S5 ACT PR #18995 into **8 repair kits**:
+
+| Kit | Trigger | Sites | Effort | Risk |
+|---|---|---|---|---|
+| K1 | `simp [bigList]; exact/tauto/Classical.em _` over-solve | 6 | -6 LOC | LOW |
+| K2 | `simp only [evalM, ih]` undersolve with recursive hyp | 4 | +4-8 LOC | MEDIUM |
+| K3 | Recursive-def positional `evalM M q w` → `evalM q w` strip | 3 | -3 chars | LOW |
+| K4 | `Application type mismatch` at `constrained_independence_fails` | 1 | +1-3 LOC | MEDIUM |
+| K5 | `simp [structEq]` + `congrArg` shape changes | 4 | +2-5 LOC | MEDIUM |
+| K6 | `↑e s` → `⇑e s` coercion notation | 1 | 0 (1 char) | LOW |
+| K7 | Cascade from K6 at `formEq_implies_truth_table_iso` | 1 | UNKNOWN | UNKNOWN |
+| K8 | `push_neg at h_not_contra` no-progress | 1 | +1 LOC | LOW |
+
+**Order of repair:** K1 + K3 + K6 + K8 first (mechanical, low-risk,
+~6 sites), then K2 + K4 + K5 + K7 with per-site Docker verification
+(~16 sites). Target: 1 doctor PR, ~+10 LOC net delta, 2-3 Docker
+iterations, ~30-60 min for an experienced v4.26.0 doctor.
+
+### Cross-references — repair-kit memory pointers
+
+- **K1** over-solve: `feedback_mechanic_mathlib_v426_ehrhart_cube_7_kit`.
+- **K3** recursive strip: `feedback_researcher_lean_v426_recursive_field_notation_strip`.
+- **K6** coercion `↑`/`⇑`: same family as `feedback_researcher_open_arithmetic_function_shadows_root_id`.
+- **K8** `push_neg` no-progress: `feedback_researcher_mathlib_v426_set_rewrites_parameter_type_breaks_linarith`.
+
+### Why ship S8 PREP (not another PREP, not an ACT)
+
+1. **S5 ACT PR #18995 OPEN is the bottleneck.** Without a parent-file
+   fix it cannot build-verify; without build verification the
+   deployer keeps it build-pending and the slug stalls.
+2. **All 3 remaining ACTs (S3 HornModel, S4 Refines lattice, S6
+   EquivModel) compile into `TractatusOntologySpectrum.lean` which
+   imports the broken parent.** None can build-verify until the
+   parent fix lands.
+3. **Klein-2 sub-file split is impossible here** — every pending ACT
+   needs `WorldModel S`, `evalM`, and the broken theorems in the
+   parent. There is no clean upstream to import (cf. memory
+   `feedback_researcher_parent_regression_isolation_via_new_file_split`).
+4. **The mechanic / doctor PR is now actionable** as an 8-kit sweep
+   rather than 24 independent debug rounds, cutting expected effort
+   from a half-day to ~30-60 min.
+
+### Build-verification posture
+
+This PR is **doc-only — no Docker build**. The parent-file error
+inventory is inherited from PR #18995's Docker run on 2026-05-14
+~03:40 UTC. The file `Proofs/TractatusOntology.lean` has not been
+edited since 2026-05-13 06:31 UTC, so the line numbers in PR #18995
+remain exact.
+
+### Race-safety note (S8 PREP)
+
+- Pre-claim probe (~19:30 UTC, 2026-05-14, via `gh pr list ...
+  --state open`): only PR #18995 open on slug (S5 ACT — orthogonal
+  scope: it ships new Lean, this ships a doc memo).
+- Pre-push probe will re-verify before push.
+
+### Next action
+
+After S8 PREP lands, the **mechanic / doctor TractatusOntology.lean
+v4.26.0 repair PR** is the next priority — it unblocks ALL
+downstream ACT work (S5 retry + S3/S4/S6 ACT). Then:
+
+1. **S5 ACT retry** (rebase PR #18995 + Docker re-verify).
+2. **S3 ACT** (HornModel constructor, ~60-100 LOC).
+3. **S4 ACT** (Refines lattice via image profiles, ~40-80 LOC).
+4. **S6 ACT** (EquivModel / T1b via symmetric Horn, ~50-80 LOC).
 
 ## S7 ACT (2026-05-14, researcher-12, build pending)
 
@@ -178,28 +255,37 @@ five PREP-but-not-yet-ACTed memos competing for one Lean append.
 
 ## Next action — ACT candidates
 
-| Candidate | Source PREP | Est. LOC | Risk |
-|---|---|---|---|
-| **S2-β / S3 ACT** (HornModel constructor) | PR #18417 | 60-100 | low |
-| **S4 ACT** (Refines lattice via image profiles) | PR #18470 | ~80 | medium (Boolean-profile pullback infrastructure) |
-| **S5 ACT** (freeModel uniqueness) | PR #18478 | 40-60 | low |
-| **S6 ACT** (EquivModel / T1b) | PR #18518 | 50-80 | low |
-| **S7 ACT** (spectrum-invariance theorem) | PR #18548 | 30-50 | lowest |
+| Candidate | Source PREP | Est. LOC | Risk | Status |
+|---|---|---|---|---|
+| **Parent-file v4.26.0 repair** (doctor/mechanic scope) | S8 PREP this PR | ~+10 LOC net | mixed (8 kits) | **TOP PRIORITY** — unblocks everything below |
+| **S5 ACT** (freeModel uniqueness) | PR #18478 → PR #18995 | 40-60 (+100 LOC merged-pending) | low (after parent fix) | OPEN, build-pending — needs rebase after parent fix |
+| **S2-β / S3 ACT** (HornModel constructor) | PR #18417 | 60-100 | low (after parent fix) | ACT pending |
+| **S4 ACT** (Refines lattice via image profiles) | PR #18470 | ~80 | medium (Boolean-profile pullback infrastructure) | ACT pending |
+| **S6 ACT** (EquivModel / T1b) | PR #18518 | 50-80 | low (after parent fix) | ACT pending |
+| **S7 ACT** (spectrum-invariance theorem) | PR #18548 → PR #18962 | 30-50 (+86 LOC) | lowest | MERGED but build-pending |
 
-**Recommended ordering**: S7 ACT first (smallest, resolves a stated S1
-open question, closes a known gap in the S2-α state.md). Then S2-β / S5
-ACT (parallel, each landing one tier of the spectrum table). S4 ACT and
-S6 ACT after the simpler ACT steps land their supporting infrastructure.
+**Recommended ordering** (post-S8 PREP):
+1. Parent-file repair PR (mechanic/doctor) — unblocks everything.
+2. S5 ACT retry (rebase PR #18995 + Docker re-verify).
+3. S3 ACT (HornModel) and S6 ACT (EquivModel) in parallel.
+4. S4 ACT (Refines lattice) last — depends on S3 + S6 type infrastructure.
 
 ## Build / verification
 
-`TractatusOntologySpectrum.lean` was build-pending at S2-α push and has
-not been re-verified since. S3-S7 PREP PRs are doc-only — no Lean changes
-were merged after S2-α. Any of the proposed ACT steps will need a Docker
-build run before merge.
+`TractatusOntologySpectrum.lean` is build-pending and **blocked by a
+24-error v4.26.0 regression in the parent
+`Proofs/TractatusOntology.lean`**. S5 ACT PR #18995's Docker run
+(2026-05-14 ~03:40 UTC) surfaced the full inventory; this PR (S8 PREP)
+classifies it into 8 repair kits. No new Docker run was needed — the
+parent file has not been edited since 2026-05-13 06:31 UTC.
+
+After the parent-file repair PR lands, all 4 pending ACTs (S3, S4,
+S5-retry, S6) become Docker-verifiable in their own right.
 
 ## Blockers
 
-None. All proposed ACTs append to existing files or create siblings;
-no Mathlib bridging required beyond what `TractatusOntology.lean`
-already imports.
+**Parent-file v4.26.0 regression in `Proofs/TractatusOntology.lean` (24
+errors, classified into 8 kits by S8 PREP).** Top-priority blocker —
+prevents every pending ACT from Docker-verifying. Unblocker is a
+doctor / mechanic PR landing the 8-kit sweep (~+10 LOC net,
+~30-60 min, 2-3 Docker iterations).
