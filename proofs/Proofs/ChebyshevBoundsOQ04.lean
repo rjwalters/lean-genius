@@ -295,7 +295,7 @@ private theorem chebyshevPsi_odd_step (m : ℕ) :
       Real.log (Nat.choose (2 * m + 1) m : ℝ) := psi_odd_le_log_choose m
   have h2 : Nat.choose (2 * m + 1) m ≤ 2 ^ (2 * m) := by
     calc Nat.choose (2 * m + 1) m ≤ 4 ^ m := Nat.choose_middle_le_pow m
-      _ = 2 ^ (2 * m) := by ring
+      _ = 2 ^ (2 * m) := by rw [pow_mul]; rfl
   exact h1.trans ( by simpa using Real.log_le_log ( Nat.cast_pos.mpr <| Nat.choose_pos <| by linarith ) <| Nat.cast_le.mpr h2 )
 
 /-- **Upper bound** (proved): ψ(n) ≤ 2n · log 2 for all n.

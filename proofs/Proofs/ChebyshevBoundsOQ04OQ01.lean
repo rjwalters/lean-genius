@@ -188,7 +188,7 @@ the simplest non-trivial value of the auxiliary function. -/
 theorem vonMangoldtConv_prime (p : ℕ) (hp : Nat.Prime p) :
     vonMangoldtConv p = 0 := by
   unfold vonMangoldtConv
-  rw [Nat.divisors_prime hp]
+  rw [Nat.Prime.divisors hp]
   have hne : (1 : ℕ) ≠ p := hp.one_lt.ne
   rw [Finset.sum_pair hne]
   rw [Nat.div_one, Nat.div_self hp.pos, vonMangoldt_apply_one]
@@ -203,28 +203,105 @@ theorem selbergLambda2_prime (p : ℕ) (hp : Nat.Prime p) :
   rw [vonMangoldtConv_prime p hp, vonMangoldt_apply_prime hp]
   ring
 
+/-! ### Selberg's dual identity (Iter 3)
+
+The central algebraic identity at the heart of the elementary PNT proof is
+
+    Λ₂(n) = Σ_{d ∣ n} μ(d) · (log (n/d))²    (n ≥ 1).
+
+By Möbius inversion this is equivalent to its **dual form**
+
+    Σ_{d ∣ n} Λ₂(d) = (log n)²    (n ≥ 1),
+
+which is the natural target of direct algebra. The dual unfolds as
+
+    Σ_{d ∣ n} Λ₂(d)
+      = Σ_{d ∣ n} Λ(d)·log d + Σ_{d ∣ n} (Λ ∗ Λ)(d)
+      = Σ_{d ∣ n} Λ(d)·log d + Σ_{d ∣ n} Λ(d)·log(n/d)
+      = Σ_{d ∣ n} Λ(d)·(log d + log(n/d))
+      = log n · Σ_{d ∣ n} Λ(d)
+      = (log n)²
+
+using the standard Dirichlet identity Λ ∗ ζ = log (Mathlib's
+`vonMangoldt_mul_zeta`) twice, `Real.log_mul`, and the fundamental sum
+`Σ_{d ∣ n} Λ(d) = log n` (`vonMangoldt_sum`). The "original" identity
+follows by `sum_eq_iff_sum_mul_moebius_eq` (deferred to Iter 4). -/
+
+/-- Bridge: the local `vonMangoldtConv` (defined as a sum over `divisors`)
+    coincides with the Mathlib Dirichlet convolution `Λ ∗ Λ` of `vonMangoldt`
+    with itself (which unfolds over `divisorsAntidiagonal`). -/
+theorem vonMangoldtConv_eq_mul (n : ℕ) :
+    vonMangoldtConv n = ((vonMangoldt : ArithmeticFunction ℝ) * vonMangoldt) n := by
+  unfold vonMangoldtConv
+  rw [ArithmeticFunction.mul_apply, ← Nat.map_div_right_divisors, Finset.sum_map]
+  rfl
+
+/-- Convolution identity in summed form: `Σ_{d ∣ n} (Λ ∗ Λ)(d) = Σ_{d ∣ n} Λ(d) · log(n/d)`.
+    The proof uses `(Λ ∗ Λ) ∗ ζ = Λ ∗ (Λ ∗ ζ) = Λ ∗ log`. -/
+theorem sum_divisors_vonMangoldtConv (n : ℕ) :
+    ∑ d ∈ n.divisors, vonMangoldtConv d =
+      ∑ d ∈ n.divisors, vonMangoldt d * Real.log ((n / d : ℕ) : ℝ) := by
+  simp_rw [vonMangoldtConv_eq_mul]
+  rw [← ArithmeticFunction.coe_mul_zeta_apply, mul_assoc,
+      ArithmeticFunction.vonMangoldt_mul_zeta, ArithmeticFunction.mul_apply,
+      ← Nat.map_div_right_divisors, Finset.sum_map]
+  simp [ArithmeticFunction.log_apply]
+
+/-- **Selberg's dual identity** (Iter 3, central deliverable): for every `n > 0`,
+
+      Σ_{d ∣ n} Λ₂(d) = (log n)².
+
+    This is the Möbius-dual form of `Λ₂(n) = Σ_{d ∣ n} μ(d) · log²(n/d)`. The
+    proof is fully elementary: it combines Λ ∗ ζ = log (twice) with the
+    pointwise additivity of `Real.log` on divisor pairs. -/
+theorem sum_divisors_selbergLambda2_eq_log_sq {n : ℕ} (hn : 0 < n) :
+    ∑ d ∈ n.divisors, selbergLambda2 d = (Real.log n) ^ 2 := by
+  unfold selbergLambda2
+  rw [Finset.sum_add_distrib, sum_divisors_vonMangoldtConv,
+      ← Finset.sum_add_distrib]
+  have key : ∀ d ∈ n.divisors,
+      vonMangoldt d * Real.log d + vonMangoldt d * Real.log ((n / d : ℕ) : ℝ) =
+        vonMangoldt d * Real.log n := by
+    intro d hd
+    rw [← mul_add]
+    rw [Nat.mem_divisors] at hd
+    obtain ⟨hdvd, _⟩ := hd
+    have hd_pos : (0 : ℕ) < d := Nat.pos_of_dvd_of_pos hdvd hn
+    have hnd_pos : (0 : ℕ) < n / d := Nat.div_pos (Nat.le_of_dvd hn hdvd) hd_pos
+    have hd_ne : ((d : ℕ) : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hd_pos.ne'
+    have hnd_ne : (((n / d : ℕ)) : ℝ) ≠ 0 := Nat.cast_ne_zero.mpr hnd_pos.ne'
+    rw [← Real.log_mul hd_ne hnd_ne, ← Nat.cast_mul, Nat.mul_div_cancel' hdvd]
+  rw [Finset.sum_congr rfl key, ← Finset.sum_mul,
+      ArithmeticFunction.vonMangoldt_sum]
+  ring
+
 /-! ## Future Work
 
 The remaining next-iteration deliverables are, in order of increasing
 difficulty:
 
-1. **`selbergLambda2_eq_moebius_log_sq`**: the identity
+1. **`selbergLambda2_eq_moebius_log_sq`** (Iter 4, ~15 LOC): one
+   application of `ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq` to
+   `sum_divisors_selbergLambda2_eq_log_sq` gives
+
+        Λ₂(n) = Σ_{(d,m) ∈ n.divisorsAntidiagonal} μ(d) · (log m)²    (n ≥ 1)
+
+   and `Nat.map_div_right_divisors` re-indexes to the canonical form
+
         Λ₂(n) = Σ_{d ∣ n} μ(d) · (log (n/d))²    (n ≥ 1).
-   Provable from the Mathlib `moebius_mul_coe_zeta` machinery once one
-   knows Λ = μ ∗ log (the standard expansion).
 
-2. **`selbergSum2_eq_two_n_log_n_plus_O`**: Selberg's symmetry formula
+2. **`selbergSum2_eq_two_n_log_n_plus_O`** (Iter 5–6): Selberg's symmetry formula
         S₂(N) = 2 N · log N + O(N).
-   This is the central identity. The error-term step requires summation
-   by parts and quantitative control of Σ_{d ≤ x} μ(d) — but only its
-   `O(x)` form, which is well within elementary bounds.
+   The error-term step requires summation by parts and quantitative
+   control of Σ_{d ≤ x} μ(d) — but only its `O(x)` form, which is well
+   within elementary bounds.
 
-3. **Tauberian step → PNT**: Erdős–Selberg's combinatorial finishing
-   argument, the longest part of the elementary proof.
+3. **Tauberian step → PNT** (Iter 7+): Erdős–Selberg's combinatorial
+   finishing argument, the longest part of the elementary proof.
 
-Iteration 2 (this commit) closes the easy prime-value lemmas
-`vonMangoldtConv_prime` and `selbergLambda2_prime`. The total estimated
-formalization size for the remaining roadmap is several thousand lines,
-but each step decomposes into Mathlib-friendly pieces. -/
+Iteration 3 (this commit) closes the central algebraic step — Selberg's
+dual identity Σ_{d ∣ n} Λ₂(d) = (log n)² — together with the bridge
+lemma `vonMangoldtConv_eq_mul` that connects this file's explicit
+divisor-sum definition to Mathlib's `ArithmeticFunction` convolution. -/
 
 end ChebyshevBoundsOQ04OQ01
