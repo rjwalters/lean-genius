@@ -71,11 +71,17 @@ import Mathlib.Algebra.Group.Basic
 import Mathlib.Algebra.GroupWithZero.Basic
 -- S12 (iter 12, Path B): `mul_self_nonneg` for the sum-of-squares witness
 -- used in closure of Σ₁ under binary intersection. ℚ is a LinearOrderedField,
--- so `0 ≤ a*a` for every `a : ℚ`.
-import Mathlib.Algebra.Order.Ring.Lemmas
+-- so `0 ≤ a*a` for every `a : ℚ`. Provided transitively via
+-- `Mathlib.Algebra.Order.Ring.Basic` (Mathlib v4.26.0; the historic
+-- `Mathlib.Algebra.Order.Ring.Lemmas` barrel file was removed).
+import Mathlib.Algebra.Order.Ring.Basic
 -- S12 (iter 12, Path B): `linarith` to discharge the conclusion
 -- `a*a + b*b = 0  ∧  0 ≤ a*a  ∧  0 ≤ b*b  →  a*a = 0  ∧  b*b = 0`.
 import Mathlib.Tactic.Linarith
+-- v4.26.0 (Path B mechanic): `ring` tactic, formerly pulled in transitively
+-- via the now-removed `Mathlib.Algebra.Order.Ring.Lemmas` barrel; must be
+-- imported explicitly at v4.26.0.
+import Mathlib.Tactic.Ring
 -- Iter 17 (Path B): `Finset.toList` and `Finset.mem_toList` for Finset
 -- transports of the iter 10 / iter 14 / iter 15 list closures.
 import Mathlib.Data.Finset.Basic
@@ -903,9 +909,9 @@ theorem union_isDiophantineDefinition
   constructor
   · rintro (hS₁ | hS₂)
     · obtain ⟨x, hx⟩ := (hP₁ q).mp hS₁
-      exact ⟨x, by rw [hx, zero_mul]⟩
+      exact ⟨x, by simp only [hx, zero_mul]⟩
     · obtain ⟨x, hx⟩ := (hP₂ q).mp hS₂
-      exact ⟨x, by rw [hx, mul_zero]⟩
+      exact ⟨x, by simp only [hx, mul_zero]⟩
   · rintro ⟨x, hx⟩
     rcases mul_eq_zero.mp hx with hzero | hzero
     · exact Or.inl ((hP₁ q).mpr ⟨x, hzero⟩)
@@ -952,10 +958,10 @@ theorem intersection_isCoDiophantineDefinition
     refine ⟨?_, ?_⟩
     · apply (hP₁ q).mpr
       rintro ⟨x, hx⟩
-      exact hnsol ⟨x, by rw [hx, zero_mul]⟩
+      exact hnsol ⟨x, by simp only [hx, zero_mul]⟩
     · apply (hP₂ q).mpr
       rintro ⟨x, hx⟩
-      exact hnsol ⟨x, by rw [hx, mul_zero]⟩
+      exact hnsol ⟨x, by simp only [hx, mul_zero]⟩
 
 /-- Iter 9 corollary, Path B: **every pair `{a, b} ⊂ ℚ` is Σ₁-definable**
     for any `a, b : ℚ`.
@@ -1257,6 +1263,8 @@ theorem intersection_isDiophantineDefinition
     obtain ⟨x₁, hx₁⟩ := (hP₁ q).mp hS₁
     obtain ⟨x₂, hx₂⟩ := (hP₂ q).mp hS₂
     refine ⟨interleave x₁ x₂, ?_⟩
+    show P₁ q (evenProj (interleave x₁ x₂)) * P₁ q (evenProj (interleave x₁ x₂)) +
+         P₂ q (oddProj (interleave x₁ x₂)) * P₂ q (oddProj (interleave x₁ x₂)) = 0
     rw [evenProj_interleave, oddProj_interleave, hx₁, hx₂]
     ring
   · rintro ⟨x, hx⟩
@@ -1428,7 +1436,7 @@ theorem finIntersectionList_isDiophantineDefinition
       universe_isDiophantineDefinition
   | cons a t ih =>
     have h_head : IsDiophantineDefinition a :=
-      h a (List.mem_cons_self a t)
+      h a (List.mem_cons_self)
     have h_tail : ∀ S ∈ t, IsDiophantineDefinition S :=
       fun S hS => h S (List.mem_cons_of_mem a hS)
     have ih_def : IsDiophantineDefinition (fun q : Rat => ∀ S ∈ t, S q) :=
@@ -1442,7 +1450,7 @@ theorem finIntersectionList_isDiophantineDefinition
       intro q
       constructor
       · intro hall
-        refine ⟨hall a (List.mem_cons_self a t),
+        refine ⟨hall a (List.mem_cons_self),
           fun S hS => hall S (List.mem_cons_of_mem a hS)⟩
       · rintro ⟨ha, htail⟩ S hS
         rcases List.mem_cons.mp hS with rfl | hSt
@@ -1495,7 +1503,7 @@ theorem finUnionList_isCoDiophantineDefinition
       empty_isCoDiophantineDefinition
   | cons a t ih =>
     have h_head : IsCoDiophantineDefinition a :=
-      h a (List.mem_cons_self a t)
+      h a (List.mem_cons_self)
     have h_tail : ∀ S ∈ t, IsCoDiophantineDefinition S :=
       fun S hS => h S (List.mem_cons_of_mem a hS)
     have ih_def : IsCoDiophantineDefinition (fun q : Rat => ∃ S ∈ t, S q) :=
@@ -1513,7 +1521,7 @@ theorem finUnionList_isCoDiophantineDefinition
         · exact Or.inl hSq
         · exact Or.inr ⟨S, hSt, hSq⟩
       · rintro (ha | ⟨S, hSt, hSq⟩)
-        · exact ⟨a, List.mem_cons_self a t, ha⟩
+        · exact ⟨a, List.mem_cons_self, ha⟩
         · exact ⟨S, List.mem_cons_of_mem a hSt, hSq⟩
     exact (coDiophantineDefinition_iff_of_pred_iff hbridge).mpr h_union
 
@@ -1576,7 +1584,7 @@ theorem finUnionList_isDiophantineDefinition
       empty_isDiophantineDefinition
   | cons a t ih =>
     have h_head : IsDiophantineDefinition a :=
-      h a (List.mem_cons_self a t)
+      h a (List.mem_cons_self)
     have h_tail : ∀ S ∈ t, IsDiophantineDefinition S :=
       fun S hS => h S (List.mem_cons_of_mem a hS)
     have ih_def : IsDiophantineDefinition (fun q : Rat => ∃ S ∈ t, S q) :=
@@ -1594,7 +1602,7 @@ theorem finUnionList_isDiophantineDefinition
         · exact Or.inl hSq
         · exact Or.inr ⟨S, hSt, hSq⟩
       · rintro (ha | ⟨S, hSt, hSq⟩)
-        · exact ⟨a, List.mem_cons_self a t, ha⟩
+        · exact ⟨a, List.mem_cons_self, ha⟩
         · exact ⟨S, List.mem_cons_of_mem a hSt, hSq⟩
     exact (diophantineDefinition_iff_of_pred_iff hbridge).mpr h_union
 
@@ -1648,7 +1656,7 @@ theorem finIntersectionList_isCoDiophantineDefinition
       universe_isCoDiophantineDefinition
   | cons a t ih =>
     have h_head : IsCoDiophantineDefinition a :=
-      h a (List.mem_cons_self a t)
+      h a (List.mem_cons_self)
     have h_tail : ∀ S ∈ t, IsCoDiophantineDefinition S :=
       fun S hS => h S (List.mem_cons_of_mem a hS)
     have ih_def : IsCoDiophantineDefinition (fun q : Rat => ∀ S ∈ t, S q) :=
@@ -1662,7 +1670,7 @@ theorem finIntersectionList_isCoDiophantineDefinition
       intro q
       constructor
       · intro hall
-        refine ⟨hall a (List.mem_cons_self a t),
+        refine ⟨hall a (List.mem_cons_self),
           fun S hS => hall S (List.mem_cons_of_mem a hS)⟩
       · rintro ⟨ha, htail⟩ S hS
         rcases List.mem_cons.mp hS with rfl | hSt
@@ -1923,7 +1931,7 @@ theorem sigma2_intersection_isExistentialUniversalDefinition
     obtain ⟨y₂, hy₂⟩ := (hP₂ q).mp hS₂
     refine ⟨interleave y₁ y₂, ?_⟩
     rintro ⟨x, hx⟩
-    rw [evenProj_interleave, oddProj_interleave] at hx
+    simp only [evenProj_interleave, oddProj_interleave] at hx
     rcases mul_eq_zero.mp hx with h1 | h2
     · exact hy₁ ⟨x, h1⟩
     · exact hy₂ ⟨x, h2⟩
@@ -1931,10 +1939,10 @@ theorem sigma2_intersection_isExistentialUniversalDefinition
     refine ⟨(hP₁ q).mpr ⟨evenProj y, ?_⟩, (hP₂ q).mpr ⟨oddProj y, ?_⟩⟩
     · rintro ⟨x, hx⟩
       apply hy
-      exact ⟨x, by rw [hx]; ring⟩
+      exact ⟨x, by simp only [hx, zero_mul]⟩
     · rintro ⟨x, hx⟩
       apply hy
-      exact ⟨x, by rw [hx]; ring⟩
+      exact ⟨x, by simp only [hx, mul_zero]⟩
 
 -- ============================================================
 -- Part VIII.22 (iter 20, Path B): Π₂ closed under binary union
@@ -2067,7 +2075,7 @@ theorem sigma2_intersectionList_isExistentialUniversalDefinition
       universe_isExistentialUniversalDefinition
   | cons a t ih =>
     have h_head : IsExistentialUniversalDefinition a :=
-      h a (List.mem_cons_self a t)
+      h a (List.mem_cons_self)
     have h_tail : ∀ S ∈ t, IsExistentialUniversalDefinition S :=
       fun S hS => h S (List.mem_cons_of_mem a hS)
     have ih_def : IsExistentialUniversalDefinition
@@ -2082,7 +2090,7 @@ theorem sigma2_intersectionList_isExistentialUniversalDefinition
       intro q
       constructor
       · intro hall
-        refine ⟨hall a (List.mem_cons_self a t),
+        refine ⟨hall a (List.mem_cons_self),
           fun S hS => hall S (List.mem_cons_of_mem a hS)⟩
       · rintro ⟨ha, htail⟩ S hS
         rcases List.mem_cons.mp hS with rfl | hSt
@@ -2143,7 +2151,7 @@ theorem pi2_unionList_isUniversalExistentialDefinition
       empty_isUniversalExistentialDefinition
   | cons a t ih =>
     have h_head : IsUniversalExistentialDefinition a :=
-      h a (List.mem_cons_self a t)
+      h a (List.mem_cons_self)
     have h_tail : ∀ S ∈ t, IsUniversalExistentialDefinition S :=
       fun S hS => h S (List.mem_cons_of_mem a hS)
     have ih_def : IsUniversalExistentialDefinition
@@ -2162,7 +2170,7 @@ theorem pi2_unionList_isUniversalExistentialDefinition
         · exact Or.inl hSq
         · exact Or.inr ⟨S, hSt, hSq⟩
       · rintro (ha | ⟨S, hSt, hSq⟩)
-        · exact ⟨a, List.mem_cons_self a t, ha⟩
+        · exact ⟨a, List.mem_cons_self, ha⟩
         · exact ⟨S, List.mem_cons_of_mem a hSt, hSq⟩
     exact (universalExistentialDefinition_iff_of_pred_iff hbridge).mpr h_union
 
@@ -2411,6 +2419,8 @@ theorem pi2_intersection_isUniversalExistentialDefinition
     obtain ⟨x₁, hx₁⟩ := (hP₁ q).mp hS₁ y
     obtain ⟨x₂, hx₂⟩ := (hP₂ q).mp hS₂ y
     refine ⟨interleave x₁ x₂, ?_⟩
+    show P₁ q y (evenProj (interleave x₁ x₂)) * P₁ q y (evenProj (interleave x₁ x₂)) +
+         P₂ q y (oddProj (interleave x₁ x₂)) * P₂ q y (oddProj (interleave x₁ x₂)) = 0
     rw [evenProj_interleave, oddProj_interleave, hx₁, hx₂]
     ring
   · intro hAll
@@ -2540,7 +2550,7 @@ theorem sigma2_unionList_isExistentialUniversalDefinition
       empty_isExistentialUniversalDefinition
   | cons a t ih =>
     have h_head : IsExistentialUniversalDefinition a :=
-      h a (List.mem_cons_self a t)
+      h a (List.mem_cons_self)
     have h_tail : ∀ S ∈ t, IsExistentialUniversalDefinition S :=
       fun S hS => h S (List.mem_cons_of_mem a hS)
     have ih_def : IsExistentialUniversalDefinition
@@ -2559,7 +2569,7 @@ theorem sigma2_unionList_isExistentialUniversalDefinition
         · exact Or.inl hSq
         · exact Or.inr ⟨S, hSt, hSq⟩
       · rintro (ha | ⟨S, hSt, hSq⟩)
-        · exact ⟨a, List.mem_cons_self a t, ha⟩
+        · exact ⟨a, List.mem_cons_self, ha⟩
         · exact ⟨S, List.mem_cons_of_mem a hSt, hSq⟩
     exact (existentialUniversalDefinition_iff_of_pred_iff hbridge).mpr h_union
 
@@ -2620,7 +2630,7 @@ theorem pi2_intersectionList_isUniversalExistentialDefinition
       universe_isUniversalExistentialDefinition
   | cons a t ih =>
     have h_head : IsUniversalExistentialDefinition a :=
-      h a (List.mem_cons_self a t)
+      h a (List.mem_cons_self)
     have h_tail : ∀ S ∈ t, IsUniversalExistentialDefinition S :=
       fun S hS => h S (List.mem_cons_of_mem a hS)
     have ih_def : IsUniversalExistentialDefinition
@@ -2635,7 +2645,7 @@ theorem pi2_intersectionList_isUniversalExistentialDefinition
       intro q
       constructor
       · intro hall
-        refine ⟨hall a (List.mem_cons_self a t),
+        refine ⟨hall a (List.mem_cons_self),
           fun S hS => hall S (List.mem_cons_of_mem a hS)⟩
       · rintro ⟨ha, htail⟩ S hS
         rcases List.mem_cons.mp hS with rfl | hSt
