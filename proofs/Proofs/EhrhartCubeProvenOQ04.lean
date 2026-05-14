@@ -130,9 +130,10 @@ theorem eulerian_4_4 : eulerianNumber 4 4 = 0 := rfl
   identity. The proof follows by induction on `d` directly from the recurrence
   `A(d+1, 0) = A(d, 0)` and the base case `A(0, 0) = 1`.
 -/
-theorem eulerian_zero_eq_one : ∀ d : ℕ, eulerianNumber d 0 = 1
-  | 0     => rfl
-  | _ + 1 => eulerian_zero_eq_one _
+theorem eulerian_zero_eq_one (d : ℕ) : eulerianNumber d 0 = 1 := by
+  induction d with
+  | zero => rfl
+  | succ d ih => exact ih
 
 /--
   **Out-of-range vanishing** (S3): for `d ≥ 1` and `k ≥ d`, `A(d, k) = 0`.
@@ -198,8 +199,7 @@ theorem eulerian_row_sum_factorial (d : ℕ) (hd : 0 < d) :
               = ∑ k ∈ Finset.range (d + 1), (d + 1) * eulerianNumber d k := by
           rw [Finset.sum_range_succ
                 (fun k => (d + 1) * eulerianNumber d k) d,
-              eulerian_eq_zero_of_le d d hd_pos (le_refl d), Nat.mul_zero,
-              Nat.add_zero]
+              eulerian_eq_zero_of_le d d hd_pos (le_refl d), mul_zero, add_zero]
         rw [rhs_extend]
         -- Peel off the `k = 0` term on both sides.
         rw [Finset.sum_range_succ' (fun k => eulerianNumber (d + 1) k) d,
@@ -363,9 +363,7 @@ theorem eulerian_palindrome : ∀ d k : ℕ, 0 < d → k < d →
           ring
         · -- k = d: A(d+1, d) = A(d+1, d - d) = A(d+1, 0)
           have hkd : k = d := by omega
-          subst hkd
-          -- After subst, the goal is A(d+1, d) = A(d+1, d - d)
-          rw [Nat.sub_self d, hboundary, eulerian_zero_eq_one (d + 1)]
+          rw [hkd, Nat.sub_self, hboundary, eulerian_zero_eq_one (d + 1)]
 
 -- Concrete checks
 example : eulerianNumber 3 0 = eulerianNumber 3 2 := rfl
@@ -409,7 +407,7 @@ lemma worpitzky_step (n d k : ℕ) (hk : k ≤ d) :
       _ = ((k + 1) * Nat.choose m (d + 1) + (d - k) * Nat.choose m (d + 1))
             + (d - k) * Nat.choose m d := by ring
       _ = ((k + 1) + (d - k)) * Nat.choose m (d + 1) + (d - k) * Nat.choose m d := by
-          rw [Nat.add_mul]
+          ring
       _ = (d + 1) * Nat.choose m (d + 1) + (d - k) * Nat.choose m d := by
           rw [hsum_coef]
       _ = (m - d) * Nat.choose m d + (d - k) * Nat.choose m d := by rw [key]
@@ -475,7 +473,12 @@ theorem worpitzky_identity_cube (d : ℕ) (hd : 0 < d) (n : ℕ) :
                       + (d - k) * Nat.choose (n + 2 + k) (d + 1)) := by
                 refine Finset.sum_congr rfl fun k hk => ?_
                 have hkd : k ≤ d := Nat.le_of_lt (Finset.mem_range.mp hk)
-                rw [← worpitzky_step n d k hkd]; ring
+                have hws := worpitzky_step n d k hkd
+                calc eulerianNumber d k * (n + 1 + k).choose d * (n + 1)
+                    = eulerianNumber d k * ((n + 1) * (n + 1 + k).choose d) := by ring
+                  _ = eulerianNumber d k *
+                        ((k + 1) * (n + 1 + k).choose (d + 1)
+                          + (d - k) * (n + 2 + k).choose (d + 1)) := by rw [← hws]
           _ = ∑ k ∈ Finset.range d,
                   (eulerianNumber d k * (k + 1) * Nat.choose (n + 1 + k) (d + 1)
                     + eulerianNumber d k * (d - k) * Nat.choose (n + 2 + k) (d + 1)) := by
@@ -581,10 +584,10 @@ theorem worpitzky_d2 (n : ℕ) :
   | succ m ih =>
     -- (m+2)^2 vs C(m+2, 2) + C(m+3, 2)
     -- Use Pascal and ih
-    rw [pow_two, pow_two] at *
+    simp only [pow_two] at ih ⊢
     rw [Nat.choose_succ_succ (m + 1) 1, Nat.choose_succ_succ (m + 2) 1]
     simp only [Nat.choose_one_right, Nat.choose_self, Nat.add_zero] at ih ⊢
-    omega
+    nlinarith [ih]
 
 /-- Verification at d = 2, n = 0:  1² = 1·C(1,2) + 1·C(2,2) = 0 + 1 = 1. -/
 example : (0 + 1)^2 = eulerianNumber 2 0 * Nat.choose 1 2
@@ -653,7 +656,7 @@ theorem cube_h_star_eulerian (d k : ℕ) (hd : 0 < d) (hk : k < d) :
   simp only [Polynomial.coeff_smul, Polynomial.coeff_X_pow, smul_eq_mul,
              mul_ite, mul_one, mul_zero]
   -- ∑ j ∈ range d, (if k = j then eulerianNumber d j else 0) = eulerianNumber d k
-  rw [Finset.sum_ite_eq' (Finset.range d) k (fun j => eulerianNumber d j)]
+  rw [Finset.sum_ite_eq (Finset.range d) k (fun j => eulerianNumber d j)]
   exact if_pos (Finset.mem_range.mpr hk)
 
 -- ============================================================
