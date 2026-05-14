@@ -112,10 +112,11 @@ theorem qdet01_mul_eq_neg_det {F : Type*} [Field F]
   field_simp
   ring
 
-/-- Over a commutative field: a11 * |A|10 = -det(A) -/
+/-- Over a commutative field: a01 * |A|10 = -det(A)
+    (b * |A|10 = -det(A) per the doc table, where b = A 0 1 is the complement of position (1,0)). -/
 theorem mul_qdet10_eq_neg_det {F : Type*} [Field F]
     (A : Matrix (Fin 2) (Fin 2) F) (h : A 0 1 ≠ 0) :
-    A 1 1 * qdet10 A = -A.det := by
+    A 0 1 * qdet10 A = -A.det := by
   simp only [qdet10, det_fin_two]
   field_simp
   ring
@@ -154,12 +155,12 @@ theorem qdet11_lower_tri (A : Matrix (Fin 2) (Fin 2) D) (h : A 0 1 = 0) :
 /-- For an upper triangular matrix, |A|01 = a01. -/
 theorem qdet01_upper_tri (A : Matrix (Fin 2) (Fin 2) D) (h : A 1 0 = 0) :
     qdet01 A = A 0 1 := by
-  simp [qdet01, h, inv_zero, mul_zero, zero_mul]
+  simp [qdet01, h, _root_.inv_zero, mul_zero, zero_mul]
 
 /-- For a lower triangular matrix, |A|10 = a10. -/
 theorem qdet10_lower_tri (A : Matrix (Fin 2) (Fin 2) D) (h : A 0 1 = 0) :
     qdet10 A = A 1 0 := by
-  simp [qdet10, h, inv_zero, mul_zero, zero_mul]
+  simp [qdet10, h, _root_.inv_zero, mul_zero, zero_mul]
 
 -- ============================================================
 -- PART IV: Row and Column Scaling
@@ -184,7 +185,7 @@ theorem qdet00_left_row0_scale (a b c d : D) (lambda : D) :
     qdet00 A' = lambda * qdet00 A := by
   simp only [qdet00, Matrix.of_apply, Matrix.cons_val_zero, Matrix.cons_val_one,
     Matrix.head_cons, Matrix.head_fin_const]
-  rw [mul_sub, mul_assoc, mul_assoc]
+  rw [mul_sub, mul_assoc, mul_assoc, mul_assoc]
 
 /-- Right column scaling: |A|00 is right-linear in column 0.
     If a' = a*lambda, c' = c*lambda (col 0 scaled), then |A'|00 = |A|00 * lambda. -/
@@ -277,14 +278,14 @@ theorem nc_kernel_trivial_alt (A : Matrix (Fin 2) (Fin 2) D) (x : Fin 2 → D)
     simp [mulVec, dotProduct, Fin.sum_univ_two] at this; exact this
   -- From row 0: x0 = -(a00^{-1} * a01 * x1)
   have hx0 : x 0 = -((A 0 0)⁻¹ * (A 0 1 * x 1)) := by
-    have h := eq_neg_of_add_eq_zero_right hrow0
+    have h : A 0 0 * x 0 = -(A 0 1 * x 1) := add_eq_zero_iff_eq_neg.mp hrow0
     calc x 0 = (A 0 0)⁻¹ * (A 0 0 * x 0) := by
             rw [← mul_assoc, inv_mul_cancel₀ h00, one_mul]
       _ = -((A 0 0)⁻¹ * (A 0 1 * x 1)) := by rw [h, mul_neg]
   -- Substitute into row 1: qdet11(A) * x1 = 0
   have hqx : qdet11 A * x 1 = 0 := by
     have h1 : A 1 0 * (-((A 0 0)⁻¹ * (A 0 1 * x 1))) + A 1 1 * x 1 = 0 := by rwa [← hx0]
-    rw [mul_neg, ← sub_eq_add_neg] at h1
+    rw [mul_neg, neg_add_eq_sub] at h1
     rw [← mul_assoc (A 1 0), ← mul_assoc (A 1 0 * (A 0 0)⁻¹)] at h1
     rwa [← sub_mul, show A 1 1 - A 1 0 * (A 0 0)⁻¹ * A 0 1 = qdet11 A from rfl] at h1
   -- qdet11 != 0, so x1 = 0; then x0 = 0
@@ -342,11 +343,13 @@ def schurInv (A : Matrix (Fin 2) (Fin 2) D) : Matrix (Fin 2) (Fin 2) D := fun i 
 
 @[simp] lemma schurInv_01 (A : Matrix (Fin 2) (Fin 2) D) :
     schurInv A 0 1 = -((qdet00 A)⁻¹ * A 0 1 * (A 1 1)⁻¹) := by
-  simp only [schurInv, show ¬(1 : Fin 2) = (0 : Fin 2) from by decide]
+  simp only [schurInv, show ¬(1 : Fin 2) = (0 : Fin 2) from by decide,
+    if_true, if_false, ite_true, ite_false]
 
 @[simp] lemma schurInv_10 (A : Matrix (Fin 2) (Fin 2) D) :
     schurInv A 1 0 = -((A 1 1)⁻¹ * A 1 0 * (qdet00 A)⁻¹) := by
-  simp only [schurInv, show ¬(1 : Fin 2) = (0 : Fin 2) from by decide]
+  simp only [schurInv, show ¬(1 : Fin 2) = (0 : Fin 2) from by decide,
+    if_true, if_false, ite_true, ite_false]
 
 @[simp] lemma schurInv_11 (A : Matrix (Fin 2) (Fin 2) D) :
     schurInv A 1 1 =
@@ -360,9 +363,11 @@ theorem mul_schurInv_00 (A : Matrix (Fin 2) (Fin 2) D)
     (hq : qdet00 A ≠ 0) :
     A 0 0 * schurInv A 0 0 + A 0 1 * schurInv A 1 0 = 1 := by
   simp only [schurInv_00, schurInv_10]
-  rw [mul_neg, ← sub_eq_add_neg, ← mul_assoc (A 0 1), ← mul_assoc (A 0 1 * (A 1 1)⁻¹),
-    ← sub_mul]
-  rw [show A 0 0 - A 0 1 * (A 1 1)⁻¹ * A 1 0 = qdet00 A from rfl]
+  rw [mul_neg, ← sub_eq_add_neg]
+  rw [show A 0 1 * ((A 1 1)⁻¹ * A 1 0 * (qdet00 A)⁻¹) =
+        A 0 1 * (A 1 1)⁻¹ * A 1 0 * (qdet00 A)⁻¹ from by
+    rw [← mul_assoc, ← mul_assoc]]
+  rw [← sub_mul, show A 0 0 - A 0 1 * (A 1 1)⁻¹ * A 1 0 = qdet00 A from rfl]
   exact mul_inv_cancel₀ hq
 
 /-- The (1,0) entry of A * schurInv(A) is 0.
@@ -371,7 +376,10 @@ theorem mul_schurInv_10 (A : Matrix (Fin 2) (Fin 2) D)
     (hd : A 1 1 ≠ 0) :
     A 1 0 * schurInv A 0 0 + A 1 1 * schurInv A 1 0 = 0 := by
   simp only [schurInv_00, schurInv_10]
-  rw [mul_neg, ← sub_eq_add_neg, ← mul_assoc, mul_inv_cancel₀ hd, one_mul, sub_self]
+  rw [mul_neg]
+  rw [show A 1 1 * ((A 1 1)⁻¹ * A 1 0 * (qdet00 A)⁻¹) = A 1 0 * (qdet00 A)⁻¹ from by
+    rw [← mul_assoc, ← mul_assoc, mul_inv_cancel₀ hd, one_mul]]
+  exact add_neg_cancel _
 
 -- ============================================================
 -- PART VII: Transpose and Commutativity
@@ -414,12 +422,12 @@ This is the non-commutative analogue of det(triangular) = product of diagonal.
     (Since 0^{-1} = 0 in a DivisionRing, the correction term vanishes.) -/
 theorem qdet00_of_zero_complement (A : Matrix (Fin 2) (Fin 2) D) (h : A 1 1 = 0) :
     qdet00 A = A 0 0 := by
-  simp [qdet00, h, inv_zero, mul_zero, zero_mul]
+  simp [qdet00, h, _root_.inv_zero, mul_zero, zero_mul]
 
 /-- If the complementary entry a00 = 0, then qdet11 = a11. -/
 theorem qdet11_of_zero_complement (A : Matrix (Fin 2) (Fin 2) D) (h : A 0 0 = 0) :
     qdet11 A = A 1 1 := by
-  simp [qdet11, h, inv_zero, mul_zero, zero_mul]
+  simp [qdet11, h, _root_.inv_zero, mul_zero, zero_mul]
 
 -- ============================================================
 -- PART IX: Quasideterminant Product Identities
@@ -446,9 +454,9 @@ theorem qdet00_eq_det_div {F : Type*} [Field F]
 theorem qdet11_eq_det_div {F : Type*} [Field F]
     (A : Matrix (Fin 2) (Fin 2) F) (h : A 0 0 ≠ 0) :
     qdet11 A = A.det * (A 0 0)⁻¹ := by
-  have := mul_qdet11_eq_det A h
-  rw [eq_comm, ← mul_left_cancel₀ h (qdet11 A) (A.det * (A 0 0)⁻¹)]
-  rw [this, mul_assoc, mul_inv_cancel₀ h, mul_one]
+  have hmul := mul_qdet11_eq_det A h
+  rw [← hmul]
+  field_simp
 
 /-- Over a commutative field, the two diagonal quasideterminants are proportional:
     |A|00 * a00 = |A|11 * a11 (both equal det(A)). -/

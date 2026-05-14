@@ -71,20 +71,20 @@ abbrev block3 (A : Matrix (Fin 3) (Fin 3) D) (i j : Fin 3) : Matrix (Fin 2) (Fin
 @[simp] lemma block3_22_10 (A : Matrix (Fin 3) (Fin 3) D) : block3 A 2 2 1 0 = A 1 0 := rfl
 @[simp] lemma block3_22_11 (A : Matrix (Fin 3) (Fin 3) D) : block3 A 2 2 1 1 = A 1 1 := rfl
 
-/-- det(block3 A 0 0) = A11·A22 - A12·A21 -/
-lemma block3_00_det (A : Matrix (Fin 3) (Fin 3) D) :
+/-- det(block3 A 0 0) = A11·A22 - A12·A21 (Matrix.det requires CommRing, so over F). -/
+lemma block3_00_det {F : Type*} [Field F] (A : Matrix (Fin 3) (Fin 3) F) :
     (block3 A 0 0).det = A 1 1 * A 2 2 - A 1 2 * A 2 1 := by
-  simp [Matrix.det_fin_two]
+  simp only [Matrix.det_fin_two, block3_00_00, block3_00_01, block3_00_10, block3_00_11]
 
-/-- det(block3 A 1 1) = A00·A22 - A02·A20 -/
-lemma block3_11_det (A : Matrix (Fin 3) (Fin 3) D) :
+/-- det(block3 A 1 1) = A00·A22 - A02·A20 (Matrix.det requires CommRing, so over F). -/
+lemma block3_11_det {F : Type*} [Field F] (A : Matrix (Fin 3) (Fin 3) F) :
     (block3 A 1 1).det = A 0 0 * A 2 2 - A 0 2 * A 2 0 := by
-  simp [Matrix.det_fin_two]
+  simp only [Matrix.det_fin_two, block3_11_00, block3_11_01, block3_11_10, block3_11_11]
 
-/-- det(block3 A 2 2) = A00·A11 - A01·A10 -/
-lemma block3_22_det (A : Matrix (Fin 3) (Fin 3) D) :
+/-- det(block3 A 2 2) = A00·A11 - A01·A10 (Matrix.det requires CommRing, so over F). -/
+lemma block3_22_det {F : Type*} [Field F] (A : Matrix (Fin 3) (Fin 3) F) :
     (block3 A 2 2).det = A 0 0 * A 1 1 - A 0 1 * A 1 0 := by
-  simp [Matrix.det_fin_two]
+  simp only [Matrix.det_fin_two, block3_22_00, block3_22_01, block3_22_10, block3_22_11]
 
 -- ============================================================
 -- PART II: The 9 Quasideterminants over a Field
@@ -154,6 +154,7 @@ theorem qdet3_00_schur_expand (A : Matrix (Fin 3) (Fin 3) F)
     qdet3 A 0 0 = A 0 0
       - (A 0 1 * A 2 2 - A 0 2 * A 2 1) / (block3 A 0 0).det * A 1 0
       - (A 0 2 * A 1 1 - A 0 1 * A 1 2) / (block3 A 0 0).det * A 2 0 := by
+  rw [block3_00_det] at h
   simp only [qdet3, block3_00_det, Matrix.det_fin_three]
   field_simp
   ring
@@ -239,6 +240,14 @@ theorem qdet3_00_nc_eq_qdet3 (A : Matrix (Fin 3) (Fin 3) F)
     (hd : A 2 2 ≠ 0)
     (hq : A 1 1 - A 1 2 * (A 2 2)⁻¹ * A 2 1 ≠ 0) :
     qdet3_00_nc A = qdet3 A 0 0 := by
+  -- Derive the un-inverted-form non-vanishing hypothesis field_simp needs.
+  have hq2 : A 1 1 * A 2 2 - A 1 2 * A 2 1 ≠ 0 := by
+    intro hzero
+    apply hq
+    have hmul : (A 1 1 - A 1 2 * (A 2 2)⁻¹ * A 2 1) * A 2 2 = A 1 1 * A 2 2 - A 1 2 * A 2 1 := by
+      field_simp
+    rw [hzero] at hmul
+    exact (mul_eq_zero.mp hmul).resolve_right hd
   simp only [qdet3_00_nc, qdet3, schurComp3, block3_00_det, Matrix.det_fin_three]
   field_simp
   ring
@@ -249,7 +258,6 @@ theorem schurComp3_mul_eq_minor_det (A : Matrix (Fin 3) (Fin 3) F)
     schurComp3 A * A 2 2 = (block3 A 0 0).det := by
   simp only [schurComp3, block3_00_det]
   field_simp
-  ring
 
 -- ============================================================
 -- PART VI: The 3×3 Cramer's Rule
@@ -270,7 +278,7 @@ for any (i,j) with non-zero minor, expressing the denominator via a quasidetermi
 theorem cramer_rule_3x3 (A : Matrix (Fin 3) (Fin 3) F) (b : Fin 3 → F)
     (hA : A.det ≠ 0) :
     A.mulVec (A.det⁻¹ • A.cramer b) = b := by
-  rw [mulVec_smul, Matrix.mulVec_cramer, smul_smul, inv_mul_cancel hA, one_smul]
+  rw [mulVec_smul, Matrix.mulVec_cramer, smul_smul, inv_mul_cancel₀ hA, one_smul]
 
 /-- The quasideterminant denominator: det(A) = qdet₃ A i j · det(block3 A i j). -/
 theorem cramer_denom_qdet (A : Matrix (Fin 3) (Fin 3) F) (i j : Fin 3)
