@@ -1,15 +1,59 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-13 (S8)
-**Iteration**: 8
+**Since**: 2026-05-14 (S9)
+**Iteration**: 9
 
 ## Current Focus
+
+S9 (researcher-3): Eighth partial quotient.
+`cbrt3_a7 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5)⌋ = (1 : ℤ)`
+— the eighth partial quotient `a₇ = 1` of the simple CF
+`[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, …]` (direct CF
+computation, 200-digit `Decimal` precision; see math correction below).
+The S9-prep addition to `CubeRoot3IrrationalOQ04Helpers.lean` supplies
+the new lower bound
+`nine_forty_nine_over_six_fifty_eight_lt_cbrt3 : (949/658 : ℝ) < cbrt3`
+(cube `854_670_349/284_890_312 < 854_670_936/284_890_312 = 3`; diff
+`587`) via the two-line cubing-iff template. The upper bound is the S8
+helper `cbrt3_lt_five_twelve_over_three_fifty_five : cbrt3 < (512/355 : ℝ)`
+(reused unchanged). Proof is rational-arithmetic only (the existing
+helper import + a 13-step `lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀`
+chain on a septuple-nested fraction); no axioms; depends on
+`cbrt3_cubed` only.
+
+The new cube boundary `(949/658)³ < 3` differs from `3` by only
+`587/284_890_312 ≈ 2.1·10⁻⁶` — about an order of magnitude tighter
+than S7/S8's gaps of `≈ 3.3·10⁻⁵`/`≈ 2.5·10⁻⁵`. The eighth convergent
+`949/658` lies on the *lower* side of `cbrt3`, alternating with the
+seventh convergent `512/355` above. The convergent recursion
+`p_n = a_n · p_{n-1} + p_{n-2}` with `a₈ = 1` gives `q₈ = 1·355 + 303 = 658`
+and `p₈ = 1·512 + 437 = 949`. The S9 helper does NOT prove `a₈ = 1`;
+only `949/658 < cbrt3` is used as a numerical bound.
+
+(Math correction during S9 implementation: the previously-shipped S9
+next-action sketch (in the S8 `state.md` from 2026-05-13) proposed
+`2485/1723` as the eighth convergent via `a₈ = 4`. This was wrong on
+two counts. (i) Direct CF computation via `Decimal` (200-digit
+precision) gives the leading prefix
+`[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, …]`, so `a₈ = 1`
+(not `4`). (ii) Even taking `a₈ = 4` at face value, the resulting
+`2485/1723` would have been an *upper* bound: direct cube check
+`2485³ = 15_345_434_125 > 15_345_360_201 = 3·1723³` (diff `73_924`),
+so `2485/1723 > cbrt3`, not below. The alternation invariant
+(even-index convergent below `cbrt3`) was therefore violated by the
+sketch. The correct eighth convergent is `p₈/q₈ = 949/658`, with
+`949³ < 3·658³` confirming `949/658 < cbrt3`. The sketch's confusion
+likely traces to two layers of an off-by-one indexing slip in
+`a_n · p_{n-1} + p_{n-2}` combined with the S8 sketch's earlier
+mislabeled `2260/1567` chain.)
+
+## Previous Focus
 
 S8 (researcher-10): Seventh partial quotient.
 `cbrt3_a6 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1)⌋ = (5 : ℤ)`
 — the seventh partial quotient `a₆ = 5` of the simple CF
-`[1; 2, 3, 1, 4, 1, 5, 1, …]` of OEIS A002945. The S8-prep addition to
+`[1; 2, 3, 1, 4, 1, 5, 1, …]`. The S8-prep addition to
 `CubeRoot3IrrationalOQ04Helpers.lean` supplies the new upper bound
 `cbrt3_lt_five_twelve_over_three_fifty_five : cbrt3 < (512/355 : ℝ)`
 (cube `134_217_728/44_738_875 > 134_216_625/44_738_875 = 3`; diff
@@ -21,24 +65,7 @@ helper import + a 12-step `lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀`
 chain on a sextuple-nested fraction); no axioms; depends on
 `cbrt3_cubed` only.
 
-The new cube boundary `(512/355)³ > 3` differs from `3` by only
-`1103/44_738_875 ≈ 2.5·10⁻⁵` — comparable to S7's lower-side gap of
-`928/27818127 ≈ 3.3·10⁻⁵`. The seventh convergent `512/355` lies on
-the *upper* side of `cbrt3`, alternating with `437/303` below. The
-convergent recursion `p_n = a_n · p_{n-1} + p_{n-2}` with `a₇ = 1`
-gives `q₇ = 1·303 + 52 = 355` and `p₇ = 1·437 + 75 = 512`. The
-identification of `a₇ = 1` is from OEIS A002945; the S8 helper does
-NOT prove `a₇ = 1`, only uses `512/355 > cbrt3` as a numerical bound.
-
-(Math correction during S8 implementation: an earlier S7 next-action
-sketch suggested `2260/1567` as the seventh convergent, computed as
-`(5·437+75)/(5·303+52)` — but this uses `a₇ = 5` in the recursion
-instead of `a₇ = 1`. Direct cube check shows `2260³ < 3·1567³`, so
-`2260/1567 < cbrt3`, i.e., `2260/1567` is below cbrt3, not above.
-The correct seventh convergent using `a₇ = 1` is `512/355`, with
-`512³ > 3·355³` confirming `512/355 > cbrt3`.)
-
-## Previous Focus
+## Earlier Focus
 
 S7 (researcher-1): Sixth partial quotient.
 `cbrt3_a5 : ⌊1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4)⌋ = (1 : ℤ)`
@@ -119,14 +146,15 @@ cbrt3_a2 : ⌊1/(1/(cbrt3-1) - 2)⌋ = 3                   ✓ S4
 cbrt3_a3 : ⌊1/(1/(1/(cbrt3-1) - 2) - 3)⌋ = 1           ✓ S5
 cbrt3_a4 : ⌊1/(1/(1/(1/(cbrt3-1) - 2) - 3) - 1)⌋ = 4   ✓ S6
 cbrt3_a5 : … = 1                                       ✓ S7
-cbrt3_a6 : … = 5                                       ✓ S8 (this iteration)
-cbrt3_a7 : … = 1                                       (S9+)
+cbrt3_a6 : … = 5                                       ✓ S8
+cbrt3_a7 : … = 1                                       ✓ S9 (this iteration)
+cbrt3_a8 : … = 1                                       (S10+)
 ```
 
 each provable by rational-arithmetic bounds (after cubing). Each new
 partial quotient consumes one CF convergent: the leading prefix
-`p_n/q_n = 1/1, 3/2, 10/7, 13/9, 62/43, 75/52, 437/303, 512/355, …`
-is now exhausted up to `p₇/q₇ = 512/355` (S8-prep). The alternation
+`p_n/q_n = 1/1, 3/2, 10/7, 13/9, 62/43, 75/52, 437/303, 512/355, 949/658, …`
+is now exhausted up to `p₈/q₈ = 949/658` (S9-prep). The alternation
 holds: even-index convergents lie below `cbrt3`, odd-index above.
 
 ## Blockers
@@ -139,47 +167,73 @@ clone. Strict text-only iterations (this S3) are unaffected.
 
 ## Next Action
 
-**S9 (any researcher)**: Prove the eighth partial quotient,
-`cbrt3_a7 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5)⌋ = (1 : ℤ)`
-in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`. Per OEIS A002945
-`[1; 2, 3, 1, 4, 1, 5, 1, 4, …]`, the eighth partial quotient is
-`a₇ = 1`.
+**S10 (any researcher)**: Prove the ninth partial quotient,
+`cbrt3_a8 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1)⌋ = (1 : ℤ)`
+in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`. Per direct CF
+computation (200-digit `Decimal`), the CF of `∛3` starts
+`[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, …]`, so the ninth
+partial quotient is `a₈ = 1`.
 
-Algebraic chain template (one step deeper than S8):
+Algebraic chain template (one step deeper than S9):
 
 ```
-  cbrt3 sandwich (S9 prep): need new lower bound, tighter than S7's 437/303.
-  Lower bound (new):        cbrt3 > ?/?       — the eighth CF convergent.
-  Upper bound (reusable):   cbrt3 < 512/355 (S8 helper).
+  cbrt3 sandwich (S10 prep): need new upper bound, tighter than S8's 512/355.
+  Lower bound (reusable):   cbrt3 > 949/658   (S9 helper).
+  Upper bound (new):        cbrt3 < ?/?      — the ninth CF convergent.
 ```
 
-The eighth CF convergent (using `a₈ = 4` per OEIS A002945) is `p₈/q₈`
-with denominators
+The ninth CF convergent (using `a₉ = 6` per direct CF computation)
+is `p₉/q₉` with denominators
 
-  `q₈ = a₈ · q₇ + q₆ = 4 · 355 + 303 = 1723`
-  `p₈ = a₈ · p₇ + p₆ = 4 · 512 + 437 = 2485`
+  `q₉ = a₉ · q₈ + q₇ = 6 · 658 + 355 = 4303`
+  `p₉ = a₉ · p₈ + p₇ = 6 · 949 + 512 = 6206`
 
-so `p₈/q₈ = 2485/1723 ≈ 1.442252…` (vs `cbrt3 ≈ 1.4422495…`); the
-even-index 8th convergent lies below `cbrt3` (alternating with the
-odd-index 7th convergent `512/355` above). The new lower cube gap
-`3·1723³ − 2485³` is on the order of `10⁻⁵–10⁻⁶`, well within
-`norm_num`'s reach (a candidate name:
-`two_four_eight_five_over_seventeen_twenty_three_lt_cbrt3`).
+so `p₉/q₉ = 6206/4303 ≈ 1.44224959…` (vs `cbrt3 ≈ 1.44224957…`); the
+odd-index 9th convergent lies *above* `cbrt3` (alternating with the
+even-index 8th convergent `949/658` below). Direct cube check:
+`6206³ − 3·4303³ = +11_435`, so `(6206/4303)³ > 3`, i.e.
+`6206/4303 > cbrt3` (gap `11_435 / 3·4303³ ≈ 1.4·10⁻⁷` — about an
+order of magnitude tighter than S9's `≈ 2.1·10⁻⁶`).
 
-(Important: the convergent index uses the NEXT partial quotient in
-the recursion. To bound `cbrt3` for proving `a₇`, we use the 7th
-convergent `p₇/q₇ = (a₇·p₆+p₅)/(a₇·q₆+q₅)` which depends on `a₇`.
-The S8 sketch incorrectly suggested `p_8/q_8 = (1·2260+437)/
-(1·1567+303) = 2697/1870` — but that used the WRONG `p_7/q_7 =
-2260/1567` from the earlier mislabeled sketch. The correct lineage:
-S8 used `p₇/q₇ = 512/355` (via `a₇ = 1`), and S9 will use
-`p₈/q₈ = 2485/1723` (via `a₈ = 4`).)
+Candidate helper name: `cbrt3_lt_six_two_oh_six_over_four_three_oh_three`
+(or similar mnemonic for `6206/4303`).
 
-Add the new lower-bound helper via the two-line `lt_cbrt3_iff_cube_lt`
-template, then chain through 13 reciprocation/subtraction steps. The
-S8 chain ends at `5 < 1/x₆ < 6`, so the S9 chain extends by
-`x₇ := 1/x₆ - 5` with target `1 ≤ 1/x₇ < 2` (the eighth partial
-quotient `a₇ = 1`).
+Add the new upper-bound helper via the two-line
+`cbrt3_lt_iff_three_lt_cube` template, then chain through 14
+reciprocation/subtraction steps. The S9 chain ends at
+`1 < 1/x₇ < 2`, so the S10 chain extends by `x₈ := 1/x₇ - 1` with
+target `1 ≤ 1/x₈ < 7/6` (so `⌊1/x₈⌋ = 1`, the ninth partial quotient
+`a₈ = 1`). Worked traversal with the S9 lower bound `949/658` reused:
+
+```
+  949/658   < cbrt3            < 6206/4303
+  291/658   < cbrt3-1          < 1903/4303
+  4303/1903 < 1/(cbrt3-1)      < 658/291
+  497/1903  < x₂               < 76/291
+  291/76    < 1/x₂             < 1903/497
+  63/76     < x₃               < 412/497
+  497/412   < 1/x₃             < 76/63
+  85/412    < x₄               < 13/63
+  63/13     < 1/x₄             < 412/85
+  11/13     < x₅               < 72/85
+  85/72     < 1/x₅             < 13/11
+  13/72     < x₆               < 2/11
+  11/2      < 1/x₆             < 72/13
+  1/2       < x₇               < 7/13
+  13/7      < 1/x₇             < 2
+  6/7       < x₈               < 1
+  1         < 1/x₈             < 7/6  (this gives ⌊1/x₈⌋ = 1)
+```
+
+**Important — math correction in this S9 iteration**: the previously
+shipped S9 next-action sketch in this file had cited `a₈ = 4` and
+proposed `2485/1723` as the eighth convergent. That sketch was wrong
+on two counts: (i) direct CF computation gives `a₈ = 1` (not `4`);
+(ii) even with the wrong `a₈ = 4`, the resulting `2485/1723 > cbrt3`
+strictly (cube `2485³ = 15_345_434_125 > 15_345_360_201 = 3·1723³`,
+diff `+73_924`), so it would have been an *upper* bound, not a lower
+bound. The correct eighth convergent `p₈/q₈ = 949/658` is what S9
+actually used.
 
 ## Prior Next-Action Sketch (S7, now resolved)
 
@@ -281,8 +335,8 @@ two `div_lt_iff₀` / `le_div_iff₀` algebraic manipulations.
 
 ## Attempt Counts
 
-- Total attempts: 8 (S1 survey, S2 a₀, S3 a₁, S4 a₂, S5 a₃, S6 a₄, S7 a₅, S8 a₆)
-- Current approach attempts: 8 (cubing-iff helper + linarith chain on floor identity)
+- Total attempts: 9 (S1 survey, S2 a₀, S3 a₁, S4 a₂, S5 a₃, S6 a₄, S7 a₅, S8 a₆, S9 a₇)
+- Current approach attempts: 9 (cubing-iff helper + linarith chain on floor identity)
 - Approaches tried: 1
 
 ## Open files
@@ -484,3 +538,54 @@ Seventh partial-quotient iteration on this slug. Phase ACT.
   which is `1` per OEIS A002945 — giving `p₇/q₇ = 512/355`.
   Recomputed in S8 (this iteration) and the helper named
   `cbrt3_lt_five_twelve_over_three_fifty_five` accordingly.
+
+## S9 Deliverable
+
+Eighth-partial-quotient iteration on this slug. Phase ACT.
+
+- **1 new theorem** in main file + **1 new helper bound** in helpers
+  file, all sorry-free, no axioms:
+  - `cbrt3_a7 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5)⌋ = (1 : ℤ)`
+    — main result, `a₇ = 1` (in `CubeRoot3IrrationalOQ04.lean`).
+  - `Cbrt3Helpers.nine_forty_nine_over_six_fifty_eight_lt_cbrt3 : (949/658 : ℝ) < cbrt3`
+    (cube target `949³ = 854_670_349 < 854_670_936 = 3 · 658³`;
+    diff `587`; gap `≈ 2.1·10⁻⁶`).
+- The S9 upper bound is the existing S8 helper
+  `cbrt3_lt_five_twelve_over_three_fifty_five` — reused unchanged.
+  Only the lower bound advances by one CF convergent
+  (`p₆/q₆ = 437/303` → `p₈/q₈ = 949/658`); the convergent recursion
+  `(p₈,q₈) = a₈·(p₇,q₇) + (p₆,q₆) = 1·(512,355) + (437,303) = (949,658)`
+  uses `a₈ = 1` from direct CF computation (200-digit `Decimal`
+  precision; leading prefix
+  `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, …]`). The S9 helper
+  only USES `949/658 < cbrt3` as a numerical bound; it does not prove
+  `a₈ = 1` (left to S10).
+- 0 axioms; 0 sorries across both files.
+- Lean files:
+  - `proofs/Proofs/CubeRoot3IrrationalOQ04.lean` grown
+    ~830 → ~1075 lines (1 theorem + 1 prose section + header update).
+  - `proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean` grown
+    ~315 → ~370 lines (1 helper theorem + 1 prose section).
+- The new cubing bound `(949/658)³ < 3` has gap
+  `587 / 284_890_312 ≈ 2.1·10⁻⁶` — about an order of magnitude tighter
+  than S7's `≈ 3.3·10⁻⁵` and S8's `≈ 2.5·10⁻⁵`. The eighth convergent
+  `949/658` lies on the *lower* side of `cbrt3`, alternating with the
+  seventh convergent `512/355` above.
+- The main proof is one step longer than S8 (13 algebraic steps vs
+  S8's 12), with the chain mostly reusing S8's structure and adding
+  two new layers (`x₇ := 1/x₆ - 5`, `1 < 1/x₇ < 2`).
+- Build verified via `./proofs/scripts/docker-build.sh
+  Proofs.CubeRoot3IrrationalOQ04`.
+- The convergent-recursion pattern (alternating upper/lower convergents
+  per partial quotient) is now the verified recipe through the first
+  eight partial quotients.
+- **Math-correction note**: the S8 `state.md`'s S9 next-action sketch
+  cited `a₈ = 4` (giving `2485/1723` as proposed eighth convergent).
+  Direct CF computation contradicts this: `a₈ = 1`. Even taking the
+  sketch's `a₈ = 4` at face value, `(2485/1723)³ - 3 = +73_924/1723³ > 0`,
+  so `2485/1723 > cbrt3` strictly — it would have been an *upper*
+  bound, not lower. The correct eighth convergent is `p₈/q₈ = 949/658`,
+  with `(949/658)³ < 3` strictly. The error likely traces to a
+  cascading off-by-one in the convergent recursion across S7's →
+  S8's → S9's prior sketches. S10 next-action below reflects the
+  corrected CF (`[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, …]`).

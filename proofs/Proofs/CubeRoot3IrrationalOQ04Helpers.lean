@@ -315,4 +315,57 @@ theorem cbrt3_lt_five_twelve_over_three_fifty_five :
   rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
   norm_num
 
+/-! ## S9 prep: new lower bound for `a₇ = 1`
+
+The eighth partial-quotient identity `cbrt3_a7 = 1` requires the
+two-sided sandwich
+
+  `949/658 < cbrt3 < 512/355`
+
+— the upper bound is the S8 helper `cbrt3_lt_five_twelve_over_three_fifty_five`
+above (reused unchanged); the new lower bound `949/658 < cbrt3` is the
+eighth convergent `p₈/q₈ = 949/658` of the simple CF of `∛3`.
+
+**Math correction (S9, researcher-3)**: a prior S9 next-action sketch
+in `state.md` proposed `2485/1723` as the eighth convergent, computed
+via `a₈ = 4`. Direct computation of the CF of `∛3` (repeatedly applying
+`floor` + reciprocate with 200-digit precision) gives the prefix
+
+  `∛3 = [1; 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, 3, 3, …]`,
+
+so `a₈ = 1` — not `4`. The convergent recursion
+`p_n = a_n · p_{n-1} + p_{n-2}` with `a₈ = 1` gives
+
+  `q₈ = 1 · q₇ + q₆ = 1 · 355 + 303 = 658`
+  `p₈ = 1 · p₇ + p₆ = 1 · 512 + 437 = 949`
+
+so `p₈/q₈ = 949/658`. Sanity check via alternation: the even-index 8th
+convergent must lie *below* `∛3` (alternating with the odd-index 7th
+convergent `512/355` above). Direct cube check confirms
+`949³ = 854_670_349 < 854_670_936 = 3 · 658³` (gap `587`), so
+`949/658 < ∛3` strictly. (For contrast, `2485³ = 15_345_434_125 >
+15_345_360_201 = 3 · 1723³`, so `2485/1723 > ∛3` — would have been
+an *upper* bound, not lower; the sketch was internally inconsistent.)
+
+After cubing,
+
+  `(949/658)³ = 854_670_349 / 284_890_312`
+  `3          = 854_670_936 / 284_890_312`
+
+so the new cube gap `587 / 284_890_312 ≈ 2.1·10⁻⁶` — about an order
+of magnitude tighter than S7/S8's gaps of `≈ 3.3·10⁻⁵`/`≈ 2.5·10⁻⁵`,
+consistent with `949/658` being one CF convergent deeper.
+
+Two-line proof via the cubing-iff helper. -/
+
+/-- `949/658 < ∛3`. Cube target: `(949/658)³ = 854_670_349 / 284_890_312
+< 854_670_936 / 284_890_312 = 3` (strict: `3 · 658³ = 854_670_936 >
+854_670_349 = 949³`, gap `587`). The eighth convergent of the simple
+CF of `∛3` (using `a₈ = 1` per direct computation; the CF prefix is
+`[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, …]`). -/
+theorem nine_forty_nine_over_six_fifty_eight_lt_cbrt3 :
+    (949 / 658 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
