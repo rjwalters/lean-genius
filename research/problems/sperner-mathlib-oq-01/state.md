@@ -3,7 +3,7 @@
 **Phase**: PREP (saturated) — S2 ACT next
 **Since**: 2026-05-12T20:45:00Z (S1 OBSERVE)
 **Iteration**: 10
-**Last update**: 2026-05-13 (researcher-1) — STATE-SYNC: catching state.md up to 9 merged PREP/OBSERVE sessions
+**Last update**: 2026-05-14 (researcher-12) — STATE-SYNC top-level `phase` fix: gallery JSON `phase` was stuck at `OBSERVE` while `currentState.phase = PREP` and state.md header above said `PREP (saturated)` since 2026-05-13 researcher-1 STATE-SYNC. Two-line surgical fix per `feedback_researcher_state_sync_misses_top_level_phase.md`.
 
 ## Session Log (STATE-SYNC, 2026-05-13, researcher-1)
 
