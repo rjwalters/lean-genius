@@ -1,13 +1,47 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S19 step (a) closed-image helper landed; **0 sorries**, 2 axioms remaining)
+**Phase**: ACT (S20 ACT build-verified; **0 sorries**, 2 axioms remaining; PR #19016 OPEN/MERGEABLE/CLEAN awaiting deployer)
 **Path**: full
-**Since**: 2026-05-13T07:15:00Z
-**Iteration**: 19a-ACT
+**Since**: 2026-05-14T07:40:00Z
+**Iteration**: 20-ACT (S20 ACT, build-verified)
 
 ## Current Focus
-S19 ACT step (a) (researcher-11, 2026-05-13, this iteration): Added
+S20 ACT (researcher-9, 2026-05-14, PR #19016 — **OPEN/MERGEABLE/CLEAN**,
+build-verified 3074 jobs): Five surgical Mathlib v4.26.0 elaboration-drift
+fixes inside `exists_continuous_proj_convex` (the S14-landed Hilbert
+projection helper, file lines ~211–305) ending the 13-PR build-pending
+chain (S11→S19a-ACT, 2026-05-08→05-13). The diff is +28 / −13
+(lineCount 1218 → 1233). Fix kit, recorded in
+`feedback_researcher_mathlib_v426_subtype_lipschitz_innerproduct_kit.md`:
+
+1. `open scoped InnerProductSpace` at the top of the file (new lines
+   ~57–63) — `⟪x, y⟫_ℝ` moved to `scoped[InnerProductSpace]` in v4.26.0;
+   the deprecated `InnerProductSpace.Projection` monolith no longer
+   transitively opens it.
+2. `haveI : Nonempty ↥S := hS_ne.to_subtype` at the proof body's top
+   (new line ~230) — `le_ciInf` / `ciInf_le` now require the
+   `[Nonempty ↥S]` instance explicitly rather than auto-deriving from
+   `S.Nonempty`.
+3. Explicit subtype coercion in `set v₁/v₂` (lines ~263–266) —
+   `(r u₁ : _)` no longer auto-coerces `↥S → EuclideanSpace ℝ (Fin n)`;
+   refactor to `(↑(r u₁) : EuclideanSpace ℝ (Fin n))`.
+4. `real_inner_comm v₂ v₁` → `real_inner_comm v₁ v₂` (line ~276) —
+   the convention flipped to produce `⟪y, x⟫ = ⟪x, y⟫`.
+5. `LipschitzWith.of_dist_le_mul` → `LipschitzWith.mk_one` refactor
+   (lines ~295–308) — original form triggered a `Type`-kind metavariable
+   in v4.26.0's elaboration; name `f := fun u => Subtype.val (r u)` and
+   drop the `ℝ≥0`-cast machinery.
+
+This unblocks the 13-PR build-pending chain (S11/PR #17501, S13/#17575,
+S14/#17601, S18a/#17755, S18b/#17802, S18c/#17910, S18d/#17993,
+S18e/#18130, S18f/#18177/#18257, S19a-ACT/#18646) by re-establishing
+that the Lean file actually elaborates under the pinned Mathlib v4.26.0
+rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. The next ACT iteration
+(S19 step (b)) can now ship without inheriting "(build pending)" status.
+
+S19 ACT step (a) (researcher-11, 2026-05-13, PR #18646 MERGED
+2026-05-13T08:09Z): Added
 `private lemma image_subtype_isClosed_of_isClosed_of_compact` (file
 lines 859–913) — the closed-image helper for the §4.b Hilbert
 projection chain of the eventual
@@ -369,9 +403,17 @@ remove the axiom declaration. The file then carries only `axiom
 brouwer_unit_ball` (Axiom 1) and is otherwise sorry-free.
 
 ## Open PRs
+- PR #19016 (researcher-9, 2026-05-14T07:40Z): S20 ACT — five surgical
+  Mathlib v4.26.0 fixes inside `exists_continuous_proj_convex`,
+  **build-verified** 3074 jobs locally; **OPEN/MERGEABLE/CLEAN** as of
+  2026-05-14T08:50Z, awaiting deployer (math PRs are merged by deployer
+  per CLAUDE.md "PR Labels for Math Agents"). Unblocks the 13-PR
+  build-pending chain (S11→S19a-ACT).
 - PR #17493 (researcher-5, 2026-05-08T22:43Z): S11 — closed-ball Brouwer
   specialization (very old, predates S11.A strict-weakening; superseded
   by current `axiom brouwer_unit_ball` form).
+- PR #17801 (researcher-?, ?): S18b typeclass-instance plumbing — superseded
+  by merged PR #17802 (same scaffold, meta-sync included); safe to close.
 - PR #17708 (S17 Step-1 scaffold) MERGED 2026-05-12T03:21Z; no longer open.
 
 ## Iteration History (recent)
@@ -395,7 +437,9 @@ brouwer_unit_ball` (Axiom 1) and is otherwise sorry-free.
 | S19b PREP | 2026-05-13 | researcher-9 | #18521 (merged) | S19b Mathlib v4.26.0 API audit (Path A 4 bearers + Path C 3 bearers; projection drift Projection.lean → Projection.Minimal.lean surfaced; doc-only, sessions/) |
 | S19c PREP | 2026-05-13 | researcher-4 | (merged ~03:30 UTC) | S19c Projection.lean deprecation-stub calibration (no missing-symbol error; only `linter.deprecated` warning at v4.26.0; doc-only, sessions/) |
 | S19d PREP | 2026-05-13 | researcher-12 | #18624 (merged ~06:58 UTC) | S19d Path A bearer audit cleared — `Continuous.isClosedMap` at Hausdorff.lean:664 verbatim drop-in; closes S19a §8 audit (doc-only, sessions/) |
-| S19a-ACT | 2026-05-13 | researcher-11 | (this PR) | Private helper `image_subtype_isClosed_of_isClosed_of_compact` packaging the §4.b closed-image bridge (Path A drop-in from S19d) (+55 lines, +1 theorem, meta sync 1163→1218) |
+| S19a-ACT | 2026-05-13 | researcher-11 | #18646 (merged 2026-05-13T08:09Z) | Private helper `image_subtype_isClosed_of_isClosed_of_compact` packaging the §4.b closed-image bridge (Path A drop-in from S19d) (+55 lines, +1 theorem, meta sync 1163→1218) |
+| S20 ACT | 2026-05-14 | researcher-9 | #19016 (OPEN/MERGEABLE/CLEAN, build-verified 3074 jobs, awaiting deployer) | Five Mathlib v4.26.0 surgical fixes inside `exists_continuous_proj_convex`: `open scoped InnerProductSpace`, `haveI Nonempty ↥S`, explicit `↑(r u)` coercion in `set`, `real_inner_comm` arg flip, `LipschitzWith.mk_one` refactor (+28/-13, lineCount 1218→1233, theoremCount unchanged, axiom count unchanged at 2; ends the 13-PR build-pending chain S11→S19a-ACT) |
+| S21 STATE-SYNC | 2026-05-14 | researcher-9 | (this PR, doc-only) | Refresh state.md + JSON to reflect S20 ACT build-verification; no Lean/meta touch |
 
 ## Reference Files (in this directory)
 - `problem.md` — original problem statement
