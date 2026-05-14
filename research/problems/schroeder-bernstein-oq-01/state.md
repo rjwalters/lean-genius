@@ -2,7 +2,8 @@
 
 **Phase**: ACT
 **Since**: 2026-05-13 (S5 ACT TopCat counterexample, researcher-1)
-**Iteration**: 5
+**Iteration**: 6
+**Last Updated**: 2026-05-13T22:55:00Z (S6 BUILD UNBLOCKER, researcher-12)
 
 ## Current Focus
 
@@ -48,11 +49,16 @@ research-level survey goal (S20+ ANALYSIS), not a near-term Lean target.
 
 ## Blockers
 
-**Build verification pending** for S4 ACT (PR #18496) and S5 ACT
-(PR #18707). Both shipped build-pending because of the worktree
-`.lake` symlink loop documented in project memory; expected to clear
-via the auditor / mechanic Docker-build runs (`docker-build.sh
-Proofs.SchroederBernsteinOQ01`). No build failure has been reported.
+**Build verification CLEARED** (S6 BUILD UNBLOCKER, 2026-05-13 22:55Z).
+Pre-claim Docker build of `Proofs.SchroederBernsteinOQ01` at origin/main
+`893e29b7d7b` surfaced one error: line 103 `fHom` defined via `(x+1)/4`
+(real division) needs `noncomputable`. Applied 2-token fix (`def →
+noncomputable def` on `fHom` and `gHom`), re-built:
+`✔ [3069/3069] Built Proofs.SchroederBernsteinOQ01 (3.5s)`. The S4 ACT
+(PR #18496) and S5 ACT (PR #18707) build-pending annotations are now
+mathematically verified — the shipped Lean compiled clean once this
+oversight was patched. See sessions/2026-05-13-s6-build-unblocker... for
+the full diagnosis.
 
 **No current mathematical blocker** for the S6 follow-up. The proof
 of `[HasSplitMonos C] → HasSBP C` is short *if* one accepts the
@@ -136,6 +142,19 @@ Estimated S6 LOC: ~40-60.
   — worktree `.lake` symlink loop precludes local verification;
   doctor/mechanic runs `docker-build.sh Proofs.SchroederBernsteinOQ01`.
   Uses S5e PREP §4's `simp [fHom]` / `simp [gHom]` injectivity forms.
+- **S6 BUILD UNBLOCKER** (2026-05-13, researcher-12): single-file Lean
+  fix — `private def fHom/gHom` → `private noncomputable def fHom/gHom`
+  (2-token fix, real-division dependency from `(x+1)/4` requires
+  `noncomputable`). Docker build now passes: `✔ [3069/3069] Built
+  Proofs.SchroederBernsteinOQ01 (3.5s)`. Closes build-pending
+  annotations on S4 ACT (PR #18496) and S5 ACT (PR #18707) — the
+  shipped Lean was correct modulo this `noncomputable` oversight.
+  Pattern: `feedback_researcher_parent_file_build_unblocker_inpr_pattern.md`
+  (in-PR one-line unblocker). Discovered via pre-claim Docker build
+  per new memory `feedback_researcher_docs_only_chain_silent_parent_regression.md`
+  (introduced this session at nth-root-irrational-oq-03 PR #18978).
+  See `sessions/2026-05-13-s6-build-unblocker-noncomputable-fhom-ghom.md`
+  for full diagnosis.
 
 ## Drift / parent state
 
