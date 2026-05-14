@@ -4,6 +4,7 @@ import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.Data.Real.Irrational
 import Mathlib.Tactic
+import Proofs.eTranscendental
 
 /-!
 # Irrationality Measure of e (Open Question)
@@ -115,7 +116,7 @@ axiom irrational_liouvilleWith_two (x : ℝ) (hx : Irrational x) : LiouvilleWith
 
 /-- **e has irrationality measure ≥ 2** (from Dirichlet + irrationality of e). -/
 theorem e_liouvilleWith_two : LiouvilleWith 2 (exp 1) :=
-  irrational_liouvilleWith_two _ (irrational_exp_iff.mpr (by norm_num : (1 : ℚ) ≠ 0))
+  irrational_liouvilleWith_two _ e_irrational
 
 /-! ═══════════════════════════════════════════════════════════════════════════════
 PART III: UPPER BOUND — μ(e) ≤ 2
