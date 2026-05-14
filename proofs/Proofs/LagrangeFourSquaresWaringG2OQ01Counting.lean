@@ -119,7 +119,7 @@ theorem g3_lower_counting : ¬ IsSumOfCubes 8 23 := by
     have h := Finset.card_eq_sum_card_fiberwise (f := g)
       (s := (Finset.univ : Finset (Fin 8)))
       (t := (Finset.univ : Finset (Fin 3)))
-      (fun _ _ => Finset.mem_univ _)
+      (by simp)
     rw [Finset.card_univ, Fintype.card_fin] at h
     rw [Fin.sum_univ_three] at h
     -- `h : 8 = n 0 + n 1 + n 2` after definitional unfolding of `n`.
