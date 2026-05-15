@@ -229,6 +229,51 @@ theorem latticeDisc_card_le_explicit (R : ℝ) :
     (latticeDisc R).card ≤ ((2 * ⌈|R|⌉ + 1).toNat) ^ 2 :=
   (latticeDisc_card_le_bbox R).trans_eq (bbox_card R)
 
+/-! ## S2-Gauss-real — Real-form qualitative Gauss-circle bound
+
+Bridge S2d's `Nat`-valued explicit bound `(latticeDisc R).card ≤ (2⌈|R|⌉+1)²`
+to a `Real`-form analytic bound `((latticeDisc R).card : ℝ) ≤ (2|R| + 3)²`
+suitable for downstream `ℓ¹`-majorisation / Plancherel estimates on
+`sphPartialSum`. The constant `4|R|² + 12|R| + 9` is the expanded form;
+the `(2|R|+3)²` form is the natural closure under `Int.ceil_lt_add_one`
+and `pow_le_pow_left₀`. The sharp constant `π` remains deferred (separate
+boundary-lattice analysis).
+-/
+
+/-- **Real-form qualitative Gauss-circle bound**:
+    `((latticeDisc R).card : ℝ) ≤ (2|R| + 3)²`.
+
+    Combines S2d's `latticeDisc_card_le_explicit` with `Int.ceil_lt_add_one`
+    (`⌈|R|⌉ < |R| + 1`) under cast to `ℝ`. The bound is qualitative
+    (constant 4 vs sharp π); useful for `O(R²)`-class estimates of the
+    spherical partial sum's ℓ¹-norm. -/
+theorem latticeDisc_card_le_real (R : ℝ) :
+    ((latticeDisc R).card : ℝ) ≤ (2 * |R| + 3) ^ 2 := by
+  -- Integer-side nonneg facts (so toNat is identity-on-Int and squaring monotone)
+  have hceil_nn : (0 : ℤ) ≤ ⌈|R|⌉ := Int.ceil_nonneg (abs_nonneg R)
+  have hpos : (0 : ℤ) ≤ 2 * ⌈|R|⌉ + 1 := by linarith
+  -- Cast S2d's Nat bound to ℝ, then use Int.toNat_of_nonneg to drop .toNat
+  have h_card_le_Nat : ((latticeDisc R).card : ℝ)
+                       ≤ (((2 * ⌈|R|⌉ + 1).toNat : ℝ)) ^ 2 := by
+    have h := latticeDisc_card_le_explicit R
+    exact_mod_cast h
+  have h_toNat : (((2 * ⌈|R|⌉ + 1).toNat : ℝ)) = ((2 * ⌈|R|⌉ + 1 : ℤ) : ℝ) := by
+    have := Int.toNat_of_nonneg hpos
+    exact_mod_cast this
+  rw [h_toNat] at h_card_le_Nat
+  -- ⌈|R|⌉ ≤ |R| + 1 (strict, but ≤ suffices)
+  have h_ceil_lt : (⌈|R|⌉ : ℝ) < |R| + 1 := Int.ceil_lt_add_one |R|
+  -- 2⌈|R|⌉ + 1 ≤ 2|R| + 3 (in ℝ)
+  have h_lin : ((2 * ⌈|R|⌉ + 1 : ℤ) : ℝ) ≤ 2 * |R| + 3 := by
+    push_cast
+    linarith
+  -- Nonneg of the integer cast (for monotone squaring)
+  have h_nn_R : (0 : ℝ) ≤ ((2 * ⌈|R|⌉ + 1 : ℤ) : ℝ) := by exact_mod_cast hpos
+  -- Square the linear inequality
+  have h_sq : ((2 * ⌈|R|⌉ + 1 : ℤ) : ℝ) ^ 2 ≤ (2 * |R| + 3) ^ 2 :=
+    pow_le_pow_left₀ h_nn_R h_lin 2
+  linarith
+
 end
 
 end FourierSeriesOQ04OQ01
