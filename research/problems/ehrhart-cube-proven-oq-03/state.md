@@ -2,11 +2,15 @@
 
 ## Current State
 
-**Phase**: S3 PREP (hypersimplex-track bearer audit, doc-only)
+**Phase**: S4 ACT (palindrome sorry discharged, build clean)
 **Path**: full
-**Since**: 2026-05-13T22:15Z (researcher-4, S3)
-**Last Updated**: 2026-05-13 (Session 3 researcher-4)
-**Iteration**: 3
+**Since**: 2026-05-14T14:55Z (researcher-3, S4)
+**Last Updated**: 2026-05-14 (Session 4 researcher-3)
+**Iteration**: 4
+
+**Sorries**: 2 → 1 (`hypersimplex_palindrome_k_d_minus_1` proven; only `hypersimplex_count_k_one` remains).
+**Build**: clean (7743 Docker jobs, single iteration, 2026-05-14).
+**File**: `proofs/Proofs/EhrhartCubeProvenOQ03.lean` 119 → 169 LOC.
 
 ## Session 2 — S2 PREP: Mathlib bearer audit + slot-drift discovery (researcher-10, 2026-05-13)
 
@@ -287,3 +291,75 @@ complements helper, and the four `card_nbij'` field proofs).
 * No JSON `title` / `tags` retitle (still in Option A vs B scope-decision territory).
 * No new sibling slug creation.
 * No commitment to Option A vs B — that decision remains with seeker / curator / human per Session 2 Decision Log.
+
+## Session 4 — S4 ACT: discharge `hypersimplex_palindrome_k_d_minus_1` (researcher-3, 2026-05-14)
+
+**Mode.** ACT. Single `.lean` edit at `proofs/Proofs/EhrhartCubeProvenOQ03.lean:79–91` (replaces the docstring sketch and the `sorry` body with a complete proof). +50 LOC, file 119 → 169. Build clean on first Docker iteration: `Build completed successfully (7743 jobs)`. Sorries 2 → 1.
+
+**Outcome.** The palindrome sorry is now PROVEN. The hypersimplex track has its first axiom-free reference identity, on the Option-A continuation (no scope-decision flip; the on-main hypersimplex slot remains the slug's subject).
+
+### Path chosen: Option A (continue hypersimplex)
+
+S3 PREP (researcher-4, PR #18923) deferred Option A vs B to seeker/curator/human triage. This session takes Option A on the narrowest justification: a single bearer-clean sorry (`hypersimplex_palindrome_k_d_minus_1`) is now provable in ≤ 60 LOC, the proof has zero scope-decision content (it only touches the existing hypersimplex namespace's reference identity), and shipping it does NOT preclude Option B for the larger Barvinok plan (which would still spin off to `oq-05` if chosen). The k=1 sorry (`hypersimplex_count_k_one`) remains for a future S5+ ACT and would also remain unaffected by an Option B fork.
+
+### Proof construction
+
+The S3 PREP outline (state.md §Refined proof outline — `hypersimplex_palindrome_k_d_minus_1`) used `Finset.card_nbij' φ φ` (4 field obligations: 2 × `Set.MapsTo`, 2 × `Set.LeftInvOn`/`RightInvOn`). On inspection of `Mathlib/Data/Finset/Card.lean` at the lake-pinned SHA, the specialization `Finset.card_equiv` (line 403) is cleaner when the bijection is a self-inverse involution:
+
+```
+lemma card_equiv (e : α ≃ β) (hst : ∀ i, i ∈ s ↔ e i ∈ t) : #s = #t
+```
+
+This has 1 obligation (the iff) versus 4. The shipped proof bundles φ as an `Equiv` via `{ toFun := φ, invFun := φ, left_inv := hφφ, right_inv := hφφ }` where `hφφ : ∀ x, φ (φ x) = x`, then applies `card_equiv` with the iff closed by `omega` after the linear-arithmetic bridge `d * n = n * 1 + n * (d - 1)`.
+
+**Proof skeleton (in shipped order):**
+
+1. `hbnd : ∀ x i, (x i : ℕ) ≤ n` — from `(x i).isLt : (x i : ℕ) < n + 1` by omega. Used twice.
+2. `let φ : ... := fun x i => ⟨n - (x i : ℕ), by ...; omega⟩` — the involution.
+3. `hφφ : ∀ x, φ (φ x) = x` — pointwise `Fin.ext`; `n - (n - x_i) = x_i` by `omega` given `hbnd`.
+4. `hsum : ∀ x, (∑ i, (φ x i : ℕ)) + (∑ i, (x i : ℕ)) = d * n` — `Finset.sum_add_distrib` + pointwise `(n - x_i) + x_i = n` + `simp only` chain through `Finset.sum_const`, `Finset.card_univ`, `Fintype.card_fin`, `smul_eq_mul`.
+5. `let e : ... ≃ ... := { toFun := φ, invFun := φ, left_inv := hφφ, right_inv := hφφ }` — bundle as Equiv.
+6. `unfold hypersimplexLatticeCount; refine Finset.card_equiv e ?_` — reduce to the iff.
+7. Linear bridge `h_d1 : d * n = n * 1 + n * (d - 1)` via `Nat.add_mul` + `ring` from `d = 1 + (d - 1)` (which `omega` produces from `hd : 2 ≤ d`).
+8. `omega` × 2 — closes both ↔ directions from `hsum x` + `h_d1` + the assumed sum-equality.
+
+**Deviations from S3 PREP plan.**
+
+- Used `Finset.card_equiv` (1 obligation) over `Finset.card_nbij'` (4 obligations). Both work; `card_equiv` is the right tool when the bijection is a self-inverse involution because the LeftInvOn/RightInvOn discharge collapses into one `hφφ` proof reused twice in the Equiv constructor.
+- The S3 PREP "known hazard" (`omega` stall on `n * (d − 1)`) did NOT fire. Reason: the bridge `d * n = n * 1 + n * (d - 1)` is proven once as a hypothesis (`h_d1`) using `Nat.add_mul` + `ring`, then `omega` treats the `n * (d - 1)` term as an opaque atom — purely linear given `h_d1` + `hsum`. The S3 PREP's `Nat.mul_sub_one` backup was unnecessary.
+- S3 PREP did NOT mention `set_option linter.unusedTactic false`; the file already had it at line 33 so no new linter overrides were needed.
+
+### Files modified (this PR)
+
+* `proofs/Proofs/EhrhartCubeProvenOQ03.lean` — replace `sorry` body at line 89-91 with the ~50-LOC proof; rewrite the surrounding docstring (line 79-90) to reflect the proven status; file 119 → 169 LOC.
+* `src/data/proofs/ehrhart-cube-proven-oq-03/meta.json` — `leanFile.{lineCount,sorries}` (119 → 169, 2 → 1) and `meta.sorries` (2 → 1).
+* `src/data/research/problems/ehrhart-cube-proven-oq-03.json` — phase `S3_PREP` → `S4_ACT`, iteration `3` → `4`, `lastUpdate`, `currentState.{since,iteration,focus,nextAction,attemptCounts.{total,currentApproach}}`, `leanFiles[0].{lineCount,sorryCount}`.
+* `research/problems/ehrhart-cube-proven-oq-03/state.md` — this Session 4 section + header refresh.
+
+### Out of scope (this PR)
+
+* No `hypersimplex_count_k_one` discharge (the k=1 sorry remains, queued for S5+ ACT per the S3 PREP caveat).
+* No new sibling slug creation; no rename of this slug's `title` / `tags` / `description` (the Option A vs B scope-decision territory in §Recommended Continuation Paths is left intact — Option B can still be chosen by a future iteration without rewinding this proof).
+* No `meta.json` `status` change (`"formalized"` remains correct while sorries > 0).
+* No `knowledge.md` edit (the S3 PREP bearer table and the §S3 PREP refined proof outline already match the shipped proof; appending an "S4 ACT — proof shipped" note would be redundant with this state.md section).
+* No `S5 ACT` start on the k=1 sorry. That is materially harder (~80 LOC, needs a multiplicity bijection or stars-and-bars construction); per session-discipline norms it deserves a separate ACT iteration with its own pre-flight Mathlib bearer check on `Sym.card_sym_eq_choose` argument shape + `Finset.card_powersetCard`.
+
+### Build
+
+```
+./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ03
+...
+⚠ [7743/7743] Built Proofs.EhrhartCubeProvenOQ03 (9.3s)
+warning: Proofs/EhrhartCubeProvenOQ03.lean:75:8: declaration uses 'sorry'
+Build completed successfully (7743 jobs).
+
+=== Build succeeded ===
+```
+
+The single remaining `'sorry'` warning is at line 75 = `hypersimplex_count_k_one`, as expected.
+
+### Decision Log
+
+* **2026-05-14 S4 (researcher-3)**: Take Option A on the narrowest justification (one bearer-clean sorry, ≤ 60 LOC, no scope-decision content, leaves Option B available for the larger Barvinok plan). Reason: shipping a small axiom-free reference identity strictly improves the slug's state and does not foreclose any of S2 PREP's two recommended continuation paths.
+* **2026-05-14 S4 (researcher-3)**: Use `Finset.card_equiv` over the S3-sketched `Finset.card_nbij'`. Reason: the involution form `φ ∘ φ = id` bundles directly as an `Equiv`, collapsing 4 field obligations to 1 iff goal; the proof is materially shorter and easier to read. Recorded for future hypersimplex-style proofs.
+* **2026-05-14 S4 (researcher-3)**: Do NOT bundle the k=1 ACT into this PR. Reason: it is materially harder, needs a non-trivial Sym-or-stars-and-bars bijection (~80 LOC per S3 PREP caveat), and would dilute the review surface of a tight ~60-LOC palindrome ACT. Session-discipline norm: ship the small win, queue the bigger ACT.

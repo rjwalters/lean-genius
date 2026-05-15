@@ -6,10 +6,10 @@
   "leanFile": {
     "path": "Proofs/EhrhartCubeProvenOQ03.lean",
     "filename": "EhrhartCubeProvenOQ03.lean",
-    "lineCount": 119,
+    "lineCount": 169,
     "theoremCount": 6,
     "definitionCount": 2,
-    "sorries": 2,
+    "sorries": 1,
     "axiomCount": 0
   },
   "meta": {
@@ -17,7 +17,7 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Hypersimplex",
     "date": "2026",
     "status": "formalized",
-    "sorries": 2,
+    "sorries": 1,
     "proofRepoPath": "Proofs/EhrhartCubeProvenOQ03.lean",
     "tags": [
       "combinatorics",
@@ -55,16 +55,16 @@
     },
     {
       "id": "section-2-reference-identities",
-      "title": "Section II — Reference identities (S2 / S3 targets, `sorry`)",
+      "title": "Section II — Reference identities (S2 / S3 targets)",
       "startLine": 64,
-      "endLine": 92,
-      "summary": "States two reference identities to discharge in S2 and S3: `hypersimplex_count_k_one` (k=1 reduces to standard simplex via OQ-01 multiset bijection) and `hypersimplex_palindrome_k_d_minus_1` (the involution `x ↦ n - x` sends Δ(d, k) lattice points to Δ(d, d-k) lattice points)."
+      "endLine": 141,
+      "summary": "Two reference identities. `hypersimplex_count_k_one` (k=1 reduces to standard simplex via OQ-01 multiset bijection) remains `sorry`'d, queued for S5+ ACT. `hypersimplex_palindrome_k_d_minus_1` (the involution `x ↦ n - x` sends Δ(d, k) lattice points to Δ(d, d-k) lattice points) is PROVEN as of S4 ACT (researcher-3, 2026-05-14, PR pending) via `Finset.card_equiv` bundled around the involution `φ x i = ⟨n - x i, _⟩`, the sum-of-complements identity `∑ φ x_i + ∑ x_i = d·n`, and a linear-arithmetic bridge `d·n = n·1 + n·(d-1)` closed by `omega`."
     },
     {
       "id": "section-3-sanity-checks",
       "title": "Section III — Numeric sanity checks (no `sorry`)",
-      "startLine": 93,
-      "endLine": 119,
+      "startLine": 143,
+      "endLine": 169,
       "summary": "Four numeric sanity checks closed by `decide` anchoring the definition: `hypersimplex_count_2_1_2 = 3`, `hypersimplex_count_3_1_1 = 3`, `hypersimplex_count_3_2_1 = 3` (palindrome witness), and `hypersimplex_count_3_1_2 = C(4, 2)` (binomial check)."
     }
   ],
