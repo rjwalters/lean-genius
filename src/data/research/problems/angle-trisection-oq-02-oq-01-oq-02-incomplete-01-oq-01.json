@@ -1,0 +1,98 @@
+{
+  "slug": "angle-trisection-oq-02-oq-01-oq-02-incomplete-01-oq-01",
+  "title": "Completing the Wantzel-Galois Constructibility Proof — OQ extension (01)",
+  "phase": "OBSERVE",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "problemStatement": {
+    "formal": "\\text{IsConstructible } \\alpha \\iff \\exists n, |\\mathrm{Gal}((\\mathrm{minpoly}_{\\mathbb{Q}} \\alpha).\\mathrm{SplittingField})| = 2^n",
+    "plain": "Prove the Wantzel-Galois characterization (`wantzel_galois_iff`): a complex number alpha is constructible (in the parent's inductive `IsConstructible` sense) if and only if the Galois group of the splitting field of its minimal polynomial over Q has order a power of 2. The parent slug closes the three classical impossibility results via a weaker degree criterion; this OQ-01 extension targets the abstract characterization (or, more modestly, the forward direction `constructible -> Gal is 2-group`).",
+    "whyMatters": [
+      "Closes the most prominent 'out-of-scope' entry in the parent file's docstring (~500 LOC was the parent's estimate; the forward direction is ~200 LOC).",
+      "Exercises and consolidates the Galois infrastructure already built in the parent (`isConstructible_map`, `isConstructible_minpoly_pow2`, `isConstructible_irred_degree_pow2`).",
+      "Bridges to sibling slugs (`angle-trisection-oq-02-oq-04-oq-01`, `angle-trisection-cos-20-gal-oq-01-*`) which use explicit QuadraticTower or Galois-cardinality formulations of the same characterization."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Parent: isConstructible_map (Galois invariance under Q-AlgHom C -> C)",
+      "Parent: isConstructible_algebraic_degree (finrank Q Q(alpha) divides 2^n)",
+      "Parent: isConstructible_minpoly_pow2 (minpoly Q alpha has natDeg = 2^m)",
+      "Parent: isConstructible_irred_degree_pow2 (irreducible p with constructible root has natDeg = 2^m)",
+      "Parent: angle_trisection_impossible_degree, doubling_cube_impossible_degree, regular_7gon_construction_impossible (the three classical impossibility theorems, all proved via degree criterion alone)"
+    ],
+    "open": [
+      "isConstructible_galois_two_group (forward direction): IsConstructible alpha -> |Gal(minpoly_Q alpha)| = 2^n",
+      "Reverse direction (constructible_of_galois_two_group): full FTGT + Sylow + degree-2 extension as sqrt adjoin — likely spin off to oq-02 slug",
+      "Full wantzel_galois_iff (bidirectional)"
+    ],
+    "goal": "Prove `wantzel_galois_iff` or at minimum its forward direction (`isConstructible_galois_two_group`)."
+  },
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-14T21:00:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE complete — bootstrapped slug from seeker-stub to full survey (problem.md + knowledge.md + state.md + session log). Identified the forward direction (`isConstructible_galois_two_group`) as the primary tractable scope; route R2 (new companion file `AngleTrisectionOQ02OQ01OQ02Incomplete01OQ01.lean`) is the S1 recommendation. No Lean changes.",
+    "blockers": [],
+    "nextAction": "S2 PREP: Mathlib v4.26.0 bearer-lemma audit for the 8 lemmas listed in knowledge.md §3 (IsAlgClosed.lift, Polynomial.Gal, IntermediateField.adjoin.finrank, etc.); private-lemma surface audit in the parent; R1 vs R2 vs R3 route decision; ⇒ alone vs full ↔ scope decision.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  },
+  "knowledge": {
+    "progressSummary": "S1 OBSERVE (researcher-8, 2026-05-14, doc-only): bootstrapped slug. Parent `AngleTrisectionOQ02OQ01OQ02Incomplete01.lean` shipped at 0 sorries / 0 axioms / 639 LOC with 21 declarations; all three classical impossibility theorems are closed via the degree criterion alone. The abstract `wantzel_galois_iff` is explicitly listed as out-of-scope (~500 LOC) in the parent's docstring. This OQ-01 extension targets that gap. Forward direction (~200 LOC) is sketched in parent Session 36 via `isConstructible_map` + `IsAlgClosed.lift` + tower-of-roots argument; reverse direction (~300 LOC) needs FTGT + Sylow.",
+    "builtItems": [],
+    "insights": [
+      "Parent file is sorry-free and axiom-free — this OQ-01 is genuinely additive, not a repair task.",
+      "Forward direction reuses parent's `isConstructible_map` (proved) + Mathlib `IsAlgClosed.lift` + standard Galois-cardinality lemmas. 7-step proof sketch in knowledge.md §4.",
+      "Three private lemmas in the parent (`isConstructible_algebraic`, `isConstructible_sup_degree`, `isConstructible_algebraic_degree`) may need surface-lift or re-derivation. Public-surface re-derivation via `isConstructible_minpoly_pow2` is feasible.",
+      "Reverse direction is likely too large for a single ACT session — recommend spin-out to a future oq-02 slug after the forward direction lands."
+    ],
+    "mathlibGaps": [
+      "S2 PREP must verify Mathlib v4.26.0 path for `Polynomial.Gal` (vs e.g. `Polynomial.gal` or split into `SplittingField ≃ₐ[ℚ] SplittingField`).",
+      "S2 PREP must verify `IsAlgClosed.lift` signature (`AlgHom` vs `AlgEquiv` output) — parent's `isConstructible_map` accepts the weaker `→ₐ[ℚ]` so this should align."
+    ],
+    "nextSteps": [
+      "S2 PREP: Mathlib v4.26.0 bearer-lemma audit (8 items, knowledge.md §3).",
+      "S2 PREP: parent `private` lemma audit — for each private lemma needed by S3 ACT, decide re-derive or surface-lift.",
+      "S2 PREP: R1 (extend parent file) vs R2 (new companion `AngleTrisectionOQ02OQ01OQ02Incomplete01OQ01.lean`) vs R3 (companion + parent-surface-lift PR) decision.",
+      "S3 ACT: state and partially prove `isConstructible_galois_two_group` with strategic sorries on the riskiest step (IsAlgClosed.lift chain).",
+      "S4 ACT: close remaining sorries in forward direction.",
+      "(stretch) S5+: spin out reverse direction to dedicated oq-02 slug, or attempt directly here."
+    ]
+  },
+  "tags": [
+    "seeker-selected",
+    "extension",
+    "gallery-extracted",
+    "galois-theory",
+    "constructibility"
+  ],
+  "relatedProofs": [
+    "angle-trisection",
+    "angle-trisection-oq-02",
+    "angle-trisection-oq-02-oq-01",
+    "angle-trisection-oq-02-oq-01-oq-02",
+    "angle-trisection-oq-02-oq-01-oq-02-incomplete-01",
+    "angle-trisection-oq-02-oq-04-oq-01",
+    "angle-trisection-cos-20-gal-oq-01-oq-01"
+  ],
+  "references": {
+    "papers": [],
+    "urls": [],
+    "mathlib": [
+      "Mathlib/FieldTheory/Galois/Basic.lean",
+      "Mathlib/FieldTheory/IsAlgClosed/Basic.lean",
+      "Mathlib/FieldTheory/IntermediateField/Adjoin/Basic.lean",
+      "Mathlib/FieldTheory/SplittingField/Construction.lean",
+      "Mathlib/LinearAlgebra/Dimension/StrongRankCondition.lean"
+    ]
+  },
+  "started": "2026-05-13T07:10:22.506Z",
+  "lastUpdate": "2026-05-14T21:00:00Z",
+  "significance": 6,
+  "tractability": 5
+}
