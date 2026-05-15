@@ -30,16 +30,19 @@
 -/
 
 import Mathlib.Analysis.InnerProductSpace.PiL2
-import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace
+import Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic
+import Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
 import Mathlib.Data.Finset.Basic
 import Mathlib.Tactic
 
 namespace Erdos735
 
+open scoped Classical
+
 /- ## Basic Setup -/
 
 /-- A point configuration in the plane -/
-def PointConfig := Finset (EuclideanSpace ℝ (Fin 2))
+abbrev PointConfig := Finset (EuclideanSpace ℝ (Fin 2))
 
 /-- A weighting assigns a positive real to each point -/
 def Weighting (P : PointConfig) := {w : P → ℝ // ∀ p, w p > 0}
@@ -47,11 +50,11 @@ def Weighting (P : PointConfig) := {w : P → ℝ // ∀ p, w p > 0}
 /-- A line determined by the configuration (at least 2 points) -/
 def ConfigLine (P : PointConfig) :=
   { L : AffineSubspace ℝ (EuclideanSpace ℝ (Fin 2)) //
-    L.direction.toSubmodule.rank = 1 ∧
+    Module.rank ℝ L.direction = 1 ∧
     (P.filter (· ∈ L)).card ≥ 2 }
 
 /-- The sum of weights on a line -/
-def lineSum (P : PointConfig) (w : Weighting P) (L : ConfigLine P) : ℝ :=
+noncomputable def lineSum (P : PointConfig) (w : Weighting P) (L : ConfigLine P) : ℝ :=
   (P.filter (· ∈ L.val)).sum fun p =>
     if h : p ∈ P then w.val ⟨p, h⟩ else 0
 
@@ -70,7 +73,7 @@ noncomputable def magicConstant (P : PointConfig) (hMagic : IsMagic P) : ℝ :=
 /-- Class 1: All points collinear -/
 def IsCollinear (P : PointConfig) : Prop :=
   ∃ L : AffineSubspace ℝ (EuclideanSpace ℝ (Fin 2)),
-    L.direction.toSubmodule.rank = 1 ∧ ∀ p ∈ P, p ∈ L
+    Module.rank ℝ L.direction = 1 ∧ ∀ p ∈ P, p ∈ L
 
 /-- Collinear configurations are trivially magic (only one line). -/
 axiom collinear_is_magic (P : PointConfig) (hP : P.card ≥ 2) :
@@ -79,7 +82,7 @@ axiom collinear_is_magic (P : PointConfig) (hP : P.card ≥ 2) :
 /-- Class 2: General position (no 3 collinear) -/
 def IsGeneralPosition (P : PointConfig) : Prop :=
   ∀ L : AffineSubspace ℝ (EuclideanSpace ℝ (Fin 2)),
-    L.direction.toSubmodule.rank = 1 →
+    Module.rank ℝ L.direction = 1 →
     (P.filter (· ∈ L)).card ≤ 2
 
 /-- General position configurations are magic with equal weights. -/
@@ -89,11 +92,12 @@ axiom general_position_is_magic (P : PointConfig) (hP : P.card ≥ 2) :
 /-- Class 3: Near-pencil (n-1 points on a line) -/
 def IsNearPencil (P : PointConfig) : Prop :=
   ∃ L : AffineSubspace ℝ (EuclideanSpace ℝ (Fin 2)),
-    L.direction.toSubmodule.rank = 1 ∧
+    Module.rank ℝ L.direction = 1 ∧
     (P.filter (· ∈ L)).card = P.card - 1 ∧
     P.card ≥ 3
 
-/-- Near-pencil configurations are magic via careful weight assignment. -/
+/- Near-pencil configurations are magic via careful weight assignment. -/
+
 /-- Class 4: Incenter configuration — a triangle with its incenter and
     points on angle bisectors, or any projective image of such. -/
 def IsIncenterConfig (P : PointConfig) : Prop :=
@@ -105,7 +109,8 @@ def IsIncenterConfig (P : PointConfig) : Prop :=
       Collinear ℝ ({B, I, p} : Set (EuclideanSpace ℝ (Fin 2))) ∨
       Collinear ℝ ({C, I, p} : Set (EuclideanSpace ℝ (Fin 2))))
 
-/-- Incenter configurations are magic. -/
+/- Incenter configurations are magic. -/
+
 /- ## Projective Equivalence -/
 
 /-- Two configurations are projectively equivalent -/
@@ -114,7 +119,8 @@ def ProjectivelyEquivalent (P Q : PointConfig) : Prop :=
     Function.Bijective f ∧
     Q = P.image f
 
-/-- Magic property is preserved under projective equivalence -/
+/- Magic property is preserved under projective equivalence -/
+
 /- ## The Main Classification -/
 
 /-- A configuration belongs to one of the four magic classes -/
@@ -136,8 +142,9 @@ noncomputable def linesThrough (P : PointConfig) (p : EuclideanSpace ℝ (Fin 2)
     (hp : p ∈ P) : ℕ :=
   (P.filter (· ≠ p)).card
 
-/-- In a magic configuration, the weight of a point is determined by
+/- In a magic configuration, the weight of a point is determined by
     the number of lines through it and the magic constant. -/
+
 /- ## The Non-Magic Theorem -/
 
 /-- Configurations not in the four classes are not magic -/
@@ -150,8 +157,10 @@ theorem not_magic_outside_classes (P : PointConfig) (hP : P.card ≥ 3) :
 /- ## Examples -/
 
 /-- Example: Three collinear points are magic -/
-def threeCollinear : PointConfig :=
-  {![0, 0], ![1, 0], ![2, 0]}
+noncomputable def threeCollinear : PointConfig :=
+  {WithLp.toLp 2 ![(0 : ℝ), 0],
+   WithLp.toLp 2 ![(1 : ℝ), 0],
+   WithLp.toLp 2 ![(2 : ℝ), 0]}
 
 axiom three_collinear_card : threeCollinear.card ≥ 2
 axiom three_collinear_collinear : IsCollinear threeCollinear
@@ -160,8 +169,10 @@ theorem three_collinear_is_magic : IsMagic threeCollinear :=
   collinear_is_magic threeCollinear three_collinear_card three_collinear_collinear
 
 /-- Example: Three non-collinear points (triangle) are magic -/
-def triangle : PointConfig :=
-  {![0, 0], ![1, 0], ![0, 1]}
+noncomputable def triangle : PointConfig :=
+  {WithLp.toLp 2 ![(0 : ℝ), 0],
+   WithLp.toLp 2 ![(1 : ℝ), 0],
+   WithLp.toLp 2 ![(0 : ℝ), 1]}
 
 axiom triangle_card : triangle.card ≥ 2
 axiom triangle_general_position : IsGeneralPosition triangle
@@ -176,12 +187,14 @@ noncomputable def incidenceMatrix (P : PointConfig) :
     (ConfigLine P) → P → ℝ :=
   fun L p => if p.val ∈ L.val then 1 else 0
 
-/-- Magic iff the incidence linear system has a positive solution -/
+/- Magic iff the incidence linear system has a positive solution -/
+
 /- ## Dimension Counting Argument -/
 
-/-- The space of valid weightings has dimension at most n minus the number
+/- The space of valid weightings has dimension at most n minus the number
     of independent line constraints. For configurations outside the four
     classes, this dimension is negative — no positive solution exists. -/
+
 end Erdos735
 
 /-
