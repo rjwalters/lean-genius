@@ -116,9 +116,11 @@ theorem m_jump_downward_ivt_unit_recovery (l : List ℤ)
   obtain ⟨k, hk_gt, hk_le, hk_lo, hk_hi⟩ :=
     m_jump_downward_ivt l 1 (by simpa using h_step) v i j hij hjlen hi_gt hj_le
   refine ⟨k, hk_gt, hk_le, ?_⟩
-  -- hk_lo : v - 1 + 1 ≤ prefixSum l k, i.e. v ≤ prefixSum l k
+  -- hk_lo : v - ↑1 + 1 ≤ prefixSum l k, i.e. v ≤ prefixSum l k
   -- hk_hi : prefixSum l k ≤ v
-  linarith
+  -- `omega` (not `linarith`) is needed because `↑(1 : ℕ) = (1 : ℤ)` is
+  -- not auto-normalised by `linarith` in v4.26.0.
+  omega
 
 /-! ## Upward IVT (B′ companion)
 
@@ -221,7 +223,250 @@ theorem m_jump_upward_ivt_unit_recovery (l : List ℤ)
     m_jump_upward_ivt l 1 (by simpa using h_step) v i j hij hjlen hi_lt hj_ge
   refine ⟨k, hk_gt, hk_le, ?_⟩
   -- hk_lo : v ≤ prefixSum l k
-  -- hk_hi : prefixSum l k ≤ v + 1 - 1, i.e. prefixSum l k ≤ v
+  -- hk_hi : prefixSum l k ≤ v + ↑1 - 1, i.e. prefixSum l k ≤ v
+  -- `omega` (not `linarith`) is needed because `↑(1 : ℕ) = (1 : ℤ)` is
+  -- not auto-normalised by `linarith` in v4.26.0.
+  omega
+
+/-! ## Part: Conjecture E discharge — restricted alphabet `{+1, -m}`
+
+S1 OBSERVE refuted the naive `⌈l.sum / m⌉ ≤ |goodRotations|` bound on the
+broad `step ≥ -m` family. **Conjecture E** restricts attention to the
+alphabet `{+1, -m}`, on which the parent's `cycle_lemma` (in `GeneralizedBallot`,
+`BallotProblemOQ01.lean:764`) gives the *exact* count
+
+```
+(goodRotations l).card = a - m·b = l.sum.toNat
+```
+
+where `a = l.count 1`, `b = l.count (-m)`. This dominates `⌈l.sum / m⌉` since
+`m ≥ 1`. The discharge is a thin restatement of the parent — not a
+consequence of the m-jump IVTs (D, D′) above, whose conclusion windows are
+strictly weaker. The only non-trivial atom is the residual arithmetic
+`⌈S/m⌉ ≤ S` for `S > 0` and `m ≥ 1`.
+-/
+
+/-- Residual arithmetic atom for conjecture E: for `S > 0` and `m ≥ 1`,
+    `⌈S/m⌉ ≤ S` in `Int.toNat`. -/
+private lemma ceil_div_le_toNat (S : ℤ) (m : ℕ) (hm : 1 ≤ m) (hS : 0 < S) :
+    Int.toNat ⌈(S : ℚ) / m⌉ ≤ S.toNat := by
+  have hm_pos : (0 : ℚ) < m := by exact_mod_cast Nat.lt_of_lt_of_le Nat.zero_lt_one hm
+  have hSQ : (0 : ℚ) < S := by exact_mod_cast hS
+  have hmQ : (1 : ℚ) ≤ m := by exact_mod_cast hm
+  -- S / m ≤ S since m ≥ 1 and S > 0
+  have hle : (S : ℚ) / m ≤ S := by
+    rw [div_le_iff₀ hm_pos]
+    nlinarith
+  -- Therefore ⌈S/m⌉ ≤ S (in ℤ)
+  have hceil_le : ⌈(S : ℚ) / m⌉ ≤ S := by
+    rw [Int.ceil_le]; exact_mod_cast hle
+  -- ⌈S/m⌉ ≥ 0 since S/m > 0
+  have h_pos : (0 : ℚ) < (S : ℚ) / m := div_pos hSQ hm_pos
+  have hceil_nonneg : (0 : ℤ) ≤ ⌈(S : ℚ) / m⌉ :=
+    Int.ceil_nonneg h_pos.le
+  -- Combine into toNat
+  omega
+
+/-- **Conjecture E**: on the restricted alphabet `{+1, -m}` with positive sum,
+    the fractional cycle-lemma bound `⌈l.sum / m⌉ ≤ (goodRotations l).card`
+    holds.
+
+    A thin restatement of the parent's `cycle_lemma`
+    (`BallotProblemOQ01.lean:764`): with `a := l.count 1`, `b := l.count (-m)`,
+    we have `l ∈ kCountedSequence m a b` and `m·b < a`, so
+    `(goodRotations l).card = a - m·b = l.sum.toNat`. The residual
+    `⌈S/m⌉ ≤ S` follows from `m ≥ 1`.
+
+    **Contrast with S1 OBSERVE**: the analogous bound on the broad `step ≥ -m`
+    family is FALSE — the refuting witness `l = [-m, 2m+1]` has
+    `|goodRotations| = 1 < ⌈(m+1)/m⌉ = 2`. The alphabet restriction
+    `x = 1 ∨ x = -m` blocks that family (the only allowed positive value is
+    `1`, not `2m+1`). -/
+theorem step_in_one_neg_m_count (l : List ℤ) (m : ℕ) (hm : 1 ≤ m)
+    (h_step : ∀ x ∈ l, x = 1 ∨ x = -(m : ℤ)) (hS : 0 < l.sum) :
+    Int.toNat ⌈(l.sum : ℚ) / m⌉ ≤ (goodRotations l).card := by
+  -- Bridge: l ∈ kCountedSequence m (l.count 1) (l.count (-m))
+  have hl_mem : l ∈ kCountedSequence m (l.count 1) (l.count (-(m : ℤ))) :=
+    ⟨rfl, rfl, h_step⟩
+  -- Sum identity from the parent
+  have hsum : l.sum = (l.count 1 : ℤ) - m * (l.count (-(m : ℤ))) :=
+    kCountedSequence_sum hl_mem
+  -- Positivity of l.sum forces m·b < a
+  have hab : m * l.count (-(m : ℤ)) < l.count 1 := by
+    have h_pos : (0 : ℤ) < (l.count 1 : ℤ) - m * (l.count (-(m : ℤ))) := hsum ▸ hS
+    have habℤ : (m * l.count (-(m : ℤ)) : ℤ) < (l.count 1 : ℤ) := by linarith
+    exact_mod_cast habℤ
+  -- Apply parent's cycle_lemma: exact count
+  have hcard : (goodRotations l).card = l.count 1 - m * l.count (-(m : ℤ)) :=
+    cycle_lemma hl_mem hab
+  rw [hcard]
+  -- Bridge `(a - m*b : ℕ) = l.sum.toNat`
+  have h_eq : (l.count 1 - m * l.count (-(m : ℤ)) : ℕ) = l.sum.toNat := by
+    have habℤ : (m * l.count (-(m : ℤ)) : ℤ) ≤ (l.count 1 : ℤ) := by exact_mod_cast hab.le
+    rw [hsum]
+    -- ((a : ℤ) - m * b).toNat = a - m * b when m·b ≤ a
+    omega
+  rw [h_eq]
+  exact ceil_div_le_toNat l.sum m hm hS
+
+
+/-! ## Part: Path B (S7 ACT) — Mixed-down alphabet variant of the cycle lemma
+
+S5 PREP §3.2 (`sessions/2026-05-13-s5-prep-discharge-sketch-audit.md`) and
+S7 PREP §3 (`sessions/2026-05-14-s7-prep-path-b-transfer-audit.md`) identify
+**Path B**: the alphabet `x = 1 ∨ ∃ k ∈ {1,…,m}, x = −k` (one-up plus
+arbitrary mixed-down). Under this hypothesis, the parent's `cycle_lemma`
+chain (`BallotProblemOQ01.lean:563–774`) transfers via a single
+`rcases`-pattern adjustment to destructure the existential. The
+`linarith [show (0 : ℤ) ≤ k …]` discharge in the parent depends only on
+`0 ≤ k`, **not** on `1 ≤ k` or `k ≤ m`, so the adaptation is purely
+syntactic. The conclusion strengthens from B′'s slack form to an
+**equality**:
+
+```
+(goodRotations l).card = l.sum.toNat
+```
+
+The parent's `levelPos` private helpers are not cross-file callable; this
+file re-defines them as `private` in the slug namespace (per S7 PREP §3.4
+implementation choice (b)).
+-/
+
+/-- Path B private helper: rightmost position with prefix sum ≤ `minPrefixSum + n`.
+    Verbatim from `BallotProblemOQ01.lean:665`. -/
+private noncomputable def levelPosB (l : List ℤ) (n : ℕ) : ℕ :=
+  ((Finset.range (l.length + 1)).filter (fun i => prefixSum l i ≤ minPrefixSum l + n)).max'
+    ⟨rightmostMinPos l, Finset.mem_filter.mpr ⟨
+      Finset.mem_range.mpr (Nat.lt_succ_of_le (rightmostMinPos_le l)),
+      by rw [prefixSum_rightmostMinPos]; omega⟩⟩
+
+private theorem levelPosB_mem (l : List ℤ) (n : ℕ) :
+    levelPosB l n ∈ (Finset.range (l.length + 1)).filter
+      (fun i => prefixSum l i ≤ minPrefixSum l + n) := by
+  unfold levelPosB; exact Finset.max'_mem _ _
+
+private theorem levelPosB_le (l : List ℤ) (n : ℕ) : levelPosB l n ≤ l.length :=
+  Nat.lt_succ_iff.mp (Finset.mem_range.mp (Finset.mem_filter.mp (levelPosB_mem l n)).1)
+
+private theorem levelPosB_prefixSum_le (l : List ℤ) (n : ℕ) :
+    prefixSum l (levelPosB l n) ≤ minPrefixSum l + n :=
+  (Finset.mem_filter.mp (levelPosB_mem l n)).2
+
+private theorem levelPosB_max (l : List ℤ) (n p : ℕ)
+    (hp : p ≤ l.length) (hp_le : prefixSum l p ≤ minPrefixSum l + n) :
+    p ≤ levelPosB l n :=
+  Finset.le_max' _ p (Finset.mem_filter.mpr ⟨Finset.mem_range.mpr (by omega), hp_le⟩)
+
+private theorem levelPosB_lt (l : List ℤ) (n : ℕ) (hn : (n : ℤ) < l.sum) :
+    levelPosB l n < l.length := by
+  rcases Nat.eq_or_lt_of_le (levelPosB_le l n) with h | h
+  · have hle := levelPosB_prefixSum_le l n
+    rw [h, prefixSum_length] at hle
+    linarith [minPrefixSum_le_zero l]
+  · exact h
+
+private theorem levelPosB_right (l : List ℤ) (n p : ℕ)
+    (hp_gt : levelPosB l n < p) (hp_le : p ≤ l.length) :
+    minPrefixSum l + (n : ℤ) < prefixSum l p := by
+  by_contra hle; push_neg at hle
+  exact absurd (levelPosB_max l n p hp_le hle) (by omega)
+
+/-- **Path B `levelPos_eq`** — the parent's `levelPos_eq`
+    (`BallotProblemOQ01.lean:703`) adapted to the mixed-down alphabet.
+    The proof is identical except for a single `rcases`-pattern change to
+    destructure the existential `∃ k ∈ {1,…,m}, x = −k`. The
+    `linarith [show (0 : ℤ) ≤ k …]` discharge depends only on `0 ≤ k`. -/
+private theorem levelPosB_eq (l : List ℤ) (m : ℕ)
+    (hmem : ∀ x ∈ l, x = 1 ∨ (∃ k : ℕ, 1 ≤ k ∧ k ≤ m ∧ x = -(k : ℤ)))
+    (n : ℕ) (hn : (n : ℤ) < l.sum) :
+    prefixSum l (levelPosB l n) = minPrefixSum l + n := by
+  have hj_lt : levelPosB l n < l.length := levelPosB_lt l n hn
+  have hj_le : prefixSum l (levelPosB l n) ≤ minPrefixSum l + n := levelPosB_prefixSum_le l n
+  have hj1_gt : minPrefixSum l + (n : ℤ) < prefixSum l (levelPosB l n + 1) := by
+    by_contra hle; push_neg at hle
+    exact absurd (levelPosB_max l n (levelPosB l n + 1) (by omega) hle) (by omega)
+  have helem : l[levelPosB l n] = (1 : ℤ) := by
+    rcases hmem l[levelPosB l n] (List.getElem_mem hj_lt) with h1 | ⟨k, _hk_lo, _hk_hi, hx_eq⟩
+    · exact h1
+    · exfalso
+      have hstep : prefixSum l (levelPosB l n + 1)
+          = prefixSum l (levelPosB l n) + l[levelPosB l n] := by
+        simp only [prefixSum]; exact List.sum_take_succ l (levelPosB l n) hj_lt
+      rw [hstep, hx_eq] at hj1_gt
+      linarith [show (0 : ℤ) ≤ (k : ℤ) from Int.natCast_nonneg k]
+  have hstep : prefixSum l (levelPosB l n + 1) = prefixSum l (levelPosB l n) + 1 := by
+    simp only [prefixSum]; rw [List.sum_take_succ l (levelPosB l n) hj_lt, helem]
   linarith
+
+/-- **Path B lower bound** — analog of `goodRotations_card_ge`
+    (`BallotProblemOQ01.lean:731`), free of the `kCountedSequence` structure.
+    Uses `hS : 0 < l.sum` directly; the count `l.sum.toNat` replaces the
+    parent's `a - k * b`. -/
+private theorem goodRotations_card_ge_pathB (l : List ℤ) (m : ℕ)
+    (hmem : ∀ x ∈ l, x = 1 ∨ (∃ k : ℕ, 1 ≤ k ∧ k ≤ m ∧ x = -(k : ℤ)))
+    (hS : 0 < l.sum) :
+    l.sum.toNat ≤ (goodRotations l).card := by
+  -- Bridge `n < l.sum.toNat ↔ (n : ℤ) < l.sum` via `Int.toNat_of_nonneg hS.le`.
+  have hToNat : (l.sum.toNat : ℤ) = l.sum := Int.toNat_of_nonneg hS.le
+  rw [← Finset.card_range l.sum.toNat]
+  apply Finset.card_le_card_of_injOn (levelPosB l)
+  · -- Each `levelPosB n` lies in goodRotations.
+    intro n hn
+    have hn_lt : n < l.sum.toNat := Finset.mem_range.mp (Finset.mem_coe.mp hn)
+    have hn' : (n : ℤ) < l.sum := by
+      have : (n : ℤ) < (l.sum.toNat : ℤ) := by exact_mod_cast hn_lt
+      omega
+    exact Finset.mem_coe.mpr (Finset.mem_filter.mpr
+      ⟨Finset.mem_range.mpr (levelPosB_lt l n hn'),
+        rightmostAtLevel_good l (minPrefixSum l + n) hS
+          (by linarith [show (0 : ℤ) ≤ (n : ℤ) from Int.natCast_nonneg n])
+          (by linarith)
+          (levelPosB l n) (levelPosB_lt l n hn')
+          (levelPosB_eq l m hmem n hn')
+          (fun p hp hpl => levelPosB_right l n p hp hpl)⟩)
+  · -- `levelPosB` is injective on `Finset.range l.sum.toNat`.
+    intro n₁ hn₁ n₂ hn₂ heq
+    simp only [Finset.mem_coe, Finset.mem_range] at hn₁ hn₂
+    have hn₁' : (n₁ : ℤ) < l.sum := by
+      have : (n₁ : ℤ) < (l.sum.toNat : ℤ) := by exact_mod_cast hn₁
+      omega
+    have hn₂' : (n₂ : ℤ) < l.sum := by
+      have : (n₂ : ℤ) < (l.sum.toNat : ℤ) := by exact_mod_cast hn₂
+      omega
+    have h₁ := levelPosB_eq l m hmem n₁ hn₁'
+    have h₂ := levelPosB_eq l m hmem n₂ hn₂'
+    rw [heq] at h₁
+    have : (n₁ : ℤ) = n₂ := by linarith
+    exact_mod_cast this
+
+/-- **Path B equality** — combines the parent's `goodRotations_card_le`
+    upper bound (alphabet-agnostic) with Path B's lower bound to give an
+    exact count. This is the strict-equality version of B′'s slack form
+    (`step_in_one_pos_mixed_neg_card_bound` below). -/
+theorem step_in_one_pos_mixed_neg_card_eq (l : List ℤ) (m : ℕ)
+    (hmem : ∀ x ∈ l, x = 1 ∨ (∃ k : ℕ, 1 ≤ k ∧ k ≤ m ∧ x = -(k : ℤ)))
+    (hS : 0 < l.sum) :
+    (goodRotations l).card = l.sum.toNat :=
+  le_antisymm (goodRotations_card_le hS) (goodRotations_card_ge_pathB l m hmem hS)
+
+/-- **Path B slack-form corollary** — recovers B′'s slack inequality
+    `l.sum ≤ m · |gR| + (m − 1) · l.length` from the strict equality,
+    via `Int.toNat_of_nonneg`. The slack term is non-negative when
+    `m ≥ 1`; equality holds when `m = 1`. -/
+theorem step_in_one_pos_mixed_neg_card_bound (l : List ℤ) (m : ℕ) (hm : 1 ≤ m)
+    (hmem : ∀ x ∈ l, x = 1 ∨ (∃ k : ℕ, 1 ≤ k ∧ k ≤ m ∧ x = -(k : ℤ)))
+    (hS : 0 < l.sum) :
+    l.sum ≤ (m : ℤ) * (goodRotations l).card + ((m : ℤ) - 1) * l.length := by
+  have heq := step_in_one_pos_mixed_neg_card_eq l m hmem hS
+  have hToNat : (l.sum.toNat : ℤ) = l.sum := Int.toNat_of_nonneg hS.le
+  have h_card_eq : ((goodRotations l).card : ℤ) = l.sum := by
+    have : ((goodRotations l).card : ℤ) = (l.sum.toNat : ℤ) := by exact_mod_cast heq
+    omega
+  -- Goal: l.sum ≤ m * (goodRotations l).card + (m - 1) * l.length
+  -- After substitution: l.sum ≤ m * l.sum + (m - 1) * l.length
+  -- i.e. 0 ≤ (m - 1) * l.sum + (m - 1) * l.length = (m - 1) * (l.sum + l.length)
+  have hmZ : (1 : ℤ) ≤ (m : ℤ) := by exact_mod_cast hm
+  have hlen : (0 : ℤ) ≤ (l.length : ℤ) := by exact_mod_cast l.length.zero_le
+  nlinarith [hS, hmZ, hlen, h_card_eq]
 
 end BallotMJumpCycleLemma
