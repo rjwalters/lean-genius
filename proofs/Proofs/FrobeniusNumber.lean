@@ -78,6 +78,7 @@ def frobeniusNumber (a b : ℕ) : ℕ := a * b - a - b
 theorem frobenius_alt_axiom (a b : ℕ) (ha : 2 ≤ a) (hb : 2 ≤ b) :
     frobeniusNumber a b = (a - 1) * (b - 1) - 1 := by
   unfold frobeniusNumber
+  rw [Nat.mul_sub_one, Nat.sub_one_mul]
   omega
 
 /-- Verified for specific examples -/
@@ -162,8 +163,9 @@ theorem large_representable {a b : ℕ} (hab : Nat.Coprime a b)
     have h_kb_bound : k * b ≤ (a - 1) * b := Nat.mul_le_mul_right b (by omega)
     -- (a-1)*b = (a-1)*(b-1) + (a-1)
     have hab_expand : (a - 1) * b = (a - 1) * (b - 1) + (a - 1) := by
-      have : b = (b - 1) + 1 := by omega
-      rw [this, mul_add, mul_one]
+      have hb_eq : b = (b - 1) + 1 := by omega
+      conv_lhs => rw [hb_eq]
+      rw [mul_add, mul_one]
     -- k*b ≥ n + a ≥ (a-1)*(b-1) + a, but k*b ≤ (a-1)*(b-1) + (a-1)
     -- This gives a ≤ a - 1, contradiction
     rw [hab_expand] at h_kb_bound
@@ -190,13 +192,25 @@ theorem frobenius_not_representable {a b : ℕ} (hab : Nat.Coprime a b)
   -- a*b ≥ a + b since (a-1)*(b-1) ≥ 1
   have hab_ge : a + b ≤ a * b := by nlinarith
   -- Rewrite: a*b = a*(x+1) + b*(y+1)
-  have key : a * b = a * (x + 1) + b * (y + 1) := by nlinarith
+  have key : a * b = a * (x + 1) + b * (y + 1) := by
+    have h_expand : a * (x + 1) + b * (y + 1) = a * x + b * y + (a + b) := by ring
+    omega
   -- a | b*(y+1): factor as a*(b-(x+1)) using key
-  have h_dvd_by : a ∣ b * (y + 1) := ⟨b - (x + 1), by nlinarith⟩
+  have h_dvd_by : a ∣ b * (y + 1) := by
+    have h_xb : x + 1 ≤ b := by
+      nlinarith [key, Nat.zero_le (b * (y + 1))]
+    refine ⟨b - (x + 1), ?_⟩
+    rw [Nat.mul_sub_left_distrib]
+    omega
   -- By coprimality: a | (y + 1)
   have h_dvd_y1 : a ∣ (y + 1) := hab.dvd_of_dvd_mul_left h_dvd_by
   -- b | a*(x+1): factor as b*(a-(y+1)) using key
-  have h_dvd_ax : b ∣ a * (x + 1) := ⟨a - (y + 1), by nlinarith⟩
+  have h_dvd_ax : b ∣ a * (x + 1) := by
+    have h_ya : y + 1 ≤ a := by
+      nlinarith [key, Nat.zero_le (a * (x + 1))]
+    refine ⟨a - (y + 1), ?_⟩
+    rw [Nat.mul_sub_left_distrib, mul_comm b a]
+    omega
   -- By coprimality: b | (x + 1)
   have h_dvd_x1 : b ∣ (x + 1) := hab.symm.dvd_of_dvd_mul_left h_dvd_ax
   -- y + 1 ≥ a and x + 1 ≥ b
