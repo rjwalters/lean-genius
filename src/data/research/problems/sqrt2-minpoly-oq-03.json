@@ -1,7 +1,7 @@
 {
   "slug": "sqrt2-minpoly-oq-03",
   "title": "Class number 1 for Q(√2) via Minkowski's bound",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "minkowski-route",
@@ -35,16 +35,17 @@
     "goal": "Establish the class-number-1 result for Q(√2) using Mathlib's NumberField + Minkowski-bound + Zsqrtd machinery, producing a `verified` / `original` gallery entry with 0 axioms and 0 sorries on the main theorem. Optional follow-up: ring-of-integers iso to `Zsqrtd 2` and direct Euclidean-domain proof."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T17:30:00.000Z",
-    "iteration": 1,
-    "focus": "S1 OBSERVE (researcher-10, 2026-05-12) — doc-only scaffold. Created problem.md, knowledge.md, state.md, this JSON. No Lean changes. Identified the Minkowski-bound route as the canonical proof (Marcus Chapter 5 worked example) and the Euclidean-domain route as an optional S5 strengthening. Surveyed Mathlib's NumberField / RingOfIntegers / classNumber / minkowskiBound / Zsqrtd surface at v4.26.0 (subject to S2 ORIENT module-path verification — the worktree's recursive `proofs/.lake` self-symlink trap prevents direct Mathlib search). Identified the parent gallery's `irred_X_sq_sub_two_rat` as the immediate input to constructing Q(√2) via `Polynomial.SplittingField (X^2 - C 2)`.",
+    "phase": "ACT",
+    "since": "2026-05-14T15:10:00.000Z",
+    "lastUpdated": "2026-05-14T15:10:00.000Z",
+    "iteration": 11,
+    "focus": "S3 ACT SCAFFOLD (researcher-8, 2026-05-14) — created `proofs/Proofs/Sqrt2MinpolyOQ03.lean` (70 LOC) with `AdjoinRoot`-based Q_sqrt2 construction, `Fact (Irreducible X_sq_sub_two)` from parent's `Sqrt2Minpoly.irred_X_sq_sub_two`, and explicit `NumberField Q_sqrt2` instance via `AdjoinRoot.powerBasis` for finite-dimensionality. Strategic sorry on capstone `Q_sqrt2_classNumber_eq_one`. Docker-verified clean (7744 jobs). Converts 9 doc-only PREP sessions (#18223 S1 + #18340/#18371/#18454/#18479/#18526/#18600/#18666/#18710/#18762 PREP-1..9) into actual Lean code. PREP-8's 128-LOC sorry-free design (discriminant chain + IsTotallyReal + classNumber capstone) is now ready for S4 ACT implementation.",
     "blockers": [],
-    "nextAction": "S2 ORIENT: create `proofs/Proofs/Sqrt2MinpolyOQ03.lean`. Imports: `Sqrt2Minpoly` + `Mathlib.NumberTheory.NumberField.Basic` + `Mathlib.NumberTheory.NumberField.ClassNumber` + `Mathlib.NumberTheory.NumberField.Discriminant` + `Mathlib.NumberTheory.NumberField.CanonicalEmbedding` (verify exact module name for the Minkowski-bound API) + `Mathlib.NumberTheory.Zsqrtd.Basic`. Define `Q_sqrt2 := Polynomial.SplittingField (X^2 - C 2 : ℚ[X])` and verify the `NumberField Q_sqrt2` instance. Stub `Q_sqrt2_classNumber_eq_one` with `by sorry` and document the proof strategy (compute discriminant 8 → compute Minkowski bound √2 → apply existence-of-small-norm-element → conclude trivial class group). Estimated S2 ACT size: ~40 lines, 1 sorry on the main theorem (deferred to S3-S4 sub-targets), 0 sorries on the field / NumberField instance derivation. Have a fallback `AdjoinRoot (X^2 - C 2)` construction ready if `SplittingField`'s `NumberField` instance is friction-heavy at v4.26.0.",
+    "nextAction": "S4 ACT step 1 (discriminant chain): implement `NumberField.discr Q_sqrt2 = 8` per PREP-3 `discr_powerBasis_eq_norm` route or PREP-6 monogenic-Eisenstein shortcut. PREP-4 has the verbatim norm chain (~20 LOC). Next agent should also discharge the strategic capstone sorry incrementally as the disc/Minkowski/IsTotallyReal sub-lemmas land. Reference: PREP-9 risk-corrected sorry-free derivation sketch in `sessions/2026-05-13-s02-prep-9-compile-time-risk-verification.md` §8.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
