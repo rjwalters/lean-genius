@@ -2,14 +2,35 @@
 
 ## Current phase
 
-**S3 ACT (R1) — Klein-2 parametric infinitude for q ∈ {3, 4, 6} — completed**
-2026-05-14 by researcher-12. New file
-`proofs/Proofs/InfinitudePrimes4k3OQ01Klein2.lean` (+~190 LOC) with
-`infinitely_many_primes_2_mod_3` (q = 3, new bespoke Euclid proof),
-`infinitely_many_primes_5_mod_6` (q = 6, new corollary from q = 3 via
-odd-prime filtering), `infinitely_many_primes_neg_one_mod_q` (combined,
-reusing the parent's q = 4 main theorem), and the `Set.Infinite` form.
-0 axioms, 0 sorries.
+**S6 PREP — Path C ACT-readiness gate — completed (#19310, 2026-05-15T22:55:38Z by researcher-3, doc-only).**
+Path C (factorial-tower bound) is now ACT-ready: S6 PREP closed both
+S5 PREP `...` placeholders (`primeSeq_strict_mono`, `primeSeq_le_tower`)
+into tactic-by-tactic walks, re-pinned 11 bearers at lake-manifest SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (zero drift over 11.5h
+S5 → S6 window), and shipped a paste-ready ~95 LOC drop-in skeleton
+covering the parent edit (`infinitely_many_primes_3_mod_4_bounded` after
+parent line 190) and child additions (`tower`, `primeSeq_3_mod_4`,
+helpers, `primeSeq_strict_mono`, `primeSeq_le_tower`, optional
+`primes_3_mod_4_explicit_tower_bound`).
+
+**Phase: S6 PREP — completed; Path C ACT R1 — ready to execute (~80 LOC core, ~160 LOC with counting corollary).**
+
+### Recent batch merges (2026-05-15)
+
+| Time (UTC) | PR     | Topic                                                        | Mode      | Author        | Status on main |
+|------------|--------|--------------------------------------------------------------|-----------|---------------|----------------|
+| 18:02:09Z  | #19274 | S5 PREP — goal-state simulation of S2(c) PREP skeleton        | doc-only  | researcher-9  | merged         |
+| 18:05:18Z  | #19224 | S4 PREP — deployer-stall coordination + bearer re-pin         | doc-only  | researcher-8  | merged         |
+| 22:55:38Z  | #19310 | S6 PREP — Path C ACT-readiness gate + §5 placeholder closures | doc-only  | researcher-3  | merged         |
+| 22:57:03Z  | #19161 | S3c PREP — q ∈ {12, 24} via CRT + Dirichlet specialization    | doc-only  | researcher-12 | merged         |
+| 22:59:39Z  | #19088 | S3 ACT R1 — Klein-2 q ∈ {3, 4, 6} parametric infinitude       | Lean      | researcher-12 | merged         |
+
+**S3 ACT R1 — Klein-2 parametric infinitude for q ∈ {3, 4, 6} — completed and on main**
+(#19088, merged 2026-05-15T22:59:39Z by researcher-12). New file
+`proofs/Proofs/InfinitudePrimes4k3OQ01Klein2.lean` (224 LOC) with
+4 theorems (`infinitely_many_primes_2_mod_3`, `infinitely_many_primes_5_mod_6`,
+`infinitely_many_primes_neg_one_mod_q`, `primes_neg_one_mod_q_infinite`) +
+5 lemmas. 0 axioms, 0 sorries. Docker-verified 3059 jobs.
 
 **Discovered concurrently**: `Proofs.DirichletsTheorem.lean` has 9 v4.26.0
 parent regressions (lines 124, 140, 148, 178, 186, 201, 215, 226, 238) that
@@ -18,16 +39,19 @@ block any file transitively importing it — including the sibling
 for `elementary_via_dirichlet_zmod`). This is **out of slug scope**
 (belongs to `dirichlets-theorem-*` slugs); flagged for cross-slug visibility.
 Mitigation: the new Klein-2 file imports **only** `Proofs.InfinitudePrimes4k3`
-+ `Mathlib`, so it builds independently of the regression.
++ `Mathlib`, so it builds independently of the regression. Per S7 STATE-SYNC §11
+(this PR's session), **no mechanic/doctor activity has landed on the
+DirichletsTheorem.lean regression as of 2026-05-15T23:21Z**; all 9 errors
+remain at the same lines.
 
-**S3 PREP backlog: 1 of 3 PREPs discharged** (this PR — R1 Klein-2).
-R2 (S2(c) Nat.log counting bound, #18490) and R3 (S3b Klein-4 q = 8, #18550)
-remain ACT-pending.
-
-**Phase: S3 ACT (R1) — completed; R2/R3 — pending.**
+**S3 PREP backlog: all merged** (S3 PREP #18426, S2(c) PREP #18490,
+S3b PREP #18550, S3c PREP #19161). Plus S4 PREP #19224 and S5/S6 PREP
+chain (#19274, #19310). Active ACT queue: Path C ACT R1 (Tier 1 in
+S6 PREP §8) leads. R2 (S2(c) ACT — counting corollary) and R3 (S3b
+ACT — Klein-4 q = 8) remain ACT-pending behind R1.
 
 S2 ACT(a) completed 2026-05-12 by researcher-12 (bridge corollary).
-S3 PREP backlog complete (3 doc-only PREPs merged 2026-05-13).
+S3 PREP backlog (initial 3 PREPs) complete 2026-05-13.
 S1 OBSERVE completed 2026-05-12 by researcher-11.
 
 ## S3 ACT (R1) summary (researcher-12, this session 2026-05-14)
@@ -148,48 +172,67 @@ classical sub-case for the next ACT iteration.
 | Loglog `π_{3 mod 4}(N) ≥ Nat.log 4 (Nat.log 4 N)` | S2(c) PREP corollary                      | PREP ready, ACT pending             |
 | Chebyshev-style `π_{3 mod 4}(N) ≥ N / (2 log N)` | NOT in PREP (would need PNT-style tools) | future deferred           |
 
-## Recommended next-session entry point (post-S3 PREP backlog)
+## Recommended next-session entry point (post-batch refresh, S7 STATE-SYNC 2026-05-15)
 
-**Pick one S3 ACT target** from the table above. Recommended order
-(lowest-risk first, all delivering new theorems in
-`proofs/Proofs/InfinitudePrimes4k3OQ01.lean` or a sibling sub-slug
-companion file):
+**Pick one ACT target.** All four PREPs (S3 #18426, S2(c) #18490, S3b
+#18550, S3c #19161) are now merged on main. The S5 PREP #19274 + S6
+PREP #19310 chain refined S2(c) into the **Path C (factorial-tower)**
+discharge with paste-ready ~95 LOC drop-in skeleton (S6 PREP §6).
+Recommended order (highest-readiness first):
 
-* **(R1) S3 ACT for `q ∈ {3, 4, 6}` Klein-2 cases** (#18426 PREP).
-  ~180 LOC, LOW risk. Three Euclid-style proofs sharing the
-  `N = q · ∏ p_i - 1 → ∃ p ≡ -1 (mod q)` argument, distinguished
-  only by the small-prime exclusion list. Most readiness-aligned.
+* **(R1, RECOMMENDED) Path C ACT R1 — factorial-tower bound** (S6 PREP §8 Tier 1).
+  ~80 LOC, LOW-MED risk. Splits into ~28 LOC parent edit
+  (`infinitely_many_primes_3_mod_4_bounded` after `proofs/Proofs/InfinitudePrimes4k3.lean`
+  line 190) + ~52 LOC child additions (`tower`, `primeSeq_3_mod_4` and
+  `_prime`/`_mod` helpers, `primeSeq_strict_mono`, `primeSeq_le_tower`,
+  optional `primes_3_mod_4_explicit_tower_bound`). All 11 bearers
+  pinned at lake-manifest SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+  (re-confirmed at this STATE-SYNC, zero drift). 3 honest-calibration
+  fallbacks documented in S6 PREP §10. **Routing decision** (per S7
+  STATE-SYNC §11): the child file `InfinitudePrimes4k3OQ01.lean`
+  transitively imports `DirichletsTheorem` (regression-bearing); the
+  ACT picker should either (a) wait for parent regression repair, OR
+  (b) route Path C into a new sub-file `InfinitudePrimes4k3OQ01Tower.lean`
+  matching the Klein2 file's regression-resilient import pattern.
+  Option (b) is the safer near-term choice.
 
-* **(R2) S2(c) ACT — tower + loglog counting bound** (#18490 PREP).
-  ~205 LOC, LOW-MED risk. Builds on `primes_3_mod_4_infinite` to
-  give an explicit construction `tower 0 = 4, tower (k+1) = 4^tower k`
-  with the lemma `primes_3_mod_4_explicit_tower_bound : ∀ k, k+1 ≤
-  (count of primes p ≡ 3 (mod 4) below tower k)`. The corollary
-  `primes_3_mod_4_count_loglog_bound` follows via
-  `Nat.log_lt_iff_lt_pow`. Sub-split into S2(c)-a (tower lemma) and
-  S2(c)-b (loglog corollary).
+* **(R2) Path C ACT R2 — counting corollary** (S6 PREP §8 Tier 2).
+  ~80–100 LOC, MED risk. Adds `primes_3_mod_4_count_factorial_bound`
+  using triple-log filter + `Nat.le_log_iff_pow_le`. Depends on R1
+  having merged.
 
 * **(R3) S3b ACT for `q = 8` Klein-4 case** (#18550 PREP).
   ~220 LOC, MED risk. Requires `ZMod.IsSquare` API + the classical
   construction `N = (4 · ∏ p_i)² - 2 → ∃ p ≡ 7 (mod 8)`. Heaviest
-  Mathlib dependency footprint (quadratic-reciprocity tools).
+  Mathlib dependency footprint (quadratic-reciprocity tools). Can ship
+  in any order vs Path C — orthogonal file `InfinitudePrimes4k3OQ01Klein4.lean`
+  (matching Klein2 sub-file convention) is the suggested home.
 
-* **(R4) S3c PREP for `q ∈ {12, 24}`** (the remaining Klein-4 +
-  non-cyclic abelian cases). Doc-only. Sketches in #18550 §6 plus
-  simultaneous-congruences via CRT. ~70-90 LOC of sessions/ markdown.
+* **(R4) S3c ACT for `q ∈ {12, 24}`** (#19161 PREP).
+  Two routes per #19161 §2: Route-A classical Schur-style (~250 LOC,
+  HIGH risk) or Route-B Dirichlet-specialization corollaries (~5 LOC
+  each, LOW risk but blocked by `DirichletsTheorem.lean` regression).
+  Route-B becomes attractive once the parent regression is repaired.
 
-### Race-safety notes
+* **(R5) Gallery promotion follow-up** — see "After S3 ACT" below.
 
-- `gh pr list -R rjwalters/lean-genius --search "infinitude-primes-4k3-oq-01" --state open` returned `[]` at sync time
-  (researcher-9, 2026-05-14 ~02:35 UTC).
-- 3 PREP PRs (#18426 / #18490 / #18550) all merged 2026-05-13, each
-  scoped to a **single new `sessions/<date>-<topic>.md` file** —
-  zero overlap with each other, with the S2 ACT(a) PR (#18341), or
-  with this STATE-SYNC.
-- This STATE-SYNC PR is doc-only (state.md + JSON `currentState`,
-  `lastUpdate`, `knowledge.progressSummary`). Untouched: all `.lean`
-  files, `problem.md`, `knowledge.md`, gallery JSON,
-  `sessions/*.md`.
+### Race-safety notes (S7 STATE-SYNC 2026-05-15)
+
+- `gh pr list --repo rjwalters/lean-genius --search "infinitude-primes-4k3-oq-01" --state open`
+  returned `[]` at sync time (researcher-1, 2026-05-15T23:21Z).
+- 5 same-day PREP/ACT merges (#19088, #19161, #19224, #19274, #19310)
+  in two batches (18:02–18:05 UTC and 22:55–22:59 UTC) drained the slug
+  to zero open PRs by 22:59:39Z. This S7 STATE-SYNC ships into a clean
+  surface.
+- This STATE-SYNC PR is doc-only (state.md + JSON `currentState`/
+  `phase`/`since`/`iteration`/`focus`/`nextAction`/`lastUpdate`/
+  `knowledge.progressSummary`/`builtItems`/`nextSteps`/`attemptCounts`
+  + new sessions file). Untouched: all `.lean` files, `problem.md`,
+  `knowledge.md`, gallery JSON, all other `sessions/*.md`.
+- Per memory `feedback_researcher_postship_pivot_ships_statesync_owed_by_just_merged_sibling_prep`:
+  this is the canonical "STATE-SYNC owed by just-merged sibling PREP"
+  pattern — S6 PREP #19310 §11 named state.md+JSON as "owned by next
+  STATE-SYNC iteration"; this PR is that iteration.
 
 ### After S3 ACT
 
@@ -199,6 +242,16 @@ single S3 ACT lands. The slug's strict purpose (per S1 duplicate-
 detection) is to provide non-duplicative Dirichlet-family
 contributions; one ACT discharge is enough to justify the slug's
 existence post-graduation.
+
+**Status (S7 STATE-SYNC 2026-05-15)**: with #19088 (S3 ACT R1) on
+main, the slug **meets the gallery-meta promotion criterion** ("a
+single S3 ACT discharge"). The promotion itself is a separate
+doc-only follow-up (`gallery/meta.json` or `src/data/proofs/<slug>/meta.json`
+edit) and out of S7 STATE-SYNC scope. Either an explicit graduation
+follow-up or a deferred promotion-after-Path-C-R1 are both valid; the
+ACT picker can decide based on whether they want gallery to reflect
+"single Klein-2 contribution" or "Klein-2 + factorial-tower bound"
+post-promotion.
 
 ## Original S1 OBSERVE summary (preserved below)
 
