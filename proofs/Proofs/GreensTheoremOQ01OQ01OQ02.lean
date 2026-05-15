@@ -21,7 +21,7 @@
   Axioms: 0
 -/
 
-import Mathlib.MeasureTheory.Integral.IntervalIntegral
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.MeasureTheory.Integral.Prod
 import Mathlib.MeasureTheory.Measure.Prod
 import Mathlib.Tactic
@@ -54,9 +54,10 @@ theorem intervalIntegral_swap_of_le {f : ℝ → ℝ → ℝ}
   simp_rw [integral_of_le hab, integral_of_le hcd]
   have hf_ioc : Integrable (fun p : ℝ × ℝ => f p.1 p.2)
       ((volume.restrict (Ioc a b)).prod (volume.restrict (Ioc c d))) :=
-    hf_int.mono_measure (Measure.prod_mono
-      (Measure.restrict_mono Ioc_subset_Icc_self le_rfl)
-      (Measure.restrict_mono Ioc_subset_Icc_self le_rfl))
+    hf_int.mono_measure (by
+      rw [Measure.prod_restrict, Measure.prod_restrict]
+      exact Measure.restrict_mono
+        (Set.prod_mono Ioc_subset_Icc_self Ioc_subset_Icc_self) le_rfl)
   exact (MeasureTheory.integral_integral_swap hf_ioc).symm
 
 /-! ### Part II: General Version -/
@@ -69,7 +70,7 @@ private theorem flip_bounds (f : ℝ → ℝ) (a b : ℝ) :
 /-- Helper: `∫ x in a..b, -g x = -(∫ x in a..b, g x)` -/
 private theorem neg_outside (a b : ℝ) (g : ℝ → ℝ) :
     ∫ x in a..b, -g x = -(∫ x in a..b, g x) :=
-  intervalIntegral.integral_neg g
+  intervalIntegral.integral_neg (f := g)
 
 /-- **Fubini for Interval Integrals (General)**
 
@@ -188,7 +189,7 @@ theorem intervalIntegral_swap_of_continuous {f : ℝ → ℝ → ℝ}
     isCompact_uIcc.prod isCompact_uIcc
   have hint : IntegrableOn (fun p : ℝ × ℝ => f p.1 p.2) (uIcc a b ×ˢ uIcc c d) volume :=
     hf.continuousOn.integrableOn_compact hcpt
-  rwa [restrict_prod_eq_prod_restrict measurableSet_uIcc measurableSet_uIcc] at hint
+  rwa [MeasureTheory.IntegrableOn, Measure.volume_eq_prod, ← Measure.prod_restrict] at hint
 
 /-! ### Part IV: Application to Green's Theorem -/
 
@@ -198,7 +199,7 @@ theorem greens_theorem_fubini_discharged
     ∫ y in c..d, ∫ x in a..b, dPdy (x, y) =
     ∫ x in a..b, ∫ y in c..d, dPdy (x, y) :=
   intervalIntegral_swap_of_continuous a b c d
-    (h.comp (continuous_prod_mk.mpr ⟨continuous_fst, continuous_snd⟩))
+    (h.comp (continuous_prodMk.mpr ⟨continuous_fst, continuous_snd⟩))
 
 /-! ### Summary
 
