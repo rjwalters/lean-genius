@@ -123,4 +123,44 @@ theorem exists_apGap_zero_length_5_witness :
   intro n hn
   interval_cases n <;> decide
 
+/-- **Bunyakovsky 1857** (finitary AP-gap quadratic specialization). For
+every length `k` and every common second-difference `d : ℤ` with `0 < d`,
+there exists a strictly-monotone sequence `q : ℕ → ℕ` whose first `k`
+entries are prime and whose AP-gaps equal `d`.
+
+This is conjectural; the full Bunyakovsky conjecture is open since 1857
+(unproved even for the simplest non-linear case `f(n) = n² + 1`). It is
+epistemically distinct from `greenTao_finitary` — Green-Tao (d = 0) was
+proved in 2008, whereas Bunyakovsky (d > 0) remains an open conjecture.
+Kept as a separate axiom to preserve provenance per
+`feedback_researcher_axiom_integrity_policy`.
+
+References:
+- Bunyakovsky, V. (1857). Sur les nouveaux théorèmes relatifs à la
+  distinction des nombres premiers et à la décomposition des entiers
+  en facteurs.
+- Hardy, G. H.; Littlewood, J. E. (1923). Some problems of "Partitio
+  Numerorum"; III: On the expression of a number as a sum of primes.
+  Acta Math. 44, 1-70. (Conjecture F.)
+- Bateman, P. T.; Horn, R. A. (1962). A heuristic asymptotic formula
+  concerning the distribution of prime numbers. Math. Comp. 16, 363-367. -/
+axiom bunyakovsky_finitary :
+    ∀ k : ℕ, ∀ d : ℤ, 0 < d →
+      ∃ q : ℕ → ℕ, StrictMono q ∧ (∀ n, n < k → (q n).Prime) ∧ HasAPGaps q d
+
+/-- Bridge: Bunyakovsky produces an AP-gap prime prefix for any `d > 0`.
+
+This is a direct restatement of `bunyakovsky_finitary` (no `obtain`
+unpacking needed because the F5 axiom signature directly produces the
+desired tuple). The asymmetry with `exists_apGap_zero_of_length`
+(d = 0 bridge, which DOES use `obtain` + `push_cast; ring`) reflects the
+deliberate choice to axiomatize d > 0 in predicate (F5) form rather than
+raw-triple (F1) form: the F5 form sidesteps the `ℤ`-cast bookkeeping
+that an F1 form would require for the quadratic
+`q n = q₀ + n * g₀ + (n * (n - 1) / 2) * d.toNat`. -/
+theorem exists_apGapPrimeSeq_of_length_d_pos
+    (k : ℕ) (d : ℤ) (hd : 0 < d) :
+    ∃ q : ℕ → ℕ, StrictMono q ∧ (∀ n, n < k → (q n).Prime) ∧ HasAPGaps q d :=
+  bunyakovsky_finitary k d hd
+
 end Erdos455OQ04
