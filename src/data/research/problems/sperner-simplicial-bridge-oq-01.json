@@ -1,7 +1,7 @@
 {
     "slug": "sperner-simplicial-bridge-oq-01",
     "title": "Sperner's lemma on non-pure simplicial complexes (mixed pseudomanifold)",
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "status": "active",
     "tier": "B",
     "path": "full",
@@ -29,20 +29,20 @@
         "goal": "Create a companion file Proofs/SpernerSimplicialBridgeOQ01.lean (~150-200 LOC total across S2 + S3) with: topCellsOfDim definition, MixedPseudomanifold predicate, MixedPseudomanifold.of_pure (pure → mixed sanity check), and sperner_mixed_panchromatic theorem. 0 axioms, 0 sorries. Gallery entry in S4 (formalized status, cites parent)."
     },
     "currentState": {
-        "phase": "ACT",
-        "since": "2026-05-13T22:50:00.000Z",
-        "iteration": 3,
-        "focus": "STATE-SYNC iteration (researcher-1, 2026-05-13): the tracker was last updated at S1 OBSERVE (2026-05-12T17:55Z) but the actual Lean file proofs/Proofs/SpernerSimplicialBridgeOQ01.lean is now at 184 lines / 3 defs (topCellsOfDim, MixedPseudomanifold, boundaryDoorCount) / 6 theorems (incl. sperner_mixed_panchromatic_at_dim) / 0 sorries / 0 axioms, with S2 SCAFFOLD merged via PR #18363 and S3 ACT merged via PR #18537 (both build-pending at merge). This iteration is doc-only: brings state.md + this JSON into agreement with the merged Lean work, populates leanFiles, and lists S4 (gallery entry) as the next action.",
+        "phase": "COMPLETED",
+        "since": "2026-05-14T04:00:00.000Z",
+        "iteration": 9,
+        "focus": "Session 9 (S5) build verification + gallery promotion (researcher-9, 2026-05-14): ran ./proofs/scripts/docker-build.sh Proofs.SpernerSimplicialBridgeOQ01 from a clean container against Mathlib v4.26.0 — Build completed successfully (7745 jobs), no errors. On the basis of that verification this PR promotes src/data/proofs/sperner-simplicial-bridge-oq-01/meta.json from status=formalized/badge=wip to status=verified/badge=verified, rewrites the assumptions and summary fields to drop the 'build pending' caveat, and resyncs this state.md + JSON to record the four iterations that landed between the prior STATE-SYNC PR #18940 and this verification (S2b #18434, S2c #18451, S3b #18564, S4 GALLERY #18677, audit #18746, three enrichment PRs #18741/#18819/#18833). The Lean file proofs/Proofs/SpernerSimplicialBridgeOQ01.lean is unchanged at 184 LOC / 3 defs / 6 theorems / 0 sorries / 0 axioms.",
         "blockers": [],
-        "nextAction": "S4 (next claim, ~30 LOC + meta.json): create the gallery entry src/data/proofs/sperner-simplicial-bridge-oq-01/{meta.json, index.ts, annotations.json} mirroring the canonical index.ts shape, status formalized (badge research) until docker build verifies; cross-reference parent sperner-simplicial-bridge and siblings sperner-mathlib, sperner-simplicial-instance. S4b in parallel: trigger docker build on origin/main HEAD for Proofs.SpernerSimplicialBridgeOQ01 and promote to status verified once green.",
+        "nextAction": "All required deliverables for OQ-01 are now complete (build-verified, gallery promoted). Remaining items are OPTIONAL extensions: (1) Mixed-dimension aggregator sperner_mixed_panchromatic K (∃ d, ∃ s ∈ topCellsOfDim K d, Odd (boundaryDoorCount d K) ∧ Panchromatic s) — likely as a sibling OQ rather than an OQ-01 extension; (2) Decidable promotion of boundaryDoorCount — remove the noncomputable qualifier via Fintype.card; (3) n = 7 / n = 11 stratification analogs. None required.",
         "attemptCounts": {
-            "total": 3,
-            "currentApproach": 3,
+            "total": 9,
+            "currentApproach": 9,
             "approachesTried": 1
         }
     },
     "knowledge": {
-        "progressSummary": "PROGRESS S3 ACT merged: companion proofs/Proofs/SpernerSimplicialBridgeOQ01.lean is at 184 lines / 3 defs (topCellsOfDim, MixedPseudomanifold, boundaryDoorCount) / 6 theorems (topCellsOfDim_eq_of_pure, topCellsOfDim_eq_empty_of_pure, MixedPseudomanifold.of_pure, card_of_mem_topCellsOfDim, hpseudo_of_mixed, sperner_mixed_panchromatic_at_dim) / 0 sorries / 0 axioms. S3 ACT (PR #18537) added the per-stratum main theorem sperner_mixed_panchromatic_at_dim; S2 SCAFFOLD (PR #18363) added the predicates and pure-coercion lemmas. Both merged build-pending. Tracker resynced (researcher-1, 2026-05-13). Outstanding: S4 gallery entry + docker build verification. S1 (researcher-4, 2026-05-12): OBSERVE phase established that the parent's door-counting argument naturally partitions by dimension in non-pure complexes; designed the framework predicates and main-theorem sketch.",
+        "progressSummary": "Session 9 (S5) build verification + gallery promotion (2026-05-14, researcher-9): ran ./proofs/scripts/docker-build.sh Proofs.SpernerSimplicialBridgeOQ01 from a clean container against Mathlib v4.26.0 — Build completed successfully (7745 jobs), no errors beyond the standard unusedSectionVars linter note. The build had been pending since S3 ACT (PR #18537) merged 2026-05-13T03:32:39Z with a 'build pending' qualifier; the S4 GALLERY (PR #18677, 2026-05-13T10:17Z) consequently shipped conservatively as status=formalized/badge=wip. This PR promotes the gallery entry to status=verified/badge=verified, rewrites assumptions and summary fields to drop the 'build pending' caveat, and resyncs state.md + this JSON to record the four iterations that landed between the prior STATE-SYNC PR #18940 and this verification. Iterations now span S1-S5: S1 OBSERVE (#18234), S2 SCAFFOLD (#18363), S2b OBSERVE (#18434), S2c PREP (#18451), S3 ACT (#18537), S3b PREP (#18564), S4 GALLERY (#18677), Session 8 STATE-SYNC (#18940), Session 9 (S5) build verification (this PR). Lean file unchanged at 184 LOC / 3 defs / 6 theorems / 0 sorries / 0 axioms. All required OQ-01 deliverables now complete. PROGRESS S3 ACT merged: companion proofs/Proofs/SpernerSimplicialBridgeOQ01.lean is at 184 lines / 3 defs (topCellsOfDim, MixedPseudomanifold, boundaryDoorCount) / 6 theorems (topCellsOfDim_eq_of_pure, topCellsOfDim_eq_empty_of_pure, MixedPseudomanifold.of_pure, card_of_mem_topCellsOfDim, hpseudo_of_mixed, sperner_mixed_panchromatic_at_dim) / 0 sorries / 0 axioms. S3 ACT (PR #18537) added the per-stratum main theorem sperner_mixed_panchromatic_at_dim; S2 SCAFFOLD (PR #18363) added the predicates and pure-coercion lemmas. S1 (researcher-4, 2026-05-12): OBSERVE phase established that the parent's door-counting argument naturally partitions by dimension in non-pure complexes; designed the framework predicates and main-theorem sketch.",
         "builtItems": [
             "research/problems/sperner-simplicial-bridge-oq-01/problem.md (S1, ~120 lines): formal statement of MixedPseudomanifold predicate, plain-language explanation of why door-counting respects stratification, 5-step approach plan with Lean signatures, parent-file infrastructure map.",
             "research/problems/sperner-simplicial-bridge-oq-01/knowledge.md (S1, ~150 lines): mathematical analysis of why doors are dimension-pure, edge cases (empty strata, coloring mismatch, decidability), Mathlib API survey, full S2 implementation sketch including MixedPseudomanifold.of_pure proof.",
@@ -104,7 +104,7 @@
         ]
     },
     "started": "2026-05-12T17:55:00.000Z",
-    "lastUpdate": "2026-05-13T22:50:00.000Z",
+    "lastUpdate": "2026-05-14T04:00:00.000Z",
     "significance": 6,
     "tractability": 5,
     "leanFiles": [
