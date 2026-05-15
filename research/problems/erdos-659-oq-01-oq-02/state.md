@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: OBSERVE → PREP (saturated; S2c PREP audit-corrects S2b §8.1)
-**Since**: 2026-05-12 (S1)
-**Iteration**: 7
-**Last Update**: 2026-05-13 (researcher-4) — STATE-SYNC: catching state.md up to 6 merged sessions
+**Phase**: ACT (S3 SCAFFOLD shipped → S4 PREP Lean-side helpers)
+**Since**: 2026-05-13 (S3 ACT SCAFFOLD via PR #18947)
+**Iteration**: 9
+**Last Update**: 2026-05-14 (researcher-12) — S4 PREP ZMod 5 QR helpers + log iter 8 (S3 ACT SCAFFOLD)
 
 ## Session Log (STATE-SYNC, 2026-05-13, researcher-4)
 
@@ -162,3 +162,135 @@ This S1 OBSERVE iteration is a **pure survey**. It produces:
 The provisional rate $\Theta(n^{2/d})$ is the author's synthesis from published bounds (Solymosi–Vu 2008 for the lower side, Cartesian-lattice construction for the upper). **No published paper gives the exact rate for the 4-point property in $d \ge 3$**; this OQ probes a genuinely open question in metric combinatorics.
 
 The future Lean entry will be `status: "axiomatized"` with `axiomCount ≥ 3`.
+
+---
+
+## Iteration 8 (researcher-1, 2026-05-13) — S3 ACT SCAFFOLD (merged, PR #18947)
+
+**Outcome**: built — created `proofs/Proofs/Erdos659OQ01OQ02.lean` (133
+LOC; **(build pending)** convention). Ships the outer scaffold for the
+axis-vs-plane safety predicate at `(p, q) = (2, 5)`:
+
+- `def safe_A`, `def safe_B`, `def safe_C` — the three QR equations
+  isolated by S2b PREP §4 (`5c² = a² + 2b²`, `2b² = a² + 5c²`,
+  `a² = 2b² + 5c²`).
+- `theorem safe_A_holds`, `safe_B_holds`, `safe_C_holds` —
+  **3 strategic sorries** (one per equation), descent bodies deferred
+  to S4 ACT.
+- `def SafePrimePair_AxisVsPlane (p q : ℕ)` — composite predicate
+  parameterised on the prime pair.
+- `theorem safe_2_5_axis_vs_plane : SafePrimePair_AxisVsPlane 2 5` —
+  derived as the conjunction of the three `safe_*_holds`.
+
+Sorries: 3 (strategic, all in `safe_*_holds`). Axioms: 0. The build is
+pending pending Docker verification (recursive `.lake` symlink in the
+researcher worktree precluded local `lake build`).
+
+## Iteration 9 (researcher-12, 2026-05-14) — S4 PREP — ZMod 5 QR helpers
+
+**Outcome**: built (Docker-verified — see Build status below) —
+extended `proofs/Proofs/Erdos659OQ01OQ02.lean` (133 → ~165 LOC) with
+**two decidable ZMod 5 helpers** that compress the mod-5 step of the
+S4 ACT descent proofs to a 25-case `decide`. Also dropped the stale
+`import Mathlib.Data.Int.Defs` left over from S3 ACT SCAFFOLD (the
+module does not exist at v4.26.0 — surfaced by the first Docker
+build attempt this iteration; this iter is the first Docker
+verification of the OQ02 Lean file).
+
+### What I added
+
+```lean
+import Mathlib.Data.ZMod.Basic   -- (new import)
+
+/-- Mod-5 step for equation A: `a² + 2b² ≡ 0 (mod 5)` ⇔ `a = 0 ∧ b = 0`. -/
+lemma zmod_5_a_sq_plus_2_b_sq_eq_zero_iff (a b : ZMod 5) :
+    a ^ 2 + 2 * b ^ 2 = 0 ↔ a = 0 ∧ b = 0 := by
+  revert a b; decide
+
+/-- Mod-5 step for equations B and C: `a² ≡ 2b² (mod 5)` ⇔ `a = 0 ∧ b = 0`. -/
+lemma zmod_5_a_sq_eq_two_b_sq_iff (a b : ZMod 5) :
+    a ^ 2 = 2 * b ^ 2 ↔ a = 0 ∧ b = 0 := by
+  revert a b; decide
+```
+
+### Why these helpers, and why now
+
+S2b PREP §4 sketches the mod-5 step via
+`ZMod.exists_sq_eq_two_iff` (line 74 of
+`Mathlib/NumberTheory/LegendreSymbol/QuadraticReciprocity.lean`) and
+`ZMod.exists_sq_eq_neg_two_iff` (line 80). The character-theoretic
+route works, but the mod-5 reduction itself is finite combinatorics
+over the 25 pairs `(a, b) ∈ ZMod 5 × ZMod 5`. A `decide` reflection
+over the underlying `Decidable` instance closes both lemmas in two
+lines of tactic and is mathematically equivalent to specialising
+`exists_sq_eq_{two,neg_two}_iff` at `p = 5`.
+
+Picking the `decide` form has three advantages:
+
+1. **No `Fact (Nat.Prime 5)` instance plumbing** — the two
+   QR-reciprocity routes need it (`haveI := fact_prime_five`),
+   adding 1–2 LOC per call site. The `decide` form has no instance
+   requirements.
+2. **Single load-bearing lemma for B and C** — both equations reduce
+   modulo 5 to "`a² = 2b²` in `ZMod 5`", and the same helper
+   `zmod_5_a_sq_eq_two_b_sq_iff` discharges both. (The S2b PREP §4.2
+   and §4.3 paths used two separate citations.)
+3. **Trivially auditable** — `decide` over a 25-case finite type is a
+   first-principles proof; an auditor can re-run it without any
+   number-theory background.
+
+### What this does NOT do
+
+- Does **not** discharge `safe_A_holds`, `safe_B_holds`,
+  `safe_C_holds` — the strategic sorries from S3 ACT SCAFFOLD
+  remain. Those need the integer-side descent infrastructure
+  (`Nat.strongRecOn` + substitution arithmetic), which is S4 ACT
+  scope.
+- Does **not** introduce new axioms or change `axiomCount`.
+- Does **not** touch the full-rank safety predicate (S2c PREP §6.1)
+  or full SafePrimePair conjunction.
+
+### Next action (S4 ACT)
+
+Lift the helpers into the descent proof of `safe_A_holds`
+(~30 LOC body) following the S2b PREP §5 template:
+
+1. From `5c² = a² + 2b²` and the new
+   `zmod_5_a_sq_plus_2_b_sq_eq_zero_iff`, deduce `5 ∣ a` and `5 ∣ b`
+   in ℤ.
+2. Substitute `a = 5a'`, `b = 5b'`; rearrange to `c² = 5(a'² + 2b'²)`;
+   apply `Int.Prime.dvd_natAbs_of_coe_dvd_sq` (line 38 of
+   `Mathlib/Data/Int/NatPrime.lean`) to deduce `5 ∣ c`.
+3. Substitute `c = 5c'`; get `5c'² = a'² + 2b'²` — same equation,
+   smaller `a.natAbs + b.natAbs + c.natAbs`.
+4. `Nat.strongRecOn` on the sum to close the descent.
+
+`safe_B_holds` and `safe_C_holds` mirror the structure with the second
+helper `zmod_5_a_sq_eq_two_b_sq_iff` doing the mod-5 step.
+
+Estimated S4 ACT size: **~40–50 LOC total** for all three discharges
+(down from the S2b PREP §5 estimate of ~50 LOC, after factoring out the
+two helpers).
+
+### Build status
+
+**Build verified by Docker wrapper** — log
+`.loom/logs/researcher-12-erdos659-s4-prep-build3.log`,
+`✔ Build completed successfully (3058 jobs)`. Both helpers compile
+cleanly via `decide`; the only warnings are the three pre-existing
+strategic sorries (lines 118/126/134) inherited from S3 ACT SCAFFOLD.
+
+Note: the first two Docker attempts failed because I ran the script
+from the main repo path (`cd /Users/rwalters/GitHub/lean-genius`),
+which mounts the main repo into the container — not the worktree. The
+fix was to invoke `./proofs/scripts/docker-build.sh …` from the
+worktree directory (`cwd: .loom/worktrees/researcher-12`); the script
+resolves `REPO_ROOT` from `BASH_SOURCE` and mounts whichever working
+tree contains the script invocation. Worth noting for future builds
+from worktrees with uncommitted edits.
+
+### Blockers
+
+None. S4 ACT is unblocked: the mod-5 step is now a two-line lemma
+call; the integer descent infrastructure is standard Mathlib
+(`Nat.strongRecOn`, `Int.Prime.dvd_natAbs_of_coe_dvd_sq`).

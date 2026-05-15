@@ -46,9 +46,39 @@ wrapper).
 -/
 
 import Mathlib.Tactic
-import Mathlib.Data.Int.Defs
+import Mathlib.Data.ZMod.Basic
 
 namespace Erdos659OQ01OQ02
+
+/-! ## S4 PREP — ZMod 5 QR helpers (mod-5 step for QR descent)
+
+The S4 ACT proofs of `safe_A_holds`, `safe_B_holds`, `safe_C_holds` each
+need a mod-5 step ahead of the integer descent. The two `decide`-checked
+lemmas below encapsulate that mod-5 analysis once and for all, replacing
+the longer `ZMod.exists_sq_eq_{two,neg_two}_iff` + case-on-residue path
+sketched in
+`sessions/2026-05-13-s2b-prep-qr-descent-mathlib-audit-for-2-5-pair.md`
+§4 with a 25-case `decide` check.
+
+Both are pure ZMod-5 facts, independent of the integer descent
+infrastructure; they reduce the S4 ACT body to substitution arithmetic
+plus `Nat.strongRecOn`. -/
+
+/-- **(S4 PREP, mod-5 step for equation A)** `a² + 2b² ≡ 0 (mod 5)` iff
+    both `a ≡ 0` and `b ≡ 0` in `ZMod 5`. Equivalent (via §3.2 of S2b
+    PREP) to the assertion that `−2` is not a square in `ZMod 5`. -/
+lemma zmod_5_a_sq_plus_2_b_sq_eq_zero_iff (a b : ZMod 5) :
+    a ^ 2 + 2 * b ^ 2 = 0 ↔ a = 0 ∧ b = 0 := by
+  revert a b
+  decide
+
+/-- **(S4 PREP, mod-5 step for equations B and C)** `a² ≡ 2 b² (mod 5)`
+    iff both `a ≡ 0` and `b ≡ 0` in `ZMod 5`. Equivalent (via §3.1 of S2b
+    PREP) to the assertion that `2` is not a square in `ZMod 5`. -/
+lemma zmod_5_a_sq_eq_two_b_sq_iff (a b : ZMod 5) :
+    a ^ 2 = 2 * b ^ 2 ↔ a = 0 ∧ b = 0 := by
+  revert a b
+  decide
 
 /-- Equation A predicate for the prime pair `(p, q) = (2, 5)`:
     `5 c² = a² + 2 b²` has only the trivial integer solution.
