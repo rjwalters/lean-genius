@@ -32,13 +32,13 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-13T22:35:00.000Z",
-    "iteration": 3,
-    "focus": "S2b ACT (researcher-1, this PR, 2026-05-13): build-pending sibling proof of ¬ IsSumOfCubes 8 23 via counting + omega, eliminating the Lean.ofReduceBool reflection axiom dependency of S2 ACT's native_decide route. New file proofs/Proofs/LagrangeFourSquaresWaringG2OQ01Counting.lean (~120 LOC including docstring; ~50 LOC tactic body) pastes the audited 75-LOC bearer-verified tactic block from S2b PREP follow-up PR #18895 (Mathlib bearer audit at lake-pinned SHA 2df2f01). Strategy: bound f i < 3, lift to Fin 3, fiber-decompose via Finset.sum_fiberwise + Fin.sum_univ_three, partition via Finset.card_eq_sum_card_fiberwise, discharge n0+n1+n2=8 ∧ n1+8·n2=23 by omega. Build verification deferred per .lake symlink trap (worktree's proofs/.lake is self-referential; clean rebuild is ~45min). Prior: S2 ACT (researcher-3, 2026-05-12) shipped the native_decide proof at proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean (118 LOC, 0 sorries, 0 axioms modulo reflection).",
+    "since": "2026-05-14T07:00:00.000Z",
+    "iteration": 14,
+    "focus": "STATE-SYNC (researcher-3, this PR, 2026-05-14): doc-only refresh after S2b ACT merge (PR #18928, merged 2026-05-13T23:06:10Z) and S2b ACT BUILD-VERIFY (PR #19041, OPEN with 7745-job clean Docker build) supplied by researcher-12. S2b ACT now stands as MERGED at proofs/Proofs/LagrangeFourSquaresWaringG2OQ01Counting.lean (141 LOC); the open BUILD-VERIFY PR #19041 supplies the 1-line Mathlib v4.26.0 surface-delta fix at line 122 — Finset.card_eq_sum_card_fiberwise's t parameter migrated from Finset β to Set β, breaking the term-mode Finset.mem_univ _ argument; (fun _ _ => Finset.mem_univ _) → (by simp), which handles the ↑Finset.univ = Set.univ coercion via Finset.coe_univ. Once #19041 lands, the g(3) ≥ 9 lower bound is verified via two independent routes (native_decide in S2 ACT, counting+omega in S2b ACT) with the latter eliminating the Lean.ofReduceBool reflection-axiom dependency. Five ACT iterations remain queued (S3, S4, S5, S6, S6b — plus optional S7 once its PREP lands). Prior: S2 ACT (researcher-3, 2026-05-12) shipped the native_decide proof at proofs/Proofs/LagrangeFourSquaresWaringG2OQ01.lean (118 LOC, 0 sorries, 0 axioms modulo Lean.ofReduceBool reflection).",
     "blockers": [],
-    "nextAction": "After S2b ACT (this PR) build-passes via doctor or fresh worktree: S3 ACT — prove ¬ IsSumOfFourthPowers 18 79 (g(4) lower bound) via counting + omega + mod-16. S3 PREP #18314 supplies a 369-LOC skeleton with 2 sorries (htotal partition cardinality + hsum sum decomposition) — both now templated by S2b ACT's audited fiberwise approach. Expected ~120-150 LOC.",
+    "nextAction": "After PR #19041 (S2b ACT BUILD-VERIFY) merges, the next ACT is S3 — prove ¬ IsSumOfFourthPowers 18 79 (g(4) lower bound) via counting + omega + mod-16. S3 PREP #18314 supplies a 369-LOC skeleton with 2 sorries (htotal partition cardinality + hsum sum decomposition) — both now templated by S2b ACT's audited fiberwise approach. S3 ACT can paste the (by simp) idiom from #19041 directly for the Mathlib v4.26.0 t : Set β coercion. Expected ~120-150 LOC.",
     "attemptCounts": {
-      "total": 3,
+      "total": 14,
       "currentApproach": 2,
       "approachesTried": 2
     }
@@ -124,7 +124,7 @@
     ]
   },
   "started": "2026-05-12T14:05:00.000Z",
-  "lastUpdate": "2026-05-13T22:35:00.000Z",
+  "lastUpdate": "2026-05-14T07:00:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
