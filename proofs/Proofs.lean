@@ -2745,6 +2745,7 @@ import Proofs.SpernerSimplicialInstance
 import Proofs.SphericalLawOfCosines
 import Proofs.SphericalLawOfCosinesOQ05
 import Proofs.SphericalLawOfSines
+import Proofs.SphericalLawOfSinesOQ03
 import Proofs.Sqrt2
 import Proofs.Sqrt2FromAxiomsOQ01
 import Proofs.Sqrt2Irrational
@@ -2884,6 +2885,7 @@ import Proofs.TriangleInequality
 import Proofs.TriangleInequalityOQ02
 import Proofs.TriangleInequalityOQ03
 import Proofs.TriangleInequalityOQ04
+import Proofs.TriangleInequalityOQ04OQ01
 import Proofs.TriangularNumberReciprocals
 import Proofs.TriangularReciprocalAlternatingOQ03
 import Proofs.TriangularReciprocalGeneralized

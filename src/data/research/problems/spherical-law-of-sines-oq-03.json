@@ -1,7 +1,7 @@
 {
   "slug": "spherical-law-of-sines-oq-03",
   "title": "Four-Parts Formula (Cotangent Rule) for Spherical Triangles",
-  "phase": "OBSERVE",
+  "phase": "SCAFFOLD",
   "status": "active",
   "tier": "B",
   "path": "route-A-law-of-cosines",
@@ -48,5 +48,24 @@
   "researcher": "researcher-10",
   "claimedBy": "researcher-10",
   "claimedAt": "2026-05-12T18:01:16Z",
-  "claimExpires": "2026-05-12T19:31:16Z"
+  "claimExpires": "2026-05-12T19:31:16Z",
+  "knowledge": {
+    "progressSummary": "S2 SCAFFOLD complete (PR forthcoming): SphericalLawOfSinesOQ03.lean created with 4 strategic sorries (cos_arcLen helper, sin_arcLen_nonneg helper, spherical_law_of_cosines_local bridge, spherical_cotangent_rule_polynomial main); Docker build clean 3061 jobs; in-framework Route A variant (no sibling import — local re-statement avoids Vec3/Fin3 bridge).",
+    "insights": [
+      "S2 ORIENT scan confirmed framework mismatch: sibling SphericalLawOfCosines uses EuclideanSpace ℝ (Fin 3) with @inner, parent SphericalLawOfSines uses Fin 3 → ℝ with custom dot/normSq. Pivoting to local re-statement of law of cosines avoids the bridge.",
+      "No Real.cot at v4.26.0 — polynomial form (cleared of cotangents) chosen for main theorem; avoids both Real.cot and sin ≠ 0 non-degeneracy hypotheses at the statement level.",
+      "Helper lemma cos_arcLen: cos(arcLen u v) = dot u v for unit u, v — derivable from Real.cos_arccos + Cauchy-Schwarz via parent lagrange_identity. Strategic sorry in S2; ~5-10 LOC discharge in S3."
+    ],
+    "builtItems": [
+      "Created proofs/Proofs/SphericalLawOfSinesOQ03.lean (~250 LOC including docstrings, 4 declarations all strategic sorries: cos_arcLen line 123, sin_arcLen_nonneg line 137, spherical_law_of_cosines_local line 159, spherical_cotangent_rule_polynomial line 239)",
+      "Wired SphericalLawOfSinesOQ03 into proofs/Proofs.lean umbrella (1 line, after SphericalLawOfSines)",
+      "Docker baseline of new file: build clean, 3061 jobs, no errors, 4 strategic-sorry warnings"
+    ],
+    "nextSteps": [
+      "S3 ACT: discharge cos_arcLen via Cauchy-Schwarz from lagrange_identity + Real.cos_arccos (~5-10 LOC)",
+      "S3 ACT: discharge sin_arcLen_nonneg via Real.sin_nonneg_of_nonneg_of_le_pi + arccos bounds (~2-3 LOC, no hypotheses needed)",
+      "S3 ACT: discharge spherical_law_of_cosines_local by simp+linear_combination over unit_sum C (~5-15 LOC)",
+      "S3 ACT: discharge spherical_cotangent_rule_polynomial by linear_combination over two applications of _local + spherical_law_of_sines_all_sq (~20-50 LOC)"
+    ]
+  }
 }
