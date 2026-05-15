@@ -508,6 +508,7 @@ import Proofs.ChineseRemainderNonCoprimeOQ04
 import Proofs.CircumferenceFromArea
 import Proofs.CircumferenceViaDifferentiation
 import Proofs.CircumferenceViaDifferentiationOQ01
+import Proofs.CircumferenceViaDifferentiationOQ03
 import Proofs.Club.Basic
 import Proofs.CollatzCycles
 import Proofs.CollatzCyclesOQ03
