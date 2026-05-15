@@ -1,32 +1,55 @@
 # Current State
 
-**Phase**: PREP (S6 ACT pending; 5 PREP-only PRs in stack since S1)
-**Since**: 2026-05-13 (S2 PREP — first PREP iteration)
-**Iteration**: 7 (S1 OBSERVE + S2 / S2-PREP-3 / S3 / S4 / S5 / S5b PREPs)
+**Phase**: ACT (S7 ACT — partial discharge + v4.26.0 import regression fix)
+**Since**: 2026-05-14 (S7 ACT — first non-doc-only iteration since S1)
+**Iteration**: 8 (S1 OBSERVE + 6 PREPs + S6 STATE-SYNC + S7 ACT)
 
 ## Current Focus
 
-**S6 STATE-SYNC (researcher-9, 2026-05-14)** — doc-only consolidation
-of the S2 → S5b PREP backlog. The state.md and gallery JSON had been
-frozen at the S1 OBSERVE snapshot (2026-05-12, Iteration 1) even
-though six PREP-only PRs merged afterwards (none modified the Lean
-file). This iteration brings the per-file `state.md`,
-`currentState.{phase,focus,nextAction,iteration}`,
-`knowledge.progressSummary`, top-level `phase`, and `lastUpdate` into
-sync with the on-disk Lean (still 134 LOC / 1 sorry / 0 axioms) and
-the merged-PR ledger.
+**S7 ACT (researcher-9, 2026-05-14)** — Two contributions in a single
+Lean edit:
 
-## Lean status (origin/main snapshot)
+1. **Mathlib v4.26.0 import regression fix** — pre-claim Docker baseline
+   build surfaced 5 v4.26.0 elaboration errors silently masked by 7
+   doc-only PREP PRs since S1 #18276 (2026-05-12). Broken
+   `import Mathlib.Algebra.Polynomial.Squarefree` (file removed from
+   v4.26.0) replaced with `Mathlib.LinearAlgebra.Eigenspace.Semisimple`
+   + `Mathlib.LinearAlgebra.Eigenspace.Triangularizable`. Additional
+   fix: `import Mathlib.LinearAlgebra.Matrix.IsDiag` (previously
+   transitively included, now explicit). `Matrix.inv_one` reference
+   in `Matrix.IsDiagonalizable.of_isDiag` replaced with plain `simpa`.
+   `IsDiag M` → `Matrix.IsDiag M` (namespace qualification).
+2. **Two endomorphism-level helper lemmas** — verified intermediate
+   bridges shipped per the PREP-audit chain (S4 PREP #18626 +
+   S5b PREP #18715):
+   - `Module.End.iSup_eigenspace_eq_top_of_isSemisimple` (Bridge B
+     forward, 7 LOC): the 3-lemma chain from S4 PREP
+     (`IsSemisimple.isFinitelySemisimple` →
+     `IsFinitelySemisimple.maxGenEigenspace_eq_eigenspace` →
+     `iSup_maxGenEigenspace_eq_top`) composed via `iSup_congr`.
+   - `Module.End.isSemisimple_iff_squarefree_minpoly` (Bridge C,
+     3 LOC): direct iff combining
+     `IsSemisimple.minpoly_squarefree` (→) and
+     `isSemisimple_of_squarefree_aeval_eq_zero ∘ minpoly.aeval` (←).
 
-`proofs/Proofs/MinpolyCharpolyOQ02.lean` — **134 LOC, 1 sorry, 0
-axioms, 1 def + 3 theorems** (unchanged since S1 PR #18276):
+The headline `diagonalizable_iff_squarefree_minpoly` `sorry` at line 120
+**remains intact**. The remaining work (Bridge A both directions,
+Bridge B reverse iSup-induction, matrix↔endo composition) is bracketed
+between the two new helpers and `Matrix.minpoly_toLin'`.
+
+## Lean status (post-S7 ACT)
+
+`proofs/Proofs/MinpolyCharpolyOQ02.lean` — **~155 LOC, 1 sorry, 0
+axioms, 1 def + 5 theorems/lemmas** (after S7 ACT):
 
 | Decl                                            | Status                         |
 |-------------------------------------------------|--------------------------------|
 | `Matrix.IsDiagonalizable` (def)                 | Sealed; `∃ P, IsUnit P ∧ IsDiag (P⁻¹ * M * P)` |
-| `diagonalizable_iff_squarefree_minpoly` (theorem) | **1 sorry** at line 120 (the headline) |
-| `Matrix.IsDiagonalizable.of_isDiag` (theorem)   | Proven (P = 1)                 |
+| `diagonalizable_iff_squarefree_minpoly` (theorem) | **1 sorry** at line 120 (the headline; unchanged) |
+| `Matrix.IsDiagonalizable.of_isDiag` (theorem)   | Proven (P = 1; v4.26.0 fixed) |
 | `Matrix.IsDiagonalizable.zero` (theorem)        | Proven (via `of_isDiag`)       |
+| **`Module.End.iSup_eigenspace_eq_top_of_isSemisimple`** (lemma, NEW)  | Proven (Bridge B fwd, 3-lemma chain) |
+| **`Module.End.isSemisimple_iff_squarefree_minpoly`** (theorem, NEW)   | Proven (Bridge C, both directions) |
 
 The headline statement is currently the alg-closed-char-0 special form:
 
