@@ -20,20 +20,25 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "lineCount": 225,
-    "assumptions": "0 sorries, 0 axioms in this file. The parent `Proofs/KeplerConjecture.lean` axiomatizes (a) `thues_theorem` (2D hexagonal optimality, Thue 1892 / Fejes Tóth 1940), (b) `fccDensity_lt_one` (numerical bound), and (c) the Kepler conjecture itself (Hales 1998, Flyspeck 2014). This OQ-04 file adds no new axioms — it defines the Chen-Engel-Glotzer rational constant 4000/4671 and the `tetrahedronDimerPacking : PackingDensity` instance, and proves five theorems including `tetrahedronDimerDensity_gt_fccDensity` (the central refutation `π/(3√2) < 4000/4671`, via `Real.pi_lt_315` and `Real.lt_sqrt`, axiom-free) and the existential corollary `exists_packingDensity_gt_fcc`. The ellipsoid (Bezdek-Kuperberg) and Ulam (open conjecture) sub-questions will require axiomatization when introduced in future iterations.",
+    "axiomCount": 1,
+    "lineCount": 321,
+    "assumptions": "0 sorries, 1 axiom in this file (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`, the Bezdek-Kuperberg 2007 ellipsoid lattice density bound, stated but not proved in Lean — published proof relies on affine density invariance under linear transforms, not yet in Mathlib v4.26.0). The parent `Proofs/KeplerConjecture.lean` axiomatizes (a) `thues_theorem` (2D hexagonal optimality, Thue 1892 / Fejes Tóth 1940), (b) `fccDensity_lt_one` (numerical bound), and (c) the Kepler conjecture itself (Hales 1998, Flyspeck 2014). This OQ-04 file defines the Chen-Engel-Glotzer rational constant 4000/4671, the `tetrahedronDimerPacking : PackingDensity` instance, and the `EllipsoidLatticePacking` marker structure; proves six theorems including `tetrahedronDimerDensity_gt_fccDensity` (the central refutation `π/(3√2) < 4000/4671`, via `Real.pi_lt_d2` and `Real.lt_sqrt`, axiom-free), the existential corollary `exists_packingDensity_gt_fcc`, and the Bezdek-Kuperberg-derived corollary `ellipsoid_lattice_le_fccPacking`. The Ulam (open conjecture) sub-question will require axiomatization when introduced in a future iteration.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
-        "theorem": "Real.pi_lt_315",
-        "description": "Numerical bound π < 3.15, used for the S3 inequality reduction π² < 9.9225 < 13.2002",
+        "theorem": "Real.pi_lt_d2",
+        "description": "Numerical bound π < 3.15, used in `tetrahedronDimerDensity_gt_fccDensity` to bound the LHS `4671 · π` of the cross-multiplied inequality",
         "module": "Mathlib.Analysis.SpecialFunctions.Trigonometric.Bounds"
       },
       {
-        "theorem": "Real.sq_sqrt",
-        "description": "(√x)² = x for x ≥ 0, used to clear the √2 factor in the FCC density comparison",
-        "module": "Mathlib.Analysis.SpecialFunctions.Pow.Real"
+        "theorem": "Real.lt_sqrt",
+        "description": "Characterisation `x < √y ↔ x² < y` (for `0 ≤ x`), used to derive `1.4 < √2` from `1.4² = 1.96 < 2`",
+        "module": "Mathlib.Analysis.SpecialFunctions.Pow.NNReal"
+      },
+      {
+        "theorem": "div_lt_div_iff₀",
+        "description": "Cross-multiplication for strict inequality between two positive fractions, used to clear the divisions in `tetrahedronDimerDensity_gt_fccDensity`",
+        "module": "Mathlib.Algebra.Order.Field.Basic"
       }
     ]
   },
@@ -131,6 +136,6 @@
       "relationship": "Adjacent discrete-geometric machinery. Ehrhart theory counts lattice points in dilations of a convex polytope, complementing the *volumetric* density theory of Kepler/Hales. Both frameworks share the convex-body-in-ℝᵈ setting, and Ehrhart's `tDilateLatticePoints` polynomial encodes (in the limit) the same kind of asymptotic density information that packing arguments exploit. The 4000/4671 dimer construction is itself a polytopal arrangement — its unit cell counts naturally interface with Ehrhart-style techniques."
     }
   ],
-  "theoremCount": 5,
-  "definitionCount": 2
+  "theoremCount": 6,
+  "definitionCount": 3
 }
