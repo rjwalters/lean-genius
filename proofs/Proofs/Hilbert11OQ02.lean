@@ -49,6 +49,7 @@ set_option linter.unusedVariables false
 namespace Hilbert11OQ02
 
 open Set
+open Polynomial
 
 /-! ## Section 1: The Selmer Cubic Polynomial -/
 
@@ -445,18 +446,18 @@ set_option linter.unusedSimpArgs false
 /-- Univariate Selmer polynomial in `z` at `(x, y) = (0, 1)`: `g(z) = 5z³ + 4`,
     over `ℤ` so that `Mathlib.NumberTheory.Padics.Hensel.hensels_lemma` can
     consume it via the canonical `[Algebra ℤ ℤ_[11]]` instance. -/
-def Gint : Polynomial ℤ := C 4 + C 5 * X ^ 3
+noncomputable def Gint : Polynomial ℤ := C 4 + C 5 * X ^ 3
 
 private lemma Gint_aeval (a : ℤ_[11]) :
     aeval a Gint = (4 : ℤ_[11]) + (5 : ℤ_[11]) * a ^ 3 := by
   unfold Gint
-  simp [aeval_C, aeval_X_pow] <;> ring
+  simp [aeval_C, aeval_X_pow, map_ofNat] <;> ring
 
 private lemma Gint_derivative_aeval (a : ℤ_[11]) :
     aeval a Gint.derivative = (15 : ℤ_[11]) * a ^ 2 := by
   unfold Gint
   simp [derivative_add, derivative_C, derivative_C_mul, derivative_X_pow,
-        aeval_C, aeval_X_pow] <;> ring
+        aeval_C, aeval_X_pow, map_ofNat] <;> ring
 
 private lemma Gint_aeval_at_2 :
     aeval (2 : ℤ_[11]) Gint = ((44 : ℤ) : ℤ_[11]) := by
@@ -558,25 +559,26 @@ open Polynomial
 /-- The univariate polynomial `g(z) = 5z³ + 4 ∈ ℤ[z]`, obtained from the Selmer
     cubic by fixing `(x, y) = (0, 1)`. The same polynomial works for every prime;
     only the witness `z₀` and the divisibility data change. -/
-def Gint : Polynomial ℤ := C 4 + C 5 * X ^ 3
+noncomputable def Gint : Polynomial ℤ := C 4 + C 5 * X ^ 3
 
 private lemma Gint_derivative_eq : Gint.derivative = C 15 * X ^ 2 := by
   unfold Gint
   rw [derivative_add, derivative_C, zero_add, derivative_C_mul,
-      derivative_X_pow]
-  push_cast
-  ring
+      derivative_X_pow, ← mul_assoc, ← C_mul]
+  norm_num
 
 private lemma Gint_aeval {p : ℕ} [Fact (Nat.Prime p)] (a : ℤ_[p]) :
     aeval a Gint = (4 : ℤ_[p]) + (5 : ℤ_[p]) * a ^ 3 := by
   unfold Gint
   rw [map_add, map_mul, map_pow, aeval_C, aeval_C, aeval_X]
+  simp only [algebraMap_int_eq, eq_intCast]
   push_cast
   ring
 
 private lemma Gint_derivative_aeval {p : ℕ} [Fact (Nat.Prime p)] (a : ℤ_[p]) :
     aeval a Gint.derivative = (15 : ℤ_[p]) * a ^ 2 := by
   rw [Gint_derivative_eq, map_mul, map_pow, aeval_C, aeval_X]
+  simp only [algebraMap_int_eq, eq_intCast]
   push_cast
   ring
 
@@ -718,25 +720,26 @@ open Polynomial
     constant term `c`. Specialized to `c = 3·x₀³ + 4·y₀³` it becomes the
     Selmer cubic with the `(x, y) = (x₀, y₀)` projection.
     `Section 13.HenselCaseA.Gint` is exactly `G 4` (the `(0, 1, z)` slice). -/
-def G (c : ℤ) : Polynomial ℤ := C c + C 5 * X ^ 3
+noncomputable def G (c : ℤ) : Polynomial ℤ := C c + C 5 * X ^ 3
 
 private lemma G_derivative_eq (c : ℤ) : (G c).derivative = C 15 * X ^ 2 := by
   unfold G
   rw [derivative_add, derivative_C, zero_add, derivative_C_mul,
-      derivative_X_pow]
-  push_cast
-  ring
+      derivative_X_pow, ← mul_assoc, ← C_mul]
+  norm_num
 
 private lemma G_aeval {p : ℕ} [Fact (Nat.Prime p)] (c : ℤ) (a : ℤ_[p]) :
     aeval a (G c) = (c : ℤ_[p]) + (5 : ℤ_[p]) * a ^ 3 := by
   unfold G
   rw [map_add, map_mul, map_pow, aeval_C, aeval_C, aeval_X]
+  simp only [algebraMap_int_eq, eq_intCast]
   push_cast
   ring
 
 private lemma G_derivative_aeval {p : ℕ} [Fact (Nat.Prime p)] (c : ℤ) (a : ℤ_[p]) :
     aeval a (G c).derivative = (15 : ℤ_[p]) * a ^ 2 := by
   rw [G_derivative_eq, map_mul, map_pow, aeval_C, aeval_X]
+  simp only [algebraMap_int_eq, eq_intCast]
   push_cast
   ring
 
@@ -909,25 +912,26 @@ open Polynomial
 /-- The univariate polynomial `H(x) = c + 3x³ ∈ ℤ[x]`, parametric in the
     constant term `c`. Specialized to `c = 4·y₀³ + 5·z₀³` it becomes the
     Selmer cubic with the `(y, z) = (y₀, z₀)` projection. -/
-def H (c : ℤ) : Polynomial ℤ := C c + C 3 * X ^ 3
+noncomputable def H (c : ℤ) : Polynomial ℤ := C c + C 3 * X ^ 3
 
 private lemma H_derivative_eq (c : ℤ) : (H c).derivative = C 9 * X ^ 2 := by
   unfold H
   rw [derivative_add, derivative_C, zero_add, derivative_C_mul,
-      derivative_X_pow]
-  push_cast
-  ring
+      derivative_X_pow, ← mul_assoc, ← C_mul]
+  norm_num
 
 private lemma H_aeval {p : ℕ} [Fact (Nat.Prime p)] (c : ℤ) (a : ℤ_[p]) :
     aeval a (H c) = (c : ℤ_[p]) + (3 : ℤ_[p]) * a ^ 3 := by
   unfold H
   rw [map_add, map_mul, map_pow, aeval_C, aeval_C, aeval_X]
+  simp only [algebraMap_int_eq, eq_intCast]
   push_cast
   ring
 
 private lemma H_derivative_aeval {p : ℕ} [Fact (Nat.Prime p)] (c : ℤ) (a : ℤ_[p]) :
     aeval a (H c).derivative = (9 : ℤ_[p]) * a ^ 2 := by
   rw [H_derivative_eq, map_mul, map_pow, aeval_C, aeval_X]
+  simp only [algebraMap_int_eq, eq_intCast]
   push_cast
   ring
 
@@ -1139,18 +1143,18 @@ set_option linter.unusedSimpArgs false
 
 /-- Univariate Selmer polynomial in `z` at `(x, y) = (0, 1)`: `g(z) = 5z³ + 4`,
     over `ℤ` (same polynomial as `Hensel11.Gint`). -/
-def Gint : Polynomial ℤ := C 4 + C 5 * X ^ 3
+noncomputable def Gint : Polynomial ℤ := C 4 + C 5 * X ^ 3
 
 private lemma Gint_aeval (a : ℤ_[3]) :
     aeval a Gint = (4 : ℤ_[3]) + (5 : ℤ_[3]) * a ^ 3 := by
   unfold Gint
-  simp [aeval_C, aeval_X_pow] <;> ring
+  simp [aeval_C, aeval_X_pow, map_ofNat] <;> ring
 
 private lemma Gint_derivative_aeval (a : ℤ_[3]) :
     aeval a Gint.derivative = (15 : ℤ_[3]) * a ^ 2 := by
   unfold Gint
   simp [derivative_add, derivative_C, derivative_C_mul, derivative_X_pow,
-        aeval_C, aeval_X_pow] <;> ring
+        aeval_C, aeval_X_pow, map_ofNat] <;> ring
 
 private lemma Gint_aeval_at_4 :
     aeval (4 : ℤ_[3]) Gint = ((324 : ℤ) : ℤ_[3]) := by
@@ -1187,13 +1191,13 @@ private lemma norm_80_eq_one : ‖((80 : ℤ) : ℤ_[3])‖ = 1 := by
 /-- `‖324‖_3 = (1/3)⁴ = 1/81`. -/
 private lemma norm_324_eq :
     ‖((324 : ℤ) : ℤ_[3])‖ = ((3 : ℕ) : ℝ)⁻¹ ^ 4 := by
-  rw [cast_324_factored, PadicInt.norm_mul, PadicInt.norm_pow,
+  rw [cast_324_factored, norm_mul, norm_pow,
       PadicInt.norm_p, norm_4_eq_one, mul_one]
 
 /-- `‖240‖_3 = 1/3`. -/
 private lemma norm_240_eq :
     ‖((240 : ℤ) : ℤ_[3])‖ = ((3 : ℕ) : ℝ)⁻¹ := by
-  rw [cast_240_factored, PadicInt.norm_mul, PadicInt.norm_p,
+  rw [cast_240_factored, norm_mul, PadicInt.norm_p,
       norm_80_eq_one, mul_one]
 
 /-- The strong-form Hensel hypothesis `‖g(4)‖ < ‖g'(4)‖²` for
@@ -1771,9 +1775,10 @@ lemma pow_cubeInverseExp_pow_three {p : ℕ} [Fact (Nat.Prime p)]
     {a : ZMod p} (ha : a ≠ 0) :
     (a ^ cubeInverseExp p) ^ 3 = a := by
   have h_fermat : a ^ (p - 1) = 1 := ZMod.pow_card_sub_one_eq_one ha
-  rw [← pow_mul, mul_comm, three_mul_cubeInverseExp_eq hp_mod3 hp_ne_2]
-  rw [show 2 * (p - 1) + 1 = (p - 1) + ((p - 1) + 1) from by ring,
-      pow_add, pow_add, pow_one, h_fermat, one_mul, h_fermat, one_mul]
+  rw [← pow_mul, mul_comm, three_mul_cubeInverseExp_eq hp_mod3 hp_ne_2,
+      show 2 * (p - 1) + 1 = (p - 1) + (p - 1) + 1 from by ring,
+      pow_succ, pow_add]
+  simp [h_fermat]
 
 /-- Helper: `p` prime and `p ≠ q` (for `q` prime) imply `¬ p ∣ q`. -/
 private lemma prime_not_dvd_of_prime_ne {p q : ℕ}
@@ -1781,7 +1786,7 @@ private lemma prime_not_dvd_of_prime_ne {p q : ℕ}
     ¬ p ∣ q := by
   intro h
   rcases hq.eq_one_or_self_of_dvd p h with h1 | hq'
-  · exact hp.one_lt.ne' h1.symm
+  · exact hp.one_lt.ne' h1
   · exact hne hq'
 
 /-- `(5 : ZMod p) ≠ 0` for `p` prime with `p ≠ 5`. -/
@@ -1789,7 +1794,7 @@ lemma cast_five_ne_zero {p : ℕ} [Fact (Nat.Prime p)] (hp_ne_5 : p ≠ 5) :
     (5 : ZMod p) ≠ 0 := by
   have hp_prime : Nat.Prime p := Fact.out
   have h_cast : ((5 : ℕ) : ZMod p) = (5 : ZMod p) := by norm_cast
-  rw [← h_cast, Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+  rw [← h_cast, Ne, ZMod.natCast_eq_zero_iff]
   exact prime_not_dvd_of_prime_ne hp_prime (by decide) hp_ne_5
 
 /-- `(4 : ZMod p) ≠ 0` for `p` prime with `p ≠ 2`. -/
@@ -1797,7 +1802,7 @@ lemma cast_four_ne_zero {p : ℕ} [Fact (Nat.Prime p)] (hp_ne_2 : p ≠ 2) :
     (4 : ZMod p) ≠ 0 := by
   have hp_prime : Nat.Prime p := Fact.out
   have h_cast : ((4 : ℕ) : ZMod p) = (4 : ZMod p) := by norm_cast
-  rw [← h_cast, Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+  rw [← h_cast, Ne, ZMod.natCast_eq_zero_iff]
   intro h
   -- p ∣ 4 = 2^2, p prime, so p ∣ 2, so p = 2
   have hp_dvd_2 : p ∣ 2 :=
@@ -1809,7 +1814,7 @@ lemma cast_three_ne_zero {p : ℕ} [Fact (Nat.Prime p)] (hp_ne_3 : p ≠ 3) :
     (3 : ZMod p) ≠ 0 := by
   have hp_prime : Nat.Prime p := Fact.out
   have h_cast : ((3 : ℕ) : ZMod p) = (3 : ZMod p) := by norm_cast
-  rw [← h_cast, Ne, ZMod.natCast_zmod_eq_zero_iff_dvd]
+  rw [← h_cast, Ne, ZMod.natCast_eq_zero_iff]
   exact prime_not_dvd_of_prime_ne hp_prime (by decide) hp_ne_3
 
 /-- Existence of cube-root of `-4/5` in `ZMod p` for Case-A primes:
@@ -1879,7 +1884,7 @@ theorem selmer_padic_solubility_caseA_universal {p : ℕ} [hp : Fact (Nat.Prime 
     linear_combination hz
   -- IsCoprime (15 z₀²) p in ℤ
   have h_coprime : IsCoprime (15 * z₀ ^ 2 : ℤ) (p : ℤ) := by
-    have hp_int_prime : Prime (p : ℤ) := by exact_mod_cast hp_prime.prime
+    have hp_int_prime : Prime (p : ℤ) := Nat.prime_iff_prime_int.mp hp_prime
     refine (hp_int_prime.coprime_iff_not_dvd.mpr ?_).symm
     intro hd
     have hzmod : ((15 * z₀ ^ 2 : ℤ) : ZMod p) = 0 :=
