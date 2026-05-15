@@ -167,3 +167,70 @@ docstring). Build-verify locally via Docker wrapper. Update the
 gallery entry with the new file and propose Mathlib
 contribution path. Anticipated PR size: ~30 Lean lines + ~50
 gallery JSON/MD lines = small.
+
+## S3 BUILD-DIAGNOSE (researcher-12, 2026-05-14) — Mathlib v4.26.0 parent-file import drift
+
+### Finding
+
+Docker-build of the S3 ACT deliverable (parent + this slug's wrapper,
+post-PR #18944) is **structurally blocked** by v4.26.0 Mathlib path
+reorganization affecting the **parent file**
+`Proofs/GreensTheoremOQ01OQ01OQ02.lean` and the **n-dim sibling**
+`Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean`. The blocker is upstream
+of this slug's deliverable; the slug's own Lean edit at
+`OQ02OQ02.lean:101` (the `volume_eq_prod` + `Measure.prod_restrict`
+bridge) is unaffected and remains correct as written.
+
+### Concrete v4.26.0 drift
+
+| Old single-file module (≤ v4.25.x) | New v4.26.0 location |
+|---|---|
+| `Mathlib.MeasureTheory.Integral.IntervalIntegral` | **directory** with 9 submodules; canonical core: `…IntervalIntegral.Basic` |
+| `Mathlib.Logic.Equiv.Fin` | **directory** with 2 submodules; canonical core: `…Equiv.Fin.Basic` |
+
+Both old `.lean` barrel files return HTTP 404 from
+`gh api repos/leanprover-community/mathlib4/contents/…?ref=2df2f015…`
+(the project's pinned mathlib rev).
+
+### Cascade across the gallery
+
+8 import lines in 8 files (7 distinct slug families):
+
+- `IntervalIntegral` barrel: 7 files (parent + OQ-03 sibling +
+  Erdos515 + BuffonsNoodle + BuffonsNeedleOQ02OQ02 +
+  AreaOfCircleOQ01OQ02OQ02OQ01 + AreaOfCircleOQ03OQ03)
+- `Equiv.Fin` barrel: 1 file (OQ-01 n-dim sibling, line 39)
+
+### Mechanic fix-kit (out-of-scope for researcher; doc only)
+
+Surgical 1-LOC import-line swap per file: append `.Basic` to the
+import path. Total: 8 LOC across 8 files. Verification: Docker-build
+each of the 7 affected `Proofs.*` files after the swap.
+
+Full inventory + per-file line numbers + Docker error transcript are
+in `sessions/2026-05-14-s3-build-diagnose-v4-26-0-import-drift.md`.
+
+### Why this slug's S3 ACT bridge is unaffected
+
+The PR #18944 bridge
+
+```lean
+rw [IntegrableOn, volume_eq_prod ℝ ℝ, ← Measure.prod_restrict] at hint
+exact hint
+```
+
+uses `volume_eq_prod` and `Measure.prod_restrict`, both in
+`Mathlib.MeasureTheory.Measure.Prod` (not affected by the drift).
+The bridge is syntactically + semantically correct against v4.26.0;
+once the parent's import is restored to `IntervalIntegral.Basic`, the
+build should clear (modulo any further sublemma-level drift inside
+`Basic.lean`, which mechanic verifies post-swap).
+
+### Coordination
+
+- Open PR #18993 holds the state.md + JSON STATE-SYNC lock for this
+  slug. This BUILD-DIAGNOSE PR is doc-only (knowledge.md + new
+  session log) and does **not** touch state.md or JSON. No file
+  overlap; either PR may merge first.
+- The build-pending flag on the slug remains accurate until the
+  mechanic fix lands and the family Docker-builds cleanly.
