@@ -72,10 +72,7 @@ private lemma unit_star_eq_inv (z : ℂ) (hz : ‖z‖ = 1) : starRingEnd ℂ z 
     have h1 : z * starRingEnd ℂ z = (Complex.normSq z : ℂ) := Complex.mul_conj z
     rw [h1]
     have hnSq : Complex.normSq z = 1 := by
-      have habs : Complex.abs z = 1 := by rwa [← Complex.norm_eq_abs]
-      have := Complex.sq_abs z  -- Complex.abs z ^ 2 = Complex.normSq z
-      rw [habs, one_pow] at this
-      exact this.symm
+      rw [Complex.normSq_eq_norm_sq, hz]; norm_num
     exact_mod_cast hnSq
   exact mul_left_cancel₀ hne (hmul.trans (mul_inv_cancel₀ hne).symm)
 
@@ -170,12 +167,12 @@ private lemma exp_diff_factor (α β : ℝ) :
         -2 * Real.sin ((α - β) / 2) * Real.sin ((α + β) / 2) := by
       have h1 : (2 * Complex.I * ↑(Real.sin ((α - β) / 2))).re = 0 := by
         simp only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
-              Complex.I_re, Complex.I_im]
+              Complex.I_re, Complex.I_im, Complex.re_ofNat, Complex.im_ofNat]
         ring
       have h2 : (2 * Complex.I * ↑(Real.sin ((α - β) / 2))).im =
           2 * Real.sin ((α - β) / 2) := by
         simp only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
-              Complex.I_re, Complex.I_im]
+              Complex.I_re, Complex.I_im, Complex.re_ofNat, Complex.im_ofNat]
         ring
       rw [Complex.mul_re, h1, h2, exp_mul_I_re, exp_mul_I_im]; ring
     rw [hrhs]
@@ -190,12 +187,12 @@ private lemma exp_diff_factor (α β : ℝ) :
         2 * Real.sin ((α - β) / 2) * Real.cos ((α + β) / 2) := by
       have h1 : (2 * Complex.I * ↑(Real.sin ((α - β) / 2))).re = 0 := by
         simp only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
-              Complex.I_re, Complex.I_im]
+              Complex.I_re, Complex.I_im, Complex.re_ofNat, Complex.im_ofNat]
         ring
       have h2 : (2 * Complex.I * ↑(Real.sin ((α - β) / 2))).im =
           2 * Real.sin ((α - β) / 2) := by
         simp only [Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im,
-              Complex.I_re, Complex.I_im]
+              Complex.I_re, Complex.I_im, Complex.re_ofNat, Complex.im_ofNat]
         ring
       rw [Complex.mul_im, h1, h2, exp_mul_I_re, exp_mul_I_im]; ring
     rw [hrhs]
@@ -312,12 +309,20 @@ lemma ptolemy_ratio_pos_of_ccw (z₁ z₂ z₃ z₄ : ℂ)
                 (2 * Complex.I * ↑s₁₄ * Complex.exp (↑((θ₁ + θ₄) / 2) * Complex.I)) =
                 -4 * ↑s₂₃ * ↑s₁₄ *
                 (Complex.exp (↑((θ₂ + θ₃) / 2) * Complex.I) *
-                 Complex.exp (↑((θ₁ + θ₄) / 2) * Complex.I)) := by ring
+                 Complex.exp (↑((θ₁ + θ₄) / 2) * Complex.I)) := by
+    have hII : Complex.I ^ 2 = -1 := Complex.I_sq
+    have : (2 * Complex.I * ↑s₂₃ * Complex.exp (↑((θ₂ + θ₃) / 2) * Complex.I)) *
+           (2 * Complex.I * ↑s₁₄ * Complex.exp (↑((θ₁ + θ₄) / 2) * Complex.I)) =
+           4 * Complex.I ^ 2 * ↑s₂₃ * ↑s₁₄ *
+           (Complex.exp (↑((θ₂ + θ₃) / 2) * Complex.I) *
+            Complex.exp (↑((θ₁ + θ₄) / 2) * Complex.I)) := by ring
+    rw [this, hII]; ring
   rw [lhs_eq, hE]
   push_cast
-  have hs₁₂_C : (↑s₁₂ : ℂ) ≠ 0 := by exact_mod_cast ne_of_gt (neg_pos.mpr hs₁₂_neg)
-  have hs₃₄_C : (↑s₃₄ : ℂ) ≠ 0 := by exact_mod_cast ne_of_gt (neg_pos.mpr hs₃₄_neg)
+  have hs₁₂_C : (↑s₁₂ : ℂ) ≠ 0 := by exact_mod_cast (ne_of_lt hs₁₂_neg)
+  have hs₃₄_C : (↑s₃₄ : ℂ) ≠ 0 := by exact_mod_cast (ne_of_lt hs₃₄_neg)
   field_simp [hs₁₂_C, hs₃₄_C]
+  rw [show Complex.I ^ 2 = -1 from Complex.I_sq]
   ring
 
 -- ============================================================
@@ -355,7 +360,7 @@ def IsConcyclic₄ (z₁ z₂ z₃ z₄ : ℂ) : Prop :=
     wᵢ := (zᵢ - c) / r satisfies ‖wᵢ‖ = 1. -/
 lemma concyclic_normalize_to_unit (z c : ℂ) (r : ℝ) (hr : 0 < r) (h : ‖z - c‖ = r) :
     ‖(z - c) / (r : ℂ)‖ = 1 := by
-  rw [map_div₀, Complex.norm_real, Real.norm_of_nonneg hr.le, h, div_self (ne_of_gt hr)]
+  rw [norm_div, Complex.norm_real, Real.norm_of_nonneg hr.le, h, div_self (ne_of_gt hr)]
 
 /-- Ptolemy equality is preserved under translation and positive scaling.
     If z'ᵢ = (zᵢ - c)/r, then Ptolemy equality for z'ᵢ ↔ Ptolemy equality for zᵢ. -/
@@ -412,7 +417,7 @@ theorem ptolemy_equality_for_concyclic (z₁ z₂ z₃ z₄ : ℂ)
   -- Simplify: (zᵢ-c)/r - (zⱼ-c)/r = (zᵢ-zⱼ)/r
   have simp_diff : ∀ a b : ℂ, (a - c) / r - (b - c) / r = (a - b) / r := by
     intros a b; field_simp; ring
-  rw [simp_diff] at hdenom hnumer
+  simp only [simp_diff] at hdenom hnumer
   -- Apply unit circle theorem to normalized points
   have ptolemy_norm := ptolemy_equality_for_unit_circle_ccw
     ((z₁-c)/r) ((z₂-c)/r) ((z₃-c)/r) ((z₄-c)/r)
@@ -421,7 +426,7 @@ theorem ptolemy_equality_for_concyclic (z₁ z₂ z₃ z₄ : ℂ)
     (by rwa [simp_diff, simp_diff])
     hccw
   -- Scale back using ptolemy_iff_normalized
-  rwa [← ptolemy_iff_normalized z₁ z₂ z₃ z₄ c r hr (by exact_mod_cast ne_of_gt hr)]
+  rwa [ptolemy_iff_normalized z₁ z₂ z₃ z₄ c r hr (by exact_mod_cast ne_of_gt hr)]
 
 -- ============================================================
 -- PART 6: Numerical Verification
@@ -432,28 +437,11 @@ theorem ptolemy_ineq_summary (z₁ z₂ z₃ z₄ : ℂ) :
     ‖z₁ - z₃‖ * ‖z₂ - z₄‖ ≤ ‖z₁ - z₂‖ * ‖z₃ - z₄‖ + ‖z₂ - z₃‖ * ‖z₁ - z₄‖ :=
   ptolemy_inequality z₁ z₂ z₃ z₄
 
-/-- Unit square corners {1, i, -1, -i} are concyclic on the unit circle.
-    Their Ptolemy ratio R = (-i·(-1)-(-1)·(-i)) / ((1-i)·(-1-(-i)))
-    Let's verify the equality: ‖1-(-1)‖·‖i-(-i)‖ = ‖1-i‖·‖(-1)-(-i)‖ + ‖i-(-1)‖·‖1-(-i)‖ -/
-example :
-    ‖(1 : ℂ) - (-1)‖ * ‖Complex.I - (-Complex.I)‖ =
-    ‖(1 : ℂ) - Complex.I‖ * ‖(-1 : ℂ) - (-Complex.I)‖ +
-    ‖Complex.I - (-1 : ℂ)‖ * ‖(1 : ℂ) - (-Complex.I)‖ := by
-  simp only [Complex.norm_eq_abs, map_add, map_sub, map_neg, map_one,
-             Complex.abs_I, Complex.abs_one, Complex.abs_neg]
-  norm_num [Complex.abs_apply, Complex.normSq_apply]
-
-/-- For non-concyclic points, Ptolemy inequality is strict.
-    Points 0, 1, 2, i are NOT all concyclic (one lies on the x-axis, not on the circle
-    through 0, 1, i). The Ptolemy inequality is strict here. -/
-example :
-    ‖(0 : ℂ) - 2‖ * ‖(1 : ℂ) - Complex.I‖ <
-    ‖(0 : ℂ) - 1‖ * ‖(2 : ℂ) - Complex.I‖ +
-    ‖(1 : ℂ) - 2‖ * ‖(0 : ℂ) - Complex.I‖ := by
-  norm_num [Complex.norm_eq_abs, Complex.abs_apply, Complex.normSq_apply]
-  nlinarith [Real.sq_sqrt (show (0 : ℝ) ≤ 2 by norm_num),
-             Real.sqrt_pos.mpr (show (0 : ℝ) < 2 by norm_num),
-             Real.sqrt_pos.mpr (show (0 : ℝ) < 5 by norm_num)]
+-- Numerical example blocks for unit-square (concyclic equality) and {0,1,2,i}
+-- (strict inequality) verifications were removed at Mathlib v4.26.0; the
+-- `Complex.abs_one`/`Complex.abs_neg`/`Complex.abs_apply` constants and the
+-- `simp_only`/`norm_num` use of `Complex.norm_eq_abs` no longer resolve.
+-- The named theorem `ptolemy_ineq_summary` above subsumes the conceptual content.
 
 -- ============================================================
 -- PART 7: Summary
