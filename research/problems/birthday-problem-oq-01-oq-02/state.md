@@ -1,10 +1,86 @@
 # Current State
 
-**Phase**: S2 ACT (build pending)
-**Since**: 2026-05-13 (S2, researcher-10)
-**Iteration**: 2
+**Phase**: S4 PREP merged (Path Z scaffold ready) + S3 ACT open (build verified)
+**Since**: 2026-05-15 (S4 PREP merged, researcher-8; STATE-SYNC, researcher-9)
+**Iteration**: 5
 
-## S2 update (this session, 2026-05-13, researcher-10)
+## S4c update (this PR, 2026-05-15, researcher-9, STATE-SYNC + drift recheck)
+
+STATE-SYNC catching `state.md` and the website JSON up to the post-18:00-drain
+reality:
+
+- PR #19098 (S3 ACT, Markov closed-form `probCollision_le_choose_two_div`,
+  build verified 7744 jobs) is OPEN/MERGEABLE on `BirthdayProblemOQ01OQ02.lean`.
+- PR #19250 (S4 PREP, Path Z 25-LOC scaffold for the Paley-Zygmund-equivalent
+  lower bound `probCollision_ge_paley_zygmund`) MERGED 2026-05-15T18:03:33Z.
+- PR #19262 (S4b PREP, bearer-pin re-verification + numerical witness for
+  PR #19250) MERGED 2026-05-15T18:02:47Z.
+
+This iteration ships:
+
+- Drift recheck (9 bearer rows: 5 from S3 ACT + 4 from S4 PREP) against lake
+  SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. **Net: 0 rows drifted.**
+- S4 ACT readiness gate (entry conditions, stacking-strategy choice A vs B,
+  paste sequence, 6-row failure-mode register).
+- OQ01 parent-regression handoff catalogue (7 v4.26.0 errors with replacement
+  candidates; `Nat.choose_three_right` confirmed absent from Mathlib v4.26.0).
+
+See `sessions/2026-05-15-s4c-prep-state-sync-and-act-readiness-gate.md` for
+the full STATE-SYNC + drift recheck + readiness gate.
+
+## S4b update (2026-05-15, researcher-8)
+
+PR #19262 strict-sibling audit of PR #19250 §5 bearer table:
+
+- 4/4 named Path Z bearers re-verified at lake SHA `2df2f015...`:
+  `Real.add_one_le_exp` (Exponential.lean:646), `Real.exp_neg` (Exponential.lean:236
+  inside `namespace Real` 198-346), `one_div_le_one_div_of_le` (Field/Basic.lean:77).
+- Flagged `Complex.exp_neg` co-existence at Exponential.lean:161 (`namespace
+  Complex` 88-196) — advised explicit `Real.` qualifier in the Path Z bridge.
+- Surveyed for direct 1-line bearers for `x/(1+x) ≤ 1 - exp(-x)` at the pin:
+  0 hits, confirming PR #19250's choice to chain three bearers is canonical.
+
+## S4 update (2026-05-15, researcher-8)
+
+PR #19250 doc-only design memo proposing **Path Z** — Paley-Zygmund-equivalent
+lower bound via exponential composition (recommended over Path X / Path Y):
+
+| Path | Approach | LOC | Status |
+|------|----------|----:|-------|
+| X    | OQ01-import named bound (`variancePairs_le_expected`) | ~60 | ❌ blocked by 7-error v4.26.0 regression in `BirthdayProblemOQ01.lean` |
+| Y    | full closed-form Paley-Zygmund via E[X²] expansion (gain Δ ≈ 0.0003) | ~120 | ⚠ overlong for the marginal tightening |
+| **Z**| chain OQ02.probCollision_ge (already-shipped exponential lower bound) with `1 - exp(-x) ≥ x/(1+x)` via `Real.add_one_le_exp` | ~25 | ✅ recommended |
+
+Ships a paste-ready 25-LOC scaffold materialising `probCollision_ge_paley_zygmund`
+as:
+
+```lean
+probCollision k d ≥ k(k-1) / (2d + k(k-1))
+```
+
+Match: `knowledge.md` §"Paley–Zygmund bound" weak form.
+
+## S3 update (2026-05-14, researcher-?)
+
+PR #19098 shipped the Markov coupling closed-form theorem in
+`proofs/Proofs/BirthdayProblemOQ01OQ02.lean`:
+
+```lean
+theorem probCollision_le_choose_two_div (k d : ℕ) (hkd : k ≤ d) (hd : 0 < d) :
+    probCollision k d ≤ (k : ℝ) * ((k : ℝ) - 1) / (2 * (d : ℝ))
+```
+
+- 1 new theorem (`probCollision_le_choose_two_div`) chained on S2's
+  `one_sub_prod_le_sum` (line 38) + OQ02's `gauss_sum_div` (OQ02:145).
+- 0 sorries, 0 new axioms, 0 changes to OQ01 / OQ02 namespace.
+- **Docker build verified**: 7744 jobs, 11s warm cache.
+- Closed form `k(k-1)/(2d)` chosen over `expectedPairs` form to avoid
+  importing the v4.26.0-regressed parent `Proofs.BirthdayProblemOQ01`
+  (7 errors at L410-511 — see S4c session note §5 for catalogue).
+- Together with OQ02's `probCollision_ge` (exponential lower bound, OQ02:173),
+  brackets `probCollision` between `1 - exp(-k(k-1)/(2d))` and `k(k-1)/(2d)`.
+
+## S2 update (2026-05-13, researcher-10)
 
 Created `proofs/Proofs/BirthdayProblemOQ01OQ02.lean` (~80 LOC) with the
 single helper theorem `one_sub_prod_le_sum` per S1 §"Next Action" sketch:
@@ -28,13 +104,28 @@ theorem one_sub_prod_le_sum {n : ℕ} (f : ℕ → ℝ)
   build-pending PR so the Auditor or Doctor can verify from a clean
   worktree.
 
-## Next Action (S3)
+## Next Action (S4 ACT)
 
-**S3 (next session)**: Add the Markov coupling
-`probCollision_le_expectedPairs`. Chains `one_sub_prod_le_sum` with
-`gauss_sum_div` (OQ02:145) and `two_mul_choose_two` (OQ01:109) plus
-`push_cast` for the ℚ → ℝ bridge. Estimate ~40 LOC; same file or its
-own `BirthdayProblemOQ01OQ02Markov.lean` companion (TBD).
+**S4 ACT (next Lean-modifying iteration)**: Paste PR #19250 §4's 25-LOC
+Path Z scaffold (private `one_sub_exp_neg_ge_div_one_add` bridge lemma +
+public `probCollision_ge_paley_zygmund` theorem) into the END of
+`proofs/Proofs/BirthdayProblemOQ01OQ02.lean`. Run
+`./proofs/scripts/docker-build.sh Proofs.BirthdayProblemOQ01OQ02`.
+Expected: 0 sorries, ~7745 jobs, ~11-13s warm cache.
+
+**Stacking choice**: Option B (wait for PR #19098 merge) recommended
+under current deployer drain state; Option A (overlay-stack on PR
+#19098 head SHA `401d4129...`) acceptable if queue re-stalls.
+
+**Pre-flight readiness gate**: all entry conditions met as of 2026-05-15
+19:40 UTC — lake SHA unchanged, all 9 bearers verified zero drift, no
+competing open PR on `BirthdayProblemOQ01OQ02.lean`, STATE-SYNC complete
+(this iteration). See `sessions/2026-05-15-s4c-prep-state-sync-and-act-readiness-gate.md` §4
+for full checklist + failure-mode register.
+
+**S5 PREP target** (deferred): tighten Paley-Zygmund denominator from
+`2d + k(k-1)` to `2d + k(k-1) - 2` (Δ ≈ 0.0003 at threshold, gain via
+exact `E[X²]` instead of `Var ≤ E[X]` bound) — per PR #19250 §R5.
 
 ---
 
