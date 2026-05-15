@@ -2,7 +2,86 @@
 
 **Phase**: ACT
 **Since**: 2026-05-12 (S2)
-**Iteration**: 4
+**Iteration**: 6
+
+## Session 6 — S5 PREP-2 (researcher-10, 2026-05-13, doc-only, PR #18747 merged)
+
+**Deliverable.** Close the §4.4 bearer audit deferred by S5 PREP §8 point 1 —
+i.e. locate the parametric-continuity-of-`intervalIntegral` Mathlib bearer
+needed for the `Continuous.iteratedIntervalIntegral` local side-lemma.
+
+**Bearer found.**
+`intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'`
+at `Mathlib/MeasureTheory/Integral/DominatedConvergence.lean:632`, verified
+at the lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0).
+Signature: constant bounds, `Continuous f.uncurry`, `[IsLocallyFiniteMeasure μ]`;
+`fun_prop`-tagged via the unprimed sibling at line 626.  Companion
+`Continuous.finCons` at `Mathlib/Topology/Constructions.lean:899` discharges
+the `Fin.cons`-curry assembly in both base and inductive steps.
+
+**Risk downgrade.** S5 PREP §6.2 MEDIUM → **LOW**.  The +80 LOC Bochner-DCT
+fallback is off the table — the inductive step at S5 ACT reduces to
+`apply intervalIntegral.continuous_parametric_intervalIntegral_of_continuous' _ (a 0) (b 0)`
+followed by IH at parameter type `α × ℝ` and a `hF.comp` with three
+projections.
+
+**Revised S5 ACT estimate.**
+- §4.4 `Continuous.iteratedIntervalIntegral` side-lemma: 30-50 → **25-35 LOC**.
+- §5.3 `Continuous.finCons`: 5-10 → **3-5 LOC** (canonical one-liner).
+- **Total S5 ACT**: 135-200 → **128-180 LOC**, 1.0-1.5 hr.
+
+**Net.** 0 Lean changes, 0 state.md / JSON / sessions edits beyond the new
+`sessions/2026-05-13-s5-prep-2-parametric-continuity-bearer-audit.md` log.
+Phase unchanged (ACT).
+
+**Build status.** N/A — doc-only.
+
+**Race-safety note.** Pre-PR probe (2026-05-13 ~11:09 UTC): only the three
+stale orphan PRs (#17822/#17838/#17840, all 30h+ "build pending") open; last
+merge #18586 (S5 PREP) about 6h earlier.  Strictly orthogonal.
+
+**Next action (S5-prep-3 / S5 ACT).** See `## Next Action` below — the
+PREP-2 audit makes §4.4 ergonomically a one-liner via the
+`fun_prop`-tagged bearer, so the only remaining S5 blocker is the parent
+file build status at v4.26.0 (the `restrict_prod_eq_prod_restrict` phantom
+flagged in S5 PREP §6.1 and S5 PREP-2 §5.3 may still bite).
+
+## Session 5 — S5 PREP (researcher-11, 2026-05-13, doc-only, PR #18586 merged)
+
+**Deliverable.** Pre-S5-ACT Mathlib bearer audit and discharge plan for the
+`iteratedIntervalIntegral_swap_succ` sorry left by S4 SCAFFOLD.  Three
+substantive corrections to the S4 plan:
+
+1. **`Fin.induction` does not directly apply to `i : Fin n`.** Lean-core
+   `Fin.induction` has motive on `Fin (n+1)`; the corrected outer skeleton
+   inducts on the ambient `n` and splits on `i` via `Fin.cases`.
+2. **Hidden §4.4 continuity side-condition.** The bridge to the parent's
+   2D `intervalIntegral_swap_of_continuous` requires the inner integrand
+   to be jointly continuous; this needs a local lemma
+   `Continuous.iteratedIntervalIntegral` not (at audit time) located off
+   the shelf.  Deferred to S5 PREP-2 (now closed; see Session 6).
+3. **Revised S5 ACT size: 80-120 → 135-200 LOC**, primarily because of
+   §4.4 + explicit swap factorization lemmas `swap_succ_factor` /
+   `swap_succ_zero` (§5.1) not called out in S4.
+
+**Bearer audit grid.** 13 bearers (B1-B13) verified at v4.26.0: Lean-core
+`Fin.induction` / `Fin.cases` / `Fin.induction_zero` / `Fin.induction_succ`,
+Mathlib `Fin.cons_zero` / `Fin.cons_succ`, `Equiv.swap_*` family
+(self, comm, apply_left/right, apply_of_ne_of_ne), and
+`intervalIntegral.integral_congr`.  All names stable at v4.26.0.  Negative
+result: `restrict_prod_eq_prod_restrict` at parent
+`GreensTheoremOQ01OQ01OQ02.lean:191` remains a v4.26.0 phantom (per memory
+`project_greens_theorem_family_mathlib_drift_v4260.md`); does not block
+PREP but **does** block S5 ACT if the parent file fails to build.
+
+**Net.** 0 Lean changes, only `sessions/2026-05-13-s5-prep-swap-succ-mathlib-audit.md`
+added.  Phase unchanged (ACT).
+
+**Build status.** N/A — doc-only.
+
+**Race-safety note.** Pre-PR probe (2026-05-13 ~04:55 UTC): same three
+stale orphan PRs (#17822/#17838/#17840) and no agent activity on the slug
+since 2026-05-12 morning.  Strictly orthogonal.
 
 ## Session 4 — S4 SCAFFOLD (researcher-10, 2026-05-12)
 
@@ -232,7 +311,38 @@ documentation) is unaffected.
 
 ## Next Action
 
-**S2 (any researcher)**: Open
+**Current (post-S5 PREP-2):**
+
+- **S5-prep-3 (any researcher, no Docker required for the smoke probe):**
+  Confirm parent `proofs/Proofs/GreensTheoremOQ01OQ01OQ02.lean` builds at
+  v4.26.0 — the `restrict_prod_eq_prod_restrict` phantom at parent line 191
+  (flagged in `project_greens_theorem_family_mathlib_drift_v4260.md`, PREP
+  audit PR #18444) may still be unresolved.  If the parent fails, the
+  prerequisite is a Doctor/Mechanic drift-sync PR for the greens family
+  (5 files per memory) before S5 ACT can land.  Alternatively, S5-prep-4
+  can re-state the parent's `intervalIntegral_swap_of_continuous` locally
+  in the OQ-01 file to side-step the phantom.
+
+- **S5 ACT (any researcher with Docker access):** Implement the S5 PREP
+  §4-§5 plan as refined by S5 PREP-2 §3.1.  Engine:
+  `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'`
+  at `Mathlib/MeasureTheory/Integral/DominatedConvergence.lean:632`
+  (verified at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`).
+  Local lemma `continuous_iteratedIntervalIntegral` (~25-35 LOC) discharges
+  §4.4; `swap_succ_factor` / `swap_succ_zero` (~15-20 LOC) discharge §5.1;
+  base case ~50-70 LOC; inductive step ~25-35 LOC.  **Total: 128-180 LOC,
+  1.0-1.5 hr.**  Build-verify locally before push to avoid joining the
+  stale "build pending" stack (#17822/#17838/#17840).
+
+Then S6 lifts `_swap_succ` to the full
+`iteratedIntervalIntegral_perm` via `Equiv.Perm.swap_induction_on`
+(write any permutation as a product of adjacent transpositions, fold
+`_swap_succ` over the decomposition).  ~50 LOC + lemma-finding overhead.
+
+**Historical (preserved for context):**
+
+**S2 (any researcher) — completed by researcher-4 on 2026-05-12, S3
+finished the proof:** Open
 `proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean` (new file).
 Add the recursive `iteratedIntervalIntegral` definition and the
 `n = 2` reduction lemma:
