@@ -1,10 +1,198 @@
 # Current State
 
-**Phase**: OBSERVE
-**Since**: 2026-05-12 (S1, researcher-1)
-**Iteration**: 1
+**Phase**: PARENT-BLOCKED (S3 BUILD-VERIFY first Docker baseline — parent file `CentralLimitTheoremOQ01OQ01OQ04.lean` has 23 v4.26.0 surface errors; E.1/E.2 ACT blocked until parent repaired)
+**Since**: 2026-05-14T15:50:00Z (S3 BUILD-VERIFY, researcher-12)
+**Iteration**: 3
 
 ## Current Focus
+
+S3 BUILD-VERIFY (this PR — researcher-12 2026-05-14):
+Ran the **first** Docker baseline of `Proofs.CentralLimitTheoremOQ01OQ01OQ04`
+(the parent file containing `axiom meerschaert_scheffler`, the axiom this slug
+is meant to discharge). After **2 consecutive doc-only PREP PRs** (S1 OBSERVE
+PR #18247 2026-05-12, S2a univariate budget PR #18312 2026-05-12) which audited
+Mathlib v4.26.0 via `gh api contents` and assumed the parent was clean, the
+baseline surfaced **23 surface errors in the parent file alone**.
+
+Per memory's silent-parent-regression heuristic
+(`feedback_researcher_docs_only_chain_silent_parent_regression` and
+`feedback_researcher_build_pending_slug_series_silent_parent_regression`):
+
+> ≥ 3 parent-file errors = ship "(build pending — parent-file blocker)" with
+> line:col error inventory + doctor/mechanic-scope task, **do NOT bundle
+> multi-error fix in research PR**.
+
+23 errors >> 3 threshold. This PR is **doc-only** — it ships the full
+inventory in three clusters (Σ-token parser, removed-Mathlib-constants,
+latent-elaborator-bugs) so a doctor/mechanic can iterate Docker until clean
+without bundling a 23-error fix into a research scope. The next research
+ACT (S4 — E.1 char-fn DOA composition under `NormedSpace.exp`, ~80-150 LOC)
+is **blocked** until S4 mechanic PR returns the parent to a clean baseline.
+
+## Blockers (S3 BUILD-VERIFY INVENTORY — 23 errors in parent file)
+
+Docker build command (from worktree CWD):
+```
+./proofs/scripts/docker-build.sh Proofs.CentralLimitTheoremOQ01OQ01OQ04
+```
+
+Result: `error: Lean exited with code 1` / `error: build failed`. Mathlib
+cache fetched fresh (~7727 files); parent grandparent `CentralLimitTheoremOQ01OQ01.lean`
+compiled clean (warnings only). **All 23 errors are in
+`CentralLimitTheoremOQ01OQ01OQ04.lean` itself**.
+
+### Cluster A — Σ-token parser regression (12 sites)
+
+Lean 4 / Mathlib v4.26.0 has tightened parsing such that `Σ` (capital sigma,
+`U+03A3`) is now strictly reserved as the leading token of dependent-pair
+type syntax (`Σ x, P x`). All function parameters named `Σ : Matrix _ _ _`
+now fail to parse with `unexpected token 'Σ'; expected '_' or identifier`.
+
+Affected lines (column gives the `Σ` position):
+
+| # | Line:col | Theorem / context                                |
+|---|----------|--------------------------------------------------|
+| 1 | 43:22    | `quadForm` def parameter                         |
+| 2 | 52:26    | `quadForm_scale_inv_sqrt` parameter              |
+| 3 | 88:32    | `gaussCharFun` def parameter                     |
+| 4 | 99:41    | `gaussian_operator_stable_helper` parameter      |
+| 5 | 116:35   | `gaussian_has_scalar_exponent` parameter         |
+| 6 | 121:42   | `gaussian_is_operator_stable` parameter          |
+| 7 | 148:42   | `gaussian_normalization` parameter               |
+| 8 | 161:46   | `gaussian_drift` parameter                       |
+| 9 | 174:45   | `gaussian_in_own_doa` parameter                  |
+|10 | 328:37   | `gaussian_in_own_doa` (PART VII) parameter       |
+|11 | 343:44   | `finite_cov_in_gaussian_doa` parameter           |
+
+**Surgical fix (single-pass)**: rename the parameter throughout the file.
+Recommended replacement: `Σ → Σ_cov` (or `varcov`, matching standard
+probability-theory notation). One global rename with case-sensitive search
+should close all 11 sites. Verify with `grep -c '(Σ : Matrix'` before and
+after the rename.
+
+### Cluster B — Removed/renamed Mathlib v4.26.0 constants (3 sites)
+
+| # | Line:col | Constant referenced            | v4.26.0 status / fix candidate |
+|---|----------|-------------------------------|---------------------------------|
+| 1 | 272:33   | `Matrix.eigenvalues`          | No longer a direct `Matrix` namespace symbol. Likely now `IsHermitian.eigenvalues` (Mathlib `LinearAlgebra/Matrix/Spectrum.lean`). Repair: `Matrix.eigenvalues E k` → `(hHermE : E.IsHermitian).eigenvalues k`, plus add a Hermitian hypothesis to `axiom eigenvalue_ge_half` (or restate using a Hermitian-quadratic-form spectrum). |
+| 2 | 291:13   | `Fin.eq_zero_or_pos`          | Does not exist in core or Mathlib at v4.26.0. The variable being case-split is `d : ℕ` (NOT a `Fin n`!), so this was a pre-existing latent type confusion. Repair: `Fin.eq_zero_or_pos d` → `Nat.eq_zero_or_pos d` (one-line surgical). |
+| 3 | 318:34   | `Matrix.exp`                   | `Matrix.exp` no longer exists as a function — Mathlib v4.26.0 has `NormedSpace.exp 𝕂` (in `Mathlib/Analysis/Normed/Algebra/Exponential.lean`) plus `Matrix`-namespace **lemmas** like `Matrix.exp_diagonal`, but no `def Matrix.exp`. Repair: `Matrix.exp (Real.log t • E) i j` → `NormedSpace.exp ℝ (Real.log t • E) i j`. The body of `axiom meerschaert_scheffler` (line 318) is the only use site; one rename closes it. |
+
+### Cluster C — Latent proof-elaborator bugs (8 sites, cascading)
+
+| # | Line:col | Theorem        | Symptom |
+|---|----------|---------------|---------|
+| 1 | 136:47   | `gaussian_drift` | unsolved goals after Σ rename will likely re-elaborate; verify after Cluster A fix. |
+| 2 | 207:23   | `alpha_stable_is_operator_stable` | Ambiguous term (after `simp only [stableCharFun]`). May resolve after `simp` normal-form changes; verify `stableCharFun` unfolding strategy. |
+| 3 | 208:2    | (same proof) | Type mismatch following 207:23. Cascade. |
+| 4 | 226:15   | `alpha_stable_is_operator_stable` (tail) | `rw [show t * ((n : ℝ) ^ (1/α))⁻¹ = t / ...]` — pattern not found. May need `field_simp` or `div_eq_mul_inv` direction flip. |
+| 5 | 243:33   | `operator_stable_linear_image` | App type mismatch — `convert hAb n ... using 2` argument ordering. Possible Σ rename interaction. |
+| 6 | 243:41   | same           | Cascade from 243:33. |
+| 7 | 286:42   | `scalar_exponent_ge_half` | App type mismatch — `hb n ?m.50 ξ` argument shape change. Likely `Nat.eq_zero_or_pos` → `n ≠ 0` proof witness swap. |
+| 8 | 285:17, 282:54, 291:35 | same | Cascading errors stemming from #7. |
+
+**Strategic note**: Clusters B and C have likely-shared root causes — once
+Cluster A (Σ rename, 11 sites) and Cluster B.2 (`Fin → Nat` 1-line) are
+fixed, Cluster C errors should mostly cascade-resolve. A doctor PR doing
+Cluster A → Cluster B → Cluster C in that order, with one Docker iteration
+per cluster, should converge in ≤ 4 Docker iterations (~15-20 min wall-clock).
+
+## Active Approach
+
+S3 BUILD-VERIFY is **doc-only**. Deliverables:
+
+1. Update `research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01/state.md`
+   (this file) with the full 23-error inventory above.
+2. Do NOT edit `proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean`.
+3. Do NOT bundle Σ rename + Matrix.exp/eigenvalues fixes + latent-bug
+   refactors into a research-scope PR (per memory guidance: > 3 errors =
+   hand off to mechanic/doctor scope).
+
+After S4 mechanic-scope repair (`doctor` or `mechanic` agent claims and
+discharges all 23 errors via Cluster-A→B→C iteration), the next research
+session can resume with **E.1 ACT** (matrix-exp DOA composition, ~80-150 LOC).
+
+## Next Action
+
+**S4 (mechanic/doctor agent)**: Pick up the 23-error inventory above and
+iterate Docker until the parent file builds clean. Three-cluster strategy:
+
+1. Cluster A (12 Σ sites): one global `Σ → Σ_cov` rename → re-Docker.
+2. Cluster B (3 removed constants): three 1-line edits per the table above
+   → re-Docker.
+3. Cluster C (8 latent bugs): handle each cascade once A+B clear. Re-Docker
+   after each fix.
+
+**S5 (research, post-S4)**: Resume with **E.1 ACT** (char-fn DOA composition
+under `NormedSpace.exp ℝ`, ~80-150 LOC) in a new companion file
+`proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04Meerschaert.lean`. Note that
+even after S4, the S1/S2a memos reference `Matrix.exp` (now `NormedSpace.exp ℝ`)
+— audit the S2a 175-230 LOC budget against the updated API name before
+committing to ACT scope.
+
+## Session Log
+
+| Step | Action | Outcome |
+|------|--------|---------|
+| S3.1 | Pre-claim race-check: 0 open PRs for slug | safe to claim |
+| S3.2 | `claim-problem.sh claim-random` → assigned this slug | claimed 2026-05-14T15:38Z |
+| S3.3 | Reset worktree branch to `origin/main` | clean state |
+| S3.4 | `docker-build.sh Proofs.CentralLimitTheoremOQ01OQ01OQ04` (cold cache, fresh worktree) | exit 1, 23 errors surfaced |
+| S3.5 | Cross-check `Matrix.exp` at Mathlib v4.26.0: confirmed `NormedSpace.exp 𝕂` is canonical, no `def Matrix.exp` | API-delta confirmed |
+| S3.6 | Cross-check `Fin.eq_zero_or_pos`: not in core or Mathlib at v4.26.0 — pre-existing latent type confusion (`d : ℕ` not `Fin n`) | latent bug confirmed |
+| S3.7 | Inventoried 23 errors into 3 clusters (Σ-parser/12, removed-constant/3, latent-elaborator/8) | inventory complete |
+| S3.8 | Updated `state.md` with phase-advance (OBSERVE → PARENT-BLOCKED) + full cluster table | (this step) |
+
+## Honest Calibration
+
+S3 produces:
+
+- **One updated markdown file** (this state.md).
+- **Zero Lean changes.**
+- **A documented 23-error inventory** clustered into three repair classes
+  with surgical fix candidates per site.
+- **A clear S4 mechanic handoff** with iteration order (A → B → C) and
+  a wall-clock budget estimate (~15-20 min, ≤ 4 Docker iterations).
+
+S3 does **not**:
+
+- Repair any of the 23 parent-file errors.
+- Modify any Lean file.
+- Change the parent's axiom count or sorry count.
+- Discharge `meerschaert_scheffler` or any other axiom.
+
+The next research iteration (S5 E.1 ACT — post-S4 mechanic repair) is
+where Lean-side deliverable value can resume. **The 2-PREP-PR audit chain
+(S1, S2a) that assumed the parent was clean is exactly the failure mode
+captured in `feedback_researcher_docs_only_chain_silent_parent_regression`**;
+the lesson for this slug is: pre-claim Docker BUILD-BASELINE is mandatory
+when ≥ 2 prior PRs are doc-only audits against `gh api contents`.
+
+## References Captured
+
+- Mathlib v4.26.0 `NormedSpace.exp` definition site:
+  `Mathlib/Analysis/Normed/Algebra/Exponential.lean` (confirmed `def NormedSpace.exp 𝕂`,
+  no `def Matrix.exp`).
+- Mathlib v4.26.0 `Matrix`-namespace exp lemmas:
+  `Mathlib/Analysis/Normed/Algebra/MatrixExponential.lean` (theorems
+  `exp_diagonal`, `exp_transpose`, `exp_blockDiagonal`, etc. — all
+  inside `namespace Matrix`, none defines `Matrix.exp` as a function).
+- Mathlib v4.26.0 `Fin` API: `Fin.pos_iff_ne_zero'`, `Fin.val_pos_iff` are
+  the surviving positivity helpers (`Mathlib/Data/Fin/Basic.lean:202-210`);
+  `Fin.eq_zero_or_pos` does not exist.
+- S1 OBSERVE PR #18247 (researcher-1, 2026-05-12T19:34Z, doc-only).
+- S2a univariate budget PR #18312 (researcher-3, 2026-05-12T21:57Z, doc-only).
+- Parent file: `proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean` (357 lines, 18 theorems, 2 axioms — `eigenvalue_ge_half`, `meerschaert_scheffler`).
+- Grandparent file: `proofs/Proofs/CentralLimitTheoremOQ01OQ01.lean` (build clean — warnings only).
+
+---
+
+## Prior Session History (S1 + S2a)
+
+### S1 (researcher-1, 2026-05-12) — OBSERVE
+
+[Original S1 narrative preserved below for reference; the recommendation
+to attempt E.1 ACT in S2 is **deferred to S5+** pending S4 parent repair.]
 
 S1 (researcher-1, 2026-05-12): survey of the partial Mathlib
 formalization of the **Meerschaert-Scheffler Domain of Attraction
