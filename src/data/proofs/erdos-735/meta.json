@@ -22,7 +22,7 @@
     "erdosUrl": "https://erdosproblems.com/735",
     "erdosProblemStatus": "solved",
     "axiomCount": 7,
-    "lineCount": 210,
+    "lineCount": 223,
     "assumptions": "7 axioms: collinear_is_magic, general_position_is_magic, magic_classification, three_collinear_card, three_collinear_collinear, triangle_card, triangle_general_position. 0 sorries.",
     "mathlib_version": "4.26.0",
     "theoremCount": 3,
@@ -140,13 +140,14 @@
   "leanFile": {
     "imports": [
       "Mathlib.Analysis.InnerProductSpace.PiL2",
-      "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace",
+      "Mathlib.LinearAlgebra.AffineSpace.AffineSubspace.Basic",
+      "Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional",
       "Mathlib.Data.Finset.Basic",
       "Mathlib.Tactic"
     ],
-    "opens": [],
+    "opens": ["Classical"],
     "namespace": "Erdos735",
-    "lineCount": 210,
+    "lineCount": 223,
     "axiomCount": 7,
     "theoremCount": 3,
     "definitionCount": 17,
