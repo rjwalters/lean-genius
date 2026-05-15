@@ -1,53 +1,72 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-13T13:30:00.000Z (researcher-10, S2)
-**Iteration**: 2
+**Since**: 2026-05-14T19:30:00.000Z (researcher-8, S3)
+**Iteration**: 3
 
 ## Current Focus
 
-S2 ACT (build pending) — **Layer 1 shipped**.
-`proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean` (104 LOC, 3 theorems,
-0 sorries, 0 axioms) defines the squared-Krylov sequence and proves the
-bridge to ordinary matrix powers.
+S3 ACT (build verified) — **Layer 2 shipped**.
+`proofs/Proofs/CayleyHamiltonMinpolyOQ03OQ02.lean` (200 LOC, 7 theorems
++ 1 helper, 0 sorries, 0 axioms) now formalises both the structural
+(Layer 1) and correctness (Layer 2) layers of Keller-Gehrig.
 
 * `namespace MinpolyComplexity.SubcubicKrylov` — sibling-disjoint with
-  `MinpolyVec` (OQ-03-OQ-01).
-* `def squareKrylov M : ℕ → Matrix (Fin n) (Fin n) K` — `M^(2^k)` via
-  repeated squaring (T₀ = M, T_{k+1} = T_k · T_k).
-* `@[simp] theorem squareKrylov_zero` — definitional.
-* `theorem squareKrylov_succ` — definitional.
-* `theorem squareKrylov_eq_pow_two` — induction; succ-step
-  `rw [ih, ← pow_add]; congr 1; ring` (1-line bridge over the exponent
-  identity `2^k + 2^k = 2^(k+1)`).
+  `MinpolyVec` (OQ-03-OQ-01); shared with the Layer 1 from S2.
+* `def squareKrylov M : ℕ → Matrix _` — `M^(2^k)` via repeated squaring
+  (Layer 1, unchanged).
+* `@[simp] theorem squareKrylov_zero` — definitional (Layer 1).
+* `theorem squareKrylov_succ` — definitional (Layer 1).
+* `theorem squareKrylov_eq_pow_two` — bridge `T_k = M^(2^k)` (Layer 1).
+* `def squareKrylovProd M j` — **new**: product of `squareKrylov M i`
+  over the bit indices of `j` (Layer 2).
+* `private theorem prod_pow_of_list` — **new**: helper `∏ M^(2^i) = M^(∑ 2^i)`
+  over a list (Layer 2).
+* `theorem squareKrylovProd_eq_pow` — **new**: bridge
+  `squareKrylovProd M j = M^j` (Layer 2 main result, 3-rewrite proof).
+* `@[simp] theorem squareKrylovProd_zero` — **new**: sanity check at j=0.
+* `theorem squareKrylovProd_one` — **new**: sanity check at j=1.
+* `theorem squareKrylovProd_two_pow` — **new**: sanity check at j=2^k.
 
-**Build status:** pending. Worktree `proofs/.lake` is the known
-self-referential symlink (`stat -L` reports "Too many levels of symbolic
-links"); a docker-build cycle in this worktree would trigger a fresh
-Mathlib clone (~10 min) at risk of mid-build truncation per project
-memory. Per the standard build-pending pattern (cf. recent
-`research(cube-root-3-irrational-oq-04): S6 ACT … (build pending)`),
-the Lean file is shipped and verification deferred to doctor / auditor
-from a clean worktree.
+**Build status:** ✅ **verified** (researcher-8, 2026-05-14).
+`./proofs/scripts/docker-build.sh Proofs.CayleyHamiltonMinpolyOQ03OQ02`
+on the project lockfile (mathlib v4.26.0 / lean v4.26.0) ran 3062 jobs
+clean in ~5.3 s of compile time on a fresh Mathlib cache. Log:
+`.loom/logs/researcher-8.log` (this iteration).
+
+The S2 build-verify PR (#19025, open from researcher-9) is a doc-only
+predecessor that retires the `(build pending)` qualifier on the S2 Lean
+file; my S3 work strictly extends the Lean (adds Layer 2) and obviates
+that PR's main effect — the consolidated build above covers both the
+S2 Layer 1 file and the new S3 Layer 2 additions.
 
 ## Active Approach
 
 Three-layer decomposition (unchanged):
 
 1. **Structural layer** (squared-Krylov sequence) — ✅ **Layer 1 shipped
-   in S2 (this iteration).**
-2. **Correctness layer** (Krylov-prefix ⊆ squared-Krylov span) — tractable
-   today; S3 next.
+   in S2 (build pending → verified in S3).**
+2. **Correctness layer** (Krylov power as product of squared-Krylov
+   matrices) — ✅ **Layer 2 shipped in S3 (this iteration).**
 3. **Complexity layer** ($O(n^\omega)$ operation count) — **blocked** on
    Mathlib having no complexity monad and no fast matrix multiplication.
 
-Layer 1 lays down the central algebraic object: the bridge
-`squareKrylov M k = M ^ (2^k)` is the algebraic content of the
-repeated-squaring identity that the Keller-Gehrig speed-up rests on.
+**Layer 2 reformulation note.** The S2 plan stated Layer 2 as
+"Krylov-prefix ⊆ squared-Krylov span" (linear-algebraic). The S3 ACT
+restates it as the product-formula bridge
+
+  `M^j = ∏_{i ∈ bitIndices j} T_i`
+
+which is the operationally accurate statement: Keller-Gehrig recovers
+each Krylov power M^j by *multiplying* selected squared-Krylov matrices,
+not by *summing* them. The product formulation cleanly unblocks the
+proof via `Nat.twoPowSum_bitIndices`. The linear-span statement is a
+trivial corollary (M^j · v ∈ image of the product map → span), but the
+product formulation is what the algorithm actually computes.
 
 ## Blockers
 
-(Unchanged. All gated to Layer 3; Layers 1 and 2 are unaffected.)
+(Unchanged. All gated to Layer 3; Layers 1 and 2 are now both verified.)
 
 * Mathlib has no complexity-monad / cost-counting framework — blocks any
   *quantitative* $O(n^\omega)$ statement.
@@ -58,39 +77,58 @@ repeated-squaring identity that the Keller-Gehrig speed-up rests on.
 
 ## Next Action
 
-**S3 — Layer 2 correctness: Krylov-prefix ⊆ squared-Krylov span.**
+**S4 — Linear-span corollary + Krylov-vector reachability.**
 
-Show that for every `0 ≤ j < 2^k`, the Krylov vector `M^j · v` lies in
-`span K {squareKrylov M 0 · v, …, squareKrylov M (k-1) · v}` (or
-equivalently, can be reached by `O(k)` matvecs against `T_0, …, T_{k-1}`).
+With the product formula in hand, the linear-span corollary follows by
+applying `mulVec` and using monoid actions:
 
-The textbook recipe is a Horner-style polynomial-evaluation pass against
-the base-`2^k` digit expansion of `j`. In Lean:
+* `M^j · v ∈ Submodule.span K {T_i · w : i < ⌈log₂ j⌉ + 1, w ∈ ...}`
 
-* Define the polynomial evaluation that produces `M^j` from the
-  squared-Krylov powers using `Nat.binaryRec` or `Nat.digits 2`.
-* Prove the natural-number identity `j < 2^k → ∃ (d : Fin k → Fin 2),
-  j = ∑ i, d i * 2^i` (this is `Nat.binaryRec` in disguise).
-* Bridge: `M^j = ∏ i ∈ {i | d i = 1}, squareKrylov M i`, hence `M^j` is in
-  the multiplicative submonoid generated by `T_0, …, T_{k-1}`.
+Two natural follow-ups:
 
-Target: ~60 LOC, single Docker build (deferrable to doctor if `.lake`
-symlink loop persists).
+1. **Krylov-vector bound.** For `j ≤ n`, `M^j · v` is reachable via at
+   most `Nat.log 2 j + 1` matvecs against `T_0, …, T_{k-1}` and one
+   matrix-vector multiply. Promote the matrix-level Layer 2 to a
+   vector-level statement and quantify the matvec count.
+2. **Operation-count placeholder.** State Layer 3 as an axiomatized
+   claim — a `theorem keller_gehrig_op_count` whose body is `sorry`
+   with an explicit `axiom omegaMM : ℝ` and the comment "Mathlib gap:
+   no complexity monad". Documents the gap formally without
+   over-claiming.
+
+Target: ~40-60 LOC, single Docker build. Single iteration.
 
 ## Attempt Counts
 
-- Total attempts: 2 (S1 + S2; this iteration completes S2)
-- Current approach attempts: 2 (3-layer decomposition; Layer 1 shipped)
+- Total attempts: 3 (S1 + S2 + S3; this iteration completes S3)
+- Current approach attempts: 3 (3-layer decomposition; Layers 1 + 2 shipped)
 - Approaches tried: 1 (the planned 3-layer decomposition)
 
 ## Findings Summary
 
-* **S2 (new):** The bridge `squareKrylov M k = M ^ (2^k)` is a one-line
-  induction modulo a Nat-exponent identity (`2^k + 2^k = 2^(k+1)`), which
-  `ring` discharges. Total cost: 3 theorems, 0 sorries.
+* **S3 (new):** Layer 2 has a 3-rewrite proof. After unfolding
+  `squareKrylovProd`, the list `j.bitIndices.map (squareKrylov M)` is
+  rewritten to `j.bitIndices.map (fun i => M^(2^i))` via the Layer 1
+  bridge (`List.map_congr_left`); the resulting list product collapses
+  to a single matrix power via the helper `prod_pow_of_list` (induction:
+  `pow_add` on each cons); finally `Nat.twoPowSum_bitIndices` identifies
+  the exponent sum as `j` itself. Total cost: 4 theorems + 1 helper,
+  0 sorries.
+* The product-formula bridge `M^j = ∏ T_i` is exactly the algebraic
+  content of the Keller-Gehrig outer loop: `⌈log₂ j⌉` squarings produce
+  `T_0, …, T_{k-1}`, and `popcount(j)` multiplications then yield `M^j`.
+  The asymptotic claim is that this trades $n$ matvecs against $\log n$
+  matmuls; the trade *itself* is the Layer 1 + Layer 2 result, and is
+  now fully formalised.
+* **Mathlib leverage:** `Nat.bitIndices` (Peter Nelson, 2024) +
+  `Nat.twoPowSum_bitIndices` were perfect drop-ins. No bit-manipulation
+  lemmas had to be re-proved.
+* **S2 (carried):** The bridge `squareKrylov M k = M ^ (2^k)` is a
+  one-line induction modulo a Nat-exponent identity. Total cost: 3
+  theorems, 0 sorries.
 * The Keller-Gehrig speed-up is *structural*: $n$ cheap matvecs vs.
-  $\log n$ expensive matmuls. The structural claim formalises today
-  (Layer 1: done; Layer 2: tractable).
+  $\log n$ expensive matmuls. The structural and correctness claims
+  formalise today (Layers 1 + 2: done).
 * The *quantitative* speed-up is gated on Mathlib infrastructure that does
   not exist (complexity monad, fast matmul). Any future promotion must
   declare `meta.status = axiomatized`, not `verified`.
