@@ -455,7 +455,7 @@ theorem tourMoves_getElem_63 (t : ClosedTour) :
     rw [@List.getElem_append_right _ _ t.squares.tail [t.squares.head t.nonempty] h_not_lt _ h'']
     simp only [htail_len, Nat.sub_self, List.getElem_singleton]
   have h63_fst : t.squares[63]'(by rw [t.length_eq]; omega) = t.squares.getLast t.nonempty := by
-    simp only [List.getLast_eq_get, List.get_eq_getElem]
+    simp only [List.getLast_eq_getElem]
     congr 1
     simp [t.length_eq]
   simp only [h63_snd, h63_fst]
@@ -479,7 +479,7 @@ theorem no_turn_angle_4_at_62 (t : ClosedTour) :
   -- moves[63] = getMoveVector(s1, s2) where s1 = getLast
   have hmv2 : (tourMoves t)[63]'(by rw [tourMoves_length]; omega) = getMoveVector s1 s2 := by
     have h63 : t.squares[63]'(by rw [t.length_eq]; omega) = t.squares.getLast t.nonempty := by
-      simp only [List.getLast_eq_get, List.get_eq_getElem]
+      simp only [List.getLast_eq_getElem]
       congr 1
       simp [t.length_eq]
     rw [tourMoves_getElem_63]
@@ -489,7 +489,7 @@ theorem no_turn_angle_4_at_62 (t : ClosedTour) :
   have hadj12 : knightGraph.Adj s1 s2 := by
     -- s1 = squares[63] = getLast, s2 = head
     have h63 : s1 = t.squares.getLast t.nonempty := by
-      simp only [List.getLast_eq_get, List.get_eq_getElem, t.length_eq]
+      simp only [List.getLast_eq_getElem, t.length_eq]
     rw [h63]
     exact t.closes
   -- Turn angle is 4
@@ -532,7 +532,7 @@ theorem no_turn_angle_4_at_63 (t : ClosedTour) :
   -- moves[63] = getMoveVector(s0, s1)
   have hmv1 : (tourMoves t)[63]'(by rw [tourMoves_length]; omega) = getMoveVector s0 s1 := by
     have h63 : t.squares[63]'(by rw [t.length_eq]; omega) = t.squares.getLast t.nonempty := by
-      simp only [List.getLast_eq_get, List.get_eq_getElem, t.length_eq]
+      simp only [List.getLast_eq_getElem, t.length_eq]
     have hhead : t.squares[0]'(by rw [t.length_eq]; omega) = t.squares.head t.nonempty :=
       List.getElem_zero (by rw [t.length_eq]; omega)
     -- Goal after tourMoves_getElem_63: getMoveVector getLast head = getMoveVector s0 s1
@@ -549,7 +549,7 @@ theorem no_turn_angle_4_at_63 (t : ClosedTour) :
     -- s0 = squares[63] = getLast, s1 = squares[0] = head
     -- t.closes says Adj getLast head
     have h63 : s0 = t.squares.getLast t.nonempty := by
-      simp only [List.getLast_eq_get, List.get_eq_getElem, t.length_eq]
+      simp only [List.getLast_eq_getElem, t.length_eq]
     have hhead : s1 = t.squares.head t.nonempty :=
       List.getElem_zero (by rw [t.length_eq]; omega)
     rw [h63, hhead]
@@ -682,7 +682,7 @@ theorem tour_winding_zero (t : ClosedTour) :
   simp only [tourDirections]
   intro h
   have hlen := tourMoves_length t
-  rw [List.map_eq_nil] at h
+  rw [List.map_eq_nil_iff] at h
   simp [h] at hlen
 
 /-- The 4 corner squares of the board -/
@@ -883,12 +883,6 @@ theorem corner_forces_oblique (s prev next : Square)
   · exact corner07_forces_oblique prev next hadj_prev hadj_next hno_rev
   · exact corner70_forces_oblique prev next hadj_prev hadj_next hno_rev
   · exact corner77_forces_oblique prev next hadj_prev hadj_next hno_rev
-
-/-- Consecutive squares in a tour are knight-adjacent -/
-theorem tour_consecutive_adj (t : ClosedTour) (i : Nat) (hi : i + 1 < 64) :
-    knightGraph.Adj (t.squares[i]'(by omega)) (t.squares[i + 1]'(by rw [t.length_eq]; omega)) := by
-  have h := t.path i (by rw [t.length_eq]; omega)
-  convert h using 2 <;> simp [t.length_eq]
 
 /-- In a closed tour, the square at index i is adjacent to square at (i+1) mod 64 -/
 theorem tour_cyclic_adj (t : ClosedTour) (i : Fin 64) :
@@ -1964,7 +1958,7 @@ theorem tourPairs_adj_63 (t : ClosedTour) :
   simp only [h63_snd]
   -- squares[63] is the last element
   have h63_fst : t.squares[63]'(by rw [t.length_eq]; omega) = t.squares.getLast t.nonempty := by
-    simp only [List.getLast_eq_get, List.get_eq_getElem]
+    simp only [List.getLast_eq_getElem]
     congr 1
     simp [t.length_eq]
   simp only [h63_fst]
