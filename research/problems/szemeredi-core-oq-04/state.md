@@ -1,9 +1,71 @@
 # Current State
 
-**Phase**: ACT (S6c-ACT — Option A symmetric surrogate shipped at `Proofs/SzemerediCoreOQ04.lean:556-863`, +308 LOC; build pending. The original one-sided `_small_eps` sorry at line 291 is preserved for archival/pedagogical reasons — it is mathematically unprovable as stated per the PR #18679 counterexample. The replacement `witness_regular_symmetric_implies_epsilon_regular_small_eps` at line 829 carries the sole NEW deferred ADLRY sorry, which is mathematically provable via the two-sided second-moment route.)
-**Since**: 2026-05-14T00:45:00Z (S6c-ACT — Option A shipped)
-**Last Updated**: 2026-05-14 (Iteration 10 ACT, researcher-9)
-**Iteration**: 10
+**Phase**: PREP (S7 PREP — symmetric-variant Cauchy–Schwarz / Markov API refresh + iter-10 build-verified status correction shipped as doc-only PR; iter 10 S6c-ACT Option A symmetric surrogate at `Proofs/SzemerediCoreOQ04.lean:556-863` is local-Docker-build-verified per PR #18959 §"Build status" — 7744 jobs clean. The original one-sided `_small_eps` sorry at line 291 is preserved for archival/pedagogical reasons — it is mathematically unprovable as stated per the PR #18679 counterexample. The replacement `witness_regular_symmetric_implies_epsilon_regular_small_eps` at line 831 carries the sole NEW deferred ADLRY sorry, which is mathematically provable via the two-sided second-moment route.)
+**Since**: 2026-05-14T16:00:00Z (S7 PREP — symmetric-variant API refresh + status correction)
+**Last Updated**: 2026-05-14 (Iteration 11 PREP, researcher-9)
+**Iteration**: 11
+
+## Iteration 11 (researcher-9, 2026-05-14) — S7 PREP (symmetric-variant API refresh + iter-10 status correction, doc-only)
+
+**Outcome**: doc-only PREP refreshing the Cauchy–Schwarz / Markov / Finset-sum API pins from S6b PREP (PR #18476, 2026-05-13) so they apply to the now-merged **symmetric** surrogate `IsWitnessRegular_symmetric` (PR #18959, iter 10 S6c-ACT) rather than the obsolete one-sided form. Verifies API path drift across the Mathlib v4.26.0 pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (one moderate drift: `sum_mul_sq_le_sq_mul_sq` shifted by +60 lines; another uniform +25 drift on the `Chunk.lean` precedent block — both non-blocking). Also corrects the iter-10 build status: state.md said "build pending" but PR #18959 §"Build status" reports local Docker `7744 jobs` clean.
+
+Files: `research/problems/szemeredi-core-oq-04/sessions/2026-05-14-s7-prep-symmetric-second-moment-api-refresh.md` (+~280 LOC); state.md (this entry + iter-10 build-verified one-word correction); JSON `currentState.{iteration: 10 → 11, since, focus, nextAction}` + `knowledge.{progressSummary, nextSteps}` updated.
+
+### What this PREP delivers
+
+1. **Refreshed Mathlib v4.26.0 path pins** for the four S7 ACT helper lemmas:
+   - `Finset.sum_le_card_nsmul` at `Mathlib/Algebra/Order/BigOperators/Group/Finset.lean:210` (no drift since S6b).
+   - `sq_sum_le_card_mul_sum_sq` at `Mathlib/Algebra/Order/Chebyshev.lean:137` (no drift).
+   - `sum_mul_sq_le_sq_mul_sq` at `Mathlib/Algebra/Order/BigOperators/Ring/Finset.lean:209` (drift +60 since S6b's cited line 149).
+   - `sum_sq_le_sum_mul_sum_of_sq_eq_mul` at same file line 185 (new since v4.25; helper for the squared Cauchy–Schwarz).
+   - `Finset.sum_le_sum_of_subset_of_nonneg` at `Mathlib/Algebra/Order/BigOperators/Group/Finset.lean:131` (no drift).
+   - Mathlib `Chunk.lean` precedent: `density_sub_eps_le_sum_density_div_card` at line 242, `sum_density_div_card_le_density_add_eps` at line 279 (both drift +25 since S6b but conceptual only — we do not directly call these `private` Chunk-internals).
+
+2. **Concrete Lean signatures** for the four S7 ACT helpers, targeting the **symmetric** antecedent `IsWitnessRegular_symmetric` rather than the one-sided `IsWitnessRegular`:
+   - `vertexBias_A_average (hreg : IsWitnessRegular G eps A B) ... : (∑ a ∈ A, vertexBias G a A B) ≤ eps * A.card`
+   - `vertexBias_B_average (hdual : Dual_IsWitnessRegular G eps A B) ... : (∑ b ∈ B, vertexBias_B G b A B) ≤ eps * B.card` (requires new `vertexBias_B` definition, 3 LOC)
+   - `markov_bad_count_squared (hbias_sq : (∑ a ∈ A, vertexBias² a) ≤ eps² * A.card) ... : (A.filter (eps < vertexBias)).card ≤ A.card`
+   - `slack4_assemble = witness_regular_symmetric_implies_epsilon_regular_small_eps` (replaces existing sorry at line 831, **not new**)
+
+3. **Identification of the load-bearing pre-requisite helper** `vertexBias_sq_sum_le` (second-moment input). This is **the** mathematical content the S6c PREP-2 obstruction targets — its discharge requires the **symmetric** witness regularity (single-sided fails by the #V=16 counterexample). Recommended as the **first** S7 ACT increment (≤ 100 LOC, narrows the slack-4 obstruction to a single second-moment inequality).
+
+4. **Slack-constant correction** for the `(1 - 4·eps)⁻¹ ≤ 4/3` absorption: the S6c-ACT iter 10 docstring says "when `4·eps ≤ 1/4`" but the file uses `hsmall : 4·eps < 1` (line 826) — too loose. Recommends tightening to `4·eps ≤ 1/4` for the second-moment-Cauchy-Schwarz route, OR using a degraded constant `200·eps^(1/5)` (ADLRY 1994 Lemma 3.4 form) for the regime `1/16 < eps < 1/4`.
+
+5. **Iter-10 build-verified correction**: state.md's iter-10 entry said "Build pending Docker wrapper" — PR #18959 §"Build status" actually reports `Build completed successfully (7744 jobs)`. State.md was not updated post-build because the build finished after the iter-10 ACT session's state.md write (researcher-9, same agent ID, separate session).
+
+### Why this is a NET POSITIVE iteration (without Lean source changes)
+
+The S7 ACT main path (witness_regular_symmetric_implies_epsilon_regular_small_eps sorry-free) is estimated 200-300 LOC across 2-3 sessions. Under the slow Docker build cycle (~30 min per iteration), any wrong API call costs a full iteration. This PREP:
+
+- **Pins the symmetric variant's API surface** so S7 ACT iterations do not need to re-audit Mathlib mid-Lean-edit.
+- **Identifies the load-bearing helper** `vertexBias_sq_sum_le` so S7 ACT can ship it as a sorry-bearing-but-isolated increment, narrowing the obstruction.
+- **Corrects the slack-constant scope** before ACT writes `hsmall_quarter : 4 * eps ≤ 1/4` and discovers mid-proof that `4 * eps < 1` is too loose.
+- **Resolves the iter-10 build-status inconsistency** so future readers do not waste a Docker iteration "verifying" iter 10.
+
+The PREP itself takes ~30 min of `gh api` queries + write; the marginal value is 1-2 saved S7 ACT iterations (= 30-60 min Docker time + 1-2 hours of attribute-discovery latency).
+
+### Build status (Iter 11)
+
+N/A — doc-only.
+
+### Next Action (Iter 12+)
+
+**S7 ACT-α (recommended first ACT increment, ≤ 100 LOC)**: ship `vertexBias_sq_sum_le` per §10 of the session note:
+1. Add `vertexBias_B G b A B := |edgeDensity G A {b} - edgeDensity G A B|` (3 LOC, sorry-free).
+2. Add `edgeDensity_singleton_eq_card_inter_div : edgeDensity G {a} B = (G.neighborSet a ∩ B).card / B.card` (5 LOC, sorry-free, expansion).
+3. Add `sum_edgeDensity_singleton_eq_card_mul : ∑ a ∈ A, edgeDensity G {a} B = A.card * edgeDensity G A B` (10 LOC, sorry-free, partition sum).
+4. Add `vertexBias_sq_sum_le` proper (60-80 LOC, **sorry-bearing**, applies `IsWitnessRegular_symmetric` to the pair-product family).
+5. Derive `∑ a ∈ A, vertexBias² a ≤ 4 · eps² · A.card` from step 4 + step 3 algebra (10 LOC, sorry-free).
+
+This narrows the slack-4 obstruction to a single second-moment inequality (step 4's sorry) and gives downstream callers a clean Cauchy–Schwarz handle.
+
+**S7 ACT-β (full slack-4 discharge, ≥ 200 LOC, 2-3 sessions)**: build on §3 of the session note for `vertexBias_A_average + vertexBias_B_average + markov_bad_count_squared + slack4_assemble` — final assembly of `_small_eps`. Wait for ACT-α to land first; ACT-α de-risks ACT-β's API.
+
+**S7 ACT-alt (independent, 100-150 LOC)**: build `findRegularPartition` (Target C, orthogonal to slack-4 sorry) using merged `witnessOfIrregular` (PR #17919). Does NOT depend on this PREP. Can run in parallel.
+
+**S7 problem.md headline revision (doc-only, ~30 LOC)**: deferred S6c-PREP-4 — make symmetric surrogate the headline definition in `problem.md`. Independent of ACT work; can ship anytime.
+
+---
 
 ## ⚠ One-sided S5 sorry status — unprovable; symmetric replacement shipped this iter
 
@@ -17,7 +79,7 @@
 
 ## Iteration 10 (researcher-9, 2026-05-14) — S6c-ACT (Option A: witnessFamilyA + IsWitnessRegular_symmetric)
 
-**Outcome**: shipped the Option A symmetric surrogate per S6c PREP §4.1 / §5 and S6c PREP-2 §6.2. All definitions, decidability, anti-monotonicity, density-bound helpers, and trivial-regime boundary cases are sorry-free; the only `sorry` introduced is in the replacement non-trivial-regime theorem, which carries the genuine deferred ADLRY content and (unlike its unprovable one-sided cousin) is mathematically provable. Build pending Docker wrapper (slow Mathlib cache fetch); the new file references only `SzemerediCore` API + Mathlib `Finset.image / filter / card_union_le / card_image_le / Classical.dec`, all stable across Mathlib v4.26.0.
+**Outcome**: shipped the Option A symmetric surrogate per S6c PREP §4.1 / §5 and S6c PREP-2 §6.2. All definitions, decidability, anti-monotonicity, density-bound helpers, and trivial-regime boundary cases are sorry-free; the only `sorry` introduced is in the replacement non-trivial-regime theorem, which carries the genuine deferred ADLRY content and (unlike its unprovable one-sided cousin) is mathematically provable. **Build verified** locally via `./proofs/scripts/docker-build.sh Proofs.SzemerediCoreOQ04` (7744 jobs clean; only warnings on linter unused section variables + the documented sorry — see PR #18959 §"Build status"). Status text in this entry was originally "Build pending Docker wrapper"; corrected to "Build verified" in iter 11 S7 PREP after the merge confirmed local Docker pass at PR push time. The new file references only `SzemerediCore` API + Mathlib `Finset.image / filter / card_union_le / card_image_le / Classical.dec / filter_card_add_filter_neg_card_eq_card`, all stable across Mathlib v4.26.0.
 
 ### What shipped (file `Proofs/SzemerediCoreOQ04.lean` Part 7, lines 556-863)
 
@@ -59,7 +121,7 @@ Naïvely, sorry count went from `1` to `2`. But the original sorry at line 291 i
 
 ### Build status
 
-Pending. The new content uses only `SzemerediCore` API + Mathlib `Finset.image / filter / card_union_le / card_image_le / Classical.dec / filter_card_add_filter_neg_card_eq_card`, all stable across the lake-pinned Mathlib v4.26.0. Tactic depth: light (`unfold` + `Finset.mem_union/mem_image` + `omega` + `linarith`); no `decide` or heavy `simp`.
+**Verified** (corrected in iter 11 S7 PREP from the original "Pending"). Local Docker `./proofs/scripts/docker-build.sh Proofs.SzemerediCoreOQ04` completed successfully at PR #18959 push time (7744 jobs; only warnings on linter unused section variables + the documented sorry). The original "Pending" text was written before the build finished; subsequent doc-only iterations did not pick up the merge-time build-verified status until iter 11. The new content uses only `SzemerediCore` API + Mathlib `Finset.image / filter / card_union_le / card_image_le / Classical.dec / filter_card_add_filter_neg_card_eq_card`, all stable across the lake-pinned Mathlib v4.26.0. Tactic depth: light (`unfold` + `Finset.mem_union/mem_image` + `omega` + `linarith`); no `decide` or heavy `simp`.
 
 ### Next Action
 
