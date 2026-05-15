@@ -2323,19 +2323,35 @@ private theorem gvCanon_self_inverse {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.we
   -- canonCrossN preserved → canonical data for t' matches t
   have hN := canonCrossN_preserved cfg hwf t hht hht'
   have hci' : canonI cfg hwf t' hht' = ci := by
-    simp only [canonI]; congr 1; exact hN
+    apply Fin.ext
+    change canonCrossN cfg hwf t' hht' / r % r = canonCrossN cfg hwf t hht / r % r
+    rw [hN]
   have hcj' : canonJ cfg hwf t' hht' = cj := by
-    simp only [canonJ]; congr 1; exact hN
+    apply Fin.ext
+    change canonCrossN cfg hwf t' hht' % r = canonCrossN cfg hwf t hht % r
+    rw [hN]
   have hc₀' : canonCol cfg hwf t' hht' = c₀ := by
-    simp only [canonCol]; congr 1; exact hN
+    change canonCrossN cfg hwf t' hht' / (yBound cfg * (r * r)) =
+        canonCrossN cfg hwf t hht / (yBound cfg * (r * r))
+    rw [hN]
   have hy₀' : canonY cfg hwf t' hht' = y₀ := by
-    simp only [canonY]; congr 1; exact hN
+    change canonCrossN cfg hwf t' hht' / (r * r) % yBound cfg =
+        canonCrossN cfg hwf t hht / (r * r) % yBound cfg
+    rw [hN]
   -- Split positions for t' = split positions for t
   -- (splitPosAt only uses cfg.sources, not the tuple itself)
   have hki' : splitPosAt cfg t' (canonCol cfg hwf t' hht') (canonY cfg hwf t' hht')
-      (canonI cfg hwf t' hht') = ki := by simp [splitPosAt, hci', hc₀', hy₀']
+      (canonI cfg hwf t' hht') = ki := by
+    show splitPosAt cfg t' (canonCol cfg hwf t' hht') (canonY cfg hwf t' hht')
+        (canonI cfg hwf t' hht') = splitPosAt cfg t c₀ y₀ ci
+    unfold splitPosAt
+    rw [hci', hc₀', hy₀']
   have hkj' : splitPosAt cfg t' (canonCol cfg hwf t' hht') (canonY cfg hwf t' hht')
-      (canonJ cfg hwf t' hht') = kj := by simp [splitPosAt, hcj', hc₀', hy₀']
+      (canonJ cfg hwf t' hht') = kj := by
+    show splitPosAt cfg t' (canonCol cfg hwf t' hht') (canonY cfg hwf t' hht')
+        (canonJ cfg hwf t' hht') = splitPosAt cfg t c₀ y₀ cj
+    unfold splitPosAt
+    rw [hcj', hc₀', hy₀']
   -- Image path values for double application (using helper lemmas)
   have himg_ci : (t'.2 ci).val = (t.2 ci).val.take ki ++ (t.2 cj).val.drop kj :=
     gvCanonInv_val_ci cfg hwf t hht
@@ -2366,8 +2382,8 @@ private theorem gvCanon_self_inverse {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.we
             List.take_zero, List.append_nil, List.take_take, Nat.min_self]
       have h2 : ((t.2 cj).val.take kj ++ (t.2 ci).val.drop ki).drop kj =
                 (t.2 ci).val.drop ki := by
-        have hkj_drop : ((t.2 cj).val.take kj).drop kj = [] := by
-          nth_rw 2 [← List.length_take_of_le hkj_le]; exact List.drop_length
+        have hkj_drop : ((t.2 cj).val.take kj).drop kj = [] :=
+          List.drop_of_length_le (List.length_take_of_le hkj_le).le
         rw [List.drop_append, List.length_take_of_le hkj_le, Nat.sub_self,
             List.drop_zero, hkj_drop, List.nil_append]
       rw [h1, h2, List.take_append_drop]
@@ -2382,8 +2398,8 @@ private theorem gvCanon_self_inverse {r : ℕ} (cfg : LGVConfig r) (hwf : cfg.we
               List.take_zero, List.append_nil, List.take_take, Nat.min_self]
         have h2 : ((t.2 ci).val.take ki ++ (t.2 cj).val.drop kj).drop ki =
                   (t.2 cj).val.drop kj := by
-          have hki_drop : ((t.2 ci).val.take ki).drop ki = [] := by
-            nth_rw 2 [← List.length_take_of_le hki_le]; exact List.drop_length
+          have hki_drop : ((t.2 ci).val.take ki).drop ki = [] :=
+            List.drop_of_length_le (List.length_take_of_le hki_le).le
           rw [List.drop_append, List.length_take_of_le hki_le, Nat.sub_self,
               List.drop_zero, hki_drop, List.nil_append]
         rw [h1, h2, List.take_append_drop]
