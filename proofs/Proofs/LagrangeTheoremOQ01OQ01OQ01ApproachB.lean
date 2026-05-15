@@ -75,7 +75,7 @@ infrastructure and mirror the corresponding declarations in
     of units in integral domains are cyclic
     (`isCyclic_of_subgroup_isDomain`). -/
 instance isCyclic_units_zmod : IsCyclic (ZMod q)ˣ :=
-  isCyclic_of_subgroup_isDomain (Units.coeHom (ZMod q)) Units.ext
+  isCyclic_of_subgroup_isDomain (Units.coeHom (ZMod q)) Units.val_injective
 
 /-- The unit group `(ZMod q)ˣ` has cardinality `q - 1` for any prime
     `q`. This is the count of residues `1 ≤ a < q` coprime to `q`,
@@ -123,7 +123,61 @@ theorem exists_unit_of_order_p {p : ℕ} (hp : p.Prime) (hp_dvd : p ∣ q - 1) :
   -- Step 7: the final identity `n / (n / d) = d` when `d ∣ n` and
   -- `0 ≤ n`. Matches the `orderOf_pow_div_of_dvd` signature used in
   -- `Proofs.LagrangeTheoremOQ01OQ03`.
-  exact Nat.div_div_self hp_dvd_ord (orderOf_pos g₀).le
+  exact Nat.div_div_self hp_dvd_ord (orderOf_pos g₀).ne'
+
+/-! ## S3c-i: lift the order-`p` unit to an additive automorphism of `ZMod q`
+
+Three small declarations that bridge `(ZMod q)ˣ` to `AddAut (ZMod q)`,
+preparing the assembly of the Approach-B semidirect product
+`Multiplicative (ZMod q) ⋊[φ] Multiplicative (ZMod p)` (deferred to
+S3c-ii / S3d).
+
+The bridge `unitToAddAut` packages the canonical multiplicative action
+`u • x = ↑u * x` as a group homomorphism into `AddAut (ZMod q)`. Its
+injectivity is faithful-action machinery: `u • 1 = ↑u`, so equal
+automorphisms force equal underlying values. Composed with
+`exists_unit_of_order_p`, this yields an order-`p` element of
+`AddAut (ZMod q)` for every prime `p ∣ (q - 1)`.
+
+See `notes/2026-05-13-s3c-api-audit.md` Steps 1–3 for the verbatim
+ACT skeleton this section implements (Mathlib API pinned to rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`). -/
+
+/-- The action of the units `(ZMod q)ˣ` on `ZMod q` by multiplication
+    induces a group hom into the additive automorphism group. The
+    underlying function is `u ↦ (x ↦ ↑u * x)`. -/
+def unitToAddAut : (ZMod q)ˣ →* AddAut (ZMod q) :=
+  DistribMulAction.toAddAut ((ZMod q)ˣ) (ZMod q)
+
+/-- Pointwise computation: `unitToAddAut u x = ↑u * x`. Marked `@[simp]`
+    so `unitToAddAut_injective` and downstream consumers (S3c-ii,
+    S3d-i) reduce automorphism applications to ring multiplication. -/
+@[simp]
+theorem unitToAddAut_apply (u : (ZMod q)ˣ) (x : ZMod q) :
+    unitToAddAut u x = (u : ZMod q) * x := by
+  show (u : (ZMod q)ˣ) • x = (u : ZMod q) * x
+  rw [Units.smul_def, smul_eq_mul]
+
+/-- `unitToAddAut` is injective. The action of `(ZMod q)ˣ` on `ZMod q`
+    is faithful: `u • 1 = ↑u`, so equal automorphisms force equal
+    underlying values, hence equal units. -/
+theorem unitToAddAut_injective : Function.Injective (unitToAddAut (q := q)) := by
+  intro u v huv
+  apply Units.ext
+  have h : unitToAddAut (q := q) u 1 = unitToAddAut (q := q) v 1 :=
+    DFunLike.congr_fun huv 1
+  -- After `unitToAddAut_apply` (simp) and `mul_one`, h reduces to ↑u = ↑v.
+  simpa using h
+
+/-- For each prime `p ∣ q - 1`, `AddAut (ZMod q)` contains an additive
+    automorphism of order exactly `p`. Combined with
+    `exists_unit_of_order_p`, this is the order-`p` seed for the
+    Approach-B action homomorphism `φ` constructed in S3c-ii / S3d. -/
+theorem exists_addAut_of_order_p {p : ℕ} (hp : p.Prime) (hp_dvd : p ∣ q - 1) :
+    ∃ θ : AddAut (ZMod q), orderOf θ = p := by
+  obtain ⟨g, hg⟩ := exists_unit_of_order_p hp hp_dvd
+  refine ⟨unitToAddAut g, ?_⟩
+  rw [orderOf_injective unitToAddAut unitToAddAut_injective g, hg]
 
 /-! ## Sanity check: instantiate at `p = 2, q = 3` and `p = 3, q = 7`
 
@@ -148,5 +202,13 @@ example : ∃ g : (ZMod 7)ˣ, orderOf g = 3 := by
 example : ∃ g : (ZMod 11)ˣ, orderOf g = 5 := by
   haveI : Fact (Nat.Prime 11) := ⟨by norm_num⟩
   exact exists_unit_of_order_p (by norm_num : Nat.Prime 5) (by norm_num)
+
+/-- Sanity (S3c-i): `AddAut (ZMod 7)` contains an automorphism of order
+    `3`. This is the additive-automorphism analogue of the order-`3`
+    unit in `(ZMod 7)ˣ` and is the order-`3` seed for the deferred
+    Approach-B order-21 non-abelian group `ZMod 7 ⋊ ZMod 3`. -/
+example : ∃ θ : AddAut (ZMod 7), orderOf θ = 3 := by
+  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+  exact exists_addAut_of_order_p (by norm_num : Nat.Prime 3) (by norm_num)
 
 end LagrangeOQ01OQ01OQ01.ApproachB

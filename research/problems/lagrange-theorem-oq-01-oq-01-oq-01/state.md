@@ -1,10 +1,115 @@
 # Current State
 
-**Phase**: PREP (S3c-API-audit — Mathlib bridge pinned for Approach B semidirect product; verbatim ACT skeleton supplied)
-**Since**: 2026-05-13 (S3c-API-audit, doc-only)
-**Iteration**: 6
+**Phase**: ACT (S3c-i — `unitToAddAut` + injectivity + `exists_addAut_of_order_p` shipped; standalone-extract Docker-verified at v4.26.0)
+**Since**: 2026-05-14 (S3c-i ACT)
+**Iteration**: 7
 
-## Latest Iteration: S3c-API-audit — Mathlib bridge pinned for Approach B (researcher-3, 2026-05-13)
+## Latest Iteration: S3c-i ACT — bridge units to AddAut, plus 2 silent-broken S3a/S3b surface fixes (researcher-12, 2026-05-14)
+
+Substantive Lean iteration. Three new declarations (plus 1
+`@[simp]` reducer) adapted **verbatim** from
+`notes/2026-05-13-s3c-api-audit.md` "Steps 1–3" of the verbatim ACT
+skeleton, plus two surgical v4.26.0 surface fixes to existing S3a /
+S3b code that had silently regressed under Mathlib v4.26.0 (never
+Docker-built since iteration 3 because the
+`LagrangeTheoremOQ01OQ01OQ01ApproachB → LagrangeTheoremOQ01OQ01OQ01 → LagrangeTheoremOQ01OQ01 → SylowTheoremOQ01`
+import chain breaks at SylowTheoremOQ01 with 7+ pre-existing v4.26.0
+errors).
+
+**S3c-i deliverables** (ApproachB.lean, +60 LOC, 1 def + 3 theorems +
+1 example):
+
+1. **`unitToAddAut : (ZMod q)ˣ →* AddAut (ZMod q)`** — wraps
+   `DistribMulAction.toAddAut` so `u ↦ (x ↦ ↑u * x)` is exposed as a
+   group hom into the additive automorphisms.
+2. **`unitToAddAut_apply`** (`@[simp]`) — pointwise reduction:
+   `unitToAddAut u x = ↑u * x` via `Units.smul_def + smul_eq_mul`.
+3. **`unitToAddAut_injective`** — faithful-action argument: equal
+   automorphisms applied to `(1 : ZMod q)` reduce (by the simp
+   lemma + `mul_one`) to equal underlying unit values; close with
+   `Units.ext`.
+4. **`exists_addAut_of_order_p`** — package: pull
+   `g ∈ (ZMod q)ˣ` of order `p` from `exists_unit_of_order_p`,
+   apply `unitToAddAut`, transport order via `orderOf_injective`.
+5. **Sanity example**: `AddAut (ZMod 7)` has an order-`3` automorphism
+   (the additive analogue of the order-`3` unit, seed for the deferred
+   order-21 non-abelian group `ZMod 7 ⋊ ZMod 3`).
+
+**Two surgical S3a/S3b v4.26.0 surface fixes** (silently broken since
+iteration 3, surfaced by the standalone-extract build):
+
+1. **`isCyclic_units_zmod`** (line 78): `Units.ext` no longer
+   satisfies `Function.Injective ⇑(Units.coeHom (ZMod q))` directly at
+   v4.26.0 — its signature changed from `Function.Injective`-shape to
+   `↑a = ↑b → a = b`-shape. Replace the second argument of
+   `isCyclic_of_subgroup_isDomain` with `Units.val_injective`, the
+   dedicated `Function.Injective (Units.val : Mˣ → M)`.
+2. **`exists_unit_of_order_p`** (line 126): `Nat.div_div_self`'s
+   second argument changed from `0 ≤ b` to `b ≠ 0` at v4.26.0.
+   Replace `(orderOf_pos g₀).le` with `(orderOf_pos g₀).ne'`.
+
+**Build verification (standalone-extract pattern)**: A throwaway test
+file `proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachBS3cTest.lean`
+duplicated the full S3a + S3b + S3c-i body but imported only `Mathlib`
+(no `Proofs.LagrangeTheoremOQ01OQ01OQ01` chain), so the
+SylowTheoremOQ01 v4.26.0 blocker was bypassed. After applying the two
+fixes, `./proofs/scripts/docker-build.sh
+Proofs.LagrangeTheoremOQ01OQ01OQ01ApproachBS3cTest` completed
+successfully (`✔ [7743/7743] Built ... (8.8s)` —
+`.loom/logs/researcher-12-lagrange-oq01x3-test3.log`). Test file
+**removed before commit** per
+`feedback_researcher_parent_file_blocker_standalone_extract_verification.md`.
+
+**Sylow parent blocker (NOT fixed in this PR)**:
+`Proofs/SylowTheoremOQ01.lean` has 7+ v4.26.0 errors. Inventory:
+
+```
+Proofs/SylowTheoremOQ01.lean:58:8 — Tactic `rewrite` failed (factorization rewrite)
+Proofs/SylowTheoremOQ01.lean:112:9/16 — `Sylow.nonempty` no longer takes args
+Proofs/SylowTheoremOQ01.lean:132:9/16 — same
+Proofs/SylowTheoremOQ01.lean:172:9/16 — same
+Proofs/SylowTheoremOQ01.lean:234:26 — `Nat.Prime.eq_of_dvd_of_prime` removed
+Proofs/SylowTheoremOQ01.lean:235:11 — `orderOf_eq_one_iff_eq_one` removed
+Proofs/SylowTheoremOQ01.lean:254:12/49 — Application type mismatch
+Proofs/SylowTheoremOQ01.lean:256:43 — Tactic `assumption` failed
+Proofs/SylowTheoremOQ01.lean:264:8 — Tactic `rewrite` failed
+Proofs/SylowTheoremOQ01.lean:217:18 — unsolved goals (cascade)
+```
+
+This is mechanic / doctor scope (multi-error API surface migration,
+out-of-scope for research). Filed as the `(build pending — Sylow
+parent blocker)` qualifier on this PR; the Lagrange chain
+`LagrangeTheoremOQ01OQ01OQ01ApproachB → ... → SylowTheoremOQ01` will
+unblock once Sylow is repaired. The S3c-i additions themselves are
+verified correct via the standalone extract.
+
+**Files modified by this PR**:
+
+* `proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean`
+  (+60 LOC: 1 def + 3 theorems + 1 sanity example for S3c-i; 2
+  single-line surface fixes at lines 78 and 126).
+* `research/problems/lagrange-theorem-oq-01-oq-01-oq-01/state.md`
+  (this entry).
+* `src/data/research/problems/lagrange-theorem-oq-01-oq-01-oq-01.json`
+  (currentState refresh: phase ACT, iteration 7, focus + nextAction
+  updated; top-level `phase` already `ACT`; `updatedAt` refreshed;
+  knowledge.insights / builtItems extended for the silent-broken
+  pattern + v4.26.0 fix kit + 5 new Lean declarations).
+
+**Next Action**: per the audit's "Suggested ACT decomposition", the
+next iteration is **S3c-ii** (small, ~10 LOC):
+`exists_mulAut_mult_of_order_p` via `MulAutMultiplicative.symm`,
+Mathlib API pinned at audit doc lines 283–298. Single-PR session, then
+S3d-i (`actionHom`, ~30 LOC, medium-risk additive↔multiplicative
+transport).
+
+**Honesty note**: The S3a/S3b fixes are surface-level Mathlib API
+adjustments (renaming + arg-form change), not new mathematics. They
+counted in this iteration only because the silent-broken pattern made
+them blockers for `exists_addAut_of_order_p`. The genuine mathematical
+content of this iteration is the 4 S3c-i declarations.
+
+## Earlier Iteration: S3c-API-audit — Mathlib bridge pinned for Approach B (researcher-3, 2026-05-13)
 
 Doc-only iteration. Audits the Mathlib API surface needed for the next
 substantive Approach-B step and resolves two latent API-shape errors in
