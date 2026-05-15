@@ -20,9 +20,9 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 1,
-    "lineCount": 321,
-    "assumptions": "0 sorries, 1 axiom in this file (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`, the Bezdek-Kuperberg 2007 ellipsoid lattice density bound, stated but not proved in Lean — published proof relies on affine density invariance under linear transforms, not yet in Mathlib v4.26.0). The parent `Proofs/KeplerConjecture.lean` axiomatizes (a) `thues_theorem` (2D hexagonal optimality, Thue 1892 / Fejes Tóth 1940), (b) `fccDensity_lt_one` (numerical bound), and (c) the Kepler conjecture itself (Hales 1998, Flyspeck 2014). This OQ-04 file defines the Chen-Engel-Glotzer rational constant 4000/4671, the `tetrahedronDimerPacking : PackingDensity` instance, and the `EllipsoidLatticePacking` marker structure; proves six theorems including `tetrahedronDimerDensity_gt_fccDensity` (the central refutation `π/(3√2) < 4000/4671`, via `Real.pi_lt_d2` and `Real.lt_sqrt`, axiom-free), the existential corollary `exists_packingDensity_gt_fcc`, and the Bezdek-Kuperberg-derived corollary `ellipsoid_lattice_le_fccPacking`. The Ulam (open conjecture) sub-question will require axiomatization when introduced in a future iteration.",
+    "axiomCount": 2,
+    "lineCount": 399,
+    "assumptions": "0 sorries, 2 axioms in this file: (1) `bezdek_kuperberg_ellipsoid_lattice_upper_bound`, the Bezdek-Kuperberg 2007 ellipsoid lattice density bound, stated but not proved in Lean — published proof relies on affine density invariance under linear transforms, not yet in Mathlib v4.26.0; (2) `ulam_conjecture` (S6 ACT), Ulam's 1972 open conjecture that every centrally symmetric convex body in ℝ³ packs to density at least `π/(3√2)` — currently unproven in the literature, so genuinely a STATEMENT axiom on the open conjecture. The parent `Proofs/KeplerConjecture.lean` axiomatizes (a) `thues_theorem` (2D hexagonal optimality, Thue 1892 / Fejes Tóth 1940), (b) `fccDensity_lt_one` (numerical bound), and (c) the Kepler conjecture itself (Hales 1998, Flyspeck 2014). This OQ-04 file defines the Chen-Engel-Glotzer rational constant 4000/4671, the `tetrahedronDimerPacking : PackingDensity` instance, the `EllipsoidLatticePacking` marker structure, and the `SymmetricConvexBody3DPacking` marker structure; proves seven theorems including `tetrahedronDimerDensity_gt_fccDensity` (the central refutation `π/(3√2) < 4000/4671`, via `Real.pi_lt_d2` and `Real.lt_sqrt`, axiom-free), the existential corollary `exists_packingDensity_gt_fcc`, the Bezdek-Kuperberg-derived corollary `ellipsoid_lattice_le_fccPacking`, and the Ulam-derived corollary `ulam_le_fccPacking_density`.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -136,6 +136,6 @@
       "relationship": "Adjacent discrete-geometric machinery. Ehrhart theory counts lattice points in dilations of a convex polytope, complementing the *volumetric* density theory of Kepler/Hales. Both frameworks share the convex-body-in-ℝᵈ setting, and Ehrhart's `tDilateLatticePoints` polynomial encodes (in the limit) the same kind of asymptotic density information that packing arguments exploit. The 4000/4671 dimer construction is itself a polytopal arrangement — its unit cell counts naturally interface with Ehrhart-style techniques."
     }
   ],
-  "theoremCount": 6,
-  "definitionCount": 3
+  "theoremCount": 7,
+  "definitionCount": 4
 }
