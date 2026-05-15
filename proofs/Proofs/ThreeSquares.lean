@@ -757,12 +757,12 @@ theorem dirichletScale_det (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R) :
   have hd' : (0 : ℝ) < d := by exact_mod_cast hd
   have hRle : (0 : ℝ) ≤ R := hR.le
   have hRd : (0 : ℝ) ≤ R / d := (div_pos hR hd').le
-  have h_sqRd : Real.sqrt (R / d) * Real.sqrt (R / d) = R / d := Real.sqrt_mul_self hRd
+  have h_sqRd : Real.sqrt (R / d) * Real.sqrt (R / d) = R / d := Real.mul_self_sqrt hRd
   have h_target : R ^ (3 / 2 : ℝ) = R * Real.sqrt R := by
     rw [show (3 / 2 : ℝ) = 1 + 1 / (2 : ℝ) by norm_num,
         Real.rpow_add hR, Real.rpow_one, ← Real.sqrt_eq_rpow]
   unfold dirichletScale dirichletScaleMatrix
-  rw [Matrix.det_toLin', Matrix.det_diagonal, Fin.prod_univ_three]
+  rw [LinearMap.det_toLin', Matrix.det_diagonal, Fin.prod_univ_three]
   simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
     Matrix.cons_val_succ, Matrix.cons_val_fin_one, Matrix.cons_val_two,
     Matrix.tail_cons]
@@ -787,9 +787,9 @@ theorem dirichletEllipsoid_eq_image (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R
   have hsqrtRd_pos : (0 : ℝ) < Real.sqrt (R / d) := Real.sqrt_pos.mpr hRd_pos
   have hsqrtR_ne : Real.sqrt R ≠ 0 := ne_of_gt hsqrtR_pos
   have hsqrtRd_ne : Real.sqrt (R / d) ≠ 0 := ne_of_gt hsqrtRd_pos
-  have h_sqR : Real.sqrt R * Real.sqrt R = R := Real.sqrt_mul_self hR.le
+  have h_sqR : Real.sqrt R * Real.sqrt R = R := Real.mul_self_sqrt hR.le
   have h_sqRd : Real.sqrt (R / d) * Real.sqrt (R / d) = R / d :=
-    Real.sqrt_mul_self hRd_pos.le
+    Real.mul_self_sqrt hRd_pos.le
   have hRne : R ≠ 0 := ne_of_gt hR
   have hRdne : R / d ≠ 0 := ne_of_gt hRd_pos
   ext v
@@ -809,16 +809,16 @@ theorem dirichletEllipsoid_eq_image (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R
       rw [h0, h1, h2]
       rw [show v 0 ^ 2 / R + v 1 ^ 2 / (R / d) + v 2 ^ 2 / (R / d)
             = (v 0 ^ 2 + d * v 1 ^ 2 + d * v 2 ^ 2) / R by
-          field_simp
-          ring]
+          field_simp]
       rw [div_le_one hR]
       exact hv
     · ext i
       rw [dirichletScale_apply]
       fin_cases i <;>
-        simp [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
-          Matrix.cons_val_succ, Matrix.cons_val_fin_one, Matrix.cons_val_two,
-          Matrix.tail_cons, hsqrtR_ne, hsqrtRd_ne, mul_div_cancel₀]
+        · simp [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons,
+            Matrix.cons_val_succ, Matrix.cons_val_fin_one, Matrix.cons_val_two,
+            Matrix.tail_cons, hsqrtR_ne, hsqrtRd_ne, mul_div_cancel₀]
+          try field_simp
   · rintro ⟨u, hu, hTu⟩
     have h_eq : ∀ i : Fin 3, v i =
         ![Real.sqrt R, Real.sqrt (R / d), Real.sqrt (R / d)] i * u i := by
@@ -846,7 +846,6 @@ theorem dirichletEllipsoid_eq_image (d : ℕ) (R : ℝ) (hd : 0 < d) (hR : 0 < R
         rw [mul_pow, sq, h_sqRd]
       rw [e1, e2, e3]
       field_simp
-      ring
     rw [step]
     calc R * (u 0 ^ 2 + u 1 ^ 2 + u 2 ^ 2) ≤ R * 1 :=
           mul_le_mul_of_nonneg_left hu hR.le
@@ -861,7 +860,9 @@ private theorem unitEuclideanBall3_preimage :
   simp only [Set.mem_preimage, unitEuclideanBall3, Set.mem_setOf_eq,
     Metric.mem_closedBall, dist_zero_right]
   have h_norm_sq : ‖x‖ ^ 2 = x 0 ^ 2 + x 1 ^ 2 + x 2 ^ 2 := by
-    rw [EuclideanSpace.real_norm_sq_eq, Fin.sum_univ_three]
+    rw [EuclideanSpace.norm_sq_eq, Fin.sum_univ_three,
+        Real.norm_eq_abs, Real.norm_eq_abs, Real.norm_eq_abs]
+    simp only [sq_abs]
   have hnn : 0 ≤ ‖x‖ := norm_nonneg _
   constructor
   · intro hv
@@ -1801,6 +1802,7 @@ private lemma exists_sum_three_sq_int_iff_nat (n : ℕ) :
     `not_excluded_form_is_sum_three_sq` via `r3_count_pos_iff`. -/
 theorem general_r3_formula {n : ℕ} (_hn : n ≥ 1) (hne : ¬IsExcludedForm n) :
     r3_count n > 0 := by
+  show 0 < r3_count n
   rw [r3_count_pos_iff, exists_sum_three_sq_int_iff_nat]
   exact not_excluded_form_is_sum_three_sq hne
 
