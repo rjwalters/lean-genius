@@ -853,4 +853,203 @@ theorem cbrt3_a6 :
     rw [Int.le_floor]
     exact_mod_cast hge
 
+/-! ## S9 act: eighth partial quotient `a₇ = 1`
+
+For `a₇ = 1` (eighth partial quotient of the simple CF
+`[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, …]` of OEIS A002945) we need bounds
+on a one-more-level nested fraction. The chain reuses the
+`Cbrt3Helpers.cbrt3_lt_five_twelve_over_three_fifty_five` upper bound
+(`cbrt3 < 512/355`) but tightens the lower side from S8's `437/303`
+to S9's new helper `949/658 < cbrt3` — the eighth convergent
+`p₈/q₈ = 949/658` with `a₈ = 1`.
+
+Algebraic chain (`x₂ := 1/(cbrt3-1) - 2`, `x₃ := 1/x₂ - 3`,
+`x₄ := 1/x₃ - 1`, `x₅ := 1/x₄ - 4`, `x₆ := 1/x₅ - 1`, `x₇ := 1/x₆ - 5`):
+
+```
+  949/658   < cbrt3            < 512/355
+  291/658   < cbrt3-1          < 157/355
+  355/157   < 1/(cbrt3-1)      < 658/291
+  41/157    < x₂               < 76/291
+  291/76    < 1/x₂             < 157/41
+  63/76     < x₃               < 34/41
+  41/34     < 1/x₃             < 76/63
+  7/34      < x₄               < 13/63
+  63/13     < 1/x₄             < 34/7
+  11/13     < x₅               < 6/7
+  7/6       < 1/x₅             < 13/11
+  1/6       < x₆               < 2/11
+  11/2      < 1/x₆             < 6
+  1/2       < x₇               < 1
+  1         < 1/x₇             < 2        (this gives ⌊1/x₇⌋ = 1)
+```
+
+All fourteen reciprocation/subtraction steps are linear after
+inverting strictly-positive denominators, so the proof is the same
+`lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀` chain as S8, one step
+deeper. The final floor identity uses `Int.le_floor` / `Int.floor_lt`. -/
+
+set_option maxHeartbeats 400000 in
+/-- **Eighth partial quotient of the simple CF of `∛3`.**
+
+  `⌊1/(1/(1/(1/(1/(1/(1/(∛3 - 1) - 2) - 3) - 1) - 4) - 1) - 5)⌋ = 1`.
+
+This is `a₇ = 1` in the prefix `[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, …]` of
+OEIS A002945.
+
+Proof: from `949/658 < cbrt3 < 512/355` derive successively
+`355/157 < 1/(cbrt3-1) < 658/291`, `41/157 < x₂ < 76/291`,
+`291/76 < 1/x₂ < 157/41`, `63/76 < x₃ < 34/41`,
+`41/34 < 1/x₃ < 76/63`, `7/34 < x₄ < 13/63`,
+`63/13 < 1/x₄ < 34/7`, `11/13 < x₅ < 6/7`,
+`7/6 < 1/x₅ < 13/11`, `1/6 < x₆ < 2/11`,
+`11/2 < 1/x₆ < 6`, `1/2 < x₇ < 1`, and finally
+`1 < 1/x₇ < 2`. The floor identity follows by `le_antisymm` using
+`Int.le_floor` / `Int.floor_lt`.
+
+Note: the seven-level nesting pushes Lean's term-elaboration above the
+default 200_000-heartbeat budget; `set_option maxHeartbeats 400000`
+(scoped via `in`) suffices — the proof completes well under that. -/
+theorem cbrt3_a7 :
+    ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5)⌋
+      = (1 : ℤ) := by
+  -- Step 1: `cbrt3 - 1 > 0` (from the S3 bound `4/3 < cbrt3`).
+  have hpos1 : (0 : ℝ) < cbrt3 - 1 := by linarith [four_thirds_lt_cbrt3]
+  -- S9 cubing bounds: `949/658 < cbrt3 < 512/355` (cubing-iff helpers).
+  have h_lo : (949/658 : ℝ) < cbrt3 :=
+    Cbrt3Helpers.nine_forty_nine_over_six_fifty_eight_lt_cbrt3
+  have h_hi : cbrt3 < (512/355 : ℝ) :=
+    Cbrt3Helpers.cbrt3_lt_five_twelve_over_three_fifty_five
+  -- Step 2: `355/157 < 1/(cbrt3-1) < 658/291`.
+  have hy1_gt : (355/157 : ℝ) < 1 / (cbrt3 - 1) := by
+    rw [lt_div_iff₀ hpos1]
+    -- Goal: `(355/157) * (cbrt3 - 1) < 1`, i.e. `cbrt3 < 512/355`.
+    linarith [h_hi]
+  have hy1_lt : 1 / (cbrt3 - 1) < (658/291 : ℝ) := by
+    rw [div_lt_iff₀ hpos1]
+    -- Goal: `1 < (658/291) * (cbrt3 - 1)`, i.e. `949/658 < cbrt3`.
+    linarith [h_lo]
+  -- Step 3: `x₂ := 1/(cbrt3-1) - 2` satisfies `41/157 < x₂ < 76/291`.
+  have hx2_gt : (41/157 : ℝ) < 1 / (cbrt3 - 1) - 2 := by linarith
+  have hx2_lt : 1 / (cbrt3 - 1) - 2 < (76/291 : ℝ) := by linarith
+  have hpos2 : (0 : ℝ) < 1 / (cbrt3 - 1) - 2 := by linarith
+  -- Step 4: `1/x₂` satisfies `291/76 < 1/x₂ < 157/41`.
+  have hy2_gt : (291/76 : ℝ) < 1 / (1 / (cbrt3 - 1) - 2) := by
+    rw [lt_div_iff₀ hpos2]
+    -- Goal: `(291/76) * x₂ < 1`, i.e. `x₂ < 76/291`.
+    linarith [hx2_lt]
+  have hy2_lt : 1 / (1 / (cbrt3 - 1) - 2) < (157/41 : ℝ) := by
+    rw [div_lt_iff₀ hpos2]
+    -- Goal: `1 < (157/41) * x₂`, i.e. `41/157 < x₂`.
+    linarith [hx2_gt]
+  -- Step 5: `x₃ := 1/x₂ - 3` satisfies `63/76 < x₃ < 34/41`.
+  have hx3_gt : (63/76 : ℝ) < 1 / (1 / (cbrt3 - 1) - 2) - 3 := by linarith
+  have hx3_lt : 1 / (1 / (cbrt3 - 1) - 2) - 3 < (34/41 : ℝ) := by linarith
+  have hpos3 : (0 : ℝ) < 1 / (1 / (cbrt3 - 1) - 2) - 3 := by linarith
+  -- Step 6: `1/x₃` satisfies `41/34 < 1/x₃ < 76/63`.
+  have hy3_gt : (41/34 : ℝ) < 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) := by
+    rw [lt_div_iff₀ hpos3]
+    -- Goal: `(41/34) * x₃ < 1`, i.e. `x₃ < 34/41`.
+    linarith [hx3_lt]
+  have hy3_lt : 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) < (76/63 : ℝ) := by
+    rw [div_lt_iff₀ hpos3]
+    -- Goal: `1 < (76/63) * x₃`, i.e. `63/76 < x₃`.
+    linarith [hx3_gt]
+  -- Step 7: `x₄ := 1/x₃ - 1` satisfies `7/34 < x₄ < 13/63`.
+  have hx4_gt : (7/34 : ℝ) < 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1 := by
+    linarith
+  have hx4_lt : 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1 < (13/63 : ℝ) := by
+    linarith
+  have hpos4 : (0 : ℝ) < 1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1 := by linarith
+  -- Step 8: `1/x₄` satisfies `63/13 < 1/x₄ < 34/7`.
+  have hy4_gt : (63/13 : ℝ) < 1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) := by
+    rw [lt_div_iff₀ hpos4]
+    -- Goal: `(63/13) * x₄ < 1`, i.e. `x₄ < 13/63`.
+    linarith [hx4_lt]
+  have hy4_lt :
+      1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) < (34/7 : ℝ) := by
+    rw [div_lt_iff₀ hpos4]
+    -- Goal: `1 < (34/7) * x₄`, i.e. `7/34 < x₄`.
+    linarith [hx4_gt]
+  -- Step 9: `x₅ := 1/x₄ - 4` satisfies `11/13 < x₅ < 6/7`.
+  have hx5_gt :
+      (11/13 : ℝ) < 1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4 := by
+    linarith
+  have hx5_lt :
+      1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4 < (6/7 : ℝ) := by
+    linarith
+  have hpos5 :
+      (0 : ℝ) < 1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4 := by linarith
+  -- Step 10: `1/x₅` satisfies `7/6 < 1/x₅ < 13/11`.
+  have hy5_gt :
+      (7/6 : ℝ) < 1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) := by
+    rw [lt_div_iff₀ hpos5]
+    -- Goal: `(7/6) * x₅ < 1`, i.e. `x₅ < 6/7`.
+    linarith [hx5_lt]
+  have hy5_lt :
+      1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) < (13/11 : ℝ) := by
+    rw [div_lt_iff₀ hpos5]
+    -- Goal: `1 < (13/11) * x₅`, i.e. `11/13 < x₅`.
+    linarith [hx5_gt]
+  -- Step 11: `x₆ := 1/x₅ - 1` satisfies `1/6 < x₆ < 2/11`.
+  have hx6_gt :
+      (1/6 : ℝ)
+        < 1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1 := by
+    linarith
+  have hx6_lt :
+      1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1 < (2/11 : ℝ) := by
+    linarith
+  have hpos6 :
+      (0 : ℝ)
+        < 1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1 := by
+    linarith
+  -- Step 12: `1/x₆` satisfies `11/2 < 1/x₆ < 6`.
+  have hy6_gt :
+      (11/2 : ℝ)
+        < 1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) := by
+    rw [lt_div_iff₀ hpos6]
+    -- Goal: `(11/2) * x₆ < 1`, i.e. `x₆ < 2/11`.
+    linarith [hx6_lt]
+  have hy6_lt :
+      1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) < (6 : ℝ) := by
+    rw [div_lt_iff₀ hpos6]
+    -- Goal: `1 < 6 * x₆`, i.e. `1/6 < x₆`.
+    linarith [hx6_gt]
+  -- Step 13: `x₇ := 1/x₆ - 5` satisfies `1/2 < x₇ < 1`.
+  have hx7_gt :
+      (1/2 : ℝ)
+        < 1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5 := by
+    linarith
+  have hx7_lt :
+      1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5 < (1 : ℝ) := by
+    linarith
+  have hpos7 :
+      (0 : ℝ)
+        < 1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5 := by
+    linarith
+  -- Step 14: floor antisymmetry on `1/x₇ ∈ (1, 2)`.
+  apply le_antisymm
+  · -- `⌊1/x₇⌋ ≤ 1`: from `1/x₇ < 2`.
+    have hlt :
+        1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5)
+          < (2 : ℝ) := by
+      rw [div_lt_iff₀ hpos7]
+      -- Goal: `1 < 2 * x₇`. From `x₇ > 1/2`, immediate.
+      linarith [hx7_gt]
+    have hflt :
+        ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5)⌋
+          < (2 : ℤ) := by
+      rw [Int.floor_lt]
+      exact_mod_cast hlt
+    omega
+  · -- `1 ≤ ⌊1/x₇⌋`: from `1 ≤ 1/x₇` (in fact `1 < 1/x₇` strictly).
+    have hge :
+        (1 : ℝ)
+          ≤ 1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) := by
+      rw [le_div_iff₀ hpos7]
+      -- Goal: `1 * x₇ ≤ 1`, i.e. `x₇ ≤ 1` (from the strict `x₇ < 1`).
+      linarith [hx7_lt]
+    rw [Int.le_floor]
+    exact_mod_cast hge
+
 end CubeRoot3IrrationalOQ04
