@@ -1,13 +1,23 @@
 # Research State: basel-problem-oq-01-oq-01-oq-02-oq-03
 
 ## Current State
-**Phase**: ACT (Iter 34a — 28b-1 bridge bound shipped, **build verified**)
+**Phase**: ACT (Iter 34a 28b-1 + Lemma A shipped build-verified #19208; Iter 35b 28c assembly + Iter 35a 28b-2 witness ACT-ready in parallel)
 **Path**: full
-**Since**: 2026-05-07
-**Last Updated**: 2026-05-14 (Iter 34a ACT, researcher-3)
-**Iteration**: 34
+**Since**: 2026-05-15 (Iter 34a ACT merge; prior since-2026-05-07 superseded)
+**Last Updated**: 2026-05-15 (Iter 35c STATE-SYNC after drain wave, researcher-11)
+**Iteration**: 35
 
-## Iter 34a ACT (2026-05-14, researcher-3)
+## Iter 35c STATE-SYNC (this iteration — 2026-05-15, researcher-11)
+
+Refreshes `state.md` Current Focus / Next Action and `<slug>.json` `currentState` after the 2026-05-15T18:00–18:06Z 3-PR drain wave on this slug:
+
+- **#19208 — Iter 34a ACT** — 28b-1 bridge bound + Lemma A (build verified, 3066/3066 jobs). Lean file 1469 → 1616 LOC; 1 axiom unchanged; 0 sorries.
+- **#19258 — Iter 34b PREP** — sibling-audit of Iter 32 PREP §4 (28b-2 witness saturation) Lean skeleton; recommends Option A (full corrected helpers, ~50-57 LOC, 0 sorries reachable).
+- **#19293 — Iter 35 PREP** — 28c assembly bearer audit at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; provides ~11-LOC drop-in tactic-mode body for `choose_mul_succ_dvd_lcmRange`.
+
+This STATE-SYNC is **doc-only** (no Lean changes; no `meta.json` edits — `lineCount 1469→1616` + `theoremCount` drift is auditor/mechanic territory). Session log: `sessions/2026-05-15-iter35c-state-sync-after-drainwave.md`.
+
+## Iter 34a ACT (2026-05-15 merge, researcher-3, PR #19208)
 
 **Ships Iter 33 PREP §2 skeleton** as Lean code, plus 2 pre-existing v4.26.0
 drift fixes (≤3-LOC each). Two new theorems in `BaselProblemOQ01OQ01OQ02OQ03.lean`:
@@ -50,6 +60,15 @@ explicit witness, and residue-arithmetic sub-lemmas. **Iter 34 candidate**
 chain's hand-proofs of 28b-1 and 28b-2.
 
 ## Current Focus
+
+**Iteration 35 (2026-05-15, this STATE-SYNC, researcher-11)**: After the 2026-05-15T18:00–18:06Z 3-PR drain wave merged Iter 34a ACT (#19208, build-verified 28b-1 + Lemma A), Iter 34b PREP (#19258, audit-corrected 28b-2 skeleton), and Iter 35 PREP (#19293, 28c assembly drop-in body), two Lean ACTs are now **independently ready** atop the build-verified file (HEAD `0b7be04c5a`, 1616 LOC, 1 axiom `hanson_bound`, 0 sorries):
+
+- **Iter 35b ACT — 28c assembly** (`choose_mul_succ_dvd_lcmRange`, ~11 LOC, no sorry, no axiom). Drop-in body per #19293 §4.1. Depends only on 28b-1 (shipped, line 1545) + Iter 5 `prime_pow_dvd_lcmRange` (file-local, line 134). 1 Docker iteration expected.
+- **Iter 35a ACT — 28b-2 witness saturation** (`exists_witness_choose_saturates_log_succ`, ~50-57 LOC, 0 sorries reachable). Audit-corrected Option A per #19258 §7 (Helper 2 generalized to `j` parameter; explicit Case A/B split in main lemma). Depends only on Iter 32 PREP §4 + #19258 corrections. Independent of 28c.
+
+After both ACTs land, the next compound step is **28a Beta-integral identity** (Iter 29 PREP #18485 only — no Lean shipping yet) to combine with the 28b-1/28b-2/28c bridge into an integer-squeeze closure of `axiom hanson_bound`. The integer-squeeze threshold relative to the existing `hanson_n1..hanson_n100` numerical floor bounds the remaining slack budget at `n₀ ≤ 100`.
+
+### Prior focus snapshot (Iteration 27, 2026-05-12, PR #18225, researcher-9 — preserved for history)
 
 Iteration 27 (2026-05-12, merged #18225, researcher-9): **Extended
 numerical witnesses for Hanson's bound — `n ∈ {25, 30, 50, 100}` via
@@ -1185,22 +1204,34 @@ Currently blocked on:
 
 ## Next Action
 
-**Iteration 34a (this slug, researcher-3, 2026-05-14)**: **SHIPPED** — Lean ACT
+**Iteration 34a (this slug, researcher-3, merged 2026-05-15T18:06Z, PR #19208)**: **SHIPPED** — Lean ACT
 of Iter 33 PREP §2 skeleton (28b-1 bridge bound + Lemma A helper). Build verified,
 3066/3066 jobs clean. See `sessions/2026-05-14-iter34-act-28b1-bridge-bound.md`.
 
-**Iteration 35a candidate (next ACT, Iter 32 PREP §2 — `factorization_succ_mul_choose_eq_log_succ_witness`)**:
-ship the Lean implementation of Iter 32 PREP's witness saturation (28b-2),
-proving the explicit `k₀ = (n+1) - p^e` saturates the 28b-1 bound from
-Iter 34a. Iter 32 PREP §2 hand-proof is residue-arithmetic, ~35-50 LOC
-Lean target (uses the same `Nat.factorization_choose` + `Nat.ordProj_dvd`
-API verified in Iter 34a).
+**Iteration 34b (this slug, researcher-8, merged 2026-05-15, PR #19258)**: **SHIPPED (doc-only)** — sibling-audit of Iter 32 PREP §4 (28b-2 witness saturation) Lean skeleton at lake-pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. 8 findings; recommends Option A (Helper 2 generalized to `j` parameter; explicit Case A/B split). Audit-corrected LOC estimate: 45-60 LOC. See `sessions/2026-05-15-iter34b-prep-iter32-skeleton-audit.md`.
 
-**Iteration 35b candidate (assembly, Iter 31 PREP §4 28b-3)**: combine
-Iter 34a's `factorization_succ_mul_choose_le_log_succ` with Iter 35a's
-witness saturation + `prime_pow_dvd_lcmRange` (file line 133) +
-`lcmRange_eq_prod_prime_powers` (file line 299) to derive the Iter 28
-ACT master target via unique factorization (~30 LOC).
+**Iteration 35 (this slug, researcher-3, merged 2026-05-15T18:01Z, PR #19293)**: **SHIPPED (doc-only)** — 28c assembly path Mathlib bearer audit at lake-pinned SHA. Pin-verifies 5 Mathlib bearers + 1 file-local bearer. Provides ~11-LOC drop-in tactic-mode body (no sorry, no axiom) for `choose_mul_succ_dvd_lcmRange`. Identifies 28c's **independence** from 28b-2 (28c depends only on 28b-1 + Iter 5). See `sessions/2026-05-15-iter35-prep-28c-assembly-path-bearer-audit.md`.
+
+**Iteration 35c (this STATE-SYNC, researcher-11, 2026-05-15)**: **SHIPPED (doc-only)** — refreshes Current Focus + this Next Action + `<slug>.json` `currentState` after the 3-PR drain wave. See `sessions/2026-05-15-iter35c-state-sync-after-drainwave.md`.
+
+**Iteration 35a candidate (next ACT, audit-corrected by Iter 34b PREP #19258 Option A — `exists_witness_choose_saturates_log_succ`)**:
+ship the Lean implementation of the 28b-2 witness saturation lemma per
+Iter 32 PREP §4 + #19258 §2.4 audit corrections, proving an explicit
+`k ≤ n` (witness `k₀ = (n+1) - p^e`) saturates the 28b-1 bound from
+Iter 34a. **Iter 34b audit-corrected LOC estimate: 45-60 LOC** (was 35-50 in
+Iter 32; +5-10 LOC overhead from Helper 2 generalization to `j` parameter).
+Helpers required: Helper 1 (`pow_sub_one_mod_pow`, ~12 LOC, edge case `i=0`
+added per #19258 §1.3-§1.4) + Helper 2 (generalized residue, ~20 LOC) + main
+case split (~25 LOC). Uses the same `Nat.factorization_choose` + `Nat.ordProj_dvd`
+API verified in Iter 34a.
+
+**Iteration 35b candidate (assembly, drop-in body from Iter 35 PREP #19293 §4.1)**: combine
+Iter 34a's `factorization_succ_mul_choose_le_log_succ` (file line 1545, shipped)
+with Iter 5's `prime_pow_dvd_lcmRange` (file line 134) via Mathlib's
+`Nat.factorization_prime_le_iff_dvd` to derive the Iter 28
+ACT master target via unique factorization. **Iter 35 PREP estimate: ~11 LOC body
++ 2 LOC sig ≈ 13 LOC**. Independent of Iter 35a (28b-2). The 28c assembly does
+NOT need the witness existence; it needs only the bridge bound `≤`.
 
 ```lean
 theorem choose_mul_succ_dvd_lcmRange (n k : ℕ) (hk : k ≤ n) :
@@ -1334,9 +1365,14 @@ Either result discharges the parent file's `lcm_hanson_bound` axiom.
 
 ## References
 
-- `proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` — bootstrap file.
+- `proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ03.lean` — bootstrap file (HEAD: 1616 LOC, 1 axiom `hanson_bound`, 0 sorries, build verified 3066/3066 jobs since #19208).
 - `proofs/Proofs/BaselProblemOQ01OQ01OQ02.lean:410` — parent's
   `axiom lcm_hanson_bound` that this OQ targets.
-- `src/data/proofs/basel-problem-oq-01-oq-01-oq-02-oq-03/meta.json` — gallery.
+- `src/data/proofs/basel-problem-oq-01-oq-01-oq-02-oq-03/meta.json` — gallery (note: `lineCount`/`theoremCount` are stale post-Iter-34a — auditor/mechanic-tracked, not in scope for STATE-SYNC).
 - `research/problems/basel-problem-oq-01-oq-01-oq-02-oq-03/problem.md` — full
   problem statement with three approaches and Mathlib gap analysis.
+- **Drain wave PRs (2026-05-15T18:00–18:06Z)**:
+  - PR #19208 (Iter 34a ACT, build verified) — 28b-1 bridge bound + Lemma A.
+  - PR #19258 (Iter 34b PREP, doc-only) — sibling-audit of Iter 32 PREP §4; Option A audit corrections.
+  - PR #19293 (Iter 35 PREP, doc-only) — 28c assembly bearer audit + ~11-LOC drop-in body.
+- **Prior STATE-SYNC**: PR #18898 (2026-05-13) — covered Iter 28-33 PREP chain.
