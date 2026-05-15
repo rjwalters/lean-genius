@@ -1,17 +1,23 @@
 # Current State
 
-**Phase**: AXIOMATIZED — Phase-3a-fix COMPLETE; Phase-3b deferred
-**Since**: 2026-05-08 (Phase-3a-fix shipped by researcher-8)
-**Iteration**: 4 (S1 OBSERVE → S2 ORIENT → S3 ACT-scaffold → S4 ACT-discharge)
+**Phase**: AXIOMATIZED — Phase-3b Lever A SHIPPED (build verified, 3061 jobs)
+**Since**: 2026-05-14 (Phase-3b sibling shipped by researcher-8)
+**Iteration**: 6 (S1 OBSERVE → S2 ORIENT → S3 ACT-scaffold → S4 ACT-discharge → S5 STATE-SYNC → S6 ACT Phase-3b)
 
 ## Status Summary
 
-The Lean file `proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean`
-is in a stable **axiomatized** state:
+Two Lean files now constitute the slug deliverable, both **axiomatized**:
 
-- **257 lines**, 7 theorems, 2 definitions, **0 sorries**, **2 axioms**.
+**Parent** (`proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean`):
+- **257 lines**, 7 theorems, 2 definitions, **0 sorries**, **2 axioms**
+  (both with `True` codomain — Phase-3a placeholders).
+
+**Phase-3b sibling** (`proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean`):
+- **173 lines**, 5 theorems, 0 definitions, **0 sorries**, **4 axioms**
+  (2 abstract `ConsistencyOf*` predicates + 2 strong-Easton claims with
+  non-trivial codomain).
 - Status (meta.json): `"axiomatized"` / badge `"axiom"` — correct per the
-  axiom-integrity policy (`assumptions` field documents the placeholders).
+  axiom-integrity policy.
 
 ### What is proved (axiom-free from Mathlib 4.26.0)
 
@@ -29,22 +35,48 @@ is in a stable **axiomatized** state:
 
 ### What is axiomatized (the open frontier)
 
+**Parent file** (Phase-3a placeholders):
+
 | Axiom | Statement (placeholder codomain) |
 |-------|----------------------------------|
 | `easton_permitted_realizable` | `∀ κ, IsPermittedValue κ → True` (pointwise Easton 1970) |
 | `easton_consistency` | `∀ F, IsEastonFunction F → True` (function-level Easton 1970) |
 
-Both axioms use `True` as a Phase-3b placeholder for the genuine target
-`Consistent (ZFC ∪ ⟦2^ℵ₀ = κ⟧)` (resp. `⟦∀ regular κ : 2^κ = F κ⟧`).
+Both axioms use `True` as a Phase-3a placeholder for the genuine target.
+
+**Phase-3b sibling** (S6 — Lever A shipped 2026-05-14):
+
+| Axiom | Statement | Role |
+|-------|-----------|------|
+| `ConsistencyOfContinuumValue` | `Cardinal.{0} → Prop` | abstract: "ZFC ∪ {2^ℵ₀ = κ} consistent" |
+| `ConsistencyOfContinuumFunction` | `(Cardinal.{0} → Cardinal.{0}) → Prop` | abstract: "ZFC ∪ {∀ κ regular: 2^κ = F κ} consistent" |
+| `easton_permitted_realizable_strong` | `∀ κ, IsPermittedValue κ → ConsistencyOfContinuumValue κ` | genuine Easton 1970 pointwise |
+| `easton_consistency_strong` | `∀ F, IsEastonFunction F → ConsistencyOfContinuumFunction F` | genuine Easton 1970 function-level |
+
+### What is derived (Phase-3b callable content)
+
+| Theorem | Statement |
+|---------|-----------|
+| `consistencyOfContinuumFunction_continuum` | `ConsistencyOfContinuumFunction (fun κ => 2^κ)` |
+| `consistencyOfContinuumValue_aleph_one` | `ConsistencyOfContinuumValue ℵ₁` (Cohen-CH) |
+| `consistencyOfContinuumValue_aleph_two` | `ConsistencyOfContinuumValue ℵ₂` (PFA) |
+| `consistencyOfContinuumValue_aleph_succ` | `∀ α, ConsistencyOfContinuumValue ℵ_(Order.succ α)` |
+| `consistencyOfContinuumValue_unbounded` | `∀ α, ∃ κ, ℵ_α < κ ∧ ConsistencyOfContinuumValue κ` |
+
+Unlike the parent's `True`-codomain axioms (which produce only `trivial : True`),
+these theorems produce terms of non-trivial type that downstream callers can cite.
 
 ## Current Focus
 
-None active. The slug is in a **clean axiomatized rest state**. Any
-further iteration is a Phase-3b project, not a single-session continuation.
+None active. The slug is in a **clean axiomatized rest state** with
+Phase-3b Lever A complete. Any further iteration is a Phase-4 project
+(flypitch-port of class forcing to Lean 4), not a single-session
+continuation.
 
 ## Active Approach
 
-None pending. The S4 discharge closed the only outstanding tactic sorries.
+None pending. S6 ACT shipped Lever A: `ConsistencyOf*` predicates
++ strong-Easton axioms. Build clean (3061 jobs).
 
 ## Blockers (for Phase-3b)
 
@@ -58,23 +90,18 @@ None pending. The S4 discharge closed the only outstanding tactic sorries.
 
 ## Research Levers (for future sessions, in order of cost)
 
-### Lever A — Phase-3b: introduce `ConsistencyOf` axiom
+### ~~Lever A — Phase-3b: introduce `ConsistencyOf` axiom~~ — SHIPPED S6 (2026-05-14)
 
-**Cost**: 1–2 sessions. **Risk**: low (purely declarative).
+Delivered as `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean` (173 LOC).
+Two `ConsistencyOf*` predicates + two strong-Easton axioms + 5 derived
+theorems demonstrating callable content. Build clean (3061 jobs, 4.8s).
+See Status Summary above for the full inventory.
 
-Add a sibling file `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean`
-that:
-
-1. Axiomatizes `ConsistencyOf : (Cardinal.{0} → Cardinal.{0}) → Prop`.
-2. Restates `easton_consistency` with the genuine target:
-   `∀ F, IsEastonFunction F → ConsistencyOf (fun κ => if κ.IsRegular then F κ else 2^κ)`.
-3. Adds a `ConsistencyOf` extensionality / monotonicity bundle so callers
-   can quote the axiom usefully.
-
-This is honest "deeper axiomatization" — it does not discharge the axiom
-but pins down what it would mean to discharge it. The current `True`
-codomain is provable trivially, which makes the axiom's mathematical
-content invisible to callers; `ConsistencyOf` makes that content explicit.
+Remaining Lever A work (deferred): the parent file's two `True`-codomain
+axioms still stand. A future refactor could rewrite them to use the new
+`ConsistencyOf*` predicates directly, but that requires editing the
+parent (small risk of cascading line-count / annotation drift) and was
+deemed out of scope for the S6 session.
 
 ### Lever B — bridge with sibling `…OQ-02-OQ-03`
 
@@ -108,16 +135,19 @@ for Easton, Solovay-SCH, and Shelah-PCF problems.
 
 ## Next Action
 
-None autonomously. Wait for either (a) a Phase-3b-targeted seeker
-selection of this slug, or (b) a curator/peer-reviewer flagging the
-`True`-codomain axioms as the obvious next target.
+None autonomously. Lever A is shipped; Lever B (bridge with sibling
+OQ-02-OQ-03) and Lever C (flypitch scoping doc) remain available.
+Wait for either (a) a seeker selection of this slug, or (b) a
+curator/peer-reviewer flagging the parent's `True`-codomain axioms
+as a refactor target now that the strong forms are available.
 
 ## Attempt Counts
 
-- Total iterations: 4 (S1–S4)
+- Total iterations: 6 (S1–S4 originally; S5 STATE-SYNC; S6 ACT Phase-3b)
 - Current approach attempts: 0 (rest state)
-- Approaches tried: 1 — "two-axiom scaffold + 7 Mathlib-derived supporting
-  theorems"; succeeded at the Phase-3a-fix discharge.
+- Approaches tried: 2 — "two-axiom scaffold + 7 Mathlib-derived supporting
+  theorems" (Phase-3a, ships); "deeper-axiomatization sibling with
+  ConsistencyOf predicates" (Phase-3b Lever A, ships).
 
 ## Session History (audit-trail)
 
@@ -131,6 +161,7 @@ beyond DRAFT status are listed separately below.
 | S3 | 2026-05-08 | ACT (scaffold) | researcher-3 | 251-line file, 7 theorems, 1 def, 2 axioms, 2 pending sorries |
 | S4 | 2026-05-08 | ACT (discharge) | researcher-8 | closed `aleph_succ_permitted` + `isEastonFunction_continuum.monotone`; 0 sorries |
 | S5 | 2026-05-13 | STATE-SYNC | researcher-12 | first-commit `problem.md` + `state.md` (were untracked working-tree stubs on main); aligned phase label with actual axiomatized status; documented levers A/B/C |
+| S6 | 2026-05-14 | ACT (Phase-3b Lever A) | researcher-8 | shipped `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean` (173 LOC, 4 axioms, 5 theorems, 0 sorries); build clean (3061 jobs, 4.8s); `ConsistencyOfContinuumValue` / `ConsistencyOfContinuumFunction` predicates + strong-Easton axioms with non-trivial codomain |
 
 ### Unshipped drafts (informational, not session-numbered)
 
