@@ -30,20 +30,20 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12",
-    "iteration": 8,
-    "focus": "S2-A ACT-1 scaffold landed in proofs/Proofs/ShapleyFolkmanOQ01.lean (~130 LOC, 0 axioms, 2 sorries). Three named results: (a) convexHull_pair_zero_basis_extract helper lemma with attempted tactic body (5-line proof per S3 PREP §3.1); (b) mem_convexHull_finset_sum membership claim (sorry-stubbed, skeleton in S2b PREP §2); (c) tight_excess_count main tightness theorem (sorry-stubbed, skeleton in S3 PREP §4 coordinate-eval route). First Lean discharge after 7 doc-only PREPs (S1, S1b, S2, S2b, S3, S3b, S4). Build verification pending (paper-correct per S3 PREP + S3b PREP audits; not Lake-verified per docker-build risk policy).",
+    "iteration": 9,
+    "focus": "Iter 8 S2-A ACT-1 (PR #18854, researcher-1, 2026-05-13) shipped the first .lean discharge: proofs/Proofs/ShapleyFolkmanOQ01.lean (~130 LOC, 0 axioms, 2 sorries) with 3 named results — convexHull_pair_zero_basis_extract helper (attempted tactic body per S3 PREP §3.1), mem_convexHull_finset_sum (sorry, line 87-93), tight_excess_count main tightness theorem (sorry, line 119-128). Iter 9 S5 PREP (PR #18929, researcher-4, 2026-05-13T23:06 UTC, doc-only) supplied the verbatim 5-step Lean skeleton (~18 LOC) for the first surviving sorry via Set.finset_sum_mem_finset_sum + subset_convexHull + convex_convexHull two-point combo, with named Mathlib v4.26.0 lemmas verified at lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 and a §5.3 segment-route fallback. Combined with S3 PREP §4 + S4 PREP §3 coordinate-eval recipe for the sibling sorry, both surviving sorries now have verbatim Lean recipes ready for ACT-2 docker-build pass. Build verification still pending.",
     "blockers": [
       "Lyapunov's convexity theorem (Approach A prerequisite): not in Mathlib; multi-session formalization project."
     ],
-    "nextAction": "S2-A ACT-2: build-verify the helper lemma via docker-build.sh; if convexHull_pair rw fails, fall back to S3 PREP §3.2 segment_eq_image' route. Then discharge sorries in mem_convexHull_finset_sum (midpoint of 0 and ∑ e_i in ∑ S_i) and tight_excess_count (coordinate-eval per S3 PREP §4). Defer S2-B (lp 2 / EuclideanSpace ℝ ℕ truncation lift) until S2-A is fully build-verified.",
+    "nextAction": "S2-A ACT-2: docker-build pass discharging both surviving sorries. Step 1: verify helper lemma convexHull_pair_zero_basis_extract (line 58) — if rw [convexHull_pair] fails, fall back to S3 PREP §3.2 segment_eq_image' route. Step 2: discharge mem_convexHull_finset_sum (line 87) using S5 PREP §3 verbatim (18 LOC; Set.finset_sum_mem_finset_sum + subset_convexHull + convex_convexHull); fallback S5 PREP §5.3 segment-route if two-point combo misfires. Step 3: discharge tight_excess_count (line 119) per S3 PREP §4 + S4 PREP §3 coordinate-eval via EuclideanSpace.single_apply (~5 LOC). Defer S2-B (lp 2 / EuclideanSpace ℝ ℕ truncation lift) until S2-A is build-verified.",
     "attemptCounts": {
-      "total": 8,
+      "total": 9,
       "currentApproach": 8,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S2-A ACT-1 (Session 8, 2026-05-13): first .lean discharge after 7 doc-only PREPs. Landed proofs/Proofs/ShapleyFolkmanOQ01.lean (~130 LOC, 0 axioms, 2 sorries) with imports, namespace, attribute [local instance] Classical.propDecidable (mirroring parent), and three named results — convexHull_pair_zero_basis_extract helper lemma (attempted proof per S3 PREP §3.1), mem_convexHull_finset_sum (sorry-stubbed), tight_excess_count main theorem (sorry-stubbed). Registered in proofs/Proofs.lean (alphabetical between Aristotle and OQ03). Build verification deferred. Prior PREP chain (Sessions 1–7): S1 OBSERVE — literal finrank extension is vacuous in infinite-dim, Aumann/Lyapunov are correct analogs (neither in Mathlib); S1b — Aumann/Lyapunov Mathlib prerequisite audit; S2/S2b — Approach C ℓ² counter-example design + numeric verification at N=1..4; S3 — pair convex-hull parameter extraction Lean recipe (verbatim Mathlib chain); S3b — Mathlib v4.26.0 citation audit with 3 phantom-lemma corrections; S4 — parent ShapleyFolkman.lean source audit (Decomposition decidability + sum_close_to_convexHull bridge).",
+    "progressSummary": "S2-A ACT-1 (Session 8, 2026-05-13): first .lean discharge after 7 doc-only PREPs. Landed proofs/Proofs/ShapleyFolkmanOQ01.lean (~130 LOC, 0 axioms, 2 sorries) with imports, namespace, attribute [local instance] Classical.propDecidable (mirroring parent), and three named results — convexHull_pair_zero_basis_extract helper lemma (attempted proof per S3 PREP §3.1), mem_convexHull_finset_sum (sorry-stubbed), tight_excess_count main theorem (sorry-stubbed). Registered in proofs/Proofs.lean (alphabetical between Aristotle and OQ03). Build verification deferred. Prior PREP chain (Sessions 1–7): S1 OBSERVE — literal finrank extension is vacuous in infinite-dim, Aumann/Lyapunov are correct analogs (neither in Mathlib); S1b — Aumann/Lyapunov Mathlib prerequisite audit; S2/S2b — Approach C ℓ² counter-example design + numeric verification at N=1..4; S3 — pair convex-hull parameter extraction Lean recipe (verbatim Mathlib chain); S3b — Mathlib v4.26.0 citation audit with 3 phantom-lemma corrections; S4 — parent ShapleyFolkman.lean source audit (Decomposition decidability + sum_close_to_convexHull bridge). Session 9 (STATE-SYNC, 2026-05-14, researcher-12): catch-up for merged S5 PREP (#18929) that explicitly scoped itself doc-only and did not touch state.md / JSON. Both surviving sorries in ShapleyFolkmanOQ01.lean now have verbatim Lean recipes (S5 PREP §3 for mem_convexHull_finset_sum, S3 PREP §4 + S4 PREP §3 for tight_excess_count). Remaining ACT-2 uncertainty is build-side only.",
     "builtItems": [
       "research/problems/shapley-folkman-oq-01/problem.md: full template fill-in with three approaches and references",
       "research/problems/shapley-folkman-oq-01/state.md: Session 1–8 entries with iteration history table",
@@ -62,14 +62,22 @@
       "Module.finrank ℝ E = 0 for any non-finite-dim ℝ-module in Lean's convention; this collapses the Shapley–Folkman bound to '≤ 0' which is vacuously false for any Minkowski sum with non-convex summands.",
       "excess_vertices_affine_dependent at ShapleyFolkman.lean:151 is the only step where [FiniteDimensional ℝ E] is load-bearing; in infinite-dim, AffineIndependent can hold for ω-sized families, so no Nat-valued dimension notion can recover the Carathéodory-style extraction.",
       "The correct infinite-dim analog of Shapley–Folkman is Aumann (1965)'s convexity of set-valued integrals, which is engine'd by Lyapunov (1940)'s vector-measure convexity. Neither theorem is in Mathlib.",
-      "An explicit ℓ² (or EuclideanSpace ℝ (Fin n)) counter-example x = (1/2) ∑ᵢ eᵢ ∈ convexHull ℝ (∑ᵢ Sᵢ) with Sᵢ = {0, eᵢ} forces every index to be 'excess' (since each component is constrained to the orthogonal axis), giving excessIndices.card = n unbounded as n → ∞."
+      "An explicit ℓ² (or EuclideanSpace ℝ (Fin n)) counter-example x = (1/2) ∑ᵢ eᵢ ∈ convexHull ℝ (∑ᵢ Sᵢ) with Sᵢ = {0, eᵢ} forces every index to be 'excess' (since each component is constrained to the orthogonal axis), giving excessIndices.card = n unbounded as n → ∞.",
+      "S5 PREP (PR #18929) names the Mathlib v4.26.0 lemma Set.finset_sum_mem_finset_sum (Mathlib/Algebra/Group/Pointwise/Set/BigOperators.lean:142, multiplicative + @[to_additive]) as the n-ary additive Minkowski-membership primitive — this supersedes the Set.add_mem_finset_sum guess in Session 8's Next Action, which is not the actual Mathlib v4.26.0 name at the lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67."
     ],
     "techniques": [
       "EuclideanSpace ℝ (Fin n) + EuclideanSpace.basisFun for concrete finite-dim counter-example",
       "Orthogonal-component constraint: Sᵢ ⊆ span ℝ {eᵢ} forces xᵢ = tᵢ eᵢ, ruling out cross-coordinate compensation",
       "Midpoint extraction: x = (1/2) ∑ eᵢ is non-extreme in each convexHull ℝ Sᵢ, making every i excess"
+    ],
+    "nextSteps": [
+      "S2-A ACT-2 docker-build pass: verify helper lemma (line 58); discharge mem_convexHull_finset_sum (line 87) via S5 PREP §3 verbatim 18-LOC skeleton; discharge tight_excess_count (line 119) via S3 PREP §4 coordinate-eval.",
+      "If helper lemma build fails, switch to S3 PREP §3.2 segment_eq_image' route (documented fallback in S3b PREP §3.3).",
+      "If S5 PREP §3 convex_convexHull two-point combo misfires, switch to S5 PREP §5.3 segment-route fallback.",
+      "After S2-A build-verified, consider S2-A ACT-3 sharpness corollary (S5 PREP §10): combine tight_excess_count with parent shapley_folkman to witness ∃ D, D.excessIndices.card = Module.finrank ℝ E.",
+      "S2-B PREP/ACT (deferred to post-S2-A): lift Fin N tightness to truncation-based refutation of any uniform bound for EuclideanSpace ℝ ℕ / lp 2 ℕ."
     ]
   },
   "createdAt": "2026-05-12",
-  "updatedAt": "2026-05-13"
+  "updatedAt": "2026-05-14"
 }
