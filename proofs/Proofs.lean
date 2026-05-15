@@ -721,6 +721,7 @@ import Proofs.Erdos1018Problem
 import Proofs.Erdos1019Aristotle
 import Proofs.Erdos1019Problem
 import Proofs.Erdos101OQ01
+import Proofs.Erdos101OQ04
 import Proofs.Erdos101Problem
 import Proofs.Erdos1020Problem
 import Proofs.Erdos1021Aristotle
