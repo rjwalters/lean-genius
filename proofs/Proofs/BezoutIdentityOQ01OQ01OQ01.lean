@@ -65,9 +65,8 @@ decreasing_by all_goals simp_wf; omega
 -- ============================================================
 
 /-- Nat.log 2 halves when dividing by 2 for n ≥ 2. -/
-private lemma log_div_two {n : ℕ} (hn : 2 ≤ n) : Nat.log 2 (n / 2) = Nat.log 2 n - 1 := by
-  have : 2 ≤ n := hn
-  simp [Nat.log_div_base (by norm_num : 1 < 2) (by omega : 2 ≤ n)]
+private lemma log_div_two {n : ℕ} (_hn : 2 ≤ n) : Nat.log 2 (n / 2) = Nat.log 2 n - 1 :=
+  Nat.log_div_base 2 n
 
 /-- Log is monotone: m ≤ n → log₂ m ≤ log₂ n. -/
 private lemma log_mono {m n : ℕ} (h : m ≤ n) : Nat.log 2 m ≤ Nat.log 2 n :=
@@ -113,12 +112,13 @@ theorem binaryGcdSteps_le_log (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
   | zero => intro a b hab ha hb; omega
   | succ n ih =>
     intro a b hab ha hb
-    simp only [binaryGcdSteps, if_neg (by omega : ¬(a = 0 ∨ b = 0))]
+    rw [binaryGcdSteps]
+    simp only [if_neg (by omega : ¬(a = 0 ∨ b = 0))]
     set la := Nat.log 2 a
     set lb := Nat.log 2 b
     by_cases hboth : a % 2 = 0 ∧ b % 2 = 0
     · -- Both even: both lose a bit; measure drops by 2
-      simp only [hboth, ↓reduceIte]
+      rw [if_pos hboth]
       obtain ⟨ha2, hb2⟩ := hboth
       have ha2' : 2 ≤ a := by omega
       have hb2' : 2 ≤ b := by omega
@@ -130,7 +130,7 @@ theorem binaryGcdSteps_le_log (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
       have hla_pos : 1 ≤ la := Nat.log_pos (by norm_num) ha2'
       have hlb_pos : 1 ≤ lb := Nat.log_pos (by norm_num) hb2'
       omega
-    · simp only [hboth, ↓reduceIte]
+    · rw [if_neg hboth]
       by_cases ha_even : a % 2 = 0
       · -- a even, b odd: a loses a bit
         simp only [ha_even, ↓reduceIte]
@@ -252,21 +252,24 @@ theorem binaryGcd_log_sq_complexity (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
   exact binaryGcdSteps_le_log a b ha hb
 
 /-- **Corollary**: The bit complexity is O(log²(max a b)).
-    Since log₂ a + log₂ b ≤ 2 * log₂(max a b), the total is
-    ≤ 6 * (log₂(max a b) + 1)². -/
+    Since log₂ a + log₂ b ≤ 2 * log₂(max a b), composing with
+    `binaryGcdSteps_le_log` gives `binaryGcdSteps ≤ 4·log + 2`,
+    so the total is ≤ 12 * (log₂(max a b) + 1)². -/
 theorem binaryGcd_log_sq_bound (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
-    totalBitOps a b ≤ 6 * (Nat.log 2 (max a b) + 1) ^ 2 := by
+    totalBitOps a b ≤ 12 * (Nat.log 2 (max a b) + 1) ^ 2 := by
   have hsteps := binaryGcdSteps_le_log a b ha hb
   have hlog_sum : Nat.log 2 a + Nat.log 2 b ≤ 2 * Nat.log 2 (max a b) := by
     have hma : Nat.log 2 a ≤ Nat.log 2 (max a b) := log_mono (Nat.le_max_left a b)
     have hmb : Nat.log 2 b ≤ Nat.log 2 (max a b) := log_mono (Nat.le_max_right a b)
     omega
   unfold totalBitOps
-  have hsteps' : binaryGcdSteps a b ≤ 2 * Nat.log 2 (max a b) + 2 := by omega
+  have hsteps' : binaryGcdSteps a b ≤ 4 * Nat.log 2 (max a b) + 2 := by omega
   calc binaryGcdSteps a b * (3 * (Nat.log 2 (max a b) + 1))
-      ≤ (2 * Nat.log 2 (max a b) + 2) * (3 * (Nat.log 2 (max a b) + 1)) := by
+      ≤ (4 * Nat.log 2 (max a b) + 2) * (3 * (Nat.log 2 (max a b) + 1)) := by
           apply Nat.mul_le_mul_right; exact hsteps'
-    _ = 6 * (Nat.log 2 (max a b) + 1) ^ 2 := by ring
+    _ ≤ 4 * (Nat.log 2 (max a b) + 1) * (3 * (Nat.log 2 (max a b) + 1)) := by
+          apply Nat.mul_le_mul_right; omega
+    _ = 12 * (Nat.log 2 (max a b) + 1) ^ 2 := by ring
 
 -- ============================================================
 -- PART VI: WORKED EXAMPLES
@@ -274,7 +277,7 @@ theorem binaryGcd_log_sq_bound (a b : ℕ) (ha : 0 < a) (hb : 0 < b) :
 
 example : binaryGcdSteps 12 8 = 5 := by native_decide
 example : binaryGcdSteps 21 15 = 4 := by native_decide
-example : binaryGcdSteps 252 198 = 12 := by native_decide
+example : binaryGcdSteps 252 198 = 7 := by native_decide
 -- Verify step count bound: log₂(252) + log₂(198) = 7 + 7 = 14, bound = 30
 example : binaryGcdSteps 252 198 ≤ 2 * (Nat.log 2 252 + Nat.log 2 198) + 2 := by
   native_decide
