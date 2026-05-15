@@ -500,8 +500,8 @@ theorem qBinom_pascal' (q : R) (n k : ℕ) (hk : k + 1 ≤ n + 1) :
   -- Apply first Pascal to [n+1,n-k]:
   -- Need n-k = (n-k-1)+1 or n-k = 0
   rcases Nat.eq_or_lt_of_le (show k ≤ n from by omega) with rfl | hlt
-  · -- k = n: [n+1,0] = 1 = q^0 · [n,n] + [n,n+1] = 1 + 0
-    simp [qBinom_eq_zero_of_lt q n (n + 1) (by omega)]
+  · -- k = n (rfl substitutes n with k): [k+1, k-k] = q^(k-k) · [k,k] + [k,k+1] = 1 + 0
+    simp [qBinom_eq_zero_of_lt q k (k + 1) (by omega)]
   · -- k < n: n-k ≥ 1, so write n-k = (n-k-1)+1
     conv_lhs => rw [show (n - k : ℕ) = (n - k - 1) + 1 from by omega]
     rw [qBinom_pascal, show n - k - 1 + 1 = n - k from by omega]
@@ -532,7 +532,7 @@ theorem qBinom_column_sum (q : R) (k : ℕ) : ∀ n : ℕ,
     ∑ i ∈ Finset.range (n + 1),
       q ^ ((k + 1) * (n - i)) * qBinom q i k = qBinom q (n + 1) (k + 1)
   | 0 => by
-    simp only [Finset.sum_range_one, Nat.sub_zero, Nat.mul_zero, pow_zero, one_mul]
+    simp only [Nat.zero_add, Finset.sum_range_one, Nat.sub_zero, Nat.mul_zero, pow_zero, one_mul]
     cases k with
     | zero => simp [qBinom]
     | succ k => simp [qBinom]
@@ -547,7 +547,11 @@ theorem qBinom_column_sum (q : R) (k : ℕ) : ∀ n : ℕ,
       intro i hi
       have hi' : i ≤ n := by
         simp only [Finset.mem_range] at hi; omega
-      have h_exp : (k + 1) * (n + 1 - i) = (k + 1) * (n - i) + (k + 1) := by omega
+      -- v4.26.0: omega no longer treats `(k+1) * (n - i)` and `(k+1) * (n+1 - i)` as
+      -- comparable atoms across nonlinear multiplication. Bridge via Nat.mul_succ.
+      have h_exp : (k + 1) * (n + 1 - i) = (k + 1) * (n - i) + (k + 1) := by
+        have h_sub : n + 1 - i = (n - i) + 1 := by omega
+        rw [h_sub, Nat.mul_succ]
       rw [h_exp, pow_add]; ring
     rw [Finset.sum_congr rfl h_factor, ← Finset.mul_sum]
     -- Apply IH and Pascal
@@ -629,7 +633,7 @@ theorem qBinom_vandermonde (q : R) (n : ℕ) : ∀ (m k : ℕ),
       (fun h => absurd (Finset.mem_range.mpr (Nat.zero_lt_succ k)) h)]
     simp
   | m + 1, 0 => by
-    simp [Finset.sum_range_one]
+    simp
   | m + 1, k + 1 => by
     have ih_k := qBinom_vandermonde q n m k
     have ih_k1 := qBinom_vandermonde q n m (k + 1)
@@ -640,15 +644,25 @@ theorem qBinom_vandermonde (q : R) (n : ℕ) : ∀ (m k : ℕ),
     -- Peel off j=0 from LHS: ∑_{j=0}^{k+1} f(j) = f(0) + ∑_{j=0}^{k} f(j+1)
     rw [show k + 1 + 1 = 1 + (k + 1) from by omega, Finset.sum_range_add,
         Finset.sum_range_one]
-    simp only [Nat.sub_zero, qBinom_zero_right, one_mul]
-    -- Simplify subscripts in the shifted sum
+    -- v4.26.0: `f 0` collapses to `q^... * 1 * qBinom q n (k+1)`; use `mul_one`
+    -- (not `one_mul`) to drop the right-factor `* 1` so LHS f_0 matches RHS f_0
+    -- after `h_exp0` and `congr 1` cancellation later.
+    simp only [Nat.sub_zero, qBinom_zero_right, mul_one]
+    -- Simplify subscripts in the shifted sum. v4.26.0: `Finset.sum_range_add` indexes
+    -- the shifted sum as `f (1 + x)`, so h_simp's LHS is stated in `1 + j` form to match.
+    -- The RHS produces `j + 1` form so subsequent `h_pascal` rewrites apply.
     have h_simp : ∀ j ∈ Finset.range (k + 1),
-        q ^ ((k + 1 - (j + 1)) * ((m + 1) - (j + 1))) *
-          qBinom q (m + 1) (j + 1) * qBinom q n (k + 1 - (j + 1)) =
+        q ^ ((k + 1 - (1 + j)) * (m + 1 - (1 + j))) *
+          qBinom q (m + 1) (1 + j) * qBinom q n (k + 1 - (1 + j)) =
         q ^ ((k - j) * (m - j)) * qBinom q (m + 1) (j + 1) * qBinom q n (k - j) := by
       intro j hj
       have hj' : j < k + 1 := Finset.mem_range.mp hj
-      congr 1; congr 1; congr 1 <;> omega
+      -- v4.26.0: nested `congr 1` over a*b multiplication leaves omega with nonlinear
+      -- atoms it can't relate. Discharge each linear equality independently.
+      have h1 : k + 1 - (1 + j) = k - j := by omega
+      have h2 : m + 1 - (1 + j) = m - j := by omega
+      have h3 : (1 + j : ℕ) = j + 1 := Nat.add_comm 1 j
+      rw [h1, h2, h3]
     rw [Finset.sum_congr rfl h_simp]
     -- Apply Pascal: [m+1,j+1] = [m,j] + q^{j+1}·[m,j+1]
     have h_pascal : ∀ j ∈ Finset.range (k + 1),
@@ -656,9 +670,10 @@ theorem qBinom_vandermonde (q : R) (n : ℕ) : ∀ (m k : ℕ),
         q ^ ((k - j) * (m - j)) * qBinom q m j * qBinom q n (k - j) +
         q ^ ((k - j) * (m - j) + (j + 1)) * qBinom q m (j + 1) * qBinom q n (k - j) := by
       intro j _
-      rw [qBinom_pascal q m j, add_mul, mul_assoc (q ^ ((k - j) * (m - j)))]
-      congr 1
-      rw [← mul_assoc, ← pow_add]
+      -- v4.26.0: `rw [add_mul]` no longer finds `(a + b) * c` under left-assoc `X * (a + b) * Y`.
+      -- Split via pow_add on RHS, then close via ring distributivity.
+      rw [qBinom_pascal q m j, pow_add q ((k - j) * (m - j)) (j + 1)]
+      ring
     rw [Finset.sum_congr rfl h_pascal, Finset.sum_add_distrib]
     -- Now: q^{(k+1)(m+1)}·[n,k+1] + sum_first + sum_second = sum_k + q^{k+1}·sum_{k+1}
     -- where sum_first is exactly sum_k.
@@ -666,44 +681,58 @@ theorem qBinom_vandermonde (q : R) (n : ℕ) : ∀ (m k : ℕ),
     -- by expanding sum_{k+1} = (j=0 term) + ∑_{j=0}^{k} (shifted terms)
     conv_rhs =>
       arg 2; arg 2
-      rw [show k + 1 + 1 = 1 + (k + 1) from by omega, Finset.sum_range_add,
-          Finset.sum_range_one]
-      simp only [Nat.sub_zero, qBinom_zero_right, one_mul]
-    rw [mul_add]
+      -- The earlier `rw [show k + 1 + 1 = 1 + (k + 1) ...]` already rewrote globally,
+      -- so the RHS sum is `range (1 + (k+1))` here. No additional show-rewrite needed.
+      rw [Finset.sum_range_add, Finset.sum_range_one]
+      -- v4.26.0: `f 0` collapses to `q^... * 1 * qBinom q n (k+1)`; use `mul_one`
+      -- (not `one_mul`) to remove the right-factor `* 1` so `h_exp0`'s pattern matches.
+      simp only [Nat.sub_zero, qBinom_zero_right, mul_one]
+    -- v4.26.0: bare `rw [mul_add]` fires on the Nat-level `(k+1) * (m+1) → (k+1)*m + (k+1)*1`
+    -- in the LHS exponent before reaching the intended `q^(k+1) * (b + c)` on RHS. Pin the
+    -- first argument so only the ring-level distribution at `q^(k+1)` fires.
+    rw [mul_add (q ^ (k + 1))]
     -- RHS: sum_k + (q^{k+1}·q^{(k+1)m}·[n,k+1] + q^{k+1}·∑ shifted)
     -- First: q^{k+1}·q^{(k+1)m} = q^{(k+1)(m+1)}
     have h_exp0 : q ^ (k + 1) * (q ^ ((k + 1) * m) * qBinom q n (k + 1)) =
         q ^ ((k + 1) * (m + 1)) * qBinom q n (k + 1) := by
       rw [← mul_assoc, ← pow_add]; congr 1; ring
     rw [h_exp0]
-    -- Now both sides have the form: q^{(k+1)(m+1)}·[n,k+1] + X + Y = Y + q^{(k+1)(m+1)}·[n,k+1] + Z
-    -- Cancel and match sum_second = q^{k+1}·∑ shifted
-    ring_nf
-    -- Match the remaining sums term by term
-    congr 1
-    -- Simplify shifted subscripts on RHS
-    have h_rhs_simp : ∀ j ∈ Finset.range (k + 1),
-        q ^ ((k + 1 - (j + 1)) * (m - (j + 1))) * qBinom q m (j + 1) *
-          qBinom q n (k + 1 - (j + 1)) =
-        q ^ ((k - j) * (m - (j + 1))) * qBinom q m (j + 1) * qBinom q n (k - j) := by
+    -- v4.26.0 rewrite: instead of `ring_nf + congr 1` (which leaves an unsolvable
+    -- subgoal post-Mathlib commutativity normalization), prove the key sum identity
+    -- directly and use `linear_combination` to close.
+    -- Goal at this point: f_0 + sum_A + sum_B = sum_C + f_0 + q^(k+1) * sum_offset
+    -- where sum_A = sum_C and sum_B = q^(k+1) * sum_offset.
+    -- key's RHS uses `(1 + j)` form (not `(j + 1)`) so it matches the
+    -- conv_rhs above whose `Finset.sum_range_add` expansion produced
+    -- the shifted-sum indices in `1 + j` form. `ring` cannot bridge
+    -- alpha-equivalent sums whose body indices differ syntactically.
+    have key : ∑ j ∈ Finset.range (k + 1),
+          q ^ ((k - j) * (m - j) + (j + 1)) * qBinom q m (j + 1) * qBinom q n (k - j) =
+        q ^ (k + 1) * ∑ j ∈ Finset.range (k + 1),
+          q ^ ((k + 1 - (1 + j)) * (m - (1 + j))) * qBinom q m (1 + j) *
+            qBinom q n (k + 1 - (1 + j)) := by
+      rw [Finset.mul_sum]
+      apply Finset.sum_congr rfl
       intro j hj
       have hj' : j < k + 1 := Finset.mem_range.mp hj
-      congr 1; congr 1; congr 1 <;> omega
-    rw [Finset.sum_congr rfl h_rhs_simp, ← Finset.mul_sum]
-    -- Goal: ∑ q^{(k-j)(m-j)+j+1}·[m,j+1]·[n,k-j] = q^{k+1}·∑ q^{(k-j)(m-j-1)}·[m,j+1]·[n,k-j]
-    rw [Finset.mul_sum]
-    apply Finset.sum_congr rfl
-    intro j hj
-    -- Term-by-term: q^{(k-j)(m-j)+j+1} = q^{k+1+(k-j)(m-(j+1))}
-    by_cases hjm : j + 1 ≤ m
-    · -- Exponents match when j+1 ≤ m
-      have h_exp : (k - j) * (m - j) + (j + 1) = (k + 1) + (k - j) * (m - (j + 1)) := by omega
-      rw [show q ^ ((k - j) * (m - j) + (j + 1)) = q ^ ((k + 1) + (k - j) * (m - (j + 1)))
-        from by rw [h_exp], pow_add]
-      ring
-    · -- When j+1 > m, [m,j+1] = 0 so both sides vanish
-      have hzero : qBinom q m (j + 1) = 0 := qBinom_eq_zero_of_lt q m (j + 1) (by omega)
-      simp [hzero]
+      -- Normalize `1 + j` → `j + 1` inside the RHS body so the per-j case
+      -- analysis matches the same form on both sides.
+      rw [show (1 + j : ℕ) = j + 1 from Nat.add_comm 1 j]
+      by_cases hjm : j + 1 ≤ m
+      · -- Exponents match when j+1 ≤ m
+        -- v4.26.0: omega can't bridge `(k-j) * (m-j)` and `(k-j) * (m-(j+1))`
+        -- because they're nonlinear atoms. Bridge manually via Nat.mul_succ.
+        have h_exp : (k - j) * (m - j) + (j + 1) = (k + 1) + (k - j) * (m - (j + 1)) := by
+          have hmj : m - j = (m - (j + 1)) + 1 := by omega
+          rw [hmj, Nat.mul_succ]; omega
+        have h_idx : k + 1 - (j + 1) = k - j := by omega
+        rw [show q ^ ((k - j) * (m - j) + (j + 1)) = q ^ ((k + 1) + (k - j) * (m - (j + 1)))
+          from by rw [h_exp], pow_add, h_idx]
+        ring
+      · -- When j+1 > m, [m,j+1] = 0 so both sides vanish
+        have hzero : qBinom q m (j + 1) = 0 := qBinom_eq_zero_of_lt q m (j + 1) (by omega)
+        simp [hzero]
+    linear_combination key
 
 /-- **Classical Vandermonde at q=1**: ∑ C(m,j)·C(n,k-j) = C(m+n,k).
     Derived from the q-Vandermonde identity by specializing at q = 1. -/
