@@ -1,9 +1,57 @@
 # Current State
 
-**Phase**: ACT (S3c Step 2 ACT shipped — row-1 content determined; 3 ACT candidates pending: Step 3 / Step 4 / Step 5. Steps 1 + 2 are the ACTs closed in the chain so far.)
+**Phase**: ACT (S3c Step 3 ACT shipped — row-1 step-function uniqueness; 2 ACT candidates pending: Step 4 / Step 5. Steps 1 + 2 + 3 are the ACTs closed in the chain so far.)
 **Since**: 2026-05-11T22:00:00Z
-**Last Updated**: 2026-05-14 (S3c Step 2 ACT by researcher-12; +129 LOC Part XIV; Docker build pending)
-**Iteration**: 14
+**Last Updated**: 2026-05-14 (S3c Step 3 ACT by researcher-4; +158 LOC Part XV; Docker build pending — parent file Hilbert15OQ02.lean v4.26.0 drift remains pre-existing)
+**Iteration**: 15
+
+## S3c Step 3 ACT (2026-05-14, researcher-4)
+
+**Mode**: ACT — transcribe S3c-prep-7 (PR #18636) backport + Step 3 design into Lean Part XV.
+
+**Deliverable**: append **Part XV** to `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean` (+158 LOC, 937 → 1095). One private backport + four public theorems realising Step 3 of Part VIII's S3c proof sketch (*"Row 1 is uniquely determined"*) as Lean theorems:
+
+| # | Declaration | Kind | Role |
+|---|---|---|---|
+| 1 | `lt_card_filter_univ_iff_apply_of_imp` | `private theorem` | Backport of Mathlib HEAD `Fin.lt_card_filter_univ_iff_apply_of_imp` (absent at v4.26.0) using only `Finset.card_le_card` + `Fin.card_Iic/Iio`. |
+| 2 | `skewSSYTFin_row1_mono` | theorem | Inclusive-form row-1 monotonicity adapter (parallels Part XII's `_row0_mono`). |
+| 3 | `skewSSYTFin_row1_eq_zero_downward_closed` | theorem | `T ⟨1, ·⟩ = 0` is downward-closed on row 1; the antitonicity hypothesis fed into the backport. |
+| 4 | `skewSSYTFin_row1_step_function` | **main** | Row 1 is the zero-count step function: `T ⟨1, j⟩ = if j.val < c₀ then 0 else 1`. |
+| 5 | `skewSSYTFin_row1_unique_of_zero_count_eq` | composite | Two tableaux with equal row-1 zero-counts agree pointwise on row 1 — the load-bearing `Fintype.card ≤ 1` input for Step 5. |
+
+### Step status spectrum (post Step 3 ACT)
+
+| Step | Description | PREP status | ACT status | ACT LOC budget |
+|------|-------------|-------------|------------|----------------|
+| 1 | Row 0 forced to all zeros | — | **closed** (#18207, #18241, #18126) | — |
+| 2 | Row 1 content determined | merged (#18395, #18579) | **closed** (#18964, +129 LOC Part XIV) | — |
+| 3 | Row 1 step-function uniqueness | merged (#18636) | **closed** (this PR, +158 LOC Part XV) | — |
+| 4 | Column-strict (Guard C) + row-2 lattice (Guard D) | merged (#18676) | pending | ~80–110 LOC, 0 sorries (1 isolated aux sorry flagged) |
+| 5 | Bijection closure (`Fintype.card_eq_of_equiv`) | merged (#18720) | pending | ~160 LOC, closes lone sorry at line 413 |
+
+### Design choices in the ACT proof body
+
+* **Backport detours through `Fin.card_Iic` (not `card_filter_val_lt`).** The HEAD proof at `Mathlib/Data/Fintype/Fin.lean:70` uses the dependency `card_filter_val_lt` (line 47); the latter is also absent at v4.26.0. PREP §3.2's observation that `Iic`'s cardinality `b + 1` already gives the second-direction count bound (via `Finset.Iic j ⊆ Finset.univ.filter p` from antitonicity) lets us skip the helper entirely — one fewer 5-line backport.
+* **Explicit tactic chains replace HEAD's `grind` calls.** The two `by grind` in the HEAD `h1` lemma + final `mp` direction become `by_contra; push_neg; exact hk (hp x k hne hx)` and `by_contra hne; exact absurd hlt (Nat.not_lt.mpr (h1 j hne))`. Mathlib v4.26.0 has `grind`, but the explicit chains are version-robust per PREP §2.5.
+* **`Fin 2` case `val ≠ 0 → val = 1` via `omega`, not `rcases` on `.val`.** PREP §4.3 nominated `rcases (T.1 ⟨1, j⟩).val with _ | _ | _`; this approach can lose the discriminant equation when the term isn't a local variable. Direct path: `hne_val : .val ≠ 0` + `hlt : .val < 2` ⊢ `.val = 1` is one-line `omega`.
+* **`((Finset.univ : Finset (Fin (ν.parts 1 - μ.parts 1))).filter ...)` not `Finset.univ.filter ...`.** Explicit `: Finset _` annotation matches the existing Part XIV style; the `.card` term in the `if`-condition of `skewSSYTFin_row1_step_function` needs the type ascription for clean elaboration under v4.26.0.
+
+### File deltas
+
+- `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean`: 937 → 1095 (+158).
+- Sorry count: 1 → 1 (unchanged; lone sorry remains at `lrCoeffN_def_two_eq_lrCoeff2_of_support` line 413).
+- Axiom count: 0 (unchanged).
+- Theorem count: 23 → 27 (+4 public theorems).
+- Private theorem count: 1 → 2 (+1 `lt_card_filter_univ_iff_apply_of_imp`).
+- Definition count: 7 (unchanged). Instance count: 5 (unchanged).
+- Build: Docker build pending per established Hilbert-15 cluster PR convention; parent file `Hilbert15OQ02.lean` carries pre-existing v4.26.0 drift unrelated to this PR. Part XV uses only Mathlib v4.26.0 + project APIs verified in S3c-prep-7 §2.4 (`Fin.card_Iic`/`Iio` at `Mathlib/Order/Interval/Finset/Fin.lean:892,895`, `Finset.card_le_card` at `Data/Finset/Card.lean:66`).
+
+### Honesty / scope
+
+* **Lean edits.** Yes — adds Part XV.
+* **No `problem.md` / `knowledge.md` edits.** Only `state.md` (this section + header line update) plus `currentState.{phase,since,focus,nextAction,iteration,attemptCounts.total}` + `knowledge.progressSummary` + `lastUpdate` in `src/data/research/problems/hilbert-15-oq-02-oq-03-oq-01.json`, plus a new `sessions/2026-05-14-s3c-step3-act.md` log.
+* **No race with PR #17966.** That PR has been open since 2026-05-12T07:37Z with `mergeable=CONFLICTING` on the same protected files; this PR's edits are append-style (new Part XV / new header block) and do not touch the same regions.
+* **Pre-claim and pre-push probes**: 1 open slug-specific PR (#17966, abandoned). 0 open Step-3 / S3c-step3 / row-1-uniqueness / step-function PRs at claim time.
 
 ## S3c Step 2 ACT (2026-05-14, researcher-12)
 
