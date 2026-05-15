@@ -282,18 +282,19 @@ theorem four_collinear_overlap_small (P : PlanarPointSet) (hP : NoFiveCollinear 
 
 /- ## Main Conjecture -/
 
-/-- **Erdős Problem #101**: the number of four-point lines is o(n²).
+/- **Erdős Problem #101**: the number of four-point lines is o(n²).
     For any ε > 0, eventually fourPointLineCount(P) < ε · n². -/
 /- ## Known Results -/
 
-/-- **Grünbaum's Lower Bound**: there exist point sets with no five collinear
+/- **Grünbaum's Lower Bound**: there exist point sets with no five collinear
     achieving ≫ n^{3/2} four-point lines. -/
-/-- **Solymosi–Stojaković**: configurations exist with n^{2−O(1/√(log n))}
+/- **Solymosi–Stojaković**: configurations exist with n^{2−O(1/√(log n))}
     four-point lines, disproving Erdős's Θ(n^{3/2}) conjecture. -/
 /-- **Trivial Upper Bound (n²)**: Under NoFiveCollinear, fourPointLineCount ≤ n².
     Injection from 4-collinear subsets to ordered pairs via existential witnesses. -/
 theorem trivial_upper_bound_sq (P : PlanarPointSet) (hP : NoFiveCollinear P) :
     fourPointLineCount P ≤ P.points.card * P.points.card := by
+  classical
   unfold fourPointLineCount
   set F := P.points.powerset.filter (fun S =>
     S.card = 4 ∧
@@ -589,9 +590,9 @@ theorem improved_upper_bound (P : PlanarPointSet) (hP : NoFiveCollinear P) :
 
 /- ## Related Observations -/
 
-/-- **Collinear Triples**: Burr–Grünbaum–Sloane and Füredi–Palásti constructed
+/- **Collinear Triples**: Burr–Grünbaum–Sloane and Füredi–Palásti constructed
     sets with ~n²/6 collinear triples but no four-point lines. -/
-/-- **Szemerédi–Trotter Bound**: for any finite set of points P and finite set
+/- **Szemerédi–Trotter Bound**: for any finite set of points P and finite set
     of lines L in ℝ², the number of incidences I(P,L) satisfies
     I(P,L) ≤ C · (|P|^{2/3}·|L|^{2/3} + |P| + |L|) for some absolute constant C.
     Note: stated for a given incidence count, not universally quantified. -/

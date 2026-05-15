@@ -56,6 +56,7 @@ import Proofs.Erdos101Problem
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Sqrt
+import Mathlib.Analysis.Complex.ExponentialBounds
 
 namespace Erdos101OQ01
 
@@ -132,7 +133,7 @@ theorem fourPointLineCount_o_n_squared_holds_below_four
   have hpos : 0 < P.points.card := P.size_pos
   have hcard_pos_real : (0 : ℝ) < (P.points.card : ℝ) := by exact_mod_cast hpos
   have hsq_pos : (0 : ℝ) < (P.points.card : ℝ)^2 := pow_pos hcard_pos_real 2
-  positivity
+  exact_mod_cast mul_pos hε hsq_pos
 
 /-- **Trivial quadratic upper bound** (real version): `fourPointLineCount
 P ≤ n(n-1)/12 ≤ n²/12 ≤ n²` for every no-five-collinear `P`.
@@ -362,7 +363,7 @@ theorem erdos_three_halves_conjecture_refuted :
   -- `(1/2) / sqrt (log m) < 1/2` and hence `2 - … > 3/2`.
   have h_frac_lt_half :
       (1 / 2 : ℝ) / Real.sqrt (Real.log (m : ℝ)) < 1 / 2 := by
-    rw [div_lt_iff hsqrt_pos]
+    rw [div_lt_iff₀ hsqrt_pos]
     nlinarith [hsqrt_gt_one]
   have h_exp_gt :
       (3 / 2 : ℝ) < 2 - (1 / 2 : ℝ) / Real.sqrt (Real.log (m : ℝ)) := by
@@ -452,7 +453,7 @@ theorem erdos_three_halves_conjecture_refuted_constructive :
   -- `(1/2) / sqrt (log m) < 1/2` and hence `2 - … > 3/2`.
   have h_frac_lt_half :
       (1 / 2 : ℝ) / Real.sqrt (Real.log (m : ℝ)) < 1 / 2 := by
-    rw [div_lt_iff hsqrt_pos]
+    rw [div_lt_iff₀ hsqrt_pos]
     nlinarith [hsqrt_gt_one]
   have h_exp_gt :
       (3 / 2 : ℝ) < 2 - (1 / 2 : ℝ) / Real.sqrt (Real.log (m : ℝ)) := by
