@@ -699,9 +699,8 @@ theorem schonhageGcdOf_succ_self (n : ℕ) :
   have h1 : Nat.gcd (n + 1) n ∣ (n + 1) := Nat.gcd_dvd_left _ _
   have h2 : Nat.gcd (n + 1) n ∣ n := Nat.gcd_dvd_right _ _
   have h3 : Nat.gcd (n + 1) n ∣ 1 := by
-    have hsub : (n + 1) - n = 1 := by omega
-    rw [← hsub]
-    exact Nat.dvd_sub' h1 h2
+    have hdvd : Nat.gcd (n + 1) n ∣ (n + 1) - n := Nat.dvd_sub h1 h2
+    simpa using hdvd
   exact Nat.eq_one_of_dvd_one h3
 
 -- ═══════════════════════════════════════════════════════════════
@@ -1250,19 +1249,18 @@ theorem outerGuardSurveyPairs_eq_empty_iff (lo hi : ℕ) :
   unfold outerGuardSurveyPairs
   refine ⟨?_, ?_⟩
   · -- Empty filter ⟹ hi ≤ lo: contrapose, exhibit (lo, lo).
+    -- v4.26.0: `contrapose!` pushes `≠ ∅` to `.Nonempty`, so we build the
+    -- nonempty witness directly rather than deriving a contradiction.
     contrapose!
-    intro hlt hempty
+    intro hlt
     have hlo_mem : lo ∈ Finset.Ico lo hi := by
       rw [Finset.mem_Ico]; exact ⟨le_refl _, hlt⟩
-    have hpair_mem :
-        (lo, lo) ∈ ((Finset.Ico lo hi) ×ˢ (Finset.Ico lo hi)).filter
-          (fun p => p.2 ≤ p.1) := by
-      rw [Finset.mem_filter, Finset.mem_product]
-      exact ⟨⟨hlo_mem, hlo_mem⟩, le_refl _⟩
-    exact (Finset.not_mem_empty _) (hempty ▸ hpair_mem)
+    refine ⟨(lo, lo), ?_⟩
+    rw [Finset.mem_filter, Finset.mem_product]
+    exact ⟨⟨hlo_mem, hlo_mem⟩, le_refl _⟩
   · -- hi ≤ lo ⟹ empty: every candidate pair fails the Ico bound.
     intro h
-    rw [Finset.eq_empty_iff_forall_not_mem]
+    rw [Finset.eq_empty_iff_forall_notMem]
     intro p hp
     rw [Finset.mem_filter, Finset.mem_product,
         Finset.mem_Ico, Finset.mem_Ico] at hp
@@ -1410,7 +1408,7 @@ theorem outerGuardSurveySize_succ (lo hi : ℕ) (h : lo ≤ hi) :
     rw [hnewRow,
         Finset.card_image_of_injective _
           (fun a₁ a₂ heq => (Prod.mk.inj heq).2)]
-    exact Finset.card_Ico ..
+    exact Nat.card_Ico ..
   rw [hnew_card]
 
 /-- **Closed-form triangular cardinality.** The parameterised
@@ -1429,8 +1427,7 @@ theorem outerGuardSurveySize_triangular (lo hi : ℕ) (h : lo ≤ hi) :
     outerGuardSurveySize lo hi = (hi - lo) * (hi - lo + 1) / 2 := by
   induction hi, h using Nat.le_induction with
   | base =>
-    rw [outerGuardSurveySize_eq_zero_iff.mpr le_rfl, Nat.sub_self]
-    decide
+    rw [(outerGuardSurveySize_eq_zero_iff lo lo).mpr le_rfl, Nat.sub_self]
   | succ k hk ih =>
     rw [outerGuardSurveySize_succ lo k hk, ih]
     have h1 : k + 1 - lo = (k - lo) + 1 := Nat.succ_sub hk
@@ -1575,18 +1572,20 @@ theorem hgcdMatrixSafe_inner_abort_imp_outer_fails (a b : ℕ)
   rw [schonhageOuterGuardFires_above_aborts_iff hab, hApply]
   exact hge
 
-/-- **Structural witness: `(130, 89)` outer-fails via inner-abort.**
+/-- **Direct witness: `(130, 89)` outer-fails.**
 
-    Recovers the S28a `(130, 89)` outer-fails fact (PART XIV) from
-    `hgcdMatrixSafe_inner_abort_imp_outer_fails`: the threshold check
-    is discharged by `decide` (`130 ≥ 64`), and the inner-abort
-    inequality is confirmed by `native_decide` evaluating the inner
-    recursive call. The kernel reduction goes through the structural
-    theorem rather than directly `native_decide`-ing the full
-    `schonhageOuterGuardFires` Boolean. -/
-example : schonhageOuterGuardFires 130 89 = false :=
-  hgcdMatrixSafe_inner_abort_imp_outer_fails 130 89
-    (by decide) (by native_decide)
+    The S28a `(130, 89)` outer-fails fact (PART XIV) discharged
+    directly by `native_decide` on the full Boolean. The structural
+    inner-abort route (`hgcdMatrixSafe_inner_abort_imp_outer_fails`)
+    does not apply here: a hand-trace through `lehmerCofactors` on
+    the shifted pair `(8, 5)` shows `M_inner = ⟨-1, 2, 2, -3⟩`,
+    `M_inner.apply (130, 89) = (48, -7)`, and `natAbs.max = 48 < 130`
+    — so the inner-abort hypothesis is arithmetically false at this
+    pair. The CONCLUSION still holds (the algorithm takes the
+    compose branch: `M_outer = ⟨1, -1, -6, 7⟩` over `(48, 7)` gives
+    `(55, -337)`, `natAbs.max = 337 > 130`). See PR #19156 §8 for
+    the full hand-trace. -/
+example : schonhageOuterGuardFires 130 89 = false := by native_decide
 
 /-- **Structural witness: `(107, 85)` outer-fails via inner-abort.**
 
@@ -2031,7 +2030,7 @@ theorem schonhageOuterGuardFires_above_imp_inner_fires {a b : ℕ}
     This section composes the two into single named theorems that
     bypass the manual inner-fires step at use sites. Above
     threshold + outer-fires now directly yields the
-    matrix-/apply-level compose decomposition.
+    matrix and apply level compose decomposition.
 
     Significance. Together with PART XXIII's
     `hgcdMatrixSafeOf_abort_branch` / `hgcdSafeApply_abort_branch`
