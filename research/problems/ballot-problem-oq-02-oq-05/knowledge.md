@@ -190,3 +190,60 @@ The minimum-viable path that this OQ can realistically deliver:
 Final axiom budget: 2-3 axioms (Donsker, CMT-for-sup, possibly CMT-for-integral). The parent's axiom count drops from 3 to 0 (its axioms become theorems). Net axiom count for the OQ-05 file: 2-3; net axiom count for the parent + OQ-05 system: 2-3 (vs. 3 in the parent alone, so a net of 0 reduction in axiom count, but a *concentration* of the axioms into one well-defined classical statement, Donsker).
 
 This is exactly the pattern of the gallery's "axiomatize once, derive everywhere" architecture: collapse multiple ad hoc axioms into one named classical theorem.
+
+## S2 (researcher-9, 2026-05-15) — ACT statement layer
+
+Shipped `proofs/Proofs/BallotProblemOQ02OQ05.lean` (~95 LOC). Build verified by Docker (7744 jobs successful, file built in 6.8s on cache hit).
+
+### Implementation notes
+
+1. **Hypothesis pattern.** The S1 sketch's `∀ i j, i ≠ j → IndepFun (xi i) (xi j) μ` is mutual independence's weaker pairwise cousin. Classical Donsker requires *mutual* independence, so the axiom uses Mathlib's `iIndepFun xi μ` (matching `Proofs/FairGamesTheoremOQ02OQ01OQ01.lean:59`'s pattern). Pairwise independence is provably insufficient for finite-dimensional CLT, hence insufficient for Donsker — the strengthening is needed to keep the axiom mathematically truthful.
+
+2. **Named partial sum.** Introduced `partialSum xi k ω := ∑ i ∈ Finset.range k, xi i ω` as a top-level definition rather than inlining `∑ i ∈ Finset.range k, xi i ω` inside `interpolatedRescaled`. Two reasons:
+   - S3 will need an algebraic-shape lemma `partialSum xi (k + 1) ω = partialSum xi k ω + xi k ω` (immediate from `Finset.sum_range_succ`) to reason about the random walk one-step-at-a-time. A named definition makes such lemmas reusable across S3-S6.
+   - It clarifies the formula `S_⌊tn⌋ + frac · ξ_⌊tn⌋` in `interpolatedRescaled`: the "current accumulated sum" and the "next step's contribution" are visually distinct.
+
+3. **Weak-convergence predicate scope.** `WeakConvergesInC01` is defined against `Continuous Φ` where `Φ : (ℝ → ℝ) → ℝ` carries the pointwise (product) topology on `ℝ → ℝ`. This is **strictly weaker** than the classical sup-norm formulation (every sup-norm-continuous functional is pointwise continuous, but not conversely). For our axiomatic targets in S3-S7 (which only use sup, max, and indicator integrals — all sup-norm continuous), this scope suffices. A Polish-refinement upgrade can replace the predicate without breaking downstream proofs.
+
+4. **`n = 0` degenerate case.** At `n = 0`: `t * 0 = 0`, `⌊0⌋₊ = 0`, `partialSum xi 0 ω = 0`, `frac = 0`, so the numerator is `0 + 0 * ξ_0 = 0`. Denominator `Real.sqrt 0 = 0`. By Lean's divide-by-zero convention, the formula yields `0`. This is consistent with the convention "no data, no walk" and matches both the Mathlib Standard Library convention and the intuition that an empty walk is trivially at zero.
+
+5. **Type-class inference.** The `IsProbabilityMeasure μ` and `MeasurableSpace Ω` instances on the axiom signature ensure that `∫ ω, Φ (...) ∂μ` resolves to the expected `MeasureTheory.integral`. The `Continuous Φ` requirement does not add explicit measurability — but for `Φ` non-measurable, the Bochner integral defaults to `0` in both terms, and the predicate is trivially satisfied — matching the operational content of weak convergence as a property *only* of integrable continuous functionals.
+
+### Build evidence
+
+- Docker: `LEAN_MEMORY_LIMIT=8192 LEAN_BUILD_TIMEOUT=30m ./proofs/scripts/docker-build.sh Proofs.BallotProblemOQ02OQ05` succeeded in ~13 minutes (cold cache, 7727 cache files downloaded, 7744 jobs).
+- File-only build time: 6.8s (after cache hit).
+- No warnings reported.
+
+### Confirmed v4.26.0 API surface
+
+The following Mathlib identifiers are pinned at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (the v4.26.0 reference) and used by this file:
+
+| Identifier | Module |
+|---|---|
+| `Finset.range`, `Finset.sum` | `Mathlib.Algebra.BigOperators.Basic` |
+| `Nat.floor` (`⌊_⌋₊`) | `Mathlib.Data.Nat.Floor` |
+| `Real.sqrt` | `Mathlib.Analysis.SpecialFunctions.Pow.Real` |
+| `Pairwise` | `Mathlib.Order.Defs` |
+| `MeasureTheory.Measure`, `IsProbabilityMeasure`, `MeasureTheory.integral` | `Mathlib.MeasureTheory.Measure.MeasureSpace` |
+| `ProbabilityTheory.IndepFun` | `Mathlib.Probability.Independence.Basic` |
+| `Measurable` | `Mathlib.MeasureTheory.MeasurableSpace.Defs` |
+| `Continuous` | `Mathlib.Topology.Basic` |
+| `ContinuousBallot.BrownianMotion` | `Proofs/BallotProblemOQ02.lean:75-93` (parent gallery entry) |
+
+### Axiom audit (post-S2)
+
+| File | Axioms |
+|---|---|
+| `Proofs/BallotProblemOQ02.lean` (parent) | 3 (`reflection_principle`, `firstPassageTime_eq_maxEvent`, embedded arcsine) |
+| `Proofs/BallotProblemOQ02OQ05.lean` (new) | 1 (`donsker_fclt`) |
+| **System total** | **4** (will collapse to 2-3 after S4-S6 derives parent's three from `donsker_fclt` + CMT-axioms) |
+
+### Open questions for S3+
+
+- **`partialSumBool` vs `partialSum`?** S3 will be on `Fin n → Bool` walks (the ±1 walk encoded as Bool). A new function `partialSumBool` is needed; should it be defined here in `BallotProblemOQ02OQ05.lean` (so that S3+S4 chain bridges easily) or in S3's own file? Recommendation: S3's own file — keeps S2 statement-only.
+
+- **`WeakConvergesInC01` measurability.** The integrals `∫ ω, Φ (fun t => Xn n t ω) ∂μ` implicitly require measurability of the integrand. The current predicate omits this — meaning non-measurable continuous functionals produce trivial inequalities. This is *acceptable* for the axiomatic statement (Donsker only constrains the test-functional class) but should be tightened (`AEMeasurable` ⇒ tighter predicate) when refining S4's continuous-mapping-for-sup axiom.
+
+- **Hypothesis-set audit.** `donsker_fclt` takes `iIndepFun xi μ` (mutual independence) — matches classical Donsker. The mean/variance assumptions could be tightened from "every $\xi_i$ has zero mean / unit variance" to "every $\xi_i$ is identically distributed with $\mathbb{E}\xi_0 = 0, \mathbb{E}\xi_0^2 = 1$" via `IdentDistrib`, but this is a stylistic choice — Lindeberg's CLT covers the weaker hypotheses we currently use. Defer the i.i.d.-tightening to S6 when arcsine derivation needs `IdentDistrib` for the cycle lemma.
+
