@@ -282,7 +282,7 @@ private lemma kl_term_bound_strict {p q : ℝ}
     log_lt_sub_one_of_pos_of_ne_one (div_pos hq hp) hqp_ne_one
   have h2 : p * Real.log (q / p) < q - p := by
     calc p * Real.log (q / p)
-        < p * (q / p - 1) := (mul_lt_mul_left hp).mpr h1
+        < p * (q / p - 1) := mul_lt_mul_of_pos_left h1 hp
       _ = q - p := by field_simp
   have h3 : Real.log (p / q) = -Real.log (q / p) := by
     rw [Real.log_div (ne_of_gt hp) (ne_of_gt hq),
@@ -405,7 +405,7 @@ theorem entropy_eq_log_card_iff_uniform {α : Type*} [Fintype α] [DecidableEq �
       · simp [hpy]
       · simp [hpy]
         have hpy_pos : 0 < p y := lt_of_le_of_ne (hp y) (Ne.symm hpy)
-        rw [Real.log_div (ne_of_gt hpy_pos) hinv_ne, Real.log_inv]
+        rw [Real.log_mul (ne_of_gt hpy_pos) hcard_ne]
         ring
     simp_rw [h_split]
     rw [Finset.sum_add_distrib]
@@ -832,6 +832,23 @@ where D(·||·) is the KL divergence. Since D ≥ 0 (Gibbs inequality), SSA foll
 
 **Dependencies**: Uses gibbs_inequality (KL divergence non-negativity, proved above)
 and the conditional distributions p(x,z|y) = p(x,y,z)/p(y). -/
+-- Marginal telescoping: if S=0 then 0 else S·log S = Σ (if aᵢ=0 then 0 else aᵢ·log S).
+-- Extracted to top-level for universe polymorphism (v4.26.0 elaborator stricter on
+-- `have`-bound universe-polymorphic lemmas).
+private lemma marginal_telescope {ι : Type*} [Fintype ι] (a : ι → ℝ)
+    (ha : ∀ i, 0 ≤ a i) :
+    (if (∑ i, a i) = 0 then (0 : ℝ) else (∑ i, a i) * Real.log (∑ i, a i)) =
+    ∑ i, (if a i = 0 then 0 else a i * Real.log (∑ j, a j)) := by
+  by_cases hs : (∑ i, a i) = 0
+  · have hall : ∀ i, a i = 0 := fun i =>
+      le_antisymm (by linarith [Finset.single_le_sum (fun j _ => ha j) (Finset.mem_univ i)]) (ha i)
+    simp [hs, hall]
+  · simp only [hs, ↓reduceIte]; symm
+    rw [show ∑ i, (if a i = 0 then (0 : ℝ) else a i * Real.log (∑ j, a j)) =
+        ∑ i, a i * Real.log (∑ j, a j) from
+      Finset.sum_congr rfl fun i _ => by by_cases h : a i = 0 <;> simp [h]]
+    rw [← Finset.sum_mul]
+
 theorem strong_subadditivity {α β γ : Type*}
     [Fintype α] [Fintype β] [Fintype γ]
     [DecidableEq α] [DecidableEq β] [DecidableEq γ]
@@ -851,34 +868,19 @@ theorem strong_subadditivity {α β γ : Type*}
   have hsum_n : ∑ x : α, ∑ y : β, ∑ z : γ, pXYZ (x, y, z) = 1 := by
     have h := hsum; rw [Fintype.sum_prod_type] at h; simp_rw [Fintype.sum_prod_type] at h; exact h
 
-  -- Marginal telescoping: if S=0 then 0 else S·log S = Σ (if aᵢ=0 then 0 else aᵢ·log S)
-  have htele : ∀ {ι : Type*} [Fintype ι] (a : ι → ℝ) (_ : ∀ i, 0 ≤ a i),
-      (if (∑ i, a i) = 0 then (0 : ℝ) else (∑ i, a i) * Real.log (∑ i, a i)) =
-      ∑ i, (if a i = 0 then 0 else a i * Real.log (∑ j, a j)) := by
-    intro ι _ a ha
-    by_cases hs : (∑ i, a i) = 0
-    · have : ∀ i, a i = 0 := fun i =>
-        le_antisymm (by linarith [Finset.single_le_sum (fun j _ => ha j) (Finset.mem_univ i)]) (ha i)
-      simp [hs, this]
-    · simp only [hs, ↓reduceIte]; symm
-      rw [show ∑ i, (if a i = 0 then (0 : ℝ) else a i * Real.log (∑ j, a j)) =
-          ∑ i, a i * Real.log (∑ j, a j) from
-        Finset.sum_congr rfl fun i _ => by by_cases h : a i = 0 <;> simp [h]]
-      rw [← Finset.sum_mul]
-
-  -- XY marginal telescoping
+  -- XY marginal telescoping (via top-level marginal_telescope)
   have hXY : ∀ x y, (if (∑ z : γ, pXYZ (x, y, z)) = 0 then (0 : ℝ)
       else (∑ z, pXYZ (x, y, z)) * Real.log (∑ z, pXYZ (x, y, z))) =
       ∑ z : γ, (if pXYZ (x, y, z) = 0 then 0
-        else pXYZ (x, y, z) * Real.log (∑ z' : γ, pXYZ (x, y, z'))) := by
-    intro x y; exact htele (fun z => pXYZ (x, y, z)) (fun z => hp (x, y, z))
+        else pXYZ (x, y, z) * Real.log (∑ z' : γ, pXYZ (x, y, z'))) := fun x y =>
+    marginal_telescope (fun z => pXYZ (x, y, z)) (fun z => hp (x, y, z))
 
   -- YZ marginal telescoping
   have hYZ : ∀ y z, (if (∑ x : α, pXYZ (x, y, z)) = 0 then (0 : ℝ)
       else (∑ x, pXYZ (x, y, z)) * Real.log (∑ x, pXYZ (x, y, z))) =
       ∑ x : α, (if pXYZ (x, y, z) = 0 then 0
-        else pXYZ (x, y, z) * Real.log (∑ x' : α, pXYZ (x', y, z))) := by
-    intro y z; exact htele (fun x => pXYZ (x, y, z)) (fun x => hp (x, y, z))
+        else pXYZ (x, y, z) * Real.log (∑ x' : α, pXYZ (x', y, z))) := fun y z =>
+    marginal_telescope (fun x => pXYZ (x, y, z)) (fun x => hp (x, y, z))
 
   -- Y marginal telescoping (product type → nested)
   have hY : ∀ y, (if (∑ x : α, ∑ z : γ, pXYZ (x, y, z)) = 0 then (0 : ℝ)
@@ -886,7 +888,8 @@ theorem strong_subadditivity {α β γ : Type*}
       ∑ x : α, ∑ z : γ, (if pXYZ (x, y, z) = 0 then 0
         else pXYZ (x, y, z) * Real.log (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z'))) := by
     intro y
-    have h := htele (fun (xz : α × γ) => pXYZ (xz.1, y, xz.2)) (fun xz => hp (xz.1, y, xz.2))
+    have h := marginal_telescope (fun (xz : α × γ) => pXYZ (xz.1, y, xz.2))
+      (fun xz => hp (xz.1, y, xz.2))
     simp_rw [Fintype.sum_prod_type] at h; exact h
 
   -- Term splitting: p·log(p) = CMI_term + p·log(pXY) + p·log(pYZ) - p·log(pY)
@@ -908,12 +911,14 @@ theorem strong_subadditivity {α β γ : Type*}
     · simp only [hpxyz, ↓reduceIte]
       have hpos : 0 < pXYZ (x, y, z) := lt_of_le_of_ne (hp _) (Ne.symm hpxyz)
       have hpXY : 0 < ∑ z', pXYZ (x, y, z') :=
-        lt_of_lt_of_le hpos (Finset.single_le_sum (fun z' _ => hp _) (Finset.mem_univ z))
+        lt_of_lt_of_le hpos
+          (Finset.single_le_sum (fun z' _ => hp (x, y, z')) (Finset.mem_univ z))
       have hpYZ : 0 < ∑ x', pXYZ (x', y, z) :=
-        lt_of_lt_of_le hpos (Finset.single_le_sum (fun x' _ => hp _) (Finset.mem_univ x))
+        lt_of_lt_of_le hpos
+          (Finset.single_le_sum (fun x' _ => hp (x', y, z)) (Finset.mem_univ x))
       have hpY : 0 < ∑ x' : α, ∑ z' : γ, pXYZ (x', y, z') :=
         lt_of_lt_of_le hpXY (Finset.single_le_sum
-          (fun x' _ => Finset.sum_nonneg fun z' _ => hp _) (Finset.mem_univ x))
+          (fun x' _ => Finset.sum_nonneg fun z' _ => hp (x', y, z')) (Finset.mem_univ x))
       -- log(p) = log(p·pY/(pXY·pYZ)) + log(pXY) + log(pYZ) - log(pY)
       have hlog : Real.log (pXYZ (x, y, z)) =
           Real.log (pXYZ (x, y, z) * (∑ x', ∑ z', pXYZ (x', y, z')) /
@@ -931,7 +936,7 @@ theorem strong_subadditivity {α β γ : Type*}
               ((∑ z', pXYZ (x, y, z')) * (∑ x', pXYZ (x', y, z)))) +
             Real.log (∑ z', pXYZ (x, y, z')) +
             Real.log (∑ x', pXYZ (x', y, z)) -
-            Real.log (∑ x', ∑ z', pXYZ (x', y, z'))) := by congr 1; exact hlog
+            Real.log (∑ x', ∑ z', pXYZ (x', y, z'))) := by rw [hlog]
         _ = _ := by ring
 
   -- === PART 1: Show the conditional MI ≥ 0 ===
@@ -949,23 +954,28 @@ theorem strong_subadditivity {α β γ : Type*}
     by_cases hpy : (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) = 0
     · -- All p(x,y,z) = 0 for this y
       have hall : ∀ x z, pXYZ (x, y, z) = 0 := by
-        intro x z; linarith [hp (x, y, z),
-          Finset.single_le_sum (fun z' _ => hp (x, y, z')) (Finset.mem_univ z),
-          Finset.single_le_sum (fun x' _ =>
-            Finset.sum_nonneg fun z' _ => hp (x', y, z')) (Finset.mem_univ x)]
-      simp [hall, hpy]
+        intro x z
+        have hpy_le : ∀ x' : α, (0 : ℝ) ≤ ∑ z' : γ, pXYZ (x', y, z') :=
+          fun x' => Finset.sum_nonneg fun z' _ => hp (x', y, z')
+        linarith [hp (x, y, z),
+          Finset.single_le_sum (f := fun z' : γ => pXYZ (x, y, z'))
+            (fun z' _ => hp (x, y, z')) (Finset.mem_univ z),
+          Finset.single_le_sum (f := fun x' : α => ∑ z' : γ, pXYZ (x', y, z'))
+            (fun x' _ => hpy_le x') (Finset.mem_univ x)]
+      simp [hall]
     · -- Factor: Σ_x Σ_z pXY·pYZ/pY = (Σ_x pXY)·(Σ_z pYZ)/pY = pY²/pY = pY
       have hpy_ne : (∑ x', ∑ z', pXYZ (x', y, z')) ≠ 0 := hpy
       -- Pull pYZ(y,z) out from inner sum: Σ_z (pXY(x,y) · pYZ(y,z)) = pXY(x,y) · Σ_z pYZ(y,z)
       simp_rw [mul_div_assoc]
-      -- Σ_z (pXY · (pYZ/pY)) = pXY · (Σ_z pYZ / pY) = pXY · (Σ_z pYZ) / pY
-      simp_rw [← Finset.sum_div, ← Finset.mul_sum]
-      -- Σ_x (pXY · (Σ_z pYZ) / pY) = (Σ_x pXY) · (Σ_z pYZ) / pY
-      rw [← Finset.sum_div, ← Finset.sum_mul]
-      -- (Σ_x pXY) = pY and (Σ_z pYZ) = pY, so pY·pY/pY = pY
-      rw [show ∑ z : γ, ∑ x' : α, pXYZ (x', y, z) = ∑ x' : α, ∑ z : γ, pXYZ (x', y, z) from
-        Finset.sum_comm]
-      rw [mul_div_cancel₀ _ hpy_ne]
+      -- Σ_z (pXY · (pYZ/pY)) → pXY · (Σ_z (pYZ/pY)) → pXY · ((Σ_z pYZ) / pY)
+      simp_rw [← Finset.mul_sum, ← Finset.sum_div]
+      -- Σ_x (pXY · ((Σ_z pYZ)/pY)) → (Σ_x pXY) · ((Σ_z pYZ)/pY) (since (Σ_z pYZ)/pY is const in x)
+      rw [← Finset.sum_mul]
+      -- Reorder inner sum so numerator equals denominator (both = pY by sum_comm + dummy rename)
+      rw [show (∑ i : γ, ∑ x' : α, pXYZ (x', y, i))
+          = (∑ x' : α, ∑ z' : γ, pXYZ (x', y, z')) from Finset.sum_comm]
+      -- Goal: pY * (pY / pY) = pY  (LHS-first-factor and RHS are α-equivalent)
+      rw [div_self hpy_ne, mul_one]
   -- q sums to 1
   have hq_sum : ∑ x : α, ∑ y : β, ∑ z : γ, q x y z = 1 := by
     conv_lhs => rw [Finset.sum_comm]
@@ -994,19 +1004,21 @@ theorem strong_subadditivity {α β γ : Type*}
     · simp only [hpxyz, ↓reduceIte]
       have hpos : 0 < pXYZ (x, y, z) := lt_of_le_of_ne (hp _) (Ne.symm hpxyz)
       have hpXY : 0 < ∑ z', pXYZ (x, y, z') :=
-        lt_of_lt_of_le hpos (Finset.single_le_sum (fun z' _ => hp _) (Finset.mem_univ z))
+        lt_of_lt_of_le hpos
+          (Finset.single_le_sum (fun z' _ => hp (x, y, z')) (Finset.mem_univ z))
       have hpYZ : 0 < ∑ x', pXYZ (x', y, z) :=
-        lt_of_lt_of_le hpos (Finset.single_le_sum (fun x' _ => hp _) (Finset.mem_univ x))
+        lt_of_lt_of_le hpos
+          (Finset.single_le_sum (fun x' _ => hp (x', y, z)) (Finset.mem_univ x))
       have hpY : 0 < ∑ x' : α, ∑ z' : γ, pXYZ (x', y, z') :=
         lt_of_lt_of_le hpXY (Finset.single_le_sum
-          (fun x' _ => Finset.sum_nonneg fun z' _ => hp _) (Finset.mem_univ x))
+          (fun x' _ => Finset.sum_nonneg fun z' _ => hp (x', y, z')) (Finset.mem_univ x))
       have hq_pos : 0 < q x y z := by
         simp only [hq_def]; exact div_pos (mul_pos hpXY hpYZ) hpY
       -- p·log(p·pY/(pXY·pYZ)) = p·log(p/q) since q = pXY·pYZ/pY
       have hlog_eq : pXYZ (x, y, z) * (∑ x', ∑ z', pXYZ (x', y, z')) /
           ((∑ z', pXYZ (x, y, z')) * (∑ x', pXYZ (x', y, z))) =
           pXYZ (x, y, z) / q x y z := by
-        simp only [hq_def]; field_simp; ring
+        simp only [hq_def]; field_simp
       rw [hlog_eq]
       exact kl_term_bound hpos hq_pos
 
@@ -1043,8 +1055,32 @@ theorem strong_subadditivity {α β γ : Type*}
   simp_rw [hterm]
   -- Distribute negation and sums
   simp only [Finset.sum_add_distrib, Finset.sum_sub_distrib]
-  -- After distribution, the XY, YZ, and Y terms cancel, leaving 0 ≤ Σ CMI
-  linarith [h_cmi]
+  -- v4.26.0 surface: simp_rw[hYZ] / simp_rw[hY] left the outer triple sums in
+  -- non-canonical (y, z, x) and (y, x, z) bound orderings respectively, while
+  -- hterm-derived sums are in canonical (x, y, z) order. linarith treats sums
+  -- with permuted binder structure as distinct atoms. Canonicalize via
+  -- Finset.sum_comm before the final linear step.
+  have hSYZ_canon :
+      (∑ y : β, ∑ z : γ, ∑ x : α, if pXYZ (x, y, z) = 0 then (0 : ℝ)
+         else pXYZ (x, y, z) * Real.log (∑ x', pXYZ (x', y, z))) =
+      (∑ x : α, ∑ y : β, ∑ z : γ, if pXYZ (x, y, z) = 0 then (0 : ℝ)
+         else pXYZ (x, y, z) * Real.log (∑ x', pXYZ (x', y, z))) := by
+    calc (∑ y : β, ∑ z : γ, ∑ x : α, if pXYZ (x, y, z) = 0 then (0 : ℝ)
+              else pXYZ (x, y, z) * Real.log (∑ x', pXYZ (x', y, z)))
+        = ∑ y : β, ∑ x : α, ∑ z : γ, if pXYZ (x, y, z) = 0 then (0 : ℝ)
+              else pXYZ (x, y, z) * Real.log (∑ x', pXYZ (x', y, z)) := by
+          refine Finset.sum_congr rfl (fun y _ => ?_); exact Finset.sum_comm
+      _ = ∑ x : α, ∑ y : β, ∑ z : γ, if pXYZ (x, y, z) = 0 then (0 : ℝ)
+              else pXYZ (x, y, z) * Real.log (∑ x', pXYZ (x', y, z)) := Finset.sum_comm
+  have hY_canon :
+      (∑ y : β, ∑ x : α, ∑ z : γ, if pXYZ (x, y, z) = 0 then (0 : ℝ)
+         else pXYZ (x, y, z) * Real.log (∑ x', ∑ z', pXYZ (x', y, z'))) =
+      (∑ x : α, ∑ y : β, ∑ z : γ, if pXYZ (x, y, z) = 0 then (0 : ℝ)
+         else pXYZ (x, y, z) * Real.log (∑ x', ∑ z', pXYZ (x', y, z'))) :=
+    Finset.sum_comm
+  -- After canonicalization, the XY, YZ, and Y terms in the deficit cancel
+  -- against the corresponding hterm-derived sums, leaving 0 ≤ Σ CMI.
+  linarith [h_cmi, hSYZ_canon, hY_canon]
 
 /-- **Entropy chain rule**: H(X,Y) = H(Y) + H(X|Y).
     Joint entropy decomposes into marginal plus conditional.

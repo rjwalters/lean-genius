@@ -2,9 +2,52 @@
 
 **Phase**: ACT-PROGRESS
 **Since**: 2026-05-14T02:00:00Z
-**Iteration**: 10
+**Iteration**: 11
 
 ## Current Focus
+
+S11 (researcher-8, 2026-05-14) — **Parent-file unblocker:
+`Proofs/ShannonEntropy.lean` v4.26.0 surface-drift repair.** Docker
+build of `ShannonChannelCoding.lean` had been blocked since S8/S9/S10
+on the parent file's 9 untriaged v4.26.0 elaboration regressions.
+After 7 Docker iterations, all 9 errors are now resolved; build is
+green (`Built Proofs.ShannonEntropy (9.4s); Build completed
+successfully (7743 jobs)`). Net diff: 1 file, +82 / -46 LOC.
+
+### Fix kit (9 v4.26.0 surface deltas)
+
+| Line | Error | Surgical fix |
+| --- | --- | --- |
+| 285 | `mul_lt_mul_left` fails to synth `MulRightStrictMono ℝ` | replace `(mul_lt_mul_left hp).mpr h1` → `mul_lt_mul_of_pos_left h1 hp` |
+| 408 | `Real.log_div`/`log_inv` pattern absent (simp pre-rewrote to `*`) | replace with `Real.log_mul (ne_of_gt hpy_pos) hcard_ne` |
+| 874/881 | `htele` lambda elaboration fails on `(fun z => ..., fun z => hp ...)` | extracted `htele` as top-level `private lemma marginal_telescope` (universe polymorphism); both call sites refactored |
+| 889 | invalid projection `xz.1`/`xz.2` | extracted lemma also fixes via explicit `α × γ` parameter |
+| 911/997 | `Finset.single_le_sum (fun _ _ => hp _)` metavariable underdetermined | explicit triples `hp (x, y, z')`, `hp (x', y, z)`, `hp (x', y, z')` (proactive on all 3 sites in two blocks) |
+| 962 | `simp_rw [← Finset.sum_div, ← Finset.mul_sum]` no progress | reorder to `simp_rw [← Finset.mul_sum, ← Finset.sum_div]` (inner first) + `rw [← Finset.sum_mul]` + explicit Σ inner-numerator sum_comm + `div_self`/`mul_one` (replaces `mul_div_cancel₀` chain) |
+| 1047 | `linarith [h_cmi]` fails on triple-sum bound-variable mismatches | add explicit canonicalization `hSYZ_canon` (sum_comm chain for `∑ y, ∑ z, ∑ x` → `∑ x, ∑ y, ∑ z`) + `hY_canon` (single sum_comm) as linarith hints |
+
+Also surfaced via fix-and-rebuild loop:
+* Line 939: `congr 1; exact hlog` over-solves in v4.26.0 → replace with `rw [hlog]`.
+* Line 1017: `field_simp; ring` over-solves in v4.26.0 (`No goals` on `ring`) → drop `ring`.
+* Lines 957-960: `hall` proof's `Finset.single_le_sum` inside linarith hint underdetermined `f`/`s` post-restructure → extract `hpy_le` helper + explicit `(f := ...)` annotation.
+
+### Why this unblocks downstream
+
+`ShannonChannelCoding.lean` directly imports `ShannonEntropy`. With the
+parent green, all of S2-S10 (`fano_inequality`, `fano_converse_step`,
+`fano_converse_capacity`, `fano_converse_marginal`,
+`entropy_eq_log_card_iff_uniform`, `entropy_lt_log_card_iff_non_uniform`)
+are now end-to-end Docker-verifiable. S11 follow-ups previously
+documented in "Next Action" (heavy/medium/light) are no longer
+parent-blocked.
+
+This is the "(build pending) silent parent-regression" anti-pattern
+documented in memory: 4+ consecutive build-pending PRs on this slug
+masked a real Mathlib v4.26.0 drift in the parent file. Pattern caught
+because the next would-be researcher Docker-built the parent (not just
+the slug's own file) on origin/main.
+
+### Prior S10 Focus (archived)
 
 S10 (researcher-9, 2026-05-14) — **Marginal-entropy single-letter
 converse for arbitrary (non-uniform) input distributions**. Two new
@@ -163,11 +206,14 @@ type-check by inspection against Mathlib v4.26.0 surface
 
 ## Blockers
 
-* **NEW (S10, 2026-05-14)**: `proofs/Proofs/ShannonEntropy.lean` has
-  **9 pre-existing build errors on origin/main** (parent file in dep
-  chain of `ShannonChannelCoding.lean`), surfaced when researcher-9
-  ran `./proofs/scripts/docker-build.sh Proofs.ShannonChannelCoding`
-  for S10 verification. Errors (all in `ShannonEntropy.lean`):
+* **RESOLVED in S11 (2026-05-14)**: `proofs/Proofs/ShannonEntropy.lean`
+  had 9 pre-existing v4.26.0 build errors on origin/main. All fixed in
+  this session (build #7, 7743 jobs). Original inventory preserved
+  below for archival.
+
+* **Archived inventory (S10, 2026-05-14)**: 9 errors in
+  `ShannonEntropy.lean`, surfaced when researcher-9 ran the Docker
+  build for S10 verification:
   - `285:30 failed to synthesize` (in `kl_term_bound_strict` body,
     `(mul_lt_mul_left hp).mpr h1` — likely Mathlib typeclass shift)
   - `408:12 rewrite failed: Did not find an occurrence of the pattern`
@@ -219,12 +265,9 @@ type-check by inspection against Mathlib v4.26.0 surface
 ## Next Action
 
 * **S11 priority #1 (parent-file repair, doctor/mechanic-scope)**:
-  fix the 9 pre-existing build errors in `ShannonEntropy.lean` (see
-  Blockers section above). Likely a sub-slug or a parallel
-  `fix(shannon-entropy)` PR. Without this, S2–S10 cannot be
-  Docker-verified end-to-end despite shipping the headline theorems.
+  ✅ DONE in this session. All 9 v4.26.0 errors fixed; build green.
 
-* **S11 heavy** (after parent repair): discharge the
+* **S12 heavy** (now unblocked): discharge the
   `channel_coding_converse` axiom in `ShannonChannelCoding.lean`.
   Combine `fano_converse_shannon_form` (S7) or new `fano_converse_marginal`
   (S10) with a per-letter chain rule `I(X^n; Y^n) ≤ n · channelCapacity ch`
@@ -232,7 +275,7 @@ type-check by inspection against Mathlib v4.26.0 surface
   block code with `M = |Fin code.M|` codewords. Likely requires a
   separate sub-slug for the chain rule.
 
-* **S11 medium** (after parent repair): extract a downstream consequence
+* **S12 medium** (now unblocked): extract a downstream consequence
   of `entropy_eq_log_card_iff_uniform` (S8) — namely that any
   capacity-achieving input distribution `inp` for a DM channel with
   uniform output marginal must itself be uniform when the channel is
@@ -240,7 +283,7 @@ type-check by inspection against Mathlib v4.26.0 surface
   `∀ y, (∑ x, jointDist ch inp (x, y)) = (Fintype.card β)⁻¹ → ...`.
   This is a 1–2 lemma extension in `ShannonChannelCoding.lean`.
 
-* **S11 light** (after parent repair): use `entropy_eq_log_card_iff_uniform`
+* **S12 light** (now unblocked): use `entropy_eq_log_card_iff_uniform`
   (S8) to derive an equality version of `entropy_of_uniform_eq_log_card`
   as a bi-implication, perhaps as a 3-line `@[simp]` corollary.
 
