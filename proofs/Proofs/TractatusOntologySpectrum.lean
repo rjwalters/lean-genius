@@ -204,4 +204,104 @@ theorem spectrum_invariant_contradiction_iff_freeModel_contradiction
   · intro h M
     exact contradiction_pullback (refines_freeModel M) p h
 
+/-! ## S5 — `freeModel` uniqueness via `HasIndependentProfiles` -/
+
+/-- A world model has *independent profiles* when every Boolean
+    assignment `a : S → Prop` is realised by some world of the model.
+    This is the `WorldModel`-side analogue of `IndependentWorlds S`:
+    it lifts the property of `S → Prop` (which `IndependentWorlds S`
+    quantifies over) to a predicate on `WorldModel S`.
+
+    `freeModel S` satisfies this trivially; subtype-style constrained
+    models satisfy it only when their constraint predicate is vacuous
+    (see `subtype_model_independent_iff`). -/
+def HasIndependentProfiles (M : WorldModel S) : Prop :=
+  ∀ assignment : S → Prop, ∃ w : M.W, ∀ s, M.holds w s ↔ assignment s
+
+/-- The *refinement-isomorphism* relation: mutual refinement. Captured
+    as the equivalence induced by the `Refines` preorder. Strictly
+    weaker than a genuine `Equiv`: two distinct worlds in either model
+    may share a Boolean profile, so `Refines`-iso does not yield a
+    bijection of world-types without an additional tightness
+    hypothesis. -/
+def RefinesIso (M M' : WorldModel S) : Prop :=
+  Refines M M' ∧ Refines M' M
+
+/-- The free model has independent profiles: every assignment `a` is
+    realised by `a` itself (the world *is* the profile). -/
+theorem freeModel_hasIndependentProfiles :
+    HasIndependentProfiles (freeModel S) :=
+  fun a => ⟨a, fun _ => Iff.rfl⟩
+
+/-- **Half 2 of `freeModel` uniqueness.** `freeModel S` refines into
+    any model with independent profiles. The witness is the realiser
+    map `a ↦ (hM a).choose`. -/
+theorem freeModel_refines_independent
+    (M : WorldModel S) (hM : HasIndependentProfiles M) :
+    Refines (freeModel S) M := by
+  classical
+  refine ⟨fun a => (hM a).choose, ?_⟩
+  intro a s
+  exact ((hM a).choose_spec s).symm
+
+/-- **Uniqueness of `freeModel S`** up to refinement-iso.  Any model
+    with independent profiles is `RefinesIso`-related to `freeModel S`.
+    Closes the S2-γ open question listed in `state.md` (PR #18391):
+    *uniqueness of `freeModel` up to refinement-isomorphism among
+    independence-satisfying inhabitants*. -/
+theorem freeModel_unique_refines_iso
+    (M : WorldModel S) (hM : HasIndependentProfiles M) :
+    RefinesIso M (freeModel S) :=
+  ⟨refines_freeModel M, freeModel_refines_independent M hM⟩
+
+/-- **Subtype-Tier 1 collapse to T0.** A subtype-style constrained
+    model satisfies `HasIndependentProfiles` iff its constraint
+    predicate is universally true.
+
+    This is the precise content of "constraint = independence-failure":
+    inside Tier 1 (predicate-constrained subtype), the *only* point
+    satisfying independence is the one whose constraint is vacuous,
+    collapsing back to `freeModel S` up to refinement-iso. -/
+theorem subtype_model_independent_iff
+    (φ : (S → Prop) → Prop) (hne : Nonempty {w : S → Prop // φ w}) :
+    HasIndependentProfiles
+        { W := {w : S → Prop // φ w}
+          holds := fun w s => w.val s
+          nonempty := hne }
+    ↔ ∀ a : S → Prop, φ a := by
+  refine ⟨fun h a => ?_, fun h a => ⟨⟨a, h a⟩, fun _ => Iff.rfl⟩⟩
+  obtain ⟨⟨w, hw⟩, hmatch⟩ := h a
+  have hwa : w = a := funext (fun s => propext (hmatch s))
+  exact hwa ▸ hw
+
+/-- `weatherModel` fails independence at the spectrum level: there is
+    no world realising the assignment `s ↦ s = .rain`, because the
+    constraint `w .rain → w .clouds` would force `.clouds = .rain`.
+    Spectrum-level restatement of `weather_independence_fails`. -/
+theorem weatherModel_not_hasIndependentProfiles :
+    ¬ HasIndependentProfiles weatherModel := by
+  intro h
+  let bad : WeatherFacts → Prop := fun s => s = .rain
+  obtain ⟨⟨w, hw⟩, hmatch⟩ := h bad
+  have hr : w .rain := (hmatch .rain).mpr rfl
+  have hc : w .clouds := hw hr
+  have habs : (WeatherFacts.clouds : WeatherFacts) = .rain :=
+    (hmatch .clouds).mp hc
+  cases habs
+
+/-- `freeModel WeatherFacts` does *not* refine into `weatherModel`:
+    the embedding direction fails.  Strengthens
+    `weather_independence_fails` to a spectrum-level statement —
+    `weatherModel` is **strictly below** `freeModel WeatherFacts` in
+    the refinement preorder. -/
+theorem freeModel_not_refines_weatherModel :
+    ¬ Refines (freeModel WeatherFacts) weatherModel := by
+  intro ⟨f, hf⟩
+  let bad : WeatherFacts → Prop := fun s => s = .rain
+  have hr : (f bad).val .rain := (hf bad .rain).mp rfl
+  have hc : (f bad).val .clouds := (f bad).property hr
+  have habs : (WeatherFacts.clouds : WeatherFacts) = .rain :=
+    (hf bad .clouds).mpr hc
+  cases habs
+
 end Tractatus
