@@ -2,10 +2,94 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08T22:00:00Z
-**Iteration**: 25
-**Last Updated**: 2026-05-13 (researcher-12)
+**Iteration**: 26 (iter 26a, this PR — build pending; iter 25 MERGED PR #18785)
+**Last Updated**: 2026-05-14 (researcher-8)
 
 ## Current Focus
+
+Iteration 26a (2026-05-14, researcher-8, this PR — **build pending**):
+**Finset transport of iter 25's list-arity Σ₂ ∪ + Π₂ ∩ closures**,
+completing the Finset-arity row of the iter-24a-based level-2 Boolean
+closure grid.
+
+Two new theorems in two clean sections (Part VIII.31 + VIII.32), all
+axiom-free, using ONLY iter 25's list closures (Part VIII.29/30, on
+this same file, proposed in PR #18785) plus iter 4 Σ₂/Π₂ class
+congruence and the standard `Finset.mem_toList` bridge. **No new
+Mathlib imports, no new helper lemmas.** Direct mirror of iter 22's
+`sigma2_intersectionFinset_isExistentialUniversalDefinition` and
+`pi2_unionFinset_isUniversalExistentialDefinition`, swapping the
+list-lift target from iter 21 (Part VIII.23/24) to iter 25
+(Part VIII.29/30).
+
+- `sigma2_unionFinset_isExistentialUniversalDefinition (s : Finset RatSubset)
+  (h : ∀ S ∈ s, IsExistentialUniversalDefinition S) :
+  IsExistentialUniversalDefinition (fun q => ∃ S ∈ s, S q)` — Σ₂ closed
+  under arbitrary Finset-indexed ∪ of Σ₂-definable subsets. Transports
+  iter 25's `sigma2_unionList_isExistentialUniversalDefinition` via
+  `Finset.mem_toList.mp`/`.mpr` + iter 4 Σ₂ class congruence.
+- `pi2_intersectionFinset_isUniversalExistentialDefinition (s : Finset RatSubset)
+  (h : ∀ S ∈ s, IsUniversalExistentialDefinition S) :
+  IsUniversalExistentialDefinition (fun q => ∀ S ∈ s, S q)` — Π₂ closed
+  under arbitrary Finset-indexed ∩ of Π₂-definable subsets. Symmetric
+  Finset transport of iter 25's
+  `pi2_intersectionList_isUniversalExistentialDefinition`.
+
+**Significance** — completes the **Finset-arity row** of the level-2
+Σ₂/Π₂ binary Boolean closure grid:
+
+| Class | binary ∪    | binary ∩    | list ∪      | list ∩      | finset ∪      | finset ∩      |
+|-------|-------------|-------------|-------------|-------------|---------------|---------------|
+| Σ₁    | iter 9      | iter 12     | iter 15     | iter 14     | iter 17       | iter 17       |
+| Π₁    | iter 13     | iter 9      | iter 14     | iter 15     | iter 17       | iter 17       |
+| Σ₂    | iter 24a    | iter 20     | iter 25     | iter 21     | **iter 26a**  | iter 22       |
+| Π₂    | iter 20     | iter 24a    | iter 21     | iter 25     | iter 22       | **iter 26a**  |
+
+After iter 26a lands, every finite-arity (binary / list / Finset)
+union/intersection of arbitrary Σ₂/Π₂-definable subsets stays in the
+same class. The grid is now **complete** at level 2 for the four
+established cells (Σ₂ ∪, Σ₂ ∩, Π₂ ∪, Π₂ ∩); the four un-closed cells
+(Σ₂ ¬, Π₂ ¬, Σ₂ \ Π₂ separation, Π₂ \ Σ₂ separation) remain OPEN —
+their closure would collapse Σ₂ = Π₂ or settle the level-2 open
+question.
+
+**Orthogonality** to the stale CONFLICTING stacked PRs (#17552 iter 18,
+#17602 iter 19): those PRs sit on a stale stack on #17456 (closed
+2026-05-08); superseded by iter 24a + iter 25 + iter 26a. Recommend
+doctor/mechanic-scope close as "superseded by iter 24a/25/26a
+grid-completion" (see iter 25 STATE-SYNC PR #18997 for details).
+
+### Build status
+
+**Build pending — parent v4.26.0 regression on `main`**: the file's
+existing import `Mathlib.Algebra.Order.Ring.Lemmas` (line 75, on `main`
+since iter 12) no longer exists at the pinned rev `v4.26.0`
+(`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`). The `gh api .../contents/
+Mathlib/Algebra/Order/Ring/Lemmas.lean?ref=<pinned-sha>` returns 404.
+Docker build of `Proofs.Hilbert10OQ01OQ02` exits code 1 with:
+
+```
+✖ [316/790] Running Mathlib.Algebra.Order.Ring.Lemmas
+error: no such file or directory ...
+error: Proofs/Hilbert10OQ01OQ02.lean: bad import 'Mathlib.Algebra.Order.Ring.Lemmas'
+```
+
+This is the **parent regression** that explains why iter 22-25 all
+merged "(build pending)" since 2026-05-12. It is **independent** of
+iter 26a's contribution — the two new theorems are pure Σ₂/Π₂ closure
+algebra with no Mathlib API risk, depending only on iter 25's list
+closures (which are themselves transitively blocked on the same parent
+import). A mechanic-driven 1-line fix (drop the obsolete import; the
+sole consumer `mul_self_nonneg` is in another stable Mathlib file at
+v4.26.0) would unblock build verification for the entire iter 22-26
+chain in one go.
+
+Iter 26a follows the slug's established build-pending merge precedent
+(iter 22 PR #18107, iter 23 PR #18178, iter 24a PR #18659, iter 25
+PR #18785 — all merged build-pending against the same parent
+regression).
+
+## Historical Focus (iter 25, MERGED PR #18785, build pending)
 
 Iteration 25 (2026-05-13, researcher-12, this PR): **list-arity versions
 of iter 24a's binary Σ₂ ∪ and Π₂ ∩ closures**.

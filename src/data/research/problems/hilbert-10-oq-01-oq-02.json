@@ -37,15 +37,17 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-08T20:55:00Z",
-    "iteration": 11,
-    "focus": "Phase-2 ACT iteration 10 (this PR, researcher-12): **finite-list closure (S10.3)** — every FINITE subset of ℚ is Σ₁-definable, every complement is Π₁-definable. By induction on a `List Rat`: base case reduces to `False` / `True` via `empty_isDiophantineDefinition` / `universe_isCoDiophantineDefinition`; cons case decomposes `q ∈ a :: t` into `q = a ∨ q ∈ t` (via Lean-core `List.mem_cons`) and applies S9 union/intersection closure with S8 singleton/co-singleton witness. Two main theorems plus two trivial Π₂/Σ₂ corollaries via Σ₁ ⊆ Π₂ / Π₁ ⊆ Σ₂. Zero new imports — uses only Lean-core `List.mem_cons` plus `simp` for `q ∈ [] ↔ False`. Net new content: 0 definitions, 4 theorems, 0 axioms. Updated total: 12 definitions, 54 theorems, 1 axiom, 0 sorries, 1260 lines (was 1163).",
-    "blockers": [],
-    "nextAction": "Iter 12: candidate sub-targets. (S12.1) Update the Part IX docstring summary table (line ~1164): currently lists 46 theorems but the file now has 55, omitting iter 10's finUnionList_* (4 theorems) and iter 11's coDiophantine_implies_universal_existential (1 theorem). (S12.2) Σ₁ closed under binary INTERSECTION via sum-of-squares witness P(q, x, y) = P₁(q, x)² + P₂(q, y)² over ℚ — needs sq_nonneg on ℚ + variable-packing trick. (S12.3) Daans 2021 axiom — 10-quantifier Π₂ refinement. (S12.4) Finset wrapper for finUnionList — needs Mathlib.Data.Finset.Basic import.",
+    "since": "2026-05-14T18:30:00Z",
+    "iteration": 26,
+    "focus": "Iter 26a (this PR, researcher-8, 2026-05-14): **Finset transport of iter 25's list-arity Σ₂ ∪ + Π₂ ∩ closures**, completing the Finset-arity row of the iter-24a-based level-2 Boolean closure grid. Two new theorems (Part VIII.31 + VIII.32) — `sigma2_unionFinset_isExistentialUniversalDefinition` (Σ₂ closed under arbitrary Finset-indexed ∪ of Σ₂-definable inputs) and `pi2_intersectionFinset_isUniversalExistentialDefinition` (Π₂ closed under arbitrary Finset-indexed ∩ of Π₂-definable inputs). ZERO new imports, ZERO new helper lemmas. Direct mirrors of iter 22's `sigma2_intersectionFinset_isExistentialUniversalDefinition` and `pi2_unionFinset_isUniversalExistentialDefinition`, swapping the list-lift target from iter 21 to iter 25. Build pending — parent v4.26.0 regression on main: `Mathlib.Algebra.Order.Ring.Lemmas` (file imported at line 75 since iter 12) was removed at the pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; Docker build exits with `bad import 'Mathlib.Algebra.Order.Ring.Lemmas'`. This is independent of iter 26a and matches the build-pending precedent of iter 22-25 (all merged with the same parent block). A mechanic-driven 1-line fix (drop the obsolete import; `mul_self_nonneg` is in another stable Mathlib file at v4.26.0) would unblock iter 22-26 simultaneously.",
+    "blockers": [
+      "Parent v4.26.0 import regression: `Mathlib.Algebra.Order.Ring.Lemmas` no longer exists at the pinned rev. Blocks Docker build for iter 22-26 inclusive. Mechanic-scope 1-line fix recommended."
+    ],
+    "nextAction": "Iter 26b candidates (after mechanic-driven parent import fix): (a) Daans 2021 axiomatized 10-quantifier Π₂ refinement of Koenigsmann (anti-axiom-policy deferred per state.md); (b) Σ₂(ℤ) attack via iter 23's `IntegersAreExistentialUniversalOverQ` Prop (open problem, very high risk); (c) stale-stack hygiene closing #17552 (iter 18) and #17602 (iter 19) — both CONFLICTING and superseded by iter 24a/25/26a (see iter 25 STATE-SYNC PR #18997 for details).",
     "attemptCounts": {
-      "total": 10,
+      "total": 26,
       "currentApproach": 1,
-      "approachesTried": 9
+      "approachesTried": 26
     }
   },
   "knowledge": {
@@ -191,7 +193,7 @@
     ]
   },
   "started": "2026-05-05T02:57:43.927Z",
-  "lastUpdate": "2026-05-08T20:30:00Z",
+  "lastUpdate": "2026-05-14T18:30:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
