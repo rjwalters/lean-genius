@@ -348,6 +348,72 @@ theorem IsStationaryBelow.of_subset {S T : Set Ordinal} {o : Ordinal}
   exact hMeet C hC (hS C hC)
 
 -- ══════════════════════════════════════════════════════════════════
+-- § Part VII: Solovay Splitting — Step 1 (Limit Ordinals Form a Club)
+-- ══════════════════════════════════════════════════════════════════
+
+/-- **Step 1 of Solovay splitting (S2-α)** — the set of limit ordinals below `κ.ord`
+    is a club. Canonical preliminary lemma for Solovay's splitting theorem: it lets us
+    WLOG-assume any stationary `S ⊆ κ.ord` consists of limit ordinals, by intersecting
+    with this club.
+
+    Proof:
+    * Closure: an accumulation point of limit ordinals is itself a limit ordinal — no
+      successor `b + 1` can be an `IsAcc`-point, since `IsAcc` forces an element of `S`
+      strictly between any `q < p` and `p`.
+    * Unboundedness: for any `α < κ.ord`, the ordinal `α + ω₀` is a limit (sum with a
+      limit is a limit) and is `< κ.ord` by regularity
+      (`Cardinal.isPrincipal_add_ord` since `α, ω₀ < κ.ord` and `ℵ₀ ≤ κ`). -/
+theorem isLimitOrdinals_isClubBelow {κ : Cardinal.{0}}
+    (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ) :
+    IsClubBelow {α : Ordinal | α < κ.ord ∧ IsSuccLimit α} κ.ord where
+  subset_Iio := fun _ ha => ha.1
+  closed := by
+    rw [isClosedBelow_iff]
+    intro p hpκ pAcc
+    refine ⟨hpκ, ?_⟩
+    have hpos : (0 : Ordinal) < p := pAcc.pos
+    have hAcc : ∀ q < p,
+        ∃ r ∈ {α : Ordinal | α < κ.ord ∧ IsSuccLimit α}, q < r ∧ r < p := by
+      rw [isAcc_iff] at pAcc
+      exact pAcc.2
+    refine ⟨?_, ?_⟩
+    · -- ¬ IsMin p
+      intro hmin
+      exact hpos.ne' (le_antisymm (hmin (le_of_lt hpos)) (le_of_lt hpos))
+    · -- IsSuccPrelimit p: ∀ b, ¬ b ⋖ p
+      intro b hcov
+      obtain ⟨r, _, hbr, hrp⟩ := hAcc b hcov.1
+      exact hcov.2 hbr hrp
+  unbounded := by
+    intro α hα
+    -- ω₀ < κ.ord via ω₀ = ℵ₀.ord and the Cardinal.ord-monotonicity from ℵ₀ < κ
+    have hω_lt : Ordinal.omega0 < κ.ord := by
+      rw [show Ordinal.omega0 = (ℵ₀ : Cardinal).ord from Cardinal.ord_aleph0.symm]
+      exact Cardinal.ord_lt_ord.mpr hκ_unc
+    -- α + ω₀ < κ.ord via cardinality: card(α + ω₀) = card α + ℵ₀ < κ (regularity)
+    have hαω_lt : α + Ordinal.omega0 < κ.ord := by
+      rw [Cardinal.lt_ord, Ordinal.card_add, Ordinal.card_omega0]
+      exact Cardinal.add_lt_of_lt hκ.aleph0_le (Cardinal.lt_ord.mp hα) hκ_unc
+    refine ⟨α + Ordinal.omega0, ⟨hαω_lt, ?_⟩, ?_, hαω_lt⟩
+    · -- α + ω₀ is a limit (sum-with-a-limit is a limit)
+      exact Ordinal.isSuccLimit_add α Ordinal.isSuccLimit_omega0
+    · -- α < α + ω₀ via IsNormal of (α + ·): 0 < ω₀ ⇒ α + 0 < α + ω₀, then α + 0 = α
+      have h : α + 0 < α + Ordinal.omega0 :=
+        (Ordinal.isNormal_add_right α).strictMono Ordinal.omega0_pos
+      rwa [add_zero] at h
+
+/-- **Corollary**: the set of non-limit ordinals below `κ.ord` is *not* stationary.
+    Direct consequence of `isLimitOrdinals_isClubBelow`: the complement of a club
+    cannot intersect every club (in particular, the club from the lemma). -/
+theorem nonLimitOrdinals_not_isStationaryBelow {κ : Cardinal.{0}}
+    (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ) :
+    ¬ IsStationaryBelow {α : Ordinal | α < κ.ord ∧ ¬ IsSuccLimit α} κ.ord := by
+  intro hStat
+  obtain ⟨_, hγnonlim, hγlim⟩ :=
+    hStat {α | α < κ.ord ∧ IsSuccLimit α} (isLimitOrdinals_isClubBelow hκ hκ_unc)
+  exact hγnonlim.2 hγlim.2
+
+-- ══════════════════════════════════════════════════════════════════
 -- § Summary and Open Next Steps
 -- ══════════════════════════════════════════════════════════════════
 
@@ -366,6 +432,8 @@ Key results:
   ✓ `diagInter_isClubBelow`: diagonal intersection of clubs is a club
   ✓ `fodor`: Fodor's pressing-down lemma (0 sorries)
   ✓ `fodor_aleph1`: specialization to ω₁
+  ✓ `isLimitOrdinals_isClubBelow`: limit ordinals below κ.ord form a club (Solovay Step 1)
+  ✓ `nonLimitOrdinals_not_isStationaryBelow`: non-limit ordinals are non-stationary (corollary)
 
 Sorries remaining: 0
 
