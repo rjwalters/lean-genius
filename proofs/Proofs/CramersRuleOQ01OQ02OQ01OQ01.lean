@@ -44,7 +44,9 @@ which is non-recursive and reusable as the building block of either:
 Both routes converge on `qdetN_step A i j Minv`; only the construction of
 `Minv` differs. The field-consistency theorem `qdetN_step_eq_qdetF` (S3,
 sorry) anchors the recurrence: over a field, choosing `Minv := M⁻¹`
-recovers `qdetF A i j = det(A) / det(M)`.
+recovers `(-1)^(i+j) * qdetF A i j = det(A) / det(M)` up to the cofactor
+sign factor (the unsigned form is false for off-diagonal pivots; see the
+theorem docstring below).
 
 ## Main results
 
@@ -55,7 +57,8 @@ recovers `qdetF A i j = det(A) / det(M)`.
 - `qdetF_eq_qdet00` / `qdetF_eq_qdet11` (S2): n=2 specializations.
 - `qdetN_step` (S3): non-recursive Schur formula over a division ring.
 - `qdetN_step_zero_minv` (S3): degenerate case `Minv = 0` gives `A i j`.
-- `qdetN_step_eq_qdetF` (S3 SCAFFOLD, sorry): field-consistency reduction.
+- `qdetN_step_eq_qdetF` (S3 SCAFFOLD, sorry): field-consistency reduction,
+  signed-RHS form `(-1)^(i+j) * qdetF` (corrected by researcher-12 S4-statement-fix).
 
 ## References
 
@@ -245,27 +248,42 @@ identity guaranteeing the formula is correctly anchored. -/
 
 Over a field `F`, choosing `Minv := (minorIJ A i j)⁻¹` (Mathlib's
 `Matrix.nonsingInv`) inside `qdetN_step` recovers the Route-A quotient
-`qdetF A i j = det A / det(minor)`. This is the bridge between the
-commutative (S2) and non-commutative (S3-Route-B) formulations.
+`qdetF A i j = det A / det(minor)` up to the cofactor sign
+`(-1)^(i+j)`. This is the bridge between the commutative (S2) and
+non-commutative (S3-Route-B) formulations.
+
+**Why the `(-1)^(i+j)` factor.** Verified by S4c PREP §2 against
+`A = ⟦1 2; 3 4⟧` at all four `(i,j) ∈ Fin 2 × Fin 2` pivots:
+the ratio `qdetN_step / qdetF` is `+1` at the diagonal `(0,0)` and
+`(1,1)` but `-1` at the off-diagonal `(0,1)` and `(1,0)`, matching
+`(-1)^(i+j)` exactly. The S4 PREP block-Schur reshape derives this
+algebraically from `sign(Fin.cycleRange i .symm) * sign(Fin.cycleRange j) = (-1)^i * (-1)^j`.
+The earlier S3 SCAFFOLD statement (without the sign factor) was
+mathematically false for off-diagonal pivots; this correction has zero
+impact on `qdetN_step_zero_minv` (the `Minv = 0` base case is unsigned
+because the field-consistency theorem only fires when `M⁻¹ = (minorIJ).⁻¹`).
 
 **Proof strategy (S4).** Expand `Matrix.inv_def`:
   `(minorIJ A i j)⁻¹ = (1 / (minorIJ A i j).det) • (minorIJ A i j).adjugate`,
-factor out the scalar `1 / det(minor)`, and apply `Matrix.det_succ_row`
-(Laplace cofactor expansion along row `i`) which gives
-  `det A = ∑_k A i k · (-1)^(i+k) · det(minor_{i,k}(A))`.
-Separating the `k = j` summand isolates `A i j · det(minor) /` from the
-remaining cofactor sum, and the resulting identity is precisely the
-Schur formula after sign normalisation via
-`Matrix.adjugate_apply` (which relates `(adjugate M) q p` to the
-cofactor `(-1)^(p+q) · det(submatrix_{p,q} M)`).
+factor out the scalar `1 / det(minor)`, and apply
+`Matrix.det_eq_sum_mul_adjugate_row` (per S4e PREP §2 — cleaner than
+`Matrix.det_succ_row` because cofactor signs are baked into adjugate
+notation). Splitting the row-`i` sum at column `k = j` isolates
+`A i j * adjugate A j i + ∑_{k≠j} A i k * adjugate A k i = A.det`;
+unfolding the adjugate entries via
+`Matrix.adjugate_fin_succ_eq_det_submatrix` and re-indexing the
+`k ≠ j` sum via `Fin.sum_univ_succAbove` collects the `(-1)^(i+j)`
+factor on the `A.det / minor.det` quotient, yielding the signed
+field-consistency identity.
 
-Estimated S4 proof size: ~60–90 Lean lines (the cofactor-sum
+Estimated S4 proof size: ~55–85 Lean lines (the cofactor-sum
 re-indexing through `Fin.succAbove`'s sign convention is the main
-mechanical step). -/
+mechanical step). See S4e PREP §3 for the LOC table. -/
 theorem qdetN_step_eq_qdetF {n : ℕ}
     (A : Matrix (Fin (n+1)) (Fin (n+1)) F) (i j : Fin (n+1))
     (h : (minorIJ A i j).det ≠ 0) :
-    qdetN_step A i j (minorIJ A i j)⁻¹ = qdetF A i j := by
+    qdetN_step A i j (minorIJ A i j)⁻¹
+      = (-1 : F) ^ ((i : ℕ) + (j : ℕ)) * qdetF A i j := by
   sorry
 
 end NonCommutative

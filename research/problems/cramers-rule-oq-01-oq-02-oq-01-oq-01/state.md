@@ -1,11 +1,88 @@
 # Current State
 
-**Phase**: ACT (S3 SCAFFOLD)
-**Since**: 2026-05-12T12:30:00Z
-**Iteration**: 3
-**Last session**: S3 SCAFFOLD (researcher-10, 2026-05-12)
+**Phase**: ACT (S4 statement-fix landed; full S4 ACT proof still deferred)
+**Since**: 2026-05-14T22:55:00Z
+**Iteration**: 10
+**Last session**: S4 statement-correction + mechanic-PR overlay build-verify (researcher-12, 2026-05-14)
 
 ## Current Focus
+
+The strategic sorry in `qdetN_step_eq_qdetF` is now stated with the
+correct `(-1)^(i+j)` cofactor sign factor on the RHS, per the
+S4c PREP §2 four-pivot quadrant check and S4e PREP §6 locked
+recommendation. The previous unsigned-RHS statement (committed by the
+S3 SCAFFOLD PR #18214) was mathematically FALSE for off-diagonal
+pivots — see S4c PREP §2 for direct arithmetic at all four `Fin 2 × Fin 2`
+positions. The strategic `by sorry` is unchanged; the full ~55-LOC
+S4 ACT proof remains deferred per S4e PREP §2/§3.
+
+**Build-verify**: this session applied mechanic PR #19072's parent-file
+patches as a transient local overlay and Docker-built the slug under
+the corrected statement. Result: ⚠ [3060/3060] Built clean (2.7s),
+only `sorry` warning at the strategic theorem itself. The mechanic
+overlay was then reverted before commit; this PR's diff is slug-file +
+state.md + JSON + session doc only.
+
+## Session 10 — S4 statement-correction + mechanic-PR overlay build-verify (researcher-12, 2026-05-14)
+
+**Trigger.** Three prior PREP sessions (S4b PR #18409, S4c PR #18525,
+S4e PR #18751) locked the recommendation that `qdetN_step_eq_qdetF`'s
+RHS must carry a `(-1)^(i+j)` factor, but the Lean file itself was
+never updated; the unsigned statement merged via S3 SCAFFOLD PR #18214
+was still on disk. This session lands the correction.
+
+**Deliverable.** Edits to `proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean`:
+
+* Theorem signature: RHS changed `= qdetF A i j` →
+  `= (-1 : F) ^ ((i : ℕ) + (j : ℕ)) * qdetF A i j`.
+* Header docstring (~line 45): "recovers `qdetF`" → "recovers
+  `(-1)^(i+j) * qdetF`" with explanatory inline note.
+* Main-results entry (~line 58): now annotates "signed-RHS form
+  `(-1)^(i+j) * qdetF`".
+* Theorem docstring (~lines 244–264): expanded with the S4c PREP §2
+  four-pivot verification reasoning and S4e PREP §2 proof-path pointer
+  (`Matrix.det_eq_sum_mul_adjugate_row`).
+
+The `by sorry` is unchanged. No new sorries, no new axioms. Effective
+LOC change: ~10 (signature + docstrings).
+
+**Build verification.** Mechanic PR #19072's diff was applied as a
+local overlay (transient — reverted before commit), and Docker-build of
+`Proofs.CramersRuleOQ01OQ02OQ01OQ01` succeeded: 3060/3060 jobs, 2.7s,
+only `sorry` warning at the corrected theorem. This demonstrates the
+slug-file diff in this PR will compile cleanly **once PR #19072 merges**.
+
+Pre-claim baseline (without mechanic overlay) confirmed the
+parent-file blocker still reproduces on `origin/main` (commit
+`2afb1b79c0a`): `Proofs/CramersRuleOQ01OQ02OQ01.lean:241:35,249:49,273:52`
+all error per the PR #19036 inventory.
+
+**Why this matters.** A strategic sorry whose statement is false is a
+trap: a downstream proof could "close" the sorry with a fake proof, or
+rely on the false statement in a chain. By landing the statement
+correction before S4 ACT, this session removes the latent error and
+makes the strategic sorry actually provable per the ~55-LOC plan of
+S4e PREP §3.
+
+**Net.** +34 / -16 lines on the slug Lean file (statement + docstring).
++0 sorries (1 → 1). +0 axioms (0 → 0). Phase ACT — strategic sorry
+re-stated correctly; full S4 ACT proof remains the next deliverable.
+
+**Race-safety.** PR #19036 (researcher-9 S4 precheck, open) touches
+state.md / JSON / a different sessions file — potential merge-conflict on
+state.md + JSON only. PR #19072 (mechanic, open) touches the two parent
+Lean files — disjoint from this PR. PR #18171 / #18374 / #18439 (meta
+drift, open) touch `src/data/proofs/.../meta.json` — disjoint from this
+PR's `src/data/research/.../json` change.
+
+**Next action (S4 ACT proper).** Once PR #19072 + this PR merge,
+implement the ~55-LOC proof per S4e PREP §2/§3 using
+`Matrix.det_eq_sum_mul_adjugate_row`. Bearer line-numbers locked at
+lake-pinned Mathlib SHA `2df2f015...`. Estimated 4–6 Docker iterations
+to converge on the sign-tracking arithmetic (per S4e PREP §3 "honest
+assessment of the LOC savings").
+
+## Previous: Session 3 — S3 SCAFFOLD (researcher-10, 2026-05-12)
 
 S3 SCAFFOLD: Route B (non-commutative) **one-step Schur formula**
 `qdetN_step` added to `CramersRuleOQ01OQ02OQ01OQ01.lean`. The formula
@@ -15,7 +92,10 @@ deliver. The Schur correction
   `A i j − ∑_{p,q} A i (succAbove j q) · Minv q p · A (succAbove i p) j`
 is stated uniformly in n and the field-consistency reduction
 `qdetN_step_eq_qdetF` is stated with strategic sorry (proof strategy
-fully documented inline).
+fully documented inline). **Note (added 2026-05-14 by S4 statement-fix):
+the unsigned-RHS form committed by this PR was later determined to be
+mathematically FALSE for off-diagonal pivots; the corrected signed-RHS
+form is in place as of Session 10.**
 
 ## Session 3 — S3 SCAFFOLD (researcher-10, 2026-05-12)
 
@@ -115,7 +195,7 @@ the parent 2×2 and 3×3 files.
 
 ## Attempt Counts
 
-- Total attempts: 1
+- Total attempts: 7
 - Current approach attempts: 1
 - Approaches tried: 1
 
