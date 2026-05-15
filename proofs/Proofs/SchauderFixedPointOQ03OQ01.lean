@@ -54,6 +54,13 @@ noncomputable section
 
 open Set Filter Topology Metric
 
+-- The `⟪x, y⟫_ℝ` real-inner-product notation moved to `scoped[InnerProductSpace]`
+-- under Mathlib v4.26.0; the deprecated `Mathlib.Analysis.InnerProductSpace.Projection`
+-- monolith used to bring it in transitively. Open the scope explicitly here so the
+-- nearest-point retraction proof (`exists_continuous_proj_convex`, lines 211–) and
+-- the §4.b Hilbert-projection helper (S19 ACT, lines 859–) keep parsing.
+open scoped InnerProductSpace
+
 namespace KakutaniFromBrouwer
 
 -- ============================================================
@@ -220,6 +227,9 @@ lemma exists_continuous_proj_convex {n : ℕ}
   -- inequality (`norm_eq_iInf_iff_real_inner_le_zero`) and Cauchy–Schwarz.
   -- Idempotency on `↥S` follows from the infimum being 0 when `x ∈ S`.
   classical
+  -- v4.26.0: `le_ciInf` / `ciInf_le` now require an explicit `[Nonempty ↥S]`
+  -- instance rather than auto-deriving it from `S.Nonempty` in the proof body.
+  haveI : Nonempty ↥S := hS_ne.to_subtype
   have hS_complete : IsComplete S := hS_compact.isComplete
   have hexists : ∀ u : EuclideanSpace ℝ (Fin n),
       ∃ v ∈ S, ‖u - v‖ = ⨅ w : S, ‖u - w‖ :=
@@ -250,8 +260,10 @@ lemma exists_continuous_proj_convex {n : ℕ}
         ‖(r u₁ : EuclideanSpace ℝ (Fin n)) - (r u₂ : EuclideanSpace ℝ (Fin n))‖
           ≤ ‖u₁ - u₂‖ := by
       intro u₁ u₂
-      set v₁ : EuclideanSpace ℝ (Fin n) := (r u₁ : _) with hv₁
-      set v₂ : EuclideanSpace ℝ (Fin n) := (r u₂ : _) with hv₂
+      -- v4.26.0: explicit `↑` is required for the `↥S → EuclideanSpace ℝ (Fin n)`
+      -- coercion in `set`'s RHS — bare `(r u₁ : _)` no longer auto-coerces.
+      set v₁ : EuclideanSpace ℝ (Fin n) := (↑(r u₁) : EuclideanSpace ℝ (Fin n)) with hv₁
+      set v₂ : EuclideanSpace ℝ (Fin n) := (↑(r u₂) : EuclideanSpace ℝ (Fin n)) with hv₂
       have h1 : ⟪u₁ - v₁, v₂ - v₁⟫_ℝ ≤ 0 := hVI u₁ v₂ (hr_mem u₂)
       have h2 : ⟪u₂ - v₂, v₁ - v₂⟫_ℝ ≤ 0 := hVI u₂ v₁ (hr_mem u₁)
       -- Algebraic identity: the sum of the two variational quantities equals
@@ -260,7 +272,9 @@ lemma exists_continuous_proj_convex {n : ℕ}
                 = ‖v₁ - v₂‖ ^ 2 - ⟪u₁ - u₂, v₁ - v₂⟫_ℝ := by
         have hself : ⟪v₁ - v₂, v₁ - v₂⟫_ℝ = ‖v₁ - v₂‖ ^ 2 :=
           real_inner_self_eq_norm_sq _
-        have hcomm : ⟪v₂, v₁⟫_ℝ = ⟪v₁, v₂⟫_ℝ := real_inner_comm v₂ v₁
+        -- v4.26.0: `real_inner_comm x y : ⟪y, x⟫ = ⟪x, y⟫` (the convention flipped
+        -- relative to the old call); swap arguments to recover the same equation.
+        have hcomm : ⟪v₂, v₁⟫_ℝ = ⟪v₁, v₂⟫_ℝ := real_inner_comm v₁ v₂
         simp only [inner_sub_left, inner_sub_right, hcomm] at hself
         simp only [inner_sub_left, inner_sub_right, hcomm]
         linarith [hself]
@@ -279,18 +293,19 @@ lemma exists_continuous_proj_convex {n : ℕ}
         exact le_of_mul_le_mul_right hsq' hpos
     -- Convert Lipschitz on the underlying value to continuity into ↥S.
     refine continuous_induced_rng.mpr ?_
-    have hg_dist : ∀ u₁ u₂ : EuclideanSpace ℝ (Fin n),
-        dist ((r u₁ : EuclideanSpace ℝ (Fin n)))
-             ((r u₂ : EuclideanSpace ℝ (Fin n)))
-          ≤ ((1 : ℝ≥0) : ℝ) * dist u₁ u₂ := by
+    -- v4.26.0: the original `dist (f u₁) (f u₂) ≤ ((1 : ℝ≥0) : ℝ) * dist u₁ u₂`
+    -- formulation triggers a `Type`-kind metavariable in the `≤` / `OfNat 0`
+    -- elaboration. Refactor: name the underlying function `f` and use
+    -- `LipschitzWith.mk_one` (the `K = 1` specialization of `of_dist_le_mul`)
+    -- which sidesteps the `ℝ≥0 → ℝ` cast entirely.
+    let f : EuclideanSpace ℝ (Fin n) → EuclideanSpace ℝ (Fin n) :=
+      fun u => Subtype.val (r u)
+    have hf_dist : ∀ u₁ u₂ : EuclideanSpace ℝ (Fin n),
+        dist (f u₁) (f u₂) ≤ dist u₁ u₂ := by
       intro u₁ u₂
-      rw [NNReal.coe_one, one_mul, dist_eq_norm, dist_eq_norm]
+      rw [dist_eq_norm, dist_eq_norm]
       exact hLip u₁ u₂
-    have hLipWith :
-        LipschitzWith 1 (fun u : EuclideanSpace ℝ (Fin n) =>
-                          ((r u : EuclideanSpace ℝ (Fin n)) :
-                            EuclideanSpace ℝ (Fin n))) :=
-      LipschitzWith.of_dist_le_mul hg_dist
+    have hLipWith : LipschitzWith 1 f := LipschitzWith.mk_one hf_dist
     exact hLipWith.continuous
   · -- Idempotency: `x ∈ S ⇒ r x = x`.
     intro x
