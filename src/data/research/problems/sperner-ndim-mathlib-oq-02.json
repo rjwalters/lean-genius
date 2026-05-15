@@ -1,7 +1,7 @@
 {
   "slug": "sperner-ndim-mathlib-oq-02",
   "title": "Use Sperner's lemma to prove Brouwer's fixed-point theorem in Lean 4",
-  "phase": "ACT",
+  "phase": "BLOCKED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "REFINE",
-    "since": "2026-05-06",
-    "iteration": 30,
-    "focus": "S30-prep-gdiag-path-odd (this PR, researcher-8, 2026-05-12, build pending — parent file build broken on origin/main since 2026-05-08 at t1_ne_t2/diagonal_in_t1_iff post-Mathlib drift): packaged the immediate corollary of S29-prep (gDiag, PR #17985, merged) — restated face2_path_odd's odd-cardinality conclusion using the top-level gDiag in place of its internal `let g`. New section N2GDiagPathOdd (1 private lemma, ~58 lines incl. header comment) inserted between N2DiagFin2Coloring (S29-prep) and the final end SpernerFreudSimp. New lemma: `face2_path_odd_gDiag : Odd ((Finset.range N).filter (fun k => gDiag N hN f hf_map k ≠ gDiag N hN f hf_map (k + 1))).card`. Two-line proof: `unfold gDiag; exact face2_path_odd N hN f hf_map`. gDiag's body is literally identical to face2_path_odd's local `g`, so the filter predicates coincide definitionally. Frees downstream consumers from re-unfolding the `let g` binding at every use site; composes with S29-prep's `gDiag_ne_iff_cN2_total_diag_ne` to give the eventual odd-count in cN2_total-form that S22's IsDoor color-change bridge consumes after S25's _hLastFace-filter ↔ satDiagBases correspondence. Independent of in-flight S23 (PR #17571, color-side wiring), S25-prep (PR #17621, gridPt coord helpers), and S28-prep-color-change-iff (PR #17984, if-shape ↔ cN2_total pointwise bridge).",
-    "blockers": [],
-    "nextAction": "S31 (final assembly path 1): combine face2_path_odd_gDiag (this PR) + gDiag_ne_iff_cN2_total_diag_ne (S29-prep) via Finset.filter_congr to obtain `Odd ((Finset.range N).filter (fun k => cN2_total (k, N - k) ≠ cN2_total (k + 1, N - (k + 1)))).card` directly. This is the cN2_total-form odd-count S22's IsDoor color-change bridge ultimately consumes after S25's satDiagBases ↔ _hLastFace-filter bijection via b ↦ b.1. ~10-15 lines. Alternative S31 path (using PR #17984): `cN2_diag_if_shape_ne_iff_cN2_total_ne` (when merged) + `face2_path_odd` directly — both routes are now feasible; the gDiag-form (this PR) is the cleaner one because it composes with S29-prep's structurally-equivalent gDiag_eq_iff_cN2_total_diag_eq lifting.",
+    "phase": "BLOCKED",
+    "since": "2026-05-14",
+    "iteration": 31,
+    "focus": "S30b STATE-SYNC (this PR, researcher-12, 2026-05-14): Docker-baseline of SpernerFreudenthalSimplex.lean on origin/main reveals 100+ errors (capped at 100 by maxErrors; 103 raw records; 56 distinct error lines spanning 73→1093). Parent file silently broken since ~2026-05-08; 20 merged + 3 open (build pending) PRs have accumulated on top of an unbuildable parent. STOP further PREP-on-PREP; ship error inventory for mechanic-agent consumption. No Lean ACT this session. Build log: .loom/logs/researcher-12-sperner-freud-baseline.log. Error inventory in sessions/2026-05-14-s30b-state-sync-...md (top 7 error classes by Mathlib v4.26.0 cause class).",
+    "blockers": [
+      "Parent-file build failure on origin/main: 100+ errors in SpernerFreudenthalSimplex.lean from Mathlib v4.26.0 API drift (since ~2026-05-08). Mechanic-agent scope. 20 merged + 3 open (build pending) PRs need rebase after parent repair lands."
+    ],
+    "nextAction": "Mechanic-agent claim: parent-file repair of SpernerFreudenthalSimplex.lean per the S30b STATE-SYNC error inventory. Top 7 error classes: (1) Finset.sum_eq_zero linarith-fact-filter narrowing (line 73), (2) anonymous-lambda binder-type inference (line 77), (3) Finset.min'_mem placeholder-synthesis cascade (line 118 ×12), (4) Type mismatch (line 135), (5) rw-pattern-not-found ×3 (lines 171, 232, 234), (6) omega usable-constraints narrowing ×6 (lines 226, 227, 308, 310, 1068, 1085), (7) cases-motive cascade (line 348 ×6). Start at line 73; raise maxErrors ceiling temporarily; budget 2-3 Docker iterations. STOP further research PREPs on this slug until parent builds clean. 3 open (build pending) PRs (#17571, #17621, #17984) need rebase/repair post-mechanic.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,

@@ -1,13 +1,37 @@
 # Current State
 
-**Phase**: REFINE
+**Phase**: REFINE → **ACT-BLOCKED at parent-file level (mechanic-scope flag)**
 **Since**: 2026-05-06
-**Last Updated**: 2026-05-12 (Iteration 30-prep-gdiag-path-odd, researcher-8)
-**Iteration**: 30-prep-gdiag-path-odd
+**Last Updated**: 2026-05-14 (S30b STATE-SYNC, researcher-12)
+**Iteration**: 30b-state-sync-docker-baseline
 
-## Current Focus
+## Current Focus (S30b STATE-SYNC, 2026-05-14, researcher-12)
 
-Session 30-prep-gdiag-path-odd (this iteration, researcher-8,
+**Docker-baseline of `proofs/Proofs/SpernerFreudenthalSimplex.lean` on
+origin/main reveals 100+ errors** (capped at 100 by `maxErrors`; 103 raw
+records; 56 distinct error lines spanning 73 to 1093). The parent file has
+been silently broken since ~2026-05-08, and **20 merged "(build pending)"
+PRs + 3 still-open "(build pending)" PRs** have accumulated on top of an
+unbuildable parent. This is exactly the silent-parent-regression pattern
+flagged in researcher memory; the correct response is to halt further
+PREPs and let the mechanic-agent fix the parent.
+
+**No Lean ACT this session.** This STATE-SYNC ships an error inventory
+(top 7 error classes, line:col positions, likely Mathlib v4.26.0 causes)
+in `sessions/2026-05-14-s30b-state-sync-docker-baseline-100-error-mechanic-flag.md`
+for the mechanic agent to consume.
+
+**Build log**: `.loom/logs/researcher-12-sperner-freud-baseline.log`.
+
+**Recommended next action**:
+- Future researchers: **STOP** claiming this slug until the mechanic repair
+  lands. Any S31+ PREP would compound the chain.
+- Mechanic agent: claim this slug; start at line 73; fix-and-rebuild loop
+  with `maxErrors` ceiling raised; budget 2-3 Docker iterations.
+
+## Prior Focus (S30-prep-gdiag-path-odd, 2026-05-12, researcher-8 — pre-baseline)
+
+Session 30-prep-gdiag-path-odd (researcher-8,
 2026-05-12, build pending — parent file build broken on
 origin/main since 2026-05-08 at `t1_ne_t2`/`diagonal_in_t1_iff`
 post-Mathlib drift): Packaged the immediate corollary of S29-prep
