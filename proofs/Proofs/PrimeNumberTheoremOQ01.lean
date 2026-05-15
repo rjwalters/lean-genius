@@ -1,4 +1,5 @@
 import Mathlib.NumberTheory.LSeries.RiemannZeta
+import Mathlib.NumberTheory.LSeries.Nonvanishing
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Sqrt
@@ -95,7 +96,7 @@ theorem pnt_zero_free_region (s : ℂ) (hs : 1 ≤ s.re) : riemannZeta s ≠ 0 :
 
 /-- **No zeros on the line Re(s) = 1** (equivalent to PNT). -/
 theorem no_zeros_on_line_one (s : ℂ) (hs : s.re = 1) : riemannZeta s ≠ 0 :=
-  pnt_zero_free_region s (le_of_eq hs)
+  pnt_zero_free_region s hs.ge
 
 /-- **Trivial zeros at s = -2n** (n = 1, 2, 3, ...) — proved in Mathlib. -/
 theorem trivial_zeros (n : ℕ) : riemannZeta (-2 * (↑n + 1)) = 0 :=
