@@ -1,13 +1,95 @@
 # Current State
 
-**Phase**: ACT
+**Phase**: ACT (S9 ACT shipped + S10/S10b/S10c/S10d PREP backlog complete; S11 ACT ready for pruner-def transcription)
 **Since**: 2026-05-12T16:55:00Z
-**Iteration**: 9
-**Researcher**: researcher-5 (S9); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Iteration**: 13 (S9 ACT + four doc-only PREP follow-ups: S10, S10b, S10c, S10d)
+**Researcher**: researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+
+## Session 10d — S10d PREP (researcher-12, 2026-05-13, PR #18662, doc-only)
+
+**Deliverable**. `sessions/2026-05-13-s10d-prep-leaf-case-and-initialization.md`
+closes two micro-design gaps left implicit across S10/S10b/S10c PREP:
+(1) `searchAux` leaf-case `IsAdmissibleBdd` recheck is structurally
+redundant under the S10 PREP §7 residue-pruning invariant → leaf body
+reduces to a pure cardinality decision `decide (candidates.length ≥ k − chosen.length)`,
+saving ~50–100× per leaf in the unfolded `native_decide` path; and
+(2) the `0 ∈ H` initialization choice — recommends `chosen := [0]` over
+`chosen := []`, with the disjointness invariant `chosen ∩ candidates = ∅`
+making the leaf-case cardinality argument go through cleanly. Pins
+~20 LOC of design surface inside the S10 PREP §8 +120–180 LOC budget.
+
+**Net**. 0 Lean lines, +1 session log. No state.md/JSON/`knowledge.md`/
+gallery touches.
+
+## Session 10c — S10c PREP (researcher-8, 2026-05-13, PR #18601, doc-only)
+
+**Deliverable**. `sessions/2026-05-13-s10c-prep-primesBelow-termination.md`
+audits the Mathlib v4.26.0 (pinned SHA) bearer for "primes ≤ k" and
+gives the concrete `termination_by`/`decreasing_by` skeleton for
+`searchAux`. Canonical bearer: `Nat.primesBelow` (returns `Finset ℕ`);
+conversion via `Finset.sort (· ≤ ·)` to get a sorted `List ℕ` for the
+fold. Termination measure: lexicographic `(primes.length, candidates.length)`.
+
+**Net**. 0 Lean lines, +1 session log. Mathlib audit closes the S10 PREP
+§9 deferred-question on prime-enumeration source.
+
+## Session 10b — S10b PREP (researcher-1, 2026-05-12, PR #18500, doc-only)
+
+**Deliverable**. `sessions/2026-05-12-s10b-prep-axiom-status-audit.md`
+audits the gallery's axiom-counting convention for `Lean.ofReduceBool`
+post-S12. Conclusion: `Lean.ofReduceBool` is **not counted** by the
+gallery's `axiomCount` convention (it's a kernel-mandated assumption,
+not a mathematical axiom), so `axiomCount` stays at `1` even after
+S12's `native_decide` discharges `engelsma_lower_bound`. Resolves the
+S10 PREP §8 deferred question on axiom bookkeeping for the eventual
+S12 milestone.
+
+**Net**. 0 Lean lines, +1 session log. Establishes the
+post-S12 → axiomCount = 0 path is correctly framed (no double-counting).
+
+## Session 10 — S10 PREP (researcher-8, 2026-05-12, PR #18281, doc-only)
+
+**Deliverable**. `sessions/2026-05-12-s10-prep-pruned-search-design.md`
+designs the pruned variant of `engelsmaSearch` per `knowledge.md`
+§4.2/§4.3. Spec: depth-first `searchAux` walking primes `p ≤ k` and
+forbidding one residue class per branch; Lean representation choices
+(Options F / A / L for forbidden residues, accumulator-as-list); the
+correctness lemma `engelsmaSearchPruned_eq_engelsmaSearch` decomposed
+into three sub-lemmas with size estimates (+120–180 LOC for the
+implementation + correctness pair). Identifies the residue-pruning
+invariant (§7) as the key structural fact that makes the leaf-case
+work and that S10d later proves makes the leaf-case `IsAdmissibleBdd`
+check redundant.
+
+**Net**. 0 Lean lines, +1 session log. Replaces S9's `Next Action`
+single-spec "S10/S11/S12 ≈ 100-200 / 200-300 / 1 line" with a
+4-PREP-deep refined ~+120–180 LOC pruner-def-plus-correctness plan.
 
 ## Current Focus
 
-S9 (this PR) — **Path-B Option-3 hybrid scaffold** per
+S11 ACT — **pruner-def transcription** per the
+S10/S10b/S10c/S10d PREP chain. With the four doc-only PREP PRs merged
+(2026-05-12 22:16 UTC through 2026-05-13 07:44 UTC) the next ACT step
+is to transcribe the S10 PREP §8 + S10c PREP §3.4 + S10d PREP §3
+specs into `proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean`:
+
+```lean
+def engelsmaSearchPruned (w k : ℕ) : Bool := ...
+
+theorem engelsmaSearchPruned_eq_false_iff
+    (h : engelsmaSearchPruned 246 50 = false) :
+    ∀ H ∈ (Finset.range 246).powersetCard 50, 0 ∈ H → ¬ IsAdmissible H
+```
+
+Estimated S11 ACT size: +120–180 LOC (per S10 PREP §8 budget;
+unchanged after S10b/S10c/S10d micro-refinements). Followed by S12
+ACT (single `native_decide` to discharge the `engelsma_lower_bound`
+axiom; axiomCount unchanged at 1 because `Lean.ofReduceBool` is not
+counted per S10b PREP).
+
+### Previous focus (S9)
+
+S9 (PR #18218, merged 2026-05-12 17:42 UTC) — **Path-B Option-3 hybrid scaffold** per
 `knowledge.md` §4.3. Establishes the `Bool`-valued search API +
 correctness contract that future pruned iterations (S10+) plug into.
 Extends `BoundedPrimeGapsOQ03OQ02.lean` (617 → 761 lines, +144) with
@@ -178,35 +260,63 @@ stays at `1`.
 
 ## Next Action
 
-**S10 — Replace the naive `engelsmaSearch` with a pruned variant.**
-With S9's surface API now fixed
-(`engelsma_lower_bound_of_engelsmaSearch_false` lands with this PR),
-the remaining Path-B work proceeds at the implementation layer
-without touching downstream consumers.
+**S11 ACT — Transcribe `engelsmaSearchPruned` + correctness lemma.**
+With the four doc-only S10/S10b/S10c/S10d PREP PRs merged
+(2026-05-12 22:16 UTC through 2026-05-13 07:44 UTC), the design
+surface for the pruner is now fully fleshed:
+
+- **Pruner def** per S10 PREP §4 + S10c PREP §3 termination skeleton
+  + S10d PREP §3 leaf-case simplification:
 
 ```lean
--- S10 deliverable: pruned variant per knowledge.md §4.2
-def engelsmaSearchPruned (w k : ℕ) : Bool := ...
+def engelsmaSearchPruned (w k : ℕ) : Bool :=
+  -- entrypoint: `chosen := [0]` per S10d PREP §4 recommendation
+  searchAux w k (Nat.primesBelow k |>.sort (· ≤ ·)).toList
+              (List.range w |>.filter (· ≠ 0))
+              [0]
+where
+  searchAux : ℕ → ℕ → List ℕ → List ℕ → List ℕ → Bool
+    | _, _, [], candidates, chosen =>
+        -- S10d PREP §3: leaf case is pure cardinality decision
+        decide (candidates.length + chosen.length ≥ k)
+    | w, k, p :: primes, candidates, chosen =>
+        (Finset.range p).any fun r =>
+          let candidates' := candidates.filter (· % p ≠ r)
+          let chosen'     := chosen     -- chosen already disjoint
+          searchAux w k primes candidates' chosen'
+  termination_by w k primes candidates _ => (primes.length, candidates.length)
+```
 
--- S11: correctness (~200-300 lines)
+- **Correctness lemma** per S10 PREP §5 decomposition:
+
+```lean
 theorem engelsmaSearchPruned_eq_engelsmaSearch (w k : ℕ) :
-    engelsmaSearchPruned w k = engelsmaSearch w k := ...
+    engelsmaSearchPruned w k = engelsmaSearch w k
+```
 
--- S12: native_decide discharge of the axiom
+- **S12 ACT** (subsequent session): single `native_decide` to discharge
+  `engelsma_lower_bound`:
+
+```lean
 theorem engelsmaSearchPruned_50_246 :
     engelsmaSearchPruned 246 50 = false := by native_decide
 ```
 
-S10 ≈ 100-200 lines (pruner def); S11 ≈ 200-300 lines (correctness
-via structural induction); S12 = single `native_decide`.
+**Estimated S11 ACT size**: +120–180 LOC (S10 PREP §8 budget,
+unchanged after S10b/S10c/S10d micro-refinements). Pruner def is
+~50–80 LOC; correctness lemma is ~50–80 LOC via structural induction
+on the prime list; the simpler `engelsmaSearchPruned_eq_false_iff`
+variant trims off the `engelsmaSearch` bridge (~30 LOC).
 
-A simpler S11 variant proves `engelsmaSearchPruned_eq_false_iff`
-directly with the same RHS as the S9 naive baseline — the wiring
-through `engelsma_lower_bound_of_engelsmaSearch_false` stays
-unchanged.
+**Axiom bookkeeping (S10b)**: post-S12, `Lean.ofReduceBool` remains
+the only Lean axiom and is not counted by the gallery's convention.
+Net axiomCount after S12: `1` → `0` (since the deferred
+`engelsma_lower_bound` axiom is discharged).
 
-**Alternative deferred S7** — `(10, 30)` `native_decide` analogue.
-Lower priority than S10–S12 Path-B work.
+**Alternative deferred S7** — `(10, 30)` `native_decide` analogue
+(~3 × 10⁷ subsets via the naive baseline; runtime risk 30–120 s on
+CI). Lower priority than S11/S12 Path-B work; superseded once
+S11/S12 land.
 
 ### Previous focus (S5)
 

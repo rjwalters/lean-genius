@@ -29,10 +29,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T16:55:00Z",
-    "iteration": 9,
-    "focus": "S9 (this PR) — Path-B Option-3 hybrid scaffold per knowledge.md §4.3. Three new top-level declarations in BoundedPrimeGapsOQ03OQ02.lean (+144 lines): (i) def engelsmaSearch (w k : ℕ) : Bool — naive decide-backed admissibility search; (ii) theorem engelsmaSearch_eq_false_iff — Bool/Prop bridge equating engelsmaSearch w k = false with the finitary form (proven via decide_eq_false_iff_not + simp [not_exists, not_and]); (iii) theorem engelsma_lower_bound_of_engelsmaSearch_false — composes (ii) with S8's engelsma_lower_bound_of_finitary to reduce the axiom statement to a single Bool equation engelsmaSearch 246 50 = false. Plus a positive unit test engelsmaSearch_7_3_eq_true via native_decide (35 subsets; witnessed by {0, 2, 6}). lineCount 617 → 761 (+144); theoremCount 20 → 23 (+3 theorems); defCount 1 → 2 (+1 def); axiomCount stays at 1 (Lean.ofReduceBool reused for the unit test). 0 sorries. The naive engelsmaSearch is intractable at (50, 246); shipped here as the surface API that future pruned variants (S10+) replace in-place. Build pending; the .lake symlink trap blocks local Docker verification.",
+    "iteration": 13,
+    "focus": "S9 ACT shipped + S10/S10b/S10c/S10d PREP backlog complete; S11 ACT ready. S9 (PR #18218, merged 2026-05-12 17:42 UTC, researcher-5) — Path-B Option-3 hybrid scaffold per knowledge.md §4.3: surface API `engelsmaSearch (w k : ℕ) : Bool` + Bool/Prop bridge + composition with S8's `engelsma_lower_bound_of_finitary` (+144 LOC). Four doc-only PREP PRs over the next 19h refined the pruner-def design: S10 PREP (PR #18281, researcher-8, 2026-05-12) — pruned-search algorithmic skeleton, Lean rep choice, correctness-lemma decomposition, +120–180 LOC budget; S10b PREP (PR #18500, researcher-1, 2026-05-12) — post-S12 axiom-status audit, `Lean.ofReduceBool` not counted by gallery convention; S10c PREP (PR #18601, researcher-8, 2026-05-13) — `Nat.primesBelow` canonical bearer + `searchAux` termination_by/decreasing_by skeleton at Mathlib v4.26.0; S10d PREP (PR #18662, researcher-12, 2026-05-13) — `searchAux` leaf-case `IsAdmissibleBdd` recheck is redundant under residue-pruning invariant (pure cardinality decision, ~50–100× speedup) + `chosen := [0]` initialization choice. All four PREPs are doc-only session logs in `sessions/`; state.md and JSON lagged at S9 until this STATE-SYNC. Lean file unchanged (still 761 LOC, 1 axiom, 0 sorries at S9 ACT tip).",
     "blockers": [],
-    "nextAction": "S10 — Replace the naive engelsmaSearch with a pruned variant engelsmaSearchPruned per knowledge.md §4.2 (branch on permitted residue r in Fin p for each small prime p, recursing into S_{p,r}). Use Array Nat or List Nat runtime representation per §4.5. ~100-200 lines for the pruned def alone. S11 = correctness via structural induction (~200-300 lines); S12 = engelsmaSearchPruned 246 50 = false := by native_decide (final discharge). Alternative deferred S7 — (10, 30) native_decide analogue.",
+    "nextAction": "S11 ACT — transcribe pruner def + correctness lemma per S10/S10b/S10c/S10d PREP chain into `proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean`. Pruner def (`engelsmaSearchPruned`): ~50–80 LOC, entrypoint `chosen := [0]` (S10d §4), termination measure `(primes.length, candidates.length)` (S10c §3.4), leaf-case pure cardinality decision (S10d §3). Correctness lemma (`engelsmaSearchPruned_eq_engelsmaSearch` or the simpler `_eq_false_iff` variant): ~50–80 LOC via structural induction on the prime list. Total S11 estimate: +120–180 LOC. Followed by S12 ACT — single `native_decide` for `engelsmaSearchPruned 246 50 = false`, discharging `engelsma_lower_bound`. Net axiomCount after S12: 1 → 0 (per S10b: `Lean.ofReduceBool` not counted). Build verification — re-run docker-build on S11 ACT tip; current S9 ACT tip is in the 7-PR `(build pending)` chain so a build-verify session may surface regressions per `feedback_researcher_build_pending_slug_series_silent_parent_regression.md` (≥4-PR chain rule).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -127,7 +127,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.561Z",
-  "lastUpdate": "2026-05-12T16:55:00Z",
+  "lastUpdate": "2026-05-14T03:40:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
