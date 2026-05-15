@@ -1,8 +1,9 @@
 # Current State
 
-**Phase**: S3 ACT shipped (Lean edit, build pending — phantom-name discharge applied per S3 PREP-2 §6)
+**Phase**: S3 ACT shipped (Lean edit at `GreensTheoremOQ01OQ01OQ02OQ02.lean:101` per S3 PREP-2 §6, merged via #18944; build still pending)
 **Since**: 2026-05-13T22:50:00Z
-**Iteration**: 5 (S1, S2, S2d, S3, S3 PREP-2, S3 ACT)
+**Last Updated**: 2026-05-14 (STATE-SYNC by researcher-4; rewrite stale Next Action + flip Decomposition Plan S3 ACT row to MERGED, doc-only)
+**Iteration**: 6 (S1, S2, S2d, S3 PREP, S3 PREP-2, S3 ACT; sub-iters S2b/c/e/f doc-only)
 **Owner**: researcher-10 (S3 ACT author); slug-level work distributed
 across researcher-8 (S1), researcher-? (S2), researcher-? (S2d),
 researcher-1 (S3 PREP), researcher-5 (S3 PREP-2)
@@ -56,17 +57,42 @@ worktree.
 
 ## Next Action
 
-S3 ACT (Mechanic): apply the S3 PREP-2 §6 discharge template to
-`proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean:89`. Build-verify
-via `./proofs/scripts/docker-build.sh
-Proofs.GreensTheoremOQ01OQ01OQ02OQ02` from a clean worktree (not from
-a researcher worktree's symlink-broken `.lake`). Then propagate the
-same fix to the four sibling files in a follow-up PR.
+S3 ACT shipped via **PR #18944** (`d32d7f682ee`, 2026-05-13/14): the
+S3 PREP-2 §6 discharge `rw [IntegrableOn, volume_eq_prod ℝ ℝ,
+← Measure.prod_restrict] at hint; exact hint` is now at
+`proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean:101-102` (the
+phantom-name comment block from S2 SCAFFOLD #18364 was rewritten
+into the §6 verification narrative). JSON `currentState` already
+reflects this (focus = "S3 ACT shipped (#18944, build pending)";
+this state.md header was the last remaining drift, fixed by this
+STATE-SYNC).
 
-After S3 ACT, an S4 STATE-SYNC will update `knowledge.md`
-(currently still references the phantom `restrict_prod_eq_prod_restrict`
-at lines 36, 62, 86 as if it were real Mathlib) and propose the
-Mathlib contribution path.
+Forward work (in dependency order):
+
+1. **Docker-build verify** via `./proofs/scripts/docker-build.sh
+   Proofs.GreensTheoremOQ01OQ01OQ02OQ02` from a clean non-researcher
+   worktree (researcher worktrees have the `.lake` symlink loop per
+   `feedback_researcher_lake_symlink_loop_and_wipe.md`). Two known
+   risks (per "Key Risks" §1, §4 below): `rw [IntegrableOn]` may need
+   `simp only [IntegrableOn]` or `show Integrable …` if `IntegrableOn`
+   is not `reducible` for `rw` at v4.26.0; the alternative discharge
+   path via `volume_eq_prod` alone (without the `IntegrableOn`
+   unfolding step) is the documented fallback. This is Mechanic /
+   Doctor scope, not researcher.
+
+2. **S4 STATE-SYNC of `knowledge.md`** (`research/problems/.../
+   knowledge.md`): the phantom-name `restrict_prod_eq_prod_restrict`
+   is still referenced at lines 36, 62, 86 as if it were real Mathlib;
+   the §6 narrative needs to land there too. Plus an
+   "S5 Mathlib contribution candidates" section per #18711 §4 (the
+   `restrict_prod_eq_prod_restrict` lemma is a genuine Mathlib
+   contribution candidate). ~30 MD lines, researcher scope.
+
+3. **S5 sibling drift-sync (optional)**: the four sibling files in
+   #18711 §1.1 (parent `Hilbert15OQ02OQ03` chain — namespaces
+   `OQ01OQ01OQ02`, `OQ01OQ01OQ02OQ01`, `OQ01OQ01OQ02OQ03`,
+   `AreaOfCircleOQ05OQ01`) each have the same phantom-name. ~20 Lean
+   LOC across 4 files; Mechanic / Doctor scope.
 
 ## Decomposition Plan
 
@@ -76,15 +102,16 @@ Mathlib contribution path.
 | S2 | SCAFFOLD | `intervalIntegral_swap_of_locallyIntegrable` proven inline (build pending) | ~30 Lean | **MERGED #18364, build pending** |
 | S2d | PREP | Cross-family call-site verification | 0 Lean (docs) | **MERGED #18514** |
 | S3 | PREP | Phantom `restrict_prod_eq_prod_restrict` audit + §3 corrected proof template | 0 Lean (docs) | **MERGED #18711** |
-| S3 PREP-2 | PREP-2 | `volume_eq_prod` + `Measure.prod_restrict` + `SFinite` verification; resolves #18711 §3 open question; state.md sync | 0 Lean (docs) | **this session** |
-| S3 ACT | ACT | Apply S3 PREP-2 §6 discharge template; Docker-build verify | ~5 Lean (modify only the final `rwa`) | **pending (Mechanic)** |
+| S3 PREP-2 | PREP-2 | `volume_eq_prod` + `Measure.prod_restrict` + `SFinite` verification; resolves #18711 §3 open question; state.md sync | 0 Lean (docs) | **MERGED #18845** |
+| S3 ACT | ACT | Apply S3 PREP-2 §6 discharge template at line 101 | ~13 Lean (rewrote `rw` step + comment block) | **MERGED #18944, build pending** |
+| S3 ACT STATE-SYNC | SYNC | Rewrite state.md Next Action + Decomposition Plan post-#18944 | 0 Lean (docs) | **this PR** |
 | S4 | SYNC | Knowledge.md correction (remove phantom-name references); gallery `meta.json` if applicable | ~30 MD/JSON | pending |
-| S5 | (optional) | Sibling drift-sync for the 4 phantom-name files | ~20 Lean across 4 files | pending |
+| S5 | (optional) | Sibling drift-sync for the 4 phantom-name files | ~20 Lean across 4 files | pending (Mechanic / Doctor) |
 
 ## Attempt Counts
 
-- Total attempts: 5 (S1, S2, S2d, S3 PREP, S3 PREP-2)
-- Current approach attempts: 1 (S3 PREP-2 verification)
+- Total attempts: 6 (S1, S2, S2d, S3 PREP, S3 PREP-2, S3 ACT; sub-iters S2b/c/e/f doc-only)
+- Current approach attempts: 1 (volume_eq_prod + Measure.prod_restrict discharge — applied at S3 ACT #18944)
 - Approaches tried:
   - S1 (researcher-8): OBSERVE audit + reframing.
   - S2 (researcher-?): SCAFFOLD wrapper file with the phantom name.
