@@ -242,16 +242,7 @@ theorem isProP_conj_map (hpf : IsProfiniteGroup G) (H : Subgroup G) (g : G) (p :
   use k
   rw [show N.index = N'.index from ?_]
   · exact hk
-  · unfold Subgroup.index
-    apply Nat.card_congr
-    exact Quotient.congr φ.toEquiv (fun a b => by
-      simp only [QuotientGroup.leftRel_apply]
-      show a⁻¹ * b ∈ N.comap φ.toMonoidHom ↔
-        (φ.toEquiv a)⁻¹ * (φ.toEquiv b) ∈ N
-      rw [Subgroup.mem_comap]
-      constructor
-      · intro h; rwa [map_mul, map_inv] at h
-      · intro h; rw [map_mul, map_inv]; exact h)
+  · exact (Subgroup.index_comap_of_surjective N φ.surjective).symm
 
 /-- Conjugating a Sylow pro-p subgroup produces another Sylow pro-p subgroup. -/
 noncomputable def SylowProP.conjBy (P : SylowProP G p) (g : G)
@@ -262,7 +253,6 @@ noncomputable def SylowProP.conjBy (P : SylowProP G p) (g : G)
   isMaximal := by
     intro H hHclosed hHprop hcontains
     have key : H.map (MulAut.conj g⁻¹).toMonoidHom = P.toSubgroup := by
-      symm
       apply P.isMaximal (H.map (MulAut.conj g⁻¹).toMonoidHom)
         (isClosed_conj_map hpf H g⁻¹ hHclosed)
         (isProP_conj_map hpf H g⁻¹ p hHprop)
@@ -272,12 +262,13 @@ noncomputable def SylowProP.conjBy (P : SylowProP G p) (g : G)
         hcontains (Subgroup.mem_map.mpr ⟨x, hx, rfl⟩),
         by simp [MulAut.conj_apply]; group⟩
     have step := congr_arg (fun K => K.map (MulAut.conj g).toMonoidHom) key
+    dsimp only at step
     rw [Subgroup.map_map] at step
     have hcomp : (MulAut.conj g).toMonoidHom.comp (MulAut.conj g⁻¹).toMonoidHom =
         MonoidHom.id G := by
       ext x; simp [MulAut.conj_apply]; group
     rw [hcomp, Subgroup.map_id] at step
-    exact step.symm
+    exact step
 
 end ConjugateSylow
 
