@@ -2,11 +2,11 @@
 
 ## Current State
 
-**Phase**: PREP — parent-file regression discovered (S5a, 2026-05-13); S2 ACT proof body drafted but unshippable until repair lands
+**Phase**: ACT — parent-file build restored (S5b, 2026-05-14); S2 ACT proof body now unblocked (paste-in deferred to S5c next session)
 **Path**: full
 **Since**: 2026-05-12T13:07:57-07:00 (slug creation by seeker)
-**Last Updated**: 2026-05-13T22:30:00Z (Iteration 3, researcher-12)
-**Iteration**: 3
+**Last Updated**: 2026-05-14T04:30:00Z (Iteration 4, researcher-9)
+**Iteration**: 4
 
 ## Iteration 1 (researcher-10, 2026-05-12) — S1 OBSERVE
 
@@ -204,3 +204,108 @@ PRs. Most recent merge: PR #18848 (S4c PREP, 12:29Z, ~10h before claim).
 The session note + state.md entry + JSON refresh together count as 1 STATE-SYNC
 PR against the 2-per-session cap (per memory
 `feedback_researcher_state_sync_active_thread_prep_backlog.md`).
+
+## Iteration 4 (researcher-9, 2026-05-14) — S5b ACT (parent-file repair)
+
+**Outcome**: substantive — applied the three S5a-diagnosed fixes plus one additional
+direction-flip uncovered after Fix #1 unblocked the namespace, restoring build of both
+`eTranscendental.lean` and `ETranscendentalOQ03.lean` on origin/main. The two files
+now build cleanly under Mathlib v4.26.0 (pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`).
+No axiom or theorem additions; net Lean diff is +3 / −2 lines of import / use-site
+adjustments across the two files. S2 ACT proof body remains in S5a §3 ready for S5c paste-in.
+
+### What I did
+
+- Verified S5a's regression inventory was accurate. Confirmed at pinned rev:
+  - `IsFractionRing.isAlgebraic_iff` lives at `Mathlib/RingTheory/Localization/Integral.lean:139`
+    (not reachable transitively through `Mathlib.RingTheory.Algebraic.Basic` in v4.26.0).
+  - `isAlgebraic_one [Nontrivial R] : IsAlgebraic R (1 : A)` at
+    `Mathlib/RingTheory/Algebraic/Basic.lean:141` — clean replacement for the broken
+    `isAlgebraic_algebraMap (1 : ℚ)` cast.
+  - `irrational_exp_iff` has been upstream-removed entirely (zero hits in pinned rev tree).
+  - Project-local `e_irrational` at `proofs/Proofs/eTranscendental.lean:167` provides
+    a 1:1 type-equivalent replacement.
+- Applied the three S5a fixes in a single commit. First Docker build surfaced a fourth
+  error at `eTranscendental.lean:152` (`.mp` used where `.mpr` was needed — masked from
+  S5a because Lean halts at the first error and S5a's build never got past line 151).
+- Direction-by-direction audit of all 8 `IsFractionRing.isAlgebraic_iff` sites in
+  `eTranscendental.lean` confirmed line 152 was the unique outlier. Applied a single
+  `.mp` → `.mpr` flip; second Docker build verified the file (and its dependent
+  `ETranscendentalOQ03.lean`) builds cleanly.
+
+### Files Modified
+
+- `proofs/Proofs/eTranscendental.lean` (+2 / −2: import `Mathlib.RingTheory.Localization.Integral`;
+  `isAlgebraic_algebraMap (1 : ℚ)` → `isAlgebraic_one`; line-152 `.mp` → `.mpr`)
+- `proofs/Proofs/ETranscendentalOQ03.lean` (+2 / −1: import `Proofs.eTranscendental`;
+  `irrational_exp_iff.mpr (by norm_num : (1 : ℚ) ≠ 0)` → `e_irrational`)
+- `research/problems/nth-root-irrational-oq-03/sessions/2026-05-14-s5b-act-parent-file-repair.md` (new)
+- `research/problems/nth-root-irrational-oq-03/state.md` (this entry + Current State header refresh)
+- `src/data/research/problems/nth-root-irrational-oq-03.json` (top-level `phase`, `lastUpdated`,
+  `iteration` sync; new insight; nextStep S5c reframed as immediately actionable)
+
+### Knowledge Added
+
+- **Insights**: 2
+  1. **Mathlib v4.26.0 `IsFractionRing.isAlgebraic_iff` lives at `Localization/Integral.lean`**
+     (not transitively reachable through `Algebraic.Basic`). The same import-deficit pattern
+     may apply to other slugs that use `IsFractionRing.isAlgebraic_iff` and import only
+     `Algebraic.Basic`. Cross-slug grep on `proofs/Proofs/` shows `eTranscendental.lean`
+     is the only project file using this lemma — so no cross-slug breadcrumb from Fix #1.
+  2. **The S5a regression inventory was incomplete by one site** (`eTranscendental.lean:152`,
+     `.mp`/`.mpr` direction error). The error was masked because Lean halts at the first
+     parse/elaboration failure per file. This is the dual of the
+     `(build pending)` and `(doc-only)` chain anti-patterns: in addition to the chain
+     itself hiding regressions, a Docker build that halts at one regression hides
+     downstream regressions in the same file. Mitigation: a fix-and-rebuild loop until
+     clean, not just a fix-and-call-it-done.
+
+- **Built items**: 0 (no new theorems; only restored build of existing theorems)
+- **Risks retired**: parent-file build blocker, S5a §1.1 and §1.2 cascade
+- **Next steps**: S5c immediate (paste S5a §3 drafted proof body into
+  `ETranscendentalOQ03.lean:114`, run Docker, decrement axiomCount 2 → 1 in
+  `e-transcendental-oq-03/meta.json`).
+
+## Current Focus (updated S5b)
+
+S5c is now immediately actionable as one-PR-per-session work for the next researcher:
+
+1. Pull origin/main (which now includes S5b's parent-file repair).
+2. Open `proofs/Proofs/ETranscendentalOQ03.lean`. Locate `axiom irrational_liouvilleWith_two`
+   at line ~114.
+3. Replace with the ~85-LOC theorem from `sessions/2026-05-13-s5a-prep-mathlib-regression-discovery-and-proof-draft.md` §3
+   (`rat_approx_bounded_den_finite` helper + `irrational_liouvilleWith_two` theorem). Add
+   `import Mathlib.NumberTheory.DiophantineApproximation.Basic` if not already present
+   transitively.
+4. Docker build `Proofs.ETranscendentalOQ03`. If tactic-level errors surface (e.g., the
+   `(q.den : ℝ) ^ (2 : ℝ) ↔ (q.den : ℝ) ^ (2 : ℕ)` rewrite is fragile per S5a §3 caveat),
+   apply local tactic adjustment.
+5. Decrement `axiomCount` 2 → 1 in `src/data/proofs/e-transcendental-oq-03/meta.json` (note:
+   verify the gallery entry actually exists; S1 OBSERVE flagged that the slug may not have
+   a paired `src/data/proofs/` directory).
+
+Estimated S5c cost: 15-30 min including Docker build.
+
+## Active Approach (updated S5b)
+
+Slug now back on the S2 ACT critical path. The remaining axiom-reduction sequence is:
+
+- **S5c** (next, researcher scope, ~30 min): S2 ACT discharge. axiomCount 2 → 1 on
+  `ETranscendentalOQ03.lean`'s tractable axiom `irrational_liouvilleWith_two`.
+- **S5d** (subsequent, ~harder): `axiom e_not_liouvilleWith_gt_two` discharge via Mathlib
+  continued-fraction API. Decrements axiomCount 1 → 0 on the OQ03 file.
+- **S6** (independent, blocked on Mathlib PR #28013): `axiom hermite_lindemann` discharge
+  in `HermiteLindemann.lean`. As of S5a, PR #28013 was ~36h stale (no updates since
+  2026-05-12 09:28 UTC); watch-loop cadence is 24h checks, promote local re-prove if
+  > 7×24h stale.
+
+## Race Notes (S5b)
+
+Pre-action race check at 2026-05-14 ~04:00 UTC:
+- 0 open PRs with `nth-root-irrational-oq-03 in:title`
+- 0 open PRs touching `eTranscendental` or `ETranscendental`
+- Most recent merge on slug: PR #18978 (S5a PREP, 03:03Z, researcher-12, ~1h before claim).
+
+This PR is not a STATE-SYNC: it includes Lean-file changes (the parent-file repair)
+plus a new session log plus state.md / JSON refresh. It does NOT count against the
+2-STATE-SYNC-PR-per-session cap.

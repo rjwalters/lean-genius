@@ -1,4 +1,5 @@
 import Mathlib.RingTheory.Algebraic.Basic
+import Mathlib.RingTheory.Localization.Integral
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.Analysis.SpecialFunctions.Complex.Analytic
 import Mathlib.Data.Real.Irrational
@@ -148,7 +149,7 @@ axiom e_transcendental : Transcendental ℤ (Real.exp 1)
     Derived from e_transcendental (over ℤ) via IsFractionRing.isAlgebraic_iff:
     IsAlgebraic ℚ x ↔ IsAlgebraic ℤ x for the fraction ring ℤ ⊂ ℚ. -/
 theorem e_transcendental_over_rationals : Transcendental ℚ (Real.exp 1) :=
-  fun halg => e_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg)
+  fun halg => e_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr halg)
 
 -- ============================================================
 -- PART 5: Corollaries
@@ -222,7 +223,7 @@ theorem e_inv_transcendental : Transcendental ℤ (Real.exp 1)⁻¹ := e_inv_tra
 theorem e_plus_one_transcendental_axiom : Transcendental ℤ (Real.exp 1 + 1) := by
   intro halg
   have hq : IsAlgebraic ℚ (Real.exp 1 + 1) := (IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mp halg
-  have h1 : IsAlgebraic ℚ (1 : ℝ) := isAlgebraic_algebraMap (1 : ℚ)
+  have h1 : IsAlgebraic ℚ (1 : ℝ) := isAlgebraic_one
   have he : IsAlgebraic ℚ (Real.exp 1) := by
     have := hq.sub h1; rwa [add_sub_cancel_right] at this
   exact e_transcendental ((IsFractionRing.isAlgebraic_iff ℤ ℚ ℝ).mpr he)
