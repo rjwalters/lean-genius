@@ -20,9 +20,9 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
-    "lineCount": 225,
-    "assumptions": "0 sorries, 0 axioms in this file. The parent `Proofs/KeplerConjecture.lean` axiomatizes (a) `thues_theorem` (2D hexagonal optimality, Thue 1892 / Fejes Tóth 1940), (b) `fccDensity_lt_one` (numerical bound), and (c) the Kepler conjecture itself (Hales 1998, Flyspeck 2014). This OQ-04 file adds no new axioms — it defines the Chen-Engel-Glotzer rational constant 4000/4671 and the `tetrahedronDimerPacking : PackingDensity` instance, and proves five theorems including `tetrahedronDimerDensity_gt_fccDensity` (the central refutation `π/(3√2) < 4000/4671`, via `Real.pi_lt_315` and `Real.lt_sqrt`, axiom-free) and the existential corollary `exists_packingDensity_gt_fcc`. The ellipsoid (Bezdek-Kuperberg) and Ulam (open conjecture) sub-questions will require axiomatization when introduced in future iterations.",
+    "axiomCount": 1,
+    "lineCount": 321,
+    "assumptions": "0 sorries, 1 axiom in this file (`bezdek_kuperberg_ellipsoid_lattice_upper_bound`, the Bezdek-Kuperberg 2007 statement that every ellipsoid lattice packing in ℝ³ has density at most the FCC sphere density). The parent `Proofs/KeplerConjecture.lean` separately axiomatizes (a) `thues_theorem` (2D hexagonal optimality, Thue 1892 / Fejes Tóth 1940), (b) `fccDensity_lt_one` (numerical bound), and (c) the Kepler conjecture itself (Hales 1998, Flyspeck 2014). This OQ-04 file defines the Chen-Engel-Glotzer rational constant 4000/4671, the `tetrahedronDimerPacking : PackingDensity` instance, and the `EllipsoidLatticePacking` wrapper structure, and proves six theorems: `tetrahedronDimerDensity_pos`, `tetrahedronDimerDensity_lt_one`, `tetrahedronDimerDensity_gt_8563`, `tetrahedronDimerDensity_gt_fccDensity` (the central refutation `π/(3√2) < 4000/4671`, via `Real.pi_lt_d2` and `Real.lt_sqrt`, axiom-free), the existential corollary `exists_packingDensity_gt_fcc`, and `ellipsoid_lattice_le_fccPacking` (derived from the Bezdek-Kuperberg axiom). The Ulam (open conjecture) sub-question will require axiomatization when introduced in a future iteration.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
       {
@@ -131,6 +131,6 @@
       "relationship": "Adjacent discrete-geometric machinery. Ehrhart theory counts lattice points in dilations of a convex polytope, complementing the *volumetric* density theory of Kepler/Hales. Both frameworks share the convex-body-in-ℝᵈ setting, and Ehrhart's `tDilateLatticePoints` polynomial encodes (in the limit) the same kind of asymptotic density information that packing arguments exploit. The 4000/4671 dimer construction is itself a polytopal arrangement — its unit cell counts naturally interface with Ehrhart-style techniques."
     }
   ],
-  "theoremCount": 5,
+  "theoremCount": 6,
   "definitionCount": 2
 }
