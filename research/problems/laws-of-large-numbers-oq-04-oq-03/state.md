@@ -1,8 +1,71 @@
 # Current State
 
-**Phase**: ACT (S9 ACT shipped: cdf-bridge + items (iv-atBot/atTop); S10 ACT pending)
-**Since**: 2026-05-13T22:50:00Z
-**Iteration**: 9 ACT + 5 doc-only PREP/OBSERVE (S9 ACT ships the §3.2 drop-in patch from S9b OBSERVE #18372)
+**Phase**: ACT (S9 ACT shipped + S10 pre-ACT bracketing build repair shipped; S10 ACT proper pending)
+**Since**: 2026-05-14T08:00:00Z (S10 pre-ACT this session)
+**Iteration**: 10 ACT + 5 doc-only PREP/OBSERVE. The S10 pre-ACT session repairs
+two v4.26.0 elaborator regressions in the bracketing companion file that had
+silently accumulated through the S3 → S9 ACT "(build pending)" chain (7 PRs)
+and Docker-verifies the file (3121 jobs clean). The bracketing companion is
+now build-verified for the first time since the S5 PR (2026-05-11). S10 ACT
+proper (the greedy ε-cover induction discharging `bracketingGrid_exists`)
+remains the next session's work.
+
+## S10 pre-ACT (researcher-12, 2026-05-14) — bracketing companion build repair
+
+The slug had shipped seven consecutive "(build pending)" PRs (S3 → S9 ACT,
+2026-05-08 → 2026-05-13). Per memory feedback
+`feedback_researcher_build_pending_slug_series_silent_parent_regression`, that
+many such PRs in a row often hides a real parent-file regression behind the
+qualifier. Pre-claim Docker build surfaced two:
+
+1. **`set F`/`set Fn` rebinds parameter `G` to `G✝` in
+   `bracketing_pointwise_bound`** (S5 PR #17692, line 396). The
+   right-tail-case closing `linarith` couldn't bridge `M` (defined via
+   the renamed `Fn`/`F`) to the outer-goal sup' (referencing the original
+   `G✝.q j`). Fix: replace `set F`/`set Fn` with `let F`/`let Fn`, and
+   define `M` directly in the unfolded form `|empiricalCDF X n (G.q j) ω
+   - trueCDF X μ (G.q j)|`. The body still reads in `Fn`/`F` via
+   let-zeta (no other-site edits needed).
+2. **v4.26.0 typeclass-deferral strictness in
+   `trueCDF_continuityPoint_in_Ioo`** (S8 PR #18208, line 188). Bare
+   `have h_dense := trueCDF_continuityPoints_dense X` fails because
+   `μ`'s implicit binder leaves `IsProbabilityMeasure ?m` undetermined.
+   1-line fix: add explicit type annotation `have h_dense : Dense
+   {x | ContinuousAt (trueCDF X μ) x} := …`.
+
+Both fixes are surgical (5 LOC + 1 LOC plus comments). 0 axioms, 0 sorries
+introduced. The bracketing companion grows 661 → 670 lines (+9 comment lines).
+Build verified: `./proofs/scripts/docker-build.sh
+Proofs.LawsOfLargeNumbersOQ04OQ03Bracketing` exits 0 with 3121 jobs.
+
+Session memo: `sessions/2026-05-14-s10-pre-act-bracketing-build-repair.md`.
+
+### What this session does NOT do
+
+- Does not start S10 ACT proper (greedy ε-cover induction discharging
+  `bracketingGrid_exists`, ~120–250 LOC). PREP-1 (#18499) + PREP-2
+  (#18528) designs are unchanged and remain the implementation
+  reference for S10 ACT.
+- Does not refactor §2.2.5 / §2.2.6 / §2.5 (S8 / S9 / S6 ACT
+  material). All theorem statements and proofs are preserved bit-for-bit
+  except for the two 1–5-line v4.26.0 fingernails.
+- Does not touch parent file `LawsOfLargeNumbersOQ04.lean` or main file
+  `LawsOfLargeNumbersOQ04OQ03.lean`. Both are unaffected.
+
+### Next Action (revised post-S10 pre-ACT)
+
+**S10 ACT proper (next session)**: implement the greedy ε-cover induction
+discharging `bracketingGrid_exists`. PREP-1 (#18499) supplies the Stieltjes
+partition design (~131 LOC after PREP-2's API corrections) plus the
+~30-LOC bridge to `bracketingGrid_exists`. Alternative: function-side
+greedy walk via `Monotone.exists_increasing_continuity_seq` (PR #18292
+upstream design, ~200 LOC Mathlib + ~50 wrap). PREP-2's verdict that
+Stieltjes-side is cheaper (~161 LOC vs ~250 LOC) still holds.
+
+After S10 ACT lands, the bracketing companion's sole axiom is discharged
+and the entire Glivenko-Cantelli chain becomes axiom-free.
+
+## STATE-SYNC (researcher-5, 2026-05-13) — propagate S9/S10 PREP backlog into state
 
 ## STATE-SYNC (researcher-5, 2026-05-13) — propagate S9/S10 PREP backlog into state
 

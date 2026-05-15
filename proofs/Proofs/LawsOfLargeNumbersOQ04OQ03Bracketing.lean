@@ -185,7 +185,10 @@ theorem trueCDF_continuityPoints_dense [IsProbabilityMeasure μ]
 theorem trueCDF_continuityPoint_in_Ioo [IsProbabilityMeasure μ]
     (X : ℕ → Ω → ℝ) {a b : ℝ} (hab : a < b) :
     ∃ x ∈ Set.Ioo a b, ContinuousAt (trueCDF X μ) x := by
-  have h_dense := trueCDF_continuityPoints_dense X
+  -- v4.26.0 elaborator no longer defers typeclass resolution on bare `have`;
+  -- annotate the `Dense` set to fix `μ` for `IsProbabilityMeasure μ`.
+  have h_dense : Dense {x : ℝ | ContinuousAt (trueCDF X μ) x} :=
+    trueCDF_continuityPoints_dense X
   -- `Dense` + nonempty open set ⇒ nonempty intersection.
   have h_open : IsOpen (Set.Ioo a b) := isOpen_Ioo
   have h_ne : (Set.Ioo a b).Nonempty := Set.nonempty_Ioo.mpr hab
@@ -393,15 +396,23 @@ private lemma bracketing_pointwise_bound [IsProbabilityMeasure μ]
       (Finset.univ.sup' Finset.univ_nonempty
         (fun j : Fin (G.k + 2) => |empiricalCDF X n (G.q j) ω - trueCDF X μ (G.q j)|))
       + 2 * ε := by
-  set F : ℝ → ℝ := trueCDF X μ with hF_def
-  set Fn : ℝ → ℝ := fun y => empiricalCDF X n y ω with hFn_def
+  -- v4.26.0: `set F := trueCDF X μ` rebinds the parameter `G` from
+  -- `BracketingGrid (trueCDF X μ) ε` to `BracketingGrid F ε`, leaving the
+  -- original as `G✝`. The outer-goal Finset.sup' then mentions `G✝.q j`
+  -- while inner hypotheses mention `G.q j`, and `linarith` cannot bridge
+  -- the two. `let` (no goal substitution) avoids the rebinding; the body
+  -- still reads in terms of `Fn`/`F` via let-zeta.
+  let F : ℝ → ℝ := trueCDF X μ
+  let Fn : ℝ → ℝ := fun y => empiricalCDF X n y ω
   set M : ℝ := Finset.univ.sup' Finset.univ_nonempty
-    (fun j : Fin (G.k + 2) => |Fn (G.q j) - F (G.q j)|) with hM_def
+    (fun j : Fin (G.k + 2) => |empiricalCDF X n (G.q j) ω - trueCDF X μ (G.q j)|)
+    with hM_def
   -- Bound at any specific grid point: `|Fn(q j) - F(q j)| ≤ M`.
   have hM_at : ∀ j : Fin (G.k + 2), |Fn (G.q j) - F (G.q j)| ≤ M := by
     intro j
     exact Finset.le_sup'
-      (f := fun j : Fin (G.k + 2) => |Fn (G.q j) - F (G.q j)|)
+      (f := fun j : Fin (G.k + 2) =>
+        |empiricalCDF X n (G.q j) ω - trueCDF X μ (G.q j)|)
       (Finset.mem_univ j)
   by_cases hA : x < G.q 0
   · -- Case A: x in the left tail
