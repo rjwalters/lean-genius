@@ -1,10 +1,10 @@
 # State: mean-value-theorem-oq-02-oq-04-oq-01
 
-**Phase**: ACT (S5 merged; S6 → S6e PREP chain complete; S7 ACT pending). The Lean file (`MeanValueTheoremOQ02OQ04OQ01.lean`, 706 lines, 0 new axioms, 1 sorry) is unchanged since S5 ACT (PR #18197, merged 2026-05-12T23:20Z). The single residual `sorry` on `cauchy_diag_norm_bound_at_radius` has — after the merged S6/S6b/S6c/S6d/S6e PREPs — a complete drop-in tactic chain with all 13 Mathlib v4.26.0 lemma names pinned (S6e PR #18536), three S6b-flagged placeholders resolved (S6c PR #18396), and a 10-item integration-risk register with 3 risks discharged at v4.26.0 (S6d PR #18464 → S6e PR #18536). S7 ACT is now a docker-build-bounded paste step (~60-90 LOC, including the +10-15 LOC `DiffContOnCl` bridge surfaced as R-? in S6e).
+**Phase**: COMPLETED (S7 ACT merged 2026-05-14, researcher-3). `MeanValueTheoremOQ02OQ04OQ01.lean` is now 758 LOC, 0 axioms, 0 sorries. The residual `sorry` on `cauchy_diag_norm_bound_at_radius` was discharged via the S6f drop-in proof body (S6f PREP PR #18774) with three Mathlib v4.26.0 elaborator corrections surfaced by the docker-build loop (4 iterations). Build verified clean: `Build completed successfully (7745 jobs)` from the worktree CWD on 2026-05-14.
 
 ## Lean File
 
-`proofs/Proofs/MeanValueTheoremOQ02OQ04OQ01.lean` — 705 lines, 0 new axioms, 1 sorry (now on the finite-radius sub-lemma `cauchy_diag_norm_bound_at_radius`).
+`proofs/Proofs/MeanValueTheoremOQ02OQ04OQ01.lean` — 758 lines, 0 axioms, 0 sorries. The finite-radius sub-lemma `cauchy_diag_norm_bound_at_radius` is fully proven via the S6f drop-in chain + 4-fingernail v4.26.0 surgical fix kit (see `sessions/2026-05-14-s7-act-cauchy-diag-discharge.md`).
 
 ## Theorems Proved (constructively)
 
@@ -23,7 +23,9 @@
 
 ## Theorems With Sorry (deferred)
 
-- `cauchy_diag_norm_bound_at_radius`: per-degree Cauchy coefficient bound at a strict intermediate radius `r' ∈ (0, R)` — `‖p k (fun _ ↦ w)‖ ≤ M · (‖w‖ / r')^k` — given `‖f z‖ ≤ M` on `Metric.ball a R` and `HasFPowerSeriesOnBall f p a (ENNReal.ofReal R)`. **This is the only remaining sorry in the file** (deferred to S6). The boundary form `cauchy_diag_norm_bound` is now PROVEN from this via limit-extraction.
+**None** — as of S7 ACT (2026-05-14), the file has 0 sorries and 0 axioms.
+
+The previously-deferred `cauchy_diag_norm_bound_at_radius` is now PROVEN (S7 ACT, researcher-3). Its 6-step proof body (MeanValueTheoremOQ02OQ04OQ01.lean:457–525) follows the S6f drop-in chain: closedBall⊂ball inclusions; `Metric.emetric_ball` EMetric→Metric bridge; `DiffContOnCl.mk_ball` constructor; `Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le` (the Mathlib Cauchy estimate at `Liouville.lean:44`); `HasFPowerSeriesOnBall.factorial_smul` + `iteratedFDeriv_apply_eq_iteratedDeriv_mul_prod` diag-collapse; `RCLike.norm_nsmul` + `nsmul_eq_mul` + `norm_smul` + `norm_pow` norm-step + `le_of_mul_le_mul_left` finisher.
 
 ## Definitions
 
@@ -33,11 +35,11 @@
 
 ## Build Status
 
-S5 ACT **build verified** at merge (PR #18197, 2026-05-12T23:20Z). The Lean file has been untouched since. S6 → S6e are doc-only PREP iterations under `sessions/` and require no docker build.
+S7 ACT **build verified** in this session (2026-05-14, researcher-3): `./proofs/scripts/docker-build.sh Proofs.MeanValueTheoremOQ02OQ04OQ01` → `Build completed successfully (7745 jobs)`. Log: `.loom/logs/researcher-3-mvt-s7-act-build-1778769694.log`. S5 ACT (PR #18197, 2026-05-12T23:20Z) was the previous baseline. S6 → S6f were doc-only PREP iterations under `sessions/`.
 
-## Session Log (S5 → S6e)
+## Session Log (S5 → S7)
 
-Doc-only PREP backlog after S5 ACT. Each row corresponds to one merged PR + one new file under `research/problems/mean-value-theorem-oq-02-oq-04-oq-01/sessions/`.
+S5 ACT shipped the limit-extraction proof; S6 → S6f were doc-only PREP iterations pinning Mathlib v4.26.0 names; S7 ACT (this session) pasted the S6f drop-in proof and ran 4 docker-build iterations to surface and fix three v4.26.0 elaborator fingernails that the doc-only audits missed.
 
 | Iter | Phase | PR    | Author       | Lean status     | Memo                                            | Contribution |
 |------|-------|-------|--------------|-----------------|-------------------------------------------------|--------------|
@@ -47,6 +49,8 @@ Doc-only PREP backlog after S5 ACT. Each row corresponds to one merged PR + one 
 | 6c   | PREP  | #18396| researcher-1 | doc-only        | `2026-05-13-s6c-prep-placeholder-resolution.md` | Resolves S6b's 3 unresolved placeholders (P1: `sphere → ball` membership; P2: `closedBall a r' ⊂ EMetric.ball …`; P3: norm equivalence). Provides a complete drop-in tactic chain. |
 | 6d   | PREP  | #18464| researcher-10| doc-only        | `2026-05-13-s6d-prep-s7-act-risk-register.md`   | S7 ACT pre-flight risk register: 10 integration risks (e.g. `Complex.abs_natCast` naming, iteratedFDeriv ↔ iteratedDeriv bridge), each with mitigation. |
 | 6e   | PREP  | #18536| researcher-5 | doc-only        | `2026-05-13-s6e-prep-mathlib-name-v4260-audit.md` | Pins S6d R-1, R-4 at v4.26.0; refutes S6d's in-file precedent claim (R-1 `Complex.abs_natCast` is PHANTOM — canonical is `Complex.norm_natCast` via `RCLike.norm_natCast` @ `RCLike/Basic.lean:633`, `@[simp 1100]`). Surfaces a new R-? `DiffContOnCl` bridge (Mathlib `Liouville.lean:44` Cauchy estimate requires `DiffContOnCl`, not `HasFPowerSeriesOnBall`) → +10-15 LOC not in S6d's budget. |
+| 6f   | PREP  | #18774| researcher-9 | doc-only        | `2026-05-13-s6f-prep-final-pin-and-emetric-bridge.md` | Pins three S6e-flagged-unresolved items: (i) `HasFPowerSeriesOnBall.analyticOnNhd` at `ChangeOrigin.lean:366` returns `AnalyticOnNhd ℂ f (EMetric.ball ...)`, requiring `Metric.emetric_ball` bridge to flip to `Metric.ball`; (ii) `DiffContOnCl` is a `structure` with `.mk_ball` constructor at `DiffContOnCl.lean:66` (cleaner than anonymous constructor); (iii) `HasFPowerSeriesOnBall.factorial_smul` dot-notation call shape `hf.factorial_smul w k`. Provides corrected drop-in proof body for S7 ACT. |
+| 7    | ACT   | (this)| researcher-3 | **+52/-2 code** | `2026-05-14-s7-act-cauchy-diag-discharge.md`     | Pastes the S6f drop-in body; 4 docker-build iterations surface and fix three v4.26.0 elaborator fingernails: (1) `mul_le_mul_iff_left₀` at v4.26.0 expects factor on RIGHT — use `le_of_mul_le_mul_left` instead; (2) `Complex.`-namespace prefix missing on `norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le`; (3) `congrArg (‖·‖)` eta-expansion blocks subsequent `rw` patterns — derive via `rw [h_combined]` instead; (4) `field_simp [hr'.ne']; ring` does not cancel `r'⁻¹^k` residue — use `rw [div_pow]; ring`. Sorry count 1 → 0. Build clean at 7745 jobs. |
 
 ## S5 Contribution (previous, for reference)
 
@@ -87,9 +91,13 @@ This builds on the merged S4 state (PR #18085). The S5 sub-lemma `cauchy_diag_no
 
 PR #17904 (researcher-1, conflicting) had `cauchy_diag_norm_bound` as a separate `sorry` AND the main combination step as a separate `sorry` (net 2 sorries vs S3's 1). This S4 PR keeps the sorry count at 1 by completing the combination step, leaving only the Cauchy-coefficient gap deferred. The naming `cauchy_diag_norm_bound` is identical to #17904's; the signature differs (uses `_hR`, `_hM`, `_hf`, `_hbound`, `_hw` underscored since the body is `sorry`).
 
-## Next Action (S7 ACT — pre-flighted by S6 → S6e PREP chain)
+## Next Action (post-S7)
 
-Discharge `cauchy_diag_norm_bound_at_radius` by **pasting the S6c drop-in tactic chain** (PR #18396) with the v4.26.0 lemma-name pins from S6b (PR #18386) and S6e (PR #18536), and the +10-15 LOC `DiffContOnCl` bridge surfaced as R-? in S6e. The limit-extraction step is already done in S5; this S7 ACT replaces only the one residual `sorry` on the finite-radius sub-lemma.
+The slug is COMPLETED. Optional follow-ups:
+1. Propagate the 4-fingernail v4.26.0 surgical fix kit (see this session's memo) to memory and to future `gh api`-based PREP audits in other slugs, so the same elaborator gotchas don't burn 4 docker iterations again.
+2. Consider sharpening S2's `analytic_taylor_remainder_uniform_geometric_complex` (existential form via Mathlib's `HasFPowerSeriesOnBall.uniform_geometric_approx'`) into the explicit S4 constant form (`analytic_taylor_remainder_uniform_bound_complex`). The S4 explicit form is already proven; this would be Mathlib-style packaging rather than open content.
+
+The original S7 ACT plan (referenced for archival):
 
 **Lemma table** (all names verified at Mathlib v4.26.0 SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; see `2026-05-13-s6e-prep-mathlib-name-v4260-audit.md` for the 13-step pinned sketch):
 
@@ -115,4 +123,4 @@ Discharge `cauchy_diag_norm_bound_at_radius` by **pasting the S6c drop-in tactic
 
 ## Pool Status Note
 
-This slug remains `progress`. One `sorry` remains on `cauchy_diag_norm_bound_at_radius`. After the S6 → S6e PREP chain, the next iteration is **S7 ACT (high readiness)**: every lemma the proof needs has been pinned at v4.26.0, every S6c placeholder has been resolved, and only one new risk (R-? `DiffContOnCl` bridge) has emerged. Do not status-change to `completed` until docker-build verifies the paste.
+This slug is now `completed` as of S7 ACT (2026-05-14, researcher-3). Zero sorries, zero axioms in `MeanValueTheoremOQ02OQ04OQ01.lean`. Docker-build verified at 7745 jobs from the worktree CWD.
