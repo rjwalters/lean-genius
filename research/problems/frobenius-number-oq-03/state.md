@@ -1,13 +1,93 @@
 # Current State: frobenius-number-oq-03
 
-**Phase**: ACT (S2 skeleton shipped + build verified after S2-fix unblocker)
+**Phase**: ACT (S3a `frobeniusNumber3` definition + structural API shipped, build verified)
 **Path**: full
-**Since**: 2026-05-13T22:42:00Z
-**Iteration**: 3 (S1 OBSERVE + S2 ACT + S2-fix BUILD UNBLOCKER)
+**Since**: 2026-05-14T05:20:00Z
+**Iteration**: 4 (S1 OBSERVE + S2 ACT + S2-fix BUILD UNBLOCKER + S3a ACT)
 
 ## Current Focus
 
-S2-fix BUILD UNBLOCKER (researcher-9, 2026-05-14, this iteration):
+S3a ACT (researcher-12, 2026-05-14, this iteration): defined the
+**three-generator Frobenius number** itself and shipped a small
+structural API for the non-representable set, layered cleanly on top
+of S2's `Representable3` predicate and **self-contained** (no
+dependency on the parent `Proofs.FrobeniusNumber` file — see "Open
+blockers" below).
+
+Net diff to `proofs/Proofs/FrobeniusNumberOQ03.lean`: **+89/-10 LOC**
+(68 → 146). Five new declarations + one bridge lemma:
+
+- `noncomputable def frobeniusNumber3 (a b c : ℕ) : ℕ :=
+   sSup { n : ℕ | ¬ Representable3 a b c n }` — the `sSup` of the
+   non-representable set under `ℕ`'s
+   `ConditionallyCompleteLinearOrderBot` instance (so the value
+   defaults to `0` when the set is empty or unbounded, per
+   `Mathlib.Data.Nat.Lattice`).
+- `frobeniusNumber3_def` — definitional unfolding lemma (one-line
+   `rfl`).
+- `representable3_of_gt_frobeniusNumber3_of_bddAbove` — the workhorse
+   for `> frobeniusNumber3 ⇒ Representable3`, conditional on
+   `BddAbove`; proof is `by_contra` + `le_csSup` + `omega` (4 lines).
+- `frobeniusNumber3_le_of_subset_Iio` — abstract upper bound: if
+   `{¬ Representable3} ⊆ Set.Iio K` then `frobeniusNumber3 a b c ≤ K`;
+   case-splits on `Set.Nonempty` and dispatches via `csSup_le` or
+   `csSup_empty + bot_le` (10 lines).
+- `not_representable3_frobeniusNumber3_of_nonempty` — sSup-attained
+   lemma; one-line consequence of `Nat.sSup_mem` (verified at
+   `Mathlib/Data/Nat/Lattice.lean:148` via
+   `gh api .../contents/Mathlib/Data/Nat/Lattice.lean?ref=2df2f0150c`).
+- (bridge lemma) `representable3_of_two_gen` — collapses a
+   `n = a*x + b*y` witness to `Representable3 a b c n` with `z = 0`;
+   reserved for S3b once the parent file is unblocked.
+
+Imports: dropped nothing; **added** `Mathlib.Data.Nat.Lattice` (a
+9103-byte file at the pinned Mathlib rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` containing the
+`Nat.sSup_def` / `Nat.sSup_mem` declarations plus the
+`ConditionallyCompleteLinearOrderBot ℕ` instance that exposes
+`csSup_empty` / `csSup_le` / `le_csSup`).
+
+**Docker build verified**: `./proofs/scripts/docker-build.sh
+Proofs.FrobeniusNumberOQ03` from this worktree:
+`✔ [3058/3058] Built Proofs.FrobeniusNumberOQ03 (3.7s)` /
+`Build completed successfully (3058 jobs)` /
+`=== Build succeeded ===`. 0 sorries, 0 axioms confirmed post-build.
+**Counts**: 12 theorems (was 7) + 2 definitions (was 1; S3a adds
+`noncomputable def frobeniusNumber3` alongside the existing
+`def Representable3`). The gallery `meta.json` (`src/data/proofs/
+frobenius-number-oq-03/`) is intentionally left unchanged in this PR
+— the audit-tracker bump in #18952 set baseline counts at 7 thm / 1
+def, and a separate `mechanic` refresh can sync the gallery counters
+to (12 thm, 2 def) once this S3a PR is merged. The Lean file itself
+is the source of truth.
+
+**S3b deferred** (next iteration): the **existence proof** —
+finiteness of `{n | ¬ Representable3 a b c n}` for `gcd(a,b,c) = 1`.
+The natural proof reuses the 2-generator Sylvester bound
+(`large_representable` in `Proofs/FrobeniusNumber.lean`) plus the
+`representable3_of_two_gen` bridge (shipped here). Currently blocked
+by **pre-existing build errors in the parent file**
+`Proofs/FrobeniusNumber.lean` — see **Open blockers** below.
+Importing that file from this one would contaminate the build with
+errors that are out of S3 research scope; the S3a API is therefore
+self-contained.
+
+## Open Blockers
+
+The Lean S3a docstring (this iteration) notes that
+`Proofs/FrobeniusNumber.lean` (the **2-generator** flagship gallery
+file) is reported to carry pre-existing build errors under Mathlib
+v4.26.0 (linarith failures and an unsolved-rewrite goal). The S3a
+build above did NOT exercise the parent file (S3a is intentionally
+self-contained — no `import Proofs.FrobeniusNumber`), so this claim
+was not independently re-verified by this PR's build run. **Next-
+iteration TODO**: a separate Docker build of `Proofs.FrobeniusNumber`
+alone to confirm or refute, then either (a) ship a parent-file repair
+PR in `doctor`/`mechanic` scope before S3b, or (b) re-derive the
+2-generator Sylvester bound inline inside `FrobeniusNumberOQ03.lean`
+as a standalone helper (estimated ~40 LOC) for S3b.
+
+S2-fix BUILD UNBLOCKER (researcher-9, 2026-05-14, prior iteration):
 Docker-built `Proofs.FrobeniusNumberOQ03` from a fresh worktree to
 clear the S2 ACT "build pending" caveat (PR #18937, S2 ACT,
 2026-05-13). **First Docker attempt failed** with
@@ -77,15 +157,36 @@ declarations).
 
 ## Next Action
 
-**S3 (next claim, ~80 lines)**: Define
-`frobeniusNumber3 a b c : ℕ` (noncomputable, via `sSup` over the
-complement of `Representable3`) and prove existence: for
-`gcd (gcd a b) c = 1` the non-representable set is finite, hence
-bounded above, so `sSup` is well-defined. Mathlib pointers:
-`Nat.sSup_def`, `BddAbove.csSup_mem`, `Set.Finite`. Reuses this
-file's `Representable3` + closure lemmas as black boxes.
+**S3b (next claim, ~40-80 lines)**: Prove the **existence proof** for
+`frobeniusNumber3`: when `gcd(a, gcd b c) = 1` the non-representable
+set is finite (hence `BddAbove`), so `not_representable3_
+frobeniusNumber3_of_nonempty` (S3a) returns a genuine non-representable
+witness. Two paths:
 
-**S2 (this iteration, completed — build pending)**: Created file
+1. **Path (a) — parent-file repair first**: clear the reported pre-
+   existing errors in `Proofs/FrobeniusNumber.lean`, then `import
+   Proofs.FrobeniusNumber` and apply `large_representable` to get the
+   2-generator Sylvester bound on `{x*a + y*b}`, then bridge to three
+   generators via `representable3_of_two_gen` (already shipped in S3a).
+2. **Path (b) — self-contained**: re-derive the 2-generator Sylvester
+   bound inline as a private helper inside `FrobeniusNumberOQ03.lean`
+   (~40 LOC), keeping the file fully decoupled from the parent.
+
+Mathlib pointers (already exercised in S3a): `Nat.sSup_mem`,
+`BddAbove`, `Set.Finite`, `Set.Iio`, `csSup_le`, `le_csSup`,
+`csSup_empty`.
+
+**S3a (this iteration, completed — build verified)**: Defined
+`noncomputable def frobeniusNumber3 (a b c : ℕ) : ℕ :=
+sSup { n : ℕ | ¬ Representable3 a b c n }` plus 5 structural
+theorems and 1 bridge lemma, totaling **+89/-10 LOC** on
+`proofs/Proofs/FrobeniusNumberOQ03.lean` (68 → 146). Build verified
+via `./proofs/scripts/docker-build.sh Proofs.FrobeniusNumberOQ03`:
+`✔ [3058/3058] Built Proofs.FrobeniusNumberOQ03 (3.7s)`,
+0 sorries, 0 axioms. Self-contained (no `import
+Proofs.FrobeniusNumber`).
+
+**S2 (prior iteration, completed — build pending → verified)**: Created file
 `proofs/Proofs/FrobeniusNumberOQ03.lean` (68 lines) containing the
 `Representable3 a b c n := ∃ x y z : ℕ, n = a*x + b*y + c*z`
 predicate and the seven foundational closure lemmas. This is a
@@ -156,7 +257,8 @@ Build verification: standard docker wrapper from main repo
 |------|------|-----------|-----|---------|
 | S1 | 2026-05-12 | researcher-4 | #18128 | OBSERVE survey: 4 files (problem.md, knowledge.md, state.md, src/data/research/problems/...json), no Lean changes |
 | S2 | 2026-05-13 | researcher-1 | #18937 | ACT skeleton: Representable3 + 7 closure lemmas, 68 lines, 0 sorries, 0 axioms, **build pending** (later: bad import `Mathlib.Data.Nat.Defs`) |
-| S2-fix | 2026-05-14 | researcher-9 | (this PR) | BUILD UNBLOCKER: removed phantom `import Mathlib.Data.Nat.Defs`; Docker build succeeded `✔ [3058/3058] (3.4s)`, 0 sorries / 0 axioms confirmed; state.md "build pending" → "build verified" |
+| S2-fix | 2026-05-14 | researcher-9 | #18979 | BUILD UNBLOCKER: removed phantom `import Mathlib.Data.Nat.Defs`; Docker build succeeded `✔ [3058/3058] (3.4s)`, 0 sorries / 0 axioms confirmed; state.md "build pending" → "build verified" |
+| S3a | 2026-05-14 | researcher-12 | (this PR) | ACT: `frobeniusNumber3` definition (`noncomputable def := sSup {n | ¬ Representable3 a b c n}`) + 5 structural theorems + 1 bridge lemma, +89/-10 LOC (68 → 146), 0 sorries, 0 axioms. Counts: 12 thm + 2 def (was 7 + 1). Docker build `✔ [3058/3058] (3.7s)`. Added `import Mathlib.Data.Nat.Lattice` (`Nat.sSup_mem` at line 148 of that file at the pinned rev). |
 
 ## Reference Files (in this directory)
 

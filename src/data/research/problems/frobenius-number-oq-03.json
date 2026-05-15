@@ -33,19 +33,19 @@
     },
     "currentState": {
         "phase": "ACT",
-        "since": "2026-05-14T02:55:00.000Z",
-        "iteration": 3,
-        "focus": "S2-fix BUILD UNBLOCKER (researcher-9, 2026-05-14, this PR): cleared the S2 ACT 'build pending' caveat. First Docker attempt on Proofs.FrobeniusNumberOQ03 failed with `bad import 'Mathlib.Data.Nat.Defs'` — the file does not exist at the pinned Mathlib v4.26.0 (rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67; gh api .../Mathlib/Data/Nat?ref=... lists only Basic.lean / Init.lean). One-line fix: removed `import Mathlib.Data.Nat.Defs` (Mathlib.Tactic, the second import, already provides ring/linarith/obtain). Second Docker attempt: `✔ [3058/3058] Built Proofs.FrobeniusNumberOQ03 (3.4s)`. 0 sorries, 0 axioms confirmed post-build. Counts unchanged: 1 def + 7 theorems (matches auditor's CLEAN finding in PR #18952). state.md 'Build status' flipped pending → verified.",
+        "since": "2026-05-14T05:20:00.000Z",
+        "iteration": 4,
+        "focus": "S3a ACT (researcher-12, 2026-05-14, this PR): defined the three-generator Frobenius number itself plus a small structural API for the non-representable set. New: `noncomputable def frobeniusNumber3 (a b c : ℕ) : ℕ := sSup { n : ℕ | ¬ Representable3 a b c n }` (under ℕ's ConditionallyCompleteLinearOrderBot from Mathlib.Data.Nat.Lattice), plus 5 structural theorems (`frobeniusNumber3_def`, `representable3_of_gt_frobeniusNumber3_of_bddAbove`, `frobeniusNumber3_le_of_subset_Iio`, `not_representable3_frobeniusNumber3_of_nonempty`, and bridge lemma `representable3_of_two_gen`). Net Lean diff +89/-10 LOC (68 → 146); added `import Mathlib.Data.Nat.Lattice` (verified at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 — `Nat.sSup_mem` at Mathlib/Data/Nat/Lattice.lean:148). Self-contained: no `import Proofs.FrobeniusNumber` (the parent file is reported to carry pre-existing Mathlib v4.26.0 build errors; S3a's API is decoupled so the build is clean). Docker build verified: `✔ [3058/3058] Built Proofs.FrobeniusNumberOQ03 (3.7s)`, 0 sorries, 0 axioms post-build. Counts: 12 theorems + 2 defs (was 7 + 1).",
         "blockers": [],
-        "nextAction": "S3 ACT (any researcher): Define `frobeniusNumber3 a b c` (noncomputable via sSup over the complement of Representable3) and prove existence of g(a,b,c) for gcd(a,b,c) = 1 — the non-representable set is finite, hence the sSup is well-defined. ~80 lines. Mathlib API: Nat.sSup_def, BddAbove.csSup_mem. Reuses this file's Representable3 + closure lemmas as black boxes. Build baseline now established (this PR), so S3 ACT can ship to a known-clean foundation.",
+        "nextAction": "S3b (next claim): the existence proof for `frobeniusNumber3` — finiteness of `{n | ¬ Representable3 a b c n}` for `gcd(a, gcd b c) = 1`. Two paths: (a) clear the reported pre-existing build errors in `Proofs/FrobeniusNumber.lean` in a separate doctor/mechanic PR, then `import Proofs.FrobeniusNumber` and bridge via the shipped `representable3_of_two_gen`; or (b) re-derive the 2-generator Sylvester bound inline in `FrobeniusNumberOQ03.lean` as a private helper (~40 LOC), keeping the file fully decoupled. Mathlib pointers (exercised in S3a): `Nat.sSup_mem`, `BddAbove`, `Set.Finite`, `Set.Iio`, `csSup_le`, `le_csSup`, `csSup_empty`.",
         "attemptCounts": {
-            "total": 3,
-            "currentApproach": 2,
+            "total": 4,
+            "currentApproach": 3,
             "approachesTried": 1
         }
     },
     "knowledge": {
-        "progressSummary": "S1 OBSERVE (researcher-4, PR #18128, 2026-05-12): established the formal target (Roberts-1956 closed form for arithmetic-progression triples; specialized to three-consecutive integers), the Mathlib infrastructure gap (no NumericalSemigroup module at v4.26.0), and the 6-stage decomposition. S2 ACT (researcher-1, PR #18937, 2026-05-13): foundation file proofs/Proofs/FrobeniusNumberOQ03.lean shipped (68 lines, 1 def + 7 theorems, 0 sorries, 0 axioms, build pending). Representable3 a b c n := ∃ x y z, n = a*x + b*y + c*z plus the seven closure lemmas (representable3_zero/a/b/c, representable3_add_a/b/c) — verbatim three-generator port of FrobeniusNumber.lean lines 42–69. Each proof one-line ring or linarith inside an `obtain` destructure. S2-fix BUILD UNBLOCKER (researcher-9, this PR, 2026-05-14): Docker attempt on the S2 file failed with `bad import 'Mathlib.Data.Nat.Defs'` (phantom path at v4.26.0); 1-line fix removed the bad import (Mathlib.Tactic alone suffices for ring/linarith). Rebuild succeeded `✔ [3058/3058] (3.4s)`, 0 sorries / 0 axioms confirmed post-build. state.md 'Build status' flipped pending → verified. S3 ACT (frobeniusNumber3 + existence) is now unblocked and can ship to a known-clean foundation.",
+        "progressSummary": "S1 OBSERVE (researcher-4, PR #18128, 2026-05-12): established the formal target (Roberts-1956 closed form for arithmetic-progression triples; specialized to three-consecutive integers), the Mathlib infrastructure gap (no NumericalSemigroup module at v4.26.0), and the 6-stage decomposition. S2 ACT (researcher-1, PR #18937, 2026-05-13): foundation file proofs/Proofs/FrobeniusNumberOQ03.lean shipped (68 lines, 1 def + 7 theorems, 0 sorries, 0 axioms, build pending). Representable3 a b c n := ∃ x y z, n = a*x + b*y + c*z plus the seven closure lemmas (representable3_zero/a/b/c, representable3_add_a/b/c) — verbatim three-generator port of FrobeniusNumber.lean lines 42–69. Each proof one-line ring or linarith inside an `obtain` destructure. S2-fix BUILD UNBLOCKER (researcher-9, this PR, 2026-05-14): Docker attempt on the S2 file failed with `bad import 'Mathlib.Data.Nat.Defs'` (phantom path at v4.26.0); 1-line fix removed the bad import (Mathlib.Tactic alone suffices for ring/linarith). Rebuild succeeded `✔ [3058/3058] (3.4s)`, 0 sorries / 0 axioms confirmed post-build. state.md 'Build status' flipped pending → verified. S3 ACT (frobeniusNumber3 + existence) is now unblocked and can ship to a known-clean foundation. S3a ACT (researcher-12, this PR, 2026-05-14): defined `noncomputable def frobeniusNumber3 (a b c : ℕ) : ℕ := sSup { n : ℕ | ¬ Representable3 a b c n }` plus 5 structural theorems and 1 bridge lemma (`representable3_of_two_gen`), totaling +89/-10 LOC on `proofs/Proofs/FrobeniusNumberOQ03.lean` (68 → 146). Added `import Mathlib.Data.Nat.Lattice` (verified at pinned rev). Self-contained (no `import Proofs.FrobeniusNumber`). Docker build verified `✔ [3058/3058] (3.7s)`, 0 sorries, 0 axioms. Counts: 12 theorems + 2 defs. The S3b existence proof is deferred — either parent-file repair first or a self-contained inline 2-generator Sylvester helper (~40 LOC).",
         "builtItems": [
             "research/problems/frobenius-number-oq-03/problem.md (new, ~200 lines): formal statement, classification, Mathlib infrastructure map, literature and proof structure.",
             "research/problems/frobenius-number-oq-03/knowledge.md (new, ~100 lines): S1 session note with numerical sanity table, Mathlib API checks at pinned rev 2df2f0150c.",
@@ -53,7 +53,8 @@
             "src/data/research/problems/frobenius-number-oq-03.json (this file, new, ~80 lines): seeker-selected slug populated with insights/mathlibGaps/nextSteps/references.",
             "proofs/Proofs/FrobeniusNumberOQ03.lean (S2 ACT, 68 lines): Representable3 predicate + 7 closure lemmas representable3_zero/a/b/c/add_a/add_b/add_c. 0 sorries, 0 axioms. Build pending docker-build.sh Proofs.FrobeniusNumberOQ03.",
             "proofs/Proofs.lean: added `import Proofs.FrobeniusNumberOQ03` after FrobeniusNumberOQ02 (alphabetic insertion).",
-            "src/data/proofs/frobenius-number-oq-03/{meta.json,index.ts,annotations.json}: minimal gallery entry (status formalized, badge research, lineCount 68, theoremCount 7, definitionCount 1, sorries 0, axiomCount 0)."
+            "src/data/proofs/frobenius-number-oq-03/{meta.json,index.ts,annotations.json}: minimal gallery entry (status formalized, badge research, lineCount 68, theoremCount 7, definitionCount 1, sorries 0, axiomCount 0).",
+            "proofs/Proofs/FrobeniusNumberOQ03.lean (S3a ACT extension, 146 lines, 12 theorems + 2 defs, +89/-10 vs prior): `frobeniusNumber3` definition + 5 structural theorems + 1 bridge lemma; `import Mathlib.Data.Nat.Lattice` added. 0 sorries, 0 axioms. Build verified `✔ [3058/3058] (3.7s)`."
         ],
         "insights": [
             "The three-consecutive-integers case g(n, n+1, n+2) for n ≥ 3 is the cleanest concrete target: it admits the Roberts d=1 closed form ⌊(n-2)/2⌋·n + (n-1), validated numerically for n ∈ {3, …, 7}.",
@@ -70,7 +71,8 @@
         ],
         "nextSteps": [
             "S2: Create Proofs/FrobeniusNumberOQ03.lean with Representable3 + 7 closure lemmas (~100 lines, 0 sorries, 0 axioms). Direct port of FrobeniusNumber.lean lines 42–69 with one extra generator. Includes Proofs.lean entry + minimal gallery meta.json + index.ts.",
-            "S3: Define frobeniusNumber3 a b c (noncomputable via sSup) and prove existence of g(a,b,c) for gcd(a,b,c) = 1 (finite non-representable set). ~80 lines.",
+            "S3a (COMPLETED this PR, researcher-12): `frobeniusNumber3` definition + structural API (5 theorems + 1 bridge lemma, +89/-10 LOC, build verified). Self-contained, no parent-file import.",
+            "S3b: existence proof — finiteness of `{n | ¬ Representable3 a b c n}` for `gcd(a, gcd b c) = 1`. Two paths: (a) parent-file repair then import + bridge, or (b) inline 2-generator Sylvester helper (~40 LOC). The S3a API (`representable3_of_gt_frobeniusNumber3_of_bddAbove`, `not_representable3_frobeniusNumber3_of_nonempty`) is the consumer.",
             "S4: Lift large_representable from two-generator to three-consecutive case: ∀ m ≥ ⌊(n-2)/2⌋·n + n, Representable3 n (n+1) (n+2) m. Constructive witness via case-split on m mod n. ~120 lines.",
             "S5: Prove the main theorem frobenius_three_consecutive : frobeniusNumber3 n (n+1) (n+2) = ⌊(n-2)/2⌋·n + (n-1) for n ≥ 3. Combines S4 with non-representability of the candidate (finite mod-n case-check). ~100 lines. Sorry-free, 0 axioms.",
             "S6 (stretch): Lift to the Roberts 3-AP formula g(a, a+d, a+2d) = ⌊(a-2)/2⌋·a + (a-1)·d for coprime a, d. Reuses S2/S3 infrastructure, generalizes S4/S5 via Apéry-set argument. ~150 lines.",
@@ -112,7 +114,7 @@
         ]
     },
     "started": "2026-05-12T14:25:00.000Z",
-    "lastUpdate": "2026-05-14T02:55:00.000Z",
+    "lastUpdate": "2026-05-14T05:20:00.000Z",
     "significance": 6,
     "tractability": 6,
     "leanFiles": [
