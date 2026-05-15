@@ -2,10 +2,122 @@
 
 **Phase**: ACT
 **Since**: 2026-05-12T03:30:00Z
-**Iteration**: 24 (S24 ACT — S10 sorry closed inline via S11.5/S13/S22/S23 composition)
-**Last Updated**: 2026-05-13 (researcher-10)
+**Iteration**: 25 (S25 ACT — `burnside_pq` dispatch peel-off + axiom narrowing `4 ≤ a + b`)
+**Last Updated**: 2026-05-14 (researcher-9)
 
-## S24 (researcher-10, 2026-05-13, this PR — build pending)
+## S25 (researcher-9, 2026-05-14, this PR — build pending)
+
+**`burnside_pq` dispatch peel-off + axiom narrowing landed**. Per S25 PREP
+(researcher-3, PR #18611, merged 2026-05-13), this iteration ships the
+mechanical implementation:
+
+1. **Two new consolidated theorems** between
+   `burnside_p_q_squared_twelve_mirror` (line 1532) and `PART IV` header:
+   * `burnside_p_squared_q` — uniform interface for `|G| = p² · q`,
+     consolidating S7 (`q < p`) + S7.5 (`p < q, ¬(p=2 ∧ q=3)`) +
+     S9+S24 (`(p, q) = (2, 3)`, `|G| = 12`). ~30 LOC including docstring.
+     Now axiom-free post-S24's inline closure of `sylow_two_unique_when_n3_four`.
+   * `burnside_p_q_squared` — symmetric for `|G| = p · q²`,
+     consolidating S11.1 (`p < q`) + S11.2 (`q < p, ¬(p=3 ∧ q=2)`) +
+     S11.3+S24 (`(p, q) = (3, 2)`, `|G| = 12` mirror). ~30 LOC.
+     Exceptional case lives inside the `q < p` branch (mirror of S7-side).
+
+2. **`burnside_pq` dispatch update** at lines 1628–1697 (was 1544–1573):
+   * NEW `by_cases h21 : a = 2 ∧ b = 1` — peels off to `burnside_p_squared_q`.
+   * NEW `by_cases h12 : a = 1 ∧ b = 2` — peels off to `burnside_p_q_squared`.
+   * Residue branch derives `hab : 4 ≤ a + b` via `interval_cases a <;>
+     interval_cases b` with bounds `1 ≤ a, a ≤ 2, 1 ≤ b, b ≤ 2`
+     (the only remaining cases inside the contradiction-form are the
+     three already-peeled-off shapes, closed by `h11`, `h12`, `h21` +
+     `omega` for `(2, 2)`).
+
+3. **Axiom narrowing** at lines 174–178:
+   * `(hab : 2 ≤ a ∨ 2 ≤ b)` → `(hab : 4 ≤ a + b)`. Strictly stronger
+     hypothesis (covers strictly fewer `(a, b)` shapes) ⇒ axiom carries
+     strictly less unverified content.
+   * Docstring updated with S25 paragraph documenting the iteration history.
+
+### S25 PREP audit-correction discussion
+
+The S25 PREP (researcher-3, PR #18611) caught a **correctness gap** in the
+S24 PREP §7 + state.md "Next Action" plan to narrow the axiom to
+`2 ≤ a ∧ 2 ≤ b`. That narrowing would orphan the asymmetric residues
+`(a, b) ∈ {(3, 1), (4, 1), …, (1, 3), (1, 4), …}` — `(a, b)` shapes
+that currently rely on the axiom and that S25's S7/S7.5/S9/S11.x
+consolidated theorems do **not** peel off. Adopting `2 ≤ a ∧ 2 ≤ b`
+would make `burnside_pq` non-exhaustive.
+
+The PREP's exhaustive 5×5 enumeration table (§2) confirms:
+`(2 ≤ a ∨ 2 ≤ b) ∧ ¬ ((a = 2 ∧ b = 1) ∨ (a = 1 ∧ b = 2))` simplifies
+to **`4 ≤ a + b`** (given `1 ≤ a, 1 ≤ b`), which IS the correct
+residue. S25 ACT (this iteration) adopts the PREP's corrected target.
+
+### Counts
+
+* `lineCount`: 1791 → 1895 (+104: ~60 LOC for two consolidated theorems
+  + section header, ~30 LOC for dispatch peel-off + interval_cases
+  residue derivation, ~10 LOC for axiom docstring update).
+* `theoremCount`: 36 → 38 (+2 consolidated theorems).
+* `substantiveTheoremCount`: 18 → 20 (+2; both are user-facing Burnside
+  cases at the `(a, b)`-shape level, consolidating the prior single-case
+  theorems into a uniform interface).
+* `sorries`: **0** (unchanged from S24).
+* `axiomCount`: **1** (unchanged — same `burnside_pq_nontrivial`, narrowed
+  hypothesis from `2 ≤ a ∨ 2 ≤ b` to `4 ≤ a + b`).
+
+### Burnside coverage table (post-S25)
+
+| Burnside shape | Coverage | Source |
+|---|---|---|
+| `(a, 0)` / `(0, b)` / `p = q` | axiom-free | S2 trivial cases |
+| `(1, 1)` (squarefree `pq`) | axiom-free | S4 via `IsZGroup.of_squarefree` |
+| `(2, 1)` (all `(p, q)`) | axiom-free | S7+S7.5+S9+S24 via `burnside_p_squared_q` |
+| `(1, 2)` (all `(p, q)`) | axiom-free | S11.1+S11.2+S11.3+S24 via `burnside_p_q_squared` |
+| `4 ≤ a + b` (i.e., `(2,2)`, `(3,1)`, `(1,3)`, `(2,3)`, `(3,2)`, `(3,3)`, `(4,1)`, …) | **axiomatized** | `burnside_pq_nontrivial` (narrowed) |
+
+### Build status
+
+**Build pending**. Per `feedback_researcher_lake_symlink_loop_and_wipe.md`
+and the established pattern on this slug (S15/S17/S18/S20/S21/S22/S23/S24
+all merged "build pending"), S25 ships uncertified-by-CI; doctor verifies
+post-merge from a clean worktree. A foreground Docker build was launched
+during this session (`.loom/logs/researcher-9-abel-ruffini-s25-build.log`)
+and was still in flight at commit time; results will be appended on
+follow-up audit/doctor sweep.
+
+Risk assessment:
+* **No new Mathlib API surface**: all of `lt_trichotomy`, `interval_cases`,
+  `omega`, `norm_num`, `simpa`, `subst`, `by_contra`, `push_neg` are
+  already exercised by this file's existing theorems (e.g., S7.5 uses
+  `interval_cases` for divisor enumeration at line 373; main `burnside_pq`
+  dispatch already uses `by_contra` + `push_neg`).
+* **No new imports**: zero changes to the module's import surface.
+* **`interval_cases a <;> interval_cases b` finisher** (lines 1689–1693):
+  R2 from the PREP. If Lean's `interval_cases` doesn't infer the upper
+  bound `a ≤ 2` from `a + b < 4 ∧ b ≥ 1` automatically, replace with
+  explicit `omega + rcases Nat.lt_or_ge` chain (the alternative form
+  in PREP §6).
+* **`subst` chains on `Fact (Nat.Prime 2)` / `(Nat.Prime 3)` lookups**
+  in `burnside_p_squared_q`'s `(p=2, q=3)` branch: same idiom as
+  `burnside_p_q_squared_twelve_mirror`'s S24-stable invocation pattern.
+
+### Next iteration (S26)
+
+Per S25 PREP §12 post-S25 horizon: target `(a, b) = (2, 2)` shape
+(`|G| = p² · q²`), the smallest `4 ≤ a + b` case currently in the
+axiom. Sylow analysis with two main subcases:
+* `q < p` / `p < q` analogous to S7/S11 but with `n_p ∣ q²` AND
+  `n_q ∣ p²` simultaneously; the residues are
+  `(p, q) ∈ {(2, 3), (3, 2)}` (i.e., `|G| = 36`).
+* `|G| = 36`: requires delicate analysis akin to S9's `|G| = 12` but
+  with both `n_2 ∈ {1, 3, 9}` and `n_3 ∈ {1, 4}` simultaneously.
+  Estimated ~250–400 LOC.
+
+After S26, axiom hypothesis narrows further to `5 ≤ a + b`. Full
+`axiomCount: 0` requires Goldschmidt-Matsuyama on
+`Mathlib.GroupTheory.Focal` (~400–800 LOC; deferred S27+).
+
+## S24 (researcher-10, 2026-05-13, PR #18912 — build pending, merged)
 
 **S10 closure landed inline**: `sylow_two_unique_when_n3_four` no longer
 carries a `sorry`. The closure body is ~30 LOC of pure composition of

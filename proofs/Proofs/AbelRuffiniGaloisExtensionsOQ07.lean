@@ -148,12 +148,19 @@ theorem burnside_pq_pq_case {G : Type*} [Group G] [Finite G]
 
 /-- **AXIOM (Burnside's pᵃqᵇ theorem, non-trivial case)**: every finite
     group of order `p^a · q^b` is solvable, when `p` and `q` are distinct
-    primes, `a, b ≥ 1`, AND at least one of `a, b` is ≥ 2.
+    primes, `a, b ≥ 1`, AND `a + b ≥ 4` (i.e., not one of the three
+    axiom-free shapes `(a, b) ∈ {(1, 1), (2, 1), (1, 2)}`).
 
-    The hypothesis `2 ≤ a ∨ 2 ≤ b` narrows the axiom: the `a = b = 1`
-    sub-case (`|G| = p · q` squarefree) is now proved axiom-free via
-    `burnside_pq_pq_case`. The genuinely-open content is `|G|` divisible
-    by `p²` or `q²` for distinct primes.
+    Iteration history of the hypothesis: original was `2 ≤ a ∨ 2 ≤ b`
+    after S4's `burnside_pq_pq_case` peeled off `(1, 1)`. S25 (this
+    iteration) further narrows to `4 ≤ a + b` after S7+S7.5+S9+S24
+    peeled off the `(2, 1)` shape (via `burnside_p_squared_q`) and
+    S11.1+S11.2+S11.3+S24 peeled off the `(1, 2)` shape (via
+    `burnside_p_q_squared`). The S25-narrowed axiom covers exactly
+    the residue `(a, b)` with `a + b ≥ 4`, i.e., `(2, 2)`, `(3, 1)`,
+    `(1, 3)`, `(2, 3)`, `(3, 2)`, `(3, 3)`, …, `(4, 1)`, `(1, 4)`, …
+    The genuinely-open content is `|G|` with at least one prime
+    appearing to the second power AND the total exponent at least 4.
 
     Proof sketch (NOT in Mathlib, character-theoretic, Burnside 1904):
     Suppose for contradiction `G` is a minimal counterexample. Then `G` is
@@ -173,7 +180,7 @@ theorem burnside_pq_pq_case {G : Type*} [Group G] [Finite G]
     is a starting point for the character-free route. -/
 axiom burnside_pq_nontrivial {G : Type*} [Group G] [Finite G]
     {p q : ℕ} [Fact p.Prime] [Fact q.Prime] {a b : ℕ}
-    (hpq : p ≠ q) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : 2 ≤ a ∨ 2 ≤ b)
+    (hpq : p ≠ q) (ha : 1 ≤ a) (hb : 1 ≤ b) (hab : 4 ≤ a + b)
     (hcard : Nat.card G = p ^ a * q ^ b) : IsSolvable G
 
 -- ═══════════════════════════════════════════════════════════════════════
@@ -1530,6 +1537,79 @@ theorem burnside_p_q_squared_twelve_mirror
   burnside_p_squared_q_twelve hcard
 
 -- ═══════════════════════════════════════════════════════════════════════
+-- PART III.7: Consolidated `(a, b) ∈ {(2, 1), (1, 2)}` theorems
+--             (S25 — uniform dispatch interface)
+-- ═══════════════════════════════════════════════════════════════════════
+
+/-- **Burnside `|G| = p² · q`** (consolidated, axiom-free).
+
+    Combines `burnside_p_squared_q_p_gt_q` (S7),
+    `burnside_p_squared_q_p_lt_q` (S7.5), and
+    `burnside_p_squared_q_twelve` (S9 + S24 inline closure) into a
+    single interface keyed only on `p ≠ q` and `Nat.card G = p² · q`.
+    The internal case-split on the `(p, q)` relation:
+    * `q < p`           → S7  (axiom-free)
+    * `p < q ∧ ¬ (p = 2 ∧ q = 3)` → S7.5 (axiom-free)
+    * `p = 2 ∧ q = 3`   → S9 wrapper (`|G| = 12`); axiom-free post-S24.
+
+    The S25 `burnside_pq` dispatch uses this consolidated form to peel
+    off the `(a, b) = (2, 1)` shape without enumerating the `(p, q)`
+    cases at the top level. -/
+theorem burnside_p_squared_q
+    {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} [hp : Fact p.Prime] [hq : Fact q.Prime]
+    (hpq : p ≠ q) (hcard : Nat.card G = p ^ 2 * q) :
+    IsSolvable G := by
+  rcases lt_trichotomy p q with hlt | heq | hgt
+  · -- p < q
+    by_cases hexc : p = 2 ∧ q = 3
+    · -- |G| = 2² · 3 = 12
+      obtain ⟨hp2, hq3⟩ := hexc
+      subst hp2
+      subst hq3
+      have h12 : Nat.card G = 12 := by rw [hcard]; norm_num
+      exact burnside_p_squared_q_twelve h12
+    · exact burnside_p_squared_q_p_lt_q hlt hexc hcard
+  · exact absurd heq hpq
+  · -- q < p
+    exact burnside_p_squared_q_p_gt_q hgt hcard
+
+/-- **Burnside `|G| = p · q²`** (consolidated, axiom-free).
+
+    Mirror of `burnside_p_squared_q`. Combines
+    `burnside_p_q_squared_p_lt_q` (S11.1), `burnside_p_q_squared_q_lt_p`
+    (S11.2), and `burnside_p_q_squared_twelve_mirror` (S11.3 +
+    S24 inline closure) into a single interface. The case-split:
+    * `p < q`           → S11.1 (axiom-free)
+    * `q < p ∧ ¬ (p = 3 ∧ q = 2)` → S11.2 (axiom-free)
+    * `p = 3 ∧ q = 2`   → S11.3 wrapper (`|G| = 12`); axiom-free post-S24.
+
+    The exceptional case `(p, q) = (3, 2)` lives inside `q < p` (since
+    `q = 2 < 3 = p`), in contrast to `burnside_p_squared_q`'s `(2, 3)`
+    case which lives inside `p < q`.
+
+    The S25 `burnside_pq` dispatch uses this consolidated form to peel
+    off the `(a, b) = (1, 2)` shape. -/
+theorem burnside_p_q_squared
+    {G : Type*} [Group G] [Finite G]
+    {p q : ℕ} [hp : Fact p.Prime] [hq : Fact q.Prime]
+    (hpq : p ≠ q) (hcard : Nat.card G = p * q ^ 2) :
+    IsSolvable G := by
+  rcases lt_trichotomy p q with hlt | heq | hgt
+  · -- p < q
+    exact burnside_p_q_squared_p_lt_q hlt hcard
+  · exact absurd heq hpq
+  · -- q < p
+    by_cases hexc : p = 3 ∧ q = 2
+    · -- |G| = 3 · 4 = 12 (mirror)
+      obtain ⟨hp3, hq2⟩ := hexc
+      subst hp3
+      subst hq2
+      have h12 : Nat.card G = 12 := by rw [hcard]; norm_num
+      exact burnside_p_q_squared_twelve_mirror h12
+    · exact burnside_p_q_squared_q_lt_p hgt hexc hcard
+
+-- ═══════════════════════════════════════════════════════════════════════
 -- PART IV: Main theorem
 -- ═══════════════════════════════════════════════════════════════════════
 
@@ -1538,9 +1618,13 @@ theorem burnside_p_q_squared_twelve_mirror
 
     Combines:
     - the three axiom-free trivial cases (`a = 0`, `b = 0`, `p = q`),
-    - the axiom-free squarefree-order case (`a = b = 1`, `p ≠ q`), and
+    - the axiom-free squarefree-order case (`a = b = 1`, `p ≠ q`),
+    - the axiom-free `(a, b) = (2, 1)` case via `burnside_p_squared_q`
+      (S25 consolidation of S7+S7.5+S9+S24),
+    - the axiom-free `(a, b) = (1, 2)` case via `burnside_p_q_squared`
+      (S25 consolidation of S11.1+S11.2+S11.3+S24),
     - the conjectural non-trivial case (`burnside_pq_nontrivial`,
-      `2 ≤ a ∨ 2 ≤ b`). -/
+      narrowed in S25 to `4 ≤ a + b`). -/
 theorem burnside_pq {G : Type*} [Group G] [Finite G]
     {p q : ℕ} [Fact p.Prime] [Fact q.Prime] {a b : ℕ}
     (hcard : Nat.card G = p ^ a * q ^ b) : IsSolvable G := by
@@ -1564,13 +1648,34 @@ theorem burnside_pq {G : Type*} [Group G] [Finite G]
       subst hb1
       have hcard' : Nat.card G = p * q := by simpa [pow_one] using hcard
       exact burnside_pq_pq_case hpq hcard'
-    · -- 2 ≤ a ∨ 2 ≤ b: use the (narrowed) axiom
-      have hab : 2 ≤ a ∨ 2 ≤ b := by
-        by_contra h
-        push_neg at h
-        obtain ⟨ha2, hb2⟩ := h
-        exact h11 ⟨by omega, by omega⟩
-      exact burnside_pq_nontrivial hpq ha hb hab hcard
+    · -- S25: peel off (a, b) = (2, 1) via burnside_p_squared_q
+      by_cases h21 : a = 2 ∧ b = 1
+      · obtain ⟨ha2, hb1⟩ := h21
+        subst ha2
+        subst hb1
+        have hcard' : Nat.card G = p ^ 2 * q := by simpa [pow_one] using hcard
+        exact burnside_p_squared_q hpq hcard'
+      · -- S25: peel off (a, b) = (1, 2) via burnside_p_q_squared
+        by_cases h12 : a = 1 ∧ b = 2
+        · obtain ⟨ha1, hb2⟩ := h12
+          subst ha1
+          subst hb2
+          have hcard' : Nat.card G = p * q ^ 2 := by simpa [pow_one] using hcard
+          exact burnside_p_q_squared hpq hcard'
+        · -- Residue: a + b ≥ 4. Apply narrowed axiom.
+          have hab : 4 ≤ a + b := by
+            by_contra hcontra
+            push_neg at hcontra
+            -- a ≥ 1, b ≥ 1, a + b < 4 ⇒ (a, b) ∈ {(1,1), (2,1), (1,2)}
+            have ha_le : a ≤ 2 := by omega
+            have hb_le : b ≤ 2 := by omega
+            interval_cases a <;> interval_cases b <;>
+              first
+                | exact h11 ⟨rfl, rfl⟩
+                | exact h12 ⟨rfl, rfl⟩
+                | exact h21 ⟨rfl, rfl⟩
+                | omega
+          exact burnside_pq_nontrivial hpq ha hb hab hcard
 
 -- ═══════════════════════════════════════════════════════════════════════
 -- PART V: Sanity checks
@@ -1784,6 +1889,8 @@ theorem burnside_pq_sharp :
 #check @burnside_pq_with_normal_pSylow
 #check @burnside_pq_with_normal_qSylow
 #check @burnside_p_squared_q_p_gt_q
+#check @burnside_p_squared_q
+#check @burnside_p_q_squared
 #check @alternatingGroupFin5_card
 #check @alternatingGroupFin5_not_solvable
 #check @burnside_pq_sharp
