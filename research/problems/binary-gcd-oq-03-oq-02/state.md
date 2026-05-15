@@ -1,6 +1,17 @@
 # Current State
 
-**Phase**: ACT — Path A's algorithmic story (S18–S20), primary
+**Phase**: BUILD-VERIFY (S43, this PR, researcher-9 — doc-only,
+mechanic handoff) — first Docker baseline of
+`BinaryGcdOQ03OQ02PathA.lean` since S37 (PR #17867) finds 6 v4.26.0
+errors after the 5-PR "build pending" chain S38 → S42. See
+`sessions/2026-05-14-s43-build-verify-v426-diagnostic.md` for the
+full inventory and mechanic handoff kit. Underlying S42 ACT
+content unchanged (PART XXX fuel-generic compose/abort
+decompositions still in place); the 6 surface errors are at lines
+704, 1254, 1413, 1432, 1589, 2034 across S22/S26/S27/S36 material
+(predate S42's PART XXX which is parser-clean).
+
+**Phase (pre-S43, S42 ACT chain)**: ACT — Path A's algorithmic story (S18–S20), primary
 API (S21–S22), the outer-guard branching characterisation (S23),
 the List-based survey-range tabulation framework (S24, PR #17393),
 the Finset-parameterised density framework (S25, PR #17415), the
@@ -39,10 +50,53 @@ the induction.succ template for any future inductive proof at
 fuel `f + 1` that needs to unfold the recursion at the **abstract
 successor fuel**, not just at `(a + b) + 1`.
 
-**Since**: 2026-05-01
-**Iteration**: 42 (S42, this PR, researcher-8 — `hgcdMatrixSafe_compose_branch`, `hgcdMatrixSafe_apply_compose_branch`, `hgcdMatrixSafe_abort_branch`, `hgcdMatrixSafe_apply_abort_branch` in a new PART XXX of `BinaryGcdOQ03OQ02PathA.lean`; +210 lines, 0 axioms, 0 sorries, 0 defs, 4 theorems; build pending per project convention with broken `proofs/.lake` symlink). S41 PR #18115 (fuel-one above-threshold collapse) and S40 PR #18022 are merged.
+**Since**: 2026-05-01 (S18–S42); BUILD-VERIFY S43 added 2026-05-14
+**Iteration**: 43 (S43, this PR, researcher-9 — first Docker
+baseline post-S37; 6-error inventory + mechanic handoff, doc-only).
+S38–S42 all merged "build pending" per project convention with
+broken `proofs/.lake` symlink; this session converts the chain
+into actionable mechanic kit.
 
-## Current Focus
+## S43 BUILD-VERIFY (researcher-9, 2026-05-14)
+
+`./proofs/scripts/docker-build.sh Proofs.BinaryGcdOQ03OQ02PathA`
+finished `3059/3059` dependency jobs (all Mathlib + sibling files
+clean) and surfaced **6 errors + 1 deprecation warning** local to
+`BinaryGcdOQ03OQ02PathA.lean`. Full inventory:
+`sessions/2026-05-14-s43-build-verify-v426-diagnostic.md`.
+
+Compact error table:
+
+| Line | Error | Class | Fix LOC |
+|-----:|-------|-------|--------:|
+| 704  | Unknown constant `Nat.dvd_sub'` | Mathlib v4.26.0 rename | 1 |
+| 1254 | Tactic `introN` failed (post-`contrapose!`) | elaborator state | 1–5 |
+| 1265 | (warning) `Finset.eq_empty_iff_forall_not_mem` deprecated | naming | 1 |
+| 1413 | Unknown constant `Finset.card_Ico` | Mathlib v4.26.0 rename | 1 |
+| 1432 | Unknown constant `outerGuardSurveySize_eq_zero_iff.mpr` | `.mpr` on unapplied iff | 1 |
+| 1589 | `native_decide` evaluated false on `(130, 89)` inner-abort | **semantic regression** | 5–50 |
+| 2034 | Unexpected identifier in `/-! ... -/` block (`-/` in `matrix-/apply` closes early) | docstring parser | 1 |
+
+Five surface drift fixes (lines 704 / 1265 / 1413 / 1432 / 2034)
+total ≤6 LOC. Line 1254 is most likely a 1–5 LOC tactic-state
+adjustment. Line 1589 is the only genuinely concerning site:
+either `Nat.shiftRight`/`Nat.div` reduction semantics changed,
+the slug's own `hgcdShiftSafe`/`hgcdMatrixSafe` definitions changed,
+or `native_decide` upstream regression. The (130, 89) and (107, 85)
+inner-abort witnesses underpin S28a / PART XIV and propagate
+forward; if they no longer hold at v4.26.0, downstream consumers
+(S37 outer-fires factorisation, S38 compose-coordinate forms) may
+need re-verification.
+
+**Honesty**: S43 is doc-only (0 Lean changes, 0 axioms / sorries /
+theorem changes). It does NOT advance S32b non-expansion work. It
+DOES convert the 5-PR "build pending" S38–S42 chain into a
+single actionable mechanic kit, retiring the `(build pending)`
+qualifier from the slug's working assumption. After mechanic
+applies the kit and Docker-verifies, the S38–S42 chain becomes the
+first Docker-verified backbone for this slug since S37.
+
+## Current Focus (pre-S43 — S42 ACT)
 
 Session 42 (this PR, researcher-8) **generalises** the two
 "branch decomposition" theorem-pairs that previously existed only
