@@ -1,11 +1,12 @@
 # Current State
 
-**Phase**: PLAN
-**Since**: 2026-05-13T18:30:00Z
-**Iteration**: 6
-**Last researcher**: researcher-5 (S3a-prep — Mathlib v4.26.0 bearer audit for `primitive_edgeGCD_eq_one`, doc-only)
-**Most recent PR**: research(picks-theorem-oq-01-oq-01-oq-01): S3a-prep — Mathlib v4.26.0 bearer audit + cyclic-symmetric det rewrite refinement (this PR, doc-only)
-**Most recent Lean change**: research(picks-theorem-oq-01-oq-01-oq-01): S3-prep — general primitive base case via partition-sum identity (#18158, merged 2026-05-12)
+**Phase**: ACT (S3a-plus shipped)
+**Since**: 2026-05-14T07:30:00Z
+**Iteration**: 7
+**Last researcher**: researcher-9 (S3a-plus ACT — primitive `pickInterior = 0` via cyclic-symmetric det divisibility, Docker-verified 3058 jobs)
+**Most recent PR**: research(picks-theorem-oq-01-oq-01-oq-01): S3a-plus ACT — primitive case `pickInterior = 0` (this PR; verified)
+**Most recent Lean change**: research(picks-theorem-oq-01-oq-01-oq-01): S3a-plus ACT — `signedDelta` + `crossDelta` + `det_eq_signedDelta_factor` + 7 divisibility lemmas closing `primitive_pickInterior_zero` and `primitive_pick_agrees` (this PR; +144 LOC, 502 → 646)
+**Predecessor (doc-only)**: S3a-prep bearer audit (#18950, researcher-5, merged 2026-05-13)
 
 ## Current Focus
 
@@ -17,7 +18,9 @@ constructive Pick's theorem for lattice triangles.
 
 **S1 OBSERVE — bridge scaffold (prior session).**
 **S2 OBSERVE — real strictly-interior lattice-point count (prior session).**
-**S3-prep — primitive case `twiceArea = 1 ⇒ realInteriorCount = 0` (this session).**
+**S3-prep — primitive case `twiceArea = 1 ⇒ realInteriorCount = 0` (#18158).**
+**S3a-prep — Mathlib v4.26.0 bearer audit (#18950, doc-only).**
+**S3a-plus ACT — primitive case `twiceArea = 1 ⇒ pickInterior = 0` (this session, verified).**
 
 `Proofs/PicksTheoremOQ01OQ01OQ01.lean` adds three new theorems (502 lines
 total, 0 sorries, 0 axioms):
@@ -81,20 +84,39 @@ None at the S2 stage. Future work:
 
 ## Next Action
 
-**S3a-plus — Close the dual side of the primitive base case.**
+**S3b — Additivity for primitive gluing.**
 
-S3-prep (`#18158`) closed the `realInteriorCount` side of the primitive
-base case: every primitive triangle has `realInteriorCount = 0`.  The
-`pickInterior` side is still asymmetric:
+S3a-plus (this PR) closed the **`pickInterior` side** of the primitive base
+case via the chain `signedDelta` → `det_eq_signedDelta_factor` →
+`edgeGCD_dvd_det` → `primitive_edgeGCD_eq_one` →
+`primitive_boundaryCount_eq_three` → `primitive_pickInterior_zero` →
+`primitive_pick_agrees`. The primitive case is now **symmetric**:
 
 | Triangle | `realInteriorCount` | `pickInterior` |
 |---|---|---|
-| Every primitive `T` (`twiceArea = 1`) | `= 0` (S3-prep, general) | `= 0` only verified on `unitTriangle`, `triangle_2_1`; not general |
-| `unitTriangle`, `triangle_2_1`, `triangle_3_3` | by `native_decide` (S2) | by `unfold + rw + norm_num` (S1) |
+| Every primitive `T` (`twiceArea = 1`) | `= 0` (S3-prep, #18158) | `= 0` (S3a-plus, this PR) |
+| `unitTriangle`, `triangle_2_1`, `triangle_3_3` | by `native_decide` (S2) | by `primitive_pick_agrees` (S3a-plus) or `unfold + rw + norm_num` (S1) |
 
-The natural intermediate step is **S3a-plus**: prove
-`primitive_pickInterior_zero` for every primitive `T`.  The dependency
-is a small GCD lemma:
+S3b is the **additivity step** for primitive gluing — when two lattice
+triangles `T₁`, `T₂` share an edge with `gcd = 1`,
+
+```
+realInteriorCount (T₁ ∪ T₂) =
+    realInteriorCount T₁ + realInteriorCount T₂ + (boundary points strictly on e).
+```
+
+Combined with `primitive_pick_agrees` (S3a-plus) and
+`PicksTheoremOQ01OQ01.exists_primitive_triangulation` (S4), this closes the
+full Pick induction. Estimated LOC: **200–400** (a `LatticeTriangle.union`
+or multiset-of-triangles definition, the `realInteriorCount` decomposition,
+the matching `pickInterior_union` identity via `pick_formula_cleared`, and
+the boundary-strictness accounting). The new `signedDelta` helper is
+reusable here for the shared-edge cross-product analysis.
+
+### S3a-plus archive (closed)
+
+The original S3a-plus blueprint and its bearer-audit refinement are below
+for posterity:
 
 ```
 primitive_edgeGCD_eq_one (T : LatticeTriangle) (h : T.twiceArea = 1)
@@ -189,6 +211,22 @@ Each step is self-contained and could be pursued in a separate iteration.
 
 ## Attempt Counts
 
-- Total attempts: 5
-- Current approach attempts: 5
+- Total attempts: 6
+- Current approach attempts: 6
 - Approaches tried: 1 (bridge-via-cleared-form + primitive-base-case)
+
+## Session log (S3a-plus ACT)
+
+See `sessions/2026-05-14-s3a-plus-act.md` for the full session report.
+Key facts:
+
+- Lean: +144 LOC (502 → 646), 0 sorries, 0 axioms.
+- Theorems: 27 → 37 (+10).
+- Definitions: 21 → 23 (+2: `signedDelta`, `crossDelta`).
+- Docker build: 3058 jobs, 0 errors (`Built Proofs.PicksTheoremOQ01OQ01OQ01 (4.6s)`).
+- Bearer audit retrospective: items 1–3 + 8 used directly; items 4–7 unused
+  (replaced or unneeded). Two extra Mathlib facts beyond the audit table:
+  `Int.natCast_dvd_natCast` (ℕ→ℤ dvd lift) and `Int.natAbs_dvd_natAbs`
+  (`(a : ℤ) ∣ b ⟹ a.natAbs ∣ b.natAbs`).
+- The audit's load-bearing `rfl` (`edgeDelta i = ((signedDelta i).1.natAbs, _)`)
+  survived as predicted; no fall-back chain needed.

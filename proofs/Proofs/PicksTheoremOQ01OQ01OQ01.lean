@@ -499,4 +499,148 @@ theorem primitive_realInteriorCount_zero (T : LatticeTriangle)
 example : unitTriangle.realInteriorCount = 0 :=
   primitive_realInteriorCount_zero unitTriangle unitTriangle_twiceArea
 
+-- ════════════════════════════════════════════════════════════════
+-- SECTION IX (S3a-plus): Primitive case — `pickInterior = 0`
+-- ════════════════════════════════════════════════════════════════
+
+/-! ### Primitive case: every edge GCD is `1`, hence `pickInterior T = 0`
+
+S3-prep (`primitive_realInteriorCount_zero`) closed the geometric side
+of the primitive base case: every primitive triangle has zero strictly-
+interior lattice points.  S3a-plus closes the *formula* side: every
+primitive triangle also has `pickInterior T = 0` (by Pick's identity,
+since `boundaryCount = 3` once each edge GCD is `1`).
+
+Combining the two, `(realInteriorCount T : ℚ) = pickInterior T` for
+every primitive `T`, not only the three concrete witnesses verified by
+`native_decide` in Section VII.
+
+The proof factors through the signed edge vector for each edge: define
+`signedDelta i : ℤ × ℤ` (the absolute-value-free version of
+`edgeDelta i`), express `T.det` cyclically as a `ℤ`-linear combination
+of its two components, and conclude `edgeGCD i ∣ T.twiceArea`; with
+`T.twiceArea = 1` the only natural-number divisor is `1`.
+
+Per the S3a-prep bearer audit (`#18950`), the Mathlib v4.26.0 / Lean
+core API points used are: `Nat.gcd_dvd_left/right`,
+`Nat.eq_one_of_dvd_one`, `Int.natCast_dvd_natCast`, `Int.dvd_natAbs`,
+`Int.natAbs_dvd_natAbs` — all stable on the lockfile pin. -/
+
+/-- The **signed** edge vector for edge `i`, retaining direction
+    information that `edgeDelta i` (which is component-wise
+    `Int.natAbs`) discards.  Used purely to express `T.det` as a
+    `ℤ`-linear combination uniformly across the three edges. -/
+def LatticeTriangle.signedDelta (T : LatticeTriangle) : Fin 3 → ℤ × ℤ
+  | 0 => (T.v2.1 - T.v1.1, T.v2.2 - T.v1.2)
+  | 1 => (T.v3.1 - T.v2.1, T.v3.2 - T.v2.2)
+  | 2 => (T.v1.1 - T.v3.1, T.v1.2 - T.v3.2)
+
+/-- `edgeDelta i` recovers `signedDelta i` componentwise via `Int.natAbs`. -/
+lemma edgeDelta_eq_natAbs_signedDelta (T : LatticeTriangle) (i : Fin 3) :
+    T.edgeDelta i = ((T.signedDelta i).1.natAbs, (T.signedDelta i).2.natAbs) := by
+  fin_cases i <;> rfl
+
+/-- The *other* edge vector emanating from `v_i` in the cyclic
+    factorisation of `T.det`.  Pairs with `signedDelta i` so that
+    `T.det = signedDelta_i.1 · crossDelta_i.2 − crossDelta_i.1 · signedDelta_i.2`. -/
+def LatticeTriangle.crossDelta (T : LatticeTriangle) : Fin 3 → ℤ × ℤ
+  | 0 => (T.v3.1 - T.v1.1, T.v3.2 - T.v1.2)
+  | 1 => (T.v1.1 - T.v2.1, T.v1.2 - T.v2.2)
+  | 2 => (T.v2.1 - T.v3.1, T.v2.2 - T.v3.2)
+
+/-- **Cyclic factorisation of the determinant**: for every edge index
+    `i`, `T.det` is a `ℤ`-linear combination of the two coordinates of
+    `signedDelta i`, with `crossDelta i` supplying the cofactors.
+
+    This is the algebraic content of "the 2×2 determinant is invariant
+    under cyclic permutation of the three vertices" — for `i = 0` it is
+    the literal definition of `T.det`; for `i = 1, 2` it is the same
+    determinant computed against a cyclically shifted base vertex. -/
+lemma det_eq_signedDelta_factor (T : LatticeTriangle) (i : Fin 3) :
+    T.det = (T.signedDelta i).1 * (T.crossDelta i).2
+             - (T.crossDelta i).1 * (T.signedDelta i).2 := by
+  unfold LatticeTriangle.det LatticeTriangle.signedDelta LatticeTriangle.crossDelta
+  fin_cases i <;> ring
+
+/-- The edge GCD (as a `ℤ`) divides the first component of `signedDelta i`. -/
+lemma edgeGCD_dvd_signedDelta_fst (T : LatticeTriangle) (i : Fin 3) :
+    (T.edgeGCD i : ℤ) ∣ (T.signedDelta i).1 := by
+  have h : T.edgeGCD i ∣ (T.signedDelta i).1.natAbs := by
+    unfold LatticeTriangle.edgeGCD
+    rw [edgeDelta_eq_natAbs_signedDelta]
+    exact Nat.gcd_dvd_left _ _
+  exact Int.dvd_natAbs.mp (Int.natCast_dvd_natCast.mpr h)
+
+/-- The edge GCD (as a `ℤ`) divides the second component of `signedDelta i`. -/
+lemma edgeGCD_dvd_signedDelta_snd (T : LatticeTriangle) (i : Fin 3) :
+    (T.edgeGCD i : ℤ) ∣ (T.signedDelta i).2 := by
+  have h : T.edgeGCD i ∣ (T.signedDelta i).2.natAbs := by
+    unfold LatticeTriangle.edgeGCD
+    rw [edgeDelta_eq_natAbs_signedDelta]
+    exact Nat.gcd_dvd_right _ _
+  exact Int.dvd_natAbs.mp (Int.natCast_dvd_natCast.mpr h)
+
+/-- The edge GCD (as a `ℤ`) divides `T.det`.  Combines the cyclic
+    determinant factorisation with the two component-wise divisibilities. -/
+lemma edgeGCD_dvd_det (T : LatticeTriangle) (i : Fin 3) :
+    (T.edgeGCD i : ℤ) ∣ T.det := by
+  rw [det_eq_signedDelta_factor T i]
+  exact ((edgeGCD_dvd_signedDelta_fst T i).mul_right _).sub
+        ((edgeGCD_dvd_signedDelta_snd T i).mul_left _)
+
+/-- The edge GCD divides `T.twiceArea` (= `|T.det|`).  Direct corollary
+    of `edgeGCD_dvd_det` after collapsing through `Int.natAbs`. -/
+lemma edgeGCD_dvd_twiceArea (T : LatticeTriangle) (i : Fin 3) :
+    T.edgeGCD i ∣ T.twiceArea := by
+  have h : (T.edgeGCD i : ℤ) ∣ T.det := edgeGCD_dvd_det T i
+  have h' : (T.edgeGCD i : ℤ).natAbs ∣ T.det.natAbs :=
+    Int.natAbs_dvd_natAbs.mpr h
+  simpa [LatticeTriangle.twiceArea] using h'
+
+/-- **Primitive case — every edge GCD is `1`**.  For every primitive
+    lattice triangle (`twiceArea = 1`) and every edge index `i`, the
+    edge GCD equals `1` — equivalently, the segment from `v_i` to
+    `v_{i+1}` contains no interior lattice points. -/
+theorem primitive_edgeGCD_eq_one (T : LatticeTriangle) (h : T.twiceArea = 1)
+    (i : Fin 3) : T.edgeGCD i = 1 := by
+  have hdvd : T.edgeGCD i ∣ T.twiceArea := edgeGCD_dvd_twiceArea T i
+  rw [h] at hdvd
+  exact Nat.eq_one_of_dvd_one hdvd
+
+/-- **Primitive case — boundary count is `3`**.  Each edge contributes
+    `edgeGCD = 1` lattice points to the boundary count, so the total is
+    exactly `3` (one for each vertex/edge cycle). -/
+theorem primitive_boundaryCount_eq_three (T : LatticeTriangle)
+    (h : T.twiceArea = 1) : T.boundaryCount = 3 := by
+  unfold LatticeTriangle.boundaryCount
+  rw [primitive_edgeGCD_eq_one T h 0, primitive_edgeGCD_eq_one T h 1,
+      primitive_edgeGCD_eq_one T h 2]
+
+/-- **Primitive case — Pick's formula gives `pickInterior = 0`**.  For
+    every primitive lattice triangle (`twiceArea = 1`), Pick's formula
+    `I = A − B/2 + 1 = 1/2 − 3/2 + 1` evaluates to `0`.  This matches the
+    geometric count `realInteriorCount = 0` (S3-prep). -/
+theorem primitive_pickInterior_zero (T : LatticeTriangle)
+    (h : T.twiceArea = 1) : T.pickInterior = 0 := by
+  unfold LatticeTriangle.pickInterior
+  rw [primitive_boundaryCount_eq_three T h, h]
+  norm_num
+
+/-- **Primitive base case — agreement of `realInteriorCount` and
+    `pickInterior`**.  For every primitive lattice triangle
+    (`twiceArea = 1`), the geometric count of strictly-interior lattice
+    points matches the rational value of Pick's formula.  This is the
+    clean primitive base case of the eventual Pick induction. -/
+theorem primitive_pick_agrees (T : LatticeTriangle) (h : T.twiceArea = 1) :
+    (T.realInteriorCount : ℚ) = T.pickInterior := by
+  rw [primitive_realInteriorCount_zero T h, primitive_pickInterior_zero T h]
+  simp
+
+/-- **Sanity check**: the unit-triangle agreement
+    `unitTriangle.realInteriorCount = unitTriangle.pickInterior`
+    (originally `native_decide` in S2, restated `unfold + norm_num` in S1)
+    is now recovered uniformly as a corollary of `primitive_pick_agrees`. -/
+example : (unitTriangle.realInteriorCount : ℚ) = unitTriangle.pickInterior :=
+  primitive_pick_agrees unitTriangle unitTriangle_twiceArea
+
 end PicksTheoremOQ01OQ01OQ01
