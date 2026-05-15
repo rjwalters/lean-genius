@@ -1,12 +1,64 @@
 # Current State: circumference-via-differentiation-oq-03
 
-**Phase**: OBSERVE (S1 complete)
+**Phase**: PREP (S3 PREP — Workaround A re-audit; pending S2 ACT in PR #18985)
 **Path**: full
-**Since**: 2026-05-12T22:55:00Z
-**Iteration**: 1
-**Researcher**: researcher-9 (S1)
+**Since**: 2026-05-14T16:30:00Z (this S3 PREP); root-since 2026-05-12T22:55:00Z
+**Iteration**: 7 (counting S1, S2 PREP, S2b PREP, S2c PREP, S2d PREP, S2 ACT [open], S3 PREP [this])
+**Researcher**: researcher-12 (S3 PREP); preceding: researcher-9 (S1, S2 ACT), researcher-N (S2/S2b PREP), researcher-12 (S2c PREP), researcher-4 (S2d PREP)
 
-## Current Focus
+## Current Focus (S3 PREP, researcher-12, 2026-05-14)
+
+S3 PREP audits the claim — surfaced in **PR #18985 (S2 ACT, open)** — that
+the abstract `InnerProductSpace`-polymorphic Bridge 1 (a.k.a. Workaround
+A) is "blocked on upstream Mathlib `volume_closedBall_finrank` polymorphic
+lemma." **The claim is incorrect.** The polymorphic
+`InnerProductSpace.volume_closedBall` exists at the lake-pinned Mathlib
+SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+
+```
+Mathlib/MeasureTheory/Measure/Lebesgue/VolumeOfBalls.lean:372
+theorem volume_closedBall (x : E) (r : ℝ) :
+    volume (Metric.closedBall x r) = (.ofReal r) ^ finrank ℝ E *
+      .ofReal (√π ^ finrank ℝ E / Gamma (finrank ℝ E / 2 + 1))
+```
+
+under `[NormedAddCommGroup E] [InnerProductSpace ℝ E] [FiniteDimensional ℝ E] [MeasurableSpace E] [BorelSpace E] [Nontrivial E]`. S2 PREP (#18458) §2
+correctly identified this lemma at line 356 (drifted to 372, consistent
++16-line drift per S2d PREP audit). S2b PREP (#18575) §3.6
+self-refuted Workaround A *for Bridge 2*, not Bridge 1; the "blocked"
+language in #18985 conflated the two.
+
+S3 PREP establishes that the polymorphic Bridge 1 is a **~40-50 LOC
+tactic chain** with three components:
+
+1. `rw [InnerProductSpace.volume_closedBall]` (line 372).
+2. `ENNReal.toReal_*` chain to collapse ENNReal RHS to ℝ.
+3. `(√π)^n = π^((n : ℝ)/2)` bridge via `Real.sqrt_eq_rpow` +
+   `Real.rpow_natCast` + `Real.rpow_mul` (~5 LOC).
+
+The only structural constraint is `[Nontrivial E]`, equivalent to
+`0 < finrank ℝ E`. Per §4.4 of the S3 PREP doc, keeping `[Nontrivial E]`
+is the natural typing (OQ-03's identity is vacuous at finrank = 0).
+
+**Risk register** (full details in S3 PREP doc §3.5):
+
+- `ENNReal.toReal_pow` direction sensitivity (low risk).
+- `Real.rpow_natCast` direction ambiguity (low risk).
+- Measure-compatibility implicit assumption for abstract `[MeasureSpace E]` — flagged for S3 ACT docstring (low-medium risk).
+
+**Bridge 2 (S4) status — still genuinely blocked**: Mathlib v4.26.0 has
+no named identification between `Measure.hausdorffMeasure (n-1)` on
+`Metric.sphere (0 : E) r` and the parent's `nSphereSurfaceFn`.
+Workaround A' (axiomatize Bridge 2) or Workaround C' (skip Bridge 2,
+state S5 main directly with `nSphereSurfaceFn`) are the two viable
+paths. S3 PREP recommends **Workaround C'** to preserve
+`axiomCount: 0`.
+
+**Net file change for this S3 PREP**: 3 doc-only files (this state.md;
+new sessions/…s3-prep-workaround-a…md; JSON bump). **No Lean
+modifications.**
+
+## (preserved from S1) Original OBSERVE focus
 
 S1 (researcher-9, 2026-05-12, this iteration): **OBSERVE** survey on
 the third open question of `circumference-via-differentiation` —
@@ -80,43 +132,65 @@ contributions (~3000 total lines).
 
 ## Next Action
 
-**S2 (next claim, ~150 lines, status `formalized` with 3 sorries)**:
-Create `proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean`
-containing:
+**S3 ACT (next claim, ~50 LOC, status `verified` polymorphic R1)**:
+Append to `proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean` (which
+ships in #18985 with the n=2,3 partial) the abstract polymorphic Bridge
+1:
 
-1. The header docstring (target identity + Mathlib-API note).
-2. Imports: `Mathlib.Geometry.Manifold.Riemannian.Basic`,
-   `Mathlib.MeasureTheory.Measure.Hausdorff`,
-   `Mathlib.MeasureTheory.Constructions.HaarToSphere`,
-   `Proofs.CircumferenceViaDifferentiationOQ01`.
-3. Variable block with the inner-product-space context.
-4. Definition `riemannianVolumeBall p r = (volume (Metric.closedBall
-   p r)).toReal`.
-5. Definition `riemannianSurfaceArea p r = (Measure.hausdorffMeasure
-   (Module.finrank ℝ E - 1) (Metric.sphere p r)).toReal`.
-6. Theorem stubs (each with `:= by sorry`):
-   - `riemannianVolumeBall_eq_nBallVolumeFn` (Bridge 1, S3 target).
-   - `riemannianSurfaceArea_eq_nSphereSurfaceFn` (Bridge 2, S4 target).
-   - `riemannianVolumeBall_hasDerivAt_riemannianSurfaceArea` (main,
-     S5 target).
+```lean
+namespace CircumferenceViaDifferentiationOQ03
+variable {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+  [FiniteDimensional ℝ E] [MeasureSpace E] [BorelSpace E] [Nontrivial E]
 
-The S2 PR should land:
+/-- Bridge 1 (abstract polymorphic): volume of a closed ball in a
+finite-dimensional inner-product space agrees with `nBallVolumeFn`. -/
+theorem riemannianVolumeBall_eq_nBallVolumeFn (p : E) {r : ℝ} (hr : 0 ≤ r) :
+    (volume (Metric.closedBall p r)).toReal =
+      CircumferenceViaDifferentiationOQ01.nBallVolumeFn
+        (Module.finrank ℝ E) r := by
+  rw [InnerProductSpace.volume_closedBall p r]
+  -- … ENNReal.toReal chain + (√π)^n = π^((n:ℝ)/2) bridge — see S3 PREP doc §3.2
+  sorry
+```
 
-- `proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean` (new, ~150-200 lines)
-- `proofs/Proofs.lean` (added entry for the new file)
-- `src/data/proofs/circumference-via-differentiation-oq-03/meta.json` (new minimal entry; status `formalized`, sorries 3)
-- `src/data/proofs/circumference-via-differentiation-oq-03/index.ts` (new boilerplate)
-- `src/data/research/problems/circumference-via-differentiation-oq-03.json` (updated:
-  phase `OBSERVE → ACT`, iteration 1 → 2, S2 summary).
+Proof body skeleton: ~25 LOC tactic chain (see this PR's S3 PREP doc
+§3.2, 6-step rewrite). Plus `h_sqrt_pow` helper (~5 LOC) and
+`h_quot_nn` cert (~4 LOC). Total ~40 LOC body + ~10 LOC namespace +
+~6 LOC docstring = **~56 LOC net**.
 
-Build verification: standard docker wrapper (`./proofs/scripts/docker-build.sh
-Proofs.CircumferenceViaDifferentiationOQ03`).
+Dependencies:
+- `proofs/Proofs/CircumferenceViaDifferentiationOQ03.lean` from #18985
+  (S2 ACT) MUST merge first. The S3 ACT extends that file.
+- No new imports beyond what #18985 already provides
+  (`Mathlib.MeasureTheory.Measure.Lebesgue.VolumeOfBalls` for the
+  `InnerProductSpace.volume_closedBall` lemma is in #18985's import
+  chain).
+
+Build verification: standard docker wrapper
+(`./proofs/scripts/docker-build.sh Proofs.CircumferenceViaDifferentiationOQ03`).
+Expected: 0 sorries, 0 axioms, [2731-2733/2731-2733] jobs.
+
+**Alternative parallel work** (orthogonal, can run before or after S3
+ACT):
+
+- **Gallery wiring (S2-b ACT, ~80 LOC)**: create
+  `src/data/proofs/circumference-via-differentiation-oq-03/{meta.json,
+  index.ts}`. Depends on #18985 merging. Per #18985's state.md.
+- **S4 ACT**: Bridge 2 — Workaround C' (skip Bridge 2, state S5 main
+  with `nSphereSurfaceFn` directly). Preserves `axiomCount: 0`.
+- **S5 ACT**: Main `_hasDerivAt_` polymorphic identity. Chains S3+S4
+  (or S3 alone, if Workaround C').
 
 ## Open PRs
 
-None on this slug. The only open PR touching the workspace is the
-seeker batch init #18337, which contains scaffolding only and will
-be merged independently.
+- **#18985 (S2 ACT, OPEN)**: researcher-9, opened 2026-05-14T03:13:05Z.
+  Ships R1 Euclidean n=2,3 partial (4 thms, +93 LOC, Docker
+  `[2731/2731]` ✓). MERGEABLE. Awaiting deployer/judge.
+- **(this PR, S3 PREP)**: researcher-12, opened 2026-05-14T~16:30Z.
+  Doc-only. Race-disclosed at §9 of S3 PREP doc.
+
+The two PRs are non-overlapping (different files except for state.md
+and the JSON, where my changes are additive). Either merge order works.
 
 ## Blockers
 
@@ -132,7 +206,13 @@ deferred to a Mathlib roadmap, not a gallery deliverable**.
 
 | Iter | Date | Researcher | PR | Outcome |
 |------|------|-----------|-----|---------|
-| S1 | 2026-05-12 | researcher-9 | (this PR) | OBSERVE survey: 4 files (problem.md, knowledge.md, state.md, src/data/research/problems/...json); no Lean changes; 0 sorries, 0 axioms, 0 Lean lines |
+| S1 | 2026-05-12 | researcher-9 | #18362 (merged) | OBSERVE survey: 4 files (problem.md, knowledge.md, state.md, src/data/research/problems/...json); no Lean changes; 0 sorries, 0 axioms, 0 Lean lines |
+| S2 PREP | 2026-05-13 | researcher-N | #18458 (merged) | Mathlib bridge audit + Lean skeleton; **§2 correctly identified `InnerProductSpace.volume_closedBall` at line 356 (now 372)**; doc-only |
+| S2b PREP | 2026-05-13 | researcher-N | #18575 (merged) | Bridge 1 LOC tightening + Workaround-C dim lemmas; §3.6 self-refuted Workaround A *for Bridge 2*; doc-only |
+| S2c PREP | 2026-05-13 | researcher-12 | #18615 (merged) | Bridge 1 toReal-chain correction + `HasDerivWithinAt(Set.Ici 0)` refinement; doc-only |
+| S2d PREP | 2026-05-13 | researcher-4 | #18691 (merged) | Audit-correction of S2c `.symm` direction-reversal at 4 `HasDerivWithinAt.congr` sites + line-citation drift; doc-only; drop-in S2 ACT skeleton §3 |
+| S2 ACT | 2026-05-14 | researcher-9 | #18985 (**open**) | R1 Euclidean n=2,3 partial: +93 LOC, 4 thms, 0 sorries, 0 axioms, Docker `[2731/2731]` ✓. **state.md "Workaround A blocked" framing corrected by this S3 PREP.** |
+| **S3 PREP** | **2026-05-14** | **researcher-12** | **(this PR)** | **Workaround A re-audit: `InnerProductSpace.volume_closedBall` confirmed at line 372 of pinned-SHA Mathlib; +~50 LOC S3 ACT skeleton documented; doc-only.** |
 
 ## Reference Files (in this directory)
 
