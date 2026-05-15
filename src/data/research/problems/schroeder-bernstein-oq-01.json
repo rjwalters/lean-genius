@@ -28,13 +28,13 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-13T08:50:00Z",
-    "iteration": 6,
-    "focus": "S6 BUILD UNBLOCKER (this PR): 2-token noncomputable fix on fHom/gHom in SchroederBernsteinOQ01.lean clears the S4/S5 ACT build-pending uncertainty. Build now verified: 3069/3069 jobs.",
+    "since": "2026-05-14T15:50:00.000Z",
+    "iteration": 7,
+    "focus": "S6 ACT shipped (researcher-9, 2026-05-14): hasSBP_of_isDiscrete : [Category C] -> [IsDiscrete C] -> HasSBP C — the vacuous half of the Banaschewski-Brümmer sufficient-condition framework. Generalizes hasSBP_Discrete (S4 ACT, PR #18496) beyond C = Discrete α to any Mathlib IsDiscrete instance, with proof reduced to one tactic line (`exact ⟨asIso m⟩`) using Mathlib's isIso_of_isDiscrete (Discrete/Basic.lean:342 at v4.26.0 pin 2df2f01). Hypothesis is documented as VACUOUS: it forces Mono = Iso, so the mutual-mono premise of HasSBP isn't substantively used. Companion file now ~200 LOC, 4 public theorems (hasSBP_Type / hasSBP_Discrete / not_hasSBP_TopCat / hasSBP_of_isDiscrete), 0 sorries, 0 axioms, Docker-build verified at 3069 jobs. S7 picker has 3 candidate paths for the non-vacuous follow-up: hasSBP_of_isGroupoid (~5 LOC, still-vacuous broadening), RegularMono variant (~30-50 LOC, first non-vacuous), full Banaschewski-Brümmer factorisation system (~150-300 LOC, literature-aligned long horizon). Sanity constraint across all three: any chosen hypothesis P must exclude TopCat (since P TopCat -> HasSBP TopCat would contradict not_hasSBP_TopCat, PR #18707).",
     "blockers": [],
-    "nextAction": "S7: Banaschewski-Brümmer split-mono → HasSBP C (literal or regular-mono variant). On closer review, the state.md S6 sketch needs revision (mono + split-mono does NOT imply iso in general); flagging for a more careful read of B-B 1986 before Lean implementation.",
+    "nextAction": "S7 (any researcher): state and prove a non-vacuous sufficient condition for HasSBP. Three paths in order of cost: (C) hasSBP_of_isGroupoid via [IsGroupoid C] (~5 LOC; still vacuous, but broadens to fundamental groupoids etc.); (D) RegularMono variant via [HasRegularMonos C] + split structure (~30-50 LOC, first genuinely non-vacuous result); (E) full Banaschewski-Brümmer 1986 retraction condition via MorphismProperty factorisation system (~150-300 LOC). Recommended: path (C) as a low-cost broadening, then path (D) for genuine non-vacuity. Sanity constraint: chosen hypothesis P must exclude TopCat (else `P TopCat -> HasSBP TopCat` contradicts S5 not_hasSBP_TopCat). For path (C) this is automatic; for (D, E) requires a P TopCat -> False proof. Estimated S7 LOC: 5 (C), 40-60 (D), 150-300 (E).",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -111,7 +111,7 @@
     ]
   },
   "started": "2026-05-12T20:25:00Z",
-  "lastUpdate": "2026-05-13",
+  "lastUpdate": "2026-05-14",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [

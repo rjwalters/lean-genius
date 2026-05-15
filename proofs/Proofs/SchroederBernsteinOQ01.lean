@@ -38,11 +38,27 @@ Banaschewski and Brummer (1986) showed it holds in categories with a
 
 No sorries, no axioms.
 
+## S6 ACT (this PR)
+
+5. Prove `hasSBP_of_isDiscrete : [IsDiscrete C] → HasSBP C` — the
+   vacuous sufficient condition. In any `[IsDiscrete C]` category (at
+   most one morphism between objects, with morphisms forcing object
+   equality), every morphism is iso (`isIso_of_isDiscrete`), so the
+   first mono of a mutual-monomorphism pair is itself an iso witness.
+   This abstracts the proof pattern of `hasSBP_Discrete` to all
+   `IsDiscrete` categories; `Discrete α` is one such instance.
+
 ## Future phases (not in this file)
 
-- Banaschewski-Brummer (S6+): state and prove a sufficient categorical
-  condition implying `HasSBP C` (the 1986 retraction-condition theorem).
-- S7+ classification: survey strict generalizations (Trnková 1975,
+- Banaschewski-Brummer S7+ (non-vacuous): identify a sufficient
+  hypothesis that does NOT force `Mono = Iso`. Candidates:
+  regular-mono variants (RegularMono / StrongMono), groupoid
+  reductions of monoidal slices, retraction-conditions per
+  Banaschewski-Brummer 1986. The S5 TopCat counterexample is a
+  useful sanity check: any chosen hypothesis `P` must exclude
+  `TopCat` (since `P TopCat -> HasSBP TopCat` would contradict
+  `not_hasSBP_TopCat`).
+- S8+ classification: survey strict generalizations (Trnková 1975,
   Pradic-Brown 2019 — SBP in IZF + Infinity equivalent to LEM).
 - Counter-examples in `Grp` (Bumby 1965) and `Ban` (Gowers 1996) remain
   at the literature-citation level; Lean-formal failure witnesses beyond
@@ -157,5 +173,38 @@ theorem not_hasSBP_TopCat : ¬ HasSBP TopCat.{0} := by
   -- `isCompact_Ioo_iff` forces `1 ≤ 0`; contradiction.
   rw [isCompact_Ioo_iff] at hIoo_compact
   linarith
+
+/-! ## S6 ACT — `[IsDiscrete C] → HasSBP C` (vacuous sufficient condition)
+
+The vacuous half of the Banaschewski-Brümmer style sufficient condition
+for the categorical Schroeder-Bernstein property: any `[IsDiscrete C]`
+category satisfies SBP because every morphism in such a category is
+already an isomorphism (Mathlib's `isIso_of_isDiscrete`), so the first
+mono of a mutual-monomorphism pair witnesses the required iso without
+the second mono being consumed.
+
+`IsDiscrete C` is the Mathlib typeclass (`Mathlib.CategoryTheory.Discrete.Basic`)
+asserting that `C` has at most one morphism between any two objects AND
+that any morphism `f : X ⟶ Y` forces `X = Y`. `Discrete α` is the
+canonical instance (`Discrete.isDiscrete`); the existing `hasSBP_Discrete`
+above is the specialization at `C = Discrete α`.
+
+This abstracts `hasSBP_Discrete`'s proof pattern: the substantive work
+happens in Mathlib's `isIso_of_isDiscrete` instance, and the categorical
+SBP statement reduces to `asIso m` once `IsIso m` is in scope.
+
+The hypothesis `IsDiscrete C` is restrictive (it forces `Mono = Iso`),
+so this is the **vacuous case** of the Banaschewski-Brümmer sufficient
+condition. A non-vacuous hypothesis (regular-mono variants, retraction
+conditions) is deferred to S7+.
+-/
+
+/-- **S6 ACT — vacuous sufficient condition for SBP**: any `[IsDiscrete C]`
+category has the Schroeder-Bernstein property. Generalizes `hasSBP_Discrete`
+beyond `C = Discrete α`. -/
+theorem hasSBP_of_isDiscrete (C : Type*) [Category C] [IsDiscrete C] :
+    HasSBP C := by
+  intro _ _ ⟨m, _⟩ _
+  exact ⟨asIso m⟩
 
 end SchroederBernsteinOQ01
