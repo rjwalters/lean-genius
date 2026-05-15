@@ -2819,6 +2819,74 @@ lemma permStabilizer_card (v : Fin 4 → ℤ) :
   rw [Fintype.card_congr e]
   exact DomMulAct.stabilizer_card' v
 
+-- =====================================================================
+-- PART 33.5 (S18c-ORBIT-PRECURSOR-4): joint sign-flip/permutation action laws
+-- =====================================================================
+--
+-- Prerequisites for the combined `(ℤ/2)⁴ ⋊ S₄` stabilizer count (deferred
+-- Part 34, `combinedStabilizer_card`) and the 8-divisibility theorem
+-- (deferred Part 35, `orbitCard_dvd_eight_of_pos`). Both lemmas here are
+-- pure structural facts about the interplay of `applyFlip` (Part 29) and
+-- `applyPerm` (Part 30); no Mathlib dependencies beyond what those parts
+-- already require. PREP coverage: `s18c-orbit-mathlib-audit-prep.md` §4
+-- supplies the verbatim computations.
+--
+-- (1) `applyPerm_applyFlip` — the conjugation formula for the semidirect
+--     product: pushing a permutation past a sign-flip rewrites the flip's
+--     argument by `σ.symm`. This is the "twist" in `(ℤ/2)⁴ ⋊ S₄`.
+--
+-- (2) `applyFlip_applyFlip` — sign-flips compose by pointwise `xor` on
+--     their bool-tuples. Generalises Part 29's `applyFlip_involutive`
+--     (the `s₁ = s₂` case yields `xor s s = false`, hence the identity
+--     flip).
+--
+-- Together, these two lemmas express every element of the joint action as
+-- a single `(s, σ) · v = applyFlip s (applyPerm σ v)` representation
+-- closed under composition — the structural prerequisite for the
+-- combined-stabilizer enumeration in PREP `s18c-orbit-case-enumeration-prep.md`.
+
+/-- **(S18c-orbit precursor)** Conjugation: pushing a coordinate
+    permutation past a sign-flip pulls the flip-tuple back by `σ.symm`.
+
+    For any `σ : Equiv.Perm (Fin 4)`, `s : SignFlip`, `v : Fin 4 → ℤ`,
+
+      `applyPerm σ (applyFlip s v) = applyFlip (s ∘ σ.symm) (applyPerm σ v)`.
+
+    This is the semidirect-product "twist" for the `(ℤ/2)⁴ ⋊ S₄` action;
+    the conjugation `σ · s := s ∘ σ.symm` makes the joint composition
+    `applyFlip s₁ ∘ applyPerm σ₁ ∘ applyFlip s₂ ∘ applyPerm σ₂` collapse
+    to `applyFlip (s₁ XOR (σ₁ · s₂)) ∘ applyPerm (σ₁ * σ₂)`.
+
+    Proof: both sides reduce pointwise to
+    `if s (σ.symm i) = true then -(v (σ.symm i)) else v (σ.symm i)`
+    after unfolding `applyPerm` and `applyFlip`; `funext` + `rfl` closes. -/
+@[simp] lemma applyPerm_applyFlip
+    (σ : Equiv.Perm (Fin 4)) (s : SignFlip) (v : Fin 4 → ℤ) :
+    applyPerm σ (applyFlip s v) = applyFlip (s ∘ σ.symm) (applyPerm σ v) := by
+  funext i
+  rfl
+
+/-- **(S18c-orbit precursor)** Two-flip composition: sign-flips compose
+    by pointwise `xor`.
+
+    For any `s₁ s₂ : SignFlip` and `v : Fin 4 → ℤ`,
+
+      `applyFlip s₁ (applyFlip s₂ v) = applyFlip (fun i => xor (s₁ i) (s₂ i)) v`.
+
+    Generalises Part 29's `applyFlip_involutive` (the diagonal case
+    `s₁ = s₂` gives `xor (s i) (s i) = false`, hence the trivial
+    sign-flip). Together with `applyPerm_applyFlip` (above) and
+    `applyPerm_mul` (Part 30), this characterises the joint
+    `(ℤ/2)⁴ ⋊ S₄` action's composition law.
+
+    Proof: pointwise case analysis on `s₁ i, s₂ i ∈ Bool`. -/
+@[simp] lemma applyFlip_applyFlip (s₁ s₂ : SignFlip) (v : Fin 4 → ℤ) :
+    applyFlip s₁ (applyFlip s₂ v) = applyFlip (fun i => xor (s₁ i) (s₂ i)) v := by
+  funext i
+  simp only [applyFlip]
+  by_cases h₁ : s₁ i = true <;> by_cases h₂ : s₂ i = true <;>
+    simp_all [Bool.not_eq_true]
+
 /-- **(S18c-orbit, TARGET DECLARATION, deferred)** Every orbit of the
     (ℤ/2)⁴ ⋊ S₄ action on the four-square solution set has cardinality
     divisible by 8 when `n > 0`.
