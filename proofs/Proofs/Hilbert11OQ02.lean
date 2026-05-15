@@ -451,13 +451,13 @@ noncomputable def Gint : Polynomial ℤ := C 4 + C 5 * X ^ 3
 private lemma Gint_aeval (a : ℤ_[11]) :
     aeval a Gint = (4 : ℤ_[11]) + (5 : ℤ_[11]) * a ^ 3 := by
   unfold Gint
-  simp [aeval_C, aeval_X_pow] <;> ring
+  simp [aeval_C, aeval_X_pow, map_ofNat] <;> ring
 
 private lemma Gint_derivative_aeval (a : ℤ_[11]) :
     aeval a Gint.derivative = (15 : ℤ_[11]) * a ^ 2 := by
   unfold Gint
   simp [derivative_add, derivative_C, derivative_C_mul, derivative_X_pow,
-        aeval_C, aeval_X_pow] <;> ring
+        aeval_C, aeval_X_pow, map_ofNat] <;> ring
 
 private lemma Gint_aeval_at_2 :
     aeval (2 : ℤ_[11]) Gint = ((44 : ℤ) : ℤ_[11]) := by
@@ -564,20 +564,21 @@ noncomputable def Gint : Polynomial ℤ := C 4 + C 5 * X ^ 3
 private lemma Gint_derivative_eq : Gint.derivative = C 15 * X ^ 2 := by
   unfold Gint
   rw [derivative_add, derivative_C, zero_add, derivative_C_mul,
-      derivative_X_pow]
-  push_cast
-  ring
+      derivative_X_pow, ← mul_assoc, ← C_mul]
+  norm_num
 
 private lemma Gint_aeval {p : ℕ} [Fact (Nat.Prime p)] (a : ℤ_[p]) :
     aeval a Gint = (4 : ℤ_[p]) + (5 : ℤ_[p]) * a ^ 3 := by
   unfold Gint
   rw [map_add, map_mul, map_pow, aeval_C, aeval_C, aeval_X]
+  simp only [algebraMap_int_eq, eq_intCast]
   push_cast
   ring
 
 private lemma Gint_derivative_aeval {p : ℕ} [Fact (Nat.Prime p)] (a : ℤ_[p]) :
     aeval a Gint.derivative = (15 : ℤ_[p]) * a ^ 2 := by
   rw [Gint_derivative_eq, map_mul, map_pow, aeval_C, aeval_X]
+  simp only [algebraMap_int_eq, eq_intCast]
   push_cast
   ring
 
@@ -724,20 +725,21 @@ noncomputable def G (c : ℤ) : Polynomial ℤ := C c + C 5 * X ^ 3
 private lemma G_derivative_eq (c : ℤ) : (G c).derivative = C 15 * X ^ 2 := by
   unfold G
   rw [derivative_add, derivative_C, zero_add, derivative_C_mul,
-      derivative_X_pow]
-  push_cast
-  ring
+      derivative_X_pow, ← mul_assoc, ← C_mul]
+  norm_num
 
 private lemma G_aeval {p : ℕ} [Fact (Nat.Prime p)] (c : ℤ) (a : ℤ_[p]) :
     aeval a (G c) = (c : ℤ_[p]) + (5 : ℤ_[p]) * a ^ 3 := by
   unfold G
   rw [map_add, map_mul, map_pow, aeval_C, aeval_C, aeval_X]
+  simp only [algebraMap_int_eq, eq_intCast]
   push_cast
   ring
 
 private lemma G_derivative_aeval {p : ℕ} [Fact (Nat.Prime p)] (c : ℤ) (a : ℤ_[p]) :
     aeval a (G c).derivative = (15 : ℤ_[p]) * a ^ 2 := by
   rw [G_derivative_eq, map_mul, map_pow, aeval_C, aeval_X]
+  simp only [algebraMap_int_eq, eq_intCast]
   push_cast
   ring
 
@@ -915,20 +917,21 @@ noncomputable def H (c : ℤ) : Polynomial ℤ := C c + C 3 * X ^ 3
 private lemma H_derivative_eq (c : ℤ) : (H c).derivative = C 9 * X ^ 2 := by
   unfold H
   rw [derivative_add, derivative_C, zero_add, derivative_C_mul,
-      derivative_X_pow]
-  push_cast
-  ring
+      derivative_X_pow, ← mul_assoc, ← C_mul]
+  norm_num
 
 private lemma H_aeval {p : ℕ} [Fact (Nat.Prime p)] (c : ℤ) (a : ℤ_[p]) :
     aeval a (H c) = (c : ℤ_[p]) + (3 : ℤ_[p]) * a ^ 3 := by
   unfold H
   rw [map_add, map_mul, map_pow, aeval_C, aeval_C, aeval_X]
+  simp only [algebraMap_int_eq, eq_intCast]
   push_cast
   ring
 
 private lemma H_derivative_aeval {p : ℕ} [Fact (Nat.Prime p)] (c : ℤ) (a : ℤ_[p]) :
     aeval a (H c).derivative = (9 : ℤ_[p]) * a ^ 2 := by
   rw [H_derivative_eq, map_mul, map_pow, aeval_C, aeval_X]
+  simp only [algebraMap_int_eq, eq_intCast]
   push_cast
   ring
 
@@ -1145,13 +1148,13 @@ noncomputable def Gint : Polynomial ℤ := C 4 + C 5 * X ^ 3
 private lemma Gint_aeval (a : ℤ_[3]) :
     aeval a Gint = (4 : ℤ_[3]) + (5 : ℤ_[3]) * a ^ 3 := by
   unfold Gint
-  simp [aeval_C, aeval_X_pow] <;> ring
+  simp [aeval_C, aeval_X_pow, map_ofNat] <;> ring
 
 private lemma Gint_derivative_aeval (a : ℤ_[3]) :
     aeval a Gint.derivative = (15 : ℤ_[3]) * a ^ 2 := by
   unfold Gint
   simp [derivative_add, derivative_C, derivative_C_mul, derivative_X_pow,
-        aeval_C, aeval_X_pow] <;> ring
+        aeval_C, aeval_X_pow, map_ofNat] <;> ring
 
 private lemma Gint_aeval_at_4 :
     aeval (4 : ℤ_[3]) Gint = ((324 : ℤ) : ℤ_[3]) := by
@@ -1188,13 +1191,13 @@ private lemma norm_80_eq_one : ‖((80 : ℤ) : ℤ_[3])‖ = 1 := by
 /-- `‖324‖_3 = (1/3)⁴ = 1/81`. -/
 private lemma norm_324_eq :
     ‖((324 : ℤ) : ℤ_[3])‖ = ((3 : ℕ) : ℝ)⁻¹ ^ 4 := by
-  rw [cast_324_factored, PadicInt.norm_mul, PadicInt.norm_pow,
+  rw [cast_324_factored, norm_mul, norm_pow,
       PadicInt.norm_p, norm_4_eq_one, mul_one]
 
 /-- `‖240‖_3 = 1/3`. -/
 private lemma norm_240_eq :
     ‖((240 : ℤ) : ℤ_[3])‖ = ((3 : ℕ) : ℝ)⁻¹ := by
-  rw [cast_240_factored, PadicInt.norm_mul, PadicInt.norm_p,
+  rw [cast_240_factored, norm_mul, PadicInt.norm_p,
       norm_80_eq_one, mul_one]
 
 /-- The strong-form Hensel hypothesis `‖g(4)‖ < ‖g'(4)‖²` for
@@ -1772,9 +1775,10 @@ lemma pow_cubeInverseExp_pow_three {p : ℕ} [Fact (Nat.Prime p)]
     {a : ZMod p} (ha : a ≠ 0) :
     (a ^ cubeInverseExp p) ^ 3 = a := by
   have h_fermat : a ^ (p - 1) = 1 := ZMod.pow_card_sub_one_eq_one ha
-  rw [← pow_mul, mul_comm, three_mul_cubeInverseExp_eq hp_mod3 hp_ne_2]
-  rw [show 2 * (p - 1) + 1 = (p - 1) + ((p - 1) + 1) from by ring,
-      pow_add, pow_add, pow_one, h_fermat, one_mul, h_fermat, one_mul]
+  rw [← pow_mul, mul_comm, three_mul_cubeInverseExp_eq hp_mod3 hp_ne_2,
+      show 2 * (p - 1) + 1 = (p - 1) + (p - 1) + 1 from by ring,
+      pow_succ, pow_add]
+  simp [h_fermat]
 
 /-- Helper: `p` prime and `p ≠ q` (for `q` prime) imply `¬ p ∣ q`. -/
 private lemma prime_not_dvd_of_prime_ne {p q : ℕ}
@@ -1782,7 +1786,7 @@ private lemma prime_not_dvd_of_prime_ne {p q : ℕ}
     ¬ p ∣ q := by
   intro h
   rcases hq.eq_one_or_self_of_dvd p h with h1 | hq'
-  · exact hp.one_lt.ne' h1.symm
+  · exact hp.one_lt.ne' h1
   · exact hne hq'
 
 /-- `(5 : ZMod p) ≠ 0` for `p` prime with `p ≠ 5`. -/
