@@ -3,6 +3,7 @@ import Mathlib.Algebra.GCDMonoid.Finset
 import Mathlib.Data.Nat.Log
 import Mathlib.Data.Nat.Prime.Basic
 import Mathlib.Data.Nat.Factorization.Basic
+import Mathlib.Data.Nat.Choose.Factorization
 import Mathlib.NumberTheory.PrimeCounting
 import Mathlib.NumberTheory.Primorial
 import Mathlib.Tactic
@@ -571,7 +572,12 @@ theorem primorial_le_lcmRange (n : ℕ) :
     primorial n ≤ lcmRange n := by
   rcases Nat.eq_zero_or_pos n with rfl | hn
   · -- n = 0: primorial 0 = 1 = lcmRange 0.
-    simp [primorial, lcmRange_zero]
+    -- v4.26.0 drift fix: `simp [primorial, lcmRange_zero]` leaves
+    -- `∏ x ∈ {0} with Nat.Prime x, x ≤ 1` open after partial unfolding;
+    -- close with `native_decide` (concrete finite Finset; the filter is
+    -- empty since 0 is not prime, so the product is 1).
+    simp only [primorial, lcmRange_zero]
+    native_decide
   exact Nat.le_of_dvd (lcmRange_pos n hn) (primorial_dvd_lcmRange n)
 
 /-- **Chebyshev decomposition factored through primorial** (Iter 16):
@@ -1009,7 +1015,10 @@ theorem prod_div_small_prime_le_pow_sqrt {n : ℕ} (hn : 2 ≤ n) :
 example :
     ∏ p ∈ (Finset.range 11).filter (fun p => p.Prime ∧ p ^ 2 ≤ 10), 10 / p
       ≤ (10 / 2) ^ Nat.sqrt 10 := by
-  decide
+  -- v4.26.0 drift fix: `decide` no longer reduces this `Decidable` instance
+  -- because `Nat.decidablePrime` short-circuits to a stuck `match` on `.ble`;
+  -- `native_decide` evaluates via compiled bytecode and closes immediately.
+  native_decide
 
 -- =====================================================================
 -- ITER 23: filtered Iter-19 + small-prime power-product envelope
@@ -1435,6 +1444,144 @@ theorem lcmRange_30_eq : lcmRange 30 = 2329089562800 := by native_decide
 theorem lcmRange_50_eq : lcmRange 50 = 3099044504245996706400 := by native_decide
 theorem lcmRange_100_eq :
     lcmRange 100 = 69720375229712477164533808935312303556800 := by native_decide
+
+-- =====================================================================
+-- PART 4.5: Iter 34 — Hanson/Route B bridge bound (28b-1)
+-- =====================================================================
+
+/-- **Iter 33 PREP Lemma A** (residue-arithmetic helper for 28b-1).
+
+    For any prime `p`, any `n` and `k ≤ n`, and any position `i ∈ [1, v_p(n+1)]`,
+    the residue sum `k % p^i + (n - k) % p^i` is strictly less than `p^i`.
+
+    Equivalently: position `i` contributes **no carry** to the carries-count
+    representation of `v_p(C(n,k))` (`Nat.factorization_choose`).
+
+    **Proof sketch** (Iter 33 PREP §1.2):
+    1. `p^i ∣ n + 1` (since `i ≤ v_p(n+1)` and `p^(v_p(n+1)) ∣ n+1` by
+       `Nat.ordProj_dvd`, transitively via `Nat.pow_dvd_pow`).
+    2. Hence `n % p^i = p^i - 1` (`n+1 ≡ 0 mod p^i` and `p^i ≥ 2`).
+    3. By `Nat.add_mod` on `k + (n - k) = n`, the residue sum is
+       `≡ p^i - 1 (mod p^i)`. Since both summands lie in `[0, p^i - 1]`,
+       their sum lies in `[0, 2 p^i - 2]`, and the only value in that
+       range with the required residue is `p^i - 1` itself. -/
+lemma sum_mod_pow_lt_of_pow_dvd_succ
+    {p i n k : ℕ} (hp : p.Prime) (hkn : k ≤ n) (hi : 1 ≤ i)
+    (hi_le : i ≤ (n + 1).factorization p) :
+    k % p ^ i + (n - k) % p ^ i < p ^ i := by
+  have hp_two : 2 ≤ p := hp.two_le
+  have hpi_pos : 0 < p ^ i := Nat.pow_pos hp.pos
+  -- p^i ≥ 2 since p ≥ 2 and i ≥ 1.
+  have hpi_ge_two : 2 ≤ p ^ i := by
+    calc 2 = 2 ^ 1 := (pow_one 2).symm
+      _ ≤ p ^ 1 := Nat.pow_le_pow_left hp_two 1
+      _ ≤ p ^ i := Nat.pow_le_pow_right (by omega : 1 ≤ p) hi
+  -- Step 1: p^i ∣ n+1.
+  have h_dvd : p ^ i ∣ (n + 1) :=
+    (Nat.pow_dvd_pow p hi_le).trans (Nat.ordProj_dvd (n + 1) p)
+  have h_succ_mod : (n + 1) % p ^ i = 0 :=
+    Nat.dvd_iff_mod_eq_zero.mp h_dvd
+  -- Step 2: n % p^i = p^i - 1.
+  -- From (n+1) % p^i = 0 and Nat.add_mod, plus 1 % p^i = 1 (since p^i ≥ 2).
+  have h_one_mod : (1 : ℕ) % p ^ i = 1 := Nat.mod_eq_of_lt (by omega : (1 : ℕ) < p ^ i)
+  have h_nmod_lt : n % p ^ i < p ^ i := Nat.mod_lt _ hpi_pos
+  have h_add_succ : (n + 1) % p ^ i = (n % p ^ i + 1) % p ^ i := by
+    conv_lhs => rw [Nat.add_mod]
+    rw [h_one_mod]
+  rw [h_succ_mod] at h_add_succ
+  -- (n % p^i + 1) % p^i = 0 with n % p^i ≤ p^i - 1 ⇒ n % p^i + 1 = p^i, i.e., n % p^i = p^i - 1.
+  have h_n_mod : n % p ^ i = p ^ i - 1 := by
+    rcases Nat.lt_or_ge (n % p ^ i + 1) (p ^ i) with hlt | hge
+    · -- Case 1: n % p^i + 1 < p^i ⇒ (n % p^i + 1) % p^i = n % p^i + 1 ⇒ n % p^i + 1 = 0, absurd.
+      exfalso
+      have h_mod_self : (n % p ^ i + 1) % p ^ i = n % p ^ i + 1 := Nat.mod_eq_of_lt hlt
+      rw [h_mod_self] at h_add_succ
+      exact absurd h_add_succ.symm (Nat.succ_ne_zero _)
+    · -- Case 2: n % p^i + 1 ≥ p^i with n % p^i < p^i ⇒ n % p^i + 1 = p^i.
+      omega
+  -- Step 3: sum residue analysis.
+  have h_sum_eq : k + (n - k) = n := Nat.add_sub_cancel' hkn
+  have h_add_mod_eq : (k % p ^ i + (n - k) % p ^ i) % p ^ i = p ^ i - 1 := by
+    have h_chain := Nat.add_mod k (n - k) (p ^ i)
+    rw [h_sum_eq] at h_chain
+    rw [← h_chain, h_n_mod]
+  -- Range squeeze: both addends are < p^i.
+  have h_k : k % p ^ i < p ^ i := Nat.mod_lt _ hpi_pos
+  have h_nk : (n - k) % p ^ i < p ^ i := Nat.mod_lt _ hpi_pos
+  -- sum < 2*p^i; sum % p^i = p^i - 1. The only candidate < 2*p^i is p^i - 1 itself.
+  by_contra h_not
+  push_neg at h_not
+  -- h_not : p^i ≤ sum.  Also sum < 2*p^i (from h_k + h_nk).
+  have h_S_lt_2pi : k % p ^ i + (n - k) % p ^ i < 2 * p ^ i := by omega
+  -- sum - p^i < p^i. By `Nat.mod_eq_sub_mod` and `Nat.mod_eq_of_lt`,
+  -- (sum) % p^i = (sum - p^i) % p^i = sum - p^i.
+  have h_sub_lt : k % p ^ i + (n - k) % p ^ i - p ^ i < p ^ i := by omega
+  have h_mod_eq_sub : (k % p ^ i + (n - k) % p ^ i) % p ^ i =
+      k % p ^ i + (n - k) % p ^ i - p ^ i := by
+    rw [Nat.mod_eq_sub_mod h_not, Nat.mod_eq_of_lt h_sub_lt]
+  rw [h_mod_eq_sub] at h_add_mod_eq
+  -- h_add_mod_eq : sum - p^i = p^i - 1, so sum = 2*p^i - 1. But sum ≤ 2*(p^i - 1) = 2*p^i - 2.
+  omega
+
+/-- **Iter 34 ACT — 28b-1 bridge bound** (Iter 33 PREP §1.3, "Theorem 28b-1").
+
+    For every prime `p`, every `n` and `k ≤ n`,
+    `v_p(n+1) + v_p(C(n,k)) ≤ ⌊log_p (n+1)⌋`.
+
+    This is the key arithmetic step of Hanson's bridge identity:
+    `(n+1) * C(n,k) ∣ lcm(1,...,n+1)` (cf. Iter 28 PREP's
+    `choose_mul_succ_dvd_lcmRange` target). Combined with the
+    saturation witness (Iter 32 PREP 28b-2, follow-up ACT) and
+    `lcmRange_eq_prod_prime_powers` (line 299), it discharges 28b
+    by unique factorisation.
+
+    **Proof sketch** (Iter 33 PREP §1.3):
+    Apply `Nat.factorization_choose` with `b = log_p(n+1) + 1` (using
+    `Nat.log_mono_right` so that `log_p n < log_p(n+1) + 1`). The
+    resulting carries-set `{i ∈ Ico 1 (e+1) | p^i ≤ k%p^i + (n-k)%p^i}`
+    is, by `sum_mod_pow_lt_of_pow_dvd_succ` (Lemma A), contained in
+    `Ico (a+1) (e+1)` where `a = v_p(n+1)` and `e = log_p(n+1)`.
+    Cardinality bound: `e - a`. Adding back `a` gives the claim. -/
+theorem factorization_succ_mul_choose_le_log_succ
+    {p : ℕ} (hp : p.Prime) {n k : ℕ} (hkn : k ≤ n) :
+    (n + 1).factorization p + (Nat.choose n k).factorization p
+      ≤ Nat.log p (n + 1) := by
+  set a := (n + 1).factorization p with ha
+  set e := Nat.log p (n + 1) with he
+  -- `log p n < e + 1` (so factorization_choose's `b = e+1` is valid).
+  have hlog : Nat.log p n ≤ e := Nat.log_mono_right (Nat.le_succ n)
+  have hb : Nat.log p n < e + 1 := Nat.lt_succ_of_le hlog
+  rw [Nat.factorization_choose hp hkn hb]
+  -- a ≤ e (since p^a ∣ n+1 ⇒ p^a ≤ n+1 ⇒ a ≤ log_p (n+1)).
+  have ha_le_e : a ≤ e := by
+    have h_dvd : p ^ a ∣ (n + 1) := Nat.ordProj_dvd (n + 1) p
+    have hn_pos : 0 < n + 1 := Nat.succ_pos n
+    have h_pa_le : p ^ a ≤ n + 1 := Nat.le_of_dvd hn_pos h_dvd
+    exact Nat.le_log_of_pow_le hp.one_lt h_pa_le
+  -- Carries-set is contained in Ico (a+1) (e+1).
+  have hfilter_subset :
+      ((Finset.Ico 1 (e + 1)).filter
+          (fun i => p ^ i ≤ k % p ^ i + (n - k) % p ^ i)) ⊆
+        Finset.Ico (a + 1) (e + 1) := by
+    intro i hi
+    simp only [Finset.mem_filter, Finset.mem_Ico] at hi
+    obtain ⟨⟨hi1, hi2⟩, hi_carry⟩ := hi
+    refine Finset.mem_Ico.mpr ⟨?_, hi2⟩
+    by_contra hlt
+    push_neg at hlt
+    have hi_le_a : i ≤ a := Nat.lt_succ_iff.mp hlt
+    have hsum := sum_mod_pow_lt_of_pow_dvd_succ hp hkn hi1 hi_le_a
+    omega
+  -- Cardinality of the carries-set is at most e - a.
+  have hcard : (Finset.Ico (a + 1) (e + 1)).card = e - a := by
+    rw [Nat.card_Ico]
+    omega
+  have h_filter_card_le :
+      (((Finset.Ico 1 (e + 1)).filter
+          (fun i => p ^ i ≤ k % p ^ i + (n - k) % p ^ i)).card)
+        ≤ e - a :=
+    (Finset.card_le_card hfilter_subset).trans hcard.le
+  omega
 
 -- =====================================================================
 -- PART 5: Hanson's general bound (open conjecture, axiomatized)
