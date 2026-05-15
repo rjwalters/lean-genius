@@ -2,15 +2,23 @@
 
 **Phase**: ORIENT
 **Since**: 2026-05-12T13:25:00Z
-**Iteration**: 16
+**Iteration**: 18
 
 ## Current Focus
 
-Phase-2 formalization is complete (1 axiom for the open conjecture, 0 sorries).
-Iteration 7 (researcher-11) added a uniform Z/2 lower bound `d − 1 ≤
-symBUDim n d` valid at ALL dimensions (not just even) — strictly tighter than
-`symBUDim_even_lower` at odd d. Combined with a generalized n=2 closed form,
-the conjecture is now fully settled axiom-free at n=2 across all dimensions.
+Phase-2 formalization is complete (1 axiom for the open conjecture, 0 sorries
+in Lean). Iter 17 (Part XXIV) refuted strict-monotonicity of
+`buDim ∘ largestPrimeBelow` at every even d (axiom-free) — the conjecture's
+non-trivial content lives genuinely at odd d only, where parent's
+`buDim_prime` axiom is silent for primes p ≥ 3. Iter 18 S18 PREP audited
+the parent-side odd-d gap (proposed `buDim_prime_odd` axiom under Lefschetz
+fixed-point motivation) and flagged that `problem.md`'s literal Formal
+Statement chain `symBUDim ≟ buDim = 2⌊d/2⌋ − 1` was provably inconsistent
+at every odd d ≥ 3 (refuted by Iter-14's `symBUDim_lower_z2` + parent's
+`buDim_two`). Iter 18 S19 ACT (this session, 2026-05-14) discharges S18
+PREP §1.5 Option A: drops the inconsistent closed-form decoration from
+`problem.md` and replaces with the consistent two-level statement
+(conjecture + qualifier at even d only). No Lean change.
 
 ## Active Approach
 
@@ -928,4 +936,114 @@ exercised by earlier iterations — `symBUDim_even_formula`,
 4. Stretch (unchanged): n=3 case directly via `symBUDim_three`-style
    axiom, or n=4 case via Klein-4 V₄ ≤ S₄ structure.
 5. Stretch (unchanged): falsification target `buDim 3 3` via
+   equivariant cohomology of Z/3 on simple S²-actions.
+
+## Iteration 18 Builds (researcher-4, 2026-05-14)
+
+Focus: **discharge S18 PREP §1.5 Option A** — fix the literal Formal
+Statement chain in `problem.md` to remove the closed-form decoration
+`= 2⌊d/2⌋ − 1`, which is provably inconsistent with the file's existing
+axiom-free Iter-14 theorem `symBUDim_lower_z2 (n d) (hn) (hd) :
+d − 1 ≤ symBUDim n d` (combined with parent's `buDim_two`). Doc-only
+fix to `problem.md`; no Lean file is modified; no axiom is added.
+
+### S19 ACT additions (doc-only)
+
+- **`problem.md` Formal Statement (Option A from S18 PREP §1.5)**:
+  - Title heading rewritten from
+    `For S_n, is symBUDim n d = buDim_{largest prime ≤ n} d = 2⌊d/2⌋ − 1?`
+    to `For S_n, is symBUDim n d = buDim_{largest prime ≤ n} d?`.
+  - Plain Language paragraph reworded to acknowledge that the
+    "2k − 1" closed form only holds at even d via Yang-Borsuk
+    (`buDim_prime`), and that the odd-d value is not currently
+    axiomatised for odd primes.
+  - Formal Statement subsection split into two: (a) the genuine
+    conjecture `symBUDim(n,d) ?= buDim(p*, d)`, and (b) a
+    qualifier paragraph explaining the closed-form `= 2k − 1`
+    applies at even d only via parent's `buDim_prime`, with a
+    pointer to S18 PREP for the audit detail.
+  - Status block extended to 2026-05-14 + new entries for Iter-14's
+    `symBUDim_lower_z2` and Iter-17's Part XXIV even-d/odd-d
+    asymmetry result. Lean file metadata updated to current
+    (1788 LOC, 109 theorems, 2 definitions, 1 axiom, 0 sorries).
+  - New `## Iter 18 S19 ACT (2026-05-14)` subsection explaining
+    the rationale for the formal-statement fix.
+
+### S19 ACT additions (state + JSON refresh)
+
+- State.md header bumped Iteration: 16 → 18 (was 2 iterations stale —
+  Iter 17 had landed mid-state.md without header refresh, then S18 PREP
+  added a session-file entry without touching state.md).
+- State.md `## Current Focus` rewritten to reflect Iter-17 Part XXIV +
+  Iter-18 S18 PREP + S19 ACT chain. The prior text described Iter-7's
+  Z/2 bound as the most recent advance — out of date by 11 iterations.
+- JSON `currentState.iteration` 16 → 18, `currentState.phase` remains
+  ORIENT (S19 ACT is doc-only, no Lean change ⇒ no ACT advance),
+  `currentState.focus` + `currentState.nextAction` refreshed to S19
+  ACT outcome and the post-S19 Path Forward.
+- JSON top-level `phase` already ORIENT (consistent with
+  `currentState.phase`); `lastUpdate` advances to 2026-05-14;
+  `lastUpdated` synced.
+- JSON `knowledge.progressSummary` refreshed: notes the S19 ACT
+  fix discharges S18 PREP §1.5 Option A and brings `problem.md` into
+  consistency with Iter-14's `symBUDim_lower_z2` (axiom-free, 6+
+  iterations old).
+
+**Counts**: no Lean file changes. `problem.md` ~70 → ~110 lines
+(content fix + qualifier paragraph + extended Status section);
+`state.md` 931 → ~1010 lines (Iter 18 section + header refresh).
+
+**Significance**: brings the published statement of the conjecture
+into consistency with axiom-free theorems that have been in the Lean
+file since Iter 14 (~6 iterations ago, PR #18127 ff). The
+inconsistency was invisible to readers who only saw the literal
+"= 2⌊d/2⌋ − 1" line in `problem.md` because the Lean file
+established Z/2 monotonicity as a separate axiom-free fact rather
+than refuting the closed-form chain directly. S18 PREP surfaced
+the inconsistency; S19 ACT fixes it.
+
+The fix is also a small but principled step toward Iter 18 PR (2)
+(parent-side `buDim_prime_odd` axiom + downstream PART XXV closure),
+which remains the natural next ACT: with `problem.md` now consistent
+on its own terms, the proposed parent-side axiom and its trivialising
+consequence (`symBUDim n d = d − 1` uniformly) can be evaluated
+honestly. **PR (2) is NOT shipped in this session** — it requires
+~135 LOC across two Lean files (with a fresh Docker build), is
+axiom-adding to the parent, and carries the content-collapse caveat
+that PARTS VI–XX become decorative under §3.5's verdict. A future
+session should weigh that caveat against the closed-form payoff
+before committing.
+
+**Build**: no Lean change; no build required. CI runs Lean checks
+on origin/main; the unchanged `BorsukUlamOQ02OQ01OQ03OQ02.lean`
+inherits the Iter-17 "build pending" status (state.md Iter-17
+notes worktree reset mid-iter; iter-16 was last "build verified"
+on 2026-05-12).
+
+**Path forward** (revised post-iter-18 S19 ACT):
+1. **Iter 18 PR (2): `buDim_prime_odd` parent-side axiom + PART XXV
+   closure** (S18 PREP §3). Adds ~135 LOC across
+   `BorsukUlamOQ02OQ01.lean` (parent) and
+   `BorsukUlamOQ02OQ01OQ03OQ02.lean` (this file). Yields unified
+   closed form `symBUDim n d = d − 1` at all n ≥ 2, d ≥ 1. The
+   content-collapse caveat (parts VI–XX become decorative) should
+   be flagged in the PR docstrings explicitly. Requires a fresh
+   Docker build (40+ min from cold cache).
+2. **Re-verify Iter-17 + Iter-18 cumulative build** (independent of
+   PR (2)): the Iter-17 PR landed with "(build pending)"; a clean
+   Docker build of `Proofs.BorsukUlamOQ02OQ01OQ03OQ02` against
+   origin/main would confirm no silent parent-file regression. Five
+   "build pending" PRs (S13, S14, S15, S17 ± others) shipped in the
+   chain since Iter-16's "build verified" baseline; the cumulative
+   regression risk is moderate (see
+   `feedback_researcher_build_pending_slug_series_silent_parent_regression.md`).
+   A future researcher should do this baseline check before shipping
+   PR (2)'s axiom-adding ACT.
+3. **symBUDim-side biconditional** (unchanged from iters 14–17):
+   reverse direction needs `symBUDim_cyc` injectivity-across-primes,
+   not currently axiomatized.
+4. **Concrete-pair monotonicity instances** (unchanged from Iter 16
+   Path Forward Item 2): incremental.
+5. Stretch (unchanged): n=3 case directly, or n=4 V₄ ≤ S₄ case.
+6. Stretch (unchanged): falsification target `buDim 3 3` via
    equivariant cohomology of Z/3 on simple S²-actions.
