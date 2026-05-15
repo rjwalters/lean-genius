@@ -336,23 +336,6 @@ axiom p_no_triple_tendsto (c : ℝ) (hc : 0 < c) :
         (Fintype.card (Fin (n d) → Fin d) : ℝ))
       Filter.atTop (nhds (Real.exp (-(c ^ 3 / 6))))
 
-/-- Poisson approximation for k=3 birthday coincidences.
-    Derived from Lemma B (exp_lambda_tendsto) and Lemma C (p_no_triple_tendsto):
-    P - exp(-C(n,3)/d²) = [P - exp(-c³/6)] - [exp(-C(n,3)/d²) - exp(-c³/6)]
-    Both brackets → 0 by Lemma C and Lemma B respectively. -/
-theorem poisson_approx_birthday3 (c : ℝ) (hc : 0 < c) :
-    let n : ℕ → ℕ := fun d => ⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊
-    Filter.Tendsto
-      (fun d : ℕ =>
-        (Finset.univ.filter (fun f : Fin (n d) → Fin d =>
-          ∀ i j k : Fin (n d), i ≠ j → j ≠ k → i ≠ k →
-            ¬(f i = f j ∧ f j = f k))).card /
-        (Fintype.card (Fin (n d) → Fin d) : ℝ) -
-        Real.exp (-(n d).choose 3 / (d : ℝ) ^ 2))
-      Filter.atTop (nhds 0) := by
-  have h := (p_no_triple_tendsto c hc).sub (exp_lambda_tendsto c hc)
-  simpa using h
-
 /-
   ## Decomposition of `poisson_approx_birthday3` (Session 2 framing)
 
@@ -416,7 +399,7 @@ lemma lambda_tendsto (c : ℝ) (hc : 0 < c) :
       Filter.atTop (nhds (c ^ 3 / 6)) := by
   have hbase := nc_div_pow_tendsto c hc
   -- (d^(2/3))^3 = d^2 for d > 0 (used to convert between the two quotient forms)
-  have hpow3_eq : ∀ᶠ d in Filter.atTop, ((d : ℝ) ^ ((2 : ℝ) / 3)) ^ 3 = (d : ℝ) ^ 2 := by
+  have hpow3_eq : ∀ᶠ d : ℕ in Filter.atTop, ((d : ℝ) ^ ((2 : ℝ) / 3)) ^ 3 = (d : ℝ) ^ 2 := by
     filter_upwards [Filter.eventually_ne_atTop 0] with d hd
     have hd_pos : (0 : ℝ) < (d : ℝ) := by exact_mod_cast Nat.pos_of_ne_zero hd
     rw [← Real.rpow_natCast ((d : ℝ) ^ ((2 : ℝ) / 3)) 3, ← Real.rpow_mul hd_pos.le]
@@ -447,9 +430,9 @@ lemma lambda_tendsto (c : ℝ) (hc : 0 < c) :
       (Real.rpow_pos_of_pos (by exact_mod_cast Nat.pos_of_ne_zero hd) _).ne'
     rw [div_pow, hd3]; ring
   -- nc(d) ≥ 2 eventually (since c·d^(2/3) → ∞)
-  have hnc_ge_2 : ∀ᶠ d in Filter.atTop, 2 ≤ ⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊ := by
+  have hnc_ge_2 : ∀ᶠ d : ℕ in Filter.atTop, 2 ≤ ⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊ := by
     filter_upwards [rpow23_atTop.eventually_ge_atTop (2 / c)] with d hd
-    rw [Nat.le_floor]
+    apply Nat.le_floor
     have heq : c * (2 / c) = 2 := by field_simp
     linarith [mul_le_mul_of_nonneg_left hd hc.le]
   -- Squeeze: lower ≤ C(nc,3)/d² ≤ upper, both → c³/6
@@ -471,6 +454,23 @@ lemma exp_lambda_tendsto (c : ℝ) (hc : 0 < c) :
         (d : ℝ) ^ 2)))
       Filter.atTop (nhds (Real.exp (-(c ^ 3 / 6)))) :=
   (Real.continuous_exp.tendsto (-(c ^ 3 / 6))).comp (lambda_tendsto c hc).neg
+
+/-- Poisson approximation for k=3 birthday coincidences.
+    Derived from Lemma B (exp_lambda_tendsto) and Lemma C (p_no_triple_tendsto):
+    P - exp(-C(n,3)/d²) = [P - exp(-c³/6)] - [exp(-C(n,3)/d²) - exp(-c³/6)]
+    Both brackets → 0 by Lemma C and Lemma B respectively. -/
+theorem poisson_approx_birthday3 (c : ℝ) (hc : 0 < c) :
+    let n : ℕ → ℕ := fun d => ⌊c * (d : ℝ) ^ ((2 : ℝ) / 3)⌋₊
+    Filter.Tendsto
+      (fun d : ℕ =>
+        (Finset.univ.filter (fun f : Fin (n d) → Fin d =>
+          ∀ i j k : Fin (n d), i ≠ j → j ≠ k → i ≠ k →
+            ¬(f i = f j ∧ f j = f k))).card /
+        (Fintype.card (Fin (n d) → Fin d) : ℝ) -
+        Real.exp (-(n d).choose 3 / (d : ℝ) ^ 2))
+      Filter.atTop (nhds 0) := by
+  have h := (p_no_triple_tendsto c hc).sub (exp_lambda_tendsto c hc)
+  simpa [neg_div] using h
 
 -- ============================================================
 -- §6. k=2 vs k=3 THRESHOLD COMPARISON
@@ -544,8 +544,8 @@ theorem general_threshold_exponent (k : ℕ) (hk : 2 ≤ k) :
 private lemma bad_count_n3 (d : ℕ) :
     (Finset.univ.filter (fun f : Fin 3 → Fin d =>
       f 0 = f 1 ∧ f 1 = f 2)).card = d := by
-  rw [show d = Fintype.card (Fin d) from (Fintype.card_fin d).symm,
-      ← Fintype.card_coe]
+  conv_rhs => rw [show d = Fintype.card (Fin d) from (Fintype.card_fin d).symm]
+  rw [← Fintype.card_coe]
   apply Fintype.card_congr
   exact {
     toFun := fun ⟨f, _⟩ => f 0
@@ -568,9 +568,9 @@ theorem good_count_n3 (d : ℕ) :
   have h_split : (Finset.univ.filter (fun f : Fin 3 → Fin d => f 0 = f 1 ∧ f 1 = f 2)).card +
       (Finset.univ.filter (fun f : Fin 3 → Fin d => ¬(f 0 = f 1 ∧ f 1 = f 2))).card =
       Fintype.card (Fin 3 → Fin d) := by
-    rw [← Finset.card_univ,
-        ← Finset.filter_card_add_filter_neg_card_eq_card
-          (fun f : Fin 3 → Fin d => f 0 = f 1 ∧ f 1 = f 2)]
+    conv_rhs => rw [← Finset.card_univ,
+                    ← Finset.filter_card_add_filter_neg_card_eq_card
+                      (fun f : Fin 3 → Fin d => f 0 = f 1 ∧ f 1 = f 2)]
   rw [h_bad, h_card] at h_split
   omega
 
@@ -608,7 +608,6 @@ theorem p_triple_n3 (d : ℕ) (hd : 1 ≤ d) :
   push_cast
   have hne : (d : ℝ) ≠ 0 := hd_pos.ne'
   field_simp
-  ring
 
 /-- At n=3, the probability of a birthday triple equals `expectedTriples 3 d`.
     This is the n=3 first-moment identity: when X_d ≤ 1 (only one possible triple),
@@ -764,7 +763,7 @@ theorem bad_count_general (d n : ℕ) (i j k : Fin n)
                  Finset.mem_sdiff, Finset.mem_insert, Finset.mem_singleton, not_or]
     have hpair_card : ({j, k} : Finset (Fin n)).card = 2 := by
       rw [Finset.card_insert_of_not_mem (by simp [hjk]), Finset.card_singleton]
-    rw [heq, Finset.card_sdiff (Finset.subset_univ _),
+    rw [heq, Finset.card_sdiff_of_subset (Finset.subset_univ _),
         Finset.card_univ, Fintype.card_fin, hpair_card]
   -- Step 2: target function space has cardinality d^(n-2).
   have hcard_target :
@@ -812,7 +811,7 @@ theorem bad_count_general (d n : ℕ) (i j k : Fin n)
     funext m
     by_cases hmj : m = j
     · subst hmj
-      show (if hj : m = j then f i
+      show (if hj : m = m then f i
             else if hk : m = k then f i
             else f m) = f m
       rw [dif_pos rfl]
@@ -820,7 +819,7 @@ theorem bad_count_general (d n : ℕ) (i j k : Fin n)
     · by_cases hmk : m = k
       · subst hmk
         show (if hj : m = j then f i
-              else if hk : m = k then f i
+              else if hk : m = m then f i
               else f m) = f m
         rw [dif_neg hmj, dif_pos rfl]
         exact h.1.trans h.2
@@ -962,7 +961,9 @@ lemma card_strict_triples (n : ℕ) :
     have h_unique : ∀ m : Fin 3,
         ({i, j, k} : Finset (Fin n)).orderEmbOfFin hcard m = f m := by
       intro m
-      exact Finset.orderEmbOfFin_unique hf_mem hf_mono m
+      have heq : f = (({i, j, k} : Finset (Fin n)).orderEmbOfFin hcard : Fin 3 → Fin n) :=
+        Finset.orderEmbOfFin_unique hcard hf_mem hf_mono
+      exact (congr_fun heq m).symm
     -- Conclude: the inverse of {i,j,k} returns (i, j, k).
     show (({i, j, k} : Finset (Fin n)).orderEmbOfFin hcard ⟨0, by norm_num⟩,
           ({i, j, k} : Finset (Fin n)).orderEmbOfFin hcard ⟨1, by norm_num⟩,
@@ -1164,7 +1165,8 @@ private lemma card_tripleCountFinset (d n : ℕ) (f : Fin n → Fin d) :
     at `n = 0`. Used in §6 to express the second factorial moment in ℝ. -/
 lemma descFactorial_two_real_eq (n : ℕ) :
     (n.descFactorial 2 : ℝ) = (n : ℝ) * ((n : ℝ) - 1) := by
-  have hN : n.descFactorial 2 = n * (n - 1) := Nat.descFactorial_two n
+  have hN : n.descFactorial 2 = n * (n - 1) := by
+    simp [Nat.descFactorial, Nat.mul_comm]
   rcases n with _ | n
   · simp [hN]
   · rw [hN]
@@ -1193,9 +1195,13 @@ lemma tripleCount_descFact_2_eq_pairs (d n : ℕ) (f : Fin n → Fin d) :
       (f p.2.1 = f p.2.2.1 ∧ f p.2.2.1 = f p.2.2.2))).card := by
   classical
   -- Step 1: reduce LHS to (tripleCountFinset).offDiag.card via
-  -- (Nat.descFactorial_two) + (Finset.card_offDiag).
-  rw [← card_tripleCountFinset, Nat.descFactorial_two,
-      ← Finset.card_offDiag]
+  -- (descFactorial 2 expansion) + (Finset.offDiag_card).
+  rw [← card_tripleCountFinset]
+  have hdesc : (tripleCountFinset d n f).card.descFactorial 2 =
+      (tripleCountFinset d n f).offDiag.card := by
+    rw [Finset.offDiag_card]
+    simp [Nat.descFactorial, Nat.mul_sub_one, Nat.mul_comm]
+  rw [hdesc]
   -- Step 2: identify offDiag of the f-filtered strict-triple set with the
   -- bipartite f-trivialise filter on (strictTriples × strictTriples).
   congr 1
@@ -1292,31 +1298,35 @@ lemma strict_eq_of_tripleSet_eq {n : ℕ}
   have hc'_mem : c' ∈ ({a, b, c} : Finset (Fin n)) := by
     rw [hset]; simp
   -- a = a' (both are minima of equal sets)
+  -- For a ≤ a': use a' ∈ {a, b, c} (a is min of T1)
   have ha_le_a' : a ≤ a' := by
+    simp only [Finset.mem_insert, Finset.mem_singleton] at ha'_mem
+    rcases ha'_mem with h' | h' | h'
+    · exact h'.symm.le
+    · rw [h']; exact hab.le
+    · rw [h']; exact hac.le
+  -- For a' ≤ a: use a ∈ {a', b', c'} (a' is min of T2)
+  have ha'_le_a : a' ≤ a := by
     simp only [Finset.mem_insert, Finset.mem_singleton] at ha_mem
     rcases ha_mem with h | h | h
-    · exact h.le
-    · exact h ▸ hab'.le
-    · exact h ▸ hac'.le
-  have ha'_le_a : a' ≤ a := by
-    simp only [Finset.mem_insert, Finset.mem_singleton] at ha'_mem
-    rcases ha'_mem with h | h | h
-    · exact h.le
-    · exact h ▸ hab.le
-    · exact h ▸ hac.le
+    · exact h.symm.le
+    · rw [h]; exact hab'.le
+    · rw [h]; exact hac'.le
   have ha_eq : a = a' := le_antisymm ha_le_a' ha'_le_a
   -- c = c' (both are maxima of equal sets)
+  -- For c ≤ c': use c ∈ {a', b', c'} (c is max of T1 so c ≤ c' which is max of T2...
+  --   actually we need c' is in {a,b,c}'s max-witness; we use c ∈ {a',b',c'} and prove ≤ c')
   have hc'_le_c : c' ≤ c := by
     simp only [Finset.mem_insert, Finset.mem_singleton] at hc'_mem
     rcases hc'_mem with h | h | h
-    · exact h ▸ hac.le
-    · exact h ▸ hbc.le
+    · rw [h]; exact hac.le
+    · rw [h]; exact hbc.le
     · exact h.le
   have hc_le_c' : c ≤ c' := by
     simp only [Finset.mem_insert, Finset.mem_singleton] at hc_mem
     rcases hc_mem with h | h | h
-    · exact h ▸ hac'.le
-    · exact h ▸ hbc'.le
+    · rw [h]; exact hac'.le
+    · rw [h]; exact hbc'.le
     · exact h.le
   have hc_eq : c = c' := le_antisymm hc_le_c' hc'_le_c
   -- b = b' (the only remaining element after fixing min and max)
@@ -1324,10 +1334,12 @@ lemma strict_eq_of_tripleSet_eq {n : ℕ}
     simp only [Finset.mem_insert, Finset.mem_singleton] at hb_mem
     rcases hb_mem with h | h | h
     · -- b = a' = a contradicts a < b
-      exfalso; rw [← ha_eq] at h; omega
+      exfalso; rw [← ha_eq] at h
+      exact absurd h.symm hab.ne
     · exact h
     · -- b = c' = c contradicts b < c
-      exfalso; rw [← hc_eq] at h; omega
+      exfalso; rw [← hc_eq] at h
+      exact absurd h hbc.ne
   exact Prod.ext ha_eq (Prod.ext hb_eq hc_eq)
 
 /-- The intersection of two strict triples' underlying sets has cardinality
@@ -1383,21 +1395,21 @@ lemma overlapPattern_partitions_offDiag (n : ℕ) :
     (((strictTriples n) ×ˢ (strictTriples n)).filter (fun p => p.1 ≠ p.2)).card =
     ∑ k ∈ Finset.range 4, (overlapPattern n k).card := by
   classical
-  have hF : ∀ p ∈ (((strictTriples n) ×ˢ (strictTriples n)).filter
-      (fun p : (Fin n × Fin n × Fin n) × (Fin n × Fin n × Fin n) => p.1 ≠ p.2)),
-        (tripleSet p.1 ∩ tripleSet p.2).card ∈ Finset.range 4 := by
+  have hF : Set.MapsTo
+      (fun p : (Fin n × Fin n × Fin n) × (Fin n × Fin n × Fin n) =>
+        (tripleSet p.1 ∩ tripleSet p.2).card)
+      (↑(((strictTriples n) ×ˢ (strictTriples n)).filter
+          (fun p : (Fin n × Fin n × Fin n) × (Fin n × Fin n × Fin n) => p.1 ≠ p.2)) : Set _)
+      (↑(Finset.range 4) : Set _) := by
     intro p hp
-    simp only [Finset.mem_filter, Finset.mem_product] at hp
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_product] at hp
     have hcard_le := tripleSet_inter_card_le_three (T₂ := p.2) hp.1.1
-    simp only [Finset.mem_range]
+    simp only [Finset.mem_coe, Finset.mem_range]
     omega
   rw [Finset.card_eq_sum_card_fiberwise hF]
   apply Finset.sum_congr rfl
   intro k _hk
-  congr 1
-  ext ⟨T₁, T₂⟩
-  simp only [overlapPattern, Finset.mem_filter, Finset.mem_product]
-  tauto
+  rfl
 
 /-- **Layer 3d.** Per-`f` second-factorial-moment expansion: the
     descending-factorial `tripleCount.descFactorial 2` decomposes as a sum
@@ -1415,15 +1427,18 @@ lemma tripleCount_descFact_2_eq_overlap_sum (d n : ℕ) (f : Fin n → Fin d) :
   classical
   rw [tripleCount_descFact_2_eq_pairs]
   -- Fiberwise partition of the f-trivialise pair set by overlap size.
-  have hF : ∀ p ∈ (((strictTriples n) ×ˢ (strictTriples n)).filter (fun p =>
-        p.1 ≠ p.2 ∧
-        (f p.1.1 = f p.1.2.1 ∧ f p.1.2.1 = f p.1.2.2) ∧
-        (f p.2.1 = f p.2.2.1 ∧ f p.2.2.1 = f p.2.2.2))),
-        (tripleSet p.1 ∩ tripleSet p.2).card ∈ Finset.range 4 := by
+  have hF : Set.MapsTo
+      (fun p : (Fin n × Fin n × Fin n) × (Fin n × Fin n × Fin n) =>
+        (tripleSet p.1 ∩ tripleSet p.2).card)
+      (↑(((strictTriples n) ×ˢ (strictTriples n)).filter (fun p =>
+          p.1 ≠ p.2 ∧
+          (f p.1.1 = f p.1.2.1 ∧ f p.1.2.1 = f p.1.2.2) ∧
+          (f p.2.1 = f p.2.2.1 ∧ f p.2.2.1 = f p.2.2.2))) : Set _)
+      (↑(Finset.range 4) : Set _) := by
     intro p hp
-    simp only [Finset.mem_filter, Finset.mem_product] at hp
+    simp only [Finset.mem_coe, Finset.mem_filter, Finset.mem_product] at hp
     have hcard_le := tripleSet_inter_card_le_three (T₂ := p.2) hp.1.1
-    simp only [Finset.mem_range]
+    simp only [Finset.mem_coe, Finset.mem_range]
     omega
   rw [Finset.card_eq_sum_card_fiberwise hF]
   apply Finset.sum_congr rfl
@@ -1490,7 +1505,7 @@ theorem bad_count_disjoint (d n : ℕ) (a₁ b₁ c₁ a₂ b₂ c₂ : Fin n)
           Finset.card_insert_of_not_mem
             (by simp [h₅₆]),
           Finset.card_singleton]
-    rw [heq, Finset.card_sdiff (Finset.subset_univ _),
+    rw [heq, Finset.card_sdiff_of_subset (Finset.subset_univ _),
         Finset.card_univ, Fintype.card_fin, hquad_card]
   -- Step 2: target function space has cardinality d^(n - 4).
   have hcard_target :
@@ -1577,7 +1592,7 @@ theorem bad_count_disjoint (d n : ℕ) (a₁ b₁ c₁ a₂ b₂ c₂ : Fin n)
     funext m
     by_cases hmb1 : m = b₁
     · subst hmb1
-      show (if hb1 : m = b₁ then f a₁
+      show (if hb1 : m = m then f a₁
             else if hc1 : m = c₁ then f a₁
             else if hb2 : m = b₂ then f a₂
             else if hc2 : m = c₂ then f a₂
@@ -1586,7 +1601,7 @@ theorem bad_count_disjoint (d n : ℕ) (a₁ b₁ c₁ a₂ b₂ c₂ : Fin n)
     · by_cases hmc1 : m = c₁
       · subst hmc1
         show (if hb1 : m = b₁ then f a₁
-              else if hc1 : m = c₁ then f a₁
+              else if hc1 : m = m then f a₁
               else if hb2 : m = b₂ then f a₂
               else if hc2 : m = c₂ then f a₂
               else f m) = f m
@@ -1595,16 +1610,17 @@ theorem bad_count_disjoint (d n : ℕ) (a₁ b₁ c₁ a₂ b₂ c₂ : Fin n)
         · subst hmb2
           show (if hb1 : m = b₁ then f a₁
                 else if hc1 : m = c₁ then f a₁
-                else if hb2 : m = b₂ then f a₂
+                else if hb2 : m = m then f a₂
                 else if hc2 : m = c₂ then f a₂
                 else f m) = f m
-          rw [dif_neg hmb1, dif_neg hmc1, dif_pos rfl]; exact h.2.2.1
+          rw [dif_neg hmb1, dif_neg hmc1, dif_pos rfl]
+          exact h.2.2.1
         · by_cases hmc2 : m = c₂
           · subst hmc2
             show (if hb1 : m = b₁ then f a₁
                   else if hc1 : m = c₁ then f a₁
                   else if hb2 : m = b₂ then f a₂
-                  else if hc2 : m = c₂ then f a₂
+                  else if hc2 : m = m then f a₂
                   else f m) = f m
             rw [dif_neg hmb1, dif_neg hmc1, dif_neg hmb2, dif_pos rfl]
             exact h.2.2.1.trans h.2.2.2
@@ -1829,13 +1845,13 @@ lemma card_overlapPattern_le_generic (n k : ℕ) (hk : k ≤ 3) :
     (Finset.univ : Finset (Fin n)).powersetCard (6 - k) with hU_pool
   set tgt : Finset (Σ _ : Finset (Fin n), Finset (Fin n) × Finset (Fin n)) :=
     U_pool.sigma (fun U => U.powersetCard 3 ×ˢ U.powersetCard 3) with htgt
-  -- Embedding φ on the underlying Set: (T₁, T₂) ↦ ⟨tripleSet T₁ ∪ tripleSet T₂,
+  -- Embedding embed on the underlying Set: (T₁, T₂) ↦ ⟨tripleSet T₁ ∪ tripleSet T₂,
   --                                              (tripleSet T₁, tripleSet T₂)⟩.
-  let φ : (Fin n × Fin n × Fin n) × (Fin n × Fin n × Fin n) →
+  let embed : (Fin n × Fin n × Fin n) × (Fin n × Fin n × Fin n) →
           Σ _ : Finset (Fin n), Finset (Fin n) × Finset (Fin n) :=
     fun p => ⟨tripleSet p.1 ∪ tripleSet p.2, (tripleSet p.1, tripleSet p.2)⟩
-  -- Step 1: φ maps overlapPattern n k into tgt.
-  have hMapsTo : Set.MapsTo φ
+  -- Step 1: embed maps overlapPattern n k into tgt.
+  have hMapsTo : Set.MapsTo embed
       ((overlapPattern n k : Finset _) : Set _)
       ((tgt : Finset _) : Set _) := by
     intro p hp_set
@@ -1843,7 +1859,7 @@ lemma card_overlapPattern_le_generic (n k : ℕ) (hk : k ≤ 3) :
     -- Unpack membership in overlapPattern.
     simp only [overlapPattern, Finset.mem_filter, Finset.mem_product] at hp
     obtain ⟨⟨⟨hT₁, hT₂⟩, _hne⟩, _hcap⟩ := hp
-    -- Establish the three membership facts at the φ image.
+    -- Establish the three membership facts at the embed image.
     have hUcard : (tripleSet p.1 ∪ tripleSet p.2).card = 6 - k :=
       tripleSet_union_card_of_overlap (by
         simp only [overlapPattern, Finset.mem_filter, Finset.mem_product]
@@ -1852,20 +1868,20 @@ lemma card_overlapPattern_le_generic (n k : ℕ) (hk : k ≤ 3) :
     have hcard₂ : (tripleSet p.2).card = 3 := card_tripleSet_of_strict hT₂
     have hsub₁ : tripleSet p.1 ⊆ tripleSet p.1 ∪ tripleSet p.2 := Finset.subset_union_left
     have hsub₂ : tripleSet p.2 ⊆ tripleSet p.1 ∪ tripleSet p.2 := Finset.subset_union_right
-    -- Assemble: φ p ∈ tgt.
-    show φ p ∈ tgt
+    -- Assemble: embed p ∈ tgt.
+    show embed p ∈ tgt
     simp only [tgt, hU_pool, Finset.mem_sigma, Finset.mem_powersetCard,
                Finset.mem_product, Finset.subset_univ, true_and]
     refine ⟨hUcard, ⟨⟨hsub₁, hcard₁⟩, ⟨hsub₂, hcard₂⟩⟩⟩
-  -- Step 2: φ is injective on overlapPattern n k.
-  have hInjOn : Set.InjOn φ ((overlapPattern n k : Finset _) : Set _) := by
-    intro p₁ hp₁_set p₂ hp₂_set hφ
+  -- Step 2: embed is injective on overlapPattern n k.
+  have hInjOn : Set.InjOn embed ((overlapPattern n k : Finset _) : Set _) := by
+    intro p₁ hp₁_set p₂ hp₂_set hembed
     have hp₁ : p₁ ∈ overlapPattern n k := by exact_mod_cast hp₁_set
     have hp₂ : p₂ ∈ overlapPattern n k := by exact_mod_cast hp₂_set
-    -- Extract tripleSet equalities from the Sigma/Product equality φ p₁ = φ p₂.
+    -- Extract tripleSet equalities from the Sigma/Product equality embed p₁ = embed p₂.
     have h_eq2 : (tripleSet p₁.1, tripleSet p₁.2) = (tripleSet p₂.1, tripleSet p₂.2) := by
-      have := congrArg Sigma.snd hφ
-      simpa [φ] using this
+      have := congrArg Sigma.snd hembed
+      simpa [embed] using this
     have hts1 : tripleSet p₁.1 = tripleSet p₂.1 := (Prod.mk.injEq _ _ _ _).mp h_eq2 |>.1
     have hts2 : tripleSet p₁.2 = tripleSet p₂.2 := (Prod.mk.injEq _ _ _ _).mp h_eq2 |>.2
     -- Recover strictTriples membership of each component.
@@ -1878,7 +1894,7 @@ lemma card_overlapPattern_le_generic (n k : ℕ) (hk : k ≤ 3) :
     exact Prod.ext e1 e2
   -- Step 3: combine the embedding into a cardinality chain.
   calc (overlapPattern n k).card
-      ≤ tgt.card := Finset.card_le_card_of_injOn φ hMapsTo hInjOn
+      ≤ tgt.card := Finset.card_le_card_of_injOn embed hMapsTo hInjOn
     _ = ∑ U ∈ U_pool, (U.powersetCard 3 ×ˢ U.powersetCard 3).card := by
           rw [htgt, Finset.card_sigma]
     _ = ∑ U ∈ U_pool, (U.powersetCard 3).card * (U.powersetCard 3).card := by
