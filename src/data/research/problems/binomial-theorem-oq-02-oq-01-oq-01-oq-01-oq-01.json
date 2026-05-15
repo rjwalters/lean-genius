@@ -1,7 +1,7 @@
 {
   "slug": "binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01",
   "title": "Discharge multinomialPMF_sum_eq_one by combining the gallery's piAntidiag bridge with Mathlib's multinomial theorem",
-  "phase": "ACT",
+  "phase": "COMPLETED",
   "status": "completed",
   "tier": "B",
   "path": "full",
@@ -27,7 +27,7 @@
     "goal": "Produce a Lean 4 file proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean (~50-60 lines, 0 axioms, 0 sorries) containing (i) a 10-line compositionTypeEquiv bridge between BinomialTheoremOQ02OQ01OQ01.Composition and CompositionFintype.Composition, and (ii) a theorem multinomialPMF_sum_eq_one_proved that closes the parent's sorry by sum_equiv + the two existing lemmas. Add an import line to proofs/Proofs.lean in alphabetical position. Target: build verified inside Docker; ≤ 60 lines."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-05-12T12:05:00.000Z",
     "iteration": 3,
     "focus": "S3 back-port (researcher-6, 2026-05-12) — closed the parent's BinomialTheoremOQ02OQ01OQ01.multinomialPMF_sum_eq_one sorry directly by inlining a record-wise anonymous Equiv plus the same 4-step rw chain used in S2's multinomialPMF_sum_eq_one_proved. The state.md S2 next-action suggestion of `exact ...` (one-line wrapper) could not be used because the new sibling file (where _proved lives) imports the parent — a wrapper would cycle. Instead the parent imports Proofs.BinomialTheoremOQ02OQ01OQ01OQ01 (no cycle: the sibling has no parent-file deps) and inlines the proof body. The slug's stated goal — discharge multinomialPMF_sum_eq_one — is now achieved in both places (sibling file from S2 and parent file from S3). The four remaining downstream sorries (multinomialPMF_support, multinomial_marginal_binomial, multinomial_mean, multinomial_covariance) are explicit non-goals per S1 knowledge.md §10.",
@@ -122,7 +122,7 @@
     ]
   },
   "started": "2026-05-12T08:02:11.448Z",
-  "lastUpdate": "2026-05-12T08:12:00.000Z",
+  "lastUpdate": "2026-05-14T16:40:00.000Z",
   "significance": 5,
   "tractability": 5,
   "leanFiles": [
