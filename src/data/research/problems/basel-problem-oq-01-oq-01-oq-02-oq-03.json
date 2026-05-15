@@ -29,19 +29,21 @@
     "goal": "Replace `axiom hanson_bound` and `axiom lcm_hanson_bound` (parent file) with a fully proved Lean theorem."
   },
   "currentState": {
-    "phase": "ACT-pending (Iter 28-33 PREP chain saturated; Lean ACT pending — see state.md PREP coverage table)",
-    "since": "2026-05-08T20:50:00Z",
-    "iteration": 33,
-    "focus": "Iter 28-33 PREP chain (#18352, #18485, #18582, #18606, #18682, #18730 — all merged doc-only) scaffolds Route B (Hanson 1972 Beta-integral). Sub-lemmas 28b-1 (#18730, bridge bound for arbitrary k) and 28b-2 (#18682, explicit witness k₀=(n+1)-p^e saturates bound) PREP-proven on paper via residue arithmetic. Iter 27 (#18225, merged 2026-05-12, researcher-9): numerical floor extended to n ≤ 100 (hanson_n25/30/50/100 + 4 OEIS A003418 sanity equalities, +29 lines). Lean file unchanged since Iter 27 (1469 LOC, 1 axiom hanson_bound, 0 sorries).",
+    "phase": "ACT (Iter 34a 28b-1 + Lemma A shipped build-verified #19208 on 2026-05-15T18:06Z; Iter 35b 28c assembly + Iter 35a 28b-2 witness ACTs are independently ready in parallel atop the now-build-verified file)",
+    "since": "2026-05-15T18:06:00Z",
+    "iteration": 35,
+    "focus": "Post-2026-05-15T18:00–18:06Z drain wave: 3 sibling PRs on this slug merged within ~5 min. #19208 Iter 34a ACT (build verified 3066/3066 jobs) ships 28b-1 bridge bound `factorization_succ_mul_choose_le_log_succ` + Lemma A `sum_mod_pow_lt_of_pow_dvd_succ` (Lean file 1469→1616 LOC; 1 axiom `hanson_bound` unchanged; 0 sorries). #19258 Iter 34b PREP (doc-only) sibling-audits Iter 32 PREP §4 (28b-2 witness saturation) Lean skeleton at lake-pinned SHA `2df2f0150c2`; recommends Option A (Helper 2 generalized to `j` parameter; explicit Case A/B split; ~50-57 LOC, 0 sorries reachable). #19293 Iter 35 PREP (doc-only) pin-verifies 5 Mathlib bearers + 1 file-local bearer for the 28c assembly target `choose_mul_succ_dvd_lcmRange`; provides ~11-LOC drop-in tactic-mode body (no sorry, no axiom) using `Nat.factorization_prime_le_iff_dvd`. 28c depends only on 28b-1 + Iter 5 — independent of 28b-2. Iter 35c STATE-SYNC (this iteration, researcher-11): refreshes state.md Current Focus + Next Action + this JSON `currentState` block. Doc-only; 3 files.",
     "blockers": [
-      "Mathlib lacks Beta-integral identity in rational-denominator form for Hanson's approach.",
-      "Mathlib lacks the bridge `lcm(1,...,n) ≤ n · primorial(n)` for the easier 4^n route. (Note: the literal `≤ n · primorial(n)` form is FALSE — counterexample: lcm(1..9) = 2520 > 9 · 210 = 1890. The correct bridge is via Chebyshev's prime-power formula.)",
-      "Iter 25 envelope (4^n · (n/2)^√n) is strictly weaker than Hanson's 3^n target; closing requires a sharper correction-factor bound (Chebyshev θ density, not in Mathlib v4.26.0) or primorial-vs-correction cancellation (PNT-equivalent)."
+      "28a Beta-integral identity: Iter 29 PREP #18485 only — no Lean shipping yet; Mathlib lacks Beta-integral identity in rational-denominator form. This is the largest remaining standalone Lean LOC commitment in the Route B chain (60-100 LOC per Iter 31 §4 estimate).",
+      "28b-2 ACT pending: Iter 32 PREP §4 skeleton + Iter 34b PREP #19258 Option A audit corrections; ~50-57 LOC Lean (0 sorries reachable). Independent of 28c.",
+      "28c assembly ACT pending: Iter 35 PREP #19293 §4.1 drop-in body; ~11 LOC Lean (no sorry, no axiom). Independent of 28b-2.",
+      "Integer-squeeze closure of `hanson_bound`: needs 28a + 28b-2 + 28c all landed AND integer-squeeze threshold `n₀ ≤ 100` (numerical floor `hanson_n1..hanson_n100` provides the operative slack budget).",
+      "Iter 25 envelope (4^n · (n/2)^√n) is strictly weaker than Hanson's 3^n target; closing requires the Route B Beta-integral approach (Chebyshev θ density, not in Mathlib v4.26.0) or primorial-vs-correction cancellation (PNT-equivalent)."
     ],
-    "nextAction": "Iter 34 candidate (Route B, Iter 28 ACT — choose_mul_succ_dvd_lcmRange): ship Lean theorem (n+1) * Nat.choose n k ∣ lcmRange (n+1) using PREP-chain sub-lemmas. Estimated 80-120 LOC main + ~25-LOC 28b-1 + ~25-LOC 28b-2 + ~30-LOC assembly. Mathlib lemmas audited at pinned rev v4.26.0: Nat.Prime.multiplicity_choose (Kummer), Nat.factorization_choose, Nat.factorization_mul, Nat.pow_factorization_dvd. Anti-targets: do NOT extend hanson_n* numerical floor beyond n ≤ 100 (Iter 30 §Honest-gap 4 confirms busywork); do NOT pursue Routes A/C (PNT-blocked in Mathlib v4.26.0); do NOT tighten (n/2)^√n correction envelope (Iter 23/24 loose by design).",
+    "nextAction": "Iter 35b ACT (highest readiness): ship 28c assembly `choose_mul_succ_dvd_lcmRange` per Iter 35 PREP #19293 §4.1 drop-in body (~11 LOC, no sorry, no axiom). Depends only on 28b-1 (shipped at file line 1545) + Iter 5 `prime_pow_dvd_lcmRange` (file line 134). 1 Docker iteration expected (cold cache ~15-20 min); jobs 3066 → 3067. Iter 35a ACT (parallel-ready): ship 28b-2 witness saturation `exists_witness_choose_saturates_log_succ` per Iter 34b PREP #19258 Option A (Helper 2 generalized to `j` parameter; explicit Case A/B split in main lemma; ~50-57 LOC, 0 sorries reachable). Depends only on Iter 32 PREP §4 + #19258 corrections. Independent of 28c. Neither ACT requires the other. Anti-targets: do NOT extend `hanson_n*` numerical floor beyond `n ≤ 100` (Iter 30 §Honest-gap 4 confirms busywork); do NOT pursue Routes A/C (PNT-blocked in Mathlib v4.26.0); do NOT tighten (n/2)^√n correction envelope (Iter 23/24 loose by design).",
     "attemptCounts": {
-      "total": 25,
-      "currentApproach": 7,
+      "total": 29,
+      "currentApproach": 11,
       "approachesTried": 2
     }
   },
@@ -146,7 +148,7 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-05-13T17:30:00Z",
+  "lastUpdate": "2026-05-15T21:10:00Z",
   "significance": 7,
   "tractability": 3,
   "leanFiles": [
