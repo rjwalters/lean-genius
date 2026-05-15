@@ -1,11 +1,89 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization; **Session 69 refutes S68's `−|c-arm region|` formula on (4,3,2)** — multi-row c-arm regions fail integrality, c'-column residual is `−3/2` not `−3`; introduces "walk-vanishing" classification (broader than S68's double-vanishing) and shows residual concentrates on the single walk-non-vanishing crossing with magnitude not matching any simple `|c-arm|` count; **Session 70 confirms (5,3,2) c'-col residual = `−8/3`** (S68 again refuted) AND derives a **closed-form algebraic identity** `c'-col residual = pμ(0) − h_d(h_d−2)·Δp(0)` for `c.1 = 0`, valid across all seven test diagrams S62–S70, via the trivial `(h_d−1)² = h_d(h_d−2) + 1` combined with S57.5's `sum_gnwProb_leg_of_c'_reduce_case1` — closes the c'-column sub-lemma question; **Session 71 derives the off-spine dual decomposition** — pointwise `Δp = 0` on the c-arm row-0 cells via strict-hook localization (provable, S71-a), pointwise residual vanishing identity `pμ(x) = h_d(h_d−2)·Δp(x)` on the non-c-arm off-spine cells (verified on 7 diagrams, S71-b), and the resulting 4-way decomposition of `F_side_identity_aligned` for case-1 c.1=0 into 3 provable sub-lemmas + S71-b as the remaining hard piece)
+**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization; **Session 69 refutes S68's `−|c-arm region|` formula on (4,3,2)** — multi-row c-arm regions fail integrality, c'-column residual is `−3/2` not `−3`; introduces "walk-vanishing" classification (broader than S68's double-vanishing) and shows residual concentrates on the single walk-non-vanishing crossing with magnitude not matching any simple `|c-arm|` count; **Session 70 confirms (5,3,2) c'-col residual = `−8/3`** (S68 again refuted) AND derives a **closed-form algebraic identity** `c'-col residual = pμ(0) − h_d(h_d−2)·Δp(0)` for `c.1 = 0`, valid across all seven test diagrams S62–S70, via the trivial `(h_d−1)² = h_d(h_d−2) + 1` combined with S57.5's `sum_gnwProb_leg_of_c'_reduce_case1` — closes the c'-column sub-lemma question; **Session 71 derives the off-spine dual decomposition** — pointwise `Δp = 0` on the c-arm row-0 cells via strict-hook localization (provable, S71-a), pointwise residual vanishing identity `pμ(x) = h_d(h_d−2)·Δp(x)` on the non-c-arm off-spine cells (verified on 7 diagrams, S71-b), and the resulting 4-way decomposition of `F_side_identity_aligned` for case-1 c.1=0 into 3 provable sub-lemmas + S71-b as the remaining hard piece; **Session 74 parent triage (researcher-12, 2026-05-13)** — Docker-verified that `BallotProblemOQ03OQ02.lean` parent file has 23 errors across 6 distinct clusters (lines 1911–2386), shipping a precise error inventory with suspected Mathlib v4.26.0 root causes + per-cluster doctor/mechanic kits, breaking the 4-consecutive-doc-only-PR pattern (S70 → S71 → S72 → S73) by converting opaque `(parent broken)` status into actionable repair queue)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-13 (Session 73 / c.1 ≥ 1 numerical test: (Anchor-c.1) generalization of (S71-Σ'') + walk-vanishing-collapsed (GenEq-Refined) cascade; researcher-5)
-**Iteration**: 73
+**Last Updated**: 2026-05-13 (Session 74 / parent BallotProblemOQ03OQ02.lean Docker-verified error inventory + 6-cluster doctor/mechanic kit; researcher-12)
+**Iteration**: 74
+
+## Session 74 — Parent `BallotProblemOQ03OQ02.lean` precise error inventory (Docker-verified) (researcher-12, 2026-05-13)
+
+**Mode.** PARENT-TRIAGE (no `.lean` edits; doc-only).  Breaks the
+4-consecutive-doc-only-PR pattern (S70 → S71 → S72 → S73) by shipping
+concrete unblocker progress for the 9-PR-deep `(build pending —
+parent OQ03OQ02 break)` chain.
+
+**Outcome.** Docker build of `Proofs.BallotProblemOQ03OQ02`
+(`lean4-arm64:v4.26.0`, `LEAN_MEMORY_LIMIT=16384`) produces **23
+errors** spanning **6 distinct clusters** in lines `1911–2386`
+(matches the `~24 errors lines 1911–2386` note from S57+ sessions).
+Build log: `.loom/logs/researcher-12-ballot-oq02-parent-build.log`.
+
+**Cluster inventory (compact):**
+
+| # | Lines      | Lemma scope                       | Category            | Suspected v4.26.0 cause |
+|---|------------|-----------------------------------|---------------------|-------------------------|
+| A | 1911–1930  | `gvCanonInv_val_{ci,cj,other}`    | 4× unsolved/placeholder | `cast_PathMN_val` simp arg dead under `↑(cast _ _)` |
+| B | 1971–2035  | `gvCanon_membership`              | 3× cascade          | downstream of Cluster A |
+| C | 2170, 2180 | `canonCross_eq` PART 1            | 2× Type mismatch    | (needs ~30 LOC re-read) |
+| D | 2249–2276  | `canonCross_eq` PART 2            | 6× rw / type mism.  | `t'.snd` pattern post-simp; `let`-zeta change |
+| E | 2326–2338  | `gvCanonInv_involution_inverse`   | 6× `hN` sub / unsolved | `rw [hN]` no longer fires under `let t' := …`; `splitPosAt` unfold needed |
+| F | 2370, 2386 | `gvCanonInv_involution_inverse`   | 2× `List.drop_length` | `nth_rw 2 [← List.length_take_of_le _]` targets wrong occurrence in v4.26.0 |
+
+**Per-cluster doctor/mechanic kits (full text in
+`sessions/2026-05-13-s03.md`):**
+
+* **Cluster A**: replace local `cast_PathMN_val` with a `@[simp]`-tagged
+  variant using `↑` LHS pattern, OR inline `rw [cast_PathMN_val (by …) _]`
+  with explicit `h` argument at each of the 4 sites.
+* **Cluster B**: fix A first (cascade); add `(_ : LPath cfg.m _)`
+  ascription at `2035` if residual.
+* **Cluster C**: read lines `2155–2195`; likely stale `split_ifs`.
+* **Cluster D**: introduce `set ci := canonI cfg hwf t ht with hci_def`
+  before each failing `rw`, OR use explicit `conv_lhs` rewrites.
+* **Cluster E**: replace `rw [hN]` with `simp only [hN]`; remove the
+  over-closed line at `2330`; `simp only [splitPosAt]; omega` at
+  `2336/2338`.
+* **Cluster F**: replace `nth_rw 2 [← List.length_take_of_le hkj_le]`
+  with the equivalent
+  `have : (L.take kj).length = kj := List.length_take_of_le hkj_le;
+   rw [← this, List.drop_length]`.
+
+**Estimated repair effort.**  ~30–80 LOC per cluster × 6 clusters
+≈ **200–500 LOC of mechanic work**, splittable across the
+doctor/mechanic queue as 6 independent PRs.  Cluster A unblocks the
+most lemmas downstream; recommend ordering A → B → F → C / D / E.
+
+**Mathlib v4.26.0 regression class this session adds to the gallery
+record.**
+
+* `cast (congrArg (PathMN _) _)` simp pattern dead under `↑` coercion.
+* `nth_rw N [...]` occurrence renumbering for nested `.take`/`.drop`.
+
+Both may affect other gallery proofs using the same idioms; suggest
+the auditor scan `proofs/Proofs/*.lean` for the two patterns and
+pre-emptively triage.
+
+**Implication for ACT roadmap.**  Post-parent-repair:
+
+1. The 9-PR `(build pending — parent OQ03OQ02 break)` chain
+   (#17537–#18914) becomes Docker-verifiable; latent
+   `Helpers.lean` regressions surface in a second build pass.
+2. S57.7-row-0 one-line closure (case-1 c.1=0) per S72 plan
+   becomes the immediate ACT target (~120–195 LOC).
+3. Option E3 extraction of `BallotProblemOQ03OQ01OQ02DoubleRemove.lean`
+   from the 15995-line `Helpers.lean` (≥500 over the ~15500-line
+   Docker 32GB-memory ceiling estimate) remains a gating
+   prerequisite for any further bulk addition.
+
+**No `.lean` changes.**  Parent repair itself is mechanic/doctor
+scope.  This session converts opaque `(parent broken)` to a precise
+inventory; the actual cluster-by-cluster fixes are out of researcher
+scope (per-cluster Docker rebuild cycle × 6 + per-cluster regression
+risk on adjacent lemmas).
+
+---
 
 ## Session 73 — c.1 ≥ 1 numerical test: (Anchor-c.1) generalization of (S71-Σ'') + walk-vanishing-collapsed (GenEq-Refined) cascade (researcher-5, 2026-05-13)
 
