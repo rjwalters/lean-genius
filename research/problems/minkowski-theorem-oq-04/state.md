@@ -4,17 +4,18 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-05-09T02:30:00Z
-**Last Updated**: 2026-05-13 (STATE-SYNC)
-**Iteration**: 22 (parts A + B merged; STATE-SYNC by researcher-12 on 2026-05-13)
+**Last Updated**: 2026-05-14 (Iter 23 BUILD-VERIFY)
+**Iteration**: 23 (BUILD-VERIFY: 9-PR chain Docker-verified clean; researcher-3 on 2026-05-14)
 
-**Live Lean source on `origin/main`** (`proofs/Proofs/MinkowskiTheoremOQ04.lean`):
+**Live Lean source on `origin/main` after this PR** (`proofs/Proofs/MinkowskiTheoremOQ04.lean`):
 
 | Field | Value |
 | --- | --- |
-| `lineCount` | 921 |
+| `lineCount` | 922 (+1 vs pre-Iter-23 921) |
 | `theoremCount` | 15 |
-| `axiomCount` | 0 (textually); `meta.status: axiomatized` pending Docker CI |
+| `axiomCount` | 0 (textually; **Docker-verified** as of 2026-05-14) |
 | `sorries` | 0 |
+| `meta.status` | `axiomatized` (mechanic flip to `verified` now unblocked) |
 
 The 15 theorems, in file order: `blichfeldt_proj_measurable`,
 `blichfeldt_disj_bound`, `blichfeldt_basic`,
@@ -25,14 +26,113 @@ The 15 theorems, in file order: `blichfeldt_proj_measurable`,
 `minkowski_general_k`, `minkowski_general_k_pairwise`,
 `minkowski_general_k_finset`, `minkowski_four_points`.
 
-**In flight**: PR #17599 (Iter 21, `minkowski_three_points`, k=2
-Minkowski-side corollary, +35 LOC, build pending). Opened
-2026-05-09T01:26:27Z and unmerged at the time of this STATE-SYNC
-(2026-05-13, ~4 days stale). Its textual insertion site is between
-`minkowski_general_k_finset` and `minkowski_four_points` — disjoint
-from all post-#17626 lines, so the in-flight rebase should be
-mechanical. No other open research / mechanic / auditor PR touches
-this slug.
+**In flight**:
+
+* PR #17599 (Iter 21, `minkowski_three_points`, k=2 Minkowski-side
+  corollary, +35 LOC, build pending). Opened 2026-05-09T01:26:27Z; ~5
+  days unmerged as of this Iter 23 BUILD-VERIFY. Textual insertion site
+  between `minkowski_general_k_finset` and `minkowski_four_points` —
+  rebase against this Iter 23 1-LOC `#check` addition is purely
+  cosmetic (the new `#check` line is in the Export check section, 30+
+  lines below the `minkowski_three_points` insertion site).
+* PR #18989 (S23 PREP — lattice-generalization spec, doc-only, ~320
+  LOC `s23-lattice-generalization-spec.md` + state.md/JSON narrative
+  edits). Author: researcher-5. Opened 2026-05-14T03:23:24Z. No Lean
+  edits — orthogonal to this BUILD-VERIFY.
+
+## Iteration 23 BUILD-VERIFY 2026-05-14 (researcher-3)
+
+**Focus**: First Docker baseline build of `MinkowskiTheoremOQ04.lean`
+since the S13–S22 axiom-elimination chain landed 2026-05-08…05-09.
+The slug carried a 9-PR build-pending convention (S13, S14, S15, S16,
+S17, S18, S19, S20, S22A+B; plus PR #17599 still open) for 5–6 days
+gated on a single Docker green pass. This iteration runs that pass,
+records the outcome, and ships the 1-LOC `#check
+minkowski_general_k_pairwise` cleanup that the STATE-SYNC #18969 (PR
+#18969, 2026-05-13) flagged as "Minor cleanup pending".
+
+### Outcome
+
+**Build**: clean. `./proofs/scripts/docker-build.sh
+Proofs.MinkowskiTheoremOQ04` returns **3075-job clean** on Lean v4.26.0
++ Mathlib v4.26.0 (pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`).
+Only warnings (routine `automatically included section variable(s)
+unused` + `This simp argument is unused` in the parent
+`MinkowskiFundamentalTheorem.lean`) — zero errors anywhere in the
+build closure.
+
+The 10 `#check` declarations in the Export check section all elaborate
+cleanly (signatures shown in the build log; spot-check matches
+state.md "live theorems" list).
+
+### Lean edit (+1 LOC, net 921 → 922)
+
+Single-line addition to the Export check section at line 920 of
+`MinkowskiTheoremOQ04.lean`:
+
+```lean
+#check BlichfeldtTheorem.minkowski_general_k_pairwise
+```
+
+Placed alphabetically between `#check minkowski_general_k` (line 919)
+and `#check minkowski_general_k_finset` (line 921 → 922). This closes
+the "Minor cleanup pending" item flagged by STATE-SYNC #18969 (state.md
+§"Minor cleanup pending"). Zero new Mathlib API; zero risk —
+`minkowski_general_k_pairwise` is the Iter 22-B theorem (line 779) and
+its signature was already verified by Iter 22-B's `Function.Injective`
++ `sub_eq_zero` proof.
+
+### What this unblocks
+
+1. **Meta status flip (Mechanic next)**: `meta.json` flip from
+   `status: axiomatized → verified` and `badge: axiom → original` is
+   now safe to perform. Docstring §"Axioms" claim "Zero axioms remain
+   (down from four)" + Docker green build evidence = full provenance.
+   Mechanic should also rewrite `meta.assumptions` to drop the
+   "pending Docker CI" caveat and update
+   `mainTheorems[blichfeldt_general].type: axiom → proved` (currently
+   axiom-typed in `mainTheorems` per `meta.json`).
+2. **PR #17599 rebase**: the open Iter 21 PR (`minkowski_three_points`)
+   can rebase against this 1-LOC `#check` addition with a 3-line
+   context adjustment (the insertion sites are 130+ lines apart and
+   logically independent).
+3. **S24 ACT (per PR #18989 sequencing)**: the lattice-generalization
+   spec now has Docker-clean parent-state baseline to build on. PR-A
+   (`volume_eq_setLIntegral_indicator_tsum` basis lift) and PR-B
+   (`blichfeldt_general_lattice`) ship from a verified-green parent.
+
+### Build environment data (for reproducibility)
+
+| Field | Value |
+| --- | --- |
+| Docker image | `lean4-arm64:v4.26.0` |
+| Lean toolchain | `v4.26.0` |
+| Mathlib pin | `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` |
+| Memory limit | 32 GB (hard, cgroups) |
+| Total jobs | 3075 |
+| Errors | 0 |
+| Mathlib cache | 7727 files (Azure origin) |
+| Wall time | ~12 min (cold start; Mathlib clone + cache download + build) |
+
+### Honest-status block
+
+* **Mathematical progress in this PR**: zero new theorems; one
+  Export-check `#check` line added. The mathematical content of the
+  S13–S22 chain was already in-tree; this PR's contribution is
+  **build-verification evidence + a 1-LOC cleanup**.
+* **Build-verification status**: chain is now Docker-verified clean.
+  The "9-PR build-pending" convention used by S13–S22 PRs is
+  retroactively satisfied by this iteration's Docker run.
+* **Open conjecture status**: unchanged — the underlying
+  Minkowski/Blichfeldt generalization has been complete in the source
+  file since Iter 22 (2026-05-09). This PR closes the verification
+  gap, not the proof gap.
+* **PR #18989 (S23 PREP lattice spec) status**: unaffected. That PR
+  is doc-only and shapes S24/S25 scope; this PR is doc-mostly
+  (+1 Lean LOC) and discharges the S22 build-pending convention. The
+  two are independent.
+
+----
 
 ## STATE-SYNC 2026-05-13 (researcher-12)
 

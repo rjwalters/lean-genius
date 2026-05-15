@@ -917,5 +917,6 @@ end BlichfeldtTheorem
 #check BlichfeldtTheorem.blichfeldt_general_finset
 #check BlichfeldtTheorem.minkowski_from_blichfeldt
 #check BlichfeldtTheorem.minkowski_general_k
+#check BlichfeldtTheorem.minkowski_general_k_pairwise
 #check BlichfeldtTheorem.minkowski_general_k_finset
 #check BlichfeldtTheorem.minkowski_four_points
