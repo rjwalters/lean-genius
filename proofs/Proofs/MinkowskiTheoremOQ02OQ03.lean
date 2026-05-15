@@ -249,4 +249,83 @@ theorem shearM_det (n : ℕ) (α : Fin n → ℝ) :
   simp_rw [hkk]
   rw [Finset.prod_const, Finset.card_univ, Fintype.card_fin]
 
+-- ============================================================
+-- PART 6: Shear linear map components (S5-b ACT — this revision)
+-- ============================================================
+
+/-- **Shear preserves first coordinate.** The linear map `(shearM n α).toLin'`
+acts as the identity on the `j = 0` coordinate: only the diagonal entry
+`(shearM α) 0 0 = 1` contributes to the row-0 mulVec sum, because every
+other entry in row 0 vanishes (column 0 hits the upper-triangular zero
+slot via `Fin.cases_zero`, and the off-diagonal off-column-0 entries are
+ruled out by `0 ≠ k.succ`). -/
+theorem shearM_toLin'_apply_zero (n : ℕ) (α : Fin n → ℝ)
+    (v : Fin (n + 1) → ℝ) :
+    ((shearM n α).toLin' v) 0 = v 0 := by
+  simp only [Matrix.toLin'_apply, Matrix.mulVec, dotProduct]
+  rw [Finset.sum_eq_single (0 : Fin (n + 1))]
+  · simp [shearM, Matrix.of_apply]
+  · intro j _ hjne
+    simp [shearM, Matrix.of_apply, hjne, Ne.symm hjne]
+  · intro h; exact absurd (Finset.mem_univ _) h
+
+/-- **Shear acts on residual coordinates.** For `i : Fin n`, the row-`i.succ`
+shear formula reads `T v (i.succ) = α i · v 0 − v (i.succ)`. Two non-zero
+terms in the row-`i.succ` mulVec sum: column 0 (the lower-triangular block,
+`(shearM α) (i.succ) 0 = α i` via `Fin.cases_succ`) and column `i.succ`
+(the negative diagonal, `(shearM α) (i.succ) (i.succ) = -1`). All other
+columns contribute 0 because `i.succ ≠ k.succ` for `k ≠ i` (by
+`Fin.succ_injective`). -/
+theorem shearM_toLin'_apply_succ (n : ℕ) (α : Fin n → ℝ)
+    (v : Fin (n + 1) → ℝ) (i : Fin n) :
+    ((shearM n α).toLin' v) i.succ = α i * v 0 - v i.succ := by
+  simp only [Matrix.toLin'_apply, Matrix.mulVec, dotProduct,
+    Fin.sum_univ_succ, shearM, Matrix.of_apply, Fin.cases_succ]
+  rw [Finset.sum_eq_single i]
+  · simp [Fin.succ_ne_zero]; ring
+  · intro j _ hjne
+    have hsuccne : i.succ ≠ j.succ := fun h => hjne (Fin.succ_injective _ h).symm
+    simp [Fin.succ_ne_zero, hsuccne]
+  · intro hk
+    exact absurd (Finset.mem_univ i) hk
+
+/-- The axis-aligned open box image of `dirichletSetN n α Q` under the
+shear `(shearM n α).toLin'`: an `Fin (n+1)`-indexed `Set.pi` of
+intervals, with `(−(Qⁿ+1), Qⁿ+1)` on coordinate 0 and `(−1/Q, 1/Q)` on
+each `k.succ`. -/
+def dirichletBoxN (n : ℕ) (Q : ℕ) : Set (Fin (n + 1) → ℝ) :=
+  Set.pi Set.univ fun j : Fin (n + 1) =>
+    Set.Ioo (Fin.cases (-((Q : ℝ) ^ n + 1)) (fun _ : Fin n => -(1 / (Q : ℝ))) j)
+            (Fin.cases ((Q : ℝ) ^ n + 1) (fun _ : Fin n => 1 / (Q : ℝ)) j)
+
+/-- **Preimage identity.** The Cassels parallelepiped is the preimage of
+`dirichletBoxN` under the linear shear `(shearM n α).toLin'`. Combined
+with `shearM_det = (-1)^n` (so `|det shearM| = 1`) and
+`Real.map_matrix_volume_pi_eq_smul_volume_pi`, this is the bridge from
+the parallelepiped's volume to the box's volume (the next S5-c ACT). -/
+theorem dirichletSetN_eq_shearM_preimage (n : ℕ) (α : Fin n → ℝ) (Q : ℕ) :
+    dirichletSetN n α Q = (shearM n α).toLin' ⁻¹' dirichletBoxN n Q := by
+  ext v
+  simp only [dirichletSetN, dirichletBoxN, Set.mem_setOf_eq, Set.mem_preimage,
+    Set.mem_pi, Set.mem_univ, forall_true_left]
+  constructor
+  · rintro ⟨h0, hi⟩ j
+    refine j.cases ?_ ?_
+    · simp only [Fin.cases_zero, Set.mem_Ioo]
+      rw [shearM_toLin'_apply_zero]; exact abs_lt.mp h0
+    · intro k
+      simp only [Fin.cases_succ, Set.mem_Ioo]
+      rw [shearM_toLin'_apply_succ]; exact abs_lt.mp (hi k)
+  · intro h
+    refine ⟨?_, ?_⟩
+    · have h0 := h 0
+      simp only [Fin.cases_zero, Set.mem_Ioo] at h0
+      rw [shearM_toLin'_apply_zero] at h0
+      exact abs_lt.mpr h0
+    · intro k
+      have hk := h k.succ
+      simp only [Fin.cases_succ, Set.mem_Ioo] at hk
+      rw [shearM_toLin'_apply_succ] at hk
+      exact abs_lt.mpr hk
+
 end MinkowskiTheoremOQ02OQ03
