@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-13T08:09:52Z",
-    "iteration": 14,
-    "focus": "S10 ACT closed (PR #18204, merged): uniform constant-coefficient corollary `r_constantCoeff_eq_signed_uniform` lifted via S9 anchor. Lean file at 1166 LOC, 61 theorems, 1 sorry (general conjecture), 0 axioms. S11-S14 PREP audit chain (all doc-only, all merged) shipped between 2026-05-13T02:09Z and 2026-05-13T08:09Z: S11 designs the two-stage Möbius-driven trace bridge for the next ACT (corrects arithmetic error in prior sketch); S12 audits Stage 1 against Mathlib v4.26.0 (corrects Finset.sum_coeff -> Polynomial.finsetSum_coeff); S13 rules out pure-decide tactic for Stage 2 and supplies corrected template using existing cyclotomic_{2p}_eq rewrites; S14 discharges S13's deferred simp-set audit (6 of 18 lemmas not in default simp at v4.26.0). Net Lean delta across S11-S14: 0 lines, 0 theorems, 0 sorries, 0 axioms.",
+    "since": "2026-05-14T06:25:00Z",
+    "iteration": 15,
+    "focus": "S15 ACT closed (this PR): uniform trace bridge for r_subLeadingCoeff_eq_neg_p. Three new named theorems + 1 private helper, 217 net LOC, build verified clean (Docker, 7743 jobs). Stage 1 (cyclotomic_two_mul_prime_subLeadingCoeff_uniform): (cyclotomic (2*p) Z).coeff (p - 2) = -1 for odd prime p — the trace counterpart of S9 norm anchor, both via S9 geometric-series identification + finset_sum_coeff + Finset.sum_eq_single + private neg_X_pow_coeff_eq helper. Stage 2a (r_subLeadingCoeff_via_moebius_uniform): per-prime structural decomposition (r p).coeff ((p-1)/2 - 1) = -((p:Z) - 1) + (Phi_{2p}).coeff (p - 2) for p in {5,7,11,13} via rcases + r_p_eq + cyclotomic_{2p}_eq + simp only [coeff_*] + decide. Stage 2b (r_subLeadingCoeff_eq_neg_p_uniform): Finset-quantified corollary (r p).coeff ((p-1)/2 - 1) = -p for p in {5,7,11,13} combining Stage 2a with Stage 1, routing through the cyclotomic anchor. Lean file at 1383 LOC, 64 named theorems + 1 private lemma, 1 sorry (general conjecture, unchanged), 0 axioms. S12 PREP bearer-name erratum: cited Polynomial.finsetSum_coeff (camelCase) is NOT in v4.26.0 Mathlib; canonical name is finset_sum_coeff (snake_case, @[simp], at Coeff.lean:89, no deprecation tag).",
     "blockers": [],
-    "nextAction": "S15 ACT: Implement the S11-S14-audited two-stage uniform trace bridge for `r_subLeadingCoeff_eq_neg_p`. Stage 1 (~25 LOC): `cyclotomic_two_mul_prime_subLeadingCoeff_uniform : (cyclotomic (2*p) ℤ).coeff (p - 2) = -1` for odd prime p, via `cyclotomic_two_mul_prime_eq_geom_neg_series` (S9 structural lemma) + Polynomial.finsetSum_coeff (S12-corrected name) + Finset.range index arithmetic. Stage 2 (~40-45 LOC): `r_subLeadingCoeff_eq_neg_p_uniform : ∀ p ∈ ({5,7,11,13} : Finset ℕ), (r p).coeff ((p-1)/2 - 1) = -(p : ℤ)`, via rcases destructure + per-prime rewrite with existing `cyclotomic_{10,14,22,26}_eq` identities + S14-audited 18-lemma `simp only` set (6 of which require explicit listing at v4.26.0: coeff_X, coeff_C, coeff_one, coeff_X_pow, coeff_X_pow_self, Finset.mem_singleton). Boundary p=3 stays separate (r_3_traceCoeff). Companion stale ACT PR #17906 (S4 build-pending from 2026-05-12T06:22Z) untouched.",
+    "nextAction": "S16 PREP-first survey of two paths to the open conjecture eisenstein_conjecture_cos_pi_p. Path A (cyclotomic-coefficient uniform divisibility): show (cyclotomic (2*p) Z).coeff k in Ideal.span {(p:Z)} for 1 <= k <= p - 2 for odd prime p, then bridge to r p via uniform substitution (currently r p ~= Phi_{2p} bridge is per-prime only via cyclotomic_{2p}_eq rewrites; need uniform version). Path B (local-field uniformizer theorem, deeper): (2 + zeta_{2p} + zeta_{2p}^-1) is uniformizer of unique prime above p in Z[2cos(pi/p)] with ramification index (p-1)/2; minimal polynomial Eisenstein by Neukirch ANT II.6. ~200-400 LOC import of Mathlib.NumberTheory.Cyclotomic + RamificationInertia. S16 task: survey both paths, identify lighter-weight bridge.",
     "attemptCounts": {
-      "total": 14,
-      "currentApproach": 13,
-      "approachesTried": 14
+      "total": 15,
+      "currentApproach": 14,
+      "approachesTried": 15
     }
   },
   "knowledge": {
-    "progressSummary": "ACT (S10 closed, Lean unchanged through S11-S14 PREP) - Through S10 the file `AngleTrisectionCos20GalOQ01OQ03.lean` (1166 LOC, 61 theorems, 1 sorry, 0 axioms) carries: S5/S6 per-prime cyclotomic anchors Φ_{2p}(-1) = p for p ∈ {3,5,7,11,13}; S7 combinatorial backbone divisors_two_mul_odd_prime; S8 uniform cyclotomic bridge `cyclotomic (2*p) ℤ * (X+1) = X^p+1` for odd prime p; S9 structural geometric-series identification `cyclotomic (2*p) ℤ = ∑_{i<p} (-X)^i` + uniform numerical anchor `(cyclotomic (2*p) ℤ).eval (-1) = p`; S10 uniform constant-coefficient corollary `r_constantCoeff_eq_signed_uniform : ∀ p ∈ ({3,5,7,11,13} : Finset ℕ), (r p).coeff 0 = (-1)^((p-1)/2) · p`. Post-S10 (2026-05-13) four doc-only PREP memos shipped: S11 PREP (PR #18410) designs two-stage Möbius-driven trace-bridge outline (corrects prior arithmetic error); S12 PREP (PR #18571) audits S11 Stage 1 against Mathlib v4.26.0 pin (corrects bearer Finset.sum_coeff → Polynomial.finsetSum_coeff); S13 PREP (PR #18588) rules out pure-decide for Stage 2 (cyclotomic is opaque def) and supplies corrected template; S14 PREP (PR #18642) discharges S13 §11.3 deferred simp-set audit (6 of 18 lemmas not @[simp]-eligible at v4.26.0, ships explicit list). S15 target: implement audited Stage 1 (cyclotomic_two_mul_prime_subLeadingCoeff_uniform, ~25 LOC) + Stage 2 (r_subLeadingCoeff_eq_neg_p_uniform, ~40-45 LOC) for the uniform trace fingerprint.",
+    "progressSummary": "ACT (S15 closed) - Lean file  at 1383 LOC, 64 named theorems + 1 private lemma, 1 sorry (general conjecture), 0 axioms. S5/S6 per-prime cyclotomic anchors Phi_{2p}(-1) = p for p in {3,5,7,11,13}; S7 combinatorial backbone divisors_two_mul_odd_prime; S8 uniform cyclotomic bridge cyclotomic (2*p) Z * (X+1) = X^p+1 for odd prime p; S9 structural geometric-series identification cyclotomic (2*p) Z = sum_{i<p} (-X)^i + uniform numerical anchor (cyclotomic (2*p) Z).eval (-1) = p; S10 uniform constant-coefficient corollary r_constantCoeff_eq_signed_uniform : forall p in ({3,5,7,11,13} : Finset N), (r p).coeff 0 = (-1)^((p-1)/2) * p; S15 (this iter) uniform trace bridge: Stage 1 cyclotomic_two_mul_prime_subLeadingCoeff_uniform (uniform Mathlib-style lemma for sub-leading of Phi_{2p}), Stage 2a r_subLeadingCoeff_via_moebius_uniform (per-prime structural decomposition), Stage 2b r_subLeadingCoeff_eq_neg_p_uniform (Finset-quantified -p corollary via cyclotomic-anchor route, combining Stage 2a + Stage 1). Both Vieta endpoints (constant + sub-leading) now closed in uniform Finset form via cyclotomic-anchor route. Remaining gap to general conjecture: HARD half of sub-leading divisibility for all indices 0 <= k < (p-1)/2 (not just two endpoints) — requires either uniform r_p ~= Phi_{2p} bridge (Path A) or local-field uniformizer theorem (Path B, ~200-400 LOC).",
     "builtItems": [
       "Created proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean (S2): parametric r : N -> Z[X] for p in {5, 7, 11, 13}, IsEisensteinAt verifications, irreducibility for p in {11, 13}, eisenstein_conjecture_cos_pi_p (sorry).",
       "Created src/data/proofs/angle-trisection-cos-20-gal-oq-01-oq-03/ (S2): meta.json with status axiomatized, sorries 1, axioms 0; annotations.json empty; index.ts.",
@@ -38,7 +38,8 @@
       "S6 (PR pending): added cyclotomic_twentytwo_eval_neg_one (Phi_22(-1) = 11) and cyclotomic_twentysix_eval_neg_one (Phi_26(-1) = 13). The numerical anchors for p in {11, 13}.",
       "S6 (PR pending): added r_11_constantCoeff_eq_cyclotomic and r_13_constantCoeff_eq_cyclotomic — bridge (r p).coeff 0 = (-1)^((p-1)/2) * Phi_{2p}(-1) for p in {11, 13}.",
       "S6 (PR pending): added r_constantCoeff_eq_cyclotomic_full — packaged 5-prime conjunction extending S5 r_constantCoeff_eq_cyclotomic_small (3 primes) to the full gallery set p in {3, 5, 7, 11, 13}.",
-      "Theorem cyclotomic_two_mul_prime_mul_X_add_one_uniform in AngleTrisectionCos20GalOQ01OQ03.lean:851 (line approximate post-S8): cyclotomic (2 * p) ℤ * (X + 1) = X^p + 1 for {p : ℕ} (hp : p.Prime) (hpodd : Odd p). 127 line additions; 0 new sorries; 0 new axioms."
+      "Theorem cyclotomic_two_mul_prime_mul_X_add_one_uniform in AngleTrisectionCos20GalOQ01OQ03.lean:851 (line approximate post-S8): cyclotomic (2 * p) ℤ * (X + 1) = X^p + 1 for {p : ℕ} (hp : p.Prime) (hpodd : Odd p). 127 line additions; 0 new sorries; 0 new axioms.",
+      "S15 ACT (this PR): uniform trace bridge — cyclotomic_two_mul_prime_subLeadingCoeff_uniform (Stage 1: (Phi_{2p}).coeff (p-2) = -1 for odd prime p, via S9 structural lemma + finset_sum_coeff + Finset.sum_eq_single + private helper neg_X_pow_coeff_eq); r_subLeadingCoeff_via_moebius_uniform (Stage 2a: per-prime structural decomposition for p in {5,7,11,13}); r_subLeadingCoeff_eq_neg_p_uniform (Stage 2b: Finset-quantified corollary -p, combining Stage 2a + Stage 1). Net 217 LOC, +3 named theorems + 1 private lemma, 0 sorries added, 0 axioms added. Docker-build verified 7743 jobs clean."
     ],
     "insights": [
       "Gallery has two empirically-verified instances of the conjecture: cos(pi/5) at OQ01OQ02 with r=Y^2-5Y+5 Eisenstein at 5, and cos(pi/7) at OQ01 with r=Y^3-7Y^2+14Y-7 Eisenstein at 7. Both use the substitution Y = 2X + 2 to convert the minimal polynomial of cos(pi/p) into Eisenstein-at-p form.",
@@ -82,7 +83,7 @@
     "mathlib": []
   },
   "started": "2026-05-08T19:09:00.559Z",
-  "lastUpdate": "2026-05-13T17:30:00Z",
+  "lastUpdate": "2026-05-14T06:25:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -174,5 +175,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AngleTrisectionCos20GalOQ01OQ03.lean"
     }
-  ]
+  ],
+  "lastUpdated": "2026-05-14T06:25:00Z"
 }
