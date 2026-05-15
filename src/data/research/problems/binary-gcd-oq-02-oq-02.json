@@ -30,14 +30,14 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-05-12T12:15:00.000Z",
+    "since": "2026-05-12T12:20:43.000Z",
     "iteration": 2,
-    "focus": "S2 GALLERY: src/data/proofs/binary-gcd-oq-02-oq-02/{meta,annotations,index}.ts — verified-status entry with 8 sections, 9 annotations, 5 cross-references, 3 references.",
+    "focus": "Slug COMPLETED: S1 (PR #18083, 2026-05-12) shipped Lehmer GCD for ℤ via natAbs reduction (~155 LOC, 0 sorries, 0 axioms, build verified); S2 (PR #18095, 2026-05-12) shipped gallery entry src/data/proofs/binary-gcd-oq-02-oq-02/. No further research-scope work expected. This STATE-SYNC consolidates the canonical-vs-flat-path divergence: prior session log lived at misplaced flat research/binary-gcd-oq-02-oq-02/ (no problems/ segment) while canonical research/problems/binary-gcd-oq-02-oq-02/state.md remained at seeker-init stub.",
     "blockers": [],
-    "nextAction": "Optional follow-up: explicit Lehmer↔Binary GCD cross-algorithm equality file (5-line statement composing lehmerGcdInt_eq_natAbs_gcd + BinaryGcdOQ02.binaryGcdInt_eq_intGcd). Independent of this slug; could be its own thin entry.",
+    "nextAction": "Terminal: no further research-scope work expected. Optional sibling extensions (require new slug): (1) lehmerGcdInt = binaryGcdInt via Int.gcd composition (needs new sibling file to break import cycle); (2) GaussianInt / ℤ[i] extension. Optional enricher work: cross-link to binary-gcd-oq-02 and binary-gcd-oq-02-oq-01 in gallery's GCD-algorithm family thread.",
     "attemptCounts": {
       "total": 2,
-      "currentApproach": 2,
+      "currentApproach": 0,
       "approachesTried": 1
     }
   },
@@ -91,7 +91,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.560Z",
-  "lastUpdate": "2026-05-12T12:15:00.000Z",
+  "lastUpdate": "2026-05-14T14:30:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
