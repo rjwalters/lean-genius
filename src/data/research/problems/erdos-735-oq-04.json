@@ -1,7 +1,7 @@
 {
   "slug": "erdos-735-oq-04",
   "title": "Magic configurations on k-flats in ℝ^d (Erdős #735 extension)",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -30,15 +30,18 @@
     "goal": "Formalize in Lean: (1) PointConfigD / WeightingD / ConfigKFlat / IsKFlatMagic definitions parameterised on (d, k). (2) Trivial cases k = 0, k = d. (3) Definitional reduction IsKFlatMagic 1 = parent's IsMagic for d = 2. (4) Axiomatise higher-dim classification (conjectural). (5) native_decide certificates for tetrahedron / octahedron / cube. (6) Gallery JSON with status: axiomatized."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T22:15:00.000Z",
-    "iteration": 3,
-    "focus": "Three doc-only iterations have shipped: S1 OBSERVE (PR #18336, researcher-10, 2026-05-12) + S6a PREP (PR #18486, researcher-9, 2026-05-13, tetrahedron 2-flat-magic certificate, magic constant 3) + S6b PREP (PR #18541, researcher-5, 2026-05-13, refutation of octahedron + cube 2-flat-magic claims via O_h symmetry + exhaustive 2-flat enumeration). S6b explicitly deferred state.md / knowledge.md / gallery-JSON corrections to a future doctor/curator pass; this STATE-SYNC (researcher-5) applies them. Lean S2 ACT scaffold (proofs/Proofs/Erdos735OQ04.lean) has NOT yet shipped; no .lean changes in any of S1, S6a, S6b, or this STATE-SYNC.",
-    "blockers": [],
-    "nextAction": "S2: define PointConfigD, WeightingD, ConfigKFlat, IsKFlatMagic in proofs/Proofs/Erdos735OQ04.lean. Approach: parameterise parent's definitions on (d, k), use EuclideanSpace ℝ (Fin d) and AffineSubspace. Prove trivial cases k = 0 (zero_flat_magic_trivial), k = d (ambient_flat_magic_trivial), and the parent reduction for d = 2, k = 1. Expected ~50 Lean lines, 3 sorries for the trivial cases (mechanical to discharge).",
+    "phase": "ACT",
+    "since": "2026-05-13T23:55:00.000Z",
+    "iteration": 4,
+    "focus": "S2 ACT shipped (researcher-12, 2026-05-13, this PR): first Lean delta under this slug — proofs/Proofs/Erdos735OQ04.lean (99 LOC, 5 defs + 2 sorry-theorems + 0 axioms). Definitions: abbrev PointConfigD, def WeightingD, def ConfigKFlat, noncomputable def kFlatSum, def IsKFlatMagic. Theorem signatures with `sorry`: zero_flat_magic_trivial (k = 0), ambient_flat_magic_trivial (k = d). The third trivial target oneflat_eq_parent (d = 2, k = 1 ↔ parent's IsMagic) is DEFERRED — parent file Proofs/Erdos735Problem.lean is broken on origin/main under Mathlib v4.26.0 (four cumulative regressions: AffineSubspace module-split, Finset → Sort coercion via def-alias, AffineSubspace.direction.toSubmodule.rank API change, matrix ![...] literal coercion to EuclideanSpace). Three sibling Erdős parents (Erdos105/209/210) share the import-path issue at minimum. Docker-build clean: 3058 jobs, 2 expected sorry warnings. Recommended follow-up: doctor/mechanic sweep on the 4 Erdős parent files; OUT OF SCOPE for OQ04 research PRs.",
+    "blockers": [
+      "S4 ACT (parent reduction oneflat_eq_parent): blocked on Proofs/Erdos735Problem.lean repair against Mathlib v4.26.0 (4 cumulative regressions documented in sessions/2026-05-13-s2-act-scaffold.md §'Parent-file regression'). Doctor/mechanic task — out of scope for OQ04 research PRs.",
+      "S5 axiom: genuinely open in the literature (Mathlib has no published k-flat classification beyond ABKPR's ℝ² case). Future iteration must axiomatise."
+    ],
+    "nextAction": "S3 ACT (any researcher): discharge the two trivial-case sorries. (a) zero_flat_magic_trivial: constant-1 weighting + c = 1; for each F : ConfigKFlat 0 P, show F.val is a singleton (rank-0 + filter card ≥ 1 forces uniqueness); kFlatSum = 1. ~15-20 LOC; uses Submodule.rank_eq_zero_iff / Module.rank_eq_zero_iff. (b) ambient_flat_magic_trivial: case split on P.card ≥ d + 1. Vacuous case (no qualifying d-flats) picks c = 1. Non-vacuous case picks c = P.card, uniform weight. ~20-30 LOC; uses AffineSubspace.direction_eq_top_iff or Module.rank_eq_finrank_iff for Fin d → ℝ. Total: ~35-50 LOC, 0 new sorries.",
     "attemptCounts": {
       "S1_observe": 1,
-      "S2_definitions": 0,
+      "S2_definitions": 1,
       "S3_trivial_cases": 0,
       "S4_parent_reduction": 0,
       "S5_higher_dim_classification_axiom": 0,
@@ -60,9 +63,11 @@
       "Created src/data/research/problems/erdos-735-oq-04.json (this file) — S1 OBSERVE, PR #18336.",
       "Wrote research/problems/erdos-735-oq-04/sessions/2026-05-13-s6a-prep-tetrahedron-magic-certificate.md (tetrahedron at alt-cube-vertices, magic constant 3, explicit proof terms; ~3K words) — S6a PREP, PR #18486.",
       "Wrote research/problems/erdos-735-oq-04/sessions/2026-05-13-s6b-prep-octahedron-cube-not-2-flat-magic.md (refutation of S1 OBSERVE's octa+cube claims, Python certificate, O_h symmetry argument; +508 LOC) — S6b PREP, PR #18541.",
-      "Updated state.md / knowledge.md / this JSON to reflect S6a + S6b corrections (proven[3], insights[0], focus, progressSummary, attemptCounts.S6) — STATE-SYNC (this PR)."
+      "Updated state.md / knowledge.md / JSON to reflect S6a + S6b corrections (proven[3], insights[0], focus, progressSummary, attemptCounts.S6) — STATE-SYNC, PR #18891.",
+      "Wrote proofs/Proofs/Erdos735OQ04.lean (99 LOC; 5 defs: PointConfigD/WeightingD/ConfigKFlat/kFlatSum/IsKFlatMagic; 2 sorry-theorems: zero_flat_magic_trivial, ambient_flat_magic_trivial; 0 axioms; 2 sorries). Docker-build verified 3058-job clean. Added Proofs.Erdos735OQ04 import to proofs/Proofs.lean. — S2 ACT (this PR).",
+      "Wrote research/problems/erdos-735-oq-04/sessions/2026-05-13-s2-act-scaffold.md documenting four Mathlib v4.26.0 surface fixes and the parent-file regression that blocks S4 — S2 ACT (this PR)."
     ],
-    "progressSummary": "S1 OBSERVE complete (PR #18336). S6a PREP shipped (PR #18486, tetrahedron 2-flat-magic certificate). S6b PREP shipped (PR #18541, refutation of octahedron + cube 2-flat-magic claims via O_h symmetry + exhaustive Python enumeration). STATE-SYNC (this PR) applies corrections owed: state.md / knowledge.md / JSON now accurately distinguish the magic tetrahedron from the non-magic octahedron and cube. The conjectural 'regular-polytope' new magic family is strictly narrower than S1 OBSERVE suggested: at minimum the tetrahedron survives; dodec/icosa untested (S6d, deferred). Definitions and Lean signatures (S2 ACT) and trivial-case theorems (S3, S4) NOT yet shipped — proofs/Proofs/Erdos735OQ04.lean does not exist on main. Higher-dim ABKPR extension (S5 axiom) genuinely open."
+    "progressSummary": "S1 OBSERVE complete (PR #18336). S6a PREP shipped (PR #18486, tetrahedron 2-flat-magic certificate). S6b PREP shipped (PR #18541, refutation of octahedron + cube 2-flat-magic claims via O_h symmetry + exhaustive Python enumeration). STATE-SYNC (PR #18891) applied corrections owed. S2 ACT (this PR) ships the first Lean delta: proofs/Proofs/Erdos735OQ04.lean (99 LOC, 5 defs + 2 sorry-theorems + 0 axioms + 2 sorries), Docker-build clean (3058 jobs). The parent reduction theorem oneflat_eq_parent (S4) is deferred: parent file Proofs/Erdos735Problem.lean is broken on origin/main against Mathlib v4.26.0 (4 cumulative API regressions, including the AffineSubspace module-split that surfaces in 3 sibling Erdős parents — Erdos105/209/210). Recommended doctor/mechanic sweep. The conjectural 'regular-polytope' new magic family is strictly narrower than S1 OBSERVE suggested: at minimum the tetrahedron survives; dodec/icosa untested (S6d, deferred). Higher-dim ABKPR extension (S5 axiom) genuinely open."
   },
   "tags": [
     "seeker-selected",
@@ -78,5 +83,5 @@
   ],
   "significance": 6,
   "tractability": 5,
-  "lastUpdated": "2026-05-13T17:35:00.000Z"
+  "lastUpdated": "2026-05-13T23:55:00.000Z"
 }
