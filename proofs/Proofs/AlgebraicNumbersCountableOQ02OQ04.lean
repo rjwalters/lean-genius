@@ -2,14 +2,24 @@ import Mathlib.SetTheory.Cardinal.Basic
 import Mathlib.SetTheory.Cardinal.Continuum
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Countable
+import Mathlib.Data.Rat.Cardinal
 import Mathlib.Data.Rat.Denumerable
 import Mathlib.Logic.Denumerable
 import Mathlib.Computability.Primrec
 import Mathlib.Computability.Partrec
 import Mathlib.Computability.PartrecCode
-import Mathlib.Topology.Instances.Real
+import Mathlib.Topology.Instances.Real.Lemmas
 import Mathlib.Tactic
 import Proofs.AlgebraicNumbersCountable
+
+-- Mathlib v4.26.0 introduced `Rat.instEncodable` (via `Mathlib.Data.Rat.Encodable`,
+-- transitively imported), which competes with the `Encodable ℚ` instance derived
+-- from `Primcodable.ofDenumerable ℚ`. `Computable.encode` synthesises the latter,
+-- but Lean prefers the former at standalone `Encodable.encode (q : ℚ)` sites,
+-- creating a mismatch in the `decodeReal` proof chain. Disabling the standalone
+-- `Rat.instEncodable` in this file forces both routes to use the Primcodable-
+-- derived instance, keeping the proof's encode/decode round-trip coherent.
+attribute [-instance] Rat.instEncodable
 
 /-
 # Countability of Computable Real Numbers
@@ -304,7 +314,7 @@ theorem aleph0_le_card_computable_reals :
     exact_mod_cast hv
   have hcard : (#ℚ : Cardinal) ≤ #({r : ℝ | IsComputable r} : Set ℝ) :=
     Cardinal.mk_le_of_injective hinj
-  simpa [Cardinal.mk_rat] using hcard
+  simpa [Cardinal.mkRat] using hcard
 
 /-! ## Exact ℵ₀ equality
 
@@ -369,11 +379,8 @@ private theorem computable_nonComputable_disjoint :
     Proof: `ℵ₀ + κ ≤ κ + κ = κ` (by `Cardinal.add_eq_self`); the other direction
     is trivial. Mirrors the helper in
     `AlgebraicNumbersCountableOQ02OQ03.aleph0_add_of_ge`. -/
-private theorem aleph0_add_of_ge {κ : Cardinal} (h : ℵ₀ ≤ κ) : ℵ₀ + κ = κ :=
-  le_antisymm
-    (calc ℵ₀ + κ ≤ κ + κ := add_le_add_right h κ
-              _ = κ := Cardinal.add_eq_self h)
-    (le_add_left κ ℵ₀)
+private theorem aleph0_add_of_ge {κ : Cardinal} (h : ℵ₀ ≤ κ) : ℵ₀ + κ = κ := by
+  rw [Cardinal.add_eq_max le_rfl, max_eq_right h]
 
 /-- **Upper bound**: the non-computable reals are a subset of `ℝ`, so their
     cardinality is at most 𝔠. -/
@@ -434,7 +441,7 @@ theorem continuum_le_card_nonComputableReals :
           (#(↑nonComputableReals : Set ℝ) : Cardinal) :=
             mk_real_le_computable_add_nonComputable
     _ ≤ ℵ₀ + (#(↑nonComputableReals : Set ℝ) : Cardinal) :=
-          add_le_add_right card_computable_reals_le_aleph0 _
+          add_le_add_left card_computable_reals_le_aleph0 _
     _ = (#(↑nonComputableReals : Set ℝ) : Cardinal) := h_absorb
 
 /-- **Main S4 theorem — exact cardinality of non-computable reals**: 𝔠.
@@ -476,7 +483,7 @@ theorem exists_non_computable_real : ∃ r : ℝ, ¬ IsComputable r := by
     Combines `Set.subset_univ` (the non-strict inclusion) with
     `exists_non_computable_real` (a witness in the complement). -/
 theorem computable_reals_strict_ssubset_univ :
-    ({r : ℝ | IsComputable r} : Set ℝ) ⊊ Set.univ := by
+    HasSSubset.SSubset ({r : ℝ | IsComputable r} : Set ℝ) Set.univ := by
   refine ⟨Set.subset_univ _, ?_⟩
   intro h_univ_sub
   obtain ⟨r, hr⟩ := exists_non_computable_real
