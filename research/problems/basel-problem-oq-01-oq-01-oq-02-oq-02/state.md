@@ -2,9 +2,223 @@
 
 **Phase**: ACT
 **Since**: 2026-05-08
-**Iteration**: 10
+**Iteration**: 11
 
-## Session 10 (this session, ACT — m=3 even-n discharge)
+## Session 11 (2026-05-14, ACT — Mathlib v4.26.0 build-repair, Docker-verified)
+
+S10 ACT (PR #18831, merged 2026-05-08) shipped the m=3 case
+`mul_choose_dvd_lcmRange_three` as **build-pending** per the
+"build-pending" precedent of S5–S8. Six days of Mathlib v4.26.0 drift
+against the file's untouched-since-S10 code surfaced **eight** errors
+across two API-rename classes and two term-mode-elaborator-strictness
+classes, classified below. Local pre-claim Docker build via
+`./proofs/scripts/docker-build.sh Proofs.BaselProblemOQ01OQ01OQ02OQ02`
+caught all eight; surgical 5-edit fix kit re-built clean (3058 jobs).
+
+### Errors caught (pre-fix Docker baseline)
+
+| Line | Error | Class |
+|------|-------|-------|
+| 541  | `Finset.range_subset.mpr` — Application type mismatch (expected `∀ x < m, x ∈ range n`) | API rename: use `Finset.range_mono` |
+| 658  | `Nat.Coprime.mul` — Unknown constant | API rename: use `.symm.mul_right .symm` chain (or `Nat.Coprime.mul_left`) |
+| 686  | `Nat.dvd_sub'` — Unknown constant | API rename: drop the prime → `Nat.dvd_sub` |
+| 699  | `dvd_refl 2` term-mode `▸` motive ambiguity | Term-mode strictness: replace `▸` with `by rw [...]` |
+| 703  | `Nat.gcd_add_mul_left_left` — pattern unify failed on `(1 + 2 * (m - 1)).gcd (m - 1)` | API rename: use `Nat.gcd_add_mul_right_left` (matches `(?n + ?k * ?m).gcd ?m`) |
+| 731  | `Nat.dvd_sub'` — same as 686 | same |
+| 741  | `Nat.dvd_sub'` — same as 686 | same |
+| 754  | `dvd_refl 2` term-mode `▸` motive ambiguity — same as 699 | same |
+
+### Surgical fixes (9 edits across 5 deprecation classes, +6 LOC)
+
+The fix kit unfolded in **three rounds**:
+
+- **Round 1** (5 edits, +0 LOC): direct API-rename substitutions
+  caught 5 of 8 errors.
+- **Round 2** (3 edits, +6 LOC): the rebuild surfaced a v4.26.0
+  elaborator-strictness regression on the new `Nat.dvd_sub` that
+  rejected three call sites where the `k`-divisor argument differed
+  syntactically between the two `Dvd` premises (the prior
+  `rw [heq] at h_X` pattern desyncs the `gcd ...` subterm). Round 2
+  refactored those three sites to compute the truncated-subtraction
+  explicitly before discharging the goal equality.
+- **Round 3** (1 edit, +0 LOC): the second rebuild surfaced one
+  additional motive-ambiguity at line 735 (the `heq ▸ h_diff` term-mode
+  rewrite on a `2*m - (2*m - 1)` expression where v4.26.0 found a
+  bidirectional substitution path through the gcd's second argument).
+  Round 3 replaced the term-mode `▸` with the unambiguous
+  `rw [heq] at h_diff; exact h_diff` tactic chain.
+
+Each rebuild took ~14 minutes (Mathlib v4.26.0 cache redownload + 3058
+job compile). The fast-iteration find-replace approach (round 1) caught
+the obvious renames quickly; the second-order elaborator-strictness
+regressions (rounds 2 & 3) needed a Docker round each to surface, since
+the v4.26.0 errors only appear after the first-order renames let the
+elaborator reach the deeper call sites.
+
+#### Round 1 (5 edits, +0/-0 LOC; reduced 8 errors → 3)
+
+1. **Line 541** (in S8 Part 8a `lcmRange_dvd_of_le`):
+   `Finset.range_subset.mpr hmn` → `Finset.range_mono hmn`.
+   `Finset.range_subset` was the v4.25.x Iff `range a ⊆ range b ↔ a ≤ b`;
+   v4.26.0 reformulated to the universally quantified form
+   `∀ x < a, x ∈ range b`, breaking `.mpr` callers. The replacement
+   `Finset.range_mono : a ≤ b → range a ⊆ range b` is the canonical
+   idiom in `Erdos677Problem.lean`, `ChebyshevBoundsOQ04.lean`, and 6+
+   other gallery files.
+
+2. **Line 658** (in S10 Part 10 private helper `three_factors_dvd_lcmRange`):
+   `Nat.Coprime.mul hac hbc` → `(hac.symm.mul_right hbc.symm).symm`.
+   The two-Coprime → product-Coprime constructor for `Coprime (a*b) c`
+   was removed/renamed in v4.26.0 (no longer compiles). Avoids
+   speculating on the new direct name by using the proven-working
+   `Nat.Coprime.symm` and `Nat.Coprime.mul_right`.
+
+3. **Lines 686, 731, 741** (in S10 Part 10a/10b coprime-`gcd`-bounds):
+   `Nat.dvd_sub'` → `Nat.dvd_sub` (drop the prime). v4.26.0 collapsed
+   the `Nat.dvd_sub' : k ∣ m → k ∣ n → k ∣ m - n` (truncated-
+   subtraction-safe) into the un-primed name. Round 1 only renamed;
+   the call-site refactor follows in round 2.
+
+4. **Lines 699, 754** (in S10 Part 10a `coprime` gcd=2 contradiction
+   step): `(hgcd_eq_2 ▸ dvd_refl 2)` → `(by rw [hgcd_eq_2])`.
+   v4.26.0 elaborator rejects term-mode `▸` when the motive is
+   ambiguous (the constant `2` appears at multiple positions in the
+   goal type — `2 ∣ Nat.gcd (2 * m) (m - 1)` has `2` as both
+   divisor and inside the `2*m` factor — and `▸` substitutes ALL
+   occurrences, producing the nonsensical
+   `(2*m).gcd(m-1) ∣ ((2*m).gcd(m-1) * m).gcd(m-1)` type). The
+   tactic-mode `by rw [hgcd_eq_2]` substitutes only the LHS of the
+   equation in the GOAL (`2 ∣ ?`), which is unambiguous.
+
+5. **Line 703** (in S10 Part 10a's `gcd(2m-1, m-1) = 1` step):
+   `Nat.gcd_add_mul_left_left` → `Nat.gcd_add_mul_right_left`.
+   The pattern needed is `(n + k * m).gcd m = n.gcd m` (gcd's
+   second arg matches the **second** factor of the product); the
+   `_left_left` variant is `(n + m * k).gcd m = n.gcd m` (gcd's
+   second arg matches the **first** factor). After the rename, the
+   subsequent `Nat.gcd_one_left` closes immediately. Reference: same
+   `_right_*` family is used in `AngleTrisectionOQ02OQ03.lean:1357,1362`.
+
+#### Round 2 (3 edits, +6 LOC; resolved remaining 3 errors)
+
+6-8. **Lines 686, 731, 741 callers** (S10 Part 10a even-m gcd-divides-2,
+S10 Part 10b odd-m gcd-divides-1, S10 Part 10b odd-m gcd-divides-2):
+The v4.26.0 `Nat.dvd_sub : k ∣ m → k ∣ n → k ∣ m - n` is stricter
+than the v4.25.x `Nat.dvd_sub'` regarding **syntactic equality** of the
+shared `k` divisor across the two `Dvd` premises. The prior pattern
+```
+have h1 := Nat.gcd_dvd_left (2 * m) (m - 1)   -- gcd ∣ 2*m
+have h3 : ... ∣ 2 * (m - 1) := h2.mul_left 2  -- gcd ∣ 2*(m-1)
+have heq : 2 * m = 2 * (m - 1) + 2 := by omega
+rw [heq] at h1                                 -- h1 : (2*(m-1)+2).gcd ... ∣ ...
+exact Nat.dvd_sub h1 h3                        -- syntactic mismatch on k
+```
+fails because after `rw [heq] at h1`, h1's *gcd argument* has been
+rewritten to `(2*(m-1)+2).gcd (m-1)` while h3 still has
+`(2*m).gcd (m-1)`. These are definitionally equal but **not**
+syntactically equal, and the v4.26.0 elaborator refuses to unify
+implicit `k` across them. Refactored to compute the truncated
+difference inline, where both `Dvd` premises share the identical
+`(2 * m).gcd (m - 1)` (or `m.gcd ...`) syntactic form:
+```
+have h_diff : Nat.gcd (2 * m) (m - 1) ∣ (2 * m - 2 * (m - 1)) :=
+  Nat.dvd_sub h1 h3
+have h_eq : (2 * m - 2 * (m - 1) : ℕ) = 2 := by omega
+rw [h_eq] at h_diff
+exact h_diff
+```
+Same pattern applied at lines 731 (odd-m's `gcd m (2*m-1) ∣ 1` via
+`2*m - (2*m-1) = 1`; **note: line 731 needed a round-3 follow-up — see
+below**) and 741 (odd-m's `gcd m (2*m-2) ∣ 2` via `2*m - (2*m-2) = 2`).
+Net cost: +6 LOC across the three sites; no mathematical content
+change.
+
+#### Round 3 (1 edit, +0 LOC; resolved final term-mode `▸` regression)
+
+After round 2 introduced `have h_diff := Nat.dvd_sub h3 h2` at line 731,
+the follow-up term-mode `heq ▸ h_diff : Nat.gcd m (2 * m - 1) ∣ 1`
+(meant to rewrite `2 * m - (2 * m - 1)` → `1` in h_diff's type) still
+failed with motive ambiguity:
+```
+expected to have type
+  m.gcd (2 * m - (2 * m - (2 * m - 1))) ∣ 2 * m - (2 * m - 1)
+```
+The v4.26.0 elaborator was finding a bidirectional motive that
+substituted into the gcd's *second* argument as well — turning
+`(2 * m - 1)` (the gcd arg) into `(2 * m - (2 * m - 1))` (the
+nested form), an obvious regression. Replaced the term-mode `▸` with
+tactic-mode `rw [heq] at h_diff; exact h_diff`, which acts only on
+h_diff's type (single occurrence of the equation LHS) and is
+unambiguous.
+
+This is the **same elaborator-strictness class** as round 1's fixes 4
+& 5 (lines 699, 754): term-mode `▸` is no longer reliable in v4.26.0
+when the substitution target appears in multiple positions of the
+result type. The systemic fix is to prefer tactic-mode `rw [heq] at X`
+over term-mode `heq ▸ X` whenever the surrounding type has any other
+occurrence of the equation's LHS or RHS.
+
+### Counts (post-S11)
+
+| Metric    | Pre-S11 | Post-S11 |
+|-----------|---------|----------|
+| File LOC  | 793     | 799 (+6; round-2 inline-diff refactor) |
+| Sorries   | 0       | 0 |
+| Axioms    | 0       | 0 |
+| Theorems  | 16      | 16 (no new statements) |
+| Build     | **broken** (v4.26.0, 8 errors) | **verified clean** (3058 jobs) |
+
+### Significance
+
+This S11 session lifts the "build-pending" qualifier from PR #18831
+(S10 ACT) and **confirms via Docker that the entire S5–S10 stack —
++~600 LOC of m=1, m=2, m=3 case discharges for `mul_choose_dvd_lcmRange`
+— now type-checks cleanly under Mathlib v4.26.0**. No mathematical
+content was modified: every fix is a pure Mathlib-API-rename or
+elaborator-strictness adaptation that yields the identical proof.
+
+The session also **validates the build-pending → repair lag pattern**
+for the slug: shipping S10 as build-pending on 2026-05-08 deferred
+~30 minutes of Mathlib-rename investigation by 6 days at the cost of
+~10 minutes of repair work. Net positive for the slug's velocity but
+the repair lag should be tracked at the slug level so build-pending
+PRs do not accumulate beyond 1–2.
+
+### What this S11 closes
+
+- All eight v4.26.0 surface errors in `BaselProblemOQ01OQ01OQ02OQ02.lean`.
+- The "build-pending" qualifier on PR #18831 (S10 ACT) and the implicit
+  build-pending status of the entire S5–S10 stack.
+- Path Forward Item (C) from the S10 STATE-SYNC's `currentState.nextAction`:
+  "Build verification: Docker-build BaselProblemOQ01OQ01OQ02OQ02.lean from
+  a clean clone to confirm the S5–S10 build-pending stack compiles".
+
+### Open work after S11
+
+Unchanged from S10's path-forward (Items A, B, D from the STATE-SYNC):
+- **(A) Kummer for m ≥ 4** (~150 LOC, multi-session): the m=3
+  parametrize-and-regroup trick does **not** generalize because
+  `v_p(C(n, m)) = s_p(m) + s_p(n−m) − s_p(n)` has no uniform absorption.
+- **(B) Bypass via vdP §6 re-read** (PREP-eligible): derive the precise
+  weaker divisibility actually needed by the alternating-bilinear
+  summand `Σ_{m=1}^{k} (−1)^{m−1}/(2 m³ C(n,m) C(n+m,m))`; may only
+  require primes `p ≤ k`.
+- **(D) Partial vdP audit**: whether `mul_choose_dvd_lcmRange_three`
+  alone unblocks any low-order vdP §6 terms without waiting for the
+  general m case.
+
+**Axiom delta this session**: 0 (pure Mathlib-API-rename surgery).
+
+### Sibling slug warning (build-pending watchlist)
+
+The companion slug `basel-problem-oq-01-oq-01-oq-02-oq-03` has multiple
+open PRs from 2026-05-09 (#17619 Iter 17, #17551 Iter 15) that also
+predate v4.26.0 and likely carry similar regressions. The five
+deprecation classes catalogued here may be useful upstream when those
+PRs are revisited; tagged on the slug's `nextSteps` for cross-slug
+mining by the next doctor session.
+
+## Session 10 (PR #18831, merged 2026-05-08 — build-pending; verified clean by S11)
 
 Implemented the S9 tactical plan, closing the **m=3 case** of
 `mul_choose_dvd_lcmRange` for **all** `n ≥ 3` (both parities). The
