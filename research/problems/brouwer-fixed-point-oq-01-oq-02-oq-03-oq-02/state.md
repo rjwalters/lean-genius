@@ -1,12 +1,34 @@
 # Current State
 
-**Phase**: ACT (G6/G7/G8/G9 all on main; G6 via S13 companion-file pivot; S9 ACT-D-3 EXEC gate 7/8 → 8/8 modulo build-pending)
-**Since**: 2026-05-16 (Session 13, researcher-9, S13 ACT — G6 companion-file pivot ACTIVATED)
-**Iteration**: 13
+**Phase**: ACT (G6/G7/G8/G9 all on main; G6 via S13 companion-file pivot; S9 ACT-D-3 EXEC integration step is the next blocker; Docker daemon hung — B3 INFRA RED)
+**Since**: 2026-05-16T15:05:00Z (Session 14, researcher-11, S14 STATE-SYNC — research-JSON catchup post-S12 PREP + S13 ACT)
+**Iteration**: 14
 
 ## Current Focus
 
-S13 ACT (this session, researcher-9, 2026-05-16) — **G6 companion-file
+S14 STATE-SYNC (this session, researcher-11, 2026-05-16, doc-only) —
+research-JSON `currentState.*` + `knowledge.builtItems` + top-level
+`lastUpdate` catchup absorbing S12 PREP (PR #19474, doc-only G6
+companion-file pivot pre-staging, merged 2026-05-16T08:54:15Z) +
+S13 ACT (PR #19624, +87 LOC `BrouwerFixedPointOQ01OQ02G6.lean`,
+merged 2026-05-16T14:32:50Z). State.md was updated by S13 ACT
+(iter 12 → 13, Phase block, new "S13 ACT" focus section, B3 INFRA
+blocker); the research-JSON was NOT updated by S12 PREP nor S13 ACT
+— this PR closes 8 drift items: `currentState.iteration` 11 → 13,
+`phase` post-S13 framing, `since` 2026-05-16 → 2026-05-16T15:05Z,
+`focus` S11-STATE-SYNC framing → S13-ACT framing, `blockers` (add B3
+INFRA NEW + re-frame PR #18011 stale → SUPERSEDED), `nextAction`
+(PR #18011-gated → B3-gated; bump S10 ACT-D-4 → S15 ACT-D-4 to match
+new iter numbering), `activeApproach`, `knowledge.builtItems`
+(+4 G6 theorems + local lemma + S12/S13/S14 session memos). Also
+fixes the cosmetic S13 ACT inaccuracy "this slug has no
+`research-json`" — the JSON exists; that claim was about edit scope,
+not existence. **No Lean / problem.md / knowledge.md body / meta.json
+edits.**
+
+## S13 ACT (researcher-9, 2026-05-16, PR #19624, +87 Lean LOC, build pending)
+
+S13 ACT — **G6 companion-file
 pivot ACTIVATED** per the S12 PREP (#19474) §6 drain-wave trigger ledger.
 Trigger condition met: PR #18011 `updatedAt: 2026-05-12T08:58:14Z` is
 **unchanged** at S13 author time (~4 days stale; state OPEN; mergeable
@@ -21,7 +43,11 @@ Ships `proofs/Proofs/BrouwerFixedPointOQ01OQ02G6.lean` (87 LOC, namespace
 artifact verbatim modulo the file-level docstring (S13 add: trigger-fire
 context, build-pending qualifier, risk inventory back-reference). No
 changes to `…OQ02.lean` / `…G7.lean` / `…G8.lean` / `knowledge.md` /
-`problem.md` (this slug has no `research-json`).
+`problem.md` (S13 ACT made no `research-json` edits either — the JSON
+file at `src/data/research/problems/brouwer-fixed-point-oq-01-oq-02-oq-03-oq-02.json`
+DOES exist; the original S13 ACT phrasing "this slug has no
+research-json" referred to edit scope, not file existence; S14
+STATE-SYNC absorbs S13 into JSON).
 
 **Build status**: **PENDING — Docker daemon hung at S13 author time**
 (`docker info` Server header past 10s, no Containers/Runtime block;
