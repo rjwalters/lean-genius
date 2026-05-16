@@ -23,7 +23,7 @@
     "sorries": 0,
     "axiomCount": 0,
     "dateAdded": "2026-05-04",
-    "lineCount": 282,
+    "lineCount": 285,
     "theoremCount": 9,
     "definitionCount": 3,
     "assumptions": "None. The per-step bit-operation cost was formerly axiomatized via `stepBitOps : ℕ → ℕ → ℕ` and `stepBitOps_le : stepBitOps a b ≤ 3·(log₂(max a b)+1)`; both axioms were eliminated by the OQ-01 follow-up (`bezout-identity-oq-01-oq-01-oq-01-oq-01`): `stepBitOps` is now the concrete `def stepBitOps a b := 2 · Nat.size (max a b) + 1` (comparison + shift/subtraction + parity check), and the envelope `2 · size + 1 ≤ 3 · (log₂ + 1)` is now a theorem proved via the bridging identity `Nat.size n = Nat.log 2 n + 1` for `n ≥ 1` (private lemma `size_eq_succ_log`, 4-line `le_antisymm` proof). The whole bit-complexity proof is now machine-checked end-to-end.",
@@ -213,7 +213,7 @@
   ],
   "leanFile": {
     "path": "Proofs/BezoutIdentityOQ01OQ01OQ01.lean",
-    "lineCount": 282,
+    "lineCount": 285,
     "theoremCount": 9,
     "axiomCount": 0,
     "definitionCount": 3,
