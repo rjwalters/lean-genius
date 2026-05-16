@@ -2,23 +2,58 @@
 
 ## Current phase
 
-**Phase**: ACT (Iter 4 Möbius–log literal form Λ₂(n) = Σ_{d|n} μ(d)·log²(n/d) verified)
-**Iteration**: 5 (Iter 5 in planning — Selberg's symmetry formula S₂(N) = 2N·log N + O(N))
-**Since**: 2026-05-16T02:55:00Z
+**Phase**: PREP (Iter 5a planning — Iter 4 MERGED; bearer manifest staged for split ACT)
+**Iteration**: 5 (Iter 5a split into 5a-α / 5a-β / 5a-γ per S6 PREP recommendation; see Iter log)
+**Since**: 2026-05-16T04:37:00Z
 
-## Lean snapshot (post-Iter 4)
+## Lean snapshot (post-Iter 4 merge, S6 PREP doc-only)
 
 | File | LOC | Thm | Defs | Sorries | Axioms | Status |
 |---|---:|---:|---:|---:|---:|---|
-| `proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean` | 325 | 16 | 3 noncomputable | 0 | 0 | build-verified 7744 jobs at Iter 4 |
-| `proofs/Proofs/ChebyshevBoundsOQ04.lean` | (parent) | — | — | 0 | 1 | parent's `chebyshevPsi_asymptotic` axiom remains the open target |
+| `proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean` | 325 | 16 | 3 noncomputable | 0 | 0 | build-verified 7744 jobs at Iter 4 (frozen by S6 PREP — doc-only) |
+| `proofs/Proofs/ChebyshevBoundsOQ04.lean` | 386 | — | — | 0 | 1 | parent's `chebyshevPsi_asymptotic` axiom remains the open target |
 
 OQ-04-OQ-01 is the **elementary Selberg–Erdős 1949 PNT** approach to
 discharging that parent axiom (no complex analysis).
 
 ## Iteration log
 
-### Iter 4 — 2026-05-16 (this session, PR pending)
+### S6 PREP — 2026-05-16T04:37Z (this session, doc-only, PR pending)
+
+**Researcher**: researcher-9. **Scope**: 0 Lean changes; STATE-SYNC of
+Iter 4 merge + bearer manifest + scope honesty for Iter 5a.
+
+This PREP does **not** ship Lean code. It (a) absorbs the Iter 4 merge
+(PR #19400 at 2026-05-16T03:52:02Z) — Iter 4's iteration-log entry
+below carried "this session, PR pending" notation written from
+researcher-6's session perspective; PR is now MERGED; (b) catalogues
+Mathlib bearers for Iter 5a's analytic infrastructure (Abel summation,
+sum/integral comparisons, divisor sums) at the current pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` — 0 drift from Iter 4's
+cited lines; (c) flags two Mathlib gaps (Mertens M1 `Σ μ(d)/d = O(1)`
+and `Σ (log m)² = N(log N)² − 2N log N + 2N + O(log²N)`) and proposes
+to build the weak forms locally; (d) recommends **splitting Iter 5a**
+into three sub-iters 5a-α / 5a-β / 5a-γ with a more honest total budget
+of **150–230 LOC** (vs the Iter 4 session memo's 80–120 LOC estimate).
+
+**Side-note discovery** (recorded in S6 PREP §4.5): Mathlib has
+`Chebyshev.psi` and `Chebyshev.theta` natively (`Mathlib/NumberTheory/
+Chebyshev.lean`, 272 LOC, upstreamed from PrimeNumberTheoremAnd) with
+`psi_le_const_mul_self : ψ x ≤ (log 4 + 4) * x`. This is an upper
+bound, **not** the asymptotic `ψ(x) ~ x` — so does not discharge the
+parent's `chebyshevPsi_asymptotic` axiom. Implication: Iter 5a–7+ stays
+on the Selberg–Erdős track; an Iter 7+ bridge to `Chebyshev.psi` is
+viable for the Tauberian step but not strictly required.
+
+**Files touched**: `research/problems/chebyshev-bounds-oq-04-oq-01/
+sessions/2026-05-16-s6-prep-iter5a-symmetry-formula.md` (new),
+`research/problems/chebyshev-bounds-oq-04-oq-01/state.md` (this file,
+head replacement only — historical tail preserved),
+`src/data/research/problems/chebyshev-bounds-oq-04-oq-01.json`
+(phase/since/iteration/lastUpdate/focus/nextAction/attemptCounts +
+knowledge.insights + knowledge.nextSteps refresh).
+
+### Iter 4 — 2026-05-16 (MERGED as PR #19400 at 2026-05-16T03:52:02Z)
 
 **Result**: Closes the literal Möbius–log form deferred from Iter 3:
 
@@ -162,57 +197,110 @@ Iter 5a (the leading-term `2N log N`) and a separate Iter 5b for the
 
 ## Next Action
 
-**Iter 5a — Selberg's symmetry formula, leading term**: prove
+**S6 PREP recommends splitting Iter 5a into three sub-iters** (see
+`sessions/2026-05-16-s6-prep-iter5a-symmetry-formula.md` §5–§8 for the
+full per-sub-iter acceptance criteria). Picker priority:
 
-```
-Σ_{n ≤ N} Λ₂(n) = 2 N · log N + O(N).
-```
+1. **Iter 5a-α** (independent, can be claimed first): prove
 
-Starting from Iter 4's `selbergLambda2_eq_moebius_log_sq`, sum over
-`n ≤ N` and swap the order to get
+   ```
+   ∃ C : ℝ, ∀ N ≥ 2,
+     |Σ_{m ∈ Icc 1 N} (Real.log m)² − (N · (Real.log N)² − 2N · Real.log N + 2N)|
+       ≤ C · (Real.log N)²
+   ```
 
-```
-Σ_{n ≤ N} Λ₂(n) = Σ_{d ≤ N} μ(d) · Σ_{m ≤ N/d} (log m)²
-```
+   via Abel summation against `f(t) = (log t)²` (Mathlib bearer
+   `sum_mul_eq_sub_integral_mul₀'` at `Mathlib/NumberTheory/
+   AbelSummation.lean:229`). Estimated **60–90 LOC**, 2–4 Docker iters.
 
-(this is the standard "Möbius hyperbola" trick). The inner sum
-`Σ_{m ≤ x} (log m)² = x · (log x)² − 2 x · log x + 2 x + O(log²x)`
-follows from integration by parts on `log²` (a smooth monotone-control
-estimate; cf. Tenenbaum I.6.2). The leading-term contribution
-`2 N · log N` comes from the `−2 x · log x` term times
-`Σ_{d ≤ N} μ(d) / d = O(1)` (Mertens). Estimated ~80–120 LOC for the
-leading term alone; the `O(N)` error term is comparable.
+2. **Iter 5a-β** (independent of 5a-α; can run in parallel): prove the
+   weak Mertens M1 bound
 
-After Iter 5, the remaining roadmap is:
+   ```
+   ∀ N ≥ 1, |Σ_{d ∈ Icc 1 N} (ArithmeticFunction.moebius d : ℝ) / d|
+     ≤ 1 + Real.log N
+   ```
 
-- **Iter 6**: clean up the error-term `O(N)` (Möbius hyperbola bound).
-- **Iter 7+**: Tauberian step (Erdős–Selberg combinatorial finishing
-  argument), discharging `chebyshevPsi_asymptotic`.
+   via summation by parts on `M(N) := Σ μ(d)` (use
+   `|M(N)| ≤ N` from `abs_sum_le_sum_abs` + `Int.abs_moebius_le_one`).
+   Estimated **50–80 LOC**, 2–3 Docker iters.
+
+3. **Iter 5a-γ** (requires 5a-α + 5a-β merged): assemble Selberg's
+   symmetry formula
+
+   ```
+   ∃ C : ℝ, ∀ N ≥ 2,
+     |selbergSum2 N − 2 · (N : ℝ) · Real.log (N : ℝ)| ≤ C · (N : ℝ)
+   ```
+
+   via the Möbius hyperbola sum swap on Iter 4's
+   `selbergLambda2_eq_moebius_log_sq`. May require an additional
+   Iter 5a-δ for Mertens M2 (`Σ (μ(d)/d) · log d = O(1)`, ~30–50 LOC)
+   depending on the sign-cancellation handling.
+   Estimated **40–60 LOC**, 2–4 Docker iters.
+
+**Total honest budget for Iter 5a**: **150–230 LOC**, **6–11 Docker
+iters** across the three (potentially four) sub-iters. The Iter 4
+session memo's estimate of 80–120 LOC was too optimistic by ~2×.
+
+After Iter 5a, the remaining roadmap is:
+
+- **Iter 5b**: optional sharpening of the `O(N)` error term via a
+  detailed Möbius-hyperbola bound (only needed if downstream Iter 6
+  requires a witnessed constant smaller than 5a-γ produces).
+- **Iter 6**: Tauberian inequality
+  `V(x) · log x ≤ (2/x) · Σ_{n ≤ x} V(x/n) · Λ(n) + O(1)`
+  where `V(x) := |ψ(x) − x| / x`.
+- **Iter 7+**: Erdős combinatorial finishing argument; discharges
+  parent's `chebyshevPsi_asymptotic` axiom.
 
 ## Attempt Counts
 
-- Total attempts: 4 (Iter 1, Iter 2, Iter 3, Iter 4)
+- Total attempts: 4 (Iter 1, Iter 2, Iter 3, Iter 4); S6 PREP is
+  bookkeeping, does not bump counter
 - Current approach attempts: 4 (Selberg–Erdős elementary)
 - Approaches tried: 1
 
-## Race awareness (this Iter 4)
+## Blockers
+
+None. Iter 5a is the next analytic step, decomposed into the three
+(optionally four) sub-iters described above. The two Mathlib gaps
+identified by S6 PREP §4.4 (`Σ (log m)²` asymptotic and weak Mertens
+M1) are both buildable locally in 50–90 LOC each, so the slug is not
+truly blocked — only awaiting the next ACT picker for sub-iter 5a-α
+or 5a-β.
+
+## Race awareness (this S6 PREP)
 
 `gh pr list -R rjwalters/lean-genius --search "chebyshev-bounds-oq-04-oq-01 in:title" --state open`
-at session start returned 0 OPEN PRs (Iter 3 PR #19092 merged
-2026-05-15T22:59:33Z, S4 PREP #19171 merged 2026-05-15T22:56:46Z,
-stale #17689 CLOSED). Iter 4 touches:
+at session start returned **0 OPEN PRs**:
 
-- `proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean` (+24/-12 lines:
-  new theorem `selbergLambda2_eq_moebius_log_sq` added after
-  `sum_divisors_selbergLambda2_eq_log_sq`; Future Work docstring
-  pruned to remove the now-closed Iter 4 entry)
+- Iter 4 PR #19400 MERGED 2026-05-16T03:52:02Z
+- S4 PREP #19171 MERGED 2026-05-15T22:56:46Z
+- Iter 3 PR #19092 MERGED 2026-05-15T22:59:33Z
+- Stale #17689 CLOSED (parallel Iter 2 attempt, superseded by #17690)
+
+This S6 PREP touches:
+
+- `research/problems/chebyshev-bounds-oq-04-oq-01/sessions/2026-05-16-s6-prep-iter5a-symmetry-formula.md`
+  (new — comprehensive bearer manifest + scope honesty + split
+  recommendation)
+- `research/problems/chebyshev-bounds-oq-04-oq-01/state.md` (this file
+  — head replacement only; historical iteration log preserved verbatim)
 - `src/data/research/problems/chebyshev-bounds-oq-04-oq-01.json`
-  (knowledge + currentState + top-level phase update)
-- `research/problems/chebyshev-bounds-oq-04-oq-01/state.md` (this file)
-- `src/data/proofs/chebyshev-bounds-oq-04-oq-01/meta.json`
-  (`lineCount` 230 → 325, `theoremCount` 12 → 16, conclusion +
-  originalContributions updated for Iter 3 + Iter 4)
-- `research/problems/chebyshev-bounds-oq-04-oq-01/sessions/2026-05-16-s5-iter4-act-moebius-log-literal.md` (new)
+  (phase/since/iteration/lastUpdate/focus/nextAction/attemptCounts +
+  knowledge.insights += 1 + knowledge.nextSteps refresh)
+
+**Not touched**:
+
+- `proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean` — Lean source frozen
+  at Iter 4 post-merge state (325 LOC, 16 thm, 0 sorries, 0 axioms)
+- `proofs/Proofs/ChebyshevBoundsOQ04.lean` — parent file unchanged
+- `src/data/proofs/chebyshev-bounds-oq-04-oq-01/meta.json` — gallery
+  meta frozen at Iter 4 post-merge state (lineCount 325, theoremCount
+  16)
+- No sibling slug content, no Mathlib content, no Aristotle companion
+  (the slug doesn't have one — Λ₂ work is open mathematics)
 
 Pre-push re-check (per `feedback_researcher_preclaim_open_pr_check_avoids_s3_act_duplicate.md`):
 will re-run `gh pr list` immediately before `git push`.
