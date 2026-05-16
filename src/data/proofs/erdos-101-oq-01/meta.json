@@ -24,10 +24,10 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2026-05-11",
     "axiomCount": 0,
-    "lineCount": 383,
+    "lineCount": 471,
     "assumptions": "2 sorries: (1) erdos_101_oq_01 (the main open conjecture, $100 Erdős prize); (2) solymosi_stojakovic_lower_bound (the 2013 lower bound, recorded statement — construction itself uses algebraic geometry over finite fields and is deferred). S3 (2026-05-12) discharged the S2 corollary `erdos_three_halves_conjecture_refuted` from the lower bound via elementary real-analysis arithmetic (specialising to $C = 1/2$, using `Real.exp_one_lt_d9` to get $\\log m > 1$ for $m \\geq 3$, then `Real.rpow_lt_rpow_of_exponent_lt`). All other supporting lemmas (small-case bound, real-valued $O(n^2)$ trivial bound, $n^2/12$ rate witness) are unconditional and axiom-free. 0 axioms remain — every assumption is a deferred proof obligation rather than a permanent axiomatisation.",
     "mathlib_version": "4.26.0",
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 4,
     "substantiveTheoremCount": 7
   },
@@ -129,9 +129,9 @@
       "Classical"
     ],
     "namespace": "Erdos101OQ01",
-    "lineCount": 383,
+    "lineCount": 471,
     "axiomCount": 0,
-    "theoremCount": 8,
+    "theoremCount": 9,
     "definitionCount": 4,
     "path": "Proofs/Erdos101OQ01.lean",
     "sorries": 2
