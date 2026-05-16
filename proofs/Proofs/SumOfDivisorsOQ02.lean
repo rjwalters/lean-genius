@@ -18,10 +18,12 @@ The bundled Archive proof
 `Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect`
 performs all six steps in a single block; this file exposes them named.
 
-## S2 SCAFFOLD Status
+## Status (post-S4)
 
+- Step 1 (`sigma_two_pow_mul_odd`): proved (S4 ACT, term-mode via
+  `isMultiplicative_sigma.map_mul_of_coprime` + `.symm.pow_left`).
 - Step 2 (`sigma_two_pow_eq_mersenne`): proved (direct alias of Archive).
-- Steps 1, 3, 4, 5, 6: `sorry` placeholders. Discharge planned for S3+.
+- Steps 3, 4, 5, 6: `sorry` placeholders. Discharge planned for S5+.
 - Top-level theorem `euler_converse_self_contained`: `sorry` (chains steps).
 
 ## Honesty Note
@@ -44,11 +46,13 @@ open scoped sigma
 
 /-- **Step 1** (sigma multiplicativity, specialized to `2^k · m` with `m` odd).
 Since `m` is odd, `gcd(2^k, m) = 1`, so σ(2^k · m) = σ(2^k) · σ(m).
-S3+ proof plan: `isMultiplicative_sigma.map_mul_of_coprime
-((Odd.coprime_two_right hm_odd).pow_right _)` (mirroring the Archive line). -/
+Proof: `isMultiplicative_sigma` supplies σ's multiplicativity; the coprimality
+hypothesis is built by `Odd.coprime_two_right hm_odd : Coprime m 2`, symmetrized
+to `Coprime 2 m`, then promoted by `pow_left k` to `Coprime (2^k) m`. -/
 lemma sigma_two_pow_mul_odd (k m : ℕ) (hm_odd : Odd m) :
-    σ 1 (2 ^ k * m) = σ 1 (2 ^ k) * σ 1 m := by
-  sorry
+    σ 1 (2 ^ k * m) = σ 1 (2 ^ k) * σ 1 m :=
+  isMultiplicative_sigma.map_mul_of_coprime
+    ((Odd.coprime_two_right hm_odd).symm.pow_left k)
 
 /-- **Step 2** (σ of a power of 2). Direct alias of the Archive lemma.
 `σ(2^k) = 2^(k+1) - 1 = M_{k+1}`. -/
