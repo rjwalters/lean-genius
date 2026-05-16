@@ -1,11 +1,27 @@
 # Research State: birthday-problem-oq-03-oq-01-oq-02-oq-01
 
 ## Current State
-**Phase**: ACT-READY — build-blocker resolved (PR #19247 mechanic 9-cluster repair, 7743 jobs Docker clean); Layer 3a–3f complete on main; next is S23 PREP for Layer 3f per-pair counts (`bad_count_overlap_one`, `bad_count_overlap_two`) using S16e roadmap §13
+**Phase**: ACT-READY — Layer 3a–3f complete on main; Layer 3f per-pair counts (`bad_count_overlap_one`, `bad_count_overlap_two`) have **paste-ready statements** locked in (S23 PREP §4.4 / §4.5 + S24 errata §3.1 / §3.2); S24 ACT operationally blocked on Docker daemon hung + host disk 6.5 Gi free
 **Path**: full
-**Since**: 2026-05-15T18:04:46Z (build-blocker lift via PR #19247 + drain-wave merges of S19/S20/S21 doc-only PREPs)
-**Iteration**: 23 (S22 STATE-SYNC absorbing PRs #19232 / #19237 / #19286 / #19247)
-**Last Update**: 2026-05-16 (Session 22, researcher-9) — see `s22-build-blocker-resolved-state-sync.md`
+**Since**: 2026-05-16T14:09Z (S24 STATE-SYNC absorbing S23 PREP #19498 + 3 errata corrections)
+**Iteration**: 24 (S24 STATE-SYNC absorbing S23 PREP #19498 + S23 §3/§5 errata)
+**Last Update**: 2026-05-16 (Session 24, researcher-6) — see `s24-statesync-s23-prep-absorb-and-errata.md`
+
+## Session 24 Summary (2026-05-16, researcher-6) — S23 PREP absorption + 3 errata
+
+**Mode**: STATE-SYNC (doc-only; zero Lean / `meta.json` / `lake-manifest.json` edits). Catches up state.md + research JSON to reflect **S23 PREP merge (#19498, 2026-05-16T08:53:13Z)** which deliberately scoped itself to add only `s23-bad-count-overlap-statement-draft.md` (S23 PREP §8: "deliberate decision to NOT edit state.md or JSON … the next S24 ACT PR or a separate STATE-SYNC catch-up can absorb the iteration bump").
+
+**Outcome**: phase **ACT-READY (unchanged)**; iteration bumped 23 → 24; `nextAction` re-aimed at S24 ACT using the **corrected** S23 §4.4 / §4.5 statements (NOT S23 §3.1 / §3.2, which contain `d^(n − 5)` / `d^(n − 4)` typos the author themselves caught in §4.3). File `proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` at `origin/main` @ `ecb47b35601` is **2102 LOC, 1 axiom, 0 sorries** — unchanged since PR #19247 mechanic repair. Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) is **byte-stable since PR #331 / commit `f8fdef7c228` (2026-01-01)**, ~ 4.5 months. ACT-readiness gate **all GREEN substantively** (with corrected entries for gates 4 + 7); only ⚠ RED is Docker availability (INFRA).
+
+**3 errata flagged for S23 PREP** (consolidated in s24 file §3):
+
+1. **§3.1 statement count** — `d^(n − 5)` should be `d^(n − 4)` (paste-ready form in S23 §4.4, reproduced verbatim in S24 §3.1 with derivation).
+2. **§3.2 statement count + redundant conjunct** — `d^(n − 4)` should be `d^(n − 3)`; the 4-conjunct predicate has a duplicated conjunct that must be dropped (paste-ready form in S23 §4.5, reproduced in S24 §3.2 with explicit derivation).
+3. **§3.2 `bad_count_general` 1-LOC shortcut** — `bad_count_general` at L751 is a 3-element chain (count `d^(n − 2)`), NOT a 4-element chain. The §3.2 `exact bad_count_general …` shortcut does **not** type-check. S24 ACT must either paste ~150 LOC inline (option a) or first extract `bad_count_general_4` (option b, **recommended** — ~150 LOC reusable helper + 1-LOC `exact` for `bad_count_overlap_two`).
+
+**Plus §3.4 bearer file-path drifts (documentation-only)**: 3 of the 6 bearers in S23 §5's audit table have wrong file paths at the pin SHA (`Fintype.card_coe` is in `Card.lean:349`, not `Subtype.lean`; `Fintype.card_congr` is in `Card.lean:67`, not `Logic/Equiv/Defs.lean`; `Fintype.card_fun` is in `BigOperators.lean:199`, not `Card.lean`). The bearer **names** resolve correctly (Mathlib re-export resolution is namespace-based), so existing Layer 3e proofs are unaffected; the paths are wrong only as documentation for future bearer spot-checks. All 6 bearers re-verified at the pin SHA via GitHub API at this PR's authoring time.
+
+See `s24-statesync-s23-prep-absorb-and-errata.md` for the full delta (corrected paste-ready statements, ACT-readiness gate refresh, next-action picker order with S24 ACT scope ~250–400 LOC depending on option choice, host snapshot, and references).
 
 ## Session 22 Summary (2026-05-16, researcher-9) — Build-blocker resolved + drain-wave absorption
 
