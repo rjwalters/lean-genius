@@ -1,8 +1,8 @@
 {
   "slug": "descartes-rule-of-signs-oq-02-oq-01-oq-02",
   "title": "Sturm Theorem: Exact Root Count via Sign-Change Sequences",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "phase": "PREP",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,20 +16,23 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-04-26T14:43:29.520Z",
-    "iteration": 1,
-    "focus": "Gallery entry merged: 458 lines, 28 theorems/lemmas, 6 defs, 1 axiom (sturm_exact_count_axiom), 0 sorries — gallery status: axiomatized, badge: axiom. Sturm sequence + key structural lemmas (mod_eval_at_root, sturm_neighbors_opposite_at_root, sturmVariations_antitone, squarefree_no_common_roots, linear specialization) are fully proved; the main count theorem remains axiomatized.",
-    "blockers": [],
-    "nextAction": "Open follow-up: prove sturm_exact_count_axiom (sign-count piecewise constancy + decrease analysis). Tracked as future research, not blocking this entry.",
+    "phase": "PREP",
+    "since": "2026-05-16T19:16:50Z",
+    "iteration": 2,
+    "focus": "S2 PREP (researcher-8, this PR, #PR): paste-ready Step-A `private lemma sturmVariations_locally_constant` drafted (~80–120 LOC, in session memo §3) + 5-spot Mathlib bearer recheck at SHA 2df2f0150c… (Topology/Algebra/Polynomial 8668 B confirmed for Polynomial.continuous, the not-yet-exercised Step-A bearer) + canonical research JSON catchup (this file: phase COMPLETED→PREP, status completed→active, currentState.* rewrite to reflect S1 OBSERVE's multi-cycle plan). S2 PREP discharges all four S1 OBSERVE handoff items; ACT-readiness gate items 5+8 GREEN. ACT remains gated on host: disk 3.5 Gi avail (worsened from S1's 6.9 Gi; cascade-safety floor is 30 Gi), Docker daemon hung (was responsive at S1).",
+    "blockers": [
+      "B1 INFRA: host disk 3.5 Gi avail / 82% used (well below 30 Gi cascade-safety floor; worsened 3.4 Gi over ~10 h since S1)",
+      "B2 INFRA: Docker daemon hung (`docker info` no return < 30 s; was GREEN < 5 s at S1)"
+    ],
+    "nextAction": "S3 ACT — land Step-A `sturmVariations_locally_constant` lemma in `proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean` between §4 (sturmVariations_C, line 208) and §5 (mod_eval_at_root, line 216) as new sub-section §4a. Gated on host disk recovery ≥30 Gi avail AND `docker info` responsive < 5 s. Paste-ready draft in `research/problems/<slug>/sessions/2026-05-16-s2-prep-bearer-recheck-locally-constant.md` §3.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: PR #14919 — 1 axiom (sturm_exact_count_axiom), 0 sorries, Docker build passes. 28 theorems/lemmas proved across 458 lines, 6 noncomputable defs, full gallery entry at status: axiomatized.",
+    "progressSummary": "S2 PREP (researcher-8, 2026-05-16T19:16Z): paste-ready Step-A locally-constant lemma drafted + 5-spot Mathlib bearer recheck @ pin 2df2f0150c… + canonical JSON catchup. S1 OBSERVE bootstrap (researcher-11, 2026-05-16T09:25Z, PR #19566): research dir seeded, 10-section survey, 8-phase multi-cycle plan (~600–950 LOC forecast over 4–8 ACT cycles). Origin: PR #14919 — 1 axiom (sturm_exact_count_axiom), 0 sorries, 458 lines, 28 theorems/lemmas, 6 noncomputable defs, gallery status axiomatized/badge axiom. The slug is actively being worked toward axiom discharge; status is NOT \"completed\" (corrected from prior JSON state, which predated S1 OBSERVE and reflected gallery-entry-merge milestone only).",
     "builtItems": [
       "DescartesRuleOfSignsOQ02OQ01OQ02.lean (458 lines, 1 axiom, 0 sorries)",
       "sturmSeqAux: fuel-based Sturm sequence construction via EuclideanDomain.mod",
@@ -58,11 +61,13 @@
       "Mathlib has no Sturm theorem formalization as of v4.26.0 — needs to be built from scratch"
     ],
     "nextSteps": [
-      "Prove sturm_exact_count_axiom: formalize that σ_p is piecewise constant and decreases by 1 at each real root of p",
-      "Need continuity argument: σ_p(x) is constant between consecutive roots of any pₖ",
-      "Need sign count decrease lemma: as x crosses a root of p, the (p,p') pair loses exactly 1 sign change",
-      "Need no-change lemma: as x crosses a root of pₖ (k≥1), the triple (pₖ₋₁,pₖ,pₖ₊₁) contribution is unchanged",
-      "Consider Aristotle submission for HARD sub-lemmas (piecewise constancy is a tactic grinding task)"
+      "S3 ACT — land Step-A `private lemma sturmVariations_locally_constant` (~80–120 LOC; paste-ready draft in S2 PREP session memo §3, gated on host disk ≥30 Gi + Docker responsive)",
+      "S4 PREP — paste-ready Step-B `private lemma sturmVariations_drop_at_root` (~120–180 LOC; combinatorial sign-change accounting on (p, p') at squarefree roots of p)",
+      "S5 ACT — land Step-B lemma",
+      "S6 PREP — paste-ready Step-C `private lemma sturmVariations_unchanged_at_interior_root` (~100–150 LOC; uses sturm_neighbors_opposite_at_root + signVariations triple identity)",
+      "S7 ACT — land Step-C lemma",
+      "S8 PREP+ACT — assemble main `theorem sturm_exact_count` via well-founded induction on multiset card of distinct Sturm-sequence roots in (a, b]; drop `axiom` keyword; update gallery meta.json (axiomCount 1→0, status axiomatized→verified, badge axiom→original)",
+      "Consider Aristotle submission for any HARD sub-lemma if hand-written ACT cycle exceeds budget (Step B is the dominant ergonomic risk; ~2× upward LOC revision is plausible per memory trap _postship_pivot_lands_on_audit_corrected_…)"
     ]
   },
   "tags": [
@@ -87,7 +92,7 @@
     "mathlib": []
   },
   "started": "2026-04-26T14:43:29.519Z",
-  "lastUpdate": "2026-05-07T17:55:00.000Z",
+  "lastUpdate": "2026-05-16T19:16:50Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
