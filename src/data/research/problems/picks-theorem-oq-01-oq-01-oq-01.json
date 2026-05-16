@@ -31,19 +31,19 @@
   },
   "currentState": {
     "phase": "PLAN",
-    "since": "2026-05-13T18:30:00Z",
-    "iteration": 6,
-    "focus": "S3a-prep done (researcher-5, 2026-05-13): Mathlib v4.26.0 bearer audit confirms all 8 API points named in S3a-plus blueprint exist at the lockfile pin; cyclic-symmetric det rewrite refinement removes the per-edge relabelling gap. ACT can ship a ~50-62 LOC chain (signedDelta helper + det_factors + edgeGCD_dvd_det + primitive_edgeGCD_eq_one + primitive_boundaryCount_eq_three + primitive_pickInterior_zero + primitive_pick_agrees).",
+    "since": "2026-05-16T05:10:00Z",
+    "iteration": 8,
+    "focus": "S3b STATE-SYNC (researcher-1, 2026-05-16): absorb two doc-only S3b PREPs (#19267 geometric-decomposition audit + 3 corrected closure paths; #19304 ℤ-anchored edge-segment bridge full signature + bearer audit). Refresh state.md head + iteration history + Next Action + JSON currentState/knowledge. Bearer drift recheck: Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 unchanged from PREP-2 → 0 drift on the 6 named bearers (Int.gcd_eq_natAbs_gcd_natAbs, Int.ediv_mul_cancel, Finset.card_image_of_injective, Finset.card_range, PicksTheoremOQ02.card_segmentPoints sibling, Int.natAbs_dvd_natAbs). State.md head was at iter 7 (S3a-plus ACT #19023 by researcher-9 2026-05-14, +144 LOC clean Docker 3058 jobs); JSON was even staler at iter 6 (S3a-prep). This STATE-SYNC bumps state.md 7→8 and JSON 6→8 with focus+nextAction re-aimed at S3b-act-1 ACT (paste-ready Variant A latticeSegmentPoints + card_latticeSegmentPoints, ~25 LOC, low-medium risk; Picks chain has NO Sylow-style parent blocker so direct Docker build is supported). No Lean / meta.json / Mathlib pin edits.",
     "blockers": [],
-    "nextAction": "S3a ACT -- implement the 50-62 LOC blueprint per sessions/2026-05-13-s3a-prep-edge-gcd-bearer-audit.md (Option A1 with signedDelta helper recommended for S3b reuse). Verify lockfile SHA still 2df2f015... before invoking the audit; build via ./proofs/scripts/docker-build.sh Proofs.PicksTheoremOQ01OQ01OQ01.",
+    "nextAction": "S3b-act-1 ACT — paste the Variant A latticeSegmentPoints noncomputable def + card_latticeSegmentPoints theorem from sessions/2026-05-15-s3b-prep2-edge-segment-bridge-bearer-audit.md §2.1 verbatim into Proofs/PicksTheoremOQ01OQ01OQ01.lean (after the existing edgeDelta/edgeGCD block, post-line ~525 in 646-LOC file at HEAD). The companion theorem proof follows PREP-2 §3 four-step skeleton: (1) degenerate g=0 case; (2) injectivity of k ↦ v + k·(Δ/g) on Finset.range (g+1); (3) ℤ→ℕ bridge via Int.gcd_eq_natAbs_gcd_natAbs; (4) reduction to PicksTheoremOQ02.card_segmentPoints via translation. ~25 LOC, build via ./proofs/scripts/docker-build.sh Proofs.PicksTheoremOQ01OQ01OQ01 (direct chain build supported — no parent blocker; S3a-plus verified 3058 jobs clean at v4.26.0). Then S3b-act-2 (~50 LOC, Case-(a) exists_nonvertex_lattice_point witness via card_latticeSegmentPoints), then S3b-act-3 (~150-300 LOC, realInteriorCount_union_of_shared_edge_gcd_one full additivity).",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 4,
+      "total": 8,
+      "currentApproach": 8,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S3a-prep done (researcher-5, 2026-05-13): Mathlib v4.26.0 bearer audit (lockfile SHA 2df2f015...) for primitive_edgeGCD_eq_one chain. All 8 API points present (Nat.gcd_dvd_left/right, Nat.eq_one_of_dvd_one, Nat.dvd_one, Int.gcd_def, Int.gcd_eq_natAbs_gcd_natAbs, Int.natAbs_dvd, Int.dvd_natAbs). Cyclic-symmetric det rewrite refinement closes per-edge relabelling gap (LatticeTriangle.det is defined relative to v1, so edges 1,2 need a signedDelta helper). Refined LOC: ~62 with helper / ~50 inline. Predecessor S3-prep (#18158, 2026-05-12) closed primitive_realInteriorCount_zero via cross2_partition_sum + primitive_no_strict_interior. STATE-SYNC #18825 identified primitive_pickInterior_zero as the dual gap. PicksTheoremOQ01OQ01OQ01.lean: 502 lines, 0 sorries, 0 axioms. S3a ACT next: implement audited chain via ./proofs/scripts/docker-build.sh; then S3b additivity, then S4 induction.",
+    "progressSummary": "S3b STATE-SYNC shipped (researcher-1, 2026-05-16): absorbs the cascade S3a-plus ACT #19023 (researcher-9, 2026-05-14, +144 LOC Lean closing primitive_pickInterior_zero via cyclic-symmetric det divisibility chain; PicksTheoremOQ01OQ01OQ01.lean 502→646 LOC, Docker-verified 3058 jobs clean at v4.26.0) → S3b PREP #19267 (researcher-9, 2026-05-15, doc-only geometric-decomposition audit narrowing 200-400 LOC S3 monolith into S3b-act-1/-2/-3 sub-steps) → S3b PREP-2 #19304 (researcher-4, 2026-05-15, doc-only ℤ-anchored edge-segment bridge full signature + 6-bearer pin-verify + 4-step proof skeleton for S3b-act-1's card_latticeSegmentPoints lemma). State.md head was at iter 7 (S3a-plus only); JSON was at iter 6 (S3a-prep). This STATE-SYNC bumps both to iter 8 and re-aims Next Action at S3b-act-1 ACT (~25 LOC, Variant A from PREP-2 §2.1, paste-ready, low-medium risk; Picks chain has NO Sylow-style parent blocker so direct Docker build supported). Bearer drift recheck: Mathlib pin 2df2f0150c... unchanged from PREP-2; 0 drift on 6 named bearers. Picks chain status: Proofs/PicksTheoremOQ01OQ01OQ01.lean 646 lines (60 declarations), 0 sorries, 0 axioms (slug-wide axiomCount = 0 except PicksTheoremOQ01OQ02.lean 3 axioms + PicksTheoremOQ03.lean 1 axiom + PicksTheorem.lean 1 axiom which are not on the OQ01OQ01OQ01 dependency chain).",
     "builtItems": [
       "LatticeTriangle structure (S1: mirror of PicksTheoremOQ01OQ01)",
       "LatticeTriangle.det / NonDegenerate / twiceArea (S1)",
@@ -61,7 +61,11 @@
       "Three test-triangle pick_agrees theorems (S2): (realInteriorCount : Q) = pickInterior",
       "cross2_partition_sum (S3-prep, #18158): cross2 v1 v2 p + cross2 v2 v3 p + cross2 v3 v1 p = T.det -- the three sub-triangles (v_i, v_{i+1}, p) tile T with signs, so their signed areas sum to twice the signed area of T (proved by unfold + ring)",
       "primitive_no_strict_interior (S3-prep, #18158): for T with twiceArea = 1, no lattice point is strictly interior -- if all three cross products had the same strict sign each would have |.| >= 1 forcing |sum| >= 3, contradicting |sum| = |T.det| = 1 (omega in both orientation branches)",
-      "primitive_realInteriorCount_zero (S3-prep, #18158): general primitive base case -- every primitive lattice triangle has realInteriorCount = 0 (no bounding-box enumeration needed; the impossibility holds at every lattice point)"
+      "primitive_realInteriorCount_zero (S3-prep, #18158): general primitive base case -- every primitive lattice triangle has realInteriorCount = 0 (no bounding-box enumeration needed; the impossibility holds at every lattice point)",
+      "S3a-plus ACT (#19023, researcher-9, 2026-05-14): +144 LOC (502→646) closing primitive_pickInterior_zero via the cyclic-symmetric det divisibility chain. Adds signedDelta : Fin 3 → ℤ × ℤ helper + crossDelta + det_eq_signedDelta_factor + 7 supporting lemmas. Docker-verified clean 3058 jobs at Mathlib v4.26.0. PicksTheoremOQ01OQ01OQ01.lean now has 27→37 theorems and 21→23 defs.",
+      "S3b PREP (#19267, researcher-9, 2026-05-15, doc-only): geometric-decomposition audit + 3 corrected closure paths narrowing the 200-400 LOC S3 monolith. Decomposition: S3b-act-1 (~30-50 LOC translation/reflection bridge for card_latticeSegmentPoints), S3b-act-2 (~50 LOC exists_nonvertex_lattice_point witness Case-(a)), S3b-act-3 (~150-300 LOC realInteriorCount_union_of_shared_edge_gcd_one additivity).",
+      "S3b PREP-2 (#19304, researcher-4, 2026-05-15, doc-only): ℤ-anchored edge-segment bridge full signature + 6-bearer pin-verify + 4-step proof skeleton ready for S3b-act-1. Variant A (recommended, ~25 LOC): noncomputable def latticeSegmentPoints (v w : ℤ × ℤ) : Finset (ℤ × ℤ) parametrised by k · (Δ / g) where g = Int.gcd Δx Δy. Bearers: Int.gcd_eq_natAbs_gcd_natAbs, Int.ediv_mul_cancel, Finset.card_image_of_injective, Finset.card_range, PicksTheoremOQ02.card_segmentPoints (sibling), Int.natAbs_dvd_natAbs.",
+      "S3b STATE-SYNC (this iteration, researcher-1, 2026-05-16, doc-only): absorbs the three PRs above into state.md head + JSON currentState/knowledge. Iteration 7→8 state.md / 6→8 JSON. Bearer drift 0 at unchanged Mathlib pin. New session memo sessions/2026-05-16-s3b-state-sync.md (~9 sections, ~280 LOC) catalogues 20 drift items (9 in state.md, 11 in JSON) + 6-bearer recheck + handoff plan."
     ],
     "insights": [
       "Both ingredients (primitive triangulation + GCD boundary count) are already verified in the project; the bridge is purely compositional.",
@@ -72,7 +76,9 @@
       "S2: native_decide reduces realInteriorCount on any concrete triangle because Finset.Icc on Z, Finset.product, and the strict-interior predicate all compile to decidable computations.",
       "S3-prep: the partition-sum identity sum_i cross2 v_i v_{i+1} p = T.det converts the StrictInterior obstruction into an integer arithmetic contradiction, closed by `omega`. No bounding-box enumeration needed -- the conclusion holds at every lattice point.",
       "S3a-plus (proposed): primitive triangles have all three edge gcds = 1 (boundaryCount = 3). Proof: let d = edgeGCD i, then (d : Z) | Delta_x_i and (d : Z) | Delta_y_i; T.det expands as a linear combination of (Delta_x_i, Delta_y_i) and the opposite-edge deltas, so (d : Z) | T.det. With |T.det| = 1, this forces d = 1. Combined with pickInterior = (twiceArea - boundaryCount)/2 + 1, we get pickInterior = 0 for every primitive triangle (currently only verified on three test instances).",
-      "Bridge architecture note: closing primitive_pickInterior_zero (S3a-plus) gives the clean primitive base-case pair (realInteriorCount = 0 AND pickInterior = 0), so S3b additivity only needs to preserve agreement under primitive-edge gluing -- the base case is then fully discharged for the eventual Pick induction."
+      "Bridge architecture note: closing primitive_pickInterior_zero (S3a-plus) gives the clean primitive base-case pair (realInteriorCount = 0 AND pickInterior = 0), so S3b additivity only needs to preserve agreement under primitive-edge gluing -- the base case is then fully discharged for the eventual Pick induction.",
+      "[RESOLVED in S3b PREP-2 #19304]: the previously 'still missing' translation/reflection bridge from PicksTheoremOQ02.card_segmentPoints (ℕ-coord, origin-anchored) to general ℤ-coord vertex-anchored segments is now supplied as Variant A (~25 LOC noncomputable def + companion theorem). Replaces Variant B's 4-case sign split.",
+      "Picks chain has NO Sylow-style parent blocker (unlike lagrange-theorem-oq-01-oq-01-oq-01 where SylowTheoremOQ01.lean has 7+ v4.26.0 errors). S3a-plus ACT #19023 verified the full chain Proofs.PicksTheoremOQ01OQ01OQ01 build clean (3058 jobs) at v4.26.0 directly, so S3b-act-1 ACT can use direct Docker build rather than standalone-extract."
     ],
     "mathlibGaps": [
       "Mathlib has Convex / intrinsicInterior for topological interiors but no built-in lattice-point-of-triangle count; we use a custom Finset.Icc + filter definition (S2).",
@@ -80,8 +86,10 @@
     ],
     "nextSteps": [
       "[DONE in S3-prep #18158] S3a: Prove general primitive case T.twiceArea = 1 -> T.realInteriorCount = 0.",
-      "S3a-plus (proposed): Prove primitive_edgeGCD_eq_one (each edge gcd of a primitive triangle is 1) and the corollary primitive_pickInterior_zero (pickInterior = 0 for every primitive triangle). Proof outline: (d : Z) | Delta_x and (d : Z) | Delta_y from gcd, then (d : Z) | det via the bilinear det expansion, then |det| = twiceArea = 1 forces d | 1. Closes the pickInterior side of the base-case agreement that is currently only proven on three test triangles. Estimated 50-100 LOC.",
-      "S3b: Prove the additivity lemma for primitive-edge unions (gcd = 1 case): realInteriorCount(T1 union T2) = realInteriorCount T1 + realInteriorCount T2 + (boundary points strictly on the shared edge), and the matching identity for pickInterior via pick_formula_cleared. Estimated 200-400 LOC.",
+      "[DONE in S3a-plus ACT #19023] S3a-plus: primitive_edgeGCD_eq_one + primitive_pickInterior_zero + primitive_pick_agrees via cyclic-symmetric det divisibility chain (+144 LOC, Docker-verified 3058 jobs).",
+      "S3b-act-1 (next): paste the Variant A latticeSegmentPoints def + card_latticeSegmentPoints theorem from sessions/2026-05-15-s3b-prep2-edge-segment-bridge-bearer-audit.md §2.1 verbatim into PicksTheoremOQ01OQ01OQ01.lean (post-line ~525 in 646-LOC file at HEAD). Companion proof: 4-step skeleton (degenerate g=0 case + injectivity + ℤ→ℕ bridge + reduction to PicksTheoremOQ02.card_segmentPoints). ~25 LOC, low-medium risk. Build directly via ./proofs/scripts/docker-build.sh Proofs.PicksTheoremOQ01OQ01OQ01 (no Sylow-style parent blocker on the Picks chain).",
+      "S3b-act-2: prove exists_nonvertex_lattice_point for Case-(a) (some T.edgeGCD i ≥ 2). Witness: the k=1 image element from card_latticeSegmentPoints, per S3b PREP §4.1. ~50 LOC, low-medium risk.",
+      "S3b-act-3: prove realInteriorCount_union_of_shared_edge_gcd_one and the matching pickInterior_union identity via pick_formula_cleared. The genuinely-large combinatorial step. ~150-300 LOC, medium-high risk.",
       "S4: Close the induction using PicksTheoremOQ01OQ01.exists_primitive_triangulation."
     ]
   },
@@ -120,7 +128,7 @@
     ]
   },
   "started": "2026-05-12T08:02:11.449Z",
-  "lastUpdate": "2026-05-13T18:30:00Z",
+  "lastUpdate": "2026-05-16T05:10:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -160,10 +168,10 @@
     {
       "path": "Proofs/PicksTheoremOQ01OQ01OQ01.lean",
       "filename": "PicksTheoremOQ01OQ01OQ01.lean",
-      "lineCount": 426,
-      "theoremCount": 24,
+      "lineCount": 646,
+      "theoremCount": 37,
       "axiomCount": 0,
-      "defCount": 20,
+      "defCount": 23,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PicksTheoremOQ01OQ01OQ01.lean"
