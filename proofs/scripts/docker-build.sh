@@ -69,6 +69,33 @@ echo ""
 
 # Run in Docker with hard memory limit and persistent cache volume
 CONTAINER_NAME="lean-build-$$"
+BUILD_PID=""
+CLEANED_UP=false
+
+cleanup() {
+    local exit_code="${1:-$?}"
+
+    if [ "$CLEANED_UP" = "true" ]; then
+        exit "$exit_code"
+    fi
+    CLEANED_UP=true
+    trap - INT TERM HUP EXIT
+
+    docker stop --time=5 "$CONTAINER_NAME" >/dev/null 2>&1 || true
+    docker rm -f "$CONTAINER_NAME" >/dev/null 2>&1 || true
+
+    if [ -n "$BUILD_PID" ] && kill -0 "$BUILD_PID" 2>/dev/null; then
+        kill "$BUILD_PID" 2>/dev/null || true
+        wait "$BUILD_PID" 2>/dev/null || true
+    fi
+
+    exit "$exit_code"
+}
+
+trap 'cleanup 130' INT
+trap 'cleanup 143' TERM
+trap 'cleanup 129' HUP
+trap 'cleanup $?' EXIT
 
 docker run --rm \
     --memory="${MEMORY_LIMIT}m" \
