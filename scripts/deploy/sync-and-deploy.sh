@@ -162,15 +162,15 @@ merge_prs() {
     for pr in $(echo "$eligible_prs" | jq -r '.[] | select(.mergeable == "MERGEABLE") | .number'); do
         if $DRY_RUN; then
             echo "  Would merge PR #$pr"
-            ((merged++))
+            ((++merged))
         else
             echo -n "  #$pr: "
             if gh pr merge "$pr" --squash 2>/dev/null; then
                 echo "merged"
-                ((merged++))
+                ((++merged))
             else
                 echo "failed"
-                ((failed++))
+                ((++failed))
             fi
         fi
     done
@@ -182,12 +182,12 @@ merge_prs() {
         if [[ "$status" == "MERGEABLE" ]]; then
             if $DRY_RUN; then
                 echo "  Would merge PR #$pr (after status refresh)"
-                ((merged++))
+                ((++merged))
             else
                 echo -n "  #$pr: "
                 if gh pr merge "$pr" --squash 2>/dev/null; then
                     echo "merged"
-                    ((merged++))
+                    ((++merged))
                 else
                     echo "skipped"
                 fi
@@ -224,7 +224,7 @@ merge_prs() {
             git fetch origin "$branch"
             git worktree add "$worktree_path" "origin/$branch" --detach 2>/dev/null || {
                 print_warning "Could not create worktree for #$pr"
-                ((failed++))
+                ((++failed))
                 continue
             }
             (cd "$worktree_path" && git checkout -B "$branch" "origin/$branch")
@@ -328,10 +328,10 @@ fs.writeFileSync('$conflict_file', JSON.stringify(ours, null, 2) + '\n');
         echo -n "  #$pr (after rebase): "
         if [[ "$new_status" == "MERGEABLE" ]] && gh pr merge "$pr" --squash 2>/dev/null; then
             echo "merged"
-            ((merged++))
+            ((++merged))
         else
             echo "still conflicting ($new_status)"
-            ((failed++))
+            ((++failed))
         fi
     done
 
