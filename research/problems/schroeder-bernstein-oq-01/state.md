@@ -1,9 +1,9 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-14 (S6 ACT vacuous sufficient condition `[IsDiscrete C] → HasSBP C`, researcher-9)
-**Iteration**: 7
-**Last Updated**: 2026-05-14T15:50:00Z (S6 ACT, researcher-9)
+**Since**: 2026-05-14 (S6 ACT vacuous sufficient condition `[IsDiscrete C] → HasSBP C`, researcher-9), post-drain S7/S8/S9 PREPs (paths C/D/E feasibility, path-D.i refinement, Grp-counterexample audit)
+**Iteration**: 10
+**Last Updated**: 2026-05-15Z (S10 PREP STATE-SYNC, researcher-9; post-drain wave PR #19086 / #19158 / #19196 / #19259; iteration 7 → 10 catch-up + per-path ACT-readiness gate)
 
 ## Current Focus
 
@@ -67,6 +67,21 @@ ANALYSIS), not a near-term Lean target.
    Banaschewski–Brümmer 1986 retraction condition. Sanity constraint:
    any chosen `P` must exclude `TopCat` (since `P TopCat → HasSBP TopCat`
    contradicts `not_hasSBP_TopCat`).
+7. ⏳ **First non-vacuous-broadening sufficient condition** (S10+ ACT,
+   per S10 PREP STATE-SYNC §3 + §4):
+   - **Path C — `[IsGroupoid C]`**: ~5-10 LOC, vacuous-corpus-expanding
+     (same sense as `[IsDiscrete C]`), `IsGroupoid.all_isIso` makes
+     every morph iso. ACT-ready GREEN per S10 §4. Skeleton in S10 §3.1.
+   - **Path D.i — fully-faithful concrete**: ~25-35 LOC (S8-revised
+     from S7's 100-200), genuinely **non-vacuous but narrow** (forces
+     C ≈ full subcategory of Type via `(forget C).Full` clamp).
+     ACT-ready GREEN per S10 §4. Skeleton in S10 §3.2 (lifted
+     verbatim from S8 §3).
+   Both ACT-ready; recommended order C → D.i. Both can be picked up
+   by the same researcher in two sequential PRs. Negative corpus
+   expansion `not_hasSBP_AddCommGrpCat` (~245-400 LOC, S9 §6) deferred
+   past S10. problem.md S3 §2 line 70 amendment (S9 §8 Path (ii))
+   recommended but deferred to doctor/auditor or next STATE-SYNC.
 
 ## Blockers
 
@@ -90,12 +105,28 @@ slice-category reformulation); the S6 researcher should reread the
 
 ## Next Action
 
-**S7 (any researcher)**: State and prove a **non-vacuous** sufficient
-condition for `HasSBP C`. The S6 ACT shipped the vacuous case
-(`[IsDiscrete C] → HasSBP C`); the open work is a hypothesis that
-allows monos that are not iso but still forces SBP.
+**S10 ACT (any researcher) — Path C ship (RECOMMENDED FIRST)**:
+Add `import Mathlib.CategoryTheory.Groupoid` and ship the 5-10 LOC
+`hasSBP_of_isGroupoid : ∀ (C : Type*) [Category C] [IsGroupoid C],
+HasSBP C := fun _ _ ⟨m, _⟩ _ ↦ ⟨asIso m⟩` theorem (5th positive instance
+in the corpus). Vacuous-broadening (`IsGroupoid.all_isIso` instance at
+`Mathlib/CategoryTheory/Groupoid.lean:121` makes every morph iso) but
+expands corpus to fundamental groupoids etc. Sanity: `TopCat` is not
+a groupoid; S5 `not_hasSBP_TopCat` survives. ACT-ready GREEN per S10
+PREP STATE-SYNC §4. Bearer pin verified at lake SHA `2df2f015...` per
+S10 §1.2 row 5.
 
-Three candidate paths, ordered by ascending Mathlib-API ambition:
+**S11 ACT (any researcher) — Path D.i ship (RECOMMENDED SECOND)**:
+Ship the 25-35 LOC `hasSBP_of_fullFaithful_forget` theorem under
+hypothesis `[ConcreteCategory C][(forget C).Full][(forget C).Faithful]
+[(forget C).PreservesMonomorphisms]`. **First genuinely non-vacuous**
+result (admits non-iso monos), though narrow (forces C ≈ full
+subcategory of Type). Tactic skeleton in S10 §3.2 (lifted from S8 §3).
+Bearers verified per S10 §1.2 rows 1-3. Sanity: TopCat lacks
+`(forget TopCat).Full` (continuous maps ⊊ underlying functions);
+S5 survives. ACT-ready GREEN.
+
+Legacy three-path catalogue (preserved for reference):
 
 - **(C) Groupoid / `IsGroupoid C`.** Add `import Mathlib.CategoryTheory.Groupoid`
   and prove `[IsGroupoid C] → HasSBP C` (~5 LOC, identical proof
@@ -211,6 +242,37 @@ Estimated S7 LOC: ~10 (path C), ~40-60 (path D), ~150-300 (path E).
   (~5 LOC), RegularMono variant (~30-50 LOC), or full Banaschewski-Brümmer
   factorisation system (~150-300 LOC). See
   `sessions/2026-05-14-s6-act-vacuous-sufficient-condition-isdiscrete.md`.
+- **S7 PREP** (2026-05-14, researcher-?): doc-only paths-C/D/E
+  feasibility audit at v4.26.0. Per-path Mathlib API verification +
+  LOC estimates (C: 5-10, D.i: 100-200 (S8-revised to 25-35),
+  D.ii: 150-250, E: 150-300). Sequencing recommendation:
+  C → D.i → D.ii → E. PR #19158.
+- **S8 PREP** (2026-05-15, researcher-9): doc-only path-D.i refinement.
+  Refines hypothesis from S7's `[SplitMonoCategory C][ConcreteCategory C]`
+  to S8's `[ConcreteCategory C][(forget C).Full][(forget C).Faithful]
+  [(forget C).PreservesMonomorphisms]`. LOC estimate revised
+  100-200 → 25-35. Path-D.i admitted as narrow (forces C ≈ full
+  subcategory of Type) but non-vacuous. PR #19196.
+- **S9 PREP** (2026-05-15, researcher-3): doc-only `Grp` /
+  `AddCommGrpCat` counterexample feasibility audit. **Falsifies
+  problem.md S3 §2 line 70** (`(ℤ, ℤ × ℤ/2ℤ)` pair: no injective
+  group hom `ℤ × ℤ/2ℤ → ℤ` exists since ℤ is torsion-free; the
+  `(0,1)` torsion element is killed under any hom into ℤ).
+  Supplies corrected candidate in `AddCommGrpCat` via Ulm-invariant
+  separation (~245-400 LOC for S10+ ACT). Recommends doctor/auditor
+  amendment of problem.md line 70 (deferred). PR #19259.
+- **S10 PREP STATE-SYNC** (2026-05-15, researcher-9, this PR):
+  catches state.md from iteration 7 → 10 after the S6/S7/S8/S9
+  drain wave. Per-path ACT-readiness gate at lake SHA
+  `2df2f015...` (5 critical bearers re-verified at unchanged SHA;
+  0 drift). Path C (`[IsGroupoid C]`, ~5-10 LOC, vacuous-broadening)
+  and Path D.i (`[ConcreteCategory C][(forget C).Full][(forget C).Faithful]
+  [(forget C).PreservesMonomorphisms]`, ~25-35 LOC, narrowly
+  non-vacuous) are both **GREEN ACT-ready**. Recommended order:
+  C → D.i. Path D.ii / Path E / `not_hasSBP_AddCommGrpCat`
+  deferred past S10 (LOC scope or Mathlib audit). problem.md
+  line 70 amendment recap (S9 §8 Path (ii)) — deferred to next
+  picker. See `sessions/2026-05-15-s10-prep-statesync.md`.
 
 ## Drift / parent state
 
