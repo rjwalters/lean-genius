@@ -1,9 +1,102 @@
 # Current State
 
-**Phase**: ACT (S9 ACT shipped + S10/S10b/S10c/S10d PREP backlog complete; S11 ACT ready for pruner-def transcription)
-**Since**: 2026-05-12T16:55:00Z
-**Iteration**: 13 (S9 ACT + four doc-only PREP follow-ups: S10, S10b, S10c, S10d)
-**Researcher**: researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Phase**: ACT (S10 ACT shipped (#19014, build verified at 7745 jobs); state.md/JSON now reflect post-S10-ACT tip at 835 LOC / 25 theorems / 3 defs / 1 axiom; S11 ACT pruner-def transcription ready per S16 PREP α-route)
+**Since**: 2026-05-16T00:25:00Z
+**Iteration**: 16 (S10 ACT + two doc-only PREP follow-ups: S15 coordination, S16 syntax audit)
+**Researcher**: researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+
+## Session 16 — S16 PREP (researcher-12, 2026-05-15, PR #19273, doc-only)
+
+**Deliverable**. `sessions/2026-05-15-s16-prep-searchaux-syntax-audit.md`
+audits the Mathlib v4.26.0 (manifest SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)
+syntax + elaboration risks in the S10c/S10d `searchAux` skeleton, locks
+three failure modes (the `r ↦ candidates.filter (· % p ≠ r)` callback
+inside `(Finset.range p).any` carries a hidden partial-application
+binding; the `termination_by primes _ _ => primes.length` 3-binder
+form has zero direct Mathlib precedent; the `decreasing_by` chain
+needs `all_goals (simp_wf; omega)` wrapping per Mathlib's
+`Data/List/Defs.lean:170` precedent), and proposes three S11 ACT
+structures (Option α "helper lift", Option β "explicit binding",
+Option γ "Lean-native `List.any`") with recommendation = Option α
+(smallest LOC overhead ~6 LOC, idiomatic Mathlib shape). Pins
+~9 Mathlib bearer lines for the S11 ACT pre-flight checklist.
+
+**Net**. 0 Lean lines, +1 session log. No state.md/JSON/`knowledge.md`/
+gallery touches.
+
+## Session 15 — S15 PREP (researcher-12, 2026-05-15, PR #19201, doc-only)
+
+**Deliverable**. `sessions/2026-05-15-s15-prep-coord-merge-sequencing.md`
+coordinates the merge sequencing for the three slug PRs sitting open
+under the 2026-05-14/15 deployer stall (~22.5 h zero-merge window):
+(1) merge-order forecast for the two CLEAN PRs #19014 (S10 ACT) +
+#19004 (Session 14 STATE-SYNC); (2) post-merge JSON `leanFiles[]`
+mechanic-sync gap that Session 14 STATE-SYNC explicitly defers
+(file metrics will be 835 / 25 / 3 post-S10-ACT but JSON will read
+761 / 23 / 2 until the next STATE-SYNC); (3) supersedure analysis
+for the DIRTY 3-day-old orphan #18024 (S6 alt `engelsma_analogue_9_26`,
+~3M subset stress test) — superseded by S6 #18027's four
+non-vacuous-boundary cases (~14k subsets, four orders of magnitude
+cheaper); (4) S11 ACT pre-flight bearer re-pin at the manifest SHA
+(closes S10c/S10d's `v4.26.0` tag → SHA verification loop).
+
+**Net**. 0 Lean lines, +1 session log. Forecasts exactly the
+mechanic-sync gap this STATE-SYNC absorbs.
+
+## Session 14 — S10 ACT (rjwalters, 2026-05-15, PR #19014, +74 LOC, build verified 7745 jobs)
+
+**Deliverable**. Two-part research deliverable for
+`proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean`, build-verified
+end-to-end via Docker (7745 jobs, 8.4 s):
+
+**Part A — S9 build unblocker (3 errors + 2 deprecations)**.
+The Docker baseline build of the origin/main S9 tip surfaced **3
+errors** that the 7-deep "(build pending)" S2–S9 PR chain hid
+(2026-05-11 / 2026-05-12): line 475 `rewrite` needed beta-aliased
+`hrr_beta := hrr'` so `rw` finds the pattern; line 488 `omega`
+needed `simp only at hab` to beta-reduce `(fun x => x - m) a = …`;
+line 593 `rw [hH'_def]` required the same beta-trick. Plus 2
+Mathlib v4.26.0 deprecation renames (`Finset.notMem_erase`,
+`Finset.card_insert_of_notMem`). Root cause: Mathlib v4.26.0's
+stricter `rewrite` motive checks + `omega`'s beta behavior on
+hypothesis-lambdas. The 7-PR build-pending chain hid these because
+the local-worktree `proofs/.lake` symlink trap blocked Docker
+verification for every prior researcher (memory:
+`feedback_researcher_lake_symlink_broken.md`).
+
+**Part B — S10 ACT pre-flight (`primesUpTo` bearer)**. Per S10c
+PREP §2.3, the canonical bearer for "primes ≤ k as a sorted list":
+
+```lean
+def primesUpTo (k : ℕ) : List ℕ :=
+  (Nat.primesBelow (k + 1)).sort (· ≤ ·)
+
+theorem primesUpTo_10_eq : primesUpTo 10 = [2, 3, 5, 7] := by native_decide
+theorem primesUpTo_50_eq :
+    primesUpTo 50 = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47] := by
+  native_decide
+```
+
+The `primesUpTo 50` shape is **the exact list** S11 ACT's pruned
+`searchAux` will branch on at the `engelsmaSearch 246 50 = false`
+discharge (15 primes — `Nat.primesBelow 51`). The two `native_decide`
+sanity tests pin both list value and ascending order; both reuse
+the S4-introduced `Lean.ofReduceBool` (no axiomCount bump).
+
+**Net**. +74 LOC (lineCount 761 → 835; net is +74 because the
+deprecation renames also rewrite existing lines; PR header reports
++80 / −6). `defCount` 2 → 3 (`primesUpTo`). `theoremCount` 23 → 25
+(the two `primesUpTo_*_eq` tests). `axiomCount` stays at 1
+(`Lean.ofReduceBool` reused per S10b PREP gallery convention).
+0 sorries. Docker build clean.
+
+**Implication for S11 ACT**. The bearer is now on `origin/main`;
+the S11 ACT pruner def can `use primesUpTo k` directly without
+re-deriving the Mathlib bearer. Combined with S16 PREP's three-option
+syntax audit, S11 ACT is now blocked only by writer-time —
+all design surface and bearer plumbing is pinned. The S15 PREP
+forecast (file metrics 835 / 25 / 3) is **exactly** confirmed by
+this PR.
 
 ## Session 10d — S10d PREP (researcher-12, 2026-05-13, PR #18662, doc-only)
 
@@ -68,10 +161,15 @@ single-spec "S10/S11/S12 ≈ 100-200 / 200-300 / 1 line" with a
 ## Current Focus
 
 S11 ACT — **pruner-def transcription** per the
-S10/S10b/S10c/S10d PREP chain. With the four doc-only PREP PRs merged
-(2026-05-12 22:16 UTC through 2026-05-13 07:44 UTC) the next ACT step
-is to transcribe the S10 PREP §8 + S10c PREP §3.4 + S10d PREP §3
-specs into `proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean`:
+S10/S10b/S10c/S10d PREP chain + S15/S16 PREP coordination + S10 ACT
+bearer. With the six doc-only PREP PRs merged (S10/S10b/S10c/S10d at
+2026-05-12 22:16 UTC through 2026-05-13 07:44 UTC, S15 at 2026-05-15
+01:40 UTC, S16 at 2026-05-15 07:30 UTC) and the S10 ACT (#19014)
+build-verified at 7745 jobs on origin/main (Lean file 761 → 835 LOC,
+`primesUpTo` bearer + S9 build unblocker shipped), the next ACT step
+is to transcribe the S10 PREP §8 + S10c PREP §3.4 + S10d PREP §3 +
+S16 PREP §3.4 (Option α "helper lift") specs into
+`proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean`:
 
 ```lean
 def engelsmaSearchPruned (w k : ℕ) : Bool := ...
@@ -82,10 +180,13 @@ theorem engelsmaSearchPruned_eq_false_iff
 ```
 
 Estimated S11 ACT size: +120–180 LOC (per S10 PREP §8 budget;
-unchanged after S10b/S10c/S10d micro-refinements). Followed by S12
-ACT (single `native_decide` to discharge the `engelsma_lower_bound`
-axiom; axiomCount unchanged at 1 because `Lean.ofReduceBool` is not
-counted per S10b PREP).
+unchanged after S10b/S10c/S10d micro-refinements; S16 PREP Option α
+adds ~6 LOC helper lift). With S10 ACT's `primesUpTo` bearer now on
+`origin/main` (S15 PREP §6 verification loop closed), S11 ACT uses
+`primesUpTo k` directly without re-deriving the Mathlib bearer.
+Followed by S12 ACT (single `native_decide` to discharge the
+`engelsma_lower_bound` axiom; axiomCount unchanged at 1 because
+`Lean.ofReduceBool` is not counted per S10b PREP).
 
 ### Previous focus (S9)
 
