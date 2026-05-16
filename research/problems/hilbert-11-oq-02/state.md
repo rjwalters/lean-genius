@@ -1,11 +1,127 @@
 # Current State
 
-**Phase**: ITERATING (universal Case-A closure resolving the enumeration of Sections 22-25)
-**Since**: 2026-05-12T16:46:00Z
-**Last Updated**: 2026-05-12 (Iteration 17, researcher-6)
-**Iteration**: 17
+**Phase**: RECOVERING (post-mechanic Sub-PR-1; ~17 residual v4.26.0 errors per PR #19056 title — Cluster B cascade + Cluster E re-derivation needed for Sub-PR-2)
+**Since**: 2026-05-15T16:27:00Z (mechanic Sub-PR-1 #19056 merged)
+**Last Updated**: 2026-05-16 (Iteration 23, researcher-1 — S23 STATE-SYNC)
+**Iteration**: 23
 
-## Iteration 17 (researcher-6, 2026-05-12) — Section 27 universal Case-A theorem
+## Iteration 23 (researcher-1, 2026-05-16) — S23 STATE-SYNC: post-mechanic-#19056 static residual survey + Sub-PR-2 PREP (doc-only)
+
+**Outcome**: STATE-SYNC. Catches state.md and research-JSON
+`currentState` up from iter 17 to iter 23, recording 5 intervening
+doc-only sessions (S18-S22), mechanic Sub-PR-1 #19056 (4-of-6-cluster
+v4.26.0 surgical repair, claims "39 → 17 errors"), and gallery
+`meta.json` drift-sync #19523. Static cluster-by-cluster verification
+at branch-base SHA `73525731387` confirms Clusters A / C / D / F /
+3-deprecation warnings are **resolved** post-mechanic; Cluster E
+(2 sites in `pow_cubeInverseExp_pow_three`) was **attempted** by
+mechanic but not credited in the PR title — pre-emptive 1-2 LOC
+robustness patch derived; Cluster B (18 cascade sites) **unverified
+without Docker** but ≥80 % expected auto-resolved per S22 cascade
+analysis. Docker hung this cycle (`docker version` exit 124 at 8 s);
+disk 6.8 Gi avail (R5 RED for Sub-PR-2 cold Mathlib re-fetch). Sub-PR-2
+is mechanically ready (4 GREEN gates + 3 YELLOW + 2 RED INFRA) but
+environmentally blocked.
+
+### What I added (+~620 LOC doc-only, 0 Lean / `leanFiles[]` / `meta.json` / `problem.md` / `knowledge.md` / Mathlib-pin edits)
+
+- New `research/problems/hilbert-11-oq-02/sessions/2026-05-16-s23-state-sync-post-mechanic-residual.md` (~470 LOC):
+  - §1 chronology of 9 events on slug since iter 17 (PRs #18243, #18427, #18576, #18608, #18663, #18900, #19034, #19056, #19523).
+  - §2 static cluster-by-cluster verification at SHA `73525731387` (Clusters A/B/C/D/E/F + dep warnings; greps + targeted Reads, no Docker).
+  - §3 8-item risk inventory R1-R8 (norm_mul overload, R2 heavier-rewrite, R3a-d Cluster E failure modes, R4 corollary shadowing, R5 disk-marginal, R6 stale OPEN PRs, R7 leanFiles[] drift, R8 +5 theoremCount discrepancy).
+  - §4 9-item Sub-PR-2 ACT-readiness gate (G1-G9; 4 GREEN + 3 YELLOW + 2 RED).
+  - §5 recommended Sub-PR-2 scope (4-step plan with paste-ready Cluster E patch).
+  - §6 4-item drift inventory NOT touched by S23 (mechanic/curator territory).
+  - §7 honesty + predecessor-stability check.
+- This state.md prepend (iter 23 entry + Phase/Iteration header refresh).
+- `src/data/research/problems/hilbert-11-oq-02.json` `currentState`-only edit (iteration 17 → 23, phase ITERATING → RECOVERING, focus + nextAction + lastUpdate refresh, blockers gain "host disk ≤ 15 Gi" + "Docker daemon hung").
+
+### Why S23 instead of researcher ACT or Sub-PR-2 ship
+
+Three pressures:
+1. **State.md / JSON divergence from reality** — 5 doc-only sessions
+   (S18-S22) + 2 mechanic PRs (#19056, #19523) have landed since
+   iter 17, none reflected in `currentState`. The slug's
+   `nextAction` still pointed at "Section 28 universal Case-B"
+   despite the parent file being **demonstrably broken** under
+   v4.26.0 per S22 #19034. A researcher claiming this slug from
+   scratch (e.g. via `claim-random`) would not see the broken-build
+   warning until the first Docker run — at which point they would
+   either misfile the issue as fresh (duplicating S22 work) or
+   release without contributing.
+2. **Docker hung + disk 6.8 Gi avail** — Sub-PR-2 needs ≥ 15 Gi
+   avail for a clean Mathlib re-fetch (per the broken
+   `proofs/.lake` symlink documented in iter-17 build notes) and a
+   responsive daemon. Both fail at S23 start; deferring Sub-PR-2 to
+   a Docker-responsive cycle is correct.
+3. **Cluster E paste-ready patch** is a 1-2 LOC robustness fix that
+   even without Docker is high-confidence per the R3a-d static
+   analysis. Including it as a paste in the session memo gives the
+   *next* researcher / mechanic / doctor cycle a head-start without
+   committing to its correctness.
+
+### Counts (unchanged from iter 17 / mechanic Sub-PR-1)
+
+- `lineCount`: 1975 (iter 17 = 1970; mechanic Sub-PR-1 = +5)
+- `theoremCount`: 88 (per gallery `meta.json` #19523; research-JSON
+  `leanFiles[]` still records 83 — R7 mechanic-territory drift)
+- `defCount`: 9
+- `axiomCount`: 2 (`selmer_no_rational_solution`,
+  `selmer_padic_solubility`; no change)
+- `sorryCount`: 0
+
+### Files modified (S23 doc-only, 3 files)
+
+- `research/problems/hilbert-11-oq-02/sessions/2026-05-16-s23-state-sync-post-mechanic-residual.md` (new, ~470 LOC).
+- `research/problems/hilbert-11-oq-02/state.md` (this entry +
+  Phase/Iteration header).
+- `src/data/research/problems/hilbert-11-oq-02.json`
+  (`currentState.iteration` 17 → 23, `phase` ITERATING →
+  RECOVERING, `focus`, `nextAction`, `lastUpdate`, `blockers`,
+  `attemptCounts.total` 17 → 23 — all in `currentState` only; no
+  `leanFiles[]` / `knowledge` / `references` / `tags` edits).
+
+### Next Action (Sub-PR-2 entry conditions, next cycle)
+
+**Researcher / mechanic / doctor cycle in environment with**:
+1. Docker daemon responsive (`docker version` < 5 s).
+2. ≥ 15 Gi disk avail (for cold Mathlib re-fetch ~3.4 GB + ~10 GB
+   extract).
+
+**Step 1**: Docker re-run on current `origin/main` (post-mechanic
+Sub-PR-1):
+```
+./proofs/scripts/docker-build.sh Proofs.Hilbert11OQ02 2>&1 \
+  | tee .loom/logs/researcher-?-hilbert11-postSubPR1-rebuild.log
+```
+
+**Step 2**: Apply Cluster E pre-emptive patch from
+session-memo §2 (1-2 LOC, replaces `simp [h_fermat]` with explicit
+`rw [h_fermat]; ring`):
+```lean
+-- Replace lines 1778-1781:
+  rw [← pow_mul, mul_comm, three_mul_cubeInverseExp_eq hp_mod3 hp_ne_2]
+  have h2 : 2 * (p - 1) + 1 = (p - 1) + (p - 1) + 1 := by omega
+  rw [h2, pow_succ, pow_add, h_fermat]; ring
+```
+
+**Step 3**: Surgical 1-LOC fix per residual Cluster B site
+(missing `simp` lemmas in `Gint_aeval` family — mechanic added
+`map_ofNat` in 4 sites, may need to add to 14 more).
+
+**Step 4**: Second Docker re-run; if 0 errors, ship as
+`fix(doctor): hilbert-11-oq-02 Sub-PR-2 — Cluster B residual +
+Cluster E robustness (X → 0 errors)`.
+
+**Estimated**: ~6-12 LOC across 5-10 sites, one session.
+
+**Long-horizon (unchanged from iter 17, gated on Sub-PR-2 landing)**:
+(1) Section 28 universal Case-B theorem, (2) `Hensel*.Gint` cleanup
+refactor, (3) `selmer_no_rational_solution` 3-descent (far stretch).
+
+---
+
+## (Historic) Iteration 17 (researcher-6, 2026-05-12) — Section 27 universal Case-A theorem
 
 **Outcome**: progress — closes the enumeration theater of Sections 22-25
 (per-prime Case-A primes 41/47/53/59/71/83/89/101/107/113) with a single
