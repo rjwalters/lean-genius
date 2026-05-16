@@ -5,33 +5,32 @@
   the closure-lemma block from `Proofs/FrobeniusNumber.lean` (lines 42–69).
   S2-fix BUILD UNBLOCKER (researcher-9, 2026-05-14, PR #18979).
   S3a ACT (researcher-12, 2026-05-14): `frobeniusNumber3` definition + a small
-  set-theoretic API for the non-representable set, **self-contained** (no
-  dependency on the parent `Proofs.FrobeniusNumber` file).
+  set-theoretic API for the non-representable set.
+  S3b ACT (researcher-9, 2026-05-16): bridge lemma
+  `large_representable3_via_two_gen` lifting the 2-generator Sylvester bound
+  from `FrobeniusNumber.large_representable` (in module `Proofs.FrobeniusNumber`,
+  now safely importable after mechanic PR #19194 cleared the v4.26.0 regression
+  in the parent file) into a 3-generator existence form by setting the third
+  coefficient to zero.
 
     Representable3 a b c n := ∃ x y z : ℕ, n = a*x + b*y + c*z
 
-  together with the seven canonical closure lemmas (S2) and, in S3a, the
-  Frobenius number definition itself plus structural lemmas:
+  together with the seven canonical closure lemmas (S2), the Frobenius number
+  definition + structural API (S3a):
 
     `noncomputable def frobeniusNumber3 a b c : ℕ := sSup { n | ¬ Representable3 a b c n }`
-
-  with structural API:
     `representable3_of_gt_of_bddAbove` — every `n > frobeniusNumber3 a b c` is
         representable, conditional on bounded-aboveness;
-    `frobeniusNumber3_le_of_subset_Iio` — abstract upper bound.
+    `frobeniusNumber3_le_of_subset_Iio` — abstract upper bound;
 
-  The **existence proof** (finiteness of the non-representable set for
-  `gcd(a,b,c) = 1`) is deferred to S3b once the parent file
-  `Proofs/FrobeniusNumber.lean` (which provides the 2-generator Sylvester
-  bound `large_representable`) is unblocked from a Mathlib v4.26.0 regression
-  — see this slug's state.md "Open blockers" entry. Importing
-  `Proofs.FrobeniusNumber` from this file would expose 4 pre-existing build
-  errors (linarith failures at lines 193/195/199, an unsolved rewrite goal at
-  line 164) that are out of S3 research scope.
+  and the 2→3 generator bridge (S3b):
+
+    `large_representable3_via_two_gen` — for `Nat.Coprime a b`, `1 ≤ a`,
+        `1 ≤ b`, every `n ≥ (a-1)(b-1)` is `Representable3 a b c n`.
 
   Subsequent stages (per `research/problems/frobenius-number-oq-03/state.md`):
-    S3b — finiteness/existence proof via the 2-generator Sylvester bound
-          (blocked on parent-file unblock).
+    S3c — finiteness of the non-representable set for `gcd(a,b,c) = 1`
+          (via the bridge + cofiniteness of the 2-generator non-rep set).
     S4 — `large_representable3` for the three-consecutive family.
     S5 — `frobenius_three_consecutive` (Roberts d=1 closed form).
     S6+ — Roberts 3-AP, Fibonacci triples, Mersenne triples.
@@ -41,6 +40,7 @@
 
 import Mathlib.Tactic
 import Mathlib.Data.Nat.Lattice
+import Proofs.FrobeniusNumber
 
 namespace FrobeniusOQ03
 
@@ -137,9 +137,21 @@ theorem not_representable3_frobeniusNumber3_of_nonempty {a b c : ℕ}
   Nat.sSup_mem hne hbdd
 
 /-- A `Representable3` witness with the third coefficient zero collapses to a
-    two-generator witness in `a, b`. (Bridge lemma used in S3b once the parent
-    file `Proofs.FrobeniusNumber` is unblocked.) -/
+    two-generator witness in `a, b`. (Bridge lemma used in S3b.) -/
 theorem representable3_of_two_gen {a b c n x y : ℕ} (h : n = a * x + b * y) :
     Representable3 a b c n := ⟨x, y, 0, by linarith⟩
+
+/-! ### S3b — 2→3 generator bridge -/
+
+/-- **S3b bridge**: lift the 2-generator Sylvester bound to 3 generators by
+    setting the third coefficient to zero. For coprime `a, b` with `1 ≤ a`,
+    `1 ≤ b`, every `n ≥ (a-1)(b-1)` satisfies `Representable3 a b c n`
+    (witnessed with `z = 0`). The third generator `c` is irrelevant for the
+    upper-bound side, foreshadowing S3c's finiteness argument. -/
+theorem large_representable3_via_two_gen
+    {a b c n : ℕ} (hab : Nat.Coprime a b) (ha : 1 ≤ a) (hb : 1 ≤ b)
+    (hn : (a - 1) * (b - 1) ≤ n) : Representable3 a b c n := by
+  obtain ⟨x, y, hxy⟩ := FrobeniusNumber.large_representable hab ha hb n hn
+  exact representable3_of_two_gen hxy
 
 end FrobeniusOQ03
