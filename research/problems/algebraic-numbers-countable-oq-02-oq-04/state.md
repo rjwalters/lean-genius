@@ -2,9 +2,36 @@
 
 ## Current Status
 
-**Phase**: S6 SET-LEVEL STRUCTURAL API (build pending)
-**Owner**: researcher-9 (S6, 2026-05-12)
-**Branch**: `research/algebraic-numbers-countable-oq-02-oq-04-s6-structural-<ts>`
+**Phase**: S6 BUILD VERIFIED (post-mechanic PR #19054, doc tracker resynced via S6f STATE-SYNC)
+**Owner**: researcher-5 (S6f STATE-SYNC, 2026-05-16); prior S6 ACT owner: researcher-9 (2026-05-12)
+**Iteration**: 7 (S1 + S2 + S3 + S4 + S5 + S6 + mechanic #19054 + S6f STATE-SYNC)
+**Last Updated**: 2026-05-16Z (S6f STATE-SYNC; catches doc tracker after 4-day freeze + mechanic build-blocker resolution)
+**Branch (this PR)**: `research/algebraic-numbers-countable-oq-02-oq-04-s6f-statesync-postmechanic-<ts>`
+
+## Post-mechanic Lean file inventory (at base `78448f56d0a`)
+
+```
+File:        proofs/Proofs/AlgebraicNumbersCountableOQ02OQ04.lean
+Lines:       656 (was 110 at S1; +546 across S2-S6)
+Theorems:    31 (per S6 sessions log; pre-S6 was 21)
+Definitions: 3 (IsComputable, decodeReal, nonComputableReals)
+Sorries:     0 (S3 discharged the S1 sorry; S4/S5/S6 added no new)
+Axioms:      0
+Build:       ✔ VERIFIED post-mechanic PR #19054 (3067 jobs clean)
+```
+
+3 critical Mathlib bearers re-verified at SHA `2df2f015...`
+(S6f §3 — 0 drift):
+- `Nat.Partrec.Code.exists_code` at `Mathlib/Computability/PartrecCode.lean:550`
+- `le_aleph0_iff_set_countable` at `Mathlib/SetTheory/Cardinal/Basic.lean:430`
+- `Cardinal.aleph0_lt_continuum` at `Mathlib/SetTheory/Cardinal/Continuum.lean:65`
+
+**Next-picker priority (S7+)**: ship `IsComputable e` (or `π`) as
+the explicit computable transcendental witness sharpening the strict
+inclusion `algebraic ⊊ computable` beyond the pure-cardinality argument
+of S4. Path A (e via partial sums of `1/n!`) is the cleaner-skeleton
+candidate at v4.26.0; ~80-150 LOC estimate. See S6f §5 for the
+full S7-S10 priority tree.
 
 ## What's Done
 
@@ -148,6 +175,35 @@ infrastructure + strategy + 1 file + 1 module-doc + 4 annotations).
   Lean file 570 → 649 lines; no new defs, no new sorries, no new axioms;
   theorem count synced to 31 (pre-S6 stale meta value was 24, drift +2 from
   S5 + audit cleanup).
+- **2026-05-15 (mechanic PR #19054, researcher-12 / mechanic)**: v4.26.0
+  ELABORATION REPAIR. Fixed the 4-error inventory + 1-parser-cascade
+  surfaced by researcher-12 PR #19040's import-line change
+  (`Mathlib.Topology.Instances.Real` → `.Lemmas`). Build now clean:
+  `✔ 3067/3067 jobs`. **Ends the build-blocker era** for the slug
+  (S1-S6 all shipped 2026-05-12 with "build pending" annotation,
+  3.5 days of silent build-blocked state).
+- **2026-05-16 (S6f STATE-SYNC, researcher-5, this PR, doc-only)**:
+  post-mechanic doc tracker catch-up. state.md / JSON tracker had been
+  frozen at S1/S4-era values for **4 days** (JSON `lastUpdate` =
+  2026-05-12T02:30Z) while the file silently advanced through
+  S2/S3/S4/S5/S6 + the mechanic fix. This S6f:
+  (i) replaces state.md head (Phase / Owner / Iteration / Last
+  Updated + post-mechanic inventory snapshot + S7+ priority);
+  (ii) updates JSON `currentState.{phase, iteration, focus,
+  nextAction, since, lastUpdate}` + extends `progressSummary` +
+  syncs `leanFiles[0].{lineCount, theoremCount, defCount,
+  sorryCount}` from S1-era (208/9/1/1) to actual (656/31/3/0);
+  (iii) re-pins 3 critical Mathlib bearers at SHA `2df2f015...`
+  via `gh api` (`Nat.Partrec.Code.exists_code` line 550,
+  `le_aleph0_iff_set_countable` line 430, `Cardinal.aleph0_lt_continuum`
+  line 65; 0 drift);
+  (iv) declares ACT-readiness GREEN for S7+ (`IsComputable e ∨ π`
+  recommended first, ~80-150 LOC); gallery `meta.json` count sync
+  is YELLOW (deferred to next mechanic pass). 0 Lean edits;
+  0 `proofs/Proofs/*.lean`, `proofs/Proofs.lean`, `problem.md`,
+  `knowledge.md`, or `meta.json` changes. See
+  `sessions/2026-05-16-s6f-statesync-postmechanic-buildverified.md`
+  for the full memo (~360 LOC, 8 sections).
 
 ## S3 — What This Buys
 
