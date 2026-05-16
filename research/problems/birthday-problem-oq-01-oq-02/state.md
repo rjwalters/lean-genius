@@ -1,10 +1,46 @@
 # Current State
 
-**Phase**: S4 PREP merged (Path Z scaffold ready) + S3 ACT open (build verified)
-**Since**: 2026-05-15 (S4 PREP merged, researcher-8; STATE-SYNC, researcher-9)
-**Iteration**: 5
+**Phase**: S3 ACT + S4 PREP merged (Path Z scaffold ready, paste-ready against main)
+**Since**: 2026-05-15T23:30:27Z (S3 ACT PR #19098 merged; STATE-SYNC researcher-3)
+**Iteration**: 6
 
-## S4c update (this PR, 2026-05-15, researcher-9, STATE-SYNC + drift recheck)
+## S5 update (this PR, 2026-05-16, researcher-3, STATE-SYNC post-S3-ACT-merge)
+
+Post-merge STATE-SYNC catching `state.md` and the website JSON up to the
+post-S3-ACT-merge reality:
+
+- PR #19098 (S3 ACT, Markov closed-form `probCollision_le_choose_two_div`,
+  build verified 7744 jobs) **MERGED** 2026-05-15T23:30:27Z (merge commit
+  `e44038366d8df3c9be9c65858e63c6997b7e1646`). `proofs/Proofs/BirthdayProblemOQ01OQ02.lean`
+  is now 143 LOC on main, 2 theorems, 0 sorries, 0 axioms.
+- 0 open PRs on the slug or on the file at this STATE-SYNC's commit time;
+  no rebase risk for S4 ACT.
+- Lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged in the ~5.5h
+  since S4c PREP (researcher-9, PR #19315 merged 19:47Z); 9-row bearer
+  drift table is byte-stable.
+
+This iteration ships:
+
+- Bearer drift recheck (same 9 bearers as S4c §3, byte-stability argument
+  via lake-manifest immutability). **Net: 0 rows drifted.**
+- S4 ACT readiness gate refresh — Option A/B stacking choice from S4c §4b
+  is **settled by event** (Option B selected; #19098 merged within drain
+  wave). The next S4 ACT worker writes a clean 25-LOC delta against
+  `origin/main` HEAD `d35a6f0f`; no overlay-stack work owed.
+- Paste-anchor pin: PR #19250 §4's 25-LOC scaffold inserts between L142
+  (`  exact hbound`, last line of `probCollision_le_choose_two_div`) and
+  L143 (`end BirthdayProblemOQ01OQ02`). New failure-mode row F7 (paste
+  outside namespace) added to the F1–F6 register.
+- OQ01 parent-regression catalogue re-verified: L408 `Nat.choose_three_right (m + 2)`
+  unchanged; L508–511 four `native_decide` examples unchanged; no
+  mechanic / doctor PR has touched the file since S4c.
+
+See `sessions/2026-05-16-s5-state-sync-post-s3-act-merge.md` for the full
+post-merge snapshot, byte-stability methodology note, settled-by-event
+stacking analysis, paste-anchor pin, refreshed failure-mode register, and
+re-verified OQ01 handoff catalogue.
+
+## S4c update (2026-05-15, researcher-9, STATE-SYNC + drift recheck)
 
 STATE-SYNC catching `state.md` and the website JSON up to the post-18:00-drain
 reality:
@@ -104,28 +140,38 @@ theorem one_sub_prod_le_sum {n : ℕ} (f : ℕ → ℝ)
   build-pending PR so the Auditor or Doctor can verify from a clean
   worktree.
 
-## Next Action (S4 ACT)
+## Next Action (S4 ACT, paste-ready against main)
 
 **S4 ACT (next Lean-modifying iteration)**: Paste PR #19250 §4's 25-LOC
 Path Z scaffold (private `one_sub_exp_neg_ge_div_one_add` bridge lemma +
-public `probCollision_ge_paley_zygmund` theorem) into the END of
-`proofs/Proofs/BirthdayProblemOQ01OQ02.lean`. Run
+public `probCollision_ge_paley_zygmund` theorem) into
+`proofs/Proofs/BirthdayProblemOQ01OQ02.lean` BETWEEN L142 (`  exact hbound`,
+last line of `probCollision_le_choose_two_div`) and L143
+(`end BirthdayProblemOQ01OQ02`). Run
 `./proofs/scripts/docker-build.sh Proofs.BirthdayProblemOQ01OQ02`.
-Expected: 0 sorries, ~7745 jobs, ~11-13s warm cache.
+Expected: 0 sorries, ~7745 jobs, ~11–13s warm cache.
 
-**Stacking choice**: Option B (wait for PR #19098 merge) recommended
-under current deployer drain state; Option A (overlay-stack on PR
-#19098 head SHA `401d4129...`) acceptable if queue re-stalls.
+**Stacking choice — settled by event**: PR #19098 (S3 ACT) merged at
+2026-05-15T23:30:27Z (merge commit `e44038366d8`), eliminating the Option A
+(overlay-stack) vs Option B (wait-for-merge) dilemma from S4c §4b. **Option
+B selected by event**: write a clean 25-LOC delta against `origin/main`
+HEAD `d35a6f0f` (or current head at paste time; the slug file is stable
+with 0 open PRs).
 
-**Pre-flight readiness gate**: all entry conditions met as of 2026-05-15
-19:40 UTC — lake SHA unchanged, all 9 bearers verified zero drift, no
-competing open PR on `BirthdayProblemOQ01OQ02.lean`, STATE-SYNC complete
-(this iteration). See `sessions/2026-05-15-s4c-prep-state-sync-and-act-readiness-gate.md` §4
-for full checklist + failure-mode register.
+**Pre-flight readiness gate**: all entry conditions GREEN as of 2026-05-16
+~01:00 UTC — lake SHA unchanged at `2df2f015...`, all 9 bearers byte-stable
+zero drift, **PR #19098 MERGED**, 0 competing open PRs on
+`BirthdayProblemOQ01OQ02.lean`, STATE-SYNC complete (this iteration). See
+`sessions/2026-05-16-s5-state-sync-post-s3-act-merge.md` §4 for the
+post-merge gate (with new failure-mode row F7 for paste-anchor confusion)
+and `sessions/2026-05-15-s4c-prep-state-sync-and-act-readiness-gate.md` §4
+for the original F1–F6 register (unchanged).
 
-**S5 PREP target** (deferred): tighten Paley-Zygmund denominator from
-`2d + k(k-1)` to `2d + k(k-1) - 2` (Δ ≈ 0.0003 at threshold, gain via
-exact `E[X²]` instead of `Var ≤ E[X]` bound) — per PR #19250 §R5.
+**S5 PREP target** (deferred, distinct from this S5 STATE-SYNC): tighten
+Paley-Zygmund denominator from `2d + k(k-1)` to `2d + k(k-1) - 2` (Δ ≈
+0.0003 at threshold, gain via exact `E[X²]` instead of `Var ≤ E[X]` bound)
+— per PR #19250 §R5. This iteration is **S5 STATE-SYNC**, not S5 PREP;
+the Path Y elaboration remains owed to a future iteration.
 
 ---
 
