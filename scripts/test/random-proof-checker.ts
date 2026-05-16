@@ -9,7 +9,7 @@
  */
 
 import { chromium, type Page, type ConsoleMessage } from 'playwright'
-import { execSync } from 'child_process'
+import { execFileSync } from 'child_process'
 
 // --- CLI args ---
 const args = process.argv.slice(2)
@@ -36,8 +36,20 @@ async function extractSlug(page: Page): Promise<string> {
 /** Check if a GitHub issue already exists for this slug */
 function issueExists(slug: string): boolean {
   try {
-    const out = execSync(
-      `gh issue list --state open --search "[tester] ${slug}" --json number --limit 1`,
+    const out = execFileSync(
+      'gh',
+      [
+        'issue',
+        'list',
+        '--state',
+        'open',
+        '--search',
+        `[tester] ${slug}`,
+        '--json',
+        'number',
+        '--limit',
+        '1',
+      ],
       { encoding: 'utf8', timeout: 15000 }
     )
     const issues = JSON.parse(out)
@@ -74,8 +86,18 @@ function fileIssue(result: TestResult, screenshotPath?: string): void {
   ].join('\n')
 
   try {
-    execSync(
-      `gh issue create --title "[tester] Proof page broken: ${result.slug}" --body "${body.replace(/"/g, '\\"')}" --label bug`,
+    execFileSync(
+      'gh',
+      [
+        'issue',
+        'create',
+        '--title',
+        `[tester] Proof page broken: ${result.slug}`,
+        '--body',
+        body,
+        '--label',
+        'bug',
+      ],
       { encoding: 'utf8', timeout: 30000 }
     )
     console.log(`  Filed issue for ${result.slug}`)
