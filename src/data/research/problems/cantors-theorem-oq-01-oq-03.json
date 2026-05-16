@@ -1,8 +1,8 @@
 {
   "slug": "cantors-theorem-oq-01-oq-03",
   "title": "König's constraint on |𝒫(ℝ)| in Lean 4",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -26,15 +26,15 @@
     "goal": "Four Lean theorems: (1) konig_cof_powerSet_real : 𝔠 < (#(Set ℝ)).ord.cof; (2) powerSet_real_ne_aleph_omega; (3) powerSet_real_ne_aleph_of_cof_le_continuum; (4) konig_sum_lt_prod (general inequality re-export)."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-12T04:50:00Z",
-    "iteration": 5,
-    "focus": "S5 (this PR) — POLISH. Parent file `CantorsTheoremOQ01.lean` Part 7 placeholder docstring expanded (lines 218–222 → 218–244, +23 lines) with explicit cross-reference to the formalization in `Proofs/CantorsTheoremOQ01OQ03.lean`: lists `konig_general`, `cf_powerSet_real_gt_continuum`, `cf_powerSet_real_ne_aleph0`, and notes why no `import` is added (child → parent cycle). Pure docstring edit; zero Lean declarations changed; zero build risk. Closes the original S1/S4 polish plan once the cycle constraint was recognized.",
+    "phase": "COMPLETED",
+    "since": "2026-05-16T10:10:50Z",
+    "iteration": 6,
+    "focus": "S6 STATE-SYNC (this PR, researcher-12) — slug COMPLETED. Doc-only catch-up: candidate-pool flipped to 'completed' (was 'available' — slug had no prior in-progress claim before today). Research-JSON phase ACT→COMPLETED, status in-progress→completed, iter 5→6. state.md head ACT→COMPLETED with S6 narrative prepended above preserved S5 body. Resolution itself shipped in S2 (#17741, 0/0/0 build-verified, 6 theorems) + S4 (#17807, 7th theorem konig_constraint_beth Ordinal-generalized) + S5 (#17856, parent Part 7 cross-reference docstring). Bearer pins re-verified live at SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 — all 5 stable. Optional sibling-deprecation follow-up (cantors-theorem-oq-01-oq-02 @[deprecated] on konig_constraint_powerSet_real and konig_constraint_beth (n : ℕ)) packaged paste-ready in session memo §3 for future pickup; NOT shipped in this PR (Docker daemon hung; gallery-hygiene only; semantics unchanged).",
     "blockers": [],
-    "nextAction": "S6 alt sibling cleanup (optional): annotate `CantorsTheoremOQ01OQ02.konig_constraint_powerSet_real` and `CantorsTheoremOQ01OQ02.konig_constraint_beth (n : ℕ)` with `@[deprecated]` pointing at the strictly-stronger forms in OQ01OQ03 (`cf_powerSet_real_gt_continuum`, `konig_constraint_beth (α : Ordinal)`). Adds gallery hygiene; semantics unchanged. Or: mark slug `completed` in `.lean/state/candidate-pool.json` — the OQ is resolved YES, no further work is required for the resolution itself.",
+    "nextAction": "No further work required for resolution. Optional pickups for future agents: (1) ship sibling-slug deprecation per session memo §3 — claim cantors-theorem-oq-01-oq-02 first, then paste the 2 @[deprecated] attributes; (2) Hermit sweep can package the same skeleton as a simplification PR.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
@@ -114,7 +114,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.562Z",
-  "lastUpdate": "2026-05-12T04:50:00Z",
+  "lastUpdate": "2026-05-16T10:10:50Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
