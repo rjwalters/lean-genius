@@ -65,8 +65,10 @@ main() {
     echo ""
 
     cd "$REPO_ROOT"
+    set +e
     npx tsx scripts/test/random-proof-checker.ts "$@"
     local exit_code=$?
+    set -e
 
     echo ""
     if [[ $exit_code -eq 0 ]]; then
