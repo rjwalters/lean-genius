@@ -76,6 +76,7 @@ import Proofs.Erdos101OQ01
 import Mathlib.Analysis.SpecialFunctions.Pow.Real
 import Mathlib.Analysis.SpecialFunctions.Log.Basic
 import Mathlib.Analysis.SpecialFunctions.Sqrt
+import Mathlib.Data.ZMod.Basic
 
 namespace Erdos101OQ04
 
@@ -279,5 +280,123 @@ theorem solymosi_stojakovic_exponent_gt_three_halves
     rw [div_lt_iff hsqrt_pos]
     nlinarith [hsqrt_gt_one, hC_pos]
   linarith
+
+/- ## S3-B1 (Grünbaum F_p² parabola — foundational definition + cardinality)
+
+The Grünbaum parabola modulo `p` is the `(ZMod p)²` subset
+
+    G_p := {(i, j) ∈ (ZMod p) × (ZMod p) : 4·j = -(i·i)}.
+
+For `p ≥ 3` prime, the map `i ↦ (i, -i² · 4⁻¹)` is a bijection
+`ZMod p ≃ G_p`, so `|G_p| = p`.
+
+This iteration delivers only the foundational object plus its
+cardinality.  The 4-collinear count bound `Ω(p^{3/2})`, the
+embedding `(ZMod p)² ↪ ℝ²`, and the downstream
+`IsLowerBoundConstruction` instance are deferred to S3-B2+.
+
+Reference: Grünbaum (1972), *Arrangements and Spreads*, §3.3;
+Brass–Moser–Pach (2005), *Research Problems in Discrete Geometry*,
+§7.2 (orchard regime). -/
+
+namespace Grunbaum
+
+/-- The Grünbaum parabola in `(ZMod p) × (ZMod p)`: the set of
+points satisfying `4·j = -(i·i)`. -/
+def parabola (p : ℕ) [NeZero p] : Finset (ZMod p × ZMod p) :=
+  Finset.univ.filter (fun x : ZMod p × ZMod p => 4 * x.2 = -(x.1 * x.1))
+
+/-- The parameterisation `i ↦ (i, -i² · 4⁻¹)`. -/
+def param (p : ℕ) : ZMod p → ZMod p × ZMod p :=
+  fun i => (i, -(i * i) * (4 : ZMod p)⁻¹)
+
+/-- The parameterisation is injective: distinct `i` give distinct first
+coordinates. -/
+theorem param_injective (p : ℕ) : Function.Injective (param p) := by
+  intro a b hab
+  simpa [param] using congrArg Prod.fst hab
+
+/-- For `p` prime with `p ≠ 2`, the constant `(4 : ZMod p)` is nonzero.
+Equivalently `p ∤ 4`, which (for prime `p`) forces `p = 2`. -/
+theorem four_ne_zero (p : ℕ) [hp_fact : Fact p.Prime] (hp : p ≠ 2) :
+    (4 : ZMod p) ≠ 0 := by
+  have hp_prime : Nat.Prime p := hp_fact.out
+  intro h
+  have h' : ((4 : ℕ) : ZMod p) = 0 := by exact_mod_cast h
+  have h_dvd : (p : ℕ) ∣ 4 := (ZMod.natCast_eq_zero_iff 4 p).mp h'
+  have h_le : p ≤ 4 := Nat.le_of_dvd (by norm_num) h_dvd
+  have h_ge : 2 ≤ p := hp_prime.two_le
+  interval_cases p
+  · exact hp rfl                        -- p = 2
+  · norm_num at h_dvd                   -- p = 3 does not divide 4
+  · exact absurd hp_prime (by decide)   -- p = 4 not prime
+
+/-- The parameterised point `(i, -i² · 4⁻¹)` lies on the parabola.
+The verification reduces to `4 · 4⁻¹ = 1`, valid since `(4 : ZMod p)`
+is invertible when `p` is an odd prime. -/
+theorem param_mem_parabola (p : ℕ) [NeZero p] [Fact p.Prime] (hp : p ≠ 2)
+    (i : ZMod p) : param p i ∈ parabola p := by
+  rw [parabola, Finset.mem_filter]
+  refine ⟨Finset.mem_univ _, ?_⟩
+  show (4 : ZMod p) * (-(i * i) * (4 : ZMod p)⁻¹) = -(i * i)
+  have h4 := four_ne_zero p hp
+  have h_assoc : (4 : ZMod p) * (-(i * i) * (4 : ZMod p)⁻¹)
+              = -(i * i) * ((4 : ZMod p) * (4 : ZMod p)⁻¹) := by ring
+  rw [h_assoc, mul_inv_cancel₀ h4, mul_one]
+
+/-- A point `x` lies on the parabola iff it equals the parameter image
+of its first coordinate.  Direction `→` uses `mul_left_cancel₀` with
+`(4 : ZMod p) ≠ 0`; direction `←` follows from `param_mem_parabola`. -/
+theorem mem_parabola_iff_eq_param (p : ℕ) [NeZero p] [Fact p.Prime]
+    (hp : p ≠ 2) (x : ZMod p × ZMod p) :
+    x ∈ parabola p ↔ x = param p x.1 := by
+  rw [parabola, Finset.mem_filter]
+  constructor
+  · rintro ⟨_, hxeq⟩
+    have h4 := four_ne_zero p hp
+    have hx2 : x.2 = -(x.1 * x.1) * (4 : ZMod p)⁻¹ := by
+      have hmul : (4 : ZMod p) * x.2
+                = (4 : ZMod p) * (-(x.1 * x.1) * (4 : ZMod p)⁻¹) := by
+        rw [hxeq]
+        have h_assoc : (4 : ZMod p) * (-(x.1 * x.1) * (4 : ZMod p)⁻¹)
+                    = -(x.1 * x.1) * ((4 : ZMod p) * (4 : ZMod p)⁻¹) := by
+          ring
+        rw [h_assoc, mul_inv_cancel₀ h4, mul_one]
+      exact mul_left_cancel₀ h4 hmul
+    exact Prod.ext rfl hx2
+  · intro hx
+    refine ⟨Finset.mem_univ _, ?_⟩
+    rw [hx]
+    show (4 : ZMod p) * (param p x.1).2 = -((param p x.1).1 * (param p x.1).1)
+    have h4 := four_ne_zero p hp
+    simp only [param]
+    have h_assoc : (4 : ZMod p) * (-(x.1 * x.1) * (4 : ZMod p)⁻¹)
+                = -(x.1 * x.1) * ((4 : ZMod p) * (4 : ZMod p)⁻¹) := by ring
+    rw [h_assoc, mul_inv_cancel₀ h4, mul_one]
+
+/-- The parabola equals the image of the parameter map on `Finset.univ`. -/
+theorem parabola_eq_image (p : ℕ) [NeZero p] [Fact p.Prime] (hp : p ≠ 2) :
+    parabola p = (Finset.univ : Finset (ZMod p)).image (param p) := by
+  ext x
+  rw [Finset.mem_image, mem_parabola_iff_eq_param p hp]
+  constructor
+  · intro hx
+    exact ⟨x.1, Finset.mem_univ _, hx.symm⟩
+  · rintro ⟨i, _, hi⟩
+    subst hi
+    rfl
+
+/-- **Cardinality of the Grünbaum parabola** (S3-B1 deliverable).
+
+For `p` prime with `p ≠ 2`, the F_p²-parabola `G_p = {(i,j) : 4j = -i²}`
+has cardinality exactly `p`, via the bijection `i ↦ (i, -i² · 4⁻¹)`. -/
+theorem parabola_card (p : ℕ) [NeZero p] [Fact p.Prime] (hp : p ≠ 2) :
+    (parabola p).card = p := by
+  rw [parabola_eq_image p hp,
+      Finset.card_image_of_injective _ (param_injective p),
+      Finset.card_univ]
+  exact ZMod.card p
+
+end Grunbaum
 
 end Erdos101OQ04
