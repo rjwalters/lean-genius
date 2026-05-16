@@ -2,15 +2,35 @@
 
 ## Current State
 
-**Phase**: S4 ACT (palindrome sorry discharged, build clean)
+**Phase**: S5b PREP complete (`equivNatSumOfFintype` bearer + 2 elaboration-bug corrections; awaiting S6 ACT)
 **Path**: full
-**Since**: 2026-05-14T14:55Z (researcher-3, S4)
-**Last Updated**: 2026-05-14 (Session 4 researcher-3)
-**Iteration**: 4
+**Since**: 2026-05-14T14:55Z (researcher-3, S4 ACT — palindrome discharged); S5/S5b PREP layers added 2026-05-15
+**Last Updated**: 2026-05-16T09:24Z (Session 7 STATE-SYNC researcher-1; iteration head bumped 4 → 6 to reflect S5 + S5b PREP)
+**Iteration**: 6
 
-**Sorries**: 2 → 1 (`hypersimplex_palindrome_k_d_minus_1` proven; only `hypersimplex_count_k_one` remains).
-**Build**: clean (7743 Docker jobs, single iteration, 2026-05-14).
-**File**: `proofs/Proofs/EhrhartCubeProvenOQ03.lean` 119 → 169 LOC.
+**Sorries**: 2 → 1 (`hypersimplex_palindrome_k_d_minus_1` proven at S4 ACT; `hypersimplex_count_k_one` remains; ~25 LOC skeleton drafted in S5 PREP #19179 with S5b PREP #19236 elaboration-bug corrections — both doc-only, not yet build-verified).
+**Build**: last clean = S4 ACT 2026-05-14 (7743 Docker jobs); S5/S5b skeleton awaits S6 ACT to verify.
+**File**: `proofs/Proofs/EhrhartCubeProvenOQ03.lean` 169 LOC (unchanged since S4 ACT 2026-05-14).
+
+## S6 picker (post-S5b, this STATE-SYNC bump)
+
+S5 PREP (#19179, merged 2026-05-15T22:56Z): drafted ~25-LOC §3 proof skeleton for `hypersimplex_count_k_one` using `Sym.equivNatSumOfFintype` from `Mathlib/Data/Finsupp/Multiset.lean`, with 6 caveats.
+
+S5b PREP (#19236, merged 2026-05-15T18:04Z): pre-flight pin-verification found **2 elaboration bugs** in S5 §3 skeleton; corrections filed (see `sessions/2026-05-15-s5b-preflight-bearer-corrections.md`, 483 LOC).
+
+**Next picker**: S6 ACT — transcribe corrected S5+S5b skeleton into `proofs/Proofs/EhrhartCubeProvenOQ03.lean` (replace line-75 `sorry`), build-verify via `./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ03`. Pre-requisite: host disk capacity ≥ 10 Gi avail + Docker daemon responsive (current 2026-05-16T09:24Z: 100% / 6.9 Gi avail / `docker info` hung past 8 s — BLOCKED on infrastructure, not bearer or logic).
+
+## S5b PREP (researcher-12, 2026-05-15, doc-only, PR #19236)
+
+Pre-flight pin-verification of #19179 §3 skeleton against lake pin `2df2f0150c…` surfaced 2 elaboration bugs; corrections filed. Skeleton now bearer-CLEAN with corrected references.
+
+## S5 PREP (researcher-3, 2026-05-15, doc-only, PR #19179)
+
+Identified `Sym.equivNatSumOfFintype` at `Mathlib/Data/Finsupp/Multiset.lean` as minimum-LOC bearer for `hypersimplex_count_k_one`. Drafted ~25-LOC §3 proof skeleton with 6 caveats.
+
+## S4 ACT (researcher-3, 2026-05-14, PR #18923 → merged; Lean + build-verify)
+
+Discharged `hypersimplex_palindrome_k_d_minus_1` via involution `φ x i = ⟨n − x i, _⟩`, sum-of-complements identity, then `Finset.card_equiv`. Build clean on first Docker iter (7743 jobs). File 119 → 169 LOC; sorries 2 → 1.
 
 ## Session 2 — S2 PREP: Mathlib bearer audit + slot-drift discovery (researcher-10, 2026-05-13)
 
