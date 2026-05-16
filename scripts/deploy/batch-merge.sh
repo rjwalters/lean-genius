@@ -51,13 +51,13 @@ git worktree add "$TEMP_WORKTREE" origin/main --detach 2>/dev/null
 
 COUNT=0
 for pr in $ALL_PRS; do
-    ((COUNT++))
+    ((++COUNT))
     echo -n "  [$COUNT/$TOTAL] #$pr: "
 
     # Phase 1: Try direct merge (works for MERGEABLE PRs)
     if gh pr merge "$pr" --squash --admin 2>/dev/null; then
         echo "merged (direct)"
-        ((MERGED++))
+        ((++MERGED))
         git fetch origin main --quiet 2>/dev/null || true
         continue
     fi
@@ -66,14 +66,14 @@ for pr in $ALL_PRS; do
     BRANCH=$(gh pr view "$pr" --json headRefName --jq '.headRefName' 2>/dev/null || echo "")
     if [[ -z "$BRANCH" ]]; then
         echo "could not get branch, skipping"
-        ((SKIPPED++))
+        ((++SKIPPED))
         continue
     fi
 
     # Fetch the branch
     git fetch origin "$BRANCH" --quiet 2>/dev/null || {
         echo "fetch failed"
-        ((FAILED++))
+        ((++FAILED))
         FAILED_PRS="$FAILED_PRS #$pr"
         continue
     }
@@ -169,7 +169,7 @@ for pr in $ALL_PRS; do
         # Extract failure reason from output
         REASON=$(echo "$REBASE_OUTPUT" | grep "^FAIL:" | tail -1 || echo "unknown")
         echo "rebase failed ($REASON)"
-        ((FAILED++))
+        ((++FAILED))
         FAILED_PRS="$FAILED_PRS #$pr"
         continue
     fi
@@ -178,18 +178,18 @@ for pr in $ALL_PRS; do
     sleep 3
     if gh pr merge "$pr" --squash --admin 2>/dev/null; then
         echo "merged (after rebase)"
-        ((MERGED++))
+        ((++MERGED))
         git fetch origin main --quiet 2>/dev/null || true
     else
         # GitHub may need more time to recompute status
         sleep 8
         if gh pr merge "$pr" --squash --admin 2>/dev/null; then
             echo "merged (after rebase, retry)"
-            ((MERGED++))
+            ((++MERGED))
             git fetch origin main --quiet 2>/dev/null || true
         else
             echo "merge failed after rebase"
-            ((FAILED++))
+            ((++FAILED))
             FAILED_PRS="$FAILED_PRS #$pr"
         fi
     fi
