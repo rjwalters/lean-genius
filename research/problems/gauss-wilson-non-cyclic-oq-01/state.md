@@ -2,20 +2,28 @@
 
 ## Current phase
 
-**S8 ACT shipped (2026-05-13).** Phase B strategic sorry discharged
-via strong-induction-on-Finset (neither Route A nor Route B from S4
-PREP). Slug-level sorry count: **1** (Phase C non-cyclic direction at
-`GaussWilsonNonCyclicOQ01.lean:149`, transitively unblocked).
+**S11 STATE-SYNC shipped (2026-05-16, this PR).** Absorbs four merged
+work items into the on-disk tracker (S9 PREP #19270, S9 PREP-2 #19301,
+S9 ACT #19075, S10 PREP-3 session file). Slug-level sorry count
+**unchanged at 1** (Phase C non-cyclic direction at
+`GaussWilsonNonCyclicOQ01.lean:149`). The Phase C scaffold is now
+**build-verified** (3065 jobs) via #19075's outer-theorem
+`[NeZero n]` typeclass-swap; the remaining sorry is one paste away
+from discharge — paste-ready ~40-LOC skeleton lives in PR #19301 §6
+(corrected for F1/F2/F3) with goal-state walk in the merged S10 PREP-3
+session file. Lake mathlib pin unchanged at
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; 14-bearer drift recheck
+in this PR's sessions/ file §2 confirms zero substantive drift.
 
-## Phase chain snapshot (2026-05-13 post-S8 ACT)
+## Phase chain snapshot (2026-05-16 post-S11 STATE-SYNC)
 
-| Phase | File | LOC | Sorries | Status | Originating PR |
+| Phase | File | LOC | Sorries | Status | Originating PR(s) |
 |---|---|---|---|---|---|
 | A | `GaussWilsonNonCyclicOQ01A.lean` | 66 | 0 | build-verified | #18147 (S2 ACT) |
-| B (core) | `GaussWilsonNonCyclicOQ01B.lean` | 243 | **0** | **build-verified** | #18232 (S3) + #18??? (S8 this PR) |
-| C (iff scaffold) | `GaussWilsonNonCyclicOQ01.lean` | 201 | 1 | build-pending | #18652 (S6 ACT) |
+| B (core) | `GaussWilsonNonCyclicOQ01B.lean` | 243 | **0** | **build-verified** | #18232 (S3) + #18957 (S8 ACT) |
+| C (iff scaffold) | `GaussWilsonNonCyclicOQ01.lean` | 201 | **1** | **build-verified** | #18652 (S6 ACT) + #18743 (S7 ACT cyclic dir) + **#19075 (S9 ACT outer-theorem `[NeZero n]` unblocker, 3065 jobs)** |
 
-**Remaining sorry (build-pending; companion: 0 axioms slug-wide):**
+**Remaining sorry (slug-wide axiom count: 0):**
 
 1. `GaussWilsonNonCyclicOQ01.lean:149` —
    `prod_eq_one_of_not_isCyclic_aux` (Phase C non-cyclic direction).
@@ -23,9 +31,96 @@ PREP). Slug-level sorry count: **1** (Phase C non-cyclic direction at
    `prod_univ_eq_prod_two_torsion`, (ii) parent's
    `card_sq_eq_one_ge_three` + power-of-2-cardinality upgrade,
    (iii) Phase B `prod_univ_eq_one_of_elementary_card_ge_four`
-   (now sorry-free post-S8). Estimated 30-50 lines.
+   (now sorry-free post-S8). The paste-ready ~40-LOC discharge
+   skeleton lives in PR #19301 (S9 PREP-2) §6 — F1+F2+F3-corrected;
+   `_hncyc → hncyc` rename on parent file line 147 still required at
+   paste time (verified by `git show origin/main:...` at this PR's
+   commit time).
 
 ## Iteration log
+
+### S11 STATE-SYNC — 2026-05-16 (this PR)
+
+**Result:** Doc-only tracker resync. Absorbs four merged work items
+(S9 PREP #19270, S9 PREP-2 #19301, S9 ACT #19075, and the
+S10 PREP-3 sessions file from the same 2026-05-15 18:00Z drain wave)
+into this `state.md`. Adds new sessions file
+`sessions/2026-05-16-s11-state-sync-and-act-readiness-refresh.md`
+with 14-bearer drift recheck at the current `origin/main` lake mathlib
+pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (zero drift), refreshed
+S11 ACT-readiness gate (GO on all 4 conditions, NO-GO on none of 3),
+and a one-screen S11 ACT recipe pointing the implementer at PR #19301
+§6's corrected skeleton.
+
+**Files:** +1 new (this PR's `sessions/` file) + 1 update
+(`state.md`). Zero Lean edits; zero `meta.json` edits; zero gallery
+JSON edits.
+
+**Composition:** Strictly conflict-free against the only concurrent
+open PR (sibling `oq-03` PR #18230, DIRTY, touches disjoint files).
+No open PR on this slug at PR-commit time.
+
+**Sorries / axioms delta:** unchanged. Slug-wide: 1 sorry (Phase C
+non-cyclic-direction aux at `GaussWilsonNonCyclicOQ01.lean:149`),
+0 axioms.
+
+### S10 PREP-3 — 2026-05-15 (merged in 2026-05-15T18:00Z drain wave)
+
+**Result:** Doc-only. Per-tactic goal-state walk of #19301 §6's
+corrected ~40-LOC skeleton (every tactic line: goal-before, goal-after,
+hypothesis context delta, inference rule); F1 lambda-typing precision
+audit; residual-risk inventory P1-P4 with paste-ready fallback recipes;
+S(11) ACT-readiness gate (exact build command, expected job count,
+go/no-go criterion, post-ACT bookkeeping). One new file:
+`sessions/2026-05-15-s10-prep-goal-state-walk-and-act-readiness.md`
+(~837 LOC).
+
+### S9 ACT — 2026-05-15 (PR #19075 merged 23:26:43Z)
+
+**Result:** Build-verified surgical 12-line patch to the OUTER theorem
+`prod_univ_units_zmod_eq_neg_one_iff_isCyclic` at
+`Proofs/GaussWilsonNonCyclicOQ01.lean:174–194`. Swaps the
+`(hn : 1 ≤ n)` explicit hypothesis for an `[NeZero n]` typeclass so
+that the `Fintype (ZMod n)ˣ` instance flows in at statement elaboration
+time. Phase C scaffold builds clean: **3065 jobs**, zero compilation
+errors, zero new sorries. Inner-theorem region (lines 146–149) and
+Phase A / Phase B files **untouched**. The slug's outstanding sorry
+remains at line 149 — `prod_eq_one_of_not_isCyclic_aux`, the Phase C
+non-cyclic-direction auxiliary — ready for S11 ACT paste from #19301
+§6's corrected skeleton.
+
+**Sorries / axioms delta:** unchanged. Slug-wide: 1 sorry, 0 axioms.
+Build status: `Phase C build-pending → build-verified`.
+
+### S9 PREP / S9 PREP-2 — 2026-05-15 (PR #19270 + #19301 merged 18:00–18:02Z)
+
+**Result:** Doc-only PREP wave for the inner Phase C non-cyclic
+direction discharge:
+
+- **#19270 (S9 PREP, merged 18:02:17Z):** 11-bearer Mathlib pin table
+  at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` + paste-ready
+  ~38-LOC ACT skeleton via subgroup-construction + `IsPGroup.iff_card`
+  + Phase B application route.
+
+- **#19301 (S9 PREP-2, merged 18:00:35Z):** Cross-PR seam audit of
+  #19075 + #19270. Surfaces 3 build risks the original skeleton would
+  hit (F1 `SubmonoidClass.coe_finset_prod` over-application TYPE
+  ERROR; F2 missing `_hncyc → hncyc` parent rename UNKNOWN IDENTIFIER;
+  F3 `simp [T]` on `let`-bound `T` FRAGILE) and 1 citation correction
+  (F4 `Nat.card_eq_fintype_card` lives in `SetTheory/Cardinal/Finite.lean:45`,
+  not `Data/Finite/Card.lean`). Promotes 2 bonus `rfl`-bearers
+  (`SubgroupClass.coe_pow`, `OneMemClass.coe_one` — both `@[simp, norm_cast]
+  rfl` at `Subgroup/Defs.lean:246` + `:526`) from soft-risk to
+  confirmed-safe. Ships F1+F2+F3-corrected ~40-LOC skeleton in §6.
+  Numerical sanity at `n ∈ {8, 12, 15}`.
+
+Each PR ships exactly one new session file under
+`research/problems/gauss-wilson-non-cyclic-oq-01/sessions/` with
+zero edits to `state.md`, `problem.md`, `knowledge.md`, `meta.json`,
+or any Lean file (per PREP convention).
+
+**Sorries / axioms delta:** unchanged (PREPs). Slug-wide: 1 sorry,
+0 axioms.
 
 ### S8 ACT — 2026-05-13 (this PR)
 
@@ -254,32 +349,66 @@ the file (S9 candidate).
 
 ## Next Action
 
-**S9 ACT — close the Phase C non-cyclic-direction sorry
-`prod_eq_one_of_not_isCyclic_aux`** at
-`GaussWilsonNonCyclicOQ01.lean:149`. With Phase B now sorry-free (S8
-ACT this PR), the composition described in the in-file docstring
-(lines 133-135) is mechanically tractable:
+**S11 ACT — paste the F1+F2+F3-corrected ~40-LOC skeleton from PR
+#19301 §6** at `Proofs/GaussWilsonNonCyclicOQ01.lean:146–149`, **with
+the F2 `_hncyc → hncyc` rename on line 147**, then run a single Docker
+build cycle:
+
+```bash
+./proofs/scripts/docker-build.sh Proofs.GaussWilsonNonCyclicOQ01
+```
+
+Expected: 3065 ± 5 jobs, zero `'sorry'` warnings, ~20s warm-cache
+wall-clock. Iteration budget: 1-expected, 2-worst-case. If Iter 1
+fails, consult the merged S10 PREP-3 sessions file §4 (P1-P4 fallback
+recipes) for the matching fix.
+
+**Why a paste rather than fresh derivation:** the discharge route was
+designed in S5b/S6 (Phase C iff scaffold + cyclic-direction recipe),
+the bearer table was pinned in S9 PREP (#19270) at lake SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, the 3 build risks were
+audited and fixed in S9 PREP-2 (#19301), and a per-tactic goal-state
+walk in S10 PREP-3 confirms every line of the corrected skeleton
+elaborates as intended. S11 STATE-SYNC (this PR) re-corroborates all
+14 bearer pins at the current `origin/main` lake SHA — zero drift —
+and confirms the parent file's `_hncyc` underscore is still present
+on line 147 (rename still required at paste time).
+
+**Mathematical route** (unchanged from S5b/S6 design):
 
 1. Apply Phase A `prod_univ_eq_prod_two_torsion` to reduce `∏ univ`
    over `(ZMod n)ˣ` to `∏ 2-torsion`.
-2. Invoke parent `card_sq_eq_one_ge_three` to get `|2-torsion| ≥ 3`.
-3. Power-of-2-cardinality upgrade: 2-torsion has exponent 2 → its
-   order is a power of 2 → `≥ 3` upgrades to `≥ 4`.
-4. Apply Phase B `prod_univ_eq_one_of_elementary_card_ge_four`.
+2. Build the 2-torsion as a `Subgroup` `T` (carrier, one_mem, mul_mem,
+   inv_mem).
+3. Show `IsPGroup 2 T` via `Subtype.ext (show g^2 = 1; exact hg)`
+   (load-bearing on `SubgroupClass.coe_pow` being `rfl`).
+4. Apply `IsPGroup.iff_card` (lake SHA `:46`) to get `Nat.card T = 2^k`.
+5. Show `|T| ≥ 3` via parent's `card_sq_eq_one_ge_three`; combined with
+   `|T| = 2^k`, deduce `k ≥ 2`, hence `|T| ≥ 4`.
+6. Apply Phase B `prod_univ_eq_one_of_elementary_card_ge_four`.
+7. Bridge subgroup ↔ ambient via `SubmonoidClass.coe_finset_prod`
+   (F1: drop `T.toSubmonoid` arg — 2 explicit args only) and
+   `Finset.prod_subtype` (F3: avoid `simp [T]`; use explicit
+   `constructor`).
 
-Step (3) is the load-bearing step; Mathlib offers
-`IsPGroup.card_eq_pow_one_iff_orderOf_dvd` (or similar) for the
-prime-power-cardinality lemma. S5b PREP (PR #18607) scoped this out
-in detail. Estimated 30-50 lines.
+**S12 (after S11 ACT) — closure bookkeeping:**
 
-**S10 (after S9) — completion:** build-verify all three files
-(Docker rebuild from clean `.lake`); update meta.json sorry/axiom
-counts; close the slug as COMPLETED.
+1. Post-merge `state.md` Phase C row: `sorries 1 → 0`, drop
+   "Remaining sorry" block.
+2. Optional `meta.json` audit: parent gallery proof
+   `gauss-wilson-non-cyclic` remains `verified, sorries: 0`
+   (unaffected); slug has no per-slug gallery meta.
+3. Peer-review / Auditor pass to confirm 0 axioms + 0
+   structure-encoded assumptions slug-wide; promote
+   `formalized → verified` only after that confirmation per
+   CLAUDE.md axiom-integrity policy.
 
 ## Attempt Counts
 
-- Total attempts: 10 (S1 OBSERVE, S2 ACT, S3 ACT partial, S4 PREP, S4b
-  PREP, S5 PREP, S5b PREP, S6 ACT, S7 PREP, S7 ACT).
+- Total attempts: 17 (S1 OBSERVE, S2 ACT, S3 ACT partial, S4 PREP, S4b
+  PREP, S5 PREP, S5b PREP, S6 ACT, S7 PREP, S7 ACT, STATE-SYNC #18942,
+  S8 ACT, S9 PREP, S9 PREP-2, S9 ACT, S10 PREP-3, S11 STATE-SYNC this
+  PR). One pending: S11 ACT.
 - Current approach attempts: per-phase, 1 each.
 - Approaches tried: 1 (3-phase decomposition).
 
@@ -288,21 +417,30 @@ counts; close the slug as COMPLETED.
 - `problem.md` — formal Lean signature targets, three-phase decomposition.
 - `knowledge.md` — proof sketches, Mathlib API summary, S2 next-action skeleton.
 - `proofs/Proofs/GaussWilsonNonCyclicOQ01A.lean` — Phase A (S2, 0 sorries, build-verified).
-- `proofs/Proofs/GaussWilsonNonCyclicOQ01B.lean` — Phase B core (S3, 1 strategic sorry, build-pending).
-- `proofs/Proofs/GaussWilsonNonCyclicOQ01.lean` — Phase C iff scaffold (S6, S7-discharged cyclic direction, 1 remaining sorry, build-pending).
+- `proofs/Proofs/GaussWilsonNonCyclicOQ01B.lean` — Phase B core (S3 + S8, 0 sorries, build-verified).
+- `proofs/Proofs/GaussWilsonNonCyclicOQ01.lean` — Phase C iff scaffold (S6 + S7 + S9 ACT #19075 `[NeZero n]` unblocker, 1 remaining sorry on line 149, **build-verified per 3065 jobs**).
 
 ## Race awareness
 
-As of this STATE-SYNC commit, **0 open PRs** on
-`gauss-wilson-non-cyclic-oq-01` (`gh pr list --search
-"gauss-wilson-non-cyclic-oq-01 in:title" --state open` returns `[]`).
-Sibling `gauss-wilson-non-cyclic-oq-03` has 1 open PR (#18230, S5-prep
-on parity at odd primes) — independent slug, no overlap with this
-slug's Phase B/C strategic sorries.
+As of this S11 STATE-SYNC commit, **0 open PRs** on
+`gauss-wilson-non-cyclic-oq-01` (`gh pr list --repo rjwalters/lean-genius
+--search "gauss-wilson-non-cyclic-oq-01" --state open` returns `[]`
+prior to this PR's push). Sibling `gauss-wilson-non-cyclic-oq-03` has
+1 open PR (#18230, S5-prep on parity at odd primes; mergeStatus DIRTY)
+— independent slug touching `OQ03.lean` + `oq-03/state.md` +
+`oq-03.json`, zero overlap with this slug.
 
 ## STATE-SYNC notes
 
-This entry is a doc-only tracker resync (no Lean / no JSON beyond
-`currentState` / `knowledge.progressSummary` / `lastUpdate`). The
-in-file Phase chain docstring in `GaussWilsonNonCyclicOQ01.lean` is
-intentionally left stale (refresh deferred to next ACT touch).
+This S11 STATE-SYNC entry is a doc-only tracker resync (1 new sessions
+file + state.md update; no Lean / no `meta.json` / no gallery JSON).
+The in-file docstring of `GaussWilsonNonCyclicOQ01.lean` still says
+"2 strategic sorries deferred to S7/S8" (lines 25, 33) and the Phase
+chain table on line 32 still describes Phase B as "S3 PR #18232" only
+— refresh deferred to the next ACT touch (S11 ACT), where it
+naturally accompanies the discharge of the remaining sorry. See the
+new sessions file
+`sessions/2026-05-16-s11-state-sync-and-act-readiness-refresh.md`
+for the full absorption inventory, 14-bearer drift recheck at lake SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, and refreshed S11 ACT
+readiness gate.
