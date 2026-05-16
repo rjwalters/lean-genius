@@ -1,8 +1,157 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-08
-**Iteration**: 11
+**Since**: 2026-05-16
+**Iteration**: 14
+
+## Session 14 (2026-05-16, STATE-SYNC — post-S12+S13-PREP-merge refresh, bearer drift recheck, two ACT-time risk flags pre-discharged)
+
+Doc-only STATE-SYNC iteration. PR #19322 (own prior branch
+S2 PREP for unrelated slug `angle-trisection-...`) merged
+2026-05-16T00:08:48Z; this slug's S12 PREP (PR #19217) and S13 PREP
+(PR #19299) merged in the 2026-05-15T18:00–18:06Z drain wave (within
+~5 min of each other and ~5 min after S11 BUILD-REPAIR PR #19017
+merged at 17:59Z). Both S12+S13 PREPs explicitly deferred state.md
+and JSON refresh to "next STATE-SYNC iteration" (S12 PREP §2.2; S13
+PREP §6.3) to remain conflict-free with the open S11 PR. This S14
+ships those deferred updates plus three new bearer pins.
+
+### What S12 PREP (#19217) added
+
+**Path Forward (A) Kummer**: pinned `Nat.pow_factorization_choose_le`
+at `Mathlib/Data/Nat/Choose/Factorization.lean:196` (lake SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`). Signature
+`(hn : 0 < n) : p ^ (choose n k).factorization p ≤ n`. Drafted the
+S15 ACT skeleton (`choose_dvd_lcmRange : 0 < n → k ≤ n →
+Nat.choose n k ∣ lcmRange n`) at ~50-60 LOC.
+
+**Path Forward (B) vdP §6 bypass**: ruled out. The induction-on-k
+closed form `lcmRange(n)³ · C(n,k) · C(n+k,k) · S_k(n) ∈ ℤ` does
+NOT bypass `mul_choose_dvd_lcmRange` for general m: the induction
+step introduces a `(n - k + 1)(n + k) / k²` rescaling that requires
+the *squared* prefactor `C(n,k)² C(n+k,k)²` plus a Wilf-Zeilberger
+creative-telescoping certificate. Formalizing W-Z is "not noticeably
+easier than path (A)".
+
+**Recommendation**: queue S12 ACT (renumbered to S15 here) as Path
+(A.1) — `choose_dvd_lcmRange`, +~60 LOC, axiom-free. The harder
+`mul_choose_dvd_lcmRange` (A.2) follows by case analysis on whether
+`p ∣ m`.
+
+### What S13 PREP (#19299) added on top of S12
+
+**Sibling-audit value** (S13 PREP §"Distinct value"):
+
+1. All four S12-pinned Mathlib bearers re-pin-verified at lake SHA
+   via direct `gh api` + `curl` download (line numbers confirmed
+   exactly, not via search-API indexing).
+2. **One adjacent bearer newly pinned**: `Finset.prod_dvd_of_isRelPrime`
+   at `Mathlib/RingTheory/Coprime/Lemmas.lean:252` — replaces S12's
+   loose `Finset.prod_dvd via primes-coprime` placeholder.
+3. **Goal-state walk** of A.1: identifies three sub-goals
+   (per-p divisibility split into v=0 vs v>0; pairwise IsRelPrime by
+   case on factorization values) and pins typeclass dependency
+   `DecompositionMonoid ℕ` via `[Nonempty (GCDMonoid α)]` instance at
+   `Mathlib/Algebra/GCDMonoid/Basic.lean:493`.
+4. **Path (B) re-verified**: `R_k = (n-k+1)(n+k)/k²` recurrence
+   confirmed, W-Z absence from Mathlib confirmed via
+   `gh api search/code` round-trip.
+5. **Path (A.2) bound re-validated** at 7 distinct (n, m, p) cases.
+   S12 PREP's n=4, m=2, p=2 counterexample for the naive
+   `v_p(n) + log_p(n-1)` route is reconfirmed. Two additional
+   bearers pinned for the correct Legendre route:
+   `Nat.Prime.emultiplicity_choose` at `Multiplicity.lean:209`
+   (Kummer's theorem) and `Nat.Prime.emultiplicity_factorial` at
+   `Multiplicity.lean:102` (Legendre).
+
+**Sequencing recommendation** (S13 §7): wait for #19017 + #19217 +
+#19299 to merge (all done 2026-05-15T18:00-18:06Z); then
+S14 ACT = A.1, S15 ACT = A.2, S16+ = vdP §6 application.
+
+### What this S14 STATE-SYNC adds (3 new pins + 2 risk-flag discharges + renumber)
+
+**S14 §3 bearer drift recheck — 6 bearers, 0 drift**: all bearers
+S12+S13 pinned at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+re-verified at the same SHA (which is still current per current
+`proofs/lake-manifest.json`). Zero file-position changes. The
+re-pin documents the recheck protocol for S15+ ACTs.
+
+**S14 §4 — two S13 §3.6 ACT-time risk flags PRE-DISCHARGED**:
+
+| S13 §3.6 risk flag | S14 discharge |
+|--------------------|---------------|
+| `Nat.coprime_iff_isRelPrime` may have moved/renamed in v4.26.0 | Pinned at `Mathlib/Data/Nat/GCD/Basic.lean:218` (signature unchanged) |
+| `factorization_eq_zero_of_not_prime` may have renamed in v4.26.0 | Pinned at `Mathlib/Data/Nat/Factorization/Defs.lean:129` (signature unchanged) |
+
+Both bearers are in scope after the slug's existing imports
+(`Mathlib.Algebra.GCDMonoid.Finset` + `Mathlib.Tactic`).
+
+**S14 §5 — one new bearer pin**: `isRelPrime_one_left` at
+`Mathlib/Algebra/Divisibility/Units.lean:166` (signature
+`IsRelPrime 1 x := isUnit_one.isRelPrime_left`). S13 §3.4 sub-case
+(i) wrote "Mathlib pin needed; at
+`Mathlib/Algebra/GroupWithZero/Coprime.lean` or similar"; the actual
+location is `Mathlib/Algebra/Divisibility/Units.lean`, transitively
+imported via `Mathlib.Tactic`.
+
+**S14 §6 — S12+S13 compatibility synthesis (no contradictions)**:
+
+| Topic | S12 conclusion | S13 conclusion | Synthesis |
+|-------|----------------|----------------|-----------|
+| Path (A) Kummer is right route | Yes | Yes | ✓ |
+| Path (B) bypass viable | No | No | ✓ |
+| A.1 LOC budget | ~50-60 | ~30-40 | S13 tighter; ~30-40 binding |
+| Mathlib bearer for `Finset.prod` step | Loose `Finset.prod_dvd` | `Finset.prod_dvd_of_isRelPrime:252` | S13 sharpens |
+| Recommended next ACT | S12a → A.1 (~60 LOC) | S14 ACT → A.1 → S15 ACT → A.2 | ✓ — S14 renumbers (+1) for itself |
+
+**S14 §6.1 — RENUMBERING**: this STATE-SYNC absorbs iteration count 14;
+the post-STATE-SYNC ACTs shift +1:
+
+- ~~S14 ACT~~ → **S15 ACT**: A.1 implementation
+  (`choose_dvd_lcmRange`, ~30-40 LOC, Docker-verify required).
+- ~~S15 ACT~~ → **S16 ACT**: A.2 implementation
+  (`mul_choose_dvd_lcmRange`, ~80-120 LOC, Docker-verify required).
+- ~~S16+ ACT~~ → **S17+ ACT**: apply A.2 to vdP §6 alternating-bilinear
+  summand for final `denominator_control` discharge.
+
+The renumber preserves CONTENT sequence; only labels shift. State.md,
+JSON, and PR titles should adopt the renumber.
+
+### S15 ACT readiness checklist (post-S14)
+
+| Item | Status |
+|------|--------|
+| `Nat.pow_factorization_choose_le` bearer pinned | ✓ S12 + S13 |
+| `Nat.prod_pow_factorization_choose` bearer pinned | ✓ S12 + S13 |
+| `Finset.prod_dvd_of_isRelPrime` bearer pinned | ✓ S13 §2.4 |
+| `DecompositionMonoid ℕ` typeclass in scope | ✓ S13 §2.5 |
+| `Nat.coprime_iff_isRelPrime` bearer pinned | ✓ **S14 §4.1** |
+| `Nat.factorization_eq_zero_of_not_prime` bearer pinned | ✓ **S14 §4.2** |
+| `isRelPrime_one_left` bearer pinned | ✓ **S14 §5** |
+| Lake SHA stable (`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) | ✓ S14 §3 |
+| File LOC + axiom + sorry count baseline | ✓ 799 / 0 / 0 (S11 post-fix) |
+| Build-pending precedent for ACT | **Docker-verify required** (S11 admonition) |
+
+S15 ACT can begin without further PREP work.
+
+### Counts (post-S14, unchanged from S11)
+
+| Metric    | Value |
+|-----------|-------|
+| File LOC  | 799 (unchanged from S11) |
+| Sorries   | 0 (unchanged) |
+| Axioms    | 0 (unchanged) |
+| Theorems  | 16 (unchanged) |
+| Build     | verified clean (3058 jobs, S11 baseline) |
+
+**Axiom delta this session**: 0 (documentation-only).
+
+**Files changed**: this state.md (+ ~110 LOC near top); the slug's
+JSON (`currentState.iteration` 11 → 14, `since` 2026-05-08 →
+2026-05-16, `lastUpdate`, refreshed `nextAction`, plus 3 new entries
+each in `knowledge.insights` and `knowledge.nextSteps`); 1 new
+sessions/ note (`2026-05-16-s14-state-sync-post-s12-s13-prep-merge.md`).
+0 Lean file edits. 0 sibling-slug edits.
 
 ## Session 11 (2026-05-14, ACT — Mathlib v4.26.0 build-repair, Docker-verified)
 
