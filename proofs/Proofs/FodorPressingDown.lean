@@ -414,6 +414,118 @@ theorem nonLimitOrdinals_not_isStationaryBelow {κ : Cardinal.{0}}
   exact hγnonlim.2 hγlim.2
 
 -- ══════════════════════════════════════════════════════════════════
+-- § Part VIII: Solovay Splitting — Step 2 Companions (S2-β-α ACT)
+-- ══════════════════════════════════════════════════════════════════
+
+/-- **Binary intersection of clubs is a club** (S2-β-α companion).
+
+    Two clubs `C, D` below `κ.ord` intersect to a club. This is the
+    workhorse companion used to derive `IsStationaryBelow.inter_isClubBelow`
+    (which then powers the WLOG-restrict-to-limits reduction at the head of
+    Solovay Step 2).
+
+    Closure: an `IsAcc`-point of `C ∩ D` is an `IsAcc`-point of both `C`
+    and `D` (the `IsAcc` witnesses lift through the intersection by
+    projecting the membership pair), so it lies in both by their closure.
+
+    Unboundedness: apply `diagInter_isUnboundedBelow` to the 2-element
+    family `f β = C if β = 0 else D` (both clubs) from starting point
+    `max α 1`. The resulting `γ ∈ diagInter f κ.ord` has `γ > max α 1 ≥ 1`,
+    so both `0 < γ` and `1 < γ`, witnessing `γ ∈ f 0 = C` and `γ ∈ f 1 = D`. -/
+theorem IsClubBelow.inter {C D : Set Ordinal} {κ : Cardinal.{0}}
+    (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
+    (hC : IsClubBelow C κ.ord) (hD : IsClubBelow D κ.ord) :
+    IsClubBelow (C ∩ D) κ.ord where
+  subset_Iio := fun _ hx => hC.subset_Iio hx.1
+  closed := by
+    rw [isClosedBelow_iff]
+    intro p hpκ hpAcc
+    refine ⟨?_, ?_⟩
+    · -- p ∈ C: p IsAcc on C ∩ D ⇒ p IsAcc on C
+      apply hC.closed.forall_lt p hpκ
+      rw [isAcc_iff] at hpAcc ⊢
+      refine ⟨hpAcc.1, fun q hq => ?_⟩
+      obtain ⟨r, hrCD, hqr, hrp⟩ := hpAcc.2 q hq
+      exact ⟨r, hrCD.1, hqr, hrp⟩
+    · -- p ∈ D: p IsAcc on C ∩ D ⇒ p IsAcc on D
+      apply hD.closed.forall_lt p hpκ
+      rw [isAcc_iff] at hpAcc ⊢
+      refine ⟨hpAcc.1, fun q hq => ?_⟩
+      obtain ⟨r, hrCD, hqr, hrp⟩ := hpAcc.2 q hq
+      exact ⟨r, hrCD.2, hqr, hrp⟩
+  unbounded := by
+    intro α hα
+    -- 2-element family selecting C at β=0 and D otherwise
+    let f : Ordinal → Set Ordinal := fun β => if β = 0 then C else D
+    have hf_club : ∀ β < κ.ord, IsClubBelow (f β) κ.ord := by
+      intro β _
+      by_cases hβ : β = 0
+      · simp only [f, hβ, if_true]; exact hC
+      · simp only [f, if_neg hβ]; exact hD
+    -- κ.ord > 1: regularity gives ω₀ ≤ κ.ord, and 1 < ω₀
+    have h1lt : (1 : Ordinal) < κ.ord := by
+      have h_aleph0_le : (Cardinal.aleph0 : Cardinal).ord ≤ κ.ord :=
+        Cardinal.ord_le_ord.mpr hκ.aleph0_le
+      rw [Cardinal.ord_aleph0] at h_aleph0_le
+      exact lt_of_lt_of_le Ordinal.one_lt_omega0 h_aleph0_le
+    -- Starting point: max α 1 < κ.ord
+    have hmaxκ : max α 1 < κ.ord := max_lt hα h1lt
+    -- diagInter unboundedness gives γ above max α 1, in diagInter f κ.ord
+    obtain ⟨γ, hγdiag, hmγ, hγκ⟩ :=
+      diagInter_isUnboundedBelow hκ hκ_unc hf_club (max α 1) hmaxκ
+    rw [mem_diagInter] at hγdiag
+    obtain ⟨_, hγfor⟩ := hγdiag
+    -- max α 1 ≥ 1 ensures γ > 1; max α 1 ≥ α ensures γ > α
+    have hγ_gt_1 : (1 : Ordinal) < γ := lt_of_le_of_lt (le_max_right α 1) hmγ
+    have hγ_gt_0 : (0 : Ordinal) < γ := lt_of_lt_of_le one_pos (le_of_lt hγ_gt_1)
+    have hα_lt_γ : α < γ := lt_of_le_of_lt (le_max_left α 1) hmγ
+    have hγC : γ ∈ C := by
+      have h := hγfor 0 hγ_gt_0
+      simp only [f, if_true] at h
+      exact h
+    have hγD : γ ∈ D := by
+      have h : γ ∈ f 1 := hγfor 1 hγ_gt_1
+      simpa [f] using h
+    exact ⟨γ, ⟨hγC, hγD⟩, hα_lt_γ, hγκ⟩
+
+/-- **Intersection with a club preserves stationarity** (S2-β-α companion).
+
+    If `S` is stationary below `κ.ord` and `C` is a club below `κ.ord`,
+    then `S ∩ C` is stationary. This is the WLOG-in-club pull-back the
+    S2-β ACT writer uses with `C = isLimitOrdinals_isClubBelow` to
+    restrict any stationary `S` to its limit-ordinal part before invoking
+    the cofinal-sequence machinery (S2-β / Solovay Step 2 proper).
+
+    Proof: For any club `D` below `κ.ord`, `C ∩ D` is a club
+    (`IsClubBelow.inter`), so the stationarity of `S` yields some
+    `γ ∈ S ∩ (C ∩ D)`; rearrange to `(S ∩ C) ∩ D`. -/
+theorem IsStationaryBelow.inter_isClubBelow {S C : Set Ordinal} {κ : Cardinal.{0}}
+    (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
+    (hS : IsStationaryBelow S κ.ord) (hC : IsClubBelow C κ.ord) :
+    IsStationaryBelow (S ∩ C) κ.ord := by
+  intro D hD
+  -- C ∩ D is a club by binary intersection
+  have hCD : IsClubBelow (C ∩ D) κ.ord := IsClubBelow.inter hκ hκ_unc hC hD
+  -- S meets C ∩ D by stationarity of S
+  obtain ⟨γ, hγS, hγCD⟩ := hS (C ∩ D) hCD
+  -- γ ∈ S ∧ γ ∈ C ∧ γ ∈ D ⇒ γ ∈ (S ∩ C) ∩ D
+  exact ⟨γ, ⟨hγS, hγCD.1⟩, hγCD.2⟩
+
+/-- **Stationary restricts to limits, with WLOG ⊆ limit ordinals** (S2-β-α corollary).
+
+    Stationary subsets `S ⊆ κ.ord` can be WLOG-assumed to consist of limit
+    ordinals: `S ∩ {α | IsSuccLimit α}` is itself stationary below `κ.ord`.
+
+    This is `IsStationaryBelow.inter_isClubBelow` applied with
+    `C = isLimitOrdinals_isClubBelow`, packaged as a directly-usable form
+    for the S2-β / Solovay Step 2 ACT writer. -/
+theorem IsStationaryBelow.inter_isLimitOrdinals {S : Set Ordinal} {κ : Cardinal.{0}}
+    (hκ : κ.IsRegular) (hκ_unc : ℵ₀ < κ)
+    (hS : IsStationaryBelow S κ.ord) :
+    IsStationaryBelow (S ∩ {α : Ordinal | α < κ.ord ∧ IsSuccLimit α}) κ.ord :=
+  hS.inter_isClubBelow hκ hκ_unc (isLimitOrdinals_isClubBelow hκ hκ_unc)
+
+-- ══════════════════════════════════════════════════════════════════
 -- § Summary and Open Next Steps
 -- ══════════════════════════════════════════════════════════════════
 
@@ -434,6 +546,9 @@ Key results:
   ✓ `fodor_aleph1`: specialization to ω₁
   ✓ `isLimitOrdinals_isClubBelow`: limit ordinals below κ.ord form a club (Solovay Step 1)
   ✓ `nonLimitOrdinals_not_isStationaryBelow`: non-limit ordinals are non-stationary (corollary)
+  ✓ `IsClubBelow.inter`: binary intersection of clubs is a club (Solovay Step 2 companion)
+  ✓ `IsStationaryBelow.inter_isClubBelow`: stationary ∩ club is stationary (Solovay Step 2 companion)
+  ✓ `IsStationaryBelow.inter_isLimitOrdinals`: WLOG-restrict stationary to limit ordinals
 
 Sorries remaining: 0
 

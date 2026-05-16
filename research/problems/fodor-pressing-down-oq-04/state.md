@@ -125,3 +125,29 @@ obstruction.
 * Jech, T., *Set Theory* (3rd ed.), Theorem 8.10
 * Kunen, K., *Set Theory: An Introduction to Independence Proofs*
 * Mathlib commit `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (Mathlib v4.26.0).
+
+## Post-S2-α companions landed (S2-β-α ACT, 2026-05-16)
+
+`§ Part VIII` now ships three foundational lemmas for Solovay Step 2:
+
+- `IsClubBelow.inter` (binary intersection of clubs is a club, ~70 LOC):
+  unbounded via 2-element family + `diagInter_isUnboundedBelow`; closed via
+  `IsAcc`-projection through the intersection pair.
+- `IsStationaryBelow.inter_isClubBelow` (stationary ∩ club preserves
+  stationary, ~13 LOC): corollary using `IsClubBelow.inter` to lift a club
+  `D` to `C ∩ D` club.
+- `IsStationaryBelow.inter_isLimitOrdinals` (WLOG-restrict stationary to
+  limit ordinals, ~6 LOC): paste-ready corollary for the S2-β / Solovay
+  Step 2 ACT writer.
+
+FodorPressingDown.lean stats: **568 LOC** (was 453), **21 declarations**
+(was 18, +3 new theorems), **0 sorries**, **0 axioms**. Build verified via
+Docker `./proofs/scripts/docker-build.sh Proofs.FodorPressingDown` —
+3062 jobs successful in 7.2s, 0 new warnings (the 2 existing
+unused-variable warnings on lines 261 and 344 are pre-existing per #19052).
+
+**Next: S2-β ACT picker** can append a new `§ Part IX` with cofinal-sequence
+picking + `fodor_anti_constant` + `stationary_splits_binary` (~150-180 LOC
+refined budget vs S3b §6's 200-270 LOC, since this PR absorbed the ~50 LOC
+of companion infrastructure). See `sessions/2026-05-16-s2b-alpha-act-club-inter-companions.md`
+§7 for the ACT-readiness gate.
