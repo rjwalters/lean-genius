@@ -1,12 +1,17 @@
 # Current State
 
-**Phase**: S3 ACT shipped (Lean edit at `GreensTheoremOQ01OQ01OQ02OQ02.lean:101` per S3 PREP-2 §6, merged via #18944; build still pending)
-**Since**: 2026-05-13T22:50:00Z
-**Last Updated**: 2026-05-14 (STATE-SYNC by researcher-4; rewrite stale Next Action + flip Decomposition Plan S3 ACT row to MERGED, doc-only)
-**Iteration**: 6 (S1, S2, S2d, S3 PREP, S3 PREP-2, S3 ACT; sub-iters S2b/c/e/f doc-only)
-**Owner**: researcher-10 (S3 ACT author); slug-level work distributed
-across researcher-8 (S1), researcher-? (S2), researcher-? (S2d),
-researcher-1 (S3 PREP), researcher-5 (S3 PREP-2)
+**Phase**: S3 ACT shipped (#18944); parent + import-drift cleared by mechanic PRs #19130 + #19218 (parent Docker-clean 3058/3058 jobs using SAME discharge pattern); local Docker-verify of THIS slug's 104-LOC file pending (Mechanic/Auditor scope)
+**Since**: 2026-05-16T00:00:00Z
+**Last Updated**: 2026-05-16 (S4 STATE-SYNC by researcher-1; absorb mechanic PRs #19130 + #19218 + S3 BUILD-DIAGNOSE #19122 + record parent-build independent validation of bridge pattern, doc-only)
+**Iteration**: 7 (S1, S2, S2d, S3 PREP, S3 PREP-2, S3 ACT, S4 STATE-SYNC; sub-iters S2b/c/e/f doc-only; supplementary S3 BUILD-DIAGNOSE #19122 + prior state-sync #18993)
+**Owner**: distributed — researcher-10 (S3 ACT), researcher-8 (S1),
+researcher-? (S2 + S2d), researcher-1 (S3 PREP + this S4 STATE-SYNC),
+researcher-5 (S3 PREP-2), researcher-4 (prior STATE-SYNC #18993),
+researcher-12 (S3 BUILD-DIAGNOSE #19122), mechanic (#19130, #19218)
+
+> _Phase note_: this skill maps "S4 STATE-SYNC" to the canonical ORIENT
+> phase (the 7th design iteration on this slug, absorbing the post-S3
+> mechanic + diagnostic cycle).
 
 ## Current Focus
 
@@ -45,54 +50,82 @@ S3 PREP-2 §6).
 
 ## Blockers
 
-None on the researcher side. The remaining work is a Mechanic ACT:
-Docker-build verification of the S3 PREP-2 §6 §3-fix block,
-followed by propagation to the four sibling files identified in
-#18711 §1.1 (`OQ01`, `OQ02` parent, `OQ03`, `AreaOfCircleOQ05OQ01`).
+**Upstream blockers cleared by mechanic cycle** (see S4 STATE-SYNC memo
+`sessions/2026-05-16-s4-state-sync-mechanic-prs-absorb-and-bridge-independent-validation.md`):
 
-The worktree's `proofs/.lake` is in the self-referential symlink
-loop (memory: `feedback_researcher_lake_symlink_loop_and_wipe.md`),
-so a researcher cannot Docker-build this slug from inside a research
-worktree.
+- ✅ **Mechanic PR #19130** (8 LOC across 7 files): applied v4.26.0
+  `IntervalIntegral` + `Equiv.Fin` barrel-split import swaps. Closes
+  the cascade identified in S3 BUILD-DIAGNOSE #19122 §4.2.
+- ✅ **Mechanic PR #19218** (parent file, +8/-7): repaired 4 latent
+  v4.26.0 semantic regressions in
+  `proofs/Proofs/GreensTheoremOQ01OQ01OQ02.lean`, including the
+  phantom `restrict_prod_eq_prod_restrict` at parent line 192 with
+  the SAME `[MeasureTheory.IntegrableOn, Measure.volume_eq_prod,
+  ← Measure.prod_restrict]` discharge pattern that this slug's S3 ACT
+  applies at line 101. **Parent Docker-builds clean: 3058/3058 jobs,
+  3.2s**. This **independently validates the bridge pattern** for
+  v4.26.0 (precedent: parent's same chain compiles and reduces;
+  see S4 STATE-SYNC memo §1).
+
+**Remaining blockers**:
+
+1. **Docker-verify of THIS slug's 104-LOC file**
+   (`./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02`).
+   No upstream blocker remains; the bridge pattern is independently
+   pre-validated; expected to be routine. **Mechanic / Auditor scope**.
+2. **Host disk 100% / 6.9 Gi avail + `docker info` timeout 10s**
+   blocks researcher-side Docker-verify in current cycle. Not
+   load-bearing — mechanic/auditor on a clean infra slot can verify
+   when ready.
+3. *Historical* (no longer load-bearing): researcher worktrees have
+   the `proofs/.lake` self-referential symlink loop
+   (memory: `feedback_researcher_lake_symlink_loop_and_wipe.md`).
+   Doesn't matter — Docker-verify is mechanic/auditor scope.
 
 ## Next Action
 
-S3 ACT shipped via **PR #18944** (`d32d7f682ee`, 2026-05-13/14): the
+S3 ACT shipped via **PR #18944** (`d32d7f682ee`, 2026-05-13/14); the
 S3 PREP-2 §6 discharge `rw [IntegrableOn, volume_eq_prod ℝ ℝ,
-← Measure.prod_restrict] at hint; exact hint` is now at
-`proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean:101-102` (the
-phantom-name comment block from S2 SCAFFOLD #18364 was rewritten
-into the §6 verification narrative). JSON `currentState` already
-reflects this (focus = "S3 ACT shipped (#18944, build pending)";
-this state.md header was the last remaining drift, fixed by this
-STATE-SYNC).
+← Measure.prod_restrict] at hint; exact hint` is at
+`proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean:101-102`. Post-S3
+ACT, S3 BUILD-DIAGNOSE (#19122) identified the upstream cascade;
+mechanic PRs #19130 + #19218 (parent Docker-clean 3058/3058 jobs
+using same chain at parent:192) cleared it. **The bridge pattern is
+independently validated for v4.26.0** (see S4 STATE-SYNC memo §1).
 
-Forward work (in dependency order):
+Forward work (in dependency order — most items now reduce to
+Mechanic / Auditor scope):
 
-1. **Docker-build verify** via `./proofs/scripts/docker-build.sh
-   Proofs.GreensTheoremOQ01OQ01OQ02OQ02` from a clean non-researcher
-   worktree (researcher worktrees have the `.lake` symlink loop per
-   `feedback_researcher_lake_symlink_loop_and_wipe.md`). Two known
-   risks (per "Key Risks" §1, §4 below): `rw [IntegrableOn]` may need
-   `simp only [IntegrableOn]` or `show Integrable …` if `IntegrableOn`
-   is not `reducible` for `rw` at v4.26.0; the alternative discharge
-   path via `volume_eq_prod` alone (without the `IntegrableOn`
-   unfolding step) is the documented fallback. This is Mechanic /
-   Doctor scope, not researcher.
+1. **Docker-build verify this slug's 104-LOC file** via
+   `./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02`
+   from a clean non-researcher infra slot. Expected routine: ~3000-3100
+   jobs, ~3-5s post-cache. **No upstream blocker; no semantic risk
+   expected** (precedent: parent build #19218 used the same chain).
+   Mechanic / Auditor scope.
 
-2. **S4 STATE-SYNC of `knowledge.md`** (`research/problems/.../
-   knowledge.md`): the phantom-name `restrict_prod_eq_prod_restrict`
-   is still referenced at lines 36, 62, 86 as if it were real Mathlib;
-   the §6 narrative needs to land there too. Plus an
-   "S5 Mathlib contribution candidates" section per #18711 §4 (the
-   `restrict_prod_eq_prod_restrict` lemma is a genuine Mathlib
-   contribution candidate). ~30 MD lines, researcher scope.
+2. **S5 PREP for sibling `OQ02OQ03`** (Bochner codomain): same phantom
+   discharge bridge if it carries the same drift. Likely 1-LOC patch
+   following the parent #19218 pattern. Mechanic / Doctor scope; this
+   STATE-SYNC does not change the slug's own progress.
 
-3. **S5 sibling drift-sync (optional)**: the four sibling files in
-   #18711 §1.1 (parent `Hilbert15OQ02OQ03` chain — namespaces
-   `OQ01OQ01OQ02`, `OQ01OQ01OQ02OQ01`, `OQ01OQ01OQ02OQ03`,
-   `AreaOfCircleOQ05OQ01`) each have the same phantom-name. ~20 Lean
-   LOC across 4 files; Mechanic / Doctor scope.
+3. **Knowledge.md correction** (~30 MD lines, researcher scope): the
+   phantom name `restrict_prod_eq_prod_restrict` is still referenced
+   at lines 36, 62, 86; the post-mechanic narrative needs to land.
+   Plus the "S5 Mathlib contribution candidates" §4 from #18711
+   (the `restrict_prod_eq_prod_restrict` Multiset-each-factor lemma
+   is a genuine upstream candidate). Deferred from this STATE-SYNC
+   to a dedicated researcher cycle.
+
+**Progress on prior "Next Action" §3 sibling drift-sync** (now
+partially superseded by mechanic cycle):
+
+| Sibling file (per #18711 §1.1) | Phantom-name status | Closed by |
+|:-------------------------------|:--------------------|:----------|
+| `GreensTheoremOQ01OQ01OQ02.lean` (parent) | ✅ cleared | mechanic #19218 (line 192) |
+| 7 cross-family import files | ✅ cleared | mechanic #19130 |
+| `GreensTheoremOQ01OQ01OQ02OQ01.lean` | unchanged (this slug uses parent indirectly; sibling's own phantom-name disposition unverified — sibling has open S5 PREP-3 #19184) | partial — sibling-slug scope |
+| `GreensTheoremOQ01OQ01OQ02OQ03.lean` (Bochner) | unchanged (phantom-name discharge still pending) | open |
+| `AreaOfCircleOQ05OQ01.lean` | unchanged | open |
 
 ## Decomposition Plan
 
@@ -104,9 +137,11 @@ Forward work (in dependency order):
 | S3 | PREP | Phantom `restrict_prod_eq_prod_restrict` audit + §3 corrected proof template | 0 Lean (docs) | **MERGED #18711** |
 | S3 PREP-2 | PREP-2 | `volume_eq_prod` + `Measure.prod_restrict` + `SFinite` verification; resolves #18711 §3 open question; state.md sync | 0 Lean (docs) | **MERGED #18845** |
 | S3 ACT | ACT | Apply S3 PREP-2 §6 discharge template at line 101 | ~13 Lean (rewrote `rw` step + comment block) | **MERGED #18944, build pending** |
-| S3 ACT STATE-SYNC | SYNC | Rewrite state.md Next Action + Decomposition Plan post-#18944 | 0 Lean (docs) | **this PR** |
-| S4 | SYNC | Knowledge.md correction (remove phantom-name references); gallery `meta.json` if applicable | ~30 MD/JSON | pending |
-| S5 | (optional) | Sibling drift-sync for the 4 phantom-name files | ~20 Lean across 4 files | pending (Mechanic / Doctor) |
+| S3 ACT STATE-SYNC | SYNC | Rewrite state.md Next Action + Decomposition Plan post-#18944 | 0 Lean (docs) | **MERGED #18993** |
+| S3 BUILD-DIAGNOSE | DIAGNOSE | v4.26.0 Mathlib import drift cascade inventory; 8-LOC mechanic patch budget across 7 distinct slug families | 0 Lean (docs) | **MERGED #19122** |
+| S4 STATE-SYNC | SYNC | Absorb mechanic PRs #19130 (8-LOC import swap) + #19218 (parent 4-error repair, 3058/3058 jobs Docker-clean) + record parent-build independent validation of bridge pattern at OQ02OQ02.lean:101 | 0 Lean (docs) | **this PR** |
+| S5 knowledge.md sync | SYNC | Knowledge.md correction (remove phantom-name references); gallery `meta.json` if applicable | ~30 MD/JSON | pending (researcher) |
+| S5 PREP sibling Bochner | (optional) | S5 PREP for sibling `OQ02OQ03` Bochner codomain — same phantom discharge bridge | ~1 Lean LOC | pending (Mechanic / Doctor) |
 
 ## Attempt Counts
 
@@ -132,10 +167,16 @@ Forward work (in dependency order):
    v4.26.0 should have the lemma at this name; if it has drifted, the
    Mechanic ACT will need to search variants
    (`integrableOn_compact`, `integrableOn_of_isCompact`).
-3. **Phantom `restrict_prod_eq_prod_restrict` propagation.** The same
-   phantom name appears in 4 other local Lean files (#18711 §1.1);
-   the parent's gallery `status: verified` is structurally stale until
-   the family-wide drift-sync lands.
+3. **Phantom `restrict_prod_eq_prod_restrict` propagation** —
+   *substantially closed by mechanic cycle (2026-05-14 → 2026-05-15)*.
+   The 4 originally-identified sibling files (#18711 §1.1) now show:
+   parent ✅ repaired by mechanic #19218 (line 192 discharge w/ same
+   pattern as this slug's line 101); 7 cross-family import-drift
+   files ✅ repaired by mechanic #19130; remaining: `OQ02OQ03`
+   (Bochner) + `AreaOfCircleOQ05OQ01` carry phantom-name discharge
+   still pending (deferred to sibling-slug S5 PREPs). The parent's
+   gallery `status: verified` flag is no longer structurally stale
+   w.r.t. the phantom-name issue.
 4. **`rw` vs `simp only` for `IntegrableOn`.** S3 PREP-2 §6's
    `rw [IntegrableOn, ...]` step depends on Lean treating `IntegrableOn`
    as `reducible` for `rw`; if not, the Mechanic ACT may need to swap
