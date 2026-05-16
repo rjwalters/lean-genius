@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: S8 ACT readiness — **DOCKER-BLOCKED** (S9 PREP added B1 hard-blocker; ACT picker should wait for daemon recovery OR ship as `build pending` per S5 ACT precedent)
-**Since**: 2026-05-16T06:36Z (S9 PREP added B1 Docker daemon hung blocker; was S8 STATE-SYNC 2026-05-16T02:00Z)
-**Iteration**: 12 (S1 OBSERVE + 6 PREPs + S6 STATE-SYNC + S7 ACT + S7b PREP + S7c PREP + S8 STATE-SYNC + this S9 PREP)
+**Phase**: S8 ACT readiness — **DOCKER + DISK BLOCKED** (B1 ongoing; S10 STATE-SYNC recheck at T+~7h since S9 confirms daemon still hung AND disk now 4.5 Gi worsening — disk reclamation is the new binding constraint, daemon recovery alone insufficient)
+**Since**: 2026-05-16T15:40Z (S10 STATE-SYNC absorbed S9 PREP B1 + re-measured Docker + disk; was S9 PREP 2026-05-16T06:36Z)
+**Iteration**: 13 (S1 OBSERVE + 6 PREPs + S6 STATE-SYNC + S7 ACT + S7b PREP + S7c PREP + S8 STATE-SYNC + S9 PREP + this S10 STATE-SYNC)
 
 ## Current Focus
 
@@ -143,7 +143,7 @@ Plus one **latent `ring`-bridge bug** caught by S7c PREP #19257 §3:
 
 | ID | Description | Since | Mitigation |
 |----|-------------|-------|------------|
-| **B1** | **Docker daemon hung** — `timeout 30 docker info` returns exit 124 with Server section blank after Client section completes. `docker ps -a` returns empty. Host `/System/Volumes/Data` at 100% / 7.3 Gi free; Docker Desktop `error-dialog` process PID 58071 active; `com.docker.backend services` at ~57% CPU. Blocks `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ02` invocation needed for S8 ACT build-verify. | 2026-05-16T06:01Z | Wait for host disk recovery (expected window 30 min – 4 h per prior incidents); run `docker system prune -f` when daemon responsive; THEN execute S8 ACT steps 1–8 per S9 PREP §3.3. Alternative: ship S8 ACT as `build pending` per S5 ACT precedent (PR #18707 → cleared by PR #18980) — same recipe applied for bounded-prime-gaps-oq-03-oq-02 S11a ACT PR #19519 (researcher-9, today). |
+| **B1** | **Docker daemon hung + host disk worsening** — `timeout 5 docker info` returns Server: blank (HUNG). Host `df -h /` shows **4.5 Gi available at S10 (2026-05-16T15:40Z)**, down from 7.3 Gi at S9 (06:36Z) and ~10 Gi at S8 (02:00Z); ~0.4 Gi/h erosion. Blocks `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ02` (~30-50 Gi headroom needed); blocks S8 ACT build-verify. | 2026-05-16T06:01Z (B1 onset; reconfirmed by S10 STATE-SYNC at 15:40Z, 9h on) | **Two-stage recovery required**: (a) host disk reclaim (need ≥30 Gi free for build); (b) Docker daemon recovery (`docker system prune -f` after disk recovery). Daemon recovery alone WITHOUT disk reclamation is INSUFFICIENT for ACT build-verify under current trajectory. Alternative: ship S11 ACT under `build pending` qualifier (recipe paste-ready per S7c §5.3 + S7c §3.3 Option A) — but synthesis risk on heavy slug (10-PREP-accumulated work) higher than typical leaf-only ACT; weigh vs 5-consecutive-doc-only threshold. |
 
 Mathematical / library-side: **none**. The full discharge route is
 pinned to specific Mathlib v4.26.0 lemmas in S7c PREP §2 (18 bearers,
@@ -197,17 +197,19 @@ Expected S8 ACT deliverable: **~228 LOC, 0 sorries, 0 axioms**.
 
 ## Attempt Counts
 
-- Total iterations: 11 (S1, S2, S2-PREP-3, S3, S4, S5, S5b, S6 STATE-SYNC,
-  S7 ACT, S7b PREP, S7c PREP, S8 STATE-SYNC = 12 if this one counts; the
-  numerical `iteration` in JSON tracks scope-order with this STATE-SYNC at 11)
+- Total iterations: 13 (S1, S2, S2-PREP-3, S3, S4, S5, S5b, S6 STATE-SYNC,
+  S7 ACT, S7b PREP, S7c PREP, S8 STATE-SYNC, S9 PREP, S10 STATE-SYNC; the
+  numerical `iteration` in JSON tracks scope-order with this STATE-SYNC at 13)
 - Lean iterations: 1 (S7 ACT, PR #19095)
-- PREP iterations: 8 (S2, S2-PREP-3, S3, S4, S5, S5b, S7b, S7c)
-- STATE-SYNC iterations: 2 (S6 #18976, S8 this PR)
+- PREP iterations: 9 (S2, S2-PREP-3, S3, S4, S5, S5b, S7b, S7c, S9)
+- STATE-SYNC iterations: 3 (S6 #18976, S8 #19374, S10 this PR)
 - ACT iterations: 1 (S7 ACT #19095)
 - Audit-correction iterations: 3 (S4 corrects S3, S5b corrects S5, S7c
   surfaces S5b §5 latent issue)
 - Build-verify iterations: 1 (S7 ACT BUILD-VERIFY #19093, closed as
   superseded by S7 ACT #19095)
+- Infrastructure-recheck iterations: 2 (S9 PREP surfaces B1 Docker hung;
+  S10 STATE-SYNC re-confirms at T+~7h with disk-worsening trajectory)
 - Approaches tried:
   - S1 (researcher-9, 2026-05-12): Mathlib survey, 4-sub-OQ decomposition,
     splitting subtlety identified.
@@ -232,7 +234,16 @@ Expected S8 ACT deliverable: **~228 LOC, 0 sorries, 0 axioms**.
     Option A merge sequence (deployer executed).
   - S7c PREP (researcher-12, 2026-05-15): 18-bearer pin-verify +
     §3.3 Option A `Finset.erase` correction.
-  - S8 STATE-SYNC (researcher-3, 2026-05-16): this iteration.
+  - S8 STATE-SYNC (researcher-3, 2026-05-16): doc-only refresh.
+  - S9 PREP (researcher-9, 2026-05-16): B1 Docker daemon hung blocker
+    surfaced + SHA-identity pin-recheck (18 bearers inherited GREEN from
+    S7c §2 ledger; manifest unchanged at `2df2f0150c…` 9-day stable);
+    2 files (sessions/notes + state.md head/Blockers).
+  - S10 STATE-SYNC (researcher-9, 2026-05-16): this iteration — JSON
+    catchup absorbing S9 PREP B1 + iter bump 11→13 + Docker re-measure
+    at T+~7h since S9 (still hung) + host disk re-measure (7.3 Gi →
+    4.5 Gi, worsening). 3 files (sessions/notes + state.md head/Attempt
+    Counts/Open files + JSON 7 field refresh).
 
 ## Open files
 
@@ -250,7 +261,9 @@ Expected S8 ACT deliverable: **~228 LOC, 0 sorries, 0 axioms**.
 - `sessions/2026-05-14-s7-act-import-regression-bridges.md` (S7 ACT)
 - `sessions/2026-05-15-s7b-prep-deployer-stall-coord.md` (S7b)
 - `sessions/2026-05-15-s7c-prep-pre-s8-bearer-pin-verify.md` (S7c)
-- `sessions/2026-05-16-s8-state-sync-post-s7-act-merge.md` — added by this PR.
+- `sessions/2026-05-16-s8-state-sync-post-s7-act-merge.md` (S8)
+- `sessions/2026-05-16-s9-prep-pin-recheck-docker-hung-blocker.md` (S9)
+- `sessions/2026-05-16-s10-state-sync-json-catchup.md` — added by this PR.
 
 ## S8 STATE-SYNC Deliverable
 
