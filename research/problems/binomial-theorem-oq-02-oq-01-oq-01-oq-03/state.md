@@ -1,11 +1,104 @@
 # Research State: binomial-theorem-oq-02-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: PREP (S16 ACT Gate E honesty correction shipped (#19402, researcher-3, comment-only +22/-13 Lean docstrings); Lean file at 712 LOC / 16 theorems / 3 defs / 1 axiom / 0 sorries; BUILD-VERIFIED state at 3209 jobs (S12) persists; Phase-4 D1 Lemma C ACT ready pending Gate A pre-claim baseline build)
+**Phase**: PREP (S18 STATE-SYNC absorbing mechanic PR #19511 lineCount fix + INFRA escalation: Gate A now RED × 3 INFRA blockers (Docker daemon hung + host disk 3.8 Gi/100% + `proofs/.lake` circular self-symlink); Lean file unchanged at 712 LOC / 16 theorems / 3 defs / 1 axiom / 0 sorries; BUILD-VERIFIED state at 3209 jobs (S12) persists; Phase-4 D1 Lemma C ACT structurally unreachable this session — D1 picker must wait for host-side INFRA recovery)
 **Path**: full
-**Since**: 2026-05-16T04:05:00Z
-**Last Updated**: 2026-05-16 (Session 17, researcher-12)
-**Iteration**: 16
+**Since**: 2026-05-16T17:55:00Z
+**Last Updated**: 2026-05-16 (Session 18, researcher-10)
+**Iteration**: 17
+
+## Session 18 Focus (2026-05-16, researcher-10) — STATE-SYNC: INFRA escalation (3 RED blockers) + mechanic PR #19511 absorbed (HALF of S17 §8) + bearer recheck @ T+17h zero drift (doc-only)
+
+S18 STATE-SYNC fires ~13 h after S17 STATE-SYNC merge. `claim-random`
+landed researcher-10 on this slug at 2026-05-16T17:52Z. S17 prescribed
+D1 Lemma C ACT next ("MUST run Gate A pre-claim Docker baseline first"),
+but Gate A is **structurally impossible** at the host level right now.
+S18 pivots to doc-only STATE-SYNC, absorbs the mechanic PR that landed
+in the gap, escalates the INFRA blockers, and refreshes the
+bearer-stability declaration past S15 PREP's 17 h cutoff. Full session
+log at `sessions/2026-05-16-s18-statesync-infra-escalation-mechanic-half-absorbed.md`.
+
+### Three RED INFRA blockers preventing Gate A (new this session)
+
+1. **Docker daemon hung**: `docker info` returns empty `Server:` section.
+   Same pattern as memory feedback `_postship_pivot_lands_on_act_slug_
+   whose_just_merged_statesync_inherited_cross_prep_namespace_cite_
+   regression.md`. No client-side mitigation.
+2. **Host disk 100% (3.8 Gi free)**: Below the floor at which any
+   same-day ACT was attempted (shannon S18a-1 ran at 5.8 Gi; ballot
+   S6 ran at 5.4 Gi). Mathlib cold-build needs ~15-20 Gi headroom.
+3. **`proofs/.lake` circular self-symlink**: Main repo's
+   `/Users/rwalters/GitHub/lean-genius/proofs/.lake` is `→` itself;
+   loop propagates to all worktrees. Recovery needs host-side
+   `rm proofs/.lake && lake build`.
+
+S17 trap budget item 5 ("lake symlink loop on researcher worktrees —
+mitigation: Docker wrapper exclusively") — mitigation FAILED because
+the Docker daemon itself is down. Trap (5) escalates to RED INFRA.
+
+### Mechanic PR #19511 absorption (HALF of S17 §8)
+
+Mechanic PR **#19511** (rjwalters, merged 2026-05-16T08:52:45Z, +2/-2)
+fixed gallery meta.json `lineCount: 544 → 712` in both occurrences.
+**`theoremCount` drift remains** (meta says 18, actual file is 16);
+re-flagged for next Mechanic cycle. S18 §3 table:
+
+| Field         | Pre-#19511 | Post-#19511 | Actual | Status |
+|---------------|-----------:|------------:|-------:|--------|
+| `lineCount`   | 544        | **712**     | 712    | ✅ CLOSED by mechanic |
+| `theoremCount`| 18         | 18          | **16** | ❌ STILL DRIFTED — re-flag |
+| `axiomCount`  | 1          | 1           | 1      | ✅ |
+
+### Bearer drift recheck @ pin SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (UNCHANGED)
+
+Two-bearer spot-check (B1prime line 333, B3 line 213) byte-for-byte
+verbatim match S15 PREP §3 table. ZERO drift across the ~17 h since
+S15 PREP's 2026-05-16T00:55Z recheck. B1/B2/B4/B5 + negative findings
+(`Mathlib.Probability.CentralLimitTheorem`, `iid_central_limit_theorem`,
+Measure-form binomial all absent) carry forward at unchanged SHA per
+S18 §4.3 ("re-spotting at a byte-stable SHA is busywork" per memory
+feedback `_long_completed_slug_*_canonical_json_materially_contradicts_
+observe_findings_*`).
+
+### Phase-4 readiness gate refresh
+
+| Gate | S17 | S18 | Change |
+|------|-----|-----|--------|
+| A    | NOT YET | **RED × 3 INFRA** | DEGRADED |
+| B    | GREEN   | GREEN (B1prime + B3 re-spot stable) | unchanged |
+| C    | GREEN   | GREEN (skeleton paste-ready behind Gate A) | unchanged |
+| D    | GREEN   | GREEN (D3 upstream-track relatively more attractive while Gate A RED) | unchanged |
+| E    | GREEN   | GREEN | unchanged |
+
+Net: 4/5 GREEN content + 1/5 RED INFRA (was 4/5 GREEN + 1/5 NOT-YET).
+Content posture unchanged; INFRA posture materially degraded.
+
+### Net deliverables (this STATE-SYNC)
+
+- +1 new `sessions/2026-05-16-s18-statesync-infra-escalation-mechanic-half-absorbed.md` (~280 LOC, 10 sections incl. host-side INFRA recovery script for human/daemon operator).
+- state.md head replacement (sessions 13/15/17 tail preserved verbatim).
+- JSON `currentState` refresh (phase still PREP; iteration 16 → 17;
+  since/lastUpdate bumped 04:05Z → 17:55Z; focus/nextAction rewritten
+  for INFRA-RED reality; `attemptCounts.total` 16 → 17) +
+  `progressSummary` prepend + `nextSteps` refresh + `lastUpdate` field.
+- 0 Lean edits / 0 Docker iterations / 0 gallery meta.json edits /
+  0 problem.md / knowledge.md domain edits.
+
+### Next picker (S19) decision matrix
+
+| Host state at S19 claim time          | Picker action |
+|---------------------------------------|---------------|
+| All 3 INFRA blockers cleared          | Resume S17 prescription: Gate A baseline → bearer re-spot → D1 Lemma C ACT |
+| Docker + disk OK, `.lake` still circular | `rm proofs/.lake && lake build --no-build` first, then Gate A |
+| Docker OK, disk still <10 Gi free     | DO NOT attempt Gate A — OOM risk. Pick another slug or wait. |
+| Docker still hung                     | DO NOT attempt anything code-touching. D3 upstream-track inquiry / D4 defer / pick different slug. |
+| All 3 RED still + no host-side fix    | Ship doc-only STATE-SYNC ONLY if material new state arrived. Otherwise pick different slug — back-to-back STATE-SYNCs at unchanged state is the busywork pattern. |
+
+### Mechanic re-flag (next mechanic cycle)
+
+`src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/meta.json`
+`leanFile.theoremCount: 18` (stale) — actual 16. Drift -2. Suggested
+title: `fix(meta): binomial-theorem-oq-02-oq-01-oq-01-oq-03 theoremCount 18→16`.
 
 ## Session 17 Focus (2026-05-16, researcher-12) — STATE-SYNC absorbing S16 ACT Gate E honesty correction + JSON lineCount drift fix (doc-only)
 
