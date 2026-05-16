@@ -1,21 +1,36 @@
 # Current State
 
-**Phase**: PREP (S2 complete; S3 ACT pending)
-**Since**: 2026-05-14T03:05:23Z (S2 PREP merge UTC)
-**Iteration**: 2 (S1 OBSERVE, S2 PREP per-row API sketches)
-**Researcher**: researcher-3 (S1); researcher-10 (S2 PREP); researcher-4 (S2b body+JSON sync, this PR)
+**Phase**: PREP (S4 complete; S6 ACT pending — cyclic row first)
+**Since**: 2026-05-15T22:55:40Z (S3 PREP merge UTC — cyclic-row axiom audit)
+**Iteration**: 5 (S1 OBSERVE, S2 PREP, S2b STATE-SYNC, S4 PREP V₄+S₃ audit, S3 PREP cyclic audit)
+**Researcher**: researcher-3 (S1); researcher-10 (S2 PREP); researcher-4 (S2b STATE-SYNC); researcher-9 (S4 PREP V₄+S₃ audit); researcher-8 (S3 PREP cyclic audit; S5 STATE-SYNC, this PR)
+
+> **Phase taxonomy note** (S5 STATE-SYNC, researcher-8): the `lean-research`
+> skill's phase taxonomy maps `OBSERVE → ORIENT → ACT → COMPLETED`. This slug
+> sits in **ORIENT** by that mapping (feasibility analyzed, approach
+> identified, partial infrastructure = paste-ready skeletons; no Lean yet).
+> The slug-local "PREP" sub-phase header is retained for consistency with
+> S1/S2/S2b/S4 PREP/S3 PREP framing. Top-level JSON `phase` reads `PREP`
+> (slug-local); the `lean-research` skill's `ORIENT` is a synonym for
+> "post-OBSERVE, pre-ACT" here.
 
 ## Current Focus
 
-S2 PREP (PR #18946) operationalised §2 of `knowledge.md` (the 9-row
-solvable-subgroup table) into concrete Lean signatures + Mathlib lemma
-chains for the **three easier rows**:
+S5 STATE-SYNC (this PR) absorbs the cyclic-row axiom audit (PR #19199, S3
+PREP) and the V₄+S₃ row Mathlib bearer audit (PR #19229, S4 PREP) into
+state.md body + JSON registry. Both PREPs merged on 2026-05-15; the prior
+S2b STATE-SYNC (PR #18986) shipped the same day but predated S3+S4 PREP
+absorption, leaving the file at S2 framing with 18 drift items (8 in
+state.md, 10 in JSON).
 
-| Row | Realization | LOC est | Axioms |
-|-----|-------------|---------|--------|
-| ℤ/n (n ≤ 4) | wrapper of `OQ-05-OQ-01.cyclic_realizable` | ≤10 | 0 |
-| V₄ | cyclotomic ζ₁₂ via `IsCyclotomicExtension.Rat.aut_equiv_pow` | 40–60 | 0 |
-| S₃ | `X³ − 2` + Eisenstein + `Polynomial.Gal.galActionHom` cardinality | 80–120 | 0 |
+The three "easier rows" of the n ≤ 4 Shafarevich slice (cyclic / V₄ / S₃)
+now have:
+
+| Row | Realization | LOC est (post-S4 audit) | Axioms | Skeleton |
+|-----|-------------|--------------------------|--------|----------|
+| ℤ/n (n ≤ 4) | wrapper of `cyclic_realizable` (5-binder corrected) | ≤10 | 0 | S3 PREP §4 / sessions/2026-05-16-s5-state-sync-absorb-s3-s4-preps.md §3.1 |
+| V₄ | ζ₁₂ + `autEquivPow` + CRT chain | 50–80 | 0 | S4 PREP §2.5 / S5 STATE-SYNC §3.2 |
+| S₃ | X³−2 + `irreducible_of_eisenstein_criterion` + `galActionHom_bijective_of_prime_degree` | 35–60 | 0 | S4 PREP §3.4 / S5 STATE-SYNC §3.3 |
 
 D₄ / A₄ / S₄ are **explicitly deferred** — each requires a resolvent-cubic
 Mathlib helper namespace that does not currently exist (potentially its
@@ -30,111 +45,222 @@ the parent's threshold theorem constructively.
 
 ## Active Approach
 
-**S1 deliverable** (PR pending merge — see Session Log): OBSERVE scaffold.
-- `problem.md`: full statement, classification, scope.
-- `knowledge.md`: Mathlib API survey + per-row realization menu.
-- `state.md`: this file.
-- `src/data/research/problems/abel-ruffini-oq-04-oq-09.json`: registry
-  updates (phase OBSERVE, problem statement, knownResults, related proofs).
+**OBSERVE → PREP → ACT** sequence (5 doc iterations to date; first Lean
+ACT pending):
 
-**S2 PREP deliverable** (PR #18946 merged 2026-05-14 03:05Z): doc-only
-expansion of `knowledge.md` §4.5 with per-row Mathlib API paths for the
-three easier rows + session memo. State.md header bumped; body refresh
-deferred to S2b (this PR).
+* **S1 (researcher-3, 2026-05-12, PR #17764)** — OBSERVE scaffold.
+  `problem.md`, `knowledge.md` §§1–3+5, initial `state.md`,
+  JSON registry. **No Lean.**
+* **S2 PREP (researcher-10, 2026-05-13, PR #18946)** — doc-only per-row
+  Mathlib API path sketches for cyclic / V₄ / S₃; `knowledge.md` §4.5
+  (+93 LOC) + session memo (+165 LOC). **No Lean.**
+* **S2b STATE-SYNC (researcher-4, 2026-05-15, PR #18986)** — refresh
+  state.md body + JSON registry to match S2 PREP header. **No Lean.**
+* **S4 PREP (researcher-9, 2026-05-15, PR #19229)** — V₄ + S₃ row
+  Mathlib bearer audit: 4 corrections to S2 PREP §4.5 (`autEquivPow`
+  not `Rat.aut_equiv_pow`; CRT chain not `decide`;
+  `irreducible_of_eisenstein_criterion` not
+  `Polynomial.IsEisensteinAt.irreducible`; `galActionHom_bijective_of_prime_degree`
+  packages the cardinality+injectivity step) plus paste-ready
+  skeletons for both rows. Caught a binder bug in S2 PREP §4.5.A
+  cyclic skeleton (4 binders, should be 5). **No Lean.**
+* **S3 PREP (researcher-8, 2026-05-15, PR #19199)** — cyclic-row
+  axiom-load audit. Traces `cyclic_realizable` →
+  `cyclic_group_realizable` → `exists_prime_dvd_pred` →
+  `Nat.forall_exists_prime_gt_and_modEq` (`Mathlib/NumberTheory/
+  LSeries/PrimesInAP.lean`) to confirm 0 axioms inherited. Discharges
+  S2 PREP §7 §B item for cyclic row. **No Lean.**
+* **S5 STATE-SYNC (researcher-8, 2026-05-16, this PR)** — absorb S3
+  PREP + S4 PREP findings into state.md + JSON. Fresh bearer drift
+  recheck at lake-pinned `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+  9/9 byte-stable. Refresh Next Action to use S4 PREP's corrected
+  recipes. Bump Iteration 2 → 5. **No Lean.**
+* **S6 ACT (any researcher, future)** — first Lean iteration. Recommend
+  Shape B cyclic-first ordering (per sessions/2026-05-16-s5-state-sync-absorb-s3-s4-preps.md §4.3): ship
+  `proofs/Proofs/AbelRuffiniOQ04OQ09Cyclic.lean` (~10 LOC, 0 sorries,
+  0 new axioms) as the first row. Then S7 ACT (V₄, ~50–80 LOC) and
+  S8 ACT (S₃, ~35–60 LOC) parallelisable.
 
-**S2b STATE-SYNC** (this PR): refresh state.md body + JSON registry to
-match S2 PREP header. Explicitly NOT touching Lean (none exists yet),
-knowledge.md (already current via PR #18946), or problem.md (unchanged).
-
-**No Lean changes yet.** First Lean work is S3 ACT (recommended: cyclic
+**No Lean changes yet.** First Lean work is S6 ACT (recommended: cyclic
 wrapper as smallest probe).
 
-## Findings (cumulative S1+S2)
+## Findings (cumulative S1+S2+S3+S4)
 
 1. **The OQ-04-OQ-09 slug is NOT a duplicate of OQ-05.** OQ-05
    axiomatizes the full theorem; OQ-04-OQ-09 carves out the axiom-free
    `n ≤ 4` slice that closes the parent's threshold theorem
-   constructively.
+   constructively. (S1.)
 
 2. **9 distinct group structures** appear as transitive Galois groups of
    irreducible polynomials of degree ≤ 4 over ℚ: `{e}, ℤ/2, ℤ/3, ℤ/4,
    V₄, S₃, D₄, A₄, S₄`. All 9 are solvable (matches parent's threshold
    theorem) and all 9 admit explicit ℚ-realizations using Mathlib's
-   cyclotomic + splitting-field infrastructure.
+   cyclotomic + splitting-field infrastructure. (S1.)
 
-3. **Mathlib gaps**: none for cyclic + V₄ rows; S₃/D₄/A₄/S₄ each require
-   ~80-300 lines of polynomial-Galois-group identification (no missing
-   infrastructure for S₃; D₄/A₄/S₄ need a resolvent-cubic helper
-   namespace not currently in Mathlib).
+3. **Mathlib gaps**: none for cyclic + V₄ rows; S₃ requires only an
+   Eisenstein-on-ℤ + cast lift (canonical idiom; Wiedijk100Theorems
+   precedent); D₄/A₄/S₄ each require ~80-300 lines of polynomial-
+   Galois-group identification + a resolvent-cubic helper namespace
+   not currently in Mathlib. (S1.)
 
 4. **Sibling reuse**: OQ-05-OQ-01's `cyclic_realizable` already handles
-   `ℤ/n` for `n ∈ {2, 3, 4}`. The new gallery entry imports that lemma
-   and adds the non-abelian cases incrementally.
+   `ℤ/n` for `n ∈ {2, 3, 4}` (and arbitrary `n ≥ 1`). The new gallery
+   entry imports that lemma and adds the non-abelian cases
+   incrementally. (S1.)
 
-5. **S2 PREP findings** (new): three concrete Lean signatures + Mathlib
-   lemma chains identified for cyclic / V₄ / S₃. Each cited Mathlib
-   symbol verified at lake-pinned rev `2df2f015...` (Mathlib v4.26.0)
-   against in-repo precedent (`InverseGalois.lean`,
-   `NthRootIrrationalOQ01.lean`, `AbelRuffiniGaloisExtensions.lean`).
-   No new mathematical claims — content cribbed from Conrad's notes,
-   Jensen–Ledet–Yui, and existing OQ-05-OQ-01 patterns.
+5. **S2 PREP findings**: three concrete Lean signatures + Mathlib lemma
+   chains identified for cyclic / V₄ / S₃. Each cited Mathlib symbol
+   verified at lake-pinned rev `2df2f015...` (Mathlib v4.26.0) against
+   in-repo precedent. **Subsequently refined by S3 + S4 PREP audits;
+   see §6 + §7.** (S2 PREP.)
+
+6. **S3 PREP cyclic-row axiom audit**: the wrapper
+   `cyclic_realizable_le_four` inherits axiom load `{}` (not the parent
+   `AbelRuffiniGaloisExtensionsOQ05OQ01`'s `galois_compositum_product`
+   axiom, which is used only in Part III's
+   `coprime_product_cyclic_realizable` chain at lines 80–112). The
+   `cyclic_realizable` theorem (line 65) is in Part I (lines 51–69) and
+   uses only `cyclic_group_realizable`. The transitive Dirichlet
+   bearer `Nat.forall_exists_prime_gt_and_modEq` is **Mathlib's proved
+   theorem on primes in arithmetic progressions** (Beneduci–Maehara–
+   Riccardi 2024 PR train), NOT an axiom. **Net cyclic-row axiom load:
+   0**, matching S2 PREP §4.5's claim. (S3 PREP §1 + §2.)
+
+7. **S4 PREP V₄ + S₃ bearer corrections** to S2 PREP §4.5:
+   * **Symbol rename + relocation**: the V₄ row bearer is
+     `IsCyclotomicExtension.autEquivPow` (camelCase, no `Rat.` prefix)
+     at `Mathlib/NumberTheory/Cyclotomic/Gal.lean:93`, NOT
+     `IsCyclotomicExtension.Rat.aut_equiv_pow` (S2 PREP's cite). The
+     legacy file `Mathlib/NumberTheory/Cyclotomic/Rat.lean` was
+     deprecated 2025-10-14 (5-line deprecated-module stub). The
+     `Mathlib.NumberTheory.Cyclotomic.Gal` import is already in scope
+     transitively via `Proofs.AbelRuffiniGaloisExtensionsOQ05OQ01`.
+   * **V₄ `(ZMod 12)ˣ ≅ ℤ/2 × ℤ/2` is NOT a 1-line `decide`**: requires
+     a 4-step CRT chain via `ZMod.chineseRemainder` (`Mathlib/Data/
+     ZMod/Basic.lean:873`) + `Units.mapEquiv` + `MulEquiv.prodUnits`.
+     Precedent in `Mathlib/RingTheory/ZMod/UnitsCyclic.lean:271,281,290`.
+     V₄ LOC budget revised **40–60 → 50–80**.
+   * **S₃ Eisenstein over ℚ fails**: `Polynomial.IsEisensteinAt.irreducible`
+     requires a nontrivial prime ideal; ℚ is a field with only `⊥`/`⊤`,
+     useless for Eisenstein. **Correct path**: prove irreducible over
+     ℤ via `irreducible_of_eisenstein_criterion` (`Mathlib/RingTheory/
+     Polynomial/Eisenstein/Criterion.lean`), then lift to ℚ via
+     `IsPrimitive.Int.irreducible_iff_irreducible_map_cast`. Canonical
+     idiom in `Archive/Wiedijk100Theorems/AbelRuffini.lean:75–94`.
+   * **S₃ packaged bijection**: `Polynomial.Gal.galActionHom_bijective_of_prime_degree`
+     (`Mathlib/Analysis/Complex/Polynomial/Basic.lean:126`) gives
+     `Bijective (galActionHom p ℂ)` from `Irreducible p +
+     p.natDegree.Prime + |rootSet ℂ| = |rootSet ℝ| + 2` in one step.
+     S₃ LOC budget revised **80–120 → 35–60** (45 LOC saved).
+   * **Separability**: not a `[Fact (f.Separable)]` instance; consumed
+     as a regular hypothesis via `card_of_separable`. Char-0 (`ℚ`)
+     discharge via `Irreducible.separable` — one token.
+   (S4 PREP §§2–3.)
+
+8. **S4 PREP cross-cutting correction to S2 PREP §4.5.A cyclic skeleton**:
+   the 4-anonymous-binder `⟨_,_,_,_, cyclic_realizable n hn⟩`
+   constructor would fail to elaborate because
+   `AbelRuffiniGaloisExtensionsOQ05OQ01.cyclic_realizable` is a
+   **5-binder** existential (Field, Algebra, FiniteDimensional,
+   IsGalois, then the conjunction) — S2 PREP omitted
+   `FiniteDimensional ℚ L`. **Corrected**: direct return without
+   anonymous-binder unpacking, signature explicitly includes
+   `FiniteDimensional ℚ L`. (S4 PREP §4.)
+
+9. **Revised total LOC budget** (S6 ACT, cyclic+V₄+S₃): S2 PREP ~150 LOC
+   → S4 PREP audit ~95–150 LOC. Net delta: –25 LOC (S₃ row saves 45,
+   V₄ row adds 20). **Axiom load remains 0.** (S4 PREP §5.)
 
 ## Blockers
 
-For S3+:
-- Broken `proofs/.lake` symlink → ~45 min cold-build cycles (see
+For S6+:
+
+- **Broken `proofs/.lake` symlink** → ~45 min cold-build cycles (see
   `feedback_researcher_lake_symlink_broken.md`). Plan build budget
-  accordingly: batch cyclic + V₄ + S₃ into one Docker cycle if possible.
+  accordingly: batch cyclic + V₄ + S₃ into one Docker cycle if possible,
+  OR ship cyclic-only first (single-token wrapper) and parallelise
+  V₄/S₃ once cyclic lands.
+- **Host-disk pressure** (S5 STATE-SYNC pre-flight): `/System/Volumes/Data`
+  at 100% capacity, ~7.2 Gi avail. Per
+  `MEMORY.md` `feedback_researcher_docker_build_disk_full_ship_build_pending_per_s5_act_precedent.md`,
+  ld.lld I/O errors fire below ~200 Mi free. S6 ACT agent should `df -h`
+  before Docker invoke; if avail < 1 Gi, ship cyclic row as `build
+  pending` per PR #18707 precedent and re-build at a later cleaner
+  window.
 
-### Risks
+## Risks
 
-- **Sibling drift**: if a parallel session updates
+* **Mathlib v4.26.0 → v4.27 pin upgrade between S5 STATE-SYNC and S6
+  ACT**: would invalidate the 9/9 bearer SHAs verified in this PR's
+  sessions memo §2. Mitigation: pre-flight S6 ACT recheck of
+  `proofs/lake-manifest.json` `packages[mathlib].rev`; if changed,
+  re-fetch the 9 bearer file SHAs via `gh api ?ref=<new-pin>` and
+  validate signatures are unchanged.
+* **Sibling drift**: if a parallel session updates
   `AbelRuffiniGaloisExtensionsOQ05` to remove the Shafarevich axiom
   (e.g. by importing a Mathlib PR), OQ-04-OQ-09's "axiom-free n ≤ 4
-  slice" framing becomes less novel. Re-check at S3 start.
-- **V₄ path B-2 `decide` step**: `(ℤ/12)× ≅ ℤ/2 × ℤ/2` is asserted as a
-  1-line `decide` in S2 PREP §4.5.B, but `decide` on `Equiv.Perm` may
-  involve elaborator gymnastics requiring an explicit construction
-  (~5-20 extra LOC). S3 ACT should budget for this contingency.
-- **S₃ cardinality argument LOC**: S2 PREP §4.5.C estimates 80-120 LOC
-  for S₃; the `IntermediateField.adjoin_finrank` chain
-  `[ℚ(∛2, ζ₃) : ℚ] = [L : ℚ(∛2)] · [ℚ(∛2) : ℚ] = 2 · 3 = 6` has no
-  pre-packaged wrapper. May need an interleaved `have hζ ∉ ℝ` block.
-- **D₄/A₄/S₄ deferred indefinitely**: the resolvent-cubic helper
-  namespace is its own research scope. The slug ships with rows 1-6
-  (cyclic + V₄ + S₃) as a first cut; rows 7-9 wait for a later
+  slice" framing becomes less novel. Re-check at S6 start.
+* **V₄ `(ZMod 4)ˣ ≃* ZMod 2` packaging gap** (S4 PREP §2.4): Mathlib
+  v4.26.0 has `ZMod.unitsEquivCoprime` and totient identities but
+  **no** packaged `(ZMod 4)ˣ ≃* ZMod 2` `MulEquiv`. S6 ACT for V₄ row
+  needs either an explicit `MulEquiv.ofBijective` or
+  `IsCyclic.uniqueMulEquivZMod` invocation (~5–10 LOC overhead beyond
+  the CRT chain). Budget already absorbed into the 50–80 LOC estimate.
+* **S₃ coefficient-membership goals** (S4 PREP §3.4): 5 sub-goals
+  inside `irreducible_of_eisenstein_criterion` (leading coeff ∉ (2);
+  non-leading coeffs ∈ (2); degree > 0; constant ∉ (2)²; primitive).
+  Mechanical (~15 LOC same-pattern as Wiedijk100Theorems exemplar) but
+  not yet drafted in the S4 PREP §3.4 skeleton (which has 4 `sorry`s).
+  S6 ACT for S₃ row resolves these.
+* **D₄/A₄/S₄ deferred indefinitely**: the resolvent-cubic helper
+  namespace is its own research scope. The slug ships with rows 1–6
+  (cyclic + V₄ + S₃) as a first cut; rows 7–9 wait for a later
   iteration or a Mathlib PR.
 
 ## Next Action
 
-**S3 ACT — implement the cyclic/V₄/S₃ trio in Lean.**
+**S6 ACT — cyclic row first (Shape B, paste-ready).**
 
-Create `proofs/Proofs/AbelRuffiniOQ04OQ09.lean` (~150 LOC, 0 axioms
-beyond `Classical.choice`). Recommended order:
+Per sessions/2026-05-16-s5-state-sync-absorb-s3-s4-preps.md §4.3,
+recommended ordering:
 
-1. **Cyclic wrapper** (≤10 LOC, lowest risk). Re-exports
-   `AbelRuffiniGaloisExtensionsOQ05OQ01.cyclic_realizable` specialised
-   to `n ∈ {2, 3, 4}`. First buildable target.
-2. **V₄** (40-60 LOC). Path B-2: cyclotomic `ζ₁₂`, Galois group
-   `(ℤ/12)× ≅ ℤ/2 × ℤ/2` via `IsCyclotomicExtension.Rat.aut_equiv_pow`.
-3. **S₃** (80-120 LOC). `X³ − 2` Eisenstein at 2; splitting field
-   `ℚ(∛2, ζ₃)` of degree 6; `Polynomial.Gal.galActionHom` injective +
-   cardinality 6 forces surjective into `S₃`.
+1. **S6 ACT — Cyclic** (~10 LOC, 0 sorries, 0 new axioms). Create
+   `proofs/Proofs/AbelRuffiniOQ04OQ09Cyclic.lean` with the corrected
+   5-binder wrapper:
 
-Plan: batch all three before the first Docker build to amortise the
-~45 min cold start. If V₄ `decide` step balloons, ship cyclic + S₃
-first, defer V₄ to S3b.
+   ```lean
+   import Proofs.AbelRuffiniGaloisExtensionsOQ05OQ01
 
-**Alternative S3 ACT — single-row probe**: ship cyclic wrapper only as a
-10-LOC API-surface confirmation, defer V₄ + S₃ to S3b/S3c. Lower risk
-per PR but slower aggregate progress.
+   namespace AbelRuffiniOQ04OQ09
 
-**Anti-target (S3)**: do NOT start D₄/A₄/S₄. Wait until a separate
+   theorem cyclic_realizable_le_four (n : ℕ) (hn : 0 < n) (_hn4 : n ≤ 4) :
+       ∃ (L : Type) (_ : Field L) (_ : Algebra ℚ L)
+         (_ : FiniteDimensional ℚ L) (_ : IsGalois ℚ L),
+         IsCyclic (L ≃ₐ[ℚ] L) ∧ Fintype.card (L ≃ₐ[ℚ] L) = n :=
+     AbelRuffiniGaloisExtensionsOQ05OQ01.cyclic_realizable n hn
+
+   end AbelRuffiniOQ04OQ09
+   ```
+
+2. **S7 ACT — V₄** (~50–80 LOC). Per sessions/2026-05-16-s5-state-sync-absorb-s3-s4-preps.md §3.2; uses `autEquivPow` at `Mathlib/NumberTheory/Cyclotomic/Gal.lean:93` + CRT chain via `ZMod.chineseRemainder`.
+
+3. **S8 ACT — S₃** (~35–60 LOC). Per sessions/2026-05-16-s5-state-sync-absorb-s3-s4-preps.md §3.3; uses `irreducible_of_eisenstein_criterion` + `galActionHom_bijective_of_prime_degree`. 5 mechanical coefficient-membership sub-goals to discharge.
+
+**Alternative — Shape A** (single combined file): viable but exposes
+the S6 ACT agent to a 4-class bug-stack risk if V₄ or S₃ has
+elaboration drift at first Docker contact (per
+`MEMORY.md` `feedback_researcher_postship_pivot_lands_on_slug_whose_paste_ready_act_has_4_act_blocking_bugs_under_docker.md`).
+Cyclic-first ordering surfaces such drift early at lowest LOC cost.
+
+**Anti-target (S6+)**: do NOT start D₄/A₄/S₄. Wait until a separate
 researcher session packages the resolvent-cubic helper namespace.
+
+**Gallery entry**: deferred to S9+ ACT once at least the cyclic row is
+on main. Slug remains research-only through S6–S8.
 
 ## Attempt Counts
 
-- Total attempts: 0 (S1 and S2 are documentation-only)
+- Total attempts: 0 Lean iterations (S1–S5 are all documentation-only)
 - Current approach attempts: 0
 - Approaches tried: 0
 
@@ -154,36 +280,68 @@ researcher session packages the resolvent-cubic helper namespace.
   Explicitly deferred D₄/A₄/S₄ (need resolvent-cubic helper). Each
   cited Mathlib symbol cross-checked against in-repo precedent at
   lake-pinned rev. **No Lean code; no build.** JSON sync deferred.
-- **S2b STATE-SYNC** (2026-05-14, researcher-4, this PR) — refresh
+- **S2b STATE-SYNC** (2026-05-15, researcher-4, PR #18986) — refresh
   state.md body (Focus/Approach/Findings/NextAction/SessionLog) and
   JSON registry (`phase`, `currentState.{phase,since,iteration,focus,
   nextAction}`, `knowledge.{progressSummary,builtItems,nextSteps}`,
   top-level `lastUpdate`) to match the S2 PREP header. No Lean, no
   knowledge.md, no problem.md edits. **Doc-only sync.**
+- **S4 PREP** (2026-05-15, researcher-9, PR #19229) — V₄ + S₃ row
+  Mathlib bearer audit. 4 corrections to S2 PREP §4.5: (1) `autEquivPow`
+  not `Rat.aut_equiv_pow`; (2) CRT chain not `decide` for V₄
+  identification; (3) `irreducible_of_eisenstein_criterion` not
+  `Polynomial.IsEisensteinAt.irreducible` for S₃; (4) packaged
+  `galActionHom_bijective_of_prime_degree` for the cardinality+injectivity
+  step. Also caught a binder bug in S2 PREP §4.5.A cyclic skeleton
+  (4 → 5 binders). Paste-ready V₄ + S₃ skeletons shipped in §2.5 +
+  §3.4. ~430-LOC sessions memo. **No Lean, no state.md, no JSON.**
+- **S3 PREP** (2026-05-15, researcher-8, PR #19199) — cyclic-row
+  axiom-load audit. Traced `cyclic_realizable` →
+  `cyclic_group_realizable` → `exists_prime_dvd_pred` →
+  `Nat.forall_exists_prime_gt_and_modEq` to confirm Mathlib's proved
+  Dirichlet theorem (NOT an axiom). 4 OQ-05-OQ-01 axiom declarations
+  inspected — none reach the cyclic-row call graph. Net cyclic-row
+  axiom load: **0**, matching S2 PREP §4.5 claim. Paste-ready cyclic
+  skeleton at §4 (later corrected by S4 PREP §4 for the 5-binder
+  signature). ~232-LOC sessions memo. **No Lean, no state.md, no JSON.**
+- **S5 STATE-SYNC** (2026-05-16, researcher-8, this PR) — absorb S3
+  PREP + S4 PREP findings into state.md body (Phase, Iteration,
+  Researcher, Active Approach, Findings §§6–9, Risks, Next Action,
+  Session Log) and JSON registry (`currentState.{phase, iteration,
+  focus, nextAction}`, `knowledge.{builtItems, insights, nextSteps,
+  progressSummary}`, top-level `phase`, `lastUpdate`). Fresh bearer
+  drift recheck at lake-pinned `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+  9/9 byte-stable. ACT-readiness gate for S6 cyclic row: 7/8 GREEN,
+  1/8 AMBER (Docker host-disk pressure — infrastructure-only).
+  ~450-LOC sessions memo. **No Lean, no knowledge.md, no problem.md,
+  no gallery edits.**
 
-## Honest Calibration (S2b)
+## Honest Calibration (S5 STATE-SYNC)
 
-This S2b STATE-SYNC:
+This S5 STATE-SYNC:
 
 - Adds 0 Lean to the project.
 - Closes 0 sorries.
 - Resolves 0 of the open mathematical questions.
 - States 0 new theorems.
-- Does NOT verify the S2 PREP API path sketches (S3 ACT will).
+- Does NOT verify the S3/S4 PREP-revised skeletons by Docker build (S6
+  ACT will).
 
 It does:
 
-- Align `state.md` body with the `S2 PREP complete` header.
-- Update the JSON registry's top-level `phase` and `lastUpdate` so
-  `research-listings.json` (via `scripts/research/build.ts`) and the
-  `ResearchPage` gallery reflect post-S2 reality. (Per memory
-  `feedback_researcher_state_sync_misses_top_level_phase`.)
-- Update `currentState.{phase, since, iteration, focus, nextAction}`
-  and `knowledge.{progressSummary, builtItems, nextSteps}` so any
-  subsequent agent reading the JSON sees the correct iteration and
-  next-action target.
-- Set a concrete S3 ACT plan (three-row Lean implementation, recommended
-  ordering, anti-target).
+- Refresh `state.md` Phase header, Iteration, Researcher, Active
+  Approach, Findings, Risks, Next Action, Session Log to reflect S3
+  PREP and S4 PREP merges (8 drift items in state.md).
+- Refresh JSON registry `currentState.*`, `knowledge.*`, top-level
+  `phase`, `lastUpdate` (10 drift items in JSON).
+- Confirm 9/9 Mathlib bearers byte-stable at the lake-pinned SHA via
+  `gh api ?ref=<pin>` re-fetches.
+- Set a concrete S6+ ACT plan (Shape B, cyclic-first ordering, three
+  independent files) with paste-ready skeletons in sessions/2026-05-16-s5-state-sync-absorb-s3-s4-preps.md
+  §§3.1–3.3.
+- Set an 8-item ACT-readiness gate (7/8 GREEN, 1/8 AMBER on Docker
+  host-disk pressure).
 
-The S2 PREP author explicitly deferred this JSON sync to a separate PR
-(see PR #18946 §5 "Out of scope"); this S2b is that separate PR.
+The S3 PREP and S4 PREP authors explicitly deferred their state.md /
+JSON syncs to a separate PR (S3 PREP §7, S4 PREP §7); this PR is that
+separate sync.

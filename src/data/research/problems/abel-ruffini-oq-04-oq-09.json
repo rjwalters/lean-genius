@@ -29,14 +29,14 @@
     "goal": "Build a single Lean file Proofs/AbelRuffiniOQ04OQ09.lean exhibiting explicit Q-realizations of all 9 solvable transitive Galois groups occurring in degrees ≤ 4, with 0 axioms beyond Classical.choice, paired with a gallery entry that completes oq-04's threshold theorem with the constructive direction."
   },
   "currentState": {
-    "phase": "PREP",
-    "since": "2026-05-14T03:05:23Z",
-    "iteration": 2,
-    "focus": "S2 PREP complete (PR #18946) — per-row Mathlib API path sketches for cyclic (≤10 LOC wrapper of OQ-05-OQ-01.cyclic_realizable), V₄ (40–60 LOC via cyclotomic ζ₁₂ → IsCyclotomicExtension.Rat.aut_equiv_pow), and S₃ (80–120 LOC via X³−2 + Eisenstein + Polynomial.Gal.galActionHom). D₄/A₄/S₄ deferred — each requires resolvent-cubic Mathlib helper namespace not yet packaged.",
+    "phase": "PREP (S4 complete; S6 ACT pending — cyclic row first)",
+    "since": "2026-05-15T22:55:40Z",
+    "iteration": 5,
+    "focus": "S3 PREP (PR #19199) + S4 PREP (PR #19229) merged 2026-05-15; S5 STATE-SYNC (this PR) absorbs both into state.md + JSON. Three easier rows of the n ≤ 4 Shafarevich slice now have paste-ready skeletons with corrected Mathlib bearers: cyclic (≤10 LOC, 5-binder wrapper of OQ-05-OQ-01.cyclic_realizable; S3 PREP axiom-load audit confirmed 0 axioms), V₄ (50–80 LOC via ζ₁₂ + autEquivPow [NOT Rat.aut_equiv_pow — deprecated 2025-10-14] + ZMod.chineseRemainder CRT chain), S₃ (35–60 LOC via irreducible_of_eisenstein_criterion on ℤ then map_cast to ℚ + packaged galActionHom_bijective_of_prime_degree). D₄/A₄/S₄ remain deferred (resolvent-cubic helper namespace not in Mathlib). 9/9 Mathlib bearers byte-stable at lake-pinned 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67.",
     "blockers": [
       "Broken proofs/.lake symlink → ~45 min cold build cycles (feedback_researcher_lake_symlink_broken.md)"
     ],
-    "nextAction": "S3 ACT — implement the cyclic/V₄/S₃ trio in Lean as `proofs/Proofs/AbelRuffiniOQ04OQ09.lean` (~150 LOC, 0 axioms beyond Classical.choice). Recommended order: (1) cyclic wrapper (lowest risk, reuses OQ-05-OQ-01.cyclic_realizable directly); (2) V₄ via ζ₁₂ cyclotomic Galois group; (3) S₃ via X³−2 Eisenstein + cardinality argument. Plan one Docker build cycle per row (~45 min cold + 5 min compile) or batch all three before first build. D₄/A₄/S₄ remain separate scope (resolvent-cubic helper namespace first).",
+    "nextAction": "S6 ACT — cyclic row first (Shape B, paste-ready). Create proofs/Proofs/AbelRuffiniOQ04OQ09Cyclic.lean with the corrected 5-binder wrapper `cyclic_realizable_le_four` (≤10 LOC, 0 sorries, 0 new axioms). Body: direct return `AbelRuffiniGaloisExtensionsOQ05OQ01.cyclic_realizable n hn` (signatures align modulo the unused `_hn4 : n ≤ 4` documentation parameter). Then S7 ACT (V₄, ~50–80 LOC) and S8 ACT (S₃, ~35–60 LOC) parallelisable. Skeletons paste-ready in sessions/2026-05-16-s5-state-sync-absorb-s3-s4-preps.md §§3.1–3.3. Pre-flight: re-verify proofs/lake-manifest.json mathlib rev unchanged (currently 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67); df -h before Docker (host-disk at 100% with ~7.2Gi avail — if drops below 1Gi, ship cyclic row as `build pending` per PR #18707 precedent). Anti-target: do NOT start D₄/A₄/S₄ (resolvent-cubic infrastructure deferred).",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -44,28 +44,41 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE + S2 PREP complete. Scope narrowed to subgroups of S_n with n ≤ 4 (9 distinct group structures); per-row Mathlib API paths sketched for the three easier rows (cyclic / V₄ / S₃). D₄/A₄/S₄ explicitly deferred to a follow-up scope (need resolvent-cubic Mathlib helper namespace). No Lean code yet — pure documentation iterations.",
+    "progressSummary": "S1 OBSERVE + S2 PREP + S3 PREP (cyclic-row axiom audit) + S4 PREP (V₄+S₃ bearer audit) complete; S5 STATE-SYNC absorbs S3+S4 findings (this PR). Scope narrowed to subgroups of S_n with n ≤ 4 (9 distinct group structures); per-row Mathlib API paths sketched + audited for the three easier rows (cyclic ≤10 LOC, V₄ 50–80 LOC, S₃ 35–60 LOC; revised total ~95–150 LOC, –25 LOC vs S2 PREP estimate). 0 axioms inherited (S3 PREP verified for cyclic row by chain trace through Mathlib's proved Dirichlet theorem). D₄/A₄/S₄ explicitly deferred (need resolvent-cubic Mathlib helper namespace). No Lean code yet — 5 doc iterations (S1, S2 PREP, S2b STATE-SYNC, S4 PREP, S3 PREP) + S5 STATE-SYNC. S6 ACT (cyclic row first) is paste-ready at sessions/2026-05-16-s5-state-sync-absorb-s3-s4-preps.md §3.1.",
     "builtItems": [
       "research/problems/abel-ruffini-oq-04-oq-09/problem.md — full statement + classification",
       "research/problems/abel-ruffini-oq-04-oq-09/knowledge.md — Mathlib API survey + 9-row realization menu + §4.5 per-row API paths for cyclic/V₄/S₃ (S2 PREP)",
-      "research/problems/abel-ruffini-oq-04-oq-09/state.md — phase PREP, S2 PREP complete header (body refresh pending in this PR)",
-      "research/problems/abel-ruffini-oq-04-oq-09/sessions/2026-05-13-s2-prep-per-row-mathlib-api-paths.md — S2 PREP memo (PR #18946)"
+      "research/problems/abel-ruffini-oq-04-oq-09/state.md — phase PREP (S4 complete; S6 ACT pending), iter 5, S5 STATE-SYNC absorbs S3+S4 PREP findings",
+      "research/problems/abel-ruffini-oq-04-oq-09/sessions/2026-05-13-s2-prep-per-row-mathlib-api-paths.md — S2 PREP memo (PR #18946)",
+      "research/problems/abel-ruffini-oq-04-oq-09/sessions/2026-05-15-s3-prep-cyclic-row-axiom-audit.md — S3 PREP memo (PR #19199): cyclic-row axiom-load chain audit confirming 0 axioms",
+      "research/problems/abel-ruffini-oq-04-oq-09/sessions/2026-05-15-s4-prep-v4-s3-row-mathlib-bearer-audit.md — S4 PREP memo (PR #19229): V₄ + S₃ bearer corrections + S2 PREP cyclic skeleton 5-binder fix",
+      "research/problems/abel-ruffini-oq-04-oq-09/sessions/2026-05-16-s5-state-sync-absorb-s3-s4-preps.md — S5 STATE-SYNC memo (this PR): 18-item drift table + 9/9 bearer recheck + paste-ready S6 ACT recipes"
     ],
     "insights": [
       "Not a duplicate of oq-05: this slug is the axiom-free n ≤ 4 slice; oq-05 is the axiomatized full theorem.",
       "9 solvable transitive groups in degree ≤ 4: {e}, Z/2, Z/3, Z/4, V₄, S₃, D₄, A₄, S₄ — all realizable in Mathlib without new infrastructure.",
       "Sibling reuse: oq-05-oq-01's cyclic_realizable handles Z/n for n ∈ {2,3,4} already; this entry adds the 4 non-abelian cases.",
-      "S₃ realization via X^3-2 (disc = -108, non-square), D₄ via X^4-2, A₄ via X^4+8X+12 (disc = 81·16²), S₄ via X^4-X-1 (generic)."
+      "S₃ realization via X^3-2 (disc = -108, non-square), D₄ via X^4-2, A₄ via X^4+8X+12 (disc = 81·16²), S₄ via X^4-X-1 (generic).",
+      "S3 PREP: cyclic-row axiom load is 0 — `cyclic_realizable` → `cyclic_group_realizable` → `exists_prime_dvd_pred` → Mathlib's PROVED Dirichlet theorem `Nat.forall_exists_prime_gt_and_modEq` (Mathlib/NumberTheory/LSeries/PrimesInAP.lean). Sibling `galois_compositum_product` axiom in OQ-05-OQ-01 is used only in Part III (lines 80–112), NOT reachable from `cyclic_realizable` (line 65, Part I).",
+      "S4 PREP: V₄ row bearer is `IsCyclotomicExtension.autEquivPow` (camelCase, in Mathlib/NumberTheory/Cyclotomic/Gal.lean:93), NOT `Rat.aut_equiv_pow` (S2 PREP miscite; legacy Mathlib/NumberTheory/Cyclotomic/Rat.lean deprecated 2025-10-14 to 5-line stub).",
+      "S4 PREP: (ZMod 12)ˣ ≃* ZMod 2 × ZMod 2 is NOT a 1-line `decide` (S2 PREP claim); requires `ZMod.chineseRemainder` (4 = 4·3 coprime) + `Units.mapEquiv` + `MulEquiv.prodUnits` 4-step chain (precedent: Mathlib/RingTheory/ZMod/UnitsCyclic.lean:271,281,290).",
+      "S4 PREP: S₃ row Eisenstein over ℚ fails (no nontrivial prime ideal). Correct path: `irreducible_of_eisenstein_criterion` on ℤ + `IsPrimitive.Int.irreducible_iff_irreducible_map_cast` to lift to ℚ. Canonical idiom in Archive/Wiedijk100Theorems/AbelRuffini.lean:75–94.",
+      "S4 PREP: S₃ cardinality+injectivity packaged in `Polynomial.Gal.galActionHom_bijective_of_prime_degree` (Mathlib/Analysis/Complex/Polynomial/Basic.lean:126) — collapses ~30+ LOC manual argument to ~5 LOC. S₃ row revised 80–120 → 35–60 LOC.",
+      "S4 PREP found binder bug in S2 PREP §4.5.A cyclic skeleton: 4-anonymous-binder `⟨_,_,_,_, ...⟩` constructor fails because `AbelRuffiniGaloisExtensionsOQ05OQ01.cyclic_realizable` returns a 5-binder existential (Field, Algebra, FiniteDimensional, IsGalois, conjunction). Corrected to direct return."
     ],
     "mathlibGaps": [
-      "No general 'compute Gal(f) for specific f ∈ ℚ[X]' tactic — each of S₃/D₄/A₄/S₄ requires per-case identification via Polynomial.Gal.galActionHom (~100 lines).",
-      "Compositum disjointness for cyclotomic subfields — already flagged by oq-05-oq-01 as the 'general abelian' gap (~500 lines per its estimate). Does NOT block the n ≤ 4 slice."
+      "No general `compute Gal(f) for specific f ∈ ℚ[X]` tactic — each of S₃/D₄/A₄/S₄ requires per-case identification via Polynomial.Gal.galActionHom (~100 lines), though S4 PREP §3.2 found a packaged shortcut for prime-degree polynomials with the right real/complex root count.",
+      "Compositum disjointness for cyclotomic subfields — already flagged by oq-05-oq-01 as the 'general abelian' gap (~500 lines per its estimate). Does NOT block the n ≤ 4 slice.",
+      "Resolvent-cubic helper namespace for quartic Galois group identification (needed for D₄/A₄/S₄ rows). Could be its own Mathlib PR. ~200–500 LOC estimate.",
+      "Packaged `(ZMod p)ˣ ≃* ZMod (p-1)` for small primes (φ(4)=2, φ(3)=2): V₄ row's final identification step lacks a single named `MulEquiv` from `(ZMod 4)ˣ` to `ZMod 2`. Workable via `IsCyclic.uniqueMulEquivZMod` (~5 LOC), but a packaged lemma would tighten the V₄ row to ~40 LOC."
     ],
     "nextSteps": [
-      "S3 ACT: implement the cyclic/V₄/S₃ trio in proofs/Proofs/AbelRuffiniOQ04OQ09.lean (~150 LOC, 0 axioms).",
-      "S4 PREP: resolvent-cubic Mathlib helper namespace blueprint for D₄/A₄/S₄.",
-      "S5 ACT: implement D₄/A₄/S₄ row(s) once resolvent-cubic infrastructure is packaged.",
-      "S6: gallery entry (meta.json + index.ts + annotations.json) and cross-reference into abel-ruffini-oq-04 conclusion.openQuestions[8]."
+      "S6 ACT: ship cyclic row (proofs/Proofs/AbelRuffiniOQ04OQ09Cyclic.lean, ≤10 LOC, 0 sorries, 0 new axioms) per sessions/2026-05-16-s5-state-sync-absorb-s3-s4-preps.md §3.1. Shape B cyclic-first ordering recommended.",
+      "S7 ACT: ship V₄ row (proofs/Proofs/AbelRuffiniOQ04OQ09V4.lean, 50–80 LOC, 0 axioms) per sessions/2026-05-16-s5-state-sync-absorb-s3-s4-preps.md §3.2. Skeleton has 1 sorry placeholder for the construction body.",
+      "S8 ACT: ship S₃ row (proofs/Proofs/AbelRuffiniOQ04OQ09S3.lean, 35–60 LOC, 0 axioms) per sessions/2026-05-16-s5-state-sync-absorb-s3-s4-preps.md §3.3. Skeleton has 4 sorry placeholders for the 5 Eisenstein coefficient-membership goals.",
+      "S9+ ACT (post-S6/S7/S8 merge): gallery entry (meta.json + index.ts + annotations.json) + cross-reference into abel-ruffini-oq-04 conclusion.openQuestions[8] as `[RESOLVED in oq-04-oq-09 for cyclic + V₄ + S₃ rows]`.",
+      "S10+ PREP: resolvent-cubic Mathlib helper namespace blueprint for D₄/A₄/S₄ (separate scope, potentially own Mathlib PR).",
+      "S11+ ACT: implement D₄/A₄/S₄ row(s) once resolvent-cubic infrastructure is packaged."
     ]
   },
   "tags": [
@@ -108,7 +121,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.559Z",
-  "lastUpdate": "2026-05-14T03:05:23Z",
+  "lastUpdate": "2026-05-16T05:30:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
