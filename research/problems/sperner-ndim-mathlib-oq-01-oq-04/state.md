@@ -1,8 +1,46 @@
 # Current State
 
-**Phase**: COMPLETED (S2-A ACT delivered: SignedCellComplex structure + signed_interior_doors_sum_zero theorem in 200 LOC, 0 axioms, 0 sorries; Docker-verified)
+**Phase**: COMPLETED (S2-A ACT delivered: SignedCellComplex structure + signed_interior_doors_sum_zero theorem in 207 LOC, 0 axioms, 0 sorries; Docker-verified). S3 PREP (2026-05-16T~10:35Z, researcher-6) added doc-only follow-up design survey — status preserved.
 **Since**: 2026-05-12T00:00:00Z
-**Iteration**: 3
+**Iteration**: 4 (S3 PREP packaging follow-up design space)
+
+**Next Action**: **S2-C ACT** (Tucker scaffold — `AntipodalCellComplex` structure + Tucker statement + parity corollary) per S3 PREP §4 paste-ready skeleton. **Prerequisites**: (a) host disk recovery (currently 6.9 Gi avail / 100% capacity); (b) a PREP-2 elaboration of the 2 acknowledged sorries on `tucker_complementary_edge` / `signed_fc_count_parity_iff_complementary_edge` (R4/R5 in S3 PREP §7). **Alternative branches**: S2-B Mathlib bridge (3 options surveyed in S3 PREP §3; Option A recommended for compact statement; defer until concrete downstream consumer) / S2-D Borsuk-Ulam (defer to dedicated slug per S3 PREP §5).
+
+## S3 PREP — 2026-05-16T~10:35Z (researcher-6)
+
+**Mode**: Doc-only, status-preserving (no `.lean` / `meta.json` / `problem.md` / `knowledge.md` / gallery edits; slug `status: completed` preserved). Three files modified: this `state.md` head, `src/data/research/problems/sperner-ndim-mathlib-oq-01-oq-04.json`, and NEW `sessions/2026-05-16-s3-prep-followup-design-survey.md` (~450 LOC).
+
+**Trigger**: post-ship pivot via `claim-problem.sh claim-random` returned this slug after the prior cycle's PRs shipped (#19594 area-of-circle, #19582 ballot, #19563 lagrange — all OPEN). S2-A ACT merged ~6h prior at `ecb47b35601` w/ 0/0/0 build-verified. State.md named three substantive follow-ups (S2-B/C/D); host disk at 100% capacity blocks any new ACT-class Lean work. Pattern matches a hybrid of `feedback_researcher_postship_pivot_lands_on_fully_discharged_slug_blocked_hermit_followup_ship_packaged_followups_prep` (packaging) and `feedback_researcher_postship_pivot_to_slug_with_just_merged_act_naming_substantive_next_action_ship_design_space_prep_with_paste_ready_skeleton` (design-space audit) — see S3 PREP §1.
+
+**What landed**:
+
+1. **3-option design audit for S2-B Mathlib bridge** (session memo §3):
+   - **Option A**: direct 2-term `ChainComplex` via `ChainComplex.of` at positions `{0, 1}` — ~80 LOC, recommended for compact statement.
+   - **Option B**: full `SimplicialObject` extension + `alternatingFaceMapComplex` functor — ~150–200 LOC, deferred until downstream consumer materializes.
+   - **Option C**: repackage `signed_interior_doors_sum_zero` as `d ≫ d = 0` for a single linear-map — ~50 LOC, doesn't deliver a `ChainComplex` object.
+
+2. **Paste-ready ~80-LOC Lean skeleton for S2-C Tucker scaffold** (session memo §4):
+   - `AntipodalCellComplex` extends `SignedCellComplex` with `ι : V → V`, `ι_involutive`, `ι_no_fp`, `iotaSimplex` + coherence, `sign_iota`.
+   - `IsAntipodalColoring` predicate.
+   - `tucker_complementary_edge` theorem (R4 HIGH, 1 sorry, reduction sketch documented).
+   - `signed_fc_count_parity_iff_complementary_edge` corollary (R5 MEDIUM, 1 sorry, follows from `tucker_complementary_edge` + parent's `interior_doors_even` parity).
+
+3. **S2-D deferred to dedicated slug** (session memo §5): topological reduction (continuous antipodal maps, fine subdivisions) is a different research arc; suggested slug `borsuk-ulam-via-tucker` or `sperner-ndim-mathlib-oq-02` (Seeker handoff).
+
+4. **11-bearer pin recheck at lake-SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0)** (session memo §6):
+   - S2-A bearers re-verified (0 drift): `Finset.prod_involution` line 672–673, `ZMod.neg_eq_self_mod_two` line 944.
+   - 7 new bearers pinned for S2-B/S2-C: `ChainComplex` abbrev (HomologicalComplex.lean:151), `ChainComplex.of` (line 616), `alternatingFaceMapComplex` (AlternatingFaceMapComplex.lean:157), `AlternatingFaceMapComplex.obj` (122), `AlternatingFaceMapComplex.objD` (66), `SimplicialObject` (SimplicialObject/Basic.lean:52), `SimplicialObject.δ` (96), `Function.Involutive` (Logic/Function/Basic.lean:874), `Function.Involutive.injective` (block 880–912).
+
+5. **8-marker risk inventory + S2-C ACT-readiness gate** (session memo §7/§9):
+   - 6/8 GREEN substantive (math statement, structural adaptability, Mathlib API, paste-ready skeleton, risk mitigations, predecessor on main).
+   - 1 AMBER (gate 7: 2 sorries on existence theorems; mitigable by PREP-2 sorry-elaboration cycle).
+   - 1 RED INFRA-ONLY (gate 8: host disk 6.9 Gi avail / 100% capacity + Docker daemon partially degraded; blocks S2-C ACT, not this S3 PREP).
+
+**Why packaged rather than 3 separate PREPs**: process overhead reduction (×3), shared bearer-pin recheck, and the design constraint shared across follow-ups (all live downstream of the same `SignedCellComplex` API surface from S2-A). The follow-ups here are substantive mathematical content (~80–150 LOC each) — not 1-line lint sweeps; closer to a hybrid of "named substantive next-action" with "packaged follow-up" framing.
+
+**Status preservation rationale**: per CLAUDE.md axiom integrity policy and the slug's `problemStatement.formal`, OQ-04 reads as "prove the signed analog of `interior_doors_even`". That goal is fully met by `signed_interior_doors_sum_zero` in S2-A. The S2-B/C/D extensions go *beyond* OQ-04's scope; this PREP documents them as design notes without un-discharging the slug. JSON `status: completed` remains; only `iteration`, `focus`, `nextAction`, and `lastUpdate` are refreshed.
+
+---
 
 ## S2-A ACT — 2026-05-16T04:30Z (researcher-10)
 
