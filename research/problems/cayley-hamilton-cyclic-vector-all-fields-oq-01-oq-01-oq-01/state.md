@@ -1,10 +1,77 @@
 # Current State
 
-**Phase**: PREP (S2 — S1 OBSERVE deferred bearers pinned + namespace decision)
-**Since**: 2026-05-16
-**Iteration**: 2 (S1 OBSERVE + S2 PREP)
+**Phase**: ACT (S2 — backward direction `cyclic ⇒ nonderogatory` over `[CommRing R] [Nontrivial R]`, build pending)
+**Since**: 2026-05-16T01:15:00Z
+**Iteration**: 3 (S1 OBSERVE + S2 PREP + S2 ACT)
 
-## Latest Iteration: S2 PREP (researcher-1, 2026-05-16)
+## Latest Iteration: S2 ACT (researcher-3, 2026-05-16T01:15Z)
+
+Substantive Lean PR — first Lean delta on this slug. Created
+`proofs/Proofs/CayleyHamiltonCyclicVectorCommRingOQ01.lean` (~95 LOC
+including module docstring; ~50 LOC of Lean), introducing the new
+sibling namespace `GeneralCyclicVectorRing` with `[CommRing R] [Nontrivial R]`
+versions of `IsCyclicVector` and `IsNonderogatory`, and proving the
+backward direction `cyclic_implies_nonderogatory_commring`.
+
+### S2 ACT Headline Finding
+
+While preparing the build, **two upstream-typeclass mismatches in S2 PREP's
+bearer audit** were discovered. Both would have prevented the original
+~46-LOC skeleton from compiling:
+
+1. **`Polynomial.minpoly.dvd` is `Field`-locked, not `[CommRing A]`.**
+   It lives in `Mathlib/FieldTheory/Minpoly/Field.lean:72`, and the file's
+   top-level `variable` declares `[Field A]` (line 31). The proof uses
+   the Euclidean-division-with-degree-strictly-decreasing argument that
+   genuinely requires field hypotheses (the leading-coefficient inverse
+   step). S2 PREP §3 placed this lemma in `Basic.lean`'s `[CommRing A]`
+   section — incorrect.
+
+2. **`Polynomial.natDegree_le_of_dvd` requires `[NoZeroDivisors R]`.**
+   It lives in `Mathlib/Algebra/Polynomial/Degree/Domain.lean:61` inside
+   `section Semiring` with `variable [Semiring R] [NoZeroDivisors R]`.
+   S2 PREP §3 listed only "Algebra/Polynomial/Div.lean:~809 (existence
+   verified via usage)" — missing the `NoZeroDivisors` requirement.
+
+### Fix — `minpoly.unique'` bypasses divisibility entirely
+
+`Polynomial.minpoly.unique'` (`FieldTheory/Minpoly/Basic.lean:139`, in
+`section Ring` with `[CommRing A]`) says: a monic polynomial `p`
+annihilating `x` equals `minpoly A x` iff every polynomial of strictly
+smaller degree is zero or fails to annihilate. Apply to `p := M.charpoly`:
+
+- `M.charpoly.Monic`: ✓ `Matrix.charpoly_monic` at `[CommRing R]`.
+- `aeval M M.charpoly = 0`: ✓ `Matrix.aeval_self_charpoly`.
+- For every `q : R[X]` with `q.degree < M.charpoly.degree`: by
+  `Polynomial.natDegree_lt_natDegree`, `q ≠ 0` implies
+  `q.natDegree < M.charpoly.natDegree = n`. The cyclic-vector
+  hypothesis applied to `q` then says `aeval M q = 0` would force
+  `q = 0`, contradiction. So either `q = 0` or `aeval M q ≠ 0`.
+
+Conclusion: `M.charpoly = minpoly R M`, i.e., `IsNonderogatory M`. The
+proof avoids `minpoly.dvd` and `natDegree_le_of_dvd` entirely. See
+sessions/2026-05-16-s2-act-cyclic-implies-nonderogatory-commring.md
+§1 for the full bearer-audit corrections, §2 for the final skeleton,
+§3 for the corrected 7-bearer audit, §4 for the build outcome.
+
+### Files touched (4)
+
+1. `proofs/Proofs/CayleyHamiltonCyclicVectorCommRingOQ01.lean` (new, ~95 LOC).
+2. `research/problems/<slug>/sessions/2026-05-16-s2-act-cyclic-implies-nonderogatory-commring.md` (new).
+3. `research/problems/<slug>/state.md` (this file — S2 ACT block prepended).
+4. `src/data/research/problems/<slug>.json` (refresh).
+
+### Honesty footprint
+
+- 1 new Lean theorem (`cyclic_implies_nonderogatory_commring`) over `[CommRing R] [Nontrivial R]`.
+- 1 trivial corollary (`not_nonderogatory_of_no_cyclic_vector_commring`).
+- 0 new sorries.
+- 0 new axioms.
+- 1 new Lean file; 0 edits to any existing Lean file.
+- Build verification: see §4 of session note (in flight at PR-create
+  time; this state will be amended on completion).
+
+## Previous Iteration: S2 PREP (researcher-1, 2026-05-16)
 
 Doc-only S2 PREP closing two questions S1 OBSERVE explicitly deferred:
 
