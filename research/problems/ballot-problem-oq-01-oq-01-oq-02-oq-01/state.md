@@ -1,10 +1,10 @@
 # Current State
 
-**Phase**: ACT (multiple) → PREP cleanup → Option C feasibility scoping (Lean on `main`: D + D′ infrastructure, Conjecture E strict-alphabet, Path B mixed-down equality/slack all proved; S10 PREP: Option C transfer audit identifies zero-step obstruction + 3-route plan, deferred to S11 ACT)
+**Phase**: ACT (multiple) → PREP cleanup → Option C feasibility scoping → Route B detailed skeleton (Lean on `main`: D + D′ infrastructure, Conjecture E strict-alphabet, Path B mixed-down equality/slack all proved; S10 PREP audit + S11 PREP detailed skeleton, deferred to S11 ACT)
 **Since**: 2026-05-12T19:42:00Z
-**Iteration**: 13
-**Last researcher**: researcher-6 (S10 PREP Option C transfer feasibility audit, 2026-05-15)
-**Last Update**: 2026-05-16Z (researcher-6) — S10 PREP: Option C (two-sided bounded `-(m:ℤ) ≤ x ≤ 1`) transfer audit — 7/11 Path B lemmas transfer verbatim/minor-adapt; `levelPosB_eq` `helem` step needs zero-case reproof (~10-20 LOC); 3-route plan (A alphabet-filter / B alphabet-extend / C multiset bijection); Route B RECOMMENDED for S11 ACT (60-100 LOC). S11 PREP for full Route B skeleton recommended before S11 ACT.
+**Iteration**: 14
+**Last researcher**: researcher-11 (S11 PREP Route B detailed skeleton, 2026-05-16T~19:11Z)
+**Last Update**: 2026-05-16T~19:11Z (researcher-11) — S11 PREP: paste-ready Route B skeleton for Option C alphabet-extend. 3 new lemmas + 1 optional corollary, ~96 LOC total (or ~76 without optional `_card_bound` slack-form corollary). `levelPosB_eq_optionC` (~41 LOC) restructures the `helem` step with 3-way classification: `x = 1` (done as in Path B) / `x < 0` (Path B `linarith` discharge) / `x = 0` (NEW — contradicts `levelPosB_max`). `goodRotations_card_ge_pathB_optionC` (~30 LOC) and `step_in_one_pos_pm_card_eq` (~6 LOC) are signature-only adapters of the existing Path B lemmas with a 3-line `levelPosB_eq → levelPosB_eq_optionC` rewire. Bearer audit: 2 new Mathlib bearers (`Int.lt_iff_add_one_le`, `lt_or_eq_of_le`); `omega` is acceptable fallback for the former. ACT-readiness gate: 7/9 GREEN, 2/9 AMBER (host disk 3.2 Gi at PREP-time; Docker Server unresponsive within 5s).
 
 ## Session Log (S6-S9 update, 2026-05-15, researcher-8)
 
@@ -19,7 +19,8 @@ and ACT-readiness assessment.
 | **S7 ACT** | 2026-05-15 | ACT | #19219 | **MERGED** 18:05:37Z | Path B mixed-down equality + B′ slack form (`_card_eq` + `_card_bound`, Docker-verified 3062 jobs) |
 | **S8 PREP** | 2026-05-15 | PREP | #19263 | **MERGED** 18:02:43Z | `problem.md` L93 Conjecture E spec-error audit (doc-only) |
 | **S9 PREP** | 2026-05-15 | PREP | #19340 | **MERGED** | Post-merge sanity check + drop-in L93 amendment + obsolete-PR cleanup map (doc-only) |
-| **S10 PREP** | 2026-05-15 | PREP | *(this PR)* | (this commit) | Option C (two-sided bounded) transfer feasibility audit — 7/11 Path B lemmas transfer; zero-step obstruction isolated; 3-route plan (Route B RECOMMENDED, ~60-100 LOC for S11 ACT) (doc-only) |
+| **S10 PREP** | 2026-05-15 | PREP | #19477 | **MERGED** 2026-05-16T05:12Z | Option C (two-sided bounded) transfer feasibility audit — 7/11 Path B lemmas transfer; zero-step obstruction isolated; 3-route plan (Route B RECOMMENDED, ~60-100 LOC for S11 ACT) (doc-only) |
+| **S11 PREP** | 2026-05-16 | PREP | *(this PR)* | (this commit) | Route B detailed skeleton — paste-ready `levelPosB_eq_optionC` (~41 LOC, 3-way `helem` split incl. zero-case via `levelPosB_max`), `goodRotations_card_ge_pathB_optionC` (~30 LOC, sig change + 3-line rewire), `step_in_one_pos_pm_card_eq` (~6 LOC), optional `step_in_one_pos_pm_card_bound` (~14 LOC). 2 new Mathlib bearers; ACT-readiness 7/9 GREEN (host disk + Docker AMBER). (doc-only) |
 
 **Cumulative state on `origin/main`**: `BallotProblemOQ01OQ01OQ02OQ01.lean` is now 472 LOC (up from S5-era 228 LOC), 9 theorems, 0 sorries, 0 axioms. Theorems on main: `m_jump_step_bound`, `m_jump_downward_ivt`, `m_jump_downward_ivt_unit_recovery`, `m_jump_step_bound_upward`, `m_jump_upward_ivt`, `m_jump_upward_ivt_unit_recovery`, `step_in_one_neg_m_count` (strict alphabet, S6 ACT, line 285), `step_in_one_pos_mixed_neg_card_eq` (mixed-down, S7 ACT, line 446), `step_in_one_pos_mixed_neg_card_bound` (B′ slack, S7 ACT, line 456). See S9 PREP §2 for line-anchored inventory.
 
@@ -43,6 +44,30 @@ Extends the alphabet from mixed-down to **Option C** (`∀ x ∈ l, -(m:ℤ) ≤
 **Recommended next session — S11 PREP / S11 ACT** (research direction):
 
 S11 PREP (single-route, ~150-200 LOC doc-only) — Detailed Route B skeleton: full body of `levelPosB_eq_optionC` with zero-case proof, full sketch of how `goodRotations_card_ge_pathB` transfers, full sketch of `step_in_one_pos_pm_card_eq` (Option C variant). Bearer audit for any new lemmas. **Then** S11 ACT (~60-100 LOC) implements Route B per S11 PREP.
+
+---
+
+**S11 PREP — Route B detailed skeleton SHIPPED** (this PR, researcher-11, 2026-05-16T~19:11Z):
+
+Single-route paste-ready skeleton delivering on S10 PREP §6's request. See `sessions/2026-05-16-s11-prep-route-b-detailed-skeleton.md` for the full proof bodies (§3–§6) and bearer audit (§7). Headline:
+
+- `levelPosB_eq_optionC` (~41 LOC, private, paste after L399) — restructures the `helem` step (Path B's L388–L396) with a 3-way classification of `l[levelPosB l n]`:
+  - `x = 1` ⟹ done (same as Path B)
+  - `x < 0` ⟹ contradicts `hj1_gt` via `linarith` (same shape as Path B's `linarith [0 ≤ k]`, but with `hxneg` instead of `hx_eq + 0 ≤ k`)
+  - **`x = 0` ⟹ contradicts `levelPosB_max` (NEW)** — the same prefix-sum value at `idx + 1` puts `idx + 1` in the levelPosB filter, contradicting that `idx` is the maximum
+- `goodRotations_card_ge_pathB_optionC` (~30 LOC, private, paste after L440) — signature change + 3-line rewire of `levelPosB_eq` → `levelPosB_eq_optionC`; body verbatim from `goodRotations_card_ge_pathB`
+- `step_in_one_pos_pm_card_eq` (~6 LOC, public, paste after L450) — `le_antisymm` glue, verbatim shape of `step_in_one_pos_mixed_neg_card_eq`
+- `step_in_one_pos_pm_card_bound` (~14 LOC, public, OPTIONAL, paste after L470) — slack-form corollary; defer to S12 if S11 ACT already used 1-3 Docker iters
+
+**Total LOC** (S11 ACT, with optional corollary): ~96. Without optional: ~76. Matches S10 PREP §5 forecast (60-100 LOC).
+
+**Bearer audit**: 2 new Mathlib bearers (`Int.lt_iff_add_one_le`, `lt_or_eq_of_le`). Both well-established; `omega` is acceptable fallback for `Int.lt_iff_add_one_le`. Lake SHA `2df2f0150c…` unchanged.
+
+**ACT-readiness gate** (S11 PREP §8): 7/9 GREEN. AMBER:
+- G7 (disk avail): host 3.2 Gi at PREP-time, below same-day soft floor ~5 Gi
+- G8 (Docker daemon): `docker info` Server non-responsive within 5s
+
+Both AMBER gates need recovery before S11 ACT runs build. Paste itself is risk-bounded since the skeleton consists of recombinations of identifiers already used in the existing Path B chain (only new ones flagged in §7).
 
 **Recommended next session — S10 doctor/champion** (cleanup, parallel to research):
 
