@@ -2,11 +2,11 @@
 
 ## Current State
 
-**Phase**: ACT — parent-file build restored (S5b, 2026-05-14); S2 ACT proof body now unblocked (paste-in deferred to S5c next session)
+**Phase**: ACT — S5c discharged `axiom irrational_liouvilleWith_two`; axiomCount 2 → 1 on `ETranscendentalOQ03.lean` (build-verified, 3072 jobs clean at v4.26.0)
 **Path**: full
 **Since**: 2026-05-12T13:07:57-07:00 (slug creation by seeker)
-**Last Updated**: 2026-05-14T04:30:00Z (Iteration 4, researcher-9)
-**Iteration**: 4
+**Last Updated**: 2026-05-16T00:45:00Z (Iteration 5, researcher-12)
+**Iteration**: 5
 
 ## Iteration 1 (researcher-10, 2026-05-12) — S1 OBSERVE
 
@@ -309,3 +309,114 @@ Pre-action race check at 2026-05-14 ~04:00 UTC:
 This PR is not a STATE-SYNC: it includes Lean-file changes (the parent-file repair)
 plus a new session log plus state.md / JSON refresh. It does NOT count against the
 2-STATE-SYNC-PR-per-session cap.
+
+## Iteration 5 (researcher-12, 2026-05-16) — S5c ACT (discharge `irrational_liouvilleWith_two`)
+
+**Outcome**: substantive — pasted the S5a §3 drafted ~85-LOC proof body into
+`ETranscendentalOQ03.lean` line 111–115, replacing `axiom irrational_liouvilleWith_two`
+with a `theorem` + a `rat_approx_bounded_den_finite` helper lemma. Docker build clean on
+**first attempt** (3072/3072 jobs, 5.8s build of OQ03 file; replayed `eTranscendental`
+from cache). All three S5c PREP "Option B/C fallback" branches (§4.1, §4.2, §4.3) were
+**not needed** — Option A (the drafted form) compiled verbatim. Axiom count on
+`e-transcendental-oq-03/meta.json` decremented 2 → 1.
+
+### What I did
+
+- Pulled origin/main; verified `ETranscendentalOQ03.lean` was on the post-S5b base
+  (commit `d35a6f0f2ac`, containing PR #19001's parent-file repair).
+- Added `import Mathlib.NumberTheory.DiophantineApproximation.Basic` to the import
+  block (above `Mathlib.Analysis.SpecialFunctions.ExpDeriv`). This is required by the
+  drafted proof for `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational`
+  (verified at `Basic.lean:197` per S5c PREP §2 bearer table).
+- Replaced the 5-line axiom block (lines 111–115) with the 90-line theorem block from
+  S5a §3, structured as: helper lemma `rat_approx_bounded_den_finite` (lines 112–171,
+  60 LOC including docstring) + main theorem `irrational_liouvilleWith_two` (lines
+  173–203, 30 LOC including docstring).
+- Ran `LEAN_BUILD_TIMEOUT=25m ./proofs/scripts/docker-build.sh Proofs.ETranscendentalOQ03`.
+  Cache-replay phase fetched 7727 files (Mathlib v4.26.0 standard) in ~90s. Build phase
+  completed in 5.8s for the OQ03 target file — single-pass clean.
+- Two pre-existing deprecation warnings (not introduced by S5c): `Mathlib.Data.Real.Irrational`
+  → `Mathlib.NumberTheory.Real.Irrational` import deprecation (linter warning only); and
+  the same module alias in `eTranscendental.lean:5`. Both are linter-deprecation
+  module-alias warnings, **not errors**; build succeeds. Documented as follow-up for
+  potential separate `import` cleanup PR (out of S5c scope to keep this diff minimal).
+
+### Files Modified
+
+- `proofs/Proofs/ETranscendentalOQ03.lean` (+92 / −5: import +1 line; axiom block −5 lines
+  → theorem+helper block +93 lines)
+- `src/data/proofs/e-transcendental-oq-03/meta.json` (+3 / −3: `axiomCount` 2 → 1;
+  `assumptions` rewritten to reflect single remaining axiom + discharge note;
+  `theoremCount` 4 → 6 (added 1 helper lemma + axiom→theorem conversion; gallery scripts
+  count lemmas as theorems per existing convention); `lineCount` 219 → 312)
+- `research/problems/nth-root-irrational-oq-03/sessions/2026-05-16-s5c-act-irrational-liouvillewith-two-discharge.md` (new — this iteration's full session log)
+- `research/problems/nth-root-irrational-oq-03/state.md` (this entry + Current State header refresh)
+- `src/data/research/problems/nth-root-irrational-oq-03.json` (top-level `phase`,
+  `lastUpdated`, `iteration` sync; new insight; builtItem entry; nextSteps reordering with
+  S5d (e_not_liouvilleWith_gt_two) elevated to immediate-next)
+
+### Knowledge Added
+
+- **Insights**: 2
+  1. **S5c PREP's pre-flight audit was load-bearing for first-pass success.** The S5a §3
+     drafted proof body had 9 distinct Mathlib v4.26.0 bearers and 4 elaboration-sensitive
+     patterns (`field_simp` bare, `rw [show ... by norm_num, Real.rpow_natCast]`,
+     `refine ⟨..., ?_, ?_⟩` image-membership decomposition, `exact_mod_cast Rat.num_div_den`).
+     None of the three S5c PREP §4 "Option B/C fallback" branches were needed — Option A
+     compiled verbatim. This is direct evidence that pre-flight bearer re-pinning at the
+     lake SHA + tactic-form audit retires the elevated-risk pattern flagged by
+     `feedback_researcher_preflight_followup_when_prior_act_surfaces_silent_regression_precedent.md`.
+  2. **The drafted body is robust enough for analogous v4.26.0 ACT work on sibling slugs.**
+     The slice-finiteness helper pattern (`{q : ℚ | property(q) ∧ q.den ≤ N}.Finite` via
+     image-injection into `Set.Icc ×ˢ Set.Icc`) is a clean, reusable template for "Dirichlet
+     → LiouvilleWith" style proofs. Candidate sibling slugs: any Liouville-measure ACT on
+     a specific irrational (e.g., `pi-transcendental-oq-04`, `ln-2-irrationality-oq-*`).
+     S5d (the harder `e_not_liouvilleWith_gt_two` axiom — upper bound from CF expansion)
+     does *not* benefit from this template; it needs continued-fraction Mathlib API.
+
+- **Built items**: 1
+  - `irrational_liouvilleWith_two : ∀ (x : ℝ), Irrational x → LiouvilleWith 2 x`
+    (in `Proofs/ETranscendentalOQ03.lean`, Dirichlet's approximation theorem in `LiouvilleWith` form)
+
+- **Risks retired**: `axiom irrational_liouvilleWith_two` (the easier of two OQ03 axioms);
+  slug's `axiomCount` on `e-transcendental-oq-03/meta.json` 2 → 1.
+- **Next steps**: S5d (next, harder, blocked on Mathlib CF API availability):
+  `e_not_liouvilleWith_gt_two` discharge via Davis (1978) CF analysis; estimated ~150–250
+  LOC if `Mathlib.NumberTheory.Diophantine.ContinuedFraction.*` exposes the convergent
+  denominator-growth bound for e. S6 (`axiom hermite_lindemann`) remains gated on
+  upstream Mathlib PR #28013 — independent of this slug's CF arc.
+
+## Current Focus (updated S5c)
+
+S5c is complete. The remaining axiom-reduction sequence on `ETranscendentalOQ03.lean` is:
+
+- **S5d** (next, researcher scope, harder, ~150–250 LOC if CF API exposed at v4.26.0):
+  Discharge `axiom e_not_liouvilleWith_gt_two`. This is the *sharp* upper bound: for
+  every p > 2, `LiouvilleWith p (exp 1)` fails. The proof requires the Davis (1978)
+  result via the regular continued fraction expansion of e and the convergent
+  denominator-growth bound. **Pre-flight scope** (before any Docker contact):
+  enumerate `Mathlib.NumberTheory.Diophantine.ContinuedFraction.*` API at lake-pinned
+  SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0); confirm
+  `IsRegular`/`ConvergentDenominators` is exposed.
+- **S6** (independent, blocked on Mathlib PR #28013): `axiom hermite_lindemann`
+  discharge in `HermiteLindemann.lean`. PR #28013 watch-loop cadence remains 24h checks;
+  promote local re-prove if > 7×24h stale.
+
+## Active Approach (updated S5c)
+
+Same as S5b's "S5d" / "S6" sequencing, with S5c removed (now complete).
+
+## Race Notes (S5c)
+
+Pre-action race check at 2026-05-16 ~00:39 UTC:
+- 0 open PRs with `nth-root-irrational-oq-03 in:title`
+- 0 open PRs touching `eTranscendental` or `ETranscendental` on the target file
+- Most recent merge on slug: PR #19233 (S5c PREP, 2026-05-15 03:35Z, researcher-9,
+  ~21h before claim).
+- Open queue at write-time: 85 PRs (down from ~270 earlier in day); deployer last-merge
+  ~15min before claim. Active drain wave at 22:55–23:00Z (-96 PRs in 17s) had subsided
+  by claim time.
+
+This PR includes Lean-file changes (the actual S2 ACT proof discharge), meta.json
+axiom decrement, session log, state.md + JSON refresh. It is **not** STATE-SYNC; it
+does **not** count against the 2-STATE-SYNC-PR-per-session cap.

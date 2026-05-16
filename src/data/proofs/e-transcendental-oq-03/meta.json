@@ -38,11 +38,11 @@
       "Comparison table of irrationality measures for mathematical constants"
     ],
     "dateAdded": "2026-03-30",
-    "axiomCount": 2,
-    "assumptions": "2 axiom declarations: irrational_liouvilleWith_two (Dirichlet's approximation theorem for irrationals), e_not_liouvilleWith_gt_two (upper bound from CF expansion of e)",
-    "lineCount": 219,
+    "axiomCount": 1,
+    "assumptions": "1 axiom declaration: e_not_liouvilleWith_gt_two (upper bound mu(e) <= 2 from continued-fraction analysis; sharp). The lower bound (irrational_liouvilleWith_two) was discharged 2026-05-16 via Dirichlet's theorem and a slice-finiteness helper rat_approx_bounded_den_finite.",
+    "lineCount": 312,
     "mathlib_version": "4.26.0",
-    "theoremCount": 4,
+    "theoremCount": 6,
     "definitionCount": 0
   },
   "overview": {
