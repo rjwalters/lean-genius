@@ -1,8 +1,9 @@
 # Current State
 
-**Phase**: PREP (S18 — research-JSON catchup post-S17 STATE-SYNC + Docker B1 INFRA RED + sharpened paste-body case-split for the +1 sorry; transient — reverts to ACT pivot when Docker recovers)
-**Since**: 2026-05-16 (S17 STATE-SYNC merged 2026-05-16 08:52 UTC; S18 PREP this update; ACT pending S17 Path C with Docker recovery)
-**Iteration**: 17 STATE-SYNC → 18 PREP (this update; research-JSON catchup brings JSON `currentState.iteration` from 15 → 18; S17 STATE-SYNC absorbed)
+**Phase**: PREP (S19 — reflectAcross-spelling source-verification + linear_combination coefficient sharpening + Docker B1 reaffirm at T+30min post-S18 merge + disk regression 6.8 → 6.3 Gi; transient — reverts to ACT pivot when Docker recovers)
+**Since**: 2026-05-16 (S18 PREP merged 2026-05-16 ~14:25 UTC; S19 PREP this update at T+30min; ACT pending S17 Path C with Docker recovery)
+**Iteration**: 18 PREP → 19 PREP (this update; resolves S18 PREP §5.3 caveat #1 with parent-file `reflectAcross` source cite at line 99-101 + sharpens caveat #2 `linear_combination` coefficient as `D = (p₁.2 − p₂.2)` with derivation + reaffirms Docker B1 RED + documents disk -0.5 Gi regression)
+**Last Updated**: 2026-05-16T14:52Z
 
 ## Current Focus
 
@@ -114,15 +115,31 @@ requirement table) **in place of** the single `sorry` line in S16 PREP
 the build) and **host disk is 6.8 Gi avail** (regressed 0.3 Gi from S17;
 run `docker system prune -f` first when daemon recovers).
 
+**S19 PREP update (2026-05-16 14:52 UTC, T+30min post-S18 merge)**:
+S19 PREP §3 verifies parent file `AngleTrisectionOQ05.lean:99-101`
+`reflectAcross` definition byte-for-byte matches S18 PREP §5.1's
+algebraic derivation; **caveat #1 (potential `Line.normSq` aux lemma)
+is CLOSED** — `simp only [reflectAcross, Line.contains]` unfolds without
+auxiliaries. S19 PREP §4 sharpens S18 PREP §5.3's hedged
+`linear_combination` coefficient to the explicit form
+`linear_combination (p₁.2 - p₂.2) * h_sqrt_sq` with derivation tied
+to S18 PREP §5.2's `D² · f_2 = D · (S² − E² − D²)` factorisation;
+3 fallback candidates documented (sign-flip, /2, 2× variants) + `nlinarith`
+ultimate fallback. **Docker B1 INFRA still RED** (0 recovery in 30 min;
+same `docker version` EXIT 124 failure mode). **Host disk regressed
+6.8 → 6.3 Gi** (−0.5 Gi/30min = ~1 GB/h consumption rate; well below
+8 Gi safety threshold). ACT-readiness gate unchanged 4/8 GREEN + 3 AMBER
++ 1 RED.
+
 ### Alternative — S17-β: HH-6 same-directrix general via Path A isometry transport
 
-Defer until S17-α lands. Ship as **S19 PREP** (~80 LOC additional Lean
+Defer until S17-α lands. Ship as **S20 PREP** (~80 LOC additional Lean
 covering `lineIsometry`, `lineIsometry_sends_ℓ_to_xAxis`,
-`reflectAcross_commutes_with_lineIsometry`) → then **S20 ACT** assembling
+`reflectAcross_commutes_with_lineIsometry`) → then **S21 ACT** assembling
 the general-directrix `hh6_existence_sameDirectrix` via transport.
-(Iteration labels updated post-S18 PREP — the previously-named "S18
-PREP" slot is now occupied by this S18 doc-only JSON-catchup / paste-body
-sharpening PREP; the isometry-transport PREP is one slot further.)
+(Iteration labels updated post-S19 PREP — the S19 slot is occupied by
+this doc-only reflectAcross-verify / linear_combination-sharpen PREP;
+the isometry-transport PREP is one slot further.)
 
 ### Alternative — S17-γ: HH-3 intersecting in Lean (Real.sqrt unit-normal bisector)
 
@@ -190,9 +207,34 @@ the real culprit). S18 PREP corrects this.
 | S15c | #19019 | STATE-SYNC COMPLEMENT | researcher-? | S15b complement — additional drift items absorbed (per S16 PREP §1) (doc-only) |
 | S16 | #19364 | PREP | researcher-6 | HH-6 same-directrix bearer pin verification + paste-ready WLOG-frame Lean + isometry-transport gap manifest (doc-only) |
 | S17 | #19513 | STATE-SYNC | researcher-9 | post-S16 PREP merge absorption + bearer drift recheck at HEAD `cf1cfa085e4` + S17 ACT target Path C set (doc-only) |
-| S18 | this PR | PREP | researcher-11 | post-S17-STATE-SYNC research-JSON catchup (iter 15→18) + Docker B1 INFRA RED at 13:51 UTC + Mathlib blob-SHA stability (5h) + sharpened paste-body case-split for the +1 sorry in S16 §5 + stranded-PR reaffirm (#19468 superseded, #18192 stale) (doc-only) |
+| S18 | #19623 | PREP | researcher-11 | post-S17-STATE-SYNC research-JSON catchup (iter 15→18) + Docker B1 INFRA RED at 13:51 UTC + Mathlib blob-SHA stability (5h) + sharpened paste-body case-split for the +1 sorry in S16 §5 + stranded-PR reaffirm (#19468 superseded, #18192 stale) (doc-only) |
+| S19 | this PR | PREP | researcher-8 | reflectAcross-spelling source-verification (caveat #1 CLOSED — parent file line 99-101 matches §5.1 byte-for-byte; no `Line.normSq` redirection) + linear_combination coefficient sharpening (caveat #2 — explicit `D = (p₁.2 − p₂.2)` derivation + 3 fallback candidates + `nlinarith` ultimate) + Docker B1 reaffirm RED at T+30min post-S18 merge (no recovery) + disk regression 6.8 → 6.3 Gi (−0.5 Gi/30min) (doc-only) |
 
 ## Honest Calibration
+
+This S19 PREP:
+
+- Adds 0 Lean to the file.
+- Closes 0 sorries.
+- Resolves 0 of the 3 open mathematical conjectures.
+- States 0 new theorems.
+- Records 0 new constructive HH-axiom ingredients.
+
+It does:
+
+- **Close S18 PREP §5.3 caveat #1** (reflectAcross spelling) — verifies parent file `AngleTrisectionOQ05.lean:99-101` byte-for-byte matches S18 PREP §5.1's algebraic derivation; no `Line.normSq` redirection; `simp only [reflectAcross, Line.contains]` unfolds without auxiliaries.
+- **Sharpen S18 PREP §5.3 caveat #2** (linear_combination coefficient) — explicit candidate `linear_combination (p₁.2 - p₂.2) * h_sqrt_sq` with derivation traceable to S18 PREP §5.2's `D² · f_2 = D · (S² − E² − D²)` factorisation. 3 fallback candidates (sign-flip, /2, 2×) + `nlinarith` ultimate fallback documented.
+- Reaffirm Docker B1 INFRA RED at T+30min post-S18 merge (no recovery; same `docker version` EXIT 124 failure mode).
+- Document disk regression 6.8 → 6.3 Gi (−0.5 Gi/30min = ~1 GB/h consumption rate; well below 8 Gi safety threshold).
+- Bump research JSON `currentState.iteration` from 18 → 19 + lift `currentState.since`/`focus`/`nextAction` to reference §3 + §4 sharpenings.
+- Reaffirm stranded PRs #19468 + #18192 unchanged (no S19 action — Champion/deployer/mechanic territory).
+
+This S19 PREP does **NOT**:
+
+- Re-spot-check the 9 Mathlib `Sqrt.lean` bearers (M1–M9) — pin SHA + blob SHA unchanged 5.5h since S17; per memory pattern guidance, busywork at SHA-stable T+minutes.
+- Re-pin in-repo bearers — lake SHA unchanged.
+- Touch Lean / `meta.json` / `problem.md` / `knowledge.md` / gallery files.
+- Close/comment/rebase stranded PRs.
 
 This S18 PREP:
 
