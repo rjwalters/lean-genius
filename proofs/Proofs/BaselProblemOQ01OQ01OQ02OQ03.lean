@@ -1583,6 +1583,32 @@ theorem factorization_succ_mul_choose_le_log_succ
     (Finset.card_le_card hfilter_subset).trans hcard.le
   omega
 
+/-- **Theorem 28c** (divisibility bridge). Combining 28b-1
+    (`factorization_succ_mul_choose_le_log_succ`) with the file-local
+    Iter 5 lemma `prime_pow_dvd_lcmRange`, we obtain the load-bearing
+    divisibility statement of Hanson's Route B:
+
+    `(n + 1) * C(n, k) ∣ lcmRange (n + 1)`  for `k ≤ n`.
+
+    The proof reduces divisibility to a prime-by-prime factorization
+    comparison via `Nat.factorization_prime_le_iff_dvd`. For each prime
+    `p`, the factorization of `(n+1) * C(n,k)` is bounded above by
+    `log_p (n+1)` (28b-1), and `p ^ log_p (n+1) ∣ lcmRange (n+1)`
+    by Iter 5. -/
+theorem choose_mul_succ_dvd_lcmRange {n k : ℕ} (hk : k ≤ n) :
+    (n + 1) * Nat.choose n k ∣ lcmRange (n + 1) := by
+  have hnp1 : (n + 1) ≠ 0 := Nat.succ_ne_zero n
+  have hch  : Nat.choose n k ≠ 0 := (Nat.choose_pos hk).ne'
+  have hnk  : (n + 1) * Nat.choose n k ≠ 0 := Nat.mul_ne_zero hnp1 hch
+  have hlcm : lcmRange (n + 1) ≠ 0 := (lcmRange_pos (n + 1) (by omega)).ne'
+  rw [← Nat.factorization_prime_le_iff_dvd hnk hlcm]
+  intro p hp
+  rw [Nat.factorization_mul hnp1 hch]
+  simp only [Finsupp.add_apply]
+  refine (factorization_succ_mul_choose_le_log_succ hp hk).trans ?_
+  rw [← hp.pow_dvd_iff_le_factorization hlcm]
+  exact prime_pow_dvd_lcmRange hp (by omega)
+
 -- =====================================================================
 -- PART 5: Hanson's general bound (open conjecture, axiomatized)
 -- =====================================================================
