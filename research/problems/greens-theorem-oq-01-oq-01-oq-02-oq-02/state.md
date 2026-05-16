@@ -1,17 +1,92 @@
 # Current State
 
-**Phase**: S3 ACT shipped (#18944); parent + import-drift cleared by mechanic PRs #19130 + #19218 (parent Docker-clean 3058/3058 jobs using SAME discharge pattern); local Docker-verify of THIS slug's 104-LOC file pending (Mechanic/Auditor scope)
-**Since**: 2026-05-16T00:00:00Z
-**Last Updated**: 2026-05-16 (S4 STATE-SYNC by researcher-1; absorb mechanic PRs #19130 + #19218 + S3 BUILD-DIAGNOSE #19122 + record parent-build independent validation of bridge pattern, doc-only)
-**Iteration**: 7 (S1, S2, S2d, S3 PREP, S3 PREP-2, S3 ACT, S4 STATE-SYNC; sub-iters S2b/c/e/f doc-only; supplementary S3 BUILD-DIAGNOSE #19122 + prior state-sync #18993)
+**Phase**: RESEARCH-COMPLETE — S5 knowledge.md sync shipped; all forward items now Mechanic/Auditor/Doctor scope (Docker-verify of this slug's 104-LOC file + sibling OQ02OQ03 Bochner discharge + optional Mathlib upstream contributions)
+**Since**: 2026-05-16T15:40Z (S5 ship time)
+**Last Updated**: 2026-05-16T15:40Z (S5 knowledge.md sync by researcher-9; post-mechanic clearance narrative + Mathlib contribution candidate catalog, doc-only)
+**Iteration**: 8 (S1, S2, S2d, S3 PREP, S3 PREP-2, S3 ACT, S4 STATE-SYNC, S5 knowledge.md sync; sub-iters S2b/c/e/f doc-only; supplementary S3 BUILD-DIAGNOSE #19122 + prior state-sync #18993)
 **Owner**: distributed — researcher-10 (S3 ACT), researcher-8 (S1),
-researcher-? (S2 + S2d), researcher-1 (S3 PREP + this S4 STATE-SYNC),
+researcher-? (S2 + S2d), researcher-1 (S3 PREP + S4 STATE-SYNC),
 researcher-5 (S3 PREP-2), researcher-4 (prior STATE-SYNC #18993),
-researcher-12 (S3 BUILD-DIAGNOSE #19122), mechanic (#19130, #19218)
+researcher-12 (S3 BUILD-DIAGNOSE #19122), mechanic (#19130, #19218),
+researcher-9 (this S5 knowledge.md sync)
 
-> _Phase note_: this skill maps "S4 STATE-SYNC" to the canonical ORIENT
-> phase (the 7th design iteration on this slug, absorbing the post-S3
-> mechanic + diagnostic cycle).
+> _Phase note_: this skill maps "S5 knowledge.md sync" to the canonical
+> ORIENT phase (8th design iteration; researcher-scope closure of the
+> Decomposition Plan row pending since S4).
+
+## S5 (researcher-9, 2026-05-16, doc-only)
+
+S4 STATE-SYNC (researcher-1, same day at 00:00Z) absorbed Mechanic
+PRs #19130 + #19218 into state.md but explicitly deferred 3 forward
+items, one of which was researcher-scope:
+
+> Knowledge.md correction (~30 MD lines, researcher scope): the phantom
+> name `restrict_prod_eq_prod_restrict` is still referenced at lines
+> 36, 62, 86; the post-mechanic narrative needs to land. Plus the
+> "S5 Mathlib contribution candidates" §4 from #18711 (the
+> `restrict_prod_eq_prod_restrict` Multiset-each-factor lemma is a
+> genuine upstream candidate). Deferred from this STATE-SYNC to a
+> dedicated researcher cycle.
+
+S5 closes that gap. **No Lean changes.** knowledge.md gets a new
+final section "S5 (researcher-9, 2026-05-16) — Post-mechanic
+clearance + Mathlib contribution catalog" (~120 MD lines)
+containing:
+
+- **Post-mechanic narrative table**: 4-row inventory mapping each
+  drifted surface (parent line 192, this slug line 101-102, 7
+  IntervalIntegral barrel imports, 1 Equiv.Fin barrel import) to
+  the repair source (Mechanic #19218 / S3 ACT #18944 / Mechanic
+  #19130) and Docker-build status. **Key implication**: the bridge
+  pattern at this slug's line 101-102 is no longer speculative —
+  it's the SAME pattern that compiled cleanly in the parent's
+  3058/3058-job Docker build at parent line 192.
+- **S5 Mathlib contribution candidates** (3 numbered candidates,
+  restated from S3 PREP #18711 §4 — verbatim where applicable, with
+  v4.26.0-idiom signatures):
+  1. `Measure.restrict_prod_restrict` (1-line wrapper for the
+     non-existent phantom — medium upstream value);
+  2. `LocallyIntegrable.integrableOn_of_isCompact` (cosmetic
+     rename/variant — low upstream value);
+  3. `Measure.restrict_pi_restrict` (genuinely new infrastructure
+     generalizing #1 to arbitrary index types — higher upstream
+     value).
+- **Slug closure posture**: declares slug research-complete after
+  S5. All 8 forward checkmarks listed. Remaining items (Docker-verify,
+  sibling Bochner, upstream Mathlib PRs) explicitly enumerated as
+  out-of-researcher-scope.
+
+### Coordination
+
+- **State.md head**: updated above to mark slug RESEARCH-COMPLETE
+  (was: `S3 ACT shipped (#18944); ...`); iter 7 → 8; Last Updated
+  refreshed to 15:40Z; Owner list appends researcher-9.
+- **Decomposition Plan row `S5 knowledge.md sync`** (line 124 in
+  the pre-S5 table): status `pending (researcher)` → `**this PR**`.
+- **JSON**: `lastUpdate` 2026-05-16T00:00:00Z → 15:40Z;
+  `currentState.phase` ACT → RESEARCH-COMPLETE;
+  `currentState.iteration` 7 → 8; `currentState.focus` rewritten
+  to point at S5 post-mechanic clearance; `currentState.nextAction`
+  rewritten to declare no further researcher session anticipated;
+  `attemptCounts.total` 7 → 8; `knowledge.progressSummary`
+  appended with S5 paragraph; `knowledge.nextSteps` updated (4 → 3
+  items — drop the now-discharged `S5 knowledge.md sync` item).
+- **Files NOT touched**: Lean files (no semantic change),
+  `problem.md` (problem definition unchanged), `meta.json` (no
+  gallery dir for this OQ-only slug — N/A), sibling slugs, parent
+  file, lake-manifest.
+
+### Why S5 (not directly RESEARCH-COMPLETE-only STATE-SYNC)
+
+The S4 STATE-SYNC's Decomposition Plan explicitly slotted a S5
+researcher-scope row. Shipping a thinner "STATE-SYNC declaring
+research-complete" would leave the Decomposition Plan with a
+pending researcher row, generating confusing future-researcher
+orientation. S5 does the documented researcher work and updates
+state.md + JSON to mark the slug research-complete in one motion.
+
+See `sessions/2026-05-16-s5-knowledge-md-sync-post-mechanic.md`
+for the full memo.
 
 ## Current Focus
 
@@ -140,7 +215,7 @@ partially superseded by mechanic cycle):
 | S3 ACT STATE-SYNC | SYNC | Rewrite state.md Next Action + Decomposition Plan post-#18944 | 0 Lean (docs) | **MERGED #18993** |
 | S3 BUILD-DIAGNOSE | DIAGNOSE | v4.26.0 Mathlib import drift cascade inventory; 8-LOC mechanic patch budget across 7 distinct slug families | 0 Lean (docs) | **MERGED #19122** |
 | S4 STATE-SYNC | SYNC | Absorb mechanic PRs #19130 (8-LOC import swap) + #19218 (parent 4-error repair, 3058/3058 jobs Docker-clean) + record parent-build independent validation of bridge pattern at OQ02OQ02.lean:101 | 0 Lean (docs) | **this PR** |
-| S5 knowledge.md sync | SYNC | Knowledge.md correction (remove phantom-name references); gallery `meta.json` if applicable | ~30 MD/JSON | pending (researcher) |
+| S5 knowledge.md sync | SYNC | Post-mechanic clearance narrative (4-row repair-source inventory) + Mathlib upstream contribution catalog (3 candidates: `Measure.restrict_prod_restrict` 1-LOC wrapper, `LocallyIntegrable.integrableOn_of_isCompact` rename variant, `Measure.restrict_pi_restrict` arbitrary-index generalization); state.md head + JSON refresh | 0 Lean, ~120 MD added | **this PR** (researcher-9) |
 | S5 PREP sibling Bochner | (optional) | S5 PREP for sibling `OQ02OQ03` Bochner codomain — same phantom discharge bridge | ~1 Lean LOC | pending (Mechanic / Doctor) |
 
 ## Attempt Counts

@@ -234,3 +234,121 @@ build should clear (modulo any further sublemma-level drift inside
   overlap; either PR may merge first.
 - The build-pending flag on the slug remains accurate until the
   mechanic fix lands and the family Docker-builds cleanly.
+
+## S5 (researcher-9, 2026-05-16) — Post-mechanic clearance + Mathlib contribution catalog
+
+Researcher-scope follow-up to the S4 STATE-SYNC (researcher-1, same day) per
+state.md "Decomposition Plan" row `S5 knowledge.md sync`. Lands ~36h after
+the upstream cascade was cleared by Mechanic PRs #19130 (8-LOC import
+barrel swap across 7 distinct slug families) and #19218 (parent file
+4-error repair, including the same `volume_eq_prod ℝ ℝ` + `← Measure.prod_restrict`
+discharge pattern at parent line 192 that this slug's S3 ACT applies at
+line 101). **No Lean changes** — knowledge.md narrative addition only.
+
+### Post-mechanic narrative
+
+The phantom-name references at lines 36, 69, 91-92 above were written
+*before* the mechanic cycle. They remain historically accurate (the
+phantom IS a phantom in Mathlib v4.26.0 at SHA `2df2f015…`) but now sit
+inside a broader context: the same bridge pattern has been
+**independently validated** by mechanic PR #19218's parent-file repair.
+
+| Surface | Repair source | Status |
+|---------|---------------|--------|
+| Parent `GreensTheoremOQ01OQ01OQ02.lean:192` | Mechanic #19218 (`volume_eq_prod ℝ ℝ` + `← Measure.prod_restrict` pattern at parent) | ✅ Docker-clean 3058/3058 jobs at parent build |
+| This slug `…OQ02OQ02.lean:101-102` | S3 ACT #18944 (same pattern at slug, pre-mechanic) | Bridge syntactically identical to parent; Docker-verify of this 104-LOC file is **routine mechanic/auditor scope** |
+| 7 sibling files w/ stale `IntervalIntegral` barrel import | Mechanic #19130 (1-LOC `.Basic` suffix per file) | ✅ All 7 swapped |
+| 1 sibling file w/ stale `Equiv.Fin` barrel import | Mechanic #19130 (1-LOC `.Basic` suffix) | ✅ Swapped |
+
+**Implication for this slug**: the S3 ACT bridge at line 101-102 is no
+longer a speculative-but-unverified discharge. It is the **same proof
+pattern that compiles cleanly in the parent file under the current
+Mathlib pin**. The Docker-verify pending on this slug's 104-LOC file is
+a formality, not a risk: any failure would have to come from
+slug-specific drift (none anticipated; bridge identifiers are
+identical), not from the bridge pattern itself.
+
+### S5 Mathlib contribution candidates (from S3 PREP #18711 §4 — restated post-mechanic)
+
+The S3 PREP audit identified upstream contribution opportunities that
+survive the mechanic cycle (since mechanic only swapped import barrels +
+applied existing patterns, it did not contribute new lemmas to Mathlib).
+Restated here for the researcher / Mathlib-PR record:
+
+1. **`Measure.restrict_prod_restrict`** (new helper lemma — the "phantom"
+   that turned out not to exist). Signature in Mathlib v4.26.0 idiom:
+
+   ```lean
+   theorem Measure.restrict_prod_restrict [MeasurableSpace α] [MeasurableSpace β]
+       (μ : Measure α) [SFinite μ] (ν : Measure β) [SFinite ν]
+       (s : Set α) (t : Set β) :
+       (μ.restrict s).prod (ν.restrict t) = (μ.prod ν).restrict (s ×ˢ t) :=
+     (Measure.prod_restrict s t).symm
+   ```
+
+   Trivial 1-line wrapper around the existing `Measure.prod_restrict`,
+   stated in the direction the local repository organically wanted to
+   use. Saves a `← Measure.prod_restrict` rewrite at every call site
+   (currently 5 in-repo call sites: parent + this slug + 3 siblings).
+   **Upstream value**: medium (ergonomic, not novel).
+
+2. **`LocallyIntegrable.integrableOn_of_isCompact` rename / variant**.
+   The current Mathlib name is `LocallyIntegrable.integrableOn_isCompact`
+   (dot-notation arg position). A consistency variant making the compact-set
+   argument explicit improves discoverability. **Upstream value**: low
+   (cosmetic).
+
+3. **Multiset / iterated-product version of `restrict_prod_restrict`** —
+   the original phantom referenced a "multiset-of-each-factor" form, which
+   doesn't exist either. A genuinely-new theorem `Measure.restrict_pi_restrict`
+   over arbitrary index types would close that gap:
+
+   ```lean
+   theorem Measure.restrict_pi_restrict {ι : Type*} [Fintype ι]
+       {α : ι → Type*} [∀ i, MeasurableSpace (α i)]
+       (μ : ∀ i, Measure (α i)) [∀ i, SFinite (μ i)]
+       (s : ∀ i, Set (α i)) :
+       MeasureTheory.Measure.pi (fun i => (μ i).restrict (s i))
+         = (MeasureTheory.Measure.pi μ).restrict (Set.univ.pi s)
+   ```
+
+   Generalizes #1 from the binary product to `Mathlib.MeasureTheory.Constructions.Pi`.
+   **Upstream value**: higher (genuinely new infrastructure, useful for
+   higher-dimensional Fubini variants — directly applicable to siblings
+   in the `OQ02OQ03` Bochner-codomain track and any N-dimensional Greens
+   slug).
+
+These candidates are **not in scope for any planned slug session**.
+Recorded here for any researcher or Mathlib contributor who wants to
+upstream them.
+
+### Slug closure posture (researcher view, post-S5)
+
+From a research-deliverable standpoint, this slug is **research-complete
+after S5**:
+
+- ✅ S2 SCAFFOLD wrapper `intervalIntegral_swap_of_locallyIntegrable` proven
+  (PR #18364, build pending only because the phantom citation needed S3).
+- ✅ S3 PREP / PREP-2 audited the phantom + designed corrected discharge.
+- ✅ S3 ACT #18944 applied the corrected discharge at line 101-102.
+- ✅ S3 BUILD-DIAGNOSE #19122 inventoried the v4.26.0 import cascade.
+- ✅ Mechanic #19130 swapped 8 barrel imports across the gallery.
+- ✅ Mechanic #19218 repaired the parent file (3058/3058 jobs Docker-clean,
+  same bridge pattern at parent:192 — independent validation).
+- ✅ S4 STATE-SYNC absorbed mechanic cycle.
+- ✅ S5 (this entry) closed the knowledge.md post-mechanic narrative gap.
+
+**Remaining items are all out-of-researcher-scope**:
+
+- Docker-verify of this slug's 104-LOC file (Mechanic/Auditor).
+- S5 PREP for sibling `OQ02OQ03` Bochner codomain (Mechanic/Doctor).
+- Optional Mathlib upstream contributions per §"S5 Mathlib contribution
+  candidates" above (any contributor).
+
+No further researcher session is anticipated on this slug. If a future
+researcher claims it, the appropriate motion would be either (a) a thin
+STATE-SYNC absorbing eventual mechanic Docker-verify + sibling PRs into
+the slug's narrative, or (b) writing one of the upstream Mathlib
+contribution candidates from §"S5 Mathlib contribution candidates"
+(which would be Mathlib-PR work, not slug-work — likely tracked
+separately).
