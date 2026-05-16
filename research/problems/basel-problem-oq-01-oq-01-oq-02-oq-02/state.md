@@ -2,7 +2,71 @@
 
 **Phase**: ACT
 **Since**: 2026-05-16
-**Iteration**: 14
+**Iteration**: 15
+
+## Session 15 (2026-05-16, ACT — A.1 `choose_dvd_lcmRange` Docker-verified clean)
+
+Ships the A.1 ACT planned by S12 PREP (#19217), audited by S13 PREP
+(#19299), and given a GREEN readiness gate by S14 STATE-SYNC (#19352
+§6.2). New theorem in `proofs/Proofs/BaselProblemOQ01OQ01OQ02OQ02.lean`
+(Part 11):
+
+```lean
+theorem choose_dvd_lcmRange {n k : ℕ} (hn : 0 < n) (hk : k ≤ n) :
+    Nat.choose n k ∣ lcmRange n := by
+  rw [← Nat.prod_pow_factorization_choose n k hk]
+  apply Finset.prod_dvd_of_isRelPrime
+  · -- pairwise IsRelPrime on prime-power factors
+    intro p _ q _ hne
+    simp only [Function.onFun]
+    by_cases hv_p : (Nat.choose n k).factorization p = 0
+    · rw [hv_p, pow_zero]; exact isRelPrime_one_left
+    by_cases hv_q : (Nat.choose n k).factorization q = 0
+    · rw [hv_q, pow_zero]; exact isRelPrime_one_right
+    have hpp : p.Prime := by
+      by_contra h; exact hv_p (Nat.factorization_eq_zero_of_not_prime _ h)
+    have hqq : q.Prime := by
+      by_contra h; exact hv_q (Nat.factorization_eq_zero_of_not_prime _ h)
+    exact Nat.coprime_iff_isRelPrime.mp
+      (Nat.coprime_pow_primes _ _ hpp hqq hne)
+  · -- each prime-power factor divides lcmRange n
+    intro p _
+    by_cases hv : (Nat.choose n k).factorization p = 0
+    · rw [hv, pow_zero]; exact one_dvd _
+    have hpp : p.Prime := by
+      by_contra h; exact hv (Nat.factorization_eq_zero_of_not_prime _ h)
+    exact dvd_lcmRange (pow_pos hpp.pos _)
+      (Nat.pow_factorization_choose_le hn)
+```
+
+**Docker build VERIFIED CLEAN** (3058 jobs, 17s on the final file,
+~2 min total wall-clock including cache fetch + unpack). 0 errors,
+0 new warnings (the single warning at line 256:23 is pre-existing in
+`harmonicCubed_lcm_clear_nat`'s simp call from S4 ACT, 2026-05-08).
+
+**LOC delta**: 799 → 905 (+106). **Theorem delta**: 35 → 36 (+1).
+**Sorry delta**: 0. **Axiom delta**: 0.
+
+**Imports added**: `Mathlib.Data.Nat.Choose.Factorization` (for
+`Nat.prod_pow_factorization_choose` + `Nat.pow_factorization_choose_le`)
+and `Mathlib.RingTheory.Coprime.Lemmas` (for
+`Finset.prod_dvd_of_isRelPrime`).
+
+**Two new bearer pins added to the S14 §3 table**:
+* `Nat.coprime_pow_primes` at `Mathlib/Data/Nat/Prime/Basic.lean:200`
+   — distinct primes have coprime powers; one-line shortcut around
+   S13's chained `Nat.Coprime.pow_left.pow_right` sketch.
+* `isRelPrime_one_right` at `Mathlib/Algebra/Divisibility/Units.lean:167`
+   — companion to S14 §5's `isRelPrime_one_left` for the v_q=0 branch.
+
+**Path-forward continuity**: S16 ACT (A.2 = `mul_choose_dvd_lcmRange`)
+is now the next ACT. S13 §5 sketched ~80-120 LOC via Kummer/Legendre
+(`Nat.Prime.emultiplicity_choose` at Multiplicity.lean:209 +
+`Nat.Prime.emultiplicity_factorial` at line 102). One additional
+bridge bearer (`factorization` ↔ `emultiplicity` on ℕ) must be pinned
+at S16 ACT time.
+
+Session note: `sessions/2026-05-16-s15-act-choose-dvd-lcm-range.md`.
 
 ## Session 14 (2026-05-16, STATE-SYNC — post-S12+S13-PREP-merge refresh, bearer drift recheck, two ACT-time risk flags pre-discharged)
 
