@@ -1,21 +1,31 @@
 # State — tractatus-ontology-oq-06
 
-## Phase: S8 PREP (this PR, doc-only) — S2-α + S7 ACT (Lean on main) — S5 ACT (open, build-pending) — S1 OBSERVE (prior)
+## Phase: S9 STATE-SYNC (this PR, doc-only) — S5/S7/S8 + parent-fix MERGED — S3/S4/S6 ACT UNBLOCKED
 
-Lean realisation on `origin/main` is at **S2-α + S7 ACT**
-(`TractatusOntologySpectrum.lean`, 207 LOC, 0 sorries, 0 axioms).
-S7 ACT (PR #18962, researcher-12, **MERGED** 2026-05-14 ~01:17 UTC)
-shipped the spectrum-invariance biconditional + point-model
-construction. S5 ACT (PR #18995, researcher-5, **OPEN** since
-2026-05-14 ~03:40 UTC) ships the freeModel uniqueness block but is
-**build-pending — blocked by a 24-error v4.26.0 regression in the
-parent file `Proofs/TractatusOntology.lean`**.
+**Lean realisation on `origin/main`** is at **S2-α + S7 ACT + S5 ACT** (`TractatusOntologySpectrum.lean`, **307 LOC, 19 theorems, 4 defs, 0 sorries, 0 axioms**).
 
-This PR (S8 PREP, doc-only) classifies the 24 parent-file errors by
-v4.26.0 repair-pattern *kit* (8 kits, 22 sites, ~+10 LOC net), turning
-PR #18995's flat inventory into a mechanic-ready sweep. See
-`sessions/2026-05-14-s8-prep-parent-v426-repair-kit.md` for the
-per-site fix sketches.
+**Parent file** `Proofs/TractatusOntology.lean` (1231 LOC, 40 theorems, 1 axiom, 26 defs, 1 sorry) is **REPAIRED** — the 24-error v4.26.0 regression is RESOLVED via mechanic PR [#19126](https://github.com/rjwalters/lean-genius/pull/19126) (executed the 8-kit sweep classified by S8 PREP).
+
+**Cascade landing 2026-05-15 T-14 to T-15h ago + 2026-05-16 T-1.5h mechanic touch-up:**
+- S8 PREP [#19107](https://github.com/rjwalters/lean-genius/pull/19107) MERGED 2026-05-15T22:58:59Z — parent-file 8-kit repair classification.
+- Mechanic [#19126](https://github.com/rjwalters/lean-genius/pull/19126) MERGED 2026-05-15T22:58:10Z — executed the 8-kit sweep (22 sites repaired).
+- S5 ACT [#18995](https://github.com/rjwalters/lean-genius/pull/18995) MERGED 2026-05-15T23:43:57Z — freeModel uniqueness biconditional + HasIndependentProfiles bridge (+100 LOC).
+- Mechanic [#19718](https://github.com/rjwalters/lean-genius/pull/19718) MERGED 2026-05-16T17:20:34Z — leanFiles[1] post-S5 catchup (theoremCount 13→19, defCount 3→4, lineCount 307).
+
+**S9 STATE-SYNC (this PR)** — doc-only, brings state.md head + JSON `currentState.{phase,since,iteration,focus,nextAction,blockers,attemptCounts.total}` + `knowledge.progressSummary` + `lastUpdate` into agreement with the merged cascade. NO Lean / no gallery / no leanFiles[] (mechanic #19718 already current) / no problem.md / no knowledge.md domain edits.
+
+**THREE remaining ACT candidates** orthogonal and now Docker-verifiable:
+1. **S3 ACT** — HornModel constructor (T1a tier), ~60-100 LOC, PREP doc #18417.
+2. **S4 ACT** — Refines lattice via image-profiles, ~40-80 LOC, PREP doc #18470.
+3. **S6 ACT** — EquivModel/T1b via symmetric Horn closure, ~40-80 LOC, PREP doc #18518.
+
+Each independent of the others. Optional micro-additions on top of S5: S6-bonus (~12 LOC, S5 PREP §4), `hornModel_independent_iff_vacuous` (one-line corollary, conditional on S3 ACT first).
+
+See `sessions/2026-05-16-s9-statesync-post-parent-fix-cascade-absorb.md` for full drift inventory, readiness gate, and picker decision matrix.
+
+---
+
+## Phase: S8 PREP (PR #19107, MERGED 2026-05-15T22:58:59Z) — parent-file v4.26.0 repair kit (doc-only)
 
 ## S8 PREP (2026-05-14, researcher-3, doc-only) — parent-file v4.26.0 repair kit
 
@@ -272,20 +282,12 @@ five PREP-but-not-yet-ACTed memos competing for one Lean append.
 
 ## Build / verification
 
-`TractatusOntologySpectrum.lean` is build-pending and **blocked by a
-24-error v4.26.0 regression in the parent
-`Proofs/TractatusOntology.lean`**. S5 ACT PR #18995's Docker run
-(2026-05-14 ~03:40 UTC) surfaced the full inventory; this PR (S8 PREP)
-classifies it into 8 repair kits. No new Docker run was needed — the
-parent file has not been edited since 2026-05-13 06:31 UTC.
+**Post-S9 STATE-SYNC**: `TractatusOntologySpectrum.lean` (307 LOC) is now **Docker-verifiable end-to-end** after the parent-file repair (PR #19126 mechanic sweep, MERGED 2026-05-15T22:58:10Z) executed the S8 PREP 8-kit classification. Cumulative S2-α + S7 ACT + S5 ACT all build-clean on origin/main.
 
-After the parent-file repair PR lands, all 4 pending ACTs (S3, S4,
-S5-retry, S6) become Docker-verifiable in their own right.
+S5 ACT PR #18995 originally surfaced the parent-file 24-error v4.26.0 regression on 2026-05-14 ~03:40 UTC. S8 PREP #19107 classified into 8 kits. Mechanic #19126 executed the sweep. S5 ACT #18995 was then merged 2026-05-15T23:43:57Z post-parent-fix. Mechanic #19718 brought `leanFiles[1]` post-S5 numerics current (T-1.5h).
+
+After this S9 STATE-SYNC lands, all 3 pending ACTs (S3 HornModel, S4 Refines lattice, S6 EquivModel/T1b) are Docker-verifiable in their own right against a clean parent file.
 
 ## Blockers
 
-**Parent-file v4.26.0 regression in `Proofs/TractatusOntology.lean` (24
-errors, classified into 8 kits by S8 PREP).** Top-priority blocker —
-prevents every pending ACT from Docker-verifying. Unblocker is a
-doctor / mechanic PR landing the 8-kit sweep (~+10 LOC net,
-~30-60 min, 2-3 Docker iterations).
+**None.** The parent-file v4.26.0 regression blocker is RESOLVED via mechanic PR #19126. All future ACT work proceeds against a clean v4.26.0 parent file.
