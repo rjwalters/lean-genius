@@ -2,63 +2,121 @@
 
 ## Current phase
 
-**S11 STATE-SYNC shipped (2026-05-16, this PR).** Absorbs four merged
-work items into the on-disk tracker (S9 PREP #19270, S9 PREP-2 #19301,
-S9 ACT #19075, S10 PREP-3 session file). Slug-level sorry count
-**unchanged at 1** (Phase C non-cyclic direction at
-`GaussWilsonNonCyclicOQ01.lean:149`). The Phase C scaffold is now
-**build-verified** (3065 jobs) via #19075's outer-theorem
-`[NeZero n]` typeclass-swap; the remaining sorry is one paste away
-from discharge — paste-ready ~40-LOC skeleton lives in PR #19301 §6
-(corrected for F1/F2/F3) with goal-state walk in the merged S10 PREP-3
-session file. Lake mathlib pin unchanged at
-`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; 14-bearer drift recheck
-in this PR's sessions/ file §2 confirms zero substantive drift.
+**S12 ACT shipped (2026-05-16, this PR).** Closes the Phase C
+non-cyclic direction sorry at `GaussWilsonNonCyclicOQ01.lean:149`.
+Slug-level sorry count **`1 → 0`** (slug-wide axiom count remains 0).
+Phase C file 201 → 256 LOC (+55 net incl. comments, +64/-2 diff).
+**Build-verified** end-to-end at Mathlib v4.26.0 lake SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: `docker-build.sh
+Proofs.GaussWilsonNonCyclicOQ01` reports `[3066/3066] Built
+Proofs.GaussWilsonNonCyclicOQ01 (8.9s)`, zero `sorry` tactics, zero
+`axiom` declarations, zero structure-encoded assumptions.
 
-## Phase chain snapshot (2026-05-16 post-S11 STATE-SYNC)
+Recipe consumed: PR #19301 (S9 PREP-2) §6's F1+F2+F3-corrected
+~40-LOC skeleton, with three S10 PREP-3 §4 residual-risk fallbacks
+fired during ACT-time elaboration (see Iteration log § S12 ACT below
+for the full recipe→fix correspondence).
+
+## Phase chain snapshot (2026-05-16 post-S12 ACT)
 
 | Phase | File | LOC | Sorries | Status | Originating PR(s) |
 |---|---|---|---|---|---|
 | A | `GaussWilsonNonCyclicOQ01A.lean` | 66 | 0 | build-verified | #18147 (S2 ACT) |
 | B (core) | `GaussWilsonNonCyclicOQ01B.lean` | 243 | **0** | **build-verified** | #18232 (S3) + #18957 (S8 ACT) |
-| C (iff scaffold) | `GaussWilsonNonCyclicOQ01.lean` | 201 | **1** | **build-verified** | #18652 (S6 ACT) + #18743 (S7 ACT cyclic dir) + **#19075 (S9 ACT outer-theorem `[NeZero n]` unblocker, 3065 jobs)** |
+| C (iff) | `GaussWilsonNonCyclicOQ01.lean` | **256** | **0** | **build-verified** | #18652 (S6 ACT) + #18743 (S7 ACT cyclic dir) + #19075 (S9 ACT outer `[NeZero n]`) + **S12 ACT (this PR, non-cyclic discharge)** |
 
-**Remaining sorry (slug-wide axiom count: 0):**
-
-1. `GaussWilsonNonCyclicOQ01.lean:149` —
-   `prod_eq_one_of_not_isCyclic_aux` (Phase C non-cyclic direction).
-   Per the in-file docstring lines 133–135, composes (i) Phase A
-   `prod_univ_eq_prod_two_torsion`, (ii) parent's
-   `card_sq_eq_one_ge_three` + power-of-2-cardinality upgrade,
-   (iii) Phase B `prod_univ_eq_one_of_elementary_card_ge_four`
-   (now sorry-free post-S8). The paste-ready ~40-LOC discharge
-   skeleton lives in PR #19301 (S9 PREP-2) §6 — F1+F2+F3-corrected;
-   `_hncyc → hncyc` rename on parent file line 147 still required at
-   paste time (verified by `git show origin/main:...` at this PR's
-   commit time).
+**Slug-wide totals (post-S12 ACT):** 0 sorries, 0 axioms, 0
+structure-encoded assumptions across Phases A + B + C.
 
 ## Iteration log
 
-### S11 STATE-SYNC — 2026-05-16 (this PR)
+### S12 ACT — 2026-05-16 (this PR)
 
-**Result:** Doc-only tracker resync. Absorbs four merged work items
+**Result:** Phase C non-cyclic direction sorry discharged.
+`prod_eq_one_of_not_isCyclic_aux` body filled per PR #19301 §6
+skeleton; F2 underscore-rename (`_hncyc → hncyc`) applied to header
+line 147 verbatim. Slug-level sorry count `1 → 0`. Build-verified
+clean at `Mathlib v4.26.0 / lake SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+
+```
+ℹ [3061/3066] Replayed Proofs.GaussWilsonNonCyclic
+⚠ [3066/3066] Built Proofs.GaussWilsonNonCyclicOQ01 (8.9s)
+warning: Proofs/GaussWilsonNonCyclicOQ01.lean:112:30: This simp argument is unused:
+  neg_one_sq
+```
+
+The single linter warning at line 112 is **pre-existing** in the
+cyclic-direction proof (`prod_eq_neg_one_of_isCyclic_aux`, S7 ACT
+PR #18743), unrelated to this S12 ACT — flagged for a future Hermit
+sweep but does not affect build-verified status.
+
+**ACT-time fixes applied** (4 deltas beyond PR #19301 §6's recipe):
+
+| # | Risk source | Surface symptom | Fix |
+|---|---|---|---|
+| F5 | Missing `Mathlib.GroupTheory.PGroup` import | `Unknown identifier IsPGroup` at L162 | Added `import Mathlib.GroupTheory.PGroup` alongside existing GroupTheory imports |
+| F6 | Missing `Mathlib.Algebra.Group.Subgroup.Finite` import (P1 fallback per S10 PREP-3 §4) | `failed to synthesize Fintype ↥T` | Added `import Mathlib.Algebra.Group.Subgroup.Finite` + `haveI : DecidablePred (· ∈ T) := Classical.decPred _` + `haveI : Fintype T := inferInstance` |
+| F7 | `Fintype.card T = Fintype.card { x // x^2 = 1 } by rfl` blocked by Fintype-instance discrepancy (P2 fallback per S10 PREP-3 §4) | `unknown free variable _fvar.5118` / `Type mismatch rfl` | Built explicit `Equiv T ≃ { x // x ^ 2 = 1 }` via Subtype-mk/Subtype-val swap; used `Fintype.card_congr e` to bridge |
+| F8 | Skeleton's `symm` before `apply Finset.prod_subtype` was inverse of needed direction (PREP-2 §6 over-correction) | `apply` failed unification | Removed the `symm`; `apply Finset.prod_subtype` matches directly post-`rw [SubmonoidClass.coe_finset_prod]` |
+
+The four fixes are all **localized soft-pin fallbacks** anticipated
+by S10 PREP-3 §4 (P1 + P2) and the F-series F1+F2+F3 corrections in
+PREP-2 §6 — extending the F-series to F1–F8 in this slug's history.
+
+**Files this PR touches:**
+
+| File | Action | Delta |
+|---|---|---|
+| `proofs/Proofs/GaussWilsonNonCyclicOQ01.lean` | UPDATE | +64/-2 LOC (201 → 256) |
+| `research/problems/gauss-wilson-non-cyclic-oq-01/state.md` | UPDATE | head replaced; S12 ACT prepended to iteration log |
+| `research/problems/gauss-wilson-non-cyclic-oq-01/sessions/2026-05-16-s12-act-noncyclic-direction-discharge.md` | NEW | (this session note) |
+
+**Files this PR does NOT touch:**
+
+- `meta.json` — no per-slug meta exists; parent
+  `src/data/proofs/gauss-wilson-non-cyclic/meta.json` is unaffected
+  (the parent theorem `card_sq_eq_one_ge_three` already
+  build-verified at `verified` status). Future Auditor cycles may
+  audit whether to promote this slug's badge / status given the
+  newly-zero sorry / axiom count slug-wide.
+- `problem.md`, `knowledge.md` — unchanged.
+- Any other `Proofs/*.lean` file — unchanged (single-file ACT).
+
+**Sorries / axioms delta:**
+- Sorries: −1 in `GaussWilsonNonCyclicOQ01.lean` (1 → 0).
+  Slug-wide: 1 → 0.
+- Axioms: 0 (unchanged).
+- Structure-encoded assumptions: 0 (unchanged).
+
+**Build budget consumed:** 6 Docker iterations (vs S10 PREP-3 §6.3's
+1-expected / 2-worst-case prediction). The four ACT-time fixes
+(F5/F6/F7/F8) each surfaced one iteration; iterations 4 and 6 closed.
+Cold-cache total wall time ≈ 18 min (each iter ~3 min once cache
+warmed). Pre-build Mathlib cache download ran twice (iter 1, iter 2)
+before stabilizing — Docker daemon restart in between.
+
+**Session note:** `sessions/2026-05-16-s12-act-noncyclic-direction-discharge.md`
+covers (i) the full PREP-2 §6 → applied skeleton diff, (ii) per-fix
+goal-state evidence for F5/F6/F7/F8, (iii) bearer drift recheck
+status (zero new bearers; all 17 PREP-3-confirmed bearers consumed
+as-is), (iv) suggested follow-on work (Hermit sweep on L112
+`neg_one_sq` unused simp arg; Auditor sync for slug-wide
+sorry/axiom count → 0/0; potential `formalized` → `verified` badge
+promotion pending peer review).
+
+### S11 STATE-SYNC — 2026-05-16 (PR #19359 merged 03:53:52Z)
+
+**Result:** Doc-only tracker resync. Absorbed four merged work items
 (S9 PREP #19270, S9 PREP-2 #19301, S9 ACT #19075, and the
-S10 PREP-3 sessions file from the same 2026-05-15 18:00Z drain wave)
-into this `state.md`. Adds new sessions file
+S10 PREP-3 sessions file from the same 2026-05-15 18:00Z drain wave).
+Added sessions file
 `sessions/2026-05-16-s11-state-sync-and-act-readiness-refresh.md`
-with 14-bearer drift recheck at the current `origin/main` lake mathlib
-pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (zero drift), refreshed
-S11 ACT-readiness gate (GO on all 4 conditions, NO-GO on none of 3),
-and a one-screen S11 ACT recipe pointing the implementer at PR #19301
-§6's corrected skeleton.
-
-**Files:** +1 new (this PR's `sessions/` file) + 1 update
-(`state.md`). Zero Lean edits; zero `meta.json` edits; zero gallery
-JSON edits.
-
-**Composition:** Strictly conflict-free against the only concurrent
-open PR (sibling `oq-03` PR #18230, DIRTY, touches disjoint files).
-No open PR on this slug at PR-commit time.
+with 14-bearer drift recheck at the `origin/main` lake mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (zero drift), refreshed
+S11 ACT-readiness gate (GO on all 4 conditions), and a one-screen
+S11 ACT recipe pointing implementers at PR #19301 §6's corrected
+skeleton. S12 ACT (this PR) directly consumed PR #19359's gate plus
+PR #19301's recipe.
 
 **Sorries / axioms delta:** unchanged. Slug-wide: 1 sorry (Phase C
 non-cyclic-direction aux at `GaussWilsonNonCyclicOQ01.lean:149`),

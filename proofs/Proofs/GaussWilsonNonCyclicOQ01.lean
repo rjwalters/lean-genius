@@ -2,7 +2,9 @@ import Proofs.GaussWilsonNonCyclic
 import Proofs.GaussWilsonNonCyclicOQ01A
 import Proofs.GaussWilsonNonCyclicOQ01B
 import Mathlib.Algebra.BigOperators.Group.Finset.Basic
+import Mathlib.Algebra.Group.Subgroup.Finite
 import Mathlib.Data.ZMod.Basic
+import Mathlib.GroupTheory.PGroup
 import Mathlib.GroupTheory.SpecificGroups.Cyclic
 import Mathlib.NumberTheory.Wilson
 import Mathlib.Tactic
@@ -144,9 +146,69 @@ theorem prod_eq_neg_one_of_isCyclic_aux {n : ℕ} (hn : n ≥ 3) [NeZero n]
       group; the bridge is `Finset.prod_subtype_eq_prod_filter` or
       `Finset.prod_attach`. -/
 theorem prod_eq_one_of_not_isCyclic_aux {n : ℕ} (hn : n ≥ 3) [NeZero n]
-    (_hncyc : ¬IsCyclic (ZMod n)ˣ) :
+    (hncyc : ¬IsCyclic (ZMod n)ˣ) :
     (∏ x : (ZMod n)ˣ, x) = 1 := by
-  sorry
+  -- Step 1: Phase A reduction.
+  rw [prod_univ_eq_prod_two_torsion (ZMod n)ˣ]
+  -- Step 2: Build the 2-torsion subgroup T.
+  let T : Subgroup (ZMod n)ˣ :=
+    { carrier := {x | x ^ 2 = 1}
+      one_mem' := by show (1 : (ZMod n)ˣ) ^ 2 = 1; exact one_pow _
+      mul_mem' := fun {a b} (ha : a ^ 2 = 1) (hb : b ^ 2 = 1) => by
+        show (a * b) ^ 2 = 1
+        rw [mul_pow, ha, hb, mul_one]
+      inv_mem' := fun {a} (ha : a ^ 2 = 1) => by
+        show (a⁻¹) ^ 2 = 1
+        rw [inv_pow, ha, inv_one] }
+  -- Step 3: T is a 2-group, so Nat.card T = 2^k for some k.
+  have hT_pgroup : IsPGroup 2 T := fun ⟨g, hg⟩ =>
+    ⟨1, Subtype.ext (by show g ^ (2 ^ 1) = (1 : (ZMod n)ˣ);
+                        rw [pow_one]; exact hg)⟩
+  haveI : Fact (Nat.Prime 2) := ⟨Nat.prime_two⟩
+  haveI : DecidablePred (· ∈ T) := Classical.decPred _
+  haveI : Fintype T := inferInstance
+  obtain ⟨k, hk⟩ := IsPGroup.iff_card.mp hT_pgroup
+  -- Step 4: T.card = #filter ≥ 3 → 2^k ≥ 3 → k ≥ 2 → T.card ≥ 4.
+  have h_card_filter :
+      Fintype.card T = (Finset.univ.filter (fun x : (ZMod n)ˣ => x ^ 2 = 1)).card := by
+    have e : T ≃ { x : (ZMod n)ˣ // x ^ 2 = 1 } :=
+      { toFun := fun y => ⟨y.1, y.2⟩
+        invFun := fun y => ⟨y.1, y.2⟩
+        left_inv := fun _ => rfl
+        right_inv := fun _ => rfl }
+    rw [Fintype.card_congr e]
+    exact Fintype.card_subtype _
+  have h_T_ge_3 : 3 ≤ Fintype.card T := by
+    rw [h_card_filter]
+    exact GaussWilsonNonCyclic.card_sq_eq_one_ge_three hn hncyc
+  have h_T_pow : Fintype.card T = 2 ^ k := by
+    rw [← Nat.card_eq_fintype_card]; exact hk
+  have h_T_ge_4 : 4 ≤ Fintype.card T := by
+    rw [h_T_pow] at h_T_ge_3 ⊢
+    rcases k with _ | _ | k'
+    · norm_num at h_T_ge_3
+    · norm_num at h_T_ge_3
+    · calc (4 : ℕ) = 2 ^ 2 := by norm_num
+        _ ≤ 2 ^ (k' + 2) := Nat.pow_le_pow_right (by norm_num) (Nat.le_add_left _ _)
+  -- Step 5: Apply Phase B to T.
+  have hT_exp : ∀ x : T, x ^ 2 = 1 := fun ⟨g, hg⟩ => Subtype.ext (by
+    show g ^ 2 = 1; exact hg)
+  have hT_prod : (∏ x : T, x) = 1 :=
+    prod_univ_eq_one_of_elementary_card_ge_four hT_exp h_T_ge_4
+  -- Step 6: Bridge to ambient Finset.
+  have h_bridge :
+      ∏ x ∈ Finset.univ.filter (fun x : (ZMod n)ˣ => x ^ 2 = 1), x
+        = ((∏ x : T, x : T) : (ZMod n)ˣ) := by
+    rw [SubmonoidClass.coe_finset_prod (fun (x : T) => x) Finset.univ]
+    apply Finset.prod_subtype
+    intro x
+    constructor
+    · intro hx
+      rcases Finset.mem_filter.mp hx with ⟨_, hsq⟩
+      exact hsq
+    · intro hT
+      exact Finset.mem_filter.mpr ⟨Finset.mem_univ _, hT⟩
+  rw [h_bridge, hT_prod, OneMemClass.coe_one]
 
 /-- **The main Gauss–Wilson product formula for `(ZMod n)ˣ`.**
 
