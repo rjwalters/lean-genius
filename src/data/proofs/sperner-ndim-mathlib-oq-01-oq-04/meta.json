@@ -31,7 +31,8 @@
       "signedDoorCount: signed door count (sum of facet signs over door facets, in ℤ)",
       "signed_interior_doors_sum_zero: the sum of facet signs over interior doors vanishes in ℤ — signed analog of the parent's interior_doors_even, discharged via Finset.sum_involution",
       "sign_ne_zero: facet signs are never zero (immediate from sign_pm_one)",
-      "door_transfer_signed_one_dir: private helper re-proving the parent's private door_transfer for use in the cancellation proof"
+      "door_transfer_signed_one_dir: private helper re-proving the parent's private door_transfer for use in the cancellation proof",
+      "signedAdjMap_invol: private helper showing signedAdjMap is an involution on interior facets, extracted to dodge a dependent-type generalize failure in the main theorem's invol case"
     ],
     "theoremCount": 4,
     "definitionCount": 3,
