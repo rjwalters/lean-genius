@@ -1,9 +1,78 @@
 # Current State
 
-**Phase**: ACT (post-S13 STATE-SYNC; S12 BUILD-PENDING preserved)
+**Phase**: ACT (post-S14 STATE-SYNC; S12 BUILD-PENDING preserved; **3 RED INFRA conjunction** Docker hung + disk 3.3 Gi below 5.4 Gi ACT floor + `proofs/.lake` circular self-symlink)
 **Since**: 2026-05-15 (S12 ACT first genuinely non-vacuous sufficient condition `(forget C) full + faithful + preservesMono → HasSBP C`, researcher-6), realises S10 PREP §3.2 Path D.i
-**Iteration**: 13
-**Last Updated**: 2026-05-16T16:50Z (S13 STATE-SYNC, researcher-10; absorbs S11 ACT #19424 + S12 ACT #19466 into head/Sessions/Drift; parent file 266→**353 LOC** post-S12 (corrects S12 head approx "~340 LOC"); 4-spot bearer drift recheck at pin `2df2f0150c...` v4.26.0, 0 drift; **B1 host disk full at 141Mi partially recovered (now 6.9Gi avail) → SUPERSEDED BY NEW B2 Docker daemon hung** (8s `docker version` timeout, no response); BUILD-VERIFY still blocked but by different blocker. S14 BUILD-VERIFY rotation queued for post-B2-recovery picker)
+**Iteration**: 14
+**Last Updated**: 2026-05-16T19:05Z (S14 STATE-SYNC, researcher-10; T+5h13min after S13 STATE-SYNC #19578 merge 13:52Z; **catchup ship**: brings canonical research JSON to iter 14 (S13's §9 manifest excluded JSON; left stale at iter 12 = S12 era), absorbs mechanic PR #19679 (leanFiles theoremCount 8→6 + defCount 3→1 at 16:20Z), records new single substantive INFRA delta = disk crossed AMBER→RED 6.9 Gi → 3.3 Gi over 5h crossing same-day ACT floor 5.4 Gi (ballot S78 baseline / shannon S18a 5.8 Gi). Standing 2-RED re-affirmed: Docker daemon hung (empty Server: section); `proofs/.lake` circular self-symlink. Mathlib pin 2df2f0150c byte-stable. S14 BUILD-VERIFY (S13's queued next-action) NOW BLOCKED on 3-RED conjunction not just Docker. No `.lean`, no `meta.json`, no `problem.md`, no `knowledge.md` body, no bearer re-spot-check (SHA-transitivity).)
+
+## S14 STATE-SYNC — JSON catchup + disk floor-cross + standing-RED re-affirm (researcher-10, 2026-05-16T19:05Z, this PR — doc-only, tight 3-file)
+
+**Trigger**: claim-random returned `schroeder-bernstein-oq-01` (RICH 26) at 2026-05-16T18:59:25Z. Predecessor S13 STATE-SYNC PR #19578 (researcher-10, opened 09:41:32Z) merged 13:52:19Z — **T+5h07min** before S14 claim. Pre-flight survey:
+
+- **State.md head**: iter 13 (S13 STATE-SYNC) — current at iter level, but Last-Updated line is stale on disk number ("6.9Gi avail") and on B2-only blocker framing (3-RED conjunction not yet captured).
+- **Research JSON** (`src/data/research/problems/schroeder-bernstein-oq-01.json`): `cs.iteration: 12` — DRIFT (state.md=13). `cs.focus`/`cs.nextAction`/`cs.since` still describe S12 ACT era. S13 STATE-SYNC's `§9 Files changed` manifest **deliberately excluded canonical research JSON** ("state.md head + Sessions + Drift + Blockers" only, no JSON line item). Mechanic PR #19679 (merged 16:20:46Z, T+2h28min after S13) fixed `leanFiles[1].{theoremCount 8→6, defCount 3→1}` for `SchroederBernsteinOQ01.lean` — verified at HEAD; that's the ONLY mechanic touch.
+- **Mathlib pin** `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0): byte-stable. Skip bearer re-spot-check per memory pattern (S13 §6 4-spot recheck at same SHA carries forward).
+- **3 RED INFRA conjunction at S14 author-time**:
+  - **B2 Docker daemon hung** (standing, re-affirmed): `timeout 8 docker info` returns `Client:` and `Server:` headers but empty Server: section. Same symptom as S13 STATE-SYNC's `8s docker version timeout`. Unchanged in 5h.
+  - **B1' Disk pressure crossed AMBER→RED**: `df -h /System/Volumes/Data` reports **3.3 Gi avail / 100% capacity** (-3.6 Gi vs S13's 6.9 Gi over 5h). Below same-day ACT floor 5.4 Gi (ballot-problem-oq-03-oq-02 S78 baseline; shannon-channel-coding-oq-02-oq-01-oq-01 S18a 5.8 Gi). Per memory pattern, ACT under <5.4 Gi structurally barred. Note: this re-introduces a B1-class blocker (originally noted in S6+ as "host-disk-full at 141Mi", relaxed in S13 to 6.9 Gi AMBER, now back to RED).
+  - **B3 `proofs/.lake` circular self-symlink** (newly-explicit standing issue per cross-slug memory `feedback_researcher_lake_symlink_loop_and_wipe`): `readlink proofs/.lake` returns `/Users/rwalters/GitHub/lean-genius/proofs/.lake` itself. Independent of B1/B2; standing host-side issue.
+
+**Researcher-side gate is GREEN; INFRA gates 3 RED**. No researcher ACT possible. No mechanic action needed (only leanFiles drift was already discharged by #19679). Ship doc-only **tight 3-file** S14 STATE-SYNC scoped to: (a) JSON 7-edit catchup absorbing S13 STATE-SYNC + mechanic #19679 + single disk-floor-cross + standing-RED re-affirm; (b) state.md head refresh w/ 3-RED phase line + iter 13→14 + S14 entry prepend (S13 STATE-SYNC entry preserved verbatim below in `## Sessions`); (c) NEW `sessions/2026-05-16-s14-statesync-json-catchup-disk-floor-cross.md` ~200 LOC memo. Explicitly DROP: bearer SYMBOL re-spot-check (busywork at unchanged SHA per memory), new paste-ready scaffold (S12 corpus complete; S13 STATE-SYNC's queued S14 BUILD-VERIFY recipe carries forward), `.lean` / `meta.json` / `problem.md` / `knowledge.md` body / `pnpm build` / `lake build`.
+
+### What this PR does (3 files, doc-only, tight)
+
+| Aspect | Action |
+|---|---|
+| `proofs/Proofs/SchroederBernsteinOQ01.lean` | UNCHANGED (build-pending since S12; INFRA-bar prevents verification) |
+| `src/data/proofs/schroeder-bernstein/meta.json` | UNCHANGED |
+| `proofs/lakefile.toml` (Mathlib pin) | UNCHANGED (pin `2df2f0150c…` byte-stable across S13 PR T+5h13min window) |
+| `src/data/research/problems/schroeder-bernstein-oq-01.json` | **UPDATED** — 7-edit: `currentState.{iteration 12→14, since, focus prepend S14 + preserve S12 era verbatim, nextAction prepend host-side INFRA recovery + preserve S12 era verbatim, attemptCounts.total 4→5}` + `knowledge.progressSummary prepend S14 entry` + `lastUpdate 2026-05-16T19:05:00Z`. `blockers[]` array (if present) UNCHANGED. Top-level `phase: ACT` + `status: active` UNCHANGED. `leanFiles[]` UNCHANGED (mechanic #19679 set canonical values verbatim) |
+| `state.md` head | THIS replacement — phase line refresh w/ 3-RED conjunction; iteration 13→14; Last Updated bump; S14 STATE-SYNC entry prepended before pre-existing S13 STATE-SYNC entry |
+| `state.md` historical body (S13 entry → S1) | preserved verbatim |
+| `sessions/2026-05-16-s14-statesync-json-catchup-disk-floor-cross.md` | NEW (this file's companion — 7 sections including §2 JSON drift inventory + §3 single-delta + §4 standing-RED transfer + §5 picker decision matrix + §6 host-recovery script + §7 honesty calibration) |
+
+### JSON delta summary
+
+| Field | Before (post-mechanic #19679) | After (S14 STATE-SYNC) |
+|---|---|---|
+| `currentState.iteration` | `12` | `14` (catchup absorbs S13 + S14) |
+| `currentState.since` | `2026-05-16T04:30:00.000Z` (S12 era) | `2026-05-16T19:05:00Z` |
+| `currentState.focus` | S12 ACT narrative | S14 narrative + `... preserved verbatim for continuity:` + S12 verbatim |
+| `currentState.nextAction` | "S13 ACT (RECOMMENDED FIRST: BUILD-VERIFY S12 once disk recovers): ..." | "**S14 BUILD-VERIFY — BLOCKED on 3-RED INFRA conjunction**: ..." + `Original S12-era nextAction preserved:` + verbatim |
+| `currentState.attemptCounts.total` | `4` | `5` |
+| `knowledge.progressSummary` (head) | S12-era content | S14 STATE-SYNC entry prepend + `\| Pre-S14:` + previous body verbatim |
+| `lastUpdate` | `2026-05-16` | `2026-05-16T19:05:00Z` |
+| `leanFiles[1].theoremCount` | `6` (mechanic #19679) | UNCHANGED |
+| `leanFiles[1].defCount` | `1` (mechanic #19679) | UNCHANGED |
+| `currentState.phase` | `ACT` | UNCHANGED |
+
+### ACT-readiness gate (S14 snapshot)
+
+| Gate | Status | Delta vs S13 STATE-SYNC |
+|---|---|---|
+| Researcher-side knowledge | GREEN | unchanged |
+| Researcher-side bearer pin | GREEN | unchanged (SHA-transitivity) |
+| Researcher-side paste-ready scaffolds | GREEN | unchanged |
+| `proofs/Proofs/SchroederBernsteinOQ01.lean` build verified | RED (build-pending since S12) | unchanged |
+| Docker daemon | RED B2 | unchanged (still empty Server:) |
+| Host disk | **RED B1'** | **AMBER → RED** (6.9 Gi → 3.3 Gi crossed 5.4 Gi floor) |
+| `proofs/.lake` symlink | RED B3 | newly explicit (was implicit standing issue) |
+| Canonical research JSON sync | **GREEN** (catchup) | **DRIFT → GREEN** (was iter 12 vs state.md 13; now both at 14) |
+| Mathlib SHA stable since S13 STATE-SYNC | GREEN | unchanged (`2df2f0150c…` byte-stable) |
+
+Single substantive delta motivating ship: **disk AMBER→RED**. Secondary motivation: **JSON iter-drift catchup** (S13 STATE-SYNC's deliberate JSON exclusion left stale focus/nextAction; mechanic #19679 fixed leanFiles[] but couldn't fix currentState).
+
+### Tightening rationale
+
+Memory pattern `feedback_researcher_postship_pivot_to_act_ready_rich_slug_with_predecessor_prep_escalation_and_single_disk_degradation_delta_across_sameday_softfloor_ship_thin_statesync` — primary trigger pattern. Secondary: combined with `feedback_researcher_postship_pivot_to_long_completed_slug_with_recent_observe_audit_..._canonical_json_materially_contradicts_observe_findings_ship_13_field_state_sync` (JSON-vs-state.md catchup component). Distinct from `_postship_pivot_to_active_slug_with_very_recent_statesync_predecessor_release_without_pr_when_residual_drift_below_threshold` because residual drift is NOT "only LOC off-by-one + leanFiles:null" — it's full cs.iteration drift + new substantive disk-floor-cross delta.
+
+---
+
+## S13 STATE-SYNC — original Last Updated line (researcher-10, 2026-05-16T16:50Z, MERGED PR #19578)
+
+(Original S13 Last Updated line preserved here for archival reference; superseded by S14 above.)
+
+> **Last Updated**: 2026-05-16T16:50Z (S13 STATE-SYNC, researcher-10; absorbs S11 ACT #19424 + S12 ACT #19466 into head/Sessions/Drift; parent file 266→**353 LOC** post-S12 (corrects S12 head approx "~340 LOC"); 4-spot bearer drift recheck at pin `2df2f0150c...` v4.26.0, 0 drift; **B1 host disk full at 141Mi partially recovered (now 6.9Gi avail) → SUPERSEDED BY NEW B2 Docker daemon hung** (8s `docker version` timeout, no response); BUILD-VERIFY still blocked but by different blocker. S14 BUILD-VERIFY rotation queued for post-B2-recovery picker)
 
 ## Current Focus
 
