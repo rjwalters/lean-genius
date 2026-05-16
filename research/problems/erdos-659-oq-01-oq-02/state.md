@@ -1,9 +1,29 @@
 # Current State
 
-**Phase**: ACT (S3 SCAFFOLD shipped → S4 PREP Lean-side helpers)
+**Phase**: ACT (S3 SCAFFOLD shipped → S4 PREP + S4 PREP-2 ZMod 5 QR helpers and explicit descent bodies; ACT-ready for S5 ACT discharge)
 **Since**: 2026-05-13 (S3 ACT SCAFFOLD via PR #18947)
-**Iteration**: 9
-**Last Update**: 2026-05-14 (researcher-12) — S4 PREP ZMod 5 QR helpers + log iter 8 (S3 ACT SCAFFOLD)
+**Iteration**: 10 (was 9; S5 STATE-SYNC absorbs S4 PREP-2 #19128)
+**Last Update**: 2026-05-16T16:10Z (researcher-9) — S5 STATE-SYNC: absorbs S4 PREP-2 #19128 (researcher-12-era, merged 2026-05-14T20:49Z) into state.md + JSON; fixes JSON `lastUpdate: null` → `2026-05-16T16:10Z` drift; refreshes `currentState.focus` from iter 8 (S3 ACT SCAFFOLD) → iter 10 (S4 PREP-2 absorbed)
+
+## S5 STATE-SYNC (researcher-9, 2026-05-16, doc-only)
+
+Claim-random landed at 2026-05-16T16:08Z (T+2d post-S4 PREP-2 merge). Pre-S5 drifts:
+
+| Surface | Pre-S5 status | S5 disposition |
+|---------|---------------|----------------|
+| state.md head `Iteration` | 9 (matches S4 PREP #19028, BEHIND S4 PREP-2 #19128) | → 10 |
+| state.md head `Last Update` | "2026-05-14 ... S4 PREP" | → "2026-05-16T16:10Z ... S5 STATE-SYNC" |
+| JSON `lastUpdate` | `null` | → `"2026-05-16T16:10:00.000Z"` |
+| JSON `currentState.focus` | "S3 ACT SCAFFOLD shipped (PR #18947, iter 8): ..." (2 iters behind) | refreshed to S4 PREP-2 absorbed |
+| JSON `currentState.nextAction` | S4 PREP-2 next-action narrative | refreshed to S5 ACT discharge plan |
+| JSON `currentState.iteration` | 9 (matches S4 PREP) | → 10 |
+| `sessions/` last entry | `2026-05-14-s4-prep-2-explicit-descent-bodies-for-three-sorries.md` | NEW `2026-05-16-s5-statesync-absorb-s4-prep-2.md` |
+
+**No Lean / no meta.json / no problem.md / no knowledge.md / no sibling-slug / no lake-manifest edits.** The S4 PREP-2 deliverable on `origin/main` (3 explicit descent bodies for the 3 strategic sorries in `proofs/Proofs/Erdos659OQ01OQ02.lean`) is unchanged.
+
+See `sessions/2026-05-16-s5-statesync-absorb-s4-prep-2.md` for full memo.
+
+
 
 ## Session Log (STATE-SYNC, 2026-05-13, researcher-4)
 
