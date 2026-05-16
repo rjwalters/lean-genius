@@ -1092,4 +1092,163 @@ theorem skewSSYTFin_row1_unique_of_zero_count_eq
   rw [skewSSYTFin_row1_step_function T₁ j,
       skewSSYTFin_row1_step_function T₂ j, hcount]
 
+/-! ## Part XVI: Step 4 — Column-Strict + Row-2 Lattice (S3c-prep-{8,10,13,14} ACT)
+
+    Two main public theorems matching `lrCoeff2`'s Guards C + D from
+    `Hilbert15OQ02.lean:131,149`, composed via the canonical
+    `reverseRowWord_two_canonical` decomposition. Each leans on
+    Steps 1 (`skewSSYTFin_row0_forced_zero`, line 799),
+    2 (`skewSSYTFin_row1_zero_count_of_row0_zero`, line 889),
+    3 (`skewSSYTFin_row1_step_function`, line 1040).
+
+    The auxiliary `List.reverse_map_finRange_step_function` is added here per
+    S3c-prep-10 §3 design (paste-ready proof body, ~39 LOC). Path B
+    convention (per S3c-STATE-SYNC #19371 §3.3): the threshold `c₀` is
+    **inferred** from `lam.parts 0 - r₀` rather than carried as a free
+    parameter.
+
+    Build pending — Docker daemon hung (`docker info` exit 124 at 8s)
+    + host disk 100%/6.7 Gi avail at S3c-step4-act author time
+    (researcher-4, 2026-05-16T14:35Z). Paste verbatim from
+    sessions/2026-05-16-s3c-prep-14-step4-path-b-proof-bodies.md §6
+    (researcher-11, merged 2026-05-16T13:51:53Z) modulo this build-
+    pending docstring. Bearer pin verified 0-drift at
+    `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` per prep-14 §3 5-spot
+    recheck.
+-/
+
+theorem List.reverse_map_finRange_step_function {α : Type*} (a b : α)
+    {c₀ r₁ : ℕ} (hc : c₀ ≤ r₁) :
+    ((List.finRange r₁).reverse.map
+        (fun j : Fin r₁ => if j.val < c₀ then a else b)) =
+      List.replicate (r₁ - c₀) b ++ List.replicate c₀ a := by
+  apply List.ext_getElem
+  · simp only [List.length_map, List.length_reverse, List.length_finRange,
+               List.length_append, List.length_replicate]
+    omega
+  · intro i h1 _h2
+    have hir : i < r₁ := by simpa using h1
+    have hLHS :
+        ((List.finRange r₁).reverse.map
+            (fun j : Fin r₁ => if j.val < c₀ then a else b))[i]'h1
+          = (if r₁ - 1 - i < c₀ then a else b) := by
+      simp only [List.getElem_map, List.getElem_reverse,
+                 List.length_reverse, List.length_finRange,
+                 List.getElem_finRange, Fin.cast_mk, Fin.val_mk]
+    have hRHS :
+        (List.replicate (r₁ - c₀) b ++ List.replicate c₀ a)[i]'_h2
+          = (if i < r₁ - c₀ then b else a) := by
+      rw [List.getElem_append]
+      simp only [List.length_replicate]
+      split_ifs with hi
+      · simp [List.getElem_replicate]
+      · simp [List.getElem_replicate]
+    rw [hLHS, hRHS]
+    by_cases hL : r₁ - 1 - i < c₀
+    · by_cases hR : i < r₁ - c₀
+      · exfalso; omega
+      · simp [hL, hR]
+    · by_cases hR : i < r₁ - c₀
+      · simp [hL, hR]
+      · exfalso; omega
+
+/-- **Canonical 3-replicate form** for `reverseRowWord` under Steps 1+2+3.
+    Combines Part X's row-decomposition with Part XIV's row-1 zero-count
+    and Part XV's step function. Path B: `c₀ := lam.parts 0 - r₀` is
+    inferred from `lam` + `hrow0` + `hcont0` rather than passed as a
+    parameter. -/
+theorem reverseRowWord_two_canonical {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ) (lam : Partition 2)
+    (hrow0 : ∀ j : Fin (ν.parts 0 - μ.parts 0), T.1 ⟨0, j⟩ = (0 : Fin 2))
+    (hcont0 : T.content 0 = lam.parts 0) :
+    T.reverseRowWord =
+      List.replicate (ν.parts 0 - μ.parts 0) (0 : Fin 2) ++
+      List.replicate (ν.parts 1 - μ.parts 1 -
+                       (lam.parts 0 - (ν.parts 0 - μ.parts 0))) (1 : Fin 2) ++
+      List.replicate (lam.parts 0 - (ν.parts 0 - μ.parts 0)) (0 : Fin 2) := by
+  -- Derive hcount from Part XIV (line 889).
+  have hcount :
+      ((Finset.univ : Finset (Fin (ν.parts 1 - μ.parts 1))).filter
+         (fun k => T.1 ⟨1, k⟩ = (0 : Fin 2))).card =
+      lam.parts 0 - (ν.parts 0 - μ.parts 0) :=
+    skewSSYTFin_row1_zero_count_of_row0_zero T hrow0 lam hcont0
+  -- Derive hstep from Part XV (line 1040). With #18990 merged, this
+  -- is a one-line rewrite — no funext-style bridge needed.
+  have hstep : ∀ j : Fin (ν.parts 1 - μ.parts 1),
+      T.1 ⟨1, j⟩ = if j.val < lam.parts 0 - (ν.parts 0 - μ.parts 0)
+                    then (0 : Fin 2) else (1 : Fin 2) := fun j => by
+    rw [skewSSYTFin_row1_step_function T j, hcount]
+  -- Discharge `c₀ ≤ r₁` (prep-12 §3.2).
+  have hc₀_le_r₁ :
+      lam.parts 0 - (ν.parts 0 - μ.parts 0) ≤ ν.parts 1 - μ.parts 1 := by
+    have hle :
+        ((Finset.univ : Finset (Fin (ν.parts 1 - μ.parts 1))).filter
+           (fun k => T.1 ⟨1, k⟩ = (0 : Fin 2))).card ≤
+        (Finset.univ : Finset (Fin (ν.parts 1 - μ.parts 1))).card :=
+      Finset.card_filter_le _ _
+    rw [hcount, Finset.card_univ, Fintype.card_fin] at hle
+    exact hle
+  -- Decompose reverseRowWord (Part X, line 485).
+  rw [reverseRowWord_two_eq]
+  -- Replace row-0 map with constant 0 (prep-12 §5 step 1).
+  rw [show (fun j => T.1 ⟨(0 : Fin 2), j⟩) = (fun _ => (0 : Fin 2)) from
+      funext hrow0]
+  rw [List.map_const, List.length_reverse, List.length_finRange]
+  -- Replace row-1 map with step-function form (prep-12 §5 step 2).
+  rw [show (fun j => T.1 ⟨(1 : Fin 2), j⟩)
+        = (fun j => if j.val < lam.parts 0 - (ν.parts 0 - μ.parts 0)
+                     then (0 : Fin 2) else (1 : Fin 2)) from
+      funext hstep]
+  -- Apply the helper.
+  rw [List.reverse_map_finRange_step_function (0 : Fin 2) (1 : Fin 2) hc₀_le_r₁]
+  -- Reassociate (prep-12 §4.2). Closes by `rfl`.
+  rw [← List.append_assoc]
+
+/-- **Guard C (column-strict overlap):** under Step 1 (`hrow0`) and Step 2's
+    content equation, row 1 evaluates to 1 above the step-function threshold
+    `lam.parts 0 - r₀`. The optional `_hoverlap` hypothesis records the
+    column-strict inclusion (forwards-use; not consumed by the proof
+    body). See S3c-prep-14 §4 for derivation. -/
+theorem skewSSYTFin_row1_one_of_overlap {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ) (lam : Partition 2)
+    (hrow0 : ∀ j : Fin (ν.parts 0 - μ.parts 0), T.1 ⟨0, j⟩ = (0 : Fin 2))
+    (hcont0 : T.content 0 = lam.parts 0)
+    (_hoverlap : μ.parts 0 - μ.parts 1 ≤ lam.parts 0 - (ν.parts 0 - μ.parts 0))
+    (j : Fin (ν.parts 1 - μ.parts 1))
+    (hj : lam.parts 0 - (ν.parts 0 - μ.parts 0) ≤ j.val) :
+    T.1 ⟨1, j⟩ = (1 : Fin 2) := by
+  rw [skewSSYTFin_row1_step_function T j,
+      skewSSYTFin_row1_zero_count_of_row0_zero T hrow0 lam hcont0,
+      if_neg (Nat.not_lt.mpr hj)]
+
+/-- **Guard D (row-2 lattice):** under Steps 1+2 (via
+    `reverseRowWord_two_canonical`) and the lattice-word predicate, the
+    row-1 one-count `c₁ = r₁ - c₀` is bounded by the row-0 zero-count `r₀`.
+    Mirrors lrCoeff2's Guard D at `Hilbert15OQ02.lean:149` (under the
+    renaming `r₀ ↔ r₁`, `c₁ ↔ lam.b`). See S3c-prep-14 §5 for derivation. -/
+theorem skewSSYTFin_lattice_bound_row1 {ν μ : Partition 2}
+    (T : SkewSSYTFin 2 ν μ) (lam : Partition 2)
+    (hrow0 : ∀ j : Fin (ν.parts 0 - μ.parts 0), T.1 ⟨0, j⟩ = (0 : Fin 2))
+    (hcont0 : T.content 0 = lam.parts 0)
+    (hLW : isLatticeWord T.reverseRowWord) :
+    ν.parts 1 - μ.parts 1 - (lam.parts 0 - (ν.parts 0 - μ.parts 0)) ≤
+    ν.parts 0 - μ.parts 0 := by
+  set r₀ := ν.parts 0 - μ.parts 0 with hr₀_def
+  set r₁ := ν.parts 1 - μ.parts 1 with hr₁_def
+  set c₀ := lam.parts 0 - r₀ with hc₀_def
+  have hcan := reverseRowWord_two_canonical T lam hrow0 hcont0
+  have hlen : T.reverseRowWord.length = r₀ + r₁ := reverseRowWord_two_length T
+  have hbnd : r₀ + (r₁ - c₀) < T.reverseRowWord.length + 1 := by
+    rw [hlen]; have : r₁ - c₀ ≤ r₁ := Nat.sub_le _ _; omega
+  have hcnt :
+      (T.reverseRowWord.take (r₀ + (r₁ - c₀))).count (1 : Fin 2) ≤
+      (T.reverseRowWord.take (r₀ + (r₁ - c₀))).count (0 : Fin 2) :=
+    hLW ⟨r₀ + (r₁ - c₀), hbnd⟩ 0 1 (by decide)
+  rw [hcan] at hcnt
+  simp [List.take_append_of_le_length, List.length_replicate, List.length_append,
+        List.count_append, List.count_replicate_self,
+        (show (0 : Fin 2) ≠ 1 by decide),
+        (show (1 : Fin 2) ≠ 0 by decide)] at hcnt
+  exact hcnt
+
 end Hilbert15OQ02OQ03OQ01
