@@ -20,7 +20,10 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 0,
+    "axiomCount": 4,
+    "additionalFiles": [
+      "Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean"
+    ],
     "lineCount": 230,
     "assumptions": "The parent file is now axiom-free (Phase-3a-fix discharged both sorries; S8 Lever A residual deleted the two vacuous True-codomain axioms easton_permitted_realizable and easton_consistency, which were Phase-3a placeholders). The slug-level axiomatization (4 axioms) now lives entirely in the Phase3b companion file CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean, which carries the genuine Easton 1970 realizability claim with non-trivial codomain: ConsistencyOfContinuumValue : Cardinal.{0} → Prop and ConsistencyOfContinuumFunction : (Cardinal.{0} → Cardinal.{0}) → Prop are abstract predicates (2 axioms); easton_permitted_realizable_strong (every permitted κ > ℵ₀ realizable as 2^ℵ₀, with ConsistencyOfContinuumValue codomain) and easton_consistency_strong (every Easton function realizable as continuum function on regulars, with ConsistencyOfContinuumFunction codomain) are the strong-Easton claims (2 axioms). All 7 supporting theorems in the parent file are now fully machine-checked from Mathlib (axiom-free): IsPermittedValue scaffold, aleph_one_permitted, aleph_two_permitted, aleph_succ_permitted, permitted_satisfies_konig, permitted_unbounded, IsEastonFunction structure, isEastonFunction_continuum, isEastonFunction_nonempty. The Phase3b file derives 5 callable theorems demonstrating the strong axioms have non-trivial output (consistencyOfContinuumFunction_continuum, consistencyOfContinuumValue_aleph_{one,two,succ,unbounded}). Slug-level axiom count: 4 (all Phase3b).",
     "mathlib_version": "4.26.0",
