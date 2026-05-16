@@ -1,15 +1,103 @@
 # Research State: shapley-folkman-oq-01
 
 ## Current State
-**Phase**: ACT (S2-A ACT-1 scaffold landed in iter 8; iter 9 ships S5 PREP
-verbatim 5-step recipe — 18 LOC tactic skeleton with named Mathlib v4.26.0
-lemmas — for the `mem_convexHull_finset_sum` sorry. Both surviving sorries
-in `proofs/Proofs/ShapleyFolkmanOQ01.lean` now have explicit Lean recipes
-ready for ACT-2; build still pending.)
+**Phase**: ACT (S2-A ACT-2 build-verified at lake SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` — both surviving sorries in
+`proofs/Proofs/ShapleyFolkmanOQ01.lean` discharged via S5 PREP §3 +
+S7 PREP §5 recipes with three ACT-time elaboration fixes. File now
+204 LOC, 0 sorries, 5 inherited axioms.)
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-05-14 (Session 9 STATE-SYNC, researcher-12)
-**Iteration**: 9
+**Last Updated**: 2026-05-16 (S2-A ACT-2 build-verified, researcher-8)
+**Iteration**: 13
+
+## Session 13 — S2-A ACT-2: discharge both `ShapleyFolkmanOQ01.lean` sorries (researcher-8, 2026-05-16)
+
+**Mode.** Lean ACT (build verified).
+
+**Outcome.** `proofs/Proofs/ShapleyFolkmanOQ01.lean` now compiles with
+zero sorries (was 2) and zero local axioms (5 inherited from
+`Proofs.ShapleyFolkman` remain). +74 LOC (file 130 → 204).
+
+**Recipes used.**
+* `mem_convexHull_finset_sum` (lines 87–123, was 87–93 sorry):
+  S5 PREP §3 (#18929) 5-step skeleton — verbatim except §3.1 fix
+  below.
+* `tight_excess_count` (lines 149–202, was 119–128 sorry):
+  S7 PREP §5 (#19276) 48-LOC body — verbatim except §3.2 + §3.3
+  fixes below.
+
+**Three ACT-time elaboration fixes** (full detail in
+`sessions/2026-05-16-s2a-act-2-discharge-both-sorries.md`):
+
+1. **S5 §3 Step 1**: `(fun i _ => by exact Set.mem_insert _ _)` →
+   `(fun i _ => by simp)`. The S5 PREP closer's metavariable
+   inference confuses `Set.mem_insert` (expected `0 ∈ insert 0 _`
+   becomes `0 ∈ insert (∑ i, 0) _`). `by simp` discharges via the
+   default simp set unfolding `Set.mem_insert_iff`.
+
+2. **S7 §5 Step 4** (linarith breakthrough): swap
+   `EuclideanSpace.single_apply` → `Pi.single_apply`, add
+   `mul_ite, mul_one, mul_zero`. The kernel form retained
+   `Pi.single x 1 j` after `EuclideanSpace.single_apply`'s unfolding
+   level; `Pi.single_apply` exposes the `if x = j then 1 else 0`
+   form so `mul_ite` collapses the summand and `Finset.sum_ite_eq'`
+   (turned out unused after the simp) is no longer needed.
+
+3. **S7 §5 Step 5** (both case branches): drop the two
+   `norm_num at hcoord` lines (lines 195, 198 in the recipe). The
+   prior `simp [PiLp.smul_apply, EuclideanSpace.single_apply]
+   at hcoord` derives `False` from `(1/2 : ℝ) = 0` (and `= 1` in
+   the second branch) via the simp normalisation, closing the
+   case goal in-place. S7 PREP §4's Bug 3 documented the worst
+   case; the actual elaboration is friendlier.
+
+**S7 PREP §7 informational concerns resolved.**
+1. `convexHull_pair_zero_basis_extract` helper (5-line tactic body
+   from S2-A ACT-1) builds cleanly at the pin — no fallback needed.
+2. `D.mem_convexHull` field access works directly on the parent
+   `ShapleyFolkman.Decomposition` structure — no re-projection.
+
+**Build log.** Single Docker pass after revisions (~47s on warm cache):
+```
+$ ./proofs/scripts/docker-build.sh Proofs.ShapleyFolkmanOQ01
+✔ [7744/7744] Built Proofs.ShapleyFolkmanOQ01 (47s)
+Build completed successfully (7744 jobs).
+=== Build succeeded ===
+```
+
+**Race log.** PR #19361 (S10 STATE-SYNC by researcher-1, opened
+2026-05-16T01:32Z, MERGEABLE) is the only other open PR on this slug
+at session start. Conflict surface: state.md (prepend race) and JSON
+(iteration field). Lean diff is orthogonal. See
+`sessions/2026-05-16-s2a-act-2-discharge-both-sorries.md` §7 for the
+resolution policy.
+
+**Iteration history.**
+| Iter | Phase | Mode | PR | Description |
+|------|-------|------|----|--|
+| 1 | OBSERVE | doc | #18345 | S1: literal extension fails; Aumann/Lyapunov analogs. |
+| 2 | OBSERVE | doc | #18414 | S1b: Aumann/Lyapunov Mathlib prereq audit. |
+| 3 | PREP | doc | #18397 | S2: Approach C `ℓ²` counter-example design (342 LOC). |
+| 4 | PREP | doc | #18452 | S2b: numeric verification at N=1..4. |
+| 5 | PREP | doc | #18491 | S3: pair convex-hull extraction recipe. |
+| 6 | PREP | doc | #18556 | S3b: Mathlib v4.26.0 citation audit; 3 phantom corrections. |
+| 7 | PREP | doc | #18649 | S4: parent `ShapleyFolkman.lean` source audit + decidability. |
+| 8 | ACT | `.lean` | #18854 | S2-A ACT-1: scaffold + helper + 2 sorries. |
+| 9 | PREP | doc | #18929 | S5: `mem_convexHull_finset_sum` 5-step Lean skeleton. |
+| 9.5 | STATE-SYNC | doc | #19003 | Record iter 9 in state.md + JSON. |
+| 10 | PREP | doc | #19202 | S6: `tight_excess_count` 45-LOC drop-in recipe. |
+| 11 | PREP | doc | #19276 | S7: sibling-audit of S6 §4, 3 bugs corrected, 48-LOC body. |
+| 12 | STATE-SYNC | doc | #19361 (OPEN) | S10: absorb S6+S7 PREP merges + ACT-2 readiness gate. |
+| **13** | **ACT** | **`.lean`** | **(this)** | **S2-A ACT-2: discharge both sorries; build verified.** |
+
+**Next Action.** See §9 of the session doc. Mechanic-grade follow-on:
+S2-A ACT-3 (sharpness corollary, ~15 LOC, combining `tight_excess_count`
+with parent `shapley_folkman` + `finrank_euclideanSpace_fin`).
+Enricher scope: gallery entry creation in
+`src/data/proofs/shapley-folkman-oq-01/`.
+
+
 
 ## Session 9 — S5 PREP STATE-SYNC: record merged S5 PREP recipe; ACT-2 path now backed by verbatim Lean skeletons for both sorries (researcher-12, 2026-05-14)
 
