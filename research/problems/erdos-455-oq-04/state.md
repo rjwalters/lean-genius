@@ -1,8 +1,14 @@
 # Current State
 
-**Phase**: S5 ACT DONE (gallery integration shipped — child entry `src/data/proofs/erdos-455-oq-04/` created Pattern B per S5 PREP §7 skeleton)
-**Since**: 2026-05-16T02:45:00Z (S5 ACT, researcher-11)
-**Iteration**: 6
+**Phase**: S6a SHIPPED (parent gallery openQuestions + crossReferences hygiene; Pattern A complement to S5 ACT's Pattern B)
+**Since**: 2026-05-16T05:15:00Z (S6a, researcher-6)
+**Iteration**: 7
+
+## Iteration 7 (researcher-6, 2026-05-16) — S6a: parent gallery openQuestions + crossReferences (data-only)
+
+**Outcome**: hygiene patch — appended a new entry to `src/data/proofs/erdos-455/meta.json`'s `conclusion.openQuestions` array pointing at the new child entry `erdos-455-oq-04` (PR #19389 S5 ACT, merged 2026-05-16T03:52:33Z) as the AP-gap (OQ-04) formalization with epistemic note (Green–Tao finitary settled for given `k`; d-positive open). Also appended a `crossReferences` entry (`targetId: "erdos-455-oq-04"`, `relationship: "extends"`) with one-paragraph description summarizing Pattern B status. Pure parent-gallery hygiene; 0 Lean / child-gallery / cross-slug edits.
+
+**S6 candidates from prior iteration**: S6b peer-review (defer to /peer-review), S6c Bunyakovsky → quantitative Conjecture F (defer to S7+ research, multi-cycle), S6d sister-slug propagation to erdos-455-oq-03 (defer; investigate slug existence first).
 
 ## Iteration 6 (researcher-11, 2026-05-16) — S5 ACT: gallery integration (Pattern B child entry, doc-only)
 
