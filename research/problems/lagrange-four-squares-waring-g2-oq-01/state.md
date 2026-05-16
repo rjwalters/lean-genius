@@ -1,10 +1,67 @@
 # Current State
 
-**Phase**: ACT-MERGED-3 + PREP-SATURATED (S2 + S2b + S3 ACTs MERGED on origin/main; S2b BUILD-VERIFY MERGED; S7 PREP rescued and MERGED via #19177; S1 → S7 PREP layer fully on origin/main; four ACTs queued — S4, S5, S6, S6b — plus S7 ACT now unblocked)
-**Since**: 2026-05-15T23:38:13Z (S2b ACT BUILD-VERIFY merged via [#19041](https://github.com/rjwalters/lean-genius/pull/19041); S3 ACT merged via [#19129](https://github.com/rjwalters/lean-genius/pull/19129) ~40 min earlier in the same drain wave; S7 PREP rescued via [#19177](https://github.com/rjwalters/lean-genius/pull/19177))
-**Iteration**: 15 (+1 STATE-SYNC for the 3-PR drain wave on top of iteration 14: S1 OBSERVE, S2 ACT, S2b PREP, S3 PREP, S4 PREP, S5 PREP, S6 PREP, S6b PREP, S6b audit, S6c audit, S2b bearer audit, S2b ACT, S2b BUILD-VERIFY, S3 ACT, **STATE-SYNC #19060 + this STATE-SYNC**)
+**Phase**: ACT-BLOCKED (parent `LagrangeFourSquares.lean` has v4.26.0 regressions; all five queued ACTs (S4, S5, S6, S6b, S7) blocked on Mechanic parent fix per S17 BUILD-DIAGNOSTIC)
+**Since**: 2026-05-16 (S17 BUILD-DIAGNOSTIC — parent `Proofs.LagrangeFourSquares` v4.26.0 regression discovered, 9 errors at lines 210–365 of parent)
+**Iteration**: 16 (S17 BUILD-DIAGNOSTIC; researcher-1)
 
-## Current Focus
+## S17 BUILD-DIAGNOSTIC 2026-05-16 (researcher-1)
+
+**Focus**: attempted S4 ACT via the S16 PREP §3.2 paste-ready recipe (3 theorems, ~25 LOC, 0 new axioms, re-using parent's `wieferich_nine_cubes` axiom). The OQ-01 child code drafted is byte-identical to the PREP recipe and was reverted (`git checkout --`) after the Docker build failed in the **parent** `Proofs.LagrangeFourSquares.lean`, not in the OQ-01 child or in the new code. Full memo at `sessions/2026-05-16-s17-build-diagnostic-parent-v426-regression.md`.
+
+### Result
+
+**Build failed** at `Proofs.LagrangeFourSquares.lean` (parent) with **9 elaboration errors** spanning lines 210–365. Errors are v4.26.0 API drift across 5 distinct classes:
+
+| # | Line:col | Class | One-liner |
+|---|---|---|---|
+| E1 | 210:33 | unsolved-goal | `⊢ id 1 + id p = 1 + p` (Finset.sum_insert chain) |
+| E2 | 212:35 | omega | "No usable constraints found" (cascade from E1) |
+| E3 | 220:6 | type-mismatch | `Nat.Prime.eq_one_or_self_of_dvd` Or-branch reorder (drop `.symm`) |
+| E4 | 223:34 | scope | Unknown identifier `p` (cascade from E3) |
+| E5 | 292:51 | API-shape | `Nat.log` now binary, needs explicit base arg |
+| E6 | 304:6 | rewrite-pattern | `Int.natAbs` normalisation shifted to `\|·\|` form |
+| E7 | 321:69 | API-removal | `Exists.mod_cast` field removed; use `obtain ⟨k, hk⟩ := …; exact_mod_cast …` |
+| E8 | 325:51 | omega | mod-4 reasoning fails after `Nat.cast_pow` normal-form shift |
+| E9 | 326:51 | omega | same class as E8 |
+| E10 | 365:59 | omega | 4-square sum bound `j + k + l + m ≤ 0` with `i := ↑n` |
+
+Plus 4 warnings (3 unused vars, 1 unused simp arg); none blocking.
+
+### Why this regression was invisible until now
+
+1. **S2b ACT BUILD-VERIFY (#19041, 2026-05-15T23:38:13Z)** built a sibling that imports the parent — 7745 jobs clean. So the parent **did compile** ~5h before this session.
+2. **No commits to `LagrangeFourSquares.lean`** in 24h (last touch: PR #18059, 2026-05-08).
+3. **Lake-pin unchanged** at `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` since 2026-05-13 v4.26.0 bump.
+4. **S16 PREP (#19392)** did `gh api`-level bearer drift recheck only — no Docker re-build.
+
+**Most likely cause**: the parent's `.olean` was cached from a pre-v4.26.0 elaboration and rode along under sibling-targeted builds without being re-elaborated; this session's target (which forced a parent rebuild from source) is the first elaboration against the current Mathlib pin. This is a **new manifestation** of the doc-only-saturation trap, hitting a parent slug rather than the OQ-01 child.
+
+### Impact on slug
+
+- **S16 PREP §3.2 recipe remains mathematically sound** — bridges are `Iff.rfl`-trivial, paired witness well-formed, `waringG 3 = 9 := rfl` discharges by match-arm. No edits needed when Mechanic fixes the parent.
+- **All five queued ACTs (S4, S5, S6, S6b, S7) are BLOCKED** on the parent fix. None can ship until the parent compiles.
+- **Lower-bound deliverables on origin/main** (`twenty_three_needs_nine_cubes`, `g3_lower_counting`, `g4_lower_counting`) are unaffected as source; they will rebuild green once parent does.
+- **4 other slugs** that import the same parent (`lagrange-four-squares-oq-04`, `angle-trisection-oq-02-oq-01-oq-02-incomplete-01` aristotle companion, plus this slug's `*Counting.lean` and `*CountingG4.lean`) are also blocked downstream.
+
+### Recommended Mechanic actions
+
+1. **Open fix-PR on parent** addressing E1–E10 per §5 of the session memo. Likely-mechanical fixes for E3 (drop `.symm`), E5 (`Nat.log 2 k`), E7 (`obtain` + `exact_mod_cast`); E1/E2/E4 needs a single-block restructure; E6 a `simp`-form swap; E8/E9/E10 may need explicit `Int.emod_emod_of_dvd` or hypothesis restatement.
+2. **Add parent-level pre-ACT BUILD-VERIFY pass** for all parent-of-OQ slugs that haven't been built in isolation in the last 7 days. Would have caught this before S16 PREP shipped paste-ready recipes.
+
+### Blockers (refreshed)
+
+- **B1 (NEW)**: parent `Proofs.LagrangeFourSquares.lean` has 9 v4.26.0 elaboration errors (lines 210–365). Blocks S4, S5, S6, S6b, S7 ACTs. Mechanic-scope.
+
+### Honest-status block
+
+- **Mathematical progress**: zero (S4 recipe is shovel-ready but cannot ship).
+- **Build-verification status**: ❌ parent `LagrangeFourSquares.lean` Docker-red with 9 errors.
+- **Axiom status**: parent retains `wieferich_nine_cubes` (L271, source-textual unchanged); environment cannot be loaded until parent fix.
+- **Open conjecture status**: unchanged. All five queued ACTs BLOCKED on Mechanic parent fix.
+
+---
+
+## Pre-S17 Current Focus (researcher-3, 2026-05-15 STATE-SYNC)
 
 **This iteration is a STATE-SYNC** (researcher-3, 2026-05-15) catching `state.md` and JSON up to the 3-PR drain wave that landed at 2026-05-15T22:56–23:38 UTC. See `sessions/2026-05-15-state-sync-s3-act-merge-build-verify-s7-prep-rescue.md` for full delta.
 
