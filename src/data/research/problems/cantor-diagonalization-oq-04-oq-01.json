@@ -12,10 +12,10 @@
   },
   "knownResults": {
     "proven": [
-      "lawvere_fixpoint_setoid: \u2200 f : Y \u2192 Y, \u2203 p, f(p) \u2248 p (when Y codes endomorphisms up to \u2248)",
+      "lawvere_fixpoint_setoid: ∀ f : Y → Y, ∃ p, f(p) ≈ p (when Y codes endomorphisms up to ≈)",
       "Type version recovered as discrete setoid special case",
-      "Bool and \u2115/parity cannot code their endomorphisms (impossibility witnesses)",
-      "Cantor diagonal holds: no Y \u2192 (Y \u2192 Prop) is point-surjective"
+      "Bool and ℕ/parity cannot code their endomorphisms (impossibility witnesses)",
+      "Cantor diagonal holds: no Y → (Y → Prop) is point-surjective"
     ],
     "open": [],
     "goal": "Proved: Lawvere FPT for Setoids, with full gallery entry"
@@ -23,12 +23,12 @@
   "currentState": {
     "phase": "DONE",
     "since": "2026-05-07T17:00:00Z",
-    "iteration": 1,
+    "iteration": 2,
     "focus": "Lawvere FPT for Setoids: 8 theorems, 3 definitions, 0 sorries, 0 axioms in CantorDiagonalizationOQ04OQ01.lean (166 lines). Gallery status=verified, badge=original. Merged in PR #16393.",
     "blockers": [],
     "nextAction": "None — entry complete. Optional follow-on directions tracked in nextSteps (CCC typeclass lift, characterization of admissible setoids).",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
@@ -42,16 +42,16 @@
       "typeToSetoidCoding: embedding of Type coding into setoid coding",
       "lawvere_type_from_setoid: recovery of Type version",
       "cannot_code_endomorphisms_bool_setoid: Bool impossibility",
-      "cannot_code_endomorphisms_nat_parity: \u2115/parity impossibility",
+      "cannot_code_endomorphisms_nat_parity: ℕ/parity impossibility",
       "cantor_setoid_no_surjection: Cantor diagonal in setoid setting",
       "paritySetoidN: concrete non-trivial setoid example"
     ],
     "insights": [
       "The diagonal construction g(y) = f(decode(y)(y)) works unchanged in the setoid setting",
-      "f need NOT be a setoid morphism \u2014 fixed point exists for all f : Y \u2192 Y",
+      "f need NOT be a setoid morphism — fixed point exists for all f : Y → Y",
       "Discrete setoid recovers the Type-level theorem exactly (type reduction to special case)",
       "Setoid framework models CCC equality-up-to-isomorphism within Lean type theory",
-      "Retraction condition decode(encode(g))(y) \u2248 g(y) (pointwise setoid) is the correct weakening"
+      "Retraction condition decode(encode(g))(y) ≈ g(y) (pointwise setoid) is the correct weakening"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -92,7 +92,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T14:45:58.508Z",
-  "lastUpdate": "2026-05-07T17:00:00Z",
+  "lastUpdate": "2026-05-16T15:48:00.000Z",
   "significance": 5,
   "tractability": 4,
   "leanFiles": [
