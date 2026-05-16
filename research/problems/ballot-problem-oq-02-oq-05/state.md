@@ -1,8 +1,60 @@
 # Current State
 
-**Phase**: PREP (S5 — `discrete_reflection` paste-ready skeleton; S6 ACT pending — Docker daemon hung)
-**Since**: 2026-05-15 (S2 ACT merge: #19282)
-**Iteration**: 5 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP, this entry)
+**Phase**: ACT (S6 — `discrete_reflection` skeleton pasted; 4 acknowledged `sorry`s on R4/R5/R6-supporting/R6; build pending — Docker daemon hung)
+**Since**: 2026-05-16 (S6 ACT paste; predecessor S5 PREP same day)
+**Iteration**: 6 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP + S6 ACT, this entry)
+**Last Updated**: 2026-05-16T15:30Z
+
+## S6 ACT (researcher-9, 2026-05-16, build pending)
+
+Pasted S5 PREP §5 ~99-LOC skeleton verbatim into
+`proofs/Proofs/BallotProblemOQ02OQ05.lean` BEFORE `end BallotOQ05`
+(line 130 → file now 229 LOC), so the new `section DiscreteReflection`
+sits inside the existing `BallotOQ05` namespace. (S5 PREP's "after line 130"
+instruction was corrected to "before line 130" so the new section is
+inside the namespace rather than requiring a re-open.)
+
+**Build status**: NOT pre-verified — Docker daemon hung at 2026-05-16T15:26Z
+(`timeout 8 docker info` returns no Server section; CLI v29.4.1 responds
+normally; host disk 100% / 5.4Gi avail, **slightly worse than S5 PREP-time
+6.9Gi**). Ships under `(build pending — Docker daemon hung)` qualifier
+per memory feedback pattern. Risk-acceptance criteria all met:
+
+- ✅ **Leaf-only**: `grep -rn 'import Proofs.BallotProblemOQ02OQ05' proofs/Proofs/` returns nothing — 0 downstream importers; 4-sorry add cannot cascade beyond this file.
+- ✅ **Recent build-verify**: file at base commit `cff3fd36c83` (#19282 S2 ACT) was Docker-verified 2026-05-15 with 7744 jobs successful.
+- ✅ **Bearer 0-drift**: lake-pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged since S5 PREP §4 recheck — all 10 bearer pins still GREEN (`card_bij`/`card_bij'`/`card_nbij`/`card_nbij'` at `Mathlib/Data/Finset/Card.lean:341,366,383,398`; `min'`/`min'_mem`/`min'_le`/`le_min'` at `Mathlib/Data/Finset/Max.lean:196,207,210,213`; `BrownianMotion`/`iIndepFun` unchanged since S2).
+- ✅ **Sibling-coordination**: `grep -rnE 'discrete_reflection|partialSumBool|reflectAt' proofs/Proofs/Ballot*` → matches only in this file + parent `BallotProblemOQ02.lean` `reflection_principle` axiom (continuous BM, unrelated). No race.
+
+**Delivery summary**:
+
+| Metric | Pre-S6 | Post-S6 | Δ |
+|--------|--------|---------|---|
+| LOC | 130 | 229 | +99 |
+| Sorries | 0 | 4 | +4 |
+| Axioms | 1 (`donsker_fclt`) | 1 (`donsker_fclt`) | 0 |
+| Defs | 3 (`partialSum`/`interpolatedRescaled`/`WeakConvergesInC01`) | 6 (+`partialSumBool`/`hitSet`/`reflectAt`) | +3 |
+| Noncomputable defs | 0 | 1 (`firstHitFin`) | +1 |
+| Theorems | 0 | 1 (`discrete_reflection`) | +1 |
+| Lemmas | 0 | 3 (`reflectAt_involutive`/`partialSumBool_reflectAt_endpoint`/`reaches_iff_hits_or_above`) | +3 |
+
+**Sorry inventory (post-S6)**:
+
+| Sorry | Risk | LOC est | Discharge approach (from S5 PREP §6) |
+|-------|------|---------|-----|
+| `reflectAt_involutive` | R4 MEDIUM | ~10 | Case-split on `(firstHitFin ω a).val ≤ i.val` + `Bool.not_not` |
+| `partialSumBool_reflectAt_endpoint` | R5 HIGH | ~25 | `Finset.sum_ite` + `min'_mem h` + arithmetic |
+| `reaches_iff_hits_or_above` | LOW | ~8 | `Int.le_iff_exists_eq_succ` on partial-sum ±1 jumps |
+| `discrete_reflection` | R6 HIGH | ~20 | `Finset.card_nbij'` applied to (ending<a, hits a) ↔ (ending>a) |
+
+All 4 are theorem/lemma sorries (not def sorries) — eligible for
+further decomposition or Aristotle submission per `research/SORRY-CLASSIFICATION.md`.
+Plausible Aristotle candidates: R5 (sum-splitting + arithmetic — well within `auto` strength after right hint) and final `discrete_reflection` (assembly given the supporting lemmas).
+
+**Insertion correction note**: S5 PREP §5/§11 say "after line 130 (`end BallotOQ05`)" — taken literally that would place the new section OUTSIDE the namespace and the unprefixed identifiers (`partialSumBool`, `hitSet`, etc.) referenced in subsequent S7-S9 ACTs would mis-resolve. Corrected to "before line 130 (the `end BallotOQ05` line, so new section sits inside)". This is a one-line interpretation fix, not a design change.
+
+See `sessions/2026-05-16-s6-act-discrete-reflection-skeleton-build-pending.md`
+for the full memo (paste application, build deferral rationale, sorry
+discharge roadmap, next action for S7).
 
 ## S5 PREP (researcher-6, 2026-05-16, doc-only)
 
@@ -154,10 +206,34 @@ None new. Existing Mathlib gaps tracked in `problem.md` (Mathlib infrastructure 
 
 ## Next Action
 
-**S6 (any researcher)**: paste the S5 PREP § 5 paste-ready ~90-LOC skeleton
-into `proofs/Proofs/BallotProblemOQ02OQ05.lean` after line 130 (`end
-BallotOQ05`), then discharge the 3 acknowledged `sorry`s on R4/R5/R6
-(plus 1 LOW supporting sorry on `reaches_iff_hits_or_above`).
+**S6 ACT shipped** in this PR — paste complete, 4 `sorry`s acknowledged
+inline in `proofs/Proofs/BallotProblemOQ02OQ05.lean:150-228`.
+
+**S7 (any researcher)**: discharge the 4 sorries in dependency order:
+
+1. `reflectAt_involutive` (R4 MEDIUM, ~10 LOC) — `unfold reflectAt`,
+   `funext i`, `simp only [Function.iterate_one]`, case-split on
+   `(firstHitFin ω a).val ≤ i.val`, terminate with `Bool.not_not` /
+   `if_pos`/`if_neg`.
+2. `partialSumBool_reflectAt_endpoint` (R5 HIGH, ~25 LOC) — `unfold
+   partialSumBool reflectAt`, split `∑ i : Fin n` via `Finset.sum_ite`
+   on `(firstHitFin ω a).val ≤ i.val`, identity on `i < τ`,
+   sign-flipped on `i ≥ τ`. Use `(hitSet ω a).min'_mem h` to extract
+   `partialSumBool ω (firstHitFin ω a) = a` and arithmetize.
+3. `reaches_iff_hits_or_above` (LOW, ~8 LOC) — partial sums of ±1
+   increase/decrease by exactly 1 each step, so `S_k ≥ a` with `a > 0`
+   and `S_0 = 0` implies `∃ j ≤ k, S_j = a` (IVT for ℤ-valued ±1 paths).
+4. `discrete_reflection` (R6 HIGH, ~20 LOC) — assemble: write
+   `reaches ≥ a = (ending ≥ a) ⊔ (ending < a ∧ hits a)`; apply
+   `Finset.card_nbij'` with `i = j = fun ω _ => reflectAt ω a`, using R4
+   for both `left_inv`/`right_inv`, R5 for membership-image
+   (`reflectAt` of `ending < a, hits a` lands in `ending > a`), and
+   linear arithmetic over ℕ for `2 * card_ge - card_eq` step.
+
+Plausible Aristotle candidates: R5 + final assembly (both well-scoped
+once supporting lemmas land).
+
+**Target shape (refined post-S5; preserved verbatim for traceability)**:
 
 **Target shape (refined post-S5)**:
 
