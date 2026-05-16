@@ -423,7 +423,7 @@ recover_server_completed() {
 
         if [[ "$DRY_RUN" == true ]]; then
             echo -e "  ${YELLOW}[DRY RUN]${NC} Would attempt recovery"
-            ((recovered++))
+            ((++recovered))
             continue
         fi
 
@@ -436,7 +436,7 @@ recover_server_completed() {
         if echo "$result" | grep -q "ERROR"; then
             echo -e "  ${RED}Failed to retrieve:${NC} $result"
             rm -f "$tmp_solution"
-            ((failed_recover++))
+            ((++failed_recover))
             continue
         fi
 
@@ -586,7 +586,7 @@ recover_server_completed() {
                 }]
             ' "$JOBS_FILE" > "$tmp_file" && mv "$tmp_file" "$JOBS_FILE"
 
-            ((recovered++))
+            ((++recovered))
             continue
         fi
 
@@ -615,7 +615,7 @@ recover_server_completed() {
             if ! safe_to_overwrite "$target_file" "$tmp_solution"; then
                 echo -e "  ${RED}Skipping recovery for safety${NC}"
                 mv "$tmp_solution" "$PROCESSED_DIR/recovered-${pid}-blocked.lean"
-                ((failed_recover++))
+                ((++failed_recover))
                 continue
             fi
 
@@ -642,7 +642,7 @@ recover_server_completed() {
                 }]
             ' "$JOBS_FILE" > "$tmp_jq" && mv "$tmp_jq" "$JOBS_FILE"
 
-            ((recovered++))
+            ((++recovered))
         else
             echo -e "  ${YELLOW}No improvement${NC}"
             mv "$tmp_solution" "$PROCESSED_DIR/recovered-${pid}.lean"
@@ -663,7 +663,7 @@ recover_server_completed() {
                 }]
             ' "$JOBS_FILE" > "$tmp_jq" && mv "$tmp_jq" "$JOBS_FILE"
 
-            ((skipped++))
+            ((++skipped))
         fi
     done <<< "$server_ids"
 
@@ -714,9 +714,9 @@ main() {
             [[ -z "$job" ]] && continue
 
             if integrate_solution "$job"; then
-                ((integrated++))
+                ((++integrated))
             else
-                ((failed++))
+                ((++failed))
             fi
             echo ""
         done <<< "$completed_jobs"
