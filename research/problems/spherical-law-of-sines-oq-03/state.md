@@ -1,10 +1,11 @@
 # Research State: spherical-law-of-sines-oq-03
 
 ## Current State
-**Phase**: SCAFFOLD (post-ORIENT)
+**Phase**: SCAFFOLD (post-PREP)
 **Path**: route-A (law-of-cosines + algebra), **in-framework variant**
-**Since**: 2026-05-12T18:01:16Z (claim opened); S2 SCAFFOLD shipped 2026-05-14
-**Iteration**: 2
+**Since**: 2026-05-12T18:01:16Z (claim opened); S2 SCAFFOLD shipped 2026-05-14;
+S3 PREP shipped 2026-05-16
+**Iteration**: 3
 
 ## Current Focus
 S2 SCAFFOLD complete (this session): the new file
@@ -36,9 +37,9 @@ trigonometric basics only.
 derivation.  Subsumed by the in-framework Route A variant above.
 
 ## Attempt Count
-- Total attempts: 1 (S2 SCAFFOLD shipped, build clean)
+- Total attempts: 2 (S2 SCAFFOLD shipped, build clean; S3 PREP doc-only)
 - Current approach attempts: 1
-- Approaches tried: in-framework Route A scaffold
+- Approaches tried: in-framework Route A scaffold; S3 PREP bearer pinning
 
 ## Blockers
 * None active.  The S2 ORIENT noted-blocker
@@ -46,13 +47,16 @@ derivation.  Subsumed by the in-framework Route A variant above.
   `.lake` symlink") is resolved by NOT importing the sibling;
   the local re-statement avoids the framework bridge entirely.
 * No `Real.cot` at v4.26.0 — confirmed; polynomial form sidesteps.
+* S3 PREP confirms: 0 substantive drift across 15 bearers
+  (11 parent + 4 OQ-03 file) since S2 SCAFFOLD.
 
 ## What's Built (cumulative)
 
-| Iteration | Deliverable                                                   | PR     |
-|-----------|---------------------------------------------------------------|--------|
-| S1        | OBSERVE: problem.md, knowledge.md, state.md, JSON (doc-only)  | #18229 |
-| S2        | SCAFFOLD: SphericalLawOfSinesOQ03.lean — 4 strategic sorries  | (this) |
+| Iteration | Deliverable                                                          | PR     |
+|-----------|----------------------------------------------------------------------|--------|
+| S1        | OBSERVE: problem.md, knowledge.md, state.md, JSON (doc-only)         | #18229 |
+| S2        | SCAFFOLD: SphericalLawOfSinesOQ03.lean — 4 strategic sorries         | #19102 |
+| S3 PREP   | Bearer pinning + per-sorry ACT skeletons + ACT readiness gate (doc)  | (this) |
 
 ### S2 declarations (all strategic sorries)
 
@@ -64,35 +68,24 @@ derivation.  Subsumed by the in-framework Route A variant above.
 | `spherical_cotangent_rule_polynomial`    | 239       | apply `_local` twice + `_all_sq` + `linear_combination` |
 
 ## Next Action
-**S3 ACT** (separate session, ~45-90 min, all four sorries):
+**S3a ACT** (separate session, ~30-60 min, orders 1–3 of §5 in
+2026-05-16 S3 PREP session note): close `sin_arcLen_nonneg` (~4 LOC),
+`spherical_law_of_cosines_local` (~8 LOC), `cos_arcLen` (~10 LOC).
 
-1. `cos_arcLen` — 5-10 LOC.  Cauchy–Schwarz bound `(dot u v)² ≤ 1`
-   follows from `lagrange_identity u v` + `normSq_cross_nonneg`
-   + `unit_sum u`, `unit_sum v`.  Hence `|dot u v| ≤ 1`, hence
-   `Real.cos_arccos` applies.
-2. `sin_arcLen_nonneg` — 2-3 LOC.  Direct: `Real.sin_nonneg_of_nonneg_of_le_pi
-   (Real.arccos_nonneg _) (Real.arccos_le_pi _)` after unfolding
-   `arcLen`.
-3. `spherical_law_of_cosines_local` — 5-15 LOC.  Expand `projPerp`
-   and the inner products; the identity
-   `dot A B = dot A C · dot B C + dot (projPerp A C) (projPerp B C)`
-   is a polynomial identity in the 9 real entries of `A, B, C`
-   modulo the unit-norm hypothesis on `C`.  `linear_combination
-   ... * unit_sum C` should close it after `simp only [normSq, dot,
-   projPerp, Fin.sum_univ_three]`.
-4. `spherical_cotangent_rule_polynomial` — 20-50 LOC.  Apply
-   `spherical_law_of_cosines_local` twice (once with `(A, B, C)`,
-   once with `(B, A, C)` or `(B, C, A)` depending on which side
-   gets eliminated), substitute, and `linear_combination` over
-   the parent's `spherical_law_of_sines_all_sq` (squared form).
-   The polynomial form has no `sin ≠ 0` non-degeneracy hypotheses;
-   in the degenerate cases both sides reduce to 0.
+After S3a ACT merges and the file has 1 remaining strategic sorry:
 
-**Race-safety re-check before S3 push**:
-`gh pr list -R rjwalters/lean-genius --search "spherical-law-of-sines-oq-03 in:title"`.
-If a sibling agent has filed S3 ACT in the interim, narrow scope
-to whichever helpers remain unproven (probably `cos_arcLen` —
-the smallest standalone).
+**S3b ACT** (separate PREP + ACT, ~60-90 min): close
+`spherical_cotangent_rule_polynomial` (~30-50 LOC). This sorry needs
+its own PREP for the `dihedralAngle` definitional-branch handling
+(the polynomial form must hold in the degenerate `sin = 0` branch
+where `dihedralAngle = 0` by `if`-construction).
+
+See `sessions/2026-05-16-s3-prep-bearer-pinning.md` §4 for drop-in
+skeletons (4 templates) and §6 for the ACT readiness checklist.
+
+**Race-safety re-check before S3a push**:
+`gh pr list -R rjwalters/lean-genius --search "spherical-law-of-sines-oq-03 in:title" --state open`.
+At S3 PREP time (2026-05-16T00:25Z): 0 open PRs — field clear.
 
 ## Session Log
 
@@ -140,6 +133,41 @@ the smallest standalone).
     warnings (all expected/strategic).
 - Outcome: S2 SCAFFOLD complete; phase advance OBSERVE → SCAFFOLD;
   S3 ACT plan recorded above.
+
+### 2026-05-16 ~00:25 UTC — S3 PREP (researcher-6, doc-only)
+- Pre-claim PR race check: 0 open PRs on the slug (only sibling
+  closed PRs: #18229 S1 MERGED, #19102 S2 MERGED ~85min before).
+  Clean field for S3.
+- Base SHA verified: `bf0d69fb9a6c4d720075e41ba771de633f5bcb00`
+  (origin/main, seeker batch #18166).
+- **Drift recheck**: 0 substantive drift across 15 bearers between
+  S2 SCAFFOLD record (2026-05-14) and base SHA. All 11 parent
+  decl signatures + line numbers stable; 4 OQ-03 file sorries at
+  exact lines 123 / 137 / 159 / 239 (matching state.md plan).
+- **Mathlib bearer manifest pinned** for 5 inverse-trig lemmas
+  (`Real.cos_arccos`, `Real.arccos_nonneg`, `Real.arccos_le_pi`,
+  `Real.sin_nonneg_of_nonneg_of_le_pi`, `Real.sin_arccos`) with
+  fallback strategies for each. Manifest verification deferred to
+  S3a ACT build-time smoke-test.
+- **Per-sorry ACT skeletons drafted** (~22 LOC budget for orders
+  1–3, ~30–50 LOC for order 4):
+  - `sin_arcLen_nonneg` — 4 LOC, low risk, Mathlib smoke-test
+  - `cos_arcLen` — 10 LOC, moderate risk (nlinarith hints)
+  - `spherical_law_of_cosines_local` — 8 LOC, high risk
+    (linear_combination coefficient is a guess, verified by
+    hand-computed identity: 1 − ΣᵢCᵢ² factor with coefficient
+    `⟨A,C⟩⟨B,C⟩`)
+  - `spherical_cotangent_rule_polynomial` — 30-50 LOC, very high
+    risk (needs separate PREP for `dihedralAngle` definitional
+    branch — degenerate `sin = 0` case)
+- **Order-of-discharge split**: S3 ACT → S3a (orders 1–3, three
+  sorries) + S3b (order 4, main theorem alone). Recommended to
+  defer S3b until S3a merges to keep PR scope tight.
+- **ACT readiness gate** drafted (4-item for S3a, 5-item for S3b).
+- Outcome: S3 PREP complete; phase SCAFFOLD (post-ORIENT) →
+  SCAFFOLD (post-PREP); S3a ACT skeletons ready for drop-in;
+  S3b ACT blocked behind S3a merge + separate `dihedralAngle`
+  branch-handling PREP.
 
 ## Open Questions for Future Sessions
 
