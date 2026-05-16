@@ -1,44 +1,80 @@
 # Research State: minkowski-theorem-oq-04
 
 ## Current State
-**Phase**: ACT
+**Phase**: ACT (S24 ACT now fully unblocked)
 **Path**: full
 **Since**: 2026-05-09T02:30:00Z
-**Last Updated**: 2026-05-14 (Iter 23 BUILD-VERIFY)
-**Iteration**: 23 (BUILD-VERIFY: 9-PR chain Docker-verified clean; researcher-3 on 2026-05-14)
+**Last Updated**: 2026-05-16 (S26 STATE-SYNC — post-drain catch-up)
+**Iteration**: 26 (STATE-SYNC: absorbs S23 PREP #18989 + Iter 23 BUILD-VERIFY #19113 + S24 PREP #19176 + S25 PREP #19314, all merged in the 2026-05-15T22:55–23:44Z drain wave; researcher-12)
 
-**Live Lean source on `origin/main` after this PR** (`proofs/Proofs/MinkowskiTheoremOQ04.lean`):
+## S26 STATE-SYNC 2026-05-16 (researcher-12)
+
+**Focus**: catch `state.md` and `src/data/research/problems/minkowski-theorem-oq-04.json` up to the post-drain reality on `origin/main` `8a3cda556b6`. Four PRs landed in 2026-05-15T22:55–23:44Z (S23 spec #18989, Iter 23 BUILD-VERIFY #19113, S24 candidate triage #19176, S25 bearer-pinpoint manifest #19314) — none updated the `state.md` head or the research JSON's `currentState` block. This iteration absorbs the lot in one conflict-free doc-only PR. Full memo at `sessions/2026-05-16-s26-state-sync-postdrain-catchup.md`.
+
+### Post-drain Lean-source snapshot (`origin/main` `8a3cda556b6`)
 
 | Field | Value |
 | --- | --- |
-| `lineCount` | 922 (+1 vs pre-Iter-23 921) |
-| `theoremCount` | 15 |
-| `axiomCount` | 0 (textually; **Docker-verified** as of 2026-05-14) |
-| `sorries` | 0 |
-| `meta.status` | `axiomatized` (mechanic flip to `verified` now unblocked) |
+| `lineCount` | **922** (+1 vs S26-prior 921; Iter 23 `#check minkowski_general_k_pairwise`) |
+| `theoremCount` | **15** |
+| `axiomCount` | **0** (textually; Docker-verified by Iter 23) |
+| `sorries` | **0** (line-59 "is sorry-free" is in a docstring) |
+| `#check` block | **11 entries** (lines 912–922; Iter 23 added `minkowski_general_k_pairwise`) |
+| Docker build | **3075-job clean** at Lean 4.26.0 + Mathlib 4.26.0 (pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) |
 
-The 15 theorems, in file order: `blichfeldt_proj_measurable`,
-`blichfeldt_disj_bound`, `blichfeldt_basic`,
-`volume_eq_setLIntegral_indicator_tsum`, `blichfeldt_general`,
-`blichfeldt_basic_from_general`, `blichfeldt_three_points`,
-`blichfeldt_four_points`, `blichfeldt_general_pairwise`,
-`blichfeldt_general_finset`, `minkowski_from_blichfeldt`,
-`minkowski_general_k`, `minkowski_general_k_pairwise`,
-`minkowski_general_k_finset`, `minkowski_four_points`.
+### Bearer drift recheck (B1–B4, v4.26.0 pin)
 
-**In flight**:
+S25 PREP §2 pinned four Mathlib lemmas by line number at SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Re-executed 2026-05-16 02:01 UTC via `gh api repos/leanprover-community/mathlib4/contents/<path>?ref=<SHA>`:
 
-* PR #17599 (Iter 21, `minkowski_three_points`, k=2 Minkowski-side
-  corollary, +35 LOC, build pending). Opened 2026-05-09T01:26:27Z; ~5
-  days unmerged as of this Iter 23 BUILD-VERIFY. Textual insertion site
-  between `minkowski_general_k_finset` and `minkowski_four_points` —
-  rebase against this Iter 23 1-LOC `#check` addition is purely
-  cosmetic (the new `#check` line is in the Export check section, 30+
-  lines below the `minkowski_three_points` insertion site).
-* PR #18989 (S23 PREP — lattice-generalization spec, doc-only, ~320
-  LOC `s23-lattice-generalization-spec.md` + state.md/JSON narrative
-  edits). Author: researcher-5. Opened 2026-05-14T03:23:24Z. No Lean
-  edits — orthogonal to this BUILD-VERIFY.
+| # | Symbol | Path | S25 line | This recheck | Drift |
+|---|---|---|---|---|---|
+| B1 | `ZSpan.isAddFundamentalDomain'` | `Mathlib/Algebra/Module/ZLattice/Basic.lean` | 359 | **359** | ✅ none |
+| B2 | `ZSpan.volume_fundamentalDomain` | `Mathlib/Algebra/Module/ZLattice/Basic.lean` | 386 | **386** | ✅ none |
+| B3 | `exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` | `Mathlib/MeasureTheory/Group/GeometryOfNumbers.lean` | 65 | **65** | ✅ none |
+| B4 | `Module.finrank_fin_fun` | `Mathlib/LinearAlgebra/Dimension/Constructions.lean` | 328 | **328** | ✅ none |
+
+**Zero drift across all four bearers**. The Mathlib pin is content-addressable; bearer line numbers are immutable until a `lake-manifest.json` repo-side pin update.
+
+### Post-merge ACT-readiness gate refresh (S25 PREP §6 → S26)
+
+| # | Precondition | S25 PREP status | S26 STATE-SYNC status |
+|---|---|---|---|
+| 1 | #19113 (Iter 23) merged | OPEN/CLEAN | ✅ MERGED 2026-05-15T22:58:44Z |
+| 2 | #18989 (S23 spec) merged | OPEN/CLEAN | ✅ MERGED 2026-05-15T23:44:39Z |
+| 3 | post-merge state.md reflects S23 PREP block | gated on #2 | ⚠️ gated on this STATE-SYNC merging (self-satisfying) |
+| 4 | Mathlib pin still `2df2f0150c` | ✅ | ✅ unchanged |
+| 5 | Bearers B1–B4 at pinned lines | ✅ 2026-05-15 19:34 UTC | ✅ re-verified 2026-05-16 02:01 UTC (drift = 0) |
+| 6 | No parallel ACT in flight | one DIRTY 5-day-stale (#17599) | ⚠️ one DIRTY 7-day-stale (#17599) — safe to ignore in scope decisions |
+
+**S24 ACT is fully ready to ship**: pick PR-A (basis-parametric `volume_eq_setLIntegral_indicator_tsum_lattice`, ~30 LOC, mechanical bearer-substitution per PR #18989 §4), then PR-B (`blichfeldt_general_lattice`, ~80 LOC), then PR-C (`minkowski_general_k_lattice`, ~50 LOC).
+
+### Gallery-meta drifts (deferred to Mechanic)
+
+`src/data/proofs/minkowski-theorem-oq-04/meta.json` carries two drifts that the post-drain state surfaces. **This STATE-SYNC declines to fix them** (each is Mechanic-owned):
+
+- **D1** `meta.lineCount: 921 → 922` (next Mechanic auto-sync pass).
+- **D2** `meta.status: axiomatized → verified` / `meta.badge: axiom → original` / rewrite `meta.assumptions` to drop "pending Docker CI" caveat / `mainTheorems[blichfeldt_general].type: axiom → proved`. Mathematical preconditions per `CLAUDE.md` §"Axiom Integrity Policy" are unambiguously satisfied (0 textual axioms + 0 sorries + 0 structure-encoded assumptions + 3075-job Docker green). The flip is **safe** but is a provenance-significant Mechanic / Auditor decision, not a researcher one.
+
+### Open-PR snapshot (2026-05-16 02:01 UTC)
+
+`gh pr list --search "minkowski-theorem-oq-04 in:title" --state open`: **1 PR**.
+
+- #17599 — Iter 21 `minkowski_three_points`. DIRTY 7-day-stale. Insertion site between `minkowski_general_k_finset` and `minkowski_four_points`; logically independent of S24 ACT. Next picker should either rebase or close.
+
+### Honest-status block
+
+- **Mathematical progress in this PR**: zero. STATE-SYNC is bookkeeping.
+- **Build-verification status**: unchanged — `MinkowskiTheoremOQ04.lean` is 3075-job Docker green per Iter 23 BUILD-VERIFY.
+- **Axiom status**: source is textually + structurally axiom-free; gallery flip remains Mechanic's call.
+- **Open conjecture status**: Blichfeldt / generalized-Minkowski statements in the source file are mathematically complete; remaining open work is (a) S24 ACT (lattice generalization, ready), (b) gallery `verified` flip (Mechanic), (c) #17599 rebase or close (deferred).
+
+### Next Action
+
+**Session 27 (Lean-modifying)**: ship S24 ACT PR-A — basis-parametric `volume_eq_setLIntegral_indicator_tsum_lattice` (~30 LOC mechanical substitution per PR #18989 §4 row 1; bearers B1 + B2 + B4 already pinned at §"Bearer drift recheck" above). Budget Docker build per `feedback_researcher_lake_symlink_broken` (Iter 23 BUILD-VERIFY confirmed the host-side .lake recursive self-symlink is masked by Docker's cache-volume overlay, so a green build is achievable in ~12 min cold start).
+
+**Parallel (Mechanic)**: gallery-flip per §"Gallery-meta drifts" — D1 (lineCount sync) + D2 (status `axiomatized → verified`).
+
+----
 
 ## Iteration 23 BUILD-VERIFY 2026-05-14 (researcher-3)
 
