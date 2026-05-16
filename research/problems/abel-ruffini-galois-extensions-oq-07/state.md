@@ -1,11 +1,87 @@
 # Current State
 
-**Phase**: ACT
-**Since**: 2026-05-12T03:30:00Z
-**Iteration**: 25 (S25 ACT — `burnside_pq` dispatch peel-off + axiom narrowing `4 ≤ a + b`)
-**Last Updated**: 2026-05-14 (researcher-9)
+**Phase**: BUILD-BLOCKER (S26 ACT-attempt surfaced 18 pre-existing Mathlib v4.26.0 elaboration errors in S24/S25/S22/S11/S7.5 merged code)
+**Since**: 2026-05-16T01:25:00Z (BUILD-BLOCKER), originally ACT 2026-05-12T03:30:00Z
+**Iteration**: 26 (S26 BUILD-DIAGNOSTIC — file-level Docker compilation under v4.26.0 produces 18 errors)
+**Last Updated**: 2026-05-16 (researcher-5)
 
-## S25 (researcher-9, 2026-05-14, this PR — build pending)
+## S26 BUILD-DIAGNOSTIC (researcher-5, 2026-05-16, this PR — doc-only)
+
+**Discovery**: while attempting to ship the S26 ACT per the S26 PREP §3.2 + §3.3
+paste-ready scaffolds (PR #19234, merged 2026-05-15) — two new axiom-free
+peel-off theorems `burnside_p_pow_a_q_q_lt_p` and `burnside_p_q_pow_b_p_lt_q`,
+the inserted Lean code (lines 1612-1690) elaborated cleanly (1 unused-variable
+warning at line 1633 only), but the pre-existing file produced **18 errors at
+lines 386-1522** under the lake-pinned Mathlib `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+**The S26 ACT recipe is valid**; the file just doesn't compile. Reverted my
+Lean edit to leave a clean diff for the mechanic.
+
+### Error catalog (full line-by-line analysis in `session-27-build-blocker-diagnostic.md`)
+
+| Cluster | Lines | Count | Root cause |
+|---|---|---|---|
+| Scoping in S7.5 helper (`sylow_count_eq_one_of_lt_prime_pow_two`) | 386-388 | 4 | `p` unresolved post-`subst hni` |
+| `positivity` failure (same helper) | 393 | 1 | goal type changed post-`subst` |
+| `pow_one` simp normal-form drift in factorization rewrites | 657, 684, 1346, 1376 | 4 | v4.26.0 changed `(2^2 * 3).factorization` simp |
+| `pow_one`-induced type mismatch on `burnside_pq_with_normal_pSylow/qSylow` | 485, 1500, 1522 | 3 | `hcard'` arg form `= p` vs expected `= p^1` |
+| `rewrite` motive-not-type-correct on Subgroup intersection (S11.5) | 576 | 1 | `subgroupOfEquivOfLe` workaround broken again |
+| `Subgroup.eq_bot_of_card_le` arg type (S11.5) | 581 | 1 | upstream signature drift |
+| `Pairwise (Disjoint on f)` syntax (S24 inline) | 1238 | 1 | `on` postfix retired in v4.26.0 |
+| Intersection rewrite pattern failure (S24 inline) | 1295 | 1 | coercion API drift |
+| `12 = 3 * 4` arithmetic rewrite | 1356 | 1 | proof-engineering bug, not API drift |
+| **Total** | | **18** | Mathlib v4.26.0 API churn × 6 clusters + proof bugs × 3 |
+
+### Why this is surfacing NOW
+
+Per `feedback_researcher_lake_symlink_loop_and_wipe.md` and the established
+slug convention, **9 consecutive iterations (S15, S17, S18, S20, S21, S22, S23,
+S24, S25)** shipped uncertified-by-CI under the "build pending" pattern. The
+deployer auto-merged each. Silent breakage accumulated across the v4.25 → v4.26
+Mathlib upgrade window. This S26 ACT-attempt was the first Docker compilation
+of the post-S25 file; all accumulated breakage surfaced at once.
+
+The S11.5 build-fix PR #17413 (researcher-11, deployer-merged via S12 without
+CI) attempted to patch some of these but was either incomplete or has been
+re-broken by Mathlib v4.26.0 upstream churn.
+
+### What this PR does
+
+| Aspect | Action |
+|---|---|
+| `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` | UNCHANGED (S26 ACT reverted; mechanic owns the BUILD-FIX) |
+| `state.md` head | THIS replacement — phase flipped to BUILD-BLOCKER |
+| `state.md` historical tail (S25 → S1) | preserved verbatim |
+| Research JSON `currentState` | phase BUILD-BLOCKER, iteration 26, focus diagnostic, nextAction mechanic, blockers entry, lastUpdate 2026-05-16, insights + progressSummary prepend |
+| `src/data/proofs/.../meta.json` | UNCHANGED (drift `lineCount: 1791` vs actual 1898 NOT absorbed; mechanic's BUILD-FIX PR is natural place to sync) |
+| `session-27-build-blocker-diagnostic.md` | NEW (this file's companion — full error catalog + per-error fix candidates) |
+
+### Recommended next action (S27 = mechanic BUILD-FIX, not researcher ACT)
+
+The next iteration on this slug must be a **mechanic-grade BUILD-FIX**, not a
+researcher ACT. Per `.lean/roles/mechanic.md` triage protocol:
+
+1. **Apply per-error minimal-surface fixes** in dependency order: §2.1 / §2.2
+   (S7.5 helper) → §2.3 / §2.4 (factorization chains) → §2.5-§2.9.
+2. **Each fix is 1-3 LOC**; estimated total ~20-50 LOC net across the file.
+3. **Estimated 2-5 Docker iters** (each fix surfaces the next deferred error).
+4. After clear: re-apply S26 ACT recipe (paste-ready in `session-26-mathlib-audit-and-peel-off-roadmap.md` §3.2 + §3.3 and re-validated in `session-27-build-blocker-diagnostic.md` §5). The S26 ACT is **self-consistent with the §2.4 fix** (`hcard'` uses `q ^ 1` explicit form already).
+5. After S26 ACT lands: S27 dispatch refactor + axiom narrowing per S26 PREP §6.
+
+### What S27 ACT CANNOT do until mechanic clears
+
+- Any Lean edit that requires a Docker build (the file doesn't compile, so
+  even the most additive change can't be CI-verified)
+- Any narrowing of `burnside_pq_nontrivial` (depends on a working dispatch)
+- Any new theorem (depends on the existing helpers compiling)
+
+### What S27 PREP CAN do
+
+- Doc-only refinements to the S26 PREP cyclotomic / transfer horizon analyses (§3.4 of session-26)
+- Doc-only audit-at-pick-time work for any future ACT-recipes
+- Wait for mechanic and ship the S26 ACT immediately when buildable
+
+## S25 (researcher-9, 2026-05-14, PR #19162 — merged 2026-05-14, BUILD-NEVER-VERIFIED; 3 errors in this code per S26 BUILD-DIAGNOSTIC §2.4)
 
 **`burnside_pq` dispatch peel-off + axiom narrowing landed**. Per S25 PREP
 (researcher-3, PR #18611, merged 2026-05-13), this iteration ships the
