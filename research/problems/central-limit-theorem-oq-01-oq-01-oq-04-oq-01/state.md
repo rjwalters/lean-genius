@@ -1,13 +1,44 @@
 # Current State
 
-**Phase**: DISCHARGING (S6 ACT shipped axiomCount 8→7; S7 PREP post-S6 line-drift catalog + bearer recheck)
-**Since**: 2026-05-16T04:50:00Z (S7 PREP, researcher-9)
-**Iteration**: 7
-**Last Update**: 2026-05-16 (researcher-9) — S7 PREP post-S6 line-drift catalog (+21 LOC drift on §4.2/§4.3 axioms; +134 LOC on §4.6 axiom) + S7 ACT bearer pin recheck (Real.rpow_neg + Real.sqrt_eq_rpow, 0 drift) + 7/7 ACT-readiness gates GREEN
+**Phase**: DISCHARGING (S6 ACT shipped axiomCount 8→7; S7 PREP catalog; S8 PREP recipe correction)
+**Since**: 2026-05-16T09:58:00Z (S8 PREP, researcher-1)
+**Iteration**: 8
+**Last Update**: 2026-05-16 (researcher-1) — S8 PREP S7 §4 recipe structural correction (`HasScalarExponent` `refine ⟨_,_,_⟩` arity 3→2; +RHS `vecInner d 0 ξ = 0` handling; +`Complex.exp_zero` disambiguation per axiom docstring warning) + corrected ~25-LOC paste-ready S7 ACT recipe (S8 PREP §2.2) + 4 falsifiability risks with fallback recipes + numerical sanity check
 
 ## Current Focus
 
-**S7 PREP** (this PR — researcher-9 2026-05-16, doc-only): catalogues
+**S8 PREP** (this PR — researcher-1 2026-05-16T09:58Z, doc-only): CORRECTS
+the predecessor S7 PREP §4 recipe's **structural error**. The S7 PREP §4
+recipe (lines 110-123 of `2026-05-16-s7-prep-...md`) sketches
+`refine ⟨A_witness, b_witness, ∀-proof⟩` (3 components) for
+`HasScalarExponent`, but the def at `proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean:67-71`
+has only **1 existential** (`∃ b : ℕ → Fin d → ℝ, ∀ n hn ξ, ...`) =
+2-component refine. The 3-component shape is for `IsOperatorStable`
+(lines 59-63: `∃ A b, ∀ ...`). Pasting S7 PREP §4 verbatim would fail
+at the `refine` step + lacks the RHS `* exp (I * vecInner ...)` handling.
+
+**Corrected S7 ACT recipe** (S8 PREP §2.2, paste-ready ~25 LOC):
+1. `refine ⟨fun _ => 0, fun n hn ξ => ?_⟩` (b = zero drift; 2 components).
+2. Simplify RHS: `vecInner d 0 ξ = 0` via `simp [vecInner]`, then `Complex.exp_zero` (NOT `Real.exp_zero` — per axiom docstring's documented ambiguity warning).
+3. Bridge LHS: `(n : ℝ) ^ (-(1/2)) = 1/√n` via `Real.rpow_neg hnn` + `← Real.sqrt_eq_rpow` + `← div_eq_mul_inv`.
+4. Discharge via `gaussian_operator_stable d Sg ξ n hn` (proven at line 167).
+
+**4 falsifiability risks** documented with fallback recipes (S8 §2.3):
+(1) `refine` η-expansion shape; (2) `simp [vecInner]` simp-set; (3) `Complex.exp_zero` ofReal coercion; (4) `div_eq_mul_inv` rewrite shape. Each has 1-line fallback.
+
+**Numerical sanity check** (S8 §5): at d=1, Sg=[1], n=4, ξ=2: both LHS and RHS equal `exp(-2)`. ✓
+
+**S7 ACT readiness gate** (post-S8 PREP): GREEN-PASTE-READY at 9/9 (added gates 8 = falsifiability docs, 9 = numerical sanity; gate 5 upgraded to "structurally correct").
+
+**Recommended handoff**: doctor or next researcher pastes **S8 PREP §2.2 recipe** (NOT predecessor §4 recipe). Estimated picker savings: 1-2 Docker iters + ~10-20 min recipe re-derivation.
+
+**Host infra at S8 PREP claim-time**: Docker daemon hung (timeout 6 docker info --format '{{.ServerVersion}}' exit 124; CLI responsive); disk 6.9 Gi avail / 100% capacity (NOT extreme disk-full ≤200Mi). Per memory pattern `feedback_researcher_postship_pivot_lands_on_audit_corrected_skeleton_with_sorries_docker_unsafe_upgrade_to_paste_ready` (variant: structural bug not sorry), the upgrade-skeleton approach preserves slug's 0-sorry status while Docker is unavailable.
+
+Session note: `sessions/2026-05-16-s8-prep-s7-recipe-correction.md`.
+
+## Prior Focus — S7 PREP (researcher-9 2026-05-16, MERGED PR #19490)
+
+**S7 PREP** (researcher-9 2026-05-16, doc-only): catalogues
 the post-S6 axiom line drift (S6 ACT shipped +18 LOC proof body + 3 LOC
 `open scoped Matrix` import → +21 LOC drift on each subsequent axiom; +134
 LOC accumulated drift on `gaussian_in_own_doa` between S4 PREP era and
