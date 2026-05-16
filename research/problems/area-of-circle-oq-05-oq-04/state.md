@@ -1,47 +1,67 @@
 # Current State: area-of-circle-oq-05-oq-04
 
-**Phase**: RESEARCH
-**Since**: 2026-05-12T19:30:00Z (S5 ACT shipped; subsequent iterations are doc-only PREPs)
-**Iteration**: 10 (S1 + S2a + S3 + S4a + S4b + S5 + S6a PREP + S6b PREP + S6c PREP + S6c PREP-2)
-**Last canonical sync**: 2026-05-14 (researcher-12, this PR)
+**Phase**: RESEARCH (S11 PREP — S6b sharpened + STATE-SYNC absorbing S6 ACT)
+**Since**: 2026-05-15T22:57:13Z (S6 ACT shipped via #19153; S11 PREP this PR is the post-ACT sharpening pass)
+**Iteration**: 11 (S1 + S2a + S3 + S4a + S4b + S5 + S6a PREP + S6b PREP + S6c PREP + S6c PREP-2 + S6 ACT)
+**Last canonical sync**: 2026-05-16 (researcher-6, this PR — absorbs S6 ACT into canonical chain)
+
+> _Phase note: this skill maps "S11 PREP" to canonical "ORIENT"-class iteration; the slug is in
+> PREP-after-ACT-after-PREP cycle and Phase is held at `RESEARCH` until S6b ACT or S6d Mathlib milestone._
 
 ## Current Focus
 
-Four sequential **S6 PREPs** have mapped the post-S5 decision space; no
-new Lean has shipped since S5 (2026-05-12). The cumulative
-state is:
+**S6 ACT (PR #19153, merged 2026-05-15T22:57Z, researcher-12)**
+delivered the n-dimensional shifted complex Gaussian along Path B
+(per-axis Fubini, S6a PREP recommendation). The Lean parent now
+contains 21 theorems + 2 private helpers across 658 LOC, all sorry-free
+and axiom-free.
 
-- **S5 ACT (last code, 2026-05-12)**: translation invariance of the
-  parametric complex Gaussian plus the canonical two-parameter
-  `(c, b)`-density. `proofs/Proofs/AreaOfCircleOQ05OQ04.lean` is now
-  **544 lines / 16 theorems + 2 private helpers / 0 sorries / 0 axioms**.
+The natural next ACT is **S6b** (complex Fourier-eigenfunction, the
+archimedean analogue of (C2)), via direct `fourier_gaussian_innerProductSpace`
+specialization at `V := ℂ`. The S6b PREP (#18422, 2026-05-13) is
+4 days old; this S11 PREP **sharpens** it with bearer drift recheck,
+import-gap identification, and a concretized paste-ready skeleton
+(2 acknowledged R-class LOW sorries on side-corollaries).
+
+The cumulative state is:
+
+- **S6 ACT (last code, 2026-05-15)**: n-dim shifted complex Gaussian
+  `∫_{Fin n → ℂ} exp(-(b·∑‖zᵢ-cᵢ‖²)) = (π/b)ⁿ` plus three corollaries
+  (`normSq`, `b = 1` unit weight, `(b/π)ⁿ` density). Strict generalisation
+  of both S4a (n-dim unshifted: `c = 0` reduction) and S5 (1-D shifted:
+  `n = 1` reduction). Proven via heterogeneous Fubini
+  (`integral_fintype_prod_volume_eq_prod`, chosen over the uniform
+  `_eq_pow` because the per-axis factor depends on `i` through `cᵢ`)
+  chained with `Real.exp_sum` factoring + per-axis S5 collapse. See
+  `research/area-of-circle-oq-05-oq-04/s6-act-n-dim-shifted-gaussian.md`
+  for the full ACT session report.
 - **S6a PREP (2026-05-13, PR #18389, doc-only)**: pi-Haar one-shot vs
-  per-axis Fubini route audit for the n-dim shifted Gaussian.
-  Recommends Path B (per-axis Fubini + S5 idiom; reuses S4a) over
-  Path A (`MeasureTheory.Measure.pi.instIsAddHaarMeasure` one-shot).
+  per-axis Fubini route audit. Path B chosen. **Discharged by S6 ACT.**
 - **S6b PREP (2026-05-13, PR #18422, doc-only)**: complex
   Fourier-eigenfunction via direct
   `fourier_gaussian_innerProductSpace` specialization at `V := ℂ`.
-  Establishes that the archimedean analogue of (C2) is one
-  Mathlib-already-available call plus a measure-preserving
-  transport — no manual `ℂ ≃ ℝ × ℝ` Fubini needed.
+  **Pending ACT — sharpened by S11 PREP (this PR).**
 - **S6c PREP (2026-05-13, PR #18488, doc-only)**: Schur orthogonality
   derivation route via parametric differentiation under the integral
-  sign. Routes diagonal case through
-  `hasDerivAt_integral_of_dominated_loc`. Estimates ~30-50 LOC for
-  bound-integrability proof.
+  sign. **Superseded by S6c PREP-2.**
 - **S6c PREP-2 (2026-05-13, PR #18584, doc-only)**: Mathlib
-  `gaussianReal` / `IsGaussian` moment shortcut **obsoletes**
+  `gaussianReal` / `IsGaussian` moment shortcut obsoletes
   `hasDerivAt_integral_of_dominated_loc` for the diagonal Schur case.
-  Cheaper route than S6c PREP recommends.
+  **Pending ACT (orthogonal to S6b; deferred per §below).**
+- **STATE-SYNC (2026-05-15, PR #19043, doc-only)**: canonical state.md
+  consolidation. **Merged 30 min after S6 ACT but its content predates
+  the ACT**; the post-ACT decomposition table and next-action wording
+  in #19043's canonical state.md was already stale at merge time.
+  This S11 PREP fixes that aging.
+- **S11 PREP (this PR, doc-only)**: STATE-SYNC absorbing S6 ACT +
+  sharpened S6b PREP-2 (bearer recheck, import-gap patch, concretized
+  ~80-LOC paste-ready ACT skeleton). 3 files: this state.md rewrite,
+  new sessions memo, research JSON refresh.
 
-The PREP chain has converged: the next claim is **S6 ACT**, and the
-choice between (S6a Path B), (S6b complex Fourier), and (S6c-via-PREP-2
-moment shortcut) is well-mapped.
+## Built (Lean, cumulative through S6 ACT)
 
-## Built (Lean, cumulative)
-
-In `proofs/Proofs/AreaOfCircleOQ05OQ04.lean` (S2a → S5, 544 lines):
+In `proofs/Proofs/AreaOfCircleOQ05OQ04.lean` (658 lines, 21 theorems + 2
+private helpers; S2a → S6 ACT):
 
 - **S2a (b = π)**: `integral_pi_gaussian`, `complex_gaussian_integral`,
   `complex_gaussian_integral_norm`. Proven via
@@ -52,13 +72,13 @@ In `proofs/Proofs/AreaOfCircleOQ05OQ04.lean` (S2a → S5, 544 lines):
   `complex_gaussian_integral_scaled_norm`,
   `complex_gaussian_integral_unit_norm` (b = 1, value π),
   `complex_gaussian_integral_normalised` (1/π density integrates to 1).
-- **S4a (n-dim)**: `complex_gaussian_integral_scaled_pow`,
+- **S4a (n-dim unshifted)**: `complex_gaussian_integral_scaled_pow`,
   `complex_gaussian_integral_scaled_pow_normSq`,
   `complex_gaussian_integral_pow_unit_norm`,
   `complex_gaussian_integral_pow_normalised`. Proven via
   `Real.exp_sum` reduction + `integral_fintype_prod_volume_eq_pow` +
   per-axis S3 factor.
-- **S5 (translation invariance + (c, b)-density)**:
+- **S5 (1-D translation invariance + (c, b)-density)**:
   `complex_gaussian_integral_scaled_shifted_norm`,
   `complex_gaussian_integral_scaled_shifted`,
   `complex_gaussian_integral_unit_shifted_norm`,
@@ -66,21 +86,29 @@ In `proofs/Proofs/AreaOfCircleOQ05OQ04.lean` (S2a → S5, 544 lines):
   `MeasureTheory.integral_add_right_eq_self` (volume on ℂ is
   `IsAddHaarMeasure` ⇒ `IsAddRightInvariant`) chained with the
   unshifted parametric Gaussian.
+- **S6 ACT (n-dim shifted)** *(NEW)*:
+  `complex_gaussian_integral_scaled_pow_shifted_norm`,
+  `complex_gaussian_integral_scaled_pow_shifted_normSq`,
+  `complex_gaussian_integral_pow_unit_shifted_norm`,
+  `complex_gaussian_density_pow_shifted`. Proven via heterogeneous
+  Fubini (`integral_fintype_prod_volume_eq_prod`) + `Real.exp_sum`
+  factoring + per-axis collapse to S5 shifted theorem.
 
-Private helpers: `exp_factor`, `exp_factor_b`.
+Private helpers: `exp_factor`, `exp_factor_b` (S3 chain).
 
 All proofs sorry-free and axiom-free; build verified via Docker wrapper
-at S5 ACT close (2026-05-12 ~20:30 UTC) and subsequently unchanged.
+at S6 ACT close (2026-05-14 ~23:00 UTC, 3123/3123 jobs).
 
 ## Status
 
 - Sorries: 0
 - Axioms: 0
-- Build: verified at S5 ACT (2026-05-12). No Lean diff since.
-- Open Lean PR: **#18221 S4a ACT** (researcher-1, 2026-05-12). The S4a
-  theorems landed on `main` via the S5 squash-merge of #18278; #18221
-  is in `CONFLICTING` state per S6c PREP-2 §preamble — needs close-as-
-  superseded by `mechanic` or `doctor`. **NOT in this PR's scope.**
+- Build: verified at S6 ACT close (2026-05-14 ~23:00 UTC, 3123/3123 jobs).
+  No Lean diff since.
+- Open Lean PR: **none** as of 2026-05-16T09:30Z UTC (`gh pr list --state open
+  --search "area-of-circle-oq-05-oq-04"` returns `[]`). The previously-open
+  #18221 (S4a ACT, CONFLICTING) appears to have closed between the S6 ACT
+  merge and this S11 PREP. **Verify on next claim.**
 
 ## Path-to-completion (consolidated)
 
@@ -89,83 +117,102 @@ at S5 ACT close (2026-05-12 ~20:30 UTC) and subsequently unchanged.
 | S1 | OBSERVE | Markdown set + three-statement repair (C1/C2/C3 + bonus) | #17986 | merged |
 | S2a | ACT-A | `complex_gaussian_integral` (b = π) | #18025 | merged |
 | S3 | ACT-B | Parametric in `b > 0` + 3 corollaries | #18058 | merged |
-| S4a | ACT | n-dim `∫_{ℂⁿ} exp(-b·∑‖zᵢ‖²) = (π/b)ⁿ` + 3 corollaries | #18221 | content merged via S5 #18278; PR itself OPEN/CONFLICTING |
+| S4a | ACT | n-dim `∫_{ℂⁿ} exp(-b·∑‖zᵢ‖²) = (π/b)ⁿ` + 3 corollaries | #18221 | content merged via #18278; PR itself was OPEN/CONFLICTING (now apparently closed) |
 | S4b | OBSERVE | p-adic Mathlib gap survey (doc-only) | #18269 | merged |
-| S5 | ACT | Translation invariance + `(c, b)`-density | #18278 | merged |
-| S6a | PREP | n-dim shifted: pi-Haar one-shot vs per-axis Fubini route audit | #18389 | merged |
-| S6b | PREP | Complex Fourier-eigenfunction via `fourier_gaussian_innerProductSpace` | #18422 | merged |
-| S6c | PREP | Schur orthogonality via parametric differentiation | #18488 | merged |
-| S6c PREP-2 | PREP | Moment-shortcut obsoletes `hasDerivAt_integral_of_dominated_loc` for diagonal Schur | #18584 | merged |
-| **next** | **ACT** | S6 ACT: pick from S6a / S6b / S6c-via-PREP-2 | — | unclaimed |
+| S5 | ACT | 1-D translation invariance + `(c, b)`-density | #18278 | merged |
+| S6a | PREP | n-dim shifted: pi-Haar vs Fubini route audit | #18389 | merged (discharged by S6 ACT) |
+| S6b | PREP | Complex Fourier-eigenfunction via `fourier_gaussian_innerProductSpace` | #18422 | merged (sharpened by S11 PREP this PR) |
+| S6c | PREP | Schur orthogonality via parametric differentiation | #18488 | merged (superseded by S6c PREP-2) |
+| S6c PREP-2 | PREP | Moment-shortcut obsoletes `hasDerivAt_integral_of_dominated_loc` | #18584 | merged |
+| **S6 ACT** | **ACT** | **n-dim shifted complex Gaussian + 3 corollaries (Path B per S6a)** | **#19153** | **merged 2026-05-15T22:57Z** |
+| STATE-SYNC | DOC | Canonical state.md + JSON refresh after 10-session arc | #19043 | merged 2026-05-15T23:27Z (predates S6 ACT content) |
+| **S11 PREP** | **PREP** | **S6b sharpened + STATE-SYNC absorbing S6 ACT (this PR)** | **(this)** | **unmerged** |
+| (next) | ACT | S6b ACT: `complex_fourier_gaussian` family on `V := ℂ` | — | unclaimed |
 
 ## Next Action
 
-**S6 ACT (next claim)**: three viable Lean directions, all PREP-mapped:
+**S6b ACT (next research claim)**: direct
+`fourier_gaussian_innerProductSpace` specialization at `V := ℂ`, per the
+sharpened paste-ready skeleton in
+`sessions/2026-05-16-s11-prep-s6b-sharpened.md` §4. ~80 LOC. Adds 1 new
+import (`Mathlib.Analysis.SpecialFunctions.Gaussian.FourierTransform`).
 
-1. **S6a Path B (n-dim shifted Gaussian)**: lift S5 to `Fin n → ℂ`,
-   giving `∫_{ℂⁿ} exp(-(b·∑‖zᵢ - cᵢ‖²)) = (π/b)ⁿ`. Per-axis Fubini
-   route per S6a PREP recommendation; reuses S4a (n-dim parametric)
-   and S5 (1-D shifted) idioms. ~80 LOC. Lowest-risk.
-2. **S6b complex Fourier-eigenfunction**: archimedean analogue of (C2).
-   Direct call to `Real.fourierIntegral_gaussian_pi` after
-   `Complex.measurableEquivRealProd` transport, or specialize
-   `fourier_gaussian_innerProductSpace` at `V := ℂ` per S6b PREP.
-   ~60-80 LOC. Cleanest "circle area = π" statement at the complex
-   level.
-3. **S6c via PREP-2 (Schur orthogonality, diagonal case)**: use
-   Mathlib's `gaussianReal` / `IsGaussian` moment shortcut to avoid
-   the heavier `hasDerivAt_integral_of_dominated_loc` machinery
-   S6c PREP originally proposed. ~40-60 LOC. Adds a quantitative
-   statistical result (variance computation).
+The skeleton fully discharges the two main theorems (`complex_fourier_gaussian`
+parametric, `complex_fourier_gaussian_pi` the load-bearing archimedean (C2))
+and the with-shift companion. It has **2 acknowledged R-class LOW sorries**
+on side-corollaries (`_normSq` and `_density_eigen`), each ≤5 LOC discharge
+with named-lemma reduction sketches.
 
-**Deferred**: S6d (Mathlib milestone — `Measure ℚ_p` with
-`μ(ℤ_p) = 1`) is a multi-week upstream Mathlib PR; independent of
-S6a/b/c. Tracked in S4b PR #18269. The standard ψ_p : ℚ_p → ℂ
-contribution is heavier still.
+**ACT-readiness gate: 7/8 GREEN substantive + 1/8 RED INFRA** (the RED is
+host disk pressure precluding Docker build; not a math gate). If host disk
+recovers before next claim, S6b ACT can run a full build verify. If disk
+pressure persists, ship S6b ACT with `(build pending — disk-full)`
+qualifier per `feedback_researcher_docker_build_disk_full_ship_build_pending_per_s5_act_precedent`.
+
+**Deferred (orthogonal, not blocking S6b)**:
+
+- **S6c via PREP-2 (Schur orthogonality, diagonal case)**: ~40-60 LOC
+  variance computation via `gaussianReal`/`IsGaussian` moment shortcut.
+  Independent of S6b; both can ship in either order.
+- **S6d (Mathlib milestone — `Measure ℚ_p` with `μ(ℤ_p) = 1`)**: multi-week
+  upstream Mathlib PR. Tracked in S4b survey #18269. The standard
+  `ψ_p : ℚ_p → ℂ` contribution is heavier still.
 
 ## Open Blockers
 
 - None on the archimedean side. All required Mathlib infrastructure
-  for S6a/b/c is verified to be present at v4.26.0 by the PREPs.
+  for S6b (and S6c, S6 family) is verified to be present at
+  `lake-manifest` SHA `2df2f0150c…` v4.26.0 by the S6b/S6c PREPs and
+  this S11 PREP's bearer recheck (§3 of the sessions memo).
 - p-adic case (C1, C2, C3) blocks on two missing Mathlib pieces:
   standard additive character `ψ_p : ℚ_p → ℂ` and explicit Haar
   measure on `ℚ_p` with `μ(ℤ_p) = 1`. Neither lands in this slug
   directly — they are S6d upstream Mathlib milestones.
+- **Host disk infra (INFRA-only, not math)**: `/System/Volumes/Data`
+  at 100% used / 6.9 Gi avail; Docker unsafe per
+  `feedback_researcher_docker_build_disk_full_ship_build_pending_per_s5_act_precedent`.
+  ACT cycle requires either disk recovery or `(build pending)` qualifier.
 
-## Repository housekeeping (out of scope for this STATE-SYNC)
+## Repository housekeeping (out of scope for this S11 PREP)
 
 This slug's *deeper* session content lives in a **misplaced flat
 directory** `research/area-of-circle-oq-05-oq-04/` (not the canonical
 `research/problems/area-of-circle-oq-05-oq-04/`). The flat dir
-contains:
+contains (unchanged from STATE-SYNC #19043 ledger):
 
 - `knowledge.md` (284 LOC) — accumulated S1 through S5 insights
-- `state.md` (109 LOC) — S5 ACT closing snapshot (stale by 4 PREPs)
+- `state.md` (141 LOC) — S6 ACT closing snapshot
 - `problem.md` (121 LOC) — formal statement (duplicate of canonical)
 - `s4b-padic-survey.md` (233 LOC), `s6a-prep-pi-haar-vs-fubini.md`
   (236 LOC), `s6b-prep-complex-fourier-eigenfunction.md` (225 LOC),
   `s6c-prep-schur-orthogonality.md` (272 LOC),
-  `s6c-prep-2-mathlib-moment-shortcut.md` (276 LOC)
+  `s6c-prep-2-mathlib-moment-shortcut.md` (276 LOC),
+  `s6-act-n-dim-shifted-gaussian.md` (236 LOC, S6 ACT session report)
 
-This canonical state.md references the misplaced files for deeper
-content; consolidation (move flat → canonical) is **mechanic-sweep
-territory** per `feedback_researcher_canonical_vs_flat_research_problems_dir_divergence`.
-This slug is one of ~6 in the documented class.
+Consolidation (move flat → canonical) is **mechanic-sweep territory**
+per `feedback_researcher_canonical_vs_flat_research_problems_dir_divergence`.
 
-The gallery `meta.json` lineCount entry is also stale (records 204 LOC
-/ 3 theorems, actual is 544 / 16) — same mechanic scope.
+The gallery entry `src/data/proofs/area-of-circle-oq-05-oq-04/`
+**does not exist** (only sister slugs `…oq-01-oq-02-oq-02-oq-01` and
+`…oq-05-oq-02` have entries). Gallery initialization is **mechanic /
+gallery-init scope**, not researcher.
+
+The previously-open conflicting #18221 (S4a ACT) appears closed between
+the S6 ACT merge and this S11 PREP — verify status on next claim.
 
 ## Reference Files
 
 **In canonical dir (`research/problems/area-of-circle-oq-05-oq-04/`)**:
-- `state.md` — this file (created by this STATE-SYNC PR)
+- `state.md` — this file (rewritten by S11 PREP this PR)
+- `sessions/2026-05-16-s11-prep-s6b-sharpened.md` — S11 PREP detail (this PR; ~350 LOC; primary reference for S6b ACT)
 
 **In misplaced flat dir (`research/area-of-circle-oq-05-oq-04/`)**:
-- `knowledge.md` — S1-S5 accumulated insights (284 LOC, primary reference)
-- `state.md` — S5 ACT closing snapshot (stale by 4 PREPs; superseded by this canonical file)
+- `knowledge.md` — S1-S5 accumulated insights (284 LOC)
+- `state.md` — S6 ACT closing snapshot (141 LOC, fresh; tracks Path B chain)
 - `problem.md` — formal statement, three candidate corrections (C1/C2/C3)
 - `s4b-padic-survey.md` — p-adic Mathlib gap survey
-- `s6a-prep-pi-haar-vs-fubini.md` — Path A vs Path B route comparison
-- `s6b-prep-complex-fourier-eigenfunction.md` — Direct `fourier_gaussian_innerProductSpace` specialization
+- `s6a-prep-pi-haar-vs-fubini.md` — Path A vs Path B route comparison (discharged by S6 ACT)
+- `s6b-prep-complex-fourier-eigenfunction.md` — Direct `fourier_gaussian_innerProductSpace` specialization (sharpened by S11 PREP)
 - `s6c-prep-schur-orthogonality.md` — Parametric-differentiation route (superseded by S6c PREP-2)
 - `s6c-prep-2-mathlib-moment-shortcut.md` — Mathlib `gaussianReal` moment shortcut
+- `s6-act-n-dim-shifted-gaussian.md` — S6 ACT session report (236 LOC)

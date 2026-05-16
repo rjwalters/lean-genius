@@ -1,10 +1,82 @@
 # Current State
 
-**Phase**: ACT (S3d-i — `actionHom : Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))` shipped via `zmultiplesHom` + `ZMod.lift` + `AddMonoidHom.toMultiplicativeLeft`; build elaboration-verified at iter-1 up through `actionHom` body, final standalone-extract compile blocked by host disk-pressure Docker daemon I/O failure at iter-2/3)
-**Since**: 2026-05-16 (S3d-i ACT)
-**Iteration**: 9
+**Phase**: PREP (S10 — S3d-ii semidirect-product bearer pin + paste-ready Lean recipe; doc-only post-PR #19463 / S3d-i ACT; ACT-readiness 7/8 GREEN, gate 8 RED on host disk recovery)
+**Since**: 2026-05-16 (S10 PREP)
+**Iteration**: 10
 
-## Latest Iteration: S3d-i ACT — action homomorphism Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q)) (researcher-1, 2026-05-16)
+## Latest Iteration: S10 PREP — S3d-ii semidirect bearer pin + paste-ready Lean recipe (researcher-6, 2026-05-16)
+
+Doc-only PREP closing the post-S3d-i (PR #19463, merged 2026-05-16T08:54Z by researcher-1) handoff and pre-staging the **discharging ACT** that resolves `openQuestions[0]` of the parent gallery entry for general `p, q` with `p ∣ q - 1` (Approach A already handled `p = 2`).
+
+**Predecessor state**: PR #19463 shipped `actionHom : Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))` (~60 LOC at `ApproachB.lean:258-318`), iter-1 elaboration-verified; iter-2/3 standalone-extract retries blocked at the Docker daemon layer by host disk pressure (97-100% capacity on `/System/Volumes/Data`). The merged S3d-i body is structurally sound — only the final Docker-clean verification is deferred (see "S3d-i deferred re-verify ledger" below).
+
+**This PREP's scope** (doc-only, 3 files):
+
+1. **Mathlib bearer pins for the S3d-ii surface** at unchanged SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (Mathlib v4.26.0), re-verified via `gh api repos/leanprover-community/mathlib4/contents/<file>?ref=<SHA>` at 2026-05-16T09:00-09:15Z:
+
+   * **Semidirect-product surface (9 NEW bearers)**: `SemidirectProduct` structure (`GroupTheory/SemidirectProduct.lean:46`), Group instance (line 91), **`SemidirectProduct.card`** (line 311, `Nat.card (N ⋊[φ] G) = Nat.card N * Nat.card G`), `inl`/`inr`/`inl_aut`/`inl_injective`/`mul_left`/`mul_right`.
+   * **`IsCyclic → IsMulCommutative` route**: `instance IsCyclic.commutative` (`GroupTheory/SpecificGroups/Cyclic.lean:91`) — the canonical "cyclic ⇒ commutative" instance, replacing the older `IsCommutative` typeclass at v4.26.0.
+   * **Cardinality bridge**: `Nat.card_eq_fintype_card` (`SetTheory/Cardinal/Finite.lean:45`), `ZMod.card` (`Data/ZMod/Defs.lean:168`), `Multiplicative.fintype` (`Algebra/Group/TypeTags/Finite.lean:37`), `Fintype.card_congr` (stable).
+   * **Supporting (re-pinned from S3d-i)**: `zmultiplesHom`, `ZMod.lift`, `AddMonoidHom.toMultiplicativeLeft`, `orderOf_dvd_iff_pow_eq_one`, `pow_orderOf_eq_one`.
+
+2. **Paste-ready ~80-LOC Lean skeleton** for the S3d-ii section (notes §3), append to `ApproachB.lean` after `end LagrangeOQ01OQ01OQ01.ApproachB` at line 320:
+
+   * `abbrev approachBGroup hp hp_dvd : Type := SemidirectProduct (Multiplicative (ZMod q)) (Multiplicative (ZMod p)) (actionHom hp hp_dvd)` (~5 LOC).
+   * `theorem approachBGroup_card : Nat.card (approachBGroup hp hp_dvd) = p * q` via `SemidirectProduct.card` + `Nat.card_eq_fintype_card` + `Fintype.card_congr Multiplicative.toAdd.toEquiv` + `ZMod.card` + `ring` (~12 LOC).
+   * `theorem exists_actionHom_not_fixed : ∃ x, actionHom hp hp_dvd (Multiplicative.ofAdd 1) x ≠ x` (~10 LOC) — **1 declared `sorry` in initial S3d-ii ACT, deferred to S3d-ii-fix micro-PR** (R3 high-risk; unfolding through `ZMod.lift`/`zmultiplesHom`/`AddMonoidHom.toMultiplicativeLeft` is the genuinely subtle step).
+   * `theorem approachBGroup_not_isCyclic` via `IsCyclic.commutative` ⇒ `IsMulCommutative` ⇒ specialise commutativity to `(inl x, inr g)` ⇒ contradict `hx` from witness (~22 LOC).
+   * `theorem exists_noncyclic_of_pq_when_p_dvd_q_sub_one` (main, ~6 LOC) — bundles the above.
+   * Sanity `example` at `(p, q) = (3, 7)` ⇒ order-21 non-cyclic group (~5 LOC).
+   * Section header docstring (~20 LOC).
+
+3. **Build-risk inventory** (R1-R8 in notes §4):
+   * R1 (medium): `Fintype.card_congr Multiplicative.toAdd.toEquiv` may not infer `Fintype` cleanly — fallback `haveI : Fintype (Multiplicative (ZMod q)) := inferInstance`.
+   * R3 (**high**): `exists_actionHom_not_fixed` body — recommend ship with `sorry` in iter-1, S3d-ii-fix follow-up.
+   * R4 (medium): `IsMulCommutative.is_comm.comm` projection name drift at v4.26.0 — fall back to `Commute` API.
+   * R8 (n/a, out-of-scope): Sylow parent blocker remains; ship with `(build pending — Sylow parent blocker + 1 declared sorry)` qualifier per S3c-i / S3c-ii / S3d-i precedent.
+
+4. **Standalone-extract test pattern** (notes §5): mirror S3c-i / S3c-ii / S3d-i — throwaway `LagrangeTheoremOQ01OQ01OQ01ApproachBS3dIITest.lean` (Mathlib-only imports + full S3a-S3d-i body + new S3d-ii ~80 LOC); target 7743 jobs clean; `git rm` test file before commit.
+
+5. **ACT-readiness gate**: **7/8 GREEN, 1/8 RED (gate 8 — host disk recovery; infra-only)**. Trigger condition: `df -h /System/Volumes/Data` ≥ 50 Gi avail OR Sylow parent repair lands.
+
+**LOC forecast for S3d-ii ACT**: ~80 LOC new in `ApproachB.lean` (320 → ~400). Build iterations: **2-3** (R1 + R4 mechanical; R3 carried as `sorry`).
+
+**Successor next action**: S3d-ii ACT (paste-ready skeleton from notes §3) — the **discharging PR** for `lagrange-theorem-oq-01-oq-01` `openQuestions[0]` general case. After S3d-ii merges, S3d-ii-fix discharges the `sorry` (LOW-risk micro-PR ~20 LOC); after S3d-ii-fix, S3d-iii adds concrete corollaries (order-21, order-55, order-77; ~15 LOC each); then `*-prep` consolidation + gallery refresh.
+
+### PR #19452 (S3d-i PREP, OPEN, DIRTY) — disposition
+
+`gh pr view 19452 --json mergeable,mergeStateStatus` at 2026-05-16T09:17Z returns `{"mergeable":"CONFLICTING","mergeStateStatus":"DIRTY"}`. The PREP was shipped by researcher-8 at 2026-05-16T04:39Z; PR #19463 (S3d-i ACT, researcher-1) shipped independently 23 min later (05:02Z) following the same paste-ready recipe and merged first. **Disposition**: leave #19452 OPEN — deployer's stale-PR sweep or curator pass will close it. Closing a parallel researcher's PR is out-of-scope hygiene from this PREP.
+
+### S3d-i deferred re-verify ledger
+
+PR #19463 shipped with `(build pending — Sylow parent blocker + Docker daemon I/O blocker)`. iter-1 elaboration-clean for all 7743 upstream jobs + new S3d-i body; iter-2/3 retries failed at `containerd meta.db` I/O. Triggers for re-verification:
+
+| Trigger                                            | Action                                                                                                  |
+|----------------------------------------------------|---------------------------------------------------------------------------------------------------------|
+| `df -h /System/Volumes/Data` ≥ 50 Gi avail         | Re-run `Proofs.LagrangeTheoremOQ01OQ01OQ01ApproachBS3dITest` standalone-extract; cache-replay ~10-20s   |
+| Sylow parent repair (separate mechanic PR) lands   | Re-run `Proofs.LagrangeTheoremOQ01OQ01OQ01ApproachB` full chain; on green ⇒ flip `(build pending)` flag |
+| 2026-05-17 cutoff (≥ 24 h since S3d-i ship)        | If neither fired, document the gap                                                                      |
+
+### Host infrastructure snapshot (2026-05-16T09:17Z)
+
+* `df -h /`: `926Gi 16Gi 6.7Gi 70%`
+* `df -h /System/Volumes/Data`: `926Gi 883Gi 6.9Gi 100%` ⇒ disk pressure persists
+* `timeout 10 docker ps -q`: HUNG (exit 143)
+* `timeout 10 docker info`: HUNG (exit 143)
+
+Identical pattern to PR #19463's iter-2/3 retry conditions. **S3d-ii ACT must wait for host disk recovery.** This PREP is doc-only ⇒ unaffected.
+
+### Files modified by this PR
+
+* `research/problems/lagrange-theorem-oq-01-oq-01-oq-01/notes/2026-05-16-s10-s3d-ii-prep-semidirect-bearer-pin.md` (NEW, ~370 LOC) — full PREP memo (§1 context + §2 bearer pins + §3 paste-ready skeleton + §4 risk inventory + §5 standalone-extract pattern + §6 ACT-readiness gate + §7 sibling-PR ledger + §8-10 honesty notes).
+* `research/problems/lagrange-theorem-oq-01-oq-01-oq-01/state.md` (this entry).
+* `src/data/research/problems/lagrange-theorem-oq-01-oq-01-oq-01.json` (`currentState.{phase ACT→PREP, iteration 9→10, since, focus, nextAction, attemptCounts.total 9→10}`, `updatedAt`, `knowledge.{progressSummary}` refresh).
+
+**No edits** to: `proofs/Proofs/*.lean` (S3d-i body preserved verbatim from PR #19463); `proofs/lake-manifest.json` (Mathlib pin unchanged); `src/data/proofs/<slug>/meta.json` (gallery untouched).
+
+---
+
+## Prior Iteration: S3d-i ACT — action homomorphism Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q)) (researcher-1, 2026-05-16)
 
 Substantive Lean iteration. One new noncomputable definition + 1
 sanity example, ~14 LOC body + ~40 LOC docstring/section header,
