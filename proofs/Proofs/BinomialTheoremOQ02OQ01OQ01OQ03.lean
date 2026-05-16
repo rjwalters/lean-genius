@@ -13,11 +13,15 @@ already-proved marginal-PMF identity from `BinomialTheoremOQ02OQ01OQ02`.
 The reduction lemma `multinomialMarginalCDF_eq_binomialCDF` is now fully
 proved (Phase-3 deliverable, this file).
 
-The de Moivre–Laplace CLT itself is taken as an axiom: a measure-theoretic
-proof from Mathlib's `ProbabilityTheory.iid_central_limit_theorem` is
-non-trivial (CDF ↔ measure-weak-convergence bridge) and is left for a
-follow-up effort. After this file, the single mathematical assumption
-beyond Mathlib is the classical Binomial CLT itself.
+The de Moivre–Laplace CLT itself is taken as an axiom: at the lake-pinned
+Mathlib v4.26.0 SHA (`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`), no
+`ProbabilityTheory.iid_central_limit_theorem` symbol exists anywhere in
+Mathlib (see S14 bearer audit in `research/problems/binomial-theorem-oq-
+02-oq-01-oq-01-oq-03/knowledge.md`); a Mathlib-native proof would have
+to construct the i.i.d. CLT scaffolding locally and bridge to CDF form
+via Portmanteau, which is non-trivial and is left for a follow-up
+effort. After this file, the single mathematical assumption beyond
+Mathlib is the classical Binomial CLT itself.
 
 ## What This File Provides
 
@@ -103,12 +107,15 @@ an explicit named assumption.
 
 ## Why CDF formulation
 
-Mathlib's CLT (`ProbabilityTheory.iid_central_limit_theorem`) is stated in
-terms of measure-weak-convergence of the law of standardized sums to the
-Gaussian measure. Our statement is in CDF form to (a) avoid the heavy
-measure-theory setup for a marginal-only result, (b) match the classical
-"de Moivre–Laplace" presentation, and (c) keep the reduction to the
-already-proved marginal-PMF identity transparent.
+A measure-theoretic CLT (the form Mathlib would naturally provide, were
+`ProbabilityTheory.iid_central_limit_theorem` present — it is NOT at the
+lake-pinned v4.26.0 SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; see
+S14 bearer audit in `knowledge.md`) is stated in terms of measure-weak-
+convergence of the law of standardized sums to the Gaussian measure. Our
+statement is in CDF form to (a) avoid the heavy measure-theory setup for
+a marginal-only result, (b) match the classical "de Moivre–Laplace"
+presentation, and (c) keep the reduction to the already-proved marginal-
+PMF identity transparent.
 
 ## Dependencies
 
@@ -364,8 +371,10 @@ theorem standardNormalCDF_tendsto_atTop :
     `binomialCDF n p (np + x √(np(1−p)))  →  Φ(x)`.
 
     Mathematical justification: classical, see e.g. Feller, *Introduction to
-    Probability Theory*, Vol. I (1968), Ch. VII §3. The Mathlib path is via
-    `ProbabilityTheory.iid_central_limit_theorem` plus a CDF-bridge; recorded
+    Probability Theory*, Vol. I (1968), Ch. VII §3. The Mathlib path would
+    route through a not-yet-landed `iid_central_limit_theorem` (absent at
+    the v4.26.0 pin SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, see
+    S14 audit in `knowledge.md`) plus a Portmanteau CDF-bridge; recorded
     as an axiom here (Phase-3 target). -/
 axiom binomial_clt_pointwise
     (p : ℝ) (hp0 : 0 < p) (hp1 : p < 1) (x : ℝ) :
