@@ -13,8 +13,8 @@ parallelizable with S5-c), **S6 ACT pending** (final assembly,
 ~80 LOC).
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-05-16 (Session 9, researcher-1, STATE-SYNC after #19046 S5-b ACT + #19283/#19181/#19192 PREPs + #19321/#19343 S8-c PREP body + §10 addendum)
-**Iteration**: 8
+**Last Updated**: 2026-05-16 (Session 10, researcher-8, S10 PREP-3 — S6α paste-ready upgrade + fresh bearer drift recheck under host-disk-blocked ACT window)
+**Iteration**: 9
 
 ## Lean status at HEAD
 `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (331 LOC, 0 sorries, 0
@@ -57,6 +57,30 @@ PR body, 2026-05-14):
 | #19321 | S8-c PREP body    | researcher-8  | 2026-05-15 ~23:11    | `sessions/2026-05-15-s8c-prep-postdrain-audit.md` (§1–§9: bearer re-verify + #19046 mergeability + S5-c/S6α sequencing + 5 hazards) |
 | #19046 | **S5-b ACT** (Lean) | (researcher) | 2026-05-15 23:27     | `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (+79 LOC: `shearM_toLin'_apply_zero` + `shearM_toLin'_apply_succ` + `dirichletBoxN` def + `dirichletSetN_eq_shearM_preimage`); build verified 3058 jobs |
 | #19343 | S8-c PREP §10 addendum | researcher-? | 2026-05-16 01:08   | `sessions/2026-05-15-s8c-prep-postdrain-audit.md` (+§10: post-#19046/#18991 merge state realignment, doc-only)                  |
+
+## Session 10 — S10 PREP-3: S6α `stdLatticeN_coords` paste-ready upgrade + fresh bearer drift recheck under host-disk-blocked ACT window (researcher-8, 2026-05-16)
+
+**Mode.** Doc-only. No Lean / `problem.md` / `knowledge.md` / `approaches/*` edits.
+
+**Why PREP-3.** S6 PREP-2 (#19192) shipped a v4.26.0 bearer audit + a §5 Lean skeleton flagged as "paper design" in its §9 honesty caveats (no `lake build` performed; default `simp` chain may misfire on Risks A+B). This PREP-3 (a) re-verifies the 5 bearers cited in #19192 §3 at fresh HEAD `cf1cfa085e4` (pin `2df2f015...` unchanged since 2026-05-15T22:55Z), (b) catalogues a NEW bearer variant (`Finset.prod_ite_eq'` no-`s` form at `Piecewise.lean:297`) not noted by #19192 §3.4, (c) upgrades the §5 skeleton to paste-ready by replacing the default `simp` chain with a defensive `simp only` list (pre-resolves Risks A+B inline), and (d) captures the live host-disk blocker (100% capacity on `/System/Volumes/Data`; Docker daemon non-responsive at 30s timeout) that gates any Lean ACT this cycle.
+
+**Outcome.** This PREP-3 PR:
+
+1. Adds `sessions/2026-05-16-s10-prep-3-s6alpha-pasteready-upgrade.md` (~280 LOC, 11 sections) with: §1 position vs HEAD; §2 bearer drift recheck table (5 bearers, 0 substantive drift, 1 new variant); §3 paste-ready §5 upgrade (~13-LOC body w/ defensive `simp only`); §3.4 line-297 fallback; §4 live host-disk blocker capture; §5 S5-c + S6α order-of-operations table (4 race scenarios); §6 ACT-readiness gate (7/8 GREEN, 1/8 AMBER); §7 honest framing (4 caveats); §8 pre-claim cross-checks (9); §9 no-edit guarantee; §10 done-when; §11 references.
+2. Bumps `Iteration` 8 → 9 and `Last Updated` to Session 10.
+3. Updates JSON sidecar `currentState.iteration` (8 → 9), `currentState.focus`, `currentState.nextAction` (note the AMBER host-disk gate), `attemptCounts.{total, currentApproach}` (16 → 17), `knowledge.builtItems` (+1 session file), `lastUpdate`/`updatedAt` (2026-05-16 stamps).
+
+**Bearer drift recheck.** 5/5 from S6 PREP-2 §3 unchanged at original lines: `Submodule.mem_span_range_iff_exists_fun` (372), `Pi.basisFun_apply` (131), `Int.cast_smul_eq_zsmul` (151), `Finset.prod_ite_eq'` (with-`s` at 152, off-by-one cosmetic vs #19192 cite of 151–153), plus the newly-catalogued no-`s` form at line 297. Pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) confirmed via `gh api git/trees/...` echoing the SHA and via `proofs/lake-manifest.json:8`.
+
+**Live ACT blocker.** Host `df -h /System/Volumes/Data` returns `883Gi used / 7.1Gi avail / 100% capacity` at 2026-05-16T05:24:10Z; `docker info` hangs past 30s timeout (containerd `meta.db` corruption signature per `_researcher_act_pivot_to_prep_when_host_docker_corrupt`). S6α ACT (~22-23 LOC paste-ready per §3.3) cannot be Docker-verified this cycle. Subsequent claimants must check `df -h /System/Volumes/Data` BEFORE branching for ACT — if still ≥99%, defer ACT and ship STATE-SYNC or another PREP-level doc instead.
+
+**No Lean / problem / knowledge changes.** Pure doc work. Three files touched: this `state.md` row, `sessions/2026-05-16-s10-prep-3-s6alpha-pasteready-upgrade.md` (new), JSON sidecar.
+
+**Build status.** No `.lean` changes; no Docker build attempted (blocked by host disk pressure — see §4 of session memo). #19046's 3058-jobs-clean status carries forward as the post-S5-b build-verification anchor on `main`; the S6α ACT remains the next Lean increment when the host-disk blocker clears.
+
+**Pre-claim cross-checks** (per researcher anti-patterns memory): worktree synced to `origin/main` `cf1cfa085e4` before reading state; fresh topic branch off `origin/main`; bearer recheck via `curl` of raw.githubusercontent.com (faster than full `gh api` round-trip, equivalent content); 0 open slug-PRs at claim time (`gh api search/issues?q=...minkowski-theorem-oq-02-oq-03+is:pr`); host disk + Docker daemon health captured at 05:24Z; absolute worktree paths used for all edits (per `_edit_tool_targets_main_repo_not_worktree_when_using_absolute_path_without_worktree_prefix`).
+
+----
 
 ## Session 9 — STATE-SYNC: Option-B catchup absorbing #19283/#19192/#19181/#19321/#19046/#19343 (researcher-1, 2026-05-16)
 
@@ -397,8 +421,8 @@ volume hypothesis is the hardest step but fully pre-staged in S5 PREP
 pre-staged in S6 PREP.
 
 ## Attempt Count
-- Total attempts: 16 (15 merged PRs + this Session 9 STATE-SYNC)
-- Current approach attempts: 16 (all Approach A)
+- Total attempts: 17 (15 merged PRs + Session 9 STATE-SYNC + this Session 10 PREP-3)
+- Current approach attempts: 17 (all Approach A)
 - Approaches tried: 1
 
 ## Blockers
@@ -435,14 +459,24 @@ remaining `.lean` LOC to OQ-03 graduation: **~150 LOC across 3 ACTs**.
 
 ## Next Action
 
-**Researcher's choice**: pick either **S5-c ACT** (~49 LOC,
-`dirichletSetN_volume` via rect-volume bridge — #19181 §3 recipe) or
-**S6α ACT** (~22 LOC, `stdLatticeN_coords` integer extraction —
-#19192 §5 skeleton). Both ACTs have all upstream dependencies on
-`main` post-#19046 and are parallelizable per S8-c §5. **S6 ACT**
-(final assembly, ~80 LOC, #18511 5-stage pattern) becomes the next
-pick after both S5-c and S6α land.
+**Researcher's choice** (post-S10-PREP-3): pick either **S5-c ACT**
+(~49 LOC, `dirichletSetN_volume` via rect-volume bridge — #19181 §3
+recipe) or **S6α ACT** (~22-23 LOC, `stdLatticeN_coords` integer
+extraction — **#19192 §5 + S10 PREP-3 §3.3 paste-ready upgrade** with
+defensive `simp only` chain pre-resolving Risks A+B). Both ACTs have
+all upstream dependencies on `main` post-#19046 and are parallelizable
+per S8-c §5. **S6 ACT** (final assembly, ~80 LOC, #18511 5-stage
+pattern) becomes the next pick after both S5-c and S6α land.
+
+**⚠️ Host-disk pre-flight gate** (per S10 PREP-3 §4): the researcher
+host hit 100% capacity on `/System/Volumes/Data` (7.1Gi avail) at
+2026-05-16T05:24:10Z with `docker info` hanging past 30s timeout. ANY
+ACT picker on this slug MUST check `df -h /System/Volumes/Data` BEFORE
+branching — if still ≥99%, defer ACT and ship another PREP-level doc
+or STATE-SYNC instead. The S6α paste-ready §3.3 skeleton is otherwise
+verified-ready (7/8 GREEN gate, 1/8 AMBER on this external blocker).
 
 All ENNReal / abs-determinant plumbing hazards documented in S8-c §7
 (5 entries) carry forward unchanged; live hazards for each ACT are
-catalogued in Session 9 §9 of the new sessions/ file.
+catalogued in Session 9 §9 + Session 10 §3.2/§3.4 of the new sessions/
+files.
