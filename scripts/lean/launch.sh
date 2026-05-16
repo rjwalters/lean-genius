@@ -1213,6 +1213,22 @@ daemon_log() {
     echo "[$timestamp] $level: $msg"
 }
 
+guard_git_auto_gc() {
+    git config gc.auto 0 2>/dev/null || daemon_log "WARN" "Could not set git gc.auto=0"
+    git config maintenance.auto false 2>/dev/null || daemon_log "WARN" "Could not set git maintenance.auto=false"
+
+    local stale_pids
+    stale_pids=$(pgrep -f 'git (pack-objects.*--cruft|repack.*--cruft)' 2>/dev/null || true)
+    [[ -z "$stale_pids" ]] && return 0
+
+    local stale_count
+    stale_count=$(echo "$stale_pids" | wc -l | tr -d ' ')
+    if [[ "$stale_count" -gt 5 ]]; then
+        daemon_log "WARN" "Found $stale_count stale git cruft repack process(es), killing"
+        echo "$stale_pids" | xargs kill 2>/dev/null || true
+    fi
+}
+
 # Helper: Apply time-based schedule overrides to pool targets
 # Reads .loom/lean-schedule.json and adjusts pool variables based on current time
 apply_schedule() {
@@ -1776,6 +1792,7 @@ cmd_daemon() {
 
     daemon_log "INFO" "Starting daemon (PID $$, interval ${interval}s, monitor_only=$monitor_only)"
     daemon_log "INFO" "Pool config: enricher=$enricher, aristotle=$aristotle, researcher=$researcher, auditor=$auditor, seeker=$seeker, deployer=$deployer, tester=$tester, herald=$herald, mechanic=$mechanic"
+    guard_git_auto_gc
 
     if [[ "$monitor_only" == "true" ]]; then
         daemon_log "INFO" "Monitor-only mode: skipping agent startup, monitoring existing sessions"
