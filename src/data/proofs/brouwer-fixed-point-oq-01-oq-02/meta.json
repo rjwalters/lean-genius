@@ -51,12 +51,12 @@
       "H_n_minus_1_sphere_nonzero: residual deep axiom for H_{n-1}(S^{n-1}) ≠ 0 + retraction-functoriality (Mathlib gap B2)",
       "contractible_singularHomology_zero: thin B1-surrogate axiom — the n-th singular homology of a contractible space is zero for n ≥ 1 (slated for upstream contribution via the prism operator)",
       "singular_homology_retraction_split: composite split, now a derived theorem rather than an axiom; preserved for downstream callers",
-      "13 total theorems separating algebraic core (0 axioms), ball-zero scaffold + substantive form (theorems), and the two residual axioms (B1 surrogate + B2 sphere-nonzero)"
+      "14 total theorems separating algebraic core (0 axioms), ball-zero scaffold + substantive form (theorems), and the residual axioms (B1 surrogate + B2 sphere-nonzero, with the S7 ACT-D-1 substantive H_{n-1}(S^{n-1}) ≠ 0 theorem added)"
     ],
     "dateAdded": "2026-04-04",
     "lineCount": 462,
     "assumptions": "3 axioms. (1) H_n_minus_1_sphere_nonzero (n ≥ 1, r : Retraction n, φ : ℤ →+ Unit) ⇒ ∃ ψ : Unit →+ ℤ, ψ.comp φ = id ℤ — mock-form B2 surrogate composing the deep singular-homology facts H_{n-1}(S^{n-1}) ≅ ℤ (Mathlib gap B2: no Mayer–Vietoris, no excision, no sphere homology) with retraction-functoriality. (2) contractible_singularHomology_zero (n ≥ 1, X : Type, [TopologicalSpace X] [ContractibleSpace X]) ⇒ singularHomology n X is zero — a thin classical-fact surrogate for Mathlib gap B1 (the prism operator bridging topological homotopy and chain homotopy). (3) sphere_singularHomology_nonzero (n ≥ 1) ⇒ singularHomology n (UnitSphere (n+1)) is non-zero — strictly weaker substantive B2 surrogate landed in S7 ACT-D-1 (only asserts non-vanishing, not the full H_n(𝕊 n) ≅ ℤ), driving H_n_minus_1_sphere_nonzero_substantive while leaving the algebraic Section G7 bridge for S8. The mock-form lemma H_n_minus_1_ball_zero is preserved as a trivial theorem (existential witness ⟨0, trivial⟩); alongside it H_n_minus_1_ball_zero_substantive is proved using contractible_singularHomology_zero. The composite singular_homology_retraction_split is preserved as a derived theorem combining the mock form with sphere-nonzero. no_retraction_axiom appears only in a block-comment example, not as an actual axiom. The algebraic argument (Part II) is fully proved with 0 axioms.",
-    "theoremCount": 13,
+    "theoremCount": 14,
     "definitionCount": 3
   },
   "overview": {
@@ -152,7 +152,7 @@
     "axiomCount": 4,
     "sorries": 0,
     "definitionCount": 3,
-    "theoremCount": 13
+    "theoremCount": 14
   },
   "sorries": 0
 }
