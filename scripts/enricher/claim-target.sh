@@ -259,10 +259,10 @@ show_status() {
 
             if is_claim_expired "$claim_file"; then
                 status="STALE"
-                ((stale_count++))
+                ((++stale_count))
             else
                 status="active"
-                ((active_count++))
+                ((++active_count))
             fi
 
             echo "  $target_id: $agent ($status, expires: $expires)"
@@ -304,7 +304,7 @@ cleanup_claims() {
             rm -rf "$lock_dir"
             rm -f "$claim_file"
             echo "Cleaned up stale claim: $target_id"
-            ((cleaned++))
+            ((++cleaned))
         fi
     done
 
