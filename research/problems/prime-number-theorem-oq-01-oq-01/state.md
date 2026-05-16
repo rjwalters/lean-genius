@@ -1,9 +1,57 @@
 # Current State
 
-**Phase**: ACT (S6 STATE-SYNC — post-drain-wave catch-up; bridge build-verify gated on next Docker run)
+**Phase**: ACT (S7 BUILD-VERIFY complete; build-verified S2 ACT; S3 ACT pending)
 **Since**: 2026-05-12T18:25:00Z
-**Iteration**: 6
-**Last Update**: 2026-05-16 (researcher-3) — S6 STATE-SYNC: post #19115 + #19118 + #19190 drain wave; #19007 closed unmerged
+**Iteration**: 7
+**Last Update**: 2026-05-16 (researcher-6) — S7 BUILD-VERIFY: 3318/3318 jobs, 0 errors, S2 build-pending caveat DISCHARGED
+
+## Session N=7 — S7 BUILD-VERIFY (2026-05-16, researcher-6)
+
+**Mode**: BUILD-VERIFY (ACT class; single Docker invocation).
+
+**Outcome**: ✓ **HAPPY-PATH** — `./proofs/scripts/docker-build.sh Proofs.PrimeNumberTheoremOQ01OQ01` returned `Build completed successfully (3318 jobs)` with the slug-owned bridge file built at step 3318/3318 in 3.1s elaboration. Total wall ~90s (within the "warm-cache 60-180s" forecast band despite the worktree being a fresh clone — docker image v4.26.0 Mathlib artefacts are pre-warmed).
+
+**Forecast vs actual**:
+
+| Metric | S5 PREP forecast (#19190) | S7 actual | Deviation |
+|---|---|---|---|
+| Total jobs | 3319 (= 3292 parent + 26 RH + 1 bridge) | 3318 | **−1 / 0.03%** |
+| Wall (warm-cache) | 60–180s | ~90s | within band |
+| Errors | 0 | 0 | 0 |
+| Slug-file warnings | 0 | 0 | 0 |
+
+The −1 job is a Lake DAG flattening detail (shared `Proofs.RiemannHypothesis` import is deduplicated between parent's transitive surface and bridge's direct import); the S5 PREP forecast was structurally correct.
+
+**Build env**: Docker image `lean4-arm64:v4.26.0`, Lean v4.26.0, Mathlib v4.26.0 pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, 32 GB memory cap, 60 min wall cap.
+
+**Bridge file** `Proofs/PrimeNumberTheoremOQ01OQ01.lean`: 60 LOC, 2 theorems (`rh_canonical_iff_pnt`, `rh_pnt_iff_canonical`), 0 axioms, 0 sorries, 0 warnings, byte-identical to S2 ACT shipped form (researcher-4, 2026-05-13). Both S2 ACT "build pending" caveat and S4 BUILD-DIAGNOSTIC blocker are now **DISCHARGED**.
+
+**Sad-paths did NOT occur**:
+
+- Sad-path A (bridge regression): bridge built clean; `Iff.trans` / `Iff.symm` on signature-stable `RH_alt` + `rh_iff_re_half` work as predicted.
+- Sad-path B (parent regression returns): parent (`Proofs/PrimeNumberTheoremOQ01.lean`) built clean via cache replay at step 3317/3318. #19118's `Nonvanishing` import fix is still load-bearing and intact at HEAD `8a3cda556b6`.
+
+**Preexisting warnings** (none on slug-owned file; reported here for accountability — defer to mechanic / parent-slug agent):
+
+| File | Line | Warning |
+|---|---|---|
+| `Proofs/RiemannHypothesis.lean` | 6 | `Mathlib.NumberTheory.ArithmeticFunction` deprecated |
+| `Proofs/RiemannHypothesis.lean` | 128 | namespace `RiemannHypothesis` duplicated in `RiemannHypothesis.RiemannHypothesis` |
+| `Proofs/RiemannHypothesis.lean` | 2119, 2753 (×2), 3480, 3569 | unused variables |
+| `Proofs/RiemannHypothesis.lean` | 2122, 2129 | unused simp arguments |
+| `Proofs/PrimeNumberTheoremOQ01.lean` | 276 | unused variable `s` |
+
+**Honest-status block**: zero new mathematics this iteration; this iteration empirically validated that the S2-shipped bridge theorem elaborates clean against the post-#19118 parent and v4.26.0 Mathlib. RH itself remains an open Millennium Prize conjecture — the bridge resolves only the propositional-duplication concern from S1 OBSERVE.
+
+**Next ACT picker priority** (post-S7):
+
+1. **S8 PREP — bridge-docstring fix** (smallest follow-on; ~3 LOC edit to the comment-block at top of `Proofs/PrimeNumberTheoremOQ01OQ01.lean`, updating stale `:69` / `:73` parent-line references to current `:70` / `:74`). Cosmetic; build-no-op (no elaboration change).
+2. **S8 PREP — S3 ACT `zeta_conj` Schwarz reflection**. PR #18943's merged sessions/ memo contains the bearer-audit skeleton; two open audits remain pending name-confirmation at v4.26.0 pin (`Set.preconnected_compl_of_singleton` phantom + antilinear-holomorphic composition lemma).
+3. **S8 OBSERVE — gallery-side enricher integration** of the now-build-verified bridge into `src/data/proofs/` enrichment tree. Out-of-researcher-scope; refer to enricher.
+
+Full forensics in `sessions/2026-05-16-s7-buildverify-bridge-discharge.md`.
+
+---
 
 ## Session N=6 — S6 STATE-SYNC (2026-05-16, researcher-3)
 
