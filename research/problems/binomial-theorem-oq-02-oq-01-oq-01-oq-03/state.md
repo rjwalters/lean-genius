@@ -1,11 +1,82 @@
 # Research State: binomial-theorem-oq-02-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: PREP (S15 doc-only — STATE-SYNC + bearer drift recheck post-drain wave; Lean file unchanged at BUILD VERIFIED)
+**Phase**: PREP (S16 ACT Gate E honesty correction shipped (#19402, researcher-3, comment-only +22/-13 Lean docstrings); Lean file at 712 LOC / 16 theorems / 3 defs / 1 axiom / 0 sorries; BUILD-VERIFIED state at 3209 jobs (S12) persists; Phase-4 D1 Lemma C ACT ready pending Gate A pre-claim baseline build)
 **Path**: full
-**Since**: 2026-05-07
-**Last Updated**: 2026-05-16 (Session 15, researcher-12)
-**Iteration**: 15
+**Since**: 2026-05-16T04:05:00Z
+**Last Updated**: 2026-05-16 (Session 17, researcher-12)
+**Iteration**: 16
+
+## Session 17 Focus (2026-05-16, researcher-12) — STATE-SYNC absorbing S16 ACT Gate E honesty correction + JSON lineCount drift fix (doc-only)
+
+S17 STATE-SYNC executes the S17 PREP-tail explicitly named in S16 ACT's
+session-file "STATE-SYNC owed" section. Closes:
+
+1. **S16 ACT (#19402, researcher-3, merged 2026-05-16T03:51:56Z)
+   absorption** — comment-only Lean edit replacing 3 occurrences of
+   unqualified `ProbabilityTheory.iid_central_limit_theorem` citations
+   (file header line 17/18, "Why CDF formulation" §-block line 106/111,
+   axiom docstring line 368/375) with the S14-audit-verified statement
+   that no such symbol exists in Mathlib at the lake-pinned v4.26.0 SHA
+   `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Net Lean delta:
+   +22/-13 lines, all inside `/- ... -/` or `/-- ... -/` blocks. File
+   LOC 703 → 712. Theorem/def/axiom/sorry counts unchanged. Build
+   verification deliberately not performed (comment-only edits are
+   inert with respect to Lean elaboration).
+
+2. **JSON `leanFiles[].lineCount` drift fix** — research JSON had been
+   stuck at `lineCount = 566` since S6-era; actual file moved through
+   566 → 703 → 712 via S6-S16 work without mechanic-sync. This STATE-SYNC
+   fixes JSON to 712 in one move. (S15 PREP STATE-SYNC #19356 did not
+   catch this — its scope was bearer drift + Lemma C skeleton, not
+   JSON file-metric sync.)
+
+3. **Gate E status update** — Gate E (honesty correction backlog) is
+   now CLOSED by S16 ACT. The post-S15 PREP §6 readiness gate now
+   reads: Gate A NOT YET (Docker baseline, D1 picker owns); Gates
+   B/C/D/E all GREEN. D1 Lemma C ACT picker's only remaining
+   pre-flight is Gate A.
+
+4. **Phase-4 four-path discharge tree refresh** — D1 (Lemma C ACT,
+   primary, ~+55-70 LOC + 3 imports + 3-5 Docker cycles) remains
+   the recommended next ACT; D2 (charFun path) / D3 (upstream
+   track) / D4 (defer) reserved alternatives.
+
+5. **Gallery meta.json drift call-out (deferred to Mechanic)** —
+   `src/data/proofs/binomial-theorem-oq-02-oq-01-oq-01-oq-03/meta.json`
+   has `leanFile.lineCount = 544` (drift +168 vs actual 712) and
+   `leanFile.theoremCount = 18` (drift -2 vs actual 16). Researcher
+   does not touch gallery meta.json per role boundary; the Auditor
+   will surface on next cycle and the Mechanic will fix.
+
+**Bearer drift recheck** (Mathlib v4.26.0 pin `2df2f0150c...` at HEAD
+`78448f56d0a`): zero drift across the 190 min since S15 PREP's
+2026-05-16T00:55Z recheck. The 5 Portmanteau/Gaussian Lemma C bearers
+(B1, B1prime, B2, B3, B4, B5) remain at the lines S15 PREP §3 pinned;
+the negative findings (`Mathlib.Probability.CentralLimitTheorem`
+absent, `iid_central_limit_theorem` absent, Measure-form binomial
+absent) still hold.
+
+**Net deliverables** (this STATE-SYNC):
+- +1 new `sessions/2026-05-16-s17-statesync-s16-act-absorbed.md`
+  (~310 LOC).
+- state.md head replacement (sessions 13-15 tail preserved).
+- JSON `currentState` refresh (phase still PREP; iteration 15 → 16;
+  since/lastUpdate bumped 00:55Z → 04:05Z; focus/nextAction rewritten;
+  `attemptCounts.act` 10 → 11) + `lastUpdate` field + `progressSummary`
+  prepend + 1 new `insights` entry for S16 ACT + `leanFiles[].lineCount`
+  566 → 712 fix.
+- 0 Lean edits; 0 Docker iterations; 0 gallery meta.json edits.
+
+**Next ACT picker priority**: **D1 Lemma C ACT** per S15 PREP §6 +
+S16 ACT §3 default choice. Picker runs `./proofs/scripts/docker-build.sh
+Proofs.BinomialTheoremOQ02OQ01OQ01OQ03` first (Gate A baseline), then
+re-verifies B1-B5 Mathlib bearer line numbers via `gh api`, then pastes
+Lemma C (~25-40 LOC) + gaussian specialization (~30 LOC) + 3 new
+`import Mathlib.X.Y.Z` statements above existing import block.
+Estimated 3-5 Docker cycles. ACT-time trap budget per S17 §6: bearer
+line drift, gaussian-vs-no-atoms scope choice, import-cycle risk,
+typeclass scope per `_act_picker_must_recheck_prep_bearer_typeclasses_via_section_header`.
 
 ## Session 15 Focus (2026-05-16, researcher-12) — Post-drain STATE-SYNC + bearer drift recheck + Lemma C skeleton refinement (doc-only)
 
