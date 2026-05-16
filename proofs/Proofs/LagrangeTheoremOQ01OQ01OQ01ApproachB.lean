@@ -211,4 +211,48 @@ example : ∃ θ : AddAut (ZMod 7), orderOf θ = 3 := by
   haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
   exact exists_addAut_of_order_p (by norm_num : Nat.Prime 3) (by norm_num)
 
+/-! ## S3c-ii: transport the order-`p` `AddAut` to a `MulAut` on `Multiplicative (ZMod q)`
+
+Approach B assembles the semidirect product
+`Multiplicative (ZMod q) ⋊[φ] Multiplicative (ZMod p)` for a
+non-trivial homomorphism
+`φ : Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))`.
+This section provides the multiplicative-side existence seed: an
+order-`p` element of `MulAut (Multiplicative (ZMod q))`, obtained from
+the S3c-i `AddAut (ZMod q)` witness by transport along the canonical
+Mathlib equivalence
+`MulAutMultiplicative (ZMod q) : AddAut (ZMod q) ≃* MulAut (Multiplicative (ZMod q))`
+(defined at `Mathlib/Algebra/Group/End.lean:887`), using
+`MulEquiv.orderOf_eq` (at `Mathlib/GroupTheory/OrderOfElement.lean:343`)
+to carry the order across the equivalence.
+
+See `notes/2026-05-15-s3c-ii-preflight.md` for the bearer audit
+(re-pinned at lake-manifest rev
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`), the corrected skeleton
+options (A/B/C), and the rationale for shipping Option C below. -/
+
+/-- For each prime `p ∣ q - 1`, `MulAut (Multiplicative (ZMod q))`
+    contains a multiplicative automorphism of order exactly `p`.
+
+    Obtained from `exists_addAut_of_order_p` (S3c-i) via the canonical
+    equivalence
+    `(MulAutMultiplicative (ZMod q)).symm : AddAut (ZMod q) ≃* MulAut (Multiplicative (ZMod q))`,
+    pushing the order witness through with `MulEquiv.orderOf_eq`. Order
+    is preserved because the carrier is a multiplicative isomorphism. -/
+theorem exists_mulAut_mult_of_order_p {p : ℕ} (hp : p.Prime) (hp_dvd : p ∣ q - 1) :
+    ∃ ψ : MulAut (Multiplicative (ZMod q)), orderOf ψ = p := by
+  obtain ⟨θ, hθ⟩ := exists_addAut_of_order_p hp hp_dvd
+  refine ⟨(MulAutMultiplicative (ZMod q)).symm θ, ?_⟩
+  rw [(MulAutMultiplicative (ZMod q)).symm.orderOf_eq, hθ]
+
+/-- Sanity (S3c-ii): `MulAut (Multiplicative (ZMod 7))` contains an
+    automorphism of order `3`. Multiplicative analogue of the S3c-i
+    `AddAut (ZMod 7)` order-`3` witness, transported via
+    `(MulAutMultiplicative (ZMod 7)).symm`. Order-`3` seed for the
+    deferred Approach-B order-21 non-abelian group
+    `Multiplicative (ZMod 7) ⋊ Multiplicative (ZMod 3)`. -/
+example : ∃ ψ : MulAut (Multiplicative (ZMod 7)), orderOf ψ = 3 := by
+  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+  exact exists_mulAut_mult_of_order_p (by norm_num : Nat.Prime 3) (by norm_num)
+
 end LagrangeOQ01OQ01OQ01.ApproachB
