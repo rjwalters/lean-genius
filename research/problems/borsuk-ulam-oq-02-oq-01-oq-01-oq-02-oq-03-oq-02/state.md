@@ -1,10 +1,72 @@
 # Current State
 
-**Phase**: COMPLETED (k-prime CRT generalization landed; canonical state.md sync, doc-only)
-**Since**: 2026-05-06 (gallery promote); STATE-SYNC 2026-05-14T16:00:00Z (researcher-9)
-**Iteration**: 2 (1 ACT + this STATE-SYNC)
+**Phase**: COMPLETED — axiomatized-final (k-prime CRT generalization landed 2026-05-06; S2 state.md sync 2026-05-14; this S3 JSON catchup + sessions/ bootstrap + leanFiles mechanic handoff, doc-only)
+**Since**: 2026-05-06 (gallery promote); STATE-SYNC 2026-05-14T16:00:00Z (researcher-9, S2) + 2026-05-16T15:14:53Z (researcher-9, S3)
+**Last Updated**: 2026-05-16T15:14:53Z (researcher-9, S3 STATE-SYNC)
+**Iteration**: 3 (1 ACT + S2 STATE-SYNC + this S3 STATE-SYNC)
 
-## Iteration 2 (researcher-9, 2026-05-14) — STATE-SYNC
+## Iteration 3 (researcher-9, 2026-05-16) — S3 STATE-SYNC
+
+**Outcome**: doc-only — absorb the four residual drift items that S2's
+narrow "state.md-only" scope left behind, bootstrap the `sessions/`
+directory, and package the `leanFiles[].lineCount: 235 → 247` correction
+as a ready-to-paste mechanic handoff. The slug remains
+`axiomatized-final` (no math change; the 247-LOC leaf .lean file,
+13 theorems, 0 sorries, 0 new axioms, 5 inherited parent axioms is
+unchanged since the 2026-05-06 S1 ACT).
+
+### Drift absorbed (4 surfaces; see new memo §2 for verification commands)
+
+- JSON `currentState.iteration` `1 → 3` (catches S2 + S3 in one bump)
+- JSON `currentState.since` refresh to `2026-05-06T00:00:00Z` (gallery
+  promote canonicalisation; not S3 ship time per memo §5.10)
+- JSON `currentState.attemptCounts.total` `0 → 3` (never bumped through
+  S1 ACT or S2 STATE-SYNC)
+- JSON `lastUpdate` (top-level) `2026-05-05T02:57:44.792Z (seeker create)
+  → 2026-05-16T15:14:53Z`
+- JSON `currentState.focus` minor refresh to reference S3 + S2 STATE-SYNCs
+- JSON `currentState.nextAction` adds 1-sentence mechanic handoff pointing
+  at memo §3 (leanFiles drift) without self-editing the leanFiles field
+- JSON `knowledge.nextSteps` populated from `[]` with 2 items:
+  completed-final declaration + 1 mechanic handoff note pointing at memo §3
+- `sessions/` directory bootstrapped with this session memo as first entry
+
+### Not done (out of scope per memory feedback)
+
+- No `leanFiles[]` self-edit (mechanic territory; memo §3 packages the
+  ready-to-paste correction)
+- No `proofs/Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ02.lean` edit (slug
+  is axiomatized-final; Lean unchanged)
+- No gallery `meta.json` edit (all fields correct at branch base SHA)
+- No `problem.md` creation (curator batch territory for OQ-class slugs)
+- No `knowledge.md` edit (math content unchanged)
+- No close/comment on the 4 OPEN PRs for the related-but-distinct
+  5-segment slug `borsuk-ulam-oq-02-oq-01-oq-03-oq-02` (informational
+  audit only — see memo §4)
+- No Docker build (doc-only; daemon hung + disk 5.7 Gi marginal in any
+  case)
+
+### Files modified (S3, 3 files, doc-only)
+
+- `research/problems/borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02/sessions/2026-05-16-s3-state-sync-completed-final.md`
+  (new, ~220 LOC, 8 sections — bootstraps the `sessions/` directory).
+- `research/problems/borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02/state.md`
+  (this entry + header refresh).
+- `src/data/research/problems/borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02.json`
+  (5 `currentState` fields + `lastUpdate` top-level + `knowledge.nextSteps`;
+  `leanFiles[]` NOT touched per memo §3.5 mechanic-territory rule).
+
+### Next Action
+
+**None — axiomatized-final**. Future cycles on this slug, if any, are
+mechanic (the §3 `leanFiles[].lineCount` correction; ready-to-paste
+package supplied), curator (`problem.md` bootstrap for OQ-class slugs
+lacking one), or champion (PR audit). Researcher claim-random should
+skip this slug going forward.
+
+---
+
+## (Historic) Iteration 2 (researcher-9, 2026-05-14) — STATE-SYNC
 
 **Outcome**: doc-only — refresh canonical `state.md` from seeker-init
 stub to a consolidated session log reflecting the slug's COMPLETED
