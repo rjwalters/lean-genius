@@ -1,8 +1,87 @@
 # State: `law-of-cosines-oq-04-oq-02-oq-01`
 
 **Tier**: B (Significance 6 / Tractability 5)
-**Phase**: OBSERVE (S1) → PREP (S2-prep) → ACT (S2-skeleton) → ACT (S3 partial, build verified)
-**Last update**: 2026-05-14 (researcher-9) — S3 Steps 1–2 discharged; only main theorem sorry remains
+**Phase**: OBSERVE (S1) → PREP (S2-prep) → ACT (S2-skeleton) → ACT (S3 partial, build verified) → PREP (S4-prep, S5-statesync+audit-ext)
+**Last update**: 2026-05-16 (researcher-9) — S5 STATE-SYNC absorbed S4 PREP into state.md/JSON + Step (c)/(d)/(e)/(f) bearer audit-extension; S4 PREP § 3.3 `...` placeholders resolved with disjunct-selection error fix; main theorem now paste-ready for S6 ACT
+
+## Iteration History
+
+| Iter | Session | Mode | Date | PR | Author | Net |
+|---|---|---|---|---|---|---|
+| 1 | S1 | OBSERVE | 2026-05-11 | #17833 | researcher-8 | +3 docs (problem.md, knowledge.md, JSON) |
+| 2 | S2 PREP | PREP | 2026-05-13 | #18908 | researcher-4 | +1 doc (s2-prep-bearer-audit.md) |
+| 3 | S2 ACT skeleton | ACT (build pending) | 2026-05-13 | #18924 | researcher-10 | +1 Lean (145 LOC, 4 sorries) |
+| 4 | S3 ACT | ACT (build verified, 7745 jobs) | 2026-05-14 | #18963 | researcher-9 | +30 LOC Lean (4→1 sorries) + parent stewarts_theorem fix |
+| 5 | S4 PREP | PREP | 2026-05-15 | #19032 | researcher-12 | +1 doc (s4-prep-step-b-and-e-bearer-audit.md) |
+| 6 | S5 STATE-SYNC + audit-ext | STATE-SYNC + PREP-2 | 2026-05-16 | this PR | researcher-9 | +1 doc (s5-statesync-audit-extension.md), state.md catchup, JSON catchup |
+
+## Session N=5 — S5 STATE-SYNC + audit-extension (2026-05-16, researcher-9)
+
+**Mode**: STATE-SYNC + PREP-extension (doc-only; absorbs S4 PREP into state.md/JSON, plus completes the Step (c)/(d)/(e)/(f) bearer audit).
+
+**Outcome**: 3 files, all doc-only.
+
+(a) **STATE-SYNC** (state.md + JSON):
+* state.md head updated; Iteration History table prepended; Session N=5
+  entry (this one); Next-action rewritten to point at the S6 ACT main
+  theorem discharge.
+* JSON `currentState.{since,iteration,focus,nextAction,attemptCounts.
+  total}` refreshed; `knowledge.{progressSummary,nextSteps}` cleaned
+  (drop S1-era "S2: Implement Path A" residue); `knowledge.mathlibGaps[2]`
+  refined now that the strict-Cauchy-Schwarz bearer chain is identified
+  locally; `lastUpdate` bumped. **`leanFiles[]` NOT self-edited** —
+  mechanic territory; ready-to-paste snippet provided in memo § 8.2.
+
+(b) **Audit-extension** (new memo `s5-statesync-audit-extension.md`,
+    ~320 LOC, 10 sections):
+* § 3 — three deferred bearers from S4 PREP § 3.2 spot-checked at SHA
+  `2df2f01`; one returns a **materially corrected statement**
+  (`inner_eq_norm_mul_iff_real` is `↔ ‖y‖•x = ‖x‖•y`, **not**
+  `↔ ∃ r ≥ 0, y = r•x`; the explicit-scalar form is the separate
+  `real_inner_div_norm_mul_norm_eq_one_iff` at Basic.lean:771).
+* § 4 — refined Step (e) proof-fragment that resolves S4 PREP § 3.3's
+  `...` placeholders **and** fixes a latent **disjunct-selection error**:
+  S4 PREP wrote `right; right; right` (selecting `∠ = π`, cos = -1)
+  but the narrative argued angle = 0, cos = 1 — should have been
+  `right; right; left`. Plus the set literal would have needed
+  `Set.insert_comm` permutation. Refined route via
+  `cos_eq_one_iff_angle_eq_zero` (Basic.lean:310) + `angle_eq_zero_iff_
+  ne_and_wbtw` (Affine.lean:349) + `Wbtw.collinear` (Between.lean:1020)
+  sidesteps the entire disjunct dance.
+* § 5 — Step (c) inner-product expansion bearer chain (`inner_add_left/
+  right`, `inner_sub_left/right`, `inner_smul_left/right`,
+  `real_inner_self_eq_norm_mul_norm`).
+* § 6 — Step (d) algebraic factorization via `linear_combination` with
+  hand-witness sign tracking.
+* § 7 — Step (f) final conclusion chain extracting `s = c/(b+c)` and
+  substituting into `bisector_dist_BD/DC` outputs.
+* § 8 — S6 ACT readiness gate (9/9 substantive GREEN).
+
+**Net diff this session**:
+* `state.md`: this Session N=5 entry + Iteration History table + header
+  refresh.
+* `s5-statesync-audit-extension.md`: NEW (~320 LOC).
+* `src/data/research/problems/law-of-cosines-oq-04-oq-02-oq-01.json`:
+  field refresh (no leanFiles touch).
+
+**Sorry / axiom delta**: Lean files unchanged.
+`LawOfCosinesOQ04OQ02OQ01.lean`: **1 → 1 sorries, 0 → 0 axioms**.
+Parent `LawOfCosinesOQ04OQ02.lean`: **0 → 0 sorries, 0 → 0 axioms**.
+
+**Why not S5 ACT directly**: Docker daemon hung this session
+(`docker info` returns empty `Server:`), so no `docker-build`
+verification possible. Memory same-wave precedent allows build-pending
+ACT under qualifier when (a) leaf-only adds, (b) recent BUILD-VERIFY,
+(c) bearer 0-drift — all three met. **However**, the S4 PREP § 3.3
+sketch had a disjunct-selection error and `...` placeholders, plus
+three deferred-bearer line numbers were unverified — a build-pending
+S5 ACT pasted from S4 PREP § 3.3 as-is would have failed to compile.
+The audit-extension makes S6 ACT genuinely paste-ready.
+
+**Consecutive doc-only count**: 2 (S4 PREP #19032 + this S5). Within
+4+ threshold. S6 ACT is the next-action.
+
+---
 
 ## Session N=4 — S3 partial ACT (2026-05-14, researcher-9)
 
@@ -231,14 +310,25 @@ the identity `m · b = n · c` follows immediately.
 * **Files touched**: 3 markdown + 1 JSON (this iteration); no Lean file modifications.
 * **Build status**: unchanged.
 
-## Next action (Session N=5)
+## Next action (Session N=6 — S6 ACT)
 
-S3 Steps 1–2 are complete (this session). The remaining work:
+S3 Steps 1–2 discharged (N=4). S4 PREP audited Steps (b)/(e). S5
+STATE-SYNC + audit-extension (N=5) absorbed S4 PREP into state.md/JSON,
+spot-checked the three deferred bearers (one materially corrected),
+audited Steps (c)/(d)/(f), and resolved S4 PREP § 3.3's `...`
+placeholders with a corrected disjunct-selection.
+
+**S6 ACT scope**: discharge `angle_bisector_ratio_from_geometry`
+(~80-120 LOC main theorem body). Per S4 PREP § 4 + S5 § 8.1, all 9
+substantive readiness criteria GREEN; main theorem is paste-ready under
+build-pending qualifier (precedent: ≥5 same-wave PRs). Recipe is split
+across S4 PREP § 2 (Step b) + S5 § 4 (Step e, refined) + S5 § 5-7
+(Steps c, d, f).
 
 1. ~~**`bisector_param_exists`**~~ ✅ Discharged in N=4.
 2. ~~**`bisector_dist_BD` / `bisector_dist_DC`**~~ ✅ Discharged in N=4.
 
-3. **`angle_bisector_ratio_from_geometry`** (~150-200 LOC, in order):
+3. **`angle_bisector_ratio_from_geometry`** (~80-120 LOC, in order):
    * Apply `bisector_param_exists` to get `s`.
    * Cosine equality via `Real.arccos_inj` + `InnerProductGeometry.cos_angle` (Step 1
      of strategy, §4 of `s2-prep-bearer-audit.md`).
