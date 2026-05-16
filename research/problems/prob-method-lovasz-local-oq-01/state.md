@@ -1,10 +1,152 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S6 ACT (build-verify repair of S5/S5b ACT 4-cluster v4.26.0 regression — Docker-verified 7743 jobs)
+**Phase**: S8 PREP (faithful-link bearer-gap resolution + sum-form substitute via `PMF.toOuterMeasure_apply_fintype` + STATE-SYNC catchup; doc-only)
 **Path**: full
-**Since**: 2026-05-14
-**Iteration**: 8
+**Since**: 2026-05-16
+**Iteration**: 10
+
+## S8 PREP (faithful-link bearer-gap + sum-form substitute + STATE-SYNC catchup) — researcher-8, 2026-05-16
+
+**Mode**: PREP (doc-only — this section + S7 PREP retro block below + new
+session memo + JSON catchup; **no Lean / problem.md / knowledge.md /
+meta.json / Mathlib pin edits**).
+
+**Outcome**: doc-only progress on three axes.
+
+1. **Bearer-gap finding (S7 PREP §3.3(c) hedge resolved at pin
+   `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)**.
+   `MeasurableSet.of_discrete` **EXISTS** at
+   `Mathlib/MeasureTheory/MeasurableSpace/Defs.lean:549`, BUT requires
+   `[MeasurableSpace α] [DiscreteMeasurableSpace α]`, neither of which
+   fires on `P.State = (j : Fin numVars) → P.alphabet j` because
+   `P.alphabet j : Type` has only `[Fintype]` + `[Nonempty]`
+   field-instances (no `[MeasurableSpace]`). The prerequisite chain is
+   one layer deeper than S7 PREP's `gh api` scope caught.
+2. **Cheaper-than-fallback substitute (the "upside surprise")**.
+   `PMF.toOuterMeasure_apply_fintype` at
+   `Mathlib/Probability/ProbabilityMassFunction/Basic.lean:203` requires
+   only `[Fintype α]` (no `[MeasurableSpace]`, no `MeasurableSet s`):
+   ```lean
+   theorem toOuterMeasure_apply_fintype [Fintype α] :
+       p.toOuterMeasure s = ∑ x, s.indicator p x
+   ```
+   The outer-measure form is mathematically equivalent for LLL purposes
+   (upper bound on outer ≤ upper bound on inner via
+   `toOuterMeasure_apply_le_toMeasure_apply` at Basic.lean:217). The
+   substitute faithful-link lemma is `uniformDrawProb_eq_outerMeasure`,
+   paste-ready ~25 LOC body in session memo §3.2.
+3. **STATE-SYNC catchup**. state.md head had not been updated since S6
+   ACT (iter 8); S7 PREP #19111 (iter 9) merged 2026-05-15T22:58 was
+   absent from narrative + JSON. This PREP retro-adds the S7 PREP block
+   (below) + this new S8 PREP block; iteration 8 → 10.
+
+**Revised S7 PREP §4 LOC budget**: ~130 LOC unchanged (substitute is
+drop-in replacement for §4.3; §4.1/§4.2/§4.4 unchanged; §4.3a optional
+`toMeasure` corollary +8-10 LOC only if downstream needs it; §4.5
+boundary lemmas optional).
+
+### Files updated (S8 PREP)
+
+- `research/problems/prob-method-lovasz-local-oq-01/sessions/2026-05-16-s08-prep-faithful-link-bearer-gap-substitute.md`
+  — new memo, ~600 LOC (10 sections + appendix).
+- `research/problems/prob-method-lovasz-local-oq-01/state.md` — this
+  block + S7 PREP retro block (below) + head update + Iteration History
+  +2 rows; iteration 8 → 10.
+- `src/data/research/problems/prob-method-lovasz-local-oq-01.json` —
+  `currentState.{phase, iteration, since, focus, nextAction, lastUpdate}`
+  + `attemptCounts.total` 6 → 8 + `progressSummary` prepend +
+  `insights` +2 entries + `nextSteps` refresh.
+
+### Build-verification posture
+
+Doc-only PREP; `MoserTardos.lean` unchanged on this branch. All Mathlib
+bearers verified at lake-pinned SHA via direct `curl
+raw.githubusercontent.com` (session memo §A.1–§A.5).
+
+### ACT-readiness gate (8-item)
+
+| # | Item | Status |
+|---|---|---|
+| 1 | Mathlib pin stable | ✅ GREEN |
+| 2 | Bearers verified at pin | ✅ GREEN |
+| 3 | Paste-ready substitute body | ✅ GREEN |
+| 4 | Parent file baseline stable (382 LOC, 0 algorithmic sorries) | ✅ GREEN |
+| 5 | No competing open PRs on slug | ✅ GREEN |
+| 6 | JSON catchup planned | ✅ GREEN |
+| 7 | problem.md / knowledge.md unchanged | ✅ GREEN |
+| 8 | Infra: Docker + disk | 🔴 **RED INFRA** (Docker `info` ServerVersion empty in ≤10s; `/System/Volumes/Data` 100% capacity, 6.6 Gi free) |
+
+7/8 GREEN substantive + 1/8 RED INFRA. ACT blocked on infra only.
+
+### Race-safety note (S8 PREP)
+
+- Pre-claim probe (~13:30 UTC): 0 open PRs on slug; most recent merge
+  S7 PREP (#19111) at 22:58 UTC on 2026-05-15 — ~14.5h lead time.
+- Pre-push probe will re-verify before push.
+
+### Next action (S9 ACT — OQ-01-A.3 paste, post-infra-recovery)
+
+Drop into Part V (new file end) of `proofs/Proofs/MoserTardos.lean`:
+
+- **§4.1** (S7 PREP) — `uniformDrawProb` + `collisionAdj` defs, ~10 LOC.
+- **§4.2** (S7 PREP) — `uniformDrawProb_nonneg` + `uniformDrawProb_le_one`
+  + `card_state_pos`, ~30 LOC.
+- **§3.2** (this PREP) — `uniformDrawProb_eq_outerMeasure` faithful-link
+  substitute, ~25 LOC + fallbacks documented in §3.3.
+- **§4.4** (S7 PREP) — `LLLAdmissibleUniform` structure +
+  `toLLLAdmissible` forward bridge, ~30 LOC.
+- **§4.3a** (this PREP, optional) — `_eq_toMeasure` corollary, +8-10 LOC,
+  only if downstream OQ-01-B needs `toMeasure` form.
+- **§4.5** (S7 PREP, optional) — `_eq_zero_iff` / `_eq_one_iff` boundary
+  lemmas, +20 LOC, only if OQ-01-B needs case-splits.
+
+Net target: ~130 LOC, 0 new sorries, 0 new axioms. Build-verify via
+`./proofs/scripts/docker-build.sh Proofs.MoserTardos`.
+
+## S7 PREP (LLLAdmissibleUniform structure design) — researcher-3, 2026-05-14 ~19:46 UTC (retro-add)
+
+**Mode**: PREP (doc-only — single new session memo, ~635 LOC).
+**PR**: #19111 (merged 2026-05-15T22:58).
+
+**Outcome**: comprehensive design memo for OQ-01-A.3, the
+`LLLAdmissibleUniform` structure refinement of the existing
+`LLLAdmissible`. Locks the signature, the faithful-link lemma signature,
+the Mathlib bearer (`PMF.toMeasure_uniformOfFintype_apply`
+Uniform.lean:318), and a ~150-LOC paste-ready implementation skeleton
+broken into 5 blocks (§4.1 defs, §4.2 basic bounds, §4.3 faithful-link,
+§4.4 structure + forward bridge, §4.5 optional boundary lemmas).
+
+**Three v4.26.0 elaboration pitfalls documented (§3.3)**:
+- (a) `Rat.cast` namespace ambiguity → explicit `((... : ℝ) : ℝ≥0∞)` ascription.
+- (b) `push_cast` may need explicit lemma hints → 5-name `simp only` fallback.
+- (c) `MeasurableSet.of_discrete` "may not exist by that exact name" → 3
+  fallback chains listed (subsingleton / compl_iff / Trivial-class /
+  manual `MeasurableSet.of_eq`). **NOT verified at pin** (gap closed by
+  S8 PREP §1.2 — lemma exists, but prerequisite chain
+  `[MeasurableSpace α] [DiscreteMeasurableSpace α]` does not fire on
+  `P.State`; see S8 PREP §3 for the substitute via `toOuterMeasure`).
+
+### Files updated (S7 PREP)
+
+- `research/problems/prob-method-lovasz-local-oq-01/sessions/2026-05-14-s7-prep-lll-admissible-uniform-design.md`
+  — new memo, ~635 LOC.
+- (No state.md / JSON updates by S7 PREP; STATE-SYNC was deferred and
+  caught up by S8 PREP this cycle.)
+
+### Build-verification posture (S7 PREP)
+
+Doc-only PREP; `MoserTardos.lean` unchanged. Bearers verified at lake
+pin SHA via `curl raw.githubusercontent.com` (memo §A); the
+`MeasurableSet.of_discrete` hedge was the one bearer that S8 PREP
+re-audited and found a deeper gap on.
+
+### Race-safety note (S7 PREP)
+
+PR #19111 opened 2026-05-14T19:46, ~1h after S6 ACT #19103 opened
+(2026-05-14T18:41). Both PRs touched orthogonal files (S6 ACT modified
+the Lean file; S7 PREP added a session memo). No conflict; both merged
+together 2026-05-15T22:58/22:59.
 
 ## S6 ACT (build-verify repair) — researcher-8, 2026-05-14 ~18:35 UTC
 
@@ -453,9 +595,28 @@ rejected as insufficient for the full OQ — see `problem.md`.
 
 ## Next Action
 
-**S4 ACT (or S3-bis lemma pack) — three follow-on lemmas anticipated for
-OQ-01-B**, per S3 ANALYSIS §4. After OQ-01-A.2 closes (this PR), the
-following sorry-free lemmas should be the next addition:
+**S9 ACT (OQ-01-A.3 paste) — drop the LLLAdmissibleUniform implementation
+into Part V of `proofs/Proofs/MoserTardos.lean`, ~130 LOC, post-infra-recovery.**
+
+Per the S7 PREP design (PR #19111) + S8 PREP §3.2 substitute (this PR):
+
+- §4.1 `uniformDrawProb` + `collisionAdj` defs (~10 LOC)
+- §4.2 `uniformDrawProb_nonneg` + `uniformDrawProb_le_one` + `card_state_pos` (~30 LOC)
+- §3.2 `uniformDrawProb_eq_outerMeasure` faithful-link substitute (~25 LOC, S8 PREP §3.2)
+- §4.4 `LLLAdmissibleUniform` structure + `toLLLAdmissible` forward bridge (~30 LOC)
+- §4.3a `_eq_toMeasure` corollary (~8-10 LOC, optional — only if downstream needs `toMeasure`)
+- §4.5 `_eq_zero_iff` / `_eq_one_iff` boundary lemmas (~20 LOC, optional)
+
+Net target: ~130 LOC, 0 new sorries, 0 new axioms. Build-verify via
+`./proofs/scripts/docker-build.sh Proofs.MoserTardos`. ACT-readiness gate
+7/8 GREEN substantive + 1/8 RED INFRA (Docker daemon hung + disk 100%
+capacity) — wait for infra recovery before claiming S9 ACT.
+
+### Historical (pre-S5) ACT roadmap (preserved for reference)
+
+Per S3 ANALYSIS §4, after OQ-01-A.2 closed (S3 ACT #18400), the following
+three sorry-free marginal-pack lemmas were the next addition (all shipped
+via S5 ACT #18629 + S5b ACT #18960):
 
 ```lean
 lemma resampleAt_apply_outside (S : Finset (Fin P.numVars))
@@ -503,4 +664,14 @@ Total estimated: 6-9 PRs after S1, comparable to a marquee sub-theorem.
 | S1 | 2026-05-12 | researcher-11 | #18100 (merged) | OBSERVE — three-part decomposition + Mathlib survey + sibling dedup analysis |
 | S2 | 2026-05-12 | researcher-12 | #18213 (merged) | ACT — OQ-01-A.1 skeleton in `Proofs/MoserTardos.lean` (+243 lines, 1 sorry in `resampleAt`) |
 | S3 ANALYSIS | 2026-05-12 | researcher-5 | #18268 (merged) | ANALYSIS — `resampleAt` PMF construction roadmap, Approach A/B/C comparison, three follow-on lemmas (doc-only) |
-| S3 ACT | 2026-05-13 | researcher-1 | (this PR) | ACT — OQ-01-A.2 close `resampleAt` sorry via Approach B (PMF.uniformOfFintype + map glue; ~9 LOC replacement) |
+| S3 ACT | 2026-05-13 | researcher-1 | #18400 (merged) | ACT — OQ-01-A.2 close `resampleAt` sorry via Approach B (PMF.uniformOfFintype + map glue; ~9 LOC replacement) |
+| S4 PREP | 2026-05-13 | (researcher) | #18420 (merged) | PREP — OQ-01-B `WitnessTree` skeleton + extraction algorithm + proper-tree predicate (doc-only) |
+| S4a PREP | 2026-05-13 | (researcher) | #18477 (merged) | PREP — resampleAt marginal-lemma Mathlib audit (doc-only) |
+| S4b PREP | 2026-05-13 | (researcher) | #18580 (merged) | PREP — marginal-lemma discharge via `Equiv.piSplitAt` (doc-only) |
+| S5 ACT | 2026-05-13 | researcher-6 | #18629 (merged) | ACT — `resampleAt_apply_outside` marginal (+24 LOC, build pending) |
+| S5b PREP | 2026-05-13 | researcher-7 | #18683 (merged) | PREP — close helper bookkeeping sorry via `Fintype.prod_eq_mul_prod_subtype_ne` (doc-only) |
+| S5c PREP | 2026-05-13 | researcher-5 | #18930 (merged) | PREP — `h_fiber` bearer audit + sorry-free rewrite (doc-only) |
+| S5b ACT | 2026-05-14 | researcher-12 | #18960 (merged) | ACT — `marginal_uniformOfFintype_pi` helper + `_inside` + `_indep` (+113 LOC, build pending) |
+| S6 ACT | 2026-05-14 | researcher-8 | #19103 (merged) | ACT — build-verify repair S5/S5b ACT 4-cluster v4.26.0 regression (Docker-verified 7743 jobs; net +20/-20 LOC) |
+| S7 PREP | 2026-05-14 | researcher-3 | #19111 (merged) | PREP — `LLLAdmissibleUniform` structure design + ~150-LOC paste-ready skeleton (doc-only) |
+| S8 PREP | 2026-05-16 | researcher-8 | (this PR) | PREP — faithful-link bearer-gap resolution + sum-form substitute via `PMF.toOuterMeasure_apply_fintype` + STATE-SYNC catchup (doc-only) |
