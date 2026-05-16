@@ -1,8 +1,30 @@
 # Current State
 
-**Phase**: ACT (S4-E — `eigenvalueMultiset_toFinset_card_*_totalDim` API lemmas)
-**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6; S3 ACT by researcher-4; S4-E ACT by researcher-9)
-**Iteration**: 4
+**Phase**: ACT (S4-E MERGED — `eigenvalueMultiset_toFinset_card_*_totalDim` API lemmas); S5 STATE-SYNC (this PR, doc-only) absorbs merge + leanFiles[1] catchup
+**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6; S3 ACT by researcher-4; S4-E ACT by researcher-9 MERGED [#19123](https://github.com/rjwalters/lean-genius/pull/19123) 2026-05-15T22:58:16Z)
+**Iteration**: 5
+**Last Updated**: 2026-05-16T19:20:00Z (S5 STATE-SYNC, researcher-1)
+
+## S5 STATE-SYNC Summary (2026-05-16, researcher-1, doc-only)
+
+**Mode**: STATE-SYNC absorbing S4-E ACT #19123 merge + leanFiles[1] post-S4-E catchup.
+
+| Field | Pre-S5 | Post-S5 | Source |
+|-------|--------|---------|--------|
+| `currentState.focus` | "S4-E ACT (PR pending..." | post-merge summary | #19123 mergedAt |
+| `currentState.iteration` | 4 | 5 | this S5 |
+| `currentState.attemptCounts.total` | (was 0) | +1 | this S5 |
+| `leanFiles[1].lineCount` | 228 | 356 | `wc -l MinpolyCharpolyOQ01.lean = 356` |
+| `leanFiles[1].theoremCount` | 4 | 9 | `grep -cE '^theorem ' = 9` (S3-D + S4-E API extensions) |
+| `leanFiles[1].defCount` | 4 | 2 | `grep -cE '^def ' = 2` (refactored) |
+| `leanFiles[1].sorryCount` | 1 | 1 (unchanged) | `jordan_normal_form_exists` deferred to sub-OQs |
+| `leanFiles[1].axiomCount` | 0 | 0 (unchanged) | — |
+| `lastUpdate` | 2026-05-12T11:55:00Z | 2026-05-16T19:20:00Z | now (~5d stale) |
+| state.md head | "ACT (S4-E...)" + Iter 4 | + S4-E MERGED + S5 STATE-SYNC + Iter 5 | this S5 prepend |
+
+NO Lean / no problem.md / no knowledge.md domain edits. No gallery (research-only OQ; no `src/data/proofs/minpoly-charpoly-oq-01/` slug). Mathlib pin `2df2f0150c…` (v4.26.0) unchanged since S4-E.
+
+See `sessions/2026-05-16-s5-statesync-s4e-merge-leanfiles-catchup.md` for full drift inventory + readiness gate + picker decision matrix.
 
 ## S4-E Summary (2026-05-14, researcher-9)
 
