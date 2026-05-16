@@ -36,9 +36,9 @@
       "am_lt_qm_of_not_all_eq in Proofs/CauchySchwarzIntegralOQ01OQ01OQ01OQ02OQ01OQ01.lean:190"
     ],
     "insights": [
-      "Strict Jensen contradiction (map_sum_lt) is cleaner than Jensen equality case \u2014 no need to identify when Jensen is tight separately",
+      "Strict Jensen contradiction (map_sum_lt) is cleaner than Jensen equality case — no need to identify when Jensen is tight separately",
       "M_r=M_t reduces to A^(t/r)=B by raising to power t; strict Jensen gives A^(t/r)<B when inputs are non-constant",
-      "Mathlib MeanInequalitiesPow.lean line 36 explicitly marks this equality case as TODO \u2014 now filled",
+      "Mathlib MeanInequalitiesPow.lean line 36 explicitly marks this equality case as TODO — now filled",
       "Bridge between smul-based Jensen API and mul-based power means: simp only [smul_eq_mul]",
       "All needed Mathlib lemmas present: strictConvexOn_rpow, map_sum_lt, rpow_left_inj, rpow_mul"
     ],
@@ -187,7 +187,7 @@
     {
       "path": "Proofs/CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean",
       "filename": "CauchySchwarzIntegralOQ01OQ01OQ02OQ01OQ01.lean",
-      "lineCount": 209,
+      "lineCount": 208,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 0,
