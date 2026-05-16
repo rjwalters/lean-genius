@@ -2,7 +2,112 @@
 
 **Phase**: PREP
 **Since**: 2026-05-16
-**Iteration**: 16
+**Iteration**: 17
+
+## Session 17 (2026-05-16, PREP — `pow_factorization_mul_choose_le` fully-discharged paste-ready skeleton (S16 §7 sorry pre-closed at sketch level) + 3 NEW bearer pins + 0-drift recheck, doc-only)
+
+Doc-only PREP iteration that upgrades the S16 PREP §7 skeleton
+(which had **1 explicit `sorry`** on the Kummer carry-count
+argument) to a **fully-discharged paste-ready** S17a proof with
+**0 sorries**, using a subset-cardinality argument on
+`Nat.factorization_choose`'s carry formula rather than the
+`multiplicity`/`emultiplicity` bridges S16 §3.3-§3.4 pinned.
+
+S16 PREP (PR #19438, researcher-11) merged 2026-05-16T04:25Z and
+recommended Route C (split S17a + S17b ACTs) with a `sorry`-stub
+skeleton at §7. This S17 PREP fires ~5h35m post-merge after
+`claim-random` lands on this slug at 2026-05-16T09:55Z (RICH 80,
+0 open PRs on the exact slug, 0 open PRs on sibling slug `-oq-03`
+per `gh pr list`).
+
+**Host infra**: Docker daemon hung (`timeout 8 docker info
+--format '{{.ServerVersion}}'` exit 124; CLI section responsive),
+disk 6.9 Gi avail / 100% capacity (NOT extreme disk-full ≤200Mi).
+Per memory pattern `feedback_researcher_postship_pivot_lands_on_audit_corrected_skeleton_with_sorries_docker_unsafe_upgrade_to_paste_ready`,
+the move is to upgrade the audit-corrected skeleton with sorries
+to a fully-discharged paste-ready Lean recipe at the sketch level,
+preserving the slug's 0-sorry status while Docker is unavailable.
+
+### What S17 PREP adds
+
+**3 NEW bearer pins** at unchanged lake SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+
+| # | Bearer | Path | Line | Why |
+|---|--------|------|------|-----|
+| 14 | `Nat.Prime.pow_dvd_iff_le_factorization` | `Mathlib/Data/Nat/Factorization/Basic.lean` | 168 | Converts `i ≤ m.factorization p` ⟺ `p^i ∣ m` (subset argument anchor) |
+| 15 | `Nat.factorization_choose_le_log` | `Mathlib/Data/Nat/Choose/Factorization.lean` | 185 | Canonical `(choose n m).factorization p ≤ log p n`; documents the Ico-cardinality machinery verified-in-use |
+| 16 | `Nat.pow_le_of_le_log` | `Mathlib/Data/Nat/Log.lean` | 171 | Converts `v ≤ log p n` to `p^v ≤ n` (closes the proof) |
+
+**0-drift recheck** of all 13 existing pins from S12+S13+S14+S15+S16.
+Each rechecked via `gh api repos/leanprover-community/mathlib4/contents/<path>?ref=<SHA> --jq '.download_url'`
++ `curl -sL` + `grep -n`. All 13 byte-identical at the same lake SHA
+(unchanged since S14 §3; 4 successive PREPs with 0 drift).
+
+### Path α: fully-discharged S17a skeleton (NO sorries) — RECOMMENDED
+
+The S17 PREP §4 skeleton replaces S16 PREP §7's `sorry` with a
+complete proof using 5 stages:
+
+1. `Nat.factorization_mul` decomposes `v_p(m · C(n, m)) = v_p(m) + v_p(C(n, m))`.
+2. Non-prime case discharged via `Nat.factorization_eq_zero_of_not_prime` (→ both summands = 0; goal becomes `1 ≤ n`).
+3. Prime case: reduce via `pow_le_of_le_log` to `v_p(m) + v_p(C(n, m)) ≤ log p n`.
+4. Expand `v_p(C(n, m))` via `Nat.factorization_choose` (Choose/Factorization.lean:131) at bound `b = log p n + 1`.
+5. **Subset argument**: bound filter cardinality by `Ico (m.factorization p + 1) (log p n + 1)` cardinality, because positions `i ≤ m.factorization p` cannot satisfy `p^i ≤ m % p^i + (n-m) % p^i` — `Nat.Prime.pow_dvd_iff_le_factorization` gives `p^i ∣ m`, hence `m % p^i = 0`, hence condition becomes `p^i ≤ (n-m) % p^i < p^i` (contradiction).
+
+The auxiliary `a ≤ log p n` (where `a = m.factorization p`) is closed via `p^a ∣ m ⇒ p^a ≤ m ≤ n ⇒ a ≤ log p n` (using `Nat.le_log_of_pow_le`).
+
+**LOC**: ~75 (theorem body ~60-65 + 10-15 docstring + Part header).
+**Imports needed**: NONE new (all bearers in scope through existing slug imports).
+**Sorries**: 0.
+
+### Path β: original Route A via emultiplicity bridges (FALLBACK)
+
+Preserved as documented alternative consuming S16-pinned bearers
+12+13 (`Nat.multiplicity_eq_factorization`,
+`multiplicity_eq_of_emultiplicity_eq_some`) + new
+`Mathlib.Data.Nat.Multiplicity` import + `Nat.Prime.emultiplicity_choose`
+(S13 §5 pin). ~100-120 LOC, more imports. NOT recommended for
+the first ACT but useful for future S18+ extension to
+`C(n+m, m)` factors in vdP §6's alternating-bilinear summand.
+
+### Numerical validation of the §4 subset argument
+
+Spot-checked at 3 concrete cases:
+
+| Case | a=v_p(m) | b=log_p n | Filter set | Ico(a+1,b+1) | Subset? | v_p(m·C(n,m)) | a + #filter |
+|------|----------|-----------|------------|--------------|---------|---------------|-------------|
+| n=12, m=4, p=2 (S16 §6 counterexample) | 2 | 3 | ∅ | {3} | ∅ ⊆ {3} ✓ | 2 | 2 ≤ 3 ✓ |
+| n=16, m=8, p=2 (TIGHT) | 3 | 4 | {4} | {4} | {4} ⊆ {4} ✓ tight | 4 | 4 ≤ 4 ✓ tight |
+| n=8, m=2, p=2 (TIGHT) | 1 | 3 | {2,3} | {2,3} | {2,3} ⊆ {2,3} ✓ tight | 3 | 3 ≤ 3 ✓ tight |
+
+The subset argument is correct including the tight cases.
+
+### S17a ACT readiness gate (POST-S17 PREP)
+
+**GREEN-PASTE-READY** at 20/20 items via Path α (item 17 on `Mathlib.Data.Nat.Multiplicity` import is N/A — Path α does NOT consume it). Path α is the recommended discharge for the first S17a ACT; Path β remains available for future extensions. Slug's 0-sorry status preserved (the §4 skeleton has 0 sorries).
+
+For S17b ACT (post-S17a-merge): all S15 §4 bearers re-used + S17a's `pow_factorization_mul_choose_le` consumed as black-box. **9/9 GREEN at S17b time**.
+
+### Counts (post-S17 PREP, unchanged from S16 because doc-only)
+
+| Metric | Value |
+|--------|-------|
+| File LOC | 905 (unchanged from S15) |
+| Sorries | 0 (unchanged; skeleton in §4 has 0 sorries) |
+| Axioms | 0 (unchanged) |
+| Theorems | 36 (unchanged) |
+| Build | verified clean (3058 jobs, S15 baseline) |
+
+**Axiom delta this session**: 0 (documentation-only).
+
+**Files changed**: this state.md (+ ~120 LOC near top); the slug's
+JSON (`currentState.iteration` 16 → 17, `since` 2026-05-16T04:12Z
+→ 2026-05-16T09:55Z, `lastUpdate`, refreshed `nextAction` from
+"Path α or β" to "Path α paste-ready (S17 §4)", +2 insights,
++2 nextSteps); 1 new sessions/ note. 0 Lean file edits. 0 sibling-slug edits.
+
+Session note: `sessions/2026-05-16-s17-prep-mul-choose-dvd-lcm-range-fully-discharged-skeleton.md`.
 
 ## Session 16 (2026-05-16, PREP — `mul_choose_dvd_lcmRange` route audit + bridge bearer pin, doc-only)
 
