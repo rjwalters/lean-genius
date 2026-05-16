@@ -72,10 +72,10 @@ while IFS= read -r num; do
 
     if "$HAS_QUALITY_ISSUES" "$num" 2>/dev/null; then
         status="needs-work"
-        ((needs_work_count++))
+        ((++needs_work_count))
     else
         status="quality"
-        ((quality_count++))
+        ((++quality_count))
     fi
 
     new_json=$(echo "$new_json" | jq \
