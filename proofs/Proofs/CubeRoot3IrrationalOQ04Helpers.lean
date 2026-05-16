@@ -417,4 +417,56 @@ theorem cbrt3_lt_six_two_oh_six_over_four_three_oh_three :
   rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
   norm_num
 
+/-! ## S11 prep: new lower bound for `a₉ = 6` (the tenth partial quotient)
+
+The tenth CF convergent of `∛3` (using `a₁₀ = 1` per OEIS A002945) is
+`p₁₀/q₁₀ = (a₁₀·p₉ + p₈) / (a₁₀·q₉ + q₈) = (1·6206 + 949) / (1·4303 + 658)
+= 7155/4961`.
+
+This convergent is even-index, so it lies on the LOWER side of `∛3`
+(alternating with the upper-side ninth convergent `6206/4303` from
+S10).
+
+Convergent recursion (with `a₁₀ = 1`):
+
+  `q₁₀ = 1 · q₉ + q₈ = 1 · 4303 + 658 = 4961`
+  `p₁₀ = 1 · p₉ + p₈ = 1 · 6206 + 949 = 7155`
+
+After cubing,
+
+  `(7155/4961)³ = 366_293_248_875 / 122_097_755_681`
+  `3            = 366_293_267_043 / 122_097_755_681`
+
+so `7155³ = 366_293_248_875 < 366_293_267_043 = 3 · 4961³` (strict,
+diff `18_168`). The new lower cube gap
+`18_168 / 122_097_755_681 ≈ 1.488·10⁻⁷` is slightly tighter than
+S10's upper-side gap of `11_435 / 79_673_526_127 ≈ 1.43·10⁻⁷`,
+consistent with `7155/4961` being the even-index tenth convergent
+(lower side of `cbrt3`), one rung beyond S10's `6206/4303`.
+
+(Note on the convergent recursion direction: per
+`feedback_researcher_cf_convergent_recursion_direction_trap` and the
+S7/S8 / S8→S9 / S10→S11 math-correction history in
+`CubeRoot3IrrationalOQ04.lean`, the 10th convergent computed at the
+point of proving `a₉` uses `a₁₀` (the *next* partial quotient), not
+`a₉`. Per OEIS A002945, `a₁₀ = 1`, giving `p₁₀/q₁₀ = 7155/4961`.
+Pre-claim Python sanity check: `7155³ = 366_293_248_875`,
+`3 · 4961³ = 366_293_267_043`, diff `+18_168 > 0` confirming
+`(7155/4961)³ < 3`, hence `7155/4961 < cbrt3` as required for a
+lower bound. The post-S10 next-action sketch in PR #19420 (doc-only
+PREP MATH-CORRECTION) caught and corrected three magnitude errors
+in the cube digits before this S11a helper was pasted.)
+
+Two-line proof via the cubing-iff helper. -/
+
+/-- `7155/4961 < ∛3`. Cube target: `(7155/4961)³ =
+366_293_248_875 / 122_097_755_681 < 366_293_267_043 / 122_097_755_681
+= 3` (strict: `7155³ = 366_293_248_875 < 366_293_267_043 = 3 · 4961³`,
+gap `18_168`). The tenth convergent of the simple CF of `∛3` (using
+`a₁₀ = 1` per OEIS A002945). -/
+theorem seven_one_five_five_over_four_nine_six_one_lt_cbrt3 :
+    (7155 / 4961 : ℝ) < cbrt3 := by
+  rw [lt_cbrt3_iff_cube_lt (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
