@@ -384,7 +384,7 @@ wait_or_force_kill() {
             for session in "${sessions[@]}"; do
                 if tmux has-session -t "$session" 2>/dev/null; then
                     echo -e "${YELLOW}Timeout: force-killing $session${NC}"
-                    tmux kill-session -t "$session" 2>/dev/null || true
+                    kill_session_processes "$session"
                     remaining=$((remaining + 1))
                 fi
             done
@@ -766,6 +766,25 @@ find_claude_child() {
 # Helper: Kill all processes in a tmux session before destroying it.
 # This prevents orphaned claude/timeout processes when tmux SIGHUP
 # doesn't propagate across process group boundaries.
+kill_proc_tree() {
+    local pid="$1"
+    local sig="${2:-TERM}"
+
+    [[ -z "$pid" ]] && return 0
+    kill -0 "$pid" 2>/dev/null || return 0
+
+    local children
+    children=$(pgrep -P "$pid" 2>/dev/null || true)
+    if [[ -n "$children" ]]; then
+        local child
+        for child in $children; do
+            kill_proc_tree "$child" "$sig"
+        done
+    fi
+
+    kill "-$sig" "$pid" 2>/dev/null || true
+}
+
 kill_session_processes() {
     local session="$1"
 
@@ -774,14 +793,7 @@ kill_session_processes() {
     pane_pid=$(tmux list-panes -t "$session" -F '#{pane_pid}' 2>/dev/null | head -1)
 
     if [[ -n "$pane_pid" ]]; then
-        # Kill entire process tree under the pane
-        local children
-        children=$(pgrep -P "$pane_pid" 2>/dev/null || true)
-        if [[ -n "$children" ]]; then
-            echo "$children" | xargs kill 2>/dev/null || true
-        fi
-        # Also kill the pane process itself
-        kill "$pane_pid" 2>/dev/null || true
+        kill_proc_tree "$pane_pid" TERM
     fi
 
     # Now kill the tmux session
@@ -789,6 +801,10 @@ kill_session_processes() {
 
     # Brief wait for processes to exit
     sleep 1
+
+    if [[ -n "$pane_pid" ]] && kill -0 "$pane_pid" 2>/dev/null; then
+        kill_proc_tree "$pane_pid" KILL
+    fi
 }
 
 # Helper: Get process elapsed time in minutes
@@ -2133,7 +2149,7 @@ cmd_stop() {
         # Kill the lean-daemon tmux session (the respawner)
         if tmux has-session -t "lean-daemon" 2>/dev/null; then
             echo -e "  Killing lean-daemon tmux session"
-            tmux kill-session -t "lean-daemon" 2>/dev/null || true
+            kill_session_processes "lean-daemon"
         fi
 
         local stopped=0
@@ -2161,7 +2177,7 @@ cmd_stop() {
 
         echo -e "${BLUE}Killing Seeker agent session...${NC}"
         if tmux has-session -t "seeker-agent" 2>/dev/null; then
-            tmux kill-session -t "seeker-agent" 2>/dev/null || true
+            kill_session_processes "seeker-agent"
             stopped=$((stopped + 1))
         fi
 
@@ -2316,7 +2332,7 @@ cmd_stop_type() {
         while IFS= read -r session; do
             [[ -z "$session" ]] && continue
             echo -e "${BLUE}Killing $session...${NC}"
-            tmux kill-session -t "$session" 2>/dev/null || true
+            kill_session_processes "$session"
         done <<< "$sessions"
         echo -e "${GREEN}${BOLD}All ${agent_type} agents killed${NC}"
     else
