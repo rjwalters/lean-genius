@@ -8,8 +8,8 @@ S7 PREP §5 recipes with three ACT-time elaboration fixes. File now
 204 LOC, 0 sorries, 5 inherited axioms.)
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-05-16 (S2-A ACT-2 build-verified, researcher-8)
-**Iteration**: 13
+**Last Updated**: 2026-05-16T05:05:00Z (S14 STATE-SYNC, researcher-12 — housekeeping after #19361 + #19399 race resolved)
+**Iteration**: 14
 
 ## Session 13 — S2-A ACT-2: discharge both `ShapleyFolkmanOQ01.lean` sorries (researcher-8, 2026-05-16)
 
@@ -66,12 +66,14 @@ Build completed successfully (7744 jobs).
 === Build succeeded ===
 ```
 
-**Race log.** PR #19361 (S10 STATE-SYNC by researcher-1, opened
-2026-05-16T01:32Z, MERGEABLE) is the only other open PR on this slug
-at session start. Conflict surface: state.md (prepend race) and JSON
-(iteration field). Lean diff is orthogonal. See
-`sessions/2026-05-16-s2a-act-2-discharge-both-sorries.md` §7 for the
-resolution policy.
+**Race log (historical, now resolved).** PR #19361 (S10 STATE-SYNC
+by researcher-1, opened 2026-05-16T01:32Z) was the only other open
+PR on this slug at S2-A ACT-2 session start. The race resolved
+cleanly: S2-A ACT-2 (#19399) merged first at 2026-05-16T03:52:04Z,
+S10 STATE-SYNC (#19361) merged second at 2026-05-16T04:45:00Z, no
+state.md/JSON conflict (S10 only added a new sessions/ file). See
+the S2-A ACT-2 session doc §7 for the resolution policy, and S14
+STATE-SYNC §3 for the post-merge reconciliation.
 
 **Iteration history.**
 | Iter | Phase | Mode | PR | Description |
@@ -88,8 +90,9 @@ resolution policy.
 | 9.5 | STATE-SYNC | doc | #19003 | Record iter 9 in state.md + JSON. |
 | 10 | PREP | doc | #19202 | S6: `tight_excess_count` 45-LOC drop-in recipe. |
 | 11 | PREP | doc | #19276 | S7: sibling-audit of S6 §4, 3 bugs corrected, 48-LOC body. |
-| 12 | STATE-SYNC | doc | #19361 (OPEN) | S10: absorb S6+S7 PREP merges + ACT-2 readiness gate. |
-| **13** | **ACT** | **`.lean`** | **(this)** | **S2-A ACT-2: discharge both sorries; build verified.** |
+| 12 | STATE-SYNC | doc | #19361 | S10: absorb S6+S7 PREP merges + ACT-2 readiness gate via new sessions/ file (no state.md/JSON edit). MERGED 2026-05-16T04:45:00Z. |
+| 13 | ACT | `.lean` | #19399 | S2-A ACT-2: discharge both sorries (`mem_convexHull_finset_sum` via S5 PREP §3 5-step skeleton + `tight_excess_count` via S7 PREP §5 48-LOC body, with 3 ACT-time elaboration fixes); build verified `✔ [7744/7744] (47s)`. File 130 → 204 LOC, sorries 2 → 0, 5 inherited axioms. MERGED 2026-05-16T03:52:04Z. |
+| **14** | **STATE-SYNC** | **doc** | **(this)** | **S14: housekeeping — correct iter-history `(OPEN)` / `(this)` placeholders post-#19361 merge, refresh Race Log, append sessions/ note; no Lean / meta.json / Next Action changes (S2-A ACT-3 still the recommended next claim).** |
 
 **Next Action.** See §9 of the session doc. Mechanic-grade follow-on:
 S2-A ACT-3 (sharpness corollary, ~15 LOC, combining `tight_excess_count`
