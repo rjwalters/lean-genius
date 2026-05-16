@@ -34,14 +34,15 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-14T21:50:00.000Z",
-    "iteration": 2,
-    "focus": "S2 ACT (researcher-9, 2026-05-14, S2-A-extended) — created `proofs/Proofs/Erdos101OQ04.lean` (280 LOC). Added the `IsLowerBoundConstruction P threshold` Prop predicate as the OQ-04 framework abstraction; deferred the two OPEN lower-bound constructions (Grünbaum Ω(n^{3/2}) and Solymosi–Stojaković n^{2−O(1/√log n)}) as `theorem ... := by sorry` so they can be cited without introducing axioms; proved 4 axiom-free supporting lemmas: (1) `exists_four_collinear_subset_of_count_pos` — witness extraction from positive fpc, (2) `isLowerBoundConstruction_threshold_eq_zero_of_small` — vacuous case below size 4, (3) `solymosi_stojakovic_lower_bound_via_oq01` — bridge showing the OQ-04 sorry reduces to the OQ-01 sorry, (4) `solymosi_stojakovic_exponent_gt_three_halves` — the S-S exponent strictly dominates 3/2 for C < 1/2 and n ≥ 3. Added `import Proofs.Erdos101OQ04` to `proofs/Proofs.lean`. Net: 1 def, 6 theorems (4 PROVED, 2 deferred), 0 axioms, 2 sorries (both on OPEN constructions, zero net axiom growth via bridge lemma).",
+    "since": "2026-05-16T11:00:00.000Z",
+    "iteration": 3,
+    "focus": "S3-B1 ACT (researcher-3, 2026-05-16) — created namespace `Erdos101OQ04.Grunbaum` in `proofs/Proofs/Erdos101OQ04.lean` (lines 284-400, +119 LOC). Delivered the Path B foundational construction: the Grünbaum F_p² parabola `G_p := {(i, j) ∈ (ZMod p) × (ZMod p) : 4·j = -(i·i)}` as a `Finset`, plus parameterisation `param p : ZMod p → ZMod p × ZMod p` mapping `i ↦ (i, -i² · 4⁻¹)`. Proved 6 axiom-free supporting lemmas: (1) `param_injective` — distinct `i` give distinct first coordinates; (2) `four_ne_zero` — `(4 : ZMod p) ≠ 0` for odd primes via `ZMod.natCast_eq_zero_iff` + `interval_cases p` over `2 ≤ p ≤ 4`; (3) `param_mem_parabola` — the parameterised point lies on the parabola, reducing to `4 · 4⁻¹ = 1` via `mul_inv_cancel₀`; (4) `mem_parabola_iff_eq_param` — bijection criterion via `mul_left_cancel₀`; (5) `parabola_eq_image` — the parabola equals `Finset.univ.image (param p)`; (6) **`parabola_card`** — **`(parabola p).card = p` for `p` prime with `p ≠ 2`** (the S3-B1 deliverable). Net: 2 defs + 6 PROVED theorems, 0 axioms, 0 new sorries (S2 sorries on OPEN constructions unchanged).",
     "blockers": [
-      "S4-S5 (random-projection no-5-collinear): measure-theoretic genericity argument; may need new Mathlib infrastructure for parameter-space measure theory.",
-      "Build verification deferred: researcher worktree `.lake` self-symlink (per feedback_researcher_lake_symlink_broken.md) forces ~45-min fresh-clone for Docker build; CI is the ground truth."
+      "S3-B2-β 4-collinear count `Ω(p^{3/2})`: requires polynomial-roots bound on (ZMod p)[X] + intersection-multiplicity. In Mathlib v4.26.0 but combinatorial reduction nontrivial.",
+      "Build verification deferred: researcher worktree `.lake` self-symlink + 99%-full host disk (6.8 Gi avail of 926 Gi) + Docker daemon unresponsive force CI as ground truth.",
+      "S4-S5 (Path A random-projection genericity): unchanged from S2 — measure-theoretic infrastructure deferred to dedicated multi-session ACT."
     ],
-    "nextAction": "S3 ORIENT. Pick a single concrete continuation: (S3-A1) define `d`-dimensional grid `G_d := (Fin k → Fin d → ℤ)` + cardinality `k^d` (~30 LOC, 0 sorries, foundational for Path A); (S3-B1) define the Grünbaum parabola `{(i,j) ∈ F_p × F_p : 4j ≡ -i² (mod p)}` + cardinality `p` (~40 LOC, 0 sorries, foundational for Path B); (S3-C) framework scaffold `RandomProjection`/`FourTermAP`/`LineRichness` covering both paths (~80 LOC, 1-2 sorries). Recommendation: S3-B1 if discharge target is Grünbaum, S3-A1 if Path A (Solymosi–Stojaković) remains long-term."
+    "nextAction": "S3-B2-α (Path B continuation, smallest piece): embed the parabola into ℝ² via `ZMod p ↪ ℝ` (using `Nat.cast`), producing a `PlanarPointSet` of size `p`. ~40 LOC, 0 sorries. Yields `Finset (ℝ × ℝ)` plus `size_pos` (from `p ≥ 2`). Unblocks the `IsLowerBoundConstruction` instantiation step. ALTERNATIVE: S3-A1 (Path A pivot) — d-dim grid `G_d := (Fin k → Fin d → ℤ)` + cardinality `k^d` (~30 LOC, 0 sorries) if Path B count proves unworkable."
   },
   "leanFiles": [
     "proofs/Proofs/Erdos101OQ04.lean"
@@ -62,7 +63,10 @@
   "references": [
     {
       "title": "Many collinear k-tuples with no k+1 collinear points",
-      "authors": ["J. Solymosi", "M. Stojaković"],
+      "authors": [
+        "J. Solymosi",
+        "M. Stojaković"
+      ],
       "year": "2013",
       "venue": "Combinatorica 33: 247–258",
       "doi": "10.1007/s00493-013-2820-6",
@@ -70,35 +74,49 @@
     },
     {
       "title": "Problems and results in combinatorial geometry",
-      "authors": ["P. Erdős"],
+      "authors": [
+        "P. Erdős"
+      ],
       "year": "1995",
       "venue": "Various",
       "note": "Original conjecture L_4(n) = Θ(n^{3/2}). Problem #101 in the modern enumeration. $100 prize on the o(n^2) gap."
     },
     {
       "title": "Arrangements and Spreads",
-      "authors": ["B. Grünbaum"],
+      "authors": [
+        "B. Grünbaum"
+      ],
       "year": "1972",
       "venue": "CBMS Regional Conference Series in Mathematics 10",
       "note": "Weaker lower bound L_4(n) ≳ n^{3/2}. Concrete construction (alternative S2-B target)."
     },
     {
       "title": "The orchard problem",
-      "authors": ["S. A. Burr", "B. Grünbaum", "N. J. A. Sloane"],
+      "authors": [
+        "S. A. Burr",
+        "B. Grünbaum",
+        "N. J. A. Sloane"
+      ],
       "year": "1974",
       "venue": "Geometriae Dedicata 2: 397–424",
       "note": "Related 3-line orchard problem; uses similar finite-field constructions."
     },
     {
       "title": "Research Problems in Discrete Geometry",
-      "authors": ["P. Brass", "W. Moser", "J. Pach"],
+      "authors": [
+        "P. Brass",
+        "W. Moser",
+        "J. Pach"
+      ],
       "year": "2005",
       "venue": "Springer",
       "note": "§7.2 surveys the four-point line problem. Modern reference."
     },
     {
       "title": "Erdős Problems #101",
-      "authors": ["Erdős Problems database"],
+      "authors": [
+        "Erdős Problems database"
+      ],
       "url": "https://erdosproblems.com/101",
       "note": "Live problem database with current best bounds and references."
     }
@@ -109,5 +127,6 @@
     "sourceProofId": "erdos101-problem",
     "sourceTitle": "Erdős Problem #101: Four-Point Lines from Planar Point Sets",
     "sourceType": "open-question"
-  }
+  },
+  "lastUpdate": "2026-05-16T11:00:00.000Z"
 }

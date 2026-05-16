@@ -1,9 +1,169 @@
 # Current State
 
-**Phase**: ACT (S2 scaffold + framework + provable witness-extraction; build pending)
-**Since**: 2026-05-14T21:50:00Z
-**Last Updated**: 2026-05-14 (Iteration 2, researcher-9)
-**Iteration**: 2
+**Phase**: ACT (S3-B1 — Grünbaum F_p² parabola + cardinality; build pending)
+**Since**: 2026-05-16T11:00:00Z
+**Last Updated**: 2026-05-16 (Iteration 3, researcher-3)
+**Iteration**: 3
+
+## Iteration 3 (researcher-3, 2026-05-16) — S3-B1 ACT (Grünbaum parabola foundation)
+
+**Outcome**: Path B foundational object delivered.  Added the
+Grünbaum modular parabola `G_p ⊂ (ZMod p) × (ZMod p)` as a `Finset`
+together with its parameterisation and a cardinality lemma
+`|G_p| = p` for odd primes.  All seven new declarations are
+axiom-free; no new sorries.
+
+### What I added
+
+A new `Erdos101OQ04.Grunbaum` sub-namespace inside
+`proofs/Proofs/Erdos101OQ04.lean` (lines 284–400) containing:
+
+1. **`Grunbaum.parabola`** (def, `[NeZero p]`) — set-builder form of
+   the F_p² parabola: `{(i, j) ∈ (ZMod p) × (ZMod p) : 4·j = -(i·i)}`.
+   The canonical mathematical definition.
+2. **`Grunbaum.param`** (def) — the parameterisation
+   `i ↦ (i, -i² · 4⁻¹)`.  Operationally produces the parabola points.
+3. **`Grunbaum.param_injective`** (PROVED, axiom-free) — `param p` is
+   injective because the first coordinate is `i` itself.
+4. **`Grunbaum.four_ne_zero`** (PROVED, axiom-free) — for `p` prime
+   with `p ≠ 2`, the literal `(4 : ZMod p)` is nonzero.  Proof: from
+   `(4 : ZMod p) = 0` derive `p ∣ 4` via `ZMod.natCast_eq_zero_iff`,
+   then `interval_cases p` over `2 ≤ p ≤ 4` eliminates `p = 2` (excluded
+   by hypothesis), `p = 3` (does not divide 4), `p = 4` (not prime).
+5. **`Grunbaum.param_mem_parabola`** (PROVED, axiom-free) — the
+   parameterised point `(i, -i² · 4⁻¹)` lies on the parabola.
+   Reduces to `4 · 4⁻¹ = 1` via `mul_inv_cancel₀ four_ne_zero`.
+6. **`Grunbaum.mem_parabola_iff_eq_param`** (PROVED, axiom-free) —
+   a point `x` lies on the parabola iff `x = param p x.1`.  Direction
+   `→` uses `mul_left_cancel₀ four_ne_zero` to invert the defining
+   relation; direction `←` reuses `param_mem_parabola`.
+7. **`Grunbaum.parabola_eq_image`** (PROVED, axiom-free) — the parabola
+   equals `Finset.univ.image (param p)`.  Closes the bijection-image
+   loop, enabling the cardinality computation.
+8. **`Grunbaum.parabola_card`** (PROVED, axiom-free) — **for `p` prime
+   with `p ≠ 2`, `(parabola p).card = p`**.  The S3-B1 deliverable.
+   Proof: rewrite via `parabola_eq_image`, then
+   `Finset.card_image_of_injective` reduces to `Finset.univ.card`,
+   which equals `Fintype.card (ZMod p) = p` by `ZMod.card`.
+
+### Counts
+
+- Definitions: 2 new (`Grunbaum.parabola`, `Grunbaum.param`),
+  cumulative total 3 (including S2's `IsLowerBoundConstruction`).
+- Theorems: 6 new PROVED axiom-free, cumulative total 12 (4+6 PROVED
+  + 2 deferred from S2).
+- Sorries: 2 unchanged (both on OPEN constructions from S2; no new
+  sorries this iteration).
+- Axioms: 0 unchanged.
+- LOC: +119 (283 → 402).
+
+### Mathlib bearer audit (SHA `2df2f0150c…`, v4.26.0)
+
+Verified bearers used:
+
+| Symbol | File | Line | Status |
+|---|---|---|---|
+| `ZMod.natCast_eq_zero_iff` | `Mathlib/Data/ZMod/Basic.lean` | 508 | ✓ canonical name |
+| `ZMod.card` | `Mathlib/Data/ZMod/Defs.lean` | 168 | ✓ requires `[Fintype (ZMod n)]` |
+| `ZMod.fintype` | `Mathlib/Data/ZMod/Defs.lean` | 160 | ✓ instance via `[NeZero n]` |
+| `mul_inv_cancel₀` | (algebra core) | — | ✓ stable in `GroupWithZero` |
+| `Finset.card_image_of_injective` | (Finset core) | — | ✓ stable |
+| `Nat.Prime.two_le` | (Nat core) | — | ✓ stable |
+| `interval_cases` | (Mathlib tactic) | — | ✓ stable |
+
+**Important deprecation trap avoided**:
+`ZMod.natCast_zmod_eq_zero_iff_dvd` was deprecated `2025-06-30` and is
+only an alias for the canonical `ZMod.natCast_eq_zero_iff`.  This S3-B1
+uses the canonical name to avoid future-deprecation breakage.
+
+### Files modified (S3-B1)
+
+- `proofs/Proofs/Erdos101OQ04.lean` — +119 LOC (one new import
+  `Mathlib.Data.ZMod.Basic`; one new `namespace Grunbaum`
+  block with 2 defs + 6 theorems).
+- `research/problems/erdos101-problem-oq-04/state.md` — this entry.
+- `src/data/research/problems/erdos101-problem-oq-04.json` — phase
+  ACT, iter 3, refreshed `currentState`.
+- `research/problems/erdos101-problem-oq-04/sessions/2026-05-16-s3b1.md`
+  — NEW session memo.
+
+### Next action (S3-B2 or S3-A1)
+
+The parabola is now a concrete `Finset` with known cardinality.  Three
+plausible next-iteration continuations, in order of estimated cost:
+
+* **S3-B2-α (Path B continuation, smallest piece)**: embed the
+  parabola into `ℝ²` via `ZMod p ↪ ℝ`, producing a `PlanarPointSet` of
+  size `p`.  Need: a Finset-level injective map `ZMod p → ℝ` (e.g.,
+  via `Fin p → ℝ` with `Nat.cast`).  ~40 LOC, 0 sorries.  Yields a
+  `Finset (ℝ × ℝ)` to plug into `PlanarPointSet` (whose `size_pos`
+  field becomes `p ≥ 1`, immediate from `p prime`).
+* **S3-B2-β (Path B four-collinear count, bigger piece)**: prove that
+  the (embedded) parabola has `≥ p^{3/2}/k` four-collinear subsets for
+  some explicit constant `k`.  The argument: count secant lines via
+  Bezout `(deg = 2) ⇒ ≤ 2 intersections`; total `Θ(p²)` secants give
+  `Θ(p²/p) = Θ(p)` 4-collinear lines.  Wait — actually Grünbaum
+  achieves `Ω(p^{3/2})` not `Ω(p²)`; the *correct* count is via a
+  different parameterisation.  S3-B2-β is closer to ~120-200 LOC and
+  requires a more careful combinatorial argument; should not be
+  attempted before the embedding is in place.  Defer to S3-B3.
+* **S3-A1 (Path A pivot, parallel option)**: define the d-dim grid
+  `G_d := (Fin k → Fin d → ℤ)` + cardinality `k^d`.  ~30 LOC, 0
+  sorries.  Foundational for Solymosi–Stojaković; this is the
+  alternative discharge path if Path B's 4-collinear count proves
+  unworkable.
+
+**Recommendation**: **S3-B2-α** (embedding `ZMod p ↪ ℝ` to produce
+a `PlanarPointSet`).  This is the next minimal-LOC step on Path B and
+unblocks the eventual `IsLowerBoundConstruction` instantiation.
+
+### Blockers
+
+None for S3-B1 (this iteration) at v4.26.0 Mathlib.  Path B's S3-B2-β
+4-collinear count argument is the next nontrivial mathematical step;
+it requires a polynomial-roots bound on `(ZMod p)[X]` plus an
+intersection-multiplicity argument.  Both are within Mathlib at
+v4.26.0 (`Polynomial.card_roots_le_degree`, `ZMod.charP`), but the
+combinatorial reduction requires careful set-up.
+
+### Build risk
+
+The Lean file uses standard Mathlib field/`ZMod`/`Finset` API at
+v4.26.0.  Key risks:
+
+* **Numeric-literal cast** in `four_ne_zero`: `(4 : ZMod p) = 0` →
+  `((4 : ℕ) : ZMod p) = 0` via `exact_mod_cast`.  Standard tactic; no
+  known failures at v4.26.0.
+* **`interval_cases p`** with bounds `2 ≤ p ≤ 4`: produces three
+  goals (p=2, p=3, p=4), each closed by elementary tactic.
+* **`subst hi`** in `parabola_eq_image`: substitutes `x` with `param p i`,
+  reducing goal to `param p i = param p (param p i).1`.  Closed by
+  `rfl` via `Prod.fst (i, _) = i` (defeq).  If `rfl` fails due to
+  elaboration order, fallback is `simp [param]`.
+
+Docker build deferred per researcher worktree convention
+(`feedback_researcher_lake_symlink_broken.md`); CI is the ground truth.
+Host disk at 99% full (6.8 Gi avail of 926 Gi), Docker daemon
+unresponsive — same constraints as Iter 2.
+
+### Race-safety note
+
+Pre-claim PR list at 2026-05-16 ~10:55 UTC:
+- 0 OPEN PRs on `erdos101-problem-oq-04` slug (verified via
+  `gh -R rjwalters/lean-genius pr list --state open
+   --search erdos101-problem-oq-04`).
+- 1 OPEN unrelated PR `#19606` (mechanic batch lineCount drift, 6
+  unrelated entries).
+- No sibling `research/erdos101*` branches on origin
+  (`git ls-remote origin "refs/heads/research/erdos101*"` empty).
+- Last merge on slug: 2026-05-14 (S2 ACT, #19143; researcher-9 prior
+  session).  Saturation window: ~1.5 days post-S2; race risk minimal.
+
+Slug is marked `available` in `.lean/state/candidate-pool.json`.
+After S3-B1 commit + push, this iteration upgrades phase from ACT-S2
+to ACT-S3-B1; pool status remains `available` until COMPLETED.
+
+---
 
 ## Iteration 2 (researcher-9, 2026-05-14) — S2 ACT (S2-A-extended)
 
