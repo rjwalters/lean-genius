@@ -17,6 +17,9 @@ top of the S2 ORIENT Lean scaffold (PR #18155, 76 LOC + 1 sorry):
 | #18482 | **S4 PREP** parent-axiom replacement choreography (Strategy B split-parent) | 2026-05-13 02:37 UTC |
 | #18633 | **S4b PREP** annotations.json migration + meta.json lineCount   | 2026-05-13 07:11 UTC |
 | #18731 | **S4c PREP** Mathlib bearer audit at lake-pinned SHA (2 phantoms + 3 drifts) | 2026-05-13 09:26 UTC |
+| #19265 | **S4d PREP** sibling audit of S4c workarounds (sharper Option B, verified `smul_eq_self` drop-in) | 2026-05-15 18:02 UTC |
+| #19266 | **S4d PREP** Strategy B split-point forward-ref audit + workaround bearer pin-verification (5 ACT-hazard observations) | 2026-05-15 18:02 UTC |
+| #19307 | **S4e PREP** post-batch boundary inventory + S4 ACT-readiness onesheet (consolidates 11 sessions) | 2026-05-15 19:00 UTC |
 
 These three S4 PREPs together resolve two issues the S3 refinement
 overlooked:
@@ -49,6 +52,21 @@ overlooked:
    `annotations.json` migration the S5 implementer must apply alongside
    the Lean refactor; failing to do so leaves stale line-refs in the
    gallery viewer.
+
+The three post-S4c PREPs (S4d-sibling #19265, S4d-splitpoint #19266,
+S4e consolidation #19307) refine the S4c-era plan in three substantive
+ways: (i) **sharper Option B by cancellation** for the
+`card_stabilizer_eq_card_inertia_mul_finrank` workaround reduces
+sub-step (c) by ~12–18 LOC (S4d-sibling §4); (ii) **verified drop-in**
+for the `IsArithFrobAt.smul_eq_self` workaround (~8–12 LOC, no
+residual sorries) addresses a σ vs σ⁻¹ direction subtlety S4c left
+as sorries (S4d-sibling §3.4); (iii) **Strategy B split point at
+line 1896 is mechanically safe** — zero genuine forward-references
+across lines 329..1896 of the parent (S4d-splitpoint §1). Revised
+S4 ACT LOC budget: **246–381 LOC** (down from S4c's 270–410 LOC).
+See `sessions/2026-05-15-s4d-prep-*.md` and
+`sessions/2026-05-15-s4e-prep-*.md` for the full audit transcripts;
+S4e's §5 is the canonical onesheet for the next ACT claimer.
 
 The parent file's status remains **`axiomatized`** (1 axiom, 0 sorries,
 84 theorems, 2067 lines). Eliminating `three_dvd_gal_card` would
@@ -91,13 +109,17 @@ and `InverseGaloisA5Resultant`.
 
 **S3 sub-step decomposition (refined micro-designs, doc-only):**
 
-| Sub-step | Goal | Original LOC | Post-S4c LOC | Key Mathlib API at pin `2df2f01` |
-|---|---|---:|---:|---|
-| (a) | Typeclass plumbing: `Algebra.IsInvariant ℤ 𝒪 q.Gal`, `Finite q.Gal` | 30–50 | 30–50 | `Algebra.isInvariant_of_isGalois`, `IsIntegralClosure.MulSemiringAction` |
-| (b) | Exhibit `Q : Ideal 𝒪` over `(7)` with `inertiaDegIn = 3` | 100–150 | 100–150 | `Ideal.Quotient.stabilizerHom_surjective`, parent's `cubic_factor_no_roots_mod7` |
-| (c) | `orderOf (arithFrobAt ℤ q.Gal Q) = 3` | 100–150 | 125–190 | `arithFrobAt` (line **256** at pin, not 258); `IsArithFrobAt.arithFrobAt` (line **260**); `card_inertia_eq_ramificationIdxIn` (line **323**); plus §3.3 `IsArithFrobAt.smul_eq_self` local lemma (~10–15 LOC) and §4.4 `card_stabilizer_eq_card_inertia_mul_finrank_local` (~15–25 LOC) extracted from `ncard_primesOver_mul_card_inertia_mul_finrank`'s proof body |
-| (d) | `exists_gal_order_three` plumbing | 5–10 | 5–10 | `orderOf_dvd_card` |
-| **Total S4 ACT** | | **235–360** | **270–410** | |
+| Sub-step | Goal | Original LOC | Post-S4c LOC | Post-S4d LOC | Key Mathlib API at pin `2df2f01` |
+|---|---|---:|---:|---:|---|
+| (a) | Typeclass plumbing: `Algebra.IsInvariant ℤ 𝒪 q.Gal`, `Finite q.Gal` | 30–50 | 30–50 | 30–50 | `Algebra.isInvariant_of_isGalois`, `IsIntegralClosure.MulSemiringAction` |
+| (b) | Exhibit `Q : Ideal 𝒪` over `(7)` with `inertiaDegIn = 3` | 100–150 | 100–150 | 100–150 | `Ideal.Quotient.stabilizerHom_surjective`, parent's `cubic_factor_no_roots_mod7` |
+| (c) | `orderOf (arithFrobAt ℤ q.Gal Q) = 3` | 100–150 | 125–190 | **116–181** | `arithFrobAt` (line **256** at pin, not 258); `IsArithFrobAt.arithFrobAt` (line **260**); `card_inertia_eq_ramificationIdxIn` (line **323**); plus S4d-sibling §3.4 verified `IsArithFrobAt.smul_eq_self` drop-in (~8–12 LOC) and S4d-sibling §4 cancellation path for the cardinality identity (~10–14 LOC; S4c §4.4 Option B 22–28-LOC fallback only) |
+| (d) | `exists_gal_order_three` plumbing | 5–10 | 5–10 | 5–10 | `orderOf_dvd_card` |
+| **Total S4 ACT** | | **235–360** | **270–410** | **246–381** | |
+
+Post-S4d savings: sub-step (c) drops ~12–18 LOC via S4d-sibling §4
+cancellation path; the verified `smul_eq_self` drop-in saves ~3–5 LOC
+over S4c's sketch via direct-cancellation in §3.4 (no residual sorries).
 
 **S4 PREP Strategy B (post-ACT choreography, doc-only):**
 
@@ -199,16 +221,24 @@ ACT plan (~270–410 LOC, –1 sorry):
    from parent's `cubic_factor_no_roots_mod7` via residue-field-degree-3
    over `𝔽_7`.
 
-3. **Sub-step (c) Frobenius order (~125–190 LOC after phantom
-   workarounds)**: see PR #18378 (original recipe) + PR #18731
-   (workarounds). Use:
+3. **Sub-step (c) Frobenius order (~116–181 LOC after phantom
+   workarounds, post-S4d)**: see PR #18378 (original recipe) +
+   PR #18731 (S4c workarounds) + PR #19265 (S4d-sibling verified
+   drop-ins, preferred over S4c). Use:
    - `arithFrobAt ℤ q.Gal Q` (line **256** at pin, not 258);
-   - **Local lemma `IsArithFrobAt.smul_eq_self`** (S4c §3.3, ~10–15 LOC) for the
-     stabilizer-membership fact that `arithFrobAt_mem_stabilizer` would
-     have packaged at HEAD;
-   - **Local lemma `card_stabilizer_eq_card_inertia_mul_finrank_local`**
-     (S4c §4.4 Option B, ~15–25 LOC) extracted from the middle of
-     `ncard_primesOver_mul_card_inertia_mul_finrank`'s proof body.
+   - **Local lemma `IsArithFrobAt.smul_eq_self`** (**S4d-sibling §3.4**
+     verified drop-in, ~8–12 LOC, no residual sorries; fallback
+     §3.5 explicit-membership ~12–15 LOC) for the stabilizer-membership
+     fact that `arithFrobAt_mem_stabilizer` would have packaged at HEAD.
+     Uses `pointwise_smul_eq_comap` + `H.comap_eq` + `comap_comap` bridge.
+   - **Sharper cancellation path** for the cardinality identity
+     (**S4d-sibling §4**, ~10–14 LOC) using
+     `ncard_primesOver_mul_card_inertia_mul_finrank` +
+     `MulAction.orbitProdStabilizerEquivGroup` +
+     `Algebra.IsInvariant.orbit_eq_primesOver`. Avoids the
+     `attribute [local instance 1001] Ideal.Quotient.field Module.Free.of_divisionRing in`
+     typeclass-priority trick (would be required by the S4c §4.4
+     Option B proof-body replay path, kept as 22–28-LOC fallback only).
    - `card_inertia_eq_ramificationIdxIn` (line **323** at pin, not 333)
      with `ramificationIdxIn = 1` (unramified) bounds the order.
    - `IsCyclic.of_FiniteField` (or `FiniteField.frobenius_pow`) for the
@@ -227,6 +257,28 @@ migration applied alongside. Lean diff ~+250 LOC (new main file)
 + ~+10 LOC (theorem replacing axiom). Gallery diff: meta.json
 `status: axiomatized → verified`, `badge: axiom → original`,
 `axiomCount: 1 → 0`; annotations.json: 6 entries migrated per S4b.
+
+**S5 carryover hazards** (per S4d-splitpoint #19266 §2.3–§2.6 + §4):
+
+- **H1** — 6 stale-docstring sites at lines 1907, 2052, 2057, 2059–2063
+  reference theorems that migrate to `InverseGaloisA5Base.lean`
+  (S5 docstring rewrites; not S4 ACT scope).
+- **H2** — `set_option` (e.g. `maxHeartbeats 400000`),
+  `open scoped Classical`, `namespace InverseGaloisA5`, `open Polynomial`
+  need to migrate with the theorems they modify. Naked `decide` in
+  Part XII fails without heartbeat extension if the `set_option`
+  doesn't migrate to `InverseGaloisA5Base.lean`.
+- **H3** — `proofs/Proofs.lean` umbrella-import for
+  `Proofs.InverseGaloisA5Dedekind` is **already correctly placed** at
+  S2 (line 2415, alphabetical; S4d-splitpoint §2.5 verified). No diff
+  needed in S4 ACT.
+- **H4** — `InverseGaloisA5Resultant*.lean` (three sibling files) are
+  independent of `Proofs.InverseGaloisA5`. Strategy B's split does not
+  ripple to the Resultant files (S4d-splitpoint §2.6).
+- **H5** — `attribute [local instance 1001]` typeclass-priority trick
+  subsumed by S4d-sibling §4 cancellation drop-in (no longer needed in
+  the recommended sub-step (c) path; only relevant if the fallback
+  S4c §4.4 Option B path is invoked).
 
 ## Session Log
 
@@ -262,9 +314,24 @@ migration applied alongside. Lean diff ~+250 LOC (new main file)
 | S4 PREP | researcher-4 designed parent-axiom replacement choreography (Strategy B split-parent, resolves circular import) | PR #18482 merged 2026-05-13T02:37Z |
 | S4b PREP | researcher-12 audited annotations.json migration + corrected meta.json `lineCount` for Strategy B | PR #18633 merged 2026-05-13T07:11Z |
 | S4c PREP | researcher-6 audited Mathlib bearer lemmas at lake-pinned SHA `2df2f01`: 2 phantoms (`arithFrobAt_mem_stabilizer`, `card_stabilizer_eq_card_inertia_mul_finrank`) + 3 drifts; provided drop-in workarounds (~+25–40 LOC overhead) | PR #18731 merged 2026-05-13T09:26Z |
-| S4d STATE-SYNC | researcher-9 aligned state.md + JSON `currentState` + JSON `updatedAt` with the 9 merged S1–S4c sessions; surfaced phantom-API findings + Strategy B + annotations-migration into state.md so the S4 ACT picker reads canonical-truth from a single entry point | this PR |
+| S4d STATE-SYNC | researcher-9 aligned state.md + JSON `currentState` + JSON `updatedAt` with the 9 merged S1–S4c sessions; surfaced phantom-API findings + Strategy B + annotations-migration into state.md so the S4 ACT picker reads canonical-truth from a single entry point | PR #19081 merged 2026-05-15T22:59:48Z |
+| S4d PREP-sibling | researcher-8 sibling-after-PREP audit of S4c §3/§4 workarounds — sharper Option B by cancellation (~10–14 LOC vs 22–28); verified `smul_eq_self` drop-in (~8–12 LOC, no sorries) | PR #19265 merged 2026-05-15T18:02:36Z |
+| S4d PREP-splitpoint | researcher-9 Strategy B split-point forward-ref audit (zero forward-refs in lines 329..1896) + workaround bearer pin-verification (19 bearers, 0 drift) + 5 ACT-hazard observations (§2.3–§2.6, §4) | PR #19266 merged 2026-05-15T18:02:32Z |
+| S4e PREP | researcher-12 post-batch boundary inventory (11 merged + 1 open PR on slug) + S4d integration audit + obsolescence map for #19081 + drop-in §4 appendix + consolidated S4 ACT-readiness onesheet (§5) | PR #19307 merged 2026-05-15T19:00:19Z |
+| S4f STATE-SYNC | researcher-9 absorbs S4d-×2 + S4e facts (M1–M9) into state.md + JSON `currentState` post-#19081 merge; 6th independent bearer spot-check at lake-pinned SHA (0 drift across 60h window) | this PR |
 
 ## Honest Calibration
+
+**S4f distinction from #19081** (added 2026-05-16): the S4f STATE-SYNC
+is the Path-A follow-up to #19081 (per S4e PREP #19307 §3.3). #19081
+captured the chain through S4c correctly; the S4f follow-up adds the
+post-S4d facts (M1–M9 per the S4e PREP enumeration) that #19081's
+filing timestamp (2026-05-14T15:25Z, before S4d-×2 merged
+2026-05-15T18:02Z) could not have included. The S4f PR appends
+within existing sections of `state.md` and updates
+`currentState.{since, iteration, focus, nextAction}` +
+`currentState.attemptCounts.total` + top-level `updatedAt` in JSON.
+No content of #19081 is amended, force-pushed, or shadowed.
 
 This S4d STATE-SYNC produces (in this iteration):
 
