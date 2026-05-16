@@ -23,10 +23,10 @@
     "assumptions": "1 axiom: knuth_unique_four_oblique — any closed knight's tour with exactly 4 oblique turns is D4-equivalent to the minimal oblique tour. Accepted based on Knuth's exhaustive computational verification of all ~13.3 trillion closed knight's tours (TAOCP Vol 4 Fascicle 8a, December 2025).",
     "proofRepoPath": "Proofs/KnightsTourOblique.lean",
     "mathlib_version": "4.26.0",
-    "lineCount": 2469,
+    "lineCount": 2463,
     "sorries": 0,
-    "theoremCount": 111,
-    "definitionCount": 48
+    "theoremCount": 100,
+    "definitionCount": 42
   },
   "overview": {
     "historicalContext": "The knight's tour problem has fascinated mathematicians for over 1200 years, with the earliest known reference from the 9th century. Euler studied it in 1759, constructing explicit tours by hand and introducing the technique of dividing the board into regions. Schwenk (1991) completely characterized which rectangular boards admit closed knight's tours. In his 29th Annual Christmas Lecture (December 2025), Donald Knuth revealed a new structural property: the minimum number of oblique turns in any closed tour, and the remarkable uniqueness of the tour achieving this minimum. Knuth's analysis uses techniques from graph theory and combinatorial optimization to certify optimality, extending the classical enumeration results of de Bruijn and others.",
@@ -142,10 +142,10 @@
     }
   ],
   "leanFile": {
-    "lineCount": 2469,
+    "lineCount": 2463,
     "structureCount": 2,
     "axiomCount": 1,
-    "theoremCount": 111,
+    "theoremCount": 100,
     "lemmaCount": 0,
     "imports": [
       "Mathlib.Combinatorics.SimpleGraph.Basic",
@@ -157,7 +157,7 @@
     "opens": [],
     "path": "Proofs/KnightsTourOblique.lean",
     "sorries": 0,
-    "definitionCount": 48
+    "definitionCount": 42
   },
   "mainTheorems": [
     {
