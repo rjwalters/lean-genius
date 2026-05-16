@@ -35,8 +35,15 @@ gives termCount(P²) ≥ 2k - 1.
    but NOT f(k) → ∞ (general polynomials). Bridging this gap requires controlling
    cancellation — an algebraic, not purely combinatorial, phenomenon.
 
-5. **Mathlib gap**: The sumset bound |A + A| ≥ 2|A| - 1 is not in Mathlib.
-   Provable via the min/max chain argument but requires nontrivial Finset work.
+5. **Mathlib gap (status update 2026-05-16)**: The sumset bound
+   |A + A| ≥ 2|A| - 1 is NOW IN MATHLIB at v4.26.0 as the additive form
+   of `cauchy_davenport_mul_of_linearOrder_isCancelMul` (file
+   `Mathlib/Combinatorics/Additive/CauchyDavenport.lean`). Mathlib also
+   has Plünnecke-Ruzsa (`Mathlib/Combinatorics/Additive/PluenneckeRuzsa.lean`).
+   Our hand-rolled `sumset_card_lower_bound` (lines 188–220 of
+   `Erdos485OQ02.lean`) can be refactored to a ~3-LOC Cauchy-Davenport
+   invocation. See `sessions/session-003-statesync-mathlibgap-stale.md`
+   Recipe A.
 
 ---
 
@@ -48,8 +55,25 @@ gives termCount(P²) ≥ 2k - 1.
 
 ---
 
-## Next Steps
+## Status (S3 STATE-SYNC 2026-05-16)
 
-- Prove `sumset_card_lower_bound` in Lean (the 1 sorry remaining)
-- Explore whether Freiman-Ruzsa inverse sumset theorems help bound cancellation
-- Consider: for random polynomials, how many cancellations occur on average?
+- `Erdos485OQ02.lean` is COMPLETE: 10 theorems, 0 sorries, 0 axioms.
+- `sumset_card_lower_bound` is already proved from first principles (the
+  earlier "1 sorry remaining" note is stale).
+- 3 file-lineCount drifts in the research JSON closed (451/327/225).
+
+---
+
+## Next Steps (post-S3)
+
+- **Recipe A**: Refactor `sumset_card_lower_bound` (33 → 3 LOC) using
+  `Mathlib.Combinatorics.Additive.CauchyDavenport`. Keep first-principles
+  proof as a pedagogical comment block. Needs Docker for build-verify.
+- **Recipe B**: Add (A + B).card ≥ A.card + B.card - 1 (two-set
+  variant) + Finset ℤ version (~10 LOC). Useful for Laurent-polynomial
+  extensions.
+- **Recipe C**: Explore Plünnecke-Ruzsa for cancellation control —
+  realistic outcome is a **negative result** (formal proof that
+  doubling-constant alone is insufficient). ~150-300 LOC.
+- Consider: for random polynomials, how many cancellations occur on
+  average? (probability-theoretic question, separate research direction)
