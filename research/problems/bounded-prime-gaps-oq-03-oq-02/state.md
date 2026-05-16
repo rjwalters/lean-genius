@@ -1,15 +1,69 @@
 # Current State
 
-**Phase**: PREP (S20 — S11a paste audit + S18 PREP §2 sub-lemma resync against SHIPPED `tryBranch`+`searchAux` API; **B1 STILL ACTIVE** — Docker daemon still hung at S20 PREP open, `docker info --format '{{.ServerVersion}}'` exit 124 @ 5s; host disk 6.9 Gi free / 100%; S11a-VERIFY remains INFRA-blocked. S11a ACT PR #19519 merged 2026-05-16T06:01Z still build-pending. Lean file unchanged at 953 LOC / 29 theorems / 5 defs / 1 sorry / 1 axiomCount; this PREP doc-only.)
-**Since**: 2026-05-16T09:30:00Z
-**Iteration**: 20 (S20 PREP — paste audit confirms 7/7 sub-sections verbatim; §3 surfaces 2 substantive DELTAs against S18 PREP §2; §6 ships paste-ready S11b-α combiner skeleton w/ 2 named sorries on `primesUpTo` membership extraction; refined S11b LOC budget +35-60 LOC over S18 PREP §2.4)
-**Researcher**: researcher-10 (S20 PREP, this PR, doc-only); researcher-9 (S11a ACT — PR #19519, build pending); researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Phase**: PREP (S21 STATE-SYNC — JSON `knowledge.*` catchup absorbing S11a ACT (PR #19519) + S20 PREP (PR #19570); **B1 STILL ACTIVE** — Docker daemon hung 9h since 2026-05-16T06:01Z, within < 12h Path C cancellation window; S11a-VERIFY remains INFRA-blocked. Lean file unchanged at 953 LOC / 1 sorry / 1 axiomCount; this STATE-SYNC doc-only.)
+**Since**: 2026-05-16T15:00:00Z
+**Iteration**: 21 (S21 STATE-SYNC — JSON `knowledge.progressSummary` + `knowledge.builtItems` (+7 Lean items, +5 session memos) + `knowledge.nextSteps` (rewritten to S11a-VERIFY + S11b-α/β/γ/δ four-sub-PR split) + top-level `lastUpdate` refresh; no Lean, no `knowledge.md` body, no `problem.md`, no `meta.json`, no bearer re-spot-check)
+**Researcher**: researcher-11 (S21 STATE-SYNC, this PR, doc-only); researcher-10 (S20 PREP — PR #19570); researcher-9 (S11a ACT — PR #19519, build pending); researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
 
 ## Blockers
 
 | ID | Description | Since | Mitigation |
 |----|-------------|-------|------------|
-| B1 | **Docker daemon hung** — `docker info` exit 124 at 30s timeout (Server section blank after Client section completes); host disk pressure 100% / 6.8 Gi free on `/System/Volumes/Data`; `error-dialog` Docker Desktop process active; backend at 57.5% CPU. Blocks all `./proofs/scripts/docker-build.sh` invocations. | 2026-05-16T06:01Z | Wait for host disk recovery (expected window 30 min – 4 h per prior incidents); run `docker system prune -f` when daemon responsive; re-attempt Docker round 1 verify of S11a paste. Precedent: S5 ACT for schroeder-bernstein-oq-01 PR #18707 → cleared by PR #18980. |
+| B1 | **Docker daemon hung** — `docker info` exit 124 at 30s timeout (Server section blank after Client section completes); host disk pressure 100% / 6.7 Gi free on `/System/Volumes/Data`. Blocks all `./proofs/scripts/docker-build.sh` invocations. | 2026-05-16T06:01Z | Wait for host disk recovery (expected window 30 min – 4 h per prior incidents); run `docker system prune -f` when daemon responsive; re-attempt Docker round 1 verify of S11a paste. **9h since hang** at S21 STATE-SYNC open — still within Path C cancellation window (12h). Precedent: S5 ACT for schroeder-bernstein-oq-01 PR #18707 → cleared by PR #18980. |
+
+## Session 22 — S21 STATE-SYNC (researcher-11, 2026-05-16, this PR, doc-only)
+
+**Deliverable**. `sessions/2026-05-16-s21-statesync-knowledge-catchup-post-s20.md`
+ships a tight (~150 LOC) doc-only JSON `knowledge.*` catchup absorbing
+the already-merged S11a ACT (PR #19519, 08:52Z, build pending) +
+S20 PREP (PR #19570, 13:52Z, post-paste audit + 4-sub-PR split) into
+the research JSON registry. S20 PREP updated `currentState.*` +
+iteration but missed `knowledge.{progressSummary,builtItems,nextSteps}`
++ top-level `lastUpdate`.
+
+**Drift closed (4 items)**:
+
+1. `knowledge.progressSummary` rewritten from S17/S18/S19 STATE-SYNC
+   framing → S11a ACT shipped + S20 PREP closing audit framing.
+2. `knowledge.builtItems` appended with 7 S11a ACT Lean items
+   (`tryBranch`, `searchAux`, `engelsmaSearchPruned`,
+   `engelsmaSearchPruned_eq_false_iff` with `sorry`,
+   `engelsma_lower_bound_of_engelsmaSearchPruned_false`,
+   `engelsmaSearchPruned_7_3_eq_true`,
+   `engelsmaSearchPruned_11_5_eq_true`) + 5 session memos (S17 PREP,
+   S18 PREP, Session 19 STATE-SYNC, S11a ACT, S20 PREP) + this S21
+   STATE-SYNC memo (12 net additions).
+3. `knowledge.nextSteps` rewritten from "S11 ACT — transcribe pruned
+   engelsmaSearchPruned" (stale; S11=S11a shipped) → S11a-VERIFY
+   (Path A) + S11b-α/β/γ/δ four-sub-PR split (Path B per S20 PREP §5)
+   + Path C cancellation clause + Alternative deferred S7 + Fallback.
+4. Top-level `lastUpdate` 2026-05-16T09:30:00Z → 2026-05-16T15:00:00Z.
+
+**Pre-flight**:
+
+- `gh pr list -R rjwalters/lean-genius --state open --search
+  "bounded-prime-gaps-oq-03-oq-02 in:title"` → 0 (conflict-free).
+- `timeout 30 docker info` → only `Client:` block; no `Server:`
+  Containers/Runtime/Storage Driver/Server Version lines (B1 still
+  RED; 9h since hang at 06:01Z).
+- `df -h /System/Volumes/Data` → 6.7 Gi avail (above 1 Gi threshold).
+- Mathlib pin `2df2f0150c…` unchanged (S20 PREP §4 confirmed zero
+  drift 1h ago; not re-spot-checked).
+
+**Net**. 0 Lean lines. State.md head: Phase/Iteration/Researcher
+refresh; B1 row updated (9h elapsed note + Path C window remaining);
+this S21 STATE-SYNC entry. JSON: `currentState.{focus,since,iteration:
+20→21}` + `knowledge.{progressSummary,builtItems[+12 entries],
+nextSteps[rewritten]}` + `lastUpdate`. New ~150-LOC session memo. No
+`knowledge.md` / `problem.md` / `meta.json` / gallery JSON / `.lean`
+touches. B1 blocker preserved.
+
+**Honest calibration**: this PR adds 0 Lean, closes 0 sorries, resolves
+0 open math questions, states 0 new theorems. It refreshes JSON so a
+future researcher (any agent) sees the actual built items + correct
+nextSteps reflecting the S11b 4-sub-PR split. The S11b-α-1 / S11b-α-2
+paper sorries from S20 PREP §6 are NOT discharged here (deferred to
+Path C activation when Docker hang exceeds 12h, currently 9h).
 
 ## Session 21 — S20 PREP (researcher-10, 2026-05-16, this PR, doc-only)
 
