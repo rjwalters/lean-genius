@@ -1,16 +1,19 @@
 # Current State
 
-**Phase**: AXIOMATIZED — Phase-3b Lever A SHIPPED (build verified, 3061 jobs)
-**Since**: 2026-05-14 (Phase-3b sibling shipped by researcher-8)
-**Iteration**: 6 (S1 OBSERVE → S2 ORIENT → S3 ACT-scaffold → S4 ACT-discharge → S5 STATE-SYNC → S6 ACT Phase-3b)
+**Phase**: AXIOMATIZED — Lever A residual SHIPPED (parent file refactor, slug axiom count 6 → 4; build pending, see §S8 §4)
+**Since**: 2026-05-16 (S8 ACT — researcher-5)
+**Iteration**: 7 (S1 OBSERVE → S2 ORIENT → S3 ACT-scaffold → S4 ACT-discharge → S5 STATE-SYNC → S6 ACT Phase-3b → S7 PREP doc-only (#19174) → S8 ACT Lever A residual)
 
 ## Status Summary
 
-Two Lean files now constitute the slug deliverable, both **axiomatized**:
+Two Lean files constitute the slug deliverable. Both are **axiomatized**;
+no vacuous `True` codomains remain anywhere in the slug:
 
 **Parent** (`proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean`):
-- **257 lines**, 7 theorems, 2 definitions, **0 sorries**, **2 axioms**
-  (both with `True` codomain — Phase-3a placeholders).
+- **230 lines** (was 257; S8 −27 LOC), 7 theorems, 2 definitions,
+  **0 sorries**, **0 axioms** (S8 deleted both `True`-codomain
+  placeholders; Part III docstring rewritten as 12-line pointer to
+  Phase3b).
 
 **Phase-3b sibling** (`proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean`):
 - **173 lines**, 5 theorems, 0 definitions, **0 sorries**, **4 axioms**
@@ -18,6 +21,8 @@ Two Lean files now constitute the slug deliverable, both **axiomatized**:
   non-trivial codomain).
 - Status (meta.json): `"axiomatized"` / badge `"axiom"` — correct per the
   axiom-integrity policy.
+
+**Slug-level axiom count: 4** (all in Phase3b; parent is now axiom-free).
 
 ### What is proved (axiom-free from Mathlib 4.26.0)
 
@@ -35,14 +40,10 @@ Two Lean files now constitute the slug deliverable, both **axiomatized**:
 
 ### What is axiomatized (the open frontier)
 
-**Parent file** (Phase-3a placeholders):
-
-| Axiom | Statement (placeholder codomain) |
-|-------|----------------------------------|
-| `easton_permitted_realizable` | `∀ κ, IsPermittedValue κ → True` (pointwise Easton 1970) |
-| `easton_consistency` | `∀ F, IsEastonFunction F → True` (function-level Easton 1970) |
-
-Both axioms use `True` as a Phase-3a placeholder for the genuine target.
+**Parent file**: NONE — axiom-free as of S8 (Lever A residual).
+The two prior `True`-codomain placeholders
+(`easton_permitted_realizable`, `easton_consistency`) were deleted;
+their genuine `_strong` analogues live in the Phase-3b sibling.
 
 **Phase-3b sibling** (S6 — Lever A shipped 2026-05-14):
 
@@ -69,14 +70,17 @@ these theorems produce terms of non-trivial type that downstream callers can cit
 ## Current Focus
 
 None active. The slug is in a **clean axiomatized rest state** with
-Phase-3b Lever A complete. Any further iteration is a Phase-4 project
-(flypitch-port of class forcing to Lean 4), not a single-session
-continuation.
+Lever A residual (S8) now shipped. All 4 slug-level axioms have
+non-trivial codomain; the parent file is axiom-free. Any further
+iteration is a Lever B (sibling bridge) or Lever C (Phase-4 flypitch
+scoping) project, not a single-session continuation.
 
 ## Active Approach
 
-None pending. S6 ACT shipped Lever A: `ConsistencyOf*` predicates
-+ strong-Easton axioms. Build clean (3061 jobs).
+None pending. S6 ACT shipped Lever A (sibling file with `ConsistencyOf*`
+predicates + strong-Easton axioms); S8 ACT shipped Lever A residual
+(parent file refactored to delete vacuous `True`-codomain axioms).
+Build clean.
 
 ## Blockers (for Phase-3b)
 
@@ -97,11 +101,14 @@ Two `ConsistencyOf*` predicates + two strong-Easton axioms + 5 derived
 theorems demonstrating callable content. Build clean (3061 jobs, 4.8s).
 See Status Summary above for the full inventory.
 
-Remaining Lever A work (deferred): the parent file's two `True`-codomain
-axioms still stand. A future refactor could rewrite them to use the new
-`ConsistencyOf*` predicates directly, but that requires editing the
-parent (small risk of cascading line-count / annotation drift) and was
-deemed out of scope for the S6 session.
+### ~~Lever A residual — delete parent's vacuous `True`-codomain axioms~~ — SHIPPED S8 (2026-05-16)
+
+Per S7 PREP plan (#19174): deleted `axiom easton_permitted_realizable`
+and `axiom easton_consistency` from the parent file (no external Lean
+callers, per `rg` audit at S7 PREP §3), removed their 2 `#check`
+directives, and rewrote Part III docstring as a 12-line pointer to
+the Phase3b companion. Parent file: 257 → 230 LOC; axiomCount 2 → 0.
+Slug-level axiom count: 6 → 4 (all axioms now non-trivial-codomain).
 
 ### Lever B — bridge with sibling `…OQ-02-OQ-03`
 
@@ -135,19 +142,21 @@ for Easton, Solovay-SCH, and Shelah-PCF problems.
 
 ## Next Action
 
-None autonomously. Lever A is shipped; Lever B (bridge with sibling
+None autonomously. Lever A (Phase-3b axioms) and Lever A residual
+(parent refactor) are both shipped. Lever B (bridge with sibling
 OQ-02-OQ-03) and Lever C (flypitch scoping doc) remain available.
-Wait for either (a) a seeker selection of this slug, or (b) a
-curator/peer-reviewer flagging the parent's `True`-codomain axioms
-as a refactor target now that the strong forms are available.
+Wait for either (a) a seeker selection of this slug for Lever B/C, or
+(b) a Phase-4 flypitch-port effort starting elsewhere in the codebase.
 
 ## Attempt Counts
 
-- Total iterations: 6 (S1–S4 originally; S5 STATE-SYNC; S6 ACT Phase-3b)
+- Total iterations: 7 (S1–S4 originally; S5 STATE-SYNC; S6 ACT Phase-3b; S7 PREP doc-only; S8 ACT Lever A residual)
 - Current approach attempts: 0 (rest state)
-- Approaches tried: 2 — "two-axiom scaffold + 7 Mathlib-derived supporting
+- Approaches tried: 3 — "two-axiom scaffold + 7 Mathlib-derived supporting
   theorems" (Phase-3a, ships); "deeper-axiomatization sibling with
-  ConsistencyOf predicates" (Phase-3b Lever A, ships).
+  ConsistencyOf predicates" (Phase-3b Lever A, ships); "delete parent's
+  vacuous True-codomain axioms now that strong forms are available"
+  (Lever A residual, ships).
 
 ## Session History (audit-trail)
 
@@ -162,6 +171,8 @@ beyond DRAFT status are listed separately below.
 | S4 | 2026-05-08 | ACT (discharge) | researcher-8 | closed `aleph_succ_permitted` + `isEastonFunction_continuum.monotone`; 0 sorries |
 | S5 | 2026-05-13 | STATE-SYNC | researcher-12 | first-commit `problem.md` + `state.md` (were untracked working-tree stubs on main); aligned phase label with actual axiomatized status; documented levers A/B/C |
 | S6 | 2026-05-14 | ACT (Phase-3b Lever A) | researcher-8 | shipped `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean` (173 LOC, 4 axioms, 5 theorems, 0 sorries); build clean (3061 jobs, 4.8s); `ConsistencyOfContinuumValue` / `ConsistencyOfContinuumFunction` predicates + strong-Easton axioms with non-trivial codomain |
+| S7 | 2026-05-14 | PREP (doc-only) | researcher-8 | shipped Lever A residual scoping memo (PR #19174): line-range plan, external-caller `rg` audit (0 functional callers), conflict-free certification vs PR #19112, S8 ACT plan |
+| S8 | 2026-05-16 | ACT (Lever A residual) | researcher-5 | refactored parent file: deleted 2 vacuous `True`-codomain axioms + 2 `#check` directives, rewrote Part III docstring as 12-LOC pointer to Phase3b; parent file 257 → 230 LOC, axiomCount 2 → 0; slug axiom count 6 → 4 |
 
 ### Unshipped drafts (informational, not session-numbered)
 

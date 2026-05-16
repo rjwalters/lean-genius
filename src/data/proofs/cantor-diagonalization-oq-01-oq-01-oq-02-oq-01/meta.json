@@ -20,9 +20,9 @@
     ],
     "badge": "axiom",
     "sorries": 0,
-    "axiomCount": 2,
-    "lineCount": 257,
-    "assumptions": "2 axiom declarations (easton_permitted_realizable and easton_consistency) state the realizability direction of Easton's 1970 theorem: every regular κ > ℵ₀ is realizable as 2^ℵ₀, and every Easton function is realizable as the continuum function on regular cardinals. Both axioms have True as codomain (placeholder), since a genuine Consistent (ZFC ∪ ⟦...⟧) predicate would require Gödel-encoding ZFC formulas — deferred to a future Phase-3b file. All 7 supporting theorems are now fully machine-checked from Mathlib (axiom-free): IsPermittedValue scaffold, aleph_one_permitted, aleph_two_permitted, aleph_succ_permitted, permitted_satisfies_konig, permitted_unbounded, IsEastonFunction structure, isEastonFunction_continuum, isEastonFunction_nonempty. The previous Phase-3a sorries (aleph_succ_permitted, isEastonFunction_continuum.monotone) were closed in Phase-3a-fix: the ℵ₀ < ℵ_(succ α) step uses ℵ₀ = aleph 0 ≤ aleph α < succ (aleph α) (via Cardinal.aleph_zero, Cardinal.aleph_le_aleph, Order.lt_succ); the monotone field uses Cardinal.power_le_power_right (the previous comment claiming it varies the base was incorrect — confirmed exponent-monotonic in current Mathlib via the sibling OQ-02-OQ-03 file).",
+    "axiomCount": 0,
+    "lineCount": 230,
+    "assumptions": "The parent file is now axiom-free (Phase-3a-fix discharged both sorries; S8 Lever A residual deleted the two vacuous True-codomain axioms easton_permitted_realizable and easton_consistency, which were Phase-3a placeholders). The slug-level axiomatization (4 axioms) now lives entirely in the Phase3b companion file CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean, which carries the genuine Easton 1970 realizability claim with non-trivial codomain: ConsistencyOfContinuumValue : Cardinal.{0} → Prop and ConsistencyOfContinuumFunction : (Cardinal.{0} → Cardinal.{0}) → Prop are abstract predicates (2 axioms); easton_permitted_realizable_strong (every permitted κ > ℵ₀ realizable as 2^ℵ₀, with ConsistencyOfContinuumValue codomain) and easton_consistency_strong (every Easton function realizable as continuum function on regulars, with ConsistencyOfContinuumFunction codomain) are the strong-Easton claims (2 axioms). All 7 supporting theorems in the parent file are now fully machine-checked from Mathlib (axiom-free): IsPermittedValue scaffold, aleph_one_permitted, aleph_two_permitted, aleph_succ_permitted, permitted_satisfies_konig, permitted_unbounded, IsEastonFunction structure, isEastonFunction_continuum, isEastonFunction_nonempty. The Phase3b file derives 5 callable theorems demonstrating the strong axioms have non-trivial output (consistencyOfContinuumFunction_continuum, consistencyOfContinuumValue_aleph_{one,two,succ,unbounded}). Slug-level axiom count: 4 (all Phase3b).",
     "mathlib_version": "4.26.0",
     "theoremCount": 7,
     "definitionCount": 2
@@ -73,20 +73,20 @@
       "mathContext": "The structure $\\mathsf{IsEastonFunction}\\,F$ captures the function-level Easton conditions on regular cardinals: $F(\\kappa) \\geq \\kappa^+$, $\\kappa \\leq \\lambda \\Rightarrow F(\\kappa) \\leq F(\\lambda)$, $\\mathrm{cf}(F(\\kappa)) > \\kappa$. The witness $F(\\kappa) = 2^\\kappa$ satisfies all three from Mathlib's Cantor, power_le_power_right, and lt_cof_power lemmas."
     },
     {
-      "id": "easton-axioms",
-      "title": "Easton Consistency: Axiomatized Realizability",
+      "id": "easton-axioms-pointer",
+      "title": "Easton Consistency: Pointer to Phase3b Companion File",
       "startLine": 174,
-      "endLine": 218,
-      "summary": "Axiomatizes Easton's 1970 realizability theorem at two granularities: easton_permitted_realizable (every permitted value κ > ℵ₀ realizable as 2^ℵ₀) and easton_consistency (every Easton function realizable as the continuum function on regulars). Both axioms have True as codomain — a placeholder for a future Consistent-of-ZFC predicate. 2 axiom declarations.",
-      "mathContext": "$\\mathsf{Easton}\\,(1970)$: $\\mathsf{Con}(\\mathsf{ZFC}) \\Rightarrow \\mathsf{Con}(\\mathsf{ZFC} + (\\forall \\kappa\\,\\mathrm{regular} \\geq \\aleph_0:\\, 2^\\kappa = F(\\kappa)))$ for every Easton function $F$. The proof uses Easton product forcing — class-sized partial orders adding $F(\\kappa) - \\kappa$ many Cohen subsets to $\\kappa$ for every regular $\\kappa$. Not formalized in Lean."
+      "endLine": 213,
+      "summary": "Part III now redirects the reader to the Phase3b companion file CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean, where Easton's 1970 realizability theorem is axiomatized with non-trivial codomain (ConsistencyOfContinuumValue / ConsistencyOfContinuumFunction). The earlier vacuous True-codomain axioms in this file were retired in S8 Lever A residual; they had no mathematical content beyond what the Phase3b _strong siblings carry.",
+      "mathContext": "Pointer narrative. The genuine $\\mathsf{Easton}\\,(1970)$ statement lives in the Phase3b companion: $\\mathsf{Con}(\\mathsf{ZFC}) \\Rightarrow \\mathsf{Con}(\\mathsf{ZFC} + (\\forall \\kappa\\,\\mathrm{regular} \\geq \\aleph_0:\\, 2^\\kappa = F(\\kappa)))$ for every Easton function $F$, packaged via the abstract ConsistencyOf predicates."
     },
     {
       "id": "verification",
       "title": "Verification Section",
-      "startLine": 234,
-      "endLine": 251,
-      "summary": "#check declarations confirm all 7 theorems, 1 definition, 1 structure, and 2 axioms type-check correctly. Closes the namespace CantorDiagOQ01OQ01OQ02OQ01.",
-      "mathContext": "Sanity check: every public symbol in the file has its expected type signature."
+      "startLine": 213,
+      "endLine": 230,
+      "summary": "#check declarations confirm all 7 theorems, 1 definition, and 1 structure type-check correctly. Closes the namespace CantorDiagOQ01OQ01OQ02OQ01. The previous two #check directives for the deleted axioms (easton_permitted_realizable, easton_consistency) were removed in S8 Lever A residual.",
+      "mathContext": "Sanity check: every public symbol in the parent file has its expected type signature."
     }
   ],
   "conclusion": {
@@ -107,8 +107,8 @@
       "Mathlib.Tactic"
     ],
     "namespace": "CantorDiagOQ01OQ01OQ02OQ01",
-    "lineCount": 257,
-    "axiomCount": 2,
+    "lineCount": 230,
+    "axiomCount": 0,
     "theoremCount": 7,
     "definitionCount": 2,
     "path": "Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean",
