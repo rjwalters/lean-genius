@@ -2,12 +2,12 @@
   "id": "ehrhart-cube-proven-oq-04",
   "title": "Eulerian-Number Interpretation of the h*-Vector of the Unit Cube",
   "slug": "ehrhart-cube-proven-oq-04",
-  "description": "Open question from `ehrhart-cube-proven`: formalize the classical identity that the Ehrhart h*-vector of the unit d-cube is the sequence of Eulerian numbers (A(d, 0), A(d, 1), …, A(d, d-1)). Equivalently, Worpitzky's identity: (n+1)^d = Σ_{k=0}^{d-1} A(d, k) · C(n+1+k, d). Defines `eulerianNumber d k` via the standard recurrence, verifies values for d ≤ 4 by `rfl`, and proves the row-sum identity Σ A(d, k) = d! (S3), the general Worpitzky identity (S4) by induction on d, and the palindrome A(d, k) = A(d, d-1-k) (S5) by algebraic induction on d. Source has 0 sorries; build verification pending.",
+  "description": "Open question from `ehrhart-cube-proven`: formalize the classical identity that the Ehrhart h*-vector of the unit d-cube is the sequence of Eulerian numbers (A(d, 0), A(d, 1), …, A(d, d-1)). Equivalently, Worpitzky's identity: (n+1)^d = Σ_{k=0}^{d-1} A(d, k) · C(n+1+k, d). Defines `eulerianNumber d k` via the standard recurrence, verifies values for d ≤ 4 by `rfl`, and proves the row-sum identity Σ A(d, k) = d! (S3), the general Worpitzky identity (S4) by induction on d, and the palindrome A(d, k) = A(d, d-1-k) (S5) by algebraic induction on d. Source has 0 sorries, 0 axioms; Docker build verified at Mathlib v4.26.0 via PR #19101 (7743 jobs clean).",
   "meta": {
     "author": "Lean Genius Research",
     "sourceUrl": "https://en.wikipedia.org/wiki/Eulerian_number",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/EhrhartCubeProvenOQ04.lean",
     "tags": [
       "combinatorics",
@@ -23,10 +23,10 @@
       "research",
       "seeker-selected"
     ],
-    "badge": "wip",
+    "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 677,
+    "lineCount": 775,
     "assumptions": "",
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-11",
@@ -81,7 +81,7 @@
         "module": "Mathlib.Algebra.BigOperators.Basic"
       }
     ],
-    "theoremCount": 27,
+    "theoremCount": 30,
     "definitionCount": 2,
     "relatedProblems": [
       {
@@ -178,9 +178,9 @@
       "Finset"
     ],
     "namespace": "EhrhartCubeProvenOQ04",
-    "lineCount": 677,
+    "lineCount": 775,
     "axiomCount": 0,
-    "theoremCount": 27,
+    "theoremCount": 30,
     "definitionCount": 2,
     "path": "Proofs/EhrhartCubeProvenOQ04.lean",
     "sorries": 0

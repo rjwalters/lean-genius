@@ -1,29 +1,35 @@
 # Current State
 
-**Phase**: BUILD-VERIFY-FAILED (S8 first Docker baseline — 7 surface errors in slug-target file post-v4.26.0 toolchain bump)
-**Since**: 2026-05-14T15:30:00Z (S8 STATE-SYNC — build-pending blocker inventory, doc-only)
-**Iteration**: 8
-**Researcher**: researcher-12
+**Phase**: VERIFIED (S9 ACT mechanic fix PR #19101 merged 2026-05-15T22:59:15Z; Docker build clean, 7743 jobs; S12 STATE-SYNC absorbs the S8 → S9 PREP → S10 PREP → S11 PREP → S9 ACT cascade)
+**Since**: 2026-05-15T22:59:15Z (S9 ACT mechanic fix merge — first clean Docker baseline)
+**Iteration**: 12
+**Researcher**: researcher-12 (S12 STATE-SYNC)
 
 ## Current Focus
 
-S8 BUILD-VERIFY (this PR — researcher-12 2026-05-14):
-Ran first Docker baseline of `Proofs.EhrhartCubeProvenOQ04` after 7 consecutive
-"(build pending)" PRs (S1 SCAFFOLD → S7 POLY-COROLLARIES). All seven
-prior research PRs shipped under the convention "Docker cold-build ~45 min,
-`.lake` symlink trap" — none Docker-verified. Memory's silent-regression
-heuristic (4+ consecutive "(build pending)" PRs = mandatory baseline)
-applies; baseline surfaced **7 real proof errors** in the slug's own
-target file `proofs/Proofs/EhrhartCubeProvenOQ04.lean`. None of the
-errors are in parent files (`Mathlib`, `EhrhartCubeProven`) — they are
-all v4.26.0 elaborator-strictness or proof-logic regressions inside
-the slug's own theorems.
+S12 STATE-SYNC (this PR — researcher-12 2026-05-15):
+Consumes the merged 5-PR cascade that resolved the S8 7-error inventory:
 
-This PR is **doc-only**: updates `state.md` to reflect the build-pending
-blocker status and provides a surgical error inventory for the S9
-follow-up (mechanic-scope). No Lean source edits — bundling a 7-error
-fix in a research PR violates memory's `> 3 errors = ship inventory,
-defer multi-error fix to mechanic` guidance.
+| # | PR | Title | Merged |
+|---|---|---|---|
+| 1 | #19078 | S8 BUILD-VERIFY — 7-error inventory (doc-only) | 2026-05-15T23:26:37Z |
+| 2 | #19220 | S9 PREP — mechanic kit (doc-only) | 2026-05-15T18:05:33Z |
+| 3 | #19298 | S10 PREP — audit of S9 kit (doc-only) | 2026-05-15T18:00:47Z |
+| 4 | #19303 | S11 PREP — ACT-readiness gate (doc-only) | 2026-05-15T19:00:33Z |
+| 5 | #19101 | S9 ACT — mechanic 7-error parent repair (16 ins / 13 dels) | 2026-05-15T22:59:15Z |
+
+Net result: `proofs/Proofs/EhrhartCubeProvenOQ04.lean` builds clean
+at Mathlib v4.26.0 (SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`),
+7743 jobs in ~10s warm-cache. **0 sorries, 0 axioms, 0
+structure-encoded assumptions** — meets CLAUDE.md `status: verified`
+definition. The cascade's zero-drift property held: the S10 PREP
+Option-variant recommendations `1A / 2B / 3A / 4A / 5A / 6 / 7`
+landed verbatim through S11 PREP into PR #19101's per-site edits.
+
+See `sessions/2026-05-15-s12-state-sync-build-verified.md` for the
+full cascade timeline, drift-recheck table, and orthogonality
+manifest. This PR is **doc-only**: updates state.md, meta.json, and
+ships a new session note. No Lean source edits.
 
 ## Blockers (S8 BUILD-VERIFY INVENTORY — 7 errors)
 
@@ -225,7 +231,12 @@ mathematical content change. All errors are localized and independent
 (no inter-error coupling). Mechanic should be able to land all seven
 in one Docker iteration after triaging each independently.
 
-## What's Built (cumulative S1–S7, COMPILE-PENDING)
+## What's Built (cumulative S1–S7, BUILD-VERIFIED via PR #19101)
+
+> Post-verification: all seven `[Error N]` markers below are
+> retrospectively retired by the merged S9 ACT mechanic fix; the
+> per-error inventory in §"Blockers" remains canonical surgical-fix
+> reference for future toolchain regressions.
 
 ### Definitions (axiom-free, computable)
 - `eulerianNumber : ℕ → ℕ → ℕ` — recurrence A(d+1, k+1) = (k+2) A(d, k+1) + (d-k) A(d, k).
@@ -235,7 +246,7 @@ in one Docker iteration after triaging each independently.
 - A(0..4, *) — 13 entries plus row-sum and palindrome sanity checks.
 
 ### Structural helpers (S3)
-- `eulerian_zero_eq_one : ∀ d, A(d, 0) = 1`. **[Error 1 — fails to elaborate]**
+- `eulerian_zero_eq_one : ∀ d, A(d, 0) = 1`. [verified; PR #19101 Error 1 fix]
 - `eulerian_eq_zero_of_le : ∀ d k, 0 < d → d ≤ k → A(d, k) = 0`.
 
 ### Recurrence helper (S5)
@@ -243,22 +254,22 @@ in one Docker iteration after triaging each independently.
     A(d+1, k+1) = (k+2)·A(d, k+1) + (d-k)·A(d, k)` — definitional `rfl`.
 
 ### Row-sum theorem (S3)
-- `eulerian_row_sum_factorial : ∀ d, 0 < d → ∑ k ∈ range d, A(d, k) = d!`. **[Error 2 — unsolved `+ 0`]**
+- `eulerian_row_sum_factorial : ∀ d, 0 < d → ∑ k ∈ range d, A(d, k) = d!`. [verified; PR #19101 Error 2 fix]
 
 ### Worpitzky step (S4)
 - `worpitzky_step (n d k : ℕ) (hk : k ≤ d) :
-    (k+1) * C(n+1+k, d+1) + (d-k) * C(n+2+k, d+1) = (n+1) * C(n+1+k, d)`. **[Error 4 — unsolved arithmetic]**
+    (k+1) * C(n+1+k, d+1) + (d-k) * C(n+2+k, d+1) = (n+1) * C(n+1+k, d)`. [verified; PR #19101 Error 4 fix]
 
 ### Worpitzky's identity (S4, main theorem)
 - `worpitzky_identity_cube (d : ℕ) (hd : 0 < d) (n : ℕ) :
-    (n + 1)^d = ∑ k ∈ Finset.range d, A(d, k) * C(n + 1 + k, d)`. **[Error 5 — rewrite pattern mismatch]**
+    (n + 1)^d = ∑ k ∈ Finset.range d, A(d, k) * C(n + 1 + k, d)`. [verified; PR #19101 Error 5 fix]
 
 ### Palindromic symmetry (S5)
 - `eulerian_palindrome (d k : ℕ) (hd : 0 < d) (hk : k < d) :
-    A(d, k) = A(d, d - 1 - k)`. **[Error 3 — Unknown identifier d after subst]**
+    A(d, k) = A(d, d - 1 - k)`. [verified; PR #19101 Error 3 fix]
 
 ### Coefficient extraction (S2)
-- `cube_h_star_eulerian : ∀ d k, 0 < d → k < d → (cubeHStarPoly d).coeff k = A(d, k)`. **[Error 7 — sum_ite_eq direction]**
+- `cube_h_star_eulerian : ∀ d k, 0 < d → k < d → (cubeHStarPoly d).coeff k = A(d, k)`. [verified; PR #19101 Error 7 fix]
 - `cube_lattice_count_eulerian : ∀ d n, 0 < d →
     |Fin d → Fin (n+1)| = ∑ A(d, k) C(n+1+k, d)`.
 
@@ -272,44 +283,67 @@ in one Docker iteration after triaging each independently.
     (cubeHStarPoly d).coeff k = (cubeHStarPoly d).coeff (d - 1 - k)`.
 
 ### Concrete cases (S4)
-- `worpitzky_d2 (n : ℕ) : (n+1)^2 = C(n+1, 2) + C(n+2, 2)`. **[Error 6 — redundant pow_two]**
+- `worpitzky_d2 (n : ℕ) : (n+1)^2 = C(n+1, 2) + C(n+2, 2)`. [verified; PR #19101 Error 6 fix]
 
 ## Next Action
 
-**S9 (mechanic/doctor-scope full-file repair)**:
-Apply the 7 surgical fixes documented in the inventory above. Expected
-LOC: ~10-15 across 7 sites. After repair, re-run
-`./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ04` from a
-worktree CWD; expect ~5-10 min cold-build (Mathlib cache hit). On
-success, ship S9 BUILD-VERIFIED PR upgrading badge to `verified` and
-status to `proved`.
+**S13 (OPTIONAL — Mathlib upstream contribution)**:
+The slug is now `verified`/`proved` from the gallery's perspective.
+The Worpitzky identity (`worpitzky_identity_cube`) and the Eulerian
+recurrence (`eulerianNumber`) are textbook combinatorial content
+not currently in Mathlib (`Mathlib.Combinatorics.Enumerative.*`).
+Upstreaming candidates: `Nat.eulerianNumber` (def + recurrence),
+`Nat.eulerian_row_sum_factorial` (row-sum), and
+`Nat.worpitzky_identity_cube` (main theorem). See S12 STATE-SYNC
+session note §7 for the full contribution map.
 
-**S10 (post-build)**:
-1. Audit-sync `meta.json` (line counts, theoremCount, axiomCount).
-2. Optional: Mathlib upstream contribution path (Combinatorics/Enumerative).
+S13 is **not required** for slug completion. If no S13 work is
+undertaken, the slug terminates here with 30 theorems + 2 defs,
+0 sorries, 0 axioms, Docker-verified at Mathlib v4.26.0.
+
+**S14 (REGRESSION CHECK — prospective)**:
+On any future Mathlib toolchain bump (v4.27.0 and beyond), re-run
+`./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ04`
+as a regression baseline before any new S## research lands. The
+7-error v4.26.0 surface is canonical — should it recur, the S8
+inventory in §"Blockers" below remains the surgical-fix reference.
 
 ## Attempt Counts
 
-- Total attempts: 8 (S1 SCAFFOLD, S2 STRUCTURAL, S3 ROW-SUM, S4 WORPITZKY, S5 PALINDROME, S6 PALINDROME-COROLLARY, S7 POLY-COROLLARIES, S8 BUILD-VERIFY)
-- Current approach attempts: 0 (S9 mechanic-scope)
-- Approaches tried: 1 (S8 docker baseline → 7-error inventory)
+- Total iterations: 12 (S1 SCAFFOLD, S2 STRUCTURAL, S3 ROW-SUM, S4 WORPITZKY, S5 PALINDROME, S6 PALINDROME-COROLLARY, S7 POLY-COROLLARIES, S8 BUILD-VERIFY, S9 PREP, S10 PREP, S11 PREP, S12 STATE-SYNC)
+- S9 ACT (mechanic-scope, sibling PR #19101): 1 iteration (clean on first Docker build)
+- Approaches tried: 2 (S8 docker baseline → 7-error inventory; S9 ACT mechanic surgical 7-site repair → clean build)
 
-## Open Questions / Risks
+## Open Questions / Risks (post-verify, retrospective)
 
-1. **All seven errors are surface-fixable** — confidence high (each error
-   has a localized surgical-fix candidate; no proof restructuring needed).
-   Risk: a fix could surface a hidden eighth error masked by error 1's
-   early termination failure. Mechanic should iterate Docker-build until
-   clean.
+1. **All seven errors were surface-fixable** — confirmed by PR #19101's
+   single-iteration clean Docker build (7743 jobs, ~10s). The
+   "hidden eighth error" risk did not materialize. The pre-fix
+   inventory's confidence rating ("≥ 0.6 conf for medium-confidence
+   sites 2/4/5") was upheld by S11 PREP's goal-state walks
+   upgrading those to ≥ 0.95 conf.
 
-2. **Pre-v4.26.0 build status unknown** — the 7 PRs (S1-S7) shipped
-   under "build pending" convention; impossible to determine if any
-   ever Docker-built. Most likely the file was never built cleanly,
-   so these are not "regressions" but "latent defects". Confirmation
-   would require checking PR CI artifacts or the toolchain bump
-   commit timeline.
+2. **Pre-v4.26.0 build status confirmed unknown / likely never-built**
+   — the S1-S7 PRs (2026-05-12 to 2026-05-13) all shipped under
+   "(build pending)" convention with the toolchain bump landing
+   between then and S8 BUILD-VERIFY (2026-05-14). PR #19101's clean
+   build at v4.26.0 retroactively confirms the seven errors were
+   latent defects, not regressions — they would have surfaced on the
+   first Docker build regardless of toolchain version, since the
+   v4.26.0-specific changes (Error 4 `Nat.add_mul` distribution,
+   Error 6 `pow_two` no-op) interact with proof-construction choices
+   the original PRs made.
 
-3. **Mathlib v4.26.0 stricter no-op rewrites** — error 6 reveals
-   `pow_two` no-op rewrite now errors; this pattern may affect other
-   files in the gallery. Worth a Hermit scan for `rw [_, _] at *`
-   chains where the same lemma is repeated. (Out of scope for this slug.)
+3. **Mathlib v4.26.0 stricter no-op rewrites pattern** — Error 6
+   (`rw [pow_two, pow_two] at *`) is a Hermit-scope concern: same
+   lemma repeated in `rw [_, _]` chains is now a silent failure
+   across the gallery. Out of scope for this slug; flagged for a
+   Hermit cross-gallery scan.
+
+4. **`theoremCount` / `lineCount` audit drift** — meta.json's
+   `theoremCount: 27` (now 30) and `lineCount: 677` (now 775)
+   pre-date the S6/S7 corollaries and post-S1 LOC growth. The prior
+   `fix(meta) #17850/#17868/#17878` audit chain (2026-05-12)
+   didn't catch the drift because it used merged pre-build counts.
+   S12 STATE-SYNC corrects this; future `fix(meta)` PRs should hit
+   `wc -l` parity against the source.
