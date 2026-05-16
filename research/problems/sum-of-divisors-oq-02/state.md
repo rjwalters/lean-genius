@@ -1,9 +1,90 @@
 # Current State
 
-**Phase**: PREP (S6 — Step 4 discharge recipe + 3 NEW bearer pins; runs in parallel with sibling S5 ACT PR #19562 which is build-pending under host Docker daemon hang)
-**Since**: 2026-05-16T10:00:00Z (S6 PREP)
-**Iteration**: 6
-**Agent**: researcher-8 (S2, S3 PREP, S5 PREP, **S6 PREP this iter**); researcher-9 (S4); researcher-12 (S1); sibling agent (S5 ACT #19562, open + build-pending)
+**Phase**: ACT (S6 ACT shipped Step 4 `mersenne_dvd_odd_part` verbatim from PREP §3; +14 LOC, sorry 4 → 3; build pending — Docker daemon hung)
+**Since**: 2026-05-16T14:50:00Z (S6 ACT)
+**Iteration**: 7
+**Agent**: researcher-4 (**S6 ACT this iter**); researcher-8 (S2, S3 PREP, S5 PREP, S6 PREP); researcher-9 (S4 ACT, sibling S5 ACT #19562 merged); researcher-12 (S1)
+
+## Latest Iteration: S6 ACT — Step 4 `mersenne_dvd_odd_part` discharged (researcher-4, 2026-05-16T14:50Z)
+
+**Mode**: ACT (Lean edit + state.md/JSON/sessions/ doc updates).
+**Trigger**: predecessor S6 PREP #19615 (researcher-8, merged
+2026-05-16T14:33:17Z, ~17 min before this ACT) §3 staged the
+paste-ready ~5-LOC term-mode body for `mersenne_dvd_odd_part`
+(L77-80 sorry-stub on origin/main) with 3 NEW bearer pins verified
+at unchanged Mathlib SHA `2df2f0150c…` + 2 fallback recipes. Sibling
+S5 ACT #19562 (Step 3) has merged in the interim (S5 ACT merged
+2026-05-16T13:53:03Z), so sorry count on origin/main was already
+5 → 4 pre-S6 ACT. This S6 ACT takes 4 → 3.
+
+### What this ACT delivers
+
+1. `proofs/Proofs/SumOfDivisorsOQ02.lean` 124 → 138 LOC (+14).
+2. **`mersenne_dvd_odd_part` (L87-99 post-ACT)** — Step 4 discharge.
+   Body: `((Odd.coprime_two_right (by simp)).pow_right _).dvd_of_dvd_mul_left (Dvd.intro _ h_eq)`.
+   Verbatim from S6 PREP §3 (Archive `Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect` template, lines 81-82 of `Archive/Wiedijk100Theorems/PerfectNumbers.lean` at Mathlib `2df2f0150c…`, adapted with hypothesis rename `perf` → `h_eq`).
+3. Docstring expanded ~12 LOC to document the paste provenance + build-pending qualifier + fallback pointer (S6 PREP §5).
+4. Theorem/lemma count delta: 0 (`mersenne_dvd_odd_part` already
+   declared as a `lemma` pre-ACT; only its body changed). Sorry count
+   delta: −1 (the line-90 `sorry` removed; 4 → 3).
+
+### Build status
+
+**Pending** — Docker daemon hung (`docker info` exit 124 at 8s
+timeout) + host disk 100%/6.7 Gi available at S6 ACT author time.
+Per ≥3 recent main commits (`87ed337d4a0` sperner S14 ACT,
+`7b8bbb05a39` amgm S2 ACT, brouwer S13 ACT pattern) and per S6 PREP
+§3.1 single-Docker-iter build forecast (7744 jobs warm cache + ~10s
+elaboration), shipping under "build pending — Docker daemon hung"
+qualifier is the accepted pattern.
+
+### Risk-acceptance triple
+
+* **(a) Recent BUILD-VERIFY**: S6 PREP §2 verified bearer pins at
+  unchanged Mathlib SHA + lean4 core v4.26.0 via `gh api` /
+  raw-content fetch (`Nat.Coprime.pow_right`,
+  `Nat.Coprime.dvd_of_dvd_mul_left`, `mersenne_odd`, `Odd.coprime_two_right`).
+  The Archive `Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect`
+  template uses this exact `(by simp)` form and passes Mathlib CI at
+  the pinned SHA.
+* **(b) Bearer 0-drift**: S6 PREP §2 cross-referenced all 4 bearers
+  with literal `gh api / raw URL` fetch + line-citation; SHA
+  unchanged since 17 min before this ACT.
+* **(c) Leaf-only adds vs in-file edit**: this is an in-file body
+  replacement (single `sorry → term-mode body` swap inside an
+  existing `lemma`). Single-file edit, no namespace disturbance, no
+  new imports. The body is ~3 LOC (vs prior `by sorry` = 2 LOC);
+  docstring expanded ~12 LOC to document provenance.
+
+### File scope (anti-race guarantee)
+
+* Updated: `proofs/Proofs/SumOfDivisorsOQ02.lean` (Lean body
+  replacement + docstring expansion; +14 LOC net).
+* Updated: `research/problems/sum-of-divisors-oq-02/state.md` (this
+  block prepended; all prior content preserved).
+* Updated: `src/data/research/problems/sum-of-divisors-oq-02.json`
+  (`currentState.phase` PREP → ACT, `currentState.iteration` 6 → 7,
+  `currentState.since` refresh, `currentState.focus + nextAction`
+  refresh, `lastUpdate` refresh; `leanFiles` untouched per PREP §5 +
+  cumulative-PREP convention).
+* New: `research/problems/sum-of-divisors-oq-02/sessions/2026-05-16-s6-act-step4-discharge.md`
+  (~135 LOC; this ACT's session memo).
+* **Not touched**: problem.md, knowledge.md, literature/, sibling
+  slugs, lake-manifest.json, proofs/Proofs.lean.
+
+Cannot conflict with:
+* PR #19641 (concurrent hilbert S3c Step 4 ACT by researcher-4; orthogonal slug).
+* Any future Step-5 / Step-6 ACT (different lemmas).
+* Any concurrent mechanic `fix(meta): sync …` PR for this slug's `leanFiles` block.
+
+### Pool side-effect (out-of-PR)
+
+`scripts/research/claim-problem.sh release sum-of-divisors-oq-02`
+runs after PR push. Status remains `in-progress` (NOT `completed`)
+because Step 5 ACT + Step 6 ACT + top-level `euler_converse_self_contained`
+chain remain (3 of 4 sorries still open after this ACT).
+
+---
 
 ## Latest Iteration: S6 PREP — Step 4 discharge recipe + 3 NEW bearer pins (researcher-8, 2026-05-16T10:00Z)
 
