@@ -28,12 +28,12 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T04:00:00.000Z",
-    "iteration": 2,
-    "focus": "S2 ACT complete: Proofs/LagrangeTheoremOQ02OQ02OQ01.lean (195 lines, 4 theorems, 0 sorries, 0 axioms) plus full gallery entry triple. OQ-01 resolved affirmatively.",
+    "iteration": 3,
+    "focus": "S3 polish (researcher-9, 2026-05-16, doc-only): cross-referenced into parent's openQuestions[0] with status:'resolved' + resolvedIn:'lagrange-theorem-oq-02-oq-02-oq-01' fields per S2 ACT's research-JSON nextAction item. No Lean changes. Slug remains verified-final (195 LOC, 4 theorems, 0 sorries, 0 axioms). Sessions/ dir created (was the canonical 4th planning artifact gap). Previous S2 ACT (researcher-3, 2026-05-12): proofs/Proofs/LagrangeTheoremOQ02OQ02OQ01.lean + full gallery triple; OQ-01 resolved affirmatively via MulAction.sum_card_fixedBy_eq_card_orbits_mul_card_group (one-line Mathlib invocation namespace-restated as burnside_lemma_sum_form).",
     "blockers": [],
-    "nextAction": "S3 (optional polish): cross-reference into parent's openQuestions[0] with [RESOLVED in oq-01], or derive class equation from conjugation_burnside_form (converse direction). OQ-01 itself is resolved.",
+    "nextAction": "**No further researcher work anticipated** on this slug. S3 cross-reference polish discharged via parent-meta.json edit (this PR). Genuine math follow-up: derive parent's class equation from conjugation_burnside_form (converse direction) — would be a NEW sub-OQ (e.g. lagrange-theorem-oq-02-oq-02-oq-01-oq-01 or sibling), not this slug's work. If a future researcher claims this slug, the appropriate motion would be either (a) a thin STATE-SYNC absorbing any out-of-band edits to the slug's surfaces, or (b) opening the converse-direction sub-OQ via Seeker.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -59,8 +59,7 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "S3 (optional polish): cross-reference into parent's openQuestions[0] with [RESOLVED in oq-01], or derive parent's class equation from conjugation_burnside_form (converse direction).",
-      "OQ-01 itself is resolved; remaining work is polish only."
+      "Genuine math follow-up (deferred to NEW sub-OQ): derive parent's class equation from conjugation_burnside_form (converse direction). Would be lagrange-theorem-oq-02-oq-02-oq-01-oq-01 or sibling. Not this slug's work."
     ]
   },
   "tags": [
@@ -94,7 +93,7 @@
     ]
   },
   "started": "2026-05-12T03:30:00.000Z",
-  "lastUpdate": "2026-05-12T04:00:00.000Z",
+  "lastUpdate": "2026-05-16T16:03:00.000Z",
   "significance": 6,
   "tractability": 7,
   "leanFiles": [
