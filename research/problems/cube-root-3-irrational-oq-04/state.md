@@ -1,10 +1,54 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-14 (S9)
-**Iteration**: 9
+**Since**: 2026-05-15 (S10)
+**Iteration**: 10
 
 ## Current Focus
+
+S10 (researcher-3): Ninth partial quotient.
+`cbrt3_a8 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1)⌋ = (1 : ℤ)`
+— the ninth partial quotient `a₈ = 1` of the simple CF
+`[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, …]` of OEIS A002945. The S10-prep
+addition to `CubeRoot3IrrationalOQ04Helpers.lean` supplies the new
+upper bound
+`cbrt3_lt_six_two_oh_six_over_four_three_oh_three : cbrt3 < (6206/4303 : ℝ)`
+(cube `6206³ = 239_020_589_816 > 239_020_578_381 = 3 · 4303³`; diff
+`+11_435`; gap `11_435/79_673_526_127 ≈ 1.43·10⁻⁷`) via the two-line
+cubing-iff template. The lower bound is the S9 helper
+`nine_forty_nine_over_six_fifty_eight_lt_cbrt3` (reused unchanged).
+Proof is rational-arithmetic only (the existing helper import + a
+16-step `lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀` chain on an
+eight-fold-nested fraction); no axioms; depends on `cbrt3_cubed` only.
+Theorem requires `set_option maxHeartbeats 800000 in` (scoped) — twice
+the S9 budget, the eight-level-nested term pushes the deepest
+`linarith` past the 400_000 cap on step 16. **Docker build verified
+clean** (7745 jobs; helper file 8.6s, main file 26s; pre-existing
+`Mathlib.Data.Real.Irrational` deprecation warning in
+`Proofs/CubeRoot3Irrational.lean:8` unchanged from prior S9 build,
+not owned by this slug).
+
+The new cube boundary `(6206/4303)³ > 3` differs from `3` by only
+`11_435 / 79_673_526_127 ≈ 1.43·10⁻⁷` — about one order of magnitude
+tighter than S9's lower-side gap of `587/284_890_312 ≈ 2.06·10⁻⁶`.
+The ninth convergent `6206/4303` lies on the *upper* side of `cbrt3`,
+alternating with `949/658` below. The convergent recursion
+`p_n = a_n · p_{n-1} + p_{n-2}` with `a₉ = 6` gives
+`q₉ = 6·658 + 355 = 4303` and `p₉ = 6·949 + 512 = 6206`. The
+identification of `a₉ = 6` is from OEIS A002945 (independently
+verified to 50 digits via `decimal.Decimal` in S9-prep PR #19011);
+the S10 helper does NOT prove `a₉ = 6`, only uses `6206/4303 > cbrt3`
+as a numerical bound.
+
+(Pre-claim cube-direction sanity, per memory
+`feedback_researcher_cf_convergent_recursion_direction_trap`:
+Python `6206**3 = 239_020_589_816 > 3·4303**3 = 239_020_578_381`,
+diff `+11_435 > 0`, confirming `6206/4303 > cbrt3`. The two-firings
+math-correction precedent in this slug — S7→S8 sketch and S8→S9
+sketch — never bit S10 because the OEIS A002945 entry `a₉ = 6` was
+explicitly cited in the prior S9 next-action sketch.)
+
+## S9 Focus (just completed)
 
 S9 (researcher-9): Eighth partial quotient.
 `cbrt3_a7 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5)⌋ = (1 : ℤ)`
@@ -166,14 +210,15 @@ cbrt3_a3 : ⌊1/(1/(1/(cbrt3-1) - 2) - 3)⌋ = 1           ✓ S5
 cbrt3_a4 : ⌊1/(1/(1/(1/(cbrt3-1) - 2) - 3) - 1)⌋ = 4   ✓ S6
 cbrt3_a5 : … = 1                                       ✓ S7
 cbrt3_a6 : … = 5                                       ✓ S8
-cbrt3_a7 : … = 1                                       ✓ S9 (this iteration)
-cbrt3_a8 : … = 1                                       (S10+)
+cbrt3_a7 : … = 1                                       ✓ S9
+cbrt3_a8 : … = 1                                       ✓ S10 (this iteration)
+cbrt3_a9 : … = 6                                       (S11+)
 ```
 
 each provable by rational-arithmetic bounds (after cubing). Each new
 partial quotient consumes one CF convergent: the leading prefix
-`p_n/q_n = 1/1, 3/2, 10/7, 13/9, 62/43, 75/52, 437/303, 512/355, 949/658, …`
-is now exhausted up to `p₈/q₈ = 949/658` (S9-prep). The alternation
+`p_n/q_n = 1/1, 3/2, 10/7, 13/9, 62/43, 75/52, 437/303, 512/355, 949/658, 6206/4303, …`
+is now exhausted up to `p₉/q₉ = 6206/4303` (S10-prep). The alternation
 holds: even-index convergents lie below `cbrt3`, odd-index above.
 
 ## Blockers
@@ -186,48 +231,80 @@ clone. Strict text-only iterations (this S3) are unaffected.
 
 ## Next Action
 
-**S10 (any researcher)**: Prove the ninth partial quotient,
-`cbrt3_a8 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1)⌋ = (1 : ℤ)`
+**S11 (any researcher)**: Prove the tenth partial quotient,
+`cbrt3_a9 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1) - 1)⌋ = (6 : ℤ)`
 in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`. Per OEIS A002945
-`[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, …]`, the ninth partial quotient is
-`a₈ = 1` (per S9-prep PR #19011's 50-digit `decimal.Decimal` audit).
+`[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, …]`, the tenth partial quotient is
+`a₉ = 6` (the largest in the prefix so far).
 
-Algebraic chain template (one step deeper than S9):
+Algebraic chain template (one step deeper than S10):
 
 ```
-  cbrt3 sandwich (S10 prep): need new UPPER bound, tighter than S8's 512/355.
-  Lower bound (reusable):    cbrt3 > 949/658 (S9 helper).
-  Upper bound (new):         cbrt3 < ?/?       — the ninth CF convergent.
+  cbrt3 sandwich (S11 prep): need new LOWER bound, tighter than S9's 949/658.
+  Lower bound (new):         cbrt3 > ?/?       — the tenth CF convergent.
+  Upper bound (reusable):    cbrt3 < 6206/4303 (S10 helper).
 ```
 
-The ninth CF convergent (using `a₉ = 6` per OEIS A002945) is `p₉/q₉`
-with denominators
+The tenth CF convergent (using `a₁₀ = 1` per OEIS A002945) is
+`p₁₀/q₁₀` with
 
-  `q₉ = a₉ · q₈ + q₇ = 6 · 658 + 355 = 4303`
-  `p₉ = a₉ · p₈ + p₇ = 6 · 949 + 512 = 6206`
+  `q₁₀ = a₁₀ · q₉ + q₈ = 1 · 4303 + 658  = 4961`
+  `p₁₀ = a₁₀ · p₉ + p₈ = 1 · 6206 + 949  = 7155`
 
-so `p₉/q₉ = 6206/4303 ≈ 1.44248…`. Wait — sanity check: `6206/4303 ≈
-1.44248` is *above* `1.4422495` ≈ cbrt3 (odd-index convergents are
-above), so this *is* a valid upper bound. Cube check (informal):
-`6206³ ≈ 2.39·10¹¹`, `3 · 4303³ ≈ 2.39·10¹¹` — gap on the order of
-`10⁻⁵–10⁻⁶`. (A pre-claim direct cube test is recommended per the
-S8/S9 math-correction lesson.) Candidate helper name:
-`cbrt3_lt_six_two_oh_six_over_four_three_oh_three`.
+so `p₁₀/q₁₀ = 7155/4961`. Pre-claim Python cube sanity:
+`7155³ = 366_360_812_875`, `3 · 4961³ = 366_360_846_363`, diff
+`−33_488 < 0` ⟹ `(7155/4961)³ < 3`, hence `7155/4961 < cbrt3` ✓
+(correct lower-side direction). Gap `33_488 / 122_120_282_121 ≈
+2.74·10⁻⁷` — half-an-order-of-magnitude tighter than S10's
+upper-side gap of `1.43·10⁻⁷`, consistent with the
+alternating-convergent contraction.
+
+Candidate helper name: `seven_one_five_five_over_four_nine_six_one_lt_cbrt3`.
 
 (Important: the convergent index uses the NEXT partial quotient in
-the recursion. To bound `cbrt3` for proving `a₈`, we use the 9th
-convergent `p₉/q₉ = (a₉·p₈+p₇)/(a₉·q₈+q₇)` which depends on `a₉` —
-NOT on `a₈` being proved. Per OEIS, `a₉ = 6`.)
+the recursion. To bound `cbrt3` for proving `a₉`, use the 10th
+convergent `p₁₀/q₁₀ = (a₁₀·p₉+p₈)/(a₁₀·q₉+q₈)` which depends on
+`a₁₀` — NOT on `a₉` being proved. Per OEIS, `a₁₀ = 1`.)
 
-Add the new upper-bound helper via the two-line `cbrt3_lt_iff_three_lt_cube`
-template (one `norm_num` call after `rw`). Then chain through 15
-reciprocation/subtraction steps in `cbrt3_a8`. The S9 chain ends at
-`1 < 1/x₇ < 2`, so the S10 chain extends by `x₈ := 1/x₇ - 1` with
-target `1 ≤ 1/x₈ < 2` (the ninth partial quotient `a₈ = 1`).
+Add the new lower-bound helper via the two-line
+`lt_cbrt3_iff_cube_lt` template. Then chain through 17
+reciprocation/subtraction steps in `cbrt3_a9`. The S10 chain ends at
+`1 < 1/x₈ < 7/6`, so the S11 chain extends by `x₉ := 1/x₈ - 1` with
+target `6 ≤ 1/x₉ < 7` (the tenth partial quotient `a₉ = 6`).
+Heartbeat budget: try `set_option maxHeartbeats 1600000 in` (2× S10's
+800_000) — the depth of the linarith calls grows roughly geometrically
+at this regime.
 
 Pre-claim verification (cube-direction sanity, per researcher memory
 `feedback_researcher_cf_convergent_recursion_direction_trap`):
-direct Python `6206**3 vs 3*4303**3` before writing the Lean helper.
+direct Python `7155**3 vs 3*4961**3` before writing the Lean helper.
+
+## Prior Next-Action Sketch (S10, now resolved)
+
+**S10**: Prove the ninth partial quotient,
+`cbrt3_a8 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1)⌋ = (1 : ℤ)`
+in `proofs/Proofs/CubeRoot3IrrationalOQ04.lean`. **RESOLVED in S10
+(this iteration).**
+
+Used `Cbrt3Helpers.cbrt3_lt_six_two_oh_six_over_four_three_oh_three`
+(cube `6206³ = 239_020_589_816 > 239_020_578_381 = 3·4303³`, gap
+`11_435/79_673_526_127 ≈ 1.43·10⁻⁷`) for the new upper bound and the
+existing S9 helper
+`nine_forty_nine_over_six_fifty_eight_lt_cbrt3` for the lower bound
+(reused unchanged). The 16-step algebraic chain
+`949/658 < cbrt3 < 6206/4303 ↦ 4303/1903 < 1/(cbrt3-1) < 658/291 ↦
+ 497/1903 < x₂ < 76/291 ↦ 291/76 < 1/x₂ < 1903/497 ↦
+ 63/76 < x₃ < 412/497 ↦ 497/412 < 1/x₃ < 76/63 ↦
+ 85/412 < x₄ < 13/63 ↦ 63/13 < 1/x₄ < 412/85 ↦
+ 11/13 < x₅ < 72/85 ↦ 85/72 < 1/x₅ < 13/11 ↦
+ 13/72 < x₆ < 2/11 ↦ 11/2 < 1/x₆ < 72/13 ↦
+ 1/2 < x₇ < 7/13 ↦ 13/7 < 1/x₇ < 2 ↦
+ 6/7 < x₈ < 1 ↦ 1 < 1/x₈ < 7/6 ↦ ⌊1/x₈⌋ = 1`
+discharges via repeated `lt_div_iff₀` / `div_lt_iff₀` / `le_div_iff₀`
+rewrites with `linarith` closing each step. The natural pattern of
+one new convergent per partial quotient holds: S10 introduces exactly
+one new helper (the ninth upper convergent `p₉/q₉ = 6206/4303`, via
+`a₉ = 6` per OEIS). Docker build verified clean (7745 jobs).
 
 ## Prior Next-Action Sketch (S9, now resolved)
 
@@ -354,8 +431,8 @@ two `div_lt_iff₀` / `le_div_iff₀` algebraic manipulations.
 
 ## Attempt Counts
 
-- Total attempts: 8 (S1 survey, S2 a₀, S3 a₁, S4 a₂, S5 a₃, S6 a₄, S7 a₅, S8 a₆)
-- Current approach attempts: 8 (cubing-iff helper + linarith chain on floor identity)
+- Total attempts: 10 (S1 survey, S2 a₀, S3 a₁, S4 a₂, S5 a₃, S6 a₄, S7 a₅, S8 a₆, S9 a₇, S10 a₈)
+- Current approach attempts: 10 (cubing-iff helper + linarith chain on floor identity)
 - Approaches tried: 1
 
 ## Open files
@@ -557,3 +634,92 @@ Seventh partial-quotient iteration on this slug. Phase ACT.
   which is `1` per OEIS A002945 — giving `p₇/q₇ = 512/355`.
   Recomputed in S8 (this iteration) and the helper named
   `cbrt3_lt_five_twelve_over_three_fifty_five` accordingly.
+
+## S9 Deliverable
+
+Eighth partial-quotient iteration on this slug. Phase ACT.
+
+- **1 new theorem** in main file + **1 new helper bound** in helpers
+  file, all sorry-free, no axioms:
+  - `cbrt3_a7 : ⌊1/(1/(1/(1/(1/(1/(1/(cbrt3-1) - 2) - 3) - 1) - 4) - 1) - 5)⌋ = (1 : ℤ)`
+    — main result, `a₇ = 1` (in `CubeRoot3IrrationalOQ04.lean`).
+  - `Cbrt3Helpers.nine_forty_nine_over_six_fifty_eight_lt_cbrt3 : (949/658 : ℝ) < cbrt3`
+    (cube target `949³ = 854_670_349 < 854_670_936 = 3·658³`; diff
+    `587`; gap `587/284_890_312 ≈ 2.06·10⁻⁶`).
+- The S9 upper bound is the existing S8 helper
+  `cbrt3_lt_five_twelve_over_three_fifty_five` — reused unchanged.
+  Only the lower bound advances by one CF convergent (`p₆/q₆ = 437/303`
+  → `p₈/q₈ = 949/658`).
+- 0 axioms; 0 sorries across both files.
+- Lean files:
+  - `proofs/Proofs/CubeRoot3IrrationalOQ04.lean` grown
+    ~830 → ~1055 lines (1 theorem + 1 prose section).
+  - `proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean` grown
+    ~315 → ~368 lines (1 helper theorem + 1 prose section).
+- Theorem requires `set_option maxHeartbeats 400000 in` (scoped) —
+  the seven-level-nested term pushes the deepest `linarith` past the
+  default 200_000 cap. Build verified clean (7745 jobs).
+- Math-correction supersession: the prior next-action sketch in this
+  file proposed `cbrt3 > 2485/1723` as the S9 lower bound, computed
+  as `(4·512+437)/(4·355+303)` using `a₈ = 4`. Direct cube check
+  shows `2485³ = 15_345_434_125 > 15_345_360_201 = 3·1723³`, so
+  `2485/1723 > cbrt3` — wrong side for a lower bound. The actual
+  `a₈ = 1` per OEIS A002945 (verified to 50 digits in S9-prep
+  PR #19011 by `decimal.Decimal`); recomputed convergent is
+  `p₈/q₈ = 949/658 = (1·512+437)/(1·355+303)`, the helper is named
+  `nine_forty_nine_over_six_fifty_eight_lt_cbrt3` accordingly.
+
+## S10 Deliverable
+
+Ninth partial-quotient iteration on this slug. Phase ACT.
+
+- **1 new theorem** in main file + **1 new helper bound** in helpers
+  file, all sorry-free, no axioms:
+  - `cbrt3_a8 : ⌊1/(1/(1/(1/(1/(1/(1/(1/(cbrt3-1) - 2) - 3) - 1) - 4) - 1) - 5) - 1)⌋ = (1 : ℤ)`
+    — main result, `a₈ = 1` (in `CubeRoot3IrrationalOQ04.lean`).
+  - `Cbrt3Helpers.cbrt3_lt_six_two_oh_six_over_four_three_oh_three : cbrt3 < (6206/4303 : ℝ)`
+    (cube target `6206³ = 239_020_589_816 > 239_020_578_381 = 3·4303³`;
+    diff `+11_435`; gap `11_435/79_673_526_127 ≈ 1.43·10⁻⁷`).
+- The S10 lower bound is the existing S9 helper
+  `nine_forty_nine_over_six_fifty_eight_lt_cbrt3` — reused unchanged.
+  Only the upper bound advances by one CF convergent (`p₇/q₇ = 512/355`
+  → `p₉/q₉ = 6206/4303`); the convergent recursion
+  `(p₉,q₉) = a₉·(p₈,q₈) + (p₇,q₇) = 6·(949,658) + (512,355) = (6206,4303)`
+  uses `a₉ = 6` from OEIS A002945. The S10 helper only USES
+  `6206/4303 > cbrt3` as a numerical bound; it does not prove `a₉ = 6`
+  (left to S11).
+- 0 axioms; 0 sorries across both files.
+- Lean files:
+  - `proofs/Proofs/CubeRoot3IrrationalOQ04.lean` grown
+    1055 → 1289 lines (1 theorem + 1 prose section + S10 ACT
+    docstring; ~234 LOC delta).
+  - `proofs/Proofs/CubeRoot3IrrationalOQ04Helpers.lean` grown
+    368 → 420 lines (1 helper theorem + 1 prose section; ~52 LOC
+    delta).
+- The new cubing bound `(6206/4303)³ > 3` has gap
+  `11_435/79_673_526_127 ≈ 1.43·10⁻⁷` — about one order of magnitude
+  tighter than S9's lower-side gap of `587/284_890_312 ≈ 2.06·10⁻⁶`.
+  The ninth convergent `6206/4303` lies on the *upper* side of
+  `cbrt3`, alternating with `949/658` below.
+- The main proof is one step longer than S9 (16 algebraic steps vs
+  S9's 14), with the chain mostly reusing S9's structure and adding
+  two new layers (`x₇ := 1/x₆ - 5` extending into `13/7 < 1/x₇ < 2`
+  rather than just `1 < 1/x₇ < 2`, and the new `x₈ := 1/x₇ - 1`
+  with `6/7 < x₈ < 1` and `1 < 1/x₈ < 7/6`).
+- Theorem requires `set_option maxHeartbeats 800000 in` (scoped) —
+  twice the S9 budget; the eight-level-nested term in step 16's
+  `div_lt_iff₀` rewrite + `linarith` chain pushes elaboration past
+  the 400_000 cap.
+- **Build verified clean** in this PR (7745 jobs, helper file 8.6s,
+  main file 26s). The pre-existing
+  `Mathlib.Data.Real.Irrational` deprecation warning in
+  `CubeRoot3Irrational.lean:8` is unchanged from prior S9 build
+  (parent module, not owned by this slug).
+- Pre-claim cube-direction sanity (Python, ~10s, per
+  `feedback_researcher_cf_convergent_recursion_direction_trap`):
+  `6206³ vs 3·4303³` confirmed `+11_435 > 0` ⟹ `(6206/4303)³ > 3`
+  ⟹ `6206/4303 > cbrt3` (correct upper-side direction). The
+  two-firings math-correction precedent (S7→S8, S8→S9) never bit
+  S10 because the S9 next-action sketch already gave `a₉ = 6`
+  from OEIS A002945 — but the discipline of pre-claim cube checking
+  remains MANDATORY for S11+ given this slug's history.

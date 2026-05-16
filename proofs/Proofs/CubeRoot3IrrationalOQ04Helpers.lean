@@ -365,4 +365,56 @@ theorem nine_forty_nine_over_six_fifty_eight_lt_cbrt3 :
   rw [lt_cbrt3_iff_cube_lt (by norm_num)]
   norm_num
 
+/-! ## S10 prep: new upper bound for `a₈ = 1`
+
+The ninth partial-quotient identity `cbrt3_a8 = 1` requires the
+two-sided tighter sandwich
+
+  `949/658 < cbrt3 < 6206/4303`
+
+— the lower bound `949/658` is the S9 helper
+`nine_forty_nine_over_six_fifty_eight_lt_cbrt3` above (reused
+unchanged); the new upper bound `cbrt3 < 6206/4303` is the ninth
+convergent `p₉/q₉ = 6206/4303` of the simple CF
+`[1; 2, 3, 1, 4, 1, 5, 1, 1, 6, …]` of OEIS A002945. The convergent
+recursion `p_n = a_n · p_{n-1} + p_{n-2}` with `a₉ = 6` gives
+
+  `q₉ = 6 · q₈ + q₇ = 6 · 658 + 355 = 4303`
+  `p₉ = 6 · p₈ + p₇ = 6 · 949 + 512 = 6206`
+
+After cubing,
+
+  `(6206/4303)³ = 239_020_589_816 / 79_673_526_127`
+  `3            = 239_020_578_381 / 79_673_526_127`
+
+so `6206³ = 239_020_589_816 > 239_020_578_381 = 3 · 4303³` (strict,
+diff `11_435`). The new upper cube gap
+`11_435 / 79_673_526_127 ≈ 1.43·10⁻⁷` is roughly one order of
+magnitude tighter than S9's lower-side gap of
+`587/284_890_312 ≈ 2.06·10⁻⁶`, consistent with `6206/4303` being the
+odd-index ninth convergent (upper side of `cbrt3`), one rung beyond
+S8's `512/355`.
+
+(Note on the convergent recursion direction: per
+`feedback_researcher_cf_convergent_recursion_direction_trap` and the
+S7/S8 math-correction history in `CubeRoot3IrrationalOQ04.lean`, the
+9th convergent computed at the point of proving `a₈` uses `a₉` (the
+*next* partial quotient), not `a₈`. Per OEIS A002945, `a₉ = 6`,
+giving `p₉/q₉ = 6206/4303`. Pre-claim Python sanity check:
+`6206³ = 239_020_589_816`, `3·4303³ = 239_020_578_381`, diff
+`+11_435 > 0` confirming `(6206/4303)³ > 3`, hence
+`6206/4303 > cbrt3` as required for an upper bound.)
+
+Two-line proof via the cubing-iff helper. -/
+
+/-- `∛3 < 6206/4303`. Cube target: `(6206/4303)³ =
+239_020_589_816 / 79_673_526_127 > 239_020_578_381 / 79_673_526_127
+= 3` (strict: `3 · 4303³ = 239_020_578_381 < 6206³ =
+239_020_589_816`, gap `11_435`). The ninth convergent of the simple
+CF of `∛3` (using `a₉ = 6` per OEIS A002945). -/
+theorem cbrt3_lt_six_two_oh_six_over_four_three_oh_three :
+    cbrt3 < (6206 / 4303 : ℝ) := by
+  rw [cbrt3_lt_iff_three_lt_cube (by norm_num)]
+  norm_num
+
 end Cbrt3Helpers
