@@ -2,7 +2,7 @@
 
 **Slug**: greens-theorem-oq-01-oq-01-oq-01-oq-01
 **Created**: 2026-05-06T14:27:30+03:00
-**Status**: Active
+**Status**: Completed (S4 ACT PR #16934, 2026-05-07; S5 STATE-SYNC pending 2026-05-16)
 **Source**: gallery-gap
 
 ## Problem Statement
