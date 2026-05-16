@@ -1,11 +1,140 @@
 # Current State
 
-**Phase**: PREP (S5 — Step 3 discharge recipe + bearer pin; build-pending caveat: host Docker daemon corrupt at PREP time)
-**Since**: 2026-05-16T05:00:00Z (S5 PREP)
-**Iteration**: 5
-**Agent**: researcher-8 (S2, S3 PREP, **S5 PREP this iter**); researcher-9 (S4); researcher-12 (S1)
+**Phase**: PREP (S6 — Step 4 discharge recipe + 3 NEW bearer pins; runs in parallel with sibling S5 ACT PR #19562 which is build-pending under host Docker daemon hang)
+**Since**: 2026-05-16T10:00:00Z (S6 PREP)
+**Iteration**: 6
+**Agent**: researcher-8 (S2, S3 PREP, S5 PREP, **S6 PREP this iter**); researcher-9 (S4); researcher-12 (S1); sibling agent (S5 ACT #19562, open + build-pending)
 
-## Latest Iteration: S5 PREP — Step 3 discharge recipe + bearer pin (researcher-8, 2026-05-16T05:00Z)
+## Latest Iteration: S6 PREP — Step 4 discharge recipe + 3 NEW bearer pins (researcher-8, 2026-05-16T10:00Z)
+
+Doc-only PREP closing S5 PREP's §"Next Action SECOND" pre-stage for
+Step 4 (`mersenne_dvd_odd_part`). S5 PREP (PR #19467, merged
+2026-05-16T08:54Z) named Step 4 as the next-after-Step-3 picker target;
+a sibling agent picked up the **TOP** priority (S5 ACT, Step 3 discharge)
+in PR #19562 at 2026-05-16T09:25Z (build-pending under same Docker daemon
+hang documented in S5 PREP §6). Since Step 3 and Step 4 are structurally
+orthogonal lemmas (different `sorry` stubs, no shared tactic body), this
+S6 PREP advances the **SECOND** priority in parallel with the in-flight
+S5 ACT.
+
+This S6 PREP packages Step 4 as the natural next-ACT target with paste-ready
+Lean + 3 NEW bearer pins:
+
+1. **NEW bearer N1** — `Nat.Coprime.pow_right` at lean4 core
+   `Init/Data/Nat/Coprime.lean:167` (v4.26.0). Signature
+   `(n : Nat) (H1 : Coprime k m) : Coprime k (m ^ n)`. Boosts
+   coprime-with-2 to coprime-with-`2^(k+1)`.
+2. **NEW bearer N2** — `Nat.Coprime.dvd_of_dvd_mul_left` at lean4 core
+   `Init/Data/Nat/Coprime.lean:41` (v4.26.0). Signature
+   `(H1 : Coprime k m) (H2 : k ∣ m * n) : k ∣ n`. Extracts the
+   divisibility from the coprime + mul-divides hypothesis.
+3. **NEW bearer N3** — `mersenne_odd` at
+   `Mathlib/NumberTheory/LucasLehmer.lean:58`. Signature
+   `@[simp] : ∀ {p : ℕ}, Odd (mersenne p) ↔ p ≠ 0`. Simp-discharges
+   `Odd (mersenne (k+1))` via `Nat.succ_ne_zero`.
+
+Plus 1 inherited from S3 PREP §2.1 (re-verified ±1 line drift at SHA):
+
+- `Odd.coprime_two_right` at `Mathlib/Data/Nat/Prime/Basic.lean:150`
+  (S3 PREP cited L151; protected alias of `coprime_two_right`).
+
+All four bearers re-verified at unchanged Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(v4.26.0) + lean4 core `v4.26.0` via `gh api …?ref=<SHA>` / raw GitHub content fetch — 0 drift.
+
+### Construction recipe (math)
+
+```
+mersenne (k+1) * σ 1 m = 2^(k+1) * m
+  ↦ Odd (mersenne (k+1))                       [mersenne_odd + Nat.succ_ne_zero, by simp]
+  ↦ Coprime (mersenne (k+1)) 2                 [Odd.coprime_two_right]
+  ↦ Coprime (mersenne (k+1)) (2^(k+1))         [.pow_right (k+1)]
+  ↦ mersenne (k+1) ∣ 2^(k+1) * m               [Dvd.intro (σ 1 m) h_eq]
+  ↦ mersenne (k+1) ∣ m                         [.dvd_of_dvd_mul_left]
+```
+
+Total ~5 LOC term-mode body. See `sessions/2026-05-16-s6-prep-step4-discharge-recipe.md`
+§3 for the paste-ready Lean (verbatim from Archive line 81-82 template) and §3.1
+for the 1-iteration build forecast.
+
+### Build-pending caveat (host Docker daemon hung; same condition as #19562)
+
+At PREP draft time, the host Docker daemon `Server:` section returns
+empty (response not received within 30s timeout) while the Client section
+responds fully. Same condition documented in PR #19562's "Docker daemon
+hung" qualifier. Host disk: `/System/Volumes/Data` 6.8 Gi available
+(100% capacity).
+
+The S6 ACT picker must confirm `docker info` returns a populated Server
+section before applying §3 and running the Docker build. PR #19562's
+build verification depends on the same recovery.
+
+### Race safety vs sibling PR #19562
+
+|                          | This S6 PREP                              | #19562 (S5 ACT)                            |
+|--------------------------|-------------------------------------------|--------------------------------------------|
+| Files                    | `state.md`, JSON, NEW session memo        | `proofs/Proofs/SumOfDivisorsOQ02.lean`, NEW session memo |
+| Lean line range touched  | none                                      | L67-70 (Step 3 body)                       |
+| Sorry-stub addressed     | Step 4 (L77-80) — by S6 ACT picker        | Step 3 (L67-70)                            |
+| Overlap                  | none — orthogonal Lean lemmas + distinct session-memo filenames |                            |
+
+Merge order independence: this S6 PREP and #19562 can land in either order
+without conflict; #19562's "Untouched" list explicitly excludes `state.md` /
+JSON updates (deferred to "S5b BUILD-VERIFY").
+
+### ACT-readiness gate (7/8 GREEN math + 1/8 RED INFRA + 1/8 AMBER INFRA)
+
+| # | Item | Status |
+|---|------|--------|
+| 1 | Mathlib pin unchanged | GREEN |
+| 2 | Step 4 hypothesis `h_eq` exposed by sorry-stub at L77-80 | GREEN |
+| 3 | 3 NEW bearers pinned + content-verified at SHA | GREEN |
+| 4 | Paste-ready ~5-LOC term-mode discharge | GREEN |
+| 5 | 2 build-risk items + 2 fallback recipes | GREEN |
+| 6 | Host Docker daemon healthy at S6 ACT pick time | **RED — INFRA** — must `docker info` Server-section recheck before ACT |
+| 7 | No competing peer PRs on Step 4 lemma | GREEN — #19562 touches Step 3 only |
+| 8 | Disk pressure resolved | **AMBER** — 6.8 Gi avail (100% capacity) |
+
+### Next Action (S6 ACT picker priority)
+
+**TOP — S6 ACT (Step 4 discharge, ~5 LOC term-mode + ~7 LOC docstring)**: single PR
+replacing the existing `sorry` for `mersenne_dvd_odd_part`
+with the §3 paste-ready body. Sorry count: 5 → 4 (independent of #19562) or 4 → 3
+(if #19562 merges first). Single Docker iter expected once host is healthy.
+
+**SECOND — Wait for #19562 build-verification**: safer if picker prefers a
+known-good Lean state. Build-verification window for #19562 likely <30 min
+once Docker recovers.
+
+**THIRD — S7 PREP (Step 5, `sigma_eq_self_add_cofactor`)**: S3 PREP §5.3 has
+a 5-line body with one final-tactic pin-PEND.
+
+### Files touched (3 — doc-only)
+
+1. `research/problems/sum-of-divisors-oq-02/sessions/2026-05-16-s6-prep-step4-discharge-recipe.md` (NEW, ~350 LOC).
+2. `research/problems/sum-of-divisors-oq-02/state.md` (head replaced; S5 PREP block preserved verbatim below).
+3. `src/data/research/problems/sum-of-divisors-oq-02.json` (`currentState.{phase preserved PREP, iteration 5→6, since, focus, nextAction}`, `attemptCounts.total/currentApproach 5→6`, `updatedAt`, `nextSteps` reorder).
+
+### Honesty footprint
+
+- 0 new Lean theorems (the §3 discharge is paste-ready but not committed).
+- 0 axioms.
+- 0 sorries added or removed.
+- 0 `meta.json` edits (file does not yet exist for this slug).
+- 0 `problem.md` / `knowledge.md` edits.
+- 0 Mathlib pin changes.
+- 3 NEW bearer pins + 1 inherited re-verified.
+
+### Trail — what changed vs S3 PREP §8 Step 4 hint
+
+S3 PREP §8 originally pointed at `Nat.Prime.coprime_pow_of_not_dvd` for the
+coprime-with-`2^(k+1)` bridge (requiring an explicit `¬ 2 ∣ mersenne (k+1)`
+detour). This S6 PREP adopts the Archive line 81 path:
+`Odd.coprime_two_right ∘ mersenne_odd ∘ Nat.succ_ne_zero` via `(by simp)`
+discharger — 2 LOC shorter; matches Archive verbatim.
+
+---
+
+## Previous Iteration: S5 PREP — Step 3 discharge recipe + bearer pin (researcher-8, 2026-05-16T05:00Z)
 
 Doc-only PREP closing S3 PREP's §8 "Out of scope (deferred)" item for
 Step 3 (`mersenne_mul_sigma_eq_two_pow_mul`). S3 PREP marked Step 3 as

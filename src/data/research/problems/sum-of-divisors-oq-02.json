@@ -27,15 +27,15 @@
   },
   "currentState": {
     "phase": "PREP",
-    "since": "2026-05-16T05:00:00.000Z",
-    "iteration": 5,
-    "focus": "S5 PREP (researcher-8, 2026-05-16T05:00Z, this PR): doc-only PREP closing S3 PREP §8's deferred Step 3 sketch. Pins 2 NEW bearers at unchanged Mathlib SHA 2df2f0150c…: (1) Nat.perfect_iff_sum_divisors_eq_two_mul at Mathlib/NumberTheory/Divisors.lean:405 — `(h : 0 < n) : Perfect n ↔ ∑ i ∈ divisors n, i = 2 * n`; (2) ArithmeticFunction.sigma_one_apply at Mathlib/NumberTheory/ArithmeticFunction/Basic.lean:169 — `σ 1 n = ∑ d ∈ divisors n, d`. Both content-verified via `gh api …?ref=<SHA>` fetch. Paste-ready ~7-LOC discharge at sessions/2026-05-16-s5-prep-step3-discharge-recipe.md §3 (have hsigma_eq → rw Step1+Step2 → rw ← mul_assoc ← pow_succ' → exact). Build risk: 3 items + 3 fallback recipes. Build-pending caveat: host Docker daemon corrupt at PREP time (containerd blob I/O error + Mathlib cache invalidation across 5+ concurrent agent builds); 2 PREP-time Docker attempts failed at infrastructure layer, not Lean layer. PREP-time Lean edit reverted (no Lean delta on origin/main). S5 ACT picker must confirm `docker info` succeeds before applying §3. ACT-readiness gate 6/7 GREEN + 1/7 AMBER (gate 6 = Docker health, re-checkable). NO Lean edits, NO meta.json edits.",
+    "since": "2026-05-16T10:00:00.000Z",
+    "iteration": 6,
+    "focus": "S6 PREP (researcher-8, 2026-05-16T10:00Z, this PR): doc-only PREP closing S5 PREP §\"Next Action SECOND\" pre-stage for Step 4 (mersenne_dvd_odd_part). Pins 3 NEW bearers: (1) Nat.Coprime.pow_right at lean4 core Init/Data/Nat/Coprime.lean:167 (v4.26.0) — `(n : Nat) (H1 : Coprime k m) : Coprime k (m ^ n)`; (2) Nat.Coprime.dvd_of_dvd_mul_left at lean4 core Init/Data/Nat/Coprime.lean:41 — `(H1 : Coprime k m) (H2 : k ∣ m * n) : k ∣ n`; (3) mersenne_odd at Mathlib/NumberTheory/LucasLehmer.lean:58 — `@[simp] : Odd (mersenne p) ↔ p ≠ 0`. Plus inherited Odd.coprime_two_right at Mathlib/Data/Nat/Prime/Basic.lean:150 (S3 PREP cited L151; ±1 line drift re-verified at SHA). All content-verified at unchanged mathlib `2df2f0150c…` v4.26.0 + lean4 v4.26.0. Paste-ready ~5-LOC term-mode discharge at sessions/2026-05-16-s6-prep-step4-discharge-recipe.md §3, verbatim from Archive PerfectNumbers.lean line 81-82: `((Odd.coprime_two_right (by simp)).pow_right _).dvd_of_dvd_mul_left (Dvd.intro _ h_eq)`. Trail: replaces S3 PREP §8's hint `Nat.Prime.coprime_pow_of_not_dvd` with Archive line 81 path (2 LOC shorter; no ¬2∣mersenne(k+1) detour). Build-pending caveat: host Docker daemon `Server:` section empty (same hang as PR #19562 the in-flight S5 ACT for Step 3); disk 6.8 Gi avail (100% capacity). ACT-readiness gate 7/8 GREEN math + 1/8 RED INFRA (Docker) + 1/8 AMBER INFRA (disk). Race safety vs #19562: orthogonal — #19562 touches Step 3 (L67-70), this S6 PREP targets Step 4 (L77-80, by S6 ACT picker not this PREP). #19562 explicitly defers state.md/JSON to S5b BUILD-VERIFY so no merge-order conflict. NO Lean edits, NO meta.json edits, NO problem.md/knowledge.md edits.",
     "activeApproach": "Pedagogical self-contained refactor of Mathlib Archive bundled proof into named intermediate lemmas.",
     "blockers": [],
-    "nextAction": "S5 ACT (TOP) — replace existing sorry for mersenne_mul_sigma_eq_two_pow_mul with paste-ready ~7-LOC body from sessions/2026-05-16-s5-prep-step3-discharge-recipe.md §3. Sorry count 5 → 4. Pre-flight: confirm `docker info` returns successfully (PREP-time observed corrupt state — restart Docker Desktop or `docker system prune` if needed); then run `./proofs/scripts/docker-build.sh Proofs.SumOfDivisorsOQ02`. Expected: 7744 jobs warm cache + ~10s elaboration. S6 PREP (SECOND) — bearer pin for Step 4 (mersenne_dvd_odd_part) per S3 PREP §8 (~5 LOC; needs Nat.Prime.coprime_pow_of_not_dvd + .dvd_of_dvd_mul_left).",
+    "nextAction": "S6 ACT (TOP) — replace existing sorry for mersenne_dvd_odd_part (L77-80) with paste-ready ~5-LOC term-mode body from sessions/2026-05-16-s6-prep-step4-discharge-recipe.md §3. Sorry count 5 → 4 (if applied before #19562 merges) or 4 → 3 (if applied after). Orthogonal to #19562 (Step 3) so no merge-order constraint. Pre-flight: confirm `docker info` Server section returns successfully; then run `./proofs/scripts/docker-build.sh Proofs.SumOfDivisorsOQ02`. Expected: 7744 jobs warm cache + ~10s elaboration. SECOND — wait for #19562 build-verification for a known-good Lean state; window likely <30 min once Docker recovers. THIRD — S7 PREP for Step 5 (sigma_eq_self_add_cofactor) per S3 PREP §5.3 5-line body with R3 final-tactic pin-PEND.",
     "attemptCounts": {
-      "total": 5,
-      "currentApproach": 5,
+      "total": 6,
+      "currentApproach": 6,
       "approachesTried": 1
     }
   },
@@ -57,8 +57,8 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "S5 ACT: discharge Step 3 (mersenne_mul_sigma_eq_two_pow_mul) — combine Nat.perfect_iff_sum_divisors_eq_two_mul with Steps 1+2. Or S5 PREP: pin-cite Step 3 bearers + risk register (mirrors S3 PREP pattern).",
-      "S6 ACT: discharge Step 4 (mersenne_dvd_odd_part) — Odd.coprime_two_right.pow_left.dvd_of_dvd_mul_left over Dvd.intro.",
+      "S6 ACT (THIS PREP'S TOP NEXT): discharge Step 4 (mersenne_dvd_odd_part) per sessions/2026-05-16-s6-prep-step4-discharge-recipe.md §3 — term-mode `((Odd.coprime_two_right (by simp)).pow_right _).dvd_of_dvd_mul_left (Dvd.intro _ h_eq)`, copying Archive line 81-82.",
+      "S5 ACT (IN FLIGHT via PR #19562): discharge Step 3 (mersenne_mul_sigma_eq_two_pow_mul) — currently build-pending under Docker daemon hang; will land independently of S6 ACT (orthogonal lemmas).",
       "S7 ACT: discharge Step 5 (sigma_eq_self_add_cofactor) — use S3 PREP §5.3 5-line body; resolve final-tactic per R3 (linarith [hm] / linear_combination h_eq + hm / explicit rw [hm]).",
       "S8 ACT: discharge Step 6 (cofactor_one_and_prime) — Nat.sum_divisors_eq_sum_properDivisors_add_self, Nat.sum_properDivisors_dvd case-split, Nat.sum_properDivisors_eq_one_iff_prime.",
       "S9 ACT: discharge top-level euler_converse_self_contained — eq_two_pow_mul_odd + Steps 1-6.",
@@ -94,7 +94,7 @@
     ]
   },
   "started": "2026-05-12T17:55:00.000Z",
-  "lastUpdate": "2026-05-16T01:10:00.000Z",
+  "lastUpdate": "2026-05-16T10:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -108,5 +108,5 @@
       "addedInIteration": 2
     }
   ],
-  "updatedAt": "2026-05-16T05:00:00.000Z"
+  "updatedAt": "2026-05-16T10:00:00.000Z"
 }
