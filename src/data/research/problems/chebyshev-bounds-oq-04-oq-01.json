@@ -1,7 +1,7 @@
 {
   "slug": "chebyshev-bounds-oq-04-oq-01",
   "title": "Elementary Proof of Full PNT from Chebyshev Bounds",
-  "phase": "ACT (Iter 4 Möbius–log literal form Λ₂(n) = Σ_{d|n} μ(d)·log²(n/d) verified)",
+  "phase": "PREP (Iter 5a planning — Iter 4 MERGED; bearer manifest staged for split ACT)",
   "status": "in-progress",
   "tier": "S",
   "path": "full",
@@ -33,12 +33,12 @@
     "goal": "Replace the axiom ChebyshevBoundsOQ04.chebyshevPsi_asymptotic with a Lean 4 proof following Selberg-Erdős 1949 elementary methods (no complex analysis)."
   },
   "currentState": {
-    "phase": "ACT (Iter 4 Möbius–log literal form Λ₂(n) = Σ_{d|n} μ(d)·log²(n/d) verified)",
-    "since": "2026-05-16T03:00:00.000Z",
+    "phase": "PREP (Iter 5a planning — Iter 4 MERGED; bearer manifest staged for split ACT)",
+    "since": "2026-05-16T04:37:00.000Z",
     "iteration": 5,
-    "focus": "Iter 4 (2026-05-16, build verified 7744 jobs, this PR) closes the literal Möbius-inversion form Λ₂(n) = Σ_{d|n} μ(d) · (Real.log (n/d : ℕ))² for n > 0, deferred from Iter 3. One new theorem selbergLambda2_eq_moebius_log_sq applies ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq (Moebius.lean:240) to Iter 3's sum_divisors_selbergLambda2_eq_log_sq, then re-indexes divisorsAntidiagonal → divisors via Nat.sum_divisorsAntidiagonal (Divisors.lean:543). Proof body ~8 LOC. ChebyshevBoundsOQ04OQ01.lean grows 312 → 325 LOC, 15 → 16 theorems, 0 sorries, 0 axioms maintained. Build trap surfaced (now documented in state.md): the ∀ m > 0 lift hypothesis must annotate m : ℕ explicitly — without it Lean infers m : ℝ from Real.log m and fails on m.divisors. Iter 5 is now the next analytic step: Selberg's symmetry formula S₂(N) = 2N · log N + O(N) via the Möbius hyperbola trick on Iter 4's identity (~80–120 LOC for the leading term).",
+    "focus": "S6 PREP (researcher-9, 2026-05-16T04:37Z, doc-only, this PR) absorbs the Iter 4 ACT merge (PR #19400 at 2026-05-16T03:52:02Z) and stages Iter 5a (Selberg's symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N · log N + O(N)) with a Mathlib bearer manifest at pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. 0 Lean changes. Iter 4 bearers (Moebius.lean:240, Divisors.lean:543) re-verified, 0 drift. Iter 5a candidate bearers identified in Mathlib/NumberTheory/AbelSummation.lean (sum_mul_eq_sub_integral_mul₀' at L229, sum_mul_eq_sub_sub_integral_mul at L129) and Mathlib/Analysis/SumIntegralComparisons.lean (MonotoneOn.integral_le_sum_Ico at L195). Two confirmed Mathlib gaps: (1) Σ_{m ≤ x} (log m)² asymptotic — not in Mathlib, buildable in ~30 LOC via Abel summation; (2) Mertens M1 bound Σ_{d ≤ N} μ(d)/d = O(1) — not in Mathlib (listed under \"Mertens's theorems\" in docs/1000.yaml), weak version |Σ μ(d)/d| ≤ 1 + log N buildable elementarily in ~50 LOC. Recommended split-ACT plan: Iter 5a-α (log² asymptotic, ~60-90 LOC) + Iter 5a-β (weak Mertens M1, ~50-80 LOC) + Iter 5a-γ (Möbius hyperbola assembly, ~40-60 LOC). Total honest budget 150-230 LOC (vs Iter 4 session memo's 80-120 estimate). Side-note: Mathlib has Chebyshev.psi/theta natively (Mathlib/NumberTheory/Chebyshev.lean, 272 LOC, upstreamed from PrimeNumberTheoremAnd) with psi_le_const_mul_self bound but NOT the asymptotic ψ ~ x — so the parent's chebyshevPsi_asymptotic axiom remains unsolved by Mathlib alone.",
     "blockers": [],
-    "nextAction": "Iter 5a: Selberg's symmetry formula leading term Σ_{n ≤ N} Λ₂(n) = 2N · log N + O(N). Starting from selbergLambda2_eq_moebius_log_sq, sum over n ≤ N and swap order: Σ_{n ≤ N} Λ₂(n) = Σ_{d ≤ N} μ(d) · Σ_{m ≤ N/d} (log m)² (Möbius hyperbola). Inner sum Σ_{m ≤ x} (log m)² = x · (log x)² − 2x · log x + 2x + O(log²x) by integration by parts on log² (cf. Tenenbaum I.6.2). Leading term −2x · log x scaled by Σ_{d ≤ N} μ(d)/d = O(1) (Mertens) gives 2N · log N. Estimated ~80–120 LOC.",
+    "nextAction": "Pick Iter 5a-α or Iter 5a-β (independent, can be parallelised). Iter 5a-α: prove ∃ C, ∀ N ≥ 2, |Σ_{m ∈ Icc 1 N} (Real.log m)² − (N · (Real.log N)² − 2N · Real.log N + 2N)| ≤ C · (Real.log N)² via Abel summation against f(t) = (log t)² (bearer: sum_mul_eq_sub_integral_mul₀' at Mathlib/NumberTheory/AbelSummation.lean:229, pin 2df2f0150c). Estimated 60-90 LOC, 2-4 Docker iters. Iter 5a-β: prove ∀ N ≥ 1, |Σ_{d ∈ Icc 1 N} (ArithmeticFunction.moebius d : ℝ) / d| ≤ 1 + Real.log N via summation by parts on M(N) := Σ μ(d) (using |M(N)| ≤ N from abs_sum_le_sum_abs + Int.abs_moebius_le_one). Estimated 50-80 LOC, 2-3 Docker iters. Iter 5a-γ assembles both into the symmetry formula, requires 5a-α + 5a-β merged. Full per-sub-iter acceptance criteria in research/problems/chebyshev-bounds-oq-04-oq-01/sessions/2026-05-16-s6-prep-iter5a-symmetry-formula.md §6-§8.",
     "attemptCounts": {
       "total": 4,
       "currentApproach": 4,
@@ -75,7 +75,8 @@
       "Iter 3 trap (Real.log + exact_mod_cast incompatibility): when proving `Real.log (↑d * ↑(n/d)) = Real.log ↑n`, the natural attempt `congr 1; push_cast; exact_mod_cast Nat.mul_div_cancel' hdvd` fails because exact_mod_cast cannot see through Real.log. Cleaner pattern: rewrite the entire argument chain in one shot, `rw [← Real.log_mul hd_ne hnd_ne, ← Nat.cast_mul, Nat.mul_div_cancel' hdvd]`, which combines the two logs, lifts the cast to ℕ, then applies the division identity directly. No congr / push_cast / exact_mod_cast needed.",
       "Mathlib v4.26.0 surface delta (Iter 3 build surfaced): `Nat.divisors_prime hp` is GONE in v4.26.0 — replaced by the dot-method form `Nat.Prime.divisors hp` (or equivalently `hp.divisors`) at Mathlib/NumberTheory/Divisors.lean:416. This silent rename affects ALL Iter 2 prime-value lemmas in build-pending chains. Pre-claim Docker baseline is mandatory: the slug had been 'build verified' at Iter 2 merge (2026-05-12T00:48Z) but Mathlib's tracked revision evolved in the intervening 2 days.",
       "Mathlib v4.26.0 surface delta (Iter 3 build surfaced): `ring` no longer closes `4^m = 2^(2*m)` even with `ring_nf` suggestion — the elaborator treats `4` and `2^2` as distinct atoms in ring-normalization. Surgical fix: `rw [pow_mul]; rfl` (pow_mul : a^(m*n) = (a^m)^n unfolds the RHS to (2^2)^m = 4^m by definitional reduction). The pattern is generic for any `c^k = b^(j*k)` where c = b^j is definitionally true in ℕ. Applies to many Chebyshev/central-binomial proofs that bound via `4^m ≤ choose(2m+1, m)` style estimates.",
-      "Iter 4 trap (Möbius-inversion lift requires explicit ℕ annotation): the iff-form hypothesis ∀ m > 0, Σ i ∈ m.divisors, ... = (Real.log m)² must be written as ∀ m : ℕ, 0 < m → ... — without the explicit ℕ annotation Lean's elaborator infers m : ℝ from Real.log m (which accepts ℝ directly), then fails on m.divisors (\"Real.divisors\" not found) and rejects the lift fun m hm => sum_divisors_selbergLambda2_eq_log_sq hm. The fix is a 1-token addition. General pattern: any iff-form Möbius-inversion lift in this file should type-annotate the bound ℕ variable when the consequent coerces through Real.log."
+      "Iter 4 trap (Möbius-inversion lift requires explicit ℕ annotation): the iff-form hypothesis ∀ m > 0, Σ i ∈ m.divisors, ... = (Real.log m)² must be written as ∀ m : ℕ, 0 < m → ... — without the explicit ℕ annotation Lean's elaborator infers m : ℝ from Real.log m (which accepts ℝ directly), then fails on m.divisors (\"Real.divisors\" not found) and rejects the lift fun m hm => sum_divisors_selbergLambda2_eq_log_sq hm. The fix is a 1-token addition. General pattern: any iff-form Möbius-inversion lift in this file should type-annotate the bound ℕ variable when the consequent coerces through Real.log.",
+      "S6 PREP scope-honesty finding (2026-05-16, this PR): Iter 4 session memo estimated Iter 5a at 80-120 LOC. Post bearer survey, the honest budget is 150-230 LOC because two prerequisite Mathlib gaps (Σ (log m)² asymptotic and Mertens M1 |Σ μ(d)/d| = O(1)) must be built locally. Recommendation: split Iter 5a into three sub-iters (5a-α log² asymptotic, 5a-β weak Mertens M1, 5a-γ assembly) to limit per-PR Docker churn and enable parallel claims on the independent sub-iters. Side discovery: Mathlib has Chebyshev.psi/theta natively (Mathlib/NumberTheory/Chebyshev.lean, 272 LOC, upstreamed from PrimeNumberTheoremAnd), with psi_le_const_mul_self : ψ x ≤ (log 4 + 4) * x — an upper bound, not the asymptotic — so the Selberg-Erdős elementary route remains the right strategy for the parent's chebyshevPsi_asymptotic axiom. A 2-LOC bridge from parent.chebyshevPsi to Mathlib's Chebyshev.psi may be useful at the Iter 7+ Tauberian step."
     ],
     "mathlibGaps": [
       "No formalization of Selberg's symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N log N + O(N). (Iter 5–6 target.)",
@@ -84,13 +85,14 @@
       "Iter 4 closed the literal Möbius–log identity Λ₂(n) = Σ_{d|n} μ(d) · log²(n/d) in this file. Mathlib v4.26.0 still has no formalised PNT in any form; the symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N log N + O(N) and the Erdős–Selberg Tauberian finishing argument remain to be done here."
     ],
     "nextSteps": [
-      "Iter 4 — DONE (this PR, 2026-05-16): selbergLambda2_eq_moebius_log_sq via ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq + Nat.sum_divisorsAntidiagonal; 7744-job Docker build clean.",
-      "Iter 5a (next, ~80–120 LOC): Selberg's symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N · log N + O(N) leading term. Use Iter 4's literal form: swap sum order to get Σ_{d ≤ N} μ(d) · Σ_{m ≤ N/d} (log m)². Inner sum has explicit asymptotic Σ_{m ≤ x} (log m)² = x · (log x)² − 2x · log x + 2x + O(log²x) (integration by parts on log²; cf. Tenenbaum I.6.2). Leading −2x · log x scaled by Σ_{d ≤ N} μ(d)/d = O(1) (Mertens) yields 2N · log N.",
-      "Iter 5b (~80 LOC): O(N) error-term cleanup via the Möbius hyperbola bound.",
-      "Iter 6+: summation-by-parts framework specialised to Λ-weighted sums (Mathlib gap — current Mathlib has only generic Abel-style lemmas in MeanInequalitiesPow that don't apply directly). Either hand-roll or upstream to Mathlib.",
-      "Iter 7+: Tauberian inequality V(x)·log x ≤ (2/x)·Σ_{n ≤ x} V(x/n)·Λ(n) + O(1) where V(x) = |ψ(x) − x|/x.",
-      "Iter 8+: Erdős combinatorial finishing lim sup V(x) = 0 from the Tauberian inequality.",
-      "Iter 9: discharge of chebyshevPsi_asymptotic axiom (slug's terminal goal)."
+      "Iter 4 — DONE (MERGED as PR #19400 at 2026-05-16T03:52:02Z): selbergLambda2_eq_moebius_log_sq via ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq + Nat.sum_divisorsAntidiagonal; 7744-job Docker build clean.",
+      "S6 PREP — DONE (this PR, 2026-05-16T04:37Z): doc-only bearer manifest + scope honesty for Iter 5a, recommending split into 5a-α/5a-β/5a-γ sub-iters.",
+      "Iter 5a-α (60-90 LOC, independent of 5a-β): prove Σ_{m ∈ Icc 1 N} (Real.log m)² = N·(log N)² − 2N·log N + 2N + O(log²N) via Abel summation against f(t) = (log t)² (bearer: Mathlib/NumberTheory/AbelSummation.lean:229 sum_mul_eq_sub_integral_mul₀').",
+      "Iter 5a-β (50-80 LOC, independent of 5a-α): prove weak Mertens M1 |Σ_{d ∈ Icc 1 N} (μ d : ℝ)/d| ≤ 1 + Real.log N via summation by parts on M(N) := Σ μ(d), using |M(N)| ≤ N from abs_sum_le_sum_abs + Int.abs_moebius_le_one.",
+      "Iter 5a-γ (40-60 LOC, requires 5a-α + 5a-β merged): assemble Selberg's symmetry formula |selbergSum2 N − 2N·log N| ≤ C·N via Möbius hyperbola sum swap on Iter 4's selbergLambda2_eq_moebius_log_sq. May require Iter 5a-δ for Mertens M2 (Σ (μ(d)/d)·log d = O(1), ~30-50 LOC) depending on sign-cancellation handling.",
+      "Iter 5b (optional, ~80 LOC): O(N) error-term sharpening if downstream Iter 6 requires a witnessed constant smaller than 5a-γ produces.",
+      "Iter 6+: Tauberian inequality V(x)·log x ≤ (2/x)·Σ_{n ≤ x} V(x/n)·Λ(n) + O(1) where V(x) = |ψ(x) − x|/x.",
+      "Iter 7+: Erdős combinatorial finishing lim sup V(x) = 0 from the Tauberian inequality; discharges parent's chebyshevPsi_asymptotic axiom (slug's terminal goal)."
     ]
   },
   "tags": [
@@ -105,6 +107,7 @@
   "relatedProofs": [
     "chebyshev-bounds",
     "chebyshev-bounds-oq-04",
+    "chebyshev-bounds-oq-04-oq-01",
     "chebyshev-pnt-bridge"
   ],
   "references": {
@@ -149,7 +152,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.340Z",
-  "lastUpdate": "2026-05-16T03:00:00.000Z",
+  "lastUpdate": "2026-05-16T04:37:00.000Z",
   "significance": 9,
   "tractability": 3,
   "leanFiles": [
@@ -189,7 +192,7 @@
     {
       "path": "Proofs/ChebyshevBoundsOQ04OQ01.lean",
       "filename": "ChebyshevBoundsOQ04OQ01.lean",
-      "lineCount": 325,
+      "lineCount": 326,
       "theoremCount": 16,
       "axiomCount": 0,
       "defCount": 3,
