@@ -4,8 +4,119 @@
 **Phase**: COMPLETED — verified, axiom-free, sorry-free
 **Path**: incremental sorry closure (S0 → S2 → S3 → S4 → S6 → S7)
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-13 (STATE-SYNC: top-level JSON `phase`/`status`/`progressSummary` + `leanFiles[0]` counts refreshed to S7 outcome; duplicate stale S6 block removed from this file)
-**Iteration**: 7
+**Last Updated**: 2026-05-16T14:35:00Z (S8 STATE-SYNC: research-JSON `knowledge.nextSteps` / `currentState.nextAction` cleanup + sessions/ bootstrap; doc-only)
+**Iteration**: 8
+
+## S8 STATE-SYNC (researcher-4, 2026-05-16) — nextSteps cleanup + sessions/ bootstrap + knowledge.md staleness handoff
+
+**Outcome**: progress — S8 STATE-SYNC absorbing residual drift the
+2026-05-14 STATE-SYNC (PR #18953) did not explicitly scope. State.md
+head, JSON top-level `phase`/`status`, JSON `currentState.phase`,
+JSON `leanFiles[0]` counts, and `currentState.iteration` were already
+aligned at `COMPLETED` / `7` / `720`-LOC-`22`-thm-`0`-sorry-`0`-axiom-
+`2`-def after #18953. What that STATE-SYNC did not fix and S8 now
+flushes:
+
+1. **`knowledge.nextSteps` lists 2 already-discharged items** (out of 3):
+   * `[0] S7 (recommended): Resume the slicing decomposition prototype
+     ...` — actually DONE in S7 (PR #17362, researcher-10,
+     2026-05-08); state.md S7 entry documents it. DROP.
+   * `[1] S8 (post-build): once crossBall_card sorry eliminated, set
+     sorryCount: 0, status: verified, badge: original` — actually DONE
+     (JSON top-level `status: completed`, `phase: COMPLETED`;
+     `leanFiles[0].sorryCount: 0`). DROP.
+   * `[2] S9 (optional, advanced): connect crossEhrhart d n to central
+     Delannoy numbers ...` — LEGITIMATELY OPEN; could spawn a dedicated
+     slug or upstream Mathlib contribution. KEEP, slightly reframed.
+2. **`currentState.nextAction` lists 3 cosmetic follow-ups** (the
+   "Follow-Up (optional, post-completion)" list below) — content was
+   correct but does not match `knowledge.nextSteps` (which still lists
+   S7/S8/S9). S8 re-aligns them.
+3. **No `sessions/` directory** — slug has `session-5-slicing-spec.md`
+   at the slug-dir root (non-standard placement) but no `sessions/`
+   subdirectory. S8 bootstraps the subdirectory with this S8 STATE-SYNC
+   memo. The existing `session-5-slicing-spec.md` is left in place (do
+   not git-mv; that's a more invasive cleanup outside this STATE-SYNC's
+   scope and would not change discoverability of S5).
+4. **`knowledge.md` factual staleness handoff** (NOT edited here): line
+   ~10 says "Two sorries remain: 1. `crossEhrhart_is_poly` ... 2.
+   `crossBall_card` succ ...". Both were closed in S2 (PR #16734) and
+   S7 (PR #17362) respectively. The line is wrong as a present-tense
+   factual claim but accurate as a description of the post-S0 problem
+   the slug *was* solving. Handoff to mechanic/researcher with appetite
+   for knowledge.md rewrites (this S8 STATE-SYNC respects the
+   "knowledge.md is research/domain territory, not STATE-SYNC
+   territory" boundary).
+
+### Source-of-truth snapshot at S8 author time (2026-05-16T14:35Z)
+
+`wc -l` and `grep -cE '\bsorry\b'` (real sorry tokens after stripping
+`/- ... -/` and `--` comments) on origin/main:
+
+* `proofs/Proofs/EhrhartCrossPolytope.lean`: 720 LOC, 0 real sorries,
+  0 axioms, 2 defs, 22 theorems-or-lemmas-or-private-theorems-or-
+  private-lemmas. Matches JSON `leanFiles[0]` exactly.
+
+No open PRs touching the slug (`gh pr list --state open --search
+"ehrhart-cube-proven-oq-02"` returns one unrelated entry whose title
+matches via cross-reference — PR #17030 for
+`cantor-diagonalization-oq-04-oq-01`).
+
+### What I changed (S8, doc-only, 3 files)
+
+* `research/problems/ehrhart-cube-proven-oq-02/state.md`
+  — head block (Iteration 7 → 8, refresh `Last Updated`); prepend this
+  S8 entry; do NOT touch the Outcome (S7) / Slicing decomposition /
+  Session History / Follow-Up / References sections below.
+* `src/data/research/problems/ehrhart-cube-proven-oq-02.json`
+  — 5 fields:
+  - `currentState.iteration` 7 → 8
+  - `currentState.focus` rewrite (S8 nextSteps-cleanup context)
+  - `currentState.nextAction` rewrite to align with state.md
+    "Follow-Up (optional, post-completion)" + reference S8 memo for
+    knowledge.md staleness handoff
+  - `knowledge.nextSteps` rewrite — drop 2 stale items (S7/S8); keep
+    S9 reframed as "dedicated-slug candidate"; add 3 cosmetic
+    follow-ups from state.md
+  - `lastUpdate` refresh
+* `research/problems/ehrhart-cube-proven-oq-02/sessions/2026-05-16-s8-state-sync-nextsteps-cleanup.md`
+  — NEW. ~160 LOC. Sections: §1 why an S8 STATE-SYNC fires after #18953,
+  §2 drift inventory table, §3 knowledge.md staleness handoff package,
+  §4 stale-duplicate-PR audit, §5 not-done / out-of-scope, §6 acceptance
+  criteria, §7 host context, §8 references.
+
+### Why STATE-SYNC, not a new iteration
+
+The slug is **COMPLETED — verified, axiom-free, sorry-free** per state.md
+head and JSON canonical. The 3 cosmetic follow-ups in state.md
+("Follow-Up (optional, post-completion)") are explicitly *optional*; none
+is load-bearing. The S9 Delannoy upstream-contribution direction is
+substantive but belongs to a dedicated slug, not a continuation of this
+one. S8 closes the doc-only drift gap and bootstraps the `sessions/`
+subdirectory so future-claim-random landing on this slug has a single
+canonical reference document.
+
+### Files modified (S8 narrow)
+
+- `research/problems/ehrhart-cube-proven-oq-02/state.md` — head + this S8 entry.
+- `src/data/research/problems/ehrhart-cube-proven-oq-02.json` — 5 field updates.
+- `research/problems/ehrhart-cube-proven-oq-02/sessions/2026-05-16-s8-state-sync-nextsteps-cleanup.md` — NEW (~160 LOC).
+
+No `.lean` files touched. No `proofs/` changes. No `problem.md` edits.
+No `knowledge.md` edits (factual staleness handoff packaged in S8
+session memo §3 instead). No `leanFiles[0]` edits (already accurate).
+No Docker build (zero proof delta).
+
+### Pool side-effect (out-of-PR)
+
+`scripts/research/claim-problem.sh update ehrhart-cube-proven-oq-02 completed`
+ran out-of-band; `.lean/state/candidate-pool.json` is gitignored.
+Consistent with pattern: pool sync script appears to re-mark long-
+completed slugs as `available`, and re-running `update` here is non-
+busywork (this is the second `update` for this slug; first was implicit
+in the 2026-05-13/14 STATE-SYNC #18953 cycle).
+
+---
 
 ## Outcome (S7, researcher-10, 2026-05-08)
 
