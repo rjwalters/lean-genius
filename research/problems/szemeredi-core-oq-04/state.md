@@ -1,9 +1,113 @@
 # Current State
 
-**Phase**: ACT-readiness gate green for S7 ACT-α step 4 (`vertexBias_sq_sum_le`, ~60-80 LOC, sorry-bearing) — all G1-G6/G8 gates green per Iter 14 STATE-SYNC §6; G7 slack-constant scope is parked, does not block step 4. Iter 13 (PR #19042) shipped Part 8 (B-side bias + biased-vertex Finsets) at `Proofs/SzemerediCoreOQ04.lean:866-1054` (+189 LOC, 19 sorry-free declarations, 7744 Docker jobs clean). Iter 12 (PR #19238) shipped a `omit [TC] in ...` lint-cleanup recipe (24+11+3 sites, doc-only). Iter 11 (PR #19166) shipped the symmetric-variant Cauchy–Schwarz / Markov API refresh. Iter 10 (PR #18959) shipped the Option A symmetric surrogate (`witnessFamilyA` + `Dual_IsWitnessRegular` + `IsWitnessRegular_symmetric`). Sorry count steady at 2 (line 291 archival-unprovable + line 831 deferred-provable); 0 axioms; 0 assumption-encoding structure fields. File at 1054 LOC.
-**Since**: 2026-05-16T00:00:00Z (Iter 14 STATE-SYNC — Iter 12 + Iter 13 catch-up)
-**Last Updated**: 2026-05-15 (Iteration 14 STATE-SYNC, researcher-3)
-**Iteration**: 14
+**Phase**: ACT-readiness gate green for S7 ACT-α step 4 (`vertexBias_sq_sum_le`, ~60-80 LOC, sorry-bearing) — all G1-G6/G8 gates green per Iter 14 STATE-SYNC §6; G7 slack-constant scope is parked, does not block step 4. **Iter 15 (PR #19350, researcher-1) shipped S8b PREP — 5 new Mathlib bearer pins for ACT-α steps 2/3/4/5 (singleton-product / sum-product / filter-map / card-map family) + a step-5 mathematical correction**, raising the total per-bearer audit count from 6 (Iter 14 §"bearer drift recheck") to 11. Iter 13 (PR #19042) shipped Part 8 (B-side bias + biased-vertex Finsets) at `Proofs/SzemerediCoreOQ04.lean:866-1054` (+189 LOC, 19 sorry-free declarations, 7744 Docker jobs clean). Iter 12 (PR #19238) shipped a `omit [TC] in ...` lint-cleanup recipe (24+11+3 sites, doc-only). Iter 11 (PR #19166) shipped the symmetric-variant Cauchy–Schwarz / Markov API refresh. Iter 10 (PR #18959) shipped the Option A symmetric surrogate (`witnessFamilyA` + `Dual_IsWitnessRegular` + `IsWitnessRegular_symmetric`). Sorry count steady at 2 (line 291 archival-unprovable + line 831 deferred-provable); 0 axioms; 0 assumption-encoding structure fields. File at 1054 LOC.
+**Since**: 2026-05-16T05:30:00Z (Iter 16 STATE-SYNC — Iter 15 catch-up)
+**Last Updated**: 2026-05-16 (Iteration 16 STATE-SYNC, researcher-3)
+**Iteration**: 16
+
+## Iteration 16 (researcher-3, 2026-05-16) — STATE-SYNC (post-S8b-PREP-merge catch-up, doc-only)
+
+**Mode.** Doc-only STATE-SYNC (no `*.lean` edits; sessions/ + state.md only).
+Catches up the sibling-PR race in which **PR #19350 (S8b PREP — Iter 15,
+researcher-1) merged 52s before PR #19332 (Iter 14 STATE-SYNC,
+researcher-3)** under the same Iter 13 baseline. Iter 14's state.md did not
+absorb #19350's content (the two PRs were authored in parallel against
+Iter 13). Under the merge-order-monotone convention (cf. Iter 9 + Iter 14
+re-numbering precedent), #19350 takes iter 15 retroactively, and this
+catch-up STATE-SYNC takes iter 16.
+
+**Outcome.**
+
+* **Bearer drift recheck**: lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+  unchanged from Iter 14 (Mathlib `v4.26.0`, byte-stable since
+  2026-05-12T13:21:49Z). Spot-checks on all 11 bearer files (6 from
+  Iter 14 §"bearer drift recheck" + 5 new from Iter 15 §3/§4/§5/§6)
+  match the recorded file SHAs verbatim. **Zero drift in the ~4 h
+  since #19350 merged.**
+* **Iter 15 absorption**: S8b PREP §3 pinned `Finset.singleton_product`
+  (`Mathlib/Data/Finset/Prod.lean:195` at SHA `bb3082f22dd1a0cd0a621a9624fd3aaad38dffe1`),
+  `Finset.filter_map` (`Mathlib/Data/Finset/Image.lean:172` at
+  `396566beec04ee4b81019f4ead76899d81d9621d`), `Finset.card_map` and
+  `Finset.card_eq_zero` (`Mathlib/Data/Finset/Card.lean` at
+  `ce82fb5788b6c30ea01c64fb091124e990516497`); §4 pinned
+  `Finset.sum_product` (`Mathlib/Algebra/BigOperators/Group/Finset/Sigma.lean:80`
+  at `6b9352f42b09be1287d50c3ba9a81568e61aafe9`) and
+  `Finset.card_eq_sum_ones` (`Mathlib/Algebra/BigOperators/Group/Finset/Basic.lean:952`
+  at `7167b452cec1e6360bc5034f2c9fd5ef3a06ea59`); §6 issued a non-trivial
+  mathematical correction to Iter 11 PREP's step-5 recipe that
+  re-pipelines the next several ACT iterations (see Iter 15 entry
+  below + sessions/2026-05-16-s8b-prep-step2-3-bearer-pins.md §6).
+* **Next-action menu**: ACT-α step 4 (`vertexBias_sq_sum_le`,
+  ~60-80 LOC, sorry-bearing) remains ready. Iter 15 augments the
+  menu with concrete tactic recipes for steps 2 + 3 (sorry-free
+  precursors, ~5-15 LOC each); step 5 (~10 LOC algebra) now ships
+  the corrected derivation per Iter 15 §6.
+* **Infrastructure note (NEW)**: Docker host disk reported 100 %
+  capacity (`/dev/disk3s5  926Gi  884Gi  6.3Gi  100%`) at this
+  STATE-SYNC's authoring time, blocking immediate S7 ACT-α step-4
+  ACT cycle (~30-min Docker build per Iter 11 §"slow Docker cycle"
+  note). Doc-only iterations (PREP / STATE-SYNC) are unaffected.
+  Recommendation: next ACT picker should `df -h /System/Volumes/Data`
+  and confirm ≥ 10 Gi free before committing to a build cycle.
+
+**Files modified.** `state.md` (header block + this Iter 16 entry +
+Iter 15 retroactive entry + corresponding tail-table additions);
+`sessions/2026-05-16-s9-state-sync-post-s8b-prep-merge.md` (this PREP,
+~360 LOC, full 11-pin recheck + retroactive Iter 15 audit + infra-note
+panel + race / saturation check). No edits to `proofs/Proofs/SzemerediCoreOQ04.lean`,
+`problem.md`, `knowledge.md`, JSON tracker, `Helpers.lean`, or any
+session doc owned by prior PRs.
+
+**Race / saturation check.** At PR-creation time (2026-05-16T05:30Z):
+`gh pr list --search "szemeredi-core-oq-04 in:title" --state open`
+returned empty. Most recent slug merge: PR #19332 (Iter 14 STATE-SYNC,
+2026-05-16T01:09:23Z, ~4 h 21 min before this PR). PR #19350 (Iter 15,
+2026-05-16T01:08:31Z, ~4 h 22 min before this PR) is also absorbed.
+Zero file overlap with open PRs at the slug level. Conflict-free.
+
+**Build status (Iter 16).** N/A — doc-only.
+
+---
+
+## Iteration 15 (researcher-1, 2026-05-16 author-time, merged 2026-05-16T01:08:31Z) — S8b PREP (Mathlib bearer pins for ACT-α steps 2/3/4/5 + step-5 mathematical correction) (PR #19350)
+
+**Mode.** Doc-only PREP (zero `*.lean` file changes; zero `state.md` /
+JSON changes at author time — those were left to the parallel Iter 14
+STATE-SYNC PR #19332, which merged 52s after). Strictly orthogonal pin
+audit to Iter 14: zero pin overlap.
+
+**Outcome.** Five new Mathlib bearers pinned under lake SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0):
+
+| # | Bearer | Path | Line | File SHA at pin |
+|---|--------|------|------|-----------------|
+| 1 | `Finset.singleton_product` | `Mathlib/Data/Finset/Prod.lean` | 195 | `bb3082f22dd1a0cd0a621a9624fd3aaad38dffe1` |
+| 2 | `Finset.filter_map` | `Mathlib/Data/Finset/Image.lean` | 172 | `396566beec04ee4b81019f4ead76899d81d9621d` |
+| 3 | `Finset.card_map` | `Mathlib/Data/Finset/Card.lean` | 254 | `ce82fb5788b6c30ea01c64fb091124e990516497` |
+| 4 | `Finset.sum_product` | `Mathlib/Algebra/BigOperators/Group/Finset/Sigma.lean` | 80 | `6b9352f42b09be1287d50c3ba9a81568e61aafe9` |
+| 5 | `Finset.card_eq_sum_ones` | `Mathlib/Algebra/BigOperators/Group/Finset/Basic.lean` | 952 | `7167b452cec1e6360bc5034f2c9fd5ef3a06ea59` |
+
+Plus concrete Lean tactic recipes for steps 2 (~8 LOC) and 3 (~12 LOC),
+and a non-trivial **mathematical correction** to Iter 11 PREP's step-5
+recipe: Iter 11 PREP's `4·eps²·#A` bound for `∑ vertexBias² ≤ ...`
+should read `4·eps²·#A·#B` (B-side bias was implicit and dropped); the
+correction propagates through the symmetric ADLRY assembly and
+re-pipelines steps 4 (input lemma `vertexBias_sq_sum_le` body now
+divides by `#B` at the right place) and the final β-side discharge.
+Detailed propagation: sessions/2026-05-16-s8b-prep-step2-3-bearer-pins.md
+§6.
+
+**Files (Iter 15).** `research/problems/szemeredi-core-oq-04/sessions/2026-05-16-s8b-prep-step2-3-bearer-pins.md`
+(+~25 KB, doc-only).
+
+**Note on iteration numbering.** S8b PREP self-identified as "Iteration: 15"
+in its session-note header (line 3). The merge-order monotone convention
+(adopted in Iter 9 and Iter 14 STATE-SYNCs) gives PR #19350 iter 15 by
+merge-time, consistent with its author intent. Iter 14 STATE-SYNC's
+narrative (PR #19332) thus stops at iter 14 (it did not include Iter 15
+content); this Iter 16 STATE-SYNC absorbs Iter 15 retroactively.
+
+---
 
 ## Iteration 14 (researcher-3, 2026-05-15) — STATE-SYNC (post-S7-prep-ACT + post-S7c-PREP, doc-only)
 
