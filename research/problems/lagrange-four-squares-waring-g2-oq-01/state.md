@@ -1,8 +1,47 @@
 # Current State
 
-**Phase**: ACT-BLOCKED (parent `LagrangeFourSquares.lean` has v4.26.0 regressions; all five queued ACTs (S4, S5, S6, S6b, S7) blocked on Mechanic parent fix per S17 BUILD-DIAGNOSTIC)
+**Phase**: ACT-BLOCKED (parent `LagrangeFourSquares.lean` has v4.26.0 regressions; all five queued ACTs (S4, S5, S6, S6b, S7) blocked on Mechanic parent fix per S17 BUILD-DIAGNOSTIC; S18 PREP supplies paste-ready Mechanic handoff)
 **Since**: 2026-05-16 (S17 BUILD-DIAGNOSTIC — parent `Proofs.LagrangeFourSquares` v4.26.0 regression discovered, 9 errors at lines 210–365 of parent)
-**Iteration**: 16 (S17 BUILD-DIAGNOSTIC; researcher-1)
+**Iteration**: 17 (S18 PREP Mechanic handoff; researcher-5)
+
+## S18 PREP 2026-05-16 (researcher-5)
+
+**Focus**: doc-only PREP upgrading S17 BUILD-DIAGNOSTIC §5 "rough fix sketch" to paste-ready per-error Lean edits for the parent `proofs/Proofs/LagrangeFourSquares.lean` v4.26.0 regression. Full memo at `sessions/2026-05-16-s18-prep-mechanic-handoff-parent-v426-paste-ready-fixes.md`.
+
+### Deliverables
+
+- **§3 paste-ready fix table** for E1–E10 (7 fix sites, ~25 LOC add / ~10 LOC del; covers all 5 v4.26.0 API-drift classes catalogued in S17 §2). Each fix lists: parent file line, exact diff (with surrounding context), Mathlib bearer used, risk class (TRIVIAL/LOW/MEDIUM).
+- **§2 bearer-pin table** for 7 Mathlib bearers (B1–B7) verified present at lake-pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0, unchanged since 2026-05-13 bump) via `gh api` reads of the Mathlib repository at that SHA. **0 bearers absent.**
+- **§5 risk analysis** for Mechanic — aggregate Docker risk LOW (single parent file rebuild, expected ~3–5 min after host-disk recovery; sibling slugs auto-rebuild from .olean ~5–7 min total).
+- **§9 handoff** — recommended Mechanic PR title + checklist + recommended next-researcher action (S4 ACT verbatim from S16 PREP §3.2 in ~5 min cycle after Mechanic).
+
+### ACT-readiness gate (post-S18)
+
+| Gate | Status | Notes |
+|---|---|---|
+| 1. S16 PREP §3.2 recipe mathematically sound | ✅ GREEN | Confirmed in S17 §4. No edits needed once parent compiles. |
+| 2. Parent file `LagrangeFourSquares.lean` Docker-green | ❌ RED → 🟡 AMBER (post-S18 paste by Mechanic) | Paste-ready fixes in this PREP §3. |
+| 3. Bearer drift on parent fixes | ✅ GREEN | 7 bearers verified at lake-pin (S18 §2 table). |
+| 4. Host disk recovery for Docker | ❌ RED (INFRASTRUCTURE-ONLY) | 7.2 Gi free / 100%. Wait for cleanup. |
+| 5. Sibling slugs ready to ride parent fix | ✅ GREEN | Source files unchanged on origin/main; rebuild from .olean. |
+| 6. S4 ACT 5-minute paste cycle after parent fix | ✅ GREEN | S16 PREP §3.2 recipe is byte-identical to S17's drafted-then-reverted edits. |
+| 7. S18 PREP doc-only deliverable shipped | ✅ GREEN (this PR) | Paste-ready manifest for Mechanic. |
+| 8. No cross-slug state changes | ✅ GREEN | Touches only this slug's state.md + JSON + sessions/. |
+
+**5/8 GREEN, 1/8 AMBER (post-paste parent build), 2/8 RED (INFRASTRUCTURE-ONLY — Docker daemon + host disk).**
+
+### Blockers (refreshed)
+
+- **B1 (UNCHANGED from S17)**: parent `Proofs.LagrangeFourSquares.lean` has 9 v4.26.0 elaboration errors (lines 210–365). Blocks S4, S5, S6, S6b, S7 ACTs. **Mechanic-scope, paste-ready fixes now staged in S18 PREP §3.**
+
+### Honest-status block
+
+- **Mathematical progress this session**: zero new theorems. Mechanic-handoff manifest is process-class improvement, not mathematics.
+- **Build-verification status**: ❌ unchanged from S17 — parent Docker-red. This PREP does not attempt to verify; explicitly deferred to Mechanic.
+- **Axiom status**: parent axioms unchanged in source. No environment-level audit possible until parent compiles.
+- **Open conjecture status**: unchanged from S17. All 5 queued ACTs (S4/S5/S6/S6b/S7) still BLOCKED on Mechanic parent fix; this PREP reduces Mechanic's per-error re-derivation cost.
+
+---
 
 ## S17 BUILD-DIAGNOSTIC 2026-05-16 (researcher-1)
 
@@ -117,9 +156,11 @@ The S2 ACT shipped instance uses an alternative `native_decide` over `3^8 = 6561
 | S3 ACT | researcher-12 | 2026-05-14 | ACT | `g4_lower_counting : ¬ IsSumOfFourthPowers 18 79` via counting+omega — second verified instance of the parametric template (sibling of S2b ACT at `k = 4`). New file `LagrangeFourSquaresWaringG2OQ01CountingG4.lean` (155 LOC on origin/main, 0 sorries, 0 axioms, no `native_decide`). **First-iteration Docker build success, 7743 jobs clean.** Registered in `Proofs.lean`. | [#19129](https://github.com/rjwalters/lean-genius/pull/19129) | **MERGED** 2026-05-15T22:58:02Z (`c803ae7efe88`) |
 | S7 PREP rescue | researcher-? | 2026-05-15 | PREP | Rescued the orphan-branch `g(7) ≥ 143` design memo (828 LOC) from `research/lagrange-four-squares-waring-g2-oq-01-s7-prep-g7-counting-omega-20260513-054453`. Opens S7 ACT as a routine port of the S3 ACT recipe at `k = 7`. | [#19177](https://github.com/rjwalters/lean-genius/pull/19177) | **MERGED** 2026-05-15T22:56:35Z (`b8c177c438e2`) |
 | STATE-SYNC | researcher-3 | 2026-05-15 | STATE-SYNC | doc-only refresh after S3 ACT (#19129) merge + S2b BUILD-VERIFY (#19041) merge (partial — JSON-only, did not touch state.md) | [#19060](https://github.com/rjwalters/lean-genius/pull/19060) | **MERGED** 2026-05-15T23:34:19Z (`037b5b88d81`) |
-| STATE-SYNC | researcher-3 | 2026-05-15 | STATE-SYNC | this PR — doc-only refresh after the 3-PR drain wave (#19129 + #19041 + #19177); refreshes `state.md` (Phase, Iteration, Current Focus, Iteration history, Open branches, Next Action, Attempt Counts, Open files, Honesty block, Future Iterations) + JSON (`currentState.{phase, since, iteration, focus, nextAction, attemptCounts.total}` + `knowledge.{progressSummary, builtItems, nextSteps}` + top-level `lastUpdate`) + new session memo. **No Lean changes.** | (this PR) | OPEN |
+| STATE-SYNC | researcher-3 | 2026-05-15 | STATE-SYNC | doc-only refresh after the 3-PR drain wave (#19129 + #19041 + #19177); refreshes `state.md` + JSON + new session memo. **No Lean changes.** | [#19366](https://github.com/rjwalters/lean-genius/pull/19366) | **MERGED** 2026-05-16T03:53:34Z |
+| S17 BUILD-DIAGNOSTIC | researcher-1 | 2026-05-16 | BUILD-DIAGNOSTIC | doc-only; attempted S4 ACT via S16 PREP §3.2 paste-ready recipe but discovered parent `Proofs.LagrangeFourSquares.lean` fails Docker elaboration with 9 v4.26.0 errors at lines 210–365 (5 API-drift classes). Drafted child code reverted. Blocks all 5 queued ACTs (S4/S5/S6/S6b/S7); B1 NEW blocker added. | [#19442](https://github.com/rjwalters/lean-genius/pull/19442) | **MERGED** 2026-05-16T04:39:18Z |
+| S18 PREP | researcher-5 | 2026-05-16 | PREP | this PR — doc-only Mechanic handoff upgrading S17 §5 rough fix sketch to paste-ready per-error Lean edits for parent `LagrangeFourSquares.lean` v4.26.0 fixes. 7 fix sites (E1+E2, E3, E4 cascade, E5, E6, E7, E8+E9, E10), ~25 LOC add / ~10 LOC del. Bearer-pinned at lake-SHA `2df2f015…` (7 bearers verified). Risk classification per fix (TRIVIAL/LOW/MEDIUM). Includes S4 ACT 5-min paste cycle once Mechanic ships parent fix. **No Lean changes; no `meta.json` edits.** | (this PR) | OPEN |
 
-**Total PREP/ACT artifacts on origin/main**: 15 PRs merged (post-S2b ACT: 11 PREP/ACT/audit + 2 STATE-SYNC + S3 ACT + S2b BUILD-VERIFY + S7 PREP rescue) + this STATE-SYNC OPEN, ~5.5k lines of design documentation, 3 verified Lean files (S2 ACT, S2b ACT post-#19041, S3 ACT) on origin/main.
+**Total PREP/ACT artifacts on origin/main**: 17 PRs merged (post-S2b ACT: 11 PREP/ACT/audit + 3 STATE-SYNC + S3 ACT + S2b BUILD-VERIFY + S7 PREP rescue + S17 BUILD-DIAGNOSTIC) + this S18 PREP OPEN, ~6k lines of design documentation, 3 verified Lean files (S2 ACT, S2b ACT post-#19041, S3 ACT) on origin/main.
 
 ## Open branches
 
@@ -127,13 +168,18 @@ None for this slug as of 2026-05-16T01:43Z. The S7 PREP orphan branch `research/
 
 ## Blockers
 
-None for the PREP layer — design coverage is saturated through `k = 7`.
+- **B1 (NEW 2026-05-16 via S17)**: parent `proofs/Proofs/LagrangeFourSquares.lean` fails Docker elaboration with 9 v4.26.0 errors at lines 210–365 across 5 API-drift classes. **Blocks S4/S5/S6/S6b/S7 ACTs.** **Mechanic-scope, paste-ready fixes staged in S18 PREP §3** (`sessions/2026-05-16-s18-prep-mechanic-handoff-parent-v426-paste-ready-fixes.md`). Per-error: E1+E2 (unsolved goal `id 1 + id p = 1 + p` + omega cascade, L210–212, LOW), E3 (drop `.symm` on `Nat.Prime.eq_one_or_self_of_dvd`, L220, TRIVIAL), E4 (scope cascade resolves after E3, L223, TRIVIAL), E5 (`Nat.log` binary arity, insert base `2`, L292, LOW), E6 (`Int.natAbs` → `sq_abs` rewrite swap, L304, LOW), E7 (`Exists.mod_cast` → `mod_two_eq_one_iff_ne_two.mpr`, L321, LOW), E8+E9 (extract `sq_mod_four` helper for mod-4 omega, L325–326, MEDIUM), E10 (`Int.toNat_natCast` cast collapse, L365, MEDIUM). Aggregate ~25 LOC add / ~10 LOC del; single Mechanic PR, single Docker pass once host-disk recovers.
+- **B2 (INFRASTRUCTURE)**: host disk `/System/Volumes/Data` at 100% capacity (~7.2 Gi free / 926 Gi as of 2026-05-16T~05:00Z). Docker containerd `meta.db` cannot write atomically. Doc-only PREPs (this S18) and STATE-SYNCs unblocked; ACT/BUILD-VERIFY requires host-disk cleanup first.
 
-**ACT-side risk**: Docker build of Lean ACTs requires a fresh Mathlib clone if the worktree's `proofs/.lake` symlink is broken (`feedback_researcher_lake_symlink_broken.md`); end-to-end build is ~45 minutes. Allocate session budget accordingly.
+**ACT-side risk** (when host-disk recovers): Docker build of Lean ACTs requires a fresh Mathlib clone if the worktree's `proofs/.lake` symlink is broken (`feedback_researcher_lake_symlink_broken.md`); end-to-end build is ~45 minutes. Allocate session budget accordingly.
 
 ## Next Action
 
-Five ACT iterations remain queued after the 3-PR drain wave (S3 ACT + S2b BUILD-VERIFY + S7 PREP all MERGED on 2026-05-15). Listed in recommended picker order (smallest scope / lowest build-risk first):
+**Path A (preferred — Mechanic-gated)**: wait for Mechanic to apply S18 PREP §3 paste-ready fixes to parent `proofs/Proofs/LagrangeFourSquares.lean`. Estimated Mechanic cycle: ~5–7 min Docker (parent rebuild + 4 sibling .olean refresh) once host-disk recovers. After Mechanic ships fix-PR, ANY researcher can claim this slug and ship S4 ACT verbatim from S16 PREP §3.2 in a ~5-min paste cycle.
+
+**Path B (fallback if Mechanic-handoff stalls ≥ 4 drain waves)**: this slug's next researcher can attempt a Path-B fork — extract OQ-01 child code into a fully-self-contained sibling file that does NOT import `Proofs.LagrangeFourSquares` (define local `IsSumOfPowers`, local `waringG`, local `wieferich_nine_cubes` axiom; lose the bridge to parent but unblock S4 ACT). Estimated effort: ~50 LOC fresh recipe; trades parent-bridge for unblocked ACT. Recommend Path A unless Mechanic-side activity for `lagrange-four-squares` parent is invisible past 4 drain waves.
+
+After Path A unblock, the queued ACTs remain (in recommended picker order — smallest scope / lowest build-risk first):
 
 1. **S4 ACT** — register `axiom waring_g3_upper : ∀ n, ∃ f : Fin 9 → ℕ, (∑ i, (f i)^3) = n` (per S4 PREP [#18348](https://github.com/rjwalters/lean-genius/pull/18348)) + `theorem waringG_g3 : waringG 3 = 9` combining S2 ACT's `twenty_three_needs_nine_cubes` (lower, `native_decide` route) and S2b ACT's `g3_lower_counting` (lower, axiom-free counting+omega) with `waring_g3_upper` (axiomatized upper). **Smallest scope, ~50 LOC, axiom-only file, no fiberwise tactics, no `(by simp)` coercion surface — single Docker build expected first-iteration.**
 2. **S5 ACT** — `g(5) ≥ 37` via counting+omega. Witness `223 = 6 · 32 + 31`. Expected size: ~150–180 LOC (case analysis on `n_2 ∈ {0..6}` has 7 branches vs. 5 for `k = 4`). **Routine port of S3 ACT recipe** — change `Fin 18 → Fin 36`, `79 → 223`, `16 → 32`, `81 → 243`, `^4 → ^5`. Paste `(by simp)` idiom from `Counting.lean:122` directly.
