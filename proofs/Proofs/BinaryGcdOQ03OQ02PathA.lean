@@ -2857,6 +2857,124 @@ theorem hgcdMatrixSafe_apply_abort_branch (f a b : ℕ)
           (b / 2 ^ hgcdShiftSafe a b)).apply (a : ℤ) (b : ℤ) := by
   rw [hgcdMatrixSafe_abort_branch f a b hab hge]
 
+-- ═══════════════════════════════════════════════════════════════
+-- PART XXXI: FIRING-COUNT ROW RECURRENCE + MONOTONICITY (Session 47)
+-- ═══════════════════════════════════════════════════════════════
+
+/-! ### Firing-count refinements (B.1 + B.3 per S46 PREP)
+
+    S25 PART XVI introduced `outerGuardFiringCount`; S25 PART XVII +
+    S26 PART XVIII established the structural empty/sub-threshold zero
+    closures. S27 PART XIX closed the **survey-size** side with a row
+    recurrence + closed-form triangular cardinality
+    (`outerGuardSurveySize_succ` / `_triangular`). This section closes
+    the analogous **firing-count** side: a row recurrence
+    (`outerGuardFiringCount_succ`), a monotonicity corollary
+    (`outerGuardFiringCount_mono_hi`), and a closed-form numeric
+    upper bound (`outerGuardFiringCount_le_triangular`).
+
+    All proofs are unconditional (0 axioms, 0 sorries) and structural
+    (no `native_decide` enumeration). The row recurrence mirrors the
+    S27 PART XIX `_succ` decomposition with the
+    `schonhageOuterGuardFires` flag carried through the
+    `Finset.filter` chain unchanged. -/
+
+/-- **One-step recurrence for `outerGuardFiringCount`.** Extending the
+    survey range from `hi` to `hi + 1` (with `lo ≤ hi`) adds exactly
+    the firings in the new row `{(hi, b) | b ∈ [lo, hi + 1)}`, of
+    cardinality `#{b ∈ [lo, hi + 1) | schonhageOuterGuardFires hi b}`.
+
+    Mirrors `outerGuardSurveySize_succ` (T7); identical Finset-disjoint
+    -union decomposition, with the inner `Finset.filter` on
+    `schonhageOuterGuardFires` flowing through unchanged. -/
+theorem outerGuardFiringCount_succ (lo hi : ℕ) (h : lo ≤ hi) :
+    outerGuardFiringCount lo (hi + 1) =
+      outerGuardFiringCount lo hi +
+        ((Finset.Ico lo (hi + 1)).filter
+          (fun b => schonhageOuterGuardFires hi b = true)).card := by
+  unfold outerGuardFiringCount outerGuardFiringPairs outerGuardSurveyPairs
+  set newRow := ((Finset.Ico lo (hi + 1)).filter
+    (fun b => schonhageOuterGuardFires hi b = true)).image
+    (fun b => (hi, b)) with hnewRow
+  have hunion :
+      (((Finset.Ico lo (hi + 1)) ×ˢ (Finset.Ico lo (hi + 1))).filter
+          (fun p => p.2 ≤ p.1)).filter
+            (fun p => schonhageOuterGuardFires p.1 p.2 = true) =
+        (((Finset.Ico lo hi) ×ˢ (Finset.Ico lo hi)).filter
+            (fun p => p.2 ≤ p.1)).filter
+              (fun p => schonhageOuterGuardFires p.1 p.2 = true) ∪ newRow := by
+    ext ⟨a, b⟩
+    simp only [hnewRow, Finset.mem_filter, Finset.mem_product,
+               Finset.mem_Ico, Finset.mem_union, Finset.mem_image,
+               Prod.mk.injEq]
+    constructor
+    · rintro ⟨⟨⟨⟨ha_lo, ha_hi⟩, hb_lo, hb_hi⟩, hba⟩, hfires⟩
+      by_cases hcase : a < hi
+      · left
+        exact ⟨⟨⟨⟨ha_lo, hcase⟩, hb_lo, by omega⟩, hba⟩, hfires⟩
+      · push_neg at hcase
+        have ha_eq : a = hi := by omega
+        right
+        refine ⟨b, ⟨⟨hb_lo, hb_hi⟩, ?_⟩, ha_eq.symm, rfl⟩
+        rw [ha_eq] at hfires
+        exact hfires
+    · rintro (⟨⟨⟨⟨ha_lo, ha_hi⟩, hb_lo, hb_hi⟩, hba⟩, hfires⟩ |
+              ⟨b', ⟨⟨hb'_lo, hb'_hi⟩, hb'_fires⟩, ha_eq, hb_eq⟩)
+      · exact ⟨⟨⟨⟨ha_lo, by omega⟩, hb_lo, by omega⟩, hba⟩, hfires⟩
+      · subst ha_eq
+        subst hb_eq
+        refine ⟨⟨⟨⟨h, by omega⟩, hb'_lo, hb'_hi⟩, ?_⟩, ?_⟩
+        · omega
+        · exact hb'_fires
+  have hdisj :
+      Disjoint
+        ((((Finset.Ico lo hi) ×ˢ (Finset.Ico lo hi)).filter
+            (fun p => p.2 ≤ p.1)).filter
+              (fun p => schonhageOuterGuardFires p.1 p.2 = true))
+        newRow := by
+    rw [Finset.disjoint_left]
+    rintro ⟨a, b⟩ h1 h2
+    rw [hnewRow] at h2
+    simp only [Finset.mem_filter, Finset.mem_product,
+               Finset.mem_Ico] at h1
+    simp only [Finset.mem_image, Prod.mk.injEq] at h2
+    obtain ⟨⟨⟨⟨_, ha_hi⟩, _, _⟩, _⟩, _⟩ := h1
+    obtain ⟨_, _, ha_eq, _⟩ := h2
+    omega
+  rw [hunion, Finset.card_union_of_disjoint hdisj, hnewRow,
+      Finset.card_image_of_injective _
+        (fun a₁ a₂ heq => (Prod.mk.inj heq).2)]
+
+/-- **Monotonicity in `hi`.** Extending the survey range to include
+    more pairs only adds firings. Direct corollary of
+    `outerGuardFiringCount_succ`: the new-row firing cardinality is
+    `≥ 0`. -/
+theorem outerGuardFiringCount_mono_hi {lo hi₁ hi₂ : ℕ}
+    (h : lo ≤ hi₁) (hle : hi₁ ≤ hi₂) :
+    outerGuardFiringCount lo hi₁ ≤ outerGuardFiringCount lo hi₂ := by
+  induction hi₂, hle using Nat.le_induction with
+  | base => exact le_rfl
+  | succ k hk ih =>
+    have hkk : lo ≤ k := h.trans hk
+    rw [outerGuardFiringCount_succ lo k hkk]
+    exact ih.trans (Nat.le_add_right _ _)
+
+/-- **Closed-form numeric upper bound on `outerGuardFiringCount`.**
+    The firing count on `[lo, hi)²` is bounded by the triangular
+    cardinality `(hi - lo) · (hi - lo + 1) / 2` for `lo ≤ hi`.
+
+    Composes `outerGuardFiringCount_le_surveySize` (T1) with
+    `outerGuardSurveySize_triangular` (T8). One-liner; provides a
+    named entry point for the numeric bound without forcing consumers
+    to apply T1 + T8 in sequence. -/
+theorem outerGuardFiringCount_le_triangular (lo hi : ℕ) (h : lo ≤ hi) :
+    outerGuardFiringCount lo hi ≤ (hi - lo) * (hi - lo + 1) / 2 := by
+  calc outerGuardFiringCount lo hi
+      ≤ outerGuardSurveySize lo hi :=
+        outerGuardFiringCount_le_surveySize lo hi
+    _ = (hi - lo) * (hi - lo + 1) / 2 :=
+        outerGuardSurveySize_triangular lo hi h
+
 end HGcdSafe
 
 /-! ## Summary

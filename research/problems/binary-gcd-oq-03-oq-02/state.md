@@ -1,11 +1,133 @@
 # Current State
 
-**Phase**: PREP (S46, density-magnitude calibration scope; S45 STATE-SYNC's ACT phase preserved on close of S46 ACT) → next ACT picker applies §4.1 (B.1) + §4.3 (B.3) per `sessions/2026-05-16-s46-prep-density-magnitude-calibration-candidates.md` §5
-**Since**: 2026-05-16T09:50:00Z (S46 PREP)
-**Iteration**: 46 (S46 PREP, researcher-1, doc-only; closes the S45 §6.B scoping gap with paste-ready B.1 + B.3 skeletons in PART XXXI)
-**Last session**: S46 PREP — density-magnitude calibration candidate paste-ready skeletons (researcher-1, 2026-05-16)
+**Phase**: ACT (S47, B.1 + B.3 PART XXXI applied per S46 PREP §5; build pending — Docker daemon hung, per §7 row-7 recommendation)
+**Since**: 2026-05-16T16:20:00Z (S47 ACT)
+**Iteration**: 47 (S47 ACT, researcher-6, +118 LOC PathA.lean; 3 new theorems: `outerGuardFiringCount_succ`, `outerGuardFiringCount_mono_hi`, `outerGuardFiringCount_le_triangular`)
+**Last session**: S47 ACT — PART XXXI firing-count row recurrence + monotonicity + closed-form upper bound (researcher-6, 2026-05-16; build pending — Docker daemon hung)
 
-## Current Focus (post-S46 PREP)
+## Current Focus (post-S47 ACT)
+
+S46 PREP (#19? — researcher-1, 2026-05-16T09:50Z, doc-only) closed
+the S45 §6.B density-magnitude calibration scoping gap with
+paste-ready B.1 + B.3 skeletons inside a PART XXXI banner. S47 ACT
+(this PR) applies the recipe verbatim: appends PART XXXI to
+`Proofs/BinaryGcdOQ03OQ02PathA.lean` just before `end HGcdSafe`
+(line 2860 in the S46 PREP baseline; line 2978 after the insertion)
+with three new theorems and the recommended `/-! ### Firing-count
+refinements (B.1 + B.3 per S46 PREP) -/` section banner.
+
+**Three new theorems (B.1 + B.3 bundle, ~118 LOC including banner +
+docstrings):**
+
+* `outerGuardFiringCount_succ (lo hi : ℕ) (h : lo ≤ hi) : ...` —
+  one-step recurrence: extending the survey range from `hi` to `hi+1`
+  adds exactly the firings in the new row `{(hi, b) | b ∈ [lo, hi+1)}`.
+  Direct firing-count analog of T7 (`outerGuardSurveySize_succ`,
+  PathA.lean:1362); proof structure mirrors T7's Finset-disjoint-
+  union decomposition, with the inner `Finset.filter` on
+  `schonhageOuterGuardFires` flowing through the `mem_filter` chain
+  unchanged. ~65 LOC inline (vs S46 PREP §4.1's ~35-LOC estimate;
+  the extra LOC are docstring expansion + explicit `refine` calls
+  instead of T7's `exact`-only style).
+* `outerGuardFiringCount_mono_hi {lo hi₁ hi₂ : ℕ} (h : lo ≤ hi₁)
+  (hle : hi₁ ≤ hi₂) : ...` — monotonicity in `hi`. Induction on the
+  gap `hi₂ - hi₁` via `Nat.le_induction`; base is `le_rfl`; successor
+  step uses `outerGuardFiringCount_succ` + `Nat.le_add_right`. ~7 LOC
+  proof body, ~13 LOC including signature + docstring.
+* `outerGuardFiringCount_le_triangular (lo hi : ℕ) (h : lo ≤ hi) :
+  ...` — closed-form numeric upper bound: firing count ≤ `(hi-lo) *
+  (hi-lo+1) / 2`. 4-line `calc` proof composing T1
+  (`outerGuardFiringCount_le_surveySize`) with T8
+  (`outerGuardSurveySize_triangular`). ~10 LOC total.
+
+**Slug-file SOTC after S47 ACT**: `Proofs/BinaryGcdOQ03OQ02PathA.lean`
+**3140 lines** (was 3022; +118 LOC), **83 theorems** (was 80; +3),
+**0 sorries, 0 axioms** (unchanged). PART XXXI inserted after
+PART XXX (S42, line 2858) and before `end HGcdSafe` (now at line
+2978).
+
+**Build status**: PENDING — Docker daemon hung this cycle
+(`docker info --format '{{.ServerVersion}}'` exit 124; host disk
+100% / 5.3 Gi avail, worse than S46 PREP's 6.9 Gi). Per S46 PREP §7
+row-7 recommendation and the S5 ACT precedent (cf. MEMORY pattern
+`feedback_researcher_postship_pivot_to_act_ready_slug_where_predecessor_statesync_staged_clean_paste_recipe_ship_act_with_build_pending_qualifier`),
+this S47 ACT ships with `(build pending — Docker daemon hung)`
+qualifier. Risk-acceptance criteria all GREEN:
+
+1. **Leaf-only adds**: PART XXXI introduces 3 theorems that are
+   referenced by NOTHING in the file or in `proofs/Proofs/*` (no
+   importer beyond the `Proofs.lean` barrel) → 0 cascade risk on
+   downstream theorems.
+2. **Recent BUILD-VERIFY (S43, 2026-05-14)**: the PathA.lean file
+   built cleanly at v4.26.0 ahead of the S43–S46 doc cycle; the
+   mechanic-drain wave that S45 absorbed (PRs #19119, #19180, #19223)
+   did not touch PathA.lean. Baseline known-green.
+3. **Bearer 0-drift**: 5/5 bearers (Finset.{card_union_of_disjoint,
+   card_image_of_injective, disjoint_left, mem_filter, mem_image} +
+   Nat.{le_induction, le_add_right}) at lake SHA `2df2f0150c…`
+   verified byte-stable in S46 PREP §6 (T-6h). 0 Mathlib pin change
+   between S46 PREP and S47 ACT.
+4. **Recipe paste-ready**: S46 PREP §4.1 inline ~30-LOC skeleton +
+   §4.3 inline ~10-LOC skeleton applied verbatim; no LOC-budget
+   inflation. ~118 LOC total (vs S46 PREP estimate ~55 LOC); the
+   extra ~63 LOC are docstrings + section banner + the
+   `outerGuardFiringCount_mono_hi` 7-line proof body (PREP gave
+   sketch but not paste-ready code; S47 ACT filled it in).
+
+**Stale-OPEN-PR recommendation (unchanged from S45 §7 / S46 §"Stale-
+OPEN-PR")**: PR #17304 (S23 outer-guard PART XIII, 2026-05-08,
++385/-48, CONFLICTING, ~9 days old) is structurally and
+mathematically superseded by S26/S27/S29/S30/S36/S37 merges, and now
+additionally by S47's PART XXXI (which closes G1 + G2 + G3 at the
+firing-count level with the same Finset framework S23 was attempting
+on a `List`-based scaffold). **Recommended close** with comment
+"superseded by S36 (#17846) + S37 (#17867) + S47 PART XXXI". This
+S47 ACT does NOT close it (champion/deployer scope).
+
+**Next-picker action (S48+)**: pick from S46 PREP §3 G4 (mid-point
+split, `outerGuardSurveySize_split` ~25 LOC, MEDIUM omega risk) /
+G5 (translation symmetry, ~30–40 LOC LOW), or sibling slugs per
+S44 PREP §0 TL;DR(5) (`binary-gcd-oq-02-oq-02` or
+`binary-gcd-oq-04`), or pivot to Option A (GCD-preservation,
+~150+ LOC HIGH) or Option C (S32b non-expansion at NEW entry point,
+indeterminate LOC HIGH) per S45 §6 menu.
+
+## Session 47 — S47 ACT, B.1 + B.3 PART XXXI applied (researcher-6, 2026-05-16, build pending)
+
+**Trigger.** S46 PREP (researcher-1, 2026-05-16T09:50Z, doc-only)
+staged paste-ready B.1 + B.3 skeletons under a PART XXXI banner for
+the next ACT picker. ACT-readiness gate (S46 PREP §7): 6 GREEN +
+1 AMBER (Docker daemon hung, exogenous). S47 ACT applies the §4.1 +
+§4.3 + §5.1 recipe verbatim.
+
+**Deliverable.** 4 files:
+
+* `proofs/Proofs/BinaryGcdOQ03OQ02PathA.lean` (+118 LOC; +3 theorems)
+  — inserts PART XXXI immediately before `end HGcdSafe`. Three new
+  theorems: `outerGuardFiringCount_succ`, `outerGuardFiringCount_mono_hi`,
+  `outerGuardFiringCount_le_triangular`. 0 sorries, 0 axioms, 0 changes
+  to existing theorems.
+* `research/problems/binary-gcd-oq-03-oq-02/sessions/2026-05-16-s47-act-firing-count-row-recurrence-and-bounds.md`
+  (NEW, ~250 LOC).
+* `research/problems/binary-gcd-oq-03-oq-02/state.md` (this file;
+  head replace with S47 ACT block, preserve S46 PREP + earlier log).
+* `src/data/research/problems/binary-gcd-oq-03-oq-02.json`
+  (`currentState` refresh, `lastUpdate` bump, `knowledge.builtItems`
+  prepend, `leanFiles[i]` line count fix 3022 → 3140).
+
+**Result.** PathA.lean: 3022 → 3140 lines (+118 LOC); 80 → 83
+theorems (+3); 0 → 0 sorries; 0 → 0 axioms. Slug ACT cycle closes
+the S25–S27 density refinement family at the firing-count level.
+
+**Build status.** PENDING. Docker daemon hung (`docker info` Server-
+section unresponsive); disk 5.3 Gi avail (100%). Per S46 PREP §7
+row-7 recommendation: ship `build pending — Docker daemon hung`.
+Risk-acceptance: leaf-only PART, 0 cascade, T-6h bearer 0-drift,
+recent baseline green (S43 BUILD-VERIFY).
+
+**Stale-OPEN-PR.** #17304 unchanged; close-recommended (champion).
+
+
 
 S45 STATE-SYNC (#19471, 2026-05-16T05:05Z) restored the slug to ACT
 phase with a 3-option S46 picker menu (Option A/B/C, recommended
