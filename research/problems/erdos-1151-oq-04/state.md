@@ -1,11 +1,85 @@
 # Research State: erdos-1151-oq-04
 
 ## Current State
-**Phase**: ACT
+**Phase**: ACT (still gated on Docker daemon I/O recovery for S33 BUILD-VERIFY; S33 pre-BUILD-VERIFY STATE-SYNC this iter caught up phase + progressSummary + nextSteps from S22-S29-era stale to S32+ post-cherry-pick state)
 **Path**: full
-**Since**: 2026-04-21
-**Iteration**: 32
-**Last Updated**: 2026-05-15
+**Since**: 2026-05-16T15:56:00Z (S33 pre-BUILD-VERIFY STATE-SYNC)
+**Iteration**: 33
+**Last Updated**: 2026-05-16 (researcher-6)
+
+## Session 33 (researcher-6, 2026-05-16, doc-only pre-BUILD-VERIFY STATE-SYNC) — JSON drift catchup
+
+Doc-only STATE-SYNC catching the research JSON up to post-S32-ACT reality. The S32
+ACT (PR #19...) shipped `chebyshev_lebesgue_saturated` (+106 LOC, theoremCount
+65 → 66, sorryCount 1, 0 axioms) under the `(build pending — Docker daemon I/O
+blocked)` qualifier and correctly updated `state.md` + JSON
+`currentState.{phase=IN-PROGRESS [LEGACY], focus, nextAction}` + `leanFiles[i]`.
+BUT left the following JSON tail-end drift:
+
+1. **Top-level `phase: IN-PROGRESS`** — legacy phase value; gallery listings
+   derive from this. State.md head reads `ACT`. Flip top-level → `ACT`.
+2. **`currentState.phase: IN-PROGRESS`** — same flip → `ACT`.
+3. **`currentState.attemptCounts: {0, 0, 0}`** — set to non-zero reflecting
+   actual 33 iterations (bumped to {3, 1, 1} per per-session metric heuristic;
+   prior values were stuck at the slug-bootstrap default).
+4. **`knowledge.progressSummary`** (339 chars) — S22-era; says "2 sorries
+   remain" but actual is 1; refers to "Step 7b ... closed via S22 trig_sum_small_n_const"
+   AND "Step 7a outstanding" as the only frontier. Now obsolete: post-S29 closed
+   trig_sum_harmonic_lb via close_harmonic_lb; post-S32 closed
+   chebyshev_lebesgue_saturated. Sorry 1 already closed; only Sorry 2
+   (`divergence_from_lebesgue_growth`) remains, with the S33-S36 plan
+   (BUILD-VERIFY + ContinuousLinearMap + operator-norm + BanachSteinhaus)
+   as the route. Refresh to ~600-700 chars covering S26-S33 progression.
+5. **`knowledge.nextSteps[]`** (5 items) — all 5 are "Step 7a/7b/7c/8"
+   trig_sum_harmonic_lb content, S22-S29 era. All obsolete (those steps
+   shipped in S29 PR #17580 + later). Replace with the S33-S36 plan from
+   state.md Session 32 entry.
+
+**Files this S33 pre-BUILD-VERIFY STATE-SYNC**:
+1. EDIT this state.md (head replace; add this Session 33 narrative; preserve
+   Sessions 32 → S1 verbatim).
+2. EDIT `src/data/research/problems/erdos-1151-oq-04.json`:
+   - top-level `phase: IN-PROGRESS → ACT`
+   - `currentState.phase: IN-PROGRESS → ACT`
+   - `currentState.iteration: 32 → 33`
+   - `currentState.since: 2026-05-15T22:15:00Z → 2026-05-16T15:56:00Z`
+   - `currentState.attemptCounts.total: 0 → 3`
+   - `currentState.attemptCounts.currentApproach: 0 → 1`
+   - `currentState.attemptCounts.approachesTried: 0 → 1`
+   - `currentState.lastUpdate: 2026-05-15T22:15:00Z → 2026-05-16T15:56:00Z`
+   - `knowledge.progressSummary` refresh (≈ 700 chars)
+   - `knowledge.nextSteps[]` replace with the S33-S36 plan + post-Docker
+     recovery operations + sibling cleanup pointer
+   - top-level `lastUpdate: 2026-05-15T22:15:00Z → 2026-05-16T15:56:00Z`
+
+**0 Lean / 0 meta.json / 0 problem.md / 0 knowledge.md / 0 lake-manifest / 0
+sibling-slug edits.** 0 axiom / 0 sorry change (1 sorry preserved at
+`divergence_from_lebesgue_growth`).
+
+**Host infra this S33 STATE-SYNC cycle**:
+- **Docker daemon still hung** (same B1 condition as S32 ACT and as my prior
+  two iterations 30-60 min before this; ~7.5+ h cumulative).
+- **Disk degraded**: 5.2 Gi avail (was 5.4 Gi 15 min ago; was 6.9 Gi at S32
+  ACT cycle start 2026-05-15; ~30+h cumulative degradation; **AT** the
+  ~5 Gi safety-floor mentioned in S32 ACT memo). Disk pressure is part of
+  what continues to hold Docker daemon I/O blocked.
+- **Mathlib SHA**: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0,
+  unchanged since pre-S32 era).
+- **0 open PRs** for this slug at cycle start.
+
+**Next action (unchanged from S32 ACT)**: S33 BUILD-VERIFY. Once Docker daemon
+I/O recovers (host disk pressure drops below 99% capacity), re-attempt
+`./proofs/scripts/docker-build.sh Proofs.Erdos1151OQ04`. Expected outcome
+(HIGH likelihood per PREP-2 audit depth): clean build at ~3060/3060 jobs.
+If clean, flip state.md / JSON build status `(build pending) → (build
+verified, NNNN/NNNN jobs)` as a 5-min doc-only commit. Then proceed with
+S34 (ContinuousLinearMap packaging Λₙ_x; +80-120 LOC) → S35 (operator-norm
+identity; +30-50 LOC) → S36 (BanachSteinhaus contrapositive; +20-40 LOC) to
+discharge Sorry 2 entirely.
+
+(No new session memo file this iteration — the Session 33 narrative above is
+short and structural-only; future S33 BUILD-VERIFY OR S34 ACT will create
+`session-34-...md` or similar per this slug's flat-file naming convention.)
 
 ## Session 32 (researcher-10, 2026-05-15, build pending — Docker daemon I/O blocked) — ACT: cherry-pick stranded `chebyshev_lebesgue_saturated`
 
