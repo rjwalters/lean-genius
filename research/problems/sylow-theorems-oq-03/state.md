@@ -1,9 +1,94 @@
 # Current State
 
-**Phase**: ACT-MERGED (S2 ACT shipped + build-verified 3062 Docker jobs; OQ-02 axiom drop is a deferred follow-on per S3 STATE-SYNC § 5a)
+**Phase**: ACT-REALIZED (S2 ACT shipped 2026-05-15T18:02:55Z; S4 ACT realizes the deferred OQ-02 axiom drop 5→4; OQ-02 axiomCount on disk now 4)
 **Since**: 2026-05-12T20:55:00Z
-**Last update**: 2026-05-16 (S3 STATE-SYNC by researcher-12; catch up post-S2-ACT + post-PREP-7 + post-#18994 STATE-SYNC content drift)
-**Iteration**: 12 (8 PREP + S2 PREP-7 #19297 + S2 ACT #19260 + STATE-SYNC #18994 + this S3 STATE-SYNC)
+**Last update**: 2026-05-16 (S4 ACT by researcher-3; realize the S3 §5a deferred 5→4 axiom drop, build-verified 3062 Docker jobs on `Proofs.SylowTheoremOQ03`)
+**Iteration**: 13 (8 PREP + S2 PREP-7 #19297 + S2 ACT #19260 + STATE-SYNC #18994 + S3 STATE-SYNC #19347 + this S4 ACT)
+
+## S4 ACT 2026-05-16 (researcher-3)
+
+**Mode:** S4 ACT — Lean-modifying, bundles gallery-meta + research state sync
+(6 files: 2 Lean — 1 axiom-block deletion + 1 docstring-prose correction, 1
+gallery meta.json, 2 research files refresh, 1 NEW session note). Realizes
+the S3 STATE-SYNC §5a deferred follow-on. Build-verified by
+`./proofs/scripts/docker-build.sh Proofs.SylowTheoremOQ03` at 3062 jobs (cache
+hit on Mathlib v4.26.0, 7727 files unpacked) — see session note §5 +
+`.loom/logs/researcher-3-sylow-s4-build.log`.
+
+### What changed (concise)
+
+| File | Δ | Note |
+|------|---|------|
+| `proofs/Proofs/SylowTheoremOQ02.lean` | −10 LOC (384 → 374) | Deleted `axiom sylowProP_projects_pgroup` block (132–140) + `#check @sylowProP_projects_pgroup` line |
+| `proofs/Proofs/SylowTheoremOQ03.lean` | 0 Lean Δ (docstring prose only) | §"Effect on `SylowTheoremOQ02.lean`" rewritten to match the realized deletion |
+| `src/data/proofs/sylow-theorems-oq-02/meta.json` | axiomCount 5→4 + lineCount 393→374 + assumption text + section metadata | See session note §1 table |
+| `research/problems/sylow-theorems-oq-03/state.md` | this header + S4 ACT subsection | Prior STATE-SYNC content preserved verbatim |
+| `src/data/research/problems/sylow-theorems-oq-03.json` | `currentState` + `knowledge.{builtItems,nextSteps}` | S3 §5a moved from nextSteps → builtItems |
+| `research/problems/sylow-theorems-oq-03/sessions/2026-05-16-s4-act-oq02-axiom-drop.md` | NEW | This S4 ACT session note |
+
+### Realized vs deferred ledger (S3 §5 decision tree)
+
+| S3 branch | Description | Status after S4 |
+|-----------|-------------|------------------|
+| §5a | Realize deferred OQ-02 axiom drop 5→4 | **REALIZED** (this S4 ACT) |
+| §5b | Candidate B ACT (`sylowProP_inter_trivial`) | New TOP priority, OPEN |
+| §5c | Mathlib upstream contribution | Out-of-band (mathlib4 PR) |
+| §5d | `frattini_profinite` axiom restatement | Curator/architect scope; no researcher action |
+
+### Net axiom impact (now realized, per Axiom Integrity policy)
+
+OQ-02 axiom count: **5 → 4** (verified on disk: `grep -cE "^axiom "
+proofs/Proofs/SylowTheoremOQ02.lean` returns `4`; remaining axioms are
+`sylowProP_existence` L108, `sylowProP_conjugacy` L119, `frattini_profinite`
+L126, `sylowProP_inter_trivial` L133).
+
+OQ-03 itself: still 0 axioms / 0 structure-encoded hypotheses / 0 sorries
+(unchanged from S2 ACT).
+
+### Mathlib pin recheck (no drift)
+
+`proofs/lake-manifest.json` mathlib `rev` =
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) — same SHA at which
+PREP-7 / S2 ACT / S3 STATE-SYNC pinned the bearer kit. PREP-7's 8-bearer
+table remains authoritative for `SylowTheoremOQ03.lean`; S4 ACT does not
+touch that file's theorem body.
+
+### Caller audit (sanity-check on deletion)
+
+Pre-S4 `proofs/Proofs/` had `sylowProP_projects_pgroup` at:
+
+1. `SylowTheoremOQ02.lean:134` — the `axiom` (DELETED)
+2. `SylowTheoremOQ02.lean:380` — `#check @sylowProP_projects_pgroup` (DELETED)
+3. `SylowTheoremOQ03.lean` lines 13/17/58/62/123 — docstring prose (line 58
+   rewritten; others unchanged)
+4. `SylowTheoremOQ03.lean:135,162` — distinct-name
+   `sylowProP_projects_pgroup_continuous` (UNCHANGED)
+
+No theorem / definition / tactic / import in `proofs/Proofs/` referenced
+the deleted axiom by name. Deletion is purely additive to the
+axiom-integrity ledger.
+
+### Build verification
+
+`./proofs/scripts/docker-build.sh Proofs.SylowTheoremOQ03` →
+`Build completed successfully (3062 jobs)` (cache hit; 7727 Mathlib files
+unpacked; ~3.5 min wall). Two pre-existing warnings in
+`SylowTheoremOQ03.lean` (auto-included section variable unused at L96; one
+unused `simp` argument at L144) — both predate this PR (they shipped with
+S2 ACT #19260) and are unaffected by S4 ACT. No build errors, no new
+warnings introduced.
+
+### Revised Current Focus / Next Action / Subsequent candidates
+
+- **§6a (new TOP)** — Candidate B ACT (`sylowProP_inter_trivial`), ~25 LOC,
+  medium build risk (PREP-2 / PREP-4 / PREP-5 bearer kit:
+  `nhds_basis_clopen` + `IsTopologicalGroup` typeclass bridge). Net OQ-02
+  axiom count 4 → 3.
+- **§6b** — Mathlib upstream contribution (out-of-band; mathlib4 PR).
+- **§6c** — `frattini_profinite` axiom restatement (curator/architect scope).
+- **§6d** — Stop. Once Candidate B lands (or is declared out-of-researcher-scope),
+  OQ-03 reaches a natural stopping point with OQ-02 at 3 axioms (the two
+  deep inverse-limit axioms + derivable `frattini`) and 0 sorries.
 
 ## S3 STATE-SYNC 2026-05-16 (researcher-12)
 
