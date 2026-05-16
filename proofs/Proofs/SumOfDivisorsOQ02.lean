@@ -18,12 +18,15 @@ The bundled Archive proof
 `Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect`
 performs all six steps in a single block; this file exposes them named.
 
-## Status (post-S4)
+## Status (post-S5)
 
 - Step 1 (`sigma_two_pow_mul_odd`): proved (S4 ACT, term-mode via
   `isMultiplicative_sigma.map_mul_of_coprime` + `.symm.pow_left`).
 - Step 2 (`sigma_two_pow_eq_mersenne`): proved (direct alias of Archive).
-- Steps 3, 4, 5, 6: `sorry` placeholders. Discharge planned for S5+.
+- Step 3 (`mersenne_mul_sigma_eq_two_pow_mul`): proved (S5 ACT, ~7 LOC via
+  `sigma_one_apply` + `Nat.perfect_iff_sum_divisors_eq_two_mul` bridge, then
+  Steps 1+2 + `← mul_assoc; ← pow_succ'`).
+- Steps 4, 5, 6: `sorry` placeholders. Discharge planned for S6+.
 - Top-level theorem `euler_converse_self_contained`: `sorry` (chains steps).
 
 ## Honesty Note
@@ -60,14 +63,21 @@ lemma sigma_two_pow_eq_mersenne (k : ℕ) :
     σ 1 (2 ^ k) = mersenne (k + 1) :=
   Theorems100.Nat.sigma_two_pow_eq_mersenne_succ k
 
-/-- **Step 3** (perfect equation expansion). If `n = 2^k · m` is perfect with `m` odd
-and `0 < m`, combining `σ(n) = 2n` with Steps 1+2 gives `M_{k+1} · σ(m) = 2^(k+1) · m`.
-S3+ proof plan: rewrite via `Nat.perfect_iff_sum_divisors_eq_two_mul`, apply Steps 1+2,
-then `← mul_assoc, ← pow_succ'` (mirroring the Archive). -/
+/-- **Step 3** (perfect equation expansion). If `n = 2^k · m` is perfect with `m` odd,
+combining `σ(n) = 2n` with Steps 1+2 gives `M_{k+1} · σ(m) = 2^(k+1) · m`.
+Proof: bridge `Perfect` to `σ 1 (2^k * m) = 2 * (2^k * m)` via
+`Nat.perfect_iff_sum_divisors_eq_two_mul` (Divisors.lean:405) + `sigma_one_apply`
+(Basic.lean:169). Apply Steps 1+2 to LHS, then `← mul_assoc; ← pow_succ'` to
+collapse `2 * 2^k = 2^(k+1)`. -/
 lemma mersenne_mul_sigma_eq_two_pow_mul
     (k m : ℕ) (hm_odd : Odd m) (h_perfect : (2 ^ k * m).Perfect) :
     mersenne (k + 1) * σ 1 m = 2 ^ (k + 1) * m := by
-  sorry
+  have hsigma_eq : σ 1 (2 ^ k * m) = 2 * (2 ^ k * m) := by
+    rw [sigma_one_apply]
+    exact (Nat.perfect_iff_sum_divisors_eq_two_mul h_perfect.right).mp h_perfect
+  rw [sigma_two_pow_mul_odd k m hm_odd, sigma_two_pow_eq_mersenne k] at hsigma_eq
+  rw [← mul_assoc, ← pow_succ'] at hsigma_eq
+  exact hsigma_eq
 
 /-- **Step 4** (Mersenne factor divides the odd part). `M_{k+1} = 2^(k+1) - 1` is
 coprime to `2^(k+1)` (since `M_{k+1}` is odd), so from
