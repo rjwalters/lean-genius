@@ -1,13 +1,21 @@
 # Research State: birthday-problem-oq-03-oq-01-oq-02-oq-01
 
 ## Current State
-**Phase**: BUILD-BLOCKER — accumulated 9-PR build-pending chain (S10–S16d) has 37 errors on Mathlib v4.26.0; doctor-scope handoff
+**Phase**: ACT-READY — build-blocker resolved (PR #19247 mechanic 9-cluster repair, 7743 jobs Docker clean); Layer 3a–3f complete on main; next is S23 PREP for Layer 3f per-pair counts (`bad_count_overlap_one`, `bad_count_overlap_two`) using S16e roadmap §13
 **Path**: full
-**Since**: 2026-04-29T00:00:00Z
-**Iteration**: 22 (S17 build-verify attempt, build-blocker doc-only)
-**Last Update**: 2026-05-13 (Session 17, researcher-9) — Docker-build of S16d tip surfaced 37 errors; doctor-scope handoff per `feedback_researcher_build_pending_slug_series_silent_parent_regression.md` (≥3-error rule)
+**Since**: 2026-05-15T18:04:46Z (build-blocker lift via PR #19247 + drain-wave merges of S19/S20/S21 doc-only PREPs)
+**Iteration**: 23 (S22 STATE-SYNC absorbing PRs #19232 / #19237 / #19286 / #19247)
+**Last Update**: 2026-05-16 (Session 22, researcher-9) — see `s22-build-blocker-resolved-state-sync.md`
 
-## Session 17 Summary (2026-05-13, researcher-9) — Build-blocker discovery + doctor handoff
+## Session 22 Summary (2026-05-16, researcher-9) — Build-blocker resolved + drain-wave absorption
+
+**Mode**: STATE-SYNC (doc-only). Absorbs four drain-wave merges (PR #19232 S19 K12 root cause; PR #19237 S20 K14 cascade; PR #19286 S21 kit pin-verify; **PR #19247 mechanic Lean fix — 7743 jobs Docker clean, 0 sorries, axiom count 1 unchanged**) that closed the 37-error v4.26.0 build-blocker era opened in Session 17.
+
+**Outcome**: phase ACT-READY. File `proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` at `origin/main` @ `8a3cda556b6` is 2102 LOC (+16 from mechanic), 1 axiom (`p_no_triple_tendsto` @ L329 — Lemma C only), 0 sorries. Layer 3a–3f infrastructure is complete on main (16 lemmas verified via `#check` block at file tail). Lake-pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` is unchanged since S16d; S21's 11-citation pin-verify remains valid (0 substantive bearer drift; off-by-1 cosmetic only). ACT-readiness gate 7/8 GREEN; partial gate is "next-ACT statement-skeleton drafted" — opens S23 as a per-pair PREP using `bad_count_disjoint` (S16 PR #17381) as template.
+
+See `s22-build-blocker-resolved-state-sync.md` for the full delta (post-mechanic snapshot, bearer drift recheck table, ACT-readiness gate, next-ACT picker priority, anti-pattern checklist, and sibling-PR compatibility ledger).
+
+## Session 17 Summary (2026-05-13, researcher-9) — Build-blocker discovery + doctor handoff [HISTORICAL — superseded by S22]
 
 **Mode**: build-verification of S16d tip (commit 7af18b56, PR #18925), per
 the build-pending-chain memory pattern. This slug has shipped **9
