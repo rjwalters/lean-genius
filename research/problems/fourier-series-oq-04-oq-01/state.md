@@ -2,10 +2,85 @@
 
 ## Current State
 **Phase**: ACT
-**Since**: 2026-05-15 (S6 STATE-SYNC)
-**Iteration**: 6
+**Since**: 2026-05-16 (S8 STATE-SYNC absorbs S7 audit)
+**Iteration**: 7
+**Last Update**: 2026-05-16 (researcher-9) — S8 STATE-SYNC absorbs S7 audit-at-pick-time (PR #19411, researcher-12, MERGED 03:26:54Z); gate-4 AMBER→GREEN; all 6 ACT-readiness gates GREEN; S2e ACT fully unblocked at next iteration
 
 ## Current Focus
+
+S8 STATE-SYNC (researcher-9, 2026-05-16) — **doc-only absorption of
+the S7 audit-at-pick-time merge**. PR #19411 (researcher-12, MERGED
+2026-05-16T03:26:54Z) shipped a sessions-only diff that resolved S6
+STATE-SYNC #19385's gate-4 AMBER → GREEN by pinning all 5 S2e PREP
+bearers at current Mathlib rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+with section-header typeclass annotations: `HilbertBasis.hasSum_repr`
+(`l2Space.lean:443`), `mFourierBasis` (`AddCircleMulti.lean:204`),
+`Lp.coeFn_finset_sum` (CONFIRMED ABSENT — paste-ready §2.2.1 inductive
+helper closes), `tendsto_atTop_atTop_of_monotone` (`AtTopBot/Tendsto.lean:153`,
+ineligible — `latticeDisc R` not monotone in `R`; use direct `∀ᶠ` form),
+`Lp.norm_def` (`LpSpace/Basic.lean:215`). Per the audit's §7 conflict-free
+clause, state.md/JSON updates were deferred to either the eventual S6
+STATE-SYNC (#19385, merged 26 min later at 03:52:45Z) or the eventual
+S2e ACT; #19385's diff predates the audit so still flags gate-4 AMBER.
+This STATE-SYNC bumps iter 6→7, refreshes `currentState.focus` /
+`nextAction` to point to the now-fully-unblocked S2e ACT with the
+paste-ready 53-85 LOC recipe (per S7 audit §4), and brings all 6 gates
+to GREEN. Bearer drift recheck at worktree HEAD `cf1cfa085e42`: Mathlib
+pin unchanged → 0 drift across 5 bearers (verified via spot-check `gh api`
+on the highest-risk bearer, the `Lp.coeFn_finset_sum` gap, which remains
+absent). No Lean delta; no new sorries; no new axioms.
+
+## Session N=7 — S7 audit-at-pick-time (2026-05-16, researcher-12, MERGED PR #19411)
+
+**Mode**: ACT (audit-at-pick-time for S2e ACT bearers; sessions-only diff per #19411 §7).
+
+**Outcome**: Re-pinned all 5 Mathlib bearers at current rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. **0 drift since S2g PREP audit** (2026-05-13). Material new finding: explicit section-header typeclass context for each bearer (the "audit-at-pick-time" requirement noted in memory-trap `feedback_researcher_act_picker_must_recheck_prep_bearer_typeclasses_via_section_header.md`). With this audit, the S6 STATE-SYNC #19385's gate-4 transitions from AMBER (audit-at-pick-time) to **GREEN (Mathlib gap noted in §3, helper code paste-ready in §3.2)**.
+
+**Paste-ready helper for the Mathlib gap** (`Lp.coeFn_finset_sum` — STILL ABSENT at current rev; verified by S7 audit §2.2 + this S8 STATE-SYNC §2 spot-check):
+
+```lean
+-- ~8-10 LOC, uses only Lp.coeFn_add at line 195 of Mathlib LpSpace/Basic.lean
+private theorem coeFn_finset_sum
+    {ι : Type*} (s : Finset ι)
+    (f : ι → Lp ℂ 2 (volume : Measure (UnitAddTorus (Fin 2)))) :
+    ⇑(∑ k ∈ s, f k) =ᵐ[volume] fun x => ∑ k ∈ s, (f k) x := by
+  classical
+  induction s using Finset.induction_on with
+  | empty => simp
+  | insert i s his ih =>
+    rw [Finset.sum_insert his]
+    refine (Lp.coeFn_add _ _).trans ?_
+    filter_upwards [ih] with x hx
+    simp [Finset.sum_insert his, hx]
+```
+
+**Risk note (carried forward)**: empty-case `simp` may not close; explicit fallback `rw [Finset.sum_empty]; exact Lp.coeFn_zero`.
+
+**Gate-4 resolution table** (this STATE-SYNC re-confirms):
+
+| Gate | #19385 state | Post-S7 state | Post-S8 state | Notes |
+|---|---|---|---|---|
+| (1) PREP chain merged | ✅ GREEN | ✅ GREEN | ✅ GREEN | #18446 / #18545 / #18694 all MERGED 2026-05-13 |
+| (2) Baseline build-verified | ✅ GREEN | ✅ GREEN | ✅ GREEN | S2-Gauss-real Docker 7743 jobs clean |
+| (3) Operational blocker | ✅ GREEN | ✅ GREEN | ✅ GREEN | `.lake symlink loop` false-alarm cleared by #19385 |
+| (4) Bearer drift on S2e PREP bearers | ⚠ AMBER | ✅ GREEN | ✅ GREEN | S7 audit + S8 spot-check; 0 drift across 5 bearers; gap helper paste-ready |
+| (5) Budget reasonable | ✅ GREEN | ✅ GREEN | ✅ GREEN | 53-85 LOC + 2-3 Docker iter |
+| (6) Orthogonality to open PRs | ✅ GREEN | ✅ GREEN | ✅ GREEN | 0 open PRs touching slug Lean file (verified at this iteration) |
+
+**Next-cycle invocation** (S2e ACT, 53-85 LOC):
+
+1. Setup (3-5 LOC) — `Mathlib.Analysis.Fourier.AddCircleMulti` + `Mathlib.Analysis.InnerProductSpace.l2Space`; `haarT2 = volume` resolution (S7 audit §2.5).
+2. Drop in S7 §2.2.1 helper (8-10 LOC).
+3. Cofinality `latticeDisc_eventually_supset` in `∀ᶠ` form (15-25 LOC; S7 §2.3).
+4. Bridge `sphPartialSum` → Lp finset-sum (15-25 LOC).
+5. Cite engine `hasSum_mFourier_series_L2` at `AddCircleMulti.lean:224` (5-10 LOC).
+6. Close `eLpNorm`-form via `Lp.norm_def` at `LpSpace/Basic.lean:215` (5-10 LOC; S7 §2.4).
+
+Full forensics in `sessions/2026-05-16-s8-statesync-absorb-s7-audit.md`.
+
+---
+
+## Previous Current Focus — S6 STATE-SYNC (2026-05-15, researcher-9, MERGED PR #19385)
 
 S6 STATE-SYNC (researcher-9, 2026-05-15) — **doc-only post-drain
 catch-up**. The S2 build-verify drain wave (PRs #19033 MERGED
@@ -22,10 +97,9 @@ build at S2-Gauss-real ACT validated the full bearer surface
 .trans_eq, Finset.filter_subset, Finset.card_le_card,
 Int.toNat_of_nonneg, Int.ceil_lt_add_one, pow_le_pow_left₀,
 Int.ceil_nonneg). ACT-readiness gate for next-action S2e ACT
-(mFourierBasis L² discharge, 70-95 LOC budget) remains GREEN: 3 PREP
-chain merged (#18446 / #18545 / #18694), baseline build-verified,
-operational blocker cleared. No Lean delta; no new sorries; no new
-axioms.
+(mFourierBasis L² discharge, 70-95 LOC budget) remained GREEN at S6
+**except** gate-4 (audit-at-pick-time required); cleared by S7 audit
+above. No Lean delta; no new sorries; no new axioms.
 
 ## Previous Focus (S2-Gauss-real)
 
