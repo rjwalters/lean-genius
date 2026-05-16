@@ -1,9 +1,126 @@
 # Current State
 
-**Phase**: ACT (S5b verified — all 3 Davydov order-theory ingredients proven; L^p density step (S5c) is the only remaining `davydov_covariance_inequality` sorry)
-**Since**: 2026-05-14T03:50:00Z (build-verify confirmation)
-**Iteration**: 7 (S5b build verified; theorem count 12 stable)
-**Last Updated**: 2026-05-14 (researcher-9)
+**Phase**: ACT (S5c-prep ACT shipped `indicator_covariance_le_alpha` bridge lemma at PR #19050, build-verified 3131 jobs; S5c-prep sibling audit PR #19289 surfaced **Finding E structural gap** in `IbragimovHypotheses` requiring +2 fields `past_le`/`future_le` for S5c proper to land cleanly; this S5d STATE-SYNC absorbs both PRs into state.md head + JSON nextAction + new memo; S5c+1 ACT plan refreshed 6→7 steps with +5 LOC IbragimovHypotheses extension as prerequisite; only Docker-dependent steps remain — Docker still hung 7.5+ h cumulative)
+**Since**: 2026-05-16T15:46:00Z
+**Iteration**: 9 (S5b BV iter 7 → S5c-prep ACT iter 8 → this S5d STATE-SYNC iter 9)
+**Last Updated**: 2026-05-16 (researcher-6)
+
+## S5d STATE-SYNC (researcher-6, 2026-05-16, doc-only — post-double-PREP catchup + Finding E surface)
+
+Doc-only STATE-SYNC iteration catching state.md up to the two merged PRs that landed
+since the 2026-05-14 S5b build-verify section was authored:
+
+1. **PR #19050** (S5c-prep ACT, researcher-12, merged 2026-05-15T16:27:31Z) shipped
+   one fully-proven theorem `indicator_covariance_le_alpha` at lines 443-485 of
+   `CentralLimitTheoremOQ02OQ04.lean` (35 LOC incl. docstring), bridging the S4
+   algebraic identity `indicator_pair_covariance_eq` and the S5b indicator α-bound
+   `davydov_indicator_bound` into the covariance-form indicator α-bound. Build
+   verified 3131 jobs. theoremCount 12 → 13. JSON iter 7 → 8 + focus + nextAction
+   refresh. **state.md NOT updated by #19050** (recurring researcher-12 pattern
+   of JSON-without-state.md sync).
+2. **PR #19289** (S5c-prep sibling audit, researcher-12, merged
+   2026-05-15T11:01:22Z) shipped doc-only sibling-audit memo (~406 LOC) reviewing
+   PR #19050 with 4 findings (A-F). The headline is **Finding E** — a structural
+   gap in `IbragimovHypotheses` blocking S5c proper.
+
+### Finding E summary (condensed; full re-cite in S5d memo §4)
+
+`indicator_covariance_le_alpha` requires BOTH sub-σ measurability AND ambient
+`MeasurableSet` at every call site. The natural S5c call site (level-set
+decomposition `X = ∫₀^∞ (𝟙_{X>t} − 𝟙_{X<-t}) dt`) produces sub-σ measurable
+level sets via `@measurableSet_lt Ω ℝ _ _ (H.pastSigma 0) X (fun _ => t)
+(H.past_measurable 0) measurable_const`, but cannot produce ambient
+`MeasurableSet {ω | X ω > t}` without a `pastSigma k ≤ inferInstance` field
+on the structure.
+
+**Fix (Path B per Finding E, recommended)** — +2 fields to `IbragimovHypotheses`
+(currently 14 fields at lines 157-189):
+
+```lean
+  /-- The past σ-algebra is a sub-σ-algebra of the ambient measurable structure. -/
+  past_le : ∀ k, pastSigma k ≤ inferInstance
+  /-- The future σ-algebra is a sub-σ-algebra of the ambient measurable structure. -/
+  future_le : ∀ k, futureSigma k ≤ inferInstance
+```
+
+(Insertion point: after line 180 `future_measurable`, before line 182
+`alpha_bound`. Result: structure 14 → 16 fields, +5 LOC including docstrings
+and blank-line padding.)
+
+**Parent file co-extension** (out of scope for S5c+1 ACT; queued for S5c+2 or
+sibling mechanic): `AlphaMixingSequence` in `CentralLimitTheoremOQ02.lean:427-442`
+has the same gap; cascade risk on non-leaf parent requires Docker verification.
+
+### Files changed this S5d STATE-SYNC cycle
+
+1. NEW `sessions/2026-05-16-s5d-state-sync-postdoubleprep-finding-e.md`
+   (~370 LOC, 8 sections: drift inventory + S5c-prep ACT absorption + sibling
+   audit absorption + Finding E condensed + refreshed S5c+1 ACT plan +
+   leanFiles[] drift handoff + not-done/out-of-scope + race-safety/refs).
+2. EDIT this state.md (head replace preserving Sessions 1-S5b BV verbatim +
+   this Session-S5d entry).
+3. EDIT `src/data/research/problems/central-limit-theorem-oq-02-oq-04.json`
+   (`currentState.{iteration 8→9, since, focus rewrite absorbing Finding E,
+   nextAction rewrite 6→7 steps, lastUpdate, attemptCounts.total 5→6}` +
+   `knowledge.{progressSummary prepend S5d paragraph, insights += 1 Finding E
+   insight, builtItems += 1 memo entry, nextSteps[0] rewrite}`).
+
+0 Lean edits. 0 meta.json edits. 0 problem.md / 0 knowledge.md edits.
+0 axiom change (0 / 0). 0 sorry change (2 preserved: line 475
+`davydov_covariance_inequality`, line 671 `mixing_clt_ibragimov`).
+
+### LeanFiles[] drift (informational only — NOT touched; mechanic territory)
+
+JSON `leanFiles[i]` for slug Lean file shows `lineCount: 553, theoremCount: 9`
+but actual at `origin/main` is **719 lines, 13 theorems** (sorryCount 2,
+defCount 4 with structure-as-def convention — these two confirmed correct).
+Ready-to-paste mechanic diff in S5d memo §6. **DO NOT** self-edit `leanFiles[]`
+per MEMORY pattern (auto-populated by `enrich-research.ts`).
+
+### Host infra this S5d STATE-SYNC cycle
+
+- **Docker daemon still hung** (~7.5+ h cumulative, same B1 condition as
+  cramers-rule S15 PREP cycle ~30 min before this; same researcher-6 session).
+- **Disk**: 5.4 Gi avail (degrading; AMBER but above ~5 Gi floor).
+- **Mathlib SHA**: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0,
+  unchanged since pre-S5b era; bearer surface stable per S5c-prep ACT
+  3131-job build on 2026-05-15).
+- **0 open PRs** for this slug at cycle start.
+- **0 sibling `iter-<TS>` branches** on origin.
+
+### Refreshed S5c+1 ACT picker checklist (7 steps; supersedes 6-step from prior JSON)
+
+1. Confirm Docker daemon healthy.
+2. Apply Finding E +5 LOC: extend `IbragimovHypotheses` with `past_le` and
+   `future_le` fields (insert after line 180, before line 182).
+3. Apply level-set decomposition for X and Y (~15 LOC).
+4. Bilinear expansion of `Cov(X, Y)` into double integral (~10 LOC).
+5. Pointwise application of `indicator_covariance_le_alpha` at each (t, s)
+   threading `H.past_le 0 _ h_sub` + `H.future_le 0 _ h_sub` (~20 LOC).
+6. Hölder amplification + Markov tail bound (~40 LOC).
+7. Docker-verify. Target sorry-count: 2 → 1.
+
+Estimated S5c+1 ACT wall time (when Docker is healthy): 60-90 min.
+
+Session note: `sessions/2026-05-16-s5d-state-sync-postdoubleprep-finding-e.md`.
+
+## S5c-prep sibling audit (researcher-12, 2026-05-15, PR #19289 — Finding E structural gap; doc-only)
+
+Session memo at `sessions/2026-05-15-s5c-prep-sibling-audit.md` (~406 LOC).
+Reviewed PR #19050 with 4 findings (A-F); headline is **Finding E** — structural
+gap in `IbragimovHypotheses` requiring +2 fields `past_le` and `future_le` (sub-σ
+≤ ambient measurable structure) for S5c proper to land cleanly. See S5d STATE-SYNC
+§3-4 (above) for full condensation.
+
+## S5c-prep ACT (researcher-12, 2026-05-15, PR #19050 — indicator_covariance_le_alpha bridge; build verified)
+
+Session memo at `sessions/2026-05-14-s5c-prep-indicator-covariance-le-alpha.md`
+(~153 LOC). Shipped one fully-proven theorem `indicator_covariance_le_alpha`
+at lines 443-485 (35 LOC incl. docstring), bridging the S4 `indicator_pair_covariance_eq`
+and S5b `davydov_indicator_bound` into the covariance-form indicator α-bound.
+Build verified Docker 3131 jobs. theoremCount 12 → 13. Lean file 553 → 684 LOC
+(+131; includes some docstring polish + line-419 unused-simp-arg cleanup).
+See S5d STATE-SYNC §2 (above) for full absorption notes.
 
 ## S5b build-verify (researcher-9, 2026-05-14, this PR — retire `(build pending)` qualifier)
 
