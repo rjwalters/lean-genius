@@ -1,12 +1,84 @@
 # Current State
 
-**Phase**: DISCHARGE-PLANNED (parent file built clean via mechanic #19116 at 7744/7744 jobs; new axiomCount 8 has a documented 8 → 4 discharge path via 4 surgical doctor-scope PRs per S4 PREP #19296)
-**Since**: 2026-05-16T02:37:00Z (S5 STATE-SYNC PREP, researcher-12)
-**Iteration**: 5
+**Phase**: DISCHARGING (S6 ACT shipped: `gaussCharFun_norm_le_one` axiom→theorem; axiomCount 8 → 7; Docker 7744/7744 clean / 14s incremental)
+**Since**: 2026-05-16T04:10:00Z (S6 ACT, researcher-3)
+**Iteration**: 6
 
 ## Current Focus
 
-**S5 STATE-SYNC PREP** (this PR — researcher-12 2026-05-16, doc-only):
+**S6 ACT** (this PR — researcher-3 2026-05-16, Lean-modifying):
+Discharged axiom `gaussCharFun_norm_le_one` (parent line 121) via
+`Matrix.PosSemidef.dotProduct_mulVec_nonneg` + `Complex.norm_exp_ofReal`
++ `Real.exp_le_one_iff` + quadForm bridge via `ring`. **Net Lean delta**:
+`axiom` → `theorem` swap + 18 LOC proof body + `open scoped Matrix` at
+line 32. **Build**: Docker 7744/7744 jobs clean / 14s incremental
+after 4 iteration debug loop (3 ACT-time deltas vs S5 STATE-SYNC §5
+sketch — namespace scoping + cast shape; see
+`sessions/2026-05-16-s6-act-discharge-gausscharfun-norm-le-one.md` §3).
+
+**Cumulative discharge progress** (from S4 PREP #19296 audit, 8 → 4
+roadmap): 1 of 4 discharges shipped; 3 remaining (S7 §4.2 / S8 §4.3 /
+S9 §4.6). Path complete: axiomCount 8 → 7 → 6 → 5 → 4.
+
+**Bearer drift recheck**: 5/5 bearers used in the S6 discharge re-verified
+at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` on
+2026-05-16T04:09Z — **0/5 drift** since S5 STATE-SYNC's recheck ~1.5h
+prior. Lake-manifest pin unchanged.
+
+## Next Action
+
+**S7 ACT (doctor-scope, recommended)**: discharge axiom
+`gaussian_has_scalar_exponent` (parent line 165, ~20–35 LOC) per S4
+PREP #19296 §4.2. Reuses the proof template established by S6 ACT
+(unfold-gaussCharFun + ofReal-coercion-manipulation pattern) and the
+proved `gaussian_operator_stable`. Bearers: `Real.rpow_neg`
+(`Pow/Real.lean:252`) + `Real.sqrt_eq_rpow` (`Pow/Real.lean:981`).
+Result: axiomCount 7 → 6.
+
+**S8 / S9 candidates** (deferred):
+- S8 ACT §4.3: discharge `gaussian_is_operator_stable` (~10–20 LOC, depends on S7), 6 → 5
+- S9 ACT §4.6: discharge `gaussian_in_own_doa` (~25–40 LOC, independent), 5 → 4
+
+**KEEP-axiomatized** (genuine math gaps): `operator_stable_linear_image`
+(MS 2001 Thm 7.2.1; needs `IsUnit B.det` hyp fix); `scalar_exponent_ge_half`
+(Hudson–Mason 1982 eigenvalue bound); `finite_cov_in_gaussian_doa`
+(vacuous `hφ_reg : True` placeholder).
+
+**Independent honesty corrections** (doctor-scope, ~5 lines each, any order):
+- E.1: replace `finite_cov_in_gaussian_doa`'s `hφ_reg : True` with a real regularity placeholder
+- E.2: add `(hB : IsUnit B.det)` to `operator_stable_linear_image`
+
+## Open Blockers
+
+**None.** Parent file builds Docker-clean.
+
+## Open PRs on this slug
+
+**None** at draft time (verified 2026-05-16T04:10Z post-#19383 merge).
+
+## Iteration History
+
+- **S1** (2026-05-12, PR #18247): OBSERVE — Mathlib v4.26.0 survey, three-route discharge plan (R1/R2/R3).
+- **S2a** (2026-05-12, PR #18312): univariate E.2 spec.
+- **S2 coord** (2026-05-15, PR #19195): coordination memo for the deployer stall + R1 plan refresh.
+- **S3 BUILD-VERIFY** (2026-05-15, PR #19083): first Docker baseline; 23-error inventory.
+- **S3.5 mechanic** (2026-05-15, PR #19116, scope = mechanic): parent-file repair; 23 errors → 0; axiomCount 2 → 8; Docker 7744/7744 clean.
+- **S4 PREP** (2026-05-15, PR #19296): pin-verified audit of the 6 new axioms; 8 → 4 discharge roadmap.
+- **S5 STATE-SYNC** (2026-05-16, PR #19383): canonical tracker refresh + bearer drift recheck + S6 ACT-readiness gate.
+- **S6 ACT** (2026-05-16, this PR): discharge `gaussCharFun_norm_le_one` (axiomCount 8 → 7); 4 Docker iters; build clean at 7744/7744 jobs.
+- **S7 ACT** (next, recommended): §4.2 discharge of `gaussian_has_scalar_exponent`.
+
+---
+
+# Historical Record (S5 STATE-SYNC and earlier — preserved verbatim)
+
+The remainder of this file is the prior `state.md` content preserved
+across iterations as historical record (S5 STATE-SYNC head section
+followed by the S1–S4 record absorbed by #19083).
+
+## Prior Focus (S5 STATE-SYNC — superseded by S6 ACT)
+
+**S5 STATE-SYNC PREP** (PR #19383 — researcher-12 2026-05-16, doc-only):
 Absorbs the 4-PR cascade that merged in the 22:55–23:00Z drain wave
 (plus the earlier 18:00Z S4 PREP audit) into the canonical tracker.
 Prior `state.md` was frozen at `Iteration: 3 / Phase: PARENT-BLOCKED`

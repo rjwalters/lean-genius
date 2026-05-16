@@ -29,6 +29,7 @@ import Proofs.CentralLimitTheoremOQ01OQ01
 namespace OperatorStable
 
 open DomainOfAttraction Real Complex Finset
+open scoped Matrix
 
 set_option maxHeartbeats 800000
 
@@ -111,16 +112,36 @@ theorem gaussCharFun_zero (d : ℕ) (Sg : Matrix (Fin d) (Fin d) ℝ) :
     gaussCharFun d Sg (fun _ => 0) = 1 := by
   simp [gaussCharFun, quadForm]
 
-/-- **AXIOM**: Gaussian characteristic function norm ≤ 1 when Sg is positive semidefinite.
+/-- Gaussian characteristic function norm ≤ 1 when Sg is positive semidefinite.
 
-    Axiomatized at Mathlib v4.26.0: the original proof invoked
-    `Matrix.PosSemidef.inner_le` plus `Complex.re_ofReal` / `Real.exp_le_one_of_nonpos`,
-    all of which have been renamed or removed in v4.26.0. The math content
-    is standard (φ_Σ(ξ) = exp(-Q(ξ)/2) with Q(ξ) ≥ 0 by PosSemidef → ‖·‖ ≤ 1),
-    but the proof chain spans 3 renamed lemmas across PSD/exp/complex namespaces. -/
-axiom gaussCharFun_norm_le_one (d : ℕ) (Sg : Matrix (Fin d) (Fin d) ℝ)
+    The Gaussian characteristic function is `φ_Σ(ξ) = exp(-Q(ξ)/2)` where
+    `Q(ξ) = ξᵀSgξ`. PosSemidef ensures `Q(ξ) ≥ 0`, so the real exponent
+    `-Q(ξ)/2 ≤ 0`, hence the complex norm is `Real.exp (-Q/2) ≤ 1`.
+
+    Discharged at Mathlib v4.26.0 (S6 ACT, PR following S5 STATE-SYNC #19383)
+    via `Matrix.PosSemidef.dotProduct_mulVec_nonneg` + `Complex.norm_exp_ofReal`
+    + `Real.exp_le_one_iff`; quadForm bridge via index reordering (`ring`). -/
+theorem gaussCharFun_norm_le_one (d : ℕ) (Sg : Matrix (Fin d) (Fin d) ℝ)
     (hSg : Matrix.PosSemidef Sg) (ξ : Fin d → ℝ) :
-    ‖gaussCharFun d Sg ξ‖ ≤ 1
+    ‖gaussCharFun d Sg ξ‖ ≤ 1 := by
+  -- Step 1: quadForm d Sg ξ ≥ 0 (Sg is PSD; ξ is real so star ξ = ξ).
+  have hQ : 0 ≤ quadForm d Sg ξ := by
+    have h := hSg.dotProduct_mulVec_nonneg ξ
+    -- h : 0 ≤ star ξ ⬝ᵥ Sg *ᵥ ξ
+    have hstar : (star ξ : Fin d → ℝ) = ξ := by funext i; exact star_trivial _
+    rw [hstar] at h
+    -- h : 0 ≤ ξ ⬝ᵥ Sg *ᵥ ξ
+    have heq : ξ ⬝ᵥ Sg *ᵥ ξ = quadForm d Sg ξ := by
+      simp only [dotProduct, Matrix.mulVec, quadForm, Finset.mul_sum]
+      refine Finset.sum_congr rfl fun i _ => ?_
+      refine Finset.sum_congr rfl fun j _ => ?_
+      ring
+    linarith [heq ▸ h]
+  -- Step 2: ‖Complex.exp (-↑(q/2))‖ = Real.exp (-(q/2)) ≤ 1 since q ≥ 0.
+  -- (Elaborator pushes negation outside the coercion: `(-(q/2 : ℝ) : ℂ) = -↑(q/2)`.)
+  unfold gaussCharFun
+  rw [← Complex.ofReal_neg, Complex.norm_exp_ofReal]
+  exact Real.exp_le_one_iff.mpr (by linarith)
 
 -- ============================================================
 -- PART III: Gaussian Operator-Stability (Proved)
