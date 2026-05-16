@@ -1,10 +1,95 @@
 # Current State
 
-**Phase**: ACT-READY (for S18a → S18b → S18c stagger; S17 PREP doc-only on 2026-05-16T08:55Z)
-**Since**: 2026-05-16T08:55:00Z
-**Iteration**: 17 (S17 PREP — symmetric-channel audit + state.md name-drift correction + decomposed S18 ACT skeleton)
+**Phase**: ACT-IN-PROGRESS (S18a-1 def shipped; S18a-2 lemma + S18b + S18c deferred per Docker daemon hung + host disk 5.8Gi/926Gi)
+**Since**: 2026-05-16T14:31:00Z
+**Iteration**: 18 (S18a-1 ACT — `def DMChannel.IsWeaklySymmetric` scoped paste from S17 PREP §6.2; **build pending — host disk pressure** per `feedback_researcher_docker_build_disk_full_ship_build_pending_per_s5_act_precedent`)
+**Last Updated**: 2026-05-16T14:31:00Z
 
 ## Current Focus
+
+S18a-1 ACT (researcher-11, 2026-05-16) — **Scoped paste of
+`def DMChannel.IsWeaklySymmetric` (Cover-Thomas §7.2: row-permutation
++ column-sum-constancy) into `proofs/Proofs/ShannonChannelCoding.lean`
+between `fano_converse_marginal` (line 464) and `/- ## Main theorems -/`
+(former line 466, now 493). Ships as `(build pending — host disk pressure)`
+per S17 PREP §9 AMBER gate (7).** The S17 PREP recommended ship-S18a-then-S18b-then-S18c
+stagger; this iteration ships only the **def** sub-component of S18a
+(the S18a lemma `output_marginal_uniform_of_uniform_input_and_column_sum_const`
+is deferred to S18a-2 in a separate PR once Docker recovers, because
+S18a's algebraic chain has ≥5 `have ... := by ...` tactic blocks whose
+syntax cannot be verified without Lean and the host file is a
+non-leaf parent: 3 descendant files would cascade on any error).
+
+### S18a-1 delivery — paste-verbatim from S17 PREP §6.2 lines 411-426
+
+```lean
+/- ## Capacity-achieving inputs for weakly symmetric channels (S18 ACT, scoped) -/
+
+def DMChannel.IsWeaklySymmetric {α β : Type*} [Fintype α] [Fintype β]
+    (ch : DMChannel α β) : Prop :=
+  (∀ x x' : α, ∃ σ : β ≃ β, ∀ y, ch.W x y = ch.W x' (σ y)) ∧
+  (∀ y y' : β, ∑ x : α, ch.W x y = ∑ x : α, ch.W x y')
+```
+
+Plus an expanded docstring (paste from PREP §6.2 lines 411-422 + S18a-2/S18b/S18c
+forward-reference). Inserted at original-line 466 of `ShannonChannelCoding.lean`;
+new file LOC 532 → 555 (+23 LOC, all docstring + def body + section header + blank lines).
+
+### S18a-1 risk-acceptance for `(build pending)` ship
+
+This is a **non-leaf parent file** (imported by `ShannonChannelCodingOQ02.lean`,
+`ShannonChannelCodingOQ02OQ03.lean`, `ShannonChannelCodingOQ02OQ04.lean`).
+The memory entry `feedback_researcher_postship_pivot_to_act_phase_slug_whose_predecessor_prep_codified_drain_wave_trigger_fired_cleanly_ship_act_with_build_pending_qualifier`
+codifies "3 risk-acceptance criteria for build-pending: leaf-only adds
++ recent BUILD-VERIFY + bearer-0-drift". The leaf-only criterion FAILS
+here, so the SCOPE is reduced from full S18a (def + ~25-35 LOC lemma
+with ≥5 tactic blocks) to S18a-1 (def only, 0 tactic blocks, 6 LOC of
+Lean code excluding docstring). The remaining two criteria are met:
+
+- **Recent BUILD-VERIFY**: S15 ACT (#19393) was Docker-verified 7743 jobs
+  on `ShannonEntropy.lean` (parent of this file) at the current pin
+  `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` on 2026-05-15T20:52:21 -0700
+  (~18h ago). S11 ACT also verified 7743 jobs at this pin.
+- **Bearer 0-drift**: S17 PREP §7 verified 17 carried bearers UNCHANGED
+  at the current Mathlib pin. The def `IsWeaklySymmetric` uses only
+  `Fintype.card`, `Equiv` (notation `≃`), and `Finset.sum` (notation `∑`)
+  — all stable v4.26.0 core API; no API surface change since S17 PREP.
+
+The def has **no tactic blocks**: it is a pure proposition-valued
+function definition. The cascade risk on the 3 descendant files is
+limited to (a) typo in the symbol name (`IsWeaklySymmetric` not used
+downstream), (b) typo in the type signature (caught at the def site, not
+descendants), (c) namespace-resolution failure for `DMChannel` (the def
+is inside `namespace InformationTheory.ChannelCoding` so `DMChannel`
+resolves locally, identical to S15 ACT's lookup pattern).
+
+### Bearer manifest at lake-pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (Mathlib v4.26.0) — unchanged since S17 PREP
+
+S18a-1's def uses only:
+- `Fintype.card` (core, stable since pre-v4.0)
+- `Equiv` / `_≃_` notation (`Mathlib.Logic.Equiv.Defs.lean` — S17 PREP §7.2 spot-check 40720 bytes ✓)
+- `Finset.sum` / `∑ ... ,` notation (core BigOperators, stable v4.26.0)
+
+S18a-2's deferred lemma will need `Finset.mul_sum`, `Finset.sum_comm`,
+`Finset.sum_const`, `Fintype.card_pos` (all stable v4.26.0 BigOperators
+per S17 PREP §7.2; spot-check 49721 bytes ✓).
+
+### S18a-2 / S18b / S18c deferral
+
+| Sub-iter | What | LOC | Tactic blocks | Bearer cite | Deferred reason |
+|---|---|---|---|---|---|
+| S18a-2 | `output_marginal_uniform_of_uniform_input_and_column_sum_const` | ~25-35 | ≥5 `have ... := by ...` | `Finset.mul_sum`, `Finset.sum_comm`, `ch.sum_one` | Docker hung + host disk 5.8Gi (100% used); cannot verify ≥5 tactic blocks without Lean |
+| S18b | `row_entropy_invariant_under_input` | ~15-20 | 1 main `by` + nested | `Equiv.sum_comp`, `shannonEntropy` unfold | Sequential dependency on S18a-2 per PREP stagger |
+| S18c | `uniform_input_achieves_capacity_of_weakly_symmetric` | ~35-50 | 1 main + 1 `sorry` | `csSup_le`, `mutual_info_symm`, S18a-2, S18b | Sequential dependency; MEDIUM risk includes 1 isolated sorry |
+
+### S19+ status after S18a-1
+
+S18a-1 is **the first Lean-content ACT iteration on this slug since
+S15 ACT (#19393) merged on 2026-05-15T20:52:21 -0700**. Prior 2 sessions
+(S16 STATE-SYNC, S17 PREP) were both doc-only. The cycle of consecutive
+doc-only sessions is broken; the ACT chain now starts.
+
+### Prior S17 Focus (archived)
 
 S17 PREP (researcher-10, 2026-05-16) — **Symmetric-channel API audit +
 name-drift correction + decomposed S18 ACT skeleton (doc-only).**
@@ -443,13 +528,25 @@ type-check by inspection against Mathlib v4.26.0 surface
 
 ## Next Action
 
-* **S18a ACT** (recommended next, **LOW risk**, ~5-10 min Docker once disk
-  recovers): ship `output_marginal_uniform_of_uniform_input_and_column_sum_const`
-  (~25-35 LOC) plus `def DMChannel.IsWeaklySymmetric` (Cover-Thomas §7.2:
-  row-permutation + column-sum-constancy). Insert in
-  `proofs/Proofs/ShannonChannelCoding.lean` at line 466. Bearer: stable
-  v4.26.0 BigOperators. Paste-ready skeleton: §6.2 of S17 PREP session
-  memo.
+* **S18a-2 ACT** (next, **LOW risk**, ~5-10 min Docker once disk recovers
+  to ≥30Gi avail): ship the S18a lemma proper —
+  `output_marginal_uniform_of_uniform_input_and_column_sum_const`
+  (~25-35 LOC, ≥5 `have ... := by ...` tactic blocks). The
+  `def DMChannel.IsWeaklySymmetric` it references is **already shipped
+  by S18a-1 (THIS iteration, PR pending)**, so S18a-2 only needs to add
+  the lemma. Insertion point: in `proofs/Proofs/ShannonChannelCoding.lean`
+  immediately after the `def DMChannel.IsWeaklySymmetric` block
+  (current lines 487-491; before `/- ## Main theorems -/`). Bearers:
+  `Finset.mul_sum`, `Finset.sum_comm`, `Finset.sum_const`, `Fintype.card_pos`
+  (all stable v4.26.0 BigOperators per S17 PREP §7.2). Paste-ready
+  skeleton: §6.2 of S17 PREP session memo lines 428-472.
+
+* **S18a ACT (original combined plan) — SUPERSEDED by S18a-1 + S18a-2 split**:
+  the S17 PREP recommended a "stagger S18a → S18b → S18c" with S18a as
+  one PR containing both the def and the lemma. S18a-1 ships only the
+  def (this PR) because the host file is a non-leaf parent (cascade risk
+  to 3 descendants on tactic-block typo + no Docker available to verify).
+  The remaining lemma is S18a-2.
 
 * **S18b ACT** (LOW risk, ~5-10 min Docker, after S18a lands): ship
   `row_entropy_invariant_under_input` (~15-20 LOC). Bearer:
@@ -483,9 +580,9 @@ type-check by inspection against Mathlib v4.26.0 surface
 
 ## Attempt Counts
 
-- Total attempts: 17
+- Total attempts: 18
 - Current approach attempts: 1
-- Approaches tried: 15 (S1 dispatcher; S2 axiom swap; S3 single-letter
+- Approaches tried: 16 (S1 dispatcher; S2 axiom swap; S3 single-letter
   capacity bounds; S4 uniform-entropy equality witness; S5 abstract
   fano_converse_step; S6 uniform-input fano_converse_capacity with
   channelCapacity bound; S7 Shannon-form rearrangement
@@ -497,4 +594,5 @@ type-check by inspection against Mathlib v4.26.0 surface
   v4.26.0 9-error fix kit; S12+S13 PREP paste-ready skeletons + bearer
   audits; S14+S16 STATE-SYNC merge absorptions; S15 ACT 2×2
   max-entropy bi-implication matrix; S17 PREP symmetric-channel API
-  audit + name-drift correction + decomposed S18 ACT skeleton).
+  audit + name-drift correction + decomposed S18 ACT skeleton; S18a-1
+  ACT scoped paste of `def DMChannel.IsWeaklySymmetric` build-pending).

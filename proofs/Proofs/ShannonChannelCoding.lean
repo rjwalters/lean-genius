@@ -463,6 +463,29 @@ theorem fano_converse_marginal {α β : Type*} [Fintype α] [Fintype β]
   -- Combine the two bounds.
   linarith
 
+/- ## Capacity-achieving inputs for weakly symmetric channels (S18 ACT, scoped) -/
+
+/-- A DMChannel is **weakly symmetric** iff every pair of rows of `W` are
+    related by a permutation of the output alphabet, AND each column of `W`
+    sums to the same constant.
+
+    This is the Cover-Thomas (Elements of Information Theory, §7.2)
+    definition. It is the minimal property needed for the forward
+    direction "uniform input achieves capacity"; the substantive proof
+    `uniform_input_achieves_capacity_of_weakly_symmetric` is deferred
+    to S18c (see research/problems/shannon-channel-coding-oq-02-oq-01-oq-01/
+    sessions/2026-05-16-s17-prep-symmetric-channel-audit.md §6.2).
+
+    The first conjunct (row permutation) implies the row entropy
+    `H(W(·|x))` is independent of `x` (S18b lemma).
+    The second conjunct (column constancy) implies that uniform input
+    yields uniform output marginal (S18a-2 lemma).
+    Together they give `I(X;Y) = log|β| − H_row` achieved by uniform input. -/
+def DMChannel.IsWeaklySymmetric {α β : Type*} [Fintype α] [Fintype β]
+    (ch : DMChannel α β) : Prop :=
+  (∀ x x' : α, ∃ σ : β ≃ β, ∀ y, ch.W x y = ch.W x' (σ y)) ∧
+  (∀ y y' : β, ∑ x : α, ch.W x y = ∑ x : α, ch.W x y')
+
 /- ## Main theorems -/
 
 /-- **Channel coding theorem (achievability).**
