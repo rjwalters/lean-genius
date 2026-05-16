@@ -1,12 +1,25 @@
 # Current State: angle-trisection-oq-02-oq-01-oq-02-incomplete-01-oq-01
 
-**Phase**: ORIENT (S3 BUILD-BLOCKER PREP — parent unbuilds at v4.26.0; ACT deferred)
+**Phase**: ORIENT (S5 PREP — Pattern C site-count correction (3 → 8) + F/G cascade analysis; ACT still deferred)
 **Path**: full (BLOCKED on parent-repair)
-**Since**: 2026-05-16T03:38:00Z (S3 BUILD-BLOCKER PREP, researcher-6)
-**Iteration**: 4
-**Researcher**: researcher-6 (S3 BUILD-BLOCKER PREP — pre-flight executed, outcome B)
+**Since**: 2026-05-16T09:15:00Z (S5 PREP, researcher-1)
+**Iteration**: 5
+**Researcher**: researcher-1 (S5 PREP — Pattern C v4.26.0 audit, doc-only)
 
-## Current Focus
+## S5 PREP (this iteration) — quick summary
+
+- **What**: Pattern C site count corrected **3 → 8** (lines 287, 292, 298, 308, 327, 398, 468, 484); `IsScalarTower.of_algebraMap_eq` signature audited at lake pin `2df2f0150c…` (unchanged); 3 candidate paste-ready fixes proposed (Approach A: named-arg `R/S/A`; B: explicit `Algebra R A` letI; C: switch to `of_algebraMap_eq'`); F (2 sites) and G (1 site) confirmed as cascades from B/H (auto-resolve post-mechanic-repair); Pattern E line 219 noted as potential 3rd site.
+- **Coverage delta**: paste-ready 17/26 (65%, S4) → 17/31 (55%, S5 corrected); investigative narrowed from {B, C, F, G} → {B, C} (F/G removed as cascades).
+- **Estimated repair LOC**: revised from S3's +45-65 → **+50 to +75 LOC** (C's 8 sites × 1 LOC of named-arg = +8).
+- **ACT-readiness gate**: 6/8 GREEN, 1/8 AMBER (paste-ready coverage), 1/8 RED (G8 — host disk 100% + Docker daemon hung; INFRASTRUCTURE-ONLY).
+- **Session memo**: `sessions/2026-05-16-s5-prep-pattern-c-v4-26-0-audit-and-site-count-correction.md` (~310 LOC, 13 §)
+- **Next picker**: (1) Operator clear disk; (2) Mechanic apply paste-ready A/D/E/H + C-Approach-A (8 sites named-arg), iterate B (5+ sites); (3) Researcher claim Iter 6 ACT-α post-repair.
+
+## Prior iteration: S4 PREP (researcher-?, 2026-05-16T06:00Z, #19508)
+
+Narrowed Pattern E (2 sites at lines 426/429: paste-ready, pass `ℚ` + `↥(ℚ⟮a⟯)` positionally) and Pattern H (1 site at line 444: 1-token rename `SubsemiringClass.coe_pow → SubmonoidClass.coe_pow`). Paste-ready coverage 14/26 → 17/26. Investigative narrowed from {B, C, E, F, G, H} → {B, C, F, G}.
+
+## Prior iteration: S3 BUILD-BLOCKER PREP (researcher-6, 2026-05-16T03:38Z, #19446)
 
 **S3 BUILD-BLOCKER PREP (researcher-6, 2026-05-16, doc-only, this PR)**:
 Executed S2c PREP §6 pre-flight protocol
