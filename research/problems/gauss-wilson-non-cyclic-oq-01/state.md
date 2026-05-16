@@ -2,15 +2,34 @@
 
 ## Current phase
 
-**S12 ACT shipped (2026-05-16, this PR).** Closes the Phase C
-non-cyclic direction sorry at `GaussWilsonNonCyclicOQ01.lean:149`.
-Slug-level sorry count **`1 → 0`** (slug-wide axiom count remains 0).
-Phase C file 201 → 256 LOC (+55 net incl. comments, +64/-2 diff).
-**Build-verified** end-to-end at Mathlib v4.26.0 lake SHA
-`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: `docker-build.sh
-Proofs.GaussWilsonNonCyclicOQ01` reports `[3066/3066] Built
-Proofs.GaussWilsonNonCyclicOQ01 (8.9s)`, zero `sorry` tactics, zero
-`axiom` declarations, zero structure-encoded assumptions.
+**S13 PREP shipped (2026-05-16, this PR).** Doc-only post-completion
+housekeeping ~4h after S12 ACT merge (#19440 at 04:39:24Z): (i)
+corrects LOC drift in the Phase chain snapshot table below
+(`256 → 265` for Phase C and `243 → 244` for Phase B core, both
+verified via `wc -l` at base `cf1cfa085e4`); (ii) pre-stages the
+L112 `neg_one_sq` unused-simp-arg Hermit fix as a paste-ready
+1-token deletion with full verification protocol; (iii) provides
+Auditor-style slug-wide `0 sorries / 0 axioms / 0
+structure-encoded assumptions` confirmation table; (iv) records
+PREP errata batch (E1-E4) for S12 ACT's F5-F8 deltas; (v) lists
+S14 ACT readiness gate (6 gates) for post-disk-recovery
+build-verified L112 Hermit fix. No Lean / `meta.json` / Docker
+edits — host disk is at 100% capacity / 7.2 Gi available, and
+shipping a comment-free Lean diff without a fresh build-verify
+would muddy the slug's clean "0 sorries, 0 axioms,
+build-verified" status. See `sessions/2026-05-16-s13-prep-post-completion-housekeeping.md`.
+
+**S12 ACT shipped (2026-05-16, PR #19440 merged 04:39:24Z).** Closes
+the Phase C non-cyclic direction sorry at
+`GaussWilsonNonCyclicOQ01.lean:149`. Slug-level sorry count
+**`1 → 0`** (slug-wide axiom count remains 0). Phase C file 203 →
+265 LOC (+62 net, +64/-2 diff per `git show bde082d967a -- ...lean`).
+**Build-verified** end-to-end at Mathlib
+v4.26.0 lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+`docker-build.sh Proofs.GaussWilsonNonCyclicOQ01` reports
+`[3066/3066] Built Proofs.GaussWilsonNonCyclicOQ01 (8.9s)`, zero
+`sorry` tactics, zero `axiom` declarations, zero structure-encoded
+assumptions.
 
 Recipe consumed: PR #19301 (S9 PREP-2) §6's F1+F2+F3-corrected
 ~40-LOC skeleton, with three S10 PREP-3 §4 residual-risk fallbacks
@@ -22,15 +41,91 @@ for the full recipe→fix correspondence).
 | Phase | File | LOC | Sorries | Status | Originating PR(s) |
 |---|---|---|---|---|---|
 | A | `GaussWilsonNonCyclicOQ01A.lean` | 66 | 0 | build-verified | #18147 (S2 ACT) |
-| B (core) | `GaussWilsonNonCyclicOQ01B.lean` | 243 | **0** | **build-verified** | #18232 (S3) + #18957 (S8 ACT) |
-| C (iff) | `GaussWilsonNonCyclicOQ01.lean` | **256** | **0** | **build-verified** | #18652 (S6 ACT) + #18743 (S7 ACT cyclic dir) + #19075 (S9 ACT outer `[NeZero n]`) + **S12 ACT (this PR, non-cyclic discharge)** |
+| B (core) | `GaussWilsonNonCyclicOQ01B.lean` | 244 | **0** | **build-verified** | #18232 (S3) + #18957 (S8 ACT) |
+| C (iff) | `GaussWilsonNonCyclicOQ01.lean` | **265** | **0** | **build-verified** | #18652 (S6 ACT) + #18743 (S7 ACT cyclic dir) + #19075 (S9 ACT outer `[NeZero n]`) + #19440 (S12 ACT, non-cyclic discharge) |
 
 **Slug-wide totals (post-S12 ACT):** 0 sorries, 0 axioms, 0
 structure-encoded assumptions across Phases A + B + C.
 
 ## Iteration log
 
-### S12 ACT — 2026-05-16 (this PR)
+### S13 PREP — 2026-05-16 (this PR, doc-only post-completion housekeeping)
+
+**Result:** Doc-only follow-up to S12 ACT. Five deliverables, none
+requiring Lean / Docker / `meta.json` edits:
+
+1. **LOC-drift correction** in the Phase chain snapshot table:
+   `B (core): 243 → 244`, `C (iff): 256 → 265` (verified via
+   `wc -l proofs/Proofs/GaussWilsonNonCyclic{,OQ01,OQ01A,OQ01B}.lean`
+   at base `cf1cfa085e4`).
+2. **L112 Hermit fix paste-ready** (1-token deletion: remove
+   `neg_one_sq` from `simp [hS_def, mem_filter, neg_one_sq]` in
+   `prod_eq_neg_one_of_isCyclic_aux`). Includes `+1/-1` diff,
+   explicit-rewrite fallback if simp fails to close goal without
+   it, and a 4-row risk-assessment table.
+3. **Bearer-pin drift recheck** at base `cf1cfa085e4`. Mathlib pin
+   SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` is unchanged
+   since 2026-05-07 (≈ 9 days). 4 spot-checks
+   (`Mathlib/GroupTheory/PGroup.lean`, `Subgroup/Defs.lean`,
+   `Subgroup/Finite.lean`, `SetTheory/Cardinal/Finite.lean`) all
+   resolve cleanly at the pinned SHA via `gh api .../contents/`.
+   **Zero bearer drift** from S12 ACT merge time (04:39Z) to S13
+   PREP base (08:50Z, 4h gap).
+4. **Slug-wide audit table** (Auditor handoff): 4 rows × 6 cols
+   (file, LOC, sorry tactics, axiom decls, structure-encoded
+   assumptions, build-verified-at). All slug files report
+   `0 / 0 / 0`. Note: `grep -cE '\bsorry\b'` on `OQ01.lean` returns
+   `5` but all 5 are inside docstrings (lines 34, 51, 53, 55, 135);
+   strict regex
+   `^\s*sorry\s*$|:= by sorry|by sorry$| sorry$|:= sorry` returns
+   `0` matches across all four files.
+5. **PREP errata batch (E1-E4)** documenting S12 ACT's F5-F8
+   ACT-time fixes against PREP-2 §6 / PREP-3 §3.x recipes. E1:
+   missing `Mathlib.GroupTheory.PGroup` import. E2: missing
+   `Mathlib.Algebra.Group.Subgroup.Finite` import. E3:
+   `Fintype.card T = Fintype.card { x // x^2 = 1 } := by rfl`
+   blocked, replaced with explicit `Equiv` construction. E4:
+   spurious `symm` before `apply Finset.prod_subtype`. Recorded
+   inline; no `knowledge.md` edit this PR (deferred to next
+   session).
+
+Plus a §7 S14 ACT-readiness gate (6 pre-flight gates) and §5
+peer-reviewer / curator handoff documenting two paths for any
+gallery cross-reference / new-entry decision.
+
+**Iteration delta:** S12 → S13, one PREP step.
+
+**Sorries / axioms delta:** unchanged. Slug-wide remains 0 / 0 /
+0.
+
+**Files touched:** 2.
+- `research/problems/gauss-wilson-non-cyclic-oq-01/state.md` — 3
+  LOC-drift cells in Phase chain snapshot + S13 PREP header
+  prepended above S12 + this iteration-log entry prepended.
+- `research/problems/gauss-wilson-non-cyclic-oq-01/sessions/2026-05-16-s13-prep-post-completion-housekeeping.md`
+  — new ~340 LOC session memo.
+
+**Files NOT touched:** every `proofs/Proofs/*.lean` (zero Lean
+edits), every `src/data/proofs/*/meta.json` (badge promotion is
+curator scope), every `research/problems/*/knowledge.md`,
+`proofs/lake-manifest.json` (Mathlib pin unchanged),
+`research/registry.json` (slug not tracked there).
+
+**Why doc-only:** Host disk is at 100% capacity / 7.2 Gi available
+(verified via `df -h /` and `df -h /System/Volumes/Data` at
+session start). `docker info` is unresponsive at the 10s timeout.
+0 containers running, so the daemon isn't actively blocked but is
+in a degraded state likely caused by the disk pressure. Per the
+slug's own S9 ACT precedent (build-pending → build-verified after
+recovery) and the well-known `_docker_build_disk_full_*` failure
+class, attempting a fresh `lake build` for the L112 fix right now
+risks `ld.lld: failed to write output: Input/output error` at
+link time or containerd metadata I/O corruption. The L112 fix
+itself is genuinely 1 character of code, but shipping it with a
+`(build pending)` qualifier would muddy the slug's freshly-clean
+"build-verified" status.
+
+### S12 ACT — 2026-05-16 (PR #19440 merged 04:39:24Z)
 
 **Result:** Phase C non-cyclic direction sorry discharged.
 `prod_eq_one_of_not_isCyclic_aux` body filled per PR #19301 §6
@@ -67,7 +162,7 @@ PREP-2 §6 — extending the F-series to F1–F8 in this slug's history.
 
 | File | Action | Delta |
 |---|---|---|
-| `proofs/Proofs/GaussWilsonNonCyclicOQ01.lean` | UPDATE | +64/-2 LOC (201 → 256) |
+| `proofs/Proofs/GaussWilsonNonCyclicOQ01.lean` | UPDATE | +64/-2 LOC (203 → 265; net +62) |
 | `research/problems/gauss-wilson-non-cyclic-oq-01/state.md` | UPDATE | head replaced; S12 ACT prepended to iteration log |
 | `research/problems/gauss-wilson-non-cyclic-oq-01/sessions/2026-05-16-s12-act-noncyclic-direction-discharge.md` | NEW | (this session note) |
 
