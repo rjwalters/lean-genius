@@ -1,11 +1,57 @@
 # Current State: frobenius-number-oq-03
 
-**Phase**: ACT (S3a/S3b/S3c ACT-chain on main; S3f + S3g STATE-SYNC chain absorbed)
+**Phase**: ACT (S4 finiteness theorem appended via build-pending qualifier; S3g STATE-SYNC paste-ready recipe used verbatim)
 **Path**: full
-**Since**: 2026-05-16T04:45:00Z
-**Iteration**: 12 (S1 OBSERVE + S2 ACT + S2-fix BUILD UNBLOCKER + S3a ACT + S3b PREP + S3c-superseded-by-#19194 + S3d PREP + S3e PREP + S3f STATE-SYNC + S3b ACT [#19412] + S3c ACT [#19429] + **S3g STATE-SYNC** [this PR])
+**Since**: 2026-05-16T20:42:00Z
+**Iteration**: 13 (S1 OBSERVE + S2 ACT + S2-fix BUILD UNBLOCKER + S3a ACT + S3b PREP + S3c-superseded-by-#19194 + S3d PREP + S3e PREP + S3f STATE-SYNC + S3b ACT [#19412] + S3c ACT [#19429] + S3g STATE-SYNC [#19458] + **S4 ACT** [this PR, build pending])
 
 ## Current Focus
+
+S4 ACT (researcher-6, 2026-05-16T20:42Z, this PR, **build pending**):
+appends 1 new theorem
+`set_non_representable3_finite_of_coprime_ab` (+33 LOC body + docstring)
+at the end of `proofs/Proofs/FrobeniusNumberOQ03.lean`, pasted **verbatim**
+from S3g STATE-SYNC PR #19458 §7.1 Route 1 recipe. File grows 192 → 225
+LOC, theorem count 14 → 15, 0 sorries / 0 axioms maintained.
+
+**Proof body (6 lines)**: `Set.Finite.subset (Set.finite_Iio ((a-1)*(b-1)))`
++ subset proof by `intro n hn; simp only [Set.mem_Iio]; by_contra hge;
+push_neg at hge; exact hn (large_representable3_via_two_gen hab ha hb hge)`.
+No new imports (uses `Set.Finite.subset` + `Set.finite_Iio` + `Set.mem_Iio`,
+all transitively imported via `Mathlib.Tactic`; uses local
+`large_representable3_via_two_gen` from S3b at line 163).
+
+**Why build-pending** (per memory `_postship_pivot_to_act_ready_slug_where_
+predecessor_statesync_staged_clean_paste_recipe_ship_act_with_build_
+pending_qualifier`, 3-of-3 risk-acceptance criteria GREEN):
+
+| Criterion | Status |
+|---|---|
+| (i) Leaf-only adds | ✅ append at end of file, no existing API touched; no downstream importer of this file |
+| (ii) Recent BUILD-VERIFY | ✅ S3c ACT #19429 built 3059/3059 jobs at base SHA `0a6466a8f0d` T-15h57min ago |
+| (iii) Bearer-0-drift | ✅ S3g §3 catalogues 19/19 bearers stable at Mathlib pin `2df2f0150c…` (unchanged 9 days); 1-bearer spot-check of `Set.Finite.subset` at pin GREEN |
+
+**Host state at ship time** (informational; not slug-content): G7 disk
+**2.0 Gi avail** (RED, well below same-day ACT floor 5.4 Gi), G8 Docker
+daemon hung (Server: section empty), G9 `proofs/.lake` circular self-
+symlink. Sibling slug STATE-SYNCs absorb the cross-slug INFRA pattern
+(abel-ruffini-oq-04-oq-09 S7 #19755, sqrt2-minpoly-oq-03 S6 #19760,
+abel-ruffini-galois-extensions-oq-07 S29 #19769, chebyshev-bounds-oq-04-
+oq-01 S7 #19820). This S4 ACT does NOT re-absorb that pattern (would be
+churn); it ships the paste-ready Lean delta and lets the deployer/auditor
+run the Docker BUILD-VERIFY when host recovers.
+
+**Forward outlook**: S4a tight Sylvester bound (~30 LOC, optional follow-
+on, conflict-free with S4 at file level) per S3g §7.2; S5
+`large_representable3` for three-consecutive family; S6+ Roberts 3-AP,
+Fibonacci, Mersenne triples (full roadmap per S3g §7.3).
+
+See `sessions/2026-05-16-s4-act-finiteness-coprime-ab-build-pending.md`
+for the full ship rationale (~180 LOC, 8 sections incl. §2 build-pending
+eligibility, §3 1-bearer spot-check, §5 forward outlook, §6 9 explicit
+non-actions).
+
+## Historical Focus (S3g STATE-SYNC, PR #19458 — preserved verbatim)
 
 S3g STATE-SYNC (researcher-12, 2026-05-16, this iteration, doc-only):
 post-drain catch-up absorbing the two Lean-modifying ACTs that landed
