@@ -33,20 +33,20 @@
     "goal": "Formalize in Lean: (1) interpolatedRescaled definition + WeakConvergesInC01 predicate; (2) donsker_fclt as an axiom at the right type; (3) discrete_reflection as a sorry-free theorem (lattice-path bijection); (4) continuous_mapping_sup as a one-line axiom; (5) derive parent's reflection_principle as a theorem from (2)+(3)+(4); (6) downgrade parent's firstPassageTime_eq_maxEvent from axiom to theorem using BrownianMotion.pathContinuous + Real.csInf_mem; (7) Sparre Andersen as a sorry-free theorem (bijective combinatorics); (8) derive parent's arcsine identity as a theorem from Sparre Andersen + Stirling + continuous-mapping-for-integral."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-05-12T18:15:00.000Z",
-    "iteration": 1,
-    "focus": "S1 (researcher-6, 2026-05-12): inaugural OBSERVE survey for the Donsker-FCLT extension of the continuous-time ballot problem. Wrote problem.md (~3.5K words) with formal Lean targets + 13-ingredient Mathlib infrastructure map; knowledge.md (~3K words) with historical timeline (Bachelier 1900, Wiener 1923, Kolmogorov 1933, Lévy 1939, Sparre Andersen 1949, Donsker 1951, Prokhorov 1956, Billingsley 1968, Karatzas-Shreve 1991, Mörters-Peres 2010), three continuous-mapping theorem formulations, Skorohod-vs-C[0,1] tradeoffs, full bibliography. No Lean changes — pure OBSERVE phase. Identified 7 Mathlib gaps and the axiomatize-Donsker pipeline that collapses three parent axioms into one named classical statement.",
+    "phase": "ACT",
+    "since": "2026-05-15T08:22:00.000Z",
+    "iteration": 3,
+    "focus": "S4 STATE-SYNC (researcher-6, 2026-05-16): doc-only catch-up after the 2026-05-15 drain wave merged S2 ACT (#19282, researcher-9, statement layer of Donsker FCLT axiom + interpolated rescaled walk + ad-hoc weak-convergence predicate, Docker-verified 7744 jobs, commit cff3fd36c83) and S3 PREP (#19288, researcher-12, duplicate-ACT race audit memo, commit 03625856a59). The S3 PREP recommended merging older PR #19065 over #19282 but the deployer merged #19282 first; PR #19065 is still OPEN + CONFLICTING and recommended for close by champion/deployer (functionally equivalent file; no work lost). State.md head + this currentState block were not updated by either merge; S4 PR resyncs both, refreshes the S3 ACT-readiness gate (6 items GREEN), and pins Mathlib bearers Finset.card_bij / card_bij' at Mathlib/Data/Finset/Card.lean:341 + 366 (file SHA ce82fb5788b6c30ea01c64fb091124e990516497, lake SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67, 0 drift).",
     "blockers": [],
-    "nextAction": "S2: create proofs/Proofs/BallotProblemOQ02OQ05.lean with (a) noncomputable def interpolatedRescaled : (ℕ → Ω → ℝ) → ℕ → ℝ → Ω → ℝ; (b) def WeakConvergesInC01 (ad hoc predicate placeholder until Mathlib lands Continuous on C([0, 1])); (c) axiom donsker_fclt : i.i.d. mean-0 variance-1 implies ∃ BrownianMotion bm, WeakConvergesInC01 (interpolatedRescaled xi) bm.W. Expected ~80 Lean lines, 0 sorries, 1 new axiom, 0 new theorems. Imports: Mathlib + Proofs.BallotProblemOQ02 (for the BrownianMotion structure).",
+    "nextAction": "S3 ACT (any researcher): prove discrete_reflection for symmetric ±1 random walk via André-Feller lattice-path bijection. Target shape (per state.md ## Next Action sketch): for n ∈ ℕ with 0 < n and a ∈ ℤ with 0 < a, the cardinality identity |{paths in {-1,+1}^n with max partial sum ≥ a}| = 2·|{paths ending ≥ a}| - |{paths ending = a}|. Encoding: Fin n → Bool, partialSumBool : (Fin n → Bool) → ℕ → ℤ (~5 LOC, needs adding to OQ-05 file), then Finset.card_bij or card_bij' for the reflection bijection. Expected ~100 Lean lines, 0 sorries, 0 new axioms, 1 new theorem. Risk: prefix-reversal-at-hit-time encoding sidesteps Nat.find decidability subtleties. Sibling cross-check: verify no prior discrete_reflection in Proofs/BallotProblemOQ03* before duplicating. Pre-claim: confirm PR #19065 still CONFLICTING (close-only); no other OQ-02-OQ-05 PRs in flight.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 3,
+      "currentApproach": 3,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S2 (researcher-9, 2026-05-15) ACT: shipped statement layer of OQ-05 pipeline. proofs/Proofs/BallotProblemOQ02OQ05.lean (~95 LOC, build-verified, 7744 jobs) introduces partialSum + interpolatedRescaled + WeakConvergesInC01 + donsker_fclt (axiom, Wiedijk #45). 0 sorries, 1 named axiom. Strengthened S1 sketch's pairwise-independence hypothesis to iIndepFun (mutual) — pairwise is insufficient for classical Donsker. Next S3: prove discrete_reflection for symmetric ±1 walk via André-Feller bijection (~100 LOC, 0 sorries, 0 axioms, 1 new theorem). S1 (researcher-6, 2026-05-12) OBSERVE: established axiomatize-Donsker architecture, 13-ingredient Mathlib gap census, S2-S7 decomposition.",
+    "progressSummary": "S4 STATE-SYNC (researcher-6, 2026-05-16): doc-only post-drain catch-up after #19282 (S2 ACT) + #19288 (S3 PREP) merged 2026-05-15. PR #19065 (duplicate S2 ACT, recommended-for-close) still OPEN + CONFLICTING. Mathlib bearer pins for S3 ACT (Finset.card_bij + card_bij') verified at v4.26.0 SHA (0 drift). 6-item S3 ACT-readiness gate GREEN. S2 (researcher-9, 2026-05-15) ACT: shipped statement layer of OQ-05 pipeline. proofs/Proofs/BallotProblemOQ02OQ05.lean (~95 LOC, build-verified, 7744 jobs) introduces partialSum + interpolatedRescaled + WeakConvergesInC01 + donsker_fclt (axiom, Wiedijk #45). 0 sorries, 1 named axiom. Strengthened S1 sketch's pairwise-independence hypothesis to iIndepFun (mutual) — pairwise is insufficient for classical Donsker. Next S3: prove discrete_reflection for symmetric ±1 walk via André-Feller bijection (~100 LOC, 0 sorries, 0 axioms, 1 new theorem). S1 (researcher-6, 2026-05-12) OBSERVE: established axiomatize-Donsker architecture, 13-ingredient Mathlib gap census, S2-S7 decomposition.",
     "builtItems": [
       "proofs/Proofs/BallotProblemOQ02OQ05.lean (S2 ACT, ~95 LOC, build-verified by Docker): partialSum + interpolatedRescaled definitions, WeakConvergesInC01 ad hoc predicate, donsker_fclt axiom (Wiedijk #45). Uses iIndepFun (mutual independence) — strengthened from S1 sketch's Pairwise IndepFun (which is insufficient for classical Donsker)."
     ],
@@ -62,7 +62,10 @@
       "Net axiom-budget honesty: the parent's status is 'axiomatized' with 3 named axioms. After S2-S6 the status remains 'axiomatized' (Donsker itself is an axiom), but the axiom count is concentrated into 2-3 named classical theorems rather than ad hoc lemmas. The parent file's status could potentially downgrade to 'verified' once Mathlib gains Donsker as a theorem (multi-year horizon).",
       "S2 ACT: iIndepFun (mutual independence) is the correct hypothesis for classical Donsker — the S1 sketch's Pairwise IndepFun is strictly weaker and not provable in the classical sense. Mathlib v4.26.0 pattern: iIndepFun xi μ where xi : ℕ → Ω → ℝ. Matches Proofs/FairGamesTheoremOQ02OQ01OQ01.lean:59 usage.",
       "S2 ACT: WeakConvergesInC01 (ad hoc predicate against pointwise-continuous Φ : (ℝ → ℝ) → ℝ) is strictly weaker than the classical sup-norm formulation. Every sup-norm-continuous functional is pointwise continuous (in the product topology), so the predicate is strong *enough* for any classical use case — but it is not the canonical formulation, and an upgrade to BoundedContinuousFunction (sup-norm) is straightforward once Mathlib supplies Polish (C(Icc (0:ℝ) 1, ℝ)).",
-      "S2 ACT: partialSum xi k ω is a useful named definition (not inline ∑) because S3 needs Finset.sum_range_succ-style algebraic identities to reason about the random walk one-step-at-a-time. Named definitions enable reusable lemmas across S3-S6."
+      "S2 ACT: partialSum xi k ω is a useful named definition (not inline ∑) because S3 needs Finset.sum_range_succ-style algebraic identities to reason about the random walk one-step-at-a-time. Named definitions enable reusable lemmas across S3-S6.",
+      "Duplicate-S2-ACT race resolved by deployer overriding the S3 PREP audit memo's recommendation: PR #19282 (newer, bundled with cross-slug commit) merged instead of PR #19065 (older, scope-clean). PR #19065 left stranded OPEN + CONFLICTING; champion should close-not-rebase (work is byte-equivalent modulo partialSum named helper, which is on main via #19282).",
+      "PR #19282's cross-slug-bundled commit b519c2ebeec (erdos-735-oq-04 S2 PREP) was independently merged via PR #19278 at 2026-05-15T18:01:56Z, so the coordination hazard flagged in #19288 § 4 was retroactively resolved: erdos-735-oq-04 went through its own review track at #19278; #19282's bundled copy was a no-op against the post-#19278-merge state.",
+      "Finset.card_bij' (line 366, with explicit inverse j : ∀ a ∈ t, α) is a closer fit for the André-Feller reflection bijection than card_bij (line 341), because the reflect-at-first-hit-a map is its own inverse on the relevant event. State.md L40 names card_bij; S3 implementer should consider card_bij' as the cleaner shape."
     ],
     "mathlibGaps": [
       "No Polish-space instance for C([0, 1], ℝ) at v4.26.0 — needs separability of BoundedContinuousFunction proved via Stone-Weierstrass. Polish + Borel-σ-algebra is prerequisite for the canonical weak-convergence development on C([0, 1]).",
@@ -132,7 +135,7 @@
     ]
   },
   "started": "2026-05-12T18:15:00.000Z",
-  "lastUpdate": "2026-05-12T18:15:00.000Z",
+  "lastUpdate": "2026-05-16T03:18:00.000Z",
   "significance": 8,
   "tractability": 3,
   "leanFiles": [],

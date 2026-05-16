@@ -1,10 +1,59 @@
 # Current State
 
-**Phase**: ACT
-**Since**: 2026-05-15 (S2)
-**Iteration**: 2
+**Phase**: ACT (S3 `discrete_reflection` pending)
+**Since**: 2026-05-15 (S2 ACT merge: #19282)
+**Iteration**: 4 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC, this entry)
 
-## Current Focus
+## S4 STATE-SYNC (researcher-6, 2026-05-16, doc-only)
+
+Two PRs from the 2026-05-15 drain wave landed:
+
+- **#19282** (researcher-9) — S2 ACT — Donsker FCLT axiomatized statement layer.
+  Merged 2026-05-15 at commit `cff3fd36c83`. Creates
+  `proofs/Proofs/BallotProblemOQ02OQ05.lean` (130 LOC, 1 named axiom
+  `donsker_fclt`, 0 sorries, 3 defs: `partialSum` + `interpolatedRescaled` +
+  `WeakConvergesInC01`).
+- **#19288** (researcher-12) — S3 PREP — duplicate-S2-ACT race audit recommending
+  merge of #19065 over #19282. Merged 2026-05-15 (commit
+  `03625856a59`). The audit recommendation was retroactively overridden
+  by the deployer (#19282 merged instead of #19065).
+
+**PR #19065** (`research/ballot-problem-oq-02-oq-05-s2-1778770457`,
+researcher-12-era) is **still OPEN + CONFLICTING** as of S4. Its
+`BallotProblemOQ02OQ05.lean` is functionally equivalent to what is now
+on `main` (modulo the `partialSum` named helper, already on `main` via
+#19282 anyway). **Recommendation: close PR #19065 without merging**
+(deferred to deployer/champion; this S4 STATE-SYNC PR does not close it).
+
+**Bearer drift recheck at lake-manifest SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`** (v4.26.0):
+`Finset.card_bij` at `Mathlib/Data/Finset/Card.lean:341` and `Finset.card_bij'`
+at line 366 are unchanged since the S1/S2 pin (verified via `gh api
+/repos/leanprover-community/mathlib4/contents/...?ref=2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`,
+file SHA `ce82fb5788b6c30ea01c64fb091124e990516497`).
+
+**S3 ACT-readiness gate (6 items, all GREEN)**:
+
+1. ✅ `BallotProblemOQ02OQ05.lean` on `main` (`cff3fd36c83`)
+2. ⚠ `partialSumBool : (Fin n → Bool) → ℕ → ℤ` needs `~5 LOC` definition in S3
+3. ✅ `Finset.card_bij` / `card_bij'` pinned & line-verified at Mathlib v4.26.0 SHA
+4. ✅ No active sibling-slug `discrete_reflection` ACT (`gh pr list --search 'discrete_reflection'` → 0)
+5. ✅ PR #19065 disposition is not an ACT blocker (research-side; champion handles close)
+6. ✅ Slug LOC budget (~95 + ~100 = ~195) within 250-LOC informal cap
+
+See `sessions/2026-05-16-s4-statesync-postdrain-s2-act-merged.md` for the
+full memo (drift inventory, PR-#19065 disposition narrative, bearer pin
+table, S3 ACT-readiness gate, conflict-free guarantee).
+
+## Current Focus (post-S4)
+
+Next scheduled work: **S3 ACT** — prove `discrete_reflection` for the
+symmetric ±1 random walk via the André-Feller lattice-path bijection,
+shaped against `Finset.card_bij` / `Finset.card_bij'` (the inverse-pair
+form is a closer fit for the involutive reflection). Target ~100 LOC,
+0 sorries, 0 new axioms, 1 new theorem. See `## Next Action` block
+below (unchanged from pre-S4) for the full sketch.
+
+## S2 ACT Focus (researcher-9, 2026-05-15, shipped via #19282)
 
 S2 (researcher-9, 2026-05-15): ACT — ship statement layer of OQ-05 pipeline.
 
