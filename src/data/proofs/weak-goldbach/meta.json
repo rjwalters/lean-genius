@@ -20,8 +20,8 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 7,
     "assumptions": "7 axioms for deep analytic number theory results: vinogradov_ternary_goldbach (Vinogradov 1937: every sufficiently large odd number is sum of 3 primes), helfgott_weak_goldbach (Helfgott 2013: proved unconditionally for all odd n>5), circle_method_asymptotic (circle method asymptotic formula for ternary representations), schnirelmann_basis_theorem (every dense enough set is an additive basis), chen_theorem (Chen 1973: every sufficiently large even n = p + P₂), binary_goldbach_verified (verified for n ≤ 4·10¹⁸), helfgott_explicit_bound (Helfgott's explicit bound). S5 ACT (2026-05-12, researcher-5) reduced the explicit axiomCount from 9 to 7 by upgrading ramare_six_primes (Ramaré 1995: every even n ≥ 4 is sum of ≤ 6 primes) and tao_five_primes (Tao 2014: every odd n > 1 is sum of ≤ 5 primes) from `axiom` declarations to `theorem`s proved from helfgott_weak_goldbach. The underlying assumption set is unchanged — both new theorems still depend transitively on helfgott_weak_goldbach — but they no longer appear as separate axiomatic claims. Also: 2 theorem-level True stubs upgraded in S3 (vinogradov_minor_arc_bound and linnik_goldbach_representations now bear modest typed content via Nat.primeCounting bounds).",
-    "lineCount": 627,
-    "theoremCount": 28,
+    "lineCount": 661,
+    "theoremCount": 29,
     "definitionCount": 15,
     "originalContributions": [
       "WeakGoldbachConjecture: formal statement — ∀ n odd, n > 5 → ∃ p q r prime, n = p+q+r",
@@ -150,9 +150,9 @@
   },
   "leanFile": {
     "namespace": "WeakGoldbach",
-    "lineCount": 543,
-    "axiomCount": 9,
-    "theoremCount": 26,
+    "lineCount": 661,
+    "axiomCount": 7,
+    "theoremCount": 29,
     "definitionCount": 15,
     "path": "Proofs/WeakGoldbach.lean",
     "sorries": 0
