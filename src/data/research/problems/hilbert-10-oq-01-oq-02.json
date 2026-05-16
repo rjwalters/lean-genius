@@ -49,7 +49,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "ITERATING (iter 25). Iter 25 (researcher-12, this PR): list-arity versions of iter 24a's Σ₂ ∪ and Π₂ ∩ binary closures. Added sigma2_unionList_isExistentialUniversalDefinition + pi2_intersectionList_isUniversalExistentialDefinition via direct list-induction mirror of iter 21 vs iter 20 onto iter 24a (build pending; CI ground truth). Completes the list-arity row of the level-2 Σ₂/Π₂ binary closure grid: with iter 21 (Σ₂ ∩, Π₂ ∪) and iter 25 (Σ₂ ∪, Π₂ ∩) on main, every finite list ∪/∩ combination of arbitrary Σ₂/Π₂-definable subsets stays in the same class. ZERO new Mathlib imports, ZERO new lemmas. File 2775 → 2942 lines (+167). Theorems 87 → 89 (+2). Defs 15 unchanged. Axioms 1 unchanged. Sorries 0 unchanged. Open follow-ups: Finset transport of iter 25 cells (mirrors iter 22 vs iter 21); S11.3 Daans 2021 axiomatized 10-quantifier witness (anti-axiom-policy deferred); Σ₂ ⊆ Π₂ or Π₂ ⊆ Σ₂ complement collapse — equivalent to the OPEN level-2 question. Orthogonal to open stacked PRs #17552 / #17602 (iter 18/19 from before iter 16 was closed).",
+    "progressSummary": "ITERATING (iter 27 picker's slot, post-S28 drift sync). Iter 26a Finset transport (Part VIII.31 sigma2_unionFinset_isExistentialUniversalDefinition + Part VIII.32 pi2_intersectionFinset_isUniversalExistentialDefinition, two theorems, zero new imports / zero new helpers) MERGED 2026-05-15T22:58:32Z in PR #19117 — completing the Finset-arity row of the level-2 Σ₂/Π₂ closure grid. Parent v4.26.0 Mathlib.Algebra.Order.Ring.Lemmas import regression CLEARED by mechanic 4-kit PR #19137 (MERGED 2026-05-15T22:57:42Z, replaces with Ring.Basic at line 77) — entire iter 22-26 build-pending chain retroactively builds at Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0, unchanged). Meta.json gallery lineCount 2652 → 3082 synced via PR #19344 (MERGED 2026-05-16T01:08:47Z). S27 STATE-SYNC absorbed the drain wave into currentState in PR #19379 (MERGED 2026-05-15T20:53 PT). Sole prior CONFLICTING stack PR #17602 (iter 19) now CLOSED — slug has zero open PRs. S28 STATE-SYNC (this PR, doc-only) absorbs four residual drift items left by S27: (i) .knowledge.progressSummary / .knowledge.nextSteps were not refreshed to iter 27 frame; (ii) leanFiles[3] for Hilbert10OQ01OQ02.lean had stale counts (lineCount 1260, theoremCount 54, defCount 12 — vs actual 3082 / 85 / 15); (iii) src/data/proofs/hilbert-10-oq-01-oq-02/meta.json still referenced the dropped Mathlib.Algebra.Order.Ring.Lemmas barrel in leanFile.imports[] and mathlibDependencies[mul_self_nonneg].module + had definitionCount 16 (actual 15); (iv) state.md §'Open PR hygiene' still described #17602 as the sole OPEN PR. File totals at base SHA cf1cfa085e4: 3082 lines, 85 public theorems + 6 private (91 total), 8 public defs + 7 private (15 total), 1 axiom (koenigsmann_2016_universal, Π₂(ℤ) Annals 2016, irreducible), 0 sorries. Level-2 Σ₂/Π₂ closure grid complete at the four established cells (binary × list × Finset, ∪/∩). Iter 27 next picker's slot inherits ACT-readiness gate 10/10 GREEN (see S27 sessions memo §5).",
     "builtItems": [
       "Proofs/Hilbert10OQ01OQ02.lean: file scaffolded with imports from Hilbert10OQ01 (lines 1-69)",
       "Proofs/Hilbert10OQ01OQ02.lean: abbrev RatSubset := Rat → Prop (line 71)",
@@ -141,12 +141,13 @@
       "Mathlib has sub_eq_zero, mul_eq_zero, and Rat field arithmetic — so Path B for arbitrary singletons + finite-union closure is fully buildable. The OPEN content is the COUNTABLE union (uniform vs non-uniform witness for ℤ ⊂ ℚ Σ₁-definability), which is precisely the open Σ₁ question and not a Mathlib gap"
     ],
     "nextSteps": [
-      "S10.1 (Path B): Π₁ ⊆ Π₂ via the polynomial-inversion trick a ≠ 0 ⟺ ∃ z, a·z = 1 — completes the four-corner inclusion picture (Σ₁ ⊆ Π₂, Π₁ ⊆ Σ₂, Π₁ ⊆ Π₂). Needs Rat field arithmetic (mul_inv, mul_inv_cancel from Mathlib).",
-      "S10.2 (Path B): Σ₁ closure under finite INTERSECTION via sum-of-squares witness P(q, x, y) = P₁(q, x)² + P₂(q, y)². Needs (a² + b² = 0 ↔ a = 0 ∧ b = 0) over an ordered field, plus a packing-trick to use disjoint variable indices for x and y (since the SAME variable assignment block won't work for intersection).",
-      "S10.3 (Path B): finUnion_singletons_isDiophantineDefinition — by induction on a finite list of rationals (extending S9's binary pair), every FINITE subset of ℚ is Σ₁-definable. Makes precise the boundary of what S8+S9 reach: every finite subset is Σ₁; the OPEN Σ₁ question for ℤ ⊂ ℚ is whether COUNTABLE union extends.",
-      "S10.4: Daans 2021 (10-quantifier reduction) as a separate axiom refining koenigsmann_2016_universal — would add 1 new axiom but improve quantitative content.",
-      "S10.5: Eisenträger-Park 2018 universal-existential characterization for global fields — sibling-of-sibling formalization track.",
-      "Eventually: formalize the explicit Koenigsmann polynomial in Lean to discharge `koenigsmann_2016_universal` — requires Hilbert-symbol/quaternion infrastructure (partial in Hilbert11_QuadraticForms.lean)."
+      "Iter 27a (high leverage, high risk; multi-cycle ACT budget): Σ₂(ℤ) attack via Koenigsmann lift + complement-collapse against the named OPEN level-2 Prop `IntegersAreExistentialUniversalOverQ` (Part VIII.27 line 2317). Strategy: produce a Σ₂ definition of ℤ ⊂ ℚ from Koenigsmann's Π₂ definition by exploiting the Σ₂ ∩ Π₂ = Δ₂ collapse + iter 26a's Finset closures over Koenigsmann's atomic universal blocks. Recommended sub-step: first nail the Σ₂/Π₂ symmetric duality on a non-trivial fragment (e.g., the rational-square cone) before attacking the full ℤ case. Failure mode overwhelmingly likely (this is the genuine open problem); success would be a level-2 refinement of Koenigsmann's Annals 2016 result.",
+      "Iter 27e (low leverage, low risk; ~30-60 LOC mechanical ladder rung): symmetric level-2 dualities on universe / empty set + class-congruence sharpening via iter 5's `existentialUniversal_iff_universalExistential_complement` (Part VIII.5, line 343) and `universalExistentialDefinition_iff_of_pred_iff`. The four trivial-set facts (empty_isUniversalExistentialDefinition / universe_isUniversalExistentialDefinition / empty_isExistentialUniversalDefinition / universe_isExistentialUniversalDefinition) at Part VIII.6 lines 591-629 currently expose only one direction of the duality; bidirectional iff forms and a tightened class-congruence lemma at the trivial-set level would be the mechanical filler. Suitable when picker wants a low-risk shipment without engaging the open question.",
+      "Iter 27 ACT-readiness gate: 10/10 GREEN at base SHA cf1cfa085e4 (post-S28 sync); Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0) unchanged; 18-bearer drift recheck = 0 events since Session 26 (2026-05-15T01:29Z), re-verified in S27 sessions memo §2. Zero open PRs on slug. Sole previous CONFLICTING stack PR #17602 (iter 19) now CLOSED.",
+      "Anti-candidate: iter 27b (four un-closed level-2 cells Σ₂ ¬, Π₂ ¬, Σ₂ \\ Π₂, Π₂ \\ Σ₂) — closure of any of these would either collapse Σ₂ = Π₂ at level 2 (settling the slug's central open question) or settle the level-2 separation; not viable without new axioms; anti-axiom-policy DEFERRED.",
+      "Anti-candidate: iter 27c (close stale CONFLICTING stack PRs) — superseded by S28 STATE-SYNC: #17602 + #17552 + #18997 all already CLOSED on origin/main.",
+      "Anti-candidate: iter 27d (Daans 2021 10-quantifier reduction as a refinement axiom of koenigsmann_2016_universal) — anti-axiom-policy DEFERRED; would add 1 new axiom for a quantitative improvement only.",
+      "Long-term: formalize the explicit Koenigsmann 2016 polynomial in Lean to discharge the `koenigsmann_2016_universal` axiom — requires Hilbert-symbol / quaternion infrastructure (partial in Hilbert11_QuadraticForms.lean). Multi-month research effort; the only path to converting the slug from `axiomatized` to `verified` status."
     ]
   },
   "tags": [
@@ -191,7 +192,7 @@
     ]
   },
   "started": "2026-05-05T02:57:43.927Z",
-  "lastUpdate": "2026-05-16T02:30:00Z",
+  "lastUpdate": "2026-05-16T03:30:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -231,10 +232,10 @@
     {
       "path": "Proofs/Hilbert10OQ01OQ02.lean",
       "filename": "Hilbert10OQ01OQ02.lean",
-      "lineCount": 1260,
-      "theoremCount": 54,
+      "lineCount": 3082,
+      "theoremCount": 85,
       "axiomCount": 1,
-      "defCount": 12,
+      "defCount": 15,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10OQ01OQ02.lean"
