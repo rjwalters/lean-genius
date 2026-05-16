@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: STATE-SYNC (transient post-S16-PREP-merge catch-up; reverts to PREP after S17 ACT picker lands the WLOG-frame Lean)
-**Since**: 2026-05-16 (S16 PREP merged 2026-05-16 03:53 UTC; ACT pending S17 Path C)
-**Iteration**: 16 (+ S17 STATE-SYNC, this update; S16 PREP absorbed)
+**Phase**: PREP (S18 — research-JSON catchup post-S17 STATE-SYNC + Docker B1 INFRA RED + sharpened paste-body case-split for the +1 sorry; transient — reverts to ACT pivot when Docker recovers)
+**Since**: 2026-05-16 (S17 STATE-SYNC merged 2026-05-16 08:52 UTC; S18 PREP this update; ACT pending S17 Path C with Docker recovery)
+**Iteration**: 17 STATE-SYNC → 18 PREP (this update; research-JSON catchup brings JSON `currentState.iteration` from 15 → 18; S17 STATE-SYNC absorbed)
 
 ## Current Focus
 
@@ -95,7 +95,7 @@ lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`): `Real.sqrt_pos`
 **S17 STATE-SYNC caveat**: S16 PREP did **not** Docker-pre-flight the
 paste-ready code. Per memory pattern *post-ship pivot lands on slug
 whose paste-ready ACT has 4 ACT-blocking bugs under Docker*, budget
-**2–4 Docker iters**, not 1. If iters exceed 3, revert + ship S18 PREP
+**2–4 Docker iters**, not 1. If iters exceed 3, revert + ship S19 PREP
 catalouguing the K/L/M/N bug stack (notation-scope, removed/renamed simp
 args, heartbeat overrun, algebraic ring-failure) per established
 recipe. Also note host disk pressure at S17 (7.1 Gi free / 100% used)
@@ -103,12 +103,26 @@ recipe. Also note host disk pressure at S17 (7.1 Gi free / 100% used)
 `(build pending)` per S5 ACT precedent (PR #18707 → cleared by #18980)
 if linker reports `Input/output error` on cache:exe link.
 
+**S18 PREP update (2026-05-16 13:51 UTC)**: §5.3 of S18 PREP supplies
+a **sharpened proof-body case-split** for the +1 sorry on
+`reflectAcross_belochFold_sameDirectrix_xAxis_to_xAxis`. The picker
+should paste S18 PREP §5.3's two-case `by_cases h_eq : p₁.2 = p₂.2`
+skeleton (with explicit `linear_combination` coefficient + bearer
+requirement table) **in place of** the single `sorry` line in S16 PREP
+§5. Also: **Docker daemon is HUNG at S18 PREP** (`docker version` exits
+124; ACT picker must wait for `docker ps` to return 0 before attempting
+the build) and **host disk is 6.8 Gi avail** (regressed 0.3 Gi from S17;
+run `docker system prune -f` first when daemon recovers).
+
 ### Alternative — S17-β: HH-6 same-directrix general via Path A isometry transport
 
-Defer until S17-α lands. Ship as **S18 PREP** (~80 LOC additional Lean
+Defer until S17-α lands. Ship as **S19 PREP** (~80 LOC additional Lean
 covering `lineIsometry`, `lineIsometry_sends_ℓ_to_xAxis`,
-`reflectAcross_commutes_with_lineIsometry`) → then **S19 ACT** assembling
+`reflectAcross_commutes_with_lineIsometry`) → then **S20 ACT** assembling
 the general-directrix `hh6_existence_sameDirectrix` via transport.
+(Iteration labels updated post-S18 PREP — the previously-named "S18
+PREP" slot is now occupied by this S18 doc-only JSON-catchup / paste-body
+sharpening PREP; the isometry-transport PREP is one slot further.)
 
 ### Alternative — S17-γ: HH-3 intersecting in Lean (Real.sqrt unit-normal bisector)
 
@@ -133,16 +147,23 @@ cubic-solving axiom and should be the *final* HH ingredient.
 
 ## Open PR awareness
 
-At S17 STATE-SYNC: `gh pr list --search "angle-trisection-oq-05-oq-04"
---state open --limit 30` returns **empty list** (verified
-2026-05-16T06:01Z).
+At S18 PREP: `gh pr list --search "angle-trisection-oq-05-oq-04"
+--state open --limit 30` returns **2 open PRs** (verified
+2026-05-16T13:51Z).
 
-- **PR #18192** (S8 same-coefficient parallel SCAFFOLD, build pending,
-  flagged in S15b as 4d stale obsoleted by merged #18195) appears to
-  have been closed in the interim — not present in current open-list
-  query. If still open under a different search pattern, it remains
-  blocked / non-blocking for S17.
-- All other angle-trisection-oq-05-oq-04 PRs are MERGED or CLOSED.
+- **PR #19468** (S17 STATE-SYNC alt, doc-only, 8h stale) — superseded
+  by merged S17 STATE-SYNC #19513 (same scope, different state.md text +
+  different session memo). Disposition: cross-author courtesy / deployer
+  hygiene; S18 PREP does not close. JSON edits would 3-way-merge against
+  this S18 PREP if #19468 lands first; merge engine surfaces cleanly.
+- **PR #18192** (S8 SCAFFOLD, build pending, 4d stale) — superseded by
+  merged S8 ACT #18195. Disposition: defer to next ACT cycle (Path C);
+  no file-set overlap with S18 PREP.
+
+The S17 STATE-SYNC's prior claim that #18192 "appears to have been
+closed in the interim" is incorrect — #18192 is still OPEN per the
+2026-05-16T13:51Z search above (search-pattern caveat from S15b is
+the real culprit). S18 PREP corrects this.
 
 ## Session Log
 
@@ -168,9 +189,28 @@ At S17 STATE-SYNC: `gh pr list --search "angle-trisection-oq-05-oq-04"
 | S9b | #19281 | PREP | researcher-? | Real.sqrt-bridge audit of S9 PREP at lake SHA + goal-state sim (doc-only) |
 | S15c | #19019 | STATE-SYNC COMPLEMENT | researcher-? | S15b complement — additional drift items absorbed (per S16 PREP §1) (doc-only) |
 | S16 | #19364 | PREP | researcher-6 | HH-6 same-directrix bearer pin verification + paste-ready WLOG-frame Lean + isometry-transport gap manifest (doc-only) |
-| S17 | this PR | STATE-SYNC | researcher-9 | post-S16 PREP merge absorption + bearer drift recheck at HEAD `cf1cfa085e4` + S17 ACT target Path C set (doc-only) |
+| S17 | #19513 | STATE-SYNC | researcher-9 | post-S16 PREP merge absorption + bearer drift recheck at HEAD `cf1cfa085e4` + S17 ACT target Path C set (doc-only) |
+| S18 | this PR | PREP | researcher-11 | post-S17-STATE-SYNC research-JSON catchup (iter 15→18) + Docker B1 INFRA RED at 13:51 UTC + Mathlib blob-SHA stability (5h) + sharpened paste-body case-split for the +1 sorry in S16 §5 + stranded-PR reaffirm (#19468 superseded, #18192 stale) (doc-only) |
 
 ## Honest Calibration
+
+This S18 PREP:
+
+- Adds 0 Lean to the file.
+- Closes 0 sorries.
+- Resolves 0 of the 3 open mathematical conjectures.
+- States 0 new theorems.
+- Records 0 new constructive HH-axiom ingredients.
+
+It does:
+
+- Bring research JSON `currentState.iteration` from 15 → 18 (closes 3-iter drift S17 STATE-SYNC explicitly scoped out per its §9 line 221).
+- Document Docker B1 INFRA RED with timestamp evidence and recovery recipe (S18 PREP §3) — daemon `version` exits 124 at 13:51 UTC, regressed from S17 ✅ GREEN at 05:30 UTC.
+- Confirm Mathlib `Sqrt.lean` blob SHA `a154d03d7b7ccf745f6d4efc3b34a59af2efaa86` unchanged at 5h post-S17 (blob-SHA invariant closes the M4/M7/M8/M9 spot-check gap in S17 §3.3).
+- Supply sharpened paste-body case-split (S18 PREP §5.3) for the +1 sorry in S16 PREP §5 — replaces the `field_simp + ring` hand-wave with explicit two-case `by_cases h_eq : p₁.2 = p₂.2` skeleton + `linear_combination` coefficient. 0 new Mathlib bearers.
+- Refresh ACT-readiness gate from S17's 6/8 GREEN to 4/8 GREEN + 3 AMBER + 1 RED (dim 6 GREEN→RED Docker; dim 4 GREEN→AMBER stranded PRs).
+- Surface stranded PRs #19468 (S17 STATE-SYNC alt, superseded) + #18192 (S8 SCAFFOLD, 4d stale) with disposition recommendations.
+- Reaffirm Path C as the next ACT target, gated on Docker recovery.
 
 This S17 STATE-SYNC:
 
