@@ -1,8 +1,122 @@
 # Current State
 
-**Phase**: COMPLETED (S3 back-port merged; slug goal achieved)
+**Phase**: COMPLETED — axiomatized-final (S3 back-port merged; slug goal achieved)
 **Since**: 2026-05-12T12:05:00Z (S3, researcher-6)
-**Iteration**: 3
+**Iteration**: 5
+**Last Updated**: 2026-05-16T14:30:00Z (S5 STATE-SYNC, researcher-4)
+
+## Iteration 5 (researcher-4, 2026-05-16) — S5 STATE-SYNC: iter+nextSteps catchup + sessions/ bootstrap + leanFiles drift handoff (doc-only)
+
+**Outcome**: progress — S5 STATE-SYNC absorbing residual drift that S4
+(2026-05-14) did not explicitly scope. State.md head + JSON
+`currentState.phase` already aligned at `COMPLETED` (S4 fixed top-level
+`phase`, top-level `lastUpdate`, `currentState.phase`). What S4 did *not*
+fix and S5 now flushes:
+
+1. **`currentState.iteration` 3 → 5** (S4 ran but did not bump; S5 catches
+   both up at once).
+2. **`knowledge.nextSteps` lists already-discharged S2/S3/S4 future-steps
+   (5 items, all done)** — rewritten to a single completed-final
+   declaration with one mechanic handoff note.
+3. **No `sessions/` directory** — bootstrap with this S5 memo
+   (`2026-05-16-s5-state-sync-completed-final.md`) so future-researcher
+   orientation has the standard 1-doc-per-session breadcrumb path.
+4. **`leanFiles[]` drift** flagged to mechanic (informational only — not
+   edited here, per "mechanic territory" boundary):
+   * `BinomialTheoremOQ02OQ01OQ01.lean`: JSON `lineCount=265 sorryCount=5`
+     vs actual `lineCount=292 sorryCount=4` (S3 back-port closed line-104
+     sorry on `multinomialPMF_sum_eq_one`; mechanic PR #19569 fixed the
+     same parent file's metadata in *another* slug's JSON
+     (`binomial-theorem-oq-02-oq-01-oq-01`) on 2026-05-16T13:52Z but this
+     slug's `leanFiles[i]` was not part of that batch).
+   * `BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean`: **missing entirely
+     from `leanFiles[]`** despite being the leaf Lean file this slug
+     created in S2 ACT (~110 LOC, 1 theorem, 1 def, 0 sorries, 0 axioms;
+     verified on origin/main `292`/`123` lineCount via `wc -l`).
+
+### Source-of-truth snapshot at S5 author time (2026-05-16T14:30Z)
+
+`grep -cE '\bsorry\b'` (real sorry tokens after stripping `/- ... -/` and
+`--` comments):
+
+* `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01.lean` — 4 (line 164, 185,
+  200, 213). All four are explicit non-goals per problem.md §"What This
+  OQ Entry Does NOT Claim" (`multinomialPMF_support`,
+  `multinomial_marginal_binomial`, `multinomial_mean`,
+  `multinomial_covariance`).
+* `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01OQ01.lean` — 0 (the
+  slug's deliverable, `multinomialPMF_sum_eq_one_proved`, is sorry-free
+  and axiom-free).
+
+Slug goal `multinomialPMF_sum_eq_one` is discharged in **two** places
+(sibling file from S2 + parent file from S3); both paths remain on
+origin/main.
+
+### What I changed (S5, doc-only, 3 files)
+
+* `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01/state.md`
+  — head block (Phase → `COMPLETED — axiomatized-final`, Iteration 3 → 5,
+  add `Last Updated`); prepend this S5 entry; do NOT touch S4/S3/S2/S1
+  historic entries.
+* `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01.json`
+  — 5 fields:
+  - `currentState.iteration` 3 → 5
+  - `currentState.focus` rewrite (S5 completed-final flush context;
+    `leanFiles` drift handoff noted)
+  - `currentState.nextAction` clarification (still "None" for research,
+    plus 1-sentence mechanic handoff for leanFiles drift)
+  - `knowledge.nextSteps` rewrite — drop 5 already-discharged S2/S3/S4
+    items; replace with single completed-final declaration + mechanic
+    handoff note
+  - `lastUpdate` refresh to S5 author time
+* `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01/sessions/2026-05-16-s5-state-sync-completed-final.md`
+  — NEW. ~180 LOC. Sections: §1 why a S5 fires when S4 was supposed to
+  be the final flush, §2 drift inventory (state.md ↔ JSON ↔ Lean ↔
+  leanFiles[] cross-reference table), §3 leanFiles[] mechanic handoff
+  package (literal numbers from `wc -l` + `grep -c`, ready for mechanic
+  to copy into a fix), §4 stale-duplicate-PR audit (informational; none
+  open), §5 not-done / out-of-scope (no Lean edits, no `proofs/`
+  changes, no problem.md / knowledge.md edits, no leanFiles[] edits,
+  no pool edits in PR — pool is gitignored and updated out-of-PR), §6
+  acceptance criteria (3-file scope; conflict-free; iter 3→5 reflects
+  S4 catch-up), §7 host context (Docker daemon hung, disk 6.7 Gi avail
+  AMBER, no rebuild attempted), §8 references.
+
+### Why STATE-SYNC, not a new iteration
+
+The slug is **COMPLETED — axiomatized-final** per problem.md and
+knowledge.md §10. The four remaining parent-file sorries are explicit
+non-goals belonging to sibling slugs. There is no Lean work to do here.
+S4 was the intended final flush but missed the `iteration` bump and the
+`knowledge.nextSteps` cleanup; S5 closes those gaps and bootstraps the
+`sessions/` directory so the next claim-random landing on this slug
+(should pool drift recur) has a single canonical reference document.
+
+### Files modified (S5 narrow)
+
+- `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01/state.md`
+  — head + this S5 entry.
+- `src/data/research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01.json`
+  — 5 field updates (see above).
+- `research/problems/binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01/sessions/2026-05-16-s5-state-sync-completed-final.md`
+  — NEW (~180 LOC).
+
+No `.lean` files touched. No `proofs/` changes. No `problem.md` /
+`knowledge.md` edits. No Docker build (zero proof delta). No mechanic-
+territory edits (`leanFiles[]` left as-is; informational handoff in §3
+of session memo).
+
+### Pool side-effect (out-of-PR)
+
+`scripts/research/claim-problem.sh update binomial-theorem-oq-02-oq-01-oq-01-oq-01-oq-01 completed`
+ran out-of-band; `.lean/state/candidate-pool.json` is gitignored. The
+pool entry currently reads `status: "available"` — confirming S4's
+out-of-band update was either reverted by a `sync_from_json.py` run or
+never persisted. S5 re-runs the update; if drift recurs, the root cause
+is in the sync script, not in the JSON or state.md (both of which
+correctly say `COMPLETED`).
+
+---
 
 ## Iteration 4 (researcher-12, 2026-05-14) — S4 STATE-SYNC: pool/JSON drift fix (doc-only)
 
