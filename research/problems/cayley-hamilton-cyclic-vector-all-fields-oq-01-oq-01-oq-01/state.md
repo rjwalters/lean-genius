@@ -1,10 +1,101 @@
 # Current State
 
-**Phase**: ACT (S2 — backward direction `cyclic ⇒ nonderogatory` over `[CommRing R] [Nontrivial R]`, build pending)
-**Since**: 2026-05-16T01:15:00Z
-**Iteration**: 3 (S1 OBSERVE + S2 PREP + S2 ACT)
+**Phase**: ACT (S2 backward over `[CommRing R] [Nontrivial R]` SHIPPED build-verified; S3 ACT Approach B `ZMod 4` counterexample next)
+**Since**: 2026-05-16T04:10:00Z (S3 STATE-SYNC bumps post S2 ACT merge)
+**Iteration**: 4 (S1 OBSERVE + S2 PREP + S2 ACT + S3 STATE-SYNC)
 
-## Latest Iteration: S2 ACT (researcher-3, 2026-05-16T01:15Z)
+## Latest Iteration: S3 STATE-SYNC (researcher-8, 2026-05-16T04:10Z)
+
+Doc-only post-S2-ACT-merge catch-up. **PR #19362** (S2 ACT, researcher-3, MERGED
+2026-05-16T03:53:45Z, ~16 min before this STATE-SYNC) shipped the first Lean
+delta on this slug: new file
+`proofs/Proofs/CayleyHamiltonCyclicVectorCommRingOQ01.lean` (96 LOC) introducing
+namespace `GeneralCyclicVectorRing` over `[CommRing R] [Nontrivial R]` and
+proving `cyclic_implies_nonderogatory_commring` (build verified: 7743 jobs, 0
+sorries, 0 axioms, 0 warnings). Predecessor S2 PREP (PR #19333,
+MERGED 2026-05-16T01:09:19Z) had two bearer-audit typeclass errors which S2 ACT
+caught and bypassed via `Polynomial.minpoly.unique'` (`Basic.lean:139`,
+`[CommRing A]` section).
+
+**S3 STATE-SYNC scope** (3 files, doc-only):
+
+1. This state.md (head replaced; S2 ACT and prior blocks preserved verbatim).
+2. `src/data/research/problems/<slug>.json` (iteration 3 → 4; `lastUpdate` bumped;
+   `currentState.since` refreshed; `leanFiles[]` appended with the new
+   `CayleyHamiltonCyclicVectorCommRingOQ01.lean` entry; `knowledge.progressSummary`
+   appended; `knowledge.insights` prepended with the STATE-SYNC bookkeeping
+   insight).
+3. `sessions/2026-05-16-s3-statesync-post-s2-act-merge.md` (~430 LOC, this
+   STATE-SYNC's session memo with §1 7-bearer drift recheck, §3 S3 ACT
+   readiness gate 7/7 GREEN, §3.1 paste-ready Lean skeleton for the ZMod 4
+   counterexample, §3.2 5-9-bearer manifest, §5 sibling-PR ledger).
+
+### 7-bearer drift recheck — 0 substantive drifts
+
+Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) **unchanged**
+since S1 OBSERVE; all 7 bearers in `CayleyHamiltonCyclicVectorCommRingOQ01.lean`
+module docstring (L19-33) re-verified by `gh api …?ref=<SHA>` content fetch:
+
+| # | Bearer                            | File / L                           | Typeclass at SHA            | Drift |
+|---|-----------------------------------|------------------------------------|-----------------------------|-------|
+| 1 | `Polynomial.minpoly.unique'`      | `FieldTheory/Minpoly/Basic.lean:139` | `[CommRing A]` (file L42)   | 0 |
+| 2 | `Polynomial.minpoly.monic`        | `FieldTheory/Minpoly/Basic.lean:54`  | `[CommRing A]` (file L42)   | 0 |
+| 3 | `Polynomial.natDegree_lt_natDegree` | `Algebra/Polynomial/Degree/Operations.lean:73` | `[Semiring]` (general) | 0 |
+| 4 | `Matrix.charpoly_natDegree_eq_dim`  | `LinearAlgebra/Matrix/Charpoly/Coeff.lean:113` | `[CommRing R] [Nontrivial R]` | 0 |
+| 5 | `Matrix.charpoly_monic`             | `LinearAlgebra/Matrix/Charpoly/Coeff.lean:117` | `[CommRing R]` (internal `nontriviality`) | 0 |
+| 6 | `Matrix.aeval_self_charpoly`        | `LinearAlgebra/Matrix/Charpoly/Basic.lean:211` (refined from "no line" in docstring) | `[CommRing R]` (file L40) | 0 substantive (line refinement) |
+| 7 | `Matrix.zero_mulVec`                | `Data/Matrix/Mul.lean:729`           | `@[simp]` (general; `[Fintype n]`) | 0 |
+
+**Net: 7/7 green; 0 substantive drifts.** The optional `aeval_self_charpoly` line
+pin (`Basic.lean` → `Basic.lean:211`) is deferred to S3 ACT if and only if the
+S3 ACT happens to touch the parent module docstring; otherwise leave it alone
+(one-character refinement does not justify an isolated Lean file edit).
+
+### S3 ACT readiness gate — 7/7 GREEN
+
+| # | Item | Status | Evidence |
+|---|------|--------|----------|
+| 1 | Mathlib pin unchanged | GREEN | `lake-manifest.json` rev `2df2f0150c…` re-verified |
+| 2 | S2 ACT namespace importable | GREEN | `import Proofs.CayleyHamiltonCyclicVectorCommRingOQ01` |
+| 3 | `IsCyclicVector` API stable | GREEN | S2 ACT L56-57 |
+| 4 | No open peer PRs | GREEN | `gh pr list --search "<slug>" --state open` = `[]` |
+| 5 | Counterexample math worked out | GREEN | state.md L121-141 + knowledge.md |
+| 6 | No `meta.json` edits needed | GREEN | No gallery entry at `src/data/proofs/<slug>/` |
+| 7 | No pre-existing Lean file edits | GREEN | S3 ACT = one new file `…ZMod4Counterexample.lean` |
+
+### Next ACT picker priority
+
+**TOP**: S3 ACT (Approach B — `ZMod 4` counterexample formalisation,
+mechanic-grade). New file
+`proofs/Proofs/CayleyHamiltonCyclicVectorZMod4Counterexample.lean` (~40-60 LOC),
+three theorems: `charpoly_eq_X_sq`, `minpoly_eq_X_sq`, `no_cyclic_vector`
+(reuses `IsCyclicVector` from S2 ACT's namespace). 0 new sorries/axioms target;
+~5-9 new bearer pins required (see sessions §3.2 candidate list). Estimated
+single PR, ~3-5 min Docker (warm cache). After S3 ACT lands, the OQ is settled
+**negatively** over non-domains: `IsNonderogatory M ∧ ¬ ∃ v, IsCyclicVector M v`
+witnessed concretely at `M = !![0, 2; 0, 0] : Matrix (Fin 2) (Fin 2) (ZMod 4)`.
+
+**SECOND**: S4 PREP (Approach C — optional UFD/IsDomain forward extension,
+doc-only scoping). Higher risk (~150-300 LOC); defer until S3 ships.
+
+### Files touched (3 — doc-only)
+
+1. `research/problems/<slug>/state.md` (head replaced; S2 ACT block's "build
+   pending" closeout amended to "build verified, 7743 jobs"; rest preserved).
+2. `src/data/research/problems/<slug>.json` (`currentState.{iteration,since,focus}`,
+   `lastUpdate`, `leanFiles[]` append, `knowledge.{progressSummary,insights}`).
+3. `research/problems/<slug>/sessions/2026-05-16-s3-statesync-post-s2-act-merge.md` (new).
+
+### Honesty footprint
+
+- 0 new Lean theorems
+- 0 new sorries
+- 0 axiom changes
+- 0 Lean files modified
+- 0 `meta.json` edits (no gallery entry)
+- 0 build runs (S2 ACT's build verification was 7743 jobs PASS / 0 warnings at v2)
+
+## Previous Iteration: S2 ACT (researcher-3, 2026-05-16T01:15Z)
 
 Substantive Lean PR — first Lean delta on this slug. Created
 `proofs/Proofs/CayleyHamiltonCyclicVectorCommRingOQ01.lean` (~95 LOC
@@ -68,8 +159,8 @@ sessions/2026-05-16-s2-act-cyclic-implies-nonderogatory-commring.md
 - 0 new sorries.
 - 0 new axioms.
 - 1 new Lean file; 0 edits to any existing Lean file.
-- Build verification: see §4 of session note (in flight at PR-create
-  time; this state will be amended on completion).
+- Build verification (per S2 ACT memo §4 — v2): 7743 jobs PASS, 0 sorries,
+  0 axioms, 0 warnings, ~90s wall (warm cache). Amended in S3 STATE-SYNC.
 
 ## Previous Iteration: S2 PREP (researcher-1, 2026-05-16)
 
