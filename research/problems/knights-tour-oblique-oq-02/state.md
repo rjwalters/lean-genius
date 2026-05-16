@@ -1,10 +1,75 @@
 # Current State
 
-**Phase**: BLOCKED (parent file `KnightsTourOblique.lean` regression on origin/main)
-**Since**: 2026-05-14T03:30:00Z
-**Last Updated**: 2026-05-14 (Iteration 5, researcher-12)
-**Iteration**: 5
-**Blocker handoff**: mechanic (Mathlib v4.26.0 drift + duplicate decl in parent)
+**Phase**: ACT (S4 mod-8 divisibility plan staged; parent UNBLOCKED post-mechanic-#19059; build-verify deferred to S7 when Docker recovers)
+**Since**: 2026-05-16T10:35:00Z
+**Last Updated**: 2026-05-16 (Iteration 6 S6 STATE-SYNC, researcher-4)
+**Iteration**: 6
+
+> _Phase note: this skill maps "S6 STATE-SYNC" to canonical "ORIENT" sub-iteration of an ongoing ACT phase. Previous BLOCKED status from Iteration 5 (S5 STATE-SYNC) is RESOLVED by mechanic PR #19059 (merged 2026-05-14 post-#19027)._
+
+## Iteration 6 (researcher-4, 2026-05-16) — S6 STATE-SYNC, post-mechanic-#19059 UNBLOCKED + S4 PREP stale-blocker-assertion correction
+
+This S6 STATE-SYNC absorbs mechanic PR #19059 (merged 2026-05-14 post-#19027) into state.md head and corrects the stale "parent broken" assertion in S4 PREP (PR #19277) that propagated despite the resolution.
+
+### PR timeline & blocker resolution
+
+| PR | Type | Date | Effect |
+|----|------|------|--------|
+| #18176 | research ACT (S3) | 2026-05-13 | D4 framework + level-set invariance shipped in `KnightsTourObliqueOQ02.lean` |
+| #19027 | research STATE-SYNC (S5) | 2026-05-14 | Declared BLOCKED on parent regression; mechanic handoff |
+| **#19059** | **mechanic fix Tier 1+2** | **2026-05-14 post-#19027** | **RESOLVED parent regression** (7 deprecations + 1 dup); **UNBLOCKED OQ02** |
+| #19228 | research PREP (S3.5b) | 2026-05-15 | Mechanic-kit enrichment + S4 API audit (deployer-stall coordination); state.md head NOT refreshed |
+| #19277 | research PREP (S4) | 2026-05-15 | Goal-state simulation of mod-8 orbit-decomposition plan; **claimed "parent still broken"** (STALE — un-rechecked post-#19059); state.md head NOT refreshed |
+| #19574 (OPEN) | mechanic meta sync | 2026-05-16 | `fix(meta): knights-tour-oblique lineCount/theoremCount/definitionCount sync` for PARENT slug; no conflict surface for OQ02 |
+| **THIS S6** | **research STATE-SYNC** | **2026-05-16** | **state.md head refresh: BLOCKED → ACT; S4 PREP correction; ACT-readiness gate refresh** |
+
+### Live parent verification (this S6, 2026-05-16T10:30Z)
+
+Parent `proofs/Proofs/KnightsTourOblique.lean` on origin/main:
+- LOC: 2463 (sync pending in OPEN PR #19574; not a build issue)
+- Sorries: 0
+- Axioms: 1 (intentional `knuth_unique_four_oblique` at line 2352; matches `meta.status = "axiomatized"`)
+- Structural integrity: clean
+- Mechanic fix #19059 applied: ✓ (commit `a25b4768565` on main)
+
+**Parent file is healthy** post-#19059. The S4 PREP (#19277) assertion "Parent is still broken on origin/main (4-iter precedent)" is **stale** — derived from S5 STATE-SYNC's pre-mechanic snapshot rather than from a live verification.
+
+OQ02 slug file `proofs/Proofs/KnightsTourObliqueOQ02.lean`: 340 LOC, 0 sorries, 0 axioms (verified at S3 ACT close; no upstream change since).
+
+### Refreshed S4 ACT readiness gate
+
+| Item | Status |
+|------|--------|
+| Parent file healthy on origin/main | ✓ **NEW** (was ✗ at S5; resolved by #19059) |
+| OQ02 slug file builds clean at HEAD | ✓ |
+| S4 PREP §1 mod-8 divisibility plan articulated | ✓ (PR #19277) |
+| Bearer pins (`MulAction`, `Subgroup.card_eq_index_mul_card_subgroup`, `Fintype.card_orbit_eq_index_stabilizer`) at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` | ✓ (S4 PREP §2+§3) |
+| Self-symmetric tour exception lemma sketched | ⚠ (S4 PREP §4; expected 1 acknowledged sorry on the exception set for S5 follow-up) |
+| Docker daemon responsive | ✗ (hung this S6 cycle; BUILD-VERIFY DEFERRED to S7) |
+| Host disk ≥ 5 Gi avail | ⚠ (6.9 Gi avail / 100% capacity; barely above floor) |
+
+**Gate**: **YELLOW** (was RED-with-stale-BLOCKED at S5). Two ⚠ items + one ✗ (infra-only). When Docker recovers, S4 ACT picker can paste the S4 PREP §1 mod-8 divisibility skeleton.
+
+### Counts (post-S6, unchanged from S3 ACT because doc-only)
+
+| Metric | Value |
+|--------|------:|
+| OQ02 slug LOC | 340 (unchanged) |
+| OQ02 sorries | 0 |
+| OQ02 axioms | 0 |
+| OQ02 theorem count | 8 (per S3 ACT close) |
+| Parent LOC | 2463 |
+| Parent sorries | 0 |
+| Parent axioms | 1 (intentional, axiomatized status) |
+| Build | OQ02 verified clean at S3 ACT close; parent verified clean post-#19059 mechanic-fix landing |
+
+**Axiom delta this session**: 0 (documentation-only).
+
+**Files changed**: this state.md (+ ~80 LOC near top); 1 new sessions/ note (~210 LOC). 0 Lean file edits. 0 meta.json edits.
+
+**Next action**: S5 ACT (orbit-stabilizer mod-8 divisibility per S4 PREP §1) — when Docker recovers, follow the S4 PREP §5 step list with the documented bearer chain. Expected LOC: ~150-200; expected 1 sorry on the self-symmetric exception set.
+
+Session note: `sessions/2026-05-16-s6-statesync-post-mechanic-unblock.md`.
 
 ## Iteration 2 (researcher-8, 2026-05-12) — S2 ORIENT / ACT
 
