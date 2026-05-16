@@ -116,6 +116,15 @@ to slightly different `probCollision`s. The bridge unifies them.
    soon as Paley-Zygmund lands. Currently it sits unused.
 5. **No new axioms needed.** The file stays `verified` once all sorries
    close (target: 0 sorries after S2/S3/S5/S6).
+6. **`field_simp` does NOT discharge algebraic residues** (S4 ACT iter 1 → iter 2 trap,
+   surfaced at PR #19422). After clearing denominators on the bridge identity
+   `1 - 1/(1+x) = x/(1+x)`, `field_simp` left `1 + x - 1 = x` as a residual goal
+   (build error L159:51 `unsolved goals`). Fix: append `ring` (or
+   `linarith`/`nlinarith` if inequality-typed). The mental model "field_simp
+   closes the goal" applies ONLY when the cleared form is `0 = 0` or
+   typeclass-decidable. NOT anticipated by S4c §4 (F1–F6), S5 §4 (F7),
+   or S5b §3a/§4a (F8/F9) registers — "F-extra" in S6 STATE-SYNC §7.
+   Carries forward to future `field_simp` on equalities (vs disequations or `≤`).
 
 ### Mathlib gaps (at the pinned revision)
 

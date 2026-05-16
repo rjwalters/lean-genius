@@ -1,10 +1,68 @@
 # Current State
 
-**Phase**: S3 ACT + S4 PREP merged (Path Z scaffold ready, paste-ready against main)
-**Since**: 2026-05-15T23:30:27Z (S3 ACT PR #19098 merged; STATE-SYNC researcher-3)
-**Iteration**: 6
+**Phase**: S4 ACT merged (probCollision_ge_paley_zygmund + private bridge, build verified 7744 jobs; S6 STATE-SYNC catch-up by researcher-10)
+**Since**: 2026-05-16T04:40:14Z (S4 ACT PR #19422 merged; S6 STATE-SYNC researcher-10)
+**Iteration**: 7
 
-## S5 update (this PR, 2026-05-16, researcher-3, STATE-SYNC post-S3-ACT-merge)
+## S6 update (this PR, 2026-05-16, researcher-10, STATE-SYNC absorbing S4 ACT merge)
+
+S4 ACT (PR #19422) merged 2026-05-16T04:40:14Z (merge commit `cbfc0fdd8f1`).
+PR body explicitly stated "a follow-on S6 STATE-SYNC is owed to absorb this
+ACT (state.md `phase` → `S4 ACT merged`; `iteration` 6 → 7; JSON
+`currentState` refresh; bearer table augmented with `Real.exp_neg`'s
+`← one_div` form + `field_simp + ring` trap)." This iteration discharges
+that owed STATE-SYNC.
+
+`proofs/Proofs/BirthdayProblemOQ01OQ02.lean` is now **203 LOC** on main
+(was 143 pre-PR-#19422), **4 theorems** (was 2): `one_sub_prod_le_sum` (S2),
+`probCollision_le_choose_two_div` (S3), `one_sub_exp_neg_ge_div_one_add`
+(S4 private bridge), `probCollision_ge_paley_zygmund` (S4 main).
+0 sorries, 0 axioms.
+
+**Closed-form bracket** on `probCollision k d` now stands:
+
+```
+k(k-1) / (2d + k(k-1))  ≤  probCollision k d  ≤  k(k-1) / (2d)
+```
+
+Both bounds purely intra-namespace (no OQ01 dependency); OQ01's 7
+v4.26.0 regressions owned by separate-slug mechanic pass (catalogue
+unchanged since S4c §5).
+
+This iteration ships:
+
+- state.md head refresh (Phase, Since, Iteration); S4 ACT row appended
+  to Iteration History; Next Action rewritten from "S4 ACT paste-ready"
+  (DONE) to "S5 PREP — tight Paley-Zygmund denominator" target.
+- Research JSON 13-field drift refresh (`phase`, `currentState.{phase,
+  since, iteration, focus, attemptCounts.{total, currentApproach},
+  nextAction}`, `knowledge.{progressSummary, builtItems, insights,
+  nextSteps}`, `lastUpdate`).
+- knowledge.md Insight 6 added: **F-extra trap** — `field_simp` on
+  `1 - 1/(1+x) = x/(1+x)` leaves algebraic residue `1 + x - 1 = x`
+  requiring `ring` to close. Surfaced at S4 ACT iter 1 (PR #19422),
+  fixed at iter 2.
+- Bearer-pin recheck: lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+  unchanged (no Mathlib bump since v4.26.0 2026-05-14). 0 drift in any
+  of the 9 S4c-era bearers or 4 S4-ACT-era bearers.
+- Failure-mode register update: F1–F9 carried forward (F8, F9 pre-pinned
+  by S5b §3a/§4a, fired & fixed at S4 ACT iter 1); **F-extra is new**
+  at S4 ACT iter 1 (not anticipated by S4c/S5/S5b registers).
+- S5 PREP target documented (tight Paley-Zygmund Δ ≈ 0.0003 via exact
+  `E[X²]`, ~120 LOC, MEDIUM risk on Mathlib `Probability.Variance` API
+  surface); S6 PREP target documented (probAllDistinct ↔ descFactorial
+  bridge, ~30 LOC, LOW risk).
+
+Infrastructure (2026-05-16T09:55Z): Docker daemon hung exit 124 + host
+disk 100% / 6.9Gi avail. **Irrelevant** to this doc-only STATE-SYNC.
+
+See `sessions/2026-05-16-s6-state-sync-absorb-s4-act-merge.md` for the
+full drift inventory, F-extra trap analysis, S5/S6 PREP target
+specifications, and ACT-readiness forward-gate.
+
+---
+
+## S5 update (2026-05-16, researcher-3, STATE-SYNC post-S3-ACT-merge)
 
 Post-merge STATE-SYNC catching `state.md` and the website JSON up to the
 post-S3-ACT-merge reality:
@@ -140,38 +198,53 @@ theorem one_sub_prod_le_sum {n : ℕ} (f : ℕ → ℝ)
   build-pending PR so the Auditor or Doctor can verify from a clean
   worktree.
 
-## Next Action (S4 ACT, paste-ready against main)
+## Open PRs
 
-**S4 ACT (next Lean-modifying iteration)**: Paste PR #19250 §4's 25-LOC
-Path Z scaffold (private `one_sub_exp_neg_ge_div_one_add` bridge lemma +
-public `probCollision_ge_paley_zygmund` theorem) into
-`proofs/Proofs/BirthdayProblemOQ01OQ02.lean` BETWEEN L142 (`  exact hbound`,
-last line of `probCollision_le_choose_two_div`) and L143
-(`end BirthdayProblemOQ01OQ02`). Run
-`./proofs/scripts/docker-build.sh Proofs.BirthdayProblemOQ01OQ02`.
-Expected: 0 sorries, ~7745 jobs, ~11–13s warm cache.
+- (this PR — S6 STATE-SYNC) — doc-only catch-up absorbing S4 ACT merge.
+- No competing open PRs on `BirthdayProblemOQ01OQ02.lean`.
 
-**Stacking choice — settled by event**: PR #19098 (S3 ACT) merged at
-2026-05-15T23:30:27Z (merge commit `e44038366d8`), eliminating the Option A
-(overlay-stack) vs Option B (wait-for-merge) dilemma from S4c §4b. **Option
-B selected by event**: write a clean 25-LOC delta against `origin/main`
-HEAD `d35a6f0f` (or current head at paste time; the slug file is stable
-with 0 open PRs).
+## Iteration History (recent)
 
-**Pre-flight readiness gate**: all entry conditions GREEN as of 2026-05-16
-~01:00 UTC — lake SHA unchanged at `2df2f015...`, all 9 bearers byte-stable
-zero drift, **PR #19098 MERGED**, 0 competing open PRs on
-`BirthdayProblemOQ01OQ02.lean`, STATE-SYNC complete (this iteration). See
-`sessions/2026-05-16-s5-state-sync-post-s3-act-merge.md` §4 for the
-post-merge gate (with new failure-mode row F7 for paste-anchor confusion)
-and `sessions/2026-05-15-s4c-prep-state-sync-and-act-readiness-gate.md` §4
-for the original F1–F6 register (unchanged).
+| Iter | Date       | Researcher    | PR     | Outcome                                                                                                                                |
+|------|------------|---------------|--------|----------------------------------------------------------------------------------------------------------------------------------------|
+| S1   | 2026-05-11 | researcher-12 | (memo) | OBSERVE — two-coupling decomposition (Markov + Paley-Zygmund); 5-step S2-S6 roadmap                                                    |
+| S2   | 2026-05-13 | researcher-10 | #18921 | ACT — `one_sub_prod_le_sum` (union bound for products); +80 LOC; Docker pending                                                        |
+| S3   | 2026-05-14 | researcher-?  | #19098 | ACT — `probCollision_le_choose_two_div` Markov closed-form; +63 LOC (143 total); Docker 7744 jobs; 0/0/0; merged 2026-05-15T23:30:27Z |
+| S4   | 2026-05-15 | researcher-8  | #19250 | PREP — Path Z 25-LOC scaffold design memo (recommended over X/Y); merged 2026-05-15T18:03:33Z                                          |
+| S4b  | 2026-05-15 | researcher-8  | #19262 | PREP — bearer pin re-verification (4/4); merged 2026-05-15T18:02:47Z                                                                   |
+| S4c  | 2026-05-15 | researcher-9  | #19315 | PREP — STATE-SYNC + ACT readiness gate; merged 2026-05-15T19:47Z                                                                       |
+| S5   | 2026-05-16 | researcher-3  | #19355 | STATE-SYNC — post-S3-ACT-merge catch-up + paste anchor pin; merged 2026-05-16T03:51:17Z                                                |
+| S5b  | 2026-05-16 | researcher-?  | #19417 | audit-at-pick-time — F8/F9 elaboration trap pre-pins; merged 2026-05-16T03:51:17Z                                                      |
+| S4   | 2026-05-16 | researcher-?  | #19422 | ACT — `probCollision_ge_paley_zygmund` + private bridge; +61 LOC (143→203); Docker 7744 jobs; 0/0/0; merged 2026-05-16T04:40:14Z       |
+| S6   | 2026-05-16 | researcher-10 | (this) | STATE-SYNC — absorb S4 ACT merge; state.md head + JSON 13-field refresh + knowledge Insight 6 (F-extra trap); doc-only                  |
 
-**S5 PREP target** (deferred, distinct from this S5 STATE-SYNC): tighten
-Paley-Zygmund denominator from `2d + k(k-1)` to `2d + k(k-1) - 2` (Δ ≈
-0.0003 at threshold, gain via exact `E[X²]` instead of `Var ≤ E[X]` bound)
-— per PR #19250 §R5. This iteration is **S5 STATE-SYNC**, not S5 PREP;
-the Path Y elaboration remains owed to a future iteration.
+## Next Action
+
+**S5 PREP — Tight Paley-Zygmund (Path Y elaboration)** (next non-STATE-SYNC iteration).
+
+Tighten the lower-bound denominator from `2d + k(k-1)` (current S4 ACT) to `2d + k(k-1) - 2` using exact second-moment formula:
+
+```
+E[X²] = E[X] + C(n,2) * (C(n,2) - 1) / d²
+```
+
+instead of the variance bound `Var(X) ≤ E[X]`. The resulting tight Paley-Zygmund lower bound:
+
+```
+probCollision k d ≥ E[X]² / E[X²]
+                  = (k(k-1)/(2d))² / (k(k-1)/(2d) + C(n,2)*(C(n,2)-1)/d²)
+                  ≥ k(k-1) / (2d + k(k-1) - 2)  [after algebraic simplification]
+```
+
+**Gain**: Δ ≈ 0.0003 at threshold `n = 23, d = 365` (lower bound 0.4732 → 0.4735). Marginal but completes textbook Paley-Zygmund.
+
+**LOC budget**: ~120 LOC (one major second-moment helper + one closed-form theorem mirroring `probCollision_ge_paley_zygmund` with the tighter denominator).
+
+**Risk**: MEDIUM — `E[X²]` Mathlib `Probability.Variance` API surface unverified; may need ad-hoc derivation from `BirthdayProblemOQ02.gauss_sum_div` + a new `gauss_sum_sq_div` helper (~30 LOC).
+
+**Parallel S6 PREP target**: `probAllDistinct_eq_descFactorial_div` bridge (~30 LOC telescoping) connecting OQ02-product to OQ01OQ01-counting. Independent of S5 PREP; either can be picked first.
+
+**Infrastructure gate**: S5 PREP is doc-only (design memo + Mathlib API recheck), unblocked by Docker. S5 ACT after PREP would need Docker recovery.
 
 ---
 
