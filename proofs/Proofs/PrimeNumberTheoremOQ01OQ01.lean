@@ -13,7 +13,7 @@
      ```
 
   2. `PrimeNumberTheoremOQ01.RiemannHypothesis` in
-     `Proofs/PrimeNumberTheoremOQ01.lean:69`, defined with the two hypotheses
+     `Proofs/PrimeNumberTheoremOQ01.lean:70`, defined with the two hypotheses
      separated:
      ```
      ∀ s, riemannZeta s = 0 → s ∈ criticalStrip → s ∈ criticalLine
@@ -26,7 +26,7 @@
   ```
 
   via `RiemannHypothesis.RH_alt` (`RiemannHypothesis.lean:132`) and
-  `PrimeNumberTheoremOQ01.rh_iff_re_half` (`PrimeNumberTheoremOQ01.lean:73`),
+  `PrimeNumberTheoremOQ01.rh_iff_re_half` (`PrimeNumberTheoremOQ01.lean:74`),
   respectively. The bridge between the two RH declarations is then a single
   `Iff.trans`.
 

@@ -1,9 +1,49 @@
 # Current State
 
-**Phase**: ACT (S7 BUILD-VERIFY complete; build-verified S2 ACT; S3 ACT pending)
+**Phase**: ACT (S7 BUILD-VERIFY complete; S8 PREP docstring fix shipped doc-only-Lean; warm-cache re-verify deferred to next session due to host infra)
 **Since**: 2026-05-12T18:25:00Z
-**Iteration**: 7
-**Last Update**: 2026-05-16 (researcher-6) — S7 BUILD-VERIFY: 3318/3318 jobs, 0 errors, S2 build-pending caveat DISCHARGED
+**Iteration**: 8
+**Last Update**: 2026-05-16 (researcher-9) — S8 PREP docstring fix: 2-LOC comment-block edit (`:69`→`:70`, `:73`→`:74`); theorem bodies byte-identical to S7-verified form; Docker re-verify deferred (host disk 100% + containerd corruption)
+
+## Session N=8 — S8 PREP — bridge-docstring fix (doc-only-Lean) (2026-05-16, researcher-9)
+
+**Mode**: PREP (doc-only-Lean — comment block in slug-owned Lean file).
+
+**Outcome**: 2-LOC edit to the `/-...-/` block at top of `Proofs/PrimeNumberTheoremOQ01OQ01.lean`, updating two stale parent-line pointers from the pre-#19118 layout (`PrimeNumberTheoremOQ01.lean:69` and `:73`) to the verified post-#19118 layout (`:70` and `:74`). Both theorem bodies (`rh_canonical_iff_pnt`, `rh_pnt_iff_canonical`) are byte-identical to the S7 BUILD-VERIFY shipped form.
+
+**Verification of which line numbers were stale** (full table in S8 sessions/ §2):
+
+| Pointer (pre-edit) | Current actual line | Action |
+|---|---|---|
+| `RiemannHypothesis.lean:128` (def) | line 128 | no change |
+| `RiemannHypothesis.lean:132` (`RH_alt`) | line 132 | no change |
+| `PrimeNumberTheoremOQ01.lean:69` (def) | line **70** | edit (+1) |
+| `PrimeNumberTheoremOQ01.lean:73` (`rh_iff_re_half`) | line **74** | edit (+1) |
+
+The `RiemannHypothesis.lean` pointers are unchanged because #19118 only added one import line to the `PrimeNumberTheoremOQ01.lean` parent file, not to `RiemannHypothesis.lean`.
+
+**Build verification**: **DEFERRED to next session**. Two attempts to invoke `./proofs/scripts/docker-build.sh Proofs.PrimeNumberTheoremOQ01OQ01` failed at the docker-daemon layer with `input/output error` writing to `/var/lib/desktop-containerd/daemon/io.containerd.metadata.v1.bolt/meta.db` (containerd content-store corruption — missing blob `sha256:1487d0af…`). Root cause confirmed via `df -h /`: host data volume at 100% capacity (890 GiB used / 926 GiB / 136 MiB free). Four concurrent `lean-build-*` containers (6-7 min old) observed via `docker ps` — likely other researchers' active builds amplifying disk pressure. Side-effect: `git stash` failed with `ENOSPC` mid-iteration.
+
+**Forecast for next session's re-verify** (after disk recovery): warm-cache replay of S7's verified bridge, expected to complete in **~20-30s wall** (faster than S7's ~90s because lake's content-addressed hashing of the bridge file's `Expr` AST is unchanged by comment-only edits, so the cached `.olean` replays without re-elaboration). Job count: 3318 (matches S7). Build-risk classes: only sad-path is an unanticipated Mathlib-pin or parent-file regression since S7 — checked: pin `2df2f0150c…` unchanged, parent file unchanged on origin/main since #19118's HEAD `8a3cda556b6`.
+
+**Re-verify recipe** (single command, deferrable to any future agent):
+```bash
+cd /Users/rwalters/GitHub/lean-genius && ./proofs/scripts/docker-build.sh Proofs.PrimeNumberTheoremOQ01OQ01
+```
+
+**Race disclosure**: no other open research / mechanic / auditor PR mentions this slug or the parent slug `prime-number-theorem-oq-01` as of 2026-05-16 04:00Z. Sole open PR on slug since S7 merged.
+
+**Honest-status block**: zero new mathematics; this iteration is purely narrative-clarity (correcting stale line-number breadcrumbs in a docstring). Theorem bodies + axiom count + sorry count + import set all byte-identical to S7's verified form. Comment-only Lean edits do NOT count as a new BUILD-VERIFY; re-verify is a forecast warm-cache replay, not a fresh elaboration. Open conjecture status unchanged (Millennium Prize).
+
+**Next ACT picker priority** (post-S8, in order):
+
+1. **S9 BUILD-VERIFY** — warm-cache re-verify (~20-30s expected) after host disk recovers. Single Docker invocation. Discharges this PREP's deferred-verify caveat. **Smallest follow-on.**
+2. **S9 PREP** — S3 ACT `zeta_conj` Schwarz reflection bearer-audit completion: 80-120 LOC eventual discharge of `Proofs.RiemannHypothesis.zeta_conj` axiom. PR #18943's merged `sessions/2026-05-13-s3-prep-zeta-conj-schwarz-bearer-audit.md` contains the bearer-audit skeleton; two open audits remain pending name-confirmation at v4.26.0 pin (`Set.preconnected_compl_of_singleton` phantom-name check + antilinear-holomorphic composition lemma absence-confirmation via Mathlib search). Most substantive follow-on.
+3. **S9 OBSERVE** — gallery-side enricher integration of the build-verified bridge into `src/data/proofs/` enrichment tree (out-of-researcher-scope; refer to enricher).
+
+Full forensics in `sessions/2026-05-16-s8-prep-docstring-fix-deferred-reverify.md`.
+
+---
 
 ## Session N=7 — S7 BUILD-VERIFY (2026-05-16, researcher-6)
 
