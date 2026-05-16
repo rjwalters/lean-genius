@@ -37,11 +37,11 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-14T19:46:00.000Z",
-    "iteration": 6,
-    "focus": "Phase-3b Lever A SHIPPED (S6, researcher-8, 2026-05-14): added sibling CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean (173 LOC, 4 axioms, 5 theorems, 0 sorries). Introduced ConsistencyOfContinuumValue + ConsistencyOfContinuumFunction abstract predicates and strong-Easton axioms with non-trivial codomain. Build clean first iter (3061 jobs). Slug axiom count 2 → 6 (deeper-axiomatization trade).",
+    "since": "2026-05-16T04:30:00.000Z",
+    "iteration": 7,
+    "focus": "S8 ACT — Lever A residual SHIPPED (researcher-5, 2026-05-16): parent file CantorDiagonalizationOQ01OQ01OQ02OQ01.lean refactored — deleted 2 vacuous True-codomain axioms (easton_permitted_realizable, easton_consistency) + their 2 #check directives, rewrote Part III docstring as pointer to Phase3b. Parent file 257 → 230 LOC, axiomCount 2 → 0. Slug-level axiom count 6 → 4 (all 4 axioms now in Phase3b companion with non-trivial codomain — no vacuous True codomains remain anywhere). Stable axiomatized rest state.",
     "blockers": [],
-    "nextAction": "Lever A residual (refactor parent True-codomain to ConsistencyOf*), Lever B (bridge with sibling OQ-02-OQ-03), Lever C (flypitch-port scoping). All Phase-3b/4 work; awaits seeker re-selection.",
+    "nextAction": "Lever B (bridge with sibling OQ-02-OQ-03: easton_iff_permitted two-sided characterization), Lever C (flypitch-port scoping doc under research/). All Phase-3b/4 work; awaits seeker re-selection.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 1,
@@ -49,7 +49,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S6 (researcher-8, 2026-05-14, ACT — Phase-3b Lever A SHIPPED): added sibling file `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean` (173 LOC, 4 axioms, 5 theorems, 0 sorries). Introduces abstract `ConsistencyOfContinuumValue : Cardinal.{0} → Prop` and `ConsistencyOfContinuumFunction : (Cardinal.{0} → Cardinal.{0}) → Prop` predicates plus strong-Easton axioms `easton_permitted_realizable_strong` and `easton_consistency_strong` with non-trivial codomain — making the mathematical content of Easton 1970 explicit at the type level (replaces parent's `True` codomain pattern). Derives 5 theorems demonstrating callable content: `consistencyOfContinuumFunction_continuum`, `consistencyOfContinuumValue_aleph_one/_two/_succ/_unbounded`. Build clean first iter (3061 jobs, 4.8s for new file). Total slug axiom count 2 → 6 (deeper-axiomatization trade, not axiom-elimination). Parent file unchanged at this stage (Lever A residual: parent refactor deferred).\n\nS4 (researcher-8, 2026-05-08, ACT): Phase-3a-fix COMMITTED. Both pending sorries closed in CantorDiagonalizationOQ01OQ01OQ02OQ01.lean. (1) aleph_succ_permitted via aleph_zero + aleph_le_aleph + Order.lt_succ. (2) isEastonFunction_continuum.monotone via Cardinal.power_le_power_right. 249 lines, 7 theorems, 0 sorries, 2 axioms.\nS3 (researcher-3, 2026-05-08, ACT): scaffold 251 LOC.\nS2 (2026-05-08, ORIENT): designed Easton converse strategy.\nS1 (2026-05-07, OBSERVE): identified seed.",
+    "progressSummary": "S8 (researcher-5, 2026-05-16, ACT — Lever A residual SHIPPED): parent file CantorDiagonalizationOQ01OQ01OQ02OQ01.lean refactored to delete the 2 vacuous True-codomain axioms (easton_permitted_realizable, easton_consistency) — discharged the residual flagged in PR #19112 body. Parent file 257 → 230 LOC, axiomCount 2 → 0. Slug-level axiom count: 6 → 4 (all axioms now live in Phase3b companion with non-trivial codomain; no vacuous True codomains remain in the slug). Part III docstring rewritten as a 12-line pointer to Phase3b; 2 #check directives for the deleted axioms removed.\n\nS6 (researcher-8, 2026-05-14, ACT — Phase-3b Lever A SHIPPED): added sibling file `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean` (173 LOC, 4 axioms, 5 theorems, 0 sorries). Introduces abstract `ConsistencyOfContinuumValue : Cardinal.{0} → Prop` and `ConsistencyOfContinuumFunction : (Cardinal.{0} → Cardinal.{0}) → Prop` predicates plus strong-Easton axioms `easton_permitted_realizable_strong` and `easton_consistency_strong` with non-trivial codomain — making the mathematical content of Easton 1970 explicit at the type level (replaces parent's `True` codomain pattern). Derives 5 theorems demonstrating callable content: `consistencyOfContinuumFunction_continuum`, `consistencyOfContinuumValue_aleph_one/_two/_succ/_unbounded`. Build clean first iter (3061 jobs, 4.8s for new file). Total slug axiom count 2 → 6 (deeper-axiomatization trade, not axiom-elimination). Parent file unchanged at this stage (Lever A residual: parent refactor deferred).\n\nS4 (researcher-8, 2026-05-08, ACT): Phase-3a-fix COMMITTED. Both pending sorries closed in CantorDiagonalizationOQ01OQ01OQ02OQ01.lean. (1) aleph_succ_permitted via aleph_zero + aleph_le_aleph + Order.lt_succ. (2) isEastonFunction_continuum.monotone via Cardinal.power_le_power_right. 249 lines, 7 theorems, 0 sorries, 2 axioms.\nS3 (researcher-3, 2026-05-08, ACT): scaffold 251 LOC.\nS2 (2026-05-08, ORIENT): designed Easton converse strategy.\nS1 (2026-05-07, OBSERVE): identified seed.",
     "builtItems": [
       "Session 3 (2026-05-08): proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01.lean — 234 lines, 9 theorems, 1 def, 2 axioms, 0 sorries. Imports parent file + Mathlib Cardinal.{Basic,Ordinal,Cofinality}.",
       "Session 3 (2026-05-08): src/data/proofs/cantor-diagonalization-oq-01-oq-01-oq-02-oq-01/{meta.json,index.ts,annotations.json} — gallery entry with axiom badge, full overview/sections/conclusion/crossReferences (4 cross-refs: parent oq-02, sibling oq-03, oq-01, continuum-hypothesis), 6 references.",
@@ -65,7 +65,12 @@
       "S4 — closed sorry in isEastonFunction_continuum.monotone: Cardinal.power_le_power_right hκν (verified working via sibling OQ-02-OQ-03)",
       "S4 — corrected misleading comments in file header (sorry status) and isEastonFunction_continuum docstring",
       "S4 — file: 251→249 lines, sorries 2→0, status formalized→axiomatized",
-      "S6 (researcher-8, 2026-05-14): proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean — 173 LOC, 4 axioms (ConsistencyOfContinuumValue + ConsistencyOfContinuumFunction + easton_permitted_realizable_strong + easton_consistency_strong), 5 derived theorems (consistencyOfContinuumFunction_continuum, consistencyOfContinuumValue_aleph_{one,two,succ}, consistencyOfContinuumValue_unbounded), 0 sorries. Build clean (3061 jobs, 4.8s)."
+      "S6 (researcher-8, 2026-05-14): proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean — 173 LOC, 4 axioms (ConsistencyOfContinuumValue + ConsistencyOfContinuumFunction + easton_permitted_realizable_strong + easton_consistency_strong), 5 derived theorems (consistencyOfContinuumFunction_continuum, consistencyOfContinuumValue_aleph_{one,two,succ}, consistencyOfContinuumValue_unbounded), 0 sorries. Build clean (3061 jobs, 4.8s).",
+      "S8 (researcher-5, 2026-05-16, ACT): deleted axiom easton_permitted_realizable (vacuous True codomain) from CantorDiagonalizationOQ01OQ01OQ02OQ01.lean — no external Lean callers (per S7 PREP §3 rg audit). Phase3b _strong sibling carries the genuine content.",
+      "S8 (researcher-5, 2026-05-16, ACT): deleted axiom easton_consistency (vacuous True codomain) from CantorDiagonalizationOQ01OQ01OQ02OQ01.lean — no external Lean callers. Phase3b _strong sibling carries the genuine content.",
+      "S8 — rewrote Part III docstring (lines 193–215, 23 LOC) to 12-LOC pointer narrative directing readers to the Phase3b companion file for the genuine Easton 1970 axiomatization.",
+      "S8 — removed 2 #check directives (#check @easton_permitted_realizable, #check @easton_consistency) from Part IV verification.",
+      "S8 — parent file: 257 LOC → 230 LOC (−27); axiomCount 2 → 0; theoremCount unchanged at 7; defCount unchanged at 2; sorries unchanged at 0."
     ],
     "insights": [
       "The two LOCAL Easton constraints are already in Mathlib (`Cardinal.power_mono`, `Cardinal.lt_cof_power`); only the GLOBAL consistency claim requires forcing — phase-2 can cleanly separate object-level definitions from meta-level consistency",
@@ -87,7 +92,10 @@
       "S4 — The ℵ₀ < ℵ_(succ α) goal does not need aleph0_lt_aleph_iff; it factors via ℵ₀ = aleph 0 ≤ aleph α < succ (aleph α) using stable Mathlib lemmas Cardinal.aleph_zero, Cardinal.aleph_le_aleph, Order.lt_succ.",
       "S4 — Cardinal.power_le_power_right IS exponent-monotonic in current Mathlib (a ≤ b → c^a ≤ c^b). The prior comment claiming it had drifted to base-monotonicity was incorrect; sibling file OQ-02-OQ-03 uses it as exponent-monotonic.",
       "S4 — Counter-pattern: not every API-drift comment is correct. When a comment claims a lemma changed semantics, verify against current sibling-file usage before accepting.",
-      "S6 Lever A: introducing two abstract `ConsistencyOf*` predicates per axiom (pointwise + function-level) is the right granularity — the parent has two distinct axioms (`easton_permitted_realizable` and `easton_consistency`) at different levels, so a single `ConsistencyOf : (Cardinal → Cardinal) → Prop` predicate cannot capture the pointwise form naturally (constant function fails IsEastonFunction.succ_le for κ ≥ ℵ₂ and IsEastonFunction.monotone everywhere)."
+      "S6 Lever A: introducing two abstract `ConsistencyOf*` predicates per axiom (pointwise + function-level) is the right granularity — the parent has two distinct axioms (`easton_permitted_realizable` and `easton_consistency`) at different levels, so a single `ConsistencyOf : (Cardinal → Cardinal) → Prop` predicate cannot capture the pointwise form naturally (constant function fails IsEastonFunction.succ_le for κ ≥ ℵ₂ and IsEastonFunction.monotone everywhere).",
+      "S8 — confirmed S7 PREP §3 external-caller audit at execution time: rg \"easton_permitted_realizable|easton_consistency\" across proofs/Proofs/ matched only the parent file (definitions + #check), the sibling OQ-02-OQ-03 file (its own theorem easton_consistency in a different namespace with a different signature — Ordinal.{0} → Cardinal.{0}), and JSON narrative strings — 0 functional Lean callers. Deletion was fully safe.",
+      "S8 — slug axiom count 6 → 4 with all 4 axioms now non-trivial: 2 abstract predicates (ConsistencyOfContinuumValue/Function) + 2 strong-Easton claims (easton_permitted_realizable_strong, easton_consistency_strong). No vacuous True codomains remain anywhere in the slug.",
+      "S8 — the Lever A two-step pattern (S6 ACT introduces sibling file with strong axioms + S7 PREP doc-only plans parent refactor + S8 ACT executes parent refactor) is a clean way to migrate vacuous-codomain placeholders to genuine-codomain axioms without ever leaving the slug in a half-refactored state."
     ],
     "mathlibGaps": [
       "No formalization of forcing in Mathlib (flypitch lives in Lean 3 + Lean Mathlib3, not yet ported)",
@@ -96,9 +104,9 @@
       "Mathlib's `Cardinal.cof` is set-level; the regular cardinals form a proper class (not a set) — needs careful universe handling"
     ],
     "nextSteps": [
-      "Lever A residual: refactor parent file CantorDiagonalizationOQ01OQ01OQ02OQ01.lean to use ConsistencyOf* codomain on `easton_permitted_realizable` and `easton_consistency` directly, eliminating the redundant True-codomain forms (would bring slug axiom count 6 → 4)",
-      "Lever B: bridge file with sibling OQ-02-OQ-03 — prove two-sided characterization (easton_iff_permitted)",
-      "Lever C: write Phase-4-flypitch-scoping.md document under research/ for the class-forcing port effort"
+      "Lever B: bridge file with sibling OQ-02-OQ-03 — prove two-sided characterization easton_iff_permitted (forward direction from sibling, reverse from Phase3b strong axiom).",
+      "Lever C: write Phase-4-flypitch-scoping.md document under research/ for the class-forcing port effort (only path to genuine discharge of the 4 Phase3b axioms).",
+      "Optional: sibling OQ-02-OQ-03 (.OQ03 not OQ02OQ03) currently has 1 sorry; investigate whether Lever B bridge work informs that sorry."
     ]
   },
   "tags": [

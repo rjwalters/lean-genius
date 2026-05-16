@@ -192,50 +192,25 @@ theorem isEastonFunction_nonempty :
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
-PART III: EASTON CONSISTENCY — AXIOMATIZED (PROOF NEEDS CLASS FORCING)
+PART III: EASTON CONSISTENCY — AXIOMATIZED (SEE PHASE3B COMPANION FILE)
 ═══════════════════════════════════════════════════════════════════════════════
 
-The two axioms below state Easton's 1970 consistency theorem at two
-granularities (pointwise and function-level). The proofs require:
+Easton's 1970 consistency theorem is axiomatized in the Phase3b
+companion file `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean`
+under namespace `CantorDiagOQ01OQ01OQ02OQ01` as
+`easton_permitted_realizable_strong` and `easton_consistency_strong`,
+with non-trivial codomains `ConsistencyOfContinuumValue` and
+`ConsistencyOfContinuumFunction`.
 
-  - Class-sized partial orders (Easton product forcing posets)
-  - Generic filter constructions on proper classes
-  - Forcing-language semantics for ZFC's class-comprehension schema
+Two earlier vacuous `True`-codomain axioms in this file
+(`easton_permitted_realizable`, `easton_consistency`) had no
+mathematical content beyond what the Phase3b `_strong` siblings now
+carry; they have been retired in S8 (Lever A residual).
 
-None of this infrastructure exists in Lean 4 / Mathlib. The closest
-existing work is the `flypitch` project (Han, Van Doorn 2020), which
-formalized Cohen's set forcing for CH-independence in Lean 3 — but
-class-sized forcing has not been ported and is a strictly stronger
-construction.
-
-The `True` codomain on the axioms is a placeholder. A future Phase-3b
-file will introduce `ConsistencyOf : (Cardinal → Cardinal) → Prop`
-(requires Gödel-encoding ZFC formulas) and replace the placeholder
-with the genuine consistency predicate.
+Class-forcing infrastructure to discharge the strong axioms is a
+future Phase-4 effort; see Phase3b file's docstring for the
+flypitch-port roadmap.
 -/
-
-/-- **Axiom (Easton 1970, pointwise form)**: Every permitted value is
-    realizable as 2^ℵ₀ in some forcing extension of ZFC.
-
-    Concretely: for every regular κ > ℵ₀, the theory
-    ZFC + (2^ℵ₀ = κ) is consistent (assuming Con(ZFC)).
-
-    The codomain `True` is a Phase-3b placeholder; the genuine target
-    is `Consistent (ZFC ∪ ⟦2^ℵ₀ = κ⟧)`. -/
-axiom easton_permitted_realizable :
-    ∀ κ : Cardinal.{0}, IsPermittedValue κ → True
-
-/-- **Axiom (Easton 1970, function-level form)**: Every Easton function
-    F : Cardinal → Cardinal is realizable as the continuum function
-    on regular cardinals in some forcing extension of ZFC.
-
-    Concretely: for every Easton function F, the theory
-    ZFC + (∀ regular κ ≥ ℵ₀: 2^κ = F κ) is consistent (assuming Con(ZFC)).
-
-    The codomain `True` is a Phase-3b placeholder; the genuine target
-    is `Consistent (ZFC ∪ ⟦∀ κ regular: 2^κ = F κ⟧)`. -/
-axiom easton_consistency :
-    ∀ F : Cardinal.{0} → Cardinal.{0}, IsEastonFunction F → True
 
 /-
 ═══════════════════════════════════════════════════════════════════════════════
@@ -251,7 +226,5 @@ PART IV: VERIFICATION
 #check @IsEastonFunction
 #check @isEastonFunction_continuum
 #check @isEastonFunction_nonempty
-#check @easton_permitted_realizable
-#check @easton_consistency
 
 end CantorDiagOQ01OQ01OQ02OQ01
