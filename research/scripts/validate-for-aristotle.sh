@@ -114,7 +114,7 @@ WARNINGS=0
 # ---------------------------------------------------------------------------
 DOCSTRINGS=$(grep -n "/-!" "$LEAN_FILE" 2>/dev/null || true)
 if [ -n "$DOCSTRINGS" ]; then
-    ((ISSUES++))
+    ((++ISSUES))
     log_error "Found /-! docstrings (Aristotle parser fails on these)"
     echo "$DOCSTRINGS" | head -5 | while read -r line; do
         echo "    $line"
@@ -122,7 +122,7 @@ if [ -n "$DOCSTRINGS" ]; then
     if [ "$SHOW_FIX" = true ]; then
         echo ""
         echo -e "  ${BLUE}Fix:${NC} Replace /-! with /- or use regular comments"
-        echo "       sed -i '' 's|/-!|/-|g' $FILENAME"
+        echo "       sed 's|/-!|/-|g' $FILENAME > $FILENAME.tmp && mv $FILENAME.tmp $FILENAME"
     fi
     echo ""
 fi
@@ -132,7 +132,7 @@ fi
 # ---------------------------------------------------------------------------
 DEF_SORRIES=$(grep -nE "^(noncomputable )?(abbrev |def |instance )[a-zA-Z0-9_]+.*:=.*sorry|^(noncomputable )?(abbrev |def |instance )[a-zA-Z0-9_]+.*:= by sorry" "$LEAN_FILE" 2>/dev/null || true)
 if [ -n "$DEF_SORRIES" ]; then
-    ((ISSUES++))
+    ((++ISSUES))
     log_error "Found definition sorries (Aristotle skips these entirely)"
     echo "$DEF_SORRIES" | head -5 | while read -r line; do
         echo "    $line"
@@ -152,7 +152,7 @@ fi
 NAMESPACE_DEPTH=$(grep -c "^namespace " "$LEAN_FILE" 2>/dev/null | head -1 || echo "0")
 END_COUNT=$(grep -c "^end " "$LEAN_FILE" 2>/dev/null | head -1 || echo "0")
 if [ "$NAMESPACE_DEPTH" -gt 3 ]; then
-    ((WARNINGS++))
+    ((++WARNINGS))
     log_warn "Deep namespace nesting ($NAMESPACE_DEPTH levels) may cause issues"
     if [ "$SHOW_FIX" = true ]; then
         echo -e "  ${BLUE}Fix:${NC} Consider flattening namespace structure"
@@ -162,7 +162,7 @@ fi
 
 # Check for mismatched namespace/end
 if [ "$NAMESPACE_DEPTH" -ne "$END_COUNT" ]; then
-    ((WARNINGS++))
+    ((++WARNINGS))
     log_warn "Namespace/end count mismatch ($NAMESPACE_DEPTH namespaces, $END_COUNT ends)"
     echo ""
 fi
@@ -172,7 +172,7 @@ fi
 # ---------------------------------------------------------------------------
 AXIOM_COUNT=$(grep -c "^axiom " "$LEAN_FILE" 2>/dev/null | head -1 || echo "0")
 if [ "$AXIOM_COUNT" -gt 0 ]; then
-    ((WARNINGS++))
+    ((++WARNINGS))
     log_warn "Found $AXIOM_COUNT axiom declarations"
     echo "    Aristotle treats axioms as 'given' and will NOT attempt to prove them."
     echo "    If you want Aristotle to prove these, convert to theorem sorries."
@@ -189,7 +189,7 @@ fi
 # ---------------------------------------------------------------------------
 TRUE_THEOREMS=$(grep -n "theorem.*: True" "$LEAN_FILE" 2>/dev/null || true)
 if [ -n "$TRUE_THEOREMS" ]; then
-    ((WARNINGS++))
+    ((++WARNINGS))
     log_warn "Found placeholder 'True' theorems (trivial, no value)"
     echo "$TRUE_THEOREMS" | head -3 | while read -r line; do
         echo "    $line"
@@ -203,7 +203,7 @@ fi
 # Check for unusual Unicode that might cause parsing issues
 UNUSUAL_UNICODE=$(grep -nP '[^\x00-\x7F\xCE\xCF\xE2\xC2]' "$LEAN_FILE" 2>/dev/null | head -3 || true)
 if [ -n "$UNUSUAL_UNICODE" ]; then
-    ((WARNINGS++))
+    ((++WARNINGS))
     log_warn "Unusual Unicode characters detected (may cause issues)"
     echo "$UNUSUAL_UNICODE" | while read -r line; do
         echo "    $line"
@@ -217,7 +217,7 @@ fi
 # Check for imports that Aristotle might not have
 UNUSUAL_IMPORTS=$(grep "^import " "$LEAN_FILE" 2>/dev/null | grep -vE "(Mathlib|Lean|Init|Proofs)" || true)
 if [ -n "$UNUSUAL_IMPORTS" ]; then
-    ((WARNINGS++))
+    ((++WARNINGS))
     log_warn "Non-standard imports detected (verify Aristotle has these)"
     echo "$UNUSUAL_IMPORTS" | while read -r line; do
         echo "    $line"
