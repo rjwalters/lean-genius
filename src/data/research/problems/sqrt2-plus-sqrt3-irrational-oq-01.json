@@ -31,24 +31,24 @@
     "currentState": {
         "phase": "COMPLETED",
         "since": "2026-05-13T04:08:24Z",
-        "iteration": 4,
-        "focus": "OQ-01 answered affirmatively and formalized in Mathlib v4.26.0 via 'isolate sqrt(30) by squaring twice'. Full chain on main: S1 OBSERVE (#18222), S2 PREP (#18353), S2 ACT (#18369, build verified), S3 GALLERY (#18538, shipped under sibling gallery slug sqrt2-plus-sqrt3-plus-sqrt5-irrational matching the theorem name), S4 PREP (#18402, Besicovitch sibling-slug design memo). Lean file proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean: 144 lines, 5 theorems, 0 sorries, 0 axioms.",
+        "iteration": 5,
+        "focus": "OQ-01 answered affirmatively and formalized in Mathlib v4.26.0 via 'isolate sqrt(30) by squaring twice'. Full chain on main: S1 OBSERVE (#18222), S2 PREP (#18353), S2 ACT (#18369, build verified), S3 GALLERY (#18538, shipped under sibling gallery slug sqrt2-plus-sqrt3-plus-sqrt5-irrational matching the theorem name), S4 PREP (#18402, Besicovitch sibling-slug design memo only — slug not yet created). S5 STATE-SYNC (#18893, phase ACT→COMPLETED doc-only). S6 STATE-SYNC (this PR, residual drift: leanFiles populated, 145→144 LOC fixes, oq-02 \"seeded\" wording corrected). Lean file proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean: 144 lines, 5 theorems, 0 sorries, 0 axioms.",
         "blockers": [],
-        "nextAction": "None for this slug. Besicovitch (1940) general k-summand formalization is now tracked under successor slug sqrt2-plus-sqrt3-irrational-oq-02 (seeded by S4 PREP #18402).",
+        "nextAction": "None for this slug. Besicovitch (1940) general k-summand formalization is design-scoped by S4 PREP #18402 under the planned (not-yet-created) successor slug sqrt2-plus-sqrt3-irrational-oq-02 — that is a seeker job, not this slug.",
         "attemptCounts": {
-            "total": 4,
+            "total": 5,
             "currentApproach": 1,
             "approachesTried": 1
         }
     },
     "knowledge": {
-        "progressSummary": "S2 (researcher-4, 2026-05-12): ACT phase BUILD VERIFIED. Created proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean (145 lines, 0 sorries, 0 axioms): (1) irrational_sqrt_thirty via irrational_sqrt_natCast_iff.mpr + native_decide; (2) alpha_pos via sqrt_nonneg/sqrt_pos + linarith; (3) sqrt5_mul_sqrt6 (private cross-radical bridge) via ← Real.sqrt_mul + norm_num; (4) alpha_quartic_identity via parent sqrt2_plus_sqrt3_sq + Real.sq_sqrt × 2 + ring + linarith (following the locked S2 PREP tactic chain from merged PR #18353, which proved the strategy works without nlinarith); (5) irrational_sqrt2_plus_sqrt3_plus_sqrt5 (main) via eq_div_iff + push_cast + contradict (1). Build under v4.26.0: 3060 jobs, ~4 min total in Docker with full mathlib cache, no errors. PR #18369 (build verified).",
+        "progressSummary": "S2 (researcher-4, 2026-05-12): ACT phase BUILD VERIFIED. Created proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean (144 lines, 0 sorries, 0 axioms): (1) irrational_sqrt_thirty via irrational_sqrt_natCast_iff.mpr + native_decide; (2) alpha_pos via sqrt_nonneg/sqrt_pos + linarith; (3) sqrt5_mul_sqrt6 (private cross-radical bridge) via ← Real.sqrt_mul + norm_num; (4) alpha_quartic_identity via parent sqrt2_plus_sqrt3_sq + Real.sq_sqrt × 2 + ring + linarith (following the locked S2 PREP tactic chain from merged PR #18353, which proved the strategy works without nlinarith); (5) irrational_sqrt2_plus_sqrt3_plus_sqrt5 (main) via eq_div_iff + push_cast + contradict (1). Build under v4.26.0: 3060 jobs, ~4 min total in Docker with full mathlib cache, no errors. PR #18369 (build verified).",
         "builtItems": [
             "research/problems/sqrt2-plus-sqrt3-irrational-oq-01/problem.md (new, ~190 lines): formal statement, proof strategy (isolate √30 by squaring twice), Mathlib infrastructure map, decomposition table comparing parent (2-summand) to this (3-summand), staged plan, race-risk assessment.",
             "research/problems/sqrt2-plus-sqrt3-irrational-oq-01/knowledge.md (new, ~140 lines): S1 session note with proof-strategy derivation, Mathlib API checks at v4.26.0, floating-point sanity table, decomposition into S2/S3/S4 sub-iterations, bibliography.",
             "research/problems/sqrt2-plus-sqrt3-irrational-oq-01/state.md (new, ~95 lines): phase OBSERVE, iteration 1, concrete S2 next-action sketch with the four lemma names and their proof techniques.",
             "src/data/research/problems/sqrt2-plus-sqrt3-irrational-oq-01.json (this file, new, ~85 lines): seeker-selected slug populated with proof strategy, insights, mathlibGaps, nextSteps, references.",
-            "proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean (new, 145 lines): 4 theorems + 1 private bridge, 0 sorries, 0 axioms. Build verified.",
+            "proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean (new, 144 lines): 4 theorems + 1 private bridge, 0 sorries, 0 axioms. Build verified.",
             "proofs/Proofs.lean: added import line for Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.",
             "PR #18369: research(sqrt2-plus-sqrt3-irrational-oq-01) S2 ACT, build verified, ready for deployer."
         ],
@@ -69,7 +69,7 @@
             "The general Besicovitch (1940) theorem (the squarefree linear-independence result) is not in Mathlib. Stating it requires `Polynomial.IsSplittingField` or a custom predicate for squarefree integers; the proof requires structured induction on the number of distinct prime factors."
         ],
         "nextSteps": [
-            "S3 GALLERY (follow-up PR): create src/data/proofs/sqrt2-plus-sqrt3-plus-sqrt5-irrational/{meta.json, annotations.json, index.ts} mirroring the parent gallery entry. status=verified, badge=original, 4 theorems, 0 axioms, lineCount=145. Cross-refs: parent=sqrt2-plus-sqrt3-irrational, related=sqrt2-plus-sqrt3-irrational-oq-03 (sister).",
+            "S3 GALLERY (follow-up PR): create src/data/proofs/sqrt2-plus-sqrt3-plus-sqrt5-irrational/{meta.json, annotations.json, index.ts} mirroring the parent gallery entry. status=verified, badge=original, 4 theorems, 0 axioms, lineCount=144. Cross-refs: parent=sqrt2-plus-sqrt3-irrational, related=sqrt2-plus-sqrt3-irrational-oq-03 (sister).",
             "S4 (stretch, separate slug): seed sqrt2-plus-sqrt3-irrational-oq-02 for the Besicovitch (1940) general k-summand theorem — formalise the squarefree-set linear-independence statement as `theorem ... := by sorry` with companion Aristotle file for routine supporting lemmas."
         ]
     },
@@ -105,8 +105,19 @@
         ]
     },
     "started": "2026-05-12T17:55:00.000Z",
-    "lastUpdate": "2026-05-13T17:35:00.000Z",
+    "lastUpdate": "2026-05-16T18:18:36Z",
     "significance": 6,
     "tractability": 7,
-    "leanFiles": []
+    "leanFiles": [
+        {
+            "path": "proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean",
+            "lineCount": 144,
+            "sorries": 0,
+            "axioms": 0,
+            "theorems": 5,
+            "definitions": 0,
+            "buildVerified": true,
+            "mathlibSha": "2df2f0150c275ad53cb3c90f7c98ec15a56a1a67"
+        }
+    ]
 }
