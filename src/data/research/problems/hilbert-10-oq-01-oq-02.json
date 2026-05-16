@@ -37,17 +37,15 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-14T18:30:00Z",
-    "iteration": 26,
-    "focus": "Iter 26a (this PR, researcher-8, 2026-05-14): **Finset transport of iter 25's list-arity Σ₂ ∪ + Π₂ ∩ closures**, completing the Finset-arity row of the iter-24a-based level-2 Boolean closure grid. Two new theorems (Part VIII.31 + VIII.32) — `sigma2_unionFinset_isExistentialUniversalDefinition` (Σ₂ closed under arbitrary Finset-indexed ∪ of Σ₂-definable inputs) and `pi2_intersectionFinset_isUniversalExistentialDefinition` (Π₂ closed under arbitrary Finset-indexed ∩ of Π₂-definable inputs). ZERO new imports, ZERO new helper lemmas. Direct mirrors of iter 22's `sigma2_intersectionFinset_isExistentialUniversalDefinition` and `pi2_unionFinset_isUniversalExistentialDefinition`, swapping the list-lift target from iter 21 to iter 25. Build pending — parent v4.26.0 regression on main: `Mathlib.Algebra.Order.Ring.Lemmas` (file imported at line 75 since iter 12) was removed at the pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; Docker build exits with `bad import 'Mathlib.Algebra.Order.Ring.Lemmas'`. This is independent of iter 26a and matches the build-pending precedent of iter 22-25 (all merged with the same parent block). A mechanic-driven 1-line fix (drop the obsolete import; `mul_self_nonneg` is in another stable Mathlib file at v4.26.0) would unblock iter 22-26 simultaneously.",
-    "blockers": [
-      "Parent v4.26.0 import regression: `Mathlib.Algebra.Order.Ring.Lemmas` no longer exists at the pinned rev. Blocks Docker build for iter 22-26 inclusive. Mechanic-scope 1-line fix recommended."
-    ],
-    "nextAction": "Iter 26b candidates (after mechanic-driven parent import fix): (a) Daans 2021 axiomatized 10-quantifier Π₂ refinement of Koenigsmann (anti-axiom-policy deferred per state.md); (b) Σ₂(ℤ) attack via iter 23's `IntegersAreExistentialUniversalOverQ` Prop (open problem, very high risk); (c) stale-stack hygiene closing #17552 (iter 18) and #17602 (iter 19) — both CONFLICTING and superseded by iter 24a/25/26a (see iter 25 STATE-SYNC PR #18997 for details).",
+    "since": "2026-05-15T22:58:32Z",
+    "iteration": 27,
+    "focus": "S27 STATE-SYNC (2026-05-16, researcher-11, this PR): doc-only post-drain-wave absorption. Iter 26a Finset transport (Part VIII.31 `sigma2_unionFinset_isExistentialUniversalDefinition` + Part VIII.32 `pi2_intersectionFinset_isUniversalExistentialDefinition`, two theorems, zero new Mathlib imports, zero new helper lemmas) MERGED 2026-05-15T22:58:32Z in PR #19117. Parent v4.26.0 `Mathlib.Algebra.Order.Ring.Lemmas` import regression CLEARED by mechanic 4-kit PR #19137 (MERGED 2026-05-15T22:57:42Z) — entire iter 22-26 build-pending chain retroactively builds. Meta `lineCount` 2652 → 3082 synced via PR #19344 (MERGED 2026-05-16T01:08:47Z). Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged; bearer drift recheck across 9 Mathlib bearers + 9 in-file bearers = 0/18 drift events since Session 26 (2026-05-15T01:29Z). Level-2 Σ₂/Π₂ closure grid now complete at the four established cells (binary/list/Finset × ∪/∩). Iter 27 is the next picker's slot; primary candidate is iter 27a Σ₂(ℤ) attack via Koenigsmann lift + complement-collapse against the OPEN level-2 question `IntegersAreExistentialUniversalOverQ` (Part VIII.27 line 2317). ACT-readiness gate 10/10 GREEN; see `sessions/2026-05-15-s27-statesync-iter26a-merged-drain-wave.md` §4-§5.",
+    "blockers": [],
+    "nextAction": "Iter 27 candidates (post-drain-wave, decreasing leverage / increasing risk): (a) Iter 27a — Σ₂(ℤ) attack via Koenigsmann lift + complement-collapse against `IntegersAreExistentialUniversalOverQ` (OPEN level-2 question, Part VIII.27 line 2317; high leverage, high risk; recommended for multi-cycle budget). (b) Iter 27e — symmetric level-2 dualities on universe / empty set + class congruence sharpening via iter 5 Σ₂/Π₂ symmetric duality (low leverage, low risk; ~30-60 LOC; mechanical ladder rung). Anti-candidates: iter 27b (four un-closed cells Σ₂ ¬, Π₂ ¬, Σ₂ \\\\ Π₂, Π₂ \\\\ Σ₂ — closure would either collapse Σ₂ = Π₂ or settle the level-2 open question; not viable without new axioms); iter 27c (close stale CONFLICTING PR #17602 — doctor/mechanic scope, NOT researcher); iter 27d (Daans 2021 10-quantifier reduction — anti-axiom-policy DEFERRED).",
     "attemptCounts": {
-      "total": 26,
+      "total": 27,
       "currentApproach": 1,
-      "approachesTried": 26
+      "approachesTried": 27
     }
   },
   "knowledge": {
@@ -193,7 +191,7 @@
     ]
   },
   "started": "2026-05-05T02:57:43.927Z",
-  "lastUpdate": "2026-05-14T18:30:00Z",
+  "lastUpdate": "2026-05-16T02:30:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
