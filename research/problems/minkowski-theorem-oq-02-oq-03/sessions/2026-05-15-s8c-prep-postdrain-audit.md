@@ -363,3 +363,56 @@ sequenced ACTs to graduation.
 - [x] Filename `2026-05-15-s8c-prep-postdrain-audit.md` does not collide with any existing session file (latest existing is `2026-05-15-s5b-prep-Tv-preimage.md`).
 - [x] Branch base `ea85bb70b79` (post-drain `origin/main` HEAD).
 - [x] Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) re-confirmed via `proofs/lake-manifest.json`.
+
+---
+
+## §10. Post-draft state addendum (added 2026-05-16T00:30Z, pre-push)
+
+This PREP was drafted in the ~12-min window 2026-05-15T23:15Z → ~23:27Z while
+PR #19046 (S5-b ACT) and PR #18991 (Session 8 STATE-SYNC) were both `OPEN`.
+A subsequent deployer drain wave merged both before this branch was pushed:
+
+| PR | Title | Merged (UTC) | Now on `main` |
+|---|---|---|---|
+| #19046 | S5-b ACT — shearM linear-map components + preimage identity (build verified, 3058 jobs) | 2026-05-15T23:27:39Z | yes |
+| #18991 | Session 8 STATE-SYNC — refresh after #18975 S5-a ACT (doc-only) | 2026-05-15T23:29:31Z | yes |
+
+Implications for §2, §6, §8 above (the audit body is preserved verbatim;
+treat the table below as the live overlay):
+
+- **§2 (PR #19046 mergeability re-check)** — predictive value retired;
+  the snapshot (`MERGEABLE / CLEAN`, headRefOid `77fa321468dc…`,
+  diff `+79 / -0`, 4 declarations at lines 252→331) is now the
+  historical merge audit for the deployer-resolved PR. The diff
+  summary in §2 corresponds 1-to-1 with what landed on `main`.
+- **§3 / §5 (sequencing chain)** — "S5-c ACT MUST wait for #19046"
+  precondition is **discharged**. Updated chain on `main`:
+  `S5-c ACT (~49 LOC) ‖ S6α ACT (~22 LOC)` parallelizable now;
+  `S6 ACT (~80 LOC)` once both land. Total remaining `.lean` LOC
+  to OQ-03 graduation: **~150 LOC across 3 ACTs** (unchanged from §8).
+- **§6.1 (STATE-SYNC supersession plan)** — Option **B** is now
+  realizable in a single follow-up: the next state-touching iteration
+  on this slug should catch §6 table rows 2–5 (`#19283 S5-b PREP`,
+  `#19181 S5-c PREP`, `#19192 S6 PREP-2`, `#19046 S5-b ACT`) plus add
+  `MinkowskiTheoremOQ02OQ03.lean` to `currentState.leanFiles` (still
+  missing per #18991 §"Drift surface" — #18991 only catches up to
+  row 1, S5-a).
+- **§8 action item #1** ("Land #19046") — **closed**. Updated
+  priority list:
+  1. Ship the §6.1 Option-B STATE-SYNC (rows 2–5 + leanFiles fix).
+  2. Ship S5-c ACT (~49 LOC) and S6α ACT (~22 LOC) in parallel
+     once STATE-SYNC lands (or in parallel with STATE-SYNC if
+     orthogonal — STATE-SYNC touches `state.md` + JSON only).
+  3. Ship S6 ACT (~80 LOC) once S5-c + S6α land.
+
+**Bearer drift re-check at post-merge `origin/main` HEAD `d35a6f0f2ac…`
+(2026-05-16T00:25Z)**: the §1 6-row bearer table remains valid (no
+Mathlib pin change between drafting and post-push verification — same
+SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`). The post-merge
+parent-file layout for `MinkowskiTheoremOQ02OQ03.lean` now matches
+#19181's line pins (252 → 331 LOC), so §3's "advisory, not current"
+caveat is now also **discharged**: #19181's S5-c recipe pins are live
+against `main`.
+
+This addendum is doc-only and self-contained within the same sessions/
+file; no other file edits.
