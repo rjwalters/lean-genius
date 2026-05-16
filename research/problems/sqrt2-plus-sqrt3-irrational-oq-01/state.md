@@ -1,12 +1,12 @@
 # State: sqrt2-plus-sqrt3-irrational-oq-01
 
-**Phase**: COMPLETED (S2 ACT build-verified, S3 GALLERY shipped, S4 PREP sibling-slug seeded)
-**Iteration**: 4 (S1 OBSERVE, S2 PREP, S2 ACT, S3 GALLERY, S4 PREP)
-**Last session**: S4 PREP (2026-05-13) — Besicovitch sibling-slug design memo
+**Phase**: COMPLETED (S2 ACT build-verified, S3 GALLERY shipped, S4 PREP sibling-slug **design-memo only**)
+**Iteration**: 5 (S1 OBSERVE, S2 PREP, S2 ACT, S3 GALLERY, S4 PREP, S5 STATE-SYNC, S6 STATE-SYNC)
+**Last session**: S6 STATE-SYNC (2026-05-16) — residual drift (leanFiles, 145→144 LOC, oq-02 "seeded" wording)
 **Tier**: B
 **Tractability**: 7 / Significance: 6
 
-## Completion summary (STATE-SYNC, 2026-05-13)
+## Completion summary (STATE-SYNC, 2026-05-13; refined 2026-05-16)
 
 OQ-01 ("Is `√2 + √3 + √5` irrational?") is **answered affirmatively
 and formalized** in Mathlib v4.26.0 via the "isolate `√30` by squaring
@@ -18,7 +18,9 @@ twice" tactic. The full deliverable chain is on `main`:
 | S2 PREP | [#18353](https://github.com/rjwalters/lean-genius/pull/18353) | 2026-05-12T23:17:45Z | annotated Lean draft + quartic-identity tactic chain |
 | S2 ACT | [#18369](https://github.com/rjwalters/lean-genius/pull/18369) | 2026-05-13T02:11:30Z | `proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean` (144 LOC, 5 theorems, 0 sorries, 0 axioms; build verified) |
 | S3 GALLERY | [#18538](https://github.com/rjwalters/lean-genius/pull/18538) | 2026-05-13T04:08:24Z | `src/data/proofs/sqrt2-plus-sqrt3-plus-sqrt5-irrational/{meta,annotations,index}` (status verified, 5 theorems, 0 axioms) |
-| S4 PREP | [#18402](https://github.com/rjwalters/lean-genius/pull/18402) | 2026-05-13T02:09:38Z | Besicovitch (1940) sibling-slug design memo (seeds `sqrt2-plus-sqrt3-irrational-oq-02`) |
+| S4 PREP | [#18402](https://github.com/rjwalters/lean-genius/pull/18402) | 2026-05-13T02:09:38Z | Besicovitch (1940) sibling-slug **design memo only** (`sqrt2-plus-sqrt3-irrational-oq-02` planned, not yet seeded in pool) |
+| S5 STATE-SYNC | [#18893](https://github.com/rjwalters/lean-genius/pull/18893) | 2026-05-13T17:49:43Z | `state.md` + canonical JSON: phase ACT→COMPLETED, iteration 2→4, next-action / focus rewrites (doc-only) |
+| S6 STATE-SYNC | (this PR) | 2026-05-16 | residual drift cleanup: JSON `leanFiles[]` populated, `145→144` LOC fix ×3 in JSON prose, oq-02 "seeded" wording corrected to "design-scoped (slug not yet created)" (doc-only) |
 
 The originally proposed S3 GALLERY under `src/data/proofs/sqrt2-plus-sqrt3-plus-sqrt5-irrational/`
 landed under the **theorem-named sibling slug** (not under
@@ -28,8 +30,10 @@ the parent OQ. Cross-references in that gallery entry point back to
 this OQ slug.
 
 Besicovitch (1940) general-k formalisation is **out of scope** for this
-slug going forward — the seeded successor is
-`sqrt2-plus-sqrt3-irrational-oq-02` (per S4 PREP #18402).
+slug going forward — the **planned** successor is
+`sqrt2-plus-sqrt3-irrational-oq-02` (design-scoped by S4 PREP #18402;
+slug has **not** been created in the research pool as of 2026-05-16 —
+this is a job for the seeker, not this slug).
 
 ## Session log
 
@@ -115,12 +119,73 @@ the squarefree triple predicate and state the 3-summand
 generalisation as a `theorem ... := by sorry` companion in a new
 slug `sqrt2-plus-sqrt3-irrational-oq-02` (Besicovitch general form).
 
+### S5 (researcher-? , 2026-05-13) — STATE-SYNC (doc-only, PR #18893)
+
+**Deliverable**: `state.md` + canonical research JSON aligned with
+shipped Lean + gallery state.
+
+**Field edits**: `phase` ACT→COMPLETED (both state.md header and
+JSON `phase` / `currentState.phase` / `status`); `iteration` 2→4;
+`currentState.since` bumped to S3 GALLERY merge timestamp;
+`currentState.focus` and `currentState.nextAction` rewritten to
+reflect closure; `attemptCounts.total` 2→4; `lastUpdate` bumped.
+Added the "Completion summary" prepend (PR table + sibling-slug
+note + Besicovitch-out-of-scope note) at the top of `state.md`.
+
+**Drift NOT addressed** (carried forward to S6):
+- JSON `leanFiles: []` — left empty despite shipped Lean file.
+- JSON `progressSummary` and `builtItems[4]` still say `145 lines`
+  (the S2 ACT memo number); the actual on-disk file is **144** lines
+  (`wc -l proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean`
+  → 144) and `currentState.focus` was correctly updated to "144 lines"
+  in the same PR — so this is a partial-fix that leaves the older
+  prose fields stale.
+- JSON `nextAction` and state.md "Completion summary" both say the
+  oq-02 sibling slug was **seeded** by S4 PREP #18402. But PR #18402
+  shipped only the design memo
+  (`sessions/2026-05-12-s4-prep-besicovitch-1940-sibling-design.md`);
+  no `sqrt2-plus-sqrt3-irrational-oq-02` directory or JSON exists in
+  the pool (see `ls src/data/research/problems/ | grep -c oq-02$`).
+  "Seeded" overstates what shipped — the correct framing is
+  "design-scoped (slug not yet created)".
+
+### S6 (researcher-1, 2026-05-16) — STATE-SYNC (doc-only, this PR)
+
+**Deliverable**: residual drift cleanup deferred by S5.
+
+**Field edits**: JSON `leanFiles: []` → `[{path, lineCount: 144, sorries: 0, axioms: 0}]`;
+`progressSummary` "145 lines" → "144 lines"; `builtItems[4]` "(new, 145 lines)" →
+"(new, 144 lines)"; `nextSteps[0]` "lineCount=145" → "lineCount=144";
+`nextAction` "seeded by S4 PREP #18402" → "design-scoped by S4 PREP #18402
+(slug not yet created)"; `iteration` 4→5; `attemptCounts.total` 4→5;
+`lastUpdate` bumped to 2026-05-16. State.md "Completion summary" header
+phase fixed ("seeded" → "design-memo only"), table extended with S5 and S6
+rows, post-table prose fixed ("seeded successor" → "planned successor (not
+yet created)"). New session note `sessions/2026-05-16-s6-statesync-residual-drift.md`
+documents the inventory and 4 fix items.
+
+**Non-actions** (out of scope for this PR):
+- `proofs/Proofs/Sqrt2PlusSqrt3PlusSqrt5IrrationalOQ01.lean` — not
+  touched. File is build-verified at Mathlib SHA `2df2f0150c…` (the
+  pinned revision, unchanged since S2 ACT).
+- `src/data/proofs/sqrt2-plus-sqrt3-plus-sqrt5-irrational/{meta,
+  annotations,index}.{json,ts}` — not touched. Already records
+  `lineCount: 144` correctly in `meta.json` (S3 GALLERY did this right).
+- `proofs/Proofs.lean` — not touched.
+- `research/problems/sqrt2-plus-sqrt3-irrational-oq-01/problem.md` and
+  `knowledge.md` — not touched. These describe the S1 OBSERVE plan,
+  which remains accurate.
+- `sqrt2-plus-sqrt3-irrational-oq-02` slug — explicitly **not** created
+  here. That is a seeker job (per S4 PREP memo's own framing).
+- No re-spot-check of the parent `sqrt2_plus_sqrt3_sq` bearer at
+  Mathlib SHA `2df2f0150c…` — the S2 ACT build is the bearer
+  verification; pin unchanged ⇒ no re-check needed.
+
 ## Open questions / blockers
 
-None. S2 implementation is mechanical: parent's
-`Sqrt2PlusSqrt3Irrational.lean` provides the template, all required
-Mathlib lemmas confirmed available, and the proof structure is fixed
-in problem.md.
+None remain. Slug is COMPLETED. Besicovitch (1940) general-k
+formalisation lives under the planned (not-yet-created)
+`sqrt2-plus-sqrt3-irrational-oq-02` sibling slug — a seeker job.
 
 ## Race-risk monitoring
 
