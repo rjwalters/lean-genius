@@ -1,6 +1,7 @@
 import Mathlib.CategoryTheory.EpiMono
 import Mathlib.CategoryTheory.Types.Basic
 import Mathlib.CategoryTheory.Discrete.Basic
+import Mathlib.CategoryTheory.Groupoid
 import Mathlib.SetTheory.Cardinal.SchroederBernstein
 import Mathlib.Topology.Category.TopCat.Basic
 import Mathlib.Topology.Category.TopCat.EpiMono
@@ -48,12 +49,27 @@ No sorries, no axioms.
    This abstracts the proof pattern of `hasSBP_Discrete` to all
    `IsDiscrete` categories; `Discrete α` is one such instance.
 
+## S11 ACT (this PR)
+
+6. Prove `hasSBP_of_isGroupoid : [IsGroupoid C] → HasSBP C` — a
+   second vacuous sufficient condition broadening the `IsDiscrete`
+   regime to all groupoids. Mathlib's `IsGroupoid.all_isIso`
+   (`Mathlib.CategoryTheory.Groupoid` line 119, registered as an
+   instance at line 121) makes every morphism iso, so the first mono
+   of a mutual-monomorphism pair is itself an iso witness — the
+   second mono is again unused. The hypothesis broadens
+   `hasSBP_of_isDiscrete`'s instance space from at-most-one-Hom-per-pair
+   to all groupoids (fundamental groupoids of spaces, Brandt
+   groupoids, `EssGroupoid`, etc.) while preserving the
+   `not_hasSBP_TopCat` sanity check (`TopCat` is not a groupoid:
+   inclusion `(0,1) ↪ [0,1]` lacks a continuous inverse).
+
 ## Future phases (not in this file)
 
-- Banaschewski-Brummer S7+ (non-vacuous): identify a sufficient
+- Banaschewski-Brummer S11+ (non-vacuous): identify a sufficient
   hypothesis that does NOT force `Mono = Iso`. Candidates:
-  regular-mono variants (RegularMono / StrongMono), groupoid
-  reductions of monoidal slices, retraction-conditions per
+  regular-mono variants (RegularMono / StrongMono), the fully-faithful
+  concrete path D.i per S10 PREP §3.2, retraction-conditions per
   Banaschewski-Brummer 1986. The S5 TopCat counterexample is a
   useful sanity check: any chosen hypothesis `P` must exclude
   `TopCat` (since `P TopCat -> HasSBP TopCat` would contradict
@@ -203,6 +219,46 @@ conditions) is deferred to S7+.
 category has the Schroeder-Bernstein property. Generalizes `hasSBP_Discrete`
 beyond `C = Discrete α`. -/
 theorem hasSBP_of_isDiscrete (C : Type*) [Category C] [IsDiscrete C] :
+    HasSBP C := by
+  intro _ _ ⟨m, _⟩ _
+  exact ⟨asIso m⟩
+
+/-! ## S11 ACT — `[IsGroupoid C] → HasSBP C` (vacuous-but-broadening)
+
+The second vacuous sufficient condition for the categorical
+Schroeder-Bernstein property: any `[IsGroupoid C]` category satisfies
+SBP because Mathlib's `IsGroupoid.all_isIso` instance (`Mathlib.
+CategoryTheory.Groupoid` line 119, registered as a global instance at
+line 121) makes every morphism an isomorphism. The first supplied mono
+therefore witnesses the required iso directly; the second mono is again
+unused.
+
+This broadens the `[IsDiscrete C] → HasSBP C` regime (S6 ACT) from
+"at most one morphism per object pair" to all groupoids — i.e. all
+categories where every morphism is invertible. Concrete additional
+instance space: fundamental groupoids of topological spaces, Brandt
+groupoids, the `EssGroupoid` of any category, action groupoids.
+
+The proof is one line (`asIso m`), structurally identical to
+`hasSBP_Discrete` / `hasSBP_of_isDiscrete`. What differs is the route
+to `IsIso m`: in S4 / S6 it comes from `isIso_of_isDiscrete`; here it
+comes from `IsGroupoid.all_isIso`.
+
+**Sanity vs S5**: `TopCat` is not a groupoid — the continuous inclusion
+`(0,1) ↪ [0,1]` has no continuous inverse — so this hypothesis does not
+contradict `not_hasSBP_TopCat`.
+
+**Vacuousness**: This is the **vacuous-but-broadening** half of the
+Banaschewski-Brümmer sufficient-condition map (forces `Mono = Iso`
+again). The first genuinely non-vacuous sufficient condition (path D.i
+fully-faithful concrete, per S10 PREP §3.2) is deferred to S12+.
+-/
+
+/-- **S11 ACT — vacuous-but-broadening sufficient condition for SBP**:
+any `[IsGroupoid C]` category has the Schroeder-Bernstein property.
+Broadens `hasSBP_of_isDiscrete` from at-most-one-Hom categories to all
+groupoids (every morphism iso). -/
+theorem hasSBP_of_isGroupoid (C : Type*) [Category C] [IsGroupoid C] :
     HasSBP C := by
   intro _ _ ⟨m, _⟩ _
   exact ⟨asIso m⟩

@@ -1,41 +1,48 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-14 (S6 ACT vacuous sufficient condition `[IsDiscrete C] → HasSBP C`, researcher-9), post-drain S7/S8/S9 PREPs (paths C/D/E feasibility, path-D.i refinement, Grp-counterexample audit)
-**Iteration**: 10
-**Last Updated**: 2026-05-15Z (S10 PREP STATE-SYNC, researcher-9; post-drain wave PR #19086 / #19158 / #19196 / #19259; iteration 7 → 10 catch-up + per-path ACT-readiness gate)
+**Since**: 2026-05-15 (S11 ACT vacuous-but-broadening sufficient condition `[IsGroupoid C] → HasSBP C`, researcher-5), realises S10 PREP §3.1 Path C
+**Iteration**: 11
+**Last Updated**: 2026-05-16Z (S11 ACT, researcher-5; realises S10 PREP §3.1 Path C; parent file 210→266 LOC; 1 new theorem, 0 sorries, 0 axioms; Docker build verified)
 
 ## Current Focus
 
-Through S6 the slug has accumulated a **four-theorem pos/neg corpus**
+Through S11 the slug now has a **five-theorem pos/neg corpus**
 for the categorical Schroeder–Bernstein predicate `HasSBP` in
-`proofs/Proofs/SchroederBernsteinOQ01.lean` (now ~200 LOC,
-4 public theorems, 0 sorries, 0 axioms, build verified).
+`proofs/Proofs/SchroederBernsteinOQ01.lean` (now ~266 LOC,
+5 public theorems, 0 sorries, 0 axioms, build verified).
 
 | Stage | Category | Theorem | Sign | Vacuous? | Build | Anchor PR |
 |---|---|---|---|---|---|---|
 | S2/S3 ACT | `Type u` | `hasSBP_Type` | + | non-vacuous (Mono = Injection ≠ Iso) | verified | #18383 |
 | S4 ACT    | `Discrete α` | `hasSBP_Discrete` | + | vacuous (every morph is iso) | verified | #18496 |
 | S5 ACT    | `TopCat.{0}` | `not_hasSBP_TopCat` | − | n/a (refutation) | verified | #18707 |
-| **S6 ACT** | **abstract `[IsDiscrete C]`** | **`hasSBP_of_isDiscrete`** | + | **vacuous (every morph is iso)** | **verified** | **this PR** |
+| S6 ACT    | abstract `[IsDiscrete C]` | `hasSBP_of_isDiscrete` | + | vacuous (every morph is iso) | verified | #19086 |
+| **S11 ACT** | **abstract `[IsGroupoid C]`** | **`hasSBP_of_isGroupoid`** | + | **vacuous-but-broadening** | **verified** | **this PR** |
 
-S6 ACT generalizes `hasSBP_Discrete`'s proof pattern beyond
-`C = Discrete α` to all categories `C` with Mathlib's
-`[IsDiscrete C]` typeclass (at most one morphism between objects,
-morphisms force `X = Y`). The substantive work is in Mathlib's
-`isIso_of_isDiscrete` instance (`Discrete/Basic.lean:342`); the
-categorical SBP reduction is one line (`asIso m`).
+S11 ACT broadens the `[IsDiscrete C] → HasSBP C` vacuous regime
+(S6 ACT) from "at most one morphism per object pair" to all
+groupoids via Mathlib's `IsGroupoid.all_isIso` instance
+(`Mathlib.CategoryTheory.Groupoid` line 119, registered as a global
+instance at line 121). Same one-line `asIso m` proof; what differs
+is the route to `IsIso m` (`IsGroupoid.all_isIso` vs S6's
+`isIso_of_isDiscrete`). Concrete additional instance space:
+fundamental groupoids of topological spaces, Brandt groupoids,
+`EssGroupoid` of any category, action groupoids.
 
-The S6 hypothesis is **the vacuous half of the Banaschewski–Brümmer
-1986 sufficient-condition map**: it forces `Mono = Iso` and so doesn't
-substantively use the mutual-mono hypothesis. The S5 TopCat
-counterexample remains a sanity check: any non-vacuous hypothesis
-*must exclude TopCat* (since `P TopCat → HasSBP TopCat` contradicts
-`not_hasSBP_TopCat`).
+The S11 hypothesis remains **vacuous** (forces `Mono = Iso` via
+`all_isIso`) and is therefore the **vacuous-but-broadening** half of
+the Banaschewski–Brümmer 1986 sufficient-condition map: it doesn't
+substantively use the mutual-mono hypothesis, but it covers
+strictly more categories than `IsDiscrete`. The S5 TopCat
+counterexample remains a sanity check: `TopCat` is not a groupoid
+(continuous inclusion `(0,1) ↪ [0,1]` has no continuous inverse), so
+no contradiction with `not_hasSBP_TopCat`.
 
-The next horizon (S7+) is a **non-vacuous** sufficient condition:
-Banaschewski–Brümmer 1986 "retraction condition", regular-mono
-variants, or groupoid reductions. The "complete characterization"
+The next horizon (S12+) is the **first genuinely non-vacuous**
+sufficient condition: path D.i fully-faithful concrete categories
+per S10 PREP §3.2 (~25-35 LOC), or the path D.ii / E long-horizon
+constructions per S10 PREP §3.3 / §3.4. The "complete characterization"
 half of the open question is a research-level survey goal (S20+
 ANALYSIS), not a near-term Lean target.
 
@@ -105,18 +112,22 @@ slice-category reformulation); the S6 researcher should reread the
 
 ## Next Action
 
-**S10 ACT (any researcher) — Path C ship (RECOMMENDED FIRST)**:
-Add `import Mathlib.CategoryTheory.Groupoid` and ship the 5-10 LOC
-`hasSBP_of_isGroupoid : ∀ (C : Type*) [Category C] [IsGroupoid C],
-HasSBP C := fun _ _ ⟨m, _⟩ _ ↦ ⟨asIso m⟩` theorem (5th positive instance
-in the corpus). Vacuous-broadening (`IsGroupoid.all_isIso` instance at
-`Mathlib/CategoryTheory/Groupoid.lean:121` makes every morph iso) but
-expands corpus to fundamental groupoids etc. Sanity: `TopCat` is not
-a groupoid; S5 `not_hasSBP_TopCat` survives. ACT-ready GREEN per S10
-PREP STATE-SYNC §4. Bearer pin verified at lake SHA `2df2f015...` per
-S10 §1.2 row 5.
+**S11 ACT — Path C SHIPPED** (this PR, researcher-5, 2026-05-16Z):
+Added `hasSBP_of_isGroupoid : ∀ (C : Type*) [Category C] [IsGroupoid C],
+HasSBP C := fun _ _ ⟨m, _⟩ _ ↦ ⟨asIso m⟩` (~5 LOC body + ~30 LOC
+docstring; parent file 210→266 LOC). 5th positive instance in the
+corpus. Vacuous-broadening (`IsGroupoid.all_isIso` instance at
+`Mathlib/CategoryTheory/Groupoid.lean:121` makes every morph iso),
+expanding to fundamental groupoids, Brandt groupoids, `EssGroupoid`,
+action groupoids. Sanity: `TopCat` is not a groupoid; S5
+`not_hasSBP_TopCat` survives. Bearer pin `IsGroupoid` /
+`all_isIso` verified at lake SHA `2df2f015...` per S10 §1.2 row 5
+(0 drift). Docker build verified — 3069/3069 jobs, 6.1s
+elaboration, 1 Docker iteration, identical job count to S6 ACT
+baseline (Groupoid import transitively present per S10 PREP §3.1
+forecast).
 
-**S11 ACT (any researcher) — Path D.i ship (RECOMMENDED SECOND)**:
+**S12 ACT (any researcher) — Path D.i ship (RECOMMENDED NEXT)**:
 Ship the 25-35 LOC `hasSBP_of_fullFaithful_forget` theorem under
 hypothesis `[ConcreteCategory C][(forget C).Full][(forget C).Faithful]
 [(forget C).PreservesMonomorphisms]`. **First genuinely non-vacuous**
@@ -125,6 +136,12 @@ subcategory of Type). Tactic skeleton in S10 §3.2 (lifted from S8 §3).
 Bearers verified per S10 §1.2 rows 1-3. Sanity: TopCat lacks
 `(forget TopCat).Full` (continuous maps ⊊ underlying functions);
 S5 survives. ACT-ready GREEN.
+
+**S13+ (deferred per S10 PREP §3.3/§3.4/§3.5)**:
+- Path D.ii abstract orbit construction (~150-250 LOC)
+- Path E Banaschewski-Brümmer 1986 retraction condition (~150-300 LOC)
+- `not_hasSBP_AddCommGrpCat` corpus expansion (~245-400 LOC, S9 §6),
+  blocked on problem.md S3 §2 line 70 amendment (S9 §8 Path (ii))
 
 Legacy three-path catalogue (preserved for reference):
 
@@ -261,18 +278,40 @@ Estimated S7 LOC: ~10 (path C), ~40-60 (path D), ~150-300 (path E).
   Supplies corrected candidate in `AddCommGrpCat` via Ulm-invariant
   separation (~245-400 LOC for S10+ ACT). Recommends doctor/auditor
   amendment of problem.md line 70 (deferred). PR #19259.
-- **S10 PREP STATE-SYNC** (2026-05-15, researcher-9, this PR):
-  catches state.md from iteration 7 → 10 after the S6/S7/S8/S9
-  drain wave. Per-path ACT-readiness gate at lake SHA
-  `2df2f015...` (5 critical bearers re-verified at unchanged SHA;
-  0 drift). Path C (`[IsGroupoid C]`, ~5-10 LOC, vacuous-broadening)
-  and Path D.i (`[ConcreteCategory C][(forget C).Full][(forget C).Faithful]
+- **S10 PREP STATE-SYNC** (2026-05-15, researcher-9): catches
+  state.md from iteration 7 → 10 after the S6/S7/S8/S9 drain wave.
+  Per-path ACT-readiness gate at lake SHA `2df2f015...` (5
+  critical bearers re-verified at unchanged SHA; 0 drift). Path C
+  (`[IsGroupoid C]`, ~5-10 LOC, vacuous-broadening) and Path D.i
+  (`[ConcreteCategory C][(forget C).Full][(forget C).Faithful]
   [(forget C).PreservesMonomorphisms]`, ~25-35 LOC, narrowly
   non-vacuous) are both **GREEN ACT-ready**. Recommended order:
   C → D.i. Path D.ii / Path E / `not_hasSBP_AddCommGrpCat`
   deferred past S10 (LOC scope or Mathlib audit). problem.md
   line 70 amendment recap (S9 §8 Path (ii)) — deferred to next
-  picker. See `sessions/2026-05-15-s10-prep-statesync.md`.
+  picker. PR #19369.
+- **S11 ACT** (2026-05-16, researcher-5, this PR): realises S10
+  PREP §3.1 Path C — adds `hasSBP_of_isGroupoid : ∀ (C : Type*)
+  [Category C] [IsGroupoid C], HasSBP C` to
+  `SchroederBernsteinOQ01.lean`. Broadens `hasSBP_of_isDiscrete`
+  (S6 ACT) from at-most-one-Hom categories to all groupoids via
+  Mathlib's `IsGroupoid.all_isIso` instance
+  (`Mathlib.CategoryTheory.Groupoid:119` registered global at line
+  121, pinned SHA `2df2f015...`). One-line proof body (`exact
+  ⟨asIso m⟩`), structurally identical to `hasSBP_Discrete` /
+  `hasSBP_of_isDiscrete`. +56 LOC (parent 210→266; 1 new theorem
+  +5-line body + ~30 docstring lines + 1 import + ~20-line section
+  preamble + header docstring §S11 ACT block). Vacuous (still forces
+  Mono = Iso) but broadens the corpus to fundamental groupoids,
+  Brandt groupoids, `EssGroupoid`, action groupoids. Sanity vs S5:
+  `TopCat` is not a groupoid; `not_hasSBP_TopCat` survives.
+  Bearer pin recheck: 0 drift (S10 §1.2 row 5 re-verified). Phase
+  remains ACT; iteration 10 → 11. Docker build verified:
+  `✔ [3069/3069] Built Proofs.SchroederBernsteinOQ01 (6.1s)`
+  (identical job count to S6 ACT baseline; Groupoid import
+  transitively present per S10 PREP §3.1 forecast). Next picker:
+  S12 Path D.i (first genuinely non-vacuous, ~25-35 LOC).
+  See `sessions/2026-05-15-s11-act-isgroupoid.md`.
 
 ## Drift / parent state
 
