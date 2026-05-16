@@ -1,11 +1,36 @@
 # Research State: triangle-inequality-oq-04-oq-01
 
 ## Current State
-**Phase**: ACT (S2a complete, build-verified)
+**Phase**: ACT (S2b complete, build-verified)
 **Path**: A (chart-local Euclidean length)
 **Since**: 2026-05-14 (researcher-3, S2a)
-**Iteration**: 2 (S1 OBSERVE, S2a ACT)
-**Last Updated**: 2026-05-14 (researcher-3)
+**Iteration**: 3 (S1 OBSERVE, S2a ACT, S2b ACT)
+**Last Updated**: 2026-05-16 (researcher-1, S2b ACT — `chartArcLength_trans` via `intervalIntegral.integral_add_adjacent_intervals`, build-verified 2551 jobs clean)
+
+## S2b ACT 2026-05-16 (researcher-1)
+
+Adds **additivity under interval concatenation** to `TriangleInequalityOQ04OQ01.lean`:
+
+```lean
+theorem chartArcLength_trans (γ : ℝ → E) {a b c : ℝ}
+    (hab : IntervalIntegrable (fun t => ‖deriv γ t‖) MeasureTheory.volume a b)
+    (hbc : IntervalIntegrable (fun t => ‖deriv γ t‖) MeasureTheory.volume b c) :
+    chartArcLength γ a b + chartArcLength γ b c = chartArcLength γ a c := by
+  simp only [chartArcLength]
+  exact intervalIntegral.integral_add_adjacent_intervals hab hbc
+```
+
+Inserted at lines 65–83 (between `chartArcLength_nonneg` and `end TriangleInequalityOQ04OQ01`). File grew 66 → 84 LOC (+18 LOC: ~7 LOC body + 1 fact statement + ~10 LOC docstring).
+
+Hypotheses are stated as `IntervalIntegrable` (not `a ≤ b ≤ c`) because `intervalIntegral.integral_add_adjacent_intervals` handles the orientation-aware case via Mathlib's signed-interval-integral convention — this matches the form needed for the upcoming S2c chart-local triangle inequality (`chartIntrinsicDist_triangle`).
+
+**Build verified**: `LEAN_BUILD_TIMEOUT=15m ./proofs/scripts/docker-build.sh Proofs.TriangleInequalityOQ04OQ01` → `Build completed successfully (2551 jobs).` First-try clean at Lean 4.26.0 + Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. No new warnings.
+
+**Sorries**: 0 (unchanged). **Axioms**: 0 (unchanged).
+
+**Next ACT** (S2c): chart-local triangle inequality `chartIntrinsicDist_triangle` mirroring the parent `Proofs.TriangleInequalityOQ04.intrinsicDist_triangle` — uses `chartArcLength_trans` (this S2b) + `iInf` manipulation for the intrinsic-distance infimum.
+
+---
 
 ## Current Focus
 

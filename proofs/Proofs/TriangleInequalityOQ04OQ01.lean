@@ -62,4 +62,23 @@ theorem chartArcLength_nonneg (γ : ℝ → E) {a b : ℝ} (hab : a ≤ b) :
     0 ≤ chartArcLength γ a b :=
   intervalIntegral.integral_nonneg hab (fun _ _ => norm_nonneg _)
 
+/-- **Additivity under interval concatenation** (S2b): for any three parameter
+points `a, b, c : ℝ` such that the speed `‖γ'(·)‖` is interval-integrable on
+both `[a, b]` and `[b, c]`, the chart-local arc lengths over those two
+intervals sum to the arc length over `[a, c]`.
+
+The hypotheses are stated as `IntervalIntegrable` rather than the more
+restrictive `a ≤ b ≤ c`, because `intervalIntegral.integral_add_adjacent_intervals`
+handles the orientation-aware case (`∫_{a..b} + ∫_{b..c} = ∫_{a..c}` for any
+ordering of `a, b, c`) via Mathlib's signed-interval-integral convention. This
+matches the form needed for the S2c chart-local triangle inequality
+(`chartIntrinsicDist_triangle`), where `b` is the intermediate endpoint of a
+broken path. -/
+theorem chartArcLength_trans (γ : ℝ → E) {a b c : ℝ}
+    (hab : IntervalIntegrable (fun t => ‖deriv γ t‖) MeasureTheory.volume a b)
+    (hbc : IntervalIntegrable (fun t => ‖deriv γ t‖) MeasureTheory.volume b c) :
+    chartArcLength γ a b + chartArcLength γ b c = chartArcLength γ a c := by
+  simp only [chartArcLength]
+  exact intervalIntegral.integral_add_adjacent_intervals hab hbc
+
 end TriangleInequalityOQ04OQ01
