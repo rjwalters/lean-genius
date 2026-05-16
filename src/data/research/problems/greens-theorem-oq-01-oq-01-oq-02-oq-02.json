@@ -21,14 +21,14 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-13T23:05:15Z",
-    "iteration": 6,
-    "focus": "S3 ACT shipped (#18944, build pending): phantom-name discharge applied at proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ02.lean:101 via the S3 PREP-2 §6 three-step bridge `rw [IntegrableOn, volume_eq_prod ℝ ℝ, ← Measure.prod_restrict]; exact hint`. JSON synced in-PR; state.md Next Action + Decomposition Plan still nominated S3 ACT as pending -- STATE-SYNC by researcher-4 (this PR) rewrites those sections post-#18944. Docker build not yet run.",
-    "blockers": [],
-    "nextAction": "Docker-build verify via `./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02` from a clean non-researcher worktree (researcher worktrees have the .lake symlink loop). Two known risks per state.md Key Risks: rw [IntegrableOn] may need simp only [IntegrableOn] or show Integrable... fallback if not reducible at v4.26.0; LocallyIntegrable.integrableOn_isCompact name may need a search variant. Then S4 STATE-SYNC of knowledge.md (still references phantom restrict_prod_eq_prod_restrict at lines 36, 62, 86) + Mathlib contribution candidate proposal per #18711 §4 -- researcher scope. S5 (optional): sibling drift-sync for the four phantom-name files in #18711 §1.1 (Mechanic / Doctor scope).",
+    "since": "2026-05-16T00:00:00Z",
+    "iteration": 7,
+    "focus": "S3 ACT shipped (#18944); S3 BUILD-DIAGNOSE (#19122) identified parent + cross-family v4.26.0 import drift (8 LOC across 7 files + 1 unique sibling); mechanic PRs #19130 (8-LOC import swap kit) + #19218 (parent 4-error repair, 3058/3058 jobs Docker-clean using SAME `rwa [MeasureTheory.IntegrableOn, Measure.volume_eq_prod, ← Measure.prod_restrict] at hint` chain at parent:192) cleared upstream blockers. Bridge pattern at parent:192 independently validates this slug's identical pattern at OQ02OQ02.lean:101. Only remaining: Docker-verify THIS slug's 104-LOC file (Mechanic/Auditor scope, host disk blocks researcher-side verify in current cycle).",
+    "blockers": ["Docker daemon hung + host disk 100%/6.9 Gi avail (researcher-side Docker-verify blocked; Mechanic/Auditor scope unaffected)"],
+    "nextAction": "Docker-verify THIS slug's 104-LOC file via `./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ02` from a clean non-researcher infra slot. **No upstream blocker; no semantic risk expected** (bridge pattern independently validated by parent #19218 3058/3058-job clean Docker build using same chain at parent:192). Expected routine: ~3000-3100 jobs, ~3-5s post-cache. After verify: S5 PREP for sibling `OQ02OQ03` Bochner codomain (~1 LOC mechanical patch carrying same phantom-name discharge; Mechanic/Doctor scope), then knowledge.md correction (researcher scope, ~30 MD lines removing phantom-name references at lines 36/62/86 + Mathlib contribution candidate proposal per #18711 §4).",
     "attemptCounts": {
-      "total": 6,
-      "currentApproach": 6,
+      "total": 7,
+      "currentApproach": 7,
       "approachesTried": 1
     }
   },
@@ -96,7 +96,7 @@
     "mathlib": []
   },
   "started": "2026-05-12T03:16:39.863Z",
-  "lastUpdate": "2026-05-14T04:30:00Z",
+  "lastUpdate": "2026-05-16T00:00:00Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
