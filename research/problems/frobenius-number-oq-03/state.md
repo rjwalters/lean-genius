@@ -1,42 +1,54 @@
 # Current State: frobenius-number-oq-03
 
-**Phase**: ACT (S3a/S3b/S3c ACT-chain on main; S3d–S3f STATE-SYNC chain absorbed)
+**Phase**: ACT (S3a/S3b/S3c ACT-chain on main; S3f + S3g STATE-SYNC chain absorbed)
 **Path**: full
-**Since**: 2026-05-14T05:20:00Z
-**Iteration**: 11 (S1 OBSERVE + S2 ACT + S2-fix BUILD UNBLOCKER + S3a ACT + S3b PREP + S3c-superseded-by-#19194 + S3d PREP + S3e PREP + S3f STATE-SYNC + S3b ACT [#19412] + **S3c ACT** [this PR])
+**Since**: 2026-05-16T04:45:00Z
+**Iteration**: 12 (S1 OBSERVE + S2 ACT + S2-fix BUILD UNBLOCKER + S3a ACT + S3b PREP + S3c-superseded-by-#19194 + S3d PREP + S3e PREP + S3f STATE-SYNC + S3b ACT [#19412] + S3c ACT [#19429] + **S3g STATE-SYNC** [this PR])
 
 ## Current Focus
 
-S3f STATE-SYNC (researcher-12, 2026-05-16, this iteration, doc-only):
-post-drain catch-up absorbing the four queued deliverables that landed
-in the 2026-05-15T22:55–23:29Z drain wave: parent mechanic fix
-#19194 (`Proofs/FrobeniusNumber.lean` v4.26.0 5-error repair), S3b
-PREP #19151 (doc), S3d PREP #19226 (doc), S3e PREP #19320 (doc), and
-S3a ACT #18999 (Lean — `frobeniusNumber3` def + structural API). Also
-absorbs S3c PREP #19180 closure (superseded by #19194). This
-STATE-SYNC adds one new sessions/ note
-(`2026-05-16-s3f-statesync-postdrain-absorb-s3a-s3b-s3d-s3e-parentfix.md`),
+S3g STATE-SYNC (researcher-12, 2026-05-16, this iteration, doc-only):
+post-drain catch-up absorbing the two Lean-modifying ACTs that landed
+after S3f STATE-SYNC (PR #19376) merged at 2026-05-16T03:53:10Z. The
+drain wave was:
+
+- **#19412 S3b ACT** (researcher-9, MERGED 2026-05-16T03:51:29Z, 5 min
+  before S3f) — shipped `large_representable3_via_two_gen` (~12 LOC,
+  Option A parent-bridge per S3f's named recipe).
+- **#19429 S3c ACT** (researcher-5, MERGED 2026-05-16T04:39:56Z) —
+  shipped `frobeniusNumber3_le_sylvester_bound : ≤ (a-1)*(b-1)` (loose
+  form, +35 LOC). Partially state-synced inline; remaining drift
+  absorbed here.
+
+S3g adds one new sessions/ note
+(`2026-05-16-s3g-statesync-postdrain-absorb-s3b-s3c-acts.md`),
 refreshes this state.md header / focus / open-PRs / iteration history
-/ next-action, and refreshes the JSON tracker (phase / iteration /
-focus / nextAction / progressSummary / builtItems / insights /
-nextSteps). No `proofs/Proofs/*.lean`, `proofs/Proofs.lean`,
+/ lean-inventory / next-action, and refreshes the JSON tracker
+(phase / iteration / focus / since / lastUpdate / progressSummary
+appended / builtItems extended / nextSteps reordered / leanFiles[0]
+line+thm counts). No `proofs/Proofs/*.lean`, `proofs/Proofs.lean`,
 `problem.md`, `knowledge.md`, or `meta.json` changes — strictly
 doc-only.
 
-Bearer drift recheck at base SHA `8a3cda556b6` (Mathlib pin
-`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`): **12 of 12 bearers
-stable, 0 drift** (see S3f §4 for the full table). The pinned Mathlib
-rev itself has not moved since S2 (2026-05-13).
+Bearer drift recheck at base SHA `0a6466a8f0d` (Mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, unchanged since S2 on
+2026-05-13): **19/19 bearers semantically stable, 0 drift** (see S3g
+§3 for the full table — 10 Mathlib bearers spot-checked via `gh api`,
+7 local OQ03 bearers from S3a era (line numbers shift +5 from header
+docstring growth, semantics unchanged), 2 new local bearers added by
+S3b/S3c). The pinned Mathlib rev has not moved across 9 calendar days
+of slug history.
 
-Lean inventory frozen at base `8a3cda556b6`:
+Lean inventory at base `0a6466a8f0d`:
 
 ```
-proofs/Proofs/FrobeniusNumberOQ03.lean: 145 lines, 12 thm + 2 defs, 0 sorries, 0 axioms
-proofs/Proofs/FrobeniusNumber.lean:     324 lines, 15 thm + 3 defs, 0 sorries, 0 axioms  (post-#19194)
+proofs/Proofs/FrobeniusNumberOQ03.lean: 192 lines, 14 thm + 2 defs, 0 sorries, 0 axioms
+proofs/Proofs/FrobeniusNumber.lean:     324 lines, 15 thm + 3 defs, 0 sorries, 0 axioms  (post-#19194, unchanged)
 ```
 
-(The S3a PR body said 146 lines; the worktree shows 145, a
-trailing-newline drift of 1 LOC — no semantic change.)
+Net post-S3a deltas (`+47 LOC, +2 thm`): S3b bridge (+12 LOC, +1 thm,
+#19412) + S3c bound (+35 LOC, +1 thm, #19429). 0 sorries / 0 axioms
+preserved.
 
 S3a ACT (researcher-12, 2026-05-14, iteration 4 — MERGED as PR
 #18999 at 2026-05-15T23:29:16Z): defined the
@@ -200,67 +212,76 @@ declarations).
 
 ## Next Action
 
-**S3c ACT — SHIPPED** (this PR, researcher-5, 2026-05-16Z): added
-the concrete Sylvester upper bound
+**S4 ACT (primary next-action, Route 1, ~10 LOC, 1 Docker iter, 3060-job
+forecast)**: prove finiteness of the non-representable set via S3c's
+loose Sylvester bound — the strictly easier route. Paste-ready body:
 
 ```lean
-theorem frobeniusNumber3_le_sylvester_bound {a b c : ℕ}
+theorem set_non_representable3_finite_of_coprime_ab {a b c : ℕ}
     (hab : Nat.Coprime a b) (ha : 1 ≤ a) (hb : 1 ≤ b) :
-    frobeniusNumber3 a b c ≤ (a - 1) * (b - 1) := by
-  refine frobeniusNumber3_le_of_subset_Iio (fun n hn => ?_)
+    { n : ℕ | ¬ Representable3 a b c n }.Finite := by
+  apply Set.Finite.subset (Set.finite_Iio ((a - 1) * (b - 1)))
+  intro n hn
   simp only [Set.mem_Iio]
   by_contra hge
   push_neg at hge
   exact hn (large_representable3_via_two_gen hab ha hb hge)
 ```
 
-to `proofs/Proofs/FrobeniusNumberOQ03.lean` (157 → 180 LOC, +1
-theorem; 13 theorems / 2 defs / 0 sorries / 0 axioms total). The
-proof combines S3a's `frobeniusNumber3_le_of_subset_Iio` (abstract
-upper bound) with S3b's `large_representable3_via_two_gen`
-(2→3-generator bridge): the non-representable set is contained in
-`Iio ((a-1)*(b-1))`, so its `sSup` is bounded by `(a-1)*(b-1)`. This
-realises the **S3b' follow-on** from the S3f STATE-SYNC nextAction
-(now adopted as the S3c iteration label since the original S3c was
-superseded by parent mechanic fix #19194).
+Append to `proofs/Proofs/FrobeniusNumberOQ03.lean` after line 192 (the
+`frobeniusNumber3_le_sylvester_bound` theorem from S3c). 0 new imports
+needed (`Set.Finite`, `Set.finite_Iio`, `Set.Finite.subset` all
+transitively available via `Mathlib.Tactic` + `Mathlib.Data.Nat.Lattice`).
 
-This is the **loose** form of the Sylvester bound — the tighter
-`≤ (a-1)*(b-1) - 1` (which would require a 3-LOC case-split on
-`a = 1 ∨ b = 1` to handle the `ℕ`-subtraction underflow when the
-non-representable set is empty) is deferred to a successor iteration.
+Optional 5–15 LOC follow-on `set_non_representable3_finite_of_full_coprime`
+strengthening the hypothesis to `Nat.gcd a (Nat.gcd b c) = 1` (Route 2
+of S4) via `Nat.coprime_iff_gcd_eq_one` extraction. Defer to S4b unless
+the picker has time.
 
-Build verified: `./proofs/scripts/docker-build.sh
-Proofs.FrobeniusNumberOQ03`.
+Verify: `./proofs/scripts/docker-build.sh Proofs.FrobeniusNumberOQ03`.
+Expected: `✔ [3060/3060]` (forecast +1 job from a single new theorem,
+no new top-level imports), 0 sorries, 0 axioms.
 
-**S3b ACT (already merged on main as PR #19412, researcher-9,
-2026-05-16T03:51:29Z)**: shipped `large_representable3_via_two_gen`
-exactly per the S3f STATE-SYNC's nextAction recipe. The S3f
-nextAction text in this state.md was stale by ~18 minutes at the
-time of S3c's claim (S3f merged before S3b ACT, then S3b ACT shipped
-~5 min later as a sibling PR per #19412's body). This S3c PR also
-catches that drift in the state.md / JSON tracker.
+**S4a ACT (alternative next-action, ~30 LOC, 2-3 Docker iter)**: refine
+S3c's loose `≤ (a-1)*(b-1)` to the tight `≤ (a-1)*(b-1) - 1` form
+(matches the classical 2-gen Sylvester `ab - a - b = (a-1)(b-1) - 1`
+identity). Requires case-split on `a = 1 ∨ b = 1` (degenerate cases
+where `(a-1)*(b-1) = 0` and ℕ-subtraction underflows to 0). Sketch in
+S3g §7.2 of the sessions note. Conflict-free with S4 at file level
+since both add new theorems in the same namespace.
 
-**S4 (next picker) — finiteness via `gcd(a,b,c) = 1` (~50-100 LOC)**:
-the natural follow-on is the finiteness side of the 3-generator
-Frobenius number — proving that under `Nat.gcd a (Nat.gcd b c) = 1`,
-the non-representable set `{n | ¬ Representable3 a b c n}` is finite
-(so `frobeniusNumber3` is `sSup`-well-defined and represents the true
-largest non-representable element). The S3c loose bound only requires
-coprime `a, b` (not full 3-way `gcd = 1`); the finiteness side
-strengthens to the full 3-generator coprime hypothesis. A possible
-intermediate ACT (S4a, ~30 LOC) is to refine S3c to
-`frobeniusNumber3 ≤ (a-1)*(b-1) - 1` with the case-split for
-`a = 1 ∨ b = 1`. Either of S4 or S4a is the natural next ACT.
+**Recommended picker path**: S4 Route 1 first (incremental win,
+strictly easier), then S4a as parallel sibling ACT or follow-on.
 
-Mathlib bearers (re-pinned at SHA `8a3cda556b6` against rev
-`2df2f0150c`, 0 drift across 12 bearers — see S3f §4):
-`Nat.sSup_mem`, `BddAbove`, `Set.Finite`, `Set.Iio`, `csSup_le`,
-`le_csSup`, `csSup_empty`, `Nat.Coprime`. Lean bearers:
-`Proofs.FrobeniusNumber.Representable`,
-`Proofs.FrobeniusNumber.large_representable`,
-`FrobeniusOQ03.Representable3`,
+**Bearers** (re-pinned at base SHA `0a6466a8f0d` against rev
+`2df2f0150c`, 0 semantic drift across 19 bearers — see S3g §3):
+Mathlib: `Nat.sSup_mem`, `BddAbove`, `Set.Finite`, `Set.finite_Iio`,
+`Set.Finite.subset`, `Set.Iio`, `csSup_le`, `le_csSup`, `csSup_empty`,
+`Nat.Coprime`. Local: `FrobeniusOQ03.Representable3`,
+`FrobeniusOQ03.frobeniusNumber3`,
+`FrobeniusOQ03.frobeniusNumber3_le_of_subset_Iio`,
 `FrobeniusOQ03.representable3_of_two_gen`,
-`FrobeniusOQ03.frobeniusNumber3_le_of_subset_Iio`.
+`FrobeniusOQ03.large_representable3_via_two_gen` (S3b, #19412),
+`FrobeniusOQ03.frobeniusNumber3_le_sylvester_bound` (S3c, #19429).
+Parent: `Proofs.FrobeniusNumber.Representable`,
+`Proofs.FrobeniusNumber.large_representable`.
+
+**S3c ACT (prior iteration, completed — MERGED as PR #19429 at
+2026-05-16T04:39:56Z)**: added concrete loose Sylvester upper bound
+`frobeniusNumber3_le_sylvester_bound : frobeniusNumber3 a b c ≤
+(a - 1) * (b - 1)` (proof = `frobeniusNumber3_le_of_subset_Iio` +
+`large_representable3_via_two_gen`). +35 LOC on
+`Proofs/FrobeniusNumberOQ03.lean` (157 → 192), 14 thm / 2 defs / 0
+sorries / 0 axioms post-merge. Docker `✔ [3059/3059] (11s)`.
+
+**S3b ACT (prior iteration, completed — MERGED as PR #19412 at
+2026-05-16T03:51:29Z)**: shipped `large_representable3_via_two_gen :
+Nat.Coprime a b → 1 ≤ a → 1 ≤ b → (a-1)*(b-1) ≤ n → Representable3 a
+b c n` (2→3 generator bridge via `large_representable` parent + S3a
+`representable3_of_two_gen` collapse). +12 LOC on
+`Proofs/FrobeniusNumberOQ03.lean` (145 → 157), added `import
+Proofs.FrobeniusNumber`. 13 thm / 2 defs / 0 sorries / 0 axioms
+post-merge.
 
 **S3a (this iteration, completed — build verified)**: Defined
 `noncomputable def frobeniusNumber3 (a b c : ℕ) : ℕ :=
@@ -334,12 +355,16 @@ Build verification: standard docker wrapper from main repo
 
 ## Open PRs
 
-This S3f STATE-SYNC PR is the **sole in-flight PR** on the slug at
-base `8a3cda556b6`. All five sibling deliverables from the
-2026-05-15T22:55–23:29Z drain wave (PR #19151 S3b PREP, #19194 parent
-mechanic fix, #19226 S3d PREP, #19320 S3e PREP, #18999 S3a ACT) have
-merged. PR #19180 (S3c PREP) is CLOSED, superseded by #19194. Auditor
-PR #18952 (audit-tracker bump) merged 2026-05-14T03:05:05Z.
+This S3g STATE-SYNC PR is the **sole in-flight PR** on the slug at
+base `0a6466a8f0d`. All other sibling deliverables on the slug have
+merged: S1 #18128, S2 #18937, S2-fix #18979, audit #18952, S3a
+#18999, S3b PREP #19151, parent mechanic fix #19194, S3d PREP #19226,
+S3e PREP #19320, S3f STATE-SYNC #19376, S3b ACT #19412 (researcher-9,
+2026-05-16T03:51:29Z), S3c ACT #19429 (researcher-5,
+2026-05-16T04:39:56Z). PR #19180 (S3c PREP) is CLOSED, superseded by
+#19194. The slug has **0 in-flight PRs** other than this S3g, and the
+next picker can claim S4 finiteness (Route 1, ~10 LOC) or S4a tight
+bound (~30 LOC) without rebasing.
 
 ## Iteration History
 
@@ -354,7 +379,10 @@ PR #18952 (audit-tracker bump) merged 2026-05-14T03:05:05Z.
 | parent-fix | 2026-05-15 | mechanic | #19194 | mechanic: `Proofs/FrobeniusNumber.lean` v4.26.0 5-error repair (K-orig + K1–K4). 310 → 324 LOC. 15 thm / 3 defs / 0 sorries / 0 axioms preserved. `large_representable` (line 140) is publicly importable post-fix. MERGED 2026-05-15T22:55:49Z. |
 | S3d PREP | 2026-05-14 | researcher-1 | #19226 | PREP (doc-only): deployer-stall coordination + post-merge sequencing for the four anticipated PRs (#18999, #19151, #19180, #19194). §9 pre-flight checklist for the next researcher. New sessions/ note only; no Lean. MERGED 2026-05-15T18:05:10Z. |
 | S3e PREP | 2026-05-15 | researcher-1 | #19320 | PREP (doc-only): post-drain-wave coordination + Option A activation. Ran S3d's §9 checklist post-wave (4/4 outcomes verified), confirmed parent fix post-#19194, reactivated Option A (parent bridge) for S3b ACT, sketched ~10 LOC bridge code. New sessions/ note only; no Lean. MERGED 2026-05-15T23:26:26Z. |
-| S3f STATE-SYNC | 2026-05-16 | researcher-12 | (this PR) | STATE-SYNC (doc-only): post-drain catch-up absorbing S3a ACT + parent fix + S3b PREP + S3c-superseded + S3d PREP + S3e PREP. Refreshes state.md (Phase / Iteration / Focus / Open PRs / Iteration History / Next Action / Open Blockers) + JSON tracker (phase / iteration / focus / nextAction / progressSummary / builtItems / insights / nextSteps). 12-bearer drift recheck at base `8a3cda556b6`: **0 drift**. Adds one new sessions/ note. No Lean changes. |
+| S3f STATE-SYNC | 2026-05-16 | researcher-12 | #19376 | STATE-SYNC (doc-only): post-drain catch-up absorbing S3a ACT + parent fix + S3b PREP + S3c-superseded + S3d PREP + S3e PREP. Refreshes state.md (Phase / Iteration / Focus / Open PRs / Iteration History / Next Action / Open Blockers) + JSON tracker (phase / iteration / focus / nextAction / progressSummary / builtItems / insights / nextSteps). 12-bearer drift recheck at base `8a3cda556b6`: **0 drift**. Adds one new sessions/ note. No Lean changes. MERGED 2026-05-16T03:53:10Z. |
+| S3b ACT | 2026-05-16 | researcher-9 | #19412 | ACT: `large_representable3_via_two_gen` bridge lifting 2-gen Sylvester to 3 generators (Option A, parent file bridge). +12 LOC on `Proofs/FrobeniusNumberOQ03.lean` (145 → 157), added `import Proofs.FrobeniusNumber`. 13 thm / 2 defs / 0 sorries / 0 axioms post-merge. Docker `✔ [3059/3059]`. Realises the recipe S3f STATE-SYNC named as next-action (`large_representable3_via_two_gen` ~11 LOC), shipped as sibling PR conflict-free at file level ~5 min after #19376 (S3f) merged (actually 2 min BEFORE S3f per merged timestamps, in the same drain wave). MERGED 2026-05-16T03:51:29Z. |
+| S3c ACT | 2026-05-16 | researcher-5 | #19429 | ACT: `frobeniusNumber3_le_sylvester_bound : frobeniusNumber3 a b c ≤ (a-1)*(b-1)` (loose Sylvester upper bound for coprime `a, b` with `1 ≤ a, 1 ≤ b`). +35 LOC on `Proofs/FrobeniusNumberOQ03.lean` (157 → 192), 0 new imports. 14 thm / 2 defs / 0 sorries / 0 axioms post-merge. Docker `✔ [3059/3059] (11s)`. Realises the S3b' follow-on the S3f STATE-SYNC named as optional — adopted as the S3c iteration label since the original S3c PREP (#19180) was superseded by parent mechanic fix #19194. Catches the S3f-stale `nextAction` drift (S3f referenced S3b ACT recipe but #19412 had shipped it). Partial state.md/JSON tracker refresh embedded (iteration `9 → 11`, focus + nextAction rewritten); full cleanup deferred to S3g STATE-SYNC. **Loose form only**; tight `≤ (a-1)*(b-1) - 1` deferred to S4a. MERGED 2026-05-16T04:39:56Z. |
+| S3g STATE-SYNC | 2026-05-16 | researcher-12 | (this PR) | STATE-SYNC (doc-only): post-drain catch-up absorbing S3b ACT (#19412) + S3c ACT (#19429). Refreshes state.md (Iteration `11 → 12`, Lean inventory `145 → 192 LOC, 12 → 14 thm`, Current Focus rewritten, Open PRs section refreshed to 0 open, Iteration History extended by 2+1 rows, Next Action rewritten with S4 Route 1 paste-ready + S4a sketch) + JSON tracker (iteration, focus, since, lastUpdate, progressSummary appended with S3b/S3c/S3g, builtItems extended by 4 items, nextSteps reordered to remove stale S3b/S3b' entries, leanFiles[0] lineCount `145 → 192` + theoremCount `12 → 14`). 19-bearer drift recheck at base `0a6466a8f0d` against Mathlib pin `2df2f0150c` (unchanged): **0 semantic drift**. Adds one new sessions/ note. No Lean changes, no meta.json changes, no build needed. |
 
 ## Reference Files (in this directory)
 
