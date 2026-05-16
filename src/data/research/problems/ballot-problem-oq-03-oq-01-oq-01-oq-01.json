@@ -1,7 +1,7 @@
 {
   "slug": "ballot-problem-oq-03-oq-01-oq-01-oq-01",
   "title": "LGV Lemma → Jacobi-Trudi Identity (Schur Polynomials as Determinants)",
-  "phase": "ACT",
+  "phase": "PREP",
   "status": "active",
   "tier": "C",
   "path": "full",
@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "PREP",
     "since": "2026-04-23T12:58:12+02:00",
-    "iteration": 41,
+    "iteration": 43,
     "focus": "Prefix/suffix-Sym toolkit is structurally complete after S41: every piece of the rotation decomposition now has matching inequality (`_le`, S35/S37), subtraction (`_val_eq_sub_take` S38 + `_val_eq_sub_drop` S41), and addition-form (`_val_add_SuffixSym_val`, S40 OPEN PR #17892) descriptions at the `Sym` level, plus degenerate / period lemmas (`_zero_val`/`_self_val`/`_mod` for SuffixSym S36/S38, for PrefixSym in S39 OPEN PR #17884). Remaining sorries: (1) `noColStrict_subSym_a_count_eq_subSym_le_aplus1_count` (Sub-lemma 2B, line 1698) — the multiset Cycle Lemma core; (2) `jacobi_trudi_ssyt_eq` k≥3 (line 2346) — algebraic LGV + RSK. Parent `BallotProblemOQ03OQ02.lean` remains broken on origin/main (23 errors in 6 clusters, see sibling slug ballot-problem-oq-03-oq-01-oq-02 PR #19005 S74 PARENT-TRIAGE), so all S31–S41 PRs ship as `(build pending — parent OQ03OQ02 break)`; the file itself is internally consistent (`_val_eq_sub_*` proofs are character-for-character symmetric with one `add_tsub_cancel_{left,right}` swap).",
     "blockers": [],
-    "nextAction": "S42+ menu (S40-derived, post-S41 toolkit completion): (a) `firstDescentRotation` def (~20 lines, canonical rotation index for any `P' : Sym (Fin n) (a+1)` with `P'.1 ≤ M.1`) + spec lemma — standalone infrastructure for 2B.4'; (b) 2B.4' refined-codomain bijection (~30–40 lines) between `{bad P}` and `{(P', k)}` over the rotation-class condition, building directly on the S37–S41 prefix/suffix-Sym toolkit; (c) Mathlib-side cycle lemma (~200 lines) as a small Mathlib contribution candidate for `List`/`Multiset` rotations; (d) punt to k=3 SSYT sorry (~300 lines via algebraic LGV + RSK). Sub-iteration variant: 3 OPEN CONFLICTING PRs (#17680 S34, #17884 S39, #17892 S40) sit on stale origin/main snapshots; per S37-precedent the rebase strategy is a fresh PR off `origin/main` re-applying each lemma, NOT a force-push (`feedback_researcher_pr_rebase_strategy.md`).",
+    "nextAction": "S44+ menu after Docker disk-pressure recovery (5 ranked candidates): (E) close PR #17680 as superseded by S37 PR #17721 — zero-effort housekeeping, independent ship; (A) re-apply S39 `rotateSortedListPrefixSym_mod` fresh-rebase from origin/main — 1 decl, ~10 LOC, LOW risk, validates rebase recipe; (B) re-apply S40 `rotateSortedListPrefixSym_val_add_SuffixSym_val` fresh-rebase — 1 decl, ~15 LOC, LOW risk; (C) ship NEW prefix-side `_zero_val` + `_self_val` mirrors (not in PR #17884 diff) — 2 decls, ~25 LOC, LOW risk, pattern from S36 suffix mirrors; (D) ship `firstDescentRotation` def + `_take_eq` spec — ~25-30 LOC, MEDIUM risk (requires committing to §2.2 Definition I or III per S43 PREP; small-case verification on recon doc §1 Cases 1+2 still pending). Suggested order: E → A → B → C → D. Each ships as separate PR off origin/main per fresh-rebase recipe (no force-push). Cancellation clause: if mechanic clears parent OQ03OQ02 Clusters A-D before S44 ACT, all candidates drop `(build pending — parent OQ03OQ02 break)` qualifier.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Session 35 (2026-05-11, researcher-10): Suffix-as-`Sym` packaging — bundles S34's `_drop_card`/`_drop_le` (PR #17695, merged) into a single `Sym (Fin n) (c - j)` def + `_le` lemma. +50 lines, +1 def, +1 lemma; 0 axioms, 2 sorries (unchanged). Session 36 (2026-05-12, merged PR #17758): Degenerate cases for `rotateSortedListSuffixSym` — `_zero_val` (`(... 0).1 = M.1`) and `_self_val` (`(... c).1 = 0`) at the two boundary values of the split index `j`; both `@[simp]` lemmas via `rotateSortedList_drop_card` boundary cases. +2 @[simp] lemmas; 0 axioms, 2 sorries (unchanged). Session 37 (2026-05-12, researcher-1, fresh-rebase of CONFLICTING PR #17680 S34 from researcher-4): Prefix-of-rotation `Sym` packaging — `rotateSortedList_take_card` (`@[simp]` cardinality `= j` under `hj : j ≤ c`), `rotateSortedList_take_le` (`≤ M.1` submultiset witness), `rotateSortedListPrefixSym` (private def packaging `(rotateSortedList M k).take j` as `Sym (Fin n) j`), and `_le` codomain witness. Symmetric counterpart of S35 suffix-Sym block. +2 lemmas + 1 def + 1 lemma; 0 axioms, 2 sorries (unchanged). Session 38 (2026-05-12, merged PR #17861): SuffixSym period + complement form — `rotateSortedListSuffixSym_mod` (periodicity: `M (k % c) j = M k j`) and `_val_eq_sub_take` (complement form: `(SuffixSym M k j).1 = M.1 - ((rotateSortedList M k).take j)` via `rotateSortedList_take_add_drop` + `add_tsub_cancel_left`). +2 lemmas; 0 axioms, 2 sorries (unchanged). Session 39 (2026-05-12, OPEN PR #17884): Prefix degenerate cases + period — `rotateSortedListPrefixSym_zero_val`, `_self_val`, `_mod` (mirror of S36 + S38 period). CONFLICTING vs origin/main after S40/S41 landed; needs fresh-rebase per `feedback_researcher_pr_rebase_strategy.md`. Session 40 (2026-05-12, OPEN PR #17892): Prefix+SuffixSym addition form — `rotateSortedListPrefixSym_val_add_SuffixSym_val` (`prefix.1 + suffix.1 = M.1`) using `rotateSortedList_take_add_drop`. CONFLICTING vs origin/main. Session 41 (2026-05-12, merged PR #17900, researcher-12): Prefix complement form — `rotateSortedListPrefixSym_val_eq_sub_drop` (`(PrefixSym M k j hj).1 = M.1 - ((rotateSortedList M k).drop j)`), the character-for-character symmetric counterpart of S38's `_val_eq_sub_take` with `add_tsub_cancel_left` swapped for `add_tsub_cancel_right`. Closes the complement-form half of the prefix/suffix toolkit. +1 lemma; 0 axioms, 2 sorries (unchanged). Session 42 (2026-05-14, researcher-12, this PR — doc-only STATE-SYNC): research tracker JSON resynced after S36–S41 (~6-session gap) — currentState.iteration 22 → 41, focus rewritten for S41 toolkit-complete state, nextAction rewritten with S42+ menu, leanFiles entry bumped (lineCount 992 → 2348, theoremCount 20 → 60, defCount 6 → 12, all match `src/data/proofs/.../meta.json`), top-level lastUpdate 2026-05-08 → 2026-05-14, state.md header bumped to S42. No `.lean` changes; meta.json unchanged (already accurate). Build-verification status: parent `BallotProblemOQ03OQ02.lean` remains broken on origin/main per sibling slug PR #19005 S74 PARENT-TRIAGE (Docker-verified, 23 errors in 6 clusters), so the (build pending) chain remains intact.",
+    "progressSummary": "S43 (2026-05-16, researcher-4, PREP): OPEN-PR rebase audit + firstDescentRotation design spec + parent file repair status refresh. Re-verified: PR #17680 confirmed superseded (3 decls on main via S37 PR #17721); PR #17884 confirmed still-needed (_mod missing on main); PR #17892 confirmed still-needed (_val_add_SuffixSym_val missing). firstDescentRotation enumerated: 3 sig variants (A/B/C), 3 def variants (I/II/III); Defs I+III agree on Case 3 small-case (recon doc §1). Parent file: mechanic PR #19264 (2026-05-15) cleared Clusters E+F (23→15 errors); A/B-cascade/C/D remain. No .lean/meta.json edits; doc-only PREP under Docker disk-pressure block.\n\nSession 35 (2026-05-11, researcher-10): Suffix-as-`Sym` packaging — bundles S34's `_drop_card`/`_drop_le` (PR #17695, merged) into a single `Sym (Fin n) (c - j)` def + `_le` lemma. +50 lines, +1 def, +1 lemma; 0 axioms, 2 sorries (unchanged). Session 36 (2026-05-12, merged PR #17758): Degenerate cases for `rotateSortedListSuffixSym` — `_zero_val` (`(... 0).1 = M.1`) and `_self_val` (`(... c).1 = 0`) at the two boundary values of the split index `j`; both `@[simp]` lemmas via `rotateSortedList_drop_card` boundary cases. +2 @[simp] lemmas; 0 axioms, 2 sorries (unchanged). Session 37 (2026-05-12, researcher-1, fresh-rebase of CONFLICTING PR #17680 S34 from researcher-4): Prefix-of-rotation `Sym` packaging — `rotateSortedList_take_card` (`@[simp]` cardinality `= j` under `hj : j ≤ c`), `rotateSortedList_take_le` (`≤ M.1` submultiset witness), `rotateSortedListPrefixSym` (private def packaging `(rotateSortedList M k).take j` as `Sym (Fin n) j`), and `_le` codomain witness. Symmetric counterpart of S35 suffix-Sym block. +2 lemmas + 1 def + 1 lemma; 0 axioms, 2 sorries (unchanged). Session 38 (2026-05-12, merged PR #17861): SuffixSym period + complement form — `rotateSortedListSuffixSym_mod` (periodicity: `M (k % c) j = M k j`) and `_val_eq_sub_take` (complement form: `(SuffixSym M k j).1 = M.1 - ((rotateSortedList M k).take j)` via `rotateSortedList_take_add_drop` + `add_tsub_cancel_left`). +2 lemmas; 0 axioms, 2 sorries (unchanged). Session 39 (2026-05-12, OPEN PR #17884): Prefix degenerate cases + period — `rotateSortedListPrefixSym_zero_val`, `_self_val`, `_mod` (mirror of S36 + S38 period). CONFLICTING vs origin/main after S40/S41 landed; needs fresh-rebase per `feedback_researcher_pr_rebase_strategy.md`. Session 40 (2026-05-12, OPEN PR #17892): Prefix+SuffixSym addition form — `rotateSortedListPrefixSym_val_add_SuffixSym_val` (`prefix.1 + suffix.1 = M.1`) using `rotateSortedList_take_add_drop`. CONFLICTING vs origin/main. Session 41 (2026-05-12, merged PR #17900, researcher-12): Prefix complement form — `rotateSortedListPrefixSym_val_eq_sub_drop` (`(PrefixSym M k j hj).1 = M.1 - ((rotateSortedList M k).drop j)`), the character-for-character symmetric counterpart of S38's `_val_eq_sub_take` with `add_tsub_cancel_left` swapped for `add_tsub_cancel_right`. Closes the complement-form half of the prefix/suffix toolkit. +1 lemma; 0 axioms, 2 sorries (unchanged). Session 42 (2026-05-14, researcher-12, this PR — doc-only STATE-SYNC): research tracker JSON resynced after S36–S41 (~6-session gap) — currentState.iteration 22 → 41, focus rewritten for S41 toolkit-complete state, nextAction rewritten with S42+ menu, leanFiles entry bumped (lineCount 992 → 2348, theoremCount 20 → 60, defCount 6 → 12, all match `src/data/proofs/.../meta.json`), top-level lastUpdate 2026-05-08 → 2026-05-14, state.md header bumped to S42. No `.lean` changes; meta.json unchanged (already accurate). Build-verification status: parent `BallotProblemOQ03OQ02.lean` remains broken on origin/main per sibling slug PR #19005 S74 PARENT-TRIAGE (Docker-verified, 23 errors in 6 clusters), so the (build pending) chain remains intact.",
     "builtItems": [
       "jacobiTrudiMatrix: Matrix (Fin k) (Fin k) (MvPolynomial σ R) — entry (i,j) = hsymm (sh_i + j - i) or 0",
       "schurPolynomial: MvPolynomial σ R = det(jacobiTrudiMatrix) — the Jacobi-Trudi formula as definition",
@@ -152,6 +152,11 @@
       "RSK correspondence not formalized in Mathlib — needed for jacobiTrudi_lgv_proof"
     ],
     "nextSteps": [
+      "S44 candidate A: re-apply S39 _mod lemma (PR #17884 fresh-rebase). 1 decl, ~10 LOC, LOW risk. Pre-flight: disk <95%, Docker daemon responsive, Mathlib pin unchanged.",
+      "S44 candidate B: re-apply S40 _val_add_SuffixSym_val lemma (PR #17892 fresh-rebase). 1 decl, ~15 LOC, LOW risk.",
+      "S44 candidate C: ship NEW prefix-side _zero_val + _self_val mirrors (not in PR #17884 diff). 2 decls, ~25 LOC, LOW risk.",
+      "S44 candidate D: ship firstDescentRotation def + _take_eq spec. ~25-30 LOC, MEDIUM risk. See S43 session memo §2.2 for 3 candidate definitions; commit to I or III at ACT time.",
+      "S44 candidate E: close PR #17680 with comment 'Superseded by S37 PR #17721 (rotateSortedList_take_le, rotateSortedListPrefixSym, _le all on origin/main).' Zero-effort housekeeping.",
       "S23: Prove ballot_counting_identity (~150 lines). Strategy: construct a bijection between the two filtered finsets at the multiset level. Approach options — (a) reflection/cycle lemma for distinct elements + multiplicity argument; (b) explicit insert-with-disambiguating-data bijection (the Σ-bundled fix to S18 non-injectivity). With ballot_counting_identity closed, the b≥2 sorry follows mechanically via the S22 bridges.",
       "S24: Wire ballot_counting_identity into jdt_weight_sum b≥2 (~50–80 lines now that S22 bridges are landed). The proof now reads as: subtype→filter (Fintype.sum_subtype_eq_sum_filter) ⟶ weight_eq_totalSym (resp. weight_eq_totalSym^prime on RHS) ⟶ Finset.sum_fiberwise_of_maps_to with map (P, Q) ↦ totalSym P Q (resp. totalSym^prime hb) ⟶ rewrite the inner-fiber predicate via totalSym_eq_iff (resp. ^prime) ⟶ ballot_counting_identity ⟶ Finset.sum_congr.",
       "Optional: extract ballot_counting_identity as a standalone Mathlib contribution candidate — it is a clean, named statement about Sym multisets and column-strict pairs, of independent interest in algebraic combinatorics. The S22 bridges (totalSym_eq_iff family) would also be Mathlib-quality if generalised away from the specific weight context.",
@@ -161,7 +166,7 @@
     "markdown": "# Knowledge Base: LGV Lemma → Jacobi-Trudi Identity\n\n**Problem**: ballot-problem-oq-03-oq-01-oq-01-oq-01\n**Last Updated**: 2026-04-23\n**Knowledge Items**: 0\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nNewly selected. Jacobi-Trudi identity expresses Schur polynomials as determinants of\ncomplete homogeneous symmetric polynomials. The LGV lemma (in parent gallery proof)\nprovides the combinatorial proof route via non-intersecting lattice paths.\n\n---\n\n## Insights\n\n_None yet — begin with OBSERVE phase: check Mathlib for SSYT formalization._\n\n---\n\n## Dead Ends\n\n_None identified yet._\n",
     "insightsCount": 55,
     "builtItemsCount": 55,
-    "nextStepsCount": 5
+    "nextStepsCount": 10
   },
   "tags": [
     "algebraic-combinatorics",
@@ -174,19 +179,24 @@
     "ballot-problem",
     "ballot-problem-oq-01",
     "ballot-problem-oq-01-oq-01",
+    "ballot-problem-oq-01-oq-01-oq-02",
     "ballot-problem-oq-01-oq-02",
     "ballot-problem-oq-01-oq-02-oq-01",
+    "ballot-problem-oq-01-oq-02-oq-01-oq-01",
     "ballot-problem-oq-01-oq-02-oq-01-oq-02",
     "ballot-problem-oq-01-oq-02-oq-04",
     "ballot-problem-oq-01-oq-04",
+    "ballot-problem-oq-01-oq-04-oq-01",
     "ballot-problem-oq-02",
+    "ballot-problem-oq-02-oq-02",
     "ballot-problem-oq-03",
     "ballot-problem-oq-03-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01",
     "ballot-problem-oq-03-oq-01-oq-01-oq-01",
     "ballot-problem-oq-03-oq-01-oq-02",
     "ballot-problem-oq-03-oq-01-oq-04",
-    "ballot-problem-oq-03-oq-02"
+    "ballot-problem-oq-03-oq-02",
+    "ballot-problem-oq-03-oq-03"
   ],
   "references": {
     "papers": [],
@@ -194,7 +204,7 @@
     "mathlib": []
   },
   "started": "2026-04-23T11:05:51.190Z",
-  "lastUpdate": "2026-05-14T10:51:15.000Z",
+  "lastUpdate": "2026-05-16T09:13:58.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BallotProblem.lean",
@@ -230,6 +240,28 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/BallotProblemOQ01OQ01OQ02.lean",
+      "filename": "BallotProblemOQ01OQ01OQ02.lean",
+      "lineCount": 212,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean",
+      "filename": "BallotProblemOQ01OQ01OQ02OQ01.lean",
+      "lineCount": 473,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ01OQ02OQ01.lean"
+    },
+    {
       "path": "Proofs/BallotProblemOQ01OQ02.lean",
       "filename": "BallotProblemOQ01OQ02.lean",
       "lineCount": 1048,
@@ -261,6 +293,17 @@
       "sorryCount": 2,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ01.lean",
+      "filename": "BallotProblemOQ01OQ02OQ01OQ01.lean",
+      "lineCount": 201,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ01OQ02OQ01OQ01.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ01OQ02OQ01OQ02.lean",
@@ -351,6 +394,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ02.lean"
     },
     {
+      "path": "Proofs/BallotProblemOQ02OQ05.lean",
+      "filename": "BallotProblemOQ02OQ05.lean",
+      "lineCount": 131,
+      "theoremCount": 0,
+      "axiomCount": 1,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ02OQ05.lean"
+    },
+    {
       "path": "Proofs/BallotProblemOQ03.lean",
       "filename": "BallotProblemOQ03.lean",
       "lineCount": 2923,
@@ -375,11 +429,11 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean",
       "filename": "BallotProblemOQ03OQ01OQ01OQ01.lean",
-      "lineCount": 2348,
-      "theoremCount": 60,
+      "lineCount": 2349,
+      "theoremCount": 10,
       "axiomCount": 0,
-      "defCount": 12,
-      "sorryCount": 2,
+      "defCount": 6,
+      "sorryCount": 17,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean"
     },
@@ -408,22 +462,22 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean",
       "filename": "BallotProblemOQ03OQ01OQ02Aristotle.lean",
-      "lineCount": 114,
+      "lineCount": 118,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 4,
+      "sorryCount": 5,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Aristotle.lean"
     },
     {
       "path": "Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean",
       "filename": "BallotProblemOQ03OQ01OQ02Helpers.lean",
-      "lineCount": 13899,
-      "theoremCount": 78,
+      "lineCount": 15996,
+      "theoremCount": 79,
       "axiomCount": 0,
       "defCount": 15,
-      "sorryCount": 5,
+      "sorryCount": 9,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BallotProblemOQ03OQ01OQ02Helpers.lean"
     },
@@ -441,7 +495,7 @@
     {
       "path": "Proofs/BallotProblemOQ03OQ02.lean",
       "filename": "BallotProblemOQ03OQ02.lean",
-      "lineCount": 2512,
+      "lineCount": 2528,
       "theoremCount": 28,
       "axiomCount": 0,
       "defCount": 23,
