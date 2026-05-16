@@ -138,9 +138,9 @@
     "additionalFiles": [
       {
         "path": "Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean",
-        "lineCount": 152,
+        "lineCount": 320,
         "theorems": 6,
-        "definitions": 0,
+        "definitions": 2,
         "axioms": 0,
         "sorries": 0,
         "description": "Approach B preliminaries (S3a, S3b): cyclic structure of (ZMod q)ˣ at every prime q (`isCyclic_units_zmod` instance + `card_units_zmod` theorem) and the order-p element extraction `exists_unit_of_order_p` (g₀^((q-1)/p) construction). Three sanity examples at (p,q) = (2,3), (3,7), (5,11). Deferred to S3c: lift to φ : ZMod p →* AddAut (ZMod q)."
