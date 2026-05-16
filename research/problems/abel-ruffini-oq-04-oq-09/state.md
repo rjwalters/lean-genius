@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: PREP (S4 complete; S6 ACT pending — cyclic row first)
-**Since**: 2026-05-15T22:55:40Z (S3 PREP merge UTC — cyclic-row axiom audit)
-**Iteration**: 5 (S1 OBSERVE, S2 PREP, S2b STATE-SYNC, S4 PREP V₄+S₃ audit, S3 PREP cyclic audit)
-**Researcher**: researcher-3 (S1); researcher-10 (S2 PREP); researcher-4 (S2b STATE-SYNC); researcher-9 (S4 PREP V₄+S₃ audit); researcher-8 (S3 PREP cyclic audit; S5 STATE-SYNC, this PR)
+**Phase**: PREP (S5 STATE-SYNC absorbed; S6 ACT GATED on Docker daemon liveness + `proofs/.lake` symlink repair)
+**Since**: 2026-05-16T<S6-PREP-merge-UTC> (S6 PREP merge — this PR)
+**Iteration**: 6 (S1 OBSERVE, S2 PREP, S2b STATE-SYNC, S4 PREP V₄+S₃ audit, S3 PREP cyclic audit, S5 STATE-SYNC, S6 PREP namespace+INFRA correction)
+**Researcher**: researcher-3 (S1); researcher-10 (S2 PREP); researcher-4 (S2b STATE-SYNC); researcher-9 (S4 PREP V₄+S₃ audit); researcher-8 (S3 PREP cyclic audit; S5 STATE-SYNC); researcher-11 (S6 PREP, this PR)
 
 > **Phase taxonomy note** (S5 STATE-SYNC, researcher-8): the `lean-research`
 > skill's phase taxonomy maps `OBSERVE → ORIENT → ACT → COMPLETED`. This slug
@@ -16,12 +16,41 @@
 
 ## Current Focus
 
-S5 STATE-SYNC (this PR) absorbs the cyclic-row axiom audit (PR #19199, S3
-PREP) and the V₄+S₃ row Mathlib bearer audit (PR #19229, S4 PREP) into
-state.md body + JSON registry. Both PREPs merged on 2026-05-15; the prior
-S2b STATE-SYNC (PR #18986) shipped the same day but predated S3+S4 PREP
-absorption, leaving the file at S2 framing with 18 drift items (8 in
-state.md, 10 in JSON).
+**S6 PREP (this PR, researcher-11, 2026-05-16)** — doc-only correction
+of two pre-S6-ACT issues surfaced during paste-body pre-flight:
+
+1. **Namespace-cite drift** in the S5 STATE-SYNC paste-ready cyclic
+   skeleton: S5 §3.1 (inheriting from S4 PREP §4) cited
+   `AbelRuffiniGaloisExtensionsOQ05OQ01.cyclic_realizable` — but that
+   is the **module path**, not a namespace. The actual namespace is
+   `ShafarevichFeasibility` (line 47–201 of the parent file).
+   Verbatim paste of S5 §3.1 would fail at first Docker build with
+   `unknown identifier 'AbelRuffiniGaloisExtensionsOQ05OQ01.cyclic_realizable'`.
+   S3 PREP §4 had the namespace right (`open ShafarevichFeasibility`
+   + `cyclic_realizable n hn`); S4 PREP §4 regressed; S5 STATE-SYNC
+   inherited the regression. Fix in this PR: rewrite Next Action paste
+   body to `ShafarevichFeasibility.cyclic_realizable n hn`
+   (fully-qualified, 1-word delta).
+
+2. **Infra escalation**: `proofs/.lake` is a **circular** self-symlink
+   (`readlink` returns itself; `ls` errors with `Too many levels of
+   symbolic links`) — stronger blocker than state.md's previous
+   "broken / 45 min cold cycles" framing; cold rebuild will NOT
+   recover. Docker daemon also hung (`docker info` returns only
+   `Client:` block, no `Server:` section) — B1 INFRA RED.
+
+S6 ACT is GATED on host-side fixes (daemon restart + symlink repoint),
+not researcher-scope.
+
+---
+
+S5 STATE-SYNC (PR #19538, researcher-8, 2026-05-16T13:54:04Z) absorbed
+the cyclic-row axiom audit (PR #19199, S3 PREP) and the V₄+S₃ row
+Mathlib bearer audit (PR #19229, S4 PREP) into state.md body + JSON
+registry. Both PREPs merged on 2026-05-15; the prior S2b STATE-SYNC
+(PR #18986) shipped the same day but predated S3+S4 PREP absorption,
+leaving the file at S2 framing with 18 drift items (8 in state.md, 10
+in JSON).
 
 The three "easier rows" of the n ≤ 4 Shafarevich slice (cyclic / V₄ / S₃)
 now have:
@@ -173,20 +202,41 @@ wrapper as smallest probe).
 
 ## Blockers
 
-For S6+:
+For S6 ACT (researcher-scope: 0 of 3 actionable from inside the loom worktree):
 
-- **Broken `proofs/.lake` symlink** → ~45 min cold-build cycles (see
-  `feedback_researcher_lake_symlink_broken.md`). Plan build budget
-  accordingly: batch cyclic + V₄ + S₃ into one Docker cycle if possible,
-  OR ship cyclic-only first (single-token wrapper) and parallelise
-  V₄/S₃ once cyclic lands.
-- **Host-disk pressure** (S5 STATE-SYNC pre-flight): `/System/Volumes/Data`
-  at 100% capacity, ~7.2 Gi avail. Per
+- **B1 RED — Docker daemon hung** (S6 PREP pre-flight, this PR):
+  `timeout 30 docker info` returns only `Client:` block; no `Server:`
+  section. Same shape as B1 INFRA RED in researcher-N adjacent cycles
+  today (brouwer-fixed-point S13 ACT 2026-05-16; angle-trisection
+  S18 PREP same window). **Recovery**: host-side `docker desktop
+  restart` or Docker Desktop quit+relaunch. Not researcher-scope.
+- **B2 RED — `proofs/.lake` is a circular self-symlink** (S6 PREP
+  finding, this PR; supersedes prior "broken" framing):
+
+  ```bash
+  $ readlink proofs/.lake
+  proofs/.lake
+
+  $ ls proofs/.lake/
+  ls: proofs/.lake/: Too many levels of symbolic links
+  ```
+
+  The symlink resolves to **itself**, not a missing target. Any tool
+  that follows symlinks (Docker bind mount, `lake build`, `find -L`,
+  `ls`) hits the loop. **Cold rebuild will NOT recover** — `lake
+  build` follows the symlink before doing any build work. **Recovery**:
+  host-side `rm proofs/.lake && lake build` (the build will recreate
+  it correctly) or manually repoint to `~/.elan/toolchains/...` if a
+  toolchain-specific target is expected. Not researcher-scope.
+  Predates today's claims (`stat` shows `May 14 20:47:51 2026`).
+- **B3 AMBER — Host-disk pressure** (S5 STATE-SYNC pre-flight,
+  carried forward): `/System/Volumes/Data` at 100% capacity, ~6.5 Gi
+  avail (trending down from S5's ~7.2 Gi an hour ago). Per
   `MEMORY.md` `feedback_researcher_docker_build_disk_full_ship_build_pending_per_s5_act_precedent.md`,
-  ld.lld I/O errors fire below ~200 Mi free. S6 ACT agent should `df -h`
-  before Docker invoke; if avail < 1 Gi, ship cyclic row as `build
-  pending` per PR #18707 precedent and re-build at a later cleaner
-  window.
+  ld.lld I/O errors fire below ~200 Mi free. S6 ACT agent should
+  `df -h` before Docker invoke; if avail < 1 Gi, ship cyclic row as
+  `build pending` per PR #18707 precedent and re-build at a later
+  cleaner window.
 
 ## Risks
 
@@ -219,14 +269,19 @@ For S6+:
 
 ## Next Action
 
-**S6 ACT — cyclic row first (Shape B, paste-ready).**
+**S6 ACT — cyclic row first (Shape B, paste-ready) — GATED on host-side
+infra fixes (Docker daemon restart + `proofs/.lake` symlink repoint).**
 
-Per sessions/2026-05-16-s5-state-sync-absorb-s3-s4-preps.md §4.3,
+Per sessions/2026-05-16-s6-prep-namespace-drift-correction-and-infra-escalation.md
+§3.2 (this PR; supersedes S5 STATE-SYNC §3.1 only on the namespace cite),
 recommended ordering:
 
 1. **S6 ACT — Cyclic** (~10 LOC, 0 sorries, 0 new axioms). Create
    `proofs/Proofs/AbelRuffiniOQ04OQ09Cyclic.lean` with the corrected
-   5-binder wrapper:
+   5-binder wrapper using **`ShafarevichFeasibility.cyclic_realizable`**
+   (NOT `AbelRuffiniGaloisExtensionsOQ05OQ01.cyclic_realizable` —
+   the latter is a module path, not a namespace; see §1 of S6 PREP
+   memo for the drift trace):
 
    ```lean
    import Proofs.AbelRuffiniGaloisExtensionsOQ05OQ01
@@ -237,7 +292,7 @@ recommended ordering:
        ∃ (L : Type) (_ : Field L) (_ : Algebra ℚ L)
          (_ : FiniteDimensional ℚ L) (_ : IsGalois ℚ L),
          IsCyclic (L ≃ₐ[ℚ] L) ∧ Fintype.card (L ≃ₐ[ℚ] L) = n :=
-     AbelRuffiniGaloisExtensionsOQ05OQ01.cyclic_realizable n hn
+     ShafarevichFeasibility.cyclic_realizable n hn
 
    end AbelRuffiniOQ04OQ09
    ```
@@ -304,7 +359,7 @@ on main. Slug remains research-only through S6–S8.
   axiom load: **0**, matching S2 PREP §4.5 claim. Paste-ready cyclic
   skeleton at §4 (later corrected by S4 PREP §4 for the 5-binder
   signature). ~232-LOC sessions memo. **No Lean, no state.md, no JSON.**
-- **S5 STATE-SYNC** (2026-05-16, researcher-8, this PR) — absorb S3
+- **S5 STATE-SYNC** (2026-05-16, researcher-8, PR #19538) — absorb S3
   PREP + S4 PREP findings into state.md body (Phase, Iteration,
   Researcher, Active Approach, Findings §§6–9, Risks, Next Action,
   Session Log) and JSON registry (`currentState.{phase, iteration,
@@ -315,6 +370,59 @@ on main. Slug remains research-only through S6–S8.
   1/8 AMBER (Docker host-disk pressure — infrastructure-only).
   ~450-LOC sessions memo. **No Lean, no knowledge.md, no problem.md,
   no gallery edits.**
+- **S6 PREP** (2026-05-16, researcher-11, this PR) — doc-only
+  correction surfaced during S6 ACT paste-body pre-flight:
+  (1) namespace-cite drift in S5 STATE-SYNC §3.1 paste body
+  (`AbelRuffiniGaloisExtensionsOQ05OQ01.cyclic_realizable` — module
+  path, not namespace; actual namespace is `ShafarevichFeasibility`,
+  fix verified by `grep -nE "^namespace|^end" proofs/Proofs/AbelRuffiniGaloisExtensionsOQ05OQ01.lean`
+  → 47:namespace ShafarevichFeasibility / 201:end ShafarevichFeasibility,
+  and `grep -rn "AbelRuffiniGaloisExtensionsOQ05OQ01\b" proofs/`
+  finding only `import Proofs.AbelRuffiniGaloisExtensionsOQ05OQ01`
+  as a module path, no namespace declaration);
+  (2) infra escalation: `proofs/.lake` is a **circular** self-symlink
+  (not just "broken" / 45 min cold cycle as state.md previously
+  framed) — cold rebuild won't recover; needs host-side delete+repoint;
+  (3) Docker daemon hung (`docker info` no `Server:` section);
+  (4) refresh ACT-readiness gate to 5/9 GREEN, 1/9 AMBER, 3/9 RED
+  (S5's 7/8 GREEN, 1/8 AMBER didn't check Docker daemon or symlink
+  circularity, and accepted S4 PREP's regressive namespace cite).
+  Mathlib pin unchanged at `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`;
+  `autEquivPow` re-verified at `Mathlib/NumberTheory/Cyclotomic/Gal.lean:93`
+  via `git show <pin>:...`. **No Lean, no knowledge.md, no problem.md,
+  no gallery edits.**
+
+## Honest Calibration (S6 PREP)
+
+This S6 PREP:
+
+- Adds 0 Lean to the project.
+- Closes 0 sorries.
+- Resolves 0 of the open mathematical questions.
+- States 0 new theorems.
+- Does NOT verify any S3–S5 PREP/STATE-SYNC claim by Docker build (S6
+  ACT will, once daemon + symlink are repaired).
+
+It does:
+
+- Fix the namespace-cite drift (`AbelRuffiniGaloisExtensionsOQ05OQ01.`
+  → `ShafarevichFeasibility.`) in state.md NextAction paste body +
+  JSON `currentState.nextAction` + (cross-reference to) S5 §3.1
+  paste body. Closes a build-blocking R6 risk that would have cost
+  one cold Docker cycle to diagnose at S6 ACT.
+- Escalate `proofs/.lake` symlink from "broken / 45 min cold cycle"
+  to "**circular self-symlink** — cold rebuild won't recover; host-side
+  delete+repoint required". Updates Blockers from 1 to 3 entries.
+- Add Docker daemon hung (B1 INFRA RED) — S5 STATE-SYNC's ACT-readiness
+  gate didn't check daemon liveness.
+- Refresh ACT-readiness gate from S5's 7/8 GREEN, 1/8 AMBER to
+  5/9 GREEN, 1/9 AMBER, 3/9 RED (1 of 3 REDs — the namespace cite —
+  closed by this PR; the other 2 REDs are host-side and not researcher-scope).
+
+The S6 ACT verb itself is **gated** on host-side fixes (daemon
+restart, symlink repoint) outside researcher-scope. This PR prepares
+the doc surface so the next agent picks up a paste body that **will**
+compile when the infra is healthy.
 
 ## Honest Calibration (S5 STATE-SYNC)
 
