@@ -1,9 +1,49 @@
 # Current State
 
-**Phase**: ACT (S3 ACT SCAFFOLD complete; capstone strategic sorry; Docker-verified 7744 jobs)
-**Since**: 2026-05-14T15:10:00Z
-**Last Updated**: 2026-05-14 (Iteration 11, researcher-8)
-**Iteration**: 11
+**Phase**: ACT (S3 SCAFFOLD + S4 PREP merged; capstone discharge skeleton paste-ready against `main`)
+**Since**: 2026-05-15T23:26:58Z (S3 ACT SCAFFOLD merge anchor)
+**Last Updated**: 2026-05-16T03:35Z (Iteration 13, researcher-11)
+**Iteration**: 13
+
+## Iteration 13 (researcher-11, 2026-05-16) — S5 STATE-SYNC
+
+**Outcome**: STATE-SYNC (doc-only) — post-S4-PREP-merge catch-up: state.md head + JSON `currentState` block + `attemptCounts` (off-by-12 corrected) + 12-bearer drift recheck (4 fresh round-trips + 8 byte-stable, 0 drift) + S5 ACT-readiness gate 8/8 GREEN.
+
+### What I added
+
+- `sessions/2026-05-16-s5-state-sync-post-s4-prep-merge.md` (NEW, ~310 LOC) — post-merge snapshot, 12-row bearer drift recheck (§3), 8/8 GREEN ACT-readiness gate (§4), iteration ledger consolidated through Iter 13 (§5), orthogonality manifest (§6), strict-honesty footprint (§7).
+- This `state.md` head: phase header refresh + Since + Iteration 11→13 + Iteration 12 + Iteration 13 sections inserted above preserved Iter 11 block.
+- `src/data/research/problems/sqrt2-minpoly-oq-03.json`: `currentState.phase`/`since`/`lastUpdated`/`iteration`/`focus`/`nextAction` refresh + `attemptCounts.total` 1→13 (off-by-12 fix) + `knowledge.progressSummary` tail + `knowledge.nextSteps[0]` rewrite.
+
+### Why a STATE-SYNC now
+
+PR #19253 (S4 PREP, researcher-3) merged 2026-05-15T18:03:22Z. PR #19068 (S3 ACT SCAFFOLD, researcher-8) merged 2026-05-15T23:26:58Z. state.md + JSON head still read Iter 11 (SCAFFOLD pre-merge); the next ACT picker has no single-source view of the post-S4-PREP gate state. This STATE-SYNC corrects that and pins the gate at 8/8 GREEN with the §4 paste-ready ~75-LOC skeleton as the next single-step ACT.
+
+### Next action (S5 ACT)
+
+Paste S4 PREP §4 ~75-LOC capstone skeleton into `proofs/Proofs/Sqrt2MinpolyOQ03.lean` between L72 and L73 (replace L71 `  sorry` body with the discharge chain). Recommended Option A from S4 PREP §4.3 discriminant-bridge matrix: `PowerBasis.norm_gen_eq_coeff_zero_minpoly` + `integralBasis` bridge (3 + 2 LOC). Docker-build expecting `[7745/7745]` (~12s warm). Failure modes: see S4 PREP §6 R1-R5; this STATE-SYNC §4b adds R6 (NumberField hidden field) — pre-mitigated via SCAFFOLD's L48 `to_charZero := inferInstance`.
+
+### Files modified
+
+- `research/problems/sqrt2-minpoly-oq-03/state.md` (this file head)
+- `src/data/research/problems/sqrt2-minpoly-oq-03.json`
+- `research/problems/sqrt2-minpoly-oq-03/sessions/2026-05-16-s5-state-sync-post-s4-prep-merge.md` (NEW)
+
+## Iteration 12 (researcher-3, 2026-05-15) — S4 PREP (merged 2026-05-15T18:03:22Z, PR #19253)
+
+**Outcome**: PREP (doc-only) — bearer-pin all 12 capstone bearers at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` + 2 NEW bearer findings (`PowerBasis.norm_gen_eq_coeff_zero_minpoly`, `Algebra.norm_algebraMap`) collapsing §3.x norm chain from ~20 LOC to 3 LOC + paste-ready ~75-LOC S5 ACT capstone skeleton with 3-option discriminant-bridge matrix (§4.3).
+
+### What was added
+
+- `sessions/2026-05-15-s4-prep-bearer-pin-and-paste-ready-skeleton.md` (849 LOC):
+  - §1 Lake SHA confirmation + lake-pinned methodology.
+  - §2 12-bearer pin-verification grid (capstone, discriminant, norm, AdjoinRoot, IsTotallyReal).
+  - §2.3 NEW finding: `PowerBasis.norm_gen_eq_coeff_zero_minpoly` (`Norm/Basic.lean:65`) + `Algebra.norm_algebraMap` (`Norm/Defs.lean:100-103`).
+  - §4 Paste-ready ~75-LOC S5 ACT capstone skeleton.
+  - §4.3 3-option discriminant-bridge matrix (A: PowerBasis-norm + integralBasis bridge / B: trace matrix on Zsqrtd 2 / C: defer to PREP-2's Zsqrtd→𝓞 iso).
+  - §6 Risk register R1-R5 (3 of 5 mitigated by NEW bearers).
+
+No edits to other files (pristine doc-only); composes cleanly with then-OPEN PR #19068.
 
 ## Iteration 11 (researcher-8, 2026-05-14) — S3 ACT SCAFFOLD
 
