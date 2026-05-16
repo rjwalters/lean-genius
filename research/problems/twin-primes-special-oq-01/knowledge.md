@@ -12,6 +12,53 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 2026-05-16 (Session 2) — STATE-SYNC: catchup, implementation merged out-of-band
+
+**Mode**: doc-only STATE-SYNC
+**Outcome**: completed (no proof change)
+**PR**: this PR
+
+### What I Did
+
+1. `claim-random` landed on this slug (RICH 9 MODERATE+, originally tier A path full).
+2. Audited disk reality vs planning artifacts: state.md said `Phase: SURVEYED, "no Lean file or gallery entry exists yet"`. JSON said `phase: NEW, status: active, currentState.phase: SURVEYED, since: 2026-04-27`.
+3. Reality check: `proofs/Proofs/TwinPrimesSpecialOQ01.lean` exists (150 LOC, 25 theorems, 0 sorries, 0 standalone axioms inherits `twin_prime_conjecture`); gallery entry `src/data/proofs/twin-primes-special-oq-01/{meta.json,annotations.json,index.ts}` exists with `status: "axiomatized"`.
+4. Traced via `git log --all`: implementation was merged via PR #14871 (`feat(twin-primes): add TPC OQ-01 gallery entry with 25 verified twin prime pairs`, 2026-05-02 23:19 +0200) — a `feat(...)` PR not `research(...)`, bypassing the standard researcher state tracking.
+5. Updated state.md: Phase SURVEYED → COMPLETED (axiomatized), Since → 2026-05-16, Iteration 1 → 2, History appended with out-of-band impl + S2 catchup, Attempt Count 1 → 2.
+6. Updated JSON: 14 field edits (phase NEW→COMPLETED, status active→completed, currentState 5 fields, blockers re-scoped to standing INFRA, knowledge.progressSummary rewrite, builtItems prepended with [S2-catchup] items, insights add 1 new entry about out-of-band PRs, nextSteps refresh, leanFiles[0].lineCount 151→150 to match gallery, lastUpdate).
+7. Bootstrapped sessions/ directory and authored `sessions/2026-05-16-s2-statesync-catchup-implementation-merged-out-of-band.md` (~340 LOC, 10 sections including drift inventory + bearer spot-check + picker decision matrix + honesty calibration).
+
+### Verified (no proof regression)
+
+- Lean file: 150 LOC (matches gallery `meta.json.lineCount: 150`), 25 theorems (matches), 0 sorries (matches), 0 standalone axioms.
+- Parent `proofs/Proofs/TwinPrimes.lean`: axiom `twin_prime_conjecture:163` byte-stable, SHA-stable.
+- Gallery `meta.json`: all numerics canonical (150/25/1/0/0 status:axiomatized badge:axiom).
+- Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged since 2026-05-02.
+
+### Host snapshot (S2 time)
+
+- Disk free: 2.5 Gi 🔴
+- Docker daemon: hung 🔴
+- `proofs/.lake`: circular self-symlink 🔴
+- 3 INFRA RED → only optional follow-up iter (Maynard-Tao axiom, etc.) blocked; slug itself is COMPLETED so nothing required is blocked.
+
+### Files Modified
+
+- `research/problems/twin-primes-special-oq-01/state.md` (Phase + Since + Iter + body sections + History + Attempt Count)
+- `src/data/research/problems/twin-primes-special-oq-01.json` (14 field edits including top-level phase/status + currentState + knowledge + leanFiles[0].lineCount + lastUpdate)
+- `research/problems/twin-primes-special-oq-01/knowledge.md` (this entry)
+- `research/problems/twin-primes-special-oq-01/sessions/2026-05-16-s2-statesync-catchup-implementation-merged-out-of-band.md` (new, ~340 LOC, 10 sections)
+
+### Next Steps (post-S2)
+
+Slug COMPLETED axiomatized. Optional follow-up:
+
+- Maynard-Tao bounded-gaps axiom (k≤246) as strengthened companion
+- Cross-reference Zhang/Polymath8 via shared parent refactor
+- Annotation enrichment via /lean-research enricher
+
+---
+
 ## Session 2026-04-27 (Session 1) — Survey + Plan for OQ-01 Gallery Entry
 
 **Mode**: FRESH
