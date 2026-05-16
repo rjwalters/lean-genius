@@ -1,11 +1,86 @@
 # Current State
 
-**Phase**: BUILD-BLOCKER (persists — 18 pre-existing Mathlib v4.26.0 elaboration errors in S24/S25/S22/S11/S7.5 merged code; mechanic BUILD-FIX not yet shipped)
+**Phase**: BUILD-BLOCKER (persists — 18 pre-existing Mathlib v4.26.0 elaboration errors in S24/S25/S22/S11/S7.5 merged code; mechanic BUILD-FIX still not shipped; same SHA as S27 PREP merge)
 **Since**: 2026-05-16T01:25:00Z (BUILD-BLOCKER), originally ACT 2026-05-12T03:30:00Z
-**Iteration**: 27 (S27 PREP — post-PR #19510 housekeeping + mechanic-handoff sharpening; doc-only)
-**Last Updated**: 2026-05-16 (researcher-6)
+**Iteration**: 28 (S28 PREP — JSON catchup absorbing S27 PREP #19548 + B1 Docker-hung INFRA reaffirm + stranded-branch reaffirm; doc-only)
+**Last Updated**: 2026-05-16 (researcher-1)
 
-## S27 PREP — post-completion housekeeping (researcher-6, 2026-05-16, this PR — doc-only)
+## S28 PREP — JSON catchup absorbing S27 PREP #19548 (researcher-1, 2026-05-16, this PR — doc-only, tight)
+
+**Trigger**: claim-random returned `abel-ruffini-galois-extensions-oq-07` (RICH 86) at 2026-05-16T14:06:03Z. Predecessor S27 PREP PR #19548 (researcher-6, opened 09:11:14Z) was merged 13:53:37Z — **T+12.5 minutes** before this claim. Pre-flight survey:
+
+- **State.md head**: BUILD-BLOCKER, iter 27 (S27 PREP, researcher-6) — current.
+- **Research JSON** (`src/data/research/problems/abel-ruffini-galois-extensions-oq-07.json`): drifted. `currentState.iteration: 26` (state.md=27), `currentState.focus` still describes S26 BUILD-DIAGNOSTIC verbatim (no mention of S27 PREP §4 cluster-priority reorder or §2 3-spot Mathlib API recheck or "3 HIGH paste-ready clusters" upgrade), `currentState.nextAction` includes stale step `sync 'meta.json' 'lineCount: 1791 → 1898' + 'theoremCount: 36 → 38'` already discharged by merged PR #19510 ~5h ago + uses S26 BUILD-DIAGNOSTIC's older dependency order rather than S27 PREP's HIGH-paste-ready prioritisation, top-level `phase: ACT` and `status: active` (should be `BUILD-BLOCKER` and `blocked-on-mechanic` respectively per state.md head).
+- **Mechanic BUILD-FIX**: still not opened. `gh pr list --search "abel-ruffini-galois-extensions-oq-07" --label loom:mechanic --state open` returns `[]`. Last mechanic PR on this slug was #19510 (meta.json drift, merged 08:52:48Z = ~5h ago); did NOT touch Lean source.
+- **Mathlib pin**: unchanged at `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0). No upstream churn since S27 PREP T+12.5min ago.
+- **4 stranded "build pending" researcher-PRs** (#17528, #17586, #17587, #17685 from May 8-12): still OPEN, still formally obsolete per S24 PREP §4 / S27 PREP §3 (no change since S27 PREP merged T+12.5min ago).
+- **Docker daemon**: hung. Background `docker info` hit 60s+ without returning Containers/Runtime headers; had to `kill -9` the wedged process. Pattern B1 (Docker daemon hung) per memory `_host_infra_blocked_buildverify_pivots_to_prep_deferred_reverify`.
+- **Disk**: `/` 6.8 Gi avail (~70% used). Tighter than S27 PREP's "7.0 Gi" snapshot; same B1-class pressure.
+
+**Researcher-side gate is GREEN; infrastructure gates RED (Docker daemon hung B1; disk 6.8 Gi)**. No researcher ACT possible. Mechanic still owns BUILD-FIX. Ship doc-only **tight** S28 PREP scoped to JSON catchup + INFRA reaffirm + stranded-branch reaffirm only — explicitly dropping bearer re-spot-check, Mathlib SHA recheck, and new paste-ready skeleton because S27 PREP at T+12.5min already covered those layers (§2 3-spot API + §3 stale-PR + §4 mechanic handoff + §5 bearer recheck), and the same SHA is byte-stable across 12.5 min. Memory pattern `_postship_pivot_to_own_just_merged_prep_with_zero_json_edits_at_T_plus_minutes_s` cited verbatim in §6 below.
+
+### What this PR does (3 files, doc-only, tight)
+
+| Aspect | Action |
+|---|---|
+| `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` | UNCHANGED (BUILD-BLOCKER persists; mechanic owns BUILD-FIX) |
+| `src/data/proofs/abel-ruffini-galois-extensions/meta.json` | UNCHANGED (PR #19510 already absorbed lineCount/theoremCount drift; verified again here at iter-28-baseline SHA) |
+| `proofs/lakefile.toml` (Mathlib pin) | UNCHANGED (pin `2df2f0150c…` byte-stable across S27 PREP T+12.5min window) |
+| `src/data/research/problems/abel-ruffini-galois-extensions-oq-07.json` | **UPDATED** — `currentState.iteration: 26 → 28`, `currentState.focus` refreshed to point at S27 PREP §4 sharpened mechanic-handoff + this S28 catchup, `currentState.nextAction` reordered per S27 PREP §4 HIGH-paste-ready prioritisation + stale meta.json sync step dropped, `currentState.since` retained (BUILD-BLOCKER unchanged), top-level `phase: ACT → BUILD-BLOCKER`, top-level `status: active → blocked-on-mechanic`, top-level `lastUpdate: 2026-05-16` (string preserved as-is) |
+| `state.md` head | THIS replacement — phase BUILD-BLOCKER unchanged; iteration 27 → 28; S28 PREP section prepended before S27 PREP |
+| `state.md` historical tail (S27 PREP → S1) | preserved verbatim |
+| `session-29-s28-json-catchup.md` | NEW (this file's companion — JSON-diff transcript + INFRA reaffirm + tightening justification) |
+
+### JSON delta summary (full diff in `session-29-s28-json-catchup.md` §2)
+
+| Field | Before (S26 BUILD-DIAGNOSTIC era) | After (S28 PREP — catchup) |
+|---|---|---|
+| `phase` (top) | `"ACT"` | `"BUILD-BLOCKER"` |
+| `status` (top) | `"active"` | `"blocked-on-mechanic"` |
+| `currentState.iteration` | `26` | `28` |
+| `currentState.focus` | "S26 BUILD-DIAGNOSTIC (researcher-5, 2026-05-16, doc-only): BUILD-BLOCKER discovered. ..." (1200+ char description of S26 only) | "S28 PREP (researcher-1, 2026-05-16, doc-only, tight): JSON catchup absorbing S27 PREP #19548 + B1 Docker-hung INFRA reaffirm + stranded-branch reaffirm. State unchanged since S26 BUILD-DIAGNOSTIC: 18 pre-existing Mathlib v4.26.0 elaboration errors at lines 386-1522 block all CI builds. S27 PREP #19548 (merged 2026-05-16T13:53:37Z) sharpened mechanic-handoff: 3 HIGH paste-ready clusters identified via `gh api` at pin `2df2f0150c…` (§2.7 `open scoped Function` 1 LOC, §2.6 `eq_bot_of_card_le` dot-notation 1 LOC, §2.5 `set k := …` motive abstraction 3 LOC). Net LOC narrowed to ~25-40 (from S26's 20-50); Docker iters narrowed to 2-4 (from 2-5). Mechanic BUILD-FIX still not opened as of S28 claim 2026-05-16T14:06Z (T+12.5min after S27 PREP merge)." |
+| `currentState.nextAction` | Order: §2.1/§2.2 → §2.3/§2.4 → §2.5/§2.6 → §2.7/§2.8 → §2.9 + stale "sync meta.json lineCount 1791→1898 + theoremCount 36→38" | Order: §2.7 → §2.6 → §2.4 → §2.2 → §2.9 → §2.3 → §2.1 → §2.5 → §2.8 (per S27 PREP §4 HIGH-paste-ready prioritisation). Stale meta.json sync step DROPPED (already discharged by merged PR #19510 at 2026-05-16T08:52:48Z). After mechanic clears: S29 ACT = re-apply S26 ACT recipe (paste-ready in `session-26-mathlib-audit-and-peel-off-roadmap.md` §3.2 + §3.3, re-validated by S27 PREP §5 bearer recheck); S30 ACT = dispatch refactor + axiom narrowing per S26 PREP §6. Four stranded researcher-PRs (#17528, #17586, #17587, #17685) remain formally obsolete per S24 PREP §4. |
+
+### INFRA reaffirm (B1 Docker hung)
+
+| Probe | Result | Pattern |
+|---|---|---|
+| `df -h /` | 6.8 Gi avail / 16 Gi used / 926 Gi total — ~70% used | host-disk pressure (memory `_host_infra_blocked_buildverify_pivots_to_prep_deferred_reverify`) |
+| `docker info 2>&1 \| head -5` | hung 60s+ without returning Containers/Runtime headers; killed with `kill -9` | B1 = Docker daemon hung; identical to S27 PREP "docker info slow" diagnosis |
+| `lakefile.toml` Mathlib SHA | `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` — same as S27 PREP recorded SHA | byte-stable across T+12.5min |
+
+Conclusion: B1 INFRA blocker unchanged since S27 PREP T+12.5min ago. No researcher ACT possible. Mechanic ALSO needs Docker working (BUILD-FIX requires per-iteration Docker build), so mechanic is similarly blocked on INFRA recovery (host disk reclaim or Docker daemon restart).
+
+### Stranded-branch reaffirm (no change since S27 PREP T+12.5min)
+
+`git ls-remote origin "refs/heads/*abel-ruffini-galois*"` returns 8 remote branches; among them 4 OPEN researcher PRs (#17528, #17586, #17587, #17685) referenced in S27 PREP §3 + S24 PREP §4 as "formally obsolete". No change in 12.5 min. These remain candidates for closure-by-author (researcher-1 not authoring closure — defer to /champion or /guide triage).
+
+### Tightening rationale (§6 of session-29)
+
+Predecessor PREP shipped T+12.5 minutes ago at SHA `2df2f0150c…`. Memory pattern `_postship_pivot_to_own_just_merged_prep_with_zero_json_edits_at_T_plus_minutes_s` (researcher-4 precedent at T+4min, same-day): when predecessor at T+small-minutes already covered (b)+(c)+(d)+(e)+(f) layers and pin is byte-stable, ship ONLY (a) JSON catchup + (e) Docker INFRA reaffirm + (f) stranded-branch reaffirm. DROP (b) Mathlib SHA recheck, (c) bearer SYMBOL re-spot-check, (d) new paste-ready skeleton because all three are busywork at T+12.5min/SHA-stable. Caveat: this is a DIFFERENT agent (researcher-1, not researcher-6) shipping the catchup but the substrate of "predecessor at T+small-minutes covering the deep layers" is the same.
+
+### ACT-readiness gate
+
+| Gate | Status |
+|---|---|
+| Researcher-side knowledge | GREEN (S26 BUILD-DIAGNOSTIC §2 + S27 PREP §4 catalog ready; S26 ACT recipe re-validated) |
+| Researcher-side bearer pin | GREEN (S27 PREP §5 4-spot recheck at `2df2f0150c…` all unchanged) |
+| Researcher-side paste-ready scaffolds | GREEN (3 HIGH clusters in S27 PREP §4 + 6 MEDIUM in S26 BUILD-DIAGNOSTIC §2) |
+| `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` compiles | RED (18 elaboration errors per S26 BUILD-DIAGNOSTIC §2; needs mechanic BUILD-FIX) |
+| Docker daemon | RED B1 (hung; `kill -9` needed to release wedged probe) |
+| Host disk | AMBER (6.8 Gi avail; tightening from S27 PREP's 7.0 Gi at T-12.5min) |
+| Mechanic claim on slug | RED (no `loom:mechanic` BUILD-FIX PR open; mechanic also INFRA-blocked) |
+| Mathlib SHA stable since S27 PREP | GREEN (`2df2f0150c…` byte-stable) |
+
+7 of 8 substantively researcher-side gates GREEN; 1 RED INFRA (Docker daemon) + 1 AMBER (disk) on infra side. No researcher ACT possible.
+
+### What S29 PREP CAN do (forward-looking, not THIS PR)
+
+- If mechanic ships BUILD-FIX: ship S29 ACT immediately (re-apply S26 ACT recipe — paste-ready per S26 BUILD-DIAGNOSTIC §5 + S27 PREP §5)
+- If mechanic surfaces unexpected errors during BUILD-FIX: ship S29 PREP with diagnosis + adjusted scaffolds
+- If mechanic still blocked at T+next-cycle: skip — releasing without PR is correct per memory `_postship_claim_lands_on_slug_with_inflight_peer_act_lt_15min_old_release_exit` (adapted: predecessor doc-only PREP at T+next-cycle still blocking on same mechanic)
+
+## S27 PREP — post-completion housekeeping (researcher-6, 2026-05-16, PR #19548 — doc-only)
 
 **Trigger**: claim-random returned `abel-ruffini-galois-extensions-oq-07` (RICH 86) ~2026-05-16T09:00Z. State.md head said BUILD-BLOCKER (S26 BUILD-DIAGNOSTIC, researcher-5). Pre-flight survey:
 - PR #19510 (mechanic, merged 2026-05-16T08:52:48Z, ~8min before claim) absorbed `lineCount` + `theoremCount` drift in `meta.json` only (4-LOC patch); **did NOT touch Lean source**.
