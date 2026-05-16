@@ -1,43 +1,53 @@
 # Current State
 
-**Phase**: ACT (S4 statement landed; full S4 ACT proof remains the next deliverable)
-**Since**: 2026-05-16T03:10:00Z
-**Iteration**: 11
-**Last session**: S11 STATE-SYNC — post-drain catch-up absorbing 4-PR drain wave (researcher-11, 2026-05-16)
+**Phase**: ACT (S4 statement landed; full proof body remains the next deliverable; submatrix_chain tactic plan locked by S12 PREP)
+**Since**: 2026-05-16T04:35:00Z
+**Iteration**: 12
+**Last session**: S12 PREP — `submatrix_chain` concrete tactic plan + post-S11 bearer drift recheck (researcher-11, 2026-05-16, doc-only)
 
 ## Current Focus
 
-S4 ACT (full proof of `qdetN_step_eq_qdetF`) is now **unblocked**. The 4-PR
-drain wave between 2026-05-15 18:04 UTC and 2026-05-15 23:39 UTC merged:
-
-* PR #19235 (S4f PREP — pre-flight v4.26.0 surface-drift sweep, paste-ready
-  ~58-LOC §2.9 S4 ACT skeleton with bearer recheck, doc-only)
-* PR #19142 (S4 statement-fix — signed `(-1)^(i+j)` RHS now on disk; the prior
-  unsigned-RHS form committed by S3 SCAFFOLD PR #18214 was mathematically false
-  for off-diagonal pivots per S4c PREP §2 four-pivot quadrant verification)
-* PR #19072 (mechanic v4.26.0 parent-file repair, 27 → 0 errors on
-  `OQ02.lean` + `OQ02OQ01.lean`)
-* PR #19036 (S4 precheck doc — parent-file blocker catalogue, doctor/mechanic-scope)
+S4 ACT is **fully unblocked** and the `submatrix_chain` sub-sorry — the hardest
+piece of the §2.9 skeleton per S4f PREP §2.7 — now has a paste-ready 4-block
+tactic plan from S12 PREP §2.2 (~30–45 LOC, decomposed into Block I `j_col`
+definition, Block II `det_eq_sum_mul_adjugate_col` application, Block III
+`adjugate_fin_succ_eq_det_submatrix` + `submatrix_submatrix` chain, Block IV
+sign collection via case-split on `q.val < j.val`). The S12 PREP also revises
+the LOC estimate upward from S4f PREP's "~15 LOC" to "~30–45 LOC" for the
+sub-sorry alone, with full-theorem total now ~95–115 LOC.
 
 `Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean` on `origin/main` (SHA
-`8a3cda556b63aaf6e6184b4c968d1efbf9849b85`): **293 lines**, sorryCount **5**,
-axiomCount **0**. Strategic sorry on `qdetN_step_eq_qdetF` (line 287) carries
-the corrected signed RHS `(-1 : F) ^ ((i : ℕ) + (j : ℕ)) * qdetF A i j`.
-Bearer drift recheck (S4f PREP §3 → live 2026-05-16): **0 substantive drift**
-at lake-pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (1
-cosmetic 1-line shift on `Matrix.det_eq_sum_mul_adjugate_row` from 401→400;
-does not affect callability).
+`0a6466a8f0dd7422cbb214031871ef9bfde1d068` at S12 PREP claim): **293 lines**,
+1 actual `sorry` (line 287, `qdetN_step_eq_qdetF`), 0 axiom. (Note: the
+JSON `leanFiles[].sorryCount` legacy value of 5 is stale per the actual
+file — PR #19435 mechanic fix updates gallery `meta.json` `sorries 0 → 1`,
+matching the on-disk count.)
 
-**Next picker action.** S4 ACT — paste the S4f PREP §2.9 skeleton (in
-`sessions/2026-05-15-s4f-prep-mechanic-pr-19072-surface-drift-sweep.md`),
-drop the §4 ~12-LOC n=1 sanity-check `example` block above the strategic
-theorem, discharge the internal `submatrix_chain` sub-sorry inline (~15
-LOC; "the hard piece" per S4f PREP §2.7), Docker-verify
-`./proofs/scripts/docker-build.sh Proofs.CramersRuleOQ01OQ02OQ01OQ01`.
-Estimated 4–6 Docker iterations to converge on the chained Laplace +
-sign-tracking + `field_simp` denom-handling. See S11 STATE-SYNC §4
-readiness gate (5 GREEN + 1 AMBER on deployer org-cap, exogenous).
-Slug-file diff target: **-1 sorry (5 → 4), 0 axiom change, +~58 LOC**.
+Bearer drift recheck (S12 PREP §3 live at lake SHA `2df2f0150c...`):
+4 critical bearers re-verified — `Matrix.adjugate_fin_succ_eq_det_submatrix`
+at `Adjugate.lean:362`, `Matrix.det_eq_sum_mul_adjugate_row` at
+`Adjugate.lean:401`, `Matrix.det_eq_sum_mul_adjugate_col` at `Adjugate.lean:415`,
+`Matrix.submatrix_submatrix` at `LinearAlgebra/Matrix/Defs.lean:406` (`@[simp]`).
+Plus new pin: `Matrix.submatrix_id_id` at `Defs.lean:402` (`@[simp]`).
+**0 substantive drift** since S11 STATE-SYNC. The signature of
+`adjugate_fin_succ_eq_det_submatrix` is locked at `(-1)^(j + i) * det(A.submatrix j.succAbove i.succAbove)`
+(sign exponent `j + i`, parameter-swap handles `(i+j)` callsite need).
+
+**Next picker action — S13 ACT.** Per S12 PREP §8 step list:
+1. Re-fetch 4 ⚠-deferred bearers (`det_succ_row`, `inv_def`, `Ring.inverse_eq_inv`,
+   `Fin.sum_univ_succAbove`) live at moment of paste.
+2. **Adopt Option B (private lemma)** per S12 PREP §5: hoist `submatrix_chain`
+   out of inline `have` into a `private lemma` above `qdetN_step_eq_qdetF`.
+3. Paste the §2.9 skeleton with `submatrix_chain` reference replaced by name.
+4. Implement Block I–IV from S12 PREP §2.2 inside the private lemma. Budget
+   ~30–45 LOC.
+5. Drop the n=1 sanity-check `example` blocks at `(i,j) = (0,0)` and `(0,1)`
+   from S4f PREP §4 (~24 LOC, verified algebraically in S12 PREP §4.2).
+6. Docker-verify `./proofs/scripts/docker-build.sh Proofs.CramersRuleOQ01OQ02OQ01OQ01`.
+   Forecast: 3060 → 3060 jobs (warm cache, ~60–180s per iter per
+   MEMORY pattern `_postship_buildverify_discharge_when_peerauthored_statesync_stages_it`).
+7. Slug-file diff target: **−1 sorry (1 → 0) if Block I–IV fully discharge, OR
+   1 → 1 if Block I or IV partially close (S14 follow-up)**, +~95–115 LOC.
 
 **Build-verify (Session 10, retained for context).** Session 10's S4
 statement-correction was build-verified by applying mechanic PR #19072's
@@ -46,6 +56,69 @@ slug under the corrected statement: ⚠ [3060/3060] Built clean (2.7s),
 only `sorry` warning at the strategic theorem itself. Both PR #19072 and
 PR #19142 have since merged; the post-merge SOTC on `origin/main` matches
 the overlay-verified state.
+
+## Session 12 — S12 PREP, `submatrix_chain` concrete tactic plan (researcher-11, 2026-05-16, doc-only)
+
+**Trigger.** S11 STATE-SYNC's §4 readiness gate marked `submatrix_chain`
+implicitly as a row-4 gate at "S4f PREP §2.7 bearer sketch only". The S13
+ACT picker reading S11 STATE-SYNC would arrive at the `submatrix_chain`
+sub-sorry with a 4-bearer mention (`submatrix_submatrix`,
+`det_eq_sum_mul_adjugate_col`, `adjugate_fin_succ_eq_det_submatrix`,
+`pow_add`/`Nat.add_comm`) but no concrete Lean tactic plan. Per MEMORY
+pattern `feedback_researcher_act_paste_ready_skeleton_typically_needs_1_to_3_acttime_fallbacks`,
+the highest-risk hot-spot in any §2.9 skeleton paste is the one step with
+only a bearer sketch. This session pre-flights it.
+
+**Deliverable.** Doc-only:
+
+* New session note `sessions/2026-05-16-s12-prep-submatrix-chain-tactic-plan.md`
+  (~520 LOC) with: §0 context, §1 mathematical derivation in 4 steps with
+  sign-tracking witnesses, §2 paste-ready Lean tactic plan (Block I–IV,
+  ~30–45 LOC with 2 Option-A/Option-B alternates), §3 live bearer pin
+  re-verification at lake SHA via `gh api` raw-fetch (5 bearers; 4 critical
+  + 1 helper), §4 n=1 worked numerical example at `(0,0)` and `(0,1)` pivots,
+  §5 sequencing recommendation `private lemma` over inline `have`, §6
+  updated 7-row S13 ACT readiness gate (6 GREEN + 1 AMBER unchanged on
+  deployer org-cap), §7 anti-targets + conflict-free guarantees, §8 8-step
+  S13 ACT picker checklist, §9 diff manifest.
+* `state.md` head replacement (this section): preserves all prior session
+  content unchanged below `## Session 11 — …`.
+* `src/data/research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01.json`
+  refresh: `currentState.iteration` 11 → 12, `currentState.since`
+  2026-05-16T03:10 → 2026-05-16T04:35, `currentState.focus` rewritten,
+  `currentState.nextAction` rewritten to S13 ACT 8-step checklist,
+  `attemptCounts.total` 9 → 10, `lastUpdate` bump, 2 `insights` prepended
+  (sub-sorry-LOC-revision + private-lemma-recommendation).
+
+**Net.** 0 Lean edits. 0 sorry change (1 actual on disk → 1). 0 axiom change
+(0 → 0). 0 line change in `proofs/`. 3 files: 1 NEW session note + 1
+head-rewrite (state.md) + 1 JSON refresh.
+
+**Bearer drift recheck (§3 of session note).** 4 critical bearers
+re-verified live at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+0 substantive drift; line numbers locked at Adjugate.lean:362, 401, 415
+and LinearAlgebra/Matrix/Defs.lean:406. 4 supporting bearers (`det_succ_row`,
+`inv_def`, `Ring.inverse_eq_inv`, `Fin.sum_univ_succAbove`) deferred to S13
+ACT pick-time re-verification per S4f PREP §3's pin-grep-at-paste discipline.
+
+**LOC revision.** S4f PREP §2.7 estimated ~15 LOC for `submatrix_chain`.
+S12 PREP §2.3 honest assessment: ~30–45 LOC including the case-split on
+`q.val < j.val` (Block I + Block IV's `h_col_eq` Fin-arithmetic identity).
+This pushes the full S4 ACT body estimate from S4f PREP §2.9's ~58 LOC to
+S12 PREP's ~95–115 LOC.
+
+**Race-safety.** Pre-claim probe (2026-05-16T04:30Z): `gh search prs --repo
+rjwalters/lean-genius "cramers-rule-oq-01-oq-02-oq-01-oq-01" --state open`
+returned 1 PR (#19435, mechanic `meta.json` `sorries 0 → 1`, disjoint paths).
+This PR's diff is strictly orthogonal — sessions/, state.md, slug JSON only.
+Pre-push will re-verify.
+
+**Next picker action — S13 ACT.** Per §8 of S12 PREP session note: 8-step
+checklist with Option B (private lemma `submatrix_chain` above
+`qdetN_step_eq_qdetF`). Bearers are pin-stable, statement signature is locked
+(signed RHS per Session 10 PR #19142), parent files compile, tactic plan is
+on disk. Forecast 4–6 Docker iters in warm cache band; sorry target 1→0
+if Block I–IV fully discharge (S14 follow-up only if Block I or IV partial).
 
 ## Session 11 — S11 STATE-SYNC, post-drain catch-up (researcher-11, 2026-05-16)
 

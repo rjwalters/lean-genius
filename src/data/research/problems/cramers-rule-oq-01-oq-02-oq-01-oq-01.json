@@ -28,17 +28,17 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-16T03:10:00Z",
-    "iteration": 11,
-    "focus": "S11 STATE-SYNC (researcher-11, 2026-05-16): post-drain catch-up absorbing the 4-PR drain wave between 2026-05-15 18:04 UTC and 2026-05-15 23:39 UTC — PR #19235 (S4f PREP, paste-ready ~58-LOC §2.9 S4 ACT skeleton + bearer recheck), PR #19142 (S4 statement-fix, signed (-1)^(i+j) RHS now on disk), PR #19072 (mechanic v4.26.0 parent-file repair, 27→0 errors), PR #19036 (S4 precheck doc). The slug-file SOTC on origin/main (SHA 8a3cda556b6...) is 293 lines, sorryCount 5, axiomCount 0; strategic sorry on qdetN_step_eq_qdetF (line 287) carries the corrected signed RHS. Bearer drift recheck (S4f PREP §3 → live 2026-05-16) at lake-pinned Mathlib SHA 2df2f015...: 0 substantive drift (1 cosmetic 1-line shift on Matrix.det_eq_sum_mul_adjugate_row 401→400, does not affect callability). S4 ACT is now unconditionally unblocked.",
+    "since": "2026-05-16T04:35:00Z",
+    "iteration": 12,
+    "focus": "S12 PREP (researcher-11, 2026-05-16, doc-only): concrete Lean tactic plan for the submatrix_chain sub-sorry that S4f PREP §2.7 left as a 4-bearer sketch. New session note 2026-05-16-s12-prep-submatrix-chain-tactic-plan.md (~520 LOC) decomposes submatrix_chain into Block I (j_col definition via Fin.cases on q.val < j.val), Block II (det_eq_sum_mul_adjugate_col application), Block III (adjugate_fin_succ_eq_det_submatrix + submatrix_submatrix flattening), Block IV (sign collection h_col_eq Fin-arithmetic). Honest LOC estimate revised upward from S4f PREP's ~15 LOC to ~30–45 LOC for the sub-sorry alone (case-split on q.val < j.val is unavoidable). Full §2.9 skeleton + n=1 examples now estimated at ~95–115 LOC. Bearer drift recheck at lake SHA 2df2f0150c... re-verifies 4 critical bearers (adjugate_fin_succ_eq_det_submatrix at Adjugate.lean:362, det_eq_sum_mul_adjugate_row at :401, det_eq_sum_mul_adjugate_col at :415, submatrix_submatrix at LinearAlgebra/Matrix/Defs.lean:406 @[simp]). 0 substantive drift since S11. Sequencing recommendation: hoist submatrix_chain to private lemma above qdetN_step_eq_qdetF (Option B per §5).",
     "blockers": [
       "Mathlib has no Matrix.quasideterminant; all infrastructure original.",
-      "S4 ACT proper: discharge qdetN_step_eq_qdetF (signed RHS) via S4f PREP §2.9 paste-ready ~58-LOC skeleton (Matrix.det_eq_sum_mul_adjugate_row + Matrix.adjugate_fin_succ_eq_det_submatrix + Fin.sum_univ_succAbove). The internal submatrix_chain sub-sorry (~15 LOC, 'the hard piece' per S4f PREP §2.7) is the chained Laplace step the implementer eliminates inline as part of the same ACT.",
+      "S13 ACT proper: discharge qdetN_step_eq_qdetF (signed RHS) via S4f PREP §2.9 paste-ready skeleton + S12 PREP §2.2 four-block paste-ready submatrix_chain body. Hoist submatrix_chain to a private lemma above the strategic theorem per S12 PREP §5 (Option B). Block I and Block IV's h_col_eq Fin-arithmetic are the genuine new content beyond the §2.9 skeleton; budget ~30–45 LOC for the lemma body alone.",
       "S5: build the mutual recursion qdetN ↔ qdetN_inv (or alternative typeclass parameterisation via Invertible (minorIJ _ _) that avoids mutual recursion at the cost of a side-condition hypothesis)."
     ],
-    "nextAction": "S4 ACT (full proof, unconditional): paste the S4f PREP §2.9 ~58-LOC skeleton, drop the §4 ~12-LOC n=1 sanity-check `example` block above the strategic theorem, discharge the internal submatrix_chain sub-sorry inline, Docker-verify ./proofs/scripts/docker-build.sh Proofs.CramersRuleOQ01OQ02OQ01OQ01. Estimated 4–6 Docker iterations to converge on the chained Laplace + sign-tracking + field_simp denom-handling. Slug-file diff target: -1 sorry (5 → 4), 0 axiom change, +~58 LOC. See S11 STATE-SYNC §4 readiness gate (5 GREEN + 1 AMBER on deployer org-cap, exogenous).",
+    "nextAction": "S13 ACT (per S12 PREP §8 8-step checklist): (1) Re-fetch 4 ⚠-deferred bearers (Matrix.det_succ_row, Matrix.inv_def, Ring.inverse_eq_inv, Fin.sum_univ_succAbove) live at moment of paste. (2) Adopt Option B from S12 PREP §5: hoist submatrix_chain to private lemma above qdetN_step_eq_qdetF. (3) Paste §2.9 skeleton with submatrix_chain reference replaced by name. (4) Implement Block I (j_col Fin.cases on q.val < j.val) → Block II (det_eq_sum_mul_adjugate_col + submatrix entry simplification) → Block III (adjugate_fin_succ_eq_det_submatrix forward + backward + submatrix_submatrix simp) → Block IV (h_col_eq funext + sign collection by_cases hqj). (5) Drop §4 sanity-check `example` blocks at (0,0) and (0,1) (~24 LOC, verified algebraically in S12 PREP §4.2). (6) Docker-verify ./proofs/scripts/docker-build.sh Proofs.CramersRuleOQ01OQ02OQ01OQ01. Forecast: 3060→3060 jobs warm cache. (7) Slug-file diff target: -1 sorry (1 → 0) if Block I–IV fully discharge, or 1 → 1 if Block I or IV partial (S14 follow-up). +~95–115 LOC total. (8) See S12 PREP §6 readiness gate (6 GREEN + 1 AMBER unchanged on deployer org-cap, exogenous).",
     "attemptCounts": {
-      "total": 9,
+      "total": 10,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -53,6 +53,8 @@
       "proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean S3 Part VI (+88 lines, +1 sorry): qdetN_step + qdetN_step_zero_minv + qdetN_step_eq_qdetF (sorry)"
     ],
     "insights": [
+      "S12 PREP submatrix_chain LOC revision (researcher-11, 2026-05-16): S4f PREP §2.7's '~15 LOC' estimate for submatrix_chain is optimistic. Honest reassessment in S12 PREP §2.3 raises the budget to ~30–45 LOC because the LHS column-index `j_col` requires a case-split on `q.val < j.val` (Block I), and Block IV's `h_col_eq : (j.succAbove q).succAbove ∘ j_col.succAbove = j.succAbove ∘ q.succAbove` is a non-trivial Fin-level identity (~5 LOC by-cases). Full §2.9 skeleton + n=1 examples now estimated at ~95–115 LOC. This revision should be baked into any future post-S4-ACT PREP timeline forecasting (S5 mutual recursion will likely reuse submatrix_chain or a generalisation).",
+      "S12 PREP sequencing recommendation (researcher-11, 2026-05-16): hoist submatrix_chain out of inline `have` (S4f PREP §2.9 style) into a `private lemma` above qdetN_step_eq_qdetF (Option B per §5). Pros: isolates Fin-arithmetic from field-arithmetic; lets S14 ACT target only the lemma if Block I/IV partial-discharges; reusable for S5 mutual recursion or alternative typeclass parameterisation [Invertible (minorIJ _ _)]. Con: one new private top-level name. Decision favors decomposition over single-theorem-self-containment because the genuine new mathematical content (column-expansion + 2× succAbove composition + sign parity) is orthogonal to the field-arithmetic of M_inv_apply + field_simp + ring.",
       "S4 statement-correction (researcher-12, 2026-05-14): the qdetN_step_eq_qdetF strategic sorry's RHS must carry a (-1)^(i+j) cofactor sign factor. Verified at all four (i,j) ∈ Fin 2 × Fin 2 pivots on A = ⟦1 2; 3 4⟧: ratio qdetN_step/qdetF is +1 at (0,0)/(1,1) but −1 at (0,1)/(1,0). The unsigned form is mathematically FALSE for off-diagonal pivots. The qdetN_step_zero_minv companion theorem is unaffected (the sign factor only fires when M⁻¹ is supplied, not when Minv=0).",
       "Build-blocker disentanglement: when a slug's strategic sorry has an incorrect statement AND parent files block the build, the mechanic-PR overlay pattern (transient git apply of an open mechanic PR + Docker-build + revert before commit) confirms the slug-file change will compile cleanly once the mechanic PR merges, without overlapping its diff.",
       "Route A (commutative qdetF n A i j := A.det / minor_det) avoids mutual recursion and closes the commutative half uniformly in n; it is the cleanest first iteration.",
@@ -69,7 +71,7 @@
       "No general n×n Cramer's rule over a division ring."
     ],
     "nextSteps": [
-      "S4 ACT (full proof, unconditional — preconditions PR #19072 + PR #19142 both MERGED 2026-05-15): paste the S4f PREP §2.9 paste-ready ~58-LOC skeleton from sessions/2026-05-15-s4f-prep-mechanic-pr-19072-surface-drift-sweep.md, drop the §4 ~12-LOC n=1 sanity-check `example` above the strategic theorem, discharge the internal submatrix_chain sub-sorry inline (~15 LOC, the chained-Laplace 'hard piece' per S4f PREP §2.7), Docker-verify. Bearers stable at lake-pinned Mathlib SHA 2df2f015... (0 substantive drift per S11 STATE-SYNC §2). Target ~58 LOC, -1 sorry (5 → 4), 0 axiom change. Estimated 4–6 Docker iterations.",
+      "S13 ACT (per S12 PREP §8 8-step checklist): hoist submatrix_chain to a private lemma above qdetN_step_eq_qdetF (Option B per S12 PREP §5), paste the S4f PREP §2.9 ~58-LOC outer skeleton, implement Block I–IV inside the private lemma (~30–45 LOC; see S12 PREP §2.2 paste-ready code), drop the §4 n=1 sanity-check `example` blocks at (0,0) and (0,1) (~24 LOC), Docker-verify. Bearers stable at lake-pinned Mathlib SHA 2df2f015... (S12 PREP §3 re-verified 4 critical + 1 helper; 4 deferred bearers to re-fetch at moment of paste). Target +~95–115 LOC total, -1 sorry (1 → 0) if Block I–IV fully discharge or 1 → 1 if Block I or IV partial. Estimated 4–6 Docker iterations.",
       "S5 [NC-DEFINE] Build qdetN via well-founded recursion on Σ n, Matrix (Fin n) (Fin n) D, OR via [Invertible (minorIJ _ _)] typeclass parameter (avoiding mutual recursion).",
       "S6 [CRAMER] State and prove cramer_rule_nxn_qdet (n×n Cramer's rule over division rings)."
     ]
@@ -117,7 +119,7 @@
     ]
   },
   "started": "2026-05-12T08:02:11.449Z",
-  "lastUpdate": "2026-05-16T03:10:00Z",
+  "lastUpdate": "2026-05-16T04:35:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
