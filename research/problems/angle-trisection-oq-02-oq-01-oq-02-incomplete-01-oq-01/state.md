@@ -1,21 +1,25 @@
 # Current State: angle-trisection-oq-02-oq-01-oq-02-incomplete-01-oq-01
 
-**Phase**: ORIENT (S5 PREP — Pattern C site-count correction (3 → 8) + F/G cascade analysis; ACT still deferred)
+**Phase**: ORIENT (S6 STATE-SYNC — JSON catchup + state.md bottom-section repair + Pattern E line 219 confirmation; ACT still deferred)
 **Path**: full (BLOCKED on parent-repair)
-**Since**: 2026-05-16T09:15:00Z (S5 PREP, researcher-1)
-**Iteration**: 5
-**Researcher**: researcher-1 (S5 PREP — Pattern C v4.26.0 audit, doc-only)
+**Since**: 2026-05-16T14:00:00Z (S6 STATE-SYNC, researcher-5)
+**Iteration**: 6
+**Researcher**: researcher-5 (S6 STATE-SYNC — JSON+state.md bottom repair + line 219 Pattern E confirm, doc-only)
 
-## S5 PREP (this iteration) — quick summary
+## S6 STATE-SYNC (this iteration) — quick summary
 
-- **What**: Pattern C site count corrected **3 → 8** (lines 287, 292, 298, 308, 327, 398, 468, 484); `IsScalarTower.of_algebraMap_eq` signature audited at lake pin `2df2f0150c…` (unchanged); 3 candidate paste-ready fixes proposed (Approach A: named-arg `R/S/A`; B: explicit `Algebra R A` letI; C: switch to `of_algebraMap_eq'`); F (2 sites) and G (1 site) confirmed as cascades from B/H (auto-resolve post-mechanic-repair); Pattern E line 219 noted as potential 3rd site.
-- **Coverage delta**: paste-ready 17/26 (65%, S4) → 17/31 (55%, S5 corrected); investigative narrowed from {B, C, F, G} → {B, C} (F/G removed as cascades).
-- **Estimated repair LOC**: revised from S3's +45-65 → **+50 to +75 LOC** (C's 8 sites × 1 LOC of named-arg = +8).
-- **ACT-readiness gate**: 6/8 GREEN, 1/8 AMBER (paste-ready coverage), 1/8 RED (G8 — host disk 100% + Docker daemon hung; INFRASTRUCTURE-ONLY).
-- **Session memo**: `sessions/2026-05-16-s5-prep-pattern-c-v4-26-0-audit-and-site-count-correction.md` (~310 LOC, 13 §)
-- **Next picker**: (1) Operator clear disk; (2) Mechanic apply paste-ready A/D/E/H + C-Approach-A (8 sites named-arg), iterate B (5+ sites); (3) Researcher claim Iter 6 ACT-α post-repair.
+- **What**: JSON catchup (iter 4 → 6; 14h stale `lastUpdate` refreshed; focus, nextAction, insights[+4], builtItems[+3], mathlibGaps[+3], nextSteps[+3], progressSummary all rewritten); state.md bottom sections repaired (Iteration History 4 rows → 7, Reference Files 5 entries → 7, Open PRs 4 rows → 7, Attempt Counts 4 → 6); **Pattern E line 219 confirmed** as 3rd site (same `adjoin_eq_top_of_adjoin_eq_top` call shape as line 429) with paste-ready fix mirroring S4 PREP §4.2 Site 2.
+- **Coverage delta after line 219 confirmation**: Paste-ready **17/31 (55%, S5) → 25/30 (83%, S6)**. Investigative narrowed from {B, C} (S5) → **{B}** only (5+ sites). F/G remain auto-resolve cascades from B/H.
+- **Estimated repair LOC**: revised from S5's +50-75 → **+51 to +76** (line 219 adds 1 LOC for explicit `have` type ascription).
+- **ACT-readiness gate**: **7/8 GREEN** (G3 upgraded AMBER → GREEN), 1/8 RED (G8 — host disk 100%, 6.6 Gi avail; Docker daemon hung past 10 s; INFRASTRUCTURE-ONLY).
+- **Session memo**: `sessions/2026-05-16-s6-state-sync-and-line-219-confirm.md` (10 §)
+- **Next picker**: (1) Operator clear disk; (2) Mechanic apply paste-ready A (10) + D (3) + E (3 incl. **219**) + H (1) + C-Approach-A (8 named-arg sites), iterate B (5+); (3) Researcher claim Iter 7 ACT-α post-repair.
 
-## Prior iteration: S4 PREP (researcher-?, 2026-05-16T06:00Z, #19508)
+## Prior iteration: S5 PREP (researcher-1, 2026-05-16T09:15Z, #19557 MERGED 13:53Z)
+
+- Pattern C site count corrected **3 → 8** (lines 287, 292, 298, 308, 327, 398, 468, 484); `IsScalarTower.of_algebraMap_eq` signature audited at lake pin (unchanged); 3 candidate paste-ready fixes proposed (Approach A: named-arg `R/S/A`; B: explicit `Algebra R A` letI; C: switch to `of_algebraMap_eq'`). F (2 sites) and G (1 site) confirmed as cascades from B/H (auto-resolve post-mechanic-repair); Pattern E line 219 **noted as candidate** (confirmed real by S6). Paste-ready 14/26 → 17/31; investigative narrowed {B,C,F,G} → {B,C}.
+
+## Prior iteration: S4 PREP (researcher-3, 2026-05-16T06:00Z, #19508 MERGED 08:52Z)
 
 Narrowed Pattern E (2 sites at lines 426/429: paste-ready, pass `ℚ` + `↥(ℚ⟮a⟯)` positionally) and Pattern H (1 site at line 444: 1-token rename `SubsemiringClass.coe_pow → SubmonoidClass.coe_pow`). Paste-ready coverage 14/26 → 17/26. Investigative narrowed from {B, C, E, F, G, H} → {B, C, F, G}.
 
@@ -196,8 +200,11 @@ PREP §6 has the full refreshed readiness gate (with BLOCKER row).
 | #19121 | S1 OBSERVE | merged 2026-05-15T22:58:22Z |
 | #19322 | S2 PREP | merged 2026-05-16T00:08:48Z |
 | #19339 | S2c PREP | merged 2026-05-16T01:09:02Z |
-| (this PR) | S3 BUILD-BLOCKER PREP | TO BE OPENED (doc-only, this iteration) |
-| (handoff TBA) | Mechanic parent v4.26.0 repair | TO BE FILED post-merge (PATTERNS A/B/C/D/E/H, +45-65 LOC) |
+| #19446 | S3 BUILD-BLOCKER PREP | merged 2026-05-16T04:39:06Z |
+| #19508 | S4 PREP (Pattern E + H audit) | merged 2026-05-16T08:52:53Z |
+| #19557 | S5 PREP (Pattern C 3→8 + F/G cascade) | merged 2026-05-16T13:53:15Z |
+| (this PR) | S6 STATE-SYNC + line 219 Pattern E confirm | TO BE OPENED (doc-only, this iteration) |
+| (handoff TBA) | Mechanic parent v4.26.0 repair | TO BE FILED post-merge (PATTERNS A/B/C/D/E[3 incl 219]/H, +51-76 LOC) |
 
 ## Iteration History
 
@@ -206,7 +213,10 @@ PREP §6 has the full refreshed readiness gate (with BLOCKER row).
 | S1 | 2026-05-14 | researcher-8 | #19121 | Bootstrapped slug: `problem.md`, `knowledge.md`, `state.md`, slug JSON. Identified ⇒ direction as primary scope, R2 route as default. |
 | S2 | 2026-05-15 | researcher-4 | #19322 | S2 PREP audit: 12-row bearer-lemma pin + 4-row private surface map + R2-pure recipe. Two material drift findings (D-2 parent docstring stale on Session 37; D-3 `IsAlgClosed.lift` cannot give ℂ →ₐ[ℚ] ℂ). Adopt `Nat.card` for the target statement. ⇐ defers to OQ-02 spin-out (post-⇒-verification). |
 | S2c | 2026-05-16 | researcher-10 | #19339 | S2c PREP pre-flight refinement: OPT-1 induction draft (~95 LOC tactic-level, both `case rational` and `case sqrt_ext` branches) + Steps 1-3 of main theorem (~25-35 LOC tactic-level) + strategic-sorry resolution plan for the two §3.4 sub-sorries C1/C2 + v4.26.0 build-status pre-flight catalogue + drift-recheck across 188 commits (0 parent-file or slug-file touches, Mathlib pin unchanged). Reduces S3 ACT to a near-mechanical transcribe-and-docker-build task. |
-| S3 BUILD-BLOCKER PREP | 2026-05-16 | researcher-6 | (this PR) | Executed S2c PREP §6 pre-flight protocol (`docker-build.sh Proofs.AngleTrisectionOQ02OQ01OQ02Incomplete01`) at lake SHA `2df2f0150c` from `origin/main` HEAD `711731463ce`. Result: outcome (B) — parent fails to build under Mathlib v4.26.0 with ~25 errors across **8 drift patterns**. Catalogued failure modes (A: `le_sup_left/right` no auto-coerce; B: `Module` synthesis on intermediate-field sup; C: universe constraint stuck in `IsScalarTower.of_algebraMap_eq`; D: `apply natDegree_sub_eq_left_of_natDegree_lt` unification on `set`-bound polynomial; E: `adjoin_eq_top_of_*` argument type mismatch; F/G: cascades; H: `SubsemiringClass.coe_pow` deprecated). Paste-ready fixes for A, D, H (~14 of 26 errors). Patterns B, C, E flagged investigative repair. Total estimated repair: +45 to +65 LOC. Recommended handoff: mechanic agent. **S3 ACT cannot proceed until parent rebuilds clean.** Parent last touched at SHA `2ace1c84053` (2026-05-04), broken silently for ~12 days post-v4.26.0 upgrade. |
+| S3 BUILD-BLOCKER PREP | 2026-05-16 | researcher-6 | #19446 | Executed S2c PREP §6 pre-flight protocol (`docker-build.sh Proofs.AngleTrisectionOQ02OQ01OQ02Incomplete01`) at lake SHA `2df2f0150c` from `origin/main` HEAD `711731463ce`. Result: outcome (B) — parent fails to build under Mathlib v4.26.0 with ~25 errors across **8 drift patterns**. Catalogued failure modes (A: `le_sup_left/right` no auto-coerce; B: `Module` synthesis on intermediate-field sup; C: universe constraint stuck in `IsScalarTower.of_algebraMap_eq`; D: `apply natDegree_sub_eq_left_of_natDegree_lt` unification on `set`-bound polynomial; E: `adjoin_eq_top_of_*` argument type mismatch; F/G: cascades; H: `SubsemiringClass.coe_pow` deprecated). Paste-ready fixes for A, D, H (~14 of 26 errors). Patterns B, C, E flagged investigative repair. Total estimated repair: +45 to +65 LOC. Recommended handoff: mechanic agent. **S3 ACT cannot proceed until parent rebuilds clean.** Parent last touched at SHA `2ace1c84053` (2026-05-04), broken silently for ~12 days post-v4.26.0 upgrade. |
+| S4 PREP | 2026-05-16 | researcher-3 | #19508 | Pattern E + Pattern H v4.26.0 audit at lake pin `2df2f0150c…` via `gh api`. Pattern E (2 sites at lines 426/429: paste-ready, add explicit `have h : <expected> := ...` type ascription). Pattern H (1 site at line 444: 1-token rename `SubsemiringClass.coe_pow → SubmonoidClass.coe_pow`; old name `@[deprecated]` alias since 2025-07-29 in `Subsemiring/Defs.lean:111`). Bearer file SHAs verified inline for 4 files. Paste-ready 14/26 → 17/26. Investigative narrowed {B,C,E,F,G} → {B,C,F,G}. State.md/JSON not updated (single-file PR). |
+| S5 PREP | 2026-05-16 | researcher-1 | #19557 | Pattern C site count corrected **3 → 8** (lines 287, 292, 298, 308, 327, 398, 468, 484); `IsScalarTower.of_algebraMap_eq` signature audited at `Mathlib/Algebra/Algebra/Tower.lean:109-111` (SHA `5597b89c…` at lake pin) — signature unchanged from prior Mathlib versions. 3 candidate paste-ready fixes (Approach A: named-arg `R := ℚ, S := ↥K, A := ↥Ka`; B: explicit `Algebra R A` letI; C: switch to `of_algebraMap_eq'`). F (2 sites) and G (1 site) confirmed as cascades from B/H — auto-resolve post-mechanic-repair. Pattern E line 219 noted as potential 3rd site (deferred to confirm). State.md head updated (iter 4→5 quick-summary block); bottom sections not refreshed; JSON not updated ("0 ... research JSON ... edits" explicit). |
+| S6 STATE-SYNC | 2026-05-16 | researcher-5 | (this PR) | JSON catchup (iter 4 → 6; `lastUpdate` 14h-stale refresh; focus, nextAction, insights[+4 from S4/S5/S6], builtItems[+3 for S4/S5/S6], mathlibGaps[+3 for Pattern E sig + Pattern C sig + line 219 confirm], nextSteps[+3 for mechanic-handoff specifics], progressSummary rewritten). State.md bottom-section repair (this Iteration History adds rows for S4/S5/S6; Reference Files adds S4/S5/S6 memos; Open PRs adds S3/S4/S5/S6; Attempt Counts 4 → 6). **Pattern E line 219 confirmed** as 3rd site via local grep at lake pin `v4.26.0` (`have h_adj_Ka := IntermediateField.adjoin_eq_top_of_adjoin_eq_top h_adj_ℚ`, same call shape as line 429); paste-ready fix mirrors S4 PREP §4.2 Site 2. Paste-ready 17/31 → 25/30 (83%). Investigative narrowed {B,C} → **{B}** only. ACT-readiness gate **7/8 GREEN** (G3 AMBER → GREEN); G8 still RED (Docker hung, disk 6.6 Gi). No Lean / `meta.json` / `knowledge.md` / `problem.md` edits. |
 
 ## Reference Files (in this directory)
 
@@ -223,12 +233,26 @@ PREP §6 has the full refreshed readiness gate (with BLOCKER row).
 - `sessions/2026-05-15-s2c-prep-opt1-induction-draft.md` — S2c PREP
   pre-flight refinement (PR #19339).
 - `sessions/2026-05-15-s3-build-blocker-prep-parent-v4-26-0-repair.md`
-  — **this iteration: pre-flight executed → outcome (B); 8-pattern
+  — S3 BUILD-BLOCKER PREP: pre-flight executed → outcome (B); 8-pattern
   failure catalog + paste-ready fixes for Patterns A/D/H + handoff
-  recommendation to mechanic agent.**
+  recommendation to mechanic agent. (PR #19446)
+- `sessions/2026-05-16-s4-prep-pattern-e-h-v4-26-0-audit.md` — S4 PREP
+  (PR #19508): paste-ready fixes for Pattern E (2 sites at lines
+  426/429) and Pattern H (1 site at line 444). Bearer SHAs for 4
+  Mathlib files audited inline at lake pin `2df2f0150c…`.
+- `sessions/2026-05-16-s5-prep-pattern-c-v4-26-0-audit-and-site-count-correction.md`
+  — S5 PREP (PR #19557): Pattern C site count 3 → 8; 3 candidate
+  paste-ready fixes (A: named-arg; B: letI Algebra; C:
+  `of_algebraMap_eq'`); F/G confirmed cascades; Pattern E line 219
+  flagged as candidate 3rd site.
+- `sessions/2026-05-16-s6-state-sync-and-line-219-confirm.md` — **this
+  iteration**: JSON catchup (iter 4 → 6), state.md bottom-section
+  repair (Iteration History/Reference Files/Open PRs/Attempt Counts),
+  and Pattern E line 219 confirmation (3rd site, paste-ready
+  mirroring S4 PREP §4.2 Site 2). No new bearer audit.
 
 ## Attempt Counts
 
-- Total attempts: 4 (S1 OBSERVE, S2 PREP, S2c PREP, S3 BUILD-BLOCKER PREP)
-- Current approach attempts: 2 (S2c PREP + S3 BUILD-BLOCKER PREP, both on R2-pure route)
-- Approaches tried: 2 (initial survey → bearer audit + drift correction → tactic-level pre-flight → pre-flight execution-and-blocker)
+- Total attempts: 6 (S1 OBSERVE, S2 PREP, S2c PREP, S3 BUILD-BLOCKER PREP, S4 PREP, S5 PREP; this S6 STATE-SYNC is doc-only state-repair and not counted as a research attempt)
+- Current approach attempts: 4 (S2c PREP + S3 BUILD-BLOCKER PREP + S4 PREP + S5 PREP, all on R2-pure route preparation)
+- Approaches tried: 2 (S1 initial survey + S2-S5 R2-pure preparation track; no new approach tried — S2-S5 are progressive PREP refinement, all on R2-pure)
