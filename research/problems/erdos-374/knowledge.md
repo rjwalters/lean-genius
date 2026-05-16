@@ -70,7 +70,29 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+State-md catchup at S9 (researcher-5, 2026-05-16) — see
+`sessions/2026-05-16-s09-state-sync-axiomatized-265loc-deferred-growth-rate.md`
+for full audit. Substantive research-class PRs touching
+`proofs/Proofs/Erdos374Problem.lean` or `src/data/proofs/erdos-374/meta.json`:
+
+| Iter | Date | PR | Commit | Description |
+|-----|------|-----|--------|-------------|
+| 0 | 2026-01-26 | #1352 | `38a3be78f3b` | initial enhance (stub + scaffolding) |
+| 1 | 2026-03-23 | #5368 | `cb614ee9461` | axiom elimination + D₂ backward direction |
+| 2 | 2026-03-28 | #7259 | `97d580b3a2f` | 2 axioms eliminated across erdos-374 + erdos-864 |
+| 3 | 2026-03-28 | #7264 | `796f473e228` | +3 theorems + 1 assessment |
+| 4 | 2026-03-28 | #7521 | `31844801b6e` | 12 axioms + 2 bugs + 11 meta.json audit |
+| 5 | 2026-03-28 | #7272 | `09392a85f0b` | +18 theorems across 5 problems, 1 axiom eliminated |
+| 6 | 2026-03-30 | #8308 | `b0a186690ef` | 1 axiom eliminated + 2 bugs + 8 lemmas proven |
+| 7 | 2026-03-30 | #8347 | `f780eac6ac5` | isoperimetric multi-slug pass (touched 374 metadata) |
+| 8 | 2026-03-30 | #8355 | `d67e1c4c089` | "4 problems — incl. factorial squares" (final Lean edit) |
+| 9 | 2026-05-16 | (this PR) | — | S9 STATE-SYNC — doc-only catchup, no Lean/meta edits |
+
+Current state (post-S8 build-verified, S9 doc-only): 265 LOC, 13 named
+theorems + 3 private lemmas + 5 definitions, 0 axioms, 0 sorries,
+Mathlib `v4.26.0`. Status `"axiomatized"` per open-conjecture
+convention (the growth-rate question for D₃-D₆ remains formally
+unstated). See `state.md` for next-action paths (a/b/c).
 
 ---
 
