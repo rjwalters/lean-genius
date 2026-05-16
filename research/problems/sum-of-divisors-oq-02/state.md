@@ -1,11 +1,89 @@
 # Current State
 
-**Phase**: ACT
-**Since**: 2026-05-16T01:10:00Z
-**Iteration**: 4
-**Agent**: researcher-9 (S4); researcher-8 (S2, S3 PREP); researcher-12 (S1)
+**Phase**: PREP (S5 — Step 3 discharge recipe + bearer pin; build-pending caveat: host Docker daemon corrupt at PREP time)
+**Since**: 2026-05-16T05:00:00Z (S5 PREP)
+**Iteration**: 5
+**Agent**: researcher-8 (S2, S3 PREP, **S5 PREP this iter**); researcher-9 (S4); researcher-12 (S1)
 
-## Current Focus
+## Latest Iteration: S5 PREP — Step 3 discharge recipe + bearer pin (researcher-8, 2026-05-16T05:00Z)
+
+Doc-only PREP closing S3 PREP's §8 "Out of scope (deferred)" item for
+Step 3 (`mersenne_mul_sigma_eq_two_pow_mul`). S3 PREP marked Step 3 as
+"S4 follow-up (~6 LOC)" — but S4 ACT (PR #19357, MERGED 2026-05-16T03:53Z)
+shipped only Step 1. This S5 PREP packages Step 3 as the natural next-ACT
+target with paste-ready Lean + 2 NEW bearer pins:
+
+1. **NEW bearer N1** — `Nat.perfect_iff_sum_divisors_eq_two_mul` at
+   `Mathlib/NumberTheory/Divisors.lean:405`. Signature
+   `(h : 0 < n) : Perfect n ↔ ∑ i ∈ divisors n, i = 2 * n`. Supplies
+   the Perfect-to-`σ 1 = 2·n` bridge.
+2. **NEW bearer N2** — `ArithmeticFunction.sigma_one_apply` at
+   `Mathlib/NumberTheory/ArithmeticFunction/Basic.lean:169`. Signature
+   `σ 1 n = ∑ d ∈ divisors n, d`. Rewrites the divisor sum into `σ 1`.
+
+Both bearers re-verified at unchanged Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(v4.26.0) via `gh api …?ref=<SHA>` content fetch — 0 drift.
+
+### Construction recipe (math)
+
+```
+Perfect (2^k * m)
+  ↦ σ 1 (2^k * m) = 2 * (2^k * m)               [N1 + N2 + sigma_one_apply]
+  ↦ σ 1 (2^k) * σ 1 m = 2 * (2^k * m)            [Step 1: sigma_two_pow_mul_odd]
+  ↦ mersenne (k+1) * σ 1 m = 2 * (2^k * m)       [Step 2: sigma_two_pow_eq_mersenne]
+  ↦ mersenne (k+1) * σ 1 m = 2^(k+1) * m         [← mul_assoc; ← pow_succ']
+```
+
+Total ~7 LOC tactic body. See `sessions/2026-05-16-s5-prep-step3-discharge-recipe.md`
+§3 for the paste-ready Lean and §4 for the 1-iteration build forecast.
+
+### Build-pending caveat (host Docker daemon corrupt)
+
+At PREP draft time, the host Docker daemon was observed in a corrupt
+state (`docker info` reports containerd blob I/O error). Two PREP-time
+Docker build attempts failed at the host-infrastructure layer
+(Mathlib cache invalidation + blob storage write error), not at the
+Lean elaboration layer. The S5 ACT picker must confirm `docker info`
+returns successfully before applying §3 and running the Docker build.
+
+### ACT-readiness gate (6/7 GREEN + 1/7 AMBER)
+
+| # | Item | Status |
+|---|------|--------|
+| 1 | Mathlib pin unchanged | GREEN |
+| 2 | Steps 1+2 in scope (parent file) | GREEN |
+| 3 | 2 NEW bearers pinned + content-verified at SHA | GREEN |
+| 4 | Paste-ready ~7-LOC discharge | GREEN |
+| 5 | 3 build-risk items + 3 fallback recipes | GREEN |
+| 6 | Host Docker daemon healthy at S5 ACT pick time | **AMBER** — must `docker info` recheck before ACT |
+| 7 | No open peer PRs on slug | GREEN |
+
+### Next Action (S5 ACT picker priority)
+
+**TOP — S5 ACT (Step 3 discharge, ~7 LOC + ~4 LOC docstring)**: single PR
+replacing the existing `sorry` for `mersenne_mul_sigma_eq_two_pow_mul`
+with the §3 paste-ready body. Sorry count: 5 → 4. Single Docker iter
+expected once host is healthy.
+
+**SECOND — S6 PREP (Step 4 discharge, `mersenne_dvd_odd_part`)**: ~5
+LOC per S3 PREP §8; needs `Nat.Prime.coprime_pow_of_not_dvd` +
+`.dvd_of_dvd_mul_left` bearer pins.
+
+### Files touched (3 — doc-only)
+
+1. `research/problems/sum-of-divisors-oq-02/sessions/2026-05-16-s5-prep-step3-discharge-recipe.md` (NEW, ~310 LOC).
+2. `research/problems/sum-of-divisors-oq-02/state.md` (head replaced; S4 ACT block preserved verbatim).
+3. `src/data/research/problems/sum-of-divisors-oq-02.json` (`currentState.{phase ACT→PREP, iteration 4→5, since, focus, nextAction}`, `updatedAt`, top-level `phase OBSERVE→ACT` drift fix).
+
+### Honesty footprint
+
+- 0 new Lean theorems (the §3 discharge is paste-ready but not committed)
+- 0 new sorries
+- 0 axiom changes
+- 0 Lean files modified (PREP-time build attempt edit reverted)
+- 2 Docker build attempts (both failed at host-infrastructure layer)
+
+## Previous Iteration (S4 ACT)
 
 S4 ACT — discharged Step 1 (`sigma_two_pow_mul_odd`) verbatim from
 `sessions/2026-05-14-s3-prep-step1-step5-discharge.md` §3.2 (term-mode body,
