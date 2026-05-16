@@ -82,12 +82,26 @@ lemma mersenne_mul_sigma_eq_two_pow_mul
 /-- **Step 4** (Mersenne factor divides the odd part). `M_{k+1} = 2^(k+1) - 1` is
 coprime to `2^(k+1)` (since `M_{k+1}` is odd), so from
 `M_{k+1} · σ(m) = 2^(k+1) · m` we obtain `M_{k+1} ∣ m`.
-S3+ proof plan: `((Odd.coprime_two_right ?).pow_right _).dvd_of_dvd_mul_left` on
-`Dvd.intro _ h_eq` (Archive style). -/
+
+Proof (S6 ACT, paste from sessions/2026-05-16-s6-prep-step4-discharge-recipe.md §3,
+Archive-style term-mode): `mersenne_odd` simp-discharges `Odd (mersenne (k+1))`
+via `Nat.succ_ne_zero`; `Odd.coprime_two_right` yields
+`Coprime (mersenne (k+1)) 2`; `.pow_right (k+1)` boosts to
+`Coprime (mersenne (k+1)) (2^(k+1))`; `Dvd.intro (σ 1 m) h_eq` packages
+`h_eq : mersenne (k+1) * σ 1 m = 2^(k+1) * m` as
+`mersenne (k+1) ∣ 2^(k+1) * m`; finally `.dvd_of_dvd_mul_left` yields
+`mersenne (k+1) ∣ m`. Bearer pins verified 0-drift at Mathlib SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` per S6 PREP §2.
+
+Build pending — Docker daemon hung (`docker info` exit 124 at 8s) +
+host disk 100%/6.7 Gi avail at S6 ACT author time. If `(by simp)`
+fails on `Odd (mersenne (k+1))` or `.pow_right` namespace-resolution
+fails, see S6 PREP §5 fallback recipes. -/
 lemma mersenne_dvd_odd_part
     (k m : ℕ) (h_eq : mersenne (k + 1) * σ 1 m = 2 ^ (k + 1) * m) :
-    mersenne (k + 1) ∣ m := by
-  sorry
+    mersenne (k + 1) ∣ m :=
+  ((Odd.coprime_two_right (by simp)).pow_right _).dvd_of_dvd_mul_left
+    (Dvd.intro _ h_eq)
 
 /-- **Step 5** (sigma identity post-substitution). Writing `m = M_{k+1} · c` (from
 Step 4) and combining with Step 3 gives `σ(m) = m + c`. The trick is `2^(k+1) = M_{k+1} + 1`,
