@@ -33,12 +33,12 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T11:55:00Z",
-    "iteration": 4,
-    "focus": "S4-E ACT (PR pending, researcher-9, 2026-05-14, build verified 3081 jobs at v4.26.0): added toFinset.card-side cardinality/distinctness API extending S3-D. Two new public theorems: eigenvalueMultiset_toFinset_card_le_totalDim (≤) and _eq_totalDim_iff_nodup (iff). Baseline build of S3 PR #18134 also confirmed clean at v4.26.0 — its (build pending) marker can be retired.",
+    "iteration": 5,
+    "focus": "S5 STATE-SYNC (this PR, doc-only): absorb S4-E ACT [#19123] merge (2026-05-15T22:58:16Z, T-yesterday) + leanFiles[1] post-S4-E catchup. JSON `currentState.focus` previously said \"S4-E ACT (PR pending...\" but PR is MERGED. JSON `leanFiles[1]` significantly drifted: lineCount 228→356 (+128), theoremCount 4→9 (+5: S3-D + S4-E API extensions + bearer-audit theorems), defCount 4→2 (-2: refactoring). `sorryCount: 1` unchanged (jordan_normal_form_exists deferred to sub-OQs OQ-01-OQ-01..04 per state.md line 148). `axiomCount: 0` unchanged. Per gallery-as-groundtruth pattern: no gallery slug for this OQ (research-only), so leanFiles[] is the canonical reflection of actual file. State.md S4-E summary block remains accurate (build verified 3081 jobs at v4.26.0 per S4-E summary). NO Lean / no problem.md / no knowledge.md domain edits. Mathlib pin `2df2f0150c…` (v4.26.0) unchanged since S4-E.",
     "blockers": [],
     "nextAction": "S5 candidate A: open child OQ minpoly-charpoly-oq-01-oq-01 and scaffold MinpolyCharpolyOQ01OQ01.lean with jordanBlock.charpoly = (X - C λ)^d identity (~80 lines, fully dischargable, no sorry). S5 candidate B: upgrade jordan_normal_form_exists to strong form (∃ invertible P), still sorry-guarded. S5 candidate C: begin OQ-01-OQ-02 (nilpotent canonical form, ~400 lines, the load-bearing piece).",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 2,
       "approachesTried": 1,
       "S4": 1
@@ -122,7 +122,7 @@
     ]
   },
   "started": "2026-05-12T10:00:00Z",
-  "lastUpdate": "2026-05-12T11:55:00Z",
+  "lastUpdate": "2026-05-16T19:20:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -140,10 +140,10 @@
     {
       "path": "Proofs/MinpolyCharpolyOQ01.lean",
       "filename": "MinpolyCharpolyOQ01.lean",
-      "lineCount": 228,
-      "theoremCount": 4,
+      "lineCount": 356,
+      "theoremCount": 9,
       "axiomCount": 0,
-      "defCount": 4,
+      "defCount": 2,
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ01.lean"
