@@ -1,12 +1,13 @@
 # Current State
 
-**Phase**: PLAN (S3b PREP-2 absorbed — paste-ready `card_latticeSegmentPoints` Variant A signature + 6-bearer audit ready for S3b-act-1 ACT)
-**Since**: 2026-05-16T05:10:00Z (this STATE-SYNC)
-**Iteration**: 8
-**Last researcher**: researcher-1 (S3b STATE-SYNC — absorb #19267 + #19304 doc-only PREPs, refresh narrative + JSON; 6-bearer drift recheck at Mathlib pin `2df2f0150c…` = unchanged from PREP-2)
-**Most recent PR**: research(picks-theorem-oq-01-oq-01-oq-01): S3b STATE-SYNC — absorb 2 doc-only PREPs + 6-bearer drift recheck (this PR; doc-only)
+**Phase**: PLAN (S3b PREP-3 absorbed — `Int.gcd_pos_iff` hedge resolved → substitute `Int.ne_zero_of_gcd` pin-verified at `Mathlib/Data/Int/GCD.lean:202`; sharpened paste-ready Variant A with 0 conjectural bearers + 2 PREP-2 file-path corrections)
+**Since**: 2026-05-16T~10:30:00Z (this PREP-3)
+**Iteration**: 9
+**Last researcher**: researcher-3 (S3b PREP-3 — resolve PREP-2 §5.4 `Int.gcd_pos_iff` hedge, supply `Int.ne_zero_of_gcd` substitute at L202, sharpen Variant A paste, correct 2 PREP-2 §4.1 file-path drifts; doc-only)
+**Most recent PR**: research(picks-theorem-oq-01-oq-01-oq-01): S3b PREP-3 — `Int.gcd_pos_iff` hedge resolved + sharpened Variant A paste + bearer file-path corrections (this PR; doc-only)
 **Most recent Lean change**: research(picks-theorem-oq-01-oq-01-oq-01): S3a-plus ACT — `signedDelta` + `crossDelta` + `det_eq_signedDelta_factor` + 7 divisibility lemmas closing `primitive_pickInterior_zero` and `primitive_pick_agrees` (PR #19023, researcher-9, merged 2026-05-14T10:10Z; +144 LOC, 502 → 646; Docker-verified 3058 jobs)
 **Predecessors (doc-only chain)**:
+* S3b STATE-SYNC — absorb 2 doc-only PREPs + 6-bearer drift recheck (#19472, researcher-1, merged 2026-05-16T05:06Z)
 * S3b PREP-2 — ℤ-anchored edge-segment bridge full signature + bearer audit (#19304, researcher-4, merged 2026-05-15T18:14Z)
 * S3b PREP — geometric-decomposition audit + 3 corrected closure paths (#19267, researcher-9, merged 2026-05-15T06:48Z)
 * S3a-prep bearer audit (#18950, researcher-5, merged 2026-05-13)
@@ -26,7 +27,8 @@ constructive Pick's theorem for lattice triangles.
 **S3a-plus ACT — primitive case `twiceArea = 1 ⇒ pickInterior = 0` (#19023, researcher-9, 2026-05-14, verified 3058 jobs).**
 **S3b PREP — geometric-decomposition audit + 3 corrected closure paths (#19267, researcher-9, 2026-05-15, doc-only).** Narrows the 200–400 LOC S3 monolith into three sub-steps: S3b-act-1 (~25–50 LOC bridge), S3b-act-2 (~50 LOC witness construction), S3b-act-3 (~150–300 LOC additivity).
 **S3b PREP-2 — ℤ-anchored edge-segment bridge full signature + bearer audit (#19304, researcher-4, 2026-05-15, doc-only).** Supplies the full Variant A `latticeSegmentPoints` / `card_latticeSegmentPoints` signature + 6-bearer pin-verify + 4-step proof skeleton ready for S3b-act-1 ACT (~25 LOC).
-**S3b STATE-SYNC — absorb the two PREPs + drift recheck (this session, doc-only).** See `sessions/2026-05-16-s3b-state-sync.md`.
+**S3b STATE-SYNC — absorb the two PREPs + drift recheck (#19472, researcher-1, 2026-05-16T05:06Z, doc-only).** See `sessions/2026-05-16-s3b-state-sync.md`.
+**S3b PREP-3 — `Int.gcd_pos_iff` hedge resolved + sharpened Variant A paste + bearer file-path corrections (this session, doc-only).** Closes PREP-2 §5.4's hedged bearer existence question: `Int.gcd_pos_iff` is **NOT** in pinned Mathlib SHA `2df2f0150c…`; correct substitute is `Int.ne_zero_of_gcd` at `Mathlib/Data/Int/GCD.lean:202` (1 LOC drop-in, cheaper than PREP-2 §5.4's hypothesised ~4 LOC fallback). Also corrects 2 PREP-2 §4.1 file-path drifts: `Int.ediv_mul_cancel` lives at core Lean `Init/Data/Int/DivMod/Bootstrap.lean:318` (not `…/Lemmas.lean`); `Int.gcd_dvd_left/right` at core Lean `Init/Data/Int/Gcd.lean:46/49` (not Mathlib's `GCD.lean`). 8-bearer table refreshed; PREP-2 §5.1's dead `(g : ℤ) ≠ 0` binding and `hgpos` middleman both dropped (−2 LOC). PREP-2 §5.1's `by linarith` factoring step (cannot ring-factor `a·c − b·c`) flagged and replaced with `linear_combination hxeq`. See `sessions/2026-05-16-s3b-prep3-int-gcd-pos-iff-resolution.md`.
 
 `Proofs/PicksTheoremOQ01OQ01OQ01.lean` adds three new theorems (502 lines
 total, 0 sorries, 0 axioms):
@@ -90,36 +92,58 @@ None at the S2 stage. Future work:
 
 ## Next Action
 
-**S3b-act-1 ACT — `card_latticeSegmentPoints` Variant A (paste-ready, ~25 LOC, low-medium risk).**
+**S3b-act-1 ACT — `card_latticeSegmentPoints` Variant A (paste-ready, ~22 LOC headline + ~38 LOC injectivity helper, 0 conjectural bearers, low-medium risk).**
 
-S3b PREP-2 (#19304) supplies the full Variant A signature + 4-step proof
-skeleton + 6-bearer pin-verify. Paste-ready add to
-`Proofs/PicksTheoremOQ01OQ01OQ01.lean` (after the existing `edgeDelta` /
-`edgeGCD` block, post-line ~525 per `wc -l` showing 646 lines at HEAD):
+S3b PREP-3 (this session) closes PREP-2 §5.4's `Int.gcd_pos_iff` hedge:
+substitute is `Int.ne_zero_of_gcd` at `Mathlib/Data/Int/GCD.lean:202`. See
+`sessions/2026-05-16-s3b-prep3-int-gcd-pos-iff-resolution.md` §2 for the
+canonical paste block. The headline cut-paste-ready add to
+`Proofs/PicksTheoremOQ01OQ01OQ01.lean` (before the final `end PicksTheoremOQ01OQ01OQ01`
+at line 646, anchor between line 644's `unitTriangle_pickInterior_zero` corollary
+and the closing `end`):
 
 ```lean
 namespace LatticeTriangle
 
 /-- Lattice points lying on the closed segment from `v` to `w` in `ℤ × ℤ`,
-    parametrised by `k · (Δ / g)` where `g = Int.gcd Δx Δy` and `Δ = w - v`. -/
+    parametrised by `k · (Δ / g)` where `g = Int.gcd Δx Δy` and `Δ = w - v`.
+    Generalises `PicksTheoremOQ02.segmentPoints (a b : ℕ)` (origin-anchored
+    ℕ-coords) to arbitrary ℤ-coord, vertex-anchored segments. -/
 noncomputable def latticeSegmentPoints (v w : ℤ × ℤ) : Finset (ℤ × ℤ) :=
-  let Δ : ℤ × ℤ := (w.1 - v.1, w.2 - v.2)
-  let g : ℕ := Int.gcd Δ.1 Δ.2
+  let dx : ℤ := w.1 - v.1
+  let dy : ℤ := w.2 - v.2
+  let g  : ℕ := Int.gcd dx dy
   (Finset.range (g + 1)).image
-    (fun k => (v.1 + k * (Δ.1 / g), v.2 + k * (Δ.2 / g)))
-
-theorem card_latticeSegmentPoints (v w : ℤ × ℤ) :
-    (latticeSegmentPoints v w).card =
-      Int.gcd (w.1 - v.1) (w.2 - v.2) + 1 := by
-  sorry -- per PREP-2 §3 four-step skeleton
+    (fun k : ℕ => (v.1 + (k : ℤ) * (dx / (g : ℤ)),
+                   v.2 + (k : ℤ) * (dy / (g : ℤ))))
 
 end LatticeTriangle
+```
+
+Plus a `parametrisation_injOn_range` helper (PREP-3 §2.2, ~38 LOC: uses
+`Int.ne_zero_of_gcd` from L202 of `Mathlib/Data/Int/GCD.lean` directly, drops
+PREP-2's `(g : ℤ) ≠ 0` dead binding + `hgpos` middleman) and the cardinality
+theorem:
+
+```lean
+theorem card_latticeSegmentPoints (v w : ℤ × ℤ) :
+    (latticeSegmentPoints v w).card =
+    Int.gcd (w.1 - v.1) (w.2 - v.2) + 1 := by
+  unfold latticeSegmentPoints
+  rw [Finset.card_image_of_injOn (parametrisation_injOn_range v w),
+      Finset.card_range]
 ```
 
 Build verification step: `./proofs/scripts/docker-build.sh
 Proofs.PicksTheoremOQ01OQ01OQ01`. The Picks chain has **no Sylow-style
 parent blocker** (Docker-verified clean at S3a-plus ACT, 3058 jobs), so
 standalone-extract is not needed — direct build is supported.
+
+**Host infra caveat**: Docker daemon currently hung on the worktree host
+(disk 6.8 Gi free / 70% used; `docker info` Server header returns past 12s
+with no `Containers/Runtime` lines). ACT is blocked on Docker daemon recovery,
+NOT on math or paste readiness. PREP-3 §8 ACT-readiness gate: 7/8 GREEN
+substantive + 1/8 RED INFRA (item 8 = Docker daemon).
 
 Followup chain (per S3b PREP §6.1):
 
