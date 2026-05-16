@@ -328,6 +328,112 @@ theorem cos_rational_pi_nonzero_along_multiples (p q m : ℕ) (hp : Odd p)
   rw [cos_int_pi]
   exact zpow_ne_zero _ (by norm_num)
 
+/-! ## Operator-Norm Saturation for Banach-Steinhaus (Session 31) -/
+
+/-- **Operator-norm saturation lower bound for the Chebyshev interpolation functional.**
+
+    For any `n : ℕ` and `x : ℝ`, there exists a function `f : ℝ → ℝ` with `|f t| ≤ 1`
+    for all `t` and `chebyshevInterp n f x = chebyshevLebesgue n x`. The construction
+    places `±1` (the sign of `lagrangeBasis n (chebyshevNode n) k x`) at each
+    Chebyshev node and `0` elsewhere; injectivity of the nodes
+    (`chebyshevNode_injective`) ensures the single-node weight survives the
+    indicator-sum, and the sign choice saturates each absolute value
+    `|lagrangeBasis n (chebyshevNode n) k x|` exactly.
+
+    Combined with the existing `chebyshev_upper_bound`
+    (`|chebyshevInterp n f x| ≤ M · chebyshevLebesgue n x` for `M` bounding `f`),
+    this yields the operator-norm identity `‖f ↦ chebyshevInterp n f x‖ =
+    chebyshevLebesgue n x` on the unit `L^∞` ball. That identity is the input to a
+    future Banach-Steinhaus contrapositive
+    (`Mathlib.Analysis.NormedSpace.BanachSteinhaus.banach_steinhaus`) which closes
+    Sorry 2 (`divergence_from_lebesgue_growth`): once `Λₙ(x) → ∞`, the sequence of
+    evaluation functionals has unbounded operator norm, so by UBP some `f` makes
+    `chebyshevInterp n f x` unbounded.
+
+    The witness `f` here is *not* continuous (it is `0` off the finite
+    Chebyshev-node set); a future session wiring this through Mathlib's
+    `ContinuousLinearMap` / `BanachSteinhaus` infrastructure will lift the
+    witness to a continuous function via Tietze extension. The discrete
+    saturation proved here is the mathematical content; the topological lift is
+    routine. -/
+private lemma chebyshev_lebesgue_saturated (n : ℕ) (x : ℝ) :
+    ∃ f : ℝ → ℝ, (∀ t, |f t| ≤ 1) ∧
+      chebyshevInterp n f x = chebyshevLebesgue n x := by
+  classical
+  -- Sign weight at each node so that w k * ℓ_k(x) = |ℓ_k(x)|.
+  let w : Fin n → ℝ := fun k =>
+      if 0 ≤ lagrangeBasis n (chebyshevNode n) k x then (1 : ℝ) else -1
+  have hw_abs : ∀ k, |w k| = 1 := by
+    intro k
+    show |(if 0 ≤ lagrangeBasis n (chebyshevNode n) k x then (1 : ℝ) else -1)| = 1
+    by_cases h : 0 ≤ lagrangeBasis n (chebyshevNode n) k x
+    · rw [if_pos h]; norm_num
+    · rw [if_neg h]; norm_num
+  have hw_sat : ∀ k, w k * lagrangeBasis n (chebyshevNode n) k x =
+      |lagrangeBasis n (chebyshevNode n) k x| := by
+    intro k
+    show (if 0 ≤ lagrangeBasis n (chebyshevNode n) k x then (1 : ℝ) else -1) *
+        lagrangeBasis n (chebyshevNode n) k x =
+      |lagrangeBasis n (chebyshevNode n) k x|
+    by_cases h : 0 ≤ lagrangeBasis n (chebyshevNode n) k x
+    · rw [if_pos h, one_mul, abs_of_nonneg h]
+    · push_neg at h
+      rw [if_neg (not_le.mpr h), neg_one_mul, abs_of_neg h]
+  -- f is the sum-of-indicators with sign weights at each Chebyshev node.
+  refine ⟨fun t => ∑ k : Fin n, w k * (if t = chebyshevNode n k then (1 : ℝ) else 0),
+    ?_, ?_⟩
+  · -- |f t| ≤ 1
+    intro t
+    show |∑ k : Fin n, w k * (if t = chebyshevNode n k then (1 : ℝ) else 0)| ≤ 1
+    rcases Nat.eq_zero_or_pos n with rfl | hn
+    · -- Empty sum: f t = 0.
+      simp
+    · by_cases ht : ∃ k : Fin n, chebyshevNode n k = t
+      · -- t coincides with some node k₀: only that term contributes.
+        obtain ⟨k₀, hk₀⟩ := ht
+        have hsum_eq :
+            (∑ k : Fin n, w k * (if t = chebyshevNode n k then (1 : ℝ) else 0)) = w k₀ := by
+          rw [Finset.sum_eq_single_of_mem k₀ (Finset.mem_univ _)]
+          · rw [if_pos hk₀.symm, mul_one]
+          · intro k _ hk_ne
+            have hne_t : t ≠ chebyshevNode n k := fun heq =>
+              hk_ne ((chebyshevNode_injective n hn (hk₀.trans heq)).symm)
+            rw [if_neg hne_t, mul_zero]
+        rw [hsum_eq]; exact (hw_abs k₀).le
+      · -- t is not a Chebyshev node: every term vanishes.
+        push_neg at ht
+        have hsum_zero :
+            (∑ k : Fin n, w k * (if t = chebyshevNode n k then (1 : ℝ) else 0)) = 0 := by
+          apply Finset.sum_eq_zero
+          intro k _
+          have hne_t : t ≠ chebyshevNode n k := fun heq => ht k heq.symm
+          rw [if_neg hne_t, mul_zero]
+        rw [hsum_zero, abs_zero]
+        norm_num
+  · -- chebyshevInterp n f x = chebyshevLebesgue n x
+    rcases Nat.eq_zero_or_pos n with rfl | hn
+    · -- Empty sums on both sides.
+      simp [chebyshevInterp, lagrangeInterp, chebyshevLebesgue]
+    · simp only [chebyshevInterp, lagrangeInterp, chebyshevLebesgue]
+      apply Finset.sum_congr rfl
+      intro k₀ _
+      -- Evaluating f at chebyshevNode n k₀: only the k = k₀ term survives.
+      have hf_eval :
+          (∑ k : Fin n,
+              w k * (if chebyshevNode n k₀ = chebyshevNode n k then (1 : ℝ) else 0)) = w k₀ := by
+        rw [Finset.sum_eq_single_of_mem k₀ (Finset.mem_univ _)]
+        · rw [if_pos rfl, mul_one]
+        · intro k _ hk_ne
+          have h_node_ne : chebyshevNode n k₀ ≠ chebyshevNode n k := fun heq =>
+            hk_ne ((chebyshevNode_injective n hn heq).symm)
+          rw [if_neg h_node_ne, mul_zero]
+      -- Beta-reduce f application; then apply hf_eval and hw_sat.
+      show (∑ k : Fin n,
+              w k * (if chebyshevNode n k₀ = chebyshevNode n k then (1 : ℝ) else 0))
+            * lagrangeBasis n (chebyshevNode n) k₀ x
+            = |lagrangeBasis n (chebyshevNode n) k₀ x|
+      rw [hf_eval, hw_sat k₀]
+
 /-! ## Chebyshev Product Formula and Trig Helpers (Session 5) -/
 
 section ProductFormula

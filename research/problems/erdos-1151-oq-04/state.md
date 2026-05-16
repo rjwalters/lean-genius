@@ -4,8 +4,78 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-21
-**Iteration**: 31
-**Last Updated**: 2026-05-09
+**Iteration**: 32
+**Last Updated**: 2026-05-15
+
+## Session 32 (researcher-10, 2026-05-15, build pending — Docker daemon I/O blocked) — ACT: cherry-pick stranded `chebyshev_lebesgue_saturated`
+
+**Executes the PREP-2 §6 nine-step recipe** to land the long-stranded
+`chebyshev_lebesgue_saturated` lemma (commit `2099b97d59a`, authored
+2026-05-09, never opened as a PR or pushed to a named remote branch,
+surfaced + rescued by S32 PREP PR #19183 + bearer-audited by S32 PREP-2
+PR #19256).
+
+**Net change.** `proofs/Proofs/Erdos1151OQ04.lean` goes 2589 → 2695 LOC
+(+106), theoremCount 65 → 66 (+1 `chebyshev_lebesgue_saturated`),
+sorryCount unchanged at 1 (still `divergence_from_lebesgue_growth`),
+axiomCount unchanged at 0, defCount unchanged at 5.
+
+The −2 LOC versus PREP's headline "+108 LOC" reflects the **PREP-2
+§4.1 micro-refactor**: both `Finset.sum_eq_single k₀` call sites in
+the lemma body replaced by `Finset.sum_eq_single_of_mem k₀
+(Finset.mem_univ _)`, dropping the trivially-impossible third bullet
+(`k₀ ∉ univ → f k₀ = 0`) at each site. Sibling-precedent-confirmed
+against `Erdos671Problem.lean:128-131`.
+
+**Build status.** **PENDING** — Docker daemon on the host became
+unresponsive (`docker ps` times out at 10s) due to host disk pressure
+(100% capacity / 6.9 Gi available). One Docker build attempt ran for
+~10 minutes with zero bytes written to its stdout log (container
+never reached build phase) before being killed. **No elaboration
+confidence** on the new body itself; HIGH confidence on bearers + §4.1
+substitution via PREP-2 audit. See session-33-act-… memo §5 for the
+honest disclosure + S33 BUILD-VERIFY follow-on plan.
+
+**Mathematical content.** `chebyshev_lebesgue_saturated (n : ℕ) (x : ℝ)`
+returns `∃ f : ℝ → ℝ, (∀ t, |f t| ≤ 1) ∧ chebyshevInterp n f x =
+chebyshevLebesgue n x` — operator-norm saturation lower bound for the
+Chebyshev interpolation functional. Combined with the existing
+`chebyshev_upper_bound`, yields `‖Λₙ_x‖ = chebyshevLebesgue n x` on
+the L∞ unit ball — the entry point to the Banach–Steinhaus
+contrapositive that closes Sorry 2 (`divergence_from_lebesgue_growth`)
+in S34+.
+
+**Construction.** Sign-pattern weight `w k = ±1` at each Chebyshev
+node (sign of `lagrangeBasis n (chebyshevNode n) k x`); `f t :=
+∑ k, w k * indicator(t = chebyshevNode n k)`. The `|f t| ≤ 1` half
+case-splits on whether `t` is a node (sum collapses via
+`sum_eq_single_of_mem` + `chebyshevNode_injective` to `w k₀`); the
+`chebyshevInterp n f x = chebyshevLebesgue n x` half evaluates `f` at
+each node `chebyshevNode n k₀` (same `sum_eq_single_of_mem` collapse).
+
+**Files touched.** `proofs/Proofs/Erdos1151OQ04.lean` (+106 LOC),
+`state.md` (this), `session-33-act-ubp-saturation-cherry-pick.md` (new),
+`src/data/research/problems/erdos-1151-oq-04.json` (iteration + focus
++ nextAction + lineCount + theoremCount).
+
+**Conflict-free guarantee.** Open PRs #17386 / #17457 (S23/S25 combine
+helpers, both CONFLICTING, obsolete per S29 PR #17580) touch the
+line-~2300+ trig sum region — textually disjoint from this ACT's
+line-~329 insertion point. No race possible.
+
+**Next action.** S33 BUILD-VERIFY — once Docker daemon I/O recovers,
+re-attempt build of `Proofs.Erdos1151OQ04`. If clean (most likely
+given PREP-2's audit depth), flip state.md / JSON build status from
+`(build pending)` to `(build verified, NNNN/NNNN jobs)`. If errors
+surface, mechanic-handoff for tactic-glue fixes (bearers are correct;
+errors would be in `rw` ordering / `push_neg` placement / etc.).
+
+Post-S33 outline: S34 = `ContinuousLinearMap` packaging via
+`LinearMap.mkContinuous` + Tietze lift of saturation witness to a
+continuous function on `Icc -1 1` (~80–120 LOC); S35 = operator-norm
+identity (~30–50 LOC); S36 = `BanachSteinhaus` contrapositive to
+discharge Sorry 2 (~20–40 LOC). Total to reach 0 sorries: ~130–210
+LOC across 3 PRs.
 
 ## Session 31 (researcher-13, 2026-05-09, build pending) — linear-functional helpers
 
