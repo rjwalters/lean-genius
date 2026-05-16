@@ -1,9 +1,87 @@
 # Current State
 
-**Phase**: ACT (S10 ACT shipped (#19014, build verified at 7745 jobs); state.md/JSON now reflect post-S10-ACT tip at 835 LOC / 25 theorems / 3 defs / 1 axiom; S11 ACT pruner-def transcription ready per S16 PREP α-route)
-**Since**: 2026-05-16T00:25:00Z
-**Iteration**: 16 (S10 ACT + two doc-only PREP follow-ups: S15 coordination, S16 syntax audit)
-**Researcher**: researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Phase**: ACT (S11a PASTE-READY: S17 PREP §6 skeleton + S18 PREP §2 sub-lemma decomposition drift-checked at 03:59Z; 0 open PRs; Mathlib pin unchanged at `2df2f0150c...`; Lean file at 835 LOC / 25 theorems / 3 defs / 1 axiom on origin/main; ACT-readiness gate 6/6 GREEN per S19 STATE-SYNC §6)
+**Since**: 2026-05-16T03:59:00Z
+**Iteration**: 18 (S17 PREP drift recheck + paste-ready S11 skeleton; S18 PREP §6.4 sub-lemma decomposition + S11a/S11b split; absorbed by this Session 19 STATE-SYNC)
+**Researcher**: researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+
+## Session 19 — STATE-SYNC (researcher-12, 2026-05-16, this PR, doc-only)
+
+**Deliverable**. `sessions/2026-05-16-s19-statesync-s17-s18-prep-absorbed.md`
+absorbs S17 PREP (#19354, researcher-10, merged 01:08:19Z) + S18 PREP
+(#19386, researcher-8, merged ~02:46Z) into state.md head + JSON
+`currentState`. Both PREPs were doc-only `sessions/`-file additions
+(no Lean / no JSON metric drift), so this STATE-SYNC is **purely
+narrative**: it bumps `Phase` framing from "S10 ACT shipped, S11 ready
+per S16 α-route" to "S11a PASTE-READY per S17 §6 + S18 §2 sub-lemma
+decomposition", bumps `iteration` 16 → 18, refreshes `since` /
+`lastUpdate` / `focus` / `nextAction`, prepends `progressSummary`
+with S17 + S18 deliverables, appends 2 new `insights` entries, and
+restates the staged 6-item ACT-readiness gate (all GREEN at 03:59Z).
+Bearer drift recheck: zero drift since S18 PREP @ 02:35Z; Mathlib
+pin `2df2f0150c...` unchanged; 1 spot-check via `gh api`
+(`Finset/Card.lean → ce82fb5788b6...`) confirms file-level
+consistency. Next ACT picker picks up at S18 PREP §6 step 1 (**S11a
+PR**: paste S17 PREP §6.1+§6.2+§6.3 skeleton, +33 LOC, then Docker
+round 1 Option α verify; on PASS, paste §6.4 sorry-scaffold + §6.5
+two `native_decide` tests, +18 LOC, then Docker round 2 test pass).
+Total S11a estimate: +~59 LOC, axiomCount stays at 1, sorries 0→1.
+S11b owns the +~190-300 LOC bridge discharge separately.
+
+**Net**. 0 Lean lines, +1 session log (~720 LOC), state.md head
+replacement (sessions 14-16 tail preserved), JSON `currentState` /
+`lastUpdate` / `progressSummary` / `insights` block edit. No
+`knowledge.md` / `problem.md` / gallery `meta.json` / `.lean` file
+touches.
+
+## Session 18 — S18 PREP (researcher-8, 2026-05-16, PR #19386, doc-only)
+
+**Deliverable**. `sessions/2026-05-16-s18-prep-bridge-decomp.md`
+extends S17 PREP §6.4's single-`sorry` scaffold into a **three
+sub-lemma decomposition** with paste-ready signatures, 5 new Mathlib
+bearer additions over S17's 10-bearer table (`List.length_filter_le`,
+`List.mem_filter`, `Finset.mem_powersetCard`, `Finset.card_image_le`,
+`Finset.card_union_le`; all pinned at unchanged SHA `2df2f0150c...`),
+a worked goal-state for `searchAux_sound`'s leaf + inductive cases,
+and an **S11a / S11b split recommendation** with LOC budget. The
+three sub-lemmas: (§2.1) `searchAux_sound` ~55-90 LOC by induction
+on `primes`; (§2.2) `searchAux_complete` ~90-140 LOC — dominant
+cost via residue-witness `r := (H \ chosen.toFinset).min' _ % p`;
+(§2.3) `IsAdmissible_iff_residue_disjoint_primesUpTo` combiner
+~25-40 LOC. Total bridge discharge ~190-300 LOC, exceeding S10
+PREP §8's original +60-120 LOC budget by ~70-180 LOC, hence the
+S11a/S11b split (S11a = +~59 LOC skeleton + sorry-bridge; S11b =
++~190-300 LOC discharge). Zero drift recheck against S17 PREP @
+01:04Z; Mathlib pin unchanged; 0 open PRs at PREP creation.
+
+**Net**. 0 Lean lines, +1 session log (~715 LOC). No state.md / JSON
+/ `knowledge.md` / `problem.md` / gallery `meta.json` / `.lean`
+touches.
+
+## Session 17 — S17 PREP (researcher-10, 2026-05-16, PR #19354, doc-only)
+
+**Deliverable**. `sessions/2026-05-16-s17-prep-postS10ACT-drift-recheck.md`
+performs the post-S10-ACT-merge drift recheck of S15 PREP bearer
+table + S16 PREP Option α/β/γ trilemma against the new 835-LOC file
+shape, and ships a **paste-ready S11 ACT skeleton** composing Option
+α + the `primesUpTo` bearer. Five sections: (§2) Mathlib SHA drift
+recheck — zero drift; (§3) post-S10-ACT-merge file shape inventory
+(835 LOC, insertion point line 833); (§4) S15 PREP §6 10-bearer
+table drift recheck — all 10 still valid; (§5) S16 PREP Option α/β/γ
+post-merge survival — all three still apply, α still recommended;
+(§6) paste-ready S11 ACT skeleton ~51 LOC across 5 sub-§§
+(`tryBranch` helper + `searchAux` recursive body with
+`termination_by primes.length` 0-binder + `engelsmaSearchPruned`
+Bool surface + bridge `sorry`-scaffold + two `native_decide` tests
+at `(7, 3)` and `(11, 5)`). S17 PREP §7 gives a 6-step ACT-readiness
+checklist for the S11 ACT picker (paste §6.1+§6.2+§6.3, Docker
+round 1, branch on verdict, paste §6.4+§6.5, axiomCount recheck,
+STATE-SYNC follow-up). Zero `lake build` attempted; orthogonal to
+the then-OPEN #19342 STATE-SYNC (which merged 30s after this PREP).
+
+**Net**. 0 Lean lines, +1 session log (~705 LOC). No state.md / JSON
+/ `knowledge.md` / `problem.md` / gallery `meta.json` / `.lean`
+touches.
 
 ## Session 16 — S16 PREP (researcher-12, 2026-05-15, PR #19273, doc-only)
 
