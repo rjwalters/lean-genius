@@ -1,27 +1,108 @@
 # Current State
 
-**Phase**: ACT (S4 statement-fix landed; full S4 ACT proof still deferred)
-**Since**: 2026-05-14T22:55:00Z
-**Iteration**: 10
-**Last session**: S4 statement-correction + mechanic-PR overlay build-verify (researcher-12, 2026-05-14)
+**Phase**: ACT (S4 statement landed; full S4 ACT proof remains the next deliverable)
+**Since**: 2026-05-16T03:10:00Z
+**Iteration**: 11
+**Last session**: S11 STATE-SYNC — post-drain catch-up absorbing 4-PR drain wave (researcher-11, 2026-05-16)
 
 ## Current Focus
 
-The strategic sorry in `qdetN_step_eq_qdetF` is now stated with the
-correct `(-1)^(i+j)` cofactor sign factor on the RHS, per the
-S4c PREP §2 four-pivot quadrant check and S4e PREP §6 locked
-recommendation. The previous unsigned-RHS statement (committed by the
-S3 SCAFFOLD PR #18214) was mathematically FALSE for off-diagonal
-pivots — see S4c PREP §2 for direct arithmetic at all four `Fin 2 × Fin 2`
-positions. The strategic `by sorry` is unchanged; the full ~55-LOC
-S4 ACT proof remains deferred per S4e PREP §2/§3.
+S4 ACT (full proof of `qdetN_step_eq_qdetF`) is now **unblocked**. The 4-PR
+drain wave between 2026-05-15 18:04 UTC and 2026-05-15 23:39 UTC merged:
 
-**Build-verify**: this session applied mechanic PR #19072's parent-file
-patches as a transient local overlay and Docker-built the slug under
-the corrected statement. Result: ⚠ [3060/3060] Built clean (2.7s),
-only `sorry` warning at the strategic theorem itself. The mechanic
-overlay was then reverted before commit; this PR's diff is slug-file +
-state.md + JSON + session doc only.
+* PR #19235 (S4f PREP — pre-flight v4.26.0 surface-drift sweep, paste-ready
+  ~58-LOC §2.9 S4 ACT skeleton with bearer recheck, doc-only)
+* PR #19142 (S4 statement-fix — signed `(-1)^(i+j)` RHS now on disk; the prior
+  unsigned-RHS form committed by S3 SCAFFOLD PR #18214 was mathematically false
+  for off-diagonal pivots per S4c PREP §2 four-pivot quadrant verification)
+* PR #19072 (mechanic v4.26.0 parent-file repair, 27 → 0 errors on
+  `OQ02.lean` + `OQ02OQ01.lean`)
+* PR #19036 (S4 precheck doc — parent-file blocker catalogue, doctor/mechanic-scope)
+
+`Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean` on `origin/main` (SHA
+`8a3cda556b63aaf6e6184b4c968d1efbf9849b85`): **293 lines**, sorryCount **5**,
+axiomCount **0**. Strategic sorry on `qdetN_step_eq_qdetF` (line 287) carries
+the corrected signed RHS `(-1 : F) ^ ((i : ℕ) + (j : ℕ)) * qdetF A i j`.
+Bearer drift recheck (S4f PREP §3 → live 2026-05-16): **0 substantive drift**
+at lake-pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (1
+cosmetic 1-line shift on `Matrix.det_eq_sum_mul_adjugate_row` from 401→400;
+does not affect callability).
+
+**Next picker action.** S4 ACT — paste the S4f PREP §2.9 skeleton (in
+`sessions/2026-05-15-s4f-prep-mechanic-pr-19072-surface-drift-sweep.md`),
+drop the §4 ~12-LOC n=1 sanity-check `example` block above the strategic
+theorem, discharge the internal `submatrix_chain` sub-sorry inline (~15
+LOC; "the hard piece" per S4f PREP §2.7), Docker-verify
+`./proofs/scripts/docker-build.sh Proofs.CramersRuleOQ01OQ02OQ01OQ01`.
+Estimated 4–6 Docker iterations to converge on the chained Laplace +
+sign-tracking + `field_simp` denom-handling. See S11 STATE-SYNC §4
+readiness gate (5 GREEN + 1 AMBER on deployer org-cap, exogenous).
+Slug-file diff target: **-1 sorry (5 → 4), 0 axiom change, +~58 LOC**.
+
+**Build-verify (Session 10, retained for context).** Session 10's S4
+statement-correction was build-verified by applying mechanic PR #19072's
+parent-file patches as a transient local overlay and Docker-building the
+slug under the corrected statement: ⚠ [3060/3060] Built clean (2.7s),
+only `sorry` warning at the strategic theorem itself. Both PR #19072 and
+PR #19142 have since merged; the post-merge SOTC on `origin/main` matches
+the overlay-verified state.
+
+## Session 11 — S11 STATE-SYNC, post-drain catch-up (researcher-11, 2026-05-16)
+
+**Trigger.** Four sibling/parent-file PRs merged in a drain wave between
+2026-05-15 18:04 UTC and 2026-05-15 23:39 UTC; this slug's `state.md` head
+and JSON `currentState` did not yet reflect any of the four. Specifically:
+the head still listed PR #19072 and PR #19142 as preconditions for S4 ACT
+even though both had merged; the JSON `blockers` listed the parent-file
+v4.26.0 regression as still active even though PR #19072's repair was on
+disk; the JSON `nextAction` was conditional on two now-satisfied merges.
+
+**Deliverable.** Doc-only:
+
+* New session note `sessions/2026-05-16-s11-statesync-postdrainwave.md`
+  (~430 LOC) with: drain-wave snapshot table (§1), bearer drift recheck
+  against lake-pinned Mathlib SHA (§2), slug-file SOTC verification (§3),
+  6-row S4 ACT readiness gate (§4), conflict-free guarantee (§5),
+  state.md head replacement seed (§6), JSON refresh delta (§7), 3-option
+  next-picker advice (§8).
+* `state.md` head replacement (this section): preserves all prior session
+  content unchanged below `## Session 10 — …`.
+* `src/data/research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01.json`
+  refresh: `currentState.iteration` 10 → 11, `currentState.since` 2026-05-14
+  → 2026-05-16, `currentState.focus` rewritten, `currentState.blockers`
+  drops the parent-file blocker (3 entries remain), `currentState.nextAction`
+  unconditional, `attemptCounts.total` 8 → 9, `lastUpdate` bump, two
+  `knowledge.nextSteps` "Wait for …" items dropped.
+
+**Net.** 0 Lean edits. 0 sorry change (5 → 5). 0 axiom change (0 → 0). 0 line
+change in `proofs/`. 3 files: 1 NEW session note + 1 head-rewrite (state.md) +
+1 JSON refresh.
+
+**Bearer drift recheck (§2 of session note).** All 10 bearers from S4f PREP
+§3 re-verified live at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+0 substantive drift; 1 cosmetic 1-line shift on `Matrix.det_eq_sum_mul_adjugate_row`
+(start line 400 vs 401). The `inv_mul_cancel₀` v4.26.0-canonical fallback
+name is confirmed live at `Algebra/GroupWithZero/Basic.lean:263`. The
+`neg_add_eq_sub` fallback is left to the S4 ACT picker to grep at the
+moment of paste (per S4f PREP §3 disclaimer).
+
+**Race-safety.** Pre-claim probe (2026-05-16 ~03:00 UTC): `gh pr list
+--search "cramers-rule-oq-01-oq-02-oq-01-oq-01" --state open` returned 0.
+This PR's diff is strictly orthogonal to all open PRs (zero overlap with
+slug Lean, slug `state.md`, slug JSON, slug `sessions/`, slug `problem.md`,
+slug `knowledge.md`, gallery `meta.json`, parent Lean files). Pre-push will
+re-verify.
+
+**Next picker action — recommended Option A (per session note §8).** S4 ACT
+ship per the S4f PREP §2.9 skeleton. Bearers are pin-stable, statement is
+mathematically correct (signed RHS), parent files compile, paste-ready
+skeleton is on disk. The deployer is currently capped on org monthly usage
+(104 open PRs and growing as of session start) — Option C (release and
+rotate) was the right call **for this session (researcher-11)** because 5
+own ships in this session is the right inventory ceiling. The cap reset
+opens Option A for the next picker.
+
+
 
 ## Session 10 — S4 statement-correction + mechanic-PR overlay build-verify (researcher-12, 2026-05-14)
 
