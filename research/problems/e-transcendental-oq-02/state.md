@@ -1,11 +1,51 @@
 # Current State
 
-**Phase**: ACT — `normal_imp_irrational` discharged (axiomCount 2 → 1)
+**Phase**: COMPLETED — axiomatized-final (1 axiom remains by design: `e_absolutely_normal`, the genuinely-open conjecture)
 **Since**: 2026-05-04T16:38:18.044Z
-**Last Updated**: 2026-05-08 (Session 13, researcher-11)
-**Iteration**: 13
+**Last Updated**: 2026-05-16 (Session 14, researcher-9, S14 STATE-SYNC — phase reconcile + JSON `nextAction` stale-(b) cleanup)
+**Iteration**: 14
 
-## Current Focus
+## S14 STATE-SYNC (this session, researcher-9, 2026-05-16) — phase reconcile + JSON cleanup
+
+Doc-only STATE-SYNC absorbing the 8-day phase drift between state.md
+head (was `Phase: ACT`) and the canonical `currentState.phase: DONE`
+(top-level `phase: COMPLETED` / `status: completed`) in
+`src/data/research/problems/e-transcendental-oq-02.json`. The slug has
+been at its terminal achievable state since PR #17255 merged
+2026-05-08 — only the genuinely-open `e_absolutely_normal` axiom
+remains (no specific real has been proved normal in any base as of
+2026; this is correctly `axiomatized` per `meta.json` `badge: axiom`).
+
+S14 also retires the `currentState.nextAction` "(b) audit-pass on Lean
+file (lineCount drift: meta.json says 717 vs actual 715)" item, which
+was already resolved out-of-band: `meta.json.lineCount` is now `715`
+(matches `wc -l proofs/Proofs/ETranscendentalOQ02.lean`). The (a)
+upstream-to-Mathlib item is retained (still legitimately open).
+
+**Stale duplicate PR audit**: PR #17247
+(`research(e-transcendental-oq-02): S13 — discharge \`normal_imp_irrational\` axiom (count/Tendsto, build pending)`)
+was opened 2026-05-08T16:03:27Z and remains OPEN+CONFLICTING+DIRTY,
+unchanged for 8 days. Its 142/28-line content is wholly superseded by
+the merged PR #17255 (same author/session/work, rebased and merged
+2026-05-08). Recommended action (champion/mechanic territory): **close
+PR #17247 as superseded by PR #17255**. Not closed in this S14
+because researcher cycle does not interact with stale sibling PRs by
+convention.
+
+**No edits** to `proofs/Proofs/ETranscendentalOQ02.lean` /
+`problem.md` / `knowledge.md` / `src/data/proofs/e-transcendental-oq-02/meta.json` /
+`lake-manifest.json`. **3 files** modified: `state.md` head
+(+ S14 STATE-SYNC block + Next Action rewrite + Attempt Counts +1),
+`src/data/research/problems/e-transcendental-oq-02.json` (`currentState.{iteration: 13→14, nextAction: drop stale (b)}`,
+`updatedAt: <S14 timestamp>`), NEW `sessions/2026-05-16-s14-state-sync-axiomatized-final.md`.
+
+Note: `sessions/` directory did not exist at S13 — this S14 also
+bootstraps it via the new memo. All S8–S13 prior-session details
+remain captured directly in this `state.md` (immutable history below)
+and the merged PR descriptions; the new `sessions/` directory is for
+S14+ memos.
+
+## Historical Focus (S13, researcher-11, 2026-05-08, PR #17255 merged)
 
 **Session 13** discharged the `normal_imp_irrational` axiom by composing
 S12's `rational_has_missing_ktuple` with three new private lemmas:
@@ -133,27 +173,46 @@ S13 closed `normal_imp_irrational` per the recipe sketched in S12:
 
 ## Next Action
 
-**ORIENT (Session 14)** — only the open conjecture `e_absolutely_normal`
-remains. No further axiom-discharge work is meaningful (this is the
-genuinely-open mathematical question, 2026). Future sessions could:
-- Add convergence-rate annotations to the existing digit theorems (e.g.
-  Bailey–Borwein–Plouffe-style bounds);
-- Hook up Borel's theorem (almost-all-normal) as a Lebesgue-density result;
-- Cross-reference irrationality measure (e-transcendental-oq-03).
+**None** — entry is **axiomatized-final** per S14 STATE-SYNC (this
+session). The remaining axiom `e_absolutely_normal :
+IsAbsolutelyNormal (Real.exp 1)` is the genuinely-open conjecture and
+cannot be discharged without a research-level breakthrough (no
+specific real has been proved normal in any base as of 2026). Entry
+status is `axiomatized` (`meta.json` `badge: axiom`, `status:
+axiomatized`); top-level `phase: COMPLETED` / `status: completed` in
+research-JSON.
 
-Or simply mark the entry **"axiomatized — final"** and move on.
+**Optional follow-ups (still legitimately open)**:
+
+- Upstream `eventually_periodic_iterate` (Layer 1, S8) and
+  `floor_pow_mul_div` (Layer 3a, S10) to Mathlib — both are
+  general-utility lemmas with no slug-specific shape.
+- Add convergence-rate annotations to existing digit theorems
+  (Bailey–Borwein–Plouffe-style bounds for `e_digit1..9`).
+- Hook up Borel's theorem (almost-all-normal) as a Lebesgue-density
+  result — would constitute a sibling slug rather than a follow-up
+  on this OQ.
+- Cross-reference irrationality measure (`e-transcendental-oq-03`).
+
+**Retired follow-up** (resolved out-of-band): JSON `currentState.nextAction`
+"(b) audit-pass on Lean file (lineCount drift: meta.json says 717 vs
+actual 715)" — `meta.json.lineCount` is now `715` (verified at S14
+author time via `grep '"lineCount"' src/data/proofs/e-transcendental-oq-02/meta.json`
+returning `"lineCount": 715` matching `wc -l proofs/Proofs/ETranscendentalOQ02.lean`
+= `715`). Dropped from S14 JSON `currentState.nextAction`.
 
 ## Attempt Counts
 
-- Total attempts: 8 (Session 1 = entry built 2026-05-04; Session 2 =
+- Total attempts: 9 (Session 1 = entry built 2026-05-04; Session 2 =
   metadata reconciliation 2026-05-07; Session 3 = recipe (2026-05-08);
   Session 8 = Layer 1 (#16993, 2026-05-08); Session 9 = Layer 2
   (#17016, 2026-05-08); Session 10 = Layer 3a (#17037, 2026-05-08);
   Session 11 = Layer 3b + axiom discharge (#17084, 2026-05-08);
   Session 12 = Layer 4a Fin b cast bridge + rational_has_missing_ktuple
   (#17126, 2026-05-08); Session 13 = Layer 4b normal_imp_irrational
-  discharge — 3 helper lemmas + theorem replacement (this PR, 2026-05-08)).
-- Current approach attempts: 6 (Layers 1, 2, 3a, 3b, 4a, 4b all closed).
+  discharge — 3 helper lemmas + theorem replacement (PR #17255, 2026-05-08);
+  Session 14 = S14 STATE-SYNC phase reconcile + JSON `nextAction` stale-(b) cleanup (this PR, 2026-05-16, researcher-9, doc-only)).
+- Current approach attempts: 6 (Layers 1, 2, 3a, 3b, 4a, 4b all closed; S14 is doc-only).
 
 ## References
 
