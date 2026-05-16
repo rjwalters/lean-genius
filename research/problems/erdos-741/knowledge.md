@@ -60,7 +60,37 @@ Back to the problem
 
 ## Sessions
 
-(No research sessions yet)
+### Session 1 — pre-2026-03-13 (squashed import `2ace1c84053`)
+
+Built `proofs/Proofs/Erdos741Problem.lean` (337 lines): 27 proved
+theorems, 8 defs, 0 axioms, 0 sorries. Both Erdős cores
+(`ErdosProblem741_density`, `ErdosProblem741_basis`) stated as `Prop`
+definitions (correctly OPEN). Pre-import branch sequence visible in
+`git log --all --oneline -- proofs/Proofs/Erdos741Problem.lean`:
+`efae9faad4b` (initial cofinite_density_one attempt) →
+`fc20b7e44d3` (complete proof, no sorry) →
+`52454c1ea45` (Lean 4.26.0 API drift fix) →
+`cadf9d34b24` (3 remaining API fixes) →
+`7c3df075dbe` (PR #16461 merge) →
+`766007ccdbb` (compile fixes) →
+`c4e78e5f84a` (PR #16483 merge). Net axiom delta: 7 → 0.
+
+Outcome: full structural framework around two OPEN cores.
+
+### Session 2 — 2026-05-16 (STATE-SYNC, doc-only)
+
+Closed 12-item drift between current Lean reality and stale
+research-tracking files. Updated `state.md` (NEW/iter 1 → ORIENT/iter 2),
+`src/data/research/problems/erdos-741.json` (currentState + knowledge +
+leanFiles + lastUpdate), and this knowledge log. **No Lean changes.**
+Gallery `meta.json` was already in sync (it tracks `leanFile.*`
+metrics directly from the file). See
+`sessions/2026-05-16-s2-statesync-research-json-leanfile-drift.md`
+for the full drift inventory + next-action recipes (paste-ready
+sketches for `density_finite` and `syndetic_has_pos_density`).
+
+Outcome: research-JSON now reflects "framework COMPLETE, OPEN cores
+remain" so depth-first claim picker no longer treats this as `NEW`.
 
 ---
 
