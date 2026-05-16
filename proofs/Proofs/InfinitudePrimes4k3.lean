@@ -189,6 +189,32 @@ theorem infinitely_many_primes_3_mod_4 :
   -- But p is prime, so p ≥ 2, contradiction with p ∣ 1
   exact hp_prime.not_dvd_one hp_dvd_diff
 
+/-- Strengthened parent of `infinitely_many_primes_3_mod_4`: the
+    elementary witness for "prime ≡ 3 (mod 4) > n" lives in the
+    interval `(n, 4 * (n + 1)! - 1]`. Used by
+    `InfinitudePrimes4k3OQ01Tower.lean` (S9 ACT, Path C R1) to extract
+    an explicit factorial-tower bound; S8 PREP §5 paste-ready. -/
+theorem infinitely_many_primes_3_mod_4_bounded (n : ℕ) :
+    ∃ p : ℕ, Nat.Prime p ∧ n < p ∧ p ≤ 4 * (n + 1).factorial - 1 ∧ p % 4 = 3 := by
+  let N := 4 * (n + 1).factorial - 1
+  have hfact_pos : (n + 1).factorial ≥ 1 := Nat.factorial_pos _
+  have hN_mod : N % 4 = 3 := by simp only [N]; omega
+  have hN_ge3 : N ≥ 3 := by simp only [N]; omega
+  have hN_pos : 0 < N := by omega
+  obtain ⟨p, hp_prime, hp_div, hp_mod⟩ := has_prime_factor_3_mod_4 hN_ge3 hN_mod
+  refine ⟨p, hp_prime, ?_, Nat.le_of_dvd hN_pos hp_div, hp_mod⟩
+  by_contra hpn
+  push_neg at hpn
+  have hp_le : p ≤ n + 1 := by omega
+  have hp_dvd_fact : p ∣ (n + 1).factorial := Nat.dvd_factorial hp_prime.pos hp_le
+  have hp_dvd_4fact : p ∣ 4 * (n + 1).factorial := dvd_mul_of_dvd_right hp_dvd_fact 4
+  have h_ge : 4 * (n + 1).factorial ≥ 1 := by omega
+  have hN_add : N + 1 = 4 * (n + 1).factorial := by simp only [N]; omega
+  have hp_dvd_diff : p ∣ (N + 1) - N :=
+    Nat.dvd_sub (by rw [hN_add]; exact hp_dvd_4fact) hp_div
+  simp only [add_tsub_cancel_left] at hp_dvd_diff
+  exact hp_prime.not_dvd_one hp_dvd_diff
+
 /-- Alternative statement: The set of primes ≡ 3 (mod 4) is infinite -/
 theorem primes_3_mod_4_infinite : Set.Infinite {p : ℕ | Nat.Prime p ∧ p % 4 = 3} := by
   apply Set.infinite_of_not_bddAbove
