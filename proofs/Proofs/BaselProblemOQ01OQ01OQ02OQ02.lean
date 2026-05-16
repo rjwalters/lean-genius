@@ -1,4 +1,6 @@
 import Mathlib.Algebra.GCDMonoid.Finset
+import Mathlib.Data.Nat.Choose.Factorization
+import Mathlib.RingTheory.Coprime.Lemmas
 import Mathlib.Tactic
 
 /-
@@ -795,5 +797,109 @@ theorem mul_choose_dvd_lcmRange_three {n : ℕ} (hn : 3 ≤ n) :
       omega
     exact mul_choose_dvd_lcmRange_three_even hn_4 heven
   · exact mul_choose_dvd_lcmRange_three_odd hn hodd
+
+-- =====================================================================
+-- PART 11 (Session 15): A.1 — `C(n, k) ∣ lcmRange n` via factorization
+-- =====================================================================
+
+/-! ### Why this lemma (path A.1)
+
+The full m ≥ 3 case of `mul_choose_dvd_lcmRange : m · C(n,m) ∣ lcmRange n`
+requires either Kummer's theorem on `v_p(m · C(n,m))` (path A.2) or a
+double `(n, m)` induction. Before tackling A.2, this lemma discharges
+the simpler analogue without the `m` factor:
+
+  `choose_dvd_lcmRange : 0 < n → k ≤ n → C(n, k) ∣ lcmRange n`.
+
+The proof factors `C(n, k)` into its prime-power decomposition via
+`Nat.prod_pow_factorization_choose`, then uses
+`Finset.prod_dvd_of_isRelPrime` to lift a per-prime-power divisibility
+witness through the product. The per-prime-power witness combines
+`Nat.pow_factorization_choose_le` (prime-power bound `p^v_p ≤ n`)
+with the local `dvd_lcmRange`. Pairwise coprimality of the
+prime-power factors comes from `Nat.coprime_pow_primes` (distinct
+primes have coprime powers) translated to `IsRelPrime` via
+`Nat.coprime_iff_isRelPrime`.
+
+Pinned bearers (Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`,
+re-verified by Session 14 STATE-SYNC §3, §4, §5):
+* `Nat.prod_pow_factorization_choose` — Mathlib/Data/Nat/Choose/Factorization.lean:267
+* `Nat.pow_factorization_choose_le` — Mathlib/Data/Nat/Choose/Factorization.lean:196
+* `Nat.factorization_eq_zero_of_not_prime` — Mathlib/Data/Nat/Factorization/Defs.lean:129
+* `Nat.coprime_iff_isRelPrime` — Mathlib/Data/Nat/GCD/Basic.lean:218
+* `Nat.coprime_pow_primes` — Mathlib/Data/Nat/Prime/Basic.lean:200
+* `Finset.prod_dvd_of_isRelPrime` — Mathlib/RingTheory/Coprime/Lemmas.lean:252
+* `isRelPrime_one_left` / `isRelPrime_one_right` —
+   Mathlib/Algebra/Divisibility/Units.lean:166-167
+* `DecompositionMonoid ℕ` instance via `[Nonempty (GCDMonoid ℕ)]` —
+   Mathlib/Algebra/GCDMonoid/Basic.lean:493 (in scope via the
+   `Mathlib.Algebra.GCDMonoid.Finset` import already at the file top).
+
+This is the A.1 ACT planned in Session 12 PREP, audited in Session 13
+PREP, and given a GREEN readiness gate in Session 14 STATE-SYNC.
+The next-action after this is A.2 (`mul_choose_dvd_lcmRange`), which
+requires bridging `factorization` and `emultiplicity` via Kummer's
+theorem. -/
+
+/-- **(Part 11) `C(n, k) ∣ lcmRange n`**: for `0 < n` and `k ≤ n`,
+    the binomial coefficient `C(n, k)` divides `lcmRange n`.
+
+    Proof: decompose `C(n, k) = ∏_{p ≤ n} p ^ v_p(C(n, k))` via
+    `Nat.prod_pow_factorization_choose`, then use
+    `Finset.prod_dvd_of_isRelPrime` reducing to two sub-goals:
+    pairwise `IsRelPrime` on the prime-power factors (sub-goal 1),
+    and per-prime-power divisibility into `lcmRange n` (sub-goal 2).
+
+    Sub-goal 1: distinct primes have coprime powers
+    (`Nat.coprime_pow_primes`), and the `Coprime` ↔ `IsRelPrime`
+    bridge on ℕ is `Nat.coprime_iff_isRelPrime`. The `v = 0` edge
+    cases reduce to `IsRelPrime 1 _` via `pow_zero`.
+
+    Sub-goal 2: when `v_p(C(n, k)) = 0` the factor is `1`; otherwise
+    `p` is prime (via `Nat.factorization_eq_zero_of_not_prime`
+    contrapositive) and `p ^ v_p ≤ n` (by
+    `Nat.pow_factorization_choose_le`), so the local `dvd_lcmRange`
+    applies. -/
+theorem choose_dvd_lcmRange {n k : ℕ} (hn : 0 < n) (hk : k ≤ n) :
+    Nat.choose n k ∣ lcmRange n := by
+  rw [← Nat.prod_pow_factorization_choose n k hk]
+  apply Finset.prod_dvd_of_isRelPrime
+  · -- Sub-goal 1: pairwise `IsRelPrime` on the prime-power factors.
+    intro p _ q _ hne
+    simp only [Function.onFun]
+    by_cases hv_p : (Nat.choose n k).factorization p = 0
+    · rw [hv_p, pow_zero]
+      exact isRelPrime_one_left
+    by_cases hv_q : (Nat.choose n k).factorization q = 0
+    · rw [hv_q, pow_zero]
+      exact isRelPrime_one_right
+    -- Both v_p, v_q > 0 ⇒ both p, q are primes.
+    have hpp : p.Prime := by
+      by_contra h
+      exact hv_p (Nat.factorization_eq_zero_of_not_prime _ h)
+    have hqq : q.Prime := by
+      by_contra h
+      exact hv_q (Nat.factorization_eq_zero_of_not_prime _ h)
+    -- Distinct primes have coprime powers (Nat.coprime_pow_primes),
+    -- then translate Coprime ⟶ IsRelPrime on ℕ.
+    have hcop : Nat.Coprime (p ^ (Nat.choose n k).factorization p)
+        (q ^ (Nat.choose n k).factorization q) :=
+      Nat.coprime_pow_primes _ _ hpp hqq hne
+    exact Nat.coprime_iff_isRelPrime.mp hcop
+  · -- Sub-goal 2: each prime-power factor divides `lcmRange n`.
+    intro p _
+    by_cases hv : (Nat.choose n k).factorization p = 0
+    · rw [hv, pow_zero]
+      exact one_dvd _
+    -- v_p > 0 ⇒ p prime ⇒ p^v_p > 0 ⇒ apply dvd_lcmRange with the
+    -- Mathlib bound `pow_factorization_choose_le`.
+    have hpp : p.Prime := by
+      by_contra h
+      exact hv (Nat.factorization_eq_zero_of_not_prime _ h)
+    have hpow_pos : 0 < p ^ (Nat.choose n k).factorization p :=
+      pow_pos hpp.pos _
+    have hpow_le : p ^ (Nat.choose n k).factorization p ≤ n :=
+      Nat.pow_factorization_choose_le hn
+    exact dvd_lcmRange hpow_pos hpow_le
 
 end BaselProblemOQ01OQ01OQ02OQ02
