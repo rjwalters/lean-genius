@@ -1,6 +1,10 @@
 # State — fodor-pressing-down-oq-04
 
-## Phase: S2 ACT (Step I complete — limit ordinals form a club)
+## Phase: S2 ACT (Step I + Step II foundations complete — limit-ordinal club + binary club intersection + stationary ∩ club preservation)
+
+> **Iteration**: 9 (was 8 after S2-β-α ACT; bumped by S4 STATE-SYNC
+> 2026-05-15 absorbing S3c PREP merge).
+> **Last Updated**: 2026-05-15 (S4 STATE-SYNC, researcher-10).
 
 ## Session summary
 
@@ -101,12 +105,14 @@ Three doc-only design PRs have merged refining the S2-β plan:
   companion lemmas needed: `IsStationaryBelow.inter_isClubBelow`
   (~20-30 LOC) and `fodor_anti_constant` (~60-80 LOC); refined LOC band
   to 200-270.
-- **#TBD** (S3c PREP, this session, 2026-05-16) — post-merge drift
-  recheck; locked exact post-#19052 line numbers for the 6 in-gallery
-  bearers (L1'@53, L2@59, L3@343, L4@259, L5@366, L6@408); corrected 2
-  S3b §2 Mathlib line citations (C9 47→44, C10 49→47); corrected the
-  C1 binder transcription (`∀ {i j} (hi hj)`, not `∀ ⟨i j⟩`); catalogued
-  Part VII section anchor at line 351 for the upcoming Part VIII insert.
+- **#19365** (S3c PREP, merged 2026-05-15T20:53:36Z by researcher-11) —
+  post-merge drift recheck; locked exact post-#19052 line numbers for
+  the 6 in-gallery bearers (L1'@53, L2@59, L3@343, L4@259, L5@366,
+  L6@408); corrected 2 S3b §2 Mathlib line citations (C9 47→44,
+  C10 49→47); corrected the C1 binder transcription
+  (`∀ {i j} (hi hj)`, not `∀ ⟨i j⟩`); catalogued Part VII section
+  anchor at line 351 for the upcoming Part VIII insert (now landed via
+  #19378 — S2-β-α ACT — between #19251's merge and #19365's merge).
 
 **Net effect for the S2-β ACT picker**: LOC budget 200–270, two
 companion lemmas to discharge in advance of the main theorem, all
@@ -158,7 +164,7 @@ obstruction.
 * Kunen, K., *Set Theory: An Introduction to Independence Proofs*
 * Mathlib commit `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (Mathlib v4.26.0).
 
-## Post-S2-α companions landed (S2-β-α ACT, 2026-05-16)
+## Post-S2-α companions landed (S2-β-α ACT, merged #19378 2026-05-15T20:53:04Z)
 
 `§ Part VIII` now ships three foundational lemmas for Solovay Step 2:
 
@@ -183,3 +189,41 @@ picking + `fodor_anti_constant` + `stationary_splits_binary` (~150-180 LOC
 refined budget vs S3b §6's 200-270 LOC, since this PR absorbed the ~50 LOC
 of companion infrastructure). See `sessions/2026-05-16-s2b-alpha-act-club-inter-companions.md`
 §7 for the ACT-readiness gate.
+
+## S4 STATE-SYNC (researcher-10, 2026-05-15, doc-only) — post-#19365 + #19378 absorption
+
+Closes the partial-sync drift after the same-drain-wave merges of
+S2-β-α ACT (#19378) and S3c PREP (#19365), both landed 2026-05-15T20:53Z.
+At claim time (2026-05-15T22:21Z) the slug had:
+
+* **head Phase line** stale (described only "Step I complete" but
+  Step II foundations also done via #19378);
+* **§Post-S2-α planning landed §`#TBD`** placeholder still in place for
+  the S3c PREP entry (line 104) — now updated to **#19365**;
+* **§Post-S2-α companions landed** header silent on the PR number for
+  #19378 — now annotated;
+* **JSON `currentState.focus`** mentioned S2-β-α ACT but **NOT** S3c
+  PREP merge — refreshed to mention both drain-wave merges + iteration
+  9 (was 8 from S2-β-α ACT);
+* **JSON `lastUpdate`** stale (2026-05-16T02:00:00Z but written at S2-β-α
+  ACT timestamp) — refreshed.
+
+**Conflict-free guarantee.** Only `state.md` (4 small in-place edits) +
+JSON (`currentState` head + `lastUpdate`) + a new `sessions/2026-05-15-s4-state-sync-post-drain.md`.
+**Zero** Lean / lake / lakefile / problem.md / knowledge.md changes.
+Compatible with the next S2-β ACT (Part IX) regardless of who picks it
+up: the in-place state.md edits add no new section, so the S2-β ACT
+just appends a `## Post-S2-β-α + S3c append landed (S2-β ACT, …)` per
+the existing chronological-append convention.
+
+**0-drift bearer recheck (spot-check, conflict-free with #19365 §2).**
+Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` and gallery
+`FodorPressingDown.lean` are both unchanged since the S3c PREP audit at
+~20:53Z. No re-verification needed beyond #19365's table; all 6 in-gallery
+bearers (L1'@53, L2@59, L3@343, L4@259, L5@366, L6@408) and 11 Mathlib
+bearers (C1–C11 at corrected lines per S3c) remain valid for the S2-β
+ACT picker.
+
+See `sessions/2026-05-15-s4-state-sync-post-drain.md` for the full §
+catalogue (drift items, conflict-free guarantee, bearer-spot-check
+delta).
