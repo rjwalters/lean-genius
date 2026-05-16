@@ -1,8 +1,125 @@
 # Current State
 
-**Phase**: ACT
+**Phase**: PREP
 **Since**: 2026-05-16
-**Iteration**: 15
+**Iteration**: 16
+
+## Session 16 (2026-05-16, PREP — `mul_choose_dvd_lcmRange` route audit + bridge bearer pin, doc-only)
+
+Doc-only PREP iteration discharging the deferred bridge-bearer
+pencilwork named by the post-S15 `currentState.nextAction`. PR #19397
+(S15 ACT, researcher-9, shipped A.1 `choose_dvd_lcmRange`)
+merged 2026-05-16T03:52:10Z; this S16 PREP fires ~20 min
+post-merge after `claim-random` landed on this slug (RICH 76,
+0 open PRs).
+
+### What S16 PREP adds
+
+**4 NEW bearer pins** at unchanged lake SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+
+| # | Bearer | Path | Line | Why |
+|---|--------|------|------|-----|
+| 10 | `Nat.factorization_mul` | `Mathlib/Data/Nat/Factorization/Defs.lean` | 155 | Foundational decomposition `v_p(m·C) = v_p(m) + v_p(C)` for S17 ACT |
+| 11 | `Nat.factorization_le_factorization_choose_add` | `Mathlib/Data/Nat/Choose/Factorization.lean` | 142 | Kummer-corollary lower bound (load-bearing if Route A taken) |
+| 12 | `Nat.multiplicity_eq_factorization` | `Mathlib/Data/Nat/Factorization/Defs.lean` | 89 | Bridge `multiplicity ↔ factorization` for nonzero ℕ |
+| 13 | `multiplicity_eq_of_emultiplicity_eq_some` | `Mathlib/RingTheory/Multiplicity.lean` | 73 | Bridge `emultiplicity ↔ multiplicity` (extracts ℕ value from ℕ∞) |
+
+**0-drift recheck** of all 9 bearers pinned by S12 / S13 / S14 / S15.
+Each rechecked via `gh api repos/leanprover-community/mathlib4/contents/<path>?ref=2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
++ `curl -sL` + `sed -n '<line>p'`. All 9 byte-identical signature blocks.
+
+**`Nat.succ_mul_choose_eq` DEPRECATION NOTED** (2025-12-09, since v4.26.0):
+the slug's `mul_choose_eq_mul_choose_pred` proof (line 367) already
+uses the new name `Nat.add_one_mul_choose_eq`. The two
+docstring references (lines 121, 344) cite the old name informationally
+and produce **no v4.26.0 build warning/error** (S15 ACT shipped clean
+3058 jobs). No fix needed; flag for next slug-wide hermit sweep if
+the deprecation banner becomes hard-removed (estimated ~6 months).
+
+### Three viable routes audited
+
+S16 PREP audits three Lean-formalization routes for
+`mul_choose_dvd_lcmRange : 0 < m → m ≤ n → m·C(n,m) ∣ lcmRange n`:
+
+| Route | Strategy | LOC | Docker iters | Bearer set |
+|-------|----------|-----|--------------|------------|
+| **A** | Full Kummer via `emultiplicity_choose` + bridges 12+13 + carry-count arithmetic | 100-150 | 3-4 | Full ℕ∞ bridge stack |
+| **B** | Hybrid: `mul_choose_eq_mul_choose_pred` rewrite then prime-power decomp on `n · C(n-1, m-1)` | 80-100 | 2-3 | Slug identity + S15 framework |
+| **C** | Split S17a + S17b — per-prime bound lemma `pow_factorization_mul_choose_le` (~60-80 LOC) + S15-framework lift (~30-40 LOC) | 90-120 total | 1-2 per sub-step | All 13 bearers |
+
+**RECOMMENDATION**: **Route C with split S17a + S17b ACTs**. Rationale:
+1. Smaller Docker-verifiable PRs reduce ACT-time risk (memory pattern
+   `feedback_researcher_act_realizing_followon_predecessor_preps_merged_even_if_gating_statesync_open`).
+2. S17a's `pow_factorization_mul_choose_le` is useful standalone — it
+   generalizes S15's `pow_factorization_choose_le` for vdP §6's
+   `C(n+m, m)` summand.
+3. S17b is a mechanical clone of S15's `choose_dvd_lcmRange` body with
+   `m·C(n,m)` substituted for `C(n,m)` and S17a in place of
+   `pow_factorization_choose_le`.
+
+### Naive-route counterexample (sharper than S13 §5.1's cited case)
+
+S13 §5.1's claim "naive bound `v_p(m) + ⌊log_p(n-1)⌋ ≤ ⌊log_p n⌋` is
+FALSE" needs a sharper counterexample than the n=4, m=2, p=2 case S13
+cited (which holds tightly: 1+1=2 ≤ 2). The genuine counterexample is:
+
+**n=12, m=4, p=2**:
+- `v_2(m) = v_2(4) = 2`
+- `⌊log_2(n-1)⌋ = ⌊log_2 11⌋ = 3` (since `2^3 = 8 ≤ 11 < 16 = 2^4`)
+- `v_2(m) + ⌊log_2(n-1)⌋ = 5`
+- `⌊log_2 n⌋ = ⌊log_2 12⌋ = 3`
+- `5 > 3` — naive bound FAILS by 2 units.
+
+Yet the actual bound `v_p(m · C(n, m)) ≤ log_p n` holds: `C(12, 4) = 495 = 3²·5·11`
+is odd, so `v_2(4·495) = v_2(1980) = 2 ≤ 3`. The naive sum
+overestimates by 3 units (5 vs 2). This counterexample is documented
+in the S17a docstring (per §7 of the session note) to motivate the
+Kummer carry-count argument.
+
+### S17 ACT readiness gate
+
+**For S17a ACT** (Route C sub-step a, per-prime bound lemma):
+
+| Item | Status |
+|------|--------|
+| 9 existing bearers (S12+S13+S14+S15) pinned + recheck | ✓ S16 §2, 0 drift |
+| `Nat.factorization_mul` bearer pinned | ✓ **S16 §3.1** |
+| `Nat.factorization_le_factorization_choose_add` bearer pinned | ✓ **S16 §3.2** |
+| `Nat.multiplicity_eq_factorization` bridge pinned | ✓ **S16 §3.3** |
+| `multiplicity_eq_of_emultiplicity_eq_some` bridge pinned | ✓ **S16 §3.4** |
+| `Nat.Prime.emultiplicity_choose` (Kummer) pinned | ✓ S13 §5 |
+| `Nat.Prime.emultiplicity_factorial` (Legendre) pinned | ✓ S13 §5 |
+| Lake SHA stable | ✓ S14 §3 → S16 §2 (0 drift) |
+| Slug builds clean at HEAD | ✓ S15 ACT verified (3058 jobs) |
+| `Mathlib.Data.Nat.Multiplicity` import needed | ⚠ Add 1 line at S17a ACT |
+
+**Gate**: GREEN for S17a. The ⚠ on the new import is a one-line
+addition (no bearer-pin work needed).
+
+**For S17b ACT** (Route C sub-step b, S15-framework lift): all S15 §4
+bearers re-used + S17a's `pow_factorization_mul_choose_le` consumed as
+a black-box. GREEN at S17b time once S17a merges.
+
+### Counts (post-S16, unchanged from S15 because doc-only)
+
+| Metric | Value |
+|--------|-------|
+| File LOC | 905 (unchanged from S15) |
+| Sorries | 0 (unchanged) |
+| Axioms | 0 (unchanged) |
+| Theorems | 36 (unchanged) |
+| Build | verified clean (3058 jobs, S15 baseline) |
+
+**Axiom delta this session**: 0 (documentation-only).
+
+**Files changed**: this state.md (+ ~110 LOC near top); the slug's JSON
+(`currentState.iteration` 15 → 16, `phase` ACT → PREP, `since`
+2026-05-16T02:55Z → 2026-05-16T04:xxZ, `lastUpdate`, refreshed
+`nextAction` pointing at S17a ACT, +2 insights, +2 nextSteps); 1 new
+sessions/ note. 0 Lean file edits. 0 sibling-slug edits.
+
+Session note: `sessions/2026-05-16-s16-prep-mul-choose-dvd-lcm-range-bearer-pin-and-route-audit.md`.
 
 ## Session 15 (2026-05-16, ACT — A.1 `choose_dvd_lcmRange` Docker-verified clean)
 
