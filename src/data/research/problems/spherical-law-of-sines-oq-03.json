@@ -1,7 +1,7 @@
 {
   "slug": "spherical-law-of-sines-oq-03",
   "title": "Four-Parts Formula (Cotangent Rule) for Spherical Triangles",
-  "phase": "S3a-ACT",
+  "phase": "S3b-PREP",
   "status": "active",
   "tier": "B",
   "path": "route-A-law-of-cosines",
@@ -44,13 +44,13 @@
     "alternatives": "Route B: independent cross-product derivation in parent's Fin 3 → ℝ framework, mirroring parent's `linear_combination` style (~150-200 LOC). Reserve as fallback if Route A namespace bridge to sibling proves brittle."
   },
   "createdAt": "2026-05-12T18:01:16Z",
-  "lastUpdated": "2026-05-16T02:48:00Z",
-  "researcher": "researcher-6",
+  "lastUpdated": "2026-05-16",
+  "researcher": "researcher-12",
   "claimedBy": "researcher-6",
   "claimedAt": "2026-05-16T00:22:52Z",
   "claimExpires": "2026-05-16T01:52:52Z",
   "knowledge": {
-    "progressSummary": "S3a ACT complete: 3 of 4 strategic sorries discharged in SphericalLawOfSinesOQ03.lean (Docker-clean, 3061 jobs). cos_arcLen closed via Cauchy-Schwarz from lagrange_identity + Real.cos_arccos (~14 LOC). sin_arcLen_nonneg closed via Real.sin_nonneg_of_nonneg_of_le_pi + arccos bounds (~3 LOC). spherical_law_of_cosines_local closed via simp + linear_combination -⟨A,C⟩⟨B,C⟩ * hC' (~5 LOC). 1 strategic sorry remains: spherical_cotangent_rule_polynomial (the boxed main theorem, deferred to S3b PREP + ACT for dihedralAngle definitional-branch handling).",
+    "progressSummary": "S3b PREP complete (2026-05-16, researcher-12, doc-only): resolved the open question from S3 PREP §4.4 — *does the polynomial form of the cotangent rule reduce to 0=0+0 in the degenerate branches of dihedralAngle?* Answer: yes, via a three-way by_cases split on Real.sin (arcLen X Y) = 0 for each of the three sides (a, b, c), collapsing 8 sign patterns into 4 macro-cases. Macro-case A (sin b = 0): both α and γ are dihedralAngle-degenerate via sin b = 0 → sin α = sin γ = 0 → LHS = RHS = 0 (~14 LOC). Macro-case B (sin a = 0 ∧ sin b ≠ 0): RHS = 0 directly (sin a factor); LHS = 0 via inline helper `sin_dihedralAngle_eq_zero_of_sin_arcLen_third_eq_zero` (~12 LOC + 10 LOC helper). Macro-case C (sin c = 0 ∧ sin a sin b ≠ 0): α-deg via sin c = 0 ⟹ sin α = 0 ⟹ LHS = 0; need sin γ = 0 via symmetric helper (~18 LOC + 10 LOC helper). Macro-case D (non-degenerate): algebraic core via sin_sq_dihedralAngle + spherical_law_of_cosines_local twice + lagrange_identity (~25-45 LOC, very high risk). Paste-ready Lean skeleton in sessions §7. Total LOC estimate ~70-100 (inline helpers) or ~50-70 (parent helpers in S3c). Bearer drift recheck at SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: `Mathlib/Analysis/SpecialFunctions/Trigonometric/Inverse.lean` (`67fe98d576b76fc0379a6cfe9d9ee00c126663f3`) + `.../Trigonometric/Basic.lean` (`93fc1d70f829448208fd4930ac2fcd38ea94b877`) — 0 drift since S3 PREP. Iteration 4 → 5. S3a ACT complete: 3 of 4 strategic sorries discharged in SphericalLawOfSinesOQ03.lean (Docker-clean, 3061 jobs). cos_arcLen closed via Cauchy-Schwarz from lagrange_identity + Real.cos_arccos (~14 LOC). sin_arcLen_nonneg closed via Real.sin_nonneg_of_nonneg_of_le_pi + arccos bounds (~3 LOC). spherical_law_of_cosines_local closed via simp + linear_combination -⟨A,C⟩⟨B,C⟩ * hC' (~5 LOC). 1 strategic sorry remains: spherical_cotangent_rule_polynomial (the boxed main theorem, deferred to S3b PREP + ACT for dihedralAngle definitional-branch handling).",
     "insights": [
       "S2 ORIENT scan confirmed framework mismatch: sibling SphericalLawOfCosines uses EuclideanSpace ℝ (Fin 3) with @inner, parent SphericalLawOfSines uses Fin 3 → ℝ with custom dot/normSq. Pivoting to local re-statement of law of cosines avoids the bridge.",
       "No Real.cot at v4.26.0 — polynomial form (cleared of cotangents) chosen for main theorem; avoids both Real.cot and sin ≠ 0 non-degeneracy hypotheses at the statement level.",
@@ -66,8 +66,8 @@
       "S3a ACT: discharged 3 of 4 strategic sorries in SphericalLawOfSinesOQ03.lean. cos_arcLen (~14 LOC): unfold IsUnit3 + arcLen, Cauchy-Schwarz bound via lagrange_identity + normSq_cross_nonneg, then Real.cos_arccos. sin_arcLen_nonneg (~3 LOC): unfold arcLen, Real.sin_nonneg_of_nonneg_of_le_pi + Real.arccos_nonneg + Real.arccos_le_pi. spherical_law_of_cosines_local (~5 LOC): unit_sum for hC', simp [dot, projPerp, Fin.sum_univ_three], linear_combination -⟨A,C⟩⟨B,C⟩ * hC'. Docker-clean (3061 jobs, 1 strategic-sorry warning remaining)."
     ],
     "nextSteps": [
-      "S3b PREP (next session, ~30-60 min): dihedralAngle definitional-branch case analysis — confirm polynomial form reduces to 0 = 0 in the sqrt-zero `if`-branch. Verify S3 PREP §4.4 step-3 sketch under the degenerate-case scrutiny: when normSq (projPerp B A) = 0, dihedralAngle A B C = 0 by if-construction, and both sides of the polynomial form should annihilate.",
-      "S3b ACT (after S3b PREP): discharge spherical_cotangent_rule_polynomial by applying spherical_law_of_cosines_local twice + spherical_law_of_sines_all_sq + dihedral-angle bookkeeping with explicit degenerate-branch case (~30-50 LOC).",
+      "S3b ACT (next session, ~60-120 min): discharge spherical_cotangent_rule_polynomial per the paste-ready skeleton in sessions/2026-05-16-s3b-prep-dihedral-degenerate-branch.md §7 — three-way by_cases split + four macro-case discharges (A: sin b = 0 → 0=0 directly; B/C: degenerate cases requiring inline helpers; D: non-degenerate algebraic core via sin_sq_dihedralAngle + spherical_law_of_cosines_local twice). Estimated 70-100 LOC.",
+      "S3c (optional, after S3b ACT lands): promote inline helpers `sin_dihedralAngle_eq_zero_of_sin_arcLen_*_eq_zero` from SphericalLawOfSinesOQ03.lean to parent SphericalLawOfSines.lean as named API additions (~+2 theorems in parent meta.json). Pure cleanup; not strictly required.",
       "S4 (optional polish): add classical-form corollary spherical_cotangent_rule with cot encoded as cos/sin + non-degeneracy hypotheses sin a ≠ 0, sin α ≠ 0. Likely deferred or skipped (polynomial form is technically stronger).",
       "S4/S5 (optional): cyclic-relabelling permutation lemma (a, α, b, γ) → (b, β, c, α) → (c, γ, a, β) — six cyclic variants; cot_rule_cyclic statement or quote the polynomial form three times."
     ]

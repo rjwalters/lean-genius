@@ -1,19 +1,28 @@
 # Research State: spherical-law-of-sines-oq-03
 
 ## Current State
-**Phase**: S3a-ACT (3 of 4 sorries closed; S3b PREP next)
+**Phase**: S3b-PREP (doc-only; macro-case taxonomy + paste-ready skeleton for the final sorry)
 **Path**: route-A (law-of-cosines + algebra), **in-framework variant**
 **Since**: 2026-05-12T18:01:16Z (claim opened); S2 SCAFFOLD shipped 2026-05-14;
-S3 PREP shipped 2026-05-16T01:08Z; S3a ACT shipped 2026-05-16T02:48Z
-**Iteration**: 4
+S3 PREP shipped 2026-05-16T01:08Z; S3a ACT shipped 2026-05-16T02:48Z;
+S3b PREP shipped 2026-05-16 (this session)
+**Iteration**: 5
 
 ## Current Focus
-S3a ACT complete (this session): closed three strategic sorries in
-`proofs/Proofs/SphericalLawOfSinesOQ03.lean` per the S3 PREP plan
-(`cos_arcLen`, `sin_arcLen_nonneg`, `spherical_law_of_cosines_local`).
-File now has 1 strategic sorry remaining (`spherical_cotangent_rule_polynomial`,
-the boxed main theorem). Docker build clean: 3061 jobs, 0 errors, 1
-strategic-sorry warning (line 255).
+S3b PREP complete (this session, researcher-12): doc-only PREP resolving
+the open question flagged by S3 PREP §4.4 and the S3b ACT readiness gate —
+*does the polynomial form of the cotangent rule reduce to `0 = 0 + 0` in
+the degenerate branches of `dihedralAngle`, and via what taxonomy?* Answer:
+yes, via a **three-way `by_cases` split on `Real.sin (arcLen X Y) = 0` for
+each of the three sides `(a, b, c)`**, collapsing 8 sign patterns into 4
+macro-cases (A: sin b = 0; B: sin a = 0 ∧ sin b ≠ 0; C: sin c = 0 ∧
+sin a sin b ≠ 0; D: non-degenerate). Macro-cases A/B/C all yield `0 = 0`
+via `sin α = 0` and/or `sin γ = 0` (sometimes requiring a helper lemma
+`sin_dihedralAngle_eq_zero_of_sin_arcLen_*_eq_zero`); macro-case D is the
+algebraic core via `sin_sq_dihedralAngle` + `spherical_law_of_cosines_local`
+twice + `lagrange_identity`. **Paste-ready Lean skeleton in §7** of the
+sessions memo. LOC estimate: ~70-100 (with inline helpers) or ~50-70 (with
+parent helpers). No Lean edits this iteration.
 
 ## Active Approach
 **Route A, in-framework variant**: derive the cotangent rule from
@@ -37,11 +46,13 @@ trigonometric basics only.
 derivation.  Subsumed by the in-framework Route A variant above.
 
 ## Attempt Count
-- Total attempts: 3 (S2 SCAFFOLD shipped, build clean; S3 PREP doc-only;
-  S3a ACT shipped, build clean, 3 of 4 sorries closed)
+- Total attempts: 4 (S2 SCAFFOLD shipped, build clean; S3 PREP doc-only;
+  S3a ACT shipped, build clean, 3 of 4 sorries closed; S3b PREP doc-only
+  macro-case taxonomy + paste-ready skeleton)
 - Current approach attempts: 1
 - Approaches tried: in-framework Route A scaffold; S3 PREP bearer pinning;
-  S3a ACT three-sorry discharge per PREP §4.1–§4.3 skeletons
+  S3a ACT three-sorry discharge per PREP §4.1–§4.3 skeletons; S3b PREP
+  dihedralAngle definitional-branch case taxonomy
 
 ## Blockers
 * None active.  The S2 ORIENT noted-blocker
@@ -59,7 +70,8 @@ derivation.  Subsumed by the in-framework Route A variant above.
 | S1        | OBSERVE: problem.md, knowledge.md, state.md, JSON (doc-only)         | #18229 |
 | S2        | SCAFFOLD: SphericalLawOfSinesOQ03.lean — 4 strategic sorries         | #19102 |
 | S3 PREP   | Bearer pinning + per-sorry ACT skeletons + ACT readiness gate (doc)  | #19340 |
-| S3a ACT   | Discharged 3 of 4 sorries (cos_arcLen + sin_arcLen_nonneg + slc_local)| (this)|
+| S3a ACT   | Discharged 3 of 4 sorries (cos_arcLen + sin_arcLen_nonneg + slc_local)| #19388 |
+| S3b PREP  | `dihedralAngle` definitional-branch case taxonomy + skeleton (doc)   | (this) |
 
 ### Current Lean-file status (post-S3a ACT)
 
@@ -71,22 +83,37 @@ derivation.  Subsumed by the in-framework Route A variant above.
 | `spherical_cotangent_rule_polynomial`    | 255 (was 239) | strategic sorry — S3b PREP + ACT |
 
 ## Next Action
-**S3b PREP** (next session, ~30-60 min): `dihedralAngle` definitional-branch
-case analysis — confirm the polynomial form reduces to `0 = 0` in the
-sqrt-zero `if`-branch where `dihedralAngle = 0` by `if`-construction.
-Verify S3 PREP §4.4 step-3 sketch under the degenerate-case scrutiny:
-when `normSq (projPerp B A) = 0`, the LHS factor `sin (dihedralAngle A B C)`
-and the RHS factor `sin (dihedralAngle C A B)` annihilate the respective
-products, leaving `0 = 0`.
+**S3b ACT** (next session, ~60-120 min): discharge the remaining
+strategic sorry `spherical_cotangent_rule_polynomial` per the paste-ready
+skeleton in `sessions/2026-05-16-s3b-prep-dihedral-degenerate-branch.md`
+§7. **Recipe**:
 
-**S3b ACT** (after S3b PREP, ~60-90 min): discharge
-`spherical_cotangent_rule_polynomial` by applying
-`spherical_law_of_cosines_local` twice (sides b and c), substituting via
-the new S3a-proved helpers `cos_arcLen` and `sin_arcLen_nonneg`, and
-using `spherical_law_of_sines_all_sq` plus dihedral-angle bookkeeping
-with explicit degenerate-branch case. Estimated 30–50 LOC.
+1. Three-way `by_cases` split on `Real.sin (arcLen B C) = 0`,
+   `Real.sin (arcLen A C) = 0`, `Real.sin (arcLen A B) = 0` per §3.
+2. Macro-case A (sin b = 0): unfold `dihedralAngle` if-branch to get
+   `sin α = sin γ = 0`, then `ring`. ~14 LOC.
+3. Macro-case B (sin a = 0 ∧ sin b ≠ 0): inline helper
+   `sin_dihedralAngle_eq_zero_of_sin_arcLen_third_eq_zero` (~10 LOC),
+   then `ring`. ~12 LOC + helper.
+4. Macro-case C (sin c = 0 ∧ sin a, sin b ≠ 0): inline helper
+   `sin_dihedralAngle_eq_zero_of_sin_arcLen_first_two_eq_zero` (~10 LOC),
+   then `ring`. ~18 LOC + helper.
+5. Macro-case D (non-degenerate): the algebraic core. Use
+   `sin_sq_dihedralAngle` twice (for α and γ) + `spherical_law_of_cosines_local`
+   twice + `lagrange_identity` + `linear_combination` or
+   `(LHS - RHS)(LHS + RHS) = 0` strategy. ~25-45 LOC, **very high risk**.
 
-**Race-safety re-check before S3a push** (this session):
+**Total estimate**: ~70-100 LOC (with inline helpers); ~50-70 LOC if
+parent helpers are extracted in S3c. Bearer drift: 0 at SHA `2df2f0150c`
+(re-verified S3b PREP).
+
+**S3c** (optional, after S3b ACT lands): promote the inline helpers
+`sin_dihedralAngle_eq_zero_of_sin_arcLen_*_eq_zero` to the parent
+`SphericalLawOfSines.lean` as named API additions (~+2 theorems in
+parent meta.json; auditor will catch drift). This is purely a cleanup
+iteration and is optional.
+
+**Race-safety re-check** (this session):
 `gh pr list -R rjwalters/lean-genius --search "spherical-law-of-sines-oq-03 in:title" --state open` → 0 open PRs — field clear.
 
 ## Session Log
