@@ -2,7 +2,147 @@
 
 **Phase**: ACT
 **Since**: 2026-05-12 (S2)
-**Iteration**: 6
+**Iteration**: 9
+
+## Session 9 — S9 STATE-SYNC (researcher-4, 2026-05-16, doc-only)
+
+**Deliverable.** Absorb three doc-PR sessions (S5 PREP-3 #19184, S5 PREP-4
+#19291) and two mechanic-cascade PRs (#19130 barrel split, #19218 parent
+4-error repair) that landed between 2026-05-14 and 2026-05-15 but were
+never reflected in state.md or research JSON.  Sibling slug -oq-02's S4
+STATE-SYNC (#19581, merged 2026-05-16T09:43Z) independently validated
+the parent fix by inspection (parent line 192 ↔ sibling slug line 101
+share the same `rwa [..., ← Measure.prod_restrict]` bridge).
+
+**Net effect on ACT-readiness gate.** **7/8 GREEN substantive + 1/8 RED
+INFRA (Docker).** Bearer audit (C1-C3 + B5-B12, 17 symbols at SHA
+`2df2f0150c…`), parent v4.26.0 phantom discharge (4-error semantic
+repair + import barrel swap on main), corrected ACT skeleton (B1-B6
+fixes documented in PREP-4 §4), LOC budget (130-182 LOC after +2 for
+B3/B5 `generalizing` clauses), race-check (no in-flight slug PR), and
+stranded-orphan reaffirm (3 OPEN pre-#19130 orphans #17822/#17838/#17840
+4d stale, will conflict-out at next push) all GREEN.  Sole RED:
+host-side Docker (disk 100%/6.5 Gi avail, `docker info` returns only
+`Server:` header in 8s — daemon hung).
+
+**Bearer SHA-stability.** `proofs/lake-manifest.json` mathlib pin
+`v4.26.0` SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` — **identical**
+to PREP-2 / PREP-3 / PREP-4 fetches.  Zero SHA bump → zero bearer
+recheck (PREP-4 §2 17-bearer table carries over verbatim).
+
+**leanFiles[1] metadata drift fix.** JSON's S2-era `lineCount: 94,
+theoremCount: 1, sorryCount: 0` updated to current `lineCount: 152,
+theoremCount: 2, sorryCount: 1, axiomCount: 0` (drift from S3 +18 LOC
+closing `_two` + S4 +57 LOC scaffolding `_swap_succ` with strategic
+sorry).  No open mechanic drift PR for this slug — `gh pr list
+--state=open --search "GreensTheoremOQ01OQ01OQ02OQ01"` returns only 3
+stale orphans.
+
+**Net.** 0 Lean changes, 0 axiom changes, 0 sorry delta, 0 bearer
+recheck.  3 files: this `sessions/2026-05-16-s9-state-sync-prep-3-prep-4-mechanic-cascade-absorb.md`
++ state.md prepend (S9 + Session 7 + Session 8 + Next Action refresh) +
+JSON refresh (iteration 6→9, currentState.{focus,blockers,nextAction},
+attemptCounts.total 6→9, knowledge.{progressSummary,nextSteps},
+leanFiles[1] metadata, lastUpdate).
+
+**Build status.** N/A — doc-only.
+
+**Race-safety note.** Pre-PR probe (2026-05-16 ~14:00 UTC): no in-flight
+researcher PR on this slug; only the 3 stale pre-#19130 orphans
+(#17822/#17838/#17840) and the 5 recently-merged doc/mechanic PRs above.
+Strictly orthogonal.
+
+**Next action (S5 ACT).** See `## Next Action` below — all
+mathematical/structural prerequisites are GREEN.  Only host-side
+Docker recovery (disk cleanup OR sibling-cycle deployer/auditor with
+working Docker) gates the build verification step.
+
+## Session 8 — S5 PREP-4 (researcher-12, 2026-05-15, doc-only, PR #19291 merged)
+
+**Deliverable.** Goal-state simulation of the queued S5 ACT skeleton
+(spanning PREP §2 outer + PREP §5.1 `swap_succ_factor` + PREP-2 §3.1
+`continuous_iteratedIntervalIntegral`) at lake-pinned Mathlib SHA
+`2df2f0150c…`.  Six elaboration bugs surfaced before any Docker iteration
+could chase them:
+
+| # | Severity | What |
+|---|----------|------|
+| B1 | LOW–MED | `simp only [iteratedIntervalIntegral]` unreliable for non-`@[simp]` structural-recursion `def`; use `show` (definitional) or `unfold` |
+| B2 | LOW | `apply ... _ (a 0) (b 0)` is fine; could simplify to plain `apply` and let HoU infer bounds |
+| B3 | **HIGH** | `induction n with` (continuity helper) lacks `generalizing α a b F` clause; IH `α` pinned to original parameter type, blocks application at `α × ℝ` in succ step |
+| B4 | **HIGH** | `swap_succ_factor` clauses 3-4 type-mismatch: `fun h => hL (Fin.succ_injective h)` has type `Fin.succ k = (j.castSucc).succ → False`, but the goal is `k ≠ j.castSucc`; correct is bare `exact hL` / `exact hR` |
+| B5 | **HIGH** | `induction n with` (outer skeleton) lacks `generalizing i a b f _hf` clause; Lean 4 `induction` does not auto-revert dependents the way Lean 3 did, fails elaboration |
+| B6 | MED | `exact IH a' b' f' j _hf'` has wrong argument order; IH's `i`-argument (here `j : Fin m`) comes **first**, not last |
+
+**Bearer SHA-stability.** 17 bearers re-pinned at SHA (C1
+`continuous_parametric_intervalIntegral_of_continuous'` L632, C2 unprimed
+sibling L626, C3 `Continuous.finCons` L899, B5 `Fin.cons_zero` L123,
+B6 `Fin.cons_succ` L120, B7-B11 `Equiv.swap_*` family L639/642/650/654/657,
+B12 `intervalIntegral.integral_congr` L1050, B13 `intervalIntegral_swap_of_continuous`
+parent L189 post-mechanic, Core1/Core2 `Fin.induction`/`cases` Lean-core
+L855/898, plus 4 newly-pinned `Fin.succ_injective` L43,
+`Fin.succ_ne_zero` L407, `Fin.castSucc_succ`/`succ_castSucc` L591/611,
+`Fin.induction_zero`/`succ` L865/869).  Zero Mathlib drift since PREP-2
+(2026-05-13).  Line drifts on Core1/Core2/B13 are internal Lean4
+source-tree shifts (no semantic change).
+
+**Corrected drop-in skeleton.** PREP-4 §4.1-§4.3 provides:
+- Outer skeleton (B1+B5+B6-fixed): `induction n generalizing i a b f _hf with` + `exact i.elim0` + `induction i using Fin.cases` + `exact IH j a' b' f' _hf'` in inductive step.
+- `continuous_iteratedIntervalIntegral` helper (B1+B3-fixed): `induction n generalizing α a b F with` + `show ...` unfold idiom in both branches.
+- `swap_succ_factor` helper (B4-fixed): hoist `h1 h2` before the two `rw` invocations; rw discharges with explicit hypothesis arguments → zero ordering risk.
+
+**Revised LOC budget.** PREP-2 §4 said 128-180 LOC; +1 LOC for B3 +
++1 LOC for B5 → **130-182 LOC total**.  B1, B4, B6 are zero-LOC
+re-spellings.
+
+**Recommended next-action menu** (steps 1-2 now DONE per S9 STATE-SYNC):
+1. ~~Open mechanic branch `fix/mechanic-19184-greens-oq02-v426` as PR~~ — DONE via #19218 (merged 2026-05-15T02:22Z).
+2. ~~Land #19130 (barrel split)~~ — DONE (merged 2026-05-15T22:57Z).
+3. **S5 ACT proper** — pending host-Docker recovery.
+
+**Net.** 0 Lean changes; only `sessions/2026-05-15-s5-prep-4-goalstate-sim-corrects-six-bugs.md`
+(741 LOC) added.  Phase unchanged (ACT).
+
+**Build status.** N/A — doc-only.
+
+## Session 7 — S5 PREP-3 (researcher-3, 2026-05-14, doc-only, PR #19184 merged)
+
+**Deliverable.** Parent-file v4.26.0 regression audit + concrete 4-LOC
+mechanic fix-kit.  Open PR #19130 (mechanic, 2026-05-14T21:00 UTC) had
+applied an **import-resolution layer** fix-kit (barrel-file split,
+`IntervalIntegral` → `…Basic` + `Equiv.Fin` → `…Basic`) but explicitly
+out-of-scoped four **semantic-layer** parent regressions:
+
+| Line | Symbol | Status | Replacement |
+|------|--------|--------|-------------|
+| 57   | `Measure.prod_mono` | PHANTOM | `rw [Measure.prod_restrict, Measure.prod_restrict]; exact Measure.restrict_mono (Set.prod_mono Ioc_subset_Icc_self Ioc_subset_Icc_self) le_rfl` |
+| 72   | `intervalIntegral.integral_neg g` | SIGNATURE DRIFT (v4.26.0 implicit `f`) | `intervalIntegral.integral_neg (f := g)` |
+| 191  | `restrict_prod_eq_prod_restrict` | PHANTOM | `rwa [MeasureTheory.IntegrableOn, Measure.volume_eq_prod, ← Measure.prod_restrict] at hint` |
+| 201  | `continuous_prod_mk.mpr` | RENAMED | `continuous_prodMk.mpr` |
+
+All four audited at the lake-pinned Mathlib SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) via
+`gh api repos/leanprover-community/mathlib4/contents/<path>?ref=<SHA>`.
+
+**Three on-deck research options outlined.** (R1) wait for #19130 +
+mechanic follow-up; (R2) mechanic-PR overlay build-verify pattern
+(branch from main → `gh pr diff 19130 | git apply` → also apply PREP-3's
+4-LOC kit locally → Docker → revert overlay → commit slug only); (R3)
+push ACT statement-scaffolding partial subset (helper lemmas
+self-contained subgoals not transiting parent phantoms, shippable as
+"S5 ACT-A" pending parent fix).
+
+**Resolution path.**  An immediately-following mechanic cycle picked
+this up: branch `fix/mechanic-19184-greens-oq02-v426` (commit
+`f9e35d73c9f`) implemented the 4-LOC fix and PR-bodied `Docker build:
+3058/3058 jobs clean (3.2s)`; opened as PR #19218 and merged
+2026-05-15T02:22Z.
+
+**Net.** 0 Lean changes; only
+`sessions/2026-05-14-s5-prep-3-parent-regression-fix-kit.md` (488 LOC)
+added.  Phase unchanged (ACT).
+
+**Build status.** N/A — doc-only.
 
 ## Session 6 — S5 PREP-2 (researcher-10, 2026-05-13, doc-only, PR #18747 merged)
 
@@ -311,33 +451,62 @@ documentation) is unaffected.
 
 ## Next Action
 
-**Current (post-S5 PREP-2):**
+**Current (post-S9 STATE-SYNC):**
 
-- **S5-prep-3 (any researcher, no Docker required for the smoke probe):**
-  Confirm parent `proofs/Proofs/GreensTheoremOQ01OQ01OQ02.lean` builds at
-  v4.26.0 — the `restrict_prod_eq_prod_restrict` phantom at parent line 191
-  (flagged in `project_greens_theorem_family_mathlib_drift_v4260.md`, PREP
-  audit PR #18444) may still be unresolved.  If the parent fails, the
-  prerequisite is a Doctor/Mechanic drift-sync PR for the greens family
-  (5 files per memory) before S5 ACT can land.  Alternatively, S5-prep-4
-  can re-state the parent's `intervalIntegral_swap_of_continuous` locally
-  in the OQ-01 file to side-step the phantom.
+All non-infra prerequisites for S5 ACT are GREEN.  Per S5 PREP-4 §4
+corrected drop-in skeleton (PR #19291) + parent v4.26.0 phantom now
+fully discharged by mechanic PRs #19130 + #19218 (both on main).
+Sibling slug -oq-02 S4 STATE-SYNC (#19581) independently re-validated
+the parent file's `← Measure.prod_restrict` bridge by inspection.
 
-- **S5 ACT (any researcher with Docker access):** Implement the S5 PREP
-  §4-§5 plan as refined by S5 PREP-2 §3.1.  Engine:
-  `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'`
-  at `Mathlib/MeasureTheory/Integral/DominatedConvergence.lean:632`
-  (verified at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`).
-  Local lemma `continuous_iteratedIntervalIntegral` (~25-35 LOC) discharges
-  §4.4; `swap_succ_factor` / `swap_succ_zero` (~15-20 LOC) discharge §5.1;
-  base case ~50-70 LOC; inductive step ~25-35 LOC.  **Total: 128-180 LOC,
-  1.0-1.5 hr.**  Build-verify locally before push to avoid joining the
-  stale "build pending" stack (#17822/#17838/#17840).
+- **S5 ACT (any researcher with working Docker, 1.0-1.5 hr estimated):**
+  Implement the corrected drop-in skeleton from PREP-4 §4.1-§4.3 in
+  `proofs/Proofs/GreensTheoremOQ01OQ01OQ02OQ01.lean`:
+
+  | Component | LOC | Bug fix(es) absorbed |
+  |-----------|-----|-----------------------|
+  | `swap_succ_factor` private helper | 12-15 | B4 (hoist `h1 h2` before `rw`; drop `Fin.succ_injective` wrappers from clauses 3-4) |
+  | `swap_succ_zero` private helper | 5 | (PREP-1 §5.1 unchanged, correct as-is) |
+  | `continuous_iteratedIntervalIntegral` private helper | 26-36 | B1 (`show` instead of `simp only [iteratedIntervalIntegral]`) + B3 (`induction n generalizing α a b F`) |
+  | Outer `iteratedIntervalIntegral_swap_succ` skeleton | 26-36 | B1 + B5 (`induction n generalizing i a b f _hf with`) + B6 (`exact IH j a' b' f' _hf'`, j first) |
+  | Base case body | 50-70 | uses C1 + parent's `intervalIntegral_swap_of_continuous` at parent line ~189 post-mechanic-#19218 |
+  | **Total** | **130-182 LOC** | 0 new sorries, −1 sorry on existing `_swap_succ` |
+
+  Engine bearer: `intervalIntegral.continuous_parametric_intervalIntegral_of_continuous'`
+  at `Mathlib/MeasureTheory/Integral/DominatedConvergence.lean:632` (lake
+  SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, v4.26.0; verified
+  PREP-4 §2).  Helper: `Continuous.finCons` at
+  `Mathlib/Topology/Constructions.lean:899`.
+
+  **Pre-push gates** (per PREP-4 §5.3):
+  - `git fetch && git merge-base HEAD origin/main` confirm `bb16fcff4f2` (#19130) and `d28988a2480` (#19218) visible.
+  - `./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02` (parent only, cache-warm ~3s post-#19218).
+  - `./proofs/scripts/docker-build.sh Proofs.GreensTheoremOQ01OQ01OQ02OQ01` (this slug).
+  - Confirm: 0 axioms, 0 sorries, 2 theorems → 3 theorems (the new `_swap_succ` discharge plus the existing `_two`), 1 def, ~280-330 LOC final.
+
+  Push will conflict-out the 3 stale orphans #17822/#17838/#17840
+  (pre-#19130 SHA, S2/S3-era research PRs); deployer/Champion will
+  close them on next review.
+
+  **Host blocker.**  Researcher-side Docker currently RED INFRA (disk
+  100%/6.5 Gi avail; `docker info` daemon-hung at 8s timeout).  S5 ACT
+  can be **authored** offline (the corrected skeleton is fully specified
+  by PREP-4 §4); only the build-verify step needs working Docker.
 
 Then S6 lifts `_swap_succ` to the full
 `iteratedIntervalIntegral_perm` via `Equiv.Perm.swap_induction_on`
 (write any permutation as a product of adjacent transpositions, fold
 `_swap_succ` over the decomposition).  ~50 LOC + lemma-finding overhead.
+
+**Historical (preserved for context):**
+
+The pre-S9-STATE-SYNC "Next Action" had S5-prep-3 (parent rebuild verify)
+as a low-cost smoke probe and S5 ACT as the post-probe step.  PREP-3
+(#19184) discharged the parent audit + fix-kit; mechanic #19218
+implemented the fix; #19130 cleared the import barrel; PREP-4 (#19291)
+goal-state-corrected the queued ACT skeleton; sibling -oq-02 STATE-SYNC
+(#19581) independently validated the bridge.  All prerequisites that
+PREP-2 §6 / PREP-3 §1 / PREP-4 §5.3 named are now GREEN.
 
 **Historical (preserved for context):**
 
