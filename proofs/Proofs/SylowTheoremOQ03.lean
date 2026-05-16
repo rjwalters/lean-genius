@@ -54,12 +54,14 @@ earlier 3-lemma chain.
 
 ## Effect on `SylowTheoremOQ02.lean`
 
-This file does not edit `SylowTheoremOQ02.lean`. The original axiom
-`sylowProP_projects_pgroup` remains in OQ-02 as a thin wrapper for
-backward compatibility (axiom count of OQ-02 unchanged: 5). A future
-iteration may delete the axiom and route any callers (currently
-none in the gallery) to
-`ProfiniteSylow.sylowProP_projects_pgroup_continuous`.
+In S4 ACT (this file's companion edit), the original axiom
+`sylowProP_projects_pgroup` was deleted from `SylowTheoremOQ02.lean`
+along with its `#check` line in the sanity-check block. Net OQ-02
+axiom count: 5 → 4. No callers anywhere in `proofs/Proofs/` referenced
+the axiom by name beyond the `#check`, so removal is purely additive
+to the gallery's axiom-integrity ledger; the continuity-enhanced
+theorem `ProfiniteSylow.sylowProP_projects_pgroup_continuous` below
+is the new bearer of the projection result.
 
 ## References
 

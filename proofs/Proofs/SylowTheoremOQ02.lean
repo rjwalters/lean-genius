@@ -129,15 +129,6 @@ axiom frattini_profinite
     (p : ℕ) (hp : Fact p.Prime) :
     ∀ g : G, ∃ (n : N) (m : G), m ∈ N.normalizer ∧ g = n * m
 
-/-- The image of a Sylow pro-p subgroup under a continuous surjective
-    homomorphism to a finite group is a p-group. -/
-axiom sylowProP_projects_pgroup
-    (hpf : IsProfiniteGroup G) (p : ℕ) (hp : Fact p.Prime)
-    (P : SylowProP G p)
-    (H : Type*) [Group H] [Fintype H]
-    (φ : G →* H) (hφ_surj : Function.Surjective φ) :
-    IsPGroup p (P.toSubgroup.map φ)
-
 /-- Sylow pro-p subgroups for distinct primes have trivial intersection. -/
 axiom sylowProP_inter_trivial
     (hpf : IsProfiniteGroup G)
@@ -377,7 +368,6 @@ Axiom count: 5, Sorry count: 0, Proved theorems: 10
 #check @proP_subgroup_card_ppow
 #check @sylowProP_normal_of_unique
 #check @frattini_profinite
-#check @sylowProP_projects_pgroup
 #check @finite_quotient_sylow_count
 #check @sylowProP_inter_trivial
 
