@@ -10,11 +10,15 @@ The d-dimensional cross-polytope `B_d = {x ∈ ℝᵈ : ‖x‖₁ ≤ 1}` has E
 polynomial `L(B_d, n) = ∑_{k=0}^d 2^k · C(d,k) · C(n,k)`. The gallery entry
 `ehrhart-cube-proven-oq-02` proves the *algebraic* recursion
 `L(B_{d+1},n) = L(B_d,n) + 2·∑_{m<n} L(B_d,m)` via Pascal + hockey-stick, and
-several base/concrete cases. Two sorries remain:
+several base/concrete cases. Both sorries closed (S2: PR #16734;
+S7: PR #17362):
 
 1. `crossEhrhart_is_poly` — exhibit the polynomial of degree d in ℚ[X].
-2. `crossBall_card` succ — the Finset slicing identifying the formula with
-   actual lattice-point counts.
+   Closed in S2 by routing through `descPochhammer` (PR #16734).
+2. `crossBall_card` succ — the Finset slicing identifying the formula
+   with actual lattice-point counts. Closed in S7 by the three-piece
+   slicing decomposition `crossBall_succ_d_fiber_card` /
+   `crossBall_succ_d_slice` / `sum_crossBall_pair` (PR #17362).
 
 ---
 
