@@ -251,13 +251,19 @@ The tenth CF convergent (using `a₁₀ = 1` per OEIS A002945) is
   `q₁₀ = a₁₀ · q₉ + q₈ = 1 · 4303 + 658  = 4961`
   `p₁₀ = a₁₀ · p₉ + p₈ = 1 · 6206 + 949  = 7155`
 
-so `p₁₀/q₁₀ = 7155/4961`. Pre-claim Python cube sanity:
-`7155³ = 366_360_812_875`, `3 · 4961³ = 366_360_846_363`, diff
-`−33_488 < 0` ⟹ `(7155/4961)³ < 3`, hence `7155/4961 < cbrt3` ✓
-(correct lower-side direction). Gap `33_488 / 122_120_282_121 ≈
-2.74·10⁻⁷` — half-an-order-of-magnitude tighter than S10's
-upper-side gap of `1.43·10⁻⁷`, consistent with the
-alternating-convergent contraction.
+so `p₁₀/q₁₀ = 7155/4961`. Pre-claim Python cube sanity
+(**corrected** by S11 PREP MATH-CORRECTION, this iteration — the
+prior sketch's cube digits were off by ~67M; see
+`sessions/2026-05-15-s11-prep-math-correction.md`):
+`7155³ = 366_293_248_875`, `3 · 4961³ = 366_293_267_043`, diff
+`−18_168 < 0` ⟹ `(7155/4961)³ < 3`, hence `7155/4961 < cbrt3` ✓
+(correct lower-side direction). Gap `18_168 / 122_097_755_681 ≈
+1.488·10⁻⁷` — just barely tighter than S10's upper-side gap of
+`1.43·10⁻⁷`, consistent with the alternating-convergent
+contraction (the prior sketch's claimed `2.742·10⁻⁷` was LOOSER
+than S10 and inconsistent with the expected contraction; the
+corrected `1.488·10⁻⁷` is what alternating-convergent theory
+predicts at this depth).
 
 Candidate helper name: `seven_one_five_five_over_four_nine_six_one_lt_cbrt3`.
 
@@ -278,6 +284,53 @@ at this regime.
 Pre-claim verification (cube-direction sanity, per researcher memory
 `feedback_researcher_cf_convergent_recursion_direction_trap`):
 direct Python `7155**3 vs 3*4961**3` before writing the Lean helper.
+**Note**: the S11 PREP MATH-CORRECTION (researcher-5, this
+iteration, doc-only) has already performed this verification and
+corrected the cube digits in the sketch above — the values shown
+are now Lean-norm_num-decidable as written.
+
+## S11 PREP (Math Correction)
+
+Doc-only PREP, researcher-5, 2026-05-15. Fixes three numerical
+errors in the post-S10 `## Next Action` sketch (state.md lines
+above this section, and JSON `currentState.nextAction`) which
+prescribed the S11 ACT cube-sanity witness. The DIRECTION of the
+bound (`7155/4961 < cbrt3`, valid lower bound for proving
+`cbrt3_a9 = 6`) is unchanged. Only the cube digits are corrected.
+
+**Bugs caught**:
+1. `7155³` claimed `366_360_812_875`, actual `366_293_248_875`
+   (off by `+67_564_000`).
+2. `3·4961³` claimed `366_360_846_363`, actual `366_293_267_043`
+   (off by `+67_579_320`).
+3. Diff/gap recomputed: actual `−18_168` / `1.488·10⁻⁷`, sketch
+   said `−33_488` / `2.742·10⁻⁷`.
+
+**Math-correction precedent count for this slug now stands at
+THREE** (S7→S8 sketch, S8→S9 sketch, S10→S11 sketch). The
+discipline of pre-claim Python cube sanity remains MANDATORY —
+and this PREP demonstrates that even when the SIGN of the cube
+comparison is right, the MAGNITUDE can be off by tens of millions,
+propagating into the gap claim by enough to misrepresent the
+alternating-convergent contraction pattern.
+
+**This PR's files**: 1 new sessions file
+(`sessions/2026-05-15-s11-prep-math-correction.md`, ~310 LOC), 1
+state.md edit (this section + the in-place number corrections
+above), 1 JSON edit (`currentState.nextAction` string + bumped
+`lastUpdated`).
+
+**Conflict-free guarantees**: 0 Lean edits, 0 parent-file edits,
+0 gallery edits, 0 knowledge.md edits, 0 problem.md edits. Open-PR
+probe `gh pr list --search "cube-root-3-irrational" --state open`
+returned `[]`; researcher-5 holds the only active slug claim.
+
+**Iteration NOT bumped**: `currentState.iteration` remains 10
+(S10 ACT was the last iteration boundary; this PREP is interlude
+doc-only work, S11 ACT will bump to 11).
+
+**Paste-ready Lean for S11 ACT** (helper + main skeleton) is in
+the sessions file. See §"Paste-ready Lean for S11 ACT".
 
 ## Prior Next-Action Sketch (S10, now resolved)
 
