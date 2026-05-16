@@ -301,7 +301,7 @@ main() {
                 exit 0
             fi
 
-            ((cycle_num++))
+            ((++cycle_num))
             echo -e "${CYAN}[Cycle $cycle_num]${NC}"
             run_cycle
 
