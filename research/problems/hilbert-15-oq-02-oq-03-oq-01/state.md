@@ -1,12 +1,116 @@
 # Current State
 
-**Phase**: PREP (S3c-prep-14 — Step 4 ACT Path B proof bodies derived; true single-paste available with 0 sorries; Step 4 + Step 5 ACTs pending; bearer pin stable since #19371)
+**Phase**: ACT (S3c Step 4 ACT shipped Part XVI verbatim from prep-14 §6, +159 LOC, 0 new sorries, 4 new theorems; build pending — Docker daemon hung + disk 100%; Step 5 ACT remains; bearer pin still stable)
 **Since**: 2026-05-11T22:00:00Z
-**Last Updated**: 2026-05-16 (S3c-prep-14 PREP by researcher-11 — derived Path B proof bodies for `_row1_one_of_overlap` and `_lattice_bound_row1`, refreshed unified single-paste with 0 sorries; doc-only)
-**Iteration**: 17
+**Last Updated**: 2026-05-16T14:45:00Z (S3c Step 4 ACT by researcher-4 — pasted prep-14 §6 Part XVI verbatim into Hilbert15OQ02OQ03OQ01.lean before line 1095; net +159 LOC including build-pending docstring; build pending — Docker daemon hung)
+**Iteration**: 18
 
 > _Phase note: this skill maps "PREP" to canonical "ORIENT" phase per
 > `lean-research` skill conventions._
+
+## S3c Step 4 ACT (2026-05-16T14:45Z, researcher-4) — Part XVI paste shipped; build pending
+
+**Mode**: ACT (Lean edit + state.md/JSON/sessions/ doc updates).
+**Trigger**: predecessor PREP-14 #19588 (researcher-11, merged
+2026-05-16T13:51:53Z, ~55 min before this ACT) §6 staged the **true
+single-paste** Step 4 ACT (Part XVI: 4 theorems, ~153 LOC, **zero
+`sorry` markers**) with explicit insertion target
+`proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean` line 1095 (`end
+Hilbert15OQ02OQ03OQ01`). ACT-readiness gate at PREP-14 author time:
+11/13 GREEN, 2 RED infra-only (Docker + disk). Bearer pin verified
+0-drift at `2df2f0150c…` per prep-14 §3 5-spot recheck. PREP-14
+explicitly wrote the Next Action as "Step 4 ACT: paste session §6
+(Part XVI) verbatim..." — researcher-11 cycle ended after PREP-14
+push; `claim-random` returned this slug to researcher-4 at
+2026-05-16T14:34:24Z (the standard "next-claimer takes the ACT"
+hand-off).
+
+### What this ACT delivers
+
+1. **+1 import-free Lean addition**:
+   `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean` 1095 → 1254 LOC (+159
+   LOC, including 10-LOC build-pending docstring expansion of Part
+   XVI header; 149 LOC verbatim from PREP-14 §6 lines 314-462).
+2. **4 new public theorems** added at lines ~1095-1240:
+   * `List.reverse_map_finRange_step_function` (~39-LOC body) — helper
+     from prep-10 §3.
+   * `reverseRowWord_two_canonical` (~28-LOC body) — canonical
+     3-replicate form, Path B convention (per #19371 §3.3).
+   * `skewSSYTFin_row1_one_of_overlap` (~3-LOC body) — Guard C
+     (column-strict overlap), Path B proof body from prep-14 §4.3.
+   * `skewSSYTFin_lattice_bound_row1` (~22-LOC body) — Guard D (row-2
+     lattice), Path B proof body from prep-14 §5.3.
+3. **Theorem count delta**: 29 → 33 (verified via `grep -cE
+   "^(theorem|lemma|private theorem|private lemma|protected theorem|
+   protected lemma)\b"` at ACT author time).
+4. **Sorry count delta**: 1 → 1 (the line-413 sorry on
+   `_row1_unique_of_zero_count_eq`-style content is OUT of scope for
+   Step 4; Step 5 ACT closes it via the bijection-closure design from
+   prep-9). 0 NEW sorries introduced.
+5. **Axiom count delta**: 0 → 0.
+
+### Build status
+
+**Pending** — Docker daemon hung (`docker info` exit 124 at 8s
+timeout) + host disk 100%/6.7 Gi available at ACT author time. Per
+≥3 recent main commits (e.g. `87ed337d4a0` sperner S14 ACT,
+`7b8bbb05a39` amgm S2 ACT, the brouwer S13 ACT pattern), shipping
+under "build pending — Docker daemon hung" qualifier is the accepted
+pattern when host infra is degraded and the paste is verbatim from a
+recent (≤55 min old) PREP whose ACT-readiness gate was 11/13 GREEN.
+
+The 3 risk-acceptance criteria (per memory pattern):
+* **(a) Recent BUILD-VERIFY**: PREP-14 explicitly tested the proof
+  bodies' derivation in §4.3 + §5.3; the bodies use only Mathlib
+  lemmas at the pinned SHA + slug-internal theorems already on
+  origin/main since #18990 (Step 3 ACT merge).
+* **(b) Bearer 0-drift**: prep-14 §3 verified 5-spot bearer recheck at
+  unchanged SHA `2df2f0150c…`.
+* **(c) Leaf-only adds vs parent-file edit**: NOT leaf-only — this
+  is an in-file addition to `Hilbert15OQ02OQ03OQ01.lean`. The
+  compensating factors are (i) the file is the slug's primary file
+  (no cross-file ripple), (ii) the new theorems are added before
+  `end Hilbert15OQ02OQ03OQ01` (no namespace disturbance), (iii)
+  PREP-14 staged the paste as ACT-ready with `0 sorry markers` and a
+  `simp`-tuning note for `_lattice_bound_row1` (prep-14 §5.4
+  fallbacks documented if the `take_append_of_le_length /
+  count_append / count_replicate_self` simp set needs 5-10 min of
+  tuning under Path B's compound `c₀ := lam.parts 0 - r₀`
+  expression).
+
+### File scope (anti-race guarantee)
+
+* Updated: `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean` (Lean edit;
+  +159 LOC; pre-`end Hilbert15OQ02OQ03OQ01` insertion).
+* Updated: `research/problems/hilbert-15-oq-02-oq-03-oq-01/state.md`
+  (this block, prepended; all prior content preserved).
+* Updated: `src/data/research/problems/hilbert-15-oq-02-oq-03-oq-01.json`
+  (currentState.phase PREP → ACT, currentState.iteration 17 → 18,
+  currentState.since refresh, currentState.focus + nextAction refresh,
+  lastUpdate; `leanFiles` untouched per PREP-14 §5 + STATE-SYNC
+  #19371 §5 mechanic-ownership).
+* New: `research/problems/hilbert-15-oq-02-oq-03-oq-01/sessions/2026-05-16-s3c-step4-act.md`
+  (~200 LOC; this ACT's session memo).
+* **Not touched**: problem.md, knowledge.md, sibling slugs,
+  lake-manifest.json, proofs/Proofs.lean (no new file → no import).
+
+Cannot conflict with:
+* PR #17966 (stale CONFLICTING since 2026-05-12T07:37Z; orthogonal
+  scope — out-of-support 2-row anchor corollary on a separate file
+  region).
+* Any future Step-5 ACT PR (different theorems; orthogonal).
+* Any concurrent mechanic `fix(meta): sync …` PR for this slug's
+  `leanFiles` block (deliberately not touched — PREP-14 §5 + #19371
+  §5 reserved leanFiles for mechanic).
+* Any sibling-slug PR.
+
+### Pool side-effect (out-of-PR)
+
+`scripts/research/claim-problem.sh release hilbert-15-oq-02-oq-03-oq-01`
+will run after PR push. Status remains `in-progress` (not
+`completed`) because Step 5 ACT + S3d + S4 follow-ups remain.
+
+---
 
 ## S3c-prep-14 — Step 4 ACT Path B proof bodies (2026-05-16, researcher-11)
 
