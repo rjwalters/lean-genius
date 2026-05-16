@@ -275,33 +275,51 @@ theorem sum_divisors_selbergLambda2_eq_log_sq {n : ℕ} (hn : 0 < n) :
       ArithmeticFunction.vonMangoldt_sum]
   ring
 
+/-- **Möbius–log identity (literal form, Iter 4)**: for `n > 0`,
+
+      Λ₂(n) = Σ_{d ∣ n} μ(d) · log²(n/d).
+
+    This is the Möbius-inverse of Iter 3's dual identity
+    `sum_divisors_selbergLambda2_eq_log_sq`. The proof applies
+    `ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq` to the dual
+    identity, then re-indexes `divisorsAntidiagonal → divisors` via
+    `Nat.sum_divisorsAntidiagonal`. -/
+theorem selbergLambda2_eq_moebius_log_sq {n : ℕ} (hn : 0 < n) :
+    selbergLambda2 n =
+      ∑ d ∈ n.divisors,
+        ((ArithmeticFunction.moebius d : ℝ) * (Real.log (n / d : ℕ)) ^ 2) := by
+  have hiter3 : ∀ m : ℕ, 0 < m → ∑ i ∈ m.divisors, selbergLambda2 i = (Real.log m) ^ 2 :=
+    fun m hm => sum_divisors_selbergLambda2_eq_log_sq hm
+  have hinv :=
+    (ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq (R := ℝ)).mp hiter3 n hn
+  have hbridge :
+      ∑ x ∈ n.divisorsAntidiagonal,
+          ((ArithmeticFunction.moebius x.fst : ℝ) * (Real.log x.snd) ^ 2)
+        = ∑ d ∈ n.divisors,
+          ((ArithmeticFunction.moebius d : ℝ) * (Real.log (n / d : ℕ)) ^ 2) :=
+    Nat.sum_divisorsAntidiagonal
+      (fun a b => (ArithmeticFunction.moebius a : ℝ) * (Real.log b) ^ 2)
+  exact hinv.symm.trans hbridge
+
 /-! ## Future Work
 
 The remaining next-iteration deliverables are, in order of increasing
 difficulty:
 
-1. **`selbergLambda2_eq_moebius_log_sq`** (Iter 4, ~15 LOC): one
-   application of `ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq` to
-   `sum_divisors_selbergLambda2_eq_log_sq` gives
-
-        Λ₂(n) = Σ_{(d,m) ∈ n.divisorsAntidiagonal} μ(d) · (log m)²    (n ≥ 1)
-
-   and `Nat.map_div_right_divisors` re-indexes to the canonical form
-
-        Λ₂(n) = Σ_{d ∣ n} μ(d) · (log (n/d))²    (n ≥ 1).
-
-2. **`selbergSum2_eq_two_n_log_n_plus_O`** (Iter 5–6): Selberg's symmetry formula
+1. **`selbergSum2_eq_two_n_log_n_plus_O`** (Iter 5–6): Selberg's symmetry formula
         S₂(N) = 2 N · log N + O(N).
    The error-term step requires summation by parts and quantitative
    control of Σ_{d ≤ x} μ(d) — but only its `O(x)` form, which is well
    within elementary bounds.
 
-3. **Tauberian step → PNT** (Iter 7+): Erdős–Selberg's combinatorial
+2. **Tauberian step → PNT** (Iter 7+): Erdős–Selberg's combinatorial
    finishing argument, the longest part of the elementary proof.
 
-Iteration 3 (this commit) closes the central algebraic step — Selberg's
-dual identity Σ_{d ∣ n} Λ₂(d) = (log n)² — together with the bridge
-lemma `vonMangoldtConv_eq_mul` that connects this file's explicit
-divisor-sum definition to Mathlib's `ArithmeticFunction` convolution. -/
+Iterations 3–4 (now closed) deliver the central algebraic identities of
+the Selberg–Erdős elementary PNT proof: Iter 3's dual form
+Σ_{d ∣ n} Λ₂(d) = (log n)² and Iter 4's Möbius-inverse literal form
+Λ₂(n) = Σ_{d ∣ n} μ(d) · log²(n/d), together with the bridge lemma
+`vonMangoldtConv_eq_mul` that connects this file's explicit divisor-sum
+definition to Mathlib's `ArithmeticFunction` convolution. -/
 
 end ChebyshevBoundsOQ04OQ01

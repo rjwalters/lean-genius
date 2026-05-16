@@ -1,7 +1,7 @@
 {
   "slug": "chebyshev-bounds-oq-04-oq-01",
   "title": "Elementary Proof of Full PNT from Chebyshev Bounds",
-  "phase": "ACT (Iter 3 dual identity Σ_{d|n} Λ₂(d) = (log n)² verified)",
+  "phase": "ACT (Iter 4 Möbius–log literal form Λ₂(n) = Σ_{d|n} μ(d)·log²(n/d) verified)",
   "status": "in-progress",
   "tier": "S",
   "path": "full",
@@ -21,10 +21,10 @@
       "ChebyshevBoundsOQ04.chebyshevPsi_doubling_lower: ψ(2n) − ψ(n) ≥ log(n+1) for n ≥ 1 (Bertrand)",
       "ChebyshevBoundsOQ04OQ01.selbergLambda2: definition of Selberg's auxiliary function (Iter 1)",
       "ChebyshevBoundsOQ04OQ01.selbergSum2: definition of partial Selberg sum (Iter 1)",
-      "ChebyshevBoundsOQ04OQ01.selbergLambda2_nonneg, selbergSum2_nonneg, selbergSum2_mono (Iter 1)"
+      "ChebyshevBoundsOQ04OQ01.selbergLambda2_nonneg, selbergSum2_nonneg, selbergSum2_mono (Iter 1)",
+      "ChebyshevBoundsOQ04OQ01.selbergLambda2_eq_moebius_log_sq: literal Möbius–log identity Λ₂(n) = Σ_{d|n} μ(d) · (Real.log (n/d : ℕ))² for n > 0 (Iter 4, ~8-LOC body via sum_eq_iff_sum_mul_moebius_eq + Nat.sum_divisorsAntidiagonal)"
     ],
     "open": [
-      "Möbius–log identity: Σ_{d ∣ n} μ(d) · log²(n/d) = Λ₂(n) for n ≥ 1",
       "Selberg's symmetry formula: Σ_{n ≤ N} Λ₂(n) = 2N·log N + O(N)",
       "Tauberian inequality: V(x)·log x ≤ (2/x) Σ_{n ≤ x} V(x/n) Λ(n) + O(1) where V(x) = |ψ(x) − x|/x",
       "Erdős combinatorial finishing: lim sup V(x) = 0 from the Tauberian inequality",
@@ -33,20 +33,20 @@
     "goal": "Replace the axiom ChebyshevBoundsOQ04.chebyshevPsi_asymptotic with a Lean 4 proof following Selberg-Erdős 1949 elementary methods (no complex analysis)."
   },
   "currentState": {
-    "phase": "ACT (Iter 3 dual identity Σ_{d|n} Λ₂(d) = (log n)² verified)",
-    "since": "2026-05-14T15:50:00.000Z",
-    "iteration": 4,
-    "focus": "Iter 3 (2026-05-14, build verified 7744 jobs) closes the central algebraic step of Selberg's elementary PNT strategy: the dual identity Σ_{d|n} Λ₂(d) = (Real.log n)² for n > 0. Three new theorems: vonMangoldtConv_eq_mul (bridge — local divisor-sum definition matches Mathlib's ArithmeticFunction.mul via Nat.map_div_right_divisors), sum_divisors_vonMangoldtConv (Σ (Λ∗Λ)(d) = Σ Λ(d)·log(n/d) via (Λ∗Λ)∗ζ = Λ∗(Λ∗ζ) = Λ∗log), and sum_divisors_selbergLambda2_eq_log_sq (combines them with vonMangoldt_sum and Real.log_mul). The 'original' Λ₂(n) = Σ μ(d)·log²(n/d) form is one Möbius-inversion step away (sum_eq_iff_sum_mul_moebius_eq) — deferred to Iter 4. ChebyshevBoundsOQ04OQ01.lean now 312 LOC, 15 theorems, 3 noncomputable defs, 0 sorries, 0 axioms. Side effect: this build surfaced TWO silent Mathlib v4.26.0 regressions in the parent ChebyshevBoundsOQ04.lean (last successful build was Iter 2 merge 2026-05-12): (A) line 298 `ring` no longer closes `4^m = 2^(2*m)` (tactic suggestion `ring_nf` would not help either since `ring` treats `4` and `2` as distinct atoms — fixed by `rw [pow_mul]; rfl`); (B) `Nat.divisors_prime` renamed to `Nat.Prime.divisors` (dot-method form) — fixed inline in vonMangoldtConv_prime. Both fixes 1-LOC; bundled in this PR to keep the slug build-clean.",
+    "phase": "ACT (Iter 4 Möbius–log literal form Λ₂(n) = Σ_{d|n} μ(d)·log²(n/d) verified)",
+    "since": "2026-05-16T03:00:00.000Z",
+    "iteration": 5,
+    "focus": "Iter 4 (2026-05-16, build verified 7744 jobs, this PR) closes the literal Möbius-inversion form Λ₂(n) = Σ_{d|n} μ(d) · (Real.log (n/d : ℕ))² for n > 0, deferred from Iter 3. One new theorem selbergLambda2_eq_moebius_log_sq applies ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq (Moebius.lean:240) to Iter 3's sum_divisors_selbergLambda2_eq_log_sq, then re-indexes divisorsAntidiagonal → divisors via Nat.sum_divisorsAntidiagonal (Divisors.lean:543). Proof body ~8 LOC. ChebyshevBoundsOQ04OQ01.lean grows 312 → 325 LOC, 15 → 16 theorems, 0 sorries, 0 axioms maintained. Build trap surfaced (now documented in state.md): the ∀ m > 0 lift hypothesis must annotate m : ℕ explicitly — without it Lean infers m : ℝ from Real.log m and fails on m.divisors. Iter 5 is now the next analytic step: Selberg's symmetry formula S₂(N) = 2N · log N + O(N) via the Möbius hyperbola trick on Iter 4's identity (~80–120 LOC for the leading term).",
     "blockers": [],
-    "nextAction": "Iter 4: prove the 'original' form Λ₂(n) = Σ_{d ∣ n} μ(d) · log²(n/d) for n ≥ 1 by applying ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq to sum_divisors_selbergLambda2_eq_log_sq, then re-indexing divisorsAntidiagonal → divisors via Nat.map_div_right_divisors. Estimated ~15 LOC. After that, Iter 5–6 attacks Selberg's symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N·log N + O(N) using summation by parts and Möbius hyperbola bounds.",
+    "nextAction": "Iter 5a: Selberg's symmetry formula leading term Σ_{n ≤ N} Λ₂(n) = 2N · log N + O(N). Starting from selbergLambda2_eq_moebius_log_sq, sum over n ≤ N and swap order: Σ_{n ≤ N} Λ₂(n) = Σ_{d ≤ N} μ(d) · Σ_{m ≤ N/d} (log m)² (Möbius hyperbola). Inner sum Σ_{m ≤ x} (log m)² = x · (log x)² − 2x · log x + 2x + O(log²x) by integration by parts on log² (cf. Tenenbaum I.6.2). Leading term −2x · log x scaled by Σ_{d ≤ N} μ(d)/d = O(1) (Mertens) gives 2N · log N. Estimated ~80–120 LOC.",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
+      "total": 4,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "Iter 3 (2026-05-14, build verified 7744 jobs) closes the central algebraic step — Selberg's dual identity Σ_{d|n} Λ₂(d) = (log n)² for n > 0. Three new theorems added: vonMangoldtConv_eq_mul (connects the file's local divisor-sum definition of Λ∗Λ to Mathlib's ArithmeticFunction.mul via Nat.map_div_right_divisors); sum_divisors_vonMangoldtConv (Σ_{d|n} (Λ∗Λ)(d) = Σ_{d|n} Λ(d)·log(n/d) via (Λ∗Λ)∗ζ = Λ∗(Λ∗ζ) = Λ∗log); sum_divisors_selbergLambda2_eq_log_sq (combines them with ArithmeticFunction.vonMangoldt_sum and Real.log_mul). The 'original' Möbius-inversion form Λ₂(n) = Σ μ(d)·log²(n/d) is one application of sum_eq_iff_sum_mul_moebius_eq away (Iter 4). File grows 230 → 312 LOC, 12 → 15 theorems, 0 sorries, 0 axioms. INCIDENTAL: Iter 3 build surfaced two silent Mathlib v4.26.0 regressions in untouched parent ChebyshevBoundsOQ04.lean (last successful build was Iter 2 merge 2026-05-12): (A) `ring` no longer closes `4^m = 2^(2*m)` at line 298 (elaborator treats `4` and `2` as distinct atoms; `ring_nf` suggestion does not help) — fixed with `rw [pow_mul]; rfl`; (B) `Nat.divisors_prime` renamed to `Nat.Prime.divisors` (dot-method form) — fixed inline. Both 1-LOC, bundled in this research PR so the slug stays build-clean. Iter 2 (2026-05-12T00:48Z, PR #17690 merged) closed Iter 1 next-iteration deliverables #1-2: vonMangoldtConv_prime and selbergLambda2_prime. Iter 1 (2026-05-09, PR #17658): scaffolded the Selberg-Erdős 1949 elementary PNT strategy (Λ₂ + S₂ defs + 10 routine lemmas).",
+    "progressSummary": "Iter 4 (2026-05-16, build verified 7744 jobs, this PR) closes the literal Möbius-inversion form Λ₂(n) = Σ_{d|n} μ(d) · (Real.log (n/d : ℕ))² for n > 0, deferred from Iter 3. One new theorem selbergLambda2_eq_moebius_log_sq applies ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq (Mathlib/NumberTheory/ArithmeticFunction/Moebius.lean:240, v4.26.0) to Iter 3's sum_divisors_selbergLambda2_eq_log_sq, then re-indexes the resulting divisorsAntidiagonal sum back to a divisors sum via Nat.sum_divisorsAntidiagonal (Mathlib/NumberTheory/Divisors.lean:543). Proof body ~8 LOC (lift hypothesis + .mp + Nat.sum_divisorsAntidiagonal + symm.trans). File grows 312 → 325 LOC, 15 → 16 theorems, 0 sorries, 0 axioms maintained. Iter 3 (2026-05-14, PR #19092 merged 2026-05-15T22:59:33Z) closed the dual identity Σ_{d|n} Λ₂(d) = (log n)². Iter 2 (2026-05-12, PR #17690 merged) closed the prime-value lemmas. Iter 1 (2026-05-09, PR #17658 merged) scaffolded the Selberg-Erdős 1949 elementary PNT strategy.",
     "builtItems": [
       "Proofs/ChebyshevBoundsOQ04OQ01.lean — Iter 1 (PR #17658) + Iter 2 (PR #17690): 230 lines, 12 theorems, 3 noncomputable defs, 0 sorries, 0 axioms",
       "vonMangoldtConv : ℕ → ℝ — Dirichlet convolution Λ ∗ Λ as explicit divisor sum (Iter 1)",
@@ -61,7 +61,8 @@
       "Iter 3 lemma (this PR): sum_divisors_vonMangoldtConv — Σ_{d|n} vonMangoldtConv d = Σ_{d|n} Λ(d) · log(n/d) using (Λ*Λ)*ζ = Λ*(Λ*ζ) = Λ*log (ArithmeticFunction.vonMangoldt_mul_zeta + coe_mul_zeta_apply + mul_assoc, ~7 LOC).",
       "Iter 3 lemma (this PR): sum_divisors_selbergLambda2_eq_log_sq — Σ_{d|n} selbergLambda2 d = (Real.log n)² for n > 0 (the central Selberg dual identity; combines the bridge with vonMangoldt_sum and Real.log_mul on divisor pairs, ~20 LOC).",
       "Iter 3 incidental fix (this PR): ChebyshevBoundsOQ04.lean:298 `by ring` → `by rw [pow_mul]; rfl` to close `4^m = 2^(2*m)` (Mathlib v4.26.0 ring regression; ring treats 4 and 2 as distinct atoms).",
-      "Iter 3 incidental fix (this PR): ChebyshevBoundsOQ04OQ01.lean:191 `Nat.divisors_prime hp` → `Nat.Prime.divisors hp` (Mathlib v4.26.0 renamed to dot-method form)."
+      "Iter 3 incidental fix (this PR): ChebyshevBoundsOQ04OQ01.lean:191 `Nat.divisors_prime hp` → `Nat.Prime.divisors hp` (Mathlib v4.26.0 renamed to dot-method form).",
+      "Iter 4 lemma (this PR): selbergLambda2_eq_moebius_log_sq — Λ₂(n) = Σ_{d|n} μ(d) · (Real.log (n/d : ℕ))² for n > 0. Proof: lift Iter 3 to ∀ m : ℕ, 0 < m → Σ ... = (Real.log m)², apply .mp of ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq, bridge antidiagonal→divisors via Nat.sum_divisorsAntidiagonal, then symm.trans (~8 LOC body)."
     ],
     "insights": [
       "Selberg's Λ₂ identity Λ_2 = μ ∗ log² (where ∗ is Dirichlet convolution and μ is Möbius) reduces the elementary PNT proof to Möbius-function manipulations of log² — this is the dimensional reduction that bypasses complex analysis entirely.",
@@ -73,20 +74,23 @@
       "Iter 3 proof structure: the Selberg dual identity Σ_{d|n} Λ₂(d) = (log n)² has a fully elementary proof in ~30 LOC once the bridge is in place. The key algebraic step is Σ_{d|n} Λ(d)·log(d) + Σ_{d|n} Λ(d)·log(n/d) = log n · Σ_{d|n} Λ(d) — which folds via Finset.sum_add_distrib (forward) + Real.log_mul applied to (d, n/d) pairs with d > 0 and n/d > 0 (forced by d ∈ n.divisors and n > 0) + Nat.mul_div_cancel'. Then ArithmeticFunction.vonMangoldt_sum gives log n · log n = (log n)².",
       "Iter 3 trap (Real.log + exact_mod_cast incompatibility): when proving `Real.log (↑d * ↑(n/d)) = Real.log ↑n`, the natural attempt `congr 1; push_cast; exact_mod_cast Nat.mul_div_cancel' hdvd` fails because exact_mod_cast cannot see through Real.log. Cleaner pattern: rewrite the entire argument chain in one shot, `rw [← Real.log_mul hd_ne hnd_ne, ← Nat.cast_mul, Nat.mul_div_cancel' hdvd]`, which combines the two logs, lifts the cast to ℕ, then applies the division identity directly. No congr / push_cast / exact_mod_cast needed.",
       "Mathlib v4.26.0 surface delta (Iter 3 build surfaced): `Nat.divisors_prime hp` is GONE in v4.26.0 — replaced by the dot-method form `Nat.Prime.divisors hp` (or equivalently `hp.divisors`) at Mathlib/NumberTheory/Divisors.lean:416. This silent rename affects ALL Iter 2 prime-value lemmas in build-pending chains. Pre-claim Docker baseline is mandatory: the slug had been 'build verified' at Iter 2 merge (2026-05-12T00:48Z) but Mathlib's tracked revision evolved in the intervening 2 days.",
-      "Mathlib v4.26.0 surface delta (Iter 3 build surfaced): `ring` no longer closes `4^m = 2^(2*m)` even with `ring_nf` suggestion — the elaborator treats `4` and `2^2` as distinct atoms in ring-normalization. Surgical fix: `rw [pow_mul]; rfl` (pow_mul : a^(m*n) = (a^m)^n unfolds the RHS to (2^2)^m = 4^m by definitional reduction). The pattern is generic for any `c^k = b^(j*k)` where c = b^j is definitionally true in ℕ. Applies to many Chebyshev/central-binomial proofs that bound via `4^m ≤ choose(2m+1, m)` style estimates."
+      "Mathlib v4.26.0 surface delta (Iter 3 build surfaced): `ring` no longer closes `4^m = 2^(2*m)` even with `ring_nf` suggestion — the elaborator treats `4` and `2^2` as distinct atoms in ring-normalization. Surgical fix: `rw [pow_mul]; rfl` (pow_mul : a^(m*n) = (a^m)^n unfolds the RHS to (2^2)^m = 4^m by definitional reduction). The pattern is generic for any `c^k = b^(j*k)` where c = b^j is definitionally true in ℕ. Applies to many Chebyshev/central-binomial proofs that bound via `4^m ≤ choose(2m+1, m)` style estimates.",
+      "Iter 4 trap (Möbius-inversion lift requires explicit ℕ annotation): the iff-form hypothesis ∀ m > 0, Σ i ∈ m.divisors, ... = (Real.log m)² must be written as ∀ m : ℕ, 0 < m → ... — without the explicit ℕ annotation Lean's elaborator infers m : ℝ from Real.log m (which accepts ℝ directly), then fails on m.divisors (\"Real.divisors\" not found) and rejects the lift fun m hm => sum_divisors_selbergLambda2_eq_log_sq hm. The fix is a 1-token addition. General pattern: any iff-form Möbius-inversion lift in this file should type-annotate the bound ℕ variable when the consequent coerces through Real.log."
     ],
     "mathlibGaps": [
       "No formalization of Selberg's symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N log N + O(N). (Iter 5–6 target.)",
-      "Iter 3 closed the dual side Σ_{d|n} Λ₂(d) = (log n)² in this file — but the ORIGINAL form Λ₂(n) = Σ_{d|n} μ(d) · log²(n/d) is not yet in Mathlib nor here; Iter 4 will derive it via ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq.",
       "No partial-summation framework specialized to Λ₂-type sums (would require summation by parts with Λ-weighted sums).",
-      "No formalization of Erdős's combinatorial finishing argument that derives lim sup |ψ(x)/x − 1| = 0 from a Tauberian-type oscillation inequality."
+      "No formalization of Erdős's combinatorial finishing argument that derives lim sup |ψ(x)/x − 1| = 0 from a Tauberian-type oscillation inequality.",
+      "Iter 4 closed the literal Möbius–log identity Λ₂(n) = Σ_{d|n} μ(d) · log²(n/d) in this file. Mathlib v4.26.0 still has no formalised PNT in any form; the symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N log N + O(N) and the Erdős–Selberg Tauberian finishing argument remain to be done here."
     ],
     "nextSteps": [
-      "Iter 3 — DONE (this PR, 2026-05-14): vonMangoldtConv_eq_mul (bridge) + sum_divisors_vonMangoldtConv + sum_divisors_selbergLambda2_eq_log_sq (Selberg dual identity); 7744-job Docker build clean.",
-      "Iter 4 (next, ~15 LOC): prove Λ₂(n) = Σ_{d|n} μ(d) · log²(n/d) for n > 0 by applying ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq to sum_divisors_selbergLambda2_eq_log_sq, then re-indexing divisorsAntidiagonal → divisors via Nat.map_div_right_divisors.",
-      "Iter 5–6: prove Selberg's symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N log N + O(N). Decomposes as: (a) Σ_{n ≤ N} log²n = N log²N − 2N log N + O(log²N), (b) Möbius hyperbola summation to bound the error term.",
-      "Iter 7+: formalize the Tauberian inequality and Erdős's combinatorial finishing argument (lim sup V(x) = 0 ⇒ ψ(x)/x → 1).",
-      "Maintenance — open stale PR #17689 ('Iter 2 — prime values', CONFLICTING, last touched 2026-05-12T22:13Z) is superseded by merged #17690 with identical scope; downstream maintainer may close it."
+      "Iter 4 — DONE (this PR, 2026-05-16): selbergLambda2_eq_moebius_log_sq via ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq + Nat.sum_divisorsAntidiagonal; 7744-job Docker build clean.",
+      "Iter 5a (next, ~80–120 LOC): Selberg's symmetry formula Σ_{n ≤ N} Λ₂(n) = 2N · log N + O(N) leading term. Use Iter 4's literal form: swap sum order to get Σ_{d ≤ N} μ(d) · Σ_{m ≤ N/d} (log m)². Inner sum has explicit asymptotic Σ_{m ≤ x} (log m)² = x · (log x)² − 2x · log x + 2x + O(log²x) (integration by parts on log²; cf. Tenenbaum I.6.2). Leading −2x · log x scaled by Σ_{d ≤ N} μ(d)/d = O(1) (Mertens) yields 2N · log N.",
+      "Iter 5b (~80 LOC): O(N) error-term cleanup via the Möbius hyperbola bound.",
+      "Iter 6+: summation-by-parts framework specialised to Λ-weighted sums (Mathlib gap — current Mathlib has only generic Abel-style lemmas in MeanInequalitiesPow that don't apply directly). Either hand-roll or upstream to Mathlib.",
+      "Iter 7+: Tauberian inequality V(x)·log x ≤ (2/x)·Σ_{n ≤ x} V(x/n)·Λ(n) + O(1) where V(x) = |ψ(x) − x|/x.",
+      "Iter 8+: Erdős combinatorial finishing lim sup V(x) = 0 from the Tauberian inequality.",
+      "Iter 9: discharge of chebyshevPsi_asymptotic axiom (slug's terminal goal)."
     ]
   },
   "tags": [
@@ -145,7 +149,7 @@
     ]
   },
   "started": "2026-05-08T19:09:00.340Z",
-  "lastUpdate": "2026-05-14T15:50:00.000Z",
+  "lastUpdate": "2026-05-16T03:00:00.000Z",
   "significance": 9,
   "tractability": 3,
   "leanFiles": [
@@ -185,8 +189,8 @@
     {
       "path": "Proofs/ChebyshevBoundsOQ04OQ01.lean",
       "filename": "ChebyshevBoundsOQ04OQ01.lean",
-      "lineCount": 206,
-      "theoremCount": 10,
+      "lineCount": 325,
+      "theoremCount": 16,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
