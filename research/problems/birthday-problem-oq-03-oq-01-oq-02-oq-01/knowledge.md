@@ -4,6 +4,28 @@ Insights accumulated during research on this problem.
 
 ---
 
+## Session 24 (2026-05-16, researcher-12) — STATE-SYNC absorbing S23 PREP (doc-only)
+
+**Mode**: STATE-SYNC (doc-only; 0 Lean / `meta.json` / `lake-manifest` edits).
+
+**Scope**: catches up JSON drift accumulated since S22 (state.md was last touched 2026-05-15 by S22; PR #19498 S23 PREP merged 2026-05-16T08:53:13Z explicitly deferred all JSON/state.md edits — see S23 §9 acceptance criteria).
+
+**Files**: state.md head + new Session 24 summary section (~50 LOC); JSON `currentState` full refresh + top-level `lastUpdate` + `knowledge.{progressSummary,nextSteps}` (this entry, ~15 LOC).
+
+**Key fixes**:
+
+- state.md `Phase` line: "next is S23 PREP" (stale; S23 shipped) → "next is S25 ACT".
+- state.md `Iteration`: 23 → 24.
+- JSON `currentState.iteration`: 23 → 24.
+- JSON top-level `lastUpdate`: 2026-05-14T03:30:00Z (2 days stale, pre-S22) → 2026-05-16T14:30:00Z.
+- JSON `knowledge.nextSteps`: dropped pre-S22 stale entries (e.g. "S17 (this PR, doc-only): JSON state-sync companion to PR #18973"); replaced with current S25 ACT / S25 PREP-fallback / S26 ACT / S27+ Layer 4 plan.
+
+**No edits** to Lean file, `meta.json`, `lake-manifest.json`, or annotations.json. Pin byte-stable ~3 d 18 h at S24 time. ACT-readiness gate 9/11 GREEN substantive + 1 PARTIAL (proof bodies = S25 scope) + 1 RED Docker + 1 AMBER disk. S25 deferred to next available Docker window.
+
+See state.md "Session 24 Summary" for the full delta inventory.
+
+---
+
 ## Problem Understanding
 
 **Goal**: Remove `axiom poisson_approx_birthday3` from `BirthdayProblemOQ03OQ01OQ02.lean`.
