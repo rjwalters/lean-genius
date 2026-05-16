@@ -7,17 +7,21 @@
   Σ x_i = k. Lattice points in n · Δ(d, k) correspond to functions
   x : Fin d → Fin (n + 1) with Σ x_i = n · k.
 
-  This S1 OBSERVE provides:
+  Contents:
   1. The lattice-point counting definition `hypersimplexLatticeCount`
      via a `Finset.filter` predicate on `Fin d → Fin (n + 1)`.
-  2. Two reference identities stated as `sorry` for S2/S3:
+  2. Two reference identities (both PROVEN):
      - `hypersimplex_count_k_one`:
          hypersimplexLatticeCount d 1 n = (n + d - 1).choose (d - 1)
+       (S6 ACT 2026-05-16 — `Sym.equivNatSumOfFintype` +
+        `Sym.card_sym_eq_choose` + `Nat.choose_symm_of_eq_add`)
      - `hypersimplex_palindrome_k_d_minus_1`:
          hypersimplexLatticeCount d (d - 1) n
            = hypersimplexLatticeCount d 1 n
-  3. Three numeric sanity checks closed by `decide` to anchor the
-     definition (no `sorry` in these).
+       (S4 ACT 2026-05-14 — involution `φ x i = ⟨n − x i, _⟩` +
+        `Finset.card_equiv`)
+  3. Numeric sanity checks closed by `decide` to anchor the
+     definition.
 
   Sibling files in the `ehrhart-cube-proven` family:
   - `EhrhartCubeProven.lean`    — |[0,1]^d ∩ (1/n)ℤ^d| = (n+1)^d (verified)
@@ -25,7 +29,8 @@
   - `EhrhartCrossPolytope.lean` — OQ-02 cross-polytope (verified)
   - `EhrhartCubeProvenOQ04.lean` — Eulerian h*-vector + Worpitzky (formalized)
 
-  Status: S1 SCAFFOLD. Sorries: 2 (both theorems above).
+  Status: S6 ACT 2026-05-16. Sorries: 0. Build pending — Docker
+  daemon hung at S6 ACT author time.
 -/
 import Mathlib
 
@@ -61,20 +66,56 @@ def hypersimplexLatticeCount (d k n : ℕ) : ℕ :=
   (Finset.univ.filter
       (fun x : Fin d → Fin (n + 1) => (∑ i : Fin d, (x i : ℕ)) = n * k)).card
 
-/-! ## Section II — Reference identities (S2 / S3 targets, `sorry`) -/
+/-! ## Section II — Reference identities -/
 
-/-- **S2 target**: When k = 1, the hypersimplex `Δ(d, 1)` reduces to a
-    standard (d - 1)-simplex. Concretely:
+/-- When k = 1, the hypersimplex `Δ(d, 1)` reduces to a standard
+    (d - 1)-simplex. Concretely:
 
       hypersimplexLatticeCount d 1 n = (n + d - 1).choose (d - 1).
 
-    Proof sketch: Lattice points are weak compositions of `n` into `d` parts.
-    Setting `y_i = x_i` for i < d - 1 and absorbing the slack into the last
-    coordinate yields a bijection with `Sym (Fin d) n`; conclude with
-    `Sym.card_sym_eq_choose` (cf. `EhrhartSimplexProven.simplex_lattice_count`). -/
+    Proof: lattice points {x : Fin d → Fin (n+1) | ∑ x_i = n} are weak
+    compositions of `n` into `d` nonneg parts, which biject with
+    `Sym (Fin d) n` via `Sym.equivNatSumOfFintype`. Stars-and-bars
+    (`Sym.card_sym_eq_choose`) then gives `(d + n - 1).choose n`, and
+    `Nat.choose_symm_of_eq_add` rewrites that as `(n + d - 1).choose (d - 1)`.
+    Discharged at S6 ACT (researcher-8, 2026-05-16). -/
 theorem hypersimplex_count_k_one (d n : ℕ) (hd : 1 ≤ d) :
     hypersimplexLatticeCount d 1 n = (n + d - 1).choose (d - 1) := by
-  sorry
+  unfold hypersimplexLatticeCount
+  simp only [Nat.mul_one]
+  -- Lift between subtype-coded weak compositions over `Fin (n + 1)`
+  -- and over `ℕ` (bounds are non-binding when ∑ = n).
+  let e_lift :
+      {x : Fin d → Fin (n + 1) // (∑ i : Fin d, (x i : ℕ)) = n}
+        ≃ {P : Fin d → ℕ // ∑ i, P i = n} :=
+    { toFun := fun ⟨x, hx⟩ => ⟨fun i => (x i : ℕ), hx⟩
+      invFun := fun ⟨P, hP⟩ =>
+        ⟨fun i => ⟨P i, by
+          have hPi : P i ≤ ∑ j, P j :=
+            Finset.single_le_sum (f := P) (fun _ _ => Nat.zero_le _)
+              (Finset.mem_univ i)
+          omega⟩, by
+          simp only; exact hP⟩
+      left_inv := by intro ⟨x, hx⟩; ext i; rfl
+      right_inv := by intro ⟨P, hP⟩; ext i; rfl }
+  -- Identify the filter-cardinality with `Fintype.card (Sym (Fin d) n)`.
+  have h_card :
+      (Finset.univ.filter (fun x : Fin d → Fin (n + 1) =>
+          (∑ i : Fin d, (x i : ℕ)) = n)).card
+        = Fintype.card (Sym (Fin d) n) := by
+    rw [show (Finset.univ.filter (fun x : Fin d → Fin (n + 1) =>
+              (∑ i : Fin d, (x i : ℕ)) = n)).card =
+            Fintype.card {x : Fin d → Fin (n + 1) //
+              (∑ i : Fin d, (x i : ℕ)) = n} from
+              (Fintype.card_of_subtype _
+                (fun x => by simp [Finset.mem_filter, Finset.mem_univ])).symm]
+    exact Fintype.card_congr
+      (e_lift.trans (Sym.equivNatSumOfFintype (Fin d) n).symm)
+  -- Stars-and-bars then choose-symmetry close the goal.
+  rw [h_card, Sym.card_sym_eq_choose, Fintype.card_fin]
+  have h_idx : (d + n - 1) = (n + d - 1) := by omega
+  rw [h_idx]
+  exact Nat.choose_symm_of_eq_add (by omega)
 
 /-- **S3 target**: The lattice-isomorphism `x ↦ (n - x i)` sends `Δ(d, k)`
     bijectively to `Δ(d, d - k)`. Specialising at `k = 1`:

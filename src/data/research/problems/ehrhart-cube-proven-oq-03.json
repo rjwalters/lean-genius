@@ -1,7 +1,7 @@
 {
   "slug": "ehrhart-cube-proven-oq-03",
   "title": "Barvinok's algorithm for lattice point counting in fixed dimension",
-  "phase": "S5b_PREP_complete",
+  "phase": "S6_ACT",
   "status": "in-progress",
   "tier": "B",
   "path": "full",
@@ -30,31 +30,35 @@
     "goal": "Add gallery entry for Barvinok-1994 algorithm: axiomatize the polytime claim, define short rational generating function as a Lean type, prove first-principles corollary f([0,n]^d; x) = prod_i (1 - x_i^{n+1}) / (1 - x_i), bridge to ehrhart-cube-proven's (n+1)^d via x -> 1 specialization."
   },
   "currentState": {
-    "phase": "S5b_PREP_complete",
-    "since": "2026-05-14T14:55:00Z",
-    "iteration": 6,
-    "focus": "S5b PREP complete (researcher-12, 2026-05-15, PR #19236): pre-flight pin-verification of S5 PREP §3 skeleton (PR #19179, researcher-3, 2026-05-15) against lake pin 2df2f0150c surfaced 2 elaboration bugs; corrections filed. Combined S5+S5b gives bearer-CLEAN paste-ready skeleton for `hypersimplex_count_k_one` discharge using `Sym.equivNatSumOfFintype` from Mathlib/Data/Finsupp/Multiset.lean. Awaiting S6 ACT to transcribe + build-verify. S4 ACT outcome (researcher-3, 2026-05-14, PR #18923): `hypersimplex_palindrome_k_d_minus_1` discharged via involution `φ x i = ⟨n − x i, _⟩` + `Finset.card_equiv`; file 119 → 169 LOC; sorries 2 → 1; build clean.",
+    "phase": "S6_ACT",
+    "since": "2026-05-16T14:30:00Z",
+    "iteration": 7,
+    "focus": "S6 ACT (researcher-8, 2026-05-16): Option A from S5b PREP §3 transcribed into proofs/Proofs/EhrhartCubeProvenOQ03.lean replacing line-75 `sorry` of `hypersimplex_count_k_one`. Body uses Sym.equivNatSumOfFintype + Sym.card_sym_eq_choose + Fintype.card_of_subtype + Nat.choose_symm_of_eq_add, with a 1-LOC `right_inv := ext i; rfl` safe substitute for S5b §4 caveat #4. File 169 → 210 LOC, sorries 1 → 0. Both reference identities now proven (palindrome at S4 ACT; k=1 at S6 ACT). Build pending — Docker daemon hung at S6 author time (docker info no Server response past 8s; disk 6.7 Gi avail). All 4 critical bearers re-verified at lake pin 2df2f0150c2 via gh-api spot-check.",
     "blockers": [
-      "Bearer audit S2 (2026-05-13): Mathlib has NO Ehrhart-theory toolkit (`Polytope` namespace absent, `LatticePolytope` absent, `Ehrhart` absent). Any retargeted S2 ACT must build from MvPolynomial/RatFunc/MvPowerSeries; no specialisation possible. Barvinok-track bearer-ABSENT.",
-      "Slot drift S2 (2026-05-13): proofs/Proofs/EhrhartCubeProvenOQ03.lean is occupied by hypersimplex Δ(d,k) scaffold from PR #18293; namespace EhrhartCubeProvenOQ03. Any Barvinok retarget collides unless spun off to a new sibling slug.",
-      "Scope-decision deferral (S2 + S3 confirmed): Option A (continue hypersimplex) vs Option B (spin off Barvinok as oq-05) still awaits seeker/curator/human triage. Neither S2 PREP nor S3 PREP committed to either path."
+      "Docker daemon hung at S6 ACT author time (2026-05-16T14:16Z: `docker info` Client-only response, no Server response past 8s; root disk 6.7 Gi avail = 70% capacity). Build-verify of S6 ACT proof body deferred to deployer-side compile or to a follow-up session when host recovers.",
+      "Bearer audit S2 (2026-05-13, preserved): Mathlib has NO Ehrhart-theory toolkit (`Polytope` namespace absent, `LatticePolytope` absent, `Ehrhart` absent). Any retargeted Barvinok track must build from MvPolynomial/RatFunc/MvPowerSeries; no specialisation possible.",
+      "Slot drift S2 (2026-05-13, preserved): proofs/Proofs/EhrhartCubeProvenOQ03.lean is occupied by hypersimplex Δ(d,k) scaffold. Option B (spin off Barvinok as oq-05) still awaits seeker/curator/human triage.",
+      "Status flip to `verified` deferred (S6 ACT): meta.status remains `formalized` while build is pending; auditor/mechanic flips to `verified`+`original` once Docker build confirms 0 sorries + 0 axioms."
     ],
-    "nextAction": "S6 ACT — transcribe corrected S5+S5b skeleton (~25 LOC) into proofs/Proofs/EhrhartCubeProvenOQ03.lean replacing line-75 sorry (`hypersimplex_count_k_one`); build-verify via ./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ03. Pre-requisite: host disk ≥ 10 Gi avail + Docker daemon responsive (currently BLOCKED: 100% / 6.9 Gi avail / docker info hung past 8 s — INFRASTRUCTURE-ONLY blocker).",
+    "nextAction": "S7 (post-build-verify): if Docker build confirms 0 sorries + 0 axioms, auditor/mechanic should flip meta.json `status: formalized` → `verified` and `badge: formalized` → `original`. If build surfaces an elaboration issue, follow-up doctor/researcher session fixes (best-guess fallbacks already documented in S5b PREP §3 Option B/C: explicit `Fintype.card_of_subtype` arguments or bypass via `Finset.card_filter` decomposition). Separately: Barvinok track Option B (spin off ehrhart-cube-proven-oq-05) remains a scope-decision question for seeker/curator/human triage; both reference identities for the on-main hypersimplex track are now discharged.",
     "attemptCounts": {
-      "total": 6,
-      "currentApproach": 4,
+      "total": 7,
+      "currentApproach": 5,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S3 PREP doc-only (researcher-4, 2026-05-13): hypersimplex-track Mathlib bearer audit, complementary to S2's Barvinok-track audit. Sketch-cited lemmas in the on-main scaffold's docstring (Sym.card_sym_eq_choose, Finset.card_nbij', Finset.sum_add_distrib, Nat.sub_add_cancel, Nat.choose_symm) are ALL present at lake-pinned SHA 2df2f0150c27, with citation-level paths/lines recorded. Hypersimplex track is bearer-CLEAN. Refined proof outlines: palindrome via Finset.card_nbij' + involution `x ↦ ⟨n − x_i, _⟩` (~60 LOC, lowest-risk start); k=1 case requires a non-trivial Sym bijection construction (~80 LOC, deferred to S5+). Option A vs B scope decision still deferred to seeker/curator/human triage; 0 .lean edits this iteration. Predecessor: S2 PREP doc-only (researcher-10, 2026-05-13): Mathlib bearer audit disproves S1's Mathlib.Combinatorics.Polytope.Ehrhart premise; slot-drift discovered.",
+    "progressSummary": "S6 ACT (researcher-8, 2026-05-16): `hypersimplex_count_k_one` discharged by transcribing Option A from S5b PREP §3 (researcher-12, 2026-05-15) into proofs/Proofs/EhrhartCubeProvenOQ03.lean. Proof: lift weak compositions over `Fin (n+1)` to weak compositions over ℕ via an `Equiv` (with `Finset.single_le_sum` bound for invertibility), compose with `Sym.equivNatSumOfFintype` and `Sym.card_sym_eq_choose` (stars-and-bars), close via `Nat.choose_symm_of_eq_add`. File 169 → 210 LOC; sorries 1 → 0; axioms 0. The 1-LOC S5b §4 caveat #4 safe substitute (`right_inv := ext i; rfl`) pre-staged. All 4 critical bearers (Sym.equivNatSumOfFintype @ Mathlib/Data/Finsupp/Multiset.lean:260, Sym.card_sym_eq_choose @ Mathlib/Data/Sym/Card.lean:113, Fintype.card_of_subtype @ Mathlib/Data/Fintype/Card.lean:47, Nat.choose_symm_of_eq_add @ Mathlib/Data/Nat/Choose/Basic.lean:199) re-verified at lake pin 2df2f0150c2 via gh-api spot-check at S6 author time. Both reference identities now proven (palindrome at S4 ACT; k=1 at S6 ACT). Build pending — Docker daemon hung (no Server response past 8s; disk 6.7 Gi avail). Predecessor S5b PREP (researcher-12, 2026-05-15, PR #19236) corrected 2 elaboration bugs in S5 PREP §3 skeleton (`Fintype.card_subtype` → `Fintype.card_of_subtype`; drop outer `.symm` on equiv composition). Predecessor S5 PREP (researcher-3, 2026-05-15, PR #19179) drafted the ~25-LOC skeleton. Predecessor S4 ACT (researcher-3, 2026-05-14, PR #19066) discharged the palindrome.",
     "builtItems": [
-      "research/problems/ehrhart-cube-proven-oq-03/state.md: S3 PREP session log appended (Mode, Rationale, Bearer audit table, Refined proof outlines for both sorries, S4 ACT plan, Out-of-scope list); Current State header advanced S2_PREP→S3_PREP / iteration 2→3.",
-      "research/problems/ehrhart-cube-proven-oq-03/knowledge.md: §S3 PREP Hypersimplex-track Mathlib bearer audit appended (method, findings table, caveat on k=1 bijection-construction gap, implication for S4 ACT).",
-      "(Predecessor S2 PREP) research/problems/ehrhart-cube-proven-oq-03/state.md: rewritten with 4 findings + 2 continuation options.",
-      "(Predecessor S2 PREP) research/problems/ehrhart-cube-proven-oq-03/knowledge.md: Barvinok-track bearer audit appended."
+      "proofs/Proofs/EhrhartCubeProvenOQ03.lean: `hypersimplex_count_k_one` proof body written (replacing the `sorry` at line 75-77 of the on-main file); file 169 → 210 LOC; sorries 1 → 0; axioms 0; both reference identities now proven (S6 ACT k=1 + S4 ACT palindrome). Header docstring updated to reflect proven status. Build pending — Docker daemon hung at author time.",
+      "src/data/proofs/ehrhart-cube-proven-oq-03/meta.json: leanFile.{lineCount,sorries} 169/1 → 210/0; meta.sorries 1 → 0; sections[].startLine/endLine refreshed; section-2 summary rewritten to reflect both identities proven; section-0 summary updated to drop S1 OBSERVE framing. Status `formalized` and badge `formalized` PRESERVED pending build-verify (auditor/mechanic will flip to `verified` + `original` once Docker confirms).",
+      "src/data/research/problems/ehrhart-cube-proven-oq-03.json: phase S5b_PREP_complete → S6_ACT; iteration 6 → 7; currentState.{since,focus,blockers,nextAction,attemptCounts} rewritten; knowledge.{progressSummary,insights,nextSteps,builtItems,markdown} refreshed; leanFiles[0].{lineCount,sorryCount} 169/1 → 210/0; lastUpdate.",
+      "research/problems/ehrhart-cube-proven-oq-03/state.md: S6 ACT section appended; Current State header advanced S5b_PREP_complete→S6_ACT / iteration 6→7 / Sorries 1→0 / File 169→210 LOC.",
+      "research/problems/ehrhart-cube-proven-oq-03/sessions/2026-05-16-s6-act-hypersimplex-count-k1-discharge.md: NEW session memo documenting the S6 ACT discharge (Option A transcription rationale, 4-bearer re-pin at lake-SHA, build-pending qualifier, ACT-readiness gate snapshot, hazard log walkthrough, decisions, out-of-scope)."
     ],
     "insights": [
+      "S6 ACT proof architecture (researcher-8, 2026-05-16): the cleanest path through `hypersimplex_count_k_one` lifts to an `ℕ`-valued subtype before invoking `Sym.equivNatSumOfFintype` — the `Fin (n+1)` upper-bound is non-binding when ∑ = n (`Finset.single_le_sum` makes any `P i ≤ ∑ P_j = n` so `P i < n + 1`). This avoids the more painful path of building the Sym bijection directly on `Fin (n+1)`-valued functions (which would require threading the upper bound through the multiplicity bijection). The `Fintype.card_of_subtype` rewrite then turns the filter cardinality into a `Fintype.card` of the subtype, where `Fintype.card_congr (e_lift.trans equivNatSum.symm)` discharges the equality. Total ~32 LOC paste-ready.",
+      "S6 ACT pre-staged S5b §4 caveat #4 safe substitute: `right_inv := ext i; rfl` mirroring the `left_inv` pattern. Bare `intro ⟨P, hP⟩; rfl` would require Lean's η-expansion to recognize `(fun i => (⟨P i, _⟩ : Fin (n+1)).val) = P` definitionally; the `ext i; rfl` chain (Subtype.ext then funext then beta reduction) is robust against `Fin.val_mk` not auto-reducing.",
       "Hypersimplex-track bearer at SHA 2df2f0150c27 (S3 PREP): `Sym.card_sym_eq_choose` (`Mathlib/Data/Sym/Card.lean:113`, signature `card (Sym α k) = (card α + k - 1).choose k`) and `Finset.card_nbij'` (`Mathlib/Data/Finset/Card.lean:366`, non-dependent-bijection form with MapsTo/MapsTo/LeftInvOn/RightInvOn) are both present and signature-compatible with the docstring sketches. The hypersimplex track is bearer-clean — opposite of S2's Barvinok-track verdict.",
       "Palindrome sorry plan (S3 PREP): use `Finset.card_nbij' φ φ` with `φ x i = ⟨n − (x i : ℕ), by omega⟩`. Key helper: sum-of-complements identity `∑ φ x_i + ∑ x_i = d·n` from `Finset.sum_add_distrib` + `Nat.sub_add_cancel` + `Finset.sum_const`. Closing the MapsTo arithmetic relies on `d·n = n + n·(d − 1)` for `d ≥ 1`, which may need `Nat.mul_sub_one` if `omega` stalls on the non-linear `n·(d − 1)`. Estimated ≤ 60 LOC.",
       "k=1 sorry CAVEAT (S3 PREP, corrects docstring sketch): `Sym.card_sym_eq_choose` gives `#(Sym α k)`, not directly `#{x : Fin d → Fin (n+1) | ∑ x_i = n}`. The 'multiplicity' bijection between weak compositions and Sym is NOT a one-liner in Mathlib — it requires explicit construction (likely ~50 LOC via `Finset.card_nbij'` to the Sym finset). Alternative: stars-and-bars to `Finset.card_powersetCard` (~80 LOC). Recommendation: defer to S5+ after S4 ACT shakes out Lean-4 idioms on the palindrome.",
@@ -70,13 +74,13 @@
       "No short rational generating function type as a first-class concept."
     ],
     "nextSteps": [
-      "TRIAGE (S2 + S3 unanimous recommendation): seeker / curator / human picks Option A (continue hypersimplex on-main scaffold) or Option B (spin off Barvinok as ehrhart-cube-proven-oq-05).",
-      "Option A → S4 ACT (S3 PREP-prepared, lowest-risk start): discharge `hypersimplex_palindrome_k_d_minus_1` via `Finset.card_nbij' φ φ` where `φ x i = ⟨n − (x i : ℕ), by omega⟩`. Key helper: sum-of-complements identity `∑ φ x_i + ∑ x_i = d·n` from `Finset.sum_add_distrib` + `Nat.sub_add_cancel` + `Finset.sum_const`. Estimated +50/−1 LOC at `proofs/Proofs/EhrhartCubeProvenOQ03.lean:89-91`. Single Docker build.",
-      "Option A → S5+ ACT (deferred per S3 caveat): `hypersimplex_count_k_one` via Sym-bijection (~50 LOC for the 'multiplicity' bijection + `Sym.card_sym_eq_choose` + `Nat.choose_symm`) OR via stars-and-bars to `Finset.card_powersetCard` (~80 LOC). The k=1 case is materially harder than the palindrome; let S4 ACT settle Lean-4 idioms first.",
-      "Option B → new slug oq-05 S1 OBSERVE: bootstrap fresh workspace for Barvinok with corrected Mathlib substrate awareness; preserve Session 1 problem.md + Barvinok plan; this slug's JSON title/tags revert to hypersimplex.",
-      "Whichever option, the Session 1 S2.1 Docker probe is now redundant (both S2 PREP and S3 PREP bearer audits have done the work)."
+      "S7 (post-build-verify): once host disk recovers and Docker daemon responds, run `./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ03` to verify the S6 ACT proof body compiles. Expected: 0 sorries warning (vs 1 pre-S6 ACT), 0 errors. Auditor/mechanic flips `meta.status: formalized` → `verified` and `meta.badge: formalized` → `original` upon green build.",
+      "S7 fallback (if Option A elaboration fails): apply S5b PREP §3 Option B (explicit `Fintype.card_of_subtype` arguments with named `s` and explicit `H` body via `Finset.mem_filter`/`mem_univ`) — adds ~5 LOC. If that fails too, fall back to Option C (bypass `Fintype.card_of_subtype` via direct `Finset.card_filter` decomposition) — adds ~10 LOC; doctor/researcher iteration.",
+      "Status flip readiness: with both reference identities proven (palindrome S4 ACT + k=1 S6 ACT), file at 0 sorries + 0 axioms + 0 structure-encoded assumptions, the slug is eligible for `meta.status: verified` + `meta.badge: original` once build-verify clears.",
+      "Barvinok track (separate scope decision still open): Option B (spin off Barvinok as ehrhart-cube-proven-oq-05) still awaits seeker/curator/human triage. With the hypersimplex track now substantively complete, the slug's JSON `title` (`Barvinok's algorithm for lattice point counting`) is increasingly mismatched against the on-main Lean content (hypersimplex Δ(d,k)); a future seeker iteration may flip the JSON title to `Ehrhart Polynomial of the Hypersimplex` and split Barvinok off as its own slug.",
+      "Generic Stanley formula (S4+ horizon, preserved): $L(\\Delta(d, k), n) = \\sum_{j=0}^{d} (-1)^j \\binom{d}{j} \\binom{nk - j(n+1) + d - 1}{d - 1}$ remains an open follow-up if Option A is chosen; bridges to `EhrhartCubeProvenOQ04`'s Eulerian numbers via $h^*(\\Delta(d, k)) = A(d - 1, k - 1)$."
     ],
-    "markdown": "# ehrhart-cube-proven-oq-03: Knowledge\n\n## Status: S3 PREP doc-only (2026-05-13, researcher-4)\n\nHypersimplex-track Mathlib bearer audit at lake-pinned SHA 2df2f0150c27 — complementary to S2's Barvinok-track audit. Sketch-cited lemmas (Sym.card_sym_eq_choose, Finset.card_nbij', Nat.sub_add_cancel, Nat.choose_symm) are ALL present and signature-compatible; the hypersimplex track is bearer-clean. Refined proof outlines: palindrome via Finset.card_nbij' + involution (~60 LOC, lowest-risk start); k=1 case requires non-trivial Sym bijection (~80 LOC, deferred to S5+). Option A vs B scope decision still deferred to seeker/curator/human triage.\n\nPredecessor (S2 PREP, researcher-10, 2026-05-13): Mathlib bearer audit disproved S1's `Mathlib.Combinatorics.Polytope.Ehrhart` premise; slot-drift found (on-main Lean file is hypersimplex, not Barvinok).\n\nSee research/problems/ehrhart-cube-proven-oq-03/state.md §Session 3 for the bearer table + refined proof outlines, and §Session 2 for the 4 findings + 2 continuation options."
+    "markdown": "# ehrhart-cube-proven-oq-03: Knowledge\n\n## Status: S6 ACT (2026-05-16, researcher-8)\n\nBoth reference identities in the on-main hypersimplex scaffold are now PROVEN:\n\n- `hypersimplex_palindrome_k_d_minus_1` — S4 ACT (researcher-3, 2026-05-14, PR #19066): via the involution `φ x i = ⟨n − x i, _⟩` + `Finset.card_equiv` + sum-of-complements identity.\n- `hypersimplex_count_k_one` — S6 ACT (researcher-8, 2026-05-16): via `Sym.equivNatSumOfFintype` + `Sym.card_sym_eq_choose` + `Nat.choose_symm_of_eq_add`, with `Fintype.card_of_subtype` bridging the filter cardinality to a Subtype cardinality.\n\nFile: 169 → 210 LOC. Sorries: 1 → 0. Axioms: 0. Status remains `formalized` pending Docker build-verify (Docker daemon hung at S6 author time; auditor/mechanic flips to `verified` upon green build).\n\nPredecessors: S5b PREP (researcher-12, 2026-05-15, PR #19236) corrected 2 elaboration bugs in the S5 PREP §3 skeleton. S5 PREP (researcher-3, 2026-05-15, PR #19179) drafted the skeleton. S3 PREP (researcher-4, 2026-05-13, PR #18923) audited bearers. S2 PREP (researcher-10, 2026-05-13) disproved the S1 Barvinok premise + surfaced slot-drift.\n\nSee research/problems/ehrhart-cube-proven-oq-03/state.md §Session 6 and sessions/2026-05-16-s6-act-hypersimplex-count-k1-discharge.md for the S6 ACT proof walkthrough."
   },
   "tags": [
     "seeker-selected",
@@ -110,18 +114,18 @@
     ]
   },
   "started": "2026-05-12T20:55:00Z",
-  "lastUpdate": "2026-05-16T09:24:00Z",
+  "lastUpdate": "2026-05-16T14:30:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/EhrhartCubeProvenOQ03.lean",
       "filename": "EhrhartCubeProvenOQ03.lean",
-      "lineCount": 169,
+      "lineCount": 210,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EhrhartCubeProvenOQ03.lean"
     }

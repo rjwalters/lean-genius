@@ -2,15 +2,38 @@
 
 ## Current State
 
-**Phase**: S5b PREP complete (`equivNatSumOfFintype` bearer + 2 elaboration-bug corrections; awaiting S6 ACT)
+**Phase**: S6 ACT — `hypersimplex_count_k_one` discharged (Option A from S5b §3 transcribed); both reference identities now proven
 **Path**: full
-**Since**: 2026-05-14T14:55Z (researcher-3, S4 ACT — palindrome discharged); S5/S5b PREP layers added 2026-05-15
-**Last Updated**: 2026-05-16T09:24Z (Session 7 STATE-SYNC researcher-1; iteration head bumped 4 → 6 to reflect S5 + S5b PREP)
-**Iteration**: 6
+**Since**: 2026-05-16T14:30Z (researcher-8, S6 ACT — k=1 discharged; build pending — Docker daemon hung)
+**Last Updated**: 2026-05-16T14:30Z (Session 8 ACT researcher-8; iteration 6 → 7)
+**Iteration**: 7
 
-**Sorries**: 2 → 1 (`hypersimplex_palindrome_k_d_minus_1` proven at S4 ACT; `hypersimplex_count_k_one` remains; ~25 LOC skeleton drafted in S5 PREP #19179 with S5b PREP #19236 elaboration-bug corrections — both doc-only, not yet build-verified).
-**Build**: last clean = S4 ACT 2026-05-14 (7743 Docker jobs); S5/S5b skeleton awaits S6 ACT to verify.
-**File**: `proofs/Proofs/EhrhartCubeProvenOQ03.lean` 169 LOC (unchanged since S4 ACT 2026-05-14).
+**Sorries**: 1 → 0 (`hypersimplex_palindrome_k_d_minus_1` proven at S4 ACT 2026-05-14; `hypersimplex_count_k_one` proven at S6 ACT 2026-05-16 via Option A from S5b §3).
+**Axioms**: 0 (no `axiom` declarations, no structure-encoded assumptions).
+**Build**: last clean = S4 ACT 2026-05-14 (7743 Docker jobs); S6 ACT proof body PENDING build-verify (Docker daemon hung at S6 author time — disk 6.7 Gi avail, `docker info` no Server response past 8s). Bearer pin re-verified at lake SHA `2df2f0150c2` via gh-api spot-check before transcription.
+**File**: `proofs/Proofs/EhrhartCubeProvenOQ03.lean` 169 → 210 LOC.
+**Status flip readiness**: with 0 sorries + 0 axioms, eligible for `meta.status: formalized → verified` + `meta.badge: formalized → original` once Docker build clears (auditor/mechanic flip; deferred this PR per build-pending).
+
+## S6 ACT (researcher-8, 2026-05-16, this PR)
+
+Transcribed Option A from S5b PREP §3 (researcher-12, PR #19236) into `proofs/Proofs/EhrhartCubeProvenOQ03.lean` lines 75–77, replacing the `sorry` body of `hypersimplex_count_k_one` with a ~32-LOC proof. Approach: lift the subtype-coded weak compositions over `Fin (n+1)` to subtype-coded weak compositions over `ℕ` via an `Equiv` (the upper-bound `< n + 1` is non-binding when ∑ = n, by `Finset.single_le_sum`), compose with `Sym.equivNatSumOfFintype` and `Sym.card_sym_eq_choose` (stars-and-bars), then close via `Nat.choose_symm_of_eq_add (by omega)`. The `Fintype.card_of_subtype` rewrite bridges the filter cardinality and the Subtype cardinality.
+
+**S5b §4 caveats pre-handled.** The S5b PREP §4 hazard log heightened risk on caveat #4 (`right_inv` `rfl` vs `ext i; rfl`). This PR pre-stages the safe substitute (`right_inv := by intro ⟨P, hP⟩; ext i; rfl`) mirroring the `left_inv` pattern; Bugs A and B from S5b §2 are applied verbatim (`Fintype.card_of_subtype` over `card_subtype`, no outer `.symm`). The `H` argument to `Fintype.card_of_subtype` uses explicit `simp [Finset.mem_filter, Finset.mem_univ]` (Option B-style robustness) over Option A's bare `simp`, costing 0 net LOC.
+
+**Bearer pin re-verification.** All 4 critical bearers re-fetched via `gh api repos/leanprover-community/mathlib4/contents/<path>?ref=2df2f0150c2…` at S6 author time:
+
+| Bearer | Path | Line | Verdict at pin |
+|---|---|---|---|
+| `Sym.equivNatSumOfFintype` | `Mathlib/Data/Finsupp/Multiset.lean` | 260 | ✅ noncomputable def, signature `Sym α n ≃ {P : α → ℕ // ∑ i, P i = n}` |
+| `Sym.card_sym_eq_choose` | `Mathlib/Data/Sym/Card.lean` | 113 | ✅ `card (Sym α k) = (card α + k - 1).choose k` |
+| `Fintype.card_of_subtype` | `Mathlib/Data/Fintype/Card.lean` | 47 | ✅ `card { x // p x } = #s` (the corrected S5b §2 Bug A target) |
+| `Nat.choose_symm_of_eq_add` | `Mathlib/Data/Nat/Choose/Basic.lean` | 199 | ✅ `n = a + b → choose n a = choose n b` |
+
+No drift since S5b PREP recorded.
+
+**Status quo flip deferred.** Per CLAUDE.md axiom-integrity policy, do NOT flip `meta.status: formalized` → `verified` until Docker build confirms compilation. This S6 ACT PR keeps status `formalized` with sorries 0; auditor/mechanic flips to `verified` once build is green.
+
+**Out of scope (this PR).** No `meta.status` / `meta.badge` flip (build pending). No knowledge.md edit (the existing §S3 PREP bearer table + §S5/S5b refinements describe the shipped proof; appending a §S6 ACT walkthrough is the session memo's job, not knowledge.md's). No re-title of JSON `title` from Barvinok to hypersimplex (still in Option A vs B scope-decision territory). No Barvinok-track `oq-05` spinoff.
 
 ## S6 picker (post-S5b, this STATE-SYNC bump)
 
