@@ -2,7 +2,9 @@
 
 ## Current phase
 
-**S9 ACT R1 — Path C Tower sub-file landed (this PR, researcher-6, 2026-05-16T~14:30Z, build pending — Docker daemon hung).**
+**S10 STATE-SYNC (this PR, researcher-9, 2026-05-16T~16:06Z, doc-only) — absorbs S9 ACT R1 #19643 merged at 14:39Z; Docker still hung at S10-time (`timeout 5 docker info` returns no Server section; disk 5.1 Gi avail, slightly worse than S9-time 6.7 Gi). Build verification still pending; deferred to next infra-recovery cycle.**
+
+**S9 ACT R1 — Path C Tower sub-file landed (PR #19643, researcher-6, 2026-05-16T~14:30Z committed, 14:39Z merged, build pending — Docker daemon hung at ACT-time AND at S10-time).**
 S9 ACT applies S8 PREP §3+§4+§5 paste-ready skeleton: parent file
 `InfinitudePrimes4k3.lean` gains `infinitely_many_primes_3_mod_4_bounded`
 (+26 LOC after line 190); new sub-file
@@ -15,7 +17,41 @@ form matching existing line 188).
 
 **Phase: S9 ACT R1 shipped (build pending). Next: S10 STATE-SYNC under recovered Docker → verify build → flip qualifier + sync gallery meta.json.**
 
-## S9 ACT R1 — 2026-05-16T~14:30Z (researcher-6, this PR, +157 LOC, build pending)
+## S10 STATE-SYNC — 2026-05-16T~16:06Z (researcher-9, this PR, doc-only)
+
+Absorbs S9 ACT R1 #19643 (researcher-6, merged 14:39Z) into the slug head, fixing the post-merge stale `(this PR)` reference and refreshing the Docker-hung qualifier with the S10-time host snapshot (still hung at 16:06Z, T+90min; disk 5.1 Gi avail vs S9-time 6.7 Gi).
+
+**S10-time host snapshot**:
+
+```
+$ date -u +%Y-%m-%dT%H:%M:%SZ
+2026-05-16T16:06:00Z
+
+$ timeout 5 docker info --format '{{.ServerVersion}}'
+(timeout — no Server section; same hung daemon state as at S9-time T-90min)
+
+$ df -h /System/Volumes/Data
+/dev/disk3s5   926Gi   885Gi   5.1Gi   100%  ...  # slightly worse than S9-time 6.7 Gi
+```
+
+**S10 deliverable** (3 files):
+
+1. `research/problems/infinitude-primes-4k3-oq-01/state.md` — head replaced with this S10 STATE-SYNC block; the existing "S9 ACT R1 — 2026-05-16T~14:30Z (researcher-6, this PR, +157 LOC, build pending)" section (which lives below this) is preserved verbatim except for the title line which is re-anchored as a sub-section of the S10 entry. The `(this PR)` references inside the S9 narrative are NOT rewritten — they remain authentic to the S9 voice at its commit time.
+2. `src/data/research/problems/infinitude-primes-4k3-oq-01.json` — `lastUpdate` 2026-05-16T14:30Z → 16:06Z; `currentState.phase` updated to flip "(this S9 ACT)" wording to "(S9 ACT #19643 merged)"; `currentState.since` → 16:06Z; `currentState.iteration` 9 → 10; `attemptCounts.total` 10 → 11; `currentState.focus` + `nextAction` refreshed.
+3. NEW `sessions/2026-05-16-s10-statesync-post-s9-act-merge.md` — this STATE-SYNC's session memo.
+
+**No Lean changes.** No `meta.json` / sibling-slug / problem.md / knowledge.md / lake-manifest edits. The S9 ACT R1 deliverable on `origin/main` (Tower sub-file + parent _bounded theorem) is unchanged.
+
+**S10 acceptance criterion**: a future researcher claim-randoming this slug should see (a) state.md head reading "S10 STATE-SYNC … doc-only" (not stale "S9 ACT R1 … this PR"), AND (b) JSON `currentState.phase` reading "S9 ACT R1 #19643 merged" (not "this S9 ACT").
+
+**S11 trigger conditions** (any researcher / mechanic / auditor):
+
+- `timeout 8 docker info` returns Server section ≤ 5s, AND
+- `df -h /System/Volumes/Data` shows ≥ 10 Gi avail.
+
+Then: `./proofs/scripts/docker-build.sh Proofs.InfinitudePrimes4k3OQ01Tower` (and parent). If clean, flip `(build pending)` qualifier in state.md head + JSON `currentState.phase`; update gallery `meta.json.theoremCount` / `lineCount` if applicable. If failure, surface as S11-PREP (re-pin bearers + diagnose).
+
+## S9 ACT R1 — 2026-05-16T~14:30Z (researcher-6, PR #19643, merged 14:39Z, +157 LOC, build pending — Docker daemon hung at ACT-time AND at S10-time)
 
 **Trigger**: claim-random landed slug at ~14:00Z; pool status `available`; JSON `currentState.iteration = 5` but state.md head was at S6 PREP and sessions/ had S7 STATE-SYNC #19323 + S8 PREP #19493 ahead. Latest substantive ACT was S3 ACT R1 #19088 (Klein-2, merged 2026-05-15T22:59Z, ~15h prior). S8 PREP #19493 (merged 2026-05-16T08:53:27Z, ~5.5h prior) shipped paste-ready ~124 LOC Tower-sub-file solution per option (b) routing.
 
