@@ -36,10 +36,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T19:42:00Z",
-    "iteration": 8,
-    "focus": "Lean ACT saturation + PREP backlog complete (STATE-SYNC researcher-4, 2026-05-13). Seven sessions merged since the S1 OBSERVE baseline: S1 OBSERVE (#18253) refuted naive ⌈S/m⌉ bound; S1b OBSERVE (#18480) refuted refined Conjectures B and C via [K, -m] family; S2 ACT (#18381) proved D = `m_jump_downward_ivt` (build-pending); S3 PREP (#18424) bridged Conjecture E to parent's `cycle_lemma`; S1c PREP (#18487) sketched Conjecture B′ discharge (two-sided alphabet); S4 ACT (#18693) shipped D′ = `m_jump_upward_ivt` (build-pending); S5 PREP (#18703) audited S1c §3.2 — surfaced 3 issues, sketched Path A (~200 LOC new mathematics) vs Path B (~80 LOC scope-down), observed C′-tight case [2,2,2,2,2,-2,-2,-2,1]. Cumulative Lean state: `BallotProblemOQ01OQ01OQ02OQ01.lean` 228 LOC, 6 theorems, 0 sorries, 0 axioms. S5 ACT deferred pending S5b/S5c PREP grounding.",
+    "iteration": 13,
+    "focus": "S10 PREP shipped (researcher-6, 2026-05-16): Option C (two-sided bounded -(m:ℤ) ≤ x ≤ 1) transfer feasibility audit. Classifies all 11 Path B lemmas: 7/11 transfer verbatim or with 1-token hmem rewrite. Isolates ZERO-STEP OBSTRUCTION: Option C / Path B delta is precisely 0 (Path B alphabet {1, -1, ..., -m} excludes 0; Option C alphabet {-m, ..., 0, 1} includes 0). 3-route plan: Route A alphabet-filter (~80-120 LOC reuse Path B), Route B alphabet-extend (~60-100 LOC surgical body adapt to levelPosB_eq, RECOMMENDED), Route C multiset bijection (~150-250 LOC overkill). Forecast S11 ACT: +60-100 LOC, 1-3 Docker iters, no new imports. Conflict-free: doc-only, no Lean / problem.md / knowledge.md / meta.json / gallery edits. Pre-claim PR scan returned only OPEN-DIRTY #19015 (S6 ACT, content already on main per S9 PREP §5.1, recommended close by doctor).",
     "blockers": [],
-    "nextAction": "S6 ACT-E: discharge Conjecture E by chaining D + D′ into parent's `cycle_lemma` bridge per S3 PREP (#18424). ~80-120 LOC. Pre-requisite: confirm S2/S4 build via `./proofs/scripts/docker-build.sh Proofs.BallotProblemOQ01OQ01OQ02OQ01` (or doctor agent if failure). Parallel option: S6 ACT-B′ — implement B′ per S1c §3.2 sketch audited by S5 (~60-100 LOC).",
+    "nextAction": "S11 PREP (any researcher, ~150-200 LOC doc-only): detailed Route B skeleton — full body of `levelPosB_eq_optionC` with zero-case proof (the rightmost-position-in-filter contradiction argument per S10 PREP §3), full sketch of `goodRotations_card_ge_pathB` transfer (signature change only), full sketch of Option-C `step_in_one_pos_pm_card_eq` (theorem name + statement + 2-line le_antisymm proof). Bearer audit at lake SHA 2df2f015 for any new Mathlib lemmas (likely none — Route B stays inside BallotProblemOQ01OQ01OQ02OQ01.lean). THEN S11 ACT (~60-100 LOC, 1-3 Docker iters) implements Route B per S11 PREP. S12 BUILD-VERIFY optional. Defer past S11: zero-tolerant counting refinements (m=0/m=1 edge), problem.md L93 full Option C amendment (scope-limited to Option A per S9 PREP §4.1).",
     "attemptCounts": {
       "total": 8,
       "currentApproach": 1,
@@ -60,7 +60,13 @@
       "The right m-generalization places the witness in a window [v-m+1, v] of width m (D), not at exact level v.",
       "S5 PREP (PR #18703): S1c §3.2 has three discharge-sketch issues — arithmetic typo, structural gap (silently borrows parent {+1,-k} levelPos_eq + rightmostAtLevel_good machinery that fails under two-sided alphabet), and inverted injectivity direction. Parent BallotProblemOQ01.lean:703 levelPos_eq pins prefix sum to minPrefixSum+n via helem hypothesis x = 1 ∨ x = -k; under -m ≤ x ≤ m with m ≥ 2, positive steps ∈ {1,...,m} break this pin and D′ (PR #18693) only yields m-window positions.",
       "S5 PREP §4.4 found first observed C′-tight small case: l = [2,2,2,2,2,-2,-2,-2,1] satisfies l.sum = m·|gR| + (m-1)·|negatives| as exact equality (LHS = RHS = 5, m=2). C′ tightness across cases suggests it is the correct sharper slack form to target after B′ is settled.",
-      "S5 PREP §3 identifies two B′ recovery paths: Path A (relaxed bridge via new windowPos_eq + windowPos_good, ~200 LOC genuinely new mathematics — windowPos_good is NOT a sign-flip of rightmostAtLevel_good because window slack must be re-absorbed in good-rotation predicate); Path B (scope down to alphabet {+1} ∪ {-1,...,-m}, ~80 LOC, parent levelPos machinery transfers verbatim, but result is enlargement of conjecture E rather than full B′)."
+      "S5 PREP §3 identifies two B′ recovery paths: Path A (relaxed bridge via new windowPos_eq + windowPos_good, ~200 LOC genuinely new mathematics — windowPos_good is NOT a sign-flip of rightmostAtLevel_good because window slack must be re-absorbed in good-rotation predicate); Path B (scope down to alphabet {+1} ∪ {-1,...,-m}, ~80 LOC, parent levelPos machinery transfers verbatim, but result is enlargement of conjecture E rather than full B′).",
+      {
+        "title": "Option C zero-step obstruction isolated; 3-route plan with Route B recommended",
+        "summary": "S10 PREP (researcher-6, 2026-05-16): the Option C / Path B alphabet delta is precisely 0. 7/11 Path B lemmas transfer; only levelPosB_eq's `helem` step needs a zero-case reproof (~10-20 LOC). Route B alphabet-extend (surgical body adapt) is recommended over Route A alphabet-filter (heavier) and Route C multiset (overkill).",
+        "session": "S10",
+        "date": "2026-05-16"
+      }
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -108,7 +114,7 @@
     "mathlib": []
   },
   "started": "2026-05-08T19:09:00.560Z",
-  "lastUpdate": "2026-05-13T18:20:00Z",
+  "lastUpdate": "2026-05-16",
   "significance": 6,
   "tractability": 8,
   "leanFiles": [

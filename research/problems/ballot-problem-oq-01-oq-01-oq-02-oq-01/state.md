@@ -1,10 +1,10 @@
 # Current State
 
-**Phase**: ACT (multiple) → PREP cleanup (Lean on `main`: D + D′ infrastructure, Conjecture E strict-alphabet, Path B mixed-down equality/slack all proved; PREP cleanup of spec drift + obsolete OPEN PRs)
+**Phase**: ACT (multiple) → PREP cleanup → Option C feasibility scoping (Lean on `main`: D + D′ infrastructure, Conjecture E strict-alphabet, Path B mixed-down equality/slack all proved; S10 PREP: Option C transfer audit identifies zero-step obstruction + 3-route plan, deferred to S11 ACT)
 **Since**: 2026-05-12T19:42:00Z
-**Iteration**: 12
-**Last researcher**: researcher-8 (S9 PREP post-merge audit + problem.md amendment, 2026-05-15)
-**Last Update**: 2026-05-15 (researcher-8) — S9 PREP: post-merge sanity check of S6/S7 ACT on `main` + drop-in `problem.md` L93 amendment patch + obsolete-PR cleanup map (#19015 close, #19172 let-merge)
+**Iteration**: 13
+**Last researcher**: researcher-6 (S10 PREP Option C transfer feasibility audit, 2026-05-15)
+**Last Update**: 2026-05-16Z (researcher-6) — S10 PREP: Option C (two-sided bounded `-(m:ℤ) ≤ x ≤ 1`) transfer audit — 7/11 Path B lemmas transfer verbatim/minor-adapt; `levelPosB_eq` `helem` step needs zero-case reproof (~10-20 LOC); 3-route plan (A alphabet-filter / B alphabet-extend / C multiset bijection); Route B RECOMMENDED for S11 ACT (60-100 LOC). S11 PREP for full Route B skeleton recommended before S11 ACT.
 
 ## Session Log (S6-S9 update, 2026-05-15, researcher-8)
 
@@ -18,7 +18,8 @@ and ACT-readiness assessment.
 | **S7 PREP** | 2026-05-14 | PREP | #19172 | OPEN/CLEAN (let deployer merge) | Path B (mixed-down alphabet) transfer audit (doc-only) |
 | **S7 ACT** | 2026-05-15 | ACT | #19219 | **MERGED** 18:05:37Z | Path B mixed-down equality + B′ slack form (`_card_eq` + `_card_bound`, Docker-verified 3062 jobs) |
 | **S8 PREP** | 2026-05-15 | PREP | #19263 | **MERGED** 18:02:43Z | `problem.md` L93 Conjecture E spec-error audit (doc-only) |
-| **S9 PREP** | 2026-05-15 | PREP | *(this PR)* | (this commit) | Post-merge sanity check + drop-in L93 amendment + obsolete-PR cleanup map (doc-only) |
+| **S9 PREP** | 2026-05-15 | PREP | #19340 | **MERGED** | Post-merge sanity check + drop-in L93 amendment + obsolete-PR cleanup map (doc-only) |
+| **S10 PREP** | 2026-05-15 | PREP | *(this PR)* | (this commit) | Option C (two-sided bounded) transfer feasibility audit — 7/11 Path B lemmas transfer; zero-step obstruction isolated; 3-route plan (Route B RECOMMENDED, ~60-100 LOC for S11 ACT) (doc-only) |
 
 **Cumulative state on `origin/main`**: `BallotProblemOQ01OQ01OQ02OQ01.lean` is now 472 LOC (up from S5-era 228 LOC), 9 theorems, 0 sorries, 0 axioms. Theorems on main: `m_jump_step_bound`, `m_jump_downward_ivt`, `m_jump_downward_ivt_unit_recovery`, `m_jump_step_bound_upward`, `m_jump_upward_ivt`, `m_jump_upward_ivt_unit_recovery`, `step_in_one_neg_m_count` (strict alphabet, S6 ACT, line 285), `step_in_one_pos_mixed_neg_card_eq` (mixed-down, S7 ACT, line 446), `step_in_one_pos_mixed_neg_card_bound` (B′ slack, S7 ACT, line 456). See S9 PREP §2 for line-anchored inventory.
 
@@ -35,9 +36,13 @@ and ACT-readiness assessment.
 - **F** *(new, S7 ACT)* — mixed-down `|gR| = l.sum.toNat` (strict equality). **Proved** (line 446).
 - **G** *(new, S7 ACT)* — mixed-down B′ slack form. **Proved** (line 456).
 
-**Recommended next session — S10 PREP** (research direction):
+**S10 PREP — Option C feasibility audit SHIPPED** (this PR, researcher-6, 2026-05-16Z):
 
-Extend the alphabet from mixed-down to **Option C** (`∀ x ∈ l, -(m:ℤ) ≤ x ∧ x ≤ 1`, full two-sided bounded). S8 PREP §6 confirms no Mathlib bearer for any cycle-lemma form, so Option C requires in-repo IVT-on-`[-m,1]` argument. Recommend S10 PREP to first sketch the transfer (200-300 LOC doc-only) before any S10 ACT attempt.
+Extends the alphabet from mixed-down to **Option C** (`∀ x ∈ l, -(m:ℤ) ≤ x ∧ x ≤ 1`, full two-sided bounded). S10 PREP §2 classifies all 11 Path B lemmas: 7/11 transfer verbatim or with a 1-token `hmem` rewrite. S10 PREP §3 isolates the **zero-step obstruction**: the Option C / Path B delta is precisely `0` (Path B's alphabet is `{1, -1, ..., -m}` excluding 0; Option C is `{-m, ..., 0, 1}`). S10 PREP §4 proposes a 3-route plan: Route A alphabet-filter (~80-120 LOC, reuse Path B verbatim), Route B alphabet-extend (~60-100 LOC, surgical body adapt to `levelPosB_eq`, **RECOMMENDED**), Route C multiset bijection (~150-250 LOC, overkill). Forecast S11 ACT: +60-100 LOC, 1-3 Docker iters, no new imports.
+
+**Recommended next session — S11 PREP / S11 ACT** (research direction):
+
+S11 PREP (single-route, ~150-200 LOC doc-only) — Detailed Route B skeleton: full body of `levelPosB_eq_optionC` with zero-case proof, full sketch of how `goodRotations_card_ge_pathB` transfers, full sketch of `step_in_one_pos_pm_card_eq` (Option C variant). Bearer audit for any new lemmas. **Then** S11 ACT (~60-100 LOC) implements Route B per S11 PREP.
 
 **Recommended next session — S10 doctor/champion** (cleanup, parallel to research):
 
