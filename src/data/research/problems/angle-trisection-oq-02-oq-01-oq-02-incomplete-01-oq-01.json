@@ -31,13 +31,13 @@
   },
   "currentState": {
     "phase": "ORIENT",
-    "since": "2026-05-15T23:30:00Z",
-    "iteration": 2,
-    "focus": "S2 PREP complete (researcher-4, 2026-05-15, doc-only): 12-row Mathlib v4.26.0 bearer-lemma audit + 4-row parent private-surface audit + R2-pure route recipe. Two material drift findings: D-2 (parent docstring lists isConstructible_minpoly_pow2 / isConstructible_irred_degree_pow2 as Session 37 lemmas but neither exists in the file) — R2-pure re-derives them in the companion via not_constructible_of_bad_degree contrapositive. D-3 (IsAlgClosed.lift cannot extend a Q⟮α⟯-embedding to a Q-algebra endomorphism of ℂ because ℂ is transcendental over ℚ) — S3 ACT adopts OPT-1 relativized isConstructible_map_intermediate (~40-60 LOC). One bearer drift D-1 (B6 card_eq_finrank_splittingField → card_of_separable returning Nat.card). Target statement convention: Nat.card (minpoly ℚ α).Gal = 2^n.",
+    "since": "2026-05-16T00:15:00Z",
+    "iteration": 3,
+    "focus": "S2c PREP complete (researcher-10, 2026-05-16, doc-only): pre-flight refinement of S2 PREP §6 — OPT-1 induction draft (~95 LOC tactic-level, both `case rational` and `case sqrt_ext` branches with 2 named strategic sub-sorries C1/C2) + Steps 1-3 of main theorem (~25-35 LOC tactic-level: separability of minpoly char 0, card_of_separable invocation, adjoin_rootSet identification) + strategic-sorry resolution plan for C1 (Algebra.IsAlgebraic ℚ K' via finite-extension fallback) and C2 (σ' extension via IsAlgClosed.lift over K with restrictScalars composition) + parent-file v4.26.0 build-status pre-flight catalogue (parent uses no ord_compl, last verified-building SHA 2ace1c84053 predates v4.26.0; S3 ACT MUST docker-smoke-build parent first with three branch outcomes A/B/C) + drift-recheck across 188 commits between S2 PREP build SHA 74a47a86244 and S2c PREP base 6a8646670b9 (0 commits touched parent file or any slug file, Mathlib pin v4.26.0 unchanged, all 12 bearer rows still valid). Reduces S3 ACT to a near-mechanical transcribe-and-docker-build task. Built atop S2 PREP (researcher-4, PR #19322 merged 2026-05-16T00:08:48Z) without modifying its drift findings or route decision (R2-pure, no parent edits).",
     "blockers": [],
-    "nextAction": "S3 ACT: create companion AngleTrisectionOQ02OQ01OQ02Incomplete01OQ01.lean with namespace, imports, three bridge lemmas (isConstructible_algebraic, isConstructible_minpoly_pow2, isConstructible_map_intermediate via OPT-1), then state isConstructible_galois_two_group with v4.26.0 convention Nat.card (minpoly ℚ α).Gal = 2^n, carry out proof Steps 1-3 (separability char 0 + card_of_separable + SplittingField.adjoin_rootSet), leave Steps 4-7 (constructibility of each conjugate + tower-law accumulation) as strategic sorries for S4 ACT. Build via Docker wrapper.",
+    "nextAction": "S3 ACT: (1) docker-smoke-build parent first (S2c PREP §6 pre-flight protocol); branch on outcomes A=clean / B=v4.26.0-repair-first / C=escalate. (2) Create companion AngleTrisectionOQ02OQ01OQ02Incomplete01OQ01.lean with namespace + imports per S2c PREP §3.2. (3) Transcribe S2c PREP §3.3-§3.4 directly as isConstructible_map_intermediate body (~95 LOC), leaving C1/C2 sorries OR resolving them inline via S2c PREP §4 plans. (4) Transcribe S2c PREP §5.2-§5.4 as isConstructible_galois_two_group Steps 1-3 body (~25-35 LOC). (5) Add bridge lemmas isConstructible_algebraic and isConstructible_minpoly_pow2 from S2 PREP §4 R2-pure recipe (~20 LOC). (6) Docker build companion. S4 ACT (next iteration after S3 ACT): close OPT-1 C1/C2 + main theorem Steps 4-7.",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 2
     }
@@ -45,9 +45,10 @@
   "knowledge": {
     "progressSummary": "S2 PREP (researcher-4, 2026-05-15, doc-only) revises S1 plan with two material drift findings. D-1: B6 bearer is `Polynomial.Gal.card_of_separable` at PolynomialGaloisGroup.lean:349 returning Nat.card (not the S1-guessed `card_eq_finrank_splittingField`); adopt Nat.card convention. D-2: parent docstring claims Session 37 added `isConstructible_minpoly_pow2` and `isConstructible_irred_degree_pow2` but grep confirms neither exists in the file; S1 inheritance table is incorrect on this point. R2-pure re-derives `isConstructible_minpoly_pow2` from `not_constructible_of_bad_degree` contrapositive (~10 LOC, no parent edits). D-3: `IsAlgClosed.lift` requires Algebra.IsAlgebraic R S; with S=ℂ, R=ℚ this is FALSE (transcendental). S3 ACT adopts OPT-1 (relativize isConstructible_map to K-intermediate-field-bounded variant, +40-60 LOC) instead of S1 Step 4 direct ℂ →ₚ[ℚ] ℂ. Route: R2-pure companion file, no parent edits. Scope: ⇒ direction only; ⇐ defers to OQ-02 spin-out. Revised LOC budget for S3 ACT: 170-230.",
     "builtItems": [
-      "research/problems/angle-trisection-oq-02-oq-01-oq-02-incomplete-01-oq-01/sessions/2026-05-15-s2-prep-bearer-audit.md (S2 PREP session note, 10 sections, doc-only)",
-      "research/problems/angle-trisection-oq-02-oq-01-oq-02-incomplete-01-oq-01/state.md (S2 PREP update: phase ORIENT, drift table, S3 readiness checklist)",
-      "src/data/research/problems/angle-trisection-oq-02-oq-01-oq-02-incomplete-01-oq-01.json (S2 PREP update: phase, iteration, focus, nextAction, insights, mathlibGaps, nextSteps)"
+      "research/problems/angle-trisection-oq-02-oq-01-oq-02-incomplete-01-oq-01/sessions/2026-05-15-s2-prep-bearer-audit.md (S2 PREP session note, 10 sections, doc-only, PR #19322 merged 2026-05-16T00:08:48Z)",
+      "research/problems/angle-trisection-oq-02-oq-01-oq-02-incomplete-01-oq-01/sessions/2026-05-15-s2c-prep-opt1-induction-draft.md (S2c PREP session note, 11 sections, doc-only, this PR)",
+      "research/problems/angle-trisection-oq-02-oq-01-oq-02-incomplete-01-oq-01/state.md (S2c PREP update: phase ORIENT iteration 3, refreshed Path-to-Verification table, expanded Next Action with pre-flight protocol)",
+      "src/data/research/problems/angle-trisection-oq-02-oq-01-oq-02-incomplete-01-oq-01.json (S2c PREP update: phase, iteration, focus, nextAction, insights, mathlibGaps, nextSteps)"
     ],
     "insights": [
       "Parent file is sorry-free and axiom-free — this OQ-01 is genuinely additive, not a repair task.",
@@ -59,7 +60,12 @@
       "S2 PREP drift D-3: IsAlgClosed.lift (`Mathlib/FieldTheory/IsAlgClosed/Basic.lean:351`) requires Algebra.IsAlgebraic R S; ℂ is transcendental over ℚ so it cannot extend a ℚ⟮α⟯-embedding to ℂ →ₚ[ℚ] ℂ. S1 Step 4 needs replacement.",
       "Route R2-pure: 4-row private surface audit shows we only need `isConstructible_algebraic` (re-derive ~10 LOC inductive) + a positive form of `isConstructible_algebraic_degree` (re-derive ~10 LOC via not_constructible_of_bad_degree contrapositive on minpoly). No parent edits required.",
       "OPT-1 for D-3: state a relativized `isConstructible_map_intermediate (K : IntermediateField ℚ ℂ) [Algebra.IsAlgebraic ℚ K] (σ : K →ₚ[ℚ] ℂ) : IsConstructible α → α ∈ K → IsConstructible (σ ⟨α,_⟩)`. Direct induction tracking witness intermediate fields; ~40-60 LOC; lives in companion.",
-      "Auxiliary v4.26.0 pins surfaced during audit: minpoly.irreducible (Minpoly/Basic.lean:277), minpoly.aeval (L88), minpoly.natDegree_pos (L199), Algebra.IsAlgebraic.algHomEquivAlgHomOfSplits (IsAlgClosed/Basic.lean:528 — fallback infrastructure for OPT-2 if needed)."
+      "Auxiliary v4.26.0 pins surfaced during audit: minpoly.irreducible (Minpoly/Basic.lean:277), minpoly.aeval (L88), minpoly.natDegree_pos (L199), Algebra.IsAlgebraic.algHomEquivAlgHomOfSplits (IsAlgClosed/Basic.lean:528 — fallback infrastructure for OPT-2 if needed).",
+      "S2c PREP (researcher-10): OPT-1 detailed Lean draft (~95 LOC tactic-level). The `case sqrt_ext` branch is structurally heavier than S2 PREP's 40-60 LOC stub suggested — re-basing σ : K →ₐ[ℚ] ℂ to σ' : K' →ₐ[ℚ] ℂ where K' := K ⊔ ℚ⟮β⟯ adds ~15 LOC of intermediate-field calculus. Total OPT-1 budget revised to 105-115 LOC.",
+      "S2c PREP: the two named strategic sub-sorries in §3.4 are (C1) `Algebra.IsAlgebraic ℚ K'` — best resolved via `Algebra.IsAlgebraic.adjoin_algebraic`-style combinator if available in v4.26.0, fallback is the inductive-characterization proof (~15-20 LOC); and (C2) σ' extension — `IsAlgClosed.lift` over K (not over ℚ — D-3 still applies to ℚ) gives K' →ₐ[K] ℂ, then `restrictScalars ℚ` + uniqueness-on-generators verification.",
+      "S2c PREP: Step 1 of main theorem (separability of minpoly char 0) requires picking the exact v4.26.0 canonical name from `Polynomial.Separable.of_irreducible_charZero` / `Polynomial.Irreducible.separable_of_charZero` / `Polynomial.separable_iff_squarefree` + `Irreducible.squarefree`. S3 ACT-time grep recommended; fallback proof via derivative-nonzero argument is ~5 LOC inline.",
+      "S2c PREP: parent-file v4.26.0 build status is **unverified** — last verified-building SHA is 2ace1c84053 (PR #18059, 2026-05-04) which predates v4.26.0 upgrade. Parent uses no `ord_compl` symbol (grep clean) so not affected by the 87-error regression listed in PR #18987. But other v4.26.0 API changes may have hit the parent. S3 ACT pre-flight: docker-smoke-build the parent BEFORE drafting the companion, with three branch outcomes A=clean/B=v4.26.0-repair-first/C=escalate.",
+      "S2c PREP drift-recheck: 188 commits between S2 PREP build SHA 74a47a86244 and S2c PREP base 6a8646670b9; **0 commits touched parent file or any slug file**. Mathlib pin v4.26.0 unchanged. All 12 bearer rows still valid. S2 PREP audit conclusions transfer verbatim to S3 ACT."
     ],
     "mathlibGaps": [
       "B6 drift confirmed: canonical name is `Polynomial.Gal.card_of_separable` returning `Nat.card`. No `card_eq_finrank_splittingField` exists in v4.26.0 Mathlib.",
@@ -68,13 +74,14 @@
       "OPT-2 (fallback): IsAlgClosed.lift via algebraic-closure-of-ℚ-inside-ℂ — would require pinning Mathlib's specific object for that subfield. Not pursued in S2 PREP; OPT-1 is preferred."
     ],
     "nextSteps": [
-      "S3 ACT (next claim): create companion `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01OQ01.lean` with namespace + imports + three bridge lemmas. Use sessions/2026-05-15-s2-prep-bearer-audit.md §6 as the explicit skeleton.",
-      "S3 ACT: state `isConstructible_galois_two_group (α : ℂ) (h : IsConstructible α) : ∃ n : ℕ, Nat.card (minpoly ℚ α).Gal = 2 ^ n` (Nat.card, not Fintype.card).",
-      "S3 ACT: prove `isConstructible_algebraic` (~10 LOC inductive, mirror parent L134-142) and `isConstructible_minpoly_pow2` (~10 LOC via `not_constructible_of_bad_degree` contrapositive). These ship as completed bridge lemmas, no sorries.",
-      "S3 ACT: prove `isConstructible_map_intermediate` skeleton (~40-60 LOC); 1-2 strategic sorries acceptable.",
-      "S3 ACT: main theorem Steps 1-3 (separability char 0 / card_of_separable / SplittingField.adjoin_rootSet) closed; Steps 4-7 strategic sorries (S4 ACT).",
-      "S3 ACT: build companion via `./proofs/scripts/docker-build.sh Proofs.AngleTrisectionOQ02OQ01OQ02Incomplete01OQ01` to ensure no import / Mathlib path regressions.",
-      "S4 ACT: close OPT-1 induction + Steps 4-7 strategic sorries; verify 0 sorries / 0 axioms.",
+      "S3 ACT pre-flight (FIRST action): docker-smoke-build the parent file `./proofs/scripts/docker-build.sh Proofs.AngleTrisectionOQ02OQ01OQ02Incomplete01`. Branch on outcomes A=build-clean (proceed) / B=v4.26.0-errors (file parent-repair issue first, then resume) / C=unrelated-errors (escalate; possibly private helper decay). See S2c PREP §6 for protocol.",
+      "S3 ACT: create companion `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01OQ01.lean` with namespace + imports per S2c PREP §3.2 preamble.",
+      "S3 ACT: transcribe S2c PREP §3.3 (`case rational`, ~15 LOC) and §3.4 (`case sqrt_ext`, ~55 LOC body + 2 named strategic sub-sorries C1/C2) into the body of `isConstructible_map_intermediate`. Either leave C1/C2 as `sorry` for S4 ACT or resolve inline using S2c PREP §4 tactic plans (~10-35 LOC each).",
+      "S3 ACT: transcribe S2c PREP §5.2-§5.4 (Steps 1-3 of main theorem: separability char 0, card_of_separable, adjoin_rootSet identification) directly into `isConstructible_galois_two_group` body (~25-35 LOC). Leave Steps 4-7 as strategic sorries for S4 ACT.",
+      "S3 ACT: state `isConstructible_galois_two_group (α : ℂ) (h : IsConstructible α) : ∃ n : ℕ, Nat.card (minpoly ℚ α).Gal = 2 ^ n` (Nat.card, not Fintype.card — per S2 PREP D-1).",
+      "S3 ACT: add bridge lemmas `isConstructible_algebraic` (~10 LOC inductive, mirror parent L134-142) and `isConstructible_minpoly_pow2` (~10 LOC via `not_constructible_of_bad_degree` contrapositive, full body in S2 PREP §4 R2-pure recipe).",
+      "S3 ACT: build companion via Docker wrapper to verify no import or Mathlib path regressions.",
+      "S4 ACT: close OPT-1 strategic sorries C1, C2 (if not done in S3) + main theorem Steps 4-7; verify 0 sorries / 0 axioms.",
       "Spin-out (post-S4 ACT verification): file `angle-trisection-oq-02-oq-01-oq-02-incomplete-01-oq-02` for ⇐ direction (FTGT + Sylow + degree-2-as-sqrt; ~300 LOC; out of scope this slug)."
     ]
   },
@@ -106,7 +113,7 @@
     ]
   },
   "started": "2026-05-13T07:10:22.506Z",
-  "lastUpdate": "2026-05-15T23:30:00Z",
+  "lastUpdate": "2026-05-16T00:15:00Z",
   "significance": 6,
   "tractability": 5
 }
