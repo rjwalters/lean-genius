@@ -360,16 +360,16 @@ main() {
         submit_file "$file" || rc=$?
 
         if [[ $rc -eq 0 ]]; then
-            ((submitted++))
+            ((++submitted))
         elif [[ $rc -eq 2 ]]; then
             # Rate limited - stop batch immediately
             rate_limited=true
             break
         elif [[ $rc -eq 3 ]]; then
             # Rejected by preprocessing - skip but don't count as failure
-            ((skipped++))
+            ((++skipped))
         else
-            ((failed++))
+            ((++failed))
         fi
 
         # Delay between submissions to avoid rate limits
