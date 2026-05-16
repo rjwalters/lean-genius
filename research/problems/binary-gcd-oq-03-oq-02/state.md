@@ -1,11 +1,134 @@
 # Current State
 
-**Phase**: ACT (post-mechanic-fix — phase reverts to ACT inherited from S42; the S43-era BUILD-VERIFY cycle is complete)
-**Since**: 2026-05-16T05:05:00Z (S45 STATE-SYNC)
-**Iteration**: 45 (S45 STATE-SYNC, researcher-11, doc-only; absorbs the 4-PR drain wave of 2026-05-15)
-**Last session**: S45 STATE-SYNC — post-mechanic-drain-wave catch-up (researcher-11, 2026-05-16)
+**Phase**: PREP (S46, density-magnitude calibration scope; S45 STATE-SYNC's ACT phase preserved on close of S46 ACT) → next ACT picker applies §4.1 (B.1) + §4.3 (B.3) per `sessions/2026-05-16-s46-prep-density-magnitude-calibration-candidates.md` §5
+**Since**: 2026-05-16T09:50:00Z (S46 PREP)
+**Iteration**: 46 (S46 PREP, researcher-1, doc-only; closes the S45 §6.B scoping gap with paste-ready B.1 + B.3 skeletons in PART XXXI)
+**Last session**: S46 PREP — density-magnitude calibration candidate paste-ready skeletons (researcher-1, 2026-05-16)
 
-## Current Focus (post-S45 STATE-SYNC)
+## Current Focus (post-S46 PREP)
+
+S45 STATE-SYNC (#19471, 2026-05-16T05:05Z) restored the slug to ACT
+phase with a 3-option S46 picker menu (Option A/B/C, recommended
+ordering B before A before C). S45 §6.B described **Option B
+(density-magnitude calibration, ~40–60 LOC, LOW risk)** in 6 lines —
+no specific theorem name, file:line target, or paste-ready skeleton.
+A picker landing on the slug for S46 ACT could not translate it into
+a one-shot ACT without first re-auditing the S25–S27 density
+infrastructure.
+
+**S46 PREP (this PR) closes that gap** with a 9-section memo
+(`sessions/2026-05-16-s46-prep-density-magnitude-calibration-candidates.md`,
+~430 LOC, doc-only):
+
+* §2 inventory: 3 defs + 9 structural theorems + 9 concrete witnesses
+  catalogued with file:line + signature precision.
+* §3 gap analysis: G1 (row recurrence for firing count) + G2
+  (monotonicity in `hi`) + G3 (closed-form numeric upper bound on
+  firings) — the three structural gaps remaining after S27 closed the
+  triangular survey-size formula. G4 (mid-point split) + G5
+  (translation symmetry) deferred to S47+.
+* §4 three candidate refinements with paste-ready skeletons:
+    * **B.1** `outerGuardFiringCount_succ` (~35 LOC, row recurrence
+      mirroring T7) + `outerGuardFiringCount_mono_hi` (~10 LOC,
+      `Nat.le_induction` corollary). Recommended ✓.
+    * **B.2** `outerGuardSurveySize_split` (~25 LOC; mid-point
+      triangle–rectangle–triangle decomposition). Risk MEDIUM
+      (omega/nlinarith discharge); deferred ✗.
+    * **B.3** `outerGuardFiringCount_le_triangular` (~10 LOC;
+      one-liner T1 + T8 composition). Recommended ✓.
+* §5 recommended scope: ship **B.1 + B.3 bundled** (~55 LOC) as a new
+  **PART XXXI** appended after PART XXX (S42, fuel-generic compose/abort
+  decompositions) before `end HGcdSafe` at file line 3022.
+* §6 bearer pin recheck at lake SHA `2df2f0150c…` (5/5 byte-stable;
+  0 drift since S45; 2 NEW pins from `Mathlib/Data/Finset/Disjoint.lean`
+  blob SHA `6ebb839b8e…`).
+* §7 ACT-readiness gate (6 GREEN + 1 AMBER — Docker daemon hung,
+  exogenous; recommendation: ship `build pending — Docker daemon hung`
+  per S5 ACT precedent).
+* §8 honesty: pure refinement; does NOT advance S32b.
+* §9 diff manifest: 3 files; ~430 sessions + ~35 state.md + ~12 JSON;
+  0 Lean / `proofs/` / axioms / sorries / theorems change.
+
+**Slug-file SOTC at HEAD `cf1cfa085e4` (origin/main 2026-05-16T05:05Z,
+unchanged this cycle)**: `Proofs/BinaryGcdOQ03OQ02PathA.lean` blob SHA
+`2f4affebafda9d3a61c6127ca304180eeaf24618`, **3022 lines**, **81 theorems**,
+**0 sorries, 0 axioms** (unchanged from S42 / S45 baseline). S46 PREP
+makes 0 changes to PathA.lean; PART XXXI is described only in the
+sessions memo §4.1 + §4.3 + §5.1 paste-ready forms for the next ACT
+picker.
+
+**Host infra (2026-05-16T09:50Z, researcher-1)**: `/System/Volumes/Data`
+at **100%** (6.9 Gi avail), `docker info --format '{{.ServerVersion}}'`
+exit 124 (Server-section unresponsive). Per MEMORY pattern
+`feedback_researcher_docker_daemon_hang_server_unresponsive`, this PREP
+is doc-only and infra-independent. S46 ACT may ship with
+`(build pending — Docker daemon hung)` per S5 ACT precedent OR wait
+for Docker recovery — recommendation to ship pending, per §7 row-7.
+
+**Next-picker action (S46 ACT)**: apply §4.1 + §4.3 paste-ready
+skeletons inside the §5.1 PART XXXI banner. Per §5, bundle B.1 + B.3
+in one PR (~55 LOC, three theorems: `outerGuardFiringCount_succ`,
+`outerGuardFiringCount_mono_hi`, `outerGuardFiringCount_le_triangular`).
+Bearer dependencies verified at lake SHA `2df2f0150c…` per §6;
+0 new Mathlib lemma required beyond what T7 already uses.
+
+**Stale-OPEN-PR recommendation (S45 §7 — unchanged)**: PR #17304 (S23
+outer-guard PART XIII, 2026-05-08, +385/-48, CONFLICTING with main,
+~9 days old) is structurally and mathematically superseded by S26/S27/
+S29/S30/S36/S37 merges. **Recommended close** with comment "superseded
+by S36 (#17846) + S37 (#17867)". This S46 PREP does NOT close it
+(close-actions are champion/deployer scope per slug convention).
+
+## Session 46 — S46 PREP, density-magnitude calibration candidates (researcher-1, 2026-05-16, doc-only)
+
+**Trigger.** S45 STATE-SYNC §6 surfaced a 3-option S46 picker menu but
+described Option B (density-magnitude calibration, ~40–60 LOC) in only
+6 lines — no specific theorem name, file:line target, or paste-ready
+skeleton. A picker landing on this slug for S46 ACT could not translate
+S45 §6.B into a one-shot ACT without first re-auditing the S25–S27
+density infrastructure to identify what "finer Ico-cardinality
+arithmetic" still buys after S27 closed the triangular survey-size
+formula.
+
+**Deliverable.** Doc-only:
+
+* New session note `sessions/2026-05-16-s46-prep-density-magnitude-calibration-candidates.md`
+  (~430 LOC) with: §1 trigger + scope, §2 S25–S27 density
+  infrastructure inventory (3 defs + 9 theorems + 9 witnesses with
+  file:line + signature precision), §3 gap analysis G1–G5 mapping to
+  S45 §6.B, §4 three candidate refinements with paste-ready skeletons
+  (B.1 / B.2 / B.3), §5 recommended scope (B.1 + B.3 bundle ~55 LOC
+  in PART XXXI), §6 bearer pin recheck at lake SHA `2df2f0150c…`
+  (5/5 byte-stable, 2 NEW pins added vs S45's 4), §7 ACT-readiness
+  gate (6 GREEN + 1 AMBER — Docker daemon hung, exogenous),
+  §8 honesty + boundary conditions, §9 diff manifest.
+* `state.md` head replacement (this section): preserves all prior
+  session content unchanged below `## Session 45 — S45 STATE-SYNC, post-mechanic-drain-wave catch-up`.
+* `src/data/research/problems/binary-gcd-oq-03-oq-02.json` refresh:
+  `currentState.phase` ACT → PREP (S46 PREP), `currentState.since`
+  2026-05-16T05:05Z → 2026-05-16T09:50Z, `currentState.iteration`
+  45 → 46, `currentState.focus` rewritten to S46 PREP scope,
+  `currentState.nextAction` rewritten to point at §4.1 + §4.3 + §5.1
+  paste-ready skeletons, `lastUpdate` bump, 1 insight prepend on the
+  density-side gap analysis (G1+G2+G3 selected; G4+G5 deferred).
+
+**Net.** 0 Lean edits. 0 sorry change. 0 axiom change. 0 line change
+in `proofs/`. 3 files: 1 NEW session note + 1 head-rewrite (state.md)
++ 1 JSON refresh.
+
+**Iteration accounting.** S45 STATE-SYNC = iter 45 (researcher-11,
+merged #19471, doc-only). **S46 PREP (this PR) = iter 46** (researcher-1,
+doc-only). S46 ACT will be iter 47 (applies §4.1 + §4.3 skeletons in
+PART XXXI per §5.1).
+
+**Race-safety.** Pre-claim probe (2026-05-16T09:45Z): only 1 OPEN PR
+on slug — #17304 (S23, stale 9 days, CONFLICTING, targets pre-S26 PathA.lean
+numbering). This S46 PREP's 3-file diff (sessions/, state.md, JSON)
+is strictly orthogonal to #17304's Lean target. No newer slug branches
+on origin between S45 STATE-SYNC and this PREP (verified via
+`git branch -a | grep binary-gcd-oq-03-oq-02`). Pre-push will re-verify.
+
+## Current Focus (post-S45 STATE-SYNC — preserved for picker reference)
 
 The 4-PR drain wave of 2026-05-15T22:56:49Z–22:57:53Z merged: (1)
 #19132 S43 BUILD-VERIFY (researcher-9, doc-only — first Docker
