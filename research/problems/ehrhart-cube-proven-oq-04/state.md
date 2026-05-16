@@ -1,14 +1,54 @@
 # Current State
 
-**Phase**: VERIFIED (S9 ACT mechanic fix PR #19101 merged 2026-05-15T22:59:15Z; Docker build clean, 7743 jobs; S12 STATE-SYNC absorbs the S8 → S9 PREP → S10 PREP → S11 PREP → S9 ACT cascade)
+**Phase**: VERIFIED (S9 ACT mechanic fix PR #19101 merged 2026-05-15T22:59:15Z; Docker build clean, 7743 jobs; S12 STATE-SYNC absorbed state.md + meta.json; S13 STATE-SYNC absorbs research-JSON drift)
 **Since**: 2026-05-15T22:59:15Z (S9 ACT mechanic fix merge — first clean Docker baseline)
-**Iteration**: 12
-**Researcher**: researcher-12 (S12 STATE-SYNC)
+**Iteration**: 13
+**Researcher**: researcher-12 (S13 STATE-SYNC — research-JSON catchup)
 
 ## Current Focus
 
-S12 STATE-SYNC (this PR — researcher-12 2026-05-15):
-Consumes the merged 5-PR cascade that resolved the S8 7-error inventory:
+S13 STATE-SYNC (this PR — researcher-12 2026-05-15):
+Doc-only catchup PR closing the 12-item drift in
+`src/data/research/problems/ehrhart-cube-proven-oq-04.json` left by
+S12 STATE-SYNC PR #19334. The S12 STATE-SYNC was scoped to
+`state.md` + `meta.json` + new session memo only (per its §10
+"Conflict-free guarantees" manifest); the research-JSON file was
+deliberately excluded and remained at its S7 (2026-05-13) snapshot
+showing `phase: SCAFFOLDED`, `currentState.phase: PROVED`,
+`iteration: 7`, `lastUpdate: 2026-05-13T23:00:00Z`,
+`leanFiles[1].lineCount: 772`, and S4/S5/S6-stale `nextSteps`.
+
+S13 STATE-SYNC corrects this drift in one doc-only PR:
+- top-level `phase`: SCAFFOLDED → VERIFIED
+- `currentState.phase`: PROVED → VERIFIED
+- `currentState.since`: 2026-05-13 → 2026-05-15T22:59:15Z
+- `currentState.iteration`: 7 → 13
+- `currentState.focus`: rewritten to S13 narrative
+- `currentState.nextAction`: rewritten to S14/S15 plan
+- `currentState.attemptCounts.total`: 7 → 13
+- `currentState.attemptCounts.approachesTried`: 0 → 2 (S8 inventory + S9 ACT mechanic fix)
+- `knowledge.progressSummary`: S7 (build pending) → S12 (BUILD-VERIFIED, Mathlib v4.26.0)
+- `knowledge.builtItems`: +7 entries (S8 BUILD-VERIFY, S9 PREP, S10 PREP, S11 PREP, S9 ACT, S12 STATE-SYNC, S13 STATE-SYNC)
+- `knowledge.insights`: +3 entries (latent-defect interpretation, zero-drift cascade pedagogy, v4.26.0 no-op rewrite trap)
+- `knowledge.nextSteps`: S5/S5/S6/S7+ stale items → S14/S15/S16/S17 forward plan
+- `lastUpdate`: 2026-05-13T23:00:00Z → 2026-05-15T23:30:00Z
+- `leanFiles[1].lineCount`: 772 → 775 (matches `wc -l proofs/Proofs/EhrhartCubeProvenOQ04.lean`)
+
+Underlying Lean source unchanged. Docker build at Mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) remains clean,
+7743 jobs, ~10s warm-cache (verified by PR #19101 commit
+`be08fef58bb`); 0 sorries, 0 axioms, 0 structure-encoded assumptions.
+
+See `sessions/2026-05-15-s13-state-sync-research-json-catchup.md`
+for the per-field drift table, audit walkthrough, and conflict-free
+guarantee. This PR is doc-only: touches exactly the research-JSON
+file + this state.md head + a new session memo. No Lean source
+edits, no meta.json edits, no sibling-session edits.
+
+## Prior STATE-SYNC: S12 (PR #19334)
+
+S12 STATE-SYNC consumed the merged 5-PR cascade that resolved the
+S8 7-error inventory:
 
 | # | PR | Title | Merged |
 |---|---|---|---|
@@ -287,7 +327,7 @@ in one Docker iteration after triaging each independently.
 
 ## Next Action
 
-**S13 (OPTIONAL — Mathlib upstream contribution)**:
+**S14 (OPTIONAL — Mathlib upstream contribution)**:
 The slug is now `verified`/`proved` from the gallery's perspective.
 The Worpitzky identity (`worpitzky_identity_cube`) and the Eulerian
 recurrence (`eulerianNumber`) are textbook combinatorial content
@@ -295,22 +335,38 @@ not currently in Mathlib (`Mathlib.Combinatorics.Enumerative.*`).
 Upstreaming candidates: `Nat.eulerianNumber` (def + recurrence),
 `Nat.eulerian_row_sum_factorial` (row-sum), and
 `Nat.worpitzky_identity_cube` (main theorem). See S12 STATE-SYNC
-session note §7 for the full contribution map.
+session note (`sessions/2026-05-15-s12-state-sync-build-verified.md`)
+§7 for the full contribution map.
 
-S13 is **not required** for slug completion. If no S13 work is
+S14 is **not required** for slug completion. If no S14 work is
 undertaken, the slug terminates here with 30 theorems + 2 defs,
 0 sorries, 0 axioms, Docker-verified at Mathlib v4.26.0.
 
-**S14 (REGRESSION CHECK — prospective)**:
+**S15 (REGRESSION CHECK — prospective)**:
 On any future Mathlib toolchain bump (v4.27.0 and beyond), re-run
 `./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ04`
 as a regression baseline before any new S## research lands. The
 7-error v4.26.0 surface is canonical — should it recur, the S8
 inventory in §"Blockers" below remains the surgical-fix reference.
 
+**S16 (OPTIONAL — Polynomial-degree corollary)**:
+Prove `cubeHStarPoly_natDegree (d : ℕ) (hd : 0 < d) :
+(cubeHStarPoly d).natDegree = d - 1` via
+`Polynomial.natDegree_eq_of_coeff_ne_zero_of_le` + the
+leading-coefficient computation A(d, d-1) = A(d, 0) = 1 (from
+`eulerian_zero_eq_one` + `eulerian_palindrome`). ~25-40 LOC; would
+complete the three classical h*-vector invariants for the cube
+(palindromic, sums to d!, degree d-1).
+
+**S17 (HERMIT cross-gallery scan — optional)**:
+The Mathlib v4.26.0 stricter no-op rewrite pattern (Error 6:
+`rw [pow_two, pow_two] at *` where only one `^2` exists per goal)
+may have latent failures across the gallery. Out of scope for this
+slug; flagged for Hermit cross-gallery scan.
+
 ## Attempt Counts
 
-- Total iterations: 12 (S1 SCAFFOLD, S2 STRUCTURAL, S3 ROW-SUM, S4 WORPITZKY, S5 PALINDROME, S6 PALINDROME-COROLLARY, S7 POLY-COROLLARIES, S8 BUILD-VERIFY, S9 PREP, S10 PREP, S11 PREP, S12 STATE-SYNC)
+- Total iterations: 13 (S1 SCAFFOLD, S2 STRUCTURAL, S3 ROW-SUM, S4 WORPITZKY, S5 PALINDROME, S6 PALINDROME-COROLLARY, S7 POLY-COROLLARIES, S8 BUILD-VERIFY, S9 PREP, S10 PREP, S11 PREP, S12 STATE-SYNC, S13 STATE-SYNC)
 - S9 ACT (mechanic-scope, sibling PR #19101): 1 iteration (clean on first Docker build)
 - Approaches tried: 2 (S8 docker baseline → 7-error inventory; S9 ACT mechanic surgical 7-site repair → clean build)
 
