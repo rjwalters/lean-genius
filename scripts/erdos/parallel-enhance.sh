@@ -282,14 +282,14 @@ send_continue() {
     if [[ "$agent_num" == "all" ]]; then
         for session in $(get_running_agents); do
             tmux send-keys -t "$session" "continue" Enter 2>/dev/null && \
-                print_success "Sent continue to $session" && ((sent++)) || \
+                print_success "Sent continue to $session" && ((++sent)) || \
                 print_warning "Could not send to $session"
         done
     else
         local session="$SESSION_PREFIX-$agent_num"
         if tmux has-session -t "$session" 2>/dev/null; then
             tmux send-keys -t "$session" "continue" Enter 2>/dev/null && \
-                print_success "Sent continue to $session" && ((sent++)) || \
+                print_success "Sent continue to $session" && ((++sent)) || \
                 print_warning "Could not send to $session"
         else
             print_error "Agent $agent_num is not running"
