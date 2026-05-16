@@ -27,26 +27,26 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-14",
-    "iteration": 2,
-    "focus": "S2 SCAFFOLD — proofs/Proofs/SumOfDivisorsOQ02.lean shipped with 6 named lemmas (Step 2 proved as Archive alias, Steps 1/3/4/5/6 sorry) and top-level euler_converse_self_contained (sorry). 3063-job Docker build clean.",
+    "since": "2026-05-16",
+    "iteration": 4,
+    "focus": "S4 ACT — Step 1 (sigma_two_pow_mul_odd) discharged term-mode via isMultiplicative_sigma.map_mul_of_coprime ((Odd.coprime_two_right hm_odd).symm.pow_left k), verbatim from S3 PREP §3.2. LOC +6/-4. Sorry count: 6 → 5. Step 2 was already Archive-alias proved. Steps 3/4/5/6 + top-level remain sorry.",
     "activeApproach": "Pedagogical self-contained refactor of Mathlib Archive bundled proof into named intermediate lemmas.",
     "blockers": [],
-    "nextAction": "S3 ACT — discharge Step 1 (sigma_two_pow_mul_odd) via isMultiplicative_sigma.map_mul_of_coprime + Odd.coprime_two_right.pow_right, mirroring the Archive proof line. Step 2 is already discharged. Steps 3/4/5/6 deferred to S4+.",
+    "nextAction": "S5 ACT — discharge Step 3 (mersenne_mul_sigma_eq_two_pow_mul) by unfolding Nat.perfect_iff_sum_divisors_eq_two_mul, applying Step 1 + Step 2, then ← mul_assoc + pow_succ. Or S5 PREP: bearer audit for Step 3 + risk register, mirroring S3 PREP's pattern for the harder Step 5.",
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 2,
+      "total": 4,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S2 SCAFFOLD complete. proofs/Proofs/SumOfDivisorsOQ02.lean (110 LOC, 6 lemmas, 1 theorem, 6 sorries, 0 axioms). Step 2 (sigma_two_pow_eq_mersenne) proved as direct Archive alias. Steps 1/3/4/5/6 and top-level theorem carry sorries with documented S3+ discharge plans. 3063-job Docker build clean at Mathlib v4.26.0.",
+    "progressSummary": "S4 ACT complete. proofs/Proofs/SumOfDivisorsOQ02.lean (114 LOC, 6 lemmas, 1 theorem, 5 sorries, 0 axioms). Steps 1 + 2 proved (Step 1 S4 ACT term-mode via isMultiplicative_sigma.map_mul_of_coprime + Odd.coprime_two_right.symm.pow_left, verbatim from S3 PREP §3.2; Step 2 S2 SCAFFOLD direct Archive alias). Steps 3/4/5/6 + top-level theorem carry sorries with S3 PREP plan covering Steps 1 and 5 (Step 5 has one pin-PEND on final tactic). S2 SCAFFOLD's 3063-job Docker build was clean at Mathlib v4.26.0; S4 build also clean (3063 jobs, 5 expected sorry warnings).",
     "builtItems": [
-      "Proofs/SumOfDivisorsOQ02.lean : sigma_two_pow_mul_odd (sorry, Step 1 multiplicativity)",
-      "Proofs/SumOfDivisorsOQ02.lean : sigma_two_pow_eq_mersenne (PROVED via Archive alias)",
+      "Proofs/SumOfDivisorsOQ02.lean : sigma_two_pow_mul_odd (PROVED S4 ACT term-mode, Step 1 multiplicativity)",
+      "Proofs/SumOfDivisorsOQ02.lean : sigma_two_pow_eq_mersenne (PROVED S2 SCAFFOLD via Archive alias)",
       "Proofs/SumOfDivisorsOQ02.lean : mersenne_mul_sigma_eq_two_pow_mul (sorry, Step 3 perfect-eq expansion)",
       "Proofs/SumOfDivisorsOQ02.lean : mersenne_dvd_odd_part (sorry, Step 4 divisibility)",
-      "Proofs/SumOfDivisorsOQ02.lean : sigma_eq_self_add_cofactor (sorry, Step 5 σ(m) = m + c)",
+      "Proofs/SumOfDivisorsOQ02.lean : sigma_eq_self_add_cofactor (sorry, Step 5 σ(m) = m + c; S3 PREP §5.3 5-line body w/ final-tactic pin-PEND ready)",
       "Proofs/SumOfDivisorsOQ02.lean : cofactor_one_and_prime (sorry, Step 6 two-divisor)",
       "Proofs/SumOfDivisorsOQ02.lean : euler_converse_self_contained (sorry, top-level chain)"
     ],
@@ -57,13 +57,12 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "S3 ACT: discharge Step 1 (sigma_two_pow_mul_odd) using isMultiplicative_sigma.map_mul_of_coprime + (Odd.coprime_two_right ?).pow_right _ — mirroring Archive line 49 of PerfectNumbers.lean.",
-      "S4 ACT: discharge Step 3 (mersenne_mul_sigma_eq_two_pow_mul) — combine Nat.perfect_iff_sum_divisors_eq_two_mul with Steps 1+2.",
-      "S5 ACT: discharge Step 4 (mersenne_dvd_odd_part) — Odd.coprime_two_right.pow_right.dvd_of_dvd_mul_left over Dvd.intro.",
-      "S6 ACT: discharge Step 5 (sigma_eq_self_add_cofactor) — substitute m = M*c, cancel mersenne, use succ_mersenne to rewrite 2^(k+1) = M + 1.",
-      "S7 ACT: discharge Step 6 (cofactor_one_and_prime) — Nat.sum_divisors_eq_sum_properDivisors_add_self, Nat.sum_properDivisors_dvd case-split, Nat.sum_properDivisors_eq_one_iff_prime.",
-      "S8 ACT: discharge top-level euler_converse_self_contained — eq_two_pow_mul_odd + Steps 1-6.",
-      "Honest assessment after Steps fully discharged (S8): if the scaffold collapses to Archive structure, close as documentation-only contribution."
+      "S5 ACT: discharge Step 3 (mersenne_mul_sigma_eq_two_pow_mul) — combine Nat.perfect_iff_sum_divisors_eq_two_mul with Steps 1+2. Or S5 PREP: pin-cite Step 3 bearers + risk register (mirrors S3 PREP pattern).",
+      "S6 ACT: discharge Step 4 (mersenne_dvd_odd_part) — Odd.coprime_two_right.pow_left.dvd_of_dvd_mul_left over Dvd.intro.",
+      "S7 ACT: discharge Step 5 (sigma_eq_self_add_cofactor) — use S3 PREP §5.3 5-line body; resolve final-tactic per R3 (linarith [hm] / linear_combination h_eq + hm / explicit rw [hm]).",
+      "S8 ACT: discharge Step 6 (cofactor_one_and_prime) — Nat.sum_divisors_eq_sum_properDivisors_add_self, Nat.sum_properDivisors_dvd case-split, Nat.sum_properDivisors_eq_one_iff_prime.",
+      "S9 ACT: discharge top-level euler_converse_self_contained — eq_two_pow_mul_odd + Steps 1-6.",
+      "Honest assessment after Steps fully discharged (S9): if the scaffold collapses to Archive structure, close as documentation-only contribution."
     ],
     "markdown": "# Knowledge Base: Euler's Converse for Even Perfect Numbers\n\n## Status: S1 OBSERVE complete (survey + plan, no Lean changes yet)\n\nSee research/problems/sum-of-divisors-oq-02/knowledge.md for the full 7-step proof skeleton and Mathlib API inventory.\n\n## Key Mathlib lemmas\n- ArithmeticFunction.IsMultiplicative.sigma_one (sigma is multiplicative)\n- Theorems100.Nat.sigma_two_pow_eq_mersenne_succ (sigma(2^k) = mersenne (k+1))\n- Theorems100.Nat.eq_two_pow_mul_prime_mersenne_of_even_perfect (bundled Euler direction)\n\n## Proof skeleton (Euler ⇒)\nLet n = 2^k * m even and perfect, m odd, k ≥ 1.\n1. sigma(2^k * m) = sigma(2^k) * sigma(m) — multiplicativity on coprimes\n2. sigma(2^k) = M_{k+1} = 2^(k+1) - 1 — Archive lemma\n3. M_{k+1} * sigma(m) = 2^(k+1) * m — perfect equation expanded\n4. M_{k+1} | m — since M_{k+1} odd, coprime to 2^(k+1)\n5. Writing m = M_{k+1} * c: sigma(m) = 2^(k+1) * c = m + c\n6. c | m and sigma(m) = m + c forces c = 1 and m prime (two-divisor uniqueness)\n7. Conclude n = 2^k * M_{k+1} with M_{k+1} prime. ∎"
   },
@@ -95,15 +94,15 @@
     ]
   },
   "started": "2026-05-12T17:55:00.000Z",
-  "lastUpdate": "2026-05-14T19:30:00.000Z",
+  "lastUpdate": "2026-05-16T01:10:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "proofs/Proofs/SumOfDivisorsOQ02.lean",
-      "lineCount": 110,
+      "lineCount": 114,
       "axiomCount": 0,
-      "sorryCount": 6,
+      "sorryCount": 5,
       "theoremCount": 7,
       "defCount": 0,
       "addedInIteration": 2
