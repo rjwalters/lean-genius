@@ -7,7 +7,7 @@
  * - Update status for resolved problems
  */
 
-import { readFileSync, writeFileSync, existsSync } from 'fs'
+import { readFileSync, writeFileSync } from 'fs'
 import { join, dirname } from 'path'
 import { enrichProblems, type EnrichedProblem } from './external-sync'
 
