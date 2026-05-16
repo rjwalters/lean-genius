@@ -1,11 +1,36 @@
 # Research State: triangle-inequality-oq-04-oq-01
 
 ## Current State
-**Phase**: ACT (S2b complete, build-verified)
+**Phase**: PREP (S3 PREP — `chartIntrinsicDist_triangle` design + paste-ready skeleton; doc-only)
 **Path**: A (chart-local Euclidean length)
 **Since**: 2026-05-14 (researcher-3, S2a)
-**Iteration**: 3 (S1 OBSERVE, S2a ACT, S2b ACT)
-**Last Updated**: 2026-05-16 (researcher-1, S2b ACT — `chartArcLength_trans` via `intervalIntegral.integral_add_adjacent_intervals`, build-verified 2551 jobs clean)
+**Iteration**: 4 (S1 OBSERVE, S2a ACT, S2b ACT, S3 PREP)
+**Last Updated**: 2026-05-16 (researcher-10, S3 PREP — chartIntrinsicDist design space + Option A (Path-mirror w/ reparam) recommended; paste-ready Lean skeleton ~120 LOC with 2 sorries for reparam plumbing; Docker hung exit 124 + disk 100% — PREP doc-only, S3 ACT awaits Docker recovery)
+
+## S3 PREP 2026-05-16 (researcher-10)
+
+Doc-only PREP packaging the **design space + paste-ready skeleton** for the named S2c → S3 ACT (`chartIntrinsicDist_triangle`). No Lean source touched.
+
+**Key findings**:
+
+1. **Parent's `intrinsicDist_triangle` proof structure** (lines 215–239 of `TriangleInequalityOQ04.lean`): 2-step calc using (I1) `pathLength_trans` for additivity + (I2) `ENNReal.iInf_add`/`ENNReal.add_iInf` for distributivity. The parent's `pathLength_trans` (lines 169–196) is itself 4 steps + 2 helper lemmas (`eqOn_first`, `eqOn_second`) + 2 image lemmas (`image_scale_half`, `image_shift_half`).
+2. **Chart-local reparameterization has no direct analog** at v4.26.0: parent's `eVariationOn.comp_eq_of_monotoneOn` is a single lemma; the integral-form analog is a **3-lemma chain** — `deriv.scomp` (chain rule) + `norm_smul` (positive scalar) + `intervalIntegral.integral_comp_mul_left` (substitution). All 3 verified at pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+3. **Four design options surveyed** for `chartIntrinsicDist p q`:
+   - **Option A (RECOMMENDED)**: `⨅ (γ : Path p q) (_ : IntervalIntegrable ...), chartArcLength γ.extend 0 1`. Mirrors parent. Reparam via 3-lemma chain. ~120 LOC.
+   - Option B: Constructive concatenation (no iInf). Skirts the mathematical content but easy. ~40 LOC.
+   - Option C: 6-fold-nested iInf over `(a, b, γ, hp, hq, hint)`. Painful unfolding. ~80 LOC.
+   - Option D: iInf over `(γ : ℝ → E) (_ : ContDiff ℝ 1 γ) (hp : γ 0 = p) (hq : γ 1 = q)`. Needs C¹ extension machinery. ~150 LOC.
+4. **Paste-ready skeleton** (~120 LOC, 1 def + 4 helpers + 1 main, 2 sorries on reparameterization adapters): provided in session memo §5.
+5. **Risk inventory** (8 markers R1–R8): 3 LOW + 4 MEDIUM + 1 INFRASTRUCTURE (Docker hung). No HIGH.
+6. **Bearer-pin drift recheck**: 4-spot-check at pinned SHA `2df2f0150c…` — ZERO drift since S2b ACT (PR #19449, ~5h13m ago).
+
+**Infrastructure status** (2026-05-16T09:51Z): Docker daemon hung — `timeout 5 docker info --format '{{.ServerVersion}}'` → exit 124 (daemon unresponsive); `df -h /System/Volumes/Data` → 100% capacity, 6.9Gi avail. PREP is **doc-only** — does not require build.
+
+**Next ACT (S3)**: paste the §5 skeleton into `proofs/Proofs/TriangleInequalityOQ04OQ01.lean` and discharge the 2 reparameterization `sorry`s. Optionally decompose into 4 sub-iterations (S3a definition + nonneg, S3b reparam adapters, S3c `chartArcLength_pathTrans`, S3d main calc). Estimated 120 LOC total, 0 sorries, 0 axioms.
+
+See `sessions/2026-05-16-s3-prep-chartintrinsicdist-design.md` for full design rationale, paste-ready code, API-bearer audit, and risk decomposition.
+
+---
 
 ## S2b ACT 2026-05-16 (researcher-1)
 
@@ -89,32 +114,33 @@ depend on the missing typeclass.
 
 ## Next Action
 
-**S2b ACT — `chartArcLength_trans`** (additivity under interval concatenation).
-For `a ≤ b ≤ c` with `IntervalIntegrable (fun t => ‖deriv γ t‖) volume a b` and
-similarly for `b c`,
+**S3 ACT (post-Docker-recovery)** — paste the §5 paste-ready skeleton from
+`sessions/2026-05-16-s3-prep-chartintrinsicdist-design.md` into
+`proofs/Proofs/TriangleInequalityOQ04OQ01.lean` (insertion at line 84) and
+discharge the 2 reparameterization `sorry`s:
 
-```
-chartArcLength γ a c = chartArcLength γ a b + chartArcLength γ b c.
-```
+1. `chartArcLength_comp_mul_left` — `∫_{0..1/2} ‖deriv (γ ∘ (· * 2)) t‖ dt = ∫_{0..1} ‖deriv γ s‖ ds` via the 3-lemma chain: `deriv.scomp` (chain rule) + `norm_smul` (positive scalar) + `intervalIntegral.integral_comp_mul_left` (substitution).
+2. `chartArcLength_comp_mul_left_shift` — analogous for `γ ∘ (· * 2 - 1)` on `[1/2, 1]`, with an additional `integral_comp_add_right` for the affine shift.
 
-This is a direct application of
-`intervalIntegral.integral_add_adjacent_intervals` (Mathlib v4.26.0,
-`MeasureTheory/Integral/IntervalIntegral/Basic.lean:1022`). Estimated ~25–40
-LOC + 1 helper for the `IntervalIntegrable` hypothesis (typically discharged
-from `Continuous (deriv γ)` and `Continuous.norm` and
-`Continuous.intervalIntegrable`).
+The remaining components (`chartIntrinsicDist` def, `chartIntrinsicDist_nonneg`, `chartEqOn_first/second`, `chartArcLength_pathTrans`, `chartIntrinsicDist_triangle` main calc) are then assembled via the parent's 2-step iInf-exchange structure.
 
-After S2b, S2c will prove the chart-local triangle inequality
-`chartIntrinsicDist_triangle` by infimum-exchange, mirroring the parent
-`Proofs.TriangleInequalityOQ04.intrinsicDist_triangle` proof structure (~50 LOC).
+**LOC budget**: ~120 LOC total, 0 sorries on completion, 0 axioms.
+
+**Path A or Path B?** Option A (Path-mirror) recommended for maximum structural parallel with parent; Option B (constructive concatenation, no iInf) is the fallback if Option A's reparameterization plumbing blows up beyond 50 LOC.
+
+**Decomposition (optional)**: split S3 ACT into 4 sub-iters — S3a (def + nonneg, 5–10 LOC), S3b (reparam adapters, 30–50 LOC), S3c (`chartArcLength_pathTrans`, 20–30 LOC), S3d (main calc, 10–20 LOC). Mitigates LOC-blowup risk by isolating failure to a single sub-iter.
+
+**Infrastructure gate**: S3 ACT awaits Docker recovery (currently hung exit 124, disk 6.9Gi avail). If Docker remains hung at claim time, ship with `(build pending — Docker daemon hung)` qualifier per memory pattern `_docker_daemon_hang_server_unresponsive_ship_build_pending_distinct_from_disk_full`.
 
 ## Open PRs
 
-- (this PR — S2a ACT) — see commit log.
+- (this PR — S3 PREP) — `chartIntrinsicDist_triangle` design + paste-ready skeleton; doc-only.
 
 ## Iteration History (recent)
 
-| Iter | Date       | Researcher    | PR          | Outcome                                                                                       |
-|------|------------|---------------|-------------|-----------------------------------------------------------------------------------------------|
-| S1   | 2026-05-12 | researcher-5  | (doc-only)  | OBSERVE — Mathlib survey: no `RiemannianMetric`; 4 paths identified; Path A recommended for S2 |
-| S2a  | 2026-05-14 | researcher-3  | (this PR)   | ACT — `chartArcLength` + 3 sanity lemmas; +60 LOC; Docker-verified (2551 jobs); 0 sorries, 0 axioms |
+| Iter | Date       | Researcher     | PR          | Outcome                                                                                       |
+|------|------------|----------------|-------------|-----------------------------------------------------------------------------------------------|
+| S1   | 2026-05-12 | researcher-5   | #18333      | OBSERVE — Mathlib survey: no `RiemannianMetric`; 4 paths identified; Path A recommended for S2 |
+| S2a  | 2026-05-14 | researcher-3   | #19100      | ACT — `chartArcLength` + 3 sanity lemmas; +60 LOC; Docker-verified (2551 jobs); 0 sorries, 0 axioms |
+| S2b  | 2026-05-16 | researcher-1   | #19449      | ACT — `chartArcLength_trans` (additivity) via `intervalIntegral.integral_add_adjacent_intervals`; +18 LOC; Docker-verified (2551 jobs); 0 sorries, 0 axioms |
+| S3   | 2026-05-16 | researcher-10  | (this PR)   | PREP — `chartIntrinsicDist_triangle` design (Option A: Path-mirror + reparam) + paste-ready skeleton (~120 LOC, 2 sorries on reparam adapters) + risk inventory (R1–R8) + ACT-readiness gate (6/8 GREEN, 1/8 AMBER, 1/8 RED Docker); doc-only |

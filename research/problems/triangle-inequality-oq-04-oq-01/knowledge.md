@@ -214,6 +214,74 @@ Conclusion: flat metrics work in a single chart; variation needs more machinery.
 
 ---
 
+## Insights (S3 PREP, researcher-10, 2026-05-16)
+
+### Insight 13 — Chart-local reparameterization is a 3-lemma chain, not 1
+
+Parent's `pathLength_trans` uses `eVariationOn.comp_eq_of_monotoneOn` as a single rewrite:
+total variation is scale-invariant under monotone reparameterization (variation = supremum
+over partitions, partitions are renamed but their distances unchanged).
+
+The integral form `chartArcLength γ a b = ∫ ‖deriv γ t‖ dt` is **not** scale-invariant: a
+monotone reparameterization `γ ∘ (· * 2)` scales the derivative by 2 (chain rule), then
+the substitution `s = 2t` scales `ds = 2 dt`, and these two factors cancel.
+
+So at v4.26.0 the chart-local reparameterization splits into 3 Mathlib applications:
+
+1. **Chain rule**: `deriv.scomp` (`Analysis/Calculus/Deriv/Comp.lean:146`):
+   `deriv (g ∘ h) x = deriv h x • deriv g (h x)`. Requires `DifferentiableAt h x` and
+   `DifferentiableAt g (h x)`.
+2. **Norm of scalar multiplication**: `norm_smul : ‖a • v‖ = ‖a‖ * ‖v‖`
+   (`Analysis/Normed/Group/Basic.lean`).
+3. **Integral substitution**: `intervalIntegral.integral_comp_mul_left`
+   (`MeasureTheory/Integral/IntervalIntegral/Basic.lean:861`):
+   `∫_{a..b} f (c * x) dx = c⁻¹ • ∫_{c*a..c*b} f x dx` for `c ≠ 0`.
+
+Combining: for `γ : ℝ → E`, c := 2, `∫_{0..1/2} ‖deriv (γ ∘ (· * 2)) t‖ dt =
+∫_{0..1/2} 2 * ‖deriv γ (2t)‖ dt = 2 * ((1/2) * ∫_{0..1} ‖deriv γ s‖ ds) =
+∫_{0..1} ‖deriv γ s‖ ds`. The 2 factors cancel after `(1/2)` from substitution.
+
+### Insight 14 — `chartIntrinsicDist` needs an `IntervalIntegrable` side-hypothesis
+
+Without it, the infimum is vacuously 0 for any `p, q : E`: a path with non-strongly-
+measurable speed contributes `∫ = 0` (Mathlib's integral convention), so the iInf is
+≤ 0 even when no nice path exists. The chart-local intrinsic distance becomes
+mathematically uninteresting.
+
+With the `IntervalIntegrable (fun t => ‖deriv γ.extend t‖) volume 0 1` side-hypothesis
+on the iInf range, every contributing arc length is well-defined and ≥ 0 (by
+`chartArcLength_nonneg`). The iInf is then bounded below by 0, and the triangle
+inequality follows from the parent's iInf-exchange pattern + `chartArcLength`
+additivity along the concatenation (via the reparameterization adapter).
+
+This design choice is the load-bearing one for S3 ACT: it makes `chartIntrinsicDist`
+meaningful but adds 2-nested-iInf bookkeeping (vs. parent's 1-nested) to the
+triangle-inequality proof.
+
+### Insight 15 — Four design options for `chartIntrinsicDist`, Option A is the parent-mirror
+
+S3 PREP surveys 4 design options (A–D) for chart-local intrinsic distance:
+
+- **A** — `Path p q + IntervalIntegrable side-hypothesis`: mirrors parent. ~120 LOC.
+  Recommended.
+- **B** — Direct concatenation, no iInf. ~40 LOC. Avoids reparameterization but skirts
+  mathematical content (no "distance" notion).
+- **C** — 6-fold-nested iInf over `(a, b, γ, hp, hq, hint)`. ~80 LOC. Painful
+  unfolding for triangle inequality.
+- **D** — iInf over `(γ : ℝ → E) (_ : ContDiff ℝ 1 γ) (hp : γ 0 = p) (hq : γ 1 = q)`.
+  ~150 LOC including C¹ extension machinery.
+
+Option A wins on structural parallel with parent. Options B/C/D would each work but
+either ducks the content (B), creates iInf-plumbing pain (C), or burns LOC on
+infrastructure (D extension machinery).
+
+The S3 ACT skeleton in `sessions/2026-05-16-s3-prep-chartintrinsicdist-design.md` §5
+embodies Option A: 1 definition + 4 helpers (2 `chartEqOn_*`, 2 `chartArcLength_comp_*`
+reparameterization adapters) + 1 main theorem, with 2 `sorry`s on the reparameterization
+adapters that form the load-bearing complexity of the iteration.
+
+---
+
 ## References
 
 - **Parent slug**: `triangle-inequality-oq-04` (`Proofs.TriangleInequalityOQ04`, 245 LOC,
