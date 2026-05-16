@@ -2,15 +2,15 @@
 
 ## Current phase
 
-**Phase**: ACT (Iter 3 dual identity Σ_{d|n} Λ₂(d) = (log n)² verified)
-**Iteration**: 4 (Iter 4 in planning — Möbius-inverted "original" form)
-**Since**: 2026-05-14T15:50:00Z
+**Phase**: ACT (Iter 4 Möbius–log literal form Λ₂(n) = Σ_{d|n} μ(d)·log²(n/d) verified)
+**Iteration**: 5 (Iter 5 in planning — Selberg's symmetry formula S₂(N) = 2N·log N + O(N))
+**Since**: 2026-05-16T02:55:00Z
 
-## Lean snapshot (post-Iter 3)
+## Lean snapshot (post-Iter 4)
 
 | File | LOC | Thm | Defs | Sorries | Axioms | Status |
 |---|---:|---:|---:|---:|---:|---|
-| `proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean` | 312 | 15 | 3 noncomputable | 0 | 0 | build-verified 7744 jobs at Iter 3 |
+| `proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean` | 325 | 16 | 3 noncomputable | 0 | 0 | build-verified 7744 jobs at Iter 4 |
 | `proofs/Proofs/ChebyshevBoundsOQ04.lean` | (parent) | — | — | 0 | 1 | parent's `chebyshevPsi_asymptotic` axiom remains the open target |
 
 OQ-04-OQ-01 is the **elementary Selberg–Erdős 1949 PNT** approach to
@@ -18,7 +18,41 @@ discharging that parent axiom (no complex analysis).
 
 ## Iteration log
 
-### Iter 3 — 2026-05-14 (this session, PR pending)
+### Iter 4 — 2026-05-16 (this session, PR pending)
+
+**Result**: Closes the literal Möbius–log form deferred from Iter 3:
+
+```
+Λ₂(n) = Σ_{d ∣ n} μ(d) · (Real.log (n/d : ℕ))²    (n > 0).
+```
+
+One new theorem (file grows 312 → 325 LOC, 15 → 16 theorems, 0 sorries,
+0 axioms maintained):
+
+- `selbergLambda2_eq_moebius_log_sq`: applies
+  `ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq` (Mathlib v4.26.0
+  `Mathlib/NumberTheory/ArithmeticFunction/Moebius.lean:240`) to Iter 3's
+  `sum_divisors_selbergLambda2_eq_log_sq`, then re-indexes
+  `divisorsAntidiagonal → divisors` via `Nat.sum_divisorsAntidiagonal`
+  (`Mathlib/NumberTheory/Divisors.lean:543`). Proof body ~8 LOC.
+
+**Build trap (worth recording for future Möbius-inversion lifts)**: the
+lift `∀ m > 0, ∑ i ∈ m.divisors, selbergLambda2 i = (Real.log m) ^ 2`
+must annotate `m : ℕ` explicitly. Without it, Lean infers `m : ℝ` from
+`Real.log m` (which accepts `ℝ` directly), then fails on `m.divisors`
+("Real.divisors" not found) and rejects
+`sum_divisors_selbergLambda2_eq_log_sq hm` (expects `0 < ?m : ℕ`). Fix
+is a single-token addition (`∀ m : ℕ, 0 < m → ...`). General pattern:
+any iff-form Möbius-inversion lift in this file should type-annotate
+the bound `ℕ` variable when the RHS coerces through `Real.log`.
+
+**Build verification**: `./proofs/scripts/docker-build.sh
+Proofs.ChebyshevBoundsOQ04OQ01` reports clean
+`[7744/7744] Built Proofs.ChebyshevBoundsOQ04OQ01 (51s)` after 2 Docker
+iterations on base SHA `8a3cda556b6` against Mathlib v4.26.0 pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+### Iter 3 — 2026-05-14 (PR #19092 merged 2026-05-15T22:59:33Z)
 
 **Result**: Closes the central algebraic step of the elementary PNT
 strategy — Selberg's **dual identity**
@@ -115,54 +149,70 @@ open target.
 
 ## Blockers
 
-None. Iter 4 (Möbius inversion of the dual identity to the "original"
-form `Λ₂(n) = Σ_{d ∣ n} μ(d) · log²(n/d)`) has clear Mathlib API
-(`ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq`), no exotic
-typeclass machinery needed.
+None. Iter 5 (Selberg's symmetry formula
+`Σ_{n ≤ N} Λ₂(n) = 2N · log N + O(N)`) is the next analytic step.
+Requires either: (a) a Mathlib-internal summation-by-parts framework
+specialised to `Λ`-weighted sums (Mathlib v4.26.0 has only
+`Finset.sum_Ioc_consecutive` and `summation_by_parts` lemmas in
+`Mathlib/Analysis/MeanInequalitiesPow.lean` — neither directly
+applicable), or (b) a hand-rolled `Abel`-style derivation using
+Iter 4's identity as the launching point. Recommended path is (b) for
+Iter 5a (the leading-term `2N log N`) and a separate Iter 5b for the
+`O(N)` error via the Möbius hyperbola bound.
 
 ## Next Action
 
-**Iter 4 — Möbius-inverted "original" form**: prove
+**Iter 5a — Selberg's symmetry formula, leading term**: prove
 
 ```
-Λ₂(n) = Σ_{d ∣ n} μ(d) · (log(n/d))²        (for n ≥ 1)
+Σ_{n ≤ N} Λ₂(n) = 2 N · log N + O(N).
 ```
 
-by applying `ArithmeticFunction.sum_eq_iff_sum_mul_moebius_eq` to the
-Iter 3 dual identity `sum_divisors_selbergLambda2_eq_log_sq`, then
-re-indexing `divisorsAntidiagonal` → `divisors` via
-`Nat.map_div_right_divisors`. Estimated ~15 LOC.
+Starting from Iter 4's `selbergLambda2_eq_moebius_log_sq`, sum over
+`n ≤ N` and swap the order to get
 
-After Iter 4, the remaining roadmap is:
+```
+Σ_{n ≤ N} Λ₂(n) = Σ_{d ≤ N} μ(d) · Σ_{m ≤ N/d} (log m)²
+```
 
-- **Iter 5–6**: Selberg's symmetry formula
-  `Σ_{n ≤ N} Λ₂(n) = 2N log N + O(N)` via summation by parts +
-  Möbius hyperbola bound for the error term.
-- **Iter 7+**: Erdős finishing argument bridging
-  `S₂(N) → ψ(N) ∼ N`, discharging `chebyshevPsi_asymptotic`.
+(this is the standard "Möbius hyperbola" trick). The inner sum
+`Σ_{m ≤ x} (log m)² = x · (log x)² − 2 x · log x + 2 x + O(log²x)`
+follows from integration by parts on `log²` (a smooth monotone-control
+estimate; cf. Tenenbaum I.6.2). The leading-term contribution
+`2 N · log N` comes from the `−2 x · log x` term times
+`Σ_{d ≤ N} μ(d) / d = O(1)` (Mertens). Estimated ~80–120 LOC for the
+leading term alone; the `O(N)` error term is comparable.
+
+After Iter 5, the remaining roadmap is:
+
+- **Iter 6**: clean up the error-term `O(N)` (Möbius hyperbola bound).
+- **Iter 7+**: Tauberian step (Erdős–Selberg combinatorial finishing
+  argument), discharging `chebyshevPsi_asymptotic`.
 
 ## Attempt Counts
 
-- Total attempts: 3 (Iter 1, Iter 2, Iter 3)
-- Current approach attempts: 3 (Selberg–Erdős elementary)
+- Total attempts: 4 (Iter 1, Iter 2, Iter 3, Iter 4)
+- Current approach attempts: 4 (Selberg–Erdős elementary)
 - Approaches tried: 1
 
-## Race awareness (this Iter 3)
+## Race awareness (this Iter 4)
 
 `gh pr list -R rjwalters/lean-genius --search "chebyshev-bounds-oq-04-oq-01 in:title" --state open`
-at session start returned 1 OPEN PR (#17689, CONFLICTING since
-2026-05-12T22:13Z, superseded by merged #17690). Iter 3 touches:
+at session start returned 0 OPEN PRs (Iter 3 PR #19092 merged
+2026-05-15T22:59:33Z, S4 PREP #19171 merged 2026-05-15T22:56:46Z,
+stale #17689 CLOSED). Iter 4 touches:
 
-- `proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean` (new lemmas in
-  Iter-3-marked section after `selbergLambda2_prime`; existing Iter 1/2
-  content unchanged except `Nat.divisors_prime` → `Nat.Prime.divisors`
-  at line 191)
-- `proofs/Proofs/ChebyshevBoundsOQ04.lean` (1-LOC parent regression
-  fix at line 298)
+- `proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean` (+24/-12 lines:
+  new theorem `selbergLambda2_eq_moebius_log_sq` added after
+  `sum_divisors_selbergLambda2_eq_log_sq`; Future Work docstring
+  pruned to remove the now-closed Iter 4 entry)
 - `src/data/research/problems/chebyshev-bounds-oq-04-oq-01.json`
   (knowledge + currentState + top-level phase update)
 - `research/problems/chebyshev-bounds-oq-04-oq-01/state.md` (this file)
+- `src/data/proofs/chebyshev-bounds-oq-04-oq-01/meta.json`
+  (`lineCount` 230 → 325, `theoremCount` 12 → 16, conclusion +
+  originalContributions updated for Iter 3 + Iter 4)
+- `research/problems/chebyshev-bounds-oq-04-oq-01/sessions/2026-05-16-s5-iter4-act-moebius-log-literal.md` (new)
 
-No file overlap with stale #17689 — the parent fix and rename are
-incidental to Iter 3, and #17689's "Iter 2 prime values" content was
-already merged via #17690 (verified during pre-claim race check).
+Pre-push re-check (per `feedback_researcher_preclaim_open_pr_check_avoids_s3_act_duplicate.md`):
+will re-run `gh pr list` immediately before `git push`.
