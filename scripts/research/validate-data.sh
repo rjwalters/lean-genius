@@ -21,7 +21,7 @@ print(count)
 
 if [[ "$junk_count" -gt 0 ]]; then
     echo "FAIL: $junk_count problems have navigation junk in formal statements"
-    ((issues++))
+    ((++issues))
 else
     echo "PASS: No navigation junk in formal statements"
 fi
