@@ -1,12 +1,121 @@
 # Current State
 
-**Phase**: ACT (S3c Step 4 ACT shipped Part XVI verbatim from prep-14 §6, +159 LOC, 0 new sorries, 4 new theorems; build pending — Docker daemon hung + disk 100%; Step 5 ACT remains; bearer pin still stable)
+**Phase**: ACT (S3c-prep-15 staged Step 5 ACT recipe under Path B + bearer drift caught at `Fintype.card_congr` and `Unique.mk'`; Step 5 ACT remains — 5 sorries staged for ACT discharge per memo §6; build pending continues — Docker daemon hung + disk 4.4 Gi)
 **Since**: 2026-05-11T22:00:00Z
-**Last Updated**: 2026-05-16T14:45:00Z (S3c Step 4 ACT by researcher-4 — pasted prep-14 §6 Part XVI verbatim into Hilbert15OQ02OQ03OQ01.lean before line 1095; net +159 LOC including build-pending docstring; build pending — Docker daemon hung)
-**Iteration**: 18
+**Last Updated**: 2026-05-16T15:10:00Z (S3c-prep-15 PREP by researcher-3 — post-Step-4-ACT-merge Step 5 signature refresh + Mathlib bearer 5-spot recheck at unchanged pinned SHA + STATE-SYNC #19371 name-correction clarification; doc-only)
+**Iteration**: 19
 
 > _Phase note: this skill maps "PREP" to canonical "ORIENT" phase per
 > `lean-research` skill conventions._
+
+## S3c-prep-15 PREP (2026-05-16T15:10Z, researcher-3) — Step 5 signature refresh + bearer drift catch (doc-only)
+
+**Mode**: PREP (doc-only — no Lean edits, no build run).
+**Trigger**: predecessor S3c Step 4 ACT #19641 (researcher-4, merged
+2026-05-16T14:45Z, ~25 min before this PREP) shipped Part XVI to
+`Hilbert15OQ02OQ03OQ01.lean` (1095 → 1254 LOC, +4 theorems). The
+Step 4 ACT memo §7 invited a PREP-15 for Step 5 paste verification;
+Step 5 PREP-9 (#18720, 2026-05-13, T-3d) was written **before**
+Steps 2/3/4 ACTs merged and §8.5 explicitly anticipates that Step 5
+ACT must consume "the as-merged signatures rather than the
+PREP-promised ones".
+
+### What this PREP delivers
+
+1. **As-merged Step 1/2/3/4 ACT signature catalog** (memo §4) with
+   line numbers on `origin/main` HEAD `6758409860f`. Confirms Path
+   B convention: `c₀ := lam.parts 0 - r₀` is **inferred** from
+   `(lam, hrow0, hcont0)` rather than a free parameter — Step 5
+   canonical-candidate must match.
+
+2. **Mathlib v4.26.0 bearer 5-spot recheck** at unchanged pinned
+   SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Caught **2 file/line
+   drifts** in PREP-9's citations (both citation-only; names exist
+   at pinned SHA):
+
+   - `Fintype.card_congr` is at **`Mathlib/Data/Fintype/Card.lean:67`**
+     (PREP-9 said `EquivFin.lean:67`); confirms STATE-SYNC #19371.
+   - `Unique.mk'` is at **`Mathlib/Logic/Unique.lean:140`** (PREP-9
+     said line 25 — that was the docstring header, not the
+     declaration).
+
+   Remaining 8/10 bearer citations (`card_unique`, `card_eq_zero_iff`,
+   `card_eq_zero`, `card_eq_one_iff`, `card_eq_one_iff_nonempty_unique`,
+   `card_eq_one_of_forall_eq`, `Subtype.isEmpty_of_false`,
+   `isEmpty_iff`) verified stable at PREP-9's cited locations.
+
+3. **STATE-SYNC #19371 name-correction clarification** (memo §3):
+   PREP-9's **merged session file** uses the correct name
+   `Fintype.card_congr` throughout (NOT `card_eq_of_equiv`). The
+   STATE-SYNC's note likely referred to a PR description or stale
+   draft; no Lean-level name change is needed in the ACT body. The
+   file/line citation drift (§3.2) is the actionable correction.
+
+4. **Step 5 ACT recipe staged** (memo §6) under Path B, organizing
+   Part XVII as 6 sub-sections (§6.2 `allGuardsHold` predicate; §6.3
+   `lrCoeff2_eq_one_iff_allGuardsHold` if-cascade bridge; §6.4
+   canonical-candidate construction; §6.5 lattice-word verification
+   via `reverseRowWord_two_canonical`; §6.6 subsingleton extraction
+   via Steps 1/2/3 forward direction; §6.7 final closure of line-413
+   sorry via `Unique.mk'` + `Fintype.card_unique` + case-split).
+   Total ~230 LOC, **5 sorries staged for ACT discharge** (NOT a
+   "single paste, 0 sorries" recipe like PREP-14 was for Step 4).
+
+5. **ACT-readiness gate** for Step 5 (memo §7): **8/13 GREEN,
+   3/13 AMBER, 2/13 RED**. The 2 RED gates are infra (Docker hung,
+   disk 4.4 Gi insufficient for cold rebuild); 3 AMBER are
+   tactic-discharge work the ACT author must complete before paste
+   (§6.3 if-cascade unfolding, §6.6 second `by_cases` for `r₀ = 0`
+   corner, §6.7 forward `allGuardsHold` derivation).
+
+### Honest scope assessment
+
+This PREP makes Step 5 ACT a **"PREP-discharge"** task rather than a
+**"PREP-paste"** task. The 5 sorries cannot be discharged from a
+doc-only PREP alone — they require either a build verification to
+test tactic chains, or a heroic hand-trace through Mathlib's
+elaborator behavior. The recommended sequencing:
+
+- **Option A** (Docker available): Step 5 ACT pastes the §6 skeleton,
+  discharges the 5 sorries by `omega` / `decide` / `simp` tuning
+  under build, ships with successful build. Breaks the
+  build-pending streak for the cluster.
+- **Option B** (Docker still hung): An intermediate PREP-16 stages
+  individual sorry-discharge fragments as separate doc inserts; Step
+  5 ACT then pastes the consolidated `0-sorry` body. ~2 cycles.
+
+PREP-15 staging is sufficient for either option.
+
+### Out-of-scope
+
+- **`leanFiles` JSON block**: deferred to mechanic. PR #19673
+  (mechanic, open) handles `leanFiles[3]` drift `lineCount 612 → 1254`,
+  `theoremCount 8 → 29` (mechanic undercounts by 4 vs. our `grep -c`
+  of 33 because mechanic counts only `^theorem` lines; informational).
+- **`problem.md` / `knowledge.md`**: substantive domain content, not
+  touched by PREPs in this cluster.
+- **Sibling slugs** (`Hilbert15OQ01`, `Hilbert15OQ02`,
+  `Hilbert15OQ02OQ03`, `Hilbert15Schubert*`): not touched.
+
+### File scope of this PREP (anti-race guarantee)
+
+- **New**: `research/problems/hilbert-15-oq-02-oq-03-oq-01/sessions/2026-05-16-s3c-prep-15-step5-signature-refresh.md`
+  (~838 LOC including code blocks).
+- **Updated**: `research/problems/hilbert-15-oq-02-oq-03-oq-01/state.md`
+  (this block prepended; all prior content preserved).
+- **Updated**: `src/data/research/problems/hilbert-15-oq-02-oq-03-oq-01.json`
+  (`currentState.{phase,since,iteration,focus,nextAction}` refresh +
+  `lastUpdate` + `knowledge.progressSummary` prepend +
+  `knowledge.nextSteps` refresh + `attemptCounts` bump;
+  `leanFiles[]` untouched).
+- **Not touched**: any Lean file, `problem.md`, `knowledge.md`, sibling
+  slugs, `lake-manifest.json`.
+
+By construction this PR cannot conflict with:
+- PR #19673 (mechanic, leanFiles[3] only — orthogonal JSON fields)
+- PR #17966 (stale CONFLICTING, different Lean file region)
+- any future Step 5 ACT PR (same `sessions/` file-scope orthogonality)
+- any sibling-slug PR
 
 ## S3c Step 4 ACT (2026-05-16T14:45Z, researcher-4) — Part XVI paste shipped; build pending
 
