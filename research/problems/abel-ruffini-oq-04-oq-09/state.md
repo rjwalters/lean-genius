@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: PREP (S5 STATE-SYNC absorbed; S6 ACT GATED on Docker daemon liveness + `proofs/.lake` symlink repair)
-**Since**: 2026-05-16T<S6-PREP-merge-UTC> (S6 PREP merge — this PR)
-**Iteration**: 6 (S1 OBSERVE, S2 PREP, S2b STATE-SYNC, S4 PREP V₄+S₃ audit, S3 PREP cyclic audit, S5 STATE-SYNC, S6 PREP namespace+INFRA correction)
-**Researcher**: researcher-3 (S1); researcher-10 (S2 PREP); researcher-4 (S2b STATE-SYNC); researcher-9 (S4 PREP V₄+S₃ audit); researcher-8 (S3 PREP cyclic audit; S5 STATE-SYNC); researcher-11 (S6 PREP, this PR)
+**Phase**: PREP (S6 PREP closed namespace cite; S7 STATE-SYNC absorbs G7 disk AMBER → RED + reaffirms G8 + G9; S7 ACT remains GATED on host-side Docker daemon liveness + `proofs/.lake` symlink repair + disk cleanup)
+**Since**: 2026-05-16T18:25:00Z (S7 STATE-SYNC merge — this PR)
+**Iteration**: 7 (S1 OBSERVE, S2 PREP, S2b STATE-SYNC, S4 PREP V₄+S₃ audit, S3 PREP cyclic audit, S5 STATE-SYNC, S6 PREP namespace+INFRA correction, S7 STATE-SYNC G7 disk RED escalation)
+**Researcher**: researcher-3 (S1); researcher-10 (S2 PREP); researcher-4 (S2b STATE-SYNC); researcher-9 (S4 PREP V₄+S₃ audit); researcher-8 (S3 PREP cyclic audit; S5 STATE-SYNC); researcher-11 (S6 PREP); researcher-12 (S7 STATE-SYNC, this PR)
 
 > **Phase taxonomy note** (S5 STATE-SYNC, researcher-8): the `lean-research`
 > skill's phase taxonomy maps `OBSERVE → ORIENT → ACT → COMPLETED`. This slug
@@ -16,7 +16,28 @@
 
 ## Current Focus
 
-**S6 PREP (this PR, researcher-11, 2026-05-16)** — doc-only correction
+**S7 STATE-SYNC (this PR, researcher-12, 2026-05-16T18:25Z)** — doc-only
+infra-delta absorption. Claim-random landed researcher-12 on this slug
+T+3h49min after S6 PREP (PR #19633) merged. Pre-flight finds **one
+substantive delta** vs S6 PREP: **G7 host-disk avail dropped from
+~6.5 Gi (AMBER) to 3.3 Gi (RED)**, below same-day soft floors set by
+shannon-channel S18a-1 (5.8 Gi) and ballot-problem S6 ACT (5.4 Gi).
+G8 (Docker daemon hung) and G9 (`proofs/.lake` circular self-symlink)
+remain RED unchanged. Mathlib SHA + 1 bearer spot-check
+(`ShafarevichFeasibility.cyclic_realizable` @
+`AbelRuffiniGaloisExtensionsOQ05OQ01.lean:65`) both byte-stable at
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. The S6 PREP §3.2 paste
+body remains recipe-frozen; only the **gate state** has changed.
+ACT-readiness gate moves from S6 PREP's 5/9 GREEN, 1/9 AMBER, 3/9 RED
+to **5/9 GREEN, 0/9 AMBER, 4/9 RED**. S7 ACT remains blocked. Next
+agent picker recommendation: release-and-cycle until G7 ≥ 5.4 Gi
+(same-day soft floor) AND host-side Docker + symlink fixes (per
+§6 picker decision matrix in
+sessions/2026-05-16-s7-state-sync-disk-red-escalation-bearer-reaffirm.md).
+
+---
+
+**S6 PREP (researcher-11, 2026-05-16, PR #19633)** — doc-only correction
 of two pre-S6-ACT issues surfaced during paste-body pre-flight:
 
 1. **Namespace-cite drift** in the S5 STATE-SYNC paste-ready cyclic
@@ -28,7 +49,7 @@ of two pre-S6-ACT issues surfaced during paste-body pre-flight:
    `unknown identifier 'AbelRuffiniGaloisExtensionsOQ05OQ01.cyclic_realizable'`.
    S3 PREP §4 had the namespace right (`open ShafarevichFeasibility`
    + `cyclic_realizable n hn`); S4 PREP §4 regressed; S5 STATE-SYNC
-   inherited the regression. Fix in this PR: rewrite Next Action paste
+   inherited the regression. Fix in S6 PREP: rewrote Next Action paste
    body to `ShafarevichFeasibility.cyclic_realizable n hn`
    (fully-qualified, 1-word delta).
 
@@ -229,14 +250,20 @@ For S6 ACT (researcher-scope: 0 of 3 actionable from inside the loom worktree):
   it correctly) or manually repoint to `~/.elan/toolchains/...` if a
   toolchain-specific target is expected. Not researcher-scope.
   Predates today's claims (`stat` shows `May 14 20:47:51 2026`).
-- **B3 AMBER — Host-disk pressure** (S5 STATE-SYNC pre-flight,
-  carried forward): `/System/Volumes/Data` at 100% capacity, ~6.5 Gi
-  avail (trending down from S5's ~7.2 Gi an hour ago). Per
+- **B3 RED — Host-disk pressure** (S7 STATE-SYNC pre-flight,
+  ESCALATED from AMBER): `/System/Volumes/Data` at 100% capacity,
+  **3.3 Gi avail** (trending down from S6 PREP's 6.5 Gi and S5
+  STATE-SYNC's 7.2 Gi; −3.2 Gi over 3h49min). Below same-day soft
+  floors set by adjacent build-pending ACTs: shannon-channel S18a-1
+  (5.8 Gi) and ballot-problem S6 ACT (5.4 Gi). Per
   `MEMORY.md` `feedback_researcher_docker_build_disk_full_ship_build_pending_per_s5_act_precedent.md`,
-  ld.lld I/O errors fire below ~200 Mi free. S6 ACT agent should
-  `df -h` before Docker invoke; if avail < 1 Gi, ship cyclic row as
-  `build pending` per PR #18707 precedent and re-build at a later
-  cleaner window.
+  ld.lld I/O errors fire below ~200 Mi free, but recent precedent
+  shows the safety-margin floor for build-pending ACTs is ~5.4 Gi
+  (lake link transients can chew 3-4 Gi headroom). At 3.3 Gi the
+  margin is no longer comparable. **Recovery**: host-side cleanup —
+  `docker system prune -af --volumes` (5-20 Gi reclaim potential)
+  AND/OR `rm proofs/.lake && lake build` (concurrent G9 fix; recreates
+  .lake correctly). Not researcher-scope.
 
 ## Risks
 
@@ -370,7 +397,7 @@ on main. Slug remains research-only through S6–S8.
   1/8 AMBER (Docker host-disk pressure — infrastructure-only).
   ~450-LOC sessions memo. **No Lean, no knowledge.md, no problem.md,
   no gallery edits.**
-- **S6 PREP** (2026-05-16, researcher-11, this PR) — doc-only
+- **S6 PREP** (2026-05-16, researcher-11, PR #19633) — doc-only
   correction surfaced during S6 ACT paste-body pre-flight:
   (1) namespace-cite drift in S5 STATE-SYNC §3.1 paste body
   (`AbelRuffiniGaloisExtensionsOQ05OQ01.cyclic_realizable` — module
@@ -391,6 +418,62 @@ on main. Slug remains research-only through S6–S8.
   `autEquivPow` re-verified at `Mathlib/NumberTheory/Cyclotomic/Gal.lean:93`
   via `git show <pin>:...`. **No Lean, no knowledge.md, no problem.md,
   no gallery edits.**
+- **S7 STATE-SYNC** (2026-05-16, researcher-12, this PR) — doc-only
+  infra-delta absorption T+3h49min after S6 PREP merge. **One**
+  substantive new delta: G7 host-disk avail dropped from S6 PREP's
+  ~6.5 Gi (AMBER) to 3.3 Gi (RED), below same-day soft floors set by
+  shannon-channel S18a-1 (5.8 Gi, PR #19655) and ballot-problem S6
+  ACT (5.4 Gi, PR #19675). G8 Docker daemon hung and G9
+  `proofs/.lake` circular self-symlink remain RED unchanged. Mathlib
+  pin verified unchanged at
+  `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; 1-bearer spot-check on
+  `ShafarevichFeasibility.cyclic_realizable` (line 65 of
+  `Proofs/AbelRuffiniGaloisExtensionsOQ05OQ01.lean`) byte-stable. S6
+  PREP §3.2 paste body remains recipe-frozen (no edit). ACT-readiness
+  gate refreshed from S6 PREP's 5/9 GREEN, 1/9 AMBER, 3/9 RED to
+  5/9 GREEN, 0/9 AMBER, 4/9 RED. 5-row picker decision matrix
+  captured in sessions/2026-05-16-s7-state-sync-disk-red-escalation-bearer-reaffirm.md §6.
+  Recommendation for next agent: release-and-cycle until G7 ≥ 5.4 Gi
+  AND host-side Docker + symlink fixes. **No Lean, no knowledge.md,
+  no problem.md, no gallery edits, no leanFiles[] edits.**
+
+## Honest Calibration (S7 STATE-SYNC)
+
+This S7 STATE-SYNC:
+
+- Adds 0 Lean to the project.
+- Closes 0 sorries.
+- Resolves 0 of the open mathematical questions.
+- States 0 new theorems.
+- Does NOT verify any S3–S6 PREP/STATE-SYNC claim by Docker build (host
+  infra remains RED, escalated from 3/9 RED to 4/9 RED).
+- Does NOT re-walk all 9 bearer SHAs (S5 STATE-SYNC's count carries
+  forward at unchanged Mathlib SHA; 1 spot-check in §4.2 of session
+  memo suffices).
+- Does NOT add a new ACT recipe (S6 PREP §3.2 paste body remains
+  recipe-frozen; only the gate state changed).
+- Does NOT change the slug's recommended sequencing (cyclic → V₄ → S₃
+  → gallery; D₄/A₄/S₄ deferred).
+
+It does:
+
+- Escalate G7 host-disk pressure from AMBER (~6.5 Gi) to RED (3.3 Gi)
+  with same-day soft-floor evidence (shannon 5.8 Gi, ballot 5.4 Gi).
+- Reaffirm G8 + G9 as standing REDs at this claim window.
+- Spot-check the cyclic-row proof-engine bearer at the unchanged
+  Mathlib SHA, confirming the S6 PREP §3.2 paste body remains valid.
+- Refresh the ACT-readiness gate from 5/9 GREEN, 1/9 AMBER, 3/9 RED
+  to 5/9 GREEN, 0/9 AMBER, 4/9 RED.
+- Capture a 5-row picker decision matrix so the next agent can decide
+  between S7 ACT (build-pending), STATE-SYNC, and release-and-cycle
+  without re-deriving the disk-floor evidence.
+- Document the host-side recovery path that would discharge G7 + G9
+  in one combined `rm proofs/.lake && lake build` (G8 requires
+  separate Docker Desktop restart).
+
+The S7 ACT verb remains gated on host-side fixes outside researcher
+scope. This PR prepares the documentation surface so the next agent
+picks up the gate state without ambiguity about AMBER vs RED.
 
 ## Honest Calibration (S6 PREP)
 
