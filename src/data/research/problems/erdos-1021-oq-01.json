@@ -1,42 +1,57 @@
 {
   "slug": "erdos-1021-oq-01",
   "title": "Does ex(n, G_k) = o(n^{3/2}) for any k >= 4",
-  "phase": "NEW",
+  "phase": "ORIENT",
   "status": "in-progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in graph theory: Does ex(n, G_k) = o(n^{3/2}) for any k >= 4.",
-    "whyMatters": []
+    "formal": "weakConjectureK4 := ∀ k ≥ 4, isLittleO (fun n => exGk k n) (fun n => (n : ℝ) ^ (3/2 : ℝ))",
+    "plain": "OQ-01 (weak form of Erdős #1021): for every k ≥ 4, is ex(n, G_k) = o(n^{3/2})? Here G_k is the bipartite graph with vertex sets {y_1,...,y_k} and {z_1,...,z_C(k,2)}, each z_j joined to exactly one pair of y vertices. KST trivial bound gives ≤ O(n^{3/2}); whether ≤ o(n^{3/2}) holds is open for k ≥ 4. The k=3 case (G_3 ≅ C_6) is solved by Bondy-Simonovits at exponent 7/6.",
+    "whyMatters": [
+      "Weak form of the unresolved Erdős #1021 (open since 1980s)",
+      "Sharpens the KST trivial bound ex(n,G_k) ≤ C·n^{3/2}; o(·) would be a genuine improvement",
+      "Lower bound 3/2 − 1/(k−1) approaches 3/2 as k → ∞ (probabilistic method), so the gap shrinks but never closes"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "oq01_from_weak: weak_conjecture → weakConjectureK4 (Erdos1021OQ01.lean L62)",
+      "oq01_from_strong: erdos_1021_conjecture → weakConjectureK4 (Erdos1021OQ01.lean L67)",
+      "big_O_not_implies_little_o: O(n^{3/2}) ≠ o(n^{3/2}) (separates KST from OQ-01)",
+      "lower_bound_exponent_approach: 3/2 − 1/(k−1) < 3/2 (Erdos1021OQ01.lean L153)"
+    ],
+    "open": [
+      "L112 oq01_strictly_beyond_kst: o() → uniform O() bound (MECHANICAL, ~15-25 LOC)",
+      "L127 k3_strong_implies_weak: blocked on parent k3_case_solved (parent sorry)",
+      "L136 ex_not_obviously_monotone_in_k: HARD; may be unprovable as stated (pair-graph monotonicity argument supports the original)",
+      "L165 lower_bound_exponent_tendsto: 1/(k−1) → 0 (MECHANICAL, ~8 LOC paste-ready)"
+    ],
+    "goal": "OQ-01 unresolvable in Lean (depends on unproved combinatorial result); achievable: discharge 2 mechanical sorries (L112 + L165), document honest residuals."
   },
   "currentState": {
     "phase": "ORIENT",
-    "since": "2026-03-30T21:46:38.106Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "since": "2026-05-16T09:20:00Z",
+    "iteration": 2,
+    "focus": "S2 PREP complete (doc-only). Catch-up from 2026-03-30 NEW bootstrap to current Lean reality (8 thms, 2 axioms, 4 sorries since pre-2026-04-03 SCAFFOLD). 4-sorry inventory classified MECHANICAL (L112 + L165) / BLOCKED (L127 on parent k3_case_solved) / HARD-or-unprovable-as-stated (L136). S3 ACT plan targets L165 with paste-ready ~8-LOC Filter.Tendsto chain.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "S3 ACT (next session): discharge sorry #4 at L165 (lower_bound_exponent_tendsto) via Tendsto.inv_tendsto_atTop chain (paste-ready ~8 LOC per sessions/2026-05-16-s2-prep-orient-survey.md §3.1; 2-3 Docker iters expected for inv_tendsto bearer name resolution; build-pending fallback if disk hits 100%).",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
       "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY+FORMALIZATION: Created OQ-01 formalization. Established logical hierarchy and key bounds. Problem open for k≥4. 2 axioms (known results), 4 sorries.",
+    "progressSummary": "SURVEY+FORMALIZATION: Created OQ-01 formalization. Established logical hierarchy and key bounds. Problem open for k≥4. 2 axioms (known results), 4 sorries. S2 PREP (2026-05-16): bootstrap orientation. 4-sorry inventory classified MECHANICAL (L112 oq01_strictly_beyond_kst — ~15-25 LOC Finset.sup ceiling extraction; L165 lower_bound_exponent_tendsto — ~8 LOC Filter.Tendsto chain, paste-ready) / BLOCKED on parent k3_case_solved sorry (L127 k3_strong_implies_weak) / HARD-or-unprovable-as-stated (L136 ex_not_obviously_monotone_in_k — pair-graph monotonicity argument suggests the original assertion is true; theorem may need reformulation). Mathlib bearer survey for L165 chain: tendsto_natCast_atTop_atTop + Filter.Tendsto.atTop_add + Tendsto.inv_tendsto_atTop + Filter.Tendsto.sub (variant name TBD at first build iter). S3 ACT plan: L165 only (+6 LOC net, 2-3 Docker iters expected, single-iter plausible under 6.9Gi disk avail with build-pending fallback per memory trap _docker_build_disk_full_…).",
     "builtItems": [
       "Created Erdos1021OQ01.lean with 8 theorems, 2 axioms, 4 sorries",
       "Defined weakConjectureK4 = ∀ k ≥ 4, isLittleO (exGk k) n^{3/2}",
       "Proved strong→weak→OQ-01 chain",
       "Proved O(n^{3/2}) ≠ o(n^{3/2}) (separating trivial bound from the question)",
       "Proved lower bound exponent < 3/2 and approaches 3/2 as k→∞",
-      "Created src/data/proofs/erdos-1021-oq-01/ gallery entry"
+      "Created src/data/proofs/erdos-1021-oq-01/ gallery entry",
+      "S2 PREP (2026-05-16-s2-prep-orient-survey.md, ~440 LOC): orientation survey + 4-sorry inventory + Mathlib bearer survey + S3 ACT paste-ready ~8-LOC chain for L165 + S4 ACT draft for L112 (~15-25 LOC) + S5+ deferred work documented (L127 parent unblock, L136 reformulation); state.md bootstrapped from NEW iter 1 → ORIENT iter 2; JSON top-level phase NEW → ORIENT + problemStatement/knownResults populated"
     ],
     "insights": [
       "OQ-01 asks: for k≥4, does ex(n,G_k) = o(n^{3/2})?",
@@ -49,7 +64,11 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Try to prove kst_trivial_bound from scratch (Kővári-Sós-Turán in Mathlib?)",
+      "S3 ACT: discharge sorry #4 at L165 (lower_bound_exponent_tendsto) via Filter.Tendsto chain (paste-ready ~8 LOC, 2-3 Docker iters expected, build-pending fallback)",
+      "S4 ACT (deferred until disk ≥50Gi): discharge sorry #1 at L112 (oq01_strictly_beyond_kst) via Finset.sup ceiling extraction (~15-25 LOC, 3-5 Docker iters)",
+      "S5+ (deferred): convert parent k3_case_solved sorry to honest axiom (4-LOC parent edit), then discharge L127 (3-LOC mechanical)",
+      "S6+ (deferred): re-examine L136 ex_not_obviously_monotone_in_k theorem statement; pair-graph monotonicity argument supports the asserted negation being FALSE — consider reformulation or removal",
+      "Try to prove kst_trivial_bound from scratch (Kővári-Sós-Turán in Mathlib? — Mathlib.Combinatorics.SimpleGraph.DegreeSum may have KST infrastructure)",
       "Look for Mathlib lemmas on bipartite extremal numbers",
       "Check if probabilistic_lower_bound can be reduced to simpler existence claim"
     ]
@@ -72,7 +91,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T21:46:38.106Z",
-  "lastUpdate": "2026-03-30T21:46:38.106Z",
+  "lastUpdate": "2026-05-16T09:20:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
