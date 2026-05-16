@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "ORIENT",
-    "since": "2026-03-28T20:58:08-07:00",
-    "iteration": 2,
-    "focus": "S2 PREP complete (doc-only). Base cases pre-staged; architectural bridge identified; honest scope of remaining inductive step.",
+    "since": "2026-05-16T08:50:00Z",
+    "iteration": 3,
+    "focus": "S3 PREP complete (doc-only). d=0 paste-readiness re-confirmed at SHA 2df2f0150c (no bearer drift since S2). d=1 sketch upgraded: three sub-lemma bodies (polyDegOne_eq_C_mul_X_add_C 8 LOC, polyDegOne_coeff_one_ne_zero 7 LOC, rootsInInterval_polyDegOne 22 LOC, budanCount_polyDegOne 28-35 LOC) + main _natDegree_one 30-40 LOC (13-23 LOC of remaining signChangesInList / sign-of-product sorries). Honest LOC budget revised 40-60 → 100-120 (~2× upward, matches _postship_pivot_lands_on_audit_corrected_skeleton_… trap). ACT split: S4=minimal d=0+bridge (+12 LOC, single Docker iter, ship-as-build-pending fallback under 7.2Gi disk avail) and S5=substantial d=1+axiom+composed (+100-120 LOC, defer until disk ≥50Gi).",
     "blockers": [],
-    "nextAction": "S2 ACT: add import + d=0 theorem + d=1 sub-lemmas + _natDegree_ge_two residual axiom to DescartesRuleOfSignsOQ02OQ01.lean",
+    "nextAction": "S4 ACT (minimal, next session, single-Docker-iter): add `import Proofs.DescartesRuleOfSignsOQ02` + open new `namespace BudanTheorem` block + paste 4-line `_natDegree_zero` theorem from S2 PREP §3 (re-confirmed in S3 PREP §3). Run docker-build; if disk hits 100% mid-build, ship as build-pending with B1 blocker per memory trap _docker_build_disk_full_ship_build_pending_…. Defer S5 (d=1 sub-lemmas + main + residual axiom + composed; +100-120 LOC, 3-5 Docker iters expected) until disk avail ≥50Gi.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 3,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: S1 (#17193) added 5 iterDeriv structural lemmas; OQ02OQ01 now 192 LOC, 9 thms, 0 sorries, 0 axioms. S2 PREP (this session): bootstrapped problem.md / state.md / knowledge.md + session note with concrete d=0 base-case proof (4 lines) + d=1 skeleton (40-60 LOC) + Mathlib bearer audit + Rolle-vs-factor-out-root strategy comparison + architectural bridge (OQ02OQ01 must import OQ02 to access budanCount/rootsInInterval). Next: S2 ACT — add import + d=0 theorem + d=1 sub-lemmas, declaring _natDegree_ge_two as honest residual axiom.",
+    "progressSummary": "PROGRESS: S1 (#17193) added 5 iterDeriv structural lemmas; OQ02OQ01 now 239 LOC, 9 thms, 0 sorries, 0 axioms. S2 PREP (PR #18756): bootstrapped problem.md / state.md / knowledge.md + session note with concrete d=0 base-case proof (4 lines) + d=1 skeleton (40-60 LOC) + Mathlib bearer audit + Rolle-vs-factor-out-root strategy comparison + architectural bridge (OQ02OQ01 must import OQ02 to access budanCount/rootsInInterval). S3 PREP (this session, 2026-05-16): Mathlib bearer audit refresh at SHA 2df2f0150c (unchanged ≥9d) confirmed all S2 bearers + new bearers for d=1 (roots_X_add_C, roots_C_mul, derivative_C_mul / derivative_X / derivative_C / derivative_add — Mathlib has no monolithic derivative_C_mul_X_add_C or roots_linear); d=0 byte-paste-ready re-confirmed; d=1 sketch upgraded with sub-lemma proof bodies (polyDegOne_eq_C_mul_X_add_C 8 LOC, polyDegOne_coeff_one_ne_zero 7 LOC, rootsInInterval_polyDegOne 22 LOC, budanCount_polyDegOne 28-35 LOC, _natDegree_one 30-40 LOC; total 100-120 LOC); 13-23 LOC of remaining sorries in signChangesInList case-analyses and sign-of-product steps (documented per-step). Honest budget revised 2× upward. ACT split: S4=minimal d=0+bridge (+12 LOC, 1 Docker iter, ship-as-build-pending fallback under 7.2Gi disk pressure), S5=substantial d=1 (+100-120 LOC, defer until disk ≥50Gi).",
     "builtItems": [
       "Created DescartesRuleOfSignsOQ02OQ01.lean: proof scaffold with 5 theorems, 3 sorries",
       "Proved constant_no_roots base case",
@@ -39,7 +39,8 @@
       "S2 PREP: bootstrapped research/problems/descartes-rule-of-signs-oq-02-oq-01/{problem.md,state.md,knowledge.md} (slug previously had no research dir)",
       "S2 PREP: 2026-05-13-s2-prep-base-case-bridge.md — concrete d=0 base case proof, d=1 skeleton, Mathlib audit, strategy comparison (~400 LOC doc-only)",
       "S2 PREP: Mathlib bearer audit confirmed no Polynomial.budanCount/budanSequence/half-open-interval-root-counting API exists; OQ-02 locals are genuinely necessary",
-      "S2 PREP: small-case falsification of (X-r)*q sign-change conjecture on (X-1)(X+1) and (X-1)(X-3) — both consistent"
+      "S2 PREP: small-case falsification of (X-r)*q sign-change conjecture on (X-1)(X+1) and (X-1)(X-3) — both consistent",
+      "S3 PREP (2026-05-16-s3-prep-d1-pasteready.md): bearer audit refresh at SHA 2df2f0150c (no Mathlib drift since S2 PREP); d=0 byte-paste-ready re-confirmation; d=1 sub-lemma upgrade from sorries to paste-ready bodies (polyDegOne_eq_C_mul_X_add_C 8 LOC via as_sum_range_C_mul_X_pow; polyDegOne_coeff_one_ne_zero 7 LOC via leadingCoeff_ne_zero; rootsInInterval_polyDegOne 22 LOC via roots_C_mul + roots_X_add_C; budanCount_polyDegOne 28-35 LOC via composed derivative_* + signChangesInList case-analysis); main _natDegree_one 30-40 LOC assembly with case-split on r ∈ (a,b]; total revised LOC budget 100-120 (vs S2 PREP 40-60, ~2× upward); ACT-readiness gate S4 8/9 GREEN 1/9 AMBER (disk margin), S5 2/4 GREEN 2/4 RED (disk pressure); split-ACT plan minimal S4 (+12 LOC d=0+bridge) and substantial S5 (+100-120 LOC d=1+axiom+composed deferred until disk ≥50Gi)"
     ],
     "insights": [
       "Proof by strong induction on deg(p): base deg≤1 trivial, inductive step uses Rolle",
@@ -57,11 +58,9 @@
       "No (X-r) * q sign-change-preservation lemma at arbitrary evaluation points; Mathlib only has succ_signVariations_le_X_sub_C_mul which is coefficient-based"
     ],
     "nextSteps": [
-      "S2 ACT: add import Proofs.DescartesRuleOfSignsOQ02 to DescartesRuleOfSignsOQ02OQ01.lean",
-      "S2 ACT: paste verbatim 4-line budan_upper_bound_natDegree_zero proof (from session note §3)",
-      "S2 ACT: prove three d=1 sub-lemmas (polyDegOne_eq_X_aff, rootsInInterval_polyDegOne_eq_ite, budanCount_polyDegOne_eq_ite), then budan_upper_bound_natDegree_one (40-60 LOC)",
-      "S2 ACT: declare budan_upper_bound_natDegree_ge_two as honest residual axiom",
-      "S3 ACT (deferred): prove _natDegree_ge_two via Rolle induction + sign-change accounting (~100-200 LOC)"
+      "S4 ACT (minimal, single-Docker-iter): add `import Proofs.DescartesRuleOfSignsOQ02` + open new `namespace BudanTheorem` block + paste 4-line `_natDegree_zero` theorem (per S2 PREP §3 / S3 PREP §3, byte-paste-ready, bearer-confirmed at SHA 2df2f0150c). +12 LOC. Ship-as-build-pending fallback if disk hits 100% mid-build (memory trap _docker_build_disk_full_ship_build_pending_…)",
+      "S5 ACT (deferred until disk avail ≥50Gi): paste §§4.1-4.5 of 2026-05-16-s3-prep-d1-pasteready.md into namespace BudanTheorem: 3 private sub-lemmas + main _natDegree_one (~+95 LOC, includes 13-23 LOC of remaining signChangesInList/sign-of-product sorries) + residual `_natDegree_ge_two` axiom (4 LOC) + composed `_axiom_proved` theorem per S2 PREP §6 (~10 LOC). +100-120 LOC total. Expect 3-5 Docker iters.",
+      "S6 ACT (much later, after S4+S5 land): prove `_natDegree_ge_two` via Rolle induction + sign-change accounting (~100-200 LOC). See S2 PREP §5 for strategy comparison vs Mathlib factor-out-root pattern."
     ],
     "markdown": "# Knowledge Base: descartes-rule-of-signs-oq-02-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
@@ -83,7 +82,7 @@
     "mathlib": []
   },
   "started": "2026-03-29T04:28:18.977Z",
-  "lastUpdate": "2026-05-13T10:50:00Z",
+  "lastUpdate": "2026-05-16T08:50:00Z",
   "leanFiles": [
     {
       "path": "Proofs/DescartesRuleOfSigns.lean",
