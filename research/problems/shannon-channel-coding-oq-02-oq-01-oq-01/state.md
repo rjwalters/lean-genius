@@ -1,10 +1,66 @@
 # Current State
 
-**Phase**: ACT-PROGRESS
-**Since**: 2026-05-14T02:00:00Z
-**Iteration**: 11
+**Phase**: ACT-READY
+**Since**: 2026-05-16T01:10:00Z
+**Iteration**: 14
 
 ## Current Focus
+
+S14 STATE-SYNC (researcher-1, 2026-05-16) — **Post-S11/S12/S13 merge
+absorption + bearer drift recheck + ACT-readiness gate.** All three
+sibling PRs (#19061 S11 ACT parent-file unblocker MERGED 2026-05-15T23:27Z,
+#19240 S12 PREP paste-ready S12-light skeleton MERGED 2026-05-15T18:04Z,
+#19269 S13 PREP sibling audit + strict-form companion skeleton MERGED
+2026-05-15T18:02Z) have landed on `origin/main`. Both PREPs explicitly
+deferred state.md/JSON updates to "next STATE-SYNC iteration"; this
+session discharges them.
+
+**Bearer drift recheck post-#19061** (`+148/-69` on
+`proofs/Proofs/ShannonEntropy.lean`, 1 file): 6/6 anchor predictions
+from S12 PREP §5 line-shift map verified EXACT on origin/main
+`8a3cda556b63a` — `entropy_le_log_card` 195, `entropy_of_uniform_eq_log_card`
+233, `entropy_eq_log_card_iff_uniform` 379, `entropy_lt_log_card_iff_non_uniform`
+438, `chain_rule` 611, `strong_subadditivity` 852 (predicted "~852"; +79
+LOC net all interior to `strong_subadditivity` proof body below line 438).
+Mathlib pinned at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(v4.26.0), unchanged from S12/S13 PREP. Both this-file bearers'
+signatures byte-identical to S12 PREP §3 / S13 PREP §3.1 expected forms.
+
+**Paste-ready S15 ACT (Option A′)**: ship S12-light + S13 strict-form
+companion together in `proofs/Proofs/ShannonEntropy.lean` (~12-15 LOC,
+single Docker iter, ~25-35 min wall). Skeletons preserved verbatim from
+PREPs:
+
+```lean
+-- ~line 454 (S12-light, after S9):
+theorem entropy_eq_log_card_iff_eq_uniform {α : Type*} [Fintype α] [DecidableEq α]
+    [Nonempty α] {p : α → ℝ}
+    (hp : ∀ x, 0 ≤ p x) (hsum : ∑ x, p x = 1) :
+    shannonEntropy p = Real.log (Fintype.card α) ↔
+    p = (fun _ : α => (Fintype.card α : ℝ)⁻¹) :=
+  (entropy_eq_log_card_iff_uniform hp hsum).trans
+    ⟨funext, fun h x => congrFun h x⟩
+
+-- ~line 460 (S13, immediately after S12-light):
+theorem entropy_lt_log_card_iff_ne_uniform {α : Type*} [Fintype α] [DecidableEq α]
+    [Nonempty α] {p : α → ℝ}
+    (hp : ∀ x, 0 ≤ p x) (hsum : ∑ x, p x = 1) :
+    shannonEntropy p < Real.log (Fintype.card α) ↔
+    p ≠ (fun _ : α => (Fintype.card α : ℝ)⁻¹) :=
+  (entropy_lt_log_card_iff_non_uniform hp hsum).trans Function.ne_iff.symm
+```
+
+Together they complete a 2×2 max-entropy bi-implication matrix
+(pointwise/function × equality/strict). HoU-safety audited (S13 PREP §2.3
++ §3.3); mathematical correctness re-derived (this session §3.4) +
+4-case numerical cross-check (§9). v4.26.0 trap surface check (§6) shows
+0 of the 9 S11 trap patterns apply to the term-mode `Iff.trans`
+insertions. Trap-free, paste-ready, ready to ship.
+
+Backup plan if joint Docker fails: split into S15a (S12-light only) +
+S15b (S13 only). Both have independent paste-ready skeletons.
+
+### Prior S11 Focus (archived)
 
 S11 (researcher-8, 2026-05-14) — **Parent-file unblocker:
 `Proofs/ShannonEntropy.lean` v4.26.0 surface-drift repair.** Docker
