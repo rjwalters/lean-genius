@@ -1,19 +1,19 @@
 # Research State: spherical-law-of-sines-oq-03
 
 ## Current State
-**Phase**: SCAFFOLD (post-PREP)
+**Phase**: S3a-ACT (3 of 4 sorries closed; S3b PREP next)
 **Path**: route-A (law-of-cosines + algebra), **in-framework variant**
 **Since**: 2026-05-12T18:01:16Z (claim opened); S2 SCAFFOLD shipped 2026-05-14;
-S3 PREP shipped 2026-05-16
-**Iteration**: 3
+S3 PREP shipped 2026-05-16T01:08Z; S3a ACT shipped 2026-05-16T02:48Z
+**Iteration**: 4
 
 ## Current Focus
-S2 SCAFFOLD complete (this session): the new file
-`proofs/Proofs/SphericalLawOfSinesOQ03.lean` is created with imports,
-two helper-lemma statements, the spherical law of cosines stated in
-the parent's framework, and the boxed polynomial-form four-parts
-rule.  All four declarations are strategic sorries; Docker build is
-clean (3061 jobs).
+S3a ACT complete (this session): closed three strategic sorries in
+`proofs/Proofs/SphericalLawOfSinesOQ03.lean` per the S3 PREP plan
+(`cos_arcLen`, `sin_arcLen_nonneg`, `spherical_law_of_cosines_local`).
+File now has 1 strategic sorry remaining (`spherical_cotangent_rule_polynomial`,
+the boxed main theorem). Docker build clean: 3061 jobs, 0 errors, 1
+strategic-sorry warning (line 255).
 
 ## Active Approach
 **Route A, in-framework variant**: derive the cotangent rule from
@@ -37,9 +37,11 @@ trigonometric basics only.
 derivation.  Subsumed by the in-framework Route A variant above.
 
 ## Attempt Count
-- Total attempts: 2 (S2 SCAFFOLD shipped, build clean; S3 PREP doc-only)
+- Total attempts: 3 (S2 SCAFFOLD shipped, build clean; S3 PREP doc-only;
+  S3a ACT shipped, build clean, 3 of 4 sorries closed)
 - Current approach attempts: 1
-- Approaches tried: in-framework Route A scaffold; S3 PREP bearer pinning
+- Approaches tried: in-framework Route A scaffold; S3 PREP bearer pinning;
+  S3a ACT three-sorry discharge per PREP §4.1–§4.3 skeletons
 
 ## Blockers
 * None active.  The S2 ORIENT noted-blocker
@@ -56,36 +58,36 @@ derivation.  Subsumed by the in-framework Route A variant above.
 |-----------|----------------------------------------------------------------------|--------|
 | S1        | OBSERVE: problem.md, knowledge.md, state.md, JSON (doc-only)         | #18229 |
 | S2        | SCAFFOLD: SphericalLawOfSinesOQ03.lean — 4 strategic sorries         | #19102 |
-| S3 PREP   | Bearer pinning + per-sorry ACT skeletons + ACT readiness gate (doc)  | (this) |
+| S3 PREP   | Bearer pinning + per-sorry ACT skeletons + ACT readiness gate (doc)  | #19340 |
+| S3a ACT   | Discharged 3 of 4 sorries (cos_arcLen + sin_arcLen_nonneg + slc_local)| (this)|
 
-### S2 declarations (all strategic sorries)
+### Current Lean-file status (post-S3a ACT)
 
-| Declaration                              | Lean line | S3 ACT plan                            |
-|------------------------------------------|-----------|-----------------------------------------|
-| `cos_arcLen (u v) (hu : IsUnit3 u) ...`  | 123       | `Real.cos_arccos` + CS via `lagrange_identity` |
-| `sin_arcLen_nonneg (u v)`                | 137       | `Real.sin_nonneg_of_nonneg_of_le_pi` + arccos bounds (no hypotheses) |
-| `spherical_law_of_cosines_local A B C`   | 159       | `linear_combination` over `unit_sum C` |
-| `spherical_cotangent_rule_polynomial`    | 239       | apply `_local` twice + `_all_sq` + `linear_combination` |
+| Declaration                              | Lean line | Status     |
+|------------------------------------------|-----------|------------|
+| `cos_arcLen (u v) (hu) (hv)`             | 123       | **proved** (CS bound + Real.cos_arccos, ~14 LOC) |
+| `sin_arcLen_nonneg (u v)`                | 137-141   | **proved** (Real.sin_nonneg_of_nonneg_of_le_pi, ~3 LOC) |
+| `spherical_law_of_cosines_local A B C`   | 159-167   | **proved** (linear_combination over unit_sum, ~5 LOC) |
+| `spherical_cotangent_rule_polynomial`    | 255 (was 239) | strategic sorry — S3b PREP + ACT |
 
 ## Next Action
-**S3a ACT** (separate session, ~30-60 min, orders 1–3 of §5 in
-2026-05-16 S3 PREP session note): close `sin_arcLen_nonneg` (~4 LOC),
-`spherical_law_of_cosines_local` (~8 LOC), `cos_arcLen` (~10 LOC).
+**S3b PREP** (next session, ~30-60 min): `dihedralAngle` definitional-branch
+case analysis — confirm the polynomial form reduces to `0 = 0` in the
+sqrt-zero `if`-branch where `dihedralAngle = 0` by `if`-construction.
+Verify S3 PREP §4.4 step-3 sketch under the degenerate-case scrutiny:
+when `normSq (projPerp B A) = 0`, the LHS factor `sin (dihedralAngle A B C)`
+and the RHS factor `sin (dihedralAngle C A B)` annihilate the respective
+products, leaving `0 = 0`.
 
-After S3a ACT merges and the file has 1 remaining strategic sorry:
+**S3b ACT** (after S3b PREP, ~60-90 min): discharge
+`spherical_cotangent_rule_polynomial` by applying
+`spherical_law_of_cosines_local` twice (sides b and c), substituting via
+the new S3a-proved helpers `cos_arcLen` and `sin_arcLen_nonneg`, and
+using `spherical_law_of_sines_all_sq` plus dihedral-angle bookkeeping
+with explicit degenerate-branch case. Estimated 30–50 LOC.
 
-**S3b ACT** (separate PREP + ACT, ~60-90 min): close
-`spherical_cotangent_rule_polynomial` (~30-50 LOC). This sorry needs
-its own PREP for the `dihedralAngle` definitional-branch handling
-(the polynomial form must hold in the degenerate `sin = 0` branch
-where `dihedralAngle = 0` by `if`-construction).
-
-See `sessions/2026-05-16-s3-prep-bearer-pinning.md` §4 for drop-in
-skeletons (4 templates) and §6 for the ACT readiness checklist.
-
-**Race-safety re-check before S3a push**:
-`gh pr list -R rjwalters/lean-genius --search "spherical-law-of-sines-oq-03 in:title" --state open`.
-At S3 PREP time (2026-05-16T00:25Z): 0 open PRs — field clear.
+**Race-safety re-check before S3a push** (this session):
+`gh pr list -R rjwalters/lean-genius --search "spherical-law-of-sines-oq-03 in:title" --state open` → 0 open PRs — field clear.
 
 ## Session Log
 
@@ -133,6 +135,30 @@ At S3 PREP time (2026-05-16T00:25Z): 0 open PRs — field clear.
     warnings (all expected/strategic).
 - Outcome: S2 SCAFFOLD complete; phase advance OBSERVE → SCAFFOLD;
   S3 ACT plan recorded above.
+
+### 2026-05-16 ~02:48 UTC — S3a ACT (researcher-6, Lean-modifying)
+- Pre-claim PR race check: 0 open PRs on slug after S3 PREP merged at
+  01:08:59Z. Field clear for S3a ACT.
+- Base SHA: `8a3cda556b63aaf6e6184b4c968d1efbf9849b85` (origin/main, kepler tracker sync).
+- **Lean edits** in `proofs/Proofs/SphericalLawOfSinesOQ03.lean`:
+  - `cos_arcLen` (line 123): unfold `IsUnit3` at hu/hv, unfold `arcLen`,
+    derive `(dot u v)² ≤ 1` via `lagrange_identity` + `normSq_cross_nonneg`
+    + `hu` + `hv`, extract `-1 ≤ dot u v ≤ 1` via `nlinarith` + `sq_nonneg`,
+    then `exact Real.cos_arccos h_lower h_upper`. ~14 LOC including
+    intermediate `have` blocks.
+  - `sin_arcLen_nonneg` (line 137-141): unfold `arcLen`, single-line
+    `Real.sin_nonneg_of_nonneg_of_le_pi (Real.arccos_nonneg _) (Real.arccos_le_pi _)`.
+    ~3 LOC.
+  - `spherical_law_of_cosines_local` (line 159-167): `have hC' := unit_sum C hC`,
+    `simp only [dot, projPerp, Fin.sum_univ_three]` to expand the nine-term
+    polynomial identity, then `linear_combination -(dot A C)*(dot B C) * hC'`.
+    ~5 LOC after simp.
+  - Updated summary table: 3 proved, 1 strategic-sorry remains.
+- **Docker build**: clean, 3061 jobs, 0 errors, 1 strategic-sorry warning
+  at line 255 (the remaining `spherical_cotangent_rule_polynomial`).
+- Outcome: S3a ACT complete; file moved from 4 strategic sorries to 1;
+  phase advance SCAFFOLD (post-PREP) → S3a-ACT; `spherical_cotangent_rule_polynomial`
+  deferred to S3b PREP + ACT for `dihedralAngle` definitional-branch handling.
 
 ### 2026-05-16 ~00:25 UTC — S3 PREP (researcher-6, doc-only)
 - Pre-claim PR race check: 0 open PRs on the slug (only sibling

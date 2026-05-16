@@ -122,7 +122,18 @@ the bounds `-1 ≤ dot u v` and `dot u v ≤ 1` obtained from
 `(dot u v) ^ 2 ≤ normSq u · normSq v = 1`. -/
 theorem cos_arcLen (u v : Fin 3 → ℝ) (hu : IsUnit3 u) (hv : IsUnit3 v) :
     Real.cos (arcLen u v) = dot u v := by
-  sorry
+  unfold IsUnit3 at hu hv
+  unfold arcLen
+  have h_lag := lagrange_identity u v
+  have h_nn := normSq_cross_nonneg u v
+  have h_bound_sq : (dot u v) ^ 2 ≤ 1 := by
+    have h : (dot u v) ^ 2 ≤ normSq u * normSq v := by linarith
+    rw [hu, hv] at h; linarith
+  have h_upper : dot u v ≤ 1 := by
+    nlinarith [h_bound_sq, sq_nonneg (dot u v - 1)]
+  have h_lower : -1 ≤ dot u v := by
+    nlinarith [h_bound_sq, sq_nonneg (dot u v + 1)]
+  exact Real.cos_arccos h_lower h_upper
 
 /-- `0 ≤ sin (arcLen u v)` for any pair `u, v : Fin 3 → ℝ`.
 
@@ -136,7 +147,9 @@ gives the result.
 (Real.arccos_le_pi _)`. -/
 theorem sin_arcLen_nonneg (u v : Fin 3 → ℝ) :
     0 ≤ Real.sin (arcLen u v) := by
-  sorry
+  unfold arcLen
+  exact Real.sin_nonneg_of_nonneg_of_le_pi
+    (Real.arccos_nonneg _) (Real.arccos_le_pi _)
 
 /-- The inner-product (general) form of the **spherical law of
 cosines** in the parent's `Fin 3 → ℝ` framework.
@@ -158,7 +171,10 @@ the corresponding statement in the `EuclideanSpace` framework
 `linear_combination` over the unit-`C` hypothesis `normSq C = 1`. -/
 theorem spherical_law_of_cosines_local (A B C : Fin 3 → ℝ) (hC : IsUnit3 C) :
     dot A B = dot A C * dot B C + dot (projPerp A C) (projPerp B C) := by
-  sorry
+  have hC' : C 0 * C 0 + C 1 * C 1 + C 2 * C 2 = 1 := unit_sum C hC
+  simp only [dot, projPerp, Fin.sum_univ_three]
+  linear_combination -(A 0 * C 0 + A 1 * C 1 + A 2 * C 2) *
+    (B 0 * C 0 + B 1 * C 1 + B 2 * C 2) * hC'
 
 /-! ### Main statement: the four-parts (cotangent) rule -/
 
@@ -251,12 +267,12 @@ theorem spherical_cotangent_rule_polynomial
 
 | Result                                                            | Status |
 |-------------------------------------------------------------------|--------|
-| `cos_arcLen`: cos(arcLen u v) = dot u v for unit u, v             | sorry  |
-| `sin_arcLen_nonneg`: 0 ≤ sin(arcLen u v)                          | sorry  |
-| `spherical_law_of_cosines_local` (general inner-product form)     | sorry  |
+| `cos_arcLen`: cos(arcLen u v) = dot u v for unit u, v             | proved |
+| `sin_arcLen_nonneg`: 0 ≤ sin(arcLen u v)                          | proved |
+| `spherical_law_of_cosines_local` (general inner-product form)     | proved |
 | `spherical_cotangent_rule_polynomial` (main theorem)              | sorry  |
 
-Sorries: 4 (strategic — all to be closed in S3 ACT)
+Sorries: 1 (strategic — `spherical_cotangent_rule_polynomial` deferred to S3b ACT)
 Axioms:  0
 -/
 
