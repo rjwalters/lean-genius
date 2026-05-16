@@ -1,14 +1,14 @@
 {
   "slug": "erdos-101-oq-01",
   "title": "Erdős #101 OQ-01: Four-Point Lines are $o(n^2)$",
-  "phase": "ACT",
+  "phase": "PREP",
   "status": "active",
   "tier": "B",
   "path": "full",
   "significance": 7,
   "tractability": 5,
   "started": "2026-05-11T19:00:00Z",
-  "lastUpdate": "2026-05-12T05:00:00Z",
+  "lastUpdate": "2026-05-16T01:12:00Z",
   "problemStatement": {
     "formal": "\\forall \\varepsilon > 0,\\ \\exists N,\\ \\forall P : \\text{PlanarPointSet},\\ \\text{NoFiveCollinear}\\ P \\land N \\leq |P| \\Rightarrow \\text{fourPointLineCount}(P) < \\varepsilon \\cdot |P|^2",
     "plain": "Given $n$ points in $\\mathbb{R}^2$ with no five collinear, is the number of lines containing exactly four points $o(n^2)$? Best known: $O(n^2)$ upper (trivial), $\\Omega(n^{2-O(1/\\sqrt{\\log n})})$ lower (Solymosi–Stojaković).",
@@ -33,16 +33,16 @@
     "goal": "Prove $\\text{fourPointLineCount}(P) = o(|P|^2)$ for all `NoFiveCollinear P`, or sharpen the bound to an explicit subquadratic rate."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-13T18:00:00.000Z",
-    "iteration": 4,
-    "focus": "S4 (researcher-1, 2026-05-13): extended S3 negated-existence refutation to its positive constructive form. New theorem erdos_three_halves_conjecture_refuted_constructive : ∀ N, ∃ P, NoFiveCollinear P ∧ N ≤ |P| ∧ (|P| : ℝ)^(3/2 : ℝ) < (fourPointLineCount P : ℝ) — for every threshold N, an explicit no-five-collinear witness with |P| ≥ N and strictly more than |P|^(3/2) four-point lines. Proof reuses S3 chain (Real.exp_one_lt_d9 + Real.log_lt_log + Real.sqrt_lt_sqrt + Real.rpow_lt_rpow_of_exponent_lt) verbatim through h_rpow_lt; only the final assembly differs (witness delivery via refine + rw [hcard] + linarith [hP_lb, h_rpow_lt] instead of contradiction). Sorries unchanged at 2 (main conjecture + solymosi_stojakovic_lower_bound); axioms unchanged at 0; theorems 8 → 9. Lean file 383 → 470 LOC (+87).",
+    "phase": "PREP",
+    "since": "2026-05-16T01:12:00.000Z",
+    "iteration": 8,
+    "focus": "S8 STATE-SYNC (researcher-12, 2026-05-16): doc-only refresh discharging the state.md/JSON update deferred by S6 PREP (#19221) and S7 PREP (#19287), plus cataloguing mechanic resolution of v4.26.0 parent/child build regression (#19099 + #19255, both MERGED 2026-05-15). Re-verifies S7 PREP bearer table at unchanged lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0). Drift verdict: ZERO across ~7h since S7 PREP. All four blocking PRs merged on main; queue conflict-free (0 open PRs on slug). Stages S8 ACT readiness gate: 3-artifact Path-A plan from S7 PREP §9 (corrected post-audit), ~105–125 LOC, 2 Docker iterations. Lean file unchanged: 471 LOC, 9 theorems, 4 defs, 2 actual sorries (lines 111 erdos_101_oq_01 + 302 solymosi_stojakovic_lower_bound), 0 axioms, 0 structure-encoded assumptions.",
     "blockers": [],
-    "nextAction": "S5 candidates: (1) Asymptotics.IsBigO/IsLittleO bridge — define maxFourPointLines : ℕ → ℕ, convert fourPointLineCount_le_quadratic to Filter.IsBigO atTop statement; (2) Cauchy–Schwarz refinement of fourCollinearThrough_bound for a 1 - o(1) leading constant on the n^2/12 elementary bound; (3) witness extraction at fixed n via decide on small finite combinatorics for native_decide-certified gallery examples. Main conjecture erdos_101_oq_01 ($100 Erdős prize) and solymosi_stojakovic_lower_bound remain OPEN/deferred.",
+    "nextAction": "S8 ACT (next picker): paste-ready 3-artifact recipe from sessions/2026-05-16-s8-statesync-postdrain.md §5 + sessions/2026-05-15-s7-prep-sibling-audit-of-s6-bridge.md §9. Artifact (i): noncomputable def maxFourPointLines : ℕ → ℕ (surrogate n*(n-1)/12) + maxFourPointLines_isBigO_n_squared : Asymptotics.IsBigO atTop (fun n : ℕ => (maxFourPointLines n : ℝ)) (fun n : ℕ => (n : ℝ)^2) via Asymptotics.IsBigO.of_norm_le + Path-A aggregator routing through ℕ → ℝ (fixes S7 Bug C type-incoherence on Preorder PlanarPointSet) + per-P corollary fourPointLineCount_le_max ~45–60 LOC. Artifact (ii): isLittleOh_n_squared_iff_isLittleO with corrected direction-mapping (→ direct via le_of_lt no ε/2; ← instantiate c := ε/2, max N₀ 1 lift, mul_lt_mul_of_pos_right) ~30 LOC. Artifact (iii): erdos_101_oq_01_isLittleO_form : Asymptotics.IsLittleO atTop … := sorry (rephrased OPEN content of erdos_101_oq_01, $100 Erdős prize remains OPEN) ~30 LOC. Total ~105–125 LOC, 2 Docker iterations. Imports: add explicit Mathlib.Analysis.Asymptotics.Defs + Mathlib.Order.Filter.AtTopBot.Basic. Main conjecture erdos_101_oq_01 ($100 Erdős prize) and solymosi_stojakovic_lower_bound remain OPEN/deferred.",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 1,
-      "approachesTried": 3
+      "total": 7,
+      "currentApproach": 0,
+      "approachesTried": 4
     }
   },
   "knowledge": {
@@ -70,16 +70,21 @@
       "Solymosi–Stojaković (2013) refuted Erdős's $\\Theta(n^{3/2})$ conjecture with $\\Omega(n^{2-O(1/\\sqrt{\\log n})})$ — the open content is the polylog correction, not the leading order.",
       "All known elementary upper bounds are $\\Theta(n^2)$; closing the gap to $o(n^2)$ requires either a multiplicity-aware Szemerédi–Trotter refinement or a non-incidence argument.",
       "The ℕ→ℝ cast in `bounds_at_rate_quadratic_over_twelve` weakens $n(n-1)/12$ to $n^2/12$ to avoid `Nat.sub` truncation; asymptotically equivalent.",
-      "S4 (researcher-1, 2026-05-13): the negated-existence form (S3) and positive constructive form (S4) of the three-halves refutation are interconvertible by simple boolean rephrasing, but the constructive form is more useful downstream — it directly supplies witnesses rather than refuting a hypothetical bound. Both depend on the same axiom-free deferred theorem solymosi_stojakovic_lower_bound (still sorry). The S3 chain is reusable across both forms: chain S3 through Real.rpow_lt_rpow_of_exponent_lt, then choose between contradiction (S3) vs. refine+linarith (S4) at the final assembly step."
+      "S4 (researcher-1, 2026-05-13): the negated-existence form (S3) and positive constructive form (S4) of the three-halves refutation are interconvertible by simple boolean rephrasing, but the constructive form is more useful downstream — it directly supplies witnesses rather than refuting a hypothetical bound. Both depend on the same axiom-free deferred theorem solymosi_stojakovic_lower_bound (still sorry). The S3 chain is reusable across both forms: chain S3 through Real.rpow_lt_rpow_of_exponent_lt, then choose between contradiction (S3) vs. refine+linarith (S4) at the final assembly step.",
+      "S6/S7 PREP (researcher-12, 2026-05-15): bridging the slug's strict-< IsLittleOh_n_squared definition to Mathlib's ≤-form Asymptotics.isLittleO_iff is asymmetric. → direction (slug ⇒ Mathlib) is direct via le_of_lt — take Mathlib's universal c as slug's ε. ← direction (Mathlib ⇒ slug) needs (i) instantiate Mathlib's universal c at ε/2 to leave room for strict gap, (ii) max N₀ 1 to ensure (n : ℝ)^2 > 0 (avoids vacuous n=0 case), (iii) mul_lt_mul_of_pos_right. The naive 'ε/2 trick for the → direction' is the wrong assignment — the strict-< form on the LHS of → direction is the *easier* side, not the harder side.",
+      "S7 PREP (researcher-12, 2026-05-15): Asymptotics.IsBigO atTop typeclass-resolves against [Preorder α] for the filter α; specialising α := PlanarPointSet fails (no Preorder/LE/SemilatticeSup instance). Path A fix: route IsBigO through a ℕ → ℝ aggregator (maxFourPointLines), which has the required Preorder ℕ for free. The aggregator can be a pessimistic surrogate n*(n-1)/12 (independent of NoFiveCollinear) — gives a trivial-O(n²) IsBigO statement that's still useful as the Mathlib-idiom form of the parent bound.",
+      "S8 STATE-SYNC (researcher-12, 2026-05-16): post-mechanic on-main baseline is GREEN at lake-pinned v4.26.0 SHA 2df2f01 (parent #19099 + child #19255 cleared the 5+1 cascading errors). The bearer table from S7 PREP §6 re-verifies with zero drift ~7h later — bearer drift recheck cadence ~7h is sufficient at lake-SHA-pinned v4.26.0 (no Mathlib version bump in the interim). All four blocking PRs (#19099 + #19255 + #19221 + #19287) are merged; S8 ACT has a paste-ready ~105–125 LOC recipe and 0 open PR conflicts on the slug at the STATE-SYNC moment."
     ],
     "mathlibGaps": [
       "No direct Σ₂-style $o(n^2)$ uniform-bound vocabulary; we use an explicit ε–N form. Bridge to `Asymptotics.IsLittleO` deferred to S3.",
       "Szemerédi–Trotter incidence bound not formalised in Mathlib; would be a useful prerequisite for the Solymosi–Stojaković construction."
     ],
     "nextSteps": [
-      "S4: connect `BoundsAtRate` instances to `Asymptotics.IsBigO`/`IsLittleO` on the filter `atTop`. Requires defining `maxFourPointLines : ℕ → ℕ` (e.g., via `Finset.sup'` over the set of no-five-collinear sets of fixed size at most $n$).",
-      "S5: positive (constructive) form of the refutation — rewrite `erdos_three_halves_conjecture_refuted` as `∀ N, ∃ P, NoFiveCollinear P ∧ N ≤ |P| ∧ (P.points.card : ℝ)^(3/2 : ℝ) < (fourPointLineCount P : ℝ)` (the de Morgan dual of the S3 negated-existence form).",
-      "S6: Cauchy–Schwarz refinement of `fourCollinearThrough_bound` $\\leq (n-1)/3$ for a $1 - o(1)$ leading constant on the $n^2/12$ elementary bound (still $\\Theta(n^2)$, but a concrete improvement on the constant)."
+      "S8 ACT (immediate, next picker): paste-ready ~105–125 LOC across 3 artifacts via Path-A aggregator routing — see sessions/2026-05-16-s8-statesync-postdrain.md §5 + sessions/2026-05-15-s7-prep-sibling-audit-of-s6-bridge.md §9 for the corrected recipe (S7 audit-amended); 2 Docker iterations budgeted. Adds `noncomputable def maxFourPointLines : ℕ → ℕ` + `maxFourPointLines_isBigO_n_squared` (Mathlib-idiom form of the existing parent O(n²) bound) + `isLittleOh_n_squared_iff_isLittleO` (bridge between slug ε–N form and Mathlib's `Asymptotics.isLittleO_iff`) + `erdos_101_oq_01_isLittleO_form` (rephrased OPEN content; same sorry status).",
+      "S9 candidate (after S8 ACT): true-sup `maxFourPointLines` (replace surrogate `n*(n-1)/12` with `Finset.sup'` over no-five-collinear sets, requires finiteness scaffold ~15 LOC).",
+      "S10 candidate: Cauchy–Schwarz refinement of `fourCollinearThrough_bound` $\\leq (n-1)/3$ for a $1 - o(1)$ leading constant on the $n^2/12$ elementary bound (still $\\Theta(n^2)$, but a concrete improvement on the constant — adds a new non-sorry theorem `four_collinear_through_bound_refined`).",
+      "S11 candidate: witness extraction at fixed `n` via `decide`/`native_decide` on small finite combinatorics for `native_decide`-certified gallery examples (no-five-collinear sets up to n = 12 or so, recording empirical `fourPointLineCount` values).",
+      "Deferred (OPEN): main conjecture `erdos_101_oq_01` ($100 Erdős prize, sub-quadratic upper bound) and `solymosi_stojakovic_lower_bound` (construction over finite fields, deferred to a much later iteration)."
     ]
   },
   "tags": [
