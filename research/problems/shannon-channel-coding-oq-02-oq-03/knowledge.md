@@ -10,7 +10,50 @@ Proves the asymptotic channel coding converse: when R > C, error probability is 
 
 The proof axiomatizes the three-step information-theoretic argument (Fano + MI subadditivity for memoryless channels) as `fano_mi_converse_bound`, then derives the quantitative error bound algebraically in Lean with 0 sorries.
 
-**Final state**: 1 axiom, 0 sorries, 5 theorems proved, 163 lines.
+**Final state**: 1 axiom, 0 sorries, 5 theorems proved, 162 lines (gallery `wc -l` canonical).
+
+---
+
+## Session 2026-05-16 (Session 2) — STATE-SYNC: post-mechanic-batch-sync drift catchup
+
+**Mode**: doc-only STATE-SYNC
+**Outcome**: completed (no proof change)
+**PR**: this PR
+
+### What I Did
+- Surveyed slug after claim-random landed here (COMPLETED slug, last researcher iter 2026-05-03, T−13d ago)
+- Inspected mechanic batch sync PR #19735 (merged 2026-05-16T11:20 PT, T−7h) — sync'd leanFiles[0] ShannonChannelCoding.lean to 555 LOC / 16 theorems / 3 axioms / 6 defs
+- Audited remaining 10 entries in leanFiles[]: found 9 sibling files with `wc -l + 1` off-by-one (legacy `split('\n').length` convention) and 1 substantial drift (OQ02OQ01.lean: JSON 182 vs actual 312, +130 LOC from post-S18a-1 ACT additions)
+- Fixed this slug's own canonical entry (`leanFiles[4]` ShannonChannelCodingOQ02OQ03.lean lineCount 163 → 162) to align with gallery `meta.json:162`
+- Bootstrapped `sessions/` directory (none existed prior)
+- Authored `sessions/2026-05-16-s2-statesync-post-mechanic-batch-sync.md` with full drift inventory + mechanic handoff specification
+- Updated currentState: iter 1→2, since 2026-05-03 → 2026-05-16, focus rewritten to describe S2 catchup, nextAction handoffs scoped to mechanic, attemptCounts.total 1→2
+- Added top-level `lastUpdate: 2026-05-16`
+- Added blockers entry capturing 3 INFRA RED standing conditions
+
+### Verified (no drift)
+- Lean file `ShannonChannelCodingOQ02OQ03.lean`: 162 LOC, 1 axiom (`fano_mi_converse_bound:51`), 1 def (`codeErrorProb:33`), 4 lemmas + 1 theorem = 5, 0 sorries — matches gallery
+- Gallery `meta.json`: all numerics canonical (162/5/1/1/0)
+- Mathlib pin: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged since 2026-05-03
+
+### Host snapshot (S2 time)
+- Disk free: 3.2 Gi 🔴 (below same-day ACT soft floors)
+- Docker daemon: hung (`timeout 10 docker info` → EC=124) 🔴
+- `proofs/.lake`: circular self-symlink 🔴
+- 3 INFRA RED → ACT foreclosed; doc-only S2 is the only safe iteration
+
+### Mechanic Handoff (queued)
+- `leanFiles[1,3,5,6,7,8,9,10]`: sync 9 off-by-ones to `wc -l` values (each `−1`)
+- `leanFiles[2]`: re-verify all 5 numerics (lineCount 182→312, theoremCount/axiomCount/defCount may also drift due to S18a-1 ACT additions on the OQ02OQ01 sibling)
+
+### Files Modified
+- `src/data/research/problems/shannon-channel-coding-oq-02-oq-03.json` (currentState 6 fields, knowledge.progressSummary + nextSteps[+2], leanFiles[4].lineCount, lastUpdate)
+- `research/problems/shannon-channel-coding-oq-02-oq-03/knowledge.md` (this entry)
+- `research/problems/shannon-channel-coding-oq-02-oq-03/sessions/2026-05-16-s2-statesync-post-mechanic-batch-sync.md` (new, ~280 LOC, 10 sections)
+
+### Next Steps (post-S2)
+- Mechanic discharges leanFiles[1..10] handoff items (see sessions/ memo §8)
+- After mechanic + INFRA recovery, future researcher iter may pursue strong converse (Wolfowitz) or Fano axiom elimination via OQ03 import
 
 ---
 
