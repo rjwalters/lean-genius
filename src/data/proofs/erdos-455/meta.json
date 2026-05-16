@@ -166,6 +166,11 @@
       "targetId": "infinitude-primes",
       "relationship": "foundational",
       "description": "The infinitude of primes ensures that monotone-gap prime sequences can be constructed to arbitrary length"
+    },
+    {
+      "targetId": "erdos-455-oq-04",
+      "relationship": "extends",
+      "description": "Child gallery entry formalizing the AP-gap generalization of Erdős 1959 OQ-04. Pattern B (separate child slug). Status axiomatized — uses Green–Tao 2008 (proved but not yet in Mathlib) and Bunyakovsky 1857 (open conjecture) as axioms; Lean parent file `Proofs/Erdos455OQ04.lean`, 166 LOC, 5 theorems, 2 axioms, 0 sorries."
     }
   ],
   "conclusion": {
@@ -175,7 +180,8 @@
       "Must $\\lim q_n/n^2 = \\infty$ for all monotone-gap prime sequences, or does some sequence have $q_n = O(n^2)$?",
       "What is the exact value of Richter's liminf constant — is $0.352$ optimal or can it be improved?",
       "How many distinct monotone-gap prime sequences exist beginning with a given prime?",
-      "Can the problem be generalized to other arithmetic conditions on gaps (e.g., gaps forming an arithmetic progression)?"
+      "Can the problem be generalized to other arithmetic conditions on gaps (e.g., gaps forming an arithmetic progression)?",
+      "AP-gap generalization (Erdős 1959 OQ-04, formalized as gallery child [erdos-455-oq-04](/proofs/erdos-455-oq-04) per S5 ACT 2026-05-16 PR #19389): do there exist infinitely many primes $p$ admitting arbitrarily long arithmetic progressions $p < p + d < p + 2d < \\dots < p + (k-1)d$ of primes? Green–Tao 2008 settled finitary existence for given length $k$; the d-positive open-conjecture variant (Hardy–Littlewood Conjecture F) remains open."
     ]
   },
   "sorries": 0
