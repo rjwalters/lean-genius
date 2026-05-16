@@ -20,7 +20,7 @@
     "sorries": 0,
     "dateAdded": "2026-05-08",
     "axiomCount": 1,
-    "lineCount": 544,
+    "lineCount": 712,
     "assumptions": "(1) `binomial_clt_pointwise` axiom — the classical de Moivre-Laplace theorem (1733/1812): for 0 < p < 1, the standardized binomial CDF converges pointwise to the standard normal CDF. The Session-2 `standardNormalCDF` opaque marker has been replaced (Session 6) by a concrete `noncomputable def` integrating Mathlib's `ProbabilityTheory.gaussianPDFReal 0 1` over `Set.Iic x`; this removes that declaration from the assumption count and adds four elementary structural lemmas (`standardNormalCDF_nonneg`, `standardNormalCDF_le_one`, `standardNormalCDF_mono`, `standardNormalCDF_continuous` [Session 7]) that together establish Φ is a *bona fide* continuous CDF on ℝ — every point is a continuity point, so the Portmanteau bridge that next session will build to discharge the axiom applies universally. Session 8 (this session, complementary track) adds two asymptotic-saturation lemmas on the binomialCDF side — `binomialCDF_tendsto_one_atTop` (binomialCDF n p x → 1 as x → +∞, eventually-constant via `binomialCDF_eq_one`) and `binomialCDF_tendsto_zero_atBot` (binomialCDF n p x → 0 as x → -∞, eventually-constant via `binomialCDF_neg`). The matching standardNormalCDF tail-limit lemmas (Φ → 1 at +∞ and Φ → 0 at -∞) are added in the parallel S8 PR #17233; together the two PRs complete the right-tail tendsto saturation on both sides of the Portmanteau convergence. The reduction lemma `multinomialMarginalCDF_eq_binomialCDF` was proved in Phase-3: it partitions the multinomial sum over s.piAntidiag n into fibres indexed by j = k(i₀) ∈ Finset.range (n+1) using `Finset.sum_fiberwise_of_maps_to`, hoists the if-condition (k i₀ : ℝ) ≤ x out of the inner sum (it depends only on j), and applies the parent file's `multinomial_marginal_pmf` to each fibre. The main theorem `multinomial_marginal_clt` is *derived* — not itself an axiom — via `Filter.Tendsto.congr`.",
     "originalContributions": [
       "binomialCDF: concrete CDF of Binomial(n,p) as a finite sum of binomial PMF terms with a step indicator",
@@ -64,7 +64,7 @@
       "BigOperators"
     ],
     "namespace": "BinomialTheoremOQ02OQ01OQ01OQ03",
-    "lineCount": 544,
+    "lineCount": 712,
     "axiomCount": 1,
     "theoremCount": 18,
     "substantiveTheoremCount": 12,
