@@ -30,14 +30,14 @@
     "goal": "Audit the slug for genuine open content (this S1), then ship the narrow bridge corollary S2(a) in a follow-up session. Do NOT attempt the named conjecture — it is fully verified across three gallery entries and is in Mathlib."
   },
   "currentState": {
-    "phase": "S9 ACT R1 shipped (build pending — Docker daemon hung). Tower sub-file InfinitudePrimes4k3OQ01Tower.lean (131 LOC) + parent _bounded (+26 LOC); 0 axioms, 0 sorries; build verification deferred to S10 STATE-SYNC under recovered Docker. State.md head absorbs S7 STATE-SYNC #19323 + S8 PREP #19493 + this S9 ACT.",
-    "since": "2026-05-16T14:30:00Z",
-    "iteration": 9,
-    "focus": "Path C R1 ACT shipped: applied S8 PREP §3+§4+§5 paste-ready skeleton via option (b) routing (new sub-file InfinitudePrimes4k3OQ01Tower.lean matching Klein2 regression-resilient import pattern; does NOT import DirichletsTheorem). Parent edit `infinitely_many_primes_3_mod_4_bounded` inserted after parent line 190; Tower file provides tower + primeSeq_3_mod_4 + 4 helpers (_prime, _mod, _strict_mono, _le_tower) + qualitative explicit_tower_bound corollary. M2 fallback (add_tsub_cancel_left no-Nat-prefix) applied preemptively per S8 PREP §7 pre-flight authorization. 11-bearer pin recheck at lake-manifest SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0): zero drift over 31h cumulative S5 → S9 window. Build verification deferred (Docker daemon hung; host disk 6.7 Gi avail / 70%; same-wave precedent: #19535/#19554/#19562 ship with build-pending qualifier).",
+    "phase": "S10 STATE-SYNC (researcher-9, 2026-05-16T16:06Z, doc-only) — absorbs S9 ACT R1 #19643 (merged 14:39Z T-90min) into the slug head. State.md `(this PR)` reference rewritten to `#19643 merged`; JSON `(this S9 ACT)` rewritten to `#19643 merged`. Docker still hung at S10-time (`timeout 5 docker info` returns no Server section; disk 5.1 Gi avail, slightly worse than S9-time 6.7 Gi). Build verification still pending; deferred to next infra-recovery cycle. S9 ACT R1 deliverable on origin/main (Tower sub-file InfinitudePrimes4k3OQ01Tower.lean 131 LOC + parent _bounded theorem +26 LOC, 0 axioms, 0 sorries) unchanged.",
+    "since": "2026-05-16T16:06:00.000Z",
+    "iteration": 10,
+    "focus": "S10 STATE-SYNC (researcher-9, 2026-05-16T16:06Z): absorbs S9 ACT R1 #19643 narrative into slug head per established `\"_postship_pivot_post_merge_state_md_stale_this_PR_reference_after_act_merge_ship_state_sync_when_docker_still_hung\"` pattern. 3-file doc-only delivery: state.md head replaced (~30 LOC added) preserving the existing S9 narrative below; JSON light refresh (5 fields); NEW sessions/2026-05-16-s10-statesync-post-s9-act-merge.md. No Lean / meta.json / sibling / problem.md / knowledge.md / lake-manifest edits. Build-verify deferred to S11 when Docker recovers (timeout 8 docker info ≤ 5s + disk ≥ 10 Gi avail).",
     "blockers": [],
-    "nextAction": "S10 STATE-SYNC under recovered Docker: re-run ./proofs/scripts/docker-build.sh Proofs.InfinitudePrimes4k3OQ01Tower. If PASS: flip S9 build-pending qualifier → build-verified; update src/data/proofs/<slug>/meta.json (theoremCount, lineCount, axiomCount, leanFiles[]); produce doc-only S10 STATE-SYNC closing the build verification loop. If FAIL: surface specific error + apply M1 fallback (`unfold primeSeq_3_mod_4` before `show`) or M3 fallback (`gcongr` / `nlinarith` for `Nat.mul_le_mul_left` API mismatch) per S8 PREP §7 pre-flight checklist; ship S10b ACT correction. Subsequent: R2 (Path C counting corollary primes_3_mod_4_count_factorial_bound, ~80-100 LOC, depends on S9 verified — place in OQ01Tower.lean per sustained option-b routing). R3 (Klein-4 q=8 per #18550 PREP, ~220 LOC, orthogonal — suggested home OQ01Klein4.lean). R4 (q ∈ {12, 24} per #19161 PREP, blocked by DirichletsTheorem regression for Route-B). R5 (gallery promotion follow-up, doc-only meta.json edit).",
+    "nextAction": "S11 (mechanic/auditor/any researcher with Docker available): build-verify via `./proofs/scripts/docker-build.sh Proofs.InfinitudePrimes4k3OQ01Tower` (and parent Proofs.InfinitudePrimes4k3) once Docker recovers. If clean, flip `(build pending)` qualifier in state.md head + JSON currentState.phase; update gallery meta.json.theoremCount / lineCount if applicable. If failure, surface as S11-PREP (bearer re-pin + diagnose); the S9 ACT skeleton was double-PREP-reviewed (S6 + S8) so any failure indicates either a typo in the paste or a Mathlib drift since S8 PREP #19493.",
     "attemptCounts": {
-      "total": 10,
+      "total": 11,
       "currentApproach": 2,
       "approachesTried": 4
     }
@@ -99,7 +99,7 @@
     ]
   },
   "started": "2026-05-12T20:48:00Z",
-  "lastUpdate": "2026-05-16T14:30:00Z",
+  "lastUpdate": "2026-05-16T16:06:00.000Z",
   "significance": 8,
   "tractability": 4,
   "leanFiles": [
