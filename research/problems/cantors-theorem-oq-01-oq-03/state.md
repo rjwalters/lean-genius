@@ -1,8 +1,121 @@
 # Current State
 
-**Phase**: ACT (S5 parent prose polish, build verified on S2 Lean file)
-**Since**: 2026-05-12 (S5 by researcher-6)
-**Iteration**: 5
+> _Phase note: this skill maps "S6 STATE-SYNC" to canonical "COMPLETED" phase — slug resolved YES; pool/JSON drift catch-up + optional sibling-deprecation skeleton packaged for future pickup; no Lean / meta.json edits._
+
+**Phase**: COMPLETED (S6 STATE-SYNC — pool/JSON catch-up post-S5 polish)
+**Since**: 2026-05-16 (S6 by researcher-12; resolution itself: S2 PR #17741, polish: S5 PR #17856)
+**Iteration**: 6
+
+## S6 Summary (2026-05-16, researcher-12)
+
+**Mode**: STATE-SYNC (pool/JSON catch-up). Slug is fully discharged
+(verified, 0 axioms / 0 sorries / 227 LOC / 7 theorems) since
+S2 (#17741) and parent cross-reference polished in S5 (#17856) on
+2026-05-12. The only remaining drift is **administrative**:
+
+| Surface | Pre-S6 | Post-S6 |
+|---|---|---|
+| `.lean/state/candidate-pool.json` | `status: "available"` (claim-only) | `status: "completed"` |
+| `src/data/research/problems/<slug>.json` `currentState.phase` | `ACT` | `COMPLETED` |
+| `src/data/research/problems/<slug>.json` `status` | `in-progress` | `completed` |
+| `src/data/research/problems/<slug>.json` `currentState.iteration` | `5` | `6` |
+| `src/data/research/problems/<slug>.json` `lastUpdate` | `2026-05-12T…` | `2026-05-16T…` |
+| `research/problems/<slug>/state.md` Phase head | `ACT (S5 polish)` | `COMPLETED (S6 STATE-SYNC)` |
+| Gallery `meta.json` `status` | `verified` ✓ (already correct) | `verified` ✓ (no change) |
+| `problem.md` Status | (no explicit Status field — narrative-only) | unchanged |
+
+### Bearer-pin recheck (3-spot at SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)
+
+| Lemma | Module | Line @ pin | Status |
+|---|---|---|---|
+| `Cardinal.lt_cof_power` | `SetTheory/Cardinal/Cofinality.lean` | 743 | ✓ stable |
+| `Cardinal.aleph0_le_continuum` | `SetTheory/Cardinal/Continuum.lean` | 68 | ✓ stable |
+| `Cardinal.aleph0_le_aleph` | `SetTheory/Cardinal/Aleph.lean` | 417 | ✓ stable |
+| `Cardinal.beth_zero` | `SetTheory/Cardinal/Aleph.lean` | 624 | ✓ stable |
+| `Cardinal.beth_strictMono` | `SetTheory/Cardinal/Aleph.lean` | 609 | ✓ stable |
+
+All five bearers unchanged since S2 (2026-05-12) — no Mathlib API
+drift on the bearer surface. Build inheritance from origin/main
+holds.
+
+### Named optional follow-up — sibling oq-02 `@[deprecated]` skeleton
+
+The S5 (#17856) state.md `Next Action` listed an **optional** S6
+"sibling cleanup": annotate `CantorsTheoremOQ01OQ02.konig_constraint_powerSet_real`
+(line 208) and `CantorsTheoremOQ01OQ02.konig_constraint_beth (n : ℕ)`
+(line 215) with `@[deprecated]` pointing at the strictly-stronger
+forms in `CantorsTheoremOQ01OQ03` (`cf_powerSet_real_gt_continuum`
+line 140, `konig_constraint_beth (α : Ordinal)` line 123).
+
+S6 STATE-SYNC **packages a paste-ready skeleton** for this follow-up
+in this iteration's session memo §3 (so a future agent or Hermit
+sweep can pick it up without re-doing the bearer audit), but does
+not ship the Lean edit itself because:
+
+1. The OQ resolution is **complete** — sibling deprecation is
+   gallery-hygiene only, not a true follow-up requirement (research
+   JSON `nextAction` explicitly calls it "optional" and offers the
+   close-out as an alternative).
+2. Host Docker daemon is hung (B1 INFRA) — even a 2-line attribute
+   addition would ship `(build pending)` and muddy the slug's
+   freshly-clean `verified` status.
+3. The sibling oq-02 slug's own state should govern whether its
+   theorems get deprecated, not this slug's iteration log.
+
+The skeleton lives in §3 of `sessions/2026-05-16-s6-state-sync.md`
+for pickup by:
+- a future researcher claim on `cantors-theorem-oq-01-oq-02` (sibling),
+- a Hermit pass (deprecation is the kind of "simplification" Hermit
+  packages), or
+- a curator pass enriching the sibling slug.
+
+### Build inheritance
+
+| File | LOC @ origin/main | Axioms | Sorries | Build status |
+|---|---|---|---|---|
+| `proofs/Proofs/CantorsTheoremOQ01OQ03.lean` | 227 | 0 | 0 | verified (S2 + S4 + S5 inherited) |
+| `proofs/Proofs/CantorsTheoremOQ01.lean` | (post-S5 polish) | 0 | 0 | verified |
+| `proofs/Proofs/CantorsTheoremOQ01OQ02.lean` | 257 | 0 | 0 | verified |
+
+No Lean edits in this PR — build inheritance from origin/main is
+unconditional.
+
+### Not in this PR (deferred / out of scope)
+
+- **Sibling `@[deprecated]` Lean edit** — paste-ready in session
+  memo §3; defer to sibling-slug claim or Hermit sweep.
+- **S7 BUILD-VERIFY** — Docker daemon hung; build inherits from
+  origin/main (S2/S4/S5 already verified).
+- **Gallery enrichment** — gallery entry was created in S2 and
+  enriched in PR #17776; no further enrichment work indicated.
+- **Auditor handoff** — `meta.json` `status: verified` already
+  correct; no audit-sync work needed.
+
+### Host infra snapshot
+
+- Disk: `/dev/disk3s1s1` 926 Gi, 16 Gi used, **6.9 Gi avail** (70%
+  capacity) — improved from prior 100%/6.9 Gi.
+- Docker: client v29.4.1 responsive, **daemon hung** (`docker
+  version` exit 124 at 30s timeout; `docker info` Server block
+  empty).
+- Containers: 0 running.
+- B1 INFRA: Docker hung — gates substantive ACT, but doc-only
+  STATE-SYNC is safe.
+
+## Next Action (post-S6)
+
+**Slug is closed.** Optional pickups for future agents:
+
+1. **Sibling deprecation** (cantors-theorem-oq-01-oq-02 slug): see
+   `sessions/2026-05-16-s6-state-sync.md` §3 for the paste-ready
+   `@[deprecated]` skeleton.
+2. **Hermit sweep**: same skeleton works as a Hermit
+   "simplification" PR (semantically a no-op; downstream callers
+   already use the stronger forms).
+
+No further work is needed for this slug's resolution itself.
+
+---
 
 ## S5 Summary (2026-05-12, researcher-6)
 
