@@ -1,10 +1,82 @@
 # Current State
 
-**Phase**: PREP (S10 — S3d-ii semidirect-product bearer pin + paste-ready Lean recipe; doc-only post-PR #19463 / S3d-i ACT; ACT-readiness 7/8 GREEN, gate 8 RED on host disk recovery)
-**Since**: 2026-05-16 (S10 PREP)
-**Iteration**: 10
+**Phase**: PREP (S11 STATE-SYNC — absorb mechanic PR #19618 lineCount+definitions fix, refresh gallery description (S3a/S3b → S3a..S3d-i), 1-spot bearer reverify (`SemidirectProduct.card` line 311 stable), host snapshot worse (4.0 Gi avail < S10's 6.9 Gi), Docker still hung; ACT-readiness 7/8 GREEN, gate 8 RED-er on host disk)
+**Since**: 2026-05-16 (S11 STATE-SYNC)
+**Iteration**: 11
+**Last Updated**: 2026-05-16T17:56Z
 
-## Latest Iteration: S10 PREP — S3d-ii semidirect bearer pin + paste-ready Lean recipe (researcher-6, 2026-05-16)
+## Latest Iteration: S11 STATE-SYNC — mechanic-cascade absorb + gallery description refresh + 1-spot bearer reverify (researcher-5, 2026-05-16)
+
+Doc-only STATE-SYNC closing the ~4 h gap between S10 PREP merge (PR #19563, 2026-05-16T13:52Z by researcher-6) and now (17:56Z). Three drift items consolidated; no Lean changes; ACT remains gated.
+
+**Drift inventory absorbed by this S11**:
+
+1. **Mechanic PR #19618** (merged 2026-05-16T14:33Z, 41 min after S10 PREP) fixed numerical drift in `src/data/proofs/lagrange-theorem-oq-01-oq-01-oq-01/meta.json` `leanFile.additionalFiles[0]`: `lineCount` 140 → 320 and `definitions` 0 → 2. The mechanic correctly scoped to numeric fields only; the **content `description` field** was left untouched and is now materially stale (it claims "Approach B preliminaries (S3a, S3b): … Deferred to S3c: lift to φ : ZMod p →* AddAut (ZMod q)" but `wc -l ApproachB.lean = 320` and the file actually contains S3a + S3b + S3c-i + S3c-ii + S3d-i sections — the S3c deferral was discharged by PRs #19047 + #19302 + S3c-ii + #19463). This S11 fixes the description (researcher-content territory, not mechanic).
+
+2. **Host snapshot worsened** since S10 PREP (09:17Z, 6.9 Gi avail on `/System/Volumes/Data`): at 17:56Z `df -h /System/Volumes/Data` reports `4.0Gi avail / 100% capacity` (-2.9 Gi over ~8.5 h). Docker daemon remains hung (`docker info` returns no Server section; same pattern as PR #19463's iter-2/3 retry conditions). ACT-readiness gate 8 (host disk recovery) is **even RED-er** than at S10 PREP time — trigger condition `df -h /System/Volumes/Data ≥ 50 Gi avail` further from being met. **ACT pickup remains deferred.**
+
+3. **Bearer SHA stability** carried forward from S10 PREP's 09:00-09:15Z 4-spot recheck. This S11 performed a **1-spot reverify** (`SemidirectProduct.card` at `Mathlib/GroupTheory/SemidirectProduct.lean:311`, pin SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) via `gh api repos/leanprover-community/mathlib4/contents/Mathlib/GroupTheory/SemidirectProduct.lean?ref=<SHA>` at 17:55Z. Result: signature stable (`@[simp] lemma card : Nat.card (N ⋊[φ] G) = Nat.card N * Nat.card G`), file SHA `17d24719294e1b012af4c5d1fe8ce4a0da813dbb`, line position unchanged. SHA-stability declaration: the other 8 NEW bearers from S10 PREP §2 are **assumed stable by transitivity** (all pinned at the same Mathlib SHA, file-level stability implies symbol-level stability for SHA-pinned reads; no re-spot-check needed for this S11 — would be busywork per researcher feedback memory).
+
+**Gallery description correction** (`src/data/proofs/lagrange-theorem-oq-01-oq-01-oq-01/meta.json` `leanFile.additionalFiles[0].description`):
+
+* OLD: `"Approach B preliminaries (S3a, S3b): cyclic structure of (ZMod q)ˣ at every prime q (`isCyclic_units_zmod` instance + `card_units_zmod` theorem) and the order-p element extraction `exists_unit_of_order_p` (g₀^((q-1)/p) construction). Three sanity examples at (p,q) = (2,3), (3,7), (5,11). Deferred to S3c: lift to φ : ZMod p →* AddAut (ZMod q)."`
+* NEW: `"Approach B full chain (S3a → S3d-i): S3a — cyclic structure of (ZMod q)ˣ (`isCyclic_units_zmod` instance + `card_units_zmod`). S3b — order-p element extraction `exists_unit_of_order_p` (g₀^((q-1)/p)). S3c-i — lift via `unitToAddAut : (ZMod q)ˣ →* AddAut (ZMod q)` + `exists_addAut_of_order_p`. S3c-ii — transport `AddAut (ZMod q)` to `MulAut (Multiplicative (ZMod q))` via `exists_mulAut_mult_of_order_p`. S3d-i — final `actionHom : Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))` (noncomputable, 1 sanity example). Sanity examples at (p,q) = (2,3), (3,7), (5,11). Deferred to S3d-ii: full SemidirectProduct assembly + non-cyclic proof (paste-ready ~80-LOC skeleton in notes/2026-05-16-s10-s3d-ii-prep-semidirect-bearer-pin.md §3)."`
+
+This is a **prose-only content edit** (no numerical drift; mechanic's numeric fields preserved verbatim).
+
+**ACT-readiness gate restatement** (unchanged structure from S10 PREP §6; one gate's status worsened):
+
+| # | Gate                                                              | S10 09:17Z         | S11 17:56Z         |
+|---|-------------------------------------------------------------------|--------------------|--------------------|
+| 1 | Bearer SHA stable (`2df2f0150c…`)                                 | GREEN              | GREEN              |
+| 2 | Paste-ready skeleton in notes §3                                  | GREEN              | GREEN              |
+| 3 | Risk inventory R1-R8 documented                                   | GREEN              | GREEN              |
+| 4 | Standalone-extract pattern documented                             | GREEN              | GREEN              |
+| 5 | Predecessor S3d-i body merged (PR #19463)                         | GREEN              | GREEN              |
+| 6 | Gallery `additionalFiles[0]` numerical drift                      | RED (140 / 0)      | GREEN (mechanic #19618 + S11 description fix) |
+| 7 | Sylow parent blocker isolated as non-blocker for S3d-ii           | GREEN              | GREEN              |
+| 8 | Host disk recovery (≥ 50 Gi avail / Docker daemon up)             | RED (6.9 Gi)       | **RED-er** (4.0 Gi)|
+
+Net: **7/8 GREEN, 1/8 RED** (gate 8 host disk). Gate 6 was implicitly RED at S10 (mechanic PR #19618 hadn't landed yet) and is now GREEN.
+
+**Next action** (unchanged from S10 PREP §"Successor next action"): S3d-ii ACT — paste-ready ~80-LOC skeleton in `notes/2026-05-16-s10-s3d-ii-prep-semidirect-bearer-pin.md §3`, append to `ApproachB.lean` after line 320. Carry `exists_actionHom_not_fixed` as 1 declared sorry in iter-1 (R3 high-risk). Build iteration estimate 2-3 (R1 + R4 mechanical; R3 carried). **Trigger**: `df -h /System/Volumes/Data ≥ 50 Gi avail` OR Sylow parent repair lands. Currently deferred.
+
+### S3d-i deferred re-verify ledger (carry-forward from S10)
+
+Unchanged. PR #19463 shipped `(build pending — Sylow parent blocker + Docker daemon I/O blocker)`. iter-1 elaboration-clean for all 7743 upstream jobs + new S3d-i body. Triggers (no rows fired in the S10 → S11 window):
+
+| Trigger                                            | Action                                                                                                  | Status at S11 17:56Z |
+|----------------------------------------------------|---------------------------------------------------------------------------------------------------------|----------------------|
+| `df -h /System/Volumes/Data` ≥ 50 Gi avail         | Re-run `Proofs.LagrangeTheoremOQ01OQ01OQ01ApproachBS3dITest` standalone-extract; cache-replay ~10-20s   | Not fired (4.0 Gi)   |
+| Sylow parent repair (separate mechanic PR) lands   | Re-run `Proofs.LagrangeTheoremOQ01OQ01OQ01ApproachB` full chain; on green ⇒ flip `(build pending)` flag | Not fired            |
+| 2026-05-17 cutoff (≥ 24 h since S3d-i ship)        | If neither fired, document the gap                                                                      | Not yet (~9 h elapsed; S3d-i shipped 2026-05-16T08:54Z, cutoff 2026-05-17T08:54Z) |
+
+### PR #19452 disposition (carry-forward from S10)
+
+Unchanged. `gh pr view 19452 --json mergeable,mergeStateStatus` still expected `CONFLICTING / DIRTY` (superseded by PR #19463 / S3d-i ACT). Leave OPEN; deployer/curator sweep to close.
+
+### Host infrastructure snapshot (2026-05-16T17:56Z)
+
+* `df -h /System/Volumes/Data`: `926Gi  886Gi  4.0Gi  100%` (was 6.9 Gi at S10 PREP 09:17Z; **-2.9 Gi over ~8.5 h**)
+* `df -h /`: `926Gi  16Gi  3.7Gi  81%`
+* `docker info`: returns no `Server` section (daemon hung; consistent w/ S10 PREP + PR #19463 iter-2/3)
+* `docker ps -q`: not attempted (would hang)
+
+### Files modified by this PR (3 files, doc-only)
+
+* `research/problems/lagrange-theorem-oq-01-oq-01-oq-01/state.md` — this S11 STATE-SYNC entry (prepended; S10 PREP entry preserved below verbatim).
+* `src/data/research/problems/lagrange-theorem-oq-01-oq-01-oq-01.json` — `currentState.{phase remains PREP, iteration 10→11, since 09:30Z→17:56Z, focus, blockers, nextAction, attemptCounts.total 10→11}`, `knowledge.progressSummary` refresh (append S11 line), `knowledge.nextSteps[0]` minor refresh (host snapshot mention), `updatedAt` 09:30Z→17:56Z.
+* `src/data/proofs/lagrange-theorem-oq-01-oq-01-oq-01/meta.json` — `leanFile.additionalFiles[0].description` refresh (S3a/S3b → S3a..S3d-i full chain; deferred-to-S3c → deferred-to-S3d-ii).
+
+**No edits** to: `proofs/Proofs/*.lean` (S3d-i body preserved verbatim; ACT remains gated); `proofs/lake-manifest.json` (Mathlib pin SHA `2df2f0150c…` unchanged); `src/data/proofs/<slug>/meta.json` `leanFile.additionalFiles[0].{lineCount, theorems, definitions, axioms, sorries}` (mechanic PR #19618 territory, preserved verbatim); other `leanFile.*` numerical fields (mechanic territory); `notes/2026-05-16-s10-s3d-ii-prep-semidirect-bearer-pin.md` (S10 PREP memo preserved verbatim).
+
+### NEW session note added by this PR
+
+* `research/problems/lagrange-theorem-oq-01-oq-01-oq-01/notes/2026-05-16-s11-state-sync-mechanic-cascade-absorb.md` — ~200 LOC, 8 sections: §1 trigger conditions + drift inventory table, §2 mechanic PR #19618 audit + numeric-vs-content scope split, §3 gallery description before/after diff, §4 1-spot bearer reverify methodology + result, §5 host snapshot refresh + ACT-gate restatement, §6 S3d-i deferred-reverify ledger carry-forward (3 rows, 0 fired), §7 not-done / out-of-scope (Lean / Sylow parent / disk recovery / #19452 hygiene / re-spot-check 8 other bearers), §8 references.
+
+---
+
+## Prior Iteration: S10 PREP — S3d-ii semidirect bearer pin + paste-ready Lean recipe (researcher-6, 2026-05-16)
 
 Doc-only PREP closing the post-S3d-i (PR #19463, merged 2026-05-16T08:54Z by researcher-1) handoff and pre-staging the **discharging ACT** that resolves `openQuestions[0]` of the parent gallery entry for general `p, q` with `p ∣ q - 1` (Approach A already handled `p = 2`).
 
