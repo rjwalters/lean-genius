@@ -594,3 +594,133 @@ convergent is `62/43` (denominator 43) versus S4's `10/7` and `13/9`
 - No conflicting PRs at write-time: searched `gh pr list
   --search "cube-root-3-irrational-oq-04 S5"` and `--search
   "cube-root-3-irrational-oq-04 a3"` both return empty.
+
+## S9-prep MATH-CORRECTION (researcher-12, 2026-05-14, doc-only)
+
+The S8 next-action sketch in `state.md` predicted `a₈ = 4` for the
+ninth partial quotient of the simple CF of `∛3`, citing OEIS A002945
+as `[1; 2, 3, 1, 4, 1, 5, 1, 4, …]` and computing the proposed S9
+lower bound as `p₈/q₈ = (4·512 + 437)/(4·355 + 303) = 2485/1723`.
+
+**This is a one-symbol typo on the OEIS prefix.** The correct OEIS
+A002945 prefix, already documented at the top of *this* file
+(line 22), is
+
+> `1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5, 8, …`
+
+so `a₈ = 1` (not `4`). The S8 author appears to have transcribed
+the `1, 6, 2, 5` tail one-shift earlier as `4, 1, 5, 1, …` and lost
+the `a₈ = 1` step.
+
+### Independent verification
+
+A 50-digit Python `decimal.Decimal` computation of the CF algorithm
+
+```python
+import decimal
+decimal.getcontext().prec = 50
+cbrt3 = decimal.Decimal(3) ** (decimal.Decimal(1)/decimal.Decimal(3))
+# cbrt3 = 1.4422495703074083823216383107801095883918692534993…
+x, qs = cbrt3, []
+for _ in range(12):
+    a = int(x); qs.append(a)
+    frac = x - a
+    x = decimal.Decimal(1) / frac
+# qs = [1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5]
+```
+
+confirms `a₀..a₁₁ = [1, 2, 3, 1, 4, 1, 5, 1, 1, 6, 2, 5]`. The first
+nine entries exactly match the OEIS A002945 prefix above.
+
+### Why the wrong-`a₈` proposed bound is *above* `cbrt3`, not below
+
+With `a₈ = 4` (incorrect): `p₈/q₈ = 2485/1723`. Direct cube check:
+
+  `2485³ = 15_345_434_125`
+  `3 · 1723³ = 15_345_360_201`
+  `2485³ − 3 · 1723³ = +73_924  >  0`,
+
+so `(2485/1723)³ > 3`, hence `2485/1723 > ∛3`. A `norm_num` proof of
+`(2485/1723 : ℝ) < cbrt3` would therefore fail. The S9 attempt
+following the prior sketch would have been a doomed `(60+ min)`
+proof effort.
+
+With `a₈ = 1` (correct): `p₈/q₈ = (1·512 + 437)/(1·355 + 303) = 949/658`.
+Cube check:
+
+  `949³ = 854_670_349`
+  `3 · 658³ = 854_670_936`
+  `3 · 658³ − 949³ = +587  >  0`,
+
+so `(949/658)³ < 3`, hence `949/658 < ∛3`. Below `cbrt3` as expected
+for the even-index 8th convergent. The two candidates straddle `cbrt3`
+numerically:
+
+  `949/658  ≈ 1.4422492401  <  cbrt3 ≈ 1.4422495703  <  2485/1723 ≈ 1.4422518863`.
+
+The gap on the correct cube target is `+587 / (3·658³) ≈ 6.9·10⁻⁷` —
+about two orders of magnitude tighter than S8's upper-side gap
+`+1103 / (3·355³) ≈ 2.5·10⁻⁵`. This is consistent with the CF
+convergence rate `|cbrt3 − pₙ/qₙ| < 1/(qₙ · qₙ₊₁)`: the 8th
+convergent's expected error is `≈ 1/(658 · q₉) = 1/(658 · 4251)
+≈ 3.6·10⁻⁷` (using `q₉ = a₉·q₈ + q₇ = 6·658 + 355 = 4303`; close).
+
+### Verified S9 algebraic chain
+
+With `949/658 < cbrt3 < 512/355`, define `x₂ := 1/(cbrt3-1) - 2`,
+`x₃ := 1/x₂ - 3`, ..., `x₇ := 1/x₆ - 5`. Rational-arithmetic
+verification (`fractions.Fraction`) confirms:
+
+```
+    949/658   <   cbrt3        <   512/355
+    291/658   <   cbrt3 - 1    <   157/355
+    355/157   <   1/(cbrt3-1)  <   658/291
+     41/157   <   x₂           <    76/291
+    291/76    <   1/x₂         <   157/41
+     63/76    <   x₃           <    34/41
+     41/34    <   1/x₃         <    76/63
+      7/34    <   x₄           <    13/63
+     63/13    <   1/x₄         <    34/7
+     11/13    <   x₅           <     6/7
+      7/6     <   1/x₅         <    13/11
+      1/6     <   x₆           <     2/11
+     11/2     <   1/x₆         <     6
+      1/2     <   x₇           <     1
+       1      <   1/x₇         <     2     ⇒ ⌊1/x₇⌋ = 1 ✓
+```
+
+The penultimate step `1/2 < x₇` (vs the looser `x₇ > 0` one would
+get from `1/x₆ < 6` alone) is exactly what the tighter lower bound
+`949/658` (vs S7's `437/303`) supplies. Without this tightening,
+the chain would only give `0 < x₇ < 1` and `1/x₇` would not have
+an upper bound `< 2`.
+
+### Why S9 is the *correct* next iteration
+
+The chain above closes `1 ≤ 1/x₇ < 2` strictly, so `⌊1/x₇⌋ = 1`,
+giving the seventh CF identity `cbrt3_a7 = 1` (the proof of `a₇`).
+The "eighth-partial-quotient" naming in `state.md` is consistent
+with the 0-indexed `aᵢ` convention: `a₀..a₆` are proved through S2..S8;
+`a₇` is the S9 target. The OEIS confirms `a₇ = 1`.
+
+### Lesson
+
+The S2..S8 series predicted each next-action with high accuracy
+*except* for the OEIS lookup, which was sometimes done by reading
+the prefix in `knowledge.md` carefully (correct) and sometimes by
+re-quoting state.md's prior sketch (which propagated errors). A
+useful invariant for future S10+ sessions: when picking the new
+helper bound, the **OEIS prefix at the top of this file is
+canonical**; if it disagrees with state.md, the prefix here wins,
+and state.md should be corrected. The cubing-iff template makes
+both cube-direction checks trivial (one `norm_num` call), so
+verifying the proposed bound's sign *before* writing the helper
+is essentially free.
+
+### Status
+
+This is a doc-only PR. The Lean files
+(`CubeRoot3IrrationalOQ04.lean`, `CubeRoot3IrrationalOQ04Helpers.lean`)
+are unchanged from S8 (PR #18932). Phase remains `ACT`; iteration
+remains `8`. The corrected S9 sketch in `state.md` is the actionable
+output, ready for any future ACT iteration.
