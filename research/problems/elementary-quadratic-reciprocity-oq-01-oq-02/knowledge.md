@@ -3,7 +3,7 @@
 **Title**: Can the character uniqueness argument be generalized to prove cubic or quartic reciprocity?
 
 **Status**: axiomatized (build state; 0 sorries, 2 axioms)
-**Phase**: S5 OBSERVE — Mathlib bearer audit (post-S4)
+**Phase**: S6 STATE-SYNC — canonical research-JSON catchup with S5 OBSERVE (doc-only)
 
 ## Problem Summary
 
@@ -113,3 +113,65 @@ For primes p ≡ 1 (mod 3), the group (ZMod p)ˣ is cyclic of order p-1 with 3 |
 Zero — no tactic, import, or signature changes. All edits are within comment/doc text
 or JSON prose fields. Sorries unchanged (0). Axiom count unchanged (2). Theorem count
 unchanged (27).
+
+## Session 2026-05-16 (Session 6) — Canonical research-JSON catchup with S5 OBSERVE (STATE-SYNC)
+
+**Mode**: STATE-SYNC (doc-only / research-JSON catchup; no Lean changes, no meta.json changes, no S5 memo modification)
+**Outcome**: progress — reconciled canonical state-of-record with S5 audit findings
+
+### Why
+
+`claim-problem.sh claim-random` returned this slug at 2026-05-16T~14:00Z. Inspection
+revealed `src/data/research/problems/elementary-quadratic-reciprocity-oq-01-oq-02.json`
+(the canonical state-of-record consumed by gallery/research-index tooling) was 3 days
++ 1 audit-session behind the S5 OBSERVE work that landed on origin/main on 2026-05-13.
+The drift was not a Lean or meta.json issue — both of those were correctly updated by
+S5. Only the research-JSON had stale assertions that directly contradicted the S5 audit.
+
+### Drift inventory (research-JSON vs S5 audit)
+
+| Field | Before S6 (stale) | After S6 (S5-aligned) |
+|---|---|---|
+| `currentState.since` | `2026-05-04T00:42:55.000Z` (S1 ship) | `2026-05-16T14:30:00.000Z` (S6) |
+| `currentState.iteration` | `1` | `6` |
+| `currentState.focus` | "Eisenstein integers Mathlib gap" | "Axiomatized-stable… NOT Mathlib-blocked" |
+| `currentState.nextAction` | "Closed pending Mathlib upstream of ℤ[ω]" (FALSE per S5) | "Axiomatized-stable. Future S6/S7 ACT optional… ~250 LOC port using already-shipped Mathlib bearers" |
+| `currentState.attemptCounts.total` | `1` | `6` |
+| `knowledge.progressSummary` | "562 lines… documented Mathlib gaps requiring Eisenstein integers" | "578 lines… NOT Mathlib-blocked… engineering refactor" |
+| `knowledge.insights[4]` | "Eisenstein integers ℤ[ω] not in Mathlib 4.26" (FALSE) | "Eisenstein integers ARE in Mathlib v4.26.0 as 𝓞 K…" |
+| `knowledge.mathlibGaps[0]` | "Eisenstein integers ℤ[ω] structure and prime theory not in Mathlib 4.26" (FALSE) | `[RESOLVED in S5 OBSERVE]` + bearer catalog |
+| `knowledge.mathlibGaps[1]` | "Cubic residue symbol (ρ/π)₃ definition requires ℤ[ω] units" (FALSE) | `[RESOLVED in S5 OBSERVE]` + JacobiSum API note |
+| `knowledge.nextSteps` | `[]` | 6-step refactor plan from S5 memo §"Suggested next ACT" + optional quartic parallel |
+| `leanFiles[3].lineCount` (slug Lean file) | `562` | `578` (+16 from S5 docstring corrections) |
+| `lastUpdate` | `2026-05-07T19:30:00.000Z` | `2026-05-16T14:30:00.000Z` |
+
+Build state on origin/main is unchanged from S5: 0 sorries / 2 axioms / 27 theorems /
+6 defs / 578 lines / no `import` changes / no tactic changes / `lake-manifest.json`
+SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) unchanged at S6 (T+3d).
+
+### Files modified
+
+- `src/data/research/problems/elementary-quadratic-reciprocity-oq-01-oq-02.json` — 13 field edits per drift table above. JSON-validated (`python3 -m json.tool`).
+- `research/problems/elementary-quadratic-reciprocity-oq-01-oq-02/knowledge.md` — Phase header refresh + this Session-6 entry (head/tail-only, prior body unchanged).
+- `research/problems/elementary-quadratic-reciprocity-oq-01-oq-02/s6-state-sync-canonical-json-catchup.md` — NEW session memo (full drift trace + bearer-stability verification at SHA-stable T+3d).
+
+### Files NOT modified (intentional scope discipline)
+
+- `proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean` — no Lean change (S5 already corrected docstrings; S6 is canonical-JSON only).
+- `src/data/proofs/elementary-quadratic-reciprocity-oq-01-oq-02/meta.json` — already at correct lineCount (578) + correct `assumptions`/`description`/`keyInsights[4]`/`openQuestions[0]` text per S5.
+- `proofs/lake-manifest.json` — Mathlib pin unchanged (no bearer re-spot-check needed at T+3d SHA-stable; S5 audit findings still hold).
+- S5 memo (`s5-observe-eisenstein-bearer.md`) — left intact as historical audit artifact.
+- Mathlib bearer re-verification — declined; SHA `2df2f01…` unchanged since S5, so all bearers cited in S5 are bit-identical at S6 — cf. MEMORY `feedback_researcher_postship_pivot_to_own_just_merged_prep_with_zero_json_edits_at_T_plus_minutes_ship_tight_json_catchup_only_no_bundled_respotcheck` for the "tighter cycle, no busywork re-spot-check at SHA-stable" pattern.
+
+### Build Risk
+
+Zero — 0 Lean files modified, 0 imports changed, 0 tactic changes, 0 meta.json field
+edits. Sorries unchanged (0). Axiom count unchanged (2). Theorem count unchanged (27).
+LineCount unchanged on disk (578); S6 only fixes the leanFiles[3].lineCount drift in
+the research-JSON's cached metadata.
+
+### Phase head transition
+
+S5 OBSERVE (Mathlib bearer audit, doc-only) → S6 STATE-SYNC (canonical research-JSON catchup, doc-only) → "axiomatized-stable; future S6/S7 refactor optional, not actively scheduled".
+
+The slug is now in a stable terminal state with a fully-documented optional-refactor pathway. Future claim-random landings on this slug should either (a) ship the ~250-LOC engineering refactor per the S5 memo §"Suggested next ACT (S6) — refactor plan", or (b) release immediately if the refactor is out of scope for the session.

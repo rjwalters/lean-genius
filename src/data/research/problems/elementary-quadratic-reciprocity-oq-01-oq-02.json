@@ -17,19 +17,19 @@
   },
   "currentState": {
     "phase": "COMPLETE",
-    "since": "2026-05-04T00:42:55.000Z",
-    "iteration": 1,
-    "focus": "All work merged: 27 theorems / 0 sorries / 2 axioms (Eisenstein integers Mathlib gap)",
+    "since": "2026-05-16T14:30:00.000Z",
+    "iteration": 6,
+    "focus": "Axiomatized-stable on origin/main: 27 theorems / 0 sorries / 2 axioms (cubicResidueSymbol, cubic_reciprocity) at 578 LOC. S5 OBSERVE (2026-05-13) confirmed the 2 axioms are NOT Mathlib-blocked — Mathlib v4.26.0 already ships Eisenstein integers (Mathlib.NumberTheory.NumberField.Cyclotomic.Three for ℤ[ω] as 𝓞 K), the cyclotomic-3 PID instance (NumberField.Cyclotomic.PID.three_pid), and the Jacobi-sum API (NumberTheory.JacobiSum.Basic). Discharging the axioms is an engineering refactor (rebase local `structure EisensteinPrime` onto `𝓞 K`, port Ireland-Rosen Ch.9 Thm 1 using existing jacobiSum/gaussSum API, ~250 LOC), not a wait-on-upstream task.",
     "blockers": [],
-    "nextAction": "Closed pending Mathlib upstream of Eisenstein integers ℤ[ω].",
+    "nextAction": "Axiomatized-stable. Future S6/S7 ACT (optional, not actively scheduled): engineering refactor per research/problems/elementary-quadratic-reciprocity-oq-01-oq-02/s5-observe-eisenstein-bearer.md §'Suggested next ACT (S6) — refactor plan' (6-step Ireland-Rosen Ch.9 port, ~250 LOC, no new Mathlib bearer needed). Pin SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0) confirmed bearer-stable at S6 (T+3d since S5 audit).",
     "attemptCounts": {
-      "total": 1,
+      "total": 6,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Cubic + quartic characters fully developed in Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean (562 lines, 27 theorems, 6 defs, 0 sorries, 2 axioms). Both Euler criteria proved (easy + hard via discrete log); both kernel cardinalities |ker χ| = (p-1)/k proved via IsCyclic.card_pow_eq_one_le sandwich. The 2 remaining axioms (cubicResidueSymbol, cubic_reciprocity) are documented Mathlib gaps requiring Eisenstein integers ℤ[ω], not solvable here. Merged across PRs #15291 (construction), #15322 (cubicEuler_hard), #15334 (True-stub removal), #15356/#15357 (cubicChar_kernel_card), #15360 (API drift), #15414 (Session 2: quarticEuler_hard + quarticChar_kernel_card), #16616 (leanFiles drift sync).",
+    "progressSummary": "AXIOMATIZED-STABLE on origin/main: Cubic + quartic characters fully developed in Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean (578 lines as of S5 OBSERVE docstring corrections, 27 theorems, 6 defs, 0 sorries, 2 axioms). Both Euler criteria proved (easy + hard via discrete log); both kernel cardinalities |ker χ| = (p-1)/k proved via IsCyclic.card_pow_eq_one_le sandwich. The 2 remaining axioms (cubicResidueSymbol, cubic_reciprocity) are predicated on the file's local `structure EisensteinPrime` (line 469); S5 OBSERVE audit (2026-05-13) confirmed they are NOT Mathlib-blocked — discharging them is an engineering refactor onto Mathlib v4.26.0's already-shipped `IsCyclotomicExtension {3} ℚ K` / `𝓞 K` / `jacobiSum` API, ~250 LOC. Merged across PRs #15291 (construction), #15322 (cubicEuler_hard), #15334 (True-stub removal), #15356/#15357 (cubicChar_kernel_card), #15360 (API drift), #15414 (Session 2: quarticEuler_hard + quarticChar_kernel_card), #16616 (leanFiles drift sync), and the S5 OBSERVE doc-only audit (knowledge.md + meta.json + Lean docstring text-only). S6 STATE-SYNC (this PR) reconciles the canonical research-JSON with the S5 audit findings already present in knowledge.md and meta.json.",
     "builtItems": [
       "cubicChar : (ZMod p)ˣ →* (ZMod p)ˣ in ElementaryQuadraticReciprocityOQ01OQ02.lean:84",
       "cubicChar_pow_three_eq_one : χ₃(a)³ = 1 via Fermat in :106",
@@ -50,14 +50,17 @@
       "Easy Euler criterion: x³=a → a^((p-1)/3)=1 proved via Units.mk0 lift + pow_mul + units_pow_card_sub_one_eq_one",
       "Hard Euler criterion (cubic + quartic): discrete log via IsCyclic.exists_generator + Subgroup.mem_zpowers_iff + orderOf_dvd_iff_zpow_eq_one.mpr; cubExp_mul / quartExp_mul rewrites convert (p-1) | k·cubExp into 3 | k (resp. 4 | k)",
       "Kernel cardinality (cubic + quartic): IsCyclic.card_pow_eq_one_le gives upper bound k; lower bound via Finset.le_card_of_inj_on_range with k ↦ (g^3)^k (resp. g^4) using pow_injOn_Iio_orderOf",
-      "Eisenstein integers ℤ[ω] not in Mathlib 4.26 — cubic reciprocity must remain axiomatized until upstream",
+      "Eisenstein integers ℤ[ω] ARE in Mathlib v4.26.0 as 𝓞 K for IsCyclotomicExtension {3} ℚ K (Mathlib.NumberTheory.NumberField.Cyclotomic.Three + .PID.three_pid); cubic reciprocity is therefore NOT blocked on a Mathlib feature — the 2 axioms persist only because the file's local `structure EisensteinPrime` is decoupled from Mathlib's richer 𝓞 K formalization. S5 OBSERVE (2026-05-13) corrected the earlier 'not in Mathlib' framing; see s5-observe-eisenstein-bearer.md",
       "Quartic character χ₄ = powMonoidHom((p-1)/4) has identical proof structure to χ₃; both kernel-card proofs share the IsCyclic sandwich argument"
     ],
     "mathlibGaps": [
-      "Eisenstein integers ℤ[ω] structure and prime theory not in Mathlib 4.26 (blocks cubic_reciprocity proof)",
-      "Cubic residue symbol (ρ/π)₃ definition requires ℤ[ω] units (blocks cubicResidueSymbol axiom removal)"
+      "[RESOLVED in S5 OBSERVE 2026-05-13] Earlier claim 'Eisenstein integers not in Mathlib 4.26' was incorrect — Mathlib v4.26.0 ships ℤ[ω] as 𝓞 K via Mathlib.NumberTheory.NumberField.Cyclotomic.Three (η = unit primitive cube root, λ = η - 1 prime, lambda_sq, eta_sq, unit classification, Kummer's lemma for λ^2) plus Mathlib.NumberTheory.NumberField.Cyclotomic.PID.three_pid (𝓞 K is PID). The local `structure EisensteinPrime` in the file is a placeholder that decouples from this richer Mathlib formalization; refactoring onto 𝓞 K is engineering work, not a Mathlib feature gap.",
+      "[RESOLVED in S5 OBSERVE 2026-05-13] Earlier claim 'Cubic residue symbol requires ℤ[ω] units not in Mathlib' was incorrect — the cubic residue symbol can be defined directly on 𝓞 K using IsPrimitiveRoot.toInteger_cube_eq_one (η^3 = 1, so μ₃ ⊆ 𝓞 K is {1, η, η^2}). Mathlib.NumberTheory.JacobiSum.Basic also ships jacobiSum_mem_algebraAdjoin_of_pow_eq_one to conclude J(χ_π, χ_π) ∈ ℤ[ω]. No upstream Mathlib feature is needed."
     ],
-    "nextSteps": []
+    "nextSteps": [
+      "[Optional, not scheduled] S6/S7 refactor ACT — discharge the 2 axioms via Ireland-Rosen Ch.9 Thm 1 port. Per s5-observe-eisenstein-bearer.md §'Suggested next ACT (S6) — refactor plan': (1) delete local `structure EisensteinPrime`, replace with context `[hKζ : IsCyclotomicExtension {3} ℚ K] (hζ : IsPrimitiveRoot ζ 3)` and use `𝓞 K`; (2) define cubicResidueSymbol π a := IsPrimitiveRoot.cubicCharLift (a^((Ideal.absNorm (Ideal.span {π}) - 1) / 3) mod π) (image in μ₃ = {1, η, η^2}); (3) define χ_π : MulChar (𝓞 K ⧸ Ideal.span {π}) (𝓞 K) as the lift; (4) apply jacobiSum_mem_algebraAdjoin_of_pow_eq_one for J(χ_π, χ_π) ∈ ℤ[ω]; (5) compute |J|^2 = N(π) via jacobiSum_mul_jacobiSum_inv + gaussSum_pow_eq_prod_jacobiSum; (6) derive cubic reciprocity by comparing J(χ_π, χ_π)^((N(ρ)-1)/3) mod ρ against χ_ρ(N(π)) following Ireland-Rosen Theorem 1 of Chapter 9 verbatim. Estimated ~250 LOC. No new Mathlib bearer needed.",
+      "[Optional, not scheduled] After cubic axioms discharged, parallel refactor for quartic reciprocity using IsCyclotomicExtension {4} ℚ K (Gaussian integers ℤ[i]) — Mathlib has the cyclotomic-4 instance though PID/PID-companion lemmas may need separate audit."
+    ]
   },
   "tags": [
     "number-theory",
@@ -89,7 +92,7 @@
   },
   "started": "2026-05-03T11:41:44.693Z",
   "completed": "2026-05-04T00:42:55.000Z",
-  "lastUpdate": "2026-05-07T19:30:00.000Z",
+  "lastUpdate": "2026-05-16T14:30:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
@@ -129,7 +132,7 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean",
       "filename": "ElementaryQuadraticReciprocityOQ01OQ02.lean",
-      "lineCount": 562,
+      "lineCount": 578,
       "theoremCount": 27,
       "axiomCount": 2,
       "defCount": 6,
