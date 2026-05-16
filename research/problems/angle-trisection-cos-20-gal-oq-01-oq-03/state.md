@@ -1,8 +1,9 @@
 # Current State
 
-**Phase**: ACT (S15 closed Lean, 1 sorry; 1383 LOC, 64 theorems, 0 axioms; doc-only S16 PREP-1 + S16 PREP-2 + S17 PREP STATE-SYNC since)
+**Phase**: ACT (S15 closed Lean, 1 sorry; 1380 LOC, 65 theorems incl 1 private, 0 axioms; doc-only S16 PREP-1 + S16 PREP-2 + S17 PREP STATE-SYNC + S18 PREP since)
 **Since**: 2026-05-14T~06:20Z (S15 ACT — uniform trace bridge, build verified; Lean file frozen since)
-**Iteration**: 17 (S1-S10 ACT/SCAFFOLD + S11-S14 PREP + S15 ACT + S16 PREP-1 + S16 PREP-2 + S17 PREP STATE-SYNC)
+**Iteration**: 18 (S1-S10 ACT/SCAFFOLD + S11-S14 PREP + S15 ACT + S16 PREP-1 + S16 PREP-2 + S17 PREP STATE-SYNC + S18 PREP bridge-uniformity gap)
+**Last Updated**: 2026-05-16T14:30Z (S18 PREP: bridge-identity `r p` uniformity gap audit; S17a/b/c/d work order superseded by S18a–S18f R3-aligned plan)
 
 ## Current Focus
 
@@ -306,6 +307,64 @@ This STATE-SYNC also:
   `state.md` edit (which would need rebase regardless), and does **not**
   overlap PR #18171 (CONFLICTING mechanic meta-batch) at all.
 
+## S18 PREP (this PR) — bridge-identity `r p` uniformity gap audit
+
+Doc-only PR auditing the S17 ACT recipe staged by S17 PREP STATE-SYNC
+(PR #19335, merged 2026-05-16T01:09:13Z). **Headline finding**: the
+sharpened Path A bridge identity
+`(C ℤ p).comp (X - C 2) + C 2 = X · (r p)^2`
+**cannot be proved as stated** because the slug-local
+`r : ℕ → ℤ[X]` (file:89–95) is a 5-clause pattern-match returning
+`0` for `p ∉ {3, 5, 7, 11, 13}`. At `p = 17`, RHS = 0 but LHS is a
+non-zero degree-17 polynomial — bridge fails trivially for every
+odd prime `p ≥ 17`. The S16 PREP-1 / S16 PREP-2 numerical witnesses
+at `p ∈ {3, 5, 7}` all fell **inside** the 5-clause window, so they
+confirmed the bridge only where it is non-trivial by `r`'s construction;
+the catch-all branch was never tested.
+
+This PREP:
+
+- **§1** — Numerical refutation at `p = 17` + symmetric positive checks
+  at `p ∈ {3, 5}` (hand-computation) verifying the bridge IS structurally
+  correct for any odd prime `p ≥ 3` if `r p` is the Chebyshev-derived
+  "Dirichlet-kernel-cosine" polynomial (Washington, *Cyclotomic Fields* §2.1).
+- **§3** — Four resolution paths (R1 redefine `r` parametrically — HIGH
+  regression risk; R2 parallel `r'` — duplication; **R3 introduce
+  `eisensteinWitness p` helper, leave `r` unchanged — RECOMMENDED**;
+  R4 polynomial-division + perfect-square — circular).
+- **§4** — Replaces S17 PREP STATE-SYNC's S17a/b/c/d work order with
+  S18a–S18f R3-aligned plan (~170–270 LOC total): S18a define
+  `eisensteinWitness p` parametrically via closed form; S18b bridge
+  identity now valid because witness is parametric; S18c monic +
+  degree; S18d middle-coefficient divisibility; S18e instantiate
+  `Polynomial.Monic.isEisensteinAt_of_mem_of_notMem` (camelCase per
+  Finding A); S18f close `eisenstein_conjecture_cos_pi_p` existential.
+- **§5** — 4 load-bearing bearers re-pinned at SHA `2df2f0150c...`
+  with **0 drift** (`Polynomial.Chebyshev.C`, `C_add_two`,
+  `isEisensteinAt_of_mem_of_notMem`, `IsEisensteinAt.irreducible`).
+  Index trap flagged: `Polynomial.Chebyshev.C : ℤ → R[X]` is
+  ℤ-indexed, not ℕ-indexed — for prime `p : ℕ`, must use `(p : ℤ)`
+  coercion (S16 PREP-1 §3 bearer table did not flag).
+- **§6** — Two new bearer pins for Path R3: `Polynomial.Chebyshev.C_comp_two_mul_X`
+  (present at SHA, referenced in `Chebyshev.lean:291` docstring) and
+  `Polynomial.Chebyshev.U` (present at SHA, standard).
+- **§7** — Honesty log: bridge fails at `p = 17` (High confidence);
+  bridge mathematically correct for any odd prime if `r p` is the
+  Chebyshev-derived polynomial (High); Path R3 LOC budget 150–250
+  (Medium); `eisensteinWitness p` closed form non-trivial (Medium-high).
+- **§8** — Conflict-free vs PR #17906 (already CONFLICTING, no new
+  conflict layer) + PR #19645 (mechanic meta batch, MERGEABLE,
+  orthogonal — touches `meta.json`, this PREP does not).
+
+**Anti-claims**: this PREP does **not** modify the Lean file, does
+**not** discharge the open sorry, does **not** propose closing
+PR #17906, does **not** modify meta.json/problem.md/knowledge.md.
+
+**Findings A/B/C from S16 PREP-2 still apply** under R3: A (camelCase
+`notMem` for S18e), B (Mathlib `Φ_p` Eisenstein criterion upstream
+TODO — slug builds side bridge), C (`zeta_add_one_prime` absent —
+Path B still blocked).
+
 ## Previous focus (S9 — uniform numerical anchor `Φ_{2p}(-1) = p`)
 
 S9 ACT — Uniform numerical anchor `Φ_{2p}(-1) = p` proved for every
@@ -468,34 +527,62 @@ divisibility half — Tactic B) remains the deeper gap (~200–400 lines).
 
 ## Next Action
 
-**S16 next action** (post-S15 ACT): Both uniform Vieta endpoints are
-now closed (S10 constant + S15 sub-leading). The remaining gap to
-`eisenstein_conjecture_cos_pi_p` is the **HARD half**: sub-leading
-divisibility for *all* indices `0 ≤ k < (p-1)/2`, not just the two
-extreme endpoints. Two viable paths:
+**S18 PREP supersedes S17 PREP STATE-SYNC's S17a/b/c/d work order.**
+The S17 ACT recipe assumed parametric `r p`, but file:89–95 defines
+`r : ℕ → ℤ[X]` as a 5-clause pattern-match returning `0` for
+`p ∉ {3, 5, 7, 11, 13}`. Bridge identity
+`(C ℤ p).comp (X - C 2) + C 2 = X · (r p)^2` therefore fails
+**trivially** for every odd prime `p ≥ 17` (RHS = 0, LHS non-zero
+degree-`p`). Witness checks at `p ∈ {3, 5, 7}` (S16 PREP-1 §2 +
+S16 PREP-2 §5) all fell inside the 5-clause window; the catch-all
+branch was never tested. **See `sessions/2026-05-16-s18-prep-bridge-uniformity-gap.md` §1 for full derivation + §3 for resolution paths.**
 
-**Path A: Cyclotomic-coefficient uniform divisibility.**
+**S18a–S18f work order** (Path R3 from §3 — recommended; preserves `r`):
+
+| Sub-step | LOC | What | Risk |
+|---|---|---|---|
+| S18a | ~60–100 | Define `eisensteinWitness p : ℤ[X]` parametrically via closed form (cyclotomic-style explicit sum or Chebyshev-derived); prove `eisensteinWitness 3 = r 3`, …, `eisensteinWitness 13 = r 13` | Medium-high (closed form is the technical challenge) |
+| S18b | ~40–60 | Bridge identity `(C ℤ p).comp (X - C 2) + C 2 = X · (eisensteinWitness p)^2` for every odd prime `p ≥ 3`; induction on `p` via `Polynomial.Chebyshev.C_add_two` (now valid because witness is parametric) | Medium |
+| S18c | ~20–30 | `(eisensteinWitness p).Monic` and `(eisensteinWitness p).natDegree = (p - 1) / 2` | Low |
+| S18d | ~30–50 | `(eisensteinWitness p).coeff k ∈ Ideal.span {(p:ℤ)}` for `1 ≤ k ≤ (p-1)/2 - 1` via S18b + `hp.out.dvd_choose_self` | Medium-high |
+| S18e | ~10–20 | Instantiate `Polynomial.Monic.isEisensteinAt_of_mem_of_notMem` (camelCase per Finding A) | Low |
+| S18f | ~10 | Discharge `eisenstein_conjecture_cos_pi_p` via existential witness `q := eisensteinWitness p` | Low |
+
+Total: ~170–270 LOC. **Does NOT modify the existing `r`** — preserves
+S5/S6/S9/S10/S15 theorems intact. The 5 per-prime
+`eisenstein_verified_small_primes` theorems continue to serve their
+expository role.
+
+**Path R1 (redefine `r` parametrically)** was rejected: HIGH regression
+risk (would break every `rfl` / `decide` / `compute_degree!` proof in
+S5–S15). **Path R2 (parallel `r'`)** is workable but architecturally
+duplicates. **Path R4 (polynomial division + perfect square)** is
+circular. See S18 PREP §3 for full ranking.
+
+**Findings A/B/C from S16 PREP-2 still apply**: A (camelCase `notMem`
+for S18e), B (Mathlib `Φ_p` Eisenstein criterion upstream TODO —
+slug builds side bridge), C (no `zeta_add_one_prime` at SHA — Path B
+still blocked). **Index trap (new in S18 PREP §5.1)**:
+`Polynomial.Chebyshev.C : ℤ → R[X]` (NOT ℕ) — for prime `p : ℕ`
+must use `(p : ℤ)` coercion in S18a–S18f.
+
+**Original S15-era two-path framing** (preserved for historical context):
+
+**Path A: Cyclotomic-coefficient uniform divisibility** —
 Show `(cyclotomic (2 * p) ℤ).coeff k ∈ Ideal.span {(p : ℤ)}` for
-`1 ≤ k ≤ p - 2` for odd prime `p`. Combined with the per-prime
-substitution `r_p_eq` and structural identities relating `r p` to
-`Φ_{2p}` (which we currently have only at the two endpoints), this
-would lift Eisenstein-at-p uniformly. **Risk**: the S5-S9 work has
-established the cyclotomic structural identity `Φ_{2p} = ∑_{i<p} (-X)^i`
-which gives `coeff k = (-1)^k` at every k — but the `r_p` to `Φ_{2p}`
-bridge is not yet uniform (the S10/S15 endpoint corollaries depend on
-per-prime `cyclotomic_{2p}_eq` rewrites). Need a uniform structural
-identity `r p ≃ Φ_{2p}` (modulo a known polynomial substitution).
+`1 ≤ k ≤ p - 2`. Falsified by S9's own
+`cyclotomic_two_mul_prime_eq_geom_neg_series` per S16 PREP-1 §1;
+sharpened by S16 PREP-1 §2 to Chebyshev-C bridge — now superseded
+by S18 PREP's R3 plan above.
 
-**Path B: Local-field uniformizer theorem (the deep gap).**
+**Path B: Local-field uniformizer theorem (the deep gap)** —
 Prove that `(2 + ζ_{2p} + ζ_{2p}⁻¹) = 2 + 2 cos(π/p)` is a
 uniformizer of the unique prime above `p` in ℤ[2 cos(π/p)]; ramification
 index `(p-1)/2`; minimal polynomial Eisenstein by Neukirch ANT II.6.
-**Risk**: requires importing significant `Mathlib.NumberTheory.Cyclotomic`
+Blocked at SHA by absent `zeta_add_one_prime` (S16 PREP-2 Finding C);
+requires importing significant `Mathlib.NumberTheory.Cyclotomic`
 + `Mathlib.NumberTheory.RamificationInertia` machinery; estimated
-200-400 LOC. Mathlib's `IsCyclotomicExtension.Rat.totallyRamified`
-is the closest existing bearer.
-
-S16 PREP-first: survey both paths, identify the lighter-weight bridge.
+200-400 LOC.
 
 ### S15 deliverables shipped (this iteration)
   `cyclotomic_two_mul_prime_subLeadingCoeff_uniform` (Stage 1, uniform)
@@ -587,7 +674,7 @@ calculation or the local-field uniformizer theorem.
 
 ## Attempt Counts
 
-- Total attempts: 15 (S1 OBSERVE, S2 ACT Level-2, S3 ACT norm-Vieta,
+- Total attempts: 18 (S1 OBSERVE, S2 ACT Level-2, S3 ACT norm-Vieta,
   S4 ACT trace-Vieta, S5 ACT cyclotomic anchor {3,5,7},
   S6 ACT cyclotomic anchor extension {11,13},
   S7 SCAFFOLD divisor enumeration for uniform bridge,
@@ -598,11 +685,15 @@ calculation or the local-field uniformizer theorem.
   S12 PREP Stage 1 Mathlib v4.26.0 audit,
   S13 PREP Stage 2 decide-tactic feasibility audit,
   S14 PREP simp-set audit for Stage 2,
-  S15 ACT uniform trace bridge — Stage 1 + Stage 2a + Stage 2b).
-- Current approach attempts: 14 (Level-2 + S3 norm + S4 trace +
+  S15 ACT uniform trace bridge — Stage 1 + Stage 2a + Stage 2b,
+  S16 PREP-1 path survey + Chebyshev-C sharpening,
+  S16 PREP-2 bearer deprecation + p=7 witness,
+  S17 PREP STATE-SYNC + bearer recheck + ACT readiness gate,
+  S18 PREP bridge-uniformity gap audit + R3 plan).
+- Current approach attempts: 17 (Level-2 + S3 norm + S4 trace +
   S5 cyclotomic anchor + S6 cyclotomic extension + S7 SCAFFOLD + S8 ACT
   + S9 ACT + S10 ACT + S11 PREP + S12 PREP + S13 PREP + S14 PREP +
-  S15 ACT).
+  S15 ACT + S16 PREP-1 + S16 PREP-2 + S17 PREP STATE-SYNC + S18 PREP).
 - Approaches tried:
   - S1: cyclotomic ramification, surveyed only.
   - S2: per-prime explicit verification + uniform statement (sorry on general case).
@@ -619,6 +710,10 @@ calculation or the local-field uniformizer theorem.
   - S13 PREP (doc-only, PR #18588): rules out pure-`decide` for Stage 2 (cyclotomic is opaque `def`), supplies corrected template using existing `cyclotomic_{2p}_eq` rewrites.
   - S14 PREP (doc-only, PR #18642): discharges S13 §11.3 deferred simp-set audit; finds 6 of 18 Stage-2 `simp only` lemmas not in default simp at v4.26.0, ships corrected explicit list.
   - S15 ACT (this PR): uniform trace bridge — Stage 1 (`cyclotomic_two_mul_prime_subLeadingCoeff_uniform`, ~30 LOC), Stage 2a (`r_subLeadingCoeff_via_moebius_uniform`, ~30 LOC, p ∈ {5,7,11,13}), Stage 2b (`r_subLeadingCoeff_eq_neg_p_uniform`, ~12 LOC, corollary). Companion private helper `neg_X_pow_coeff_eq` (~10 LOC). Build verified clean (3 Docker iterations, 7743 jobs final). 217 net LOC, 3 new named theorems, 1 new private lemma, 0 new sorries, 0 new axioms.
+  - S16 PREP-1 (doc-only, PR #19252, researcher-8): refuted S15 Path A statement `(Φ_{2p}).coeff k ∈ Ideal.span {p}` as false (S9's `cyclotomic_two_mul_prime_eq_geom_neg_series` gives (Φ_{2p}).coeff k = (-1)^k unit); sharpened to (r p).coeff k via Chebyshev-C bridge `(C ℤ p).comp (X - C 2) + C 2 = X · (r p)^2`; 18 Mathlib bearers pin-verified; Option A recommended.
+  - S16 PREP-2 (doc-only, PR #19305, researcher-6): reaffirmed Option A; 3 findings (A: camelCase `notMem`; B: Mathlib Φ_p Eisenstein criterion upstream TODO; C: no `zeta_add_one_prime`); witness at p=7 extended; 3 bearers re-pinned 0 drift.
+  - S17 PREP STATE-SYNC (doc-only, PR #19335, researcher-9): caught state.md + JSON up to post-S15/S16 reality; 6 load-bearing bearers re-pinned 0 drift; S17 ACT readiness gate locked with S17a/b/c/d work order.
+  - S18 PREP (this PR, doc-only): bridge-identity `r p` uniformity gap audit. The S17 ACT recipe `(C ℤ p).comp (X - C 2) + C 2 = X · (r p)^2` fails for every odd prime p ≥ 17 because file:89–95 defines `r : ℕ → ℤ[X]` as a 5-clause pattern-match returning `0` outside {3,5,7,11,13}. Direct numerical refutation at p=17 (RHS=0, LHS degree-17 leading-coeff-1). S16 PREP-1/PREP-2 witness checks at p ∈ {3,5,7} all fell inside the 5-clause window; catch-all branch was never tested. 4 resolution paths cataloged (R1 redefine r — HIGH risk; R2 parallel r' — duplication; R3 `eisensteinWitness p` helper — RECOMMENDED; R4 polydiv+square — circular). S17a/b/c/d superseded by S18a–S18f R3-aligned plan (~170–270 LOC). 4 bearers re-pinned 0 drift + 2 new bearer pins (Chebyshev.C_comp_two_mul_X, Chebyshev.U). Index trap flagged: `Polynomial.Chebyshev.C : ℤ → R[X]` (NOT ℕ).
 
 ## Key Files
 
