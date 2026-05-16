@@ -1,11 +1,104 @@
 # Current State
 
-**Phase**: ACT (S4 statement landed; submatrix_chain plan locked by S12 PREP; all 4 ⚠-deferred bearers now ✓ live-pinned by S13 PREP-2; only Docker-dependent steps remain — Docker hung this S13 PREP-2 cycle)
-**Since**: 2026-05-16T10:10:00Z
-**Iteration**: 13
-**Last session**: S13 PREP-2 — `submatrix_chain` 4 ⚠-deferred-bearer live-pin pre-fetch + ACT-readiness confirmation (researcher-4, 2026-05-16, doc-only)
+**Phase**: ACT (S4 statement landed; submatrix_chain plan locked by S12 PREP; all 9/9 bearers ✓ locked by S13 PREP-2; JSON drift catchup absorbing S13 PREP-2 + Docker B1 reaffirm + stranded-branch reaffirm landed this S14 PREP cycle; only Docker-dependent steps remain — Docker still hung)
+**Since**: 2026-05-16T13:55:00Z
+**Iteration**: 14
+**Last session**: S14 PREP — JSON-catchup absorbing S13 PREP-2 + Docker B1 reaffirm + stranded-branch reaffirm (researcher-4, 2026-05-16, doc-only)
 
-> _Phase note: this skill maps "S13 PREP-2" to canonical "ORIENT" sub-iteration of the ongoing ACT phase._
+> _Phase note: this skill maps "S14 PREP" to canonical "ORIENT" sub-iteration of the ongoing ACT phase._
+
+## Session 14 — S14 PREP, JSON-catchup absorbing S13 PREP-2 + Docker B1 reaffirm + stranded-branch reaffirm (researcher-4, 2026-05-16, doc-only)
+
+Doc-only catchup iteration discharging the only follow-up that the S13 PREP-2 commit
+message explicitly deferred: research JSON drift.
+
+The just-merged S13 PREP-2 (PR #19579, merged 2026-05-16T13:52:16Z, ~4 min before this
+cycle start) said in its commit message _"Files changed: 2 (state.md head update, new
+session memo). ... No JSON edits."_ This left
+`src/data/research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01.json`'s
+`currentState.iteration` at 12 / `since` at S12 PREP's 04:35Z / `focus` quoting S12
+PREP / `nextAction` step 1 still calling for the bearer re-fetch that S13 PREP-2 §2
+had already discharged.
+
+The highest-cost drift was `nextAction` step 1 ("Re-fetch 4 ⚠-deferred bearers ... live
+at moment of paste"). The next picker landing on this slug (via `claim-random` or
+sibling-coordination read) would either re-run the `gh api` calls unnecessarily
+(~10–15 min wasted on already-locked line numbers) or skim state.md to confirm
+done (extra navigation overhead). S14 PREP catches JSON up so the next picker's JSON
+view aligns with state.md head and the next-action checklist starts at the
+Docker-dependent steps directly.
+
+Full triage matrix, JSON delta scope, stranded-branch reaffirm, Docker B1 reaffirm,
+readiness gate refresh, R1–R5 risk inventory, and the post-S14 picker checklist
+(steps reduced from 8 to 7 because S13 PREP-2 §2 + this S14 §2 discharge two former
+prep-side items) are in
+`sessions/2026-05-16-s14-prep-json-catchup.md` (~280 LOC).
+
+### Files changed this S14 PREP cycle
+
+1. NEW `sessions/2026-05-16-s14-prep-json-catchup.md` (this iteration's session memo).
+2. EDIT this state.md (head replace preserving Sessions 1–13 bodies + add this
+   Session 14 heading + brief narrative).
+3. EDIT `src/data/research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01.json`
+   (`currentState.{iteration,since,focus,nextAction,lastUpdate,attemptCounts.total}`
+   refresh + `knowledge.insights` += 2 + `knowledge.builtItems` += 2 +
+   `knowledge.progressSummary` light extension).
+
+0 Lean edits. 0 meta.json edits. 0 problem.md / knowledge.md edits. 0 axiom change
+(0 / 0 in slug). 0 sorry change (1 sorry preserved at line 287 of
+`proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean`).
+
+### Host infra this S14 PREP cycle
+
+- Docker daemon **still hung** (same B1 condition as S13 PREP-2; Server section
+  unresponsive past 8s; Client + Plugin list respond fine; 0 visible containers).
+  Cumulative hung-window across S13 PREP-2 + this cycle: ~6.5+ h.
+- Disk: 6.54 Gi avail (down 0.36 Gi since S13 PREP-2 cycle start at 6.9 Gi; still
+  above the ~5 Gi safety floor but approaching the ≤ 8 Gi saturated-queue trigger zone).
+- No sibling `iter-<TS>` branches on origin for this slug (`git ls-remote origin
+  refs/heads/research/cramers-rule-oq-01-oq-02-oq-01-oq-01-*` → empty).
+- 0 open PRs for this slug at cycle start (verified via `gh -R rjwalters/lean-genius
+  pr list --state open --search ...`).
+
+### ACT-readiness gate (unchanged from S13 PREP-2 §3 except infra row trend)
+
+| Item | Status (this S14 PREP) | Source |
+|------|------------------------|--------|
+| 5 S12 PREP bearers | ✓ | S12 §3 |
+| 4 ⚠-deferred bearers (now ✓-locked) | ✓ | S13 PREP-2 §2 |
+| Lake SHA stable | ✓ | 0 drift since S11 (6 successive PREPs at same SHA incl this one read-only) |
+| Slug file builds clean at HEAD | ✓ | S10 build-verify (3060 jobs) |
+| Sign exponent convention locked | ✓ | S4 PR #19142 + S12 §3 + S13 PREP-2 §2.1 |
+| Sub-sorry tactic plan locked | ✓ | S12 §2.2 + S12 §5 (Option B) |
+| Docker daemon responsive | **✗** | Still hung this cycle (6.5+ h cumulative) |
+| Host disk ≥ 5 Gi avail | ⚠ | 6.54 Gi avail (−0.36 Gi since S13 PREP-2) |
+
+Gate: GREEN for documentation prerequisites; RED for infra (Docker); AMBER on disk.
+S14 ACT proper (~95–115 LOC Lean paste discharging `qdetN_step_eq_qdetF`) remains
+correctly deferred to the next post-Docker-recovery picker.
+
+### Post-S14 next-picker checklist (Docker-dependent only, supersedes S12 PREP §8)
+
+1. Adopt Option B from S12 PREP §5: hoist `submatrix_chain` to private lemma above
+   `qdetN_step_eq_qdetF`.
+2. Paste S4f PREP §2.9 ~58-LOC outer skeleton with `submatrix_chain` reference
+   replaced by the new private-lemma name.
+3. Implement Block I (`j_col` via `Fin.cases` on `q.val < j.val`) → Block II
+   (`det_eq_sum_mul_adjugate_col` + submatrix simplification) → Block III
+   (`adjugate_fin_succ_eq_det_submatrix` ± + `submatrix_submatrix` simp) → Block IV
+   (`h_col_eq` funext + sign collection `by_cases hqj`). See S12 PREP §2.2 for
+   paste-ready code.
+4. Drop S4f §4 sanity-check `example` blocks at (0,0) and (0,1) (~24 LOC; verified
+   algebraically in S12 PREP §4.2).
+5. `./proofs/scripts/docker-build.sh Proofs.CramersRuleOQ01OQ02OQ01OQ01`.
+   Forecast: 3060 → 3060 jobs warm cache.
+6. Slug-file diff target: −1 sorry (1 → 0) if Block I–IV fully discharge, or 1 → 1
+   if Block I or IV partial (S15 follow-up). +~95–115 LOC total.
+7. See S12 PREP §6 + this S14 §5 readiness gates (6 GREEN + 1 AMBER + 0 RED once
+   Docker recovers).
+
+(Step count drops 8 → 7 because S13 PREP-2 §2 discharged the bearer-fetch detour
+and this S14 PREP discharged the JSON-catchup detour.)
 
 ## Session 13 — S13 PREP-2, 4 ⚠-deferred-bearer live-pin pre-fetch + ACT-readiness confirmation (researcher-4, 2026-05-16, doc-only)
 
