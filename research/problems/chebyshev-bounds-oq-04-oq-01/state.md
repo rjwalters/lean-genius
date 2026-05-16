@@ -2,21 +2,70 @@
 
 ## Current phase
 
-**Phase**: PREP (Iter 5a planning — Iter 4 MERGED; bearer manifest staged for split ACT)
-**Iteration**: 5 (Iter 5a split into 5a-α / 5a-β / 5a-γ per S6 PREP recommendation; see Iter log)
-**Since**: 2026-05-16T04:37:00Z
+**Phase**: PREP (Iter 5a planning — Iter 4 MERGED; S6 PREP bearer manifest staged; S7 absorbs 3 RED INFRA blockers — host-side, ACT foreclosed pending recovery)
+**Iteration**: 5 (Iter 5a split into 5a-α / 5a-β / 5a-γ per S6 PREP recommendation, unchanged by S7; see Iter log)
+**Since**: 2026-05-16T20:15:00Z
 
-## Lean snapshot (post-Iter 4 merge, S6 PREP doc-only)
+## Lean snapshot (post-Iter 4 merge, S6 PREP + S7 STATE-SYNC doc-only)
 
 | File | LOC | Thm | Defs | Sorries | Axioms | Status |
 |---|---:|---:|---:|---:|---:|---|
-| `proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean` | 325 | 16 | 3 noncomputable | 0 | 0 | build-verified 7744 jobs at Iter 4 (frozen by S6 PREP — doc-only) |
+| `proofs/Proofs/ChebyshevBoundsOQ04OQ01.lean` | 325 | 16 | 3 noncomputable | 0 | 0 | build-verified 7744 jobs at Iter 4 (frozen by S6 PREP + S7 STATE-SYNC — doc-only) |
 | `proofs/Proofs/ChebyshevBoundsOQ04.lean` | 386 | — | — | 0 | 1 | parent's `chebyshevPsi_asymptotic` axiom remains the open target |
 
 OQ-04-OQ-01 is the **elementary Selberg–Erdős 1949 PNT** approach to
 discharging that parent axiom (no complex analysis).
 
 ## Iteration log
+
+### S7 STATE-SYNC — 2026-05-16T20:15Z (this session, doc-only, PR pending)
+
+**Researcher**: researcher-6. **Scope**: 0 Lean changes; absorb 3 RED
+INFRA blockers on host + fix 3 stale "this PR" leftovers from S6 PREP's
+JSON write + reaffirm S6's split-ACT plan + 2-bearer SHA-stability
+spot-check + restate picker decision matrix.
+
+**Trigger**: S6 PREP merged at 2026-05-16T08:55:05Z (T-11h20m). Since
+then: (a) host disk `/dev/disk3s5` 6.5 Gi → 3.2 Gi (crossed AMBER→RED,
+below same-day soft floors set by adjacent shannon 5.8 Gi + ballot
+5.4 Gi); (b) Docker daemon hung (`docker info` returns Client block,
+Server section empty — repeatable cross-slug pattern observed in
+abel-ruffini S7 #19755, sqrt2-minpoly S6 #19760, binomial S18 #19740);
+(c) `proofs/.lake` is a circular self-symlink (target equals link
+path) — same pattern from abel-ruffini S6 PREP #19633. Mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged from S6 PREP.
+
+**JSON drift fixes** (this S7 discharges):
+
+- `currentState.focus`: "(researcher-9, ..., this PR)" →
+  "(researcher-9, ..., MERGED as PR #19455 at 08:55:05Z)"
+- `knowledge.progressSummary`: "Iter 4 (..., this PR)" →
+  "Iter 4 (..., MERGED as PR #19400 at 03:52:02Z)"
+- `knowledge.insights[11]`: "S6 PREP ... (2026-05-16, this PR)" →
+  "S6 PREP ... (MERGED as PR #19455 at 08:55:05Z)"
+
+**Bearer spot-check** (2-of-N, SHA-pin transitivity covers the rest):
+
+- `Mathlib/NumberTheory/ArithmeticFunction/Moebius.lean:240`
+  `sum_eq_iff_sum_mul_moebius_eq` — byte-stable @ pin ✅ GREEN
+- `Mathlib/NumberTheory/AbelSummation.lean:229`
+  `sum_mul_eq_sub_integral_mul₀'` (Iter 5a-α target) — byte-stable @ pin ✅ GREEN
+
+**Files touched**: `research/problems/chebyshev-bounds-oq-04-oq-01/
+sessions/2026-05-16-s7-statesync-infra-red-postship-pivot.md` (new,
+~280 LOC, 10 sections), `research/problems/chebyshev-bounds-oq-04-oq-01/
+state.md` (this file, head prepend only — historical tail preserved
+verbatim), `src/data/research/problems/chebyshev-bounds-oq-04-oq-01.json`
+(currentState.{since/focus/nextAction/blockers} + knowledge.{
+progressSummary/insights[11]/nextSteps} + lastUpdate; 11-field edit;
+iteration unchanged at 5, attemptCounts.total unchanged at 4).
+
+**Picker decision matrix** for S{8} (5-row, see §6 of session memo):
+R1/R2 ACT 5a-α or 5a-β if G7 disk ≥6.0 Gi + G8 Docker up + G9 `.lake`
+OK + Mathlib SHA unchanged. R3 ACT under `LEAN_MEMORY_LIMIT=8192` if
+4.0–6.0 Gi. R4 doc-only iteration or release-without-PR if disk still
+<4.0 Gi. R5 doc-only if G8 or G9 still RED. R6 first-action mandate
+to pre-claim Docker baseline if Mathlib SHA changes.
 
 ### S6 PREP — 2026-05-16T04:37Z (this session, doc-only, PR pending)
 
