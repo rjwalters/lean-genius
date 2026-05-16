@@ -29,16 +29,16 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12",
-    "iteration": 9,
-    "focus": "Iter 8 S2-A ACT-1 (PR #18854, researcher-1, 2026-05-13) shipped the first .lean discharge: proofs/Proofs/ShapleyFolkmanOQ01.lean (~130 LOC, 0 axioms, 2 sorries) with 3 named results — convexHull_pair_zero_basis_extract helper (attempted tactic body per S3 PREP §3.1), mem_convexHull_finset_sum (sorry, line 87-93), tight_excess_count main tightness theorem (sorry, line 119-128). Iter 9 S5 PREP (PR #18929, researcher-4, 2026-05-13T23:06 UTC, doc-only) supplied the verbatim 5-step Lean skeleton (~18 LOC) for the first surviving sorry via Set.finset_sum_mem_finset_sum + subset_convexHull + convex_convexHull two-point combo, with named Mathlib v4.26.0 lemmas verified at lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 and a §5.3 segment-route fallback. Combined with S3 PREP §4 + S4 PREP §3 coordinate-eval recipe for the sibling sorry, both surviving sorries now have verbatim Lean recipes ready for ACT-2 docker-build pass. Build verification still pending.",
+    "since": "2026-05-16",
+    "iteration": 13,
+    "focus": "Iter 13 S2-A ACT-2 (this PR, researcher-8, 2026-05-16) discharged both surviving sorries in proofs/Proofs/ShapleyFolkmanOQ01.lean — mem_convexHull_finset_sum (S5 PREP §3 5-step skeleton, 30 LOC) and tight_excess_count (S7 PREP §5 corrected body, 46 LOC). Build verified at lake SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 via ./proofs/scripts/docker-build.sh Proofs.ShapleyFolkmanOQ01 (7744 jobs, 47s warm). File 130 → 204 LOC, sorries 2 → 0, local axioms 0 (5 inherited from Proofs.ShapleyFolkman unchanged). Three ACT-time elaboration fixes: (1) Set.mem_insert closer → by simp in S5 Step 1 (metavariable inference confused {0, e_i} insert position); (2) Pi.single_apply + mul_ite/mul_one/mul_zero in S7 Step 4 simp set (EuclideanSpace.single_apply alone did not unfold the kernel-level Pi.single x 1 j retention); (3) drop norm_num at hcoord in S7 Step 5 case branches (simp already derives False from (1/2 : ℝ) = 0). S2-A ACT-1 helper lemma convexHull_pair_zero_basis_extract built cleanly without fallback. No gallery entry for shapley-folkman-oq-01 exists yet (enricher scope).",
     "blockers": [
       "Lyapunov's convexity theorem (Approach A prerequisite): not in Mathlib; multi-session formalization project."
     ],
-    "nextAction": "S2-A ACT-2: docker-build pass discharging both surviving sorries. Step 1: verify helper lemma convexHull_pair_zero_basis_extract (line 58) — if rw [convexHull_pair] fails, fall back to S3 PREP §3.2 segment_eq_image' route. Step 2: discharge mem_convexHull_finset_sum (line 87) using S5 PREP §3 verbatim (18 LOC; Set.finset_sum_mem_finset_sum + subset_convexHull + convex_convexHull); fallback S5 PREP §5.3 segment-route if two-point combo misfires. Step 3: discharge tight_excess_count (line 119) per S3 PREP §4 + S4 PREP §3 coordinate-eval via EuclideanSpace.single_apply (~5 LOC). Defer S2-B (lp 2 / EuclideanSpace ℝ ℕ truncation lift) until S2-A is build-verified.",
+    "nextAction": "Mechanic-grade follow-on: S2-A ACT-3 sharpness corollary (~15 LOC). Combine tight_excess_count with parent shapley_folkman + finrank_euclideanSpace_fin to produce ∃ D, D.excessIndices.card = Module.finrank ℝ E. Single Docker iter expected. Enricher scope: create src/data/proofs/shapley-folkman-oq-01/ gallery entry with status=axiomatized (5 inherited axioms), badge=axiom, sorries=0, theoremCount=3 (or as auditor classifies). Multi-session deferred: S2-B PREP/ACT truncation lift to EuclideanSpace ℝ ℕ / lp 2 ℕ.",
     "attemptCounts": {
-      "total": 9,
-      "currentApproach": 8,
+      "total": 13,
+      "currentApproach": 12,
       "approachesTried": 1
     }
   },
@@ -79,5 +79,5 @@
     ]
   },
   "createdAt": "2026-05-12",
-  "updatedAt": "2026-05-14"
+  "updatedAt": "2026-05-16"
 }

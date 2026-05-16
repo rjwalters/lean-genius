@@ -90,7 +90,37 @@ theorem mem_convexHull_finset_sum (N : ℕ) :
       ∈ convexHull ℝ
           (∑ i : Fin N, ({0, EuclideanSpace.single i 1} :
               Set (EuclideanSpace ℝ (Fin N)))) := by
-  sorry
+  -- Step 1: 0 ∈ ∑ S_i, witness g i = 0 ∈ S_i = {0, e_i}.
+  have h0 : (0 : EuclideanSpace ℝ (Fin N)) ∈
+      (∑ i : Fin N, ({0, EuclideanSpace.single i 1} :
+          Set (EuclideanSpace ℝ (Fin N)))) := by
+    have hzero : (0 : EuclideanSpace ℝ (Fin N))
+        = ∑ i : Fin N, (0 : EuclideanSpace ℝ (Fin N)) := by simp
+    rw [hzero]
+    exact Set.finset_sum_mem_finset_sum (Finset.univ) _ _
+      (fun i _ => by simp)
+  -- Step 2: ∑ e_i ∈ ∑ S_i, witness g i = e_i ∈ S_i = {0, e_i}.
+  have hsum : (∑ i : Fin N, EuclideanSpace.single i (1 : ℝ)) ∈
+      (∑ i : Fin N, ({0, EuclideanSpace.single i 1} :
+          Set (EuclideanSpace ℝ (Fin N)))) :=
+    Set.finset_sum_mem_finset_sum (Finset.univ) _ _
+      (fun i _ => by
+        right
+        rfl)
+  -- Step 3: rewrite x as midpoint of 0 and ∑ e_i.
+  have hmid :
+      ((1 / 2 : ℝ) • (∑ i : Fin N, EuclideanSpace.single i (1 : ℝ)))
+        = (1 / 2 : ℝ) • (0 : EuclideanSpace ℝ (Fin N))
+          + (1 / 2 : ℝ) • (∑ i : Fin N, EuclideanSpace.single i (1 : ℝ)) := by
+    rw [smul_zero, zero_add]
+  rw [hmid]
+  -- Step 4: apply convexity of the convex hull.
+  exact (convex_convexHull ℝ _)
+    (subset_convexHull ℝ _ h0)
+    (subset_convexHull ℝ _ hsum)
+    (by norm_num : (0 : ℝ) ≤ 1 / 2)
+    (by norm_num : (0 : ℝ) ≤ 1 / 2)
+    (by norm_num : (1 / 2 : ℝ) + 1 / 2 = 1)
 
 /-- **Tightness of Shapley–Folkman in `EuclideanSpace ℝ (Fin N)`**.
 
@@ -125,6 +155,49 @@ theorem tight_excess_count (N : ℕ) :
             ((1 / 2 : ℝ) • (∑ i : Fin N, EuclideanSpace.single i (1 : ℝ)) :
                 EuclideanSpace ℝ (Fin N))),
       D.excessIndices.card = N := by
-  sorry
+  intro D
+  -- Step 1: For each i, extract t i ∈ [0, 1] with D.point i = (t i) • e_i.
+  have h_pt : ∀ i : Fin N,
+      ∃ s : ℝ, s ∈ Set.Icc (0 : ℝ) 1
+        ∧ D.point i = s • EuclideanSpace.single i 1 := by
+    intro i
+    exact convexHull_pair_zero_basis_extract (D.mem_convexHull i (Finset.mem_univ i))
+  -- Step 2: Materialise t : Fin N → ℝ via choose.
+  choose t ht_in ht_eq using h_pt
+  -- Step 3: Rewrite D.sum_eq under the sum binder using ht_eq.
+  have h_sum : (∑ i : Fin N, t i • EuclideanSpace.single i (1 : ℝ)
+                : EuclideanSpace ℝ (Fin N))
+        = (1 / 2 : ℝ) • ∑ i : Fin N, EuclideanSpace.single i (1 : ℝ) := by
+    have hk := D.sum_eq
+    simp_rw [ht_eq] at hk
+    exact hk
+  -- Step 4: Coordinate-evaluate at j to force t j = 1/2.
+  have h_tj : ∀ j : Fin N, t j = 1 / 2 := by
+    intro j
+    have h_eval : (∑ i : Fin N, t i • EuclideanSpace.single i (1 : ℝ)
+                      : EuclideanSpace ℝ (Fin N)) j
+                  = ((1 / 2 : ℝ) • ∑ i : Fin N, EuclideanSpace.single i (1 : ℝ)) j :=
+      congrArg (fun v : EuclideanSpace ℝ (Fin N) => v j) h_sum
+    simp [Finset.sum_apply, PiLp.smul_apply, Pi.single_apply,
+          mul_ite, mul_one, mul_zero,
+          Finset.mem_univ] at h_eval
+    linarith
+  -- Step 5: Every j ∈ excessIndices (i.e., D.point j = (1/2) • e_j ∉ {0, e_j}).
+  have h_excess : ∀ j : Fin N, j ∈ D.excessIndices := by
+    intro j
+    simp only [ShapleyFolkman.Decomposition.excessIndices, Finset.mem_filter,
+               Finset.mem_univ, true_and]
+    rw [ht_eq j, h_tj j]
+    intro h_mem
+    simp only [Set.mem_insert_iff, Set.mem_singleton_iff] at h_mem
+    rcases h_mem with h0 | h1
+    · have hcoord := congrArg (fun v : EuclideanSpace ℝ (Fin N) => v j) h0
+      simp [PiLp.smul_apply, EuclideanSpace.single_apply] at hcoord
+    · have hcoord := congrArg (fun v : EuclideanSpace ℝ (Fin N) => v j) h1
+      simp [PiLp.smul_apply, EuclideanSpace.single_apply] at hcoord
+  -- Step 6: excessIndices = univ, so card = N.
+  rw [show D.excessIndices = Finset.univ from
+      Finset.eq_univ_iff_forall.mpr h_excess,
+      Finset.card_univ, Fintype.card_fin]
 
 end ShapleyFolkmanOQ01
