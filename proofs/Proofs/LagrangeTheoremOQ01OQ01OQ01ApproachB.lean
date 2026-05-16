@@ -255,4 +255,66 @@ example : ∃ ψ : MulAut (Multiplicative (ZMod 7)), orderOf ψ = 3 := by
   haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
   exact exists_mulAut_mult_of_order_p (by norm_num : Nat.Prime 3) (by norm_num)
 
+/-! ## S3d-i: action homomorphism `Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))`
+
+Given the order-`p` automorphism `ψ : MulAut (Multiplicative (ZMod q))`
+from S3c-ii, build the action homomorphism
+
+```
+actionHom : Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))
+```
+
+that witnesses non-triviality of the Approach-B semidirect product
+
+```
+Multiplicative (ZMod q) ⋊[actionHom] Multiplicative (ZMod p).
+```
+
+The construction factors through the additive side: `ψ ^ p = 1` lifts
+to a kernel condition on `zmultiplesHom _ (Additive.ofMul ψ) : ℤ →+ Additive G`
+that lets `ZMod.lift p` descend to `ZMod p →+ Additive G`, from which
+`AddMonoidHom.toMultiplicativeLeft` (Mathlib
+`Mathlib/Algebra/Group/TypeTags/Hom.lean:111`) produces the desired
+`Multiplicative (ZMod p) →* G`.
+
+Mathlib bridges used (pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`):
+- `zmultiplesHom` (`Mathlib/Data/Int/Cast/Lemmas.lean:276`).
+- `ZMod.lift` (`Mathlib/Data/ZMod/Basic.lean:1140`).
+- `AddMonoidHom.toMultiplicativeLeft` (`Mathlib/Algebra/Group/TypeTags/Hom.lean:111`).
+- `ofMul_zpow` / `ofMul_one` (`Mathlib/Algebra/Group/TypeTags/Basic.lean:438`/226).
+- `zpow_natCast` / `pow_orderOf_eq_one` (standard).
+
+See `notes/2026-05-13-s3c-api-audit.md` Step 5 for the recipe sketch.
+This iteration realises the pseudo-code (`zpowersHom`/`ZMod.lift`
+factoring) via the equivalent and cleaner `zmultiplesHom` +
+`AddMonoidHom.toMultiplicativeLeft` route. -/
+
+/-- The action homomorphism `φ : Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))`
+    that witnesses non-triviality of the Approach-B semidirect product.
+
+    The hom is built by lifting `Additive.ofMul ψ ∈ Additive G` (for `G`
+    the multiplicative automorphism group) to a `ℤ →+ Additive G` via
+    `zmultiplesHom`, observing that `ψ ^ p = 1` kills the image of
+    `(p : ℤ)`, descending through `ZMod.lift p` to a `ZMod p →+ Additive G`,
+    then translating back via `AddMonoidHom.toMultiplicativeLeft`. -/
+noncomputable def actionHom {p : ℕ} (hp : p.Prime) (hp_dvd : p ∣ q - 1) :
+    Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q)) := by
+  have hexists := exists_mulAut_mult_of_order_p hp hp_dvd
+  set ψ := hexists.choose
+  have hψ : orderOf ψ = p := hexists.choose_spec
+  have hψ_pow : ψ ^ p = 1 := hψ ▸ pow_orderOf_eq_one ψ
+  refine AddMonoidHom.toMultiplicativeLeft <|
+    ZMod.lift p ⟨zmultiplesHom _ (Additive.ofMul ψ), ?_⟩
+  show (p : ℤ) • Additive.ofMul ψ = 0
+  rw [← ofMul_zpow, zpow_natCast, hψ_pow, ofMul_one]
+
+/-- Sanity (S3d-i): `actionHom` is well-typed at `(p, q) = (3, 7)`.
+    Produces a hom `Multiplicative (ZMod 3) →* MulAut (Multiplicative (ZMod 7))`,
+    the action data for the deferred Approach-B order-21 non-abelian
+    group `Multiplicative (ZMod 7) ⋊ Multiplicative (ZMod 3)`. -/
+noncomputable example :
+    Multiplicative (ZMod 3) →* MulAut (Multiplicative (ZMod 7)) := by
+  haveI : Fact (Nat.Prime 7) := ⟨by norm_num⟩
+  exact actionHom (by norm_num : Nat.Prime 3) (by norm_num)
+
 end LagrangeOQ01OQ01OQ01.ApproachB
