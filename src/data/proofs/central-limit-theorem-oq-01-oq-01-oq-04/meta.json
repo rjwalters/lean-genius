@@ -20,10 +20,10 @@
     "badge": "axiom",
     "sorries": 0,
     "dateAdded": "2026-05-04",
-    "axiomCount": 7,
-    "assumptions": "scalar_exponent_ge_half (Hudson-Mason 1982, scalar form): c ≥ 1/2 for scalar-exponent operator-stable laws; meerschaert_scheffler (2001): domain of attraction ↔ matrix regular variation; operator_stable_linear_image: closure under nonsingular linear maps (Meerschaert-Scheffler 2001, Thm 7.2.1); gaussian_has_scalar_exponent: Gaussian has scalar exponent c = 1/2 with zero drift; gaussian_is_operator_stable: Gaussian is operator-stable (matrix witness form); gaussian_in_own_doa: Gaussian is in its own operator domain of attraction; finite_cov_in_gaussian_doa: finite-cov distributions are in Gaussian DOA. (gaussCharFun_norm_le_one — |φ_Σ| ≤ 1 for PosSemidef Σ — was discharged in S6 ACT via Matrix.PosSemidef.dotProduct_mulVec_nonneg + Complex.norm_exp_ofReal + Real.exp_le_one_iff.) The remaining 5 v4.26.0-bump axioms are still pending: their original v4.25 proofs relied on now-removed/renamed lemmas (Matrix.eigenvalues, Matrix.exp as function, Real.rpow_one_div_eq_pow_inv, Filter.tendsto_const_nhds) and on elaborator looseness (conv-mode ext for Pi types, tendsto_const_nhds on a non-syntactically-constant sequence). Mathematical content is unchanged.",
-    "lineCount": 343,
-    "theoremCount": 9,
+    "axiomCount": 6,
+    "assumptions": "scalar_exponent_ge_half (Hudson-Mason 1982, scalar form): c ≥ 1/2 for scalar-exponent operator-stable laws; meerschaert_scheffler (2001): domain of attraction ↔ matrix regular variation; operator_stable_linear_image: closure under nonsingular linear maps (Meerschaert-Scheffler 2001, Thm 7.2.1); gaussian_is_operator_stable: Gaussian is operator-stable (matrix witness form); gaussian_in_own_doa: Gaussian is in its own operator domain of attraction; finite_cov_in_gaussian_doa: finite-cov distributions are in Gaussian DOA. (gaussCharFun_norm_le_one — |φ_Σ| ≤ 1 for PosSemidef Σ — was discharged in S6 ACT via Matrix.PosSemidef.dotProduct_mulVec_nonneg + Complex.norm_exp_ofReal + Real.exp_le_one_iff.) (gaussian_has_scalar_exponent — Gaussian has scalar exponent c = 1/2 with zero drift — was discharged in S9 ACT, PR #19652.) The remaining 4 v4.26.0-bump axioms are still pending: their original v4.25 proofs relied on now-removed/renamed lemmas (Matrix.eigenvalues, Matrix.exp as function, Real.rpow_one_div_eq_pow_inv, Filter.tendsto_const_nhds) and on elaborator looseness (conv-mode ext for Pi types, tendsto_const_nhds on a non-syntactically-constant sequence). Mathematical content is unchanged.",
+    "lineCount": 359,
+    "theoremCount": 10,
     "originalContributions": [
       "gaussian_operator_stable: N(0,Σ) is operator-stable — (φ_Σ(ξ/√n))^n = φ_Σ(ξ) proved via exp_neg_div_pow and quadForm_scale_inv_sqrt",
       "quadForm_scale_inv_sqrt: quadratic form scaling quadForm(ξ/√n) = (1/n)·quadForm(ξ)",
@@ -118,9 +118,9 @@
   "leanFile": {
     "path": "Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean",
     "namespace": "OperatorStable",
-    "axiomCount": 7,
-    "lineCount": 343,
-    "theoremCount": 9,
+    "axiomCount": 6,
+    "lineCount": 359,
+    "theoremCount": 10,
     "definitionCount": 7,
     "sorries": 0
   },
