@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: ACT (S15 closed Lean, 1 sorry; 1383 LOC, 64 theorems, 0 axioms)
-**Since**: 2026-05-14T~06:20Z (S15 ACT — uniform trace bridge, build verified)
-**Iteration**: 15 (S1-S10 ACT/SCAFFOLD + S11-S14 PREP + S15 ACT)
+**Phase**: ACT (S15 closed Lean, 1 sorry; 1383 LOC, 64 theorems, 0 axioms; doc-only S16 PREP-1 + S16 PREP-2 + S17 PREP STATE-SYNC since)
+**Since**: 2026-05-14T~06:20Z (S15 ACT — uniform trace bridge, build verified; Lean file frozen since)
+**Iteration**: 17 (S1-S10 ACT/SCAFFOLD + S11-S14 PREP + S15 ACT + S16 PREP-1 + S16 PREP-2 + S17 PREP STATE-SYNC)
 
 ## Current Focus
 
@@ -206,6 +206,105 @@ changed, no axioms added, no sorries resolved or introduced.** The 1166-line
 - **Companion stale ACT PR**: #17906 (S4 build-pending from 2026-05-12
   06:22 UTC) remains open and ~30+ hours stale; touches the same Lean
   file. The S11-S14 PREP chain is orthogonal-by-construction (doc-only).
+
+## Recent PREP audit chain (S16-PREP-1 / PREP-2, doc-only, post-S15 ACT)
+
+Between the S15 ACT merge (PR #19053 @ 2026-05-15T23:27:25Z, but
+opened ~2026-05-14T06:25Z; ~16h pending-build window during deployer
+stall) and the S17 PREP STATE-SYNC (this PR), two doc-only S16 PREP
+memos shipped. Both are **strictly file-disjoint** from the Lean
+file and from `state.md`/`registry.json` (the latter two reserved
+for the future STATE-SYNC iteration that catches up to S15 ACT post-
+merge; this is that STATE-SYNC). **No Lean files changed, no axioms
+added, no sorries resolved or introduced.** The 1383-line
+`AngleTrisectionCos20GalOQ01OQ03.lean` is unchanged since S15 ACT.
+
+| PR | Merge (UTC) | Phase tag | Author | Net Lean delta | Session log |
+|---|---|---|---|---|---|
+| [#19252](https://github.com/rjwalters/lean-genius/pull/19252) | 2026-05-15T18:03:25Z | S16 PREP-1 | researcher-8 | 0 | `2026-05-15-s16-prep-path-survey.md` |
+| [#19305](https://github.com/rjwalters/lean-genius/pull/19305) | 2026-05-15T19:00:26Z | S16 PREP-2 | researcher-6 | 0 | `2026-05-15-s16-prep-2-bearer-deprecation-witness-extension.md` |
+
+### What each S16 PREP established
+
+- **S16 PREP-1 (#19252)** — Sibling-PREP audit of S15 ACT's "Next (S16)"
+  path-A/path-B survey, opened during the S15 ACT pending-build window:
+  - **§1 refutation**: S15 ACT's stated Path A
+    (`(Φ_{2p}).coeff k ∈ Ideal.span {p}` for middle `k`) is provably
+    **false** as stated, refuted by S9's own
+    `cyclotomic_two_mul_prime_eq_geom_neg_series` (in-file at line ~1000),
+    which gives `(Φ_{2p}).coeff k = (-1)^k ∈ {-1, +1}` — a unit
+    never in `Ideal.span {p}`. Witness at p = 5: `(Φ_{10}).coeff 1 = -1`.
+  - **§2 sharpening**: Replace `(Φ_{2p}).coeff k` with `(r p).coeff k`,
+    bridged by the Chebyshev-C identity
+    `(C ℤ p).comp (X - C 2) + C 2 = X · (r p)^2`. Numerical witnesses
+    at p ∈ {3, 5}.
+  - **§3 bearer table**: 18 entries pin-verified at SHA
+    `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+  - **§4 Path B gap**: Mathlib has `IsPrimitiveRoot.zeta_sub_one_prime`
+    for the full cyclotomic field but **no analog** for the maximal
+    real subfield. Path B ⇒ ~250-450 LOC of real-subfield buildout.
+  - **§5 three-option recipe + §6 recommendation**: Option A
+    (sharpened Chebyshev-C bridge, ~120-180 LOC).
+
+- **S16 PREP-2 (#19305)** — Sibling-extension of #19252 along three
+  orthogonal axes; **#19252's Option-A recommendation reaffirmed,
+  not reversed**:
+  - **Finding A** (`Eisenstein/Basic.lean:218-220`): The Path A
+    entry-point bearer `Polynomial.Monic.isEisensteinAt_of_mem_of_notMem`
+    (camelCase, line 211) has a **`@[deprecated (since := "2025-05-23")]`
+    snake_case alias** `_of_mem_of_not_mem` 3 lines below. S17 ACT
+    author must use camelCase. Same trap for
+    `Polynomial.Monic.leadingCoeff_notMem` (line 205) vs deprecated
+    `leadingCoeff_not_mem` (line 208).
+  - **Finding B** (`Eisenstein/Criterion.lean:33-44` module docstring):
+    Mathlib upstream `## TODO` note that **even unshifted `Φ_p`
+    Eisenstein criterion** is an upstream TODO — slug must build the
+    bridge slug-side (no upstream bearer to import).
+  - **Finding C** (`NumberField/Cyclotomic/Basic.lean:315`):
+    `norm_toInteger_sub_one_eq_one` proves `ζ - 1` is a **unit** in
+    `ℤ[ζ_n]` when `n` is **not a prime power** (hypothesis
+    `h₂ : ∀ p k, p^k ≠ n`). Since `n = 2p` for odd prime p ≥ 3 is not
+    a prime power, this **blocks** the standard `zeta_sub_one_prime`
+    route at `n = 2p` for Path B. Correct uniformizer is `ζ + 1`, but
+    Mathlib has **no `zeta_add_one_prime`** (search returns 0).
+  - **Witness extension at p = 7**: Bridge identity verified
+    numerically at p = 7, where `r_7 = X^3 - 7X^2 + 14X - 7`. Middle
+    coefficient `(r_7).coeff 1 = 14 = 2·7 ∈ Ideal.span {7}` — the
+    smallest prime where Path A's Eisenstein middle-coefficient
+    obligation is non-empty and discharged.
+  - **Bearer stability re-check at SHA**: 3 bearers re-pinned (no
+    drift in the ~17 PRs between #19252's merge and #19305's open).
+
+## S17 PREP STATE-SYNC (this PR)
+
+Doc-only PR catching `state.md` + JSON registry up to the post-S15-ACT/
+S16-PREP-1/S16-PREP-2 reality. Both S16 PREPs explicitly deferred
+state.md/JSON updates to a future STATE-SYNC iteration (PR #19252 §7,
+PR #19305 §8), anticipating the (then in-flight) S15 ACT merge that
+would touch those same files. With S15 ACT merged at 2026-05-15T23:27Z
+and the deployer drained from ~270 open PRs to ~88 in the same drain
+wave, this STATE-SYNC ships into a clean lane.
+
+This STATE-SYNC also:
+
+- **Bearer drift recheck**: Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+  is unchanged since S15 era; 6 load-bearing Option-A bearers re-pinned
+  at the same SHA with **0 drift**. Two negative searches reaffirmed
+  (`zeta_add_one_prime` count = 0, `Eisenstein/Criterion.lean` TODO
+  text present at lines 33-44).
+- **S17 ACT readiness gate**: Catalogues the four sub-step work order
+  (S17a bridge identity ~80-120 LOC, S17b lift to middle-coefficient
+  divisibility ~40-60 LOC, S17c instantiate `IsEisensteinAt` ~10-20 LOC
+  using **camelCase** `notMem` per Finding A, S17d apply
+  `IsEisensteinAt.irreducible` ~10 LOC to close the conjecture).
+  Pins Findings A/B/C as trip-wires; reaffirms Option A over Option B.
+- **Parent-regression catalogue**: None pending. Mathlib pin frozen
+  since at least 2026-05-09; no Lean parent-file edits in flight.
+- **Orthogonality manifest**: This STATE-SYNC's edit surface
+  (`state.md` + registry JSON + new session file) does **not** overlap
+  PR #17906 (CONFLICTING stale S4 ACT) beyond its already-CONFLICTING
+  `state.md` edit (which would need rebase regardless), and does **not**
+  overlap PR #18171 (CONFLICTING mechanic meta-batch) at all.
 
 ## Previous focus (S9 — uniform numerical anchor `Φ_{2p}(-1) = p`)
 
