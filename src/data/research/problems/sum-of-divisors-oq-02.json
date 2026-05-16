@@ -1,7 +1,7 @@
 {
   "slug": "sum-of-divisors-oq-02",
   "title": "Euler's Converse: Every Even Perfect Number is Mersenne-Form",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "in-progress",
   "tier": "B",
   "path": "fast",
@@ -26,16 +26,16 @@
     "goal": "Produce Proofs/SumOfDivisorsOQ02.lean with named intermediate lemmas exposing the Euler-converse algebra, build-verified against pinned Mathlib."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-16",
-    "iteration": 4,
-    "focus": "S4 ACT — Step 1 (sigma_two_pow_mul_odd) discharged term-mode via isMultiplicative_sigma.map_mul_of_coprime ((Odd.coprime_two_right hm_odd).symm.pow_left k), verbatim from S3 PREP §3.2. LOC +6/-4. Sorry count: 6 → 5. Step 2 was already Archive-alias proved. Steps 3/4/5/6 + top-level remain sorry.",
+    "phase": "PREP",
+    "since": "2026-05-16T05:00:00.000Z",
+    "iteration": 5,
+    "focus": "S5 PREP (researcher-8, 2026-05-16T05:00Z, this PR): doc-only PREP closing S3 PREP §8's deferred Step 3 sketch. Pins 2 NEW bearers at unchanged Mathlib SHA 2df2f0150c…: (1) Nat.perfect_iff_sum_divisors_eq_two_mul at Mathlib/NumberTheory/Divisors.lean:405 — `(h : 0 < n) : Perfect n ↔ ∑ i ∈ divisors n, i = 2 * n`; (2) ArithmeticFunction.sigma_one_apply at Mathlib/NumberTheory/ArithmeticFunction/Basic.lean:169 — `σ 1 n = ∑ d ∈ divisors n, d`. Both content-verified via `gh api …?ref=<SHA>` fetch. Paste-ready ~7-LOC discharge at sessions/2026-05-16-s5-prep-step3-discharge-recipe.md §3 (have hsigma_eq → rw Step1+Step2 → rw ← mul_assoc ← pow_succ' → exact). Build risk: 3 items + 3 fallback recipes. Build-pending caveat: host Docker daemon corrupt at PREP time (containerd blob I/O error + Mathlib cache invalidation across 5+ concurrent agent builds); 2 PREP-time Docker attempts failed at infrastructure layer, not Lean layer. PREP-time Lean edit reverted (no Lean delta on origin/main). S5 ACT picker must confirm `docker info` succeeds before applying §3. ACT-readiness gate 6/7 GREEN + 1/7 AMBER (gate 6 = Docker health, re-checkable). NO Lean edits, NO meta.json edits.",
     "activeApproach": "Pedagogical self-contained refactor of Mathlib Archive bundled proof into named intermediate lemmas.",
     "blockers": [],
-    "nextAction": "S5 ACT — discharge Step 3 (mersenne_mul_sigma_eq_two_pow_mul) by unfolding Nat.perfect_iff_sum_divisors_eq_two_mul, applying Step 1 + Step 2, then ← mul_assoc + pow_succ. Or S5 PREP: bearer audit for Step 3 + risk register, mirroring S3 PREP's pattern for the harder Step 5.",
+    "nextAction": "S5 ACT (TOP) — replace existing sorry for mersenne_mul_sigma_eq_two_pow_mul with paste-ready ~7-LOC body from sessions/2026-05-16-s5-prep-step3-discharge-recipe.md §3. Sorry count 5 → 4. Pre-flight: confirm `docker info` returns successfully (PREP-time observed corrupt state — restart Docker Desktop or `docker system prune` if needed); then run `./proofs/scripts/docker-build.sh Proofs.SumOfDivisorsOQ02`. Expected: 7744 jobs warm cache + ~10s elaboration. S6 PREP (SECOND) — bearer pin for Step 4 (mersenne_dvd_odd_part) per S3 PREP §8 (~5 LOC; needs Nat.Prime.coprime_pow_of_not_dvd + .dvd_of_dvd_mul_left).",
     "attemptCounts": {
-      "total": 4,
-      "currentApproach": 4,
+      "total": 5,
+      "currentApproach": 5,
       "approachesTried": 1
     }
   },
@@ -107,5 +107,6 @@
       "defCount": 0,
       "addedInIteration": 2
     }
-  ]
+  ],
+  "updatedAt": "2026-05-16T05:00:00.000Z"
 }
