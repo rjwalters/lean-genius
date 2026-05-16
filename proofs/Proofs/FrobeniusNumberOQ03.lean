@@ -12,6 +12,11 @@
   now safely importable after mechanic PR #19194 cleared the v4.26.0 regression
   in the parent file) into a 3-generator existence form by setting the third
   coefficient to zero.
+  S3c ACT (researcher-5, 2026-05-16): concrete Sylvester upper bound
+  `frobeniusNumber3_le_sylvester_bound : frobeniusNumber3 a b c ≤ (a-1)(b-1)`
+  combining S3a's `frobeniusNumber3_le_of_subset_Iio` with S3b's
+  `large_representable3_via_two_gen`. The loose form (no `-1` tightening,
+  so no case-split for `a = 1 ∨ b = 1` degenerate cases needed).
 
     Representable3 a b c n := ∃ x y z : ℕ, n = a*x + b*y + c*z
 
@@ -27,6 +32,13 @@
 
     `large_representable3_via_two_gen` — for `Nat.Coprime a b`, `1 ≤ a`,
         `1 ≤ b`, every `n ≥ (a-1)(b-1)` is `Representable3 a b c n`.
+
+  and the concrete Sylvester upper bound (S3c):
+
+    `frobeniusNumber3_le_sylvester_bound` — for `Nat.Coprime a b`, `1 ≤ a`,
+        `1 ≤ b`, the 3-generator Frobenius number is bounded above by
+        `(a-1)(b-1)` (the loose form; the tight `-1` form is deferred to
+        a successor iteration with a case-split for `a = 1 ∨ b = 1`).
 
   Subsequent stages (per `research/problems/frobenius-number-oq-03/state.md`):
     S3c — finiteness of the non-representable set for `gcd(a,b,c) = 1`
@@ -153,5 +165,28 @@ theorem large_representable3_via_two_gen
     (hn : (a - 1) * (b - 1) ≤ n) : Representable3 a b c n := by
   obtain ⟨x, y, hxy⟩ := FrobeniusNumber.large_representable hab ha hb n hn
   exact representable3_of_two_gen hxy
+
+/-! ### S3c — concrete Sylvester upper bound on the 3-generator Frobenius number -/
+
+/-- **S3c bound**: the 3-generator Frobenius number is bounded above by
+    the 2-generator Sylvester quantity `(a - 1) * (b - 1)`. This combines
+    the S3a abstract upper bound `frobeniusNumber3_le_of_subset_Iio` with
+    the S3b 2→3 bridge `large_representable3_via_two_gen`: any `n` not
+    `Representable3 a b c` must be `< (a - 1) * (b - 1)`, so the supremum
+    of the non-representable set is bounded by `(a - 1) * (b - 1)`.
+
+    Note: this is the *loose* form of the Sylvester bound. The strictly
+    tighter form `≤ (a - 1) * (b - 1) - 1` is also true but requires a
+    case-split for the degenerate `a = 1 ∨ b = 1` cases (where the
+    non-representable set is empty and the `ℕ`-subtraction underflows to
+    `0`). The loose form here is the unconditional all-cases bound. -/
+theorem frobeniusNumber3_le_sylvester_bound {a b c : ℕ}
+    (hab : Nat.Coprime a b) (ha : 1 ≤ a) (hb : 1 ≤ b) :
+    frobeniusNumber3 a b c ≤ (a - 1) * (b - 1) := by
+  refine frobeniusNumber3_le_of_subset_Iio (fun n hn => ?_)
+  simp only [Set.mem_Iio]
+  by_contra hge
+  push_neg at hge
+  exact hn (large_representable3_via_two_gen hab ha hb hge)
 
 end FrobeniusOQ03
