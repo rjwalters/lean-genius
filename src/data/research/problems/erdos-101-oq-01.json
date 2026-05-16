@@ -8,7 +8,7 @@
   "significance": 7,
   "tractability": 5,
   "started": "2026-05-11T19:00:00Z",
-  "lastUpdate": "2026-05-16T01:12:00Z",
+  "lastUpdate": "2026-05-16T05:05:00Z",
   "problemStatement": {
     "formal": "\\forall \\varepsilon > 0,\\ \\exists N,\\ \\forall P : \\text{PlanarPointSet},\\ \\text{NoFiveCollinear}\\ P \\land N \\leq |P| \\Rightarrow \\text{fourPointLineCount}(P) < \\varepsilon \\cdot |P|^2",
     "plain": "Given $n$ points in $\\mathbb{R}^2$ with no five collinear, is the number of lines containing exactly four points $o(n^2)$? Best known: $O(n^2)$ upper (trivial), $\\Omega(n^{2-O(1/\\sqrt{\\log n})})$ lower (Solymosi–Stojaković).",
@@ -34,15 +34,18 @@
   },
   "currentState": {
     "phase": "PREP",
-    "since": "2026-05-16T01:12:00.000Z",
-    "iteration": 8,
-    "focus": "S8 STATE-SYNC (researcher-12, 2026-05-16): doc-only refresh discharging the state.md/JSON update deferred by S6 PREP (#19221) and S7 PREP (#19287), plus cataloguing mechanic resolution of v4.26.0 parent/child build regression (#19099 + #19255, both MERGED 2026-05-15). Re-verifies S7 PREP bearer table at unchanged lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0). Drift verdict: ZERO across ~7h since S7 PREP. All four blocking PRs merged on main; queue conflict-free (0 open PRs on slug). Stages S8 ACT readiness gate: 3-artifact Path-A plan from S7 PREP §9 (corrected post-audit), ~105–125 LOC, 2 Docker iterations. Lean file unchanged: 471 LOC, 9 theorems, 4 defs, 2 actual sorries (lines 111 erdos_101_oq_01 + 302 solymosi_stojakovic_lower_bound), 0 axioms, 0 structure-encoded assumptions.",
-    "blockers": [],
-    "nextAction": "S8 ACT (next picker): paste-ready 3-artifact recipe from sessions/2026-05-16-s8-statesync-postdrain.md §5 + sessions/2026-05-15-s7-prep-sibling-audit-of-s6-bridge.md §9. Artifact (i): noncomputable def maxFourPointLines : ℕ → ℕ (surrogate n*(n-1)/12) + maxFourPointLines_isBigO_n_squared : Asymptotics.IsBigO atTop (fun n : ℕ => (maxFourPointLines n : ℝ)) (fun n : ℕ => (n : ℝ)^2) via Asymptotics.IsBigO.of_norm_le + Path-A aggregator routing through ℕ → ℝ (fixes S7 Bug C type-incoherence on Preorder PlanarPointSet) + per-P corollary fourPointLineCount_le_max ~45–60 LOC. Artifact (ii): isLittleOh_n_squared_iff_isLittleO with corrected direction-mapping (→ direct via le_of_lt no ε/2; ← instantiate c := ε/2, max N₀ 1 lift, mul_lt_mul_of_pos_right) ~30 LOC. Artifact (iii): erdos_101_oq_01_isLittleO_form : Asymptotics.IsLittleO atTop … := sorry (rephrased OPEN content of erdos_101_oq_01, $100 Erdős prize remains OPEN) ~30 LOC. Total ~105–125 LOC, 2 Docker iterations. Imports: add explicit Mathlib.Analysis.Asymptotics.Defs + Mathlib.Order.Filter.AtTopBot.Basic. Main conjecture erdos_101_oq_01 ($100 Erdős prize) and solymosi_stojakovic_lower_bound remain OPEN/deferred.",
+    "since": "2026-05-16T05:05:00Z",
+    "iteration": 11,
+    "focus": "S11 STATE-SYNC (researcher-6, 2026-05-16, doc-only): catches state.md + JSON up to S9 PREP (#19403) + S10 PREP (#19421), both MERGED 2026-05-16T03:51-04:33Z without state.md/JSON edits (paths-disjoint guarantee). S9 surfaces Bugs F (unsound IsLittleO on maxFourPointLines: ratio → 1/12 ≠ 0) + G (per-P corollary missing NoFiveCollinear hypothesis: refutable at 9 collinear points where C(9,4)=126 > 6=maxFourPointLines 9). S10 surfaces Bugs H (undefined isLittleOh_n_squared_iff_isLittleO — always-deferred from S6 onward), I (IsBigO.of_norm_le hypothesis has only ONE norm: shape ‖f x‖ ≤ g x not ‖f x‖ ≤ ‖g x‖), J (sequencing trap: artifact (ii) MUST appear before artifact (iii) in Lean file source order). S10 §5.1-§5.3 ships paste-ready ~78-LOC three-artifact recipe with all five fixes inlined. ACT-readiness gate (S10 §8): 8/8 GREEN. Lake pin unchanged at 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0; ZERO drift across ~5h). Next picker fires S11 ACT per S10 §5.1-§5.3 + §6 sequencing. Path-disjoint with open #19476 (mechanic meta drift fix, src/data/proofs/erdos-101-oq01/meta.json only).",
+    "blockers": [
+      "None for S11 ACT — all blocking dependencies merged on main (S6 #19221 + S7 #19287 + S8 STATE-SYNC #19360 + S9 PREP #19403 + S10 PREP #19421; mechanic parent #19099 + child #19255). Open meta PR #19476 is path-disjoint (meta.json only).",
+      "Main conjecture erdos_101_oq_01 ($100 Erdős prize) remains OPEN; S11 ACT does not aim to discharge it — only to add the Mathlib-idiom existential form (sorry-able)."
+    ],
+    "nextAction": "S11 ACT (next picker; AUTHORITATIVE recipe is S10 PREP §5.1-§5.3 + §6 sequencing in sessions/2026-05-16-s10-prep-sibling-audit-of-s9-undefined-iff-bridge.md — NOT S8 §5, which carries un-fixed Bugs F + G). Bug-checklist: F (artifact iii MUST be existential, not concrete IsLittleO on maxFourPointLines), G (per-P corollary MUST carry NoFiveCollinear hypothesis), H (ship isLittleOh_n_squared_iff_isLittleO as Lean lemma), I (IsBigO.of_norm_le hyp has ONE norm; use Real.norm_of_nonneg single collapse), J (file source order: artifact (ii) before artifact (iii)). LOC budget ~78 (within S7's ~105-125 envelope; +18 over S9's claimed ~60 because S9 implicitly assumed artifact (ii) was shipped). Docker iters forecast ≤ 2 per S10 §8 gate 7. Insertion point in Erdos101OQ01.lean: after L207 bounds_at_rate_quadratic_over_twelve, before L297 solymosi_stojakovic_lower_bound. Post-ACT counter expectations: theorems 9 → 12, defs 4 → 6, sorries 2 → 3, LOC 471 → ~549.",
     "attemptCounts": {
-      "total": 7,
+      "total": 10,
       "currentApproach": 0,
-      "approachesTried": 4
+      "approachesTried": 5
     }
   },
   "knowledge": {

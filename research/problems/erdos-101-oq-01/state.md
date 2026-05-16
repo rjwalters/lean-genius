@@ -1,24 +1,43 @@
 # Current State
 
 **Phase**: PREP
-**Since**: 2026-05-16 (S8 STATE-SYNC)
-**Iteration**: 8
-**Last Updated**: 2026-05-16 (researcher-12)
+**Since**: 2026-05-16 (S11 STATE-SYNC absorbing S9 + S10 PREP)
+**Iteration**: 11
+**Last Updated**: 2026-05-16 (researcher-6, S11 STATE-SYNC)
 
 ## Current Focus
 
-S8 STATE-SYNC (researcher-12, 2026-05-16): doc-only refresh that
-discharges the state.md/JSON update deferred by both S6 PREP (#19221)
-and S7 PREP (#19287), plus catalogues the mechanic resolution of the
-v4.26.0 parent/child build regression (#19099 parent, #19255 child,
-both MERGED 2026-05-15). Re-verifies the S7 PREP bearer table at the
-**unchanged** lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
-(v4.26.0). Drift verdict: ZERO across ~7h. Stages the S8 ACT readiness
-gate: all four blocking PRs merged on main, queue is conflict-free
-(0 open PRs on slug), 3-artifact Path-A ACT plan (~105–125 LOC, 2
-Docker iterations) ready for next picker per S7 PREP §9.
+S11 STATE-SYNC (researcher-6, 2026-05-16, doc-only): catches `state.md`
++ JSON up to **S9 PREP (#19403) and S10 PREP (#19421)** — both MERGED
+2026-05-16T03:51-04:33Z, neither touched state.md/JSON (paths-disjoint
+guarantee). S9 surfaces Bugs **F** (unsound `IsLittleO` form on
+`maxFourPointLines : n*(n-1)/12`: ratio → 1/12 ≠ 0) + **G** (per-P
+corollary missing `NoFiveCollinear` hypothesis: refutable at 9
+collinear points where `fourPointLineCount = C(9,4) = 126 > 6 =
+maxFourPointLines 9`). S10 surfaces Bugs **H** (undefined slug-local
+`isLittleOh_n_squared_iff_isLittleO` — always-deferred from S6 onward)
++ **I** (`IsBigO.of_norm_le` hypothesis has only ONE norm: shape is
+`‖f x‖ ≤ g x` not `≤ ‖g x‖`) + **J** (sequencing trap: artifact (ii)
+MUST appear before artifact (iii) in file source order). S10 §5.1-§5.3
+ships **paste-ready ~78-LOC three-artifact recipe** with all five fixes
+inlined. ACT-readiness gate (per S10 §8): **8/8 GREEN**. Lake pin
+unchanged at `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0; ZERO
+drift across ~5h since S10 PREP recheck). Next picker fires S11 ACT
+per S10 §5.1-§5.3 + §6 sequencing.
 
 ## Previous Focus
+
+S8 STATE-SYNC (researcher-12, 2026-05-16, #19360 MERGED): doc-only
+refresh that discharged the state.md/JSON update deferred by S6 PREP
+(#19221) and S7 PREP (#19287), plus catalogued the mechanic resolution
+of the v4.26.0 parent/child build regression (#19099 parent + #19255
+child). **Superseded by S9 + S10 PREP corrections**: S8's Active
+Approach §1-§3 carries Bugs F + G in-narrative (artifact (iii)
+described as concrete `IsLittleO` on `maxFourPointLines`; per-P
+corollary missing `NoFiveCollinear`). The ACT picker MUST NOT follow
+S8 §5's recipe verbatim — defer to S10 §5.1-§5.3 instead.
+
+## Earlier Focus
 
 S7 PREP (researcher-12, 2026-05-15, #19287): sibling-audit of the
 queued S6 PREP bridge plan. Found 3 substantive bugs + 1 phantom
@@ -54,55 +73,104 @@ free.
 
 ## Active Approach
 
-**S8 STATE-SYNC** (this iteration, doc-only) — refresh state.md +
-JSON + ship a bearer drift recheck. The substantive math approach
-remains the **IsBigO / IsLittleO bridge to Mathlib idiom** from
-S6 PREP, with the corrections from S7 PREP §3–§5:
+**S11 ACT (next picker; recipe AUTHORITATIVELY lives in
+`sessions/2026-05-16-s10-prep-sibling-audit-of-s9-undefined-iff-bridge.md`
+§5.1–§5.3 + §6 sequencing)**. The substantive math approach is the
+**IsBigO / IsLittleO bridge to Mathlib idiom** from S6 PREP, with **all
+five S9 + S10 corrections inlined**:
 
-1. **Artifact (i)** — aggregator + IsBigO via Path A.
-   `noncomputable def maxFourPointLines : ℕ → ℕ` (surrogate
-   `n * (n-1) / 12`) + `maxFourPointLines_isBigO_n_squared`. Routes
-   `Asymptotics.IsBigO atTop …` through `ℕ → ℝ` instead of
-   `PlanarPointSet → ℝ` (fixes S7 Bug C type-incoherence).
-2. **Artifact (ii)** — bridge `IsLittleOh_n_squared g ↔
-   Asymptotics.IsLittleO atTop (↑g) (· ^ 2)`. Direction-mapping
-   per S7 PREP §3.4 (corrected): `→` direct via `le_of_lt`;
-   `←` instantiate `c := ε/2`, `max N₀ 1` lift, `mul_lt_mul_of_pos_right`.
-3. **Artifact (iii)** — Mathlib-idiom form of OQ-01.
-   `erdos_101_oq_01_isLittleO_form : Asymptotics.IsLittleO atTop
-   (fun n => (maxFourPointLines n : ℝ)) (fun n => (n : ℝ)^2) := sorry`
-   — the same OPEN content as `erdos_101_oq_01`, rephrased in Mathlib
-   asymptotic vocabulary.
+1. **Artifact (i)** — aggregator + IsBigO + per-P corollary (~22 LOC, S10 §5.1).
+   `noncomputable def maxFourPointLines (n : ℕ) : ℕ := n * (n-1) / 12`
+   surrogate + `maxFourPointLines_isBigO_n_squared`. **Bug-I fix**:
+   `IsBigO.of_norm_le` hypothesis is `‖f x‖ ≤ g x` (ONE norm), so
+   after `apply IsBigO.of_norm_le; intro n`, collapse the LHS via
+   `rw [Real.norm_of_nonneg (by positivity)]` and proceed (no `show
+   |·| ≤ |·|`, no double `abs_of_nonneg`). **Bug-G fix**: per-P
+   corollary `fourPointLineCount_le_max` MUST carry the
+   `(hP : NoFiveCollinear P)` hypothesis (without it, 9 collinear points
+   refute the bound: `C(9,4) = 126 > 6 = maxFourPointLines 9`).
+2. **Artifact (ii)** — bridge lemma (~28 LOC, S10 §5.2). **Bug-H fix**:
+   `lemma isLittleOh_n_squared_iff_isLittleO (g : ℕ → ℕ) :
+   IsLittleOh_n_squared g ↔ Asymptotics.IsLittleO Filter.atTop
+   (fun n => (g n : ℝ)) (fun n => (n : ℝ)^2)` MUST be defined here
+   (it has been "always-deferred" from S6 onward; S9 §5.2's iff proof
+   referenced it without defining it). Direction-mapping per S7 PREP
+   §3.4 (corrected): `→` direct via `Real.norm_of_nonneg`; `←`
+   instantiate `c := ε/2`, `max N₀ 1` lift, `nlinarith`.
+3. **Artifact (iii)** — existential form + iff with primary form
+   (~28 LOC, S10 §5.3). **Bug-F fix**: artifact (iii) MUST be the
+   EXISTENTIAL form `def erdos_101_oq_01_isLittleO_form : Prop :=
+   ∃ g : ℕ → ℕ, Asymptotics.IsLittleO Filter.atTop (fun n => (g n : ℝ))
+   (fun n => (n : ℝ)^2) ∧ BoundsAtRate (fun n => (g n : ℝ))` (NOT
+   the concrete `IsLittleO` on `maxFourPointLines`, whose ratio
+   → 1/12 ≠ 0). Plus `theorem erdos_101_oq_01_rate_form_iff_isLittleO`
+   (uses artifact (ii)) + `theorem erdos_101_oq_01_isLittleO : ... := sorry`.
 
-Total: ~105–125 LOC across artifacts (i)–(iii), 2 Docker iterations
-budgeted (likely sources of iter-2 fix: `Real.norm_natCast` vs
-`‖((g n : ℕ) : ℝ)‖` normalisation).
+**Sequencing constraint (Bug J)**: artifact (ii) MUST appear before
+artifact (iii) in Lean file source order — the iff proof in §5.3
+references the lemma defined in §5.2.
+
+**Total LOC budget (S10 §5.4)**: ~78 LOC across artifacts (i)+(ii)+(iii).
+Within S7's ~105-125 envelope; +18 LOC over S9's claimed ~60 (because
+S9 implicitly assumed artifact (ii) was already shipped).
+
+**Docker iterations forecast (S10 §8 gate 7)**: ≤ 2. Likely sources of
+iter-2 fix: `Real.norm_natCast` vs `‖((g n : ℕ) : ℝ)‖` normalisation;
+or `nlinarith` fallback to explicit `calc` chain in artifact (ii)'s `←`
+direction (S10 §11 documents this fallback in ~3 extra LOC).
 
 S4's `Active Approach` (the S3 chain SS-with-C=1/2 + Real.rpow strict
 monotonicity) remains the substantive technical content already shipped
-in `Erdos101OQ01.lean`; S8 ACT operates *above* that, in the asymptotic-
-vocabulary layer.
+in `Erdos101OQ01.lean`; S11 ACT operates *above* that, in the
+asymptotic-vocabulary layer.
 
 ## Next Action
 
-**S8 ACT** (next picker; recipe is paste-ready in
-sessions/2026-05-16-s8-statesync-postdrain.md §5 and
-sessions/2026-05-15-s7-prep-sibling-audit-of-s6-bridge.md §9):
+**S11 ACT** (next picker; **AUTHORITATIVE recipe is S10 PREP §5.1–§5.3
++ §6 sequencing in
+`sessions/2026-05-16-s10-prep-sibling-audit-of-s9-undefined-iff-bridge.md`** —
+NOT S8 §5, which carries un-fixed Bugs F + G):
 
-1. `git fetch origin && git rebase origin/main` (worktree).
-2. Verify `Erdos101OQ01.lean` is at 471 LOC with 2 sorries (lines 111,
-   302); verify parent `Erdos101Problem.lean` 758 LOC intact.
+**Bug-checklist for the ACT picker (paste-ready, do NOT skip any):**
+- **F**: artifact (iii) MUST be the existential form (`∃ g, IsLittleO ∧
+  BoundsAtRate`), NOT a concrete `IsLittleO` on `maxFourPointLines`.
+- **G**: per-P corollary `fourPointLineCount_le_max` MUST carry
+  `(hP : NoFiveCollinear P)` hypothesis.
+- **H**: ship `isLittleOh_n_squared_iff_isLittleO` AS A LEAN LEMMA in
+  artifact (ii); it has been always-deferred from S6 onward.
+- **I**: `IsBigO.of_norm_le` hypothesis is `‖f x‖ ≤ g x` (ONE norm);
+  drop the RHS `|·|` + the second `abs_of_nonneg` in artifact (i)'s
+  IsBigO body — use `Real.norm_of_nonneg` for the single norm collapse.
+- **J**: file source order — artifact (ii) MUST appear BEFORE artifact
+  (iii)'s iff theorem.
+
+**Recipe steps (post-#19403 + #19421 merge state):**
+
+1. `git fetch origin && git checkout -b feature/researcher-N-erdos-101-oq-01-s11 origin/main` (latest HEAD post-#19421).
+2. Verify `Erdos101OQ01.lean` is at 471 LOC with 2 sorries (lines 110,
+   297 per S10 §2); verify parent `Erdos101Problem.lean` 758 LOC intact.
 3. Add `import Mathlib.Analysis.Asymptotics.Defs` and
    `import Mathlib.Order.Filter.AtTopBot.Basic` (cheap insurance).
-4. Add artifacts (i)–(iii) per the S7 PREP §9 recipe (above);
-   ~105–125 LOC.
+4. Add artifacts (i)–(iii) per S10 §5.1-§5.3 (paste-ready, ~78 LOC).
+   Insertion point: after `bounds_at_rate_quadratic_over_twelve` (L207),
+   before `solymosi_stojakovic_lower_bound` (L297). Keeps known/elementary
+   lemmas above open/aspirational. **Strict source order**: §5.1 (artifact
+   (i)) → §5.2 (artifact (ii)) → §5.3 (artifact (iii)).
 5. Docker-build via `./proofs/scripts/docker-build.sh Proofs.Erdos101OQ01`.
-   Plan 2 iterations.
-6. Update state.md / JSON post-ACT (iteration 8 → 9, phase PREP → ACT,
-   builtItems += 3 new theorems, sorries 2 → 3 if artifact (iii) ships
-   the new sorry).
+   **Plan ≤ 2 iterations** per S10 §8 gate 7.
+6. If iter 1 fails on `linarith` / `nlinarith` casts: add `push_cast` or
+   split `have : ... ≤ ...` intermediates. The artifact (ii) `←`
+   direction `nlinarith` fallback to explicit `calc` chain is documented
+   in S10 §11 (~3 extra LOC).
+7. Update state.md / JSON post-ACT (iteration 11 → 12, phase PREP → ACT,
+   builtItems += 1 def + 3 theorems, sorries 2 → 3 if artifact (iii)
+   ships the new sorry, theorems 9 → 12, defs 4 → 6, LOC 471 → ~549).
+8. Update `src/data/proofs/erdos-101-oq01/meta.json` aggregate counts
+   AFTER #19476 (mechanic open meta drift fix) merges; this ACT's
+   contribution to `lineCount` is +78 LOC on top of the post-#19476
+   baseline of 471.
 
-Alternative S8 candidates (deferred unless S8 ACT runs into trouble):
+Alternative S11 candidates (deferred unless S11 ACT runs into trouble):
 
 * **Cauchy–Schwarz refinement** of `fourCollinearThrough_bound`
   $\leq (n-1)/3$ to potentially yield a $1 - o(1)$ leading constant
@@ -115,11 +183,12 @@ Alternative S8 candidates (deferred unless S8 ACT runs into trouble):
 
 ## Attempt Counts
 
-- Total attempts: 7 (S1 + S2 + S3 + S4 + S6 PREP + S7 PREP + S8 STATE-SYNC; S5 OBSERVE was CLOSED → abandoned to mechanic track)
-- Current approach attempts: 0 (S8 ACT not yet attempted)
-- Approaches tried: 4 (S1 scaffold + S2 lower-bound recording;
+- Total attempts: 10 (S1 + S2 + S3 + S4 + S6 PREP + S7 PREP + S8 STATE-SYNC + S9 PREP + S10 PREP + S11 STATE-SYNC; S5 OBSERVE was CLOSED → abandoned to mechanic track)
+- Current approach attempts: 0 (S11 ACT not yet attempted)
+- Approaches tried: 5 (S1 scaffold + S2 lower-bound recording;
   S3 elementary real-analysis discharge; S4 constructive rephrasing
-  of S3 chain; S6+S7 PREP bridge plan + audit)
+  of S3 chain; S6+S7 PREP bridge plan + audit; S9+S10 PREP audit
+  cascade refining S8 STATE-SYNC's Active Approach)
 
 ## Build Status
 
