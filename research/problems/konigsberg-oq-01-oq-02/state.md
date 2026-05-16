@@ -1,13 +1,27 @@
 # Research State: konigsberg-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (main file build-blocked; recipe library extended toward open-path closure; 3 S17/S18/S20 PRs CONFLICTING/stuck — see STATE-SYNC below)
+**Phase**: ACT (main file build-blocked; recipe library extended toward open-path closure; 3 S17/S18/S20 PRs STILL CONFLICTING after **7-day stall** — see S21 STATE-SYNC + S20 STATE-SYNC narratives below)
 **Path**: full
 **Since**: 2026-05-03
-**Iteration**: 20
-**Last Update**: 2026-05-14 (STATE-SYNC, researcher-12, this PR) — JSON iteration sync 19 → 20 + record that S17/S18/S20 PRs are CONFLICTING after 5-day stall. Prior substantive update: 2026-05-09 (Session 20, researcher-3) — analysis-only spec for `walkEdges'_hcov_list_of_nodup` (closed-circuit `hcov_list` auto-derivation).
+**Iteration**: 21
+**Last Update**: 2026-05-16T16:13Z (S21 STATE-SYNC, researcher-9) — light catch-up: 5-day stall narrative → 7-day stall; verified via `gh pr view --json` at 16:13Z that all 3 PRs (#17596 / #17623 / #17637) remain `mergeStateStatus = DIRTY` / `mergeable = CONFLICTING` since 2026-05-09 (`updatedAt` byte-identical to S20 STATE-SYNC observation, no movement); JSON lastUpdate 2026-05-14T05:30Z → 16:13Z; JSON iteration 20 → 21. Prior STATE-SYNC: 2026-05-14 (researcher-12). Prior substantive update: 2026-05-09 (Session 20, researcher-3) — analysis-only spec for `walkEdges'_hcov_list_of_nodup`.
 
-## STATE-SYNC Observation (researcher-12, 2026-05-14, this PR)
+## S21 STATE-SYNC (researcher-9, 2026-05-16T16:13Z, doc-only, light)
+
+T+2d since S20 STATE-SYNC #17648 (researcher-12, 2026-05-14). The 3 OPEN PRs from the 2026-05-09 wave remain conflicting; no new merges on this slug since #17629 (S19). State.md iteration bumped 20 → 21; JSON synced. **No Lean / meta.json / problem.md / knowledge.md / sibling-slug / lake-manifest / stranded-PR edits** (cross-author PR-close territory is champion/deployer scope; S21 limits itself to the slug's own state.md + JSON narrative).
+
+**Open PR re-verification at S21-time** (2026-05-16T16:13Z, `cd /tmp && GH_REPO=rjwalters/lean-genius gh pr view <N> --json mergeable,mergeStateStatus,updatedAt`):
+
+| PR | State | Mergeable | UpdatedAt | Delta since S20 STATE-SYNC |
+|----|-------|-----------|-----------|----------------------------|
+| #17596 (S17 walkEdges' bridge) | OPEN | CONFLICTING (DIRTY) | 2026-05-09T01:24:38Z | none (byte-identical, no movement) |
+| #17623 (S18 open-walk edge-balance) | OPEN | CONFLICTING (DIRTY) | 2026-05-09T02:37:26Z | none |
+| #17637 (S20 generic step-witness lemmas) | OPEN | CONFLICTING (DIRTY) | 2026-05-09T02:58:02Z | none |
+
+**S21 + S22 next-action set unchanged** from S20 STATE-SYNC. See S20 STATE-SYNC narrative below for the path-A (rebase one of #17596/#17623/#17637 against current main and re-verify) vs path-B (cherry-pick the recipe-library content out into a fresh PR base-renamed-to-main; close stalled) options. **S21 is purely STATE-SYNC; does not commit to either path.**
+
+## STATE-SYNC Observation (researcher-12, 2026-05-14, S20 — historical)
 
 The three research PRs spawned around 2026-05-09 — #17596 (S17 `walkEdges'`
 bridge), #17623 (S18 open-walk edge-balance corollaries), #17637 (S20 generic
