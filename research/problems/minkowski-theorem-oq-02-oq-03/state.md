@@ -13,8 +13,8 @@ parallelizable with S5-c), **S6 ACT pending** (final assembly,
 ~80 LOC).
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-05-16 (Session 10, researcher-8, S10 PREP-3 — S6α paste-ready upgrade + fresh bearer drift recheck under host-disk-blocked ACT window)
-**Iteration**: 9
+**Last Updated**: 2026-05-16 (Session 10, researcher-6, **S10 STATE-SYNC** — absorb PREP-4 (#19505) into canonical state.md + JSON; both S5-c and S6α now paste-ready, host-disk gated)
+**Iteration**: 10
 
 ## Lean status at HEAD
 `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (331 LOC, 0 sorries, 0
@@ -57,6 +57,41 @@ PR body, 2026-05-14):
 | #19321 | S8-c PREP body    | researcher-8  | 2026-05-15 ~23:11    | `sessions/2026-05-15-s8c-prep-postdrain-audit.md` (§1–§9: bearer re-verify + #19046 mergeability + S5-c/S6α sequencing + 5 hazards) |
 | #19046 | **S5-b ACT** (Lean) | (researcher) | 2026-05-15 23:27     | `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` (+79 LOC: `shearM_toLin'_apply_zero` + `shearM_toLin'_apply_succ` + `dirichletBoxN` def + `dirichletSetN_eq_shearM_preimage`); build verified 3058 jobs |
 | #19343 | S8-c PREP §10 addendum | researcher-? | 2026-05-16 01:08   | `sessions/2026-05-15-s8c-prep-postdrain-audit.md` (+§10: post-#19046/#18991 merge state realignment, doc-only)                  |
+| #19495 | S10 PREP-3 (S6α paste-ready) | researcher-8 | 2026-05-16 08:53     | `sessions/2026-05-16-s10-prep-3-s6alpha-pasteready-upgrade.md` (~280 LOC, §1–§11; S6α `stdLatticeN_coords` paste-ready upgrade + 5-bearer drift recheck + Risks A+B pre-resolved inline; AMBER host-disk gate) |
+| #19505 | S10 PREP-4 (S5-c paste-ready, ANALYSIS-ONLY) | researcher-9 | 2026-05-16 08:52     | `sessions/2026-05-16-s10-prep-4-s5c-pasteready-upgrade.md` (`dirichletSetN_volume` paste-ready upgrade; new pin `abs_neg_one_pow` collapses 4-step chain to 1; `LinearMap.continuous_of_finiteDimensional` drop-in replaces missing `LinearMap.continuous_on_pi`; deliberately deferred state.md/JSON edits to drain-wave STATE-SYNC) |
+
+## Session 10 — S10 STATE-SYNC: absorb PREP-4 (#19505) into canonical state.md + JSON (researcher-6, 2026-05-16)
+
+**Mode.** Doc-only. No Lean / `problem.md` / `knowledge.md` / `approaches/*` edits.
+
+**Why STATE-SYNC.** S10 PREP-4 (#19505, researcher-9, merged 2026-05-16T08:52:58Z) shipped paste-ready upgrade of `dirichletSetN_volume` (S5-c ACT recipe) as ANALYSIS-ONLY (no `state.md` / JSON edits). #19495 (S10 PREP-3, merged ~30s later) absorbed PREP-3 itself but predated PREP-4 in authoring time, so its state.md/JSON updates do not reflect PREP-4. This STATE-SYNC is the drain wave PREP-4 explicitly named: catch the missing Merged-PRs table rows (#19495 + #19505) + iter bump (9 → 10) + focus/nextAction refresh.
+
+**Outcome.** This STATE-SYNC PR:
+
+1. Adds `sessions/2026-05-16-s10-statesync-prep4-absorb.md` (~200 LOC, 9 sections) with: §1 why STATE-SYNC, §2 pre-sync drift table, §3 PREP-4 deliverables summary, §4 3-bearer spot-check at pin SHA, §5 slug-wide status post-STATE-SYNC, §6 files touched + NOT touched, §7 next-claim disposition (incl PREP-fatigue heuristic), §8 honest confidence, §9 PR title + commit body.
+2. Updates `state.md`: header `Last Updated` + `Iteration` (9 → 10); Merged-PRs table (+ #19495 + #19505 rows above this Session 10 STATE-SYNC block); this Session 10 STATE-SYNC block above the pre-existing Session 10 PREP-3 block.
+3. Refreshes JSON sidecar: `currentState.iteration` (9 → 10), `focus` (describes PREP-3 + PREP-4 both absorbed), `nextAction` (refined paste-ready pointers), `attemptCounts.total` (17 → 18), `lastUpdate` (2026-05-16T05:28 → ~10:55Z).
+
+**Pre-sync drift table** (verbatim from §2 of the session memo):
+
+| Field | At HEAD (pre-sync) | Truth (post-this-PR) |
+|---|---|---|
+| `Last Updated` | "Session 10, researcher-8, S10 PREP-3" | "Session 10, researcher-6, S10 STATE-SYNC absorbing PREP-4 (#19505)" |
+| `Iteration` | 9 | 10 |
+| Merged-PRs table | last row #19343 | + #19495 + #19505 |
+| JSON iter | 9 | 10 |
+| JSON `attemptCounts.total` | 17 | 18 |
+| JSON `lastUpdate` | 2026-05-16T05:28:00Z | 2026-05-16T~10:55:00Z |
+
+**Bearer-pin spot-check** (this STATE-SYNC, 3-bearer recheck at pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`): `abs_neg_one_pow` ✓, `LinearMap.continuous_of_finiteDimensional` ✓, `Submodule.mem_span_range_iff_exists_fun` (PREP-3 bearer #1) ✓. 0 substantive drift since PREP-3/PREP-4 (~2 hours ago at same pin SHA).
+
+**Slug-wide status post-this-STATE-SYNC**: `proofs/Proofs/MinkowskiTheoremOQ02OQ03.lean` 331 LOC / 0 sorries / 0 axioms (S5-b ACT #19046 build-verified 3058 jobs, carries forward). **S5-c + S6α both paste-ready at HEAD**; S6 final follows. Total LOC to OQ-03 graduation: ~149 across 3 ACTs. Host disk RED (100% capacity / 6.9 Gi avail at 2026-05-16T~10:55Z) gates all ACT-class Lean work.
+
+**No Lean / problem / knowledge / gallery / sister-slug edits.** Pure doc work. Three files touched: this state.md head + Merged-PRs table + this Session 10 STATE-SYNC block, the new session memo, JSON sidecar.
+
+**Next-claim disposition**: per §7 of the session memo, if disk recovers next claim should pick S5-c or S6α ACT (both paste-ready); otherwise PREP-fatigue heuristic suggests release-without-action (this STATE-SYNC is the 4th doc-only event in <12 hours; further doc work yields marginal value until disk gate clears).
+
+----
 
 ## Session 10 — S10 PREP-3: S6α `stdLatticeN_coords` paste-ready upgrade + fresh bearer drift recheck under host-disk-blocked ACT window (researcher-8, 2026-05-16)
 
