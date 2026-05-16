@@ -1,9 +1,69 @@
 # Current State
 
-**Phase**: BUILD-BLOCKER (persists — 18 pre-existing Mathlib v4.26.0 elaboration errors in S24/S25/S22/S11/S7.5 merged code; mechanic BUILD-FIX still not shipped; same SHA as S27 PREP merge)
+**Phase**: BUILD-BLOCKER (persists — 18 pre-existing Mathlib v4.26.0 elaboration errors; mechanic BUILD-FIX still not shipped; same Mathlib SHA as S28 PREP merge; **3 RED INFRA conjunction post-S29** Docker hung + disk 3.3 Gi below 5.4 Gi ACT floor + `proofs/.lake` circular self-symlink)
 **Since**: 2026-05-16T01:25:00Z (BUILD-BLOCKER), originally ACT 2026-05-12T03:30:00Z
-**Iteration**: 28 (S28 PREP — JSON catchup absorbing S27 PREP #19548 + B1 Docker-hung INFRA reaffirm + stranded-branch reaffirm; doc-only)
-**Last Updated**: 2026-05-16 (researcher-1)
+**Iteration**: 29 (S29 STATE-SYNC — thin 3-file doc-only ship absorbing single disk-floor-cross delta + standing 2-RED re-affirm; T+4h25min after S28 PREP merge)
+**Last Updated**: 2026-05-16T18:57Z (researcher-10)
+
+## S29 STATE-SYNC — disk AMBER→RED + standing 2-RED re-affirm (researcher-10, 2026-05-16T18:57Z, this PR — doc-only, tight 3-file)
+
+**Trigger**: claim-random returned `abel-ruffini-galois-extensions-oq-07` (RICH 86) at 2026-05-16T18:25:47Z. Predecessor S28 PREP PR #19627 (researcher-1, opened 14:09:36Z) merged 14:32:41Z — **T+4h25min** before this claim. Pre-flight survey:
+
+- **State.md head**: BUILD-BLOCKER, iter 28 (S28 PREP) — current at iter level. Phase line carries Docker B1 only; needs refresh for 3-RED conjunction.
+- **Research JSON**: `currentState.iteration: 28` — current. `currentState.focus`/`nextAction` carry S28's snapshot ("disk 6.8 Gi avail / ~70% used") — STALE on the disk number (now 3.3 Gi).
+- **Mechanic BUILD-FIX**: still NOT shipped. `gh pr list --search "abel-ruffini" --label loom:mechanic --state open` returns `[]`. Last mechanic touch on slug was #19510 (meta.json drift, merged 2026-05-16T08:52:48Z = T-10h).
+- **4 stranded "build pending" researcher PRs** (#17528, #17586, #17587, #17685 from May 8-12): still OPEN, still formally obsolete per S24 PREP §4 / S27 PREP §3 / S28 PREP — no change in 4h25min.
+- **Mathlib pin** `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0): byte-stable across the 4h25min window (`grep "rev" proofs/lake-manifest.json` head matches verbatim). Skip full bearer re-spot-check per `_postship_pivot_to_long_completed_slug_with_recent_observe_audit_..._13_field` precedent ("full 8/8 at unchanged SHA is busywork"); S27 PREP §5 + S28 PREP bearer pins carry forward.
+- **3 RED INFRA conjunction** (new at S29 author-time):
+  - **B1 Docker daemon hung** (standing, re-affirmed): `timeout 8 docker info` returns `Client:` and `Server:` headers but **empty Server: section** (no version returned). Same symptom as S27 PREP "docker info slow" + S28 PREP "60s+ wedged → kill -9". No change in 4h25min.
+  - **B2 Disk pressure crossed AMBER→RED**: `df -h /System/Volumes/Data` reports **3.3 Gi avail / 100% capacity** (−3.5 Gi vs S28 author-time 6.8 Gi over 4h25min). Below same-day ACT floor 5.4 Gi (ballot-problem-oq-03-oq-02 S78 baseline; shannon-channel-coding-oq-02-oq-01-oq-01 S18a 5.8 Gi). Per memory pattern, ACT under <5.4 Gi structurally barred.
+  - **B3 `proofs/.lake` circular self-symlink** (standing, re-affirmed): `readlink proofs/.lake` returns `/Users/rwalters/GitHub/lean-genius/proofs/.lake` itself. Standing host-side issue per `feedback_researcher_lake_symlink_loop_and_wipe.md` + `feedback_researcher_lake_symlink_broken.md`.
+
+**Researcher-side gate is GREEN; INFRA gates 3 RED**. No researcher ACT possible. Mechanic ALSO blocked on INFRA (BUILD-FIX needs working Docker). Ship doc-only **tight 3-file** S29 STATE-SYNC scoped to (a) JSON 7-edit absorbing disk-floor-cross delta + standing-RED re-affirm, (b) state.md head refresh with 3-RED phase line + iteration bump + S29 entry prepend (S28 entry preserved verbatim below), (c) NEW `sessions/2026-05-16-s29-statesync-disk-floor-cross.md` memo with §1 fires/refines + §2 single-delta inventory + §3 standing-RED transfer + §4 SHA-stability spot-check + §5 5-row picker decision matrix + §6 host-recovery script + §7 honesty calibration + §8 PR + memory citations. Explicitly DROP: (i) bearer SYMBOL re-spot-check at unchanged SHA (busywork per memory); (ii) new paste-ready scaffold (S27 PREP §4 + S28 PREP §6 forecast carry-forward); (iii) mechanic-handoff re-sharpening (S27/S28 forecast unchanged); (iv) JSON `blockers[]` array touch (S28's 3 string entries are math/code-level — INFRA goes in prose per slug convention); (v) `.lean` / `meta.json` / `lake-manifest.json` / `problem.md` / `knowledge.md` body / sibling slugs / `pnpm build` / `lake build`.
+
+### What this PR does (3 files, doc-only, tight)
+
+| Aspect | Action |
+|---|---|
+| `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` | UNCHANGED (BUILD-BLOCKER persists; mechanic owns BUILD-FIX) |
+| `src/data/proofs/abel-ruffini-galois-extensions/meta.json` | UNCHANGED (PR #19510 already absorbed drift; verified verbatim) |
+| `proofs/lakefile.toml` (Mathlib pin) | UNCHANGED (pin `2df2f0150c…` byte-stable across S28 PREP T+4h25min window) |
+| `src/data/research/problems/abel-ruffini-galois-extensions-oq-07.json` | **UPDATED** — 7-edit: `currentState.{iteration 28→29, since, focus prepend S29 narrative + preserve S28 verbatim, nextAction prepend host-side INFRA recovery + preserve S28 verbatim, attemptCounts.total 11→12}` + `knowledge.progressSummary prepend S29 entry` + `lastUpdate 2026-05-16T18:57:00Z`. `blockers[]` array UNCHANGED (math/code-level — slug convention puts INFRA in prose only). Top-level `phase: BUILD-BLOCKER` + `status: blocked-on-mechanic` UNCHANGED (correctly set by S28 PREP). |
+| `state.md` head | THIS replacement — phase line refresh w/ 3-RED conjunction; iteration 28→29; Last Updated bump; S29 STATE-SYNC section prepended before S28 PREP |
+| `state.md` historical tail (S28 PREP → S1) | preserved verbatim |
+| `session-30-s29-statesync-disk-floor-cross.md` | NEW (this file's companion — 8 sections; §2 single-delta inventory + §3 standing-RED transfer + §5 5-row picker matrix + §6 host-recovery script) |
+
+### JSON delta summary (full diff in companion memo §2)
+
+| Field | Before (S28 PREP era) | After (S29 STATE-SYNC) |
+|---|---|---|
+| `currentState.iteration` | `28` | `29` |
+| `currentState.since` | `2026-05-16T01:25:00.000Z` | `2026-05-16T18:57:00Z` |
+| `currentState.focus` | S28 PREP narrative (1900+ char) ending "...no closure-by-author action this PREP." | S29 narrative (1500+ char) ending "...thin 3-file doc-only STATE-SYNC absorbing the single disk-floor-cross delta + standing-blocker re-affirm. S28 PREP body preserved verbatim for continuity: <S28 body verbatim>" |
+| `currentState.nextAction` | "**MECHANIC BUILD-FIX** ... (Mechanic is ALSO INFRA-blocked: ... disk 6.8 Gi avail.)" | "**S30 ACT — BLOCKED on 3-RED INFRA conjunction**: requires host-side recovery (1) disk reclaim ≥5.4 Gi, (2) Docker Desktop restart, (3) break .lake symlink. After 3-of-3 GREEN: original S28 PREP nextAction prioritisation applies verbatim. Original S28 nextAction preserved: <S28 nextAction verbatim>" |
+| `currentState.attemptCounts.total` | `11` | `12` |
+| `knowledge.progressSummary` (head) | "S26 BUILD-DIAGNOSTIC (researcher-5, 2026-05-16, doc-only): **BUILD-BLOCKER discovered**..." | "S29 STATE-SYNC (researcher-10, 2026-05-16T18:57Z, doc-only tight 3-file): absorbs single new substantive INFRA delta..." (prepend) + `\| Pre-S29:` + previous body verbatim |
+| `lastUpdate` | `2026-05-16` | `2026-05-16T18:57:00Z` |
+
+### ACT-readiness gate (S29 snapshot)
+
+| Gate | Status | Delta vs S28 PREP |
+|---|---|---|
+| Researcher-side knowledge | GREEN | unchanged |
+| Researcher-side bearer pin | GREEN | unchanged (SHA-transitivity) |
+| Researcher-side paste-ready scaffolds | GREEN | unchanged |
+| `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` compiles | RED | unchanged (BUILD-BLOCKER) |
+| Docker daemon | RED B1 | unchanged (still empty Server:) |
+| Host disk | **RED B2** | **AMBER → RED** (6.8 Gi → 3.3 Gi crossed 5.4 Gi floor) |
+| `proofs/.lake` symlink | RED B3 | unchanged (still circular) |
+| Mechanic claim on slug | RED | unchanged (no `loom:mechanic` PR open) |
+| Mathlib SHA stable since S28 PREP | GREEN | unchanged (`2df2f0150c…` byte-stable) |
+
+7 of 9 gates unchanged; **1 gate flipped (B2 disk AMBER→RED)** = single substantive delta motivating this STATE-SYNC.
+
+### Tightening rationale
+
+Predecessor doc-only PREP at T+4h25min already covered (b)+(c)+(d)+(e)+(f) layers and pin is byte-stable. Per memory pattern `feedback_researcher_postship_pivot_to_act_ready_rich_slug_with_predecessor_prep_escalation_and_single_disk_degradation_delta_across_sameday_softfloor_ship_thin_statesync`: when predecessor at ≤4-ish h closed inherited drift AND ONE new substantive infra delta accumulated (disk crossing same-day soft floor) AND Mathlib SHA + bearers byte-stable AND no intervening mechanic AND no active sibling work, ship thin 3-file STATE-SYNC absorbing the single delta + 5-row picker decision matrix. Distinct from: chained STATE-SYNC-PREP-STATE-SYNC, mechanic-cascade absorb (no mechanic here), build-pending ACT (foreclosed by 3-RED), and release-without-PR (delta IS substantive — disk crossed floor).
 
 ## S28 PREP — JSON catchup absorbing S27 PREP #19548 (researcher-1, 2026-05-16, this PR — doc-only, tight)
 
