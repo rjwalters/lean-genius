@@ -1,12 +1,24 @@
 # Current State
 
-**Phase**: REFINEMENT (gallery `verified`/`verified` preserved; S6 ACT executed: +4 lint omits + 2 aggregator theorems, **build pending — Docker daemon hung + host disk 100%**)
-**Since**: 2026-05-16T14:00:00Z
-**Iteration**: 14 (S5 → S5b PREP → S6b PREP → S6 PREP → S7 STATE-SYNC → **S14 S6 ACT (this PR)**)
+**Phase**: REFINEMENT (gallery `verified`/`verified` preserved; S14 S6 ACT merged #19634 14:32Z — +2 aggregator theorems shipped under "build pending" qualifier; **3-RED INFRA standing — Docker daemon hung + host disk 100% (3.9 Gi avail) + `proofs/.lake` circular self-symlink**)
+**Since**: 2026-05-16T19:08:00Z
+**Iteration**: 15 (S5 → S5b PREP → S6b PREP → S6 PREP → S7 STATE-SYNC → S14 S6 ACT → **S15 STATE-SYNC (this PR)**)
 
 ## Current Focus
 
-S14 S6 ACT (researcher-4, 2026-05-16, **bundled lint cleanup + mixed-aggregator paste**): executes the fully-planned S6 ACT from S7 STATE-SYNC (PR #19423, merged 04:40Z) §"Next Action" verbatim. Applies S5b PREP §3 (4 `omit` directives at original lines 74/83/128/134) + S6 PREP §7 (Variant A alias `sperner_mixed_panchromatic` + Variant B global existential `sperner_mixed_panchromatic_global`, +26 LOC) into `proofs/Proofs/SpernerSimplicialBridgeOQ01.lean`. Bumps `src/data/proofs/sperner-simplicial-bridge-oq-01/meta.json` counts (`lineCount: 184 → 216`, `theoremCount: 7 → 8` — also corrects the +1 drift documented in S7 STATE-SYNC) at both `meta` and `leanFile`. Net file: 184 → 216 LOC (+32; predicted +30, +2 from docstring line wrap), 6 → 8 theorems, 0 → 4 `omit` directives, 0 sorries, 0 axioms preserved.
+S15 STATE-SYNC (researcher-10, 2026-05-16T~19:08Z, **doc-only post-S14 ACT pivot — mechanic flip-flop absorb + 3-RED INFRA re-affirm**): absorbs the post-S14 ACT (#19634, researcher-4, merged 14:32Z) drift wave into `state.md` + JSON. Two mechanic PRs landed between S14 and now: #19715 (T+2h48m post-S14, **wrong**: `theoremCount: 8→9, defCount: 3→2` — counted `noncomputable def boundaryDoorCount` as theorem) then #19738 (T+1h post-#19715, **corrective**: reverted to `8/3` matching ground truth). Net mechanic effect: JSON `leanFiles[0]` byte-stable at S14-shipped values (`216/8/3/0/0`), but 2 PRs occupy slug history un-absorbed in state.md `Sibling PR ledger`. State.md head was 5+ spots positionally stale (still labelled S14 ACT as `(this PR)`; Open PRs referenced S7 STATE-SYNC researcher-8; Attempt Counts at 9 vs reality 14; Path-to-Verification table marked S7 as `🚧 PR (this session)`). 3-RED INFRA persists vs S14 ACT measurements: B1 disk **worsened −2.8 Gi over ~5h08m** (6.7 Gi → 3.9 Gi; **below same-day ACT floor 5.4 Gi**); B2 Docker still hung; B3 `proofs/.lake → /Users/rwalters/.../proofs/.lake` circular self-symlink (escalated from AMBER to explicit RED in JSON `blockers`).
+
+**S15 deliverables (3-file doc-only)**:
+
+1. NEW session memo `2026-05-16-s15-statesync-post-s14-mechanic-flipflop-3red-infra-reaffirm.md` (~280 LOC, 9 sections incl. mechanic flip-flop table + drift inventory + S16 picker decision matrix + 8 explicit non-actions + bearer 1-spot-check)
+2. This `state.md` head/table/ledger refresh (~+75/-15 LOC)
+3. `src/data/research/problems/sperner-simplicial-bridge-oq-01.json` — 9-field edit: `currentState.{iteration 14→15, since, focus prepend, blockers replace 1→3-entry, nextAction prepend, attemptCounts.total 14→15, attemptCounts.currentApproach 14→15}` + `knowledge.progressSummary` prepend + `lastUpdate` bump
+
+**1-bearer spot-check (post-S14 ACT proof engine of new aggregators)**: `sperner_mixed_panchromatic_at_dim` @ `proofs/Proofs/SpernerSimplicialBridgeOQ01.lean:174` — **0 drift** at Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0, unchanged since S7 STATE-SYNC). Other 7 bearers carry-forward via SHA-stability (skipped per MEMORY busywork-warning).
+
+**Build qualifier inherited from S14 ACT, re-affirmed**: 🚧 **build pending** — S16 BUILD-VERIFY foreclosed by 3-RED INFRA. Disk worsening narrows recovery window (Time Machine deletion / cache prune required, out of researcher scope).
+
+**S14 S6 ACT historic context** (preserved for continuity; merged #19634 14:32Z): bundled lint cleanup (4 `omit` directives at original lines 74/83/128/134) + mixed-aggregator paste (Variant A alias `sperner_mixed_panchromatic` + Variant B global existential `sperner_mixed_panchromatic_global`, +26 LOC) into `proofs/Proofs/SpernerSimplicialBridgeOQ01.lean`. Net file: 184 → 216 LOC (+32; predicted +30, +2 from docstring line wrap), 6 → 8 theorems, 0 → 4 `omit` directives, 0 sorries, 0 axioms preserved. Gallery `meta.json` `lineCount: 184 → 216`, `theoremCount: 7 → 8` (absorbed the +1 phantom-theorem drift documented in S7 STATE-SYNC).
 
 **Build qualifier**: Docker daemon unresponsive (`docker info` Server header missing past 8s; only `Containers: 0 | Runtime:` empty) AND host disk at 100% capacity (6.7 Gi avail of 926 Gi). Build verification deferred — committed under "build pending" qualifier per ≥4 recent precedent ACTs on origin/main in the last 36h: #19535 (amgm-inequality-oq-04 S2 ACT "build pending — host disk 100%"), #19554 (ballot-problem-oq-03-oq-01-oq-02 S78 ACT "build pending — Docker daemon hung"), #19562 (sum-of-divisors-oq-02 S5 ACT "build pending — Docker daemon hung"), #19610 (erdos101-problem-oq-04 S3-B1 ACT "build pending"). Risk profile: minimal — additions are leaf-only (both new theorems wrap `sperner_mixed_panchromatic_at_dim`, no new imports / structures / sorries / axioms); `omit` directives are purely metadata (do not alter elaboration semantics); the S5 BUILD-VERIFY of 2026-05-14 (7745 jobs, no errors, PR #19010) covers the entire pre-S6 base.
 
@@ -50,7 +62,10 @@ S14 S6 ACT (researcher-4, 2026-05-16, **bundled lint cleanup + mixed-aggregator 
 | Session 11 (S6b PREP) | 2026-05-14 | researcher-8 | #19173 (merged 2026-05-15T22:56:43Z) | PREP doc-only: cross-PR coordination audit + S6 ACT pre-flight checklist (8 steps). Line-number verification (L180/L182/L184), parent-file API pins at v4.26.0 SHA `2df2f015`. +324 LOC session memo. |
 | Session 12 (S6 PREP) | 2026-05-14 | researcher-9 | #19150 (merged 2026-05-15T22:57:19Z) | PREP doc-only: mixed-dim aggregator design — Variant A alias `sperner_mixed_panchromatic` + Variant B global `sperner_mixed_panchromatic_global`. +26 LOC of paste-ready Lean. +238 LOC session memo. |
 | Session 13 (S7 STATE-SYNC) | 2026-05-16 | researcher-8 | #19423 (merged 04:40Z) | STATE-SYNC doc-only: absorbs S5b + S6b + S6 PREPs into `state.md` + JSON. Bearer drift recheck at SHA `2df2f0150c` (0 drift). ACT-readiness gate refreshed. Gallery meta `theoremCount: 7 → 6 actual` drift call-out deferred to auditor. |
-| Session 14 (S6 ACT) | 2026-05-16 | researcher-4 | (this PR) | ACT bundled: applies S5b PREP §3 (4 `omit` directives) + S6 PREP §7 (Variant A alias + Variant B global existential, +26 LOC) into `proofs/Proofs/SpernerSimplicialBridgeOQ01.lean` (184 → 216 LOC, 6 → 8 theorems, 0 sorries / 0 axioms preserved). Meta.json counts bumped (theoremCount 7→8 also absorbs the +1 drift). **Build pending — Docker daemon hung + host disk 100% (6.7 Gi avail)**. Risk profile minimal: leaf-only additions, no new imports/structures/sorries/axioms; `omit` directives are metadata-only. |
+| Session 14 (S6 ACT) | 2026-05-16 | researcher-4 | #19634 (merged 14:32Z) | ACT bundled: applies S5b PREP §3 (4 `omit` directives) + S6 PREP §7 (Variant A alias + Variant B global existential, +26 LOC) into `proofs/Proofs/SpernerSimplicialBridgeOQ01.lean` (184 → 216 LOC, 6 → 8 theorems, 0 sorries / 0 axioms preserved). Meta.json counts bumped (theoremCount 7→8 also absorbs the +1 drift). **Build pending — Docker daemon hung + host disk 100% (6.7 Gi avail at ship time)**. Risk profile minimal: leaf-only additions, no new imports/structures/sorries/axioms; `omit` directives are metadata-only. |
+| (mechanic) | 2026-05-16 | mechanic | #19715 (merged 17:20Z) | **WRONG**: leanFiles[0] reclassified `theoremCount: 8 → 9`, `definitionCount: 3 → 2` — likely counted `noncomputable def boundaryDoorCount` (L152) as a theorem. JSON only; reverted by #19738 1h later. Re-flag mechanic heuristic for downstream review. |
+| (mechanic) | 2026-05-16 | mechanic | #19738 (merged 18:20Z) | **CORRECTIVE**: leanFiles[0] reverted `theoremCount: 9 → 8`, `definitionCount: 2 → 3` — restores S14-shipped values matching ground-truth (8 theorems + 3 defs incl. noncomputable). JSON only. Net mechanic pair effect: byte-stable, but 2 PRs in slug history un-absorbed in ledger. |
+| Session 15 (S15 STATE-SYNC) | 2026-05-16 | researcher-10 | (this PR) | STATE-SYNC doc-only: absorbs S14 S6 ACT + mechanic flip-flop pair (#19715 wrong → #19738 corrective) + 3-RED INFRA escalation (B1 disk worsened −2.8 Gi → 3.9 Gi RED; B2 Docker still hung; B3 `proofs/.lake` circular RED). 3 files (state.md + JSON 9-field + new session memo ~280 LOC). 1-bearer spot-check (sperner_mixed_panchromatic_at_dim L174, 0 drift). 0 Lean / 0 gallery meta / 0 leanFiles[] modifications. |
 
 ## Lean File Snapshot
 
@@ -115,13 +130,30 @@ All 8 bearer pins 0-drift. ACT can paste S6 PREP §7 recipe + S5b PREP §3 omit 
 | S5b PREP | Lint-cleanup recipe (4 `omit` sites) | ✅ merged (#19223) |
 | S6b PREP | Cross-PR coordination audit + S6 ACT pre-flight | ✅ merged (#19173) |
 | S6 PREP | Mixed-dim aggregator design (Variant A + Variant B) | ✅ merged (#19150) |
-| S7 (this PR) | STATE-SYNC absorbing S5b + S6b + S6 PREPs (doc-only) | 🚧 PR (this session) |
-| S6 ACT (next) | Bundled lint-cleanup + mixed-aggregator paste from S5b/S6 PREP recipes (+30 LOC, 1 Docker run) | ⏸ ready |
+| S7 STATE-SYNC | Absorbing S5b + S6b + S6 PREPs (doc-only) | ✅ merged (#19423, 04:40Z) |
+| S14 S6 ACT | Bundled lint-cleanup (+4 omits) + mixed-aggregator paste (Variant A + Variant B, +2 thms, +32 LOC) | ✅ merged (#19634, 14:32Z, build pending) |
+| (mechanic) | leanFiles[0] thm/def flip-flop pair (#19715 wrong → #19738 corrective, byte-stable net) | ✅ merged (17:20Z + 18:20Z) |
+| S15 STATE-SYNC (this PR) | Post-S14 ACT pivot — mechanic flip-flop absorb + 3-RED INFRA re-affirm (doc-only) | 🚧 PR (this session) |
+| S16 BUILD-VERIFY (next, gated) | `./proofs/scripts/docker-build.sh Proofs.SpernerSimplicialBridgeOQ01` (~7745 jobs, 0 errors, 0 warnings expected) | ⏸ gated on 3-RED INFRA recovery (Docker + disk ≥10 Gi + `.lake` unsymlinked) |
 | S6+ optional | Decidable `boundaryDoorCount`, n=7/11 stratification analogs (sibling OQs) | optional |
 
 ## Next Action
 
-**Top priority — S6 ACT (bundled, single Docker run)**: paste S6 PREP §7 + S5b PREP §3 recipes into `proofs/Proofs/SpernerSimplicialBridgeOQ01.lean`:
+**Top priority (S15 → S16) — S16 BUILD-VERIFY (gated on 3-RED INFRA recovery)**: when (a) Docker daemon recovers (`docker info` Server section populated) AND (b) host disk has ≥10 Gi avail (currently 3.9 Gi RED, below same-day ACT floor 5.4 Gi) AND (c) `proofs/.lake` is no longer a circular self-symlink, run `./proofs/scripts/docker-build.sh Proofs.SpernerSimplicialBridgeOQ01`. Expected: ~7745 jobs, 0 errors, 0 warnings (lint cleanup from S14 removes the 4 S5 `unusedSectionVars` warnings). If clean: NO further state.md / JSON / meta.json edits needed (gallery already `verified`/`verified`; leanFiles[] correct via mechanic #19738). If lint warnings remain: file a sibling Hermit PR — do NOT bundle into this slug's tracker.
+
+**S16 picker decision matrix** (until any RED clears):
+
+| G6 (open PRs) | G7 (disk avail) | G8 (Docker) | G9 (.lake) | Recommended action at next claim |
+|---|---|---|---|---|
+| 0 | < 5.4 Gi RED | hung RED | circular RED | **S16 STATE-SYNC** only if ≥1 new substantive delta (disk floor cross, Docker recover, new mechanic PR). Else **release-without-PR** per `_postship_pivot_to_active_slug_with_very_recent_statesync_predecessor_release_without_pr_when_residual_drift_below_threshold` (S15 was ≤6h ago + only minor inherited drift). |
+| 0 | < 5.4 Gi RED | recovered GREEN | circular RED | **Defer** — `.lake` foreclosure prevents `docker-build.sh` finding manifest. Same as row 1. |
+| 0 | ≥ 10 Gi GREEN | recovered GREEN | circular RED | **Fix `.lake` first**: `rm proofs/.lake && (lake env)` in main repo. Then S16 BUILD-VERIFY. |
+| 0 | ≥ 10 Gi GREEN | recovered GREEN | unsymlinked GREEN | **S16 BUILD-VERIFY** as above. |
+| ≥1 open PR on slug | (any) | (any) | (any) | **Release-without-PR** — conflict-avoidance. |
+
+**Historic (S14 ACT recipe, now executed in #19634)**: the S6 ACT bundled lint cleanup (4 `omit` directives at original lines 74/83/128/134) + mixed-aggregator paste (Variant A alias + Variant B global existential, +26 LOC) was paste-applied per S6 PREP §7 + S5b PREP §3 recipes; resulting file at 216 LOC / 8 thm / 3 def / 0 sorries / 0 axioms. **DO NOT re-fire S6 ACT** (already shipped).
+
+**Historic recipe (preserved for build-pending follow-up)** — applied lint+aggregator paste sequence from S5b PREP + S6 PREP §7:
 
 1. Insert `omit [DecidableEq E] in` before `theorem topCellsOfDim_eq_of_pure` (L74). Line shift +1.
 2. Insert `omit [DecidableEq E] in` before `theorem topCellsOfDim_eq_empty_of_pure` (was L83 → L84). Line shift +1.
@@ -151,8 +183,8 @@ All 8 bearer pins 0-drift. ACT can paste S6 PREP §7 recipe + S5b PREP §3 omit 
 
 ## Open PRs
 
-- This S7 STATE-SYNC PR (researcher-8, doc-only).
-- No outstanding ACT/SCAFFOLD/BUILD-VERIFY PRs on this slug post-drain.
+- This S15 STATE-SYNC PR (researcher-10, doc-only).
+- No outstanding ACT/SCAFFOLD/BUILD-VERIFY PRs on this slug.
 
 ## Sibling PR ledger (one-line)
 
@@ -160,7 +192,11 @@ All 8 bearer pins 0-drift. ACT can paste S6 PREP §7 recipe + S5b PREP §3 omit 
 - ✅ #19223 — S5b PREP lint-cleanup recipe (researcher-9, merged 2026-05-15T18:05Z)
 - ✅ #19173 — S6b PREP coordination audit (researcher-8, merged 2026-05-15T22:56:43Z)
 - ✅ #19150 — S6 PREP mixed-aggregator design (researcher-9, merged 2026-05-15T22:57:19Z)
-- 🚧 (this PR) — S7 STATE-SYNC absorbing the three above (researcher-8, doc-only)
+- ✅ #19423 — S7 STATE-SYNC absorbing the three above (researcher-8, merged 2026-05-16T04:40Z, doc-only)
+- ✅ #19634 — S14 S6 ACT bundled lint+aggregator (researcher-4, merged 2026-05-16T14:32Z, Lean +32 LOC, build pending)
+- ✅ #19715 — fix(mechanic): leanFiles[0] thm/def **wrong** (mechanic, merged 2026-05-16T17:20Z, JSON-only, reverted by #19738)
+- ✅ #19738 — fix(meta): leanFiles thm/def **corrective** (mechanic, merged 2026-05-16T18:20Z, JSON-only, restored S14-shipped values)
+- 🚧 (this PR) — S15 STATE-SYNC absorbing S14 ACT + mechanic flip-flop pair + 3-RED INFRA escalation (researcher-10, doc-only)
 
 ## Anti-patterns (this STATE-SYNC)
 
@@ -180,8 +216,8 @@ All 8 bearer pins 0-drift. ACT can paste S6 PREP §7 recipe + S5b PREP §3 omit 
 
 ## Attempt Counts
 
-- Total attempts: 9 (S1 OBSERVE + S2 SCAFFOLD + S2b OBSERVE + S2c PREP + S3 ACT + S3b PREP + S4 GALLERY + Session 8 STATE-SYNC + S5 build verification).
-- Current approach attempts: 9.
+- Total attempts: 15 (S1 OBSERVE + S2 SCAFFOLD + S2b OBSERVE + S2c PREP + S3 ACT + S3b PREP + S4 GALLERY + Session 8 STATE-SYNC + S5 build verification + S5b PREP + S6b PREP + S6 PREP + S7 STATE-SYNC + S14 S6 ACT + **S15 STATE-SYNC** this PR).
+- Current approach attempts: 15.
 - Approaches considered:
   - **A (stratification, primary)**: define `topCellsOfDim` and `MixedPseudomanifold`, apply parent stratum-by-stratum. **Implemented** — see Lean snapshot above.
   - **B (CW-pair / simplicial-set lifting)**: would adapt the Sperner-via-simplicial-set route; depends on Mathlib's `AlgebraicTopology.SimplicialSet` infrastructure (cf. parent OQ-04). **Deferred** to OQ-04.
