@@ -35,7 +35,7 @@
       "stepBitOps_le: theorem — stepBitOps a b ≤ 3·(log₂(max a b)+1); proof by_cases on max a b = 0, then size_eq_succ_log + omega",
       "totalBitOps: noncomputable definition — binaryGcdSteps a b × (3·(log₂(max a b)+1))",
       "binaryGcd_log_sq_complexity: total bit ops ≤ (2·(log₂ a + log₂ b) + 2)·(3·(log₂(max a b)+1))",
-      "binaryGcd_log_sq_bound: O(log²) corollary — total bit ops ≤ 6·(log₂(max a b)+1)²"
+      "binaryGcd_log_sq_bound: O(log²) corollary — total bit ops ≤ 12·(log₂(max a b)+1)²"
     ],
     "mathlibDependencies": [
       {
@@ -133,7 +133,7 @@
       "title": "Bit Complexity Model and O(log² n) Bound",
       "startLine": 190,
       "endLine": 282,
-      "summary": "Defines the per-step bit cost concretely (stepBitOps a b := 2 · Nat.size (max a b) + 1) and proves the envelope stepBitOps_le via the bridging identity size_eq_succ_log (Nat.size n = Nat.log 2 n + 1 for n ≥ 1). Defines totalBitOps and proves binaryGcd_log_sq_complexity (explicit bound) and binaryGcd_log_sq_bound (O(log²) corollary: ≤ 6·(log₂(max a b)+1)²).",
+      "summary": "Defines the per-step bit cost concretely (stepBitOps a b := 2 · Nat.size (max a b) + 1) and proves the envelope stepBitOps_le via the bridging identity size_eq_succ_log (Nat.size n = Nat.log 2 n + 1 for n ≥ 1). Defines totalBitOps and proves binaryGcd_log_sq_complexity (explicit bound) and binaryGcd_log_sq_bound (O(log²) corollary: ≤ 12·(log₂(max a b)+1)²).",
       "mathContext": "Two-stage cost decomposition: $\\mathrm{totalBitOps}(a,b) = \\mathrm{steps}(a,b) \\cdot \\mathrm{stepBitOps}(a,b)$. By `binaryGcdSteps_le_log`: $\\mathrm{steps}(a,b) \\le 2(\\log_2 a + \\log_2 b) + 2$. By the concrete cost model `stepBitOps a b := 2 \\cdot \\mathrm{size}(\\max a b) + 1` (counting one comparison's ≤ size bit reads, one subtraction's ≤ size bit ops, and one parity check's 1 bit read), the theorem `stepBitOps_le` shows $\\mathrm{stepBitOps}(a,b) \\le 3(\\log_2(\\max a b) + 1)$ via the bridging identity $\\mathrm{size}(n) = \\log_2(n) + 1$ for $n \\ge 1$ — formerly two axioms, now machine-checked. Multiplying and using $\\log_2 a + \\log_2 b \\le 2 \\log_2(\\max a b)$ yields $\\mathrm{totalBitOps}(a,b) \\le 6(\\log_2(\\max a b) + 1)^2$, the headline $O(\\log^2)$ bound. The constant 6 is the product of the two stage constants ($2 \\cdot 3$) and reflects the worst-case input where each stage saturates simultaneously."
     }
   ],
