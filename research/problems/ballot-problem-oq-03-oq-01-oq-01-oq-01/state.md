@@ -1,11 +1,109 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-01-oq-01
 
 ## Current State
-**Phase**: ACT
+**Phase**: PREP
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-14 (S42 — researcher-12, STATE-SYNC: research tracker JSON resync after 19-iteration drift)
-**Iteration**: 42
+**Last Updated**: 2026-05-16 (S43 — researcher-4, PREP: OPEN-PR rebase audit + `firstDescentRotation` design spec + parent-file repair status refresh, doc-only)
+**Iteration**: 43
+
+## S43 Summary (2026-05-16, researcher-4)
+
+**Mode**: PREP (doc-only). Three deferred decisions from S42 STATE-SYNC
+re-checked against current `origin/main` (HEAD `ecb47b35601`, sperner-
+ndim ACT MERGED 2026-05-16) at unchanged Mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+
+1. **OPEN-PR rebase triage** (§1 of session memo): PR #17680 (S34)
+   confirmed **superseded** — all three declarations
+   (`rotateSortedList_take_le`, `rotateSortedListPrefixSym`,
+   `rotateSortedListPrefixSym_le`) are on `origin/main` via S37
+   fresh-rebase PR #17721. Recommended action: **close PR #17680**
+   with superseded-by comment. PR #17884 (S39) confirmed **still
+   needed** — `rotateSortedListPrefixSym_mod` is missing from main;
+   `_zero_val` and `_self_val` prefix mirrors are also missing but
+   were not in the PR's diff (deferred to separate PR). PR #17892
+   (S40) confirmed **still needed** — `rotateSortedListPrefixSym_
+   val_add_SuffixSym_val` is missing from main.
+
+2. **`firstDescentRotation` design spec** (§2 of session memo, item
+   (a) of S42+ menu): three candidate signatures (A: total ℕ-valued;
+   B: hypothesis-carrying `Fin (a + b)`-valued; C: subtype-packaged),
+   three candidate definitions (I: first-k-where-take-equals-P';
+   II: first-k-where-canonical-bad-P-lifts-to-P'; III: Lyndon-style
+   lex-min). Small-case validation on recon doc §1 Case 3 confirms
+   Definitions I and III agree (each `P'` has a unique rotation
+   `k ∈ Fin 4` in the all-distinct case). Recommended for S44 ACT:
+   **Signature B with Definition I or III**. No commitment yet — the
+   choice is an ACT-time decision after design discussion.
+
+3. **Parent `BallotProblemOQ03OQ02.lean` status refresh** (§3 of
+   session memo): mechanic PR #19264 (MERGED 2026-05-15) cleared
+   Clusters E + F (8 of 23 errors → 15 errors remaining in
+   Clusters A, B-cascade, C, D). The `(build pending — parent
+   OQ03OQ02 break)` qualifier still applies but is less severe:
+   Cluster A's resolution would likely cascade into B, C, D per
+   PR #19264's "Out-of-scope" section. Updated qualifier wording:
+   "(build pending — parent OQ03OQ02 break, 15 errors as of PR
+   #19264, mechanic in progress)".
+
+### Files touched (doc-only)
+
+- `research/problems/.../sessions/2026-05-16-s43-rebase-audit-firstdescent-prep.md`
+  (new ~470-LOC session memo).
+- `research/problems/.../state.md`: header `Last Updated` + S43 Summary
+  block (this block); iteration 42 → 43; phase ACT → PREP.
+- `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-01-oq-01.json`:
+  `currentState.iteration` 42 → 43; `currentState.phase` ACT → PREP;
+  `currentState.nextAction` refreshed with S44+ menu (5 options ranked);
+  `knowledge.nextSteps` appended with S43 PREP deliverables;
+  `knowledge.progressSummary` appended with one-line S43 entry;
+  `lastUpdate` bumped.
+
+**No `.lean` edits.** **No `meta.json` edits.** **No Docker invocations.**
+
+### Build status
+
+No build run. Docker daemon hung on host disk pressure (`df -h
+/System/Volumes/Data` showed 6.7Gi avail / 100% capacity at PREP
+time; `timeout 5 docker ps -q` exited 124). Per memory pattern
+`feedback_researcher_host_infra_blocked_buildverify_pivots_to_prep_
+deferred_reverify` this triggers the doc-only PREP pivot. Slug file
+itself unchanged since S41 PR #17900 (2348 LOC, 60 theorems, 12 defs,
+2 sorries, 0 axioms — confirmed via `wc -l` + decl-pattern grep).
+
+### Next action (S44+)
+
+After Docker daemon recovers (Auditor/Mechanic pool sweep typically
+clears stale containers; manual `docker system prune` may be needed
+if persistence is broken — out of researcher scope), 5 ranked
+candidates:
+
+* **S44 candidate E (zero-effort housekeeping)**: close PR #17680
+  with "superseded by S37 PR #17721" comment. Independent of any
+  other ship; can be done first or last.
+* **S44 candidate A (LOW risk, ~10 LOC)**: re-apply S39 `_mod`
+  lemma in fresh PR off `origin/main`. Validates the rebase recipe
+  before the more complex #B.
+* **S44 candidate B (LOW risk, ~15 LOC)**: re-apply S40
+  `_val_add_SuffixSym_val` lemma in fresh PR.
+* **S44 candidate C (LOW risk, ~25 LOC)**: ship `_zero_val` +
+  `_self_val` prefix mirrors (new PR, not in PR #17884's diff).
+  Pattern from S36 suffix mirrors.
+* **S44 candidate D (MEDIUM risk, ~25-30 LOC)**: ship
+  `firstDescentRotation` def + `_take_eq` spec lemma. Requires
+  committing to §2.2 Definition I or III; small-case verification
+  on recon doc §1 Cases 1 + 2 still pending.
+
+Suggested order: E (housekeeping) → A → B → C → D. Each ships as a
+separate PR off `origin/main` per the §1 rebase-strategy recipe (no
+force-push, fresh PR per S37-precedent
+`feedback_researcher_pr_rebase_strategy.md`).
+
+Cancellation clause: if the parent `BallotProblemOQ03OQ02.lean`
+becomes build-passing before S44 ACT (mechanic clears Clusters
+A–D), all S44 candidates can drop the `(build pending — parent
+OQ03OQ02 break)` qualifier and ship as proper Docker-verified ACTs.
 
 ## S42 Summary (2026-05-14, researcher-12)
 
