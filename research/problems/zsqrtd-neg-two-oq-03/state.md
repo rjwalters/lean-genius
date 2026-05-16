@@ -1,16 +1,51 @@
 # Current State: zsqrtd-neg-two-oq-03
 
-**Phase**: ACT (S2 + S3 ACT shipped — `EuclideanDomain Eisenstein` via rounding is now live; S4 ACT next — splitting argument from `(-3/p) = 1`)
+**Phase**: ACT (S3 ACT shipped via PR #19008 build-verified 3058 jobs; S4 PREP r2 + S8 PREP both merged; S4 ACT next — splitting argument from `(-3/p) = 1`)
 **Path**: full
-**Since**: 2026-05-14T03:35:00Z (Session 7, researcher-9, S3 ACT)
-**Iteration**: 7
-**Researcher**: researcher-9 (Session 7 S3 ACT)
+**Since**: 2026-05-15T23:28:55Z (PR #19008 S3 ACT merged + cascade absorption)
+**Iteration**: 10
+**Researcher**: researcher-3 (Session 11 STATE-SYNC, 2026-05-16)
 
 ## Current Focus
 
-Session 7 S3 ACT (researcher-9, 2026-05-14, **Lean-only deliverable**):
-extends `proofs/Proofs/ZsqrtdNegTwoOQ03.lean` from 207 → 430 LOC
-(+223 LOC) with the full `EuclideanDomain Eisenstein` construction,
+Session 11 STATE-SYNC (researcher-3, 2026-05-16, **doc-only**): catches up
+the 3-PR merge wave from 2026-05-15 — **PR #19008** (S3 ACT, Lean +219 LOC,
+3058 Docker jobs clean, merged 23:28:55Z), **PR #19186** (S8 PREP — PR
+coordination + stranded-branch follow-up + S4 PREP line-erratum, doc-only,
+merged 22:56:14Z), and **PR #19189** (S4 PREP r2 — post-#19008 line-shift
+refresh + Mathlib SHA re-pin, doc-only, merged 22:56:04Z). Bumps state.md
+iteration counter 7 → 10, refreshes the Lean inventory block, retires the
+"(this PR) | Session 7 S3 ACT | TO BE OPENED" row from Open PRs, marks
+the S3 ACT row in Path to Verification as ✅, appends 3 new rows to
+Iteration History, and updates `Next Action` to include the S4 PREP r2
+erratum (`legendreSym.at_neg` does not exist in Mathlib v4.26.0 — use
+`legendreSym.mul` + `at_neg_one` decomposition instead) and the stranded-
+branch absorption decision (whether to integrate the 2 extra `@[simp]`
+`mul_conj_re`/`mul_conj_im` lemmas).
+
+### On-disk reality (current `origin/main`, 2026-05-16)
+
+| File | LOC | Theorems | `def` | `instance` | Sorries | Axioms |
+|------|-----|----------|-------|------------|---------|--------|
+| `proofs/Proofs/ZsqrtdNegTwoOQ03.lean` | **426** | **29** | **2** | **12** (7 plain + 5 `noncomputable`) | **0** | **0** |
+
+(Counts via `grep -cE "^(theorem\|lemma\|protected (theorem\|lemma)\|@\[simp\] (theorem\|lemma))"`,
+`grep -cE "^(noncomputable )?(def\|instance)"`, `grep -c sorry`,
+`grep -c "^axiom "` against the post-#19008 main file.)
+
+Drift vs. the iter-7 state.md head block (which framed Session 7 as
+"this PR" with "207 → 430 LOC, +223 LOC, 24 theorems, 3 definitions"):
+
+* LOC: 430 (state.md projection) → **426** on disk (-4 LOC, minor finalisation drift).
+* Theorems: 24 (state.md) → **29** on disk (+5; review-time additions of `@[simp] sub_re`/`sub_im` plus the conj projection lemmas).
+* `def`: 3 (state.md) → **2** on disk (-1; `norm` is a `def`, `ofInt` is a `def`; the third "definition" in state.md's tally was an instance counted under the def label).
+* Sorries: 0 / Axioms: 0 — unchanged.
+
+### Historical Focus (Session 7 S3 ACT, PR #19008, MERGED 2026-05-15T23:28:55Z)
+
+Session 7 S3 ACT (researcher-9, author-time 2026-05-14): extends
+`proofs/Proofs/ZsqrtdNegTwoOQ03.lean` from 207 → 426 LOC (+219 LOC
+post-review) with the full `EuclideanDomain Eisenstein` construction,
 pre-specified by S3 PREP (#18557), S3b PREP (#18618), and S4 PREP
 (#18573). Eleven new declarations under
 `norm_pos_of_ne_zero`:
@@ -99,8 +134,11 @@ scaffold). 0 sorries, 0 axioms in the Lean file.
 | S4 PREP | Splitting-argument assembly + erratum | — | ✅ PR #18573 (MERGED) |
 | S3b PREP | Mathlib bearer audit-correction | — | ✅ PR #18618 (MERGED) |
 | Session 6 STATE-SYNC | Re-align state.md + JSON with merged backlog | — | ✅ PR #18948 (MERGED) |
-| S3 ACT | `EuclideanDomain Eisenstein` via rounding | ~200 | 🚧 PR (this session, +223 LOC) |
-| S4 ACT | Splitting via `(-3/p) = (p/3)` and QR | ~50–70 | TODO |
+| S3 ACT | `EuclideanDomain Eisenstein` via rounding | +219 LOC | ✅ PR #19008 (MERGED 2026-05-15T23:28:55Z, 3058 Docker jobs clean) |
+| S8 PREP | PR coord audit + stranded-branch follow-up + S4 PREP line-erratum | — | ✅ PR #19186 (MERGED 2026-05-15T22:56:14Z, doc-only) |
+| S4 PREP r2 | Post-#19008 line-shift refresh + Mathlib SHA re-pin | — | ✅ PR #19189 (MERGED 2026-05-15T22:56:04Z, doc-only) |
+| Session 11 STATE-SYNC | Catch up 3-PR merge wave (this PR) | — | 🚧 PR (this session, doc-only) |
+| S4 ACT | Splitting via `(-3/p) = (p/3)` and QR | ~50–70 | TODO (use `legendreSym.mul` + `at_neg_one`, NOT the non-existent `legendreSym.at_neg`) |
 | S5 ACT | `sq_add_three_sq_of_prime_one_mod_three` (main) | ~100 | TODO |
 
 Stretch (S6+, optional): port to `n = 7, 11` (each ~400 lines).
@@ -113,11 +151,17 @@ a gallery deliverable).
 
 **S4 ACT (next claim, ~50–70 lines)**: Derive non-irreducibility of
 `(p : Eisenstein)` for `p ≡ 1 mod 3`, via quadratic reciprocity. The
-S4 PREP audit (PR #18573) pre-specified the chain:
+S4 PREP audit (PR #18573) pre-specified the chain — **with the S4
+PREP r2 erratum (PR #19189) line-shifted and the fictitious
+`legendreSym.at_neg` symbol removed**:
 
 1. `(-3/p) = (p/3)` via Mathlib's
    `legendreSym.quadratic_reciprocity_*` family
-   (`LegendreSymbol/QuadraticReciprocity.lean:123, 133, 141`).
+   (`LegendreSymbol/QuadraticReciprocity.lean:123, 133, 141` per S4 PREP §2.1;
+   **PR #19189 §1 confirms file SHA `d552964d25f71d13ca515b3fc90d62c35cb500c2` at
+   Mathlib v4.26.0 pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`**).
+   Decomposition follows `legendreSym.mul` + `at_neg_one` (NOT the
+   fictitious `at_neg` flagged by S4 PREP r2 erratum).
 2. `(-3/p) = 1 ↔ p ≡ 1 mod 3` via
    `legendreSym.eq_one_iff` (`LegendreSymbol/Basic.lean:180`) and
    `ZMod.exists_sq_eq_neg_three_iff` — *derived* from
@@ -149,6 +193,17 @@ The S4 ACT PR should land:
 `norm_nonneg`); the parity case-split between `a, b` same-parity and
 opposite-parity reduces to `omega + interval_cases`.
 
+**Stranded-branch absorption decision (open from S8 PREP §1)**: PR
+#19186 §1 identified a stranded branch
+`origin/research/zsqrtd-neg-two-oq03-s3-act-1778799640` (commit
+`af4b879f30e`, never opened as a PR) that contains the same algebraic
+content as PR #19008 plus 2 extra `@[simp]` projection lemmas
+(`mul_conj_re`, `mul_conj_im`). Recommended deferred-pencilwork: next
+ACT-touching iteration can pick these 2 lemmas up as part of S4 ACT
+(or as a tiny standalone PREP). Conflict-free with PR #19008 as
+`@[simp]` projection lemmas on `mul_conj` (which exists at line 238 of
+the current file).
+
 ## Open PRs
 
 | PR | Phase | Status |
@@ -161,7 +216,10 @@ opposite-parity reduces to `omega + interval_cases`.
 | #18573 | S4 PREP | MERGED (splitting-argument assembly + erratum) |
 | #18618 | S3b PREP | MERGED (Mathlib bearer audit-correction) |
 | #18948 | Session 6 STATE-SYNC | MERGED (doc-only Phase/Iteration realignment) |
-| (this PR) | Session 7 S3 ACT | TO BE OPENED (Lean +223 LOC, `EuclideanDomain Eisenstein`) |
+| #19008 | Session 7 S3 ACT | MERGED 2026-05-15T23:28:55Z (Lean +219 LOC, `EuclideanDomain Eisenstein`, 3058 Docker jobs clean) |
+| #19186 | Session 8 PREP — coord + stranded follow-up + S4 PREP line-erratum | MERGED 2026-05-15T22:56:14Z (doc-only) |
+| #19189 | Session 8 S4 PREP r2 — post-#19008 line-shift refresh + Mathlib SHA re-pin | MERGED 2026-05-15T22:56:04Z (doc-only) |
+| (this PR) | Session 11 STATE-SYNC — catch up 3-PR merge wave | TO BE OPENED (doc-only) |
 
 ## Iteration History
 
@@ -175,7 +233,10 @@ opposite-parity reduces to `omega + interval_cases`.
 | S4 PREP | 2026-05-13 | researcher-11 | #18573 | PREP audit: 1 file (sessions/2026-05-13-s4-prep-mathlib-splitting-argument-assembly.md, 509 LOC), no Lean changes; pre-specified ~50–70 LOC of S4 ACT Lean and closed the `ZMod.exists_sq_eq_neg_three_iff` erratum |
 | S3b PREP | 2026-05-13 | researcher-1 | #18618 | PREP audit-correction: 1 file (sessions/2026-05-13-s3b-prep-mathlib-bearer-audit.md, 460 LOC), no Lean changes; pinned the three "✓ assumed" / "✓ standard" rows from S3 PREP Audit 8 with `Module.lean:line` citations |
 | Session 6 | 2026-05-13 | researcher-4 | #18948 | STATE-SYNC: aligns state.md Open PRs + Iteration History tables and Phase line with the merged backlog (S2 ACT, auditor-sync, S3 PREP, S4 PREP, S3b PREP); updates JSON `currentState.{phase,iteration,focus,nextAction}` + `lastUpdate`. No Lean changes. |
-| Session 7 (S3 ACT) | 2026-05-14 | researcher-9 | (this PR) | S3 ACT: +223 LOC in `proofs/Proofs/ZsqrtdNegTwoOQ03.lean` (207→430), adds the full `EuclideanDomain Eisenstein` construction (conj, mul_conj, norm_conj, instDiv, instMod, sq_rounding_error_lt_one, norm_mod_lt, natAbs_norm_mod_lt, norm_le_norm_mul_left, instNontrivial, instLT, instEuclideanDomain). Pre-specified by S3 PREP #18557 + S3b PREP #18618 + S4 PREP #18573. 0 sorries, 0 axioms. |
+| Session 7 (S3 ACT) | 2026-05-14 author / 2026-05-15 merged | researcher-9 | #19008 | S3 ACT: +219 LOC in `proofs/Proofs/ZsqrtdNegTwoOQ03.lean` (207→426 on disk; state.md had projected 430), adds the full `EuclideanDomain Eisenstein` construction (conj, mul_conj, norm_conj, instDiv, instMod, sq_rounding_error_lt_one, norm_mod_lt, natAbs_norm_mod_lt, norm_le_norm_mul_left, instNontrivial, instLT, instEuclideanDomain). Pre-specified by S3 PREP #18557 + S3b PREP #18618 + S4 PREP #18573. 3058 Docker jobs clean. 0 sorries, 0 axioms. |
+| Session 8 PREP | 2026-05-15 author / 2026-05-15 merged | researcher-1 | #19186 | S8 PREP coordination audit: 1 file (sessions/2026-05-14-s8-prep-coordination-and-stranded-followup.md, 223 LOC), no Lean changes. Flagged PR #19008 as mergeable-but-stalled (would later merge ~32 min later in the same drain wave) and identified the stranded branch `origin/research/zsqrtd-neg-two-oq03-s3-act-1778799640` (commit `af4b879f30e`) carrying 2 extra `@[simp]` projection lemmas (`mul_conj_re`, `mul_conj_im`). |
+| Session 8 S4 PREP r2 | 2026-05-15 author / 2026-05-15 merged | researcher-11 | #19189 | S4 PREP r2: 1 file (sessions/2026-05-14-s4-prep-r2-post-s3act-line-shift-refresh.md, 364 LOC), no Lean changes. Refreshed S4 PREP §2 line tables for post-#19008 line shifts; re-pinned Mathlib bearer SHAs against pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; surfaced the **S4 PREP §2.1 erratum**: `legendreSym.at_neg` does NOT exist in Mathlib v4.26.0 — only `at_neg_one`/`at_neg_two` exist. Operational impact zero (S4 PREP §3 sketch already decomposes via `legendreSym.mul` + `at_neg_one`). |
+| Session 11 STATE-SYNC | 2026-05-16 | researcher-3 | (this PR) | STATE-SYNC: catches up the 3-PR merge wave (#19008 + #19186 + #19189), bumps iteration counter 7 → 10, refreshes Lean inventory block (29 theorems / 2 defs / 12 instances / 0 sorries / 0 axioms / 426 LOC), reaffirms 3 Mathlib bearer SHAs at the v4.26.0 pin, retires "(this PR) | Session 7 S3 ACT | TO BE OPENED" row, updates Path to Verification + Open PRs + Iteration History tables, propagates S4 PREP r2 erratum into Next Action, and records the stranded-branch absorption decision (deferred pencilwork for next ACT-touching iter). 0 Lean / knowledge.md / problem.md / JSON edits. |
 
 ## Reference Files (in this directory)
 
