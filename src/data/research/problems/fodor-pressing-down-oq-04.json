@@ -20,7 +20,8 @@
       "Fodor's pressing-down lemma (FodorPressingDown.lean:259) is the load-bearing hammer for the regressive auxiliary step.",
       "diagInter_isClubBelow (line 240) provides closure of clubs under κ-indexed intersection.",
       "IsStationaryBelow.of_subset (line 343) supports the WLOG reductions in Step 1.",
-      "S2-α (this session, PR pending): isLimitOrdinals_isClubBelow — limit ordinals below κ.ord form a club; corollary nonLimitOrdinals_not_isStationaryBelow."
+      "S2-α (merged #19052): isLimitOrdinals_isClubBelow — limit ordinals below κ.ord form a club (line 366); corollary nonLimitOrdinals_not_isStationaryBelow (line 408).",
+      "S2-β-α (this session, PR pending): IsClubBelow.inter (binary intersection of clubs is a club) + IsStationaryBelow.inter_isClubBelow (stationary ∩ club preserves stationary) + IsStationaryBelow.inter_isLimitOrdinals (WLOG-restrict to limits) — three foundational companions for Solovay Step 2 in new § Part VIII (+115 LOC, build-verified, 3062 jobs)."
     ],
     "open": [
       "S2-β: binary Solovay splitting — any stationary S splits into 2 disjoint stationary subsets.",
@@ -30,24 +31,25 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-14T13:10:00Z",
-    "iteration": 7,
-    "focus": "S2-α ACT shipped — Step 1 of Solovay splitting (limit ordinals below κ.ord form a club). Build-verified at 3062 jobs on Mathlib v4.26.0. Next: S2-β binary Solovay splitting via single Fodor application.",
+    "since": "2026-05-16T02:00:00Z",
+    "iteration": 8,
+    "focus": "S2-β-α ACT shipped — Solovay Step 2 companions in new § Part VIII: IsClubBelow.inter + IsStationaryBelow.inter_isClubBelow + IsStationaryBelow.inter_isLimitOrdinals. +115 LOC (453→568), 0 sorries, 0 axioms, 3062-job clean Docker build. Refined S2-β ACT budget to ~150-180 LOC (down from S3b §6's 200-270) since this PR absorbed the ~50 LOC of companion infrastructure.",
     "blockers": [],
-    "nextAction": "S2-β / S3: Binary Solovay splitting. Given stationary S ⊆ κ.ord, intersect with the new club {α | IsSuccLimit α} so WLOG S consists of limits; fix a cofinal-sequence assignment per α ∈ S (via Ordinal.bsup); apply fodor to the regressive auxiliary α ↦ c_α(0). Expected scope: ~120–250 LOC, 0 new axioms.",
+    "nextAction": "S2-β ACT: append new § Part IX with cofinal-sequence picking (via Classical.choose on Ordinal.exists_fundamental_sequence) + fodor_anti_constant (index-of-first-disagreement on cofinal-sequence pairs) + stationary_splits_binary (wires IsStationaryBelow.inter_isLimitOrdinals + fodor + fodor_anti_constant). ~150-180 LOC, 0 new axioms.",
     "attemptCounts": {
-      "total": 7,
+      "total": 8,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S2-α ACT shipped: isLimitOrdinals_isClubBelow (limit ordinals below κ.ord form a club) and corollary nonLimitOrdinals_not_isStationaryBelow are proved in FodorPressingDown.lean. Closure-branch uses IsAcc → IsSuccPrelimit (no successor can be an accumulation point) + IsAcc.pos → ¬IsMin. Unboundedness-branch uses α + ω₀: limit via Ordinal.isSuccLimit_add (Mathlib v4.26.0 line 511), bound α + ω₀ < κ.ord via cardinality (card_add + Cardinal.add_lt_of_lt + Cardinal.lt_ord), and gap α < α + ω₀ via IsNormal.strictMono. Build-verified at 3062 jobs. Step 1 of the three-step Solovay proof is now complete; Step 2 (binary splitting via single Fodor) is the next target.",
+    "progressSummary": "S2-β-α ACT shipped: three Solovay-Step-2 companions in new § Part VIII — IsClubBelow.inter (binary intersection of clubs is a club, ~70 LOC; closure via IsAcc-projection, unboundedness via diagInter with 2-element family + starting point max α 1), IsStationaryBelow.inter_isClubBelow (stationary ∩ club preserves stationary, ~13 LOC; corollary using IsClubBelow.inter), IsStationaryBelow.inter_isLimitOrdinals (WLOG-restrict to limits, ~6 LOC; paste-ready for next ACT picker). Build-verified at 3062 jobs. Previously: S2-α ACT shipped isLimitOrdinals_isClubBelow + nonLimitOrdinals_not_isStationaryBelow. Step 1 + Step 2 foundations now in place; Step 2 main theorem (stationary_splits_binary) remains the next deliverable.",
     "builtItems": [
       "research/problems/fodor-pressing-down-oq-04/problem.md (S1 OBSERVE — theorem statement, scope, anchors)",
       "research/problems/fodor-pressing-down-oq-04/knowledge.md (S1 OBSERVE — three-step proof breakdown, reusable-lemma table, Mathlib API survey, S2 candidates)",
-      "research/problems/fodor-pressing-down-oq-04/state.md (S1 OBSERVE — session log and S2-α sketch)",
-      "S2-α (this session): proofs/Proofs/FodorPressingDown.lean §Part VII — isLimitOrdinals_isClubBelow + nonLimitOrdinals_not_isStationaryBelow (+68 LOC, 0 sorries, 0 axioms; 3062-job Docker build)"
+      "research/problems/fodor-pressing-down-oq-04/state.md (S1 OBSERVE — session log + S2-α sketch + S2-β-α append)",
+      "S2-α (#19052): proofs/Proofs/FodorPressingDown.lean §Part VII — isLimitOrdinals_isClubBelow + nonLimitOrdinals_not_isStationaryBelow (+68 LOC, 0 sorries, 0 axioms; 3062-job Docker build)",
+      "S2-β-α (this session): proofs/Proofs/FodorPressingDown.lean §Part VIII — IsClubBelow.inter + IsStationaryBelow.inter_isClubBelow + IsStationaryBelow.inter_isLimitOrdinals (+115 LOC, 0 sorries, 0 axioms; 3062-job Docker build; sessions/2026-05-16-s2b-alpha-act-club-inter-companions.md)"
     ],
     "insights": [
       "Step 1 (limit-reduction) is fully independent of Fodor and is the natural S2 starting point.",
@@ -57,7 +59,9 @@
       "No new axioms required at any stage; classical choice (already used in fodor at line 279) is sufficient.",
       "S2-α surface: Mathlib v4.26.0 has no Cardinal.isPrincipal_add_ord; the cardinality-bridge α + ω₀ < κ.ord works via card_add + Cardinal.add_lt_of_lt + Cardinal.lt_ord (3 lines instead of the projected 1-line citation).",
       "S2-α surface: generic add_lt_add_left fails to synthesize AddRightStrictMono on Ordinal; the IsNormal-based path ((Ordinal.isNormal_add_right α).strictMono) gives α + 0 < α + ω₀ in one term.",
-      "S2-α surface: IsSuccLimit's field order is (¬ IsMin, IsSuccPrelimit) — corresponding refine ⟨?_, ?_⟩ goals discharge in that order."
+      "S2-α surface: IsSuccLimit's field order is (¬ IsMin, IsSuccPrelimit) — corresponding refine ⟨?_, ?_⟩ goals discharge in that order.",
+      "S2-β-α surface (3 v4.26.0 naming deltas): Ordinal.zero_lt_one is not present at that name (use one_pos, instance-resolved); Ordinal.succ_pos shows as `0 < succ 0` not `0 < 0 + 1` (pattern miss for rwa [zero_add]); `have h1ne0 : (1 : Ordinal) ≠ 0 := one_ne_zero` fails universe inference (use `simpa [f] using h` to let simp resolve `1 ≠ 0` in unfolded `if`-context).",
+      "S2-β-α architecture: binary intersection of clubs reduces to diagInter unboundedness with 2-element family `f β = if β = 0 then C else D`; starting point `max α 1` ensures the witness γ satisfies both 0 < γ (for β=0 → γ ∈ C) and 1 < γ (for β=1 → γ ∈ D). This avoids an explicit zipper construction."
     ],
     "mathlibGaps": [
       "Mathlib.SetTheory.Ordinal.Cofinality provides Ordinal.cof and related lemmas but no native stationary-set theory.",
@@ -66,7 +70,7 @@
       "Ordinal.add_zero / Ordinal.add_lt_add_left / Ordinal.zero_le are not direct constants — use generic add_zero (from AddMonoid), le_of_lt, and (Ordinal.isNormal_add_right α).strictMono respectively."
     ],
     "nextSteps": [
-      "S2-β / S3: Binary splitting via single Fodor application (~120-250 LOC).",
+      "S2-β ACT (next picker): cofinal-sequence picking + fodor_anti_constant + stationary_splits_binary in new § Part IX (~150-180 LOC, refined from S3b §6's 200-270 LOC since this PR absorbed ~50 LOC of companion infrastructure).",
       "S2-γ / S4+: Full Solovay splitting via iterated Fodor + Skolem (~400+ LOC, decompose into companions).",
       "S5+: Corollaries — club guessing, ◇_{ω₁}, Σ-products of ω₁."
     ]
@@ -104,15 +108,15 @@
     ]
   },
   "started": "2026-05-12T14:35:20.231Z",
-  "lastUpdate": "2026-05-14T13:10:00Z",
+  "lastUpdate": "2026-05-16T02:00:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/FodorPressingDown.lean",
       "filename": "FodorPressingDown.lean",
-      "lineCount": 453,
-      "theoremCount": 14,
+      "lineCount": 568,
+      "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
