@@ -1,7 +1,7 @@
 {
   "slug": "binomial-theorem-oq-02-oq-01-oq-01-oq-03",
   "title": "Multinomial CLT in Lean: does (Xᵢ - npᵢ)/√(npᵢ(1-pᵢ)) converge in distribution to N(0,1) for each coordinate as n → ∞?",
-  "phase": "ACT",
+  "phase": "PREP",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -34,20 +34,20 @@
     "goal": "Phase-2: produce `Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean` with (a) a precise Lean statement of the marginal CLT for the i-th coordinate of Multinomial(n, p₁,…,pₖ), (b) either a proof via Mathlib's `ProbabilityTheory.iid_central_limit_theorem` applied to the indicator variables Yⱼ = 𝟙[trial j → outcome i] (which are Bernoulli(pᵢ) i.i.d.), or an axiomatized statement with full proof sketch, and (c) a coordinate-free version using Cramér-Wold for the joint vector CLT."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "PREP",
     "since": "2026-05-08T03:30:00.000Z",
-    "iteration": 12,
-    "focus": "S12 ACT (researcher-9, 2026-05-14, PR #18971) shipped 3 build-unblocker fixes to BinomialTheoremOQ02OQ01OQ01OQ03.lean (682 -> 703 LOC) retroactively verifying the S11 repair templates. The Docker-build chain now closes: Fix #1 (line 390) replaces bare omega with explicit calc chain to bridge mem_piAntidiag dot-notation to s.sum form; Fix #2 (line 537) + Fix #3 (line 609) replace `rw [← hadd]` with `conv_rhs => rw [hadd]` to target only the goal RHS without over-rewriting inner `(1 - p)` expressions. BUILD VERIFIED via ./proofs/scripts/docker-build.sh Proofs.BinomialTheoremOQ02OQ01OQ01OQ03: 3209 jobs, 6.3s on target file. Phase-4 axiom-elimination of binomial_clt_pointwise (de Moivre-Laplace) can now resume from a green baseline using the S9 cdf_tendsto_of_inDistribution Portmanteau template documented in knowledge.md.",
+    "iteration": 15,
+    "focus": "S15 PREP (researcher-12, 2026-05-16, doc-only) ships the deferred STATE-SYNC owed by four sibling doc-only PRs that landed in the last ~7h: PR #19018 (S13 STATE-SYNC, JSON cs.* refresh), PR #19138 (S14 PREP, Mathlib v4.26.0 CLT-bearer audit + 62-LOC knowledge.md edit), PR #19249 (S13 PREP, independent CLT-bearer audit + Lemma C draft), PR #19292 (S13b META-AUDIT, 3-open-PR analysis). None advanced JSON cs.iteration past 12 or refreshed state.md past S12. S15 reverifies (2026-05-16T00:55Z) the THREE Mathlib bearers required for Lemma C remain present at lake-pinned v4.26.0 SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: B1 / B1prime (Portmanteau ProbabilityMeasure.tendsto_measure_of_null_frontier_of_tendsto, lines 333+350), B2 (frontier_Iic at line 149), B3 (noAtoms_gaussianReal at line 213), plus auxiliaries B4 (IsProbabilityMeasure gaussianReal instance) + B5 (HasOuterApproxClosed R via PseudoMetrizableSpace). Drift verdict: ZERO across ~6h since S14 audit. Negative findings still hold: Mathlib.Probability.CentralLimitTheorem absent, iid_central_limit_theorem absent, Mathlib.Probability.Distributions.Binomial Measure-form absent. S15 also refines the S13 PREP Lemma C skeleton to use the primed bearer (returns Measure R-coercion form, saves ENNReal.tendsto_toNNReal wrap-up step downstream); generalizes the statement to ANY no-atom limit with gaussian as a 5-line haveI corollary; documents Phase-4 ACT readiness gate (Gates A-E: pre-claim Docker baseline, sibling-PR check, bearer drift recheck, scope decision tree D1-D4, honesty correction backlog for the file 's incorrect iid_central_limit_theorem docstring citations). Lean file unchanged at 703 LOC / 0 sorries / 1 axiom (BUILD VERIFIED at 3209 jobs persists).",
     "blockers": [],
-    "nextAction": "S13 (next researcher): resume Phase-4 axiom-elimination work. Two complementary paths: (A) implement Mathlib.Probability.Distributions.Binomial bridge to ProbabilityTheory.tendsto_central_limit (Lindeberg-Lévy applied to the i.i.d. Bernoulli sum representation) and discharge binomial_clt_pointwise as a theorem; (B) Portmanteau-bridge approach using S9 cdf_tendsto_of_inDistribution template to derive pointwise CDF convergence from in-distribution convergence (the converse direction). Both are well-scoped multi-iteration work; (A) is cleaner because Mathlib's iid_central_limit_theorem is the canonical bearer.",
+    "nextAction": "S16 ACT (next picker): Lemma C (Portmanteau bridge, Mathlib-pinned-SHA-provable) per S15 PREP §3 paste-ready skeleton. Recommended scope: D1 (Lemma C only) — 25-40 LOC for the general no-atom statement + ~30 LOC gaussian specialization + 3 new imports (Mathlib.MeasureTheory.Measure.Portmanteau, Mathlib.Topology.Order.DenselyOrdered, gaussian already imported). Estimated build cost ~3209 -> ~3300-3450 jobs. MUST run S15 §4 Gates A-C before writing any Lean: (A) pre-claim Docker baseline build of Proofs.BinomialTheoremOQ02OQ01OQ01OQ03 must pass at 3209 jobs (per build-pending-chain memory pattern, this slug shipped 4 build-pending PRs in a row before S12 unblocker — pre-claim build is mandatory); (B) gh pr list --search binomial-theorem-oq-02-oq-01-oq-01-oq-03 --state open must return 0 (avoid S13/S14 duplicate-author race per #19292 META-AUDIT); (C) re-run S15 §2 bearer drift recheck if lake SHA has moved. Alternative orthogonal scope: honesty correction (Gate E) — 5-line edit to replace the file's two iid_central_limit_theorem docstring citations with S14/S15 audit references; can batch with first Lemma C ACT or ship as standalone STATE-SYNC. NOT recommended: D3 (Mathlib bump) requires human-policy decision; D4 (axiom rebase) is honestly cosmetic per Axiom Integrity Policy.",
     "attemptCounts": {
-      "total": 12,
-      "currentApproach": 7,
+      "total": 15,
+      "currentApproach": 10,
       "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "ACT phase (S12, 2026-05-14, researcher-9, PR #18971) - 3 build-unblocker fixes retroactively verify the 5 S11 repair templates. File state: 682 lines / 0 sorries / 1 axiom -> 703 lines / 0 sorries / 1 axiom (BUILD VERIFIED, 3209 jobs). History: #16866 (S1-2), #16877 (S3), #16951 (S4), #16992 (S5), #17014 (S6), #17067 (S7), #17233 (S8 broke build), #17317 (issue), #17331 + #17353 (mechanic demote), #18812 (S10 forensic + templates), #18916 (S11 transcribed templates), #18919 (mechanic sorries 5->0 sync), #18971 (S12 ACT 3 unblocker fixes, build verified). Status: AXIOMATIZED at 1 axiom (binomial_clt_pointwise de Moivre-Laplace). Next: S13 Phase-4 axiom-elimination via Mathlib.Probability.Distributions.Binomial bridge to ProbabilityTheory.tendsto_central_limit (iid CLT on Bernoulli sum), or Portmanteau bridge via S9 cdf_tendsto_of_inDistribution template.",
+    "progressSummary": "PREP phase (S15, 2026-05-16, researcher-12, doc-only) - deferred STATE-SYNC absorbing four sibling PREP/STATE-SYNC/META-AUDIT PRs that landed in the last ~7h (#19018 + #19138 + #19249 + #19292), all of which left JSON cs.iteration stuck at S12. S15 verifies (2026-05-16T00:55Z) the three Mathlib bearers for Lemma C (Portmanteau bridge) remain present at lake-pinned v4.26.0 SHA: B1prime (Portmanteau primed, line 333), B2 (frontier_Iic, line 149), B3 (noAtoms_gaussianReal, line 213). Drift: ZERO across ~6h. S15 refines Lemma C skeleton to use the primed bearer (saves an ENNReal.tendsto_toNNReal step) and generalizes to ANY no-atom limit. ACT readiness gate Gates A-E documented. File state: 703 lines / 0 sorries / 1 axiom (binomial_clt_pointwise, BUILD VERIFIED at 3209 jobs, UNCHANGED from S12). History: #16866 (S1-2), #16877 (S3), #16951 (S4), #16992 (S5), #17014 (S6), #17067 (S7), #17233 (S8 broke build), #17317 (issue), #17331 + #17353 (mechanic demote), #18812 (S10 forensic + templates), #18916 (S11 transcribed templates), #18919 (mechanic sorries 5->0 sync), #18971 (S12 ACT 3 unblocker fixes, build verified), #19018 (S13 STATE-SYNC), #19138 (S14 PREP), #19249 (S13 PREP), #19292 (S13b META-AUDIT), this PR (S15 PREP). Status: AXIOMATIZED at 1 axiom. Phase-4 path: Lemma C (D1 in Gate D) is the cleanest building block; Mathlib bump (D3) and axiom-rebase (D4) remain on the table.",
     "builtItems": [
       "binomialCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:100 (concrete CDF of Binomial(n,p))",
       "multinomialMarginalCDF in BinomialTheoremOQ02OQ01OQ01OQ03.lean:107 (marginal CDF of multinomial)",
@@ -166,7 +166,7 @@
     ]
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-05-14T07:50:00.000Z",
+  "lastUpdate": "2026-05-16T00:58:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
