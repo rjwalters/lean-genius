@@ -1,10 +1,10 @@
 # Current State: zsqrtd-neg-two-oq-03
 
-**Phase**: ACT (S3 ACT shipped via PR #19008 build-verified 3058 jobs; S4 PREP r2 + S8 PREP both merged; S4 ACT next — splitting argument from `(-3/p) = 1`)
+**Phase**: ACT (S3 ACT shipped via PR #19008 build-verified 3058 jobs; S4 PREP r2 + S8 PREP + S11 STATE-SYNC merged; **S4 ACT next** — splitting argument from `(-3/p) = 1`, paste-ready ~60-LOC skeleton in S12 PREP §5; **B1 INFRA**: Docker daemon hung under host disk pressure, ACT picker should wait OR ship `build pending` per S5 ACT precedent)
 **Path**: full
-**Since**: 2026-05-15T23:28:55Z (PR #19008 S3 ACT merged + cascade absorption)
-**Iteration**: 10
-**Researcher**: researcher-3 (Session 11 STATE-SYNC, 2026-05-16)
+**Since**: 2026-05-16T10:00Z (S12 PREP — JSON drift fix + bearer re-spot-check + S4 ACT paste-ready; was 2026-05-15T23:28:55Z post-#19008 merge)
+**Iteration**: 11 (S11 STATE-SYNC was iter 10, merged via #19494; this S12 PREP is iter 11)
+**Researcher**: researcher-9 (Session 12 PREP, 2026-05-16)
 
 ## Current Focus
 
@@ -137,8 +137,9 @@ scaffold). 0 sorries, 0 axioms in the Lean file.
 | S3 ACT | `EuclideanDomain Eisenstein` via rounding | +219 LOC | ✅ PR #19008 (MERGED 2026-05-15T23:28:55Z, 3058 Docker jobs clean) |
 | S8 PREP | PR coord audit + stranded-branch follow-up + S4 PREP line-erratum | — | ✅ PR #19186 (MERGED 2026-05-15T22:56:14Z, doc-only) |
 | S4 PREP r2 | Post-#19008 line-shift refresh + Mathlib SHA re-pin | — | ✅ PR #19189 (MERGED 2026-05-15T22:56:04Z, doc-only) |
-| Session 11 STATE-SYNC | Catch up 3-PR merge wave (this PR) | — | 🚧 PR (this session, doc-only) |
-| S4 ACT | Splitting via `(-3/p) = (p/3)` and QR | ~50–70 | TODO (use `legendreSym.mul` + `at_neg_one`, NOT the non-existent `legendreSym.at_neg`) |
+| Session 11 STATE-SYNC | Catch up 3-PR merge wave | — | ✅ PR #19494 (MERGED 2026-05-16, doc-only) |
+| Session 12 PREP | JSON drift fix + bearer re-spot-check + S4 ACT paste-ready (this PR) | — | 🚧 PR (this session, doc-only) |
+| S4 ACT | Splitting via `(-3/p) = (p/3)` and QR; paste S12 PREP §5 skeleton | ~60 | TODO (use `legendreSym.mul` + `at_neg_one` Basic.lean:L272; `quadratic_reciprocity_one_mod_four` QR.lean:L134, NOT L133; `PrincipalIdealRing.to_uniqueFactorizationMonoid` PID.lean:L345, NOT L366; SORRY-1 on `exists_sq_eq_neg_three_iff` per S12 PREP §5) |
 | S5 ACT | `sq_add_three_sq_of_prime_one_mod_three` (main) | ~100 | TODO |
 
 Stretch (S6+, optional): port to `n = 7, 11` (each ~400 lines).
@@ -219,7 +220,8 @@ the current file).
 | #19008 | Session 7 S3 ACT | MERGED 2026-05-15T23:28:55Z (Lean +219 LOC, `EuclideanDomain Eisenstein`, 3058 Docker jobs clean) |
 | #19186 | Session 8 PREP — coord + stranded follow-up + S4 PREP line-erratum | MERGED 2026-05-15T22:56:14Z (doc-only) |
 | #19189 | Session 8 S4 PREP r2 — post-#19008 line-shift refresh + Mathlib SHA re-pin | MERGED 2026-05-15T22:56:04Z (doc-only) |
-| (this PR) | Session 11 STATE-SYNC — catch up 3-PR merge wave | TO BE OPENED (doc-only) |
+| #19494 | Session 11 STATE-SYNC — catch up 3-PR merge wave | MERGED 2026-05-16 (doc-only) |
+| (this PR) | Session 12 PREP — JSON drift fix + bearer re-spot-check + S4 ACT paste-ready (doc-only) | TO BE OPENED |
 
 ## Iteration History
 
@@ -236,7 +238,8 @@ the current file).
 | Session 7 (S3 ACT) | 2026-05-14 author / 2026-05-15 merged | researcher-9 | #19008 | S3 ACT: +219 LOC in `proofs/Proofs/ZsqrtdNegTwoOQ03.lean` (207→426 on disk; state.md had projected 430), adds the full `EuclideanDomain Eisenstein` construction (conj, mul_conj, norm_conj, instDiv, instMod, sq_rounding_error_lt_one, norm_mod_lt, natAbs_norm_mod_lt, norm_le_norm_mul_left, instNontrivial, instLT, instEuclideanDomain). Pre-specified by S3 PREP #18557 + S3b PREP #18618 + S4 PREP #18573. 3058 Docker jobs clean. 0 sorries, 0 axioms. |
 | Session 8 PREP | 2026-05-15 author / 2026-05-15 merged | researcher-1 | #19186 | S8 PREP coordination audit: 1 file (sessions/2026-05-14-s8-prep-coordination-and-stranded-followup.md, 223 LOC), no Lean changes. Flagged PR #19008 as mergeable-but-stalled (would later merge ~32 min later in the same drain wave) and identified the stranded branch `origin/research/zsqrtd-neg-two-oq03-s3-act-1778799640` (commit `af4b879f30e`) carrying 2 extra `@[simp]` projection lemmas (`mul_conj_re`, `mul_conj_im`). |
 | Session 8 S4 PREP r2 | 2026-05-15 author / 2026-05-15 merged | researcher-11 | #19189 | S4 PREP r2: 1 file (sessions/2026-05-14-s4-prep-r2-post-s3act-line-shift-refresh.md, 364 LOC), no Lean changes. Refreshed S4 PREP §2 line tables for post-#19008 line shifts; re-pinned Mathlib bearer SHAs against pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; surfaced the **S4 PREP §2.1 erratum**: `legendreSym.at_neg` does NOT exist in Mathlib v4.26.0 — only `at_neg_one`/`at_neg_two` exist. Operational impact zero (S4 PREP §3 sketch already decomposes via `legendreSym.mul` + `at_neg_one`). |
-| Session 11 STATE-SYNC | 2026-05-16 | researcher-3 | (this PR) | STATE-SYNC: catches up the 3-PR merge wave (#19008 + #19186 + #19189), bumps iteration counter 7 → 10, refreshes Lean inventory block (29 theorems / 2 defs / 12 instances / 0 sorries / 0 axioms / 426 LOC), reaffirms 3 Mathlib bearer SHAs at the v4.26.0 pin, retires "(this PR) | Session 7 S3 ACT | TO BE OPENED" row, updates Path to Verification + Open PRs + Iteration History tables, propagates S4 PREP r2 erratum into Next Action, and records the stranded-branch absorption decision (deferred pencilwork for next ACT-touching iter). 0 Lean / knowledge.md / problem.md / JSON edits. |
+| Session 11 STATE-SYNC | 2026-05-16 | researcher-3 | #19494 | STATE-SYNC: catches up the 3-PR merge wave (#19008 + #19186 + #19189), bumps iteration counter 7 → 10, refreshes Lean inventory block (29 theorems / 2 defs / 12 instances / 0 sorries / 0 axioms / 426 LOC; note: on-disk `definitionCount` is `3` not `2`, see S12 PREP §10), reaffirms 3 Mathlib bearer SHAs at the v4.26.0 pin, retires "(this PR) | Session 7 S3 ACT | TO BE OPENED" row, updates Path to Verification + Open PRs + Iteration History tables, propagates S4 PREP r2 erratum into Next Action, and records the stranded-branch absorption decision (deferred pencilwork for next ACT-touching iter). 0 Lean / knowledge.md / problem.md / JSON edits. |
+| Session 12 PREP | 2026-05-16 | researcher-9 | (this PR) | PREP: 1 NEW session memo (`sessions/2026-05-16-s12-prep-json-drift-fix-bearer-respotcheck-s4-act-paste-ready.md`, ~450 LOC), state.md head + Open PRs + Path-to-Verification + Iteration History edits (~±60 LOC), and JSON `currentState.{phase,since,iteration,focus,nextAction,lastUpdate}` + `leanFiles[0].theoremCount` + top-level `lastUpdate` updates (~±10 LOC). Closes JSON drift left by S11 STATE-SYNC (#19494), re-spot-checks 4-file bearer table at HEAD `ecb47b35601` against Mathlib pin `2df2f0150c…` (IDENTICAL), surfaces 4 NEW line-citation drift findings (QR `quadratic_reciprocity` L107 not L123; QR `_one_mod_four` L134 not L133; PID `to_uniqueFactorizationMonoid` L345 not L366; Basic `eq_one_iff` L178 not L180), and lands a paste-ready ~60-LOC S4 ACT skeleton with 1 acknowledged sorry on `exists_sq_eq_neg_three_iff` (R3, ~15 LOC). Reaffirms stranded-branch absorption (#19186 §1 — 2 `@[simp]` lemmas folded into S4 ACT). Docker B1 INFRA blocker noted (daemon hung under host disk pressure). 0 Lean / 0 meta.json / 0 problem.md / 0 knowledge.md edits. |
 
 ## Reference Files (in this directory)
 
@@ -258,3 +261,27 @@ the current file).
   (researcher-11, PR #18573).
 - `sessions/2026-05-13-s3b-prep-mathlib-bearer-audit.md` —
   S3b PREP Mathlib bearer audit-correction (researcher-1, PR #18618).
+- `sessions/2026-05-14-s8-prep-coordination-and-stranded-followup.md` —
+  S8 PREP coordination audit (researcher-1, PR #19186).
+- `sessions/2026-05-14-s4-prep-r2-post-s3act-line-shift-refresh.md` —
+  S4 PREP r2 post-#19008 refresh + erratum (researcher-11, PR #19189).
+- `sessions/2026-05-14-s3-act-euclidean-domain-rounding.md` —
+  S3 ACT EuclideanDomain construction (researcher-9, PR #19008).
+- `sessions/2026-05-16-s11-state-sync-post-19008-19186-19189-merge-wave.md` —
+  Session 11 STATE-SYNC post-drain catch-up (researcher-3, PR #19494).
+- `sessions/2026-05-16-s12-prep-json-drift-fix-bearer-respotcheck-s4-act-paste-ready.md` —
+  **Session 12 PREP** (this PR; researcher-9): JSON drift fix +
+  4-file bearer re-spot-check + S4 ACT paste-ready ~60-LOC skeleton
+  with 1 acknowledged sorry + 4 NEW line-citation drift findings +
+  Docker B1 blocker note + 8-item ACT-readiness gate (7 GREEN + 1
+  RED-INFRA).
+
+## Next Action
+
+The previous-session "Next Action" block (above, after "Far-future")
+remains valid for the **mathematical content** of S4 ACT. **Use the
+S12 PREP §5 paste-ready skeleton + S12 PREP §4 corrected line
+citations** for the actual paste — the previous block's line numbers
+(QR.lean:L123/L133/L141 + PID.lean:L366 + Basic.lean:L180) are stale
+by Δ∈{−16, +1, +1, −21, −2} lines and would cost ~5-10 LOC of
+needless `rcases p=q` if used as-is.
