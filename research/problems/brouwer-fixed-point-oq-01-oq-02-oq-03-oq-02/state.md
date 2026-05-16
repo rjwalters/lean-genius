@@ -1,19 +1,31 @@
 # Current State
 
-**Phase**: ACT (G7/G8/G9 on main; S9 ACT-D-3 EXEC remains gated on PR #18011 / G6)
-**Since**: 2026-05-16 (Session 11, researcher-12, S11 STATE-SYNC post-drain)
-**Iteration**: 11
+**Phase**: ACT (G7/G8/G9 on main; S9 ACT-D-3 EXEC remains gated on PR #18011 / G6; G6 companion-file pivot pre-staged in S12)
+**Since**: 2026-05-16 (Session 12, researcher-3, S12 PREP — G6 companion-file pivot pre-staging)
+**Iteration**: 12
 
 ## Current Focus
 
-S11 STATE-SYNC (this session, researcher-12, 2026-05-16) — doc-only
-absorption of the drain wave that landed PR #19114 (S9 ACT-D-3 PREP
-G8/G9 companion file) and PR #19193 (the S10 coordination PREP), plus
-the closure of PR #19013 (S9 BUILD-VERIFY) and PR #19058 (S9 STATE-SYNC)
-as superseded by #19114. Refreshes the S9 ACT-D-3 EXEC readiness gate
-from 1/4 GREEN to 7/8 GREEN (only G6 remains RED via PR #18011); rechecks
-the 4 Mathlib bearer files at SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
-with 0 drift. No Lean / knowledge.md / problem.md edits.
+S12 PREP (this session, researcher-3, 2026-05-16) — doc-only pre-staging
+of the **G6 companion-file pivot path** introduced as a conditional
+recommendation in S11 STATE-SYNC §6. Ships paste-ready Lean for
+`BrouwerFixedPointOQ01OQ02G6.lean` (~85 LOC, namespace `BrouwerOQ01OQ02`,
+4 named theorems + a self-contained local `id_Z_ne_zero_g6`, zero new
+axioms, one new import — `Mathlib.Algebra.Group.Hom.Basic`), pins the new
+bearer file at the canonical Mathlib `v4.26.0` SHA, inventories the build
+risk (very low — pure algebra, expected ~600 jobs, no homology
+dependency), and codifies the **drain-wave trigger ledger** that gates
+the eventual S13 ACT. Companion-file pivot is **not yet activated** —
+1 of 2 drain waves have passed without rebase activity on PR #18011
+(its `updatedAt: 2026-05-12T08:58:14Z` is unchanged, 3.83 days stale).
+No Lean / knowledge.md / problem.md / JSON edits.
+
+The S9 ACT-D-3 EXEC readiness gate remains 7/8 GREEN (only G6 RED).
+The S11 STATE-SYNC §4 bearer drift recheck (4 files at SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) is reaffirmed with 0 drift,
+plus 1 new bearer pin (`Mathlib/Algebra/Group/Hom/Basic.lean` at file
+SHA `48295b4d989d7c0e51f32c6df843dea8cb693283`) covering the G6
+companion's single new import.
 
 ## On-disk reality (current main, 2026-05-16)
 
@@ -95,25 +107,49 @@ Only gate 4 is red. S9 ACT-D-3 EXEC remains gated on PR #18011.
 
 ## Next Action
 
-**S9 ACT-D-3 EXEC (gated on PR #18011 merge)** — unchanged plan:
+**Two-path branch** depending on drain-wave trigger state (see S12 PREP
+sessions memo §6 for the full ledger):
 
-1. Add `import Proofs.BrouwerFixedPointOQ01OQ02G7` and
-   `import Proofs.BrouwerFixedPointOQ01OQ02G8` to the main file.
-2. Replace mock composite axiom `H_n_minus_1_sphere_nonzero`
-   (main:~line 261, may shift after PR #18011's Part-VI append)
+**Path A — preferred — S9 ACT-D-3 EXEC via PR #18011 rebase** (unchanged):
+
+1. Wait for PR #18011 author or a mechanic to rebase against current main
+   (iter-12 baseline). Section letter in `knowledge.md` must become **R**
+   (next free).
+2. After #18011 merges, add two `import` lines to
+   `BrouwerFixedPointOQ01OQ02.lean`:
+   - `import Proofs.BrouwerFixedPointOQ01OQ02G7`
+   - `import Proofs.BrouwerFixedPointOQ01OQ02G8`
+3. Replace the mock composite axiom `H_n_minus_1_sphere_nonzero`
+   (currently main:line ~261, may shift after #18011's Part-VI append)
    with the four-bridge substantive derivation.
-3. Build-verify (expected ~3300–3400 jobs).
+4. Build-verify (expected ~3300–3400 jobs).
 
-**S10 ACT-D-4 (after S9 EXEC)**: drop the mock axiom; net axiom
-delta −1 (file-level count 4 → 3).
+**Path B — fallback — S13 ACT G6 companion file** (activates only at
+trigger threshold):
 
-**Deferred to S11+**: full Mathlib B1/B2 upstream contributions.
+1. The next researcher claiming this slug MUST first
+   `gh pr view 18011 --repo rjwalters/lean-genius --json updatedAt` and
+   compare against `2026-05-12T08:58:14Z`.
+2. If unchanged AND at least 2 deployer drain waves have completed since
+   S11 STATE-SYNC (#19439) merged: pivot is **ACTIVATED**. Paste the
+   ~85-LOC Lean from S12 PREP §3 into a fresh
+   `proofs/Proofs/BrouwerFixedPointOQ01OQ02G6.lean`; Docker-build
+   (expected ~600 jobs). Section letter R remains reserved.
+3. If `updatedAt` HAS changed (rebase push, comment, or close): pivot
+   is **CANCELLED**, resume Path A.
+
+**S10 ACT-D-4 (after either Path A or Path B + S9 EXEC)**: drop the mock
+axiom `H_n_minus_1_sphere_nonzero` entirely; net axiom delta −1
+(file-level count 4 → 3).
+
+**Deferred to S11+**: full Mathlib B1/B2 upstream contributions
+(Section H for B1 prism operator; §L3 / B2-CW for B2 sphere homology).
 
 ## Attempt Counts
 
-- Total attempts: 11
-- Current approach attempts: 1 (S11 STATE-SYNC first attempt, doc-only)
-- Approaches tried: 11 (S1 OBSERVE feasibility; S2 ACT-A scaffold;
+- Total attempts: 12
+- Current approach attempts: 1 (S12 PREP first attempt, doc-only — G6 companion-file pivot pre-staging)
+- Approaches tried: 12 (S1 OBSERVE feasibility; S2 ACT-A scaffold;
   S3 ACT-B prep `singularHomologyFunctor` API verification;
   S4 ACT-C prep prism-operator construction blueprint;
   S5 ACT-B exec — thin local axiom + substantive ball-homology theorem;
@@ -123,7 +159,8 @@ delta −1 (file-level count 4 → 3).
   S8 ACT-D-2 EXEC — G7 algebraic bridge companion file installed;
   S9 ACT-D-3 PREP — G8/G9 categorical bridges companion file installed, build verified;
   S10 coordination PREP — 4-PR cascade sequencing doc-only;
-  S11 STATE-SYNC — post-drain absorption of #19114 + #19193 doc-only)
+  S11 STATE-SYNC — post-drain absorption of #19114 + #19193 doc-only;
+  S12 PREP — G6 companion-file pivot pre-staging doc-only)
 
 ## Drain wave absorbed by this STATE-SYNC
 
