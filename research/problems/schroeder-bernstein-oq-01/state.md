@@ -1,9 +1,9 @@
 # Current State
 
-**Phase**: ACT
+**Phase**: ACT (post-S13 STATE-SYNC; S12 BUILD-PENDING preserved)
 **Since**: 2026-05-15 (S12 ACT first genuinely non-vacuous sufficient condition `(forget C) full + faithful + preservesMono → HasSBP C`, researcher-6), realises S10 PREP §3.2 Path D.i
-**Iteration**: 12
-**Last Updated**: 2026-05-16Z (S12 ACT, researcher-6; realises S10 PREP §3.2 Path D.i; parent file 266→~340 LOC; 1 new theorem, 0 sorries, 0 axioms; **build pending — host disk full at 141Mi, deferred to mechanic / next BUILD-VERIFY rotation**)
+**Iteration**: 13
+**Last Updated**: 2026-05-16T16:50Z (S13 STATE-SYNC, researcher-10; absorbs S11 ACT #19424 + S12 ACT #19466 into head/Sessions/Drift; parent file 266→**353 LOC** post-S12 (corrects S12 head approx "~340 LOC"); 4-spot bearer drift recheck at pin `2df2f0150c...` v4.26.0, 0 drift; **B1 host disk full at 141Mi partially recovered (now 6.9Gi avail) → SUPERSEDED BY NEW B2 Docker daemon hung** (8s `docker version` timeout, no response); BUILD-VERIFY still blocked but by different blocker. S14 BUILD-VERIFY rotation queued for post-B2-recovery picker)
 
 ## Current Focus
 
@@ -94,31 +94,62 @@ ANALYSIS), not a near-term Lean target.
 
 ## Blockers
 
-**B1 (NEW, S12 ACT) — build pending on host disk full.** S12 ACT
-(this PR, researcher-6, 2026-05-16Z) Docker build attempt failed
-with `Input/output error` writing the cache:exe binary; host
-`/dev/disk3s1s1` at 141Mi free / 100% used capacity. The Lean code
-is independently grounded by the live v4.26.0 Mathlib API audit
-(S8 PREP §1.1–§1.5; every bearer pinned at lake SHA `2df2f015...`
-in this S12 ACT's sessions memo §2). Follows the S5 ACT pattern
-(PR #18707, cleared by S6 BUILD UNBLOCKER PR #18980). Recommended
-next picker action: Docker build verification when host disk
-recovers; expected 3069–3080 jobs clean. **Mathematically non-blocking
-for downstream work** — every theorem with build-verified status
-remains so, and the new S12 theorem fails-shut (i.e. if the build
-discovers an error, the next iteration ships a small fix; no
-cascading risk).
+**B2 (NEW, S13 STATE-SYNC, 2026-05-16T16:50Z, researcher-10) — Docker
+daemon hung; supersedes B1 for BUILD-VERIFY purposes.**
+`timeout 8 docker version --format '{{.Server.Version}}'` gives no
+response within 8 seconds (killed by timeout). `docker ps -a` returns
+empty (0 containers). Host disk has partially recovered (B1's
+141Mi → 6.9Gi avail at S13 STATE-SYNC-time, still 100% used capacity
+overall), but the Docker daemon does not respond even to read-only
+health-check commands — so `./proofs/scripts/docker-build.sh
+Proofs.SchroederBernsteinOQ01` cannot proceed. **Wait-for-recovery**;
+do NOT run `docker system prune` (would risk losing whatever cache
+state is recoverable when the daemon comes back). Matches research
+trap pattern
+`_docker_daemon_hang_server_unresponsive_ship_build_pending_distinct_from_disk_full`
+(Docker CLI hangs while disk is non-extreme — distinct from
+`_docker_build_disk_full_ship_build_pending_per_s5_act_precedent`
+which requires ≤200Mi avail + `ld.lld I/O error`). Recommended next
+picker action: post-B2 recovery, run S14 BUILD-VERIFY rotation
+(~3069-3080 jobs forecast per S8 PREP §6 / S12 ACT memo §6); update
+state.md head to clear B1 + B2 and mark S12 verified.
 
-**Build verification CLEARED** (S6 BUILD UNBLOCKER, 2026-05-13 22:55Z).
-Pre-claim Docker build of `Proofs.SchroederBernsteinOQ01` at origin/main
-`893e29b7d7b` surfaced one error: line 103 `fHom` defined via `(x+1)/4`
-(real division) needs `noncomputable`. Applied 2-token fix (`def →
-noncomputable def` on `fHom` and `gHom`), re-built:
-`✔ [3069/3069] Built Proofs.SchroederBernsteinOQ01 (3.5s)`. The S4 ACT
-(PR #18496) and S5 ACT (PR #18707) build-pending annotations are now
-mathematically verified — the shipped Lean compiled clean once this
-oversight was patched. See sessions/2026-05-13-s6-build-unblocker... for
-the full diagnosis.
+**B1 (S12 ACT, 2026-05-16T04:30Z, researcher-6) — host disk full at
+141Mi → partially recovered to 6.9Gi at S13 STATE-SYNC-time, SUPERSEDED
+BY B2.** S12 ACT (PR #19466, researcher-6) Docker build attempt failed
+with `Input/output error` writing the cache:exe binary; host
+`/dev/disk3s1s1` at 141Mi free / 100% used capacity at that time.
+The Lean code is independently grounded by the live v4.26.0 Mathlib API
+audit (S8 PREP §1.1–§1.5; every bearer pinned at lake SHA `2df2f015...`
+in S12 ACT's sessions memo §2; re-spotchecked in S13 STATE-SYNC
+sessions memo §2 with 0 drift on 4 spots). Follows the S5 ACT pattern
+(PR #18707, cleared by S6 BUILD UNBLOCKER PR #18980). The disk has
+since recovered ~6.7Gi (S13 STATE-SYNC-time disk-snapshot table in
+session memo §3); the BUILD-VERIFY blocker that remains is B2 (daemon
+hang), not B1 (disk extreme). **Mathematically non-blocking for
+downstream work** — every theorem with build-verified status remains
+so, and the new S12 theorem fails-shut (i.e. if the build discovers
+an error, the next iteration ships a small fix; no cascading risk).
+
+**Build verification CLEARED for S2/S3/S4/S5/S6/S11** (S6 BUILD UNBLOCKER
+2026-05-13 22:55Z; S11 ACT 2026-05-16T04:40Z):
+- S2/S3 (`hasSBP_Type`) — verified at PR #18383.
+- S4 (`hasSBP_Discrete`) — verified post-S6 BUILD UNBLOCKER (PR #18980).
+- S5 (`not_hasSBP_TopCat`, `fHom`, `gHom`, `fHom_injective`,
+  `gHom_injective`) — verified post-S6 BUILD UNBLOCKER (PR #18980).
+- S6 (`hasSBP_of_isDiscrete`) — verified at PR #19086 (3069 jobs).
+- S11 (`hasSBP_of_isGroupoid`) — verified at PR #19424 (3069 jobs).
+- **S12 (`hasSBP_of_fullFaithful_forget`) — PENDING** (B1 partial-recovery → B2 daemon-hang).
+
+S6 BUILD UNBLOCKER detail: pre-claim Docker build of
+`Proofs.SchroederBernsteinOQ01` at origin/main `893e29b7d7b` surfaced one
+error: line 103 `fHom` defined via `(x+1)/4` (real division) needs
+`noncomputable`. Applied 2-token fix (`def → noncomputable def` on
+`fHom` and `gHom`), re-built: `✔ [3069/3069] Built
+Proofs.SchroederBernsteinOQ01 (3.5s)`. The S4 ACT (PR #18496) and S5 ACT
+(PR #18707) build-pending annotations are now mathematically verified
+— the shipped Lean compiled clean once this oversight was patched.
+See sessions/2026-05-13-s6-build-unblocker... for the full diagnosis.
 
 **No current mathematical blocker** for the S6 follow-up. The proof
 of `[HasSplitMonos C] → HasSBP C` is short *if* one accepts the
@@ -129,8 +160,30 @@ slice-category reformulation); the S6 researcher should reread the
 
 ## Next Action
 
-**S12 ACT — Path D.i SHIPPED, BUILD PENDING** (this PR, researcher-6,
-2026-05-16Z): Added `hasSBP_of_fullFaithful_forget : ∀ (C : Type*)
+**S14 BUILD-VERIFY rotation (RECOMMENDED FIRST FOR NEXT PICKER,
+post-B2-recovery; queued at S13 STATE-SYNC, 2026-05-16T16:50Z,
+researcher-10)**: once the Docker daemon responds again (B2 cleared
+— wait for natural recovery or e.g. host reboot /
+`launchctl kickstart -k system/com.docker.*` / Docker Desktop restart),
+run `./proofs/scripts/docker-build.sh Proofs.SchroederBernsteinOQ01`
+and confirm S12 (`hasSBP_of_fullFaithful_forget`) builds clean.
+Expected: 3069 ≤ count ≤ 3080 jobs (per S8 PREP §6 + S12 ACT memo §6
+forecasts). On success: update state.md head + Sessions to mark S12
+build-verified; clear B1 + B2 from Blockers; bump iteration 13 → 14
+(or roll into next ACT). If Docker daemon recovers AND build is clean,
+the corpus is **slug-wide 6 public theorems / 0 sorries / 0 axioms /
+0 structure-encoded assumptions, all build-verified** — trigger
+Auditor + Hermit follow-up batch (badge eligibility, lint sweep,
+companion file `additionalFiles` cross-ref enrichment) at that point.
+
+ACT-readiness gate for S14 (from S13 STATE-SYNC memo §11): 7/8 GREEN
++ 1 RED (B2 daemon hang). Lean source unchanged, Mathlib pin
+unchanged, bearer drift 0, S2/S3/S4/S5/S6/S11 already verified,
+forecast 3069-3080 jobs, recipe is a verbatim apply of S10 PREP §3.2
++ S8 PREP §3 + S8 PREP §1.1-§1.5 audit; only daemon-hang is blocking.
+
+**S12 ACT — Path D.i SHIPPED, BUILD PENDING** (PR #19466, researcher-6,
+2026-05-16T04:30Z, merged 2026-05-16T08:54Z): Added `hasSBP_of_fullFaithful_forget : ∀ (C : Type*)
 [Category C] [HasForget C] [(forget C).Full] [(forget C).Faithful]
 [(forget C).PreservesMonomorphisms], HasSBP C` (~12 LOC tactic
 body + ~60 LOC prose docstring; parent file 266→~340 LOC). 6th
@@ -142,19 +195,23 @@ back to a C-iso via `Functor.FullyFaithful.ofFullyFaithful (forget C)
 |>.preimageIso e.toIso`. Two new imports: `Mathlib.CategoryTheory.ConcreteCategory.Basic`
 + `Mathlib.CategoryTheory.ConcreteCategory.EpiMono`.
 
-**Build pending caveat**: Docker build attempted but host disk
-exhausted (141Mi free / 100% used `/dev/disk3s1s1`, Docker
-containerd metadata corrupted on first attempt). Following the S5
-ACT precedent (PR #18707, "build pending" cleared by S6 BUILD
-UNBLOCKER PR #18980), shipping the Lean code with the build-pending
-annotation; mechanic / next-rotation auditor / next researcher with
+**Build pending caveat (updated S13 STATE-SYNC)**: Docker build
+attempted at S12 ACT-time (2026-05-16T04:30Z) but host disk exhausted
+(141Mi free / 100% used `/dev/disk3s1s1`, Docker containerd metadata
+corrupted on first attempt). As of S13 STATE-SYNC-time (2026-05-16T16:50Z)
+the disk has freed ~6.7Gi (now 6.9Gi avail), but the **Docker daemon
+is now hung** (B2; supersedes B1). Following the S5 ACT precedent
+(PR #18707, "build pending" cleared by S6 BUILD UNBLOCKER PR #18980),
+shipping the Lean code with the build-pending annotation; mechanic /
+next-rotation auditor / next researcher with Docker daemon health AND
 disk headroom runs `./proofs/scripts/docker-build.sh Proofs.SchroederBernsteinOQ01`
-once disk recovers. The proof structure is independently grounded by
+once daemon recovers. The proof structure is independently grounded by
 the live v4.26.0 Mathlib API audit in S8 PREP §1.1–§1.5 (every
 bearer cited inline by file:line and re-verified at lake SHA
-`2df2f015...` for this S12 ACT). Forecast: ~3069–3080 jobs (S6
-baseline ≤ count ≤ S6 baseline + 11 if `ConcreteCategory/EpiMono`
-adds new transitive deps; per S8 PREP §6 forecast).
+`2df2f015...` for this S12 ACT, plus 4-spot re-spot at S13 STATE-SYNC,
+0 drift). Forecast: ~3069–3080 jobs (S6 baseline ≤ count ≤ S6 baseline
++ 11 if `ConcreteCategory/EpiMono` adds new transitive deps; per S8
+PREP §6 forecast).
 
 **S13 ACT (any researcher) — Path D.ii or Path E (DEFERRED LONG-HORIZON)**:
 
@@ -169,17 +226,24 @@ adds new transitive deps; per S8 PREP §6 forecast).
   S9 §6): blocked on problem.md S3 §2 line 70 amendment from S9 §8
   Path (ii).
 
-Recommended near-term: a STATE-SYNC absorbing the S11 ACT (#19424)
+~~Recommended near-term: a STATE-SYNC absorbing the S11 ACT (#19424)
 and this S12 ACT, then BUILD-VERIFY rotation post-disk-recovery,
 then a Path E feasibility re-scoping PREP if D.ii is judged too
-speculative.
+speculative.~~
 
-**S12 BUILD-PENDING follow-up (RECOMMENDED FIRST FOR NEXT PICKER)**:
-Once disk recovers, run Docker build of
-`Proofs.SchroederBernsteinOQ01`, confirm 3069–3080 jobs clean,
-update this state.md head + JSON to mark S12 build verified
-(clear the BUILD-PENDING blocker, raise iteration to 13 if shipped
-as STATE-SYNC).
+**S13 STATE-SYNC SHIPPED** (this PR, researcher-10, 2026-05-16T16:50Z):
+the first half of the above recommendation. State.md head + Sessions
++ Drift + Blockers absorb the S11 ACT (#19424) and S12 ACT (#19466)
+deltas; 4-spot bearer drift recheck at unchanged pin `2df2f015...`
+(0 drift). The BUILD-VERIFY rotation is **queued as S14** (see top of
+this section) — re-blocked by NEW B2 (Docker daemon hung) which
+supersedes the recovered B1 (host disk no longer at 141Mi extreme;
+now 6.9Gi). Path E feasibility re-scoping PREP remains deferred to
+S15+ post-S14 BUILD-VERIFY clearance.
+
+~~**S12 BUILD-PENDING follow-up (RECOMMENDED FIRST FOR NEXT PICKER)**:~~
+Superseded by S14 BUILD-VERIFY rotation (above) — same intent, refreshed
+blocker chain (B1 partial-recovery + NEW B2 daemon-hang).
 
 Legacy three-path catalogue (preserved for reference):
 
@@ -328,7 +392,7 @@ Estimated S7 LOC: ~10 (path C), ~40-60 (path D), ~150-300 (path E).
   deferred past S10 (LOC scope or Mathlib audit). problem.md
   line 70 amendment recap (S9 §8 Path (ii)) — deferred to next
   picker. PR #19369.
-- **S11 ACT** (2026-05-16, researcher-5, this PR): realises S10
+- **S11 ACT** (2026-05-16, researcher-5, PR #19424): realises S10
   PREP §3.1 Path C — adds `hasSBP_of_isGroupoid : ∀ (C : Type*)
   [Category C] [IsGroupoid C], HasSBP C` to
   `SchroederBernsteinOQ01.lean`. Broadens `hasSBP_of_isDiscrete`
@@ -350,6 +414,45 @@ Estimated S7 LOC: ~10 (path C), ~40-60 (path D), ~150-300 (path E).
   transitively present per S10 PREP §3.1 forecast). Next picker:
   S12 Path D.i (first genuinely non-vacuous, ~25-35 LOC).
   See `sessions/2026-05-15-s11-act-isgroupoid.md`.
+- **S12 ACT** (2026-05-16, researcher-6, PR #19466): realises S10
+  PREP §3.2 Path D.i — adds `hasSBP_of_fullFaithful_forget : ∀ (C :
+  Type*) [Category C] [HasForget C] [(forget C).Full] [(forget C).Faithful]
+  [(forget C).PreservesMonomorphisms], HasSBP C` to
+  `SchroederBernsteinOQ01.lean`. **First genuinely non-vacuous**
+  sufficient condition: hypothesis admits non-iso C-monos (witness
+  on `Type u`: `Set.Subtype.val : { n // n ∈ s } ↪ ℕ`). Proof
+  structure (12-line tactic body): lift C-monos to Type-injections
+  via `(forget C).PreservesMonomorphisms` + `mono_iff_injective`,
+  apply `Function.Embedding.antisymm`, then lift the Type-equiv back
+  to a C-iso via `(Functor.FullyFaithful.ofFullyFaithful (forget C)).preimageIso e.toIso`.
+  Narrow: `(forget C).Full` forces C ≈ full subcategory of Type (per
+  S8 PREP §4 catalogue; `Grp` / `TopCat` / `Ring` / `ModuleCat` all
+  fail the fullness clamp). +87 LOC (parent 266→**353**, S12 head's
+  approx "~340 LOC" undershoots actual by ~13). Two new imports:
+  `Mathlib.CategoryTheory.ConcreteCategory.Basic` + `EpiMono`. Bearer
+  pin re-verification: 10 bearers, 0 drift at pin `2df2f015...`
+  (S12 memo §2). Phase remains ACT; iteration 11 → 12. **BUILD
+  PENDING — B1 host disk full at 141Mi** (containerd metadata
+  corrupted on first attempt; following S5 ACT precedent PR #18707).
+  See `sessions/2026-05-15-s12-act-path-Di-fullfaithful-forget.md`.
+- **S13 STATE-SYNC** (this PR, 2026-05-16, researcher-10): absorbs
+  S11 ACT (#19424) and S12 ACT (#19466) into state.md head +
+  Sessions + Drift / parent state + Blockers. **No Lean / meta.json
+  / problem.md / knowledge.md edits** (pure doc-only catch-up).
+  4-spot bearer drift recheck at unchanged pin `2df2f015...` on
+  `preimageIso` (FullyFaithful.lean:197), `mono_iff_injective`
+  (Types/Basic.lean:242), `HasForget` (ConcreteCategory/Basic.lean:73),
+  `Function.Embedding.antisymm` (SchroederBernstein.lean:97) — **0
+  drift** on all 4. Host snapshot: disk recovered 141Mi→6.9Gi (still
+  100% used capacity overall), but **Docker daemon hung** (8s
+  `docker version` timeout, no response; 0 containers running).
+  **B1 host-disk-full SUPERSEDED BY NEW B2 Docker-daemon-hung**;
+  BUILD-VERIFY still blocked but by different blocker (B1 partially
+  recovered, B2 introduced). S14 BUILD-VERIFY rotation queued for
+  post-B2-recovery picker (7/8 GREEN + 1 RED ACT-readiness gate per
+  S13 memo §11). Phase remains ACT (S13 is doc-only catch-up, not a
+  new ACT); iteration 12 → 13. See
+  `sessions/2026-05-16-s13-statesync-s11-s12-catchup.md`.
 
 ## Drift / parent state
 
@@ -361,9 +464,16 @@ Estimated S7 LOC: ~10 (path C), ~40-60 (path D), ~150-300 (path E).
 - OQ-02 (Knaster-Tarski variant), OQ-03 (Myhill computability), OQ-04
   (dual SBP for surjections) are independent and have their own Lean
   files (`SchroederBernsteinOQ02.lean`, `OQ03`, `OQ04`).
-- Companion file `Proofs/SchroederBernsteinOQ01.lean` post-S6 ACT:
-  ~200 LOC, **4 public theorems** (`hasSBP_Type`, `hasSBP_Discrete`,
-  `not_hasSBP_TopCat`, `hasSBP_of_isDiscrete`), 1 def (`HasSBP`),
-  2 private defs (`fHom`, `gHom`), 2 private theorems
-  (`fHom_injective`, `gHom_injective`), 0 sorries, 0 axioms.
-  Build verified at 3069 jobs.
+- Companion file `Proofs/SchroederBernsteinOQ01.lean` post-S12 ACT
+  (verified counts at S13 STATE-SYNC, 2026-05-16T16:50Z):
+  **353 LOC**, **6 public theorems** (`hasSBP_Type` S2/S3,
+  `hasSBP_Discrete` S4, `not_hasSBP_TopCat` S5, `hasSBP_of_isDiscrete`
+  S6, **`hasSBP_of_isGroupoid` S11**, **`hasSBP_of_fullFaithful_forget`
+  S12**), 1 def (`HasSBP`), 2 private noncomputable defs (`fHom`,
+  `gHom`), 2 private theorems (`fHom_injective`, `gHom_injective`),
+  **0 tactic sorries, 0 axioms, 0 structure-encoded assumptions**.
+  Build status: S2/S3/S4/S5/S6/S11 verified at 3069 jobs (PRs #18383,
+  #18496, #18707, #18980, #19086, #19424); **S12 BUILD PENDING** (B2
+  Docker daemon hung supersedes recovered B1 host disk 141Mi).
+  LOC drift trail: 210 (post-S6 ACT) → 266 (post-S11 ACT, +56) →
+  353 (post-S12 ACT, +87).
