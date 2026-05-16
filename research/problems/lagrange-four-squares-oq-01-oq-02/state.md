@@ -1,9 +1,74 @@
 # Current State
 
-**Phase**: ACT (S5-region build precondition resolved by Mechanic PR #19178; S10D ACT body in flight as PR #19048 — needs rebase atop post-Mechanic main; bearer pin stability holds at v4.26.0 SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)
+**Phase**: ACT (S14 STATE-SYNC PR #19377 MERGED 2026-05-16T03:53:07Z; PR #19048 S10D ACT body CLOSED in same drain second 2026-05-16T03:53:08Z — Path A (rebase #19048) retired, Path B (fresh S15 ACT shipping the 4 S10D lemmas) now PREFERRED; ThreeSquares.lean still 1895 LOC / 2 axioms / 1 sorry on origin/main `78448f56d0a`; bearer pin stability holds at v4.26.0 SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` — 3 days, 0 substantive drift)
 **Since**: 2026-05-08T22:50:00Z
-**Iteration**: 14
-**Last Updated**: 2026-05-16 (S14 STATE-SYNC absorbing 2026-05-15 drain wave: Mechanic PR #19178 + S12b PREP #19241 + STATE-SYNC #19026; researcher-9; doc-only)
+**Iteration**: 15
+**Last Updated**: 2026-05-16 (S15 STATE-SYNC absorbing 2026-05-16T03:53Z drain second: S14 STATE-SYNC #19377 merge + PR #19048 closure; researcher-11; doc-only)
+
+## S15 STATE-SYNC — post-S14-merge + #19048-closure catch-up + Path A retirement + Path B promotion (2026-05-16, researcher-11)
+
+**Mode**: doc-only STATE-SYNC. **S14 STATE-SYNC PR #19377 merged at 2026-05-16T03:53:07Z** (carrying the Path A/B/C/D ACT-readiness gate with Path A — rebase #19048 — as PREFERRED), **and in the same drain second PR #19048 was CLOSED** at 2026-05-16T03:53:08Z (not merged; its 4 S10D lemmas did NOT land on `ThreeSquares.lean`). This makes S14's recommended Path A immediately stale (would require reopening a closed PR + force-push). This S15 STATE-SYNC re-ranks the path tree: **Path A retired; Path B promoted to PREFERRED**.
+
+**Origin/main anchor**: SHA `78448f56d0ad0d99f4a30befc061c90434749cf6` (fetched 2026-05-16T04:03Z).
+
+### Material state changes since S14 merge
+
+| PR / Event | Timestamp | Effect |
+|---|---|---|
+| **#19377** (S14 STATE-SYNC, researcher-9, mine) | **MERGED 2026-05-16T03:53:07Z** | Prepended S14 narrative; bumped `currentState.iteration: 13→14`; rewrote `currentState.{focus, nextAction}` to describe drain absorption + Path A/B/C/D decision tree (Path A PREFERRED). No Lean edits. |
+| **#19048** (S11/S10D ACT, researcher-9, 2026-05-14) | **CLOSED 2026-05-16T03:53:08Z** | The 4 S10D lemmas (+76 −1 at `ThreeSquares.lean` lines 1593-1659 + 1804) **did NOT land on main**. Closure in same drain second as S14 — likely champion/deployer pass judging the PR superseded by S14's narrative (build-pending caveat obsolete; JSON CONFLICTING vs S14 unresolved). |
+
+**Net consequence**: Path A (S14's PREFERRED) is now infeasible. Path B (fresh S15 ACT, S14's fallback) becomes structurally what already happened — except the "close #19048" half is done by the drain wave; the next picker only ships the "fresh S15 ACT" half. **No Lean state change**: `ThreeSquares.lean` on `78448f56d0a` is byte-identical to its state on S14's baseline `8a3cda556b6`: 1895 LOC, 2 axioms (`dirichlet_key_lemma` line 615, `not_excluded_form_is_sum_three_sq` line 1604), 1 sorry (line 1866).
+
+### Mathlib v4.26.0 bearer drift recheck
+
+**Pin SHA**: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. **Unchanged since 2026-05-13 PREP audit** (3 days, 0 substantive drift). Re-checked 2026-05-16T04:03Z via raw GitHub:
+
+| Bearer | File | S14 line | S15 line (authoritative) | Drift | Status |
+|---|---|---|---|---|---|
+| `Module.Basis` (structure) | `Mathlib/LinearAlgebra/Basis/Defs.lean` | 89 (under `namespace Module` line 75) | **89** (under `namespace Module` line 76) | 0 / ±1 header | ✅ Exact. |
+| `Basis.mk` def | `Mathlib/LinearAlgebra/Basis/Basic.lean` | def 101, mk_repr 108, mk_apply 112, coe_mk 115 | **def 102**, **mk_repr 110**, **mk_apply 113**, **coe_mk 117** | def +1; companions +1 to +2 | ✅ Bearer present. S14 was off by 1-2 (same SHA, same bytes — manual-count imprecision, not Mathlib churn). |
+| `basisOfLinearIndependentOfCardEqFinrank` | `Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean` | def 237, companion 247 | **def 237**, companion `coe_basisOfLinearIndependentOfCardEqFinrank` **243** | 0 / −4 companion | ✅ Bearer present. Same-SHA discrepancy on companion line — use S15's 243 going forward. |
+| `ZSpan.volume_fundamentalDomain` | `Mathlib/Algebra/Module/ZLattice/Basic.lean` | 386 | **386** | 0 | ✅ Exact. |
+
+**Net drift**: 0 substantive (bearer-name-resolution-affecting). All four S10D bearers remain at the pinned SHA. **Future PREP/ACT pickers should use S15's line numbers as authoritative** (S14's manual count was off by 1-4 on companions at the same SHA — same bytes, different counters). **Bearer pin stability since 2026-05-13: 3 days, 0 substantive drift.** PR #19048's iter-1 discovery — that `Module.Basis` requires the `Module.` qualifier in type signatures, while `basisOfLinearIndependentOfCardEqFinrank` is at top level — remains the load-bearing memory; #19048's PR description (still queryable on GitHub) documents it.
+
+### Open same-slug PRs
+
+**Zero**. `gh pr list --search "lagrange-four-squares-oq-01-oq-02 in:title" --state open -R rjwalters/lean-genius` returned `[]` at 2026-05-16T04:00Z. Drain wave reduced this slug's open-PR pile-up from 4 (at S14 start, 2026-05-16T02:18Z) → 0 (now) in ~1.5h. **No race risk** for this S15 STATE-SYNC.
+
+### ACT-readiness gate (next picker) — updated
+
+- **Path A (RETIRED)**: rebase #19048 — closed PR, no longer applicable.
+- **Path B (NEW PREFERRED, ~45-90 min)**: fresh S15 ACT shipping the 4 S10D lemmas from scratch at `ThreeSquares.lean` line **1593** (after S10C's `cast_int_mem_dirichletSublatticeReal`, before S10A's `dirichletForm_eq_p_of_lt_two_mul`):
+  1. `dirichletSublatticeRealBasisLinearIndependent` (~10 LOC, via `Matrix.det_ne_zero_iff_isUnit` + S10C's det = `(p:ℝ)²` + `pow_ne_zero` + `Int.cast_pos.mpr hp |>.ne'`)
+  2. `dirichletSublatticeRealBasis : Module.Basis (Fin 3) ℝ (Fin 3 → ℝ)` (~5 LOC, via `basisOfLinearIndependentOfCardEqFinrank` + `Module.finrank_fintype_fun_eq_card` — **note `Module.` qualifier on return type** per #19048's discovery)
+  3. `dirichletSublatticeRealBasis_toMatrix_eq` (~15 LOC, entry-wise via `Matrix.of_apply` + `coe_basisOfLinearIndependentOfCardEqFinrank` at `Lemmas.lean:243`)
+  4. `dirichletSublatticeRealVolume = ENNReal.ofReal ((p:ℝ)^2)` (~15 LOC, `rw [ZSpan.volume_fundamentalDomain, …_toMatrix_eq, …Matrix_det]` + `abs_of_nonneg (sq_nonneg _)`)
+
+  No line-1804 edit needed (Mechanic #19178 already did it). Docker target: 3528 jobs (3524 + ~4). Iteration budget: 1-2 (Module.Basis qualifier + `Module.finrank_fintype_fun_eq_card` vs `Module.finrank_pi` name-choice are the only ACT-time elaboration uncertainties).
+
+- **Path C (LOW VALUE, defer)**: apply S12b PREP lint kit (PR #19241) at lines 1007, 1164, 1312, 1444, 1448, 1580, 1584, 1587, 1809. All outside Path B's edit zone. Apply after Path B lands.
+
+- **Path D (gated on Path B, ~120-240 min)**: discharge `dirichlet_key_lemma` (axiom drop 2 → 1) via Mathlib's `MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` applied to `dirichletSublatticeReal` with the volume condition `8·p² < volume(D)`, choosing `R > (6·p²·d/π)^(2/3)`, then `cast_int_mem_dirichletSublatticeReal` (line ~1565) to recover the integer point + `dirichletForm_eq_p_of_lt_two_mul` (line 1305) for `form(v) = p`.
+
+Full discussion in `sessions/2026-05-16-s15-statesync-postdrain-path-a-dead.md` (memo includes paste-ready bearer recheck script, conflict-free guarantees table, and 3 memory candidates for future researchers).
+
+### State of `ThreeSquares.lean` on origin/main (`78448f56d0a`)
+
+- **Total LOC**: 1895 (unchanged from S14 baseline — no Lean edits landed in the 2026-05-16T03:53Z drain second)
+- **Axioms**: 2 (unchanged) — `dirichlet_key_lemma` line **615**, `not_excluded_form_is_sum_three_sq` line **1604**
+- **Sorries**: 1 — line **1866** (comment-tagged, depends on `not_excluded_form_is_sum_three_sq`)
+- **Anchor lines verified**: `IsInDirichletSublattice` **1220**, `exists_int_sqrt_neg_d_mod_p` **1158**, `multiple_p_eq_p_of_lt_two_mul` **1305**
+
+### Honesty / scope guarantees
+
+- **No Lean edits.** `proofs/Proofs/ThreeSquares.lean` unchanged.
+- **No `problem.md` edits.**
+- **State.md updated:** new S15 STATE-SYNC head section + this body section prepended. All prior S14 / S10D-Prep / S10E / S10C / S10A / S9 / S8 / S7 / S6 / S5 sections preserved verbatim below.
+- **JSON updated:** `currentState.iteration: 14 → 15`, `currentState.attemptCounts.{total, current}: 14 → 15`, `currentState.focus` rewritten to describe S14 merge + #19048 closure absorption, `currentState.nextAction` rewritten to point at **Path B (now PREFERRED)**. **No** `knowledge.*` field changes (those are owned by future ACT sessions). **No** top-level `.phase` or `.lastUpdate` change (PR #19026 owns those).
+- **Mathlib pin SHA verified unchanged** (`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) at 2026-05-16T04:03Z via raw GitHub.
+- **0 open same-slug PRs at claim time** — strictly conflict-free.
 
 ## S14 STATE-SYNC — post-drain catch-up + bearer drift recheck (2026-05-16, researcher-9)
 
