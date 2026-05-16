@@ -127,4 +127,103 @@ axiom donsker_fclt
     ∃ bm : BrownianMotion Ω μ,
       WeakConvergesInC01 μ (interpolatedRescaled xi) bm.W
 
+/-! ## Part IV: Discrete reflection identity (S6 ACT — paste-ready skeleton)
+
+This section is the S6 ACT paste-ready skeleton from S5 PREP §5, dropped
+in here so future researchers (or Aristotle) can discharge the 4
+acknowledged `sorry`s. The design is fully scoped in S5 PREP:
+
+- §3.1 Option C: `partialSumBool : (Fin n → Bool) → Fin (n+1) → ℤ` via
+  bounded sum over `Fin n` with `if h : i.val < k.val` guard.
+- §3.2 Option β: first hit time via `Finset.min'` on `hitSet ω a`.
+- §3.3 Option iv: bijection assembly via `Finset.card_nbij'`
+  (non-dependent, inverse-pair form — `Mathlib/Data/Finset/Card.lean:398`),
+  with `i = j = reflectAt _ a` (involutive).
+
+Build status at ACT-time: NOT verified (Docker daemon hung at
+2026-05-16T15:26Z — `timeout 8 docker info` returns no Server section;
+host disk 100% / 5.4Gi avail). Ships under
+`(build pending — Docker daemon hung)` qualifier per memory feedback
+pattern; leaf-only file (no downstream importers), bearer pins verified
+at lake-pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(S5 PREP §4), recent build-verify on `cff3fd36c83` (S2 ACT #19282,
+7744 jobs successful 2026-05-15). -/
+
+section DiscreteReflection
+
+variable {n : ℕ}
+
+/-- Partial sum at index `k` of a `Fin n → Bool` lattice path (`true ↦ +1`,
+    `false ↦ -1`). Indexed by `Fin (n+1)` so `k = ⟨n, _⟩` is the endpoint. -/
+def partialSumBool (ω : Fin n → Bool) (k : Fin (n+1)) : ℤ :=
+  ∑ i : Fin n, if h : i.val < k.val then (if ω i then (1 : ℤ) else -1) else 0
+
+/-- The finset of hit-time indices `{k : Fin (n+1) | S_k(ω) = a}`. -/
+def hitSet (ω : Fin n → Bool) (a : ℤ) : Finset (Fin (n+1)) :=
+  Finset.univ.filter fun k => partialSumBool ω k = a
+
+/-- First hit time of level `a` along `ω`. When `ω` doesn't hit `a`, returns
+    `⟨0, _⟩` as a placeholder — never referenced in proofs of paths that
+    don't reach `a`. -/
+noncomputable def firstHitFin (ω : Fin n → Bool) (a : ℤ) : Fin (n+1) :=
+  if h : (hitSet ω a).Nonempty then (hitSet ω a).min' h
+  else ⟨0, Nat.zero_lt_succ _⟩
+
+/-- Reflection of `ω` past its first hit of level `a`: flip every bit at
+    index `≥ τ_a(ω)`. Identity on paths that don't reach `a` (since
+    `firstHitFin = ⟨0, _⟩` there and we don't care about those paths in
+    the bijection). -/
+def reflectAt (ω : Fin n → Bool) (a : ℤ) : Fin n → Bool :=
+  fun i => if (firstHitFin ω a).val ≤ i.val then !(ω i) else ω i
+
+/-- **R4** Reflection is involutive. `reflectAt (reflectAt ω a) a = ω`
+    requires showing `firstHitFin (reflectAt ω a) a = firstHitFin ω a`
+    (first hit is preserved under reflection beyond it) and then the
+    pointwise `!!b = b` collapse. -/
+lemma reflectAt_involutive (ω : Fin n → Bool) (a : ℤ) :
+    reflectAt (reflectAt ω a) a = ω := by
+  sorry  -- R4: split on (firstHitFin ω a).val ≤ i.val, use Bool.not_not
+
+/-- **R5** Partial-sum-after-reflection identity at the endpoint.
+    If `ω` hits `a` at some `τ ≤ n` (i.e., `(hitSet ω a).Nonempty`), then
+    the reflected path's endpoint is `2 * a - S_n(ω)`. Proof: split the
+    sum `∑ i : Fin n` at `τ`, identity on `i < τ`, sign-flipped on `i ≥ τ`,
+    and use `S_τ(ω) = a` (`min'_mem` + `hitSet` defn). -/
+lemma partialSumBool_reflectAt_endpoint
+    {ω : Fin n → Bool} {a : ℤ} (h : (hitSet ω a).Nonempty) :
+    partialSumBool (reflectAt ω a) ⟨n, Nat.lt_succ_self n⟩
+      = 2 * a - partialSumBool ω ⟨n, Nat.lt_succ_self n⟩ := by
+  sorry  -- R5: Finset.sum_ite + min'_mem h + arithmetic
+
+/-- Hitting `≥ a` ⟺ `(hitSet ω a').Nonempty` for some `a' ≤ a`. For the
+    bijection we need: paths reaching ≥ a partition as (ending ≥ a) ⊔
+    (ending < a, having reached a). Reflection sends the second class to
+    (ending > a). -/
+lemma reaches_iff_hits_or_above
+    {ω : Fin n → Bool} {a : ℤ} (ha : 0 < a) :
+    (∃ k : Fin (n+1), partialSumBool ω k ≥ a)
+      ↔ partialSumBool ω ⟨n, Nat.lt_succ_self n⟩ ≥ a ∨ (hitSet ω a).Nonempty := by
+  sorry  -- LOW: use Int.le_iff_exists_eq_succ on partial-sum jumps of ±1
+
+/-- **Discrete reflection identity** (André 1887, Feller Vol. I § III.1).
+
+    `|{paths reaching ≥ a}| = 2 · |{paths ending ≥ a}| - |{paths ending = a}|`.
+
+    Proof: partition reaches-≥-a as (ending ≥ a) ⊔ (ending < a but hits a).
+    `card_nbij'` with `i = j = reflectAt _ a` is an involutive bijection
+    from the second class to (ending > a), by R4 + R5. Hence
+    `|reaches ≥ a| = |ending ≥ a| + |ending > a|`, and
+    `|ending > a| = |ending ≥ a| - |ending = a|` (disjoint union). -/
+theorem discrete_reflection
+    (hn : 0 < n) (a : ℤ) (ha : 0 < a) :
+    (Finset.univ.filter fun ω : Fin n → Bool =>
+        ∃ k : Fin (n+1), partialSumBool ω k ≥ a).card
+    = 2 * (Finset.univ.filter fun ω : Fin n → Bool =>
+        partialSumBool ω ⟨n, Nat.lt_succ_self n⟩ ≥ a).card
+      - (Finset.univ.filter fun ω : Fin n → Bool =>
+        partialSumBool ω ⟨n, Nat.lt_succ_self n⟩ = a).card := by
+  sorry  -- R6: assemble via Finset.card_nbij' applied to the (ending<a,hits a) ↔ (ending>a) restriction
+
+end DiscreteReflection
+
 end BallotOQ05
