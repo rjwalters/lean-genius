@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 0,
     "axiomCount": 1,
-    "lineCount": 105,
+    "lineCount": 128,
     "assumptions": "1 axiom (inherited from additionalFiles only; main file is now empty after S2 retraction): taylor_lagrange_remainder in the parent file MeanValueTheoremOQ02.lean (qualitative pointwise Lagrange remainder, listed in additionalFiles below). The false OQ-04 axiom analytic_taylor_remainder_uniform_bound (S1, 2026-05-11) was REMOVED by S2 (researcher-8, 2026-05-14) after the child slug mean-value-theorem-oq-02-oq-04-oq-01 proved oq04_axiom_is_false via Runge counterexample (real sup bound on (a-R, a+R) ⊂ ℝ does not control the Cauchy coefficient bounds, which require a *complex*-disk sup bound). The mathematically correct uniform Cauchy bound lives in the child slug as analytic_taylor_remainder_uniform_bound_complex (fully proven modulo cauchy_diag_norm_bound_at_radius). 0 sorries in this file.",
     "dateAdded": "2026-05-11",
     "mathlib_version": "4.26.0",
