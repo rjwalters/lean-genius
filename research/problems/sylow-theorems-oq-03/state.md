@@ -1,9 +1,102 @@
 # Current State
 
-**Phase**: PREP (S2 PREP chain complete — 6 PREPs merged; S2 ACT for Candidate A* nominated)
+**Phase**: ACT-MERGED (S2 ACT shipped + build-verified 3062 Docker jobs; OQ-02 axiom drop is a deferred follow-on per S3 STATE-SYNC § 5a)
 **Since**: 2026-05-12T20:55:00Z
-**Last update**: 2026-05-14 (STATE-SYNC by researcher-4; catch up 6 merged S2 PREPs)
-**Iteration**: 8 (S1, S1b, S2 PREP, S2 PREP-2, S2 PREP-3, S2 PREP-4, S2 PREP-5, S2 PREP-6)
+**Last update**: 2026-05-16 (S3 STATE-SYNC by researcher-12; catch up post-S2-ACT + post-PREP-7 + post-#18994 STATE-SYNC content drift)
+**Iteration**: 12 (8 PREP + S2 PREP-7 #19297 + S2 ACT #19260 + STATE-SYNC #18994 + this S3 STATE-SYNC)
+
+## S3 STATE-SYNC 2026-05-16 (researcher-12)
+
+**Mode:** STATE-SYNC (doc-only, 3 files: this `state.md` header + body
+addition, JSON `currentState` + `knowledge.{builtItems,nextSteps}`
+update, new session note `2026-05-16-s3-state-sync-post-act.md`).
+Triggered because the prior STATE-SYNC (PR #18994 by researcher-4)
+merged 2026-05-15T23:29:25Z but its body was authored *before* the
+build-verified S2 ACT (PR #19260, merged 2026-05-15T18:02:55Z).
+Result: on-disk `state.md` and JSON show `Phase: PREP` and
+`nextAction = "S2 ACT — Candidate A*"` even though
+`proofs/Proofs/SylowTheoremOQ03.lean` (162 LOC, 0 sorries / 0 axioms)
+landed in `origin/main` ~6 h prior to this S3.
+
+### Cascade ledger (S2 PREP-6 close → S3 open)
+
+| # | PR | Phase | Merged (UTC) | Δ |
+|---|----|-------|--------------|----|
+| 9 | #19260 | **S2 ACT — Candidate A\*** | 2026-05-15T18:02:55Z | +162 / −12 Lean (3062 jobs ✓); +1 session note |
+| 10 | #19297 | S2 PREP-7 (meta-audit) | 2026-05-15T18:00:51Z | +1 session note (8 bearers pin-verified at `2df2f015`) |
+| 11 | #18994 | STATE-SYNC (S2 PREP-6 catch-up) | 2026-05-15T23:29:25Z | state.md + JSON + 1 session note (content predates ACT) |
+| 12 | this PR | S3 STATE-SYNC (post-ACT catch-up) | (pending) | state.md + JSON + 1 session note |
+
+### Mathlib pin recheck (no drift)
+
+`proofs/lake-manifest.json` mathlib `rev` =
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) — **same SHA** at
+which PREP-7 verified all 8 bearers used in `SylowTheoremOQ03.lean`.
+PREP-7's bearer table (B1–B8) remains authoritative; see this PR's
+session note § 3 for the bearer table reproduced for convenience.
+
+### Axiom Integrity recheck (per CLAUDE.md policy)
+
+`proofs/Proofs/SylowTheoremOQ03.lean`:
+
+```text
+$ grep -cE "^axiom " proofs/Proofs/SylowTheoremOQ03.lean
+0
+$ grep -E "^structure |^class " proofs/Proofs/SylowTheoremOQ03.lean
+(no matches)
+```
+
+**OQ-03 contributes 0 axioms / 0 structure-encoded hypotheses /
+0 sorries** to the gallery. Inherits OQ-02's 5 axioms (`existence`,
+`conjugacy`, `frattini_profinite`, `projects_pgroup`, `inter_trivial`).
+
+OQ-02 axiom inventory at current `origin/main` (verified unchanged by
+S2 ACT — the merged ACT keeps OQ-02's `axiom
+sylowProP_projects_pgroup` at L134 as a backward-compat thin wrapper,
+see this PR's session note § 4 + the merged S2 ACT session note
+§ 2.2):
+
+```text
+108:axiom sylowProP_existence
+119:axiom sylowProP_conjugacy
+126:axiom frattini_profinite
+134:axiom sylowProP_projects_pgroup
+142:axiom sylowProP_inter_trivial
+```
+
+The advertised `5 → 4` net axiom impact remains a *deferred* outcome,
+not a *realized* one. To realize it: see § 5a of this PR's session
+note (mechanic-grade follow-on PR, ~5 LOC, 1 Docker iteration).
+
+### Drift recheck (PR #19260 base SHA → current `origin/main`)
+
+0 substantive drift on Lean (`SylowTheoremOQ03.lean`,
+`SylowTheoremOQ02.lean`, `Proofs.lean`) or `problem.md` /
+`knowledge.md` body since S2 ACT merge. `state.md` + JSON were the
+only files needing refresh.
+
+### Net axiom impact (revised, post-S2 ACT)
+
+OQ-02 axiom count: **5 → 5 (unchanged)**. The continuity-enhanced
+*theorem* `ProfiniteSylow.sylowProP_projects_pgroup_continuous` lives
+in `proofs/Proofs/SylowTheoremOQ03.lean` *alongside* (not replacing)
+the OQ-02 axiom. Realizing the `5 → 4` drop is a clean follow-on PR
+(see this PR's session note § 5a).
+
+### Revised Current Focus / Next Action / Subsequent candidates
+
+(See § 5 of this PR's session note for the full decision tree;
+summary header lines below are reflected in the JSON
+`currentState.{focus,nextAction}` updates.)
+
+- **5a. Realize the deferred OQ-02 axiom drop (5 → 4)** — TOP
+  priority, mechanic-grade ~5 LOC, 1 Docker iteration.
+- **5b. Candidate B ACT (`sylowProP_inter_trivial`)** — secondary,
+  ~25 LOC, medium-risk per PREP-2/4/5.
+- **5c. Mathlib upstream contribution** — out-of-band (Mathlib4 PR,
+  not lean-genius).
+- **5d. `frattini_profinite` axiom restatement** — curator/architect
+  scope per PREP-3 audit; researcher: no action.
 
 ## STATE-SYNC 2026-05-14 (researcher-4)
 
