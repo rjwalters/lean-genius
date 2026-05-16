@@ -28,18 +28,17 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-14T22:55:00Z",
-    "iteration": 10,
-    "focus": "S4 statement-correction landed: qdetN_step_eq_qdetF's RHS now carries the (-1)^(i+j) cofactor sign factor (corrected per S4c PREP §2 four-pivot quadrant check + S4e PREP §6 locked recommendation; the prior unsigned-RHS statement was mathematically false for off-diagonal pivots). Strategic by-sorry unchanged; full ~55-LOC S4 ACT proof remains the next deliverable per S4e PREP §2/§3. Build-verified by mechanic PR #19072 overlay: ⚠ [3060/3060] Built clean.",
+    "since": "2026-05-16T03:10:00Z",
+    "iteration": 11,
+    "focus": "S11 STATE-SYNC (researcher-11, 2026-05-16): post-drain catch-up absorbing the 4-PR drain wave between 2026-05-15 18:04 UTC and 2026-05-15 23:39 UTC — PR #19235 (S4f PREP, paste-ready ~58-LOC §2.9 S4 ACT skeleton + bearer recheck), PR #19142 (S4 statement-fix, signed (-1)^(i+j) RHS now on disk), PR #19072 (mechanic v4.26.0 parent-file repair, 27→0 errors), PR #19036 (S4 precheck doc). The slug-file SOTC on origin/main (SHA 8a3cda556b6...) is 293 lines, sorryCount 5, axiomCount 0; strategic sorry on qdetN_step_eq_qdetF (line 287) carries the corrected signed RHS. Bearer drift recheck (S4f PREP §3 → live 2026-05-16) at lake-pinned Mathlib SHA 2df2f015...: 0 substantive drift (1 cosmetic 1-line shift on Matrix.det_eq_sum_mul_adjugate_row 401→400, does not affect callability). S4 ACT is now unconditionally unblocked.",
     "blockers": [
       "Mathlib has no Matrix.quasideterminant; all infrastructure original.",
-      "Parent files CramersRuleOQ01OQ02.lean / CramersRuleOQ01OQ02OQ01.lean blocked by Mathlib v4.26.0 regression on origin/main (27 errors); mechanic PR #19072 (open) has the repair.",
-      "S4 ACT proper: discharge qdetN_step_eq_qdetF (now with corrected signed-RHS) via Matrix.det_eq_sum_mul_adjugate_row + Matrix.adjugate_fin_succ_eq_det_submatrix per S4e PREP §2; estimated ~55 LOC.",
+      "S4 ACT proper: discharge qdetN_step_eq_qdetF (signed RHS) via S4f PREP §2.9 paste-ready ~58-LOC skeleton (Matrix.det_eq_sum_mul_adjugate_row + Matrix.adjugate_fin_succ_eq_det_submatrix + Fin.sum_univ_succAbove). The internal submatrix_chain sub-sorry (~15 LOC, 'the hard piece' per S4f PREP §2.7) is the chained Laplace step the implementer eliminates inline as part of the same ACT.",
       "S5: build the mutual recursion qdetN ↔ qdetN_inv (or alternative typeclass parameterisation via Invertible (minorIJ _ _) that avoids mutual recursion at the cost of a side-condition hypothesis)."
     ],
-    "nextAction": "S4 ACT (full proof): once mechanic PR #19072 merges AND this S4 statement-fix PR merges, implement the ~55-LOC proof of qdetN_step_eq_qdetF per S4e PREP §2/§3. Use Matrix.det_eq_sum_mul_adjugate_row + split row sum at k=j + unfold adjugate via adjugate_fin_succ_eq_det_submatrix + reindex k≠j sum via Fin.sum_univ_succAbove. Target ~55 LOC, -1 sorry.",
+    "nextAction": "S4 ACT (full proof, unconditional): paste the S4f PREP §2.9 ~58-LOC skeleton, drop the §4 ~12-LOC n=1 sanity-check `example` block above the strategic theorem, discharge the internal submatrix_chain sub-sorry inline, Docker-verify ./proofs/scripts/docker-build.sh Proofs.CramersRuleOQ01OQ02OQ01OQ01. Estimated 4–6 Docker iterations to converge on the chained Laplace + sign-tracking + field_simp denom-handling. Slug-file diff target: -1 sorry (5 → 4), 0 axiom change, +~58 LOC. See S11 STATE-SYNC §4 readiness gate (5 GREEN + 1 AMBER on deployer org-cap, exogenous).",
     "attemptCounts": {
-      "total": 8,
+      "total": 9,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -70,9 +69,7 @@
       "No general n×n Cramer's rule over a division ring."
     ],
     "nextSteps": [
-      "Wait for mechanic PR #19072 to merge (unblocks parent-file regression on origin/main per PR #19036 inventory).",
-      "Wait for this S4 statement-fix PR to merge (lands the corrected (-1)^(i+j)-RHS form of qdetN_step_eq_qdetF in the slug file).",
-      "S4 ACT (full proof): once both above merge, implement the ~55-LOC proof of qdetN_step_eq_qdetF per S4e PREP §2/§3. Use Matrix.det_eq_sum_mul_adjugate_row + Matrix.adjugate_fin_succ_eq_det_submatrix + Fin.sum_univ_succAbove + sign collection via the four-pivot quadrant algebra of S4c PREP §4. Target ~55 LOC, -1 sorry.",
+      "S4 ACT (full proof, unconditional — preconditions PR #19072 + PR #19142 both MERGED 2026-05-15): paste the S4f PREP §2.9 paste-ready ~58-LOC skeleton from sessions/2026-05-15-s4f-prep-mechanic-pr-19072-surface-drift-sweep.md, drop the §4 ~12-LOC n=1 sanity-check `example` above the strategic theorem, discharge the internal submatrix_chain sub-sorry inline (~15 LOC, the chained-Laplace 'hard piece' per S4f PREP §2.7), Docker-verify. Bearers stable at lake-pinned Mathlib SHA 2df2f015... (0 substantive drift per S11 STATE-SYNC §2). Target ~58 LOC, -1 sorry (5 → 4), 0 axiom change. Estimated 4–6 Docker iterations.",
       "S5 [NC-DEFINE] Build qdetN via well-founded recursion on Σ n, Matrix (Fin n) (Fin n) D, OR via [Invertible (minorIJ _ _)] typeclass parameter (avoiding mutual recursion).",
       "S6 [CRAMER] State and prove cramer_rule_nxn_qdet (n×n Cramer's rule over division rings)."
     ]
@@ -120,7 +117,7 @@
     ]
   },
   "started": "2026-05-12T08:02:11.449Z",
-  "lastUpdate": "2026-05-14T22:55:00Z",
+  "lastUpdate": "2026-05-16T03:10:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
