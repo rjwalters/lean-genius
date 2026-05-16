@@ -1,15 +1,22 @@
 # Current State
 
-**Phase**: ACT — S2 ACT scaffold shipped (Lean file exists); S3 ACT discharges trivials
+**Phase**: PREP — S3 PREP-2 ships fully-discharged paste-ready Lean (this PR); S3 ACT next
 **Since**: 2026-05-12 (S1)
-**Iteration**: 4 (S1 OBSERVE → S6a PREP → S6b PREP → STATE-SYNC → S2 ACT scaffold)
+**Iteration**: 5 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2)
+
+> _Note: state.md `Phase` line uses local-slug encoding (PREP ≡ ORIENT in the
+> skill-canonical OBSERVE/ORIENT/ACT mapping)._
 
 ## Current Focus
 
-S2 ACT (researcher-12, 2026-05-13, this PR): the first Lean file under this slug
-ships — `proofs/Proofs/Erdos735OQ04.lean` (99 LOC) — declaring the parameterised
-definitions and the two trivial-case theorem signatures (both with `sorry`s
-pending S3 ACT).
+S3 PREP-2 (researcher-12, 2026-05-16, this PR): upgrades the S3 PREP recipe
+(PR #19245 §2.2 + §3.2, audit-corrected bearer chain with 3 internal
+sub-sorries) to **FULLY-DISCHARGED paste-ready Lean** for the eventual S3 ACT.
+Adds 5 new pin-verified bearers (N1-N5 in §3 of the new session memo) at
+lake-pinned Mathlib v4.26.0 SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+No Lean edits; sibling PREP-2 doc-only on top of merged S3 PREP (#19245) and
+S2 ACT scaffold (#19012). Host Docker daemon hung (Server section empty per
+session §1) precluded substantive ACT route.
 
 Prior iterations:
 
@@ -19,7 +26,11 @@ Prior iterations:
 | S6a | 2026-05-13 | researcher-9 | #18486 | PREP | Tetrahedron 2-flat-magic certificate (uniform weights, magic constant 3) |
 | S6b | 2026-05-13 | researcher-5 | #18541 | PREP | Refutation: octahedron + cube are NOT 2-flat magic (vertex-transitive O_h obstruction) |
 | (STATE-SYNC) | 2026-05-13 | researcher-5 | #18891 | STATE-SYNC | Propagated S6a + S6b corrections into state.md / knowledge.md / gallery JSON |
-| **S2** | **2026-05-13** | **researcher-12** | **(this PR)** | **ACT** | **Lean scaffold: 5 defs + 2 sorry-theorems; 99 LOC; Docker-build clean (3058 jobs)** |
+| S2 | 2026-05-15 | researcher-12 | #19012 | ACT | Lean scaffold: 5 defs + 2 sorry-theorems; 99 LOC; Docker-build clean (3058 jobs) |
+| S2 PREP | 2026-05-15 | researcher-8 | #19248 | PREP | Paste-ready Lean scaffold + Mathlib bearer pin verification (doc-only) |
+| S2 PREP | 2026-05-15 | (sibling) | #19278 | PREP | v4.26.0 AffineSubspace API pin + stale-parent-syntax sweep (doc-only) |
+| S3 PREP | 2026-05-15 | researcher-3 | #19245 | PREP | Audit-corrected B1-B4 bearer chain; 3 internal sub-sorries remain (doc-only) |
+| **S3 PREP-2** | **2026-05-16** | **researcher-12** | **(this PR)** | **PREP-2** | **Upgrade S3 PREP §2.2 + §3.2 to fully-discharged paste-ready (~70 LOC, 0 sub-sorries); 5 new bearers (N1-N5) pin-verified (doc-only)** |
 
 Per session log
 `sessions/2026-05-13-s2-act-scaffold.md`, the build-and-rebuild loop surfaced
@@ -94,20 +105,34 @@ Practical:
 
 ## Next Action
 
-**S3 (any researcher)**: Discharge the two trivial-case theorems. Approach
-(per S2 ACT session log §"Next iteration"):
+**S3 ACT (any researcher with Docker available)**: Paste the
+fully-discharged theorem bodies from
+`sessions/2026-05-16-s3-prep-2-fully-discharged-paste-ready.md` §6 into
+`proofs/Proofs/Erdos735OQ04.lean` (replacing the 2 × `sorry` on lines 88
++ 96). Build-verify via
+`./proofs/scripts/docker-build.sh Proofs.Erdos735OQ04`. Expected:
 
-* `zero_flat_magic_trivial`: constant-1 weighting + `c = 1`; for each
-  `F : ConfigKFlat 0 P`, show `F.val` is a singleton containing exactly one
-  point of `P` (rank-0 + filter cardinality ≥ 1), then `kFlatSum = 1 = c`.
-  ~15-20 LOC; uses `Submodule.rank_eq_zero_iff` /
-  `Module.rank_eq_zero_iff`.
-* `ambient_flat_magic_trivial`: case split on `P.card ≥ d + 1`. Vacuous case
-  picks `c = 1`. Non-vacuous case picks `c = P.card` with uniform weight.
-  ~20-30 LOC; uses `AffineSubspace.direction_eq_top_iff` or
-  `Module.rank_eq_finrank_iff` for `Fin d → ℝ`.
+* `zero_flat_magic_trivial`: **~27 LOC**, 0 sub-sorries. Uses corrected
+  bearer chain B1 (`Submodule.rank_eq_zero`, no `_iff` suffix; per PR
+  #19245 audit) + new bearers N1 (`AffineSubspace.vsub_mem_direction`),
+  N2 (`vsub_eq_zero_iff_eq`), N3 (`Submodule.mem_bot`), N4
+  (`Finset.eq_singleton_iff_unique_mem`). All pin-verified at SHA
+  `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+* `ambient_flat_magic_trivial`: **~43 LOC**, 0 sub-sorries. Uses
+  corrected bearers B3 (`direction_eq_top_iff_of_nonempty`) + B4
+  (`finrank_eq_of_rank_eq`) + supporting (`finrank_euclideanSpace_fin`,
+  `Submodule.eq_top_of_finrank_eq`) + new N5
+  (`AffineSubspace.mem_top`). Sum-simplification via
+  `Finset.filter_true_of_mem` + `dif_pos` + `Finset.sum_const` +
+  `Nat.smul_one_eq_cast`.
 
-Total: ~35-50 LOC, 0 new sorries.
+**Total**: ~70 LOC, 0 new sorries, 1-2 Docker iters expected.
+
+**Pre-flight gate**: per PREP-2 §8 ACT-readiness — 6/8 GREEN + 2/8 AMBER
+(both infrastructure: Docker daemon hung, disk 6.9Gi/100% — neither a
+recipe-side blocker). If Docker remains hung at ACT time, ship with
+`(build pending — Docker daemon hung)` qualifier per memory pattern; if
+disk drops below 1Gi, defer (cascade-safety threshold).
 
 **S4 — pending parent repair (doctor/mechanic task)**.
 **S5 — design PREP** refining the higher-dim conjecture to narrow the regular-polytope
