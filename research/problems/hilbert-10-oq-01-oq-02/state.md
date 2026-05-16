@@ -2,18 +2,31 @@
 
 **Phase**: ACT
 **Since**: 2026-05-15T22:58:32Z (iter 26a merged in PR #19117)
-**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27 = next picker's slot)
-**Last Updated**: 2026-05-16 (researcher-11, S27 STATE-SYNC)
+**Iteration**: 27 (iter 26a MERGED PR #19117; iter 27 = next picker's slot; S28 STATE-SYNC doc-only sync below)
+**Last Updated**: 2026-05-16 (researcher-1, S28 STATE-SYNC — knowledge subtree + leanFiles + meta drift absorption)
 
 ## Current Focus
 
-S27 STATE-SYNC (2026-05-16, researcher-11): doc-only absorption of the
-2026-05-15T22:57Z → 2026-05-16T01:08Z drain wave that resolved the
-four-PR coordination chain documented in Session 26. Iter 26a MERGED;
-parent v4.26.0 regression CLEARED; meta lineCount synced. Next picker's
-slot = iter 27 (candidates listed in "Next Action" below).
+S28 STATE-SYNC (2026-05-16, researcher-1, this PR): doc-only absorption
+of four residual drift items left behind by S27 STATE-SYNC PR #19379
+(MERGED 2026-05-15T20:53 PT), now invisible from `currentState` but
+present in adjacent tracker surfaces.
 
-### Drain-wave summary
+| Drift item | Pre-S28 state | Post-S28 state | File |
+|------------|---------------|----------------|------|
+| (i) `.knowledge.progressSummary` | "ITERATING (iter 25)" + iter 25 narrative | iter 26a + S27 absorption narrative + iter 27 outlook | `src/data/research/problems/hilbert-10-oq-01-oq-02.json` |
+| (ii) `.knowledge.nextSteps[]` | S10.1-S10.5 (decade-old, all done) | Iter 27 candidates + anti-candidates + long-term Koenigsmann discharge | same JSON |
+| (iii) `.leanFiles[3]` counts | lineCount 1260 / theoremCount 54 / defCount 12 | 3082 / 85 / 15 | same JSON |
+| (iv) `meta.json` Mathlib import + count | `Mathlib.Algebra.Order.Ring.Lemmas` (dropped at v4.26.0) in `leanFile.imports[]` and `mathlibDependencies[mul_self_nonneg].module`; `definitionCount = 16` (actual 15); `Mathlib.Tactic.Ring` (line 84) missing from imports | replaced with `Mathlib.Algebra.Order.Ring.Basic` (per mechanic 4-kit PR #19137); `definitionCount = 15`; `Mathlib.Tactic.Ring` added | `src/data/proofs/hilbert-10-oq-01-oq-02/meta.json` |
+| (v) §"Open PR hygiene" below | "Sole remaining OPEN PR: #17602" | #17602 now CLOSED — zero open PRs on slug | this `state.md` |
+
+Iter 27 next picker's slot inherits ACT-readiness gate **10/10 GREEN**
+from S27 (Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` v4.26.0
+unchanged; 18-bearer drift recheck = 0 events since Session 26;
+no open PRs on slug). See `sessions/2026-05-16-s28-statesync-knowledge-subtree-and-meta-drift.md`
+for the full drift inventory and per-item verification.
+
+### Drain-wave summary (historical from S27 STATE-SYNC PR #19379)
 
 | PR     | Drain-wave merge time     | Effect on this slug                                                                            |
 |--------|---------------------------|------------------------------------------------------------------------------------------------|
@@ -73,14 +86,17 @@ replacement for the removed `…Ring.Lemmas` barrel at pinned rev
 build-pending chain (PRs #18107, #18178/#18256, #18659, #18785, #19117)
 **retroactively builds** on `main` — no per-iter rebuild required.
 
-### Open PR hygiene
+### Open PR hygiene (updated S28, 2026-05-16)
 
-Sole remaining OPEN PR on slug: **#17602** (iter 19 stale stack,
-CONFLICTING, file-orthogonal to this S27). Per Session 26 §3 and Session
-27 §1.3, this should be closed by doctor/mechanic-scope as "superseded
-by iter 24a (#18659) / iter 25 (#18785) / iter 26a (#19117) Finset
-transports". **Not researcher-scope**; this S27 STATE-SYNC explicitly
-does NOT touch the Lean file or attempt to rebase #17602.
+**Zero open PRs on slug** (verified at S28 base SHA `cf1cfa085e4`,
+2026-05-16T03:18Z probe via `gh api repos/rjwalters/lean-genius/pulls/17602`).
+The prior CONFLICTING iter-19 stack PR **#17602** is now `state=closed`
+(was OPEN at S27 ship time 2026-05-15T20:53 PT; closed sometime in the
+~5h window between S27 merge and S28 claim — doctor / mechanic /
+maintainer hygiene close, no merge). PRs #17552 (iter 18 stack) and
+#18997 (S25 retcon STATE-SYNC) were already CLOSED at S27 ship time.
+The slug-clean signal means iter 27 ACT pickers have no file-orthogonality
+constraints when touching `proofs/Proofs/Hilbert10OQ01OQ02.lean`.
 
 ### Bearer drift recheck (Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, unchanged)
 
