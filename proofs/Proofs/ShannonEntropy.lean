@@ -453,6 +453,29 @@ theorem entropy_lt_log_card_iff_non_uniform {α : Type*} [Fintype α] [Decidable
     · exact hlt
     · exact absurd (hiff.mp heq x) hx
 
+-- Function-equality strengthening of `entropy_eq_log_card_iff_uniform`.
+-- Restates the pointwise RHS `∀ x, p x = (card α)⁻¹` as the function
+-- equality `p = (fun _ => (card α)⁻¹)`, sidestepping a one-step `funext`
+-- rewrite at downstream call sites in the Fano-converse chain.
+theorem entropy_eq_log_card_iff_eq_uniform {α : Type*} [Fintype α] [DecidableEq α]
+    [Nonempty α] {p : α → ℝ}
+    (hp : ∀ x, 0 ≤ p x) (hsum : ∑ x, p x = 1) :
+    shannonEntropy p = Real.log (Fintype.card α) ↔
+    p = (fun _ : α => (Fintype.card α : ℝ)⁻¹) :=
+  (entropy_eq_log_card_iff_uniform hp hsum).trans
+    ⟨funext, fun h x => congrFun h x⟩
+
+-- Function-inequality strengthening of `entropy_lt_log_card_iff_non_uniform`.
+-- Restates the pointwise existential RHS `∃ x, p x ≠ (card α)⁻¹` as the
+-- function inequality `p ≠ (fun _ => (card α)⁻¹)`, sidestepping a
+-- `push_neg` step at downstream call sites.
+theorem entropy_lt_log_card_iff_ne_uniform {α : Type*} [Fintype α] [DecidableEq α]
+    [Nonempty α] {p : α → ℝ}
+    (hp : ∀ x, 0 ≤ p x) (hsum : ∑ x, p x = 1) :
+    shannonEntropy p < Real.log (Fintype.card α) ↔
+    p ≠ (fun _ : α => (Fintype.card α : ℝ)⁻¹) :=
+  (entropy_lt_log_card_iff_non_uniform hp hsum).trans Function.ne_iff.symm
+
 -- ============================================================
 -- Log-Sum Inequality
 -- ============================================================
