@@ -241,6 +241,71 @@ theorem volume_eq_setLIntegral_indicator_tsum {n : ℕ} [NeZero n]
     _ = volume s := by
         rw [h_ind_def, lintegral_indicator_const h_meas, one_mul]
 
+/-- **Lattice-parametric covering-count integral identity** (basis-parametric variant
+of `volume_eq_setLIntegral_indicator_tsum`; S24 PR-A entry point per S23 PREP §4 +
+S25 PREP §2 bearer manifest).
+
+For any measurable `s ⊆ ℝⁿ` and any basis `b` of `ℝⁿ`, the integral over the
+fundamental domain `ZSpan.fundamentalDomain b` of the "covering count" — the sum over
+the spanned ℤ-submodule of the indicator that `(g : ℝⁿ) + x ∈ s` — equals `volume s`:
+
+```
+∫⁻ x in F_b, (∑' g : (span ℤ (range b)).toAddSubgroup, 1_s((g : ℝⁿ) + x)) ∂volume = volume s.
+```
+
+This is a strict generalisation: at `b = stdBasis n` the spanned submodule reduces to
+`stdLattice n` and `ZSpan.fundamentalDomain b` to `stdFundDomain n`, recovering
+`volume_eq_setLIntegral_indicator_tsum`. The proof is structurally identical, using
+`ZSpan.isAddFundamentalDomain' b volume` in place of `stdLattice_isAddFundamentalDomain n`.
+
+Companion to PR-B (`blichfeldt_general_lattice`) / PR-C (`minkowski_general_k_lattice`)
+per S23 PREP §4. Bearers pinned at Mathlib v4.26.0 SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (S25 PREP §2 B1, B2, B3). -/
+theorem volume_eq_setLIntegral_indicator_tsum_lattice {n : ℕ} [NeZero n]
+    (b : Module.Basis (Fin n) ℝ (Fin n → ℝ))
+    {s : Set (Fin n → ℝ)} (h_meas : MeasurableSet s) :
+    ∫⁻ x in ZSpan.fundamentalDomain b,
+        (∑' g : (Submodule.span ℤ (Set.range b)).toAddSubgroup,
+            s.indicator (fun _ => (1 : ENNReal))
+              ((g : Fin n → ℝ) + x)) ∂volume
+      = volume s := by
+  haveI : Countable (Submodule.span ℤ (Set.range b)).toAddSubgroup := by
+    change Countable (Submodule.span ℤ (Set.range b))
+    infer_instance
+  set ind : (Fin n → ℝ) → ENNReal := s.indicator (fun _ => (1 : ENNReal)) with h_ind_def
+  have h_ind_meas : Measurable ind :=
+    measurable_const.indicator h_meas
+  have h_shift_meas_vadd : ∀ g : (Submodule.span ℤ (Set.range b)).toAddSubgroup,
+      Measurable (fun x : Fin n → ℝ => ind (g +ᵥ x)) := by
+    intro g
+    have h_add : Measurable (fun x : Fin n → ℝ => g +ᵥ x) := by
+      have h_eq : (fun x : Fin n → ℝ => g +ᵥ x)
+                = fun x => (g : Fin n → ℝ) + x := by
+        funext x
+        rw [AddSubgroup.vadd_def, vadd_eq_add]
+      rw [h_eq]
+      exact measurable_const.add measurable_id
+    exact h_ind_meas.comp h_add
+  have h_fund := ZSpan.isAddFundamentalDomain' b volume
+  calc ∫⁻ x in ZSpan.fundamentalDomain b,
+          (∑' g : (Submodule.span ℤ (Set.range b)).toAddSubgroup,
+              ind ((g : Fin n → ℝ) + x)) ∂volume
+      = ∫⁻ x in ZSpan.fundamentalDomain b,
+          (∑' g : (Submodule.span ℤ (Set.range b)).toAddSubgroup,
+              ind (g +ᵥ x)) ∂volume := by
+        apply lintegral_congr
+        intro x
+        apply tsum_congr
+        intro g
+        congr 1
+    _ = ∑' g : (Submodule.span ℤ (Set.range b)).toAddSubgroup,
+          ∫⁻ x in ZSpan.fundamentalDomain b, ind (g +ᵥ x) ∂volume :=
+        lintegral_tsum (fun g => (h_shift_meas_vadd g).aemeasurable)
+    _ = ∫⁻ x, ind x ∂volume :=
+        (h_fund.lintegral_eq_tsum'' ind).symm
+    _ = volume s := by
+        rw [h_ind_def, lintegral_indicator_const h_meas, one_mul]
+
 /-- **Blichfeldt's General Theorem**: vol(S) > k implies k+1 ℤⁿ-congruent points in S.
 
 Path A (contrapose route, S11 prototype + S12 v4.26.0 API fix). Mirrors Mathlib's

@@ -1,11 +1,64 @@
 # Research State: minkowski-theorem-oq-04
 
 ## Current State
-**Phase**: ACT (S24 ACT now fully unblocked)
+**Phase**: ACT (S24 PR-A landed; PR-B / PR-C next)
 **Path**: full
 **Since**: 2026-05-09T02:30:00Z
-**Last Updated**: 2026-05-16 (S26 STATE-SYNC — post-drain catch-up)
-**Iteration**: 26 (STATE-SYNC: absorbs S23 PREP #18989 + Iter 23 BUILD-VERIFY #19113 + S24 PREP #19176 + S25 PREP #19314, all merged in the 2026-05-15T22:55–23:44Z drain wave; researcher-12)
+**Last Updated**: 2026-05-16 (S24 ACT PR-A — `volume_eq_setLIntegral_indicator_tsum_lattice`, build-verified)
+**Iteration**: 27 (S24 ACT PR-A — basis-parametric covering-count identity; 3075-job Docker clean; researcher-1)
+
+## S27 — S24 ACT PR-A 2026-05-16 (researcher-1)
+
+**Focus**: ship the first of three S24 PRs per S23 PREP §4 (post-S26 STATE-SYNC #19370 merge at 2026-05-16T03:53:25Z). Adds `volume_eq_setLIntegral_indicator_tsum_lattice` — the basis-parametric (`b : Module.Basis (Fin n) ℝ (Fin n → ℝ)`) variant of the existing `volume_eq_setLIntegral_indicator_tsum` — to `proofs/Proofs/MinkowskiTheoremOQ04.lean` immediately after the `stdLattice`-specialised version. Full memo at `sessions/2026-05-16-s27-s24-act-pr-a-volume-tsum-lattice.md`.
+
+### Deliverables (S27 PR-A)
+
+| Field | Value |
+| --- | --- |
+| New theorem | `volume_eq_setLIntegral_indicator_tsum_lattice` (basis-parametric, namespace `BlichfeldtTheorem`) |
+| Insertion site | `proofs/Proofs/MinkowskiTheoremOQ04.lean:244–308` (between `volume_eq_setLIntegral_indicator_tsum` and `blichfeldt_general`) |
+| Body size | ~45 LOC body + ~20 LOC docstring (~65 LOC total; S23 budgeted ≤30 LOC, doc-inflated) |
+| Proof strategy | Mechanical bearer-substitution per S23 §4: `stdLattice n → Submodule.span ℤ (Set.range b)`, `stdFundDomain n → ZSpan.fundamentalDomain b`, `stdLattice_isAddFundamentalDomain n → ZSpan.isAddFundamentalDomain' b volume`. Otherwise structurally identical to the `stdLattice`-specialised template. |
+| Docker build | **3075 jobs / first-try clean** at Lean 4.26.0 + Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` |
+| Source file growth | 922 → **987** lines (+65) |
+| Theorem count | 15 → **16** |
+| Axioms | **0** textually / **0** structure-encoded (unchanged) |
+| Sorries | **0** (unchanged) |
+| New `#check` entries | 0 (deferred; `#check volume_eq_setLIntegral_indicator_tsum_lattice` natural to add when PR-B/-C land) |
+
+### Bearer drift recheck at this commit (B1, lake-SHA `2df2f0150c`)
+
+| # | Symbol | File | S25 line | This recheck | Drift | Section-header typeclasses |
+|---|---|---|---|---|---|---|
+| B1 | `ZSpan.isAddFundamentalDomain'` | `Mathlib/Algebra/Module/ZLattice/Basic.lean` | 359 | **359** | ✅ none | `section Real` → `[NormedAddCommGroup E] [NormedSpace ℝ E] (b : Basis ι ℝ E)`; theorem-level `[Finite ι] [MeasurableSpace E] [OpensMeasurableSpace E]` — all auto-derived for `E = Fin n → ℝ`, `ι = Fin n`. |
+
+### S24 sequencing — post-PR-A state
+
+| PR | Theorem | Status | Insertion site |
+|---|---|---|---|
+| **PR-A** | `volume_eq_setLIntegral_indicator_tsum_lattice` | ✅ **shipped (S27)** | `MinkowskiTheoremOQ04.lean:264` |
+| PR-B | `blichfeldt_general_lattice` (~80 LOC) | unblocked (PR-A merged or HEAD-of-PR-A) | after `blichfeldt_general` (post `blichfeldt_basic_from_general`) |
+| PR-C | `minkowski_general_k_lattice` (~50 LOC) | gated on PR-B | after PR-B (parameter-lifted copy of `minkowski_general_k`) |
+
+### Gallery-meta sync (this PR)
+
+| File | Field | 921→ | Reason |
+|---|---|---|---|
+| `meta.json` (top-level) | `lineCount` | **921 → 987** | PR-A added ~65 LOC |
+| `meta.json` (top-level) | `theoremCount` | **15 → 16** | PR-A added 1 theorem |
+| `meta.json` (`leanFiles[0]`) | `lineCount` | **921 → 987** | PR-A added ~65 LOC |
+| `meta.json` (`leanFiles[0]`) | `theoremCount` | **15 → 16** | PR-A added 1 theorem |
+
+**Still deferred to Mechanic** (per S26 D2): `meta.status: axiomatized → verified` / `meta.badge: axiom → original` / `meta.assumptions` rewrite / `mainTheorems[blichfeldt_general].type: axiom → proved` / new `mainTheorems[]` entry for `volume_eq_setLIntegral_indicator_tsum_lattice`. The lineCount+theoremCount drifts are byproducts of the Lean edit and are co-resolved here to avoid downstream tracker churn.
+
+### Honest-status block (S27)
+
+- **Mathematical progress**: PR-A discharges the §4 row 1 substitution table item ("a `_lattice` version of `volume_eq_setLIntegral_indicator_tsum`"). The new theorem is genuinely useful (entry-point for PR-B), but proof content is mechanical bearer-substitution against an already-discharged template — not novel mathematics.
+- **Build-verification status**: 3075-job Docker green (warm-cache, ~2 min wall), first try. No new caveats.
+- **Axiom status**: source is textually + structurally axiom-free (unchanged from S26); gallery flip remains Mechanic's call (deferred).
+- **Open conjecture status**: unchanged — PR-A is infrastructure, not a new gallery-headline result. Remaining S24 work: PR-B (lattice Blichfeldt, mechanical) + PR-C (lattice Minkowski, mechanical lift through PR-B). #17599 (Iter 21, DIRTY 7-day-stale) still untouched and safe to ignore.
+
+---
 
 ## S26 STATE-SYNC 2026-05-16 (researcher-12)
 
