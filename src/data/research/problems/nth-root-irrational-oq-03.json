@@ -9,9 +9,9 @@
     67
   ],
   "created": "2026-05-12",
-  "lastUpdated": "2026-05-14",
+  "lastUpdated": "2026-05-16",
   "phase": "ACT",
-  "iteration": 4,
+  "iteration": 5,
   "status": "active",
   "shortDescription": "Hermite-Lindemann (1882): for nonzero algebraic α, e^α is transcendental. Lindemann-Weierstrass (1885): for Q-linearly-independent algebraic α₁..αₙ, the e^αᵢ are algebraically independent over Q. Project status: axiomatized in HermiteLindemann.lean; this slug coordinates bridge work to existing infrastructure rather than re-formalising from scratch.",
   "wiedijkRefs": [
@@ -37,17 +37,36 @@
       "Status field must be `axiomatized` (per Axiom Integrity Policy): main result depends on `axiom hermite_lindemann` plus 2 OQ03 axioms plus 4 sibling sorries. Never mark `verified`.",
       "S5a PREP (2026-05-13, researcher-12): discovered cascading Mathlib v4.26.0 API regressions blocking the build of both ETranscendentalOQ03.lean (line 118, `irrational_exp_iff` gone) and eTranscendental.lean (9 errors at lines 151/164/183/198/212/214/224/225/228, `IsFractionRing.isAlgebraic_iff` gone). These are pre-existing regressions on origin/main, not introduced by recent research PRs. 9 prior consecutive doc-only PREP PRs (S1-S4c) failed to catch them because none Docker-built. Repair scope: doctor/mechanic (3 fix-points across 2 files).",
       "S2 ACT discharge proof body drafted (~85 LOC): `rat_approx_bounded_den_finite` helper (50 LOC, injects bounded-den slice into Set.Icc(-M)(M) ×ˢ Set.Icc(1)(N)) + `irrational_liouvilleWith_two` (30 LOC, uses Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational + slice helper + standard LiouvilleWith repackaging). Unverified (parent does not build) but recipe is self-contained; ready to paste-in after parent repair. See sessions/2026-05-13-s5a-prep-mathlib-regression-discovery-and-proof-draft.md §3.",
-      "S5b ACT (2026-05-14, researcher-9): parent-file build restored on origin/main via 4 surgical Mathlib v4.26.0 fixes (3 diagnosed in S5a, 1 surfaced after Fix #1 unblocked the namespace). `eTranscendental.lean` and `ETranscendentalOQ03.lean` now build cleanly (3071 jobs). Fix breakdown: (1) add `import Mathlib.RingTheory.Localization.Integral` to `eTranscendental.lean` for `IsFractionRing.isAlgebraic_iff` (lemma moved out of `Algebraic.Basic`'s transitive closure). (2) Replace `isAlgebraic_algebraMap (1 : ℚ)` with `isAlgebraic_one` at `eTranscendental.lean:225` (newer Mathlib elaborator doesn't auto-bridge `algebraMap ℚ ℝ 1` to `(1 : ℝ)`). (3) Replace `irrational_exp_iff.mpr ...` with project-local `e_irrational` at `ETranscendentalOQ03.lean:118` (lemma upstream-removed during Mathlib.Data.Real.Irrational → Mathlib.NumberTheory.Real.Irrational refactor). (4) Flip `.mp` to `.mpr` at `eTranscendental.lean:152` (sole site mismatched with v4.26.0 iff convention `IsAlgebraic A x ↔ IsAlgebraic K x`). Unblocks S5c S2 ACT paste-in for axiomCount 2→1."
+      "S5b ACT (2026-05-14, researcher-9): parent-file build restored on origin/main via 4 surgical Mathlib v4.26.0 fixes (3 diagnosed in S5a, 1 surfaced after Fix #1 unblocked the namespace). `eTranscendental.lean` and `ETranscendentalOQ03.lean` now build cleanly (3071 jobs). Fix breakdown: (1) add `import Mathlib.RingTheory.Localization.Integral` to `eTranscendental.lean` for `IsFractionRing.isAlgebraic_iff` (lemma moved out of `Algebraic.Basic`'s transitive closure). (2) Replace `isAlgebraic_algebraMap (1 : ℚ)` with `isAlgebraic_one` at `eTranscendental.lean:225` (newer Mathlib elaborator doesn't auto-bridge `algebraMap ℚ ℝ 1` to `(1 : ℝ)`). (3) Replace `irrational_exp_iff.mpr ...` with project-local `e_irrational` at `ETranscendentalOQ03.lean:118` (lemma upstream-removed during Mathlib.Data.Real.Irrational → Mathlib.NumberTheory.Real.Irrational refactor). (4) Flip `.mp` to `.mpr` at `eTranscendental.lean:152` (sole site mismatched with v4.26.0 iff convention `IsAlgebraic A x ↔ IsAlgebraic K x`). Unblocks S5c S2 ACT paste-in for axiomCount 2→1.",
+      "S5c ACT (2026-05-16, researcher-12): pasted S5a §3 drafted proof body verbatim into ETranscendentalOQ03.lean, replacing `axiom irrational_liouvilleWith_two` with a `theorem` + the helper `rat_approx_bounded_den_finite`. Added import `Mathlib.NumberTheory.DiophantineApproximation.Basic`. Docker build clean on **first attempt** (3072 jobs, OQ03 file built in 5.8s; `eTranscendental` replayed from cache). None of the S5c PREP §4 robustness fallbacks (Option B/C for `field_simp`, `rpow_natCast`, image-membership refine) were needed — Option A compiled verbatim. `e-transcendental-oq-03/meta.json` axiomCount 2→1. Sharp-upper-bound axiom `e_not_liouvilleWith_gt_two` remains (S5d). Marquee `axiom hermite_lindemann` in HermiteLindemann.lean remains gated on Mathlib PR #28013 (S6). The drafted body + slice-finiteness helper is now a reusable template for analogous LiouvilleWith ACTs."
     ],
-    "builtItems": [],
-    "progressSummary": "S1 OBSERVE (duplicate-detection survey), S2-S4c PREP chain (Mathlib API audits, 9 doc-only PRs over 14h), S5a PREP (regression discovery + S2 ACT proof body draft), S5b ACT (parent-file build restored via 4 surgical v4.26.0 fixes; eTranscendental.lean + ETranscendentalOQ03.lean now build cleanly). S5c (axiom 2→1 paste-in) immediately actionable for next session.",
+    "builtItems": [
+      {
+        "name": "irrational_liouvilleWith_two",
+        "type": "theorem",
+        "file": "proofs/Proofs/ETranscendentalOQ03.lean",
+        "namespace": "ETranscendentalOQ03",
+        "signature": "(x : ℝ) (hx : Irrational x) : LiouvilleWith 2 x",
+        "iteration": 5,
+        "summary": "Dirichlet's approximation theorem in `LiouvilleWith` form: every irrational has irrationality measure ≥ 2. Discharges the easier of two axioms on the irrationality-measure-of-e file."
+      },
+      {
+        "name": "rat_approx_bounded_den_finite",
+        "type": "lemma",
+        "file": "proofs/Proofs/ETranscendentalOQ03.lean",
+        "namespace": "ETranscendentalOQ03",
+        "signature": "(x : ℝ) (N : ℕ) : {q : ℚ | |x - (q : ℝ)| < 1 / (q.den : ℝ) ^ 2 ∧ q.den ≤ N}.Finite",
+        "iteration": 5,
+        "summary": "Slice-finiteness helper: the set of good rational approximations to `x` with denominator ≤ N is finite. Used in `irrational_liouvilleWith_two` to derive that good approximations have unbounded denominators. Reusable template for analogous `LiouvilleWith p` ACTs on specific irrationals."
+      }
+    ],
+    "progressSummary": "S1 OBSERVE (duplicate-detection survey), S2-S4c PREP chain (Mathlib API audits, 9 doc-only PRs over 14h), S5a PREP (regression discovery + S2 ACT proof body draft), S5b ACT (parent-file build restored via 4 surgical v4.26.0 fixes), S5c PREP (pre-flight bearer audit at lake-pinned SHA), S5c ACT (axiomCount 2→1 via verbatim paste-in of S5a §3 drafted body — first-pass clean Docker build, all S5c PREP §4 fallbacks unused). S5d (sharp upper bound via CF) and S6 (hermite_lindemann via Mathlib PR #28013) are the remaining axioms.",
     "approachesAttempted": [],
     "knownDeadEnds": [],
     "nextSteps": [
-      "S2 ACT: Discharge `axiom irrational_liouvilleWith_two` in ETranscendentalOQ03.lean using Mathlib Dirichlet-approximation API (axiom count 2→1).",
-      "S3: Survey current `mathlib4` Lindemann-Weierstrass upstream PR status; bridge `axiom hermite_lindemann` if upstream API is stable.",
-      "S4: Attempt `axiom e_not_liouvilleWith_gt_two` via Mathlib continued-fraction API (or document blocker if upstream CF support is insufficient on v4.26.0).",
-      "S5 (optional): Cross-reference all transcendence files in gallery for unified narrative thread.",
+      "S5d: Discharge `axiom e_not_liouvilleWith_gt_two` (sharp upper bound mu(e) <= 2) in ETranscendentalOQ03.lean via Davis (1978) CF analysis. Pre-flight: enumerate `Mathlib.NumberTheory.Diophantine.ContinuedFraction.*` at lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0); confirm convergent denominator-growth bound for e is exposed. Estimated 150-250 LOC if API available; otherwise document Mathlib gap as PREP.",
+      "S6: Watch-loop tick on Mathlib PR #28013 (Lindemann-Weierstrass upstream); cadence 24h checks, promote local re-prove if > 7×24h stale.",
+      "S7 (optional): Apply slice-finiteness helper template to sibling slug LiouvilleWith ACTs (pi-transcendental-oq-04, ln-2-irrationality-*).",
       "S5b (researcher-9, 2026-05-14): COMPLETED. Parent-file build restored via 4 one-line surgical fixes; both eTranscendental.lean and ETranscendentalOQ03.lean build cleanly (3071 jobs).",
       "S5c (researcher scope, immediately actionable post-S5b): paste drafted S2 ACT proof body (see sessions/2026-05-13-s5a §3) into ETranscendentalOQ03.lean at line 114; Docker-verify; decrement axiomCount 2 → 1 in src/data/proofs/e-transcendental-oq-03/meta.json (verify gallery entry exists first per S1 OBSERVE flag)."
     ]

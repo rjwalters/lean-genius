@@ -1,5 +1,6 @@
 import Mathlib.NumberTheory.Transcendental.Liouville.Basic
 import Mathlib.NumberTheory.Transcendental.Liouville.LiouvilleWith
+import Mathlib.NumberTheory.DiophantineApproximation.Basic
 import Mathlib.Analysis.SpecialFunctions.ExpDeriv
 import Mathlib.RingTheory.Algebraic.Basic
 import Mathlib.Data.Real.Irrational
@@ -108,11 +109,102 @@ Note: Mathlib has `liouvilleWith_one` (every real has exponent ≥ 1) but does n
 yet provide the stronger Dirichlet result for irrationals at exponent 2.
 -/
 
-/-- **Axiom: Every irrational real number has irrationality measure ≥ 2.**
+/-- **Helper: the set of "good" rational approximations to `x` with denominator
+bounded by `N` is finite.**
 
-This follows from Dirichlet's approximation theorem: for irrational α and N ≥ 1,
-there exist p, q with 1 ≤ q ≤ N such that |α - p/q| < 1/(qN) ≤ 1/q^2. -/
-axiom irrational_liouvilleWith_two (x : ℝ) (hx : Irrational x) : LiouvilleWith 2 x
+For any real `x` and natural `N`, the set
+`{q : ℚ | |x - q| < 1 / q.den^2 ∧ q.den ≤ N}` is finite. Used to derive that for
+irrational `x`, good approximations have unbounded denominators. -/
+lemma rat_approx_bounded_den_finite (x : ℝ) (N : ℕ) :
+    {q : ℚ | |x - (q : ℝ)| < 1 / (q.den : ℝ) ^ 2 ∧ q.den ≤ N}.Finite := by
+  set M : ℤ := ⌈(N : ℝ) * (|x| + 1) + 1⌉ with hM_def
+  have h_box_fin : (Set.Icc (-M) M ×ˢ Set.Icc (1 : ℕ) N).Finite :=
+    (Set.finite_Icc _ _).prod (Set.finite_Icc _ _)
+  refine (h_box_fin.image (fun p : ℤ × ℕ => (p.1 : ℚ) / (p.2 : ℚ))).subset ?_
+  rintro q ⟨hq_bd, hq_den⟩
+  have hd_pos : 0 < q.den := q.pos
+  have hd_pos_R : (0 : ℝ) < (q.den : ℝ) := by exact_mod_cast hd_pos
+  have hd_one_R : (1 : ℝ) ≤ (q.den : ℝ) := by exact_mod_cast hd_pos
+  have hd_ne : (q.den : ℝ) ≠ 0 := hd_pos_R.ne'
+  have hq_eq : (q.num : ℝ) / (q.den : ℝ) = (q : ℝ) := by
+    exact_mod_cast Rat.num_div_den q
+  have h1 : |(q.den : ℝ) * x - (q.num : ℝ)| < 1 := by
+    have h_factor : (q.den : ℝ) * x - (q.num : ℝ)
+        = (q.den : ℝ) * (x - (q.num : ℝ) / (q.den : ℝ)) := by
+      field_simp
+    have h_step : |(q.den : ℝ) * x - (q.num : ℝ)| = (q.den : ℝ) * |x - (q : ℝ)| := by
+      rw [h_factor, abs_mul, abs_of_pos hd_pos_R, hq_eq]
+    rw [h_step]
+    calc (q.den : ℝ) * |x - (q : ℝ)|
+        < (q.den : ℝ) * (1 / (q.den : ℝ) ^ 2) :=
+          mul_lt_mul_of_pos_left hq_bd hd_pos_R
+      _ = 1 / (q.den : ℝ) := by
+          rw [mul_one_div, sq]
+          field_simp
+      _ ≤ 1 := by
+          rw [div_le_one hd_pos_R]
+          exact hd_one_R
+  have h_num_bound : |(q.num : ℝ)| ≤ (q.den : ℝ) * |x| + 1 := by
+    rcases abs_lt.mp h1 with ⟨hL, hR⟩
+    have hx_le : x ≤ |x| := le_abs_self x
+    have hx_neg_le : -x ≤ |x| := neg_le_abs x
+    have h_dnn : (0 : ℝ) ≤ (q.den : ℝ) := hd_pos_R.le
+    apply abs_le.mpr
+    refine ⟨?_, ?_⟩
+    · nlinarith [hL, hx_neg_le, h_dnn]
+    · nlinarith [hR, hx_le, h_dnn]
+  have hN_bd : (q.den : ℝ) ≤ (N : ℝ) := by exact_mod_cast hq_den
+  have h_abs_x : (0 : ℝ) ≤ |x| := abs_nonneg x
+  have h_num_le_M : |(q.num : ℝ)| ≤ (M : ℝ) := by
+    have h_bd1 : (q.den : ℝ) * |x| + 1 ≤ (N : ℝ) * (|x| + 1) + 1 := by
+      nlinarith [hN_bd, h_abs_x, hd_pos_R.le]
+    have h_ceil : (N : ℝ) * (|x| + 1) + 1 ≤ (M : ℝ) := by
+      rw [hM_def]
+      exact_mod_cast Int.le_ceil ((N : ℝ) * (|x| + 1) + 1)
+    linarith [h_num_bound]
+  refine ⟨(q.num, q.den), ?_, ?_⟩
+  · constructor
+    · constructor
+      · have := (abs_le.mp h_num_le_M).1; exact_mod_cast this
+      · have := (abs_le.mp h_num_le_M).2; exact_mod_cast this
+    · exact ⟨hd_pos, hq_den⟩
+  · show ((q.num : ℚ) / (q.den : ℚ) : ℚ) = q
+    exact Rat.num_div_den q
+
+/-- **Every irrational real number has irrationality measure ≥ 2.**
+
+This is Dirichlet's approximation theorem in `LiouvilleWith` form. The proof
+combines Mathlib's `Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational`
+with the slice-finiteness lemma above, to conclude that good approximations
+have arbitrarily large denominators. -/
+theorem irrational_liouvilleWith_two (x : ℝ) (hx : Irrational x) : LiouvilleWith 2 x := by
+  refine ⟨1, ?_⟩
+  rw [Filter.frequently_atTop]
+  intro N
+  have hS_inf : {q : ℚ | |x - (q : ℝ)| < 1 / (q.den : ℝ) ^ 2}.Infinite :=
+    Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational hx
+  have h_slice_fin :
+      {q : ℚ | |x - (q : ℝ)| < 1 / (q.den : ℝ) ^ 2 ∧ q.den ≤ N}.Finite :=
+    rat_approx_bounded_den_finite x N
+  obtain ⟨q, hqS, hqN⟩ : ∃ q : ℚ,
+      |x - (q : ℝ)| < 1 / (q.den : ℝ) ^ 2 ∧ N < q.den := by
+    by_contra h_neg
+    push_neg at h_neg
+    apply hS_inf
+    apply h_slice_fin.subset
+    intro q hq
+    exact ⟨hq, h_neg q hq⟩
+  have hq_eq : (q.num : ℝ) / (q.den : ℝ) = (q : ℝ) := by
+    exact_mod_cast Rat.num_div_den q
+  refine ⟨q.den, Nat.le_of_lt hqN, q.num, ?_, ?_⟩
+  · intro h_eq
+    apply Irrational.ne_rat hx q
+    rw [← hq_eq, ← h_eq]
+  · rw [hq_eq]
+    have h_rpow : (q.den : ℝ) ^ (2 : ℝ) = (q.den : ℝ) ^ (2 : ℕ) := by
+      rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, Real.rpow_natCast]
+    rw [h_rpow]
+    exact hqS
 
 /-- **e has irrationality measure ≥ 2** (from Dirichlet + irrationality of e). -/
 theorem e_liouvilleWith_two : LiouvilleWith 2 (exp 1) :=
