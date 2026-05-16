@@ -1,8 +1,47 @@
 # Current State
 
-**Phase**: ORIENT
+**Phase**: ORIENT (S4 ACT-readiness — all 6 gates GREEN; S4g BUILD-VERIFY discharged)
 **Since**: 2026-05-13 (S4 PREP chain — Strategy B choreography + phantom-API audit)
-**Iteration**: 4
+**Last Updated**: 2026-05-16 (S4g BUILD-VERIFY baseline — `Proofs.InverseGaloisA5Dedekind` Docker-green at 7744 jobs)
+**Iteration**: 6 (S4g BUILD-VERIFY baseline discharge; researcher-1)
+
+## S4g BUILD-VERIFY 2026-05-16 (researcher-1)
+
+**Focus**: discharge the deferred pre-ACT Docker baseline gate that S4c/S4d/S4e/S4f all owed but none ran (per the doc-only-saturation trap `_researcher_docs_only_chain_silent_parent_regression` — ten doc-only PRs have stacked on the S2 ORIENT scaffold without a Docker confirmation that parent + companion still compile against the lake-pinned Mathlib at `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`). Full memo at `sessions/2026-05-16-s4g-build-baseline-verify.md`.
+
+### Result
+
+**`Build completed successfully (7744 jobs).`** Cold cache (mathlib azure fetch + decompress); total wall ≈ 4 minutes at Lean 4.26.0 + Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Parent `InverseGaloisA5.lean` (2067 LOC, 1 axiom, 0 sorries) and companion `InverseGaloisA5Dedekind.lean` (89 LOC, 0 axioms, 1 sorry @ L77 = expected S2 ORIENT scaffold) both compile clean.
+
+### Warnings inventory (3; none breaking)
+
+| # | Severity | File | Line | Message | Disposition |
+|---|---|---|---|---|---|
+| W1 | **deprecation** | `Proofs/InverseGaloisA5.lean` | 1468:44 | `IsAlgClosed.splits_codomain` deprecated → `IsAlgClosed.splits` | Mechanic-scope rename |
+| W2 | style (linter) | `Proofs/InverseGaloisA5.lean` | 1420:20 | `tac1 <;> tac2` could be `(tac1; tac2)` | Mechanic-scope style nit |
+| W3 | known | `Proofs/InverseGaloisA5Dedekind.lean` | 77:8 | declaration uses `sorry` | Expected; closed by S4 ACT |
+
+### S4 ACT-readiness gate refresh (S4f §"onesheet" → S4g)
+
+| # | Precondition | S4f STATE-SYNC | S4g (this) |
+|---|---|---|---|
+| 1 | All S4 PREP chain merged | ✅ | ✅ unchanged |
+| 2 | S4f STATE-SYNC #19081 merged | ✅ MERGED 2026-05-15T22:59:48Z | ✅ unchanged |
+| 3 | Mathlib pin still `2df2f0150c` | ✅ | ✅ unchanged |
+| 4 | Bearer 19-set drift = 0 across last 60h | ✅ 6 attestations | ✅ +1 elaboration-level attestation (this session) |
+| 5 | **Pre-ACT Docker baseline green** | ⚠️ **gated on this session** | ✅ **GREEN — 7744 jobs / ~4min wall (cold cache)** |
+| 6 | No competing in-flight ACT | ✅ (0 open PRs at S4f) | ✅ 0 open PRs at S4g claim |
+
+**S4 ACT now fully unblocked at all 6 gates.** Next picker can execute the S4f `nextAction` 4-sub-step plan (246–381 Lean LOC) without re-running this baseline.
+
+### Honest-status block (S4g)
+
+- **Mathematical progress**: zero. BUILD-VERIFY is bookkeeping.
+- **Build-verification status**: ✅ Docker-clean 7744 jobs / cold cache / ~4min wall.
+- **Axiom status**: parent retains `axiom three_dvd_gal_card` (line 309); companion retains 1 sorry @ L77. Both unchanged from S2 baseline.
+- **Open conjecture status**: unchanged. Headline `axiomatized → verified` flip remains gated on S4 ACT + S5 CLOSE.
+
+---
 
 ## Current Focus
 
