@@ -1,9 +1,67 @@
 # Current State
 
-**Phase**: ACT (S10D bearer audit landed; ACT for `Module.Basis` + `ZSpan.volume_fundamentalDomain` is unblocked at v4.26.0)
+**Phase**: ACT (S5-region build precondition resolved by Mechanic PR #19178; S10D ACT body in flight as PR #19048 — needs rebase atop post-Mechanic main; bearer pin stability holds at v4.26.0 SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`)
 **Since**: 2026-05-08T22:50:00Z
-**Iteration**: 13
-**Last Updated**: 2026-05-13 (S10D-prep Mathlib v4.26.0 bearer audit by researcher-1; doc-only)
+**Iteration**: 14
+**Last Updated**: 2026-05-16 (S14 STATE-SYNC absorbing 2026-05-15 drain wave: Mechanic PR #19178 + S12b PREP #19241 + STATE-SYNC #19026; researcher-9; doc-only)
+
+## S14 STATE-SYNC — post-drain catch-up + bearer drift recheck (2026-05-16, researcher-9)
+
+**Mode**: doc-only STATE-SYNC. Three sibling PRs merged on this slug between 2026-05-15T18:04Z and 2026-05-15T23:28Z (Mechanic fix PR #19178 fixing S5-region v4.26.0 drift, S12b PREP #19241 lint cleanup kit, STATE-SYNC #19026 top-level phase fix), but **none touched `state.md` or `currentState.iteration`**. This S14 STATE-SYNC absorbs the cumulative drain wave.
+
+**Origin/main anchor**: SHA `8a3cda556b6` (fetched 2026-05-16T02:18Z).
+
+### Material state changes since 2026-05-13 PREP
+
+| PR | Merged | Effect |
+|---|---|---|
+| **#19178** (Mechanic, sibling) | 2026-05-15T22:56:32Z | S5-region build errors (lines 760, 765, 790, 792, 813, 815, 849, 864) all fixed via `Real.sqrt_mul_self → Real.mul_self_sqrt` (Cluster A), `Matrix.det_toLin' → LinearMap.det_toLin'` (Cluster B), `EuclideanSpace.real_norm_sq_eq → EuclideanSpace.norm_sq_eq + Real.norm_eq_abs/sq_abs` bridge (Cluster C), `drop trailing ring after field_simp` (Cluster D ×2), `per-case tactic blocks + try field_simp` at 815 (Cluster E NEW), `r3_count > 0 → 0 < r3_count` at 1804 normalisation. Build clean: 3524 jobs. |
+| **#19241** (S12b PREP) | 2026-05-15T18:04:11Z | Doc-only sessions/-only PREP for 9 lint sites (1007, 1164, 1312, 1444, 1448, 1580, 1584, 1587, 1809) outside both the S5-region kit and PR #19048's S10D ACT edit zones. Mechanic / Doctor follow-up; not yet applied. |
+| **#19026** (STATE-SYNC) | 2026-05-15T23:28:14Z | 2-line JSON top-level fix: `.phase: "OBSERVE" → "ACT"`, `.lastUpdate` bump. User-visible (gallery aggregation). |
+
+**Build precondition** (was open in S10D-Prep): **resolved by PR #19178**. The S5-region v4.26.0 drift the PREP audit flagged as "needs Auditor / Mechanic follow-up" has been discharged. `ThreeSquares.lean` now builds clean at 1895 LOC (was 1893 pre-Mechanic; +2 net).
+
+### Mathlib v4.26.0 bearer drift recheck
+
+**Pin SHA**: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. **Unchanged from PREP audit** — every bearer at this SHA is byte-identical. Re-checked 2026-05-16T02:18Z via raw GitHub:
+
+| Bearer | File | PREP-audit line | Recheck line | Drift |
+|---|---|---|---|---|
+| `Module.Basis` (structure) | `Mathlib/LinearAlgebra/Basis/Defs.lean` | (PREP placed in `Basic.lean`) | **89** under `namespace Module` (line 75) | **CORRECTED** — PREP audit had wrong file. |
+| `Basis.mk` def | `Mathlib/LinearAlgebra/Basis/Basic.lean` | 110 (companion `mk_repr`) | def **101**, `mk_repr` **108**, `mk_apply` **112**, `coe_mk` **115** | ±2-13 lines on companions; not material. |
+| `basisOfLinearIndependentOfCardEqFinrank` | `Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean` | 237 + 243 (companion) | def **237** + companion **247** | 0 / +4 — bearer exact. |
+| `ZSpan.volume_fundamentalDomain` | `Mathlib/Algebra/Module/ZLattice/Basic.lean` | 386 | **386** | 0 — exact. |
+
+**Net drift**: 0 substantive. The PREP audit's only material slip was placing the `Basis` structure in `Basic.lean` instead of `Defs.lean` (under `namespace Module`). **PR #19048 caught this on Docker iteration 1** and adapted (type signatures use `Module.Basis`); see PR body for the bearer-correction discovery. **Bearer pin stability since 2026-05-13: 3 days, 0 substantive drift.**
+
+### Open same-slug PR
+
+Only **PR #19048** ("S11/S10D ACT — Module.Basis + covolume p² (build pending)", mine, 2026-05-14) remains open. Status: **CONFLICTING** (JSON `currentState.iteration`/`focus` adjacency vs PR #19026's metadata bump). Build-pending caveat in its body is now obsolete since PR #19178 fixed the S5-region cascade. Diff: +169 / -16 across `proofs/Proofs/ThreeSquares.lean` (+76 -1 at lines 1593-1659 + 1804), `state.md` (+73 -3), JSON (+20 -12).
+
+### ACT-readiness gate (next picker)
+
+- **Path A (PREFERRED)**: rebase #19048 atop current main; resolve JSON conflict by sliding `currentState.iteration` to next free integer (15 or 16 after this STATE-SYNC's 14), keeping #19048's `focus`/`nextAction`/`knowledge.*` additions verbatim. Re-run Docker — expect fully clean build (3524 jobs from #19178 + 4 new lemmas from #19048). ~30-60 min.
+- **Path B**: close #19048 as superseded; ship fresh S15 ACT with same 4 S10D lemmas + `Module.Basis` qualifier correction. ~45-90 min.
+- **Path C**: apply S12b PREP lint kit (low value; defer until after Path A / B). ~15-30 min.
+- **Path D**: S15 — discharge `dirichlet_key_lemma` (apply Mathlib's Minkowski theorem to the new sublattice + `dirichletForm_eq_p_of_lt_two_mul`). **Gated on Path A or B.** ~120-240 min. Discharges 1 axiom: 2 → 1.
+
+Full discussion in `sessions/2026-05-16-s14-statesync-postdrain.md`.
+
+### State of `ThreeSquares.lean` on origin/main (`8a3cda556b6`)
+
+- **Total LOC**: 1895 (post-Mechanic)
+- **Axioms**: 2 (unchanged) — `dirichlet_key_lemma` line **615**, `not_excluded_form_is_sum_three_sq` line **1604**
+- **Sorries**: 1 — line **1866** (comment-tagged, depends on `not_excluded_form_is_sum_three_sq`)
+- **Anchor lines verified**: `IsInDirichletSublattice` **1220**, `exists_int_sqrt_neg_d_mod_p` **1158**, `multiple_p_eq_p_of_lt_two_mul` **1305**
+
+### Honesty / scope guarantees
+
+- **No Lean edits.** `proofs/Proofs/ThreeSquares.lean` unchanged.
+- **No `problem.md` edits.**
+- **State.md updated:** new S14 section prepended (this header + section above). All prior S10D-Prep / S10E / S10C / S10A / S9 / S8 / S7 / S6 / S5 sections preserved verbatim below.
+- **JSON updated:** `currentState.iteration: 13 → 14`, `currentState.attemptCounts.{total, current}: 13 → 14`, `currentState.focus` rewritten to describe drain wave absorption, `currentState.nextAction` rewritten to describe Path A/B/C/D decision tree. **No** `knowledge.*` field changes (those are owned by future ACT sessions). **No** top-level `.phase` or `.lastUpdate` change (PR #19026 owns those).
+- **Mathlib pin SHA verified unchanged** (`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`) at 2026-05-16T02:18Z via raw GitHub.
+- **Conflict-free with #19048 except on JSON `currentState.{iteration, focus, nextAction, lastUpdate}`** — and that conflict is exactly the Path A rebase resolution.
 
 ## S10D-Prep: Mathlib v4.26.0 Bearer Audit (2026-05-13, researcher-1)
 
