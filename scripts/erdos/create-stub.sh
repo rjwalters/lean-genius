@@ -94,43 +94,58 @@ create_stub() {
     status=$(echo "$problem_data" | jq -r '.status // "open"' | tr '[:upper:]' '[:lower:]')
     statement=$(echo "$problem_data" | jq -r '.statement // .htmlStatement // "Problem statement pending."' | head -c 500)
     tags=$(echo "$problem_data" | jq -c '.tags // ["erdos"]')
+    local full_title description statement_text
+    full_title="Erdős Problem #$num: $title"
+    description=$(printf '%s' "$statement" | tr '\n' ' ' | head -c 200)
+    statement_text=$(printf '%s' "$statement" | tr '\n' ' ')
 
     # Create gallery directory
     mkdir -p "$gallery_path"
 
     # Create meta.json
-    cat > "$gallery_path/meta.json" << EOF
-{
-  "id": "erdos-$num",
-  "title": "Erdős Problem #$num: $title",
-  "slug": "erdos-$num",
-  "description": "$(echo "$statement" | tr '\n' ' ' | sed 's/"/\\"/g' | head -c 200)",
-  "meta": {
-    "author": "Erdős",
-    "sourceUrl": "https://erdosproblems.com/$num",
-    "status": "stub",
-    "proofRepoPath": "Proofs/Erdos${num}Problem.lean",
-    "tags": $tags,
-    "badge": "stub",
-    "sorries": 1,
-    "erdosNumber": $num,
-    "erdosUrl": "https://erdosproblems.com/$num",
-    "erdosProblemStatus": "$status"
-  },
-  "overview": {
-    "historicalContext": "This is a stub entry for Erdős Problem #$num. The problem was posed by Paul Erdős. Full historical context pending enhancement.",
-    "problemStatement": "$(echo "$statement" | tr '\n' ' ' | sed 's/"/\\"/g')",
-    "proofStrategy": "Pending enhancement.",
-    "keyInsights": ["Pending enhancement"]
-  },
-  "sections": [],
-  "conclusion": {
-    "summary": "Stub entry - enhancement needed.",
-    "implications": "Pending.",
-    "openQuestions": []
-  }
-}
-EOF
+    jq -n \
+        --arg id "erdos-$num" \
+        --arg title "$full_title" \
+        --arg slug "erdos-$num" \
+        --arg description "$description" \
+        --arg sourceUrl "https://erdosproblems.com/$num" \
+        --arg proofRepoPath "Proofs/Erdos${num}Problem.lean" \
+        --arg erdosUrl "https://erdosproblems.com/$num" \
+        --arg erdosProblemStatus "$status" \
+        --arg historicalContext "This is a stub entry for Erdős Problem #$num. The problem was posed by Paul Erdős. Full historical context pending enhancement." \
+        --arg problemStatement "$statement_text" \
+        --argjson tags "$tags" \
+        --argjson erdosNumber "$num" \
+        '{
+          id: $id,
+          title: $title,
+          slug: $slug,
+          description: $description,
+          meta: {
+            author: "Erdős",
+            sourceUrl: $sourceUrl,
+            status: "stub",
+            proofRepoPath: $proofRepoPath,
+            tags: $tags,
+            badge: "stub",
+            sorries: 1,
+            erdosNumber: $erdosNumber,
+            erdosUrl: $erdosUrl,
+            erdosProblemStatus: $erdosProblemStatus
+          },
+          overview: {
+            historicalContext: $historicalContext,
+            problemStatement: $problemStatement,
+            proofStrategy: "Pending enhancement.",
+            keyInsights: ["Pending enhancement"]
+          },
+          sections: [],
+          conclusion: {
+            summary: "Stub entry - enhancement needed.",
+            implications: "Pending.",
+            openQuestions: []
+          }
+        }' > "$gallery_path/meta.json"
 
     # Create minimal annotations.json
     cat > "$gallery_path/annotations.json" << EOF
