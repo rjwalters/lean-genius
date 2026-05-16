@@ -143,7 +143,7 @@
         "definitions": 2,
         "axioms": 0,
         "sorries": 0,
-        "description": "Approach B preliminaries (S3a, S3b): cyclic structure of (ZMod q)ˣ at every prime q (`isCyclic_units_zmod` instance + `card_units_zmod` theorem) and the order-p element extraction `exists_unit_of_order_p` (g₀^((q-1)/p) construction). Three sanity examples at (p,q) = (2,3), (3,7), (5,11). Deferred to S3c: lift to φ : ZMod p →* AddAut (ZMod q)."
+        "description": "Approach B full chain (S3a → S3d-i): S3a — cyclic structure of (ZMod q)ˣ (`isCyclic_units_zmod` instance + `card_units_zmod`). S3b — order-p element extraction `exists_unit_of_order_p` (g₀^((q-1)/p)). S3c-i — lift via `unitToAddAut : (ZMod q)ˣ →* AddAut (ZMod q)` + `exists_addAut_of_order_p`. S3c-ii — transport `AddAut (ZMod q)` to `MulAut (Multiplicative (ZMod q))` via `exists_mulAut_mult_of_order_p`. S3d-i — final `actionHom : Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))` (noncomputable, 1 sanity example). Sanity examples at (p,q) = (2,3), (3,7), (5,11). Deferred to S3d-ii: full SemidirectProduct assembly + non-cyclic proof (paste-ready ~80-LOC skeleton in research/problems/lagrange-theorem-oq-01-oq-01-oq-01/notes/2026-05-16-s10-s3d-ii-prep-semidirect-bearer-pin.md §3).\n"
       }
     ]
   },
