@@ -29,17 +29,17 @@
     "goal": "Replace `axiom hanson_bound` and `axiom lcm_hanson_bound` (parent file) with a fully proved Lean theorem."
   },
   "currentState": {
-    "phase": "ACT (Iter 34a 28b-1 + Lemma A #19208 + Iter 35b 28c assembly choose_mul_succ_dvd_lcmRange shipped build-verified 3066/3066; Iter 35a 28b-2 witness ACT remains parallel-ready)",
-    "since": "2026-05-15T22:55:00Z",
-    "iteration": 36,
-    "focus": "Iter 35b ACT (researcher-11, 2026-05-15, build-verified): SHIPS Iter 35 PREP #19293 §4.1 drop-in body — Theorem 28c `choose_mul_succ_dvd_lcmRange : (n + 1) * Nat.choose n k ∣ lcmRange (n + 1)` for `k ≤ n`. Tactic body wires 28b-1 bridge bound (Iter 34a #19208, file line 1545) + Iter 5 `prime_pow_dvd_lcmRange` (file line 134) through `Nat.factorization_prime_le_iff_dvd` (Mathlib v4.26.0 SHA `2df2f0150c2`). File state 1616 → 1642 LOC (+26 incl. docstring); 0 sorries; 1 axiom `hanson_bound` unchanged. Docker build verified 3066/3066 jobs clean (cache hit). The 28b-1 bridge bound is now wired to lcmRange divisibility — load-bearing for Hansons Route B integer-squeeze (Iter 28 ACT master target). Remaining open ACTs: 28b-2 witness saturation (Iter 35a, ~50-57 LOC, audit-corrected #19258 Option A) + 28a Beta-integral identity (Iter 36+, 60-100 LOC, Iter 29 PREP #18485). Both are independent and parallel-ready atop the new build-verified file.",
+    "phase": "PREP (Iter 36 paste-ready 28b-2 discharge for #19258 Option A; Iter 35a ACT-ready once Docker recovers — host disk 7.1Gi free, `docker ps` timeout)",
+    "since": "2026-05-16T05:00:00Z",
+    "iteration": 37,
+    "focus": "Iter 36 PREP (researcher-6, 2026-05-16, doc-only): UPGRADES Iter 34b PREP #19258 Option A from 3-`sorry` audit-corrected skeleton to fully-discharged paste-ready code. §2 Helper 1 `pow_sub_one_mod_pow` (25 LOC, no `sorry`); §3 Helper 2 `witness_mod_pow_lt` (24 LOC, no `sorry`, audit-corrected `j`-parameter signature); §4 main signature + setup (12 LOC) + Case A branch (9 LOC, no `sorry`); §5 main Case B body (27 LOC outer + 30 LOC residual filter-equality discharge; 2 nested `sorry`s — `k = p^a * (m - p^f)` arithmetic + filter-card discharge if `hmp` chain drifts). Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` re-confirmed unchanged since #19258. File-local bearer line-pins refreshed post-Iter-35b (Lemma A @ 1468; 28b-1 @ 1545; 28c @ 1598; axiom hanson_bound @ 1631). 13 Mathlib bearers + 5 file-local bearers verified. Total LOC estimate revised 57→127 (vs #19258), reflecting Case B's actual depth. ACT-readiness gate: **6/8 GREEN, 1/8 AMBER, 1/8 RED**. RED is INFRASTRUCTURE-ONLY: Docker `docker ps` times out at 10s under host disk pressure (7.1Gi free of 926Gi, 100% capacity). ACT deferred until Docker recovers. PREP per memory traps `_act_pivot_to_prep_when_host_docker_corrupt` + `_postship_pivot_upgrades_audit_doc_deferred_sketch_to_pasteready_prep`.",
     "blockers": [
       "28a Beta-integral identity: Iter 29 PREP #18485 only — no Lean shipping yet; Mathlib lacks Beta-integral identity in rational-denominator form. Largest remaining standalone Lean LOC commitment in Route B chain (60-100 LOC per Iter 31 §4).",
       "28b-2 witness saturation ACT pending: Iter 32 PREP §4 skeleton + Iter 34b PREP #19258 Option A audit corrections; ~50-57 LOC Lean (0 sorries reachable). Independent of 28c (now shipped).",
       "Integer-squeeze closure of hanson_bound: needs 28a + 28b-2 landed (28c shipped Iter 35b) AND integer-squeeze threshold n_0 <= 100 (numerical floor hanson_n1..hanson_n100 provides slack budget).",
       "Iter 25 envelope (4^n * (n/2)^sqrt(n)) is strictly weaker than Hanson 3^n target; closing requires Route B Beta-integral approach or primorial-vs-correction cancellation (PNT-equivalent)."
     ],
-    "nextAction": "Iter 35a ACT (highest readiness, audit-corrected Iter 34b PREP #19258 Option A): ship 28b-2 witness saturation `exists_witness_choose_saturates_log_succ` (~50-57 LOC; 0 sorries reachable). Helper 2 generalized to `j` parameter; explicit Case A/B split in main lemma. Depends only on Iter 32 PREP §4 + #19258 corrections. Independent of 28c (now shipped). Iter 36+ ACT (largest remaining LOC commitment, Iter 29 PREP #18485): ship 28a Beta-integral identity `(n+1) * Nat.choose n k * ∫₀¹ x^k(1-x)^(n-k) dx = 1` via `Real.betaIntegral` + `Real.Gamma_nat` (60-100 LOC per Iter 31 §4 estimate; Mathlib v4.26.0 lacks Beta-integral identity in rational-denominator form). Once 28a + 28b-2 land, integer-squeeze closure of `axiom hanson_bound` follows for n₀ ≤ 100 via the existing `hanson_n1..hanson_n100` numerical floor. Anti-targets: do NOT extend `hanson_n*` floor beyond n ≤ 100 (Iter 30 §Honest-gap 4 confirms busywork); do NOT pursue Routes A/C (PNT-blocked in Mathlib v4.26.0); do NOT tighten (n/2)^√n correction envelope (Iter 23/24 loose by design).",
+    "nextAction": "Iter 35a ACT (paste-ready from Iter 36 PREP §2-§5, this iter): once Docker recovers, drop in Helper 1 (25 LOC) + Helper 2 (24 LOC) + main Case A (9 LOC) verbatim with no `sorry`; discharge Case B's 2 nested `sorry`s (~30 LOC residual filter-equality). Total ACT cost: ~127 LOC, estimated 3-5 Docker iters. Insertion point: between current file line 1584 (end of 28b-1) and line 1586 (start of 28c docstring). Iter 36+ ACT (largest remaining LOC commitment, Iter 29 PREP #18485): ship 28a Beta-integral identity `(n+1) * Nat.choose n k * ∫₀¹ x^k(1-x)^(n-k) dx = 1` via `Real.betaIntegral` + `Real.Gamma_nat` (60-100 LOC per Iter 31 §4 estimate). Mathlib v4.26.0 lacks rational-denominator form, so this is a self-contained ACT atop the build-verified file. **Parallel-ready** with Iter 35a (28b-2). Both must land before `axiom hanson_bound` can be discharged via integer-squeeze + existing `hanson_n1..hanson_n100` numerical floor.",
     "attemptCounts": {
       "total": 30,
       "currentApproach": 12,
@@ -150,7 +150,7 @@
     ]
   },
   "started": "2026-04-26T08:56:57.649Z",
-  "lastUpdate": "2026-05-15T22:58:00Z",
+  "lastUpdate": "2026-05-16T05:00:00Z",
   "significance": 7,
   "tractability": 3,
   "leanFiles": [

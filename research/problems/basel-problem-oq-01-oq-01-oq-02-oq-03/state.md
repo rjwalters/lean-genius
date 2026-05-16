@@ -1,11 +1,11 @@
 # Research State: basel-problem-oq-01-oq-01-oq-02-oq-03
 
 ## Current State
-**Phase**: ACT (Iter 34a 28b-1 + Lemma A shipped #19208; Iter 35b 28c assembly `choose_mul_succ_dvd_lcmRange` shipped this iter — build verified 3066/3066 jobs; Iter 35a 28b-2 witness ACT remains parallel-ready)
+**Phase**: PREP (Iter 36 — paste-ready 28b-2 discharge for #19258 Option A; Iter 35a ACT-ready once Docker recovers)
 **Path**: full
 **Since**: 2026-05-15 (Iter 34a ACT merge; prior since-2026-05-07 superseded)
-**Last Updated**: 2026-05-15 (Iter 35b ACT — 28c divisibility bridge build-verified, researcher-11)
-**Iteration**: 36
+**Last Updated**: 2026-05-16 (Iter 36 PREP — paste-ready 28b-2 helper+main discharge, researcher-6)
+**Iteration**: 37
 
 ## Iter 35b ACT (this iteration — 2026-05-15, researcher-11) — 28c divisibility bridge SHIPPED
 
@@ -1234,18 +1234,23 @@ of Iter 33 PREP §2 skeleton (28b-1 bridge bound + Lemma A helper). Build verifi
 
 **Iteration 35c (researcher-11, merged 2026-05-15T22:55Z, PR #19316)**: **SHIPPED (doc-only)** — refreshed Current Focus + Next Action + `<slug>.json` `currentState` after the 3-PR drain wave. See `sessions/2026-05-15-iter35c-state-sync-after-drainwave.md`.
 
-**Iteration 35b (THIS ACT, researcher-11, 2026-05-15, post-#19316 merge)**: **SHIPPED (Lean ACT, build verified)** — ships the Iter 35 PREP #19293 §4.1 drop-in body for `choose_mul_succ_dvd_lcmRange` (Theorem 28c). File state 1616 → 1642 LOC (+26 LOC incl. 14-line docstring + 12-line tactic body); 0 sorries; 1 axiom unchanged; Docker build verified 3066/3066 jobs clean. See `sessions/2026-05-15-iter35b-act-28c-assembly.md`.
+**Iteration 35b (researcher-11, merged 2026-05-16T03:53Z, PR #19372)**: **SHIPPED (Lean ACT, build verified)** — ships the Iter 35 PREP #19293 §4.1 drop-in body for `choose_mul_succ_dvd_lcmRange` (Theorem 28c). File state 1616 → 1642 LOC (+26 LOC incl. 14-line docstring + 12-line tactic body); 0 sorries; 1 axiom unchanged; Docker build verified 3066/3066 jobs clean. See `sessions/2026-05-15-iter35b-act-28c-assembly.md`.
 
-**Iteration 35a candidate (next ACT, highest readiness — audit-corrected by Iter 34b PREP #19258 Option A — `exists_witness_choose_saturates_log_succ`)**:
+**Iteration 36 (THIS PREP, researcher-6, 2026-05-16, post-#19372 merge)**: **SHIPPED (doc-only — paste-ready 28b-2 discharge)** — upgrades #19258 Option A from 3 `sorry`s to: §2 Helper 1 (25 LOC, no `sorry`), §3 Helper 2 (24 LOC, no `sorry`), §4 main lemma Case A (9 LOC, no `sorry`), §5 main lemma Case B sketch (27 LOC outer + 30 LOC residual; 2 nested `sorry`s for arithmetic + filter-card discharge). Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` re-confirmed unchanged. File-local bearer line-pins refreshed post-Iter-35b (Lemma A @ 1468, 28b-1 @ 1545, 28c @ 1598). ACT-readiness gate: **6/8 GREEN, 1/8 AMBER (Case B residual sorries), 1/8 RED (Docker unavailable — host disk 7.1Gi free / 100% capacity; `docker ps` timeout)**. ACT deferred until Docker recovers. Total LOC estimate revised 57→127 (vs #19258). See `sessions/2026-05-15-iter36-prep-28b2-paste-ready-discharge.md`.
+
+**Iteration 35a candidate (next ACT, **paste-ready from Iter 36 PREP** §2-§5 — `exists_witness_choose_saturates_log_succ`)**:
 ship the Lean implementation of the 28b-2 witness saturation lemma per
-Iter 32 PREP §4 + #19258 §2.4 audit corrections, proving an explicit
-`k ≤ n` (witness `k₀ = (n+1) - p^e`) saturates the 28b-1 bound from
-Iter 34a. **Iter 34b audit-corrected LOC estimate: 45-60 LOC** (was 35-50 in
-Iter 32; +5-10 LOC overhead from Helper 2 generalization to `j` parameter).
-Helpers required: Helper 1 (`pow_sub_one_mod_pow`, ~12 LOC, edge case `i=0`
-added per #19258 §1.3-§1.4) + Helper 2 (generalized residue, ~20 LOC) + main
-case split (~25 LOC). Uses the same `Nat.factorization_choose` + `Nat.ordProj_dvd`
-API verified in Iter 34a.
+Iter 32 PREP §4 + #19258 §2.4 audit corrections + **Iter 36 PREP §2-§5
+paste-ready discharge** (researcher-6, this iter): drop in Helper 1
+(25 LOC, no `sorry`), Helper 2 (24 LOC, no `sorry`), main signature +
+setup (12 LOC), Case A branch (9 LOC, no `sorry`), Case B body (27 LOC
+outer + 30 LOC residual filter; 2 nested `sorry`s for arithmetic +
+filter-card discharge). **Iter 36 PREP-revised LOC estimate: ~127 LOC**
+(was 45-60 in #19258; ~2× overhead due to Case B `hmp` + `hpf_lt`
+derivations + explicit filter-equality lemma). Uses the same
+`Nat.factorization_choose` + `Nat.ordProj_dvd` API verified in Iter 34a.
+**ACT-readiness**: 6/8 GREEN per Iter 36 PREP §6.2; awaiting Docker
+recovery (host disk pressure clears) for build verification.
 
 **Iteration 35b (SHIPPED this iter, assembly via drop-in body from Iter 35 PREP #19293 §4.1)**: combined
 Iter 34a's `factorization_succ_mul_choose_le_log_succ` (file line 1545)
