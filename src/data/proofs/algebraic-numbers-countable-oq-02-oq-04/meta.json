@@ -2,12 +2,12 @@
   "id": "algebraic-numbers-countable-oq-02-oq-04",
   "title": "Countability of Computable Real Numbers",
   "slug": "algebraic-numbers-countable-oq-02-oq-04",
-  "description": "Open question addressing the cardinality layer below algebraic in the real-number hierarchy: prove that the set of computable real numbers is countable. A real `r` is computable when some Turing machine (formalized as a `Computable` function `ℕ → ℚ` in Mathlib) outputs a sequence of rationals converging to `r`. Since Turing-machine descriptions form a countable set, so does the set of computable reals — yielding the hierarchy ℚ ⊊ algebraic ⊊ computable ⊊ ℝ with all but the last carrying cardinality ℵ₀. S3 status (build pending): full proof via `decodeReal : Nat.Partrec.Code → ℝ` pipeline; main theorem `computable_reals_countable` and exact cardinality `card_computable_reals_eq_aleph0` are unconditional, with `wip` badge held until Docker build verifies.",
+  "description": "Open question addressing the cardinality layer below algebraic in the real-number hierarchy: prove that the set of computable real numbers is countable. A real `r` is computable when some Turing machine (formalized as a `Computable` function `ℕ → ℚ` in Mathlib) outputs a sequence of rationals converging to `r`. Since Turing-machine descriptions form a countable set, so does the set of computable reals — yielding the hierarchy ℚ ⊊ algebraic ⊊ computable ⊊ ℝ with all but the last carrying cardinality ℵ₀. S3 (build-verified): full proof via `decodeReal : Nat.Partrec.Code → ℝ` pipeline; main theorem `computable_reals_countable` and exact cardinality `card_computable_reals_eq_aleph0` are unconditional.",
   "meta": {
     "author": "Lean Genius Research",
     "sourceUrl": "https://en.wikipedia.org/wiki/Computable_number",
     "date": "2026",
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/AlgebraicNumbersCountableOQ02OQ04.lean",
     "tags": [
       "set-theory",
@@ -19,7 +19,7 @@
       "research",
       "seeker-selected"
     ],
-    "badge": "wip",
+    "badge": "verified",
     "sorries": 0,
     "axiomCount": 0,
     "lineCount": 656,
@@ -27,7 +27,6 @@
     "mathlib_version": "4.26.0",
     "dateAdded": "2026-05-11",
     "openQuestions": [
-      "Verify the S3 + S4 build (Docker); on green, bump `badge` from `wip` to `verified`.",
       "Prove that every algebraic real is computable (so the inclusion `algebraic ⊆ computable` lifts to the new definition).",
       "Prove `IsComputable e` and `IsComputable π` to exhibit a computable transcendental (concrete strict inclusion `algebraic ⊊ computable`).",
       "Construct an explicit non-computable real (e.g. Chaitin's Ω). The S4 cardinality argument proves existence; an explicit construction would witness it."
