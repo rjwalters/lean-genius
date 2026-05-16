@@ -1,30 +1,39 @@
 {
   "slug": "arithmetic-series-oq-02-oq-04-oq-01",
   "title": "Formalize descending factorial analogue of arithmetic series",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "DONE",
+  "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in analysis: Formalize descending factorial analogue of arithmetic series.",
-    "whyMatters": []
+    "formal": "C(n,k) · k! = n.descFactorial k    (Nat.descFactorial_eq_factorial_mul_choose, reversed)",
+    "plain": "Formalize descending factorial analogue of arithmetic series: the ordered-selection formula C(n,k) · k! = n.descFactorial k, dual to the ascending factorial identity in OQ-02-OQ-04.",
+    "whyMatters": [
+      "Closes the descending-factorial leg of the OQ-04 ascending/descending dual pair",
+      "Verified Lean proof: 12 theorems, 0 sorries, 0 axioms, 169 LOC"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "choose_descFactorial: C(n,k) · k! = n.descFactorial k",
+      "choose_product: C(n,k) · k! = ∏ i ∈ range k, (n-i)",
+      "choose_full_factorial: C(n,k) · k! · (n-k)! = n!",
+      "factorial_dvd_descFactorial: k! | n.descFactorial k",
+      "ascending_descending_duality: bridges to OQ-02-OQ-04 ascending leg"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "ACHIEVED: Descending factorial identity verified; 0 sorries, 0 axioms; gallery meta status=verified."
   },
   "currentState": {
-    "phase": "DONE",
-    "since": "2026-04-03T00:00:00Z",
-    "iteration": 1,
-    "focus": "Created ArithmeticSeriesOQ02OQ04OQ01.lean with 11 theorems, 0 sorries, 0 axioms.",
+    "phase": "COMPLETED",
+    "since": "2026-05-16T09:05:00Z",
+    "iteration": 2,
+    "focus": "STATE-SYNC complete. Work was finished pre-2026-04-27 (gallery meta status=verified, 0 sorries, 0 axioms, 169 LOC, 12 theorems) but top-level JSON `phase`/`status` and `state.md` had drifted (still showing ACT/active/NEW). This sync flips top-level phase ACT→DONE, status active→completed, updates state.md head, refreshes problemStatement + knownResults to reflect achieved work.",
     "blockers": [],
-    "nextAction": "Verify compilation with docker-build.sh.",
+    "nextAction": "None — work complete; gallery in sync. After merge, slug drops off claim-random's candidate pool.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 0,
       "approachesTried": 1
     }
   },
