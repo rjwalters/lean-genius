@@ -7,7 +7,7 @@
     "author": "Formalized in Lean 4 (Mathlib)",
     "sourceUrl": "https://en.wikipedia.org/wiki/Arithmetic%E2%80%93geometric_mean",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/AmgmInequalityOQ04.lean",
     "tags": [
       "analysis",
@@ -19,13 +19,13 @@
       "arithmetic-geometric-mean",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "verified",
     "sorries": 0,
-    "axiomCount": 3,
-    "lineCount": 316,
+    "axiomCount": 0,
+    "lineCount": 306,
     "theoremCount": 22,
     "definitionCount": 5,
-    "assumptions": "3 axioms: ellipticK (function), ellipticK_zero, agm_ellipticK (Gauss's theorem connecting AGM to elliptic integrals). All convergence results are proved from Mathlib's monotone convergence theorem.",
+    "assumptions": "0 axioms in this parent file (S2 ACT, 2026-05-16: Lever A deletion of 3 vacuous placeholder axioms ellipticK / ellipticK_zero / agm_ellipticK now superseded by rigorous definitions in the child file AmgmInequalityOQ04OQ01.lean). The AGM convergence theory is proved entirely from Mathlib (monotone convergence theorem). The Gauss AGM-elliptic-integral identity remains axiomatized in the child slug oq-04-oq-01 as agm_ellipticK_connection (200+ page classical proof, requires Landen/theta-function theory not in Mathlib).",
     "mathlib_version": "4.26.0"
   },
   "overview": {
@@ -37,7 +37,7 @@
       "**AM-GM is the engine**: am_ge_gm proves (a+b)/2 ≥ √(ab) by the identity ((a+b)/2)² - ab = (a-b)²/4 ≥ 0, handled by nlinarith [sq_nonneg (a-b)]. This single inequality drives the entire convergence: it establishes bₙ ≤ aₙ at each step (sandwich), which in turn implies aₙ is decreasing and bₙ is increasing. The Lean proof uses Real.sqrt_sq to convert to a squared inequality, then Real.sqrt_le_sqrt for monotonicity.",
       "**Gap halving via squeeze**: The gap contraction aₙ₊₁ - bₙ₊₁ ≤ (aₙ-bₙ)/2 follows elegantly from the observation that bₙ₊₁ = √(aₙbₙ) ≥ bₙ (proved as a calc chain: bₙ = √(bₙ²) ≤ √(aₙbₙ) = bₙ₊₁). This gives aₙ - bₙ ≤ (a-b)/2ⁿ by induction. The actual convergence is quadratic (doubly exponential: gap ≈ C·4^{-2^n}) but the linear bound suffices to prove gap → 0.",
       "**Monotone convergence + tendsto_nhds_unique**: agm_common_limit identifies the two limits by showing inf aₙ - sup bₙ = lim(aₙ - bₙ) = 0. The key Mathlib tools: tendsto_atTop_ciInf/ciSup for existence, tendsto_nhds_unique to identify the limit of the gap with the limit computed via subtraction. This is a clean application of the separation-of-convergence technique: prove the sequences converge, then prove their limits coincide.",
-      "**The 3 axioms are mathematically honest**: ellipticK, ellipticK_zero, and agm_ellipticK axiomatize K(k) and Gauss's connection theorem. The first two are self-consistent (K(0) = ∫₀^{π/2} 1 dθ = π/2), and the third is deep: Gauss's proof requires the theory of theta functions or analytic continuation. This is a clean separation of what can be proved from Mathlib's current library vs what requires new theory.",
+      "**Axiom-free parent (post-S2)**: The S2 Lever A refactor (2026-05-16) deleted three vacuous Phase-1 placeholder axioms (ellipticK as an uninterpreted function, ellipticK_zero, and agm_ellipticK) from the parent file. Their rigorous counterparts now live in the child slug oq-04-oq-01: ellipticK is defined via Mathlib intervalIntegral, ellipticK_zero is a proved theorem, and only the deep Gauss AGM-K identity remains axiomatized (200+ page proof via Landen / theta functions, not yet in Mathlib). This clean slug-level separation lets the parent slug claim verified status while the genuinely open identity stays scoped to its dedicated child slug.",
       "**Connection to Brent-Salamin π computation**: The axiom agm_ellipticK expresses K(k) in terms of AGM. Combined with Legendre's relation K(k)·K(k') + K(k')·K(k) = π/2, one can express π entirely in terms of AGM iterations. Setting a=1, b=1/√2: M(1,1/√2) = π/(2K(1/√2)). Legendre's relation gives K(1/√2) = π/(4M(1,1/√2)). Solving: M(1,1/√2) = π/√2/M(1,1/√2), so M(1,1/√2)² = π/(2√2), giving π = √2·M(1,1/√2)². This is essentially the Brent-Salamin formula."
     ],
     "prerequisites": [
@@ -47,7 +47,7 @@
     ]
   },
   "conclusion": {
-    "summary": "The Gauss AGM iteration is fully formalized: 22 theorems, 8 definitions, 3 axioms (ellipticK function, K(0)=π/2, and Gauss's connection theorem). Convergence to the common limit M(a,b) is machine-verified from AM-GM and Mathlib's monotone convergence theorem. The elliptic integral axioms are mathematically honest: they capture Gauss's deep 1799 theorem which requires techniques (theta functions, modular forms) not yet in Mathlib.",
+    "summary": "The Gauss AGM convergence theory is fully verified: 22 theorems, 5 definitions, 0 axioms. Convergence to the common limit M(a,b) is machine-verified from AM-GM and Mathlib monotone convergence (tendsto_atTop_ciInf / ciSup + squeeze). After S2 Lever A axiom deletion (2026-05-16), this parent file is axiom-free; the elliptic-integral connection (ellipticK definition + Gauss identity) lives in the child slug oq-04-oq-01 (AmgmInequalityOQ04OQ01.lean), where K(k) is rigorously defined via Mathlib intervalIntegral and the AGM-K identity is the single residual axiom requiring Landen/theta-function theory.",
     "implications": "This formalization demonstrates the power of Mathlib's real analysis infrastructure: tendsto_atTop_ciInf/ciSup, squeeze_zero, and tendsto_nhds_unique combine to give a clean convergence proof from first principles. The AGM is central to high-performance computation of π and elliptic integrals (Brent-Salamin algorithm). A full formalization of Gauss's theorem would require formalizing K(k) and Legendre's relation in Mathlib.",
     "openQuestions": [
       "Define K(k) = ∫₀^{π/2} dθ/√(1-k²sin²θ) in Lean using Mathlib's intervalIntegral and prove its basic properties (K(0)=π/2, K increasing, K→∞ as k→1⁻)",

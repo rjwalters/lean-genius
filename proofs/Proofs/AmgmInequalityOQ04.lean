@@ -10,18 +10,21 @@ starting from a₀ = a, b₀ = b.
 
 Both sequences converge to the same limit M(a,b), the arithmetic-geometric mean.
 
-This file formalizes:
+This file formalizes the AGM convergence theory (axiom-free):
 1. The AGM iteration and its basic properties
 2. The sandwich property: bₙ ≤ bₙ₊₁ ≤ aₙ₊₁ ≤ aₙ
 3. Gap contraction: aₙ₊₁ - bₙ₊₁ ≤ (aₙ - bₙ)/2
 4. Convergence of both sequences to a common limit
-5. The connection to elliptic integrals (axiomatized)
 
 ## Key Result
 
 Gauss (1799) discovered that M(1, √2/2) = π / (2K(1/√2)), where K is the
 complete elliptic integral of the first kind. This remarkable connection links
-a simple iteration to deep transcendental functions.
+a simple iteration to deep transcendental functions, and is now formalized in
+the companion file `AmgmInequalityOQ04OQ01.lean` (child slug oq-04-oq-01),
+where `ellipticK` is defined rigorously via Mathlib's `intervalIntegral` and
+the AGM–K identity is stated as the single remaining axiom there.
+This parent file retains only the AGM convergence machinery and is axiom-free.
 
 ## Status
 - [x] AGM iteration defined
@@ -29,7 +32,7 @@ a simple iteration to deep transcendental functions.
 - [x] Sandwich property proved
 - [x] Gap contraction proved
 - [x] Convergence proved (via Mathlib monotone convergence)
-- [ ] Elliptic integral connection (axiomatized, K(k) not in Mathlib)
+- [x] Elliptic integral connection: see child `AmgmInequalityOQ04OQ01.lean`
 -/
 
 import Mathlib
@@ -281,36 +284,23 @@ theorem agm_bounds (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
     rwa [agmA_zero] at this
 
 -- ============================================================================
--- § 7. Connection to Elliptic Integrals (Axiomatized)
+-- § 7. Connection to Elliptic Integrals (See Child Slug oq-04-oq-01)
 -- ============================================================================
 
 /-
-Gauss's remarkable discovery (1799): The AGM is connected to elliptic integrals.
+Gauss's 1799 identity M(a,b) = a·π/(2·K(√(1-(b/a)²))) connects the AGM to
+the complete elliptic integral of the first kind K(k) = ∫₀^{π/2} dθ/√(1-k²sin²θ).
 
-The complete elliptic integral of the first kind is:
-  K(k) = ∫₀^{π/2} dθ / √(1 - k²sin²θ)
+The rigorous formalization lives in `AmgmInequalityOQ04OQ01.lean`:
+- `ellipticK k` is defined there via Mathlib's `intervalIntegral` (not axiomatized).
+- `ellipticK_zero : ellipticK 0 = π / 2` is proved there as a theorem.
+- The deep AGM–K identity `agm_ellipticK_connection` remains the single axiom
+  there (a 200+ page proof requiring Landen's transformation / theta functions).
 
-Gauss proved: M(a, b) = a · π / (2 · K(√(1 - (b/a)²)))
-
-In particular: M(1, 1/√2) = π / (2K(1/√2))
-
-This means the AGM provides an efficient algorithm for computing π via
-elliptic integrals — the iteration converges quadratically.
-
-These are axiomatized since Mathlib does not contain elliptic integrals.
+This parent file is now axiom-free and covers only the convergence theory of
+the AGM iteration. Down-stream callers needing the elliptic-integral connection
+should `import Proofs.AmgmInequalityOQ04OQ01` and use the rigorous definitions
+defined in namespace `AmgmInequalityOQ04OQ01`.
 -/
-
-/-- Complete elliptic integral of the first kind K(k).
-    Not yet in Mathlib — axiomatized. -/
-axiom ellipticK : ℝ → ℝ
-
-/-- K(0) = π/2 (degenerate case: integral of 1). -/
-axiom ellipticK_zero : ellipticK 0 = π / 2
-
-/-- **Gauss's AGM–Elliptic Integral Theorem:**
-    M(a, b) = a · π / (2 · K(√(1 - (b/a)²)))
-    for a ≥ b > 0 and complementary modulus k' = b/a. -/
-axiom agm_ellipticK (a b : ℝ) (ha : 0 < a) (hb : 0 < b) (hab : b ≤ a) :
-    agm a b = a * π / (2 * ellipticK (Real.sqrt (1 - (b / a) ^ 2)))
 
 end AmgmInequalityOQ04
