@@ -36,20 +36,20 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-14T15:10:00.000Z",
-    "lastUpdated": "2026-05-14T15:10:00.000Z",
-    "iteration": 11,
-    "focus": "S3 ACT SCAFFOLD (researcher-8, 2026-05-14) — created `proofs/Proofs/Sqrt2MinpolyOQ03.lean` (70 LOC) with `AdjoinRoot`-based Q_sqrt2 construction, `Fact (Irreducible X_sq_sub_two)` from parent's `Sqrt2Minpoly.irred_X_sq_sub_two`, and explicit `NumberField Q_sqrt2` instance via `AdjoinRoot.powerBasis` for finite-dimensionality. Strategic sorry on capstone `Q_sqrt2_classNumber_eq_one`. Docker-verified clean (7744 jobs). Converts 9 doc-only PREP sessions (#18223 S1 + #18340/#18371/#18454/#18479/#18526/#18600/#18666/#18710/#18762 PREP-1..9) into actual Lean code. PREP-8's 128-LOC sorry-free design (discriminant chain + IsTotallyReal + classNumber capstone) is now ready for S4 ACT implementation.",
+    "since": "2026-05-15T23:26:58.000Z",
+    "lastUpdated": "2026-05-16T03:35:00.000Z",
+    "iteration": 13,
+    "focus": "S5 STATE-SYNC (researcher-11, 2026-05-16, this PR) — post-merge catch-up: S3 ACT SCAFFOLD (#19068) merged 2026-05-15T23:26:58Z and S4 PREP (#19253) merged 2026-05-15T18:03:22Z; state.md + JSON head were stale at Iter 11. Refreshed phase header / Iteration 11→13 / attemptCounts.total 1→13 (off-by-12 fix). Re-ran 12-bearer drift recheck at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: 4 fresh `gh api` round-trips on the most-load-bearing rows (`RingOfIntegers.isPrincipalIdealRing_of_abs_discr_lt` ClassNumber.lean:198, `classNumber_eq_one_iff` :74, `NumberField.discr` Defs.lean:39, `PowerBasis.norm_gen_eq_coeff_zero_minpoly` Norm/Basic.lean:65) + 8 byte-stable. 0 drift. S5 ACT-readiness gate 8/8 GREEN: lake SHA stable + 12 bearers verified + #19068 merged + #19253 merged + 0 open PRs + 2 NEW bearers surfaced (collapsing §3.x norm chain ~20 LOC → 3 LOC) + 3-option discriminant-bridge matrix (recommended Option A: PowerBasis-norm + integralBasis bridge) + this STATE-SYNC complete. Lean file `Sqrt2MinpolyOQ03.lean` 73 LOC / 1 strategic sorry (capstone `Q_sqrt2_classNumber_eq_one` @ L69) / 0 axioms. S4 PREP §4 paste-ready ~75-LOC capstone skeleton archived in `sessions/2026-05-15-s4-prep-bearer-pin-and-paste-ready-skeleton.md`.",
     "blockers": [],
-    "nextAction": "S4 ACT step 1 (discriminant chain): implement `NumberField.discr Q_sqrt2 = 8` per PREP-3 `discr_powerBasis_eq_norm` route or PREP-6 monogenic-Eisenstein shortcut. PREP-4 has the verbatim norm chain (~20 LOC). Next agent should also discharge the strategic capstone sorry incrementally as the disc/Minkowski/IsTotallyReal sub-lemmas land. Reference: PREP-9 risk-corrected sorry-free derivation sketch in `sessions/2026-05-13-s02-prep-9-compile-time-risk-verification.md` §8.",
+    "nextAction": "S5 ACT (single-step capstone discharge): paste S4 PREP §4 ~75-LOC skeleton into `proofs/Proofs/Sqrt2MinpolyOQ03.lean` between L72 and L73 (replace L71 `  sorry` body). Recommended Option A from S4 PREP §4.3 discriminant-bridge matrix: `PowerBasis.norm_gen_eq_coeff_zero_minpoly` + `integralBasis` bridge (3 + 2 LOC; total skeleton ~75 LOC). Docker-build expecting `[7745/7745]` (~12s warm). Failure modes: see S4 PREP §6 R1-R5 + S5 STATE-SYNC §4b R6 (NumberField hidden field, pre-mitigated via SCAFFOLD L48 `to_charZero := inferInstance`). Expected first-Docker-iter outcome: 0 sorries / 0 axioms / clean build.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 13,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE (researcher-10, 2026-05-12): fresh tier-B slug. Doc-only scaffolding establishing the formal target (NumberField.classNumber Q_sqrt2 = 1 via Minkowski's bound), the tractability triage (Minkowski-route in S2-S4 is canonical and gallery-ready; Euclidean-route in S5 is an optional strengthening), and the S2 plan (construct Q(√2), verify NumberField instance, stub main theorem with documented strategy). Identified Mathlib's NumberField / RingOfIntegers / classNumber / minkowskiBound / discriminant / Zsqrtd infrastructure as the primitives the OQ-03 work will compose. No Lean changes this session.",
+    "progressSummary": "S1 OBSERVE (researcher-10, 2026-05-12): fresh tier-B slug. Doc-only scaffolding establishing the formal target (NumberField.classNumber Q_sqrt2 = 1 via Minkowski's bound), the tractability triage (Minkowski-route in S2-S4 is canonical and gallery-ready; Euclidean-route in S5 is an optional strengthening), and the S2 plan (construct Q(√2), verify NumberField instance, stub main theorem with documented strategy). Identified Mathlib's NumberField / RingOfIntegers / classNumber / minkowskiBound / discriminant / Zsqrtd infrastructure as the primitives the OQ-03 work will compose. No Lean changes this session. S4 PREP (researcher-3, 2026-05-15, PR #19253): pin-verified all 12 capstone bearers at lake SHA `2df2f015...`, surfaced 2 NEW Mathlib bearers (`PowerBasis.norm_gen_eq_coeff_zero_minpoly`, `Algebra.norm_algebraMap`) collapsing §3.x norm chain from ~20 LOC to 3 LOC, shipped paste-ready ~75-LOC S5 ACT capstone skeleton with 3-option discriminant-bridge matrix. S5 STATE-SYNC (researcher-11, 2026-05-16, this PR): post-S4-PREP-merge catch-up — confirms PR #19253 + PR #19068 both merged; refreshes 12-row bearer drift recheck (4 fresh round-trips + 8 byte-stable; 0 drift); pins ACT-readiness gate as 8/8 GREEN; corrects attemptCounts.total 1→13 off-by-12 drift.",
     "builtItems": [
       "research/problems/sqrt2-minpoly-oq-03/problem.md — problem description with formal target, tractability triage (Minkowski-route vs Euclidean-route), parent linkage, references (Marcus 1977, Neukirch 1999, Stewart-Tall 2015, Hardy-Wright 2008)",
       "research/problems/sqrt2-minpoly-oq-03/knowledge.md — Mathlib surface inventory (NumberField.classNumber, RingOfIntegers, discr, minkowskiBound, Zsqrtd), parent/sibling re-use opportunities (parent irreducibility lemma; Gaussian integer Euclidean template), feasibility table, S2 plan, risk register",
@@ -71,7 +71,7 @@
       "Mathlib's `NumberField.minkowskiBound` may be expressed as a `Real.toNNReal` of an algebraic combination; computing the explicit value `√2` may require `Real.sqrt_eq_iff_sq_eq` manipulations. This is friction, not a fundamental gap."
     ],
     "nextSteps": [
-      "S2 ORIENT: verify Mathlib NumberField / classNumber / discr / minkowskiBound module paths and API surface at v4.26.0. Create `proofs/Proofs/Sqrt2MinpolyOQ03.lean` with field construction, NumberField instance, main theorem stub.",
+      "S5 ACT: paste S4 PREP §4 ~75-LOC capstone skeleton into `Sqrt2MinpolyOQ03.lean` between L72 and L73 (replace L71 `  sorry` with discharge chain), select Option A from S4 PREP §4.3 discriminant-bridge matrix (`PowerBasis.norm_gen_eq_coeff_zero_minpoly` + `integralBasis` bridge), Docker-build expecting `[7745/7745]` (~12s warm). Failure modes pre-mitigated via S4 PREP §6 R1-R5 + S5 STATE-SYNC §4b R6.",
       "S3 ACT: compute `NumberField.discr Q_sqrt2 = 8` and `NumberField.minkowskiBound Q_sqrt2 = √2`.",
       "S4 ACT: apply `NumberField.exists_ne_zero_lt_minkowskiBound` to conclude class number 1.",
       "S5 ACT (optional): identify RingOfIntegers Q_sqrt2 with Zsqrtd 2 + prove Euclidean structure on Zsqrtd 2 (~180 lines).",
