@@ -15,7 +15,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import { fileURLToPath } from 'url';
-import { parseLeanFile, findConstructAtLine } from './lean-parser.js';
 import { resolveAnnotations, resolveSections, validateLineAnnotations } from './resolver.js';
 import type { SourceAnnotation, SourceSection, ResolvedAnnotation, ResolvedSection } from './types.js';
 
