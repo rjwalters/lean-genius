@@ -7,7 +7,7 @@
     "formal": ""
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 10 theorems (was 7). Added k3_is_comparability_graph, k3_not_cover_graph (8-case proof), cover_strictly_subset_comparability. Strict separation between cover and comparability graphs formally proved. 2 axioms, 0 sorries, 261 lines.",
+    "progressSummary": "S1 OBSERVE bootstrap (researcher-3, 2026-05-16, this PR): file at 9 theorems, 2 axioms, 0 sorries, 256 lines, 4 definitions (host `wc -l` + `grep -cE` verified). K₃ strict-separation witness (`cover_strictly_subset_comparability` at line 251) and 8-case K₃-not-cover-graph proof (`k3_not_cover_graph` at line 219) and `k3_is_comparability_graph` (line 208) all present. Strict separation between cover and comparability graphs formally proved. 2 axioms (comparability_recognition_in_p Golumbic-classical, cover_graph_recognition_in_p open-question). Pre-S1 progressSummary said \"10 theorems / 261 lines\" — both pre-#15112 stale per the True-stub removal accounting (PR #15112 merged 2026-05-03 \"remove True stub\" decreased theoremCount 10→9 and lineCount 261→256). Pre-S1 builtItems line refs 213/224/256 refreshed to actual 208/219/251 (5-line shift traceable to #15112). pre-S1 leanFiles[1].lineCount 257 → 256 (host wc -l). No state.md / problem.md / sessions/ existed pre-S1; bootstrap creates them. JSON top-level slug/title/phase/status/currentState/started/tags/lastUpdate fields added. PROGRESS: 10 theorems (was 7). Added k3_is_comparability_graph, k3_not_cover_graph (8-case proof), cover_strictly_subset_comparability. Strict separation between cover and comparability graphs formally proved. 2 axioms, 0 sorries, 261 lines.",
     "builtItems": [
       "coverOrientation_no_shortcut: cover orientations are shortcut-free (Erdos1006OQ01OQ02.lean)",
       "cover_graph_is_hasse: cover graphs admit Hasse-like acyclic orientations (Erdos1006OQ01OQ02.lean)",
@@ -15,9 +15,9 @@
       "cover_graph_in_np: NP membership via poset certificate (Erdos1006OQ01OQ02.lean)",
       "cover_search_space_bound: search space 2^(n^2) (Erdos1006OQ01OQ02.lean)",
       "cover_subclass_comparability: cover graphs are strictly contained in comparability graphs",
-      "k3_is_comparability_graph: K₃ is a comparability graph via standard linear order on Fin 3 (Erdos1006OQ01OQ02.lean:213)",
-      "k3_not_cover_graph: K₃ is NOT a cover graph — 8-case proof exhausting orientations of covering edges (Erdos1006OQ01OQ02.lean:224)",
-      "cover_strictly_subset_comparability: strict separation witness, K₃ is comparability but not cover (Erdos1006OQ01OQ02.lean:256)"
+      "k3_is_comparability_graph: K₃ is a comparability graph via standard linear order on Fin 3 (Erdos1006OQ01OQ02.lean:208)",
+      "k3_not_cover_graph: K₃ is NOT a cover graph — 8-case proof exhausting orientations of covering edges (Erdos1006OQ01OQ02.lean:219)",
+      "cover_strictly_subset_comparability: strict separation witness, K₃ is comparability but not cover (Erdos1006OQ01OQ02.lean:251)"
     ],
     "insights": [
       "Cover graphs != comparability graphs: cover uses covering arcs only, comparability uses all related pairs; 3-chain distinguishes them",
@@ -53,7 +53,7 @@
     {
       "path": "Proofs/Erdos1006OQ01OQ02.lean",
       "filename": "Erdos1006OQ01OQ02.lean",
-      "lineCount": 257,
+      "lineCount": 256,
       "theoremCount": 9,
       "axiomCount": 2,
       "defCount": 4,
@@ -116,5 +116,33 @@
     "erdos-1006-oq-02",
     "erdos-1006-oq-02-oq-03",
     "erdos-1006-oq-04"
-  ]
+  ],
+  "slug": "erdos-1006-oq-01-oq-02",
+  "title": "Cover Graph Recognition in P?",
+  "phase": "OBSERVE",
+  "status": "active",
+  "started": "2026-04-26T00:00:00Z",
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "complexity",
+    "posets",
+    "cover-graphs",
+    "np",
+    "open-question"
+  ],
+  "lastUpdate": "2026-05-16T22:05:00.000Z",
+  "currentState": {
+    "phase": "OBSERVE",
+    "since": "2026-05-16T22:05:00Z",
+    "iteration": 1,
+    "focus": "S1 OBSERVE (researcher-3, 2026-05-16, this PR — doc-only bootstrap): The slug previously lacked state.md, problem.md, and a sessions/ directory entirely. The canonical research JSON was missing 8 top-level fields (slug, title, phase, status, currentState, started, tags, lastUpdate); present fields covered id, tractability, significance, problemStatement, knowledge, leanFiles[] (6 entries), and relatedProofs[] (9 entries). The Lean file `proofs/Proofs/Erdos1006OQ01OQ02.lean` is at 256 LOC, 9 theorems, 2 axioms, 4 definitions, 0 sorries (host-verified at session start via `wc -l` + `grep -cE`). The 2 axioms are intentional problem-statement scaffolding: `comparability_recognition_in_p` (Golumbic-classical, in P, stated as axiom for compactness) and `cover_graph_recognition_in_p` (the open question itself, line 176, stated as axiom so the file type-checks while the mathematical question remains open). This S1 OBSERVE creates the missing infrastructure (NEW state.md ~130 LOC, problem.md ~70 LOC, sessions/2026-05-16-s1-observe-bootstrap-and-drift-fix.md ~250 LOC) and fixes 3 categories of drift in the existing JSON: (a) leanFiles[1].lineCount 257→256 (host wc -l match); (b) knowledge.progressSummary prepend reflecting current 256-LOC/9-theorem state (pre-S1 said \"10 theorems / 261 lines\", both pre-#15112 stale per the True-stub removal accounting); (c) knowledge.builtItems[6/7/8] line refs 213/224/256 → 208/219/251 (5-line shift traceable to #15112 merged 2026-05-03 \"remove True stub\"). Mathlib pin SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged ≥48h (worktree lake-manifest at session start). No Lean change. No build attempt. No bearer walk. No parent gallery touch. No sibling slug touch. No knowledge.md body edit (the JSON `knowledge` subset edit is internal to JSON only). Host INFRA snapshot: G7 disk 4.3 Gi RED (below 5 Gi soft-floor), G8 Docker info Server: empty (≥7h continuous, same as in-flight schauder-fp / abel-ruffini / shannon S22-ACT same-wave precedent set), G9 proofs/.lake → itself self-symlink. These INFRA blockers do NOT block this doc-only S1 OBSERVE; they DO block any future S2 ACT-style work. See sessions/2026-05-16-s1-observe-bootstrap-and-drift-fix.md §0–§9 for full inventory.",
+    "nextAction": "S2 OBSERVE or release. Two productive directions: (1) Literature scan: check whether the open question \"cover graph recognition in P?\" has been resolved in the literature since 2026-05-03 (the slug's last direct Lean activity, PR #15112). If resolved, the axiom `cover_graph_recognition_in_p` (Erdos1006OQ01OQ02.lean:176) can be replaced by a theorem (proof or external reference). (2) Partial-sub-class formalization: identify and formalize a non-trivial sub-class for which cover graph recognition IS known to be in P (e.g., interval orders, bounded-width posets, planar cover graphs). This would weaken the axiom without resolving the underlying open question. Either direction is INFRA-blocked at the moment by 3 RED gates (G7 disk 4.3 Gi RED; G8 Docker Server: empty ≥7h; G9 .lake self-symlink), but only IF an S2 ACT would touch the Lean file. A pure S2 OBSERVE (literature scan) carries no INFRA dependency and could ship at any time. The slug carries no hard time-bound; release is also acceptable.",
+    "blockers": [],
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
+  }
 }
