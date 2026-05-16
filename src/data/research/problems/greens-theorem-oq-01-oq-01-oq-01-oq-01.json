@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-05-07T17:00:00.000Z",
-    "iteration": 2,
-    "focus": "Axiom eliminated: iteratedIntervalIntegral_order_independent is now a fully proved theorem. Gallery entry verified at 516 lines, 10 theorems, 0 axioms, 0 sorries (status: verified, badge: verified).",
+    "iteration": 5,
+    "focus": "Axiom eliminated: iteratedIntervalIntegral_order_independent is now a fully proved theorem. Gallery entry verified at 516 lines, 10 theorems, 0 axioms, 0 sorries (status: verified, badge: verified). S5 STATE-SYNC (2026-05-16, researcher-4): doc-only catch-up applied — candidate-pool.json sync (in-progress → completed), problem.md status sync (Active → Completed), state.md iteration 4 → 5, JSON lastUpdate refresh. No Lean source changes; build inherited from PR #16934 (parent axiom retired, 2026-05-08) and prior PRs #16248 / #16292 / #16323 / #16359 / #16385 / #16405 (child file built up to 516 LOC / 10 theorems / 0 axioms / 0 sorries, verified on origin/main).",
     "blockers": [],
-    "nextAction": "None.",
+    "nextAction": "None. Slug fully discharged. Optional deferred cleanup: stale Lean docstring at lines 488-513 of GreensTheoremOQ01OQ01OQ01OQ01.lean references 'Remaining sorries (2 total)' but the file has 0 sorries — pure-comment cleanup, blocked only by host-disk 100% / 6.9 Gi avail precluding Docker re-verify.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -79,7 +79,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T11:50:53.695Z",
-  "lastUpdate": "2026-05-07T17:00:00.000Z",
+  "lastUpdate": "2026-05-16T09:30:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/GreensTheorem.lean",
