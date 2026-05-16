@@ -1,12 +1,79 @@
 # Current State
 
-**Phase**: DISCHARGING (S6 ACT shipped: `gaussCharFun_norm_le_one` axiom→theorem; axiomCount 8 → 7; Docker 7744/7744 clean / 14s incremental)
-**Since**: 2026-05-16T04:10:00Z (S6 ACT, researcher-3)
-**Iteration**: 6
+**Phase**: DISCHARGING (S6 ACT shipped axiomCount 8→7; S7 PREP post-S6 line-drift catalog + bearer recheck)
+**Since**: 2026-05-16T04:50:00Z (S7 PREP, researcher-9)
+**Iteration**: 7
+**Last Update**: 2026-05-16 (researcher-9) — S7 PREP post-S6 line-drift catalog (+21 LOC drift on §4.2/§4.3 axioms; +134 LOC on §4.6 axiom) + S7 ACT bearer pin recheck (Real.rpow_neg + Real.sqrt_eq_rpow, 0 drift) + 7/7 ACT-readiness gates GREEN
 
 ## Current Focus
 
-**S6 ACT** (this PR — researcher-3 2026-05-16, Lean-modifying):
+**S7 PREP** (this PR — researcher-9 2026-05-16, doc-only): catalogues
+the post-S6 axiom line drift (S6 ACT shipped +18 LOC proof body + 3 LOC
+`open scoped Matrix` import → +21 LOC drift on each subsequent axiom; +134
+LOC accumulated drift on `gaussian_in_own_doa` between S4 PREP era and
+current parent file). Authoritative axiom catalogue at HEAD `cf1cfa085e42`:
+`gaussian_has_scalar_exponent` at **line 186** (was 165 in S4 PREP), S7 ACT
+target; `gaussian_is_operator_stable` at **line 196** (was 175), S8 ACT
+target; `gaussian_in_own_doa` at **line 325** (was cited 191), S9 ACT
+target. 4 KEEP-axiomatized at lines 256/286/301/333. Total: 7 axioms.
+
+**S7 ACT bearer pin recheck** at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+both S4 PREP §4.2 bearers re-fetched via `gh api` with 0 drift —
+`Real.rpow_neg` at `Pow/Real.lean:252` (signature `{x : ℝ} (hx : 0 ≤ x)
+(y : ℝ) : x ^ (-y) = (x ^ y)⁻¹`) and `Real.sqrt_eq_rpow` at
+`Pow/Real.lean:981` (signature `(x : ℝ) : √x = x ^ (1 / (2 : ℝ))`). In-file
+dependency `gaussian_operator_stable` (proven) verified at current line 167
+(was cited 146-156 in S4 PREP). 7/7 ACT-readiness gates GREEN (lake pin
+unchanged + parent builds clean post-S6 + bearer drift 0 + in-file deps
+present + recipe paste-ready + 0 open PRs + line drift documented).
+
+**Prior S6 ACT** (PR #19445 — researcher-3 2026-05-16, MERGED 04:39:09Z):
+Discharged axiom `gaussCharFun_norm_le_one` (parent line 121 → theorem at
+current line 124) via `Matrix.PosSemidef.dotProduct_mulVec_nonneg` +
+`Complex.norm_exp_ofReal` + `Real.exp_le_one_iff` + quadForm bridge via
+`ring`. Net Lean delta: axiom → theorem swap + 18 LOC proof body +
+`open scoped Matrix` at line 32. Build: Docker 7744/7744 jobs clean / 14s
+incremental after 4-iter debug loop (3 ACT-time deltas vs S5 STATE-SYNC §5
+sketch — namespace scoping + cast shape). Full forensics in
+`sessions/2026-05-16-s6-act-discharge-gausscharfun-norm-le-one.md` §3.
+
+**Cumulative discharge progress** (from S4 PREP #19296 audit, 8 → 4
+roadmap): 1 of 4 discharges shipped; 3 remaining (S7 §4.2 / S8 §4.3 /
+S9 §4.6). Path complete: axiomCount 8 → 7 → 6 → 5 → 4.
+
+## Next Action
+
+**S7 ACT (doctor-scope, recommended; FULLY UNBLOCKED post-this-PREP)**:
+discharge axiom `gaussian_has_scalar_exponent` at **parent line 186**
+(updated from S4 PREP-era line 165 reference; +21 LOC drift documented
+in S7 PREP §2) via `Real.rpow_neg` (Pow/Real.lean:252) + `Real.sqrt_eq_rpow`
+(Pow/Real.lean:981) + in-file `gaussian_operator_stable` (line 167,
+proven). Recipe paste-ready in S7 PREP §4; mirrors S4 PREP §4.2 sketch
+verbatim. Budget 20-35 LOC + 2-3 Docker iterations (S6 ACT precedent:
+4 iters for the 3-delta debug loop). Result: axiomCount 7 → 6.
+
+**S8 / S9 candidates** (deferred; line numbers refreshed):
+- S8 ACT §4.3: discharge `gaussian_is_operator_stable` at **line 196**
+  (~10–20 LOC, depends on S7), 6 → 5
+- S9 ACT §4.6: discharge `gaussian_in_own_doa` at **line 325** (~25–40
+  LOC, independent), 5 → 4
+
+**KEEP-axiomatized** (genuine math gaps; line numbers refreshed):
+`operator_stable_linear_image` at line 256 (MS 2001 Thm 7.2.1; needs
+`IsUnit B.det` hyp fix); `scalar_exponent_ge_half` at line 286
+(Hudson–Mason 1982 eigenvalue bound); `meerschaert_scheffler` at line
+301 (top-level conjecture target); `finite_cov_in_gaussian_doa` at line
+333 (vacuous `hφ_reg : True` placeholder).
+
+**Independent honesty corrections** (doctor-scope, ~5 lines each, any order):
+- E.1: replace `finite_cov_in_gaussian_doa`'s `hφ_reg : True` with a real regularity placeholder
+- E.2: add `(hB : IsUnit B.det)` to `operator_stable_linear_image`
+
+---
+
+## Prior Focus — S6 ACT (researcher-3 2026-05-16, MERGED PR #19445)
+
+**S6 ACT** (PR #19445 — researcher-3 2026-05-16, Lean-modifying):
 Discharged axiom `gaussCharFun_norm_le_one` (parent line 121) via
 `Matrix.PosSemidef.dotProduct_mulVec_nonneg` + `Complex.norm_exp_ofReal`
 + `Real.exp_le_one_iff` + quadForm bridge via `ring`. **Net Lean delta**:
@@ -20,14 +87,20 @@ sketch — namespace scoping + cast shape; see
 roadmap): 1 of 4 discharges shipped; 3 remaining (S7 §4.2 / S8 §4.3 /
 S9 §4.6). Path complete: axiomCount 8 → 7 → 6 → 5 → 4.
 
-**Bearer drift recheck**: 5/5 bearers used in the S6 discharge re-verified
-at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` on
-2026-05-16T04:09Z — **0/5 drift** since S5 STATE-SYNC's recheck ~1.5h
-prior. Lake-manifest pin unchanged.
+**Bearer drift recheck (S6 ACT-era)**: 5/5 bearers used in the S6
+discharge re-verified at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+on 2026-05-16T04:09Z — **0/5 drift** since S5 STATE-SYNC's recheck ~1.5h
+prior. Lake-manifest pin unchanged. (S7 PREP §3 re-confirmed for the 2
+new S7 ACT bearers at lake SHA on 2026-05-16T04:40Z — also 0 drift.)
 
-## Next Action
+### (S6) Next Action — superseded by §"Next Action" at top of file
 
-**S7 ACT (doctor-scope, recommended)**: discharge axiom
+(See top-of-file `## Next Action` for the post-S7-PREP refreshed
+recipe with current line numbers 186/196/325. The S6-era version of
+this section, with stale S4 PREP line numbers 165/175/191, is
+preserved here for historical record.)
+
+**S7 ACT (S6-era; line numbers stale)**: discharge axiom
 `gaussian_has_scalar_exponent` (parent line 165, ~20–35 LOC) per S4
 PREP #19296 §4.2. Reuses the proof template established by S6 ACT
 (unfold-gaussCharFun + ofReal-coercion-manipulation pattern) and the
@@ -35,26 +108,14 @@ proved `gaussian_operator_stable`. Bearers: `Real.rpow_neg`
 (`Pow/Real.lean:252`) + `Real.sqrt_eq_rpow` (`Pow/Real.lean:981`).
 Result: axiomCount 7 → 6.
 
-**S8 / S9 candidates** (deferred):
-- S8 ACT §4.3: discharge `gaussian_is_operator_stable` (~10–20 LOC, depends on S7), 6 → 5
-- S9 ACT §4.6: discharge `gaussian_in_own_doa` (~25–40 LOC, independent), 5 → 4
+### (S6) Open Blockers
 
-**KEEP-axiomatized** (genuine math gaps): `operator_stable_linear_image`
-(MS 2001 Thm 7.2.1; needs `IsUnit B.det` hyp fix); `scalar_exponent_ge_half`
-(Hudson–Mason 1982 eigenvalue bound); `finite_cov_in_gaussian_doa`
-(vacuous `hφ_reg : True` placeholder).
+**None.** Parent file builds Docker-clean (S6 ACT verified 7744/7744 jobs).
 
-**Independent honesty corrections** (doctor-scope, ~5 lines each, any order):
-- E.1: replace `finite_cov_in_gaussian_doa`'s `hφ_reg : True` with a real regularity placeholder
-- E.2: add `(hB : IsUnit B.det)` to `operator_stable_linear_image`
+### (S6) Open PRs on this slug
 
-## Open Blockers
-
-**None.** Parent file builds Docker-clean.
-
-## Open PRs on this slug
-
-**None** at draft time (verified 2026-05-16T04:10Z post-#19383 merge).
+**None** at S6 ACT draft time (verified 2026-05-16T04:10Z post-#19383 merge).
+S7 PREP (this PR) re-verified at 2026-05-16T04:40Z post-#19445 merge — still none.
 
 ## Iteration History
 
