@@ -157,26 +157,71 @@ ${leanContent}
   } else {
     fs.mkdirSync(galleryPath, { recursive: true })
 
-    // Create metadata stub
-    const metadata = {
+    // Create gallery metadata stub using the app's expected file names.
+    const title = `Erdős Problem #${problemNumber}`
+    const description = `Erdős problem #${problemNumber} (${candidate.status})`
+    const sourceUrl = `https://erdosproblems.com/${problemNumber}`
+    const erdosProblemStatus = candidate.status === 'proved' ? 'solved' :
+                               candidate.status === 'disproved' ? 'disproved' : 'partial'
+    const meta = {
+      id: gallerySlug,
+      title,
       slug: gallerySlug,
-      title: `Erdős Problem #${problemNumber}`,
-      description: `Erdős problem #${problemNumber} (${candidate.status})`,
-      status: candidate.status === 'proved' ? 'solved' :
-              candidate.status === 'disproved' ? 'disproved' : 'partial',
-      erdosNumber: problemNumber,
-      source: 'erdosproblems.com',
-      leanFile: proofFileName,
-      tags: candidate.tags || ['erdos', 'number-theory'],
-      created: new Date().toISOString().split('T')[0],
-      annotations: 'TODO'
+      description,
+      meta: {
+        author: 'Erdős',
+        sourceUrl,
+        status: 'stub',
+        proofRepoPath: `Proofs/${proofFileName}`,
+        tags: candidate.tags || ['erdos', 'number-theory'],
+        badge: 'stub',
+        sorries: 1,
+        erdosNumber: problemNumber,
+        erdosUrl: sourceUrl,
+        erdosProblemStatus,
+      },
+      overview: {
+        historicalContext: `This is a stub entry for Erdős Problem #${problemNumber}. Full historical context pending enhancement.`,
+        problemStatement: 'Problem statement pending.',
+        proofStrategy: 'Pending enhancement.',
+        keyInsights: ['Pending enhancement'],
+      },
+      sections: [],
+      conclusion: {
+        summary: 'Stub entry - enhancement needed.',
+        implications: 'Pending.',
+        openQuestions: [],
+      },
     }
+    const annotations = [
+      {
+        id: `${gallerySlug}-stub`,
+        proofId: gallerySlug,
+        type: 'context',
+        range: { startLine: 1, endLine: 10 },
+        title: 'Stub Entry',
+        content: `This is a stub entry for Erdős Problem #${problemNumber}. Enhancement needed to add proper formalization and annotations.`,
+        significance: 'supporting',
+      },
+    ]
+    const indexTs = `import meta from './meta.json'
+import annotations from './annotations.json'
+
+export { meta, annotations }
+`
 
     fs.writeFileSync(
-      path.join(galleryPath, 'metadata.json'),
-      JSON.stringify(metadata, null, 2) + '\n'
+      path.join(galleryPath, 'meta.json'),
+      JSON.stringify(meta, null, 2) + '\n'
     )
-    console.log(`✓ Created: ${galleryPath}/metadata.json`)
+    fs.writeFileSync(
+      path.join(galleryPath, 'annotations.json'),
+      JSON.stringify(annotations, null, 2) + '\n'
+    )
+    fs.writeFileSync(path.join(galleryPath, 'index.ts'), indexTs)
+    console.log(`✓ Created: ${galleryPath}/meta.json`)
+    console.log(`✓ Created: ${galleryPath}/annotations.json`)
+    console.log(`✓ Created: ${galleryPath}/index.ts`)
   }
 
   // Print next steps
@@ -185,9 +230,9 @@ ${leanContent}
   console.log(`   code ${proofPath}\n`)
   console.log('2. Build and verify:')
   console.log(`   cd proofs && lake build Proofs.Erdos${problemNumber}Problem\n`)
-  console.log('3. Add annotations:')
-  console.log(`   Create ${galleryPath}/annotations.source.json\n`)
-  console.log('4. Update metadata with proper description\n')
+  console.log('3. Improve annotations:')
+  console.log(`   Edit ${galleryPath}/annotations.json\n`)
+  console.log('4. Update meta.json with proper description and context\n')
   console.log('5. Full build:')
   console.log('   pnpm build\n')
 }
