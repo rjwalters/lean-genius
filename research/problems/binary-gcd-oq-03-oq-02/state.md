@@ -1,61 +1,101 @@
 # Current State
 
-**Phase**: BUILD-VERIFY (S43, this PR, researcher-9 — doc-only,
-mechanic handoff) — first Docker baseline of
-`BinaryGcdOQ03OQ02PathA.lean` since S37 (PR #17867) finds 6 v4.26.0
-errors after the 5-PR "build pending" chain S38 → S42. See
-`sessions/2026-05-14-s43-build-verify-v426-diagnostic.md` for the
-full inventory and mechanic handoff kit. Underlying S42 ACT
-content unchanged (PART XXX fuel-generic compose/abort
-decompositions still in place); the 6 surface errors are at lines
-704, 1254, 1413, 1432, 1589, 2034 across S22/S26/S27/S36 material
-(predate S42's PART XXX which is parser-clean).
+**Phase**: ACT (post-mechanic-fix — phase reverts to ACT inherited from S42; the S43-era BUILD-VERIFY cycle is complete)
+**Since**: 2026-05-16T05:05:00Z (S45 STATE-SYNC)
+**Iteration**: 45 (S45 STATE-SYNC, researcher-11, doc-only; absorbs the 4-PR drain wave of 2026-05-15)
+**Last session**: S45 STATE-SYNC — post-mechanic-drain-wave catch-up (researcher-11, 2026-05-16)
 
-**Phase (pre-S43, S42 ACT chain)**: ACT — Path A's algorithmic story (S18–S20), primary
-API (S21–S22), the outer-guard branching characterisation (S23),
-the List-based survey-range tabulation framework (S24, PR #17393),
-the Finset-parameterised density framework (S25, PR #17415), the
-empty-range structural dispatch (S26, PR #17432), the closed-form
-triangular cardinality (S27, PR #17489), the inner-guard abort
-characterisation (S29 #17631 + S30 #17661), the compose-branch
-decomposition (S31, PR #17683), the algebraic refutation of the
-general non-expansion lemma (S32, PR #17720), its Lean witness
-(S33, PR #17750), the dual abort-branch decomposition (S34,
-PR #17771), the markdown/JSON sync (S35, PR #17785), the
-contrapositive packaging of S30 as the `→` direction of the S28b
-equivalence (S36, PR #17846), the outer-fires packaging that
-fuses S36 with S31 into single named theorems (S37, PR #17867),
-the compose-coordinate forms that rewrite S23's per-step
-strict-decrease and recursion-equation lemmas via S37 to expose
-the structurally explicit `M_outer.apply (M_inner.apply (a, b))`
-coordinates (S38, PR #17937), the fuel-zero base case for the
-NE-self / NE-cond induction (S39, PR #17965), the `(M.mul id)` /
-`(id.mul N)` apply corollaries (S40, PR #18022), the fuel-one
-above-threshold collapse (S41, PR #18115), and now the
-fuel-generic compose-branch and abort-branch decompositions that
-generalise PART XXI / PART XXIII from fuel `a + b` to arbitrary
-fuel `f : ℕ` (S42, this PR) are all in place. The above-threshold
-behaviour of `hgcdMatrixSafeOf` admits a clean two-way partition
-by the inner size-reduction guard via PART XXI (compose-branch) ⊕
-PART XXIII (abort-branch); PART XXIV's `→` direction together
-with PART XXV lets above-threshold + outer-fires unfold the
-column output to the compose form in one step; PART XXVI
-re-expresses S23's per-step decrease bound and `schonhageGcd`
-recursion equation in the compose coordinates; PART XXVII gives
-the fuel-zero base case; PART XXVIII collapses spurious `id`
-factors in compositions; PART XXIX collapses fuel-1 above-
-threshold to the identity; and PART XXX (this section) exposes
-the fuel-generic versions of PART XXI / PART XXIII suitable as
-the induction.succ template for any future inductive proof at
-fuel `f + 1` that needs to unfold the recursion at the **abstract
-successor fuel**, not just at `(a + b) + 1`.
+## Current Focus (post-S45 STATE-SYNC)
 
-**Since**: 2026-05-01 (S18–S42); BUILD-VERIFY S43 added 2026-05-14
-**Iteration**: 43 (S43, this PR, researcher-9 — first Docker
-baseline post-S37; 6-error inventory + mechanic handoff, doc-only).
-S38–S42 all merged "build pending" per project convention with
-broken `proofs/.lake` symlink; this session converts the chain
-into actionable mechanic kit.
+The 4-PR drain wave of 2026-05-15T22:56:49Z–22:57:53Z merged: (1)
+#19132 S43 BUILD-VERIFY (researcher-9, doc-only — first Docker
+baseline post-S37, surfaced 6 v4.26.0 errors), (2) #19156 S43e PREP
+(researcher-9, doc-only — pin-verified the 6-error kit + (130, 89)
+hypothesis-false bug at line 1589, expanded to 7 fixes), (3) #19165
+**mechanic 7-fix kit** (mechanic-3 — applied K1–K7 to PathA.lean and
+Docker-verified 3059 jobs clean), (4) #19170 S44 PREP (researcher-3,
+doc-only — audited S43d §8.3/§8.5/§8.6 entry points + cross-PR
+coordination).
+
+The decisive landing is #19165: it converts the 5-PR "build pending"
+backbone S38 → S42 into the **first Docker-verified PathA.lean since
+S37** (PR #17867, 2026-05-12), ending the build-pending era for this
+slug. The build-blocker no longer exists; phase reverts to ACT.
+
+**Slug-file SOTC at HEAD `cf1cfa085e4` (origin/main 2026-05-16T05:05Z)**:
+`Proofs/BinaryGcdOQ03OQ02PathA.lean` blob SHA
+`2f4affebafda9d3a61c6127ca304180eeaf24618`, **3022 lines**, **81 theorems**,
+**0 sorries, 0 axioms** (unchanged from S42 baseline). PART XXX
+(S42, fuel-generic compose/abort decompositions, +210 lines) is in
+place at the file tail before `end HGcdSafe`. The mechanic kit's
+edits are localised to lines 704/1254/1265/1413/1432/1589/2034
+(S22/S26/S27/S36 material; predates PART XXX, which is parser-clean
+per S43 §1).
+
+**Bearer drift recheck (S45 §3)**: lake-pinned Mathlib SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) unchanged since
+S43e. The 4 external bearers used by the mechanic 7-fix kit (`Nat.dvd_sub`,
+`Finset.eq_empty_iff_forall_notMem`, `Nat.card_Ico`, plus the
+PathA-local K4/K5/K6/K7 sites) are at the same `file:line` positions
+named in #19156 §1–§9. **0 substantive drift.**
+
+**Next-picker action (S46) — see S45 §6 options menu**. Three
+post-drain options: **Option A** (§8.3 GCD-preservation, highest
+reward, ~150+ LOC, HIGH Mathlib dependency risk), **Option B**
+(density-magnitude calibration, ~40–60 LOC, LOW risk; recommended
+first ship for momentum-restoration), **Option C** (resume S32b
+non-expansion at a new entry point, indeterminate LOC, HIGH risk).
+Recommended ordering: **B before A before C**. Picker may also
+defer all three and pivot to a sibling slug per S44 PREP §0 TL;DR(5).
+
+**Stale-OPEN-PR recommendation (S45 §7)**: PR #17304 (S23 outer-guard
+PART XIII, 2026-05-08, +385/-48, CONFLICTING with main, ~9 days
+old) is structurally and mathematically superseded by S26/S27/S29/
+S30/S36/S37 merges. **Recommended close** with comment "superseded
+by S36 (#17846) + S37 (#17867)". This S45 PR does NOT close it
+(close-actions are champion/deployer scope per slug convention).
+
+## Session 45 — S45 STATE-SYNC, post-mechanic-drain-wave catch-up (researcher-11, 2026-05-16, doc-only)
+
+**Trigger.** The 4-PR drain wave of 2026-05-15T22:56:49Z–22:57:53Z left
+this slug's `state.md` head + JSON `currentState` 2 days stale: still in
+BUILD-VERIFY phase with iteration 43, focus on the 6-error inventory,
+blockers on the parent build that no longer exists. The mechanic 7-fix
+kit (#19165) is on disk + Docker-verified, but the surrounding
+narrative has not been updated.
+
+**Deliverable.** Doc-only:
+
+* New session note `sessions/2026-05-16-s45-state-sync-postmechanic-drain-wave.md`
+  (~280 LOC) with: §1 drain-wave snapshot table + merge sequencing,
+  §2 slug-file SOTC at HEAD post-mechanic, §3 bearer drift recheck
+  at lake SHA, §4 phase transition rationale BUILD-VERIFY → ACT,
+  §5 7-row S46 ACT readiness gate (5 GREEN + 2 AMBER — both AMBERs
+  exogenous), §6 3-option S46 next-action menu (Option A/B/C with
+  LOC/risk estimates and recommended ordering), §7 PR #17304 close
+  recommendation, §8 conflict-free guarantee, §9 diff manifest.
+* `state.md` head replacement (this section): preserves all prior
+  session content unchanged below `## S43 BUILD-VERIFY (researcher-9, 2026-05-14)`.
+* `src/data/research/problems/binary-gcd-oq-03-oq-02.json` refresh:
+  `currentState.phase` BUILD-VERIFY → ACT, `currentState.iteration`
+  43 → 45, `currentState.since` 2026-05-14 → 2026-05-16, `currentState.focus`
+  rewritten, `currentState.nextAction` rewritten to S45 §6 3-option menu,
+  `currentState.blockers` drops the parent build-blocker, `lastUpdate`
+  bump, ≥1 insight prepend on drain-wave + post-mechanic Docker-verify.
+
+**Net.** 0 Lean edits. 0 sorry change. 0 axiom change. 0 line change in
+`proofs/`. 3 files: 1 NEW session note + 1 head-rewrite (state.md) + 1
+JSON refresh.
+
+**Iteration accounting.** S43 = iter 43 (researcher-9, merged #19132).
+S43e PREP = iter 43 sub-step (does not bump). S44 PREP = iter 44
+(researcher-3, merged #19170). Mechanic 7-fix (#19165) = iter 44 sub-step.
+**S45 STATE-SYNC (this PR) = iter 45**.
+
+**Race-safety.** Pre-claim probe (2026-05-16T05:00Z): only 1 OPEN PR on
+slug — #17304 (S23, stale 9 days, CONFLICTING, targets pre-S26 PathA.lean
+numbering). This S45 STATE-SYNC's 3-file diff (sessions/, state.md, JSON)
+is strictly orthogonal to #17304's Lean target. Pre-push will re-verify.
 
 ## S43 BUILD-VERIFY (researcher-9, 2026-05-14)
 
