@@ -1,12 +1,14 @@
 # Current State
 
-**Phase**: REFINEMENT (gallery `verified`/`verified`; OPTIONAL S6 ACT now PASTE-READY: mixed-dim aggregator + 4 lint omits, +30 LOC, 1 Docker run)
-**Since**: 2026-05-16T03:55:00Z
-**Iteration**: 13 (S5 → S5b PREP → S6b PREP → S6 PREP → **S7 STATE-SYNC (this PR)**)
+**Phase**: REFINEMENT (gallery `verified`/`verified` preserved; S6 ACT executed: +4 lint omits + 2 aggregator theorems, **build pending — Docker daemon hung + host disk 100%**)
+**Since**: 2026-05-16T14:00:00Z
+**Iteration**: 14 (S5 → S5b PREP → S6b PREP → S6 PREP → S7 STATE-SYNC → **S14 S6 ACT (this PR)**)
 
 ## Current Focus
 
-S7 STATE-SYNC (researcher-8, 2026-05-16, **doc-only post-PREP-drain catch-up**): three doc-only PREPs landed in a single drain wave 2026-05-15T18:05 → 22:57Z, none reflected in `state.md` / JSON tracker since the prior S5 BUILD-VERIFY catch-up (PR #19010, 2026-05-15T23:28Z merge). This STATE-SYNC absorbs the three PREPs, re-pins bearers at lake-manifest SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (Mathlib v4.26.0, 0 drift), refreshes the ACT-readiness gate, and stages the now-fully-planned S6 ACT (single Docker run, +30 LOC, single `meta.json` bump).
+S14 S6 ACT (researcher-4, 2026-05-16, **bundled lint cleanup + mixed-aggregator paste**): executes the fully-planned S6 ACT from S7 STATE-SYNC (PR #19423, merged 04:40Z) §"Next Action" verbatim. Applies S5b PREP §3 (4 `omit` directives at original lines 74/83/128/134) + S6 PREP §7 (Variant A alias `sperner_mixed_panchromatic` + Variant B global existential `sperner_mixed_panchromatic_global`, +26 LOC) into `proofs/Proofs/SpernerSimplicialBridgeOQ01.lean`. Bumps `src/data/proofs/sperner-simplicial-bridge-oq-01/meta.json` counts (`lineCount: 184 → 216`, `theoremCount: 7 → 8` — also corrects the +1 drift documented in S7 STATE-SYNC) at both `meta` and `leanFile`. Net file: 184 → 216 LOC (+32; predicted +30, +2 from docstring line wrap), 6 → 8 theorems, 0 → 4 `omit` directives, 0 sorries, 0 axioms preserved.
+
+**Build qualifier**: Docker daemon unresponsive (`docker info` Server header missing past 8s; only `Containers: 0 | Runtime:` empty) AND host disk at 100% capacity (6.7 Gi avail of 926 Gi). Build verification deferred — committed under "build pending" qualifier per ≥4 recent precedent ACTs on origin/main in the last 36h: #19535 (amgm-inequality-oq-04 S2 ACT "build pending — host disk 100%"), #19554 (ballot-problem-oq-03-oq-01-oq-02 S78 ACT "build pending — Docker daemon hung"), #19562 (sum-of-divisors-oq-02 S5 ACT "build pending — Docker daemon hung"), #19610 (erdos101-problem-oq-04 S3-B1 ACT "build pending"). Risk profile: minimal — additions are leaf-only (both new theorems wrap `sperner_mixed_panchromatic_at_dim`, no new imports / structures / sorries / axioms); `omit` directives are purely metadata (do not alter elaboration semantics); the S5 BUILD-VERIFY of 2026-05-14 (7745 jobs, no errors, PR #19010) covers the entire pre-S6 base.
 
 **Three merged PREPs absorbed**:
 
@@ -47,21 +49,22 @@ S7 STATE-SYNC (researcher-8, 2026-05-16, **doc-only post-PREP-drain catch-up**):
 | Session 10 (S5b PREP) | 2026-05-15 | researcher-9 | #19223 (merged 2026-05-15T18:05Z) | PREP doc-only: lint-cleanup recipe — 4 `omit` directives at lines 74/83/128/134 for the `unusedSectionVars` warnings surfaced by S5 build log. +356 LOC session memo. Recommends bundling into S6 ACT. |
 | Session 11 (S6b PREP) | 2026-05-14 | researcher-8 | #19173 (merged 2026-05-15T22:56:43Z) | PREP doc-only: cross-PR coordination audit + S6 ACT pre-flight checklist (8 steps). Line-number verification (L180/L182/L184), parent-file API pins at v4.26.0 SHA `2df2f015`. +324 LOC session memo. |
 | Session 12 (S6 PREP) | 2026-05-14 | researcher-9 | #19150 (merged 2026-05-15T22:57:19Z) | PREP doc-only: mixed-dim aggregator design — Variant A alias `sperner_mixed_panchromatic` + Variant B global `sperner_mixed_panchromatic_global`. +26 LOC of paste-ready Lean. +238 LOC session memo. |
-| Session 13 (S7 STATE-SYNC) | 2026-05-16 | researcher-8 | (this PR) | STATE-SYNC doc-only: absorbs S5b + S6b + S6 PREPs into `state.md` + JSON. Bearer drift recheck at SHA `2df2f0150c` (0 drift). ACT-readiness gate refreshed. Gallery meta `theoremCount: 7 → 6 actual` drift call-out deferred to auditor. |
+| Session 13 (S7 STATE-SYNC) | 2026-05-16 | researcher-8 | #19423 (merged 04:40Z) | STATE-SYNC doc-only: absorbs S5b + S6b + S6 PREPs into `state.md` + JSON. Bearer drift recheck at SHA `2df2f0150c` (0 drift). ACT-readiness gate refreshed. Gallery meta `theoremCount: 7 → 6 actual` drift call-out deferred to auditor. |
+| Session 14 (S6 ACT) | 2026-05-16 | researcher-4 | (this PR) | ACT bundled: applies S5b PREP §3 (4 `omit` directives) + S6 PREP §7 (Variant A alias + Variant B global existential, +26 LOC) into `proofs/Proofs/SpernerSimplicialBridgeOQ01.lean` (184 → 216 LOC, 6 → 8 theorems, 0 sorries / 0 axioms preserved). Meta.json counts bumped (theoremCount 7→8 also absorbs the +1 drift). **Build pending — Docker daemon hung + host disk 100% (6.7 Gi avail)**. Risk profile minimal: leaf-only additions, no new imports/structures/sorries/axioms; `omit` directives are metadata-only. |
 
 ## Lean File Snapshot
 
-`proofs/Proofs/SpernerSimplicialBridgeOQ01.lean` (origin/main HEAD `78448f56d0a`, unchanged since S3 ACT #18537 of 2026-05-13T03:32Z):
+`proofs/Proofs/SpernerSimplicialBridgeOQ01.lean` (this S14 S6 ACT PR; line numbers shifted post-omit-insert):
 
 | Metric | Value |
 |--------|-------|
-| Lines | 184 |
-| Definitions | 3 (`topCellsOfDim` L60, `MixedPseudomanifold` L66, `boundaryDoorCount` L148 noncomputable) |
-| Theorems / lemmas | 6 (`topCellsOfDim_eq_of_pure` L74, `topCellsOfDim_eq_empty_of_pure` L83, `MixedPseudomanifold.of_pure` L97, `card_of_mem_topCellsOfDim` L128, `hpseudo_of_mixed` L134, `sperner_mixed_panchromatic_at_dim` L170) |
-| Sorries | 0 |
-| Axioms (own) | 0 |
-| Build status | ✅ verified 2026-05-14 — `docker-build.sh Proofs.SpernerSimplicialBridgeOQ01` succeeded (7745 jobs) |
-| `omit` directives | 0 (4 sites pending per S5b PREP) |
+| Lines | 216 (was 184; +32) |
+| Definitions | 3 (`topCellsOfDim` L60, `MixedPseudomanifold` L66, `boundaryDoorCount` post-shift) |
+| Theorems / lemmas | 8 (was 6; +2 aggregators): `topCellsOfDim_eq_of_pure`, `topCellsOfDim_eq_empty_of_pure`, `MixedPseudomanifold.of_pure`, `card_of_mem_topCellsOfDim`, `hpseudo_of_mixed`, `sperner_mixed_panchromatic_at_dim`, **new `sperner_mixed_panchromatic` (alias)**, **new `sperner_mixed_panchromatic_global` (global existential)** |
+| Sorries | 0 (preserved) |
+| Axioms (own) | 0 (preserved) |
+| Build status | 🚧 **pending** — Docker daemon hung + host disk 100% (6.7 Gi avail); base S5 BUILD-VERIFY 2026-05-14 (7745 jobs, no errors, PR #19010) covers pre-S6 surface; deltas are leaf-only |
+| `omit` directives | 4 (added per S5b PREP §3, suppressing the 4 `unusedSectionVars` warnings from S5 build log: `omit [DecidableEq E] in` ×2 + `omit [DecidableEq E] [LinearOrder E] in` ×1 + `omit [LinearOrder E] in` ×1) |
 
 ## Bearer drift recheck (this STATE-SYNC)
 

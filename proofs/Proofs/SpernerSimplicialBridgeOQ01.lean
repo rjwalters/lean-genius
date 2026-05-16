@@ -71,6 +71,7 @@ def MixedPseudomanifold (K : Finset (Finset E)) : Prop :=
 
 /-- When every cell in `K` has cardinality `d + 1`, the dimension-`d`
 stratum is `K` itself. -/
+omit [DecidableEq E] in
 theorem topCellsOfDim_eq_of_pure {d : Nat}
     (K : Finset (Finset E))
     (hcard : ∀ s ∈ K, s.card = d + 1) :
@@ -80,6 +81,7 @@ theorem topCellsOfDim_eq_of_pure {d : Nat}
 
 /-- When every cell in `K` has cardinality `d + 1`, strata at other
 dimensions `d' ≠ d` are empty. -/
+omit [DecidableEq E] in
 theorem topCellsOfDim_eq_empty_of_pure {d d' : Nat}
     (K : Finset (Finset E))
     (hcard : ∀ s ∈ K, s.card = d + 1) (hne : d' ≠ d) :
@@ -125,12 +127,14 @@ section MixedSperner
 variable [LinearOrder E]
 
 /-- Every cell in the dimension-`d` stratum has cardinality `d + 1`. -/
+omit [DecidableEq E] [LinearOrder E] in
 theorem card_of_mem_topCellsOfDim {d : Nat}
     {K : Finset (Finset E)} {s : Finset E}
     (hs : s ∈ topCellsOfDim K d) : s.card = d + 1 :=
   (Finset.mem_filter.mp hs).2
 
 /-- Per-dimension specialisation of the mixed-pseudomanifold predicate. -/
+omit [LinearOrder E] in
 theorem hpseudo_of_mixed {d : Nat}
     {K : Finset (Finset E)} (hmixed : MixedPseudomanifold K) :
     ∀ f : Finset E, f.card = d →
@@ -178,6 +182,34 @@ theorem sperner_mixed_panchromatic_at_dim {d : Nat}
   exists_panchromatic (topCellsOfDim K d)
     (fun _ hs => card_of_mem_topCellsOfDim hs)
     (hpseudo_of_mixed hmixed) c hbdry
+
+/-- **Mixed-dimension Sperner aggregator (alias).** Same content as
+`sperner_mixed_panchromatic_at_dim` with `d` re-exported as an
+implicit argument. Ergonomic alias for callers that don't need
+`_at_dim` in the name. -/
+theorem sperner_mixed_panchromatic
+    (K : Finset (Finset E)) (hmixed : MixedPseudomanifold K)
+    {d : Nat} (c : E → Fin (d + 1))
+    (hbdry : Odd (boundaryDoorCount (d := d) K c)) :
+    ∃ s : { s : Finset E // s ∈ topCellsOfDim K d },
+      Sperner.IsPanchromatic
+        (fun (σ : { s // s ∈ topCellsOfDim K d }) =>
+          vertexEnum σ.1 (card_of_mem_topCellsOfDim σ.2)) c s :=
+  sperner_mixed_panchromatic_at_dim K hmixed c hbdry
+
+/-- **Mixed-dimension Sperner aggregator (global existential).**
+If the mixed pseudomanifold `K` admits any dimension `d` and coloring
+`c` with `Odd (boundaryDoorCount d K c)`, then there exists a
+panchromatic top cell at that dimension. -/
+theorem sperner_mixed_panchromatic_global
+    (K : Finset (Finset E)) (hmixed : MixedPseudomanifold K)
+    (hd : ∃ d (c : E → Fin (d + 1)), Odd (boundaryDoorCount (d := d) K c)) :
+    ∃ d (c : E → Fin (d + 1)) (s : { s : Finset E // s ∈ topCellsOfDim K d }),
+      Sperner.IsPanchromatic
+        (fun (σ : { s // s ∈ topCellsOfDim K d }) =>
+          vertexEnum σ.1 (card_of_mem_topCellsOfDim σ.2)) c s := by
+  obtain ⟨d, c, hbdry⟩ := hd
+  exact ⟨d, c, sperner_mixed_panchromatic_at_dim K hmixed c hbdry⟩
 
 end MixedSperner
 
