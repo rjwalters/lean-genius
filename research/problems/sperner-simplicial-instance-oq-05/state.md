@@ -2,13 +2,102 @@
 
 ## Current State
 
-**Phase**: S4 GALLERY shipped (C1 brute-force promoted to public gallery).
+**Phase**: S5 PREP shipped (C2-1d readiness refresh — `iadj` private-visibility correction + skeleton simplification).
 **Path**: full
 **Since**: 2026-05-12
-**Last Updated**: 2026-05-14 (Session 11 S4 GALLERY, researcher-8)
-**Iteration**: 9
+**Last Updated**: 2026-05-16 (Session 12 S5 PREP, researcher-3)
+**Iteration**: 10
 
-## Session 11 (this session, 2026-05-14, researcher-8) — S4 GALLERY
+## Session 12 (this session, 2026-05-16, researcher-3) — S5 PREP (C2-1d readiness refresh)
+
+Doc-only readiness gate for the (C2-1d) Scarf walk ACT pending since
+S2 PREP #18489 (2026-05-13, T+3d). On review of #18489 against the
+parent file at the v4.26.0 pinned Mathlib SHA `2df2f0150c…`, two
+material findings emerged:
+
+- **F1 (HIGH — would block paste)**: the recommended skeleton's
+  `step` body uses `iadj m i k'` directly, but `iadj` is `private`
+  at `proofs/Proofs/SpernerSimplicialInstance.lean:818`. A new module
+  pasting `match h_adj : iadj m i k'` would fail with `unknown
+  identifier 'iadj'`. Fix: route through the public `T.adj` structure
+  field (line 97; `T := intervalTriangulation m hm`).
+- **F2 (MED)**: PREP #18489's `Decidable IsPanchromatic1d` instance
+  uses an unnecessarily complex `decEq |>.recOn` hand-roll where
+  `unfold IsPanchromatic1d ; infer_instance` suffices (`Decidable.not`
+  ships in core Mathlib).
+
+This PREP packages both fixes into a consolidated paste-ready
+~95 LOC skeleton (one `sorry` for `scarfWalk_isPanchromatic`
+soundness; 4-step discharge plan ~40 LOC in §4 of the memo).
+Mathlib pin is byte-stable since S3 PREP #18712 (no bearer-line
+recheck needed; the F1 fix routes through `T.adj` rather than
+`Finset.Basic`, sidestepping the bearer-drift class entirely).
+
+**ACT-readiness gate**: 8/10 GREEN (substantive), 2/10 RED (INFRA:
+Docker daemon hung, disk 100%). Next session has the option of S6
+PREP-2 (further INFRA-awaiting iteration) or S6 ACT under "build
+pending" qualifier (precedent on this slug: #18648, #19105 both
+build-pending at merge).
+
+### Files updated (Session 12)
+
+- NEW `research/problems/sperner-simplicial-instance-oq-05/sessions/2026-05-16-s5-prep-c2-1d-readiness-refresh.md`
+  (~350 LOC; 9 sections covering F1+F2 corrections, paste-ready
+  skeleton, discharge plan, Mathlib bearer audit, readiness gate,
+  risk inventory, out-of-scope including mechanic handoff for
+  `leanFiles[]` drift, acceptance criteria, references, host context).
+  This is the **first session memo under the canonical**
+  `research/problems/sperner-simplicial-instance-oq-05/sessions/`
+  path (predecessor session memos all live in the misplaced
+  `research/sperner-simplicial-instance-oq-05/sessions/` directory;
+  cleanup remains mechanic territory).
+- `research/problems/sperner-simplicial-instance-oq-05/state.md`
+  (this Session 12 entry; head reflects iter 9 → 10, phase update).
+- `src/data/research/problems/sperner-simplicial-instance-oq-05.json`
+  (`phase`, `currentState.{phase,since,focus,iteration,nextAction,
+  attemptCounts.total}`, `knowledge.progressSummary` prepended,
+  `knowledge.nextSteps` refreshed to reflect C2-1d ACT-readiness +
+  C3 readiness-refresh as parallel target, `lastUpdate`).
+
+**No Lean diff**, no gallery `meta.json` touch, no `leanFiles[]`
+edit (the +27 LOC parent-file drift / +1 def-count drift +17 LOC
+OQ05 drift is handed off to mechanic per the memo's §6 OOS-2 — see
+the ready-to-paste numbers there).
+
+### Build verification
+
+- N/A (doc-only PR; no `.lean` diff; no Mathlib clone needed).
+- Docker daemon hung throughout this session (`docker info` returns
+  Client section only). Disk at 100% / 4.2 Gi avail. Both
+  RED-gated INFRA criteria; both unrelated to slug correctness.
+- Mathlib pin verified at `proofs/lake-manifest.json` line containing
+  `"rev": "2df2f0150c275ad53cb3c90f7c98ec15a56a1a67"`.
+
+### Coordination notes
+
+- Pre-claim probe (~2026-05-16T17:27Z): 0 open PRs on slug. Last
+  merged: #19606 mechanic batch lineCount fix at 13:51Z (~T-3.5h
+  before claim) — touched only `src/data/proofs/.../meta.json` not
+  the research JSON; no scope overlap with this session.
+- Branch: `research/sperner-oq05-s5-prep-c2-1d-readiness-1735Z`,
+  based on `origin/main @ 535adef5c3d` (S3c-prep-15).
+- gh PR creation: explicit `--repo rjwalters/lean-genius` flag set
+  per recent fork-remote-resolution gotcha.
+
+### Next Action (post-Session 12)
+
+| Priority | ACT | Effort | Risk | Notes |
+|---|---|---|---|---|
+| 1 | **S6 ACT (C2-1d) under "build pending"** | ~95 LOC + 1 sorry → 1 PR; or ~135 LOC 0 sorry | MED (soundness sorry discharge) | Paste §3 skeleton from this PREP's memo; F1+F2 already applied. Leaf-only file; `T.adj` is public; precedent #18648 ACT also build-pending at merge. |
+| 1 | **S6 PREP-2 (C2-1d) — further INFRA-await** | <20 LOC | LOW | Only if Docker / disk persist RED through next claim window. Re-spot-check bearers, refresh ACT-readiness gate timestamp. |
+| 2 | **S6 PREP (C3) readiness refresh** | ~50-150 LOC | LOW (doc-only) | Parallel to (1); the C3 PREP #18392 cascade-audit is T+4d old; a refresh against the parent file's current 1022 LOC + 10 def state would tighten the (C3) ACT plan. |
+| 3 | **S6+ ACT (C3) under "build pending"** | ~80 LOC parent edit | MED-HIGH | Parent-file refactor; cascade risk on all importers of `SpernerSimplicialInstance.lean`. Defer until INFRA recovers + parent file is build-verifiable. |
+| 4 | **Misplaced-dir cleanup** | — | LOW | Mechanic territory; ~6 slugs affected. Out of scope for researcher. |
+| 5 | **`leanFiles[]` drift fix** | <10 lines edit | LOW | Mechanic territory; ready-to-paste numbers in this session's memo §6 OOS-6. |
+
+---
+
+## Session 11 (2026-05-14, researcher-8) — S4 GALLERY
 
 Ships the long-awaited S3/S4 GALLERY ACT for the merged C1 work:
 
