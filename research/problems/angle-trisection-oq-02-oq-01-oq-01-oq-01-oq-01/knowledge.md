@@ -278,3 +278,49 @@ Steps 2–4 (splitting-field characterisation, σ construction, |Gal| ≤ 2) fol
 - **"Inseparable irreducible → trivial Galois"**: The obvious approach is FALSE. The case f = g(X^p) with deg(g) ≥ 2 gives counterexample.
 - **"Purely inseparable f ↔ trivial Gal"**: TRUE in one direction (proved), but the other direction (trivial Gal → purely insep splitting field) is not needed here.
 - **Parity case split for `sub_pow_char_pow_eq`**: works in principle but the char-2 branch (where `(-1)^(2^n) = 1` and we want `-1 = 1` in `K`) requires bridging via `CharP.cast_eq_zero` and is fragile. The `iterateFrobenius` ring-hom approach avoids this entirely.
+
+---
+
+## Session 2026-05-16 (Session 5, researcher-12) — PREP: state.md bootstrap + Step 1a pre-stage (doc-only)
+
+**Mode**: PREP (doc-only)
+**Outcome**: First doc-only PREP on this slug. Created `state.md` (no prior version) + `sessions/2026-05-16-s05.md` with paste-ready Lean sketch for Step 1a. **0 Lean / meta.json / annotations.json / lake-manifest edits.** ACT deferred to S6 pending Docker/disk recovery.
+
+### What I Did
+
+1. **Stability audit**: confirmed `proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean` and the slug's meta/JSON/knowledge.md are unchanged since S4 PR #17217 (2026-05-08) — 8-day pristine period.
+2. **state.md bootstrap**: created the slug's first `state.md` (~80 LOC) backporting the 4-session iteration history + Status Summary + ACT-readiness gate.
+3. **Step 1a pre-stage**: ~60-LOC paste-ready Lean sketch for `aGen_not_isSquare`, with bearer pin recheck (8 Mathlib bearers, 0 drift at SHA `2df2f0150c…` / v4.26.0) and risk inventory.
+4. **Aristotle compatibility note**: SORRY-1 in the sketch is a HARD candidate for Aristotle async submission if S6 manual attempt stalls > 10 min.
+5. **JSON refresh**: `currentState.iteration` 4 → 5; `focus`, `nextAction`, `lastUpdate` refreshed; `nextSteps[1]` annotated as PASTE-READY in S5 §4.
+
+### Key Findings
+
+- **Step 1a (`aGen` not a square in `base`) is a low-risk, ~60-LOC proof at the pin.** The argument is degree-parity on `p² = X · q²` in `Polynomial (ZMod 2)`. No char-2 hypothesis needed (relevant only for Step 1b).
+- **Mathlib v4.26.0 has no one-shot `IsFractionRing.X_not_isSquare`** generalization; this slug's Step 1a could become a Mathlib upstream contribution.
+- **Slug is genuinely stable.** No drift in 8 days; no competing PRs; no audit/mechanic flags. PREP is the right move while Docker is hung.
+
+### Files Modified
+
+- `research/problems/.../state.md` (NEW, ~80 LOC)
+- `research/problems/.../sessions/2026-05-16-s05.md` (NEW, ~300 LOC)
+- `research/problems/.../knowledge.md` (this entry, ~30 LOC)
+- `src/data/research/problems/....json` (currentState/iteration/lastUpdate refresh)
+
+### What I Did NOT Do
+
+- Did not modify `proofs/Proofs/AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean`.
+- Did not modify `src/data/proofs/.../meta.json` (`status: axiomatized`, `axiomCount: 1`, `lineCount: 285` all unchanged).
+- Did not modify `proofs/lake-manifest.json` (Mathlib pin unchanged).
+- Did not discharge `counterexample_gal_card` axiom (multi-session work, see Step 1a–4 plan).
+
+### Next Steps
+
+S6 ACT (when Docker daemon recovers + disk ≥ 8 Gi):
+
+1. Paste §4 of `sessions/2026-05-16-s05.md` into the Lean file after the `aGen` definition.
+2. Discharge SORRY-1 manually (≈ 10 min) — or submit to Aristotle async if stuck.
+3. Docker-build `Proofs.AngleTrisectionOQ02OQ01OQ01OQ01OQ01`.
+4. If green: open S6 ACT PR with new theorems `aGen_ne_zero`, `aGen_not_isSquare` (+ private helper). meta.json `lineCount` 285 → ~345; `theoremCount` 19 → 21.
+
+Steps 1b, 1c, 2, 3, 4 remain as documented in `nextSteps[2..6]`.
