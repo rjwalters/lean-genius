@@ -8,11 +8,11 @@
     "imports": ["Mathlib"],
     "opens": ["MeasureTheory", "Complex", "Filter", "Topology"],
     "namespace": "FourierSeriesOQ04OQ01",
-    "lineCount": 234,
+    "lineCount": 279,
     "axiomCount": 1,
     "sorries": 1,
     "definitionCount": 5,
-    "theoremCount": 7
+    "theoremCount": 8
   },
   "meta": {
     "author": "Open in mathematics (Stein 1971 ICM; Tao 2002 survey). Formalized statement: Lean Genius contributors.",
@@ -33,8 +33,8 @@
     "sorries": 1,
     "dateAdded": "2026-05-12",
     "axiomCount": 1,
-    "lineCount": 234,
-    "theoremCount": 7,
+    "lineCount": 279,
+    "theoremCount": 8,
     "definitionCount": 5,
     "assumptions": "1 axiom: `carleson_2d_sph` — the open 2D Carleson spherical-summation conjecture on T². 1 sorry: `sphPartialSum_L2_norm_converge` — the unconditional L²-norm convergence statement; provable from Plancherel on T² (Mathlib gap; the orthonormal basis tensor-product structure is implicit but not exposed as a named identity). No other assumptions.",
     "mathlibDependencies": [
