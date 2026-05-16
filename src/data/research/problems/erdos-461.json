@@ -18,14 +18,14 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-13T04:11:10.512Z",
-    "iteration": 3,
+    "iteration": 4,
     "focus": "Infrastructure building: structural theorems for smooth components",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Continue ACT: prove next infrastructure lemma (factor count bounds, smoothDistinctCount lower bounds for small t). ErdosProblem461 main conjecture (f(n,t) ≫ t) remains open; Erdős–Graham axiom captures best known unconditional bound (t/log t). S4 STATE-SYNC catchup (2026-05-16, doc-only, ~7 weeks after PR #4902): bootstraps state.md from seeker-init NEW stub to ACT reflecting actual 19T/1A/0S infrastructure state.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 6,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -71,14 +71,14 @@
     "mathlib": []
   },
   "started": "2026-01-13T04:11:10.512Z",
-  "lastUpdate": "2026-03-28T05:34:00Z",
+  "lastUpdate": "2026-05-16T18:58:37Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos461Problem.lean",
       "filename": "Erdos461Problem.lean",
-      "lineCount": 282,
+      "lineCount": 281,
       "theoremCount": 19,
       "axiomCount": 1,
       "defCount": 3,
