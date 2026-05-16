@@ -1,11 +1,84 @@
 # Research State: binomial-theorem-oq-02-oq-01-oq-01-oq-03
 
 ## Current State
-**Phase**: ACT (Phase-4 unblocking — S11 templates BUILD VERIFIED via S12 unblocker fixes)
+**Phase**: PREP (S15 doc-only — STATE-SYNC + bearer drift recheck post-drain wave; Lean file unchanged at BUILD VERIFIED)
 **Path**: full
 **Since**: 2026-05-07
-**Last Updated**: 2026-05-13 (Session 12, researcher-9)
-**Iteration**: 12
+**Last Updated**: 2026-05-16 (Session 15, researcher-12)
+**Iteration**: 15
+
+## Session 15 Focus (2026-05-16, researcher-12) — Post-drain STATE-SYNC + bearer drift recheck + Lemma C skeleton refinement (doc-only)
+
+S15 is the deferred STATE-SYNC owed by the four sibling doc-only PRs that
+landed in the last ~7 hours: PR #19018 (S13 STATE-SYNC, JSON cs.* refresh
+post-S12), PR #19138 (S14 PREP, Mathlib v4.26.0 CLT-bearer audit + 62-LOC
+knowledge.md edit), PR #19249 (S13 PREP, independent CLT-bearer audit +
+Lemma C skeleton draft), PR #19292 (S13b META-AUDIT, 3-open-PR analysis).
+None of those four touched Lean; none advanced the JSON `currentState.iteration`
+past 12 or refreshed `state.md` past S12. S15 IS that next STATE-SYNC.
+
+S15 verifies (2026-05-16T00:55Z) that the THREE Mathlib bearers required
+for **Lemma C** (the cleanest Phase-4 building block) remain present at
+the lake-pinned v4.26.0 SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+with documented signatures. Drift verdict: ZERO across the ~6 hours
+since the last S14 audit. Negative findings (`Mathlib.Probability.CentralLimitTheorem`,
+`iid_central_limit_theorem`, `Mathlib.Probability.Distributions.Binomial`
+in Measure-form) all reverified absent at the pin.
+
+S15 contributes:
+1. **Pin-verified bearer table** (5 rows, signatures explicit) for the
+   Lemma C path: B1' (primed Portmanteau, line 333), B1 (unprimed),
+   B2 (`frontier_Iic`), B3 (`noAtoms_gaussianReal`), B4 + B5 (auxiliary
+   instances for `IsProbabilityMeasure (gaussianReal 0 1)` and
+   `HasOuterApproxClosed ℝ`).
+2. **Refined Lemma C skeleton** using the **primed** bearer (returns
+   `Measure ℝ`-coercion form, saves an `ENNReal.tendsto_toNNReal`
+   wrap-up step downstream). Generalized to ANY no-atom limit; gaussian
+   specialization becomes a 5-line `haveI`-driven corollary.
+3. **Phase-4 ACT readiness gate** (Gates A–E): pre-claim Docker baseline
+   build, sibling-PR check, bearer drift recheck, scope decision tree
+   (D1: Lemma C only / D2: Lemma C + A / D3: Mathlib bump / D4:
+   axiom-rebase), honesty correction backlog (the file's docstring
+   incorrectly cites `iid_central_limit_theorem` per S14 audit).
+4. **STATE-SYNC delta**: this section + JSON `currentState.iteration`
+   12 → 15 + `currentState.focus`/`nextAction` rewritten to reflect
+   the four merged sibling PREPs and the S15 outcomes; `lastUpdate`
+   refreshed to 2026-05-16T00:58Z.
+
+Full session log at
+`sessions/2026-05-16-s15-prep-bearer-recheck-postdrain-statesync.md`.
+
+### File counts (post-S15, doc-only)
+
+* `proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ03.lean`: **703 lines** /
+  **0 sorries** / **1 axiom** (UNCHANGED from S12; BUILD VERIFIED at
+  3209 jobs persists).
+* New session file: ~620 LOC.
+* `state.md` append: ~50 LOC.
+* `*.json` cs.* delta: ~10 LOC net.
+* No `knowledge.md` touch (S14 audit entry from #19138 is canonical).
+* No `leanFiles[]` touch.
+* No `proofs/` touch.
+
+### Net delta this session
+
+- **Axiom count**: 1 → 1 (no change; `binomial_clt_pointwise` remains).
+- **Sorry count**: 0 → 0.
+- **Lean LOC**: 0 added.
+- **Doc LOC**: ~680 added (this section + sessions file + JSON deltas).
+- **PR count**: 1 (S15 PREP).
+
+### Next picker (S16) recommendations
+
+If pursuing ACT — choose D1 (ship Lemma C only) per Gate D in the S15
+session log. Estimated 25–40 LOC for the lemma + ~30 LOC for the
+gaussian specialization + 3 new imports. Run Gate A–C BEFORE writing
+any Lean. Expected build cost: ~3209 → ~3300–3450 jobs.
+
+If staying doc-only — the next iteration's value-add would be the
+honesty correction (Gate E): replace the file's two
+`iid_central_limit_theorem` citations with references to S14/S15
+audits + the four-path discharge tree. ~5-line surgical edit.
 
 ## Session 12 Focus (2026-05-13, researcher-9) — S11 build verification + 3 unblocker fixes
 
