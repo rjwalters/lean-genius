@@ -1,10 +1,80 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-15 (S10)
-**Iteration**: 10
+**Since**: 2026-05-16 (S11 STATE-SYNC)
+**Iteration**: 11
 
 ## Current Focus
+
+S11 STATE-SYNC (researcher-6, 2026-05-16): doc-only catchup absorbing
+the post-S10 PREP + Helper-ACT pair into state.md + JSON head fields,
+fixing knowledge.nextSteps[0] cube-digit residue and leanFiles[]
+helper-file drift. Three predecessors merged on `origin/main` between
+S10 and now:
+
+1. **S11 PREP MATH-CORRECTION** (PR #19420, researcher-5, doc-only):
+   corrected three numerical errors in the post-S10 next-action
+   sketch — `7155³` (was `366_360_812_875`, actual `366_293_248_875`,
+   off by `+67_564_000`), `3·4961³` (was `366_360_846_363`, actual
+   `366_293_267_043`, off by `+67_579_320`), and the resulting diff
+   `−18_168` (was `−33_488`) / gap `1.488·10⁻⁷` (was `2.742·10⁻⁷`).
+   The DIRECTION of the bound (`7155/4961 < cbrt3`, valid lower
+   bound for proving `cbrt3_a9 = 6`) is unchanged. Edited state.md
+   `## Next Action` block + `currentState.nextAction` in JSON; did
+   NOT touch `knowledge.nextSteps[0]`, which retained the wrong
+   cube digits — this STATE-SYNC fixes that residue.
+
+2. **S11a Helper-ACT** (PR #19456, researcher-6, narrow ACT):
+   shipped the tenth-convergent lower-bound helper
+   `Cbrt3Helpers.seven_one_five_five_over_four_nine_six_one_lt_cbrt3 : (7155/4961 : ℝ) < cbrt3`
+   via the two-line `lt_cbrt3_iff_cube_lt + norm_num` template.
+   Helper file grew 420 → 472 lines (+52 LOC; +1 theorem +
+   prose section). Docker build verified clean (7744 jobs, helper
+   file 52s). Helper-only ACT was chosen to stay conflict-free vs
+   then-open PREP #19420 (doc-only PREP would have collided with a
+   combined ACT touching state.md / JSON). Pre-claim Python
+   cube-direction sanity: `7155³ = 366_293_248_875 < 366_293_267_043
+   = 3·4961³`, diff `−18_168 < 0` ⟹ `(7155/4961)³ < 3` ⟹
+   `7155/4961 < cbrt3` ✓ (correct lower-side direction); gap
+   `18_168/122_097_755_681 ≈ 1.488·10⁻⁷`, just barely tighter
+   than S10's upper-side gap `1.43·10⁻⁷` — consistent with
+   alternating-convergent contraction. **Iteration deliberately
+   NOT bumped by S11a** (memo §"Iteration bookkeeping": "S11
+   numbering will be applied to JSON by the future STATE-SYNC
+   that absorbs both this S11a and PR #19420" — this STATE-SYNC
+   is that planned future absorber).
+
+3. **(implicit) S10 ACT** (PR #19395, researcher-3, build-verified):
+   shipped `cbrt3_a8 = 1` via 6206/4303 upper bound (ninth
+   partial quotient). State.md + JSON head fields were correctly
+   updated at S10-merge time; only the tail-end of nextSteps
+   needed S11+ refresh.
+
+After this STATE-SYNC:
+- state.md head: `Iteration 11`, `Since 2026-05-16 (S11 STATE-SYNC)`
+- JSON `currentState.iteration: 11`, `attemptCounts.total: 11`
+- JSON `currentState.focus` → S11 STATE-SYNC description
+- JSON `currentState.nextAction` → S11b ACT skeleton (main theorem
+  `cbrt3_a9 = 6`; helper already in place from S11a)
+- JSON `knowledge.builtItems[+1]` → S11a helper entry (15th item)
+- JSON `knowledge.nextSteps[0]` → S11b plan with corrected cube
+  digits (`366_293_248_875` / `366_293_267_043` / `−18_168` /
+  `1.488·10⁻⁷`)
+- JSON `leanFiles[5]` (Helpers) → lineCount 420 → 472,
+  theoremCount 14 → 15
+- 0 Lean / 0 problem.md / 0 knowledge.md / 0 meta.json / 0 gallery
+  / 0 lake-manifest / 0 sibling-slug edits
+- 0 axiom / 0 sorry delta (slug remains 0/0)
+
+The ACT-readiness gate for S11b (main `cbrt3_a9 = 6`) is now GREEN
+on all substantive fronts: helper present, sandwich pair complete
+(`7155/4961 < cbrt3 < 6206/4303`), corrected cube digits cross-referenced,
+heartbeat-budget guess `set_option maxHeartbeats 1600000 in` (2× S10's
+`800000`) recorded, parent-file pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+unchanged since S9 build. Only blocker is the standard Docker iteration
+overhead (~25 min cold rebuild per `proofs/.lake` symlink quirk).
+
+## S10 Focus (just completed)
 
 S10 (researcher-3): Ninth partial quotient.
 `cbrt3_a8 : ⌊1 / (1 / (1 / (1 / (1 / (1 / (1 / (1 / (cbrt3 - 1) - 2) - 3) - 1) - 4) - 1) - 5) - 1)⌋ = (1 : ℤ)`
@@ -484,8 +554,13 @@ two `div_lt_iff₀` / `le_div_iff₀` algebraic manipulations.
 
 ## Attempt Counts
 
-- Total attempts: 10 (S1 survey, S2 a₀, S3 a₁, S4 a₂, S5 a₃, S6 a₄, S7 a₅, S8 a₆, S9 a₇, S10 a₈)
-- Current approach attempts: 10 (cubing-iff helper + linarith chain on floor identity)
+- Total attempts: 11 (S1 survey, S2 a₀, S3 a₁, S4 a₂, S5 a₃, S6 a₄, S7 a₅, S8 a₆, S9 a₇, S10 a₈, S11a helper-only)
+  - S9b PREP (deployer-stall coord, doc-only), S11 PREP MATH-CORRECTION
+    (doc-only), and S11 STATE-SYNC (this iteration, doc-only) do not
+    independently bump the attempt count — they are sub-step interludes
+    around the S9, S10, S11 ACT umbrellas. S11a is counted because it
+    shipped Lean content (the new helper theorem).
+- Current approach attempts: 11 (cubing-iff helper + linarith chain on floor identity)
 - Approaches tried: 1
 
 ## Open files
