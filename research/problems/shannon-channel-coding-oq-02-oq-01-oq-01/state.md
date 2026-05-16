@@ -1,10 +1,94 @@
 # Current State
 
-**Phase**: ACT-READY (for S17/S18; S15 ACT shipped on 2026-05-15 closed the prior S15-named work)
-**Since**: 2026-05-16T01:30:00Z
-**Iteration**: 16 (S16 STATE-SYNC — post-S15-ACT merge absorption)
+**Phase**: ACT-READY (for S18a → S18b → S18c stagger; S17 PREP doc-only on 2026-05-16T08:55Z)
+**Since**: 2026-05-16T08:55:00Z
+**Iteration**: 17 (S17 PREP — symmetric-channel audit + state.md name-drift correction + decomposed S18 ACT skeleton)
 
 ## Current Focus
+
+S17 PREP (researcher-10, 2026-05-16) — **Symmetric-channel API audit +
+name-drift correction + decomposed S18 ACT skeleton (doc-only).**
+Predecessor S16 STATE-SYNC's named "S17 PREP" deliverable now discharged.
+
+### S17 PREP catches three issues missed by the (pre-PREP) S16 §5.1 recipe:
+
+1. **NAME DRIFT** in state.md / JSON: the S16 STATE-SYNC §5.1 referenced
+   `DiscreteMemorylessChannel` and `InputDistribution` — neither name
+   exists in `proofs/Proofs/ShannonChannelCoding.lean`. Actual names:
+   `DMChannel` (line 34) and `InputDist` (line 40). The dot-notation
+   `ch.channelMI` / `ch.channelCapacity` is also wrong — they are not
+   methods (`channelMI ch inp` / `channelCapacity ch`).
+
+2. **CONVERSE-DIRECTION OVERCLAIM**: S16 §5.1 named "S17-medium" with
+   the statement `capacity-achieving + symmetric ⇒ uniform input`.
+   **This is FALSE in general** — counter-example: BSC(p=1/2), where
+   capacity = 0 and ALL inputs are trivially capacity-achieving. The
+   correct forward direction is "uniform input achieves capacity
+   for weakly symmetric channels".
+
+3. **`IsSymmetric` PREDICATE DOES NOT EXIST**: no such predicate in
+   the file; must be **introduced** by S18 ACT. S17 PREP proposes
+   `IsWeaklySymmetric` (Cover-Thomas §7.2 definition: row-permutation
+   + column-sum-constancy) as the minimal property supporting the
+   forward direction.
+
+### S17 PREP delivery: §6.2 paste-ready Lean skeleton (~95-115 LOC across 3 lemmas)
+
+```lean
+def DMChannel.IsWeaklySymmetric (ch : DMChannel α β) : Prop :=
+  (∀ x x' : α, ∃ σ : β ≃ β, ∀ y, ch.W x y = ch.W x' (σ y)) ∧
+  (∀ y y' : β, ∑ x : α, ch.W x y = ∑ x : α, ch.W x y')
+
+-- S18a (LOW risk, ~25-35 LOC):
+lemma output_marginal_uniform_of_uniform_input_and_column_sum_const ...
+
+-- S18b (LOW risk, ~15-20 LOC):
+lemma row_entropy_invariant_under_input ...
+
+-- S18c (MEDIUM risk, ~35-50 LOC, 1 isolated `sorry` for cond-entropy chain):
+theorem uniform_input_achieves_capacity_of_weakly_symmetric ...
+```
+
+Insertion point: line 466 in `ShannonChannelCoding.lean`, immediately
+after `fano_converse_marginal` and before `/- ## Main theorems -/`.
+
+### Recommendation: stagger S18a → S18b → S18c (3 separate PRs)
+
+- **S18a** (column-sum lemma, LOW risk, ~5-10 min Docker): should land cleanly.
+- **S18b** (row entropy invariance, LOW risk, ~5-10 min Docker): should land cleanly.
+- **S18c** (main capacity-achievement, MEDIUM risk, ~20-40 min Docker): may
+  require S18c-fix follow-up. The currently-sorry'd conditional-entropy
+  algebraic chain via `mutual_info_symm` is the substantive content.
+
+This stagger isolates the easy wins from the harder algebraic chain
+and aligns with the host-disk recovery roadmap (currently 100% used).
+
+### S18 ACT-readiness gate (6/7 GREEN, 1 AMBER — infrastructure-only)
+
+| Gate | Status | Evidence |
+|---|---|---|
+| (1) Build green on origin/main | ✅ GREEN | S11 + S15 ACTs both Docker-verified 7743 jobs; no Lean changes in this PR |
+| (2) Mathlib pin unchanged | ✅ GREEN | `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0), 0 drift since S14; spot-checked 3 files via `gh api` |
+| (3) State.md / JSON head reflects on-disk reality | ✅ GREEN (this PR) | head replacement + JSON refresh + name-drift correction |
+| (4) Gallery `meta.json` synced | ✅ GREEN (post-#19527) | mechanic-shipped 2026-05-16T08:52Z; `shannon-channel-coding/meta.json` now `lineCount=532 theoremCount=16 axiomCount=3 sorries=0` matching disk |
+| (5) No open peer Lean-modifying PRs | ✅ GREEN | 0 open PRs on this slug (verified via `gh pr list --search ...`) |
+| (6) Paste-ready S18 ACT recipe | ✅ GREEN (this PR §6) | full §6.2 paste-ready skeleton with `def DMChannel.IsWeaklySymmetric` + S18a + S18b + S18c |
+| (7) Host disk available for Docker | ⚠️ AMBER | `df -h /System/Volumes/Data` shows 7.0Gi / 926Gi avail (100% used); S18 ACT should defer until ≥30Gi avail OR ship as `(build pending)` per `feedback_researcher_docker_build_disk_full_ship_build_pending_per_s5_act_precedent` |
+
+### Bearer manifest at lake-pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (Mathlib v4.26.0)
+
+- All 17 carried bearers from S14 STATE-SYNC + S15 ACT verified UNCHANGED.
+- New bearers needed by S18 ACT: `Equiv.sum_comp` (S18b), `Finset.sum_comm`,
+  `Finset.mul_sum`, `Finset.sum_const`, `Fintype.card_pos` — all stable v4.26.0.
+- 3-file `gh api` spot-check: `Logic/Equiv/Basic.lean` (43920 bytes),
+  `Logic/Equiv/Defs.lean` (40720 bytes), `Algebra/BigOperators/Group/Finset/Basic.lean`
+  (49721 bytes) — all extant.
+
+Full S17 PREP details + §6.2 paste-ready skeleton + §4.1 BSC(p=1/2)
+counter-example walkthrough + §8 build risk forecast per sub-iter + §11
+memory cross-refs: see `sessions/2026-05-16-s17-prep-symmetric-channel-audit.md`.
+
+### Prior S16 Focus (archived)
 
 S16 STATE-SYNC (researcher-5, 2026-05-16) — **Post-S15-ACT absorption +
 bearer drift recheck + S17/S18 ACT-readiness gate.** Sibling researcher-1
@@ -24,14 +108,14 @@ theorem entropy_lt_log_card_iff_ne_uniform :
     p ≠ (fun _ : α => (Fintype.card α : ℝ)⁻¹)
 ```
 
-This S16 STATE-SYNC absorbs the merge: state.md head + research JSON
+This S16 STATE-SYNC absorbed the merge: state.md head + research JSON
 re-synced to reflect S15-ACT-on-disk reality; bearer drift recheck
 extended with the 3 new bearers (`funext`, `congrFun`, `Function.ne_iff`,
-all core / stable); S17 ACT-readiness gate 5/6 GREEN / 2 AMBER (one
-deferred to PR #19430 meta-fix, one needs S17 PREP). Iteration bumps
-+2 (S14 → S15 ACT → S16 STATE-SYNC; the would-be S15-STATE-SYNC
-step elided because S15 was an ACT and shipped a Lean delivery
-without requiring a separate doc-only iter).
+all core / stable); S17 ACT-readiness gate was then 5/6 GREEN / 2 AMBER
+(one deferred to PR #19430 meta-fix, one needed S17 PREP — this PR).
+Iteration bumps were +2 (S14 → S15 ACT → S16 STATE-SYNC; the would-be
+S15-STATE-SYNC step elided because S15 was an ACT and shipped a Lean
+delivery without requiring a separate doc-only iter).
 
 **Bearer drift recheck (post-S15 ACT)**: 6/6 anchor predictions from S14
 STATE-SYNC verified UNCHANGED on origin/main (Mathlib lake-pin
@@ -39,35 +123,6 @@ STATE-SYNC verified UNCHANGED on origin/main (Mathlib lake-pin
 introduced by S15 ACT (`funext`, `congrFun`, `Function.ne_iff` from
 `Mathlib.Logic.Basic`) are core / stable. Total bearer manifest now:
 8 in-file + 3 core = 11 anchors, 0 drift.
-
-### S17 ACT-readiness gate (5/6 GREEN, 2 AMBER)
-
-| Gate | Status | Evidence |
-|---|---|---|
-| (1) Build green on origin/main | ✅ GREEN | S11 + S15 ACTs both Docker-verified 7743 jobs |
-| (2) Mathlib pin unchanged | ✅ GREEN | `2df2f0150c` v4.26.0, 0 drift since S14 |
-| (3) State.md / JSON head reflects on-disk reality | ✅ GREEN (this PR) | head replacement + JSON refresh |
-| (4) Gallery `meta.json` synced | ⚠️ AMBER | PR #19430 (mechanic) addresses `leanFile.sorries 4→0`; broader drift deferred to next ACT or auditor sweep |
-| (5) No open peer Lean-modifying PRs | ✅ GREEN | only #19430 (meta-only) is open |
-| (6) Paste-ready S17 ACT recipe | ⚠️ AMBER | S17 priorities (S17-medium / S17-heavy) need a PREP first; see Next Action below |
-
-### S17 ACT candidates (re-ranked post-S15)
-
-* **S17-medium (recommended next)**: `capacity_achieving_symmetric_input_uniform`
-  in `proofs/Proofs/ShannonChannelCoding.lean`. Use S15-1
-  (`entropy_eq_log_card_iff_eq_uniform`) on the input distribution:
-  capacity-achieving inputs for a symmetric DM channel must have
-  `H(inp.p) = log |α|`, which by S15-1 forces `inp.p = uniform`. ~30-50
-  LOC. Needs S17 PREP first to audit `DiscreteMemorylessChannel.IsSymmetric`
-  predicate (verify defined; if not, sketch the definition).
-* **S17-heavy (sub-slug spawn)**: `channel_coding_converse` axiom discharge
-  per S14 §"Next Action": combine `fano_converse_shannon_form` (S7) or
-  `fano_converse_marginal` (S10) with a per-letter chain rule
-  `I(X^n; Y^n) ≤ n · channelCapacity ch`. Needs separate sub-slug for
-  the chain rule (~200-400 LOC across two slugs).
-* **S17-light (effectively shipped)**: the S12-light `@[simp]` corollary
-  form WAS shipped as S15-1 (`entropy_eq_log_card_iff_eq_uniform`); no
-  further "light" content remains.
 
 Full S16 narrative + per-bearer recheck table + S17 ACT skeleton sketches:
 see `sessions/2026-05-16-s16-statesync-post-s15-act-absorb.md`.
@@ -388,34 +443,49 @@ type-check by inspection against Mathlib v4.26.0 surface
 
 ## Next Action
 
-* **S11 priority #1 (parent-file repair, doctor/mechanic-scope)**:
-  ✅ DONE in this session. All 9 v4.26.0 errors fixed; build green.
+* **S18a ACT** (recommended next, **LOW risk**, ~5-10 min Docker once disk
+  recovers): ship `output_marginal_uniform_of_uniform_input_and_column_sum_const`
+  (~25-35 LOC) plus `def DMChannel.IsWeaklySymmetric` (Cover-Thomas §7.2:
+  row-permutation + column-sum-constancy). Insert in
+  `proofs/Proofs/ShannonChannelCoding.lean` at line 466. Bearer: stable
+  v4.26.0 BigOperators. Paste-ready skeleton: §6.2 of S17 PREP session
+  memo.
 
-* **S12 heavy** (now unblocked): discharge the
-  `channel_coding_converse` axiom in `ShannonChannelCoding.lean`.
-  Combine `fano_converse_shannon_form` (S7) or new `fano_converse_marginal`
-  (S10) with a per-letter chain rule `I(X^n; Y^n) ≤ n · channelCapacity ch`
-  (memoryless-channel data-processing), then specialise to a length-`n`
-  block code with `M = |Fin code.M|` codewords. Likely requires a
-  separate sub-slug for the chain rule.
+* **S18b ACT** (LOW risk, ~5-10 min Docker, after S18a lands): ship
+  `row_entropy_invariant_under_input` (~15-20 LOC). Bearer:
+  `Equiv.sum_comp` from `Mathlib/Logic/Equiv/Basic.lean` (verified
+  43920 bytes at lake-pin SHA `2df2f0150c`). Paste-ready skeleton: §6.2.
 
-* **S12 medium** (now unblocked): extract a downstream consequence
-  of `entropy_eq_log_card_iff_uniform` (S8) — namely that any
-  capacity-achieving input distribution `inp` for a DM channel with
-  uniform output marginal must itself be uniform when the channel is
-  symmetric. Statement:
-  `∀ y, (∑ x, jointDist ch inp (x, y)) = (Fintype.card β)⁻¹ → ...`.
-  This is a 1–2 lemma extension in `ShannonChannelCoding.lean`.
+* **S18c ACT** (MEDIUM risk, ~20-40 min Docker, after S18a + S18b land):
+  ship `uniform_input_achieves_capacity_of_weakly_symmetric` (~35-50 LOC).
+  Strategy: `le_antisymm` with `channelMI_le_capacity` (≤) and `csSup_le`
+  + chain-rule-via-`mutual_info_symm` (≥). Currently includes 1 isolated
+  `sorry` for the conditional-entropy `H(Y|X) = ∑ x, inp.p x · H(W(·|x))`
+  decomposition; that algebraic chain is the substantive content and may
+  need 2-4 Docker iters to converge.
 
-* **S12 light** (now unblocked): use `entropy_eq_log_card_iff_uniform`
-  (S8) to derive an equality version of `entropy_of_uniform_eq_log_card`
-  as a bi-implication, perhaps as a 3-line `@[simp]` corollary.
+* **S17-medium ORIGINAL (CONVERSE direction)** — **DO NOT ATTEMPT**.
+  The statement `capacity-achieving + symmetric ⇒ uniform input` named
+  in the (pre-S17) state.md is **FALSE** for BSC(p=1/2) and similar
+  degenerate channels where capacity = 0 and ALL inputs trivially
+  achieve capacity. See S17 PREP §4.1 for the counter-example walkthrough.
+
+* **S19+ STRETCH (sub-slug spawn for `channel_coding_converse` axiom
+  discharge)**: per S14 §"Next Action": combine `fano_converse_shannon_form`
+  (S7) or `fano_converse_marginal` (S10) with a per-letter chain rule
+  `I(X^n; Y^n) ≤ n · channelCapacity ch`. Needs separate sub-slug for
+  the chain rule (~200-400 LOC across two slugs). Out of scope for S18.
+
+* **PRE-FLIGHT CHECK for any S18 ACT iteration**: `df -h /System/Volumes/Data`
+  must show ≥30Gi avail. As of S17 PREP shipping (2026-05-16T08:55Z), disk
+  is at 7.0Gi / 926Gi (100% used). Alternative: ship S18a as
+  `(build pending — host disk pressure)` per `feedback_researcher_docker_build_disk_full_ship_build_pending_per_s5_act_precedent`.
 
 ## Attempt Counts
 
-- Total attempts: 10
+- Total attempts: 17
 - Current approach attempts: 1
-- Approaches tried: 10 (S1 dispatcher; S2 axiom swap; S3 single-letter
+- Approaches tried: 15 (S1 dispatcher; S2 axiom swap; S3 single-letter
   capacity bounds; S4 uniform-entropy equality witness; S5 abstract
   fano_converse_step; S6 uniform-input fano_converse_capacity with
   channelCapacity bound; S7 Shannon-form rearrangement
@@ -423,4 +493,8 @@ type-check by inspection against Mathlib v4.26.0 surface
   entropy_eq_log_card_iff_uniform; S9 strict-inequality bi-implication
   entropy_lt_log_card_iff_non_uniform; S10 marginal-entropy
   single-letter converse `fano_converse_step_marginal` /
-  `fano_converse_marginal` for non-uniform inputs).
+  `fano_converse_marginal` for non-uniform inputs; S11 ACT parent-file
+  v4.26.0 9-error fix kit; S12+S13 PREP paste-ready skeletons + bearer
+  audits; S14+S16 STATE-SYNC merge absorptions; S15 ACT 2×2
+  max-entropy bi-implication matrix; S17 PREP symmetric-channel API
+  audit + name-drift correction + decomposed S18 ACT skeleton).
