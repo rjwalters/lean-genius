@@ -17,17 +17,24 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-09T03:00:00Z",
-    "iteration": 27,
-    "focus": "S27 — S24 ACT PR-A (researcher-1, 2026-05-16): shipped `volume_eq_setLIntegral_indicator_tsum_lattice` — the basis-parametric (`b : Module.Basis (Fin n) ℝ (Fin n → ℝ)`) variant of `volume_eq_setLIntegral_indicator_tsum` — to `proofs/Proofs/MinkowskiTheoremOQ04.lean` (insertion lines 244–308, body ~45 LOC + docstring ~20 LOC, total file 922 → 987). Proof is mechanical bearer-substitution per S23 PREP §4 row 1 (stdLattice n → Submodule.span ℤ (Set.range b); stdFundDomain n → ZSpan.fundamentalDomain b; stdLattice_isAddFundamentalDomain n → ZSpan.isAddFundamentalDomain' b volume). Docker build: 3075 jobs / first-try clean at Lean 4.26.0 + Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Section-header typeclass recheck on B1 (ZSpan.isAddFundamentalDomain'): `section Real` → `[NormedAddCommGroup E] [NormedSpace ℝ E] (b : Basis ι ℝ E)` + theorem-level `[Finite ι] [MeasurableSpace E] [OpensMeasurableSpace E]` — all auto-derived for `E = Fin n → ℝ`, `ι = Fin n`. Gallery meta lineCount 921 → 987 + theoremCount 15 → 16 synced in this PR. Still deferred to Mechanic (per S26 D2): meta.status/badge flip + mainTheorems entries (PR-A new + blichfeldt_general type:axiom→proved).",
-    "blockers": [],
+    "since": "2026-05-16T15:00:00Z",
+    "iteration": 28,
+    "focus": "S28 PREP (researcher-11, 2026-05-16, this PR, doc-only) — post-S27-ACT-PR-A + post-mechanic-#19542 JSON catchup. Three drift items closed: (1) re-add B1 (Docker daemon hung) to currentState.blockers — S27 PR-A cleared B1 at its 04:40Z build-verify time but Docker has since re-hung at 06:01Z (9h since hang, within < 12h Path C cancellation window; `docker info` returns only Client: section, no Server: lines); (2) acknowledge mechanic PR #19542 (merged 2026-05-16T13:53:53Z) closed HALF of the prior 'Still deferred to Mechanic' note — meta.status flipped axiomatized→verified, meta.badge flipped axiom→original, meta.assumptions rewritten; mainTheorems[blichfeldt_general].type was already 'proved'; mainTheorems[] entry for the S27 PR-A new theorem `volume_eq_setLIntegral_indicator_tsum_lattice` STILL PENDING (mechanic territory, not researcher scope); (3) refresh top-level `lastUpdate` from stale 04:15Z (S27 timestamp) to current. No Lean changes, no `meta.json` edits (mechanic territory), no bearer re-spot-check (Mathlib pin unchanged at `2df2f0150c…`, S27 §`Bearer drift recheck` carries forward). PR-B (`blichfeldt_general_lattice`, ~80 LOC) and PR-C (`minkowski_general_k_lattice`, ~50 LOC) remain Docker-blocked; the S23 spec at `s23-lattice-generalization-spec.md §2.1` already contains paste-ready Lean — next ACT picker under recovered Docker can paste directly. Predecessor: S27 — S24 ACT PR-A (researcher-1, 2026-05-16): shipped `volume_eq_setLIntegral_indicator_tsum_lattice` — basis-parametric variant — to `proofs/Proofs/MinkowskiTheoremOQ04.lean` (insertion lines 244–308, total file 922 → 987 LOC, 15 → 16 theorems). Docker build: 3075 jobs / first-try clean at Lean 4.26.0 + Mathlib pin unchanged.",
+    "blockers": [
+      {
+        "id": "B1",
+        "description": "Docker daemon hung — `timeout 30 docker info` returns only `Client:` section; no `Server:` Containers/Runtime/Storage Driver/Server Version lines (canonical hung-daemon signature). Concurrent slug `bounded-prime-gaps-oq-03-oq-02` records hang start at 06:01Z (~9h before this S28 PREP). Blocks all `./proofs/scripts/docker-build.sh` invocations, including the queued S24 ACT PR-B (`blichfeldt_general_lattice`) and PR-C (`minkowski_general_k_lattice`).",
+        "since": "2026-05-16T06:01:00Z",
+        "mitigation": "Wait for host disk recovery (currently 6.7 Gi avail, above 1 Gi threshold but trending down); `docker desktop restart` on the host when feasible. Path C cancellation at 12 h since hang (06:01Z → 18:01Z; ~3 h remaining within window). Precedent: PR #18707 → cleared by PR #18980 (schroeder-bernstein-oq-01 S5 ACT). Not researcher-scope."
+      }
+    ],
     "nextAction": "S24 ACT PR-B (`blichfeldt_general_lattice`, ~80 LOC) — mechanical PR #18989 §4 6-row substitution table, insertion site after `blichfeldt_general` (post `blichfeldt_basic_from_general`). Insertion can build on PR-A's `volume_eq_setLIntegral_indicator_tsum_lattice`. Followed by PR-C (`minkowski_general_k_lattice`, ~50 LOC, parameter-lifted from `minkowski_general_k`). Anti-scope retained: no `_symm`, no `_five_points`, no wrapper-square closers. Mechanic-parallel: `meta.status: axiomatized → verified` / `meta.badge: axiom → original` / `mainTheorems[blichfeldt_general].type: axiom → proved` / new `mainTheorems[]` entry for `volume_eq_setLIntegral_indicator_tsum_lattice`. Also still parallel: #17599 (Iter 21 DIRTY 7-day-stale) — next picker should rebase or close.",
     "attemptCounts": {
       "total": 27,
       "currentApproach": 13,
       "approachesTried": 0
     },
-    "lastUpdate": "2026-05-16T04:15:00.000Z"
+    "lastUpdate": "2026-05-16T15:00:00.000Z"
   },
   "knowledge": {
     "progressSummary": "PROGRESS (S27 PR-A, 2026-05-16): shipped basis-parametric `volume_eq_setLIntegral_indicator_tsum_lattice` to `MinkowskiTheoremOQ04.lean` (+65 LOC, 922→987, 15→16 theorems, 3075-job Docker green first-try). Entry point for the S24 lattice-generalisation chain (PR-A→B→C) per S23 PREP §4. Anti-scope intact: no _symm / _five_points / wrapper closers. Gallery lineCount + theoremCount synced; meta.status/badge flip still deferred to Mechanic per S26 D2.",
@@ -155,5 +162,5 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ04.lean"
     }
   ],
-  "lastUpdate": "2026-05-16T02:01:31Z"
+  "lastUpdate": "2026-05-16T15:00:00Z"
 }

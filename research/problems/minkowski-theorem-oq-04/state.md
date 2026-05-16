@@ -1,11 +1,48 @@
 # Research State: minkowski-theorem-oq-04
 
 ## Current State
-**Phase**: ACT (S24 PR-A landed; PR-B / PR-C next)
+**Phase**: ACT (S24 PR-A landed Docker-clean; PR-B / PR-C unblocked at Lean level but Docker-blocked — B1 re-hung post-S27)
 **Path**: full
-**Since**: 2026-05-09T02:30:00Z
-**Last Updated**: 2026-05-16 (S24 ACT PR-A — `volume_eq_setLIntegral_indicator_tsum_lattice`, build-verified)
-**Iteration**: 27 (S24 ACT PR-A — basis-parametric covering-count identity; 3075-job Docker clean; researcher-1)
+**Since**: 2026-05-16T15:00:00Z (S28 PREP — JSON catchup)
+**Last Updated**: 2026-05-16 (S28 PREP — JSON catchup absorbing mechanic PR #19542 status/badge flip + B1 re-add post-S27 Docker re-hang)
+**Iteration**: 28 (S28 PREP — doc-only JSON catchup; researcher-11)
+
+## S28 — S28 PREP 2026-05-16 (researcher-11)
+
+**Focus**: doc-only JSON catchup post-S27-PR-A and post-mechanic-#19542.
+Full memo at `sessions/2026-05-16-s28-prep-postS27-postmechanic-status-sync.md`.
+
+### Three drift items closed
+
+| # | Drift | Resolution |
+|---|---|---|
+| 1 | `currentState.blockers: []` (cleared by S27 PR-A's 04:40Z build-verify) | Re-add B1 — Docker re-hung at 06:01Z (9 h before this PREP); within 12 h Path C cancellation window |
+| 2 | `currentState.focus` ends "Still deferred to Mechanic ... meta.status/badge flip + mainTheorems entries (PR-A new + blichfeldt_general type:axiom→proved)" | Mechanic PR #19542 (13:53Z, 1 h before this PREP) flipped meta.status (axiomatized→verified) + meta.badge (axiom→original) + rewrote meta.assumptions; `mainTheorems[blichfeldt_general].type` was already `"proved"`; STILL PENDING: `mainTheorems[]` entry for S27 PR-A new theorem `volume_eq_setLIntegral_indicator_tsum_lattice` (mechanic territory) |
+| 3 | `lastUpdate: 2026-05-16T04:15:00Z` (~11 h stale) | Refresh to 15:00:00Z |
+
+### PR-B / PR-C status
+
+| PR | Theorem | Lean status | Docker status |
+|---|---|---|---|
+| PR-A | `volume_eq_setLIntegral_indicator_tsum_lattice` | ✅ shipped at lines 244–308 | ✅ build-verified 3075 jobs 04:40Z |
+| PR-B | `blichfeldt_general_lattice` (~80 LOC) | paste-ready in `s23-lattice-generalization-spec.md §2.1` | ❌ BLOCKED on B1 |
+| PR-C | `minkowski_general_k_lattice` (~50 LOC) | depends on PR-B | ❌ BLOCKED on B1 + PR-B |
+
+### Pre-flight
+
+- `gh pr list --search "minkowski-theorem-oq-04 in:title" --state open` → 1 result (#17599 Iter 21, 7-day stale, DIRTY — mechanic/champion territory; not researcher scope).
+- `timeout 30 docker info` → only `Client:` block (B1 RED).
+- `df -h /System/Volumes/Data` → 6.7 Gi avail (above 1 Gi threshold).
+- Mathlib pin `2df2f0150c…` unchanged from S27 — S27 §"Bearer drift recheck" carries forward (no re-spot-check in this PREP).
+
+### Honest calibration
+
+Adds 0 Lean lines, closes 0 sorries, states 0 new theorems. JSON
+catchup is the entire deliverable. Reduces misleading state for
+future researchers/auditors scanning `currentState.{blockers,focus,
+lastUpdate}`. Anti-scope: no `meta.json` edits (`mainTheorems[]`
+append is mechanic territory), no bearer re-spot-check (Mathlib pin
+unchanged), no PR-B/PR-C Lean (Docker-blocked).
 
 ## S27 — S24 ACT PR-A 2026-05-16 (researcher-1)
 
