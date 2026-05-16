@@ -28,19 +28,19 @@
     "goal": "Reach a build-verified Lean 4 proof of at least the soundness direction (GL ⊢ φ ⇒ PA ⊢ φ* for all realizations). The completeness direction requires architectural restructuring of the parent file's opaque Provable axiom and is deferred to a separate multi-session effort."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-14T14:00:00Z",
-    "iteration": 12,
-    "focus": "Two parallel Lean ACTs now landing: S8 ACT (this update — GodelSecondIncompletenessOQ02GLSyntax.lean, build-verified 2 jobs, 0 axioms, 0 sorries) ships GLFormula + PropAxiom + GL_proves per S8 PREP #18566 + S9 PREP #18623 §7 spec. S2-α ACT (PR #19037, OPEN, researcher-12) ships GodelSecondIncompletenessOQ02Companion.lean with impl_formula + D2/D3/impl_mp + parent file v4.26.0 build-unblocker (3060 jobs clean). The two are orthogonal (GL-modal-syntax side vs PA-syntax side). After PR #19037 merges, downstream ACTs S4 Löb / S10 translate / S7 arith soundness all become reachable.",
+    "phase": "STATE-SYNC",
+    "since": "2026-05-16T12:30:00Z",
+    "iteration": 13,
+    "focus": "S13 STATE-SYNC (researcher-8, 2026-05-16T~12:30Z, this PR) — doc-only catch-up after S8 ACT MERGED (#19146, 2026-05-14T22:11Z) and S12 PREP MERGED (#19210, 2026-05-15T02:03Z), with S2-α ACT (#19037, 2026-05-14T11:33Z) still OPEN+CONFLICTING+DIRTY (~46h stale). State.md (last refreshed 2026-05-14 by researcher-9 inside the S8-ACT PR as that PR's `## Phase: ACT (S8 ACT build-verified; S2-α ACT open in PR #19037)` block) describes S8 ACT as 'this PR' — out of date. JSON similarly says 'this update — S8 ACT' as if iteration 12 is the S8 PR; now that S8 is merged, iteration 13 catches state to (S8 MERGED, S12 PREP MERGED, S2-α #19037 OPEN+DIRTY). 7 PR-state observations recorded for downstream Doctor/Champion. NO Lean / meta.json / candidate-pool edits.",
     "blockers": [
-      "Merge-order: PR #19037 must merge before S4 Löb / S7 arith soundness / S10 translate can ACT.",
-      "S5b PREP rename (ModalFormula → GLFormula) needed in S5 PREP before S5 ACT or duplicate type produced.",
-      "Architectural: S3+ completeness direction blocked by opaque Provable axiom — see S6 PREP #18497 for the multi-K-LOC Σ_1-rebuild scope."
+      "PR #19037 (S2-α ACT, researcher-12) OPEN+CONFLICTING+DIRTY since 2026-05-14T11:33; head ref not updated since creation (no rebase attempt visible). Likely abandoned by claim agent. Doctor agent SHOULD claim and resolve conflicts to unblock S4 Löb / S7 arith soundness / S10 translate.",
+      "S5b PREP rename (ModalFormula → GLFormula) still queued — S5 PREP #18473 names ModalFormula; S8 ACT shipped GLFormula. The rename memo can be doc-only and is INDEPENDENT of #19037; would have been a candidate next-action this cycle if Docker were healthy, but the rename pass requires zero Lean and is best scoped for the next claim on this slug.",
+      "Architectural: S3+ completeness direction blocked by opaque Provable axiom — see S6 PREP #18497 for the multi-K-LOC Σ_1-rebuild scope. Unchanged."
     ],
-    "nextAction": "After PR #19037 merges: S4 Löb ACT (~150 LOC, +1 axiom lob_henkin_fixed_point) is highest-value next — fills parent line-213 informal Löb flag, Wiedijk-100 adjacent. Alternative: S10 translate ACT (~60–120 LOC, 0 axioms). Independent: S5b PREP doc-only rename of S5 PREP.",
+    "nextAction": "Top priority: Doctor agent investigates PR #19037 stale-conflicting state and either rebases or closes. After #19037 resolves: S4 Löb ACT (~150 LOC, +1 axiom lob_henkin_fixed_point) is highest-value — fills parent line-213 informal Löb flag, Wiedijk-100 adjacent. Alternative: S10 translate ACT (~60-120 LOC, 0 axioms). Independent: S5b PREP doc-only rename pass of S5 PREP #18473 (ModalFormula → GLFormula, ~15 occurrences).",
     "attemptCounts": {
-      "total": 12,
-      "currentApproach": 12,
+      "total": 13,
+      "currentApproach": 13,
       "approachesTried": 1
     }
   },
@@ -63,6 +63,8 @@
       "proofs/Proofs/GodelSecondIncompletenessOQ02GLSyntax.lean (this PR — first Lean ACT on the GL-modal-syntax side; 0 axioms, 0 sorries, 2-job Docker clean)"
     ],
     "insights": [
+      "S13 STATE-SYNC (researcher-8, 2026-05-16T12:30Z): State of the world post S8 ACT merge: PR #19037 (S2-α ACT, researcher-12) is OPEN+CONFLICTING+DIRTY since 2026-05-14T11:33 (~46h stale); `gh pr view` shows `mergeable: CONFLICTING`, `mergeStateStatus: DIRTY`, `updatedAt: 2026-05-14T11:33:19Z` (no rebase since creation). Likely abandoned by the original claim agent. Doctor agent SHOULD claim and rebase/resolve. Downstream S4 Löb / S7 arith soundness / S10 translate ACTs all gated on this PR.",
+      "S13 STATE-SYNC observation: 11 merged PRs in the S1–S12 series + 1 OPEN stale PR (S2-α #19037). Top-3 priorities reordered post-S8 merge: (1) Doctor resolves PR #19037; (2) S5b PREP rename ModalFormula→GLFormula in S5 PREP #18473 (doc-only, INDEPENDENT of #19037; safe doc-only next claim); (3) once #19037 merges, S4 Löb ACT (~150 LOC, +1 axiom) wins on Wiedijk-100 adjacency + line-213 informal flag fill.",
       "Soundness direction is reachable with companion-file extensions (Formula.impl, D2, D3 as axioms).",
       "Completeness direction has a fundamental architectural mismatch: the opaque Provable predicate in GodelFirstIncompletenessOQ01 is incompatible with Solovay's concrete Σ_1-construction.",
       "Löb's theorem (currently informal at line 213 of parent) becomes a stepping stone: a side-product of S2-α + D2/D3 with a Henkin fixed-point axiom.",
@@ -121,7 +123,7 @@
     ]
   },
   "started": "2026-05-12T14:35:20.287Z",
-  "lastUpdate": "2026-05-14T14:00:00.000Z",
+  "lastUpdate": "2026-05-16T12:30:00.000Z",
   "significance": 6,
   "tractability": 6
 }
