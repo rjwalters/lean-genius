@@ -85,6 +85,38 @@ the cofinal sequence)`. Expected scope: ~120–250 LOC, 0 new axioms (uses
 This captures the Fodor pigeonhole idea without the κ-tuple bookkeeping of
 Step 3, providing a build-verified intermediate before the full κ-splitting.
 
+### Post-S2-α planning landed (2026-05-15 → 2026-05-16, doc-only)
+
+Three doc-only design PRs have merged refining the S2-β plan:
+
+- **#19207** (S3 PREP, merged 2026-05-15T18:06:25Z) — full Strategy B
+  design ("two-Fodor under regressive constraints"); revised LOC band
+  180-220; flagged `IsRegular` as a `def` (not structure) at
+  `Mathlib/SetTheory/Cardinal/Regular.lean`.
+- **#19251** (S3b PREP, merged 2026-05-15T18:03:29Z) — disjointness
+  drill; promoted Solovay's CANONICAL technique (cofinal-sequence +
+  index-of-first-disagreement) within Strategy B's umbrella; pin-verified
+  the cofinal-sequence bearer chain (C1–C11) at the lake-pinned Mathlib
+  SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; identified TWO
+  companion lemmas needed: `IsStationaryBelow.inter_isClubBelow`
+  (~20-30 LOC) and `fodor_anti_constant` (~60-80 LOC); refined LOC band
+  to 200-270.
+- **#TBD** (S3c PREP, this session, 2026-05-16) — post-merge drift
+  recheck; locked exact post-#19052 line numbers for the 6 in-gallery
+  bearers (L1'@53, L2@59, L3@343, L4@259, L5@366, L6@408); corrected 2
+  S3b §2 Mathlib line citations (C9 47→44, C10 49→47); corrected the
+  C1 binder transcription (`∀ {i j} (hi hj)`, not `∀ ⟨i j⟩`); catalogued
+  Part VII section anchor at line 351 for the upcoming Part VIII insert.
+
+**Net effect for the S2-β ACT picker**: LOC budget 200–270, two
+companion lemmas to discharge in advance of the main theorem, all
+bearers (Mathlib + gallery) drift-rechecked with the SHA unchanged.
+Strategy B (canonical Solovay) recommended over Strategy A (cofinality
+bifurcation) for the binary-splitting case. Full session catalogues:
+`sessions/2026-05-15-s3-prep-...md`,
+`sessions/2026-05-15-s3b-prep-...md`,
+`sessions/2026-05-16-s3c-prep-post-merge-drift-recheck.md`.
+
 ## Build / verification
 
 Docker-build verified on Mathlib v4.26.0 (commit `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`):
