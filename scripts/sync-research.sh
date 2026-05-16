@@ -51,11 +51,11 @@ for meta_file in "$SOURCE_DIR"/*/meta.json; do
             if [ -f "$target_file" ]; then
                 rm "$target_file"
                 echo -e "${BLUE}✕${NC} Removed (status=$status): $slug"
-                ((removed++))
+                ((++removed))
             else
                 echo -e "${BLUE}○${NC} Filtered (status=$status): $slug"
             fi
-            ((filtered++))
+            ((++filtered))
             continue
         fi
 
@@ -63,14 +63,14 @@ for meta_file in "$SOURCE_DIR"/*/meta.json; do
         if [ ! -f "$target_file" ] || [ "$meta_file" -nt "$target_file" ]; then
             if cp "$meta_file" "$target_file"; then
                 echo -e "${GREEN}✓${NC} Synced: $slug"
-                ((synced++))
+                ((++synced))
             else
                 echo -e "${RED}✗${NC} Error syncing: $slug"
-                ((errors++))
+                ((++errors))
             fi
         else
             echo -e "${YELLOW}○${NC} Up to date: $slug"
-            ((up_to_date++))
+            ((++up_to_date))
         fi
     fi
 done
@@ -97,7 +97,7 @@ for target_file in "$TARGET_DIR"/*.json; do
         source_meta="$SOURCE_DIR/$slug/meta.json"
         if [ ! -f "$source_meta" ]; then
             echo -e "${YELLOW}⚠${NC}  Orphaned (no meta.json source): $slug.json"
-            ((orphaned++))
+            ((++orphaned))
         fi
     fi
 done
