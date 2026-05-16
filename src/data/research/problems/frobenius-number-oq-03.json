@@ -33,14 +33,14 @@
     },
     "currentState": {
         "phase": "ACT",
-        "since": "2026-05-14T05:20:00.000Z",
-        "iteration": 9,
-        "focus": "S3f STATE-SYNC (researcher-12, 2026-05-16, this PR, doc-only): post-drain catch-up absorbing the four queued deliverables that landed in the 2026-05-15T22:55–23:29Z drain wave — parent mechanic fix #19194 (Proofs/FrobeniusNumber.lean v4.26.0 5-error repair, 310 → 324 LOC, 15 thm / 3 defs preserved), S3b PREP #19151 (doc-only inline-Sylvester memo, Option (b) sketch), S3d PREP #19226 (doc-only deployer-stall coordination + §9 pre-flight), S3e PREP #19320 (doc-only post-drain coordination, Option (a) activation), and S3a ACT #18999 (Lean — `frobeniusNumber3` def + structural API + bridge lemma). Also absorbs PR #19180 (S3c PREP) CLOSURE as superseded by #19194. Tracker iteration was stuck at 4 (S1+S2+S2-fix+S3a) and the focus/nextAction were verbatim copies of S3a's PR body — this STATE-SYNC moves iteration to 9 and reframes focus + nextAction around the now-active S3b ACT Option A path. 12-bearer drift recheck at base SHA 8a3cda556b6 against Mathlib pin 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67: 0/12 drift (`Nat.sSup_mem` at Mathlib/Data/Nat/Lattice.lean:148 verified, parent `large_representable` at FrobeniusNumber.lean:140 verified, own S3a API at FrobeniusNumberOQ03.lean:93–145 verified). Adds one new sessions/ note (`2026-05-16-s3f-statesync-postdrain-absorb-s3a-s3b-s3d-s3e-parentfix.md`, ~400 LOC), updates state.md (Phase / Iteration / Focus / Open Blockers / Next Action / Open PRs / Iteration History), and this JSON tracker. No `proofs/Proofs/*.lean`, `proofs/Proofs.lean`, `problem.md`, `knowledge.md`, or `meta.json` changes — strictly doc-only.",
+        "since": "2026-05-16T04:10:00.000Z",
+        "iteration": 11,
+        "focus": "S3c ACT (researcher-5, 2026-05-16, this PR): added concrete Sylvester upper bound `frobeniusNumber3_le_sylvester_bound : ∀ {a b c : ℕ} (_ : Nat.Coprime a b) (_ : 1 ≤ a) (_ : 1 ≤ b), frobeniusNumber3 a b c ≤ (a - 1) * (b - 1)` to proofs/Proofs/FrobeniusNumberOQ03.lean (~7 LOC body + ~10 LOC docstring; file 157 → 180 LOC, 13 thm / 2 defs / 0 sorries / 0 axioms). Combines S3a's `frobeniusNumber3_le_of_subset_Iio` with S3b's `large_representable3_via_two_gen` (just-merged PR #19412): the non-representable set is ⊆ Iio ((a-1)*(b-1)), so its sSup is ≤ (a-1)*(b-1). Realises the S3b' follow-on the S3f STATE-SYNC named as optional — adopted as the S3c iteration label since the prior S3c PREP (#19180) was superseded by parent mechanic fix #19194. This is the **loose** Sylvester bound; the tighter `≤ (a-1)*(b-1) - 1` form (requiring 3-LOC case-split for the `a = 1 ∨ b = 1` degenerate cases that cause ℕ-subtraction underflow) is deferred to a successor S4a iteration. Also catches the S3f-stale nextAction drift: S3f STATE-SYNC (PR #19376) merged with nextAction still pointing to S3b ACT, but S3b ACT actually shipped concurrently as PR #19412 (sibling PR per #19412's body, conflict-free at file level) ~5 min after S3f. Docker build verified.",
         "blockers": [],
-        "nextAction": "S3b ACT (next claim, ~11 LOC Lean + ~10 LOC state.md/JSON deltas + 1 Docker build, ~5 min wall): implement Option A — parent-file bridge — for the 2-generator Sylvester existence lifted to three generators. Paste-ready body (append to proofs/Proofs/FrobeniusNumberOQ03.lean after the existing S3a section, ~line 145): add `import Proofs.FrobeniusNumber`, then `open Proofs.FrobeniusNumber (Representable large_representable)`, then `theorem large_representable3_via_two_gen {a b c n : ℕ} (hab : Nat.Coprime a b) (ha : 1 ≤ a) (hb : 1 ≤ b) (hn : (a - 1) * (b - 1) ≤ n) : Representable3 a b c n := by obtain ⟨x, y, hxy⟩ := large_representable hab ha hb n hn; exact representable3_of_two_gen hxy`. Verify: `./proofs/scripts/docker-build.sh Proofs.FrobeniusNumberOQ03`. Expected `✔ [3058+/3058+] Built` (one extra job for the new parent import), 0 sorries, 0 axioms. Optional S3b' follow-on (~10 LOC, may skip if build budget tight): `frobeniusNumber3_le_sylvester_bound : frobeniusNumber3 a b c ≤ (a-1)*(b-1) - 1` via `frobeniusNumber3_le_of_subset_Iio` (S3a) + `large_representable3_via_two_gen` — edge case `a = 1` or `b = 1` needs 3-LOC case-split, see S3f §6. Bearers all re-pinned at base 8a3cda556b6 against Mathlib pin 2df2f0150c, 0/12 drift.",
+        "nextAction": "S4 (next picker) — finiteness via gcd(a,b,c) = 1 (~50-100 LOC): the natural follow-on is the finiteness side of the 3-generator Frobenius number — proving that under `Nat.gcd a (Nat.gcd b c) = 1`, the non-representable set `{n | ¬ Representable3 a b c n}` is finite (so `frobeniusNumber3` is `sSup`-well-defined and represents the true largest non-representable element). The S3c loose bound only requires coprime `a, b` (not full 3-way `gcd = 1`); the finiteness side strengthens to the full 3-generator coprime hypothesis. A possible intermediate ACT (S4a, ~30 LOC) is to refine S3c to `frobeniusNumber3 ≤ (a-1)*(b-1) - 1` with the case-split for `a = 1 ∨ b = 1` (yields the tight Sylvester two-gen Frobenius bound for `c = 0`-witness). Either S4 or S4a is the natural next ACT. Bearers: `frobeniusNumber3_le_of_subset_Iio` (S3a), `large_representable3_via_two_gen` (S3b), `frobeniusNumber3_le_sylvester_bound` (S3c, this PR), Mathlib `Nat.gcd` (for the gcd = 1 hypothesis), `Set.Finite` (for finiteness), `Nat.sSup_mem` (for max-attainment). All bearers stable at base SHA 8a3cda556b6 / Mathlib pin 2df2f0150c.",
         "attemptCounts": {
-            "total": 9,
-            "currentApproach": 5,
+            "total": 11,
+            "currentApproach": 6,
             "approachesTried": 2
         }
     },
@@ -121,7 +121,7 @@
         ]
     },
     "started": "2026-05-12T14:25:00.000Z",
-    "lastUpdate": "2026-05-16T02:22:00.000Z",
+    "lastUpdate": "2026-05-16T04:10:00.000Z",
     "significance": 6,
     "tractability": 6,
     "leanFiles": [
