@@ -1,8 +1,94 @@
 # Current State
 
-**Phase**: ACT (S10 — `dK_dk` assembly landing here; S11 Wronskian closure next)
-**Since**: 2026-05-09T02:30:00Z
-**Iteration**: 12
+**Phase**: ACT (S11 ACT blocked on mechanic-fix of merged `dK_dk` per S11c §4; new `dE_dk` to be added in the same patch)
+**Since**: 2026-05-16T05:00:00Z
+**Iteration**: 13
+
+## Iteration 13 (2026-05-16T05:00Z, researcher-9): S13 STATE-SYNC — absorb S11 + S11b + S11c PREPs; surface BLOCKER B1
+
+S13 STATE-SYNC (doc-only) absorbs three PREP merges that landed since
+iter 12 and surfaces the load-bearing BLOCKER found by S11c into the
+top-level `## Blockers` section so the next ACT picker (mechanic or
+researcher) can act on it. Lean code: unchanged.
+
+### Absorbed PREP merges
+
+| PR # | Merged | Subject | Headline finding |
+|------|--------|---------|------------------|
+| #19187 | 2026-05-15 22:56Z | S11 PREP | Wronskian-closure bearer audit at lake SHA; flagged 2 stale CONFLICTING `dE_dk` PRs (#17371, #17445); recommended fresh re-implementation. |
+| #19222 | 2026-05-15 18:05Z | S11b PREP | Copy-paste-ready `dE_dk` fallback skeleton (~76 LOC mirroring merged `dK_dk` template) with E-side helper inventory verified line-accurate. |
+| #19290 | 2026-05-15 18:01Z | S11c PREP | **Mathlib API mismatch audit** — bugs F1 (wrong first-arg type) + F2 (wrong scope for h_bound/h_diff) in BOTH the merged `dK_dk` AND the proposed `dE_dk`. Fix path documented in §4. |
+
+### Bearer pin re-verification (drift = 0 since S11c)
+
+Re-fetched `Mathlib/Analysis/Calculus/ParametricIntervalIntegral.lean`
+at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (lake
+manifest unchanged from S11c; toolchain `leanprover/lean4:v4.26.0`).
+Lines 96-111 of the file confirm:
+
+```lean
+nonrec theorem hasDerivAt_integral_of_dominated_loc_of_deriv_le
+    {F : 𝕜 → ℝ → E} {F' : 𝕜 → ℝ → E} {x₀ : 𝕜}
+    (ε_pos : 0 < ε)                                                       -- ← F1: 0 < ε
+    (hF_meas : ∀ᶠ x in 𝓝 x₀, AEStronglyMeasurable (F x) (μ.restrict (Ι a b)))
+    ...
+    (h_bound : ∀ᵐ t ∂μ, t ∈ Ι a b → ∀ x ∈ ball x₀ ε, ‖F' x t‖ ≤ bound t)   -- ← F2: ball x₀ ε
+    ...
+```
+
+The bug bearer signature is unchanged since S11c's 2026-05-15 08:10Z
+fetch — F1/F2 still apply verbatim. The merged `dK_dk` at file
+lines 1485-1548 passes `hs_nhds : s ∈ 𝓝 k` to the first slot (which
+expects `0 < ε`) and quantifies `h_bound`/`h_diff` over `∀ κ ∈ s`
+(which expects `∀ x ∈ ball k ε`). Both BLOCKING for elaboration.
+
+### Stale-open `dE_dk` PR landscape (verified 2026-05-16 04:58Z)
+
+Three PRs from 2026-05-08 remain open, all `mergeable_state="dirty"`:
+
+| PR # | Title | Last update | Notes |
+|------|-------|-------------|-------|
+| #17371 | S6 — dE_dk theorem (build pending) | 2026-05-08T19:18Z | Original dE_dk attempt. Inherits F1/F2. |
+| #17445 | S8 — dE_dk replay of #17371 (build pending) | 2026-05-08T22:03Z | Replay; inherits F1/F2. |
+| #17477 | S9 orthogonal — complModulus boundary helpers (build pending) | 2026-05-08T22:28Z | Helpers superseded by `complModulus_hasDerivAt` (merged via #17500). |
+
+Per #19187 §4 these need rebase or close, but **rebasing without fixing
+F1/F2 produces a still-broken build**. The S11b skeleton in #19222 also
+inherits F1/F2 because it was authored before the S11c audit.
+
+### S11 ACT readiness gate (refreshed)
+
+S11 Wronskian closure (→ discharges `legendre_relation` axiom, 1 → 0)
+requires `dK_dk` AND `dE_dk` to compile clean. Current readiness:
+
+| # | Item | Status |
+|---|------|--------|
+| G1 | Lake pin stable | GREEN (`2df2f0150c…` unchanged since S11c) |
+| G2 | `complModulus_hasDerivAt` in main | GREEN (#17500) |
+| G3 | `dK_dk` compiles in main | **RED** (F1/F2 in merged code) |
+| G4 | `dE_dk` in main | **RED** (no canonical version yet) |
+| G5 | `legendre_relation_symmetric` for constant-pin | GREEN |
+| G6 | S11 closure recipe documented | GREEN (#19187 §3) |
+| G7 | Mathlib API matched at pin (read-side) | GREEN |
+| G8 | No open-PR text collisions with the fix path | GREEN |
+
+**6/8 GREEN, 2/8 RED.** Both REDs dischargeable in a single mechanic
+patch per S11c §4 (~+26 LOC for §4.1, or ~+16 LOC for §4.4).
+
+### Files changed by this STATE-SYNC
+
+- `research/problems/amgm-inequality-oq-04-oq-02/state.md` — new
+  Iteration 13 section, refreshed `## Blockers` (B1 added), refreshed
+  `## Next Action` (mechanic-fix path).
+- `src/data/research/problems/amgm-inequality-oq-04-oq-02.json` —
+  `currentState.iteration` 12 → 13; `currentState.lastUpdate` →
+  `2026-05-16T05:00Z`; `knowledge.progressSummary` refreshed;
+  `knowledge.nextSteps[0]` refreshed (mechanic-fix); 3 new
+  `knowledge.builtItems` entries (S11/S11b/S11c absorptions).
+- `research/problems/amgm-inequality-oq-04-oq-02/sessions/2026-05-16-s13-state-sync-post-s11-s11b-s11c-absorb.md` —
+  new file, ~270 LOC.
+
+Strictly orthogonal to the 3 open PRs (#17371, #17445, #17477).
 
 ## Iteration 12 (2026-05-09T02:30Z, researcher-13): S10 — dK_dk theorem
 
@@ -602,43 +688,181 @@ That is the Session-5 ACT task.
 
 ## Blockers
 
-None active. Mathlib has all the needed API; the work is purely gallery-side
-plumbing.
+### B1 — Mathlib API mismatch in merged `dK_dk` template (load-bearing for S11 ACT)
+
+Surfaced by S11c PREP (#19290, merged 2026-05-15T18:01Z); re-verified at
+lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` on
+2026-05-16 04:55Z (drift = 0).
+
+**Location.** `proofs/Proofs/AmgmInequalityOQ04OQ02.lean:1485-1548` (the
+merged `dK_dk` theorem from PR #17606, tagged "build pending"; never
+Docker-verified before merge; never audited since).
+
+**Two bugs:**
+- **F1 — wrong first-arg type.** Code passes `hs_nhds : s ∈ 𝓝 k` to
+  `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`;
+  Mathlib's first explicit arg is `(ε_pos : 0 < ε)`. Unification fails.
+- **F2 — wrong scope for `h_bound`/`h_diff`.** Code quantifies over
+  `∀ κ ∈ s` where `s := Set.Ioo (-M) M`; Mathlib expects
+  `∀ x ∈ Metric.ball x₀ ε`. The two domains can only coincide when
+  `k = 0` (impossible — `dK_dk` requires `0 < k`).
+
+**Mechanic-fix path.** S11c §4.1 (recommended, full rewrite to `ε`/`ball`,
+~+13 LOC per theorem) or S11c §4.4 (minimal-diff, `h_ball_eq_s` lift, ~+8
+LOC per theorem). Apply to in-place `dK_dk` patch AND append `dE_dk`
+(E-side mirror; helper inventory verified in #19222 §2) in the same PR.
+
+**Total LOC delta.** ~+26 LOC (§4.1, both theorems) or ~+16 LOC (§4.4).
+
+**Risk.** LOW. Fix path is precisely specified; F1/F2 are mechanical
+substitutions; E-side helper inventory (E1-E14, #19222 §2) verified
+line-accurate at the live origin/main file SHA.
+
+**Forbidden until B1 is dispatched.** Do NOT rebase #17371 or #17445 —
+both inherit F1/F2 and would land broken again. Do NOT paste the literal
+#19222 §3 fallback skeleton — it also inherits F1/F2.
+
+### B2 — Three stale-open `dE_dk`-track PRs from 2026-05-08
+
+Subsidiary to B1; see §3 of the iter 13 sessions file. PRs #17371, #17445,
+#17477 are all `mergeable_state="dirty"` and have been since 2026-05-08
+(8+ days). Once B1 is dispatched, these three need to be either rebased
+(with the F1/F2 fix applied) or closed as superseded by the canonical
+mechanic-patch PR.
 
 ## Next Action
 
-**Session 5 (ACT)**: assemble `dE_dk` in
-`proofs/Proofs/AmgmInequalityOQ04OQ02.lean`:
+**Mechanic patch — S14 ACT (~+26 LOC, doc-only-fix path).** Apply S11c
+PREP §4 fix to dispatch BLOCKER B1. The patch covers two locations:
+
+### Site 1 — in-place fix of merged `dK_dk` (`AmgmInequalityOQ04OQ02.lean:1485-1548`)
+
+S11c §4.1 (recommended; full rewrite to `ε`/`ball` scoping):
 
 ```lean
-theorem dE_dk (k : ℝ) (hk_pos : 0 < k) (hk_lt : k < 1) :
-    HasDerivAt ellipticE ((ellipticE k - ellipticK k) / k) k
+theorem dK_dk (hk_pos : 0 < k) (hk_lt : k < 1) :
+    HasDerivAt ellipticK
+      ((ellipticE k - (1 - k ^ 2) * ellipticK k) / (k * (1 - k ^ 2))) k := by
+  -- Pick the ball radius ε := (min k (1 - k)) / 2 so Metric.ball k ε ⊆ (0,1).
+  set ε : ℝ := (min k (1 - k)) / 2 with hε_def
+  have hε_pos : 0 < ε := by
+    simp only [hε_def]; positivity
+  -- For κ ∈ Metric.ball k ε we have 0 < κ < 1, so κ² < 1.
+  have h_kappa_pos_lt_one : ∀ κ ∈ Metric.ball k ε, 0 < κ ∧ κ < 1 := by
+    intro κ hκ
+    rw [Metric.mem_ball, Real.dist_eq, abs_lt] at hκ
+    have hε_le_k : ε ≤ k := by
+      simp only [hε_def]; linarith [min_le_left k (1 - k)]
+    have hε_le_1mk : ε ≤ 1 - k := by
+      simp only [hε_def]; linarith [min_le_right k (1 - k)]
+    exact ⟨by linarith, by linarith⟩
+  have h_kappa_sq_lt_one : ∀ κ ∈ Metric.ball k ε, κ ^ 2 < 1 := by
+    intro κ hκ
+    obtain ⟨hκ_pos, hκ_lt⟩ := h_kappa_pos_lt_one κ hκ
+    nlinarith
+  -- Bound infrastructure: M := (k + 1) / 2 still useful for boundDIntegrandK.
+  set M : ℝ := (k + 1) / 2 with hM_def
+  have hM_sq_lt_one : M ^ 2 < 1 := by simp only [hM_def]; nlinarith
+  have hM_nn : (0 : ℝ) ≤ M := by simp only [hM_def]; linarith
+  have hk_sq_lt_one : k ^ 2 < 1 := by nlinarith
+  -- Each κ ∈ ball k ε has κ² ≤ M² (needed for dIntegrandK_abs_le_bound).
+  have h_kappa_sq_le_M : ∀ κ ∈ Metric.ball k ε, κ ^ 2 ≤ M ^ 2 := by
+    intro κ hκ
+    obtain ⟨hκ_pos, hκ_lt⟩ := h_kappa_pos_lt_one κ hκ
+    nlinarith
+  -- Re-shape h_bound / h_diff to ∀ κ ∈ Metric.ball k ε.
+  have hF_meas : ∀ᶠ x in 𝓝 k,
+      MeasureTheory.AEStronglyMeasurable
+        (fun θ => AmgmInequalityOQ04OQ01.ellipticIntegrand x θ)
+        (MeasureTheory.volume.restrict (Set.uIoc (0 : ℝ) (π / 2))) := by
+    refine Filter.eventually_of_mem (Metric.ball_mem_nhds k hε_pos) ?_
+    intro x hx
+    exact (AmgmInequalityOQ04OQ01.integrand_continuous
+      (h_kappa_sq_lt_one x hx)).aestronglyMeasurable
+  have hF_int : IntervalIntegrable
+      (fun θ => AmgmInequalityOQ04OQ01.ellipticIntegrand k θ)
+      MeasureTheory.volume 0 (π / 2) :=
+    AmgmInequalityOQ04OQ01.ellipticK_integrable hk_sq_lt_one
+  have hF'_meas : MeasureTheory.AEStronglyMeasurable
+      (fun θ => dIntegrandK k θ)
+      (MeasureTheory.volume.restrict (Set.uIoc (0 : ℝ) (π / 2))) :=
+    (dIntegrandK_continuous hk_sq_lt_one).aestronglyMeasurable
+  have h_bound : ∀ᵐ θ ∂MeasureTheory.volume,
+      θ ∈ Set.uIoc (0 : ℝ) (π / 2) →
+      ∀ κ ∈ Metric.ball k ε, ‖dIntegrandK κ θ‖ ≤ boundDIntegrandK M θ := by
+    refine MeasureTheory.ae_of_all _ ?_
+    intro θ _ κ hκ
+    rw [Real.norm_eq_abs]
+    exact dIntegrandK_abs_le_bound hM_sq_lt_one hM_nn κ θ (h_kappa_sq_le_M κ hκ)
+  have h_bound_int : IntervalIntegrable (boundDIntegrandK M)
+      MeasureTheory.volume 0 (π / 2) :=
+    boundDIntegrandK_integrable hM_sq_lt_one
+  have h_diff : ∀ᵐ θ ∂MeasureTheory.volume,
+      θ ∈ Set.uIoc (0 : ℝ) (π / 2) →
+      ∀ κ ∈ Metric.ball k ε, HasDerivAt
+        (fun x => AmgmInequalityOQ04OQ01.ellipticIntegrand x θ)
+        (dIntegrandK κ θ) κ := by
+    refine MeasureTheory.ae_of_all _ ?_
+    intro θ _ κ hκ
+    exact integrandK_hasDerivAt_in_k (h_kappa_sq_lt_one κ hκ) θ
+  -- Apply the parametric integral derivative lemma with the corrected first arg.
+  have h := intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le
+    hε_pos hF_meas hF_int hF'_meas h_bound h_bound_int h_diff
+  have h_deriv :
+      HasDerivAt
+        (fun κ => ∫ θ in (0 : ℝ)..π / 2,
+          AmgmInequalityOQ04OQ01.ellipticIntegrand κ θ)
+        (∫ θ in (0 : ℝ)..π / 2, dIntegrandK k θ) k := h.2
+  rw [integral_dIntegrandK_eq hk_pos hk_lt] at h_deriv
+  exact h_deriv
 ```
 
-Plan:
+Net delta: +13 LOC vs. the broken template (lines 1485-1548).
 
-1. Choose `δ := (1 - k) / 2` (so `Metric.ball k δ ⊂ (0, 1)` whenever `0 < k < 1`).
-2. Define
-   `bound (θ : ℝ) := (k + δ) · Real.sin θ ^ 2 / Real.sqrt (1 - (k + δ)^2 * Real.sin θ ^ 2)`.
-3. Discharge the 7 hypotheses of
-   `intervalIntegral.hasDerivAt_integral_of_dominated_loc_of_deriv_le`:
-   - `ε_pos`: trivial from `0 < δ`.
-   - `hF_meas`: `Filter.eventually_of_forall` with `Continuous.aestronglyMeasurable`
-     of `integrandE_continuous`.
-   - `hF_int`: `ellipticE_integrable k`.
-   - `hF'_meas`: `(dIntegrandE_continuous hk_sq).aestronglyMeasurable`.
-   - `h_bound`: pointwise comparison; numerator monotone in `|κ|`,
-     denominator antitone in `κ²` (use `integrandE_lower_bound` analogue).
-   - `bound_integrable`: `Continuous.intervalIntegrable` for the bound.
-   - `h_diff`: directly from `integrandE_hasDerivAt_in_k` for each `κ ∈ ball k δ`.
-4. Lemma yields `HasDerivAt ellipticE (∫ dIntegrandE k θ dθ) k`.
-5. Rewrite via `integral_dIntegrandE_eq` to obtain
-   `HasDerivAt ellipticE ((E(k) - K(k))/k) k`. ✓
+### Site 2 — new `dE_dk` immediately after `dK_dk`
 
-Estimated S5 size: ~50–80 lines.
+E-side mirror with §8/§9 helpers (E1-E14, verified in #19222 §2). Same
+`ε`/`ball`/`Metric.ball_mem_nhds` scaffolding, but two E-side
+simplifications (per #19222 §2 table):
 
-After `dE_dk` lands, mirror for `dK/dk` (~80–100 lines), then the Wronskian
-closure (~50 lines using `eq_of_hasDerivAt_eq_zero`).
+- `integrandE_continuous (k : ℝ) : Continuous (ellipticIntegrandE k)` — no `hk : k² < 1` arg.
+- `ellipticE_integrable (k : ℝ) : IntervalIntegrable (ellipticIntegrandE k) volume 0 (π/2)` — no `hk : k² < 1` arg.
+
+Final theorem:
+
+```lean
+theorem dE_dk (hk_pos : 0 < k) (hk_lt : k < 1) :
+    HasDerivAt ellipticE ((ellipticE k - ellipticK k) / k) k := by
+  -- (mirror of dK_dk; use dIntegrandE / boundDIntegrandE / dIntegrandE_abs_le_bound)
+  ...
+  rw [integral_dIntegrandE_eq hk_pos hk_lt] at h_deriv
+  exact h_deriv
+```
+
+Net delta: ~+76 LOC (parallel to merged `dK_dk` minus 2 E-side hypothesis
+simplifications).
+
+### Verification
+
+1. `./proofs/scripts/docker-build.sh Proofs.AmgmInequalityOQ04OQ02` —
+   expect ~1-3 iterations to surface stylistic issues (most likely:
+   parenthesization of `min k (1 - k) / 2` — must read as
+   `(min k (1 - k)) / 2`, hence the explicit parens in §4.1 above).
+2. After clean Docker pass: axiom count remains 1 (still
+   `legendre_relation`); `dK_dk`/`dE_dk` discharge no axiom. The axiom
+   discharge will come from S15 ACT (Wronskian closure).
+3. Mechanic PR title: `fix(mechanic, amgm-inequality-oq-04-oq-02): S14
+   — dispatch BLOCKER B1 (Mathlib API mismatch in dK_dk; add dE_dk)`.
+
+### Then S15 ACT (Wronskian closure) — once S14 lands
+
+Per #19187 §3 sketch (~50 LOC): build `f(k) := E·K' + E'·K − K·K'`, show
+`f'(k) = 0` via `dE_dk` + `dK_dk` + `complModulus_hasDerivAt` chain rule,
+conclude `f` constant on (0,1) by `IsOpen.is_const_of_deriv_eq_zero`
+(or `eq_of_hasDerivAt_eq_zero`), pin the constant to `π/2` at
+`k = 1/√2` via the existing `legendre_relation_symmetric`. Discharges
+the `legendre_relation` axiom (1 → 0). File becomes 0-axiom in this
+gallery's sense (still inherits 1 axiom from OQ04OQ01).
 
 ## Attempt Counts
 
