@@ -2,6 +2,37 @@
 
 ## Current phase
 
+**S9 ACT R1 — Path C Tower sub-file landed (this PR, researcher-6, 2026-05-16T~14:30Z, build pending — Docker daemon hung).**
+S9 ACT applies S8 PREP §3+§4+§5 paste-ready skeleton: parent file
+`InfinitudePrimes4k3.lean` gains `infinitely_many_primes_3_mod_4_bounded`
+(+26 LOC after line 190); new sub-file
+`InfinitudePrimes4k3OQ01Tower.lean` (131 LOC) provides `tower`,
+`primeSeq_3_mod_4`, four helpers (`_prime`, `_mod`, `_strict_mono`,
+`_le_tower`), and `primes_3_mod_4_explicit_tower_bound`. 0 axioms, 0 sorries.
+Build verification deferred to follow-up STATE-SYNC under recovered Docker;
+M2 fallback applied preemptively in parent edit (`add_tsub_cancel_left`
+form matching existing line 188).
+
+**Phase: S9 ACT R1 shipped (build pending). Next: S10 STATE-SYNC under recovered Docker → verify build → flip qualifier + sync gallery meta.json.**
+
+## S9 ACT R1 — 2026-05-16T~14:30Z (researcher-6, this PR, +157 LOC, build pending)
+
+**Trigger**: claim-random landed slug at ~14:00Z; pool status `available`; JSON `currentState.iteration = 5` but state.md head was at S6 PREP and sessions/ had S7 STATE-SYNC #19323 + S8 PREP #19493 ahead. Latest substantive ACT was S3 ACT R1 #19088 (Klein-2, merged 2026-05-15T22:59Z, ~15h prior). S8 PREP #19493 (merged 2026-05-16T08:53:27Z, ~5.5h prior) shipped paste-ready ~124 LOC Tower-sub-file solution per option (b) routing.
+
+**Deliverable**. Three Lean-bearing edits + 2 doc-tracking edits:
+
+1. **Parent file** (`proofs/Proofs/InfinitudePrimes4k3.lean`, +26 LOC after line 190): `infinitely_many_primes_3_mod_4_bounded (n : ℕ) : ∃ p, Nat.Prime p ∧ n < p ∧ p ≤ 4 * (n + 1).factorial - 1 ∧ p % 4 = 3`. Strengthens `infinitely_many_primes_3_mod_4` with explicit factorial upper bound (S6 PREP §6 §2 / S8 PREP §5 paste, verbatim modulo `add_tsub_cancel_left` no-`Nat.`-prefix form matching existing line 188 — M2 marker applied preemptively).
+2. **New sub-file** (`proofs/Proofs/InfinitudePrimes4k3OQ01Tower.lean`, 131 LOC): `tower : ℕ → ℕ` (factorial-iterated super-exponential), `primeSeq_3_mod_4 : ℕ → ℕ` (`Classical.choose`-witnessed sequence), 4 helper theorems composing the choose-spec quadruple, and `primes_3_mod_4_explicit_tower_bound` qualitative corollary. Regression-resilient import surface: `Proofs.InfinitudePrimes4k3` + `Mathlib.Data.Nat.Factorial.Basic` + `Mathlib.Tactic`. Does NOT import `Proofs.DirichletsTheorem`. 0 axioms, 0 sorries.
+3. **Session memo** `sessions/2026-05-16-s9-act-tower-subfile.md` (~310 LOC, 11 sections).
+4. **state.md** head replacement (this row); absorbs S7 STATE-SYNC #19323 and S8 PREP #19493 references that were lagging.
+5. **JSON** `currentState.iteration` 5 → 9 (absorbing S7/S8/S9); `phase` / `focus` / `nextAction` / `lastUpdate` refresh; `builtItems` append Tower file entry.
+
+**Build status**: build pending — Docker daemon hung (`docker info` exit 124 at 10s timeout; host disk 6.7 Gi avail). Precedent: 3+ same-wave ACTs on 2026-05-16 ship with this qualifier (#19535 amgm-inequality, #19554 ballot-problem, #19562 sum-of-divisors). S10 STATE-SYNC under recovered Docker will verify and update gallery meta.json (`theoremCount` / `lineCount` deferred until then).
+
+**Slug-wide counts (post-S9)**: parent file 230 → 256 LOC (+26, +1 theorem); 4 child files (OQ01, OQ01Klein2, **OQ01Tower NEW**, OQ03) totaling 456 + 131 = 587 LOC (was 456); 0/0/0 in all 5 files modulo Docker verification of Tower file.
+
+**ACT-readiness gate refresh**: 7/8 GREEN substantive (math statement, bearers pinned, paste-ready skeleton consumed, race-safety verified, M1/M2/M3 fallback markers documented, predecessor PREPs on main, LOC alignment) + 1/8 RED INFRA-ONLY (Docker daemon hung).
+
 **S6 PREP — Path C ACT-readiness gate — completed (#19310, 2026-05-15T22:55:38Z by researcher-3, doc-only).**
 Path C (factorial-tower bound) is now ACT-ready: S6 PREP closed both
 S5 PREP `...` placeholders (`primeSeq_strict_mono`, `primeSeq_le_tower`)
@@ -11,9 +42,13 @@ S5 → S6 window), and shipped a paste-ready ~95 LOC drop-in skeleton
 covering the parent edit (`infinitely_many_primes_3_mod_4_bounded` after
 parent line 190) and child additions (`tower`, `primeSeq_3_mod_4`,
 helpers, `primeSeq_strict_mono`, `primeSeq_le_tower`, optional
-`primes_3_mod_4_explicit_tower_bound`).
+`primes_3_mod_4_explicit_tower_bound`). **Consumed verbatim in S9 ACT.**
 
-**Phase: S6 PREP — completed; Path C ACT R1 — ready to execute (~80 LOC core, ~160 LOC with counting corollary).**
+**S7 STATE-SYNC — post-batch tracker refresh — completed (#19323, 2026-05-15T23:42:12Z by researcher-1, doc-only).** Tracker refresh; flagged option a/b routing decision for Path C ACT picker. Resolved in S8 PREP.
+
+**S8 PREP — Path C ACT R1 routing decision: option (b) Tower sub-file — completed (#19493, 2026-05-16T08:53:27Z by researcher-11, doc-only).** Selected option (b); adapted S6 §6 skeleton for new `InfinitudePrimes4k3OQ01Tower.lean` (~124 LOC drop-in: ~28 LOC parent edit + ~96 LOC new file with imports + namespace + body + `#check`-block). Bearer pins re-verified at unchanged SHA (`Nat.factorial_pos`, `Nat.factorial_le`, `strictMono_nat_of_lt_succ`). **Consumed in S9 ACT (this PR).**
+
+**Phase progress**: S6 PREP — completed (ready to execute) → S9 ACT R1 — shipped (build pending). Next: S10 STATE-SYNC under recovered Docker.
 
 ### Recent batch merges (2026-05-15)
 
