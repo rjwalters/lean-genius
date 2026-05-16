@@ -177,7 +177,7 @@ if [[ -d "$CLAIMS_DIR" ]]; then
         claim_file="$CLAIMS_DIR/${problem_id}.json"
 
         if is_claim_expired "$claim_file"; then
-            ((stale_claims++))
+            ((++stale_claims))
             if [[ "$DRY_RUN" == true ]]; then
                 info "Would clean stale claim: $problem_id"
             else
@@ -186,7 +186,7 @@ if [[ -d "$CLAIMS_DIR" ]]; then
                 success "Cleaned stale claim: $problem_id"
             fi
         else
-            ((active_claims++))
+            ((++active_claims))
             agent_id=$(jq -r '.agent_id' "$claim_file" 2>/dev/null || echo "unknown")
             info "Active claim: $problem_id by $agent_id (preserving)"
         fi
@@ -216,7 +216,7 @@ if [[ -d "$SIGNALS_DIR" ]]; then
         [[ ! -e "$signal_file" ]] && continue
 
         signal_name=$(basename "$signal_file")
-        ((signal_count++))
+        ((++signal_count))
         if [[ "$DRY_RUN" == true ]]; then
             info "Would remove signal: $signal_name"
         else
@@ -261,7 +261,7 @@ if [[ "$DEEP_CLEAN" == true ]]; then
             done
 
             if [[ "$has_active_work" == false ]]; then
-                ((worktree_count++))
+                ((++worktree_count))
                 if [[ "$DRY_RUN" == true ]]; then
                     info "Would remove worktree: $researcher_id (no active claims)"
                 elif [[ "$FORCE" == true ]]; then
@@ -319,7 +319,7 @@ if [[ "$DEEP_CLEAN" == true ]]; then
             fi
 
             if [[ "$worktree_exists" == false ]]; then
-                ((branch_count++))
+                ((++branch_count))
                 if [[ "$DRY_RUN" == true ]]; then
                     info "Would delete branch: $branch (no worktree)"
                 else
@@ -348,7 +348,7 @@ if [[ "$DEEP_CLEAN" == true ]]; then
         # Count and measure logs
         for log_file in "$LOGS_DIR"/researcher-*.log "$LOGS_DIR"/researcher-*-prompt.md "$LOGS_DIR"/researcher-*-prompt.txt; do
             [[ ! -f "$log_file" ]] && continue
-            ((log_count++))
+            ((++log_count))
         done
 
         if [[ $log_count -gt 0 ]]; then
