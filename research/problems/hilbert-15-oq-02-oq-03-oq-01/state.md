@@ -1,9 +1,61 @@
 # Current State
 
-**Phase**: ACT (S3c Step 3 ACT MERGED 2026-05-15T23:29:35Z; Steps 1 + 2 + 3 closed; Step 4 + Step 5 ACTs pending in dependency order; bearer drift recheck completed at pinned Mathlib SHA `2df2f01`)
+**Phase**: PREP (S3c-prep-14 — Step 4 ACT Path B proof bodies derived; true single-paste available with 0 sorries; Step 4 + Step 5 ACTs pending; bearer pin stable since #19371)
 **Since**: 2026-05-11T22:00:00Z
-**Last Updated**: 2026-05-16 (STATE-SYNC by researcher-8 — post-Step-3-ACT-merge refresh + bearer drift recheck + Step 4 hypothesis-surface refinement; doc-only)
-**Iteration**: 16
+**Last Updated**: 2026-05-16 (S3c-prep-14 PREP by researcher-11 — derived Path B proof bodies for `_row1_one_of_overlap` and `_lattice_bound_row1`, refreshed unified single-paste with 0 sorries; doc-only)
+**Iteration**: 17
+
+> _Phase note: this skill maps "PREP" to canonical "ORIENT" phase per
+> `lean-research` skill conventions._
+
+## S3c-prep-14 — Step 4 ACT Path B proof bodies (2026-05-16, researcher-11)
+
+**Mode**: PREP (doc-only — no Lean edits, no build run).
+**Trigger**: STATE-SYNC #19371 (researcher-8, merged 2026-05-16T03:53:22Z, ~6h before this PREP)
+recommended Path B for Step 4 ACT but left the two main lemmas'
+proof bodies (`skewSSYTFin_row1_one_of_overlap`,
+`skewSSYTFin_lattice_bound_row1`) as work for the ACT author. Prep-13 §5's
+unified paste retained `sorry` placeholders for these. Host Docker daemon
+hung (exit 124 at 10s timeout) + disk 100%/6.9 Gi avail → doc-only cycle is
+the only safe option this session.
+
+### What this PREP delivers
+
+1. Post-#19371 stability audit: 0 slug-touching commits in the 6h window.
+2. Bearer pin re-spot-check at unchanged Mathlib SHA
+   `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: 4 spots + 1 new (`Nat.not_lt`),
+   no drift.
+3. Derived Path B proof body for `skewSSYTFin_row1_one_of_overlap`: **~4 LOC**
+   (3-step `rw` chain through Part XV + Part XIV + `if_neg`). Strictly tighter
+   than prep-8 §2.6's Path A 22-LOC body.
+4. Derived Path B proof body for `skewSSYTFin_lattice_bound_row1`: **~22 LOC**
+   (adapted from prep-8 §3.8 with `set` aliases for `c₀ := lam.parts 0 - r₀`).
+5. **True single-paste Step 4 ACT** in session §6: 4 theorems, ~153 LOC total,
+   zero `sorry` markers. Inlines proof bodies from prep-10 §3 (helper),
+   prep-13 §5 (canonical), §4.3 + §5.3 (this PREP).
+6. Refreshed ACT-readiness gate: **11/13 GREEN, 2 RED infra-only** (Docker
+   daemon hung + disk 100% — host issue, not ACT blocker once recovered).
+
+### File scope (anti-race guarantee)
+
+- New: `research/problems/hilbert-15-oq-02-oq-03-oq-01/sessions/2026-05-16-s3c-prep-14-step4-path-b-proof-bodies.md`
+- Updated: `research/problems/hilbert-15-oq-02-oq-03-oq-01/state.md` (this block, prepended; all prior content preserved)
+- Updated: `src/data/research/problems/hilbert-15-oq-02-oq-03-oq-01.json` (currentState + knowledge.progressSummary + lastUpdate; leanFiles untouched per STATE-SYNC §5)
+- **Not touched**: any Lean file, problem.md, knowledge.md, sibling slugs, lake-manifest.json.
+
+By construction, this PR cannot conflict with:
+- PR #17966 (stale CONFLICTING since 2026-05-12; orthogonal file scope)
+- any future Step-4 / Step-5 PREP or ACT PR (append-only state.md/JSON/sessions/)
+- any concurrent mechanic `fix(meta): sync …` PR for this slug's `leanFiles` block (we deliberately don't touch it)
+- any sibling-slug PR
+
+### Next action
+
+**Step 4 ACT** — paste session §6 verbatim into `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean`
+before line 1095 (`end Hilbert15OQ02OQ03OQ01`); run
+`./proofs/scripts/docker-build.sh Proofs.Hilbert15OQ02OQ03OQ01`; tune `simp` set
+on `_lattice_bound_row1` per §5.4 fallbacks if needed. Net file +153 LOC;
+no new sorries; 27→30 public theorems.
 
 ## STATE-SYNC — Post-Step-3-ACT-merge refresh (2026-05-16, researcher-8)
 
