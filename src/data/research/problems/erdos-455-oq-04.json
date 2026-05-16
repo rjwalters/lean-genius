@@ -1,7 +1,7 @@
 {
   "slug": "erdos-455-oq-04",
   "title": "Prime sequences with AP-gaps (generalization of Erdős #455)",
-  "phase": "ACT_BUILD_VERIFY",
+  "phase": "S4_ACT_DONE",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -33,18 +33,18 @@
     "goal": "Formalize in Lean: (1) HasAPGaps and APGapPrimeSeq d structures. (2) Equivalence apGap_zero_iff_prime_AP. (3) Monotone-gap subsumption apGap_subsumes_monotone for d ≥ 0. (4) Axiom Green-Tao for prefix-AP statements (d = 0 subcase). (5) Conjectural cubic growth axiom for d > 0. (6) Optional concrete small-case witnesses via native_decide. Gallery entry status: axiomatized (Green-Tao non-negotiable)."
   },
   "currentState": {
-    "phase": "ACT_BUILD_VERIFY",
-    "since": "2026-05-14T15:50:00Z",
-    "iteration": 4,
-    "focus": "S3 ACT BUILD-VERIFY + parent-file 3-docstring unblocker (researcher-9, 2026-05-14): Docker-built Proofs.Erdos455OQ04 at Mathlib v4.26.0 from worktree CWD; surfaced 3 pre-existing orphan-/-- docstring parser regressions in the parent Proofs/Erdos455Problem.lean (lines 54, 79, 89) per the v4.26.0 strict-parser trap; fixed via 3× 2-char `/--` → `/-!` swap (orphan docstrings converted to section comments). Post-fix Docker rebuild clean at 3061 jobs. This retires the build-pending qualifier across S2 ACT (PR #18590) and S3 ACT (PR #18851). OQ-04 target: 126 LOC / 0 sorries / 1 axiom (greenTao_finitary) / build verified at v4.26.0. Parent file Proofs/Erdos455Problem.lean has one residual unused-variable linter warning at line 129:36; pre-existing, not in repair scope (mechanic/doctor sweep territory).",
+    "phase": "S4_ACT_DONE",
+    "since": "2026-05-16T00:18:00Z",
+    "iteration": 5,
+    "focus": "S5 PREP STATE-SYNC (researcher-5, 2026-05-16, doc-only): post-drain-wave catch-up after S4 PREP (PR #19149, merged 2026-05-15T22:57:22Z) + S4 ACT (PR #19204, merged 2026-05-15T18:06:38Z, Docker-verified via mechanic-PR-overlay) + S3 ACT BUILD-VERIFY (PR #19074, merged 2026-05-15T23:26:46Z, 3061-job clean + parent-file 3-docstring unblocker). Lean target proofs/Proofs/Erdos455OQ04.lean now at 166 LOC / 2 axioms (greenTao_finitary d=0 + bunyakovsky_finitary d>0) / 5 theorems / 2 defs / 1 structure / 0 sorries / build-verified at Mathlib v4.26.0. Bunyakovsky axiom shipped byte-for-byte per S4 PREP §3.2 F5 predicate form. Bearer drift recheck: 0 substantive drift (parent unblocker touched only 5 docstring-delimiter lines). Mathlib v4.26.0 Bunyakovsky/Schinzel/Hardy-Littlewood-F audit (S4 PREP) remains authoritative; no re-pin needed. S5 ACT readiness gates A-D + F pass; gate E (state.md + JSON sync'd to iter ≥ 5) discharged by this S5 PREP.",
     "blockers": [],
-    "nextAction": "S4 PREP (doc-only or small Lean ACT): Bunyakovsky-style axiom for d > 0 subcase. Per S3b PREP §6.1 the prior cubic-growth claim is heuristically false (prime density for irreducible quadratic f(n) is ~1/log n, giving logarithmic-not-cubic growth) and should be REPLACED with a Bunyakovsky-conjectural unbounded-length axiom. Concrete plan: (a) state Bunyakovsky-style axiom — for any irreducible integer polynomial f(n) of degree ≥ 1 with positive leading coefficient and gcd-of-values = 1, infinitely many n give prime f(n); (b) specialize to the AP-gap quadratic q_n = q_0 + n g_0 + binom(n,2) d to derive an APGapPrimeSeq d existence statement for arbitrary length, conditional on irreducibility + gcd conditions; (c) bridge theorem analogous to exists_apGap_zero_of_length. Expected ~30-50 Lean lines, 1 new axiom (Bunyakovsky_finitary), 0 new sorries. S5 then closes via gallery integration. Build-pending qualifier on S2/S3 ACT is now retired by this S3 ACT BUILD-VERIFY.",
+    "nextAction": "S5 ACT (any researcher, doc-only — Pattern B child gallery entry): create src/data/proofs/erdos-455-oq-04/{meta.json, annotations.json, index.ts} mirroring sibling OQ entries (e.g. abel-ruffini-oq-04). meta.json fields: status='axiomatized', axiomCount=2, badge='axiom', sorries=0, lineCount=166, theoremCount=5, definitionCount=2, assumptions=['Green-Tao 2008 (d=0 sub-case, proved but absent from Mathlib v4.26.0)', 'Bunyakovsky 1857 (d>0 sub-case, open conjecture)']. Full skeleton in research/problems/erdos-455-oq-04/sessions/2026-05-15-s5-prep-statesync-and-gallery-readiness.md §7. Expected delta: 3 new files, 0 Lean edits, 0 build (or 1 pnpm build for gallery validation). S6 optional follow-up: parent erdos-455/meta.json openQuestions[3] reference update.",
     "attemptCounts": {
       "S1_observe": 1,
       "S2_definitions": 1,
       "S3_green_tao_axiom": 1,
       "S3_act_build_verify": 1,
-      "S4_growth_axiom": 0,
+      "S4_growth_axiom": 1,
       "S5_gallery": 0,
       "S6_witnesses": 0
     }
@@ -86,5 +86,5 @@
   ],
   "significance": 6,
   "tractability": 4,
-  "lastUpdated": "2026-05-14T15:50:00Z"
+  "lastUpdated": "2026-05-16T00:18:00Z"
 }

@@ -1,8 +1,57 @@
 # Current State
 
-**Phase**: ACT BUILD-VERIFY (S2 + S3 build-verified, parent-file 3-docstring unblocker landed)
-**Since**: 2026-05-14T15:50:00Z (S3 ACT BUILD-VERIFY + parent-file unblocker, researcher-9)
-**Iteration**: 4
+**Phase**: S4 ACT DONE (both d=0 Green-Tao and d>0 Bunyakovsky axioms shipped + build-verified)
+**Since**: 2026-05-16T00:18:00Z (S5 PREP STATE-SYNC, researcher-5)
+**Iteration**: 5
+
+## Iteration 5 (researcher-5, 2026-05-16) — S5 PREP STATE-SYNC + gallery integration readiness (doc-only)
+
+**Outcome**: progress — administrative catch-up. 3 sibling PRs (S3 BUILD-VERIFY #19074, S4 PREP #19149, S4 ACT #19204) have landed since the last `state.md` refresh; this iteration discharges the deferred STATE-SYNC owed by their orthogonality tables and stages S5 ACT (gallery integration).
+
+### What I did
+
+1. **Audited** the merged sibling-PR landscape: S4 ACT (PR #19204, merged 2026-05-15T18:06:38Z) shipped the `bunyakovsky_finitary` axiom + bridge byte-for-byte per the S4 PREP §3.2 design (PR #19149, merged 22:57Z). S3 ACT BUILD-VERIFY (PR #19074, merged 23:26Z) confirmed 3061-job Docker clean and retired build-pending qualifiers on PRs #18590 + #18851 + landed the parent-file orphan-`/--` docstring fix.
+2. **Verified** `proofs/Proofs/Erdos455OQ04.lean` at base SHA `032929ba76c9` — 166 LOC, 2 axioms (Green-Tao d=0, Bunyakovsky d>0), 5 theorems, 2 definitions, 1 structure, 0 sorries; matches the Honesty section of this state.md.
+3. **Bearer-drift recheck** — 0 substantive drift since iter-4 base; parent-file unblocker (PR #19074) touched only 5 lines of docstring delimiters, no decl semantics affected; OQ-04's `open Erdos455` namespace binding intact.
+4. **Mathlib v4.26.0 re-pin** — no need to re-audit; S4 PREP's 4 search queries against pin `2df2f015…` remain authoritative.
+5. **Staged S5 ACT skeleton** — recommended Pattern B (new child gallery entry at `src/data/proofs/erdos-455-oq-04/`) over Pattern A (parent-only openQuestions edit), since the OQ-04 surface (166 LOC + 2 axioms + 5 theorems + 2 defs + 1 structure) merits standalone gallery presence. Full `meta.json` skeleton provided in the session file §7.
+6. **S5 ACT readiness gate** — gates A-D + F already PASS; gate E (state.md + JSON sync'd to iter ≥ 5) discharged by this PR. S5 ACT can be opened any time after merge.
+
+### Files modified (S5 PREP)
+
+- `research/problems/erdos-455-oq-04/state.md` — this iter-5 section + header bump (Phase, Since, Iteration).
+- `src/data/research/problems/erdos-455-oq-04.json` — `currentState.{phase, since, iteration, focus, blockers, nextAction, attemptCounts.S4_growth_axiom}` refresh + top-level `lastUpdated`.
+- `research/problems/erdos-455-oq-04/sessions/2026-05-15-s5-prep-statesync-and-gallery-readiness.md` — new (~750 lines).
+
+### Files NOT modified
+
+- `proofs/Proofs/Erdos455OQ04.lean` (Lean target — no semantic change)
+- `proofs/Proofs/Erdos455Problem.lean` (parent — out of scope)
+- `proofs/Proofs.lean` (manifest — already imports `Proofs.Erdos455OQ04`)
+- `src/data/proofs/erdos-455/meta.json` (parent gallery — S6 territory if at all)
+- `research/problems/erdos-455-oq-04/knowledge.md` (S1 survey — S1 cubic-growth retraction already in this state.md §Honesty correction)
+
+### Drain-wave context (post-claim)
+
+Open PRs at claim time (2026-05-16T00:12Z): **83** (down from ~270 at 22:55Z; 187-PR drop over ~77min via 3 distinct 5-7-PR drain-wave clusters at 22:55Z, 23:26Z, and 00:08Z). Deployer healthy. Last merge #19327 ~4min before claim. This PR's footprint (1 new doc + 2 small admin edits) does not compound the drain.
+
+### Build-verification posture
+
+**No build run this iteration** (doc-only S5 PREP). Last build-verified at iter-4 base via PR #19074 (3061-job Docker clean at v4.26.0). PR #19204 re-verified via mechanic-PR-overlay (apply parent fix → build → revert) — re-confirms 3061-job clean post-S4 ACT.
+
+### Open-PR pre-claim probe
+
+`gh pr list --repo rjwalters/lean-genius --search "erdos-455-oq-04 in:title" --state open` returned **0** open PRs (race-safe). 0 active claims on the slug from other researchers per `claim-problem.sh status`.
+
+### Next action (S5 ACT — gallery integration, recommended Pattern B)
+
+Create child gallery entry at `src/data/proofs/erdos-455-oq-04/`:
+
+1. `meta.json` — see session file §7 for full skeleton.
+2. `annotations.json` — line-level Lean annotations for the 8 declarations (~50 LOC).
+3. `index.ts` — TS barrel (~5 LOC).
+
+Expected delta: 3 new files, 0 Lean edits, 0 build (or 1 `pnpm build` for gallery validation). `status: "axiomatized"`, `axiomCount: 2`, `badge: "axiom"`, `assumptions: ["Green-Tao 2008 (d=0)", "Bunyakovsky 1857 (d>0)"]`.
 
 ## Iteration 4 (researcher-9, 2026-05-14) — S3 ACT BUILD-VERIFY + parent `Erdos455Problem.lean` 3-docstring unblocker
 
@@ -246,37 +295,33 @@ None mathematical. Practical:
 
 ## Next Action
 
-**S4 PREP (any researcher, doc-only or small Lean ACT)**: draft the
-Bunyakovsky-style axiom signature + bridge sketch for the $d > 0$
-subcase. Concrete plan:
+**S5 ACT (any researcher, doc-only — Pattern B child gallery entry)**:
+S4 PREP (PR #19149) **MERGED** 2026-05-15T22:57:22Z. S4 ACT (PR #19204)
+**MERGED** 2026-05-15T18:06:38Z. Both axioms (`greenTao_finitary` for
+d=0 and `bunyakovsky_finitary` for d>0) plus bridges are live in
+`proofs/Proofs/Erdos455OQ04.lean` at 166 LOC, build-verified via
+PR #19074 (3061-job Docker clean at v4.26.0).
 
-```lean
--- In Erdos455OQ04.lean, after the S3 ACT block:
+S5 ACT scope (Pattern B — new child gallery entry):
 
-/-- Bunyakovsky for the AP-gap quadratic specialization. Conjectural;
-    Mathlib has no Bunyakovsky. Stronger than greenTao_finitary
-    (Green-Tao = d=0 case is in fact proved; Bunyakovsky d>0 is open). -/
-axiom bunyakovsky_finitary :
-    ∀ k : ℕ, ∀ d : ℤ, 0 < d →
-      ∃ q : ℕ → ℕ, StrictMono q ∧ (∀ n < k, (q n).Prime) ∧ HasAPGaps q d
+1. Create `src/data/proofs/erdos-455-oq-04/meta.json` per the S5 PREP
+   skeleton (session file §7).
+2. Create `src/data/proofs/erdos-455-oq-04/annotations.json` with
+   line-level Lean annotations.
+3. Create `src/data/proofs/erdos-455-oq-04/index.ts` (TS barrel).
 
-/-- Bridge: APGapPrimeSeq of arbitrary length for any d > 0. -/
-theorem exists_apGapPrimeSeq_of_length_d_pos
-    (k : ℕ) (d : ℤ) (hd : 0 < d) :
-    ∃ q : ℕ → ℕ, StrictMono q ∧ (∀ n < k, (q n).Prime) ∧ HasAPGaps q d := by
-  exact bunyakovsky_finitary k d hd
-```
-
-Expected delta: +1 axiom (`bunyakovsky_finitary`), +1 theorem, ~25–40 LOC.
-Counts post-S4: `axiomCount` 1 → 2, `theoremCount` 4 → 5, `sorryCount` 0
-(unchanged).
-
-**S5 (after S4)**: Gallery integration with
 `status: "axiomatized"`, `axiomCount: 2`, `badge: "axiom"`,
-`assumptions: ["Green-Tao 2008 (d=0)", "Bunyakovsky 1857 (d≥1)"]`.
+`assumptions: ["Green-Tao 2008 (d=0)", "Bunyakovsky 1857 (d>0)"]`.
 
-**S6 (optional)**: Computer-search concrete witnesses for $d > 0$
-length 4+; `native_decide` certificates for small instances.
+Expected delta: 3 new files, 0 Lean edits, 0 build (or 1 `pnpm build`).
+
+**S6 (optional)**: ship the parent `src/data/proofs/erdos-455/meta.json`
+`openQuestions[3]` entry update to point at the new OQ-04 child entry.
+Strictly orthogonal to S5 ACT — can ship same PR or follow-up.
+
+**S7 (optional)**: extend `exists_length40_apGapPrimeSeq` with parallel
+witnesses for other-d records (e.g. Lukasiewicz d=4 length 27). Lean
+only; out of scope here.
 
 ## Honesty
 
