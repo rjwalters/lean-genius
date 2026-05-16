@@ -1,7 +1,7 @@
 {
   "slug": "ehrhart-cube-proven-oq-03",
   "title": "Barvinok's algorithm for lattice point counting in fixed dimension",
-  "phase": "S4_ACT",
+  "phase": "S5b_PREP_complete",
   "status": "in-progress",
   "tier": "B",
   "path": "full",
@@ -30,18 +30,18 @@
     "goal": "Add gallery entry for Barvinok-1994 algorithm: axiomatize the polytime claim, define short rational generating function as a Lean type, prove first-principles corollary f([0,n]^d; x) = prod_i (1 - x_i^{n+1}) / (1 - x_i), bridge to ehrhart-cube-proven's (n+1)^d via x -> 1 specialization."
   },
   "currentState": {
-    "phase": "S4_ACT",
+    "phase": "S5b_PREP_complete",
     "since": "2026-05-14T14:55:00Z",
-    "iteration": 4,
-    "focus": "S4 ACT (researcher-3, 2026-05-14) — Option A (continue hypersimplex). Discharged `hypersimplex_palindrome_k_d_minus_1` (line 89-91, ~50 LOC) via the S3 PREP plan: involution φ x i = ⟨n − x i, _⟩, sum-of-complements identity ∑ φ x_i + ∑ x_i = d·n from `Finset.sum_add_distrib` + pointwise `n - x_i + x_i = n` + `Finset.sum_const`/`card_univ`/`card_fin`/`smul_eq_mul`, then `Finset.card_equiv` (cleaner than the S3-sketched `Finset.card_nbij'` because the involution form `φ ∘ φ = id` bundles directly as `Equiv`). Closed both ↔ directions with `omega` after the linear bridge `d * n = n * 1 + n * (d - 1)`. Build clean on first Docker iteration (7743 jobs, 0 warnings beyond the remaining k=1 sorry). File LOC 119 → 169; sorries 2 → 1; meta.json + leanFiles synced. Predecessor S3 PREP outline (researcher-4, #18923) was bearer-correct and gave a directly usable plan; the only deviation was using `card_equiv` over `card_nbij'` (4 fewer field obligations).",
+    "iteration": 6,
+    "focus": "S5b PREP complete (researcher-12, 2026-05-15, PR #19236): pre-flight pin-verification of S5 PREP §3 skeleton (PR #19179, researcher-3, 2026-05-15) against lake pin 2df2f0150c surfaced 2 elaboration bugs; corrections filed. Combined S5+S5b gives bearer-CLEAN paste-ready skeleton for `hypersimplex_count_k_one` discharge using `Sym.equivNatSumOfFintype` from Mathlib/Data/Finsupp/Multiset.lean. Awaiting S6 ACT to transcribe + build-verify. S4 ACT outcome (researcher-3, 2026-05-14, PR #18923): `hypersimplex_palindrome_k_d_minus_1` discharged via involution `φ x i = ⟨n − x i, _⟩` + `Finset.card_equiv`; file 119 → 169 LOC; sorries 2 → 1; build clean.",
     "blockers": [
       "Bearer audit S2 (2026-05-13): Mathlib has NO Ehrhart-theory toolkit (`Polytope` namespace absent, `LatticePolytope` absent, `Ehrhart` absent). Any retargeted S2 ACT must build from MvPolynomial/RatFunc/MvPowerSeries; no specialisation possible. Barvinok-track bearer-ABSENT.",
       "Slot drift S2 (2026-05-13): proofs/Proofs/EhrhartCubeProvenOQ03.lean is occupied by hypersimplex Δ(d,k) scaffold from PR #18293; namespace EhrhartCubeProvenOQ03. Any Barvinok retarget collides unless spun off to a new sibling slug.",
       "Scope-decision deferral (S2 + S3 confirmed): Option A (continue hypersimplex) vs Option B (spin off Barvinok as oq-05) still awaits seeker/curator/human triage. Neither S2 PREP nor S3 PREP committed to either path."
     ],
-    "nextAction": "S5 ACT — discharge the remaining sorry `hypersimplex_count_k_one` (line 75) via either (a) the Sym bijection plan from S3 PREP: construct a `Finset.card_nbij'` between `{x : Fin d → Fin (n+1) | ∑ x_i = n}` and `Sym (Fin d) n` via the multiplicity map, then chain `Sym.card_sym_eq_choose` + `Nat.choose_symm` to land at `(n + d - 1).choose (d - 1)`; or (b) the stars-and-bars alternative: injection `x ↦ {prefix sums + i : i ∈ Fin (d-1)}` into `{S ⊆ Fin (n+d-1) | #S = d-1}` then `Finset.card_powersetCard`. Per S3 PREP caveat, plan (a) is ~50 LOC for the bijection + ~5 LOC for the index/symm steps; plan (b) is ~80 LOC but more elementary. S4 ACT has now settled the v4.26.0 idioms (Equiv-form > card_nbij' when involution is self-inverse), giving S5 a cleaner starting point.",
+    "nextAction": "S6 ACT — transcribe corrected S5+S5b skeleton (~25 LOC) into proofs/Proofs/EhrhartCubeProvenOQ03.lean replacing line-75 sorry (`hypersimplex_count_k_one`); build-verify via ./proofs/scripts/docker-build.sh Proofs.EhrhartCubeProvenOQ03. Pre-requisite: host disk ≥ 10 Gi avail + Docker daemon responsive (currently BLOCKED: 100% / 6.9 Gi avail / docker info hung past 8 s — INFRASTRUCTURE-ONLY blocker).",
     "attemptCounts": {
-      "total": 4,
+      "total": 6,
       "currentApproach": 4,
       "approachesTried": 1
     }
@@ -110,7 +110,7 @@
     ]
   },
   "started": "2026-05-12T20:55:00Z",
-  "lastUpdate": "2026-05-14T14:55:00Z",
+  "lastUpdate": "2026-05-16T09:24:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
