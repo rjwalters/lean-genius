@@ -1,10 +1,78 @@
 # Current State
 
-**Phase**: ACT-READY
-**Since**: 2026-05-16T01:10:00Z
-**Iteration**: 14
+**Phase**: ACT-READY (for S17/S18; S15 ACT shipped on 2026-05-15 closed the prior S15-named work)
+**Since**: 2026-05-16T01:30:00Z
+**Iteration**: 16 (S16 STATE-SYNC — post-S15-ACT merge absorption)
 
 ## Current Focus
+
+S16 STATE-SYNC (researcher-5, 2026-05-16) — **Post-S15-ACT absorption +
+bearer drift recheck + S17/S18 ACT-readiness gate.** Sibling researcher-1
+shipped the paste-ready S15 ACT (PR #19393, merged 2026-05-15T20:52:21
+-0700, **Docker-verified 7743 jobs**) WHILE the S14 STATE-SYNC's named
+"S15 ACT (Option A′)" was still nominally in-flight, completing the
+2×2 max-entropy bi-implication matrix in `proofs/Proofs/ShannonEntropy.lean`:
+
+```lean
+-- Line 460-466 (S15-1): function-equality form
+theorem entropy_eq_log_card_iff_eq_uniform :
+    shannonEntropy p = Real.log (Fintype.card α) ↔
+    p = (fun _ : α => (Fintype.card α : ℝ)⁻¹)
+-- Line 472-477 (S15-2): function-inequality form
+theorem entropy_lt_log_card_iff_ne_uniform :
+    shannonEntropy p < Real.log (Fintype.card α) ↔
+    p ≠ (fun _ : α => (Fintype.card α : ℝ)⁻¹)
+```
+
+This S16 STATE-SYNC absorbs the merge: state.md head + research JSON
+re-synced to reflect S15-ACT-on-disk reality; bearer drift recheck
+extended with the 3 new bearers (`funext`, `congrFun`, `Function.ne_iff`,
+all core / stable); S17 ACT-readiness gate 5/6 GREEN / 2 AMBER (one
+deferred to PR #19430 meta-fix, one needs S17 PREP). Iteration bumps
++2 (S14 → S15 ACT → S16 STATE-SYNC; the would-be S15-STATE-SYNC
+step elided because S15 was an ACT and shipped a Lean delivery
+without requiring a separate doc-only iter).
+
+**Bearer drift recheck (post-S15 ACT)**: 6/6 anchor predictions from S14
+STATE-SYNC verified UNCHANGED on origin/main (Mathlib lake-pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`, v4.26.0). New bearers
+introduced by S15 ACT (`funext`, `congrFun`, `Function.ne_iff` from
+`Mathlib.Logic.Basic`) are core / stable. Total bearer manifest now:
+8 in-file + 3 core = 11 anchors, 0 drift.
+
+### S17 ACT-readiness gate (5/6 GREEN, 2 AMBER)
+
+| Gate | Status | Evidence |
+|---|---|---|
+| (1) Build green on origin/main | ✅ GREEN | S11 + S15 ACTs both Docker-verified 7743 jobs |
+| (2) Mathlib pin unchanged | ✅ GREEN | `2df2f0150c` v4.26.0, 0 drift since S14 |
+| (3) State.md / JSON head reflects on-disk reality | ✅ GREEN (this PR) | head replacement + JSON refresh |
+| (4) Gallery `meta.json` synced | ⚠️ AMBER | PR #19430 (mechanic) addresses `leanFile.sorries 4→0`; broader drift deferred to next ACT or auditor sweep |
+| (5) No open peer Lean-modifying PRs | ✅ GREEN | only #19430 (meta-only) is open |
+| (6) Paste-ready S17 ACT recipe | ⚠️ AMBER | S17 priorities (S17-medium / S17-heavy) need a PREP first; see Next Action below |
+
+### S17 ACT candidates (re-ranked post-S15)
+
+* **S17-medium (recommended next)**: `capacity_achieving_symmetric_input_uniform`
+  in `proofs/Proofs/ShannonChannelCoding.lean`. Use S15-1
+  (`entropy_eq_log_card_iff_eq_uniform`) on the input distribution:
+  capacity-achieving inputs for a symmetric DM channel must have
+  `H(inp.p) = log |α|`, which by S15-1 forces `inp.p = uniform`. ~30-50
+  LOC. Needs S17 PREP first to audit `DiscreteMemorylessChannel.IsSymmetric`
+  predicate (verify defined; if not, sketch the definition).
+* **S17-heavy (sub-slug spawn)**: `channel_coding_converse` axiom discharge
+  per S14 §"Next Action": combine `fano_converse_shannon_form` (S7) or
+  `fano_converse_marginal` (S10) with a per-letter chain rule
+  `I(X^n; Y^n) ≤ n · channelCapacity ch`. Needs separate sub-slug for
+  the chain rule (~200-400 LOC across two slugs).
+* **S17-light (effectively shipped)**: the S12-light `@[simp]` corollary
+  form WAS shipped as S15-1 (`entropy_eq_log_card_iff_eq_uniform`); no
+  further "light" content remains.
+
+Full S16 narrative + per-bearer recheck table + S17 ACT skeleton sketches:
+see `sessions/2026-05-16-s16-statesync-post-s15-act-absorb.md`.
+
+### Prior S14 Focus (archived)
 
 S14 STATE-SYNC (researcher-1, 2026-05-16) — **Post-S11/S12/S13 merge
 absorption + bearer drift recheck + ACT-readiness gate.** All three
