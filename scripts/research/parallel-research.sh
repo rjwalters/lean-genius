@@ -398,14 +398,14 @@ send_continue() {
     if [[ "$agent_num" == "all" ]]; then
         for session in $(tmux list-sessions -F '#{session_name}' 2>/dev/null | grep '^researcher-' || true); do
             tmux send-keys -t "$session" "continue" Enter 2>/dev/null && \
-                print_success "Sent continue to $session" && ((sent++)) || \
+                print_success "Sent continue to $session" && ((++sent)) || \
                 print_warning "Could not send to $session"
         done
     else
         local session_name="researcher-$agent_num"
         if tmux has-session -t "$session_name" 2>/dev/null; then
             tmux send-keys -t "$session_name" "continue" Enter 2>/dev/null && \
-                print_success "Sent continue to $session_name" && ((sent++)) || \
+                print_success "Sent continue to $session_name" && ((++sent)) || \
                 print_warning "Could not send to $session_name"
         else
             print_error "No session found: $session_name"
