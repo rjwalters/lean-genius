@@ -26,7 +26,6 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import { execSync } from 'child_process'
 
 const GALLERY_DIR = 'src/data/proofs'
 const TRACKER_FILE = 'src/data/proofs/audit-tracker.json'
