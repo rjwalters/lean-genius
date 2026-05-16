@@ -832,4 +832,122 @@ theorem primesUpTo_50_eq :
       [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47] := by
   native_decide
 
+/-- Single-branch step for the pruned admissibility search.
+
+Given a prime `p`, a candidate residue `r ∈ [0, p)`, the remaining
+candidate set `candidates`, the already-chosen prefix `chosen`, and a
+continuation `cont` to invoke recursively on the filtered candidate /
+chosen lists, this helper:
+
+1. Filters `candidates` and `chosen` to drop any `n ≡ r (mod p)`.
+2. Returns `false` early if the filtering shrank `chosen` (i.e., the
+   prefix is no longer feasible after dropping that residue class).
+3. Otherwise delegates to `cont` with the filtered lists.
+
+The continuation is `Bool`-valued so the helper is non-recursive and
+sits cleanly outside `searchAux`'s well-founded scope. -/
+private def tryBranch (p r : ℕ) (candidates chosen : List ℕ)
+    (cont : List ℕ → List ℕ → Bool) : Bool :=
+  let candidates' := candidates.filter (fun n => n % p ≠ r)
+  let chosen'     := chosen.filter (fun n => n % p ≠ r)
+  if chosen'.length < chosen.length then false
+  else cont candidates' chosen'
+
+/-- Depth-first pruned admissibility search.
+
+Given a target window width `w`, target subset size `k`, the ascending
+list of primes `primes` to branch on, the remaining candidate set
+`candidates`, and the prefix `chosen`, returns `true` iff there
+exists a forbidden-residue extension of `chosen` to a `k`-element
+admissible subset of `Finset.range w` (under the S10 PREP §7
+residue-pruning invariant: each entry in `chosen` must avoid the
+forbidden residue class for **every** prime in `primes`).
+
+Leaf: when `primes = []`, the prefix `chosen` is residue-disjoint
+across all primes ≤ `k`, so admissibility reduces to a pure
+cardinality check (`candidates.length ≥ k - chosen.length`),
+discharged by `decide`. This is the S10d PREP §3 invariant.
+
+Recursive: for the head prime `p`, iterate over residues `r ∈ [0, p)`
+via `(List.range p).any` and delegate each branch to `tryBranch`. The
+recursive call `searchAux w k primes'` is **partially applied** as a
+continuation value, sidestepping the §3 elaboration risk audited in
+S16 PREP. -/
+def searchAux (w k : ℕ) :
+    (primes : List ℕ) → (candidates : List ℕ) → (chosen : List ℕ) → Bool
+  | [], candidates, chosen =>
+      decide (candidates.length ≥ k - chosen.length)
+  | p :: primes', candidates, chosen =>
+      if candidates.length < k - chosen.length then false
+      else
+        (List.range p).any (fun r =>
+          tryBranch p r candidates chosen (searchAux w k primes'))
+termination_by primes.length
+decreasing_by all_goals (simp_wf; omega)
+
+/-- Pruned-search surface for the admissibility decision problem.
+
+`engelsmaSearchPruned w k = true` iff there exists `H ⊆ {0, …, w−1}`
+with `0 ∈ H`, `|H| = k`, and `IsAdmissible H`. The implementation
+walks the primes `p ≤ k` (via `primesUpTo k`, S10 ACT bearer) and
+branches on forbidden residues; the residue-pruning invariant
+collapses the leaf to a cardinality decision (per `searchAux`).
+
+The candidate set is `List.range w` (= `[0, 1, …, w-1]`) and the
+initial prefix is `[0]` per S10d PREP §3 — pinning `0 ∈ H` lets the
+leaf cardinality check on `chosen.length` start at `1` rather than
+`0`. -/
+def engelsmaSearchPruned (w k : ℕ) : Bool :=
+  searchAux w k (primesUpTo k) (List.range w) [0]
+
+/-- **Bool/Prop bridge** for `engelsmaSearchPruned`. Mirror of
+`engelsmaSearch_eq_false_iff` (S9 ACT) for the pruned variant.
+
+The forward direction is the soundness contract: if
+`engelsmaSearchPruned w k = false`, no admissible witness exists.
+The reverse is completeness: every admissible witness is found.
+
+**Proof structure (per S10 PREP §8 decomposition + S18 PREP §2)**:
+
+1. `searchAux_sound`: `searchAux w k primes candidates chosen = true`
+   implies the witness existence at the residue-pruned prefix.
+2. `searchAux_complete`: every admissible witness consistent with
+   `chosen` is found by some branch of `searchAux`.
+3. `engelsmaSearchPruned_eq_iff`: combines the two via the
+   residue-pruning invariant evaluated at `primes = primesUpTo k`,
+   `candidates = List.range w`, `chosen = [0]`.
+
+S11b ACT author: discharge the `sorry` below via the three sub-lemmas
+above; estimate +~190-300 LOC for the full decomposition (S18 PREP §2). -/
+theorem engelsmaSearchPruned_eq_false_iff (w k : ℕ) :
+    engelsmaSearchPruned w k = false ↔
+      ∀ H ∈ (Finset.range w).powersetCard k, 0 ∈ H → ¬ IsAdmissible H := by
+  sorry
+
+/-- **Pruned-form S9 deliverable**: a `Bool`-equation reduction of
+`engelsma_lower_bound` via the pruned search. Mirrors
+`engelsma_lower_bound_of_engelsmaSearch_false` (S9 ACT). -/
+theorem engelsma_lower_bound_of_engelsmaSearchPruned_false
+    (h : engelsmaSearchPruned 246 50 = false) :
+    ∀ H : Finset ℕ, IsAdmissible H → H.card ≥ 50 →
+    ∀ hne : H.Nonempty, 246 ≤ H.max' hne - H.min' hne :=
+  engelsma_lower_bound_of_finitary
+    ((engelsmaSearchPruned_eq_false_iff 246 50).mp h)
+
+/-- **Sanity test 1**: `(w, k) = (7, 3)`, the smallest non-trivial
+parameters. Mirrors `engelsmaSearch_7_3_eq_true` (S9 ACT, line 769).
+Verifies the pruned search agrees with the naive search at small
+parameters. -/
+theorem engelsmaSearchPruned_7_3_eq_true :
+    engelsmaSearchPruned 7 3 = true := by
+  native_decide
+
+/-- **Sanity test 2**: `(w, k) = (11, 5)`. Search space
+`Nat.choose 11 5 = 462`; naive `engelsmaSearch` would still be
+feasible but slow. The pruned form prunes via primes `[2, 3, 5]`
+(= `primesUpTo 5`). -/
+theorem engelsmaSearchPruned_11_5_eq_true :
+    engelsmaSearchPruned 11 5 = true := by
+  native_decide
+
 end BoundedPrimeGapsOQ03OQ02
