@@ -25,7 +25,7 @@
     "sorries": 0,
     "axiomCount": 1,
     "lineCount": 228,
-    "theoremCount": 13,
+    "theoremCount": 14,
     "defCount": 3,
     "assumptions": "1 axiom (now in companion LawsOfLargeNumbersOQ04OQ03Bracketing.lean): bracketingGrid_exists — existence of an ε-bracketing grid of continuity points for any CDF on a probability measure on ℝ. Purely real-analytic content (reduces to Monotone.exists_increasing_continuity_seq, the natural Mathlib upstream target). The parent's monolithic axiom glivenko_cantelli_uniform was retired in S7; the proved variant lives in the companion as theorem glivenko_cantelli_uniform. The two integration facts thresholdIndicator_integrable and integral_thresholdIndicator_eq_cdf are fully proved. Pointwise convergence theorem is fully proved via SLLN.",
     "mathlibDependencies": [
@@ -214,7 +214,7 @@
     "namespace": "GlivenkoCantelli",
     "lineCount": 228,
     "axiomCount": 0,
-    "theoremCount": 13,
+    "theoremCount": 14,
     "definitionCount": 3,
     "path": "Proofs/LawsOfLargeNumbersOQ04.lean",
     "additionalFiles": [
