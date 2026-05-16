@@ -200,13 +200,24 @@ log_info "Submitting to Aristotle (async)..."
 
 # Create a project directory with the lean file and Lean project metadata
 SUBMIT_DIR=$(mktemp -d "${TMPDIR:-/tmp}/aristotle-submit-XXXXXX")
+trap 'rm -rf "$SUBMIT_DIR"' EXIT
 cp "$LEAN_FILE" "$SUBMIT_DIR/"
 cp "$PROJECT_ROOT/proofs/lakefile.toml" "$SUBMIT_DIR/"
 cp "$PROJECT_ROOT/proofs/lean-toolchain" "$SUBMIT_DIR/"
 
 # Run aristotle submit (default is async, no --wait needed)
+set +e
 SUBMIT_OUTPUT=$(uvx --from aristotlelib aristotle submit --project-dir "$SUBMIT_DIR" "Prove all sorry lemmas in $(basename "$LEAN_FILE")" 2>&1)
+SUBMIT_STATUS=$?
+set -e
 rm -rf "$SUBMIT_DIR"
+trap - EXIT
+
+if [ "$SUBMIT_STATUS" -ne 0 ]; then
+    log_error "Aristotle submit failed"
+    echo "Output: $SUBMIT_OUTPUT"
+    exit "$SUBMIT_STATUS"
+fi
 
 # Extract project ID from output
 PROJECT_ID=$(echo "$SUBMIT_OUTPUT" | grep -oE "[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}" | head -1)
