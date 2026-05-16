@@ -304,14 +304,19 @@ PROMPT_EOF
 
     # Now do variable substitution (the prompt uses ${VAR} placeholders)
     local interval_hours=$((INTERVAL / 60))
-    sed -i '' \
+    local substituted_prompt="${prompt_file}.tmp"
+    if ! sed \
         -e "s|\${REPO_ROOT}|$REPO_ROOT|g" \
         -e "s|\${INTERVAL}|$INTERVAL|g" \
         -e "s|\${INTERVAL_HOURS}|$interval_hours|g" \
         -e "s|\${STATE_FILE}|$STATE_FILE|g" \
         -e "s|\${LOG_FILE}|$LOG_FILE|g" \
         -e "s|\${SIGNALS_DIR}|$SIGNALS_DIR|g" \
-        "$prompt_file"
+        "$prompt_file" > "$substituted_prompt"; then
+        rm -f "$substituted_prompt"
+        return 1
+    fi
+    mv "$substituted_prompt" "$prompt_file"
 
     echo "$prompt_file"
 }
