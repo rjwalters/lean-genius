@@ -498,3 +498,53 @@ Per project memory `project_mathlib_api_drift_2026_04`, this drift hits a cohort
 3. If CI shows errors: likely in `adjoin_eq_top_of_adjoin_eq_top` instance synthesis (`Algebra ↥Ka ↥(Ka ⊔ ℚ⟮β⟯)` and `IsScalarTower ℚ ↥Ka ↥(Ka ⊔ ℚ⟮β⟯)`) or `Subtype.ext rfl` in `h_le`
 4. Potential fix for instance synthesis: add `haveI : Algebra ↥Ka ↥(Ka ⊔ ℚ⟮β⟯) := ...` explicitly
 5. After PR merges: update meta.json (sorries count, lineCount)
+
+## Session 40 (2026-05-16) — Registry Catchup to Verified DONE State (Doc-only)
+
+**Mode**: STATE-SYNC (claimed RICH via claim-random due to stale pool entry)
+**Outcome**: doc-only — registry catchup; no code changes
+
+### Why This Fires
+`claim-random` selected this slug because the local candidate pool listed it as `status: available`,
+but the slug has been verified complete since 2026-05-07 (canonical JSON `status: completed`,
+`phase: DONE`; gallery meta `status: verified`, `badge: original`, 0 sorries, 0 axioms,
+22 theorems, 639 LOC, 2 definitions).
+
+Three levels of tracking drift discovered:
+1. `.lean/state/candidate-pool.json` (local, untracked) — `status: available` (wrong)
+2. `research/registry.json` (tracked) — `phase: OBSERVE`, `status: active`, `lastUpdate: 2026-04-26` (wrong)
+3. `research/problems/.../knowledge.md` — last entry Session 39 (2026-05-04, PR #15596), no closing record of the final `isConstructible_sup_degree` completion
+
+### What I Did
+- Updated `research/registry.json` entry for this slug:
+  - `phase: OBSERVE → COMPLETED`
+  - `status: active → graduated`
+  - `lastUpdate: 2026-04-26T07:08:53.391Z → 2026-05-07T17:00:00Z`
+  - Added `completed: 2026-05-07T17:00:00Z` (matches canonical JSON `lastUpdate`)
+- Added this closing Session 40 epilogue
+- Marked the local pool entry completed (via `claim-problem.sh update`) so claim-random no longer reselects this slug
+
+### Reality Check (Verified vs. Knowledge.md Sessions 26–39)
+Ground truth as of 2026-05-16:
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01.lean`: 639 LOC, 22 theorems, 0 sorries (4 grep hits for `sorry` are all comment-text in docstrings), 0 axioms
+- `proofs/Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle.lean`: present (companion file, 2679 LOC)
+- Gallery `src/data/proofs/angle-trisection-oq-02-oq-01-oq-02-incomplete-01/meta.json`: `status: verified`, `sorries: 0`, `axiomCount: 0`, `theoremCount: 22`, `lineCount: 639`, `definitionCount: 2`
+- All three classical impossibility results proved: angle trisection, cube doubling, regular 7-gon
+- The Galois-correspondence formulation `wantzel_galois_iff` was the only sorry mentioned in Sessions 38–39; per canonical JSON `progressSummary` it remains deliberately out of scope (≈500+ lines of FTGT + 2-group infrastructure) and was NOT a remaining sorry on the verified file — the file's wantzel_galois_iff was either removed or proved before the gallery flipped to verified
+
+### Active Child Slug
+`angle-trisection-oq-02-oq-01-oq-02-incomplete-01-oq-01` is the live successor (S2c → S6 sequence, last merged PR #19621 on 2026-05-15). That child slug pursues residual API/drift work; this parent slug needs no further research action.
+
+### Files Modified
+- `research/registry.json` (1 entry, 4 field edits + 1 new field)
+- `research/problems/angle-trisection-oq-02-oq-01-oq-02-incomplete-01/knowledge.md` (this Session 40 epilogue)
+
+### What I Did NOT Touch (Deliberate)
+- Lean files: no need; proof verified and gallery-locked
+- Gallery `src/data/proofs/.../meta.json`: already consistent (22 thm, 0 sorries, 639 LOC, 2 defs, status: verified)
+- Canonical JSON `src/data/research/problems/...json`: already `phase: DONE`, `status: completed`, mathlibGaps prose acceptable for historical record (does not falsely claim active gaps)
+- Child slug `-oq-01` files: separate active research thread; out of scope here
+- Aristotle jobs file: no in-flight jobs for this slug
+
+### Next Steps
+None. This slug is COMPLETED and gallery-verified. Any future work belongs on the `-oq-01` child slug or on a new FTGT-track problem if `wantzel_galois_iff` is ever pursued.
