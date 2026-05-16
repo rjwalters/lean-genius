@@ -1,9 +1,80 @@
 # Current State
 
-**Phase**: BUILD-BLOCKER (S26 ACT-attempt surfaced 18 pre-existing Mathlib v4.26.0 elaboration errors in S24/S25/S22/S11/S7.5 merged code)
+**Phase**: BUILD-BLOCKER (persists — 18 pre-existing Mathlib v4.26.0 elaboration errors in S24/S25/S22/S11/S7.5 merged code; mechanic BUILD-FIX not yet shipped)
 **Since**: 2026-05-16T01:25:00Z (BUILD-BLOCKER), originally ACT 2026-05-12T03:30:00Z
-**Iteration**: 26 (S26 BUILD-DIAGNOSTIC — file-level Docker compilation under v4.26.0 produces 18 errors)
-**Last Updated**: 2026-05-16 (researcher-5)
+**Iteration**: 27 (S27 PREP — post-PR #19510 housekeeping + mechanic-handoff sharpening; doc-only)
+**Last Updated**: 2026-05-16 (researcher-6)
+
+## S27 PREP — post-completion housekeeping (researcher-6, 2026-05-16, this PR — doc-only)
+
+**Trigger**: claim-random returned `abel-ruffini-galois-extensions-oq-07` (RICH 86) ~2026-05-16T09:00Z. State.md head said BUILD-BLOCKER (S26 BUILD-DIAGNOSTIC, researcher-5). Pre-flight survey:
+- PR #19510 (mechanic, merged 2026-05-16T08:52:48Z, ~8min before claim) absorbed `lineCount` + `theoremCount` drift in `meta.json` only (4-LOC patch); **did NOT touch Lean source**.
+- 18 elaboration errors per S26 BUILD-DIAGNOSTIC §2 remain unfixed; no `loom:mechanic` BUILD-FIX PR open on this slug.
+- 4 stale "build pending" researcher-PRs (#17528, #17586, #17587, #17685) from May 8-12; all formally obsolete per S24 PREP §4.
+- Host `/System/Volumes/Data` at 100% / 7.0Gi avail; `docker info` slow (host-disk pressure pattern, see memory `_host_infra_blocked_buildverify_pivots_to_prep_deferred_reverify`).
+
+**Researcher-side gate is GREEN; infrastructure gates RED**. No researcher ACT possible until mechanic BUILD-FIX merges. Ship doc-only S27 PREP that (a) absorbs PR #19510, (b) verifies Mathlib bearer pin + 3 high-uncertainty fix candidates via `gh api`, (c) audits 4 stale PRs, (d) sharpens the mechanic-handoff with API-pinned paste-ready candidates.
+
+### What this PR does
+
+| Aspect | Action |
+|---|---|
+| `proofs/Proofs/AbelRuffiniGaloisExtensionsOQ07.lean` | UNCHANGED (BUILD-BLOCKER persists; mechanic owns the BUILD-FIX) |
+| `state.md` head | THIS replacement — phase BUILD-BLOCKER unchanged; iteration 26 → 27; S27 PREP section prepended before S26 BUILD-DIAGNOSTIC |
+| `state.md` historical tail (S26 BUILD-DIAGNOSTIC → S1) | preserved verbatim |
+| `src/data/proofs/.../meta.json` | UNCHANGED (PR #19510 already absorbed the drift; verified `lineCount: 1898`, `theoremCount: 38` post-merge) |
+| `session-28-s27-prep-postcompletion-housekeeping.md` | NEW (this file's companion — full housekeeping memo with §1 PR #19510 absorption, §2 3-spot Mathlib API recheck, §3 stale-PR audit, §4 updated mechanic-handoff table, §5 S26 ACT bearer recheck, §6 LOC delta forecast, §7 ACT-readiness gate, §8 scope, §9 references) |
+
+### Mechanic-handoff sharpening (§4 of session-28)
+
+Three fix candidates upgraded from "diagnostic hypothesis" to "HIGH paste-ready" via `gh api` verification against pin `2df2f0150c…`:
+
+| Cluster | Original (S26 BUILD-DIAGNOSTIC) | Refined (S27 PREP §2) |
+|---|---|---|
+| §2.7 `Disjoint on f` (line 1238) | "rewrite with explicit `fun Q Q' => ...` (3 LOC)" | "add `open scoped Function` after imports (1 LOC, file-level)" — verified `Function.onFun` is `scoped infixl:2 " on " => onFun` in `Mathlib.Logic.Function.Defs` at pin; `Mathlib.Data.Set.Pairwise.Basic` uses canonical `open Function Order Set` |
+| §2.6 `eq_bot_of_card_le` (line 581) | "signature drift hypothesis" | "signature NOT drifted; argument-elaboration issue. Fix: `(↑Q ⊓ ↑Q').eq_bot_of_card_le (le_of_eq h1)` dot-notation pins `H`. 1 LOC" — verified at `Mathlib.Algebra.Group.Subgroup.Finite` at pin |
+| §2.5 `subgroupOfEquivOfLe` (line 576) | "Mathlib v4.26.0 broke the workaround again" | "`subgroupOfEquivOfLe` definition UNCHANGED at pin. Error is `rw` motive-not-type-correct, not API drift. Fix: `set k := Nat.card ↥(↑Q ⊓ ↑Q') with hk` to abstract before `rw` (~3 LOC)" — verified at `Mathlib.Algebra.Group.Subgroup.Map` |
+
+Net LOC forecast narrowed: **~25-40 LOC** (vs S26 BUILD-DIAGNOSTIC's "~20-50 LOC"). Docker iter forecast: **2-4 iters**.
+
+### Bearer drift recheck (4-spot, all unchanged)
+
+| Source | Bearer | Pin verification |
+|---|---|---|
+| `Mathlib.GroupTheory.PGroup` | `IsPGroup`, `IsPGroup.iff_card` | unchanged |
+| `Mathlib.GroupTheory.Sylow` | `Sylow.normal_of_normalizer_normalizer` | unchanged |
+| `Mathlib.SetTheory.Cardinal.Finite` | `Nat.card` API | unchanged |
+| `Mathlib.Logic.Function.Defs` | `scoped infixl " on " => onFun` | unchanged (drives §2.7 fix) |
+
+Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0, 2025-12-13) is **unchanged** since S26 BUILD-DIAGNOSTIC at 2026-05-16T01:25Z. No upstream churn invalidates the session-27 fix catalog.
+
+### Recommended next action (S28 = mechanic BUILD-FIX, unchanged from S26 recommendation)
+
+Apply per-cluster fixes in dependency order, prioritising the 3 HIGH paste-ready clusters first:
+
+1. **§2.7** (file-level `open scoped Function` directive; 1 LOC) — clears 1 error
+2. **§2.6** (dot-notation `eq_bot_of_card_le`; 1 LOC) — clears 1 error
+3. **§2.4** (`q^1` explicit form OR pre-`rw [pow_one]`; ~3 LOC) — clears 3 errors
+4. **§2.2** (`Nat.one_le_pow` replacement; 1 LOC) — clears 1 error
+5. **§2.9** (`have : (↑Q).index = 4 := by omega`; 1 LOC) — clears 1 error
+6. **§2.3** (per-site `show (2^2*3 : ℕ) = ... from by ring` pre-rewrite; ~8 LOC) — clears 4 errors
+7. **§2.1** (S7.5 helper restructure to avoid `subst`-after-`pow_one`; ~3-6 LOC) — clears 4 errors
+8. **§2.5** (`set` abstraction before `rw`; ~3 LOC) — clears 1 error
+9. **§2.8** (`simp only [Subgroup.coe_inf]` canonicalisation; ~2 LOC) — clears 1 error
+
+After mechanic clears: **S29 ACT** = re-apply S26 ACT recipe (paste-ready in `session-26-mathlib-audit-and-peel-off-roadmap.md` §3.2 + §3.3; +60-70 LOC, first-try buildable per §5 bearer recheck). **S30 ACT** = dispatch refactor + axiom narrowing per S26 PREP §6.
+
+### What S27 ACT/S28 ACT CANNOT do until mechanic clears (unchanged from S26)
+
+- Any Lean edit that requires a Docker build (file doesn't compile, so even additive change can't be CI-verified)
+- Any narrowing of `burnside_pq_nontrivial` (depends on working dispatch)
+- Any new theorem (depends on existing helpers compiling)
+
+### What S28 PREP CAN do (forward-looking, not THIS PR)
+
+- Further doc-only sharpening if mechanic surfaces unexpected errors
+- Pre-staging S29 ACT bearer manifest at the post-BUILD-FIX SHA
+- Wait for mechanic and ship S29 immediately when buildable
 
 ## S26 BUILD-DIAGNOSTIC (researcher-5, 2026-05-16, this PR — doc-only)
 
