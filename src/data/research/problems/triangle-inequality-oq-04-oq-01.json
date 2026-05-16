@@ -18,30 +18,33 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-14T17:50:00Z",
-    "iteration": 2,
-    "focus": "S2a ACT — chart-local Euclidean arc length: definition + 3 sanity lemmas. Build-verified at v4.26.0 (2551 jobs).",
+    "iteration": 3,
+    "focus": "S2b ACT — chart-local arc length additivity (researcher-1, 2026-05-16): shipped `chartArcLength_trans (γ : ℝ → E) {a b c : ℝ} (hab : IntervalIntegrable (fun t => ‖deriv γ t‖) MeasureTheory.volume a b) (hbc : IntervalIntegrable _ _ b c) : chartArcLength γ a b + chartArcLength γ b c = chartArcLength γ a c := by simp only [chartArcLength]; exact intervalIntegral.integral_add_adjacent_intervals hab hbc` to `proofs/Proofs/TriangleInequalityOQ04OQ01.lean` (lines 65-83; file 66 → 84 LOC, +18 LOC = ~7 LOC body + ~10 LOC docstring + 1 theorem statement). Build-verified at v4.26.0 + Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`: `Build completed successfully (2551 jobs).` first-try clean. Sorries: 0 (unchanged). Axioms: 0 (unchanged). `IntervalIntegrable` hypotheses (not `a ≤ b ≤ c`) chosen to match the orientation-aware form required by the upcoming S2c chart-local triangle inequality `chartIntrinsicDist_triangle`.",
     "activeApproach": "Path A: chart-local Euclidean length via intervalIntegral of ‖deriv γ t‖ on ℝ → E, with chart map applied externally.",
     "blockers": [
       "**Upstream Mathlib blocker** (full Riemannian formalization): the natural"
     ],
-    "nextAction": "S2b ACT: chartArcLength_trans (additivity under interval concatenation) via intervalIntegral.integral_add_adjacent_intervals.",
+    "nextAction": "S2c ACT: chart-local triangle inequality `chartIntrinsicDist_triangle` mirroring parent `Proofs.TriangleInequalityOQ04.intrinsicDist_triangle`. Uses `chartArcLength_trans` (this S2b) for the additivity step + `iInf` manipulation for the intrinsic-distance infimum bound. Estimated ~50-80 LOC. Single Docker build expected (no new Mathlib bearer touch beyond what S2a+S2b already exercise).",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 1
-    }
+    },
+    "lastUpdate": "2026-05-16T04:55:00.000Z"
   },
   "knowledge": {
-    "progressSummary": "S2a complete: chartArcLength + 3 sanity lemmas (build verified). S2b/c remaining for chart-local triangle inequality (Path A).",
+    "progressSummary": "PROGRESS (S2b ACT, 2026-05-16, researcher-1): shipped chart-local arc-length additivity `chartArcLength_trans` to `TriangleInequalityOQ04OQ01.lean` (+18 LOC, 66→84). Build-verified Docker-clean 2551 jobs first-try at Lean 4.26.0 + Mathlib pin `2df2f0150c`. Sorries 0 / Axioms 0 unchanged. Uses `intervalIntegral.integral_add_adjacent_intervals` with `IntervalIntegrable` hypotheses (matches the form needed for S2c chart-local triangle inequality). S2c follow-up is the next natural step.",
     "builtItems": [
-      "Created Proofs/TriangleInequalityOQ04OQ01.lean: chartArcLength + chartArcLength_self + chartArcLength_const + chartArcLength_nonneg (~60 LOC, 0 sorries, 0 axioms, build verified 2551 jobs)"
+      "Created Proofs/TriangleInequalityOQ04OQ01.lean: chartArcLength + chartArcLength_self + chartArcLength_const + chartArcLength_nonneg (~60 LOC, 0 sorries, 0 axioms, build verified 2551 jobs)",
+      "S2b ACT: `TriangleInequalityOQ04OQ01.chartArcLength_trans` in `proofs/Proofs/TriangleInequalityOQ04OQ01.lean:65-83` — additivity of chart-local arc length under interval concatenation, via `intervalIntegral.integral_add_adjacent_intervals` with `IntervalIntegrable` hypotheses on the speed `‖deriv γ t‖`."
     ],
     "insights": [
       "S2a: chartArcLength typed at ℝ → E (not on manifolds) keeps imports minimal (Deriv.Basic + IntervalIntegral.Basic only); chart map applied externally by callers.",
       "Mathlib v4.26.0: intervalIntegral.integral_same (Basic.lean:641) discharges chartArcLength_self with simp.",
       "Mathlib v4.26.0: deriv_const (eta form, Deriv/Basic.lean:744) discharges chartArcLength_const with simp; pointwise deriv_const requires funext.",
       "Mathlib v4.26.0: intervalIntegral.integral_nonneg (Basic.lean:1246) takes hab : a ≤ b plus pointwise hypothesis on Set.Icc; norm_nonneg discharges trivially.",
-      "Mathlib v4.26.0 surface: Mathlib.MeasureTheory.Integral.IntervalIntegral is now a directory; older shim import path fails with 404. Use .Basic suffix."
+      "Mathlib v4.26.0 surface: Mathlib.MeasureTheory.Integral.IntervalIntegral is now a directory; older shim import path fails with 404. Use .Basic suffix.",
+      "For chart-local arc length on a normed-space-valued curve, the additivity `chartArcLength γ a b + chartArcLength γ b c = chartArcLength γ a c` discharges via a single `intervalIntegral.integral_add_adjacent_intervals` call after `simp only [chartArcLength]`. The orientation-aware `IntervalIntegrable` hypothesis form (rather than `a ≤ b ≤ c`) is preferred because Mathlib's signed-interval-integral convention handles negative orientations natively — and the orientation-aware form is precisely what the S2c chart-local triangle inequality needs at the `iInf` step."
     ],
     "mathlibGaps": [],
     "nextSteps": [
