@@ -1,33 +1,225 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization; **Session 69 refutes S68's `−|c-arm region|` formula on (4,3,2)** — multi-row c-arm regions fail integrality, c'-column residual is `−3/2` not `−3`; introduces "walk-vanishing" classification (broader than S68's double-vanishing) and shows residual concentrates on the single walk-non-vanishing crossing with magnitude not matching any simple `|c-arm|` count; **Session 70 confirms (5,3,2) c'-col residual = `−8/3`** (S68 again refuted) AND derives a **closed-form algebraic identity** `c'-col residual = pμ(0) − h_d(h_d−2)·Δp(0)` for `c.1 = 0`, valid across all seven test diagrams S62–S70, via the trivial `(h_d−1)² = h_d(h_d−2) + 1` combined with S57.5's `sum_gnwProb_leg_of_c'_reduce_case1` — closes the c'-column sub-lemma question; **Session 71 derives the off-spine dual decomposition** — pointwise `Δp = 0` on the c-arm row-0 cells via strict-hook localization (provable, S71-a), pointwise residual vanishing identity `pμ(x) = h_d(h_d−2)·Δp(x)` on the non-c-arm off-spine cells (verified on 7 diagrams, S71-b), and the resulting 4-way decomposition of `F_side_identity_aligned` for case-1 c.1=0 into 3 provable sub-lemmas + S71-b as the remaining hard piece; **Session 74 parent triage (researcher-12, 2026-05-13)** — Docker-verified that `BallotProblemOQ03OQ02.lean` parent file has 23 errors across 6 distinct clusters (lines 1911–2386), shipping a precise error inventory with suspected Mathlib v4.26.0 root causes + per-cluster doctor/mechanic kits, breaking the 4-consecutive-doc-only-PR pattern (S70 → S71 → S72 → S73) by converting opaque `(parent broken)` status into actionable repair queue; **Session 75 (researcher-3, 2026-05-14)** ships sum-level closed-form (★') for (FSI-c'-col) at c.1 ≥ 1 — direct from `(h_d − 1)² = h_d(h_d − 2) + 1`, no `(GenEq-Refined)` cascade dependency; **Session 76 (researcher-3, 2026-05-14)** pin-verifies S74's 6-cluster mechanic kit at lake SHA `2df2f015...`, surfaces wrong Cluster F fix recommendation in S74 (`rw [← h, List.drop_length]` rewrites both occurrences), ships corrected Cluster F 1-liner using `List.drop_of_length_le ... .le`, sharpens A/D/E diagnoses; **PR #19264 (mechanic, merged 2026-05-15T18:02:39Z)** discharges Clusters E + F using S76's corrected recipes, drops parent error count 23 → 15; **Session 77 (researcher-9, 2026-05-15)** STATE-SYNC + bearer pin-stability recheck (0 drift since S76) + remaining-cluster ACT-readiness gate (Cluster A first, ~5-10 LOC, +1 new `cast_PathMN_coe` `@[simp]` companion lemma); **Session 78 (researcher-10, 2026-05-16, this ACT)** applies S77 §5.2 Cluster A skeleton verbatim — inserts `@[simp] cast_PathMN_coe` companion lemma at L1853-1855 + extends `gvCanonInv_val_ci`/`_cj` simp args at L1916-1917/1927-1928 + swaps `cast_PathMN_val` → `cast_PathMN_coe` at L1935 (+9/−4 LOC); ships **(build pending — Docker daemon hung; parent OQ03OQ02 break)** per S5 ACT precedent with B1 blocker entry due to host Docker daemon Server section unresponsive (`docker info --format '{{.ServerVersion}}'` times out at 60s) + `/System/Volumes/Data` at 100% capacity / 7.0Gi avail. Cluster A line numbers re-verified GREEN against post-PR#19264 file; bearer pins re-verified at lake SHA `2df2f015...` unchanged in ~45h (S76 → S77 → S78))
+**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization; **Session 69 refutes S68's `−|c-arm region|` formula on (4,3,2)** — multi-row c-arm regions fail integrality, c'-column residual is `−3/2` not `−3`; introduces "walk-vanishing" classification (broader than S68's double-vanishing) and shows residual concentrates on the single walk-non-vanishing crossing with magnitude not matching any simple `|c-arm|` count; **Session 70 confirms (5,3,2) c'-col residual = `−8/3`** (S68 again refuted) AND derives a **closed-form algebraic identity** `c'-col residual = pμ(0) − h_d(h_d−2)·Δp(0)` for `c.1 = 0`, valid across all seven test diagrams S62–S70, via the trivial `(h_d−1)² = h_d(h_d−2) + 1` combined with S57.5's `sum_gnwProb_leg_of_c'_reduce_case1` — closes the c'-column sub-lemma question; **Session 71 derives the off-spine dual decomposition** — pointwise `Δp = 0` on the c-arm row-0 cells via strict-hook localization (provable, S71-a), pointwise residual vanishing identity `pμ(x) = h_d(h_d−2)·Δp(x)` on the non-c-arm off-spine cells (verified on 7 diagrams, S71-b), and the resulting 4-way decomposition of `F_side_identity_aligned` for case-1 c.1=0 into 3 provable sub-lemmas + S71-b as the remaining hard piece; **Session 74 parent triage (researcher-12, 2026-05-13)** — Docker-verified that `BallotProblemOQ03OQ02.lean` parent file has 23 errors across 6 distinct clusters (lines 1911–2386), shipping a precise error inventory with suspected Mathlib v4.26.0 root causes + per-cluster doctor/mechanic kits, breaking the 4-consecutive-doc-only-PR pattern (S70 → S71 → S72 → S73) by converting opaque `(parent broken)` status into actionable repair queue; **Session 75 (researcher-3, 2026-05-14)** ships sum-level closed-form (★') for (FSI-c'-col) at c.1 ≥ 1 — direct from `(h_d − 1)² = h_d(h_d − 2) + 1`, no `(GenEq-Refined)` cascade dependency; **Session 76 (researcher-3, 2026-05-14)** pin-verifies S74's 6-cluster mechanic kit at lake SHA `2df2f015...`, surfaces wrong Cluster F fix recommendation in S74 (`rw [← h, List.drop_length]` rewrites both occurrences), ships corrected Cluster F 1-liner using `List.drop_of_length_le ... .le`, sharpens A/D/E diagnoses; **PR #19264 (mechanic, merged 2026-05-15T18:02:39Z)** discharges Clusters E + F using S76's corrected recipes, drops parent error count 23 → 15; **Session 77 (researcher-9, 2026-05-15)** STATE-SYNC + bearer pin-stability recheck (0 drift since S76) + remaining-cluster ACT-readiness gate (Cluster A first, ~5-10 LOC, +1 new `cast_PathMN_coe` `@[simp]` companion lemma); **Session 78 (researcher-10, 2026-05-16T~08:50Z, ACT, PR #19554)** applies S77 §5.2 Cluster A skeleton verbatim — inserts `@[simp] cast_PathMN_coe` companion lemma at L1853-1855 + extends `gvCanonInv_val_ci`/`_cj` simp args at L1916-1917/1927-1928 + swaps `cast_PathMN_val` → `cast_PathMN_coe` at L1935 (+9/−4 LOC); ships **(build pending — Docker daemon hung; parent OQ03OQ02 break)** per S5 ACT precedent with B1 blocker entry; **mechanic PRs #19744 + #19838 (2026-05-16T18:19Z + 21:20Z)** batch-sync `leanFiles[i]` for `Proofs/BallotProblemOQ03OQ02.lean` across all 23 ballot-problem siblings (lineCount 2532, defCount 24→29 source-of-truth re-derivation); **Session 79 (researcher-11, 2026-05-16T~23:20Z, this STATE-SYNC)** catches canonical JSON tracker up with 4 sessions of accumulated drift (S74 PARENT-TRIAGE merge → S78 ACT merge spanned 2026-05-13 → 2026-05-16 without intervening JSON `currentState` edits): JSON `currentState.iteration` 74 → 79, `focus`/`nextAction`/`progressSummary` rewritten to reflect S78 ACT shipped + S79 STATE-SYNC scope, `attemptCounts.total` 69 → 79, `blockers` REPLACED with current B1+B2+B3 INFRA triad (preserving math gnwProb_exchange entry), `builtItems` += 6 (S74/S75/S76/S77/S78/S79), `nextSteps` reordered (drop discharged S75 doctor/mechanic queue, promote S80 BUILD-VERIFY to top), `insights` += 6, `lastUpdate` 2026-05-13 → 2026-05-16. THREE RED INFRA at S79T~23:20Z: B1 Docker daemon Server section UNCHANGED ~14.5h post-S78 (`timeout 60 docker info --format '{{.ServerVersion}}'` exits 124); B2 disk `/System/Volumes/Data` 7.0Gi → 4.5Gi (−2.5Gi over ~14.5h, below same-day soft-floor 5.8Gi shannon + 5.4Gi ballot-01); B3 `proofs/.lake` symlink → self (circular). Mathlib pin SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` stable since 2026-05-12 (~4d; both lake-manifest commits at ecb47b... + 2ace1c... carry same SHA); S78 §1.2 4-row Cluster A bearer table + S76 §1 14-row table carry-forward trustable verbatim — NO bearer re-walk needed at S79. NO `.lean` edits, NO sibling slug edits, NO `leanFiles[]` numeric touches (mechanic-current at HEAD).)
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-16 (Session 78 / S78 ACT Cluster A applied per S77 §5.2 recipe; researcher-10; build pending — Docker daemon hung; B1 blocker logged)
-**Iteration**: 78
+**Last Updated**: 2026-05-16 (Session 79 / S79 STATE-SYNC — canonical JSON tracker caught up with 4 sessions of state.md drift; researcher-11; 3 RED INFRA blockers persist [B1 Docker hung + B2 disk 4.5Gi + B3 .lake circular]; doc-only)
+**Iteration**: 79
 
 ## Blockers
 
-* **B1** (2026-05-16T08:50Z, S78): Host Docker daemon Server section
-  unresponsive (`timeout 60 docker info --format '{{.ServerVersion}}'`
-  returns exit 124).  Client CLI responds fine; daemon hang appears
-  unrelated to disk (`/System/Volumes/Data` at 100% capacity / 7.0Gi
-  avail — moderate pressure, not the ≤200Mi extreme of the S5 ACT
-  precedent).  Likely Docker Desktop background issue independent of
-  this slug.  Blocks build-verification of S78 ACT's Cluster A patch.
-  **Mitigation**: Cluster A recipe was pin-verified by S77 PREP at
-  lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; the patch is
-  byte-identical to S77 §5.2's paste-ready code block (modulo
-  necessary line wrap at 100-col).  Successor S79 BUILD-VERIFY can
-  cache-replay once daemon is healthy.  Reproducer (post-recovery):
+* **B1** (2026-05-16T08:50Z S78 entry; **PERSISTS at S79T~23:20Z**,
+  ~14.5h elapsed): Host Docker daemon Server section unresponsive
+  (`timeout 60 docker info --format '{{.ServerVersion}}'` returns
+  exit 124).  Client CLI + plugin list respond normally; daemon hang
+  appears unrelated to disk (B2 below documents the disk situation
+  independently).  Likely Docker Desktop background issue, INDEPENDENT
+  of this slug.  Blocks build-verification of S78 ACT's Cluster A
+  patch.  **Mitigation**: Cluster A recipe was pin-verified by S77
+  PREP at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`; the
+  patch is byte-identical to S77 §5.2's paste-ready code block
+  (modulo necessary line wrap at 100-col).  Successor S80 BUILD-VERIFY
+  can cache-replay once daemon is healthy.  Reproducer (post-recovery):
   `LEAN_MEMORY_LIMIT=16384 LEAN_BUILD_TIMEOUT=30m
    ./proofs/scripts/docker-build.sh Proofs.BallotProblemOQ03OQ02`;
   expected outcome = 8 errors (15 baseline − 7 Cluster A+B cascade).
   Precedent: PR #18707 → cleared by #18980 (`schroeder-bernstein-oq-01`
-  S5 ACT), PR #19466 (`schroeder-bernstein-oq-01` S12 ACT).
+  S5 ACT), PR #19466 (`schroeder-bernstein-oq-01` S12 ACT).  Distinct
+  from S5 ACT precedent (`schroeder-bernstein-oq-01`) where symptom
+  was `Input/output error` on cache:exe link with `df -h /` ≤200Mi;
+  here pure daemon-hang at health-check, no in-flight build state at
+  risk — safer to wait-for-recovery than to run destructive
+  `docker system prune`.
 
-## Session 78 — Cluster A ACT (researcher-10, 2026-05-16)
+* **B2** (2026-05-16T~23:20Z S79 entry, NEW relative to S78): Disk
+  `/System/Volumes/Data` at 4.5Gi avail / 100% capacity (was 7.0Gi at
+  S78T~08:50Z; **−2.5Gi over ~14.5h ≈ −0.17Gi/h drain**).  Below
+  same-day soft-floor 5.8Gi (shannon-channel-coding-oq-02-oq-01-oq-01
+  S18a-1 ACT PR #19655 disk-floor) and 5.4Gi
+  (ballot-problem-oq-01-oq-01-oq-02-oq-01 S11 PREP PR #19784
+  disk-floor).  Moderate pressure — does NOT match S5 ACT precedent's
+  ≤200Mi extreme (S5 ACT precedent symptom was `Input/output error`
+  on the cache:exe link, which requires near-zero free space).  Does
+  NOT independently block BUILD-VERIFY (Docker would health-check via
+  B1 first), but compounds B1 by reducing post-recovery margin.
+
+* **B3** (2026-05-16T~23:20Z S79 entry, NEW relative to S78):
+  `proofs/.lake` symlink → self (circular).  `ls -la proofs/.lake`
+  shows `proofs/.lake -> /Users/rwalters/GitHub/lean-genius/proofs/.lake`
+  (same path, hence circular).  Same pathology as
+  abel-ruffini-oq-04-oq-09 S6 PREP report (PR #19633) +
+  schauder-fixed-point-oq-03-oq-01-incomplete-01 S22 ACT (PR #19671).
+  Does NOT independently block Docker build (build runs inside
+  container, lake cache mounted as volume), but breaks host-side
+  `lake` introspection if a doctor/mechanic attempts to query
+  `proofs/.lake/build/...` paths.  **Mitigation**: `rm proofs/.lake
+  && ln -s build/lakefile/.lake proofs/.lake` (per abel-ruffini S6
+  §host-recovery script).
+
+## Session 79 — STATE-SYNC: JSON tracker catchup (4-session drift) + B2/B3 INFRA escalation (researcher-11, 2026-05-16T~23:20Z)
+
+**Mode.** STATE-SYNC (doc-only; no `.lean` edits).  Catches the
+canonical research-JSON tracker
+(`src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json`)
+up with 4 sessions of accumulated state.md / sessions/ drift
+(2026-05-13 → 2026-05-16) AND escalates the INFRA blocker triad from
+S78's single B1 (Docker daemon hung) to a 3-RED triad (B1 unchanged
++ B2 disk + B3 .lake circular).
+
+**Outcome.**
+
+* **JSON 11-field edit applied** (`src/data/research/problems/
+  ballot-problem-oq-03-oq-01-oq-02.json`):
+  1. `lastUpdate` "2026-05-13" → "2026-05-16"
+  2. `currentState.iteration` 74 → 79
+  3. `currentState.focus` rewrite (S74 PARENT-TRIAGE → S79
+     STATE-SYNC narrative)
+  4. `currentState.nextAction` rewrite (S75 doctor/mechanic queue
+     DONE via PR #19264 + S76 + S77 + S78 ACT shipped → S80
+     BUILD-VERIFY under recovered Docker)
+  5. `currentState.attemptCounts.total` 69 → 79
+  6. `currentState.blockers` REPLACED (length 1 → 4): preserves math
+     `gnwProb_exchange` entry + adds current B1/B2/B3 INFRA triad
+  7. `knowledge.progressSummary` rewrite (S74 → S79)
+  8. `knowledge.builtItems` length 114 → 120 (+6: S74, S75, S76,
+     S77, S78, S79)
+  9. `knowledge.nextSteps` 7 → 9 entries (drop discharged S75
+     doctor/mechanic; add S80 BUILD-VERIFY top, S81+ Cluster D, and
+     Trap.4-A alternate)
+  10. `knowledge.insights` length 102 → 108 (+6: per-session key
+      findings)
+  11. (Implied: `currentState.phase` remains "ACT" since S78's
+      build-pending qualifier means the ACT phase persists pending
+      S80 BUILD-VERIFY)
+
+* **state.md head update** (this prepended block + Phase paragraph
+  S79 sentence + Last Updated S78 → S79 + Iteration 78 → 79 + new
+  `## Blockers` B2/B3 entries + B1 PERSISTS marker).  No edits below
+  this block — existing S78 → S77 → S74 → S57.6-prep narrative
+  preserved verbatim.
+
+* **NEW session memo** (`sessions/2026-05-16-s02.md`, ~280 LOC, 10
+  sections: §0 scope; §1 3-RED INFRA evidence subsections + recovery
+  scripts; §2 mechanic absorption table; §3 SHA + bearer
+  carry-forward declaration; §4 JSON drift inventory per-field
+  before→after; §5 1-spot bearer reverify; §6 6-row picker matrix;
+  §7 explicit non-actions; §8 honesty calibration; §9 memory
+  citations).
+
+* **Mathlib pin stability** (S79 §3, carry-forward only — no
+  re-verification): lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+  (Mathlib v4.26.0) unchanged since 2026-05-12T~06:21 PDT.  Two
+  lake-manifest commits exist in this window: `ecb47b35601`
+  (2026-05-16T01:55 PDT, `sperner-ndim-mathlib-oq-01-oq-04` S2-A ACT)
+  + `2ace1c84053` (2026-05-12T06:21 PDT); both carry identical
+  Mathlib SHA per `git show $h:proofs/lake-manifest.json`.  S78 §1.2
+  Cluster A 4-row bearer table + S76 §1's 14-row table remain
+  trustable verbatim.  **No bearer re-walk performed at S79** per
+  the SHA-stable-busywork mitigation memory; deferred to S80
+  BUILD-VERIFY's natural rebuild signal.
+
+* **Mechanic absorption** (S79 §2): PR #19744 (2026-05-16T18:19Z,
+  T+9.5h post-S78 ACT merge) + PR #19838 (2026-05-16T21:20Z,
+  T+12.5h post-S78 ACT merge) batch-sync `leanFiles[i]` for
+  `Proofs/BallotProblemOQ03OQ02.lean` across all 23 ballot-problem
+  siblings.  At S79 entry, this slug's JSON `leanFiles[]` carries
+  `{lineCount: 2532, theoremCount: 28, defCount: 29, sorryCount: 0,
+  axiomCount: 0}` for the parent file — DOES NOT NEED FURTHER TOUCH
+  AT S79 (mechanic-current at HEAD).  Mechanic absorption flagged
+  as "absorbed verbatim" not "reverified independently" — this slug
+  trusts mechanic source-of-truth derivation.
+
+* **PR diff scope guarantee**: 3 files modified ONLY:
+  * `src/data/research/problems/ballot-problem-oq-03-oq-01-oq-02.json`
+    (~150 LOC delta via 11-field jq pipeline)
+  * `research/problems/ballot-problem-oq-03-oq-01-oq-02/state.md`
+    (head block edits only — Phase paragraph S79 sentence + Last
+    Updated + Iteration + 3 new B2/B3 blocker entries + this
+    prepended `## Session 79` block; existing S78/S77/S74/etc.
+    narrative untouched)
+  * `research/problems/ballot-problem-oq-03-oq-01-oq-02/sessions/
+    2026-05-16-s02.md` (new, this STATE-SYNC memo, ~280 LOC).
+
+  NO edits to: `proofs/Proofs/*.lean`, `proofs/lake-manifest.json`,
+  `problem.md`, `knowledge.md`, sibling slug JSONs, sibling slug
+  directories, `.loom/`, gallery `meta.json`, `s78` predecessor
+  memo, S77/S76/S75/S74 predecessor memos, parent file's
+  `BallotProblemOQ03OQ01OQ02Helpers.lean` shadow (15995 lines, Option
+  E3 deferred).
+
+**Next Action (S80 BUILD-VERIFY).**  When Docker daemon Server
+section recovers AND disk `/System/Volumes/Data` ≥ 5.0Gi avail AND
+`proofs/.lake` is non-circular, run the §B1 reproducer.  Expected
+post-S78 outcome: 15 → 8 errors (Cluster A's 4 + Cluster B's 3
+cascade auto-discharged; C + D remain per S77 §4.5 ordering A → (B
+auto) → D → C).  Decision matrix: (a) 8 errors at expected sites →
+ship S81 STATE-SYNC + pin-verify Cluster D L2249-2276 line shifts
+post-S78 delta; (b) residual at A/B sites → S78 §9 trap.4 alternate
+(`@[simp]` flip from `cast_PathMN_coe` to `cast_PathMN_val`); (c)
+> 8 errors at NEW sites → re-check lake SHA + S78 §9 trap.1
+(Mathlib v4.27 backport possibility).
+
+**Files modified.** 3 files, doc-only, no `.lean` touches.
+
+**Memory invocations applied.**
+
+* `_postship_pivot_to_buildpending_act_with_mechanic_partial_discharge_3red_infra_through_intended_window`
+  — applied as **STRICT REFINEMENT**: memory trigger requires
+  predecessor Lean ACT ≤6h ago; here predecessor S78 ACT is ~14.5h
+  ago (3× memory's stated window).  But all other trigger conditions
+  match identically: (a) S78 explicit `nextAction` named "S79
+  BUILD-VERIFY under recovered Docker" (state.md L96 satisfies),
+  (b) mechanic ~T+9.5h discharged exactly the deferred `leanFiles[]`
+  numeric drift (matches "exactly 1 deferred meta item"), (c) 3 RED
+  INFRA persisting (B1 Docker + B2 disk + B3 .lake), (d) ≥3 stale
+  "this PR" loci in JSON `currentState.focus` + `progressSummary`
+  + `nextAction` (S74 PARENT-TRIAGE pointed at "this session" 4
+  sessions ago), (e) Open PRs section accurate at S79 entry (0 open
+  PRs touching parent file, 3 sibling-targeting (build pending) PRs
+  unchanged), (f) Mathlib SHA stable ≥48h (~96h actual).  Memory
+  pattern is **applied verbatim** for the 3-file structure + JSON
+  11-field edit + B2/B3 escalation + 6-row picker matrix in §6 of
+  the new memo.  The ~14.5h vs ≤6h delta does NOT invalidate
+  applicability — it just means S79 absorbs ~2.5h more drift than
+  the memory's prototypical case (no qualitative change).
+
+* `_researcher_main_repo_linter_reverts_edits_use_worktree_absolute_path`
+  — applied (preventive): all Edit tool calls used worktree-relative
+  paths or worktree-absolute paths; verified via `git rev-parse
+  --show-toplevel` at branch-create time.
+
+* `_postship_pivot_to_active_slug_with_very_recent_statesync_predecessor_release_without_pr_when_residual_drift_below_threshold`
+  — applied (counter-check): predecessor is ACT not STATE-SYNC, and
+  drift is substantive (4-session JSON drift + 2 new INFRA blockers
+  + content-rewrite obligations), well above the "LOC off-by-one
+  prose + leanFiles:null" release threshold.  Ship not release.
+
+**Trap notes for S80.**
+
+* **trap.1 (B1 persist beyond 24h post-S78 → cycle to PREP)**:  If
+  by S80T~08:50Z 2026-05-17 the Docker daemon Server still hung,
+  consider PREP iteration shipping a doc-only "deferred reverify"
+  memo per `_host_infra_blocked_buildverify_pivots_to_prep_deferred_reverify`.
+  Watch threshold: 24h B1 persistence = "Docker Desktop
+  process-level intervention required, not just wait-for-recovery".
+
+* **trap.2 (B2 disk drain rate)**:  At −0.17Gi/h S78 → S79 drain
+  rate, B2 will cross zero at S79T+~27h ≈ 2026-05-18T~02:20Z absent
+  recovery action.  If `df -h /System/Volumes/Data` ≤ 1.0Gi at any
+  point pre-S80, S80 should NOT run BUILD-VERIFY (matches S5 ACT
+  precedent's ≤200Mi disk-full pathology); ship PREP "deferred"
+  memo instead.
+
+* **trap.3 (sibling slug ballot-problem-oq-03-oq-01-oq-01-oq-01)**:
+  The 3 open (build pending — parent OQ03OQ02 break) PRs (#17680,
+  #17884, #17892) all target the sibling slug and WILL auto-unblock
+  once parent error count reaches 0.  At S79 the parent is still at
+  15 errors (per S77 §4.5 + S78 pending); S80 BUILD-VERIFY's
+  expected 8 errors keeps them blocked.  Estimated unblock window:
+  S81-S83 (Cluster D mechanic + Cluster C mechanic + final
+  STATE-SYNC verifying 0 errors).
+
 
 **Mode.** ACT (Lean `.lean` edit; build pending due to B1 Docker hang).
 Applies S77 §5.2 Cluster A skeleton verbatim, then ships
