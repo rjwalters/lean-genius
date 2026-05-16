@@ -1,8 +1,40 @@
 # Current State
 
-**Phase**: OBSERVE (S1 — slug bootstrap with backward/forward dichotomy)
-**Since**: 2026-05-14
-**Iteration**: 1
+**Phase**: PREP (S2 — S1 OBSERVE deferred bearers pinned + namespace decision)
+**Since**: 2026-05-16
+**Iteration**: 2 (S1 OBSERVE + S2 PREP)
+
+## Latest Iteration: S2 PREP (researcher-1, 2026-05-16)
+
+Doc-only S2 PREP closing two questions S1 OBSERVE explicitly deferred:
+
+1. **Closing-lemma name pinned** (S1 §"Next Action" line ~146): the
+   sketch's last step `hr_monic.eq_one_iff_natDegree_le_zero.mpr
+   (le_of_eq hr_natdeg)` becomes `hr_monic.natDegree_eq_zero.mp
+   hr_natdeg`. The canonical lemma at the pinned Mathlib commit is
+   `Polynomial.Monic.natDegree_eq_zero : Monic p → (p.natDegree = 0 ↔
+   p = 1)`. The S1 OBSERVE name (`eq_one_iff_natDegree_le_zero`) does
+   not exist at the pin; the `natDegree_eq_zero_iff_eq_one` alias was
+   deprecated on 2025-10-26 in favour of `natDegree_eq_zero` itself.
+   See sessions/2026-05-16-s2-prep-… §1.
+
+2. **Namespace decision** (S1 §"Next Action" line ~104): cannot reuse
+   `GeneralCyclicVector` — that namespace is **Field-locked** at
+   `proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean:54`
+   (`variable {K : Type*} [Field K]`). Modifying it upstream would
+   blast-radius the 4 sibling gallery files. **Option A** (new
+   namespace `GeneralCyclicVectorRing` inside the new file
+   `proofs/Proofs/CayleyHamiltonCyclicVectorCommRingOQ01.lean`) is
+   recommended over Options B (modify upstream — too invasive) and C
+   (inline `private def` — harder to import for S3). See
+   sessions/2026-05-16-s2-prep-… §2.
+
+A refined S2 ACT skeleton (~46 LOC, post-S1+S2 corrections) is
+drafted at sessions/2026-05-16-s2-prep-… §2.3, with 5 fallback
+recipes for likely tactic stutters (§2.5). Bearer drift rechecked
+against the unchanged Mathlib pin: 0 substantive drifts vs S1's
+9-bearer audit, with **3 new bearer rows added**
+(`Monic.natDegree_eq_zero`, `natDegree_le_of_dvd`, `zero_mulVec`).
 
 ## Latest Iteration: S1 OBSERVE (researcher-9, 2026-05-14)
 
@@ -141,10 +173,19 @@ None mathematical or practical for S2.
        have hmul := hmin_monic.natDegree_mul' hr_monic.ne_zero
        have hprod_deg : (minpoly R M * r).natDegree = n := by rw [← hr, hchar_deg]
        linarith [hdeg]
-     have hr_eq : r = 1 := hr_monic.eq_one_iff_natDegree_le_zero.mpr (le_of_eq hr_natdeg)
-     -- (the last line may need `Monic.eq_one_iff_natDegree_le_zero` or
-     -- equivalent; S2 SCAFFOLD will pin the exact lemma name.)
+     -- S2 PREP correction: the canonical lemma at the pinned Mathlib commit is
+     -- `Polynomial.Monic.natDegree_eq_zero`, not `eq_one_iff_natDegree_le_zero`.
+     have hr_eq : r = 1 := hr_monic.natDegree_eq_zero.mp hr_natdeg
      rw [hr, hr_eq, mul_one]
+   ```
+
+   **Fallback (if `Monic.natDegree_eq_zero` is not in scope after `import Mathlib`):**
+   use `Monic.degree_le_zero_iff_eq_one` (explicit at `Monic.lean:138` in the
+   same file) with a `natDegree → degree` adapter:
+   ```lean
+     have hr_deg_le : r.degree ≤ 0 :=
+       Polynomial.natDegree_eq_zero_iff_degree_le_zero.mp hr_natdeg
+     have hr_eq : r = 1 := hr_monic.degree_le_zero_iff_eq_one.mp hr_deg_le
    ```
 
 3. Corollaries mirroring the field file's structure
@@ -155,6 +196,15 @@ None mathematical or practical for S2.
    forward direction does NOT extend, with a `#check
    CayleyHamiltonCyclicVectorZMod4Counterexample.no_cyclic_vector`
    stub for the S3 follow-up.
+
+**Namespace decision (S2 PREP §2):** Cannot reuse parent's
+`GeneralCyclicVector` namespace — it is Field-locked at
+`Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP04.lean:54`
+(`variable {K : Type*} [Field K]`). Use **Option A**: define new
+namespace `GeneralCyclicVectorRing` inside the new file with
+`[CommRing R] [Nontrivial R]` — orthogonal to upstream, zero
+modification to the 4 existing sibling files. Refined drop-in
+skeleton at sessions/2026-05-16-s2-prep-… §2.3 (~46 LOC).
 
 Estimated effort for S2: 1 session, single PR, ~60 LOC of new Lean,
 Docker build verification straightforward (no parent-file blockers in
@@ -184,16 +234,28 @@ attempt to generalise the parent file
 
 ## Attempt Counts
 
-- Total attempts: 1 (S1 OBSERVE, this iteration)
+- Total attempts: 2 (S1 OBSERVE + S2 PREP, this iteration)
 - Current approach attempts: 0 (no Lean changes yet)
 - Approaches tried: 0 (3 surveyed: A=backward over CommRing,
   B=ZMod 4 counterexample, C=UFD forward extension)
+
+## Ledger (S1 → S2)
+
+| PR     | Iter | Date / UTC          | Author        | Phase / scope                                                                          |
+|--------|-----:|---------------------|---------------|----------------------------------------------------------------------------------------|
+| #19139 |   1  | 2026-05-15 22:57    | researcher-9  | S1 OBSERVE — slug bootstrap; backward/forward dichotomy; ZMod 4 counterexample; 9-bearer Mathlib API map (doc-only) |
+| (this) |   2  | 2026-05-16 ~00:15   | researcher-1  | S2 PREP — `Monic.natDegree_eq_zero` bearer pin + `GeneralCyclicVectorRing` namespace decision (Option A); refined ~46-LOC S2 ACT skeleton (doc-only) |
+
+Both S1 and S2 are doc-only; no Lean changes. S2 ACT (Approach A,
+the backward-direction Lean diff) is the next concrete action.
 
 ## Open files
 
 - `problem.md` — full problem statement, three approaches, Mathlib API map.
 - `knowledge.md` — S1 session note: counterexample case split,
   Mathlib pin verification, domain-extension analysis.
+- `state.md` — this file (refreshed S2).
+- `sessions/2026-05-16-s2-prep-monic-bearer-pin-and-namespace-decision.md` — added by this PR.
 
 ## S1 Deliverable Honesty Summary
 
