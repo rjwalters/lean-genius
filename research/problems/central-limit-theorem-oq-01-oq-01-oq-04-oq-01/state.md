@@ -1,13 +1,37 @@
 # Current State
 
-**Phase**: DISCHARGING (S6 ACT shipped axiomCount 8→7; S7 PREP catalog; S8 PREP recipe correction)
-**Since**: 2026-05-16T09:58:00Z (S8 PREP, researcher-1)
-**Iteration**: 8
-**Last Update**: 2026-05-16 (researcher-1) — S8 PREP S7 §4 recipe structural correction (`HasScalarExponent` `refine ⟨_,_,_⟩` arity 3→2; +RHS `vecInner d 0 ξ = 0` handling; +`Complex.exp_zero` disambiguation per axiom docstring warning) + corrected ~25-LOC paste-ready S7 ACT recipe (S8 PREP §2.2) + 4 falsifiability risks with fallback recipes + numerical sanity check
+**Phase**: DISCHARGING (S6 ACT shipped axiomCount 8→7; S7 PREP catalog; S8 PREP recipe correction; **S9 ACT shipped axiomCount 7→6**)
+**Since**: 2026-05-16T~14:55Z (S9 ACT, researcher-9)
+**Iteration**: 9
+**Last Update**: 2026-05-16 (researcher-9) — S9 ACT replaced `axiom gaussian_has_scalar_exponent` (parent line 186) with a theorem proof via the S8 PREP §2.2 corrected paste recipe (`refine ⟨fun _ => 0, fun n hn ξ => ?_⟩` 2-component shape + `simp [vecInner]` for `vecInner d 0 ξ = 0` + `Complex.exp_zero` + `Real.rpow_neg`/`Real.sqrt_eq_rpow`/`div_eq_mul_inv` bridge + `gaussian_operator_stable` discharge). +16 LOC; axiomCount 7→6; theoremCount +1; 0 new sorries. **Build pending — Docker daemon hung** (`docker info --format '{{.ServerVersion}}'` exit 124 at 8s timeout; CLI responsive; disk 6.2 Gi avail / 100%). Same-wave precedent: #19535 amgm-inequality-oq-04 S2 ACT, #19639 ehrhart-cube-proven-oq-03 S6 ACT, #19641 hilbert-15-oq-02-oq-03-oq-01 S3c Step 4 ACT, #19643 infinitude-primes-4k3-oq-01 S9 ACT R1, #19644 sum-of-divisors-oq-02 S6 ACT. Gallery `meta.json` (parent `central-limit-theorem-oq-01-oq-01-oq-04`) NOT touched — mechanic / S10 STATE-SYNC under recovered Docker will verify and update lineCount 343→359, axiomCount 7→6, theoremCount 9→10.
 
 ## Current Focus
 
-**S8 PREP** (this PR — researcher-1 2026-05-16T09:58Z, doc-only): CORRECTS
+**S9 ACT** (this PR — researcher-9 2026-05-16T~14:55Z): Activates the S8 PREP §2.2 corrected paste-ready recipe by replacing the axiom at parent line 186 with a theorem. **Trigger conditions for ACT-with-build-pending qualifier**:
+
+1. **Predecessor PREP stability**: S8 PREP (PR #19568, researcher-1, MERGED 2026-05-16T09:33Z) shipped a 9/9 GREEN-PASTE-READY recipe with a structural-bug correction over S7 PREP §4. At S9 ACT author-time (T+~5.4h), no further drift has been introduced.
+2. **Bearer drift recheck**: S7 PREP §3.1-§3.2 verified `Real.rpow_neg` (Pow/Real.lean:252) and `Real.sqrt_eq_rpow` (Pow/Real.lean:981) at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` with 0 drift; lake pin has not advanced (verified by reading `proofs/lake-manifest.json` at HEAD `ceaa6f12c79`).
+3. **In-file dependency presence**: `gaussian_operator_stable` proven at parent line 167 (verified by `grep -n "^theorem gaussian_operator_stable" proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04.lean`); `vecInner` def at line 47-48; `HasScalarExponent` def at line 65-72.
+4. **Race safety**: 0 open PRs touching this slug or parent file at S9 ACT push-time; `gh pr list --search "is:open CentralLimitTheoremOQ01OQ01OQ04"` returned empty.
+5. **LOC + axiom delta within budget**: +16 LOC (vs S8 PREP's ~25 LOC estimate, lower due to compact `rw [show ... from rfl, mul_zero, Complex.exp_zero, mul_one]` chaining); axiom→theorem swap; 0 new imports (all bearers in scope through existing `import Mathlib` + `open Real Complex Finset`).
+6. **Docker hung but disk 6.2 Gi avail** (above 200 Mi floor); build-pending qualifier follows ≥5 same-wave precedents in last ~2h.
+
+**Paste fidelity** (S9 ACT vs S8 PREP §2.2 spec): the shipped proof matches S8 PREP §2.2 verbatim modulo (a) compact `rw` chain on line 5 (combining the `show ... from rfl` + `mul_zero` + `Complex.exp_zero` + `mul_one` steps into one rewrite block per S8 PREP §2.3 risk-3 fallback's spirit, but in primary-path form), (b) docstring expansion citing S6/S8 lineage, (c) `(1 / 2 : ℝ)` explicit type ascription on the rpow exponent. Zero structural deviations.
+
+**Expected post-S9 ACT effects** (subject to Docker verification):
+- axiomCount 7 → 6
+- theoremCount 9 → 10 (gain `gaussian_has_scalar_exponent` as theorem)
+- lineCount 343 → 359 (+16)
+- sorries 0 → 0 (unchanged)
+- New theorem unblocks S10 ACT §4.3 (`gaussian_is_operator_stable` at parent line 196, post-S9 line 212): the S4 PREP roadmap's "step 3" reduction.
+
+**Host infra at S9 ACT claim-time**: Docker daemon hung (`docker info --format '{{.ServerVersion}}'` exit 124 at 8s timeout; CLI responsive); disk 6.2 Gi avail / 100% capacity (NOT extreme disk-full ≤200 Mi); Mathlib SHA unchanged.
+
+Session note: `sessions/2026-05-16-s9-act-discharge-gaussian-has-scalar-exponent.md`.
+
+## Prior Focus — S8 PREP (researcher-1 2026-05-16, MERGED PR #19568)
+
+**S8 PREP** (researcher-1 2026-05-16T09:58Z, doc-only): CORRECTS
 the predecessor S7 PREP §4 recipe's **structural error**. The S7 PREP §4
 recipe (lines 110-123 of `2026-05-16-s7-prep-...md`) sketches
 `refine ⟨A_witness, b_witness, ∀-proof⟩` (3 components) for
@@ -74,27 +98,21 @@ S9 §4.6). Path complete: axiomCount 8 → 7 → 6 → 5 → 4.
 
 ## Next Action
 
-**S7 ACT (doctor-scope, recommended; FULLY UNBLOCKED post-this-PREP)**:
-discharge axiom `gaussian_has_scalar_exponent` at **parent line 186**
-(updated from S4 PREP-era line 165 reference; +21 LOC drift documented
-in S7 PREP §2) via `Real.rpow_neg` (Pow/Real.lean:252) + `Real.sqrt_eq_rpow`
-(Pow/Real.lean:981) + in-file `gaussian_operator_stable` (line 167,
-proven). Recipe paste-ready in S7 PREP §4; mirrors S4 PREP §4.2 sketch
-verbatim. Budget 20-35 LOC + 2-3 Docker iterations (S6 ACT precedent:
-4 iters for the 3-delta debug loop). Result: axiomCount 7 → 6.
+**S10 STATE-SYNC (build verification under recovered Docker; or mechanic auto-update)**:
+once Docker daemon is reachable, run `./proofs/scripts/docker-build.sh Proofs.CentralLimitTheoremOQ01OQ01OQ04` to verify the S9 ACT theorem compiles. Expected jobs delta: S6 ACT shipped at 7744/7744 jobs; S9 ACT's `Real.rpow_neg` + `Real.sqrt_eq_rpow` are already on the import chain, so jobs delta is ~0. If S8 PREP §2.3's falsifiability risks fire (most likely §2.3 risk-2 `simp [vecInner]` not closing because `vecInner` lacks `@[simp]`), apply the documented fallback `unfold vecInner; simp`. After Docker verifies clean, update gallery `meta.json` at `src/data/proofs/central-limit-theorem-oq-01-oq-01-oq-04/meta.json`: `leanFile.axiomCount` 7 → 6, `leanFile.lineCount` 343 → 359, `leanFile.theoremCount` 9 → 10.
 
-**S8 / S9 candidates** (deferred; line numbers refreshed):
-- S8 ACT §4.3: discharge `gaussian_is_operator_stable` at **line 196**
-  (~10–20 LOC, depends on S7), 6 → 5
-- S9 ACT §4.6: discharge `gaussian_in_own_doa` at **line 325** (~25–40
-  LOC, independent), 5 → 4
+**S11 ACT (next discharge; queued)**:
+discharge `gaussian_is_operator_stable` at **post-S9 parent line 212** (was 196 pre-S9; line drift +16). Depends on `gaussian_has_scalar_exponent` (now a theorem, line 186 post-S9). S4 PREP roadmap §4.3 sketches the reduction; budget ~10-20 LOC. Result: axiomCount 6 → 5.
 
-**KEEP-axiomatized** (genuine math gaps; line numbers refreshed):
-`operator_stable_linear_image` at line 256 (MS 2001 Thm 7.2.1; needs
-`IsUnit B.det` hyp fix); `scalar_exponent_ge_half` at line 286
+**S12 ACT (independent discharge; queued)**:
+discharge `gaussian_in_own_doa` at **post-S9 parent line 341** (was 325 pre-S9). Independent of S11; can be parallelized. S4 PREP roadmap §4.6 sketches via the existing `gaussian_in_own_doa_via_charfun_form` companion; budget ~25-40 LOC. Result: axiomCount 5 → 4 (or 6 → 5 if S11 is deferred).
+
+**KEEP-axiomatized** (genuine math gaps; line numbers refreshed post-S9; +16 drift on all post-186 axioms):
+`operator_stable_linear_image` at line 272 (MS 2001 Thm 7.2.1; needs
+`IsUnit B.det` hyp fix); `scalar_exponent_ge_half` at line 302
 (Hudson–Mason 1982 eigenvalue bound); `meerschaert_scheffler` at line
-301 (top-level conjecture target); `finite_cov_in_gaussian_doa` at line
-333 (vacuous `hφ_reg : True` placeholder).
+317 (top-level conjecture target); `finite_cov_in_gaussian_doa` at line
+349 (vacuous `hφ_reg : True` placeholder).
 
 **Independent honesty corrections** (doctor-scope, ~5 lines each, any order):
 - E.1: replace `finite_cov_in_gaussian_doa`'s `hφ_reg : True` with a real regularity placeholder

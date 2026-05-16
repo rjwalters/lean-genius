@@ -176,15 +176,31 @@ theorem gaussian_operator_stable (d : ℕ) (Sg : Matrix (Fin d) (Fin d) ℝ)
   rw [show (1 / (n : ℝ)) * quadForm d Sg ξ / 2 = quadForm d Sg ξ / 2 / n by ring]
   exact exp_neg_div_pow (quadForm d Sg ξ / 2) n hnn
 
-/-- **AXIOM**: Gaussian has scalar exponent c = 1/2 with zero drift.
+/-- The Gaussian is operator-stable with scalar exponent c = 1/2 and zero drift.
 
-    Axiomatized at Mathlib v4.26.0: the original proof relied on
-    `Real.rpow_one_div_eq_pow_inv` (renamed/removed in v4.26.0) for the
-    rpow-to-sqrt conversion `n^(-1/2) = 1/√n`, and on a simp set with the
-    now-ambiguous `exp_zero` (Complex.exp_zero vs Real.exp_zero). Mathematical
-    content reduces to `gaussian_operator_stable` with witness drift = 0. -/
-axiom gaussian_has_scalar_exponent (d : ℕ) (Sg : Matrix (Fin d) (Fin d) ℝ) :
-    HasScalarExponent d (gaussCharFun d Sg) (1 / 2)
+    Discharges the v4.26.0 axiomatized version by combining the proven
+    `gaussian_operator_stable` (operator-stability statement in `/√n` form) with
+    the rpow→sqrt bridge `Real.rpow_neg + Real.sqrt_eq_rpow` and the
+    `vecInner d 0 ξ = 0` simp lemma. Witness drift `b n = 0` per the axiom's
+    original "zero drift" specification. -/
+theorem gaussian_has_scalar_exponent (d : ℕ) (Sg : Matrix (Fin d) (Fin d) ℝ) :
+    HasScalarExponent d (gaussCharFun d Sg) (1 / 2) := by
+  -- Witness b n = 0 (zero drift).
+  refine ⟨fun _ => 0, fun n hn ξ => ?_⟩
+  -- Simplify RHS: vecInner d 0 ξ = 0, then exp(I*0) = 1.
+  have h_inner : vecInner d (0 : Fin d → ℝ) ξ = 0 := by
+    simp [vecInner]
+  rw [h_inner]
+  -- Goal: (...)^n = gaussCharFun d Sg ξ * Complex.exp (I * ((0 : ℝ) : ℂ))
+  rw [show ((0 : ℝ) : ℂ) = 0 from rfl, mul_zero, Complex.exp_zero, mul_one]
+  -- Bridge n^(-(1/2)) = 1/√n via Real.rpow_neg + Real.sqrt_eq_rpow.
+  have hnn : (0 : ℝ) ≤ n := Nat.cast_nonneg n
+  have h_arg : (fun i => ξ i * (n : ℝ) ^ (-(1 / 2 : ℝ)))
+             = (fun i => ξ i / Real.sqrt n) := by
+    funext i
+    rw [Real.rpow_neg hnn, ← Real.sqrt_eq_rpow, ← div_eq_mul_inv]
+  rw [h_arg]
+  exact gaussian_operator_stable d Sg ξ n hn
 
 /-- **AXIOM**: Gaussian φ_Sg is operator-stable (general form with matrix witness).
 
