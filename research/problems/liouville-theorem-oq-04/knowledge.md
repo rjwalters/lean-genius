@@ -329,3 +329,60 @@ the filtered set is empty).
 - `research/problems/liouville-theorem-oq-04/knowledge.md` (this entry)
 - `src/data/research/problems/liouville-theorem-oq-04.json` (knowledge update)
 - `src/data/proofs/liouville-theorem-oq-04/meta.json` (lineCount, theoremCount sync)
+
+## Session 17 (2026-05-16) — Registry Catchup to Verified COMPLETED State (Doc-only)
+
+**Mode**: STATE-SYNC (claimed RICH via claim-random due to stale pool/registry entry)
+**Outcome**: doc-only — registry catchup; no code, gallery, state.md, or canonical JSON changes
+
+### Why This Fires
+`claim-random` selected this slug because the local candidate-pool listed it as `status: available`,
+but the slug has been complete since 2026-05-08 (canonical JSON `phase: COMPLETE`, `since: 2026-05-08T12:00:00.000Z`,
+`iteration: 16`; state.md `Phase: COMPLETED`; gallery meta `status: verified, badge: original, axiomCount: 0, sorries: 0`).
+
+Drift was registry-scope only:
+1. `.lean/state/candidate-pool.json` (local, untracked) — `status: available` (wrong)
+2. `research/registry.json` (tracked) — `phase: ACT, status: active, lastUpdate: 2026-04-26T05:32:25Z` (wrong; entry never flipped to COMPLETED after PR #17053 merged)
+3. `knowledge.md` trails at Session 13 — Sessions 14–16 (bridge discharge in PR #17053 + meta sync) are recorded in state.md and canonical JSON but not in knowledge.md
+
+### What I Did
+- Updated `research/registry.json` entry for this slug:
+  - `phase: ACT → COMPLETED`
+  - `status: active → graduated`
+  - `lastUpdate: 2026-04-26T05:32:25.000Z → 2026-05-08T12:00:00.000Z`
+  - Added `completed: 2026-05-08T12:00:00.000Z` (matches canonical JSON `currentState.since` and state.md `Since`)
+- Added this closing Session 17 epilogue
+- Marked the local pool entry completed (via `claim-problem.sh update`) so claim-random no longer reselects this slug
+
+### Reality Check (Verified vs. knowledge.md Session 13)
+Ground truth as of 2026-05-16:
+- `proofs/Proofs/LiouvilleTheoremOQ04.lean`: 1344 LOC, 35 theorems, 6 defs, 0 sorries, 0 axioms
+- Gallery `src/data/proofs/liouville-theorem-oq-04/meta.json`: `status: verified, badge: original, axiomCount: 0, sorries: 0, theoremCount: 35, lineCount: 1344, definitionCount: 6`
+- Canonical `src/data/research/problems/liouville-theorem-oq-04.json`: `phase: COMPLETE, iteration: 16, blockers: []`, the `focus` records that PR #17053 (commit 0175c59d, merged 2026-05-08T11:27:03Z) rewrote `padic_liouville_norm_bridge` from axiom to fully-proved theorem and fixed three pre-existing 4.26 drift errors
+- State.md: `Phase: COMPLETED`, `Iteration: 16`, `Active Approach: N/A — work is COMPLETE`, `Blockers: None`
+
+### Session 14–16 Summary (NOT in knowledge.md; canonicalized in state.md / JSON / PR #17053)
+- **Session 14** added `padic_liouville_bridge_rational_roots_case` (proved lemma)
+- **Session 15** combined IV.10 + rational-roots case into a proved `padic_liouville_norm_bridge`, dropping the `axiom` declaration — merged in PR #17053 (commit 0175c59d, 2026-05-08T11:27:03Z)
+- **Session 16** flipped gallery meta.json status `axiomatized → verified`, badge `axiom → original`, axiomCount `1 → 0`, lineCount `1216 → 1344`, theoremCount `34 → 35`, refreshed narrative fields
+- PR #17053 also resolved three 4.26 drift errors discovered during post-merge build retry: `intPolyL1_pos` Finset summand inference, the `Int.algebraMap_eq_intCast → eq_intCast` rename, and `field_simp; ring → field_simp <;> ring` 'No goals' fix
+
+### Files Modified
+- `research/registry.json` (1 entry, 4 field edits + 1 new field)
+- `research/problems/liouville-theorem-oq-04/knowledge.md` (this Session 17 epilogue)
+
+### What I Did NOT Touch (Deliberate)
+- Lean files: no need; proof verified, 0 axioms, 0 sorries, gallery-locked
+- Gallery `src/data/proofs/liouville-theorem-oq-04/meta.json`: already consistent (verified, 0 axioms, 0 sorries, 35 thm, 1344 LOC, 6 defs)
+- Canonical `src/data/research/problems/liouville-theorem-oq-04.json`: already `phase: COMPLETE, iteration: 16, blockers: []`
+- `state.md`: already at `Phase: COMPLETED, Iteration: 16` with consistent Session 16 narrative
+- `problem.md`, `literature/`, `selection-report.md`: domain content unchanged
+- Sibling slugs in registry (one slug = one PR)
+
+### Next Steps (Optional, From canonical JSON)
+Future work tracked in canonical JSON `currentState.nextAction` for a *separate* problem entry, not this one:
+- (a) sharpen $\mu_p$ bound from $2d$ to Roth-optimal $2$ (would parallel Lean Roth's 1955 formalization)
+- (b) function-field analog over $\mathbb{F}_q(t)$ with $t$-adic absolute value (needs `LaurentSeries`/`RatFunc` p-adic infrastructure)
+- (c) multi-place uniform statement $orall p, \mu_p(lpha) \leq 2d$ (touches adelic product formula)
+
+For this slug specifically: **None**. COMPLETED and gallery-verified.
