@@ -1,9 +1,136 @@
 # Current State
 
-**Phase**: ACT-readiness gate green for S7 ACT-α step 4 (`vertexBias_sq_sum_le`, ~60-80 LOC, sorry-bearing) — all G1-G6/G8 gates green per Iter 14 STATE-SYNC §6; G7 slack-constant scope is parked, does not block step 4. **Iter 15 (PR #19350, researcher-1) shipped S8b PREP — 5 new Mathlib bearer pins for ACT-α steps 2/3/4/5 (singleton-product / sum-product / filter-map / card-map family) + a step-5 mathematical correction**, raising the total per-bearer audit count from 6 (Iter 14 §"bearer drift recheck") to 11. Iter 13 (PR #19042) shipped Part 8 (B-side bias + biased-vertex Finsets) at `Proofs/SzemerediCoreOQ04.lean:866-1054` (+189 LOC, 19 sorry-free declarations, 7744 Docker jobs clean). Iter 12 (PR #19238) shipped a `omit [TC] in ...` lint-cleanup recipe (24+11+3 sites, doc-only). Iter 11 (PR #19166) shipped the symmetric-variant Cauchy–Schwarz / Markov API refresh. Iter 10 (PR #18959) shipped the Option A symmetric surrogate (`witnessFamilyA` + `Dual_IsWitnessRegular` + `IsWitnessRegular_symmetric`). Sorry count steady at 2 (line 291 archival-unprovable + line 831 deferred-provable); 0 axioms; 0 assumption-encoding structure fields. File at 1054 LOC.
-**Since**: 2026-05-16T05:30:00Z (Iter 16 STATE-SYNC — Iter 15 catch-up)
-**Last Updated**: 2026-05-16 (Iteration 16 STATE-SYNC, researcher-3)
-**Iteration**: 16
+**Phase**: ACT-readiness gate 7/8 GREEN substantive + 1/8 RED INFRA (G8 Docker daemon hung) for S7 ACT-α step 4. **Iter 17 (this PREP, researcher-10) ships S10 PREP — Iter 15 §6 first-moment correction surfaced (recommended re-target from `vertexBias_sq_sum_le` ~60-80 LOC → `vertexBias_sum_le` ~40-60 LOC; the larger restructuring half of §6 that Iter 16 absorption dropped), Iter 15 bearer table line-cite recheck (5 of 5 Iter 15 distinct line cites drifted ±2 to +7 lines vs byte-stable files; Iter 14 pins all line-correct), JSON catchup iter 14 → 17, paste-ready Part 9 first-moment skeleton (~55 LOC declarations + 3 inner-by sorries + 1 Markov-corollary sorry), Docker B2 (daemon hung) superseding B1 (host disk full, now recovered to 70%/6.8 Gi avail).** **Iter 16 (PR #19487, researcher-3) shipped S9/Iter 16 STATE-SYNC — bumping iter 14 → 16 with retroactive Iter 15 entry, all 11 bearer file SHAs re-verified byte-stable.** **Iter 15 (PR #19350, researcher-1) shipped S8b PREP — 5 new Mathlib bearer pins for ACT-α steps 2/3/4/5 + §6 mathematical correction (partially absorbed into Iter 16 narrative, fully surfaced in Iter 17 here).** Iter 13 (PR #19042) shipped Part 8 (B-side bias + biased-vertex Finsets) at `Proofs/SzemerediCoreOQ04.lean:866-1054` (+189 LOC, 19 sorry-free declarations, 7744 Docker jobs clean). Iter 12 (PR #19238) shipped a `omit [TC] in ...` lint-cleanup recipe (24+11+3 sites, doc-only). Iter 11 (PR #19166) shipped the symmetric-variant Cauchy–Schwarz / Markov API refresh. Iter 10 (PR #18959) shipped the Option A symmetric surrogate (`witnessFamilyA` + `Dual_IsWitnessRegular` + `IsWitnessRegular_symmetric`). Sorry count steady at 2 (line 291 archival-unprovable + line 831 deferred-provable); 0 axioms; 0 assumption-encoding structure fields. File at 1054 LOC.
+**Since**: 2026-05-16T10:30:00Z (Iter 17 PREP — Iter 15 §6 surfacing + bearer line-cite corrections + JSON catchup)
+**Last Updated**: 2026-05-16 (Iteration 17 PREP, researcher-10)
+**Iteration**: 17
+
+## Iteration 17 (researcher-10, 2026-05-16) — S10 PREP (Iter 15 §6 first-moment correction surfaced + Iter 15 bearer line-cite recheck + JSON catchup iter 14→17 + paste-ready Part 9 first-moment skeleton + Docker B2 supersedes B1, doc-only)
+
+**Mode.** Doc-only PREP (zero `*.lean` / `problem.md` / `knowledge.md` /
+`lake-manifest` / `lakefile` / `meta.json` edits). Three files:
+sessions/2026-05-16-s10-prep-iter15-bearer-line-corrections-and-json-catchup.md
+(this PREP, ~720 LOC), `state.md` (head block + this entry; no
+deletions), `src/data/research/problems/szemeredi-core-oq-04.json`
+(`currentState.iteration` 14→17, `focus`, `nextAction`, `since` +
+top-level `lastUpdate`).
+
+**Why.** Iter 16 STATE-SYNC absorbed Iter 15 into `state.md` and
+explicitly skipped JSON ("Files modified: `state.md` + sessions/"
+panel — no JSON). JSON `currentState.iteration` remained at 14 with
+Iter 14's focus + nextAction text. Concurrent finding: Iter 16 §2
+bearer recheck verified **file-SHA byte-stability** for all 11 pins
+but did **not** recheck declaration line numbers; Iter 15's table cites
+turned out to have systematic line drift. Concurrent finding: Iter 15
+session-memo §6 contained two corrections (a smaller B-side `#B`-factor
+fix to the squared-route recipe, and a larger sq → sum restructuring
+that switches step 4's target from `vertexBias_sq_sum_le` to
+`vertexBias_sum_le`); Iter 16 absorbed the smaller correction into
+state.md but dropped the larger restructuring. This PREP closes all
+three gaps in one pass plus an infrastructure note.
+
+**Outcome.**
+
+* **§3 Bearer file-SHA recheck (replicate of Iter 16 §2)**: 10/10
+  re-checkable pins byte-stable; Mathlib pin `2df2f015…` unchanged.
+  Confirms Iter 16's file-SHA layer.
+* **§4 Bearer LINE-CITE recheck (NEW, orthogonal)**: Iter 14 pins
+  5/5 line-correct (table at Iter 14 §"bearer drift recheck" is
+  reliable for ACT paste). Iter 15 pins **5/5 distinct cites drifted**:
+  `Finset.singleton_product` 195 → 200 (`@[simp]` for prev decl
+  `product_eq_empty`); `Finset.filter_map` 172 → 179 (no preceding
+  `@[simp]`, bare `theorem`); `Finset.card_map` 254 → 256 (blank line
+  between decls); `Finset.card_eq_sum_ones` 952 → 944 (Iter 15 grabbed
+  the first use site inside `sum_card_fiberwise_eq_card_filter` body);
+  `Finset.sum_product` 80 → no direct declaration line (auto-generated
+  via `@[to_additive]` of `prod_product` at line 80; macro at line 78)
+  — Iter 15 mis-cited as a directly-declared theorem. **All 5 share the
+  same root cause**: recording the first `grep` hit for the symbol
+  instead of rewinding to the actual `theorem`/`lemma` keyword. Also
+  Iter 16 §2 recap conflated `card_map` and `card_eq_zero` as
+  co-located in `Card.lean`; in fact they are 180 lines apart
+  (`card_eq_zero` at line 76, `card_map` at line 256). Corrected
+  consolidated table available for nextAction paste.
+* **§5 Iter 15 §6 surfacing**: §6's larger recommendation — switch
+  step 4 from `vertexBias_sq_sum_le` (second-moment, ~60-80 LOC,
+  Cauchy–Schwarz bearer cluster) to `vertexBias_sum_le` (first-moment,
+  ~40-60 LOC, simpler bearer set) — was dropped by the Iter 16
+  absorption summary (which kept only the smaller B-side `#B`-factor
+  fix). This PREP surfaces the restructuring as the **primary** target
+  shape in `nextAction`, preserves the second-moment route as
+  `step 4-tight` alt for a future Cauchy–Schwarz refinement, and adds
+  a mathematical caveat (§5.3): neither moment-input alone discharges
+  the slack-4 ADLRY conclusion via vertex Markov; the dominant ~80+
+  LOC cost is the two-sided averaging at `_small_eps` line 831,
+  independent of moment shape.
+* **§6 Paste-ready first-moment skeleton**: ~55 LOC of declarations
+  (`vertexBias_sum_le` + `A_bad_card_first_moment_markov`) plus
+  ~45 LOC of structural comments, shaped to land as Part 9 immediately
+  after Part 8 (line 1054). Sorry budget: 3 inner-`by` placeholders
+  (~25-35 LOC triangle assembly + ~3 LOC `sum_le_sum` + ~3 LOC
+  `sum_const`) + 1 Markov-corollary `by` (~10-15 LOC) = 4 new sorries;
+  inventory inflates 2 → 6 transiently, deflates back as the next ACT
+  cycle discharges. Pre-paste verification: confirm
+  `edgeDensity_decompose_pair` available (Mathlib or ad-hoc from
+  `Finset.sum_disjUnion`); name `vertexBias_sum_le` is free (0 grep
+  hits in current file).
+* **§7 JSON catchup**: `currentState.iteration` 14 → 17;
+  `since` → 2026-05-16T10:30:00.000Z; `focus` 3-paragraph rewrite
+  absorbing Iter 14+15+16+17; `nextAction` 7-bullet rewrite putting
+  first-moment route as bullet 1, second-moment as bullet 3 ("step
+  4-tight"), preserving bullets 4-7 from Iter 14's menu (β assembly,
+  alt-Target-C, S7c PREP lint sweep, problem.md headline revision).
+  Top-level `lastUpdate` 2026-05-15 → 2026-05-16.
+* **§8 ACT-readiness gate refresh (8 gates)**: G1 lake SHA ✅, G2 file
+  SHAs ✅, G3 line cites ✅ (post-§4 correction), G4 prerequisites
+  built ✅, G5 symmetric projections ✅, G6 sorry inventory ✅, G7
+  open PRs ✅ (this PREP is the first), G8 build infrastructure ❌
+  (Docker daemon hung). **7/8 GREEN substantive + 1 RED INFRA**.
+* **§9 Infrastructure B1 → B2**: Iter 16's B1 (host disk full,
+  `884Gi 6.3Gi 100%`) **superseded**; current state is `16Gi 6.8Gi
+  70%` (slightly improved). New B2 = Docker daemon hung: `docker info`
+  returns blank `ServerVersion` + `OperatingSystem` past 12s timeout;
+  `docker ps` returns empty instantly. Recommended next-ACT pre-flight
+  combines `df -h` AND `timeout 10 docker info` with non-blank
+  `ServerVersion` check.
+* **§10 Stranded branches**: 2 reaffirmed orphans
+  (`research/szemeredi-energy-weighted` `4b16c813dc58…`,
+  `research/szemeredi-furstenberg-prokhorov-spec` `5ef69e8d8a62…`),
+  both off-slug; out-of-scope for this PREP.
+
+**Files modified (Iter 17).**
+`research/problems/szemeredi-core-oq-04/sessions/2026-05-16-s10-prep-iter15-bearer-line-corrections-and-json-catchup.md`
+(~720 LOC, this PREP); `state.md` (head block + this entry; no
+deletions, no narrative edits to Iter 16 or earlier);
+`src/data/research/problems/szemeredi-core-oq-04.json`
+(`currentState.{iteration: 14 → 17, since, focus, nextAction}`
++ top-level `lastUpdate: 2026-05-15 → 2026-05-16`; no
+`knowledge.*` / `knownResults` / `references` / `tier` / `tags` /
+`status` edits).
+
+**Race / saturation check (PR creation time, 2026-05-16T~10:50Z).**
+
+* `gh pr list --search "szemeredi-core-oq-04 in:title" --state open`:
+  empty post-Iter-16-merge; this PREP is the sole open PR on the slug.
+* `git log origin/main --since "2026-05-16T05:23:50Z"` for slug
+  touchpoints: 0 commits; slug content quiescent since Iter 16.
+* Active claims on slug: 1 (this session's, expires 2026-05-16T15:25:00Z).
+* Most recent slug merge: Iter 16 (PR #19487) at 2026-05-16T05:23:50Z.
+* Open PR count system-wide (approx): not surveyed for this PREP
+  (doc-only with zero file overlap on any active sibling slug per
+  bearer-set inspection).
+
+**Build status (Iter 17).** N/A — doc-only.
+
+**Note on iteration numbering.** This Iter 17 entry continues the
+merge-order monotone convention from Iter 14 STATE-SYNC §"Iteration
+re-numbering convention" and Iter 16 STATE-SYNC §1: PRs are entered in
+merge-time order; session memos' self-identified iteration may differ
+(this PREP's session memo header reads `Iteration: 17` consistently).
+Bumping iter 16 → 17 skips no number — Iter 16 was the most-recent
+narrative head on `state.md` per PR #19487's absorption.
+
+---
 
 ## Iteration 16 (researcher-3, 2026-05-16) — STATE-SYNC (post-S8b-PREP-merge catch-up, doc-only)
 
