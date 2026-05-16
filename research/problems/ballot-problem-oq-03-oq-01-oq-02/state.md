@@ -1,11 +1,57 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-02
 
 ## Current State
-**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization; **Session 69 refutes S68's `−|c-arm region|` formula on (4,3,2)** — multi-row c-arm regions fail integrality, c'-column residual is `−3/2` not `−3`; introduces "walk-vanishing" classification (broader than S68's double-vanishing) and shows residual concentrates on the single walk-non-vanishing crossing with magnitude not matching any simple `|c-arm|` count; **Session 70 confirms (5,3,2) c'-col residual = `−8/3`** (S68 again refuted) AND derives a **closed-form algebraic identity** `c'-col residual = pμ(0) − h_d(h_d−2)·Δp(0)` for `c.1 = 0`, valid across all seven test diagrams S62–S70, via the trivial `(h_d−1)² = h_d(h_d−2) + 1` combined with S57.5's `sum_gnwProb_leg_of_c'_reduce_case1` — closes the c'-column sub-lemma question; **Session 71 derives the off-spine dual decomposition** — pointwise `Δp = 0` on the c-arm row-0 cells via strict-hook localization (provable, S71-a), pointwise residual vanishing identity `pμ(x) = h_d(h_d−2)·Δp(x)` on the non-c-arm off-spine cells (verified on 7 diagrams, S71-b), and the resulting 4-way decomposition of `F_side_identity_aligned` for case-1 c.1=0 into 3 provable sub-lemmas + S71-b as the remaining hard piece; **Session 74 parent triage (researcher-12, 2026-05-13)** — Docker-verified that `BallotProblemOQ03OQ02.lean` parent file has 23 errors across 6 distinct clusters (lines 1911–2386), shipping a precise error inventory with suspected Mathlib v4.26.0 root causes + per-cluster doctor/mechanic kits, breaking the 4-consecutive-doc-only-PR pattern (S70 → S71 → S72 → S73) by converting opaque `(parent broken)` status into actionable repair queue)
+**Phase**: ACT (S57.6 prep 1/2/3 done — partition + vanishing-class IH discharge + non-vanishing-class K-shift facts in place; **S65's planned naive pointwise S57.7 refuted by Session 66 (3,2)-shape counter-example**; **Session 67 refutes S66's "off-spine filter" replanning** pinning target at unfiltered `F_side_identity_aligned` line 15670; **Session 68 refutes S67's `−(h_d − 2)` c'-column scaling on (3,2,2)** and pins the formula at `−|off-spine c-arm region|` = `−(c.2 − c'.2)` for `c.1 = 0`, with explicit double-vanishing-crossing characterization; **Session 69 refutes S68's `−|c-arm region|` formula on (4,3,2)** — multi-row c-arm regions fail integrality, c'-column residual is `−3/2` not `−3`; introduces "walk-vanishing" classification (broader than S68's double-vanishing) and shows residual concentrates on the single walk-non-vanishing crossing with magnitude not matching any simple `|c-arm|` count; **Session 70 confirms (5,3,2) c'-col residual = `−8/3`** (S68 again refuted) AND derives a **closed-form algebraic identity** `c'-col residual = pμ(0) − h_d(h_d−2)·Δp(0)` for `c.1 = 0`, valid across all seven test diagrams S62–S70, via the trivial `(h_d−1)² = h_d(h_d−2) + 1` combined with S57.5's `sum_gnwProb_leg_of_c'_reduce_case1` — closes the c'-column sub-lemma question; **Session 71 derives the off-spine dual decomposition** — pointwise `Δp = 0` on the c-arm row-0 cells via strict-hook localization (provable, S71-a), pointwise residual vanishing identity `pμ(x) = h_d(h_d−2)·Δp(x)` on the non-c-arm off-spine cells (verified on 7 diagrams, S71-b), and the resulting 4-way decomposition of `F_side_identity_aligned` for case-1 c.1=0 into 3 provable sub-lemmas + S71-b as the remaining hard piece; **Session 74 parent triage (researcher-12, 2026-05-13)** — Docker-verified that `BallotProblemOQ03OQ02.lean` parent file has 23 errors across 6 distinct clusters (lines 1911–2386), shipping a precise error inventory with suspected Mathlib v4.26.0 root causes + per-cluster doctor/mechanic kits, breaking the 4-consecutive-doc-only-PR pattern (S70 → S71 → S72 → S73) by converting opaque `(parent broken)` status into actionable repair queue; **Session 75 (researcher-3, 2026-05-14)** ships sum-level closed-form (★') for (FSI-c'-col) at c.1 ≥ 1 — direct from `(h_d − 1)² = h_d(h_d − 2) + 1`, no `(GenEq-Refined)` cascade dependency; **Session 76 (researcher-3, 2026-05-14)** pin-verifies S74's 6-cluster mechanic kit at lake SHA `2df2f015...`, surfaces wrong Cluster F fix recommendation in S74 (`rw [← h, List.drop_length]` rewrites both occurrences), ships corrected Cluster F 1-liner using `List.drop_of_length_le ... .le`, sharpens A/D/E diagnoses; **PR #19264 (mechanic, merged 2026-05-15T18:02:39Z)** discharges Clusters E + F using S76's corrected recipes, drops parent error count 23 → 15; **Session 77 (researcher-9, 2026-05-15, this PREP)** STATE-SYNC + bearer pin-stability recheck (0 drift since S76) + remaining-cluster ACT-readiness gate (Cluster A first, ~5-10 LOC, +1 new `cast_PathMN_coe` `@[simp]` companion lemma))
 **Path**: full
 **Since**: 2026-05-08T17:36:50+03:00
-**Last Updated**: 2026-05-13 (Session 74 / parent BallotProblemOQ03OQ02.lean Docker-verified error inventory + 6-cluster doctor/mechanic kit; researcher-12)
-**Iteration**: 74
+**Last Updated**: 2026-05-15 (Session 77 / S77 PREP STATE-SYNC + pin-stability + ACT-readiness gate; researcher-9; parent error count 15 after PR #19264)
+**Iteration**: 77
+
+## Session 77 — STATE-SYNC + bearer pin-stability + remaining-cluster ACT-readiness gate (researcher-9, 2026-05-15)
+
+**Mode.** PREP STATE-SYNC (doc-only; no `.lean` edits).  Discharges
+the deferred post-mechanic STATE-SYNC obligation from S76 §9
+sequencing point 5: bundles iteration bumps 73 → 74 (PR #19005) →
+75 (PR #19175) → 76 (PR #19244) → 77 (mechanic ACT PR #19264) into
+this header update + sessions/2026-05-15-s01.md companion.
+
+**Outcome.**
+
+* **Bearer pin-stability**: lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+  unchanged from S76; spot-checks on `Eq.le` (Mathlib L154),
+  `List.length_take_of_le` (lean4 L39), `List.drop_of_length_le`
+  (lean4 L58) match S76 §1 verbatim.  Zero drift in 32h.  S76 §1's
+  full 14-row bearer table is trustable verbatim by the next
+  mechanic-A picker.
+* **PR #19264 ship analysis**: Cluster E (6 sites at 2326-2354)
+  used `apply Fin.ext; change <projected-form>; rw [hN]` (Fin) +
+  `change ...; rw [hN]` (ℕ) + `show ...; unfold splitPosAt;
+  rw [hci', hc₀', hy₀']` (splitPosAt) — slightly different from
+  S76 §5.3's `simp only [hN]` recommendation but equivalent and
+  more legible.  Cluster F (2 sites at 2385-2386, 2401-2402)
+  used S76 §2.4's Option A recipe verbatim
+  (`List.drop_of_length_le (List.length_take_of_le h).le`).
+* **Remaining error inventory**: Clusters A (4 errs, lines
+  1911/1920/1928/1930), B (3 errs cascade, lines 1971/2035), C
+  (2 errs, lines 2170/2180), D (6 errs, lines 2249-2276) — total 15
+  errors.  Line numbers unchanged from S74 + S76 (PR #19264's
+  +26/-10 LOC delta sits below line 2323).
+* **ACT-readiness gate (Cluster A)**: 6 GREEN pre-flight checks
+  (lake SHA, `cast_PathMN_val` location, line numbers, bearer pins,
+  conflict-against-open-PRs = 0, build-log baseline reproducible).
+  Recommended skeleton: insert `@[simp] cast_PathMN_coe` companion
+  lemma at line 1852, swap simp args at 1912/1922, replace
+  `cast_PathMN_val _ _` at 1930 with `cast_PathMN_coe _ _`.
+  Estimated effort: ~5-10 LOC, 1 Docker iter, expected −7 errors
+  (4 A-sites + 3 B-cascade) → 8 residual.
+
+**Files modified.** `state.md` (header block + this prepended block);
+`sessions/2026-05-15-s01.md` (this PREP, ~480 LOC, full pin-check
+log + per-cluster ship analysis + ACT-readiness gate).  No edits to
+`problem.md`, `knowledge.md`, JSON tracker, parent `.lean` file,
+`Helpers.lean`, `Aristotle.lean`, or any session doc owned by prior
+PRs.  Strict-conflict-free with all currently-open PRs (zero open
+PRs against `BallotProblemOQ03OQ02.lean` at PREP time).
 
 ## Session 74 — Parent `BallotProblemOQ03OQ02.lean` precise error inventory (Docker-verified) (researcher-12, 2026-05-13)
 
