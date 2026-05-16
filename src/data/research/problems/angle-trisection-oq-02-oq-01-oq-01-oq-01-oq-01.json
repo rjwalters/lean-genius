@@ -18,12 +18,12 @@
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-05-08T00:00:00.000Z",
-    "iteration": 4,
-    "focus": "Gallery is axiomatized (status: axiomatized, badge: axiom). 19 theorems, 1 intentional axiom (counterexample_gal_card), 0 sorries. Session 4 extended the structural scaffolding from f_target to g_factor (its Artin-Schreier inner factor), and added all five non-trivial coefficient values of f_target.",
+    "iteration": 5,
+    "focus": "S5 PREP doc-only: bootstrapped state.md (no prior version) + sessions/2026-05-16-s05.md with paste-ready ~60-LOC Lean sketch for Step 1a (aGen-not-isSquare degree-parity argument). Bearer pin recheck at Mathlib v4.26.0 SHA 2df2f0150c…: 8 entries, 0 drift. No Lean / meta.json / lake-manifest edits. Gallery remains axiomatized with 19 theorems / 1 axiom / 0 sorries. ACT deferred to S6 pending Docker daemon recovery + disk ≥ 8 Gi.",
     "blockers": [],
-    "nextAction": "Multi-session Artin-Schreier formalization to discharge counterexample_gal_card. Closest next step: prove aGen is not a square in base, then g_factor irreducible (Artin-Schreier), then f_target irreducible via Capelli. Each step is independently useful and may have Mathlib upstream value.",
+    "nextAction": "S6 ACT (when host healthy): paste S5 §4 sketch into AngleTrisectionOQ02OQ01OQ01OQ01OQ01.lean after the aGen definition, discharge SORRY-1 (R3 mechanical bridge, ≈ 6-12 LOC IsFractionRing/algebraMap rewrites — manual ~10 min or Aristotle async if stuck), Docker build, open S6 ACT PR adding aGen_ne_zero + aGen_not_isSquare + private helper R_sq_eq_X_mul_sq_imp_false. Steps 1b–4 remain as documented in nextSteps[2..6].",
     "attemptCounts": {
-      "total": 4,
+      "total": 5,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -50,7 +50,8 @@
       "sub_pow_char_pow_eq: (a-b)^(p^n) = a^(p^n) - b^(p^n) in char p, via iterateFrobenius and map_sub",
       "algEquiv_eq_refl_of_isPurelyInseparable: every F-algebra automorphism of a purely inseparable extension is the identity",
       "gal_card_one_of_purelyInseparable_splitting: corollary, |Gal(f)| = 1 when SplittingField is purely inseparable",
-      "insep_gal_trivial_refuted: formal refutation using counterexample_gal_card axiom"
+      "insep_gal_trivial_refuted: formal refutation using counterexample_gal_card axiom",
+      "S5 PREP (researcher-12, 2026-05-16): created state.md (slug-first version, ~80 LOC backport of S1-S4 history) + sessions/2026-05-16-s05.md (~300 LOC) with paste-ready ~60-LOC Lean sketch for Step 1a (aGen_not_isSquare), bearer table (8 Mathlib bearers at v4.26.0 pin, 0 drift), risk inventory (no HIGH-tier risks), and Aristotle delegation plan for the SORRY-1 mechanical bridge. 0 Lean / meta.json / lake-manifest edits."
     ],
     "insights": [
       "insep_gal_trivial as stated is mathematically FALSE: f=g(X^p) with deg(g)≥2 gives inseparable irreducible with |Gal|=|Gal(g)|≥2",
@@ -68,7 +69,7 @@
     ],
     "nextSteps": [
       "Multi-session Artin-Schreier formalization to discharge counterexample_gal_card",
-      "Step 1a (closest): aGen is not a square in base — degree-parity argument over ZMod 2[X]",
+      "Step 1a (closest, [PASTE-READY in S5 PREP §4 of sessions/2026-05-16-s05.md, 1 SORRY R3 mechanical bridge]): aGen is not a square in base — degree-parity argument over Polynomial (ZMod 2)",
       "Step 1b: g_factor irreducible (Artin-Schreier criterion in char 2)",
       "Step 1c: f_target irreducible via Capelli on g_factor.comp (X^2) — uses g_factor irreducibility + aGen not a square",
       "Step 2: Splitting field characterization SplittingField f_target ≃ base⟮α^(1/2)⟯",
@@ -121,7 +122,7 @@
     "mathlib": []
   },
   "started": "2026-05-04T17:47:35.841Z",
-  "lastUpdate": "2026-05-08T17:00:00.000Z",
+  "lastUpdate": "2026-05-16T11:00:00.000Z",
   "completed": "2026-05-08T17:00:00.000Z",
   "significance": 6,
   "tractability": 5,
