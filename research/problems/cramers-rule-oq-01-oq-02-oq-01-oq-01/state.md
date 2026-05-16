@@ -1,11 +1,147 @@
 # Current State
 
-**Phase**: ACT (S4 statement landed; submatrix_chain plan locked by S12 PREP; all 9/9 bearers ✓ locked by S13 PREP-2; JSON drift catchup absorbing S13 PREP-2 + Docker B1 reaffirm + stranded-branch reaffirm landed this S14 PREP cycle; only Docker-dependent steps remain — Docker still hung)
-**Since**: 2026-05-16T13:55:00Z
-**Iteration**: 14
-**Last session**: S14 PREP — JSON-catchup absorbing S13 PREP-2 + Docker B1 reaffirm + stranded-branch reaffirm (researcher-4, 2026-05-16, doc-only)
+**Phase**: ACT (S4 statement landed; submatrix_chain plan locked by S12 PREP but **σ(q) sign factor CORRECTED in this S15 PREP** — recipe was `(-1)^(q+p)` distributed; correct is `(-1)^(j+(j.succAbove q : ℕ)+1)` constant in p; 3 numerical witnesses verify; outer §2.9 skeleton closes with corrected σ(q); Block IV `h_sign` sub-sorry now removed; only Docker-dependent steps remain — Docker still hung 7.5+ h cumulative)
+**Since**: 2026-05-16T15:30:00Z
+**Iteration**: 15
+**Last session**: S15 PREP — `submatrix_chain` sign correction (latent gap caught before S15+1 ACT) (researcher-6, 2026-05-16, doc-only)
+**Last Updated**: 2026-05-16T15:30:00Z
 
-> _Phase note: this skill maps "S14 PREP" to canonical "ORIENT" sub-iteration of the ongoing ACT phase._
+> _Phase note: this skill maps "S15 PREP" to canonical "ORIENT" sub-iteration of the ongoing ACT phase._
+
+## Session 15 — S15 PREP, `submatrix_chain` sign correction (latent correctness gap surfaced before S15+1 ACT) (researcher-6, 2026-05-16, doc-only)
+
+Doc-only PREP iteration catching a **latent correctness gap** in the
+`submatrix_chain` intermediate-have statement as stated in **S4f PREP §2.7 / §2.9**
+and elaborated in **S12 PREP §1.1 / §2.2**. The recipe gives the sign factor as
+`(-1)^((q : ℕ) + (p : ℕ))` distributed inside the sum-over-p; numerical check at
+`n = 2, i = j = 0, q = 0` shows the recipe RHS computes
+`A 1 0 * A 2 2 + A 2 0 * A 1 2` whereas the actual `det(A.submatrix
+i.succAbove (j.succAbove q).succAbove)` is `A 1 0 * A 2 2 − A 1 2 * A 2 0` —
+the signs on the second term differ. (Cross-check at `i=0, j=1, q=0` and
+`i=0, j=0, q=1` also fail.)
+
+**Root cause**: the S12 PREP §2.2 Block IV `h_sign` comment "Not always true!"
+correctly flagged that `(-1)^(p + j_col) = (-1)^(q + p)` is not provable as
+stated, but did not trace the issue back to the §1.1 statement of
+`submatrix_chain`. After re-tracing through Steps (a)-(d) of S12 PREP §1.2,
+the correct combined sign is `(-1)^(2p + j_col + q) = (-1)^(j_col + q)`,
+which is **independent of p** and thus factors OUTSIDE the sum-over-p.
+
+**Corrected σ(q)** (closed form, no j_col case-split exposed in statement):
+```
+σ(q) = (-1)^((j : ℕ) + (j.succAbove q : ℕ) + 1)
+```
+Equivalently:
+- Case q.val < j.val: `(j.succAbove q).val = q.val`, so `σ(q) = (-1)^(j + q + 1)`.
+- Case q.val ≥ j.val: `(j.succAbove q).val = q.val + 1`, so `σ(q) = (-1)^(j + q + 2) = (-1)^(j + q)`.
+- In `j_col` terms: `σ(q) = (-1)^(j_col + q)` (same as the §2 derivation's output).
+
+**Outer §2.9 verification**: the required relation for the outer
+`field_simp + ring` to close is `(-1)^(i + j.succAbove q) * σ(q) = -(-1)^(i+j)`.
+Substituting σ(q) gives `(-1)^(i + j.succAbove q + j + j.succAbove q + 1) =
+(-1)^(i + j + 1) = -(-1)^(i+j)` ✓. (Detailed §3.2 derivation in session memo.)
+
+Three numerical witnesses verify the corrected σ(q) at n=2:
+- (i,j,q) = (0,0,0): σ = +1, sum = `A(1,0)A(2,2) - A(2,0)A(1,2)` = det ✓
+- (i,j,q) = (0,1,0): σ = +1, sum = `A(1,1)A(2,2) - A(1,2)A(2,1)` = det ✓
+- (i,j,q) = (0,0,1): σ = −1, sum = `A(1,0)A(2,1) - A(2,0)A(1,1)` = det ✓
+
+**Revised Block I-IV plan** (S15 PREP §5; total ~40 LOC, slightly tighter than
+S12 PREP §2.2's ~30-45 LOC range BECAUSE Block IV's `h_sign` sub-sorry is now
+unnecessary):
+- Block I: define `j_col : Fin n` via `if-then-else` on `q.val < j.val` (~8 LOC).
+- Block II: apply `det_eq_sum_mul_adjugate_col` + `submatrix_apply` (~8 LOC).
+- Block III: `adjugate_fin_succ_eq_det_submatrix` forward + `submatrix_submatrix`
+  simp (~10 LOC).
+- Block IV (simplified, no h_sign): `h_col_eq` Fin-comp identity + clean
+  `(-1)^(2p + j_col + q) = (-1)^(j_col + q)` rewrite (~10 LOC) + wrap to
+  closed-form σ(q) (~5 LOC).
+
+### Files changed this S15 PREP cycle
+
+1. NEW `sessions/2026-05-16-s15-prep-submatrix-chain-sign-correction.md`
+   (~520 LOC, 8 sections incl. numerical refutation + algebraic derivation +
+   outer skeleton verification + Form 1/Form 2 corrected statements + revised
+   Block I-IV plan + risk inventory R1-R5 + alternative paths P1-P3 + LeanFiles
+   drift handoff). **No paste-ready ACT body** — see §5 of memo for Lean
+   skeleton snippets.
+2. EDIT this state.md (head replace preserving Sessions 1-14 bodies + this
+   Session 15 heading + narrative).
+3. EDIT `src/data/research/problems/cramers-rule-oq-01-oq-02-oq-01-oq-01.json`
+   (`currentState.{iteration 14→15, since, focus rewrite, blockers refresh,
+   nextAction rewrite pointing at S15 PREP §5 corrected Block I-IV,
+   lastUpdate, attemptCounts.total 12→13}` + `knowledge.{progressSummary
+   prepend Session-15 paragraph, insights += 1 sign-correction insight,
+   mathlibGaps unchanged, nextSteps refresh pointing at S15 PREP §6.2
+   8-step picker checklist}`).
+
+0 Lean edits. 0 meta.json edits. 0 problem.md / knowledge.md edits.
+0 axiom change (0 / 0 in slug). 0 sorry change (1 sorry preserved at line 287
+of `proofs/Proofs/CramersRuleOQ01OQ02OQ01OQ01.lean`).
+
+### Host infra this S15 PREP cycle
+
+- **Docker daemon still hung** (same B1 condition; `docker info` returns
+  Client section + Plugin list but no `Server:` body past 10s timeout).
+  Cumulative hung-window: ~7.5+ h (covering S13 PREP-2 + S14 PREP + this S15
+  cycle).
+- **Disk degraded**: 5.4 Gi avail (was 6.54 Gi at S14 PREP start; −1.1 Gi
+  in 52 min). Approaching ~5 Gi safety-floor.
+- No sibling `iter-<TS>` branches on origin for this slug.
+- 0 open PRs for this slug at cycle start.
+- Mathlib lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0,
+  unchanged since S11 STATE-SYNC; **7 successive PREPs at same SHA** now
+  incl. this one read-only).
+
+### ACT-readiness gate (refreshed from S14 PREP §5; new row for σ(q) correctness)
+
+| Item | Status (this S15 PREP) | Source |
+|------|------------------------|--------|
+| 5 S12 PREP bearers | ✓ | S12 §3 |
+| 4 S13 PREP-2 bearers (was ⚠) | ✓ | S13 PREP-2 §2 |
+| Lake SHA stable | ✓ | 0 drift since S11 (7 PREPs at same SHA) |
+| Slug file builds clean at HEAD | ✓ | S10 build-verify (3060 jobs) |
+| Sign exponent convention (outer) locked | ✓ | S4 PR #19142 |
+| **Sub-sorry tactic plan locked + correct** | **✓ (corrected this S15)** | **S15 PREP §5 (revised Blocks I-IV)** |
+| **submatrix_chain statement correct (NEW row)** | **✓ (corrected this S15)** | **S15 PREP §4 (Form 1)** |
+| Docker daemon responsive | **✗** | Still hung this cycle (7.5+ h cumulative) |
+| Host disk ≥ 5 Gi avail | ⚠ | 5.4 Gi avail (−1.1 Gi since S14 PREP) |
+
+Gate: GREEN for documentation prerequisites (7/9 ✓); RED for infra (Docker);
+AMBER on disk (degrading but above floor). S15+1 ACT proper (paste corrected
+Block I-IV + outer §2.9 skeleton + meta deltas) **remains correctly deferred**
+to the next post-Docker-recovery picker.
+
+### Post-S15 next-picker checklist (8 steps, supersedes S14 PREP's 7-step)
+
+Step count rises 7 → 8 because the corrected Block IV needs an explicit
+sign-collection rewrite `(-1)^(2p + j_col + q) = (-1)^(j_col + q)` step that
+wasn't in the prior plan (the prior plan's h_sign sub-sorry was effectively
+the same step, but mis-stated; the corrected step is provable cleanly).
+
+1. **Confirm Docker daemon healthy** (`timeout 10 docker info` returns
+   `Server:` body; `docker ps` works).
+2. **Adopt Option B (private lemma)** per S12 PREP §5: declare
+   `private lemma submatrix_chain` above `qdetN_step_eq_qdetF`.
+   **Use the CORRECTED statement (Form 1 per S15 PREP §4.1)** — NOT the S12
+   PREP §1.1 or S4f PREP §2.7 form.
+3. **Paste the §2.9 outer skeleton** with `submatrix_chain` reference replaced
+   by the private-lemma name.
+4. **Implement Block I** per S15 PREP §5.1 (~8 LOC).
+5. **Implement Block II** per S15 PREP §5.2 (~8 LOC).
+6. **Implement Block III + IV combined** per S15 PREP §5.3 + §5.4 + §5.5
+   (~25 LOC; sign collection now provable cleanly, no h_sign sub-sorry).
+7. **Drop S4f PREP §4 sanity-check `example` blocks** at `(i,j) = (0,0)` and
+   `(0,1)` (~24 LOC; re-verified algebraically at 3 witnesses in S15 PREP §3.4).
+8. **Docker-verify** via `./proofs/scripts/docker-build.sh
+   Proofs.CramersRuleOQ01OQ02OQ01OQ01`. Forecast 3060→3060 jobs warm cache.
+   **Sorry count target**: 1 → 0 (Blocks I-IV fully discharge) or 1 → 1
+   (h_col_eq partial, S15+2 follow-up).
+
+Estimated S15+1 ACT wall time (when Docker is healthy): 60-90 min (4-6 Docker
+iters at ~60-180s each in warm cache).
+
+Session note: `sessions/2026-05-16-s15-prep-submatrix-chain-sign-correction.md`.
 
 ## Session 14 — S14 PREP, JSON-catchup absorbing S13 PREP-2 + Docker B1 reaffirm + stranded-branch reaffirm (researcher-4, 2026-05-16, doc-only)
 
