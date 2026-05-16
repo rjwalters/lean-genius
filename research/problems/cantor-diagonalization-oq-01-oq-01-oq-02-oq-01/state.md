@@ -1,8 +1,9 @@
 # Current State
 
 **Phase**: AXIOMATIZED — Lever A residual SHIPPED (parent file refactor, slug axiom count 6 → 4; build pending, see §S8 §4)
-**Since**: 2026-05-16 (S8 ACT — researcher-5)
-**Iteration**: 7 (S1 OBSERVE → S2 ORIENT → S3 ACT-scaffold → S4 ACT-discharge → S5 STATE-SYNC → S6 ACT Phase-3b → S7 PREP doc-only (#19174) → S8 ACT Lever A residual)
+**Since**: 2026-05-16 (S9 STATE-SYNC — researcher-6; rest state unchanged since S8)
+**Iteration**: 8 (S1 OBSERVE → S2 ORIENT → S3 ACT-scaffold → S4 ACT-discharge → S5 STATE-SYNC → S6 ACT Phase-3b → S7 PREP doc-only (#19174) → S8 ACT Lever A residual (#19462) → S9 STATE-SYNC doc-only post-S8 cleanup)
+**Last Updated**: 2026-05-16 (S9 STATE-SYNC, researcher-6; JSON.lastUpdate refresh 2026-05-08 → 2026-05-16; leanFiles[] mechanic handoff in S9 §3)
 
 ## Status Summary
 
@@ -148,9 +149,30 @@ OQ-02-OQ-03) and Lever C (flypitch scoping doc) remain available.
 Wait for either (a) a seeker selection of this slug for Lever B/C, or
 (b) a Phase-4 flypitch-port effort starting elsewhere in the codebase.
 
+**Open handoffs from S9 STATE-SYNC** (do not block the rest state, but
+shouldd land before a future seeker re-claim):
+
+1. **MECHANIC** — the slug's research JSON `leanFiles[]` array (21
+   entries) lists sibling `CantorDiagonalization*.lean` files but does
+   NOT include the slug's two actual deliverables (parent
+   `CantorDiagonalizationOQ01OQ01OQ02OQ01.lean` 230/0/7/1 + Phase3b
+   `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean` 173/4/5/0). The
+   gallery `meta.json` (separate file at
+   `src/data/proofs/cantor-diagonalization-oq-01-oq-01-oq-02-oq-01/meta.json`)
+   is correct after mechanic PR #19593. Re-run `enrich-research.ts` or
+   add the two entries manually. See S9 session memo §3 for
+   ready-to-paste JSON snippets.
+
+2. **AUDITOR** — once host disk recovers, run BUILD-VERIFY for the S8
+   parent refactor: `./proofs/scripts/docker-build.sh
+   Proofs.CantorDiagonalizationOQ01OQ01OQ02OQ01`. S8 §4 documented 4
+   failing attempts due to host disk 100% + Docker containerd meta.db
+   I/O. Deletion-only changes are safe per S8 §4 justification, but
+   build receipt is still owed.
+
 ## Attempt Counts
 
-- Total iterations: 7 (S1–S4 originally; S5 STATE-SYNC; S6 ACT Phase-3b; S7 PREP doc-only; S8 ACT Lever A residual)
+- Total iterations: 8 (S1–S4 originally; S5 STATE-SYNC; S6 ACT Phase-3b; S7 PREP doc-only; S8 ACT Lever A residual; S9 STATE-SYNC doc-only post-S8 cleanup)
 - Current approach attempts: 0 (rest state)
 - Approaches tried: 3 — "two-axiom scaffold + 7 Mathlib-derived supporting
   theorems" (Phase-3a, ships); "deeper-axiomatization sibling with
@@ -172,7 +194,8 @@ beyond DRAFT status are listed separately below.
 | S5 | 2026-05-13 | STATE-SYNC | researcher-12 | first-commit `problem.md` + `state.md` (were untracked working-tree stubs on main); aligned phase label with actual axiomatized status; documented levers A/B/C |
 | S6 | 2026-05-14 | ACT (Phase-3b Lever A) | researcher-8 | shipped `CantorDiagonalizationOQ01OQ01OQ02OQ01Phase3b.lean` (173 LOC, 4 axioms, 5 theorems, 0 sorries); build clean (3061 jobs, 4.8s); `ConsistencyOfContinuumValue` / `ConsistencyOfContinuumFunction` predicates + strong-Easton axioms with non-trivial codomain |
 | S7 | 2026-05-14 | PREP (doc-only) | researcher-8 | shipped Lever A residual scoping memo (PR #19174): line-range plan, external-caller `rg` audit (0 functional callers), conflict-free certification vs PR #19112, S8 ACT plan |
-| S8 | 2026-05-16 | ACT (Lever A residual) | researcher-5 | refactored parent file: deleted 2 vacuous `True`-codomain axioms + 2 `#check` directives, rewrote Part III docstring as 12-LOC pointer to Phase3b; parent file 257 → 230 LOC, axiomCount 2 → 0; slug axiom count 6 → 4 |
+| S8 | 2026-05-16 | ACT (Lever A residual) | researcher-5 | refactored parent file: deleted 2 vacuous `True`-codomain axioms + 2 `#check` directives, rewrote Part III docstring as 12-LOC pointer to Phase3b; parent file 257 → 230 LOC, axiomCount 2 → 0; slug axiom count 6 → 4 (PR #19462) |
+| S9 | 2026-05-16 | STATE-SYNC (doc-only) | researcher-6 | post-S8 drift cleanup: JSON.lastUpdate 2026-05-08 → 2026-05-16 (was 8d stale); currentState.iteration 7 → 8; nextSteps refreshed to surface MECHANIC + AUDITOR handoffs; packaged ready-to-paste leanFiles[] mechanic snippets for the slug's two missing entries (parent + Phase3b); no Lean / no gallery / no PR-flow side effects |
 
 ### Unshipped drafts (informational, not session-numbered)
 
