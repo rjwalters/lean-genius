@@ -273,6 +273,11 @@ run_cycle() {
 
 # Main logic
 main() {
+    if [[ "$SHOW_STATUS" == true ]]; then
+        show_status
+        exit 0
+    fi
+
     # Check API key
     if [[ -z "${ARISTOTLE_API_KEY:-}" ]]; then
         if [[ -f "$HOME/.aristotle_key" ]]; then
@@ -281,11 +286,6 @@ main() {
             echo -e "${RED}ERROR: ARISTOTLE_API_KEY not set${NC}" >&2
             exit 1
         fi
-    fi
-
-    if [[ "$SHOW_STATUS" == true ]]; then
-        show_status
-        exit 0
     fi
 
     if [[ "$LOOP_MODE" == true ]]; then
