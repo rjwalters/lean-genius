@@ -63,13 +63,25 @@ function saveAristotleJobs(jobs: AristotleJobsFile): void {
 /**
  * Convert slug to Lean file name
  */
-function toLeanFileName(slug: string): string {
-  const pascalSlug = slug
-    .replace(/^erdos-(\d+)-?/, 'Erdos$1')
+function toPascalCase(slug: string): string {
+  return slug
     .split('-')
+    .filter(Boolean)
     .map(part => part.charAt(0).toUpperCase() + part.slice(1))
     .join('')
-  return `proofs/Proofs/${pascalSlug}.lean`
+}
+
+function toLeanFileName(slug: string): string {
+  const match = slug.match(/^erdos-(\d+)(?:-(.*))?$/)
+  if (!match) {
+    const pascalSlug = toPascalCase(slug)
+    return `proofs/Proofs/${pascalSlug || 'ErdosProblem'}.lean`
+  }
+
+  const [, number, suffix = ''] = match
+  const pascalSuffix = toPascalCase(suffix)
+  const leanFileName = `Erdos${number}${pascalSuffix || 'Problem'}`
+  return `proofs/Proofs/${leanFileName}.lean`
 }
 
 /**
