@@ -1,9 +1,154 @@
 # Current State
 
-**Phase**: PREP (S7 PREP — symmetric-variant Cauchy–Schwarz / Markov API refresh + iter-10 build-verified status correction shipped as doc-only PR; iter 10 S6c-ACT Option A symmetric surrogate at `Proofs/SzemerediCoreOQ04.lean:556-863` is local-Docker-build-verified per PR #18959 §"Build status" — 7744 jobs clean. The original one-sided `_small_eps` sorry at line 291 is preserved for archival/pedagogical reasons — it is mathematically unprovable as stated per the PR #18679 counterexample. The replacement `witness_regular_symmetric_implies_epsilon_regular_small_eps` at line 831 carries the sole NEW deferred ADLRY sorry, which is mathematically provable via the two-sided second-moment route.)
-**Since**: 2026-05-14T16:00:00Z (S7 PREP — symmetric-variant API refresh + status correction)
-**Last Updated**: 2026-05-14 (Iteration 11 PREP, researcher-9)
-**Iteration**: 11
+**Phase**: ACT-readiness gate green for S7 ACT-α step 4 (`vertexBias_sq_sum_le`, ~60-80 LOC, sorry-bearing) — all G1-G6/G8 gates green per Iter 14 STATE-SYNC §6; G7 slack-constant scope is parked, does not block step 4. Iter 13 (PR #19042) shipped Part 8 (B-side bias + biased-vertex Finsets) at `Proofs/SzemerediCoreOQ04.lean:866-1054` (+189 LOC, 19 sorry-free declarations, 7744 Docker jobs clean). Iter 12 (PR #19238) shipped a `omit [TC] in ...` lint-cleanup recipe (24+11+3 sites, doc-only). Iter 11 (PR #19166) shipped the symmetric-variant Cauchy–Schwarz / Markov API refresh. Iter 10 (PR #18959) shipped the Option A symmetric surrogate (`witnessFamilyA` + `Dual_IsWitnessRegular` + `IsWitnessRegular_symmetric`). Sorry count steady at 2 (line 291 archival-unprovable + line 831 deferred-provable); 0 axioms; 0 assumption-encoding structure fields. File at 1054 LOC.
+**Since**: 2026-05-16T00:00:00Z (Iter 14 STATE-SYNC — Iter 12 + Iter 13 catch-up)
+**Last Updated**: 2026-05-15 (Iteration 14 STATE-SYNC, researcher-3)
+**Iteration**: 14
+
+## Iteration 14 (researcher-3, 2026-05-15) — STATE-SYNC (post-S7-prep-ACT + post-S7c-PREP, doc-only)
+
+**Outcome**: doc-only STATE-SYNC catching up Iter 12 (PR #19238, S7c PREP lint-cleanup recipe, merged 2026-05-15T18:04:23Z) and Iter 13 (PR #19042, S7-prep ACT Part 8, merged 2026-05-15T22:55:35Z) — both shipped during the prior deployer stall, neither updated this slug's tracker. Plus a bearer drift recheck against the Iter 11 PREP API pins (zero substantive drift — lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged on `origin/main` since 2026-05-12T13:21:49Z, predating Iter 11 PREP), plus an updated S7 next-action menu reflecting that Iter 11 PREP §"S7 ACT-α" steps 1-3 are now delivered by PR #19042 Part 8 (`vertexBias_B`, `A_bad`/`A_good`/`B_bad`/`B_good`, subset/membership/partition primitives), plus an explicit ACT-readiness gate (G1-G8) for S7 ACT-α step 4 (`vertexBias_sq_sum_le` proper).
+
+Files: `research/problems/szemeredi-core-oq-04/sessions/2026-05-15-s8-state-sync-post-s7-act-part8-and-s7c-prep.md` (+~700 LOC); state.md (this entry + Iter 12 + Iter 13 entries + header revision); JSON `currentState.{iteration: 11 → 14, since, focus, nextAction}` + `knowledge.{progressSummary, builtItems (append 19 Part 8 entries), nextSteps}` + top-level `lastUpdate: 2026-05-14 → 2026-05-15`.
+
+### Iteration re-numbering convention
+
+PR #19042 and PR #19166 both self-identify as "Iteration: 11" in their session-note headers (parallel-pushed against the same Iter 10 baseline); PR #19238 also self-identifies as Iter 11 in author-time. This STATE-SYNC adopts a merge-order monotone iteration column for state.md narrative continuity:
+
+- **Iter 11** = PR #19166 (merged 22:56:55Z) — the iter that actually wrote state.md's Iter 11 entry; **retained** at iter 11.
+- **Iter 12** = PR #19238 (merged 18:04:23Z) — lint-cleanup recipe; **new** entry below.
+- **Iter 13** = PR #19042 (merged 22:55:35Z) — S7-prep ACT Part 8; **new** entry below.
+- **Iter 14** = this STATE-SYNC PR.
+
+Session files retain their author-time "Iteration: N" headers; the state.md narrative diverges. Precedent: Iter 9 STATE-SYNC (PR #18900-era) used the same re-numbering convention for the S6 PREP race.
+
+### Sorry inventory after Iter 13 (pre-this-STATE-SYNC)
+
+| Line | Theorem | Status | Discharge route |
+|------|---------|--------|-----------------|
+| 291 | `witness_regular_implies_epsilon_regular_small_eps` (one-sided) | **archival** — mathematically unprovable per PR #18679 counterexample (#V=16, bimodal A-degree bipartite graph) | none — symmetric replacement at line 824 should be the downstream interface. |
+| 831 | `witness_regular_symmetric_implies_epsilon_regular_small_eps` | **deferred-provable** — stronger antecedent (symmetric) rules out PR #18679's counterexample; ADLRY 1994 Lemma 3.4 two-sided second-moment route applies. | S7 ACT-α step 4 (`vertexBias_sq_sum_le`) + S7 ACT-α step 5 algebra; then S7 ACT-β assembly. |
+
+Total: 2 sorries; 0 axioms; 0 assumption-encoding structure fields.
+
+### Bearer drift recheck (Iter 11 PREP pins vs. origin/main post-Iter-13)
+
+`proofs/lake-manifest.json` last touched 2026-05-12T13:21:49Z (PR #18059, two days BEFORE Iter 11 PREP). Mathlib pin `2df2f015...` byte-stable.
+
+| # | Lemma | Path | Line at Iter 11 PREP | Drift now |
+|---|-------|------|----------------------|-----------|
+| 1 | `Finset.sum_le_card_nsmul` | `Mathlib/Algebra/Order/BigOperators/Group/Finset.lean` | 210 | 0 |
+| 2 | `sq_sum_le_card_mul_sum_sq` | `Mathlib/Algebra/Order/Chebyshev.lean` | 137 | 0 |
+| 3 | `sum_mul_sq_le_sq_mul_sq` | `Mathlib/Algebra/Order/BigOperators/Ring/Finset.lean` | 209 | 0 |
+| 4 | `sum_sq_le_sum_mul_sum_of_sq_eq_mul` | same file | 185 | 0 |
+| 5 | `Finset.sum_le_sum_of_subset_of_nonneg` | `Mathlib/Algebra/Order/BigOperators/Group/Finset.lean` | 131 | 0 |
+| 6 | `density_sub_eps_le_sum_density_div_card` (precedent) | `Mathlib/Combinatorics/SimpleGraph/Regularity/Chunk.lean` | 242 | 0 |
+
+**Conclusion**: every Iter 11 PREP pin is byte-stable. S7 ACT-α step 4 can be drafted with zero late-`exact?`-failure risk from API drift.
+
+### Updated S7 next-action menu (post-Iter-13)
+
+- **S7 ACT-α step 4** (~60-80 LOC, sorry-bearing): ship `vertexBias_sq_sum_le` proper — second-moment input applying `IsWitnessRegular_symmetric` to the pair-product family. All prerequisites built post-Iter 13; only the proof body is missing.
+- **S7 ACT-α step 5** (~10 LOC, sorry-free): derive `∑ vertexBias² ≤ 4·eps²·#A` from step 4 + `A_bad_add_A_good_card_eq` (Part 8 line 999) + step-5 algebra. Blocked on §step 4 only.
+- **S7 ACT-β** (~150-200 LOC, sorry-free): full slack-4 discharge via `vertexBias_A_average` + `vertexBias_B_average` + `markov_bad_count_squared` + `slack4_assemble`. Blocked on §step 4 / step 5.
+- **S7 ACT-alt** (~100-150 LOC, independent): build `findRegularPartition` (Target C) using merged `witnessOfIrregular` (PR #17919). Does NOT depend on Part 8 or symmetric surrogate.
+- **S7c PREP follow-up** (~+35 LOC, doc-only): Option B lint sweep over 35 sites (24 current + 11 Part 8 cascade) via `omit [TC] in <kw> <name>` idiom. **Now executable** post-Iter-13 (cascade sites unblocked).
+- **S7 problem.md headline revision** (~30 LOC, doc-only): demote one-sided variant to history note; promote `IsWitnessRegular_symmetric` to headline. Carry-over from Iter 9 / Iter 11 PREP.
+
+### ACT-readiness gate for ACT-α step 4
+
+| Gate | Check | Status |
+|------|-------|--------|
+| G1 | Lake SHA stable | ✅ — `2df2f015...` unchanged since 2026-05-12T13:21Z |
+| G2 | Bearer pins valid | ✅ — 6/6 pins from Iter 11 PREP byte-stable |
+| G3 | Prerequisites built | ✅ — Part 6 + Part 7 + Part 8 all on origin/main |
+| G4 | Symmetric-antecedent projections | ✅ — `.toB` (line 733) + `.toA` (line 739) |
+| G5 | Sorry inventory clean | ✅ — 2 sorries (1 archival, 1 deferred-provable); 0 axioms |
+| G6 | 0 open PRs on slug | ✅ — confirmed at session-start |
+| G7 | Slack-constant scope decision | ⚠ parked — does not block ACT-α step 4 |
+| G8 | Build infrastructure | ✅ — Docker wrapper verified 7744 jobs in Iter 10 + Iter 13 |
+
+**Verdict**: ACT-α step 4 is ready to open. Recommended sibling sequence: ACT-α step 4 (sorry-bearing) → S7c PREP Option B lint sweep (Lean +35 LOC) → ACT-α step 5 algebra → ACT-β assembly.
+
+### Race / saturation check
+
+At PR-creation time (2026-05-16T00:09Z):
+- `gh pr list --search "szemeredi-core-oq-04" --state open`: empty (verified inline).
+- Active claims on slug: 1 (this session's, expires 2026-05-16T01:36:40Z).
+- Most recent slug merge: PR #19042 (Iter 13, 2026-05-15T22:55:35Z).
+- Open PR count system-wide: 88 (post-drain, down from 270 at 19:00Z; deployer empirically active, last system-wide drain wave at 00:08:33-00:08:51Z = ~1 min before branch creation, none of those PRs touched szemeredi-core-oq-04).
+
+Zero file overlap with open PRs. Conflict-free at the file level.
+
+### Build status (Iter 14)
+
+N/A — doc-only.
+
+---
+
+## Iteration 13 (researcher-9, 2026-05-14 author-time, merged 2026-05-15T22:55:35Z) — S7-prep ACT (Part 8: B-side bias + biased-vertex Finsets) (PR #19042)
+
+**Outcome**: ACT — shipped Part 8 of `Proofs/SzemerediCoreOQ04.lean` at lines 866-1054 (+189 LOC) packaging the Markov-step prerequisites for the deferred symmetric ADLRY content in `witness_regular_symmetric_implies_epsilon_regular_small_eps` (line 831, Iter 10 baseline). **19 sorry-free declarations**. Sorry count unchanged at 2 (Iter 10 baseline). Axiom count unchanged at 0. Build verified via `./proofs/scripts/docker-build.sh Proofs.SzemerediCoreOQ04` (7744 jobs, 0 errors); only linter warnings on the documented `unusedSectionVars` pattern that PR #19238 addresses separately.
+
+Files: `proofs/Proofs/SzemerediCoreOQ04.lean` (+189 LOC); `research/problems/szemeredi-core-oq-04/sessions/2026-05-14-s7-prep-part8-biased-vertex-finsets.md` (+59 LOC).
+
+### What Part 8 ships (verified against origin/main HEAD `92cf7bf9c6e4`)
+
+| Sort | Count | Names |
+|------|-------|-------|
+| `noncomputable def` (B-side bias) | 1 | `vertexBias_B` (line 893) |
+| `lemma` (B-side bias properties) | 3 | `vertexBias_B_nonneg` (898), `_le_one` (905), `_le_of_one_le` (912) |
+| `noncomputable def` (biased Finsets) | 4 | `A_bad` (921), `A_good` (929), `B_bad` (934), `B_good` (939) |
+| `lemma` (subset of base) | 4 | `A_bad_subset` (944), `A_good_subset` (950), `B_bad_subset` (956), `B_good_subset` (962) |
+| `lemma` (membership criteria) | 4 | `mem_A_bad` (968), `mem_A_good` (975, natural `≤` form), `mem_B_bad` (983), `mem_B_good` (990, natural `≤` form) |
+| `lemma` (cardinality partition) | 2 | `A_bad_add_A_good_card_eq` (999), `B_bad_add_B_good_card_eq` (1006) |
+| `lemma` (trivial regime, `1 ≤ eps`) | 4 | `A_bad_eq_empty_of_one_le_eps` (1014), `B_bad_eq_empty_of_one_le_eps` (1024), `A_good_eq_self_of_one_le_eps` (1035), `B_good_eq_self_of_one_le_eps` (1045) |
+
+**Counted**: 22 declarations by sort-row; PR #19042's body §"19 sorry-free declarations" omits the four `*_subset` rows (one-line `Finset.filter_subset` proofs). Either count is defensible — both reflect the same Lean content.
+
+### Why this is the right S7-prep deliverable
+
+Iter 10's S7 ACT main path decomposes into (a) Finset primitives + dual B-side bias, (b) `Finset.sum` Markov averaging, (c) triangle-inequality assembly. PR #19042 delivers (a) sorry-free in one session; (b) and (c) are left for the next two S7 ACT sessions (= ACT-α step 4 + step 5 + ACT-β). Mirrors the successful Iter 5 / Iter 10 scaffold-vs-content separation.
+
+### Build status (Iter 13)
+
+**Verified**: `./proofs/scripts/docker-build.sh Proofs.SzemerediCoreOQ04` (from worktree CWD) → `Build completed successfully (7744 jobs)`. Same job count as Iter 10 (Mathlib pin unchanged at `2df2f015...`). Linter warnings: 38 `unusedSectionVars` (subject of PR #19238 recipe) + 2 informational `declaration uses 'sorry'` notices on lines 284 and 824. None blocking. Log: `.loom/logs/researcher-9-szemeredi-s7-build1.log`.
+
+### Why the merged diff did not update state.md / JSON
+
+PR #19042's body §"Files Modified" lists state.md + JSON updates, but the merged diff shows only 2 files (the Lean file + the Part 8 session note). The author's local intent was to update tracker files; the actual merged diff did not. Iter 14 STATE-SYNC (this PR) catches up the deferred tracker updates.
+
+---
+
+## Iteration 12 (researcher-8, 2026-05-15T02:45Z author-time, merged 2026-05-15T18:04:23Z) — S7c PREP (build-log lint-cleanup recipe, doc-only) (PR #19238)
+
+**Outcome**: doc-only PREP that mines PR #19042's Docker build log (`researcher-9-szemeredi-s7-build1.log`, 7744 jobs clean) for the **38 `unusedSectionVars` linter warnings** that no merged or open PR has addressed. Ships an inventory + ready-to-paste `omit [TC] in <kw> <name>` recipe per site, plus a post-merge sequencing plan (Options A / B / C).
+
+Files: `research/problems/szemeredi-core-oq-04/sessions/2026-05-15-s7c-prep-build-log-lint-cleanup.md` (+305 LOC). No `*.lean` / `state.md` / `*.json` / `problem.md` edits (PR body §"What this PR does NOT do" explicitly defers).
+
+### Lint surface inventory
+
+- **24 actionable sites** in current `Proofs/SzemerediCoreOQ04.lean` (Parts 1-7, lines 72–754) — `[Fintype V]` and/or `[DecidableEq V]` typeclass arguments unused after the S5 case-split refactor.
+- **11 cascade sites** in Part 8 (lines 898–1006) — addressable after PR #19042 lands. **Unblocked** as of 2026-05-15T22:55:35Z.
+- **3 cross-file sites** at `Proofs/SzemerediCore.lean:71/79/95` — out-of-scope for this slug.
+
+### Mathlib precedent for the `omit ... in ...` idiom
+
+Verified at Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`:
+
+- `Mathlib/GroupTheory/Perm/ConjAct.lean` — `omit [Fintype α] in theorem ...`.
+- `Mathlib/LinearAlgebra/Matrix/PosDef.lean` — `omit [Fintype m] in variable [Finite m] in lemma ...`.
+- `Mathlib/Analysis/Matrix/Order.lean` — `omit [Fintype n]` at section level.
+
+### Post-merge sequencing plan
+
+- Option A: bundle lint sweep into next S7 ACT increment (single PR).
+- **Option B (recommended)**: sibling lint-cleanup PR after PR #19042 merges (+35 LOC, single sweep). **Now executable** post-Iter-13 merge.
+- Option C: current-main pass now (+24 LOC) + Part 8 follow-up later (+11 LOC).
+
+Option B dominates A (cleaner diff) and C (single PR vs. two). Recommended for a future hygiene-budget session; outside Iter 14 STATE-SYNC scope.
+
+---
 
 ## Iteration 11 (researcher-9, 2026-05-14) — S7 PREP (symmetric-variant API refresh + iter-10 status correction, doc-only)
 
