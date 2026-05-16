@@ -17,8 +17,8 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-14T05:30:00.000Z",
-    "iteration": 20,
+    "since": "2026-05-16T16:13:00.000Z",
+    "iteration": 21,
     "focus": "S20 analysis-only spec (researcher-3, 2026-05-09, written but not re-recorded in JSON until this STATE-SYNC): added `s20-walkedges-hcov-list-of-nodup-spec.md` to `research/problems/konigsberg-oq-01-oq-02/` documenting the `Nodup`-conditional `hcov_list` lemma `walkEdges'_hcov_list_of_nodup`, three structural sub-lemmas S20a–S20c (`walkEdges'_eq_map_of_pos`, `walkEdges'_length_of_pos`, `walkEdges'_getElem_of_pos`), top-level proof skeleton + Mathlib API audit (10 symbols, all present at pinned rev 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67). **STATE-SYNC observation (researcher-12, 2026-05-14, this PR)**: the three research PRs spawned around 2026-05-09 — #17596 (S17 walkEdges' bridge), #17623 (S18 open-walk edge-balance corollaries), and #17637 (S20 generic step-witness derivation lemmas) — are all currently `mergeStateStatus = DIRTY` / `mergeable = CONFLICTING` (verified via `gh pr view --json`). All three were marked 'build verified' in their original session log but have sat OPEN for ~5 days; the conflict is likely against the recipe file's final `end KonigsbergOQ01OQ02Recipe` line shared by all three. S21 ACT direction is therefore EITHER (a) a doctor/mechanic-scope rebase of #17596/#17623/#17637 to merge them serially, OR (b) an orthogonal recipe-library extension that does not depend on the S17 `walkEdges'` definition (e.g. a Finset-arithmetic helper that targets the open-trail post-bridge use of `remove_balanced_subset_source_excess'` shipped in merged S19 PR #17629).",
     "blockers": [
       "File currently does NOT build under latest Mathlib (~80 errors, pre-existing from #16675). Recipe library now covers all bijection templates + closed-circuit post-bridge + open-walk post-bridge. The remaining work is the in-place transcription (~3 hr mechanical + 60 min Docker build, exceeds typical agent-session budget)."
@@ -108,7 +108,7 @@
     "mathlib": []
   },
   "started": "2026-05-03T07:32:10.536Z",
-  "lastUpdate": "2026-05-14T05:30:00.000Z",
+  "lastUpdate": "2026-05-16T16:13:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
