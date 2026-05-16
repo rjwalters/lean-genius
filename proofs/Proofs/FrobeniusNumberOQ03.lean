@@ -189,4 +189,37 @@ theorem frobeniusNumber3_le_sylvester_bound {a b c : ℕ}
   push_neg at hge
   exact hn (large_representable3_via_two_gen hab ha hb hge)
 
+/-! ### S4 — finiteness of the non-representable set under `Nat.Coprime a b` -/
+
+/-- **S4 ACT (Route 1)**: for coprime `a, b` with `1 ≤ a, 1 ≤ b`, the
+    set of three-generator non-representable values is finite. Proof:
+    every element is `< (a - 1) * (b - 1)` by the contrapositive of
+    `large_representable3_via_two_gen` (S3b), so the set is a subset
+    of `Set.Iio ((a - 1) * (b - 1))`, which is finite by
+    `Set.finite_Iio` (via `LocallyFiniteOrderBot ℕ`).
+
+    This is the strongest tractable finiteness statement at this stage
+    of the slug — the full `Nat.gcd a (Nat.gcd b c) = 1` hypothesis
+    (which would also subsume the `c`-only-coprime case) is strictly
+    weaker than `Nat.Coprime a b` for the purpose of bounding the
+    non-representable set, since `c` plays no role in the
+    `large_representable3_via_two_gen` Sylvester bound (the witness
+    sets `z = 0`).
+
+    Together with `not_representable3_frobeniusNumber3_of_nonempty`
+    (S3a, requires `Set.Nonempty` of the non-rep set) and the
+    `BddAbove` corollary of this finiteness lemma
+    (`Set.Finite.bddAbove`), this establishes that
+    `frobeniusNumber3 a b c` is **`sSup`-attained** (the supremum is a
+    member of the non-representable set) whenever the set is nonempty. -/
+theorem set_non_representable3_finite_of_coprime_ab {a b c : ℕ}
+    (hab : Nat.Coprime a b) (ha : 1 ≤ a) (hb : 1 ≤ b) :
+    { n : ℕ | ¬ Representable3 a b c n }.Finite := by
+  apply Set.Finite.subset (Set.finite_Iio ((a - 1) * (b - 1)))
+  intro n hn
+  simp only [Set.mem_Iio]
+  by_contra hge
+  push_neg at hge
+  exact hn (large_representable3_via_two_gen hab ha hb hge)
+
 end FrobeniusOQ03
