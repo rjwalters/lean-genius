@@ -231,10 +231,10 @@ batch_mode() {
         result=$(map_file "$f")
 
         if [[ "$result" == "UNMAPPED" ]]; then
-            ((unmapped++))
+            ((++unmapped))
             echo -e "  ${YELLOW}UNMAPPED${NC}: $bn" >&2
         else
-            ((mapped++))
+            ((++mapped))
             echo -e "  ${GREEN}MAPPED${NC}: $bn -> $result" >&2
         fi
     done <<< "$files"
