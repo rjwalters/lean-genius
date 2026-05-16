@@ -140,4 +140,65 @@ theorem probCollision_le_choose_two_div (k d : ℕ) (hkd : k ≤ d) (hd : 0 < d)
   rw [← hsum]
   exact hbound
 
+-- ============================================================
+-- Part III: Paley-Zygmund-equivalent lower bound (closed form)
+-- ============================================================
+
+/-- Elementary inequality: for nonneg `x`, `1 - exp(-x) ≥ x / (1 + x)`.
+
+    Bridge lemma chaining `OQ02.probCollision_ge` (exponential lower
+    bound) to the closed-form Paley-Zygmund-equivalent lower bound. -/
+private lemma one_sub_exp_neg_ge_div_one_add (x : ℝ) (hx : 0 ≤ x) :
+    x / (1 + x) ≤ 1 - Real.exp (-x) := by
+  have hx1 : 0 < 1 + x := by linarith
+  have hexp_pos : 0 < Real.exp x := Real.exp_pos x
+  have h1 : 1 + x ≤ Real.exp x := by linarith [Real.add_one_le_exp x]
+  have h2 : Real.exp (-x) ≤ 1 / (1 + x) := by
+    rw [Real.exp_neg, ← one_div]
+    exact one_div_le_one_div_of_le hx1 h1
+  have h3 : (1 : ℝ) - 1 / (1 + x) = x / (1 + x) := by
+    field_simp
+    ring
+  linarith
+
+/-- **Paley-Zygmund-equivalent lower bound** (closed form, no OQ01 import).
+
+    Chains OQ02's exponential lower bound `probCollision_ge` with the
+    bridge lemma `one_sub_exp_neg_ge_div_one_add`:
+
+      probCollision k d ≥ 1 - exp(-S)  ≥  S / (1 + S)
+                                       =  k(k-1) / (2d + k(k-1))
+
+    Matches knowledge.md §"Paley–Zygmund bound" weak form. -/
+theorem probCollision_ge_paley_zygmund (k d : ℕ) (hkd : k ≤ d) (hd : 0 < d) :
+    ((k : ℝ) * ((k : ℝ) - 1)) / (2 * (d : ℝ) + (k : ℝ) * ((k : ℝ) - 1))
+      ≤ probCollision k d := by
+  set S : ℝ := (k : ℝ) * ((k : ℝ) - 1) / (2 * (d : ℝ)) with hS
+  have hd_pos : (0 : ℝ) < d := by exact_mod_cast hd
+  have h2d_pos : (0 : ℝ) < 2 * (d : ℝ) := by linarith
+  have hkk_nn : (0 : ℝ) ≤ (k : ℝ) * ((k : ℝ) - 1) := by
+    rcases Nat.eq_zero_or_pos k with rfl | hk
+    · simp
+    · have hk1 : (1 : ℝ) ≤ (k : ℝ) := by exact_mod_cast hk
+      have hk2 : (0 : ℝ) ≤ (k : ℝ) - 1 := by linarith
+      positivity
+  have hS_nn : 0 ≤ S := by
+    rw [hS]; exact div_nonneg hkk_nn h2d_pos.le
+  -- Step 1: probCollision ≥ 1 - exp(-S)         (OQ02.probCollision_ge)
+  have step1 : 1 - Real.exp (- S) ≤ probCollision k d := by
+    have hge := probCollision_ge k d hkd hd
+    rw [hS]
+    linarith [hge]
+  -- Step 2: S / (1 + S) ≤ 1 - exp(-S)            (bridge lemma)
+  have step2 : S / (1 + S) ≤ 1 - Real.exp (-S) :=
+    one_sub_exp_neg_ge_div_one_add S hS_nn
+  -- Step 3: Rewrite S/(1+S) into the target form.
+  have h1pS_pos : (0 : ℝ) < 1 + S := by linarith
+  have hsum_pos : (0 : ℝ) < 2 * (d : ℝ) + (k : ℝ) * ((k : ℝ) - 1) := by linarith
+  have step3 : S / (1 + S)
+      = ((k : ℝ) * ((k : ℝ) - 1)) / (2 * (d : ℝ) + (k : ℝ) * ((k : ℝ) - 1)) := by
+    rw [hS]
+    field_simp
+  linarith
+
 end BirthdayProblemOQ01OQ02
