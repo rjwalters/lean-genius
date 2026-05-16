@@ -1,10 +1,70 @@
 # Current State
 
-**Phase**: COMPLETED
+**Phase**: COMPLETED — verified-final
 **Status**: graduated
 **Since**: 2026-05-12T09:55:05Z (S2 merged, PR #18029)
-**Iteration**: 2
-**Researcher**: researcher-5 (S2); researcher-9 (S1); researcher-12 (S3 STATE-SYNC)
+**Iteration**: 5
+**Last Updated**: 2026-05-16T14:32Z (S5 STATE-SYNC)
+**Researcher**: researcher-5 (S2); researcher-9 (S1); researcher-12 (S3 STATE-SYNC);
+researcher-8 (S4 PREP, S5 STATE-SYNC); mechanic (PR #19213 v4.26.0 4-error repair)
+
+## S5 STATE-SYNC (2026-05-16, researcher-8)
+
+Doc-only sync that catches up the tracker after three things happened
+since S3 STATE-SYNC (#19021, merged 2026-05-14):
+
+1. **S3 BUILD-DIAGNOSE PR #19168** (2026-05-14, *closed unmerged* 2026-05-15)
+   — first Docker baseline post-S2 found 4 latent errors masked by the
+   `(build pending)` convention. Proposed K1–K4 mechanic kit.
+2. **Mechanic PR #19213** (merged 2026-05-15T18:06Z) — applied the K1–K4
+   kit to `proofs/Proofs/BezoutIdentityOQ01OQ01OQ01.lean`. Two of the
+   four kit entries were *semantic bug fixes*: K3 corrected the
+   `binaryGcd_log_sq_bound` constant `6 → 12` (the arithmetic
+   `(4·log+2)·(3·(log+1)) ≤ 12·(log+1)²` was wrong in S2's `6·(log+1)²`);
+   K4 corrected the `binaryGcdSteps 252 198` worked example `12 → 7`
+   (hand-trace gives 7 calls). K1, K2 were API/tactic drifts under
+   v4.26.0. File now compiles end-to-end.
+3. **S4 PREP PR #19254** (researcher-8, merged 2026-05-15T05:44Z) —
+   sibling-audit of #19168's K1–K4 kit. Independent verification at
+   the pinned SHA confirmed K1, K3, K4 fully correct; flagged K2 as
+   potentially over-stated (only line 116 has explicit
+   `simp [binaryGcdSteps]`; the other 7 cited sites are downstream
+   `↓reduceIte` reducers). The mechanic ultimately applied a tighter
+   K2 (lines 116, 121, 133 only) — consistent with the audit.
+
+### What this STATE-SYNC fixes
+
+| Field | Before | After |
+|---|---|---|
+| `state.md` head Phase | `COMPLETED` | `COMPLETED — verified-final` |
+| `state.md` head Iteration | `2` | `5` (catches up S3 STATE-SYNC + S4 PREP + S5 STATE-SYNC; S3 BUILD-DIAGNOSE closed, no iter slot) |
+| `state.md` head Researcher | researcher-5, -9, -12 | + researcher-8 + mechanic |
+| `state.md` head Last Updated | (absent) | `2026-05-16T14:32Z` |
+| `state.md` Next Action | "S3 optional Mathlib contribution / S4 deferred sibling" | `**None** — verified-final` (with mechanic handoff for `leanFiles[]` drift) |
+| JSON `currentState.iteration` | 2 | 5 |
+| JSON `currentState.focus` | S2 summary only | + mechanic-cascade + S4 PREP absorption |
+| JSON `currentState.nextAction` | "Out of scope" | mechanic handoff for stale `leanFiles[]` |
+| JSON `knowledge.nextSteps` | 4 stale S2/S3/S4/S5 future-steps | `**None** — verified-final` + 1 mechanic handoff note |
+| JSON `lastUpdate` | `2026-05-14T08:30Z` | `2026-05-16T14:32Z` |
+
+### What is OUT-of-scope for this PR
+
+- **`leanFiles[0]` metadata drift** (`lineCount: 282 → 285` after the
+  mechanic K3/K4 fixes added 3 net lines; `theoremCount`/`defCount`/
+  `axiomCount`/`sorryCount` all correct at 9/3/0/0). This is mechanic
+  territory (auto-populated by `scripts/research/enrich-research.ts`);
+  manual edits risk clobber. Package as ready-to-paste in the
+  session memo §3 instead.
+- **Gallery meta.json `originalContributions`** at
+  `src/data/proofs/bezout-identity-oq-01-oq-01-oq-01/meta.json` still
+  says "binaryGcd_log_sq_bound: O(log²) corollary — total bit ops ≤
+  6·(log₂(max a b)+1)²", but the K3-fixed file now bounds at `12·…`.
+  Mechanic territory (gallery meta is the mechanic's beat per PR #19531
+  precedent which fixed gallery `lineCount` 282 → 285).
+- **No build verification** in this PR. The host has
+  Docker daemon hung + `proofs/.lake` symlink broken + disk at
+  6.5 Gi avail (AMBER). The file already compiles on CI per PR #19213
+  evidence. No new Lean is added by this PR.
 
 ## S3 STATE-SYNC (2026-05-14, researcher-12)
 
@@ -135,25 +195,25 @@ to a follow-up `*-prep` PR per the precedent in `cube-root-3-irrational-oq-04`.
 
 ## Next Action
 
-**S3 (optional Mathlib contribution)**: Submit
-`Nat.size_eq_succ_log : ∀ {n : ℕ}, 0 < n → Nat.size n = Nat.log 2 n + 1`
-upstream to Mathlib (pairs naturally with the existing
-`Nat.size_pow` lemma in `Mathlib/Data/Nat/Size.lean`). The 4-line
-proof from S2 is upstream-ready.
+**None — verified-final.** The slug's primary goal (axiom elimination
+in `Proofs/BezoutIdentityOQ01OQ01OQ01.lean`) was accomplished in S2
+(PR #18029) and the v4.26.0 build was repaired by mechanic PR #19213.
+File is 0 axioms / 0 sorries / 9 theorems / 3 defs / 285 LOC; gallery
+meta.json `bezout-identity-oq-01-oq-01-oq-01` already shows
+`status=verified`, `badge=verified`, `axiomCount=0` on origin/main.
 
-**S4 (deferred, sibling slug)**: Approach B as a separate gallery
-entry — bit-list re-implementation of `binaryGcd` on `List Bool`
-with directly-counted bit ops (~300 lines, multi-session). The
-main hurdle is the equivalence with `Nat.binaryGcd` (5 recursive
-branches each requiring `toNat`-cast machinery). The present
-OQ's primary goal — axiom elimination via Approach A — is now
-**complete** in S2; B is interesting as a *separate* showcase of
-the bit-level encoding, not a continuation of this thread.
+**Mechanic handoff** (single residual drift, this PR does NOT touch):
+`leanFiles[0]` in the research JSON for this slug still shows
+`lineCount: 282`; actual file is 285 LOC (mechanic K3/K4 added 3 net
+lines). See session memo §3 for the ready-to-paste diff. Also: gallery
+meta.json `originalContributions` text "≤ 6·(log₂(max a b)+1)²" needs
+update to "≤ 12·…" (K3 fix changed the constant).
 
-### Historical S2 plan (for archival)
+### Historical (S2 plan, archival)
 
-S2 (done by this PR, researcher-5): Eliminate `stepBitOps_le` (Approach A) in
-`proofs/Proofs/BezoutIdentityOQ01OQ01OQ01.lean`. Three deliverables:
+S2 (done in PR #18029, researcher-5): Eliminate `stepBitOps_le`
+(Approach A) in `proofs/Proofs/BezoutIdentityOQ01OQ01OQ01.lean`. Three
+deliverables:
 
 1. Helper lemma (~10 lines):
    ```lean
@@ -195,9 +255,15 @@ downstream proofs continue to work.
 
 ## Attempt Counts
 
-- Total attempts: 1 (S1 survey)
-- Current approach attempts: 0 (no Lean changes yet)
-- Approaches tried: 0 (3 surveyed: A=closed-form, B=List Bool, C=BitVec n)
+- Total attempts: 2 (S1 OBSERVE + S2 ACT). Subsequent S3 STATE-SYNC,
+  S4 PREP, mechanic PR #19213, and this S5 STATE-SYNC are
+  doc-or-repair sessions — they are not counted as new proof attempts.
+- Current approach attempts: 1 (Approach A — closed-form `stepBitOps`,
+  succeeded in S2; K3/K4 semantic-bug repairs by mechanic do not
+  change the approach).
+- Approaches tried: 1/3 surveyed (A succeeded; B = List Bool and
+  C = BitVec n remain as separate sibling gallery entries, not
+  in scope for this slug).
 
 ## Open files
 
