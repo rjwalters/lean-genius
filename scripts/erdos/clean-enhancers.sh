@@ -177,7 +177,7 @@ if [[ -d "$CLAIMS_DIR" ]]; then
         claim_file="$CLAIMS_DIR/erdos-$erdos_num.json"
 
         if is_claim_expired "$claim_file"; then
-            ((stale_claims++))
+            ((++stale_claims))
             if [[ "$DRY_RUN" == true ]]; then
                 info "Would clean stale claim: erdos-$erdos_num"
             else
@@ -186,7 +186,7 @@ if [[ -d "$CLAIMS_DIR" ]]; then
                 success "Cleaned stale claim: erdos-$erdos_num"
             fi
         else
-            ((active_claims++))
+            ((++active_claims))
             info "Active claim: erdos-$erdos_num (preserving)"
         fi
     done
@@ -217,7 +217,7 @@ if [[ -d "$SIGNALS_DIR" ]]; then
         # Only clean enhancer-related signals
         signal_name=$(basename "$signal_file")
         if [[ "$signal_name" == "stop-all" || "$signal_name" == stop-enhancer-* ]]; then
-            ((signal_count++))
+            ((++signal_count))
             if [[ "$DRY_RUN" == true ]]; then
                 info "Would remove signal: $signal_name"
             else
@@ -271,7 +271,7 @@ if [[ "$DEEP_CLEAN" == true ]]; then
             fi
 
             if [[ "$should_clean" == true ]]; then
-                ((worktree_count++))
+                ((++worktree_count))
                 if [[ "$DRY_RUN" == true ]]; then
                     info "Would remove worktree: erdos-$erdos_num ($reason)"
                 elif [[ "$FORCE" == true ]]; then
@@ -313,7 +313,7 @@ if [[ "$DEEP_CLEAN" == true ]]; then
             done
 
             if [[ "$has_active_work" == false ]]; then
-                ((worktree_count++))
+                ((++worktree_count))
                 if [[ "$DRY_RUN" == true ]]; then
                     info "Would remove worktree: enhancer-$enhancer_num (no active claims)"
                 elif [[ "$FORCE" == true ]]; then
@@ -371,7 +371,7 @@ if [[ "$DEEP_CLEAN" == true ]]; then
             fi
 
             if [[ "$pr_state" == "MERGED" ]]; then
-                ((branch_count++))
+                ((++branch_count))
                 if [[ "$DRY_RUN" == true ]]; then
                     info "Would delete branch: $branch (PR merged)"
                 else
@@ -380,7 +380,7 @@ if [[ "$DEEP_CLEAN" == true ]]; then
                         warning "Failed to delete: $branch"
                 fi
             elif [[ "$pr_state" == "CLOSED" ]]; then
-                ((branch_count++))
+                ((++branch_count))
                 if [[ "$DRY_RUN" == true ]]; then
                     info "Would delete branch: $branch (PR closed)"
                 else
@@ -408,7 +408,7 @@ if [[ "$DEEP_CLEAN" == true ]]; then
             fi
 
             if [[ "$worktree_exists" == false ]]; then
-                ((branch_count++))
+                ((++branch_count))
                 if [[ "$DRY_RUN" == true ]]; then
                     info "Would delete branch: $branch (no worktree)"
                 else
@@ -435,7 +435,7 @@ if [[ "$DEEP_CLEAN" == true ]]; then
         # Count and measure logs
         for log_file in "$LOGS_DIR"/erdos-enhancer-*.log "$LOGS_DIR"/erdos-enhancer-*-prompt.md "$LOGS_DIR"/erdos-enhancer-*-prompt.txt; do
             [[ ! -f "$log_file" ]] && continue
-            ((log_count++))
+            ((++log_count))
         done
 
         if [[ $log_count -gt 0 ]]; then
