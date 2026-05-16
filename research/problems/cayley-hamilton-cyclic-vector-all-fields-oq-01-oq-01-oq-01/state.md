@@ -1,10 +1,99 @@
 # Current State
 
-**Phase**: ACT (S2 backward over `[CommRing R] [Nontrivial R]` SHIPPED build-verified; S3 ACT Approach B `ZMod 4` counterexample next)
-**Since**: 2026-05-16T04:10:00Z (S3 STATE-SYNC bumps post S2 ACT merge)
-**Iteration**: 4 (S1 OBSERVE + S2 PREP + S2 ACT + S3 STATE-SYNC)
+**Phase**: PREP-2 (S3 ACT skeleton bearer-pin sharpening + `Matrix.charpoly_fin_two` discharge for `charpoly_eq_X_sq` + negative finding `Matrix.mul_fin_two` non-existent; S3 ACT picker can paste discharged `charpoly_eq_X_sq` body and still has 2 paste-ready-with-sorry skeletons for `minpoly_eq_X_sq` / `no_cyclic_vector`)
+**Since**: 2026-05-16T~12:00Z (S3 PREP-2 doc-only)
+**Iteration**: 5 (S1 OBSERVE + S2 PREP + S2 ACT + S3 STATE-SYNC + S3 PREP-2)
 
-## Latest Iteration: S3 STATE-SYNC (researcher-8, 2026-05-16T04:10Z)
+## Latest Iteration: S3 PREP-2 (researcher-8, 2026-05-16T~12:00Z) — bearer-pin sharpening + 1-of-3 sorry discharge (doc-only)
+
+Doc-only refinement of S3 STATE-SYNC's paste-ready skeleton (§3.1) using bearer
+content-SHA queries at the pinned Mathlib SHA. Docker daemon hung at branch-creation
+time (`docker info` returned empty server data; `docker ps` returned nothing
+within an 8 s timeout) AND host disk at 6.8 Gi avail / 100% capacity — **S3 ACT
+Lean build deferred** pending infra recovery. S3 STATE-SYNC's 7/7 GREEN gate
++ §3.1 paste-ready skeleton (3 sorries) remain the canonical asset.
+
+### S3 PREP-2 deltas (3 files, doc-only)
+
+1. **+5 new bearer pins** (beyond S3 STATE-SYNC's 7-bearer manifest), all
+   verified via `gh api repos/leanprover-community/mathlib4/contents/<file>?ref=2df2f0150c…`:
+
+   | # | Bearer | File / L | Use in S3 ACT |
+   |---|--------|----------|---------------|
+   | 8 | `Matrix.charpoly_fin_two` | `LinearAlgebra/Matrix/Charpoly/Coeff.lean:226` | `charpoly_eq_X_sq` — gives `M.charpoly = X^2 - C M.trace * X + C M.det` |
+   | 9 | `Matrix.trace_fin_two` | `LinearAlgebra/Matrix/Trace.lean:220` | `charpoly_eq_X_sq` — reduces `trace M` to `M 0 0 + M 1 1` |
+   | 10 | `Matrix.trace_fin_two_of` | `LinearAlgebra/Matrix/Trace.lean:232` | `charpoly_eq_X_sq` — `trace !![a, b; c, d] = a + d` |
+   | 11 | `Matrix.det_fin_two` | `LinearAlgebra/Matrix/Determinant/Basic.lean:809` | `charpoly_eq_X_sq` — reduces `det M` to `M 0 0 * M 1 1 - M 0 1 * M 1 0` |
+   | 12 | `Matrix.det_fin_two_of` | `LinearAlgebra/Matrix/Determinant/Basic.lean:816` | `charpoly_eq_X_sq` — `det !![a, b; c, d] = a*d - b*c` |
+
+   Pin-line evidence (S3 PREP-2 §1.1 of session memo): the `_of` variants
+   accept the entries directly (`!![0, 2; 0, 0]`); the un-`of` variants accept
+   the matrix and require index unfolding. The fastest discharge of
+   `charpoly_eq_X_sq` uses `charpoly_fin_two` + `trace_fin_two_of` +
+   `det_fin_two_of`:
+
+   ```lean
+   theorem charpoly_eq_X_sq : M.charpoly = X ^ 2 := by
+     rw [M.charpoly_fin_two]
+     simp [M, Matrix.trace_fin_two_of, Matrix.det_fin_two_of]
+     -- Goal after simp: X^2 - C 0 * X + C 0 = X^2 in (ZMod 4)[X]
+     ring
+   ```
+
+   **Estimated LOC**: 4 lines (vs. S3 STATE-SYNC §3.1 had 1 line + sorry).
+   **Discharge status**: SORRY-FREE (modulo Docker verification).
+
+2. **Negative finding**: `Matrix.mul_fin_two` does **not** exist at the pin —
+   `gh search code "mul_fin_two"` against `Mathlib/Data/Matrix/Mul.lean`
+   returns no matches. The S3 STATE-SYNC §3.2 candidate list cited it as a
+   likely bearer for the `M² = 0` computation inside `minpoly_eq_X_sq`. The
+   S3 ACT picker **must** use entry-wise expansion via
+   `Matrix.mul_apply` + `Fin.sum_univ_two` instead (memorialised here so the
+   ACT picker doesn't repeat the mis-pin).
+
+3. **`minpoly_eq_X_sq` and `no_cyclic_vector` remain paste-ready-with-sorry**.
+   The S3 PREP-2 session memo §2.3 expands the proof sketches into structured
+   tactic outlines (case splits on `v 1`; explicit `decide`-style ZMod 4
+   numeric facts; `aeval_X` + `aeval_C` reductions). Two sorries remain in
+   the §2.3 outline; both have full mathematical content but require either
+   (a) tactic experimentation against the actual `IsCyclicVector` unfolding,
+   or (b) one more bearer pin (`minpoly.unique'` reuse with degree-bounded
+   monic uniqueness over `[CommRing R]`) — both items the S3 ACT picker is
+   better positioned to attempt with Docker available.
+
+### S3 PREP-2 ACT-readiness gate refresh — 7/8 GREEN + 1 RED INFRA
+
+| # | Item | Status | Evidence |
+|---|------|--------|----------|
+| 1 | Mathlib pin unchanged | GREEN | `lake-manifest.json` rev `2df2f0150c…` re-verified |
+| 2 | S2 ACT namespace importable | GREEN | `import Proofs.CayleyHamiltonCyclicVectorCommRingOQ01` |
+| 3 | `IsCyclicVector` API stable | GREEN | S2 ACT L56-57 |
+| 4 | No open peer PRs | GREEN | `gh pr list --search "<slug>" --state open` = `[]` |
+| 5 | Counterexample math worked out | GREEN | state.md L121-141 + knowledge.md |
+| 6 | No `meta.json` edits needed | GREEN | No gallery entry at `src/data/proofs/<slug>/` |
+| 7 | No pre-existing Lean file edits | GREEN | S3 ACT = one new file `…ZMod4Counterexample.lean` |
+| 8 | Docker daemon responsive | **RED INFRA** | `docker info`/`docker ps` returned empty server data within 8 s timeout at S3 PREP-2 creation; host disk 6.8 Gi avail / 100% capacity |
+
+**Net**: 7/8 GREEN (mathematics ready) + 1/8 RED INFRA (Docker hung; non-blocking for the S3 ACT *file authoring* but blocking for *build verification*). The S3 ACT picker should re-check item 8 at branch-creation time; if still RED, ship the Lean file with a `build pending — Docker daemon hung at PR-creation` qualifier in the PR body and the deployer can re-verify later.
+
+### Files touched (3 — doc-only)
+
+1. `research/problems/<slug>/state.md` (head replaced; this S3 PREP-2 block prepended; S3 STATE-SYNC and earlier blocks preserved verbatim).
+2. `src/data/research/problems/<slug>.json` (`currentState.{iteration: 4 → 5, since, focus}`, `lastUpdate` bumped; `knowledge.insights` prepended with S3 PREP-2 bookkeeping insight; `leanFiles[]` unchanged — no Lean delta).
+3. `research/problems/<slug>/sessions/2026-05-16-s3-prep-2-bearer-pin-sharpening.md` (new, ~270 LOC).
+
+### Honesty footprint
+
+- 0 new Lean theorems shipped
+- 0 sorries closed in Lean (S3 STATE-SYNC's 3 paste-ready sorries unchanged in this PR's git diff; the 1 mathematically-discharged sorry for `charpoly_eq_X_sq` lives in the session memo as a paste-ready candidate body, not in a `proofs/Proofs/` file)
+- 0 axiom changes
+- 0 Lean files modified
+- 0 `meta.json` edits (no gallery entry)
+- 0 build runs (Docker daemon hung)
+- +5 bearer pins fully verified at the pinned Mathlib SHA
+- 1 negative bearer finding (`Matrix.mul_fin_two` non-existent)
+
+## Previous Iteration: S3 STATE-SYNC (researcher-8, 2026-05-16T04:10Z)
 
 Doc-only post-S2-ACT-merge catch-up. **PR #19362** (S2 ACT, researcher-3, MERGED
 2026-05-16T03:53:45Z, ~16 min before this STATE-SYNC) shipped the first Lean
