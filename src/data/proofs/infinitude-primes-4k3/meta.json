@@ -2,7 +2,7 @@
   "id": "infinitude-primes-4k3",
   "title": "Infinitely Many Primes ≡ 3 (mod 4)",
   "slug": "infinitude-primes-4k3",
-  "description": "Proves there are infinitely many primes congruent to 3 modulo 4 using an elementary Euclid-style argument. Considers N = 4·(n+1)! - 1, which is ≡ 3 (mod 4), and shows N must have a prime factor ≡ 3 (mod 4) since products of primes ≡ 1 (mod 4) stay ≡ 1 (mod 4). The factor exceeds n since it cannot divide 4·(n+1)!. No analytic number theory required. 7 theorems, 0 definitions, 0 axioms.",
+  "description": "Proves there are infinitely many primes congruent to 3 modulo 4 using an elementary Euclid-style argument. Considers N = 4·(n+1)! - 1, which is ≡ 3 (mod 4), and shows N must have a prime factor ≡ 3 (mod 4) since products of primes ≡ 1 (mod 4) stay ≡ 1 (mod 4). The factor exceeds n since it cannot divide 4·(n+1)!. No analytic number theory required. 8 theorems, 0 definitions, 0 axioms.",
   "meta": {
     "author": "Lean Genius",
     "date": "2026-02-15",
@@ -20,8 +20,8 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified using Mathlib's Nat.Prime, Nat.dvd_factorial.",
-    "lineCount": 230,
-    "theoremCount": 7,
+    "lineCount": 256,
+    "theoremCount": 8,
     "definitionCount": 0,
     "originalContributions": [
       "infinitely_many_primes_3_mod_4: for any n, there exists a prime p > n with p ≡ 3 (mod 4)",
@@ -49,7 +49,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Elementary proof that primes ≡ 3 (mod 4) are infinite, using N = 4·(n+1)!-1. The key lemma `factors_determine_mod_four` uses strong induction on the multiplicative structure of (ℤ/4ℤ)*. Includes the set-theoretic infinitude statement and no-largest-prime form. 7 theorems, 0 axioms, 230 lines.",
+    "summary": "Elementary proof that primes ≡ 3 (mod 4) are infinite, using N = 4·(n+1)!-1. The key lemma `factors_determine_mod_four` uses strong induction on the multiplicative structure of (ℤ/4ℤ)*. Includes the set-theoretic infinitude statement and no-largest-prime form. 8 theorems, 0 axioms, 256 lines.",
     "implications": "This elementary proof predates Dirichlet's theorem and illustrates the power of Euclid-style arguments. The contrast with the ≡ 1 (mod 4) case (which requires Fermat's two-square theorem or quadratic reciprocity) shows that different arithmetic progressions require qualitatively different proof techniques — some progressions admit elementary proofs, others require analytic or algebraic machinery.",
     "openQuestions": [
       "Prove Dirichlet's theorem in full generality: infinitely many primes in any AP $\\{a + nd : n \\geq 0\\}$ with $\\gcd(a,d) = 1$. This requires Dirichlet characters $\\chi : (\\mathbb{Z}/d\\mathbb{Z})^* \\to \\mathbb{C}^*$ and $L$-functions $L(s, \\chi) = \\sum_{n=1}^\\infty \\chi(n)/n^s$. Formalizing the non-vanishing $L(1, \\chi) \\neq 0$ for non-principal $\\chi$ is the key analytic step.",
@@ -59,9 +59,9 @@
   },
   "leanFile": {
     "namespace": "InfinitudePrimes4k3",
-    "lineCount": 230,
+    "lineCount": 256,
     "axiomCount": 0,
-    "theoremCount": 7,
+    "theoremCount": 8,
     "definitionCount": 0,
     "path": "Proofs/InfinitudePrimes4k3.lean",
     "sorries": 0
