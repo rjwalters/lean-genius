@@ -329,8 +329,13 @@ classify_error() {
         return
     fi
 
-    # Token exhausted (quota used up) — rotate to next
-    if echo "$output" | grep -qi "hit your limit\|hit.your.limit"; then
+    # Token exhausted (quota used up) — rotate to next.
+    # Anthropic emits several distinct phrasings; match all of them so the
+    # wrapper rotates instead of pinning to the dead account for 300s ticks:
+    #   - "hit your limit"                              (legacy short form)
+    #   - "You've hit your org's monthly usage limit"   (org cap; multi-word gap defeats `hit.your.limit`)
+    #   - "You're out of extra usage · resets …"        (session/extra-usage cap)
+    if echo "$output" | grep -qi "hit your limit\|monthly usage limit\|out of extra usage"; then
         echo "TOKEN_EXHAUSTED"
         return
     fi
