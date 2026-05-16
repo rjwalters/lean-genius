@@ -2,10 +2,32 @@
 
 ## Current State
 **Phase**: ACT
-**Since**: 2026-05-14 (S2-Gauss-real)
-**Iteration**: 5
+**Since**: 2026-05-15 (S6 STATE-SYNC)
+**Iteration**: 6
 
 ## Current Focus
+
+S6 STATE-SYNC (researcher-9, 2026-05-15) — **doc-only post-drain
+catch-up**. The S2 build-verify drain wave (PRs #19033 MERGED
+2026-05-16T00:11Z + #19055 MERGED 2026-05-15T23:27Z) left state.md
+with three load-bearing drift items: S2c "still build pending" (line
+106), S2d "still build pending" (line 73-82), and Operational blocker
+".lake symlink loop" (line 173-176) — all retired here per the
+session log of PR #19033 (whose actual diff shipped only the session
+file, not the state.md/JSON updates §2 listed). Bearer drift recheck
+against Mathlib v4.26.0 (rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`):
+0 drift — the rev pin is unchanged since S2d PREP and the docker
+build at S2-Gauss-real ACT validated the full bearer surface
+(Pi.card_Icc, Int.card_Icc, Finset.prod_const, Fintype.card_fin,
+.trans_eq, Finset.filter_subset, Finset.card_le_card,
+Int.toNat_of_nonneg, Int.ceil_lt_add_one, pow_le_pow_left₀,
+Int.ceil_nonneg). ACT-readiness gate for next-action S2e ACT
+(mFourierBasis L² discharge, 70-95 LOC budget) remains GREEN: 3 PREP
+chain merged (#18446 / #18545 / #18694), baseline build-verified,
+operational blocker cleared. No Lean delta; no new sorries; no new
+axioms.
+
+## Previous Focus (S2-Gauss-real)
 
 S2-Gauss-real (researcher-8, 2026-05-14) — **ACT mini-task** bridging
 S2d's `Nat`-valued explicit bound to a `Real`-form analytic bound
@@ -70,16 +92,22 @@ meta-json line/theorem counts synced; new `lattice-disc-explicit-card`
 section added (startLine 202, endLine 230); `originalContributions`
 extended.
 
-**Build status**: still **build pending** (worktree `proofs/.lake`
-symlink recursive; companion .lake symlink loop documented in MEMORY.md
-under `.lake symlink loop + mid-build worktree wipe`). Both new lemmas
-are direct applications of stable Mathlib lemmas (`Pi.card_Icc`,
-`Int.card_Icc`, `Finset.prod_const`, `Fintype.card_fin`, `.trans_eq`)
-with API verified at pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
-(v4.26.0) in the S2d PREP. Build-risk audit (S2d PREP §2.3) flagged
-medium risk on the `simp` step closing the product evaluation; the
-explicit `Fin.prod_univ_succ` + `Fin.prod_univ_zero` fallback is
-documented there if the inline `simp` underspecifies.
+**Build status**: ✅ **build VERIFIED** (Docker, 7743 jobs, single
+expected `sphPartialSum_L2_norm_converge` sorry warning at line 148)
+via researcher-9 (2026-05-14, log
+`.loom/logs/researcher-9-fourier-s2d-verify.log`; companion to PR
+#19033 doc-only retire-qualifier, MERGED 2026-05-16T00:11Z). The
+`.lake symlink loop` worktree concern was a false alarm: the Docker
+wrapper mounts `/lean/.lake` inside the container and is unaffected by
+the host `.lake` directory (per MEMORY.md
+`feedback_researcher_build_pending_dot_lake_symlink_false_alarm`).
+Both new lemmas are direct applications of stable Mathlib lemmas
+(`Pi.card_Icc`, `Int.card_Icc`, `Finset.prod_const`, `Fintype.card_fin`,
+`.trans_eq`) at pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+(v4.26.0). The S2d PREP §2.3 medium-risk flag on the `simp` step
+closing the product evaluation was discharged at build time — no
+fallback to `Fin.prod_univ_succ` + `Fin.prod_univ_zero` was needed;
+the inline `simp` was specific enough.
 
 ## S2c (Previous Iteration)
 
@@ -103,10 +131,15 @@ meta-json line/theorem counts synced; new "lattice-disc-bbox" section
 added; sanity-checks section line range corrected to 162-175 (was
 167-178 after S2a's section-numbering drift).
 
-**Build status**: still **build pending** (worktree `proofs/.lake`
-symlink recursive, ~25-45 min docker build). Both proofs are
-direct applications of stable Mathlib lemmas (`Finset.filter_subset`,
-`Finset.card_le_card`), so the risk surface is minimal.
+**Build status**: ✅ **build VERIFIED** (transitively via the S2d
+`latticeDisc_card_le_explicit` Docker run, which depends on these
+S2c lemmas — `latticeDisc_subset_bbox` + `latticeDisc_card_le_bbox` —
+and was confirmed clean by researcher-9, 2026-05-14, 7743 jobs).
+Both proofs are direct applications of stable Mathlib lemmas
+(`Finset.filter_subset`, `Finset.card_le_card`); the `.lake symlink
+loop` worktree concern cited at original push time was a false alarm
+(Docker wrapper mounts `/lean/.lake` inside the container, isolated
+from host).
 
 Earlier (S2a, researcher-8): ACT scaffold for the 2D Carleson
 spherical-summation conjecture (axiomatized) + unconditional
@@ -159,10 +192,11 @@ and reports `axiomCount: 1, sorries: 1` honestly.
 2. No `Bochner-Riesz` / `ballMultiplier` API. Required for the regularised
    $\delta > 1/2$ a.e. convergence (Stein 1958) — see S2b plan.
 
-**Operational:**
-- Worktree `proofs/.lake` is broken; docker build would be ~25 min
-  fresh clone. S2a is text-heavy enough that this is acceptable for
-  this iteration.
+**Operational:** None active. (Earlier S2a–S2d sessions cited a
+worktree `proofs/.lake` symlink loop concern — confirmed false alarm
+at S2 build-verify, MERGED 2026-05-16T00:11Z PR #19033: the Docker
+wrapper mounts `/lean/.lake` inside the container, isolated from
+host. ~5 min wall-clock from cold worktree on Azure cache hit.)
 
 ## Next Action
 
