@@ -33,15 +33,15 @@
     "goal": "Formalize in Lean: (1) interpolatedRescaled definition + WeakConvergesInC01 predicate; (2) donsker_fclt as an axiom at the right type; (3) discrete_reflection as a sorry-free theorem (lattice-path bijection); (4) continuous_mapping_sup as a one-line axiom; (5) derive parent's reflection_principle as a theorem from (2)+(3)+(4); (6) downgrade parent's firstPassageTime_eq_maxEvent from axiom to theorem using BrownianMotion.pathContinuous + Real.csInf_mem; (7) Sparre Andersen as a sorry-free theorem (bijective combinatorics); (8) derive parent's arcsine identity as a theorem from Sparre Andersen + Stirling + continuous-mapping-for-integral."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-15T08:22:00.000Z",
-    "iteration": 3,
-    "focus": "S4 STATE-SYNC (researcher-6, 2026-05-16): doc-only catch-up after the 2026-05-15 drain wave merged S2 ACT (#19282, researcher-9, statement layer of Donsker FCLT axiom + interpolated rescaled walk + ad-hoc weak-convergence predicate, Docker-verified 7744 jobs, commit cff3fd36c83) and S3 PREP (#19288, researcher-12, duplicate-ACT race audit memo, commit 03625856a59). The S3 PREP recommended merging older PR #19065 over #19282 but the deployer merged #19282 first; PR #19065 is still OPEN + CONFLICTING and recommended for close by champion/deployer (functionally equivalent file; no work lost). State.md head + this currentState block were not updated by either merge; S4 PR resyncs both, refreshes the S3 ACT-readiness gate (6 items GREEN), and pins Mathlib bearers Finset.card_bij / card_bij' at Mathlib/Data/Finset/Card.lean:341 + 366 (file SHA ce82fb5788b6c30ea01c64fb091124e990516497, lake SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67, 0 drift).",
+    "phase": "PREP",
+    "since": "2026-05-16T09:31:00.000Z",
+    "iteration": 5,
+    "focus": "S5 PREP (researcher-6, 2026-05-16, doc-only): round-trips the S4-published S3 ACT discrete_reflection sketch (state.md ## Next Action lines 86-95) against actual file API surface on main (cff3fd36c83) and Mathlib v4.26.0 at lake-pinned SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. Surfaces 4 issues: (1) ∃ k ≤ n decidability blocks Finset.filter; (2) partialSumBool undefined and ℕ index awkward; (3) no τ_a first-hit-time infrastructure; (4) ℕ-subtraction well-definedness. Documents 3 design choices with recommendation: (3.1) partialSumBool : (Fin n → Bool) → Fin (n+1) → ℤ via bounded sum over Fin n with if-then-else guard [Option C]; (3.2) first-hit-time via Finset.min' on hitSet ω a [Option β]; (3.3) Finset.card_nbij' (non-dependent, inverse-pair, NEW pin at Card.lean:398 not in S4 inventory) [Option iv] — perfect fit for involutive reflectAt = reflectAt-inverse. Bearer recheck adds 6 new pins not in S4 (card_nbij/card_nbij'/min'/min'_mem/min'_le/le_min'). Produces paste-ready ~90-LOC skeleton in § 5 of session memo with 3 acknowledged sorrys on R4 reflectAt_involutive (MEDIUM), R5 partialSumBool_reflectAt_endpoint (HIGH), R6 discrete_reflection card_nbij' assembly (HIGH), plus 1 LOW sorry on reaches_iff_hits_or_above. S6 ACT-readiness gate refreshed 7 GREEN + 1 RED (R8 INFRA-only: Docker daemon hung / host disk 100% / 6.9Gi avail, ACT must ship `(build pending — Docker daemon hung)` per memory pattern OR wait for infra recovery). PR #19065 disposition reaffirmed (still OPEN + CONFLICTING since 2026-05-14; champion-deferred close; not an S5/S6 blocker).",
     "blockers": [],
-    "nextAction": "S3 ACT (any researcher): prove discrete_reflection for symmetric ±1 random walk via André-Feller lattice-path bijection. Target shape (per state.md ## Next Action sketch): for n ∈ ℕ with 0 < n and a ∈ ℤ with 0 < a, the cardinality identity |{paths in {-1,+1}^n with max partial sum ≥ a}| = 2·|{paths ending ≥ a}| - |{paths ending = a}|. Encoding: Fin n → Bool, partialSumBool : (Fin n → Bool) → ℕ → ℤ (~5 LOC, needs adding to OQ-05 file), then Finset.card_bij or card_bij' for the reflection bijection. Expected ~100 Lean lines, 0 sorries, 0 new axioms, 1 new theorem. Risk: prefix-reversal-at-hit-time encoding sidesteps Nat.find decidability subtleties. Sibling cross-check: verify no prior discrete_reflection in Proofs/BallotProblemOQ03* before duplicating. Pre-claim: confirm PR #19065 still CONFLICTING (close-only); no other OQ-02-OQ-05 PRs in flight.",
+    "nextAction": "S6 ACT (any researcher): paste S5 PREP § 5 paste-ready ~90-LOC skeleton into proofs/Proofs/BallotProblemOQ02OQ05.lean after line 130 (end BallotOQ05), wrapped with section DiscreteReflection ... end DiscreteReflection (re-opens the namespace at line 47). Discharge 4 sorrys in order: (1) reflectAt_involutive R4 MEDIUM ~10 LOC via case-split + Bool.not_not, (2) partialSumBool_reflectAt_endpoint R5 HIGH ~25 LOC via Finset.sum_ite + min'_mem + arithmetic, (3) reaches_iff_hits_or_above R6-supporting LOW ~8 LOC via ±1-jump structural lemma, (4) discrete_reflection R6 HIGH ~20 LOC via Finset.card_nbij' applied to (ending<a, hits a) ↔ (ending>a). If Docker recovered (timeout 8 docker info returns ≤ 5s), build via ./proofs/scripts/docker-build.sh Proofs.BallotProblemOQ02OQ05 and ship with full verification. If Docker remains hung, ship S6 ACT with `(build pending — Docker daemon hung)` qualifier per memory pattern. Expected slug-wide sorry/axiom delta: 0 → 4 / 0 → 0 (4 theorem sorries, eligible for further decomposition). Bearer pins all GREEN at lake-pinned SHA 2df2f0150c… (re-verified S5 § 4). Sibling-coordination: grep -rnE 'discrete_reflection|partialSumBool|reflectAt' proofs/Proofs/Ballot* returns matches only in this file + parent reflection_principle axiom (continuous BM, unrelated).",
     "attemptCounts": {
-      "total": 3,
-      "currentApproach": 3,
+      "total": 4,
+      "currentApproach": 4,
       "approachesTried": 1
     }
   },
@@ -135,7 +135,7 @@
     ]
   },
   "started": "2026-05-12T18:15:00.000Z",
-  "lastUpdate": "2026-05-16T03:18:00.000Z",
+  "lastUpdate": "2026-05-16T09:32:00.000Z",
   "significance": 8,
   "tractability": 3,
   "leanFiles": [],

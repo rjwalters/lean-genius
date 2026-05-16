@@ -1,8 +1,84 @@
 # Current State
 
-**Phase**: ACT (S3 `discrete_reflection` pending)
+**Phase**: PREP (S5 — `discrete_reflection` paste-ready skeleton; S6 ACT pending — Docker daemon hung)
 **Since**: 2026-05-15 (S2 ACT merge: #19282)
-**Iteration**: 4 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC, this entry)
+**Iteration**: 5 (S1 OBSERVE + S2 ACT + S3 PREP + S4 STATE-SYNC + S5 PREP, this entry)
+
+## S5 PREP (researcher-6, 2026-05-16, doc-only)
+
+The S4-published "Next Action" `discrete_reflection` sketch (lines 86-95
+below — retained for traceability) was never round-tripped against the
+file as it stands on `main` (`cff3fd36c83`) or Mathlib v4.26.0 at the
+lake-pinned SHA. This S5 PREP closes that gap: 4 issues surfaced with
+the bare sketch, 3 design choices documented with a recommendation, all
+load-bearing Mathlib bearers re-pinned, and a paste-ready ~90-LOC
+skeleton w/ 3 acknowledged `sorry`s on R4/R5/R6 sub-proofs queued for
+the eventual S6 ACT.
+
+**Sketch issues fixed in S5 paste-ready skeleton** (full discussion in
+`sessions/2026-05-16-s5-prep-discrete-reflection-paste-ready-skeleton.md` § 2):
+
+| Issue | Fix |
+|-------|-----|
+| `∃ k ≤ n` not decidable for `Finset.filter` | Reshape to `∃ k : Fin (n+1), ...` (§3.1) |
+| `partialSumBool` undefined + `ℕ` index awkward | `(Fin n → Bool) → Fin (n+1) → ℤ` w/ bounded `∑ i : Fin n` indicator (§3.1 Option C) |
+| No `τ_a` first-hit-time infrastructure | `Finset.min'` on `hitSet ω a` (§3.2 Option β) + `reflectAt` (§5) |
+| ℕ-subtraction well-definedness `2 * card_ge - card_eq` | `Finset.card_le_card` + `filter_subset_filter` side lemma (§2.4) |
+
+**Design choice rec** (§3): Option **C** (`Fin (n+1)` index) + Option **β**
+(`Finset.min'`) + Option **iv** (`Finset.card_nbij'` — non-dependent
+inverse-pair; **NEW pin not in S4 inventory**).
+
+**Bearer pin recheck at SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`** (S5 PREP § 4):
+
+| API | File | Line | Diff vs S4 |
+|-----|------|------|------------|
+| `Finset.card_bij` | `Mathlib/Data/Finset/Card.lean:341` | 341 | unchanged |
+| `Finset.card_bij'` | `Mathlib/Data/Finset/Card.lean:366` | 366 | unchanged |
+| `Finset.card_nbij` | `Mathlib/Data/Finset/Card.lean:383` | 383 | **NEW pin (not in S4)** |
+| `Finset.card_nbij'` | `Mathlib/Data/Finset/Card.lean:398` | 398 | **NEW pin (not in S4) — recommended for `reflectAt = reflectAt⁻¹`** |
+| `Finset.min'` | `Mathlib/Data/Finset/Max.lean:196` | 196 | **NEW pin (not in S4)** |
+| `Finset.min'_mem` | `Mathlib/Data/Finset/Max.lean:207` | 207 | **NEW pin (not in S4)** |
+| `Finset.min'_le` | `Mathlib/Data/Finset/Max.lean:210` | 210 | **NEW pin (not in S4)** |
+| `Finset.le_min'` | `Mathlib/Data/Finset/Max.lean:213` | 213 | **NEW pin (not in S4)** |
+
+**Risk inventory (R1-R8, full table in S5 PREP § 6)**:
+
+- R1 (LOW): `partialSumBool` def
+- R2 (LOW): Decidability of `∃ k : Fin (n+1), P k`
+- R3 (LOW): `firstHitFin` totality on non-hitting paths
+- R4 (MEDIUM): `reflectAt_involutive`
+- R5 (HIGH): `partialSumBool_reflectAt_endpoint`
+- R6 (HIGH): `discrete_reflection` `card_nbij'` assembly
+- R7 (LOW): ℕ-subtraction well-definedness
+- R8 (INFRA): Docker daemon hung — ship `(build pending — Docker daemon hung)` per memory pattern
+
+**S6 ACT-readiness gate (8 items, 7 GREEN / 1 RED-INFRA-only)**:
+
+1. ✅ `BallotProblemOQ02OQ05.lean` on `main` (`cff3fd36c83`)
+2. ✅ `partialSumBool` design fixed to `Fin (n+1) → ℤ` (S5 § 3.1)
+3. ✅ `Finset.card_nbij'` pinned at line 398 (S5 § 3.3)
+4. ✅ `Finset.min'`/`min'_mem`/`min'_le`/`le_min'` pinned at lines 196/207/210/213
+5. ✅ No active sibling-slug `discrete_reflection` ACT (`gh pr list` → 0; `grep -rn` `Ballot*` → 0 outside this file)
+6. ✅ PR #19065 disposition not an ACT blocker (still OPEN+CONFLICTING; champion-deferred)
+7. ✅ Slug LOC budget (~95 + ~90 = ~185) within 250-LOC cap
+8. 🔴 Docker daemon hung; host disk 100% / 6.9Gi avail — ACT requires `(build pending — Docker daemon hung)` qualifier OR infra recovery
+
+**Sorry inventory at end of S6 ACT** (after paste-ready skeleton lands): `0 → 4` sorries, on:
+
+- `reflectAt_involutive` (R4, MEDIUM, ~10 LOC)
+- `partialSumBool_reflectAt_endpoint` (R5, HIGH, ~25 LOC)
+- `reaches_iff_hits_or_above` (R6-supporting, LOW, ~8 LOC)
+- `discrete_reflection` (R6, HIGH, ~20 LOC main assembly)
+
+All 4 are theorem/lemma sorries (not def sorries) — eligible for further
+decomposition; R5 and the final `discrete_reflection` are plausible
+Aristotle candidates if the post-ACT sub-iter route is needed.
+
+See `sessions/2026-05-16-s5-prep-discrete-reflection-paste-ready-skeleton.md`
+for the full memo (sketch round-trip, design audit, bearer recheck,
+paste-ready ~90-LOC skeleton with 3 acknowledged `sorry`s, risk
+inventory, ACT-readiness gate, host infra snapshot).
 
 ## S4 STATE-SYNC (researcher-6, 2026-05-16, doc-only)
 
@@ -78,29 +154,68 @@ None new. Existing Mathlib gaps tracked in `problem.md` (Mathlib infrastructure 
 
 ## Next Action
 
-**S3 (any researcher)**: prove `discrete_reflection` for the symmetric ±1 walk.
+**S6 (any researcher)**: paste the S5 PREP § 5 paste-ready ~90-LOC skeleton
+into `proofs/Proofs/BallotProblemOQ02OQ05.lean` after line 130 (`end
+BallotOQ05`), then discharge the 3 acknowledged `sorry`s on R4/R5/R6
+(plus 1 LOW supporting sorry on `reaches_iff_hits_or_above`).
 
-Target shape (refine against `Finset.card_bij` API):
+**Target shape (refined post-S5)**:
 
 ```lean
-theorem discrete_reflection
-    {n : ℕ} (hn : 0 < n) (a : ℤ) (ha : 0 < a) :
-    -- |{paths in {-1,+1}^n with max ≥ a}| = 2·|{paths ending ≥ a}| - |{paths ending = a}|
-    ((Finset.univ.filter fun ω : Fin n → Bool =>
-        ∃ k ≤ n, partialSumBool ω k ≥ a).card)
-    = 2 * (Finset.univ.filter fun ω => partialSumBool ω n ≥ a).card
-      - (Finset.univ.filter fun ω => partialSumBool ω n = a).card := by
-  -- via Finset.card_bij with the André-Feller reflection
-  sorry
+section DiscreteReflection
+variable {n : ℕ}
+
+-- §3.1 Option C: bounded sum over Fin n, indexed by Fin (n+1)
+def partialSumBool (ω : Fin n → Bool) (k : Fin (n+1)) : ℤ :=
+  ∑ i : Fin n, if h : i.val < k.val then (if ω i then (1 : ℤ) else -1) else 0
+
+-- §3.2 Option β: Finset.min' on hit set
+noncomputable def firstHitFin (ω : Fin n → Bool) (a : ℤ) : Fin (n+1) := ...
+
+-- Reflection past τ_a, identity on non-hitting paths
+def reflectAt (ω : Fin n → Bool) (a : ℤ) : Fin n → Bool := ...
+
+-- R4, R5, R6-supporting, R6: 4 sorries to discharge
+theorem discrete_reflection (hn : 0 < n) (a : ℤ) (ha : 0 < a) :
+    (Finset.univ.filter fun ω : Fin n → Bool =>
+        ∃ k : Fin (n+1), partialSumBool ω k ≥ a).card
+    = 2 * (Finset.univ.filter ...).card - (Finset.univ.filter ...).card := by sorry
+
+end DiscreteReflection
 ```
 
-**Approach**: André-Feller bijection between paths reaching $a$ that end below $a$ and paths ending strictly above $a$, via reflection at first hit of $a$. Lean encoding uses `Finset.card_bij` for the cardinality-preserving bijection on `Fin n → Bool`.
+**Approach (refined post-S5)**: André-Feller reflection at first-hit-time
+`τ_a` (encoded via `Finset.min'` on `hitSet ω a`), assembled via
+`Finset.card_nbij'` (§3.3 Option iv — the inverse-pair non-dependent
+form, **NEW pin at `Mathlib/Data/Finset/Card.lean:398` not in S4 inventory**)
+with `reflectAt = reflectAt⁻¹` (involutive).
 
-**Expected size**: ~100 Lean lines, 0 sorries (fully proved), 0 new axioms, 1 new theorem.
+**Expected size**: ~90 Lean lines added, 4 sorries (3 acknowledged on
+load-bearing sub-proofs + 1 LOW), 0 new axioms, 1 new theorem (plus 3
+supporting lemmas + 2 defs + 1 noncomputable def).
 
-**Risk**: the reflection bijection is well-understood mathematically but the Lean encoding of "first time hitting level $a$" via `Nat.find` requires careful decidability handling. Alternative: prefix-reversal-at-hit-time (path-as-list version), which sidesteps `Nat.find`.
+**Risk** (§6 of S5 PREP):
 
-**Sibling-coordination note**: `ballot-problem-oq-03-oq-01-oq-01` may have a parallel `discrete_reflection` formulation. Cross-check `Proofs/BallotProblemOQ03OQ01OQ01.lean` before duplicating; if a compatible lemma already exists, import it instead.
+- R4 MEDIUM: `reflectAt_involutive` — `Bool.not_not` after case-split on `(firstHitFin ω a).val ≤ i.val`
+- R5 HIGH: `partialSumBool_reflectAt_endpoint` — sum-splitting at `τ_a` + `min'_mem`
+- R6 HIGH: `discrete_reflection` — `card_nbij'` assembly
+- R8 INFRA: Docker daemon hung → ship S6 ACT with `(build pending — Docker daemon hung)` per memory pattern
+
+**Sibling-coordination check (re-verified S5)**: `grep -rnE
+'discrete_reflection|partialSumBool|reflectAt' proofs/Proofs/Ballot*`
+returns matches **only in this file** (`BallotProblemOQ02OQ05.lean`)
+and the parent `BallotProblemOQ02.lean` `reflection_principle` axiom
+(line 184, continuous BM — unrelated). No sibling implementation
+exists; no race risk.
+
+**Decidability handling**: `∃ k : Fin (n+1), P k` is decidable for
+decidable `P` via `Fintype.decidableExistsFintype` (Lean stdlib) — no
+`open Classical` needed at the `Finset.filter` call sites.
+
+**ℕ-subtraction well-definedness**: `card_eq ≤ card_ge` (paths-ending-=-a
+⊆ paths-ending-≥-a) ⟹ `2 * card_ge - card_eq` is well-defined on `ℕ`.
+Discharge via `Finset.card_le_card` + `Finset.filter_subset_filter` (5-LOC
+helper lemma).
 
 ## Prior Next-Action Sketch
 
@@ -108,8 +223,8 @@ S1 specified the file structure (definitions + axiom) verbatim. S2 implemented i
 
 ## Attempt Counts
 
-- Total attempts: 2 (S1 OBSERVE survey, S2 ACT statement layer)
-- Current approach attempts: 2 (axiomatize-Donsker decomposition)
+- Total attempts: 3 (S1 OBSERVE survey, S2 ACT statement layer, S5 PREP paste-ready skeleton)
+- Current approach attempts: 3 (axiomatize-Donsker decomposition + S6 ACT now paste-ready)
 - Approaches tried: 1
 
 ## Open files
