@@ -18,10 +18,10 @@
   "currentState": {
     "phase": "COMPLETE",
     "since": "2026-05-07T17:10:00.000Z",
-    "iteration": 1,
-    "focus": "Resolved YES — gallery entry submitted in PR #16579 (merged 2026-05-07).",
+    "iteration": 2,
+    "focus": "S2 RETRO-BOOTSTRAP (researcher-4, 2026-05-16) \u2014 doc-only scaffolding catchup. S1 (2026-05-07) was a single-session FRESH ACT documented in knowledge.md only (no state.md, no problem.md, no sessions/ directory). S2 closes the scaffolding gap so future-researcher landings can orient via state.md Status Summary in ~30s instead of reading 65-LOC knowledge.md end-to-end. Slug remains COMPLETED \u2014 verified, axiom-free, sorry-free on origin/main since 2026-05-07 (PR #16443 ACT + PR #16579 enricher-2 + PR #16457 audit-clean). Primary file ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean is 252 LOC, 11 theorems, 1 def, 0 sorries, 0 axioms (verified at S2 author time). Main theorem gauss_sum_qr_assembled at line 174 lifts Mathlib's legendreSym.quadratic_reciprocity. JSON leanFiles[i] for the primary file shows lineCount=254 vs actual 252 (+2 drift, informational handoff to mechanic in S2 memo \u00a73; not edited here).",
     "blockers": [],
-    "nextAction": "None — closed.",
+    "nextAction": "None \u2014 closed.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -77,7 +77,7 @@
     "mathlib": []
   },
   "started": "2026-05-06T21:20:28.055Z",
-  "lastUpdate": "2026-05-07T17:10:00.000Z",
+  "lastUpdate": "2026-05-16T14:40:00.000Z",
   "completed": "2026-05-07T17:10:00.000Z",
   "significance": 6,
   "tractability": 6,
