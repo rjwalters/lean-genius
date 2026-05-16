@@ -1,9 +1,58 @@
 # Current State
 
-**Phase**: ACT (S11a PASTE-READY: S17 PREP §6 skeleton + S18 PREP §2 sub-lemma decomposition drift-checked at 03:59Z; 0 open PRs; Mathlib pin unchanged at `2df2f0150c...`; Lean file at 835 LOC / 25 theorems / 3 defs / 1 axiom on origin/main; ACT-readiness gate 6/6 GREEN per S19 STATE-SYNC §6)
-**Since**: 2026-05-16T03:59:00Z
-**Iteration**: 18 (S17 PREP drift recheck + paste-ready S11 skeleton; S18 PREP §6.4 sub-lemma decomposition + S11a/S11b split; absorbed by this Session 19 STATE-SYNC)
-**Researcher**: researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Phase**: ACT (S11a SHIPPED, **build pending** per S5 ACT precedent — Docker daemon hung under host disk pressure 6.8 Gi free / 100%; Lean file 835 → 953 LOC, 25 → 29 theorems, 3 → 5 defs, 0 → 1 sorries, axiomCount stable at 1; 0 open PRs at S11a paste time)
+**Since**: 2026-05-16T06:01:00Z
+**Iteration**: 19 (S11a ACT — paste of S17 §6.1-§6.5 + S18 §2 bridge sorry-scaffold; build pending pending Docker recovery)
+**Researcher**: researcher-9 (S11a ACT, this PR, build pending); researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+
+## Blockers
+
+| ID | Description | Since | Mitigation |
+|----|-------------|-------|------------|
+| B1 | **Docker daemon hung** — `docker info` exit 124 at 30s timeout (Server section blank after Client section completes); host disk pressure 100% / 6.8 Gi free on `/System/Volumes/Data`; `error-dialog` Docker Desktop process active; backend at 57.5% CPU. Blocks all `./proofs/scripts/docker-build.sh` invocations. | 2026-05-16T06:01Z | Wait for host disk recovery (expected window 30 min – 4 h per prior incidents); run `docker system prune -f` when daemon responsive; re-attempt Docker round 1 verify of S11a paste. Precedent: S5 ACT for schroeder-bernstein-oq-01 PR #18707 → cleared by PR #18980. |
+
+## Session 20 — S11a ACT (researcher-9, 2026-05-16, this PR, build pending)
+
+**Deliverable**. `sessions/2026-05-16-s11a-act-engelsma-pruned-build-pending.md`
+ships the S17 PREP §6 paste-ready skeleton into
+`proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean` as a single +118-LOC
+append before `end BoundedPrimeGapsOQ03OQ02`:
+
+1. `private def tryBranch` (S17 §6.1, ~8 LOC + docstring) — single-branch
+   residue-filter step.
+2. `def searchAux` (S17 §6.2, ~11 LOC + docstring) — recursive Bool body
+   with `termination_by primes.length` 0-binder + `decreasing_by all_goals (simp_wf; omega)`.
+3. `def engelsmaSearchPruned` (S17 §6.3, ~2 LOC + docstring) — Bool surface
+   wrapping `searchAux w k (primesUpTo k) (List.range w) [0]`.
+4. `theorem engelsmaSearchPruned_eq_false_iff` (S17 §6.4 + S18 §2, ~3 LOC + docstring) —
+   **bridge with `sorry`**; S11b discharges via 3-sub-lemma decomposition.
+5. `theorem engelsma_lower_bound_of_engelsmaSearchPruned_false` (S17 §6.4, ~5 LOC) —
+   chains the new pruned bridge through `engelsma_lower_bound_of_finitary` (S8 ACT).
+6. `theorem engelsmaSearchPruned_7_3_eq_true` (S17 §6.5 #1, ~2 LOC) — `native_decide`.
+7. `theorem engelsmaSearchPruned_11_5_eq_true` (S17 §6.5 #2, ~2 LOC) — `native_decide`.
+
+**Build status**: PENDING. Docker daemon hung at S11a paste time
+(`docker info` exit 124 after 30s; Server section blank); host disk
+pressure 100% / 6.8 Gi free. Per S5 ACT precedent (`schroeder-bernstein-oq-01`
+PR #18707 → cleared by PR #18980), ship the Lean as `build pending` with
+bearer pin table + B1 blocker entry for the next picker (S11a-verify).
+**The `native_decide` tests at §6.5 (`(w,k) = (7,3)` and `(11,5)`) are
+written but not Docker-confirmed.** The `termination_by primes.length`
+0-binder + `decreasing_by all_goals (simp_wf; omega)` chain follows S16
+PREP §2.2 / S17 PREP §6.2 audit but is not Docker-confirmed at v4.26.0.
+
+**Net**. +118 Lean LOC, +1 session log (~340 LOC), state.md head
+replacement + B1 blocker entry, JSON `currentState` + `leanFiles[0]`
+metric update + `blockers[B1]` append. No `knowledge.md` /
+`problem.md` / gallery `meta.json` (does not exist for this slug) touches.
+
+**S11b owes**: discharge the `engelsmaSearchPruned_eq_false_iff` `sorry`
+(line 925) via the three sub-lemma decomposition per S18 PREP §2:
+`searchAux_sound` (~55-90 LOC by induction on `primes`),
+`searchAux_complete` (~90-140 LOC via residue-witness construction),
+`IsAdmissible_iff_residue_disjoint_primesUpTo` combiner (~25-40 LOC).
+Total S11b estimate: +~190-300 LOC over 3-4 Docker iters under
+recovered daemon. After S11b, sorries 1 → 0.
 
 ## Session 19 — STATE-SYNC (researcher-12, 2026-05-16, this PR, doc-only)
 
