@@ -6,10 +6,10 @@
   "leanFile": {
     "path": "Proofs/EhrhartCubeProvenOQ03.lean",
     "filename": "EhrhartCubeProvenOQ03.lean",
-    "lineCount": 169,
+    "lineCount": 210,
     "theoremCount": 6,
     "definitionCount": 2,
-    "sorries": 1,
+    "sorries": 0,
     "axiomCount": 0
   },
   "meta": {
@@ -17,7 +17,7 @@
     "sourceUrl": "https://en.wikipedia.org/wiki/Hypersimplex",
     "date": "2026",
     "status": "formalized",
-    "sorries": 1,
+    "sorries": 0,
     "proofRepoPath": "Proofs/EhrhartCubeProvenOQ03.lean",
     "tags": [
       "combinatorics",
@@ -34,37 +34,37 @@
   "sections": [
     {
       "id": "section-0-preamble",
-      "title": "Preamble — File header and S1 OBSERVE summary",
+      "title": "Preamble — File header and contents summary",
       "startLine": 1,
-      "endLine": 29,
-      "summary": "Module-level docstring stating the S1 OBSERVE goal (axiom-free hypersimplex Ehrhart count), enumerating the three deliverables (the `hypersimplexLatticeCount` definition; the two `sorry`'d reference identities `hypersimplex_count_k_one` and `hypersimplex_palindrome_k_d_minus_1`; three `decide`-closed sanity checks), and locating the file within the four-sibling `ehrhart-cube-proven` family (cube / standard simplex OQ-01 / cross-polytope OQ-02 / Eulerian h*-vector OQ-04). The header declares Status: S1 SCAFFOLD with `Sorries: 2`, which the meta.json `sorries: 2` count mirrors verbatim."
+      "endLine": 34,
+      "summary": "Module-level docstring summarising the file's three components (the `hypersimplexLatticeCount` definition; the two reference identities `hypersimplex_count_k_one` and `hypersimplex_palindrome_k_d_minus_1`, both PROVEN as of S6 ACT 2026-05-16; numeric `decide` sanity checks) and locating the file within the four-sibling `ehrhart-cube-proven` family (cube / standard simplex OQ-01 / cross-polytope OQ-02 / Eulerian h*-vector OQ-04). The header declares Status: S6 ACT with `Sorries: 0`."
     },
     {
       "id": "section-0b-imports-setup",
       "title": "Imports and namespace setup",
-      "startLine": 30,
-      "endLine": 35,
-      "summary": "`import Mathlib` brings in the full library (required for `Finset.filter`, `Fin (n+1)`, `Sym.card_sym_eq_choose`, and the decidability transfer used by `coordSumEq`'s instance). Two `set_option linter.unusedSimpArgs false` / `linter.unusedTactic false` directives silence the unused-tactic linter that fires on scaffolded `sorry` bodies. Opens `namespace EhrhartCubeProvenOQ03` to localise the four new identifiers (`coordSumEq`, `hypersimplexLatticeCount`, and the two theorem names) so siblings in the family can use the unqualified names without collision."
+      "startLine": 35,
+      "endLine": 40,
+      "summary": "`import Mathlib` brings in the full library (required for `Finset.filter`, `Fin (n+1)`, `Sym.card_sym_eq_choose`, `Sym.equivNatSumOfFintype`, `Fintype.card_of_subtype`, and the decidability transfer used by `coordSumEq`'s instance). Two `set_option linter.unusedSimpArgs false` / `linter.unusedTactic false` directives silence linter noise. Opens `namespace EhrhartCubeProvenOQ03` to localise the new identifiers."
     },
     {
       "id": "section-1-definition",
       "title": "Section I — Hypersimplex Lattice-Point Definition",
-      "startLine": 36,
-      "endLine": 62,
+      "startLine": 42,
+      "endLine": 67,
       "summary": "Defines `coordSumEq` (the coordinate-sum predicate) and `hypersimplexLatticeCount d k n` as the cardinality of `Finset.univ.filter (Σ x_i = n·k)` over `Fin d → Fin (n+1)`. Both definitions are decidable instances, enabling `decide` for small concrete values."
     },
     {
       "id": "section-2-reference-identities",
-      "title": "Section II — Reference identities (S2 / S3 targets)",
-      "startLine": 64,
-      "endLine": 141,
-      "summary": "Two reference identities. `hypersimplex_count_k_one` (k=1 reduces to standard simplex via OQ-01 multiset bijection) remains `sorry`'d, queued for S5+ ACT. `hypersimplex_palindrome_k_d_minus_1` (the involution `x ↦ n - x` sends Δ(d, k) lattice points to Δ(d, d-k) lattice points) is PROVEN as of S4 ACT (researcher-3, 2026-05-14, PR pending) via `Finset.card_equiv` bundled around the involution `φ x i = ⟨n - x i, _⟩`, the sum-of-complements identity `∑ φ x_i + ∑ x_i = d·n`, and a linear-arithmetic bridge `d·n = n·1 + n·(d-1)` closed by `omega`."
+      "title": "Section II — Reference identities",
+      "startLine": 69,
+      "endLine": 182,
+      "summary": "Two reference identities, both PROVEN. `hypersimplex_count_k_one` (S6 ACT, researcher-8, 2026-05-16): for k=1 the count equals (n+d-1).choose (d-1), proven by lifting weak compositions over `Fin (n+1)` to weak compositions over ℕ via an `Equiv` (with the `Finset.single_le_sum` bound for invertibility), composing with `Sym.equivNatSumOfFintype` and `Sym.card_sym_eq_choose` (stars-and-bars), and closing via `Nat.choose_symm_of_eq_add`. `hypersimplex_palindrome_k_d_minus_1` (S4 ACT, researcher-3, 2026-05-14, PR #19066): the involution `x ↦ n - x` sends Δ(d, k) lattice points bijectively to Δ(d, d-k) via `Finset.card_equiv` around the sum-of-complements identity `∑ φ x_i + ∑ x_i = d·n`."
     },
     {
       "id": "section-3-sanity-checks",
       "title": "Section III — Numeric sanity checks (no `sorry`)",
-      "startLine": 143,
-      "endLine": 169,
+      "startLine": 184,
+      "endLine": 210,
       "summary": "Four numeric sanity checks closed by `decide` anchoring the definition: `hypersimplex_count_2_1_2 = 3`, `hypersimplex_count_3_1_1 = 3`, `hypersimplex_count_3_2_1 = 3` (palindrome witness), and `hypersimplex_count_3_1_2 = C(4, 2)` (binomial check)."
     }
   ],
