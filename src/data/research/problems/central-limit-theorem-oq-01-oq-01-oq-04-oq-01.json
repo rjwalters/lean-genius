@@ -1,7 +1,7 @@
 {
   "slug": "central-limit-theorem-oq-01-oq-01-oq-04-oq-01",
   "title": "Partial Mathlib formalization of the Meerschaert-Scheffler DOA theorem",
-  "phase": "PARENT-BLOCKED",
+  "phase": "DISCHARGE-PLANNED",
   "status": "active",
   "tier": "B",
   "path": "partial",
@@ -30,17 +30,12 @@
     "goal": "Produce a Gaussian-specialised version of the M-S characteristic-function convergence (R1 route, ~80-150 Lean lines)"
   },
   "currentState": {
-    "phase": "PARENT-BLOCKED",
-    "since": "2026-05-14T15:50:00Z",
-    "iteration": 3,
-    "focus": "S3 BUILD-VERIFY first Docker baseline — 23 surface errors in parent file CentralLimitTheoremOQ01OQ01OQ04.lean (Σ-token parser/12 + removed-constant/3 + latent-elaborator/8). E.1/E.2 ACT blocked until S4 mechanic/doctor parent repair.",
-    "blockers": [
-      "Parent file Proofs.CentralLimitTheoremOQ01OQ01OQ04 has 23 v4.26.0 surface errors (first Docker baseline 2026-05-14, no prior Docker verification on this slug or parent slug)",
-      "Cluster A: 12 sites failing parser on `Σ` (now reserved for dependent-pair type) — global rename Σ → Σ_cov needed",
-      "Cluster B: 3 removed/renamed Mathlib constants — Matrix.exp (→ NormedSpace.exp ℝ), Matrix.eigenvalues (→ IsHermitian.eigenvalues), Fin.eq_zero_or_pos (latent type confusion: d : ℕ should use Nat.eq_zero_or_pos)",
-      "Cluster C: 8 latent proof-elaborator bugs (likely cascade-resolve after Clusters A+B)"
-    ],
-    "nextAction": "S4 (mechanic/doctor scope): pick up the 23-error inventory in state.md and iterate Docker until parent file builds clean — three-cluster strategy A → B → C, ~4 Docker iterations.",
+    "phase": "DISCHARGE-PLANNED",
+    "since": "2026-05-16T02:37:00Z",
+    "iteration": 5,
+    "focus": "S5 STATE-SYNC absorbs 4-PR cascade (#19195 + #19116 + #19083 + #19296): parent file built clean via mechanic #19116 (7744/7744 jobs), axiomCount 2 → 8; S4 PREP #19296 pin-verified a 4-axiom surgical-discharge plan (axiomCount 8 → 4 via ~67–113 LOC across 4 doctor-scope PRs). 0 open PRs on slug at S5 draft time.",
+    "blockers": [],
+    "nextAction": "S6 ACT (doctor-scope): surgical discharge of axiom `gaussCharFun_norm_le_one` (parent line 121, ~12–18 LOC) via paste-ready proof in sessions/2026-05-16-s5-prep-statesync-postdrain.md §5. Bearers B1/B2/B3 pinned and verified at lake SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67. Result: axiomCount 8 → 7.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -48,19 +43,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE complete (doc-only). Surveyed parent file (303 lines, 18 theorems, 2 axioms) and Mathlib v4.26.0 weak-convergence + characteristic-function + matrix-exponential modules. Three discharge routes mapped: R1 (Gaussian specialised, recommended for S2, ~80-150 Lean lines, demonstrates axiom non-vacuity); R2 (scalar exponent reduction to univariate, shifts axiom location without elimination); R3 (full forward direction, blocked by matrix-regular-variation gap). Parent file unchanged (axiomatized, 2 axioms). The M-S axiom is currently load-bearing-by-state-only (no other theorem in the file depends on it on the right-hand side).",
+    "progressSummary": "S1–S5 complete (S1 OBSERVE, S2a univariate spec, S2 coord, S3 BUILD-VERIFY, mechanic parent-file repair, S4 PREP audit, S5 STATE-SYNC). Parent file CentralLimitTheoremOQ01OQ01OQ04.lean (322 LOC) builds Docker-clean at 7744/7744 jobs after mechanic PR #19116 fixed 23 v4.26.0 surface errors; axiomCount jumped 2 → 8 because 6 helpers lost their proofs to removed/renamed lemmas. S4 PREP (#19296) pin-audited the 6 new axioms at lake SHA 2df2f015… and found 3 fully dischargeable via API rename (gaussCharFun_norm_le_one, gaussian_has_scalar_exponent, gaussian_in_own_doa) + 1 dischargeable via tactic restructure (gaussian_is_operator_stable, depends on prior 2). Two axioms (operator_stable_linear_image, scalar_exponent_ge_half) reflect genuine math gaps (MS 2001 Thm 7.2.1 + Hudson–Mason 1982) and should remain axiomatized. Cumulative discharge potential: ~67–113 LOC, axiomCount 8 → 4. S5 STATE-SYNC (this PR) refreshes the tracker after a 4-PR cascade (#19195 + #19116 + #19083 + #19296) left state.md and JSON frozen at Iteration: 3; rechecks all 7 cited bearers at the lake SHA (0/7 drift across ~8.5h since S4 PREP); stages S6 ACT (§4.1 surgical discharge, ~14 LOC paste-ready) as cheapest-first audit-claim test.",
     "builtItems": [
       "research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01/problem.md (~280 lines: three-route survey + Mathlib gap map + reference reading)",
       "research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01/knowledge.md (~210 lines: S1 session note + R1 Lean skeleton)",
-      "research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01/state.md (this iteration)",
-      "src/data/research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01.json (research index entry)"
+      "research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01/state.md (S1–S5 cumulative; S5 STATE-SYNC top section + S1–S4 historical record preserved)",
+      "src/data/research/problems/central-limit-theorem-oq-01-oq-01-oq-04-oq-01.json (this tracker; S5 refresh)",
+      "sessions/2026-05-15-s4-prep-axiom-rediscovery-audit.md (#19296: pin-verified discharge plan for the 6 new axioms; ~523 LOC)",
+      "sessions/2026-05-16-s5-prep-statesync-postdrain.md (this PREP: bearer drift recheck table + ACT-readiness gate + paste-ready S6 ACT discharge sketch; ~500 LOC)"
     ],
     "insights": [
       "Parent's gaussian_in_own_doa and gaussian_has_scalar_exponent already prove the Gaussian sub-case under a different framing; R1 is a restatement exercise, not new mathematics",
       "Matrix.exp (Real.log t • ((1/2) • 1)) collapses to scalar sqrt(t) • 1 — bridge between M-S's tail form and the classical 1/sqrt(n) normalisation",
       "The M-S axiom in parent's file does not appear on the RHS of any other proof, so it is load-bearing-by-state-only — R1's Gaussian-specialised restatement requires no downstream refactoring",
       "R2's scalar-exponent reduction shifts axiom location to the grandparent univariate file rather than eliminating axioms",
-      "Mathlib v4.26.0 has scalar Levy continuity (Probability/CharacteristicFunction) but the multivariate version is a known gap; matrix regular variation is entirely absent (BGT §2.10 scope)"
+      "Mathlib v4.26.0 has scalar Levy continuity (Probability/CharacteristicFunction) but the multivariate version is a known gap; matrix regular variation is entirely absent (BGT §2.10 scope)",
+      "Discharge calculus (S4 PREP audit #19296): of the 6 axioms introduced by mechanic PR #19116, 3 are pure-rename dischargeable (gaussCharFun_norm_le_one via PosSemidef.dotProduct_mulVec_nonneg + Complex.ofReal_re + Real.exp_le_one_iff; gaussian_has_scalar_exponent via Real.rpow_neg + Real.sqrt_eq_rpow; gaussian_in_own_doa via Filter.Tendsto.congr' + tendsto_const_nhds), 1 is tactic-restructure (gaussian_is_operator_stable, depends on the prior 2), and 2 reflect genuine math gaps (operator_stable_linear_image = MS 2001 Thm 7.2.1; scalar_exponent_ge_half = Hudson–Mason 1982 eigenvalue bound). Discharge of all 4 dischargeable axioms: ~67–113 LOC, axiomCount 8 → 4.",
+      "Bearer pin discipline at the lake SHA (S5 PREP §3): all 7 cited Mathlib bearers verified at exact line numbers at SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 on 2026-05-16T02:42Z (0/7 drift across ~8.5h since S4 PREP). Verification method: `gh api repos/leanprover-community/mathlib4/contents/<path>?ref=<SHA> -q .download_url | xargs -I{} curl -sL {} | sed -n '<line>p'`. Bearers: PosSemidef.dotProduct_mulVec_nonneg @ PosDef.lean:298, Complex.ofReal_re @ Complex/Basic.lean:87, Real.exp_le_one_iff @ Exponential.lean:339, Real.rpow_neg @ Pow/Real.lean:252, Real.sqrt_eq_rpow @ Pow/Real.lean:981, Real.rpow_div_two_eq_sqrt @ Pow/Real.lean:989, tendsto_const_nhds @ Neighborhoods.lean:190."
     ],
     "mathlibGaps": [
       "Multivariate Levy continuity theorem (charFun -> weak convergence in R^d): scalar exists, multivariate gap",
@@ -69,10 +68,13 @@
       "Slowly-varying function API beyond BGT §1.4 scope: partial"
     ],
     "nextSteps": [
-      "S2 ACT: create proofs/Proofs/CentralLimitTheoremOQ01OQ01OQ04Meerschaert.lean with helper matrix_exp_log_smul_half_id (~20 lines) and main theorem meerschaert_scheffler_gaussian (~60 lines) — use parent's gaussian_operator_stable + gaussian_has_scalar_exponent + exp_neg_div_pow + quadForm_scale_inv_sqrt",
-      "S2 ACT: update proofs/Proofs.lean import list and re-verify build via docker-build.sh",
-      "S3 (optional): implement R2 scalar-exponent reduction bridge to univariate DOA framework in central-limit-theorem-oq-01-oq-01.lean",
-      "S4+ (deferred): R3 full forward direction remains blocked until Mathlib lands matrix regular variation"
+      "S6 ACT (doctor-scope, cheapest-first — recommended): replace axiom `gaussCharFun_norm_le_one` (parent line 121) with theorem via the ~14-LOC paste-ready proof in sessions/2026-05-16-s5-prep-statesync-postdrain.md §5. Bearers B1+B2+B3 verified. Risk register R1–R3 documented. Result: axiomCount 8 → 7. Estimated 25–40 min calendar time (Read → edit → Docker → push → PR).",
+      "S7 ACT (doctor-scope, depends on S6 landing for template): replace axiom `gaussian_has_scalar_exponent` (parent line 165) using Real.rpow_neg + Real.sqrt_eq_rpow + proven gaussian_operator_stable. ~20–35 LOC, risk medium-low. Result: axiomCount 7 → 6.",
+      "S8 ACT (doctor-scope, depends on S7 landing): replace axiom `gaussian_is_operator_stable` (parent line 175) via tactic restructure (funext + congr 1 instead of conv_lhs ext). ~10–20 LOC, risk low. Result: axiomCount 6 → 5.",
+      "S9 ACT (doctor-scope, independent of S7/S8): replace axiom `gaussian_in_own_doa` (parent line 304) using Filter.Tendsto.congr' + tendsto_const_nhds. ~25–40 LOC, risk medium. Result: axiomCount 5 → 4.",
+      "E.1 honesty correction (doctor-scope, ~5 LOC, any order): replace `finite_cov_in_gaussian_doa`'s vacuous `hφ_reg : True` hypothesis with a proper regularity placeholder. Independent of S6–S9.",
+      "E.2 honesty correction (doctor-scope, ~3 LOC, any order): add `(hB : IsUnit B.det)` to `operator_stable_linear_image` statement. Independent of S6–S9.",
+      "S10+ (deferred): R3 full forward direction of Meerschaert–Scheffler remains blocked until Mathlib lands matrix regular variation (BGT §2.10 scope, 6–12 month infrastructure project)."
     ]
   },
   "tags": [
@@ -89,5 +91,5 @@
     "gallery-extracted"
   ],
   "createdAt": "2026-05-12T19:28:00Z",
-  "updatedAt": "2026-05-14T15:50:00Z"
+  "updatedAt": "2026-05-16T02:37:00Z"
 }

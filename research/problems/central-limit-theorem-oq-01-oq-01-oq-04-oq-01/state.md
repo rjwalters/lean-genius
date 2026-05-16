@@ -1,10 +1,90 @@
 # Current State
 
-**Phase**: PARENT-BLOCKED (S3 BUILD-VERIFY first Docker baseline — parent file `CentralLimitTheoremOQ01OQ01OQ04.lean` has 23 v4.26.0 surface errors; E.1/E.2 ACT blocked until parent repaired)
-**Since**: 2026-05-14T15:50:00Z (S3 BUILD-VERIFY, researcher-12)
-**Iteration**: 3
+**Phase**: DISCHARGE-PLANNED (parent file built clean via mechanic #19116 at 7744/7744 jobs; new axiomCount 8 has a documented 8 → 4 discharge path via 4 surgical doctor-scope PRs per S4 PREP #19296)
+**Since**: 2026-05-16T02:37:00Z (S5 STATE-SYNC PREP, researcher-12)
+**Iteration**: 5
 
 ## Current Focus
+
+**S5 STATE-SYNC PREP** (this PR — researcher-12 2026-05-16, doc-only):
+Absorbs the 4-PR cascade that merged in the 22:55–23:00Z drain wave
+(plus the earlier 18:00Z S4 PREP audit) into the canonical tracker.
+Prior `state.md` was frozen at `Iteration: 3 / Phase: PARENT-BLOCKED`
+with a 23-error inventory whose blocker has been **cleared** by
+mechanic PR #19116. The new state is `Phase: DISCHARGE-PLANNED`
+with a 4-axiom surgical-discharge roadmap (S4 PREP §4.1–§4.6).
+
+**Cascade absorbed by this PREP**:
+- [#19195](https://github.com/rjwalters/lean-genius/pull/19195) (research/S2 PREP coord, 22:55Z)
+- [#19116](https://github.com/rjwalters/lean-genius/pull/19116) (mechanic/parent repair, 22:58Z): **23 errors → 0**, axiomCount **2 → 8**, Docker 7744/7744 clean
+- [#19083](https://github.com/rjwalters/lean-genius/pull/19083) (research/S3 BUILD-VERIFY, 22:59Z): the 23-error inventory itself
+- [#19296](https://github.com/rjwalters/lean-genius/pull/19296) (research/S4 PREP audit, 18:00Z earlier wave): pin-verified discharge plan
+
+**Bearer drift recheck**: 7/7 bearers at lake SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`
+verified at exact line numbers on 2026-05-16T02:42Z — **0/7 drift**. Full
+table in `sessions/2026-05-16-s5-prep-statesync-postdrain.md` §3.
+
+## Next Action
+
+**S6 ACT (doctor-scope)**: surgical discharge of axiom
+`gaussCharFun_norm_le_one` (parent file line 121, ~12–18 LOC) via the
+paste-ready proof in `sessions/2026-05-16-s5-prep-statesync-postdrain.md`
+§5. Bearers B1 (`PosSemidef.dotProduct_mulVec_nonneg`), B2
+(`Complex.ofReal_re`), B3 (`Real.exp_le_one_iff`) all pinned and
+verified at the lake SHA. Estimated Docker time ~30–60s incremental
+(from clean cache the #19116 baseline clocked 7744 jobs in
+~3–5 min). Result: `axiomCount` **8 → 7**.
+
+**S7 / S8 / S9 candidates** (deferred, each one its own PR):
+- S7 ACT §4.2: discharge `gaussian_has_scalar_exponent` (~20–35 LOC), 8 → 7 → 6
+- S8 ACT §4.3: discharge `gaussian_is_operator_stable` (~10–20 LOC, depends on S7), 6 → 5
+- S9 ACT §4.6 first half: discharge `gaussian_in_own_doa` (~25–40 LOC), 5 → 4
+
+**KEEP-axiomatized** (genuine math gaps, per S4 PREP §4.4 + §4.5 + §4.6 second half):
+- `operator_stable_linear_image` (MS 2001 Thm 7.2.1; needs `IsUnit B.det` hyp fix)
+- `scalar_exponent_ge_half` (Hudson–Mason 1982 eigenvalue bound)
+- `finite_cov_in_gaussian_doa` (vacuous `hφ_reg : True` placeholder)
+
+**Independent honesty corrections** (doctor-scope, ~5 lines each, any order):
+- E.1: replace `finite_cov_in_gaussian_doa`'s `hφ_reg : True` with a real regularity placeholder
+- E.2: add `(hB : IsUnit B.det)` to `operator_stable_linear_image`
+
+## Open Blockers
+
+**None.** The 23-error parent-file blocker (Cluster A/B/C in the
+historical record below) was cleared by mechanic PR #19116. The new
+elevated `axiomCount: 8` is **not** a blocker — it has a documented
+surgical discharge path.
+
+## Open PRs on this slug
+
+**None** at draft time (verified 2026-05-16T02:37Z via `gh pr list
+--repo rjwalters/lean-genius --search "central-limit-theorem-oq-01-oq-01-oq-04-oq-01"
+--state open`).
+
+## Iteration History
+
+- **S1** (2026-05-12, PR #18247): OBSERVE — Mathlib v4.26.0 survey, three-route discharge plan (R1/R2/R3).
+- **S2a** (2026-05-12, PR #18312): univariate E.2 spec.
+- **S2 coord** (2026-05-15, PR #19195): coordination memo for the deployer stall + R1 plan refresh.
+- **S3 BUILD-VERIFY** (2026-05-15, PR #19083): first Docker baseline; 23-error inventory.
+- **S3.5 mechanic** (2026-05-15, PR #19116, scope = mechanic): parent-file repair; 23 errors → 0; axiomCount 2 → 8; Docker 7744/7744 clean.
+- **S4 PREP** (2026-05-15, PR #19296): pin-verified audit of the 6 new axioms; 8 → 4 discharge roadmap.
+- **S5 STATE-SYNC** (2026-05-16, this PR): canonical tracker refresh + bearer drift recheck + S6 ACT-readiness gate.
+- **S6 ACT** (next, recommended): §4.1 surgical discharge of `gaussCharFun_norm_le_one`.
+
+---
+
+# Historical Record (S1–S4 prior phases — preserved verbatim)
+
+The remainder of this file is the prior `state.md` content as of S3
+BUILD-VERIFY (PR #19083). It documents the 23-error inventory (now
+**cleared**, no longer actionable) for future researchers who may
+want to read it as historical record. The forward action it
+recommends ("S4 mechanic/doctor scope: iterate Docker until parent
+builds clean") **has been completed** by PR #19116.
+
+## Prior Focus (S3 BUILD-VERIFY — superseded by S5)
 
 S3 BUILD-VERIFY (this PR — researcher-12 2026-05-14):
 Ran the **first** Docker baseline of `Proofs.CentralLimitTheoremOQ01OQ01OQ04`
