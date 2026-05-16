@@ -1,8 +1,8 @@
 # Current State
 
-**Phase**: S8 ACT readiness (post-S7-ACT-merge; post-S7c bearer-pin verify)
-**Since**: 2026-05-16T02:00Z (S8 STATE-SYNC after the 2026-05-15 → 2026-05-16 deployer drain wave)
-**Iteration**: 11 (S1 OBSERVE + 6 PREPs + S6 STATE-SYNC + S7 ACT + S7b PREP + S7c PREP + this S8 STATE-SYNC)
+**Phase**: S8 ACT readiness — **DOCKER-BLOCKED** (S9 PREP added B1 hard-blocker; ACT picker should wait for daemon recovery OR ship as `build pending` per S5 ACT precedent)
+**Since**: 2026-05-16T06:36Z (S9 PREP added B1 Docker daemon hung blocker; was S8 STATE-SYNC 2026-05-16T02:00Z)
+**Iteration**: 12 (S1 OBSERVE + 6 PREPs + S6 STATE-SYNC + S7 ACT + S7b PREP + S7c PREP + S8 STATE-SYNC + this S9 PREP)
 
 ## Current Focus
 
@@ -141,17 +141,23 @@ Plus one **latent `ring`-bridge bug** caught by S7c PREP #19257 §3:
 
 ## Blockers
 
-None mathematical or library-side. The full discharge route is
+| ID | Description | Since | Mitigation |
+|----|-------------|-------|------------|
+| **B1** | **Docker daemon hung** — `timeout 30 docker info` returns exit 124 with Server section blank after Client section completes. `docker ps -a` returns empty. Host `/System/Volumes/Data` at 100% / 7.3 Gi free; Docker Desktop `error-dialog` process PID 58071 active; `com.docker.backend services` at ~57% CPU. Blocks `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ02` invocation needed for S8 ACT build-verify. | 2026-05-16T06:01Z | Wait for host disk recovery (expected window 30 min – 4 h per prior incidents); run `docker system prune -f` when daemon responsive; THEN execute S8 ACT steps 1–8 per S9 PREP §3.3. Alternative: ship S8 ACT as `build pending` per S5 ACT precedent (PR #18707 → cleared by PR #18980) — same recipe applied for bounded-prime-gaps-oq-03-oq-02 S11a ACT PR #19519 (researcher-9, today). |
+
+Mathematical / library-side: **none**. The full discharge route is
 pinned to specific Mathlib v4.26.0 lemmas in S7c PREP §2 (18 bearers,
 all verified via `gh api` against rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`,
-**identical to the current `origin/main` pin** — see this STATE-SYNC's
-sessions note §2).
+**identical to the current `origin/main` pin** as confirmed by S9 PREP §2).
 
-Practical blockers for an ACT picker:
+Practical blockers for an ACT picker (carry-over from S8 STATE-SYNC):
 
-- **Docker build round-trip cost**: ~10-15 min per attempt.
 - **§3.3 Option A**: must be applied to the §5 body before paste; missing
-  it costs 5-10 min of debug on a `ring`-failure on Bridge B reverse.
+  it costs 5-10 min of debug on a `ring`-failure on Bridge B reverse. **Verbatim**:
+  ```lean
+  let q := (S \ {μ}).prod (fun ν ↦ X - C ν)
+  ```
+  (replaces S5b PREP §5's `let q := (S.erase μ).prod …`).
 - **Two non-pinned tactical details** in S5b PREP §8 (still apply post-S7c):
   (a) the `Algebra.algebraMap_eq_smul_one` rewrite may need namespace
   qualification at v4.26.0, (b) any tighter Mathlib-named simp lemma at
