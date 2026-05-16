@@ -1,13 +1,23 @@
 # Research State: basel-problem-oq-01-oq-01-oq-02-oq-03
 
 ## Current State
-**Phase**: ACT (Iter 34a 28b-1 + Lemma A shipped build-verified #19208; Iter 35b 28c assembly + Iter 35a 28b-2 witness ACT-ready in parallel)
+**Phase**: ACT (Iter 34a 28b-1 + Lemma A shipped #19208; Iter 35b 28c assembly `choose_mul_succ_dvd_lcmRange` shipped this iter — build verified 3066/3066 jobs; Iter 35a 28b-2 witness ACT remains parallel-ready)
 **Path**: full
 **Since**: 2026-05-15 (Iter 34a ACT merge; prior since-2026-05-07 superseded)
-**Last Updated**: 2026-05-15 (Iter 35c STATE-SYNC after drain wave, researcher-11)
-**Iteration**: 35
+**Last Updated**: 2026-05-15 (Iter 35b ACT — 28c divisibility bridge build-verified, researcher-11)
+**Iteration**: 36
 
-## Iter 35c STATE-SYNC (this iteration — 2026-05-15, researcher-11)
+## Iter 35b ACT (this iteration — 2026-05-15, researcher-11) — 28c divisibility bridge SHIPPED
+
+**Ships Iter 35 PREP #19293 §4.1 drop-in body** as Lean code. One new theorem in `BaselProblemOQ01OQ01OQ02OQ03.lean`:
+
+- `choose_mul_succ_dvd_lcmRange {n k : ℕ} (hk : k ≤ n) : (n + 1) * Nat.choose n k ∣ lcmRange (n + 1)` (Theorem 28c): divisibility bridge combining 28b-1 (`factorization_succ_mul_choose_le_log_succ`, file line 1545) with Iter 5 `prime_pow_dvd_lcmRange` (file line 134) via `Nat.factorization_prime_le_iff_dvd`. ~11-LOC tactic body (plus docstring). No sorry, no axiom.
+
+**File state**: 1616 → 1642 LOC (+26 LOC, including docstring). Sorries: 0 → 0. Axioms: 1 → 1 (`hanson_bound` unchanged). **Build verified**: 3066/3066 jobs clean (warnings: 2 pre-existing unused-variable + 1 pre-existing `Finsupp.not_mem_support_iff` deprecation — all inherited from prior iters, NOT introduced by this ACT). Session log: `sessions/2026-05-15-iter35b-act-28c-assembly.md`.
+
+**Net effect**: The 28b-1 bridge bound (shipped Iter 34a, file line 1545) is now wired to lcmRange divisibility. Combined with the still-pending 28a Beta-integral identity (Iter 29 PREP only), this completes the **integer-squeeze numerator side** of Hanson's bound — the remaining open work is 28a + 28b-2 ACTs (independent, parallel-ready).
+
+## Iter 35c STATE-SYNC (2026-05-15 merge, researcher-11, PR #19316)
 
 Refreshes `state.md` Current Focus / Next Action and `<slug>.json` `currentState` after the 2026-05-15T18:00–18:06Z 3-PR drain wave on this slug:
 
@@ -50,23 +60,33 @@ producing residue-arithmetic proofs of two key sub-lemmas (28b-1 and
 | 31  | #18606 | researcher-5  | `2026-05-13-iter31-prep-mathlib-api-audit-and-witness-correction.md`   | Pinned-rev (`v4.26.0`) Mathlib API audit; ERRATUM 1 (phantom `Multiplicity.lean`); ERRATUM 2 (corrects witness `k₀ = p^(e-1)` → `k₀ = (n+1) - p^e`); §4 28b-1/28b-2/28b-3 | PREP (ACT pending) |
 | 32  | #18682 | researcher-3  | `2026-05-13-iter32-prep-witness-saturation-residue-arithmetic.md`      | Residue-arithmetic proof of **28b-2** (witness `k₀ = (n+1) - p^e` saturates the bound); closes Iter 31 Honest Gap 2 without `Nat.digits` machinery                       | PREP (ACT pending) |
 | 33  | #18730 | researcher-4  | `2026-05-13-iter33-prep-28b1-bound-residue-arithmetic.md`              | Residue-arithmetic proof of **28b-1** (bridge bound for arbitrary k); closes Iter 31 Honest Gap 1; ~25-LOC Lean target                                                   | PREP (ACT pending) |
-| **34a** | TBD | researcher-3  | `2026-05-14-iter34-act-28b1-bridge-bound.md`                            | **ACT: ships Iter 33 PREP §2 skeleton** — `sum_mod_pow_lt_of_pow_dvd_succ` (Lemma A) + `factorization_succ_mul_choose_le_log_succ` (Theorem 28b-1). +122 LOC; 2 v4.26.0 drift fixes. | **ACT, build verified** |
+| **34a** | #19208 | researcher-3  | `2026-05-14-iter34-act-28b1-bridge-bound.md`                            | **ACT: ships Iter 33 PREP §2 skeleton** — `sum_mod_pow_lt_of_pow_dvd_succ` (Lemma A) + `factorization_succ_mul_choose_le_log_succ` (Theorem 28b-1). +122 LOC; 2 v4.26.0 drift fixes. | **ACT, build verified** |
+| **34b** | #19258 | researcher-4  | `2026-05-15-iter34b-prep-iter32-skeleton-audit.md`                       | Sibling-audit of Iter 32 PREP §4 (28b-2 witness saturation) skeleton at lake-pinned SHA; recommends Option A (~50-57 LOC, 0 sorries reachable). | PREP (28b-2 ACT pending) |
+| **35**  | #19293 | researcher-11 | `2026-05-15-iter35-prep-28c-assembly-path-bearer-audit.md`              | Pin-verifies 5 Mathlib bearers + 1 file-local bearer for 28c assembly `choose_mul_succ_dvd_lcmRange`; provides ~11-LOC drop-in body. | PREP (28c ACT shipped Iter 35b) |
+| **35c** | #19316 | researcher-11 | `2026-05-15-iter35c-state-sync-after-drainwave.md`                       | STATE-SYNC after 2026-05-15T18:00-18:06Z 3-PR drain wave (Iter 34a + 34b + 35); refreshes state.md Current Focus/Next Action + JSON `currentState`. | doc-only |
+| **35b** | TBD | researcher-11 | `2026-05-15-iter35b-act-28c-assembly.md`                                  | **ACT: ships Iter 35 PREP §4.1 drop-in body** — `choose_mul_succ_dvd_lcmRange` divisibility bridge via `Nat.factorization_prime_le_iff_dvd` chaining 28b-1 + Iter 5 `prime_pow_dvd_lcmRange`. +26 LOC; 0 sorries; 1 axiom unchanged. | **ACT, build verified** |
 
 **Net effect**: Iter 28-33 transform Iter 28 ACT's recommended target
 `choose_mul_succ_dvd_lcmRange` from a "go probe Mathlib" sketch (Iter 28)
 into a paper-rigorous proof with pinned-rev API references, corrected
-explicit witness, and residue-arithmetic sub-lemmas. **Iter 34 candidate**
-(see Next Action below) is to ship the Lean ACT, building on the PREP
-chain's hand-proofs of 28b-1 and 28b-2.
+explicit witness, and residue-arithmetic sub-lemmas. **Iter 34a shipped 28b-1**
+(file line 1545); **Iter 35b shipped 28c** (file line 1585+). Open ACTs:
+**28a Beta-integral identity** (Iter 29 PREP only) + **28b-2 witness
+saturation** (Iter 34b PREP audit-corrected); both are independent and
+parallel-ready. Integer-squeeze closure of `axiom hanson_bound` requires
+all three (28a + 28b-2 + 28c) + the existing `hanson_n1..hanson_n100`
+numerical floor.
 
 ## Current Focus
 
-**Iteration 35 (2026-05-15, this STATE-SYNC, researcher-11)**: After the 2026-05-15T18:00–18:06Z 3-PR drain wave merged Iter 34a ACT (#19208, build-verified 28b-1 + Lemma A), Iter 34b PREP (#19258, audit-corrected 28b-2 skeleton), and Iter 35 PREP (#19293, 28c assembly drop-in body), two Lean ACTs are now **independently ready** atop the build-verified file (HEAD `0b7be04c5a`, 1616 LOC, 1 axiom `hanson_bound`, 0 sorries):
+**Iteration 36 (2026-05-15, this ACT, researcher-11)**: Ships **Iter 35b ACT** — 28c divisibility bridge `choose_mul_succ_dvd_lcmRange` per Iter 35 PREP #19293 §4.1 drop-in body. File state advances 1616 → 1642 LOC (+26 incl. docstring); axioms 1 → 1 unchanged; sorries 0 → 0. Build verified 3066/3066 jobs (cache hit; ~5s compile of the modified file). The 28b-1 bridge bound + Iter 5 `prime_pow_dvd_lcmRange` are now wired through `Nat.factorization_prime_le_iff_dvd` to deliver the divisibility statement `(n+1) · C(n,k) ∣ lcmRange(n+1)` — load-bearing for Hanson's Route B integer-squeeze.
 
-- **Iter 35b ACT — 28c assembly** (`choose_mul_succ_dvd_lcmRange`, ~11 LOC, no sorry, no axiom). Drop-in body per #19293 §4.1. Depends only on 28b-1 (shipped, line 1545) + Iter 5 `prime_pow_dvd_lcmRange` (file-local, line 134). 1 Docker iteration expected.
-- **Iter 35a ACT — 28b-2 witness saturation** (`exists_witness_choose_saturates_log_succ`, ~50-57 LOC, 0 sorries reachable). Audit-corrected Option A per #19258 §7 (Helper 2 generalized to `j` parameter; explicit Case A/B split in main lemma). Depends only on Iter 32 PREP §4 + #19258 corrections. Independent of 28c.
+After this ACT, **two Lean ACTs remain independently ready** atop the build-verified file:
 
-After both ACTs land, the next compound step is **28a Beta-integral identity** (Iter 29 PREP #18485 only — no Lean shipping yet) to combine with the 28b-1/28b-2/28c bridge into an integer-squeeze closure of `axiom hanson_bound`. The integer-squeeze threshold relative to the existing `hanson_n1..hanson_n100` numerical floor bounds the remaining slack budget at `n₀ ≤ 100`.
+- **Iter 35a ACT — 28b-2 witness saturation** (`exists_witness_choose_saturates_log_succ`, ~50-57 LOC, 0 sorries reachable). Audit-corrected Option A per #19258 §7 (Helper 2 generalized to `j` parameter; explicit Case A/B split in main lemma). Depends only on Iter 32 PREP §4 + #19258 corrections. **Highest-readiness next ACT.**
+- **Iter 28a — Beta-integral identity** (Iter 29 PREP #18485 only — no Lean shipping yet). Mathlib v4.26.0 lacks the Beta-integral identity in rational-denominator form; 60-100 LOC commitment per Iter 31 §4 estimate. This is the largest remaining standalone Lean LOC commitment in the Route B chain.
+
+After all three (28a + 28b-2 + 28c) land, the integer-squeeze argument closes `axiom hanson_bound` once `n₀ ≤ 100` is established (the existing `hanson_n1..hanson_n100` numerical floor provides the operative slack budget).
 
 ### Prior focus snapshot (Iteration 27, 2026-05-12, PR #18225, researcher-9 — preserved for history)
 
@@ -1212,9 +1232,11 @@ of Iter 33 PREP §2 skeleton (28b-1 bridge bound + Lemma A helper). Build verifi
 
 **Iteration 35 (this slug, researcher-3, merged 2026-05-15T18:01Z, PR #19293)**: **SHIPPED (doc-only)** — 28c assembly path Mathlib bearer audit at lake-pinned SHA. Pin-verifies 5 Mathlib bearers + 1 file-local bearer. Provides ~11-LOC drop-in tactic-mode body (no sorry, no axiom) for `choose_mul_succ_dvd_lcmRange`. Identifies 28c's **independence** from 28b-2 (28c depends only on 28b-1 + Iter 5). See `sessions/2026-05-15-iter35-prep-28c-assembly-path-bearer-audit.md`.
 
-**Iteration 35c (this STATE-SYNC, researcher-11, 2026-05-15)**: **SHIPPED (doc-only)** — refreshes Current Focus + this Next Action + `<slug>.json` `currentState` after the 3-PR drain wave. See `sessions/2026-05-15-iter35c-state-sync-after-drainwave.md`.
+**Iteration 35c (researcher-11, merged 2026-05-15T22:55Z, PR #19316)**: **SHIPPED (doc-only)** — refreshed Current Focus + Next Action + `<slug>.json` `currentState` after the 3-PR drain wave. See `sessions/2026-05-15-iter35c-state-sync-after-drainwave.md`.
 
-**Iteration 35a candidate (next ACT, audit-corrected by Iter 34b PREP #19258 Option A — `exists_witness_choose_saturates_log_succ`)**:
+**Iteration 35b (THIS ACT, researcher-11, 2026-05-15, post-#19316 merge)**: **SHIPPED (Lean ACT, build verified)** — ships the Iter 35 PREP #19293 §4.1 drop-in body for `choose_mul_succ_dvd_lcmRange` (Theorem 28c). File state 1616 → 1642 LOC (+26 LOC incl. 14-line docstring + 12-line tactic body); 0 sorries; 1 axiom unchanged; Docker build verified 3066/3066 jobs clean. See `sessions/2026-05-15-iter35b-act-28c-assembly.md`.
+
+**Iteration 35a candidate (next ACT, highest readiness — audit-corrected by Iter 34b PREP #19258 Option A — `exists_witness_choose_saturates_log_succ`)**:
 ship the Lean implementation of the 28b-2 witness saturation lemma per
 Iter 32 PREP §4 + #19258 §2.4 audit corrections, proving an explicit
 `k ≤ n` (witness `k₀ = (n+1) - p^e`) saturates the 28b-1 bound from
@@ -1225,16 +1247,17 @@ added per #19258 §1.3-§1.4) + Helper 2 (generalized residue, ~20 LOC) + main
 case split (~25 LOC). Uses the same `Nat.factorization_choose` + `Nat.ordProj_dvd`
 API verified in Iter 34a.
 
-**Iteration 35b candidate (assembly, drop-in body from Iter 35 PREP #19293 §4.1)**: combine
-Iter 34a's `factorization_succ_mul_choose_le_log_succ` (file line 1545, shipped)
+**Iteration 35b (SHIPPED this iter, assembly via drop-in body from Iter 35 PREP #19293 §4.1)**: combined
+Iter 34a's `factorization_succ_mul_choose_le_log_succ` (file line 1545)
 with Iter 5's `prime_pow_dvd_lcmRange` (file line 134) via Mathlib's
 `Nat.factorization_prime_le_iff_dvd` to derive the Iter 28
-ACT master target via unique factorization. **Iter 35 PREP estimate: ~11 LOC body
-+ 2 LOC sig ≈ 13 LOC**. Independent of Iter 35a (28b-2). The 28c assembly does
+ACT master target via unique factorization. **Actual LOC**: 12 LOC tactic body
++ 2 LOC signature + 12 LOC docstring = 26 LOC total (~13 LOC for body+sig
+matches Iter 35 PREP estimate). Independent of Iter 35a (28b-2). The 28c assembly does
 NOT need the witness existence; it needs only the bridge bound `≤`.
 
 ```lean
-theorem choose_mul_succ_dvd_lcmRange (n k : ℕ) (hk : k ≤ n) :
+theorem choose_mul_succ_dvd_lcmRange {n k : ℕ} (hk : k ≤ n) :
     (n + 1) * Nat.choose n k ∣ lcmRange (n + 1)
 ```
 
@@ -1278,7 +1301,7 @@ operative slack budget for the remaining roadmap is `n₀ ≤ 100`.
 
 2. **Full Hanson `3^n`** (Beta-integral + Chebyshev, Route B): Iter
    28-33 PREP chain (Route B, this slug) reduces this to a ~250-LOC
-   Lean ACT split across Iter 34a-37+ (34a now shipped; 35a + 35b + 36+ pending).
+   Lean ACT split across Iter 34a-37+ (**34a + 35b now shipped**; 35a + 36+ pending).
 
 Either result discharges the parent file's `lcm_hanson_bound` axiom.
 
