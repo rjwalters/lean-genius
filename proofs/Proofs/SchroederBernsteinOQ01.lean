@@ -2,6 +2,8 @@ import Mathlib.CategoryTheory.EpiMono
 import Mathlib.CategoryTheory.Types.Basic
 import Mathlib.CategoryTheory.Discrete.Basic
 import Mathlib.CategoryTheory.Groupoid
+import Mathlib.CategoryTheory.ConcreteCategory.Basic
+import Mathlib.CategoryTheory.ConcreteCategory.EpiMono
 import Mathlib.SetTheory.Cardinal.SchroederBernstein
 import Mathlib.Topology.Category.TopCat.Basic
 import Mathlib.Topology.Category.TopCat.EpiMono
@@ -262,5 +264,90 @@ theorem hasSBP_of_isGroupoid (C : Type*) [Category C] [IsGroupoid C] :
     HasSBP C := by
   intro _ _ ⟨m, _⟩ _
   exact ⟨asIso m⟩
+
+/-! ## S12 ACT — `(forget C).Full + Faithful + PreservesMonomorphisms → HasSBP C`
+(first genuinely non-vacuous sufficient condition, narrow)
+
+The first sufficient condition in this slug's positive corpus that
+does **not** force `Mono = Iso`: under `[HasForget C]` together with
+`[(forget C).Full]`, `[(forget C).Faithful]`, and
+`[(forget C).PreservesMonomorphisms]`, the category `C` has the
+Schroeder-Bernstein property by lifting the classical
+Schroeder-Bernstein theorem in `Type` through the fully-faithful
+forgetful functor.
+
+**Proof strategy** (per S8 PREP §3 / S10 PREP STATE-SYNC §3.2):
+
+1. `(forget C).PreservesMonomorphisms` turns each C-mono `m : X ⟶ Y`
+   into a `Type`-mono `(forget C).map m`, which by `mono_iff_injective`
+   (Type) is a `Function.Injective` underlying map.
+
+2. Apply `Function.Embedding.antisymm` to the resulting pair of
+   `Type`-embeddings to obtain a `Type`-equivalence
+   `e : (forget C).obj X ≃ (forget C).obj Y`.
+
+3. Promote `e` to the `Type`-iso `e.toIso`, then preimage it under
+   the fully-faithful `forget C` via
+   `Functor.FullyFaithful.ofFullyFaithful (forget C) |>.preimageIso`
+   to obtain a C-iso `X ≅ Y`.
+
+**Vacuousness** — NOT vacuous. The hypothesis admits non-iso C-monos
+(e.g. on `Type u`, the embedding `Set.Subtype.val : { n // n ∈ s } ↪ ℕ`
+is a non-iso mono). However, the hypothesis `(forget C).Full` is
+**narrow**: it forces every underlying function between underlying
+sets to come from a C-morphism, which essentially restricts to full
+subcategories of `Type` (S8 PREP §4 catalogue: only `Type u`,
+`Discrete α`, and similar Type-like instances qualify; `Grp`, `TopCat`,
+`Ring`, etc. do not have full forgetfuls).
+
+**Sanity vs S5**: `TopCat` lacks `(forget TopCat).Full` — continuous
+maps between underlying sets form a proper subset of arbitrary
+functions. So `not_hasSBP_TopCat` survives.
+
+**Comparison to prior positive corpus**:
+
+| Stage | Theorem | Hypothesis | Vacuous? | Instance space |
+|---|---|---|---|---|
+| S2/S3 | `hasSBP_Type` | none beyond `Type u` | non-vacuous | `Type u` only |
+| S4 | `hasSBP_Discrete` | `Discrete α` | vacuous (every morph iso) | `Discrete α` |
+| S6 | `hasSBP_of_isDiscrete` | `[IsDiscrete C]` | vacuous | every `IsDiscrete` |
+| S11 | `hasSBP_of_isGroupoid` | `[IsGroupoid C]` | vacuous | every `IsGroupoid` |
+| **S12 (this)** | **`hasSBP_of_fullFaithful_forget`** | **`[(forget C).Full] + [Faithful] + [PreservesMono]`** | **NOT vacuous** | **full subcategories of `Type`** |
+
+Path E (Banaschewski–Brümmer 1986 retraction condition, ~150-300 LOC)
+remains the long-horizon target for a genuinely-non-vacuous-AND-broad
+sufficient condition. The current S12 theorem is non-vacuous but
+narrow; the next horizon is non-vacuous-and-broader. -/
+
+/-- **S12 ACT — first non-vacuous sufficient condition for SBP**: any
+category `C` whose forgetful functor `forget C` is full, faithful, and
+preserves monomorphisms has the Schroeder-Bernstein property.
+
+Lifts the classical Schroeder-Bernstein theorem in `Type`
+(`Function.Embedding.antisymm`) through the fully-faithful forgetful
+via `Functor.FullyFaithful.preimageIso`. The hypothesis is **not
+vacuous** (admits non-iso C-monos like `Set.Subtype.val` on `Type u`)
+but is **narrow**: `(forget C).Full` essentially forces `C` to be a
+full subcategory of `Type`. See the module-level docstring above for
+the instance-space catalogue and the comparison with `hasSBP_Type` /
+`hasSBP_of_isDiscrete` / `hasSBP_of_isGroupoid`. -/
+theorem hasSBP_of_fullFaithful_forget (C : Type*) [Category C] [HasForget C]
+    [(forget C).Full] [(forget C).Faithful]
+    [(forget C).PreservesMonomorphisms] : HasSBP C := by
+  intro X Y ⟨m, hm⟩ ⟨n, hn⟩
+  haveI : Mono m := hm
+  haveI : Mono n := hn
+  -- Step 1: Lift C-monos to Type-injections via PreservesMonomorphisms +
+  -- mono_iff_injective (Type).
+  have hmi : Function.Injective ((forget C).map m) :=
+    (mono_iff_injective _).mp inferInstance
+  have hni : Function.Injective ((forget C).map n) :=
+    (mono_iff_injective _).mp inferInstance
+  -- Step 2: Apply classical Schroeder-Bernstein in Type.
+  obtain ⟨e⟩ := Function.Embedding.antisymm
+    ⟨(forget C).map m, hmi⟩ ⟨(forget C).map n, hni⟩
+  -- Step 3: Promote Type-equiv to Type-iso, then preimage under
+  -- the fully-faithful forgetful to obtain a C-iso.
+  exact ⟨(Functor.FullyFaithful.ofFullyFaithful (forget C)).preimageIso e.toIso⟩
 
 end SchroederBernsteinOQ01

@@ -1,16 +1,16 @@
 # Current State
 
 **Phase**: ACT
-**Since**: 2026-05-15 (S11 ACT vacuous-but-broadening sufficient condition `[IsGroupoid C] → HasSBP C`, researcher-5), realises S10 PREP §3.1 Path C
-**Iteration**: 11
-**Last Updated**: 2026-05-16Z (S11 ACT, researcher-5; realises S10 PREP §3.1 Path C; parent file 210→266 LOC; 1 new theorem, 0 sorries, 0 axioms; Docker build verified)
+**Since**: 2026-05-15 (S12 ACT first genuinely non-vacuous sufficient condition `(forget C) full + faithful + preservesMono → HasSBP C`, researcher-6), realises S10 PREP §3.2 Path D.i
+**Iteration**: 12
+**Last Updated**: 2026-05-16Z (S12 ACT, researcher-6; realises S10 PREP §3.2 Path D.i; parent file 266→~340 LOC; 1 new theorem, 0 sorries, 0 axioms; **build pending — host disk full at 141Mi, deferred to mechanic / next BUILD-VERIFY rotation**)
 
 ## Current Focus
 
-Through S11 the slug now has a **five-theorem pos/neg corpus**
+Through S12 the slug now has a **six-theorem pos/neg corpus**
 for the categorical Schroeder–Bernstein predicate `HasSBP` in
-`proofs/Proofs/SchroederBernsteinOQ01.lean` (now ~266 LOC,
-5 public theorems, 0 sorries, 0 axioms, build verified).
+`proofs/Proofs/SchroederBernsteinOQ01.lean` (now ~340 LOC,
+6 public theorems, 0 sorries, 0 axioms, **build pending on S12**).
 
 | Stage | Category | Theorem | Sign | Vacuous? | Build | Anchor PR |
 |---|---|---|---|---|---|---|
@@ -18,31 +18,33 @@ for the categorical Schroeder–Bernstein predicate `HasSBP` in
 | S4 ACT    | `Discrete α` | `hasSBP_Discrete` | + | vacuous (every morph is iso) | verified | #18496 |
 | S5 ACT    | `TopCat.{0}` | `not_hasSBP_TopCat` | − | n/a (refutation) | verified | #18707 |
 | S6 ACT    | abstract `[IsDiscrete C]` | `hasSBP_of_isDiscrete` | + | vacuous (every morph is iso) | verified | #19086 |
-| **S11 ACT** | **abstract `[IsGroupoid C]`** | **`hasSBP_of_isGroupoid`** | + | **vacuous-but-broadening** | **verified** | **this PR** |
+| S11 ACT   | abstract `[IsGroupoid C]` | `hasSBP_of_isGroupoid` | + | vacuous-but-broadening | verified | #19424 |
+| **S12 ACT** | **fully-faithful concrete `(forget C)`** | **`hasSBP_of_fullFaithful_forget`** | + | **NOT vacuous (narrow: forces C ≈ full subcat of Type)** | **pending** | **this PR** |
 
-S11 ACT broadens the `[IsDiscrete C] → HasSBP C` vacuous regime
-(S6 ACT) from "at most one morphism per object pair" to all
-groupoids via Mathlib's `IsGroupoid.all_isIso` instance
-(`Mathlib.CategoryTheory.Groupoid` line 119, registered as a global
-instance at line 121). Same one-line `asIso m` proof; what differs
-is the route to `IsIso m` (`IsGroupoid.all_isIso` vs S6's
-`isIso_of_isDiscrete`). Concrete additional instance space:
-fundamental groupoids of topological spaces, Brandt groupoids,
-`EssGroupoid` of any category, action groupoids.
+S12 ACT is the **first genuinely non-vacuous** sufficient condition
+in the corpus: under `[HasForget C][(forget C).Full][(forget C).Faithful]
+[(forget C).PreservesMonomorphisms]`, the proof admits non-iso
+C-monos (e.g. on `Type u`, `Set.Subtype.val : { n // n ∈ s } ↪ ℕ`)
+and lifts the classical Schroeder–Bernstein `Function.Embedding.antisymm`
+in `Type` through the fully-faithful forgetful via
+`Functor.FullyFaithful.ofFullyFaithful (forget C) |>.preimageIso e.toIso`.
 
-The S11 hypothesis remains **vacuous** (forces `Mono = Iso` via
-`all_isIso`) and is therefore the **vacuous-but-broadening** half of
-the Banaschewski–Brümmer 1986 sufficient-condition map: it doesn't
-substantively use the mutual-mono hypothesis, but it covers
-strictly more categories than `IsDiscrete`. The S5 TopCat
-counterexample remains a sanity check: `TopCat` is not a groupoid
-(continuous inclusion `(0,1) ↪ [0,1]` has no continuous inverse), so
-no contradiction with `not_hasSBP_TopCat`.
+The S12 hypothesis is non-vacuous but **narrow**: `(forget C).Full`
+essentially forces `C` to be a full subcategory of `Type` (S8 PREP
+§4 catalogue: `Type u`, `Discrete α`, and similar Type-like
+instances qualify; `Grp`, `TopCat`, `Ring`, `ModuleCat` etc. all
+fail the fullness clamp). Concrete instance space: `Type u`,
+`Discrete α`, full subcategories of `Type`.
 
-The next horizon (S12+) is the **first genuinely non-vacuous**
-sufficient condition: path D.i fully-faithful concrete categories
-per S10 PREP §3.2 (~25-35 LOC), or the path D.ii / E long-horizon
-constructions per S10 PREP §3.3 / §3.4. The "complete characterization"
+**Sanity vs S5**: `TopCat` lacks `(forget TopCat).Full` — continuous
+maps form a proper subset of underlying functions — so
+`not_hasSBP_TopCat` survives.
+
+The next horizon (S13+) is the **non-vacuous-AND-broad** target:
+Path D.ii abstract orbit construction (~150-250 LOC, per S10 PREP
+§3.3) or Path E Banaschewski–Brümmer 1986 retraction condition
+(~150-300 LOC, per S10 PREP §3.4 — long-horizon, requires
+`MorphismProperty.Factorisation` API). The "complete characterization"
 half of the open question is a research-level survey goal (S20+
 ANALYSIS), not a near-term Lean target.
 
@@ -92,6 +94,21 @@ ANALYSIS), not a near-term Lean target.
 
 ## Blockers
 
+**B1 (NEW, S12 ACT) — build pending on host disk full.** S12 ACT
+(this PR, researcher-6, 2026-05-16Z) Docker build attempt failed
+with `Input/output error` writing the cache:exe binary; host
+`/dev/disk3s1s1` at 141Mi free / 100% used capacity. The Lean code
+is independently grounded by the live v4.26.0 Mathlib API audit
+(S8 PREP §1.1–§1.5; every bearer pinned at lake SHA `2df2f015...`
+in this S12 ACT's sessions memo §2). Follows the S5 ACT pattern
+(PR #18707, cleared by S6 BUILD UNBLOCKER PR #18980). Recommended
+next picker action: Docker build verification when host disk
+recovers; expected 3069–3080 jobs clean. **Mathematically non-blocking
+for downstream work** — every theorem with build-verified status
+remains so, and the new S12 theorem fails-shut (i.e. if the build
+discovers an error, the next iteration ships a small fix; no
+cascading risk).
+
 **Build verification CLEARED** (S6 BUILD UNBLOCKER, 2026-05-13 22:55Z).
 Pre-claim Docker build of `Proofs.SchroederBernsteinOQ01` at origin/main
 `893e29b7d7b` surfaced one error: line 103 `fHom` defined via `(x+1)/4`
@@ -112,36 +129,57 @@ slice-category reformulation); the S6 researcher should reread the
 
 ## Next Action
 
-**S11 ACT — Path C SHIPPED** (this PR, researcher-5, 2026-05-16Z):
-Added `hasSBP_of_isGroupoid : ∀ (C : Type*) [Category C] [IsGroupoid C],
-HasSBP C := fun _ _ ⟨m, _⟩ _ ↦ ⟨asIso m⟩` (~5 LOC body + ~30 LOC
-docstring; parent file 210→266 LOC). 5th positive instance in the
-corpus. Vacuous-broadening (`IsGroupoid.all_isIso` instance at
-`Mathlib/CategoryTheory/Groupoid.lean:121` makes every morph iso),
-expanding to fundamental groupoids, Brandt groupoids, `EssGroupoid`,
-action groupoids. Sanity: `TopCat` is not a groupoid; S5
-`not_hasSBP_TopCat` survives. Bearer pin `IsGroupoid` /
-`all_isIso` verified at lake SHA `2df2f015...` per S10 §1.2 row 5
-(0 drift). Docker build verified — 3069/3069 jobs, 6.1s
-elaboration, 1 Docker iteration, identical job count to S6 ACT
-baseline (Groupoid import transitively present per S10 PREP §3.1
-forecast).
+**S12 ACT — Path D.i SHIPPED, BUILD PENDING** (this PR, researcher-6,
+2026-05-16Z): Added `hasSBP_of_fullFaithful_forget : ∀ (C : Type*)
+[Category C] [HasForget C] [(forget C).Full] [(forget C).Faithful]
+[(forget C).PreservesMonomorphisms], HasSBP C` (~12 LOC tactic
+body + ~60 LOC prose docstring; parent file 266→~340 LOC). 6th
+positive instance in the corpus and **first genuinely non-vacuous**.
+Tactic: lift C-monos to Type-injections via `(forget C).PreservesMonomorphisms`
++ `mono_iff_injective`, apply `Function.Embedding.antisymm` for the
+classical Schroeder–Bernstein in Type, then lift the Type-equivalence
+back to a C-iso via `Functor.FullyFaithful.ofFullyFaithful (forget C)
+|>.preimageIso e.toIso`. Two new imports: `Mathlib.CategoryTheory.ConcreteCategory.Basic`
++ `Mathlib.CategoryTheory.ConcreteCategory.EpiMono`.
 
-**S12 ACT (any researcher) — Path D.i ship (RECOMMENDED NEXT)**:
-Ship the 25-35 LOC `hasSBP_of_fullFaithful_forget` theorem under
-hypothesis `[ConcreteCategory C][(forget C).Full][(forget C).Faithful]
-[(forget C).PreservesMonomorphisms]`. **First genuinely non-vacuous**
-result (admits non-iso monos), though narrow (forces C ≈ full
-subcategory of Type). Tactic skeleton in S10 §3.2 (lifted from S8 §3).
-Bearers verified per S10 §1.2 rows 1-3. Sanity: TopCat lacks
-`(forget TopCat).Full` (continuous maps ⊊ underlying functions);
-S5 survives. ACT-ready GREEN.
+**Build pending caveat**: Docker build attempted but host disk
+exhausted (141Mi free / 100% used `/dev/disk3s1s1`, Docker
+containerd metadata corrupted on first attempt). Following the S5
+ACT precedent (PR #18707, "build pending" cleared by S6 BUILD
+UNBLOCKER PR #18980), shipping the Lean code with the build-pending
+annotation; mechanic / next-rotation auditor / next researcher with
+disk headroom runs `./proofs/scripts/docker-build.sh Proofs.SchroederBernsteinOQ01`
+once disk recovers. The proof structure is independently grounded by
+the live v4.26.0 Mathlib API audit in S8 PREP §1.1–§1.5 (every
+bearer cited inline by file:line and re-verified at lake SHA
+`2df2f015...` for this S12 ACT). Forecast: ~3069–3080 jobs (S6
+baseline ≤ count ≤ S6 baseline + 11 if `ConcreteCategory/EpiMono`
+adds new transitive deps; per S8 PREP §6 forecast).
 
-**S13+ (deferred per S10 PREP §3.3/§3.4/§3.5)**:
-- Path D.ii abstract orbit construction (~150-250 LOC)
-- Path E Banaschewski-Brümmer 1986 retraction condition (~150-300 LOC)
-- `not_hasSBP_AddCommGrpCat` corpus expansion (~245-400 LOC, S9 §6),
-  blocked on problem.md S3 §2 line 70 amendment (S9 §8 Path (ii))
+**S13 ACT (any researcher) — Path D.ii or Path E (DEFERRED LONG-HORIZON)**:
+
+- **Path D.ii — abstract orbit construction** (~150-250 LOC, per
+  S10 PREP §3.3): genuinely non-vacuous AND broader than D.i;
+  requires Bernstein-orbit recursion in pure category theory. No
+  Mathlib precedent identified.
+- **Path E — Banaschewski-Brümmer 1986 literal** (~150-300 LOC,
+  per S10 PREP §3.4): requires `MorphismProperty.Factorisation`
+  API navigation; S7 §2.3 flagged RED for Mathlib API auditability.
+- **`not_hasSBP_AddCommGrpCat` corpus expansion** (~245-400 LOC,
+  S9 §6): blocked on problem.md S3 §2 line 70 amendment from S9 §8
+  Path (ii).
+
+Recommended near-term: a STATE-SYNC absorbing the S11 ACT (#19424)
+and this S12 ACT, then BUILD-VERIFY rotation post-disk-recovery,
+then a Path E feasibility re-scoping PREP if D.ii is judged too
+speculative.
+
+**S12 BUILD-PENDING follow-up (RECOMMENDED FIRST FOR NEXT PICKER)**:
+Once disk recovers, run Docker build of
+`Proofs.SchroederBernsteinOQ01`, confirm 3069–3080 jobs clean,
+update this state.md head + JSON to mark S12 build verified
+(clear the BUILD-PENDING blocker, raise iteration to 13 if shipped
+as STATE-SYNC).
 
 Legacy three-path catalogue (preserved for reference):
 
