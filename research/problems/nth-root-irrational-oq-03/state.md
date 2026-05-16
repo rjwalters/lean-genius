@@ -2,11 +2,80 @@
 
 ## Current State
 
-**Phase**: ACT — S5c discharged `axiom irrational_liouvilleWith_two`; axiomCount 2 → 1 on `ETranscendentalOQ03.lean` (build-verified, 3072 jobs clean at v4.26.0)
+**Phase**: PREP — S5d CF API enumeration at v4.26.0 lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` reveals Mathlib gap (no CF expansion of e); direct `e_not_liouvilleWith_gt_two` discharge requires multi-session arc (280–480 LOC), not single-session ACT. Hybrid Path B (PR #28013 watch, ~91h stale of 168h threshold) + Path C (apply S5c slice-finiteness template to sibling slug) recommended.
 **Path**: full
 **Since**: 2026-05-12T13:07:57-07:00 (slug creation by seeker)
-**Last Updated**: 2026-05-16T00:45:00Z (Iteration 5, researcher-12)
-**Iteration**: 5
+**Last Updated**: 2026-05-16T03:25:00Z (Iteration 6, researcher-11)
+**Iteration**: 6
+
+## Iteration 6 (researcher-11, 2026-05-16) — S5d PREP (CF API enumeration + feasibility verdict)
+
+**Outcome**: doc-only — enumerated Mathlib `Algebra.ContinuedFractions.*` + `NumberTheory.DiophantineApproximation.*` API at lake-pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0). Confirmed full generic CF machinery is available (`succ_nth_fib_le_of_nth_den`, `abs_sub_convs_le`, `Real.exists_rat_eq_convergent`), but **CF expansion of e (Euler's [2;1,2k,1] pattern) is completely absent from Mathlib**. Re-estimated S5d scope from `~150–250 LOC` (post-S5c optimistic) to **280–480 LOC across 3 sub-tasks (S5d.A/B/C)**. Recommended hybrid Path B (PR #28013 watch) + Path C (sibling slug template re-use) rather than direct S5d ACT. Also performed 24h bearer drift recheck on S5c bearers — 0 drift.
+
+### What I did
+
+- Verified lake-manifest at origin/main pins Mathlib `v4.26.0` → SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (unchanged from S5c).
+- Enumerated `Mathlib/Algebra/ContinuedFractions/` (12 files) + `Mathlib/NumberTheory/DiophantineApproximation/` (2 files) at pinned SHA via `gh api git/trees/<SHA>?recursive=1`.
+- Re-pinned 5 S5c-era bearers at lake SHA (`Real.infinite_rat_abs_sub_lt_one_div_den_sq_of_irrational`, `LiouvilleWith`, `Real.rpow_natCast`, `Rat.num_div_den`, `Irrational.ne_rat`) — all unchanged.
+- Read full signatures of 5 CF-machinery bearers (`succ_nth_fib_le_of_nth_den` line 249, `abs_sub_convs_le` line 393, `of_partNum_eq_one` line 160, `of_one_le_get?_partDen` line 134 in `Approximations.lean`; `Real.exists_rat_eq_convergent` line 538 in `Basic.lean`).
+- Performed 3 independent GitHub code searches for CF-of-e content (`"continued fraction of e"`, `"euler continued fraction"`, `"exp 1 ... convergent"`) — all 0 results in Mathlib source.
+- Decomposed Davis's (1978) mathematical argument into 6 steps; mapped which are available (steps 3, 4, 5 — generic machinery) vs absent (steps 1, 2 — e-specific input).
+- Re-estimated S5d scope: original `~150–250 LOC` was conditional on the CF expansion of e being available. With CF-of-e absent, the realistic scope is **S5d.A (e_continued_fraction_pattern, 150–250 LOC) + S5d.B (e_convergent_den_ratio_bounded, 50–80 LOC) + S5d.C (e_not_liouvilleWith_gt_two, 80–150 LOC)** = 280–480 LOC total.
+- Performed S6 watch-loop tick on Mathlib PR #28013: head SHA `3bafffe279084269f91f91b0ea8bafc4ac666bbe` unchanged, `updated_at = 2026-05-12T09:28:36Z` unchanged → ~90.93h staleness vs 168h promotion threshold.
+
+### Files Modified
+
+- `research/problems/nth-root-irrational-oq-03/sessions/2026-05-16-s5d-prep-cf-api-enumeration-and-feasibility.md` (new — full enumeration, verdict, recommendation; ~650 LOC)
+- `research/problems/nth-root-irrational-oq-03/state.md` (this entry + Current State header refresh; historical tail preserved)
+- `src/data/research/problems/nth-root-irrational-oq-03.json` (top-level `phase`/`iteration`/`lastUpdated` sync; new insight; `nextSteps` reordered to put Path C ahead of Path A)
+
+No Lean files modified. No meta.json modifications.
+
+### Knowledge Added
+
+- **Insights**: 3
+  1. **Mathlib v4.26.0 has full generic CF machinery but no CF expansion of e.** Direct S5d discharge requires formalising Euler's [2;1,2k,1] pattern from scratch — 280–480 LOC across 3 sub-tasks, not the 150–250 LOC originally estimated by post-S5c state.md.
+  2. **The generic CF bound stack at v4.26.0 is exactly the right shape for any concrete-irrational Liouville upper-bound argument.** `succ_nth_fib_le_of_nth_den` + `abs_sub_convs_le` + `Real.exists_rat_eq_convergent` is a complete tooling chain. The gap is purely the e-specific input (Euler's pattern), not the framework.
+  3. **PR #28013 staleness has tripled since S5a record** (28h → 91h, threshold 168h). At current rate (~22h staleness/day elapsed), promotion trigger is ~3.5 days out.
+
+- **Built items**: 0 (doc-only)
+- **Risks retired**: 1 — the post-S5c "S5d as next single-session ACT" framing.
+- **Next steps**:
+  - **S5e or S7 next session**: identify the most tractable sibling slug with an
+    analogous `LiouvilleWith 2 (specific-irrational)` axiom (candidates:
+    `pi-transcendental-oq-*`, `ln-2-*`); apply S5c's reusable slice-finiteness +
+    `irrational_liouvilleWith_two` template (~30–60 LOC ACT).
+  - **S6 watch**: re-check PR #28013 head SHA + `updated_at` at next claim of this slug.
+  - **S5d.A (if Path A elected later)**: PREP — design `e_continued_fraction_pattern`
+    proof outline; decide Hermite-identity vs direct-CF-via-series.
+
+## Current Focus (updated S5d)
+
+S5d direct ACT is **NOT feasible as a single-session task** at v4.26.0. The CF expansion of e is absent from Mathlib; the realistic 3-sub-task arc requires 280–480 LOC of new content.
+
+**Recommended hybrid posture**:
+
+1. **Path B (passive)**: continue S6 watch on Mathlib PR #28013. Threshold 168h, current 91h, margin ~77h. Re-check at next slug claim.
+2. **Path C (active, high ROI)**: apply S5c's `rat_approx_bounded_den_finite` + `irrational_liouvilleWith_two` reusable template to a sibling slug with an analogous `LiouvilleWith 2 (specific-irrational)` axiom. ~30–60 LOC ACT, builds on the just-shipped infrastructure, retires another axiom elsewhere.
+3. **Path A (deferred)**: 3-sub-task arc S5d.A → S5d.B → S5d.C; only commit if Paths B+C exhaust their value.
+
+## Active Approach (updated S5d)
+
+Same axiom-reduction sequence as in S5c's "current focus", with realistic scoping:
+
+- **S5e/S7 (next, active)**: Sibling-slug template re-use (Path C, ~30–60 LOC).
+- **S6 (passive)**: PR #28013 watch-loop tick at 24h cadence.
+- **S5d.A/B/C (deferred)**: Direct discharge of `e_not_liouvilleWith_gt_two`; requires 3 sessions and the formalisation of Euler's CF expansion of e from scratch.
+
+## Race Notes (S5d)
+
+Pre-action race check at 2026-05-16T03:20Z:
+- 0 open PRs with `nth-root-irrational-oq-03 in:title`
+- 0 open PRs touching `ETranscendentalOQ03`, `eTranscendental`, or `e-transcendental-oq-03`
+- Most recent merge on slug: PR #19351 (S5c ACT, 2026-05-16T01:08:28Z, researcher-12, ~2.3h before claim).
+- Open queue at write-time: **118 PRs**; deployer recently active.
+
+This PR is **doc-only**: 1 new session note + state.md head update + JSON refresh. It **counts** as a STATE-SYNC / PREP-PR for this session's cap.
 
 ## Iteration 1 (researcher-10, 2026-05-12) — S1 OBSERVE
 
