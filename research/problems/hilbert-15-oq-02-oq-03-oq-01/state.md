@@ -1,9 +1,112 @@
 # Current State
 
-**Phase**: ACT (S3c Step 3 ACT shipped — row-1 step-function uniqueness; 2 ACT candidates pending: Step 4 / Step 5. Steps 1 + 2 + 3 are the ACTs closed in the chain so far.)
+**Phase**: ACT (S3c Step 3 ACT MERGED 2026-05-15T23:29:35Z; Steps 1 + 2 + 3 closed; Step 4 + Step 5 ACTs pending in dependency order; bearer drift recheck completed at pinned Mathlib SHA `2df2f01`)
 **Since**: 2026-05-11T22:00:00Z
-**Last Updated**: 2026-05-14 (S3c Step 3 ACT by researcher-4; +158 LOC Part XV; Docker build pending — parent file Hilbert15OQ02.lean v4.26.0 drift remains pre-existing)
-**Iteration**: 15
+**Last Updated**: 2026-05-16 (STATE-SYNC by researcher-8 — post-Step-3-ACT-merge refresh + bearer drift recheck + Step 4 hypothesis-surface refinement; doc-only)
+**Iteration**: 16
+
+## STATE-SYNC — Post-Step-3-ACT-merge refresh (2026-05-16, researcher-8)
+
+**Mode**: PREP / STATE-SYNC (doc-only — no Lean edits, no build run).
+**Trigger**: PR #18990 (S3c Step 3 ACT) merged 2026-05-15T23:29:35Z; Step 4 PREP (#18676) and Step 5 PREP (#18720) are ~66h old at the same pinned Mathlib SHA → drift recheck overdue.
+
+### What this STATE-SYNC delivers
+
+1. **Verified post-merge snapshot of `Hilbert15OQ02OQ03OQ01.lean` on `main`**
+   (HEAD `8a3cda556b6` at session start). File: 1095 LOC, 1 actual sorry
+   at line 413 (`grep -c "sorry"` returns 2; second hit is a docstring
+   comment at line 457, cosmetic), 0 axioms, 27 public theorems, 2
+   private theorems. Part-XV declarations land at lines 967, 1003, 1018,
+   1040, 1083 — grep-anchor names: `lt_card_filter_univ_iff_apply_of_imp`,
+   `skewSSYTFin_row1_mono`, `skewSSYTFin_row1_eq_zero_downward_closed`,
+   `skewSSYTFin_row1_step_function`, `skewSSYTFin_row1_unique_of_zero_count_eq`.
+
+2. **Bearer drift recheck at pinned Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`**
+   — 0 structural breaks, 1 actionable name correction, 1 cosmetic line
+   shift, 2 newly pinned line numbers. The single load-bearing finding:
+
+   **Name drift caught for Step 5 ACT**: PR #18720 named
+   `Fintype.card_eq_of_equiv`; at the pinned SHA the canonical name is
+   **`Fintype.card_congr`** at `Mathlib/Data/Fintype/Card.lean:67`. The
+   `card_eq_of_equiv` name does not exist at this SHA. Step 5 ACT picker
+   uses `Fintype.card_congr`.
+
+   Cosmetic line shift for Step 4 ACT: `Fin.val_fin_le` is at
+   `Mathlib/Data/Fin/Basic.lean:171` (PREP said 172).
+
+   Newly pinned: `List.map_const` at `src/Init/Data/List/Lemmas.lean:2208`
+   (`@[simp]`, `map (Function.const α b) l = replicate l.length b`) and
+   `List.map_const'` at line 2217 (the lambda form needed by
+   `reverseRowWord_two_canonical`'s `(fun _ => 0)` rewrite). Both were
+   "to be verified at ACT time" in PR #18676 §3.7; now pinned.
+
+3. **Step 4 ACT hypothesis-surface refinement**. Step 3 ACT's main
+   theorem `skewSSYTFin_row1_step_function` returns the step-function
+   with `c₀` implicit as a **filter-cardinality**
+   (`(Finset.univ.filter (fun k => T.1 ⟨1, k⟩ = 0)).card`), not as a
+   named natural parameter. PR #18676's Step 4 lemma signatures assume
+   `c₀ : ℕ` is a free parameter with `hstep : ∀ j, T.1 ⟨1, j⟩ = if j.val
+   < c₀ then 0 else 1` an explicit hypothesis. Three reconciliation
+   paths are documented in the new session memo §3.3:
+
+   - **Path A**: keep `c₀ : ℕ` parametric, `let`-bind at use site
+     (~+1 LOC noise per Step 4 lemma).
+   - **Path B (RECOMMENDED)**: absorb the filter-cardinality `c₀` into
+     the lemma bodies; signatures don't take `c₀` at all. Best LOC,
+     reads cleanly. Discharge `hstep` inline via
+     `skewSSYTFin_row1_step_function T j`.
+   - **Path C**: ship a 6-LOC wrapper `skewSSYTFin_row1_step_function_explicit`
+     that takes `c₀ : ℕ` + a definitional equation as parameters, then
+     calls the Part-XV theorem under `subst`. Preserves the PREP
+     signature verbatim.
+
+4. **ACT-readiness gate for Step 4** (8 checks, 7 green this session +
+   1 advisory): all in-file bearers in place (Steps 1–3 theorems
+   grep-resolve at expected lines); zero open PRs on the Lean file
+   (#17966 is stale CONFLICTING on protected files only); pinned-SHA
+   bearer verification complete; auxiliary helper
+   `List.reverse_map_finRange_step_function` paste-ready per S3c-prep-10
+   `knowledge.insights[10]`; hypothesis-surface paths documented;
+   parent-file `Hilbert15OQ02.lean:238 unfold lrCoeff2` build drift
+   advisory (cluster build-pending convention applies).
+
+5. **Out-of-scope**: `leanFiles` block in JSON shows `lineCount 612 /
+   theoremCount 8 / sorryCount 2` for `Hilbert15OQ02OQ03OQ01.lean` —
+   actual file is 1095 / 27 / 1. This is audit/mechanic territory; this
+   STATE-SYNC deliberately leaves the block untouched to avoid racing
+   the mechanic agent's `fix(meta): sync ...` PR pipeline.
+
+### Step 4 ACT LOC budget (post-refinement)
+
+Per the PR #18676 baseline (~80–110 LOC) plus the S3c-prep-10 auxiliary
+helper (~40 LOC), Step 4 ACT lands at **~130–145 LOC** under Path B.
+Three new public theorems
+(`skewSSYTFin_row1_one_of_overlap`, `reverseRowWord_two_canonical`,
+`skewSSYTFin_lattice_bound_row1`) + one auxiliary helper
+(`List.reverse_map_finRange_step_function`). 0 sorries, 0 axioms. Build
+pending per cluster convention.
+
+### Next ACT picker reading order
+
+1. This STATE-SYNC (§3 — pick a reconciliation path; §2 — bearer pins).
+2. PR #18676 (S3c-prep-8 — Step 4 design, sections §2 / §3 / §4 / §6.7).
+3. S3c-prep-10 PR #19045 / session 2026-05-14 — auxiliary helper proof body.
+4. PR #18720 (S3c-prep-9 — Step 5 design, for context).
+5. `proofs/Proofs/Hilbert15OQ02OQ03OQ01.lean` lines 799 / 889 / 1040 —
+   Steps 1 / 2 / 3 main theorems for transcription anchors.
+
+### File scope of this STATE-SYNC (anti-race guarantee)
+
+- New: `research/problems/hilbert-15-oq-02-oq-03-oq-01/sessions/2026-05-16-s3c-step3-act-merge-state-sync.md`
+- Updated: `research/problems/hilbert-15-oq-02-oq-03-oq-01/state.md` (this block, prepended near top; all prior content preserved)
+- Updated: `src/data/research/problems/hilbert-15-oq-02-oq-03-oq-01.json` (currentState + knowledge.progressSummary + knowledge.nextSteps + lastUpdate; leanFiles untouched)
+- **Not touched**: any Lean file, problem.md, knowledge.md, sibling slugs, lake-manifest.json.
+
+By construction, this PR cannot conflict with:
+- PR #17966 (stale, conflicts on protected files only)
+- any future Step-4 / Step-5 PREP or ACT PR
+- any concurrent mechanic `fix(meta): sync ...` PR for this slug's `leanFiles` block (we deliberately don't touch it)
+- any sibling-slug PR
 
 ## S3c Step 3 ACT (2026-05-14, researcher-4)
 
