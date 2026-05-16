@@ -1,13 +1,50 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S20 ACT build-verified; **0 sorries**, 2 axioms remaining; PR #19016 OPEN/MERGEABLE/CLEAN awaiting deployer)
+**Phase**: ACT (S22 ACT helper landed under build-pending qualifier; **0 sorries**, 2 axioms remaining; parent file last build-verified by S20 ACT #19016 at 3074 jobs)
 **Path**: full
-**Since**: 2026-05-14T07:40:00Z
-**Iteration**: 20-ACT (S20 ACT, build-verified)
+**Since**: 2026-05-16T15:20:00Z
+**Iteration**: 22-ACT (S22 ACT, nearest-point-in-image helper; build pending — Docker daemon hung)
+**Last Updated**: 2026-05-16T15:20:00Z
 
-## Current Focus
-S20 ACT (researcher-9, 2026-05-14, PR #19016 — **OPEN/MERGEABLE/CLEAN**,
+## Current Focus (S22 ACT, 2026-05-16, researcher-8)
+
+S22 ACT (researcher-8, 2026-05-16, this PR — build pending under Docker
+daemon hang): Lands the paste-ready `exists_nearest_in_image_F` helper
+designed by S22 PREP (researcher-3, 2026-05-14, sessions file
+`2026-05-14-s22-prep-step-b-helper-and-completeness-route.md`) at parent
+file line 928 (between the S19a-ACT `image_subtype_isClosed_of_isClosed_of_compact`
+helper ending line 927 and the `seq_compact_of_compact` theorem). The
+helper is +51 LOC (docstring + signature + 5-tactic body) following the
+Path A2 chain `IsClosed.isCompact → IsCompact.image → IsCompact.isComplete →
+exists_norm_eq_iInf_of_complete_convex` selected by S22 PREP §2 to avoid
+the `[CompleteSpace α]` typeclass synthesis. All five Mathlib bearers
+verified at pinned rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (S22
+PREP §2.2; pin unchanged across 48h S22 PREP → S22 ACT).
+
+**Build status**: PENDING under "Docker daemon hung" qualifier
+(`docker info` returns Client section but Server section empty at the
+10-second probe). Same-wave precedent qualifier seen in #19535, #19554,
+#19562, #19624, #19643, #19652 (six PRs across 2026-05-15→05-16 same
+host). The parent file's most-recent build verification (S20 ACT
+#19016, merged 2026-05-15T23:28:41Z, 3074 jobs clean at the same pinned
+SHA) provides the load-bearing recent baseline. A follow-up S23
+STATE-SYNC under recovered Docker will discharge the build-pending
+qualifier.
+
+**Predecessor merges (post-S21 STATE-SYNC, all on origin/main as of S22 ACT)**:
+- S20 ACT (#19016, researcher-9): MERGED 2026-05-15T23:28:41Z — Five
+  v4.26.0 elaboration-drift fixes in `exists_continuous_proj_convex`
+  ending the 13-PR build-pending chain (S11→S19a-ACT). state.md's
+  "OPEN/MERGEABLE/CLEAN awaiting deployer" language pre-dated this
+  merge and is corrected by this S22 ACT.
+- S22 PREP (#19??? researcher-3): MERGED 2026-05-14 — doc-only design
+  for the helper landed by this S22 ACT (Path A2 selection, paste-ready
+  helper signature, bearer pin re-verification).
+
+## Prior Focus (S20 ACT, 2026-05-14, researcher-9 — now merged)
+
+S20 ACT (researcher-9, 2026-05-14, PR #19016 — **MERGED 2026-05-15T23:28:41Z**,
 build-verified 3074 jobs): Five surgical Mathlib v4.26.0 elaboration-drift
 fixes inside `exists_continuous_proj_convex` (the S14-landed Hilbert
 projection helper, file lines ~211–305) ending the 13-PR build-pending
@@ -332,36 +369,43 @@ Two axioms remain:
    decomposes implementation into 6 PRs (each ≤ 80 lines).
 
 ## Next Action
-**S19 step (b) (next claim, ~80–150 lines)**: With the closed-image
-helper now in the file (this iteration's S19 step (a)), the next
-concrete step toward discharging `axiom approx_selection_exists` is
-to write the §4.b nearest-point projection / convex-image
-construction: given `i ∈ ρ.finsupport x`, build the closed convex
-target `Subtype.val '' F i` (now provably `IsClosed` via this
-iteration's helper and `IsClosed.isClosed_isCompact_of_image` chain;
-provably `Convex` via the existing `hF_convex` axiom hypothesis;
-provably `Nonempty` via `hF_ne`), invoke
-`exists_norm_eq_iInf_of_complete_convex`, and connect to the S18e
-witness bundle. This is the §4.b half of the eventual
-`approx_selection_exists_proof` body. Separately:
 
-**S19 step (c) (~30–60 lines)**: After step (b), the §5 graph-distance
-bound (Cellina–Browder Step 5) chains the S18f input-ball clause,
-the S18e selector formula, and the §4.b nearest-point construction
-to certify `IsGraphApproxSelection F (fun x => (f x : ↥S)) ε`. The
-S18f input-ball clause closes the `dist x i < ε` half; the
-`dist (f x) (ysel i)` half consumes the §4.b projection plus the
-convex-combination accounting (`2ε`-vs-`ε` constant calibration
-flagged in the S17 survey, refined in S19 PREP §6).
+**S23 STATE-SYNC under recovered Docker (when host Docker daemon resumes)**:
+Discharge S22 ACT's "build pending — Docker daemon hung" qualifier by
+running `./proofs/scripts/docker-build.sh
+Proofs.SchauderFixedPointOQ03OQ01`. Expected outcome: ~3074+1 jobs
+clean (unchanged from S20 ACT verification at the same pinned SHA;
+S22 ACT adds only an isolated private helper inside `namespace
+KakutaniFromBrouwer`, no signature or call-site changes to existing
+material). Refresh `state.md` Current Focus to drop the build-pending
+qualifier and JSON `currentState.focus` similarly.
 
-**S19 step (d) (~10–20 lines)**: Final packaging — `theorem
+**S23 ACT (next coder, ~30–60 lines)**: §5 graph-distance bound
+(Cellina–Browder Step 5) — chains the S18f input-ball clause, the
+S18e selector formula, and the new S22 helper `exists_nearest_in_image_F`
+into `IsGraphApproxSelection F (fun x => (f x : ↥S)) ε`. The S18f
+input-ball clause closes the `dist x i < ε` half; the
+`dist (f x) (ysel i)` half consumes the projection witness produced
+by `exists_nearest_in_image_F` plus the convex-combination accounting
+(`2ε`-vs-`ε` constant calibration flagged in the S17 survey, refined
+in S19 PREP §6).
+
+**S24 ACT (final packaging, ~10–20 lines)**: `theorem
 approx_selection_exists_proof` replaces `axiom approx_selection_exists`,
 with the augmented hypothesis stack including `hF_closed` (S19a §1
 signature update). The kakutani caller (line 1066) already passes
-`hF_closed`, so no caller-site patch is needed.
+`hF_closed`, so no caller-site patch is needed. After this lands, the
+file carries only `axiom brouwer_unit_ball` (Axiom 1) and is otherwise
+sorry-free. Sync `axiomCount` 2 → 1 in `meta.json` (under
+`src/data/proofs/schauder-fixed-point-oq-03-oq-01/`, the parent
+gallery slug; this `-incomplete-01` slug has no gallery entry of its
+own).
 
-**S19 step (a) (this iteration, landed)**: closed-image helper —
-see Current Focus above.
+**S22 ACT (this iteration, landed)**: nearest-point-in-image helper
+`exists_nearest_in_image_F` — see Current Focus above.
+
+**S19 step (a) (landed S19a-ACT #18646)**: closed-image helper
+`image_subtype_isClosed_of_isClosed_of_compact` — see Prior Focus.
 
 ### Original S18f outline (now S19; preserved verbatim):
 
@@ -438,8 +482,10 @@ brouwer_unit_ball` (Axiom 1) and is otherwise sorry-free.
 | S19c PREP | 2026-05-13 | researcher-4 | (merged ~03:30 UTC) | S19c Projection.lean deprecation-stub calibration (no missing-symbol error; only `linter.deprecated` warning at v4.26.0; doc-only, sessions/) |
 | S19d PREP | 2026-05-13 | researcher-12 | #18624 (merged ~06:58 UTC) | S19d Path A bearer audit cleared — `Continuous.isClosedMap` at Hausdorff.lean:664 verbatim drop-in; closes S19a §8 audit (doc-only, sessions/) |
 | S19a-ACT | 2026-05-13 | researcher-11 | #18646 (merged 2026-05-13T08:09Z) | Private helper `image_subtype_isClosed_of_isClosed_of_compact` packaging the §4.b closed-image bridge (Path A drop-in from S19d) (+55 lines, +1 theorem, meta sync 1163→1218) |
-| S20 ACT | 2026-05-14 | researcher-9 | #19016 (OPEN/MERGEABLE/CLEAN, build-verified 3074 jobs, awaiting deployer) | Five Mathlib v4.26.0 surgical fixes inside `exists_continuous_proj_convex`: `open scoped InnerProductSpace`, `haveI Nonempty ↥S`, explicit `↑(r u)` coercion in `set`, `real_inner_comm` arg flip, `LipschitzWith.mk_one` refactor (+28/-13, lineCount 1218→1233, theoremCount unchanged, axiom count unchanged at 2; ends the 13-PR build-pending chain S11→S19a-ACT) |
-| S21 STATE-SYNC | 2026-05-14 | researcher-9 | (this PR, doc-only) | Refresh state.md + JSON to reflect S20 ACT build-verification; no Lean/meta touch |
+| S20 ACT | 2026-05-14 | researcher-9 | #19016 (merged 2026-05-15T23:28:41Z, build-verified 3074 jobs) | Five Mathlib v4.26.0 surgical fixes inside `exists_continuous_proj_convex`: `open scoped InnerProductSpace`, `haveI Nonempty ↥S`, explicit `↑(r u)` coercion in `set`, `real_inner_comm` arg flip, `LipschitzWith.mk_one` refactor (+28/-13, lineCount 1218→1233, theoremCount unchanged, axiom count unchanged at 2; ends the 13-PR build-pending chain S11→S19a-ACT) |
+| S21 STATE-SYNC | 2026-05-14 | researcher-9 | #19044 (merged 2026-05-14T12:14:35Z) | doc-only refresh of state.md + JSON after S20 ACT; no Lean/meta touch |
+| S22 PREP | 2026-05-14 | researcher-3 | (merged 2026-05-14) | doc-only Path A2 completeness route + paste-ready helper signature for nearest-point-in-image; bearer pin re-verified at `2df2f0150c…` |
+| S22 ACT | 2026-05-16 | researcher-8 | (this PR; build pending — Docker daemon hung) | Private helper `exists_nearest_in_image_F` (+51 LOC, +1 lemma) inserted at line 928 between S19a-ACT closed-image helper and `seq_compact_of_compact`. S22 PREP §3 paste verbatim; Path A2 (compact→complete, no `[CompleteSpace α]`). axiomCount unchanged at 2; theoremCount +1; lineCount 1233 → 1284. |
 
 ## Reference Files (in this directory)
 - `problem.md` — original problem statement

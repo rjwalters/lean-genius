@@ -926,6 +926,57 @@ private lemma image_subtype_isClosed_of_isClosed_of_compact
   haveI : CompactSpace ↥S := isCompact_iff_compactSpace.mp hS_compact
   exact continuous_subtype_val.isClosedMap T hT_closed
 
+/-- **S19 step (b) helper (nearest-point in the ambient image of `F i`):**
+
+    For a compact `S ⊆ EuclideanSpace ℝ (Fin n)`, a set-valued map
+    `F : SetValuedMap (↥S) (↥S)` with nonempty closed values (in the
+    subtype `↥S`) whose ambient image is convex, and any base point
+    `i : ↥S` and target `u : EuclideanSpace ℝ (Fin n)`, the Hilbert
+    projection theorem produces a nearest point of
+    `Subtype.val '' F i` to `u`.
+
+    The proof chains:
+    * `IsClosed.isCompact` (`F i` closed in compact `↥S`)
+    * `IsCompact.image` (push compactness through `Subtype.val`)
+    * `IsCompact.isComplete` (compact → complete, no `[CompleteSpace α]`)
+    * `Set.Nonempty.image` (push nonemptyness through `Subtype.val`)
+    * `exists_norm_eq_iInf_of_complete_convex` (the Hilbert projection).
+
+    All five Mathlib bearers verified at pinned Mathlib rev
+    `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` by S22 PREP
+    (`sessions/2026-05-14-s22-prep-step-b-helper-and-completeness-route.md`),
+    which selected this tighter "compact → complete" route over the
+    S19b "closed-then-complete-with-CompleteSpace" route to avoid the
+    `[CompleteSpace α]` typeclass synthesis (same `IsCompact.isComplete`
+    dot-notation as the S14 site at file line 223).
+
+    **Use site (S19 step (c)–(d)).** Inside the eventual
+    `approx_selection_exists_proof`, applied at any
+    `i ∈ ρ.finsupport x` (from the S18e bundle) and
+    `u := (fC x : EuclideanSpace ℝ (Fin n))`, this lemma supplies the
+    witness `y ∈ F i` together with the minimal-norm certificate that
+    drives the §4.b graph-distance bound (S19 PREP §6 Step 6c). -/
+private lemma exists_nearest_in_image_F {n : ℕ}
+    (S : Set (EuclideanSpace ℝ (Fin n)))
+    (hS_compact : IsCompact S)
+    (F : SetValuedMap (↥S) (↥S))
+    (hF_ne : ∀ x, (F x).Nonempty)
+    (hF_closed : ∀ x, IsClosed (F x))
+    (hF_convex :
+      ∀ x, Convex ℝ ((Subtype.val '' F x) : Set (EuclideanSpace ℝ (Fin n))))
+    (i : ↥S) (u : EuclideanSpace ℝ (Fin n)) :
+    ∃ y ∈ ((Subtype.val '' F i) : Set (EuclideanSpace ℝ (Fin n))),
+      ‖u - y‖ = ⨅ w : ((Subtype.val '' F i) : Set _), ‖u - w‖ := by
+  haveI : CompactSpace ↥S := isCompact_iff_compactSpace.mp hS_compact
+  have hFi_ne_img :
+      ((Subtype.val '' F i) : Set (EuclideanSpace ℝ (Fin n))).Nonempty :=
+    (hF_ne i).image _
+  have hFi_complete :
+      IsComplete ((Subtype.val '' F i) : Set (EuclideanSpace ℝ (Fin n))) :=
+    (((hF_closed i).isCompact).image continuous_subtype_val).isComplete
+  exact exists_norm_eq_iInf_of_complete_convex hFi_ne_img hFi_complete
+          (hF_convex i) u
+
 /-- **Sequential Compactness in Metric Spaces**
 
     In a compact metric space, every sequence has a convergent subsequence.
