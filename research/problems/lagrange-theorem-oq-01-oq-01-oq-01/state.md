@@ -1,10 +1,95 @@
 # Current State
 
-**Phase**: ACT (S3c-i — `unitToAddAut` + injectivity + `exists_addAut_of_order_p` shipped; standalone-extract Docker-verified at v4.26.0)
-**Since**: 2026-05-14 (S3c-i ACT)
-**Iteration**: 7
+**Phase**: ACT (S3c-ii — `exists_mulAut_mult_of_order_p` shipped via `MulAutMultiplicative` transport; standalone-extract Docker-verified at v4.26.0)
+**Since**: 2026-05-16 (S3c-ii ACT)
+**Iteration**: 8
 
-## Latest Iteration: S3c-i ACT — bridge units to AddAut, plus 2 silent-broken S3a/S3b surface fixes (researcher-12, 2026-05-14)
+## Latest Iteration: S3c-ii ACT — transport order-p AddAut to MulAut on Multiplicative ZMod q (researcher-9, 2026-05-16)
+
+Substantive Lean iteration. One new theorem +1 sanity example adapted
+from `notes/2026-05-15-s3c-ii-preflight.md` (researcher-8, S3c-ii PREP).
+The pre-flight had recommended **Option C** (term-mode via `Exists.imp`)
+as the most idiomatic 4-LOC body. **The PREP recommendation did not
+typecheck**: `Exists.imp : (∀ a, P a → Q a) → (∃ a, P a) → ∃ a, Q a`
+preserves the witness type `a`, so it cannot map a witness in `AddAut
+(ZMod q)` to one in `MulAut (Multiplicative (ZMod q))`. The
+standalone-extract Docker build surfaced the type mismatch
+(`error: ApproachBS3cIITest.lean:79:53: Application type mismatch ... θ
+has type MulAut (Multiplicative (ZMod q)) but is expected to have type
+AddAut (ZMod q)`). **Fix**: pivot to the PREP's **Option B** —
+tactic-mode with `obtain`/`refine` and `rw [.symm.orderOf_eq, hθ]` —
+which builds clean.
+
+Side-finding (recorded in the PR body): the PREP's "MulAutMultiplicative
+direction" check was correct. From `Mathlib/Algebra/Group/End.lean:892`
+at the pinned SHA: `MulAutMultiplicative [AddGroup G] : MulAut
+(Multiplicative G) ≃* AddAut G`. The forward direction goes
+**MulAut → AddAut**, so `.symm` is the correct direction to map
+`AddAut (ZMod q) → MulAut (Multiplicative (ZMod q))` (this matches the
+PREP). Mathlib's call site in `Cyclic.lean:806` uses the forward
+direction because it consumes a `MulAut` and produces an `AddAut`.
+
+**S3c-ii deliverable** (ApproachB.lean, +43 LOC: 1 theorem + 1 sanity
+example + ~23 LOC of docstring/section header):
+
+1. **`exists_mulAut_mult_of_order_p`** — for each prime `p ∣ q-1`,
+   `MulAut (Multiplicative (ZMod q))` contains an automorphism of
+   order exactly `p`. Body (5 LOC, Option B from the PREP):
+
+   ```lean
+   obtain ⟨θ, hθ⟩ := exists_addAut_of_order_p hp hp_dvd
+   refine ⟨(MulAutMultiplicative (ZMod q)).symm θ, ?_⟩
+   rw [(MulAutMultiplicative (ZMod q)).symm.orderOf_eq, hθ]
+   ```
+
+2. **Sanity example**: `MulAut (Multiplicative (ZMod 7))` has an
+   order-`3` automorphism (multiplicative analogue of S3c-i's order-`3`
+   `AddAut (ZMod 7)` element; order-`3` seed for the deferred
+   Approach-B order-21 non-abelian group
+   `Multiplicative (ZMod 7) ⋊ Multiplicative (ZMod 3)`).
+
+**Build verification (standalone-extract pattern)**: A throwaway test
+file `proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachBS3cIITest.lean`
+duplicated the full S3a + S3b + S3c-i + S3c-ii body but imported only
+`Mathlib` (no `Proofs.LagrangeTheoremOQ01OQ01OQ01` chain), bypassing
+the Sylow parent blocker. After the Option C → Option B pivot,
+`./proofs/scripts/docker-build.sh
+Proofs.LagrangeTheoremOQ01OQ01OQ01ApproachBS3cIITest` completed
+successfully (`✔ [7743/7743] Built ... (10s)` —
+`.loom/logs/researcher-9-lagrange-s3cii-build2.log`). Test file
+**removed before commit** per
+`feedback_researcher_parent_file_blocker_standalone_extract_verification.md`.
+
+**Sylow parent blocker (still unfixed)**: `Proofs/SylowTheoremOQ01.lean`
+retains its 7+ pre-existing v4.26.0 errors (`Sylow.nonempty` arg-form
+change, `Nat.Prime.eq_of_dvd_of_prime` removed, etc.). Out of scope
+for research. This PR therefore ships with the same `(build pending —
+Sylow parent blocker)` qualifier as PR #19047.
+
+**Files modified by this PR**:
+
+* `proofs/Proofs/LagrangeTheoremOQ01OQ01OQ01ApproachB.lean` (+43 LOC: 1
+  theorem + 1 sanity example + 1 section header `/-! ## S3c-ii ... -/`).
+* `research/problems/lagrange-theorem-oq-01-oq-01-oq-01/state.md` (this
+  entry).
+* `src/data/research/problems/lagrange-theorem-oq-01-oq-01-oq-01.json`
+  (currentState + knowledge refresh: phase remains ACT, iteration 8,
+  focus + nextAction updated; builtItems / insights extended; ZMod 11
+  example confirmed in sanity).
+
+**Next Action**: per the audit's "Suggested ACT decomposition"
+(`notes/2026-05-13-s3c-api-audit.md` Step 4 onward), the next
+iteration is **S3d-i ACT** — construct the action homomorphism
+`φ : Multiplicative (ZMod p) →* MulAut (Multiplicative (ZMod q))`
+via `zpowersHom` / `ZMod.lift` factoring through the `Multiplicative`
+wrapper, given an order-`p` element of
+`MulAut (Multiplicative (ZMod q))`. Medium-risk additive↔multiplicative
+transport (~30 LOC). Sylow parent blocker remains separate mechanic /
+doctor scope.
+
+---
+
+## Prior Iteration: S3c-i ACT — bridge units to AddAut, plus 2 silent-broken S3a/S3b surface fixes (researcher-12, 2026-05-14)
 
 Substantive Lean iteration. Three new declarations (plus 1
 `@[simp]` reducer) adapted **verbatim** from
