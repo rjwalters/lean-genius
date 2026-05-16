@@ -21,6 +21,8 @@ NC='\033[0m' # No Color
 # Config
 STATE_FILE=".loom/lean-daemon-state.json"
 OLD_STATE_FILE="research/lean-daemon-state.json"
+DAEMON_PID_FILE="research/lean-daemon.pid"
+DAEMON_TMUX_SESSION="lean-daemon"
 ARISTOTLE_JOBS="research/aristotle-jobs.json"
 CANDIDATE_POOL=".lean/state/candidate-pool.json"
 
@@ -112,9 +114,27 @@ gather_status() {
     local daemon_uptime="N/A"
     local started_at=""
 
-    # Check daemon state file
+    # Cross-check liveness from real signals — the state-file `.running`
+    # has been observed stuck at the value from the last `launch.sh stop`
+    # for months, so trusting it alone produces both false negatives
+    # (daemon up, status says down) and false positives.
+    local tmux_alive=false
+    local pid_alive=false
+    if tmux has-session -t "$DAEMON_TMUX_SESSION" 2>/dev/null; then
+        tmux_alive=true
+    fi
+    if [[ -f "$DAEMON_PID_FILE" ]]; then
+        local _pid
+        _pid=$(cat "$DAEMON_PID_FILE" 2>/dev/null || echo "")
+        if [[ -n "$_pid" ]] && kill -0 "$_pid" 2>/dev/null; then
+            pid_alive=true
+        fi
+    fi
+    if $tmux_alive || $pid_alive; then
+        daemon_running=true
+    fi
+
     if [[ -f "$STATE_FILE" ]]; then
-        daemon_running=$(jq -r '.running // false' "$STATE_FILE")
         started_at=$(jq -r '.started_at // ""' "$STATE_FILE")
         if [[ -n "$started_at" && "$daemon_running" == "true" ]]; then
             local start_epoch
@@ -326,7 +346,20 @@ EOF
         if [[ "$daemon_running" == "true" ]]; then
             echo -e "  Daemon: ${GREEN}Running${NC} (uptime: $daemon_uptime)"
         else
-            echo -e "  Daemon: ${YELLOW}Not running${NC} (agents may still be active)"
+            # Count live agent tmux sessions other than the daemon itself.
+            # A daemon-down state is benign if nothing is running, but loud
+            # if agents exist — they're unsupervised: no respawn on STUCK,
+            # no token rotation, no scheduled work generation.
+            local _live_agents
+            _live_agents=$(tmux ls 2>/dev/null | grep -cE '^(researcher-|enricher-|mechanic-|auditor-|aristotle-|seeker-|deployer|tester-|herald-|peer-reviewer-)' || echo 0)
+            if [[ "$_live_agents" -gt 0 ]]; then
+                echo -e "  Daemon: ${RED}NOT RUNNING${NC} — ${RED}${_live_agents} agent session(s) are unsupervised${NC}"
+                echo -e "          ${YELLOW}Stuck agents will not be respawned; tokens will not rotate.${NC}"
+                echo -e "          ${YELLOW}Start the supervisor:${NC}"
+                echo -e "            ${BOLD}tmux new-session -d -s lean-daemon './scripts/lean/launch.sh daemon --monitor-only'${NC}"
+            else
+                echo -e "  Daemon: ${YELLOW}Not running${NC} (no agents active)"
+            fi
         fi
 
         # Schedule window (if active)
