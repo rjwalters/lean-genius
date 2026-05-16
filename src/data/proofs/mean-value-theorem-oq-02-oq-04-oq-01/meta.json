@@ -6,7 +6,7 @@
   "meta": {
     "author": "Lean Genius researchers (refutation by Runge counterexample, formalized 2026)",
     "date": "2026",
-    "status": "axiomatized",
+    "status": "verified",
     "proofRepoPath": "Proofs/MeanValueTheoremOQ02OQ04OQ01.lean",
     "tags": [
       "calculus",
@@ -20,10 +20,10 @@
       "analysis",
       "research"
     ],
-    "badge": "axiom",
+    "badge": "mathlib",
     "sorries": 0,
     "axiomCount": 0,
-    "lineCount": 705,
+    "lineCount": 758,
     "assumptions": "0 new axioms in this file. The parent file's axiom analytic_taylor_remainder_uniform_bound is shown mathematically false (Runge counterexample, fully formalized in section 2). The S1-S2 explicit-form RHS paired with partialSum n is also shown false (off-by-one refutation in section 3a via constant-1 witness on Complex, S3 contribution). After S7, zero sorries remain. The finite-radius form cauchy_diag_norm_bound_at_radius (the per-degree Cauchy coefficient estimate at a strict intermediate radius r prime in (0, R)) was discharged in S7 via Mathlibs Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le. The boundary form cauchy_diag_norm_bound (with norm of w over R) is PROVEN by limit-extraction (ContinuousAt + Filter.Tendsto along nhdsWithin Iio R + le_of_tendsto, S5 contribution). The section 3b main theorem analytic_taylor_remainder_uniform_bound_complex is fully proven.",
     "dateAdded": "2026-05-12",
     "mathlib_version": "4.26.0",
@@ -94,9 +94,9 @@
       "Identification of the Runge phenomenon as the root cause: real-analyticity + real sup bound does not yield Cauchy coefficient estimates because the complex radius of convergence (the distance to the nearest pole in ℂ) can be much smaller than the real interval radius (the distance to the nearest singularity on ℝ).",
       "Statement of the corrected complex-hypothesis version analytic_taylor_remainder_uniform_bound_complex with explicit Mathlib chain (HasFPowerSeriesOnBall.uniform_geometric_approx' + FormalMultilinearSeries.norm_mul_pow_le_mul_pow_of_lt_radius) for S2 discharge.",
       "Demonstration that the explicit R^n factor in the denominator (M·r^(n+1) / (R^n · (R-r))) is essential; the OQ-04 statement that absorbs R^n into M is too weak to be true under real-only hypotheses.",
-      "S4 (Iter 4): the §3b main theorem analytic_taylor_remainder_uniform_bound_complex is now fully proven modulo a single named sub-lemma cauchy_diag_norm_bound. The combination scaffolding (HasFPowerSeriesOnBall.hasSum_sub → per-term geometric bound via cauchy_diag_norm_bound → norm_sub_le_of_geometric_bound_of_hasSum at index n+1 → norm_sub_rev + field_simp + ring rescaling using 1 − r/R = (R−r)/R) is now Lean code, not docstring. Sorry count stays at 1 (moved from main-theorem black-box to a single Cauchy-coefficient gap)."
+      "S4 (Iter 4): the §3b main theorem analytic_taylor_remainder_uniform_bound_complex is now fully proven modulo a single named sub-lemma cauchy_diag_norm_bound. The combination scaffolding (HasFPowerSeriesOnBall.hasSum_sub → per-term geometric bound via cauchy_diag_norm_bound → norm_sub_le_of_geometric_bound_of_hasSum at index n+1 → norm_sub_rev + field_simp + ring rescaling using 1 − r/R = (R−r)/R) is now Lean code, not docstring. Sorry count stays at 1 (moved from main-theorem black-box to a single Cauchy-coefficient gap). (S7 follow-on: the Cauchy-coefficient gap was discharged in PR #19063 via Mathlib's Complex.norm_iteratedDeriv_le_of_forall_mem_sphere_norm_le; the file is now sorry-free.)"
     ],
-    "theoremCount": 13,
+    "theoremCount": 12,
     "definitionCount": 3
   },
   "overview": {
