@@ -17,13 +17,13 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-05-05T02:57:44.793Z",
-    "iteration": 1,
-    "focus": "Completed: proved k-prime CRT generalization with 0 sorries",
+    "since": "2026-05-06T00:00:00Z",
+    "iteration": 3,
+    "focus": "COMPLETED \u2014 axiomatized-final (S1 ACT 2026-05-06 shipped buDim_eq_sup_primeFactors + buDim_prod_primes_eq + concrete primorials 30/210/2310 native_decide, 247 LOC / 13 theorems / 0 sorries / 0 new axioms / 5 inherited parent axioms; S2 STATE-SYNC 2026-05-14 refreshed state.md from seeker-init stub to consolidated session log; S3 STATE-SYNC 2026-05-16 absorbs residual JSON drift \u2014 iter/since/lastUpdate/attemptCounts/focus/nextAction/nextSteps \u2014 and bootstraps sessions/ directory).",
     "blockers": [],
-    "nextAction": "None \u2014 proof complete",
+    "nextAction": "None \u2014 axiomatized-final. Mechanic handoff (one residual drift item, packaged as ready-to-paste in sessions/2026-05-16-s3-state-sync-completed-final.md \u00a73): canonical research-JSON leanFiles[] entry for Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ02.lean reports lineCount: 235; actual wc -l = 247 (gallery meta.json correctly says 247 in both meta.lineCount and leanFile.lineCount). Single-field correction; theoremCount/axiomCount/sorryCount all stable at 13/0/0. Mechanic can apply via enrich-research.ts re-run or narrow manual PR; sibling-slug precedent in PR #19464 (which fixed the analogous drift on the distinct 5-segment slug borsuk-ulam-oq-02-oq-01-oq-03-oq-02 but did not cover this 7-segment slug).",
     "attemptCounts": {
-      "total": 0,
+      "total": 3,
       "currentApproach": 0,
       "approachesTried": 0
     }
@@ -46,7 +46,10 @@
       "Nat.primeFactors_prime removed in Mathlib v4.26.0 \u2014 use Nat.mem_primeFactors + Finset.eq_singleton_iff_unique_mem",
       "Mathlib.Data.Finset.Lattice removed \u2014 use Mathlib.Data.Finset.Basic (Finset.sup_* available via Tactic import)"
     ],
-    "nextSteps": []
+    "nextSteps": [
+      "[COMPLETED-FINAL] axiomatized-final declared in S3 STATE-SYNC (2026-05-16). The slug's main contributions \u2014 buDim_eq_sup_primeFactors (CRT for all n \u2265 2) + buDim_prod_primes_eq (k-prime induction) + primorial-30/210/2310 native_decide cases \u2014 are stable since S1 ACT (2026-05-06). No further researcher work expected.",
+      "[MECHANIC HANDOFF] leanFiles[] entry for Proofs/BorsukUlamOQ02OQ01OQ01OQ02OQ03OQ02.lean has stale lineCount: 235 vs actual wc -l 247. Ready-to-paste correction in research/problems/borsuk-ulam-oq-02-oq-01-oq-01-oq-02-oq-03-oq-02/sessions/2026-05-16-s3-state-sync-completed-final.md \u00a73.2. Apply via mechanic PR or enrich-research.ts re-run. Other three counters (theoremCount=13, axiomCount=0, sorryCount=0) are correct."
+    ]
   },
   "tags": [
     "seeker-selected"
@@ -75,7 +78,7 @@
     "mathlib": []
   },
   "started": "2026-05-05T02:57:44.792Z",
-  "lastUpdate": "2026-05-05T02:57:44.792Z",
+  "lastUpdate": "2026-05-16T15:14:53Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
