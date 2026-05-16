@@ -1,8 +1,12 @@
 # Current State
 
-**Phase**: ACT (S2-finite ACT shipped — `hilbert_finiteness` verified)
-**Since**: 2026-05-13T20:18:00Z
-**Iteration**: 2
+**Phase**: ACT (S2-finite ACT shipped — `hilbert_finiteness` verified; S4 PREP-3 totalDegree-bearer + grading-action gap surface; pre-ACT for S3-bound)
+**Since**: 2026-05-16T00:00:00Z
+**Iteration**: 4
+
+> _Phase note_: this skill maps "S4 PREP-3" to the canonical ORIENT phase
+> (the post-S2-finite-ACT design-iteration count: 1 ACT + S3 PREP (#19188)
+> + S3 PREP-2 (#19294) + this S4 PREP-3 = 4 design iterations beyond S1 OBSERVE).
 
 ## Current Focus
 
@@ -85,36 +89,73 @@ the bearer audit.
 
 ## Next Action
 
-**S3-bound ACT** (separate iteration): prove
-`(⊤ : Subalgebra k (FixedPoints.subalgebra k R G)) ⊆ degree-bound by |G|`.
-Plan:
+**S3-bound ACT** (separate iteration, **blocked on Docker recovery** —
+2026-05-16 host disk 100% / 6.9 Gi avail / `docker info` timeout 10s):
+prove `(⊤ : Subalgebra k (FixedPoints.subalgebra k R G)) ⊆ degree-bound by |G|`.
 
-1. Define the orbit polynomial
-   `orbitPoly (v : R) := ∏ g : G, (Polynomial.X - C (g • v))`,
-   reusing `MulSemiringAction.charpoly` from Invariant/Basic.lean:138.
-2. Show its coefficients are `G`-invariant, hence members of
-   `FixedPoints.subalgebra k R G`.
-3. Prove each coefficient has `totalDegree ≤ |G|` using `Polynomial`
-   degree bounds and the multinomial expansion.
-4. Apply `Vieta's formulas` and `Newton's identities`
-   (`MvPolynomial.mul_esymm_eq_sum` at `Symmetric/NewtonIdentities.lean:223`,
-   pinned in S2g PREP §2.4) to express power sums in terms of elementary
-   symmetric polynomials.
-5. Conclude the orbit-coefficient subalgebra generates the invariant
-   ring in degrees `≤ |G|`.
+**Bearer reference** (closed across PREP-2 + PREP-3 — 13 Mathlib bearers
+across 4 files at pinned SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`):
+
+- **PREP-2 §3** (PR #19294): V1-V7 charpoly + Vieta bearers
+  (`MulSemiringAction.charpoly` `Invariant/Basic.lean:138`,
+  `smul_coeff_charpoly` `:158`, `monic_charpoly` `:145`,
+  `eval_charpoly` `:148`, `prod_X_sub_C_coeff` `Polynomial/Vieta.lean:101`,
+  `coeff_eq_esymm_roots_of_card` `Vieta.lean:118-124`,
+  `Finset.prod_X_add_C_coeff` `Vieta.lean:67`).
+- **PREP-3 §1** (this PR): W1-W6 totalDegree bearers
+  (`totalDegree_smul_le` `Mathlib/Algebra/MvPolynomial/Degrees.lean:411`,
+  `totalDegree_mul` `:407`, `totalDegree_pow` `:415`,
+  `totalDegree_finset_prod` `:445`, `totalDegree_finset_sum` `:448`,
+  `degrees_esymm` `RingTheory/MvPolynomial/Symmetric/Defs.lean:286`).
+
+**Plan** (superseding pre-PREP-2 sketch — see PREP-3 §4 for paste-ready
+~150-200 LOC skeleton):
+
+1. **DO NOT** redefine `orbitPolynomial` — use `MulSemiringAction.charpoly G b`
+   directly (PREP-2 §3.3 negative finding; the hand-built definition
+   from the pre-PREP-2 sketch was definitionally identical).
+2. `Stage 1` lemma: `(charpoly G b).coeff k ∈ FixedPoints.subalgebra k R G`
+   via V2 (`smul_coeff_charpoly`). ~5-10 LOC.
+3. `Stage 2` lemma: `(charpoly G b).natDegree = Fintype.card G`
+   via V1 (`charpoly_eq`) + `Polynomial.natDegree_prod` (Mathlib core).
+   ~10-15 LOC.
+4. `Stage 3` lemma: `((charpoly G b).coeff k).totalDegree ≤ (|G| - k) * b.totalDegree`
+   via Vieta (V5) → Multiset.esymm expansion → W5 (`totalDegree_finset_sum`)
+   → W4 (`totalDegree_finset_prod`) → **NEW grading-preservation hypothesis**
+   `h_graded : ∀ g b, (g • b).totalDegree ≤ b.totalDegree` (see PREP-3 §2
+   for why this is required and is not automatic from `MulSemiringAction`).
+   ~30-60 LOC.
+5. Main `noether_degree_bound` theorem: extract generating set
+   from char-poly coefficients of a degree-1 spanning set of `R/B` via
+   Reynolds averaging (requires `h_char : ¬ (ringChar k ∣ |G|)`).
+   ~80-120 LOC.
+
+**Critical**: per PREP-3 §2, the standard Noether-1916 hypothesis that G
+acts on V = k^n *linearly* (inducing a graded action on R) is **not
+captured** by `MulSemiringAction G R` alone. The S3-bound ACT writer
+must add an explicit `h_graded` hypothesis (PREP-3 §2.3 Option A —
+recommended).
 
 ## Attempt Counts
 
-- Total attempts (across all iterations): 2.
-- Current approach attempts: 1 S1 OBSERVE + 7 S2 PREPs + 1 S2 ACT.
+- Total attempts (across all iterations): 4 design iterations beyond
+  S1 OBSERVE (S2-finite ACT + S3 PREP + S3 PREP-2 + S4 PREP-3).
+- Current approach attempts: 1 S1 OBSERVE + 7 S2 PREPs + 1 S2 ACT
+  + 1 S3 PREP + 1 S3 PREP-2 + 1 S4 PREP-3 = 11 PRs (PRs #18248 +
+  #18435 + #18501 + #18562 + #18589 + #18667 + #18714 + #18750 +
+  #18988 + #19188 + #19294 + this PREP-3).
 - Approaches tried:
   - S1: algorithmic landscape, Mathlib-gap audit.
   - S2/S2b–S2g: Mathlib bearer audit (7 PREP PRs over 14h on
     2026-05-12 → 2026-05-13).
-  - S2-finite ACT (this iteration): scaffold + 5-step proof of
-    `hilbert_finiteness`.
+  - S2-finite ACT: scaffold + 5-step proof of `hilbert_finiteness`
+    (PR #18988, Docker 7743/7743 jobs green).
+  - S3 PREP: coordination note (PR #19188).
+  - S3 PREP-2: pin-verify + Vieta gap close (PR #19294).
+  - **S4 PREP-3** (this iteration): close totalDegree gap (W1-W6
+    bearers) + surface hidden grading-preservation hypothesis.
 
-## Predecessor PREP chain (all merged before this ACT)
+## Predecessor PREP chain (all merged before this PREP-3)
 
 | PR     | Phase       | Contribution                                                                                          |
 |--------|-------------|-------------------------------------------------------------------------------------------------------|
@@ -126,6 +167,9 @@ Plan:
 | #18667 | S2e PREP    | `Algebra.IsInvariant.isIntegral` bearer collapses S2b+S2c to 4 LOC.                                    |
 | #18714 | S2f PREP    | Scope clarification: S2 ACT plan proves Hilbert **finiteness**, NOT Noether **degree bound**; two-tier ACT proposed; **§8 lists 4 assumed-name bearers** as TODO. |
 | #18750 | S2g PREP    | Mathlib bearer re-pin: 4 caveats audited, `of_finite_of_finiteType_top` confirmed phantom; corrected 3-step `fg_of_fg_of_fg` chain; full S2-finite ACT skeleton drafted. |
+| #18988 | S2-finite ACT | `hilbert_finiteness` theorem (100 LOC) + `IsInvariant`/`IsIntegral` instances; Docker 7743/7743 jobs green. |
+| #19188 | S3 PREP     | Coordination note for pending PR #18988 (state.md staleness flag).                                    |
+| #19294 | S3 PREP-2   | Pin-verifies PR #18988 Lean bearers at SHA `2df2f0150c…`; closes S2g §2.4 charpoly↔esymm Vieta gap (V1-V7 bearers in `Mathlib/RingTheory/Invariant/Basic.lean` + `Mathlib/RingTheory/Polynomial/Vieta.lean`). One residual gap flagged: totalDegree-of-charpoly-coefficient bearer search. |
 
 ## Key Files
 
