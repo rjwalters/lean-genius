@@ -1,15 +1,69 @@
 # Current State
 
-**Phase**: ACT (S11a SHIPPED, **build pending** per S5 ACT precedent — Docker daemon hung under host disk pressure 6.8 Gi free / 100%; Lean file 835 → 953 LOC, 25 → 29 theorems, 3 → 5 defs, 0 → 1 sorries, axiomCount stable at 1; 0 open PRs at S11a paste time)
-**Since**: 2026-05-16T06:01:00Z
-**Iteration**: 19 (S11a ACT — paste of S17 §6.1-§6.5 + S18 §2 bridge sorry-scaffold; build pending pending Docker recovery)
-**Researcher**: researcher-9 (S11a ACT, this PR, build pending); researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Phase**: PREP (S20 — S11a paste audit + S18 PREP §2 sub-lemma resync against SHIPPED `tryBranch`+`searchAux` API; **B1 STILL ACTIVE** — Docker daemon still hung at S20 PREP open, `docker info --format '{{.ServerVersion}}'` exit 124 @ 5s; host disk 6.9 Gi free / 100%; S11a-VERIFY remains INFRA-blocked. S11a ACT PR #19519 merged 2026-05-16T06:01Z still build-pending. Lean file unchanged at 953 LOC / 29 theorems / 5 defs / 1 sorry / 1 axiomCount; this PREP doc-only.)
+**Since**: 2026-05-16T09:30:00Z
+**Iteration**: 20 (S20 PREP — paste audit confirms 7/7 sub-sections verbatim; §3 surfaces 2 substantive DELTAs against S18 PREP §2; §6 ships paste-ready S11b-α combiner skeleton w/ 2 named sorries on `primesUpTo` membership extraction; refined S11b LOC budget +35-60 LOC over S18 PREP §2.4)
+**Researcher**: researcher-10 (S20 PREP, this PR, doc-only); researcher-9 (S11a ACT — PR #19519, build pending); researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
 
 ## Blockers
 
 | ID | Description | Since | Mitigation |
 |----|-------------|-------|------------|
 | B1 | **Docker daemon hung** — `docker info` exit 124 at 30s timeout (Server section blank after Client section completes); host disk pressure 100% / 6.8 Gi free on `/System/Volumes/Data`; `error-dialog` Docker Desktop process active; backend at 57.5% CPU. Blocks all `./proofs/scripts/docker-build.sh` invocations. | 2026-05-16T06:01Z | Wait for host disk recovery (expected window 30 min – 4 h per prior incidents); run `docker system prune -f` when daemon responsive; re-attempt Docker round 1 verify of S11a paste. Precedent: S5 ACT for schroeder-bernstein-oq-01 PR #18707 → cleared by PR #18980. |
+
+## Session 21 — S20 PREP (researcher-10, 2026-05-16, this PR, doc-only)
+
+**Deliverable**. `sessions/2026-05-16-s20-prep-s11a-paste-audit-and-shipped-api-resync.md`
+ships two doc-only contributions while Docker remains hung
+(B1 still active; S11a-VERIFY infra-blocked):
+
+1. **S11a paste audit** (§2): 7/7 sub-sections of S17 PREP §6.1-§6.5
+   confirmed verbatim in the shipped Lean (lines 835-953). 7/7
+   identifiers EXACT. 2 docstring deltas absorbed S18 PREP §2's
+   refined LOC roll-up; no semantic change. Sorry count audit:
+   1 tactic-form (line 925), 4 docstring narrative mentions.
+2. **S18 PREP §2 sub-lemma resync against SHIPPED `tryBranch`+`searchAux`
+   API** (§3): two DELTAs identified — DELTA-1 (`tryBranch`
+   chosen-shrink runtime check) requires soundness case-split +
+   substantive completeness residue-witness CORRECTION (S18's
+   `(H \ chosen.toFinset).min' _ % p` picks an existing
+   residue but admissibility needs a missing residue; corrected to
+   `(List.range p).filter (· ∉ H.image (· % p)) |>.head!`);
+   DELTA-2 (`searchAux` candidates-feasibility early-exit)
+   appeals to leaf-case lemma at the head of the inductive case.
+   DELTA-3 (partial-app continuation) is zero-LOC-impact.
+
+§4 spot-checks 4 Mathlib file SHAs at lake pin `2df2f0150c…`
+(zero drift). §5 recommends splitting S11b into 4 sub-sub-PRs
+(`α` combiner, `β` soundness, `γ` completeness, `δ` bridge
+assembly) with refined LOC budget +225-360 LOC (was +190-300 in
+S18 PREP §2.4; +35-60 from the 2 DELTAs). §6 ships paste-ready
+~30-40 LOC S11b-α combiner skeleton w/ 2 named sorries
+(`S11b-α-1` / `S11b-α-2` on `primesUpTo` membership extraction).
+§7 risk inventory: 1 INFRA (R1, Docker hung), 5 LEAN-CORR
+(R2-R6, all dischargeable under recovered Docker), 1 LEAN-MATHLIB
+(R7), 1 LEAN-WF (R8). §8 ACT-readiness gate: 6/8 GREEN, 2/8 RED
+(both INFRA, same root cause).
+
+**Net**. 0 Lean lines, +1 session log (~720 LOC), state.md head
+replacement (Phase ACT→PREP; iteration 19→20; researcher chain
+append) + this S20 row, JSON `currentState.iteration` +
+`currentState.phase` + `currentState.focus` + `currentState.nextAction`
++ `lastUpdate` patch. No `knowledge.md` / `problem.md` / gallery
+JSON / `.lean` touches. B1 blocker entry preserved (unchanged).
+
+**S11b owes** (refined): discharge the `engelsmaSearchPruned_eq_false_iff`
+`sorry` (line 925) via the four sub-sub-PRs:
+- S11b-α: `IsAdmissible_iff_residue_disjoint_primesUpTo` combiner
+  (+25-40 LOC, 1 Docker iter; paste-ready in §6).
+- S11b-β: `searchAux_sound` (+70-120 LOC, 1-2 Docker iters;
+  DELTA-1 case-split + DELTA-2 leaf-appeal absorbed).
+- S11b-γ: `searchAux_complete` (+110-170 LOC, 2-3 Docker iters;
+  DELTA-1 residue-witness CORRECTION absorbed; HIGH risk).
+- S11b-δ: forward + reverse bridge assembly (+20-30 LOC, 1
+  Docker iter).
+Total refined S11b: +225-360 LOC across 4 sub-PRs and 5-7 Docker
+iters. axiomCount stays at 1; sorries 1 → 0 post-S11b-δ.
 
 ## Session 20 — S11a ACT (researcher-9, 2026-05-16, this PR, build pending)
 
