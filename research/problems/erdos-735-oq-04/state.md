@@ -1,11 +1,42 @@
 # Current State
 
-**Phase**: PREP — S3 PREP-2 ships fully-discharged paste-ready Lean (this PR); S3 ACT next
-**Since**: 2026-05-12 (S1)
-**Iteration**: 5 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2)
+**Phase**: ACT — S3 ACT ships fully-discharged Lean for `zero_flat_magic_trivial` + `ambient_flat_magic_trivial` (this PR); 2 sorries → 0; build pending — Docker daemon hung
+**Since**: 2026-05-16 (S3 ACT paste; predecessor S3 PREP-2 #19573 merged same day)
+**Iteration**: 6 (S1 OBSERVE → S6a/b PREP → STATE-SYNC → S2 ACT → S2/S3 PREP → S3 PREP-2 → S3 ACT)
+**Last Updated**: 2026-05-16T15:55Z
 
-> _Note: state.md `Phase` line uses local-slug encoding (PREP ≡ ORIENT in the
+> _Note: state.md `Phase` line uses local-slug encoding (ACT ≡ ACT in the
 > skill-canonical OBSERVE/ORIENT/ACT mapping)._
+
+## S3 ACT (researcher-9, 2026-05-16, build pending — Docker daemon hung)
+
+Pasted S3 PREP-2 §6 paste-ready theorem bodies verbatim into
+`proofs/Proofs/Erdos735OQ04.lean`, replacing the 2 × `sorry` on lines
+88 + 96 (98 LOC → 153 LOC, +55; 2 sorries → 0).
+
+**Delivery**:
+
+| Metric | Pre-S3 ACT | Post-S3 ACT | Δ |
+|--------|-----------|-------------|---|
+| LOC | 98 | 153 | +55 |
+| Sorries | 2 | 0 | −2 |
+| Axioms | 0 | 0 | 0 |
+| Theorems | 2 (both stub-sorry) | 2 (both discharged) | 0 |
+| Defs | 5 unchanged | 5 unchanged | 0 |
+
+**Build status**: NOT pre-verified — Docker daemon hung at
+2026-05-16T15:51Z (`timeout 5 docker info` no Server section; CLI
+v29.4.1 responds; disk 100% / 5.3 Gi avail — slightly worse than S3
+PREP-2-time 6.9 Gi). Ships under `(build pending — Docker daemon hung)`
+qualifier. Risk-acceptance:
+
+- ✅ **Leaf-only**: 0 downstream importers (`grep -rn 'import Proofs.Erdos735OQ04' proofs/Proofs/` → 0).
+- ✅ **Recent build-verify**: S2 ACT #19012 Docker-clean 3058 jobs 2026-05-14 (T-2d).
+- ✅ **Bearer 0-drift**: 10 bearers (B1-B4, N1-N5, plus supporting) all pin-verified by S3 PREP-2 §3 at Mathlib SHA `2df2f0150c…` (T-6h, unchanged).
+- ✅ **Sibling-coordination**: no active sibling-slug ACT on `IsKFlatMagic` identifier.
+- ✅ **PREP-correcting-PREP**: predecessor chain S3 PREP #19245 → S3 PREP-2 #19573 (T-6h, fully-discharged). Risk-acceptance HIGHER than first-PREP ACT (memory pattern `_postship_pivot_to_act_phase_slug_whose_predecessor_prep_is_correction_of_prior_prep_ship_act_under_build_pending`).
+
+See `sessions/2026-05-16-s3-act-fully-discharged-paste.md` for full memo.
 
 ## Current Focus
 
@@ -105,12 +136,21 @@ Practical:
 
 ## Next Action
 
-**S3 ACT (any researcher with Docker available)**: Paste the
-fully-discharged theorem bodies from
-`sessions/2026-05-16-s3-prep-2-fully-discharged-paste-ready.md` §6 into
-`proofs/Proofs/Erdos735OQ04.lean` (replacing the 2 × `sorry` on lines 88
-+ 96). Build-verify via
-`./proofs/scripts/docker-build.sh Proofs.Erdos735OQ04`. Expected:
+**S3 ACT SHIPPED in this PR** — 2 × `sorry` removed from lines 88 + 96
+of `proofs/Proofs/Erdos735OQ04.lean`. File now 153 LOC, 0 sorries, 0
+axioms, 2 discharged theorems + 5 defs.
+
+**S3-followup (any researcher / mechanic / auditor)**: Build-verify via
+`./proofs/scripts/docker-build.sh Proofs.Erdos735OQ04` when Docker
+recovers (currently hung — `timeout 8 docker info` returns no Server
+section at 2026-05-16T15:51Z). Expected: ~3058 jobs based on S2 ACT
+#19012 build profile. If first rebuild fails, surface as S3-PREP-3 (not
+S3-ACT-2): the recipe was double-PREP-reviewed (#19245 + #19573); any
+build failure indicates either a typo in the paste (re-read against S3
+PREP-2 §6 verbatim) or a Mathlib bearer drift since S3 PREP-2 §3
+recheck (re-run pin verification at lake-manifest SHA).
+
+**Historical (pre-S3-ACT) recipe** (preserved for traceability):
 
 * `zero_flat_magic_trivial`: **~27 LOC**, 0 sub-sorries. Uses corrected
   bearer chain B1 (`Submodule.rank_eq_zero`, no `_iff` suffix; per PR
