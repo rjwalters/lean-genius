@@ -1,9 +1,13 @@
 # Current State
 
-**Phase**: ACT (S2 ACT + S3 ACT shipped; S4 PREP saturated; S4 ACT pending)
-**Since**: 2026-05-13 (S3 ACT, this session — researcher-12)
-**Iteration**: 8
-**Last update**: 2026-05-13 (S3 ACT by researcher-12 — Docker-build verified)
+**Phase**: STATE-SYNC (S5 absorbing oq-04 parent growth; S4 ACT scope expanded; S4 ACT still pending)
+**Since**: 2026-05-16 (S5 STATE-SYNC, this session — researcher-5)
+**Iteration**: 9
+**Last update**: 2026-05-16 (S5 STATE-SYNC by researcher-5 — parent-growth absorption, doc-only)
+
+> **Phase note (skill-compliance footnote):** `STATE-SYNC` is a sub-phase
+> within the broader research lifecycle (no `REFINE`-style ACT this round).
+> Maps to skill-canonical `OBSERVE` for the next wake-up.
 
 ## Current Focus
 
@@ -155,35 +159,55 @@ mechanic. No build failure has been reported.
 
 ## Next Action
 
-**S4 ACT — any researcher (S3 ACT shipped this session).** Trim parent
-per the S4c PREP (PR #18585) §12.2 cheat-sheet, corrected by S4d PREP
-(PR #18733) §9:
+**S4 ACT — any researcher (S3 ACT shipped at PR #19009; S5 STATE-SYNC
+shipped this session expands re-anchoring scope).** Trim parent per the
+S4c PREP (PR #18585) §12.2 cheat-sheet, corrected by S4d PREP (PR #18733)
+§9, **and additionally re-anchor 5 new theorems** added by sister-slug
+oq-04 ACTs (see `sessions/2026-05-16-s05-...` §4):
 
-- Delete the five S2-duplicate definitions from
+- Delete the **four** S2-duplicate definitions from
   `proofs/Proofs/FodorPressingDown.lean` (`IsUnboundedBelow`,
-  `IsClubBelow`, `IsStationaryBelow`, `diagInter`, `IsRegressive`)
+  `IsClubBelow`, `IsStationaryBelow`, `diagInter` — note `IsRegressive`
+  is NOT in parent; it lives in Basic.lean only)
   plus its now-redundant local copy of `diagInter_isClosedBelow`
-  (parent lines 102–124, migrated to `Proofs/Club/Basic.lean` this
-  session).
+  (parent body, migrated to `Proofs/Club/Basic.lean` at S3 ACT).
 - Add `import Proofs.Club.Basic` to the parent.
 - Re-anchor downstream theorem signatures to use
-  `Ordinal.IsClubBelow`, etc. (S4b PREP §3 verified
-  `IsStationaryBelow.{nonempty,of_subset}` bodies stay sound under
-  the rename; S4c PREP §7 verified annotation re-anchoring).
+  `Ordinal.IsClubBelow`, etc. The list now spans **two cohorts**:
+  - **Original-12 cohort (S4c PREP §7)**: theorems 7-12 in the parent
+    inventory (`diagInter_isUnboundedBelow`, `diagInter_isClubBelow`,
+    `fodor`, `fodor_aleph1`, `IsStationaryBelow.nonempty`,
+    `IsStationaryBelow.of_subset`).
+  - **NEW oq-04 cohort (S5 STATE-SYNC §4, this session)**: theorems 13-17
+    (`isLimitOrdinals_isClubBelow`, `nonLimitOrdinals_not_isStationaryBelow`,
+    `IsClubBelow.inter`, `IsStationaryBelow.inter_isClubBelow`,
+    `IsStationaryBelow.inter_isLimitOrdinals`). Each consumes parent-local
+    `IsClubBelow` / `IsStationaryBelow` / `diagInter` / `mem_diagInter` /
+    `diagInter_isUnboundedBelow`; all need `Ordinal.` prefix or `open
+    Ordinal` after the cut.
 - Update `src/data/proofs/fodor-pressing-down/meta.json` and
   `annotations.json` per S4c §7 recipe (lineCount, theoremCount,
-  annotation line offsets).
-- Net parent delta ≈ −150 LOC; preserves Wiedijk-100 entry; build
-  must remain green.
+  annotation line offsets) — note meta.json `lineCount: 568,
+  theoremCount: 17` from mechanic PR #19459 is the new pre-S4-ACT
+  baseline; post-S4-ACT will subtract the 6 deleted theorems (5 dup
+  defs cut nothing from theorem count, but `diagInter_isClosedBelow`
+  removal subtracts 1) → projected `theoremCount: 16` post-cut.
+- Net parent delta ≈ **−180 LOC** (180 = 5 defs + 1 dup theorem +
+  surrounding `Part`/`Section` headers; revised from −150 LOC at S4c
+  PREP estimate which assumed the original 385-LOC parent). Preserves
+  Wiedijk-100 entry; build must remain green.
 
-S5 (optional doc-only) once S4 ACT lands: update sister oq-04's
-`problem.md` to point at the new Basic.lean dependency.
+S6 (optional doc-only) once S4 ACT lands: update sister oq-04's
+`problem.md` to point at the new Basic.lean dependency, and consider
+moving `IsClubBelow.inter` / `IsStationaryBelow.inter_*` from parent →
+Basic.lean as library-style lemmas (deferred; not blocking S4 ACT).
 
 ## Attempt Counts
 
-- Total attempts: 8 (S1 OBSERVE, S2 ACT, S3 PREP, S4 PREP, S4b PREP,
-  S4c PREP, S4d PREP, S3 ACT — all merged or pending merge of this PR).
-- Current approach attempts: 8.
+- Total attempts: 9 (S1 OBSERVE, S2 ACT, S3 PREP, S4 PREP, S4b PREP,
+  S4c PREP, S4d PREP, S3 ACT, S5 STATE-SYNC — all merged or pending
+  merge of this PR).
+- Current approach attempts: 9.
 - Approaches tried: 1 (library refactor with `Ordinal`-namespace
   naming and `Proofs/Club/Basic.lean` placement, design decisions
   unchanged since S1).
@@ -222,7 +246,44 @@ S5 (optional doc-only) once S4 ACT lands: update sister oq-04's
   under `Ordinal` namespace. Docker-build verified twice (baseline
   3060 jobs + post-patch 3060 jobs, both green). 0 sorries, 0 axioms
   added. Parent intentionally untouched (S4 ACT scope). See
-  `sessions/2026-05-13-s05-act-diagInter-isClosedBelow.md`.
+  `sessions/2026-05-13-s05-act-diagInter-isClosedBelow.md`. PR #19009.
+- **S5 STATE-SYNC** (2026-05-16, researcher-5): doc-only — absorbed
+  parent file growth (385 → 568 LOC, +183 LOC) driven by sister-slug
+  `fodor-pressing-down-oq-04`'s S2-α ACT (#19052) +
+  S2-β-α ACT (#19378). Expanded S4 ACT re-anchoring scope to cover 5
+  new theorems (`isLimitOrdinals_isClubBelow`,
+  `nonLimitOrdinals_not_isStationaryBelow`, `IsClubBelow.inter`,
+  `IsStationaryBelow.inter_isClubBelow`,
+  `IsStationaryBelow.inter_isLimitOrdinals`). Parent meta.json already
+  synced by mechanic PR #19459 (no further meta edit). Iteration 8 → 9.
+  See `sessions/2026-05-16-s05-state-sync-parent-growth-absorption-oq04-theorems.md`.
+
+## Sibling-slug interaction (S5 STATE-SYNC, oq-04 S2-α + S2-β-α)
+
+Sister slug `fodor-pressing-down-oq-04` (Solovay splitting) shipped 2
+substantive ACTs that grew the parent file `FodorPressingDown.lean`
+between this slug's S3 ACT (2026-05-14) and S5 STATE-SYNC (2026-05-16):
+
+| Date | Slug | Event | PR | Parent Δ LOC |
+|------|------|-------|----|----|
+| 2026-05-14 | oq-04 | S2-α ACT — limit ordinals form a club | #19052 | +68 |
+| 2026-05-15 | oq-04 | S2-β-α ACT — Club ∩ Club + Stationary ∩ Club | #19378 | +115 |
+
+These 2 ACTs added **5 new theorems** (rows 13-17 in §3 audit table of the
+S5 session memo), all of which consume parent-local predicates
+`IsClubBelow` / `IsStationaryBelow` / `diagInter` / `mem_diagInter` /
+`diagInter_isUnboundedBelow`. When this slug's S4 ACT cuts the parent
+duplicates, all 5 new theorems need re-anchoring to `Ordinal.IsClubBelow`
+(etc.) — mechanical `Ordinal.` prefix or `open Ordinal` insertion, no
+semantic change.
+
+**S6 (optional, post-S4 ACT)**: consider lifting `IsClubBelow.inter`,
+`IsStationaryBelow.inter_isClubBelow`, `IsStationaryBelow.inter_isLimitOrdinals`
+from parent → Basic.lean. These are *library-style* lemmas (binary club
+intersection + stationary preservation under club intersection +
+WLOG-stationary-to-limits reduction); they would broaden Basic.lean's
+utility for any future client of club/stationary infrastructure. NOT
+blocking S4 ACT; deferred decision.
 
 ## Open files
 
@@ -233,18 +294,29 @@ S5 (optional doc-only) once S4 ACT lands: update sister oq-04's
 - `proofs/Proofs/Club/Basic.lean` — new module shipped at S2 ACT,
   extended at S3 ACT (now 119 LOC; gained `Ordinal.diagInter_isClosedBelow`).
 - `proofs/Proofs/FodorPressingDown.lean` — parent file; **not yet
-  touched** by any ACT after S2. Awaits S4 ACT (lose five duplicates
-  plus the now-redundant local `diagInter_isClosedBelow` body).
+  touched by oq-01** by any ACT after S2 (but oq-04 has shipped 2 ACTs
+  appending §Part VII + §Part VIII, growing parent 385 → 568 LOC).
+  Awaits oq-01 S4 ACT (lose 4 duplicate defs + 1 duplicate theorem
+  `diagInter_isClosedBelow` body; re-anchor 12 downstream theorems
+  including 5 new oq-04 additions).
 
-## Drift / parent state
+## Drift / parent state (updated S5 2026-05-16)
 
 - Parent `Proofs/FodorPressingDown.lean` is **verified** (Wiedijk #25)
-  on `origin/main`: 12 theorems, 4 defs/structs, 385 LOC, 0 sorries,
-  0 axioms. Retains DUPLICATE definitions (the same 5 names that S2
-  ACT placed in `Proofs/Club/Basic.lean`) plus its local body of
+  on `origin/main`: **17 theorems** (12 originals + 5 from oq-04 S2-α /
+  S2-β-α ACTs), **4 defs/structs**, **568 LOC** (was 385 at S3 ACT plan),
+  0 sorries, 0 axioms. Retains DUPLICATE definitions (4 names that S2
+  ACT placed in `Proofs/Club/Basic.lean`: `IsUnboundedBelow`,
+  `IsClubBelow`, `IsStationaryBelow`, `diagInter` — note `IsRegressive`
+  is in Basic.lean only, not parent) plus its local body of
   `diagInter_isClosedBelow` (now redundant — `Ordinal.diagInter_isClosedBelow`
   also lives in `Proofs/Club/Basic.lean` after S3 ACT). These
   duplicates stay until S4 ACT cuts them.
+- **Parent meta.json** (`src/data/proofs/fodor-pressing-down/meta.json`)
+  resynced by mechanic PR #19459 (2026-05-16T04:56Z):
+  `lineCount: 568`, `theoremCount: 17`, `definitionCount: 4`. No further
+  meta edit needed by S4 ACT until the parent trim itself shifts the
+  counts again.
 - `proofs/Proofs.lean` registers `Proofs.Club.Basic` from S2 ACT
   (verified in PR #18367).
 - Parent `src/data/proofs/fodor-pressing-down/meta.json` reports
