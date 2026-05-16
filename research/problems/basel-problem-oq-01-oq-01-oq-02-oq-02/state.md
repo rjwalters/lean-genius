@@ -1,8 +1,92 @@
 # Current State
 
-**Phase**: PREP
+**Phase**: PREP-3
 **Since**: 2026-05-16
-**Iteration**: 17
+**Iteration**: 18
+
+## Session 18 (2026-05-16, PREP-3 — S17a ACT elaboration-risk discharge via project-internal usage evidence + INFRA disk-degradation reaffirm, doc-only)
+
+Doc-only PREP-3 iteration that discharges S17 PREP §4.1's 6
+documented elaboration risk points via grep evidence of the
+load-bearing Lean constructs already in active use across the
+project's ~1500 `proofs/Proofs/` files at the same Mathlib-pin
+SHA. The S17 §4 skeleton stays paste-ready; this PREP-3 only
+*tightens* its safety margin from "fallback recipes documented"
+to "fallback unnecessary; project verifies API".
+
+### What S18 PREP-3 adds
+
+| § | Risk (per S17 §4.1) | Discharge evidence |
+|---|---|---|
+| 2.1 | `Finsupp.add_apply` may need `Pi.add_apply` companion | 5 project files use the two-lemma `simp only [..., Pi.add_apply, ...]` form (Minkowski OQ02 OQ01, CauchySchwarz Integral, Hilbert 11, Erdos 268, Stubs Erdos 107). Discharge: write `simp only [Finsupp.add_apply, Pi.add_apply]` up front. |
+| 2.2 | `Nat.le_log_of_pow_le` may need unprefixed form | **Same-slug-family** files use `Nat.le_log_of_pow_le` prefixed (BaselProblemOQ01OQ01OQ02Aristotle, BaselProblemOQ01OQ01OQ02OQ03). S17 §4 line verbatim. |
+| 2.3 | `set` tactic standard | 20+ uses across sibling Aristotle + OQ03 files. 0 risk. |
+| 2.4 | `Nat.eq_zero_of_dvd_of_lt` pipe-style `\|>` may not elaborate | 4 project files use `Nat.mod_eq_zero_of_dvd h_pi_dvd_m` directly (InfinitudePrimes4k3, DivisibilityByThree, Erdos 1057, Erdos 700). S17 §4.2 cleaner variant is the project norm; use it verbatim. |
+| 2.5 | `Nat.card_Ico` rewrite shape | 5 project files (Erdos 1059, Erdos 1000 ×2, FairGames Theorem, Erdos 28) rewrite to `b - a` directly via `rw [Nat.card_Ico]`. Discharge with `omega` closure on the surrounding linear arithmetic; eliminates the chained `Nat.succ_sub_succ_eq_sub` + `Nat.add_sub_of_le` calc. |
+| 2.6 | `Nat.add_sub_of_le` closes arithmetic | `omega` is project's saturated linear-arithmetic norm (800+ sites). 0 risk. |
+
+**Cleaned skeleton diff in §3**: -5 LOC vs S17 §4 via `omega`
+closure of the final arithmetic chain; 0 sorries unchanged.
+
+### INFRA reaffirm
+
+| Metric | S15 ACT (Docker-clean) | S17 PREP | S18 PREP-3 (this) | Δ |
+|---|---|---|---|---|
+| Docker daemon | Active (3058 jobs) | Hung | Hung (`Server:` header empty) | persistent ~14h |
+| Disk avail | N/A | 6.9 Gi / 100% | **3.5 Gi / 100%** | **-3.4 Gi in 4h** |
+| Lake SHA | `2df2f0150c…` | `2df2f0150c…` | `2df2f0150c…` | 0 drift (5 PREPs) |
+
+The disk degradation is the load-bearing INFRA story: at 3.5 Gi
+avail, even a Docker-recovery wouldn't safely fit Mathlib clone
+(~3.5 Gi). S18 ACT under build-pending qualifier is the most
+likely next ship.
+
+### S17a ACT readiness gate (POST-S18 PREP-3)
+
+| # | Criterion | S17 PREP | This | Notes |
+|---|---|---|---|---|
+| G1 | Predecessor PREP merged | ✅ | ✅ | #19567 T+4h |
+| G2 | Mathlib pin stable | ✅ | ✅ | 17h unchanged |
+| G3 | Bearers verified | ✅ 16/16 | ✅ inherited | No re-spot-check needed |
+| G4 | Skeleton 0 sorries | ✅ | ✅ | post-discharge |
+| G5 | §4.1 risks discharged | ⚠ "fallbacks docs" | ✅ **6/6 via project usage** | this PREP-3's headline |
+| G6 | Cleaned diff | — | ✅ §3 | -5 LOC, omega-closed |
+| G7 | Slug audit clean | ✅ | ✅ | S15 ACT 3058 jobs |
+| G8 | No competing open PRs | ✅ | ✅ | 0 results |
+| G9 | Docker daemon | ❌ hung | ❌ hung 14h+ | persistent |
+| G10 | Disk headroom | ⚠ 6.9 Gi | ❌ **3.5 Gi** | clone-pressure threshold |
+
+**Readiness**: 8/10 GREEN substantive (one more discharged from
+S17's 7-soft-GREEN/1-amber-G5), 2/10 RED INFRA (G9+G10).
+
+### Counts (post-S18 PREP-3, unchanged from S17 because doc-only)
+
+| Metric | Value |
+|--------|-------|
+| File LOC | 905 (unchanged from S15) |
+| Sorries | 0 (unchanged; §3 cleaned skeleton has 0 sorries) |
+| Axioms | 0 (unchanged) |
+| Theorems | 36 (unchanged) |
+| Build | verified clean (3058 jobs, S15 baseline; lifted post-S11 BUILD-REPAIR) |
+
+**Files changed**: this state.md (+~50 LOC near top); JSON
+(`currentState.iteration` 17 → 18, `since` 2026-05-16T09:55Z →
+2026-05-16T17:50Z, `lastUpdate`, refreshed `focus` and
+`nextAction` reflecting the 6/6 discharge); NEW session memo
+`sessions/2026-05-16-s18-prep-3-s17-act-risk-discharge-via-project-usage.md`
+(~330 LOC, 12 sections). 0 Lean file edits. 0 sibling-slug edits.
+
+### Next Action (post-S18 PREP-3)
+
+| Priority | ACT | Effort | Risk | Notes |
+|---|---|---|---|---|
+| 1 | **S18 ACT (Path α, post-discharge)** under "build pending" | ~70 LOC, 0 sorries | LOW (6/6 elaboration risks discharged) | Paste §3 skeleton between L904 and L905 of `BaselProblemOQ01OQ01OQ02OQ02.lean`. |
+| 1' | **S18 ACT Docker-verified** if INFRA recovers | ~70 LOC | LOW | Restores Docker-verified precedent (S15 / S11). |
+| 2 | **S18 PREP-4 INFRA-await** if disk drops below ~2 Gi | <20 LOC | LOW | Only if INFRA further degrades. |
+| 3 | **S17b ACT (`mul_choose_dvd_lcmRange`)** after S18 ACT merges | ~30-40 LOC | LOW (mechanical clone of S15) | Path α closed. |
+| 4 | vdP §6 application (denominator_control discharge) | ~80-150 LOC across multiple sessions | MED | Long-tail. |
+
+---
 
 ## Session 17 (2026-05-16, PREP — `pow_factorization_mul_choose_le` fully-discharged paste-ready skeleton (S16 §7 sorry pre-closed at sketch level) + 3 NEW bearer pins + 0-drift recheck, doc-only)
 
