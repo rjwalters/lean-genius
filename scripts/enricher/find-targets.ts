@@ -207,7 +207,7 @@ function findTargets(): TargetInfo[] {
   return targets
 }
 
-function printStats(targets: TargetInfo[]): void {
+function getStats(targets: TargetInfo[]) {
   const total = targets.length
   const avgQuality = targets.reduce((sum, t) => sum + t.quality, 0) / total
   const passDistribution: Record<number, number> = {}
@@ -223,23 +223,35 @@ function printStats(targets: TargetInfo[]): void {
     '81-100 (excellent)': targets.filter(t => t.quality > 80).length,
   }
 
+  return {
+    total,
+    averageQuality: avgQuality,
+    qualityBuckets,
+    passDistribution,
+    needsEnrichment: targets.filter(t => t.quality < 80).length,
+  }
+}
+
+function printStats(targets: TargetInfo[]): void {
+  const stats = getStats(targets)
+
   console.log(`Enrichment Target Statistics`)
   console.log(`============================`)
-  console.log(`Total gallery entries: ${total}`)
-  console.log(`Average quality score: ${avgQuality.toFixed(1)}`)
+  console.log(`Total gallery entries: ${stats.total}`)
+  console.log(`Average quality score: ${stats.averageQuality.toFixed(1)}`)
   console.log(``)
   console.log(`Quality distribution:`)
-  for (const [bucket, count] of Object.entries(qualityBuckets)) {
+  for (const [bucket, count] of Object.entries(stats.qualityBuckets)) {
     const bar = '#'.repeat(Math.ceil(count / 20))
     console.log(`  ${bucket.padEnd(24)} ${String(count).padStart(5)} ${bar}`)
   }
   console.log(``)
   console.log(`Pass distribution:`)
-  for (const [passes, count] of Object.entries(passDistribution).sort(([a], [b]) => Number(a) - Number(b))) {
+  for (const [passes, count] of Object.entries(stats.passDistribution).sort(([a], [b]) => Number(a) - Number(b))) {
     console.log(`  ${passes} passes: ${count} entries`)
   }
   console.log(``)
-  console.log(`Entries needing enrichment: ${targets.filter(t => t.quality < 80).length}`)
+  console.log(`Entries needing enrichment: ${stats.needsEnrichment}`)
 }
 
 // Main
@@ -252,7 +264,11 @@ if (args.includes('--help') || args.includes('-h')) {
 const targets = findTargets()
 
 if (args.includes('--stats')) {
-  printStats(targets)
+  if (args.includes('--json')) {
+    console.log(JSON.stringify(getStats(targets), null, 2))
+  } else {
+    printStats(targets)
+  }
 } else if (args.includes('--json')) {
   console.log(JSON.stringify(targets, null, 2))
 } else if (args.includes('--next')) {
