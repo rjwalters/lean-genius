@@ -52,8 +52,9 @@ fi
 # Example: 5b609df4-dcc6-4e9b-8742-d0b4560f222b COMPLETE 2 days ago 100%
 parse_list_output() {
     local output="$1"
-    # Extract lines that start with a UUID
-    echo "$output" | grep -E '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' | while read -r line; do
+    while IFS= read -r line; do
+        [[ "$line" =~ ^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12} ]] || continue
+
         local pid status progress
         pid=$(echo "$line" | awk '{print $1}')
         status=$(echo "$line" | awk '{print $2}')
@@ -61,7 +62,7 @@ parse_list_output() {
         progress=$(echo "$line" | awk '{print $NF}' | sed 's/%//')
         [[ "$progress" == "-" ]] && progress="0"
         echo "$pid|$status|$progress"
-    done
+    done <<< "$output"
 }
 
 # Query the Aristotle server for all projects across all statuses.
