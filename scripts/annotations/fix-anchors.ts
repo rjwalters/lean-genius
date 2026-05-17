@@ -6,6 +6,11 @@
  * - Pattern anchors with -- line comments (not parsed)
  * - Empty doc-comment anchors
  * - Pattern anchors that don't match
+ *
+ * Usage:
+ *   npx tsx scripts/annotations/fix-anchors.ts
+ *   npx tsx scripts/annotations/fix-anchors.ts --dry-run
+ *   npx tsx scripts/annotations/fix-anchors.ts --mappings /path/to/proof_mappings.txt
  */
 
 import * as fs from 'fs';
@@ -14,11 +19,65 @@ import { parseLeanFile, findByAnchor } from './lean-parser.js';
 import type { SourceAnnotation, AnnotationAnchor, ParsedLeanFile, LeanConstruct } from './types.js';
 
 const PROOFS_DATA_DIR = 'src/data/proofs';
+const DEFAULT_MAPPINGS_FILE = '/tmp/proof_mappings.txt';
+
+interface CliOptions {
+  dryRun: boolean;
+  mappingsFile: string;
+}
 
 interface FixResult {
   proofId: string;
   fixed: number;
   unfixable: string[];
+}
+
+function printHelp(): void {
+  console.log(`Usage: npx tsx scripts/annotations/fix-anchors.ts [options]
+
+Options:
+  --dry-run, -n        Preview fixes without writing annotations.source.json
+  --mappings <file>    Read proof mappings from file (default: ${DEFAULT_MAPPINGS_FILE})
+  --help, -h           Show this help
+`);
+}
+
+function parseArgs(args: string[]): CliOptions {
+  const options: CliOptions = {
+    dryRun: false,
+    mappingsFile: DEFAULT_MAPPINGS_FILE,
+  };
+
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+
+    switch (arg) {
+      case '--dry-run':
+      case '-n':
+        options.dryRun = true;
+        break;
+      case '--mappings':
+        {
+          const mappingsFile = args[++i];
+          if (!mappingsFile) {
+            console.error('Error: --mappings requires a file path');
+            process.exit(1);
+          }
+          options.mappingsFile = mappingsFile;
+        }
+        break;
+      case '--help':
+      case '-h':
+        printHelp();
+        process.exit(0);
+      default:
+        console.error(`Unknown option: ${arg}`);
+        printHelp();
+        process.exit(1);
+    }
+  }
+
+  return options;
 }
 
 function findNearestDeclaration(parsed: ParsedLeanFile, lineNum: number): LeanConstruct | null {
@@ -81,7 +140,7 @@ function fixAnchor(
   return null;
 }
 
-function fixProof(proofDir: string, leanPath: string): FixResult {
+function fixProof(proofDir: string, leanPath: string, dryRun = false): FixResult {
   const sourceFile = path.join(proofDir, 'annotations.source.json');
   const originalFile = path.join(proofDir, 'annotations.json');
 
@@ -125,7 +184,7 @@ function fixProof(proofDir: string, leanPath: string): FixResult {
     }
   }
 
-  if (fixed > 0) {
+  if (fixed > 0 && !dryRun) {
     fs.writeFileSync(sourceFile, JSON.stringify(annotations, null, 2) + '\n');
   }
 
@@ -137,14 +196,25 @@ function fixProof(proofDir: string, leanPath: string): FixResult {
 }
 
 // Main
-const mappings = fs.readFileSync('/tmp/proof_mappings.txt', 'utf-8')
+const options = parseArgs(process.argv.slice(2));
+
+if (!fs.existsSync(options.mappingsFile)) {
+  console.error(`Error: mappings file not found: ${options.mappingsFile}`);
+  process.exit(1);
+}
+
+const mappings = fs.readFileSync(options.mappingsFile, 'utf-8')
   .trim().split('\n')
+  .filter(Boolean)
   .map(line => {
     const [dir, lean] = line.split('|');
     return { dir, lean };
   });
 
-console.log('Fixing anchor issues...\n');
+console.log(`${options.dryRun ? 'Previewing' : 'Fixing'} anchor issues...\n`);
+if (options.dryRun) {
+  console.log('Dry run: no annotations.source.json files will be written.\n');
+}
 
 let totalFixed = 0;
 let totalUnfixable = 0;
@@ -155,10 +225,10 @@ for (const { dir, lean } of mappings) {
 
   if (!fs.existsSync(leanPath)) continue;
 
-  const result = fixProof(proofDir, leanPath);
+  const result = fixProof(proofDir, leanPath, options.dryRun);
 
   if (result.fixed > 0 || result.unfixable.length > 0) {
-    console.log(`${result.proofId}: ${result.fixed} fixed, ${result.unfixable.length} unfixable`);
+    console.log(`${result.proofId}: ${result.fixed} ${options.dryRun ? 'would be fixed' : 'fixed'}, ${result.unfixable.length} unfixable`);
     if (result.unfixable.length > 0) {
       console.log(`  Unfixable: ${result.unfixable.join(', ')}`);
     }
@@ -168,4 +238,4 @@ for (const { dir, lean } of mappings) {
   totalUnfixable += result.unfixable.length;
 }
 
-console.log(`\nTotal: ${totalFixed} fixed, ${totalUnfixable} unfixable`);
+console.log(`\nTotal: ${totalFixed} ${options.dryRun ? 'would be fixed' : 'fixed'}, ${totalUnfixable} unfixable`);
