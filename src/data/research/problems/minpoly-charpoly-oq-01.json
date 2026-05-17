@@ -32,20 +32,24 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-05-12T11:55:00Z",
-    "iteration": 5,
-    "focus": "S5 STATE-SYNC (this PR, doc-only): absorb S4-E ACT [#19123] merge (2026-05-15T22:58:16Z, T-yesterday) + leanFiles[1] post-S4-E catchup. JSON `currentState.focus` previously said \"S4-E ACT (PR pending...\" but PR is MERGED. JSON `leanFiles[1]` significantly drifted: lineCount 228→356 (+128), theoremCount 4→9 (+5: S3-D + S4-E API extensions + bearer-audit theorems), defCount 4→2 (-2: refactoring). `sorryCount: 1` unchanged (jordan_normal_form_exists deferred to sub-OQs OQ-01-OQ-01..04 per state.md line 148). `axiomCount: 0` unchanged. Per gallery-as-groundtruth pattern: no gallery slug for this OQ (research-only), so leanFiles[] is the canonical reflection of actual file. State.md S4-E summary block remains accurate (build verified 3081 jobs at v4.26.0 per S4-E summary). NO Lean / no problem.md / no knowledge.md domain edits. Mathlib pin `2df2f0150c…` (v4.26.0) unchanged since S4-E.",
-    "blockers": [],
-    "nextAction": "S5 candidate A: open child OQ minpoly-charpoly-oq-01-oq-01 and scaffold MinpolyCharpolyOQ01OQ01.lean with jordanBlock.charpoly = (X - C λ)^d identity (~80 lines, fully dischargable, no sorry). S5 candidate B: upgrade jordan_normal_form_exists to strong form (∃ invertible P), still sorry-guarded. S5 candidate C: begin OQ-01-OQ-02 (nilpotent canonical form, ~400 lines, the load-bearing piece).",
+    "since": "2026-05-17T02:00:00Z",
+    "iteration": 6,
+    "focus": "S6 STATE-SYNC (this PR, doc-only) — fixes 3 numeric drifts in `leanFiles[1]` (MinpolyCharpolyOQ01.lean) introduced by S5 STATE-SYNC PR #19781 (researcher-1, T-13h45m): `theoremCount: 9 → 10` (S5 author missed `totalDim_empty` as the 10th — visible at line 351 of the actual file; sibling private lemma `eigenvalueMultiset_card_aux` at line 252 also tipped the count from 9 over to 10), `defCount: 2 → 3` (S5 author missed `jordanBlock` as a 3rd def — it is `noncomputable def jordanBlock` at line 195 and matches `^(def|noncomputable def|opaque def) ` per mechanic-convention precedent #19934 / #19816 / #19818), `sorryCount: 1 → 5` (S5 author used comment-stripped count; canonical mechanic convention since #19934 / #19816 is raw `\\bsorry\\b` — actual: 1 tactic at line 342 + 4 commentary mentions at lines 94, 120, 148, 341). Slug-local file (only `minpoly-charpoly-oq-01.json` references `MinpolyCharpolyOQ01.lean`; no sibling cascade). DEFERRED to mechanic: leanFiles[0] (`Proofs/MinpolyCharpoly.lean`) lineCount 247 → 246 — shared across 3 siblings (oq-01, oq-02, oq-03) per `grep -l Proofs/MinpolyCharpoly.lean src/data/research/problems/`. Mathlib pin `2df2f0150c…` (v4.26.0) byte-stable since S4-E (T-3d4h). Host INFRA: 3 RED gates — G7 disk 3.4 Gi avail (below 5 Gi soft-floor; was 6.7 Gi at S28 minkowski PREP T-10.5h, -3.3 Gi worsening), G8 Docker daemon hung (`docker info` Server section unresponsive 8s timeout), G9 `proofs/.lake` symlink self-loop (→ itself). 0 Lean edits, 0 problem.md edits, 0 knowledge.md domain edits, 0 sibling JSON edits. State.md S4-E summary block unchanged.",
+    "blockers": [
+      "G7 RED: host disk 3.4 Gi avail (below 5 Gi soft-floor; -3.3 Gi vs 6.7 Gi at S28 minkowski PREP T-10.5h). Blocks BUILD-VERIFY (Docker build needs ≥5 Gi).",
+      "G8 RED: Docker daemon hung — `timeout 8 docker info` returns empty Server section. Blocks any local Lean build attempt; mechanic batch + S5 STATE-SYNC absorbed without build-verify.",
+      "G9 RED: `proofs/.lake` symlink self-loop (`proofs/.lake → proofs/.lake`). Blocks `lake build` even if Docker recovers; needs `rm proofs/.lake && lake update` from main repo (researcher scope NOT to touch)."
+    ],
+    "nextAction": "S7 picker matrix (6 rows): (a) S5 candidate A — open child OQ minpoly-charpoly-oq-01-oq-01 + scaffold MinpolyCharpolyOQ01OQ01.lean with jordanBlock.charpoly = (X - C λ)^d identity (~80 LOC, fully dischargable, no sorry; NEW slug creation, fragile under 3 RED INFRA — wait for ≥1 GREEN). (b) S5 candidate B — upgrade jordan_normal_form_exists to strong form (∃ invertible P), still sorry-guarded (~5-line statement edit; safe even under no-Docker since sorry-guarded). (c) S5 candidate C — begin OQ-01-OQ-02 (nilpotent canonical form, ~400 LOC, load-bearing; HIGH risk under no-Docker). (d) **mechanic batch (recommended next)** — sync `leanFiles[0]` lineCount 247 → 246 across 3 siblings (oq-01, oq-02, oq-03) per the batch-sync precedent #19934 / #19840 / #19885. (e) S6b BUILD-VERIFY — under recovered Docker + disk ≥5 Gi, run `./proofs/scripts/docker-build.sh Proofs.MinpolyCharpolyOQ01` to retire the (build verified 3081 jobs) claim from S4-E with a current-pin baseline. (f) PIVOT to a different Tier-B slug if all 3 RED INFRA persist > 6h.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 2,
       "approachesTried": 1,
       "S4": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 OBSERVE (PR #18045) + S2 ACT (PR #18106, entry-wise jordanBlock API + drift-fix) + S3 ACT (PR #18134, eigenvalueMultiset_card_eq_totalDim) + S4-E ACT (this PR, toFinset.card ≤ totalDim + iff-Nodup). Build-verified at v4.26.0 (3081 jobs). 9 theorems, 0 axioms, 1 sorry (jordan_normal_form_exists, load-bearing, deferred to OQ-01-OQ-04). Definitions/structures stable at 4 since S2. The cardinality/distinctness API is now complete on the JordanBlockShape side; remaining work is per-eigenspace and global assembly (OQ-01-OQ-02..04).",
+    "progressSummary": "S6 STATE-SYNC (this PR, doc-only): fixes 3-field numeric drift in leanFiles[1] introduced by S5 STATE-SYNC #19781 (researcher-1, T-13h45m) — thm 9→10 (S5 missed totalDim_empty + private eigenvalueMultiset_card_aux), def 2→3 (S5 missed jordanBlock noncomputable def), sorry 1→5 (S5 used comment-stripped; canonical mechanic convention is raw \\bsorry\\b per #19934 / #19816). leanFiles[0] (MinpolyCharpoly.lean) lc 247→246 drift is 3-sibling shared; deferred to mechanic. S1 OBSERVE (PR #18045) + S2 ACT (PR #18106, entry-wise jordanBlock API + drift-fix) + S3 ACT (PR #18134, eigenvalueMultiset_card_eq_totalDim) + S4-E ACT (PR #19123, toFinset.card ≤ totalDim + iff-Nodup) + S5 STATE-SYNC (PR #19781, leanFiles[1] catchup). Build-verified at v4.26.0 (3081 jobs) per S4-E. 10 theorems, 0 axioms, 1 tactic sorry + 4 commentary mentions (raw count 5) (jordan_normal_form_exists, load-bearing, deferred to OQ-01-OQ-04). Definitions stable at 3 since S2. The cardinality/distinctness API is now complete on the JordanBlockShape side; remaining work is per-eigenspace and global assembly (OQ-01-OQ-02..04).",
     "builtItems": [
       "JordanBlockShape K (structure): bundles `blocks : List (K × Nat)` and positivity-of-block-sizes proof as a first-class JNF descriptor.",
       "JordanBlockShape.totalDim (def): the sum of all block sizes — the total dimension of the Jordan-form matrix.",
@@ -58,7 +62,8 @@
       "**(S2 NEW)** jordanBlock_off_diag_eq (theorem, unconditional): entries (i,j) of jordanBlock R λ d with i ≠ j and (j : Nat) ≠ (i : Nat) + 1 are 0 — the third case of the entry-wise classification, completing the three-way partition of Fin d × Fin d.",
       "**(S2 NEW)** jordanBlock_zero_dim (theorem, unconditional): `jordanBlock R λ 0 = 0` — the empty-index Jordan block equals the zero matrix, useful for inductive arguments on block dimension.",
       "**(S2 DRIFT-FIX)** totalDim_empty proof updated: replaced S1's `absurd hp (List.not_mem_nil _)` (broken by Mathlib v4.26.0 signature change of `List.not_mem_nil` from `a ∉ ([] : List α)` to `(h : a ∈ []) → False`) with the API-independent `nomatch hp`. The theorem statement is unchanged.",
-      "S4-E ACT (PR pending): added JordanBlockShape.eigenvalueMultiset_toFinset_card_le_totalDim + _eq_totalDim_iff_nodup API lemmas in MinpolyCharpolyOQ01.lean (+14 LOC + ~38 doc; 304 → 356 LOC). Build verified 3081 jobs at v4.26.0 — S3 PR #18134 baseline + new lemmas, iter 2 after typeclass-stuck on iter 1 (needed named (m := S.eigenvalueMultiset)). 7 → 9 theorems; sorries 1 unchanged; axioms 0 unchanged."
+      "S4-E ACT (PR pending): added JordanBlockShape.eigenvalueMultiset_toFinset_card_le_totalDim + _eq_totalDim_iff_nodup API lemmas in MinpolyCharpolyOQ01.lean (+14 LOC + ~38 doc; 304 → 356 LOC). Build verified 3081 jobs at v4.26.0 — S3 PR #18134 baseline + new lemmas, iter 2 after typeclass-stuck on iter 1 (needed named (m := S.eigenvalueMultiset)). 7 → 9 theorems; sorries 1 unchanged; axioms 0 unchanged.",
+      "**(S6 STATE-SYNC, this PR, doc-only)** Reconciled `leanFiles[1]` (MinpolyCharpolyOQ01.lean) 3-field miscount from S5 STATE-SYNC #19781: `theoremCount: 9 → 10` (S5 missed `totalDim_empty` as 10th theorem at line 351 + sibling private `eigenvalueMultiset_card_aux` at line 252), `defCount: 2 → 3` (S5 missed `jordanBlock` as noncomputable def at line 195 — matches `^(def|noncomputable def|opaque def) ` per canonical mechanic precedent #19934 / #19816 / #19818), `sorryCount: 1 → 5` (S5 used comment-stripped convention; canonical is raw `\\bsorry\\b` since #19934 / #19816 — actual: 1 tactic at line 342 + 4 commentary mentions at lines 94 / 120 / 148 / 341). Slug-local file (only oq-01.json references MinpolyCharpolyOQ01.lean; no sibling cascade). DEFERRED to mechanic: `leanFiles[0]` (MinpolyCharpoly.lean) `lineCount 247 → 246` — shared across 3 siblings (oq-01, oq-02, oq-03)."
     ],
     "insights": [
       "**Four-ingredient resolution**: gen-eigenspace decomposition + internal direct sum + Jordan-Chevalley + nilpotent canonical form. Three ingredients confirmed in Mathlib v4.26.0; the fourth (nilpotent canonical form) is a self-contained classical proof (~400 lines), not a genuine obstacle. The OQ resolves AFFIRMATIVELY at the strategy level.",
@@ -73,7 +78,7 @@
       "(Optional / further work) Uniqueness of the JordanBlockShape up to permutation. Follows from existence + dimension count of generalized-kernel filtrations."
     ],
     "nextSteps": [
-      "S2 candidate A: open child OQ minpoly-charpoly-oq-01-oq-01 and scaffold MinpolyCharpolyOQ01OQ01.lean with the jordanBlock API — charpoly identity (jordanBlock R λ d).charpoly = (X - C λ)^d, minpoly identity, nilpotent-shift identity (jordanBlock R 0 d)^d = 0. ~80 lines, fully dischargable (no sorry).",
+      "**S7 candidate A (post-S6 STATE-SYNC, post-INFRA-recovery)**: open child OQ minpoly-charpoly-oq-01-oq-01 and scaffold MinpolyCharpolyOQ01OQ01.lean with the jordanBlock API — charpoly identity (jordanBlock R λ d).charpoly = (X - C λ)^d, minpoly identity, nilpotent-shift identity (jordanBlock R 0 d)^d = 0. ~80 lines, fully dischargable (no sorry). Wait for ≥1 GREEN INFRA (Docker recovery + disk ≥5 Gi) before NEW slug creation.",
       "S2 candidate B: upgrade S1 weak-form jordan_normal_form_exists to the strong form with similarity transform P (~5-line statement edit, still sorry-guarded).",
       "S2 candidate C: begin OQ-01-OQ-02 (nilpotent canonical form). Largest piece (~400 lines); needs the most preparation. Approach: cyclic-vector chain construction (Axler §8.D) — pick the largest cyclic chain ⟨v, Nv, N²v, …⟩, induct on V / ⟨chain⟩, linearity-independence via dimension count.",
       "S3+: discharge sub-OQs sequentially. Suggested order: OQ-01-OQ-01 (smallest, fully dischargable) → OQ-01-OQ-02 (largest, load-bearing) → OQ-01-OQ-03 (per-eigenspace assembly) → OQ-01-OQ-04 (global assembly).",
@@ -122,7 +127,7 @@
     ]
   },
   "started": "2026-05-12T10:00:00Z",
-  "lastUpdate": "2026-05-16T19:20:00Z",
+  "lastUpdate": "2026-05-17T02:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -141,10 +146,10 @@
       "path": "Proofs/MinpolyCharpolyOQ01.lean",
       "filename": "MinpolyCharpolyOQ01.lean",
       "lineCount": 356,
-      "theoremCount": 9,
+      "theoremCount": 10,
       "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 1,
+      "defCount": 3,
+      "sorryCount": 5,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinpolyCharpolyOQ01.lean"
     }

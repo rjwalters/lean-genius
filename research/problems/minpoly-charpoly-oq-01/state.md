@@ -1,9 +1,44 @@
 # Current State
 
-**Phase**: ACT (S4-E MERGED — `eigenvalueMultiset_toFinset_card_*_totalDim` API lemmas); S5 STATE-SYNC (this PR, doc-only) absorbs merge + leanFiles[1] catchup
-**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6; S3 ACT by researcher-4; S4-E ACT by researcher-9 MERGED [#19123](https://github.com/rjwalters/lean-genius/pull/19123) 2026-05-15T22:58:16Z)
-**Iteration**: 5
-**Last Updated**: 2026-05-16T19:20:00Z (S5 STATE-SYNC, researcher-1)
+**Phase**: ACT (S4-E MERGED — `eigenvalueMultiset_toFinset_card_*_totalDim` API lemmas; S5 STATE-SYNC #19781 MERGED — leanFiles[1] catchup BUT 3-field miscount); S6 STATE-SYNC (this PR, doc-only) fixes S5's miscount on `leanFiles[1]` (thm 9→10, def 2→3, sorry 1→5) — slug-local file only, no sibling cascade.
+**Since**: 2026-05-12 (S1 OBSERVE by researcher-12; S2 ACT by researcher-6; S3 ACT by researcher-4; S4-E ACT by researcher-9 MERGED [#19123](https://github.com/rjwalters/lean-genius/pull/19123) 2026-05-15T22:58:16Z; S5 STATE-SYNC by researcher-1 MERGED [#19781](https://github.com/rjwalters/lean-genius/pull/19781) 2026-05-16T12:19:55Z)
+**Iteration**: 6
+**Last Updated**: 2026-05-17T02:00:00Z (S6 STATE-SYNC, researcher-11)
+
+## S6 STATE-SYNC Summary (2026-05-17, researcher-11, doc-only)
+
+**Mode**: STATE-SYNC fixing 3-field numeric miscount in `leanFiles[1]` (MinpolyCharpolyOQ01.lean) introduced by S5 STATE-SYNC PR #19781 (researcher-1, T-13h45m) + INFRA blocker absorption.
+
+### Drift inventory (5 items)
+
+| # | Drift | Pre-S6 | Post-S6 | Source / Convention |
+|---|-------|--------|---------|---------------------|
+| 1 | `leanFiles[1].theoremCount` | 9 | **10** | `grep -cE '^(protected \\|private \\|noncomputable )*(theorem\\|lemma) ' proofs/Proofs/MinpolyCharpolyOQ01.lean = 10` (S5 missed `totalDim_empty` at line 351 + sibling private `eigenvalueMultiset_card_aux` at line 252) |
+| 2 | `leanFiles[1].defCount` | 2 | **3** | `grep -cE '^(def\\|noncomputable def\\|opaque def) ' = 3` (S5 missed `jordanBlock` `noncomputable def` at line 195; canonical mechanic convention since #19934 / #19816 / #19818) |
+| 3 | `leanFiles[1].sorryCount` | 1 | **5** | `grep -cE '\\bsorry\\b' = 5` (1 tactic at line 342 + 4 commentary mentions at lines 94, 120, 148, 341; canonical mechanic convention since #19934 / #19816 is raw — S5 used comment-stripped) |
+| 4 | `currentState.{focus, nextAction, iteration, since, attemptCounts.total, blockers}` | S5-era + `blockers: []` | S6 rewrite + 3-entry G7/G8/G9 RED + iter 5→6 + total 3→4 | this S6 |
+| 5 | `lastUpdate` | 2026-05-16T19:20:00Z | 2026-05-17T02:00:00Z | now |
+
+### Deferred (mechanic territory, not this PR)
+
+| Drift | Scope | Defer reason |
+|-------|-------|--------------|
+| `leanFiles[0].lineCount` (`Proofs/MinpolyCharpoly.lean`) 247 → 246 | 3-sibling shared (oq-01, oq-02, oq-03) — confirmed via `grep -l 'Proofs/MinpolyCharpoly.lean' src/data/research/problems/*.json` | Cross-slug batch fix is mechanic territory per `feedback_mechanic_batch_sync_conventions_canonical_counts` + recent precedent #19934 / #19840 / #19885 |
+
+### Honest-status block
+
+- **Mathematical progress**: zero new Lean lines, zero new theorems, zero sorry delta. This is a numeric-hygiene PR that cleans S5's miscount.
+- **Why it matters**: future Mechanic batch passes that re-walk the file via grep would have produced a "regression" diff (3 fields drift), confusing the audit trail. Fixing now lines the slug up with the canonical convention.
+- **Build-verification status**: zero change — S4-E's 3081-job v4.26.0 build remains the latest baseline (T-3d4h). 3 RED INFRA (G7 disk 3.4 Gi avail / G8 Docker hung / G9 .lake self-loop) prevent any S6b BUILD-VERIFY this cycle.
+- **Risk**: none — surgical 3-field JSON edit, slug-local file, no Lean / no problem.md / no knowledge.md domain edits, no sibling JSON edits.
+- **Anti-scope**: leanFiles[0] cross-slug fix (mechanic), Lean ACT (S5 candidate A / B / C — gated on ≥1 GREEN INFRA), bearer re-walk (Mathlib pin byte-stable T-3d4h since S4-E), gallery `meta.json` (research-only OQ; no gallery slug).
+
+### S5 STATE-SYNC absorbed (post-merge fact-check)
+
+- PR [#19781](https://github.com/rjwalters/lean-genius/pull/19781) (researcher-1, merged 2026-05-16T12:19:55Z): updated `leanFiles[1]` lineCount 228→356 (correct), theoremCount 4→9 (off by -1; should be 10), defCount 4→2 (off by +1; should be 3 — also wrong **direction** because the S5 author's `grep -cE '^def '` excludes the `noncomputable` keyword), sorryCount 1→1 (off by -4; canonical raw is 5). S5 commit `4e17dfb70cc` / merge commit `a770451b38a`.
+- S5 author's table at state.md:14–24 lists the (incorrect) numbers as the table's "Post-S5" column — this S6 STATE-SYNC supersedes it.
+
+See `sessions/2026-05-17-s6-statesync-postS5-leanfiles-recount.md` for the full reproducibility script, mechanic-convention citations, and INFRA snapshot.
 
 ## S5 STATE-SYNC Summary (2026-05-16, researcher-1, doc-only)
 
