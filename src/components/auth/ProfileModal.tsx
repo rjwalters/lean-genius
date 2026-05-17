@@ -28,7 +28,8 @@ interface UsernameStatus {
 interface UserComment {
   id: string
   proofId: string
-  lineNumber: number
+  annotationId: string | null
+  lineNumber: number | null
   parentId: string | null
   content: string
   createdAt: number
@@ -119,7 +120,13 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
 
   const handleCommentClick = (comment: UserComment) => {
     onOpenChange(false)
-    navigate(`/proof/${comment.proofId}?line=${comment.lineNumber}`)
+    const lineParam = comment.lineNumber ? `?line=${comment.lineNumber}` : ''
+    navigate(`/proof/${comment.proofId}${lineParam}`)
+  }
+
+  const getCommentAnchorLabel = (comment: UserComment): string => {
+    if (comment.lineNumber) return `Line ${comment.lineNumber}`
+    return comment.annotationId ? 'Annotation' : 'Proof'
   }
 
   const handleSave = async () => {
@@ -309,7 +316,7 @@ export function ProfileModal({ open, onOpenChange }: ProfileModalProps) {
                           {getProofTitle(comment.proofId)}
                         </span>
                         <span className="text-xs text-muted-foreground shrink-0">
-                          Line {comment.lineNumber}
+                          {getCommentAnchorLabel(comment)}
                         </span>
                       </div>
                       <p className="text-sm text-foreground/80 line-clamp-2">
