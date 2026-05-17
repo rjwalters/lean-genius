@@ -73,7 +73,7 @@ parse_list_output() {
 lookup_server_project() {
     local target_pid="$1"
     local server_data="$2"
-    echo "$server_data" | grep "^${target_pid}|" | head -1 | cut -d'|' -f2-
+    awk -F'|' -v target_pid="$target_pid" '$1 == target_pid { print $2 "|" $3; exit }' <<< "$server_data"
 }
 
 run_check() {
