@@ -25,9 +25,31 @@ TARGET="${1:-}"
 IMAGE="lean4-arm64:v4.26.0"
 CACHE_VOLUME="lean-mathlib-cache"
 
+detect_host_cpus() {
+    local host_cpus
+    if command -v nproc >/dev/null 2>&1; then
+        host_cpus=$(nproc 2>/dev/null || echo 2)
+    else
+        host_cpus=$(sysctl -n hw.ncpu 2>/dev/null || echo 2)
+    fi
+
+    if [[ ! "$host_cpus" =~ ^[0-9]+$ || "$host_cpus" -lt 1 ]]; then
+        host_cpus=2
+    fi
+
+    local build_cpus=$((host_cpus / 2))
+    if [[ "$build_cpus" -lt 1 ]]; then
+        build_cpus=1
+    fi
+    echo "$build_cpus"
+}
+
+CPU_LIMIT="$(detect_host_cpus)"
+
 echo "=== Docker Lean Build ==="
 echo "Memory limit: ${MEMORY_LIMIT}MB (hard enforced via cgroups)"
 echo "Timeout: ${TIMEOUT}"
+echo "CPU limit: ${CPU_LIMIT}"
 echo "Target: ${TARGET:-all}"
 echo ""
 
@@ -100,7 +122,7 @@ trap 'cleanup $?' EXIT
 docker run --rm \
     --memory="${MEMORY_LIMIT}m" \
     --memory-swap="${MEMORY_LIMIT}m" \
-    --cpus="$(( $(sysctl -n hw.ncpu) / 2 ))" \
+    --cpus="$CPU_LIMIT" \
     -v "${REPO_ROOT}:/workspace:delegated" \
     -v "${CACHE_VOLUME}:/workspace/proofs/.lake/build:delegated" \
     -w /workspace/proofs \
