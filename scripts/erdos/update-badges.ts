@@ -180,6 +180,7 @@ function updateBadges(dryRun = false): UpdateResult[] {
 // Main
 const args = process.argv.slice(2)
 const dryRun = args.includes('--dry-run')
+const checkOnly = args.includes('--check')
 
 if (args.includes('--help') || args.includes('-h')) {
   console.log(`
@@ -188,6 +189,7 @@ Update Badge Script
 Usage:
   npx tsx scripts/erdos/update-badges.ts           Run and update badges
   npx tsx scripts/erdos/update-badges.ts --dry-run Preview changes without updating
+  npx tsx scripts/erdos/update-badges.ts --check   Verify badges are current (exit 1 if stale)
 
 This script scans all proof Lean files and updates badges based on:
 - sorry count (>0 = wip)
@@ -197,18 +199,26 @@ This script scans all proof Lean files and updates badges based on:
   process.exit(0)
 }
 
-console.log(dryRun ? '=== DRY RUN - No files will be modified ===\n' : '=== Updating badges ===\n')
+const previewOnly = dryRun || checkOnly
 
-const results = updateBadges(dryRun)
+console.log(
+  checkOnly
+    ? '=== CHECK - No files will be modified ===\n'
+    : dryRun
+      ? '=== DRY RUN - No files will be modified ===\n'
+      : '=== Updating badges ===\n'
+)
+
+const results = updateBadges(previewOnly)
 
 if (results.length === 0) {
   console.log('No badge updates needed.')
 } else {
-  console.log(`\nUpdates${dryRun ? ' (preview)' : ''}:`)
+  console.log(`\nUpdates${previewOnly ? ' (preview)' : ''}:`)
   for (const r of results) {
     console.log(`  ${r.id}: ${r.oldBadge} → ${r.newBadge} (${r.reason})`)
   }
-  console.log(`\nTotal: ${results.length} badge${results.length === 1 ? '' : 's'} ${dryRun ? 'would be ' : ''}updated`)
+  console.log(`\nTotal: ${results.length} badge${results.length === 1 ? '' : 's'} ${previewOnly ? 'would be ' : ''}updated`)
 }
 
 // Summary by badge type
@@ -222,4 +232,9 @@ if (Object.keys(summary).length > 0) {
   for (const [change, count] of Object.entries(summary).sort((a, b) => b[1] - a[1])) {
     console.log(`  ${change}: ${count}`)
   }
+}
+
+if (checkOnly && results.length > 0) {
+  console.error('\nBadge check failed: run npx tsx scripts/erdos/update-badges.ts to apply updates.')
+  process.exit(1)
 }
