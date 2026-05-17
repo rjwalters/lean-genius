@@ -18,6 +18,7 @@
  *   npx tsx scripts/peer-reviewer/find-targets.ts --stats   # Show statistics only
  *   npx tsx scripts/peer-reviewer/find-targets.ts --next    # Show single highest-priority target
  *   npx tsx scripts/peer-reviewer/find-targets.ts --suggest # Show top 10 review candidates (alias for default)
+ *   npx tsx scripts/peer-reviewer/find-targets.ts --help    # Show usage
  */
 
 import * as fs from 'fs'
@@ -26,6 +27,21 @@ import * as path from 'path'
 const GALLERY_DIR = 'src/data/proofs'
 const REVIEW_TRACKER_FILE = 'src/data/proofs/review-tracker.json'
 const ENRICHMENT_TRACKER_FILE = 'src/data/proofs/enrichment-tracker.json'
+
+function printUsage() {
+  console.log(`Usage: npx tsx scripts/peer-reviewer/find-targets.ts [options]
+
+Find proof gallery entries that need peer review.
+
+Options:
+  --all      Show all targets instead of the top 10
+  --json     Output JSON
+  --stats    Show statistics only
+  --next     Show the single highest-priority target
+  --suggest  Show top 10 review candidates
+  --help     Show this help message
+  -h         Show this help message`)
+}
 
 interface ReviewTrackerEntry {
   reviewCount: number
@@ -210,6 +226,11 @@ function analyzeProof(
 
 function main() {
   const args = process.argv.slice(2)
+  if (args.includes('--help') || args.includes('-h')) {
+    printUsage()
+    return
+  }
+
   const showAll = args.includes('--all')
   const showJson = args.includes('--json')
   const showStats = args.includes('--stats')
