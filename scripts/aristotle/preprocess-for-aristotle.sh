@@ -64,6 +64,11 @@ fi
 
 tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/aristotle-preprocess-XXXXXX")
 tmp_file="$tmp_dir/$(basename "$INPUT_FILE")"
+cleanup_tmp_dir() {
+    rm -rf "$tmp_dir"
+}
+trap cleanup_tmp_dir EXIT
+
 cp "$INPUT_FILE" "$tmp_file"
 
 # Copy Lean project files so aristotlelib recognizes it as a valid project
@@ -75,7 +80,8 @@ changes_made=0
 # Transform 1: Convert /-! docstrings to /- (Aristotle parser compat)
 docstring_count=$(count_matches '/-!' "$tmp_file")
 if [[ "$docstring_count" -gt 0 ]]; then
-    sed -i '' 's|/-!|/-|g' "$tmp_file"
+    sed 's|/-!|/-|g' "$tmp_file" > "$tmp_file.tmp"
+    mv "$tmp_file.tmp" "$tmp_file"
     echo "PREPROCESS: Converted $docstring_count /-! docstrings to /-" >&2
     changes_made=$((changes_made + docstring_count))
 fi
@@ -110,4 +116,5 @@ fi
 echo "PREPROCESS: Result has $post_sorry_count sorries to attempt" >&2
 
 # Last line = path to preprocessed file (caller captures this)
+trap - EXIT
 echo "$tmp_file"
