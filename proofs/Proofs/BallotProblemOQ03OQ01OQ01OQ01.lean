@@ -1342,6 +1342,52 @@ private lemma rotateSortedListPrefixSym_mod {n c : ℕ}
        = ((rotateSortedList M k).take j : Multiset (Fin n))
   rw [rotateSortedList_mod]
 
+/-! #### S45 — Reconstitution lemma for the prefix / suffix `Sym` pair
+
+Direct `Sym`-level repackage of S34's `rotateSortedList_take_add_drop`
+(line 1098, `take + drop = M.1`): the underlying multisets of the
+`Sym`-packaged prefix (S37, line 1021) and `Sym`-packaged suffix
+(S35, line 1139) add to `M.1` for every rotation index `k` and split
+index `j ≤ c`. Closes the addition-form half of the prefix / suffix
+toolkit: alongside S37's prefix `_le`, S35's suffix `_le`, S44's
+prefix `_mod`, S38's suffix `_mod`, S41's prefix complement form, and
+S38's suffix complement form, every two-out-of-three identity in the
+`take / drop` family now has a `Sym`-level statement.
+
+Re-applies the lemma originally proposed in PR #17892 (S40,
+OPEN-CONFLICTING against `origin/main`) per the S43 fresh-rebase
+recipe (`feedback_researcher_pr_rebase_strategy.md`).
+
+Use site (2B.4' refined-codomain bijection): the inverse direction
+takes a "bad" `P' : Sym (Fin n) (a + 1)` with `P'.1 ≤ M.1` and must
+recover the suffix partner `Q' : Sym (Fin n) (b - 1)`. The
+reconstitution identity (this lemma at `j = a + 1`) says that the
+canonical decomposition `(prefix, suffix)` always satisfies
+`prefix.1 + suffix.1 = M.1` — so once `P'` is identified with the
+canonical prefix at some `(k, a+1)`, the partner `Q'` is forced to
+be the canonical suffix at the same `(k, a+1)`, which lives in
+`Sym (Fin n) (c - (a+1)) = Sym (Fin n) (b - 1)` (using `c = a + b`
+and `1 ≤ b`). This makes the bijection well-defined without an
+auxiliary "Q' choice" parameter. -/
+
+/-- **Prefix `Sym` and suffix `Sym` underlying multisets sum to `M.1`**
+    (S45).
+
+    Direct `Sym`-level lift of S34's `rotateSortedList_take_add_drop`
+    (`take + drop = M.1` at the `Multiset` level): the underlying
+    multisets of `rotateSortedListPrefixSym M k j hj` and
+    `rotateSortedListSuffixSym M k j` add to `M.1`. The codomain types
+    `Sym (Fin n) j` and `Sym (Fin n) (c - j)` are independent — the
+    identity holds at the `Multiset (Fin n)` level via the underlying
+    `take` / `drop` decomposition of `rotateSortedList M k`. -/
+private lemma rotateSortedListPrefixSym_val_add_SuffixSym_val {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) (hj : j ≤ c) :
+    (rotateSortedListPrefixSym M k j hj).1
+      + (rotateSortedListSuffixSym M k j).1 = M.1 := by
+  show ((rotateSortedList M k).take j : Multiset (Fin n))
+       + ((rotateSortedList M k).drop j : Multiset (Fin n)) = M.1
+  exact rotateSortedList_take_add_drop M k j
+
 /-! #### S41 — Complement form for `rotateSortedListPrefixSym`
 
 Symmetric counterpart of S38's `rotateSortedListSuffixSym_val_eq_sub_take`:
