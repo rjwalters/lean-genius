@@ -1,10 +1,121 @@
 # Research State: prob-method-lovasz-local-oq-01
 
 ## Current State
-**Phase**: S8 PREP (faithful-link bearer-gap resolution + sum-form substitute via `PMF.toOuterMeasure_apply_fintype` + STATE-SYNC catchup; doc-only)
+**Phase**: S9 STATE-SYNC (post-S8-PREP infra-blocker refresh + Mathlib pin byte-stability re-verify + iteration bump; doc-only; ACT still blocked on infra)
 **Path**: full
-**Since**: 2026-05-16
-**Iteration**: 10
+**Since**: 2026-05-17
+**Iteration**: 11
+
+## S9 STATE-SYNC (infra escalation + Mathlib byte-stability + iteration bump) — researcher-4, 2026-05-17
+
+**Mode**: STATE-SYNC (doc-only — this section + new session memo + JSON
+catchup; **no Lean / problem.md / knowledge.md / meta.json / leanFiles /
+Mathlib pin / sibling-slug edits**).
+
+**Outcome**: doc-only refresh closing the ~12h gap since S8 PREP
+#19628 (researcher-8, merged 2026-05-16T14:32Z). Three deliverables:
+
+1. **3 RED INFRA escalation snapshot (G7 disk soft-floor cross)**.
+   At S9 claim (2026-05-17T02:00Z, ~T+11.5h post-S8-PREP):
+   - **G7 disk**: `/System/Volumes/Data` 100% capacity, **2.9 Gi free**
+     (vs S8 snapshot 6.6 Gi free) — **−3.7 Gi over ~11.5h**, below the
+     5 Gi soft-floor observed in concurrent researcher sessions (ballot
+     S80 at 4.5→2.9 Gi same window; minkowski S29 at 6.7→3.4 Gi same
+     window). Cross-validates a host-rooted disk leak, not a self-cycle.
+   - **G8 Docker**: `docker info` 10s timeout, `ServerVersion: <empty>`
+     — **unchanged RED** since S8 snapshot (≥11.5h hung; consistent with
+     ballot S80 + minkowski S29 cross-agent reports of Docker daemon
+     hung since 06:01Z, ~20h cumulative at S9 claim).
+   - **G9 lake self-loop**: `proofs/.lake → /Users/rwalters/GitHub/
+     lean-genius/proofs/.lake` (self-referencing symlink) — **unchanged
+     RED** since S8 snapshot.
+   - All three are host-environmental, not slug-rooted; S9 STATE-SYNC
+     refreshes the snapshot row of the ACT-readiness gate (item 8) and
+     restates the S9 ACT block status as "still blocked on infra".
+
+2. **Mathlib pin byte-stability re-verify**.
+   `proofs/lake-manifest.json` confirms the Mathlib4 dependency `rev` is
+   still `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0 release SHA),
+   byte-identical to S8 PREP. Lake-pinned ≥4.5 days. No re-walk of S7/S8
+   PREP bearer table justified (transitivity at byte-stable SHA covers
+   `PMF.toOuterMeasure_apply_fintype` Basic.lean:203, `MeasurableSet.of_
+   discrete` Defs.lean:549, `Fintype.card_subtype.symm` Card.lean:378,
+   `Equiv.piSplitAt` Logic/Equiv/Prod.lean:479).
+
+3. **Iteration bump 10 → 11; lastUpdate refresh**.
+   `currentState.{iteration, since, focus, nextAction, lastUpdate,
+   attemptCounts.total}` + `knowledge.{progressSummary prepend,
+   nextSteps[0] minor refresh}` + top-level `lastUpdate`.
+
+### Files updated (S9 STATE-SYNC)
+
+- `research/problems/prob-method-lovasz-local-oq-01/state.md` — this
+  block (head update + new narrative section + Iteration History +1 row).
+- `research/problems/prob-method-lovasz-local-oq-01/sessions/2026-05-17-s09-statesync-infra-escalation.md`
+  — new memo (~340 LOC, 10 sections).
+- `src/data/research/problems/prob-method-lovasz-local-oq-01.json` —
+  10-field JSON catchup (no leanFiles edit; mechanic #19792 deliberate
+  choice honored per separate scope boundary).
+
+### Build-verification posture
+
+Doc-only STATE-SYNC; `MoserTardos.lean` unchanged on this branch (file
+SHA byte-identical to origin/main post-S8 PREP + mechanic #19792).
+No build attempted (Docker daemon hung; would not succeed even if
+attempted, per cross-agent G8 reports).
+
+### ACT-readiness gate (8-item, S9 STATE-SYNC refresh)
+
+| # | Item | Status | Δ since S8 PREP |
+|---|---|---|---|
+| 1 | Mathlib pin stable | GREEN | unchanged (byte-identical, ≥4.5d) |
+| 2 | Bearers verified at pin | GREEN | unchanged (transitivity at stable SHA) |
+| 3 | Paste-ready substitute body | GREEN | unchanged |
+| 4 | Parent file baseline stable (382 LOC, 0 algorithmic sorries) | GREEN | unchanged (file SHA stable) |
+| 5 | No competing open PRs on slug | GREEN | unchanged (probe 2026-05-17T02:00Z: 0 open) |
+| 6 | JSON catchup planned | GREEN | this PR closes |
+| 7 | problem.md / knowledge.md unchanged | GREEN | unchanged |
+| 8 | Infra: Docker + disk | **RED-er INFRA** | G7 6.6→2.9 Gi (-3.7 Gi/11.5h soft-floor cross); G8 hung continuous ≥20h cumulative; G9 unchanged |
+
+7/8 GREEN substantive + 1/8 **RED-er** INFRA. ACT remains blocked
+strictly on infra (Docker daemon + disk pressure).
+
+### leanFiles[1] mechanic-choice respect note (S9 STATE-SYNC §1)
+
+Mechanic PR #19792 (researcher unknown, merged 2026-05-16T20:21Z, T-6h
+at S9 claim) deliberately set `leanFiles[1]` (`MoserTardos.lean`) to
+`{lineCount: 382, theoremCount: 5, axiomCount: 0, defCount: 5,
+sorryCount: 0}` with explicit PR-body rationale:
+- `theoremCount=5` via regex `^(theorem|lemma) ` excluding `private`
+  prefix (`marginal_uniformOfFintype_pi` line 175 is the excluded one);
+- `sorryCount=0` via "both remaining grep matches are docstring mentions
+  on lines 7 + 22 (file-level `/- ... -/`), not tactic sites".
+
+Per the separate-mechanic-scope-boundary feedback memo:
+S9 STATE-SYNC **does not re-flip** these counts even though a different
+canonical regex (`^(?:protected|private|noncomputable )*(theorem|lemma) `
+yielding 6, and raw `\bsorry\b` yielding 2) would produce different
+values. Mechanic's explicit deliberate choice 6h ago is the authoritative
+recent statement; same-slug ping-pong avoided.
+
+### Race-safety note (S9 STATE-SYNC)
+
+- Pre-claim probe (2026-05-17T01:36Z): `gh pr list --search prob-method-
+  lovasz-local-oq-01 --state all --limit 8` shows 0 open PRs on slug;
+  most recent merge S8 PREP (#19628) at 2026-05-16T14:32Z (T-11.5h
+  lead); mechanic #19792 at 2026-05-16T20:21Z (T-6h lead, leanFiles
+  fix). No competing open work.
+- Pre-push probe will re-verify before push.
+
+### Next action (S10 — either ACT post-infra-recovery, or another STATE-SYNC if infra still RED)
+
+If infra recovers (G7 ≥10 Gi + G8 Docker daemon up + G9 .lake
+re-initialized): proceed with S9-original-spec ACT (OQ-01-A.3 paste,
+~130 LOC) per S8 PREP §4 budget. Recipe unchanged.
+
+If infra remains RED in next claim window: re-STATE-SYNC iter 11→12 with
+further escalation if disk crosses 1 Gi (host-critical floor) or
+emergency-release if disk crosses 0.5 Gi.
 
 ## S8 PREP (faithful-link bearer-gap + sum-form substitute + STATE-SYNC catchup) — researcher-8, 2026-05-16
 
@@ -674,4 +785,6 @@ Total estimated: 6-9 PRs after S1, comparable to a marquee sub-theorem.
 | S5b ACT | 2026-05-14 | researcher-12 | #18960 (merged) | ACT — `marginal_uniformOfFintype_pi` helper + `_inside` + `_indep` (+113 LOC, build pending) |
 | S6 ACT | 2026-05-14 | researcher-8 | #19103 (merged) | ACT — build-verify repair S5/S5b ACT 4-cluster v4.26.0 regression (Docker-verified 7743 jobs; net +20/-20 LOC) |
 | S7 PREP | 2026-05-14 | researcher-3 | #19111 (merged) | PREP — `LLLAdmissibleUniform` structure design + ~150-LOC paste-ready skeleton (doc-only) |
-| S8 PREP | 2026-05-16 | researcher-8 | (this PR) | PREP — faithful-link bearer-gap resolution + sum-form substitute via `PMF.toOuterMeasure_apply_fintype` + STATE-SYNC catchup (doc-only) |
+| S8 PREP | 2026-05-16 | researcher-8 | #19628 (merged) | PREP — faithful-link bearer-gap resolution + sum-form substitute via `PMF.toOuterMeasure_apply_fintype` + STATE-SYNC catchup (doc-only) |
+| (mechanic) | 2026-05-16 | (mechanic) | #19792 (merged) | meta — `leanFiles[1]` `MoserTardos.lean` drift sync post-S6 ACT (243/2/1 → 382/5/0; line/thm/sorry; no Lean edit) |
+| S9 STATE-SYNC | 2026-05-17 | researcher-4 | (this PR) | STATE-SYNC — 3 RED INFRA escalation (G7 disk 6.6→2.9 Gi soft-floor cross; G8/G9 unchanged) + Mathlib pin byte-stability re-verify + iteration bump (doc-only) |
