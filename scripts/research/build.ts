@@ -550,6 +550,23 @@ function isDescriptionPlaceholder(desc: string): boolean {
 }
 
 /**
+ * Check if a problem is an unfilled Seeker stub that should not appear in the
+ * public listings. The Seeker drops `research/problems/<slug>/problem.md` from
+ * a template; if no Researcher ever fills it in, the derived site JSON keeps
+ * the literal placeholder strings ("[Problem Title]", `\text{[LaTeX
+ * formulation of the theorem/conjecture]}`), which render verbatim on the
+ * gallery and per-problem pages. We drop those from the listings index so
+ * they stop appearing as public entries until backfilled.
+ */
+function isUnfilledStub(problem: ResearchProblem): boolean {
+  const title = (problem.title || '').trim()
+  if (title === '[Problem Title]') return true
+  const formal = (problem.problemStatement?.formal || '').trim()
+  if (formal.includes('[LaTeX formulation of the theorem/conjecture]')) return true
+  return false
+}
+
+/**
  * Generate lightweight listing from full problem
  */
 function generateListing(problem: ResearchProblem): ResearchListing {
@@ -639,6 +656,8 @@ function build(): void {
   const listings: ResearchListing[] = []
   let preservedCount = 0
   let generatedCount = 0
+  let stubSkippedCount = 0
+  const stubSkippedSlugs: string[] = []
 
   for (const entry of registry.problems) {
     // Skip template-derived problems (low-value stamp collecting)
@@ -655,7 +674,14 @@ function build(): void {
       // Existing committed JSON found - preserve it, just update registry fields
       const problem = updateRegistryFields(existingProblem, entry)
       problems.push(problem)
-      listings.push(generateListing(problem))
+      if (isUnfilledStub(problem)) {
+        // Stub: keep the JSON file (deep-link still resolves) but omit from listings
+        // so the public gallery page doesn't surface literal "[Problem Title]" rows.
+        stubSkippedCount++
+        stubSkippedSlugs.push(entry.slug)
+      } else {
+        listings.push(generateListing(problem))
+      }
       preservedCount++
       console.log(`   Preserved ${entry.slug} (from committed JSON)`)
     } else {
@@ -664,7 +690,12 @@ function build(): void {
       const problem = processProblem(entry.slug, entry)
       if (problem) {
         problems.push(problem)
-        listings.push(generateListing(problem))
+        if (isUnfilledStub(problem)) {
+          stubSkippedCount++
+          stubSkippedSlugs.push(entry.slug)
+        } else {
+          listings.push(generateListing(problem))
+        }
         generatedCount++
 
         // Write individual problem JSON only for newly generated problems
@@ -688,12 +719,18 @@ function build(): void {
   console.log(`   Total:     ${problems.length} problems`)
   console.log(`   Preserved: ${preservedCount} (from committed JSON)`)
   console.log(`   Generated: ${generatedCount} (new, from markdown)`)
+  if (stubSkippedCount > 0) {
+    console.log(`   Listings:  ${listings.length} (skipped ${stubSkippedCount} unfilled Seeker stub${stubSkippedCount === 1 ? '' : 's'})`)
+    const preview = stubSkippedSlugs.slice(0, 10).join(', ')
+    const suffix = stubSkippedSlugs.length > 10 ? `, … (+${stubSkippedSlugs.length - 10} more)` : ''
+    console.log(`              ${preview}${suffix}`)
+  }
 
   // NOTE: We intentionally do NOT delete JSON files that are not in the registry.
   // They may be legitimate committed data from researchers.
 
   console.log(`\nGenerated research-listings.json (${Math.round(fs.statSync(listingsPath).size / 1024)}KB)`)
-  console.log(`   ${problems.length} problems in listings index`)
+  console.log(`   ${listings.length} problems in listings index`)
 }
 
 // Run
