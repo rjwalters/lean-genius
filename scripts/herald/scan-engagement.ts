@@ -19,7 +19,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
-import { createMastodonClient } from './mastodon-client.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -100,6 +99,7 @@ function matchesKeywords(content: string): string[] {
 async function scanHashtags(
   dryRun: boolean
 ): Promise<EngagementCandidate[]> {
+  const { createMastodonClient } = await import('./mastodon-client.js')
   const client = createMastodonClient({ dryRun, skipStateUpdate: true })
   const state = readEngagementState()
   const repliedSet = new Set(state.replied_to)
@@ -174,9 +174,10 @@ async function main() {
     }
   }
 
-  console.log(`Scanning hashtags: ${HASHTAGS.map(h => '#' + h).join(', ')}`)
-  if (dryRun) console.log('[DRY RUN] State will not be updated')
-  console.log()
+  const log = jsonOutput ? console.error : console.log
+  log(`Scanning hashtags: ${HASHTAGS.map(h => '#' + h).join(', ')}`)
+  if (dryRun) log('[DRY RUN] State will not be updated')
+  if (!jsonOutput) console.log()
 
   const candidates = await scanHashtags(dryRun)
 
