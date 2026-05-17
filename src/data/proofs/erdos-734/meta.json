@@ -55,7 +55,9 @@
       "hasSquareRootBound: the O(n^{1/2}) frequency condition",
       "erdos734Question: formal statement of the open problem",
       "deBruijn_erdos: m ≥ n axiom for non-trivial PBDs",
+      "projective_plane_exists: existence axiom for projective planes of prime order",
       "pair counting identity: discussed in docstrings only, not formalized as axiom",
+      "affine_plane_exists: discussed in docstrings only, not formalized as axiom",
       "erdos_734_summary: combining de Bruijn-Erdős and projective plane existence"
     ],
     "axiomCount": 2,
@@ -68,7 +70,7 @@
     "historicalContext": "Erdős posed Problem #734 in his 1981 paper 'On the combinatorial problems which I would most like to see solved.' He asked whether, for all large n, there exists a non-trivial pairwise balanced block design (PBD) on n points where every block size t appears in at most O(n^{1/2}) blocks. Erdős wrote that this would 'probably not be very difficult to prove' but admitted he had been unsuccessful.\n\nThe foundational result for this problem is the de Bruijn-Erdős theorem (1948), which states that any non-trivial PBD on n points has at least n blocks. By a pigeonhole argument, since block sizes range from 2 to n, at least one size must appear with frequency proportional to √n. The question is whether ALL sizes can be kept at this threshold simultaneously.\n\nClassical constructions like projective and affine planes fail the frequency condition because they have uniform block size — all blocks are the same size, concentrating frequency in a single value. No construction achieving the O(√n) bound for all sizes is known, and the problem remains open. It connects to broader questions in combinatorial design theory about how block sizes can be distributed in balanced structures.",
     "problemStatement": "**Problem Statement (Open)**\n\nFind, for all large n, a non-trivial pairwise balanced block design A₁,...,Aₘ ⊆ {1,...,n} such that for all t, there are O(n^{1/2}) many blocks of size t.\n\n**Status: OPEN**\n\nKnown constructions (projective and affine planes) have uniform block size, which fails this criterion.",
     "text": "Find a non-trivial PBD where all block sizes have O(n^{1/2}) frequency. OPEN. de Bruijn-Erdős (1948) implies some size must have high frequency on average.",
-    "proofStrategy": "The formalization defines PBD as a structure with pair coverage and non-emptiness, along with block size counting and the O(√n) frequency condition. The de Bruijn-Erdős lower bound and projective/affine plane existence are axiomatized. The pair counting identity is axiomatized. The summary theorem combines de Bruijn-Erdős with projective plane existence, with no trivial placeholders.",
+    "proofStrategy": "The formalization defines PBD as a structure with pair coverage and non-emptiness, along with block size counting and the O(√n) frequency condition. The de Bruijn-Erdős lower bound and projective plane existence are axiomatized (`deBruijn_erdos`, `projective_plane_exists`). Affine plane existence, the pair counting identity, and near-uniform designs are discussed in docstrings only — not formalized as axioms in this file. The summary theorem combines de Bruijn-Erdős with projective plane existence, with no trivial placeholders.",
     "keyInsights": [
       "**de Bruijn-Erdős Bound:** Any non-trivial PBD on n points has at least n blocks",
       "**Pigeonhole Consequence:** With ≥ n blocks and ≤ n-1 possible sizes, some size must have multiple blocks",
