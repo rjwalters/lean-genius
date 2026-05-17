@@ -15,6 +15,7 @@
  *   npx tsx scripts/erdos/quality-audit.ts --verbose     # Detailed report
  *   npx tsx scripts/erdos/quality-audit.ts --json        # JSON output
  *   npx tsx scripts/erdos/quality-audit.ts --fail-on-issues  # CI mode (exit 1 if issues)
+ *   npx tsx scripts/erdos/quality-audit.ts --help        # Show usage
  */
 
 import * as fs from 'fs'
@@ -197,12 +198,29 @@ function runAudit(): AuditResult {
   }
 }
 
+function printUsage(): void {
+  console.log(`Usage: npx tsx scripts/erdos/quality-audit.ts [options]
+
+Audit Erdős gallery and research data for known quality issues.
+
+Options:
+  --verbose         Print detailed issue paths and details
+  --json            Output the full audit result as JSON
+  --fail-on-issues  Exit with status 1 when issues are found
+  --help, -h        Show this help message`)
+}
+
 // Main
 const args = process.argv.slice(2)
+if (args.includes('--help') || args.includes('-h')) {
+  printUsage()
+  process.exit(0)
+}
+
 const result = runAudit()
 
 if (args.includes('--json')) {
-  console.log(JSON.stringify(result, null, 2))
+  process.stdout.write(JSON.stringify(result, null, 2) + '\n')
 } else {
   console.log('=== Erdos Data Quality Audit ===\n')
   console.log(`Gallery entries:  ${result.summary.galleryEntries}`)
