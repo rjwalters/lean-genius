@@ -3,6 +3,30 @@ import type { AuthState } from '@/types/auth'
 
 const SESSION_KEY = 'leangenius_session_token'
 
+function readSessionToken(): string | null {
+  try {
+    return localStorage.getItem(SESSION_KEY)
+  } catch {
+    return null
+  }
+}
+
+function writeSessionToken(token: string) {
+  try {
+    localStorage.setItem(SESSION_KEY, token)
+  } catch (error) {
+    console.warn('Unable to persist session token:', error)
+  }
+}
+
+function clearSessionToken() {
+  try {
+    localStorage.removeItem(SESSION_KEY)
+  } catch (error) {
+    console.warn('Unable to clear session token:', error)
+  }
+}
+
 interface AuthContextType extends AuthState {
   login: (email: string, password: string) => Promise<{ success: boolean; error?: string }>
   loginWithGoogle: () => void
@@ -42,7 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       // Use OAuth token if present, otherwise check localStorage
-      const sessionToken = oauthToken || localStorage.getItem(SESSION_KEY)
+      const sessionToken = oauthToken || readSessionToken()
 
       if (!sessionToken) {
         setState({ user: null, isAuthenticated: false, isLoading: false })
@@ -51,7 +75,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Store the OAuth token if we got one
       if (oauthToken) {
-        localStorage.setItem(SESSION_KEY, oauthToken)
+        writeSessionToken(oauthToken)
       }
 
       try {
@@ -68,12 +92,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           })
         } else {
           // Invalid/expired session
-          localStorage.removeItem(SESSION_KEY)
+          clearSessionToken()
           setState({ user: null, isAuthenticated: false, isLoading: false })
         }
       } catch (error) {
         console.error('Session check failed:', error)
-        localStorage.removeItem(SESSION_KEY)
+        clearSessionToken()
         setState({ user: null, isAuthenticated: false, isLoading: false })
       }
     }
@@ -103,7 +127,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       }
 
-      localStorage.setItem(SESSION_KEY, data.session_token)
+      writeSessionToken(data.session_token)
       setState({
         user: data.user,
         isAuthenticated: true,
@@ -137,7 +161,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       }
 
-      localStorage.setItem(SESSION_KEY, data.session_token)
+      writeSessionToken(data.session_token)
       setState({
         user: data.user,
         isAuthenticated: true,
@@ -155,7 +179,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, [])
 
   const logout = useCallback(async () => {
-    const sessionToken = localStorage.getItem(SESSION_KEY)
+    const sessionToken = readSessionToken()
 
     if (sessionToken) {
       try {
@@ -168,12 +192,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
     }
 
-    localStorage.removeItem(SESSION_KEY)
+    clearSessionToken()
     setState({ user: null, isAuthenticated: false, isLoading: false })
   }, [])
 
   const refreshUser = useCallback(async () => {
-    const sessionToken = localStorage.getItem(SESSION_KEY)
+    const sessionToken = readSessionToken()
 
     if (!sessionToken) return
 
@@ -217,5 +241,5 @@ export function useAuth() {
 
 // Helper to get session token for API calls
 export function getSessionToken(): string | null {
-  return localStorage.getItem(SESSION_KEY)
+  return readSessionToken()
 }
