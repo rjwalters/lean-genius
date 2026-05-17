@@ -28,10 +28,6 @@ import {
   getVerySlowConfig,
   type CacheConfig,
 } from './cache'
-import {
-  fetchLatexWithPlaywright,
-  closeBrowser,
-} from './playwright-fetch'
 
 const BASE_URL = 'https://erdosproblems.com'
 const CACHE_DIR = path.join(process.cwd(), '.erdos-cache')
@@ -169,6 +165,7 @@ async function fetchLatex(
   usePlaywright = false
 ): Promise<boolean> {
   if (usePlaywright) {
+    const { fetchLatexWithPlaywright } = await import('./playwright-fetch')
     const latexContent = await fetchLatexWithPlaywright(problemNumber)
     if (latexContent) {
       cacheLatex(problemNumber, latexContent, config)
@@ -303,6 +300,7 @@ async function main(): Promise<void> {
     }
   } finally {
     if (options.playwright) {
+      const { closeBrowser } = await import('./playwright-fetch')
       await closeBrowser()
     }
   }
