@@ -465,4 +465,6 @@ function main() {
 }
 
 // Run if this is the main module
-main();
+if (process.argv[1] && import.meta.url === `file://${process.argv[1]}`) {
+  main();
+}
