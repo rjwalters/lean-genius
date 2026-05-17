@@ -1,63 +1,72 @@
 {
   "slug": "stirling-formula-oq-01-incomplete-01",
-  "title": "Higher-Order Stirling Expansion \u2014 Complete Two-Term Proof",
-  "phase": "ACT",
-  "status": "in-progress",
+  "title": "Higher-Order Stirling Expansion: First Correction Term",
+  "phase": "OBSERVE",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "Complete the proof of the higher-order Stirling expansion. 1 sorry remains: stirling_first_correction (the 1/(12n) correction term).",
-    "whyMatters": []
+    "formal": "\\frac{n!}{\\sqrt{2\\pi n}(n/e)^n} = 1 + \\frac{1}{12n} + O\\!\\left(\\frac{1}{n^2}\\right) \\quad (n \\to \\infty)",
+    "plain": "Formalize the first correction term in Stirling's factorial approximation: the normalized ratio differs from 1 + 1/(12n) by O(1/n^2).",
+    "whyMatters": [
+      "Refines the basic Stirling approximation with its first asymptotic correction term.",
+      "Connects the gallery Stirling expansion proof to Mathlib's Stirling sequence infrastructure.",
+      "Improves factorial and binomial coefficient approximations used in asymptotic analysis."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The base stirling-formula proof is verified and uses Mathlib's Stirling.factorial_isEquivalent_stirling and Stirling.tendsto_stirlingSeq_sqrt_pi.",
+      "Current Proofs/StirlingExpansion.lean contains theorem stirling_first_correction for |stirlingSeq n / sqrt(pi) - (1 + 1/(12n))| <= C/n^2.",
+      "Current Proofs/StirlingExpansion.lean contains theorem stirling_two_term_expansion for the factorial ratio form of the same first correction.",
+      "A targeted source scan of Proofs/StirlingExpansion.lean found no Lean sorry tokens and no axiom declarations."
+    ],
+    "open": [
+      "The owned incomplete-slug research files record no independent attempt beyond initial OBSERVE setup.",
+      "Optional follow-up work is higher-order correction beyond 1/(12n), such as the 1/(288n^2) term noted by the related completed proof state."
+    ],
+    "goal": "Track the first correction term for Stirling's formula and reconcile this incomplete research scaffold with the current verified stirling-formula-oq-01 proof record before starting new Lean work."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-04-12T21:15:00Z",
-    "iteration": 2,
-    "focus": "Proved sorry 2 from sorry 1. Sorry 1 (stirling_first_correction) remains.",
+    "phase": "OBSERVE",
+    "since": "2026-04-03T02:25:34-07:00",
+    "iteration": 1,
+    "focus": "Owned state.md records initial problem understanding only; current proof metadata should be checked before assigning new work.",
     "blockers": [],
-    "nextAction": "Prove stirling_first_correction using Mathlib telescoping series bounds",
+    "nextAction": "Reconcile this incomplete scaffold with the verified stirling-formula-oq-01 and StirlingExpansion.lean records, or retarget future work to the next correction term.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
-      "approachesTried": 1
+      "total": 0,
+      "currentApproach": 0,
+      "approachesTried": 0
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Reduced from 2 sorries to 1 by proving stirling_two_term_expansion from stirling_first_correction via ratio identity. The remaining sorry (stirling_first_correction) requires extracting the 1/(12n) coefficient from Mathlib telescoping series.",
+    "progressSummary": "The owned problem.md asks for the 1/(12n) correction in Stirling's expansion, while owned state.md and knowledge.md contain only initial scaffold content. Current related proof source and metadata now show the first-correction theorem and two-term factorial expansion present in Proofs/StirlingExpansion.lean, with no Lean sorry tokens or axiom declarations found by the targeted source scan.",
     "builtItems": [
-      "Proved stirling_two_term_expansion from stirling_first_correction (2 sorries -> 1)",
-      "Established ratio identity: n!/[sqrt(2pi n)(n/e)^n] = stirlingSeq(n)/sqrt(pi)",
-      "Updated gallery meta.json (sorries: 2 -> 1)",
-      "Documented approach for remaining sorry in file summary"
+      "Proofs/StirlingExpansion.lean: stirling_first_correction theorem for the Stirling sequence first correction.",
+      "Proofs/StirlingExpansion.lean: stirling_two_term_expansion theorem translating the correction to the factorial ratio.",
+      "Proofs/StirlingExpansion.lean: error_bound_from_correction theorem deriving the base Stirling error bound from the first correction.",
+      "src/data/proofs/stirling-formula-oq-01/meta.json: related gallery metadata for the higher-order Stirling expansion."
     ],
     "insights": [
-      "Mathlib has log_stirlingSeq_diff_hasSum: exact series for each telescoping step",
-      "Leading term of series: 1/(3(2m+3)^2) sums to ~1/(12n) - this IS the correction coefficient",
-      "log_stirlingSeq_sub_log_stirlingSeq_succ gives O(1/n^2) per-step bound, sufficient for O(1/n) axiom elimination",
-      "Full 1/(12n) correction proof needs tail sum formalization + coefficient extraction (~100+ lines)",
-      "Alternative: prove weaker 1/n bound directly to eliminate axiom in StirlingFormula.lean"
+      "The target can be stated either as a factorial-ratio expansion or as a bound on stirlingSeq n / sqrt(pi), since Mathlib's stirlingSeq normalizes by sqrt(2n) * (n/e)^n.",
+      "The owned problem.md still describes two remaining sorries, but current related proof source has moved past that state.",
+      "The literature README for this owned problem contains no concrete external references beyond scaffold headings.",
+      "The related completed proof state identifies second-correction work as optional follow-up rather than part of the first-correction goal."
     ],
-    "mathlibGaps": [
-      "No direct Euler-Maclaurin formula in Mathlib",
-      "Tail sum infrastructure for tsum_{k>=n} needs custom setup"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Formalize the tail sum: tsum_{k>=n} [log(stirlingSeq(k+1)) - log(stirlingSeq(k+2))] = log(stirlingSeq(n)/sqrt(pi))",
-      "Extract leading coefficient 1/(12n) by splitting series into leading term + O(1/n^2) remainder",
-      "Or: prove weaker 1/n bound to eliminate axiom in StirlingFormula.lean (simpler, still high value)"
+      "Resolve whether this incomplete slug should be retired or linked to the completed stirling-formula-oq-01 record.",
+      "If continuing mathematically, target the next-order correction term rather than redoing the already-present first-correction theorem.",
+      "Keep future status changes tied to the owned state.md or current Lean/proof metadata."
     ],
-    "markdown": "# Knowledge Base: stirling-formula-oq-01-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "markdown": "# Knowledge Base: stirling-formula-oq-01-incomplete-01\n\n## Problem Understanding\n\nThe target is the first correction term in Stirling's expansion: the factorial ratio n!/(sqrt(2*pi*n)*(n/e)^n) equals 1 + 1/(12n) up to O(1/n^2).\n\n## Local Evidence\n\nThe owned state.md is still in OBSERVE with zero attempts. The related current proof source Proofs/StirlingExpansion.lean contains stirling_first_correction, stirling_two_term_expansion, and error_bound_from_correction, and the targeted source scan found no Lean sorry tokens or axiom declarations.\n\n## Follow-Up\n\nBefore assigning proof work under this incomplete slug, reconcile it with the completed stirling-formula-oq-01 proof record. New mathematical work should focus on higher-order corrections beyond 1/(12n).\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "analysis",
+    "stirling",
+    "asymptotic",
+    "factorial"
   ],
   "relatedProofs": [
     "stirling-formula",
@@ -66,7 +75,12 @@
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Analysis.SpecialFunctions.Stirling",
+      "Stirling.stirlingSeq",
+      "Stirling.tendsto_stirlingSeq_sqrt_pi",
+      "Stirling.factorial_isEquivalent_stirling"
+    ]
   },
   "started": "2026-04-03T02:25:34-07:00",
   "significance": 7,
