@@ -124,9 +124,12 @@ while kill -0 "$BUILD_PID" 2>/dev/null; do
     sleep "$CHECK_INTERVAL"
 done
 
-# Wait for build to finish and get exit code
+# Wait for build to finish and get exit code. Keep errexit disabled just long
+# enough to preserve failed build statuses for the summary below.
+set +e
 wait "$BUILD_PID" 2>/dev/null
 EXIT_CODE=$?
+set -e
 
 if $EXCEEDED; then
     echo ""
