@@ -13,12 +13,36 @@
 
 import { readFileSync, writeFileSync, existsSync, readdirSync } from 'fs'
 import { join, dirname } from 'path'
-import { parse as parseYaml } from 'yaml'
+import { createRequire } from 'node:module'
 
 const ROOT_DIR = join(dirname(import.meta.url.replace('file://', '')), '../..')
 const ERDOS_PROBLEMS_DIR = join(ROOT_DIR, 'external/erdosproblems')
 const FORMAL_CONJECTURES_DIR = join(ROOT_DIR, 'external/formal-conjectures')
 const OUTPUT_DIR = join(ROOT_DIR, 'scripts/erdos/data')
+const require = createRequire(import.meta.url)
+
+type ParseYaml = (content: string) => unknown
+
+let cachedParseYaml: ParseYaml | undefined
+
+function getYamlParser(): ParseYaml {
+  if (cachedParseYaml) {
+    return cachedParseYaml
+  }
+
+  try {
+    cachedParseYaml = (require('yaml') as { parse: ParseYaml }).parse
+    return cachedParseYaml
+  } catch (err) {
+    const code = err && typeof err === 'object' && 'code' in err
+      ? String((err as { code?: unknown }).code)
+      : ''
+    if (code === 'MODULE_NOT_FOUND' || code === 'ERR_MODULE_NOT_FOUND') {
+      throw new Error('The yaml package is required for external sync. Run pnpm install, then retry.')
+    }
+    throw err
+  }
+}
 
 /**
  * Problem metadata from teorth/erdosproblems
@@ -83,6 +107,7 @@ export function parseProblemsYaml(): ExternalProblemMeta[] {
     throw new Error(`problems.yaml not found at ${yamlPath}. Run: git submodule update --init`)
   }
   const content = readFileSync(yamlPath, 'utf-8')
+  const parseYaml = getYamlParser()
   return parseYaml(content) as ExternalProblemMeta[]
 }
 
@@ -420,9 +445,26 @@ export async function sync(options: { dryRun?: boolean; verbose?: boolean } = {}
   return { stats, galleryCandidates, proofTargets }
 }
 
+function printUsage(): void {
+  console.log(`Usage: npx tsx scripts/erdos/external-sync.ts [options]
+
+Sync external Erdős problem metadata and formal-conjectures Lean files.
+
+Options:
+  --dry-run       Preview sync output without writing data files
+  --verbose, -v   Show candidate and tag details
+  --help, -h      Show this help message`)
+}
+
 // CLI entry point
 if (import.meta.url === `file://${process.argv[1]}`) {
   const args = process.argv.slice(2)
+
+  if (args.includes('--help') || args.includes('-h')) {
+    printUsage()
+    process.exit(0)
+  }
+
   const dryRun = args.includes('--dry-run')
   const verbose = args.includes('--verbose') || args.includes('-v')
 
