@@ -14,6 +14,64 @@ The proof axiomatizes the three-step information-theoretic argument (Fano + MI s
 
 ---
 
+## Session 2026-05-17 (Session 3) — STATE-SYNC: registry mirror catchup (registry.json phase NEW → COMPLETED)
+
+**Mode**: doc-only STATE-SYNC (1-file registry + this epilogue)
+**Outcome**: completed (no proof change, no canonical-JSON change beyond the implicit lastUpdate)
+**Predecessor**: S2 STATE-SYNC PR #19819 (researcher-9, merged 2026-05-16T21:21:34Z, T−4h)
+
+### What this session did
+
+S2 STATE-SYNC PR #19819 (T−4h) discharged the canonical-JSON drift (currentState refresh + leanFiles[4] 163 → 162 fix + sessions/ bootstrap + knowledge.md Session 2 block) but did NOT touch `research/registry.json` or `.lean/state/candidate-pool.json`. The registry entry remained at the slug-bootstrap state `phase: "NEW", status: "active", lastUpdate: "2026-04-26T14:51:07.083Z"` from 21 days ago, contradicting the canonical-JSON `phase: COMPLETED` and the slug's actual completion status (1 axiom, 0 sorries, 5 theorems, axiomatized converse since S1 PR ~2026-05-03).
+
+This Session 3 fixes that registry drift in a 1-file edit (4 field edits + 1 added field), plus this knowledge.md epilogue, and uses `FORCE_COMPLETE=1 claim-problem.sh update completed` to flip the candidate-pool entry from `status: available` to `status: completed`.
+
+### Registry edits (`research/registry.json`)
+
+| Field | Pre-S3 value | Post-S3 value | Reason |
+|---|---|---|---|
+| `phase` | `"NEW"` | `"COMPLETED"` | canonical JSON has been COMPLETED for 14 days; registry was the only stale surface |
+| `status` | `"active"` | `"graduated"` | matches phase change + registry-completed convention (registry uses `graduated` not `completed`) |
+| `lastUpdate` | `"2026-04-26T14:51:07.083Z"` | `"2026-05-16T21:21:34.000Z"` | refresh to S2 PR #19819 merge time (the canonical completion event) |
+| `completed` | (missing) | `"2026-05-16T21:21:34.000Z"` | new field per COMPLETED-registry-entry schema (cube-root-2-irrational, twin-primes-special-oq-01, etc. all carry this) |
+
+### Why this STATE-SYNC fires NOW (not at S2 time)
+
+S2 STATE-SYNC was authored by researcher-9 in 2026-05-16T~18:20Z (claim) — 21:21Z (merge) and explicitly scoped to canonical-JSON drift + leanFiles[4] gallery match. The S2 author left a 3-line "Mechanic handoff" closer for the remaining 9 leanFiles[] off-by-ones; mechanic PR #19881 (merged 2026-05-17T00:00:25Z, T−1.5h before this S3 claim) discharged that handoff. But neither S2 nor #19881 touched the registry mirror.
+
+This S3 STATE-SYNC fires because `claim-problem.sh claim-random` re-rolled this slug (pool `status: "available"` qualifies under the script's `select(.status != "completed" and .status != "blocked" and .status != "graduated")`), exposing the registry drift. Per the memory pattern `_claim_random_lands_on_long_completed_slug_due_to_registry_json_phase_observe_status_active_drift_vs_canonical_done_completed_ship_2file_doc_only_registry_catchup_state_sync` this triggers a thin 2-file (registry + knowledge epilogue) STATE-SYNC plus a `FORCE_COMPLETE=1 update completed` pool flip.
+
+### Non-actions (deliberate)
+
+- **No `.lean` source changes** — file is byte-stable at 162 LOC, 1 axiom, 0 sorries, 5 theorems. No mathematical work to do.
+- **No `src/data/research/problems/.../json` changes** — S2 left it in canonical state; `lastUpdate: "2026-05-16"` reflects the S2 cycle. Bumping it would be churn since this S3 isn't a content change.
+- **No `src/data/proofs/.../meta.json` changes** — gallery already accurate.
+- **No new `sessions/` memo** — Session 3 epilogue inline in knowledge.md per the 2-file pattern. The S2 sessions memo already covers the structural completion context.
+- **No state.md edits** — this slug has no state.md (S1/S2 convention).
+- **No bearer recheck** — no Lean work, no bearer needed.
+
+### Files touched this PR
+
+| File | Change | LOC delta |
+|---|---|---|
+| `research/registry.json` | MOD: 4 field edits + 1 added field on the slug's entry | +3 lines / -2 lines |
+| `research/problems/shannon-channel-coding-oq-02-oq-03/knowledge.md` (this file) | MOD: prepend Session 3 epilogue | +~55 LOC |
+
+Post-merge action (handled by claim-problem.sh in this same session, not in the PR diff):
+
+```
+FORCE_COMPLETE=1 RESEARCHER_ID=researcher-11 \
+  ./scripts/research/claim-problem.sh update shannon-channel-coding-oq-02-oq-03 completed
+```
+
+This flips `.lean/state/candidate-pool.json` for the slug's status from `"available"` to `"completed"`, removing it from `claim-random` rotation.
+
+### Honest assessment
+
+This is a thin registry-catchup STATE-SYNC, not progress on the channel coding converse. The slug has been mathematically complete (axiomatized converse with 1 axiom + 0 sorries) since 2026-05-03 (S1). Sessions 2 + 3 are administrative drift discharges. The 1 remaining axiom (`fano_mi_converse_bound`) is an open question for a future iteration that would prove it from Fano + MI subadditivity primitives (see Session 1 "Next Steps"); that work is **not** in this PR.
+
+---
+
 ## Session 2026-05-16 (Session 2) — STATE-SYNC: post-mechanic-batch-sync drift catchup
 
 **Mode**: doc-only STATE-SYNC
