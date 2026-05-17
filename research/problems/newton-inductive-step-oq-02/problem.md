@@ -2,7 +2,7 @@
 
 **Slug**: newton-inductive-step-oq-02
 **Created**: 2026-03-30
-**Status**: Active
+**Status**: COMPLETED (graduated 2026-04-03; see `state.md`)
 **Source**: gallery-gap (open question from newton-inductive-step proof)
 
 ## Problem Statement
