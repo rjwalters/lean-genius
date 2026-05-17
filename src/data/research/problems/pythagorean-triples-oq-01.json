@@ -3,17 +3,30 @@
   "title": "Density of primitive Pythagorean triples with hypotenuse ≤ N ~ N/(2π)",
   "phase": "COMPLETED",
   "status": "graduated",
-  "tier": "A",
+  "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
+    "formal": "primitiveTripleCount(N) / N → 1/(2π)",
     "plain": "Proves that the number of primitive Pythagorean triples with hypotenuse c ≤ N is asymptotically N/(2π). Decomposes the result into sector lattice point density (π/8), coprime fraction (6/π²), and parity correction (2/3). Includes parity involutions, column decomposition, and computational verification. 97 theorems, 7 axioms, 0 sorries.",
-    "whyMatters": []
+    "whyMatters": [
+      "Connects the classical parametrization of primitive Pythagorean triples with an explicit asymptotic density",
+      "Separates the result into geometric lattice counting, coprime density, and parity-equidistribution components",
+      "Documents the exact analytic number theory assumptions still missing from Mathlib"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "primitiveTripleCount_density: primitive triple count divided by N tends to 1/(2π), proved from the three core density axioms",
+      "The density decomposition combines sectorPointCount(N)/N → π/8, coprimeInSectorCount(N)/sectorPointCount(N) → 6/π², and the parity correction 2/3",
+      "Exact parity and partition infrastructure, including triangle_oe_eq_oo, coprime_sector_three_way_partition, primitive_eq_eo_plus_oe, and GCD-halving lemmas",
+      "Computational checks for small N, including primitiveTripleCount values 0, 0, 1, 2, 4, 7 at N = 0, 4, 5, 13, 25, 50"
+    ],
+    "open": [
+      "Remove the sector lattice point density axiom by formalizing Gauss-circle-style lattice point counting",
+      "Remove the coprime density axiom by formalizing Möbius inversion or Euler product density arguments",
+      "Remove the parity equidistribution axiom by formalizing the needed sieve theory or character-sum bounds"
+    ],
+    "goal": "Formalize the asymptotic density of primitive Pythagorean triples with hypotenuse c ≤ N as N/(2π), with remaining analytic density facts isolated as axioms."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -24,7 +37,7 @@
     "blockers": [
       "None - formalization is complete within current Mathlib capabilities."
     ],
-    "nextAction": "None. Further axiom elimination requires Mathlib additions:",
+    "nextAction": "None for the current axiomatized formalization. Further axiom elimination would require Mathlib additions for the Gauss circle problem, Möbius inversion, and sieve theory or character sums.",
     "attemptCounts": {
       "total": 9,
       "currentApproach": 4,
@@ -32,14 +45,63 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "COMPLETED (axiomatized): The primitive Pythagorean triple density theorem is formalized with 0 sorries. The main result is proved from three core analytic number theory axioms: sector lattice density, coprime density in the sector, and parity equidistribution. Supporting work decomposes the parity axiom via exact parity involutions, partitions, boundary analysis, column density, and straddling-pair geometry.",
+    "builtItems": [
+      "proofs/Proofs/PythagoreanTriplesOQ01.lean - Main density formalization with the primitiveTripleCount_density theorem",
+      "proofs/Proofs/PythagoreanTriplesOQ01Aristotle.lean - Companion file with routine supporting lemmas",
+      "sector_lattice_point_density, coprime_fraction_in_sector, and bothOdd_fraction_in_coprime_sector isolated as the three core analytic density axioms",
+      "triangle_oe_eq_oo exact involution showing |OE(K)| = |OO(K)| in the triangular region",
+      "coprime_sector_three_way_partition and primitive_eq_eo_plus_oe partition identities for parity classes and primitive triples",
+      "parity_from_boundary_and_eo and parity_axiom_from_columns decompositions of the parity axiom",
+      "circleNorm, circleNormInv, circle_norm_gap, and parity_from_straddling_vanishes for straddling-pair geometry"
+    ],
+    "insights": [
+      "The final constant factors as (π/8) × (6/π²) × (2/3) = 1/(2π).",
+      "Primitive triples correspond to coprime pairs in the sector with opposite parity; the both-odd fraction among coprime sector pairs is the parity obstruction.",
+      "The map (m,n) ↔ (m,m-n) gives exact OE/OO balance in the triangular region, but the circular sector boundary creates a discrepancy.",
+      "The total boundary size is Θ(N), so a proof needs cancellation or discrepancy control rather than only a crude boundary-size bound.",
+      "The parity axiom can be reduced to column-density and boundary-vanishing conditions, but those conditions still need analytic number theory absent from Mathlib.",
+      "Straddling-pair analysis explains geometrically why the boundary discrepancy should vanish: the expected straddling contribution is O(√N) compared with a Θ(N) coprime sector."
+    ],
+    "mathlibGaps": [
+      "Gauss circle problem or comparable lattice point asymptotics for circular sectors",
+      "Möbius inversion, Euler product, or ζ(2)-based proof of coprime pair density",
+      "Sieve theory or Dirichlet-character/character-sum bounds for parity equidistribution among coprime pairs",
+      "Gaussian integer unique factorization infrastructure for the r2_pos_iff connection noted in the knowledge file"
+    ],
+    "nextSteps": [
+      "Keep the current result marked as complete only in the axiomatized sense.",
+      "If Mathlib gains the needed analytic number theory, start by replacing sector_lattice_point_density, then coprime_fraction_in_sector, then bothOdd_fraction_in_coprime_sector.",
+      "Use the existing parity decomposition and straddling-pair infrastructure as the roadmap for any future attempt to remove the parity axiom."
+    ],
     "markdown": "# Knowledge: Pythagorean Triples Density (OQ-01)\n\n## Result\n\nThe number of primitive Pythagorean triples with hypotenuse c ≤ N is asymptotically N/(2π).\n\n## Formalization Status: COMPLETED\n\n**File**: `proofs/Proofs/PythagoreanTriplesOQ01.lean` (~2490 lines)\n**Companion**: `proofs/Proofs/PythagoreanTriplesOQ01Aristotle.lean` (12 routine lemmas proved)\n**Stats**: ~120 theorems, ~39 definitions, 0 sorries, 7 axioms (3 core + 4 supplementary)\n**Build**: Passes (fixed Mathlib API breakage 2026-03-15)\n\n## Proof Architecture\n\nThe main theorem `primitiveTripleCount_density` decomposes the density into three independent factors:\n\n```\nprimitiveTripleCount(N) / N → 1/(2π)\n= (count/coprime) × (coprime/sector) × (sector/N)\n= (2/3) × (6/π²) × (π/8)\n= 1/(2π)\n```\n\nEach factor is proved as a separate `Tendsto` statement, then combined via arithmetic.\n\n## Three Independent Axioms\n\n### 1. `sector_lattice_point_density` (line 512)\n- **Statement**: `sectorPointCount(N) / N → π/8`\n- **Meaning**: Lattice points in {0 < n < m, m²+n² ≤ N} grow as πN/8\n- **Requires**: Gauss circle problem asymptotics\n- **Mathlib gap**: No formalization of lattice point counting in circular regions\n\n### 2. `coprime_fraction_in_sector` (line 518)\n- **Statement**: `coprimeInSectorCount(N) / sectorPointCount(N) → 6/π²`\n- **Meaning**: Density of coprime pairs is 6/π² (reciprocal of ζ(2))\n- **Requires**: Möbius inversion or Euler product\n- **Mathlib gap**: No formalization of coprime density asymptotics\n\n### 3. `bothOdd_fraction_in_coprime_sector` (line 529)\n- **Statement**: `bothOddCoprimeCount(N) / coprimeInSectorCount(N) → 1/3`\n- **Meaning**: Among coprime pairs, 1/3 have both coordinates odd\n- **Requires**: Equidistribution of coprime residues by parity class\n- **Mathlib gap**: No sieve theory or character sum bounds\n\n## Key Infrastructure Built\n\n### Involution Bijection (Part XIV)\n- `triangle_oe_eq_oo`: |OE(K)| = |OO(K)| exactly via (m,n) ↔ (m,m-n) involution\n- Proves exact parity balance in the triangular region without circle constraint\n\n### Three-Way Partition (Part XII)\n- `coprime_sector_three_way_partition`: coprime = EO + OE + OO\n- `primitive_eq_eo_plus_oe`: primitive triples = EO + OE pairs\n\n### Axiom Decomposition (Parts XVI-XIX)\n- `parity_from_boundary_and_eo`: bothOdd axiom = boundary vanishing + EO density\n- `parity_axiom_from_columns`: bothOdd axiom = column density ratio + boundary vanishing\n- Separates geometric content (boundary) from arithmetic content (density)\n\n### GCD Halving (Part XVIII)\n- `coprime_eo_iff`: gcd(2a,n) = gcd(a,n) when n is odd\n- Explains WHY each parity class has the same coprime density\n\n### Boundary Analysis (Part XVI)\n- `sector_boundary_balance`: sectorOE + bdryOE = sectorOO + bdryOO\n- `sector_oe_oo_discrepancy_bound`: sector discrepancy = boundary discrepancy\n- Total boundary is Θ(N), NOT O(√N); the discrepancy must be shown o(N)\n\n### Straddling Pair Analysis (Part XXIII)\n- `circleNorm`, `circleNormInv`: circle distance under involution\n- `circle_norm_gap`: norm difference = m|m-2n| (algebraic identity)\n- `norm_inv_larger_when_n_small/large`: involution geometry (n < m/2 → outward, n > m/2 → inward)\n- `parity_from_straddling_vanishes`: column density + straddling → 0 implies OO → 1/3\n- **Key insight**: straddling pairs = O(√N) << coprime sector = Θ(N), so boundary vanishes\n\n### Upgraded Axioms (Part XXIII)\n- `triple_count_from_r2_connection`: PROVED (π/8)×(6/π²)×(2/3) = 1/(2π)\n- `landau_two_squares`: upgraded from True to proper Landau-Ramanujan Tendsto statement\n- `r2_pos_iff`: converted to axiom (requires Gaussian integer UFD)\n\n## Approaches Explored\n\n1. **Density decomposition via telescoping** - SUCCEEDED: Main theorems proved from 3 axioms\n2. **Parity partition infrastructure** - SUCCEEDED: Exact bijections, partition identities\n3. **Boundary analysis for parity axiom** - BLOCKED: Per-column parity balance requires character sum bounds absent from Mathlib\n4. **Straddling pair analysis** - SUCCEEDED: Complete geometric explanation of parity axiom via O(√N) straddling bound\n\n## Why 3 Axioms Are Irreducible (Current Mathlib)\n\nEach axiom requires a distinct area of analytic number theory:\n- **Axiom 1** (Gauss circle): Lattice point counting in circular regions\n- **Axiom 2** (coprime density): Euler product / Möbius function\n- **Axiom 3** (parity equidistribution): Sieve theory / Dirichlet characters\n\nNone of these areas have sufficient Mathlib coverage. The decomposition work (Parts XVI-XIX) showed that Axiom 3 can be factored into two sub-conditions (column density + boundary vanishing), but both sub-conditions also require analytic tools.\n\n## Computational Verifications\n\n| N | primitiveTripleCount | coprimeInSectorCount | bothOddCoprimeCount |\n|---|---------------------|---------------------|---------------------|\n| 0 | 0 | - | - |\n| 4 | 0 | - | - |\n| 5 | 1 | 1 | 0 |\n| 13 | 2 | 3 | 1 |\n| 25 | 4 | 5 | 1 |\n| 50 | 7 | 11 | 4 |\n"
   },
-  "approaches": [],
+  "approaches": [
+    {
+      "name": "Density decomposition via telescoping",
+      "status": "successful",
+      "description": "Split primitiveTripleCount(N)/N into sector density, coprime fraction, and parity correction factors.",
+      "outcome": "Main theorem proved from three core analytic density axioms."
+    },
+    {
+      "name": "Parity partition infrastructure",
+      "status": "successful",
+      "description": "Developed exact EO/OE/OO-style parity partitions, involutions, and primitive-pair identities.",
+      "outcome": "Provided the finite combinatorial framework needed to state and combine the parity correction."
+    },
+    {
+      "name": "Boundary and column analysis for the parity axiom",
+      "status": "blocked",
+      "description": "Reduced the both-odd density axiom to boundary-vanishing and column-density subconditions.",
+      "outcome": "Clarified the obstruction, but the remaining subconditions require analytic number theory not currently available in Mathlib."
+    },
+    {
+      "name": "Straddling-pair geometry",
+      "status": "successful",
+      "description": "Analyzed how the parity involution interacts with the circle constraint through norm gaps and straddling pairs.",
+      "outcome": "Gave a geometric explanation for the expected vanishing discrepancy, while still relying on analytic estimates for full axiom removal."
+    }
+  ],
   "tags": [
     "seeker-selected",
     "number-theory",
