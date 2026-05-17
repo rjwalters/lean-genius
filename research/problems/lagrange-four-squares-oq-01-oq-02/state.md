@@ -1,9 +1,120 @@
 # Current State
 
-**Phase**: ACT (S14 STATE-SYNC PR #19377 MERGED 2026-05-16T03:53:07Z; PR #19048 S10D ACT body CLOSED in same drain second 2026-05-16T03:53:08Z — Path A (rebase #19048) retired, Path B (fresh S15 ACT shipping the 4 S10D lemmas) now PREFERRED; ThreeSquares.lean still 1895 LOC / 2 axioms / 1 sorry on origin/main `78448f56d0a`; bearer pin stability holds at v4.26.0 SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` — 3 days, 0 substantive drift)
+**Phase**: ACT (S16 PREP — Path B refinement into 3 sub-ACTs S16a/S16b/S16c + 2-bearer reverify (0 substantive drift) + host snapshot RED-er (3.9 Gi avail at 00:06Z, down from S15's 6.7 Gi over ~19.5 h; Docker still hung); ThreeSquares.lean unchanged 1895 LOC / 2 axioms / 1 sorry; non-leaf parent w/ 4 importers (LagrangeFourSquares, LagrangeFourSquaresOQ01OQ01, LagrangeFourSquaresOQ04, AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle); cumulative leanFiles[0].lineCount drift 1496 → 1895 declared as MECHANIC handoff)
 **Since**: 2026-05-08T22:50:00Z
-**Iteration**: 15
-**Last Updated**: 2026-05-16 (S15 STATE-SYNC absorbing 2026-05-16T03:53Z drain second: S14 STATE-SYNC #19377 merge + PR #19048 closure; researcher-11; doc-only)
+**Iteration**: 16
+**Last Updated**: 2026-05-17T00:06Z (S16 PREP: Path B sub-ACT refinement + 2-bearer reverify + host snapshot; researcher-5; doc-only; originally drafted ~18:00Z, refreshed at commit time)
+
+## S16 PREP — Path B refinement into S16a/S16b/S16c sub-ACTs + 2-bearer reverify + host snapshot (2026-05-17T00:06Z, researcher-5)
+
+**Mode**: doc-only PREP. **S15 STATE-SYNC PR #19428 merged at 2026-05-16T04:39:59Z** (T-19.5 h from this commit). In the intervening 19.5 h: **0 new PRs on this slug** (verified via `git log origin/main` post-fetch + `gh pr list` slug-filter), **0 same-slug PRs open at S16 claim time**, **Lean state byte-stable** (ThreeSquares.lean unchanged 1895 LOC / 2 axioms at lines 615 + 1604 / 1 sorry at line 1866; HEAD blob SHA `aec4687a5111233d009ead4b65b7188b0a34996b`), **Mathlib pin SHA unchanged** (`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` since 2026-05-13 PREP audit → now ~4 days, 0 substantive drift). Host state has worsened across the window: `df -h /System/Volumes/Data` at 00:06Z reports **3.9 Gi avail / 100% capacity** (S15's claim-time disk was 6.7 Gi per S15 §"Host infrastructure snapshot" — −2.8 Gi over ~19.5 h; intermediate 17:55Z reading was 3.7 Gi); Docker daemon still hung (`docker info` returns no `Server:` section).
+
+**Why PREP not STATE-SYNC**: S15 already absorbed all drift through 04:39Z merge. There is no NEW drift to consolidate (0 new PRs, 0 Lean changes, 0 Mathlib SHA churn). This S16 is a forward-looking **plan refinement** — converting Path B's monolithic 4-lemma ACT into 3 sequential sub-ACTs (S16a / S16b / S16c) for safer pickup under tighter disk + non-leaf parent constraints than S15 enjoyed.
+
+### Why refine Path B into sub-ACTs
+
+S15 documented Path B as a single ~45 LOC ACT with 4 lemmas + 1-2 iter budget. Two factors warrant scoping refinement:
+
+1. **Non-leaf parent confirmation** (NEW; S15 mentioned cross-traffic risk but did not enumerate importers): `grep -rln "import Proofs.ThreeSquares" proofs/Proofs/` returns **4 sibling files** that consume `ThreeSquares.lean`:
+   * `Proofs/LagrangeFourSquares.lean` (parent gallery file)
+   * `Proofs/LagrangeFourSquaresOQ01OQ01.lean`
+   * `Proofs/LagrangeFourSquaresOQ04.lean` (sibling problem; cited by S15 as concrete cross-traffic source)
+   * `Proofs/AngleTrisectionOQ02OQ01OQ02Incomplete01Aristotle.lean` (cross-domain consumer)
+
+   A 4-lemma monolithic ACT failing at typeclass inference (R1: Module.Basis qualifier or Module.finrank_fintype_fun_eq_card vs Module.finrank_pi) would cascade through all 4 importers. Per researcher feedback memory on non-leaf parents + Docker hung: **prefer scoped sub-ACTs that bound cascade to syntactic surface, especially when only the first sub-ACT carries elaboration risk.**
+
+2. **Host disk worse than S15 claim time**: 3.7 Gi avail vs S15's 6.7 Gi (S10C-era same-day ACT floor was 5.8 Gi per shannon-channel-coding precedent, 5.4 Gi per ballot-problem precedent). At 3.7 Gi the build-pending risk-acceptance bar is **stricter**: even doc-only is OK, but a 45 LOC tactic-heavy ACT touching a non-leaf parent under Docker-hung is borderline.
+
+### Sub-ACT plan (S16a → S16b → S16c)
+
+| Sub-ACT | LOC  | Tactic Blocks | Mathlib Bearers Used                                              | Risk           | Cascade Surface         | Recommended Picker Order |
+|---------|------|---------------|-------------------------------------------------------------------|----------------|-------------------------|--------------------------|
+| **S16a** | ~10  | 1             | `Matrix.det_ne_zero_iff_isUnit`, S10C's `..._det = (p:ℝ)²` (slug-local), `pow_ne_zero`, `Int.cast_pos` | R1 LOW         | LinearIndependent proof only — declaration name additive | First |
+| **S16b** | ~5   | 0 (term-mode def) | `basisOfLinearIndependentOfCardEqFinrank` (Lemmas.lean:237), `Module.finrank_fintype_fun_eq_card` | R1 MEDIUM (Module. qualifier) | One noncomputable def — depends on S16a | Second (after S16a green) |
+| **S16c** | ~30  | 2             | `Matrix.of_apply`, `coe_basisOfLinearIndependentOfCardEqFinrank` (Lemmas.lean:243), `ZSpan.volume_fundamentalDomain` (ZLattice/Basic.lean:386), `abs_of_nonneg`, `sq_nonneg` | R3 MEDIUM (entry-wise rewrite chain) | Two theorems (`_toMatrix_eq` + `RealVolume`) — depends on S16b | Third (after S16b green) |
+
+**Net LOC**: S16a + S16b + S16c = ~45 LOC (same as Path B monolithic). **Net iter budget**: 1-2 per sub-ACT, ~3-6 total iterations. **Cascade containment**: each sub-ACT's failure is local; non-leaf importers only break if a *named* symbol is mistaken (S16a's name is new, additive; S16b same; S16c same). **No reverts needed across sub-ACTs.**
+
+**Insertion point** (unchanged from S15): after `cast_int_mem_dirichletSublatticeReal` (file lines 1538-1594), before the `axiom not_excluded_form_is_sum_three_sq` block (line 1604). S15's "line 1593" referred to this region; actual insertion is **immediately after line 1594** (end of cast_int proof body).
+
+### 2-bearer reverify at T+13.5h + SHA-pin transitivity hold at T+19.5h
+
+S15 last spot-checked 4 bearers at 04:03Z. This S16 spot-checked the **2 highest-risk bearers** at the intermediate 17:55Z reading (~T+13.5h) and held them through to the commit time at 00:06Z (~T+19.5h) via Mathlib pin SHA stability (`2df2f0150c…` unchanged across the entire window per `proofs/lake-manifest.json` re-check at 00:06Z).
+
+| Bearer                                            | File                                                              | S15 line | S16 17:55Z line | File-blob SHA at pinned ref                      | Drift |
+|---------------------------------------------------|-------------------------------------------------------------------|----------|-----------------|---------------------------------------------------|-------|
+| `basisOfLinearIndependentOfCardEqFinrank` (def)   | `Mathlib/LinearAlgebra/FiniteDimensional/Lemmas.lean`             | 237      | **237** (exact) | `5037964869acbfbfc7167f101177c4e9e4726abf`        | 0     |
+| `coe_basisOfLinearIndependentOfCardEqFinrank`     | (same)                                                            | 243      | **243** (exact) | (same)                                            | 0     |
+| `ZSpan.volume_fundamentalDomain`                  | `Mathlib/Algebra/Module/ZLattice/Basic.lean`                      | 386      | **386** (exact) | `264aa571b9f8baea01e0b85956391db37bb6f082`        | 0     |
+| `Module.Basis` + `Basis.mk` (SHA-pin transitive)  | `Mathlib/LinearAlgebra/Basis/Defs.lean` + `Basic.lean`            | 89 / 102 | (not spot-checked; SHA-stable carry-forward from S15)             | n/a   |
+
+**Bearer pin stability**: 0 substantive drift since 2026-05-13 PREP audit → now ~4 days. S15's 04:03Z 4-spot recheck + this S16's 17:55Z 2-spot recheck + 00:06Z lake-manifest SHA re-check = 6+1 independent confirmations at the same Mathlib pin SHA. **Risk-acceptance**: all 4 S10D bearers remain at the pinned SHA per file-level stability + SHA-pin transitivity.
+
+### Host infrastructure snapshot (2026-05-17T00:06Z; intermediate 17:55Z reading 3.7 Gi captured below)
+
+* `df -h /System/Volumes/Data` @ 00:06Z: `926Gi  886Gi  3.9Gi  100%` (S15's 04:03Z baseline 6.7 Gi avail per S15 §"Host infrastructure snapshot"; **−2.8 Gi over ~19.5 h**; intermediate 17:55Z reading was 3.7 Gi — host has not recovered, fluctuating 3.7-3.9 Gi)
+* `df -h /` @ 00:06Z: matches Data volume (single APFS container)
+* `docker info` @ 00:06Z: no `Server:` section returned (daemon hung; consistent with S15 + PR #19048 iter-2/3 patterns + cross-slug T-2h cluster per memory `_postship_pivot_to_prep_phase_slug_with_old_prep_predecessor_and_three_red_infra`)
+* `docker ps -q`: not attempted (would hang)
+
+ACT-readiness gate worsened: S16a/S16b/S16c picker still gated on disk recovery; **Docker-clean verify still infeasible.** Per S15's risk-acceptance criteria for "build pending" ACT (leaf-only adds, recent BUILD-VERIFY, bearer-0-drift), only the third criterion is satisfied — `ThreeSquares.lean` is non-leaf (4 importers), and the last BUILD-VERIFY for this region was S10C on 2026-05-08 (~9 days ago, across v4.25→v4.26 boundary). **Build-pending qualifier alone is insufficient justification under tight disk for this non-leaf parent.**
+
+### Path tree restatement (post-S16)
+
+* **Path A** (RETIRED in S15): rebase #19048 — closed PR.
+* **Path B** (PREFERRED in S15, REFINED here): split into S16a → S16b → S16c sub-ACTs.
+  * **S16a** (FIRST PICKUP): `dirichletSublatticeRealBasisLinearIndependent` (R1 LOW, single tactic block, additive).
+  * **S16b** (after S16a green): `dirichletSublatticeRealBasis` noncomputable def (0 tactic blocks, term-mode application).
+  * **S16c** (after S16b green): `dirichletSublatticeRealBasis_toMatrix_eq` + `dirichletSublatticeRealVolume` (R3 MEDIUM, 2 entry-wise tactic blocks).
+* **Path C** (LOW VALUE, defer): apply S12b PREP lint kit (PR #19241) at lines 1007, 1164, 1312, 1444, 1448, 1580, 1584, 1587, 1809. All outside Path B's edit zone. Apply after Path B (S16a-c) lands.
+* **Path D** (gated on Path B completion, ~120-240 min): discharge `dirichlet_key_lemma` axiom (2 → 1) via `MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure` applied to `dirichletSublatticeReal` with `8·p² < volume(D)`, `R > (6·p²·d/π)^(2/3)`, composing with S10C's `cast_int_mem_dirichletSublatticeReal` + S10A's `dirichletForm_eq_p_of_lt_two_mul`.
+
+**ACT-readiness gate (S16) — restatement**:
+
+| # | Gate                                                                       | S15 04:03Z         | S16 00:06Z         |
+|---|----------------------------------------------------------------------------|--------------------|--------------------|
+| 1 | Bearer SHA stable (`2df2f0150c…`)                                          | GREEN              | GREEN (2-spot reverify @ 17:55Z, SHA-pin transitive @ 00:06Z) |
+| 2 | Paste-ready Path B skeleton                                                | GREEN (monolithic) | GREEN (refined into S16a/b/c) |
+| 3 | Risk inventory R1-R3 documented                                            | GREEN              | GREEN (per-sub-ACT) |
+| 4 | Insertion point identified (after line 1594 / before line 1604)            | GREEN              | GREEN              |
+| 5 | 0 open same-slug PRs                                                       | GREEN              | GREEN              |
+| 6 | `ThreeSquares.lean` leanFile[0] numeric drift (1496 vs 1895)               | RED (carry)        | RED (mechanic handoff §below) |
+| 7 | Sibling cross-traffic risk (non-leaf parent)                               | AMBER (S15 noted)  | AMBER (S16 enumerated 4 importers) |
+| 8 | Host disk recovery (≥ 50 Gi avail / Docker daemon up)                      | AMBER (6.7 Gi)     | **RED-er** (3.9 Gi @ 00:06Z; fluctuating 3.7-3.9 Gi over the session window) |
+
+Net: **5/8 GREEN, 1/8 AMBER (gate 7), 2/8 RED (gates 6 + 8)**. Gate 6 is mechanic territory (leanFiles[] = auto-populated; manual researcher edits risk clobber per memory) — packaged in §"Mechanic handoff" below.
+
+### Mechanic handoff — `leanFiles[0]` lineCount + axiomCount drift
+
+JSON `leanFiles[0]` for `Proofs/ThreeSquares.lean` reports `lineCount: 1496, sorryCount: 1, axiomCount: 2`. Actual on origin/main (`78448f56d0a` per S15 anchor, unchanged at 18:00Z): `wc -l` = **1895** (drift +399 from cumulative S8/S9/S10A/S10C/S10E/S10aux/S10B/S12b lint history), `grep -c "^axiom\b"` = **2** (no drift), `grep -c "\bsorry\b"` = **1** (no drift; the line-1866 comment-tagged sorry).
+
+**Ready-to-paste mechanic snippet** (for a future mechanic PR `fix(meta): lagrange-four-squares-oq-01-oq-02 ThreeSquares lineCount drift`):
+
+```jsonpatch
+[
+  { "op": "replace", "path": "/leanFiles/0/lineCount", "value": 1895 }
+]
+```
+
+Or equivalent `jq` edit:
+
+```bash
+jq '.leanFiles[0].lineCount = 1895' \
+  src/data/research/problems/lagrange-four-squares-oq-01-oq-02.json \
+  > tmp.json && mv tmp.json src/data/research/problems/lagrange-four-squares-oq-01-oq-02.json
+```
+
+This S16 PREP does **NOT** edit `leanFiles[]` directly (mechanic territory + auto-populated by `enrich-research.ts`; manual edits risk clobber on next `pnpm build`). Other leanFiles entries unchanged from S15's baseline (no numeric audit needed — out of S16 scope).
+
+### Files modified by this PR (3 files, doc-only)
+
+* `research/problems/lagrange-four-squares-oq-01-oq-02/state.md` — this S16 PREP entry (prepended; S15 STATE-SYNC + S14 STATE-SYNC + all prior entries preserved verbatim below).
+* `src/data/research/problems/lagrange-four-squares-oq-01-oq-02.json` — `currentState.{phase ACT, iteration 15→16, since (unchanged), focus REWRITE, nextAction REWRITE, attemptCounts.{total 15→16, current 15→16}, lastUpdate 2026-05-16T04:07Z→2026-05-17T00:06Z}`. **No** top-level `.phase`, `.lastUpdate`, or `leanFiles[]` change (S15's hands-off discipline preserved). **No** `knowledge.*` edits.
+* `research/problems/lagrange-four-squares-oq-01-oq-02/sessions/2026-05-16-s16-prep-pathb-subact-refinement.md` — NEW, ~330 LOC, 10 sections: §1 trigger conditions, §2 sub-ACT plan w/ per-table risk inventory, §3 insertion-point identification, §4 2-bearer reverify methodology + result, §5 host snapshot + ACT-gate restatement, §6 path tree restatement (B refined; A retired; C deferred; D gated-on-B), §7 mechanic leanFiles[0] handoff snippet, §8 non-actions (explicit), §9 references, §10 honesty calibration.
+
+**No edits** to: `proofs/Proofs/*.lean` (Lean unchanged; ACT scoped + gated); `proofs/lake-manifest.json` (Mathlib pin unchanged); `src/data/proofs/<slug>/` gallery (no gallery touch this PREP); other sibling `Proofs/LagrangeFourSquares*.lean` files (cross-traffic enumerated, not edited).
+
+---
 
 ## S15 STATE-SYNC — post-S14-merge + #19048-closure catch-up + Path A retirement + Path B promotion (2026-05-16, researcher-11)
 
