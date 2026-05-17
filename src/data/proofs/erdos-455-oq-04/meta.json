@@ -90,11 +90,19 @@
   },
   "sections": [
     {
-      "id": "setup",
-      "title": "Header, Imports, and AP-Gap Definitions",
+      "id": "header-and-motivation",
+      "title": "Header, References, and Open-Question Motivation",
       "startLine": 1,
+      "endLine": 40,
+      "summary": "Module docstring documenting the connection to the parent slug's `conclusion.openQuestions[3]` ('Can the problem be generalized to other arithmetic conditions on gaps?'), the closed-form characterization of even-d AP-gap prime sequences as prime values of $(d/2) n^2 + (g_0 - d/2) n + q_0$, the historical record (Euler 1772 length-40 for d = 2; current best d = 2 length is still 40 after 254 years), and the four-reference bibliography (Euler 1772, Green-Tao 2008, Bunyakovsky 1857, Hardy-Littlewood 1923 / Conjecture F).",
+      "mathContext": "Parent's open question: *Can Erdős #455's monotone-gap framework be generalized to AP-gap conditions?* This slug answers **yes** for the d = 2 case via Euler's witness, and **conjecturally yes** for the general d > 0 case via Bunyakovsky 1857. The general structure: for even $d > 0$ and $g_0, q_0 \\in \\mathbb{N}_{>0}$, AP-gap prime sequences are exactly the prime values of $\\frac{d}{2} n^2 + (g_0 - \\frac{d}{2}) n + q_0$."
+    },
+    {
+      "id": "ap-gap-definitions",
+      "title": "Core Definitions: HasAPGaps and APGapPrimeSeq",
+      "startLine": 42,
       "endLine": 61,
-      "summary": "Documents the open-question motivation (parent's `openQuestions[3]` on AP-gap generalizations), enumerates references (Euler 1772, Green-Tao 2008, Bunyakovsky 1857, Hardy-Littlewood 1923), and introduces the two core data types: `HasAPGaps (q : ℕ → ℕ) (d : ℤ)` for sequences with constant signed second-difference d, and `APGapPrimeSeq d` for strictly-monotone all-prime sequences satisfying `HasAPGaps`. Imports `Mathlib.Data.Nat.Prime.Basic`, `Mathlib.Tactic`, and the parent file `Proofs.Erdos455Problem`.",
+      "summary": "Introduces the two foundational data types after the imports (`Mathlib.Data.Nat.Prime.Basic`, `Mathlib.Tactic`, `Proofs.Erdos455Problem`). `HasAPGaps (q : ℕ → ℕ) (d : ℤ)` is a `Prop`-valued predicate asserting that the signed second-difference of $q$ is constantly $d$; `APGapPrimeSeq d` is a `structure` bundling a sequence with `StrictMono`, `Nat.Prime`-prefix, and `HasAPGaps d` fields. The ℤ-valued $d$ accommodates negative values syntactically (though `StrictMono q` forces $d \\geq 0$ for non-empty instances).",
       "mathContext": "An **AP-gap sequence** with common second-difference $d \\in \\mathbb{Z}$ is a function $q : \\mathbb{N} \\to \\mathbb{N}$ satisfying $(q(n+2) - 2 q(n+1) + q(n))_{\\mathbb{Z}} = d$ for every $n \\in \\mathbb{N}$. Equivalently, the first-differences $\\Delta q(n) = q(n+1) - q(n)$ themselves form an arithmetic progression with common difference $d$. Special cases: $d = 0$ recovers the standard arithmetic-progression setting (Green-Tao 2008), $d = 2$ recovers Euler-polynomial-shaped sequences."
     },
     {
