@@ -399,7 +399,7 @@ case "${1:-}" in
             print_error "Usage: $0 --slot <agent-number>"
             exit 1
         fi
-        local slot_num="$2"
+        slot_num="$2"
         if [[ $slot_num -lt 1 || $slot_num -gt $MAX_AGENTS ]]; then
             print_error "Slot must be between 1 and $MAX_AGENTS (got: $slot_num)"
             exit 1
@@ -415,18 +415,17 @@ case "${1:-}" in
         git checkout main 2>/dev/null || true
         git pull origin main 2>/dev/null || true
 
-        local i="$slot_num"
-        local session="$SESSION_PREFIX-$i"
-        local log_file="$LOGS_DIR/$session.log"
-        local enricher_id="enricher-$i"
-        local worktree_path
+        i="$slot_num"
+        session="$SESSION_PREFIX-$i"
+        log_file="$LOGS_DIR/$session.log"
+        enricher_id="enricher-$i"
         worktree_path=$(create_agent_worktree "$i")
         tmux kill-session -t "$session" 2>/dev/null || true
         tmux new-session -d -s "$session" -c "$worktree_path"
         tmux send-keys -t "$session" "export ENRICHER_ID='$enricher_id'" Enter
         tmux send-keys -t "$session" "export CLAIM_TTL='$CLAIM_TTL'" Enter
         tmux send-keys -t "$session" "export REPO_ROOT='$REPO_ROOT'" Enter
-        local prompt_file="$LOGS_DIR/$session-prompt.md"
+        prompt_file="$LOGS_DIR/$session-prompt.md"
         cat > "$prompt_file" << PROMPT_EOF
 # Proof Enrichment Agent $enricher_id
 
@@ -453,8 +452,8 @@ You are working in an isolated git worktree with your own branch.
 
 Start now by running step 1 to read the full instructions, then claim and enrich a target.
 PROMPT_EOF
-        local simple_prompt="You are $enricher_id. Read $prompt_file for your instructions, then start the enrichment workflow."
-        local wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
+        simple_prompt="You are $enricher_id. Read $prompt_file for your instructions, then start the enrichment workflow."
+        wrapper_script="$REPO_ROOT/scripts/agents/claude-wrapper.sh"
         tmux send-keys -t "$session" "$wrapper_script --prompt '$simple_prompt' --log '$log_file' --max-retries 5" Enter
         print_success "Launched $session (worktree: $worktree_path)"
         ;;
