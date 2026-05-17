@@ -1,27 +1,39 @@
 {
   "slug": "erdos-157-incomplete-01",
-  "title": "Erdős Problem #157: Infinite Sidon Set as Asymptotic Basis",
+  "title": "Erdős #157: Infinite Sidon Set as an Order-3 Asymptotic Basis",
   "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE: 2 sorries in axiomatized Lean proof.",
-    "whyMatters": []
+    "formal": "\\exists A \\subseteq \\mathbb{N},\\ A \\text{ is infinite} \\land A \\text{ is a Sidon set} \\land A \\text{ is an asymptotic basis of order } 3.",
+    "plain": "Formalize Erdős #157: Pilatte (2023) proves that an infinite Sidon set can be an asymptotic basis of order 3. The local Lean work is still in progress: pilatte_existence is blocked, and sidon_not_basis_2 still needs the SumsetK_A_2_card_bound helper.",
+    "whyMatters": [
+      "Pilatte's result resolves a long-standing Erdős question in additive combinatorics.",
+      "Finishing the Lean development would turn an axiomatized gallery entry into a more fully verified Sidon-set result.",
+      "The remaining order-2 obstruction proof has a concrete counting route that can reuse existing Sidon uniqueness lemmas."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Pilatte (2023) proves that an infinite Sidon set can be an asymptotic basis of order 3.",
+      "The local Lean file proves sidon_iff_sidon_alt, powers_of_two_sidon, example_is_sidon, and sidon_counting_contradiction."
+    ],
+    "open": [
+      "sidon_not_basis_2 still needs the SumsetK_A_2_card_bound helper lemma.",
+      "pilatte_existence is blocked on formalizing Pilatte's probabilistic construction."
+    ],
+    "goal": "Finish the tractable Sidon counting obstruction first, then keep Pilatte existence isolated as a larger blocked construction target."
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-04-03T07:56:24.931Z",
     "iteration": 1,
-    "focus": "sidon_counting_contradiction proved. Next: prove SumsetK_A_2_card_bound to complete sidon_not_basis_2.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "sidon_counting_contradiction is proved; sidon_not_basis_2 remains, with SumsetK_A_2_card_bound as the next helper lemma.",
+    "blockers": [
+      "pilatte_existence requires formalizing Pilatte 2023's probabilistic construction and is flagged as blocked in local notes."
+    ],
+    "nextAction": "Prove SumsetK_A_2_card_bound using IsSidonAlt uniqueness, then use the direct counting argument to finish sidon_not_basis_2.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: sidon_counting_contradiction proved (sorry removed). 1 sorry remains: sidon_not_basis_2 main theorem needs SumsetK_A_2_card_bound helper lemma. pilatte_existence: BLOCKED.",
+    "progressSummary": "PROGRESS: sidon_counting_contradiction is proved. Remaining Lean work is not solved: sidon_not_basis_2 needs SumsetK_A_2_card_bound, while pilatte_existence is blocked on formalizing Pilatte 2023.",
     "builtItems": [
       "sidon_not_basis_2 proof strategy: counting injection from [N0,2N] into Option(A) union (A x A), bounded by M*(M+1)/2 using IsSidonAlt",
       "Identified that basis_counting_lower is too weak (c > 0 only, not c > 1)",

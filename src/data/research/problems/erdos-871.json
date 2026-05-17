@@ -1,27 +1,36 @@
 {
   "slug": "erdos-871",
   "title": "Erdős #871: Partitioning Additive Bases of Order 2",
-  "phase": "NEW",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Erdős #871: Partitioning Additive Bases of Order 2.",
-    "whyMatters": []
+    "formal": "\\exists A \\subseteq \\mathbb{N},\\; \\mathrm{IsAdditiveBasis2}(A) \\land \\mathrm{RepTendsToInfty}(A) \\land \\neg\\mathrm{CanPartitionIntoBases}(A)",
+    "plain": "Formalize the additive-bases counterexample target: an order-2 additive basis A with representation counts r_A(n) tending to infinity that still cannot be partitioned into two disjoint order-2 additive bases.",
+    "whyMatters": [
+      "Larsen's recent disproof settles a concrete Erdős additive-bases partition question.",
+      "The remaining axioms are named published construction results, making the next formalization targets explicit.",
+      "The blocking construction may be decomposable into reusable additive-combinatorics and representation-function lemmas."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Larsen (2026) disproves the original Erdős partition question using an extension of the Erdős-Nathanson (1989) blocking construction.",
+      "Erdős-Nathanson (1989) proves a positive partition result under sufficiently strong logarithmic representation growth."
+    ],
+    "open": [
+      "Reduce or formalize the Lean axioms currently standing for the Erdős-Nathanson and Larsen construction results, especially larsen_construction_blocking."
+    ],
+    "goal": "Survey and formalize additive-combinatorics ingredients needed to reduce the current 3-axiom Lean development."
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-01-23T08:04:56.547Z",
+    "phase": "OBSERVE",
+    "since": "2026-04-04",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Axiom reduction for the additive-bases partition counterexample, starting with the Larsen 2026 blocking construction.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Read Erdos871Problem.lean in full, then survey Mathlib additive-combinatorics, set-cardinality, density, and sumset APIs for blocking-property infrastructure.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +38,19 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: File has 0 sorries, 25 proved theorems. All 3 axioms encode deep construction results from published papers (Erdős-Nathanson 1989, Larsen 2026) and cannot be proved from Mathlib. No further work needed.",
+    "progressSummary": "OBSERVE-phase Lean target: the gallery file has 3 remaining axioms for published additive-bases results, and the current work is to reduce those axioms rather than treat the target as fully formalized.",
     "builtItems": [],
     "insights": [
-      "File has 0 sorries - all 25 theorems are fully proved",
-      "3 axioms are all deep paper results: erdos_nathanson_1989 (1989 construction), erdos_nathanson_positive (probabilistic partition result), larsen_construction_blocking (2026 counterexample)",
-      "None of the 3 axioms are routine/Mathlib-provable - they encode substantial constructions from published papers",
-      "larsen_counterexample was already derived from larsen_construction_blocking (axiom count reduced 4→3)",
-      "Formalization is complete and well-structured with clear documentation"
+      "The target asks for an order-2 additive basis A with r_A(n) -> infinity that cannot be partitioned into two order-2 additive bases.",
+      "Local notes identify three active axioms: erdos_nathanson_1989, erdos_nathanson_positive, and larsen_construction_blocking.",
+      "The primary reduction target is larsen_construction_blocking because the Larsen 2026 construction is described as constructive and block-based.",
+      "Mathlib survey targets include Combinatorics.Additive, Set/Card infrastructure, density lemmas, and sumset APIs."
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Survey Mathlib.Combinatorics.Additive and related Salem/Behrend files for reusable sumset or density infrastructure.",
+      "Map the explicit Larsen blocking construction into smaller formal lemmas before attempting to discharge larsen_construction_blocking."
+    ]
   },
   "tags": [
     "erdos",

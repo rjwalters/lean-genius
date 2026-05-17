@@ -1,27 +1,37 @@
 {
   "slug": "erdos-109",
-  "title": "Erdős #109: The Erdős Sumset Conjecture",
-  "phase": "NEW",
+  "title": "Erdős #109: Erdős Sumset Conjecture",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Erdős #109: The Erdős Sumset Conjecture.",
-    "whyMatters": []
+    "formal": "\\forall A \\subseteq \\mathbb{N},\\ \\overline{d}(A)>0 \\Rightarrow \\exists B,C \\subseteq \\mathbb{N}\\text{ infinite such that } B+C \\subseteq A.",
+    "plain": "Every subset A of the natural numbers with positive upper density contains a sumset B + C for some infinite sets B and C. Moreira, Richter, and Robertson proved the conjecture in 2019; the gallery currently records the theorem as the axiom `moreira_richter_robertson`.",
+    "whyMatters": [
+      "It is a major additive-combinatorics theorem showing that positive density forces infinite sumset structure.",
+      "The proof route connects density combinatorics with Furstenberg correspondence and ergodic recurrence.",
+      "Reducing the gallery axiom would strengthen the shared density and sumset infrastructure used by nearby Erdős and Szemerédi entries."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Moreira, Richter, and Robertson proved the Erdős sumset conjecture in Annals of Mathematics in 2019.",
+      "The gallery file defines ErdosSumsetConjecture, upper density via Filter.limsup, a custom sumset operation, and consequences such as positive density implying infinitude."
+    ],
+    "open": [
+      "The gallery still axiomatizes the main theorem as moreira_richter_robertson.",
+      "It is not yet clear whether Mathlib has enough Furstenberg-correspondence, IP-set, or polynomial-recurrence infrastructure to formalize the published proof."
+    ],
+    "goal": "Reduce or replace the moreira_richter_robertson axiom by surveying the existing gallery file and Mathlib's measure-theory, recurrence, limsup, and additive-combinatorics APIs."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-23T08:04:56.540Z",
+    "phase": "OBSERVE",
+    "since": "2026-04-05",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Axiom-reduction survey for `moreira_richter_robertson : ErdosSumsetConjecture`, with `StrongerSumsetConjecture` as a secondary target.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Read `proofs/Proofs/Erdos109Problem.lean`, then survey Mathlib's measure-preserving, recurrence, `Filter.limsup`, and IP-set tooling for a Furstenberg-correspondence route.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +39,37 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "Local notes select erdos-109 as an empty-knowledge, high-priority axiom-reduction target. The theorem is mathematically solved by Moreira-Richter-Robertson (2019), but the Lean gallery currently axiomatizes the main result and records no proof attempts yet.",
+    "builtItems": [
+      {
+        "name": "ErdosSumsetConjecture",
+        "description": "Formal statement that every positive-upper-density subset of ℕ contains B + C with B and C infinite.",
+        "proven": true
+      },
+      {
+        "name": "moreira_richter_robertson",
+        "description": "Gallery axiom for the Moreira-Richter-Robertson theorem; the research target is to reduce or replace it.",
+        "proven": false
+      },
+      {
+        "name": "StrongerSumsetConjecture",
+        "description": "Gallery-defined secondary target involving stronger sumset structure; not yet assessed in the local state notes.",
+        "proven": false
+      }
+    ],
+    "insights": [
+      "The reported proof route runs through the Furstenberg correspondence principle plus IP/polynomial recurrence machinery.",
+      "Selection was based on one precise axiom-reduction target and empty prior knowledge, not on completed Lean proof progress.",
+      "The 2024 density-Hindman extension is relevant background literature, but local notes only propose surveying it."
+    ],
+    "mathlibGaps": [
+      "Need to verify whether Mathlib has enough ergodic recurrence, IP-set, and polynomial recurrence infrastructure for the Furstenberg-correspondence route."
+    ],
+    "nextSteps": [
+      "Read `proofs/Proofs/Erdos109Problem.lean` to confirm definitions and the `StrongerSumsetConjecture` statement.",
+      "Search Mathlib for `MeasureTheory.MeasurePreservingMap`, ergodic recurrence, `Filter.limsup`, and IP-set or polynomial recurrence results.",
+      "Assess a small provable fragment or consequence before attempting the full Moreira-Richter-Robertson theorem."
+    ]
   },
   "tags": [
     "erdos",
@@ -110,8 +146,8 @@
     {
       "path": "Proofs/Erdos1093Problem.lean",
       "filename": "Erdos1093Problem.lean",
-      "lineCount": 168,
-      "theoremCount": 25,
+      "lineCount": 224,
+      "theoremCount": 38,
       "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,
@@ -139,6 +175,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1095OQ01Problem.lean"
+    },
+    {
+      "path": "Proofs/Erdos1095Problem.lean",
+      "filename": "Erdos1095Problem.lean",
+      "lineCount": 181,
+      "theoremCount": 5,
+      "axiomCount": 7,
+      "defCount": 6,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1095Problem.lean"
     },
     {
       "path": "Proofs/Erdos1096Problem.lean",
@@ -231,10 +278,10 @@
     {
       "path": "Proofs/Erdos1099Problem.lean",
       "filename": "Erdos1099Problem.lean",
-      "lineCount": 655,
+      "lineCount": 724,
       "theoremCount": 23,
       "axiomCount": 0,
-      "defCount": 7,
+      "defCount": 10,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1099Problem.lean"
@@ -242,11 +289,11 @@
     {
       "path": "Proofs/Erdos109OQ01.lean",
       "filename": "Erdos109OQ01.lean",
-      "lineCount": 506,
-      "theoremCount": 11,
-      "axiomCount": 0,
+      "lineCount": 474,
+      "theoremCount": 8,
+      "axiomCount": 3,
       "defCount": 10,
-      "sorryCount": 5,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos109OQ01.lean"
     },
