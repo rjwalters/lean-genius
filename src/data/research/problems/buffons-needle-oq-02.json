@@ -1,14 +1,18 @@
 {
   "slug": "buffons-needle-oq-02",
-  "title": "[Problem Title]",
+  "title": "3D Buffon Formula for Polygonal Curves",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "formal": "\\text{For a polygonal curve of total length } L \\text{ dropped on parallel planes with spacing } d,\\; \\mathbb{E}[\\mathrm{crossings}] = \\frac{L}{2d}.\\; \\text{Equivalently, } \\alpha_3 = \\mathbb{E}_{S^2}[|\\cos \\varphi|] = \\frac{1}{2} < \\frac{2}{\\pi} = \\alpha_2.",
     "plain": "Proves the 3D Buffon formula: a polygonal curve of total length L dropped on a family of parallel planes (spacing d) has expected crossing count E[crossings] = L/(2d). The key is the sphere average E_{S²}[|cos φ|] = 1/2, proved by computing ∫₀^π sin θ |cos θ| dθ = 1 via the substitution |cos θ| = cos θ on [0,π/2] and |cos θ| = -cos θ on [π/2,π]. Compares with the 2D Buffon formula 2L/(πd), proving the 3D crossing factor α₃ = 1/2 is strictly less than the 2D factor α₂ = 2/π.",
-    "whyMatters": []
+    "whyMatters": [
+      "Connects the classical Buffon needle probability calculation to polygonal curves in three dimensions.",
+      "Isolates the dimensional constant as a sphere average, reducing the 3D crossing factor to an explicit integral.",
+      "Records the comparison between the 3D factor 1/2 and the 2D Buffon factor 2/pi."
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -21,7 +25,7 @@
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Read problem.md thoroughly and acquire full context. Then move to ORIENT phase to explore literature and related proofs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +33,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "The local research notes record only initial problem understanding. No research attempts, dead ends, Mathlib gaps, or external references have been documented for this slug.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "The problem targets the 3D Buffon crossing formula for polygonal curves of total length L against parallel planes with spacing d.",
+      "The central computation is the sphere average E_{S^2}[|cos phi|] = 1/2, expressed through the integral of sin theta |cos theta| over [0, pi].",
+      "The statement compares the 3D crossing factor alpha_3 = 1/2 with the 2D Buffon factor alpha_2 = 2/pi."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: buffons-needle-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Read the problem statement in full and confirm the intended formal scope.",
+      "Move from OBSERVE to ORIENT by checking relevant literature and related proofs.",
+      "Identify any Mathlib facts needed for the sphere-average integral and the 2D versus 3D comparison."
+    ],
+    "markdown": "# Knowledge Base: buffons-needle-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThe problem concerns the 3D Buffon formula for a polygonal curve of total length L dropped on parallel planes with spacing d. The expected crossing count is stated as L/(2d). The key constant is the sphere average E_{S^2}[|cos phi|] = 1/2, computed from the integral of sin theta |cos theta| over [0, pi]. The local statement also compares this 3D factor with the 2D Buffon factor 2/pi.\n\n---\n\n## Insights\n\n- The stated 3D crossing factor is alpha_3 = 1/2.\n- The integral calculation splits |cos theta| at pi/2, using cos theta on [0, pi/2] and -cos theta on [pi/2, pi].\n- The comparison goal is alpha_3 = 1/2 < 2/pi = alpha_2.\n\n---\n\n## Dead Ends\n\nNo dead ends are documented in the local research notes.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "probability",
+    "geometry",
+    "integral-geometry",
+    "buffons-needle"
   ],
   "relatedProofs": [
     "buffons-needle",
@@ -50,7 +63,8 @@
     "buffons-needle-oq-01-oq-02",
     "buffons-needle-oq-02",
     "buffons-needle-oq-02-oq-01",
-    "buffons-needle-oq-02-oq-02"
+    "buffons-needle-oq-02-oq-02",
+    "buffons-needle-oq-02-oq-03"
   ],
   "references": {
     "papers": [],
@@ -110,8 +124,8 @@
     {
       "path": "Proofs/BuffonsNeedleOQ01OQ01OQ04.lean",
       "filename": "BuffonsNeedleOQ01OQ01OQ04.lean",
-      "lineCount": 333,
-      "theoremCount": 20,
+      "lineCount": 568,
+      "theoremCount": 27,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
@@ -161,6 +175,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ02.lean"
+    },
+    {
+      "path": "Proofs/BuffonsNeedleOQ02OQ03.lean",
+      "filename": "BuffonsNeedleOQ02OQ03.lean",
+      "lineCount": 285,
+      "theoremCount": 27,
+      "axiomCount": 3,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BuffonsNeedleOQ02OQ03.lean"
     }
   ]
 }

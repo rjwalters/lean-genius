@@ -1,14 +1,17 @@
 {
   "slug": "desargues-theorem-oq-02",
-  "title": "[Problem Title]",
+  "title": "Moulton Plane Counterexample to Desargues's Theorem",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "How can we formalize non-Desarguesian planes in Lean to demonstrate when Desargues's theorem fails? YES — by constructing the Moulton plane, an affine plane where lines with negative slope bend at the y-axis, and exhibiting a concrete 6-point counterexample. Two triangles are perspective from a point O but their three side-intersection points are NOT Moulton-collinear, proving Desargues fails.",
-    "whyMatters": []
+    "formal": "\\text{In the Moulton plane, there exist two triangles that are perspective from a point but whose three corresponding side-intersection points are not Moulton-collinear.}",
+    "plain": "Formalize a non-Desarguesian plane in Lean by constructing the Moulton plane, where lines with negative slope bend at the y-axis, and exhibit a concrete six-point counterexample: two triangles are perspective from a point O, but their three corresponding side-intersection points are not Moulton-collinear.",
+    "whyMatters": [
+      "This records a Lean-facing route for demonstrating that Desargues's theorem can fail in a non-Desarguesian affine plane.",
+      "The Moulton-plane counterexample turns the abstract independence phenomenon into a concrete configuration of points and lines."
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -21,7 +24,7 @@
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Read problem.md thoroughly and acquire full context. Then move to ORIENT phase to explore literature and related proofs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,21 +32,35 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "The local research state still records initial OBSERVE-phase context gathering with zero attempts, while the existing JSON records this entry as graduated and includes a completed Lean artifact for the slug.",
+    "builtItems": [
+      "Existing JSON records Proofs/DesarguesTheoremOQ02.lean with 333 lines, 35 theorems, 21 definitions, 0 axioms, and 0 sorries."
+    ],
+    "insights": [
+      "The problem statement identifies the Moulton plane as the intended non-Desarguesian model.",
+      "The counterexample target is a concrete pair of perspective triangles whose corresponding side-intersection points fail Moulton collinearity.",
+      "The research notes themselves do not record additional literature findings, dead ends, or Mathlib gaps."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: desargues-theorem-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Reconcile the OBSERVE-phase state.md with the graduated/completed status recorded in the JSON.",
+      "If more curation is needed, inspect the recorded Lean artifact for the exact theorem names and configuration details before adding more proof-specific metadata."
+    ],
+    "markdown": "# Knowledge Base: desargues-theorem-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThe problem is to formalize a failure of Desargues's theorem by using the Moulton plane, an affine plane where negative-slope lines bend at the y-axis. The stated target is a concrete six-point configuration: two triangles are perspective from a point O, but their three corresponding side-intersection points are not Moulton-collinear.\n\n---\n\n## Insights\n\n- The local problem statement names the Moulton plane as the intended non-Desarguesian model.\n- The existing JSON records this entry as graduated and lists `Proofs/DesarguesTheoremOQ02.lean` with 333 lines, 35 theorems, 21 definitions, 0 axioms, and 0 sorries.\n- The local research state remains at OBSERVE with zero attempts, so the lifecycle metadata and research notes are not fully synchronized.\n\n---\n\n## Dead Ends\n\nNo dead ends are recorded in the local knowledge file.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "geometry",
+    "affine-geometry",
+    "projective-geometry",
+    "desargues-theorem",
+    "moulton-plane",
+    "counterexample",
+    "lean"
   ],
   "relatedProofs": [
     "desargues-theorem",
     "desargues-theorem-oq-01",
+    "desargues-theorem-oq-01-oq-01",
     "desargues-theorem-oq-02",
     "desargues-theorem-oq-04"
   ],
@@ -79,6 +96,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/DesarguesTheoremOQ01OQ01.lean",
+      "filename": "DesarguesTheoremOQ01OQ01.lean",
+      "lineCount": 298,
+      "theoremCount": 29,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DesarguesTheoremOQ01OQ01.lean"
     },
     {
       "path": "Proofs/DesarguesTheoremOQ02.lean",
