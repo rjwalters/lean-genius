@@ -16,6 +16,7 @@
     "research:sync": "tsx scripts/research/sync-data.ts",
     "research:build": "pnpm research:sync && tsx scripts/research/build.ts",
     "research:enrich": "tsx scripts/research/enrich-research.ts",
+    "research:validate-seeker-stubs": "tsx scripts/research/validate-seeker-stubs.ts --changed",
     "db:export": "tsx scripts/research/db-export.ts",
     "db:rebuild": "tsx scripts/research/db-rebuild.ts",
     "aristotle": "./research/scripts/aristotle-status.sh",
