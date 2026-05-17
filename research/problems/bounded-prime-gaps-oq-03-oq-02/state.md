@@ -1,17 +1,101 @@
 # Current State
 
-**Phase**: PREP (S21 STATE-SYNC — JSON `knowledge.*` catchup absorbing S11a ACT (PR #19519) + S20 PREP (PR #19570); **B1 STILL ACTIVE** — Docker daemon hung 9h since 2026-05-16T06:01Z, within < 12h Path C cancellation window; S11a-VERIFY remains INFRA-blocked. Lean file unchanged at 953 LOC / 1 sorry / 1 axiomCount; this STATE-SYNC doc-only.)
-**Since**: 2026-05-16T15:00:00Z
-**Iteration**: 21 (S21 STATE-SYNC — JSON `knowledge.progressSummary` + `knowledge.builtItems` (+7 Lean items, +5 session memos) + `knowledge.nextSteps` (rewritten to S11a-VERIFY + S11b-α/β/γ/δ four-sub-PR split) + top-level `lastUpdate` refresh; no Lean, no `knowledge.md` body, no `problem.md`, no `meta.json`, no bearer re-spot-check)
-**Researcher**: researcher-11 (S21 STATE-SYNC, this PR, doc-only); researcher-10 (S20 PREP — PR #19570); researcher-9 (S11a ACT — PR #19519, build pending); researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
+**Phase**: PREP (S22 PREP — Path C activation: paper discharge of S11b-α-1 + S11b-α-2 sorries from S20 PREP §6 skeleton + 3-RED INFRA escalation (B1 Docker 18h still hung, +9h past 12h Path C threshold; new B2 disk 4.2 Gi RED below 5 Gi soft-floor; new B3 proofs/.lake circular self-symlink RED); 1-bearer spot-check (`Finset.mem_sort` confirmed via codebase usage); §6 6-row picker decision matrix; doc-only.)
+**Since**: 2026-05-17T00:00:00Z
+**Iteration**: 22 (S22 PREP — `currentState.{focus,nextAction,blockers 1→3-entry,attemptCounts}` + `knowledge.{progressSummary,builtItems[+1],nextSteps[0]}` + `lastUpdate` refresh; new ~480-LOC session memo with §3 paper discharge of S11b-α-1 + S11b-α-2 + §6 6-row picker matrix; no Lean, no `knowledge.md` body, no `problem.md`, no `meta.json`)
+**Researcher**: researcher-10 (S22 PREP, this PR, doc-only); researcher-11 (S21 STATE-SYNC — PR #19636); researcher-10 (S20 PREP — PR #19570); researcher-9 (S11a ACT — PR #19519, build pending); researcher-12 (Session 19 STATE-SYNC); researcher-8 (S18 PREP); researcher-10 (S17 PREP); researcher-1 (Session 15 STATE-SYNC); researcher-12 (S16 PREP); researcher-12 (S15 PREP); rjwalters (S10 ACT — PR #19014); researcher-12 (S10d PREP); researcher-8 (S10c PREP); researcher-1 (S10b PREP); researcher-8 (S10 PREP); researcher-5 (S9 ACT); researcher-3 (S8); researcher-5 (S6); researcher-11 (S5); researcher-10 (S4); researcher-8 (S3); researcher-12 (S2); researcher-10 (S1)
 
 ## Blockers
 
 | ID | Description | Since | Mitigation |
 |----|-------------|-------|------------|
-| B1 | **Docker daemon hung** — `docker info` exit 124 at 30s timeout (Server section blank after Client section completes); host disk pressure 100% / 6.7 Gi free on `/System/Volumes/Data`. Blocks all `./proofs/scripts/docker-build.sh` invocations. | 2026-05-16T06:01Z | Wait for host disk recovery (expected window 30 min – 4 h per prior incidents); run `docker system prune -f` when daemon responsive; re-attempt Docker round 1 verify of S11a paste. **9h since hang** at S21 STATE-SYNC open — still within Path C cancellation window (12h). Precedent: S5 ACT for schroeder-bernstein-oq-01 PR #18707 → cleared by PR #18980. |
+| B1 | **Docker daemon hung** — `docker info` exit 124 / Server section blank (Client section completes normally). Blocks all `./proofs/scripts/docker-build.sh` invocations. **18h since hang** at S22 PREP open — **+6h PAST 12h Path C cancellation threshold** (triggered at 2026-05-16T18:01Z). | 2026-05-16T06:01Z | Wait for host disk recovery (B2 prerequisite); run `docker system prune -f` when daemon responsive; re-attempt Docker S11a-VERIFY. Precedent: S5 ACT for schroeder-bernstein-oq-01 PR #18707 → cleared by PR #18980. |
+| B2 | **Host disk RED below 5 Gi soft-floor** — `/System/Volumes/Data` at 4.2 Gi free (100% capacity). DEGRADED from 6.7 Gi at S21 STATE-SYNC (−2.5 Gi over 9.5h). Same-day 5 Gi soft-floor established by ballot-problem-oq-02-oq-05 S6 ACT PR #19675 (5.4 Gi) + shannon-channel-coding-oq-02-oq-01-oq-01 S18a-1 ACT PR #19655 (5.8 Gi). | 2026-05-17T00:00Z | Host-side cleanup script (`docker system prune` + lake cache audit + worktree audit); wait for natural recovery; re-run `df -h` before S22b ACT to confirm ≥5 Gi. |
+| B3 | **proofs/.lake circular self-symlink** — `proofs/.lake → /Users/rwalters/GitHub/lean-genius/proofs/.lake` (self-referential). Will cause `lake build` to fail before reaching Mathlib. ESCALATED from implicit AMBER (mentioned passingly in S21 STATE-SYNC §1) to explicit RED to align with same-day precedent across sperner-simplicial-bridge-oq-01 / schroeder-bernstein-oq-01 / CLT-oq-01 STATE-SYNCs. | 2026-05-16T09:04Z | `rm /Users/rwalters/GitHub/lean-genius/proofs/.lake` (symlink-only removal; lake build will recreate). |
 
-## Session 22 — S21 STATE-SYNC (researcher-11, 2026-05-16, this PR, doc-only)
+## Session 23 — S22 PREP (researcher-10, 2026-05-17, this PR, doc-only)
+
+**Deliverable**. `sessions/2026-05-17-s22-prep-path-c-activation-paper-discharge-s11b-alpha-1-2.md`
+ships a ~480-LOC doc-only Path C activation memo absorbing three drift
+wave items at T = 2026-05-17T00:00Z (S21 STATE-SYNC T-9.5h):
+
+**Primary (§3 paper discharge — Path C cancellation clause activated)**.
+S21 STATE-SYNC explicitly deferred S11b-α-1 + S11b-α-2 paper sorries
+from S20 PREP §6 skeleton to Path C activation when Docker hang
+exceeds 12h. Threshold crossed at 2026-05-16T18:01Z (T-6h); this PREP
+discharges both:
+
+1. **S11b-α-1** (forward direction prime extraction, ~4-6 LOC):
+   `hp : p ∈ primesUpTo k ⊢ p.Prime` via
+   `((Nat.primesBelow (k+1)).mem_sort (· ≤ ·)).mp hp` →
+   `Nat.mem_primesBelow.mp _ |>.2`. Fallback: `simp only
+   [Nat.primesBelow, Finset.mem_filter, Finset.mem_range]`.
+2. **S11b-α-2** (reverse direction membership construction, ~5-7 LOC):
+   `hpk : p ≤ k, hp_prime : p.Prime ⊢ p ∈ primesUpTo k` via
+   `((Nat.primesBelow (k+1)).mem_sort (· ≤ ·)).mpr` +
+   `Nat.mem_primesBelow.mpr ⟨Nat.lt_succ_of_le hpk, hp_prime⟩`.
+   Fallback: same unfold form.
+
+§3.5 refines S11b-α post-discharge LOC budget +30-40 (was S20 §6
+estimate +25-40; +5-10 from discharges). Net S11b total: +230-360
+(was +225-360).
+
+**Secondary (§2 3-RED INFRA escalation)**. JSON `blockers[]` grows
+from 1-entry to 3-entry:
+
+- B1 (Docker hung) **+9h elapsed** (18h total; +6h past Path C threshold).
+- B2 (disk RED below 5 Gi soft-floor) **NEW** — 6.7 Gi → 4.2 Gi
+  (−2.5 Gi over 9.5h; below same-day 5 Gi soft-floor by 0.8 Gi).
+- B3 (.lake circular self-symlink RED) **ESCALATED** implicit AMBER
+  (S21 STATE-SYNC §1) → explicit RED (aligns with sibling-slug same-
+  day STATE-SYNC precedents).
+
+**Tertiary (§4 1-bearer spot-check)**. New bearer `Finset.mem_sort`
+introduced by §3 discharge; spot-check confirms API shape via
+codebase usage `SpernerFreudenthal.lean:133` `(s.mem_sort (· ≤ ·)).mp
+hmem`. 3 prior bearers from S20 PREP §4 carry-forward SHA-stable at
+pin `2df2f0150c…` (busywork-warning).
+
+**Pre-flight**:
+
+- `gh pr list -R rjwalters/lean-genius --state open --search
+  "bounded-prime-gaps-oq-03-oq-02 in:title"` → 0 (race-check clean).
+- `timeout 10 docker info` → `Client:` block only; `Server:` line
+  present but Containers/Runtime/Storage Driver/Server Version
+  absent (B1 STILL RED at 18h).
+- `df -h /System/Volumes/Data` → 4.2 Gi free / 100% (B2 RED).
+- `ls -la proofs/.lake` → self-symlink (B3 RED).
+- Mathlib pin `2df2f0150c…` unchanged + S11a paste file SHA-256
+  `c2db365c1373e3045b5605dbd25da896118b8ba5397a845e21169f8d0f313be4`
+  at 953 LOC byte-stable carry-forward.
+
+**Net**. 0 Lean lines (Path C is doc-only by design; S11b-α ACT
+gated on Docker recovery). State.md head: Phase/Since/Iteration/
+Researcher refresh; Blockers table grows 1→3 entries; this S22 PREP
+Session 23 entry. JSON: 10 field edits (cs.{iteration 21→22, since,
+focus prepend, nextAction rewrite, blockers 1→3-entry,
+attemptCounts.{total,currentApproach}} + knowledge.{progressSummary
+prepend, builtItems[+1], nextSteps[0] rewrite} + lastUpdate). New
+~480-LOC session memo with §3 paper discharge + §6 6-row picker
+decision matrix + §7 informational host recovery script. No
+`knowledge.md` body / `problem.md` / `meta.json` / gallery JSON /
+`.lean` touches.
+
+**§6 picker matrix** maps S{23,24} pickers across 6 host-state
+combinations (G7 disk × G8 Docker × G9 .lake). Most-likely-next:
+state class #3 or #5 (Docker still hung) → S23 STATE-SYNC. Recovery
+to state class #1 unblocks S22b ACT (LOW risk, +30-40 LOC, 1 Docker
+build) directly from S20 §6 paste-ready skeleton + this §3 discharges.
+
+**Honest calibration**: this PR adds 0 Lean, closes 0 Lean sorries
+(line-925 bridge unchanged; S11b-α-1/-2 are paper sorries in S20
+PREP §6 skeleton, not in any .lean file). It does activate Path C
+(the slug's own deferred plan from S21), discharge 2 paper sorries
+on paper (build-pending at pin), refine the S11b-α LOC budget +5-10,
+escalate INFRA 1-RED → 3-RED, refresh JSON, and ship a 6-row picker
+matrix for next pickers.
+
+## Session 22 — S21 STATE-SYNC (researcher-11, 2026-05-16, PR #19636, doc-only)
 
 **Deliverable**. `sessions/2026-05-16-s21-statesync-knowledge-catchup-post-s20.md`
 ships a tight (~150 LOC) doc-only JSON `knowledge.*` catchup absorbing
