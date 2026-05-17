@@ -25,7 +25,6 @@
 
 import type { CliOptions, PipelineStats, TransformedProblem } from './types'
 import { getCacheStats, ensureCacheDir, getProgressSummary, getNextUncachedBatch, getSlowConfig, getVerySlowConfig } from './cache'
-import { scrapeRange, scrapeProblems, getScrapeStats } from './scrape'
 import { transformProblems, getTransformStats } from './transform'
 import { filterDuplicates, printDedupeReport } from './dedupe'
 import { generateGalleryEntries, getGalleryStats } from './generate-gallery'
@@ -232,6 +231,8 @@ async function runPipeline(options: CliOptions): Promise<PipelineStats> {
 
   // Get config (slow modes use longer delays)
   const config = options.verySlow ? getVerySlowConfig() : options.slow ? getSlowConfig() : undefined
+
+  const { scrapeRange, scrapeProblems, getScrapeStats } = await import('./scrape')
 
   // Determine which problems to scrape
   let scraped: Awaited<ReturnType<typeof scrapeProblems>>
