@@ -1,27 +1,39 @@
 {
   "slug": "brouwer-fixed-point-oq-01",
-  "title": "[Problem Title]",
-  "phase": "COMPLETED",
-  "status": "graduated",
+  "title": "Brouwer fixed point OQ-01 (statement pending)",
+  "phase": "OBSERVE",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "Formal mathematical investigation: [Problem Title].",
-    "whyMatters": []
+    "formal": "\\text{Formal statement not yet recorded in the source notes.}",
+    "plain": "Active OBSERVE-stage investigation attached to the Brouwer fixed point OQ-01 slug; the source notes still need the exact theorem statement and scope.",
+    "whyMatters": [
+      "The slug places this entry in the Brouwer fixed point family, a topology and fixed-point-theory area, but the assigned notes do not yet identify the exact OQ-01 target.",
+      "Truthful metadata prevents a template problem brief from being presented as completed research."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "No proven result is recorded in the allowed source notes for this OQ entry."
+    ],
+    "open": [
+      "The exact formal statement is still absent from problem.md.",
+      "Concrete papers, online references, Mathlib modules, related-gallery relevance, and proof approach remain to be identified during ORIENT."
+    ],
+    "goal": "Clarify the Brouwer fixed point OQ-01 statement, then move from OBSERVE to ORIENT by gathering literature, Mathlib, and related-proof context."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-02-24T13:38:05-08:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "focus": "Source notes are still at initial problem-understanding stage; formal statement, known results, and literature are not yet populated.",
+    "activeApproach": "None yet; state.md records no active approach.",
+    "blockers": [
+      "problem.md and knowledge.md contain template text rather than a concrete theorem statement or accumulated research notes.",
+      "literature/README.md contains only template headings and no concrete references."
+    ],
+    "nextAction": "Replace the source problem brief with a real Brouwer OQ-01 statement, then move to ORIENT by searching literature, Mathlib, and related gallery proofs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,44 +41,65 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "OBSERVE only: source notes define the slug/status/created timestamp and record zero attempts; they do not yet specify the formal statement, proven/open results, references, or Mathlib gaps.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: brouwer-fixed-point-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "problem.md marks the source as user-request and status as Active.",
+      "state.md places the problem in OBSERVE on the full path since 2026-02-24T13:38:05-08:00.",
+      "state.md records no active approach, no blockers, and zero total/current/approaches-tried attempts.",
+      "knowledge.md and literature/README.md are template-only; no concrete mathematical findings or references are recorded there."
+    ],
+    "mathlibGaps": [
+      "No Mathlib gap has been identified yet in the allowed notes; a Mathlib survey remains a next ORIENT task."
+    ],
+    "nextSteps": [
+      "Write the exact formal and plain-language statement for Brouwer fixed point OQ-01.",
+      "Populate known results, open questions, references, and Mathlib modules during ORIENT.",
+      "Audit related gallery proof slugs for relevance before trimming or expanding relatedProofs.",
+      "Only after the target is explicit, choose an approach and increment attempt counts when a real proof attempt starts."
+    ],
+    "markdown": "# Knowledge Base: brouwer-fixed-point-oq-01\n\n## Evidence Summary\n\n- problem.md records slug brouwer-fixed-point-oq-01, source user-request, status Active, significance 7/10, and tractability 5/10.\n- state.md records phase OBSERVE, path full, iteration 1, no active approach, no blockers, and zero attempts.\n- knowledge.md and literature/README.md do not yet contain substantive research notes or references.\n\n## Current Understanding\n\nThis is an active Brouwer fixed point OQ-01 research entry whose precise theorem statement has not yet been supplied in the allowed notes. No Lean proof attempt, literature survey, or Mathlib gap analysis is recorded there.\n\n## Next Steps\n\n1. Replace the source problem brief with the exact formal and plain-language target.\n2. During ORIENT, gather concrete literature, Mathlib modules, and related gallery proof evidence.\n3. Choose an approach only after the target is explicit; keep attempt counts at zero until a real proof attempt starts.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "topology",
+    "fixed-point-theory",
+    "brouwer",
+    "research-triage",
+    "observe-phase"
   ],
   "relatedProofs": [
     "brouwer-fixed-point",
     "brouwer-fixed-point-oq-01",
     "brouwer-fixed-point-oq-01-oq-02",
+    "brouwer-fixed-point-oq-01-oq-02-oq-03",
+    "brouwer-fixed-point-oq-01-oq-02-oq-03-oq-01",
     "brouwer-fixed-point-oq-01-oq-03",
     "brouwer-fixed-point-oq-02",
     "brouwer-fixed-point-oq-02-oq-02",
     "brouwer-fixed-point-oq-04",
+    "brouwer-fixed-point-oq-04-oq-02",
     "brouwer-fixed-point-oq-04-oq-03",
     "brouwer-fixed-point-oq-04-oq-04"
   ],
   "references": {
     "papers": [],
-    "urls": [],
+    "urls": [
+      "research/problems/brouwer-fixed-point-oq-01/problem.md",
+      "research/problems/brouwer-fixed-point-oq-01/state.md",
+      "research/problems/brouwer-fixed-point-oq-01/knowledge.md",
+      "research/problems/brouwer-fixed-point-oq-01/literature/README.md"
+    ],
     "mathlib": []
   },
-  "started": "2026-02-25T19:36:59.225Z",
-  "lastUpdate": "2026-02-25T19:36:59.225Z",
-  "completed": "2026-02-25T19:36:59.225Z",
+  "started": "2026-02-24T13:38:05-08:00",
+  "lastUpdate": "2026-05-17T15:47:11-05:00",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/BrouwerFixedPoint.lean",
       "filename": "BrouwerFixedPoint.lean",
-      "lineCount": 250,
+      "lineCount": 249,
       "theoremCount": 5,
       "axiomCount": 2,
       "defCount": 5,
@@ -88,13 +121,35 @@
     {
       "path": "Proofs/BrouwerFixedPointOQ01OQ02.lean",
       "filename": "BrouwerFixedPointOQ01OQ02.lean",
-      "lineCount": 234,
-      "theoremCount": 10,
-      "axiomCount": 2,
+      "lineCount": 462,
+      "theoremCount": 14,
+      "axiomCount": 4,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02OQ03.lean",
+      "lineCount": 172,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ01OQ02OQ03OQ01.lean",
+      "filename": "BrouwerFixedPointOQ01OQ02OQ03OQ01.lean",
+      "lineCount": 215,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ01OQ02OQ03OQ01.lean"
     },
     {
       "path": "Proofs/BrouwerFixedPointOQ01OQ03.lean",
@@ -132,8 +187,8 @@
     {
       "path": "Proofs/BrouwerFixedPointOQ02OQ01.lean",
       "filename": "BrouwerFixedPointOQ02OQ01.lean",
-      "lineCount": 1072,
-      "theoremCount": 6,
+      "lineCount": 1071,
+      "theoremCount": 33,
       "axiomCount": 0,
       "defCount": 14,
       "sorryCount": 0,
@@ -152,6 +207,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ02.lean"
     },
     {
+      "path": "Proofs/BrouwerFixedPointOQ02OQ03.lean",
+      "filename": "BrouwerFixedPointOQ02OQ03.lean",
+      "lineCount": 215,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ02OQ03.lean"
+    },
+    {
       "path": "Proofs/BrouwerFixedPointOQ02Stability.lean",
       "filename": "BrouwerFixedPointOQ02Stability.lean",
       "lineCount": 198,
@@ -165,9 +231,9 @@
     {
       "path": "Proofs/BrouwerFixedPointOQ04.lean",
       "filename": "BrouwerFixedPointOQ04.lean",
-      "lineCount": 474,
+      "lineCount": 506,
       "theoremCount": 22,
-      "axiomCount": 1,
+      "axiomCount": 2,
       "defCount": 11,
       "sorryCount": 0,
       "isAristotle": false,
@@ -183,6 +249,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/BrouwerFixedPointOQ04OQ02.lean",
+      "filename": "BrouwerFixedPointOQ04OQ02.lean",
+      "lineCount": 520,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 8,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BrouwerFixedPointOQ04OQ02.lean"
     },
     {
       "path": "Proofs/BrouwerFixedPointOQ04OQ03.lean",
