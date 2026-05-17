@@ -6,7 +6,16 @@
  */
 
 const fs = require('fs');
-const path = require('path');
+
+function rawContents(contents) {
+  if (typeof contents === 'string') return contents;
+  if (Array.isArray(contents)) {
+    return contents
+      .map((token) => typeof token === 'string' ? token : token?.raw || '')
+      .join('');
+  }
+  return contents?.raw || '';
+}
 
 function convertLeanInkToTacticStates(leanInkData) {
   const tacticStates = [];
@@ -15,22 +24,17 @@ function convertLeanInkToTacticStates(leanInkData) {
   for (const item of leanInkData) {
     // Track line numbers from raw content
     if (item._type === 'text') {
-      const content = typeof item.contents === 'string'
-        ? item.contents
-        : item.contents?.map(t => t.raw || '').join('') || '';
+      const content = rawContents(item.contents);
       currentLine += (content.match(/\n/g) || []).length;
     }
 
     // Extract tactic info from sentences
     if (item._type === 'sentence' && item.goals && item.goals.length > 0) {
-      const tactic = item.contents
-        ?.map(t => t.raw || '')
-        .join('')
-        .trim() || '';
+      const tactic = rawContents(item.contents).trim();
 
       // Skip empty tactics or whitespace-only
       if (!tactic || tactic === '' || /^\s*$/.test(tactic)) {
-        const content = item.contents?.map(t => t.raw || '').join('') || '';
+        const content = rawContents(item.contents);
         currentLine += (content.match(/\n/g) || []).length;
         continue;
       }
@@ -61,7 +65,7 @@ function convertLeanInkToTacticStates(leanInkData) {
         });
       }
 
-      const content = item.contents?.map(t => t.raw || '').join('') || '';
+      const content = rawContents(item.contents);
       currentLine += (content.match(/\n/g) || []).length;
     }
   }
@@ -80,8 +84,13 @@ function convertLeanInkToTacticStates(leanInkData) {
 
 // Main
 const args = process.argv.slice(2);
+const usage = 'Usage: node scripts/convert-leanink.cjs <file.leanInk> [--output <file.json>]';
+if (args.includes('--help') || args.includes('-h')) {
+  console.log(usage);
+  process.exit(0);
+}
 if (args.length === 0) {
-  console.error('Usage: node convert-leanink.js <file.leanInk> [--output <file.json>]');
+  console.error(usage);
   process.exit(1);
 }
 
