@@ -1,25 +1,36 @@
 {
   "slug": "cantor-diagonalization-oq-03-oq-01-oq-02",
-  "title": "[Problem Title]",
+  "title": "Rice's Theorem as Lawvere Instance",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{Rice's Theorem: For any non-trivial semantic property } P \\text{ of computable functions, the set } \\{e \\mid P(\\varphi_e)\\} \\text{ is undecidable.}",
+    "plain": "Derive Rice's theorem explicitly as a special case of the Lawvere fixed-point gallery proof: no non-trivial property of what a program computes can be decided.",
+    "whyMatters": [
+      "Rice's theorem is a central result in computability theory.",
+      "A Lawvere-instance proof would demonstrate the unifying power of the categorical fixed-point framework.",
+      "The target is a machine-verified Lean 4 proof of Rice's theorem by this route."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lawvere Fixed-Point Theorem gallery proof exists at cantor-diagonalization-oq-03-oq-01.",
+      "Mathlib has partial computability theory support."
+    ],
+    "open": [
+      "Formal derivation of Rice's theorem as a Lawvere instance in Lean 4.",
+      "Lean encoding of computable functions as the evaluation category.",
+      "Formalization of non-trivial semantic properties and the point-surjectivity condition."
+    ],
+    "goal": "Instantiate the Lawvere fixed-point theorem with computable functions and semantic-property complement to derive Rice's undecidability conclusion."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-04T02:41:19-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Work out the Lawvere fixed-point instantiation for computable functions and semantic-property complement.",
     "blockers": [],
     "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
     "attemptCounts": {
@@ -29,17 +40,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Initial notes frame Rice's theorem as a Lawvere fixed-point theorem instance, with computability encoding and semantic-property formalization as the main open work.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: cantor-diagonalization-oq-03-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "The intended instance is Val = computable functions and f = complement of a non-trivial semantic property.",
+      "Two possible approaches are direct Lawvere instantiation or a classical Rice proof connected back to Lawvere."
+    ],
+    "mathlibGaps": [
+      "Computability support may be partial for the needed evaluation-category encoding."
+    ],
+    "nextSteps": [
+      "Inspect the parent Lawvere fixed-point gallery proof.",
+      "Search Mathlib.Computability and Mathlib.CategoryTheory for the needed encoding pieces.",
+      "Formalize the non-trivial semantic property condition."
+    ],
+    "markdown": "# Knowledge Base: cantor-diagonalization-oq-03-oq-01-oq-02\n\n## Problem Understanding\n\nThis problem asks for Rice's theorem as a Lawvere fixed-point theorem instance. The intended interpretation is Val = computable functions and f = complement of a non-trivial semantic property, yielding undecidability of {e | P(phi_e)}.\n\n## Known Inputs\n\n- Parent gallery proof: cantor-diagonalization-oq-03-oq-01 proves the Lawvere fixed-point theorem.\n- Mathlib has partial computability theory support through Mathlib.Computability.\n- The relevant surrounding library area also includes Mathlib.CategoryTheory.\n\n## Current Obstacles\n\n- Need a Lean encoding of computable functions as the evaluation category.\n- Need the point-surjectivity condition for the computable-function case.\n- Need to formalize non-trivial semantic properties in Lean 4.\n\n## Candidate Approaches\n\n1. Directly instantiate the abstract Lawvere fixed-point theorem with computable functions.\n2. Prove Rice's theorem by a classical computability argument, then connect it back to the Lawvere framework.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "computability",
+    "rices-theorem",
+    "lawvere",
+    "category-theory",
+    "undecidability"
   ],
   "relatedProofs": [
     "cantor-diagonalization",
@@ -47,6 +69,7 @@
     "cantor-diagonalization-oq-01-oq-01",
     "cantor-diagonalization-oq-01-oq-01-oq-02",
     "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+    "cantor-diagonalization-oq-01-oq-02",
     "cantor-diagonalization-oq-02",
     "cantor-diagonalization-oq-02-oq-01",
     "cantor-diagonalization-oq-02-oq-03",
@@ -71,7 +94,7 @@
     {
       "path": "Proofs/CantorDiagonalization.lean",
       "filename": "CantorDiagonalization.lean",
-      "lineCount": 176,
+      "lineCount": 175,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 2,
@@ -115,13 +138,24 @@
     {
       "path": "Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean",
       "filename": "CantorDiagonalizationOQ01OQ01OQ02OQ03.lean",
-      "lineCount": 179,
+      "lineCount": 207,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 5,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01OQ02.lean",
+      "filename": "CantorDiagonalizationOQ01OQ02.lean",
+      "lineCount": 307,
+      "theoremCount": 14,
+      "axiomCount": 7,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ02.lean"
     },
     {
       "path": "Proofs/CantorDiagonalizationOQ02.lean",
@@ -148,8 +182,8 @@
     {
       "path": "Proofs/CantorDiagonalizationOQ02OQ03.lean",
       "filename": "CantorDiagonalizationOQ02OQ03.lean",
-      "lineCount": 143,
-      "theoremCount": 6,
+      "lineCount": 142,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -159,11 +193,11 @@
     {
       "path": "Proofs/CantorDiagonalizationOQ02OQ03OQ02.lean",
       "filename": "CantorDiagonalizationOQ02OQ03OQ02.lean",
-      "lineCount": 315,
+      "lineCount": 381,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 6,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ03OQ02.lean"
     },
@@ -247,22 +281,22 @@
     {
       "path": "Proofs/CantorDiagonalizationOQ04OQ03.lean",
       "filename": "CantorDiagonalizationOQ04OQ03.lean",
-      "lineCount": 284,
+      "lineCount": 300,
       "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 6,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04OQ03.lean"
     },
     {
       "path": "Proofs/CantorDiagonalizationOQ04OQ03Aristotle.lean",
       "filename": "CantorDiagonalizationOQ04OQ03Aristotle.lean",
-      "lineCount": 49,
+      "lineCount": 65,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04OQ03Aristotle.lean"
     }
