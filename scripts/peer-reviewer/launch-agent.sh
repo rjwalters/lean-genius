@@ -35,7 +35,7 @@ LOGS_DIR="$REPO_ROOT/.loom/logs"
 SIGNALS_DIR="$REPO_ROOT/.loom/signals"
 
 SLOT="${2:-1}"
-if [[ "$1" == "--slot" ]] && [[ -n "${2:-}" ]]; then
+if [[ "${1:-}" == "--slot" ]] && [[ -n "${2:-}" ]]; then
     SLOT="$2"
     shift 2
 fi
