@@ -1,11 +1,54 @@
 # Research State: minkowski-theorem-oq-04
 
 ## Current State
-**Phase**: ACT (S24 PR-A landed Docker-clean; PR-B / PR-C unblocked at Lean level but Docker-blocked — B1 re-hung post-S27)
+**Phase**: ACT (S24 PR-A landed Docker-clean; PR-B / PR-C still Docker-blocked — B1 hung 19.9h, Path C window EXPIRED 7.9h ago; B2 disk RED 3.4 Gi)
 **Path**: full
-**Since**: 2026-05-16T15:00:00Z (S28 PREP — JSON catchup)
-**Last Updated**: 2026-05-16 (S28 PREP — JSON catchup absorbing mechanic PR #19542 status/badge flip + B1 re-add post-S27 Docker re-hang)
-**Iteration**: 28 (S28 PREP — doc-only JSON catchup; researcher-11)
+**Since**: 2026-05-17T01:55:00Z (S29 STATE-SYNC — post-S28-PREP catchup, doc-only)
+**Last Updated**: 2026-05-17 (S29 STATE-SYNC — 4 drift items: focus stale "this PR" loci, B1 age, NEW B2 disk RED, leanFiles[2] post-S27 numerics)
+**Iteration**: 29 (S29 STATE-SYNC — doc-only JSON+state catchup; researcher-4)
+
+## S29 — S29 STATE-SYNC 2026-05-17 (researcher-4)
+
+**Focus**: doc-only JSON+state catchup post-S28-PREP (PR #19640 merged 2026-05-16T15:20:34Z, ~10.5h before this STATE-SYNC).
+Full memo at `sessions/2026-05-17-s29-state-sync.md`.
+
+### Four drift items closed
+
+| # | Drift | Resolution |
+|---|---|---|
+| 1 | `currentState.focus` had four "this PR" loci referring to merged S28 PREP | Repointed to "PR #19640 (S28 PREP)" + rewrote focus to S29 narrative |
+| 2 | B1 description "9h since hang ... within < 12h Path C cancellation window" | Refreshed to "19.9h since hang ... Path C window EXPIRED at 2026-05-16T18:01Z (7.9h past)"; mitigation "6.7 Gi avail" → "3.4 Gi avail (RED, below 5 Gi soft-floor)" |
+| 3 | `currentState.blockers[]` had only B1 — missing B2 disk RED | NEW B2 added: host disk RED 3.4 Gi (-3.3 Gi vs S28 PREP 6.7 Gi snapshot) |
+| 4 | `leanFiles[2]` (MinkowskiTheoremOQ04.lean) carried pre-S27 numerics | Surgical refresh: lineCount 922→987 (+65 from S27 PR-A), theoremCount 15→16 (+1), sorryCount 0→1 (raw `\bsorry\b` matches docstring "sorry-free" phrase at line 59; not a proof-level sorry — `meta.json.meta.sorryCount` left at null by mechanic PR #19542 intentionally) |
+
+### INFRA snapshot (3 RED)
+
+| Gate | Status | Detail | Δ vs S28 PREP |
+|---|---|---|---|
+| G7 host disk | RED | 3.4 Gi avail / 100% used (below 5 Gi soft-floor) | -3.3 Gi (was 6.7 Gi above 1 Gi threshold) |
+| G8 Docker server | RED | `timeout 10 docker info` returns Client only, no Server: lines (canonical hung-daemon signature) | Unchanged — hung 19.9h, Path C window EXPIRED 7.9h ago |
+| G9 .lake symlink | GREEN | `proofs/.lake → /Users/rwalters/GitHub/lean-genius/proofs/.lake` (regular symlink, not self-loop) | Unchanged — masked by Docker volume per Iter 23 insight |
+
+### PR-B / PR-C status (unchanged from S28)
+
+| PR | Theorem | Lean status | Docker status |
+|---|---|---|---|
+| PR-A | `volume_eq_setLIntegral_indicator_tsum_lattice` | ✅ shipped at lines 244–308 | ✅ build-verified 3075 jobs 04:40Z |
+| PR-B | `blichfeldt_general_lattice` (~80 LOC) | paste-ready in `s23-lattice-generalization-spec.md §2.1` | ❌ BLOCKED on B1 (Path C EXPIRED 7.9h ago) |
+| PR-C | `minkowski_general_k_lattice` (~50 LOC) | depends on PR-B | ❌ BLOCKED on B1 + PR-B |
+
+### Pre-flight
+
+- `gh pr list -R rjwalters/lean-genius --search "minkowski-theorem-oq-04 in:title" --state open` → 1 result (#17599 Iter 21, 8-day stale, DIRTY — mechanic/champion territory; not researcher scope).
+- Recency probe: latest merged researcher PR for slug was S28 PREP #19640 at 2026-05-16T15:20:34Z (T-10.5h); no same-slug merges in last 2h — no collision risk.
+- `timeout 10 docker info` → only `Client:` block (B1 RED, 19.9h hung).
+- `df -h /System/Volumes/Data` → 3.4 Gi avail (B2 RED, below 5 Gi soft-floor).
+- Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged from S25/S26/S27/S28 — bearer manifest carries forward (no re-spot-check in this STATE-SYNC).
+- Sibling-slug `leanFiles[]` drift (OQ02 lineCount 285→284, OQ02OQ01 lineCount 268→267 + theoremCount 7→8) NOT touched — sibling territory, deferred to their respective mechanic batches.
+
+### Honest calibration
+
+Adds 0 Lean lines, closes 0 sorries, states 0 new theorems. Doc-only catchup is the entire deliverable. Reduces misleading state for future researchers/auditors scanning `currentState.{focus, blockers, lastUpdate}` and `leanFiles[2]`. Anti-scope: no `meta.json` edits (`mainTheorems[]` append for `volume_eq_setLIntegral_indicator_tsum_lattice` remains mechanic territory; sorryCount=null intent preserved), no bearer re-spot-check (Mathlib pin unchanged), no PR-B/PR-C Lean (Docker-blocked harder than at S28).
 
 ## S28 — S28 PREP 2026-05-16 (researcher-11)
 
