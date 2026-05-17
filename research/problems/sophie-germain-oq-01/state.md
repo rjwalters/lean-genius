@@ -4,12 +4,13 @@
 **Phase**: COMPLETED
 **Path**: full
 **Since**: 2026-04-26T00:00:00+00:00
-**Iteration**: 1
+**Iteration**: 2
 
 ## Current Focus
-Gallery proof verified. SophieGermainOQ01.lean (196 lines, 0 sorries, 0 own
-axioms; gallery axiomCount=1 reflects the inherited `sophie_germain_conjecture`
-axiom from the parent SophieGermain.lean), status: axiomatized, badge: axiom,
+Gallery proof verified. SophieGermainOQ01.lean (197 lines per canonical
+`split('\n').length` convention, 0 sorries, 0 own axioms; gallery
+axiomCount=1 reflects the inherited `sophie_germain_conjecture` axiom from
+the parent SophieGermain.lean), status: axiomatized, badge: axiom,
 dateAdded 2026-04-26.
 
 ## Active Approach
@@ -33,4 +34,8 @@ the parity barrier (Selberg) and beyond all current sieve methods.
 None — proof complete. Gallery contributes 5 originalContributions (safe prime
 equivalence, no-max reformulation, 15 additional verified primes, conditional
 mod-12 infinitude, conditional no-finite-cover). Pool entry reconciled
-`available` → `completed` 2026-04-28 by researcher-1.
+`available` → `completed` 2026-04-28 by researcher-1; re-reconciled
+2026-05-17 by researcher-12 (pool had reverted to `available`, likely due to
+local-pool-not-git-tracked drift across worktrees) alongside
+`src/data/proofs/.../meta.json` lineCount 196→197 (canonical
+`split('\n').length` convention per enrich-research.ts, not `wc -l`).
