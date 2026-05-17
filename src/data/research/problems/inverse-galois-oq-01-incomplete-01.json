@@ -1,27 +1,42 @@
 {
   "slug": "inverse-galois-oq-01-incomplete-01",
-  "title": "inverse-galois-oq-01-incomplete-01",
+  "title": "Close the intentional Inverse Galois conjecture gap in the non-solvable frontier file",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "This proof has 1 sorry statements that need to be filled in.",
-    "whyMatters": []
+    "formal": "In `Proofs/InverseGaloisOQ01.lean`, replace the remaining `sorry` in `inverse_galois_conjecture`, which states that every finite group occurs as the Galois group of some Galois extension of `ℚ`.",
+    "plain": "The associated gallery proof already formalizes a large non-solvable frontier around the Inverse Galois Problem, including the solvability cutoffs for symmetric and alternating groups, A5 structure, quotient-realizability machinery, and A5/S5 realizations. The one remaining incomplete proof is the full Inverse Galois Conjecture itself.",
+    "whyMatters": [
+      "The full Inverse Galois Problem is a major open problem: proving this `sorry` would settle the conjecture, not merely finish a routine Lean gap.",
+      "The surrounding file gives reusable infrastructure for the solvable/non-solvable frontier: `sn_solvable_iff`, `an_solvable_iff`, A5 simplicity and perfectness, and quotient realizability via fixed fields.",
+      "The parent proof metadata records that solvable groups are handled only through Shafarevich as an axiom and the general conjecture remains deliberately unproved."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`s5_not_solvable`, `s6_not_solvable`, `s7_not_solvable`, and `sn_not_solvable_of_ge_five`: symmetric groups of degree at least 5 are not solvable.",
+      "`sn_solvable_iff`: `Equiv.Perm (Fin n)` is solvable exactly when `n ≤ 4`.",
+      "`a5_simple`, `a5_not_solvable`, `a5_not_commutative`, and `a5_commutator_eq_top`: A5 is simple, non-solvable, non-abelian, and perfect.",
+      "`an_solvable_iff`: alternating groups `A_n` are solvable exactly when `n ≤ 4`.",
+      "`quotient_is_galois`, `quotient_galois_equiv`, `quotient_of_galois_realized`, and `realizability_closed_under_quotients`: quotient realizability is formalized via fixed fields and the fundamental theorem of Galois theory.",
+      "`nonsolvable_realized_orders`, `a5_galois_iso`, and `s5_galois_iso`: the file connects the formal census to realized Galois groups of orders 60 and 120 using the A5 and S5 construction files."
+    ],
+    "open": [
+      "`inverse_galois_conjecture` in `Proofs/InverseGaloisOQ01.lean` is intentionally left as the file's single `sorry`; no general proof is known.",
+      "The OQ proof metadata reports one transitive axiom from `Proofs/InverseGaloisA5.lean`: `three_dvd_gal_card`, a Dedekind-theorem input for the A5 realization.",
+      "The parent `inverse-galois` metadata is also conservative: Shafarevich's theorem for solvable groups, Hilbert irreducibility for symmetric groups, Kronecker-Weber-style abelian realizability, and the full conjecture are represented as axioms or open statements rather than proved from Mathlib."
+    ],
+    "goal": "Understand whether any local formal evidence can reduce the remaining `inverse_galois_conjecture` sorry. Current evidence says this is a genuine open-problem placeholder, so the conservative goal is documentation and gap classification rather than claiming a proof."
   },
   "currentState": {
     "phase": "OBSERVE",
-    "since": "2026-04-03T21:34:23-07:00",
+    "since": "2026-04-03T21:37:27-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Read problem.md thoroughly and acquire full context.\nThen move to ORIENT phase to explore literature and related proofs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,27 +44,126 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: inverse-galois-oq-01-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "Backfilled from local evidence only. `src/data/proofs/inverse-galois-oq-01/meta.json` describes `Proofs/InverseGaloisOQ01.lean` as 723 lines with 40 theorems, 1 definition, 1 intentional sorry, and 1 transitive axiom from `InverseGaloisA5.lean`. The owned scaffold problem corresponds to that single remaining sorry: the full Inverse Galois Conjecture.",
+    "builtItems": [
+      "`Proofs/InverseGaloisOQ01.lean`: non-solvable frontier file with solvability classifications for `S_n` and `A_n`, A5 structural results, quotient-realizability machinery, and the stated open conjecture.",
+      "`Proofs/InverseGaloisA5.lean`: A5 realization support; metadata and source identify `three_dvd_gal_card` as the remaining Dedekind-theorem axiom.",
+      "`Proofs/AbelRuffiniOQ04OQ01.lean`: S5 realization support for `s5_galois_iso` and the census theorem.",
+      "`Proofs/AbelRuffiniGaloisExtensions.lean`: imported solvability instances for small symmetric groups used by `sn_solvable_iff`.",
+      "`Proofs/InverseGalois.lean`: parent inverse-galois development and broader realizability axioms for the main problem family."
+    ],
+    "insights": [
+      "The problem is not a routine single-sorry repair: the remaining theorem is the full Inverse Galois Conjecture and is explicitly labeled open in the Lean source.",
+      "The child `problem.md` was scaffold-generated and says only to fill one sorry; the substantive mathematical context comes from the OQ gallery meta and Lean source.",
+      "The OQ file's strongest completed local deliverables are structural: solvability thresholds, A5 obstruction analysis, Cayley's theorem, and quotient realizability.",
+      "Proof status must remain conservative because the OQ file still has one sorry and inherits an A5 axiom; the parent inverse-galois entry also contains axiomatized global realizability theorems.",
+      "A tractable follow-up should target narrower formalizations such as PSL(2,7), A6, or another explicit quotient construction, rather than the universal conjecture."
+    ],
+    "mathlibGaps": [
+      "No Mathlib proof of the full Inverse Galois Conjecture exists; this is a mathematical open problem, not merely a missing library lemma.",
+      "The local A5 realization still depends on a Dedekind-theorem divisibility input (`three_dvd_gal_card`) that the metadata says is not discharged in Mathlib.",
+      "The parent development axiomatizes major external theorems including Shafarevich's theorem and symmetric-group realizability by Hilbert irreducibility."
+    ],
+    "nextSteps": [
+      "Classify this research item as an intentional open-problem gap unless the project wants a narrower theorem in place of the universal conjecture.",
+      "If continuing locally, inspect whether `three_dvd_gal_card` in `Proofs/InverseGaloisA5.lean` can be reduced with existing Dedekind/resolvent infrastructure.",
+      "For new formal progress, choose a concrete frontier group or a reusable quotient-realizability corollary with a specific Lean target."
+    ],
+    "markdown": "# Knowledge Base: inverse-galois-oq-01-incomplete-01\n\nBackfilled from local metadata and Lean sources. The scaffold item tracks the single intentional `sorry` in `Proofs/InverseGaloisOQ01.lean`: `inverse_galois_conjecture`, the full Inverse Galois Conjecture over `ℚ`.\n\n## Problem Understanding\n\nThe OQ file already proves the solvability frontier for symmetric and alternating groups, A5 structural facts, quotient-realizability machinery, and links to A5/S5 realizations. The remaining incomplete theorem is not expected to be closed by a local tactic search because the conjecture is open.\n\n## Proof Status\n\nConservative status: incomplete. The OQ metadata reports 1 intentional sorry and 1 transitive axiom from `InverseGaloisA5.lean` (`three_dvd_gal_card`). Parent inverse-galois metadata also reports broad realizability inputs as axiomatized.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "algebra",
+    "galois-theory",
+    "group-theory",
+    "inverse-galois",
+    "open-problem",
+    "solvability",
+    "alternating-group",
+    "symmetric-group"
   ],
   "relatedProofs": [
     "inverse-galois",
-    "inverse-galois-oq-01"
+    "inverse-galois-oq-01",
+    "inverse-galois-a5",
+    "abel-ruffini-oq-04-oq-01",
+    "abel-ruffini-galois-extensions"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Hilbert, Ueber die Irreducibilitaet ganzer rationaler Functionen mit ganzzahligen Coefficienten, 1892",
+      "Shafarevich, Construction of fields of algebraic numbers with given solvable Galois group, 1954",
+      "Malle and Matzat, Inverse Galois Theory, 1999",
+      "Serre, Topics in Galois Theory"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Equiv.Perm.not_solvable",
+      "alternatingGroup",
+      "IsSimpleGroup",
+      "IntermediateField.fixedField",
+      "IsGalois",
+      "MulAction.toPermHom"
+    ]
   },
   "started": "2026-04-04T04:39:45.988Z",
-  "lastUpdate": "2026-04-04T04:39:46.013Z"
+  "lastUpdate": "2026-04-04T04:39:46.013Z",
+  "significance": 7,
+  "tractability": 5,
+  "leanFiles": [
+    {
+      "path": "Proofs/InverseGaloisOQ01.lean",
+      "filename": "InverseGaloisOQ01.lean",
+      "lineCount": 723,
+      "theoremCount": 40,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisOQ01.lean"
+    },
+    {
+      "path": "Proofs/InverseGaloisA5.lean",
+      "filename": "InverseGaloisA5.lean",
+      "lineCount": 2067,
+      "theoremCount": 65,
+      "axiomCount": 1,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGaloisA5.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniOQ04OQ01.lean",
+      "filename": "AbelRuffiniOQ04OQ01.lean",
+      "lineCount": 1498,
+      "theoremCount": 36,
+      "axiomCount": 0,
+      "defCount": 14,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniOQ04OQ01.lean"
+    },
+    {
+      "path": "Proofs/AbelRuffiniGaloisExtensions.lean",
+      "filename": "AbelRuffiniGaloisExtensions.lean",
+      "lineCount": 534,
+      "theoremCount": 57,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/AbelRuffiniGaloisExtensions.lean"
+    },
+    {
+      "path": "Proofs/InverseGalois.lean",
+      "filename": "InverseGalois.lean",
+      "lineCount": 1877,
+      "theoremCount": 105,
+      "axiomCount": 4,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/InverseGalois.lean"
+    }
+  ]
 }

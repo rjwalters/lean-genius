@@ -6,14 +6,34 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Selberg sieve approach to primes minus factorials compositeness.",
-    "whyMatters": []
+    "formal": "\\operatorname{AFSC}(n) := \\forall k,\\ k! < n \\Rightarrow \\neg\\operatorname{Prime}(n-k!) \\wedge n-k! \\ge 2.\\quad \\text{OQ-02 proves }(\\forall l\\ge 3,\\exists p\\in(l!,(l+1)!],\\operatorname{Prime}(p)\\wedge\\operatorname{AFSC}(p))\\Rightarrow \\#\\{p:\\operatorname{Prime}(p)\\wedge\\operatorname{AFSC}(p)\\}=\\infty,\\text{ with the displayed Selberg-density premise axiomatized.}",
+    "plain": "Formalizes a Selberg-sieve route to Erdős Problem #1059. Primes are organized into factorial intervals I(l) = (l!, (l+1)!]; the Lean file proves the elementary interval and wrapper lemmas, then assumes a Selberg density axiom saying every sufficiently high level contains a qualifying prime.",
+    "whyMatters": [
+      "It isolates the analytic number theory still missing from Mathlib: prime-counting estimates, Brun-Titchmarsh, and a Selberg upper-bound sieve for the shifted-prime obstruction.",
+      "The proved Lean wrapper shows that a per-interval qualifying-prime existence statement is enough to imply infinitely many primes p for which every p - k! below p is composite.",
+      "The companion correction file gives concrete evidence that the original l >= 3 threshold is too strong: all primes in I(3) = (6, 24] fail, while p = 101 qualifies in I(4)."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "In Erdos1059OQ02.lean, AllFactorialSubtractionsComposite and ErdosProblem1059 are defined for the factorial-subtraction property and infinitude target.",
+      "PrimorialInterval(l) = Finset.Ioc(l!, (l+1)!) is defined, with |I(l)| = l * l! proved and nonemptiness proved for l >= 1.",
+      "factorial_bound_in_interval proves that if p lies in I(l) and k! < p, then k <= l.",
+      "prime_in_primorial_interval proves an equivalence between AFSC(p) and checking only the factorial indices up to the interval level l.",
+      "BadFactorialIndices and condition_count_at_level formalize the finite set of shifted-prime obstructions and prove it has size at most l + 1.",
+      "primorial_intervals_disjoint proves different factorial intervals are disjoint.",
+      "selberg_implies_erdos proves the wrapper implication from the axiomatized Selberg density statement to Erdős Problem #1059.",
+      "In Erdos1059OQ02OQ01.lean, six norm_num-backed lemmas prove that 7, 11, 13, 17, 19, and 23 each fail AFSC, covering the primes in I(3).",
+      "Erdos1059OQ02OQ01.lean proves p101_prime and p101_qualifying, verifying that 101 is a qualifying prime in I(4).",
+      "Both OQ-02 and OQ-02-OQ-01 have 0 sorries in their local metadata."
+    ],
+    "open": [
+      "selberg_density_axiom in Erdos1059OQ02.lean is axiomatized and depends on analytic tools not yet supplied by Mathlib.",
+      "The l >= 3 form of selberg_density_axiom is locally shown to have a threshold bug: the companion file proves no prime in I(3) qualifies.",
+      "selberg_density_corrected in Erdos1059OQ02OQ01.lean replaces the threshold by l >= 4 but is still an axiom for the general case.",
+      "A proof of the corrected density axiom would require formal Brun-Titchmarsh/Selberg-sieve estimates for the shifted-prime sets."
+    ],
+    "goal": "Replace the axiomatized Selberg density premise with a real Lean proof, using the corrected l >= 4 threshold established by the companion analysis."
   },
   "currentState": {
     "phase": "NEW",
@@ -29,11 +49,37 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "OQ-02 contains a complete Lean wrapper around one analytic axiom: interval structure, obstruction counting, disjointness, and the implication from a per-level Selberg density premise to Erdős #1059 are proved with 0 sorries. The sibling correction file proves the original l >= 3 threshold is false at l = 3 and supplies the conservative corrected axiom l >= 4.",
+    "builtItems": [
+      "AllFactorialSubtractionsComposite: predicate requiring every p - k! with k! < p to be non-prime and at least 2.",
+      "PrimorialInterval(l): factorial interval (l!, (l+1)!] implemented as Finset.Ioc.",
+      "primorial_interval_size: Lean proof that |I(l)| = l * l!.",
+      "factorial_bound_in_interval: Lean proof that only k <= l need be checked for p in I(l).",
+      "prime_in_primorial_interval: Lean equivalence between global AFSC and finite interval-level checks.",
+      "BadFactorialIndices and condition_count_at_level: finite obstruction set and cardinality bound.",
+      "primorial_intervals_disjoint: Lean proof that different factorial intervals do not overlap.",
+      "selberg_implies_erdos: Lean theorem deriving ErdosProblem1059 from selberg_density_axiom.",
+      "p7_fails, p11_fails, p13_fails, p17_fails, p19_fails, p23_fails: companion Lean proofs that all primes in I(3) fail AFSC.",
+      "p101_qualifying: companion Lean proof that 101 satisfies AFSC in I(4).",
+      "infinitely_many_qualifying_primes: companion Lean theorem using selberg_density_corrected to get arbitrarily large qualifying primes."
+    ],
+    "insights": [
+      "The formalized elementary layer is real Lean proof; the existence of qualifying primes in every high factorial interval is not proved and remains an axiom.",
+      "The original OQ-02 axiom is stronger than the evidence supports: l = 3 is a concrete counterexample to the stated threshold.",
+      "The corrected threshold l >= 4 is sharp at the base level because 101 is verified as a qualifying prime in I(4).",
+      "The wrapper theorem does not depend on disjointness directly for its Lean proof: it obtains arbitrarily large qualifying primes by choosing l = n + 3 in the original file, while the corrected file chooses l = n + 4.",
+      "A future analytic proof should count primes p in I(l) for which some shifted value p - k! is prime, then show at least one prime avoids all such shifts."
+    ],
+    "mathlibGaps": [
+      "Brun-Titchmarsh inequality for shifted prime counts in factorial intervals.",
+      "Selberg upper-bound sieve or comparable sieve estimates for the bad factorial-index union.",
+      "Prime-counting estimates strong enough to compare good and bad prime counts in I(l)."
+    ],
+    "nextSteps": [
+      "Update any future formal route to use the corrected l >= 4 threshold rather than the parent file's l >= 3 axiom.",
+      "Formalize the analytic inequality behind selberg_density_corrected, separating finite base cases from the asymptotic sieve argument.",
+      "Compare the Selberg-density axiom with the smooth-number axiom in Erdos1059Problem.lean and the density-one route in OQ-04."
+    ]
   },
   "tags": [
     "erdos",
@@ -56,9 +102,20 @@
     "erdos-1059-oq-05"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Selberg, A. \"On an elementary method in the theory of primes\" (1947), cited in Proofs/Erdos1059OQ02.lean.",
+      "Selberg, A. \"On the normal density of primes in small intervals\" (1943), cited in src/data/proofs/erdos-1059-oq-02-oq-01/meta.json."
+    ],
+    "urls": [
+      "https://erdosproblems.com/1059"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Prime.Basic",
+      "Mathlib.Data.Nat.Factorial.Basic",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Set.Basic",
+      "Mathlib.Tactic"
+    ]
   },
   "started": "2026-03-30T19:39:40.878Z",
   "lastUpdate": "2026-03-30T19:39:40.878Z",
@@ -90,7 +147,7 @@
     {
       "path": "Proofs/Erdos1059OQ02.lean",
       "filename": "Erdos1059OQ02.lean",
-      "lineCount": 232,
+      "lineCount": 231,
       "theoremCount": 7,
       "axiomCount": 1,
       "defCount": 4,
@@ -101,7 +158,7 @@
     {
       "path": "Proofs/Erdos1059OQ02OQ01.lean",
       "filename": "Erdos1059OQ02OQ01.lean",
-      "lineCount": 174,
+      "lineCount": 173,
       "theoremCount": 10,
       "axiomCount": 1,
       "defCount": 1,

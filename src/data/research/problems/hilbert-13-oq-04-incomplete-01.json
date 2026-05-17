@@ -1,27 +1,40 @@
 {
   "slug": "hilbert-13-oq-04-incomplete-01",
-  "title": "hilbert-13-oq-04-incomplete-01",
+  "title": "Hilbert 13 OQ 04: Axiomatized Compact-Space Generalization",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "This proof has 1 sorry statements that need to be filled in.",
-    "whyMatters": []
+    "formal": "Parent Lean source `proofs/Proofs/Hilbert13GeneralSpaces.lean` formalizes `covDimLE`, `covDimEq`, `GeneralizedKARepresentation`, and `HasSuperpositionProperty`; its main compact-metric-space results are currently supplied by axioms including `generalized_kolmogorov_arnold`, `sternfeld_characterization`, and `superposition_2n_plus_1_sharp`.",
+    "plain": "Backfill and research the scaffolded gallery-gap entry for the Kolmogorov-Arnold generalization to compact metric spaces. Local evidence does not identify a separate Lean theorem with one remaining sorry; instead, the parent proof metadata reports 0 sorries and 6 axioms for the compact-space generalization.",
+    "whyMatters": [
+      "This entry connects Hilbert's 13th problem to the topological classification of compact metrizable spaces by covering dimension.",
+      "Sternfeld's characterization makes covering dimension the invariant controlling when 2n+1-term superposition representations exist.",
+      "The current Lean artifact is useful but conservative: major theorems are stated as axioms rather than fully machine-checked proofs."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`covDimLE_of_unique` proves that spaces with a unique point have covering dimension at most 0.",
+      "`unitCube_covDimLE` combines the proved n=0 case with the axiomatized positive-dimensional upper bound for `[0,1]^n`.",
+      "`classical_KA_from_general`, `unitCube_superposition`, and `unitCube_superposition_sharp` derive classical cube consequences from the axiomatized generalized theorem, Sternfeld characterization, and sharpness statement.",
+      "`covDimLE_of_embedding` proves that covering dimension does not increase along continuous injective maps from compact spaces into T2 spaces, assuming the target has the dimension bound."
+    ],
+    "open": [
+      "The Lean source keeps six mathematical assumptions as axioms: positive-dimensional cube upper bound, cube lower bound, Ostrand separating maps, generalized Kolmogorov-Arnold theorem, Sternfeld characterization, and 2n+1 sharpness.",
+      "`smooth_generalization_open` records the question of whether Vitushkin-style smooth obstructions persist for compact smooth manifolds.",
+      "`computational_complexity_open` records the question of effective computation of KA representations from finite metric approximations."
+    ],
+    "goal": "Replace scaffold metadata with an evidence-backed research summary and keep proof status conservative: the parent proof is axiomatized, not sorry-based or fully verified."
   },
   "currentState": {
     "phase": "OBSERVE",
-    "since": "2026-04-03T21:34:23-07:00",
+    "since": "2026-04-03T21:37:27-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Read problem.md thoroughly and acquire full context.\nThen move to ORIENT phase to explore literature and related proofs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,26 +42,87 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: hilbert-13-oq-04-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "The local problem.md and knowledge.md files are scaffold-heavy and do not provide a distinct incomplete theorem. The reliable evidence comes from `src/data/proofs/hilbert-13-oq-04/meta.json` and `proofs/Proofs/Hilbert13GeneralSpaces.lean`: the parent artifact is an axiomatized formalization with 0 sorries and 6 axioms.",
+    "builtItems": [
+      "Lean definitions for open covers, cover order, refinements, `covDimLE`, and `covDimEq`.",
+      "Lean structure `GeneralizedKARepresentation` for 2n+1-term compact-space superposition representations.",
+      "Lean predicate `HasSuperpositionProperty` for decomposing every continuous real-valued function through finitely many continuous maps.",
+      "Open-question stubs `smooth_generalization_open` and `computational_complexity_open` documented as `Prop := True` placeholders."
+    ],
+    "insights": [
+      "The scaffold statement claiming one remaining sorry is not supported by the parent proof metadata or Lean source; both indicate 0 sorries.",
+      "The conservative status is still axiomatized because the main mathematical content is encoded through six axioms.",
+      "The compact-space generalization extends the classical Hilbert 13 Kolmogorov-Arnold result by replacing cube dimension with covering dimension.",
+      "Ostrand's separating maps and Sternfeld's characterization are the central nontrivial mathematical inputs not proved in Lean."
+    ],
+    "mathlibGaps": [
+      "A fully formal proof of covering dimension for positive-dimensional unit cubes is not present.",
+      "Ostrand's theorem for separating maps on compact metric spaces is not available as a proved Mathlib theorem here.",
+      "Sternfeld's iff characterization and the 2n+1 optimality proof are not formalized without axioms.",
+      "Effective or computational versions of KA representation are documented as open rather than implemented."
+    ],
+    "nextSteps": [
+      "Confirm whether this research problem should track one of the documented open questions or the six axiomatized parent assumptions.",
+      "If the target is proof hardening, split the six axioms into smaller research tasks with exact Lean declaration names.",
+      "If the target is metadata hygiene only, keep this entry linked to `hilbert-13-oq-04` and avoid claiming a sorry-based proof gap."
+    ],
+    "markdown": "# Knowledge Base: hilbert-13-oq-04-incomplete-01\n\n## Problem Understanding\n\nThis research entry is a gallery-gap scaffold attached to `hilbert-13-oq-04`, the Kolmogorov-Arnold generalization to compact metric spaces. The local `problem.md` and `knowledge.md` files contain installation scaffolding rather than substantive mathematical details.\n\nThe reliable local evidence is the parent metadata and Lean source. `src/data/proofs/hilbert-13-oq-04/meta.json` describes an axiomatized Lean formalization in `proofs/Proofs/Hilbert13GeneralSpaces.lean` with 0 sorries and 6 axioms.\n\n## Evidence From Lean\n\nThe Lean file defines covering dimension infrastructure (`OpenCover`, `coverOrderAt`, `coverOrderAtMost`, `IsRefinement`, `covDimLE`, `covDimEq`), a compact-space KA representation structure (`GeneralizedKARepresentation`), and the superposition predicate (`HasSuperpositionProperty`).\n\nThe file proves basic support results such as `covDimLE_succ`, `covDimLE_zero_iff_disjoint_refinement`, `covDimLE_of_unique`, `unitCube_covDimLE`, `unitCube_covDimEq`, `classical_KA_from_general`, `unitCube_superposition`, `unitCube_superposition_sharp`, and `covDimLE_of_embedding`, but several of those depend on axiomatized inputs.\n\n## Current Proof Status\n\nConservative status: axiomatized. The parent proof metadata and Lean file report 0 sorries, but the main mathematical payload depends on six axioms: `unitCube_covDimLE_pos`, `unitCube_covDim_lower_bound`, `ostrand_separating_maps`, `generalized_kolmogorov_arnold`, `sternfeld_characterization`, and `superposition_2n_plus_1_sharp`.\n\n## Research Direction\n\nThe next useful research step is to decide whether this scaffold should become a task for eliminating one of the six axioms or for expanding one of the two recorded open-question stubs: smooth generalization of Vitushkin's obstruction, or computational complexity of constructing KA representations."
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "analysis",
+    "topology",
+    "superposition",
+    "hilbert-problems",
+    "dimension-theory",
+    "covering-dimension",
+    "compact-metric-spaces",
+    "axiomatized"
   ],
   "relatedProofs": [
     "hilbert-13",
     "hilbert-13-oq-04"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      {
+        "title": "Dimension of metric spaces and Hilbert's problem 13",
+        "author": "P. A. Ostrand",
+        "year": 1965,
+        "journal": "Bulletin of the American Mathematical Society"
+      },
+      {
+        "title": "Dimension, superposition of functions and separation of points, in compact metric spaces",
+        "author": "Y. Sternfeld",
+        "year": 1985,
+        "journal": "Israel Journal of Mathematics"
+      },
+      {
+        "title": "On the representation of continuous functions of several variables as superpositions of functions of fewer variables",
+        "author": "A. N. Kolmogorov",
+        "year": 1957,
+        "journal": "Doklady Akademii Nauk SSSR"
+      },
+      {
+        "title": "Dimension Theory",
+        "author": "R. Engelking",
+        "year": 1978,
+        "journal": "North-Holland"
+      }
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Kolmogorov%E2%80%93Arnold_representation_theorem"
+    ],
+    "mathlib": [
+      "Mathlib.Topology.Basic",
+      "Mathlib.Topology.ContinuousMap.Basic",
+      "Mathlib.Topology.Order.Basic",
+      "Mathlib.Topology.Compactness.Compact",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Topology.UnitInterval",
+      "Mathlib.Data.Fin.Basic",
+      "Mathlib.Algebra.BigOperators.Group.Finset.Basic",
+      "Mathlib.Tactic"
+    ]
   },
   "started": "2026-04-04T04:39:45.904Z",
   "lastUpdate": "2026-04-04T04:39:46.008Z"

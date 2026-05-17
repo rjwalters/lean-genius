@@ -1,27 +1,39 @@
 {
   "slug": "erdos-211-incomplete-01",
-  "title": "erdos-211-incomplete-01",
+  "title": "Erdos Problem #211: replace axiomatized incidence-geometry assumptions",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "This proof has 1 sorry statements that need to be filled in.",
-    "whyMatters": []
+    "formal": "In namespace Erdos211, reduce the unproved assumption surface behind theorem `erdos_211`: for n k : Nat and P : Finset Point, if P.card = n, 1 <= k, k < n, and HasBoundedCollinearity P k, then there exists c > 0 with (formedLines P : R) >= c * k * n.",
+    "plain": "Erdos Problem #211 asks for a lower bound Omega(k n) on the number of lines determined by n planar points when no line contains more than n-k of the points. The current Lean gallery theorem states this result, but it is axiomatized rather than proved from formalized incidence geometry.",
+    "whyMatters": [
+      "The mathematical result is a solved incidence-geometry theorem due to Beck and independently Szemeredi-Trotter in 1983.",
+      "The Lean file contains useful definitions for points, lines, bounded collinearity, formed lines, and incidence counting, but the central theorems are currently assumptions.",
+      "Backfilling the research record prevents the scaffold from incorrectly describing the task as a one-sorry repair; local metadata reports 0 sorries and 10 axioms."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The Lean theorem `erdos_211` exists in `Proofs/Erdos211Problem.lean` and has the expected Beck-Szemeredi-Trotter statement.",
+      "`Point`, `Line`, `Collinear`, `numLines`, `maxCollinear`, `HasBoundedCollinearity`, `formedLines`, and `incidences` are defined in the parent Lean file.",
+      "The gallery metadata records 246 lines, 1 theorem, 9 definitions, 10 axioms, and 0 sorries for `erdos-211`."
+    ],
+    "open": [
+      "The main bound `beck_szemeredi_trotter` is an axiom, so `erdos_211` is not a fully formal proof.",
+      "The supporting incidence-geometry tools `special_case_quadratic`, `beck_dichotomy`, `beck_quantitative`, `szemeredi_trotter`, `rich_lines_bound`, `constant_one_sixth_optimal`, `bgs_configuration`, `furedi_palasti_optimal`, and `crossing_number_inequality` are also axioms.",
+      "The source path in gallery metadata is `Proofs/Erdos211Problem.lean`; in this worktree the file is located under `proofs/Proofs/Erdos211Problem.lean`."
+    ],
+    "goal": "Audit and, where tractable, replace axiomatized components of the Erdos 211 formalization with real Lean proofs or narrower verified interfaces. Do not claim completion until the 10-axiom assumption surface is eliminated or explicitly justified."
   },
   "currentState": {
     "phase": "OBSERVE",
-    "since": "2026-04-03T21:34:23-07:00",
+    "since": "2026-04-03T21:37:26-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Read problem.md thoroughly and acquire full context.\nThen move to ORIENT phase to explore literature and related proofs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,28 +41,93 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: erdos-211-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "Backfill from local evidence: `problem.md` was still scaffold-heavy and described a 1-sorry gap, but `src/data/proofs/erdos-211/meta.json` and `proofs/Proofs/Erdos211Problem.lean` report 0 sorries and 10 axioms. The current theorem is present but delegates directly to `beck_szemeredi_trotter`, so the conservative proof status is axiomatized, not completed.",
+    "builtItems": [
+      "`Point := R x R` and `Line` as a point plus nonzero direction vector",
+      "`numLines`, `formedLines`, and `maxCollinear` counting primitives for finite point sets",
+      "`HasBoundedCollinearity P k`, formalizing the condition maxCollinear P <= P.card - k",
+      "`ErdosRefinedConjecture`, formalizing the conjectural asymptotic constant 1/6",
+      "`erdos_211`, the gallery-facing theorem, proved only by invoking the axiom `beck_szemeredi_trotter`"
+    ],
+    "insights": [
+      "This is an axiom-elimination problem, not a sorry-fill problem: the local parent proof has 0 `sorry` tokens but 10 `axiom` declarations.",
+      "The deepest blockers are incidence-geometry results absent as constructive proofs in the local file: Beck's theorem, Szemeredi-Trotter, rich-lines bounds, extremal configurations, and the crossing-number inequality.",
+      "A realistic next research pass should first classify which axioms can be narrowed, derived from each other, or isolated behind cleaner statements before attempting full Szemeredi-Trotter formalization.",
+      "The metadata's `assumptions` field explicitly says: 10 axiom(s) and 0 sorry(s)."
+    ],
+    "mathlibGaps": [
+      "No local evidence that Mathlib provides the Beck-Szemeredi-Trotter theorem needed by `beck_szemeredi_trotter`.",
+      "No local evidence that Mathlib provides the Szemeredi-Trotter incidence theorem, rich-lines corollary, or crossing-number proof used by the file.",
+      "The current file imports only Set/Cardinality, Finset, Real basics, and ordered-ring lemmas, so the discrete-geometry machinery is not developed in-file."
+    ],
+    "nextSteps": [
+      "Confirm whether any Mathlib incidence-geometry or crossing-number APIs exist under the repository's pinned Mathlib version before choosing an axiom-elimination target.",
+      "Start with a dependency audit of the 10 axioms: identify which are used only for documentation versus which feed theorem `erdos_211`.",
+      "If full formalization is out of scope, shrink the research target to replacing auxiliary axioms with definitions/propositions and documenting the single unavoidable external theorem assumption.",
+      "Keep proof status conservative in UI metadata until `beck_szemeredi_trotter` is no longer an axiom."
+    ],
+    "markdown": "# Knowledge Base: erdos-211-incomplete-01\n\n## Evidence Snapshot\n\nLocal gallery metadata for `erdos-211` reports `sorries: 0`, `axiomCount: 10`, `theoremCount: 1`, `definitionCount: 9`, and badge `axiom`. The Lean source in this worktree is `proofs/Proofs/Erdos211Problem.lean`; the metadata path omits the top-level `proofs/` prefix.\n\n## Problem Understanding\n\nErdos Problem #211 is the solved incidence-geometry result: if n planar points have at most n-k points on any line, with 1 <= k < n, then they determine Omega(k n) lines containing at least two points. The Lean theorem `erdos_211` states this result, but its proof is `beck_szemeredi_trotter n k P hn hk hcol`, where `beck_szemeredi_trotter` is an axiom.\n\n## Current Formalization Surface\n\nThe file defines the basic geometry/counting vocabulary (`Point`, `Line`, `Collinear`, `numLines`, `maxCollinear`, `HasBoundedCollinearity`, `formedLines`, `incidences`) and states several major incidence results as axioms. The 10 axioms are `beck_szemeredi_trotter`, `special_case_quadratic`, `beck_dichotomy`, `beck_quantitative`, `szemeredi_trotter`, `rich_lines_bound`, `constant_one_sixth_optimal`, `bgs_configuration`, `furedi_palasti_optimal`, and `crossing_number_inequality`.\n\n## Conservative Status\n\nThis record should not be marked complete. There are no sorries to fill, but the parent theorem depends on unproved axioms. The immediate research value is an axiom audit and possible reduction of the assumption surface."
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "erdos",
+    "combinatorics",
+    "incidence-geometry",
+    "beck-theorem",
+    "szemeredi-trotter",
+    "axiomatized",
+    "solved"
   ],
   "relatedProofs": [
-    "erdos-2",
-    "erdos-21",
-    "erdos-211"
+    "erdos-211",
+    "erdos-1069",
+    "erdos-733",
+    "erdos-1086"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      {
+        "key": "SzT83c",
+        "authors": [
+          "E. Szemeredi",
+          "W.T. Trotter"
+        ],
+        "title": "Extremal problems in discrete geometry",
+        "venue": "Combinatorica",
+        "year": "1983",
+        "volume": "3",
+        "pages": "381-392",
+        "note": "Referenced by local gallery metadata for the Szemeredi-Trotter incidence-geometry foundation."
+      }
+    ],
+    "urls": [
+      {
+        "label": "Erdos Problems #211",
+        "url": "https://erdosproblems.com/211"
+      }
+    ],
+    "mathlib": [
+      "Mathlib.Data.Set.Card",
+      "Mathlib.Data.Finset.Basic",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Algebra.Order.Ring.Lemmas"
+    ]
   },
   "started": "2026-04-04T04:39:45.988Z",
-  "lastUpdate": "2026-04-04T04:39:46.012Z"
+  "lastUpdate": "2026-04-04T04:39:46.012Z",
+  "significance": 6,
+  "tractability": 6,
+  "leanFiles": [
+    {
+      "path": "Proofs/Erdos211Problem.lean",
+      "filename": "Erdos211Problem.lean",
+      "worktreePath": "proofs/Proofs/Erdos211Problem.lean",
+      "lineCount": 246,
+      "theoremCount": 1,
+      "axiomCount": 10,
+      "defCount": 9,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos211Problem.lean"
+    }
+  ]
 }

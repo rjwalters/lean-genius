@@ -1,27 +1,38 @@
 {
   "slug": "fermat-two-squares-oq-01-oq-01",
-  "title": "fermat-two-squares-oq-01-oq-01",
+  "title": "Independent Lean formalization of the prime descent step for sums of squares",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
+    "formal": "For a prime p, formalize the elementary descent route that first finds a, b with p | 1 + a^2 + b^2 and then descends to a representation by squares, without relying on Mathlib's finished sum-of-squares theorems as the proof engine.",
     "plain": "Can the descent argument for primes (showing every prime $p$ divides some $1 + a^2 + b^2$ and descending) be formalized independently of Mathlib?",
-    "whyMatters": []
+    "whyMatters": [
+      "The related gallery proofs establish Fermat's two-squares theorem and Lagrange's four-squares theorem by using Mathlib theorems, so this question isolates whether the classical descent machinery itself can be developed locally.",
+      "A local descent formalization would make the arithmetic mechanism visible instead of treating the prime case as an imported library result."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Proofs/FermatTwoSquares.lean proves Fermat's two-squares characterization with 0 sorries and 0 axioms, but its existence direction calls Mathlib's Nat.Prime.sq_add_sq.",
+      "Proofs/FermatTwoSquaresOQ01.lean proves Lagrange's four-squares theorem and supporting algebraic identities with 0 sorries and 0 axioms; the main four-squares theorem calls Mathlib's Nat.sum_four_squares.",
+      "Proofs/FermatTwoSquaresOQ01.lean locally proves Euler's four-square identity, Lipschitz quaternion norm multiplicativity, Brahmagupta-Fibonacci two-square multiplicativity, and concrete examples such as 3 not being a sum of two squares."
+    ],
+    "open": [
+      "No local source examined here proves the prime descent argument independently of Mathlib's sum-of-squares results.",
+      "The local problem, state, and knowledge files contain only scaffold notes and do not record an attempted independent descent formalization.",
+      "The first descent input, finding a and b with p dividing 1 + a^2 + b^2, still needs a local Lean development if Mathlib's finished theorem is not used as the proof engine."
+    ],
+    "goal": "Determine whether the elementary prime descent proof can be formalized locally in Lean, identifying the residue-counting, divisibility, minimization, and descent lemmas needed without closing the question by invoking Mathlib's completed sum-of-squares theorem."
   },
   "currentState": {
     "phase": "OBSERVE",
-    "since": "2026-04-03T21:34:23-07:00",
+    "since": "2026-04-03T21:37:27-07:00",
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Read problem.md thoroughly and acquire full context.\nThen move to ORIENT phase to explore literature and related proofs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,34 +40,84 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: fermat-two-squares-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "Backfilled from local evidence. The OQ remains active: related Lean files verify Fermat two-squares and Lagrange four-squares results with 0 sorries/0 axioms, but they rely on Mathlib for the completed sum-of-squares theorems rather than formalizing the independent prime descent requested here.",
+    "builtItems": [
+      "Proofs/FermatTwoSquares.lean: Mathlib-backed Fermat two-squares characterization and prime residue corollaries.",
+      "Proofs/FermatTwoSquaresOQ01.lean: local Euler four-square identity, Lipschitz quaternion infrastructure, two-square and four-square multiplicativity, and Mathlib-backed Lagrange theorem.",
+      "research/problems/fermat-two-squares-oq-01-oq-01/state.md: OBSERVE phase, full path, zero attempts."
+    ],
+    "insights": [
+      "The related Fermat file documents Zagier's involution proof in comments, but the Lean proof of the positive direction delegates to Nat.Prime.sq_add_sq.",
+      "The four-squares file comments describe a descent argument for primes in the Lagrange proof, but the theorem lagrange_four_squares is proved by Nat.sum_four_squares.",
+      "Local infrastructure for multiplicative identities already exists and may help downstream, but it is not the independent prime descent formalization asked for by this OQ.",
+      "The scaffold problem file identifies the desired descent shape but contributes no verified lemmas beyond the plain-language question."
+    ],
+    "mathlibGaps": [
+      "A local proof of the residue-counting/pigeonhole step producing a and b with p | 1 + a^2 + b^2.",
+      "A local minimality or descent framework for reducing a multiple of p represented by squares to a representation of p.",
+      "A proof route that avoids using Nat.Prime.sq_add_sq or Nat.sum_four_squares as the core engine for this OQ."
+    ],
+    "nextSteps": [
+      "Inventory the exact Mathlib primitives allowed for elementary modular arithmetic, divisibility, finite sets, and minimal counterexample/descent.",
+      "State the first target lemma for the divisibility input p | 1 + a^2 + b^2 and test whether it can be proved from residue-counting rather than Nat.Prime.sq_add_sq.",
+      "Sketch the descent invariant and termination measure before attempting implementation."
+    ],
+    "markdown": "# Knowledge Base: fermat-two-squares-oq-01-oq-01\n\n## Problem Understanding\n\nThis OQ asks whether the prime descent argument behind sums-of-squares results can be formalized locally rather than closed by importing Mathlib's completed theorem.\n\n## Local Evidence\n\n- `Proofs/FermatTwoSquares.lean` proves Fermat's two-squares characterization with 0 sorries and 0 axioms, but the positive direction uses `Nat.Prime.sq_add_sq`.\n- `Proofs/FermatTwoSquaresOQ01.lean` proves Lagrange four-squares and algebraic identities with 0 sorries and 0 axioms, but the main four-squares theorem uses `Nat.sum_four_squares`.\n- The owned research state is still OBSERVE with zero attempts.\n\n## Current Conservative Status\n\nThe independent descent formalization has not been shown complete by the local files examined for this backfill.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "number-theory",
+    "sum-of-squares",
+    "fermat-two-squares",
+    "descent",
+    "lean-formalization"
   ],
   "relatedProofs": [
     "fermat-two-squares",
     "fermat-two-squares-oq-01"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      {
+        "title": "A One-Sentence Proof That Every Prime p ≡ 1 (mod 4) Is a Sum of Two Squares",
+        "authors": "Don Zagier",
+        "year": "1990",
+        "source": "src/data/proofs/fermat-two-squares/meta.json"
+      },
+      {
+        "title": "Démonstration d'un théorème d'arithmétique",
+        "authors": "J.-L. Lagrange",
+        "year": "1770",
+        "source": "src/data/proofs/fermat-two-squares-oq-01/meta.json"
+      }
+    ],
+    "urls": [
+      {
+        "url": "https://people.mpim-bonn.mpg.de/zagier/files/doi/10.2307/2323918/fulltext.pdf",
+        "description": "Zagier source URL recorded in src/data/proofs/fermat-two-squares/meta.json"
+      }
+    ],
+    "mathlib": [
+      {
+        "module": "Mathlib.NumberTheory.SumTwoSquares",
+        "theorem": "Nat.Prime.sq_add_sq",
+        "description": "Used by the related Fermat two-squares Lean file; this OQ asks whether the descent proof can be formalized without relying on this theorem as the engine."
+      },
+      {
+        "module": "Mathlib.NumberTheory.SumFourSquares",
+        "theorem": "Nat.sum_four_squares",
+        "description": "Used by the related Lagrange four-squares Lean file."
+      }
+    ]
   },
   "started": "2026-04-04T04:39:45.988Z",
   "lastUpdate": "2026-04-04T04:39:46.012Z",
+  "significance": 7,
+  "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/FermatTwoSquares.lean",
       "filename": "FermatTwoSquares.lean",
-      "lineCount": 202,
+      "lineCount": 201,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 0,
@@ -67,7 +128,7 @@
     {
       "path": "Proofs/FermatTwoSquaresOQ01.lean",
       "filename": "FermatTwoSquaresOQ01.lean",
-      "lineCount": 255,
+      "lineCount": 254,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 3,
