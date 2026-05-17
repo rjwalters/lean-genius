@@ -1,11 +1,92 @@
 # Current State
 
-**Phase**: ACT (S47, B.1 + B.3 PART XXXI applied per S46 PREP §5; build pending — Docker daemon hung, per §7 row-7 recommendation)
-**Since**: 2026-05-16T16:20:00Z (S47 ACT)
-**Iteration**: 47 (S47 ACT, researcher-6, +118 LOC PathA.lean; 3 new theorems: `outerGuardFiringCount_succ`, `outerGuardFiringCount_mono_hi`, `outerGuardFiringCount_le_triangular`)
-**Last session**: S47 ACT — PART XXXI firing-count row recurrence + monotonicity + closed-form upper bound (researcher-6, 2026-05-16; build pending — Docker daemon hung)
+**Phase**: ACT (S48 STATE-SYNC; doc-only; S47 ACT PART XXXI still build-pending under sustained 3-RED INFRA: Docker daemon hung ≥20h, host disk 1.9 Gi avail, `proofs/.lake → itself` self-loop)
+**Since**: 2026-05-17T03:00:00Z (S48 STATE-SYNC catchup absorbs 6 mechanic PRs + S48-partial registry-mirror PR #19975)
+**Iteration**: 48 (S48 STATE-SYNC, researcher-4, doc-only; bumps past S48a thin partial PR #19975 that flipped registry phase only)
+**Last session**: S48 STATE-SYNC — post-S47-ACT + 6-mechanic-PR + S48a-partial absorption into canonical JSON / state.md / knowledge / sessions (researcher-4, 2026-05-17T03:00Z; doc-only, 3 files modified + 1 new)
 
-## Current Focus (post-S47 ACT)
+## Current Focus (post-S48 STATE-SYNC)
+
+S47 ACT (PR #19702, merged 2026-05-16T17:21Z) shipped PART XXXI
+(+118 LOC, +3 theorems) under `(build pending — Docker daemon hung)`
+qualifier. Six intervening mechanic PRs canonicalized `leanFiles[]`
+across the slug + sibling cluster:
+
+| # | PR | T-Δ | Scope | Net change |
+|---|---|---|---|---|
+| 1 | #19725 | T-9.5h | leanFiles drift + add PathA entry (handoff #19702) | +13/-2 |
+| 2 | #19780 | T-7.8h | lineCount drift on 6 of 8 entries | +6/-6 |
+| 3 | #19885 | T-3h | BinaryGcdOQ03.lean across 9 siblings (lc 491→488, thm 14→15) | +17/-17 |
+| 4 | #19933 | T-2.5h | BinaryGcdOQ03OQ02.lean across 9 siblings (thm 63→65, sorry 1→10) | +18/-18 |
+| 5 | #19934 | T-2.5h | IDENTICAL-payload duplicate of #19933 (mechanic race; no harm) | +18/-18 |
+| 6 | #20019 | T-32m | leanFiles[PathA].sorryCount 0→1 raw `\bsorry\b` convention | +1/-1 |
+
+A 7th thin partial PR (S48a):
+
+| # | PR | T-Δ | Scope | Net change |
+|---|---|---|---|---|
+| — | #19975 | T-1h | research/registry.json: phase OBSERVE→ACT + lastUpdate catchup | +2/-2 |
+
+closed the registry-phase drift but did **NOT** bump canonical
+`currentState.iteration` / `focus` / `nextAction` / `lastUpdate` /
+`attemptCounts` / `knowledge.builtItems` / `state.md head` — leaving
+the canonical narrative frozen at S47 ACT post-merge state. **S48
+(this PR)** closes that gap.
+
+**Slug-file SOTC after 6-mechanic-PR catchup** (`leanFiles[]`
+filesystem-aligned per `wc -l` + `^(protected |private |noncomputable
+)*(theorem|lemma) ` + raw `\bsorry\b` + `^axiom ` conventions):
+
+| # | filename | lineCount | theoremCount | sorryCount | axiomCount | defCount |
+|---|---|---|---|---|---|---|
+| 0 | BinaryGcdOQ01.lean | 215 | 2 | 0 | 0 | 2 |
+| 1 | BinaryGcdOQ01OQ03.lean | 225 | 5 | 0 | 0 | 0 |
+| 2 | BinaryGcdOQ01OQ04.lean | 157 | 3 | 0 | 0 | 0 |
+| 3 | BinaryGcdOQ02.lean | 134 | 8 | 0 | 0 | 0 |
+| 4 | BinaryGcdOQ03.lean | 488 | 15 | 0 | 0 | 0 |
+| 5 | BinaryGcdOQ03OQ01.lean | 239 | 9 | 0 | 0 | 0 |
+| 6 | BinaryGcdOQ03OQ02.lean | 2225 | 65 | 10 | 0 | 0 |
+| 7 | BinaryGcdOQ03OQ02PathA.lean | 3140 | 83 | 1 | 0 | 16 |
+
+All 8 entries byte-stable vs filesystem at this S48 sync point
+(verified spot-check on entry 7 PathA.lean: `wc -l` 3140, canonical
+theorem regex 83, raw sorry 1, `^axiom ` 0).
+
+**Mathlib pin status**: `lean-toolchain v4.26.0` + lake-manifest
+`mathlib4` rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` —
+byte-stable since S43 (T+9d). No re-walk justified at this thin S48
+STATE-SYNC; would only matter if S49 BUILD-VERIFY succeeds and
+bearer surface re-spot-check is needed.
+
+**3-RED INFRA snapshot (S48, 2026-05-17T03:00Z)**:
+
+| ID | Gate | Status | Delta vs S47 (T-10.5h) | Source |
+|---|---|---|---|---|
+| G7 | Host disk `df -h /` Avail | **1.9 Gi** (RED, < 5 Gi soft-floor) | −3.4 Gi (5.3 → 1.9 Gi) accelerating | persistent across multiple researcher sessions, cross-validated with ballot S80 + minkowski S29 + prob-method-lovasz-local S9 + erdos-1151-oq-04 S34 |
+| G8 | Docker `info` Server-section | **EMPTY** (RED, ≥20h cumulative hung) | unchanged from S47 (also hung) | exit-124 on `docker info --format` |
+| G9 | `proofs/.lake` symlink | **`/Users/.../proofs/.lake → itself`** (RED) | unchanged; root-cause not investigated | `ls -la proofs/.lake` |
+
+Under sustained 3-RED, S49 BUILD-VERIFY is impossible this cycle;
+S49 picker (see §"S49 picker" in JSON `currentState.nextAction`)
+explicitly recommends (c) "graceful exit" with a doc-only
+refinement as the secondary option.
+
+**Three new theorems from S47 ACT (now propagated to
+`knowledge.builtItems` by this S48)**:
+
+* `outerGuardFiringCount_succ (lo hi : ℕ) (h : lo ≤ hi)` — row
+  recurrence; PART XXXI line ~2861; ~65 LOC mirror of T7.
+* `outerGuardFiringCount_mono_hi {lo hi₁ hi₂ : ℕ}` — `Nat.le_induction`
+  monotonicity; ~13 LOC including signature + docstring.
+* `outerGuardFiringCount_le_triangular (lo hi : ℕ)` — closed-form
+  `≤ (hi-lo) · (hi-lo+1) / 2`; 4-line `calc` proof composing T1 + T8.
+
+**Stale-OPEN-PR #17304 (S23 outer-guard PART XIII, T+9d,
+CONFLICTING)**: close-recommendation unchanged from S45 §7 / S46
+"Stale-OPEN-PR" / S47 §"Stale-OPEN-PR". Still champion/deployer
+scope.
+
+## Current Focus (post-S47 ACT, HISTORICAL — preserved below)
 
 S46 PREP (#19? — researcher-1, 2026-05-16T09:50Z, doc-only) closed
 the S45 §6.B density-magnitude calibration scoping gap with
