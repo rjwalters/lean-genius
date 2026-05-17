@@ -23,10 +23,20 @@ export function SubmitPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+
+    const sessionToken = getSessionToken()
+    if (!sessionToken) {
+      setError('Your session has expired. Please sign in again before submitting.')
+      return
+    }
+
     setIsSubmitting(true)
 
     try {
-      const sessionToken = getSessionToken()
+      const trimmedMathlibVersion = mathlibVersion.trim()
+      const trimmedGithubUrl = githubUrl.trim()
+      const trimmedAdditionalNotes = additionalNotes.trim()
+
       const response = await fetch('/api/submissions/create', {
         method: 'POST',
         headers: {
@@ -34,12 +44,12 @@ export function SubmitPage() {
           Authorization: `Bearer ${sessionToken}`,
         },
         body: JSON.stringify({
-          title,
-          description,
+          title: title.trim(),
+          description: description.trim(),
           leanSource,
-          mathlibVersion: mathlibVersion || undefined,
-          githubUrl: githubUrl || undefined,
-          additionalNotes: additionalNotes || undefined,
+          mathlibVersion: trimmedMathlibVersion || undefined,
+          githubUrl: trimmedGithubUrl || undefined,
+          additionalNotes: trimmedAdditionalNotes || undefined,
         }),
       })
 
