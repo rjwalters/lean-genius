@@ -114,7 +114,7 @@ export function generateSubmissionEmail(submission: {
 
   <div style="background: #f9fafb; padding: 24px; border: 1px solid #e5e7eb; border-top: none;">
     <p style="margin-top: 0;">
-      <strong>${submission.username}</strong> (${submission.userEmail}) submitted a proof.
+      <strong>${escapeHtml(submission.username)}</strong> (${escapeHtml(submission.userEmail)}) submitted a proof.
     </p>
 
     <h2 style="font-size: 18px; margin-top: 24px; color: #111;">Title</h2>
