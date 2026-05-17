@@ -18,8 +18,8 @@
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-12T06:58:30.838Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Erdos36Problem.lean is axiomatized: 381 LOC, 0 sorries, 3 axioms (erdos_36_limit_exists, white_lower 0.379, upper_bound 0.381 from Haugland). small_values is a proved theorem via native_decide on computable mirror MC.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -75,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-01-12T06:58:30.838Z",
-  "lastUpdate": "2026-03-13T07:52:17.043Z",
+  "lastUpdate": "2026-05-17T18:10:00.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
