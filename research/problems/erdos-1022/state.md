@@ -4,23 +4,49 @@
 **Since**: ~2026-03 (multiple sessions; first scaffold 2026-03-28 per problem JSON `started`;
 last research PR `erdos-1022 — degree-bounded ⇒ sparse via double counting` #13269 merged
 2026-04-27)
-**Iteration**: 5+ shipped (exact count unrecorded; see `builtItems` in
-`src/data/research/problems/erdos-1022.json` for granular log)
+**Iteration**: 6 shipped (S1 STATE-SYNC #18886 2026-05-13, S2 STATE-SYNC 2026-05-17)
 
 ## Status Summary
 
-Three Lean files now ship in a stable axiomatized rest state:
+Three Lean files now ship in a stable axiomatized rest state. Numbers below
+use the **canonical mechanic regex** convention (raw inclusive
+`^(protected|private|noncomputable )*(theorem|lemma) ` for theorems and
+`^(noncomputable )?(def|abbrev|structure|class|inductive|instance) ` for
+definitions; raw `wc -l` for lines), matching `src/data/proofs/erdos-1022/meta.json`.
 
 | File | Lines | Theorems | Defs | Axioms | Sorries | Role |
 |------|------:|---------:|-----:|-------:|--------:|------|
-| `Erdos1022Problem.lean` | 600 | 26 | 6 | 1 | 0 | Main file — Property B, sparsity, matching ⇒ Property B, first-moment, degree-bounded ⇒ sparse |
-| `Erdos1022OQ01.lean` | 165 | 8 | 3 | 0 | 0 | Property $B_k$ ($k$-colorability) hierarchy and monotonicity |
-| `Erdos1022OQ03.lean` | 420 | 21 | 8 | 1 | 0 | LLL infrastructure: monoProb, lllThreshold, propertyB consequences |
-| **Total** | **1185** | **55** | **17** | **2** | **0** | |
+| `Erdos1022Problem.lean` | 599 | 28 | 7 | 1 | 0 | Main file — Property B, sparsity, matching ⇒ Property B, first-moment, degree-bounded ⇒ sparse |
+| `Erdos1022OQ01.lean` | 164 | 8 | 3 | 0 | 0 | Property $B_k$ ($k$-colorability) hierarchy and monotonicity |
+| `Erdos1022OQ03.lean` | 419 | 21 | 8 | 1 | 0 | LLL infrastructure: monoProb, lllThreshold, propertyB consequences |
+| **Total** | **1182** | **57** | **18** | **2** | **0** | |
 
-`meta.json` for this slug is **not yet wired** to a gallery proof entry (no `src/data/proofs/erdos-1022/`);
-both `erdos-1022-oq-01/` (the $B_k$ Lean file) and `erdos-1022-oq-03/` are independent gallery entries
-with their own `meta.json`. This STATE-SYNC commit does not touch any gallery `meta.json`.
+(S1 #18886 reported 600/26/6, 165/8/3, 420/21/8 = 1185/55/17 using a narrow
+`^theorem ` regex that excluded the two `private lemma` declarations at lines
+397 and 416 of `Erdos1022Problem.lean` and the one `private def` at line 388,
+plus an off-by-one line count on all three files. S2 propagates the canonical
+counts.)
+
+`meta.json` is already wired for two gallery entries:
+
+- `src/data/proofs/erdos-1022/meta.json` — gallery entry for the main file,
+  `meta.lineCount=599`, `meta.theoremCount=28`, `meta.definitionCount=7`,
+  `meta.axiomCount=1` (canonical, matches actual file).
+- `src/data/proofs/erdos-1022-oq-01/meta.json` — gallery entry for OQ-01,
+  `meta.lineCount=164`, `meta.theoremCount=8`, `meta.definitionCount=3`,
+  `meta.axiomCount=0` (canonical, matches actual file).
+- **No `src/data/proofs/erdos-1022-oq-03/` exists yet** — OQ-03 (LLL bridge)
+  is research-only; pending a gallery wiring decision.
+
+This S2 STATE-SYNC commit does not touch any gallery `meta.json`.
+
+### Iteration Ledger
+
+| Iter | Date | Kind | PR | Notes |
+|------|------|------|-----|-------|
+| 1–4 | 2026-03 to 2026-04-27 | scaffold + proofs | #7595, #7630, #7781, #7833, #8322, #13269 | Built Erdos1022Problem.lean, OQ01.lean, OQ03.lean from stub; proved matching case + first-moment + degree-bounded ⇒ sparse |
+| 5 | 2026-05-13 | S1 STATE-SYNC (doc-only) | #18886 | First-commit `state.md` + `problem.md`; JSON title/statement repair from `[Problem Title]` placeholder. Reported counts used narrow `^theorem ` and miscounted `wc -l` by +1 on each file. |
+| 6 | 2026-05-17 | S2 STATE-SYNC (doc-only) | this PR | 5-field JSON `leanFiles[*]` repair to canonical mechanic counts (Problem: 600→599 LOC, 26→28 thms, 6→7 defs; OQ01: 165→164 LOC; OQ03: 420→419 LOC); state.md status table and total row aligned; gallery-meta cross-reference correction (erdos-1022/ does exist; erdos-1022-oq-03/ does not). |
 
 ### Headline result (matching case, post all completed iterations)
 
@@ -104,19 +130,30 @@ Three orthogonal next steps for future iterations:
 
 ## Honesty
 
-- **Title in `src/data/research/problems/erdos-1022.json` is still `[Problem Title]`**
-  placeholder from the original seeker-init scaffold; this STATE-SYNC commit replaces it
-  with `Erdős #1022 — Property B and Sparse Set Families` and fills in
-  `problemStatement.formal` / `problemStatement.plain` / `problemStatement.whyMatters` /
-  `knownResults` so the problem JSON matches the Lean reality (1185 LOC, 55 theorems,
-  axiomatized, $c(2) = 1$ Lovász matching case proved).
-- The Lean files have shipped on `main` since at least 2026-04-27 (PR #13269); the JSON
-  metadata is the lagging document.
-- **No `.lean` source is edited** in this PR; the axiom counts in the table above are read
-  from current `origin/main` heads. `Erdos1022Problem.lean` (lineCount 600, axiom 1) /
-  `Erdos1022OQ01.lean` (165, 0) / `Erdos1022OQ03.lean` (420, 1) — totals: 1185 LOC,
-  2 axioms, 0 sorries.
-- **No gallery `meta.json` touched.** The slug `erdos-1022` has no gallery proof directory;
-  `erdos-1022-oq-01/` and `erdos-1022-oq-03/` are separately wired.
+- **S1 (#18886, 2026-05-13) preamble**: the title in
+  `src/data/research/problems/erdos-1022.json` was `[Problem Title]` placeholder from
+  seeker-init; S1 replaced it with `Erdős #1022 — Property B and Sparse Set Families` and
+  filled in `problemStatement.formal` / `problemStatement.plain` /
+  `problemStatement.whyMatters` / `knownResults` so the problem JSON matched the Lean
+  reality. S1's reported counts (1185 LOC, 55 theorems, 17 defs) used narrow
+  `^theorem ` regex (excluded 2 `private lemma` decls in Erdos1022Problem.lean lines 397,
+  416) and narrow `^def ` regex (excluded 1 `private def` line 388) plus an off-by-one
+  `wc -l` count. **S2 (this PR) repairs those 5 numeric fields.**
+- **S2 canonical numbers**: `Erdos1022Problem.lean` (599 LOC, 28 theorems, 7 defs,
+  1 axiom) / `Erdos1022OQ01.lean` (164, 8, 3, 0) / `Erdos1022OQ03.lean` (419, 21, 8, 1)
+  — totals: **1182 LOC, 57 theorems, 18 defs, 2 axioms, 0 sorries**. Numbers match
+  `src/data/proofs/erdos-1022/meta.json` and `…erdos-1022-oq-01/meta.json` canonical
+  fields (set by mechanic batches under the inclusive regex convention).
+- The Lean files have shipped on `main` since at least 2026-04-27 (PR #13269);
+  byte-stable since (last `proofs/Proofs/Erdos1022*.lean` touch was the bulk re-import
+  in #19454 sperner ACT on 2026-05-16, which re-added without modifying content).
+- **No `.lean` source is edited** in this PR.
+- **No gallery `meta.json` touched.** Gallery wiring is correct as of S2:
+  `erdos-1022/` and `erdos-1022-oq-01/` are wired with canonical counts;
+  `erdos-1022-oq-03/` is NOT wired (research-only).
 - **No race detected.** `gh pr list --search "erdos-1022 in:title" --state open` returns
   empty as of the timestamp of this branch.
+- **INFRA S2 snapshot (non-blocking for doc-only)**: G7 host disk 4.5 GiB available
+  (RED, below 5 GiB soft floor; same Path-A window as concurrent erdos-301 S3
+  cycle); G8 docker server at 5s probe timeout (RED, hung); G9 `.lake` host-rooted
+  (GREEN).
