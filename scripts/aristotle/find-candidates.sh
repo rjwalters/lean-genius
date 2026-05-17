@@ -53,12 +53,18 @@ count_matches() {
     grep -cE "$1" "$2" 2>/dev/null || true
 }
 
-# Get list of already-submitted files (active or successful jobs)
+# Get list of files already handled by active, successful, or terminal jobs
 get_submitted_files() {
     if [[ -f "$JOBS_FILE" ]]; then
-        # Only exclude files with active or successful jobs
+        # Exclude files with active, successful, or explicit terminal jobs.
         # Expired and failed files are eligible for resubmission (handled by blocked check)
-        jq -r '.jobs[] | select(.status == "submitted" or .status == "completed" or .status == "integrated") | .file' "$JOBS_FILE" 2>/dev/null | xargs -I{} basename {} .lean | sort -u
+        jq -r '.jobs[] | select(
+            .status == "submitted" or
+            .status == "completed" or
+            .status == "integrated" or
+            .status == "resolved_manually" or
+            .status == "blocked"
+        ) | .file' "$JOBS_FILE" 2>/dev/null | xargs -I{} basename {} .lean | sort -u
     fi
 }
 
