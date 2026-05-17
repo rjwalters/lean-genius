@@ -9,7 +9,7 @@ interface Env {
   DB: D1Database
 }
 
-export async function onRequestPost(context: EventContext<Env, string, unknown>) {
+export async function onRequestPost(context: EventContext<Env, string, { id: string }>) {
   const { DB } = context.env
   const db = createDb(DB)
 
@@ -23,10 +23,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
       )
     }
 
-    // Get comment ID from URL
-    const url = new URL(context.request.url)
-    const pathParts = url.pathname.split('/')
-    const commentId = pathParts[pathParts.length - 2] // /api/comments/:id/vote
+    const commentId = context.params.id
 
     // Verify comment exists and is not deleted
     const comment = await db.query.comments.findFirst({
