@@ -57,6 +57,8 @@ export function ErdosPage() {
   // Local-only UI state
   const [showFilters, setShowFilters] = useState(false)
   const [showMilestones, setShowMilestones] = useState(true)
+  const filterPanelId = 'erdos-gallery-filters'
+  const milestonesPanelId = 'erdos-ai-milestones'
 
   // Filter to Erdős problems only, then apply additional filters
   const erdosProofs = useMemo(() => {
@@ -231,6 +233,8 @@ export function ErdosPage() {
         <section className="max-w-6xl mx-auto px-6 py-8 border-b border-border">
           <button
             onClick={() => setShowMilestones(!showMilestones)}
+            aria-expanded={showMilestones}
+            aria-controls={milestonesPanelId}
             className="flex items-center gap-2 text-sm font-semibold uppercase tracking-wide text-muted-foreground hover:text-foreground transition-colors mb-4"
           >
             <Trophy className="h-4 w-4 text-cyan-400" />
@@ -238,7 +242,7 @@ export function ErdosPage() {
             <span className="text-xs font-normal">({showMilestones ? 'hide' : 'show'})</span>
           </button>
           {showMilestones && (
-            <div className="grid gap-4 md:grid-cols-2">
+            <div id={milestonesPanelId} className="grid gap-4 md:grid-cols-2">
               {AI_MILESTONES.map((milestone, idx) => (
                 <Link
                   key={idx}
@@ -303,6 +307,8 @@ export function ErdosPage() {
             {/* Filter Button */}
             <button
               onClick={() => setShowFilters(!showFilters)}
+              aria-expanded={showFilters}
+              aria-controls={filterPanelId}
               className={`flex items-center gap-1.5 text-sm transition-colors ${
                 showFilters || selectedBadges.length > 0 || showAiSolvedOnly
                   ? 'text-annotation'
@@ -333,7 +339,7 @@ export function ErdosPage() {
 
         {/* Filter Panel */}
         {showFilters && (
-          <div className="mb-6 p-4 bg-card border border-border rounded-lg">
+          <div id={filterPanelId} className="mb-6 p-4 bg-card border border-border rounded-lg">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-medium">Filter by Category</span>
               {(selectedBadges.length > 0 || showAiSolvedOnly) && (
@@ -353,6 +359,7 @@ export function ErdosPage() {
               {/* AI-Solved Filter Toggle */}
               <button
                 onClick={() => setShowAiSolvedOnly(!showAiSolvedOnly)}
+                aria-pressed={showAiSolvedOnly}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all
                   ${showAiSolvedOnly
                     ? 'ring-2 ring-offset-2 ring-offset-background'
