@@ -25,7 +25,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import { fileURLToPath } from 'url'
-import { createRestAPIClient } from 'masto'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -134,9 +133,10 @@ export function createMastodonClient(opts: MastodonClientOptions = {}) {
   const skipState = opts.skipStateUpdate ?? false
 
   // Lazy-init the REST client (only when we actually need the API)
-  let _client: ReturnType<typeof createRestAPIClient> | null = null
-  function getClient() {
+  let _client: any = null
+  async function getClient() {
     if (!_client) {
+      const { createRestAPIClient } = await import('masto')
       const token = opts.token ?? loadToken()
       _client = createRestAPIClient({ url: instance, accessToken: token })
     }
@@ -160,7 +160,7 @@ export function createMastodonClient(opts: MastodonClientOptions = {}) {
         return null
       }
 
-      const client = getClient()
+      const client = await getClient()
       const status = await client.v1.statuses.create({
         status: text,
         visibility,
@@ -207,7 +207,7 @@ export function createMastodonClient(opts: MastodonClientOptions = {}) {
         return null
       }
 
-      const client = getClient()
+      const client = await getClient()
       const status = await client.v1.statuses.create({
         status: text,
         visibility,
@@ -245,7 +245,7 @@ export function createMastodonClient(opts: MastodonClientOptions = {}) {
         return null
       }
 
-      const client = getClient()
+      const client = await getClient()
       const status = await client.v1.statuses.$select(statusId).reblog()
 
       return {
@@ -265,7 +265,7 @@ export function createMastodonClient(opts: MastodonClientOptions = {}) {
         return null
       }
 
-      const client = getClient()
+      const client = await getClient()
       const status = await client.v1.statuses.$select(statusId).favourite()
 
       return {
@@ -283,7 +283,7 @@ export function createMastodonClient(opts: MastodonClientOptions = {}) {
       hashtag: string,
       limit: number = 20
     ): Promise<Array<{ id: string; content: string; url: string; account: string; createdAt: string }>> {
-      const client = getClient()
+      const client = await getClient()
       const paginator = client.v1.timelines.tag.$select(hashtag).list({ limit })
       const results: Array<{ id: string; content: string; url: string; account: string; createdAt: string }> = []
       for await (const statuses of paginator) {
@@ -340,6 +340,10 @@ async function main() {
   }
 
   const command = args[0]
+  if (command === '--help' || command === '-h' || command === 'help') {
+    printUsage()
+    return
+  }
 
   // Parse flags
   let dryRun = false
