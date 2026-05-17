@@ -3,6 +3,7 @@
 # claim-target.sh - Claim a proof gallery entry for exclusive peer review
 #
 # Usage:
+#   ./claim-target.sh --dry-run claim-next  # Preview the next claim without writing
 #   ./claim-target.sh claim-next            # Claim the highest-priority unclaimed target
 #   ./claim-target.sh claim <id>            # Claim a specific entry
 #   ./claim-target.sh complete <id> [grade] # Mark as completed with overall grade
@@ -16,6 +17,42 @@
 
 set -euo pipefail
 shopt -s nullglob
+
+usage() {
+    cat <<EOF
+Usage: claim-target.sh [--dry-run] {claim-next|claim <id>|complete <id> [grade]|release <id>|status|cleanup}
+
+Options:
+  --dry-run, -n  Preview claim/tracker changes without writing files
+  --help, -h     Show this help message
+
+Commands:
+  claim-next            Claim the highest-priority unclaimed target
+  claim <id>            Claim a specific entry
+  complete <id> [grade] Mark as completed with overall grade
+  release <id>          Release a claimed entry
+  status                Show all active claims
+  cleanup               Remove stale claims
+EOF
+}
+
+DRY_RUN=false
+ARGS=()
+
+for arg in "$@"; do
+    case "$arg" in
+        --dry-run|-n)
+            DRY_RUN=true
+            ;;
+        --help|-h)
+            usage
+            exit 0
+            ;;
+        *)
+            ARGS+=("$arg")
+            ;;
+    esac
+done
 
 # Find repo root
 find_repo_root() {
@@ -41,10 +78,12 @@ TTL_MINUTES="${CLAIM_TTL:-120}"
 AGENT_ID="${REVIEWER_ID:-peer-reviewer-$$}"
 
 # Ensure claims directory exists
-mkdir -p "$CLAIMS_DIR"
+if [[ "$DRY_RUN" != "true" ]]; then
+    mkdir -p "$CLAIMS_DIR"
+fi
 
 # Initialize tracker if missing
-if [[ ! -f "$TRACKER_FILE" ]]; then
+if [[ "$DRY_RUN" != "true" && ! -f "$TRACKER_FILE" ]]; then
     echo '{"version": 1, "entries": {}}' > "$TRACKER_FILE"
 fi
 
@@ -85,6 +124,14 @@ do_claim() {
     fi
 
     get_timestamps
+    if [[ "$DRY_RUN" == "true" ]]; then
+        echo "Would claim $id"
+        echo "  Claim file: $claim_file"
+        echo "  Agent: $AGENT_ID"
+        echo "  Expires: $EXPIRES_AT"
+        return 0
+    fi
+
     python3 -c "
 import json
 claim = {
@@ -140,6 +187,14 @@ do_complete() {
     local grade="${2:-ungraded}"
     local claim_file="$CLAIMS_DIR/$id.json"
 
+    if [[ "$DRY_RUN" == "true" ]]; then
+        echo "Would update tracker: $TRACKER_FILE"
+        echo "  Proof: $id"
+        echo "  Grade: $grade"
+        echo "Would remove claim file: $claim_file"
+        return 0
+    fi
+
     # Update tracker
     python3 -c "
 import json
@@ -174,6 +229,10 @@ with open(tracker_file, 'w') as f:
 # Release a claim without completing
 do_release() {
     local id="$1"
+    if [[ "$DRY_RUN" == "true" ]]; then
+        echo "Would remove claim file: $CLAIMS_DIR/$id.json"
+        return 0
+    fi
     rm -f "$CLAIMS_DIR/$id.json"
     echo "Released claim on $id"
 }
@@ -200,22 +259,34 @@ do_cleanup() {
     local removed=0
     for claim_file in "$CLAIMS_DIR"/*.json; do
         if ! is_claim_valid "$claim_file" 2>/dev/null; then
-            rm -f "$claim_file"
+            if [[ "$DRY_RUN" == "true" ]]; then
+                echo "Would remove expired claim: $claim_file"
+            else
+                rm -f "$claim_file"
+            fi
             removed=$((removed + 1))
         fi
     done
+    if [[ "$DRY_RUN" == "true" ]]; then
+        echo "Would clean up $removed expired claims"
+        return 0
+    fi
     echo "Cleaned up $removed expired claims"
 }
 
 # Main dispatch
-case "${1:-help}" in
+case "${ARGS[0]:-help}" in
     claim-next) do_claim_next ;;
-    claim)      do_claim "${2:?Usage: claim-target.sh claim <id>}" ;;
-    complete)   do_complete "${2:?Usage: claim-target.sh complete <id> [grade]}" "${3:-ungraded}" ;;
-    release)    do_release "${2:?Usage: claim-target.sh release <id>}" ;;
+    claim)      do_claim "${ARGS[1]:?Usage: claim-target.sh claim <id>}" ;;
+    complete)   do_complete "${ARGS[1]:?Usage: claim-target.sh complete <id> [grade]}" "${ARGS[2]:-ungraded}" ;;
+    release)    do_release "${ARGS[1]:?Usage: claim-target.sh release <id>}" ;;
     status)     do_status ;;
     cleanup)    do_cleanup ;;
-    help|*)
-        echo "Usage: claim-target.sh {claim-next|claim <id>|complete <id> [grade]|release <id>|status|cleanup}"
+    help)
+        usage
+        ;;
+    *)
+        usage >&2
+        exit 1
         ;;
 esac
