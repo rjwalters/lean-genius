@@ -11,7 +11,9 @@
  * 3. Syncs status between the two files (bidirectional)
  * 4. Updates problem.md files with significance/tractability from pool
  *
- * Run: npx tsx scripts/research/sync-data.ts
+ * Run:
+ *   npx tsx scripts/research/sync-data.ts
+ *   npx tsx scripts/research/sync-data.ts --dry-run
  */
 
 import * as fs from 'fs'
@@ -26,6 +28,7 @@ const STATE_DIR = path.join(__dirname, '../../.lean/state')
 const POOL_FILE = path.join(STATE_DIR, 'candidate-pool.json')
 const REGISTRY_FILE = path.join(RESEARCH_DIR, 'registry.json')
 const PROBLEMS_DIR = path.join(RESEARCH_DIR, 'problems')
+const DRY_RUN = process.argv.includes('--dry-run') || process.argv.includes('-n')
 
 // Types
 interface PoolCandidate {
@@ -257,7 +260,10 @@ function findLeanFiles(dir: string): boolean {
  * Main sync function
  */
 function sync(): void {
-  console.log('🔄 Syncing research data...\n')
+  console.log(`${DRY_RUN ? '🔎 Previewing' : '🔄 Syncing'} research data...\n`)
+  if (DRY_RUN) {
+    console.log('   Dry run: no files will be written\n')
+  }
 
   // Read files
   if (!fs.existsSync(POOL_FILE)) {
@@ -303,23 +309,27 @@ function sync(): void {
       }
       registry.problems.push(newEntry)
       addedToRegistry++
-      console.log(`   ➕ Added to registry: ${candidate.id}`)
+      console.log(`   ➕ ${DRY_RUN ? 'Would add to' : 'Added to'} registry: ${candidate.id}`)
 
       // Create problem directory if missing
       const problemDir = path.join(PROBLEMS_DIR, candidate.id)
       if (!fs.existsSync(problemDir)) {
-        fs.mkdirSync(problemDir, { recursive: true })
         createdProblemDirs++
+        if (DRY_RUN) {
+          console.log(`   📁 Would create problem directory: ${candidate.id}`)
+        } else {
+          fs.mkdirSync(problemDir, { recursive: true })
 
-        // Create problem.md
-        const problemMdPath = path.join(problemDir, 'problem.md')
-        fs.writeFileSync(problemMdPath, createMinimalProblemMd(candidate))
+          // Create problem.md
+          const problemMdPath = path.join(problemDir, 'problem.md')
+          fs.writeFileSync(problemMdPath, createMinimalProblemMd(candidate))
 
-        // Create state.md
-        const stateMdPath = path.join(problemDir, 'state.md')
-        fs.writeFileSync(stateMdPath, createMinimalStateMd(newEntry.phase))
+          // Create state.md
+          const stateMdPath = path.join(problemDir, 'state.md')
+          fs.writeFileSync(stateMdPath, createMinimalStateMd(newEntry.phase))
 
-        console.log(`   📁 Created problem directory: ${candidate.id}`)
+          console.log(`   📁 Created problem directory: ${candidate.id}`)
+        }
       }
     } else {
       // Check for status mismatch and sync
@@ -332,12 +342,12 @@ function sync(): void {
           registryEntry.completed = registryEntry.completed || new Date().toISOString()
           registryEntry.lastUpdate = new Date().toISOString()
           updatedInRegistry++
-          console.log(`   🔄 Updated registry status: ${candidate.id} → graduated`)
+          console.log(`   🔄 ${DRY_RUN ? 'Would update' : 'Updated'} registry status: ${candidate.id} → graduated`)
         } else if (candidate.status === 'skipped' && registryEntry.status !== 'blocked') {
           registryEntry.status = 'blocked'
           registryEntry.lastUpdate = new Date().toISOString()
           updatedInRegistry++
-          console.log(`   🔄 Updated registry status: ${candidate.id} → blocked`)
+          console.log(`   🔄 ${DRY_RUN ? 'Would update' : 'Updated'} registry status: ${candidate.id} → blocked`)
         }
       }
 
@@ -362,8 +372,12 @@ function sync(): void {
         }
 
         if (updated) {
-          fs.writeFileSync(problemMdPath, content)
-          console.log(`   📝 Updated problem.md: ${candidate.id}`)
+          if (DRY_RUN) {
+            console.log(`   📝 Would update problem.md: ${candidate.id}`)
+          } else {
+            fs.writeFileSync(problemMdPath, content)
+            console.log(`   📝 Updated problem.md: ${candidate.id}`)
+          }
         }
       }
     }
@@ -381,7 +395,7 @@ function sync(): void {
         if (entry.status === 'graduated' && poolEntry.status !== 'completed') {
           poolEntry.status = 'completed'
           updatedInPool++
-          console.log(`   🔄 Updated pool status: ${entry.slug} → completed`)
+          console.log(`   🔄 ${DRY_RUN ? 'Would update' : 'Updated'} pool status: ${entry.slug} → completed`)
         }
       }
     }
@@ -407,17 +421,17 @@ function sync(): void {
           entry.completed = entry.completed || meta.completed || new Date().toISOString()
           entry.lastUpdate = new Date().toISOString()
           updatedFromMeta++
-          console.log(`   🔄 Updated registry from meta.json: ${entry.slug} → graduated`)
+          console.log(`   🔄 ${DRY_RUN ? 'Would update' : 'Updated'} registry from meta.json: ${entry.slug} → graduated`)
         } else if (metaStatus === 'blocked' && entry.status !== 'blocked') {
           entry.status = 'blocked'
           entry.lastUpdate = new Date().toISOString()
           updatedFromMeta++
-          console.log(`   🔄 Updated registry from meta.json: ${entry.slug} → blocked`)
+          console.log(`   🔄 ${DRY_RUN ? 'Would update' : 'Updated'} registry from meta.json: ${entry.slug} → blocked`)
         } else if (metaStatus === 'abandoned' && entry.status !== 'abandoned') {
           entry.status = 'abandoned'
           entry.lastUpdate = new Date().toISOString()
           updatedFromMeta++
-          console.log(`   🔄 Updated registry from meta.json: ${entry.slug} → abandoned`)
+          console.log(`   🔄 ${DRY_RUN ? 'Would update' : 'Updated'} registry from meta.json: ${entry.slug} → abandoned`)
         }
       }
     } catch (e) {
@@ -440,7 +454,7 @@ function sync(): void {
         entry.completed = new Date().toISOString()
       }
       updatedPhases++
-      console.log(`   🔍 Inferred phase: ${entry.slug} → ${inferred}`)
+      console.log(`   🔍 ${DRY_RUN ? 'Would infer' : 'Inferred'} phase: ${entry.slug} → ${inferred}`)
     }
   }
 
@@ -448,18 +462,26 @@ function sync(): void {
   // Update pool timestamp
   pool.last_updated = new Date().toISOString()
 
-  fs.writeFileSync(POOL_FILE, JSON.stringify(pool, null, 2) + '\n')
-  fs.writeFileSync(REGISTRY_FILE, JSON.stringify(registry, null, 2) + '\n')
+  if (DRY_RUN) {
+    console.log(`\n🧪 Dry run: would write ${POOL_FILE}`)
+    console.log(`🧪 Dry run: would write ${REGISTRY_FILE}`)
+  } else {
+    fs.writeFileSync(POOL_FILE, JSON.stringify(pool, null, 2) + '\n')
+    fs.writeFileSync(REGISTRY_FILE, JSON.stringify(registry, null, 2) + '\n')
+  }
 
   // Summary
   console.log(`\n📊 Sync Summary:`)
-  console.log(`   Added to registry:     ${addedToRegistry}`)
-  console.log(`   Updated in registry:   ${updatedInRegistry}`)
-  console.log(`   Updated from meta:     ${updatedFromMeta}`)
-  console.log(`   Updated in pool:       ${updatedInPool}`)
-  console.log(`   Created problem dirs:  ${createdProblemDirs}`)
-  console.log(`   Inferred phases:       ${updatedPhases}`)
-  console.log(`\n✅ Sync complete!`)
+  console.log(`   ${DRY_RUN ? 'Would add to registry' : 'Added to registry'}:     ${addedToRegistry}`)
+  console.log(`   ${DRY_RUN ? 'Would update registry' : 'Updated in registry'}:   ${updatedInRegistry}`)
+  console.log(`   ${DRY_RUN ? 'Would update from meta' : 'Updated from meta'}:     ${updatedFromMeta}`)
+  console.log(`   ${DRY_RUN ? 'Would update pool' : 'Updated in pool'}:       ${updatedInPool}`)
+  console.log(`   ${DRY_RUN ? 'Would create problem dirs' : 'Created problem dirs'}:  ${createdProblemDirs}`)
+  console.log(`   ${DRY_RUN ? 'Would infer phases' : 'Inferred phases'}:       ${updatedPhases}`)
+  console.log(`\n✅ ${DRY_RUN ? 'Preview' : 'Sync'} complete!`)
+  if (DRY_RUN) {
+    console.log('   Dry run complete: no files were written.')
+  }
 }
 
 // Run
