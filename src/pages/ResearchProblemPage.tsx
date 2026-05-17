@@ -34,6 +34,19 @@ function isValidFormalStatement(formal: string | undefined): boolean {
   return true
 }
 
+function getSafeGithubUrl(url: string | undefined): string | undefined {
+  if (!url) return undefined
+
+  try {
+    const parsed = new URL(url.trim())
+    return parsed.protocol === 'https:' && parsed.hostname === 'github.com'
+      ? parsed.href
+      : undefined
+  } catch {
+    return undefined
+  }
+}
+
 /** Default number of items to show before requiring expand */
 const COLLAPSED_ITEM_LIMIT = 20
 
@@ -460,6 +473,8 @@ export function ResearchProblemPage() {
                     const matchingProof = problem.relatedProofs.find((slug) =>
                       file.path.toLowerCase().includes(slug.toLowerCase().replace(/-/g, ''))
                     )
+                    const githubUrl = getSafeGithubUrl(file.githubUrl)
+
                     return (
                       <div
                         key={file.path}
@@ -505,15 +520,17 @@ export function ResearchProblemPage() {
                             </div>
                           </div>
                           <div className="flex flex-col gap-2 flex-shrink-0">
-                            <a
-                              href={file.githubUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-muted hover:bg-muted/80 rounded transition-colors"
-                            >
-                              <Github className="h-3.5 w-3.5" />
-                              View on GitHub
-                            </a>
+                            {githubUrl && (
+                              <a
+                                href={githubUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium bg-muted hover:bg-muted/80 rounded transition-colors"
+                              >
+                                <Github className="h-3.5 w-3.5" />
+                                View on GitHub
+                              </a>
+                            )}
                             {matchingProof && (
                               <Link
                                 to={`/proof/${matchingProof}`}
