@@ -3,12 +3,15 @@ import { ChevronDown, ChevronUp, GitFork, Terminal, GitPullRequest, ExternalLink
 
 export function ContributeSection() {
   const [isExpanded, setIsExpanded] = useState(true)
+  const instructionsPanelId = 'contribute-research-instructions'
 
   return (
     <div className="bg-gradient-to-r from-annotation/5 to-annotation/10 border border-annotation/20 rounded-xl overflow-hidden">
       {/* Header - Always visible */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
+        aria-expanded={isExpanded}
+        aria-controls={instructionsPanelId}
         className="w-full px-6 py-4 flex items-center justify-between hover:bg-annotation/5 transition-colors"
       >
         <div className="flex items-center gap-3">
@@ -36,7 +39,7 @@ export function ContributeSection() {
 
       {/* Expanded Content */}
       {isExpanded && (
-        <div className="px-6 pb-6 border-t border-annotation/10">
+        <div id={instructionsPanelId} className="px-6 pb-6 border-t border-annotation/10">
           <div className="mt-4 space-y-6">
             {/* Prerequisites */}
             <div>
