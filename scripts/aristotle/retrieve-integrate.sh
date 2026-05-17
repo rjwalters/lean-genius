@@ -55,6 +55,34 @@ fi
 
 mkdir -p "$RESULTS_DIR" "$PROCESSED_DIR"
 
+# Convert Lean file names like Erdos1002OQ01OQ01.lean to canonical
+# research ids like erdos-1002-oq-01-oq-01.
+lean_file_to_problem_id() {
+    local stem
+    stem=$(basename "$1" .lean)
+    stem="${stem%Aristotle}"
+    stem="${stem%Problem}"
+
+    if [[ "$stem" =~ ^Erdos([0-9]+)(.*)$ ]]; then
+        local number="${BASH_REMATCH[1]}"
+        local suffix="${BASH_REMATCH[2]}"
+        local problem_id="erdos-$number"
+
+        if [[ -n "$suffix" ]]; then
+            local suffix_slug
+            suffix_slug=$(printf '%s\n' "$suffix" |
+                sed -E 's/([A-Za-z]+)([0-9]+)/\1-\2/g; s/([0-9])([A-Za-z])/\1-\2/g; s/([a-z])([A-Z])/\1-\2/g; s/^-//; s/-+/-/g' |
+                tr '[:upper:]' '[:lower:]')
+            problem_id="$problem_id-$suffix_slug"
+        fi
+
+        echo "$problem_id"
+        return 0
+    fi
+
+    basename "$1" .lean | tr '[:upper:]' '[:lower:]'
+}
+
 # Retrieve a single solution using the Aristotle CLI.
 # The CLI downloads a gzip tar archive; we extract the lean file from it.
 retrieve_solution() {
@@ -593,7 +621,7 @@ recover_server_completed() {
         local target_basename
         target_basename=$(basename "$target_file" .lean)
         local problem_id
-        problem_id=$(echo "$target_basename" | sed 's/Problem$//' | sed 's/Aristotle$//' | tr '[:upper:]' '[:lower:]' | sed 's/erdos/erdos-/')
+        problem_id=$(lean_file_to_problem_id "$target_basename")
 
         echo -e "  ${GREEN}Mapped to:${NC} $target_file"
 
