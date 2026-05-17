@@ -7,7 +7,7 @@
  * from the frontend because only 18 of 521 problems use it, and researchers
  * document their work in knowledge.md sessions instead.
  *
- * Run: npx tsx scripts/research/migrate-approaches.ts
+ * Run: npx tsx scripts/research/migrate-approaches.ts [--dry-run]
  */
 
 import * as fs from 'fs'
@@ -65,6 +65,25 @@ interface Approach {
   }
 }
 
+interface ProblemJson {
+  approaches?: Approach[]
+  [key: string]: unknown
+}
+
+interface MigrateOptions {
+  dryRun?: boolean
+}
+
+function printUsage(): void {
+  console.log(`Usage: npx tsx scripts/research/migrate-approaches.ts [options]
+
+Migrate approaches data from research problem JSON files into knowledge.md.
+
+Options:
+  --dry-run   Report the migration actions without writing files
+  -h, --help  Show this help message`)
+}
+
 function formatApproachesMarkdown(approaches: Approach[]): string {
   const lines: string[] = ['', '## Approaches Explored', '']
 
@@ -106,8 +125,10 @@ function isPlaceholderApproach(approach: Approach): boolean {
   return false
 }
 
-function migrate(): void {
-  console.log('Migrating approaches data to knowledge.md...\n')
+function migrate(options: MigrateOptions = {}): void {
+  const { dryRun = false } = options
+
+  console.log(`Migrating approaches data to knowledge.md${dryRun ? ' (dry run)' : ''}...\n`)
 
   let migratedCount = 0
   let skippedCount = 0
@@ -121,7 +142,7 @@ function migrate(): void {
       continue
     }
 
-    const jsonData = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'))
+    const jsonData: ProblemJson = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'))
     const approaches: Approach[] = jsonData.approaches || []
 
     if (approaches.length === 0) {
@@ -134,10 +155,14 @@ function migrate(): void {
     const meaningfulApproaches = approaches.filter(a => !isPlaceholderApproach(a))
 
     if (meaningfulApproaches.length === 0) {
-      console.log(`  SKIP (placeholder): ${slug} - only placeholder approaches, removing from JSON`)
-      // Still remove approaches from JSON
-      delete jsonData.approaches
-      fs.writeFileSync(jsonPath, JSON.stringify(jsonData, null, 2) + '\n')
+      if (dryRun) {
+        console.log(`  SKIP (placeholder): ${slug} - only placeholder approaches, would remove from JSON`)
+      } else {
+        console.log(`  SKIP (placeholder): ${slug} - only placeholder approaches, removing from JSON`)
+        // Still remove approaches from JSON
+        delete jsonData.approaches
+        fs.writeFileSync(jsonPath, JSON.stringify(jsonData, null, 2) + '\n')
+      }
       skippedCount++
       continue
     }
@@ -151,8 +176,12 @@ function migrate(): void {
 
     // Ensure the problem directory exists
     if (!fs.existsSync(problemDir)) {
-      fs.mkdirSync(problemDir, { recursive: true })
-      console.log(`  Created directory: ${problemDir}`)
+      if (dryRun) {
+        console.log(`  WOULD CREATE DIRECTORY: ${problemDir}`)
+      } else {
+        fs.mkdirSync(problemDir, { recursive: true })
+        console.log(`  Created directory: ${problemDir}`)
+      }
     }
 
     if (fs.existsSync(knowledgeMdPath)) {
@@ -160,26 +189,62 @@ function migrate(): void {
       const existing = fs.readFileSync(knowledgeMdPath, 'utf-8')
       // Only append if not already migrated
       if (!existing.includes('## Approaches Explored')) {
-        fs.writeFileSync(knowledgeMdPath, existing.trimEnd() + '\n' + approachesMarkdown)
-        console.log(`  APPENDED: ${slug} (${meaningfulApproaches.length} approach(es))`)
+        if (dryRun) {
+          console.log(`  WOULD APPEND: ${slug} (${meaningfulApproaches.length} approach(es))`)
+        } else {
+          fs.writeFileSync(knowledgeMdPath, existing.trimEnd() + '\n' + approachesMarkdown)
+          console.log(`  APPENDED: ${slug} (${meaningfulApproaches.length} approach(es))`)
+        }
       } else {
         console.log(`  ALREADY MIGRATED: ${slug}`)
       }
     } else {
       // Create new knowledge.md with approaches section
       const header = `# Knowledge Base: ${slug}\n`
-      fs.writeFileSync(knowledgeMdPath, header + approachesMarkdown)
-      console.log(`  CREATED: ${slug} knowledge.md (${meaningfulApproaches.length} approach(es))`)
+      if (dryRun) {
+        console.log(`  WOULD CREATE: ${slug} knowledge.md (${meaningfulApproaches.length} approach(es))`)
+      } else {
+        fs.writeFileSync(knowledgeMdPath, header + approachesMarkdown)
+        console.log(`  CREATED: ${slug} knowledge.md (${meaningfulApproaches.length} approach(es))`)
+      }
     }
 
     // Remove approaches from JSON
-    delete jsonData.approaches
-    fs.writeFileSync(jsonPath, JSON.stringify(jsonData, null, 2) + '\n')
+    if (dryRun) {
+      console.log(`  WOULD REMOVE approaches from JSON: ${slug}`)
+    } else {
+      delete jsonData.approaches
+      fs.writeFileSync(jsonPath, JSON.stringify(jsonData, null, 2) + '\n')
+    }
 
     migratedCount++
   }
 
   console.log(`\nDone: ${migratedCount} migrated, ${skippedCount} skipped`)
+
+  if (dryRun) {
+    console.log('No files written')
+  }
 }
 
-migrate()
+function isMainModule(): boolean {
+  return process.argv[1] ? path.resolve(process.argv[1]) === __filename : false
+}
+
+if (isMainModule()) {
+  const args = process.argv.slice(2)
+
+  if (args.includes('--help') || args.includes('-h')) {
+    printUsage()
+    process.exit(0)
+  }
+
+  const unknownArgs = args.filter(arg => arg !== '--dry-run')
+  if (unknownArgs.length > 0) {
+    console.error(`Unknown option(s): ${unknownArgs.join(', ')}`)
+    printUsage()
+    process.exit(1)
+  }
+
+  migrate({ dryRun: args.includes('--dry-run') })
+}
