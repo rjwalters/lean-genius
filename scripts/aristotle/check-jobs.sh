@@ -76,6 +76,34 @@ lookup_server_project() {
     echo "$server_data" | grep "^${target_pid}|" | head -1 | cut -d'|' -f2-
 }
 
+# Convert Lean file names like Erdos1002OQ01OQ01.lean to canonical
+# research ids like erdos-1002-oq-01-oq-01.
+lean_file_to_problem_id() {
+    local stem
+    stem=$(basename "$1" .lean)
+    stem="${stem%Aristotle}"
+    stem="${stem%Problem}"
+
+    if [[ "$stem" =~ ^Erdos([0-9]+)(.*)$ ]]; then
+        local number="${BASH_REMATCH[1]}"
+        local suffix="${BASH_REMATCH[2]}"
+        local problem_id="erdos-$number"
+
+        if [[ -n "$suffix" ]]; then
+            local suffix_slug
+            suffix_slug=$(printf '%s\n' "$suffix" |
+                sed -E 's/([A-Za-z]+)([0-9]+)/\1-\2/g; s/([0-9])([A-Za-z])/\1-\2/g; s/([a-z])([A-Z])/\1-\2/g; s/^-//; s/-+/-/g' |
+                tr '[:upper:]' '[:lower:]')
+            problem_id="$problem_id-$suffix_slug"
+        fi
+
+        echo "$problem_id"
+        return 0
+    fi
+
+    basename "$1" .lean | tr '[:upper:]' '[:lower:]'
+}
+
 run_check() {
     local all_server_projects=""
     local all_statuses="NOT_STARTED QUEUED IN_PROGRESS COMPLETE COMPLETE_WITH_ERRORS OUT_OF_BUDGET FAILED CANCELED"
@@ -260,11 +288,7 @@ reconcile_server_projects() {
         # Extract problem_id from filename (e.g., Erdos123Problem.lean -> erdos-123)
         local problem_id="recovered-${pid%%-*}"
         if [[ -n "${fname:-}" && "$fname" != "null" ]]; then
-            local num
-            num=$(echo "$fname" | sed -n 's/^Erdos\([0-9]*\)Problem\.lean$/\1/p')
-            if [[ -n "$num" ]]; then
-                problem_id="erdos-$num"
-            fi
+            problem_id=$(lean_file_to_problem_id "$fname")
         fi
 
         if [[ "$status" == "NOT_STARTED" ]]; then
