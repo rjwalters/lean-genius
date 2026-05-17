@@ -1,7 +1,7 @@
 {
   "slug": "erdos-700",
   "title": "Erdős #700",
-  "phase": "OBSERVE",
+  "phase": "AXIOMATIZED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,20 +16,24 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "AXIOMATIZED",
     "since": "2026-01-14T21:07:11.724Z",
-    "iteration": 3,
-    "focus": "f_upper_bound axiom eliminated via Kummer. 1 sorry remains in definition glue.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "iteration": 4,
+    "focus": "S2 STATE-SYNC: registry was at top-level phase OBSERVE / currentState.phase ACT / iter 3 since 2026-03-13 (T-65d) despite Lean file Erdos700Problem.lean at 427 LOC with 14 theorems, 3 defs, 2 axioms (erdos_700_question2, erdos_700_question3), 0 sorries (the previously-noted 'infrastructure glue sorry' has since been discharged). leanFiles[0] catalogue lagged actuals by 7 lines + 6 theorems + 2 axioms; gallery meta.json already at canonical AXIOMATIZED (status=axiomatized, badge=axiom, axiomCount=2, lineCount=427, theoremCount=14, definitionCount=3). The 2 remaining axioms encode open Erdős-Szekeres questions 2 (∞ many composite n with f(n)>√n) and 3 (f(n)≪_A n/(log n)^A).",
+    "blockers": [
+      "Question 1 (characterise composite n with f(n) = n/P(n)) is open and answer depends on prime factorization shape.",
+      "Question 2 (∞ many composite n with f(n) > n^{1/2}) is open — currently only the n=p² family gives f(n) ≥ n^{1/2} non-strictly, and erdos_700_question2 axiomatizes the strict-inequality version.",
+      "Question 3 (f(n) ≪_A n/(log n)^A for every A>0) is open — connects to Hardy-Ramanujan-style asymptotic density."
+    ],
+    "nextAction": "Slug is AXIOMATIZED with the lone remaining sorry discharged. Forward levers: (A) characterize the f(n)=n/P(n) family for Q1 (e.g. n=pq with p<q gives f(n)=p=n/q=n/P(n)); (B) find a single composite n other than the p² family witnessing f(n)>√n strictly, would discharge erdos_700_question2 axiom; (C) lower-bound study connecting f(n) growth to ω(n) or σ(n) for Q3.",
     "attemptCounts": {
-      "total": 0,
+      "total": 4,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 4
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: f_upper_bound axiom eliminated (3→2 axioms). Key lemma prime_not_dvd_choose_shift proved via Kummer zero-carry argument. Remaining sorry is infrastructure glue connecting to fBinom/largestPrimeFactor definitions.",
+    "progressSummary": "AXIOMATIZED: Erdos700Problem.lean — 427 LOC, 14 theorems, 3 defs, 2 axioms (erdos_700_question2 + erdos_700_question3 encoding open conjectures), 0 sorries. Major progress arc: started with 6 axioms (initial scaffolding); incrementally eliminated 4 via Kummer zero-carry argument (prime_not_dvd_choose_shift ~80 lines), sandwich argument (f_semiprime), absorption identity (choose_eq_mul_choose_pred), and infrastructure glue. Proven: f(p²)=p, f(pq)=p (for primes p≤q), f(30)=6, bounds f(n)≥p(n) and f(n)≤n/P(n) for composite n. Forward levers for the 2 remaining open-conjecture axioms documented in nextAction.",
     "builtItems": [
       "Defined fBinom via Finset.min in Erdos700Problem.lean:41-46",
       "Proved minFac_prime_sq in Erdos700Problem.lean:51-57",
@@ -72,16 +76,16 @@
     "mathlib": []
   },
   "started": "2026-01-14T21:07:11.724Z",
-  "lastUpdate": "2026-03-13T07:52:17.051Z",
+  "lastUpdate": "2026-05-17T06:40:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos700Problem.lean",
       "filename": "Erdos700Problem.lean",
-      "lineCount": 420,
-      "theoremCount": 8,
-      "axiomCount": 0,
+      "lineCount": 427,
+      "theoremCount": 14,
+      "axiomCount": 2,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
