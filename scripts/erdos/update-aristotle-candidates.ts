@@ -111,6 +111,48 @@ function saveAristotleJobs(jobs: AristotleJobsFile): void {
 }
 
 /**
+ * Extract an Erdős problem number from tracked job ids or file paths.
+ */
+function extractErdosNumber(value: unknown): number | undefined {
+  if (typeof value !== 'string') return undefined
+
+  const match = value.match(/(?:erdos-|Erdos)(\d+)/)
+  if (!match) return undefined
+
+  const parsed = parseInt(match[1], 10)
+  return Number.isFinite(parsed) ? parsed : undefined
+}
+
+/**
+ * Collect all Erdős numbers already present in the jobs tracker.
+ */
+function getTrackedErdosNumbers(jobs: AristotleJobsFile): Set<number> {
+  const tracked = new Set<number>()
+
+  for (const candidate of jobs.pending_candidates || []) {
+    if (Number.isFinite(candidate.erdosNumber)) {
+      tracked.add(candidate.erdosNumber)
+    }
+  }
+
+  for (const bucket of [jobs.jobs, jobs.completed, jobs.failed]) {
+    for (const job of bucket || []) {
+      const erdosNumber =
+        extractErdosNumber(job.problem_id) ??
+        extractErdosNumber(job.problemId) ??
+        extractErdosNumber(job.file) ??
+        extractErdosNumber(job.suggestedFile)
+
+      if (erdosNumber !== undefined) {
+        tracked.add(erdosNumber)
+      }
+    }
+  }
+
+  return tracked
+}
+
+/**
  * Main function
  */
 function main() {
@@ -123,9 +165,9 @@ function main() {
 
   // Load existing candidates
   const jobs = loadAristotleJobs()
-  const existingNumbers = new Set((jobs.pending_candidates || []).map(c => c.erdosNumber))
+  const existingNumbers = getTrackedErdosNumbers(jobs)
 
-  console.log(`Existing candidates: ${existingNumbers.size}`)
+  console.log(`Existing tracked Erdős problems: ${existingNumbers.size}`)
 
   const newCandidates: AristotleCandidate[] = []
 
@@ -163,6 +205,7 @@ function main() {
         suggestedFile: `proofs/${leanPath}`,
         notes: `Tractability: ${tractability}/10. ${status} (formalization target)`,
       })
+      existingNumbers.add(erdosNumber)
     } catch (err) {
       console.log(`  Error reading ${dir}: ${err}`)
     }
