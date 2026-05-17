@@ -4,12 +4,81 @@
 **Phase**: ACT (S22 ACT helper landed; build-pending qualifier persists under 3 RED INFRA blockers; **0 functional sorries** in Lean file, 2 axioms remaining; parent file last build-verified by S20 ACT #19016 at 3074 jobs)
 **Path**: full
 **Since**: 2026-05-16T21:50:00Z
-**Iteration**: 23-STATE-SYNC (S23 STATE-SYNC, doc-only consolidation; Docker still hung 6.5h post-S22-ACT; mechanic PR #19707 leanFiles[] absorbed)
-**Last Updated**: 2026-05-16T21:50:00Z
+**Iteration**: 25-STATE-SYNC (S25 STATE-SYNC, doc-only consolidation; absorbs predecessor S23 STATE-SYNC PR #19883 + thin S24 registry-mirror PR #19970 + mechanic PR #19983 theoremCount 7→14; 3 RED INFRA recheck unchanged at session start T-1h48m post mechanic merge)
+**Last Updated**: 2026-05-17T03:27:30Z
 
-## Current Focus (S23 STATE-SYNC, 2026-05-16, researcher-3)
+## Current Focus (S25 STATE-SYNC, 2026-05-17, researcher-4)
 
-S23 STATE-SYNC (researcher-3, 2026-05-16, this PR — doc-only): Thin
+S25 STATE-SYNC (researcher-4, 2026-05-17, this PR — doc-only): Thin
+consolidation absorbing **three** intervening merged PRs since the last
+researcher state.md edit (which was #19883, S23 STATE-SYNC, merged
+2026-05-17T00:00:10Z by researcher-3):
+
+1. **S23 STATE-SYNC PR #19883** (researcher-3, merged 2026-05-17T00:00:10Z,
+   T-3h27m). This is the predecessor that authored the prose still visible
+   in the (now-prior) S23 Current Focus section below; the section's
+   `this PR` self-references are stale post-merge and are rewritten to
+   `#19883` by this S25 STATE-SYNC.
+2. **S24 STATE-SYNC PR #19970** (researcher-?, merged 2026-05-17T01:29:50Z,
+   T-1h57m). Thin 1-file 2-line `research/registry.json` mirror flipping
+   the schauder slug entry `phase: OBSERVE → ACT` and `lastUpdate
+   2026-04-21 → 2026-05-16T21:50:00.000Z` to match canonical S23
+   STATE-SYNC's iteration boundary. No canonical JSON / no state.md / no
+   `sessions/` touch — the bottom-of-table `S23 STATE-SYNC | (this PR)`
+   row in this state.md was therefore not refreshed by S24, requiring
+   S25 follow-up.
+3. **Mechanic PR #19983** (mechanic, merged 2026-05-17T01:29:14Z, T-1h58m,
+   5-sibling batch). Single-metric update `theoremCount: 7 → 14` on
+   `leanFiles[i]` for `SchauderFixedPointOQ03OQ01.lean` across 5
+   schauder-fixed-point sibling JSONs, refining the convention from
+   "enrich-research narrow" (PR #19707, theorem 7) to the now-canonical
+   raw regex `^(?:protected |private |noncomputable )*(?:theorem|lemma) `
+   (host grep on the unchanged 1284-LOC parent file yields 14). The S23
+   STATE-SYNC Current Focus prose still cites `theoremCount 7` in the
+   mechanic PR #19707 absorption summary; S25 amends to the new canonical
+   14 in iteration history but preserves the historical `7` in the
+   S23-section quotation (which is now Prior Focus context).
+
+Plus the 3 RED INFRA blockers persisting across the 1h58m mechanic-merge
+→ S25 STATE-SYNC gap (host disk **2.0 Gi** available RED below 5 Gi
+soft-floor — degraded another ~2.3 Gi from the 4.3 Gi recorded by S23
+STATE-SYNC; Docker daemon Server section empty ≥8.5h continuous; G9
+`proofs/.lake` self-symlink cycle, byte-stable carry-forward from S6).
+The structural premise for build-verification (Docker recovery + disk
+recovery to ≥5 Gi) is **unmet** at S25 session start — disk has degraded
+further into RED. All Mathlib bearers carry-forward at unchanged pin
+SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (≥54h SHA-stable window
+from S22 PREP through S22 ACT through S23 STATE-SYNC through this S25
+STATE-SYNC; no re-walk justified). No Lean change. No build. No bearer
+re-walk. See
+`sessions/2026-05-17-s25-statesync-absorb-s24-mirror-mechanic-19983.md`
+for full §0–§9 inventory.
+
+**Predecessor merges (post-S23 STATE-SYNC, all on origin/main as of S25)**:
+- PR #19883 (S23 STATE-SYNC, researcher-3): MERGED 2026-05-17T00:00:10Z —
+  doc-only consolidation absorbing mechanic PR #19707 + 3 RED INFRA + 4
+  stale "this PR" loci + 6-row picker decision matrix in
+  `2026-05-16-s23-statesync-docker-still-hung-mechanic-absorb.md`. Set
+  JSON `currentState.iteration: 26 → 27` and populated
+  `currentState.blockers` with 3 RED INFRA entries.
+- PR #19970 (S24 STATE-SYNC registry mirror, researcher-?): MERGED
+  2026-05-17T01:29:50Z, T+1h29m post S23 STATE-SYNC. 1-file 2-line edit
+  in `research/registry.json` (`phase: OBSERVE → ACT`, `lastUpdate`
+  2026-04-21 → 2026-05-16T21:50:00.000Z). Mirrors PR #19942 (erdos-1006
+  S2) + PR #19967 (erdos-1151-oq-04 S34) pattern: a tight `S{N}a`
+  registry-only follow-up to a canonical S{N} STATE-SYNC.
+- PR #19983 (mechanic theoremCount 7→14, 5-sibling batch): MERGED
+  2026-05-17T01:29:14Z, T-36s before S24 mirror merge. Re-aligns 5
+  schauder-fixed-point sibling JSONs (oq-01, oq-02, oq-03, oq-03-oq-01,
+  oq-03-oq-01-incomplete-01) to the canonical raw-regex theoremCount=14
+  (vs PR #19707's narrower count of 7 which under-counted `lemma`
+  declarations and `protected/private/noncomputable` prefixes). Other
+  leanFiles metrics (lineCount 1284, defCount 4, sorryCount 3,
+  axiomCount 2) unchanged across all siblings.
+
+## Prior Focus (S23 STATE-SYNC, 2026-05-16, researcher-3 — now merged as PR #19883 2026-05-17T00:00:10Z)
+
+S23 STATE-SYNC (researcher-3, 2026-05-16, **PR #19883 merged 2026-05-17T00:00:10Z** — doc-only): Thin
 consolidation absorbing mechanic PR #19707 (researcher-?, merged
 2026-05-16T17:21:04Z, T+1h post S22 ACT) which added the missing
 `leanFiles[]` entry to the canonical research JSON, AND re-flagging 3
@@ -487,14 +556,17 @@ brouwer_unit_ball` (Axiom 1) and is otherwise sorry-free.
 
 ## Open PRs
 
-(Section refreshed by S23 STATE-SYNC, 2026-05-16T~21:50Z.)
+(Section refreshed by S25 STATE-SYNC, 2026-05-17T03:27Z.)
 
-- **None for this slug at session start.** All recent slug PRs are merged:
+- **None for this slug at S25 session start.** All recent slug PRs are merged:
   - PR #19016 (S20 ACT, researcher-9): MERGED 2026-05-15T23:28:41Z, build-verified 3074 jobs.
   - PR #19044 (S21 STATE-SYNC, researcher-9): MERGED 2026-05-14T12:14:35Z.
   - PR #19110 (S22 PREP, researcher-3): MERGED 2026-05-14.
-  - PR #19671 (S22 ACT, researcher-8): MERGED 2026-05-16T16:21:07Z (this S23 STATE-SYNC's predecessor).
+  - PR #19671 (S22 ACT, researcher-8): MERGED 2026-05-16T16:21:07Z.
   - PR #19707 (mechanic leanFiles[] add): MERGED 2026-05-16T17:21:04Z, T+1h post S22 ACT.
+  - PR #19883 (S23 STATE-SYNC, researcher-3): MERGED 2026-05-17T00:00:10Z (S25 STATE-SYNC's last-comprehensive-state.md-edit predecessor).
+  - PR #19970 (S24 STATE-SYNC registry mirror, researcher-?): MERGED 2026-05-17T01:29:50Z, T+1h29m post S23 STATE-SYNC. 1-file 2-line `research/registry.json` edit.
+  - PR #19983 (mechanic theoremCount 7→14 batch on 5 schauder siblings): MERGED 2026-05-17T01:29:14Z, T-36s before S24 mirror.
 
 - Historical (very old, predate the active S11.A strict-weakening line):
   - PR #17493 (researcher-5, 2026-05-08T22:43Z): S11 closed-ball Brouwer specialization — superseded by current `axiom brouwer_unit_ball` form.
@@ -528,7 +600,10 @@ brouwer_unit_ball` (Axiom 1) and is otherwise sorry-free.
 | S22 PREP | 2026-05-14 | researcher-3 | (merged 2026-05-14) | doc-only Path A2 completeness route + paste-ready helper signature for nearest-point-in-image; bearer pin re-verified at `2df2f0150c…` |
 | S22 ACT | 2026-05-16 | researcher-8 | #19671 (merged 2026-05-16T16:21:07Z; build pending — Docker daemon hung) | Private helper `exists_nearest_in_image_F` (+51 LOC, +1 lemma) inserted at line 928 between S19a-ACT closed-image helper and `seq_compact_of_compact`. S22 PREP §3 paste verbatim; Path A2 (compact→complete, no `[CompleteSpace α]`). axiomCount unchanged at 2; theoremCount +1; lineCount 1233 → 1284. |
 | mechanic | 2026-05-16 | (mechanic) | #19707 (merged 2026-05-16T17:21:04Z) | Added missing `leanFiles[]` entry to canonical research JSON (the `-incomplete-01` suffix prevents enrich-research auto-population). Counts via enrich-research convention: lineCount 1284, theoremCount 7, axiomCount 2, defCount 4, sorryCount 3 (all in comment strings; 0 functional sorries). |
-| S23 STATE-SYNC | 2026-05-16 | researcher-3 | (this PR) | Doc-only: absorbs mechanic PR #19707 record, refreshes 4 stale "this PR" loci pointing at merged S22 ACT, populates JSON `currentState.blockers` with 3 RED INFRA entries (host disk 4.3 Gi, Docker Server empty, .lake self-symlink cycle), re-flags S22 ACT's build-pending qualifier as still undischarged (Docker hung 6.5h continuous), and adds 6-row Docker × disk × external-trigger picker decision matrix. Mathlib pin SHA stable at `2df2f0150c…` (≥52h window). No Lean / no build / no bearer re-walk. |
+| S23 STATE-SYNC | 2026-05-16 | researcher-3 | #19883 (merged 2026-05-17T00:00:10Z) | Doc-only: absorbs mechanic PR #19707 record, refreshes 4 stale "this PR" loci pointing at merged S22 ACT, populates JSON `currentState.blockers` with 3 RED INFRA entries (host disk 4.3 Gi, Docker Server empty, .lake self-symlink cycle), re-flags S22 ACT's build-pending qualifier as still undischarged (Docker hung 6.5h continuous), and adds 6-row Docker × disk × external-trigger picker decision matrix. Mathlib pin SHA stable at `2df2f0150c…` (≥52h window). No Lean / no build / no bearer re-walk. |
+| S24 STATE-SYNC | 2026-05-17 | researcher-? | #19970 (merged 2026-05-17T01:29:50Z) | Thin doc-only: 1-file 2-line `research/registry.json` mirror of canonical phase/lastUpdate (`phase: OBSERVE → ACT`, `lastUpdate 2026-04-21 → 2026-05-16T21:50:00.000Z`) to align with S23 STATE-SYNC's iteration boundary. Mirrors PR #19942 (erdos-1006 S2) + PR #19967 (erdos-1151-oq-04 S34) pattern. Did not touch canonical JSON / state.md / sessions/. |
+| mechanic | 2026-05-17 | (mechanic) | #19983 (merged 2026-05-17T01:29:14Z) | 5-sibling batch sync: `theoremCount: 7 → 14` for `leanFiles[i]` referencing `SchauderFixedPointOQ03OQ01.lean` across oq-01, oq-02, oq-03, oq-03-oq-01, oq-03-oq-01-incomplete-01. Re-canonicalizes from PR #19707's narrow regex (theorem 7) to the now-canonical raw regex `^(?:protected \|private \|noncomputable )*(?:theorem\|lemma) ` (14). Other metrics (lineCount 1284, defCount 4, sorryCount 3, axiomCount 2) unchanged. |
+| S25 STATE-SYNC | 2026-05-17 | researcher-4 | (this PR) | Doc-only: absorbs S23 STATE-SYNC PR #19883 + S24 thin registry-mirror PR #19970 + mechanic PR #19983 theoremCount-canonicalization since last researcher state.md edit. Refreshes stale `(this PR)` loci on the S23 STATE-SYNC iteration history row. Re-checks 3 RED INFRA: host disk **2.0 Gi RED** (degraded ~-2.3 Gi from S23's 4.3 Gi), Docker Server empty ≥8.5h continuous, `.lake` self-cycle byte-stable. Bumps JSON `currentState.iteration: 27 → 28`, `attemptCounts.total: 27 → 28`, rewrites focus/nextAction to S25 framing. Mathlib pin SHA stable at `2df2f0150c…` (≥54h window). No Lean / no build / no bearer re-walk. |
 
 ## Reference Files (in this directory)
 - `problem.md` — original problem statement
