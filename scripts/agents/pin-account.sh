@@ -6,6 +6,7 @@
 # When no allowlist exists, all .token files are eligible (default).
 #
 # Usage:
+#   ./scripts/agents/pin-account.sh --dry-run allow agent-6 agent-7
 #   ./scripts/agents/pin-account.sh allow agent-6 agent-7   # Set allowlist
 #   ./scripts/agents/pin-account.sh add agent-8              # Add to allowlist
 #   ./scripts/agents/pin-account.sh remove agent-8           # Remove from allowlist
@@ -23,6 +24,23 @@
 
 set -euo pipefail
 
+DRY_RUN=false
+ARGS=()
+
+for arg in "$@"; do
+    case "$arg" in
+        --dry-run|-n)
+            DRY_RUN=true
+            ;;
+        --help|-h)
+            ARGS+=("help")
+            ;;
+        *)
+            ARGS+=("$arg")
+            ;;
+    esac
+done
+
 REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 TOKENS_DIR="$REPO_ROOT/.loom/tokens"
 ALLOWLIST_FILE="$TOKENS_DIR/.allowlist"
@@ -31,7 +49,11 @@ LEGACY_PIN_FILE="$TOKENS_DIR/.pinned"
 
 usage() {
     cat <<'EOF'
-Usage: pin-account.sh <command> [accounts...]
+Usage: pin-account.sh [--dry-run] <command> [accounts...]
+
+Options:
+  --dry-run, -n  Preview allowlist changes without writing files
+  --help, -h     Show this help message
 
 Commands:
   allow <name...>   Set allowlist to exactly these accounts
@@ -49,6 +71,7 @@ Partial matches are supported: "agent-6" matches "agent-6-rwalters".
 
 Examples:
   pin-account.sh allow agent-6 agent-7     # Only use these two
+  pin-account.sh --dry-run add agent-8     # Preview adding a third
   pin-account.sh add agent-8               # Add a third
   pin-account.sh remove agent-6            # Drop one
   pin-account.sh reset                     # Back to all accounts
@@ -57,9 +80,30 @@ EOF
 
 cleanup_legacy() {
     if [[ -f "$LEGACY_PIN_FILE" ]]; then
+        if [[ "$DRY_RUN" == "true" ]]; then
+            echo "  (would remove legacy .pinned file)"
+            return
+        fi
         rm -f "$LEGACY_PIN_FILE" "$TOKENS_DIR/.pin-exhaust-count"
         echo "  (removed legacy .pinned file)"
     fi
+}
+
+write_allowlist() {
+    local -n accounts_ref=$1
+
+    if [[ "$DRY_RUN" == "true" ]]; then
+        echo "Would write allowlist to $ALLOWLIST_FILE:"
+        for acct in "${accounts_ref[@]}"; do
+            echo "  $acct"
+        done
+        cleanup_legacy
+        return
+    fi
+
+    mkdir -p "$TOKENS_DIR"
+    printf '%s\n' "${accounts_ref[@]}" > "$ALLOWLIST_FILE"
+    cleanup_legacy
 }
 
 list_accounts() {
@@ -142,18 +186,24 @@ cmd_allow() {
         resolved+=("$acct")
     done
 
-    mkdir -p "$TOKENS_DIR"
-    printf '%s\n' "${resolved[@]}" > "$ALLOWLIST_FILE"
-    cleanup_legacy
+    write_allowlist resolved
 
-    echo "Allowlist set to ${#resolved[@]} account(s):"
+    if [[ "$DRY_RUN" == "true" ]]; then
+        echo "Would set allowlist to ${#resolved[@]} account(s):"
+    else
+        echo "Allowlist set to ${#resolved[@]} account(s):"
+    fi
     for acct in "${resolved[@]}"; do
         echo "  $acct"
     done
-    echo ""
-    echo "New agents will use only these accounts."
-    echo "Running agents pick this up on next cycle."
-    echo "To reset: $(basename "$0") reset"
+    if [[ "$DRY_RUN" == "true" ]]; then
+        echo "No files written."
+    else
+        echo ""
+        echo "New agents will use only these accounts."
+        echo "Running agents pick this up on next cycle."
+        echo "To reset: $(basename "$0") reset"
+    fi
 }
 
 cmd_add() {
@@ -194,15 +244,22 @@ cmd_add() {
         return 0
     fi
 
-    mkdir -p "$TOKENS_DIR"
-    printf '%s\n' "${existing[@]}" > "$ALLOWLIST_FILE"
-    cleanup_legacy
+    write_allowlist existing
 
-    echo "Added ${#added[@]} account(s) to allowlist:"
+    if [[ "$DRY_RUN" == "true" ]]; then
+        echo "Would add ${#added[@]} account(s) to allowlist:"
+    else
+        echo "Added ${#added[@]} account(s) to allowlist:"
+    fi
     for acct in "${added[@]}"; do
         echo "  + $acct"
     done
-    echo "Allowlist now has ${#existing[@]} account(s)."
+    if [[ "$DRY_RUN" == "true" ]]; then
+        echo "Allowlist would have ${#existing[@]} account(s)."
+        echo "No files written."
+    else
+        echo "Allowlist now has ${#existing[@]} account(s)."
+    fi
 }
 
 cmd_remove() {
@@ -235,11 +292,20 @@ cmd_remove() {
     done < "$ALLOWLIST_FILE"
 
     if [[ ${#remaining[@]} -eq 0 ]]; then
-        rm -f "$ALLOWLIST_FILE"
-        echo "Allowlist is now empty — removed it. All accounts are eligible."
+        if [[ "$DRY_RUN" == "true" ]]; then
+            echo "Would remove allowlist because it would be empty."
+            cleanup_legacy
+        else
+            rm -f "$ALLOWLIST_FILE"
+            echo "Allowlist is now empty — removed it. All accounts are eligible."
+        fi
     else
-        printf '%s\n' "${remaining[@]}" > "$ALLOWLIST_FILE"
-        echo "Removed ${#to_remove[@]} account(s). Allowlist now has ${#remaining[@]}:"
+        write_allowlist remaining
+        if [[ "$DRY_RUN" == "true" ]]; then
+            echo "Would remove ${#to_remove[@]} account(s). Allowlist would have ${#remaining[@]}:"
+        else
+            echo "Removed ${#to_remove[@]} account(s). Allowlist now has ${#remaining[@]}:"
+        fi
         for acct in "${remaining[@]}"; do
             echo "  $acct"
         done
@@ -248,10 +314,18 @@ cmd_remove() {
 
 cmd_reset() {
     if [[ -f "$ALLOWLIST_FILE" ]]; then
-        rm -f "$ALLOWLIST_FILE"
-        echo "Allowlist removed. All accounts are now eligible."
+        if [[ "$DRY_RUN" == "true" ]]; then
+            echo "Would remove allowlist: $ALLOWLIST_FILE"
+        else
+            rm -f "$ALLOWLIST_FILE"
+            echo "Allowlist removed. All accounts are now eligible."
+        fi
     else
-        echo "No allowlist was active."
+        if [[ "$DRY_RUN" == "true" ]]; then
+            echo "No allowlist is active; reset would not remove anything."
+        else
+            echo "No allowlist was active."
+        fi
     fi
     cleanup_legacy
 }
@@ -276,26 +350,22 @@ cmd_status() {
 }
 
 # Main
-case "${1:-}" in
+case "${ARGS[0]:-}" in
     allow)
-        shift
-        cmd_allow "$@"
+        cmd_allow "${ARGS[@]:1}"
         ;;
     add)
-        shift
-        cmd_add "$@"
+        cmd_add "${ARGS[@]:1}"
         ;;
     remove)
-        shift
-        cmd_remove "$@"
+        cmd_remove "${ARGS[@]:1}"
         ;;
     reset)
         cmd_reset
         ;;
     pin)
         # Legacy: pin = allow single account
-        shift
-        cmd_allow "$@"
+        cmd_allow "${ARGS[@]:1}"
         ;;
     unpin)
         # Legacy: unpin = reset
@@ -311,7 +381,7 @@ case "${1:-}" in
         usage
         ;;
     *)
-        echo "Unknown command: $1" >&2
+        echo "Unknown command: ${ARGS[0]}" >&2
         usage >&2
         exit 1
         ;;
