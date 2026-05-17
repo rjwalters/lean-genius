@@ -1,33 +1,33 @@
 # Current State
 
-**Phase**: ACT (axiom-elimination opportunity)
-**Since**: 2026-04-27
-**Iteration**: 3
+**Phase**: COMPLETED (axiom-elimination subgoal achieved; Bergelson–Richter axiom retained by design)
+**Since**: 2026-05-17 (S4 STATE-SYNC; subgoal completed by PR #15578 on an earlier date)
+**Iteration**: 4
 
 ## Current Focus
 
-Eliminating the `random_coprime_density` axiom. The Bergelson–Richter axiom is left in place as a deep ergodic-theory result not currently in Mathlib's reach.
+No active research focus. The `random_coprime_density` axiom-elimination subgoal that motivated the ACT phase (iter 3) was completed by PR #15578 — `random_coprime_density` is now a proved theorem in `Erdos1149Problem.lean` (line 162), reducing the file's axiom count from 2 to 1.
+
+The remaining `bergelson_richter` axiom is retained by mathematical-design judgment: it encapsulates the deep ergodic-theory main theorem of Bergelson–Richter (2017), which sits well outside Mathlib's current reach (Bergelson–Host–Kra structure theorem, nilfactor analysis, multiplicative-function-along-polynomial-sequences machinery).
 
 ## Active Approach
 
-Möbius inversion + Tannery's theorem on the partial sums:
-
-1. Counting identity: `countCoprimePairs N = ∑_{d=1}^N μ(d) ⌊N/d⌋²`.
-2. Asymptotic interchange: `(1/N²) ∑_{d=1}^N μ(d) ⌊N/d⌋² → ∑_d μ(d)/d²`.
-3. Closed form: `∑_d μ(d)/d² = 1/ζ(2) = 6/π²` via Mathlib's `hasSum_zeta_two` and `moebius_mul_coe_zeta`.
-
-All three steps stay within Mathlib's toolkit; no external theory needed.
+None active. The Möbius+Tannery approach previously documented as the elimination path was successfully executed in PR #15578 (via `BaselProblemOQ04OQ03.coprime_pair_density_limit`).
 
 ## Blockers
 
-- None hard. Step B (Möbius–Tannery interchange) is the analytic crux; expect ~80–120 lines.
+None. The slug is in a stable rest state: gallery `status: axiomatized`, `badge: axiom`, 1 axiom (`bergelson_richter`) by design.
 
 ## Next Action
 
-Implement Step A (counting identity) as a standalone lemma `countCoprimePairs_eq_moebius_sum`, generalizing `pairs_with_common_factor` from prime p to arbitrary d ≥ 1.
+No queued action. Future re-engagement candidates (low priority, all stretch):
+
+- **A. Bergelson–Richter formalization** — Multi-year effort; would require building Bergelson–Host–Kra and a nilfactor library. Not tractable in current Mathlib.
+- **B. Alternative elementary proofs of Bergelson–Richter** — Survey for any post-2017 elementary or simpler proofs that could shrink the formalization gap.
+- **C. Strengthen related infrastructure** — The Möbius and density lemmas in `Erdos1149Problem.lean` may be useful for sibling Erdős slugs; consider abstracting reusable pieces.
 
 ## Attempt Counts
 
-- Total attempts: 0 (axiom-elimination not yet attempted)
+- Total attempts: 1 (this STATE-SYNC after PR #15578 already eliminated the documented axiom-elimination target)
 - Current approach attempts: 0
-- Approaches tried: 0
+- Approaches tried: 1 (Möbius+Tannery — succeeded in PR #15578)
