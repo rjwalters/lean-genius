@@ -22,6 +22,7 @@ import * as path from 'path'
 const GALLERY_DIR = 'src/data/proofs'
 const PROOFS_DIR = 'proofs/Proofs'
 const FORMAL_CONJECTURES_DIR = 'external/formal-conjectures/FormalConjectures/ErdosProblems'
+const NAV_ARTIFACTS = ['Forum', 'Favourites', 'Random Solved', 'Random Open', 'Dual View']
 
 interface StubInfo {
   erdosNumber: number
@@ -70,13 +71,25 @@ function hasGarbageDescription(galleryPath: string): boolean {
   const metaPath = path.join(galleryPath, 'meta.json')
   if (!fs.existsSync(metaPath)) return true
   const content = fs.readFileSync(metaPath, 'utf-8')
-  // Check for common scraping artifacts
-  return content.includes('Forum\\n') ||
-         content.includes('Favourites') ||
-         content.includes('Random Solved') ||
-         content.includes('Random Open') ||
-         content.includes('Dual View') ||
-         content.includes('"description": "Forum')
+  try {
+    const meta = JSON.parse(content)
+    const descriptions: string[] = []
+    if (meta && typeof meta === 'object') {
+      if (typeof meta.description === 'string') {
+        descriptions.push(meta.description)
+      }
+      if (meta.overview && typeof meta.overview.text === 'string') {
+        descriptions.push(meta.overview.text)
+      }
+    }
+    return descriptions.some(description =>
+      NAV_ARTIFACTS.some(artifact => description.includes(artifact))
+    )
+  } catch {
+    // Preserve the old raw-text fallback for malformed metadata.
+    return NAV_ARTIFACTS.some(artifact => content.includes(artifact)) ||
+           content.includes('"description": "Forum')
+  }
 }
 
 function getProblemStatus(galleryPath: string): string | undefined {
@@ -388,9 +401,6 @@ function showStats(stats: StubStats): void {
 // Main
 const args = process.argv.slice(2)
 
-const stubs = findAllStubs()
-const stats = computeStats(stubs)
-
 if (args.includes('--help') || args.includes('-h')) {
   console.log(`
 Erdős Gallery Stub Finder
@@ -422,6 +432,9 @@ Priority order (for --next):
 `)
   process.exit(0)
 }
+
+const stubs = findAllStubs()
+const stats = computeStats(stubs)
 
 if (args.includes('--json')) {
   console.log(JSON.stringify({ stats, stubs }, null, 2))
