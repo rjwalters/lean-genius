@@ -1,14 +1,17 @@
 {
   "slug": "cramers-rule-oq-02",
-  "title": "[Problem Title]",
+  "title": "Gaussian elimination asymptotically outperforms Cramer's rule",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "formal": "\\forall K > 0,\\ \\exists N,\\ \\forall n \\ge N,\\ (n+1)n\\,n! \\ge K n^3.",
     "plain": "A formal proof that Gaussian elimination (O(n³) multiplications) is strictly more efficient than Cramer's rule ((n+1)·n·n! multiplications) for solving n×n linear systems, with the gap growing super-polynomially: for any constant K, Gaussian is eventually K-times faster.",
-    "whyMatters": []
+    "whyMatters": [
+      "It turns the usual algorithmic comparison between Gaussian elimination and Cramer's rule into a precise asymptotic inequality.",
+      "It records, in formal terms, that the factorial multiplication count for Cramer's rule eventually dominates any fixed multiple of the cubic multiplication count for Gaussian elimination."
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -29,23 +32,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "The local research notes contain the plain-language goal and initial OBSERVE state, but no substantive accumulated research observations. Existing metadata records this slug as graduated with a completed Lean file.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "The target comparison is between cubic growth for Gaussian elimination and factorial growth for Cramer's rule.",
+      "The stated asymptotic goal can be expressed as eventual domination: for every constant K, the Cramer's-rule multiplication count is at least K times n^3 for all sufficiently large n."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: cramers-rule-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "If continuing from the preserved research state, inspect the completed Lean file recorded in the existing JSON metadata before changing proof status.",
+      "Keep any further references or related proofs tied to concrete local files or documented sources."
+    ],
+    "markdown": "# Knowledge Base: cramers-rule-oq-02\n\n## Problem Understanding\n\nThis slug concerns a formal asymptotic comparison between Gaussian elimination and Cramer's rule for solving n by n linear systems. The local problem statement describes Gaussian elimination as requiring O(n^3) multiplications and Cramer's rule as requiring (n+1) * n * n! multiplications.\n\n## Insights\n\n- The comparison can be framed as eventual domination: for every constant K, the Cramer's-rule multiplication count eventually exceeds K times the cubic Gaussian-elimination count.\n- The research state is still recorded at OBSERVE with zero attempts, so the local notes do not document failed approaches, blockers, or literature findings.\n\n## Dead Ends\n\nNo dead ends are recorded in the local knowledge file.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "linear-algebra",
+    "algorithms",
+    "asymptotic-analysis",
+    "factorials"
   ],
   "relatedProofs": [
     "cramers-rule",
     "cramers-rule-oq-01",
     "cramers-rule-oq-01-oq-01",
     "cramers-rule-oq-01-oq-02",
+    "cramers-rule-oq-01-oq-02-oq-01",
     "cramers-rule-oq-01-oq-03",
     "cramers-rule-oq-01-oq-04",
     "cramers-rule-oq-02",
@@ -97,13 +108,24 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02.lean"
     },
     {
+      "path": "Proofs/CramersRuleOQ01OQ02OQ01.lean",
+      "filename": "CramersRuleOQ01OQ02OQ01.lean",
+      "lineCount": 314,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ02OQ01.lean"
+    },
+    {
       "path": "Proofs/CramersRuleOQ01OQ03.lean",
       "filename": "CramersRuleOQ01OQ03.lean",
       "lineCount": 229,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 10,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CramersRuleOQ01OQ03.lean"
     },

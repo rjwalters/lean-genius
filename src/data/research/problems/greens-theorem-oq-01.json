@@ -1,14 +1,17 @@
 {
   "slug": "greens-theorem-oq-01",
-  "title": "[Problem Title]",
+  "title": "Green's Theorem for Rectangles via Interval Integrals",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "Green's theorem for rectangles formalized using Mathlib's intervalIntegral machinery, replacing the abstract stub definitions with genuine FTC-based computations. The proof uses only FTC, Fubini (as hypothesis), linearity of integration, and ring arithmetic — demonstrating that Mathlib's analysis library is powerful enough for multivariable calculus.",
-    "whyMatters": []
+    "formal": "For a rectangle [a,b] x [c,d], formalize Green's theorem in interval-integral form: the boundary integral of P dx + Q dy is equal to the double integral of partial_x Q - partial_y P, using the fundamental theorem of calculus, a Fubini hypothesis, linearity of integration, and ring arithmetic.",
+    "plain": "Green's theorem for rectangles formalized using Mathlib's intervalIntegral machinery, replacing the abstract stub definitions with genuine FTC-based computations. The proof uses only FTC, Fubini (as hypothesis), linearity of integration, and ring arithmetic, demonstrating that Mathlib's analysis library is powerful enough for multivariable calculus.",
+    "whyMatters": [
+      "Connects a standard multivariable calculus theorem to Mathlib's intervalIntegral machinery.",
+      "Demonstrates that rectangle-level Green's theorem can be reduced to FTC-based computations plus a Fubini hypothesis, linearity of integration, and ring arithmetic."
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -29,17 +32,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "The existing metadata marks this problem as completed and graduated. The local research state remains at OBSERVE with zero recorded attempts, and the knowledge file contains no substantive accumulated research beyond the initial template.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "The intended proof scope is Green's theorem for rectangles using Mathlib interval integrals rather than abstract stub definitions.",
+      "The stated proof ingredients are FTC, Fubini as a hypothesis, linearity of integration, and ring arithmetic."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: greens-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Reconcile the completed/graduated top-level metadata with the OBSERVE research-state file if this record is refreshed from source materials.",
+      "Add concrete Mathlib references only after they are documented in the local problem or literature notes."
+    ],
+    "markdown": "# Knowledge Base: greens-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nGreen's theorem for rectangles is being treated as an interval-integral formalization task. The problem statement says the intended proof replaces abstract stub definitions with genuine computations using the fundamental theorem of calculus, a Fubini hypothesis, linearity of integration, and ring arithmetic.\n\n---\n\n## Insights\n\n- The available local notes describe the theorem scope and proof ingredients, but do not record detailed research attempts.\n- The research state is still OBSERVE with zero attempts, while the existing JSON marks the problem completed and graduated.\n\n---\n\n## Dead Ends\n\nNo dead ends are recorded in the local knowledge file.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "analysis",
+    "calculus",
+    "green-theorem",
+    "interval-integral",
+    "mathlib"
   ],
   "relatedProofs": [
     "greens-theorem",
