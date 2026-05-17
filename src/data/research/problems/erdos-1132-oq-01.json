@@ -1,27 +1,37 @@
 {
   "slug": "erdos-1132-oq-01",
-  "title": "Question 1: Does every infinite sequence have a 'witness' point",
-  "phase": "COMPLETED",
+  "title": "Witness Points for Bernstein's Density Theorem",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in mathematical analysis: Question 1: Does every infinite sequence have a 'witness' point.",
-    "whyMatters": []
+    "formal": "For an infinite node sequence (x_k) in [-1,1], define the n-th Lebesgue function by \\Lambda_n(x) = \\sum_{k=1}^n |\\ell_k^{(n)}(x)| for the Lagrange basis on x_1,...,x_n. Bernstein's density statement says the points with \\Lambda_n(x)/\\log n \\to \\infty are dense in [-1,1]. OQ-01 asks whether the Lean axioms bernstein_density_theorem or the weaker erdos_max_theorem, asserting a logarithmic lower bound for max_{[-1,1]} \\Lambda_n, can be formalized from Mathlib rather than assumed.",
+    "plain": "Investigate whether the approximation-theory axioms in Erdos1132Problem.lean can be reduced. The witness-point question is about points where the Lebesgue function for Lagrange interpolation grows as in Bernstein's dense-good-points theorem; the nearer target is a formal lower bound for the maximum Lebesgue function, possibly via Chebyshev tools or a concrete equidistant-node calculation.",
+    "whyMatters": [
+      "Reduces the parent erdos-1132 proof's reliance on axiomatized classical analysis.",
+      "Tests Mathlib support for polynomial interpolation, Chebyshev methods, and Lebesgue-function bounds.",
+      "Would contribute formal approximation-theory infrastructure beyond this gallery problem."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Local notes list Lagrange partition of unity and lebesgueFunction_ge_one as established in the parent gallery proof.",
+      "Local notes cite equidistant-node exponential Lebesgue growth and Mathlib's Lagrange.sum_basis as related existing ingredients."
+    ],
+    "open": [
+      "bernstein_density_theorem remains the full density-of-good-points axiom targeted for eventual reduction.",
+      "erdos_max_theorem remains the weaker logarithmic lower-bound axiom identified as the primary tractable target."
+    ],
+    "goal": "Assess whether erdos_max_theorem, and eventually bernstein_density_theorem, can be reduced by Lean formalization using polynomial, Chebyshev, and analysis infrastructure."
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-24T00:48:59.907Z",
+    "phase": "OBSERVE",
+    "since": "2026-04-05T13:26:15-07:00",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Axiom reduction for Bernstein's density theorem and Erdős's maximum-Lebesgue-function lower bound in Erdos1132Problem.lean.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Read proofs/Proofs/Erdos1132Problem.lean, then survey Mathlib Chebyshev and Real.iSup tools before choosing a concrete witness-point or max-bound slice.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,30 +39,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SESSION 3: Assessed lagrangeBasis_sum_eq_one sorry. Proof requires polynomial uniqueness theory or Mathlib Lagrange module connection. Documented proof strategies.",
+    "progressSummary": "Local evidence records an OBSERVE-phase research problem, not completed proof work. OQ-01 targets reducing the parent Erdos1132Problem.lean axioms bernstein_density_theorem and erdos_max_theorem, with erdos_max_theorem identified as the primary tractable target.",
     "builtItems": [
-      "lagrangeBasis_self: proved from definition using div_self (eliminated axiom)",
-      "lagrangeBasis_other: proved from definition using prod_eq_zero (eliminated axiom)",
-      "chebyshevNodes_in_interval: proved from Real.neg_one_le_cos / Real.cos_le_one (eliminated axiom)",
-      "lagrangeBasis_sum_eq_one: partition of unity lemma stated (sorry, Aristotle target)",
-      "lebesgueFunction_ge_one: converted axiom to theorem using partition of unity + triangle inequality",
-      "Erdos1132Aristotle.lean: Aristotle companion file with lagrangeBasis_sum_eq_one"
+      "Problem statement and tractability notes for Bernstein/Lebesgue-function axiom reduction",
+      "State file identifying erdos_max_theorem as the primary target and an equidistant-node calculation as the most concrete entry point"
     ],
     "insights": [
-      "lagrangeBasis_self and lagrangeBasis_other are definitionally provable — numerator=denominator and zero factor respectively",
-      "Remaining 7 axioms are genuinely deep results (Lebesgue function bounds, Erdős lower bound, Chebyshev, density theorems)",
-      "Remaining 5 axioms are genuinely deep results (Erdos lower bound, Chebyshev optimality, Bernstein density, Erdos max, equidistant exponential growth) - cannot be proved from Mathlib",
-      "lagrangeBasis_sum_eq_one (partition of unity) is the key blocker - standard polynomial identity but non-trivial to formalize from product definition",
-      "Proof strategy for partition of unity: P(x) = Σ lₖ(x) has degree ≤ n-1 and equals 1 at all n nodes, so P ≡ 1 by uniqueness of interpolation",
-      "lagrangeBasis_sum_eq_one: standard proof uses polynomial interpolation uniqueness (degree n-1 poly with n roots is 0)",
-      "Mathlib.LinearAlgebra.Lagrange may have sum_basis or equivalent; connecting custom lagrangeBasis to Mathlib Lagrange.basis could simplify proof",
-      "Direct algebraic proof for n=2 works cleanly; general case needs induction or polynomial theory"
+      "Bernstein's local statement is about dense good points where \\Lambda_n(x)/\\log n diverges for any infinite node sequence.",
+      "The Erdős maximum theorem is weaker than Bernstein density and is the local notes' preferred first target.",
+      "Mathlib has relevant polynomial interpolation and Chebyshev material, but the needed approximation-theory estimates may require new helper lemmas.",
+      "A concrete equidistant-node witness calculation at x = 0 is listed as the quickest possible standalone entry point, but no attempts are recorded yet."
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Lebesgue-constant bounds need supremum machinery over [-1,1], likely involving Real.iSup and continuity facts.",
+      "Chebyshev orthogonality or interpolation-projector norm arguments may need analysis infrastructure beyond the currently recorded gallery code."
+    ],
     "nextSteps": [
-      "Prove lagrangeBasis_sum_eq_one (partition of unity) - key sorry remaining",
-      "Potential approach: use Mathlib Lagrange.interpolate_at or prove polynomial uniqueness argument",
-      "Alternative: induction on n with careful algebraic manipulation of the product definition"
+      "Read proofs/Proofs/Erdos1132Problem.lean to understand lebesgueFunction, lebesgueConstant, InfiniteNodeSequence, and denseGoodPoints.",
+      "Search Mathlib for Polynomial.Chebyshev.T, orthogonality support, and Lagrange interpolation lemmas.",
+      "Search Mathlib for Real.iSup tools needed to express and bound the Lebesgue constant.",
+      "Assess the equidistant-nodes \\Lambda_n(0) calculation as the most concrete witness-point slice."
     ]
   },
   "tags": [

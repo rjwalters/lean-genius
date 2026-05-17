@@ -1,27 +1,37 @@
 {
   "slug": "euler-identity-oq-01-oq-01",
-  "title": "Prove tsum_even_add_odd via Equiv (Euler identity extension)",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "title": "Even/odd splitting for summable complex series",
+  "phase": "OBSERVE",
+  "status": "active",
   "tier": "B",
-  "path": "fast",
+  "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in analysis: Prove tsum_even_add_odd via Equiv (Euler identity extension).",
-    "whyMatters": []
+    "formal": "theorem tsum_even_add_odd {f : ℕ → ℂ} (h : Summable f) : ∑' k : ℕ, f (2 * k) + ∑' k : ℕ, f (2 * k + 1) = ∑' n : ℕ, f n",
+    "plain": "For any summable complex sequence, the sum over even-indexed terms plus the sum over odd-indexed terms equals the original infinite series. This axiom-elimination target removes the even/odd series-splitting axiom from the parent Euler identity proof.",
+    "whyMatters": [
+      "Eliminates one of the parent Euler identity proof's explicit axioms.",
+      "Provides a reusable infinite-sum reindexing lemma for future Taylor-series and Fourier-series formalizations.",
+      "Exercises the `Equiv.tsum_eq` pattern for splitting countable topological sums by an even/odd bijection."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The target axiom signature is already isolated in the parent EulerIdentityOQ01.lean proof.",
+      "The local problem notes identify an explicit bijection between ℕ ⊕ ℕ and ℕ as the intended proof mechanism."
+    ],
+    "open": [
+      "Whether Mathlib already exposes an exact even/odd `tsum` split under another name.",
+      "If no exact lemma exists, whether `Equiv.tsum_eq`, `tsum_sum`, or a HasSum reindexing proof gives the cleanest local theorem."
+    ],
+    "goal": "Replace the parent `tsum_even_add_odd` axiom with a theorem proved by reindexing the summable series along the even/odd equivalence."
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-04-05T03:58:33.671Z",
+    "phase": "OBSERVE",
+    "since": "2026-04-04T20:00:00-07:00",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Prove the `tsum_even_add_odd` theorem to eliminate axiom #1 from `EulerIdentityOQ01.lean`.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Search Mathlib for an existing even/odd `tsum` split; if absent, attempt the proof using the explicit ℕ ⊕ ℕ equivalence with `Equiv.tsum_eq` or related infinite-sum APIs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,23 +39,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: All 3 axioms eliminated. Proof compiles with 0 sorries, 0 axioms.",
+    "progressSummary": "OBSERVE: Local notes identify the target axiom, its parent-proof impact, and the intended even/odd reindexing approach. `state.md` records zero attempts so far.",
     "builtItems": [
-      "tsum_even_add_odd_of_summable: splits summable series into even/odd parts via Summable.comp_injective",
-      "cos_eq_tsum_thm: proves Real cos equals tsum of evenTerm via Complex.cos_eq_tsum + ofReal_cos",
-      "sin_eq_tsum_thm: proves Real sin*I equals tsum of oddTerm via Complex.sin_eq_tsum + ofReal_sin",
-      "euler_formula: e^(ix) = cos(x) + i*sin(x) with 0 axioms via ofReal_cos/ofReal_sin + Complex.exp_mul_I",
-      "euler_identity: e^(iπ) + 1 = 0 fully verified — proofs/Proofs/EulerIdentityOQ01OQ01.lean:137"
+      "Target theorem signature recorded for `{f : ℕ → ℂ}` with `Summable f` as the hypothesis.",
+      "Expected deliverable is `proofs/Proofs/EulerIdentityOQ01OQ01.lean` with the `tsum_even_add_odd` sorry eliminated."
     ],
     "insights": [
-      "Summable.comp_injective is the key to tsum_even_add_odd: injective reindexing preserves summability for k↦2k and k↦2k+1",
-      "Complex.cos_eq_tsum and Complex.sin_eq_tsum in Mathlib precisely supply the needed Taylor series facts; only need ofReal_cos/ofReal_sin to lift them",
-      "The tsum_even_add_odd in Mathlib.Topology.Algebra.InfiniteSum.NatInt exactly matches the splitting needed, requiring only .symm",
-      "After simp only [evenTerm], the congr goal for cos_eq_tsum closes definitionally — no ring needed",
-      "euler_formula needs ofReal_cos/ofReal_sin rewrites before Complex.exp_mul_I since the types differ (Complex.cos ↑x vs ↑(Real.cos x))"
+      "The theorem is the even/odd split for a summable infinite series, not a direct proof of Euler's identity.",
+      "The proposed proof route uses a bijection `ℕ ⊕ ℕ ≃ ℕ` sending `Sum.inl k` to `2 * k` and `Sum.inr k` to `2 * k + 1`.",
+      "The parent open question explicitly asks whether this axiom can be eliminated using the explicit even/odd equivalence.",
+      "Relevant APIs to investigate include `Equiv.tsum_eq`, `tsum_sum`, `HasSum.sigma`, and complementary-subtype splitting lemmas."
     ],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "mathlibGaps": [
+      "No confirmed gap yet; the first recorded action is to check whether Mathlib already contains `tsum_even_add_odd` or an equivalent lemma."
+    ],
+    "nextSteps": [
+      "Search `Mathlib.Topology.Algebra.InfiniteSum.Basic` and related modules for an existing even/odd `tsum` split.",
+      "If no exact lemma is available, prove the split via `Equiv.tsum_eq`, `tsum_sum`, or `HasSum`-based reindexing."
+    ]
   },
   "tags": [
     "analysis",

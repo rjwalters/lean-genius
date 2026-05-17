@@ -1,27 +1,37 @@
 {
   "slug": "cantor-diagonalization-oq-02-oq-03-oq-02",
-  "title": "[Problem Title]",
+  "title": "Fodor's Pressing-Down Lemma",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "For any regular uncountable cardinal \\kappa and any regressive function f on a stationary set S \\subseteq \\kappa, there exists \\alpha < \\kappa such that f^{-1}({\\alpha}) is stationary.",
+    "plain": "Formalize Fodor's pressing-down lemma: a function on a stationary set of ordinals that always maps each ordinal to a smaller one must be constant on some stationary subset.",
+    "whyMatters": [
+      "Fodor's lemma is a core tool for club and stationary set arguments in infinite combinatorics.",
+      "The target extends the gallery's regular-cardinal diagonalization work toward standard set-theoretic infrastructure.",
+      "A Lean proof would require reusable definitions and lemmas for club sets, stationary sets, and regressive functions."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The parent gallery proof cantor-diagonalization-oq-02-oq-03 formalizes a diagonal argument generalized to regular cardinals.",
+      "Mathlib provides basic ordinal and cardinal theory that can serve as the foundation."
+    ],
+    "open": [
+      "Definitions and basic properties of club and stationary sets for regular uncountable cardinals still need to be supplied or located.",
+      "Fodor's pressing-down lemma itself is not yet formalized in this local entry."
+    ],
+    "goal": "Formalize the club/stationary-set infrastructure needed for Fodor's lemma, then prove the pressing-down statement over Mathlib ordinal and cardinal APIs."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-04T02:41:19-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Assess the Mathlib ordinal/cardinal APIs needed for club sets, stationary sets, regressive functions, and Fodor's pressing-down lemma.",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "Search Mathlib for existing club, stationary, ordinal, cardinal, regular-cardinal, and regressive-function infrastructure before choosing whether to define the missing set-theoretic notions locally.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +39,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "The local problem statement identifies Fodor's pressing-down lemma as a set-theory extension of the regular-cardinal diagonalization gallery. No proof attempts are recorded yet; the first real task is an API survey for club/stationary set infrastructure.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: cantor-diagonalization-oq-02-oq-03-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "The target depends more on set-theoretic infrastructure than on Cantor diagonalization itself.",
+      "A direct proof needs definitions of club sets, stationary sets, regular uncountable cardinals, and regressive functions on stationary domains.",
+      "The local notes rate the target as challenging because the proof is classical but the Lean setup may be substantial."
+    ],
+    "mathlibGaps": [
+      "Need to verify whether Mathlib already has club/stationary-set APIs for ordinals or cardinals.",
+      "Need regular-cardinal and transfinite-induction lemmas strong enough to express the standard proof."
+    ],
+    "nextSteps": [
+      "Search Mathlib.SetTheory.Ordinal and Mathlib.SetTheory.Cardinal for regular-cardinal and closed-unbounded set infrastructure.",
+      "Define minimal local predicates for club, stationary, and regressive functions if Mathlib lacks them.",
+      "Attempt the standard contradiction proof after the infrastructure shape is fixed."
+    ],
+    "markdown": "# Knowledge Base: cantor-diagonalization-oq-02-oq-03-oq-02\n\n## Problem Understanding\n\nThis entry targets Fodor's pressing-down lemma over regular uncountable cardinals. The current local evidence is problem-definition work only; no Lean proof attempt is recorded.\n\n## Insights\n\nThe main difficulty is likely infrastructure: club sets, stationary sets, and regressive functions must be available or defined before the pressing-down proof can start.\n\n## Dead Ends\n\nNone recorded yet.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "set-theory",
+    "ordinals",
+    "cardinals",
+    "stationary-sets",
+    "fodors-lemma"
   ],
   "relatedProofs": [
     "cantor-diagonalization",
@@ -47,6 +70,7 @@
     "cantor-diagonalization-oq-01-oq-01",
     "cantor-diagonalization-oq-01-oq-01-oq-02",
     "cantor-diagonalization-oq-01-oq-01-oq-02-oq-03",
+    "cantor-diagonalization-oq-01-oq-02",
     "cantor-diagonalization-oq-02",
     "cantor-diagonalization-oq-02-oq-01",
     "cantor-diagonalization-oq-02-oq-03",
@@ -61,9 +85,14 @@
     "cantor-diagonalization-oq-04-oq-03"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Fodor, G. (1956), Eine Bemerkung zur Theorie der regressiven Funktionen"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.SetTheory.Ordinal.Basic",
+      "Mathlib.SetTheory.Cardinal.Basic"
+    ]
   },
   "started": "2026-04-04T09:42:47.007Z",
   "lastUpdate": "2026-04-04T09:42:47.023Z",
@@ -71,7 +100,7 @@
     {
       "path": "Proofs/CantorDiagonalization.lean",
       "filename": "CantorDiagonalization.lean",
-      "lineCount": 176,
+      "lineCount": 175,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 2,
@@ -115,13 +144,24 @@
     {
       "path": "Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean",
       "filename": "CantorDiagonalizationOQ01OQ01OQ02OQ03.lean",
-      "lineCount": 179,
+      "lineCount": 207,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 5,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ01OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/CantorDiagonalizationOQ01OQ02.lean",
+      "filename": "CantorDiagonalizationOQ01OQ02.lean",
+      "lineCount": 307,
+      "theoremCount": 14,
+      "axiomCount": 7,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ01OQ02.lean"
     },
     {
       "path": "Proofs/CantorDiagonalizationOQ02.lean",
@@ -148,8 +188,8 @@
     {
       "path": "Proofs/CantorDiagonalizationOQ02OQ03.lean",
       "filename": "CantorDiagonalizationOQ02OQ03.lean",
-      "lineCount": 143,
-      "theoremCount": 6,
+      "lineCount": 142,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -159,11 +199,11 @@
     {
       "path": "Proofs/CantorDiagonalizationOQ02OQ03OQ02.lean",
       "filename": "CantorDiagonalizationOQ02OQ03OQ02.lean",
-      "lineCount": 315,
+      "lineCount": 381,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 5,
-      "sorryCount": 6,
+      "sorryCount": 3,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ02OQ03OQ02.lean"
     },
@@ -247,22 +287,22 @@
     {
       "path": "Proofs/CantorDiagonalizationOQ04OQ03.lean",
       "filename": "CantorDiagonalizationOQ04OQ03.lean",
-      "lineCount": 284,
+      "lineCount": 300,
       "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 6,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04OQ03.lean"
     },
     {
       "path": "Proofs/CantorDiagonalizationOQ04OQ03Aristotle.lean",
       "filename": "CantorDiagonalizationOQ04OQ03Aristotle.lean",
-      "lineCount": 49,
+      "lineCount": 65,
       "theoremCount": 1,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CantorDiagonalizationOQ04OQ03Aristotle.lean"
     }
