@@ -194,6 +194,8 @@ export function BadgeFilter({ selectedBadges, onToggle, className = '' }: BadgeF
         return (
           <button
             key={badge}
+            type="button"
+            aria-pressed={isSelected}
             onClick={() => onToggle(badge)}
             className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-lg text-sm font-medium transition-all
               ${isSelected
