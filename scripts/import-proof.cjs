@@ -7,6 +7,7 @@
  *
  * Usage:
  *   node scripts/import-proof.cjs <proof-name>
+ *   node scripts/import-proof.cjs --dry-run|-n <proof-name>
  *   node scripts/import-proof.cjs --all
  *   node scripts/import-proof.cjs --list
  *
@@ -37,18 +38,32 @@ const PROOF_MAPPING = {
   // 'CantorDiagonalization': 'cantor-diagonalization',
 };
 
-function ensureProofsRepo() {
+function ensureProofsRepo({ dryRun = false } = {}) {
   if (!fs.existsSync(PROOFS_REPO_PATH)) {
+    if (dryRun) {
+      console.log(`[dry-run] Would clone proofs repo to ${PROOFS_REPO_PATH}`);
+      return false;
+    }
     console.log(`Cloning proofs repo to ${PROOFS_REPO_PATH}...`);
     execSync(`git clone ${PROOFS_REPO_URL} "${PROOFS_REPO_PATH}"`, { stdio: 'inherit' });
   } else {
+    if (dryRun) {
+      console.log(`[dry-run] Would update proofs repo at ${PROOFS_REPO_PATH}`);
+      return true;
+    }
     console.log(`Updating proofs repo at ${PROOFS_REPO_PATH}...`);
     execSync('git pull', { cwd: PROOFS_REPO_PATH, stdio: 'inherit' });
   }
+  return true;
 }
 
-function listAvailableProofs() {
-  ensureProofsRepo();
+function listAvailableProofs(options = {}) {
+  const repoReady = ensureProofsRepo(options);
+  if (!repoReady) {
+    console.log('[dry-run] Proof list unavailable until the proofs repo exists locally.');
+    return;
+  }
+
   const proofsDir = path.join(PROOFS_REPO_PATH, 'Proofs');
   const files = fs.readdirSync(proofsDir);
 
@@ -152,12 +167,20 @@ function convertLeanInkToTacticStates(leanInkData) {
   return deduped;
 }
 
-function importProof(proofName) {
-  ensureProofsRepo();
+function importProof(proofName, { dryRun = false, skipEnsure = false } = {}) {
+  const repoReady = skipEnsure || ensureProofsRepo({ dryRun });
 
   const slug = PROOF_MAPPING[proofName] || toSlug(proofName);
   const leanInkPath = path.join(PROOFS_REPO_PATH, 'Proofs', `${proofName}.lean.leanInk`);
   const targetDir = path.join(process.cwd(), 'src/data/proofs', slug);
+  const outputPath = path.join(targetDir, 'tacticStates.json');
+
+  if (!repoReady) {
+    console.log(`[dry-run] Would import ${proofName} -> ${slug}`);
+    console.log(`[dry-run] Would read LeanInk from ${leanInkPath}`);
+    console.log(`[dry-run] Would write tactic states to ${outputPath}`);
+    return { proofName, slug, count: null, dryRun: true };
+  }
 
   if (!fs.existsSync(leanInkPath)) {
     console.error(`Error: LeanInk output not found at ${leanInkPath}`);
@@ -171,22 +194,35 @@ function importProof(proofName) {
     process.exit(1);
   }
 
-  console.log(`Importing ${proofName} -> ${slug}...`);
+  if (dryRun) {
+    console.log(`[dry-run] Would import ${proofName} -> ${slug}...`);
+  } else {
+    console.log(`Importing ${proofName} -> ${slug}...`);
+  }
 
   // Read and convert LeanInk data
   const leanInkData = JSON.parse(fs.readFileSync(leanInkPath, 'utf-8'));
   const tacticStates = convertLeanInkToTacticStates(leanInkData);
 
   // Write tactic states
-  const outputPath = path.join(targetDir, 'tacticStates.json');
+  if (dryRun) {
+    console.log(`  [dry-run] Would write ${tacticStates.length} tactic states to ${outputPath}`);
+    return { proofName, slug, count: tacticStates.length, dryRun: true };
+  }
+
   fs.writeFileSync(outputPath, JSON.stringify(tacticStates, null, 2));
 
   console.log(`  Written ${tacticStates.length} tactic states to ${outputPath}`);
   return { proofName, slug, count: tacticStates.length };
 }
 
-function importAll() {
-  ensureProofsRepo();
+function importAll(options = {}) {
+  const repoReady = ensureProofsRepo(options);
+  if (!repoReady) {
+    console.log('[dry-run] Would scan all LeanInk files after cloning the proofs repo.');
+    return;
+  }
+
   const proofsDir = path.join(PROOFS_REPO_PATH, 'Proofs');
   const files = fs.readdirSync(proofsDir);
 
@@ -200,7 +236,7 @@ function importAll() {
 
     if (fs.existsSync(targetDir)) {
       try {
-        results.push(importProof(name));
+        results.push(importProof(name, { ...options, skipEnsure: true }));
       } catch (err) {
         console.error(`  Error importing ${name}: ${err.message}`);
       }
@@ -217,11 +253,15 @@ function importAll() {
 
 // Main
 const args = process.argv.slice(2);
+const dryRun = args.includes('--dry-run') || args.includes('-n');
+const commandArgs = args.filter(arg => arg !== '--dry-run' && arg !== '-n');
 
-if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
+if (commandArgs.length === 0 || commandArgs.includes('--help') || commandArgs.includes('-h')) {
   console.log(`
 Usage:
   node scripts/import-proof.cjs <proof-name>  Import a specific proof
+  node scripts/import-proof.cjs --dry-run|-n <proof-name>
+                                             Preview without clone/pull/write
   node scripts/import-proof.cjs --all         Import all available proofs
   node scripts/import-proof.cjs --list        List available proofs
 
@@ -232,10 +272,10 @@ Environment:
   process.exit(0);
 }
 
-if (args.includes('--list')) {
-  listAvailableProofs();
-} else if (args.includes('--all')) {
-  importAll();
+if (commandArgs.includes('--list')) {
+  listAvailableProofs({ dryRun });
+} else if (commandArgs.includes('--all')) {
+  importAll({ dryRun });
 } else {
-  importProof(args[0]);
+  importProof(commandArgs[0], { dryRun });
 }
