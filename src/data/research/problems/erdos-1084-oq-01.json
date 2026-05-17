@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1084-oq-01",
   "title": "Is f₃(n) = 6n - Θ(n^{2/3})",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -31,13 +31,13 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-03-26T00:00:00Z",
-    "iteration": 1,
-    "focus": "Formalization complete: 16 theorems, 9 axioms, 0 sorry. Gallery entry created.",
+    "since": "2026-05-17T07:30:00Z",
+    "iteration": 2,
+    "focus": "S2 STATE-SYNC: mirrored top-level phase/status to COMPLETED, refreshed leanFiles[] numerics (OQ01 lineCount 608→607/theoremCount 20→23/sorryCount 1→0, Problem lineCount 319→318/theoremCount 4→7); meta.json (gallery) already canonical (axiomatized, axiomCount 4, sorries 0).",
     "blockers": [],
-    "nextAction": "None — initial formalization complete. Future work: prove handshaking lemma, prove FCC lower bound.",
+    "nextAction": "None — formalization complete with 4 deep axiomatized published results. Future work: prove handshaking lemma, prove FCC lower bound.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -102,26 +102,26 @@
     ]
   },
   "started": "2026-03-24T00:48:59.904Z",
-  "lastUpdate": "2026-03-26T00:00:00Z",
+  "lastUpdate": "2026-05-17T07:30:00Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1084OQ01.lean",
       "filename": "Erdos1084OQ01.lean",
-      "lineCount": 608,
-      "theoremCount": 20,
+      "lineCount": 607,
+      "theoremCount": 23,
       "axiomCount": 4,
       "defCount": 5,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1084OQ01.lean"
     },
     {
       "path": "Proofs/Erdos1084Problem.lean",
       "filename": "Erdos1084Problem.lean",
-      "lineCount": 319,
-      "theoremCount": 4,
+      "lineCount": 318,
+      "theoremCount": 7,
       "axiomCount": 1,
       "defCount": 2,
       "sorryCount": 0,
