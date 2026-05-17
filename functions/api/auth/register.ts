@@ -100,7 +100,10 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
       }),
       {
         status: 201,
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store',
+        },
       }
     )
   } catch (error) {
