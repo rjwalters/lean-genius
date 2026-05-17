@@ -23,6 +23,7 @@
  *   npx tsx scripts/enricher/find-targets.ts --json    # Output as JSON
  *   npx tsx scripts/enricher/find-targets.ts --stats   # Show statistics only
  *   npx tsx scripts/enricher/find-targets.ts --next    # Show single highest-priority target
+ *   npx tsx scripts/enricher/find-targets.ts --help    # Show usage
  */
 
 import * as fs from 'fs'
@@ -30,6 +31,20 @@ import * as path from 'path'
 
 const GALLERY_DIR = 'src/data/proofs'
 const TRACKER_FILE = 'src/data/proofs/enrichment-tracker.json'
+
+function printUsage() {
+  console.log(`Usage: npx tsx scripts/enricher/find-targets.ts [options]
+
+Find proof gallery entries that need enrichment.
+
+Options:
+  --all      Show all targets instead of the top 10
+  --json     Output JSON
+  --stats    Show statistics only
+  --next     Show the single highest-priority target
+  --help     Show this help message
+  -h         Show this help message`)
+}
 
 interface TrackerEntry {
   passes: number
@@ -229,6 +244,11 @@ function printStats(targets: TargetInfo[]): void {
 
 // Main
 const args = process.argv.slice(2)
+if (args.includes('--help') || args.includes('-h')) {
+  printUsage()
+  process.exit(0)
+}
+
 const targets = findTargets()
 
 if (args.includes('--stats')) {
