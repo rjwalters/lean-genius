@@ -48,7 +48,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
       return (
         <div className="h-screen flex flex-col items-center justify-center gap-4 p-8">
-          <div className="text-center max-w-md">
+          <div className="text-center max-w-md" role="alert" aria-live="assertive">
             <h1 className="text-2xl font-bold mb-2 text-red-400">
               {isChunkError ? 'Page update available' : 'Something went wrong'}
             </h1>
@@ -59,6 +59,7 @@ export class ErrorBoundary extends Component<Props, State> {
             </p>
             {isChunkError ? (
               <button
+                type="button"
                 onClick={() => window.location.reload()}
                 className="inline-flex items-center gap-2 px-4 py-2 bg-annotation text-white rounded-lg hover:opacity-90 transition-opacity mb-4"
               >
