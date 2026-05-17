@@ -1,25 +1,31 @@
 {
   "slug": "shannon-entropy-oq-03-incomplete-01",
-  "title": "[Problem Title]",
+  "title": "Strong Subadditivity of Shannon Entropy",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "H(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)",
+    "plain": "Prove the strong subadditivity inequality for Shannon entropy. The supporting infrastructure is already in ShannonEntropySSA.lean; the remaining target is the main theorem left as a sorry.",
+    "whyMatters": [
+      "This is a targeted completion of the existing gallery proof shannon-entropy-oq-03."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Parent proof shannon-entropy-oq-03 provides the foundation."
+    ],
+    "open": [
+      "One sorry remains to fill in the main theorem, plus any axioms found when checking the source proof."
+    ],
+    "goal": "Express the deficit as I(X;Z|Y) = sum_y p(y) D(p(x,z|y) || p(x|y) * p(z|y)) and prove it nonnegative using KL divergence non-negativity."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-03T02:25:34-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Inspect the remaining strong-subadditivity sorry and the available entropy/KL-divergence lemmas.",
     "blockers": [],
     "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
@@ -29,20 +35,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Initial observe phase. The local notes identify this as the remaining strong-subadditivity theorem for Shannon entropy, with one known sorry in the parent gallery proof.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "Suggested proof route: rewrite the entropy deficit as conditional mutual information and discharge nonnegativity via KL divergence."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: shannon-entropy-oq-03-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Read the parent Lean proof shannon-entropy-oq-03 and inspect the remaining sorry location.",
+      "Move from OBSERVE to ORIENT by checking the available entropy and KL-divergence lemmas."
+    ],
+    "markdown": "# Knowledge Base: shannon-entropy-oq-03-incomplete-01\n\n## Problem Understanding\n\nThe target is strong subadditivity of Shannon entropy:\n\n$$\nH(X,Y,Z) + H(Y) \\leq H(X,Y) + H(Y,Z)\n$$\n\nThe local problem note says the supporting infrastructure is already in `ShannonEntropySSA.lean`; the remaining work is the main theorem left as a `sorry`.\n\n## Known Direction\n\nUse the parent proof `shannon-entropy-oq-03` as the foundation. The stated goal is to express the deficit as conditional mutual information, `I(X;Z|Y) = sum_y p(y) D(p(x,z|y) || p(x|y) * p(z|y))`, then use KL divergence non-negativity.\n\n## Current State\n\nNo attempts have been recorded yet. The next action in `state.md` is to read the problem thoroughly and then move to ORIENT by exploring literature and related proofs.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "information-theory",
+    "entropy",
+    "shannon",
+    "strong-subadditivity"
   ],
   "relatedProofs": [
-    "shannon-entropy",
     "shannon-entropy-oq-03"
   ],
   "references": {
