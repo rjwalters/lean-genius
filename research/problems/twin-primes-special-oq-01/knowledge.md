@@ -125,3 +125,55 @@ A new ~200-line Lean file with 20+ `decide`-based theorems is **safe in principl
 ## Dead Ends
 
 None this session — purely a survey.
+
+## Session 3 (2026-05-16) — Registry Catchup to Verified COMPLETED-Axiomatized State (Doc-only)
+
+**Mode**: STATE-SYNC (claimed via claim-random — pool still listed slug `available` despite S2 STATE-SYNC bringing tracking artifacts into alignment 2.5h prior)
+**Outcome**: doc-only — registry catchup; no code, gallery, state.md, canonical JSON, or sessions/ memo changes
+
+### Why This Fires
+`claim-random` selected this slug because the local candidate-pool listed it as `status: available`, and `research/registry.json` (which the pool-builder consults at scan-time) still showed:
+- `phase: OBSERVE` (stale from S1 SURVEYED state, 2026-04-24)
+- `status: active`
+- `lastUpdate: 2026-04-24T23:03:34.511Z` (predates implementation merge PR #14871 from 2026-05-02 and S2 STATE-SYNC PR #19827 from 2026-05-16T21:21:14Z)
+
+S2 STATE-SYNC #19827 (researcher-?, T-2.5h) bootstrapped `sessions/` and brought `state.md` + canonical JSON into alignment with disk reality (axiomatized gallery + 150-LOC Lean file from PR #14871), but did NOT touch `research/registry.json` — researchers customarily leave registry edits out of scope. This S3 closes the registry surface.
+
+### What I Did
+- Updated `research/registry.json` entry for this slug:
+  - `phase: OBSERVE → COMPLETED`
+  - `status: active → graduated`
+  - `lastUpdate: 2026-04-24T23:03:34.511Z → 2026-05-16T21:21:14.000Z` (S2 STATE-SYNC merge time)
+  - Added `completed: 2026-05-16T21:21:14.000Z`
+- Added this Session 3 epilogue (knowledge.md trailed at Session 1 SURVEYED; Session 2 is captured in `sessions/2026-05-16-s2-statesync-catchup-implementation-merged-out-of-band.md` per S2 bootstrap rather than as a knowledge.md entry)
+- Marked the local pool entry completed via `FORCE_COMPLETE=1 claim-problem.sh update` so claim-random no longer reselects this slug
+
+### Reality Check (Ground Truth as of 2026-05-16T23:55Z)
+- `proofs/Proofs/TwinPrimesSpecialOQ01.lean`: 150 LOC, 25 theorems, 0 sorries, 0 standalone axioms (inherits `twin_prime_conjecture` axiom from parent `TwinPrimes.lean`); merged in PR #14871 (2026-05-02)
+- Gallery `src/data/proofs/twin-primes-special-oq-01/meta.json`: `status: axiomatized, badge: axiom, axiomCount: 1, sorries: 0, theoremCount: 25, lineCount: 150`
+- Canonical `src/data/research/problems/twin-primes-special-oq-01.json`: `phase: COMPLETED, since: 2026-05-16, iter: 2, status: completed`
+- `state.md`: `Phase: COMPLETED (axiomatized), Since: 2026-05-16, Iteration: 2`
+- `sessions/2026-05-16-s2-statesync-catchup-implementation-merged-out-of-band.md`: present (S2 bootstrap)
+
+### Session History Quick Summary (for backfill of knowledge.md trail)
+- **Session 1 (2026-04-24)**: SURVEYED — Sophie-Germain OQ-01 port plan documented; no Lean code written by researcher
+- **PR #14871 (2026-05-02)**: implementation merged out-of-band — `TwinPrimesSpecialOQ01.lean` created (150 LOC, 25 theorems, 0 sorries, inherits parent axiom)
+- **Session 2 / PR #19827 (2026-05-16T21:21:14Z)**: STATE-SYNC catchup — state.md + JSON + leanFiles[0] 151→150 + sessions/ bootstrap (researcher-? T-2.5h)
+- **Session 3 / this PR (2026-05-16T23:55Z)**: registry catchup — `research/registry.json` flip OBSERVE→COMPLETED + active→graduated + completed timestamp
+
+### Files Modified
+- `research/registry.json` (1 entry, 4 field edits + 1 new field)
+- `research/problems/twin-primes-special-oq-01/knowledge.md` (this Session 3 epilogue)
+
+### What I Did NOT Touch (Deliberate)
+- Lean files: no need; gallery already `status: axiomatized, badge: axiom` with the inherited-from-parent axiom; `twin_prime_conjecture` is the parent's axiom, not new
+- Gallery `src/data/proofs/twin-primes-special-oq-01/meta.json`: already consistent
+- Canonical `src/data/research/problems/twin-primes-special-oq-01.json`: already `phase: COMPLETED, status: completed, iter: 2`
+- `state.md`: already at `Phase: COMPLETED (axiomatized)`
+- `sessions/2026-05-16-s2-statesync-catchup-...md`: S2 record preserved verbatim
+- `problem.md`, `literature/`, `selection-report.md`: domain content unchanged
+- Sibling slugs in registry (one slug = one PR)
+- Parent `Proofs/TwinPrimes.lean` (where `twin_prime_conjecture` axiom lives — separate slug)
+
+### Next Steps
+For this slug: **None**. COMPLETED (axiomatized). Per canonical JSON `nextAction`, optional future iterations would be (a) add Maynard-Tao bounded-gaps axiom, (b) cross-reference Zhang/Polymath8 via shared parent refactor, (c) enricher pass — all tracked but not blocking.
