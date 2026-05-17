@@ -113,9 +113,12 @@ with_pool_lock() {
         # Continue anyway to avoid blocking entirely
     fi
 
-    # Run the command
-    "$@"
+    # Run the command in a subshell with errexit preserved, while allowing the
+    # parent shell to capture the status and release the lock.
+    set +e
+    ( set -e; "$@" )
     local result=$?
+    set -e
 
     release_pool_lock
     return $result
