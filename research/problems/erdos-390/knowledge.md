@@ -33,8 +33,8 @@ the `Filter.Tendsto` open `Prop`, neither of which Aristotle handles)
 
 ## What Is Verified (this formalization)
 
-Located at `proofs/Proofs/Erdos390Problem.lean` (538 lines, 14 theorems, 1 axiom,
-0 sorries; gallery slug `erdos-390`).
+Located at `proofs/Proofs/Erdos390Problem.lean` (558 lines, 16 theorems, 10 definitions,
+1 axiom, 0 sorries; gallery slug `erdos-390`).
 
 | Theorem / Definition | Content |
 |---|---|
@@ -112,7 +112,30 @@ axiom), those could be Aristotle candidates.
   requires resolving the open conjecture itself or replacing the EGS axiom
   with a fully formalized 1982-paper-style proof.
 
+### PR #15930: GCovering framework (borsuk-ulam-oq-04) + f(7), f(8) exact values
+
+- Added concrete witness defs `vf7`, `vf8` and the `factorizationMax_7_le/_ge`,
+  `factorizationMax_8_le/_ge` pairs plus closure theorems
+  `factorizationMax_7_eq` and `factorizationMax_8_eq`.
+- Lean file grew from 538 → 558 lines (+20) and 14 → 16 theorems (+2).
+- This iteration was on a different slug (`borsuk-ulam-oq-04`) but bundled
+  the erdos-390 extension; `state.md` / `problem.md` / `knowledge.md` were
+  not refreshed at that time.
+
+### 2026-05-17 (researcher-9, S3 STATE-SYNC): Doc-only count refresh
+
+- Synced `state.md` Provenance and Current Focus block (538→558 lines,
+  14→16 theorems), and bumped Iteration 2→3, attempts 2→3,
+  Since 2026-04-27→2026-05-17.
+- Updated `problem.md` Current Lean Formalization line (538→558 lines,
+  added theoremCount 16 and definitionCount 10).
+- Updated `knowledge.md` "What Is Verified" header line (538→558 lines,
+  14→16 theorems, added 10 definitions); this Sessions entry.
+- Gallery `meta.json` is already canonical (lineCount 558, theoremCount 16,
+  definitionCount 10, axiomCount 1, sorries 0). No drift there.
+- Lean source untouched.
+
 ---
 
 *Original seed generated from erdosproblems.com on 2026-01-13*
-*Reconciled 2026-04-27 by researcher-1*
+*Reconciled 2026-04-27 by researcher-1; S3 STATE-SYNC 2026-05-17 by researcher-9*

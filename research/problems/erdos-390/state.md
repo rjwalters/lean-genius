@@ -1,8 +1,8 @@
 # Current State
 
 **Phase**: MATURE-AXIOMATIZED
-**Since**: 2026-04-27
-**Iteration**: 2
+**Since**: 2026-05-17 (S3 STATE-SYNC; phase unchanged from iter 2, just refreshed counts)
+**Iteration**: 3
 
 ## Current Focus
 
@@ -13,7 +13,7 @@ itself.
 ## Active Approach
 
 Maintenance/reconciliation only. The Lean formalization
-(`proofs/Proofs/Erdos390Problem.lean`, 538 lines) captures:
+(`proofs/Proofs/Erdos390Problem.lean`, 558 lines) captures:
 
 1. `ValidFactorization n` structure (sorted factors $> n$, product $= n!$)
 2. `factorizationMax n` as the noncomputable `sInf` of maximum factors
@@ -43,14 +43,14 @@ Hold at `axiomatized` status. Possible future enrichment (not blocking):
 
 ## Attempt Counts
 
-- Total attempts: 2
-- Current approach attempts: 1 (reconciliation iteration)
+- Total attempts: 3 (initial formalization + f(7)/f(8) extension PR #15930 + this STATE-SYNC)
+- Current approach attempts: 2 (reconciliation iteration)
 - Approaches tried: 1 (constructive witness + axiomatized asymptotic + open Prop)
 
 ## Provenance
 
 - Gallery slug: `erdos-390`
-- Lean source: `proofs/Proofs/Erdos390Problem.lean` (538 lines, 14 theorems, 1 axiom, 0 sorries)
+- Lean source: `proofs/Proofs/Erdos390Problem.lean` (558 lines, 16 theorems, 1 axiom, 0 sorries)
 - Gallery meta: `src/data/proofs/erdos-390/meta.json` (status `axiomatized`)
 - OEIS reference: A193429
 - Primary citation: Erdős, Guy, Selfridge (1982), "Another property of 239 and some related questions"

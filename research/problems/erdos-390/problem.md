@@ -61,7 +61,7 @@ bound)
 ## Current Lean Formalization
 
 **Status**: `axiomatized` (gallery), `MATURE-AXIOMATIZED` (research)
-**Source**: `proofs/Proofs/Erdos390Problem.lean` (538 lines)
+**Source**: `proofs/Proofs/Erdos390Problem.lean` (558 lines, 16 theorems, 10 definitions)
 **Sorries**: 0
 **Axioms**: 1 (`factorizationMax_asymptotic`, the EGS two-sided bound)
 
