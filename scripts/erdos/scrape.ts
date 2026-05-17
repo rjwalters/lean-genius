@@ -19,11 +19,6 @@ import {
   rateLimitedFetch,
   type CacheConfig,
 } from './cache'
-import {
-  fetchWithPlaywright,
-  fetchLatexWithPlaywright,
-  closeBrowser,
-} from './playwright-fetch'
 
 const BASE_URL = 'https://erdosproblems.com'
 
@@ -345,12 +340,13 @@ export async function scrapeProblem(
   // Check cache first
   let html = useCache ? getCachedHtml(problemNumber, config) : null
   let latex = useCache ? getCachedLatex(problemNumber, config) : null
+  const playwrightFetcher = usePlaywright ? await import('./playwright-fetch') : null
 
   // Fetch if not cached
   if (!html) {
     if (usePlaywright) {
       // Use Playwright browser
-      const result = await fetchWithPlaywright(problemNumber)
+      const result = await playwrightFetcher!.fetchWithPlaywright(problemNumber)
       if (!result) {
         return null
       }
@@ -388,7 +384,7 @@ export async function scrapeProblem(
   if (!latex) {
     if (usePlaywright) {
       // Use Playwright browser
-      const latexContent = await fetchLatexWithPlaywright(problemNumber)
+      const latexContent = await playwrightFetcher!.fetchLatexWithPlaywright(problemNumber)
       if (latexContent) {
         latex = latexContent
         cacheLatex(problemNumber, latex, config)
@@ -496,6 +492,7 @@ export async function scrapeProblems(
   } finally {
     // Close browser if using Playwright
     if (usePlaywright) {
+      const { closeBrowser } = await import('./playwright-fetch')
       await closeBrowser()
     }
   }
