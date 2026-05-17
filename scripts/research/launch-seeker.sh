@@ -7,7 +7,8 @@
 # loop by keeping the Researcher pipeline fed with good problems.
 #
 # Usage:
-#   ./launch-seeker.sh              Launch seeker (default 15min interval)
+#   ./launch-seeker.sh              Launch seeker (default 30min interval)
+#   ./launch-seeker.sh --dry-run    Preview launch without starting tmux
 #   ./launch-seeker.sh --stop       Stop the seeker
 #   ./launch-seeker.sh --status     Check seeker status
 #   ./launch-seeker.sh --attach     Attach to seeker session
@@ -15,7 +16,7 @@
 #   ./launch-seeker.sh --graceful-stop  Signal seeker to stop after current work
 #
 # Environment:
-#   SEEKER_INTERVAL - Interval in minutes between checks (default: 15)
+#   SEEKER_INTERVAL - Interval in minutes between checks (default: 30)
 #   SEEKER_THRESHOLD - Minimum available problems before triggering (default: 15)
 
 set -euo pipefail
@@ -45,6 +46,22 @@ THRESHOLD="${SEEKER_THRESHOLD:-15}"
 CANDIDATE_POOL="$REPO_ROOT/.lean/state/candidate-pool.json"
 WORKTREE_PATH="$WORKTREES_DIR/seeker"
 BRANCH_NAME="feature/seeker"
+DRY_RUN=false
+ARGS=()
+
+for arg in "$@"; do
+    case "$arg" in
+        --dry-run|-n)
+            DRY_RUN=true
+            ;;
+        --help|-h)
+            ARGS+=("--help")
+            ;;
+        *)
+            ARGS+=("$arg")
+            ;;
+    esac
+done
 
 # Colors
 RED='\033[0;31m'
@@ -209,6 +226,27 @@ EOF
 
 # Launch the seeker agent
 launch_agent() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        local available
+        available=$(check_pool_depth)
+
+        print_info "Dry run: would launch seeker agent"
+        print_info "Would check dependencies: tmux, claude, jq"
+        print_info "Would create directories: $LOGS_DIR, $SIGNALS_DIR"
+        print_info "Would remove signal: $SIGNALS_DIR/stop-seeker"
+        print_info "Would replace tmux session: $SESSION_NAME"
+        print_info "Would create or update worktree: $WORKTREE_PATH"
+        print_info "Would create prompt file under: $LOGS_DIR"
+        print_info "Would launch claude wrapper in daemon mode"
+        print_info "Interval: $INTERVAL minutes"
+        print_info "Threshold: $THRESHOLD available problems"
+        print_info "Current available: $available"
+        if [[ "$available" -lt "$THRESHOLD" ]]; then
+            print_warning "Pool is low ($available < $THRESHOLD) - seeker would select problems immediately"
+        fi
+        return
+    fi
+
     check_deps
     mkdir -p "$LOGS_DIR" "$SIGNALS_DIR"
 
@@ -262,6 +300,15 @@ launch_agent() {
 
 # Stop the seeker
 stop_agent() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        print_info "Dry run: would stop seeker agent"
+        print_info "Would create stop signal: $SIGNALS_DIR/stop-seeker"
+        print_info "Would wait 2 seconds for graceful shutdown"
+        print_info "Would kill tmux session: $SESSION_NAME"
+        print_info "Would remove stop signal: $SIGNALS_DIR/stop-seeker"
+        return
+    fi
+
     print_info "Stopping seeker agent..."
 
     # Create stop signal for graceful shutdown
@@ -283,6 +330,11 @@ stop_agent() {
 
 # Graceful stop (just create signal, don't kill)
 graceful_stop_agent() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        print_info "Dry run: would create stop signal: $SIGNALS_DIR/stop-seeker"
+        return
+    fi
+
     print_info "Sending graceful stop signal to seeker agent..."
     mkdir -p "$SIGNALS_DIR"
     touch "$SIGNALS_DIR/stop-seeker"
@@ -342,6 +394,11 @@ check_status() {
 
 # Attach to session
 attach_session() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        print_info "Dry run: would attach to tmux session: $SESSION_NAME"
+        return
+    fi
+
     if ! tmux has-session -t "$SESSION_NAME" 2>/dev/null; then
         print_error "No seeker session found"
         exit 1
@@ -352,6 +409,11 @@ attach_session() {
 
 # Tail logs
 tail_logs() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        print_info "Dry run: would tail log file: $LOG_FILE"
+        return
+    fi
+
     if [[ ! -f "$LOG_FILE" ]]; then
         print_error "No log file found: $LOG_FILE"
         exit 1
@@ -361,7 +423,7 @@ tail_logs() {
 }
 
 # Main command dispatch
-case "${1:-}" in
+case "${ARGS[0]:-}" in
     --stop|-s)
         stop_agent
         ;;
@@ -388,8 +450,10 @@ The agent runs in an isolated git worktree at $WORKTREES_DIR/seeker
 to prevent contention with other agents working in the main repository.
 
 Usage:
-  ./launch-seeker.sh              Launch seeker (default 15min interval)
+  ./launch-seeker.sh              Launch seeker (default 30min interval)
+  ./launch-seeker.sh --dry-run    Preview launch without starting tmux
   ./launch-seeker.sh --stop       Stop the seeker
+  ./launch-seeker.sh --dry-run --stop  Preview stop without touching signals
   ./launch-seeker.sh --graceful-stop  Signal seeker to stop
   ./launch-seeker.sh --status     Check seeker status
   ./launch-seeker.sh --attach     Attach to seeker session
@@ -397,11 +461,12 @@ Usage:
   ./launch-seeker.sh --help       Show this help
 
 Environment Variables:
-  SEEKER_INTERVAL    Interval in minutes between checks (default: 15)
-  SEEKER_THRESHOLD   Minimum available problems before triggering (default: 5)
+  SEEKER_INTERVAL    Interval in minutes between checks (default: 30)
+  SEEKER_THRESHOLD   Minimum available problems before triggering (default: 15)
 
 Examples:
   ./launch-seeker.sh                         # Start with defaults
+  ./launch-seeker.sh --dry-run               # Preview launch
   SEEKER_INTERVAL=5 ./launch-seeker.sh       # Check every 5 minutes
   SEEKER_THRESHOLD=3 ./launch-seeker.sh      # Trigger at 3 available
   ./launch-seeker.sh --attach                # Watch the agent work
@@ -411,7 +476,7 @@ EOF
         launch_agent
         ;;
     *)
-        print_error "Unknown option: $1"
+        print_error "Unknown option: ${ARGS[0]}"
         echo "Run '$0 --help' for usage"
         exit 1
         ;;
