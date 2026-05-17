@@ -9,7 +9,7 @@
 
 import { readFileSync, existsSync, readdirSync, writeFileSync, mkdirSync } from 'fs'
 import { join, dirname } from 'path'
-import { enrichProblems, type EnrichedProblem } from './external-sync'
+import type { EnrichedProblem } from './external-sync'
 
 const ROOT_DIR = join(dirname(import.meta.url.replace('file://', '')), '../..')
 const REGISTRY_PATH = join(ROOT_DIR, 'research/registry.json')
@@ -105,9 +105,10 @@ function findGalleryEntry(num: number): string | null {
 /**
  * Cross-reference all data sources
  */
-export function crossReference(): CrossRefResult[] {
+export async function crossReference(): Promise<CrossRefResult[]> {
   console.log('Loading data sources...')
 
+  const { enrichProblems } = await import('./external-sync')
   const registry = loadRegistry()
   const enrichedProblems = enrichProblems()
 
@@ -294,15 +295,36 @@ export function generateReport(results: CrossRefResult[]): string {
   return lines.join('\n')
 }
 
+function printHelp(): void {
+  console.log(`
+Usage: npx tsx scripts/erdos/cross-reference.ts [options]
+
+Compare external Erdős data with the Lean Genius research registry.
+
+Options:
+  --json      Print raw cross-reference JSON
+  --report    Print a markdown report
+  --help, -h  Show this help message
+
+Default output prints a report and writes:
+  scripts/erdos/data/cross-reference.json
+  scripts/erdos/data/cross-reference-report.md
+`)
+}
+
 // CLI entry point
 if (import.meta.url === `file://${process.argv[1]}`) {
   const args = process.argv.slice(2)
   const outputJson = args.includes('--json')
   const outputReport = args.includes('--report')
 
-  try {
-    const results = crossReference()
+  if (args.includes('--help') || args.includes('-h')) {
+    printHelp()
+    process.exit(0)
+  }
 
+  async function main(): Promise<void> {
+    const results = await crossReference()
     if (outputJson) {
       console.log(JSON.stringify(results, null, 2))
     } else if (outputReport) {
@@ -319,6 +341,10 @@ if (import.meta.url === `file://${process.argv[1]}`) {
       writeFileSync(join(outputDir, 'cross-reference-report.md'), report)
       console.log('\nSaved to scripts/erdos/data/cross-reference.json and cross-reference-report.md')
     }
+  }
+
+  try {
+    await main()
   } catch (err) {
     console.error('Cross-reference failed:', err)
     process.exit(1)
