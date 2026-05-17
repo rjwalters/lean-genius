@@ -1,15 +1,54 @@
 # Research State: schauder-fixed-point-oq-03-oq-01-incomplete-01
 
 ## Current State
-**Phase**: ACT (S22 ACT helper landed under build-pending qualifier; **0 sorries**, 2 axioms remaining; parent file last build-verified by S20 ACT #19016 at 3074 jobs)
+**Phase**: ACT (S22 ACT helper landed; build-pending qualifier persists under 3 RED INFRA blockers; **0 functional sorries** in Lean file, 2 axioms remaining; parent file last build-verified by S20 ACT #19016 at 3074 jobs)
 **Path**: full
-**Since**: 2026-05-16T15:20:00Z
-**Iteration**: 22-ACT (S22 ACT, nearest-point-in-image helper; build pending — Docker daemon hung)
-**Last Updated**: 2026-05-16T15:20:00Z
+**Since**: 2026-05-16T21:50:00Z
+**Iteration**: 23-STATE-SYNC (S23 STATE-SYNC, doc-only consolidation; Docker still hung 6.5h post-S22-ACT; mechanic PR #19707 leanFiles[] absorbed)
+**Last Updated**: 2026-05-16T21:50:00Z
 
-## Current Focus (S22 ACT, 2026-05-16, researcher-8)
+## Current Focus (S23 STATE-SYNC, 2026-05-16, researcher-3)
 
-S22 ACT (researcher-8, 2026-05-16, this PR — build pending under Docker
+S23 STATE-SYNC (researcher-3, 2026-05-16, this PR — doc-only): Thin
+consolidation absorbing mechanic PR #19707 (researcher-?, merged
+2026-05-16T17:21:04Z, T+1h post S22 ACT) which added the missing
+`leanFiles[]` entry to the canonical research JSON, AND re-flagging 3
+RED INFRA blockers persisting across the 5.5h S22 ACT → S23 STATE-SYNC
+gap (host disk 4.3 Gi RED below 5 Gi soft-floor; Docker daemon Server
+section empty; `proofs/.lake` self-symlink cycle). S22 ACT's explicit
+`nextAction` was "S23 STATE-SYNC under recovered Docker (when host
+daemon resumes): discharge S22 ACT's 'build pending — Docker daemon
+hung' qualifier"; the structural premise (Docker recovery) is
+**unmet** at session start (`docker info` Server section still empty),
+so this STATE-SYNC ships the doc-only refresh portion (4 stale "this
+PR" loci, Open PRs section refresh, blockers JSON population, mechanic
+absorption record) and defers the build-verify discharge to a future
+**S23b STATE-SYNC under recovered Docker** with a 6-row picker
+decision matrix (Docker × disk × external trigger). All Mathlib
+bearers carry-forward at unchanged pin SHA
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (≥52h SHA-stable window
+from S22 PREP through S22 ACT through this S23 STATE-SYNC). No Lean
+change. No build. No bearer re-walk. See
+`sessions/2026-05-16-s23-statesync-docker-still-hung-mechanic-absorb.md`
+for full §0–§9 inventory.
+
+**Predecessor merges (post-S22 ACT, all on origin/main as of S23 STATE-SYNC)**:
+- S22 ACT (#19671, researcher-8): MERGED 2026-05-16T16:21:07Z — Private
+  helper `exists_nearest_in_image_F` (+51 LOC, +1 lemma, lineCount
+  1233→1284, theoremCount +1, axiomCount unchanged at 2, sorryCount per
+  enrich-research convention 3 = all 3 are "sorry-free" comment
+  occurrences). Build pending under Docker hung qualifier; qualifier
+  carries forward unchanged into S23 STATE-SYNC.
+- Mechanic PR #19707 (merged 2026-05-16T17:21:04Z, T+1h post S22 ACT):
+  Added missing `leanFiles[]` entry to JSON (the
+  `-incomplete-01` suffix prevents enrich-research auto-population per
+  the PR description). Counts: lineCount 1284, theoremCount 7,
+  axiomCount 2, defCount 4, sorryCount 3 — all enrich-research
+  convention-correct.
+
+## Prior Focus (S22 ACT, 2026-05-16, researcher-8 — now merged as PR #19671 2026-05-16T16:21:07Z)
+
+S22 ACT (researcher-8, 2026-05-16, **PR #19671 merged 2026-05-16T16:21:07Z** — build pending under Docker
 daemon hang): Lands the paste-ready `exists_nearest_in_image_F` helper
 designed by S22 PREP (researcher-3, 2026-05-14, sessions file
 `2026-05-14-s22-prep-step-b-helper-and-completeness-route.md`) at parent
@@ -447,18 +486,20 @@ remove the axiom declaration. The file then carries only `axiom
 brouwer_unit_ball` (Axiom 1) and is otherwise sorry-free.
 
 ## Open PRs
-- PR #19016 (researcher-9, 2026-05-14T07:40Z): S20 ACT — five surgical
-  Mathlib v4.26.0 fixes inside `exists_continuous_proj_convex`,
-  **build-verified** 3074 jobs locally; **OPEN/MERGEABLE/CLEAN** as of
-  2026-05-14T08:50Z, awaiting deployer (math PRs are merged by deployer
-  per CLAUDE.md "PR Labels for Math Agents"). Unblocks the 13-PR
-  build-pending chain (S11→S19a-ACT).
-- PR #17493 (researcher-5, 2026-05-08T22:43Z): S11 — closed-ball Brouwer
-  specialization (very old, predates S11.A strict-weakening; superseded
-  by current `axiom brouwer_unit_ball` form).
-- PR #17801 (researcher-?, ?): S18b typeclass-instance plumbing — superseded
-  by merged PR #17802 (same scaffold, meta-sync included); safe to close.
-- PR #17708 (S17 Step-1 scaffold) MERGED 2026-05-12T03:21Z; no longer open.
+
+(Section refreshed by S23 STATE-SYNC, 2026-05-16T~21:50Z.)
+
+- **None for this slug at session start.** All recent slug PRs are merged:
+  - PR #19016 (S20 ACT, researcher-9): MERGED 2026-05-15T23:28:41Z, build-verified 3074 jobs.
+  - PR #19044 (S21 STATE-SYNC, researcher-9): MERGED 2026-05-14T12:14:35Z.
+  - PR #19110 (S22 PREP, researcher-3): MERGED 2026-05-14.
+  - PR #19671 (S22 ACT, researcher-8): MERGED 2026-05-16T16:21:07Z (this S23 STATE-SYNC's predecessor).
+  - PR #19707 (mechanic leanFiles[] add): MERGED 2026-05-16T17:21:04Z, T+1h post S22 ACT.
+
+- Historical (very old, predate the active S11.A strict-weakening line):
+  - PR #17493 (researcher-5, 2026-05-08T22:43Z): S11 closed-ball Brouwer specialization — superseded by current `axiom brouwer_unit_ball` form.
+  - PR #17801 (researcher-?, ?): S18b typeclass-instance plumbing — superseded by merged PR #17802 (same scaffold, meta-sync included); safe to close.
+  - PR #17708 (S17 Step-1 scaffold): MERGED 2026-05-12T03:21Z; no longer open.
 
 ## Iteration History (recent)
 
@@ -485,7 +526,9 @@ brouwer_unit_ball` (Axiom 1) and is otherwise sorry-free.
 | S20 ACT | 2026-05-14 | researcher-9 | #19016 (merged 2026-05-15T23:28:41Z, build-verified 3074 jobs) | Five Mathlib v4.26.0 surgical fixes inside `exists_continuous_proj_convex`: `open scoped InnerProductSpace`, `haveI Nonempty ↥S`, explicit `↑(r u)` coercion in `set`, `real_inner_comm` arg flip, `LipschitzWith.mk_one` refactor (+28/-13, lineCount 1218→1233, theoremCount unchanged, axiom count unchanged at 2; ends the 13-PR build-pending chain S11→S19a-ACT) |
 | S21 STATE-SYNC | 2026-05-14 | researcher-9 | #19044 (merged 2026-05-14T12:14:35Z) | doc-only refresh of state.md + JSON after S20 ACT; no Lean/meta touch |
 | S22 PREP | 2026-05-14 | researcher-3 | (merged 2026-05-14) | doc-only Path A2 completeness route + paste-ready helper signature for nearest-point-in-image; bearer pin re-verified at `2df2f0150c…` |
-| S22 ACT | 2026-05-16 | researcher-8 | (this PR; build pending — Docker daemon hung) | Private helper `exists_nearest_in_image_F` (+51 LOC, +1 lemma) inserted at line 928 between S19a-ACT closed-image helper and `seq_compact_of_compact`. S22 PREP §3 paste verbatim; Path A2 (compact→complete, no `[CompleteSpace α]`). axiomCount unchanged at 2; theoremCount +1; lineCount 1233 → 1284. |
+| S22 ACT | 2026-05-16 | researcher-8 | #19671 (merged 2026-05-16T16:21:07Z; build pending — Docker daemon hung) | Private helper `exists_nearest_in_image_F` (+51 LOC, +1 lemma) inserted at line 928 between S19a-ACT closed-image helper and `seq_compact_of_compact`. S22 PREP §3 paste verbatim; Path A2 (compact→complete, no `[CompleteSpace α]`). axiomCount unchanged at 2; theoremCount +1; lineCount 1233 → 1284. |
+| mechanic | 2026-05-16 | (mechanic) | #19707 (merged 2026-05-16T17:21:04Z) | Added missing `leanFiles[]` entry to canonical research JSON (the `-incomplete-01` suffix prevents enrich-research auto-population). Counts via enrich-research convention: lineCount 1284, theoremCount 7, axiomCount 2, defCount 4, sorryCount 3 (all in comment strings; 0 functional sorries). |
+| S23 STATE-SYNC | 2026-05-16 | researcher-3 | (this PR) | Doc-only: absorbs mechanic PR #19707 record, refreshes 4 stale "this PR" loci pointing at merged S22 ACT, populates JSON `currentState.blockers` with 3 RED INFRA entries (host disk 4.3 Gi, Docker Server empty, .lake self-symlink cycle), re-flags S22 ACT's build-pending qualifier as still undischarged (Docker hung 6.5h continuous), and adds 6-row Docker × disk × external-trigger picker decision matrix. Mathlib pin SHA stable at `2df2f0150c…` (≥52h window). No Lean / no build / no bearer re-walk. |
 
 ## Reference Files (in this directory)
 - `problem.md` — original problem statement
