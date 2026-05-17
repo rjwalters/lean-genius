@@ -22,6 +22,7 @@
  *   npx tsx scripts/auditor/find-targets.ts --stats   # Show statistics only
  *   npx tsx scripts/auditor/find-targets.ts --next    # Show single highest-priority target
  *   npx tsx scripts/auditor/find-targets.ts --issues   # Show only proofs with detected issues
+ *   npx tsx scripts/auditor/find-targets.ts --help    # Show usage
  */
 
 import * as fs from 'fs'
@@ -30,6 +31,21 @@ import * as path from 'path'
 const GALLERY_DIR = 'src/data/proofs'
 const TRACKER_FILE = 'src/data/proofs/audit-tracker.json'
 const PROOFS_DIR = 'proofs/Proofs'
+
+function printUsage() {
+  console.log(`Usage: npx tsx scripts/auditor/find-targets.ts [options]
+
+Find proof gallery entries that need integrity auditing.
+
+Options:
+  --all      Show all targets instead of the top 10
+  --json     Output JSON
+  --stats    Show statistics only
+  --next     Show the single highest-priority target
+  --issues   Show only proofs with detected issues
+  --help     Show this help message
+  -h         Show this help message`)
+}
 
 interface TrackerEntry {
   auditCount: number
@@ -353,6 +369,11 @@ function analyzeProof(id: string, galleryPath: string, tracker: Tracker): AuditT
 
 function main() {
   const args = process.argv.slice(2)
+  if (args.includes('--help') || args.includes('-h')) {
+    printUsage()
+    return
+  }
+
   const showAll = args.includes('--all')
   const showJson = args.includes('--json')
   const showStats = args.includes('--stats')
