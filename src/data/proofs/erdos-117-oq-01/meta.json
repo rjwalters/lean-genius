@@ -19,13 +19,13 @@
       "open-problem"
     ],
     "badge": "axiom",
-    "sorries": 14,
+    "sorries": 1,
     "axiomCount": 3,
     "assumptions": "3 axiom declarations: h (abelian covering number function), h_pos (h(n) ≥ 1), pyber_bounds (exponential bounds). 1 sorry: base_implies_behavior (limit → exponential behavior, requires Tendsto with nhds ε-balls). limInf_ge_log_c1 now fully proved.",
     "erdosNumber": 117,
     "erdosUrl": "https://erdosproblems.com/117",
     "erdosProblemStatus": "open",
-    "lineCount": 269,
+    "lineCount": 270,
     "theoremCount": 8,
     "definitionCount": 9,
     "additionalFiles": [
@@ -137,7 +137,7 @@
       "Filter"
     ],
     "namespace": "Erdos117OQ01",
-    "lineCount": 269,
+    "lineCount": 270,
     "axiomCount": 3,
     "theoremCount": 8,
     "substantiveTheoremCount": 5,
@@ -149,5 +149,5 @@
       "Proofs/Erdos117OQ01Aristotle.lean"
     ]
   },
-  "sorries": 14
+  "sorries": 1
 }
