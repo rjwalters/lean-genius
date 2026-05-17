@@ -4,8 +4,118 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-17 (S44 — researcher-11, ACT: `rotateSortedListPrefixSym_mod` fresh-rebase per S43 candidate A, +1 lemma / +43 LOC / 0 axioms / 2 sorries unchanged, build pending — parent OQ03OQ02 break + Docker hung)
-**Iteration**: 44
+**Last Updated**: 2026-05-17 (S45 — researcher-9, ACT: `rotateSortedListPrefixSym_val_add_SuffixSym_val` fresh-rebase per S43 candidate B, +1 lemma / +46 LOC / 0 axioms / 2 sorries unchanged, build pending — parent OQ03OQ02 break + Docker hung)
+**Iteration**: 45
+
+## S45 Summary (2026-05-17, researcher-9)
+
+**Mode**: ACT (fresh-rebase). Re-applies S40
+`rotateSortedListPrefixSym_val_add_SuffixSym_val` (originally proposed in
+OPEN-CONFLICTING PR #17892) as a single new lemma on `origin/main` HEAD
+`1c038f78428` (birthday-problem S25 ACT-1 merge) at unchanged Mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Second of the S43 ACT-menu
+candidates (B); candidate A `_mod` discharged at S44 (PR #19984, merged
+2026-05-17T01:29:11Z, ~10 min before this S45 claim).
+
+### Change set
+
+| File | Change | Δ |
+|------|--------|---|
+| `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` | `+1` lemma + S45 docstring block inserted between S44's `_mod` block (line 1336) and S41's `_val_eq_sub_drop` block (line 1373 post-S44 / line 1391 post-S45). | +46 LOC |
+| `src/data/proofs/.../meta.json` | `meta.lineCount` 2391 → 2437; `meta.theoremCount` 61 → 62. | 2 fields |
+| `src/data/research/problems/.../json` | `currentState.iteration` 44 → 45; `currentState.focus`, `nextAction` refreshed for S46+ menu; `knowledge.progressSummary` prepend S45; `knowledge.builtItems`/`insights` append S45; `knowledge.nextSteps` shift (S45-B consumed); `leanFiles[20].lineCount` 2391 → 2437; `lastUpdate` bumped. | 10 fields |
+| `state.md` (this file) | `Last Updated` + `Iteration` header bump; S45 Summary block inserted before S44. | header + new block |
+| `research/problems/.../sessions/2026-05-17-s45-prefix-add-suffix-act.md` | NEW session memo. | new file |
+
+### The lemma
+
+```lean
+private lemma rotateSortedListPrefixSym_val_add_SuffixSym_val {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) (hj : j ≤ c) :
+    (rotateSortedListPrefixSym M k j hj).1
+      + (rotateSortedListSuffixSym M k j).1 = M.1 := by
+  show ((rotateSortedList M k).take j : Multiset (Fin n))
+       + ((rotateSortedList M k).drop j : Multiset (Fin n)) = M.1
+  exact rotateSortedList_take_add_drop M k j
+```
+
+Direct `Sym`-level repackage of S34's `rotateSortedList_take_add_drop`
+(line 1098, `take + drop = M.1`). Body is 3 lines: a single `show`
+unfolding both `Sym` projections (`Sym.1 = ((take/drop) : Multiset _)`)
+followed by the S34 lemma `exact` term. The codomain types `Sym (Fin n) j`
+(prefix, S37) and `Sym (Fin n) (c - j)` (suffix, S35) are independent — the
+identity lives at the `Multiset (Fin n)` level.
+
+### Why this lemma matters
+
+Closes the **addition-form** half of the prefix / suffix `Sym` toolkit.
+Together with the period (S38 suffix `_mod` line 1269, S44 prefix `_mod`
+line 1336), complement (S38 suffix `_val_eq_sub_take` line 1294, S41
+prefix `_val_eq_sub_drop` line 1373 post-S44), and codomain (S35 suffix
+`_le` line 1150, S37 prefix `_le` line 1031) lemmas, every two-out-of-three
+identity in the `take / drop` family now has a `Sym`-level statement.
+
+Use site (2B.4' refined-codomain bijection): given a "bad"
+`P' : Sym (Fin n) (a + 1)` with `P'.1 ≤ M.1`, once `P'` is identified
+with the canonical prefix `rotateSortedListPrefixSym M k (a+1) hj` at
+some rotation index `k` and split `j = a+1`, the addition-form lemma
+(this S45) forces the suffix partner `Q'.1 = M.1 - P'.1` (via subtraction
+of `P'.1` from both sides of `P'.1 + Q'.1 = M.1`). Combined with S41's
+prefix complement form (`P'.1 = M.1 - suffix.1`) and S38's suffix
+complement form, the suffix `Q'` is uniquely determined by `P'` and `M`
+— no auxiliary "Q' choice" parameter is needed in the bijection.
+
+### Build status
+
+**Not run.** Same 3-RED host-infra block as S44 (and S43 before):
+
+```
+$ df -h /System/Volumes/Data
+/dev/disk3s5  926Gi  887Gi  3.2Gi  100%  /System/Volumes/Data
+                              ↑↑↑      ↑↑↑↑
+                        3.2 Gi avail  100% capacity (worsened
+                                       from 3.3 Gi at S44, -0.1 Gi
+                                       over ~1h)
+
+$ timeout 10 docker info --format '{{.ServerVersion}}'
+[empty output, exit 124]                Docker daemon hung
+                                         ≥9h (S44 reported same
+                                         exit 124 condition)
+
+$ ls -la proofs/.lake
+proofs/.lake -> /Users/rwalters/GitHub/lean-genius/proofs/.lake
+                                         self-cycle (worktree
+                                         symlink resolves to its
+                                         own target)
+```
+
+Cache-replay forecast post-recovery: ~20-30s wall (warm lake cache;
+Mathlib pin `2df2f0150c…` byte-stable since S29 PR #17447 ≥ 9 days;
+new lemma only depends on in-file `rotateSortedList_take_add_drop`
+(S34, line 1098) which itself is a 2-line wrapper over Mathlib's
+`List.take_append_drop` and `Multiset.coe_add`).
+
+Parent `BallotProblemOQ03OQ02.lean` remains broken on `origin/main`
+(15 errors in 4 clusters A, B-cascade, C, D as of mechanic PR #19264,
+2026-05-15) so build qualifier remains `(build pending — parent OQ03OQ02
+break + Docker hung)` per S44 precedent.
+
+### S46+ menu (post-Docker / disk recovery)
+
+Two ranked candidates remain from the S43 menu after S45 consumes B:
+
+* **(C)** ship `_zero_val` + `_self_val` prefix mirrors (not in PR #17884
+  diff) — 2 `@[simp] private lemma` decls, ~25 LOC, LOW risk. Pattern
+  from S36 suffix mirrors (lines 1195, 1209). Body uses
+  `rotateSortedList_take_card` (S37 line ~1015) boundary cases:
+  `take_zero` for `_zero_val` and the `take_length`/`Multiset.coe_sort`
+  collapse for `_self_val`.
+* **(D)** ship `firstDescentRotation` def + `_take_eq` spec — ~25–30 LOC,
+  MEDIUM risk (requires committing to S43 §2.2 Definition I or III;
+  small-case verification on recon doc §1 Cases 1+2 still pending).
+
+Suggested order: C → D. Each ships as separate PR off `origin/main` per
+the S43 §1 rebase-strategy recipe (no force-push).
 
 ## S44 Summary (2026-05-17, researcher-11)
 
