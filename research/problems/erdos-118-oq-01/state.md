@@ -1,54 +1,65 @@
 # Current State
 
-**Phase**: ACT
-**Since**: 2026-03-28T15:00:00Z
-**Iteration**: 4
+**Phase**: COMPLETED
+**Since**: 2026-03-24T15:15:41Z (registry graduated)
+**Iteration**: 5
 
-## Current Focus
+## Deliverable (Shipped)
 
-Open question OQ-01 asks: is the partition threshold of $\omega^{\omega^2}$
-exactly 3 or 4? The Lean formalization in `proofs/Proofs/Erdos118Problem.lean`
-proves the bracket result (theorem `omega_omega2_threshold`):
+The deliverable for this slug is the bracket result for
+$\mathrm{partitionThreshold}(\omega^{\omega^2})$, formalized in
+`proofs/Proofs/Erdos118Problem.lean` (139 lines, 2 axioms, 0 sorries):
 
 $$3 \leq \mathrm{partitionThreshold}(\omega^{\omega^2}) \leq 4$$
 
-derived from:
-- `counter_partition_3` axiom (Schipperus 1999/2010): $\omega^{\omega^2} \to (\omega^{\omega^2}, 3)^2$
-- `counter_not_partition_5` axiom (Larson): $\omega^{\omega^2} \nrightarrow (\omega^{\omega^2}, 5)^2$
-- `partition_monotone_down` theorem (proved, no axiom)
+theorem `omega_omega2_threshold`, derived via:
 
-OQ-01 itself — pinning down whether the threshold is exactly 3 or exactly 4
-— requires either proving `IsPartitionOrd counterexampleOrd 4` (then the
-threshold is 4) or `¬ IsPartitionOrd counterexampleOrd 4` (then the
-threshold is 3). Neither is currently in the literature.
+- `counter_partition_3` axiom (Schipperus 1999/2010, Darby 1999):
+  $\omega^{\omega^2} \to (\omega^{\omega^2}, 3)^2$
+- `counter_not_partition_5` axiom (Larson):
+  $\omega^{\omega^2} \nrightarrow (\omega^{\omega^2}, 5)^2$
+- `partition_monotone_down` (proved, no axiom)
+- `partition_monotone_up_neg` (proved, no axiom)
+- `partition_transition_exists` (proved by strong induction, no axiom — added
+  in PR #16227 to eliminate the two previously-axiomatized definitional
+  axioms `partitionThreshold` and `threshold_exact`)
 
-## Active Approach
+Axiom count history: original 4 → 2 (PR #16227 eliminated the two
+definitional axioms).
 
-None — the bracket [3, 4] is the best known. Resolving OQ-01 to a single
-value is a deep ordinal partition relation question and is the actual open
-content of this slug.
+## Residual Open Mathematics
 
-## Blockers
+OQ-01 itself — pinning down whether the threshold is exactly 3 or
+exactly 4 — requires either proving `IsPartitionOrd counterexampleOrd 4`
+(then the threshold is 4) or `¬ IsPartitionOrd counterexampleOrd 4`
+(then the threshold is 3). To my knowledge, neither is currently
+settled in the literature: the analogous result at $K_4$ is open.
+This is upstream open mathematics, not a Lean-formalization gap, and
+is consequently not actionable from this slug.
 
-- Need a settled answer to: does $\omega^{\omega^2} \to (\omega^{\omega^2}, 4)^2$ hold?
-- The two `counter_*` axioms are themselves deep theorems from Schipperus/Larson;
-  the analogous result at K_4 is, to my knowledge, still open.
+## Re-Open Trigger
 
-## Next Action
+If a literature result settles the $K_4$ case, this slug can be
+re-opened to:
 
-This slug is a candidate to remain ACT (open) until either:
-1. A literature result settles the K_4 case, after which a new axiom
-   `counter_partition_4` or `counter_not_partition_4` can be added and
-   `omega_omega2_threshold` strengthened to equality.
-2. We deliberately mark BLOCKED on the upstream open problem.
+1. Add a new axiom `counter_partition_4` or `counter_not_partition_4`.
+2. Strengthen `omega_omega2_threshold` to equality.
 
-The wider work referenced in JSON `knowledge.builtItems` (Erdos1182, etc.)
-belongs to sibling slugs (erdos-1182-related). The OQ-01-specific deliverable
-is the bracket theorem already in `Erdos118Problem.lean`, plus an honest
-acknowledgement that the precise value is open.
+Until then, the bracket [3, 4] is the best known and is the final
+deliverable.
+
+## Cross-References
+
+- Gallery: `src/data/proofs/erdos-118/` (canonical: 2 axioms, 139 lines,
+  6 theorems, 4 definitions, 0 sorries, status `axiomatized`, badge `axiom`)
+- Lean: `proofs/Proofs/Erdos118Problem.lean`
+- Predecessors: PR #1280 (initial formalization), PR #5873 (axiom-elim
+  survey), PR #5911 (`omega_omega2_threshold` + threshold guard), PR #7445
+  (`ordPartition` definition + `partition_monotone_down`), PR #16227
+  (4→2 axiom reduction via `partition_transition_exists`).
+- Related: Erdős #592 (`relation_to_592` documents the connection).
 
 ## Attempt Counts
 
-- Total attempts: 4
-- Current approach attempts: 1 (bracket [3, 4] via monotonicity)
-- Approaches tried: 1
+- Total attempts: 5 (4 prior research arcs + this STATE-SYNC catchup)
+- Approaches tried: 1 (bracket [3, 4] via monotonicity + transition)
