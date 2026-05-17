@@ -17,6 +17,12 @@
       "arithmetic progression",
       "quadratic-growth sequences",
       "ℕ to ℤ coercion"
+    ],
+    "prerequisites": [
+      "Elementary arithmetic on ℕ and ℤ",
+      "Discrete-derivative / forward-difference operator $\\Delta q(n) = q(n+1) - q(n)$",
+      "Subtraction on ℕ is truncated — motivates the ℤ coercion in the signed second-difference",
+      "Lean 4 `Prop`-valued universal definitions"
     ]
   },
   {
@@ -37,6 +43,13 @@
       "Bunyakovsky conjecture",
       "density of primes",
       "Heegner / Stark-Baker class number 1"
+    ],
+    "prerequisites": [
+      "Lean 4 `structure` declarations and projection accessors",
+      "Mathlib `StrictMono` (strictly-increasing functions on `ℕ`)",
+      "Mathlib `Nat.Prime` primality predicate",
+      "Bundle / record types vs proposition types in dependent type theory",
+      "Awareness that a non-constant arithmetic progression in ℕ cannot contain only primes (Dirichlet density argument)"
     ]
   },
   {
@@ -57,6 +70,13 @@
       "quadratic residues and prime-density obstructions",
       "Hardy-Littlewood Conjecture F",
       "Bunyakovsky conjecture"
+    ],
+    "prerequisites": [
+      "Quadratic polynomials over ℤ and their value tables",
+      "Discriminant of a quadratic ($b^2 - 4ac$) and its sign",
+      "Quadratic residues mod $p$ and the Legendre symbol",
+      "(Optional) Heegner-Stark-Baker theorem: only nine class-number-1 imaginary quadratic fields",
+      "`Nat.Prime` decidability for explicit small naturals"
     ]
   },
   {
@@ -77,6 +97,12 @@
       "ℕ to ℤ coercion",
       "polynomial identities in commutative rings",
       "second-difference of quadratics"
+    ],
+    "prerequisites": [
+      "Lean 4 tactic mode and the `unfold`/`intro` tactics",
+      "`push_cast` semantics: rewriting `((x : ℕ) : ℤ)` patterns inside arithmetic expressions",
+      "`ring` decision procedure on `CommRing` and `CommSemiring`",
+      "Closure of ℤ under subtraction (motivates choosing ℤ over ℕ for the goal)"
     ]
   },
   {
@@ -97,6 +123,12 @@
       "Nat.Prime decidability",
       "computational verification",
       "Euler's polynomial breakdown at n = 40"
+    ],
+    "prerequisites": [
+      "`interval_cases n` tactic — case-splits a bounded `ℕ` into a finite list of literal subgoals",
+      "`native_decide` tactic — discharges decidable propositions by compiling to native code (faster than `decide` on large terms)",
+      "`Decidable (Nat.Prime n)` instance for explicit literal naturals",
+      "`refine ⟨_, _, ?_⟩` anonymous constructor with placeholder for residual goal"
     ]
   },
   {
@@ -118,6 +150,13 @@
       "Goldston-Yıldırım sieve",
       "Dirichlet's theorem on primes in AP",
       "axiom integrity policy"
+    ],
+    "prerequisites": [
+      "Definition of an arithmetic progression $a, a+g, a+2g, \\ldots$ in ℕ",
+      "Concept of an axiom in Lean 4 (`axiom` declaration introduces an unproved constant)",
+      "Awareness of Mathlib's coverage frontier — what is and is not formalized at v4.26.0",
+      "(Optional) Sketch of the Green-Tao 2008 proof structure (Szemerédi + transference + GY sieve)",
+      "Project axiom-integrity policy: every `axiom` must cite its provenance and be tracked in `meta.axiomCount`"
     ]
   },
   {
@@ -138,6 +177,13 @@
       "ring tactic",
       "linear sequences have zero second-difference",
       "bridge architecture for raw axiom → predicate form"
+    ],
+    "prerequisites": [
+      "`obtain ⟨...⟩ := h` destructuring on existentials and conjunctions",
+      "Anonymous-constructor `refine ⟨_, _, _⟩` for sigma / and / exists goals",
+      "`push_cast` and `ring` (same as `eulerPoly_hasAPGaps`)",
+      "Identification: 'AP with common difference $g$' = 'linear sequence $a + ng$' = 'second-difference 0'",
+      "Lambda-syntax `fun n => a + n * g` for in-line ℕ→ℕ functions"
     ]
   },
   {
@@ -158,6 +204,13 @@
       "interval_cases tactic",
       "primorial as common-difference requirement",
       "Lander-Parkin (1967) length-10 prime AP"
+    ],
+    "prerequisites": [
+      "`decide` tactic — invokes the kernel `Decidable` instance reduction",
+      "`interval_cases n` for $n < k$ when $k$ is a small literal",
+      "Divisibility argument: in any length-$k$ prime AP with common difference $g$ and smallest term $> k$, $g$ must be divisible by every prime $p < k$",
+      "Primorial $p_k\\#$ as the natural lower bound for the common difference of a length-$k$ prime AP",
+      "(Optional) Existence of much longer prime APs: Green-Tao gives all $k$; the longest explicitly known is length 27 (PrimeGrid AP27, 2019)"
     ]
   },
   {
@@ -179,6 +232,13 @@
       "open vs proved axioms (provenance)",
       "F1 vs F5 axiom signature design",
       "axiom integrity policy"
+    ],
+    "prerequisites": [
+      "Irreducibility of polynomials over $\\mathbb{Z}$ and the `gcd` of polynomial values",
+      "Distinction between **proved** theorems (Green-Tao) and **open** conjectures (Bunyakovsky) when both are encoded as `axiom`",
+      "Predicate (F5) vs raw-triple (F1) axiom signature design — F5 returns the bridge tuple, F1 returns the data triple",
+      "ℤ-to-ℕ truncation via `Int.toNat` (and why the F1 form would force `d.toNat` casts on the binomial)",
+      "Bridge architecture: separating the axiom from the slug's predicate-form data types"
     ]
   },
   {
@@ -198,6 +258,12 @@
       "ℤ-cast bookkeeping avoidance",
       "predicate form vs raw-triple form",
       "bridge architecture for axiom → predicate connectivity"
+    ],
+    "prerequisites": [
+      "Term-mode proofs in Lean 4 — `theorem h : P := proof_term` (vs tactic-mode `by ...`)",
+      "Recognition that an axiom of statement $P$ is itself a proof of $P$, so `bunyakovsky_finitary k d hd : P` closes a goal of shape $P$ directly",
+      "Comparison of F5 (predicate-form) vs F1 (raw-triple) axiom designs and their downstream bridge-complexity trade-offs",
+      "Binomial coefficient $\\binom{n}{2} = n(n-1)/2$ and its ℕ-vs-ℤ representation issues"
     ]
   }
 ]
