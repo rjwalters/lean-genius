@@ -142,7 +142,7 @@ commit_and_pr() {
             else
                 problem_list="$name"
             fi
-            ((count++))
+            ((++count))
         fi
     done <<< "$changed_proofs"
 
