@@ -313,7 +313,8 @@ interface ResearchProblemJson {
 function enrichProblem(
   jsonPath: string,
   leanFiles: LeanFileInfo[],
-  relatedProofs: string[]
+  relatedProofs: string[],
+  dryRun = false
 ): boolean {
   if (leanFiles.length === 0 && relatedProofs.length === 0) {
     return false
@@ -351,7 +352,7 @@ function enrichProblem(
     }
   }
 
-  if (modified) {
+  if (modified && !dryRun) {
     fs.writeFileSync(jsonPath, JSON.stringify(problem, null, 2) + '\n')
   }
 
@@ -360,8 +361,24 @@ function enrichProblem(
 
 // --- Main ---
 
-function main(): void {
-  console.log('Enriching research data with Lean file metadata...\n')
+function printUsage(): void {
+  console.log(`Usage: npx tsx scripts/research/enrich-research.ts [options]
+
+Enrich built research problem JSON with Lean file metadata and related proofs.
+
+Options:
+  --dry-run       Report enrichments without writing JSON files
+  --help, -h      Show this help message`)
+}
+
+function main(options: { dryRun?: boolean } = {}): void {
+  const { dryRun = false } = options
+
+  console.log(
+    dryRun
+      ? 'Enriching research data with Lean file metadata (dry run)...\n'
+      : 'Enriching research data with Lean file metadata...\n'
+  )
 
   // Step 1: Scan Lean files
   const leanFileMap = scanLeanFiles()
@@ -395,7 +412,7 @@ function main(): void {
     const relatedProofs = findRelatedProofs(slug, matchedLeanFiles, galleryProofs)
 
     // Enrich the JSON file
-    const wasEnriched = enrichProblem(jsonPath, matchedLeanFiles, relatedProofs)
+    const wasEnriched = enrichProblem(jsonPath, matchedLeanFiles, relatedProofs, dryRun)
 
     if (wasEnriched) {
       enrichedCount++
@@ -413,6 +430,18 @@ function main(): void {
   console.log(`  Problems enriched: ${enrichedCount}/${jsonFiles.length}`)
   console.log(`  Total Lean files linked: ${totalLeanFiles}`)
   console.log(`  Total related proofs linked: ${totalRelatedProofs}`)
+  if (dryRun) {
+    console.log('  No files written')
+  }
 }
 
-main()
+if (process.argv[1] && import.meta.url === `file://${process.argv[1]}`) {
+  const args = process.argv.slice(2)
+
+  if (args.includes('--help') || args.includes('-h')) {
+    printUsage()
+    process.exit(0)
+  }
+
+  main({ dryRun: args.includes('--dry-run') })
+}
