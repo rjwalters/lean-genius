@@ -4,13 +4,24 @@
 **Phase**: COMPLETED (axiomatized)
 **Path**: full
 **Since**: 2026-05-16
-**Iteration**: 2
+**Iteration**: 3
 
 ## Current Focus
 
-S2 STATE-SYNC catchup (2026-05-16): the implementation was merged out-of-band as PR #14871 (`feat(twin-primes): add TPC OQ-01 gallery entry with 25 verified twin prime pairs`, 2026-05-02) without updating researcher tracking artifacts. State.md + JSON were frozen at the S1 SURVEYED state from 2026-04-27. This S2 brings the artifacts into alignment with disk reality.
+S3 STATE-SYNC (2026-05-17 researcher-12): correct the lineCount convention
+that S2 (2026-05-16) reversed. S2 changed `leanFiles[0].lineCount` 151→150
+to match a then-stale `meta.json`; canonical is the other way around per
+`enrich-research.ts` (`content.split('\n').length`, not `wc -l`). This S3
+fixes both `meta.json` (150→151 in `meta.lineCount` and `leanFile.lineCount`)
+and `research/.../JSON` (`leanFiles[0].lineCount` 150→151). Pool also
+re-flipped `available` → `completed`.
 
-**Disk reality**: `proofs/Proofs/TwinPrimesSpecialOQ01.lean` exists (150 LOC, 25 theorems via `decide` + conditional consequences, 0 standalone axioms, 0 sorries, inherits `twin_prime_conjecture` from parent `TwinPrimes.lean`). Gallery entry `src/data/proofs/twin-primes-special-oq-01/{meta.json,annotations.json,index.ts}` exists with `status: "axiomatized"`, `badge: "axiom"`.
+**Disk reality**: `proofs/Proofs/TwinPrimesSpecialOQ01.lean` exists (151 LOC
+per `split('\n').length`, 150 newlines, ends with trailing `\n`; 25
+theorems via `decide` + conditional consequences, 0 standalone axioms,
+0 sorries, inherits `twin_prime_conjecture` from parent `TwinPrimes.lean`).
+Gallery entry `src/data/proofs/twin-primes-special-oq-01/{meta.json,annotations.json,index.ts}`
+exists with `status: "axiomatized"`, `badge: "axiom"`.
 
 ## Active Approach
 
@@ -40,11 +51,12 @@ None of these are scheduled. The slug stands as-is.
 
 - 2026-04-23: Problem created (gallery-gap, seeker batch #11863)
 - 2026-04-27 (S1): Survey complete; port plan documented; no code change (no build access)
-- 2026-05-02 (out-of-band): PR #14871 implemented the port plan — Lean file 150 LOC + gallery entry created
-- 2026-05-16 (S2): STATE-SYNC catchup — state.md/JSON aligned with disk reality; leanFiles[0].lineCount 151→150 to match gallery; sessions/ bootstrapped
+- 2026-05-02 (out-of-band): PR #14871 implemented the port plan — Lean file 150 newlines (151 LOC split) + gallery entry created
+- 2026-05-16 (S2): STATE-SYNC catchup — state.md/JSON aligned with then-stale gallery; **leanFiles[0].lineCount erroneously rolled 151→150** to match a wc-l-style meta.json
+- 2026-05-17 (S3): STATE-SYNC re-reconciliation — restore canonical `split('\n').length` convention: meta.json 150→151, registry leanFiles[0].lineCount 150→151, pool re-flipped `available` → `completed`
 
 ## Attempt Count
 
-- Total attempts: 2
+- Total attempts: 3
 - Current approach attempts: 1 (port-from-SG-OQ-01 strategy)
 - Approaches tried: 1
