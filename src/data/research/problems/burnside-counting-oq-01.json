@@ -1,37 +1,38 @@
 {
   "slug": "burnside-counting-oq-01",
-  "title": "Burnside Counting — Prove rotatedIndex_add Composition Law",
+  "title": "Burnside Counting: Prove rotatedIndex_add Composition Law",
   "phase": "OBSERVE",
   "status": "active",
-  "tier": "C",
+  "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\forall n,a,b,k\\in\\mathbb{N},\\ 0<n\\Rightarrow \\operatorname{rotatedIndex}\\ n\\ a\\ (\\operatorname{rotatedIndex}\\ n\\ b\\ k) = \\operatorname{rotatedIndex}\\ n\\ ((a + b) \\bmod n)\\ k.",
-    "plain": "Prove that rotating a necklace by one amount and then another is the same as rotating once by the combined amount modulo the necklace length.",
+    "formal": "In `Proofs/BurnsideCounting.lean`, replace `axiom rotatedIndex_add (n : Nat) [NeZero n] (r s : ZMod n) (i : Fin n) : rotatedIndex n s (rotatedIndex n r i) = rotatedIndex n (r + s) i` with a Lean proof.",
+    "plain": "The parent Burnside-counting proof defines `rotatedIndex n r i` as the source index `((i.val + n - (r.val % n)) % n)` for rotating a necklace coloring. This problem asks for a real Lean proof that applying two such rotations composes as addition in `ZMod n`, removing the current modular-arithmetic axiom used by the coloring action.",
     "whyMatters": [
-      "This composition law is part of the cyclic group action used in the Burnside's lemma necklace-counting proof.",
-      "Formalizing it reduces reliance on ad hoc modular arithmetic assumptions around rotatedIndex.",
-      "The proof exercises the Mathlib modular arithmetic lemmas needed for the surrounding group-action infrastructure."
+      "The parent proof records `rotatedIndex_add` as one of five axioms in `Proofs/BurnsideCounting.lean`.",
+      "This lemma is the composition law needed for `cyclicAddActionOnColorings` and the rotation action on necklace colorings.",
+      "The target is a concrete proof-engineering gap in modular arithmetic, not an open mathematical conjecture."
     ]
   },
   "knownResults": {
     "proven": [
-      "The parent Burnside-counting gallery proof defines necklace rotation through rotatedIndex n a k = (k + a) % n.",
-      "Local notes identify the expected composition calculation as a Nat.add_mod-style modular arithmetic proof."
+      "`rotatedIndex_zero` is proved in the parent file: zero rotation leaves each `Fin n` index unchanged.",
+      "The parent file wraps Mathlib's Burnside lemma as `burnside_lemma` and proves supporting counts such as `binary_4_colorings_count`, `constant_coloring_count`, and `period2_count`.",
+      "Local metadata records `Proofs/BurnsideCounting.lean` as having 0 sorries but 5 axioms."
     ],
     "open": [
-      "Confirm whether rotatedIndex_add is currently axiomatized, missing, or derivable directly in the Lean source.",
-      "Decide whether the needed statement is the direct composition law or the inverse variant using (a + n - b) % n."
+      "`rotatedIndex_add` itself is still an axiom in `Proofs/BurnsideCounting.lean`.",
+      "Four other parent-file axioms remain outside this OQ: `fixed_point_sum_binary_4`, `coloringSetoid`, `coloringQuotientFintype`, and `binary_necklaces_4`."
     ],
-    "goal": "Prove the rotatedIndex composition law needed for the Burnside necklace-counting rotation action."
+    "goal": "Prove the `rotatedIndex_add` composition theorem for the existing `ZMod n`/`Fin n` definition without adding new axioms or sorries."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-03T07:05:01-07:00",
     "iteration": 1,
-    "focus": "Locate the rotatedIndex definition and prove the modular composition law for necklace rotations.",
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Inspect the BurnsideCounting Lean source, unfold rotatedIndex, and try Nat.add_mod/omega on the composition target.",
+    "nextAction": "Read problem.md thoroughly and acquire full context.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -39,22 +40,35 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "OBSERVE: Local docs and the parent proof identify `rotatedIndex_add` as an axiomatized modular-arithmetic composition law in `Proofs/BurnsideCounting.lean`. No OQ-specific Lean proof attempt is recorded in the local state.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: burnside-counting-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "The actual source theorem uses `ZMod n` rotations and `Fin n` indices, not bare natural-number rotation parameters.",
+      "`rotatedIndex n r i` computes `((i.val + n - (r.val % n)) % n)` to model subtraction modulo `n` in `Nat`.",
+      "`cyclicAddActionOnColorings.add_vadd` depends directly on `rotatedIndex_add`.",
+      "Discharging this OQ removes one parent-file axiom, but the overall Burnside-counting entry remains axiomatized until the other four parent axioms are also proved."
+    ],
+    "mathlibGaps": [
+      "No confirmed missing Mathlib theorem is documented locally; the expected work is controlling `Nat` subtraction/modulo arithmetic or recasting the argument through `ZMod`/`Fin` lemmas."
+    ],
+    "nextSteps": [
+      "Reproduce the exact parent theorem in a Lean scratch or feature file and unfold `rotatedIndex`.",
+      "Try a `simp`/`omega` route using `Nat.add_mod`, `Nat.sub_mod`, and `ZMod.val_lt`; if that stalls, move the calculation into `ZMod n` before returning to `Fin n` equality.",
+      "Only after a compiling proof exists, replace the parent axiom and refresh proof metadata."
+    ],
+    "markdown": "# Knowledge Base: burnside-counting-oq-01\n\n## Problem Understanding\n\nThe target is the parent-file axiom `rotatedIndex_add` in `Proofs/BurnsideCounting.lean`. The source definition is:\n\n```lean\ndef rotatedIndex (n : Nat) [NeZero n] (r : ZMod n) (i : Fin n) : Fin n :=\n  { val := ((i : Nat) + n - (r.val % n)) % n\n    isLt := Nat.mod_lt _ (NeZero.pos n) }\n```\n\nThe theorem to prove is that composing two rotations of this form equals rotation by the sum in `ZMod n`:\n\n```lean\nrotatedIndex n s (rotatedIndex n r i) = rotatedIndex n (r + s) i\n```\n\n## Source Evidence\n\n`Proofs/BurnsideCounting.lean` proves `rotatedIndex_zero`, but states `rotatedIndex_add` as an axiom. The `cyclicAddActionOnColorings` instance uses this axiom to satisfy `add_vadd`. Parent metadata also lists `rotatedIndex_add` as one of five assumptions in the Burnside-counting gallery proof.\n\n## Current Status\n\nThe research state is still OBSERVE with zero recorded attempts. No local session file records a failed tactic path or a completed Lean proof for this OQ.\n\n## Useful Facts\n\n- The index formula is subtraction modulo `n` implemented in `Nat`: `i + n - r.val`, then `% n`.\n- Equality of `Fin n` values should reduce to a modular arithmetic identity on the underlying natural values.\n- The parent proof already has `[NeZero n]`, so `0 < n` is available as `NeZero.pos n`.\n\n## Next Work\n\nStart from the exact source signature, unfold `rotatedIndex`, and test whether `simp` plus `omega` can close the `Nat` modulo identity. If direct `Nat.sub` arithmetic is brittle, prove the rotation law in `ZMod n` first and transfer it back to the `Fin n` index representation.\n"
   },
   "tags": [
+    "seeker-selected",
     "combinatorics",
     "group-theory",
     "counting",
     "orbits",
     "necklaces",
     "group-actions",
-    "polya-enumeration",
-    "modular-arithmetic"
+    "modular-arithmetic",
+    "zmod",
+    "polya-enumeration"
   ],
   "relatedProofs": [
     "burnside-counting",

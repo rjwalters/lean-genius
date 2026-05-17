@@ -1,36 +1,35 @@
 {
   "slug": "cantor-diagonalization-oq-03-oq-01-oq-02",
-  "title": "Rice's Theorem as Lawvere Instance",
+  "title": "Rice's Theorem as a Lawvere Instance",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
-  "path": "full",
+  "path": "fast",
   "problemStatement": {
-    "formal": "\\text{Rice's Theorem: For any non-trivial semantic property } P \\text{ of computable functions, the set } \\{e \\mid P(\\varphi_e)\\} \\text{ is undecidable.}",
-    "plain": "Derive Rice's theorem explicitly as a special case of the Lawvere fixed-point gallery proof: no non-trivial property of what a program computes can be decided.",
+    "formal": "\\text{For any non-trivial semantic property } P \\text{ of computable partial functions, } \\{e \\mid P(\\varphi_e)\\} \\text{ is undecidable.}",
+    "plain": "Derive Rice's theorem from Lawvere's fixed-point theorem by treating computable programs as the evaluation structure and using semantic-property complement/diagonalization to show that no non-trivial property of program behavior is decidable.",
     "whyMatters": [
       "Rice's theorem is a central result in computability theory.",
-      "A Lawvere-instance proof would demonstrate the unifying power of the categorical fixed-point framework.",
-      "The target is a machine-verified Lean 4 proof of Rice's theorem by this route."
+      "Deriving it as a Lawvere instance would show how the categorical fixed-point framework unifies computability-theoretic diagonal arguments."
     ]
   },
   "knownResults": {
     "proven": [
-      "Lawvere Fixed-Point Theorem gallery proof exists at cantor-diagonalization-oq-03-oq-01.",
-      "Mathlib has partial computability theory support."
+      "The parent Lawvere fixed-point theorem gallery proof exists as cantor-diagonalization-oq-03-oq-01.",
+      "The associated Lean file Proofs/CantorDiagonalizationOQ03OQ01OQ02.lean contains abstract Rice/Lawvere artifacts including abstract_rice, rice_induced_obstruction, rice_undecidable_witness, semantic_rice_flip, no_halting_model, and classical_rice_abstract; the file metadata records 8 theorems, 0 axioms, 3 definitions, and 0 sorries."
     ],
     "open": [
-      "Formal derivation of Rice's theorem as a Lawvere instance in Lean 4.",
-      "Lean encoding of computable functions as the evaluation category.",
-      "Formalization of non-trivial semantic properties and the point-surjectivity condition."
+      "A concrete Lean instantiation of Rice's theorem using computable partial functions remains open in the problem notes.",
+      "The evaluation category or model for computable functions still needs to be connected to the Lawvere point-surjectivity or recursion-theorem assumptions.",
+      "The Lean encoding of non-trivial semantic properties of computable functions remains to be finalized."
     ],
-    "goal": "Instantiate the Lawvere fixed-point theorem with computable functions and semantic-property complement to derive Rice's undecidability conclusion."
+    "goal": "Instantiate the Lawvere fixed-point theorem with computable functions and semantic-property complement to derive Rice's theorem without claiming a completed concrete computability model before it exists."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-04T02:41:19-07:00",
     "iteration": 1,
-    "focus": "Work out the Lawvere fixed-point instantiation for computable functions and semantic-property complement.",
+    "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
     "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
     "attemptCounts": {
@@ -40,28 +39,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Initial notes frame Rice's theorem as a Lawvere fixed-point theorem instance, with computability encoding and semantic-property formalization as the main open work.",
-    "builtItems": [],
+    "progressSummary": "The research notes define this problem as deriving Rice's theorem as a Lawvere fixed-point instance. Local state remains OBSERVE on the fast path with zero attempts. The associated Lean file contains an abstract Rice/Lawvere development, while the concrete computability-theoretic instantiation is still listed as open.",
+    "builtItems": [
+      "research/problems/cantor-diagonalization-oq-03-oq-01-oq-02/problem.md records the Rice's theorem target, motivation, known results, and initial proof approaches.",
+      "Proofs/CantorDiagonalizationOQ03OQ01OQ02.lean defines an abstract EvalStructure plus abstract_rice, rice_induced_obstruction, rice_undecidable_witness, SemanticProperty, HasFlipProgram, semantic_rice_flip, no_halting_model, ClassicalRiceModel, and classical_rice_abstract."
+    ],
     "insights": [
-      "The intended instance is Val = computable functions and f = complement of a non-trivial semantic property.",
-      "Two possible approaches are direct Lawvere instantiation or a classical Rice proof connected back to Lawvere."
+      "The intended Lawvere route is to turn a decidable non-trivial semantic property into a fixed-point-free Boolean endomorphism, yielding a diagonal contradiction.",
+      "A Rice-style semantic property must depend only on the behavior computed by a program, not on the program's syntax.",
+      "The existing abstract Lean development separates the Lawvere/Rice obstruction from the harder concrete computability model."
     ],
     "mathlibGaps": [
-      "Computability support may be partial for the needed evaluation-category encoding."
+      "problem.md flags Mathlib's computability coverage as only partial for this target.",
+      "A suitable Lean representation of computable functions, semantic equivalence, and the required evaluation or recursion-theorem infrastructure still needs to be selected or built."
     ],
     "nextSteps": [
-      "Inspect the parent Lawvere fixed-point gallery proof.",
-      "Search Mathlib.Computability and Mathlib.CategoryTheory for the needed encoding pieces.",
-      "Formalize the non-trivial semantic property condition."
+      "Search Mathlib.Computability for reusable definitions of computable partial functions, program codes, and semantic equivalence.",
+      "Decide whether the concrete proof should instantiate the existing ClassicalRiceModel abstraction or build a more direct Lawvere evaluation structure.",
+      "Connect the parent Lawvere fixed-point theorem or Bool instance to the concrete Rice statement once the computability model is available."
     ],
-    "markdown": "# Knowledge Base: cantor-diagonalization-oq-03-oq-01-oq-02\n\n## Problem Understanding\n\nThis problem asks for Rice's theorem as a Lawvere fixed-point theorem instance. The intended interpretation is Val = computable functions and f = complement of a non-trivial semantic property, yielding undecidability of {e | P(phi_e)}.\n\n## Known Inputs\n\n- Parent gallery proof: cantor-diagonalization-oq-03-oq-01 proves the Lawvere fixed-point theorem.\n- Mathlib has partial computability theory support through Mathlib.Computability.\n- The relevant surrounding library area also includes Mathlib.CategoryTheory.\n\n## Current Obstacles\n\n- Need a Lean encoding of computable functions as the evaluation category.\n- Need the point-surjectivity condition for the computable-function case.\n- Need to formalize non-trivial semantic properties in Lean 4.\n\n## Candidate Approaches\n\n1. Directly instantiate the abstract Lawvere fixed-point theorem with computable functions.\n2. Prove Rice's theorem by a classical computability argument, then connect it back to the Lawvere framework.\n"
+    "markdown": "# Knowledge Base: cantor-diagonalization-oq-03-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThis problem asks for Rice's theorem as an instance of Lawvere's fixed-point theorem. The target statement is that every non-trivial semantic property of computable partial functions is undecidable: for a property P depending only on program behavior, the set of codes e with P(phi_e) cannot be decided by a total computable procedure.\n\n---\n\n## Local Evidence\n\n- problem.md names the target as \"Rice's Theorem as Lawvere Instance\" and lists the parent Lawvere fixed-point theorem proof cantor-diagonalization-oq-03-oq-01 as already proven.\n- state.md keeps the work in OBSERVE on the fast path with zero total attempts.\n- Proofs/CantorDiagonalizationOQ03OQ01OQ02.lean contains an abstract Rice/Lawvere development, including abstract_rice, rice_induced_obstruction, semantic_rice_flip, no_halting_model, and classical_rice_abstract.\n\n---\n\n## Open Work\n\nThe concrete Lean derivation for computable partial functions remains open in the problem notes. The main missing bridge is a usable computability model: program codes, semantics, semantic equivalence, non-trivial semantic properties, and the Lawvere point-surjectivity or Kleene recursion-theorem infrastructure needed to derive the classical Rice conclusion.\n"
   },
   "tags": [
     "computability",
     "rices-theorem",
     "lawvere",
     "category-theory",
-    "undecidability"
+    "undecidability",
+    "diagonalization"
   ],
   "relatedProofs": [
     "cantor-diagonalization",
@@ -84,9 +89,17 @@
     "cantor-diagonalization-oq-04-oq-03"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Rice, H.G. (1953) - Classes of recursively enumerable sets and their decision problems",
+      "Lawvere, F.W. - Diagonal arguments and cartesian closed categories"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Computability",
+      "Mathlib.CategoryTheory",
+      "Mathlib.Logic.Function.Basic",
+      "Mathlib.Tactic"
+    ]
   },
   "started": "2026-04-04T09:42:47.007Z",
   "lastUpdate": "2026-04-04T09:42:47.023Z",
