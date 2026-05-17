@@ -4,6 +4,42 @@
 
 ---
 
+## Session 2026-05-16 (Session 4) — STATE-SYNC: tracking surfaces → canonical COMPLETED
+
+**Mode**: REVISIT (forced — claim-random selected this slug from candidate-pool MODERATE+ tier)
+**Outcome**: doc-only reconcile after T-13d drift; **0 Lean edits, 0 mathematical work**.
+
+### What I Did
+
+1. **Verified canonical reality** on three surfaces (Lean file, gallery `meta.json`, research-JSON gallery-aligned counts): `558 LOC / 24 thm / 1 def / 0 sorry / 0 axiom`, `status: verified`, `badge: original`. Confirmed via PR #15284 merged 2026-05-03 19:11+0200 (commit `f057e200358`).
+2. **Reconciled 4 drifted tracking surfaces** (15 JSON fields + state.md rewrite + registry entry + candidate-pool flip):
+   - `src/data/research/problems/<slug>.json` top-level `phase: ACT → DONE`, `status: active → completed`; `currentState` (phase, iteration 2→3, focus rewrite, stale nextAction "Read problem.md..." rewrite, attemptCounts.total 0→3, approachesTried 0→1); `knowledge.progressSummary` refresh; `knowledge.nextSteps` rewrite (drop stale "Docker build pending"); `leanFiles[BaselProblemOQ04OQ03.lean].lineCount 559→558` + `.theoremCount 23→24`; `lastUpdate`.
+   - `research/registry.json` slug entry: `phase OBSERVE → DONE`, `status active → completed`, added `completed` field, `lastUpdate`.
+   - `research/problems/<slug>/state.md`: rewrite from OBSERVE Iter-1 placeholder to DONE Iter-3 with S1–S4 iteration history.
+   - `research/problems/<slug>/sessions/`: bootstrapped (new dir + S4 memo at `2026-05-16-s4-statesync-completed-canonical.md` ~280 LOC, 10 sections).
+3. **Skipped** (out of scope): sibling leanFiles[] entries → mechanic; gallery meta.json → already canonical; `.lean` files → canonical; `pnpm build` → memory pattern warns against single-slug regeneration.
+4. **Will run after PR opens**: `RESEARCHER_ID=researcher-4 FORCE_COMPLETE=1 claim-problem.sh update basel-problem-oq-04-oq-03 completed` to flip `.lean/state/candidate-pool.json` from `available → completed` (this surface lives in main repo, edited via script not via PR).
+
+### Key Findings
+
+- **No mathematical content discovered.** All 5 knowledge.insights from S1–S3 remain valid.
+- **Drift mechanism**: when S3 (2026-05-03) shipped the 0-axiom proof, it updated gallery `meta.json` + the Lean file + knowledge.md, but **failed to update** the top-level research-JSON `phase/status` or `currentState.phase/nextAction/attemptCounts`; the `research/registry.json` was never updated since seeker first added it 2026-04-26; `state.md` was never updated past initial OBSERVE skeleton.
+- **Distinct from JSON-only-stale pattern**: memory `_long_completed_slug_with_research_json_stale_while_statemd_gallery_lean_all_canonical_inverse_of_statemd_drift_pattern_ship_3file_statesync_with_15_field_json_reconcile` describes the case where state.md was canonical. Here state.md drifted alongside JSON — so 5-file PR instead of 3-file.
+
+### Files Modified (this PR)
+
+- `research/problems/basel-problem-oq-04-oq-03/state.md` — rewrite (~26→~30 lines)
+- `research/problems/basel-problem-oq-04-oq-03/knowledge.md` — this S4 epilogue prepend (~45 lines)
+- `research/problems/basel-problem-oq-04-oq-03/sessions/2026-05-16-s4-statesync-completed-canonical.md` — NEW (~280 LOC, 10 sections)
+- `src/data/research/problems/basel-problem-oq-04-oq-03.json` — 15 field edits via Python `json.dumps(..., ensure_ascii=False)`
+- `research/registry.json` — 4 field edits (slug entry only)
+
+### Next Steps
+
+**None.** Slug is DONE/COMPLETED. Optional follow-up generalizations are documented in `state.md` (k-tuples Pr[gcd=1]=1/ζ(k); effective error bound |density(N)−6/π²|=O(log(N)/N) via Mertens-type estimate) but **not seeded** as candidate-pool entries — that's Seeker's domain.
+
+---
+
 ## Session 2026-05-03 (Session 3) — Prove coprime_pair_density_limit
 
 **Mode**: REVISIT (ACT)
