@@ -9,7 +9,7 @@
 
 import { readFileSync, writeFileSync } from 'fs'
 import { join, dirname } from 'path'
-import { enrichProblems, type EnrichedProblem } from './external-sync'
+import type { EnrichedProblem } from './external-sync'
 
 const ROOT_DIR = join(dirname(import.meta.url.replace('file://', '')), '../..')
 const REGISTRY_PATH = join(ROOT_DIR, 'research/registry.json')
@@ -99,7 +99,7 @@ export interface SyncResult {
 /**
  * Sync registry with external data
  */
-export function syncRegistry(options: SyncOptions = {}): SyncResult {
+export async function syncRegistry(options: SyncOptions = {}): Promise<SyncResult> {
   const {
     dryRun = false,
     enrichOnly = false,
@@ -112,6 +112,7 @@ export function syncRegistry(options: SyncOptions = {}): SyncResult {
 
   console.log('=== Registry Sync ===\n')
 
+  const { enrichProblems } = await import('./external-sync')
   const registry = loadRegistry()
   const enrichedProblems = enrichProblems()
 
@@ -301,7 +302,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     options.maxNewEntries = parseInt(args[maxIdx + 1])
   }
 
-  if (args.includes('--help')) {
+  if (args.includes('--help') || args.includes('-h')) {
     console.log(`
 Usage: npx tsx scripts/erdos/registry-sync.ts [options]
 
@@ -313,10 +314,13 @@ Options:
   --add-research  Also add open research candidates
   --max-new N     Maximum new entries to add (default: 50)
   --verbose, -v   Show detailed output
-  --help          Show this help
+  --help, -h      Show this help
 `)
     process.exit(0)
   }
 
-  syncRegistry(options)
+  syncRegistry(options).catch((err) => {
+    console.error('Registry sync failed:', err)
+    process.exit(1)
+  })
 }
