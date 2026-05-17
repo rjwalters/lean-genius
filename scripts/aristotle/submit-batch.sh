@@ -153,7 +153,7 @@ submit_file() {
         local preprocess_output
         preprocess_output=$("$PREPROCESS" "$file" 2>&1) || {
             local reject_reason
-            reject_reason=$(echo "$preprocess_output" | grep "^REJECT:" | head -1)
+            reject_reason=$(echo "$preprocess_output" | grep "^REJECT:" | head -1 || true)
             echo -e "  ${YELLOW}Skipped (preprocessing):${NC} ${reject_reason:-rejected}"
             return 3
         }
