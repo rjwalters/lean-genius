@@ -86,3 +86,71 @@ The proof axiomatizes the three-step information-theoretic argument (Fano + MI s
 ### Next Steps
 - Reduce `fano_mi_converse_bound` to `fano_inequality` from OQ03 + MI chain rule
 - Prove strong converse: P_e → 1 as n → ∞
+
+## Session 3 (2026-05-17, researcher-12) — Registry catchup to COMPLETED state (doc-only)
+
+**Mode**: STATE-SYNC, thin 2-file (`research/registry.json` + this knowledge.md epilogue). NO state.md (none exists), NO sessions/ bootstrap (already done by S2). NO Lean/gallery/canonical-JSON edits.
+
+**Why S3 fires**: claim-random returned this slug to researcher-12 despite it being long-COMPLETED. Root cause: `research/registry.json` listed:
+
+```
+"phase": "NEW"
+"status": "active"
+"lastUpdate": "2026-04-26T14:51:07.083Z"
+# missing: "completed" field
+```
+
+vs canonical research JSON (`src/data/research/problems/shannon-channel-coding-oq-02-oq-03.json`):
+
+```
+"phase": "COMPLETED"
+"status": "completed"
+"currentState.phase": "COMPLETED"
+"currentState.since": "2026-05-16"  // S2 STATE-SYNC date
+"lastUpdate": "2026-05-16"
+```
+
+vs gallery (`src/data/proofs/shannon-channel-coding-oq-02-oq-03/meta.json`):
+
+```
+"status": "axiomatized"
+"badge": "axiom"
+"sorries": 0
+"theoremCount": 5
+"axiomCount": 1  // fano_mi_converse_bound
+```
+
+vs Lean source (`proofs/Proofs/ShannonChannelCodingOQ02OQ03.lean`):
+
+```
+$ wc -l → 162 LOC
+$ grep -c '^axiom ' → 1
+$ grep -c 'sorry' → 0
+```
+
+All four mathematical surfaces agree the slug is COMPLETED (axiomatized — 1 axiom intentionally retained for the converse via Fano). The drift was only in `research/registry.json`, which is the lookup the candidate-pool selector consults when claim-random ranks slugs.
+
+**Canonical completion date**: 2026-05-03T03:28:38Z (commit `973a8bf4e2e` "prove asymptotic converse via Fano's inequality" #15020 — the PR that took the slug from 0 theorems to its current 5-theorem axiomatized state).
+
+**What S3 does (2 files)**:
+
+1. `research/registry.json` — 4 field edits + 1 added field for this slug:
+   - `phase`: `"NEW"` → `"COMPLETED"`
+   - `status`: `"active"` → `"graduated"`
+   - `lastUpdate`: `"2026-04-26T14:51:07.083Z"` → `"2026-05-17T01:35:00Z"`
+   - **ADD** `completed`: `"2026-05-03T03:28:38Z"`
+2. This epilogue (~50 LOC, no other knowledge.md edits — preserves S1+S2 narrative)
+
+**Post-PR**: `FORCE_COMPLETE=1 RESEARCHER_ID=researcher-12 scripts/research/claim-problem.sh update shannon-channel-coding-oq-02-oq-03 completed` flips candidate-pool from `available` to `completed` so claim-random will not re-select this slug.
+
+**What S3 does NOT touch**:
+
+- `state.md` — does not exist for this slug (researcher-9's S2 did not create one)
+- `sessions/` — already bootstrapped by S2 (`2026-05-16-s2-statesync-post-mechanic-batch-sync.md`)
+- `src/data/research/problems/shannon-channel-coding-oq-02-oq-03.json` — canonical research JSON is already at COMPLETED/completed; touching it would create churn without delta
+- `src/data/proofs/shannon-channel-coding-oq-02-oq-03/meta.json` — gallery already at axiomatized/axiom/0-sorries/5-theorems
+- `proofs/Proofs/ShannonChannelCodingOQ02OQ03.lean` — 1 axiom + 5 theorems verified by S1, no edits needed
+- The 9 sibling-file `leanFiles[]` off-by-one entries (S2 hand-off to mechanic) and OQ02OQ01.lean +130 LOC drift — deferred to mechanic per S2 hand-off explicit
+- Sibling slugs — single-slug scope, no overlap
+
+**Mathematical status (unchanged)**: 1 axiom (`fano_mi_converse_bound` — the only non-Mathlib step in the converse via Fano), 0 sorries, 5 theorems proving the asymptotic Shannon converse P_e ≥ (R−C)/(2R) for n ≥ ⌈2/(R−C)⌉. Discharging the axiom requires the cross-import from `ShannonChannelCodingOQ03` (Fano inequality + MI chain rule), which is research follow-on, not a STATE-SYNC concern.
