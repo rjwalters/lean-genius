@@ -149,9 +149,12 @@ main() {
     echo -e "${BLUE}Running: lake build $*${NC}"
     echo ""
 
-    # Run lake build
+    # Run lake build. Temporarily disable errexit so we can report failures
+    # before returning the original lake exit code.
+    set +e
     lake build "$@"
     local result=$?
+    set -e
 
     if [[ $result -eq 0 ]]; then
         echo ""
