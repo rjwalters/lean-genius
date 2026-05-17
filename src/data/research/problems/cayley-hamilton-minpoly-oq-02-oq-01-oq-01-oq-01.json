@@ -31,17 +31,17 @@
   "knowledge": {
     "progressSummary": "IN-PROGRESS: 1-axiom formalization of general Skolem-Noether for CSAs. All algebraic lemmas proved. Axiom = Wedderburn+IsIsotypic module iso. 7 theorems, 0 sorries, 1 axiom. Build submitted.",
     "builtItems": [
-      "rightBLinear_is_leftMul: right-B-linear K-linear map satisfies \u03c6(b)=\u03c6(1)\u00b7b (SkolemNoetherCSA.lean:45)",
+      "rightBLinear_is_leftMul: right-B-linear K-linear map satisfies φ(b)=φ(1)·b (SkolemNoetherCSA.lean:45)",
       "rightBLinear_symm_is_leftMul: inverse equiv has same property (SkolemNoetherCSA.lean:53)",
-      "isUnit_of_rightBLinear_equiv: unit extraction via both u\u00b7v=1 and v\u00b7u=1 (SkolemNoetherCSA.lean:67)",
-      "axiom skolemNoether_module_iso: A-module iso B_f\u2243B_g via right-B-linear bijection (SkolemNoetherCSA.lean:115)",
-      "skolemNoether_general: main theorem f,g:A\u2192B conjugate by unit (SkolemNoetherCSA.lean:152)",
+      "isUnit_of_rightBLinear_equiv: unit extraction via both u·v=1 and v·u=1 (SkolemNoetherCSA.lean:67)",
+      "axiom skolemNoether_module_iso: A-module iso B_f≃B_g via right-B-linear bijection (SkolemNoetherCSA.lean:115)",
+      "skolemNoether_general: main theorem f,g:A→B conjugate by unit (SkolemNoetherCSA.lean:152)",
       "aut_is_inner: CSA automorphisms are inner (SkolemNoetherCSA.lean:193)",
       "conjugate_iff_same_image: symmetry of conjugation relation (SkolemNoetherCSA.lean:200)"
     ],
     "insights": [
-      "Key algebraic insight: right-B-linear maps \u03c6:B\u2192B satisfy \u03c6(b)=\u03c6(1)\u00b7b (1-line proof, proved rigorously)",
-      "Unit extraction: if \u03c6:B\u2243\u2097[K]B satisfies \u03c6(b)=u\u00b7b, then u is a unit \u2014 proved without finite-dim using \u03c6\u2218\u03c6\u207b\u00b9=id and \u03c6\u207b\u00b9\u2218\u03c6=id",
+      "Key algebraic insight: right-B-linear maps φ:B→B satisfy φ(b)=φ(1)·b (1-line proof, proved rigorously)",
+      "Unit extraction: if φ:B≃ₗ[K]B satisfies φ(b)=u·b, then u is a unit — proved without finite-dim using φ∘φ⁻¹=id and φ⁻¹∘φ=id",
       "Proof architecture: isolate module isomorphism step (Wedderburn+IsIsotypic) as 1 axiom; all surrounding algebra proved",
       "Mathlib v4.26 has all ingredients for the axiom: IsSimpleRing.exists_ringEquiv_matrix_divisionRing + IsSimpleRing.isIsotypic",
       "The aut_is_inner corollary (CSA automorphisms are inner) follows immediately as the special case A=B"
@@ -163,8 +163,8 @@
     {
       "path": "Proofs/CayleyHamiltonMinpolyOQ03.lean",
       "filename": "CayleyHamiltonMinpolyOQ03.lean",
-      "lineCount": 369,
-      "theoremCount": 12,
+      "lineCount": 368,
+      "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
