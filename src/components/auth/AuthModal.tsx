@@ -174,7 +174,10 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
           </div>
 
           {error && (
-            <div className="text-sm text-red-400 bg-red-500/10 px-3 py-2 rounded-md">
+            <div
+              role="alert"
+              className="text-sm text-red-400 bg-red-500/10 px-3 py-2 rounded-md"
+            >
               {error}
             </div>
           )}
