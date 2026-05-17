@@ -392,7 +392,7 @@ recover_server_completed() {
 
     # Parse project IDs from the table output
     local server_ids
-    server_ids=$(echo "$output" | grep -oE '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' 2>/dev/null)
+    server_ids=$(echo "$output" | grep -oE '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' 2>/dev/null || true)
 
     if [[ -z "$server_ids" ]]; then
         echo "No completed projects found on server"
