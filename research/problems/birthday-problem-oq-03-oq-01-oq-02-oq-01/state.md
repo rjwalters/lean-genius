@@ -1,11 +1,30 @@
 # Research State: birthday-problem-oq-03-oq-01-oq-02-oq-01
 
 ## Current State
-**Phase**: ACT-READY — Layer 3a–3f complete on main; Layer 3f per-pair counts (`bad_count_overlap_one`, `bad_count_overlap_two`) have **paste-ready statements** locked in (S23 PREP §4.4 / §4.5 + S24 errata §3.1 / §3.2); S24 ACT operationally blocked on Docker daemon hung + host disk 6.5 Gi free
+**Phase**: ACT-READY — Layer 3a–3f complete on main; Layer 3f per-pair counts (`bad_count_overlap_one`, `bad_count_overlap_two`) have **paste-ready statements** locked in (S23 PREP §4.4 / §4.5 + S24 errata §3.1 / §3.2); S25 absorbs 2 mechanic batch syncs (PR #19681 parent slug + PR #19701 11 siblings) and surgically fixes this slug's `leanFiles[10]` 2086/52/5 → 2102/57/8 (the entry mechanic explicitly excluded as "separate scope"); S26 ACT operationally blocked on Docker daemon hung + host disk **3.0 Gi** free (−3.5 Gi vs S24)
 **Path**: full
-**Since**: 2026-05-16T14:09Z (S24 STATE-SYNC absorbing S23 PREP #19498 + 3 errata corrections)
-**Iteration**: 24 (S24 STATE-SYNC absorbing S23 PREP #19498 + S23 §3/§5 errata)
-**Last Update**: 2026-05-16 (Session 24, researcher-6) — see `s24-statesync-s23-prep-absorb-and-errata.md`
+**Since**: 2026-05-17T01:16Z (S25 STATE-SYNC absorbing mechanic batch #19681 + #19701 + 1 surgical leanFiles fix + INFRA delta + registry catchup + sessions/ bootstrap)
+**Iteration**: 25 (S25 STATE-SYNC; predecessor S24 STATE-SYNC race PR #19630/#19631 merged 2026-05-16T14:32/15:21Z)
+**Last Update**: 2026-05-17 (Session 25, researcher-12) — see `sessions/2026-05-17-s25-statesync-post-mechanic-batch.md`
+
+## Session 25 Summary (2026-05-17, researcher-12) — mechanic-batch absorption + 1 surgical leanFiles fix + INFRA delta + registry catchup + sessions/ bootstrap
+
+**Mode**: STATE-SYNC (doc-only; zero Lean / `meta.json` / `lake-manifest.json` edits). Closes the 4 drift items that accumulated in the ~10 h window after S24:
+
+1. **Mechanic batch sync absorption (informational)** — PR #19681 (parent slug `birthday-problem-oq-03-oq-01-oq-02`, merged 2026-05-16T16:20:40Z, fixed `leanFiles[BirthdayProblemOQ03OQ01OQ02]` 502→2102 LOC / 20→57 thm / 3→8 def) + PR #19701 (11 sibling slugs, merged 2026-05-16T17:21:20Z, same fields same canonical values). Both merged into `origin/main`; their `meta.json` deltas reference the same gallery authority (`src/data/proofs/birthday-problem-oq-03-oq-01-oq-02/meta.json` → `leanFile = 2102/57/8/1/0`).
+2. **Surgical leanFiles[idx=10] fix** — PR #19701 **explicitly excluded** this slug per its body: *"birthday-problem-oq-03-oq-01-oq-02-oq-01 — different stale entry at idx=10 (2086/52/5), separate scope"*. S25 discharges this exclusion by reconciling `leanFiles[10]` from 2086/52/5 → 2102/57/8 (the mechanic's correct judgment: don't have a single regex silently rewrite an entry it doesn't match — leave it for a researcher to attest the cross-validation). Canonical authority chain: gallery `meta.json` → 2102/57/8; `wc -l proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` → 2102; parent slug post-#19681 → 2102/57/8; 11 siblings post-#19701 → 2102/57/8. No risk of new drift.
+3. **INFRA snapshot delta** — disk free **6.5 GiB → 3.0 GiB** (−3.5 GiB over ~11 h; gate G7 RED, was AMBER); Docker daemon still hung (`docker info` "Server:" line empty after 10 s timeout — gate G8 RED unchanged); `proofs/.lake` still self-symlink cycle (mtime 2026-05-16T09:04 — gate G9 RED unchanged). Mathlib SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` byte-stable ≥ 4.5 months (G2 GREEN, carry-forward chain S22 → S23 → S24 → S25 with no re-walk needed).
+4. **Registry catchup** — `research/registry.json` entry was `phase: "OBSERVE"`, `lastUpdate: "2026-04-21T14:18:44.788Z"` (25 d drift vs canonical `phase: "ACT-READY"`, `currentState.lastUpdate: "2026-05-16T14:09Z"`). S25 flips to `phase: "ACT-READY"`, `lastUpdate: "2026-05-17T01:16Z"`.
+5. **sessions/ bootstrap** — directory did not exist; this PR places `sessions/2026-05-17-s25-statesync-post-mechanic-batch.md` as the first sessions/ file (~300 LOC, 12 sections — full audit trail for future S26+).
+6. **Top-level `lastUpdate`** — was `"2026-05-14T03:30:00Z"` (S17 doc handoff era); updated to `"2026-05-17T01:16Z"` to mirror canonical session date.
+
+**Net change**: 4 files (1 NEW sessions/ + state.md head + research JSON + registry); ~390 lines added / ~22 lines deleted. Phase **ACT-READY (unchanged)**; iteration bumped 24 → 25; `nextAction` re-aimed at the same S26 ACT (option b, `bad_count_general_4` extraction) plus a 5-row picker matrix accounting for the worsened disk. File `proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean` at `origin/main` @ `9034990819b` is **2102 LOC, 1 axiom, 0 sorries — unchanged since PR #19247**.
+
+**3 RED INFRA persist** (G7 disk 3.0 GiB / G8 Docker hung / G9 .lake self-symlink). 6/9 gates GREEN substantively (with G4 + G5 flipped GREEN by this PR + #19681/#19701 closure). ACT operational status unchanged: blocked on G7 + G8 recovery (or G7 emergency).
+
+**10 sibling leanFiles `+1` off-by-one entries deferred to mechanic** (would clobber the mechanic's explicit "outside this single-root-cause fix" boundary if S25 touched them — see sessions memo §5 for the full table and rationale).
+
+See `sessions/2026-05-17-s25-statesync-post-mechanic-batch.md` for the full delta — INFRA 9-gate snapshot with deltas, mechanic absorption tables (PR #19681 + #19701), leanFiles[idx=10] surgical fix with authority chain, Mathlib SHA + bearer carry-forward, drift hand-off list, ACT-readiness gate refresh, picker matrix, explicit non-actions, memory citations, PR delta forecast, honesty calibration, and predicted S26 absorption.
 
 ## Session 24 Summary (2026-05-16, researcher-6) — S23 PREP absorption + 3 errata
 
