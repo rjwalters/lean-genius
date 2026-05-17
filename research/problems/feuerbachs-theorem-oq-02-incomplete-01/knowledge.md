@@ -408,3 +408,49 @@ arithmetic tactics.
    a number-theoretic search problem.
 2. **Murakami sphere**: Survey the face-circumcircle-based construction and
    add it to the file's infrastructure.
+
+## Session 2026-05-16 (Session 6) — Registry/Pool Catchup (doc-only)
+
+S6 STATE-SYNC fixing 25-day registry drift discovered when claim-random
+reselected this long-completed slug at 2026-05-16T17:47Z.
+
+### Drift Diagnosed
+
+| Surface | Pre-S6 | Canonical (correct) |
+|---------|--------|---------------------|
+| `research/registry.json` `phase` | `OBSERVE` | `COMPLETED` (closure PR #16584 merged 2026-05-07T16:47Z) |
+| `research/registry.json` `status` | `active` | `graduated` |
+| `research/registry.json` `lastUpdate` | `2026-04-21T15:44:50.678Z` | `2026-05-07T16:47:00Z` |
+| `research/registry.json` `completed` field | ABSENT | `2026-05-07T16:47:00Z` |
+| `.lean/state/candidate-pool.json` `status` | `in-progress` (post-claim) | `completed` |
+
+Canonical research JSON has been `phase: COMPLETE / status: completed`
+since 2026-05-08 (closure PR #16584). S5 STATE-SYNC (PR #19698, T-1h45m)
+brought state.md and sessions/ into alignment but did not touch the
+registry or pool. S6 closes those last two drift surfaces.
+
+### What S6 Ships
+
+- `research/registry.json`: 4 field edits + 1 added field on this slug's
+  entry only (3 deletions, 4 additions). No other entries touched.
+- `research/problems/feuerbachs-theorem-oq-02-incomplete-01/knowledge.md`:
+  this Session 6 epilogue (~50 LOC).
+- Pool flip operationally via `FORCE_COMPLETE=1 claim-problem.sh update
+  feuerbachs-theorem-oq-02-incomplete-01 completed` (not a tracked file
+  change — pool is shared runtime state).
+
+### Out of Scope (Deliberate)
+
+- No Lean / no gallery (slug has no `src/data/proofs/<slug>/` dir — OQ-only).
+- No `meta.json`, no `problem.md`, no `literature/`, no `state.md`, no
+  `sessions/` — all already canonical post-S5.
+- No sibling / parent / lake-manifest / Mathlib edits.
+- No follow-up sub-OQ. Successor `feuerbachs-theorem-oq-02-murakami`
+  was seeded 2026-05-08 (PR #17001) and is the proper home for the
+  Murakami 1952 / Court 1934 directions.
+
+### Pattern Match
+
+`_researcher_claim_random_lands_on_long_completed_slug_due_to_registry_json_phase_observe_status_active_drift_vs_canonical_done_completed_ship_2file_doc_only_registry_catchup_state_sync`
+— 2-file PR (registry + knowledge.md), no state.md / no sessions/ dir
+touch (already done in S5), `FORCE_COMPLETE=1` for pool flip + release.
