@@ -1,27 +1,38 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-incomplete-01",
-  "title": "cayley-hamilton-minpoly-oq-05-oq-01-oq-04-incomplete-01",
+  "title": "Cayley-Hamilton minpoly OQ05/OQ01/OQ04: cyclic vectors over arbitrary fields",
   "phase": "COMPLETED",
   "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "This proof has 1 sorry statements that need to be filled in.",
-    "whyMatters": []
+    "formal": "\\text{If }M\\in M_n(K)\\text{ is nonderogatory, then }\\exists v:K^n\\text{ such that }v\\text{ is cyclic for }M\\text{ over every field }K.",
+    "plain": "Every nonderogatory matrix over any field has a cyclic vector, including finite fields where the usual union-avoidance proof fails.",
+    "whyMatters": [
+      "Removes the infinite-field/cardinality restriction from the cyclic-vector theorem.",
+      "Shows the finite-field obstruction is only a failure of one proof technique, not a counterexample to the theorem.",
+      "Provides a no-axiom, no-sorry Lean bridge from Cayley-Hamilton/minimal-polynomial work to field-independent cyclic-vector structure."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The Lean file Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean verifies nonderogatory_has_cyclic_vector_any_field with 0 axioms and 0 sorries.",
+      "Similarity invariance, annihilator/minimal-polynomial lemmas, and the F2 union-avoidance counterexample are recorded in the same verified file.",
+      "The main theorem delegates to the WIP05 UFD factorization wrapper and WIP04 Bezout/CRT primary-decomposition route, avoiding any PID structure-theorem assumption."
+    ],
+    "open": [
+      "Deriving a full rational-canonical-form package from the Bezout/CRT cyclic-vector route remains future library work.",
+      "A general finite-field cover theorem explaining the F_q^n union-avoidance failure remains a possible follow-up."
+    ],
+    "goal": "Keep this child record aligned with the verified all-fields cyclic-vector theorem and its 0-sorry proof status."
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-04-03T21:34:23-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Maintain verified metadata for the all-fields nonderogatory-to-cyclic-vector theorem.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "No immediate proof action; monitor upstream theorem and manifest changes.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,13 +40,14 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Fixed broken proofs in CayleyHamiltonMinpolyOQ05OQ01OQ04.lean — all sorries except the intentional structure-theorem sorry are now eliminated",
+    "progressSummary": "COMPLETE: Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean verifies the all-fields nonderogatory-to-cyclic-vector theorem with 0 axioms and 0 sorries; the main theorem delegates to WIP05 and WIP04 rather than an assumed PID structure theorem.",
     "builtItems": [
       "aeval_conj: conjugation by invertible matrix commutes with polynomial evaluation",
       "cyclic_vector_of_similar: cyclic vectors transfer under matrix similarity",
       "annihilator_dvd_minpoly: Bezout identity for GCD annihilation",
       "cyclic_iff_ann_eq_minpoly: characterization of cyclic vectors via annihilators",
-      "F2_union_covers: counterexample showing union avoidance fails over F₂"
+      "F2_union_covers: counterexample showing union avoidance fails over F₂",
+      "nonderogatory_has_cyclic_vector_any_field: verified all-fields cyclic-vector theorem via WIP05/WIP04 delegation"
     ],
     "insights": [
       "Lean 4.26: Units coercion ↑P fails to elaborate as matrix — use P.val and P.inv directly",
@@ -43,18 +55,23 @@
       "Lean 4.26: ← pow_succ fails when M^k*M is surrounded by other matrix factors — reassociate first with mul_assoc then use ← pow_succ",
       "Lean 4.26: aeval_monomial gives algebraMap K _ a * M^k (not a • M^k) — use simp only [← Algebra.smul_def] before smul_mul_assoc",
       "Lean 4.26: explicit args to ← Matrix.mulVec_mulVec are unreliable — use forward direction instead",
-      "Non-commutative matrix algebra: use simp only [mul_assoc] instead of ring for associativity steps"
+      "Non-commutative matrix algebra: use simp only [mul_assoc] instead of ring for associativity steps",
+      "The F₂ cover counterexample invalidates the cardinality proof over small finite fields but does not invalidate the theorem."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Structure theorem for f.g. modules over PID needed to complete nonderogatory_has_cyclic_vector_any_field"
+      "Generalize the finite-field union-cover counterexample beyond F₂.",
+      "Explore whether the Bezout/CRT route can supply rational-canonical-form corollaries without assuming a full PID structure theorem."
     ],
-    "markdown": "# Knowledge Base: cayley-hamilton-minpoly-oq-05-oq-01-oq-04-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "markdown": "# Knowledge Base: Cayley-Hamilton minpoly OQ05/OQ01/OQ04\n\n## Verified State\n\nThe child proof closes the all-fields nonderogatory-to-cyclic-vector theorem in `Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean`. The manifest reports 287 lines, 7 theorems, 2 definitions, 0 axioms, and 0 sorries.\n\n## Key Result\n\n`nonderogatory_has_cyclic_vector_any_field` proves that every nonderogatory matrix has a cyclic vector over any field. The proof delegates to the WIP05 UFD factorization wrapper and WIP04 Bezout/CRT primary-decomposition argument, so no PID structure theorem is assumed.\n\n## Notes\n\n`F2_union_covers` records why the usual union-avoidance proof breaks over small finite fields. That example is a limitation of the counting argument only; the algebraic theorem remains true over finite and infinite fields.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "linear-algebra",
+    "abstract-algebra",
+    "minimal-polynomial",
+    "cyclic-vector",
+    "finite-fields",
+    "module-theory"
   ],
   "relatedProofs": [
     "cayley-hamilton",
@@ -66,8 +83,38 @@
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.RingTheory.EuclideanDomain",
+      "Mathlib.FieldTheory.Minpoly.Basic",
+      "Mathlib.Algebra.Polynomial.AlgHom",
+      "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
+      "Mathlib.RingTheory.UniqueFactorizationDomain.Basic",
+      "Mathlib.Algebra.Polynomial.Monic",
+      "Mathlib.RingTheory.Coprime.Lemmas"
+    ]
   },
+  "significance": 7,
+  "tractability": 6,
+  "proofStatus": {
+    "status": "verified",
+    "badge": "mathlib",
+    "sorries": 0,
+    "axiomCount": 0,
+    "assumptions": "0 axioms, 0 sorries. Main theorem nonderogatory_has_cyclic_vector_any_field is proved by delegating to WIP05 and WIP04; no PID structure theorem is required."
+  },
+  "leanFiles": [
+    {
+      "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
+      "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04.lean",
+      "lineCount": 287,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04.lean"
+    }
+  ],
   "started": "2026-04-04T04:39:45.987Z",
   "lastUpdate": "2026-04-04T04:39:46.010Z"
 }

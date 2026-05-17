@@ -6,14 +6,26 @@
   "tier": "S",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
+    "formal": "\\text{For every compact simple gauge group }G,\\text{ construct a nontrivial quantum Yang--Mills theory on }\\mathbb{R}^4\\text{ satisfying the Wightman/Osterwalder--Schrader axioms and prove that the vacuum-orthogonal Hamiltonian spectrum is bounded below by some }\\Delta>0.",
     "plain": "MILLENNIUM PRIZE: Prove Yang-Mills theory exists in R⁴ and has positive mass gap.",
-    "whyMatters": []
+    "whyMatters": [
+      "Would give the first rigorous construction of an interacting four-dimensional quantum field theory.",
+      "Mathematically explains the positive mass scale behind confinement and short-range strong interactions.",
+      "Clarifies the bridge between lattice gauge theory, continuum limits, and spectral quantum-field-theory axioms."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The current Proofs/YangMillsMassGap.lean manifest records a 48-line axiomatized entry with 0 sorries.",
+      "Related local Yang-Mills files formalize lattice, transfer-matrix, and finite/conditional frameworks, but they do not prove the 4D continuum Millennium claim.",
+      "The manifest records 16 assumptions for the top-level Yang-Mills surface, including gauge transformation and structure-encoded QFT assumptions."
+    ],
+    "open": [
+      "The four-dimensional continuum construction of nontrivial quantum Yang-Mills theory remains open.",
+      "A proof of a positive spectral mass gap for the continuum theory remains open.",
+      "The path from lattice/OS data to a Wightman theory with controlled continuum limit is still axiomatized in this repository."
+    ],
+    "goal": "Keep the Millennium entry honest as an axiomatized research surface, not a completed proof of the open problem."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -319,11 +331,12 @@
     {
       "path": "Proofs/YangMillsMassGap.lean",
       "filename": "YangMillsMassGap.lean",
-      "lineCount": 49,
+      "lineCount": 48,
       "theoremCount": 0,
-      "axiomCount": 0,
+      "axiomCount": 16,
       "defCount": 0,
       "sorryCount": 0,
+      "status": "axiomatized",
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/YangMillsMassGap.lean"
     }

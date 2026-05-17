@@ -6,14 +6,26 @@
   "tier": "S",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
+    "formal": "\\operatorname{RH} :\\iff \\forall s : \\mathbb{C},\\ \\zeta(s)=0 \\wedge 0 < \\operatorname{Re}(s) \\wedge \\operatorname{Re}(s) < 1 \\Rightarrow \\operatorname{Re}(s)=\\frac12.",
     "plain": "MILLENNIUM PRIZE: All non-trivial zeros of ζ(s) have Re(s)=1/2.",
-    "whyMatters": []
+    "whyMatters": [
+      "Controls the error term in the prime number theorem and the distribution of primes.",
+      "Unifies many equivalent criteria across analytic number theory, arithmetic inequalities, and Hilbert-space formulations.",
+      "Provides a demanding benchmark for Mathlib's zeta-function and analytic-number-theory infrastructure."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Mathlib supplies the Riemann zeta function and core analytic infrastructure used by the local formalization.",
+      "Proofs/RiemannHypothesis.lean records 6594 lines, 363 theorems, 63 definitions, 44 axiom declarations, and 0 sorries.",
+      "Proofs/RiemannHypothesisConsequences.lean records 1735 lines, 122 theorems, 17 definitions, 18 axiom declarations, and 0 sorries."
+    ],
+    "open": [
+      "The Riemann Hypothesis remains open; this repository does not contain a proof.",
+      "The local RH development is axiomatized around deep equivalences, estimates, and consequences whose proofs are not yet available in Mathlib.",
+      "Known gaps include zeta conjugation in the critical strip and real zero exclusion without Dirichlet eta-function infrastructure."
+    ],
+    "goal": "Document the axiomatized RH research surface honestly while keeping proof-count metadata current."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -202,21 +214,21 @@
     {
       "path": "Proofs/RiemannHypothesis.lean",
       "filename": "RiemannHypothesis.lean",
-      "lineCount": 6595,
-      "theoremCount": 358,
-      "axiomCount": 32,
-      "defCount": 38,
-      "sorryCount": 2,
+      "lineCount": 6594,
+      "theoremCount": 363,
+      "axiomCount": 44,
+      "defCount": 63,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RiemannHypothesis.lean"
     },
     {
       "path": "Proofs/RiemannHypothesisConsequences.lean",
       "filename": "RiemannHypothesisConsequences.lean",
-      "lineCount": 1736,
+      "lineCount": 1735,
       "theoremCount": 122,
-      "axiomCount": 9,
-      "defCount": 9,
+      "axiomCount": 18,
+      "defCount": 17,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/RiemannHypothesisConsequences.lean"
