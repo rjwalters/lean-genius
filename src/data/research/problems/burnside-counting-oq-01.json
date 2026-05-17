@@ -1,27 +1,37 @@
 {
   "slug": "burnside-counting-oq-01",
-  "title": "[Problem Title]",
+  "title": "Burnside Counting — Prove rotatedIndex_add Composition Law",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\forall n,a,b,k\\in\\mathbb{N},\\ 0<n\\Rightarrow \\operatorname{rotatedIndex}\\ n\\ a\\ (\\operatorname{rotatedIndex}\\ n\\ b\\ k) = \\operatorname{rotatedIndex}\\ n\\ ((a + b) \\bmod n)\\ k.",
+    "plain": "Prove that rotating a necklace by one amount and then another is the same as rotating once by the combined amount modulo the necklace length.",
+    "whyMatters": [
+      "This composition law is part of the cyclic group action used in the Burnside's lemma necklace-counting proof.",
+      "Formalizing it reduces reliance on ad hoc modular arithmetic assumptions around rotatedIndex.",
+      "The proof exercises the Mathlib modular arithmetic lemmas needed for the surrounding group-action infrastructure."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The parent Burnside-counting gallery proof defines necklace rotation through rotatedIndex n a k = (k + a) % n.",
+      "Local notes identify the expected composition calculation as a Nat.add_mod-style modular arithmetic proof."
+    ],
+    "open": [
+      "Confirm whether rotatedIndex_add is currently axiomatized, missing, or derivable directly in the Lean source.",
+      "Decide whether the needed statement is the direct composition law or the inverse variant using (a + n - b) % n."
+    ],
+    "goal": "Prove the rotatedIndex composition law needed for the Burnside necklace-counting rotation action."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-03T07:05:01-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Locate the rotatedIndex definition and prove the modular composition law for necklace rotations.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Inspect the BurnsideCounting Lean source, unfold rotatedIndex, and try Nat.add_mod/omega on the composition target.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -37,9 +47,14 @@
     "markdown": "# Knowledge Base: burnside-counting-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "combinatorics",
+    "group-theory",
+    "counting",
+    "orbits",
+    "necklaces",
+    "group-actions",
+    "polya-enumeration",
+    "modular-arithmetic"
   ],
   "relatedProofs": [
     "burnside-counting",

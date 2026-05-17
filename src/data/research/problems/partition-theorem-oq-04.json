@@ -6,14 +6,25 @@
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{Define a computable Lean function realizing the Glaisher bijection between partitions into odd parts and partitions into distinct parts, and prove it is weight-preserving and bijective.}",
+    "plain": "Euler's partition theorem says that partitions of n into odd parts are equinumerous with partitions of n into distinct parts. The Glaisher bijection gives the constructive map: group repeated odd parts by the binary expansion of their multiplicities, replacing p repeated k times with the distinct parts p*2^a for the set bits of k.",
+    "whyMatters": [
+      "Turns Euler's odd-parts/distinct-parts theorem into an explicit constructive proof.",
+      "Shows the Glaisher bijection can be represented as computable Lean definitions rather than only a nonconstructive counting argument.",
+      "Exercises reusable Lean infrastructure for certified computable bijections on multisets and partitions."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Forward and backward Glaisher maps are implemented as computable multiset functions.",
+      "Weight preservation is proved for the forward and backward steps.",
+      "The forward map produces odd parts, and both round-trip directions are proved modulo the remaining multiset reconstruction identity."
+    ],
+    "open": [
+      "dedup_bind_replicate_count_eq remains as a sorry: reconstructing a multiset from toFinset values and counts.",
+      "glaisher_bijection_exists remains as a sorry for packaging the established round-trip lemmas as Function.Bijective."
+    ],
+    "goal": "Finish the multiset reconstruction lemma and then package the computable Glaisher maps as a bijection proving the constructive form of Euler's partition theorem."
   },
   "currentState": {
     "phase": "ACT",
@@ -79,9 +90,11 @@
     "markdown": "# Knowledge Base: partition-theorem-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "combinatorics",
+    "partitions",
+    "bijection",
+    "computability",
+    "euler-theorem"
   ],
   "relatedProofs": [
     "partition-theorem",
