@@ -6,22 +6,33 @@
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Binary GCD Total Cost Model Formalization.",
-    "whyMatters": []
+    "formal": "Let stepCount(a, b) count iterations of Stein's binary GCD algorithm and bitsPerStep(a, b) bound the bit-operations in one step. Define totalCost(a, b) = stepCount(a, b) * bitsPerStep(a, b), then formalize the established asymptotic cost analysis for that total bit-operation model in Lean 4.",
+    "plain": "Formalize a total bit-operation cost model for Stein's binary GCD algorithm by measuring total cost as step count times bit-operations per step, then connect that model to known asymptotic analyses.",
+    "whyMatters": [
+      "Turns established binary GCD cost analysis into an explicit Lean 4 formalization target rather than an open-ended conjecture.",
+      "Exercises algorithmic complexity and bit-operation modeling around existing GCD infrastructure.",
+      "Helps expose what Mathlib support exists or is missing for step counts, bit lengths, and computational cost models."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Classical sources analyze Stein's binary GCD / binary Euclidean algorithm costs; the local literature notes cite Knuth TAOCP Vol. 2 Section 4.5.2 and Brent 1976.",
+      "The selection report treats the mathematics as established and identifies the challenge as encoding the cost model in Lean 4."
+    ],
+    "open": [
+      "No Lean definition of this subproblem's totalCost model is recorded in the research notes.",
+      "No survey results are recorded yet for Mathlib bit-length, step-count, or cost-model infrastructure.",
+      "No proof attempts are recorded for this selected problem."
+    ],
+    "goal": "Define a Lean 4 totalCost model for Stein's binary GCD algorithm as stepCount * bitsPerStep and formalize the corresponding known asymptotic cost analysis."
   },
   "currentState": {
     "phase": "NEW",
     "since": "2026-03-30T21:13:16.757Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Set up the total-cost formalization target and orient against existing Binary GCD and Mathlib GCD infrastructure.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Read proofs/Proofs/BinaryGcd.lean, survey Mathlib GCD and cost/complexity APIs, then sketch totalCost = stepCount * bitsPerStep.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,29 +40,57 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "The workspace is still in NEW phase with zero recorded attempts. The selection report reframes the initial generic statement as a Lean 4 formalization target: model Stein's binary GCD total bit-operation cost as step count times bit-operations per step, using Knuth and Brent as classical cost-analysis references.",
+    "builtItems": [
+      "Research workspace exists with problem.md, state.md, knowledge.md, selection-report.md, and literature notes.",
+      "Selection report records related gallery context for the Binary GCD parent proof and the Euclidean algorithm variant."
+    ],
+    "insights": [
+      "The target is a formalization of established algorithm analysis, not a new open conjecture.",
+      "The first modeling boundary is separating algorithm step count from per-step bit-operation accounting.",
+      "The report's proposed totalCost shape is stepCount * bitsPerStep, so the early Lean work should focus on definitions before asymptotic bounds."
+    ],
+    "mathlibGaps": [
+      "Mathlib support for step counts, bit lengths, and bit-operation cost models has not been surveyed yet.",
+      "The notes specifically point to Mathlib.Data.Int.GCD, Nat.Coprime APIs, and Mathlib.Computability.TMComputable as relevant infrastructure to inspect."
+    ],
+    "nextSteps": [
+      "Read proofs/Proofs/BinaryGcd.lean to identify the available binary GCD definitions and lemmas.",
+      "Survey Mathlib.Data.Int.GCD, Nat.Coprime, and computability or complexity APIs for reusable GCD and cost-model infrastructure.",
+      "Define stepCount, bitsPerStep, and totalCost = stepCount * bitsPerStep for Stein's binary GCD algorithm.",
+      "Map the Knuth and Brent asymptotic cost statements into precise Lean lemma targets after the definitions are stable."
+    ]
   },
   "tags": [
     "seeker-selected",
     "algorithms",
     "complexity",
     "gcd",
-    "cost-model"
+    "cost-model",
+    "stein-algorithm",
+    "binary-euclidean-algorithm",
+    "bit-complexity",
+    "lean4-formalization"
   ],
   "relatedProofs": [
     "binary-gcd",
     "binary-gcd-oq-01",
     "binary-gcd-oq-01-oq-04",
-    "binary-gcd-oq-03"
+    "binary-gcd-oq-02",
+    "binary-gcd-oq-03",
+    "binary-gcd-oq-03-oq-02"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Donald E. Knuth, The Art of Computer Programming, Vol. 2: Seminumerical Algorithms, Section 4.5.2",
+      "Richard P. Brent, Analysis of the Binary Euclidean Algorithm (1976)"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Data.Int.GCD",
+      "Nat.Coprime APIs",
+      "Mathlib.Computability.TMComputable"
+    ]
   },
   "started": "2026-03-30T21:13:16.757Z",
   "lastUpdate": "2026-03-30T21:13:16.757Z",
@@ -92,15 +131,48 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ01OQ04.lean"
     },
     {
+      "path": "Proofs/BinaryGcdOQ02.lean",
+      "filename": "BinaryGcdOQ02.lean",
+      "lineCount": 135,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ02.lean"
+    },
+    {
       "path": "Proofs/BinaryGcdOQ03.lean",
       "filename": "BinaryGcdOQ03.lean",
-      "lineCount": 491,
-      "theoremCount": 14,
+      "lineCount": 488,
+      "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 13,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03OQ01.lean",
+      "filename": "BinaryGcdOQ03OQ01.lean",
+      "lineCount": 240,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BinaryGcdOQ03OQ02.lean",
+      "filename": "BinaryGcdOQ03OQ02.lean",
+      "lineCount": 2225,
+      "theoremCount": 65,
+      "axiomCount": 0,
+      "defCount": 6,
+      "sorryCount": 10,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinaryGcdOQ03OQ02.lean"
     }
   ]
 }
