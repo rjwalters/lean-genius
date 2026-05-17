@@ -32,12 +32,16 @@
   "currentState": {
     "phase": "ORIENT",
     "since": "2026-05-16T09:20:00Z",
-    "iteration": 2,
-    "focus": "S2 PREP complete (doc-only). Catch-up from 2026-03-30 NEW bootstrap to current Lean reality (8 thms, 2 axioms, 4 sorries since pre-2026-04-03 SCAFFOLD). 4-sorry inventory classified MECHANICAL (L112 + L165) / BLOCKED (L127 on parent k3_case_solved) / HARD-or-unprovable-as-stated (L136). S3 ACT plan targets L165 with paste-ready ~8-LOC Filter.Tendsto chain.",
-    "blockers": [],
-    "nextAction": "S3 ACT (next session): discharge sorry #4 at L165 (lower_bound_exponent_tendsto) via Tendsto.inv_tendsto_atTop chain (paste-ready ~8 LOC per sessions/2026-05-16-s2-prep-orient-survey.md §3.1; 2-3 Docker iters expected for inv_tendsto bearer name resolution; build-pending fallback if disk hits 100%).",
+    "iteration": 3,
+    "focus": "S3 STATE-SYNC (doc-only, NOT the planned S3 ACT): all 4 leanFiles[] lineCount off-by-one (+1 stale) vs canonical actual, plus Erdos1021OQ01.lean sorryCount registry says 6 but raw grep finds 5 (comment-mention 'sorry results' at L186; actual `by sorry` count is 4 per S2 PREP §3 classification). S3 ACT (target L165 lower_bound_exponent_tendsto, paste-ready ~8 LOC) deferred to next viable cycle: G7 disk avail 4.4 GiB / 100% capacity makes Docker build verification infeasible, G8 Docker server unresponsive (ps hangs).",
+    "blockers": [
+      "G7 INFRA: host disk 4.4 GiB avail / 100% capacity blocks Docker build of Lean changes; S3 ACT must wait until disk avail ≥ 50 GiB.",
+      "G8 INFRA: Docker server unresponsive (docker ps hangs); even build-pending fallback uncertain.",
+      "S5+ blocker: L127 k3_strong_implies_weak requires parent slug erdos-1021 k3_case_solved sorry to be converted to axiom (4-LOC parent edit needed first)."
+    ],
+    "nextAction": "S4 ACT (next viable cycle, requires INFRA recovery): discharge sorry #4 at L165 (lower_bound_exponent_tendsto) via paste-ready ~8 LOC Filter.Tendsto chain documented in `research/problems/erdos-1021-oq-01/sessions/2026-05-16-s2-prep-orient-survey.md` §3.1. Expected delta: +6 LOC, 4→3 real sorries, 2-3 Docker iters.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 0,
       "approachesTried": 0
     }
@@ -91,14 +95,14 @@
     "mathlib": []
   },
   "started": "2026-03-30T21:46:38.106Z",
-  "lastUpdate": "2026-05-16T09:20:00Z",
+  "lastUpdate": "2026-05-17T06:50:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1021Aristotle.lean",
       "filename": "Erdos1021Aristotle.lean",
-      "lineCount": 83,
+      "lineCount": 82,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
@@ -109,18 +113,18 @@
     {
       "path": "Proofs/Erdos1021OQ01.lean",
       "filename": "Erdos1021OQ01.lean",
-      "lineCount": 192,
+      "lineCount": 191,
       "theoremCount": 8,
       "axiomCount": 2,
       "defCount": 2,
-      "sorryCount": 6,
+      "sorryCount": 5,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1021OQ01.lean"
     },
     {
       "path": "Proofs/Erdos1021OQ01Aristotle.lean",
       "filename": "Erdos1021OQ01Aristotle.lean",
-      "lineCount": 80,
+      "lineCount": 79,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 0,
@@ -131,7 +135,7 @@
     {
       "path": "Proofs/Erdos1021Problem.lean",
       "filename": "Erdos1021Problem.lean",
-      "lineCount": 242,
+      "lineCount": 241,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 16,

@@ -2,22 +2,31 @@
 
 **Phase**: ORIENT
 **Since**: 2026-05-16 (researcher-11, S2 PREP — orientation survey + sorry inventory + S3 ACT plan)
-**Iteration**: 2
+**Iteration**: 3
+**Last Update**: 2026-05-17 (researcher-11, S3 STATE-SYNC — leanFiles[] +1 lineCount catchup + sorryCount comment-mention dedupe; S3 ACT deferred due to 3-RED INFRA)
 
 ## Current Focus
 
-Bootstrap orientation. The Lean infrastructure (`Erdos1021OQ01.lean`,
-191 LOC, 8 thms, 2 axioms, **4 sorries**) was scaffolded pre-2026-04-03
-via the SCAFFOLD pass but state.md was never updated to reflect that
-work. This S2 PREP:
+S3 STATE-SYNC (doc-only). The planned S3 ACT (discharge L165
+`lower_bound_exponent_tendsto` via paste-ready ~8 LOC `Filter.Tendsto`
+chain) is **deferred**: host disk avail is 4.4 GiB / 100% capacity (per
+`df -h /Users/rwalters`) and Docker server is unresponsive (`docker ps`
+hangs), so Lean build verification is infeasible (see memory trap
+`_skip_when_deployer_down_due_to_host_disk_full_*`).
 
-1. Catches state.md up from the 2026-03-30 NEW bootstrap to current
-   reality (ORIENT, iter 2).
-2. Classifies the 4 sorries by discharge difficulty: MECHANICAL (L112,
-   L165) / BLOCKED on parent `k3_case_solved` (L127) / HARD or possibly
-   unprovable-as-stated (L136).
-3. Proposes S3 ACT targeting the most mechanical (L165 Filter.Tendsto
-   chain, ~8 LOC paste-ready).
+This S3 STATE-SYNC catches up the research JSON registry:
+- All 4 leanFiles[] lineCount drift by +1 vs canonical actual
+  (registry 83/192/80/242 → actual 82/191/79/241 — classic narrow-grep
+  / `wc -l` off-by-one)
+- Erdos1021OQ01.lean sorryCount: registry 6 → 5 (raw grep includes a
+  comment-mention 'sorry results' at L186; actual `by sorry` count is 4
+  per S2 PREP §3 classification)
+- attemptCounts.total: 1 → 2
+- lastUpdate: 2026-05-16T09:20:00Z → 2026-05-17T06:50:00Z
+- blockers: 3 entries added (G7 disk, G8 Docker, S5+ parent slug)
+
+S4 ACT plan **unchanged from S2 PREP §3.1** — when INFRA recovers, ship
+the paste-ready chain.
 
 ## Active Approach
 
@@ -34,7 +43,13 @@ Stepwise sorry discharge:
 
 ## Blockers
 
-None for S3 ACT (target L165).
+- **G7 INFRA (NEW S3)**: host disk avail 4.4 GiB / 100% capacity blocks
+  Docker build of Lean changes; S4 ACT must wait until disk avail ≥ 50 GiB.
+- **G8 INFRA (NEW S3)**: Docker server unresponsive (`docker ps` hangs);
+  even build-pending fallback uncertain.
+- **S5+ (carried)**: L127 `k3_strong_implies_weak` requires parent slug
+  `erdos-1021` `k3_case_solved` sorry to be converted to axiom (a 4-LOC
+  parent edit needed first).
 
 ## Iteration History
 
@@ -42,7 +57,8 @@ None for S3 ACT (target L165).
 |---|---|---|---|---|
 | 0 | (pre-2026-04-03) | enricher/scaffold | SCAFFOLD | Created `Erdos1021OQ01.lean` (191 LOC, 8 thms, 2 axioms, 4 sorries); gallery entry `src/data/proofs/erdos-1021-oq-01/` |
 | 1 | 2026-03-30 | (seeker bootstrap) | INIT | bootstrapped `problem.md` + `state.md` (NEW) and research JSON; never updated post-SCAFFOLD |
-| 2 | 2026-05-16 | researcher-11 | PREP | THIS — S2 PREP: orientation survey, 4-sorry inventory + classification, Mathlib bearer survey, S3 ACT plan for L165 |
+| 2 | 2026-05-16 | researcher-11 | PREP | S2 PREP: orientation survey, 4-sorry inventory + classification, Mathlib bearer survey, S3 ACT plan for L165 (PR #19550) |
+| 3 | 2026-05-17 | researcher-11 | STATE-SYNC | THIS — S3 STATE-SYNC: registry leanFiles[] +1 lineCount catchup (4 files) + Erdos1021OQ01.lean sorryCount 6→5 (comment-mention dedupe) + iter 2→3 + attemptCounts.total 1→2 + lastUpdate refresh + 3 INFRA blockers added; S3 ACT (L165) deferred due to 4.4-GiB disk RED |
 
 ## Next Action
 
