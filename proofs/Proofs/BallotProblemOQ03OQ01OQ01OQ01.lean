@@ -1388,6 +1388,66 @@ private lemma rotateSortedListPrefixSym_val_add_SuffixSym_val {n c : ℕ}
        + ((rotateSortedList M k).drop j : Multiset (Fin n)) = M.1
   exact rotateSortedList_take_add_drop M k j
 
+/-! #### S46 — Degenerate cases of `rotateSortedListPrefixSym`
+
+Symmetric counterpart of S36's `rotateSortedListSuffixSym_{zero,self}_val`
+(lines 1195, 1209): two `.1`-projection identities pinning S37's
+`rotateSortedListPrefixSym` (line 1021) at the two natural boundary values
+of the split index `j`:
+
+* `j = 0` (no take): the prefix is `0` (the empty multiset).
+* `j = c` (take all): the prefix equals `M.1` (the full multiset).
+
+The boundary identities serve the same roles downstream as the S36 suffix
+mirrors: simp normal forms (collapse to canonical `Multiset (Fin n)`
+constants `0` and `M.1`) and dispatching the degenerate cases of the
+2B.4' refined-codomain bijection inverse map (no-descent / first-element-
+descent → `j = 0` / `j = c`). Together with S36 (suffix boundaries), S38
+(suffix period + complement), S41 (prefix complement), S44 (prefix
+period), and S45 (addition reconstitution), every `Sym`-level structural
+identity in the prefix / suffix take/drop family now has a stated lemma.
+
+Pattern: mirror of the S36 suffix proofs (lines 1195, 1209). The `_zero`
+case rewrites `take 0 = []` (`List.take_zero`) then `↑[] = 0`
+(`Multiset.coe_nil`); the `_self` case rewrites the take-length identity
+(`List.take_length` after substituting `c` with `(rotateSortedList M k).length`
+via S31's `rotateSortedList_length`) then closes by `rotateSortedList_toMultiset`.
+Bearer cohort identical to S36 (built and merged at the same Mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`). -/
+
+/-- **`rotateSortedListPrefixSym` at `j = 0` is empty** (`.1`-projection
+    form). The take-zero prefix is the empty list, whose underlying
+    multiset is `0`. The `Sym (Fin n) 0` codomain matches the
+    cardinality witness from `rotateSortedList_take_card` (S34, line 987)
+    instantiated at `j = 0`. Symmetric counterpart of S36's
+    `rotateSortedListSuffixSym_self_val` (the suffix's `j = c` boundary):
+    both lemmas pin the "trivial" end of their respective decomposition
+    to `0`. -/
+@[simp] private lemma rotateSortedListPrefixSym_zero_val {n c : ℕ}
+    (M : Sym (Fin n) c) (k : ℕ) :
+    (rotateSortedListPrefixSym M k 0 (Nat.zero_le c)).1
+      = (0 : Multiset (Fin n)) := by
+  show ((rotateSortedList M k).take 0 : Multiset (Fin n)) = 0
+  rw [List.take_zero, Multiset.coe_nil]
+
+/-- **`rotateSortedListPrefixSym` at `j = c` equals `M`** (`.1`-projection
+    form). The take-all prefix retains every element of the length-`c`
+    rotation (`take c = whole list` since the rotation has length `c`
+    by `rotateSortedList_length`, S31), whose underlying multiset is
+    `M.1` by `rotateSortedList_toMultiset` (S31). The `Sym (Fin n) c`
+    codomain matches `M`'s codomain definitionally. Symmetric
+    counterpart of S36's `rotateSortedListSuffixSym_zero_val` (the
+    suffix's `j = 0` boundary): both lemmas pin the "non-trivial" end
+    of their respective decomposition to `M.1`. -/
+@[simp] private lemma rotateSortedListPrefixSym_self_val {n c : ℕ}
+    (M : Sym (Fin n) c) (k : ℕ) :
+    (rotateSortedListPrefixSym M k c (le_refl c)).1 = M.1 := by
+  show ((rotateSortedList M k).take c : Multiset (Fin n)) = M.1
+  have hlen : (rotateSortedList M k).length = c := rotateSortedList_length M k
+  conv_lhs => rw [← hlen]
+  rw [List.take_length]
+  exact rotateSortedList_toMultiset M k
+
 /-! #### S41 — Complement form for `rotateSortedListPrefixSym`
 
 Symmetric counterpart of S38's `rotateSortedListSuffixSym_val_eq_sub_take`:

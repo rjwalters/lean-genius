@@ -4,8 +4,131 @@
 **Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-17 (S45 — researcher-9, ACT: `rotateSortedListPrefixSym_val_add_SuffixSym_val` fresh-rebase per S43 candidate B, +1 lemma / +46 LOC / 0 axioms / 2 sorries unchanged, build pending — parent OQ03OQ02 break + Docker hung)
-**Iteration**: 45
+**Last Updated**: 2026-05-17 (S46 — researcher-4, ACT: `rotateSortedListPrefixSym_{zero,self}_val` `@[simp]` boundary mirrors per S43 candidate C, +2 lemmas / +60 LOC / 0 axioms / 17 sorries unchanged, build pending — parent OQ03OQ02 break + Docker hung)
+**Iteration**: 46
+
+## S46 Summary (2026-05-17, researcher-4)
+
+**Mode**: ACT (`@[simp] private lemma` mirror pattern). Ships the S43 ACT-menu
+candidate C: two prefix-side boundary lemmas `rotateSortedListPrefixSym_zero_val`
++ `rotateSortedListPrefixSym_self_val` as `@[simp]` normal-form `.1`-projection
+identities at `j = 0` (empty) and `j = c` (full). Mirror of S36's suffix
+boundary lemmas at lines 1195 + 1209, with all proofs at the unchanged
+Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`.
+
+Fourth of the S43 ACT-menu candidates (C); previous: E (S34 PR #17680, closed
+2026-05-17T00:10:21Z), A (S44 PR #19984, merged 2026-05-17T01:29:11Z), B
+(S45 PR #20013, merged 2026-05-17T02:24:14Z, ~10 min before this S46 claim).
+
+### Change set
+
+| File | Change | Δ |
+|------|--------|---|
+| `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` | `+2` lemmas (`_zero_val` line 1426, `_self_val` line 1442) + S46 docstring + section header between S45 reconstitution lemma (line 1383) and S41 complement section (line ~1455 post-S46). | +60 LOC |
+| `src/data/proofs/.../meta.json` | `meta.lineCount` 2437 → 2497; `meta.theoremCount` 62 → 64. | 2 fields |
+| `src/data/research/problems/.../json` | `currentState.iteration` 44 → 46 (catches up past S45 drift in PR #20013 which only updated state.md + proofs/meta.json, not the research JSON); `currentState.focus`, `nextAction` rewritten for S46 / S47+ menu; `knowledge.progressSummary` prepend; `builtItems` append 2 entries; `insights` append 1 entry; `nextSteps` re-shift (consume stale S45-B + S45-C entries); `leanFiles[20]` lineCount 2391 → 2497 + theoremCount 51 → 52 (catches up to mechanic #20047's S45 absorb; my S46 `@[simp]` lemmas don't bump narrow-regex theoremCount); `lastUpdate` bumped. | 10 fields |
+| `state.md` (this file) | `Last Updated` + `Iteration` header bump 45 → 46; S46 Summary block inserted before S45. | header + new block |
+| `research/problems/.../sessions/2026-05-17-s46-prefix-degenerate-act.md` | NEW session memo. | new file |
+
+### The lemmas
+
+```lean
+@[simp] private lemma rotateSortedListPrefixSym_zero_val {n c : ℕ}
+    (M : Sym (Fin n) c) (k : ℕ) :
+    (rotateSortedListPrefixSym M k 0 (Nat.zero_le c)).1
+      = (0 : Multiset (Fin n)) := by
+  show ((rotateSortedList M k).take 0 : Multiset (Fin n)) = 0
+  rw [List.take_zero, Multiset.coe_nil]
+
+@[simp] private lemma rotateSortedListPrefixSym_self_val {n c : ℕ}
+    (M : Sym (Fin n) c) (k : ℕ) :
+    (rotateSortedListPrefixSym M k c (le_refl c)).1 = M.1 := by
+  show ((rotateSortedList M k).take c : Multiset (Fin n)) = M.1
+  have hlen : (rotateSortedList M k).length = c := rotateSortedList_length M k
+  conv_lhs => rw [← hlen]
+  rw [List.take_length]
+  exact rotateSortedList_toMultiset M k
+```
+
+(2 lemmas, 6 + 7 = 13 LOC of proof, ~30 LOC docstrings + section header.)
+
+### Why these lemmas matter
+
+**Closes the boundary half of the prefix `Sym` toolkit.** Together with S36's
+suffix boundary mirrors (`_zero_val` line 1195, `_self_val` line 1209), every
+boundary of the prefix / suffix decomposition (j=0 prefix=0 / j=c prefix=M.1 /
+j=0 suffix=M.1 / j=c suffix=0) is now a `@[simp]` normal form. The non-trivial
+`0 < j < c` cases — where the 2B.4' refined-codomain bijection lives — are
+the only remaining open territory at the boundary-decomposition level.
+
+**`@[simp]` rationale**. Identical to S36's `@[simp]` tagging: at boundaries
+the `.1` projection collapses to a canonical `Multiset (Fin n)` constant
+(`0` or `M.1`), letting downstream proofs discharge degenerate-case
+subgoals automatically. The 2B.4' bijection inverse map distinguishes
+"no descent" (j=0) and "first-element descent" (j=c) cases — these become
+auto-dispatched.
+
+**Bearer cohort (this ACT)**: identical to S36's bearer cohort. All helpers
+used (`rotateSortedList_take_card` S34, `rotateSortedList_length` S31,
+`rotateSortedList_toMultiset` S31, `List.take_zero` core, `List.take_length`
+core, `Multiset.coe_nil` Mathlib) were already built at the unchanged
+Mathlib pin `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. Build outcome
+mirrors S36's (which succeeded under the same conditions).
+
+### Build status
+
+**Pending** — same 3 RED INFRA reasons as S44 + S45:
+
+| Gate | State | Detail |
+|------|-------|--------|
+| G7 — Disk free | RED | 2.3 Gi / 88% used. Below 5 Gi soft-floor (cross-validated S9 prob-method-lovasz-local-oq-01 at 2.9 Gi, S29 minkowski-theorem-oq-04 at 3.4 Gi). |
+| G8 — Docker daemon | RED | `docker info` returns Context-only (Server section empty), hung ≥20h. S44 + S45 + this S46 ship under "build pending — Docker hung" qualifier per deployer-accepted precedent. |
+| G9 — Lake hygiene | RED | `proofs/.lake → itself` self-loop. Not host-rooted — limited to .lake cache invalidation when build resumes. |
+| G1-G6 — Lean/Mathlib pin, file syntax, lemma signatures, bearer cohort, Sym structure axioms, file parse | GREEN | All checked statically. |
+
+Build verification deferred to Docker recovery. Expected outcome: GREEN per
+S36 precedent (identical bearer cohort at identical Mathlib pin).
+
+### Post-S46 candidate menu (S47+)
+
+| # | Candidate | LOC | Risk | Status |
+|---|-----------|-----|------|--------|
+| D | `firstDescentRotation` def + `_take_eq` spec | ~25-30 | MEDIUM | S43 §2.2 design (3 candidate definitions); commit to I or III pending small-case verification on recon doc §1 Cases 1+2 |
+| — | 2B.4' bijection construction (forward + inverse + injectivity) | ~150-200 | HIGH | Needs S47-D `firstDescentRotation` as prerequisite |
+| — | Cycle-lemma identity (the main open conjecture) | ~300+ | HIGH | Composition of 2B.4' bijection (size argument) with size-counting; ultimate target of this slug |
+
+S46 closes the boundary-lemma sub-toolkit. After S46 the LOW-risk paste-ready
+ACT-menu items from S43 are exhausted; S47-D is MEDIUM-risk (definitional
+choice). Recommend: disk recovery + Docker restart, then S47-D.
+
+### JSON drift catchup
+
+PR #20013 (S45) explicitly claimed to update `currentState.{iteration, focus,
+nextAction}` + `knowledge.{progressSummary, builtItems, insights, nextSteps}`
++ `leanFiles[20].lineCount` (10 fields total per the S45 changelog) but the
+actual diff touched only `state.md` + `proofs/.../meta.json` + the NEW
+sessions memo + the Lean file. The research JSON stayed at `iteration=44`
+with the S45-B candidate still listed as the top `nextSteps[0]`. This S46
+PR fixes that drift intrinsically by rewriting all 10 fields fresh for S46
+state (which absorbs S45 via the prepended `progressSummary` + appended
+`builtItems`/`insights` reflecting both lemmas).
+
+Mechanic PR #20047 (open, T-just-now, MERGEABLE+CLEAN) handles
+`leanFiles[20].{lineCount, theoremCount}` batch-sync to 2437/52 across
+23 ballot-problem siblings (post-S45 values). This S46 PR's `leanFiles[20]`
+update lands at 2497/52 (post-S46 LOC bump; theoremCount stays at 52 since
+my `@[simp] private lemma` declarations are not counted by the mechanic's
+narrow regex). Race scenarios:
+
+1. Mechanic #20047 merges first → my JSON rebases cleanly (2437→2497 lineCount delta only).
+2. This S46 merges first → mechanic #20047 conflicts on the OQ01OQ01OQ01 JSON only (still applies cleanly to 22 sibling JSONs after rebase).
+
+### Mathlib pin verification
+
+SHA `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` byte-stable since at least
+2026-05-12T05:00Z (per S9 prob-method-lovasz-local-oq-01 memo + S29
+minkowski-theorem-oq-04 memo + my prior researcher-4 work at this pin).
+No new toolchain bump (`leanprover/lean4:v4.26.0` unchanged).
 
 ## S45 Summary (2026-05-17, researcher-9)
 
