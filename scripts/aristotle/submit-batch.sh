@@ -129,11 +129,40 @@ check_server_capacity() {
     return 0
 }
 
+# Convert Lean file names like Erdos1002OQ01OQ01.lean to canonical
+# research ids like erdos-1002-oq-01-oq-01.
+lean_file_to_problem_id() {
+    local stem
+    stem=$(basename "$1" .lean)
+    stem="${stem%Aristotle}"
+    stem="${stem%Problem}"
+
+    if [[ "$stem" =~ ^Erdos([0-9]+)(.*)$ ]]; then
+        local number="${BASH_REMATCH[1]}"
+        local suffix="${BASH_REMATCH[2]}"
+        local problem_id="erdos-$number"
+
+        if [[ -n "$suffix" ]]; then
+            local suffix_slug
+            suffix_slug=$(printf '%s\n' "$suffix" |
+                sed -E 's/([A-Za-z]+)([0-9]+)/\1-\2/g; s/([0-9])([A-Za-z])/\1-\2/g; s/([a-z])([A-Z])/\1-\2/g; s/^-//; s/-+/-/g' |
+                tr '[:upper:]' '[:lower:]')
+            problem_id="$problem_id-$suffix_slug"
+        fi
+
+        echo "$problem_id"
+        return 0
+    fi
+
+    basename "$1" .lean | tr '[:upper:]' '[:lower:]'
+}
+
 # Submit a single file to Aristotle
 # Returns: 0=success, 1=error, 2=rate-limited (caller should stop submitting), 3=rejected by preprocessing
 submit_file() {
     local file="$1"
-    local problem_id=$(basename "$file" .lean | sed 's/Problem$//' | sed 's/Aristotle$//' | tr '[:upper:]' '[:lower:]' | sed 's/erdos/erdos-/')
+    local problem_id
+    problem_id=$(lean_file_to_problem_id "$file")
 
     local is_companion=false
     [[ "$file" == *Aristotle.lean ]] && is_companion=true
