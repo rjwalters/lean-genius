@@ -217,6 +217,7 @@ async function generateUniqueUsername(
 ): Promise<string> {
   // Clean the base username
   let username = baseUsername.toLowerCase().replace(/[^a-z0-9_]/g, '')
+  if (!/^[a-z]/.test(username)) username = `user_${username}`
   if (username.length < 3) username = 'user'
   if (username.length > 20) username = username.slice(0, 20)
 
