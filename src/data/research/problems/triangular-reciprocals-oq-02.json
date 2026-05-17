@@ -1,27 +1,38 @@
 {
   "slug": "triangular-reciprocals-oq-02",
-  "title": "[Problem Title]",
+  "title": "Shifted Reciprocal Product Sum via Digamma",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\forall k \\in \\mathbb{N}_{>0},\\; \\sum_{n=1}^{\\infty} \\frac{1}{n(n+k)} = \\frac{H_k}{k},\\quad \\text{with digamma link } \\psi(k+1)=H_k-\\gamma.",
+    "plain": "For each positive integer k, prove that the infinite sum of 1/(n(n+k)) equals the kth harmonic number divided by k, and connect this identity to the digamma formula psi(k+1)=H_k-gamma.",
+    "whyMatters": [
+      "Extends the triangular-reciprocals gallery from the base triangular-number identity to a parameterized shifted reciprocal product.",
+      "Provides a clean telescoping-series target even if Mathlib lacks the special-function side.",
+      "Connects elementary infinite-series manipulation with harmonic numbers and the digamma function."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The selection report lists `triangular-reciprocals` as the base proof for sums of reciprocals of triangular numbers.",
+      "The selection report lists `triangular-reciprocals-oq-03` as a completed alternating triangular reciprocal sibling."
+    ],
+    "open": [
+      "Formalize, for positive integer k, the identity sum_{n>=1} 1/(n(n+k)) = H_k/k.",
+      "Establish or bridge the digamma relation psi(k+1) = H_k - gamma in Lean.",
+      "Confirm whether Mathlib has usable Real.digamma or Complex.Gamma support for this target."
+    ],
+    "goal": "Formalize the shifted reciprocal product sum and its digamma/harmonic-number connection, using direct partial fractions if digamma support is missing."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-05T19:30:46-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Fresh OBSERVE state: problem.md and knowledge.md contain no substantive local notes; selection-report.md identifies the target identity and initial scouting plan.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Survey `triangular-reciprocals-oq-01` and base family lemmas, check Mathlib Real.digamma or Complex.Gamma support, then choose direct telescoping or a digamma bridge.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +40,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "No research attempts are recorded yet. The local problem and knowledge notes contain no substantive local findings; selection-report.md supplies the target identity, freshness rationale, and first scouting steps.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: triangular-reciprocals-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "Selection report target: sum_{n>=1} 1/(n(n+k)) = H_k/k for positive integer k.",
+      "The intended special-function connection is psi(k+1) = H_k - gamma.",
+      "The report suggests a direct fallback through partial fractions: 1/(n(n+k)) = (1/k)(1/n - 1/(n+k)) followed by telescoping."
+    ],
+    "mathlibGaps": [
+      "No confirmed gap yet; selection-report.md flags Real.digamma or Complex.Gamma support as the first API check."
+    ],
+    "nextSteps": [
+      "Survey the active triangular-reciprocals-oq-01 sibling for reusable partial-fraction and telescoping lemmas.",
+      "Check Mathlib for Real.digamma or Complex.Gamma APIs covering psi(k+1)=H_k-gamma.",
+      "Decide between a direct telescoping proof and an axiomatized digamma bridge if the special-function API is missing."
+    ],
+    "markdown": "# Knowledge Base: triangular-reciprocals-oq-02\n\nNo research attempts are recorded yet. The local problem and knowledge notes contain no substantive local findings.\n\n---\n\n## Problem Understanding\n\nSelection-report.md identifies the goal: formalize the identity \\(\\sum_{n=1}^{\\infty} 1/(n(n+k)) = H_k/k\\) for positive integer \\(k\\), together with the digamma connection \\(\\psi(k+1)=H_k-\\gamma\\).\n\n---\n\n## Current Orientation\n\nScout related triangular-reciprocal lemmas, check Mathlib digamma/Gamma support, then choose between direct partial fractions/telescoping and an axiomatized digamma bridge if needed.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "analysis",
+    "series",
+    "harmonic-numbers",
+    "special-functions",
+    "digamma"
   ],
   "relatedProofs": [
     "triangular-reciprocals",
