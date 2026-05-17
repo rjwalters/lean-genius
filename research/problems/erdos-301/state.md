@@ -1,8 +1,16 @@
 # Current State
 
 **Phase**: SCOPED — open conjecture, lower-bound proved, upper-bound trivially weak
-**Since**: 2026-04-27T17:35:00Z
-**Iteration**: 2
+**Since**: 2026-04-27T17:35:00Z (carry-forward from S2; S3 STATE-SYNC doc-only)
+**Iteration**: 3
+
+## Iteration Ledger
+
+| Iter | Date | Phase | Author | Notes |
+|---|---|---|---|---|
+| 1 | 2026-01-12 | NEW (auto-stub) | scraper | scrape + auto-pool entry |
+| 2 | 2026-04-27 | SCOPED | researcher (orphan `f2293c11`) | Inspected Lean file; flagged misleading `vanDoorn_upper`; scoped 4 directions. **NOT merged via PR** — landed on `fix/pr-13216-researcher-5` only, then mass-imported via #19454 (state.md only; JSON registry left at iter-1 NEW). |
+| 3 | 2026-05-17 | STATE-SYNC | researcher-11 (this PR) | Doc-only: propagate S2 SCOPED into JSON registry (phase OBSERVE→SCOPED, currentState 7-field bump iter 1→2, lastUpdate 2026-03-13→2026-05-17, leanFiles[0].lineCount 159→158); update pool notes; ledger this row. **No Lean changes.** |
 
 ## Current Focus
 
@@ -72,6 +80,17 @@ Standard `Finset` / `ℚ` / arithmetic suffices for incremental improvements.
 **Disk space tight (2026-04-27): 88% capacity, ~1.7 GB free.** Adding new theorems
 requires Docker-build verification; not safe this session per researcher feedback memory.
 
+**S3 INFRA snapshot (2026-05-17, doc-only window — no Lean changes attempted):**
+
+| Gate | Value | Status |
+|---|---|---|
+| G7 (disk) | root 4.5 GiB avail (78% used) | RED (below 5 GiB soft floor; mild) |
+| G8 (Docker server) | `docker info` empty/hung at 5s timeout | RED |
+| G9 (`proofs/.lake` symlink) | → `/Users/rwalters/GitHub/lean-genius/proofs/.lake` (host-rooted) | GREEN |
+
+S3 is doc-only so RED G7+G8 don't block. For S4+ Lean ACT (menu items A/B/C/D),
+prerequisite is disk > 5 GiB free AND Docker daemon healthy.
+
 ## Next Action
 
 For a future researcher session (disk > 5 GB free):
@@ -87,7 +106,20 @@ For a future researcher session (disk > 5 GB free):
    inequalities.
 
 ## Attempt Counts
-- Total attempts: 1 (file inspection + Mathlib survey)
+- Total attempts: 1 (file inspection + Mathlib survey at S2; S3 doc-only, no new attempt)
 - Current approach attempts: 1
 - Approaches tried: 1 (scoping pass — identified the misleading-naming issue and
   four incremental directions)
+
+## S4 Picker Matrix (for next researcher)
+
+Sequenced by lowest-risk-first; all require disk > 5 GiB free + Docker healthy.
+
+| Option | Scope | LOC | Risk | Prerequisite |
+|---|---|---|---|---|
+| A — honest rename | `vanDoorn_upper` → `trivial_upper_const_5328` + comment | ~3 | trivial | Docker (`lake build` reproof) |
+| B — parity refinement | `f(N) ≥ ⌈N/2⌉ + 1` for specific parities (extend `halfInterval_egyptFree`) | 10-15 | low | Docker (real ℚ arithmetic) |
+| C — exclusion-based upper | `f(N) ≤ N - ⌊N/k⌋` via highly-composite exclusion | 50+ | moderate | Docker + Mathlib divisor API |
+| D — partial Van Doorn | Real 25/28 argument fragment | multi-session | high | Docker + multi-session planning |
+
+Recommended sequence: **A → B → D** (skipping C unless seeking a verifiable strengthening).
