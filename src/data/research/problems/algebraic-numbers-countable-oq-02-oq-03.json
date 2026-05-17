@@ -1,13 +1,13 @@
 {
   "slug": "algebraic-numbers-countable-oq-02-oq-03",
-  "title": "Formalize the independence of the Continuum Hypothesis from ZFC \u2014 this entry ...",
+  "title": "Formalize the independence of the Continuum Hypothesis from ZFC — this entry ...",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalize the independence of the Continuum Hypothesis from ZFC \u2014 this entry proves $\\aleph_0 < 2^{\\aleph_0}$ but cannot establish where $2^{\\aleph_0}$ sits in the $\\aleph$-hierarchy without additiona.",
+    "plain": "Formalize the independence of the Continuum Hypothesis from ZFC — this entry proves $\\aleph_0 < 2^{\\aleph_0}$ but cannot establish where $2^{\\aleph_0}$ sits in the $\\aleph$-hierarchy without additiona.",
     "whyMatters": []
   },
   "knownResults": {
@@ -29,16 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Proved #transcendentalReals = \ud835\udd20 in 193 lines, 0 sorries, 0 axioms",
+    "progressSummary": "COMPLETE: Proved #transcendentalReals = 𝔠 in 193 lines, 0 sorries, 0 axioms",
     "builtItems": [
       "AlgebraicNumbersCountableOQ02OQ03.lean: card_transcendentalReals_eq_continuum (main theorem)",
       "AlgebraicNumbersCountableOQ02OQ03.lean: aleph0_add_of_ge (absorption lemma)",
       "AlgebraicNumbersCountableOQ02OQ03.lean: cardinality_dichotomy (full picture)"
     ],
     "insights": [
-      "Key insight: partition \u211d = algebraic \u222a transcendental (Classical.em) combined with Cardinal.mk_union_le gives #\u211d \u2264 #algebraics + #transcendentals",
-      "Infinite cardinal absorption \u2135\u2080 + \u03ba = \u03ba (for \u03ba \u2265 \u2135\u2080) proved via Cardinal.add_eq_self \u2014 this is the core lemma for the lower bound",
-      "le_aleph0_iff_set_countable.mpr bridges Set.Countable to cardinal inequality #S \u2264 \u2135\u2080"
+      "Key insight: partition ℝ = algebraic ∪ transcendental (Classical.em) combined with Cardinal.mk_union_le gives #ℝ ≤ #algebraics + #transcendentals",
+      "Infinite cardinal absorption ℵ₀ + κ = κ (for κ ≥ ℵ₀) proved via Cardinal.add_eq_self — this is the core lemma for the lower bound",
+      "le_aleph0_iff_set_countable.mpr bridges Set.Countable to cardinal inequality #S ≤ ℵ₀"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -134,8 +134,8 @@
     {
       "path": "Proofs/AlgebraicNumbersCountableOQ05.lean",
       "filename": "AlgebraicNumbersCountableOQ05.lean",
-      "lineCount": 297,
-      "theoremCount": 12,
+      "lineCount": 296,
+      "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
