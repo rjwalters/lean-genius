@@ -175,7 +175,11 @@ export function AnnotationPanel({ annotation, proofId, lineNumber, onClose }: An
             </div>
           )
         ) : (
-          <CommentSection proofId={proofId} lineNumber={lineNumber} />
+          <CommentSection
+            proofId={proofId}
+            lineNumber={lineNumber}
+            annotationId={annotation?.id ?? null}
+          />
         )}
       </div>
     </div>

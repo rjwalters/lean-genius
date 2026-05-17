@@ -1,7 +1,8 @@
 export interface Comment {
   id: string
   proofId: string
-  lineNumber: number
+  annotationId: string | null
+  lineNumber: number | null
   parentId: string | null
   content: string
   createdAt: number
