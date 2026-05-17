@@ -189,7 +189,7 @@ submit_file() {
 
         # Last line = temp file path, preceding lines = log
         preprocessed_tmp=$(echo "$preprocess_output" | tail -1)
-        preprocess_log=$(echo "$preprocess_output" | grep "^PREPROCESS:" | grep -v "^PREPROCESS: Result has\|^PREPROCESS: No changes needed" | sed 's/^PREPROCESS: //' | paste -sd '; ' -)
+        preprocess_log=$(echo "$preprocess_output" | grep "^PREPROCESS:" | grep -v "^PREPROCESS: Result has\|^PREPROCESS: No changes needed" | sed 's/^PREPROCESS: //' | paste -sd '; ' - || true)
 
         if [[ -n "$preprocessed_tmp" && -f "$preprocessed_tmp" ]]; then
             submit_file="$preprocessed_tmp"
