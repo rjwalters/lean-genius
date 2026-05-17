@@ -8,11 +8,23 @@
  * Usage: npx tsx scripts/test/random-proof-checker.ts [--count N] [--url URL]
  */
 
-import { chromium, type Page, type ConsoleMessage } from 'playwright'
-import { execSync } from 'child_process'
+import { execFileSync } from 'child_process'
 
 // --- CLI args ---
 const args = process.argv.slice(2)
+
+if (args.includes('--help') || args.includes('-h')) {
+  console.log(`Usage: npx tsx scripts/test/random-proof-checker.ts [options]
+
+Visit leangenius.org, click random proofs, and report broken proof pages.
+
+Options:
+  --count N    Number of random proofs to test (default: 20)
+  --url URL    Base URL to test (default: https://leangenius.org)
+  --help, -h   Show this help message`)
+  process.exit(0)
+}
+
 function getArg(name: string, fallback: string): string {
   const idx = args.indexOf(name)
   return idx !== -1 && args[idx + 1] ? args[idx + 1] : fallback
@@ -27,7 +39,16 @@ interface TestResult {
   error?: string
 }
 
-async function extractSlug(page: Page): Promise<string> {
+interface PageLike {
+  url(): string
+}
+
+interface ConsoleMessageLike {
+  type(): string
+  text(): string
+}
+
+async function extractSlug(page: PageLike): Promise<string> {
   const url = page.url()
   const match = url.match(/\/proof\/([^/?#]+)/)
   return match ? match[1] : url
@@ -36,8 +57,20 @@ async function extractSlug(page: Page): Promise<string> {
 /** Check if a GitHub issue already exists for this slug */
 function issueExists(slug: string): boolean {
   try {
-    const out = execSync(
-      `gh issue list --state open --search "[tester] ${slug}" --json number --limit 1`,
+    const out = execFileSync(
+      'gh',
+      [
+        'issue',
+        'list',
+        '--state',
+        'open',
+        '--search',
+        `[tester] ${slug}`,
+        '--json',
+        'number',
+        '--limit',
+        '1',
+      ],
       { encoding: 'utf8', timeout: 15000 }
     )
     const issues = JSON.parse(out)
@@ -74,8 +107,18 @@ function fileIssue(result: TestResult, screenshotPath?: string): void {
   ].join('\n')
 
   try {
-    execSync(
-      `gh issue create --title "[tester] Proof page broken: ${result.slug}" --body "${body.replace(/"/g, '\\"')}" --label bug`,
+    execFileSync(
+      'gh',
+      [
+        'issue',
+        'create',
+        '--title',
+        `[tester] Proof page broken: ${result.slug}`,
+        '--body',
+        body,
+        '--label',
+        'bug',
+      ],
       { encoding: 'utf8', timeout: 30000 }
     )
     console.log(`  Filed issue for ${result.slug}`)
@@ -87,6 +130,7 @@ function fileIssue(result: TestResult, screenshotPath?: string): void {
 async function run(): Promise<void> {
   console.log(`Testing ${COUNT} random proofs on ${BASE_URL}`)
 
+  const { chromium } = await import('playwright')
   const browser = await chromium.launch({ headless: true })
   const context = await browser.newContext({
     viewport: { width: 1280, height: 720 },
@@ -95,7 +139,7 @@ async function run(): Promise<void> {
 
   // Collect console errors
   const consoleErrors: string[] = []
-  page.on('console', (msg: ConsoleMessage) => {
+  page.on('console', (msg: ConsoleMessageLike) => {
     if (msg.type() === 'error') {
       consoleErrors.push(msg.text())
     }
@@ -103,7 +147,7 @@ async function run(): Promise<void> {
 
   // Track failed network requests
   const networkErrors: string[] = []
-  page.on('requestfailed', (req) => {
+  page.on('requestfailed', (req: { url(): string; failure(): { errorText?: string } | null }) => {
     networkErrors.push(`${req.url()} - ${req.failure()?.errorText ?? 'unknown'}`)
   })
 
