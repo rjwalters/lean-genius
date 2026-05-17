@@ -36,6 +36,10 @@ export function TableOfContents({
           {sections.map((section, index) => (
             <button
               key={section.id}
+              type="button"
+              aria-current={
+                currentSection?.id === section.id ? 'location' : undefined
+              }
               onClick={() => onSectionClick(section)}
               className={cn(
                 'w-full text-left p-3 rounded-md transition-colors',
