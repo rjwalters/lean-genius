@@ -25,6 +25,20 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m' # No Color
 
+usage() {
+    echo "Usage: $0 [proof-file.lean]"
+    echo "       $0 --all"
+    echo ""
+    echo "Examples:"
+    echo "  $0 Proofs/Sqrt2Irrational.lean"
+    echo "  $0 --all"
+}
+
+if [ $# -eq 0 ] || [ "${1:-}" == "--help" ] || [ "${1:-}" == "-h" ]; then
+    usage
+    exit 0
+fi
+
 # Check LeanInk exists
 if [ ! -f "$LEANINK_BIN" ]; then
     echo -e "${RED}Error: LeanInk not found at $LEANINK_BIN${NC}"
@@ -74,10 +88,5 @@ elif [ -n "$1" ]; then
     process_file "$1"
 
 else
-    echo "Usage: $0 [proof-file.lean]"
-    echo "       $0 --all"
-    echo ""
-    echo "Examples:"
-    echo "  $0 Proofs/Sqrt2Irrational.lean"
-    echo "  $0 --all"
+    usage
 fi
