@@ -47,6 +47,7 @@ export function HomePage() {
 
   // Local-only UI state (no URL persistence needed)
   const [showFilters, setShowFilters] = useState(false)
+  const filterPanelId = 'proof-gallery-filters'
 
   // Filter and sort proofs
   const proofs = useMemo(() => {
@@ -243,6 +244,8 @@ export function HomePage() {
             {/* Filter Button */}
             <button
               onClick={() => setShowFilters(!showFilters)}
+              aria-expanded={showFilters}
+              aria-controls={filterPanelId}
               className={`flex items-center gap-1.5 text-sm transition-colors ${
                 showFilters || selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly || showErdosOnly
                   ? 'text-annotation'
@@ -273,7 +276,7 @@ export function HomePage() {
 
         {/* Filter Panel */}
         {showFilters && (
-          <div className="mb-6 p-4 bg-card border border-border rounded-lg">
+          <div id={filterPanelId} className="mb-6 p-4 bg-card border border-border rounded-lg">
             <div className="flex items-center justify-between mb-3">
               <span className="text-sm font-medium">Filter by Category</span>
               {(selectedBadges.length > 0 || showWiedijkOnly || showHilbertOnly || showMillenniumOnly || showErdosOnly) && (
@@ -293,6 +296,7 @@ export function HomePage() {
               {/* Wiedijk Filter Toggle */}
               <button
                 onClick={() => setShowWiedijkOnly(!showWiedijkOnly)}
+                aria-pressed={showWiedijkOnly}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all
                   ${showWiedijkOnly
                     ? 'ring-2 ring-offset-2 ring-offset-background'
@@ -317,6 +321,7 @@ export function HomePage() {
               {/* Hilbert Filter Toggle */}
               <button
                 onClick={() => setShowHilbertOnly(!showHilbertOnly)}
+                aria-pressed={showHilbertOnly}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all
                   ${showHilbertOnly
                     ? 'ring-2 ring-offset-2 ring-offset-background'
@@ -341,6 +346,7 @@ export function HomePage() {
               {/* Millennium Filter Toggle */}
               <button
                 onClick={() => setShowMillenniumOnly(!showMillenniumOnly)}
+                aria-pressed={showMillenniumOnly}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all
                   ${showMillenniumOnly
                     ? 'ring-2 ring-offset-2 ring-offset-background'
@@ -365,6 +371,7 @@ export function HomePage() {
               {/* Erdős Filter Toggle */}
               <button
                 onClick={() => setShowErdosOnly(!showErdosOnly)}
+                aria-pressed={showErdosOnly}
                 className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium transition-all
                   ${showErdosOnly
                     ? 'ring-2 ring-offset-2 ring-offset-background'
