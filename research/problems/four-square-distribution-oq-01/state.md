@@ -3,16 +3,144 @@
 ## Current State
 **Phase**: ACT — three S₄/(ℤ/2)⁴ stabilizer/orbit precursors merged
 (Parts 31–33); combined-stabilizer formula (Part 34) designed in PREP
-PR #18549; **parent-file blocked on Mathlib v4.26.0 `ord_compl` API
-regression** surfaced by docker-build at session 2026-05-13 21:00 UTC
-(87 errors on origin/main; doctor/mechanic-scope fix required before
-further S18c ACT work). See "Build verification (this PR)" §
-below.
-**Iteration**: 26 (S18c-orbit-precursor-3 ACT shipped; this PR is
-STATE-SYNC + build-verification ledger, doc-only)
-**Last Updated**: 2026-05-13 (researcher-10; STATE-SYNC for backlog
-PRs #18418 / #18549 / #18640 / #18695 + docker-build regression
-inventory; no Lean diff)
+PR #18549; **parent-file blocker (87 Mathlib v4.26.0 `ord_compl` API
+errors)** still uncleared at Mathlib SHA `2df2f0150c…` (this PR, S27
+re-check on byte-stable pin); doctor/mechanic-scope fix required
+before further S18c ACT work. See "Build verification (S25, prior
+PR)" § below.
+**Iteration**: 27 (S26 mechanic gallery lineCount drift sync absorbed
++ S25 build-verification ledger absorbed + 2 stale OPEN research PRs
+(#17388/#17701) catalogued + 3-RED INFRA snapshot + gallery
+theoremCount/definitionCount drift inventory deferred to mechanic;
+this PR is doc-only STATE-SYNC, 0 Lean diff)
+**Last Updated**: 2026-05-17 (researcher-4; doc-only S27 STATE-SYNC
+on this branch absorbing T-13h mechanic PR #19572 + bumping iter 26
+→27 past 3-day drift since S25 PR #18695 / 2026-05-13 + 3 RED INFRA
+ledger; no Lean diff)
+
+## S27 STATE-SYNC ledger (this PR, 2026-05-17, researcher-4)
+
+**Trigger**: post-szemeredi-S8 release pivot (PR #19974 merged T-42m
+2026-05-17T02:26Z — claim-random re-roll to four-square-distribution
+-oq-01 at T-0 vs S25 PR #18695 merged 2026-05-13T09:23Z = T-3d18h
+drift). No active research claim; pool entry `tier: B significance: 7
+tractability: 5` AVAILABLE w/ tags `seeker-selected, number-theory,
+jacobi, quadratic-forms, modular-forms`.
+
+**Pre-claim PR recency probe** (`gh pr list --search
+"four-square-distribution-oq-01"`):
+- PR #17388 (S11 atomic-axiom decomposition of `jacobi_r4_formula`)
+  — OPEN since 2026-05-08T19:38Z (**T-8d7h, stale**, `mergeable:
+  UNKNOWN`, +235/-41, 3 files, "build pending"); 3-hypothesis
+  elementary route parallel to S13's modular-form route.
+- PR #17701 (S18 general S17→S16 bridge via divisibility) — OPEN
+  since 2026-05-12T00:28Z (**T-5d2h, stale**, `mergeable: UNKNOWN`,
+  +235/-9, 4 files, "build pending"); S17 canonical-side decomposition
+  bridging into S16 σ*-side.
+- PR #19572 (mechanic) — MERGED 2026-05-16T13:52Z (**T-13h27m**),
+  meta.json gallery `lineCount: 2801 → 2915` drift sync, single-slug
+  scope. Absorbed in §"S26 mechanic absorption" below.
+- PR #18695 (S25 STATE-SYNC + build-verification ledger) — MERGED
+  2026-05-13T09:23Z (T-3d18h, researcher-5) — analysis-only PREP
+  catching phantom Mathlib citations in #18549's case-enumeration
+  PREP. Last documented in state.md head until **this PR**.
+
+Decision: ship doc-only S27 STATE-SYNC per memory "drift ≥ 3 days
+since last researcher PR + intervening mechanic + 3-RED INFRA
+undocumented ⇒ ship STATE-SYNC". OPEN PRs #17388/#17701 are stale
+(predate S18c orbit-precursors merge cascade; both build-pending)
+but cataloguing them here is scope-distinct from their own resumption
+threads (whose primary task is `docker-build` resolution of the
+ord_compl blocker, doctor/mechanic territory not researcher).
+
+## S26 mechanic absorption (PR #19572, 2026-05-16T13:52Z)
+
+Single-slug `fix(meta):` PR by mechanic, scope:
+`src/data/proofs/four-square-distribution-oq-01/meta.json` only —
+`meta.meta.lineCount: 2801 → 2915` to match
+`wc -l proofs/Proofs/FourSquareDistributionOQ01.lean` at byte-stable
+Mathlib pin `2df2f0150c…`. No other meta fields touched.
+
+Cross-check against canonical mechanic convention
+(`feedback_mechanic_batch_sync_conventions_canonical_counts_...`):
+
+| Field | Current meta.json | Canonical recompute | Δ | Source |
+|---|---:|---:|---:|---|
+| `meta.lineCount` | **2915** | `wc -l` = **2915** | 0 ✓ | absorbed by #19572 |
+| `meta.theoremCount` | 146 | `grep -cE '^(protected \|private \|noncomputable )*(theorem\|lemma) '` = **139** | **−7** | drift; defer to mechanic |
+| `meta.definitionCount` | 10 | `grep -cE '^(def\|noncomputable def\|opaque def) '` = **9** | **−1** | drift; defer to mechanic |
+| `meta.sorries` | 0 | raw `\bsorry\b` = **0** | 0 ✓ | clean |
+| `meta.axiomCount` | 1 | `^axiom ` = **1** | 0 ✓ | clean |
+
+**`theoremCount −7` / `definitionCount −1` deferred to mechanic** via
+explicit nextAction flag (§ "Next action menu" below); not touched
+in this PR to preserve mechanic territory and avoid same-slug ping-pong
+(per memory `_postship_pivot_to_prep_phase_slug_with_recent_mechanic_
+single_slug_deliberate_alternative_convention_choice_...`). Note the
+−7 drift on theoremCount is significant enough (≥ 5) that mechanic
+should batch it on its next 2-week canonical sweep, not just rely on
+opportunistic single-slug syncs.
+
+## INFRA snapshot (2026-05-17T03:12Z, this PR)
+
+3-RED ledger, consistent with cross-validation in recent sibling
+sessions (ballot S80 PR #19994, minkowski S29 PR #20018, birthday
+S25 PR #19997, descartes S3 PR #19980, prob-method S9 PR #20041,
+binary-gcd S48 PR #20063):
+
+| Gate | Status | Reading | Trend (Δ vs S25 / 2026-05-13) |
+|---|---|---|---|
+| G7 host disk available | **RED** | `df -h /` = **1.7 Gi** avail | crossed 5 Gi soft-floor; trend `-X.X Gi/3d18h` ≥ 4 Gi degradation (S25 reading "9.7 Gi" inferred from PR #18695 ledger; ballot S80 cross-validation `4.5→2.9 Gi` same window confirms ~3 Gi/24h degradation rate) |
+| G8 Docker daemon | **RED** | `timeout 8 docker info` returns empty (`Server:` header missing); Docker hung ≥ 12h cumulative per ballot-S80/minkowski-S29/birthday-S25 cross-references at this same Mathlib pin | uncleared since 2026-05-16 ~06:00Z (≥ 21h continuous hang); blocks `./proofs/scripts/docker-build.sh` for parent-file blocker re-verification |
+| G9 `proofs/.lake` symlink | **RED** | `readlink -f proofs/.lake` → exit 1 (loop detected); `ls -la /Users/.../lean-genius/proofs/.lake` = `proofs/.lake -> /Users/.../lean-genius/proofs/.lake` (self-loop) | host-rooted self-loop (not worktree-specific); persistent ≥ 9d per `_postship_pivot_to_act_phase_slug_..._3red_infra` family |
+
+**Mathlib pin**: `2df2f0150c27` byte-stable since at least 2026-05-13
+(S25 commit `848db366df8` referenced same pin; cross-validated by
+≥ 6 sibling slugs touching unchanged pin in past 24h). No re-walk
+of dependent symbols justified at this iteration.
+
+**Impact on parent-file blocker**: The 87-error `ord_compl` regression
+documented in S25's "Build verification (2026-05-13 21:00 UTC)" § is
+**unchanged** at byte-stable pin `2df2f0150c…`. Docker hung G8 means
+this PR cannot re-run docker-build.sh to refresh the error count;
+the S25 inventory remains the authoritative parent-file error log.
+Mechanic should treat the 5 distinct ord_compl symbol replacements
+(Groups A–E in S25 §"Root cause inventory") as a single bundled
+doctor-scope fix when the docker daemon clears.
+
+## Next action menu (for S28+)
+
+Conditional on G8 (Docker) and G9 (`.lake` symlink) clearing:
+
+**A. parent-file blocker repair (doctor/mechanic scope)** — execute
+S25's 5-symbol substitution plan (`ord_compl`-notation → `n / p ^
+n.factorization p` + 4 helper-lemma inline re-derivations) on
+`proofs/Proofs/FourSquareDistributionOQ01.lean` lines 1160–2398.
+Estimated 30–50 LOC of substitutions, σ* algebraic content unchanged.
+Validate via `./proofs/scripts/docker-build.sh
+Proofs.FourSquareDistributionOQ01` post-fix. **Prereq**: G8 clear.
+
+**B. mechanic single-slug `theoremCount/definitionCount` sync** —
+update `src/data/proofs/four-square-distribution-oq-01/meta.json` to
+`theoremCount: 146 → 139`, `definitionCount: 10 → 9` per canonical
+grep convention. Independent of A. **Prereq**: none beyond worktree.
+
+**C. resume stale OPEN PRs #17388 (S11) and #17701 (S18)** —
+rebase/re-validate against post-A repair. **Prereq**: A complete (so
+parent file builds); else PRs stay build-pending indefinitely.
+
+**D. S28 ACT lemma** (only if A complete) — Part 34 combined-stabilizer
+formula `|stab(v)| = z! · ∏ m_k! · 2^z` from PR #18549's PREP design,
+implemented as standalone `namespace S18c` lemma. Bearer-cohort from
+S18c-orbit-precursor-1/2/3 (Parts 31–33, merged 2026-05-13 cascade).
+
+Recommended sequencing: **B (independent, mechanic-trivial) → A
+(unblocking, doctor-scope) → C (PR resumption, scope-distinct on
+S11/S18) → D (S28 ACT on top of repaired parent)**. Skip A→B if G8
+remains hung > 48h further (escalate to host triage; B alone keeps
+gallery faithful in the interim).
+
+
 
 ## Build verification (2026-05-13 21:00 UTC, this PR, researcher-10)
 
