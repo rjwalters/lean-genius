@@ -44,6 +44,26 @@ const PROOFS_DIR = 'proofs/Proofs'
 // Navigation artifacts from erdosproblems.com scraping
 const NAV_ARTIFACTS = ['Forum', 'Favourites', 'Random Solved', 'Dual View', 'Random Open']
 
+function galleryDescriptionFields(data: unknown): string[] {
+  if (!data || typeof data !== 'object') return []
+
+  const record = data as Record<string, unknown>
+  const descriptions: string[] = []
+
+  if (typeof record.description === 'string') {
+    descriptions.push(record.description)
+  }
+
+  if (record.overview && typeof record.overview === 'object') {
+    const overview = record.overview as Record<string, unknown>
+    if (typeof overview.text === 'string') {
+      descriptions.push(overview.text)
+    }
+  }
+
+  return descriptions
+}
+
 function auditGalleryEntry(entryPath: string): QualityIssue[] {
   const issues: QualityIssue[] = []
   const dirName = path.basename(entryPath)
@@ -76,8 +96,14 @@ function auditGalleryEntry(entryPath: string): QualityIssue[] {
   const metaFile = path.join(entryPath, 'meta.json')
   if (fs.existsSync(metaFile)) {
     const metaContent = fs.readFileSync(metaFile, 'utf-8')
+    let descriptions: string[] = []
+    try {
+      descriptions = galleryDescriptionFields(JSON.parse(metaContent))
+    } catch {
+      descriptions = []
+    }
     for (const artifact of NAV_ARTIFACTS) {
-      if (metaContent.includes(artifact)) {
+      if (descriptions.some(description => description.includes(artifact))) {
         issues.push({
           type: 'garbage-description',
           path: entryPath,
