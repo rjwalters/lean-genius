@@ -863,6 +863,167 @@ theorem p_triple_general (d n : ℕ) (i j k : Fin n)
   have hpow_ne : (d : ℝ) ^ (n - 2) ≠ 0 := pow_ne_zero _ hd_ne
   field_simp
 
+/-- **Layer 3f preliminary (4-element generalization of `bad_count_general`).**
+
+    With four pairwise-distinct elements `i, j, k, l` of `Fin n`, the number of
+    functions `f : Fin n → Fin d` satisfying the 4-element chain
+    `f i = f j ∧ f j = f k ∧ f k = f l` is exactly `d^(n - 3)`.
+
+    Strategy mirrors `bad_count_general`: build an explicit bijection
+    `{f // f i = f j ∧ f j = f k ∧ f k = f l}  ≃  ({m : Fin n // m ≠ j ∧ m ≠ k ∧ m ≠ l} → Fin d)`
+    via restriction to the (n − 3)-element complement of `{j, k, l}`. The inverse
+    extends a function `g` on the complement by `f m = g i` for `m ∈ {j, k, l}`
+    (well-defined since `i ≠ j`, `i ≠ k`, `i ≠ l`) and `f m = g m` otherwise.
+
+    Reused by `bad_count_overlap_two` (S24 §3.2): the canonicalised overlap-2
+    constraint `f a₁ = f b₁ ∧ f b₁ = f c₁ ∧ f c₁ = f c₂` is precisely the
+    4-element chain with `(i, j, k, l) = (a₁, b₁, c₁, c₂)`. -/
+theorem bad_count_general_4 (d n : ℕ) (i j k l : Fin n)
+    (hij : i ≠ j) (hjk : j ≠ k) (hkl : k ≠ l)
+    (hik : i ≠ k) (hil : i ≠ l) (hjl : j ≠ l) :
+    (Finset.univ.filter (fun f : Fin n → Fin d =>
+      f i = f j ∧ f j = f k ∧ f k = f l)).card = d ^ (n - 3) := by
+  classical
+  -- Step 1: cardinality of the complement {m : Fin n // m ≠ j ∧ m ≠ k ∧ m ≠ l} = n - 3.
+  have hcompl_card :
+      Fintype.card {m : Fin n // m ≠ j ∧ m ≠ k ∧ m ≠ l} = n - 3 := by
+    rw [Fintype.card_subtype]
+    have heq : (Finset.univ.filter (fun m : Fin n => m ≠ j ∧ m ≠ k ∧ m ≠ l)) =
+               Finset.univ \ ({j, k, l} : Finset (Fin n)) := by
+      ext m
+      simp only [Finset.mem_filter, Finset.mem_univ, true_and,
+                 Finset.mem_sdiff, Finset.mem_insert, Finset.mem_singleton, not_or,
+                 and_assoc]
+    have htriple_card : ({j, k, l} : Finset (Fin n)).card = 3 := by
+      rw [show ({j, k, l} : Finset (Fin n)) = insert j (insert k {l}) from rfl,
+          Finset.card_insert_of_not_mem
+            (by simp [hjk, hjl]),
+          Finset.card_insert_of_not_mem (by simp [hkl]),
+          Finset.card_singleton]
+    rw [heq, Finset.card_sdiff_of_subset (Finset.subset_univ _),
+        Finset.card_univ, Fintype.card_fin, htriple_card]
+  -- Step 2: target function space has cardinality d^(n-3).
+  have hcard_target :
+      Fintype.card ({m : Fin n // m ≠ j ∧ m ≠ k ∧ m ≠ l} → Fin d) = d ^ (n - 3) := by
+    rw [Fintype.card_fun, Fintype.card_fin, hcompl_card]
+  -- Step 3: rewrite Finset.card via the Fintype.card of the constrained subtype.
+  rw [show (d ^ (n - 3) : ℕ) =
+        Fintype.card ({m : Fin n // m ≠ j ∧ m ≠ k ∧ m ≠ l} → Fin d) from
+          hcard_target.symm,
+      ← Fintype.card_coe]
+  -- Step 4: build the bijection.
+  apply Fintype.card_congr
+  refine {
+    toFun := fun f m => f.val m.val
+    invFun := fun g =>
+      ⟨fun m =>
+        if hj : m = j then g ⟨i, hij, hik, hil⟩
+        else if hk : m = k then g ⟨i, hij, hik, hil⟩
+        else if hl : m = l then g ⟨i, hij, hik, hil⟩
+        else g ⟨m, hj, hk, hl⟩,
+       Finset.mem_filter.mpr ⟨Finset.mem_univ _, ?_⟩⟩
+    left_inv := ?_
+    right_inv := ?_ }
+  · -- Membership: the extended function satisfies the 3-conjunct chain.
+    refine ⟨?_, ?_, ?_⟩
+    · -- f i = f j: LHS three dif_neg's (i ≠ j, i ≠ k, i ≠ l) → g ⟨i, …⟩;
+      -- RHS dif_pos rfl → g ⟨i, …⟩.
+      show (if hj : i = j then g ⟨i, hij, hik, hil⟩
+            else if hk : i = k then g ⟨i, hij, hik, hil⟩
+            else if hl : i = l then g ⟨i, hij, hik, hil⟩
+            else g ⟨i, hj, hk, hl⟩) =
+           (if hj : j = j then g ⟨i, hij, hik, hil⟩
+            else if hk : j = k then g ⟨i, hij, hik, hil⟩
+            else if hl : j = l then g ⟨i, hij, hik, hil⟩
+            else g ⟨j, hj, hk, hl⟩)
+      rw [dif_neg hij, dif_neg hik, dif_neg hil, dif_pos rfl]
+    · -- f j = f k: LHS dif_pos rfl → g ⟨i, …⟩;
+      -- RHS dif_neg (Ne.symm hjk), dif_pos rfl → g ⟨i, …⟩.
+      show (if hj : j = j then g ⟨i, hij, hik, hil⟩
+            else if hk : j = k then g ⟨i, hij, hik, hil⟩
+            else if hl : j = l then g ⟨i, hij, hik, hil⟩
+            else g ⟨j, hj, hk, hl⟩) =
+           (if hj : k = j then g ⟨i, hij, hik, hil⟩
+            else if hk : k = k then g ⟨i, hij, hik, hil⟩
+            else if hl : k = l then g ⟨i, hij, hik, hil⟩
+            else g ⟨k, hj, hk, hl⟩)
+      rw [dif_pos rfl, dif_neg (Ne.symm hjk), dif_pos rfl]
+    · -- f k = f l: LHS dif_neg (Ne.symm hjk), dif_pos rfl → g ⟨i, …⟩;
+      -- RHS dif_neg (Ne.symm hjl), dif_neg (Ne.symm hkl), dif_pos rfl → g ⟨i, …⟩.
+      show (if hj : k = j then g ⟨i, hij, hik, hil⟩
+            else if hk : k = k then g ⟨i, hij, hik, hil⟩
+            else if hl : k = l then g ⟨i, hij, hik, hil⟩
+            else g ⟨k, hj, hk, hl⟩) =
+           (if hj : l = j then g ⟨i, hij, hik, hil⟩
+            else if hk : l = k then g ⟨i, hij, hik, hil⟩
+            else if hl : l = l then g ⟨i, hij, hik, hil⟩
+            else g ⟨l, hj, hk, hl⟩)
+      rw [dif_neg (Ne.symm hjk), dif_pos rfl,
+          dif_neg (Ne.symm hjl), dif_neg (Ne.symm hkl), dif_pos rfl]
+  · -- left_inv: invFun (toFun ⟨f, hf⟩) = ⟨f, hf⟩.
+    rintro ⟨f, hf⟩
+    apply Subtype.ext
+    have h := (Finset.mem_filter.mp hf).2
+    -- h : f i = f j ∧ f j = f k ∧ f k = f l
+    funext m
+    by_cases hmj : m = j
+    · subst hmj
+      show (if hj : m = m then f i
+            else if hk : m = k then f i
+            else if hl : m = l then f i
+            else f m) = f m
+      rw [dif_pos rfl]
+      exact h.1
+    · by_cases hmk : m = k
+      · subst hmk
+        show (if hj : m = j then f i
+              else if hk : m = m then f i
+              else if hl : m = l then f i
+              else f m) = f m
+        rw [dif_neg hmj, dif_pos rfl]
+        exact h.1.trans h.2.1
+      · by_cases hml : m = l
+        · subst hml
+          show (if hj : m = j then f i
+                else if hk : m = k then f i
+                else if hl : m = m then f i
+                else f m) = f m
+          rw [dif_neg hmj, dif_neg hmk, dif_pos rfl]
+          exact h.1.trans (h.2.1.trans h.2.2)
+        · show (if hj : m = j then f i
+                else if hk : m = k then f i
+                else if hl : m = l then f i
+                else f m) = f m
+          rw [dif_neg hmj, dif_neg hmk, dif_neg hml]
+  · -- right_inv: toFun (invFun g) = g.
+    intro g
+    funext m
+    obtain ⟨m, hmj, hmk, hml⟩ := m
+    show (if hj : m = j then g ⟨i, hij, hik, hil⟩
+          else if hk : m = k then g ⟨i, hij, hik, hil⟩
+          else if hl : m = l then g ⟨i, hij, hik, hil⟩
+          else g ⟨m, hj, hk, hl⟩) = g ⟨m, hmj, hmk, hml⟩
+    rw [dif_neg hmj, dif_neg hmk, dif_neg hml]
+
+/-- **Layer 3f per-pair count (overlap = 2).** Given two ordered triples
+    `T₁ = (a₁, b₁, c₁)` and `T₂ = (a₂, b₂, c₂)` sharing two indices
+    (after canonicalisation, `b₁ = a₂` and `c₁ = b₂`), the count of
+    functions `f : Fin n → Fin d` simultaneously trivialising both
+    triples reduces to the 4-vertex chain `f a₁ = f b₁ ∧ f b₁ = f c₁
+    ∧ f c₁ = f c₂` and is exactly `d^(n - 3)`.
+
+    Direct corollary of `bad_count_general_4` with `(i, j, k, l) =
+    (a₁, b₁, c₁, c₂)`. The 6 pairwise-distinctness hypotheses needed
+    are: 3 within-`T₁` (`h₁₂`, `h₂₃`, `h₁₃`) + 3 cross to `c₂`
+    (`h₁₆`, `h₂₆`, `h₃₆`). -/
+theorem bad_count_overlap_two (d n : ℕ) (a₁ b₁ c₁ c₂ : Fin n)
+    (h₁₂ : a₁ ≠ b₁) (h₂₃ : b₁ ≠ c₁) (h₁₃ : a₁ ≠ c₁)
+    (h₃₆ : c₁ ≠ c₂) (h₁₆ : a₁ ≠ c₂) (h₂₆ : b₁ ≠ c₂) :
+    (Finset.univ.filter (fun f : Fin n → Fin d =>
+      f a₁ = f b₁ ∧ f b₁ = f c₁ ∧ f c₁ = f c₂)).card =
+      d ^ (n - 3) :=
+  bad_count_general_4 d n a₁ b₁ c₁ c₂ h₁₂ h₂₃ h₃₆ h₁₃ h₁₆ h₂₆
+
 -- ============================================================
 -- §5. FIRST-MOMENT IDENTITY (Layer 2 part 2 of Lemma C roadmap, Session 12)
 -- ============================================================
