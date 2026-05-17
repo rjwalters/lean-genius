@@ -1,19 +1,33 @@
 {
   "slug": "roth-theorem-k3-oq-02-incomplete-01",
-  "title": "[Problem Title]",
+  "title": "Roth's Theorem via Triangle Removal Lemma",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "r_3(N) = o(N) \\text{ via the Ruzsa-Szemeredi triangle removal construction}",
+    "plain": "Complete the scaffolded research task for the triangle-removal proof of Roth's theorem. The parent Lean development constructs the Ruzsa-Szemeredi tripartite graph encoding 3-term arithmetic progressions as triangles and proves the main theorem by calling two private helper lemmas that still contain sorries.",
+    "whyMatters": [
+      "This is a targeted completion or extension of the gallery proof roth-theorem-k3-oq-02.",
+      "The proof records the graph-theoretic route from the triangle removal lemma to Roth's theorem, complementing the Fourier-analytic proof.",
+      "Finishing the remaining helper lemmas would remove the conservative work-in-progress status from the parent development."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The parent proof defines the Ruzsa-Szemeredi graph on RSVertex N = Fin 3 x ZMod N.",
+      "The triangle/AP correspondence is formalized through APTriple, triangle_yields_ap_triple, and ap_triple_yields_triangle.",
+      "AP-freeness forcing trivial triples and the explicit AP-free triangle construction are proved.",
+      "ap_free_min_removal is proved and shows that a triangle-free edge-removal set must hit each explicit AP-free triangle.",
+      "roth_via_triangle_removal is proved syntactically in the source, but it depends on two private helper lemmas that still contain sorries."
+    ],
+    "open": [
+      "Prove rs_tc_ap_free_le, the upper bound that the AP-free RS graph has at most 6 * |A| * N ordered triangle triples.",
+      "Prove rs_removal_lb, the finite edge-removal lower bound |A| * N <= |R|.",
+      "Keep the proof status conservative until the two private helper sorries are eliminated."
+    ],
+    "goal": "Fill the remaining triangle-count and removal-lower-bound helper lemmas so the triangle-removal proof of Roth's theorem no longer depends on sorries."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -29,26 +43,103 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: roth-theorem-k3-oq-02-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "Local evidence identifies this as an incomplete research task attached to roth-theorem-k3-oq-02. The parent metadata reports 2 sorries and 0 axioms; the source confirms the sorries are in private helpers rs_tc_ap_free_le and rs_removal_lb. The main theorem roth_via_triangle_removal is present but should not be treated as fully complete independently of those helpers.",
+    "builtItems": [
+      "RSVertex N as Fin 3 x ZMod N",
+      "ruzsaSzemerediGraph with XY, YZ, and XZ adjacency relations determined by A",
+      "APTriple and both directions of the triangle-to-3AP correspondence",
+      "AP-free edge-disjointness ingredients, including xy_edge_unique_triangle and ap_free_triangle_exists",
+      "ap_free_min_removal hitting statement for explicit AP-free triangles",
+      "roth_via_triangle_removal theorem depending on the two sorry'd private helpers"
+    ],
+    "insights": [
+      "The Ruzsa-Szemeredi construction encodes generalized 3-AP triples a + b = 2c as triangles in a tripartite graph.",
+      "When A is AP-free, every AP triple is forced to be trivial, giving edge-disjoint explicit triangles of the form (x, x + a, x + 2a).",
+      "The target contradiction compares the removal lower bound |A| * N with the triangle removal lemma upper bound for a sparse-triangle graph.",
+      "The local problem statement mentions delta' = delta / 18, while the Lean theorem chooses eps_q with 9 * eps_q < delta."
+    ],
+    "mathlibGaps": [
+      "A formal counting argument for ordered triangle triples in the RS graph under AP-freeness.",
+      "A finite injection or disjointness argument turning one required removed edge per explicit triangle into |A| * N <= |R|."
+    ],
+    "nextSteps": [
+      "Inspect the exact shapes of triangleCount and removeEdges from the imported counting development.",
+      "Prove rs_tc_ap_free_le by reducing all triangles to explicit AP-free triangles and accounting for ordered permutations.",
+      "Prove rs_removal_lb by assigning each pair (a, x) to a removed edge from its explicit triangle and proving enough injectivity using edge uniqueness.",
+      "Re-run the Lean proof after each helper is replaced."
+    ],
+    "markdown": "# Knowledge Base: roth-theorem-k3-oq-02-incomplete-01\n\n## Problem Understanding\n\nThis research problem is a scaffolded follow-up to the gallery proof `roth-theorem-k3-oq-02`, Roth's theorem via the Ruzsa-Szemeredi triangle removal construction. The local problem statement asks for the triangle-removal reduction, with a quantitative choice described as `delta' = delta / 18`.\n\n## Current Evidence\n\nThe parent metadata reports `0 axioms` and `2 sorries`. The Lean source confirms both sorries are private helper lemmas in `proofs/Proofs/RothTriangleRemoval.lean`: `rs_tc_ap_free_le`, the AP-free ordered triangle-count upper bound, and `rs_removal_lb`, the finite edge-removal lower bound. The theorem `roth_via_triangle_removal` is present but calls those helpers, so the proof status remains conservative.\n\n## Built Structure\n\nThe source defines the RS graph on `Fin 3 x ZMod N`, proves the triangle/AP correspondence, proves that AP-freeness forces AP triples to be trivial, and provides the explicit AP-free triangle construction. The remaining work is concentrated in the two quantitative/private helper lemmas needed for the final contradiction.\n\n## Dead Ends\n\nNo research attempts have been recorded yet; state.md preserves zero attempts.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "additive-combinatorics",
+    "roth",
+    "arithmetic-progressions",
+    "triangle-removal",
+    "graph-theory",
+    "regularity-lemma",
+    "szemeredi",
+    "ruzsa-szemeredi",
+    "lean4"
   ],
   "relatedProofs": [
     "roth-theorem-k3",
     "roth-theorem-k3-oq-02"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      {
+        "authors": "Ruzsa, Imre; Szemeredi, Endre",
+        "title": "Triple systems with no six points carrying three triangles",
+        "year": "1978",
+        "venue": "Combinatorics (Keszthely 1976), Coll. Math. Soc. J. Bolyai 18, 939-945",
+        "note": "Introduced the construction underlying the triangle-removal proof of Roth's theorem."
+      },
+      {
+        "authors": "Roth, Klaus",
+        "title": "On certain sets of integers",
+        "year": "1953",
+        "venue": "Journal of the London Mathematical Society 28, 104-109",
+        "note": "Original proof of r_3(N) = o(N)."
+      },
+      {
+        "authors": "Szemeredi, Endre",
+        "title": "Regular partitions of graphs",
+        "year": "1978",
+        "venue": "Problemes combinatoires et theorie des graphes, 399-401",
+        "note": "Regularity lemma source for the triangle removal lemma."
+      },
+      {
+        "authors": "Komlos, Janos; Simonovits, Miklos",
+        "title": "Szemeredi's Regularity Lemma and its applications in graph theory",
+        "year": "1996",
+        "venue": "Bolyai Society Mathematical Studies 2, 295-352",
+        "note": "Survey reference listed in the parent proof metadata."
+      }
+    ],
+    "urls": [
+      {
+        "title": "Ruzsa-Szemeredi problem",
+        "url": "https://en.wikipedia.org/wiki/Ruzsa%E2%80%93Szemer%C3%A9di_problem",
+        "note": "Source URL recorded in the parent proof metadata."
+      }
+    ],
+    "mathlib": [
+      {
+        "module": "Mathlib.Combinatorics.SimpleGraph.Basic",
+        "theorem": "SimpleGraph",
+        "description": "Undirected graph type used for the RS graph."
+      },
+      {
+        "module": "Mathlib.Data.ZMod.Basic",
+        "theorem": "ZMod",
+        "description": "Cyclic groups for the vertex space."
+      },
+      {
+        "module": "Mathlib.Data.Finset.Basic",
+        "theorem": "Finset",
+        "description": "Finite sets used for subsets of ZMod N and removal sets."
+      }
+    ]
   },
   "started": "2026-04-03T02:25:34-07:00",
   "significance": 8,

@@ -1,19 +1,32 @@
 {
   "slug": "roth-theorem-k3-oq-03-incomplete-01",
-  "title": "[Problem Title]",
+  "title": "Density Increment via Gowers Norms",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "If a bounded function has large Gowers uniformity norm, prove the corresponding density increment on a subprogression; for k=3, derive the explicit increment from Roth's Fourier-analytic infrastructure.",
+    "plain": "Formalize the density-increment step behind Roth/Szemeredi-style arithmetic progression results. The parent Lean file defines k-AP-free sets, Gowers norms, and k-AP counting operators constructively; the remaining hard general-k density-increment step is represented by an axiom, while the k=3 explicit density increment is already proved from Roth infrastructure.",
+    "whyMatters": [
+      "Gowers norms are the standard tool for controlling k-term arithmetic progression counts.",
+      "The k=3 case connects the general Gowers framework back to Roth's proved Fourier-analytic density increment.",
+      "Replacing the general-k density-increment axiom would be a major Lean formalization of additive combinatorics."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Parent proof roth-theorem-k3-oq-03 defines IsKAPFreeZMod, gowersNorm, hypercubeShift, conjugateByWeight, and kAPCount constructively.",
+      "Proofs/RothTheoremOQ03.lean proves the equivalence between IsKAPFreeZMod A 3 and Szemeredi.Roth.APFree A.",
+      "Theorem density_increment_k3_explicit is proved in Proofs/RothTheoremOQ03.lean from Szemeredi.Roth.density_increment_lemma, giving delta' >= delta + delta^2 / 100 for 3-AP-free sets.",
+      "The current parent Lean file has no sorry declarations."
+    ],
+    "open": [
+      "The general-k density increment is still an axiom: density_increment_kAP.",
+      "The parent proof metadata records a second transitive axiom, szemeredi_k_ge_4, inherited through Proofs.SzemerediTheorem.",
+      "The inverse theorem for higher Gowers norms and the quantitative general-k density increment are not formalized here."
+    ],
+    "goal": "For this incomplete research problem, investigate whether more of the Gowers-norm density-increment framework can be proved, while treating the existing k=3 explicit density increment as already established by the parent Roth infrastructure."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -21,7 +34,7 @@
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Read problem.md thoroughly and acquire full context. Then move to ORIENT phase to explore literature and related proofs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,26 +42,56 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: roth-theorem-k3-oq-03-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "Scaffold backfilled from local evidence. The parent proof roth-theorem-k3-oq-03 is status axiomatized: its Gowers norm and k-AP counting infrastructure are constructive, the k=3 explicit density increment is proved from RothTheorem.lean, and the general-k density-increment layer remains conservative because density_increment_kAP is declared as an axiom and szemeredi_k_ge_4 is inherited transitively.",
+    "builtItems": [
+      "IsKAPFreeZMod for k-term arithmetic-progression-free finsets in ZMod N.",
+      "Bridge theorems apFree_of_isKAPFreeZMod_three and isKAPFreeZMod_three_of_apFree.",
+      "Constructive Gowers norm support: hypercubeShift, conjugateByWeight, and gowersNorm.",
+      "Constructive kAPCount operator for weighted k-term arithmetic progression counts.",
+      "density_increment_k3_explicit, proving the k=3 density increment with delta' >= delta + delta^2 / 100 from Roth infrastructure."
+    ],
+    "insights": [
+      "For k=3, the file avoids the general-k axiom by translating IsKAPFreeZMod A 3 to Szemeredi.Roth.APFree A and applying Szemeredi.Roth.density_increment_lemma.",
+      "For k >= 4, the intended route depends on higher Gowers norms and inverse-theorem technology; the local parent metadata treats that layer as axiomatized.",
+      "problem.md is stale about one sorry plus two axioms; the local Lean file currently has zero sorries. The conservative proof status is axiomatized because of the general-k axiom layer, not because of active sorries."
+    ],
+    "mathlibGaps": [
+      "Formal generalized von Neumann theorem via Gowers-Cauchy-Schwarz over hypercubes.",
+      "Formal inverse theorem for higher Gowers norms, including nilsequence or polynomial-phase structure.",
+      "Quantitative general-k density increment strong enough to support an iteration argument without relying on transitive Szemeredi axioms."
+    ],
+    "nextSteps": [
+      "Confirm the exact theorem surface needed to replace or weaken density_increment_kAP.",
+      "Audit whether a k=3-only problem can be closed by pointing directly to density_increment_k3_explicit.",
+      "If pursuing general k, isolate a smaller lemma around Gowers-Cauchy-Schwarz or a bounded-function von Neumann estimate."
+    ],
+    "markdown": "# Knowledge Base: roth-theorem-k3-oq-03-incomplete-01\n\n## Problem Understanding\n\nThis problem asks for the density-increment step behind the Gowers-norm generalization of Roth/Szemeredi arithmetic-progression arguments. The local problem statement phrases the target as large Gowers norm implying a density increment on a progression. The parent proof `roth-theorem-k3-oq-03` supplies the surrounding framework.\n\n## Local Evidence\n\n- `research/problems/roth-theorem-k3-oq-03-incomplete-01/problem.md` identifies the problem as density increment via Gowers norms and says the k=3 goal should use Roth infrastructure.\n- `research/problems/roth-theorem-k3-oq-03-incomplete-01/state.md` keeps the research state at OBSERVE/full with zero attempts.\n- `src/data/proofs/roth-theorem-k3-oq-03/meta.json` marks the parent proof as axiomatized, with constructive `gowersNorm` and `kAPCount`, no sorries, and two axiom sources: `density_increment_kAP` in the file plus transitive `szemeredi_k_ge_4`.\n- `proofs/Proofs/RothTheoremOQ03.lean` contains one declared axiom, `density_increment_kAP`, and proves `density_increment_k3_explicit` from `Szemeredi.Roth.density_increment_lemma`.\n\n## Insights\n\nFor k=3, the explicit density increment is already proved in the parent Lean file: translate the 3-term k-AP-free predicate to `Szemeredi.Roth.APFree`, apply the Roth density-increment lemma, and translate the AP-free result back. The conservative status remains axiomatized for the general-k layer because the density increment for k >= 3 is declared as an axiom and the parent metadata records an inherited Szemeredi axiom for k >= 4.\n\n## Dead Ends\n\nNo research attempts are recorded yet. The stale scaffold claim of one sorry should not be treated as current evidence because the local Lean file has zero `sorry` declarations.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "combinatorics",
+    "additive-combinatorics",
+    "gowers-norms",
+    "arithmetic-progressions",
+    "density-increment",
+    "roth-theorem",
+    "szemeredi-theorem"
   ],
   "relatedProofs": [
     "roth-theorem-k3",
     "roth-theorem-k3-oq-03"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Gowers (2001) - A new proof of Szemeredi's theorem",
+      "Gowers (1998) - A new proof of Szemeredi's theorem for k=4",
+      "Green-Tao-Ziegler (2012) - An inverse theorem for the Gowers U^{s+1}[N]-norm"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Proofs.RothTheorem",
+      "Proofs.SzemerediTheorem",
+      "Proofs.RothTheoremOQ03"
+    ]
   },
   "started": "2026-04-03T02:25:35-07:00",
   "significance": 7,

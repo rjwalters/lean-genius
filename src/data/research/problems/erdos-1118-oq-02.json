@@ -1,19 +1,31 @@
 {
   "slug": "erdos-1118-oq-02",
-  "title": "[Problem Title]",
+  "title": "Higher-Dimensional Analogues of Erdős Problem #1118",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{Investigate analogues of Erdős Problem #1118 for holomorphic maps } f : \\mathbb{C}^n \\to \\mathbb{C}^n, \\text{ especially finite-measure superlevel conditions such as } \\lambda_{2n}\\{z \\in \\mathbb{C}^n : \\|f(z)\\| > c\\} < \\infty.",
+    "plain": "The parent problem studies entire functions on the complex plane whose large-value sets have finite planar measure. This open question asks what the corresponding theory should look like in several complex variables for holomorphic maps from C^n to C^n.",
+    "whyMatters": [
+      "It tests whether the Camera-Gol'dberg/Gol'dberg one-variable threshold-set theory has a meaningful several-complex-variables analogue.",
+      "It would require choosing the right higher-dimensional replacements for modulus, maximum modulus growth, and Lebesgue measure of superlevel sets.",
+      "The parent Lean formalization already isolates measure monotonicity facts that are plausible reusable infrastructure for a higher-dimensional version."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "For the one-variable parent problem, the Lean file defines IsEntire, superlevelSet, HasFiniteMeasure, maxModulus, thresholdSet, growthIntegral, and HaymanConjecture.",
+      "The parent Lean file proves superlevel_nested, finite_measure_monotone, and threshold_is_upper_set directly in Lean.",
+      "The parent Lean file derives erdos_1118_question2_negative from Gol'dberg's counterexample axiom by constructing witnesses c = m + 1 and c' = m / 2."
+    ],
+    "open": [
+      "The local research scaffold records the higher-dimensional analogue for holomorphic maps f : C^n -> C^n as an open question.",
+      "No local file gives a proposed several-variable theorem statement, growth integral, or formal Lean development for this open question.",
+      "The deep analytic one-variable results in the parent proof are axiomatized, so they should not be treated as Lean-proved analytic theorems."
+    ],
+    "goal": "Determine a truthful formulation of the several-complex-variables analogue before attempting formalization."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -29,29 +41,55 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: erdos-1118-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "Backfilled from local evidence: the OQ-02 research files contain only the OBSERVE scaffold plus the question asking for higher-dimensional analogues of the parent entire-function result. The parent proof metadata and Lean source show a conservative proof boundary: Camera-Gol'dberg/Gol'dberg analytic results are axioms; the set-nesting, finite-measure monotonicity, and threshold upper-set facts are Lean-proved.",
+    "builtItems": [
+      "research/problems/erdos-1118-oq-02/problem.md records the open question and links it to parent proof erdos-1118.",
+      "proofs/Proofs/Erdos1118Problem.lean contains the parent one-variable definitions and theorems.",
+      "src/data/proofs/erdos-1118/meta.json records the parent proof as status axiomatized with 3 axioms, 7 theorems, 13 definitions, and 0 sorries."
+    ],
+    "insights": [
+      "The higher-dimensional question should not inherit the parent solved status automatically; the local OQ file records a challenging generalization question.",
+      "The parent formalization separates reusable order/measure reasoning from deep analytic content: superlevel nesting, finite-measure monotonicity, and upward closure are proved, while Hayman's growth criterion and Gol'dberg threshold classification are axioms.",
+      "A future formulation needs choices absent from the local notes: scalar versus vector-valued norm, Lebesgue measure on C^n, and the correct maximum-modulus or plurisubharmonic growth invariant."
+    ],
+    "mathlibGaps": [
+      "No local evidence shows a Mathlib-ready statement of the Camera-Gol'dberg theorem in one variable.",
+      "No local evidence shows several-complex-variables infrastructure for the desired higher-dimensional growth criterion.",
+      "The parent proof currently axiomatizes camera_goldberg_theorem, goldberg_counterexample, and goldberg_threshold_classification."
+    ],
+    "nextSteps": [
+      "Define the candidate higher-dimensional superlevel set for f : C^n -> C^n and choose a norm on the target.",
+      "Check whether the one-variable monotonicity lemmas generalize to the selected measurable space and measure.",
+      "Survey literature before asserting any Camera-Gol'dberg-style growth criterion in several complex variables."
+    ],
+    "markdown": "# Knowledge Base: erdos-1118-oq-02\n\n## Problem Understanding\n\nThis open question asks for higher-dimensional analogues of Erdős Problem #1118 for holomorphic maps `f : C^n -> C^n`. The parent problem concerns one-variable entire functions whose superlevel sets `E(c) = {z : |f z| > c}` have finite planar measure.\n\n## Evidence From Parent Formalization\n\n`proofs/Proofs/Erdos1118Problem.lean` defines the one-variable objects: entire functions, superlevel sets, finite-measure predicates, maximum modulus, threshold sets, and Hayman's growth-integral conjecture.\n\nThe analytic results are not fully proved in Lean. The file axiomatizes `camera_goldberg_theorem`, `goldberg_counterexample`, and `goldberg_threshold_classification`.\n\nThe constructive Lean-proved core consists of `superlevel_nested`, `finite_measure_monotone`, and `threshold_is_upper_set`. The negative answer to the parent threshold question is then derived from the Gol'dberg counterexample axiom with explicit witnesses `m + 1` and `m / 2`.\n\n## Current Research Boundary\n\nNo local evidence provides a specific several-variable theorem statement, growth integral, or Lean development for OQ-02. The next real work is formulation: choose the target norm, the ambient measure on `C^n`, and the correct higher-dimensional growth invariant before attempting proof work.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "erdos",
+    "complex-analysis",
+    "several-complex-variables",
+    "entire-functions",
+    "measure-theory",
+    "open-question"
   ],
   "relatedProofs": [
-    "erdos-1",
-    "erdos-11",
-    "erdos-111",
-    "erdos-1118",
-    "erdos-1118-oq-02"
+    "erdos-1118"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Hayman, Research Problems in Function Theory (1974), Problem 2.40",
+      "Camera, PhD thesis, Imperial College London (1977)",
+      "Gol'dberg, Sibirskii Matematicheskii Zhurnal (1979), 512-518"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1118"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Complex.Basic",
+      "Mathlib.Analysis.Complex.Basic",
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Log.Basic"
+    ]
   },
   "started": "2026-03-30T06:03:08.389Z",
   "lastUpdate": "2026-03-30T06:03:08.397Z",
@@ -70,7 +108,7 @@
     {
       "path": "Proofs/Erdos1118Problem.lean",
       "filename": "Erdos1118Problem.lean",
-      "lineCount": 235,
+      "lineCount": 234,
       "theoremCount": 7,
       "axiomCount": 3,
       "defCount": 13,
