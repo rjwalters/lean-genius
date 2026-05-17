@@ -16,6 +16,12 @@ export type SessionResult = {
   error: string
 }
 
+export function extractBearerToken(request: Request): string | null {
+  const authHeader = request.headers.get('Authorization')
+  const match = authHeader?.match(/^Bearer\s+(\S+)\s*$/i)
+  return match?.[1] ?? null
+}
+
 /**
  * Validate a session token and return user info if valid.
  * Extracts Bearer token from Authorization header.
@@ -24,8 +30,7 @@ export async function validateSession(
   request: Request,
   DB: D1Database
 ): Promise<SessionResult> {
-  const authHeader = request.headers.get('Authorization')
-  const sessionToken = authHeader?.replace('Bearer ', '')
+  const sessionToken = extractBearerToken(request)
 
   if (!sessionToken) {
     return { valid: false, error: 'Session token required' }

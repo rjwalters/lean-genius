@@ -1,5 +1,6 @@
 import { createDb } from '../../../shared/db/client'
 import { sessionTokens } from '../../../shared/db/schema'
+import { extractBearerToken } from '../../lib/auth'
 import { eq } from 'drizzle-orm'
 
 interface Env {
@@ -12,8 +13,7 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
 
   try {
     // Get session token from Authorization header
-    const authHeader = context.request.headers.get('Authorization')
-    const sessionToken = authHeader?.replace('Bearer ', '')
+    const sessionToken = extractBearerToken(context.request)
 
     if (!sessionToken) {
       return new Response(
