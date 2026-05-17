@@ -1,44 +1,84 @@
 {
   "slug": "prime-counting-bounds",
   "title": "Prime Counting Function Bounds",
-  "phase": "COMPLETED",
-  "status": "graduated",
-  "tier": "A",
+  "phase": "IN_PROGRESS",
+  "status": "in-progress",
+  "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "SKIPPED: Explicit Chebyshev bounds not in Mathlib.",
-    "whyMatters": []
+    "formal": "Formalize Chebyshev-style bounds for the prime counting function π(n) and the first Chebyshev function θ(n) = Σ_{p ≤ n} log p, including explicit upper and lower estimates derived from primorial, central binomial, and Bertrand-postulate arguments.",
+    "plain": "Develop Lean proofs of explicit bounds relating the number of primes up to n to n/log n, using classical Chebyshev methods as far as current Mathlib infrastructure allows.",
+    "whyMatters": [
+      "Prime-counting bounds are the classical bridge between elementary number theory and the Prime Number Theorem.",
+      "The work tests Mathlib support for primorials, prime counting, binomial factorization, logarithmic estimates, and Bertrand's postulate.",
+      "Partial formal bounds provide reusable infrastructure for future analytic-number-theory formalizations."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`chebyshevTheta_le`: θ(n) ≤ n * log 4, via `primorial_le_4_pow`.",
+      "`centralBinom_le_four_pow`: Nat.centralBinom n ≤ 4^n.",
+      "`prime_in_interval_dvd_centralBinom`: primes in (n, 2n] divide the central binomial coefficient.",
+      "`prodPrimesInInterval_dvd_centralBinom`: the product of primes in (n, 2n] divides the central binomial coefficient.",
+      "`pow_primeCounting_diff_le`: n^(π(2n) - π(n)) ≤ 4^n for n ≥ 1.",
+      "`numPrimesInInterval_eq`: the interval prime count equals π(2n) - π(n).",
+      "`primeCounting_doubling_ge_one`: π(2n) - π(n) ≥ 1 for n ≥ 1, using Bertrand's postulate.",
+      "`primeCounting_pow_two_ge`: k ≤ π(2^k) for k ≥ 1.",
+      "`primeCounting_ge_log`: a logarithmic lower bound on π(n).",
+      "`chebyshevTheta_doubling_ge`: θ(2n) - θ(n) ≥ log(n+1) for n ≥ 1.",
+      "`centralBinom_ge_four_pow_div` and `log_centralBinom_ge`: lower bounds for the central binomial coefficient and its logarithm."
+    ],
+    "open": [
+      "A full explicit constant lower bound θ(n) ≥ c*n for some c > 0 is not recorded as proved.",
+      "Full two-sided Chebyshev bounds π(x) ≍ x/log x are not recorded as proved.",
+      "Sharper historical constants, such as Chebyshev's large-n bounds for θ(n)/n, remain future work."
+    ],
+    "goal": "Build toward formal Chebyshev prime-counting bounds by extending the existing Lean file from proved upper/doubling/logarithmic estimates to full constant-factor bounds."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "IN_PROGRESS",
     "since": "2026-01-01T05:32:39.479Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "iteration": 2,
+    "focus": "Backfilled from local evidence: `proofs/Proofs/ChebyshevBounds.lean` is reported to contain 12 proved theorems with 0 axioms and 0 sorries, but the full classical Chebyshev constant-factor result is still listed as an extension.",
+    "blockers": [
+      "The local `problem.md` and `state.md` still contain skipped/new scaffold text and were not updated alongside `knowledge.md`.",
+      "A proof of θ(n) ≥ c*n and the derivation of full π(x) constant-factor bounds are not documented as completed."
+    ],
+    "nextAction": "Either telescope the θ doubling lower bound into an explicit linear lower bound, or use a Stirling/central-binomial approach to obtain sharper Chebyshev-style constants.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 2,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [
-      "Lower bound on θ(n)",
-      "Derive π(x) bounds",
-      "Telescope the doubling bound"
+    "progressSummary": "Lean evidence in `knowledge.md` reports a ChebyshevBounds file with 12 formalized theorems, 0 axioms, and 0 sorries. The proved results include θ(n) ≤ n*log 4, central-binomial upper/lower bounds, a doubling-interval upper bound for π, Bertrand-based lower bounds for π over powers of two, and θ(2n)-θ(n) ≥ log(n+1). The broader classical Chebyshev constant-factor bounds for π(x) and a linear lower bound for θ(n) remain future work in the same notes.",
+    "builtItems": [
+      "`proofs/Proofs/ChebyshevBounds.lean`: reported at about 435 lines with 12 theorems, 0 axioms, and 0 sorries.",
+      "`chebyshevTheta n`: first Chebyshev function θ(n) = Σ_{p≤n} log p.",
+      "`prodPrimesInInterval n`: product of primes in the interval (n, 2n].",
+      "`numPrimesInInterval n`: count of primes in the interval (n, 2n].",
+      "Upper θ bound from primorial inequality and logarithm monotonicity.",
+      "Prime-count doubling-interval bound from central binomial divisibility.",
+      "Bertrand-postulate lower bounds for prime counts and θ increments.",
+      "Central binomial lower bound `4^n ≤ (2n+1) * C(2n,n)` and logarithmic form."
     ],
-    "markdown": "# Prime Counting Function Bounds - Knowledge Base\n\n## Problem Statement\n\n**Chebyshev's Bounds (1852)**: Prove explicit bounds on π(x) showing that π(x) is asymptotic to x/log(x) up to constants.\n\nKey functions:\n- θ(n) = Σ_{p ≤ n} log p (first Chebyshev function)\n- π(n) = number of primes ≤ n (prime counting function)\n\n## Session 2026-01-01 - MAJOR PROGRESS\n\n### Mode\nREVISIT - Problem was previously skipped (\"Chebyshev bounds not in Mathlib\")\n\n### Key Discovery\nFound that Mathlib has the infrastructure we need:\n- `primorial_le_4_pow`: n# ≤ 4^n ✅\n- `centralBinom` with factorization theorems ✅\n- `dvd_choose_add`: primes divide binomials ✅\n\n### What We Built\n\n**File**: `proofs/Proofs/ChebyshevBounds.lean` (~250 lines, 0 axioms!)\n\n**Definitions**:\n- `chebyshevTheta n` - First Chebyshev function θ(n) = Σ_{p≤n} log p\n- `prodPrimesInInterval n` - Product of primes in (n, 2n]\n- `numPrimesInInterval n` - Count of primes in (n, 2n]\n\n**Theorems Proved**:\n1. `chebyshevTheta_le`: θ(n) ≤ n * log 4\n   - Key insight: log(primorial n) = θ(n), and primorial_le_4_pow gives primorial n ≤ 4^n\n   \n2. `centralBinom_le_four_pow`: C(2n, n) ≤ 4^n\n   - Uses binomial theorem: C(2n,n) ≤ Σ C(2n,k) = 2^{2n} = 4^n\n\n3. `prime_in_interval_dvd_centralBinom`: If n < p ≤ 2n and p prime, then p | C(2n,n)\n   - Uses `Nat.Prime.dvd_choose_add`\n\n4. `prodPrimesInInterval_dvd_centralBinom`: ∏_{n<p≤2n} p | C(2n,n)\n\n5. `pow_primeCounting_diff_le`: n^{π(2n) - π(n)} ≤ 4^n for n ≥ 1\n   - Combines: product of primes > n divides C(2n,n) ≤ 4^n\n\n6. `numPrimesInInterval_eq`: numPrimesInInterval n = π(2n) - π(n)\n\n### Proof Techniques\n\n1. **Upper bound on θ(n)**:\n   - From primorial_le_4_pow: ∏_{p≤n} p ≤ 4^n\n   - Take log: θ(n) = Σ log p ≤ n log 4\n\n2. **Bound on prime count in doubling interval**:\n   - Primes in (n, 2n] each divide C(2n, n)\n   - Their product ≤ C(2n, n) ≤ 4^n\n   - Since each prime > n: n^{count} ≤ product ≤ 4^n\n   - Taking logs: (π(2n) - π(n)) log n ≤ n log 4\n\n### What's Still Missing\n\n**Lower bounds**:\n- θ(n) ≥ cn for some c > 0 (would need more careful primorial analysis)\n- π(x) ≥ cx/log(x) for some c > 0\n\n**Sharper constants**:\n- Chebyshev actually proved 0.92 < θ(n)/n < 1.11 for large n\n- We only have θ(n) ≤ 1.386n (since log 4 ≈ 1.386)\n\n### Files Modified\n- `proofs/Proofs/ChebyshevBounds.lean` (NEW - ~250 lines)\n- `.lean/state/candidate-pool.json` (status: skipped → in-progress)\n- `src/data/research/problems/prime-counting-bounds.json` (updated)\n- `research/problems/prime-counting-bounds/knowledge.md` (NEW)\n\n### Next Steps\n\n1. **Lower bound on θ(n)**: \n   - Show θ(n) ≥ cn for some explicit c\n   - May need to analyze factorization of n! more carefully\n\n2. **Derive π(x) bounds**:\n   - From θ bounds, derive π(x) ~ x/log(x) up to constants\n   - Uses partial summation or integration by parts\n\n3. **Telescope the doubling bound**:\n   - From π(2n) - π(n) ≤ C·n/log(n), derive π(x) ≤ C'·x/log(x)\n\n### Historical Context\n\nChebyshev (1852) proved that if lim π(x)/(x/log x) exists, it must equal 1.\nHe also proved explicit bounds showing θ(x) is within constant factors of x.\nThe Prime Number Theorem (1896) by Hadamard and de la Vallée Poussin\nproved the limit actually exists.\n\n### Sources\n\n- [Mathlib Primorial](https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Primorial.html)\n- [Mathlib PrimeCounting](https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/PrimeCounting.html)\n- [Mathlib Choose Factorization](https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Nat/Choose/Factorization.html)\n- [Chebyshev's original method (Williams)](https://web.williams.edu/Mathematics/lg5/Chebyshev.pdf)\n\n## Session 2026-01-01 (continued) - LOWER BOUNDS VIA BERTRAND\n\n### Mode\nREVISIT - Continuing in-progress problem\n\n### Key Discovery\nBertrand's postulate (`Nat.exists_prime_lt_and_le_two_mul` in Mathlib) provides the foundation\nfor lower bounds. By iterating Bertrand, we can establish logarithmic lower bounds on π(n).\n\n### What We Built (Additional ~130 lines)\n\n**File**: `proofs/Proofs/ChebyshevBounds.lean` (now ~380 lines total, 0 axioms!)\n\n**New Theorems Proved**:\n\n7. `primeCounting_doubling_ge_one`: π(2n) - π(n) ≥ 1 for n ≥ 1\n   - Uses Bertrand: there exists prime p with n < p ≤ 2n\n   - Key insight: π(p) = π(p-1) + 1 for prime p\n\n8. `primeCounting_pow_two_ge`: k ≤ π(2^k) for k ≥ 1\n   - Telescopes Bertrand's postulate\n   - Induction: each doubling adds at least one prime\n\n9. `primeCounting_ge_log`: log₂(n) ≤ π(n) for n ≥ 2\n   - Combines telescoping with monotonicity of π\n\n10. `chebyshevTheta_doubling_ge`: θ(2n) - θ(n) ≥ log(n+1) for n ≥ 1\n    - Bertrand gives prime p in (n, 2n], so difference includes log(p) ≥ log(n+1)\n\n### Proof Techniques\n\n3. **Lower bound on π via Bertrand telescoping**:\n   - Bertrand: ∃ prime p with n < p ≤ 2n\n   - So π(2n) > π(n) (at least one more prime)\n   - Iterate: π(2^k) ≥ k\n   - Conclude: π(n) ≥ log₂(n) for n ≥ 2\n\n4. **Lower bound on θ doubling**:\n   - Bertrand's prime p ∈ (n, 2n] contributes log(p) to θ(2n) - θ(n)\n   - Since p > n, we have log(p) ≥ log(n+1)\n\n### Summary of Bounds\n\n| Bound | Theorem | Proof Technique |\n|-------|---------|-----------------|\n| θ(n) ≤ n·log(4) | `chebyshevTheta_le` | Primorial inequality |\n| n^{π(2n)-π(n)} ≤ 4^n | `pow_primeCounting_diff_le` | Central binomial |\n| π(2n) - π(n) ≥ 1 | `primeCounting_doubling_ge_one` | Bertrand's postulate |\n| π(n) ≥ log₂(n) | `primeCounting_ge_log` | Bertrand telescoping |\n| θ(2n) - θ(n) ≥ log(n+1) | `chebyshevTheta_doubling_ge` | Bertrand + log monotonicity |\n\n### What's Still Missing\n\n**Explicit constant lower bound on θ**:\n- θ(n) ≥ cn for explicit c > 0 (we have θ(2n) - θ(n) ≥ log(n+1) but not full θ)\n- Would need telescoping: θ(2^k) ≥ Σ log(2^{i-1} + 1) ≥ c·2^k\n\n**Stirling-based approach**:\n- The [AFP Chebyshev Prime Bounds](https://www.isa-afp.org/entries/Chebyshev_Prime_Bounds.html) in Isabelle achieves ψ(x) ≥ 0.9x\n- Uses Stirling's formula on central binomial\n- Mathlib has `Stirling.factorial_isEquivalent_stirling` - could pursue this\n\n### Files Modified\n- `proofs/Proofs/ChebyshevBounds.lean` (+130 lines, now ~380 total)\n- `research/problems/prime-counting-bounds/knowledge.md` (updated)\n- `src/data/research/problems/prime-counting-bounds.json` (to update)\n\n### Additional Central Binomial Bounds (Later Session)\n\nAdded two more theorems for completeness:\n\n11. `centralBinom_ge_four_pow_div`: 4^n ≤ (2n+1) · C(2n,n)\n    - Lower bound on central binomial coefficient\n    - From binomial theorem: 4^n = Σ C(2n,k), and C(2n,n) is maximum\n\n12. `log_centralBinom_ge`: log(C(2n,n)) ≥ n·log(4) - log(2n+1) for n ≥ 1\n    - Logarithmic form of the lower bound\n\n## COMPLETION STATUS\n\n**Problem: COMPLETE**\n\n**File**: `proofs/Proofs/ChebyshevBounds.lean`\n- **Lines**: ~435\n- **Axioms**: 0 (fully formalized)\n- **Sorries**: 0\n- **Theorems**: 12\n\n### Summary of All Results\n\n| Category | Theorem | Bound |\n|----------|---------|-------|\n| θ upper | `chebyshevTheta_le` | θ(n) ≤ n·log(4) |\n| π upper | `pow_primeCounting_diff_le` | n^{π(2n)-π(n)} ≤ 4^n |\n| π lower | `primeCounting_doubling_ge_one` | π(2n) - π(n) ≥ 1 |\n| π lower | `primeCounting_pow_two_ge` | k ≤ π(2^k) |\n| π lower | `primeCounting_ge_log` | log₂(n) ≤ π(n) |\n| θ lower | `chebyshevTheta_doubling_ge` | θ(2n) - θ(n) ≥ log(n+1) |\n| C(2n,n) | `centralBinom_le_four_pow` | C(2n,n) ≤ 4^n |\n| C(2n,n) | `centralBinom_ge_four_pow_div` | 4^n ≤ (2n+1)·C(2n,n) |\n\n### Future Extensions (Not Required)\n\nIf someone wanted to extend this work:\n\n1. **Telescope θ doubling bound**:\n   - From θ(2n) - θ(n) ≥ log(n+1), derive θ(n) ≥ cn\n   - Similar to how we telescoped π\n\n2. **Stirling approach for sharper constants**:\n   - Use log(n!) approximation from `StirlingFormula.lean`\n   - Central binomial factorization gives ψ bounds\n\n3. **Derive π lower bound from θ**:\n   - Standard partial summation: π(x) = θ(x)/log(x) + ∫ θ(t)/(t log²t) dt\n"
+    "insights": [
+      "The initial skip note was too pessimistic: Mathlib has useful infrastructure including `primorial_le_4_pow`, `centralBinom`, `Nat.Prime.dvd_choose_add`, and Bertrand's postulate.",
+      "The central-binomial method gives a formal route from divisibility of primes in (n, 2n] to an upper bound on π(2n)-π(n).",
+      "Bertrand's postulate is enough to formalize qualitative/logarithmic lower bounds, but not by itself the documented target θ(n) ≥ c*n.",
+      "A Stirling-based central-binomial approach is identified as a plausible route to sharper explicit constants."
+    ],
+    "mathlibGaps": [
+      "No documented ready-made explicit Chebyshev two-sided prime-counting bounds in Mathlib.",
+      "The evidence points to needing additional formal work for θ(n) ≥ c*n or a Stirling-driven ψ/θ estimate."
+    ],
+    "nextSteps": [
+      "Telescope the θ doubling bound into an explicit lower bound for θ(n), if feasible.",
+      "Try a Stirling-based central-binomial proof for sharper Chebyshev-style constants.",
+      "Derive explicit π(x) upper and lower bounds from θ bounds once both sides are available."
+    ],
+    "markdown": "# Prime Counting Function Bounds - Knowledge Base\n\n## Problem Statement\n\nChebyshev's bounds aim to prove explicit estimates for the prime counting function π(x), showing it is bounded above and below by constant multiples of x/log(x). The local development also works with the first Chebyshev function θ(n) = Σ_{p≤n} log p.\n\n## Local Lean Evidence\n\n`knowledge.md` reports `proofs/Proofs/ChebyshevBounds.lean` at about 435 lines with 12 theorems, 0 axioms, and 0 sorries.\n\nProved items include θ(n) ≤ n*log 4, central-binomial upper and lower bounds, divisibility of the central binomial coefficient by primes in (n, 2n], an upper bound n^(π(2n)-π(n)) ≤ 4^n, Bertrand-based lower bounds π(2n)-π(n) ≥ 1 and k ≤ π(2^k), a logarithmic lower bound for π(n), and θ(2n)-θ(n) ≥ log(n+1).\n\n## Remaining Work\n\nThe evidence does not record a completed proof of a full explicit linear lower bound θ(n) ≥ c*n, nor full two-sided Chebyshev bounds π(x) ≍ x/log(x). Suggested next directions are telescoping the θ doubling lower bound, using Stirling estimates with central binomial coefficients, and then deriving π(x) bounds from θ bounds.\n"
   },
   "tags": [
     "number-theory",
@@ -48,12 +88,21 @@
   "relatedProofs": [],
   "references": {
     "papers": [],
-    "urls": [],
-    "mathlib": []
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/Primorial.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/PrimeCounting.html",
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Data/Nat/Choose/Factorization.html",
+      "https://web.williams.edu/Mathematics/lg5/Chebyshev.pdf",
+      "https://www.isa-afp.org/entries/Chebyshev_Prime_Bounds.html"
+    ],
+    "mathlib": [
+      "Mathlib.NumberTheory.Primorial",
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Mathlib.Data.Nat.Choose.Factorization"
+    ]
   },
   "started": "2026-01-01T05:32:39.479Z",
   "lastUpdate": "2026-01-02T00:51:36.380Z",
-  "completed": "2026-01-02T00:51:36.380Z",
   "significance": 7,
   "tractability": 6
 }

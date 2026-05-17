@@ -11,17 +11,23 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Mathlib proves √2 is irrational via irrational_sqrt_two.",
+      "Mathlib can prove irrationality of square roots of natural numbers that are not perfect squares, including √6.",
+      "The local Lean gallery contains completed proofs for √2 + √3 irrational with no axioms or sorries in the main proof files."
+    ],
+    "open": [
+      "The broader gallery still has room for general theorems about sums of distinct irrational square roots."
+    ],
+    "goal": "Prove in Lean that √2 + √3 is irrational by reducing any assumed rational value to rationality of √6."
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2025-12-31T11:15:53-08:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Completed fast-path Lean proof using the standard contradiction argument: square an assumed rational sum, isolate √6, and contradict irrationality of √6.",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "No immediate proof work remains for the completed main result; possible follow-up is a generalized theorem for √a + √b when ab is not a square.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +35,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "The problem is completed by a direct algebraic contradiction. Assuming √2 + √3 is rational and squaring gives r² = 5 + 2√6, so √6 = (r² - 5) / 2 would be rational. Mathlib supplies irrationality of √6 from the fact that 6 is not a square.",
+    "builtItems": [
+      "A Lean proof of the main theorem that √2 + √3 is irrational.",
+      "An OQ03 variant proof for the same problem."
+    ],
+    "insights": [
+      "For sums of two square roots, squaring can reduce rationality of √a + √b to rationality of √(ab).",
+      "The key obstruction is showing ab is not a perfect square; here native decision can discharge ¬ IsSquare 6.",
+      "Algebraic cleanup in Lean benefits from normalizing the square expansion before rewriting square-root identities."
+    ],
+    "mathlibGaps": [
+      "No local evidence records a dedicated off-the-shelf theorem for irrationality of √a + √b."
+    ],
+    "nextSteps": [
+      "Consider extracting the completed argument into a reusable lemma for positive naturals a and b with ab not a square.",
+      "Apply the same pattern to nearby examples such as √2 + √5 or √3 + √5 if the gallery wants more instances."
+    ],
     "markdown": "# Knowledge Base: sqrt2-plus-sqrt3-irrational\n\n## Key Insight\n\n**Pattern: Sums of square roots → reduce to single square root irrationality**\n\nIf √a + √b = r (rational), then squaring gives:\n- a + 2√(ab) + b = r²\n- √(ab) = (r² - a - b) / 2\n\nThe RHS is rational, so √(ab) would be rational. If ab is not a perfect square, contradiction!\n\n## Proof Strategy\n\n1. **Assume** √2 + √3 = r (rational)\n2. **Square**: (√2 + √3)² = 2 + 2√6 + 3 = 5 + 2√6 = r²\n3. **Isolate**: √6 = (r² - 5) / 2\n4. **Contradiction**: (r² - 5)/2 is rational, but √6 is irrational (6 not perfect square)\n\n## Mathlib Theorems Used\n\n| Theorem | Purpose |\n|---------|---------|\n| `irrational_sqrt_natCast_iff` | √n irrational iff n not perfect square |\n| `IsSquare` | Predicate for perfect squares |\n| `native_decide` | Compute `¬ IsSquare 6` |\n| `sqrt_mul` | √a · √b = √(ab) for a ≥ 0 |\n| `sq_sqrt` | (√a)² = a for a ≥ 0 |\n\n## Generalization\n\nThis technique works for proving √a + √b is irrational whenever:\n1. a, b > 0\n2. ab is not a perfect square\n\nExamples that would work:\n- √2 + √5 (since 10 not perfect square)\n- √3 + √5 (since 15 not perfect square)\n- √2 + √7 (since 14 not perfect square)\n\n## Tactical Notes\n\n- Use `ring_nf` before `rw [sq_sqrt ...]` to simplify algebraic expressions\n- Use `simp only [Rat.cast_div, Rat.cast_sub, Rat.cast_pow, Rat.cast_natCast]` for rational casting\n- `linarith` handles the linear algebra for isolating √6\n\n## Date\n\n2025-12-31 - Proof completed in ~30 minutes\n"
   },
   "tags": [
@@ -42,12 +60,19 @@
     "algebraic-numbers"
   ],
   "relatedProofs": [
-    "sqrt2-plus-sqrt3-irrational"
+    "sqrt2-plus-sqrt3-irrational",
+    "sqrt2-plus-sqrt3-irrational-oq-03"
   ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Data.Real.Irrational",
+      "Mathlib.Data.Real.Sqrt",
+      "irrational_sqrt_natCast_iff",
+      "sqrt_mul",
+      "sq_sqrt"
+    ]
   },
   "started": "2025-12-31T11:10:20-08:00",
   "lastUpdate": "2026-01-01T06:38:29.515Z",
@@ -63,6 +88,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3Irrational.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3IrrationalOQ03.lean",
+      "filename": "Sqrt2PlusSqrt3IrrationalOQ03.lean",
+      "lineCount": 404,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3IrrationalOQ03.lean"
+    },
+    {
+      "path": "Proofs/Sqrt2PlusSqrt3IrrationalOQ03Aristotle.lean",
+      "filename": "Sqrt2PlusSqrt3IrrationalOQ03Aristotle.lean",
+      "lineCount": 72,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 4,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2PlusSqrt3IrrationalOQ03Aristotle.lean"
     }
   ]
 }
