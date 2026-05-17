@@ -21,7 +21,7 @@
     "erdosUrl": "https://erdosproblems.com/14",
     "erdosProblemStatus": "open",
     "axiomCount": 2,
-    "lineCount": 109,
+    "lineCount": 110,
     "prerequisites": [
       "Additive combinatorics (sumsets and representation functions)",
       "Finite set theory",
@@ -111,7 +111,7 @@
     }
   ],
   "conclusion": {
-    "summary": "This formalization captures Erdős Problem #14 in 104 lines of Lean 4, encoding the unique-sum representation problem with both finite and infinite versions, the two open conjectures, ESS bounds ($O(N^{1/2+\\varepsilon})$ eventually, $\\Omega(N^{1/3-\\varepsilon})$ frequently), the Erdős-Freud finite analogue, and structural observations about Sidon sets. Zero sorries; all deep results axiomatized.",
+    "summary": "This formalization captures Erdős Problem #14 in 110 lines of Lean 4, encoding the unique-sum representation problem with both finite and infinite versions, the two open conjectures, ESS bounds ($O(N^{1/2+\\varepsilon})$ eventually, $\\Omega(N^{1/3-\\varepsilon})$ frequently), the Erdős-Freud finite analogue, and structural observations about Sidon sets. Zero sorries; all deep results axiomatized.",
     "implications": "**Theoretical Significance**: Resolution would clarify the fundamental limits of unique representation in additive combinatorics.\n\nIf conjecture (a) holds, it establishes $\\sqrt{N}$ as a universal barrier — no set can achieve better than $\\sim \\sqrt{N}$ non-unique sums. This connects to the broader theory of additive bases, Sidon sets, and the probabilistic method in combinatorial number theory.",
     "openQuestions": [
       "Is $f_A(N) \\gg N^{1/2-\\varepsilon}$ for all $A$ and all large $N$? This is conjecture (a), the main open question.",
@@ -133,7 +133,7 @@
       "Asymptotics"
     ],
     "namespace": null,
-    "lineCount": 109,
+    "lineCount": 110,
     "axiomCount": 2,
     "theoremCount": 1,
     "definitionCount": 6,
