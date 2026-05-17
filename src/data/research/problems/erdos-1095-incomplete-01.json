@@ -29,8 +29,8 @@
   "currentState": {
     "phase": "SURVEYED",
     "since": "2026-03-28T20:57:10.257Z",
-    "iteration": 2,
-    "focus": "No separate Lean file for incomplete-01 workstream; the main Erdos1095Problem.lean has 7 axioms (g, g_gt, g_spec, g_minimal + 3 deep bounds: ees_lower_bound, ees_upper_bound, konyagin_lower_bound).",
+    "iteration": 3,
+    "focus": "No separate Lean file for incomplete-01 workstream; the main Erdos1095Problem.lean has 7 axioms (g, g_gt, g_spec, g_minimal + 3 deep bounds: ees_lower_bound, ees_upper_bound, konyagin_lower_bound) and 181 LOC. Parent erdos-1095 gallery is axiomatized.",
     "blockers": [],
     "nextAction": "Either (a) merge this workstream into erdos-1095 since no separate file exists, or (b) build Erdos1095Incomplete01.lean with the bound-strengthening axiom that is currently encoded only as comments.",
     "attemptCounts": {
@@ -96,7 +96,7 @@
     "mathlib": []
   },
   "started": "2026-03-28T20:57:10.257Z",
-  "lastUpdate": "2026-03-28T20:57:10.257Z",
+  "lastUpdate": "2026-05-17T18:00:00.000Z",
   "significance": 6,
   "tractability": 5
 }
