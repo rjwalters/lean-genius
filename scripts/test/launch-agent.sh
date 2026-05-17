@@ -9,14 +9,15 @@
 # This is a script-based agent (no LLM) — it runs test-random-proofs.sh in a loop.
 #
 # Usage:
-#   ./launch-agent.sh              Launch tester (default 30min interval, 20 proofs/cycle)
+#   ./launch-agent.sh              Launch tester (default 60min interval, 20 proofs/cycle)
+#   ./launch-agent.sh --dry-run    Preview launch without starting tmux
 #   ./launch-agent.sh --stop       Stop the tester
 #   ./launch-agent.sh --status     Check tester status
 #   ./launch-agent.sh --attach     Attach to tester session
 #   ./launch-agent.sh --logs       Tail tester logs
 #
 # Environment:
-#   TESTER_INTERVAL    - Interval in minutes between test cycles (default: 30)
+#   TESTER_INTERVAL    - Interval in minutes between test cycles (default: 60)
 #   TESTER_COUNT       - Number of proofs to test per cycle (default: 20)
 #   TESTER_URL         - Base URL to test (default: https://leangenius.org)
 
@@ -44,6 +45,22 @@ LOG_FILE="$LOGS_DIR/tester-agent.log"
 INTERVAL="${TESTER_INTERVAL:-60}"
 COUNT="${TESTER_COUNT:-20}"
 BASE_URL="${TESTER_URL:-https://leangenius.org}"
+DRY_RUN=false
+ARGS=()
+
+for arg in "$@"; do
+    case "$arg" in
+        --dry-run|-n)
+            DRY_RUN=true
+            ;;
+        --help|-h)
+            ARGS+=("--help")
+            ;;
+        *)
+            ARGS+=("$arg")
+            ;;
+    esac
+done
 
 # Colors
 RED='\033[0;31m'
@@ -132,6 +149,19 @@ run_loop() {
 
 # Launch the tester agent
 launch_agent() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        print_info "Dry run: would launch tester agent"
+        print_info "Would check dependencies: tmux, npx, gh"
+        print_info "Would create directories: $LOGS_DIR, $SIGNALS_DIR"
+        print_info "Would remove signal: $SIGNALS_DIR/stop-tester"
+        print_info "Would replace tmux session: $SESSION_NAME"
+        print_info "Would run: $REPO_ROOT/scripts/test/launch-agent.sh --run-loop"
+        print_info "Interval: $INTERVAL minutes"
+        print_info "Proofs per cycle: $COUNT"
+        print_info "URL: $BASE_URL"
+        return
+    fi
+
     check_deps
     mkdir -p "$LOGS_DIR" "$SIGNALS_DIR"
 
@@ -161,6 +191,16 @@ launch_agent() {
 
 # Stop the tester
 stop_agent() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        print_info "Dry run: would stop tester agent"
+        print_info "Would create directory: $SIGNALS_DIR"
+        print_info "Would create stop signal: $SIGNALS_DIR/stop-tester"
+        print_info "Would wait 2 seconds for graceful shutdown"
+        print_info "Would kill tmux session: $SESSION_NAME"
+        print_info "Would remove stop signal: $SIGNALS_DIR/stop-tester"
+        return
+    fi
+
     print_info "Stopping tester agent..."
 
     # Create stop signal for graceful shutdown
@@ -183,6 +223,11 @@ stop_agent() {
 
 # Graceful stop (create signal file only, don't kill session)
 graceful_stop() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        print_info "Dry run: would create stop signal: $SIGNALS_DIR/stop-tester"
+        return
+    fi
+
     mkdir -p "$SIGNALS_DIR"
     touch "$SIGNALS_DIR/stop-tester"
 }
@@ -232,9 +277,13 @@ tail_logs() {
 }
 
 # Main command dispatch
-case "${1:-}" in
+case "${ARGS[0]:-}" in
     --run-loop)
         # Internal: called by tmux session to run the main loop
+        if [[ "$DRY_RUN" == "true" ]]; then
+            print_error "--dry-run cannot be combined with --run-loop"
+            exit 1
+        fi
         run_loop
         ;;
     --stop|-s)
@@ -263,20 +312,23 @@ each page loads without errors. Failures are reported as GitHub issues.
 No worktree needed — this is read-only testing, no git changes.
 
 Usage:
-  ./launch-agent.sh              Launch tester (default 30min interval)
+  ./launch-agent.sh              Launch tester (default 60min interval)
+  ./launch-agent.sh --dry-run    Preview launch without starting tmux
   ./launch-agent.sh --stop       Stop the tester
+  ./launch-agent.sh --dry-run --stop  Preview stop without touching signals
   ./launch-agent.sh --status     Check tester status
   ./launch-agent.sh --attach     Attach to tester session
   ./launch-agent.sh --logs       Tail tester logs
   ./launch-agent.sh --help       Show this help
 
 Environment Variables:
-  TESTER_INTERVAL   Interval in minutes between test cycles (default: 30)
+  TESTER_INTERVAL   Interval in minutes between test cycles (default: 60)
   TESTER_COUNT      Number of proofs to test per cycle (default: 20)
   TESTER_URL        Base URL to test (default: https://leangenius.org)
 
 Examples:
   ./launch-agent.sh                        # Start with defaults
+  ./launch-agent.sh --dry-run              # Preview launch
   TESTER_INTERVAL=15 ./launch-agent.sh     # Test every 15 minutes
   TESTER_COUNT=50 ./launch-agent.sh        # Test 50 proofs per cycle
   ./launch-agent.sh --attach               # Watch the agent work
@@ -286,7 +338,7 @@ EOF
         launch_agent
         ;;
     *)
-        print_error "Unknown option: $1"
+        print_error "Unknown option: ${ARGS[0]}"
         echo "Run '$0 --help' for usage"
         exit 1
         ;;
