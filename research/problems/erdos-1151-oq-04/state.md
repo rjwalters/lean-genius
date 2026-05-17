@@ -1,11 +1,45 @@
 # Research State: erdos-1151-oq-04
 
 ## Current State
-**Phase**: ACT (still gated on Docker daemon I/O recovery for S33 BUILD-VERIFY; S33 pre-BUILD-VERIFY STATE-SYNC this iter caught up phase + progressSummary + nextSteps from S22-S29-era stale to S32+ post-cherry-pick state)
+**Phase**: ACT (still gated on Docker daemon I/O recovery for the deferred BUILD-VERIFY pass; S34 STATE-SYNC this iter absorbs PR #19967 S34-registry-mirror partial + mechanic PR #19775 sibling leanFiles batch + 3 RED INFRA snapshot delta + canonical iter / lastUpdate / nextAction / nextSteps refresh)
 **Path**: full
-**Since**: 2026-05-16T15:56:00Z (S33 pre-BUILD-VERIFY STATE-SYNC)
-**Iteration**: 33
-**Last Updated**: 2026-05-16 (researcher-6)
+**Since**: 2026-05-17T01:39:50Z (S34 STATE-SYNC canonical absorption)
+**Iteration**: 34
+**Last Updated**: 2026-05-17 (researcher-11)
+
+## Session 34 (researcher-11, 2026-05-17, doc-only STATE-SYNC) — post-S33 absorption: S34a registry mirror (PR #19967) + mechanic sibling-leanFiles batch (PR #19775) + INFRA delta + canonical refresh
+
+Doc-only STATE-SYNC reconciling 4 drift surfaces left after the S33 pre-BUILD-VERIFY STATE-SYNC PR #19688 (researcher-6, merged 2026-05-16T16:20:19Z) cycle, in the ~9.5 h window since that merge:
+
+1. **PR #19967 (S34a registry mirror, researcher-?, merged 2026-05-17T01:29:59Z, T-7 min)** — 1-file 2-line catchup flipping `research/registry.json` `phase: OBSERVE → ACT` + `lastUpdate: 2026-04-21T18:19:38.393Z → 2026-05-16T15:56:00.000Z` for this slug. Did NOT touch canonical JSON `currentState.iteration`, `nextAction`, `focus`, `attemptCounts`, `blockers`, `knowledge.progressSummary`, or `nextSteps[]`. PR title self-labels as "S34" referencing iter=33 explicitly — i.e. an emergency thin partial sub-step, not the canonical S34 bumper.
+
+2. **Mechanic PR #19775 (researcher-mechanic, merged 2026-05-16T19:20:13Z, T-6.5 h)** — batch-synced `leanFiles[i]` for `Erdos1151OQ04.lean` across 6 sibling JSONs from pre-S33 stale `lineCount: 1283 / theoremCount: 29 / sorryCount: 4` to canonical post-S33 `2695 / 66 / 1` (axiomCount 0, defCount 5 unchanged). Source of truth was this slug's own `leanFiles[0]` set in S33 STATE-SYNC. Six absorbed siblings + this slug = 7-entry family now consistent. Mechanic correctly excluded any `Erdos1151Problem.lean` drift from scope (sibling-list entry has separate +30-LOC off-by-one drift: actual `wc -l` 215 vs JSON `lineCount: 185`; deferred to a future mechanic batch).
+
+3. **INFRA snapshot delta (3 RED unchanged structurally + worsened on G7)**:
+   - **G7 disk avail**: 3.2 GiB (S33 was 5.2 GiB; **−2.0 GiB over ~9 h 45 min**; well below the 5 GiB safety floor referenced in S32/S33 narratives; oscillated to 2.8 GiB during birthday-problem S25 ACT-1 PR #19997 cycle and to 2.9 GiB during ballot-problem S80 STATE-SYNC PR #19994 cycle — both at T-15 min before this PR). RED, was RED.
+   - **G8 Docker daemon**: `docker info` times out after 8 s with empty `ServerVersion`. Still hung (≥10 h cumulative). RED, unchanged.
+   - **G9 `proofs/.lake → proofs/.lake` self-symlink**: confirmed on main repo (`/Users/rwalters/GitHub/lean-genius/proofs/.lake`). RED, unchanged. Worktree's `proofs/.lake` points at main's self-loop transitively.
+
+4. **Canonical JSON drift in `src/data/research/problems/erdos-1151-oq-04.json`**:
+   - `currentState.iteration: 33` (S34a did not bump) → `34` this PR (1-increment-per-PR per memory pattern).
+   - `currentState.since / lastUpdate / top-level lastUpdate`: 2026-05-16T15:56:00Z (9 h 45 min stale).
+   - `currentState.focus`: still entirely S32 ACT cherry-pick narrative (~1.6 KB); no S33 / S34a / mechanic / INFRA prepend.
+   - `currentState.nextAction`: "(Researcher / Mechanic) S33 BUILD-VERIFY" — S33 STATE-SYNC has happened; the BUILD-VERIFY pass is what's deferred. Re-anchor as **S35 BUILD-VERIFY** with 6-row picker matrix gated on Docker + disk recovery.
+   - `currentState.blockers: []` (empty array) → 3-entry G7/G8/G9 RED with evidence prose.
+   - `currentState.attemptCounts.total: 3` → `4`.
+   - `knowledge.progressSummary` (~1.8 KB): factually accurate post-S32, but doesn't reference PR #19688 (S33), PR #19775 (mechanic), or PR #19967 (S34a). Prepend short S34 absorption paragraph (~250 chars).
+   - `knowledge.nextSteps[0]`: cites "5.2 Gi avail" as the gating disk number — stale; refresh to "3.2 Gi avail (5 GiB soft floor breached for ≥9.5 h; recovery condition: disk ≥ 5 GiB + Docker daemon responsive)".
+
+**Files this S34 STATE-SYNC** (3 files, doc-only, 0 Lean / 0 meta.json / 0 lake-manifest / 0 problem.md / 0 knowledge.md body / 0 sibling-slug edits):
+1. EDIT this `state.md` (head replace + prepend this Session 34 narrative; preserve Session 33 → S1 verbatim).
+2. EDIT `src/data/research/problems/erdos-1151-oq-04.json` (10 fields per the §4 list above; jq `--rawfile --indent 2` to preserve unicode and indentation).
+3. CREATE `research/problems/erdos-1151-oq-04/session-34-statesync-post-s34a-mechanic-and-infra-absorption.md` (~280 LOC, 9 sections per memory pattern).
+
+**Mathlib pin unchanged**: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0) byte-stable since pre-S32 era. Bearer SHA-stable carry-forward chain S22 → S23 → S29 → S32 → S33 → S34 with **no re-walk needed** this iter.
+
+**0 axiom / 0 sorry change** (1 sorry preserved at `divergence_from_lebesgue_growth`; 0 axioms; `Erdos1151Problem.lean` has 2 axioms unchanged).
+
+**Next action**: **S35 BUILD-VERIFY** — once Docker daemon I/O recovers AND host disk ≥ 5 GiB, re-attempt `./proofs/scripts/docker-build.sh Proofs.Erdos1151OQ04`. Expected outcome (HIGH likelihood given PREP-2 §4.1 audit depth + ≥4.5 mo SHA stability): clean build at ~3060/3060 jobs. If clean: 5-min doc-only S35 commit flipping `(build pending) → (build verified, NNNN/NNNN jobs)`. If errors surface: mechanic-handoff for tactic-glue fixes (bearers per PREP-2 audit are correct). See `session-34-statesync-post-s34a-mechanic-and-infra-absorption.md` §6 picker matrix for full S35 decision table.
 
 ## Session 33 (researcher-6, 2026-05-16, doc-only pre-BUILD-VERIFY STATE-SYNC) — JSON drift catchup
 
