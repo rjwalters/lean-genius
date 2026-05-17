@@ -1,19 +1,32 @@
 {
   "slug": "fundamental-theorem-calculus-oq-02-incomplete-01",
-  "title": "[Problem Title]",
+  "title": "Generalized Stokes theorem: concrete mixed-partial bridge",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\int_{\\partial M} \\omega = \\int_M d\\omega; in the concrete 2D framework, prove d_1(d_0 f)=0 by identifying mixed partial derivatives for C^2 functions on \\mathbb{R}^2.",
+    "plain": "Track the gallery gap around the generalized Stokes theorem formalization: FTC is treated as the 1D Stokes theorem, Green's theorem as the 2D case, and the key concrete bridge is showing that the exterior derivative squares to zero by connecting Mathlib's second Frechet-derivative symmetry to ordinary mixed partial derivatives.",
+    "whyMatters": [
+      "The identity unifies FTC, Green's theorem, classical Stokes' theorem, and the divergence theorem.",
+      "The d^2=0 bridge is the algebraic fact needed for de Rham-style complexes in the concrete 2D formalization.",
+      "The remaining general-manifold statement marks the boundary between the current concrete Lean proof and future differential-form integration infrastructure."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Parent proof `fundamental-theorem-calculus-oq-02` provides the concrete Stokes framework for 1D and 2D differential forms.",
+      "The local main Lean file `Proofs/FundamentalTheoremCalculusStokes.lean` contains proofs of `stokes_1d`, `dd_eq_zero_2D`, and `stokes_2d_rectangle`.",
+      "Parent proof metadata records 0 axioms and 0 sorries in the main Stokes file; the stale problem scaffold still described this as a one-sorry gallery gap.",
+      "`stokes_2d_rectangle` is proved by delegating to `GreensTheoremOQ01.greens_theorem_concrete`."
+    ],
+    "open": [
+      "The fully general Stokes theorem for compact oriented smooth manifolds with boundary is documented, not formalized, in the parent Lean file.",
+      "The parent comments say Mathlib has `SmoothManifoldWithCorners` and partial exterior-algebra support, while integration of differential forms on oriented manifolds remains future infrastructure.",
+      "This research slug's own state file has no recorded dedicated attempts yet and remains in OBSERVE phase."
+    ],
+    "goal": "Reconcile this gallery-gap research slug with the current parent Stokes formalization, then either close it as subsumed by the proved concrete bridge or retarget it to the genuinely open general-manifold Stokes statement."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -29,26 +42,59 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: fundamental-theorem-calculus-oq-02-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "Local evidence shows this slug was created for the generalized Stokes gallery gap around the concrete Clairaut/mixed-partial bridge. The current parent proof metadata and `Proofs/FundamentalTheoremCalculusStokes.lean` indicate the main concrete bridge is now proved with 0 axioms and 0 sorries, while the fully abstract manifold Stokes theorem remains documented future work.",
+    "builtItems": [
+      "`Proofs/FundamentalTheoremCalculusStokes.lean`: concrete 1D and 2D Stokes framework.",
+      "`dd_eq_zero_2D`: proves d_1(d_0 f)=0 for C^2 functions on R x R using second Frechet-derivative symmetry.",
+      "`stokes_2d_rectangle`: Green's theorem in Stokes form via `GreensTheoremOQ01.greens_theorem_concrete`.",
+      "`src/data/proofs/fundamental-theorem-calculus-oq-02/meta.json`: parent proof metadata for the gallery proof."
+    ],
+    "insights": [
+      "FTC is represented as the 1D Stokes theorem with M=[a,b], omega=F, and d omega=F' dx.",
+      "The original bridge problem is to turn Mathlib's coordinate-free second-derivative symmetry into equality of the concrete partial derivatives used by `extDeriv1_2D (extDeriv0_2D f)`.",
+      "The current Lean proof performs that bridge with `HasFDerivAt.comp_hasDerivAt`, coordinate embeddings, `HasDerivAt.clm_apply`, and `ContDiffAt.isSymmSndFDerivAt`.",
+      "The remaining honest open scope is not the concrete 1D/2D Stokes hierarchy, but the full theorem for differential forms on manifolds with boundary."
+    ],
+    "mathlibGaps": [
+      "Reusable API from iterated or Frechet derivatives to concrete coordinate partial derivatives is still the delicate bridge in this area.",
+      "The parent Lean comments identify differential-form integration on oriented manifolds with boundary as future Mathlib infrastructure."
+    ],
+    "nextSteps": [
+      "Reconcile `problem.md`'s stale one-sorry wording with the current parent proof metadata and Lean file.",
+      "Decide whether this research slug should be marked as subsumed by the parent proof or retargeted to the fully general manifold Stokes theorem.",
+      "If retargeted, survey current Mathlib support for differential forms, orientations, boundaries, and integration on `SmoothManifoldWithCorners`."
+    ],
+    "markdown": "# Knowledge Base: fundamental-theorem-calculus-oq-02-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThis slug tracks a gallery-gap around the generalized Stokes theorem. The displayed identity is\n\n$$\\int_{\\partial M} \\omega = \\int_M d\\omega,$$\n\nwith the existing parent formalization specializing it concretely to FTC in one dimension and Green's theorem in two dimensions. The original incomplete point was the concrete 2D bridge: prove $d_1(d_0 f)=0$ by connecting equality of mixed partials to Mathlib's Frechet-derivative API.\n\n---\n\n## Local Evidence\n\n- `problem.md` names the target as Generalized Stokes Theorem and records the original goal as bridging Mathlib's derivative-symmetry theorem to concrete partial derivative expressions.\n- `state.md` still has this slug in OBSERVE with zero attempts, so phase, status, path, and attempt counts should stay unchanged.\n- `src/data/proofs/fundamental-theorem-calculus-oq-02/meta.json` records the parent Stokes proof as formalized with 0 axioms and 0 sorries in the main file.\n- `Proofs/FundamentalTheoremCalculusStokes.lean` contains `dd_eq_zero_2D` and `stokes_2d_rectangle`; the latter delegates to `GreensTheoremOQ01.greens_theorem_concrete`.\n- The same Lean file documents the full abstract manifold Stokes theorem as future work requiring differential-form integration on oriented manifolds with boundary.\n\n---\n\n## Insights\n\nThe stale scaffold says there is one sorry to fill, but the current parent proof evidence says the concrete Clairaut bridge has already landed in the main file. The remaining useful research question is therefore either administrative reconciliation of this stale gallery-gap slug, or a retargeting to the genuinely open fully general Stokes theorem on manifolds with boundary.\n\n---\n\n## Dead Ends\n\nDo not label this as number theory, prime gaps, or sieve methods. Do not claim new Lean progress from this metadata backfill; it only records local evidence already present in the repository.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "analysis",
+    "calculus",
+    "integration",
+    "differential-forms",
+    "stokes-theorem",
+    "manifolds",
+    "de-rham-cohomology",
+    "gallery-gap"
   ],
   "relatedProofs": [
     "fundamental-theorem-calculus",
-    "fundamental-theorem-calculus-oq-02"
+    "fundamental-theorem-calculus-oq-02",
+    "greens-theorem-oq-01"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Stokes 1854 - Smith's Prize examination",
+      "Cartan 1945 - exterior calculus and differential forms",
+      "Spivak 1965 - Calculus on Manifolds"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "ContDiffAt.isSymmSndFDerivAt",
+      "HasFDerivAt.comp_hasDerivAt",
+      "HasDerivAt.clm_apply",
+      "integral_eq_sub_of_hasDerivAt_of_le",
+      "GreensTheoremOQ01.greens_theorem_concrete"
+    ]
   },
   "started": "2026-04-03T02:25:34-07:00",
   "significance": 8,

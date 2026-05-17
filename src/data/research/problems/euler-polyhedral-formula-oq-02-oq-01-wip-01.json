@@ -1,19 +1,31 @@
 {
   "slug": "euler-polyhedral-formula-oq-02-oq-01-wip-01",
-  "title": "[Problem Title]",
+  "title": "Complete smooth Gauss-Bonnet formalization beyond structure axioms",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{For a compact orientable Riemannian 2-manifold } M \\text{ without boundary, prove } \\int_M K\\,dA = 2\\pi\\chi(M)\\text{, with }\\chi(M)=2-2g\\text{ for closed orientable genus-}g\\text{ surfaces.}",
+    "plain": "Completion task for the gallery proof `euler-polyhedral-formula-oq-02-oq-01`. The existing local Lean file models smooth Gauss-Bonnet through structure fields such as `CompactRiemannianSurface.gauss_bonnet`, then proves many downstream consequences. This WIP asks for completion beyond that scaffold: identify whether the structure-encoded assumptions can be discharged, narrowed, or honestly documented against current Mathlib support.",
+    "whyMatters": [
+      "Smooth Gauss-Bonnet is the bridge from local Gaussian curvature to the global Euler characteristic of a surface.",
+      "The parent gallery proof already proves useful consequences from axiomatized fields; completing this task would reduce the gap between an axiomatic interface and a first-principles Lean formalization.",
+      "Local evidence says Mathlib v4.26.0 lacks the Riemannian geometry infrastructure needed for a direct proof, so this problem is also a precise audit of the current library boundary."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`Proofs/EulerPolyhedralOQ02OQ01.lean` contains the current smooth Gauss-Bonnet gallery formalization: 786 lines, 60 theorem declarations, 13 definitions/structures, no `sorry` tokens, and no top-level Lean `axiom` declarations.",
+      "The downstream consequences include total curvature as a topological invariant, genus determination from total curvature, curvature-sign constraints, average curvature formulas, discrete/smooth agreement checks, Girard-style triangle consequences, Poincare-Hopf consequences, and Morse-theory consequences.",
+      "`proofs/Proofs.lean` imports `Proofs.EulerPolyhedralOQ02OQ01`, so the source proof is wired into the local proof index."
+    ],
+    "open": [
+      "The core smooth Gauss-Bonnet theorem is not proved from Mathlib Riemannian geometry; it is encoded as the `CompactRiemannianSurface.gauss_bonnet` structure field.",
+      "Local proof metadata records 10 structure-encoded assumptions, including Gauss-Bonnet, chi/genus classification, Chern-Gauss-Bonnet, boundary and polygon formulas, Poincare-Hopf, and Morse relation assumptions.",
+      "No local research attempt for this WIP has yet determined which, if any, of those structure fields can currently be replaced by first-principles Mathlib proofs."
+    ],
+    "goal": "Turn the WIP completion task into a concrete de-axiomatization plan: start from `CompactRiemannianSurface.gauss_bonnet`, audit current Mathlib support for Riemannian surfaces and integration on manifolds, and either discharge a narrow assumption or document the precise blocker without claiming unsupported Lean progress."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -29,17 +41,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Initial evidence pass only. The companion problem.md identifies this as a WIP completion task for `euler-polyhedral-formula-oq-02-oq-01`, the smooth Gauss-Bonnet gallery proof. Local proof metadata and source show that the existing Lean file is complete as an axiomatic development (0 sorries, 0 top-level Lean axioms, 60 theorem declarations), but the central differential-geometry content remains structure-encoded because Mathlib v4.26.0 lacks the needed Riemannian geometry infrastructure. No attempts have been recorded in this WIP research state.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: euler-polyhedral-formula-oq-02-oq-01-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "The source problem is a completion target for the smooth Gauss-Bonnet proof, not a separate arithmetic or sieve problem.",
+      "The current source proof is `Proofs/EulerPolyhedralOQ02OQ01.lean` in namespace `SmoothGaussBonnet`; it wraps the headline formula as `CompactRiemannianSurface.gauss_bonnet : totalCurvature = 2 * pi * chi`.",
+      "The proof file has no `sorry` tokens and no top-level `axiom` declarations, but the mathematical assumptions are embedded as structure fields, so the right completion target is de-axiomatization or precise blocker documentation.",
+      "The parent gallery metadata reports 10 structure-encoded assumptions and identifies the proof status as axiomatized, with Mathlib v4.26.0 lacking Riemannian metrics, Gaussian curvature, and integration on manifolds."
+    ],
+    "mathlibGaps": [
+      "No local evidence of Mathlib support for the full smooth Gauss-Bonnet theorem for compact Riemannian surfaces.",
+      "The source proof documentation says Mathlib v4.26.0 lacks Riemannian metrics, Gaussian curvature, integration on manifolds, differential forms, vector bundles with connection, and Morse theory infrastructure needed to replace the current structure fields."
+    ],
+    "nextSteps": [
+      "Read `Proofs/EulerPolyhedralOQ02OQ01.lean` around `CompactRiemannianSurface`, `OrientableClosedSurface`, and the summary block to list each structure-encoded assumption.",
+      "Search current Mathlib locally for Riemannian surface, Gaussian curvature, manifold integration, and differential-form APIs before attempting an ACT step.",
+      "If no direct de-axiomatization is feasible, narrow the task to one honest deliverable: a documented assumption inventory, a smaller interface around the core `gauss_bonnet` field, or a Mathlib-gap proposal."
+    ],
+    "markdown": "# Knowledge Base: euler-polyhedral-formula-oq-02-oq-01-wip-01\n\n## Problem Understanding\n\nThis is a WIP completion task for `euler-polyhedral-formula-oq-02-oq-01`, the smooth Gauss-Bonnet gallery proof. The mathematical target is the closed orientable surface formula `int_M K dA = 2*pi*chi(M)`, with `chi(M) = 2 - 2g` for genus `g`.\n\nThe existing local proof is not scaffold-only. `Proofs/EulerPolyhedralOQ02OQ01.lean` is a 786-line axiomatic development in namespace `SmoothGaussBonnet`; it has 60 theorem declarations, 13 definitions/structures, no `sorry` tokens, and no top-level Lean `axiom` declarations. The key caveat is that the central geometric facts are carried as structure fields, especially `CompactRiemannianSurface.gauss_bonnet : totalCurvature = 2 * pi * chi`.\n\n## Local Evidence\n\n- `problem.md` says this WIP was created to complete the smooth Gauss-Bonnet theorem proof in the gallery source `euler-polyhedral-formula-oq-02-oq-01`.\n- `state.md` records OBSERVE phase, fast path, iteration 1, and zero attempts.\n- `src/data/proofs/euler-polyhedral-formula-oq-02-oq-01/meta.json` marks the source proof as `axiomatized`, reports 0 sorries, 786 lines, 60 theorems, and 10 structure-encoded assumptions.\n- `proofs/Proofs.lean` imports `Proofs.EulerPolyhedralOQ02OQ01`.\n\n## Current Completion Target\n\nThe next useful work is not to fill ordinary sorries. It is to inspect and reduce the structure-encoded assumptions, starting with the core smooth Gauss-Bonnet field, or to document exactly why current Mathlib cannot support that replacement.\n\n## Mathlib Boundary\n\nThe local proof comments and metadata say Mathlib v4.26.0 lacks Riemannian metrics, Gaussian curvature, integration on manifolds, differential forms, vector bundles with connection, and Morse theory support at the level needed for a first-principles proof.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "differential-geometry",
+    "topology",
+    "gauss-bonnet",
+    "riemannian-geometry",
+    "euler-characteristic",
+    "completion",
+    "axiomatized-proof"
   ],
   "relatedProofs": [
     "euler-polyhedral-formula",
