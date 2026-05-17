@@ -38,6 +38,19 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
       )
     }
 
+    if (!user.passwordHash) {
+      return new Response(
+        JSON.stringify({
+          error: 'Invalid credentials',
+          details: 'Email or password is incorrect',
+        }),
+        {
+          status: 401,
+          headers: { 'Content-Type': 'application/json' },
+        }
+      )
+    }
+
     // Verify password
     const passwordMatch = await bcrypt.compare(password, user.passwordHash)
 
