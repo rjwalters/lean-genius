@@ -96,7 +96,7 @@ export async function fetchWithPlaywright(
       return null
     }
 
-    const status = response.status()
+    let status = response.status()
 
     if (status === 404) {
       console.log(`  Problem #${problemNumber}: Not found (404)`)
@@ -114,6 +114,7 @@ export async function fetchWithPlaywright(
       if (!retryResponse || retryResponse.status() !== 200) {
         return null
       }
+      status = retryResponse.status()
     }
 
     if (status !== 200) {
