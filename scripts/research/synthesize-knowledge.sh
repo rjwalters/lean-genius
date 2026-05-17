@@ -10,7 +10,8 @@
 #
 # Usage:
 #   ./synthesize-knowledge.sh                Run full synthesis
-#   ./synthesize-knowledge.sh --report       Generate report only (no file updates)
+#   ./synthesize-knowledge.sh --dry-run      Preview full synthesis without file updates
+#   ./synthesize-knowledge.sh --report       Generate report only
 #   ./synthesize-knowledge.sh --techniques   Update technique index only
 #   ./synthesize-knowledge.sh --gaps         Report Mathlib gaps only
 #
@@ -39,26 +40,61 @@ print_info() { echo -e "${BLUE}i $1${NC}"; }
 print_success() { echo -e "${GREEN}+ $1${NC}"; }
 print_warning() { echo -e "${YELLOW}! $1${NC}"; }
 
+usage() {
+    echo "Usage: $0 [--dry-run] [--report|--techniques|--gaps]"
+    echo ""
+    echo "Options:"
+    echo "  --dry-run, -n  Preview synthesis without writing report files"
+    echo "  --help, -h     Show this help message"
+    echo ""
+    echo "Modes:"
+    echo "  (none)        Full synthesis (techniques + gaps + report)"
+    echo "  --report      Generate synthesis report only"
+    echo "  --techniques  Show technique index status only"
+    echo "  --gaps        Report Mathlib gaps only"
+}
+
 # Parse arguments
 MODE="full"
-case "${1:-}" in
-    --report)   MODE="report" ;;
-    --techniques) MODE="techniques" ;;
-    --gaps)     MODE="gaps" ;;
-    --help|-h)
-        echo "Usage: $0 [--report|--techniques|--gaps]"
-        echo ""
-        echo "Modes:"
-        echo "  (none)        Full synthesis (techniques + gaps + report)"
-        echo "  --report      Generate synthesis report only"
-        echo "  --techniques  Update technique index only"
-        echo "  --gaps        Report Mathlib gaps only"
-        exit 0
-        ;;
-esac
+DRY_RUN=false
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --dry-run|-n)
+            DRY_RUN=true
+            ;;
+        --report)
+            MODE="report"
+            ;;
+        --techniques)
+            MODE="techniques"
+            ;;
+        --gaps)
+            MODE="gaps"
+            ;;
+        --help|-h)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1" >&2
+            usage >&2
+            exit 1
+            ;;
+    esac
+    shift
+done
 
 # Ensure directories exist
-mkdir -p "$KNOWLEDGE_DIR"
+ensure_knowledge_dir() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        if [[ ! -d "$KNOWLEDGE_DIR" ]]; then
+            print_info "Would create knowledge directory: $KNOWLEDGE_DIR"
+        fi
+    else
+        mkdir -p "$KNOWLEDGE_DIR"
+    fi
+}
 
 # Count total problems
 count_problems() {
@@ -116,15 +152,20 @@ extract_gaps() {
     done
 
     if [[ -s "$gaps_file" ]]; then
+        local sorted_gaps
+        sorted_gaps=$(mktemp)
+        sort "$gaps_file" | uniq -c | sort -rn > "$sorted_gaps"
+
         echo ""
         echo "=== Mathlib Gaps (across all problems) ==="
-        sort "$gaps_file" | uniq -c | sort -rn | head -20
+        head -20 "$sorted_gaps"
         echo ""
         local gap_count
         gap_count=$(wc -l < "$gaps_file" | tr -d ' ')
         local unique_count
         unique_count=$(sort "$gaps_file" | uniq | wc -l | tr -d ' ')
         echo "Total: $gap_count gap mentions, $unique_count unique gaps"
+        rm -f "$sorted_gaps"
     else
         echo "  No Mathlib gaps found across problems"
     fi
@@ -136,12 +177,19 @@ extract_gaps() {
 generate_report() {
     print_info "Generating synthesis report..."
 
+    ensure_knowledge_dir
+
+    local report_path="$SYNTHESIS_REPORT"
+    if [[ "$DRY_RUN" == "true" ]]; then
+        report_path=$(mktemp)
+    fi
+
     local date
     date=$(date +"%Y-%m-%d %H:%M")
     local problem_count
     problem_count=$(count_problems)
 
-    cat > "$SYNTHESIS_REPORT" << HEADER
+    cat > "$report_path" << HEADER
 # Knowledge Synthesis Report
 
 **Generated**: $date
@@ -154,10 +202,10 @@ generate_report() {
 HEADER
 
     # Knowledge distribution
-    echo "### Knowledge Distribution" >> "$SYNTHESIS_REPORT"
-    echo "" >> "$SYNTHESIS_REPORT"
-    echo "| Tier | Count | Description |" >> "$SYNTHESIS_REPORT"
-    echo "|------|-------|-------------|" >> "$SYNTHESIS_REPORT"
+    echo "### Knowledge Distribution" >> "$report_path"
+    echo "" >> "$report_path"
+    echo "| Tier | Count | Description |" >> "$report_path"
+    echo "|------|-------|-------------|" >> "$report_path"
 
     local empty=0 weak=0 moderate=0 rich=0
     for file in "$PROBLEMS_DIR"/*.json; do
@@ -176,25 +224,25 @@ HEADER
         fi
     done
 
-    echo "| EMPTY (0) | $empty | No research yet |" >> "$SYNTHESIS_REPORT"
-    echo "| WEAK (1-5) | $weak | Minimal research |" >> "$SYNTHESIS_REPORT"
-    echo "| MODERATE (6-15) | $moderate | Active research |" >> "$SYNTHESIS_REPORT"
-    echo "| RICH (16+) | $rich | Well-researched |" >> "$SYNTHESIS_REPORT"
-    echo "" >> "$SYNTHESIS_REPORT"
+    echo "| EMPTY (0) | $empty | No research yet |" >> "$report_path"
+    echo "| WEAK (1-5) | $weak | Minimal research |" >> "$report_path"
+    echo "| MODERATE (6-15) | $moderate | Active research |" >> "$report_path"
+    echo "| RICH (16+) | $rich | Well-researched |" >> "$report_path"
+    echo "" >> "$report_path"
 
     # Pool status
     if [[ -f "$CANDIDATE_POOL" ]]; then
-        echo "### Candidate Pool Status" >> "$SYNTHESIS_REPORT"
-        echo "" >> "$SYNTHESIS_REPORT"
-        echo "| Status | Count |" >> "$SYNTHESIS_REPORT"
-        echo "|--------|-------|" >> "$SYNTHESIS_REPORT"
-        jq -r '.candidates | group_by(.status) | map("| \(.[0].status) | \(length) |") | .[]' "$CANDIDATE_POOL" >> "$SYNTHESIS_REPORT" 2>/dev/null
-        echo "" >> "$SYNTHESIS_REPORT"
+        echo "### Candidate Pool Status" >> "$report_path"
+        echo "" >> "$report_path"
+        echo "| Status | Count |" >> "$report_path"
+        echo "|--------|-------|" >> "$report_path"
+        jq -r '.candidates | group_by(.status) | map("| \(.[0].status) | \(length) |") | .[]' "$CANDIDATE_POOL" >> "$report_path" 2>/dev/null
+        echo "" >> "$report_path"
     fi
 
     # Top Mathlib gaps
-    echo "### Most Common Mathlib Gaps" >> "$SYNTHESIS_REPORT"
-    echo "" >> "$SYNTHESIS_REPORT"
+    echo "### Most Common Mathlib Gaps" >> "$report_path"
+    echo "" >> "$report_path"
 
     local has_gaps=false
     for file in "$PROBLEMS_DIR"/*.json; do
@@ -214,50 +262,66 @@ HEADER
             [[ -f "$file" ]] || continue
             jq -r '.knowledge.mathlibGaps[]?' "$file" 2>/dev/null >> "$gaps_tmp"
         done
-        echo "| Gap | Occurrences |" >> "$SYNTHESIS_REPORT"
-        echo "|-----|-------------|" >> "$SYNTHESIS_REPORT"
-        sort "$gaps_tmp" | uniq -c | sort -rn | head -10 | while read -r count gap; do
-            echo "| $gap | $count |" >> "$SYNTHESIS_REPORT"
+        local top_gaps_tmp
+        top_gaps_tmp=$(mktemp)
+        sort "$gaps_tmp" | uniq -c | sort -rn > "$top_gaps_tmp"
+
+        echo "| Gap | Occurrences |" >> "$report_path"
+        echo "|-----|-------------|" >> "$report_path"
+        head -10 "$top_gaps_tmp" | while read -r count gap; do
+            echo "| $gap | $count |" >> "$report_path"
         done
-        rm -f "$gaps_tmp"
+        rm -f "$gaps_tmp" "$top_gaps_tmp"
     else
-        echo "No Mathlib gaps recorded yet." >> "$SYNTHESIS_REPORT"
+        echo "No Mathlib gaps recorded yet." >> "$report_path"
     fi
 
-    echo "" >> "$SYNTHESIS_REPORT"
+    echo "" >> "$report_path"
 
     # Cross-problem patterns
-    echo "### Cross-Problem Patterns" >> "$SYNTHESIS_REPORT"
-    echo "" >> "$SYNTHESIS_REPORT"
-    echo "Patterns are extracted from insights across all problems." >> "$SYNTHESIS_REPORT"
-    echo "Run this script periodically to keep patterns current." >> "$SYNTHESIS_REPORT"
-    echo "" >> "$SYNTHESIS_REPORT"
+    echo "### Cross-Problem Patterns" >> "$report_path"
+    echo "" >> "$report_path"
+    echo "Patterns are extracted from insights across all problems." >> "$report_path"
+    echo "Run this script periodically to keep patterns current." >> "$report_path"
+    echo "" >> "$report_path"
 
     # Technique index summary
     if [[ -f "$TECHNIQUE_INDEX" ]]; then
         local tech_count
         tech_count=$(jq '.techniques | length' "$TECHNIQUE_INDEX" 2>/dev/null || echo "0")
-        echo "### Technique Index" >> "$SYNTHESIS_REPORT"
-        echo "" >> "$SYNTHESIS_REPORT"
-        echo "Tracked techniques: $tech_count" >> "$SYNTHESIS_REPORT"
-        echo "" >> "$SYNTHESIS_REPORT"
+        echo "### Technique Index" >> "$report_path"
+        echo "" >> "$report_path"
+        echo "Tracked techniques: $tech_count" >> "$report_path"
+        echo "" >> "$report_path"
         if [[ "$tech_count" -gt 0 ]]; then
-            echo "| Technique | Problems Used | Success Rate |" >> "$SYNTHESIS_REPORT"
-            echo "|-----------|---------------|--------------|" >> "$SYNTHESIS_REPORT"
-            jq -r '.techniques[] | "| \(.name) | \(.used_in_problems | length) | \(.success_rate // "N/A") |"' "$TECHNIQUE_INDEX" >> "$SYNTHESIS_REPORT" 2>/dev/null
+            echo "| Technique | Problems Used | Success Rate |" >> "$report_path"
+            echo "|-----------|---------------|--------------|" >> "$report_path"
+            jq -r '.techniques[] | "| \(.name) | \(.used_in_problems | length) | \(.success_rate // "N/A") |"' "$TECHNIQUE_INDEX" >> "$report_path" 2>/dev/null
         fi
     fi
 
-    echo "" >> "$SYNTHESIS_REPORT"
-    echo "---" >> "$SYNTHESIS_REPORT"
-    echo "" >> "$SYNTHESIS_REPORT"
-    echo "*Report generated by synthesize-knowledge.sh*" >> "$SYNTHESIS_REPORT"
+    echo "" >> "$report_path"
+    echo "---" >> "$report_path"
+    echo "" >> "$report_path"
+    echo "*Report generated by synthesize-knowledge.sh*" >> "$report_path"
 
-    print_success "Report written to $SYNTHESIS_REPORT"
+    if [[ "$DRY_RUN" == "true" ]]; then
+        local line_count byte_count
+        line_count=$(wc -l < "$report_path" | tr -d ' ')
+        byte_count=$(wc -c < "$report_path" | tr -d ' ')
+        rm -f "$report_path"
+        print_info "Would write report to $SYNTHESIS_REPORT"
+        print_info "Report size: $line_count lines, $byte_count bytes"
+    else
+        print_success "Report written to $SYNTHESIS_REPORT"
+    fi
 }
 
 # Main
 print_info "Knowledge Synthesis (mode: $MODE)"
+if [[ "$DRY_RUN" == "true" ]]; then
+    print_info "Dry run: no report files will be written"
+fi
 echo ""
 
 case "$MODE" in
