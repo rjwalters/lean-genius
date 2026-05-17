@@ -7,9 +7,20 @@
 
 import * as fs from 'fs'
 import * as path from 'path'
-import { scrapeProblem } from './scrape'
 
 const RESEARCH_DIR = 'src/data/research/problems'
+
+function printUsage() {
+  console.log(`Usage: npx tsx scripts/erdos/update-missing-statements.ts [options]
+
+Update Erdős research problem files whose statement is missing.
+
+Options:
+  --dry-run     List files that would be updated without scraping or writing
+  --playwright  Use Playwright-backed scraping for update runs
+  --help        Show this help message
+  -h            Show this help message`)
+}
 
 interface ResearchProblem {
   slug: string
@@ -28,8 +39,14 @@ interface ResearchProblem {
 }
 
 async function main() {
-  const usePlaywright = process.argv.includes('--playwright')
-  const dryRun = process.argv.includes('--dry-run')
+  const args = process.argv.slice(2)
+  if (args.includes('--help') || args.includes('-h')) {
+    printUsage()
+    return
+  }
+
+  const usePlaywright = args.includes('--playwright')
+  const dryRun = args.includes('--dry-run')
 
   // Find all research files with missing statements
   const researchDir = path.resolve(process.cwd(), RESEARCH_DIR)
@@ -65,6 +82,8 @@ async function main() {
     }
     return
   }
+
+  const { scrapeProblem } = await import('./scrape')
 
   let updated = 0
   let failed = 0
