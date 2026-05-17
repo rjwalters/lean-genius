@@ -293,7 +293,7 @@ show_status() {
         local worktree="$WORKTREES_DIR/researcher-$agent_num"
         local branch="feature/researcher-$agent_num"
         echo "  $session: worktree=$worktree branch=$branch"
-        ((running++))
+        ((++running))
     done
 
     if [[ $running -eq 0 ]]; then
