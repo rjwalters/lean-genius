@@ -17,22 +17,23 @@
   },
   "currentState": {
     "phase": "PREP",
-    "since": "2026-05-16T19:16:50Z",
-    "iteration": 2,
-    "focus": "S2 PREP (researcher-8, this PR, #PR): paste-ready Step-A `private lemma sturmVariations_locally_constant` drafted (~80–120 LOC, in session memo §3) + 5-spot Mathlib bearer recheck at SHA 2df2f0150c… (Topology/Algebra/Polynomial 8668 B confirmed for Polynomial.continuous, the not-yet-exercised Step-A bearer) + canonical research JSON catchup (this file: phase COMPLETED→PREP, status completed→active, currentState.* rewrite to reflect S1 OBSERVE's multi-cycle plan). S2 PREP discharges all four S1 OBSERVE handoff items; ACT-readiness gate items 5+8 GREEN. ACT remains gated on host: disk 3.5 Gi avail (worsened from S1's 6.9 Gi; cascade-safety floor is 30 Gi), Docker daemon hung (was responsive at S1).",
+    "since": "2026-05-17T01:05:00Z",
+    "iteration": 3,
+    "focus": "S3 STATE-SYNC (researcher-10, this PR, #PR): doc-only catchup. Absorb 3 RED INFRA blockers (G7 disk 2.9 Gi / 100% used worsened -0.6 Gi from S2's 3.5; G8 Docker `Server:` empty unchanged from S2; G9 NEW — `proofs/.lake → itself` circular self-symlink), correct registry.json (phase NEW + lastUpdate 2026-04-26 = 21d stale vs canonical PREP iter=2 lastUpdate 2026-05-16T19:16Z established at S2), correct stale `leanFiles[6].theoremCount` 28→26 to match actual file (also reflected in S1 OBSERVE problem.md text \"26 theorems\", in S1 OBSERVE knowledge.md §1 decl table, and in `grep -cE '^(protected |private |noncomputable )*(theorem|lemma) ' proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean` → 26 — JSON drift baked in at file-creation in PR #19454). 1-spot bearer carry-forward at SHA `2df2f0150c…` (Mathlib pin byte-stable from S2). ACT remains structurally gated on host recovery; gates G7 + G8 + G9 all RED.",
     "blockers": [
-      "B1 INFRA: host disk 3.5 Gi avail / 82% used (well below 30 Gi cascade-safety floor; worsened 3.4 Gi over ~10 h since S1)",
-      "B2 INFRA: Docker daemon hung (`docker info` no return < 30 s; was GREEN < 5 s at S1)"
+      "G7 INFRA: host disk 2.9 Gi avail / 100% used (worsened from S2 3.5 Gi by -0.6 Gi; well below 30 Gi cascade-safety floor)",
+      "G8 INFRA: `docker info` returns Client: but Server: section empty (unchanged from S2; full Docker daemon unreachable, build-cycle structurally foreclosed)",
+      "G9 INFRA: `proofs/.lake → itself` circular self-symlink (NEW at S3; not flagged at S2; blocks any Lake operation including pin-state inspection)"
     ],
-    "nextAction": "S3 ACT — land Step-A `sturmVariations_locally_constant` lemma in `proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean` between §4 (sturmVariations_C, line 208) and §5 (mod_eval_at_root, line 216) as new sub-section §4a. Gated on host disk recovery ≥30 Gi avail AND `docker info` responsive < 5 s. Paste-ready draft in `research/problems/<slug>/sessions/2026-05-16-s2-prep-bearer-recheck-locally-constant.md` §3.",
+    "nextAction": "S4 STATE-SYNC or S3-ACT depending on host: (a) if disk ≥30 Gi AND `docker info` shows Server: section AND `proofs/.lake` is a real directory not a self-symlink → land paste-ready Step-A `private lemma sturmVariations_locally_constant` from S2 PREP session memo §3 (~80–120 LOC; Mathlib bearer `Polynomial.continuous` byte-stable since S2); (b) else → another doc-only STATE-SYNC absorbing whatever new drift accumulates. Flag gallery `src/data/proofs/descartes-rule-of-signs-oq-02-oq-01-oq-02/meta.json` `leanFile.theoremCount: 28` for mechanic batch-sync (likely needs same fix across ≥1 sibling descartes meta.json — out of researcher scope, deferred to mechanic per `feedback_mechanic_batch_sync_conventions_canonical_counts_…`).",
     "attemptCounts": {
-      "total": 2,
+      "total": 3,
       "currentApproach": 2,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S2 PREP (researcher-8, 2026-05-16T19:16Z): paste-ready Step-A locally-constant lemma drafted + 5-spot Mathlib bearer recheck @ pin 2df2f0150c… + canonical JSON catchup. S1 OBSERVE bootstrap (researcher-11, 2026-05-16T09:25Z, PR #19566): research dir seeded, 10-section survey, 8-phase multi-cycle plan (~600–950 LOC forecast over 4–8 ACT cycles). Origin: PR #14919 — 1 axiom (sturm_exact_count_axiom), 0 sorries, 458 lines, 28 theorems/lemmas, 6 noncomputable defs, gallery status axiomatized/badge axiom. The slug is actively being worked toward axiom discharge; status is NOT \"completed\" (corrected from prior JSON state, which predated S1 OBSERVE and reflected gallery-entry-merge milestone only).",
+    "progressSummary": "S3 STATE-SYNC (researcher-10, 2026-05-17T01:05Z): doc-only — absorbed 3 RED INFRA (G7 disk 2.9 Gi worsened from S2's 3.5 by -0.6 Gi; G8 Docker Server: empty unchanged; G9 NEW proofs/.lake → itself self-symlink), corrected registry phase NEW→PREP + lastUpdate 21d-stale→canonical, corrected canonical JSON leanFiles[6].theoremCount 28→26 to match S1 OBSERVE problem.md truth and actual file count. ACT structurally foreclosed by 3 RED. Mathlib bearer `Polynomial.continuous` byte-stable from S2 (SHA `2df2f0150c…` unchanged). S2 PREP (researcher-8, 2026-05-16T19:16Z): paste-ready Step-A locally-constant lemma drafted + 5-spot Mathlib bearer recheck @ pin 2df2f0150c… + canonical JSON catchup. S1 OBSERVE bootstrap (researcher-11, 2026-05-16T09:25Z, PR #19566): research dir seeded, 10-section survey, 8-phase multi-cycle plan (~600–950 LOC forecast over 4–8 ACT cycles). Origin: PR #14919 — 1 axiom (sturm_exact_count_axiom), 0 sorries, 458 lines, 26 theorems/lemmas (corrected from 28 at S3), 6 noncomputable defs, gallery status axiomatized/badge axiom. The slug is actively being worked toward axiom discharge; status is NOT \"completed\" (corrected at S2 PREP from prior JSON state).",
     "builtItems": [
       "DescartesRuleOfSignsOQ02OQ01OQ02.lean (458 lines, 1 axiom, 0 sorries)",
       "sturmSeqAux: fuel-based Sturm sequence construction via EuclideanDomain.mod",
@@ -92,7 +93,7 @@
     "mathlib": []
   },
   "started": "2026-04-26T14:43:29.519Z",
-  "lastUpdate": "2026-05-16T19:16:50Z",
+  "lastUpdate": "2026-05-17T01:05:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -166,7 +167,7 @@
       "path": "Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean",
       "filename": "DescartesRuleOfSignsOQ02OQ01OQ02.lean",
       "lineCount": 458,
-      "theoremCount": 28,
+      "theoremCount": 26,
       "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,

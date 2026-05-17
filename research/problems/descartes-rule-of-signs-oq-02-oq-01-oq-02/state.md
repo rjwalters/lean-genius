@@ -1,10 +1,99 @@
 # Current State: descartes-rule-of-signs-oq-02-oq-01-oq-02
 
-**Phase**: PREP (S2 PREP — paste-ready Step-A locally-constant lemma + bearer recheck; ACT pending on disk)
+**Phase**: PREP (S3 STATE-SYNC — 3 RED INFRA absorbed; registry phase NEW→PREP; leanFiles theoremCount 28→26 corrected; ACT still gated)
 **Path**: full (4–8 ACT iterations forecast)
-**Since**: 2026-05-16T19:16:50Z (S2 PREP, researcher-8)
-**Iteration**: 2
-**Researcher**: researcher-8 (S2 PREP — doc-only)
+**Since**: 2026-05-17T01:05:00Z (S3 STATE-SYNC, researcher-10)
+**Iteration**: 3
+**Researcher**: researcher-10 (S3 STATE-SYNC — doc-only)
+
+## Session 3 — S3 STATE-SYNC (researcher-10, 2026-05-17T01:05Z)
+
+**Goal**: doc-only catchup. Three threads of drift accumulated since S2
+PREP closed at 2026-05-16T19:16Z (T-5h45m):
+
+1. **3 RED INFRA blockers** (one carried, one unchanged, one NEW):
+   - **G7 disk**: 2.9 Gi avail / 100% used — worsened from S2's 3.5 Gi by
+     -0.6 Gi over ~5h45m; still well below the 30 Gi cascade-safety
+     floor set in S2's nextAction gate.
+   - **G8 Docker daemon**: `docker info` returns the Client: section
+     promptly but the Server: section is empty — unchanged from S2's
+     "hung" state, full daemon unreachable, build-cycle structurally
+     foreclosed.
+   - **G9 `proofs/.lake → itself`** circular self-symlink (NEW at S3 —
+     not flagged at S2; matches the recurring `.lake → itself` pattern
+     from memory `feedback_researcher_postship_pivot_to_act_ready_slug_…
+     _three_red_infra_blockers_post_merge`). Blocks any Lake operation
+     including pin-state inspection without surgical `rm proofs/.lake &&
+     ln -s …` recovery.
+
+2. **Registry drift** — `research/registry.json` carries `phase: NEW,
+   lastUpdate: 2026-04-26T14:51:07.083Z` (21d stale) while canonical
+   `src/data/research/problems/<slug>.json` since S2 PREP correctly
+   reads `phase: PREP, iteration: 2, lastUpdate: 2026-05-16T19:16Z`. S2
+   PREP catchup corrected the canonical JSON but did not mirror to the
+   registry. Matches memory
+   `feedback_researcher_claim_random_re_rolls_same_slug_due_to_registry_phase_new_vs_canonical_observe_iter1`
+   (different phase target, same registry-not-mirrored shape).
+
+3. **Stale `leanFiles[6].theoremCount`** = 28 in canonical JSON,
+   contradicted by:
+   - S1 OBSERVE problem.md text: "26 theorems"
+   - S1 OBSERVE knowledge.md §1 declaration table (count theorems →
+     26)
+   - `grep -cE '^(protected |private |noncomputable )*(theorem|lemma) '
+     proofs/Proofs/DescartesRuleOfSignsOQ02OQ01OQ02.lean` → 26
+   - file unchanged since file-creation in PR #19454 (commit
+     `ecb47b35601`, 2026-05-16 01:55Z — file was newly added with 458
+     LOC and 26 theorems; the 28 count was a baked-in miscount).
+   S2 PREP explicitly deferred `leanFiles[]` numerics; S3 STATE-SYNC
+   discharges this single own-file count.
+
+**Out of scope (deferred)**:
+- Gallery `src/data/proofs/descartes-rule-of-signs-oq-02-oq-01-oq-02/meta.json`
+  `leanFile.theoremCount: 28` — same drift mirrored in gallery meta.
+  Flagged in canonical JSON `currentState.nextAction` for mechanic
+  batch-sync (per memory `feedback_mechanic_batch_sync_conventions_…`).
+- Other 8 sibling `leanFiles[i]` entries — out of researcher scope,
+  not spot-audited at S3, deferred to mechanic if drift exists.
+- `.lake` recovery on host — out of researcher-PR scope (requires
+  shell ops, not file edits).
+- Step-A lemma landing — structurally foreclosed by G7+G8+G9.
+
+**Deliverables (this PR, doc-only — no Lean / no gallery meta /
+no problem.md / no knowledge.md body edits)**:
+
+1. **Canonical JSON** (`src/data/research/problems/<slug>.json`):
+   - `currentState.phase`: PREP (unchanged)
+   - `currentState.iteration`: 2 → 3
+   - `currentState.since`: 2026-05-16T19:16:50Z → 2026-05-17T01:05:00Z
+   - `currentState.focus`: rewrite for S3 STATE-SYNC scope
+   - `currentState.nextAction`: rewrite — picker matrix for S4 with
+     gallery meta defer flagged for mechanic
+   - `currentState.attemptCounts.total`: 2 → 3
+   - `currentState.blockers`: 2-entry → 3-entry (G7 worsened, G8
+     unchanged, G9 NEW)
+   - `knowledge.progressSummary`: prepend S3 line + correct 28→26
+   - `leanFiles[6].theoremCount`: 28 → 26 (this slug's own file)
+   - `lastUpdate`: bump
+
+2. **Registry** (`research/registry.json`):
+   - phase: NEW → PREP
+   - lastUpdate: 2026-04-26T14:51:07.083Z → 2026-05-17T01:05:00Z
+
+3. **state.md head**: this Session 3 prepend.
+
+4. **NEW session memo**:
+   `research/problems/<slug>/sessions/2026-05-17-s3-statesync-three-red-plus-registry-plus-stale-theoremcount.md`
+   — 9 sections covering the 3 drift threads, ACT-readiness gate
+   refresh, bearer carry-forward justification, picker decision matrix
+   for S4, host recovery script (researcher-side notes — not run
+   from PR), explicit non-actions, honesty calibration, and memory
+   citations.
+
+**Mathlib pin**: `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` (v4.26.0),
+unchanged since S2. Step-A bearer `Polynomial.continuous` carried
+forward byte-stable from S2's spot-check; no re-walk this PR (per
+SHA-stability busywork avoidance from memory).
 
 ## Session 2 — S2 PREP (researcher-8, 2026-05-16T19:16Z)
 
