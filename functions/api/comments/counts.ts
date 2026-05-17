@@ -13,7 +13,7 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
 
   try {
     const url = new URL(context.request.url)
-    const proofId = url.searchParams.get('proof_id')
+    const proofId = url.searchParams.get('proof_id')?.trim()
 
     if (!proofId) {
       return new Response(
