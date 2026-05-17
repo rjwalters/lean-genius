@@ -157,6 +157,11 @@
       "targetId": "erdos-455",
       "relationship": "extends",
       "description": "Parent: Erdős Problem #455 on monotone-gap prime sequences. The parent's `conclusion.openQuestions[3]` asks whether the problem generalizes to AP-gap conditions; this OQ-04 entry formalizes that generalization. Every AP-gap sequence with $d \\geq 0$ has non-decreasing gaps, so the AP-gap regime is a structured slice of the parent's monotone-gap domain. The parent's central question ($q_n \\gtrsim n^2$?) reduces in the AP-gap d > 0 regime to Bunyakovsky's conjecture, since AP-gap prime sequences with d > 0 grow as $q(n) \\sim \\frac{d}{2} n^2$ — recovering the parent's bound quantitatively."
+    },
+    {
+      "targetId": "dirichlets-theorem",
+      "relationship": "compares",
+      "description": "Dirichlet's theorem on primes in arithmetic progressions (1837) is the strongest Mathlib v4.26.0 result in the same conceptual family — `Mathlib/NumberTheory/LSeries/PrimesInAP.lean` provides infinitely many primes in any coprime residue class $a \\bmod q$. This is **qualitatively weaker** than the d = 0 Green-Tao axiom encoded here: Dirichlet asserts that infinitely many AP terms are prime, but does not provide $k$ **consecutive** prime terms of any AP. The gap between Dirichlet (available in Mathlib) and Green-Tao (axiomatized in this slug) is precisely what `greenTao_finitary` formalizes, and motivates the axiom-rather-than-derive choice."
     }
   ],
   "leanFile": {
