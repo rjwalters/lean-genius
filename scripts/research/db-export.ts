@@ -8,7 +8,6 @@
  * Usage: pnpm db:export
  */
 
-import Database from 'better-sqlite3';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -30,6 +29,20 @@ const TABLES = [
   'gap_dependencies'
 ];
 
+type ExportDb = {
+  prepare: (sql: string) => { all: () => unknown[] };
+  close: () => void;
+};
+
+function printUsage(): void {
+  console.log(`Usage: pnpm db:export
+
+Export research/db/knowledge.db into merge-friendly SQL files.
+
+Options:
+  --help, -h  Show this help message`);
+}
+
 function escapeSQL(value: unknown): string {
   if (value === null || value === undefined) {
     return 'NULL';
@@ -44,7 +57,7 @@ function escapeSQL(value: unknown): string {
   return `'${String(value)}'`;
 }
 
-function exportTable(db: Database.Database, tableName: string): string {
+function exportTable(db: ExportDb, tableName: string): string {
   const rows = db.prepare(`SELECT * FROM ${tableName}`).all();
 
   if (rows.length === 0) {
@@ -67,13 +80,20 @@ function exportTable(db: Database.Database, tableName: string): string {
   return lines.join('\n');
 }
 
-function main() {
+async function main() {
+  const args = process.argv.slice(2);
+  if (args.includes('--help') || args.includes('-h')) {
+    printUsage();
+    return;
+  }
+
   console.log('Exporting research database to SQL files...\n');
 
   // Ensure data directory exists
   fs.mkdirSync(DATA_DIR, { recursive: true });
 
   // Open database
+  const { default: Database } = await import('better-sqlite3');
   const db = new Database(DB_PATH, { readonly: true });
 
   let totalRows = 0;
@@ -101,4 +121,7 @@ function main() {
   console.log('  git commit -m "Export research database"');
 }
 
-main();
+main().catch((err) => {
+  console.error('Export failed:', err);
+  process.exit(1);
+});

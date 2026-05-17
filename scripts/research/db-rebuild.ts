@@ -9,7 +9,6 @@
  * Usage: pnpm db:rebuild
  */
 
-import Database from 'better-sqlite3';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -32,7 +31,22 @@ const TABLES = [
   'gap_dependencies'
 ];
 
-function main() {
+function printUsage(): void {
+  console.log(`Usage: pnpm db:rebuild
+
+Rebuild research/db/knowledge.db from schema.sql and data/*.sql files.
+
+Options:
+  --help, -h  Show this help message`);
+}
+
+async function main() {
+  const args = process.argv.slice(2);
+  if (args.includes('--help') || args.includes('-h')) {
+    printUsage();
+    return;
+  }
+
   console.log('Rebuilding research database from SQL files...\n');
 
   // Backup existing database if it exists
@@ -44,6 +58,7 @@ function main() {
   }
 
   // Create new database
+  const { default: Database } = await import('better-sqlite3');
   const db = new Database(DB_PATH);
 
   // Enable foreign keys
@@ -93,4 +108,7 @@ function main() {
   console.log(`   Location: ${DB_PATH}`);
 }
 
-main();
+main().catch((err) => {
+  console.error('Rebuild failed:', err);
+  process.exit(1);
+});
