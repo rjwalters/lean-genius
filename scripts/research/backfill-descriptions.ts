@@ -227,7 +227,7 @@ function generateFromTitleAndTags(title: string, tags: string[]): string {
 /**
  * Update problem.md file's Plain Language section
  */
-function updateProblemMd(slug: string, description: string): boolean {
+function updateProblemMd(slug: string, description: string, dryRun = false): boolean {
   const problemMdPath = path.join(RESEARCH_PROBLEMS_DIR, slug, 'problem.md')
   if (!fs.existsSync(problemMdPath)) return false
 
@@ -240,6 +240,8 @@ function updateProblemMd(slug: string, description: string): boolean {
   const currentPlain = match[2].trim().split('\n')[0]
   if (!isPlaceholder(currentPlain)) return false  // Already has a real description
 
+  if (dryRun) return true
+
   // Replace the plain language content
   const newSection = `${match[1]}${description}\n${match[3]}`
   content = content.replace(match[0], newSection)
@@ -251,7 +253,7 @@ function updateProblemMd(slug: string, description: string): boolean {
 /**
  * Update JSON problem file's problemStatement.plain
  */
-function updateProblemJson(slug: string, description: string): boolean {
+function updateProblemJson(slug: string, description: string, dryRun = false): boolean {
   const jsonPath = path.join(JSON_PROBLEMS_DIR, `${slug}.json`)
   if (!fs.existsSync(jsonPath)) return false
 
@@ -264,6 +266,9 @@ function updateProblemJson(slug: string, description: string): boolean {
     if (!data.problemStatement) {
       data.problemStatement = { formal: '', plain: '', whyMatters: [] }
     }
+
+    if (dryRun) return true
+
     data.problemStatement.plain = description
 
     fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2) + '\n')
@@ -276,8 +281,25 @@ function updateProblemJson(slug: string, description: string): boolean {
 /**
  * Main backfill function
  */
-function backfill(): void {
-  console.log('Backfilling research problem descriptions...\n')
+function printUsage(): void {
+  console.log(`Usage: npx tsx scripts/research/backfill-descriptions.ts [options]
+
+Backfill placeholder research descriptions from gallery metadata, knowledge.md,
+or title and tag synthesis.
+
+Options:
+  --dry-run       Report description backfills without writing files
+  --help, -h      Show this help message`)
+}
+
+function backfill(options: { dryRun?: boolean } = {}): void {
+  const { dryRun = false } = options
+
+  console.log(
+    dryRun
+      ? 'Backfilling research problem descriptions (dry run)...\n'
+      : 'Backfilling research problem descriptions...\n'
+  )
 
   if (!fs.existsSync(JSON_PROBLEMS_DIR)) {
     console.error('Error: JSON problems directory not found:', JSON_PROBLEMS_DIR)
@@ -346,8 +368,8 @@ function backfill(): void {
 
     // Apply the description
     if (description) {
-      const jsonOk = updateProblemJson(slug, description)
-      const mdOk = updateProblemMd(slug, description)
+      const jsonOk = updateProblemJson(slug, description, dryRun)
+      const mdOk = updateProblemMd(slug, description, dryRun)
 
       if (jsonOk) jsonUpdated++
       if (mdOk) mdUpdated++
@@ -366,8 +388,19 @@ function backfill(): void {
   console.log(`  JSON files updated:  ${jsonUpdated}`)
   console.log(`  problem.md updated:  ${mdUpdated}`)
   console.log(`  Errors:              ${errors}`)
+  if (dryRun) {
+    console.log(`  No files written`)
+  }
   console.log(`\nDone! Run 'pnpm research:build' to regenerate research-listings.json`)
 }
 
-// Run
-backfill()
+if (process.argv[1] && import.meta.url === `file://${process.argv[1]}`) {
+  const args = process.argv.slice(2)
+
+  if (args.includes('--help') || args.includes('-h')) {
+    printUsage()
+    process.exit(0)
+  }
+
+  backfill({ dryRun: args.includes('--dry-run') })
+}
