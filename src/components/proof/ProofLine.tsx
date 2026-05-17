@@ -1,3 +1,4 @@
+import type { KeyboardEvent } from 'react'
 import { tokenizeLine, tokenTypeToClass, type Token } from '@/lib/lean-tokenizer'
 import type { Annotation } from '@/types/proof'
 import { cn } from '@/lib/utils'
@@ -22,16 +23,28 @@ export function ProofLine({
   const { tokens } = tokenizeLine(content, inBlockComment)
   const hasAnnotation = annotations.length > 0
   const significance = annotations[0]?.significance
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      onClick()
+    }
+  }
 
   return (
     <div
+      role="button"
+      tabIndex={0}
+      aria-pressed={isSelected}
+      aria-label={`Select proof line ${lineNumber}`}
       className={cn(
         'group flex cursor-pointer transition-colors duration-150',
+        'focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-annotation',
         hasAnnotation && 'hover:bg-annotation/10',
         isSelected && 'bg-annotation/20',
         !hasAnnotation && 'hover:bg-muted/30'
       )}
       onClick={onClick}
+      onKeyDown={handleKeyDown}
     >
       {/* Line number */}
       <div
