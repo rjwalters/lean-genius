@@ -1,11 +1,172 @@
 # Research State: ballot-problem-oq-03-oq-01-oq-01-oq-01
 
 ## Current State
-**Phase**: PREP
+**Phase**: ACT
 **Path**: full
 **Since**: 2026-04-24T01:12:29+02:00
-**Last Updated**: 2026-05-16 (S43 — researcher-4, PREP: OPEN-PR rebase audit + `firstDescentRotation` design spec + parent-file repair status refresh, doc-only)
-**Iteration**: 43
+**Last Updated**: 2026-05-17 (S44 — researcher-11, ACT: `rotateSortedListPrefixSym_mod` fresh-rebase per S43 candidate A, +1 lemma / +43 LOC / 0 axioms / 2 sorries unchanged, build pending — parent OQ03OQ02 break + Docker hung)
+**Iteration**: 44
+
+## S44 Summary (2026-05-17, researcher-11)
+
+**Mode**: ACT (fresh-rebase). Re-applies S39 `rotateSortedListPrefixSym_mod`
+(originally proposed in OPEN-CONFLICTING PR #17884) as a single new lemma
+on `origin/main` HEAD `9034990819b` (Aristotle file-paths fix, MERGED
+2026-05-17) at unchanged Mathlib pin
+`2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`. First of the S43 ACT-menu
+candidates (E → A → B → C → D); candidate E (close PR #17680) was
+discharged separately at 2026-05-17T00:10:21Z (~40 min before this ACT
+claim, by another agent or by the deployer's autoclose triage — visible
+via `gh pr view 17680 --json state`).
+
+### Change set
+
+| File | Change | Δ |
+|------|--------|---|
+| `proofs/Proofs/BallotProblemOQ03OQ01OQ01OQ01.lean` | `+1` lemma + S44 docstring block inserted between S38's `_val_eq_sub_take` (line 1300) and S41's `_val_eq_sub_drop` block (line 1302). | +43 LOC |
+| `src/data/proofs/.../meta.json` | `meta.lineCount` 2348 → 2391; `meta.theoremCount` 60 → 61. | 2 fields |
+| `src/data/research/problems/.../json` | `currentState.iteration` 43 → 44; `currentState.phase` PREP → ACT; `currentState.focus`, `nextAction` refreshed; `knowledge.insights`, `builtItems` appended; `leanFiles[0]` lineCount/theoremCount synced; `lastUpdate` bumped. | 9 fields |
+| `state.md` (this file) | `Last Updated` + `Phase` + `Iteration` header bump; S44 Summary block inserted before S43. | header + new block |
+| `research/problems/.../sessions/2026-05-17-s44-prefix-mod-act.md` | NEW session memo. | new file |
+
+### The lemma
+
+```lean
+private lemma rotateSortedListPrefixSym_mod {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) (hj : j ≤ c) :
+    rotateSortedListPrefixSym M (k % c) j hj
+      = rotateSortedListPrefixSym M k j hj := by
+  apply Subtype.ext
+  show ((rotateSortedList M (k % c)).take j : Multiset (Fin n))
+       = ((rotateSortedList M k).take j : Multiset (Fin n))
+  rw [rotateSortedList_mod]
+```
+
+Character-for-character mirror of S38's `rotateSortedListSuffixSym_mod`
+(line 1269): `take` swapped for `drop`, the `(hj : j ≤ c)` hypothesis
+threaded from `rotateSortedListPrefixSym`'s S37 signature (line 1021).
+Both proofs unfold via `Subtype.ext` + `show` + `rw [rotateSortedList_mod]`
+(the underlying-list periodicity, S33 line 944) — same recipe, same
+3-line body length.
+
+### Why this lemma matters
+
+Closes the period half of the prefix-`Sym` toolkit. Together with S41's
+`_val_eq_sub_drop` (complement form, line 1330) and S37's `_le` (codomain
+witness, line 1031), every structural property of
+`rotateSortedListSuffixSym` now has a matching prefix counterpart for the
+two-out-of-three lemma families (period, complement form, codomain
+witness). The boundary mirrors (S43 candidate C: `_zero_val` + `_self_val`
+prefix mirrors of S36 line 1195/1209) and the addition-form
+(S43 candidate B: `_val_add_SuffixSym_val` re-apply of PR #17892) remain
+for follow-up PRs.
+
+For the 2B.4' refined-codomain bijection: the rotation-index domain
+`ℕ × Sym (Fin n) (a + 1)` can now be replaced by the canonical
+representative `Fin c × Sym (Fin n) (a + 1)` on **both** halves of the
+prefix/suffix decomposition (suffix side from S38 `_mod`, prefix side
+from S44 `_mod`). This was already true at the underlying-list level via
+`rotateSortedList_mod` (S33); S44 lifts it to the `Sym`-codomain
+representation that the 2B.4' bijection actually inhabits.
+
+### Build status
+
+**Not run.** Same host-infra block as S43:
+
+```
+$ df -h /System/Volumes/Data
+/dev/disk3s5  926Gi  887Gi  3.3Gi  100%  /System/Volumes/Data
+                              ↑↑↑      ↑↑↑↑
+                        3.3 Gi avail  100% capacity
+                        (worsened from 6.7 Gi at S43, T-16h)
+
+$ timeout 5 docker ps -q
+# (no output; exit 124 — timeout, unchanged from S43)
+
+$ docker info | head -5
+Client:
+ Version:    29.4.1
+ Context:    desktop-linux
+ ...        # Server: section empty — daemon hung
+```
+
+Disk has worsened by `-3.4 Gi` over the 16h since S43 PREP (6.7 Gi →
+3.3 Gi). Docker daemon hang has persisted across the same window.
+Per memory pattern `feedback_researcher_host_infra_blocked_buildverify_pivots_to_prep_deferred_reverify`
+the build is deferred; per S43 §4 ACT-readiness gate the parent file
+remains broken so any build verify would still ship as `(build pending)`
+even if Docker were available. The lemma body is a 3-line mirror of an
+already-merged sibling lemma compiling on the same lake hash; risk that
+the proof fails to elaborate when the cache eventually replays is
+near-zero (the only Mathlib lemma used, `rotateSortedList_mod`, is on
+the same file).
+
+**Cache-replay forecast** (post-disk-recovery): ~20–30s wall on a warm
+lake cache (lake hash unchanged since S41, no Mathlib pin movement).
+Sad-path is full ~90s elaboration only if Mathlib pin moves before
+verify; pin is currently stable at S29 PR #17447 (2026-05-08, ~9 days).
+
+### Slug-file inventory delta (post-S44)
+
+| Counter | Pre-S44 | Post-S44 | Δ |
+|---------|---------|----------|---|
+| Line count | 2348 | 2391 | +43 |
+| Theorem/lemma count (canonical pattern) | 60 | 61 | +1 |
+| Definition count | 12 | 12 | 0 |
+| `sorry` (active) | 2 | 2 | 0 |
+| `axiom` declarations | 0 | 0 | 0 |
+| Structure-encoded assumptions | 0 | 0 | 0 |
+
+`meta.json` synced: `meta.lineCount` 2348 → 2391, `meta.theoremCount`
+60 → 61. Sorry count and axiom count unchanged (the new lemma has a
+3-line `by …` proof, no `sorry`, no `axiom`).
+
+### Bearer pin reverification (1-spot)
+
+* Mathlib `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67` unchanged since S29
+  (per `proofs/lake-manifest.json` rev field). 9-day stability confirms
+  the cache-replay forecast.
+* `rotateSortedList_mod` signature unchanged at line 944 (verified via
+  `grep -n "^private lemma rotateSortedList_mod"`). The S44 proof's only
+  Mathlib dependency is this in-file lemma.
+* `rotateSortedListPrefixSym` def signature unchanged at line 1021
+  (verified). The S44 lemma's `(hj : j ≤ c)` hypothesis is the same
+  hypothesis the def takes.
+
+### Next action (S45+)
+
+After Docker daemon recovers + disk pressure resolves (Auditor/Mechanic
+pool sweep typically clears stale containers; manual `docker system
+prune` may be needed if persistence is broken — out of researcher scope),
+remaining S43 menu items:
+
+* **S45 candidate B (LOW risk, ~15 LOC)**: re-apply S40
+  `rotateSortedListPrefixSym_val_add_SuffixSym_val` lemma in fresh PR
+  off `origin/main`. Body is a 3-line term using
+  `rotateSortedList_take_add_drop` (S34 line 1098). Insertion point:
+  immediately after S44's `_mod` block (current line ~1346) and before
+  S41's `_val_eq_sub_drop` block (current line ~1349). PR #17892 can
+  then be closed with `superseded by fresh-rebase PR #<n>` comment.
+* **S45 candidate C (LOW risk, ~25 LOC)**: ship `_zero_val` +
+  `_self_val` prefix mirrors. Pattern from S36 suffix mirrors (lines
+  1195, 1209). Two `@[simp] private lemma` declarations. Insertion
+  point: same window as B (post-S44, pre-S41).
+* **S45 candidate D (MEDIUM risk, ~25-30 LOC)**: ship
+  `firstDescentRotation` def + `_take_eq` spec lemma. Requires
+  committing to S43 §2.2 Definition I or III; small-case verification
+  on recon doc §1 Cases 1 + 2 still pending (S43 §2.3 only validated
+  Case 3).
+
+Suggested order: B → C → D. Each ships as a separate PR off
+`origin/main` per the S43 §1 rebase-strategy recipe (no force-push,
+fresh PR per S37-precedent
+`feedback_researcher_pr_rebase_strategy.md`).
+
+**Cancellation clause** (carried from S43): if the parent
+`BallotProblemOQ03OQ02.lean` becomes build-passing before S45 ACT
+(mechanic clears Clusters A–D — still 15 errors as of PR #19264), all
+candidates can drop the `(build pending — parent OQ03OQ02 break)`
+qualifier and ship as proper Docker-verified ACTs.
 
 ## S43 Summary (2026-05-16, researcher-4)
 

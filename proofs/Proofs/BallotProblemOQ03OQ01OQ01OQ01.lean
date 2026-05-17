@@ -1299,6 +1299,49 @@ private lemma rotateSortedListSuffixSym_val_eq_sub_take {n c : ℕ}
   show ((rotateSortedList M k).drop j : Multiset (Fin n)) = _
   rw [← h, add_tsub_cancel_left]
 
+/-! #### S44 — Period for `rotateSortedListPrefixSym`
+
+Symmetric counterpart of S38's `rotateSortedListSuffixSym_mod` (line 1269):
+the `Sym`-packaged prefix at rotation index `k % c` equals the `Sym`-packaged
+prefix at rotation index `k`. Lifts S33's `rotateSortedList_mod` (line 944,
+the analogous identity at the underlying `List` level) through the `.1`
+projection via `Subtype.ext`. Character-for-character mirror of
+`rotateSortedListSuffixSym_mod` with `take` swapped for `drop`; the only
+signature difference is the `(hj : j ≤ c)` hypothesis required by
+`rotateSortedListPrefixSym`'s `Sym (Fin n) j` codomain (S37, line 1021).
+
+Re-applies the lemma originally proposed in PR #17884 (S39, OPEN-CONFLICTING
+against `origin/main`) per the S43 fresh-rebase recipe
+(`feedback_researcher_pr_rebase_strategy.md`). Closes the period half of
+the prefix-`Sym` toolkit: together with S41's `_val_eq_sub_drop`
+(complement form, line 1330) and S37's `_le` (codomain witness, line 1031),
+every structural property of `rotateSortedListSuffixSym` now has a matching
+prefix counterpart. The 2B.4' refined-codomain bijection's domain can
+therefore be taken as `Fin c × Sym (Fin n) (a + 1)` on both halves of the
+prefix/suffix decomposition (i.e., the rotation index space quotients
+cleanly through `% c` on both sides).
+
+The `_zero_val` / `_self_val` prefix-side boundary mirrors of S36 (lines 1195,
+1209) and S40's `_val_add_SuffixSym_val` reconstitution lemma remain to be
+shipped in follow-up PRs (S43 §4 candidates B and C). -/
+
+/-- **`rotateSortedListPrefixSym` is periodic in `k` with period `c`** (S44).
+
+    The `Sym`-packaged prefix at rotation index `k % c` equals the
+    `Sym`-packaged prefix at rotation index `k`. Lifts S33's
+    `rotateSortedList_mod` (line 944, the analogous identity at the
+    underlying `List` level) through the `.1` projection via
+    `Subtype.ext`. Symmetric counterpart of S38's
+    `rotateSortedListSuffixSym_mod`. -/
+private lemma rotateSortedListPrefixSym_mod {n c : ℕ}
+    (M : Sym (Fin n) c) (k j : ℕ) (hj : j ≤ c) :
+    rotateSortedListPrefixSym M (k % c) j hj
+      = rotateSortedListPrefixSym M k j hj := by
+  apply Subtype.ext
+  show ((rotateSortedList M (k % c)).take j : Multiset (Fin n))
+       = ((rotateSortedList M k).take j : Multiset (Fin n))
+  rw [rotateSortedList_mod]
+
 /-! #### S41 — Complement form for `rotateSortedListPrefixSym`
 
 Symmetric counterpart of S38's `rotateSortedListSuffixSym_val_eq_sub_take`:
