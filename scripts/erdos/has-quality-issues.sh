@@ -37,6 +37,35 @@ REPO_ROOT="$(find_repo_root)"
 GALLERY_DIR="$REPO_ROOT/src/data/proofs"
 PROOFS_DIR="$REPO_ROOT/proofs/Proofs"
 
+has_garbage_description() {
+    local meta_file="$1"
+    python3 - "$meta_file" <<'PY'
+import json
+import sys
+
+artifacts = ('Forum', 'Favourites', 'Random Solved', 'Dual View', 'Random Open')
+try:
+    with open(sys.argv[1], encoding='utf-8') as fh:
+        data = json.load(fh)
+except Exception:
+    sys.exit(1)
+
+descriptions = []
+if isinstance(data.get('description'), str):
+    descriptions.append(data['description'])
+overview = data.get('overview')
+if isinstance(overview, dict) and isinstance(overview.get('text'), str):
+    descriptions.append(overview['text'])
+
+has_artifact = any(
+    artifact in text
+    for artifact in artifacts
+    for text in descriptions
+)
+sys.exit(0 if has_artifact else 1)
+PY
+}
+
 entry_dir="$GALLERY_DIR/erdos-$ERDOS_NUM"
 lean_file="$PROOFS_DIR/Erdos${ERDOS_NUM}Problem.lean"
 
@@ -73,7 +102,7 @@ except:
     # Check garbage description
     meta_file="$entry_dir/meta.json"
     if [[ -f "$meta_file" ]]; then
-        if grep -qE 'Forum|Favourites|Random Solved|Dual View|Random Open' "$meta_file" 2>/dev/null; then
+        if has_garbage_description "$meta_file"; then
             has_issues=true
         fi
     fi
