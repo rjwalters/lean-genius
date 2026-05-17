@@ -26,8 +26,12 @@ export const serializers = {
    * Empty array removes from URL
    */
   stringArray: {
-    parse: (v: string | null): string[] => v?.split(',').filter(Boolean) ?? [],
-    stringify: (v: string[]): string | null => v.length ? v.join(',') : null,
+    parse: (v: string | null): string[] =>
+      v?.split(',').map((item) => item.trim()).filter(Boolean) ?? [],
+    stringify: (v: string[]): string | null => {
+      const values = v.map((item) => item.trim()).filter(Boolean)
+      return values.length ? values.join(',') : null
+    },
   } as Serializer<string[]>,
 
   /**
@@ -173,4 +177,3 @@ export function useDebouncedUrlState<T>(
 
   return [localValue, setValue, urlValue]
 }
-
