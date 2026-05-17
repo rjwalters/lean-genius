@@ -1,7 +1,7 @@
 {
   "slug": "erdos-890",
   "title": "Erdős #890",
-  "phase": "ACT",
+  "phase": "AXIOMATIZED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,20 +16,24 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "AXIOMATIZED",
     "since": "2026-01-15T10:57:29.901Z",
-    "iteration": 1,
-    "focus": "Proved Conjecture 1 for k=1, added structural lemmas",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "iteration": 2,
+    "focus": "S2 STATE-SYNC: registry was at phase ACT iter 1 since 2026-03-13 (T-65d) despite Lean file Erdos890Problem.lean encoding 2 axioms (erdos_selfridge_lower_bound, classical_omega_limsup) — should be AXIOMATIZED. state.md was still on initial NEW template (Phase: NEW, iteration 1, focus 'Initial exploration') from 2026-01-15. Gallery meta.json already correctly marked status=axiomatized, badge=axiom, axiomCount=2. Single Lean file at 210 LOC (registry had +1 off-by-one: 211→210), 9 theorems, 6 defs, 2 axioms, 0 sorries. Conjecture 1 verified for k=1 via Nat.exists_infinite_primes; sandwich theorem conditional on Conjecture 1; both Erdős-Selfridge lower bound and Hardy-Ramanujan limsup remain axiomatized as deep classical results not in Mathlib.",
+    "blockers": [
+      "Mathlib lacks the Erdős-Selfridge S_k(n) ≥ k + π(k) - 1 lower bound (1967 paper, requires Pólya's k-smooth gaps theorem).",
+      "Mathlib lacks the Hardy-Ramanujan limsup ω(n)·log log n / log n = 1 (1917 result).",
+      "Both conjectures themselves are open since Erdős-Selfridge 1967."
+    ],
+    "nextAction": "Slug is AXIOMATIZED with 2 deep classical axioms encoding the lone proven lower bound (Erdős-Selfridge) and the limsup base case (Hardy-Ramanujan). Forward levers: (A) extend conjecture1_kN to general k using sandwich approach; (B) reformulate axioms in terms of Mathlib's Nat.primeCounting and ArithmeticFunction.omega API once Pólya k-smooth gaps lands in Mathlib; (C) explore Jacobsthal function g(k) connection. None of these blockers unblock without upstream Mathlib infrastructure.",
     "attemptCounts": {
-      "total": 0,
+      "total": 1,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "AXIOMATIZED: Erdos890Problem.lean — 210 LOC, 9 theorems, 6 defs, 2 axioms, 0 sorries. Definitions: cumulativeOmega, LiminfAtMost, LiminfAtLeast, LimsupRatioIsOne, ErdosConjecture890_liminf, ErdosConjecture890_limsup. Axioms: erdos_selfridge_lower_bound (S_k(n) ≥ k + π(k) - 1), classical_omega_limsup (Hardy-Ramanujan). Proven: conjecture1_k1 (k=1 case via Nat.exists_infinite_primes), omega_prime (ω(p)=1), cumulativeOmega_one/zero/add (sum splitting), monotonicity S_{k+1} ≥ S_k, erdos_890_liminf_sandwich (conditional pin to {k+π(k)-1, k+π(k)}). Forward lever: extend k=1 to general k once Mathlib gains Pólya k-smooth gaps API.",
     "builtItems": [
       "conjecture1_k1: Conjecture 1 verified for k=1 using Nat.exists_infinite_primes",
       "omega_prime: ω(p)=1 for prime p, proved from primeFactors characterization",
@@ -59,14 +63,14 @@
     "mathlib": []
   },
   "started": "2026-01-15T10:57:29.901Z",
-  "lastUpdate": "2026-03-13T07:52:17.054Z",
+  "lastUpdate": "2026-05-17T06:30:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos890Problem.lean",
       "filename": "Erdos890Problem.lean",
-      "lineCount": 211,
+      "lineCount": 210,
       "theoremCount": 9,
       "axiomCount": 2,
       "defCount": 6,
