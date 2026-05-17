@@ -41,8 +41,8 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
 
     // Filter by line number (legacy anchor)
     if (lineNumberStr) {
-      const lineNumber = parseInt(lineNumberStr, 10)
-      if (isNaN(lineNumber)) {
+      const lineNumber = Number(lineNumberStr)
+      if (!Number.isInteger(lineNumber) || lineNumber <= 0) {
         return new Response(
           JSON.stringify({ error: 'Invalid line number' }),
           { status: 400, headers: { 'Content-Type': 'application/json' } }
