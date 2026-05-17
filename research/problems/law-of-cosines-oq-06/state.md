@@ -1,25 +1,24 @@
 # Research State: law-of-cosines-oq-06
 
 ## Current State
-**Phase**: OBSERVE
-**Path**: full
-**Since**: 2026-04-05T23:12:43-07:00
+**Phase**: COMPLETED
+**Path**: fast
+**Since**: 2026-04-13T00:00:00Z
 **Iteration**: 1
 
 ## Current Focus
-Initial problem understanding. Read problem.md and gather context.
+Done. `sin_angle_mul_norms` proved as a lemma; Law of Sines fully axiom-free.
 
 ## Active Approach
-None yet.
+Area-equality approach via 2D Lagrange identity + `Real.sin_arccos`.
 
 ## Attempt Count
-- Total attempts: 0
-- Current approach attempts: 0
-- Approaches tried: 0
+- Total attempts: 1
+- Current approach attempts: 1
+- Approaches tried: 1 (Area equality)
 
 ## Blockers
 None.
 
 ## Next Action
-Read problem.md thoroughly and acquire full context.
-Then move to ORIENT phase to explore literature and related proofs.
+None — work complete (see `knowledge.md` for full proof and findings).
