@@ -6,14 +6,26 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Classification of Semi-Regular (Archimedean) Solids.",
-    "whyMatters": []
+    "formal": "Enumerate the 13 Archimedean vertex types, verify their positive angle defect, prove they are distinct, and record their Euler data.",
+    "plain": "Back the Archimedean-solids classification entry with checked combinatorial data: the 13 listed vertex types all pass the angle-defect test, are distinct, and include Euler-count records.",
+    "whyMatters": [
+      "Archimedean solids are the semi-regular analogue of the Platonic solids.",
+      "Angle-defect and Euler-data checks give a concrete verified combinatorial core for the classification story.",
+      "The Lean file carefully separates checked finite data from the full geometric classification theorem."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The file defines face-size lists for the 13 Archimedean vertex types (Lean: archimedeanTypes).",
+      "Each listed vertex type is verified to have positive angle defect, and the combined list check is proved (Lean: all_archimedean_valid).",
+      "Combinatorial vertex, edge, and face data are recorded in ArchimedeanData values satisfying Euler's formula.",
+      "The list has length 13 and contains no duplicate vertex types (Lean: archimedean_count, archimedean_distinct).",
+      "The file verifies example facts including the snub dodecahedron defect data and truncated icosahedron soccer-ball data (Lean: snubDodecahedron_tight, soccerBall_is_archimedean, soccerBall_data)."
+    ],
+    "open": [
+      "The final geometric completeness statement is represented only as a placeholder theorem over True; this entry should not claim a full formal classification proof beyond the checked finite data."
+    ],
+    "goal": "Document the verified finite Archimedean-solid data while keeping the full geometric classification caveat explicit."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -51,7 +63,13 @@
     ]
   },
   "tags": [
-    "seeker-selected"
+    "seeker-selected",
+    "geometry",
+    "polyhedra",
+    "archimedean-solids",
+    "platonic-solids",
+    "finite-enumeration",
+    "angle-defect"
   ],
   "relatedProofs": [
     "platonic-solids",

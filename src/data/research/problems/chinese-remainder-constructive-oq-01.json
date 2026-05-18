@@ -6,14 +6,24 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalization extending an existing formalization: What are the best algorithms for computing Bezout coefficients in multi-preci....",
-    "whyMatters": []
+    "formal": "For coprime natural moduli, construct CRT solutions using Bezout coefficients and prove existence, uniqueness modulo the product, and bounded representatives.",
+    "plain": "Develop the constructive Chinese remainder theorem: compute Bezout-style combining coefficients, build CRT solutions, and prove uniqueness for two, three, and four coprime moduli.",
+    "whyMatters": [
+      "Constructive CRT proofs are the arithmetic backbone of residue-number systems and modular computation.",
+      "Bezout coefficients turn coprimality into an explicit solution-building algorithm.",
+      "The finite examples connect the abstract theorem to practical multi-modulus reconstruction."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Two-modulus CRT existence, uniqueness modulo m*n, and bounded representatives are proved for coprime moduli (Lean: crt_exists, crt_unique, crt_bounded).",
+      "Bezout coefficients and their coprime specialization are packaged for solution construction (Lean: bezoutCoeffs, bezout_identity, bezout_coprime).",
+      "The CRT solution function is defined and used to state constructive congruence behavior (Lean: crtSolution).",
+      "Three- and four-modulus CRT existence and uniqueness theorems are included (Lean: crt_three, crt_three_unique, crt_four, crt_four_unique).",
+      "Residue-number-system uniqueness and modular arithmetic helper lemmas are verified (Lean: rns_unique, modEq_add, modEq_mul, modEq_pow, crt_injective)."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Record the verified constructive CRT infrastructure for explicit Bezout-based modular reconstruction."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -40,7 +50,12 @@
   },
   "tags": [
     "seeker-selected",
-    "extension"
+    "extension",
+    "number-theory",
+    "chinese-remainder-theorem",
+    "bezout-identity",
+    "constructive",
+    "modular-arithmetic"
   ],
   "relatedProofs": [
     "chinese-remainder-constructive",
