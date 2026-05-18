@@ -1,37 +1,54 @@
 {
   "slug": "bertrands-postulate-oq-02",
-  "title": "Legendre's Conjecture: Prime Between n² and (n+1)²",
+  "title": "Legendre conjecture for square intervals",
   "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Legendre's Conjecture: Prime Between n² and (n+1)².",
-    "whyMatters": []
+    "formal": "legendre_conjecture is the open axiom asserting a prime in each interval [n^2, (n+1)^2] for n >= 1.",
+    "plain": "Track Legendre's open square-interval prime conjecture within the Bertrand short-interval hierarchy.",
+    "whyMatters": [
+      "Legendre sits between Bertrand-style existence and stronger short-interval density conjectures",
+      "The Lean family records it as an explicit open axiom rather than a proved theorem",
+      "Keeping it linked to the broader Bertrand files prevents the record from looking unstarted"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Bertrand-derived bounds and BHP-style infrastructure provide surrounding interval-prime context",
+      "The matched Cramer implication file records stronger conditional prime-gap consequences elsewhere in the family"
+    ],
+    "open": [
+      "legendre_conjecture remains an open axiom in BertrandsPostulateOQ03.lean"
+    ],
+    "goal": "Track the open Legendre conjecture alongside the formal Bertrand and short-interval hierarchy."
   },
   "currentState": {
     "phase": "NEW",
     "since": "2026-04-22T12:51:58.076Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Open conjecture linked to the six-file Bertrand proof family and no longer a blank exploration record.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Future proof work would replace the Legendre axiom with a formal derivation.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Metadata refreshed against the Bertrand proof-family match set. Legendre remains open, while the surrounding Lean files document Bertrand, BHP, PNT-density, and Cramer-conditional context.",
+    "builtItems": [
+      "legendre_conjecture axiom in BertrandsPostulateOQ03.lean",
+      "prime-gap hierarchy rows shared with the Bertrand short-interval development",
+      "six Lean metadata rows now attached through the broad Bertrand prefix match"
+    ],
+    "insights": [
+      "Legendre is an existence statement, not a density asymptotic",
+      "BHP and Cramer occupy different points in the same short-interval landscape",
+      "The Lean record correctly treats Legendre as conjectural"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -45,15 +62,21 @@
     "bertrands-postulate",
     "bertrands-postulate-oq-03",
     "bertrands-postulate-oq-03-oq-04",
+    "bertrands-postulate-oq-03-oq-04-oq-01",
     "bertrands-postulate-oq-03-oq-04-oq-03"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Baker, Harman, Pintz (2001), The difference between consecutive primes, II"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.NumberTheory.Bertrand",
+      "Mathlib.NumberTheory.PrimeCounting"
+    ]
   },
   "started": "2026-04-22T12:51:58.076Z",
-  "lastUpdate": "2026-04-22T12:51:58.076Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 8,
   "tractability": 2,
   "leanFiles": [
@@ -100,6 +123,17 @@
       "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BertrandsPostulateOQ03OQ04OQ01.lean",
+      "filename": "BertrandsPostulateOQ03OQ04OQ01.lean",
+      "lineCount": 258,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04OQ01.lean"
     },
     {
       "path": "Proofs/BertrandsPostulateOQ03OQ04OQ03.lean",
