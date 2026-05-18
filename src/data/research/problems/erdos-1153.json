@@ -1,27 +1,41 @@
 {
   "slug": "erdos-1153",
-  "title": "Erdős #1153",
+  "title": "Erdos #1153: Lebesgue Constants of Lagrange Interpolation",
   "phase": "OBSERVE",
-  "status": "active",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "For nodes x_1,...,x_n in [-1,1], prove max_{x in [a,b]} lambda(x) > (2/pi - o(1)) log n for every fixed subinterval [a,b] of [-1,1].",
+    "plain": "No choice of interpolation nodes can prevent the Lebesgue function from growing logarithmically, even when measured on a fixed subinterval.",
+    "whyMatters": [
+      "Lebesgue constants measure worst-case amplification in polynomial interpolation.",
+      "The sharp constant 2/pi explains why Chebyshev-type nodes are essentially optimal.",
+      "The Lean file separates elementary interpolation algebra from the deep analytic lower bound."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean defines Lagrange basis polynomials, the Lebesgue function, interval membership for nodes, and node distinctness.",
+      "The Kronecker-delta behavior of Lagrange basis polynomials and exact value lambda(x_k) = 1 at nodes are proved from the definitions.",
+      "The full-interval corollary is derived from the main Erdos lower-bound axiom."
+    ],
+    "open": [
+      "The sharp lower-bound theorem erdos_1153 is an active axiom in Lean.",
+      "Chebyshev-node tightness is discussed in comments, not formalized as a theorem."
+    ],
+    "goal": "Keep the solved mathematical status visible while making clear that the analytic lower bound itself is represented axiomatically."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-01-15T16:46:42.683Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "The record now distinguishes proved Lagrange/Lebesgue algebra from the single axiomatized Erdos lower bound.",
+    "blockers": [
+      "A formal proof of the analytic Lebesgue-constant lower bound is not present.",
+      "Matching Chebyshev optimality is documentation only."
+    ],
+    "nextAction": "Future proof work would need analytic interpolation machinery rather than more metadata cleanup.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -53,7 +67,11 @@
     "markdown": "# Erdős #1153 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "approximation-theory",
+    "lagrange-interpolation",
+    "lebesgue-constants",
+    "solved"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -67,14 +85,14 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:46:42.683Z",
-  "lastUpdate": "2026-03-13T07:52:17.058Z",
+  "lastUpdate": "2026-05-18T08:13:08Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1153Problem.lean",
       "filename": "Erdos1153Problem.lean",
-      "lineCount": 170,
+      "lineCount": 169,
       "theoremCount": 6,
       "axiomCount": 1,
       "defCount": 4,

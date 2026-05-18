@@ -1,41 +1,43 @@
 {
   "slug": "erdos-1158",
-  "title": "Erdős #1158",
+  "title": "Erdos #1158: Hypergraph Turan Lower Bound for K_t(r)",
   "phase": "ACT",
   "status": "in-progress",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\mathrm{ex}_t(n, K_t(r)) \\geq n^{t - r^{1-t} - o(1)}",
-    "plain": "Is it true that the hypergraph Turán number ex_t(n, K_t(r)) is at least n^{t - r^{1-t} - o(1)}, where K_t(r) is the complete t-partite t-uniform hypergraph with r vertices per class?",
+    "formal": "Prove ex_t(n, K_t(r)) >= n^{t - r^{1-t} - o(1)} for complete t-partite t-uniform hypergraphs K_t(r).",
+    "plain": "Does the expected Erdos lower-bound exponent for complete multipartite t-uniform hypergraph Turan numbers always hold?",
     "whyMatters": [
-      "Generalizes the Zarankiewicz problem (#714) to t-uniform hypergraphs",
-      "Determines tightness of Erdős's 1964 upper bound for hypergraph extremal numbers",
-      "Central question in extremal hypergraph theory"
+      "Generalizes the Zarankiewicz problem from graphs to t-uniform hypergraphs.",
+      "Asks whether the known upper-bound exponent is sharp rather than only probabilistically approximable with a worse constant.",
+      "The graph cases t=2, r=2 and r=3 are known, while r >= 4 and higher uniformities remain hard."
     ]
   },
   "knownResults": {
     "proven": [
-      "Upper bound: ex_t(n, K_t(r)) ≤ O(n^{t - r^{1-t}}) [Erdős 1964]",
-      "Weaker lower bound: ex_t(n, K_t(r)) ≥ n^{t - Cr^{1-t}} for C > 1 [Erdős 1964]",
-      "t=2, r=2: Solved via projective plane constructions",
-      "t=2, r=3: Solved by Brown (1966) and Erdős-Rényi-Sós (1966)",
-      "Stepping-up lemma: (t-1)-uniform bounds lift to t-uniform with exponent +1"
+      "Lean defines UniformHypergraph, K_t(r) containment, K_t(r)-freeness, exHypergraph, hypergraphExponent, and the epsilon-form of the conjecture.",
+      "The exponent specializes to the graph value 2 - 1/r and the cases r=2,3 compute to 3/2 and 5/3.",
+      "Structural bounds show the exponent lies below t, at least t-1, and positive in the stated parameter range."
     ],
     "open": [
-      "t=2, r≥4: Lower bound not established",
-      "t≥3, all r: Entirely open",
-      "Closing the constant gap C > 1 to C = 1"
+      "The general lower-bound conjecture is open.",
+      "The known t=2, r=2 and t=2, r=3 cases are represented as axioms.",
+      "The Erdos upper bound, weaker lower bound, and stepping-up lemma are comments only, not active Lean declarations."
     ],
-    "goal": "Prove ex_t(n, K_t(r)) ≥ n^{t - r^{1-t} - o(1)} for all t, r ≥ 2"
+    "goal": "Keep the formal hypergraph/Turan scaffold and exponent algebra visible while avoiding claims that the general conjecture or documented bounds are proved in Lean."
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-23T03:42:00Z",
     "iteration": 1,
-    "focus": "Initial Lean 4 formalization with definitions, conjecture statement, and known bounds",
-    "blockers": [],
-    "nextAction": "Prove exponent_t2 sorry; consider Aristotle companion file for routine lemmas",
+    "focus": "Metadata now emphasizes the formal hypergraph scaffold, exponent algebra, and two axiomatized graph cases instead of implying broader bounds are formal theorems.",
+    "blockers": [
+      "General K_t(r) lower bounds are open.",
+      "Only t=2, r=2 and t=2, r=3 known cases are axiomatized.",
+      "Upper/lower-bound and stepping-up results are documentation-only in this file."
+    ],
+    "nextAction": "A next proof slice would strengthen the exHypergraph infrastructure or add verified finite/graph special cases without claiming the full conjecture.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -75,6 +77,7 @@
     "hypergraphs",
     "extremal-combinatorics",
     "turan-type",
+    "zarankiewicz",
     "open-problem"
   ],
   "relatedProofs": [
@@ -86,7 +89,7 @@
   ],
   "references": {
     "papers": [
-      "Erdős (1964): On extremal problems of graphs and generalized graphs [Er64f]",
+      "Erdos (1964): On extremal problems of graphs and generalized graphs [Er64f]",
       "Verstraëte survey [Va99, 3.65]"
     ],
     "urls": [
@@ -98,17 +101,17 @@
     ]
   },
   "started": "2026-01-15T16:46:42.684Z",
-  "lastUpdate": "2026-03-23T03:42:00Z",
+  "lastUpdate": "2026-05-18T08:13:08Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1158Problem.lean",
       "filename": "Erdos1158Problem.lean",
-      "lineCount": 307,
+      "lineCount": 306,
       "theoremCount": 7,
       "axiomCount": 2,
-      "defCount": 6,
+      "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1158Problem.lean"
