@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T14:31:40.057Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Reconciling metadata with the current k-perfect framework: sigma, IsKPerfect, and perfectMultiplicity are defined, 10 theorem declarations are present, and only Robin's conditional inequality is axiomatized.",
+    "blockers": [
+      "robin_inequality_conditional remains the sole axiom; other named results are background comments unless formal declarations are added."
+    ],
+    "nextAction": "Update research fields to the one-axiom source state and distinguish formal declarations from background comments on Euler, Gronwall, Guy, largest known k, and the open conjecture.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +31,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 6 axioms all justified (Euler even perfect, largest k, main conjecture, Gronwall, Robin conditional, Guy finiteness). 0 sorries.",
+    "progressSummary": "Source checked: Erdos1053Problem.lean has 162 lines, 3 definitions, 10 theorems, 1 axiom, and 0 sorries or admits. The sole axiom is robin_inequality_conditional.",
     "builtItems": [
-      "Survey: confirmed all axioms are justified"
+      "Definitions: sigma, IsKPerfect, and perfectMultiplicity.",
+      "Proved sigma_def, sigma_one, sigma_ge_self, kperfect_k_ge_one, perfectMultiplicity_kperfect, one_perfect_unique, and example theorems.",
+      "Axiom: robin_inequality_conditional; theorem robin_gives_O_bound derives the conditional O-bound."
     ],
     "insights": [
-      "All 6 axioms are either deep published results or open conjectures — none eliminable",
-      "robin_inequality_conditional assumes RH — properly noted as conditional",
-      "Good constructive work: sigma, IsKPerfect are decidable, native_decide verifies examples"
+      "The old six-axiom/completed wording is stale; the current source has one axiom.",
+      "sigma is a definition in the source, not an axiom.",
+      "Euler, Gronwall, Guy finiteness, largest known k, and the main conjecture should stay background unless formal declarations are added."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Keep lineCount synced at 162.",
+      "Replace six-axiom/completed wording with a one-axiom source summary.",
+      "Only claim Gronwall, Guy, or main-conjecture results as formal if declarations are added."
+    ],
     "markdown": "# Erdős #1053 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCall a number $k$-perfect if $\\sigma(n)=kn$, where $\\sigma(n)$ is the sum of the divisors of $n$. Must $k=o(\\log\\log n)$?\n\n\n\nA question of Erd\\H{o}s, as reported in problem B2 of Guy's collection \\cite{Gu04}. Guy further writes 'It has even been suggested that there may be only finitely many $k$-perfect numbers with $k\\geq 3$.' The largest $k$ for which a $k$-perfect number has been found is $k=11$ - see this page for more information.\n\nThese are known as multiply perfect numbers. When $k=2$ this is the definition of a perfect number.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1052\n- Problem #1054\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -57,14 +65,14 @@
     "mathlib": []
   },
   "started": "2026-01-15T14:31:40.057Z",
-  "lastUpdate": "2026-03-13T07:52:17.056Z",
+  "lastUpdate": "2026-05-18T13:39:01Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1053Problem.lean",
       "filename": "Erdos1053Problem.lean",
-      "lineCount": 163,
+      "lineCount": 162,
       "theoremCount": 10,
       "axiomCount": 1,
       "defCount": 3,

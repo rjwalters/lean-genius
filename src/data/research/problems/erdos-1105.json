@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ACT",
     "since": "2026-01-15T15:31:24.882Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Zero-sorry open/axiomatized formalization is present: main file defines anti-Ramsey numbers, cycle/path conjectures, proves general lower and upper bounds, and leaves only ar_triangle as an axiom. Aristotle companion contains standalone counting lemmas and is not wired into the main file.",
+    "blockers": [
+      "ar_triangle remains the only main-file axiom; Aristotle helper lemmas are standalone companion material."
+    ],
+    "nextAction": "Refresh metadata/status and remove stale claims about 8 axioms, remaining ar_upper_bound sorry, and yuan_path_announced; decide whether to import/use the Aristotle helper lemmas or document them as standalone.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,24 +31,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SESSION 2: Fixed pre-existing build error (turan DecidableRel). Added 2 new proved theorems: monochromatic avoidance, numColors bound. ar_upper_bound sorry remains (needs edge_pairs_card identity). 5 theorems, 8 axioms, 1 sorry, 291 lines.",
+    "progressSummary": "Main source has 378 lines, 27 definition-like declarations by proof-meta counting, 9 theorem-or-lemma declarations, 1 axiom, and 0 sorries. Companion has 71 lines, 3 theorem declarations, 0 axioms, and no code sorries; the old sorry count came from comment text only.",
     "builtItems": [
-      "monochromatic_avoids_rainbow: constant coloring avoids rainbow (proved)",
-      "numColors_le_edges: numColors bounded by edge count (proved)",
-      "Fixed turan definition (added DecidableRel G for Finset.filter)"
+      "Definitions cover edge sets, complete graphs, edge colorings, antiRamsey, arCycle, arPath, CycleConjecture, PathConjecture, and Turan scaffolding.",
+      "Proved ar_lower_bound, ar_upper_bound, erdos_1105_cycle_statement, erdos_1105_path_statement, and private counting/coloring helpers.",
+      "Aristotle companion proves strict-pair, diagonal-pair, and finite-sum counting lemmas."
     ],
     "insights": [
-      "8 axioms: ar_triangle, simonovits_sos_path, yuan_path_announced, ar_lower_bound (oversimplified), ar_mono_n, ar_turan_lower, ar_path_3, ar_k3",
-      "1 sorry: ar_upper_bound (AR ≤ C(n,2))",
-      "ar_lower_bound is oversimplified (says ≥ 1 instead of proper bound)",
-      "yuan_path_announced axiomatizes an announced result",
-      "Pre-existing bug: turan definition lacked DecidableRel G, causing build failure - fixed",
-      "monochromatic_avoids_rainbow: constant coloring avoids rainbow for H with >= 2 edges (proved)",
-      "numColors_le_edges: card_image_le gives numColors <= edge slot count (proved)",
-      "ar_upper_bound: proof roadmap is Nat.sSup_le + numColors_le_edges + edge_pairs_card identity"
+      "The old 8-axiom/1-sorry/291-line progress summary is stale; the main source has 1 axiom, 0 sorries, and 378 lines.",
+      "ar_upper_bound is proved in the current source.",
+      "No declarations named yuan_path_announced, simonovits_sos_path, ar_turan_lower, ar_path_3, or ar_k3 exist in the current source.",
+      "The Aristotle companion is listed by proof meta as an additional file but is not imported by the main problem file."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Correct counters and stale research summary.",
+      "Keep Turan lower, path-result, and special-case claims labeled as comments unless formal declarations are added.",
+      "Resolve whether the Aristotle companion should be imported, used, or only documented as standalone support."
+    ],
     "markdown": "# Erdős #1105 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nThe anti-Ramsey number $\\mathrm{AR}(n,G)$ is the maximum possible number of colours in which the edges of $K_n$ can be coloured without creating a rainbow copy of $G$ (i.e. one in which all edges have different colours).\n\nLet $C_k$ be the cycle on $k$ vertices. Is it true that\\[\\mathrm{AR}(n,C_k)=\\left(\\frac{k-2}{2}+\\frac{1}{k-1}\\right)n+O(1)?\\]Let $P_k$ be the path on $k$ vertices and $\\ell=\\lfloor\\frac{k-1}{2}\\rfloor$. If $n\\geq k\\geq 5$ then is $\\mathrm{AR}(n,P_k)$ equal to\\[\\max\\left(\\binom{k-2}{2}+1, \\binom{\\ell-1}{2}+(\\ell-1)(n-\\ell+1)+\\epsilon\\right)\\]where $\\epsilon=1$ if $k$ is odd and $\\epsilon=2$ otherwise?\n\n\n\nA conjecture of Erd\\H{o}s, Simonovits, and S\\'{o}s \\cite{ESS75}, who gave a simple proof that $\\mathrm{AR}(n,C_3)=n-1$. In this paper they announced proofs of the claimed formula for $\\mathrm{AR}(n,P_k)$ for $n\\geq \\frac{5}{4}k+C$ for some large constant $C$, and also for all $n\\geq k$ if $k$ is sufficiently large, but these never appeared.\n\nSimonovits and S\\'{o}s \\cite{SiSo84} published a proof that the claimed formula for $\\mathrm{AR}(n,P_k)$ is true for $n\\geq ck^2$ for some constant $c>0$.\n\nA proof of the formula for $\\mathrm{AR}(n,P_k)$ for all $n\\geq k\\geq 5$ has been announced by Yuan \\cite{Yu21}\n\n\n\n\nReferences\n\n\n[ESS75] Erd\\H{o}s, P. and Simonovits, M. and S\\'os, V. T., Anti-{R}amsey theorems. (1975), 633--643.\n\n[SiSo84] Simonovits, Mikl\\'os and S\\'os, Vera T., On restricted colourings of {$K_n$}. Combinatorica (1984), 101--110.\n\n[Yu21] L.-T. Yuan, The anti-Ramsey number for paths. arXiv:2102.00807 (2021).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1104\n- Problem #1106\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ESS75\n- SiSo84\n- Yu21\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -64,10 +66,21 @@
     "mathlib": []
   },
   "started": "2026-01-15T15:31:24.882Z",
-  "lastUpdate": "2026-03-24T18:00:00Z",
+  "lastUpdate": "2026-05-18T13:39:01Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [
+    {
+      "path": "Proofs/Erdos1105Problem.lean",
+      "filename": "Erdos1105Problem.lean",
+      "lineCount": 378,
+      "theoremCount": 9,
+      "axiomCount": 1,
+      "defCount": 27,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1105Problem.lean"
+    },
     {
       "path": "Proofs/Erdos1105Aristotle.lean",
       "filename": "Erdos1105Aristotle.lean",
@@ -75,20 +88,9 @@
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1105Aristotle.lean"
-    },
-    {
-      "path": "Proofs/Erdos1105Problem.lean",
-      "filename": "Erdos1105Problem.lean",
-      "lineCount": 379,
-      "theoremCount": 4,
-      "axiomCount": 1,
-      "defCount": 25,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1105Problem.lean"
     }
   ]
 }

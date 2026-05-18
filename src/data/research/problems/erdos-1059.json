@@ -7,7 +7,7 @@
   "path": "full",
   "problemStatement": {
     "formal": "Are there infinitely many primes $p$ such that $p-k!$ is composite for each $k$ such that $1\\leq k!<p$?\n\n\n\nA question of Erd\\H{o}s reported in problem A2 of Guy's collection \\cite{Gu04}.\n\nExamples are $p=101$ and $p=211$. Erd\\H{o}s suggested it may be easier to show that there are infinitely many $n$ such that, if $l!<n\\leq (l+1)!$, then all the prime factors of $n$ are $>l$, and all the numbers $n-k!$ are composite for $1\\leq k\\leq l$.",
-    "plain": "Are there infinitely many primes $p$ such that $p-k!$ is composite for each $k$ such that $1\\leq k!l$, and all the numbers $n-k!$ are composite for $1\\leq k\\leq l$.",
+    "plain": "Are there infinitely many primes p such that p - k! is composite for every k with 1 <= k! < p? Erdos also suggested an alternative formulation using n with l! < n <= (l+1)!, all prime factors of n greater than l, and all n - k! composite for 1 <= k <= l.",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ACT",
     "since": "2026-01-15T14:31:40.058Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Backfill/source alignment for Erdos #1059: the primary file is an axiom-free formal statement and verified-example file; companion OQ files contain density, Selberg, and decidability variants, including conditional axioms and one corrected Selberg-threshold issue.",
+    "blockers": [
+      "Some companion files retain conditional axioms; OQ01OQ01 has two executable interval-decomposition sorries, while the primary file has none."
+    ],
+    "nextAction": "Refresh metadata to distinguish primary versus OQ companion files, public versus private declaration counters, direct versus inherited axioms, and executable versus raw sorry counts; remove stale claims that the primary file axiomatizes the main conjecture or Erdos alternative approach.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,24 +31,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed open conjecture axiom. Axioms: 2 → 1.",
+    "progressSummary": "Primary Erdos1059Problem.lean has 155 lines, 0 direct axioms, 0 sorries, 2 definitions, and 9 theorem declarations by proof-meta counting. It defines ErdosProblem1059 as an open proposition and verifies 101/211 witnesses plus the 89 counterexample. OQ companions add density and Selberg variants: OQ01 has density_one_conjecture, OQ02 has a threshold-bugged l >= 3 Selberg axiom, OQ02OQ01 supplies the corrected l >= 4 axiom, and OQ01OQ01 has two executable interval-decomposition sorries.",
     "builtItems": [
-      "Proved factorial_count_bound (eliminated axiom)",
-      "Fixed example_101 proof (broken by Mathlib update)",
-      "Fixed example_211 proof (broken by Mathlib update)",
-      "Fixed counterexample_89 proof (broken by Mathlib update)",
-      "Fixed prime_211 (decide → native_decide for recursion depth)",
-      "Converted erdos_1059_conjecture from axiom to def"
+      "Primary definitions: AllFactorialSubtractionsComposite and ErdosProblem1059.",
+      "Primary proved examples: example_101, example_211, counterexample_89, prime_101, prime_211, factorial bounds, and two_witnesses.",
+      "Companions cover density-counting, Selberg threshold variants, the 223 failing prime example, and decidability support."
     ],
     "insights": [
-      "factorial_count_bound proved using Nat.find (smallest m with m! ≥ n, take l = m-1)",
-      "Mathlib update broke constructor on ¬Prime ∧ ... goals: simp now resolves ≥2 part automatically",
-      "Fixed by replacing constructor with direct decide/native_decide after simp",
-      "Remaining 2 axioms are genuinely open: the conjecture itself and Erdős alternative approach",
-      "erdos_1059_conjecture was the open conjecture — converted to def"
+      "The primary file does not axiomatize the main conjecture; it defines the open proposition.",
+      "Research line counts were stale by one for the listed Lean files.",
+      "OQ02 is superseded or qualified by OQ02OQ01 for the Selberg threshold correction from l >= 3 to l >= 4.",
+      "The plain problem statement was truncated and has been repaired from the formal text."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Keep research leanFiles counters synced to proof meta and source counts.",
+      "Normalize counter conventions for public/private theorem declarations and direct/inherited axioms.",
+      "Correct primary proof-meta text in a future proof-metadata pass if that file is in scope.",
+      "Flag OQ02 as requiring the OQ02OQ01 threshold correction when discussing Selberg density."
+    ],
     "markdown": "# Erdős #1059 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many primes $p$ such that $p-k!$ is composite for each $k$ such that $1\\leq k!<p$?\n\n\n\nA question of Erd\\H{o}s reported in problem A2 of Guy's collection \\cite{Gu04}.\n\nExamples are $p=101$ and $p=211$. Erd\\H{o}s suggested it may be easier to show that there are infinitely many $n$ such that, if $l!<n\\leq (l+1)!$, then all the prime factors of $n$ are $>l$, and all the numbers $n-k!$ are composite for $1\\leq k\\leq l$.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1058\n- Problem #1060\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -71,17 +74,28 @@
     "mathlib": []
   },
   "started": "2026-01-15T14:31:40.058Z",
-  "lastUpdate": "2026-03-24T17:50:00Z",
+  "lastUpdate": "2026-05-18T13:39:01Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos1059Problem.lean",
+      "filename": "Erdos1059Problem.lean",
+      "lineCount": 155,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059Problem.lean"
+    },
+    {
       "path": "Proofs/Erdos1059OQ01.lean",
       "filename": "Erdos1059OQ01.lean",
-      "lineCount": 567,
-      "theoremCount": 30,
+      "lineCount": 566,
+      "theoremCount": 35,
       "axiomCount": 1,
-      "defCount": 5,
+      "defCount": 6,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ01.lean"
@@ -89,18 +103,18 @@
     {
       "path": "Proofs/Erdos1059OQ01OQ01.lean",
       "filename": "Erdos1059OQ01OQ01.lean",
-      "lineCount": 435,
+      "lineCount": 434,
       "theoremCount": 10,
       "axiomCount": 2,
-      "defCount": 2,
-      "sorryCount": 6,
+      "defCount": 3,
+      "sorryCount": 2,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ01OQ01.lean"
     },
     {
       "path": "Proofs/Erdos1059OQ02.lean",
       "filename": "Erdos1059OQ02.lean",
-      "lineCount": 232,
+      "lineCount": 231,
       "theoremCount": 7,
       "axiomCount": 1,
       "defCount": 4,
@@ -111,7 +125,7 @@
     {
       "path": "Proofs/Erdos1059OQ02OQ01.lean",
       "filename": "Erdos1059OQ02OQ01.lean",
-      "lineCount": 174,
+      "lineCount": 173,
       "theoremCount": 10,
       "axiomCount": 1,
       "defCount": 1,
@@ -122,7 +136,7 @@
     {
       "path": "Proofs/Erdos1059OQ03.lean",
       "filename": "Erdos1059OQ03.lean",
-      "lineCount": 46,
+      "lineCount": 45,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 1,
@@ -133,10 +147,10 @@
     {
       "path": "Proofs/Erdos1059OQ04.lean",
       "filename": "Erdos1059OQ04.lean",
-      "lineCount": 148,
-      "theoremCount": 2,
+      "lineCount": 147,
+      "theoremCount": 4,
       "axiomCount": 0,
-      "defCount": 0,
+      "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ04.lean"
@@ -144,24 +158,13 @@
     {
       "path": "Proofs/Erdos1059OQ05.lean",
       "filename": "Erdos1059OQ05.lean",
-      "lineCount": 100,
+      "lineCount": 99,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059OQ05.lean"
-    },
-    {
-      "path": "Proofs/Erdos1059Problem.lean",
-      "filename": "Erdos1059Problem.lean",
-      "lineCount": 156,
-      "theoremCount": 7,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1059Problem.lean"
     }
   ]
 }
