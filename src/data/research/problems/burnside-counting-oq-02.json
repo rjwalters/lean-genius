@@ -1,19 +1,31 @@
 {
   "slug": "burnside-counting-oq-02",
-  "title": "Burnside Counting OQ-02: Verify `fixed_point_sum_binary_4` via native_decide",
+  "title": "Binary 4-necklace fixed-point checks for Polya enumeration",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "\\sum_{r : \\mathrm{Fin}\\,4} 2^{\\gcd(r,4)} = 24, so the cyclic Burnside count for binary necklaces of length 4 is 24/4 = 6.",
+    "plain": "This entry verifies the fixed-point counts behind Burnside's lemma for binary 4-necklaces. The Lean proof checks each rotation, proves the Polya fixed-point sum, and records the divisor-sum form of the necklace formula.",
+    "whyMatters": [
+      "Turns the abstract Burnside-counting story into a fully checked finite necklace example.",
+      "Provides a concrete axiom-free bridge from fixed-point counts to the Polya enumeration formula."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`IsFixed` defines colorings fixed by a cyclic rotation.",
+      "`fixed_factors_through_mod` proves fixed colorings are constant on residue classes modulo the relevant gcd.",
+      "`polya_cyclic_fixed_count` proves the fixed-coloring count is k^gcd(r,n).",
+      "`fp_count_rot0_4_2`, `fp_count_rot1_4_2`, `fp_count_rot2_4_2`, and `fp_count_rot3_4_2` compute the four binary length-4 rotation counts.",
+      "`fp_sum_binary4`, `polya_sum_Z4_binary`, `polya_binary4_necklace_count`, and `polya_sum_identity` package the Burnside/Polya sums."
+    ],
+    "open": [
+      "The parent `BurnsideCounting.lean` still contains axiomatized Burnside infrastructure.",
+      "The Aristotle helper file linked nearby has sorries; the main OQ03 file used here is the clean source."
+    ],
+    "goal": "Keep this as the finite, computation-backed Polya example while future work connects it to the parent Burnside lemma without axioms."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -36,7 +48,13 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: burnside-counting-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "combinatorics",
+    "group-actions",
+    "burnside-lemma",
+    "polya-enumeration",
+    "necklaces"
+  ],
   "relatedProofs": [
     "burnside-counting",
     "burnside-counting-oq-03"
@@ -48,6 +66,8 @@
   },
   "started": "2026-04-03T15:38:25.652Z",
   "lastUpdate": "2026-04-03T15:38:25.669Z",
+  "significance": 6,
+  "tractability": 8,
   "leanFiles": [
     {
       "path": "Proofs/BurnsideCounting.lean",
