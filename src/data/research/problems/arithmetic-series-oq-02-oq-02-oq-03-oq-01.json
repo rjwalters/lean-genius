@@ -19,9 +19,9 @@
     "phase": "COMPLETED",
     "since": "2026-04-04T05:15:05.955Z",
     "iteration": 1,
-    "focus": "Proof complete: Burnside + Pólya formula verified for n=2,3,4,6. 1 sorry for general theorem.",
+    "focus": "Proof complete: Burnside plus Polya formula verified for n=2,3,4,6; the general CN theorem is now sorry-free.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No immediate proof action; keep metadata synchronized with the completed Lean file.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Burnside proved 6 necklaces, Pólya formula verified for n=2,3,4,6, necklace counts computed for n=1-6. 1 sorry for general cycle structure theorem.",
+    "progressSummary": "COMPLETED: Burnside proved 6 necklaces, Polya formula verified for n=2,3,4,6, necklace counts computed for n=1-6, and the general cycle-structure theorem is now sorry-free.",
     "builtItems": [
       "ZColoring (n k) = ZMod n → Fin k with clean AddAction via subtraction",
       "cyclicAction: axiom-free group action, laws from sub_sub in ZMod",
@@ -46,11 +46,7 @@
       "Burnside approach: prove orbit count via sum=card*group, not native_decide on quotient"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove cycle structure: |Fix(r)| = k^{gcd(r.val, n)} — this closes the 1 sorry",
-      "Needed: bijection between fixed colorings and (ZMod gcd)-indexed colorings",
-      "Mathlib has Nat.Coprime.pow_dvd_of_pow_dvd but not the full cycle structure"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "seeker-selected",
@@ -89,7 +85,7 @@
     {
       "path": "Proofs/ArithmeticSeries.lean",
       "filename": "ArithmeticSeries.lean",
-      "lineCount": 180,
+      "lineCount": 181,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 1,
@@ -111,8 +107,8 @@
     {
       "path": "Proofs/ArithmeticSeriesOQ00OQ01.lean",
       "filename": "ArithmeticSeriesOQ00OQ01.lean",
-      "lineCount": 282,
-      "theoremCount": 12,
+      "lineCount": 283,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -129,6 +125,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean",
+      "filename": "ArithmeticSeriesOQ00OQ02OQ01.lean",
+      "lineCount": 140,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean"
     },
     {
       "path": "Proofs/ArithmeticSeriesOQ02.lean",
@@ -272,6 +279,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03.lean",
+      "lineCount": 227,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean",
+      "lineCount": 154,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean"
     },
     {
       "path": "Proofs/ArithmeticSeriesOQ04.lean",
