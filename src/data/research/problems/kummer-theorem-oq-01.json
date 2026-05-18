@@ -1,19 +1,29 @@
 {
   "slug": "kummer-theorem-oq-01",
-  "title": "Multinomial Analogs of Kummer's Theorem",
+  "title": "Multinomial analogs of Kummer's theorem",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in combinatorics: Multinomial Analogs of Kummer's Theorem.",
-    "whyMatters": []
+    "formal": "v_p\\binom{k_1+\\cdots+k_m}{k_1,\\ldots,k_m}=\\text{total base-}p\\text{ carries across the successive partial sums}.",
+    "plain": "Extend Kummer's theorem from ordinary binomial coefficients to multinomial coefficients. The Lean support proves multinomial/binomial product decompositions and a p-adic carry-count formula, with q-binomial material present as adjacent support rather than the central OQ-01 claim.",
+    "whyMatters": [
+      "Kummer's theorem turns divisibility of binomial coefficients into a concrete carrying problem.",
+      "The multinomial version supports higher-arity combinatorial coefficients.",
+      "The adjacent q-binomial files provide nearby cyclotomic context without changing the multinomial scope of this entry."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`multinomial_eq_prod_choose` decomposes a multinomial coefficient into successive binomial coefficients.",
+      "`multinomial_kummer` proves the multinomial valuation formula as a sum of base-p carry counts.",
+      "`multinomial_kummer_concrete` supplies a concrete bound choice for the carry-count formula."
+    ],
+    "open": [
+      "Sibling Kummer open-question entries refine adjacent q-binomial and follow-up variants, so this entry should stay scoped to the multinomial OQ-01 story."
+    ],
+    "goal": "Present the zero-sorry multinomial Kummer track as a coherent bridge from binomial decompositions to base-p carry counts."
   },
   "currentState": {
     "phase": "NEW",
@@ -39,7 +49,12 @@
     "seeker-selected",
     "combinatorics",
     "number-theory",
-    "extension"
+    "extension",
+    "p-adic-valuation",
+    "multinomial",
+    "q-binomial",
+    "cyclotomic-polynomials",
+    "formalization"
   ],
   "relatedProofs": [
     "kummer-theorem",
@@ -55,8 +70,8 @@
   },
   "started": "2026-03-30T13:49:26.405Z",
   "lastUpdate": "2026-03-30T13:49:26.405Z",
-  "significance": 6,
-  "tractability": 5,
+  "significance": 7,
+  "tractability": 7,
   "leanFiles": [
     {
       "path": "Proofs/KummerTheorem.lean",

@@ -1,19 +1,29 @@
 {
   "slug": "pythagorean-theorem-oq-02",
-  "title": "The formalization uses `EuclideanSpace ℝ (Fin 2)` which is coordinatized $\\ma...",
+  "title": "Euclidean and hyperbolic Pythagorean theorem formalizations",
   "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: The formalization uses `EuclideanSpace ℝ (Fin 2)` which is coordinatized $\\ma....",
-    "whyMatters": []
+    "formal": "v\\perp w\\Rightarrow \\|v+w\\|^2=\\|v\\|^2+\\|w\\|^2,\\quad \\operatorname{cosh}(c)=\\operatorname{cosh}(a)\\operatorname{cosh}(b)\\text{ for hyperbolic right triangles}.",
+    "plain": "Repair the truncated metadata for the Pythagorean theorem track. The Lean support proves the inner-product-space Euclidean theorem and converse, records classical numeric triples, and gives the hyperbolic right-triangle law in a separate zero-sorry development.",
+    "whyMatters": [
+      "The Euclidean theorem is a canonical example of translating geometry into inner-product algebra.",
+      "The converse theorem turns the metric identity back into perpendicularity.",
+      "The hyperbolic variant shows the same theorem family across geometries without axiom or sorry debt in the declared files."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`pythagorean_theorem` proves the squared-norm identity for perpendicular vectors in the Euclidean plane.",
+      "`pythagorean_converse` proves that the squared-norm identity implies perpendicularity.",
+      "`hyperbolic_pythagorean` records the hyperbolic right-triangle law `cosh c = cosh a * cosh b`."
+    ],
+    "open": [
+      "Future work can connect these algebraic statements to richer geometric constructions and diagrammatic triangle APIs."
+    ],
+    "goal": "Present the completed Euclidean and hyperbolic Lean content under a non-truncated, geometry-focused research problem shell."
   },
   "currentState": {
     "phase": "NEW",
@@ -36,7 +46,12 @@
     "nextSteps": []
   },
   "tags": [
-    "seeker-selected"
+    "seeker-selected",
+    "geometry",
+    "euclidean-geometry",
+    "hyperbolic-geometry",
+    "inner-product-spaces",
+    "formalization"
   ],
   "relatedProofs": [
     "pythagorean-theorem",
@@ -50,7 +65,7 @@
   "started": "2026-03-30T17:32:58.852Z",
   "lastUpdate": "2026-03-30T17:32:58.852Z",
   "significance": 7,
-  "tractability": 6,
+  "tractability": 8,
   "leanFiles": [
     {
       "path": "Proofs/PythagoreanTheorem.lean",

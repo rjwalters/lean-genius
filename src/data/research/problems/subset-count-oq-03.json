@@ -1,19 +1,29 @@
 {
   "slug": "subset-count-oq-03",
-  "title": "What Counting Problems Reduce to Subset Counting",
+  "title": "Subset-count reductions and multiset counting extensions",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: What Counting Problems Reduce to Subset Counting.",
-    "whyMatters": []
+    "formal": "\\forall s : \\operatorname{Finset}(\\alpha),\\ |\\mathcal{P}(s)| = 2^{|s|},\\quad \\sum_{k=0}^{n}\\binom{n}{k}=2^n,\\quad |\\{t : \\operatorname{Multiset}(\\alpha) \\mid t \\le s\\}|=\\prod_{a\\in s.toFinset}(s.count(a)+1).",
+    "plain": "Clarify the Lean-supported reductions around ordinary subset counting and distinct submultiset counting. The core track proves the powerset cardinality theorem, the binomial-coefficient sum interpretation, and the product formula for submultisets with repeated elements.",
+    "whyMatters": [
+      "Subset counting is the base case for many finite-combinatorics reductions.",
+      "The multiset product formula records the exact correction needed when elements have multiplicity.",
+      "All declared Lean support is zero-axiom and zero-sorry, making this a clean metadata landing for completed formal content."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`card_powerset_eq_two_pow` proves that a finite set has exactly `2 ^ card` subsets.",
+      "`sum_choose_eq_two_pow` gives the binomial-coefficient count of all subsets by size.",
+      "`card_distinctSubMultisets` proves the distinct-submultiset product formula `prod (count a + 1)`."
+    ],
+    "open": [
+      "The remaining mathematical question is classificatory: which external counting problems reduce canonically to these subset or multiset templates?"
+    ],
+    "goal": "Use the proved powerset and multiset-counting lemmas as a reliable reduction library for future finite-counting entries."
   },
   "currentState": {
     "phase": "NEW",
@@ -40,7 +50,13 @@
     "nextSteps": []
   },
   "tags": [
-    "seeker-selected"
+    "seeker-selected",
+    "combinatorics",
+    "finite-sets",
+    "powersets",
+    "multisets",
+    "binomial-coefficients",
+    "formalization"
   ],
   "relatedProofs": [
     "subset-count",
@@ -57,7 +73,7 @@
   "started": "2026-03-28T17:58:20.662Z",
   "lastUpdate": "2026-03-28T17:58:20.662Z",
   "significance": 5,
-  "tractability": 6,
+  "tractability": 9,
   "leanFiles": [
     {
       "path": "Proofs/SubsetCount.lean",
