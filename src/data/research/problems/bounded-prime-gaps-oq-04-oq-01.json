@@ -1,60 +1,65 @@
 {
   "slug": "bounded-prime-gaps-oq-04-oq-01",
-  "title": "Pólya-Vinogradov inequality formalization",
+  "title": "Polya-Vinogradov inequality formalization",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Pólya-Vinogradov inequality formalization.",
-    "whyMatters": []
+    "formal": "For q >= 2 and non-principal primitive Dirichlet character chi modulo q, the interval character sum is bounded by sqrt(q) * (log q + 1).",
+    "plain": "Formalize the Polya-Vinogradov character-sum inequality as a tractable prerequisite for Bombieri-Vinogradov.",
+    "whyMatters": [
+      "Polya-Vinogradov is the most tractable character-sum prerequisite in the BV stack",
+      "The Aristotle companion now proves the Gauss-sum norm subgoal",
+      "The remaining work is localized to geometric sums, cotangent sums, and final assembly"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "complete_character_sum_zero is proved via Mathlib character orthogonality",
+      "The Aristotle companion proves gaussSumNorm without raw sorry tokens"
+    ],
+    "open": [
+      "The main OQ04OQ01 file still has four proof-hole sorries and three checklist/comment sorry tokens",
+      "geom_partial_sum_bound, cotangent_sum_bound, and final Polya-Vinogradov assembly remain proof tasks"
+    ],
+    "goal": "Continue discharging the Polya-Vinogradov prerequisite stack."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-03-30T08:49:59.544Z",
     "iteration": 1,
-    "focus": "Surveyed. All key statements formalized, proofs pending.",
+    "focus": "Polya-Vinogradov stack refreshed against script metadata and companion proof status.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Port and validate the Aristotle gaussSumNorm proof in the main file, then continue geometric and cotangent bounds.",
     "attemptCounts": {
       "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved complete_character_sum_zero in main + companion via MulChar.sum_eq_zero_of_ne_one. Main: 4 sorries remain (gaussSumNorm, geom_partial_sum_bound, cotangent_sum_bound, polya_vinogradov). Companion: 2 sorries remain.",
+    "progressSummary": "PROGRESS: Polya-Vinogradov stack refreshed against script metadata. BoundedPrimeGapsOQ04OQ01.lean reports 264 lines, 8 theorem/lemma declarations, and 7 raw sorry tokens; the Aristotle companion reports 165 lines, 11 theorem/lemma declarations, and 0 sorry tokens.",
     "builtItems": [
-      "gaussSumNorm: statement of |τ(χ)|=√q (sorry)",
-      "geom_partial_sum_bound: geometric series bound (sorry)",
-      "cotangent_sum_bound: cotangent sum estimate (sorry)",
-      "polya_vinogradov: main inequality statement (sorry)",
-      "complete_character_sum_zero: orthogonality consequence (sorry)",
-      "complete_character_sum_zero: proved via MulChar.sum_eq_zero_of_ne_one + Fin/ZMod identification",
-      "Key technique: obtain ⟨m, rfl⟩ to make ZMod (m+1) = Fin (m+1) definitional"
+      "gaussSumNorm: statement remains pending in the main file; proved in the Aristotle companion",
+      "geom_partial_sum_bound: geometric-series bound remains a main-file proof task",
+      "cotangent_sum_bound: cotangent-sum estimate remains a main-file proof task",
+      "polya_vinogradov: main inequality statement remains pending",
+      "complete_character_sum_zero: proved via MulChar.sum_eq_zero_of_ne_one and Fin/ZMod identification",
+      "Key technique: obtain the positive-modulus witness to make ZMod (m+1) and Fin (m+1) align definitionally"
     ],
     "insights": [
-      "Mathlib has ZMod.gaussSum and DirichletCharacter infrastructure",
-      "Gauss sum bound |τ(χ)|=√q is Phase 1 (~300 lines, HIGH tractability)",
-      "PV proof decomposes into 4 phases: Gauss sum, geometric series, cotangent sum, assembly",
-      "Total estimated ~700 lines (most tractable of 6 BV prerequisites)",
-      "OQ04-OQ02 already axiomatizes gaussSumBound and polyaVinogradov",
-      "MulChar.sum_eq_zero_of_ne_one is the exact Mathlib lemma for ∑ χ(n) = 0",
-      "gaussSum_mul_gaussSum_eq_card gives τ(χ)·τ(χ⁻¹) = q — the key identity for gaussSumNorm",
-      "No pre-built geometric series bound on unit circle in Mathlib — need manual proof via triangle inequality",
-      "Sum conversion range q ↔ ZMod q requires obtain ⟨m, rfl⟩ to make Fin/ZMod definitional"
+      "Mathlib has ZMod.gaussSum and DirichletCharacter infrastructure.",
+      "The PV proof decomposes into four phases: Gauss-sum norm, geometric-series bound, cotangent-sum estimate, and assembly.",
+      "The Aristotle companion proves the Gauss-sum norm target without raw sorry tokens; the main file still needs that proof ported and validated.",
+      "The geometric-sum helpers exist, but the main geom_partial_sum_bound theorem remains open.",
+      "Sum conversion over range q and ZMod q still needs careful positive-modulus transport."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove gaussSumNorm using gaussSum_mul_gaussSum_eq_card + complex norm calculation",
-      "Prove geom_partial_sum_bound via geometric series formula + |1-e^{2πiθ}|=2|sin(πθ)|",
-      "Prove cotangent_sum_bound via |sin(πa/q)|≥2a/q + harmonic sum bound",
+      "Port the Aristotle gaussSumNorm proof into the main file, then validate it there",
+      "Finish geom_partial_sum_bound from the existing helper lemmas",
+      "Prove cotangent_sum_bound via sine lower bounds and harmonic estimates",
       "Assemble polya_vinogradov from the three ingredients"
     ]
   },
@@ -66,6 +71,8 @@
   "relatedProofs": [
     "bounded-prime-gaps",
     "bounded-prime-gaps-oq-01",
+    "bounded-prime-gaps-oq-01-oq-02",
+    "bounded-prime-gaps-oq-01-oq-03",
     "bounded-prime-gaps-oq-03",
     "bounded-prime-gaps-oq-03-oq-01",
     "bounded-prime-gaps-oq-03-oq-01-oq-04",
@@ -79,7 +86,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T08:49:59.543Z",
-  "lastUpdate": "2026-03-30T08:49:59.543Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 8,
   "tractability": 5,
   "leanFiles": [
@@ -104,6 +111,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ02.lean",
+      "lineCount": 220,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ03.lean",
+      "lineCount": 156,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ03.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ03.lean",
@@ -137,6 +166,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ02.lean",
+      "lineCount": 954,
+      "theoremCount": 26,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",

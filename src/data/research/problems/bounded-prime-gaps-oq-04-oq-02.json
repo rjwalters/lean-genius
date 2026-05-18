@@ -6,65 +6,78 @@
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Catalog the six Mathlib-level analytic number theory additions that would support a theorem-level Bombieri-Vinogradov proof path.",
+    "plain": "Identify the smallest practical Mathlib addition set needed before Bombieri-Vinogradov can be attacked directly.",
+    "whyMatters": [
+      "The catalog turns the broad BV prerequisite stack into concrete Mathlib-sized implementation targets",
+      "It separates character-sum work from sieve and zero-density work",
+      "It keeps the BV axiom boundary explicit instead of hiding it behind gallery metadata"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Chebyshev/AP bridge lemmas and the MinimalAddition catalog are formalized",
+      "total_new_code, tractability, and PR-priority rankings are encoded",
+      "bv_from_minimal_additions documents the intended reduction target but still relies on the BV axiom"
+    ],
+    "open": [
+      "The six listed additions remain axioms, not Mathlib theorems",
+      "The script metadata keeps one raw sorry token from prose, not from a proof hole"
+    ],
+    "goal": "Use the catalog to prioritize BV prerequisite implementation."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-03-28T20:58:09-07:00",
     "iteration": 2,
-    "focus": "Catalog complete. Next: implement gaussSumBound and vaughanIdentity.",
+    "focus": "Minimal BV prerequisite catalog refreshed with script-counted metadata.",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "Start with gaussSumBound or vaughanIdentity as the smallest high-value prerequisite PR.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Identified 6 minimal Mathlib additions for BV (~5500 lines total). Created comprehensive Lean catalog with precise types, dependency graph, tractability ranking, and bridging lemmas.",
+    "progressSummary": "COMPLETED: Identified six minimal Mathlib additions for BV and refreshed script metadata. BoundedPrimeGapsOQ04OQ02.lean reports 600 lines, 10 theorem/lemma declarations, 6 axioms, 8 defs, and one raw prose sorry token.",
     "builtItems": [
-      "Created BoundedPrimeGapsOQ04OQ02.lean with 6 minimal additions catalog",
-      "Proved bridging lemmas: chebyshevPsi_mono, chebyshevPsiAP_le_chebyshevPsi, expectedMainTerm_pos, expectedMainTerm_q_one, bv_error_nonneg_terms",
-      "Defined dirichletGaussSum connecting DirichletCharacter API to exponential sums",
-      "Stated all 6 additions as precise Lean 4 axioms with type signatures",
-      "Created MinimalAddition inductive type with tractability/priority rankings",
+      "Created BoundedPrimeGapsOQ04OQ02.lean with a six-addition BV prerequisite catalog",
+      "Proved bridge lemmas: chebyshevPsi_mono, chebyshevPsiAP_le_chebyshevPsi, expectedMainTerm_pos, expectedMainTerm_q_one, bv_error_nonneg_terms, vonMangoldt_nonneg'",
+      "Defined dirichletGaussSum connecting the DirichletCharacter API to exponential sums",
+      "Stated all six additions as Lean 4 axioms with type signatures",
+      "Created MinimalAddition with tractability and priority rankings",
       "Documented dependency graph and recommended PR ordering"
     ],
     "insights": [
-      "BV requires exactly 6 minimal Mathlib additions: gaussSumBound, polyaVinogradov, largeSieve, siegelWalfisz, vaughanIdentity, zeroDensityEstimate",
-      "Total new code: ~5500 lines (refined from OQ04 estimate of 12000 — OQ04 double-counted scaffolding)",
-      "gaussSumBound (300 lines, tractability 5/5) is the most impactful first PR — unlocks polyaVinogradov and all character sum bounds",
-      "vaughanIdentity (400 lines, tractability 4/5) is independent and can be developed as a parallel PR",
-      "siegelWalfisz (2000 lines, tractability 1/5) is the hardest single addition — requires contour integration and Siegels ineffective theorem",
-      "Mathlib v4.26.0 has DirichletCharacter, LFunction, L(1,χ)≠0, vonMangoldt, dirichlet_modEq — roughly 70% of Layer 1 infrastructure",
-      "Two parallel development tracks: character sums (Gauss→PV→SW) and sieve methods (LS+Vaughan→zero density)",
-      "Proving all 6 additions would reduce BoundedPrimeGaps.lean from 3 axioms to 2 (bombieriVinogradov becomes theorem)",
-      "Each addition unlocks 4-5 further results beyond BV (e.g., gaussSumBound enables Burgess bounds, Jacobi sums)",
-      "LargeSieve is the first sieve result that would exist in Mathlib — foundational for all sieve theory",
-      "All 6 axioms are well-known theorems (gaussSumBound, polyaVinogradov, largeSieve, siegelWalfisz, vaughanIdentity, zeroDensityEstimate) missing from Mathlib. Each needs 300-2000 lines to prove. None are used by any theorem in the file — they are purely a catalog.",
-      "sorryCount was incorrectly 1 in metadata — actual sorry count is 0 (only appears in a comment)"
+      "BV is organized around six cataloged additions: gaussSumBound, polyaVinogradov, largeSieve, siegelWalfisz, vaughanIdentity, and zeroDensityEstimate.",
+      "The refined estimate is about 5500 lines of new code; earlier 12000-line estimates included more scaffolding.",
+      "gaussSumBound is the most tractable first target and unlocks Polya-Vinogradov and further character-sum bounds.",
+      "vaughanIdentity is independent enough to develop in parallel with gaussSumBound.",
+      "siegelWalfisz remains the hardest addition because it needs contour integration and Siegel-style ineffective estimates.",
+      "If the six additions were formalized and connected by the missing analytic proof, the BV axiom could be targeted for removal; the current file catalogs the additions and sketches that reduction.",
+      "The file documents downstream examples for gaussSumBound, largeSieve, and vaughanIdentity; extend impact lists before making the claim for all six additions.",
+      "Script sorryCount is 1 because the word appears in prose; there is no proof-hole sorry in the declarations."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Build gaussSumBound from Mathlib ZMod.gaussSum — highest tractability, most impactful",
-      "Build vaughanIdentity from Mathlib vonMangoldt + Möbius — parallel with gaussSumBound",
-      "Verify file builds via Docker (Docker was not available this session)",
-      "Consider submitting gaussSumBound as standalone Mathlib PR"
+      "Build gaussSumBound from Mathlib ZMod.gaussSum as the highest-tractability first step",
+      "Build vaughanIdentity from Mathlib vonMangoldt plus Mobius infrastructure in parallel",
+      "Validate the catalog file after the current Mathlib API repairs are complete",
+      "Consider submitting gaussSumBound as a standalone Mathlib PR"
     ],
     "markdown": "# Knowledge Base: bounded-prime-gaps-oq-04-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "number-theory",
+    "analytic-number-theory",
+    "mathlib-prerequisites"
+  ],
   "relatedProofs": [
     "bounded-prime-gaps",
     "bounded-prime-gaps-oq-01",
+    "bounded-prime-gaps-oq-01-oq-02",
+    "bounded-prime-gaps-oq-01-oq-03",
     "bounded-prime-gaps-oq-03",
     "bounded-prime-gaps-oq-03-oq-01",
     "bounded-prime-gaps-oq-03-oq-01-oq-04",
@@ -78,7 +91,7 @@
     "mathlib": []
   },
   "started": "2026-03-29T04:28:18.926Z",
-  "lastUpdate": "2026-03-29T04:28:18.986Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/BoundedPrimeGaps.lean",
@@ -101,6 +114,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ02.lean",
+      "lineCount": 220,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ03.lean",
+      "lineCount": 156,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ03.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ03.lean",
@@ -134,6 +169,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ02.lean",
+      "lineCount": 954,
+      "theoremCount": 26,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",

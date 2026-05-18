@@ -6,32 +6,47 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "The Polymath 8b bound of 246 on prime gaps comes from a specific admissible 50-tuple {0,4,...,246}. OQ-03 asks whether 246 is optimal — is there any admissible 50-tuple with diameter less than 246? Engelsma (2013) proved by exhaustive computer search that NO admissible 50-tuple with fewer than 50 elements exists with diameter below 246. This formalizes that result: the Engelsma tuple is verified admissible, and 246 is proved to be the exact minimum diameter for admissible 50-tuples.",
+    "formal": "admissible_50_tuple_min_diam proves the Engelsma/Polymath 50-tuple diameter 246 is optimal under the recorded lower-bound axiom.",
+    "plain": "Verify the Polymath 246 bound as the optimal diameter for admissible 50-tuples in the Maynard-Tao 50-tuple framework.",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "engelsma50Tuple_card, engelsma50Tuple_admissible, and engelsma50Tuple_diam verify the witness tuple",
+      "admissible_50_tuple_min_diam packages the 246 optimality statement",
+      "polymath_246_is_tight combines achievability with the Engelsma lower bound"
+    ],
+    "open": [
+      "engelsma_lower_bound remains the computer-search lower-bound axiom"
+    ],
+    "goal": "COMPLETED"
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-02-25T14:11:52.127Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Engelsma/Polymath 246 metadata refreshed across the full 15-file bounded-prime-gaps family.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None for metadata; future proof work would discharge the Engelsma search axiom.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Constructive witness checks and the 246 optimality record are now linked to the full bounded-prime-gaps Lean metadata set.",
+    "builtItems": [
+      "BoundedPrimeGapsOQ03.lean: Engelsma 50-tuple witness and 246 optimality",
+      "BoundedPrimeGapsOQ03OQ01.lean: minimum admissible diameter framework",
+      "BoundedPrimeGapsOQ03OQ02.lean: finitary Engelsma search scaffolding",
+      "BoundedPrimeGapsOQ03OQ03.lean: EH comparison table"
+    ],
+    "insights": [
+      "The 246 value is a tuple-diameter barrier inside the 50-tuple Maynard-Tao setup",
+      "Improving the unconditional gap bound requires either a different tuple size, stronger distribution input, or a different sieve method",
+      "The broad matcher now includes the finitary search file BoundedPrimeGapsOQ03OQ02.lean"
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -45,6 +60,8 @@
   "relatedProofs": [
     "bounded-prime-gaps",
     "bounded-prime-gaps-oq-01",
+    "bounded-prime-gaps-oq-01-oq-02",
+    "bounded-prime-gaps-oq-01-oq-03",
     "bounded-prime-gaps-oq-03",
     "bounded-prime-gaps-oq-03-oq-01",
     "bounded-prime-gaps-oq-03-oq-01-oq-04",
@@ -53,12 +70,15 @@
     "bounded-prime-gaps-oq-04-oq-02"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Engelsma (2013), k-tuple computations for bounded gaps",
+      "Polymath 8b (2014), Variants of the Selberg sieve"
+    ],
     "urls": [],
     "mathlib": []
   },
   "started": "2026-02-25T19:36:59.225Z",
-  "lastUpdate": "2026-02-26T21:45:55.132Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "completed": "2026-02-26T21:45:55.132Z",
   "significance": 8,
   "tractability": 6,
@@ -84,6 +104,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ02.lean",
+      "lineCount": 220,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ03.lean",
+      "lineCount": 156,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ03.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ03.lean",
@@ -117,6 +159,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ02.lean",
+      "lineCount": 954,
+      "theoremCount": 26,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",

@@ -7,35 +7,34 @@
   "path": "full",
   "problemStatement": {
     "formal": "\\exists H, \\forall N, \\exists p > N, p \\text{ prime} \\wedge (p' - p \\leq H)",
-    "plain": "There exist infinitely many pairs of consecutive primes differing by at most H, for some finite H. Best known: H ≤ 246 (Polymath), H ≤ 12 assuming Elliott-Halberstam.",
+    "plain": "There exist infinitely many pairs of consecutive primes differing by at most H, for some finite H. Best known in this formal family: H <= 246 unconditionally, and H <= 12 assuming Elliott-Halberstam.",
     "whyMatters": []
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-20T14:50:00Z",
     "iteration": 2,
-    "focus": "Axiom elimination: 5 files, 0 sorries, 4 axioms (down from 6). 2 axioms converted to derived theorems."
+    "focus": "Metadata refreshed for 15 matched Lean files across the bounded-prime-gaps family, including OQ01OQ02, OQ01OQ03, and OQ03OQ02."
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 5 files, 0 sorries, 4 axioms (reduced from 6). polymath_bounded_gaps_246 and bounded_gaps_conditional_EH now derived from sieve axioms.",
+    "progressSummary": "COMPLETED: Bounded-prime-gaps proof family now records 15 matched Lean files. The core theorem remains completed while newer companion files document EH, exact tuple tables, finitary Engelsma search, BV prerequisites, and TPC links.",
     "builtItems": [
-      "BoundedPrimeGaps.lean: ~1900 lines, 3 axioms (maynard_tao_m_tuples, maynard_tao_sieve, maynard_tao_sieve_eh)",
-      "BoundedPrimeGapsOQ01.lean: 438 lines, 0 axioms — verified extensions",
-      "BoundedPrimeGapsOQ03.lean: 279 lines, 1 axiom (engelsma_lower_bound) — Engelsma optimality",
-      "BoundedPrimeGapsSieve.lean: ~380 lines, 0 axioms (down from 2) — sieve reduction theorems",
-      "BoundedPrimeGapsTPC.lean: 281 lines, 0 axioms — twin prime conjecture connections",
-      "Part XVIII: Brun theorem and twin prime constant — Brun's constant, Hardy-Littlewood C₂ Euler product factors, convergence proof, full gap bound hierarchy"
+      "BoundedPrimeGaps.lean: 2018 script-counted lines, 125 theorem/lemma declarations, 3 axioms, 16 defs",
+      "BoundedPrimeGapsOQ01.lean plus OQ01OQ02/OQ01OQ03: verified gap-bound extensions, EH comparison, and exact small tuple table",
+      "BoundedPrimeGapsOQ03.lean plus OQ03 descendants: Engelsma 50-tuple optimality and finitary search scaffolding",
+      "BoundedPrimeGapsOQ04.lean plus OQ04 descendants: BV formalization map, Polya-Vinogradov prerequisite, and minimal Mathlib addition catalog",
+      "BoundedPrimeGapsSieve.lean and BoundedPrimeGapsTPC.lean: sieve reductions and twin-prime-conjecture connections"
     ],
     "insights": [
-      "Zhang's bound H ≤ 70,000,000 (2013) → Maynard H ≤ 600 → Polymath H ≤ 246",
-      "Assuming Elliott-Halberstam conjecture: H ≤ 12 (tantalizingly close to twin primes H = 2)",
+      "Zhang's bound H <= 70000000, Maynard's H <= 600, and Polymath's H <= 246 are represented in the hierarchy",
+      "Assuming Elliott-Halberstam, the formal family records H <= 12, close to the twin-prime target H = 2",
       "Admissible k-tuples are the combinatorial core: p divides at most p-1 residues mod p",
       "6 axioms encode deep sieve theory results (Bombieri-Vinogradov, Selberg sieve)",
       "polymath_bounded_gaps_246 is a consequence of maynard_tao_sieve + polymath50Tuple (proved)",
       "bounded_gaps_conditional_EH is a consequence of maynard_tao_sieve_eh + {0,2,6,8,12} quintuple (proved)",
       "The 4 remaining axioms (3 sieve + 1 Engelsma) are genuinely deep results requiring infrastructure not in Mathlib",
-      "Twin prime Euler product factor p(p-2)/(p-1)² < 1 proved for all p ≥ 3 (product converges)",
-      "Full gap hierarchy: TPC(2) ≤ GEH(6) ≤ EH(12) ≤ Polymath(246) ≤ Maynard(4680) ≤ Zhang(70M)"
+      "Twin-prime Euler product factor p(p-2)/(p-1)^2 < 1 is proved for p >= 3",
+      "Full gap hierarchy: TPC(2), GEH(6), EH(12), Polymath(246), Maynard(4680), Zhang(70M)"
     ],
     "nextSteps": []
   },
@@ -46,7 +45,7 @@
     "sieve-theory"
   ],
   "started": "2026-03-20T10:28:00Z",
-  "lastUpdate": "2026-03-20T14:50:00Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 9,
   "tractability": 5,
   "leanFiles": [
@@ -71,6 +70,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ02.lean",
+      "lineCount": 220,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ03.lean",
+      "lineCount": 156,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ03.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ03.lean",
@@ -104,6 +125,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ02.lean",
+      "lineCount": 954,
+      "theoremCount": 26,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",
@@ -186,6 +218,8 @@
   "relatedProofs": [
     "bounded-prime-gaps",
     "bounded-prime-gaps-oq-01",
+    "bounded-prime-gaps-oq-01-oq-02",
+    "bounded-prime-gaps-oq-01-oq-03",
     "bounded-prime-gaps-oq-03",
     "bounded-prime-gaps-oq-03-oq-01",
     "bounded-prime-gaps-oq-03-oq-01-oq-04",

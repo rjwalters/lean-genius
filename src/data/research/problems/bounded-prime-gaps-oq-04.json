@@ -1,66 +1,61 @@
 {
   "slug": "bounded-prime-gaps-oq-04",
   "title": "Can the Bombieri-Vinogradov theorem be formalized in Lean/Mathlib",
-  "phase": "NEW",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE: Can the Bombieri-Vinogradov theorem be formalized in Lean/Mathlib? This is the key analytic ingredient missing from the proof chain — Zhang's breakthrough required a weakened variant (BV with smooth m.",
-    "whyMatters": []
+    "formal": "bombieriVinogradov is recorded as the average distribution axiom that gives level 1/2 and feeds the Maynard-Tao sieve in the bounded-prime-gaps formalization.",
+    "plain": "Survey the Lean/Mathlib path to Bombieri-Vinogradov, the key analytic input behind the bounded-prime-gaps proof chain.",
+    "whyMatters": [
+      "BV is the analytic distribution theorem behind the unconditional Maynard-Tao sieve path",
+      "The record identifies prerequisite layers before this can become theorem-level Mathlib",
+      "Companion files split Polya-Vinogradov and minimal Mathlib additions into smaller work"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "chebyshevPsi, chebyshevPsiAP, expectedMainTerm, and level-of-distribution scaffolding are represented",
+      "bv_gives_half_level records BV as level 1/2 distribution",
+      "OQ04OQ02 catalogs the six minimal Mathlib additions needed for BV"
+    ],
+    "open": [
+      "bombieriVinogradov remains an axiom",
+      "Mathlib API repair and analytic prerequisite proofs remain future work"
+    ],
+    "goal": "Map the formal path from Mathlib prerequisites to BV and bounded gaps."
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "OBSERVE",
     "since": "2026-03-26T20:00:24.432Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "BV formalization map refreshed with the 15-file bounded-prime-gaps metadata set.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Repair Mathlib API drift, then continue prerequisite proof work.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "BLOCKED: API drift from 2026-04-26 Mathlib upgrade. File unbuildable. Pre-existing 1 axiom (BV) intrinsic to formalizability question. Drafted structural lemmas (mono, EH→BV, large-sieve fix) but cannot verify until mechanic repair.",
+    "progressSummary": "BLOCKED/OBSERVE: API drift from the 2026-04-26 Mathlib upgrade keeps the BV file unverified. The BV axiom is intrinsic to this formalizability question; OQ04OQ02 refines the prerequisite plan to six core Mathlib additions totaling about 5500 lines.",
     "builtItems": [
-      "BoundedPrimeGapsOQ04.lean: chebyshevPsi, chebyshevPsiAP via Mathlib vonMangoldt",
-      "BoundedPrimeGapsOQ04.lean: bombieriVinogradov formal axiom statement",
-      "BoundedPrimeGapsOQ04.lean: hasLevelOfDistribution, bv_gives_half_level",
-      "BoundedPrimeGapsOQ04.lean: ElliottHalberstamConjecture formal statement",
-      "BoundedPrimeGapsOQ04.lean: BVPrerequisiteLayer with effort estimates (12000 lines)",
-      "Gallery entry with meta.json and index.ts",
-      "Eliminated maynard_under_eh axiom (proved from minAdmissibleDiameter_3)",
-      "Replaced trivial elliott_halberstam_improvement with eh_improvement_ratio and eh_bound_lt_unconditional",
-      "Replaced opaque minAdmissibleDiameter with noncomputable def via sInf",
-      "PROVED D(2)=2: consecutive non-admissibility + {0,2} witness",
-      "PROVED D(3)=6: parity argument (mixed→mod2, same→AP diff 2→mod3) + {0,2,6} witness",
-      "New lemmas: not_admissible_consecutive, not_admissible_ap_diff2, finset_card_le_diameter_succ",
-      "exists_admissible_k_tuple: proved admissible k-tuples exist for all k≥1 (factorial construction)",
-      "prime_dvd_factorial: helper lemma p|k! when p prime and p≤k",
-      "Closed sorry in diameter_lower_bound (2→1 sorries in OQ03OQ01)"
+      "BoundedPrimeGapsOQ04.lean: chebyshevPsi and chebyshevPsiAP scaffolding via Mathlib vonMangoldt",
+      "BoundedPrimeGapsOQ04.lean: bombieriVinogradov axiom statement",
+      "BoundedPrimeGapsOQ04.lean: hasLevelOfDistribution and bv_gives_half_level",
+      "BoundedPrimeGapsOQ04.lean: Elliott-Halberstam statement and improvement-ratio lemmas",
+      "BoundedPrimeGapsOQ04.lean: BVPrerequisiteLayer with effort estimates",
+      "BoundedPrimeGapsOQ04OQ01.lean: Polya-Vinogradov prerequisite split into Gauss-sum, geometric-sum, cotangent-sum, and assembly tasks",
+      "BoundedPrimeGapsOQ04OQ02.lean: six-addition Mathlib prerequisite catalog for BV"
     ],
     "insights": [
-      "BV gives RH-quality results without RH — primes equidistribute on average over moduli q <= sqrt(x)",
-      "4 prerequisite layers: character sums (2k lines) -> analytic core (5k) -> sieve methods (3k) -> assembly (2k)",
-      "Polya-Vinogradov inequality is the single most impactful missing result for number theory in Mathlib",
-      "Formalizing BV would replace 1 of 3 axioms in BoundedPrimeGaps.lean (maynard_tao_sieve)",
-      "Mathlib already has Dirichlet characters, L-functions, primes in AP, PNT — roughly 70% coverage",
-      "maynard_under_eh axiom is redundant: D(3)=6≤12 witnesses it directly from minAdmissibleDiameter_3",
-      "Remaining 3 axioms are opaque function values that cannot be eliminated without making minAdmissibleDiameter computable",
-      "2 sorries (diameter_lower_bound, diameter_upper_bound_exists) also blocked by opaque function",
-      "Key insight for D(3)≥6: 3 same-parity elements in interval ≤5 must form {a,a+2,a+4}, which is non-admissible mod 3",
-      "diameter_lower_bound mostly proved — only missing piece is existence of admissible k-tuples for general k",
-      "Admissible k-tuples exist for all k≥1 via factorial construction: {i*k! | i<k}. For p≤k: p|k! collapses all residues. For p>k: at most k<p residues.",
-      "diameter_lower_bound sorry closed: proved admissible k-tuples exist for general k, establishing D(k)≥k-1 without sorry",
-      "BoundedPrimeGapsOQ04.lean broken by Mathlib API drift (2026-04-26 upgrade): ∑ in→∑ ∈ migration, noncomputable abbrev Λ rejected, Nat.totient_pos arity changed from function to iff. File unbuildable via Docker until mechanic repair."
+      "BV gives RH-quality distribution on average over moduli q up to about sqrt(x), without assuming RH.",
+      "The prerequisite layers remain character sums, analytic core estimates, sieve methods, and final assembly.",
+      "Polya-Vinogradov is the most tractable character-sum prerequisite currently split out from the BV stack.",
+      "The OQ04 file is currently a map plus axiom boundary, not a completed theorem-level formalization.",
+      "The 2026-04-26 Mathlib API drift is a mechanic blocker before new proof progress can be verified in this file."
     ],
     "mathlibGaps": [
       "Polya-Vinogradov inequality (character sum bounds)",
@@ -79,12 +74,16 @@
     ]
   },
   "tags": [
+    "number-theory",
+    "analytic-number-theory",
     "seeker-selected",
     "extension"
   ],
   "relatedProofs": [
     "bounded-prime-gaps",
     "bounded-prime-gaps-oq-01",
+    "bounded-prime-gaps-oq-01-oq-02",
+    "bounded-prime-gaps-oq-01-oq-03",
     "bounded-prime-gaps-oq-03",
     "bounded-prime-gaps-oq-03-oq-01",
     "bounded-prime-gaps-oq-03-oq-01-oq-04",
@@ -93,12 +92,16 @@
     "bounded-prime-gaps-oq-04-oq-02"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Bombieri and Vinogradov, average distribution of primes in arithmetic progressions",
+      "Zhang (2013), Bounded gaps between primes",
+      "Maynard (2015), Small gaps between primes"
+    ],
     "urls": [],
     "mathlib": []
   },
   "started": "2026-03-26T20:00:24.432Z",
-  "lastUpdate": "2026-03-27T05:30:00.000Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 5,
   "tractability": 6,
   "leanFiles": [
@@ -123,6 +126,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ02.lean",
+      "lineCount": 220,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ03.lean",
+      "lineCount": 156,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ03.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ03.lean",
@@ -156,6 +181,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ02.lean",
+      "lineCount": 954,
+      "theoremCount": 26,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",
