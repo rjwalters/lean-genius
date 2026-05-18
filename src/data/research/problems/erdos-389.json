@@ -1,6 +1,6 @@
 {
   "slug": "erdos-389",
-  "title": "Erdős #389",
+  "title": "Erdos #389",
   "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
@@ -8,12 +8,25 @@
   "problemStatement": {
     "formal": "Is it true that for every $n\\geq 1$ there is a $k$ such that\\[n(n+1)\\cdots(n+k-1)\\mid (n+k)\\cdots (n+2k-1)?\\]\n\n\n\nAsked by Erd\\H{o}s and Straus.\nFor example when $n=2$ we have $k=5$:\\[2\\times 3 \\times 4 \\times 5\\times 6 \\mid 7 \\times 8 \\times 9\\times 10\\times 11.\\]and when $n=3$ we have $k=4$:\\[3\\times 4\\times 5\\times 6 \\mid 7\\times 8\\times 9\\times 10.\\]Bhavik Mehta has computed the minimal such $k$ for $1\\leq n\\leq 18$ (now available as A375071 on the OEIS).",
     "plain": "Is it true that for every $n\\geq 1$ there is a $k$ such that\\[n(n+1)\\cdots(n+k-1)\\mid (n+k)\\cdots (n+2k-1)?\\]",
-    "whyMatters": []
+    "whyMatters": [
+      "The problem asks for divisibility between adjacent blocks of consecutive integers, a concrete testing ground for factorial and binomial coefficient identities.",
+      "Small verified cases and Mehta's computed n = 4 value provide strong landmarks without resolving the universal conjecture.",
+      "The Lean file separates the open existence statement from computable finite witnesses."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The examples n = 2, k = 5 and n = 3, k = 4 satisfy the required divisibility relation by native computation.",
+      "For n = 4, k = 207 is verified as a witness, and no smaller k works (Lean: mehta_n4_minimal and mehta_n4_minimality).",
+      "The consecutive-product identity consecutiveProd n k = k! * choose (n + k - 1) k is formalized.",
+      "The open conjecture is represented as a definition rather than an axiom, keeping the file free of false proof obligations."
+    ],
+    "open": [
+      "The Erdos-Straus question remains open for arbitrary n: whether some k always satisfies the divisibility.",
+      "General bounds or constructive choices of k as a function of n are not proved.",
+      "The OEIS/Mehta data for 1 <= n <= 18 is not fully formalized beyond the recorded small cases."
+    ],
+    "goal": "Record the verified small cases, Mehta n = 4 computation, and binomial-product infrastructure while preserving the general conjecture as open."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -54,10 +67,13 @@
     ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Erdős #389 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every $n\\geq 1$ there is a $k$ such that\\[n(n+1)\\cdots(n+k-1)\\mid (n+k)\\cdots (n+2k-1)?\\]\n\n\n\nAsked by Erd\\H{o}s and Straus.\nFor example when $n=2$ we have $k=5$:\\[2\\times 3 \\times 4 \\times 5\\times 6 \\mid 7 \\times 8 \\times 9\\times 10\\times 11.\\]and when $n=3$ we have $k=4$:\\[3\\times 4\\times 5\\times 6 \\mid 7\\times 8\\times 9\\times 10.\\]Bhavik Mehta has computed the minimal such $k$ for $1\\leq n\\leq 18$ (now available as A375071 on the OEIS).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #388\n- Problem #390\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
+    "markdown": "# Erdos #389 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every $n\\geq 1$ there is a $k$ such that\\[n(n+1)\\cdots(n+k-1)\\mid (n+k)\\cdots (n+2k-1)?\\]\n\n\n\nAsked by Erd\\H{o}s and Straus.\nFor example when $n=2$ we have $k=5$:\\[2\\times 3 \\times 4 \\times 5\\times 6 \\mid 7 \\times 8 \\times 9\\times 10\\times 11.\\]and when $n=3$ we have $k=4$:\\[3\\times 4\\times 5\\times 6 \\mid 7\\times 8\\times 9\\times 10.\\]Bhavik Mehta has computed the minimal such $k$ for $1\\leq n\\leq 18$ (now available as A375071 on the OEIS).\n\n\nBack to the problem\n\n## Status\n\n**Erdos Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #388\n- Problem #390\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "divisibility",
+    "computational-verification"
   ],
   "relatedProofs": [
     "erdos-3",

@@ -8,12 +8,25 @@
   "problemStatement": {
     "formal": "How many solutions are there to\\[\\sigma(a)+\\sigma(b)=\\sigma(a+b)\\]with $a+b\\leq x$, where $\\sigma$ is the sum of divisors function? Is it $\\sim cx$ for some constant $c>0$?\n\n\n\nA question of Erd\\H{o}s reported in problem B15 of Guy's collection \\cite{Gu04}.",
     "plain": "How many solutions are there to\\[\\sigma(a)+\\sigma(b)=\\sigma(a+b)\\]with $a+b\\leq x$, where $\\sigma$ is the sum of divisors function? Is it $\\sim cx$ for some constant $c>0$?",
-    "whyMatters": []
+    "whyMatters": [
+      "Frames an additive divisor-sum equation as a counting problem rather than just an isolated Diophantine identity.",
+      "The coprime-to-6 family gives a large explicit supply of solutions while leaving the predicted asymptotic constant open.",
+      "Connects sigma-function multiplicativity, prime-pattern obstructions, and experimental sequence data."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "For every a coprime to 6, the pair (a, 2a) satisfies sigma(a) + sigma(2a) = sigma(3a) (Lean: sigma_add_eq_coprime6).",
+      "There are infinitely many solution pairs from the prime subfamily p, 2p with p >= 5 prime.",
+      "If p, q, and p + q are all prime, then (p, q) is not a solution to the sigma equation (Lean: not_solution_of_sum_prime).",
+      "The counting function S(x) for solutions with a + b <= x is monotone, and prime solutions below x/3 are counted."
+    ],
+    "open": [
+      "The main Erdos question remains open: whether the number of solutions with a + b <= x is asymptotic to c x for some c > 0.",
+      "The exact value and natural Euler-product interpretation of the constant c are not formalized.",
+      "Upper bounds matching the explicit linear lower-bound families remain open in the current development."
+    ],
+    "goal": "Record the verified sigma-function solution families and obstruction lemmas while keeping the asymptotic counting conjecture explicitly open."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -47,7 +60,10 @@
     "markdown": "# Erdős #1061 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nHow many solutions are there to\\[\\sigma(a)+\\sigma(b)=\\sigma(a+b)\\]with $a+b\\leq x$, where $\\sigma$ is the sum of divisors function? Is it $\\sim cx$ for some constant $c>0$?\n\n\n\nA question of Erd\\H{o}s reported in problem B15 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1060\n- Problem #1062\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "divisor-sums",
+    "asymptotic-counting"
   ],
   "relatedProofs": [
     "erdos-1",
