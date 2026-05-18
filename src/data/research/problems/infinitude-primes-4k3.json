@@ -6,14 +6,24 @@
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "SKIPPED: Already in DirichletsTheorem.",
-    "whyMatters": []
+    "formal": "Prove that for every natural number n there exists a prime p > n with p congruent to 3 modulo 4; derive the infinitude of the set of such primes and the nonexistence of a largest one.",
+    "plain": "Give the classical Euclid-style proof that there are infinitely many primes congruent to 3 mod 4, with a bounded witness built from 4*(n+1)! - 1.",
+    "whyMatters": [
+      "The theorem is the elementary model case for primes in arithmetic progressions before Dirichlet theorem machinery.",
+      "The factorial witness gives an explicit construction of a larger prime in the 3 mod 4 class.",
+      "The file also connects the 1 mod 4 and 3 mod 4 residue classes as complementary infinite prime classes."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Prime-factor and residue lemmas show that a number congruent to 3 mod 4 has a prime factor congruent to 3 mod 4 (Lean: has_prime_factor_3_mod_4).",
+      "For every n, there is a prime p > n with p % 4 = 3 (Lean: infinitely_many_primes_3_mod_4).",
+      "A bounded witness version places p at most 4*(n+1)! - 1 (Lean: infinitely_many_primes_3_mod_4_bounded).",
+      "The set of primes congruent to 3 mod 4 is infinite and has no largest element (Lean: primes_3_mod_4_infinite, no_largest_prime_3_mod_4).",
+      "A companion file states analogous 1 mod 4 infinitude and the joint infinitude of both odd prime residue classes (Lean: infinitely_many_primes_1_mod_4, both_classes_infinite)."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Expose the verified elementary infinitude proof for primes congruent to 3 modulo 4."
   },
   "currentState": {
     "phase": "NEW",
@@ -39,6 +49,9 @@
   "tags": [
     "number-theory",
     "primes",
+    "modular-arithmetic",
+    "arithmetic-progressions",
+    "euclid-style-proof",
     "classical"
   ],
   "relatedProofs": [

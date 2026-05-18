@@ -6,14 +6,24 @@
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalization extending an existing formalization in combinatorics: General n-set Inclusion-Exclusion Formula with Formal Induction.",
-    "whyMatters": []
+    "formal": "Formalize finite-set inclusion-exclusion, including two- and three-set sieve formulas, a general finite-family inclusion-exclusion theorem, and applications to totients, surjection counts, derangements, Stirling numbers, Bell numbers, and Mobius inversion on subset lattices.",
+    "plain": "Turn inclusion-exclusion into a reusable Lean toolkit: prove the base formulas, generalize them to finite families, and verify several standard counting applications.",
+    "whyMatters": [
+      "Inclusion-exclusion is one of the main engines of finite combinatorial counting.",
+      "The formalization connects abstract finite-set identities with concrete arithmetic and enumerative examples.",
+      "The subset-lattice Mobius inversion view shows the same principle in a more structural form."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Two- and three-set inclusion-exclusion formulas are proved for finite sets (Lean: two_set_inclusion_exclusion, three_set_inclusion_exclusion).",
+      "A general finite-family inclusion-exclusion theorem and derived two-, three-, and four-set forms are included (Lean: general_inclusion_exclusion, two_set_from_general, three_set_from_general, four_set_inclusion_exclusion).",
+      "The OQ01 file proves sieve formulas and totient identities, including multiplicativity and prime-power formulas (Lean: sieve_two, sieve_three, totient_mul_coprime, totient_prime_pow').",
+      "Surjection counts, derangement values and recurrences, alternating binomial sums, and divisor-totient sums are verified (Lean: surjectionCount, derangements, altBinomSum, divisor_totient_sum).",
+      "The subset-lattice Mobius inversion companion proves zeta/Mobius transform facts and an inclusion-exclusion summary (Lean: mobius_inverts_zeta, ie_as_mobius_inversion, mobius_subset_lattice, ie_mobius_summary)."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Document the verified inclusion-exclusion toolkit and its finite-counting applications."
   },
   "currentState": {
     "phase": "NEW",
@@ -36,8 +46,14 @@
     "nextSteps": []
   },
   "tags": [
-    "seeker-selected",
     "combinatorics",
+    "inclusion-exclusion",
+    "finite-sets",
+    "sieve-method",
+    "mobius-inversion",
+    "derangements",
+    "surjections",
+    "seeker-selected",
     "extension"
   ],
   "relatedProofs": [
