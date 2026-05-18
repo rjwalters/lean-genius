@@ -6,22 +6,30 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE: What is the minimum chromatic number of a graph with girth g that fails robust orientability?.",
-    "whyMatters": []
+    "formal": "Study the minimum chromatic number of girth-g graphs failing robust orientability, separating rank-based robust orientation from the classical path-based notion.",
+    "plain": "For graphs of girth g that fail robust orientability in the classical sense, what chromatic number is forced, and where is the bound sharp?",
+    "whyMatters": [
+      "This is the main Erdos1006 chromatic-number scaffold and explains the FFLLW lower-bound threshold."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Rank-based robust orientation follows from colorability, so every finite graph has one in the rank-based setup.",
+      "K3 is formalized as a girth-3 classical witness with chromatic number 3 and no classically robust orientation.",
+      "Several rank-based lower-bound statements are proved, some vacuously because every finite graph is rank-based robust."
+    ],
+    "open": [
+      "The general classical FFLLW lower bound remains represented by `ffllw_classical`."
+    ],
+    "goal": "Keep the chromatic-number scaffold clear about rank-based versus classical robust orientation."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-02-24T06:31:43.089Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Graduated chromatic-number scaffold refreshed: current metadata now includes the seven-file Erdos1006 family and explicitly separates rank-based results from the classical FFLLW axiom.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No metadata action; future Lean work should either reduce `ffllw_classical` or move classical robustness facts into narrower child slugs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +37,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Metadata sync 2026-05-18: Erdos1006OQ02.lean script-counts as 470 lines, 17 theorems, 1 axiom, 8 definitions, and 1 raw sorry hit from comment text. The file proves rank-based robustness results and K3 classical witness facts while keeping the general classical FFLLW lower bound as an axiom.",
+    "builtItems": [
+      "coloringOrientation and rank-based robust orientation lemmas.",
+      "minimum_chromatic_* lower-bound scaffolding.",
+      "k3_no_classical_robust and girth3_classical_witness."
+    ],
+    "insights": [
+      "Rank-based robust acyclicity collapses to a very broad existence result for finite graphs.",
+      "Classical path-based robustness is the setting where the FFLLW girth/chromatic threshold remains meaningful."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Reduce or localize the `ffllw_classical` axiom if future classical-robustness work resumes."
+    ]
   },
   "tags": [
     "graph-theory",
@@ -59,7 +76,7 @@
     "mathlib": []
   },
   "started": "2026-02-24T08:35:25.047Z",
-  "lastUpdate": "2026-02-25T19:36:59.227Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "completed": "2026-02-25T19:36:59.227Z",
   "significance": 6,
   "tractability": 5,
@@ -111,13 +128,24 @@
     {
       "path": "Proofs/Erdos1006OQ04.lean",
       "filename": "Erdos1006OQ04.lean",
-      "lineCount": 193,
+      "lineCount": 194,
       "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ04Decidability.lean",
+      "filename": "Erdos1006OQ04Decidability.lean",
+      "lineCount": 116,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04Decidability.lean"
     },
     {
       "path": "Proofs/Erdos1006Problem.lean",

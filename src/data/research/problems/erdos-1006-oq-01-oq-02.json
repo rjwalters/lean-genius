@@ -4,17 +4,17 @@
   "significance": 6,
   "problemStatement": {
     "plain": "Can cover graph recognition (deciding if a graph is the Hasse diagram of some finite poset) be done in polynomial time?",
-    "formal": ""
+    "formal": "Decide whether a finite graph is a cover graph of some finite poset; the general claim remains represented by `cover_graph_recognition_in_p` in Erdos1006OQ01OQ02.lean."
   },
   "knowledge": {
-    "progressSummary": "S2 OBSERVE (researcher-5, 2026-05-17, this PR): no Lean change. Predecessor S1 OBSERVE PR #19887 (researcher-3, 2026-05-16) bootstrapped infra and fixed pre-S1 drift. S2 introduces chains/linear-order sub-case as concrete carve-off from open `cover_graph_recognition_in_p` axiom: cover graph of a finite chain is precisely the path graph (Hasse diagram of a totally ordered finite set), and path recognition is trivially in P. Sessions memo sketches paste-ready 4-definition + 1-theorem skeleton (~30 LOC) targeting Mathlib `SimpleGraph.IsPath` + degree-sequence check. INFRA at S2 OBSERVE start: G7 disk 3.3 Gi (−1.0 Gi over 2.5h since S1, below 5 Gi soft floor), G8 docker `Server:` empty ≥9.5h, G9 proofs/.lake → itself; all 3 RED block S3 ACT. 5 stale `(this PR)` citations refreshed inline to `PR #19887` (2 in JSON, 3 in state.md). File status (host wc -l + grep -cE): 256 LOC, 9 theorems, 2 axioms (intentional: comparability_recognition_in_p Golumbic-classical at line 159, cover_graph_recognition_in_p open question at line 176), 4 definitions, 0 sorries — byte-for-byte identical to S1. Mathlib pin `2df2f0150c…` unchanged ≥50h.\n\nS1 OBSERVE bootstrap (researcher-3, 2026-05-16, PR #19887): file at 9 theorems, 2 axioms, 0 sorries, 256 lines, 4 definitions (host `wc -l` + `grep -cE` verified). K₃ strict-separation witness (`cover_strictly_subset_comparability` at line 251) and 8-case K₃-not-cover-graph proof (`k3_not_cover_graph` at line 219) and `k3_is_comparability_graph` (line 208) all present. Strict separation between cover and comparability graphs formally proved. 2 axioms (comparability_recognition_in_p Golumbic-classical, cover_graph_recognition_in_p open-question). Pre-S1 progressSummary said \"10 theorems / 261 lines\" — both pre-#15112 stale per the True-stub removal accounting (PR #15112 merged 2026-05-03 \"remove True stub\" decreased theoremCount 10→9 and lineCount 261→256). Pre-S1 builtItems line refs 213/224/256 refreshed to actual 208/219/251 (5-line shift traceable to #15112). pre-S1 leanFiles[1].lineCount 257 → 256 (host wc -l). No state.md / problem.md / sessions/ existed pre-S1; bootstrap creates them. JSON top-level slug/title/phase/status/currentState/started/tags/lastUpdate fields added. PROGRESS: 10 theorems (was 7). Added k3_is_comparability_graph, k3_not_cover_graph (8-case proof), cover_strictly_subset_comparability. Strict separation between cover and comparability graphs formally proved. 2 axioms, 0 sorries, 261 lines.\n",
+    "progressSummary": "Metadata sync 2026-05-18: Erdos1006OQ01OQ02.lean remains the cover-graph recognition scaffold with 9 script-counted theorems, 2 axioms, 4 definitions, and 0 raw sorry hits. The broader Erdos1006 matcher now includes seven proof files, adding Erdos1006OQ04Decidability and using script-style line counts rather than host wc -l counts. Historical S1/S2 infra notes are preserved in session docs, but this JSON no longer reasserts those host conditions as current.",
     "builtItems": [
       "coverOrientation_no_shortcut: cover orientations are shortcut-free (Erdos1006OQ01OQ02.lean)",
       "cover_graph_is_hasse: cover graphs admit Hasse-like acyclic orientations (Erdos1006OQ01OQ02.lean)",
       "cover_implies_related: cover graph edges connect comparable pairs in the poset (Erdos1006OQ01OQ02.lean)",
       "cover_graph_in_np: NP membership via poset certificate (Erdos1006OQ01OQ02.lean)",
       "cover_search_space_bound: search space 2^(n^2) (Erdos1006OQ01OQ02.lean)",
-      "cover_subclass_comparability: cover graphs are strictly contained in comparability graphs",
+      "cover_subclass_comparability: cover-graph edges are contained in comparability graph edges",
       "k3_is_comparability_graph: K₃ is a comparability graph via standard linear order on Fin 3 (Erdos1006OQ01OQ02.lean:208)",
       "k3_not_cover_graph: K₃ is NOT a cover graph — 8-case proof exhausting orientations of covering edges (Erdos1006OQ01OQ02.lean:219)",
       "cover_strictly_subset_comparability: strict separation witness, K₃ is comparability but not cover (Erdos1006OQ01OQ02.lean:251)"
@@ -33,10 +33,8 @@
       "pow_mul needed in simp for (2^n)^n = 2^(n*n) — simp alone may not close the goal"
     ],
     "nextSteps": [
-      "S3 ACT: append chains/linear-order sub-case skeleton to Erdos1006OQ01OQ02.lean (1 def `isCoverGraphOfChain`, 1 fn `recognizeChainCover`, 1 thm `chain_cover_recognition_decidable`; ~30 LOC) once INFRA G7/G8/G9 clear",
-      "Run docker build to verify Lean file compiles with 0 sorries",
-      "Consider adding NP-hardness witness or reduction if known",
-      "Explore whether transitive reduction of a comparability orientation gives cover graph efficiently"
+      "Optional next Lean step: formalize a restricted chain/path subcase for cover graph recognition before tackling the open general axiom.",
+      "Keep `cover_graph_recognition_in_p` explicit unless a genuine general recognition result is available."
     ]
   },
   "leanFiles": [
@@ -54,7 +52,7 @@
     {
       "path": "Proofs/Erdos1006OQ01OQ02.lean",
       "filename": "Erdos1006OQ01OQ02.lean",
-      "lineCount": 256,
+      "lineCount": 257,
       "theoremCount": 9,
       "axiomCount": 2,
       "defCount": 4,
@@ -87,13 +85,24 @@
     {
       "path": "Proofs/Erdos1006OQ04.lean",
       "filename": "Erdos1006OQ04.lean",
-      "lineCount": 193,
+      "lineCount": 194,
       "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ04Decidability.lean",
+      "filename": "Erdos1006OQ04Decidability.lean",
+      "lineCount": 116,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04Decidability.lean"
     },
     {
       "path": "Proofs/Erdos1006Problem.lean",
@@ -132,17 +141,17 @@
     "np",
     "open-question"
   ],
-  "lastUpdate": "2026-05-17T00:50:00.000Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "currentState": {
     "phase": "OBSERVE",
-    "since": "2026-05-17T00:50:00Z",
-    "iteration": 2,
-    "focus": "S2 OBSERVE (researcher-5, 2026-05-17, this PR — doc-only sub-class-formalization PREP memo + 5 stale-PR-citation fixes + INFRA snapshot refresh): predecessor S1 OBSERVE PR #19887 (researcher-3, merged 2026-05-16T~22:30Z) bootstrapped state.md + problem.md + sessions/ + 8 missing JSON top-level fields (slug/title/phase/status/currentState/started/tags/lastUpdate) + 3 categories of drift fix (leanFiles[1].lineCount 257→256, knowledge.progressSummary 261/10→256/9, knowledge.builtItems[6/7/8] line refs 213/224/256 → 208/219/251 after #15112 True-stub removal). S2 OBSERVE does NOT touch the Lean file (host Docker daemon `Server:` section empty ≥9.5h continuous; host disk worsened 4.3 Gi → 3.3 Gi over ~2.5h; proofs/.lake → itself self-symlink unchanged — all 3 RED gates persist). Instead, S2 introduces the chains/linear-order sub-case as a concrete carve-off from the open `cover_graph_recognition_in_p` axiom: for the restricted class of cover graphs arising from finite chains (linear orders), the cover graph is precisely the path graph, and path recognition is trivially in P (check connectedness + ≤2 vertices of degree 1, all others degree 2, n−1 edges). The S2 sessions memo sketches a paste-ready Lean skeleton (4 definitions + 1 theorem, ~30 LOC) referencing `SimpleGraph.IsPath`, `SimpleGraph.degree`, `Finset.card_filter`, `LinearOrder`; the Mathlib bearer surface is small and the SHA-pinned (2df2f0150c…) Mathlib provides all the required primitives. Stale `(this PR)` citations from S1 OBSERVE PR-write time are refreshed inline to `PR #19887` (2 in JSON: this `currentState.focus` and `knowledge.progressSummary`; 3 in state.md: current-focus header, iteration-history row, reference-files line). No Lean change. No build attempt. No Mathlib bearer walk beyond table-of-names. No parent gallery touch. No sibling slug touch. No knowledge.md body edit. Host INFRA snapshot at S2 OBSERVE start: G7 disk 3.3 Gi RED (−1.0 Gi vs S1, below 5 Gi soft floor), G8 docker info Server: empty (continuous ≥9.5h, same pattern as in-flight wave), G9 proofs/.lake → itself self-symlink (unchanged since S1). These INFRA blockers do NOT block this doc-only S2 OBSERVE; they DO block the planned S3 ACT (chains-sub-case Lean append). See sessions/2026-05-17-s2-observe-chains-subcase-skeleton.md §0–§9 for full inventory.\n",
-    "nextAction": "S3 ACT: implement the chains-sub-case skeleton from sessions/2026-05-17-s2-observe-chains-subcase-skeleton.md §4 in proofs/Proofs/Erdos1006OQ01OQ02.lean (append ~30 LOC: one definition `isCoverGraphOfChain` characterizing cover graphs arising from finite linear orders; one constructive recognition function `recognizeChainCover : SimpleGraph V → Bool` checking the path-graph degree sequence; one theorem `chain_cover_recognition_decidable` proving `recognizeChainCover G = true ↔ ∃ (_ : LinearOrder V), isCoverGraphOf G`). This carves a fully-machine-checked sub-result out of the open `cover_graph_recognition_in_p` axiom (line 176) without weakening or replacing the axiom itself — the axiom asserts P-recognition for ALL cover graphs; the S3 theorem proves it for the chain sub-class with a constructive witness. Gates for S3 ACT: G7 host disk ≥ 5 Gi AND G8 docker info `Server:` populated AND G9 `proofs/.lake` resolvable to a real directory (recovery: `rmtree proofs/.lake` + `lake clean` + `lake new` to regenerate). Estimated build cost: small (the new definitions reuse the existing `isCoverGraphOf` machinery from `Erdos1006OQ01.lean` and Mathlib's `SimpleGraph.IsPath` directly). Fallback if INFRA stays RED: an additional doc-only S2-style refinement identifying a second sub-class (interval orders / planar cover graphs / bounded-treewidth posets) is acceptable. The slug carries no hard time-bound; release is also acceptable. Literature scan path remains open (no breakthrough found at S2 OBSERVE).\n",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 3,
+    "focus": "Metadata refreshed against the current seven-file Erdos1006 proof family; the cover-graph recognition question remains open via `cover_graph_recognition_in_p` while the chain/path subcase remains the next plausible carve-off.",
+    "nextAction": "If doing Lean work, start with the chain/path restricted recognition theorem; otherwise keep the general cover-graph recognition axiom explicit and documented as open.",
     "blockers": [],
     "attemptCounts": {
-      "total": 2,
-      "currentApproach": 1,
+      "total": 3,
+      "currentApproach": 2,
       "approachesTried": 2
     }
   }
