@@ -1,19 +1,29 @@
 {
   "slug": "pythagorean-theorem-oq-01",
-  "title": "[Problem Title]",
+  "title": "Pythagorean Theorem",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "v \\perp w \\Longrightarrow \\lVert v + w \\rVert^2 = \\lVert v \\rVert^2 + \\lVert w \\rVert^2",
+    "plain": "Formalize the Pythagorean theorem for perpendicular vectors in a two-dimensional Euclidean model, together with the converse and standard numerical triples.",
+    "whyMatters": [
+      "This is a compact test case for Euclidean geometry, norms, inner products, and perpendicularity.",
+      "The theorem is the base identity behind distance formulas and many later geometric formalizations."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "`norm_sq_eq_inner` connects the vector norm square to the inner product.",
+      "`perp_symm` proves symmetry of the perpendicular relation.",
+      "`pythagorean_theorem` proves the main norm-square identity for perpendicular vectors.",
+      "`pythagorean_3_4_5`, `pythagorean_5_12_13`, and `pythagorean_8_15_17` verify standard integer triples.",
+      "`pythagorean_converse` proves the converse direction from the norm identity to perpendicularity.",
+      "`pythagorean_sum` generalizes the identity to finite mutually perpendicular vector families."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Use the completed two-dimensional vector proof as a stable geometry example and reference point for richer Euclidean developments."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -37,9 +47,10 @@
     "markdown": "# Knowledge Base: pythagorean-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "geometry",
+    "euclidean-geometry",
+    "inner-product",
+    "classical"
   ],
   "relatedProofs": [
     "pythagorean-theorem",
