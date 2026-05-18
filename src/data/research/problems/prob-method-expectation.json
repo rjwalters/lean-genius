@@ -13,6 +13,20 @@
       "Part of marquee formalization initiative"
     ]
   },
+  "knownResults": {
+    "proven": [
+      "The first moment principle is formalized for finite averages: if the average is above a threshold, some element exceeds that threshold.",
+      "The dual first moment form and finite pigeonhole variants are proved.",
+      "Linearity of expectation is represented through Finset.sum_add_distrib.",
+      "A Ramsey lower-bound existence statement is included in the formalized workflow.",
+      "The associated Lean files are recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "This entry is scoped to the finite first-moment workflow, not a broad probability library.",
+      "Further probabilistic-method applications remain separate extensions."
+    ],
+    "goal": "Use the completed finite first-moment formalization as the base probabilistic-method building block."
+  },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-21T14:00:00Z",

@@ -14,6 +14,20 @@
       "Bridges probability and combinatorics"
     ]
   },
+  "knownResults": {
+    "proven": [
+      "The algebraic core of the Lovasz Local Lemma workflow is formalized with product-positivity hypotheses.",
+      "The symmetric threshold T(d) = d^d/(d+1)^(d+1) is connected to the packaged symmetric LLL theorem.",
+      "Concrete threshold values for small d and the universal T(d) <= 1/4 bound are recorded.",
+      "A k-SAT satisfiability bound is included as an elementary application.",
+      "The associated Lean file is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "The full measure-theoretic probabilistic LLL is still long-term work.",
+      "Graph-coloring applications remain planned extensions."
+    ],
+    "goal": "Keep the completed symmetric and algebraic LLL workflow as a stable bridge toward later measure-theoretic probability applications."
+  },
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-22T21:00:00Z",

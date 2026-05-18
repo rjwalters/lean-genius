@@ -10,6 +10,20 @@
     "plain": "Prove minkowski_fundamental axiom in MinkowskiFundamentalTheorem.lean from Mathlib's ZSpan and measure theory infrastructure.",
     "whyMatters": []
   },
+  "knownResults": {
+    "proven": [
+      "The entry records a Mathlib GeometryOfNumbers route for the standard integer-lattice case.",
+      "Bridge objects such as stdBasis, stdLattice, stdFundDomain, and stdLattice_covolume are documented.",
+      "The knowledge log records a Module.Basis bridge from the custom lattice basis matrix toward Mathlib's ZSpan API.",
+      "The intended minkowski_fundamental replacement is described as using Mathlib geometry-of-numbers infrastructure."
+    ],
+    "open": [
+      "Docker build verification is still listed as pending in the entry.",
+      "The active-state notes still call out the custom HasVolume to Lebesgue-measure bridge as a remaining integration concern.",
+      "General-lattice packaging should not be treated as independently reverified by this metadata update."
+    ],
+    "goal": "Track the axiom-elimination bridge work while preserving the entry's pending-verification caveats."
+  },
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-30T07:30:00Z",

@@ -10,6 +10,19 @@
     "plain": "The 2D Navier-Stokes equations have global existence and uniqueness of smooth solutions (Ladyzhenskaya 1969). Unlike 3D (Millennium Prize), this IS proven.",
     "whyMatters": []
   },
+  "knownResults": {
+    "proven": [
+      "The entry records the two-dimensional Ladyzhenskaya global-existence case as covered by NavierStokes.lean.",
+      "The 2D enstrophy bound is recorded as proved.",
+      "Exponential decay under a Poincare inequality is recorded as proved.",
+      "The metadata explicitly separates the proven 2D case from the open 3D Millennium Prize problem."
+    ],
+    "open": [
+      "The 3D Navier-Stokes existence and smoothness problem remains open.",
+      "Sorries and conditional structures in the shared Lean file are associated with the 3D side, not the 2D summary here."
+    ],
+    "goal": "Represent the proven 2D global-existence result while keeping the unresolved 3D theory clearly out of scope."
+  },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-20T10:35:00Z",
