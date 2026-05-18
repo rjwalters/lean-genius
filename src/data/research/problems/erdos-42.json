@@ -17,29 +17,33 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-01-12T06:58:30.838Z",
-    "iteration": 2,
-    "focus": "Initial exploration of the problem.",
+    "since": "2026-05-18T12:01:26Z",
+    "iteration": 3,
+    "focus": "Synced primary Sidon-set formalization metadata to the local Lean file.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Formalize the Sedov M=2/M=3 results or the general conjecture if the local Lean file grows beyond comments.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "SURVEYED: 5 theorem-like declarations, 0 axioms, 0 sorries. The primary Lean file defines Sidon sets, interval containment, maximality, difference sets, and disjoint differences; Sedov partial results and the general conjecture are referenced only in comments.",
     "builtItems": [
-      "theorem sidon_size_bound in Proofs/Erdos42Problem.lean:56 — axiom eliminated (5→4)"
+      "Confirmed IsSidonSet, InInterval, IsMaximalSidon, diffSet, and DisjointDiffs are the five local definitions.",
+      "Confirmed sidon_size_bound, zero_in_diffSet, and example_maximal_sidon are public theorem declarations, with two private helper theorems for the example.",
+      "Confirmed the current local file has no axiom declarations and no sorries."
     ],
     "insights": [
-      "sidon_size_bound is provable: for Sidon A⊆[1,N], the map (a,b)↦(a:ℤ)-(b:ℤ) is injective on off-diagonal A×A pairs (by Sidon + Finset.pair analysis), image ⊆ [-N+1,N-1]\\{0}, giving |A|(|A|-1) ≤ 2(N-1)",
-      "ErdosProblem42 and ErdosProblem42_constructive are genuinely OPEN, sedov_M2/M3 are published results",
-      "sidon_size_bound PROVED: injective difference map on A.offDiag → Finset.Icc (1-N) (N-1) \\ {0}, using Sidon to derive sum equality, Finset.pair membership, and omega"
+      "The earlier candidate path pointed at Erdos420Problem.lean; current gallery metadata uses Proofs/Erdos42Problem.lean.",
+      "Sedov M=2/M=3 and the open general problem are not local Lean declarations in the primary file.",
+      "The Sidon size-bound proof is the substantive local theorem; it uses injectivity of the off-diagonal difference map."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Add explicit local statements for Sedov partial cases only when a source-backed formalization plan is ready."
+    ],
     "markdown": "# Erdős #42 - Knowledge Base\n\n## Problem Statement\n\nLet $M\\geq 1$ and $N$ be sufficiently large in terms of $M$. Is it true that for every Sidon set $A\\subset \\{1,\\ldots,N\\}$ there is another Sidon set $B\\subset \\{1,\\ldots,N\\}$ of size $M$ such that $(A-A)\\cap(B-B)=\\{0\\}$? View the LaTeX source This page was last edited 14 September 2025.\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #41\n- Problem #43\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
@@ -65,125 +69,15 @@
     "mathlib": []
   },
   "started": "2026-01-12T06:58:30.839Z",
-  "lastUpdate": "2026-03-26T23:05:00Z",
+  "lastUpdate": "2026-05-18T12:01:26Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos420Problem.lean",
-      "filename": "Erdos420Problem.lean",
-      "lineCount": 279,
-      "theoremCount": 5,
-      "axiomCount": 4,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos420Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos421Problem.lean",
-      "filename": "Erdos421Problem.lean",
-      "lineCount": 580,
-      "theoremCount": 25,
-      "axiomCount": 1,
-      "defCount": 20,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos421Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos422Problem.lean",
-      "filename": "Erdos422Problem.lean",
-      "lineCount": 94,
-      "theoremCount": 7,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos422Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos423Problem.lean",
-      "filename": "Erdos423Problem.lean",
-      "lineCount": 410,
-      "theoremCount": 39,
-      "axiomCount": 3,
-      "defCount": 9,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos423Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos424Problem.lean",
-      "filename": "Erdos424Problem.lean",
-      "lineCount": 152,
-      "theoremCount": 5,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos424Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos425Problem.lean",
-      "filename": "Erdos425Problem.lean",
-      "lineCount": 265,
-      "theoremCount": 1,
-      "axiomCount": 2,
-      "defCount": 11,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos425Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos426Problem.lean",
-      "filename": "Erdos426Problem.lean",
-      "lineCount": 256,
-      "theoremCount": 2,
-      "axiomCount": 4,
-      "defCount": 8,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos426Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos427Problem.lean",
-      "filename": "Erdos427Problem.lean",
-      "lineCount": 285,
-      "theoremCount": 7,
-      "axiomCount": 3,
-      "defCount": 5,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos427Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos428Problem.lean",
-      "filename": "Erdos428Problem.lean",
-      "lineCount": 221,
-      "theoremCount": 8,
-      "axiomCount": 1,
-      "defCount": 6,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos428Problem.lean"
-    },
-    {
-      "path": "Proofs/Erdos429Problem.lean",
-      "filename": "Erdos429Problem.lean",
-      "lineCount": 172,
-      "theoremCount": 3,
-      "axiomCount": 3,
-      "defCount": 10,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos429Problem.lean"
-    },
-    {
       "path": "Proofs/Erdos42Problem.lean",
       "filename": "Erdos42Problem.lean",
-      "lineCount": 166,
-      "theoremCount": 3,
+      "lineCount": 165,
+      "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 0,

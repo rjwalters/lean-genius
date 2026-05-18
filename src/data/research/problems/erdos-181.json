@@ -17,34 +17,33 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-01-12T10:00:45.598Z",
-    "iteration": 3,
-    "focus": "Assessment complete: 4A all appropriate, +1T proved",
+    "since": "2026-05-18T12:01:26Z",
+    "iteration": 4,
+    "focus": "Synced hypercube Ramsey metadata to the primary Erdos181Problem Lean file.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Keep open-conjecture and Tikhomirov-bound dependencies axiom-explicit while improving nonemptiness/lower-bound infrastructure.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 3 axioms (all appropriate), 0 sorries, 382 lines. Open Ramsey theory problem, well-formalized.",
+    "progressSummary": "SURVEYED: 18 theorem-like declarations, 3 axioms, 0 sorries. The primary file defines hypercube adjacency and a Ramsey number, axiomatizes the open Burr-Erdos conjecture, Tikhomirov 2022 bound, and lower bound, then proves structural and implication theorems around those inputs.",
     "builtItems": [
-      "PROVED 3 axioms: 2 trivial True + 1 duplicate (7A→4A)",
-      "conjecture_implies_bounded_ratio: R(Q_n)/2^n ≤ C from conjecture (Erdos181Problem.lean)"
+      "Confirmed the primary path is Proofs/Erdos181Problem.lean, not the OQ-01 companion file.",
+      "Confirmed axioms: erdos_181_conjecture, tikhomirov_2022, and lower_bound.",
+      "Confirmed theorem-like declarations include hypercube facts, ramseyNumber_zero results, trivial_upper_bound from Tikhomirov, monotonicity, conditional lower bound, and ratio/divergence implications."
     ],
     "insights": [
-      "3 axioms proved (7A→4A): lee_bounded_degree_ramsey (trivially True), erdos_sos_question_open (True), erdos_181 (= erdos_181_conjecture)",
-      "lower_bound axiom: provable by pigeonhole (no injective Fin(2^n)→Fin(N) for N<2^n), BUT needs Ramsey set non-emptiness which requires Ramsey theorem formalization",
-      "trivial_upper_bound depends on R(K_N) ≤ C^N (Ramsey for complete graphs), too deep for Mathlib alone",
-      "tikhomirov_2022 is a 2022 research result, appropriate as axiom",
-      "All 4 axioms are appropriate: open problem + 3 deep known results. File is well-structured.",
-      "Actual axiom count is 3 (not 4 per stale metadata): erdos_181_conjecture, tikhomirov_2022, lower_bound",
-      "lower_bound requires Ramsey theorem for completeness (non-emptiness of Ramsey set); lower_bound_conditional proves it conditionally"
+      "The Lee bounded-degree item is currently a trivial True-valued contextual theorem, not a substantive formalization or an axiom.",
+      "The lower bound is still an axiom in the primary file, although a conditional lower_bound_conditional theorem proves the shape from Ramsey-set nonemptiness.",
+      "Older proof-strategy line counts and theorem totals were from a much shorter version of the file."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Replace lower_bound with a proof once the Ramsey-set nonemptiness argument is available in the local setup."
+    ],
     "markdown": "# Erdős #181 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $Q_n$ be the $n$-dimensional hypercube graph (so that $Q_n$ has $2^n$ vertices and $n2^{n-1}$ edges). Prove that\\[R(Q_n) \\ll 2^n.\\]\n\n\n\nConjectured by Burr and Erd\\H{o}s, althouhg in \\cite{Er93} Erd\\H{o}s says the behaviour of $R(Q_n)$ was considered by himself and S\\'{o}s, who could not decide whether $R(Q_n)/2^n\\to \\infty$ or not.\n\nThe trivial bound is\\[R(Q_n) \\leq R(K_{2^n})\\leq C^{2^n}\\]for some constant $C>1$. This was improved a number of times; the current best bound due to Tikhomirov \\cite{Ti22} is\\[R(Q_n)\\ll 2^{(2-c)n}\\]for some small constant $c>0$. (In fact $c\\approx 0.03656$ is permissible.)\n\nThis problem is #20 in Ramsey Theory in the graphs problem collection.\n\n\n\n\nReferences\n\n\n[Er93] Erd\\H{o}s, Paul, Some of my favorite solved and unsolved problems in graph\ntheory. Quaestiones Math. (1993), 333-350.\n\n[Ti22] Tikhomirov, K., A remark on the Ramsey number of the hypercube. arXiv:2208.14568 (2022).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #20\n- Problem #180\n- Problem #182\n- Problem #39\n- Problem #1\n\n## References\n\n- BuEr75\n- Er93\n- Ti22\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
@@ -62,26 +61,15 @@
     "mathlib": []
   },
   "started": "2026-01-12T10:00:45.598Z",
-  "lastUpdate": "2026-03-27T23:45:00.000Z",
+  "lastUpdate": "2026-05-18T12:01:26Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos181OQ01.lean",
-      "filename": "Erdos181OQ01.lean",
-      "lineCount": 171,
-      "theoremCount": 11,
-      "axiomCount": 2,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos181OQ01.lean"
-    },
-    {
       "path": "Proofs/Erdos181Problem.lean",
       "filename": "Erdos181Problem.lean",
-      "lineCount": 386,
-      "theoremCount": 17,
+      "lineCount": 385,
+      "theoremCount": 18,
       "axiomCount": 3,
       "defCount": 2,
       "sorryCount": 0,

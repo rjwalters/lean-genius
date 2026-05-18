@@ -16,57 +16,33 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-01-12T09:56:05.234Z",
-    "iteration": 1,
-    "focus": "Fully verified. Generated follow-up OQ-01 (two isolated elements).",
+    "phase": "ACT",
+    "since": "2026-05-18T12:01:26Z",
+    "iteration": 2,
+    "focus": "Synced Sidon sumset metadata to the primary Erdos152Problem Lean file.",
     "blockers": [],
-    "nextAction": "OQ-01: Strengthen to ≥2 isolated elements via dual endpoint analysis",
+    "nextAction": "Extend the one-isolated-element support toward the full arbitrarily-many isolated sums conjecture.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0A 0S verified. gap_existence_pigeonhole proved via endpoint+Sidon diff injectivity argument.",
+    "progressSummary": "SURVEYED: 11 theorem-like declarations, 0 axioms, 0 sorries. The primary file defines finite Sidon sets, sumsets, isolated sumset elements, weak/strong/infinite conjecture propositions, and proves supporting Sidon lemmas including sumset size, range lower bound, and gap_existence_pigeonhole.",
     "builtItems": [
-      "sumset_mem: a+b in A+A for a,b in A (trivial from Pointwise)",
-      "sumset_self_double: 2a in A+A for a in A",
-      "sidon_no_three_ap: no 3-AP in Sidon sets (a+c=2b implies a=c)",
-      "sidon_no_three_ap_prime: strengthened to a=b=c",
-      "sidon_sum_ne_double: a+b != 2a for distinct a,b in Sidon",
-      "sidon_sumset_size: proved via ordered pair bijection + counting",
-      "card_ordered_pairs: helper proving |{(a,b):a≤b}| = n(n+1)/2 via swap involution",
-      "sidon_ordered_pair_inj: helper for Sidon + ordering injectivity",
-      "Proved sidon_diff_injective: Sidon ⟹ distinct pairwise differences",
-      "Proved sidon_set_range_lower_bound: max(A) ≥ n(n-1)/2 via injection D → Finset.range M",
-      "gap_existence_pigeonhole: axiom→theorem (~120 lines) via endpoint analysis"
+      "Confirmed the primary path is Proofs/Erdos152Problem.lean, not the OQ-01 companion file.",
+      "Confirmed definitions for IsSidonFinset, sumsetFinset, IsIsolated, isolatedCount, ErdosProblem152, ErdosProblem152Strong, and ErdosProblem152Infinite.",
+      "Confirmed public supporting theorems plus private helper theorems account for the 11 theorem-like declarations in gallery metadata."
     ],
     "insights": [
-      "Sidon no-3-AP property is directly provable from the definition",
-      "Key technique: {a,c}={b,b}={b} in Finset, so both a and c equal b",
-      "omega tactic handles the arithmetic (a+a=b+b implies a=b)",
-      "sumset_mem follows directly from Finset.add_mem_add (Pointwise)",
-      "sidon_sumset_size still needs injection + counting argument to prove",
-      "sidon_set_range_lower_bound had off-by-one: {0,1} is Sidon with max=1 but n(n-1)/2+1=2",
-      "Correct bound is a_max ≥ n(n-1)/2 (without +1)",
-      "Ordered pair bijection: upper triangular pairs from A×A biject with A+A for Sidon sets",
-      "sidon_set_range_lower_bound proved via: n(n-1)/2 distinct positive differences ≤ max(A), using Finset.card_le_card_of_injOn",
-      "gap_existence_pigeonhole (1 remaining axiom): requires non-trivial combinatorial argument",
-      "Simple packing bound works for n≤6: max non-isolated in interval ≤ ⌊2(L+1)/3⌋ < |A+A|",
-      "For n≥7: packing bound is insufficient (28 vs 28 at n=7). Need Sidon-specific structure.",
-      "In Sidon sets, at most 1 pair of consecutive elements (difference 1 appears at most once)",
-      "2·min(A) is isolated unless min(A)+1∈A; similarly 2·max(A) isolated unless max(A)-1∈A",
-      "Proof strategy: 2M has no right neighbor. If M-1 not in A, 2M isolated. Else use Sidon diff injectivity (at most one consecutive pair) to find isolated element or derive |A|<=3 contradiction.",
-      "Key lemma: for Sidon sets, a-b=c-d with a>b,c>d implies (a,b)=(c,d). Two consecutive pairs force A to have ≤2 elements.",
-      "All theorems fully proved (0A, 0S). Gallery entry verified.",
-      "Generated OQ-01: two isolated elements via dual endpoint analysis (tractability 7/10)"
+      "The full Erdos #152 arbitrarily-many-isolated-sums statement remains open; the Lean file defines the conjecture propositions rather than proving them.",
+      "gap_existence_pigeonhole gives a one-isolated-element style supporting result for sufficiently large finite Sidon sets.",
+      "Old proof-strategy wording about supporting axioms is stale for the primary file, which currently has no axiom declarations."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove sidon_sumset_size via injection from ordered pairs to sums",
-      "Docker build verification needed"
+      "Strengthen the endpoint/Sidon-difference argument toward multiple isolated sumset elements."
     ],
     "markdown": "# Erdős #152 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $M\\geq 1$, if $A\\subset \\mathbb{N}$ is a sufficiently large finite Sidon set then there are at least $M$ many $a\\in A+A$ such that $a+1,a-1\\not\\in A+A$.\n\n\n\nThere may even be $\\gg \\lvert A\\rvert^2$ many such $a$. A similar question can be asked for truncations of infinite Sidon sets.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #151\n- Problem #153\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ESS94\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
@@ -85,26 +61,15 @@
     "mathlib": []
   },
   "started": "2026-01-12T09:56:05.235Z",
-  "lastUpdate": "2026-03-29T05:00:00.000Z",
+  "lastUpdate": "2026-05-18T12:01:26Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos152OQ01.lean",
-      "filename": "Erdos152OQ01.lean",
-      "lineCount": 320,
-      "theoremCount": 2,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos152OQ01.lean"
-    },
-    {
       "path": "Proofs/Erdos152Problem.lean",
       "filename": "Erdos152Problem.lean",
-      "lineCount": 471,
-      "theoremCount": 8,
+      "lineCount": 470,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 7,
       "sorryCount": 0,
