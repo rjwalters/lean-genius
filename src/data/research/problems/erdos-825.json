@@ -1,27 +1,45 @@
 {
   "slug": "erdos-825",
   "title": "Erdős #825",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "Is there an absolute constant $C>0$ such that every integer $n$ with $\\sigma(n)>Cn$ is the distinct sum of proper divisors of $n$?\n\n\n\nA problem of Benkoski and Erd\\H{o}s. In other words, this problem asks for an upper bound for the abundancy index of weird numbers. This could be true with $C=3$. We must have $C>2$ since $\\sigma(70)=144$ but $70$ is not the distinct sum of integers from $\\{1,2,5,7,10,14,35\\}$.\n\nErd\\H{o}s suggested that as $C\\to \\infty$ only divisors at most $\\epsilon n$ need to be used, where $\\epsilon \\to 0$.\n\nWeisenberg has observed that if $n$ is a weird number with an abundancy index $\\geq 4$ then it is divisible by an odd weird number. In particular, if there are no odd weird numbers (see [470]) then every weird number has abundancy index $<4$. Indeed, if $l(n)$ is the abundancy index and $n=2^km$ with $m$ odd then $l(n)=l(2^k)l(m)$, and $l(2^k)<2$ so if $l(n)\\geq 4$ then $l(m)>2$, and hence $m$ is weird (as a factor of a weird number).\n\nA similar argument shows that either there are infinitely many primitive weird numbers or there is an upper bound for the abundancy index of all weird numbers.\n\nSee also [18] and [470].\n\nThis is part of problem B2 in Guy's collection \\cite{Gu04} (the \\$25 is reported by Guy as offered by Erd\\H{o}s for a solution to this question).",
     "plain": "Is there an absolute constant $C>0$ such that every integer $n$ with $\\sigma(n)>Cn$ is the distinct sum of proper divisors of $n$?",
-    "whyMatters": []
+    "whyMatters": [
+      "Connects divisor sums, semiperfect numbers, and the possible growth of weird-number abundancy.",
+      "The Lean file proves the concrete weird-number obstruction at 70 and derives the necessary lower bound C > 2.",
+      "The existence of an absolute upper constant, and the stronger C=3 conjecture, remain open Prop definitions."
+    ],
+    "plainEnglish": "Ask whether sufficiently large abundancy ratio forces an integer to be semiperfect, equivalently whether weird numbers have bounded abundancy."
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`divisorSum`, `properDivisors`, `IsAbundant`, `IsSemiperfect`, `IsWeird`, and `abundancy` formalize the divisor-sum setup.",
+      "`weird_70` proves 70 is abundant and not semiperfect by finite computation.",
+      "`sigma_70` proves sigma(70)=144.",
+      "`necessary_lower_bound` proves any working constant C must satisfy C > 2."
+    ],
+    "open": [
+      "`ErdosProblem825` is a Prop definition, not a proved theorem.",
+      "`ErdosProblem825_C3` records the stronger C=3 conjecture but is not proved.",
+      "No general upper bound on weird-number abundancy is formalized."
+    ],
+    "goal": "Record the axiom-free lower-bound obstruction while keeping the bounded-abundancy conjecture open."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-15T09:39:18.199Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 2,
+    "focus": "The file has 3 theorem declarations, 8 definitions, 0 axioms, and 0 sorries; it proves the 70 obstruction and the necessary lower bound C > 2.",
+    "blockers": [
+      "The main bounded-abundancy statement is only a Prop definition.",
+      "The C=3 strengthened conjecture is not proved.",
+      "General structure of semiperfect and weird numbers beyond finite examples is not developed."
+    ],
+    "nextAction": "Formalize additional weird-number examples and prove reusable lemmas about semiperfect subsets of proper divisors.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,15 +47,37 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "progressSummary": "CURRENT: 3 theorem declarations, 8 definitions, 0 axioms, and 0 sorries; proves the 70 obstruction and the necessary lower bound C > 2.",
+    "builtItems": [
+      "divisor-sum and proper-divisor definitions",
+      "`IsAbundant`, `IsSemiperfect`, and `IsWeird`",
+      "`weird_70` and `sigma_70`",
+      "`necessary_lower_bound`",
+      "`ErdosProblem825` and `ErdosProblem825_C3`"
+    ],
+    "insights": [
+      "The file is axiom-free and sorry-free.",
+      "Finite computation via `native_decide` handles the 70 weird-number certificate.",
+      "The only general theorem currently proved is a necessary condition on any proposed C."
+    ],
+    "mathlibGaps": [
+      "Reusable semiperfect subset-search theory",
+      "General upper bounds for abundancy of weird numbers"
+    ],
+    "nextSteps": [
+      "Add more verified weird-number examples.",
+      "Separate computational certificates from reusable divisor lemmas.",
+      "Try proving semiperfectness for structured abundant families."
+    ],
     "markdown": "# Erdős #825 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there an absolute constant $C>0$ such that every integer $n$ with $\\sigma(n)>Cn$ is the distinct sum of proper divisors of $n$?\n\n\n\nA problem of Benkoski and Erd\\H{o}s. In other words, this problem asks for an upper bound for the abundancy index of weird numbers. This could be true with $C=3$. We must have $C>2$ since $\\sigma(70)=144$ but $70$ is not the distinct sum of integers from $\\{1,2,5,7,10,14,35\\}$.\n\nErd\\H{o}s suggested that as $C\\to \\infty$ only divisors at most $\\epsilon n$ need to be used, where $\\epsilon \\to 0$.\n\nWeisenberg has observed that if $n$ is a weird number with an abundancy index $\\geq 4$ then it is divisible by an odd weird number. In particular, if there are no odd weird numbers (see [470]) then every weird number has abundancy index $<4$. Indeed, if $l(n)$ is the abundancy index and $n=2^km$ with $m$ odd then $l(n)=l(2^k)l(m)$, and $l(2^k)<2$ so if $l(n)\\geq 4$ then $l(m)>2$, and hence $m$ is weird (as a factor of a weird number).\n\nA similar argument shows that either there are infinitely many primitive weird numbers or there is an upper bound for the abundancy index of all weird numbers.\n\nSee also [18] and [470].\n\nThis is part of problem B2 in Guy's collection \\cite{Gu04} (the \\$25 is reported by Guy as offered by Erd\\H{o}s for a solution to this question).\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n**Prize**: $25\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #470\n- Problem #18\n- Problem #824\n- Problem #826\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- BeEr74\n- Er74b\n- Er96b\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "divisor-sums",
+    "weird-numbers",
+    "semiperfect-numbers",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-8",
@@ -45,19 +85,28 @@
     "erdos-825"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdos problem on weird numbers and abundancy"
+    ],
+    "urls": [
+      "https://erdosproblems.com/825"
+    ],
+    "mathlib": [
+      "Nat.Basic",
+      "Finset.Basic",
+      "Rat.Basic",
+      "Tactic"
+    ]
   },
   "started": "2026-01-15T09:39:18.200Z",
-  "lastUpdate": "2026-03-13T07:52:17.053Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos825Problem.lean",
       "filename": "Erdos825Problem.lean",
-      "lineCount": 106,
+      "lineCount": 105,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 8,
