@@ -1,29 +1,32 @@
 {
   "slug": "birthday-problem-oq-02-oq-01-oq-01",
   "title": "Sharper Birthday Bound via Higher-Order Taylor Expansion",
-  "phase": "OBSERVE",
+  "phase": "COMPLETED",
   "status": "active",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
     "formal": "\\prod_{i=0}^{k-1}\\left(1 - \\frac{i}{d}\\right) \\ge \\exp\\!\\left(-\\frac{k(k-1)}{2d} - \\frac{k^2(k-1)^2}{4d^2}\\right)",
-    "plain": "The parent proof `birthday-problem-oq-02` formalizes the upper bound for collision probability in the birthday problem. This problem asks: can the matching **lower bound** be formalized in Lean 4?",
+    "plain": "The matching lower bound for the birthday product is formalized in Lean 4, completing the two-sided exponential estimate for this branch.",
     "whyMatters": [
       "Completes the birthday problem formalization"
     ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "birthdayProduct_lower_bound proves the matching lower exponential bound in BirthdayProblemOQ02OQ01.lean",
+      "birthdayProduct_two_sided combines the upper and lower birthday-product bounds"
+    ],
     "open": [],
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-04-05T01:28:50-07:00",
     "iteration": 1,
-    "focus": "Prove the lower bound for birthday collision probability via second-order Taylor remainder of ln(1-x). Parent proof (birthday-problem-oq-02) has the upper bound framework ready.",
+    "focus": "Lower bound and two-sided birthday-product estimate are proved in BirthdayProblemOQ02OQ01.lean.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "No immediate proof action; keep metadata synchronized with the completed Lean file.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,12 +34,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: BirthdayProblemOQ02OQ01.lean proves birthdayProduct_lower_bound and birthdayProduct_two_sided with 0 axioms and 0 sorries under the extractor counters.",
+    "builtItems": [
+      "birthdayProduct_lower_bound in BirthdayProblemOQ02OQ01.lean",
+      "birthdayProduct_two_sided in BirthdayProblemOQ02OQ01.lean"
+    ],
+    "insights": [
+      "The completed Lean proof uses exponential-product inequalities rather than leaving the lower-bound Taylor route open."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Knowledge Base: birthday-problem-oq-02-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "markdown": "# Knowledge Base: birthday-problem-oq-02-oq-01-oq-01\n\nThe matching lower bound and the combined two-sided birthday-product estimate are formalized in `proofs/Proofs/BirthdayProblemOQ02OQ01.lean`. Metadata in this record now points at the current extractor counts for the surrounding BirthdayProblem proof family.\n"
   },
   "tags": [
     "probability",
@@ -100,6 +108,39 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01.lean"
     },
     {
+      "path": "Proofs/BirthdayProblemOQ01OQ01.lean",
+      "filename": "BirthdayProblemOQ01OQ01.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01Aristotle.lean",
+      "filename": "BirthdayProblemOQ01OQ01Aristotle.lean",
+      "lineCount": 35,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ01OQ02.lean",
+      "lineCount": 205,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ02.lean"
+    },
+    {
       "path": "Proofs/BirthdayProblemOQ02.lean",
       "filename": "BirthdayProblemOQ02.lean",
       "lineCount": 301,
@@ -157,8 +198,8 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
-      "lineCount": 2263,
-      "theoremCount": 59,
+      "lineCount": 2264,
+      "theoremCount": 54,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
