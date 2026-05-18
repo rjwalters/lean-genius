@@ -43,5 +43,35 @@
   "relatedProofs": [
     "prob-method-expectation",
     "prob-method-expectation-oq-01"
+  ],
+  "problemStatement": {
+    "formal": "Bridge finite uniform expectation to MeasureTheory integrals and prove first-moment and linearity-of-expectation statements for probability measures.",
+    "plain": "Extends the probabilistic-method expectation entry from finite `Finset` sums into Mathlib's measure-theoretic integral framework. The file shows counting measure gives the finite uniform model, equates finite expectation with an integral, proves a first-moment method statement, and records linearity of expectation as `integral_add`.",
+    "whyMatters": [
+      "Many probabilistic-method arguments start as finite sums but become cleaner when phrased with measure-theoretic expectation.",
+      "The bridge lets finite combinatorial probability results reuse Mathlib integration tools.",
+      "First-moment and linearity statements are basic building blocks for future probabilistic combinatorics entries."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`counting_measure_is_uniform` connects counting measure on a finite type to uniform total mass.",
+      "`finset_expectation_eq_integral` proves the finite average equals the integral against the uniform counting probability measure.",
+      "`first_moment_method` proves that expectation below one forces positive mass on the zero fiber for natural-valued random variables.",
+      "`linearity_of_expectation` records expectation linearity from `integral_add`, and `expectation_indicator` identifies indicator expectation with event probability."
+    ],
+    "open": [
+      "The current OQ01 file is complete; broader infinite-space probabilistic-method applications are left to future entries."
+    ],
+    "goal": "Document the completed Finset-to-MeasureTheory expectation bridge."
+  },
+  "tags": [
+    "probability",
+    "probabilistic-method",
+    "expectation",
+    "measure-theory",
+    "finite-probability",
+    "first-moment-method",
+    "completed"
   ]
 }

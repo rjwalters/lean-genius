@@ -116,10 +116,33 @@
     "dissection-of-cubes-oq-02-oq-02",
     "dissection-of-cubes-oq-03"
   ],
-  "tags": [],
+  "tags": [
+    "geometry",
+    "hilberts-third-problem",
+    "dehn-invariant",
+    "scissors-congruence",
+    "irrational-angles",
+    "completed"
+  ],
   "problemStatement": {
-    "formal": "",
-    "plain": "Formalizes the Dehn invariant approach to Hilbert's Third Problem: proves the cube has zero Dehn invariant (rational angles) while the tetrahedron has nonzero invariant (irrational angle), showing they cannot be scissors congruent.",
-    "whyMatters": []
+    "formal": "Using the Dehn invariant, show a cube and a regular tetrahedron are not scissors congruent, giving the Hilbert third problem obstruction.",
+    "plain": "Formalizes the Dehn-invariant obstruction behind Hilbert's third problem. The entry proves the tetrahedron angle is irrational relative to pi, records the cube/tetrahedron invariant mismatch, and derives the non-dissection conclusion.",
+    "whyMatters": [
+      "Hilbert's third problem shows that equal volume is not enough for polyhedral scissors congruence.",
+      "The Dehn invariant is the central algebraic obstruction separating three-dimensional dissection from the planar case.",
+      "A Lean version gives the geometry gallery a concrete example where angle arithmetic drives an impossibility theorem."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`tetrahedron_angle_irrational_pi` captures the irrational angle input for the regular tetrahedron.",
+      "`hilbert_third_problem` states the cube and tetrahedron obstruction through the Dehn invariant.",
+      "`dehn_obstruction` packages the invariant mismatch into the scissors-congruence obstruction.",
+      "The OQ02 proof file is recorded with zero axioms and zero sorries in the current research JSON."
+    ],
+    "open": [
+      "Sibling dissection entries explore broader geometric covering and extended dissection infrastructure; this entry stays on the classical Dehn-invariant obstruction."
+    ],
+    "goal": "Document the completed Hilbert third problem / Dehn invariant formalization."
   }
 }

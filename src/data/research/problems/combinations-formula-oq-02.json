@@ -6,14 +6,25 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in combinatorics: Combinations Formula: Connections to Catalan Numbers and Combinatorial Sequences.",
-    "whyMatters": []
+    "formal": "C_n = (1/(n+1)) * binomial(2*n,n), with Catalan recurrence and central-binomial bounds formalized for n in N.",
+    "plain": "Develops the Catalan-number side of the combinations formula project. The Lean file defines Catalan numbers from central binomial coefficients, verifies the first values, proves positivity and growth bounds, and records the convolution recurrence used across Catalan-counting arguments.",
+    "whyMatters": [
+      "Catalan numbers connect binomial coefficients to trees, paths, parenthesizations, and many other counting problems.",
+      "The entry turns the combinations formula into reusable Catalan and central-binomial infrastructure rather than a single isolated identity.",
+      "Verified tables and bounds make the result useful for downstream combinatorics entries that need small values or asymptotic estimates."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Defines `catalan n` as `Nat.centralBinom n / (n + 1)` and proves the initial values C_0 through C_5.",
+      "Proves `catalan_mul_succ`, `catalan_pos`, and monotonicity for positive indices.",
+      "Establishes central-binomial bounds including `centralBinom_le_four_pow` and `centralBinom_ge_two_pow`.",
+      "Proves the Catalan convolution recurrence in `catalan_convolution` for the verified Catalan sequence."
+    ],
+    "open": [
+      "The Aristotle companion file still contains exploratory sorry placeholders; the main `CombinationsFormulaOQ02.lean` evidence is the completed file used for this metadata entry."
+    ],
+    "goal": "Document the completed Catalan-number and central-binomial toolkit attached to the combinations formula family."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -59,7 +70,11 @@
   "tags": [
     "seeker-selected",
     "combinatorics",
-    "catalan-numbers"
+    "catalan-numbers",
+    "binomial-coefficients",
+    "central-binomial-coefficients",
+    "recurrences",
+    "completed"
   ],
   "relatedProofs": [
     "combinations-formula",

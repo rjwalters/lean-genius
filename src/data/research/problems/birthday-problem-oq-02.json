@@ -154,10 +154,33 @@
     "birthday-problem-oq-03-oq-01-oq-02",
     "birthday-problem-oq-03-oq-03"
   ],
-  "tags": [],
+  "tags": [
+    "probability",
+    "birthday-problem",
+    "collision-bounds",
+    "exponential-inequalities",
+    "finite-products",
+    "completed"
+  ],
   "problemStatement": {
-    "formal": "",
-    "plain": "Proves the asymptotic upper bound for the birthday collision probability: ∏(1-i/n) ≤ exp(-k(k-1)/(2n)). Fully proved from Mathlib with 0 axioms and 0 sorries, using the fundamental inequality 1-x ≤ exp(-x) and Gauss's summation formula.",
-    "whyMatters": []
+    "formal": "For k samples from d equally likely birthdays, P(collision) >= 1 - exp(-k*(k-1)/(2*d)), with explicit threshold consequences.",
+    "plain": "Proves an exponential lower bound for the birthday collision probability. The Lean development bounds the probability that all samples are distinct by applying 1 - x <= exp(-x), then turns that into a collision lower bound and a usable threshold theorem.",
+    "whyMatters": [
+      "The birthday paradox is a canonical example where collision risk grows much faster than linear intuition suggests.",
+      "The exponential estimate is the bridge from exact counting to practical probability bounds.",
+      "The formal proof reuses elementary inequalities and finite products, making it a compact probability-analysis case study."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`probAllDistinct_le_exp_sum` bounds the distinct-sample product by an exponential of a finite sum.",
+      "`probAllDistinct_le_exp` simplifies the exponent to the usual k*(k-1)/(2*d) form.",
+      "`probCollision_ge` derives the collision lower bound from the all-distinct estimate.",
+      "`collision_exceeds_target` packages a threshold condition guaranteeing collision probability above a target."
+    ],
+    "open": [
+      "Sibling birthday-problem entries cover other exact and asymptotic refinements; this metadata entry is scoped to the OQ02 exponential bound."
+    ],
+    "goal": "Expose the completed birthday-probability estimate and its threshold consequence."
   }
 }

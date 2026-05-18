@@ -92,10 +92,35 @@
     "fundamental-theorem-calculus-oq-01",
     "fundamental-theorem-calculus-oq-02"
   ],
-  "tags": [],
+  "tags": [
+    "analysis",
+    "fundamental-theorem-of-calculus",
+    "lebesgue-integration",
+    "absolute-continuity",
+    "measure-theory",
+    "a-e-differentiability",
+    "partial-proof"
+  ],
   "problemStatement": {
-    "formal": "",
-    "plain": "Formalizes the Lebesgue generalization of the Fundamental Theorem of Calculus. Defines absolutely continuous functions (not yet in Mathlib), states the Lebesgue FTC (AC → a.e. differentiable, integral of derivative = net change), and connects to Mathlib's Vitali covering theorem, Lebesgue density theorem, and monotone a.e. differentiability.",
-    "whyMatters": []
+    "formal": "For absolutely continuous F on [a,b], recover F(b)-F(a) as the integral of F' and connect the Lebesgue FTC to classical differentiability and monotone a.e. differentiability statements.",
+    "plain": "Develops the Lebesgue-version bridge for the Fundamental Theorem of Calculus. The file defines an `AbsolutelyContinuousOn` predicate, states the differentiability and integral directions of the Lebesgue FTC, connects them back to the classical FTC, and records monotone almost-everywhere differentiability.",
+    "whyMatters": [
+      "The classical FTC is a pointwise theorem; the Lebesgue FTC explains the measure-theoretic version used in modern analysis.",
+      "Absolute continuity is the right regularity condition for recovering a function from its derivative almost everywhere.",
+      "This entry marks the boundary between what is already in Mathlib and what still needs deeper measure-theory infrastructure."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Defines `AbsolutelyContinuousOn` for real-valued functions on intervals.",
+      "`classical_ftc_from_lebesgue` connects the Lebesgue FTC assumptions back to the classical endpoint identity.",
+      "`monotone_ae_differentiable` records the monotone-function differentiability bridge used by the file.",
+      "The file relates the entry to Vitali covering and Lebesgue density style infrastructure rather than treating FTC as only a calculus identity."
+    ],
+    "open": [
+      "The current proof file still contains two axioms for the Lebesgue FTC directions and one explicit sorry for Cantor-function infrastructure, so this is evidence-aware metadata rather than a claim of a closed proof.",
+      "A fully axiom-free version would need more Mathlib support for absolute continuity, a.e. differentiability, and singular functions."
+    ],
+    "goal": "Describe the current Lebesgue FTC bridge honestly, including the remaining axiomatized analysis dependencies."
   }
 }
