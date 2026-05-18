@@ -167,10 +167,34 @@
     "chinese-remainder-non-coprime-oq-03-oq-02",
     "chinese-remainder-non-coprime-oq-04"
   ],
-  "tags": [],
+  "tags": [
+    "number-theory",
+    "chinese-remainder-theorem",
+    "non-coprime-moduli",
+    "euclidean-domains",
+    "gcd",
+    "lcm",
+    "completed"
+  ],
   "problemStatement": {
-    "formal": "",
-    "plain": "Formal mathematical investigation: chinese-remainder-non-coprime-oq-03.",
-    "whyMatters": []
+    "formal": "For three moduli m1,m2,m3 over a Euclidean domain, pairwise congruence compatibility modulo gcd(mi,mj) is equivalent to solvability of the simultaneous non-coprime CRT system, with uniqueness modulo lcm(m1,m2,m3).",
+    "plain": "Extends the non-coprime Chinese remainder theorem from two moduli to three. The proof packages the exact compatibility conditions, shows they are sufficient for a common solution, proves the iff form, and records uniqueness modulo the combined lcm.",
+    "whyMatters": [
+      "The ordinary CRT assumes coprime moduli; practical congruence systems often have overlapping moduli.",
+      "The three-moduli case is the first place where pairwise gcd/lcm compatibility has to be managed carefully.",
+      "This file supplies reusable algebra for building larger finite CRT systems over Euclidean domains."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`ed_crt_three_sufficient` proves the pairwise gcd compatibility conditions imply existence of a common solution.",
+      "`ed_crt_three_iff` packages the three-moduli non-coprime CRT as an iff.",
+      "`ed_crt_three_unique` proves any two solutions are congruent modulo the lcm of the three moduli.",
+      "The file documents the gcd/lcm decomposition needed to bridge pairwise compatibility to the combined modulus."
+    ],
+    "open": [
+      "General list-length non-coprime CRT automation is handled by sibling entries; this entry is intentionally scoped to the three-moduli theorem."
+    ],
+    "goal": "Make the three-moduli non-coprime CRT evidence discoverable without editing proof-health counts."
   }
 }
