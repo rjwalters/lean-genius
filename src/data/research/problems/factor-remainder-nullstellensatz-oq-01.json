@@ -23,7 +23,7 @@
     "proven": [
       "Proofs/FactorRemainderNullstellensatzOQ01.lean wraps Mathlib's strong Nullstellensatz theorem vanishingIdeal_zeroLocus_eq_radical.",
       "The proof derives weak Nullstellensatz, a membership criterion, radical ideal correspondence, and V-I Galois connection corollaries.",
-      "Proof metadata records 81 lines, 5 theorems, 0 axioms, and 0 sorries."
+      "Proof metadata records 82 lines, 5 theorems, 0 axioms, and 0 sorries."
     ],
     "open": [
       "OQ02 is a separate entry with axiomatized parts; this OQ01 metadata describes only the fully verified Mathlib-backed bridge.",
@@ -40,7 +40,7 @@
       "V,I form an antitone Galois connection (also in Mathlib)"
     ],
     "builtItems": [
-      "FactorRemainderNullstellensatzOQ01.lean: 81 lines, 0 axioms, 0 sorries",
+      "FactorRemainderNullstellensatzOQ01.lean: 82 lines, 0 axioms, 0 sorries",
       "strong_nullstellensatz, weak_nullstellensatz, membership_criterion, radical_ideal_correspondence"
     ],
     "progressSummary": "COMPLETED: Fully verified Nullstellensatz via Mathlib. 0 axioms, 0 sorries."

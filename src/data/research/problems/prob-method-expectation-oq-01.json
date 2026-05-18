@@ -22,7 +22,7 @@
     "proven": [
       "Proofs/ProbMethodExpectationOQ01.lean constructs the finite uniform probability bridge and proves Finset expectation equals the Bochner integral.",
       "The file proves measure-theoretic first-moment, linearity via integral_add, and indicator expectation facts.",
-      "Proof metadata records 119 lines, 5 theorems, 2 definitions, 0 axioms, and 0 sorries."
+      "Proof metadata records 120 lines, 5 theorems, 2 definitions, 0 axioms, and 0 sorries."
     ],
     "open": [
       "The proof metadata lists IsProbabilityMeasure (uniformProbMeasure alpha) as a future improvement.",
@@ -39,7 +39,7 @@
       "First moment method needs Markov's inequality + integrability"
     ],
     "builtItems": [
-      "ProbMethodExpectationOQ01.lean: 119 lines, 0 axioms, 0 sorries, 5 theorems"
+      "ProbMethodExpectationOQ01.lean: 120 lines, 0 axioms, 0 sorries, 5 theorems"
     ],
     "progressSummary": "COMPLETED: Bridge from Finset to MeasureTheory. Proved linearity + indicator expectation."
   },
