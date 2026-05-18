@@ -1,40 +1,49 @@
 {
   "slug": "fourier-series-oq-01-oq-02",
-  "title": "Replace trigPoly_L2_approx axiom with Mathlib proof",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "trigPoly_L2_approx Mathlib-backed theorem",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "The Lean formalization of Carleson's theorem (`FourierSeriesOQ01.lean`) contains an axiom",
+    "formal": "theorem trigPoly_L2_approx : L2 approximation by trigonometric polynomials",
+    "plain": "COMPLETED: trigPoly_L2_approx in FourierSeriesOQ01.lean is now a proved theorem backed by Mathlib density results, not an axiom. The remaining OQ01 axioms are carlesonData and carleson_hunt_maximal.",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "trigPoly_L2_approx is a theorem in FourierSeriesOQ01.lean, proved from Mathlib Fourier-density infrastructure.",
+      "The theorem is used by the Carleson proof architecture in FourierSeriesOQ01.lean."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Replace the old trigPoly_L2_approx assumption with a Mathlib-backed theorem - DONE."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-04-05T10:57:13.647Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "COMPLETED",
+    "since": "2026-05-18T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Completed: trigPoly_L2_approx is proved in FourierSeriesOQ01.lean; the remaining axioms are the deep Carleson inputs.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None for this subproblem.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: trigPoly_L2_approx is no longer an axiom in FourierSeriesOQ01.lean. The current OQ01 target file has 860 lines, 17 theorem/lemma declarations, 6 definitions, 2 axioms, and 0 sorries.",
+    "builtItems": [
+      "trigPoly_L2_approx is proved in FourierSeriesOQ01.lean and used by the Carleson convergence proof.",
+      "Shared Fourier leanFiles metadata refreshed to the current 14-file FourierSeries* family."
+    ],
+    "insights": [
+      "Mathlib Fourier-density infrastructure supplies the trigonometric-polynomial L2 approximation needed by the Carleson proof architecture.",
+      "The remaining OQ01 axioms are carlesonData and carleson_hunt_maximal, both deep Carleson-Hunt inputs rather than density lemmas."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Knowledge Base: fourier-series-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nReplace the `trigPoly_L2_approx` axiom in `proofs/Proofs/FourierSeriesOQ01.lean` (line 233)\nwith a proved theorem using Mathlib's existing density results.\n\nThe axiom states that for any L² function f and ε > 0, there exists a trigonometric\npolynomial g such that ‖f - g‖_L² < ε. This is exactly the density of trigonometric\npolynomials in L²(T) — a classical result.\n\n**Key observation**: `proofs/Proofs/FourierSeries.lean` already uses `span_fourier_closure_eq_top`\nfrom Mathlib (line 258) to prove `span_fourier_dense`. This is the same density result.\nThe bridge from `span_fourier_closure_eq_top` to the approximation form in FourierSeriesOQ01\nis the main task.\n\n---\n\n## Insights\n\n- `Mathlib.Analysis.Fourier.AddCircle` contains `span_fourier_closure_eq_top` which asserts\n  that the span of Fourier monomials is dense in Lp(AddCircle T μ) for 1 ≤ p < ∞.\n- The main FourierSeries.lean (line 76) documents: `span_fourier_closure_eq_top` : density of\n  trigonometric polynomials.\n- FourierSeriesOQ01.lean also uses `trigPoly_L2_approx` (line 495) in the proof of Carleson's\n  theorem to approximate arbitrary L² functions by trig polynomials.\n- The strategy: use `dense_iff_closure_eq_top.mpr` + `span_fourier_closure_eq_top` to extract\n  an approximating sequence, then use L² norm bounds.\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "markdown": "# Knowledge Base: fourier-series-oq-01-oq-02\n\nCOMPLETED. `trigPoly_L2_approx` is now a theorem in `proofs/Proofs/FourierSeriesOQ01.lean`, backed by Mathlib Fourier-density infrastructure. The old axiom-replacement task is closed; the remaining OQ01 assumptions are the deep Carleson inputs `carlesonData` and `carleson_hunt_maximal`.\n"
   },
   "tags": [
     "fourier-analysis",
@@ -61,7 +70,7 @@
     "mathlib": []
   },
   "started": "2026-04-05T12:05:44.529Z",
-  "lastUpdate": "2026-04-05T17:20:37.384Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -90,9 +99,9 @@
     {
       "path": "Proofs/FourierSeriesOQ02.lean",
       "filename": "FourierSeriesOQ02.lean",
-      "lineCount": 487,
-      "theoremCount": 18,
-      "axiomCount": 1,
+      "lineCount": 496,
+      "theoremCount": 19,
+      "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
@@ -101,7 +110,7 @@
     {
       "path": "Proofs/FourierSeriesOQ02Incomplete01.lean",
       "filename": "FourierSeriesOQ02Incomplete01.lean",
-      "lineCount": 422,
+      "lineCount": 423,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
@@ -176,6 +185,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ03OQ02Aristotle.lean"
     },
     {
+      "path": "Proofs/FourierSeriesOQ02OQ04.lean",
+      "filename": "FourierSeriesOQ02OQ04.lean",
+      "lineCount": 420,
+      "theoremCount": 1,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ02OQ04.lean"
+    },
+    {
       "path": "Proofs/FourierSeriesOQ03.lean",
       "filename": "FourierSeriesOQ03.lean",
       "lineCount": 809,
@@ -196,6 +216,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04.lean"
+    },
+    {
+      "path": "Proofs/FourierSeriesOQ04OQ01.lean",
+      "filename": "FourierSeriesOQ04OQ01.lean",
+      "lineCount": 280,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 3,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FourierSeriesOQ04OQ01.lean"
     }
   ]
 }
