@@ -1,19 +1,31 @@
 {
   "slug": "collatz-cycles-oq-04",
-  "title": "[Problem Title]",
+  "title": "Collatz Cycle Product Equation",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\prod_{i=0}^{j-1} (3n_i+1) = 2^M\\prod_{i=0}^{j-1} n_i \\Longrightarrow 3^j < 2^M",
+    "plain": "Formalize the algebraic constraint that any Collatz cycle with j odd steps and M total halvings must satisfy a product equation, forcing the strict halving bound 3^j < 2^M.",
+    "whyMatters": [
+      "Cycle-product identities are a standard way to turn possible Collatz cycles into arithmetic constraints.",
+      "The formalization packages the general j-step argument instead of only checking small cycle lengths one case at a time."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`CycleConfig` encodes a finite Collatz cycle by its odd values, halving counts, positivity, oddness, and cyclic step relation.",
+      "`cyclicSucc`, `prod_perm_eq`, and `prod_two_pow` provide the finite-index product machinery used in the cycle calculation.",
+      "`cycle_product_equation` proves the main identity `prod_i (3*n_i+1) = 2^M * prod_i n_i`.",
+      "`prod_step_gt` and `halving_constraint` prove the strict bound `3^j < 2^M` for every valid cycle.",
+      "`odd_three_pow` and `no_power_eq` rule out equality between positive powers of 2 and powers of 3.",
+      "`cycle_M_gt_j` and the `min_halvings_j1` through `min_halvings_j4` corollaries give concrete lower bounds on total halvings."
+    ],
+    "open": [
+      "These constraints do not resolve the Collatz conjecture or rule out every nontrivial cycle."
+    ],
+    "goal": "Use the general product equation as the reusable algebraic backbone for later Collatz cycle exclusions."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -37,9 +49,10 @@
     "markdown": "# Knowledge Base: collatz-cycles-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "number-theory",
+    "dynamical-systems",
+    "collatz",
+    "cycles"
   ],
   "relatedProofs": [
     "collatz-cycles",

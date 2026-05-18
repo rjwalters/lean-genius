@@ -6,14 +6,27 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Infinitely Many Wolstenholme Primes.",
-    "whyMatters": []
+    "formal": "\\forall N : \\mathbb{N},\\ \\exists p > N,\\ \\operatorname{Prime}(p) \\land \\binom{2p-1}{p-1} \\equiv 1 \\pmod{p^4}",
+    "plain": "Study the conjecture that infinitely many primes p satisfy the Wolstenholme-prime congruence C(2p-1,p-1) = 1 mod p^4. The current formalization proves the finite/infinite dichotomy, verifies the known examples, and records the standard computational and Bernoulli-number inputs with explicit axioms where needed.",
+    "whyMatters": [
+      "Wolstenholme primes are rare exceptional primes connecting binomial congruences, Bernoulli numbers, and irregular-prime phenomena.",
+      "The file is a useful example of separating fully checked finite computation and logical consequences from still-open infinitude and search-bound inputs."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`choose_fast_eq` proves the fast binomial recurrence agrees with `Nat.choose`, enabling `cb_16843` by computation.",
+      "`isWP_16843`, `isWP_2124679`, and `at_least_two_wp` verify the two known Wolstenholme primes, with the larger binomial congruence carried by the explicit axiom `cb_2124679`.",
+      "`bounded_iff_not_infinite` and `infinite_iff_no_bound` formalize the dichotomy between infinitude and boundedness.",
+      "`bounded_implies_large`, `known_wps_bounded`, `third_wp_large`, and `wp_second_or_larger` derive lower-bound consequences for any finite list or third example.",
+      "`bernoulli_characterization` states the McIntosh Bernoulli-number criterion as an axiom.",
+      "`wp_satisfies_wolstenholme` and `wp_satisfies_babbage` derive the lower-modulus congruence consequences from the p^4 Wolstenholme-prime condition."
+    ],
+    "open": [
+      "The infinitude of Wolstenholme primes remains open.",
+      "The billion-bound search result and Bernoulli-number characterization are imported as named axioms rather than proved in this file."
+    ],
+    "goal": "Keep the completed computations and dichotomy lemmas usable while clearly separating them from the open infinitude conjecture."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -65,7 +78,11 @@
     ]
   },
   "tags": [
-    "seeker-selected"
+    "number-theory",
+    "primes",
+    "congruences",
+    "bernoulli-numbers",
+    "open-problem"
   ],
   "relatedProofs": [
     "wolstenholme-theorem",
