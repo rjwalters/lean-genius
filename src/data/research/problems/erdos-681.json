@@ -16,47 +16,35 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-01-14T19:46:33.193Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-05-18T11:20:09Z",
+    "iteration": 3,
+    "focus": "Surveyed least-prime-factor offset formalization and source-declaration risks.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Compile-check and repair general_constraint before using the source as proof-complete evidence.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Session 2 added witness parity constraints and residue class resolution. 27 theorems, 0 sorries, 0 axioms, 360 lines. Even offsets excluded as witnesses. d=1 resolved for primes p ≡ 2 (mod 3) with non-twin p+2.",
+    "progressSummary": "SURVEYED: 28 theorem declarations, 0 axioms, 0 sorries. The source contains least-prime-factor infrastructure and conditional reductions for composite successors, parity, and residue classes, but the original Erdos problem remains open and one theorem body needs compile-checking.",
     "builtItems": [
-      "k1_resolves_all_d: k=1 works for ALL d when n+1 composite (proved)",
-      "general_d1_at_composite_succ: d=1 generalization at composite successors (proved)",
-      "conjecture_at_composite_succ: d=2 conjecture at composite successors (proved)",
-      "hard_case_constraint: when k >= 2, forces k^(2d) < n+k (proved)",
-      "All 21 theorems fully proved, 0 sorries, 0 axioms",
-      "minFac_of_even: minFac = 2 for even m >= 4 (proved)",
-      "even_of_prime_succ: n even when n+1 is odd prime (proved)",
-      "even_offset_excluded: even k fails for d >= 1 when n even (proved)",
-      "witness_must_be_odd: k must be odd when n+1 is prime (proved)",
-      "d1_at_2_mod_3: d=1 via k=3 for primes p ≡ 2 mod 3 (proved)"
+      "Confirmed leastPrimeFactor and IsLeastPrimeFactor infrastructure is declared around minFac.",
+      "Confirmed the source declares conditional cases: k=1 for composite successors, d=0 triviality, parity exclusions, and d1_at_2_mod_3.",
+      "Confirmed current declaration counters are 28T/0A/0S, replacing stale 21/27-theorem prose."
     ],
     "insights": [
-      "k=1 trivially resolves the conjecture for ALL d whenever n+1 is composite (p(m) >= 2 > 1^d)",
-      "The conjecture is open ONLY for n where n+1 is prime (n = p-1 for some prime p)",
-      "For k >= 2: the constraint forces k^(2d) < n+k, bounding k to roughly n^(1/(2d))",
-      "The d=0 case is trivially true (k=n gives 2n composite, p(2n) >= 2 > 1)",
-      "Connected to problems 680 (p(n+k) > k^2+1) and 682 (rough numbers in prime gaps, solved by Gafni-Tao 2025)",
-      "Infrastructure is complete: leastPrimeFactor, IsLeastPrimeFactor, uniqueness, sqrt bound all proved from Mathlib",
-      "When n+1 is an odd prime (n >= 2), any witness k >= 2 must be odd: even offsets give minFac = 2 <= k^d",
-      "For primes p ≡ 2 (mod 3) with p+2 composite, k=3 witnesses d=1 since minFac(n+3) >= 5 > 3"
+      "The remaining mathematical difficulty is concentrated at n+1 prime; composite successors are already handled by k=1.",
+      "ErdosProblem681 and ErdosProblem681General are definitions, not proved theorem declarations.",
+      "The remaining mathematical difficulty is concentrated at n+1 prime; composite successors are handled conditionally by k=1.",
+      "general_constraint appears to reference an undefined hkd_pos name in source, so compile-check before treating the theorem body as accepted."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "The open part: prove existence of k for n with n+1 prime (requires sieve theory or prime gap bounds)",
-      "Connect to Cramér conjecture: if gaps are O(log²p), then k can be bounded",
-      "Investigate computational evidence for small n with n+1 prime"
+      "Compile-check Erdos681Problem.lean and repair general_constraint if hkd_pos is indeed unresolved.",
+      "Connect the prime-successor hard case to explicit prime-gap or rough-number hypotheses."
     ],
     "markdown": "# Erdős #681 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for all large $n$ there exists $k$ such that $n+k$ is composite and\\[p(n+k)>k^2,\\]where $p(m)$ is the least prime factor of $m$?\n\n\n\nRelated to questions of Erd\\H{o}s, Eggleton, and Selfridge. This may be true with $k^2$ replaced by $k^d$ for any $d$.\n\nSee also [680] and [682].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #680\n- Problem #682\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er7d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
@@ -74,14 +62,14 @@
     "mathlib": []
   },
   "started": "2026-01-14T19:46:33.194Z",
-  "lastUpdate": "2026-03-24T15:00:00Z",
+  "lastUpdate": "2026-05-18T11:20:09Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos681Problem.lean",
       "filename": "Erdos681Problem.lean",
-      "lineCount": 363,
+      "lineCount": 362,
       "theoremCount": 28,
       "axiomCount": 0,
       "defCount": 4,
