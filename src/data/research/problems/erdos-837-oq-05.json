@@ -1,8 +1,8 @@
 {
   "slug": "erdos-837-oq-05",
-  "title": "Strengthen IsDensityJump with liminf formulation",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "title": "Hypergraph Density Jumps: Liminf Formulation",
+  "phase": "ACT",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -13,12 +13,15 @@
     ]
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ACT",
     "since": "2026-04-13",
     "iteration": 1,
-    "focus": "Definition strengthening",
-    "blockers": [],
-    "nextAction": "None",
+    "focus": "Axiomatized/open liminf formulation: primary file has 5 public theorem/lemma declarations, 1 axiom, 1 sorry, 149 lines.",
+    "blockers": [
+      "erdos_stone_simonovits is still an axiom in the primary OQ5 file.",
+      "zero_is_jump still contains one sorry for the supersaturation step."
+    ],
+    "nextAction": "Discharge zero_is_jump via a supersaturation argument or keep the entry marked active/axiomatized.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -26,28 +29,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Erdos837ProblemOQ05.lean - 146 lines, strengthened IsDensityJump with Filter.liminf. 1 axiom (ESS theorem), 1 sorry (supersaturation).",
+    "progressSummary": "ACTIVE/AXIOMATIZED: Erdos837ProblemOQ05.lean strengthens IsDensityJump with a Filter.liminf formulation, but the source is not complete: it has 1 axiom and 1 sorry in 149 lines.",
     "builtItems": [
-      "Erdos837ProblemOQ05.lean:48 IsDensityJumpLiminf (strengthened definition)",
-      "Erdos837ProblemOQ05.lean:78 liminf_implies_original",
-      "Erdos837ProblemOQ05.lean:92 turanDensity"
+      "Erdos837ProblemOQ05.lean:51 IsDensityJumpLiminf strengthened definition",
+      "Erdos837ProblemOQ05.lean:79 liminf_implies_original theorem",
+      "Erdos837ProblemOQ05.lean:89 turanDensity definition",
+      "Erdos837Problem.lean retained as direct parent/context import"
     ],
     "insights": [
-      "Filter.liminf from Mathlib.Order.LiminfLimsup handles the liminf of sequences naturally",
-      "The subhypergraph relation in the counting model is just vertex/edge count bounds",
-      "A_2 characterization (ESS theorem) gives the complete picture for graphs but A_3 remains open"
+      "Filter.liminf from Mathlib.Order.LiminfLimsup is the right formulation for the density-jump limit condition.",
+      "The graph case is represented through an Erdos-Stone-Simonovits axiom rather than a completed local proof.",
+      "The A_3 density-jump landscape remains open and should not be presented as a completed result."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove zero_is_jump via supersaturation",
-      "Use typed hypergraph structures"
+      "Prove zero_is_jump via supersaturation.",
+      "Replace erdos_stone_simonovits with a formal proof or a cited Mathlib theorem if one becomes available."
     ]
   },
   "tags": [
     "combinatorics",
     "density",
-    "number-theory",
-    "seeker-selected"
+    "hypergraphs",
+    "open-question"
   ],
   "relatedProofs": [
     "erdos-8",
@@ -57,8 +61,13 @@
   ],
   "references": {
     "papers": [],
-    "urls": [],
-    "mathlib": []
+    "urls": [
+      "https://erdosproblems.com/837"
+    ],
+    "mathlib": [
+      "Filter.liminf",
+      "Mathlib.Order.LiminfLimsup"
+    ]
   },
   "started": "2026-04-13T18:00:00Z",
   "lastUpdate": "2026-04-13T18:30:00Z",
@@ -66,26 +75,26 @@
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos837Problem.lean",
-      "filename": "Erdos837Problem.lean",
-      "lineCount": 79,
-      "theoremCount": 0,
-      "axiomCount": 0,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos837Problem.lean"
-    },
-    {
       "path": "Proofs/Erdos837ProblemOQ05.lean",
       "filename": "Erdos837ProblemOQ05.lean",
-      "lineCount": 150,
+      "lineCount": 149,
       "theoremCount": 5,
       "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos837ProblemOQ05.lean"
+    },
+    {
+      "path": "Proofs/Erdos837Problem.lean",
+      "filename": "Erdos837Problem.lean",
+      "lineCount": 78,
+      "theoremCount": 0,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos837Problem.lean"
     }
   ]
 }

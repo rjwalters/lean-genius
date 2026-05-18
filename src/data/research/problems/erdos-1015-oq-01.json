@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1015-oq-01",
-  "title": "What are the exact values of $f(t)$ for small $t \\ge 4$",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "title": "Erdos #1015 OQ1: Exact Values of f(t) for Small t >= 4",
+  "phase": "ACT",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -15,27 +15,28 @@
   },
   "knownResults": {
     "proven": [
-      "f(4) ∈ {9, 10, 11, 12} via R(4,3) = 9 and BES",
-      "f(5) ∈ {25, 26, 27, 28, 29} via R(5,4) = 25 and BES",
-      "Moon-BES consistency: f(3) = R(3,2) + 1 = 4",
-      "f(t) ≥ 2^{(t-2)/2} (exponential growth)",
-      "f(t)^{1/t} → 4 ≠ 1 (answers Erdős Q1)",
-      "f(t) ≠ O(t) (answers Erdős Q2)",
-      "BES window width: f(t) - R(t,t-1) < t"
+      "From the stated axioms, f(4) lies in the BES window {9, 10, 11, 12}.",
+      "From the stated axioms, f(5) lies in the BES window {25, 26, 27, 28, 29}.",
+      "From the stated axioms, f(t) has exponential lower growth and is not O(t).",
+      "The Lean source has 25 public theorem/lemma declarations and 0 sorries."
     ],
     "open": [
-      "Exact BES remainder x for f(4): is it 0, 1, 2, or 3?",
-      "Exact BES remainder x for f(5): is it 0, 1, 2, 3, or 4?"
+      "The 12 primary axioms remain to be eliminated or justified.",
+      "Exact BES remainder for f(4).",
+      "Exact BES remainder for f(5)."
     ],
-    "goal": "Compute tight BES windows and resolve Erdős's growth questions"
+    "goal": "Formalize and de-axiomatize exact small-t information for the clique-partition function f(t)."
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ACT",
     "since": "2026-03-25T08:30:00.000Z",
     "iteration": 1,
-    "focus": "Proof completed: 25 theorems, 12 axioms, 0 sorries, 282 lines.",
-    "blockers": [],
-    "nextAction": "PR created. Exact BES remainders for t ≥ 4 remain open for future work.",
+    "focus": "Axiomatized/open formalization: 25 public theorem/lemma declarations, 12 axioms, 0 sorries, 282 lines.",
+    "blockers": [
+      "The primary OQ1 file still depends on 12 axioms.",
+      "Exact BES remainders for f(4) and f(5) remain open."
+    ],
+    "nextAction": "Reduce the OQ1 axiom set or formalize exact BES remainders; do not present this as a fully de-axiomatized proof.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -43,37 +44,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: All BES window computations proved, both Erdős questions resolved. 25 theorems from 12 axioms, 0 sorries.",
+    "progressSummary": "ACTIVE/AXIOMATIZED: OQ1 formalizes BES-window consequences and growth statements from 12 axioms. The Lean file has 25 public theorem/lemma declarations and 0 sorries, but the exact small-t values and de-axiomatization remain open.",
     "builtItems": [
-      "Erdos1015OQ01.lean: f_lower_bound, f_upper_bound, bes_remainder_bound (BES consequences)",
-      "Erdos1015OQ01.lean: moon_bes_consistent, bes_remainder_three, f_3_bes_decomposition (Moon-BES)",
-      "Erdos1015OQ01.lean: f_4_ge, f_4_le, f_4_in_range, f_4_bes_decomposition (f(4) bounds)",
-      "Erdos1015OQ01.lean: f_5_ge, f_5_le, f_5_in_range, f_5_bes_decomposition (f(5) bounds)",
-      "Erdos1015OQ01.lean: f_exponential_lower (exponential growth)",
-      "Erdos1015OQ01.lean: f_root_not_one, f_superlinear (Erdős answers)",
-      "Erdos1015OQ01.lean: bes_window_width, bes_relative_width_bound (window analysis)",
+      "Erdos1015OQ01.lean: 282 lines, 25 public theorem/lemma declarations, 12 axioms, 0 sorries",
+      "BES-window consequences for f(4) and f(5)",
+      "Moon-BES consistency and exponential-growth consequences",
       "Gallery entry: src/data/proofs/erdos-1015-oq-01/meta.json"
     ],
     "insights": [
-      "BES formula reduces f(t) from exponential uncertainty to a window of width t",
-      "Moon-BES consistency check: f(3) = 4 corresponds to BES remainder x = 1",
-      "Limit uniqueness in Hausdorff spaces (tendsto_nhds_unique) elegantly resolves the root question",
-      "omega tactic handles all BES arithmetic consequences directly",
-      "exact_mod_cast bridges ℕ/ℝ for the exponential lower bound chain"
+      "The formal consequences are proved from axioms; they should not be read as unconditional Mathlib-only proofs.",
+      "BES reduces exact values to small remainder windows rather than resolving the exact remainders.",
+      "The primary OQ1 file does not import OQ5 or the parent problem file, so sibling files should not be counted in this record.",
+      "OQ5 is a separate axiom-elimination slice for the broader Erdos #1015 family."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Future: determine exact BES remainder for f(4) via extremal coloring analysis",
-      "Future: computational SAT-solver approach for small BES remainders"
+      "Eliminate or justify the 12 primary OQ1 axioms.",
+      "Determine exact BES remainders for f(4) and f(5)."
     ]
   },
   "tags": [
     "erdos",
     "graph-theory",
-    "ramsey",
+    "ramsey-theory",
     "clique-partition",
-    "coloring",
-    "seeker-selected"
+    "combinatorics",
+    "research"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -108,35 +104,13 @@
     {
       "path": "Proofs/Erdos1015OQ01.lean",
       "filename": "Erdos1015OQ01.lean",
-      "lineCount": 283,
+      "lineCount": 282,
       "theoremCount": 25,
       "axiomCount": 12,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1015OQ01.lean"
-    },
-    {
-      "path": "Proofs/Erdos1015OQ05.lean",
-      "filename": "Erdos1015OQ05.lean",
-      "lineCount": 354,
-      "theoremCount": 11,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1015OQ05.lean"
-    },
-    {
-      "path": "Proofs/Erdos1015Problem.lean",
-      "filename": "Erdos1015Problem.lean",
-      "lineCount": 150,
-      "theoremCount": 2,
-      "axiomCount": 2,
-      "defCount": 9,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1015Problem.lean"
     }
   ]
 }

@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1015-oq-05",
-  "title": "Can any of the 8 axioms (Moon's theorem, Ramsey bounds, BES formula, asymptotics) be proved from Mathlib?",
+  "title": "Erdos #1015 OQ5: Axiom Elimination via Erdos-Szekeres Bound",
   "phase": "COMPLETED",
-  "status": "completed",
+  "status": "graduated",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -28,9 +28,9 @@
     "phase": "COMPLETED",
     "since": "2026-03-30T07:30:00Z",
     "iteration": 1,
-    "focus": "Proved 2/8 axioms eliminable. Created Erdos1015OQ05.lean with 12 theorems, 0 axioms, 0 sorries.",
+    "focus": "Primary OQ5 proof completed: 11 public theorem/lemma declarations, 0 axioms, 0 sorries, 353 lines.",
     "blockers": [],
-    "nextAction": "None — completed.",
+    "nextAction": "None - completed.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -38,28 +38,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 2 of 8 axioms eliminated. ramseyNumber replaced with Nat.find definition, ramsey_upper_bound proved via Erdős-Szekeres bound. Remaining 6 are deep results.",
+    "progressSummary": "COMPLETED: OQ5 eliminates two local Ramsey axioms in the primary Lean file. ramseyNumber is replaced by a Nat.find definition, and the Erdos-Szekeres upper bound is proved in Lean; the primary file has 11 public theorem/lemma declarations, 0 axioms, and 0 sorries.",
     "builtItems": [
-      "Erdos1015OQ05.lean: 347 lines, 12 theorems, 0 axioms, 0 sorries",
+      "Erdos1015OQ05.lean: 353 lines, 11 public theorem/lemma declarations, 0 axioms, 0 sorries",
+      "ramseyNumber replacement via Nat.find on Ramsey existence",
+      "ramsey_upper_bound proof via the Erdos-Szekeres binomial bound",
       "Gallery entry: src/data/proofs/erdos-1015-oq-05/meta.json"
     ],
     "insights": [
-      "ramseyNumber axiom is a definition placeholder — Nat.find on Ramsey existence gives proper definition",
-      "Erdős-Szekeres bound follows from pigeonhole induction with Pascal's rule for binomial coefficients",
-      "C(n,k) ≤ 2^n bridges combinatorial to exponential bounds",
-      "Remaining 6 axioms all require deep Ramsey-theoretic machinery beyond Mathlib"
+      "The primary OQ5 file is axiom-free; its Ramsey infrastructure comes through local RamseysTheorem support rather than the sibling OQ1 file.",
+      "Nat.find packages existence of Ramsey numbers as a definition instead of an axiom.",
+      "The Erdos-Szekeres bound follows from the standard pigeonhole induction and Pascal identity for binomial coefficients.",
+      "The broader Erdos #1015 family is not fully de-axiomatized by this slice."
     ],
     "mathlibGaps": [
-      "No formal ramseyNumber in Mathlib (we define our own via Nat.find on RamseysTheorem)",
-      "Mathlib has Nat.choose and Nat.sum_range_choose but no explicit Erdős-Szekeres bound theorem"
+      "No canonical Mathlib ramseyNumber API matching this file; the proof defines the needed number locally.",
+      "No direct Mathlib theorem for the exact Erdos-Szekeres Ramsey upper bound in this form."
     ],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-1015-oq-05\n\n## Axiom Elimination Results\n\n| # | Axiom | Status | Reason |\n|---|-------|--------|--------|\n| 1 | ramseyNumber | ELIMINATED | Defined via Nat.find |\n| 2 | ramsey_upper_bound | ELIMINATED | Proved: R(r,s) ≤ C(r+s-2,r-1) ≤ 4^t |\n| 3 | moon_f3 | REMAINS | Deep: Moon (1966) triangle packing |\n| 4 | moon_f3_n | REMAINS | Deep: uniform Moon theorem |\n| 5 | erdos_ramsey_bound | REMAINS | Connects f(t) to R(t,t) |\n| 6 | burr_erdos_spencer | REMAINS | Full BES (1975) argument |\n| 7 | f_root_limit | REMAINS | Asymptotic analysis |\n| 8 | f_not_linear | REMAINS | Needs superlinear lower bound |\n"
   },
   "tags": [
-    "axiom-elimination",
+    "erdos",
+    "graph-theory",
+    "combinatorics",
     "ramsey-theory",
-    "erdos-szekeres"
+    "axiom-elimination",
+    "erdos-szekeres",
+    "research"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -72,49 +78,33 @@
   ],
   "references": {
     "papers": [
-      "Erdős-Szekeres (1935): R(r,s) ≤ C(r+s-2, r-1)"
+      "Erdos and Szekeres (1935): A combinatorial problem in geometry",
+      "Erdos (1947): Some remarks on the theory of graphs",
+      "Campos, Griffiths, Morris, and Sahasrabudhe (2023): An exponential improvement for diagonal Ramsey",
+      "McKay and Radziszowski (1995): R(4,5) = 25"
     ],
-    "urls": [],
+    "urls": [
+      "https://erdosproblems.com/1015"
+    ],
     "mathlib": [
-      "Nat.choose_succ_succ (Pascal's rule)",
-      "Nat.sum_range_choose (row sum = 2^n)"
+      "Nat.find and Nat.find_spec",
+      "Nat.choose_succ_succ",
+      "Nat.sum_range_choose"
     ]
   },
   "started": "2026-03-29T23:39:51-07:00",
   "completed": "2026-03-30T07:30:00Z",
   "leanFiles": [
     {
-      "path": "Proofs/Erdos1015OQ01.lean",
-      "filename": "Erdos1015OQ01.lean",
-      "lineCount": 283,
-      "theoremCount": 25,
-      "axiomCount": 12,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1015OQ01.lean"
-    },
-    {
       "path": "Proofs/Erdos1015OQ05.lean",
       "filename": "Erdos1015OQ05.lean",
-      "lineCount": 354,
+      "lineCount": 353,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1015OQ05.lean"
-    },
-    {
-      "path": "Proofs/Erdos1015Problem.lean",
-      "filename": "Erdos1015Problem.lean",
-      "lineCount": 150,
-      "theoremCount": 2,
-      "axiomCount": 2,
-      "defCount": 9,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1015Problem.lean"
     }
   ],
   "lastUpdate": "2026-03-30T07:30:00Z"

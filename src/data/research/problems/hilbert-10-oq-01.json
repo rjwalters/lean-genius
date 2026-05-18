@@ -1,8 +1,8 @@
 {
   "slug": "hilbert-10-oq-01",
-  "title": "Is Hilbert 10th problem decidable over the rationals?",
-  "phase": "COMPLETED",
-  "status": "completed",
+  "title": "Hilbert's 10th Problem over the Rationals (Open)",
+  "phase": "ACT",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,12 +16,15 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-30T21:46:38.029Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Axiomatized survey of the open H10/Q problem: 0 primary theorems, 2 axioms, 0 sorries, 186 lines.",
+    "blockers": [
+      "Hilbert 10 over Q remains mathematically open.",
+      "The key reduction depends on unsettled Diophantine definability over Q and related Mazur-style obstructions."
+    ],
+    "nextAction": "Keep as an active/open axiomatized survey unless a new formal reduction or theorem becomes available.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,33 +32,44 @@
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED: Formalized open problem H10/Q. Defined rational Diophantine equations, stated key reduction, documented Mazur conjecture and partial results.",
+    "progressSummary": "ACTIVE/AXIOMATIZED: The primary file formalizes the open Hilbert 10 over Q landscape with 8 definitions, 2 axioms, 0 public theorems, and 0 sorries. It is a survey/formal statement entry, not a completed proof.",
     "builtItems": [
-      "Created Hilbert10OQ01.lean with H10/Q formalization",
+      "Hilbert10OQ01.lean: 186 lines, 0 public theorem/lemma declarations, 2 axioms, 8 defs, 0 sorries",
       "Defined H10_Rational_Decidable and IntegersDiophantineOverQ",
-      "Created gallery entry"
+      "Recorded the standard reduction from Diophantine definability of Z over Q to undecidability over Q",
+      "Gallery entry: src/data/proofs/hilbert-10-oq-01/meta.json"
     ],
     "insights": [
-      "H10/Q is genuinely OPEN",
-      "Key reduction: Z Diophantine/Q implies H10/Q undecidable",
-      "Mazur conjecture blocks the reduction",
-      "Koenigsmann 2016: Z is forall-exists-definable in Q"
+      "Hilbert 10 over Q is genuinely open.",
+      "A Diophantine definition of Z over Q would imply undecidability of H10/Q.",
+      "Mazur-style conjectures and known definability results frame the obstruction but do not settle the problem.",
+      "The integer Hilbert10.lean file is contextual support, not the primary rational-open-problem proof."
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Track formal progress on Diophantine definability of Z over Q.",
+      "Avoid marking this entry graduated unless the two primary axioms are replaced by theorems."
+    ]
   },
   "tags": [
-    "seeker-selected",
     "computability",
     "number-theory",
-    "hilbert"
+    "hilbert",
+    "diophantine",
+    "open-problem"
   ],
   "relatedProofs": [
     "hilbert-10",
     "hilbert-10-oq-01"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Matiyasevich (1970): Enumerable sets are Diophantine",
+      "Davis, Putnam, and Robinson (1961): The decision problem for exponential Diophantine equations",
+      "Mazur (1992): The topology of rational points",
+      "Poonen (2009): The set of nonsquares in a number field is Diophantine",
+      "Koenigsmann (2016): Defining Z in Q"
+    ],
     "urls": [],
     "mathlib": []
   },
@@ -65,20 +79,9 @@
   "tractability": 4,
   "leanFiles": [
     {
-      "path": "Proofs/Hilbert10.lean",
-      "filename": "Hilbert10.lean",
-      "lineCount": 239,
-      "theoremCount": 7,
-      "axiomCount": 4,
-      "defCount": 12,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Hilbert10.lean"
-    },
-    {
       "path": "Proofs/Hilbert10OQ01.lean",
       "filename": "Hilbert10OQ01.lean",
-      "lineCount": 187,
+      "lineCount": 186,
       "theoremCount": 0,
       "axiomCount": 2,
       "defCount": 8,

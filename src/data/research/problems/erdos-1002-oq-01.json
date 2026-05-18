@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1002-oq-01",
-  "title": "Asymptotic distribution of Diophantine approximation function f(α,n)",
+  "title": "Erdos #1002 OQ-01: Proving Cauchy CDF and Periodic Sum Axioms",
   "phase": "COMPLETED",
-  "status": "completed",
+  "status": "graduated",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -29,9 +29,9 @@
     "phase": "COMPLETED",
     "since": "2026-03-29T15:35:00.000Z",
     "iteration": 1,
-    "focus": "Axiom elimination via Mathlib proofs",
+    "focus": "Primary OQ1 axiom-elimination slice completed: 2 public theorem/lemma declarations, 0 axioms, 0 sorries, 140 lines.",
     "blockers": [],
-    "nextAction": "Integrate proved theorems into parent file to replace axioms",
+    "nextAction": "None for this OQ1 slice; companion and parent files track the remaining open Erdos #1002 work.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -39,31 +39,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved 2 axioms from Erdős #1002. cauchy_is_distribution via arctan monotonicity/limits. innerSum_periodic_rational via fract(x+n)=fract(x) and cyclic sum induction.",
+    "progressSummary": "COMPLETED: The primary OQ1 file proves the Cauchy CDF and rational-periodic inner-sum axioms in Lean. It has 2 public theorem/lemma declarations, 0 axioms, and 0 sorries; the separate OQ01-OQ01 companion and parent open problem should not drive this record status.",
     "builtItems": [
-      "Erdos1002OQ01.lean: cauchy_is_distribution theorem (was axiom)",
-      "Erdos1002OQ01.lean: innerSum_periodic_rational theorem (was axiom)",
-      "Erdos1002OQ01.lean: cyclic_sum_periodic helper lemma",
-      "Erdos1002OQ01.lean: deviation_add_int helper lemma",
+      "Erdos1002OQ01.lean: 140 lines, 2 public theorem/lemma declarations, 0 axioms, 0 sorries",
+      "cauchy_is_distribution theorem",
+      "innerSum_periodic_rational theorem",
+      "cyclic_sum_periodic and deviation_add_int helper lemmas",
       "Gallery data: src/data/proofs/erdos-1002-oq-01/"
     ],
     "insights": [
-      "arctan_strictMono from Mathlib provides monotonicity; compose with positive scaling for the Cauchy CDF",
-      "tendsto_arctan_atTop/atBot give π/2 and -π/2 limits; 1/π * (±π/2) + 1/2 = {1,0}",
-      "Fractional part periodicity: fract(x+n) = fract(x) for integer n, giving deviation period q for rational p/q",
-      "Cyclic sum invariance: ∑g(n+k) = ∑g(k) for periodic g, proved by induction using sum_range_succ/succ'"
+      "arctan monotonicity and endpoint limits in Mathlib give the Cauchy CDF proof.",
+      "Fractional-part periodicity for rational shifts gives the inner-sum periodicity theorem.",
+      "The parent Erdos #1002 conjecture remains open, but this record is only the completed two-theorem axiom-elimination slice."
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Replace axioms in parent Erdos1002Problem.lean with imports from this file",
-      "Consider proving weyl_equidistribution if Mathlib has sufficient Fourier analysis"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "analysis",
     "diophantine-approximation",
     "erdos",
-    "seeker-selected",
+    "distribution-functions",
     "axiom-elimination"
   ],
   "relatedProofs": [
@@ -75,8 +71,14 @@
     "erdos-1002-oq-01-oq-01"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Kesten (1960): On a conjecture of Erdos and Szusz related to uniform distribution mod 1",
+      "Weyl (1916): Uber die Gleichverteilung von Zahlen mod. Eins",
+      "Beck (2014): Probabilistic Diophantine approximation"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1002"
+    ],
     "mathlib": [
       "Real.arctan_strictMono",
       "Real.tendsto_arctan_atTop",
@@ -94,46 +96,13 @@
     {
       "path": "Proofs/Erdos1002OQ01.lean",
       "filename": "Erdos1002OQ01.lean",
-      "lineCount": 141,
+      "lineCount": 140,
       "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002OQ01.lean"
-    },
-    {
-      "path": "Proofs/Erdos1002OQ01OQ01.lean",
-      "filename": "Erdos1002OQ01OQ01.lean",
-      "lineCount": 706,
-      "theoremCount": 8,
-      "axiomCount": 1,
-      "defCount": 4,
-      "sorryCount": 3,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002OQ01OQ01.lean"
-    },
-    {
-      "path": "Proofs/Erdos1002OQ01OQ01Aristotle.lean",
-      "filename": "Erdos1002OQ01OQ01Aristotle.lean",
-      "lineCount": 94,
-      "theoremCount": 6,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002OQ01OQ01Aristotle.lean"
-    },
-    {
-      "path": "Proofs/Erdos1002Problem.lean",
-      "filename": "Erdos1002Problem.lean",
-      "lineCount": 190,
-      "theoremCount": 2,
-      "axiomCount": 1,
-      "defCount": 11,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1002Problem.lean"
     }
   ]
 }

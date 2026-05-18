@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1027-oq-01",
   "title": "Erdős #1027 OQ-01: Union Bound Lower Bound on Good Sets",
-  "phase": "ACT",
-  "status": "completed",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "B",
   "path": "full",
   "significance": 7,
@@ -18,51 +18,45 @@
   },
   "knownResults": {
     "proven": [
-      "card_subsets_missing: |{B ⊆ X : Disjoint B A}| = 2^{|X|−|A|} (proved via Finset.subset_sdiff bijection)",
-      "card_bad_bound: |bad-due-to-A| ≤ 2·2^{|X|−|A|} (proved via Finset.card_union_le)",
-      "property_b_from_union_bound: corollary via good_set_lower_bound + nlinarith"
+      "card_subsets_missing: the subsets disjoint from A are counted by (X \\ A).powerset",
+      "card_subsets_containing: the subsets containing A are counted by complementing inside X",
+      "card_bad_bound: bad sets contributed by one A are bounded by 2 * 2^(|X|-|A|)",
+      "good_set_lower_bound: 2^|X| <= |goodSets F| + |F| * 2^(|X|-n+1)",
+      "property_b_from_union_bound: the classical union-bound corollary"
     ],
     "open": [
-      "card_subsets_containing: bijection via B ↦ X \\ B (3 sorries)",
-      "hbad_bound: total bad ≤ |F|·2·2^{|X|−n} (needs partitioning argument)",
-      "hgood_bad: good + bad = 2^|X| (needs partition of X.powerset)"
+      "The separate main Chan theorem in the shared parent file remains represented by an external axiom."
     ],
-    "goal": "Prove good_set_lower_bound: 2^|X| ≤ |goodSets F| + |F| · 2^{|X|−n+1}"
+    "goal": "Prove the OQ1 union-bound lower bound on good sets."
   },
   "currentState": {
-    "blockers": [
-      "card_subsets_containing: requires Finset.card_bij or image_eq approach for the involution B ↦ X \\ B",
-      "hgood_bad: partition argument needs IsGoodSet ↔ ¬bad formalization and disjointness proof",
-      "hbad_bound: union bound over F needs Finset.sum_card_inter_filter or biUnion approach"
-    ]
+    "blockers": [],
+    "phase": "COMPLETED",
+    "focus": "Primary OQ1 union-bound proof completed: 5 public theorem/lemma declarations, 0 axioms, 0 sorries, 183 lines.",
+    "nextAction": "None - completed for the OQ1 union-bound slice.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: All 3 sorries proved. card_subsets_containing via Finset.card_bij + sdiff_sdiff_cancel_left involution. hbad_bound via biUnion + card_biUnion_le + sum_le_sum. hgood_bad via disjoint filter partition. property_b_from_union_bound corollary also proved. 183 lines, 0 sorries, 0 axioms.",
+    "progressSummary": "COMPLETE: The OQ1 union-bound lower bound is fully proved in Erdos1027OQ01.lean with 5 public theorem/lemma declarations, 0 local axioms, and 0 sorries. The shared parent file remains as the imported problem context.",
     "insights": [
-      "card_subsets_missing proved cleanly: filter (Disjoint · A) X.powerset = (X \\ A).powerset via Finset.subset_sdiff",
-      "card_bad_bound follows immediately from card_union_le + both component counts = 2^{|X|-|A|}",
-      "The corollary property_b_from_union_bound uses pow_add to relate 2^{|X|-n+1} and 2^{|X|}, then nlinarith",
-      "The sorries hbad_bound and hgood_bad are the structural crux: they encode the partition of X.powerset into good and bad sets"
+      "card_subsets_containing is resolved by the subset-complement involution inside the primary proof.",
+      "The bad-set estimate is handled by the union-bound argument over the family F.",
+      "The good/bad partition over X.powerset is formalized, so the previous structural blockers are no longer open for OQ1.",
+      "OQ03 and Aristotle files are sibling/companion work and should not drive this record status."
     ],
     "builtItems": [
-      "card_subsets_missing lemma: filter proof via subset_sdiff (Erdos1027OQ01.lean:50-54)",
-      "card_subsets_containing lemma stub: sorry with detailed comment (Erdos1027OQ01.lean:60-62)",
-      "card_bad_bound lemma: proved via card_union_le (Erdos1027OQ01.lean:65-72)",
-      "good_set_lower_bound theorem: structure with 3 steps, 2 sorries (Erdos1027OQ01.lean:82-98)",
-      "property_b_from_union_bound corollary: fully proved (Erdos1027OQ01.lean:103-119)",
-      "Gallery entry created: src/data/proofs/erdos-1027-oq-01/ (meta.json, index.ts, annotations.json)"
+      "Erdos1027OQ01.lean: 183 lines, 5 public theorem/lemma declarations, 0 axioms, 0 sorries",
+      "card_subsets_containing proof via complement bijection",
+      "good_set_lower_bound theorem and property_b_from_union_bound corollary",
+      "Direct import/context file retained: Erdos1027Problem.lean"
     ],
-    "mathlibGaps": [
-      "Finset.card_bij or Finset.card_image_of_injOn for the B ↦ X \\ B involution proof",
-      "Finset.card_biUnion for the union bound sum over F (hbad_bound)"
-    ],
-    "nextSteps": [
-      "Submit card_subsets_containing to Aristotle (HARD sorry — bijection via B ↦ X \\ B)",
-      "Submit hbad_bound to Aristotle (HARD sorry — union bound sum over F)",
-      "Submit hgood_bad to Aristotle (HARD sorry — partition of X.powerset)",
-      "Consider alternative: use Finset.card_sdiff_add_card_eq_card for hgood_bad"
-    ],
-    "phase": "ACT"
+    "mathlibGaps": [],
+    "nextSteps": [],
+    "phase": "COMPLETED"
   },
   "tags": [
     "erdos",
@@ -97,20 +91,9 @@
   "started": "2026-04-13T00:00:00Z",
   "leanFiles": [
     {
-      "path": "Proofs/Erdos1027Aristotle.lean",
-      "filename": "Erdos1027Aristotle.lean",
-      "lineCount": 50,
-      "theoremCount": 1,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 1,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1027Aristotle.lean"
-    },
-    {
       "path": "Proofs/Erdos1027OQ01.lean",
       "filename": "Erdos1027OQ01.lean",
-      "lineCount": 184,
+      "lineCount": 183,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 0,
@@ -119,24 +102,13 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1027OQ01.lean"
     },
     {
-      "path": "Proofs/Erdos1027OQ03.lean",
-      "filename": "Erdos1027OQ03.lean",
-      "lineCount": 309,
-      "theoremCount": 17,
-      "axiomCount": 0,
-      "defCount": 5,
-      "sorryCount": 1,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1027OQ03.lean"
-    },
-    {
       "path": "Proofs/Erdos1027Problem.lean",
       "filename": "Erdos1027Problem.lean",
-      "lineCount": 354,
+      "lineCount": 353,
       "theoremCount": 10,
       "axiomCount": 1,
       "defCount": 10,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1027Problem.lean"
     }
