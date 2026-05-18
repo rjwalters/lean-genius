@@ -25,7 +25,7 @@
     "phase": "COMPLETED",
     "since": "2026-04-04T00:00:00.000Z",
     "iteration": 1,
-    "focus": "Completed: GreensTheoremOQ02.lean compiles, 0 sorries, 19 theorems, 1 axiom.",
+    "focus": "Completed: GreensTheoremOQ02.lean compiles, 0 sorries, 1 axiom, and 21 extractor-counted theorem/lemma lines.",
     "blockers": [],
     "nextAction": "Explore BV (bounded variation) regularity as next weakening.",
     "attemptCounts": {
@@ -35,13 +35,13 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries, 19 theorems, 1 axiom (greens_theorem_l1curl = Whitney 1957)",
+    "progressSummary": "COMPLETE: 0 sorries, 1 axiom (greens_theorem_l1curl = Whitney 1957), and 21 extractor-counted theorem/lemma lines.",
     "builtItems": [
       "LipschitzClosedCurve structure: GreensTheoremOQ02.lean:90",
       "lipschitzLineIntegral def: GreensTheoremOQ02.lean",
       "greens_theorem_l1curl axiom: GreensTheoremOQ02.lean",
       "unitCircle_lipschitz: proved via sup_le for product edist",
-      "19 total theorems with 0 sorries"
+      "21 extractor-counted theorem/lemma lines with 0 sorries"
     ],
     "insights": [
       "Product metric on ℝ×ℝ: edist (a,b) (c,d) = edist a c ⊔ edist b d — use show ... ⊔ ... ≤; exact sup_le",
@@ -119,7 +119,7 @@
     {
       "path": "Proofs/GreensTheoremOQ01OQ01.lean",
       "filename": "GreensTheoremOQ01OQ01.lean",
-      "lineCount": 150,
+      "lineCount": 155,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,

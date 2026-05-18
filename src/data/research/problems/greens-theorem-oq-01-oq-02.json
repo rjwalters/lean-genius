@@ -1,8 +1,8 @@
 {
   "slug": "greens-theorem-oq-01-oq-02",
   "title": "Green's theorem for smooth curves via Mathlib",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "BLOCKED",
+  "status": "blocked",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,7 +16,7 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "BLOCKED",
     "since": "2026-03-30T13:07:48.620Z",
     "iteration": 1,
     "focus": "BLOCKED: requires smooth path integral infrastructure not in Mathlib",
@@ -26,7 +26,7 @@
       "Only circleIntegral exists (complex analysis, not general curves)",
       "Requires 500+ lines: smooth path type, 1-form integration, Stokes machinery"
     ],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Wait for smooth path-integral and bounded-domain integral infrastructure before attempting the general smooth-curve theorem.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 0,
@@ -104,7 +104,7 @@
     {
       "path": "Proofs/GreensTheoremOQ01OQ01.lean",
       "filename": "GreensTheoremOQ01OQ01.lean",
-      "lineCount": 150,
+      "lineCount": 155,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,

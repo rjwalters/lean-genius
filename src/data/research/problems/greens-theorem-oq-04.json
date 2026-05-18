@@ -1,6 +1,6 @@
 {
   "slug": "greens-theorem-oq-04",
-  "title": "greens-theorem-oq-04",
+  "title": "Green's Theorem OQ-04: Multiply-Connected Regions",
   "phase": "COMPLETED",
   "status": "completed",
   "tier": "C",
@@ -19,9 +19,9 @@
     "phase": "COMPLETED",
     "since": "2026-03-29T19:03:47-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Completed multiply-connected Green's theorem formalization with 0 direct axioms in GreensTheoremOQ04.lean and 0 sorries.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "No immediate action; future work would formalize residue-theorem-style period vectors.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,16 +29,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated axiom greens_theorem_multiply_connected by proving it from greens_theorem_typeI. Also fixed sign error in OQ03 axiom and corrected typeILineIntegral definition. 0 axioms, 0 sorries, 584 lines.",
+    "progressSummary": "COMPLETED: Eliminated direct axiom greens_theorem_multiply_connected by proving it from greens_theorem_typeI. Also fixed sign error in OQ03 axiom and corrected typeILineIntegral definition. GreensTheoremOQ04.lean has 0 direct axioms, 0 sorries, and 588 lines; gallery metadata remains axiomatized through inherited OQ03 assumptions.",
     "builtItems": [
-      "proofs/Proofs/GreensTheoremOQ04.lean (552 lines, 22 theorems, 1 axiom, 0 sorries)",
+      "proofs/Proofs/GreensTheoremOQ04.lean (588 lines, 22 theorems, 0 direct axioms, 0 sorries)",
       "src/data/proofs/greens-theorem-oq-04/meta.json (gallery entry)",
       "src/data/proofs/greens-theorem-oq-04/annotations.json",
       "src/data/proofs/greens-theorem-oq-04/index.ts",
       "Corrected typeILineIntegral definition (includes Q·deriv terms)",
       "Proved greens_theorem_multiply_connected from greens_theorem_typeI",
       "Fixed sign error in greens_theorem_typeI (OQ-03)",
-      "Updated meta.json: status verified, 0 axioms"
+      "Gallery meta remains axiomatized through inherited OQ03 assumptions"
     ],
     "insights": [
       "MultiplyConnectedRegion = outer TypeIRegion + list of hole TypeIRegions with containment proofs",
@@ -102,7 +102,7 @@
     {
       "path": "Proofs/GreensTheoremOQ01OQ01.lean",
       "filename": "GreensTheoremOQ01OQ01.lean",
-      "lineCount": 150,
+      "lineCount": 155,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,

@@ -1,8 +1,8 @@
 {
   "slug": "greens-theorem-oq-01-oq-01",
   "title": "Can Fubini be proved from Mathlib's MeasureTheory",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
@@ -32,9 +32,9 @@
     "progressSummary": "COMPLETED: All 3 sorries eliminated. intervalIntegral_swap proved via Mathlib Fubini, fubini_of_continuous proved via integrableOn_compact.",
     "builtItems": [
       "Created GreensTheoremOQ01OQ01.lean with Fubini bridge",
-      "Stated intervalIntegral_swap (core result, 1 sorry)",
+      "Proved intervalIntegral_swap via Mathlib Fubini",
       "Proved greens_fubini_eliminated: hFubini follows from intervalIntegral_swap (0 sorries)",
-      "Stated fubini_of_continuous: C^0 functions always satisfy Fubini (1 sorry)",
+      "Proved fubini_of_continuous: C^0 functions always satisfy Fubini",
       "Proved greens_fubini_for_C1: C^1 vector fields satisfy Fubini (0 new sorries)",
       "intervalIntegral_swap: FULLY PROVED via integral_of_le + integral_integral_swap",
       "fubini_of_continuous: FULLY PROVED via integrableOn_compact + restrict_prod_eq_prod_restrict"
@@ -56,11 +56,7 @@
       "Measure.restrict_prod_eq_prod_restrict bridges IntegrableOn and product-restricted Integrable"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Complete intervalIntegral_swap proof: convert intervalIntegral ↔ set_integral on Ioc",
-      "Use MeasureTheory.integral_integral_swap or MeasureTheory.set_integral_prod to bridge",
-      "Handle Ioc vs Icc and sign convention in intervalIntegral"
-    ],
+    "nextSteps": [],
     "markdown": "# Knowledge Base: greens-theorem-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [],
@@ -105,7 +101,7 @@
     {
       "path": "Proofs/GreensTheoremOQ01OQ01.lean",
       "filename": "GreensTheoremOQ01OQ01.lean",
-      "lineCount": 150,
+      "lineCount": 155,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
