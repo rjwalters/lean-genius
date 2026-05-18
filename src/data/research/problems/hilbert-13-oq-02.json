@@ -7,12 +7,14 @@
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in analysis: Efficient Computation of Kolmogorov Superposition.",
+    "plain": "How hard is it to compute Kolmogorov-Arnold superposition representations? Hilbert13GeneralSpaces.lean formalizes the compact-metric-space superposition framework and records the effective computation problem as open because the classical proof is nonconstructive.",
     "whyMatters": []
   },
   "knownResults": {
     "proven": [],
-    "open": [],
+    "open": [
+      "Given a compact metric space presented by finite approximations and a continuous function f : X -> R, determine the computational complexity of producing a Kolmogorov-Arnold representation."
+    ],
     "goal": ""
   },
   "currentState": {
@@ -29,7 +31,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Hilbert13GeneralSpaces.lean provides the covering-dimension and compact-metric-space Kolmogorov-Arnold infrastructure, but the efficient-computation question remains an open placeholder: computational_complexity_open is defined as Prop := True and no algorithmic complexity theorem is proved.",
     "builtItems": [],
     "insights": [],
     "mathlibGaps": [],
@@ -58,8 +60,8 @@
     {
       "path": "Proofs/Hilbert13GeneralSpaces.lean",
       "filename": "Hilbert13GeneralSpaces.lean",
-      "lineCount": 444,
-      "theoremCount": 7,
+      "lineCount": 481,
+      "theoremCount": 9,
       "axiomCount": 6,
       "defCount": 8,
       "sorryCount": 0,
