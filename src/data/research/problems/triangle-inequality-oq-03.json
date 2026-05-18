@@ -1,59 +1,106 @@
 {
   "slug": "triangle-inequality-oq-03",
-  "title": "## Source",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Ultrametric Triangle Inequality",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "In non-Archimedean (ultrametric) spaces, the triangle inequality strengthens to d(x,z) ≤ max(d(x,y), d(y,z)). This forces every triangle to be isosceles, every ball to be clopen, and distinct balls to be disjoint — properties realized by p-adic norms.",
-    "whyMatters": []
+    "formal": "In an ultrametric space, d(x,z) <= max(d(x,y), d(y,z)), with geometric consequences for triangles and balls.",
+    "plain": "Formalize the stronger non-Archimedean triangle inequality and its consequences for ultrametric geometry.",
+    "whyMatters": [
+      "Explains the tree-like geometry of p-adic and non-Archimedean metric spaces",
+      "Shows how Mathlib ultrametric infrastructure implies familiar geometric corollaries"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The ultrametric inequality implies the standard triangle inequality.",
+      "Every ultrametric triangle is isosceles, with a sharp max-distance form when sides differ.",
+      "Mathlib ball and p-adic infrastructure supplies clopen-ball and non-Archimedean examples."
+    ],
+    "open": [
+      "Formalize broader p-adic developments such as Ostrowski classification or Hensel-style applications."
+    ],
+    "goal": "Record the verified ultrametric triangle inequality and its geometric consequences."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-22T09:13:15-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-03-23T08:19:33.498Z",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Verified source-backed record: primary proof has 255 lines, 15 theorems, 0 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Optional follow-on: extend toward Ostrowski classification or p-adic functional analysis.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Proofs/TriangleInequalityOQ03.lean proves ultrametric triangle consequences with 15 theorems, 0 axioms, and 0 sorries.",
+    "builtItems": [
+      "Proofs/TriangleInequalityOQ03.lean: 255 lines, 15 theorems, 0 axioms, 0 sorries",
+      "ultrametric_implies_triangle, isosceles_of_lt, and isosceles_triangle",
+      "Ball-structure and p-adic connections through Mathlib ultrametric APIs"
+    ],
+    "insights": [
+      "Replacing addition by max turns the triangle inequality into a much stronger geometric principle.",
+      "If two ultrametric side lengths differ, the third side equals the longer side.",
+      "Ultrametric balls behave like nested partitions: centers are not unique and balls can be clopen."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: triangle-inequality-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Formalize Ostrowski classification connections.",
+      "Use the same infrastructure for Hensel-style p-adic applications."
+    ],
+    "markdown": ""
   },
-  "tags": [],
+  "tags": [
+    "geometry",
+    "analysis",
+    "metric-spaces",
+    "non-archimedean",
+    "p-adic",
+    "number-theory",
+    "topology"
+  ],
   "relatedProofs": [
     "triangle-inequality",
     "triangle-inequality-oq-03",
     "triangle-inequality-oq-04"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Alexander Ostrowski, classification of absolute values (1916)",
+      "Marc Krasner, ultrametric space theory"
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Topology/MetricSpace/Ultra/Basic.html"
+    ],
+    "mathlib": [
+      "Mathlib.Topology.MetricSpace.Ultra.Basic",
+      "Mathlib.NumberTheory.Padics.PadicNorm"
+    ]
   },
   "started": "2026-03-22T16:23:16.662Z",
-  "lastUpdate": "2026-03-22T16:23:16.673Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "leanFiles": [
+    {
+      "path": "Proofs/TriangleInequalityOQ03.lean",
+      "filename": "TriangleInequalityOQ03.lean",
+      "lineCount": 255,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleInequalityOQ03.lean"
+    },
     {
       "path": "Proofs/TriangleInequality.lean",
       "filename": "TriangleInequality.lean",
-      "lineCount": 245,
+      "lineCount": 244,
       "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 0,
@@ -64,7 +111,7 @@
     {
       "path": "Proofs/TriangleInequalityOQ02.lean",
       "filename": "TriangleInequalityOQ02.lean",
-      "lineCount": 193,
+      "lineCount": 192,
       "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 0,
@@ -73,20 +120,9 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleInequalityOQ02.lean"
     },
     {
-      "path": "Proofs/TriangleInequalityOQ03.lean",
-      "filename": "TriangleInequalityOQ03.lean",
-      "lineCount": 256,
-      "theoremCount": 15,
-      "axiomCount": 1,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleInequalityOQ03.lean"
-    },
-    {
       "path": "Proofs/TriangleInequalityOQ04.lean",
       "filename": "TriangleInequalityOQ04.lean",
-      "lineCount": 285,
+      "lineCount": 284,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 2,
@@ -94,5 +130,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleInequalityOQ04.lean"
     }
-  ]
+  ],
+  "completed": "2026-03-23T08:19:33.498Z"
 }

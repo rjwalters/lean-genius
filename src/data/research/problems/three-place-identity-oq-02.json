@@ -1,82 +1,109 @@
 {
   "slug": "three-place-identity-oq-02",
-  "title": "Etter's 'Stereo Equality Theorem' claims two separate equality predicates suf...",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Etter's Stereo Equality Theorem",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in set theory: Etter's 'Stereo Equality Theorem' claims two separate equality predicates suf....",
-    "whyMatters": []
+    "formal": "Show that two equivalence relations can encode a three-place relative identity predicate satisfying the expected equivalence properties.",
+    "plain": "Formalize Etter's claim that stereo equality, built from two equality relations, suffices for relative identity.",
+    "whyMatters": [
+      "Gives a machine-checked bridge from philosophical relative identity to elementary equivalence-relation structure",
+      "Clarifies why one flat equivalence relation is too weak for viewpoint-dependent identity"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The stereoToRelative construction turns two equivalence relations into a valid relative identity predicate.",
+      "The relativeToStereo construction extracts a stereo pair from a relative identity predicate.",
+      "A single equivalence relation gives only flat identity, while two relations support nontrivial disagreement between viewpoints."
+    ],
+    "open": [
+      "Formalize richer viewpoint-indexed identity families.",
+      "Study whether some relative identity structures require more than two equivalence relations."
+    ],
+    "goal": "Record the verified stereo equality construction and its converse."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-30T01:04:30.839Z",
+    "phase": "COMPLETED",
+    "since": "2026-03-30T06:06:23.639Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Verified source-backed record: primary proof has 175 lines, 6 theorems, 3 definitions, 0 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Optional follow-on: formalize the indexed viewpoint-dependent version.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Proofs/ThreePlaceIdentityOQ02.lean verifies Etter's stereo equality theorem with 6 theorems, 3 definitions, 0 axioms, and 0 sorries.",
+    "builtItems": [
+      "Proofs/ThreePlaceIdentityOQ02.lean: 175 lines, 6 theorems, 3 definitions, 0 axioms, 0 sorries",
+      "stereoToRelative and relativeToStereo constructions",
+      "Flat single-equivalence identity and nontrivial stereo disagreement results"
+    ],
+    "insights": [
+      "Two equivalence relations provide enough structure to model relative identity predicates.",
+      "A single equivalence relation collapses all viewpoints into flat identity.",
+      "The source proof is self-contained and does not depend on the parent ThreePlaceIdentity.lean file."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Formalize indexed families Id(x,y,z) := E_x(y,z).",
+      "Investigate minimal numbers of equivalence relations for richer structures."
+    ]
   },
   "tags": [
     "foundations",
     "set-theory",
     "logic",
     "identity",
-    "seeker-selected"
+    "open-question"
   ],
   "relatedProofs": [
     "three-place-identity",
     "three-place-identity-oq-02"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Tom Etter, Equalities and Quine Identities (2001)"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Tactic.Tauto",
+      "Mathlib.Logic.Basic"
+    ]
   },
   "started": "2026-03-30T01:04:30.839Z",
-  "lastUpdate": "2026-03-30T01:04:30.839Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/ThreePlaceIdentity.lean",
-      "filename": "ThreePlaceIdentity.lean",
-      "lineCount": 426,
-      "theoremCount": 10,
-      "axiomCount": 0,
-      "defCount": 10,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ThreePlaceIdentity.lean"
-    },
-    {
       "path": "Proofs/ThreePlaceIdentityOQ02.lean",
       "filename": "ThreePlaceIdentityOQ02.lean",
-      "lineCount": 176,
+      "lineCount": 175,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ThreePlaceIdentityOQ02.lean"
+    },
+    {
+      "path": "Proofs/ThreePlaceIdentity.lean",
+      "filename": "ThreePlaceIdentity.lean",
+      "lineCount": 425,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 10,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ThreePlaceIdentity.lean"
     }
-  ]
+  ],
+  "completed": "2026-03-30T06:06:23.639Z"
 }

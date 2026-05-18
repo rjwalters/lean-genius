@@ -1,42 +1,69 @@
 {
   "slug": "sqrt2-examples-oq-01",
-  "title": "sqrt2-examples-oq-01",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Generalized Non-Negativity of Squares",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Generalize square non-negativity from integers to arbitrary LinearOrderedSemiring and related ordered algebraic structures.",
+    "plain": "Show that x*x is nonnegative in the weakest common ordered algebraic setting, then derive standard square-based consequences.",
+    "whyMatters": [
+      "Demonstrates how Lean typeclasses expose the exact algebraic assumptions behind familiar inequalities",
+      "Turns the parent integer proof into reusable ordered-ring and ordered-field infrastructure"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Mathlib mul_self_nonneg proves 0 <= x*x in any LinearOrderedSemiring.",
+      "The result specializes to Nat, Int, Rat, and Real, and also has an independent LinearOrderedRing case-analysis proof.",
+      "Consequences include sum-of-squares nonnegativity, abs-square equality, and a two-variable AM-GM variant."
+    ],
+    "open": [
+      "Clarify minimal partial-order assumptions beyond LinearOrderedSemiring.",
+      "Extend the AM-GM and Cauchy-Schwarz-style consequences to broader finite-family statements."
+    ],
+    "goal": "Record the verified generalization of square non-negativity."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-29T21:03:27-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-03-30T05:35:33.338Z",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Verified source-backed record: primary proof has 102 lines, 10 theorems, 0 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Optional follow-on: generalize the inequality consequences to finite families.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Proofs/Sqrt2OQ01.lean generalizes square non-negativity with 10 theorems, 0 axioms, and 0 sorries.",
+    "builtItems": [
+      "Proofs/Sqrt2OQ01.lean: 102 lines, 10 theorems, 0 axioms, 0 sorries",
+      "square_nonneg_general via mul_self_nonneg",
+      "Nat/Int/Rat/Real specializations and AM-GM style consequence"
+    ],
+    "insights": [
+      "LinearOrderedSemiring is enough for x*x >= 0; subtraction is not required for the core fact.",
+      "The parent sign-case proof generalizes cleanly to LinearOrderedRing.",
+      "The AM-GM variant follows from the standard square_nonneg trick applied to (a-b)^2."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: sqrt2-examples-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Investigate partial-order variants.",
+      "Extend AM-GM and Cauchy-Schwarz consequences to finite families."
+    ],
+    "markdown": ""
   },
-  "tags": [],
+  "tags": [
+    "ordered-rings",
+    "algebra",
+    "generalization",
+    "pedagogical",
+    "research"
+  ],
   "relatedProofs": [
     "sqrt2-examples",
     "sqrt2-examples-oq-01"
@@ -44,8 +71,25 @@
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Algebra.Order.Ring.Lemmas",
+      "Mathlib.Algebra.GroupPower.Basic"
+    ]
   },
-  "started": "2026-03-30T04:12:19.656Z",
-  "lastUpdate": "2026-03-30T04:12:19.671Z"
+  "started": "2026-03-30T04:50:51.732Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
+  "completed": "2026-03-30T05:35:33.338Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/Sqrt2OQ01.lean",
+      "filename": "Sqrt2OQ01.lean",
+      "lineCount": 102,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Sqrt2OQ01.lean"
+    }
+  ]
 }

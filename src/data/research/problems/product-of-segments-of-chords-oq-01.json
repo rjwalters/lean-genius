@@ -1,42 +1,68 @@
 {
   "slug": "product-of-segments-of-chords-oq-01",
-  "title": "Generalization to 3D: for a sphere with center O and radius r, is the product...",
-  "phase": "NEW",
-  "status": "active",
+  "title": "Product of Segments of Chords: 3D and Inner Product Generalization",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Generalization to 3D: for a sphere with center O and radius r, is the product....",
-    "whyMatters": []
+    "formal": "For a sphere in a real inner product space and an interior point P, prove that the product of chord segment lengths is r^2 - ||P-O||^2 and is independent of direction.",
+    "plain": "Generalize the intersecting chords theorem from circles to spheres and arbitrary real inner product spaces.",
+    "whyMatters": [
+      "Shows power-of-a-point is dimension-independent",
+      "Turns the chord intersection problem into a verified quadratic and Vieta calculation"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The chord intersection equation reduces to a monic quadratic in the line parameter.",
+      "The product of the two chord segment lengths is r^2 - ||P-O||^2 for interior points.",
+      "The result includes an explicit 3D sphere corollary and is fully verified for the OQ01 primary proof."
+    ],
+    "open": [
+      "Extend the formalization to the external point/secant case.",
+      "Investigate analogous statements for complex inner product spaces."
+    ],
+    "goal": "Record the verified sphere and inner-product-space generalization of the chord product theorem."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-30T17:32:58.852Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-03T04:43:04.856Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Verified source-backed record: primary proof has 228 lines, 5 public theorems plus 1 private helper theorem, 1 definition, 0 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Optional follow-on: formalize the external secant case.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Proofs/ProductOfSegmentsOfChordsOQ01.lean resolves OQ-01 with a dimension-independent inner-product-space proof and a 3D corollary.",
+    "builtItems": [
+      "Proofs/ProductOfSegmentsOfChordsOQ01.lean: 228 lines, 5 public theorems plus 1 private helper theorem, 1 definition, 0 axioms, 0 sorries",
+      "Chord quadratic equation and Vieta product identity",
+      "sphere3d_chord_products_equal 3D corollary"
+    ],
+    "insights": [
+      "The entire theorem depends only on inner-product-space algebra, not on the dimension of the ambient space.",
+      "The interior-point condition makes the two roots have opposite signs, converting the signed Vieta product into a product of distances.",
+      "The parent circle theorem is useful context but remains axiomatized separately; OQ01 itself has 0 axioms."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Prove the external point/secant version.",
+      "Investigate complex inner product space variants."
+    ]
   },
   "tags": [
-    "seeker-selected"
+    "geometry",
+    "inner-product-space",
+    "power-of-a-point",
+    "sphere",
+    "generalization",
+    "wiedijk-100"
   ],
   "relatedProofs": [
     "product-of-segments-of-chords",
@@ -45,34 +71,40 @@
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Analysis.InnerProductSpace.PiL2",
+      "Mathlib.Analysis.NormedSpace.Real",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
+    ]
   },
-  "started": "2026-03-30T17:32:58.851Z",
-  "lastUpdate": "2026-03-30T17:32:58.851Z",
+  "started": "2026-03-30T17:47:50.026Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/ProductOfSegmentsOfChords.lean",
-      "filename": "ProductOfSegmentsOfChords.lean",
-      "lineCount": 542,
-      "theoremCount": 11,
-      "axiomCount": 1,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProductOfSegmentsOfChords.lean"
-    },
-    {
       "path": "Proofs/ProductOfSegmentsOfChordsOQ01.lean",
       "filename": "ProductOfSegmentsOfChordsOQ01.lean",
-      "lineCount": 229,
+      "lineCount": 228,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProductOfSegmentsOfChordsOQ01.lean"
+    },
+    {
+      "path": "Proofs/ProductOfSegmentsOfChords.lean",
+      "filename": "ProductOfSegmentsOfChords.lean",
+      "lineCount": 541,
+      "theoremCount": 11,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ProductOfSegmentsOfChords.lean"
     }
-  ]
+  ],
+  "completed": "2026-04-03T04:43:04.856Z"
 }

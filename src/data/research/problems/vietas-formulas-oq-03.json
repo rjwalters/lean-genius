@@ -1,42 +1,70 @@
 {
   "slug": "vietas-formulas-oq-03",
-  "title": "## Source",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Newton's Identities: Power Sums and Elementary Symmetric Polynomials",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "Newton's identities express power sums pₖ = Σxᵢᵏ in terms of elementary symmetric polynomials eⱼ. Proved for 2, 3, and 4 variables: the recursive form pₖ = Σ(-1)^{i-1} eᵢ pₖ₋ᵢ + (-1)^{k-1} k eₖ, plus the inversion formulas recovering eₖ from power sums. Applications to discriminants, matrix traces, and the sum-of-cubes factorization.",
-    "whyMatters": []
+    "formal": "Newton identities express power sums p_k in terms of elementary symmetric polynomials e_j, and conversely.",
+    "plain": "Formalize Newton identities for two, three, and four variables, including recursive and closed-form power-sum identities plus inversion formulas.",
+    "whyMatters": [
+      "Connects Vieta-style coefficient formulas to symmetric functions and trace invariants",
+      "Provides executable polynomial-identity proofs using ring and field_simp"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Newton identities are verified for 2, 3, and 4 variables with 31 public theorems in the primary file.",
+      "Inversion formulas recover elementary symmetric polynomials from power sums over fields.",
+      "Application identities cover discriminants, matrix-trace coefficients, and the sum-of-cubes factorization."
+    ],
+    "open": [
+      "Generalize the case-by-case proofs to arbitrary n using Mathlib symmetric-polynomial infrastructure.",
+      "Formalize broader algorithms such as Faddeev-LeVerrier from the same identities."
+    ],
+    "goal": "Move from verified finite-variable identities toward a general Newton identity theorem."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-22T09:13:15-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-03-23T09:45:43.580Z",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Verified source-backed record: primary proof has 383 lines, 31 public theorems, 0 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Optional follow-on: prove a general arbitrary-n Newton identities theorem.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Proofs/VietasFormulasOQ03.lean verifies Newton identities for 2, 3, and 4 variables with 31 public theorems, 0 axioms, and 0 sorries.",
+    "builtItems": [
+      "Proofs/VietasFormulasOQ03.lean: 383 lines, 31 public theorems, 0 axioms, 0 sorries",
+      "Recursive and closed-form Newton identities for small finite variable counts",
+      "Power-sum inversion, discriminant, matrix trace, and sum-of-cubes identities"
+    ],
+    "insights": [
+      "Each result is a polynomial identity closed by ring or field_simp plus ring.",
+      "The formalization demonstrates the change of basis between power sums and elementary symmetric polynomials in concrete finite cases.",
+      "The remaining mathematical opportunity is a single arbitrary-n statement rather than more case-by-case expansions."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: vietas-formulas-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Generalize to arbitrary n with Mathlib symmetric polynomial APIs.",
+      "Connect the identities to a verified Faddeev-LeVerrier algorithm."
+    ],
+    "markdown": ""
   },
-  "tags": [],
+  "tags": [
+    "algebra",
+    "symmetric-functions",
+    "polynomials",
+    "research",
+    "newtons-identities",
+    "power-sums"
+  ],
   "relatedProofs": [
     "vietas-formulas",
     "vietas-formulas-oq-02",
@@ -45,17 +73,34 @@
     "vietas-formulas-oq-03-oq-05"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Isaac Newton, Arithmetica Universalis (1707)"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Newton%27s_identities"
+    ],
+    "mathlib": [
+      "Mathlib.Tactic"
+    ]
   },
   "started": "2026-03-22T16:23:16.662Z",
-  "lastUpdate": "2026-03-22T16:23:16.673Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "leanFiles": [
+    {
+      "path": "Proofs/VietasFormulasOQ03.lean",
+      "filename": "VietasFormulasOQ03.lean",
+      "lineCount": 383,
+      "theoremCount": 31,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ03.lean"
+    },
     {
       "path": "Proofs/VietasFormulas.lean",
       "filename": "VietasFormulas.lean",
-      "lineCount": 180,
+      "lineCount": 179,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
@@ -66,7 +111,7 @@
     {
       "path": "Proofs/VietasFormulasOQ02.lean",
       "filename": "VietasFormulasOQ02.lean",
-      "lineCount": 205,
+      "lineCount": 204,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 10,
@@ -75,20 +120,9 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ02.lean"
     },
     {
-      "path": "Proofs/VietasFormulasOQ03.lean",
-      "filename": "VietasFormulasOQ03.lean",
-      "lineCount": 384,
-      "theoremCount": 31,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ03.lean"
-    },
-    {
       "path": "Proofs/VietasFormulasOQ03OQ01.lean",
       "filename": "VietasFormulasOQ03OQ01.lean",
-      "lineCount": 186,
+      "lineCount": 185,
       "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 2,
@@ -99,7 +133,7 @@
     {
       "path": "Proofs/VietasFormulasOQ03OQ05.lean",
       "filename": "VietasFormulasOQ03OQ05.lean",
-      "lineCount": 305,
+      "lineCount": 304,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 3,
@@ -107,5 +141,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ03OQ05.lean"
     }
-  ]
+  ],
+  "completed": "2026-03-23T09:45:43.580Z"
 }

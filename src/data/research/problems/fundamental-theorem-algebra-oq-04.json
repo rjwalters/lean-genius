@@ -1,44 +1,66 @@
 {
   "slug": "fundamental-theorem-algebra-oq-04",
-  "title": "FTA: C is the unique algebraic closure of R",
-  "phase": "NEW",
-  "status": "active",
+  "title": "C is the Unique Algebraic Closure of R",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in algebra: FTA: C is the unique algebraic closure of R.",
-    "whyMatters": []
+    "formal": "Show that C is an algebraic closure of R and that any algebraic closure of R is R-algebra isomorphic to C.",
+    "plain": "Prove that the complex numbers form the unique algebraic closure of the real numbers.",
+    "whyMatters": [
+      "Extends the Fundamental Theorem of Algebra to the algebraic-closure uniqueness statement",
+      "Connects Mathlib complex numbers, finite extensions, and Steinitz uniqueness"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "C is algebraic over R and forms an algebraic closure of R.",
+      "Any algebraic closure of R is R-algebra isomorphic to C by Steinitz uniqueness.",
+      "[C:R] = 2, R is not algebraically closed, and no proper intermediate field occurs inside C/R."
+    ],
+    "open": [
+      "Formalize broader real-closed-field and Artin-Schreier characterizations as follow-on work."
+    ],
+    "goal": "Record the verified uniqueness of C as the algebraic closure of R."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-23T17:46:34.542Z",
+    "phase": "COMPLETED",
+    "since": "2026-03-24T22:16:39.850Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Verified source-backed record: primary proof has 207 lines, 9 theorems, 2 definitions, 0 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Optional follow-on: relate this concrete R/C result to a general real-closed-field theorem.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Proofs/FundamentalTheoremAlgebraOQ04.lean proves that C is the unique algebraic closure of R with 9 theorems, 2 definitions, 0 axioms, and 0 sorries.",
+    "builtItems": [
+      "Proofs/FundamentalTheoremAlgebraOQ04.lean: 207 lines, 9 theorems, 2 definitions, 0 axioms, 0 sorries",
+      "complex_algebraic_over_reals and complex_is_alg_closure",
+      "unique_algebraic_closure, reals_not_alg_closed, and no_intermediate_field"
+    ],
+    "insights": [
+      "Finite extension degree [C:R] = 2 supplies algebraicity over R.",
+      "Steinitz uniqueness via IsAlgClosure.equiv gives the isomorphism from any algebraic closure of R to C.",
+      "The tower law rules out proper intermediate fields in the degree-2 extension."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Formalize the Artin-Schreier real-closed-field generalization.",
+      "Connect the uniqueness proof to broader algebraic-closure examples."
+    ]
   },
   "tags": [
-    "seeker-selected",
     "algebra",
+    "field-theory",
     "algebraic-closure",
+    "complex-numbers",
+    "steinitz-theorem",
     "wiedijk-100"
   ],
   "relatedProofs": [
@@ -46,19 +68,39 @@
     "fundamental-theorem-algebra-oq-04"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Ernst Steinitz, Algebraische Theorie der Koerper (1910)"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Fundamental_theorem_of_algebra"
+    ],
+    "mathlib": [
+      "Mathlib.FieldTheory.IsAlgClosed.Basic",
+      "Mathlib.Analysis.SpecialFunctions.Complex.Circle",
+      "Mathlib.RingTheory.Algebraic.Basic",
+      "Mathlib.LinearAlgebra.FreeModule.Finite.Rank"
+    ]
   },
   "started": "2026-03-23T17:46:34.542Z",
-  "lastUpdate": "2026-03-23T17:46:34.542Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 8,
   "tractability": 5,
   "leanFiles": [
     {
+      "path": "Proofs/FundamentalTheoremAlgebraOQ04.lean",
+      "filename": "FundamentalTheoremAlgebraOQ04.lean",
+      "lineCount": 207,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ04.lean"
+    },
+    {
       "path": "Proofs/FundamentalTheoremAlgebra.lean",
       "filename": "FundamentalTheoremAlgebra.lean",
-      "lineCount": 215,
+      "lineCount": 214,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 0,
@@ -69,24 +111,14 @@
     {
       "path": "Proofs/FundamentalTheoremAlgebraOQ02.lean",
       "filename": "FundamentalTheoremAlgebraOQ02.lean",
-      "lineCount": 126,
+      "lineCount": 125,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ02.lean"
-    },
-    {
-      "path": "Proofs/FundamentalTheoremAlgebraOQ04.lean",
-      "filename": "FundamentalTheoremAlgebraOQ04.lean",
-      "lineCount": 208,
-      "theoremCount": 9,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremAlgebraOQ04.lean"
     }
-  ]
+  ],
+  "completed": "2026-03-24T22:16:39.850Z"
 }
