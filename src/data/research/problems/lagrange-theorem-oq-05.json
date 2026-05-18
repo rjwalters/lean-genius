@@ -1,27 +1,35 @@
 {
   "slug": "lagrange-theorem-oq-05",
-  "title": "lagrange-theorem-oq-05",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Burnside counting lemma from orbit-stabilizer",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Formalize the chain from Lagrange's theorem to orbit-stabilizer and Burnside/Cauchy-Frobenius counting for finite group actions.",
+    "plain": "Show how Lagrange's theorem generalizes through orbit-stabilizer into Burnside's counting lemma for group actions.",
+    "whyMatters": [
+      "Burnside/Cauchy-Frobenius counting is a core bridge from finite group theory to combinatorial enumeration.",
+      "The Lean file makes the Lagrange to orbit-stabilizer to fixed-point-counting relationship explicit."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "lagrange_divides and lagrange_index restate subgroup divisibility and index form.",
+      "orbit_stabilizer and orbit_equiv_cosets package the group-action bridge.",
+      "fixedPoints defines fixed-point sets for the Burnside statement.",
+      "burnside_lemma and burnside_divides formalize the counting result."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Keep the research record aligned with the verified Burnside counting Lean file."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-03-29T19:03:42-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Source-backed metadata sync for the verified Burnside counting entry. Primary Lean source is Proofs/LagrangeTheoremOQ05.lean with 113 lines, 8 theorem declarations, 1 definition, 0 axioms, and 0 executable sorries or admits.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "No Lean work is needed for the catalog entry; optional proof-meta cleanup can record the actual import Mathlib and clarify that chain_lagrange_to_burnside is the Lagrange/index endpoint while burnside_lemma carries the fixed-point count.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,12 +37,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Proofs/LagrangeTheoremOQ05.lean formalizes the path from Lagrange's theorem through orbit-stabilizer to Burnside/Cauchy-Frobenius counting using Mathlib group-action machinery. Source audit: 113 lines, 8 theorems, 1 definition, 0 axioms, 0 executable sorries or admits.",
+    "builtItems": [
+      "Proofs/LagrangeTheoremOQ05.lean: 113 lines, 8 theorems, 1 definition, 0 axioms, 0 sorries",
+      "lagrange_divides, lagrange_index, orbit_stabilizer, orbit_equiv_cosets, fixedPoints, burnside_lemma, burnside_divides, chain_lagrange_to_burnside"
+    ],
+    "insights": [
+      "The source uses Mathlib group-action machinery to expose the orbit-stabilizer and fixed-point counting chain.",
+      "The Burnside statement lives in burnside_lemma and burnside_divides.",
+      "The proof-meta import list is more specific than the source, which currently imports Mathlib."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: lagrange-theorem-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Optional proof-meta cleanup: either record the actual import Mathlib or narrow the source imports in a later code PR.",
+      "Clarify that chain_lagrange_to_burnside is the Lagrange/index endpoint while burnside_lemma carries the Burnside fixed-point statement."
+    ],
+    "markdown": "# Knowledge Base: lagrange-theorem-oq-05\n\n## Source-backed status\n\nCompleted. Proofs/LagrangeTheoremOQ05.lean has 113 lines, 8 theorem declarations, 1 definition, 0 axioms, and 0 executable sorries or admits.\n\n## Main declarations\n\n- lagrange_divides\n- lagrange_index\n- orbit_stabilizer\n- orbit_equiv_cosets\n- fixedPoints\n- burnside_lemma\n- burnside_divides\n- chain_lagrange_to_burnside\n\n## Notes\n\nThe Burnside/Cauchy-Frobenius statement is carried by burnside_lemma and burnside_divides. The chain_lagrange_to_burnside declaration records the Lagrange/index endpoint.\n"
   },
   "tags": [],
   "relatedProofs": [
@@ -50,12 +68,23 @@
     "mathlib": []
   },
   "started": "2026-03-30T02:13:21.213Z",
-  "lastUpdate": "2026-03-30T02:13:21.224Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "leanFiles": [
+    {
+      "path": "Proofs/LagrangeTheoremOQ05.lean",
+      "filename": "LagrangeTheoremOQ05.lean",
+      "lineCount": 113,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ05.lean"
+    },
     {
       "path": "Proofs/LagrangeTheorem.lean",
       "filename": "LagrangeTheorem.lean",
-      "lineCount": 223,
+      "lineCount": 222,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 0,
@@ -66,7 +95,7 @@
     {
       "path": "Proofs/LagrangeTheoremOQ01.lean",
       "filename": "LagrangeTheoremOQ01.lean",
-      "lineCount": 142,
+      "lineCount": 141,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 0,
@@ -77,7 +106,7 @@
     {
       "path": "Proofs/LagrangeTheoremOQ02.lean",
       "filename": "LagrangeTheoremOQ02.lean",
-      "lineCount": 208,
+      "lineCount": 207,
       "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 1,
@@ -88,24 +117,13 @@
     {
       "path": "Proofs/LagrangeTheoremOQ03.lean",
       "filename": "LagrangeTheoremOQ03.lean",
-      "lineCount": 374,
+      "lineCount": 373,
       "theoremCount": 27,
       "axiomCount": 2,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ03.lean"
-    },
-    {
-      "path": "Proofs/LagrangeTheoremOQ05.lean",
-      "filename": "LagrangeTheoremOQ05.lean",
-      "lineCount": 114,
-      "theoremCount": 8,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ05.lean"
     }
   ]
 }

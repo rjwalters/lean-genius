@@ -1,27 +1,35 @@
 {
   "slug": "lagrange-theorem-oq-01",
-  "title": "Can the Sylow theorems (partial converse of Lagrange) be formalized, showing ...",
+  "title": "Sylow theorems as a partial converse to Lagrange",
   "phase": "COMPLETED",
-  "status": "active",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in group theory: Can the Sylow theorems (partial converse of Lagrange) be formalized, showing ....",
-    "whyMatters": []
+    "formal": "State and prove Lagrange divisibility, Sylow existence/cardinality/conjugacy/counting, prime-power subgroup existence, and Cauchy's theorem for finite groups.",
+    "plain": "Formalize the Sylow theorems as the prime-power partial converse to Lagrange's theorem, together with Cauchy's theorem.",
+    "whyMatters": [
+      "Sylow theory is the main positive answer left after the full converse to Lagrange fails for composite divisors.",
+      "The proof packages standard Mathlib finite group theory into a gallery-ready entry."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "lagrange, lagrange_index, and order_dvd_card provide the Lagrange layer.",
+      "sylow_exists, sylow_card_eq, sylow_conjugate, sylow_count_dvd_index, and sylow_count_mod_p package the three Sylow theorems.",
+      "partial_converse_lagrange proves prime-power subgroup existence.",
+      "cauchy_theorem delegates to Mathlib's exists_prime_orderOf_dvd_card."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Keep the research record aligned with the completed Sylow partial-converse Lean file."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-03-28T20:57:10.258Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Source-backed metadata sync for the completed Sylow partial-converse entry. Primary Lean source is Proofs/LagrangeTheoremOQ01.lean with 141 lines, 11 theorem declarations, 0 definitions, 0 axioms, and 0 executable sorries or admits.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No Lean work is needed for the catalog entry; optional proof-meta cleanup can point open-question prose at the existing pq, A4, and Hall follow-up entries.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,19 +37,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All three Sylow theorems + partial converse + Cauchy theorem. 0 sorries, 0 axioms.",
+    "progressSummary": "COMPLETED: Proofs/LagrangeTheoremOQ01.lean wraps Mathlib results for Lagrange/index/order divisibility, Sylow existence/cardinality/conjugacy/counting, prime-power subgroup existence, and Cauchy's theorem. Source audit: 141 lines, 11 theorems, 0 definitions, 0 axioms, 0 executable sorries or admits.",
     "builtItems": [
-      "LagrangeTheoremOQ01.lean: ~140 lines, 11 theorems, 0 sorries, 0 axioms",
-      "Parts I-V: Lagrange, Sylow existence, conjugacy, counting, partial converse + Cauchy"
+      "Proofs/LagrangeTheoremOQ01.lean: 141 lines, 11 theorems, 0 axioms, 0 sorries",
+      "lagrange, lagrange_index, order_dvd_card, sylow_exists, sylow_card_eq, sylow_conjugate, sylow_count_dvd_index, sylow_count_mod_p, partial_converse_lagrange, cauchy_theorem"
     ],
     "insights": [
-      "Sylow theorems are fully in Mathlib — file wraps existing API in gallery format",
-      "Key Mathlib lemmas: Sylow.nonempty, Sylow.card_eq_multiplicity, Sylow.conj_eq",
-      "Sylow.card_sylow_dvd_index, Sylow.card_sylow_modEq_one, exists_prime_orderOf_dvd_card",
-      "Partial converse: Sylow.exists_subgroup_card_pow_prime gives p^k | |G| → ∃ H of order p^k"
+      "The source packages existing Mathlib Sylow and Lagrange APIs rather than proving finite group theory from scratch.",
+      "Cauchy's theorem is proved directly through exists_prime_orderOf_dvd_card, not by a local Sylow derivation.",
+      "The pq and A4 follow-ups already have verified child entries; Hall remains axiomatized in its child entry."
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Optional proof-meta cleanup: update open-question prose to reference the verified pq and A4 children and the axiomatized Hall child entry.",
+      "Avoid saying the source derives cauchy_theorem from Sylow; the Lean proof delegates directly to exists_prime_orderOf_dvd_card."
+    ]
   },
   "tags": [
     "group-theory",
@@ -63,25 +73,14 @@
     "mathlib": []
   },
   "started": "2026-03-28T20:57:10.258Z",
-  "lastUpdate": "2026-03-28T20:57:10.258Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
-      "path": "Proofs/LagrangeTheorem.lean",
-      "filename": "LagrangeTheorem.lean",
-      "lineCount": 223,
-      "theoremCount": 11,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheorem.lean"
-    },
-    {
       "path": "Proofs/LagrangeTheoremOQ01.lean",
       "filename": "LagrangeTheoremOQ01.lean",
-      "lineCount": 142,
+      "lineCount": 141,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 0,
@@ -90,9 +89,20 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheoremOQ01.lean"
     },
     {
+      "path": "Proofs/LagrangeTheorem.lean",
+      "filename": "LagrangeTheorem.lean",
+      "lineCount": 222,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/LagrangeTheorem.lean"
+    },
+    {
       "path": "Proofs/LagrangeTheoremOQ02.lean",
       "filename": "LagrangeTheoremOQ02.lean",
-      "lineCount": 208,
+      "lineCount": 207,
       "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 1,
@@ -103,7 +113,7 @@
     {
       "path": "Proofs/LagrangeTheoremOQ03.lean",
       "filename": "LagrangeTheoremOQ03.lean",
-      "lineCount": 374,
+      "lineCount": 373,
       "theoremCount": 27,
       "axiomCount": 2,
       "defCount": 1,
@@ -114,7 +124,7 @@
     {
       "path": "Proofs/LagrangeTheoremOQ05.lean",
       "filename": "LagrangeTheoremOQ05.lean",
-      "lineCount": 114,
+      "lineCount": 113,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 1,

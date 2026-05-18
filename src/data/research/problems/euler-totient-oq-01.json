@@ -1,27 +1,36 @@
 {
   "slug": "euler-totient-oq-01",
   "title": "Carmichael's Function: a^λ(n) ≡ 1 (mod n)",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Carmichael's Function: a^λ(n) ≡ 1 (mod n).",
-    "whyMatters": []
+    "formal": "\\lambda(n) = \\operatorname{exponent}((\\mathbb{Z}/n\\mathbb{Z})^*) and, for every unit a, a^{\\lambda(n)} = 1; moreover \\lambda(n) divides \\varphi(n), is minimal among universal exponents, and \\lambda(p)=p-1 for prime p.",
+    "plain": "Define Carmichael's function as the exponent of the unit group modulo n, then prove its universal-exponent, divisibility, minimality, and prime-modulus properties.",
+    "whyMatters": [
+      "Carmichael's function is the exact universal exponent behind modular arithmetic and RSA-style correctness conditions.",
+      "The proof shows these facts are direct consequences of Mathlib's abstract group exponent API."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "carmichael defines Monoid.exponent (ZMod n)^*.",
+      "carmichael_pow_eq_one proves the universal exponent property for every unit.",
+      "carmichael_dvd_totient proves lambda(n) divides Nat.totient n.",
+      "carmichael_minimal proves any universal exponent is a multiple of lambda(n).",
+      "carmichael_prime proves lambda(p)=p-1 for prime p; carmichael_one and carmichael_two prove the small cases."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Keep the research record aligned with the completed Carmichael-function Lean file."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-03-30T13:49:26.404Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Source-backed metadata sync for the completed Carmichael-function formalization. Primary Lean source is Proofs/EulerTotientOQ01.lean with 83 lines, 6 theorem declarations, 1 definition, 0 axioms, and 0 executable sorries or admits.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No Lean work is needed for the catalog entry; keep RSA and lambda(n)=1 classification commentary clearly marked as context unless dedicated Lean declarations are added.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,19 +38,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved carmichael_prime via IsCyclic.exponent_eq_card. 0 sorries, 0 axioms.",
+    "progressSummary": "COMPLETED: Proofs/EulerTotientOQ01.lean defines carmichael n as Monoid.exponent (ZMod n)^* and proves universality, divisibility by Nat.totient, minimality, lambda(p)=p-1 for primes, and lambda(1)=lambda(2)=1. Source audit: 83 lines, 6 theorems, 1 definition, 0 axioms, 0 executable sorries or admits.",
     "builtItems": [
-      "carmichael_prime: proved using IsCyclic.exponent_eq_card + ZMod.card_units_eq_totient + Nat.totient_prime",
-      "carmichael (definition): Monoid.exponent (ZMod n)ˣ",
-      "carmichael_pow_eq_one, carmichael_dvd_totient, carmichael_minimal: all proved from Monoid.exponent API"
+      "Proofs/EulerTotientOQ01.lean: 83 lines, 6 theorems, 1 definition, 0 axioms, 0 sorries",
+      "carmichael_pow_eq_one, carmichael_dvd_totient, carmichael_minimal, carmichael_prime, carmichael_one, carmichael_two"
     ],
     "insights": [
-      "Carmichael function = group exponent of (ZMod n)ˣ, directly from Mathlib",
-      "For prime p: (ZMod p)ˣ is cyclic (Mathlib instance), so exponent = card",
-      "Prior proof attempt used iSup_orderOf which got stuck; direct IsCyclic.exponent_eq_card is cleaner"
+      "The proof uses Mathlib's Monoid.exponent API instead of hand-rolling modular arithmetic.",
+      "The minimality theorem is a group-exponent statement; RSA commentary should stay contextual unless separately formalized.",
+      "The first leanFiles entry now matches the proof bundle primary path."
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Optional proof-meta cleanup: keep RSA correctness and lambda(n)=1 classification language separate from what this Lean file proves."
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -62,25 +72,14 @@
     "mathlib": []
   },
   "started": "2026-03-30T13:49:26.404Z",
-  "lastUpdate": "2026-03-30T13:49:26.404Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
-      "path": "Proofs/EulerTotient.lean",
-      "filename": "EulerTotient.lean",
-      "lineCount": 136,
-      "theoremCount": 5,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotient.lean"
-    },
-    {
       "path": "Proofs/EulerTotientOQ01.lean",
       "filename": "EulerTotientOQ01.lean",
-      "lineCount": 84,
+      "lineCount": 83,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 1,
@@ -89,9 +88,20 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotientOQ01.lean"
     },
     {
+      "path": "Proofs/EulerTotient.lean",
+      "filename": "EulerTotient.lean",
+      "lineCount": 135,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerTotient.lean"
+    },
+    {
       "path": "Proofs/EulerTotientOQ02.lean",
       "filename": "EulerTotientOQ02.lean",
-      "lineCount": 173,
+      "lineCount": 172,
       "theoremCount": 16,
       "axiomCount": 0,
       "defCount": 0,
@@ -102,7 +112,7 @@
     {
       "path": "Proofs/EulerTotientOQ02OQ01.lean",
       "filename": "EulerTotientOQ02OQ01.lean",
-      "lineCount": 208,
+      "lineCount": 207,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
@@ -113,7 +123,7 @@
     {
       "path": "Proofs/EulerTotientOQ03.lean",
       "filename": "EulerTotientOQ03.lean",
-      "lineCount": 209,
+      "lineCount": 208,
       "theoremCount": 16,
       "axiomCount": 0,
       "defCount": 0,
@@ -124,7 +134,7 @@
     {
       "path": "Proofs/EulerTotientOQ04.lean",
       "filename": "EulerTotientOQ04.lean",
-      "lineCount": 232,
+      "lineCount": 231,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 1,

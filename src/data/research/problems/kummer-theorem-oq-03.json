@@ -1,27 +1,35 @@
 {
   "slug": "kummer-theorem-oq-03",
   "title": "Patterns in Pascal's Triangle mod p^k for k > 1",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: Patterns in Pascal's Triangle mod p^k for k > 1.",
-    "whyMatters": []
+    "formal": "For prime p and k <= n, p^m divides Nat.choose n k iff m <= carryCount p n k; in particular prime-power Pascal rows have interior entries divisible by p, and zero carries imply coprimality to p.",
+    "plain": "Characterize divisibility patterns in Pascal's triangle modulo prime powers using the carry count from Kummer's theorem.",
+    "whyMatters": [
+      "Kummer's carry criterion explains the arithmetic pattern behind Pascal triangle residues modulo prime powers.",
+      "The record connects the parent Kummer proof to concrete row and carry-free divisibility corollaries."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "choose_dvd_prime_pow_iff characterizes p^m divisibility by the carry count.",
+      "pascal_row_prime_power_div proves interior entries in a p^n row are divisible by p.",
+      "choose_prime_div and choose_prime_sq_div provide prime and prime-square row corollaries.",
+      "choose_coprime_of_no_carries proves the carry-free coprimality criterion."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Keep the research record aligned with the completed prime-power divisibility Lean file."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-03-28T17:58:20.661Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Source-backed metadata sync for the completed prime-power Pascal divisibility entry. Primary Lean source is Proofs/KummerTheoremOQ03.lean with 116 lines, 5 theorem declarations, 1 definition, 0 axioms, and 0 executable sorries or admits.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No Lean work is needed for the catalog entry; optional proof-meta cleanup can clarify that the source proves divisibility-pattern corollaries rather than a separate named valuation theorem for special binomial coefficients.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,16 +37,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: File fully proved (0A, 0S). Kummer criterion for p^m divisibility via carry count.",
-    "builtItems": [],
+    "progressSummary": "COMPLETED: Proofs/KummerTheoremOQ03.lean is 116 lines with 1 definition, 5 theorem declarations, 0 axioms, and 0 executable sorries or admits. The main theorem choose_dvd_prime_pow_iff characterizes p^m divisibility of Nat.choose n k by m <= carryCount, with row and carry-free corollaries delegated to the parent Kummer proof.",
+    "builtItems": [
+      "Proofs/KummerTheoremOQ03.lean: 116 lines, 5 theorems, 1 definition, 0 axioms, 0 sorries",
+      "choose_dvd_prime_pow_iff, pascal_row_prime_power_div, choose_prime_div, choose_prime_sq_div, choose_coprime_of_no_carries"
+    ],
     "insights": [
-      "KummerTheoremOQ03.lean is fully proved: 0A, 0S",
-      "Main result: choose_dvd_prime_pow_iff — C(n,k) divisible by p^m iff ≥ m carries in base-p addition",
-      "Built on parent KummerTheorem via carryCount definition",
-      "Also proves C(p^n, k) ≡ 0 (mod p) for interior entries"
+      "The local carryCount wrapper is the bridge from the parent Kummer theorem to divisibility by p^m.",
+      "Prime-power Pascal row corollaries are source-backed and do not require axioms.",
+      "Companion theorem counts now follow proof-meta convention, including lemma declarations where meta includes them."
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Optional proof-meta cleanup: tighten wording that mentions p-adic valuations for specific patterns; the current source proves divisibility-pattern corollaries."
+    ]
   },
   "tags": [
     "seeker-selected"
@@ -56,14 +68,25 @@
     "mathlib": []
   },
   "started": "2026-03-28T17:58:20.661Z",
-  "lastUpdate": "2026-03-28T17:58:20.661Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/KummerTheoremOQ03.lean",
+      "filename": "KummerTheoremOQ03.lean",
+      "lineCount": 116,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ03.lean"
+    },
+    {
       "path": "Proofs/KummerTheorem.lean",
       "filename": "KummerTheorem.lean",
-      "lineCount": 192,
+      "lineCount": 191,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
@@ -74,7 +97,7 @@
     {
       "path": "Proofs/KummerTheoremOQ01.lean",
       "filename": "KummerTheoremOQ01.lean",
-      "lineCount": 109,
+      "lineCount": 108,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 1,
@@ -85,8 +108,8 @@
     {
       "path": "Proofs/KummerTheoremOQ01Aristotle.lean",
       "filename": "KummerTheoremOQ01Aristotle.lean",
-      "lineCount": 182,
-      "theoremCount": 9,
+      "lineCount": 181,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -96,8 +119,8 @@
     {
       "path": "Proofs/KummerTheoremOQ01OQ01.lean",
       "filename": "KummerTheoremOQ01OQ01.lean",
-      "lineCount": 202,
-      "theoremCount": 7,
+      "lineCount": 201,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -107,24 +130,13 @@
     {
       "path": "Proofs/KummerTheoremOQ02.lean",
       "filename": "KummerTheoremOQ02.lean",
-      "lineCount": 413,
-      "theoremCount": 12,
+      "lineCount": 412,
+      "theoremCount": 21,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ02.lean"
-    },
-    {
-      "path": "Proofs/KummerTheoremOQ03.lean",
-      "filename": "KummerTheoremOQ03.lean",
-      "lineCount": 117,
-      "theoremCount": 5,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/KummerTheoremOQ03.lean"
     }
   ]
 }
