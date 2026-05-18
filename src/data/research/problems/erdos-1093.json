@@ -1,7 +1,7 @@
 {
   "slug": "erdos-1093",
   "title": "Erdős #1093",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -19,9 +19,9 @@
     "phase": "ACT",
     "since": "2026-01-15T14:52:37.979Z",
     "iteration": 2,
-    "focus": "Initial exploration of the problem.",
+    "focus": "1 explicit ELS upper-bound axiom, 44 script-counted theorem declarations, and 0 sorries; native_decide examples cover the Lean deficiency function.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Keep original binomial-coefficient hypotheses explicit when presenting native_decide deficiency examples.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +29,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1 axiom (els_upper_bound, deep). 25 theorems including 5 deficiency>1 examples and structural bounds. Comprehensive formalization.",
+    "progressSummary": "PROGRESS: 1 axiom (els_upper_bound), 44 script-counted theorem declarations, 0 sorries. Native_decide examples prove values of the Lean deficiency function; the original Erdos questions remain open.",
     "builtItems": [
       "Assessment: 2A appropriate",
       "13 new native_decide theorems: deficiency_14_4 through deficiency_2099_19",
       "Eliminated many_deficiency_one_examples axiom (2→1 axioms)",
-      "5 new deficiency>1 native_decide theorems (lines 127-137)",
+      "16 script-counted deficiency > 1 native_decide example theorems for the Lean total deficiency function",
       "deficiency_le bound theorem (lines 149-153)",
       "isKSmooth_one and not_isKSmooth_zero lemmas (lines 155-167)"
     ],
     "insights": [
-      "2 axioms: els_upper_bound (deep), many_deficiency_one_examples (computational, potentially provable by native_decide but slow). 4T, 0S.",
+      "1 axiom remains: els_upper_bound. The live file has 44 script-counted theorem declarations and 0 sorries.",
       "Eliminated many_deficiency_one_examples axiom: replaced bulk computation (10M pairs) with 13 individually verified native_decide examples",
       "Verified examples span k=4,5,6,7,8,9,10,11,12,14,15,16,19 — matching the known deficiency-1 pairs from computational search",
       "Remaining axiom els_upper_bound (ELS 1993) is a deep published result unlikely provable from Mathlib",
@@ -72,8 +72,8 @@
     {
       "path": "Proofs/Erdos1093Problem.lean",
       "filename": "Erdos1093Problem.lean",
-      "lineCount": 168,
-      "theoremCount": 25,
+      "lineCount": 258,
+      "theoremCount": 44,
       "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,

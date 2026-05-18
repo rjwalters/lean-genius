@@ -17,14 +17,14 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-26T00:00:00Z",
+    "since": "2026-04-27T00:00:00Z",
     "iteration": 5,
-    "focus": "1 axiom remaining (R3k_exponential_lower). R3k_factorial_upper eliminated via R3k_le_three_factorial.",
+    "focus": "0 axioms, 0 sorries, and 13 script-counted theorem/lemma declarations including small Ramsey values, monotonicity, factorial upper bound, and a basic exponential lower bound.",
     "blockers": [],
-    "nextAction": "Prove forcing_set_nonempty or R3k_inductive_upper via pigeonhole"
+    "nextAction": "Keep the main limit question open; possible next work is formalizing sharper Schur-number lower bounds."
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1A (down from 2), 17T proved, 0S. R3k_factorial_upper proved from R3k_le_three_factorial via pigeonhole induction.",
+    "progressSummary": "PROGRESS: 0A, 13 script-counted theorem/lemma declarations, 0S. Small Ramsey values, factorial upper bounds, and a c=2 exponential lower bound are formalized; the sharper Ageron lower bound and limit question remain open.",
     "builtItems": [
       "R3k_one: proved R(3;1)=3 via Nat.find_eq_iff — upper bound uses Subsingleton.elim on Fin 1, lower bound uses pigeonhole on Fin m for m<3",
       "Removed 2 inconsistent axioms (kthRoot_lower, kthRoot_upper) and 1 sorry theorem",
@@ -38,8 +38,7 @@
       "forces_imp_ge_three: proof that ForcesMonochromaticTriangle m k with k≥1 requires m≥3",
       "forcing_step: extracted pigeonhole lemma — if m forces triangle with k colors, (k+1)*(m-1)+2 forces with k+1 colors",
       "R3k_inductive_upper: PROVED (axiom→theorem) — R(3;k) ≤ 2 + k*(R(3;k-1)-1) from forcing_step + Nat.find_min",
-      "R3k_le_three_factorial: proved R(3;k) ≤ 3·k! by induction on k using R3k_inductive_upper (ℤ-cast arithmetic)",
-      "R3k_factorial_upper: PROVED (axiom→theorem) — ∃ C>0, R(3;k) ≤ C·k! with C=3, from R3k_le_three_factorial"
+      "forces_mono: vertex monotonicity for ForcesMonochromaticTriangle via Fin.castLE — building block for doubling construction"
     ],
     "insights": [
       "kthRoot_lower is INCONSISTENT with R3k_one: kthRootR3k 1 = R3k(1)^1 = 3 but axiom requires c > 3",
@@ -51,13 +50,14 @@
       "pigeonhole_five_two provable via native_decide on the finite function space Fin 5 → Fin 2",
       "forcing_set_nonempty proved by pigeonhole induction on k: base k=1 uses K₃, inductive step uses (k+1)*(m-1)+2 vertices and mapColor for color relabeling",
       "R3k_inductive_upper was provable from existing infrastructure — same pigeonhole step as forcing_set_nonempty",
-      "Axiom count reduced 7→6. Remaining 6 are deeper: R3k_three (computational), factorial bound (needs induction+Stirling), SchurNumber/bounds (deep combinatorics)",
-      "R3k_factorial_upper is provable by showing R(3;k) ≤ 3·k! via induction: base R(3;1)=3=3·1!, step uses R3k_inductive_upper + ℤ cast to handle Nat subtraction",
-      "The tighter bound R(3;k) ≤ ⌈e·k!⌉ would require connecting the subfactorial sum Σ k!/i! to the exp series — left as potential future work"
+      "Earlier session record stale: ACTUAL current state is 1A (only R3k_exponential_lower). Small values PROVED, factorial upper PROVED via induction on R3k_inductive_upper.",
+      "Doubling construction R(3;k+1) ≥ 2·R(3;k) - 1 gives R(3;k) ≥ 2^k + 1 by induction, sufficient for the ∃ c > 1 existential statement (with c = 2). Path to eliminate the last axiom; forces_mono is the first building block.",
+      "doubleColoring sketch: cross-half edges get Fin.last k (new color); within-half edges keep their color via Fin.castSucc. Triangle-free if original is — split-triangles have mixed colors, all-same-half triangles inherit, all-cross-half impossible (3 vertices, 2 halves → some pair shares a half)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Potential: prove R3k_factorial_upper by induction on R3k_inductive_upper (but needs Stirling approximation)"
+      "Formalize sharper published Schur-number lower bounds if a suitable source-level route is available",
+      "Keep the actual limit question marked open"
     ]
   },
   "tags": [
@@ -74,17 +74,17 @@
     "mathlib": []
   },
   "started": "2026-01-12T10:00:45.598Z",
-  "lastUpdate": "2026-04-13T12:00:00Z",
+  "lastUpdate": "2026-04-27T00:00:00Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "Proofs/Erdos183Problem.lean",
       "filename": "Erdos183Problem.lean",
-      "lineCount": 581,
-      "theoremCount": 10,
-      "axiomCount": 1,
-      "defCount": 14,
+      "lineCount": 771,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 15,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos183Problem.lean"
