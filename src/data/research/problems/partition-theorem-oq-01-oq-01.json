@@ -1,55 +1,29 @@
 {
-  "id": "partition-theorem-oq-01-oq-01",
-  "title": "Rogers-Ramanujan OQ-01-OQ-01: Finite Verification Through 8",
-  "description": "Can the Rogers-Ramanujan identities be proved via q-series in Lean using PowerSeries from Mathlib?",
-  "problemStatement": {
-    "formal": "Verify, by native computation, the first and second Rogers-Ramanujan partition identities for n = 0 through n = 8.",
-    "plain": "Records a finite computational verification slice for the Rogers-Ramanujan identities. The Lean file checks both Rogers-Ramanujan partition-count equalities through 8 while leaving the full q-series identity to the broader parent work.",
-    "whyMatters": [
-      "Finite checks provide regression tests for the partition definitions used by the larger Rogers-Ramanujan project.",
-      "The two identity families exercise both gap and mod-5 partition encodings.",
-      "The metadata separates proved finite verification from the axiom-backed full q-series parent theorem."
-    ]
-  },
-  "knownResults": {
-    "proven": [
-      "`rr1_n0` through `rr1_n8` verify the first Rogers-Ramanujan identity for n = 0..8.",
-      "`rr2_n0` through `rr2_n8` verify the second Rogers-Ramanujan identity for n = 0..8.",
-      "`rr_both_verified_through_8` packages the finite verification range for both identity families.",
-      "`PartitionTheoremOQ01OQ01.lean` is recorded with 0 axioms and 0 sorries."
+  "slug": "partition-theorem-oq-01-oq-01",
+  "title": "partition-theorem-oq-01-oq-01",
+  "phase": "COMPLETED",
+  "status": "active",
+  "tier": "B",
+  "path": "full",
+  "knowledge": {
+    "progressSummary": "COMPLETE: Rogers-Ramanujan RR1 and RR2 verified for n ≤ 8 via native_decide. 0 sorries.",
+    "insights": [
+      "native_decide applies because rr1GapPartitions/rr2GapPartitions/rr1Mod5Partitions/rr2Mod5Partitions are all computable Finset filters",
+      "interval_cases n cleanly splits n ≤ 8 into 9 concrete cases each handled by native_decide",
+      "Computational verification for n ≤ 8 confirms definitions in parent PartitionTheoremOQ01 are consistent with classical RR identities",
+      "General proof remains open (requires q-series/Rogers-Ramanujan generating function machinery)"
     ],
-    "open": [
-      "The full infinite Rogers-Ramanujan q-series proof remains in the broader parent work and is not proved by this finite verification file.",
-      "Related parent partition files contain axioms or sorries outside this exact OQ-01-OQ-01 slice."
+    "builtItems": [
+      "PartitionTheoremOQ01OQ01.lean: rr1_n0 through rr1_n8 (RR1 for small n)",
+      "PartitionTheoremOQ01OQ01.lean: rr2_n0 through rr2_n8 (RR2 for small n)",
+      "PartitionTheoremOQ01OQ01.lean: rr_both_verified_through_8 (combined theorem)"
     ],
-    "goal": "Expose the completed finite Rogers-Ramanujan verification results without overstating the full q-series theorem."
+    "mathlibGaps": [
+      "General Rogers-Ramanujan proof requires q-series identity not in Mathlib"
+    ],
+    "nextSteps": [],
+    "phase": "COMPLETED"
   },
-  "source": {
-    "proofId": "partition-theorem-oq-01",
-    "proofTitle": "Rogers-Ramanujan and Schur Partition Identities",
-    "type": "open-question"
-  },
-  "category": "extension",
-  "tractability": "challenging",
-  "tags": [
-    "combinatorics",
-    "number-theory",
-    "partitions",
-    "rogers-ramanujan",
-    "schur",
-    "finite-verification",
-    "q-series",
-    "formalized"
-  ],
-  "relatedProofs": [
-    "partition-theorem",
-    "partition-theorem-oq-01",
-    "partition-theorem-oq-01-oq-01",
-    "partition-theorem-oq-03"
-  ],
-  "status": "available",
-  "selectedDate": "2026-04-12",
-  "selectedBy": "seeker",
   "leanFiles": [
     {
       "path": "Proofs/PartitionTheorem.lean",
@@ -117,5 +91,11 @@
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PartitionTheoremOQ04Aristotle.lean"
     }
+  ],
+  "relatedProofs": [
+    "partition-theorem",
+    "partition-theorem-oq-01",
+    "partition-theorem-oq-01-oq-01",
+    "partition-theorem-oq-03"
   ]
 }
