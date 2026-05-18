@@ -7,6 +7,26 @@
     "proofTitle": "Efficient Digital Root Computation via Modular Arithmetic",
     "type": "open-question"
   },
+  "problemStatement": {
+    "formal": "For base b >= 3, formalize digitalRootBase b n and its congruence to n modulo b - 1 using Nat.digits b n.",
+    "plain": "Generalize the familiar base-10 digit-sum divisibility rule to arbitrary bases by proving that the digital root tracks residues modulo b - 1.",
+    "whyMatters": [
+      "The result turns a base-specific divisibility trick into reusable modular-arithmetic infrastructure.",
+      "It connects Lean's digit-list API to practical divisibility tests in bases such as 8, 10, and 16."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "digitalRootBase defines the base-b digital root as 0 at n = 0 and 1 + (n - 1) % (b - 1) otherwise.",
+      "digitSum_mod_base_pred and congruence relate digit sums and digital roots to n modulo b - 1.",
+      "digitalRootBase_range, digitalRootBase_single, and digitalRootBase_idempotent prove range and stability properties.",
+      "div_pred_iff_div_digitSum proves the divisibility rule by b - 1 using the digit sum.",
+      "factor_div_rule generalizes the rule to any factor d of b - 1.",
+      "base10_eq_OQ03_formula plus base 16, base 8, and base 7 examples connect the general theorem to concrete computations."
+    ],
+    "open": [],
+    "goal": "Expose the completed base-parametrized digital-root theorem family without changing the underlying proof artifacts."
+  },
   "category": "extension",
   "tractability": "challenging",
   "tags": [

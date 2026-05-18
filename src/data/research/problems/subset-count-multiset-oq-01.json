@@ -2,6 +2,33 @@
   "id": "subset-count-multiset-oq-01",
   "title": "Distinct Submultiset Count: prod(m_i + 1)",
   "status": "completed",
+  "problemStatement": {
+    "formal": "For a finite multiset s, prove that the number of distinct submultisets is the product over a in s.toFinset of s.count a + 1.",
+    "plain": "Count all distinct submultisets by choosing how many copies of each element to keep.",
+    "whyMatters": [
+      "The formula generalizes the subset-count identity 2^n from sets to multisets with repeated elements.",
+      "It packages the counting argument as a reusable equivalence with bounded count functions."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "distinctSubMultisets collects exactly the submultisets t with t <= s.",
+      "mem_distinctSubMultisets, distinctSubMultisets_empty, and self_mem_distinctSubMultisets establish the basic API.",
+      "submultisetEquiv gives a bijection between submultisets and bounded count functions on s.toFinset.",
+      "card_distinctSubMultisets proves the product formula for the number of distinct submultisets.",
+      "Concrete examples and native_decide checks cover singleton, pair, triple, and repeated-element cases.",
+      "nodup_card_eq_two_pow recovers the usual 2 ^ s.card formula when the multiset has no duplicates."
+    ],
+    "open": [],
+    "goal": "Expose the completed multiset subset-count theorem and its reduction to the classical nodup case."
+  },
+  "tags": [
+    "combinatorics",
+    "multisets",
+    "counting",
+    "finite-types",
+    "subsets"
+  ],
   "knowledge": {
     "insights": [
       "A submultiset t ≤ s is uniquely determined by its count function restricted to s.toFinset",

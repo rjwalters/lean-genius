@@ -154,10 +154,29 @@
     "birthday-problem-oq-03-oq-01-oq-02",
     "birthday-problem-oq-03-oq-03"
   ],
-  "tags": [],
+  "tags": [
+    "probability",
+    "birthday-problem",
+    "asymptotic-bounds",
+    "exponential-bounds",
+    "combinatorics"
+  ],
   "problemStatement": {
     "formal": "",
     "plain": "Proves the asymptotic upper bound for the birthday collision probability: ∏(1-i/n) ≤ exp(-k(k-1)/(2n)). Fully proved from Mathlib with 0 axioms and 0 sorries, using the fundamental inequality 1-x ≤ exp(-x) and Gauss's summation formula.",
     "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "probAllDistinct gives the product formula for the probability that all birthdays are distinct.",
+      "one_sub_le_exp_neg proves the basic inequality 1 - x <= exp(-x).",
+      "probAllDistinct_le_exp and probCollision_ge derive the exponential upper bound for distinct birthdays and lower bound for collisions.",
+      "collision_exceeds_target formalizes the threshold criterion for exceeding a target collision probability.",
+      "probAllDistinct_antitone proves monotonicity as the number of sampled birthdays increases."
+    ],
+    "open": [
+      "The file proves explicit exponential bounds and threshold criteria, not a separate full asymptotic equivalence theorem."
+    ],
+    "goal": "Expose the completed birthday-collision bound while keeping the distinction between explicit bounds and asymptotic equivalence clear."
   }
 }

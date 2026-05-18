@@ -9,6 +9,17 @@
     "formal": "∑_{i+j≤n} C(i+a,a)·C(j+b,b) = C(n+a+b+2, a+b+2)",
     "plain": "The 2D generalization of the hockey stick identity for binomial coefficients."
   },
+  "knownResults": {
+    "proven": [
+      "simplicial packages binomial coefficients as Nat.choose (n + k) k.",
+      "hockey_stick proves the one-dimensional hockey-stick identity for the simplicial sequence.",
+      "parallel_vandermonde proves the parallel Vandermonde convolution used by the two-dimensional result.",
+      "hockey_stick_2d proves the two-dimensional hockey-stick identity by iterating the one-dimensional identity.",
+      "native_decide checks cover small concrete cases of the simplicial and parallel-Vandermonde formulas."
+    ],
+    "open": [],
+    "goal": "Record the completed binomial-identity infrastructure around the two-dimensional hockey-stick theorem."
+  },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-22T03:10:00Z",

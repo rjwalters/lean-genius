@@ -4,6 +4,27 @@
   "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
+  "problemStatement": {
+    "formal": "For a depressed cubic x^3 + p*x + q with roots x1, x2, x3, prove that -4*p^3 - 27*q^2 equals the root-separation discriminant.",
+    "plain": "Formalize the discriminant identity for depressed cubics and derive root-separation consequences from the sign of the discriminant.",
+    "whyMatters": [
+      "The discriminant is the bridge between an algebraic formula and the qualitative behavior of cubic roots.",
+      "The Lean proof isolates the identity needed before broader cubic-solution classification work."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "discriminant defines the depressed-cubic discriminant -4*p^3 - 27*q^2.",
+      "rootDiscriminant defines the product of squared root differences.",
+      "discriminant_eq_root_form proves the discriminant equals the root-separation product under Vieta-style hypotheses.",
+      "distinct_roots_of_pos_discriminant proves that positive discriminant forces the three real roots to be pairwise distinct.",
+      "repeated_root_of_zero_discriminant proves that zero discriminant forces a repeated root."
+    ],
+    "open": [
+      "This entry does not claim the separate negative-discriminant complex-root classification."
+    ],
+    "goal": "Record the completed depressed-cubic discriminant identity and its real-root consequences."
+  },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-28T21:00:00Z",
