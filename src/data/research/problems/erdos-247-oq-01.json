@@ -13,6 +13,21 @@
       "Gap between weak and strong growth conditions for lacunary sums"
     ]
   },
+  "knownResults": {
+    "proven": [
+      "The main and companion files are recorded as sorry-free.",
+      "Strong-growth helper lemmas for powers of two and factorials are proved.",
+      "Strong growth is shown to imply weak growth.",
+      "The square sequence is formalized as weak-growth but not strong-growth, capturing the central gap.",
+      "The factorial lacunary sum is proved transcendental through a Liouville-number route."
+    ],
+    "open": [
+      "The deep erdos_transcendence_strong theorem remains axiomatized for the 2^k and general strong-growth cases.",
+      "The original quadratic-growth lacunary series remains beyond the current Mathlib transcendence library.",
+      "Future work could split or weaken the remaining transcendence axiom."
+    ],
+    "goal": "Keep the sorry-free lacunary-series infrastructure discoverable while marking the remaining deep transcendence theorem as an axiom."
+  },
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-20T15:00:00.000Z",
