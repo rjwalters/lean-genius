@@ -1,37 +1,58 @@
 {
   "slug": "arithmetic-series-oq-00-oq-02",
   "title": "Can we prove the weighted generalization: ∑_{k=1}^n (2k-1)·k² = (∑_{k=1}^n k)²",
-  "phase": "NEW",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Can we prove the weighted generalization: ∑_{k=1}^n (2k-1)·k² = (∑_{k=1}^n k)²?.",
-    "whyMatters": []
+    "formal": "The conjecture sum_{k=1}^n (2k-1)k^2 = (sum_{k=1}^n k)^2 is false: n=2 gives 13 != 9; the corrected closed form is 6 * sum_{k<n} (2(k+1)-1)(k+1)^2 + n(n+1) = n^2(n+1)(3n+1).",
+    "plain": "The weighted generalization is false after n=1: n=2 is already a counterexample. The Lean development proves counterexamples and the corrected closed form.",
+    "whyMatters": [
+      "Separates the true Nicomachus sum-of-cubes identity from a plausible but false odd-weighted variant.",
+      "Records the corrected closed form so later agents do not re-open a disproved conjecture."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "counterexample_n2: the weighted identity fails at n=2, with 13 != 9",
+      "counterexample_n3: the weighted identity also fails at n=3",
+      "weighted_sum_closed_form: subtraction-free integer closed form for the weighted sum",
+      "nicomachus: the original sum-of-cubes identity remains the correct square identity",
+      "cubes_minus_weighted: formal comparison between cube sums and the weighted variant"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "No proof blockers remain; the conjecture is resolved negatively with a corrected closed form."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-04-26T08:56:57.649Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Resolved negatively: counterexamples and corrected closed form are proved with 0 sorries and 0 axioms.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No immediate action; optional follow-up would package the corrected closed form for reuse.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: the proposed weighted generalization is false. ArithmeticSeriesOQ00OQ02.lean proves n=2 and n=3 counterexamples, the corrected closed form, the original Nicomachus identity, and the difference formula with 0 sorries and 0 axioms.",
+    "builtItems": [
+      "ArithmeticSeriesOQ00OQ02.lean: 121 lines, 11 theorem/lemma lines, 0 axioms, 0 sorries",
+      "counterexample_n2: LHS 13 differs from RHS 9",
+      "holds_n1: explains the false initial plausibility at n=1",
+      "counterexample_n3: second concrete failure case",
+      "weighted_sum_closed_form: corrected integer closed form for the weighted sum",
+      "nicomachus: sum of cubes remains the valid square identity",
+      "cubes_minus_weighted: formal difference between cube and weighted sums"
+    ],
+    "insights": [
+      "The conjecture is false for every meaningful n beyond the trivial n=1 check; n=2 is decisive.",
+      "The correct formula follows from 2*sum(k^3) - sum(k^2), encoded in subtraction-free integer form.",
+      "The odd-number weight explains why the conjecture looks plausible, but it does not reproduce k^3."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -72,7 +93,7 @@
     {
       "path": "Proofs/ArithmeticSeries.lean",
       "filename": "ArithmeticSeries.lean",
-      "lineCount": 180,
+      "lineCount": 181,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 1,
@@ -94,8 +115,8 @@
     {
       "path": "Proofs/ArithmeticSeriesOQ00OQ01.lean",
       "filename": "ArithmeticSeriesOQ00OQ01.lean",
-      "lineCount": 282,
-      "theoremCount": 12,
+      "lineCount": 283,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
