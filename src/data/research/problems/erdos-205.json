@@ -1,7 +1,7 @@
 {
   "slug": "erdos-205",
   "title": "Erdős #205: Powers of 2 plus numbers with few prime factors",
-  "phase": "NEW",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "fast",
@@ -16,24 +16,44 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-23T08:04:56.542Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-05-18T12:19:44Z",
+    "iteration": 2,
+    "focus": "Disproof-oriented formalization reviewed against the primary Lean file.",
+    "activeApproach": "Axiom-aware source assessment of the counterexample and covering-system bridge.",
+    "blockers": [
+      "Six external analytic or number-theoretic inputs remain axiomatized."
+    ],
+    "nextAction": "Audit or formalize the six named external assumptions if this disproof bridge needs proof-health hardening.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "SOURCE REFRESH: Primary Lean file has 9 definitions, 44 theorems, 6 axioms, 0 sorries over 444 lines. It proves not Erdos205Conjecture from axiomatized counterexample, asymptotic, and covering inputs, plus concrete arithmetic witness facts in source.",
+    "builtItems": [
+      "Defines bigOmega, HasSmallOmegaRep, Erdos205Conjecture, minOmegaRemainder, thresholdFunction, IsPowerPlusePrime, IsCoveringSystem, erdosCoveringModulus, and IsDePolignac.",
+      "Proves the source-level bridge erdos_205_disproved from barreto_leeham_counterexample and threshold_dominates_loglog.",
+      "Records concrete bigOmega computations, modular orders for powers of 2, the covering_orders_lcm fact, and odd/composite witness facts for 127 and 149.",
+      "Leaves six named axioms: barreto_leeham_counterexample, threshold_dominates_loglog, romanoff_positive_density, erdos_covering_obstruction, average_omega_asymptotic, and omega_concentration."
+    ],
+    "insights": [
+      "This is not a fresh unconditional disproof in Mathlib; the negated conjecture is derived from six axiomatized mathematical inputs.",
+      "The local source contains the arithmetic and covering-system scaffolding needed to connect the named assumptions to the problem statement.",
+      "The native_decide-style arithmetic facts are present in source, but this metadata pass records source facts rather than claiming a fresh Lean compile.",
+      "The related Romanoff and de Polignac material is supporting infrastructure, not a replacement for the six external assumptions."
+    ],
+    "mathlibGaps": [
+      "Average order and concentration results for bigOmega are not available as local proved lemmas.",
+      "The named counterexample and covering obstruction are external mathematical inputs in the current file."
+    ],
+    "nextSteps": [
+      "Verify citation coverage for the named counterexample and threshold inputs.",
+      "Try to replace threshold_dominates_loglog with a local asymptotic proof if the required real-analysis lemmas are available.",
+      "Separate the Romanoff/de Polignac support file goals from the core Erdos205Conjecture disproof bridge."
+    ]
   },
   "tags": [
     "erdos",
@@ -54,14 +74,14 @@
     "mathlib": []
   },
   "started": "2026-01-23T08:04:56.542Z",
-  "lastUpdate": "2026-01-23T08:04:56.542Z",
+  "lastUpdate": "2026-05-18T12:19:44Z",
   "significance": 7,
   "tractability": 8,
   "leanFiles": [
     {
       "path": "Proofs/Erdos205Problem.lean",
       "filename": "Erdos205Problem.lean",
-      "lineCount": 445,
+      "lineCount": 444,
       "theoremCount": 44,
       "axiomCount": 6,
       "defCount": 9,

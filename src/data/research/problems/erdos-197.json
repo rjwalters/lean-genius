@@ -2,7 +2,7 @@
   "slug": "erdos-197",
   "title": "Erdős #197",
   "phase": "OBSERVE",
-  "status": "completed",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,41 +16,39 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-28T09:10:00Z",
-    "iteration": 4,
-    "focus": "Graduated: 0 sorries, 2 deep axioms",
-    "blockers": [],
-    "nextAction": "None — formalization complete. 2 deep axioms (Erdős-Graham three-set, Stanley sequence existence).",
+    "phase": "ACT",
+    "since": "2026-05-18T12:19:44Z",
+    "iteration": 5,
+    "focus": "Source metadata refreshed: open two-set question plus two deep supporting axioms.",
+    "blockers": [
+      "Erdos #197 remains open; the three-set theorem and Stanley sequence existence are axiomatized."
+    ],
+    "nextAction": "Future progress would require new mathematics or formalizing the Erdos-Graham three-set and Stanley sequence inputs.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 9 theorems, 2 deep axioms, 0 sorries. Eliminated 3 false/unused axioms in prior sessions. Remaining axioms: erdos_graham_three_sets (published result), stanley_avoids_3AP (Stanley sequence existence). Problem (two-set partition) remains OPEN.",
+    "progressSummary": "SOURCE REFRESH: Primary Lean file has 10 definitions, 9 theorems, 2 axioms, 0 sorries over 307 lines. The open two-set question is recorded through status theorems; the remaining axioms are erdos_graham_three_sets and stanley_avoids_3AP.",
     "builtItems": [
-      "Proved powers_of_2_avoid_3AP: 2^n avoids 3-APs (since j<k => 2^k >= 2*2^j)",
-      "Proved erdos_197_conjecture from Classical.em + De Morgan",
-      "Fixed constant_has_3AP (was incorrectly claiming constant sequences avoid 3-APs)",
-      "Fixed isStanleySequence definition (Nat.find API change)",
-      "Proved avoids3AP_of_comp: subsequence of 3-AP-free sequence is 3-AP-free",
-      "Proved stanley_implies_avoids3AP: documents redundancy in stanley_avoids_3AP axiom",
-      "Graduated to completed (iteration 4)"
+      "Formalizes arithmetic progressions, 3-AP-free enumerations, two-set and three-set partitions, monotone order predicates, and Stanley sequences.",
+      "Proves partition_mem_iff, erdos_197_conjecture, constant_has_3AP, identity_has_3AP, powers_of_2_avoid_3AP, avoids3AP_of_comp, stanley_implies_avoids3AP, erdos_197_status, and erdos_197_open_question.",
+      "Keeps exactly two deep supporting axioms: erdos_graham_three_sets and stanley_avoids_3AP."
     ],
     "insights": [
-      "2^i + 2^k = 2*2^j is impossible for i<j<k because 2^k >= 2*2^j and 2^i >= 1",
-      "erdos_197_conjecture (P or not-P) is just excluded middle, not a real axiom",
-      "erdos_197_not_finite_checkable had a placeholder True making it malformed",
-      "constant_avoids_3AP was a false theorem: constant sequences DO have 3-APs",
-      "avoids3AP_of_comp: subsequences of 3-AP-free sequences are 3-AP-free (key structural property)",
-      "stanley_avoids_3AP axiom has redundant conjunction: isStanleySequence already includes avoids3AP",
-      "fast_growing_avoids_3AP is FALSE: e.g. f=(1,3,5) has 2^n ≤ f(n) but 1+5=2*3 is an AP",
-      "Graduation review: 2 remaining axioms are both deep published results. erdos_graham_three_sets is the Erdős-Graham three-set theorem. stanley_avoids_3AP asserts Stanley sequence existence."
+      "The two-set Erdos #197 question itself remains open; the file records it as an open-question status surface rather than proving the problem.",
+      "The three-set Erdos-Graham result and Stanley sequence existence are the remaining external mathematical inputs.",
+      "The source no longer has the older false/unused axiom claims around powers_of_2_avoid_3AP or finite non-checkability.",
+      "The primary file has no source-level sorry or admit tokens in the current proof metadata."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Formalize the Erdos-Graham three-set theorem if a suitable Mathlib route becomes available.",
+      "Replace stanley_avoids_3AP with a formal construction of a Stanley sequence avoiding 3-APs.",
+      "Keep future progress language separate from the still-open two-set partition question."
+    ],
     "markdown": "# Erdős #197 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCan $\\mathbb{N}$ be partitioned into two sets, each of which can be permuted to avoid monotone 3-term arithmetic progressions?\n\n\n\nIf three sets are allowed then this is possible.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #196\n- Problem #198\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr79\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
@@ -67,14 +65,14 @@
     "mathlib": []
   },
   "started": "2026-01-12T16:01:50.837Z",
-  "lastUpdate": "2026-03-24T06:03:17.000Z",
+  "lastUpdate": "2026-05-18T12:19:44Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos197Problem.lean",
       "filename": "Erdos197Problem.lean",
-      "lineCount": 308,
+      "lineCount": 307,
       "theoremCount": 9,
       "axiomCount": 2,
       "defCount": 10,

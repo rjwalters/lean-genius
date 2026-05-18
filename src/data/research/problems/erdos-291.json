@@ -1,8 +1,8 @@
 {
   "slug": "erdos-291",
   "title": "Harmonic Number Divisibility",
-  "phase": "COMPLETED",
-  "status": "graduated",
+  "phase": "OBSERVE",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,33 +16,51 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETE",
-    "since": "2026-02-06T06:00:00Z",
-    "iteration": 5,
-    "focus": "Converted 2 axioms to proved theorems: part2_trivially_true and small_examples.",
-    "activeApproach": "Axiom reduction via computation and set-theoretic proofs.",
-    "blockers": [],
-    "nextAction": "Consider submitting steinerberger_criterion or wolstenholme_theorem to Aristotle. Remaining 4 axioms are deep mathematical results.",
+    "phase": "ACT",
+    "since": "2026-05-18T12:19:44Z",
+    "iteration": 6,
+    "focus": "Source metadata refreshed: part 2 support from two axiomatized inputs; part 1 remains open.",
+    "activeApproach": "Axiom-aware assessment of harmonic-number gcd infrastructure.",
+    "blockers": [
+      "wolstenholme_theorem and divisibility_characterization remain axiomatized.",
+      "Part 1 remains open; seven_gcd_one_values is finite evidence only."
+    ],
+    "nextAction": "Formalize Wolstenholme or the divisibility characterization, and keep Part 1 listed as open until new mathematics lands.",
     "attemptCounts": {
-      "total": 3,
+      "total": 4,
       "currentApproach": 1,
-      "approachesTried": 3
+      "approachesTried": 4
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": []
+    "progressSummary": "SOURCE REFRESH: Primary Lean file has 10 definitions, 84 theorems, 2 axioms, 0 sorries over 932 lines. It proves the Part 2 surface from wolstenholme_theorem and divisibility_characterization; Part 1 remains open, with finite evidence recorded.",
+    "builtItems": [
+      "Defines L, H, a, harmonicGCD, question_part1, question_part2, erdos291Statement, leadingDigitAux, leadingDigit, and countGCDOne.",
+      "Implements steinerberger_criterion, small_examples, first_gcd_gt_one, small_gcd_one, leading-digit lemmas, divisibility examples, part2_trivially_true, erdos_291_summary, erdos_291, part2_via_five, and small examples through n=10.",
+      "Keeps exactly two axioms: wolstenholme_theorem and divisibility_characterization."
+    ],
+    "insights": [
+      "The older metadata claimed four remaining axioms and carried a 1-sorry tag; the primary proof metadata now reports two axioms and zero sorries.",
+      "Part 2 is represented through the two axiomatized number-theoretic inputs, not as a fully independent Mathlib proof.",
+      "Part 1 remains open; seven_gcd_one_values is finite/computational evidence rather than an infinite result.",
+      "The primary file has no source-level sorry or admit tokens in the current proof metadata."
+    ],
+    "mathlibGaps": [
+      "Wolstenholme theorem in the exact form needed here.",
+      "The divisibility characterization connecting harmonicGCD to leading digits."
+    ],
+    "nextSteps": [
+      "Try to formalize wolstenholme_theorem from Mathlib modular arithmetic and binomial infrastructure.",
+      "Break divisibility_characterization into smaller lemmas around L, H, and p-adic divisibility.",
+      "Keep Part 1 marked open unless an infinite proof replaces the finite seven_gcd_one_values evidence."
+    ]
   },
   "tags": [
     "seeker-selected",
     "number-theory",
     "harmonic-numbers",
     "divisibility",
-    "wolstenholme",
-    "1-sorry"
+    "wolstenholme"
   ],
   "relatedProofs": [
     "erdos-2",
@@ -55,16 +73,15 @@
     "mathlib": []
   },
   "started": "2026-01-27T22:18:02.333Z",
-  "lastUpdate": "2026-02-11T05:41:00.788Z",
-  "completed": "2026-02-11T05:41:00.788Z",
+  "lastUpdate": "2026-05-18T12:19:44Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos291Problem.lean",
       "filename": "Erdos291Problem.lean",
-      "lineCount": 933,
-      "theoremCount": 77,
+      "lineCount": 932,
+      "theoremCount": 84,
       "axiomCount": 2,
       "defCount": 10,
       "sorryCount": 0,
