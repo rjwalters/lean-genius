@@ -6,14 +6,25 @@
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "A comprehensive collection of formally verified divisibility rules: general last-k-digits framework, power-of-2/5 generalizations, truncation methods for 7, 11, 13, 17, and 19, casting out nines/threes, digital root theory, and coprime factorization rules.",
-    "whyMatters": []
+    "formal": "\\forall b\\ d\\ n,\\ 2\\le b\\land 0<d\\land b\\equiv 1\\pmod d\\Rightarrow (d\\mid n\\leftrightarrow d\\mid \\operatorname{digitSum}_b(n)), with base-10 divisibility by 3/9 and digital-root corollaries.",
+    "plain": "Backfill the divisibility-rule metadata around digit-sum tests in arbitrary bases, concrete base-10 rules for 3 and 9, hex/octal specializations, and digital-root arithmetic.",
+    "whyMatters": [
+      "Digit-sum divisibility rules are elementary number-theory facts with reusable modular-arithmetic structure.",
+      "The generalized base/modulus theorem explains why the familiar tests for 3 and 9 work.",
+      "The digital-root files package the same congruence idea into computable arithmetic checks."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`divisibility_by_3` and `divisibility_by_9` prove the base-10 digit-sum rules.",
+      "`modEq_digits_sum_general` and `dvd_iff_dvd_digits_sum_general` give the general theorem when `b % d = 1`.",
+      "`hex_div_15`, `hex_div_3`, `hex_div_5`, and `oct_div_7` instantiate the rule for hexadecimal and octal bases.",
+      "`digitalRootFormula`, `digitalRoot_mod9`, `digitalRoot_div3`, `digitalRoot_add`, and `digitalRoot_mul` formalize digital-root behavior."
+    ],
+    "open": [
+      "The linked `DivisibilityBy3*.lean` files record zero axioms and zero sorries; the remaining caveat is stale metadata elsewhere that names an old `DivisibilityByThreeOQ01.lean` path."
+    ],
+    "goal": "Expose the completed digit-sum and digital-root formalization without relying on the stale proof-meta path."
   },
   "currentState": {
     "phase": "COMPLETE",
@@ -40,7 +51,10 @@
     "seeker-selected",
     "number-theory",
     "modular-arithmetic",
-    "extension"
+    "extension",
+    "divisibility-rules",
+    "digital-root",
+    "formalization"
   ],
   "relatedProofs": [
     "divisibility-by-3",

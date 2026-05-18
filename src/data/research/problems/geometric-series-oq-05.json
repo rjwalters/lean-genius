@@ -1,19 +1,30 @@
 {
   "slug": "geometric-series-oq-05",
-  "title": "For matrices, the geometric series $\\sum A^k = (I - A)^{-1}$ converges iff the spectral radius $\\rho(A) < 1$. The spectral radius condition is strictly weaker than $\\|A\\| < 1$ — can this refinement be",
+  "title": "Operator geometric series and Neumann inverse bounds",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: For matrices, the geometric series $\\sum A^k = (I - A)^{-1}$ converges iff the spectral radius $\\rho(A) < 1$. The spectral radius condition is strictly weaker than $\\|A\\| < 1$ — can this refinement be.",
-    "whyMatters": []
+    "formal": "\\lVert T\\rVert<1\\Rightarrow \\operatorname{Summable}(n\\mapsto T^n)\\land (1-T)^{-1}=\\sum_{n\\ge 0}T^n, alongside scalar finite and infinite geometric-sum identities.",
+    "plain": "Backfill this geometric-series entry around the norm-contractive Neumann series that is actually formalized, plus the scalar finite and infinite geometric-sum infrastructure.",
+    "whyMatters": [
+      "Neumann-series inverses are the operator-theoretic version of the geometric series.",
+      "The Lean development proves the norm-contractive case cleanly, which is useful even before the sharper spectral-radius criterion is available.",
+      "Keeping the metadata precise prevents the gallery from advertising the stronger matrix spectral-radius theorem as proved."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`finite_geom_sum` and `finite_geom_sum'` prove finite geometric-sum formulas.",
+      "`infinite_geom_sum` and `infinite_geom_sum_scaled` prove scalar infinite sums under `|r| < 1`.",
+      "`operator_geometric_summable` proves summability of `n |-> T ^ n` when `||T|| < 1`.",
+      "`neumann_series_mul_right`, `oneSub_inv_eq_tsum`, and `neumann_series_norm_bound` give the Neumann inverse identity and norm bound."
+    ],
+    "open": [
+      "The spectral-radius-if-and-only-if matrix refinement from the original prompt is not formalized here; the linked files prove the norm-bound sufficient condition with zero axioms and zero sorries."
+    ],
+    "goal": "Present the completed norm-contractive geometric-series formalization while marking the spectral-radius refinement as future work."
   },
   "currentState": {
     "phase": "NEW",
@@ -37,7 +48,12 @@
   },
   "tags": [
     "seeker-selected",
-    "extension"
+    "extension",
+    "analysis",
+    "geometric-series",
+    "operator-theory",
+    "neumann-series",
+    "formalization"
   ],
   "relatedProofs": [
     "geometric-series",
