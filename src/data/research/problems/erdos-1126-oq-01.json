@@ -16,47 +16,36 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ACT",
     "since": "2026-03-24T00:48:59.906Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Source refresh: Erdos1126OQ01Problem.lean is the proof-meta primary, with 472 lines, 15 theorem/lemma declarations, 11 defs, 7 axioms, and 0 executable sorries; the Aristotle companion has 3 lemmas and 0 executable sorries.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Keep OQ01Problem primary and treat Aristotle as a companion; further work should reduce the seven primary stability axioms or reconcile the companion lemma comments with the private primary axioms.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Formalized extensions of de Bruijn-Jurkat to multiplicative, Jensen, and derivation equations. 12 theorems (10 proved, 2 sorry), 6 axioms, 388 lines.",
+    "progressSummary": "SOURCE CHECKED: OQ01Problem formalizes additive, Jensen, multiplicative, and derivation stability patterns. Primary status: 472 lines, 15 theorem/lemma declarations, 11 defs, 7 axioms, 0 executable sorries. Aristotle companion has 44 lines, 3 lemmas, and 0 executable sorries.",
     "builtItems": [
-      "IsJensen definition in Erdos1126OQ01Problem.lean",
-      "IsMultiplicative definition in Erdos1126OQ01Problem.lean",
-      "IsDerivation definition in Erdos1126OQ01Problem.lean",
-      "jensen_implies_shifted_additive (proved)",
-      "additive_plus_const_is_jensen (proved)",
-      "jensen_iff_additive_shifted (proved)",
-      "mul_func_one (proved)",
-      "mul_func_sq (proved)",
-      "derivation_at_one (proved)",
-      "derivation_sq (proved)",
-      "derivation_pow (proved by induction)",
-      "stability_paradigm_summary (proved from axioms)",
-      "Gallery entry at src/data/proofs/erdos-1126-oq-01/"
+      "Jensen/additive equivalence and shifted-additive reductions.",
+      "Multiplicative and derivation definitions plus basic proved consequences.",
+      "Stability paradigm summary built from explicit stability axioms.",
+      "Aristotle companion retained as a small lemma file with one remaining sorry."
     ],
     "insights": [
-      "Jensen equation is exactly equivalent to additivity modulo constants (proved both directions)",
-      "Multiplicative stability reduces to additive stability via logarithmic conjugation",
-      "Derivation power rule d(x^n) = n*x^(n-1)*d(x) proved by induction",
-      "All algebraic functional equations exhibit a.e. stability (Ger 1979, Járai 2005)",
-      "Continuous derivations on R are trivially zero, unlike continuous additive functions"
+      "The previous summary was stale: primary counters are 15 theorem/lemma declarations, 7 axioms, 472 lines, and no primary sorries.",
+      "The Aristotle file is not the primary for this slug even though it was listed first.",
+      "The companion sorry should not be confused with the primary OQ01Problem source state."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove the 2 remaining sorries (almost_jensen reduction, log_of_mul_is_additive)",
-      "Create Aristotle companion file for routine lemmas",
-      "Connect to Mathlib ConvexOn for Jensen-convexity relationship"
+      "Put Erdos1126OQ01Problem.lean first and sync counters from proof metadata.",
+      "Clarify whether the Aristotle companion lemmas should replace matching private primary axioms.",
+      "If extending, target the seven primary stability axioms."
     ]
   },
   "tags": [
@@ -80,36 +69,36 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.906Z",
-  "lastUpdate": "2026-03-24T06:50:00Z",
+  "lastUpdate": "2026-05-18T14:01:02Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/Erdos1126OQ01Aristotle.lean",
-      "filename": "Erdos1126OQ01Aristotle.lean",
-      "lineCount": 45,
-      "theoremCount": 3,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 1,
-      "isAristotle": true,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1126OQ01Aristotle.lean"
-    },
-    {
       "path": "Proofs/Erdos1126OQ01Problem.lean",
       "filename": "Erdos1126OQ01Problem.lean",
-      "lineCount": 473,
-      "theoremCount": 13,
-      "axiomCount": 5,
+      "lineCount": 472,
+      "theoremCount": 15,
+      "axiomCount": 7,
       "defCount": 11,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1126OQ01Problem.lean"
     },
     {
+      "path": "Proofs/Erdos1126OQ01Aristotle.lean",
+      "filename": "Erdos1126OQ01Aristotle.lean",
+      "lineCount": 44,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1126OQ01Aristotle.lean"
+    },
+    {
       "path": "Proofs/Erdos1126Problem.lean",
       "filename": "Erdos1126Problem.lean",
-      "lineCount": 158,
+      "lineCount": 157,
       "theoremCount": 6,
       "axiomCount": 4,
       "defCount": 5,

@@ -16,24 +16,37 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-02-21T19:21:07.133Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Source refresh: ContinuumHypothesisOQ01.lean is the proof-meta primary, with 317 lines, 20 theorems, 10 axioms, 4 definition-like declarations, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Keep the OQ01 primary first and continue by separating source-true CH/large-cardinal landscape facts from broader base CH and OQ02 companions.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SOURCE CHECKED: OQ01 formalizes axiom-choice criteria for CH using Decides, V=L, Ultimate L, PFA, MM, measurable cardinals, and large-cardinal compatibility. The primary has 317 lines, 20 theorems, 10 axioms, 4 definition-like declarations, and 0 sorries.",
+    "builtItems": [
+      "OQ01 primary CH axiom-adoption landscape summary.",
+      "Decides framework for axioms implying CH or not-CH.",
+      "V=L and Ultimate L imply CH/GCH; PFA/MM imply not-CH.",
+      "Large-cardinal compatibility tension recorded via measurable-cardinal assumptions."
+    ],
+    "insights": [
+      "The old research state was still initial-exploration despite a graduated OQ01 formalization.",
+      "The OQ01 proof metadata is primary for this slug; base ContinuumHypothesis.lean and OQ02 are companions.",
+      "All three CH-related source files have zero sorries, but line/definition/axiom counters were stale by source-meta standards."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Keep OQ01 first in leanFiles and sync counters from proof metadata.",
+      "If extending, reduce the ten OQ01 set-theoretic axioms or document them as independence assumptions.",
+      "Treat base CH and OQ02 material as companions, not the primary for this OQ01 record."
+    ]
   },
   "tags": [
     "seeker-selected",
@@ -57,40 +70,40 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.133Z",
-  "lastUpdate": "2026-02-23T05:42:29.518Z",
+  "lastUpdate": "2026-05-18T14:01:02Z",
   "completed": "2026-02-23T05:42:29.518Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/ContinuumHypothesis.lean",
-      "filename": "ContinuumHypothesis.lean",
-      "lineCount": 396,
-      "theoremCount": 8,
-      "axiomCount": 4,
-      "defCount": 8,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ContinuumHypothesis.lean"
-    },
-    {
       "path": "Proofs/ContinuumHypothesisOQ01.lean",
       "filename": "ContinuumHypothesisOQ01.lean",
-      "lineCount": 318,
+      "lineCount": 317,
       "theoremCount": 20,
       "axiomCount": 10,
-      "defCount": 3,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ContinuumHypothesisOQ01.lean"
     },
     {
+      "path": "Proofs/ContinuumHypothesis.lean",
+      "filename": "ContinuumHypothesis.lean",
+      "lineCount": 395,
+      "theoremCount": 8,
+      "axiomCount": 4,
+      "defCount": 12,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ContinuumHypothesis.lean"
+    },
+    {
       "path": "Proofs/ContinuumHypothesisOQ02.lean",
       "filename": "ContinuumHypothesisOQ02.lean",
-      "lineCount": 585,
+      "lineCount": 584,
       "theoremCount": 32,
-      "axiomCount": 2,
-      "defCount": 6,
+      "axiomCount": 3,
+      "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ContinuumHypothesisOQ02.lean"

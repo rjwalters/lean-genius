@@ -16,24 +16,36 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-24T00:48:59.901Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Source refresh: Erdos1010OQ02Problem.lean is a zero-sorry K_r supersaturation stub with 200 lines, 8 defs, 3 axioms, and no theorem declarations.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Keep counters aligned and, if continuing, replace the Turan/Razborov/Reiher axioms with formal graph-theory infrastructure.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SOURCE CHECKED: OQ02 defines turanNumber, cliqueCount, shadow, exactKrDensityOpen, and kr_supersaturation_conjecture. The formal state is a zero-sorry, three-axiom scaffold for Turan, Razborov triangle density, and Reiher K4 density.",
+    "builtItems": [
+      "Definitions for K_r supersaturation and clique density scaffolding.",
+      "Axioms isolating Turan, Razborov triangle density, and Reiher K4 density inputs.",
+      "Base Erdos1010Problem.lean retained as a two-axiom companion."
+    ],
+    "insights": [
+      "The record was still initial-exploration despite a source-backed OQ02 file.",
+      "The primary has no theorem declarations; claiming proved results would overstate the current Lean surface.",
+      "The exact K_r density problem remains open for r >= 5."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Correct line counts to the proof metadata values.",
+      "If extending, add theorem wrappers around consequences of the three axioms or start reducing the graph-density axioms.",
+      "Keep the base Erdos1010Problem.lean as a companion."
+    ]
   },
   "tags": [
     "erdos",
@@ -56,14 +68,14 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.901Z",
-  "lastUpdate": "2026-03-24T00:48:59.901Z",
+  "lastUpdate": "2026-05-18T14:01:02Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1010OQ02Problem.lean",
       "filename": "Erdos1010OQ02Problem.lean",
-      "lineCount": 201,
+      "lineCount": 200,
       "theoremCount": 0,
       "axiomCount": 3,
       "defCount": 8,
@@ -74,7 +86,7 @@
     {
       "path": "Proofs/Erdos1010Problem.lean",
       "filename": "Erdos1010Problem.lean",
-      "lineCount": 94,
+      "lineCount": 93,
       "theoremCount": 0,
       "axiomCount": 2,
       "defCount": 2,

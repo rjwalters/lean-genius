@@ -16,24 +16,38 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-02-21T19:21:07.134Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Source refresh: DirichletsTheoremOQ01.lean is the proof-meta primary, with 705 lines, 31 theorems, 5 analytic-number-theory axioms, 5 defs, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Keep OQ01 primary metadata current; further work would reduce the Siegel, GRH, Landau-Page, Deuring-Heilbronn, or Tatuzawa axioms.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEYED - 20 proved theorems, 3 axioms for deep analytic NT results, 0 sorries.",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SOURCE CHECKED: OQ01 formalizes the Siegel-zero framework around L_one_ne_zero, IsSiegelZero, no_siegel_zero_gives_lower_bound, GRH and Landau-Page consequences, Deuring-Heilbronn repulsion, Tatuzawa, and prime-counting AP corollaries. Primary status: 31 theorems, 5 axioms, 0 sorries.",
+    "builtItems": [
+      "OQ01 Siegel-zero formalization with 31 theorem declarations and 0 sorries.",
+      "Definitions for IsSiegelZero, HasSiegelZero, SiegelZeroConjecture, and primeCountAP.",
+      "Conditional GRH, Landau-Page, Deuring-Heilbronn, and Tatuzawa consequences.",
+      "Companion OQ02/OQ03 files retained with source-synced counters.",
+      "DirichletsTheoremOQ03Incomplete01 resolves the Linnik lower-bound companion without executable sorries."
+    ],
+    "insights": [
+      "The embedded markdown summary claiming 20 theorems and 3 axioms is stale.",
+      "The base DirichletsTheorem.lean is a companion here; OQ01 is the proof-meta primary for this slug.",
+      "OQ02, OQ02OQ01, and OQ03Incomplete01 carry no executable sorries; only OQ03 remains sorry-bearing among listed companions."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Sync OQ01 counters from proof metadata and keep it first in leanFiles.",
+      "If continuing, target the five primary analytic-number-theory axioms.",
+      "Avoid describing companion OQ02/OQ02OQ01/OQ03Incomplete01 as sorry-bearing unless source metadata says so."
+    ],
     "markdown": "# dirichlets-theorem-oq-01: Siegel Zeros / L(1,χ) Lower Bounds\n\n## Problem Summary\n\n**Open Question**: Do Siegel zeros exist? Equivalently, can L(1,χ) be exponentially small (e.g., like exp(-c·√(log q))) for real primitive Dirichlet characters χ of large conductor q?\n\n**Status**: SURVEYED - 20 proved theorems, 3 axioms for deep analytic NT results, 0 sorries.\n\n**Key results**:\n- L(1,χ) ≠ 0: proved via Mathlib's `LFunction_apply_one_ne_zero`\n- Siegel's bound L(1,χ) > C(ε)/q^ε: axiomatized (not in Mathlib)\n- GRH → no Siegel zeros: proved conditional on GRH\n- MVT argument bounding L(1,χ) in terms of Siegel zeros: proved\n\n## Session 2026-02-25 (Session 1) - Initial Formalization\n\n**Mode**: FRESH (problem had EMPTY knowledge)\n**Outcome**: surveyed/progress\n\n### What I Did\n- Created full formalization of Siegel zero framework\n- Proved 20 theorems about structural properties of Siegel zeros\n- Fixed `siegel_zero_in_upper_half` proof (`div_lt_iff` not in Lean 4.26; use `div_lt_one`)\n- Added 9 new structural results in Part VIII\n- Created PR #3245\n\n### Key Findings\n- `div_lt_iff` is not available in Lean 4.26; use `div_lt_one` instead for division inequalities\n- MVT approach works well: if β is a zero and β < 1, then |L(1,χ)| ≤ (1-β)·M\n- GRH eliminates Siegel zeros in (1/2, 1) by zero-free region hypothesis\n- Siegel theorem and Landau-Page theorem require deep analytic NT infrastructure not in Mathlib\n- Docker build fails with linter reverting files; worktree approach handles this correctly\n\n### Files Modified\n- `proofs/Proofs/DirichletsTheoremOQ01.lean` (381→475 lines, 20 theorems, 0 sorries)\n\n### Next Steps\n- Submit to Aristotle companion for routine supporting lemmas\n- Extend with zero-spacing results or Siegel-Walfisz theorem\n- The open question (whether Siegel zeros exist) is a major open problem in analytic NT\n"
   },
   "tags": [
@@ -61,26 +75,15 @@
     "mathlib": []
   },
   "started": "2026-02-21T19:21:07.134Z",
-  "lastUpdate": "2026-03-06T06:42:42.096Z",
+  "lastUpdate": "2026-05-18T14:01:02Z",
   "completed": "2026-03-06T06:42:42.096Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/DirichletsTheorem.lean",
-      "filename": "DirichletsTheorem.lean",
-      "lineCount": 314,
-      "theoremCount": 10,
-      "axiomCount": 0,
-      "defCount": 7,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheorem.lean"
-    },
-    {
       "path": "Proofs/DirichletsTheoremOQ01.lean",
       "filename": "DirichletsTheoremOQ01.lean",
-      "lineCount": 706,
+      "lineCount": 705,
       "theoremCount": 31,
       "axiomCount": 5,
       "defCount": 5,
@@ -89,31 +92,42 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ01.lean"
     },
     {
+      "path": "Proofs/DirichletsTheorem.lean",
+      "filename": "DirichletsTheorem.lean",
+      "lineCount": 313,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheorem.lean"
+    },
+    {
       "path": "Proofs/DirichletsTheoremOQ02.lean",
       "filename": "DirichletsTheoremOQ02.lean",
-      "lineCount": 102,
+      "lineCount": 101,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ02.lean"
     },
     {
       "path": "Proofs/DirichletsTheoremOQ02OQ01.lean",
       "filename": "DirichletsTheoremOQ02OQ01.lean",
-      "lineCount": 367,
+      "lineCount": 366,
       "theoremCount": 16,
       "axiomCount": 4,
       "defCount": 9,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ02OQ01.lean"
     },
     {
       "path": "Proofs/DirichletsTheoremOQ03.lean",
       "filename": "DirichletsTheoremOQ03.lean",
-      "lineCount": 140,
+      "lineCount": 139,
       "theoremCount": 6,
       "axiomCount": 2,
       "defCount": 6,
@@ -124,11 +138,11 @@
     {
       "path": "Proofs/DirichletsTheoremOQ03Incomplete01.lean",
       "filename": "DirichletsTheoremOQ03Incomplete01.lean",
-      "lineCount": 155,
-      "theoremCount": 7,
+      "lineCount": 154,
+      "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 3,
-      "sorryCount": 6,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DirichletsTheoremOQ03Incomplete01.lean"
     }

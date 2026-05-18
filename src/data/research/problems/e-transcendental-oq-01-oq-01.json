@@ -16,24 +16,36 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-03-24T00:48:59.900Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 2,
+    "focus": "Source refresh: ETranscendentalOQ01OQ01.lean is the proof-meta primary, with 341 lines, 9 theorems, 1 Schanuel axiom, 0 defs, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Keep the OQ01OQ01 primary first; further progress would replace the Schanuel-dependent e+pi and e*pi conclusions with unconditional results.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SOURCE CHECKED: OQ01OQ01 proves Nesterenko-based transcendence/irrationality consequences and Schanuel-conditional results for e+pi and e*pi. Primary status: 341 lines, 9 theorems, 1 axiom, 0 sorries.",
+    "builtItems": [
+      "OQ01OQ01 primary results for pi, exp(pi), gammaQuarter, pi*exp(pi), and exp(pi) irrationality.",
+      "Schanuel axiom isolated for conditional e+pi and e*pi transcendence/irrationality.",
+      "OQ01 and OQ03 companions retained with source-synced counters."
+    ],
+    "insights": [
+      "The record was still marked initial exploration despite a source-backed OQ01OQ01 primary.",
+      "The primary for this slug is OQ01OQ01, not the broader OQ01 companion.",
+      "All listed source files are zero-sorry; the remaining primary gap is the Schanuel axiom."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Sync leanFiles ordering to put OQ01OQ01 first.",
+      "If extending, isolate which results are unconditional Nesterenko consequences versus Schanuel-conditional.",
+      "Search for Mathlib support only after preserving the open/conditional status of e+pi."
+    ]
   },
   "tags": [
     "transcendental-numbers",
@@ -55,25 +67,14 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.899Z",
-  "lastUpdate": "2026-03-24T00:48:59.899Z",
+  "lastUpdate": "2026-05-18T14:01:02Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/ETranscendentalOQ01.lean",
-      "filename": "ETranscendentalOQ01.lean",
-      "lineCount": 539,
-      "theoremCount": 15,
-      "axiomCount": 1,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01.lean"
-    },
-    {
       "path": "Proofs/ETranscendentalOQ01OQ01.lean",
       "filename": "ETranscendentalOQ01OQ01.lean",
-      "lineCount": 342,
+      "lineCount": 341,
       "theoremCount": 9,
       "axiomCount": 1,
       "defCount": 0,
@@ -82,11 +83,22 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/ETranscendentalOQ01.lean",
+      "filename": "ETranscendentalOQ01.lean",
+      "lineCount": 538,
+      "theoremCount": 15,
+      "axiomCount": 1,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ETranscendentalOQ01.lean"
+    },
+    {
       "path": "Proofs/ETranscendentalOQ03.lean",
       "filename": "ETranscendentalOQ03.lean",
-      "lineCount": 220,
-      "theoremCount": 4,
-      "axiomCount": 2,
+      "lineCount": 312,
+      "theoremCount": 6,
+      "axiomCount": 1,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
