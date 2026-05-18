@@ -1,50 +1,86 @@
 {
   "slug": "erdos-410",
   "title": "Erdős #410",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "Let $\\sigma_1(n)=\\sigma(n)$, the sum of divisors function, and $\\sigma_k(n)=\\sigma(\\sigma_{k-1}(n))$. Is it true that\\[\\lim_{k\\to \\infty} \\sigma_k(n)^{1/k}=\\infty?\\]\n\n\n\nThis is discussed in problem B9 of Guy's collection \\cite{Gu04}.",
-    "plain": "Let $\\sigma_1(n)=\\sigma(n)$, the sum of divisors function, and $\\sigma_k(n)=\\sigma(\\sigma_{k-1}(n))$. Is it true that\\[\\lim_{k\\to \\infty} \\sigma_k(n)^{1/k}=\\infty?\\]",
-    "whyMatters": []
+    "plain": "For the iterated sum-of-divisors function sigma_k(n), ask whether sigma_k(n)^(1/k) tends to infinity for every n > 1.",
+    "whyMatters": [
+      "Connects divisor-sum iteration, aliquot-style dynamics, perfect numbers, and analytic estimates for sigma.",
+      "The Lean file proves substantial elementary iteration infrastructure and a super-exponential reformulation of the conjecture.",
+      "The main growth-rate conjecture remains open, with two analytic-number-theory axioms retained as context."
+    ],
+    "plainEnglish": "For the iterated sum-of-divisors function sigma_k(n), ask whether sigma_k(n)^(1/k) tends to infinity for every n > 1."
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Small values of sigma and several iterates are verified by computation, including chains starting at 2 and 6.",
+      "`sigma_pos`, `sigma_ge_self`, `sigma_gt_n`, `sigma_lower_bound`, and `sigma_prime` prove elementary divisor-sum facts.",
+      "`sigmaIterate` and its recursion/base lemmas support proofs of monotone, linearly growing, and divergent iterates for n > 1.",
+      "`perfect_6`, `perfect_28`, `perfect_496`, `abundant_12`, `deficient_2`, and aliquot examples are proved.",
+      "`conjecture_equiv_exp` proves the main conjecture is equivalent to eventual domination of every exponential c^k."
+    ],
+    "open": [
+      "`ErdosConjecture410` remains open: the normalized growth rate tending to infinity is not proved.",
+      "`robin_inequality` and `average_sigma` are axioms.",
+      "`average_sigma` sums over `Finset.range n`, so it includes the k=0 term under Lean real division conventions.",
+      "The analytic estimates are contextual and do not settle any specific n > 1 case of the normalized conjecture."
+    ],
+    "goal": "Show the proved elementary iteration framework and equivalence while preserving the open analytic growth conjecture."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T02:38:27.586Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 2,
+    "focus": "The file has 42 theorem declarations, 7 definitions, 2 axioms, and 0 sorries; it proves linear divergence and an exponential-growth equivalence, not the main normalized limit.",
+    "blockers": [
+      "`robin_inequality` is axiomatized and tied to deep RH-equivalent estimates.",
+      "`average_sigma` is axiomatized analytic number theory.",
+      "`average_sigma` should be reviewed because its range includes k=0.",
+      "The super-exponential growth required by `ErdosConjecture410` remains open."
+    ],
+    "nextAction": "Search for a weaker normalized-growth theorem for special starting values, or isolate the analytic estimates behind narrower interfaces.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated 1 axiom (conjecture_equiv_exp proved from limit theory). 3→2 axioms. Remaining 2 axioms are unprovable (RH equivalence + deep analytic NT).",
+    "progressSummary": "CURRENT: 42 theorem declarations, 7 definitions, 2 axioms, 0 sorries. Elementary sigma-iterate growth and the super-exponential reformulation are proved; the normalized growth conjecture remains open.",
     "builtItems": [
-      "rpow_inv_pow_eq helper lemma (line 264): (x^{1/k})^k = x for x >= 0, k >= 1",
-      "conjecture_equiv_exp theorem (line 272): proved ErdosConjecture410 <-> super-exponential growth"
+      "Computed sigma values and iterate chains for small examples",
+      "`sigma_pos`, `sigma_ge_self`, `sigma_gt_n`, `sigma_lower_bound`, and `sigma_prime`",
+      "`sigmaIterate`, `growthRate`, and `ErdosConjecture410`",
+      "`sigma_iterate_ge`, `sigma_iterate_increasing`, `sigma_iterate_linear_lower`, and `sigma_iterate_tendsto_infty`",
+      "`conjecture_equiv_exp` and structural perfect/abundant/aliquot examples"
     ],
     "insights": [
-      "Proved conjecture_equiv_exp: the conjecture is equivalent to super-exponential growth, using rpow_inv_pow_eq helper and limit characterization",
-      "robin_inequality is equivalent to the Riemann Hypothesis (Robin 1984) — cannot be proved",
-      "average_sigma (Cesaro mean of sigma(n)/n -> pi^2/6) is deep analytic NT, not in Mathlib"
+      "Linear divergence of sigma iterates is proved, but it is much weaker than growthRate tending to infinity.",
+      "The equivalence theorem reframes the main conjecture as eventual domination of every exponential c^k.",
+      "Robin and average-sigma estimates are present as axioms but do not by themselves prove the conjecture.",
+      "`average_sigma` is a broad axiom and its displayed finite sum includes k=0 via `Finset.range n`.",
+      "The file imports all of Mathlib and is sorry-free."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Attempt special-case normalized-growth lower bounds for selected n.",
+      "Tighten `average_sigma` to a positive-index sum if it becomes operationally important.",
+      "Refine or remove unused analytic axioms if they remain contextual.",
+      "Develop more explicit iterate computations for small starting values."
+    ],
     "markdown": "# Erdős #410 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $\\sigma_1(n)=\\sigma(n)$, the sum of divisors function, and $\\sigma_k(n)=\\sigma(\\sigma_{k-1}(n))$. Is it true that\\[\\lim_{k\\to \\infty} \\sigma_k(n)^{1/k}=\\infty?\\]\n\n\n\nThis is discussed in problem B9 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #409\n- Problem #411\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "divisor-sums",
+    "aliquot-sequences",
+    "asymptotic-growth",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-4",
@@ -52,20 +88,31 @@
     "erdos-410"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Guy, Unsolved Problems in Number Theory B9",
+      "Robin 1984 inequality context"
+    ],
+    "urls": [
+      "https://erdosproblems.com/410"
+    ],
+    "mathlib": [
+      "ArithmeticFunction.sigma",
+      "Function.iterate",
+      "Filter.Tendsto",
+      "Real.rpow",
+      "Nat.Prime"
+    ]
   },
   "started": "2026-01-13T02:38:27.587Z",
-  "lastUpdate": "2026-03-13T07:52:17.047Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos410Problem.lean",
       "filename": "Erdos410Problem.lean",
-      "lineCount": 372,
-      "theoremCount": 41,
+      "lineCount": 371,
+      "theoremCount": 42,
       "axiomCount": 2,
       "defCount": 7,
       "sorryCount": 0,
