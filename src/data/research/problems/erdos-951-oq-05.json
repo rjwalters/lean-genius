@@ -6,14 +6,26 @@
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Resolve the finiteness of Beurling prime counting and connect the ordinary prime sequence to the Beurling-prime abstraction.",
+    "plain": "Show that the Beurling counting function is finite in the formal model and that ordinary primes instantiate the abstraction.",
+    "whyMatters": [
+      "The result removes a small infrastructure gap in the Beurling-prime formalization.",
+      "It gives a verified bridge between generalized prime systems and the usual prime-counting function."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "beurlingPi_finite proves the finite-counting fact for Beurling prime sequences.",
+      "primeSeq_isPrime, primeSeq_strictly_increasing, and primeSeq_gt_one establish ordinary primes as a valid sequence.",
+      "primeSeq_well_separated proves the ordinary prime sequence satisfies the well-separated-products condition.",
+      "actualPrimes packages ordinary primes as a BeurlingPrimes structure.",
+      "actualPrimes_counting proves that Beurling counting agrees with primePi for ordinary primes.",
+      "erdos_951_primes_equality records the bridge theorem between the generalized and ordinary counting functions."
+    ],
+    "open": [
+      "The broader erdos951_conjecture is explicitly left open and is not axiomatized."
+    ],
+    "goal": "Document the completed Beurling-prime counting infrastructure while keeping the larger conjecture out of scope."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -36,7 +48,13 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-951-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "erdos",
+    "number-theory",
+    "beurling-primes",
+    "prime-counting",
+    "generalized-primes"
+  ],
   "relatedProofs": [
     "erdos-9",
     "erdos-95",

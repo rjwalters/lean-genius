@@ -8,6 +8,35 @@
     "parentProof": "abel-ruffini-oq-04-oq-02",
     "question": "Can the general theorem 'finite group of order < 60 is solvable' be formalized?"
   },
+  "problemStatement": {
+    "formal": "Formalize solvability building blocks for finite groups of order less than 60, while documenting the remaining Burnside and Sylow cases.",
+    "plain": "Prove the readily available p-group and abelian-group cases and mark the full order-below-60 theorem as still requiring deeper group theory.",
+    "whyMatters": [
+      "The entry turns a large classification target into verified reusable group-theory components.",
+      "It keeps the S5 order-60 threshold visible for the Abel-Ruffini solvability story."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "pGroup_isSolvable proves that finite p-groups are solvable through Mathlib's nilpotent-group infrastructure.",
+      "abelian_isSolvable records the commutative-group case.",
+      "s5_not_solvable marks the non-solvable threshold at S5.",
+      "primes_below_60 verifies the count of primes below 60.",
+      "The Lean file documents the order-classification table and the cases covered by the proved components."
+    ],
+    "open": [
+      "The full theorem that every finite group of order less than 60 is solvable is not completed here.",
+      "Burnside's p^a q^b theorem or case-by-case Sylow counting remains needed for the documented remaining cases."
+    ],
+    "goal": "Surface the completed solvability scaffolding without overstating the unfinished classification theorem."
+  },
+  "tags": [
+    "group-theory",
+    "abel-ruffini",
+    "finite-groups",
+    "solvable-groups",
+    "classification"
+  ],
   "knowledge": {
     "progressSummary": "COMPLETED: Proved p-group→solvable chain and abelian→solvable using Mathlib. Documented complete order classification below 60. Full theorem needs Burnside p^a·q^b (not in Mathlib). 0A/0S, 4 proved theorems, 104 lines.",
     "builtItems": [
