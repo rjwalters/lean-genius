@@ -1,38 +1,37 @@
 {
   "slug": "minkowski-theorem-oq-02-oq-01",
-  "title": "Axiom-free Dirichlet approximation via Minkowski (eliminate 3 measure-theoretic axioms)",
+  "title": "Dirichlet's Approximation Theorem via Minkowski: Axiom-Free Proof",
   "phase": "COMPLETED",
-  "status": "completed",
+  "status": "graduated",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\forall \\alpha \\in \\mathbb{R}, \\forall Q \\in \\mathbb{N}^+, \\exists p, q \\in \\mathbb{Z},\\ 1 \\le q \\le Q \\wedge |\\alpha q - p| < 1/Q",
-    "plain": "Eliminate the three measure-theoretic axioms from MinkowskiTheoremOQ02.lean: dirichletSet_convex, dirichletSet_measurable, and dirichletSet_volume — producing a fully axiom-free proof of Dirichlet's approximation theorem via Minkowski's lattice point theorem.",
+    "formal": "Prove Dirichlet approximation via Minkowski with no axioms by proving the Dirichlet parallelogram is open, convex, and has volume 4*(Q+1)/Q.",
+    "plain": "Replace the earlier axiomatized geometric steps in the Minkowski proof of Dirichlet approximation with fully verified Mathlib arguments.",
     "whyMatters": [
-      "Demonstrates complete formal verification with zero axioms and zero sorries",
-      "Shows measurability via openness, convexity via linear preimage, and volume via shear map argument",
-      "Confirms the full Dirichlet-Minkowski proof chain is formalizable in Lean 4 without any assumptions"
+      "Turns an axiomatized geometry-of-numbers proof into an axiom-free proof",
+      "Gives a reusable pattern for eliminating measure and convexity assumptions"
     ]
   },
   "knownResults": {
     "proven": [
-      "dirichletSet_symmetric: central symmetry of the parallelogram",
-      "dirichletSet_measurable: the set is open hence measurable (preimage of Ioo × Ioo)",
-      "dirichletSet_convex: intersection of halfplanes via Convex.linear_preimage",
-      "dirichletSet_volume: area = 4(Q+1)/Q via shear map T(x,y)=(x,αx-y) with |det|=1",
-      "dirichletSet_volume_gt_four: 2^2 < volume(S) for all Q ≥ 1",
-      "dirichlet_approximation: main theorem, 0 axioms, 0 sorries"
+      "The Dirichlet parallelogram is open and measurable.",
+      "Convexity follows from linear preimages of open intervals.",
+      "The shear-map volume calculation and final Dirichlet approximation theorem are proved with 0 axioms and 0 sorries."
     ],
-    "open": [],
-    "goal": "Produce a fully axiom-free Lean 4 proof of Dirichlet's approximation theorem via Minkowski"
+    "open": [
+      "Extend the method to simultaneous Dirichlet approximation.",
+      "Investigate Hurwitz and metric Diophantine approximation refinements."
+    ],
+    "goal": "Record the axiom-free replacement for the Minkowski proof of Dirichlet approximation."
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-04-05T00:00:00.000Z",
+    "since": "2026-04-06T00:14:41.505Z",
     "iteration": 1,
-    "focus": "Proof complete: 0 axioms, 0 sorries",
+    "focus": "Verified source-backed record: primary proof has 267 lines, 7 public theorems plus 1 private theorem, 1 definition, 0 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Merged - done",
+    "nextAction": "Optional follow-on: generalize the axiom-free argument to simultaneous approximation.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -40,88 +39,78 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Axiom-free proof of Dirichlet's approximation theorem. All 3 axioms eliminated. 0 sorries. PR on branch feature/researcher-9.",
+    "progressSummary": "COMPLETED: Proofs/MinkowskiTheoremOQ02OQ01.lean eliminates the three OQ02 geometric axioms and proves Dirichlet approximation axiom-free.",
     "builtItems": [
-      "DirichletMinkowskiAxiomFree.dirichletSet: open parallelogram {|x|<Q+1, |αx-y|<1/Q}",
-      "DirichletMinkowskiAxiomFree.dirichletSet_symmetric: central symmetry (0 axioms)",
-      "DirichletMinkowskiAxiomFree.dirichletSet_measurable: IsOpen.measurableSet via preimage of Ioo",
-      "DirichletMinkowskiAxiomFree.dirichletSet_convex: Convex.linear_preimage of Ioo under linear functionals",
-      "DirichletMinkowskiAxiomFree.shearMap_det: det(!![1,0;α,-1]) = -1",
-      "DirichletMinkowskiAxiomFree.dirichletSet_volume: 4(Q+1)/Q via map_matrix_volume_pi_eq_smul_volume_pi",
-      "DirichletMinkowskiAxiomFree.dirichletSet_volume_gt_four: ENNReal.ofReal_lt_ofReal_iff with positivity",
-      "DirichletMinkowskiAxiomFree.dirichlet_approximation: main theorem (0 axioms, 0 sorries)",
-      "dirichlet_from_minkowski_axiom_free: top-level export",
-      "proofs/Proofs/MinkowskiTheoremOQ02OQ01.lean (0 axioms, 0 sorries, 267 lines)"
+      "Proofs/MinkowskiTheoremOQ02OQ01.lean: 267 lines, 7 public theorems plus 1 private theorem, 1 definition, 0 axioms, 0 sorries",
+      "Measurability, convexity, and shear-map volume lemmas for the Dirichlet parallelogram",
+      "dirichlet_from_minkowski_axiom_free export"
     ],
     "insights": [
-      "Measurability: dirichletSet is open as preimage of Ioo × Ioo under continuous maps; openness → measurability",
-      "Convexity: each condition is preimage of convex Ioo under a linear functional; use Convex.linear_preimage",
-      "Volume: shear map T(x,y)=(x,αx-y) has matrix !![1,0;α,-1] with det=-1, |det|=1 → measure-preserving",
-      "map_matrix_volume_pi_eq_smul_volume_pi: key Mathlib lemma for volume under matrix linear map",
-      "ZSpan.isAddFundamentalDomain' + ZSpan.volume_fundamentalDomain: ℤ² fundamental domain has volume 1",
-      "Pi.basisFun ℝ (Fin 2): standard basis; b i j = Pi.single i 1 j = if i=j then 1 else 0",
-      "Coordinate extraction: simp only [Pi.add_apply, Pi.smul_apply] BEFORE zsmul_eq_mul to avoid vector multiplication",
-      "zsmul_one and smul_zero complete the reduction after Pi.smul_apply distributes",
-      "exact_mod_cast handles Int.cast_abs direction for |↑c| vs ↑|c| cast alignment",
-      "fin_cases + show: use 'show x_val 0 = 0' to normalize Fin.mk representation before rw"
+      "Openness gives measurability cleanly through IsOpen.measurableSet.",
+      "Convexity is reduced to preimages of convex intervals under linear maps.",
+      "The shear map has determinant -1, turning the tilted parallelogram into an axis-aligned rectangle of known volume."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove simultaneous Dirichlet approximation in ℝⁿ using n+1 dimensional Minkowski",
-      "Prove Hurwitz theorem: |α-p/q| < 1/(√5·q²) for infinitely many p/q"
+      "Extend to simultaneous approximation.",
+      "Explore Hurwitz theorem and metric Diophantine applications."
     ]
   },
   "tags": [
-    "seeker-selected",
     "number-theory",
-    "geometry",
-    "lattice",
+    "dirichlet",
+    "minkowski",
+    "approximation",
     "measure-theory",
-    "axiom-elimination",
-    "wiedijk-100"
+    "geometry-of-numbers"
   ],
   "relatedProofs": [
     "minkowski-theorem",
     "minkowski-theorem-oq-02"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
+    "papers": [
+      "Dirichlet, approximation theorem (1842)",
+      "Hermann Minkowski, geometry of numbers (1896)"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Dirichlet%27s_approximation_theorem"
+    ],
     "mathlib": [
-      "MeasureTheory.exists_ne_zero_mem_lattice_of_measure_mul_two_pow_lt_measure",
-      "ZSpan.isAddFundamentalDomain'",
-      "ZSpan.volume_fundamentalDomain",
-      "map_matrix_volume_pi_eq_smul_volume_pi",
-      "Convex.linear_preimage",
-      "Pi.basisFun"
+      "Mathlib.MeasureTheory.Measure.Lebesgue.Basic",
+      "Mathlib.Analysis.Convex.Basic",
+      "Mathlib.MeasureTheory.Group.GeometryOfNumbers",
+      "Mathlib.Data.Real.Basic",
+      "Mathlib.Tactic"
     ]
   },
-  "started": "2026-04-04T00:00:00.000Z",
-  "lastUpdate": "2026-04-05T00:00:00.000Z",
+  "started": "2026-04-05T12:05:44.541Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 8,
   "tractability": 7,
   "leanFiles": [
     {
-      "path": "Proofs/MinkowskiTheoremOQ02.lean",
-      "filename": "MinkowskiTheoremOQ02.lean",
-      "lineCount": 285,
-      "theoremCount": 6,
-      "axiomCount": 3,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02.lean"
-    },
-    {
       "path": "Proofs/MinkowskiTheoremOQ02OQ01.lean",
       "filename": "MinkowskiTheoremOQ02OQ01.lean",
-      "lineCount": 268,
+      "lineCount": 267,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/MinkowskiTheoremOQ02.lean",
+      "filename": "MinkowskiTheoremOQ02.lean",
+      "lineCount": 284,
+      "theoremCount": 6,
+      "axiomCount": 3,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/MinkowskiTheoremOQ02.lean"
     }
-  ]
+  ],
+  "completed": "2026-04-06T00:14:41.505Z"
 }

@@ -1,27 +1,37 @@
 {
   "slug": "triangle-inequality-oq-04",
-  "title": "The triangle inequality for geodesic distances on Riemannian manifolds involv...",
+  "title": "Triangle Inequality for Geodesic/Path Metrics",
   "phase": "COMPLETED",
-  "status": "completed",
+  "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: The triangle inequality for geodesic distances on Riemannian manifolds involv....",
-    "whyMatters": []
+    "formal": "For the intrinsic path metric d_path(x,y) defined by an infimum of path lengths, prove d_path(x,z) <= d_path(x,y) + d_path(y,z).",
+    "plain": "Prove the triangle inequality for path and geodesic distances by concatenating paths and adding their lengths.",
+    "whyMatters": [
+      "Captures the core reason geodesic distances form metrics",
+      "Provides a path-metric foundation for future Riemannian formalization"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Path length is additive under concatenation.",
+      "The intrinsic/path metric satisfies the triangle inequality.",
+      "The proof uses total variation splitting and reparameterization invariance."
+    ],
+    "open": [
+      "Extend the abstract path-metric result to full Riemannian manifolds once Mathlib support matures.",
+      "Formalize Hopf-Rinow and comparison-geometry follow-ons."
+    ],
+    "goal": "Record the verified path-metric triangle inequality formalization."
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-04-05T00:00:00.000Z",
+    "since": "2026-04-05T12:58:50.696Z",
     "iteration": 1,
-    "focus": "Proof complete. Triangle inequality for geodesic/path metric, 0 sorries, 0 axioms.",
+    "focus": "Verified source-backed record: primary proof has 284 lines, 5 public theorems plus 4 private lemmas, 2 definitions, 0 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "PR merged.",
+    "nextAction": "Optional follow-on: lift the path-metric theorem to concrete Riemannian-manifold infrastructure.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,33 +39,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Proved triangle inequality for geodesic/path metric in Lean 4. 0 sorries, 0 axioms.",
+    "progressSummary": "COMPLETED: Proofs/TriangleInequalityOQ04.lean proves the triangle inequality for intrinsic/path metrics with 5 public theorems plus 4 private lemmas, 0 axioms, and 0 sorries.",
     "builtItems": [
-      "pathLength def: arc length as eVariationOn γ.extend [0,1] (TriangleInequalityOQ04.lean:71)",
-      "pathLength_refl: constant path has zero arc length (TriangleInequalityOQ04.lean:76)",
-      "pathLength_trans: length(γ₁ ∗ γ₂) = length(γ₁) + length(γ₂) (TriangleInequalityOQ04.lean:162)",
-      "intrinsicDist def: geodesic distance = inf path lengths (TriangleInequalityOQ04.lean:201)",
-      "intrinsicDist_triangle: triangle inequality for path metric (TriangleInequalityOQ04.lean:220)"
+      "Proofs/TriangleInequalityOQ04.lean: 284 lines, 5 public theorems plus 4 private lemmas, 2 definitions, 0 axioms, 0 sorries",
+      "pathLength_trans at line 169",
+      "intrinsicDist at line 208 and intrinsicDist_triangle at line 227"
     ],
     "insights": [
-      "Triangle inequality for geodesic distance follows from path concatenation + arc length additivity",
-      "eVariationOn.comp_eq_of_monotoneOn is the key lemma: reparameterization invariance gives additivity",
-      "eVariationOn.Icc_add_Icc splits variation at t=1/2, matching Path.trans structure",
-      "ENNReal.iInf_add and add_iInf enable clean infimum exchange argument",
-      "Path.trans_apply has t=1/2 boundary case requiring separate treatment (both γ₁ at 1 and γ₂ at 0 equal y)",
-      "Full Riemannian formalization awaits Mathlib tangent bundle support, but abstract path metric proof is complete"
+      "The triangle inequality follows by concatenating an x-to-y path with a y-to-z path.",
+      "Arc length additivity is proved using total variation splitting and monotone reparameterization.",
+      "Full Riemannian geodesic distance remains a downstream application, not a blocker for this path-metric proof."
     ],
-    "mathlibGaps": [
-      "Riemannian manifolds (tangent bundles, metric tensors) not yet in Mathlib v4.26.0 — needed for full Riemannian formalization"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Formalize Hopf-Rinow theorem: completeness ↔ geodesic completeness",
-      "Prove intrinsic metric = ambient metric for complete Riemannian manifolds",
-      "Formalize comparison geometry (Alexandrov spaces, CAT(k) spaces)"
+      "Apply the intrinsic metric result to future Riemannian manifold APIs.",
+      "Formalize Hopf-Rinow-style completeness results."
     ]
   },
   "tags": [
-    "seeker-selected"
+    "geometry",
+    "analysis",
+    "metric-spaces",
+    "riemannian-geometry",
+    "geodesics",
+    "path-metrics",
+    "topology"
   ],
   "relatedProofs": [
     "triangle-inequality",
@@ -63,19 +71,41 @@
     "triangle-inequality-oq-04"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Bernhard Riemann, On the hypotheses which lie at the foundations of geometry (1854)",
+      "Dmitri Burago, Yuri Burago, Sergei Ivanov, A Course in Metric Geometry"
+    ],
+    "urls": [
+      "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Analysis/BoundedVariation.html"
+    ],
+    "mathlib": [
+      "Mathlib.Topology.Connected.PathConnected",
+      "Mathlib.Analysis.BoundedVariation",
+      "Mathlib.Topology.MetricSpace.Basic",
+      "Mathlib.Data.ENNReal.Basic",
+      "Mathlib.Tactic"
+    ]
   },
-  "started": "2026-03-30T17:32:58.852Z",
-  "lastUpdate": "2026-04-05T00:00:00.000Z",
+  "started": "2026-03-30T17:47:50.026Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/TriangleInequalityOQ04.lean",
+      "filename": "TriangleInequalityOQ04.lean",
+      "lineCount": 284,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleInequalityOQ04.lean"
+    },
+    {
       "path": "Proofs/TriangleInequality.lean",
       "filename": "TriangleInequality.lean",
-      "lineCount": 245,
+      "lineCount": 244,
       "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 0,
@@ -86,7 +116,7 @@
     {
       "path": "Proofs/TriangleInequalityOQ02.lean",
       "filename": "TriangleInequalityOQ02.lean",
-      "lineCount": 193,
+      "lineCount": 192,
       "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 0,
@@ -97,24 +127,14 @@
     {
       "path": "Proofs/TriangleInequalityOQ03.lean",
       "filename": "TriangleInequalityOQ03.lean",
-      "lineCount": 256,
+      "lineCount": 255,
       "theoremCount": 15,
-      "axiomCount": 1,
+      "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleInequalityOQ03.lean"
-    },
-    {
-      "path": "Proofs/TriangleInequalityOQ04.lean",
-      "filename": "TriangleInequalityOQ04.lean",
-      "lineCount": 285,
-      "theoremCount": 5,
-      "axiomCount": 0,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangleInequalityOQ04.lean"
     }
-  ]
+  ],
+  "completed": "2026-04-05T12:58:50.696Z"
 }

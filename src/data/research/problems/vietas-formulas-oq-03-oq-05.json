@@ -1,61 +1,72 @@
 {
   "slug": "vietas-formulas-oq-03-oq-05",
-  "title": "[Problem Title]",
+  "title": "Quartic Discriminant and Ferrari's Resolvent Cubic",
   "phase": "COMPLETED",
-  "status": "active",
+  "status": "graduated",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "Prove the quartic discriminant formula, Ferrari decomposition identity, and the resolvent cubic discriminant relation Delta_res = 64 * Delta_4.",
+    "plain": "Extend Newton identity computations to quartics, including Ferrari resolvents and the quartic discriminant.",
+    "whyMatters": [
+      "Connects quartic solving to cubic resolvents and discriminants",
+      "Provides machine-checked polynomial identities over arbitrary commutative rings"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The 16-term quartic discriminant identity is verified.",
+      "The depressed quartic discriminant and q -> -q symmetry are verified.",
+      "Ferrari algebraic identities and the resolvent discriminant scaling relation are proved with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "Formalize the quartic Galois solvability criterion using the discriminant.",
+      "Connect the resolvent construction to radical solvability and broader characteristic-polynomial algorithms."
+    ],
+    "goal": "Record the verified quartic discriminant and Ferrari resolvent formalization."
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-04-03T21:27:22-07:00",
+    "since": "2026-04-04T23:54:07.843Z",
     "iteration": 1,
-    "focus": "Proof complete: 11 theorems, 0 sorries, 0 axioms.",
+    "focus": "Verified source-backed record: primary proof has 304 lines, 11 theorems, 3 definitions, 0 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Optional follow-on: connect the discriminant identities to quartic Galois solvability.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Proved quartic discriminant (16 terms), depressed quartic (6 terms), Ferrari identity, resolvent condition, and Δ_res = 64·Δ₄. All by ring or linear_combination.",
+    "progressSummary": "COMPLETED: Proofs/VietasFormulasOQ03OQ05.lean verifies the quartic discriminant, Ferrari identity, and resolvent cubic discriminant connection with 11 theorems, 0 axioms, and 0 sorries.",
     "builtItems": [
-      "VietasFormulasOQ03OQ05.lean: vieta_quartic (ring proof)",
-      "VietasFormulasOQ03OQ05.lean: discriminant_quartic — 16-term formula (ring, degree 12)",
-      "VietasFormulasOQ03OQ05.lean: discriminant_depressed — 6-term formula for e₁=0 (ring)",
-      "VietasFormulasOQ03OQ05.lean: depressedDiscriminant def + neg_q symmetry",
-      "VietasFormulasOQ03OQ05.lean: ferrari_identity — (x²+y)² - inner = quartic (ring)",
-      "VietasFormulasOQ03OQ05.lean: resolvent_cubic_condition — from a²,2ab,b² to resolvent vanishing (linear_combination)",
-      "VietasFormulasOQ03OQ05.lean: cubicDiscriminant def + resolvent_discriminant_eq: 64× connection (ring)",
-      "Gallery: src/data/proofs/vietas-formulas-oq-03-oq-05/ (meta.json, annotations.json, index.ts)"
+      "Proofs/VietasFormulasOQ03OQ05.lean: 304 lines, 11 theorems, 3 definitions, 0 axioms, 0 sorries",
+      "Quartic discriminant formula and depressed quartic specialization",
+      "Ferrari identity and Delta_res = 64 * Delta_4 connection"
     ],
     "insights": [
-      "The quartic discriminant has exactly 16 terms in e₁,e₂,e₃,e₄ (degree 12 polynomial identity, proved by ring in Lean 4)",
-      "Setting e₁=0 (depressed quartic) reduces 16 terms to 6 terms — exactly the formula Δ = 256r³ - 128p²r² + 144pq²r - 27q⁴ + 16p⁴r - 4p³q²",
-      "Ferrari decomposition: x⁴+px²+qx+r = (x²+y)² - ((2y-p)x²-qx+(y²-r)), proved by ring",
-      "The resolvent cubic arises from requiring (2y-p)x²-qx+(y²-r) to be a perfect square: conditions a²=2y-p, 2ab=q, b²=y²-r force 8y³-4py²-8ry+(4pr-q²)=0, proved via linear_combination",
-      "Key result: Δ(resolvent cubic) = 64·Δ(depressed quartic), a pure ring identity. Both vanish iff quartic has repeated root.",
-      "The factor 64 comes from the leading coefficient 8 of the resolvent cubic (8³=512 and 8²=64 interact in the cubic discriminant formula)"
+      "The quartic discriminant expands to 16 symmetric terms in e1 through e4.",
+      "Ferrari resolvent conditions reduce to a cubic after eliminating auxiliary square-root variables.",
+      "The 64 scaling factor ties repeated roots of the quartic to repeated roots of the resolvent cubic."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: vietas-formulas-oq-03-oq-05\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Formalize the quartic Galois solvability criterion.",
+      "Connect to a verified Faddeev-LeVerrier algorithm."
+    ],
+    "markdown": ""
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "algebra",
+    "symmetric-functions",
+    "discriminant",
+    "quartic",
+    "ferrari",
+    "resolvent-cubic",
+    "polynomials",
+    "research",
+    "newtons-identities"
   ],
   "relatedProofs": [
     "vietas-formulas",
@@ -65,17 +76,47 @@
     "vietas-formulas-oq-03-oq-05"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Lodovico Ferrari, quartic solution (1545)",
+      "B. L. van der Waerden, Algebra"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Quartic_function#Ferrari%27s_solution"
+    ],
+    "mathlib": [
+      "Mathlib.Tactic.Ring",
+      "Mathlib.Tactic.LinearCombination"
+    ]
   },
-  "started": "2026-04-04T04:39:45.988Z",
-  "lastUpdate": "2026-04-04T04:39:46.013Z",
+  "started": "2026-04-04T05:15:05.954Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "leanFiles": [
+    {
+      "path": "Proofs/VietasFormulasOQ03OQ05.lean",
+      "filename": "VietasFormulasOQ03OQ05.lean",
+      "lineCount": 304,
+      "theoremCount": 11,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ03OQ05.lean"
+    },
+    {
+      "path": "Proofs/VietasFormulasOQ03.lean",
+      "filename": "VietasFormulasOQ03.lean",
+      "lineCount": 383,
+      "theoremCount": 31,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ03.lean"
+    },
     {
       "path": "Proofs/VietasFormulas.lean",
       "filename": "VietasFormulas.lean",
-      "lineCount": 180,
+      "lineCount": 179,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
@@ -86,7 +127,7 @@
     {
       "path": "Proofs/VietasFormulasOQ02.lean",
       "filename": "VietasFormulasOQ02.lean",
-      "lineCount": 205,
+      "lineCount": 204,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 10,
@@ -95,37 +136,16 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ02.lean"
     },
     {
-      "path": "Proofs/VietasFormulasOQ03.lean",
-      "filename": "VietasFormulasOQ03.lean",
-      "lineCount": 384,
-      "theoremCount": 31,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ03.lean"
-    },
-    {
       "path": "Proofs/VietasFormulasOQ03OQ01.lean",
       "filename": "VietasFormulasOQ03OQ01.lean",
-      "lineCount": 186,
+      "lineCount": 185,
       "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ03OQ01.lean"
-    },
-    {
-      "path": "Proofs/VietasFormulasOQ03OQ05.lean",
-      "filename": "VietasFormulasOQ03OQ05.lean",
-      "lineCount": 305,
-      "theoremCount": 11,
-      "axiomCount": 0,
-      "defCount": 3,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/VietasFormulasOQ03OQ05.lean"
     }
-  ]
+  ],
+  "completed": "2026-04-04T23:54:07.843Z"
 }

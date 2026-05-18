@@ -1,42 +1,72 @@
 {
   "slug": "wolstenholme-theorem-oq-02",
-  "title": "## Source",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Wolstenholme Primes and the Mod 4 Question",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "A Wolstenholme prime p has C(2p-1,p-1) ≡ 1 (mod p⁴). Only two known: 16843 and 2124679, both ≡ 3 (mod 4). Proves small primes are not Wolstenholme, both known WPs are ≡ 3 (mod 4), and formalizes the open question of whether a WP ≡ 1 (mod 4) exists.",
-    "whyMatters": []
+    "formal": "Study whether there exists a Wolstenholme prime p with p congruent to 1 modulo 4.",
+    "plain": "Formalize Wolstenholme primes, the two known examples, and the open mod 4 question.",
+    "whyMatters": [
+      "Connects binomial congruences to computational number theory",
+      "Records the mod 4 behavior of the known Wolstenholme primes without closing the open question"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Small primes 5 through 23 are proved not to be Wolstenholme primes.",
+      "The two known Wolstenholme primes, 16843 and 2124679, are formalized and both are 3 mod 4.",
+      "Any third Wolstenholme prime must exceed 10^9, using an axiomatized literature search result."
+    ],
+    "open": [
+      "Whether any Wolstenholme prime is 1 mod 4 remains open.",
+      "Whether infinitely many Wolstenholme primes exist remains open."
+    ],
+    "goal": "Record the completed axiomatized formalization of the Wolstenholme prime mod 4 question."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-03-22T09:13:15-07:00",
+    "phase": "COMPLETED",
+    "since": "2026-03-23T14:21:05.220Z",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Completed axiomatized source-backed record: primary proof has 262 lines, 30 theorems, 5 definitions, 3 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Optional follow-on: replace the large computational-search axioms or extend the residue analysis.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: wolstenholme-theorem-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "COMPLETED/AXIOMATIZED: Proofs/WolstenholmePrimeMod4.lean formalizes the mod 4 Wolstenholme prime question with 30 theorems, 5 definitions, 3 axioms, and 0 sorries.",
+    "builtItems": [
+      "Proofs/WolstenholmePrimeMod4.lean: 262 lines, 30 theorems, 5 definitions, 3 axioms, 0 sorries",
+      "Definition of Wolstenholme primes via the mod p^4 binomial coefficient condition",
+      "Residue proofs for the two known Wolstenholme primes and the no-other-below-10^9 axiom"
+    ],
+    "insights": [
+      "Both known Wolstenholme primes are 3 mod 4.",
+      "The open question is equivalent to refuting the all-known-pattern conjecture that every Wolstenholme prime is 3 mod 4.",
+      "The large binomial computations are axiomatized rather than kernel-normalized."
+    ],
+    "mathlibGaps": [
+      "Large binomial coefficient verification is not practical inside the Lean kernel for the known Wolstenholme primes."
+    ],
+    "nextSteps": [
+      "Replace the computational-search axioms with checked certificates if available.",
+      "Extend residue-class analysis beyond mod 4."
+    ],
+    "markdown": ""
   },
-  "tags": [],
+  "tags": [
+    "number-theory",
+    "binomial-coefficients",
+    "modular-arithmetic",
+    "research",
+    "wolstenholme-primes",
+    "open-question"
+  ],
   "relatedProofs": [
     "wolstenholme-theorem",
     "wolstenholme-theorem-oq-01",
@@ -44,67 +74,32 @@
     "wolstenholme-theorem-oq-03"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Richard J. McIntosh and Eric L. Roettger, A search for Fibonacci-Wieferich and Wolstenholme primes (2008)"
+    ],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Wolstenholme_prime"
+    ],
+    "mathlib": [
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Prime.Defs",
+      "Mathlib.Tactic"
+    ]
   },
   "started": "2026-03-22T16:23:16.662Z",
-  "lastUpdate": "2026-03-22T16:23:16.673Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "leanFiles": [
     {
-      "path": "Proofs/WolstenholmeTheorem.lean",
-      "filename": "WolstenholmeTheorem.lean",
-      "lineCount": 221,
-      "theoremCount": 17,
-      "axiomCount": 2,
-      "defCount": 6,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheorem.lean"
-    },
-    {
-      "path": "Proofs/WolstenholmeTheoremOQ01.lean",
-      "filename": "WolstenholmeTheoremOQ01.lean",
-      "lineCount": 272,
-      "theoremCount": 24,
+      "path": "Proofs/WolstenholmePrimeMod4.lean",
+      "filename": "WolstenholmePrimeMod4.lean",
+      "lineCount": 262,
+      "theoremCount": 30,
       "axiomCount": 3,
-      "defCount": 7,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ01.lean"
-    },
-    {
-      "path": "Proofs/WolstenholmeTheoremOQ02.lean",
-      "filename": "WolstenholmeTheoremOQ02.lean",
-      "lineCount": 145,
-      "theoremCount": 12,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ02.lean"
-    },
-    {
-      "path": "Proofs/WolstenholmeTheoremOQ02OQ02.lean",
-      "filename": "WolstenholmeTheoremOQ02OQ02.lean",
-      "lineCount": 317,
-      "theoremCount": 14,
-      "axiomCount": 1,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ02OQ02.lean"
-    },
-    {
-      "path": "Proofs/WolstenholmeTheoremOQ03.lean",
-      "filename": "WolstenholmeTheoremOQ03.lean",
-      "lineCount": 250,
-      "theoremCount": 3,
-      "axiomCount": 4,
-      "defCount": 6,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ03.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmePrimeMod4.lean"
     }
-  ]
+  ],
+  "completed": "2026-03-23T14:21:05.220Z"
 }

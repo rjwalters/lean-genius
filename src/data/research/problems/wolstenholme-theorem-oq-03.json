@@ -2,37 +2,36 @@
   "slug": "wolstenholme-theorem-oq-03",
   "title": "Wolstenholme-FLT Connection via Regular Primes",
   "phase": "COMPLETED",
-  "status": "completed",
+  "status": "graduated",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{Define IsRegularPrime, state Kummer's criterion, connect to Wolstenholme via Bernoulli}",
-    "plain": "Formalize the connection between Wolstenholme's theorem and Fermat's Last Theorem through regular primes and Bernoulli numbers.",
+    "formal": "Relate Wolstenholme-style congruences, Bernoulli numbers, regular primes, and Fermat Last Theorem criteria.",
+    "plain": "Formalize the triangle of connections between Wolstenholme primes, Bernoulli numbers, regular primes, and FLT.",
     "whyMatters": [
-      "Kummer's criterion was deepest FLT result for 145 years",
-      "Bernoulli numbers connect Wolstenholme and FLT"
+      "Shows where Wolstenholme congruences meet Kummer regular-prime theory",
+      "Records deep number-theoretic dependencies explicitly as axioms"
     ]
   },
   "knownResults": {
     "proven": [
-      "Regular ↔ ¬Irregular",
-      "Irregular primes block Kummer's approach"
+      "Regular and irregular primes are defined through Bernoulli-number divisibility.",
+      "The complementarity of regular and irregular primes is proved.",
+      "Irregular primes are shown to block the Kummer route in the axiomatized framework."
     ],
     "open": [
-      "Computational verification of irregular primes",
-      "Cyclotomic field theory"
+      "Replace Kummer criterion, Bernoulli-harmonic connection, Wolstenholme-Bernoulli equivalence, and Wiles FLT axioms with formal proofs.",
+      "Computationally verify concrete irregular-prime cases in Lean."
     ],
-    "goal": "Formal connection between Wolstenholme and FLT via Bernoulli numbers"
+    "goal": "Record the completed axiomatized Wolstenholme/FLT connection formalization."
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-04-12T21:30:00Z",
+    "since": "2026-04-12T21:45:39.917Z",
     "iteration": 1,
-    "focus": "Definitions and axiomatized connections.",
-    "blockers": [
-      "Cyclotomic field theory not in Mathlib"
-    ],
-    "nextAction": "Verify irregular primes computationally; connect to cyclotomic fields.",
+    "focus": "Completed axiomatized source-backed record: primary proof has 249 lines, 3 theorems, 6 definitions, 4 axioms, and 0 sorries.",
+    "blockers": [],
+    "nextAction": "Optional follow-on: formalize or certificate-check the four deep axiomatized number-theory results.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -40,39 +39,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Formalized Wolstenholme-FLT connection. Defined regular/irregular primes via Bernoulli numbers, stated Kummer's criterion and Bernoulli-harmonic connection, proved structural results. 5 definitions, 4 axioms, 3 proved theorems.",
+    "progressSummary": "COMPLETED/AXIOMATIZED: Proofs/WolstenholmeTheoremOQ03.lean defines regular and irregular primes and states the Wolstenholme/FLT connection with 4 axioms and 0 sorries.",
     "builtItems": [
-      "Created WolstenholmeTheoremOQ03.lean with connection triangle formalization",
-      "Defined IsRegularPrime and IsIrregularPrime via Bernoulli number divisibility",
-      "Proved regular_iff_not_irregular (complementarity)",
-      "Stated kummer_criterion: regular primes → FLT",
-      "Stated wolstenholme_bernoulli_equiv: Wolstenholme primes ↔ p² | B_{p-1}",
-      "Created gallery entry with full metadata"
+      "Proofs/WolstenholmeTheoremOQ03.lean: 249 lines, 3 theorems, 6 definitions, 4 axioms, 0 sorries",
+      "IsRegularPrime, IsIrregularPrime, irregularityIndex, and FLT definitions",
+      "Axiomatized Kummer criterion, Bernoulli-harmonic connection, Wolstenholme-Bernoulli equivalence, and Wiles FLT"
     ],
     "insights": [
-      "Bernoulli numbers are the common thread: Wolstenholme concerns B_{p-1}, Kummer concerns B_2,...,B_{p-3}",
-      "Regular primes satisfy FLT by Kummer (1850), irregular primes need Wiles (1995)",
-      "The irregularity index counts how many B_{2k} have p-divisible numerators",
-      "McIntosh (1995): Wolstenholme primes ↔ p² | B_{p-1} — deeper than the standard Wolstenholme condition",
-      "Mathlib has bernoulli : ℕ → ℚ which provides the needed infrastructure"
+      "Bernoulli numbers are the common bridge between Wolstenholme primes and Kummer regular-prime theory.",
+      "The file is structurally useful but intentionally axiomatized around deep algebraic number theory.",
+      "OQ03 imports only Mathlib modules, so the broader Wolstenholme family belongs in relatedProofs rather than leanFiles."
     ],
     "mathlibGaps": [
-      "No cyclotomic field class number theory in Mathlib",
-      "No unique factorization in Z[ζ_p] for regular primes",
-      "Computational evaluation of Bernoulli numerators for specific primes would need native_decide"
+      "Cyclotomic field and p-adic Bernoulli infrastructure needed for the Kummer and Wolstenholme equivalence results."
     ],
     "nextSteps": [
-      "Computationally verify p=37 is irregular using native_decide on Bernoulli numerators",
-      "Connect to cyclotomic field theory when Mathlib support improves",
-      "Formalize the density conjecture for irregular primes (~1 - 1/e)"
+      "Formalize concrete irregular-prime computations.",
+      "Replace the Kummer/Wiles-style axioms as Mathlib support improves."
     ]
   },
   "tags": [
     "number-theory",
     "congruences",
+    "bernoulli-numbers",
     "irregular-primes",
-    "fermat-last-theorem",
-    "bernoulli-numbers"
+    "fermat-last-theorem"
   ],
   "relatedProofs": [
     "wolstenholme-theorem",
@@ -81,69 +72,31 @@
   ],
   "references": {
     "papers": [
-      "Kummer 1850",
-      "Johnson 1975",
-      "McIntosh 1995"
+      "Ernst Kummer, regular primes and Fermat Last Theorem (1850)",
+      "W. Johnson, p-adic congruences for Bernoulli numbers",
+      "Richard McIntosh, Wolstenholme search and Bernoulli criteria"
     ],
-    "urls": [],
+    "urls": [
+      "https://en.wikipedia.org/wiki/Regular_prime"
+    ],
     "mathlib": [
-      "bernoulli",
-      "Rat.num"
+      "Mathlib.NumberTheory.Bernoulli",
+      "Mathlib.Data.Nat.Choose.Basic",
+      "Mathlib.Data.Nat.Prime.Defs",
+      "Mathlib.Data.ZMod.Basic",
+      "Mathlib.Data.Rat.Defs",
+      "Mathlib.Tactic"
     ]
   },
-  "started": "2026-04-12T21:00:00Z",
-  "lastUpdate": "2026-04-12T21:30:00Z",
+  "started": "2026-04-06T03:14:36.235Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
     {
-      "path": "Proofs/WolstenholmeTheorem.lean",
-      "filename": "WolstenholmeTheorem.lean",
-      "lineCount": 221,
-      "theoremCount": 17,
-      "axiomCount": 2,
-      "defCount": 6,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheorem.lean"
-    },
-    {
-      "path": "Proofs/WolstenholmeTheoremOQ01.lean",
-      "filename": "WolstenholmeTheoremOQ01.lean",
-      "lineCount": 272,
-      "theoremCount": 24,
-      "axiomCount": 3,
-      "defCount": 7,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ01.lean"
-    },
-    {
-      "path": "Proofs/WolstenholmeTheoremOQ02.lean",
-      "filename": "WolstenholmeTheoremOQ02.lean",
-      "lineCount": 145,
-      "theoremCount": 12,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ02.lean"
-    },
-    {
-      "path": "Proofs/WolstenholmeTheoremOQ02OQ02.lean",
-      "filename": "WolstenholmeTheoremOQ02OQ02.lean",
-      "lineCount": 317,
-      "theoremCount": 14,
-      "axiomCount": 1,
-      "defCount": 2,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ02OQ02.lean"
-    },
-    {
       "path": "Proofs/WolstenholmeTheoremOQ03.lean",
       "filename": "WolstenholmeTheoremOQ03.lean",
-      "lineCount": 250,
+      "lineCount": 249,
       "theoremCount": 3,
       "axiomCount": 4,
       "defCount": 6,
@@ -151,5 +104,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/WolstenholmeTheoremOQ03.lean"
     }
-  ]
+  ],
+  "completed": "2026-04-12T21:45:39.917Z"
 }
