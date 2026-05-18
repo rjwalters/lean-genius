@@ -1,59 +1,74 @@
 {
   "slug": "erdos-155",
   "title": "Erdős #155",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Let $F(N)$ be the size of the largest Sidon subset of $\\{1,\\ldots,N\\}$. Is it true that for every $k\\geq 1$ we have\\[F(N+k)\\leq F(N)+1\\]for all sufficiently large $N$?\n\n\n\nThis may even hold with $k\\approx \\epsilon N^{1/2}$.",
-    "plain": "Let $F(N)$ be the size of the largest Sidon subset of $\\{1,\\ldots,N\\}$. Is it true that for every $k\\geq 1$ we have\\[F(N+k)\\leq F(N)+1\\]for all sufficiently large $N$?",
-    "whyMatters": []
+    "formal": "Let F(N) be the maximum size of a Sidon subset of {1, ..., N}, using the Lean file's strict-pair/no-self-sum convention. For each fixed k >= 1, is there N0(k) such that F(N+k) <= F(N)+1 for all N >= N0(k)? A stronger variant asks whether k may grow on the order of epsilon * sqrt(N).",
+    "plain": "Do maximal Sidon sets grow so slowly that adding any fixed number of new ambient integers eventually increases the maximum size by at most one?",
+    "plainEnglish": "Do maximal Sidon sets grow so slowly that adding any fixed number of new ambient integers eventually increases the maximum size by at most one?",
+    "whyMatters": [
+      "Tests fine-grained growth of extremal Sidon sets.",
+      "Connects explicit finite-set formalization with asymptotic additive combinatorics.",
+      "Separates the Lean strict-pair convention from the classical B2/self-sum convention."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`maxSidonSize` is now a concrete noncomputable definition over finite Sidon subsets.",
+      "`maxSidon_achievable` and `maxSidon_optimal` provide existence and optimality of an extremal set.",
+      "`maxSidon_monotone` and `maxSidon_step` prove monotonicity and the one-step bound F(N+1) <= F(N)+1.",
+      "`increase_count_le` bounds the number of strict increases below M by F(M).",
+      "Small values F(1)=1, F(2)=2, and F(3)=3 are proved under the file's strict-pair/no-self-sum convention."
+    ],
+    "open": [
+      "The eventual fixed-k conjecture F(N+k) <= F(N)+1.",
+      "The stronger epsilon * sqrt(N) window suggested in the problem text.",
+      "Deep asymptotic Sidon-set bounds beyond the single `erdos_turan_upper` axiom."
+    ],
+    "goal": "Track the formal finite Sidon-set infrastructure and isolate the remaining asymptotic conjectural work."
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-03-26T00:00:00Z",
-    "iteration": 3,
-    "focus": "9 axioms (down from 11). Proved maxSidon_monotone and maxSidon_step.",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 4,
+    "focus": "Metadata now matches the one-axiom Lean file: `maxSidonSize` is defined, extremal existence/optimality and one-step growth are proved, and only `erdos_turan_upper` remains axiomatized.",
     "blockers": [],
-    "nextAction": "Convert maxSidonSize to def, prove more axioms"
+    "nextAction": "Either formalize more asymptotic Sidon bounds or extend small-value computations under the strict-pair convention."
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 10 theorems (up from 7), 6 axioms, 0 sorries. Proved increase_count_le. increase_points_sparse nearly eliminable (needs only elementary ℝ inequality).",
+    "progressSummary": "CURRENT: 10 theorem/lemma declarations, 3 definitions, 1 axiom (`erdos_turan_upper`), 0 sorries. `maxSidonSize` is already a definition, with extremal existence, optimality, monotonicity, one-step growth, increase-count, and F(1..3) facts proved.",
     "builtItems": [
-      "maxSidon_monotone: any Sidon subset of {1,...,N} is valid for {1,...,N+1}",
-      "maxSidon_step: removing N+1 from optimal (N+1)-set gives valid N-set with |S|≤|S|+1",
-      "noncomputable def maxSidonSize using Finset.sup over sidonSets (replaces axiom)",
-      "theorem maxSidon_achievable (replaces axiom)",
-      "theorem maxSidon_optimal (replaces axiom)",
-      "theorem maxSidon_monotone (replaces axiom)",
-      "theorem maxSidon_step (replaces axiom)",
-      "Proved increase_count_le: telescoping bound on increase points"
+      "`IsSidonSet` strict-pair Sidon predicate",
+      "`maxSidonSize` noncomputable extremal definition",
+      "`maxSidon_achievable` and `maxSidon_optimal`",
+      "`maxSidon_monotone` and `maxSidon_step`",
+      "`increase_count_le`",
+      "`maxSidonSize_1`, `maxSidonSize_2`, `maxSidonSize_3`"
     ],
     "insights": [
-      "maxSidon_monotone trivially follows from containment: {1,...,N}⊆{1,...,N+1}",
-      "maxSidon_step uses Finset.erase and Nat.lt_of_le_of_ne for the N+1 exclusion",
-      "maxSidonSize converted from axiom to noncomputable def using Finset.sup over sidonSets (powerset filter)",
-      "maxSidon_achievable proved via Finset.exists_max_image + le_antisymm with Finset.le_sup/Finset.sup_le",
-      "maxSidon_optimal proved via Finset.le_sup on the sidonSets membership",
-      "maxSidon_monotone proved: Sidon set of {1..N} ⊆ sidonSets (N+1) via Icc monotonicity",
-      "maxSidon_step proved: S.erase (N+1) gives valid N-set, card diff at most 1",
-      "Proved increase_count_le: #{N<M : F(N+1)>F(N)} ≤ F(M). Induction: each step contributes 0 or 1 (maxSidon_step), telescoping gives total = F(M)-F(0) = F(M).",
-      "increase_points_sparse can be eliminated: increase_count_le + erdos_turan_upper + elementary real analysis (M^{1/4}+1 ≤ ε√M for large M). Only missing piece is the ℝ inequality."
+      "The Lean formalization uses a strict-pair/no-self-sum Sidon convention, so metadata should not silently identify it with every classical B2 convention.",
+      "`maxSidonSize` is built as a noncomputable `Finset.sup` over finite Sidon subsets.",
+      "`maxSidon_step` removes the newly added ambient point to get F(N+1) <= F(N)+1.",
+      "`increase_count_le` packages the one-step bound into a telescoping count of strict increases.",
+      "Only the asymptotic `erdos_turan_upper` estimate is axiomatized in source; the main conjecture remains in comments/metadata rather than as an active axiom."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove small_values for F(1)=1 by computation or decide on small Finsets",
-      "The 5 deep axioms (asymptotic bounds, conjecture, consequences) require substantial number theory"
+      "Formalize additional asymptotic Sidon estimates beyond `erdos_turan_upper`.",
+      "Check whether the strict-pair convention should be bridged to a classical self-sum Sidon predicate.",
+      "Extend verified small values if useful for examples."
     ]
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "additive-combinatorics",
+    "sidon-sets",
+    "extremal-combinatorics",
+    "growth-rate",
+    "open"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -61,22 +76,31 @@
     "erdos-155"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdos-Turan upper bounds for Sidon sets"
+    ],
+    "urls": [
+      "https://erdosproblems.com/155"
+    ],
+    "mathlib": [
+      "Finset.powerset",
+      "Finset.sup",
+      "Finset.erase",
+      "Finset.card_le_card"
+    ]
   },
   "started": "2026-01-12T09:56:05.235Z",
-  "lastUpdate": "2026-03-27T00:15:00Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos155Problem.lean",
       "filename": "Erdos155Problem.lean",
-      "lineCount": 200,
-      "theoremCount": 8,
+      "lineCount": 199,
+      "theoremCount": 10,
       "axiomCount": 1,
-      "defCount": 2,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos155Problem.lean"
