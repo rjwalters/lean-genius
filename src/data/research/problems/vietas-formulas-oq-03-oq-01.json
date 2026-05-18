@@ -6,14 +6,24 @@
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "For variables indexed by Fin n over a commutative ring, define power sums and elementary symmetric polynomials, then derive Newton identities via MvPolynomial evaluation.",
+    "plain": "Generalizes Newton identities and Vieta-style coefficient relations from small fixed arities to n variables using Mathlib's MvPolynomial symmetric-polynomial infrastructure.",
+    "whyMatters": [
+      "Newton identities are the bridge between power sums of roots and elementary symmetric coefficients.",
+      "Moving from hand-written low-degree cases to Fin n makes the Vieta machinery reusable for arbitrary finite families.",
+      "The proof demonstrates how Mathlib's abstract symmetric-polynomial theorems can be evaluated into concrete formulas."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Concrete powerSum and elemSymm definitions are provided for functions Fin n -> R.",
+      "Evaluation bridges connect MvPolynomial.psum and MvPolynomial.esymm to the concrete definitions (Lean: aeval_psum_eq and aeval_esymm_eq).",
+      "General Newton identities are derived from Mathlib symmetric-polynomial theorems (Lean: newton_identity and newton_identity_psum).",
+      "Basic elementary-symmetric and power-sum identities are included, including newton_first.",
+      "Two-, three-, and four-variable specializations plus Vieta product formulas are verified by ring."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Document the verified n-variable Newton-identity generalization and its Vieta-formula specializations."
   },
   "currentState": {
     "phase": "ACT",
@@ -56,7 +66,14 @@
     ],
     "markdown": "# Knowledge Base: vietas-formulas-oq-03-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "algebra",
+    "symmetric-polynomials",
+    "vieta-formulas",
+    "newton-identities",
+    "mvpolynomial",
+    "finite-families"
+  ],
   "relatedProofs": [
     "vietas-formulas",
     "vietas-formulas-oq-02",

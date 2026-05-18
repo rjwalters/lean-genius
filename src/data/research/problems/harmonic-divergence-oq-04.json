@@ -6,14 +6,24 @@
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "For f : N -> R with f >= 0 and f antitone: Summable f <-> Summable (fun k => 2^k * f(2^k))",
-    "plain": "Can Oresme's grouping argument be generalized to characterize all divergent series with terms decreasing to zero?",
-    "whyMatters": []
+    "formal": "For f : Nat -> Real with f nonnegative and antitone on positive indices, prove Summable f iff Summable (fun k => 2^k * f (2^k)).",
+    "plain": "Generalizes Oresme's grouping argument via the Cauchy condensation test, then recovers divergence of the harmonic series as a special case.",
+    "whyMatters": [
+      "Cauchy condensation turns Oresme's harmonic-series grouping into a general convergence test for monotone nonnegative series.",
+      "The proof connects a classical divergence argument with Mathlib's summability infrastructure.",
+      "The harmonic-series result is shown both through condensation and in agreement with Mathlib's direct theorem."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "The Cauchy condensation test is wrapped for real nonnegative antitone sequences (Lean: cauchy_condensation_test).",
+      "The divergence contrapositive is available as cauchy_condensation_diverges.",
+      "The file proves the needed nonnegativity and antitone facts for 1/n (Lean: one_div_nonneg_nat and one_div_antitone).",
+      "The condensed harmonic series is shown to diverge, yielding Oresme's harmonic divergence proof (Lean: condensed_harmonic_diverges and oresme_via_condensation).",
+      "The result is checked against Mathlib's direct harmonic divergence theorem (Lean: harmonic_diverges_mathlib and condensation_iff_summable)."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Expose the verified Cauchy-condensation characterization and the harmonic-series divergence specialization."
   },
   "currentState": {
     "phase": "ACT",
@@ -44,7 +54,14 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: harmonic-divergence-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "analysis",
+    "series",
+    "harmonic-series",
+    "cauchy-condensation",
+    "oresme",
+    "summability"
+  ],
   "relatedProofs": [
     "harmonic-divergence",
     "harmonic-divergence-oq-01",

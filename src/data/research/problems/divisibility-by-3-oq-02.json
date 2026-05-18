@@ -6,14 +6,24 @@
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "",
-    "plain": "Generalizes divisibility rules to arbitrary bases: for b ≥ 3, (b-1) | n iff (b-1) | digit_sum_b(n). Covers hexadecimal (mod 15), octal (mod 7), factor tests, and cross-base divisibility. All 15 theorems fully verified.",
-    "whyMatters": []
+    "formal": "For base b >= 3 and n : Nat, prove n is congruent modulo b - 1 to the sum of its base-b digits, and derive divisibility tests for factors of b - 1.",
+    "plain": "Generalizes divisibility rules to arbitrary bases: for b >= 3, (b - 1) divides n iff (b - 1) divides the base-b digit sum. Covers hexadecimal, octal, factor tests, and cross-base consistency. All direct file theorems are verified.",
+    "whyMatters": [
+      "Digit-sum divisibility rules are a familiar arithmetic trick with a clean modular explanation.",
+      "The base-b version shows the rule is really about b == 1 modulo b - 1, not about decimal notation specifically.",
+      "The hexadecimal, octal, and cross-base corollaries make the theorem useful beyond the classic tests for 3 and 9."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "The base congruence b % (b - 1) = 1 is proved for b >= 3 (Lean: base_mod_pred).",
+      "The digit-sum congruence n == sum(digits_b n) mod (b - 1) is formalized (Lean: modEq_digits_sum_base_minus_one and mod_base_minus_one_eq).",
+      "Divisibility by b - 1 and by factors of b - 1 is reduced to divisibility of the digit sum (Lean: dvd_base_minus_one_iff and dvd_factor_iff).",
+      "Concrete hexadecimal and octal rules are included for divisibility by 15, 3, 5, and 7 (Lean: hex_div_15, hex_div_3, hex_div_5, oct_div_7).",
+      "Cross-base consistency and the usual decimal divisibility-by-3 and divisibility-by-9 rules are derived."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Record the verified arbitrary-base digit-sum divisibility framework and its concrete base-specific corollaries."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -49,7 +59,14 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: divisibility-by-3-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "number-theory",
+    "modular-arithmetic",
+    "divisibility-rules",
+    "digit-sums",
+    "base-b",
+    "verified"
+  ],
   "relatedProofs": [
     "divisibility-by-3",
     "divisibility-by-3-oq-02",

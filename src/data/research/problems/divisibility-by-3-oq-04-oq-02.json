@@ -6,14 +6,24 @@
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "For d >= 2 and a base b with b % d = 1, count the residues detected by the digit-sum perturbation test and prove the detected proportion is (d - 1) / d in cardinal form.",
+    "plain": "Formalizes how often digit-sum divisibility checks detect perturbations: among residues modulo d, exactly d - 1 nonzero residues are detected and one zero residue is undetected.",
+    "whyMatters": [
+      "Detection-rate claims make divisibility tests quantitative instead of only yes/no rules.",
+      "Counting the detected and undetected residue classes explains why mod 9 catches eight out of nine nonzero decimal digit-sum errors.",
+      "The same residue-counting argument applies to decimal, octal, hexadecimal, and arbitrary bases satisfying b == 1 mod d."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Powers of the base remain 1 modulo d when b % d = 1 (Lean: base_pow_mod_one).",
+      "Digit perturbations preserve the expected modular behavior (Lean: perturbation_mod, dvd_mul_pow_iff, digit_sum_perturbation).",
+      "The file counts multiples and nonmultiples in the residue interval 1..d (Lean: unique_multiple_in_range, multiples_in_range, undetected_count, detected_count).",
+      "The detection-rate identity is proved in cardinal form: detected_count * d = (d - 1) * d (Lean: detection_rate_ratio).",
+      "Concrete decimal, octal, hexadecimal, and trivial binary cases are verified, including nines_better_than_threes."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Document the verified residue-counting proof for digit-sum detection rates and its concrete base examples."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -44,7 +54,14 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: divisibility-by-3-oq-04-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "number-theory",
+    "modular-arithmetic",
+    "divisibility-rules",
+    "digit-sums",
+    "detection-rate",
+    "finite-counting"
+  ],
   "relatedProofs": [
     "divisibility-by-3",
     "divisibility-by-3-oq-02",
