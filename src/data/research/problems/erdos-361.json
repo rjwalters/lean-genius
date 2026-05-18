@@ -1,7 +1,7 @@
 {
   "slug": "erdos-361",
   "title": "Erdős #361",
-  "phase": "COMPLETED",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -26,12 +26,14 @@
     "goal": "Formalize structural properties; asymptotic growth is axiomatized as open"
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-03-23T20:30:00Z",
-    "iteration": 1,
-    "focus": "Eliminated all sorries, fixed incorrect theorem, added structural lemmas.",
-    "blockers": [],
-    "nextAction": "None — formalization complete. 2 axioms remain (open Erdős conjecture).",
+    "phase": "ACT",
+    "since": "2026-05-18T12:36:54Z",
+    "iteration": 2,
+    "focus": "Supporting formalization source-clean: 0 axioms and 0 sorries; conjectural statements remain definitions.",
+    "blockers": [
+      "ErdosProblem361 and MaxNonReprUnbounded are open problem statements, not proved theorems."
+    ],
+    "nextAction": "Use the subset-sum and maxNonReprSize lemmas as infrastructure for future growth or non-monotonicity work.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -39,25 +41,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries, 2 axioms (open Erdős conjectures), 8 theorems proved.",
+    "progressSummary": "SOURCE REFRESH: Primary Lean file has 5 definitions, 6 theorems, 0 axioms, 0 sorries over 140 lines. It proves structural non-representing lemmas and lower/full-range bounds; the main irregularity and unboundedness statements remain open definitions.",
     "builtItems": [
-      "nonRepresenting_empty: empty set is non-representing",
-      "nonRepresenting_subset: monotone under subsets",
-      "singleton_one_nonRepr: {1} non-representing for n >= 2",
-      "nonRepresenting_of_sum_lt: if sum(A) < n then A non-representing",
-      "maxNonRepr_full_of_sum_lt: when sum < n, full range is optimal (corrects former false theorem)",
-      "maxNonRepr_ge_one: maxNonReprSize >= 1 for c >= 1, n >= 2"
+      "Defines IsSubsetSum, NonRepresenting, maxNonReprSize, ErdosProblem361, and MaxNonReprUnbounded.",
+      "Implements nonRepresenting_empty, nonRepresenting_subset, singleton_one_nonRepr, nonRepresenting_of_sum_lt, maxNonRepr_full_of_sum_lt, and maxNonRepr_ge_one.",
+      "Correctly keeps the former false large-n/full-range style claim out of the theorem surface."
     ],
     "insights": [
-      "The former maxNonRepr_large_n theorem was FALSE: claimed eventually all of {1,...,floor(cn)} is non-repr for c<1, but sum grows as Theta(c^2 n^2) which exceeds n",
-      "open Classical needed for Finset.filter DecidablePred synthesis with NonRepresenting",
-      "Mathlib.Analysis.Asymptotics.Asymptotics was split into Defs + Lemmas in newer Mathlib",
-      "Finset.le_sup is the key tool for showing lower bounds on Finset.sup definitions",
-      "Finset.sum_le_sum_of_subset_of_nonneg gives subset sum monotonicity for nat-valued functions",
-      "Nat.floor_pos.mpr bridges (1:R) <= x to 0 < floor(x)"
+      "The file now has no axioms; earlier copy about two open Erdos conjecture axioms is stale because those conjectures are definitions rather than axioms.",
+      "nonRepresenting_of_sum_lt is the key monotonicity bridge: any subset sum stays below n when the full set sum is below n.",
+      "maxNonRepr_ge_one gives a simple lower bound from the singleton {1} for c >= 1 and n >= 2.",
+      "The primary file has no source-level sorry or admit tokens in the current proof metadata."
     ],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "A proof of non-monotonicity for maxNonReprSize c.",
+      "A proof that maxNonReprSize c tends to infinity."
+    ],
+    "nextSteps": [
+      "Develop quantitative lower bounds for maxNonReprSize c beyond the singleton witness.",
+      "Search for explicit n1 < n2 witnesses of non-monotonicity for fixed c.",
+      "Keep metadata wording clear that the source is support infrastructure, not a proof of the open problem."
+    ],
     "markdown": ""
   },
   "tags": [
@@ -74,14 +78,14 @@
     "mathlib": []
   },
   "started": "2026-01-13T00:56:39.043Z",
-  "lastUpdate": "2026-03-23T20:30:00.000Z",
+  "lastUpdate": "2026-05-18T12:36:54Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos361Problem.lean",
       "filename": "Erdos361Problem.lean",
-      "lineCount": 141,
+      "lineCount": 140,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 5,

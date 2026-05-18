@@ -16,37 +16,42 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T23:55:09.604Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-05-18T12:36:54Z",
+    "iteration": 2,
+    "focus": "Primary proof metadata refreshed: main avoidance file first, OQ constructions retained as supplementary.",
+    "blockers": [
+      "vanDoorn_bound remains the only axiom in the primary file.",
+      "The main density question and factor-of-2 variant remain open."
+    ],
+    "nextAction": "Formalize or cite van Doorn bound; keep OQ construction files secondary to the primary problem file.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "SOURCE REFRESH: Primary Erdos327Problem.lean has 5 definitions, 8 theorems, 1 axiom, 0 sorries over 198 lines. The previous first leanFiles entry was the OQ construction file; the primary record is now first, with OQ construction files retained as supplementary entries.",
     "builtItems": [
-      "Proved sumDvdProd_iff_reduced_divides_gcd in Erdos327Problem.lean:144-168 - complete proof replacing sorry",
-      "sumDvdProd_iff_unitFraction: axiom→theorem via div_add_div + div_eq_div_iff in ℚ",
-      "Created Proofs/Erdos327OQ01.lean: explicit coprime factorization construction"
+      "Defines SumNotDvdProd, SumNotDvdTwoProd, maxAvoidSize, ErdosProblem327, and ErdosProblem327_variant.",
+      "Implements sumDvdProd_iff_unitFraction, empty/singleton/subset facts, oddNumbers_sumNotDvdProd, coprime_sumNotDvdProd, sumNotDvdProd_of_pairwise_coprime, and sumDvdProd_iff_reduced_divides_gcd.",
+      "Retains supplementary OQ files for explicit sum-divides-product pair constructions and lower-bound witness families."
     ],
     "insights": [
-      "Proof strategy: write a=d*a', b=d*b' with d=gcd. Then (a+b)|a*b ↔ (a'+b')|d via coprimality of a'+b' and a'*b'",
-      "gcd(a'+b', a'*b') = 1 follows from gcd(a',b')=1 using Euclidean algorithm property: gcd(a+b,a) = gcd(b,a)",
-      "Main Mathlib API challenge: finding exact lemma names for Nat.Coprime.add_left style results",
-      "Proof uses coprime_div_gcd_div_gcd to get gcd(a/d, b/d)=1, then derives gcd(a/d+b/d, a/d*b/d)=1 via Coprime.mul_right",
-      "Key Mathlib API: mul_dvd_mul_iff_left cancels common factor d from divisibility, Coprime.dvd_of_dvd_mul_right extracts the coprime factor",
-      "coprime_self_add_right is the bridge: gcd(a, a+b) = gcd(a, b) allows lifting coprimality to the sum",
-      "sumDvdProd_iff_unitFraction provable: 1/a+1/b=(a+b)/(ab), equals 1/c iff c*(a+b)=ab iff (a+b)|ab. Forward: div_add_div combines fractions, div_eq_div_iff clears denominators. Backward: field_simp in ℚ + exact_mod_cast back to ℕ.",
-      "Follow-up OQ-01: parametrization of sum-dvd-prod pairs (10 theorems, 0 axioms)"
+      "The primary file now has a single external input: vanDoorn_bound for the 25/28 density threshold.",
+      "The unit-fraction equivalence and gcd-reduction lemmas are implemented in the primary file without source-level sorries.",
+      "OQ01 and OQ01OQ04 are useful construction infrastructure but should not be counted as the primary problem metadata.",
+      "The factor-of-2 variant remains a conjectural problem statement."
     ],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "A formal proof of van Doorn density bound for large subsets of {1,...,N}.",
+      "Asymptotic machinery for the o(N) factor-of-2 variant."
+    ],
+    "nextSteps": [
+      "Attempt a standalone formalization of vanDoorn_bound, or attach a precise external reference if it stays axiomatized.",
+      "Keep the primary Erdos327Problem.lean entry first when future enrichment includes OQ construction files."
+    ],
     "markdown": "# Erdős #327 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nSuppose $A\\subseteq \\{1,\\ldots,N\\}$ is such that if $a,b\\in A$ and $a\\neq b$ then $a+b\\nmid ab$. Can $A$ be 'substantially more' than the odd numbers?\n\nWhat if $a,b\\in A$ with $a\\neq b$ implies $a+b\\nmid 2ab$? Must $\\lvert A\\rvert=o(N)$?\n\n\n\nThe connection to unit fractions comes from the observation that $\\frac{1}{a}+\\frac{1}{b}$ is a unit fraction if and only if $a+b\\mid ab$.\n\nWouter van Doorn has given an elementary argument that proves that if $A\\subseteq \\{1,\\ldots,N\\}$ has $\\lvert A\\rvert \\geq (25/28+o(1))N$ then $A$ must contain $a\\neq b$ with $a+b\\mid ab$ (see the discussion in [301]).\n\nSee also [302].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #28\n- Problem #301\n- Problem #302\n- Problem #326\n- Problem #328\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
@@ -65,14 +70,25 @@
     "mathlib": []
   },
   "started": "2026-01-12T23:55:09.604Z",
-  "lastUpdate": "2026-03-29T19:00:00Z",
+  "lastUpdate": "2026-05-18T12:36:54Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos327Problem.lean",
+      "filename": "Erdos327Problem.lean",
+      "lineCount": 198,
+      "theoremCount": 8,
+      "axiomCount": 1,
+      "defCount": 5,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos327Problem.lean"
+    },
+    {
       "path": "Proofs/Erdos327OQ01.lean",
       "filename": "Erdos327OQ01.lean",
-      "lineCount": 166,
+      "lineCount": 165,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 4,
@@ -83,24 +99,13 @@
     {
       "path": "Proofs/Erdos327OQ01OQ04.lean",
       "filename": "Erdos327OQ01OQ04.lean",
-      "lineCount": 88,
+      "lineCount": 87,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos327OQ01OQ04.lean"
-    },
-    {
-      "path": "Proofs/Erdos327Problem.lean",
-      "filename": "Erdos327Problem.lean",
-      "lineCount": 199,
-      "theoremCount": 8,
-      "axiomCount": 1,
-      "defCount": 5,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos327Problem.lean"
     }
   ]
 }

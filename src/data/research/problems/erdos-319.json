@@ -17,30 +17,39 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-01-12T23:51:53.285Z",
-    "iteration": 2,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "since": "2026-05-18T12:36:54Z",
+    "iteration": 3,
+    "focus": "Source metadata refreshed: irreducible signed unit-fraction support with two remaining inputs.",
+    "blockers": [
+      "adenwalla_lower_bound and croot_unit_fraction_theorem remain axiomatized mathematical inputs."
+    ],
+    "nextAction": "Formalize the Croot/Adenwalla lower-bound machinery or keep the file framed as conditional support for the open problem.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Proved small_example axiom (4→3 axioms). Constructed A={2,3,6} with δ(2)=-1, verified irreducibility by exhaustive case analysis on all 6 proper non-empty subsets.",
+    "progressSummary": "SOURCE REFRESH: Primary Lean file has 4 definitions, 3 theorems, 2 axioms, 0 sorries over 191 lines. It proves trivial_upper_bound, erdos_319_conjecture from Adenwalla-style input, and small_example; the two remaining axioms are adenwalla_lower_bound and croot_unit_fraction_theorem.",
     "builtItems": [
-      "PROVED trivial_upper_bound (5A→4A)",
-      "PROVED small_example: irreducible zero sum {2,3,6} with δ(2)=-1 (4A→3A)"
+      "Defines IsSigning, signedSum, IsIrreducibleZeroSum, and maxIrreducibleSize.",
+      "Implements trivial_upper_bound and a concrete small_example based on the irreducible zero-sum set {2, 3, 6}.",
+      "Derives erdos_319_conjecture from the external adenwalla_lower_bound input."
     ],
     "insights": [
-      "trivial_upper_bound proved: maxIrreducibleSize N ≤ N follows from A ⊆ {1,...,N} → |A| ≤ N. 5A→4A.",
-      "-1/2 + 1/3 + 1/6 = 0 is the simplest irreducible zero sum in unit fractions",
-      "Irreducibility verified by 8-way case split on membership in {2,3,6}, each subset sum computed via Finset.sum_insert + push_cast + norm_num"
+      "The concrete identity -1/2 + 1/3 + 1/6 = 0 gives a small irreducible example in source.",
+      "The large-N lower-bound content is still external: Adenwalla/Croot unit-fraction machinery is not proved locally.",
+      "The primary file has no source-level sorry or admit tokens in the current proof metadata."
     ],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "mathlibGaps": [
+      "Croot unit-fraction theorem in the form needed for short intervals.",
+      "Adenwalla lower-bound construction for maxIrreducibleSize."
+    ],
+    "nextSteps": [
+      "Break croot_unit_fraction_theorem into finite Egyptian-fraction lemmas if a formal route is attempted.",
+      "Keep future metadata from describing the lower-bound theorem as unconditional Mathlib proof until the two axioms are removed."
+    ],
     "markdown": "# Erdős #319 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nWhat is the size of the largest $A\\subseteq \\{1,\\ldots,N\\}$ such that there is a function $\\delta:A\\to \\{-1,1\\}$ such that\\[\\sum_{n\\in A}\\frac{\\delta_n}{n}=0\\]and\\[\\sum_{n\\in A'}\\frac{\\delta_n}{n}\\neq 0\\]for all non-empty $A'\\subsetneq A$?\n\n\n\nAdenwalla has observed that a lower bound of\\[\\lvert A\\rvert\\geq (1-\\tfrac{1}{e}+o(1))N\\]follows from the main result of Croot \\cite{Cr01}, which states that there exists some set of integers $B\\subset [(\\frac{1}{e}-o(1))N,N]$ such that $\\sum_{b\\in B}\\frac{1}{b}=1$. Since the sum of $\\frac{1}{m}$ for $m\\in [c_1N,c_2N]$ is asymptotic to $\\log(c_2/c_1)$ we must have $\\lvert B\\rvert \\geq (1-\\tfrac{1}{e}+o(1))N$.\n\nWe may then let $A=B\\cup\\{1\\}$ and choose $\\delta(n)=-1$ for all $n\\in B$ and $\\delta(1)=1$.\n\nThis problem has been formalised in Lean as part of the Google DeepMind Formal Conjectures project.\n\n\n\n\nReferences\n\n\n[Cr01] Croot, III, Ernest S., On unit fractions with denominators in short intervals. Acta Arith. (2001), 99-114.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #318\n- Problem #320\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n- Cr01\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
@@ -57,14 +66,14 @@
     "mathlib": []
   },
   "started": "2026-01-12T23:51:53.285Z",
-  "lastUpdate": "2026-03-13T07:52:17.045Z",
+  "lastUpdate": "2026-05-18T12:36:54Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos319Problem.lean",
       "filename": "Erdos319Problem.lean",
-      "lineCount": 192,
+      "lineCount": 191,
       "theoremCount": 3,
       "axiomCount": 2,
       "defCount": 4,

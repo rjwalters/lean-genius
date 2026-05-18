@@ -16,32 +16,42 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T00:59:36.242Z",
-    "iteration": 2,
-    "focus": "Eliminated conjecture_equiv axiom. 2 axioms remain (both deep analytic).",
+    "phase": "ACT",
+    "since": "2026-05-18T12:36:54Z",
+    "iteration": 3,
+    "focus": "Source metadata refreshed: 0 axioms, 0 sorries, with k-good prime infrastructure and open conjecture definitions.",
     "blockers": [
-      "positive_density_smooth and dickman_asymptotic are deep analytic"
+      "The main ErdosConjecture383 statement remains open; no Dickman/smooth-number asymptotic is formalized as an axiom in this file."
     ],
-    "nextAction": "Both remaining axioms are deep analytic.",
+    "nextAction": "Build actual smooth-number or Dickman estimates only if future work attacks k >= 1 cases.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated conjecture_equiv axiom (3 to 2). Defined maxPrimeFac, proved equivalence.",
-    "builtItems": [],
-    "insights": [
-      "File already well-developed: 7 proved theorems, only 3 axioms remain",
-      "conjecture_equiv might be provable if Nat.maxPrimeFac API is well-defined in Mathlib",
-      "positive_density_smooth and dickman_asymptotic are deep analytic results, not provable",
-      "Nat.maxPrimeFac does not exist in Mathlib",
-      "Both remaining axioms require real analysis beyond Mathlib"
+    "progressSummary": "SOURCE REFRESH: Primary Lean file has 13 definitions, 17 theorem/lemma declarations, 0 axioms, 0 sorries over 286 lines. It defines a local largest-prime-factor helper, proves the k = 0 case, proves conjecture_equiv, and proves the connection from the k = 1 case to Problem #382.",
+    "builtItems": [
+      "Defines primeDivisors, hasLargestPrimeFactor, maxPrimeFac, consecutiveSquareProduct, isKGood, isKGood', kGoodPrimes, ErdosConjecture383, ErdosConjecture383', Problem382Part2, isSmooth, countSmooth, and erdos_383_status.",
+      "Implements largest-prime-factor helper lemmas, consecutive-square product identities, zero_good, conjecture_equiv, infinitely_many_zero_good, kGood_one_smooth_p2_plus_1, problem383_implies_382, kGood_iff_smooth, and erdos_383_statement.",
+      "Keeps the Dickman/smooth-number heuristic as commentary rather than Lean axioms."
     ],
-    "mathlibGaps": [],
-    "nextSteps": [],
+    "insights": [
+      "The old research copy saying two or three axioms remain is stale; the current primary file declares zero axioms.",
+      "Nat.maxPrimeFac availability is no longer a blocker in this file because a local maxPrimeFac helper is defined and used.",
+      "The k = 0 case is settled in source; the k >= 1 infinitude conjecture remains open.",
+      "The primary file has no source-level sorry or admit tokens in the current proof metadata."
+    ],
+    "mathlibGaps": [
+      "Smooth-number density estimates strong enough for k >= 1.",
+      "Dickman-function asymptotics if the heuristic route becomes a formal proof route."
+    ],
+    "nextSteps": [
+      "Avoid reintroducing Dickman material as an axiom unless a Lean declaration is actually added.",
+      "Try small k reductions through kGood_iff_smooth and Problem382Part2.",
+      "Preserve the distinction between source-clean support infrastructure and a proof of ErdosConjecture383."
+    ],
     "markdown": "# Erdős #383 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs it true that for every $k$ there are infinitely many primes $p$ such that the largest prime divisor of\\[\\prod_{0\\leq i\\leq k}(p^2+i)\\]is $p$?\n\n\n\nA positive answer to this would give an answer to the second part of [382]. Heuristically, the 'probability' that $n$ has no prime divisors $\\geq n^{1/2}$ is $1-\\log 2>0$, so standard heuristics predict the answer to this is yes.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #382\n- Problem #2\n- Problem #384\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
@@ -58,15 +68,15 @@
     "mathlib": []
   },
   "started": "2026-01-13T00:59:36.243Z",
-  "lastUpdate": "2026-03-13T07:52:17.047Z",
+  "lastUpdate": "2026-05-18T12:36:54Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos383Problem.lean",
       "filename": "Erdos383Problem.lean",
-      "lineCount": 287,
-      "theoremCount": 14,
+      "lineCount": 286,
+      "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 13,
       "sorryCount": 0,
