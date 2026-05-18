@@ -16,12 +16,12 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-01-15T08:32:32.166Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Source-backed formalization of the witness-divisor predicate, small membership and non-membership examples, counting and density definitions, and simple-group-order predicates; the asymptotic Erdos question remains open.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Metadata is current for the support formalization; future mathematical work would address the open asymptotic density question.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,24 +29,20 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 6A (deep results), 8T proved, 0S.",
+    "progressSummary": "Lean source has 280 lines with 10 definitions, 9 theorem/lemma declarations, 0 axioms, 0 sorries, and 0 admits. It proves basic membership facts including 1 in A, 12 in A, 56 in A, 6 not in A, exclusion of prime powers, and existence of 12 as the smallest nontrivial element.",
     "builtItems": [
-      "Proved prime_power_not_in_setA (was sorry)",
-      "Proved six_not_in_setA (corrected math error: 6∉A)",
-      "Proved twelve_in_setA and fiftysix_in_setA (was axiom)",
-      "Proved smallest_nontrivial_in_setA = 12 (was axiom)",
-      "Fixed one_in_setA proof (removed nonexistent Nat lemma)",
-      "Fixed universe metavariable in isSimpleGroupOrder/isNonCyclicSimpleGroupOrder"
+      "Definitions: hasWitnessDivisor, inSetA, setA, inSetA prime-list variant, countA, densityA, exponentFunc, isSimpleGroupOrder, isNonCyclicSimpleGroupOrder, and logLogDensity.",
+      "Membership results: one_in_setA, twelve_in_setA, fiftysix_in_setA, six_not_in_setA, small_elements_of_A, and smallest_nontrivial_in_setA.",
+      "Structural result: prime_power_not_in_setA plus product_special_primes_in_setA for products of primes with witness chains."
     ],
     "insights": [
-      "MATH FIX: 6 ∉ A (p=3 has no witness: divisors >1 of 6 are {2,3,6}, none ≡1 mod 3)",
-      "First nontrivial element of A is 12 (not 6). Elements: 1, 12, 24, 30, 36, 48, 56, ...",
-      "prime_power_not_in_setA: key step is p | d (via Nat.exists_prime_and_dvd), giving d%p=0≠1",
-      "Universe metavariable fix: use Type instead of Type* for isSimpleGroupOrder",
-      "DecidablePred fix: use Classical.decPred for Finset.filter on inSetA"
+      "The Lean file proves supporting finite and structural lemmas; it does not solve the open asymptotic density problem.",
+      "The formalization has no axioms or source sorries."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Keep future metadata clear that completion refers to the Lean support file, not to the original asymptotic Erdos problem."
+    ],
     "markdown": "# Erdős #768 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset\\mathbb{N}$ be the set of $n$ such that for every prime $p\\mid n$ there exists some $d\\mid n$ with $d>1$ such that $d\\equiv 1\\pmod{p}$. Is it true that there exists some constant $c>0$ such that for all large $N$\\[\\frac{\\lvert A\\cap [1,N]\\rvert}{N}=\\exp(-(c+o(1))\\sqrt{\\log N}\\log\\log N).\\]\n\n\n\nErd\\H{o}s could prove that there exists some constant $c>0$ such that for all large $N$\\[\\exp(-c\\sqrt{\\log N}\\log\\log N)\\leq \\frac{\\lvert A\\cap [1,N]\\rvert}{N}\\]and\\[\\frac{\\lvert A\\cap [1,N]\\rvert}{N}\\leq \\exp(-(1+o(1))\\sqrt{\\log N\\log\\log N}).\\]Erd\\H{o}s asked about this because $\\lvert A\\cap [1,N]\\rvert$ provides an upper bound for the number of integers $n\\leq N$ for which there is a non-cyclic simple group of order $n$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #767\n- Problem #769\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er74b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -63,15 +59,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T08:32:32.167Z",
-  "lastUpdate": "2026-03-23T07:00:00.000Z",
+  "lastUpdate": "2026-05-18T13:25:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos768Problem.lean",
       "filename": "Erdos768Problem.lean",
-      "lineCount": 281,
-      "theoremCount": 8,
+      "lineCount": 280,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 10,
       "sorryCount": 0,

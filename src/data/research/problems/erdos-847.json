@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T10:25:45.155Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Formalization of the ENR and AP-free-set framework and consequences of the recorded counterexample axiom; the file treats the conjecture as disproved but relies on one axiom for the negation of ENRConjecture.",
+    "blockers": [
+      "enr_conjecture_false remains the single axiom recording the external disproof input."
+    ],
+    "nextAction": "Keep metadata source-backed: this is not initial exploration, but the counterexample itself is assumed by axiom rather than constructed in the file.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +31,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Lean source has 290 lines with 8 definitions, 7 theorem declarations, 1 axiom, 0 sorries, and 0 admits. It defines AP-free sets, the ENR condition and property, finite AP-free unions, and derives counterexample/disproved statements from enr_conjecture_false; it also proves finite AP-free unions imply the ENR condition.",
+    "builtItems": [
+      "Definitions: isThreeTermAP, isAPFree, isAPFree prime variant, hasENRCondition, hasENRProperty, isFiniteAPFreeUnion, hasFiniteAPFreePartition, and ENRConjecture.",
+      "Proved framework lemmas: isAPFree_subset, apfree_equiv, finite_union_implies_enr, erdos_847_disproved, and erdos_847_counterexample.",
+      "Axiom: enr_conjecture_false records the external counterexample input."
+    ],
+    "insights": [
+      "The research metadata should not describe this file as NEW or unexplored.",
+      "The file derives the disproved status from an axiom, so metadata should avoid implying the counterexample is constructed internally."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "If available, replace enr_conjecture_false with a formal counterexample construction or cited imported theorem.",
+      "Keep OPEN/DISPROVED wording aligned with the proof metadata and source comments."
+    ],
     "markdown": "# Erdős #847 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset \\mathbb{N}$ be an infinite set for which there exists some $\\epsilon>0$ such that in any subset of $A$ of size $n$ there is a subset of size at least $\\epsilon n$ which contains no three-term arithmetic progression.\n\nIs it true that $A$ is the union of a finite number of sets which contain no three-term arithmetic progression?\n\n\n\nA problem of Erd\\H{o}s, Ne\\v{s}et\\v{r}il, and R\\\"{o}dl.\n\nSee also [774] and [846].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #774\n- Problem #846\n- Problem #848\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er92b\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -50,15 +62,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T10:25:45.155Z",
-  "lastUpdate": "2026-03-13T07:52:17.053Z",
+  "lastUpdate": "2026-05-18T13:25:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos847Problem.lean",
       "filename": "Erdos847Problem.lean",
-      "lineCount": 291,
-      "theoremCount": 6,
+      "lineCount": 290,
+      "theoremCount": 7,
       "axiomCount": 1,
       "defCount": 8,
       "sorryCount": 0,

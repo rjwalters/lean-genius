@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ACT",
     "since": "2026-01-15T10:25:45.156Z",
     "iteration": 3,
-    "focus": "Proved r_ge_four, maynard_tao_gap_persistent, updated gallery data",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Primary file defines the prime-gap census and r(x) via Nat.find, proves structural gap-set facts and bounds 4 <= r(x) <= x for the stated ranges, and leaves the Erdos weak/strong conjectures plus Maynard-Tao and Cramer inputs as axioms.",
+    "blockers": [
+      "erdos_853_weak, erdos_853_strong, maynard_tao_bounded_gaps, and cramer_conjecture_bound remain axioms."
+    ],
+    "nextAction": "Metadata cleanup is the current work: remove stale notes that r or r_upper_bound are axiomatized or sorry-based.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,43 +31,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 31T, 4A (all appropriate), 0S. Proved r(x)≥4 (lower bound), maynard_tao_gap_persistent. Updated meta.json.",
+    "progressSummary": "Primary Lean file has 523 lines, 4 definitions, 33 theorem/lemma declarations, 4 axioms, and 0 sorries or admits. r is constructively defined via Nat.find; r_upper_bound, r_ge_four, weak_implies_all_even_gaps, and maynard_tao_gap_persistent are proved. Remaining axioms are the two open Erdos conjectures, Maynard-Tao bounded gaps, and Cramer conjectural bound.",
     "builtItems": [
-      "Proved gap_lt_prime: prime gaps are < the prime (Bertrand postulate)",
-      "Proved gapSet_lt: all gaps in gapSet(x) are < x",
-      "Fixed r_upper_bound: hypothesis x≥3 → x≥4 (counterexample at x=3)",
-      "r_upper_bound_even: even case of upper bound (Erdos853Problem.lean:257)",
-      "nthPrime_two: p₂=5 via count/nth Galois connection (Erdos853Problem.lean)",
-      "primeGap_one: d₁=2, first twin prime gap (Erdos853Problem.lean)",
-      "two_mem_gapSet: gap 2 always in gapSet(x) for x≥3 (Erdos853Problem.lean)",
-      "r_ge_four: r(x)≥4 for x≥3 (Erdos853Problem.lean)",
-      "maynard_tao_gap_persistent: consequence of Maynard-Tao axiom (Erdos853Problem.lean)"
+      "Definitions: nthPrime, primeGap, gapSet, and r.",
+      "Proved prime-gap facts: primeGap_pos, concrete first prime/gap values, primeGap_even, primeGap_ge_two, nthPrime_mono, and gap_lt_prime.",
+      "Proved gap-set and r facts: gapSet_mono, gapSet_even, gapSet_finite, exists_even_not_in_gapSet, r_even_pos, r_not_gap, r_minimal, r_monotone, r_upper_bound, and r_ge_four.",
+      "Conditional consequences: weak_implies_all_even_gaps and maynard_tao_gap_persistent."
     ],
     "insights": [
-      "r(x) is an opaque axiom function - should ideally be defined via Nat.find",
-      "Deep axioms: maynard_tao_bounded_gaps, cramer_conjecture_bound not provable from Mathlib",
-      "r_upper_bound (r(x)<=x) might be provable if r was defined constructively",
-      "r(x) can be DEFINED via Nat.find over even integers not in gapSet(x)",
-      "Need: nthPrime_ge (n <= nthPrime n), gapSet_finite (image of bounded set), exists_even_not_in_gapSet (infinite set minus finite)",
-      "r_even_pos, r_not_gap, r_minimal all follow from Nat.find_spec and Nat.find_min",
-      "Use Set.infinite_range_of_injective with f(k) = 2k+2 to show even numbers are infinite",
-      "For (2k+2) % 2 = 0, use Nat.mul_mod_right not omega",
-      "Need Classical.dec for Decidable (t in gapSet x)",
-      "r_upper_bound axiom is FALSE at x=3: gapSet(3)={2}, r(3)=4>3. Correct for x≥4.",
-      "gap_lt_prime proved: d_n < p_n for n≥1 via Bertrand postulate (2·p_n not prime since even>2)",
-      "gapSet_lt proved: all gaps in gapSet(x) are strictly less than x",
-      "For even x≥4: r(x)≤x because x is even, ≥2, and x∉gapSet(x) since gaps<x",
-      "For odd x≥5: counting argument needed - number of distinct gaps < number of even values ≤ x",
-      "r_upper_bound sorry: even x case trivial (x not in gapSet by gapSet_lt), odd x needs counting argument",
-      "All 4 axioms appropriate: erdos_853_weak/strong (open), maynard_tao (deep), cramer_conjecture (deep)",
-      "r_upper_bound_even: proved r(x) ≤ x for even x ≥ 4 via x ∉ gapSet(x) + minimality of r",
-      "r(x)≥4 provable without deep number theory: gap 2 always realized by twin primes 3,5",
-      "nthPrime_two provable using count/nth Galois connection + 4 not prime",
-      "Maynard-Tao gap persistence follows from infinitely-many witnesses and gapSet monotonicity"
+      "r is not opaque or axiomatized; it is defined via Nat.find.",
+      "r_upper_bound is proved in the primary source and should not be listed as a possible sorry-removal target.",
+      "The remaining axioms are external/open number-theoretic inputs."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Problem is mature: 0 sorries, 4 appropriate axioms, concrete bounds 4≤r(x)≤x"
+      "Keep future work focused on replacing clearly targetable external axioms, not on already-proved r infrastructure."
     ],
     "markdown": "# Erdős #853 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $d_n=p_{n+1}-p_n$, where $p_n$ is the $n$th prime. Let $r(x)$ be the smallest even integer $t$ such that $d_n=t$ has no solutions for $n\\leq x$.\n\nIs it true that $r(x)\\to \\infty$? Or even $r(x)/\\log x \\to \\infty$?\n\n\n\nIn \\cite{Er85c} Erd\\H{o}s omits the condition that $t$ be even, but this is clearly necessary.\n\n\n\n\nReferences\n\n\n[Er85c] Erd\\H{o}s, P., On some of my problems in number theory I would most like to see solved. Number theory (Ootacamund, 1984) (1985), 74-84.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #852\n- Problem #854\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er85c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -83,15 +63,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T10:25:45.156Z",
-  "lastUpdate": "2026-03-29T23:50:00.000Z",
+  "lastUpdate": "2026-05-18T13:25:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos853Problem.lean",
       "filename": "Erdos853Problem.lean",
-      "lineCount": 524,
-      "theoremCount": 31,
+      "lineCount": 523,
+      "theoremCount": 33,
       "axiomCount": 4,
       "defCount": 4,
       "sorryCount": 0,

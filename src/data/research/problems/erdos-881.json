@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ORIENT",
     "since": "2026-01-15T10:46:46.306Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Formalization exists for asymptotic additive bases, minimal bases, the main Erdos 881 conjecture, a weak version, squares and powers examples, and basic structural lemmas.",
+    "blockers": [
+      "erdos_881 remains the axiom recording the open conjecture."
+    ],
+    "nextAction": "Review whether the main conjecture should remain axiomatized as erdos_881; improve small non-open lemmas around basis order, subsets, and examples as needed.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +31,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Primary Lean file has 243 lines, 6 definitions, 8 proved theorems, 1 axiom for the open conjecture, and no source sorries or admits. It proves the order-one characterization, finite sets are not bases, minimal bases are infinite, strong implies weak, squares are an order-4 basis via Nat.sum_four_squares, and monotonicity/subset properties.",
+    "builtItems": [
+      "Definitions: IsAsymptoticAddBasisOfOrder, IsMinimalAsymptoticAddBasisOfOrder, erdos881Conjecture, erdos881Weak, squares, and powers.",
+      "Proved basics: order_one_basis, finite_not_basis, minimal_basis_infinite, strong_implies_weak, basis_order_monotone, basis_subset, and erdos_881_summary.",
+      "Example theorem: squares_basis_order_4 from Nat.sum_four_squares.",
+      "Axiom: erdos_881 records the still-open main conjecture."
+    ],
+    "insights": [
+      "The file is not initial exploration; it has a substantive axiomatized formalization.",
+      "The only axiom is the open main conjecture, not a local proof gap."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Document the single axiom clearly and avoid saying the problem is only at initial exploration.",
+      "Add small structural lemmas around basis order or examples when they avoid touching the open conjecture."
+    ],
     "markdown": "# Erdős #881 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A\\subset\\mathbb{N}$ be an additive basis of order $k$ which is minimal, in the sense that if $B\\subset A$ is any infinite set then $A\\backslash B$ is not a basis of order $k$.\n\nMust there exist an infinite $B\\subset A$ such that $A\\backslash B$ is a basis of order $k+1$?\n\n\n\n\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #880\n- Problem #882\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er98\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -50,15 +63,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T10:46:46.306Z",
-  "lastUpdate": "2026-03-13T07:52:17.054Z",
+  "lastUpdate": "2026-05-18T13:25:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos881Problem.lean",
       "filename": "Erdos881Problem.lean",
-      "lineCount": 244,
-      "theoremCount": 9,
+      "lineCount": 243,
+      "theoremCount": 8,
       "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,
