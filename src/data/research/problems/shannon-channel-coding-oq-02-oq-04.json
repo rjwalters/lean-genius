@@ -7,23 +7,26 @@
   "path": "full",
   "problemStatement": {
     "formal": "C = \\max_{p(x)} I(X; Y) = \\log |\\mathcal{X}| - H(Y|X)",
-    "plain": "The existing `shannon-channel-coding` gallery proof contains a `sorry`-backed placeholder",
+    "plain": "Generalize the BSC capacity proof to weakly symmetric channels. The current OQ02OQ04 target has 0 sorries and states the symmetric-channel capacity theorem; parent ShannonChannelCoding.lean still uses axioms for broader channel-coding results.",
     "whyMatters": [
       "Generalizes existing gallery work"
     ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "ShannonChannelCodingOQ02OQ04.lean proves symmetric-channel capacity support for the BSC generalization path.",
+      "The target file has 0 axioms and 0 sorries by the current extractor counts."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Generalize the BSC capacity proof to weakly symmetric channels - graduated."
   },
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-23T01:33:17+02:00",
-    "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "phase": "COMPLETED",
+    "since": "2026-05-18T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Completed/graduated metadata refreshed: ShannonChannelCodingOQ02OQ04.lean script-counts as 249 lines, 10 theorem/lemma declarations, 1 definition, 0 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None for this graduated metadata record; parent integration and broader channel-coding axioms belong to sibling tasks.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -31,12 +34,17 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Metadata sync 2026-05-18: target file counts are current at 249 script-counted lines, 10 theorem/lemma declarations, 1 definition, 0 axioms, 0 sorries. Extractor note: broad slug matching includes the full ShannonChannelCoding* proof family; line counts use content.split(\"\\n\"), theorem counts ignore private/attributed declarations, and raw sorry counts include comments.",
+    "builtItems": [
+      "ShannonChannelCodingOQ02OQ04.lean: symmetric-channel capacity theorem family",
+      "Broad ShannonChannelCoding leanFiles metadata refreshed to 11 current proof files"
+    ],
+    "insights": [
+      "The current target uses no sorries; parent-level channel-coding axioms are separate from this graduated symmetric-channel record."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
-    "markdown": "# Knowledge Base: shannon-channel-coding-oq-02-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "markdown": "# Knowledge Base: shannon-channel-coding-oq-02-oq-04\n\nGraduated. Metadata refreshed on 2026-05-18. `ShannonChannelCodingOQ02OQ04.lean` contains the weakly symmetric channel capacity support with current extractor counts of 249 lines, 10 theorem/lemma declarations, 1 definition, 0 axioms, and 0 sorries. Parent-level channel-coding axioms are tracked separately.\n"
   },
   "tags": [
     "information-theory",
@@ -62,7 +70,7 @@
     "mathlib": []
   },
   "started": "2026-04-13T00:54:20.862Z",
-  "lastUpdate": "2026-04-23T01:33:17+02:00",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "completed": "2026-04-13T06:39:18.605Z",
   "significance": 7,
   "tractability": 6,
@@ -70,7 +78,7 @@
     {
       "path": "Proofs/ShannonChannelCoding.lean",
       "filename": "ShannonChannelCoding.lean",
-      "lineCount": 555,
+      "lineCount": 556,
       "theoremCount": 16,
       "axiomCount": 3,
       "defCount": 6,
@@ -81,7 +89,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ02.lean",
       "filename": "ShannonChannelCodingOQ02.lean",
-      "lineCount": 297,
+      "lineCount": 298,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 1,
@@ -92,7 +100,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
       "filename": "ShannonChannelCodingOQ02OQ01.lean",
-      "lineCount": 312,
+      "lineCount": 313,
       "theoremCount": 6,
       "axiomCount": 1,
       "defCount": 0,
@@ -103,7 +111,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ02OQ01Aristotle.lean",
       "filename": "ShannonChannelCodingOQ02OQ01Aristotle.lean",
-      "lineCount": 111,
+      "lineCount": 112,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
@@ -114,7 +122,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ02OQ03.lean",
       "filename": "ShannonChannelCodingOQ02OQ03.lean",
-      "lineCount": 162,
+      "lineCount": 163,
       "theoremCount": 5,
       "axiomCount": 1,
       "defCount": 1,
@@ -125,8 +133,8 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ02OQ04.lean",
       "filename": "ShannonChannelCodingOQ02OQ04.lean",
-      "lineCount": 248,
-      "theoremCount": 11,
+      "lineCount": 249,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -136,8 +144,8 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ03.lean",
       "filename": "ShannonChannelCodingOQ03.lean",
-      "lineCount": 664,
-      "theoremCount": 10,
+      "lineCount": 665,
+      "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
@@ -147,7 +155,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ03Aristotle.lean",
       "filename": "ShannonChannelCodingOQ03Aristotle.lean",
-      "lineCount": 104,
+      "lineCount": 105,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 3,
@@ -158,8 +166,8 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ04.lean",
       "filename": "ShannonChannelCodingOQ04.lean",
-      "lineCount": 224,
-      "theoremCount": 10,
+      "lineCount": 225,
+      "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
@@ -169,7 +177,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ04OQ01.lean",
       "filename": "ShannonChannelCodingOQ04OQ01.lean",
-      "lineCount": 126,
+      "lineCount": 127,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
@@ -180,7 +188,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ04OQ01OQ01.lean",
       "filename": "ShannonChannelCodingOQ04OQ01OQ01.lean",
-      "lineCount": 102,
+      "lineCount": 103,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
