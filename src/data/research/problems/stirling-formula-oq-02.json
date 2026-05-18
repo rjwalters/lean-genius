@@ -6,14 +6,26 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalization extending an existing formalization in mathematical analysis: Stirling Approximation for the Gamma Function.",
-    "whyMatters": []
+    "formal": "\\Gamma(n+1) \\sim \\sqrt{2\\pi n}\\,(n/e)^n, with supporting identities for gamma values and ratios.",
+    "plain": "Extend the Stirling-formula development from factorials to gamma-function statements, including natural-number gamma identities, asymptotic ratios, lower bounds, and half-integer gamma formulas.",
+    "whyMatters": [
+      "Connects the classical factorial asymptotic with gamma-function notation used throughout analysis and probability.",
+      "Builds reusable gamma identities for later asymptotic and special-function formalizations."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`gamma_eq_factorial`, `gamma_one`, and `gamma_nat_pos` establish the basic natural-number gamma facts.",
+      "`gamma_isEquivalent_stirling` and `gamma_div_stirling_tendsto_one` state the Stirling-equivalence result for the gamma sequence.",
+      "`gamma_stirling_ratio_tendsto_sqrt_pi` records the normalized ratio limit.",
+      "`gamma_lower_bound` and `log_gamma_lower_bound` provide explicit lower-bound infrastructure.",
+      "`gamma_ratio_succ` and `gamma_ratio_exact` prove successor-ratio formulas.",
+      "`gamma_one_half`, `duplication_at_nat`, and `gamma_half_int_formula` cover key half-integer and duplication identities."
+    ],
+    "open": [
+      "The record does not claim a full continuous Laplace-method proof for all positive real arguments; the verified development focuses on the sequence and special-value infrastructure."
+    ],
+    "goal": "Use the completed sequence-level gamma Stirling development as a base for broader real-variable gamma asymptotics."
   },
   "currentState": {
     "phase": "NEW",

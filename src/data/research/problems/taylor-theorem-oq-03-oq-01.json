@@ -7,13 +7,25 @@
   "path": "fast",
   "problemStatement": {
     "formal": "\\text{taylorWithinEval}(\\exp, n, [0,x], 0, x) = \\sum_{k=0}^{n} \\frac{x^k}{k!}",
-    "plain": "`TaylorTheoremOQ03.lean` uses Mathlib's `taylorWithinEval` (the Taylor polynomial",
-    "whyMatters": []
+    "plain": "Bridge Mathlib's `taylorWithinEval` formulation of Taylor polynomials to the explicit exponential partial sums used in the remainder estimates.",
+    "whyMatters": [
+      "A clean bridge would remove an interface gap between Mathlib's general Taylor machinery and the concrete exponential-series proof.",
+      "The surrounding verified exponential estimates are useful regression tests for future axiom-elimination work."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`exp_series_summable`, `exp_tsum`, and `exp_hasSum` establish the exponential power-series facts.",
+      "`exp_partial_sum_tendsto` and `exp_remainder_tendsto_zero` prove convergence of partial sums and vanishing remainders.",
+      "`iteratedDeriv_exp` records the derivative identity needed by Taylor arguments.",
+      "`exp_lagrange_remainder` proves a Lagrange-remainder bound for positive inputs.",
+      "`euler_number_series`, `euler_tsum`, and `euler_partial_sum_tendsto` specialize the series to e.",
+      "`euler_approx_error`, `exp_infinite_radius`, `exp_one_gt_two`, and `exp_five_term` provide concrete estimates and corollaries."
+    ],
+    "open": [
+      "The direct equality between `taylorWithinEval` and the explicit exponential partial sum remains the named bridge target."
+    ],
+    "goal": "Close the Taylor API bridge so the exponential remainder proof can rely on Mathlib's Taylor polynomial interface without extra translation."
   },
   "currentState": {
     "phase": "OBSERVE",
