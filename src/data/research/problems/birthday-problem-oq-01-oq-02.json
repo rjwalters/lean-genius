@@ -1,7 +1,7 @@
 {
   "slug": "birthday-problem-oq-01-oq-02",
   "title": "Coupling between expected pairs and collision probability",
-  "phase": "S4 ACT merged",
+  "phase": "S4 MERGED",
   "status": "active",
   "tier": "B",
   "path": "full",
@@ -16,55 +16,47 @@
     ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [
-      "Markov bound: probCollision n d <= upArrow(expectedPairs n d).",
-      "Paley-Zygmund bound: probCollision n d >= (expectedPairs n d)^2 / E[X^2].",
-      "Bridge: probAllDistinct n d = descFactorial(d, n) / d^n (relates OQ02 product to OQ01OQ01 counting)."
+    "proven": [
+      "one_sub_prod_le_sum: product union-bound helper.",
+      "probCollision_le_choose_two_div: probCollision <= k*(k-1)/(2*d).",
+      "one_sub_exp_neg_ge_div_one_add: private bridge for the lower bound.",
+      "probCollision_ge_paley_zygmund: k*(k-1)/(2*d + k*(k-1)) <= probCollision."
     ],
-    "goal": "Formalize both couplings plus the OQ02-OQ01OQ01 bridge. After all sorries close: status verified, 0 axioms, file ~150-200 lines."
+    "open": [
+      "Optional tightening: replace the current lower-bound denominator with the exact second-moment denominator.",
+      "Optional bridge: relate probAllDistinct to Nat.descFactorial d n / d^n."
+    ],
+    "goal": "Keep the closed-form collision-probability bracket synced and prepare the optional follow-up refinements."
   },
   "currentState": {
-    "phase": "S4 ACT merged",
-    "since": "2026-05-16T04:40:14.000Z",
-    "iteration": 7,
-    "focus": "S4 ACT (PR #19422, probCollision_ge_paley_zygmund + private bridge one_sub_exp_neg_ge_div_one_add, build verified 7744 jobs) MERGED 2026-05-16T04:40:14Z (merge commit cbfc0fdd8f1). proofs/Proofs/BirthdayProblemOQ01OQ02.lean is now 203 LOC on main with 4 theorems: one_sub_prod_le_sum (S2), probCollision_le_choose_two_div (S3), one_sub_exp_neg_ge_div_one_add (S4 private bridge), probCollision_ge_paley_zygmund (S4 main). 0 sorries, 0 axioms. Closed-form Paley-Zygmund bracket on probCollision k d now stands: k(k-1)/(2d + k(k-1)) \u2264 probCollision k d \u2264 k(k-1)/(2d), both bounds purely intra-namespace with no OQ01 dependency. S6 STATE-SYNC (this iteration, researcher-10) discharges the owed catch-up (per PR #19422 body): state.md head Phase/Since/Iteration refresh + Iteration History S4 ACT row + Next Action rewritten from 'S4 ACT paste-ready' (DONE) to 'S5 PREP \u2014 tight Paley-Zygmund denominator' target + research JSON 13-field drift refresh + knowledge.md Insight 6 (F-extra trap: field_simp does NOT discharge algebraic residues, surfaced at S4 ACT iter 1, fix: append ring). Bearer-pin recheck: lake SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 unchanged; 0 drift in any of 13 S4c-era/S4-ACT-era bearers. OQ01 parent-regression catalogue (7 v4.26.0 errors) unchanged since S4c \u00a75; owned by separate-slug pass.",
+    "phase": "S4 MERGED",
+    "since": "2026-05-18T00:00:00.000Z",
+    "iteration": 8,
+    "focus": "S4 is merged and Lean-backed: BirthdayProblemOQ01OQ02.lean proves the product union-bound helper, the closed-form upper bound probCollision <= k*(k-1)/(2*d), and the closed-form lower bound k*(k-1)/(2*d + k*(k-1)) <= probCollision. The file stays independent of OQ01.",
     "blockers": [],
-    "nextAction": "S5 PREP \u2014 Tight Paley-Zygmund (Path Y elaboration): tighten lower-bound denominator from 2d + k(k-1) (current S4 ACT) to 2d + k(k-1) - 2 using exact E[X\u00b2] = E[X] + C(n,2) * (C(n,2)-1) / d\u00b2 instead of variance bound Var(X) \u2264 E[X]. Gain \u0394 \u2248 0.0003 at threshold n=23,d=365 (lower bound 0.4732 \u2192 0.4735); marginal but completes textbook Paley-Zygmund. LOC budget ~120 (one second-moment helper + one closed-form theorem). Risk MEDIUM \u2014 E[X\u00b2] Mathlib Probability.Variance API surface unverified; may need ad-hoc derivation from BirthdayProblemOQ02.gauss_sum_div + new gauss_sum_sq_div helper (~30 LOC). Parallel S6 PREP option: probAllDistinct_eq_descFactorial_div bridge (~30 LOC telescoping) OQ02\u2194OQ01OQ01. S5 PREP is doc-only (design memo + Mathlib API recheck), unblocked by Docker. S5 ACT after PREP needs Docker recovery.",
+    "nextAction": "Prep either the tight Paley-Zygmund denominator or the probAllDistinct-to-descFactorial bridge; both are follow-up improvements, not blockers for the current bracket.",
     "attemptCounts": {
-      "total": 7,
-      "currentApproach": 7,
+      "total": 8,
+      "currentApproach": 8,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "S1 (researcher-12, 2026-05-11) OBSERVE: mapped two complementary couplings + 5-step S2-S6 decomposition. S2 ACT (researcher-10, 2026-05-13, PR #18921 merged): created BirthdayProblemOQ01OQ02.lean with helper one_sub_prod_le_sum (union bound for products, induction on n with Finset.prod_range_succ + Finset.prod_le_one + Finset.prod_nonneg + nlinarith). S3 ACT (2026-05-14, PR #19098 MERGED 2026-05-15T23:30:27Z, merge commit e44038366d8, build verified 7744 jobs): probCollision_le_choose_two_div in closed form k(k-1)/(2d) \u2014 chains one_sub_prod_le_sum with OQ02.gauss_sum_div; avoids the v4.26.0-regressed OQ01 parent (Nat.choose_three_right removed + 5 native_decide failures at L410-511) by stating the closed form directly. S4 PREP (researcher-8, 2026-05-15, PR #19250 merged 18:03:33Z): Path Z 25-LOC scaffold for probCollision_ge_paley_zygmund (k(k-1)/(2d + k(k-1))) chaining OQ02.probCollision_ge with the elementary bridge 1 - exp(-x) >= x/(1+x); recommended over Path X (OQ01-blocked) and Path Y (overlong second-moment). S4b PREP (researcher-8, 2026-05-15, PR #19262 merged 18:02:47Z): bearer pin re-verification of PR #19250 \u00a75 table (4/4 verified at SHA 2df2f015, Complex.exp_neg co-existence flagged) + four-row numerical witness table. S4c PREP (researcher-9, 2026-05-15, PR #19315 merged 19:47Z): STATE-SYNC catching state.md + JSON up to post-S3/S4/S4b reality + 9-row bearer drift recheck (zero drift, 5 S3-ACT rows + 4 S4-PREP rows) + S4 ACT readiness gate (entry conditions, stacking strategy, paste sequence, 6-row failure-mode register) + OQ01 parent-regression handoff catalogue (7 v4.26.0 errors with replacement candidates, Nat.choose_three_right confirmed absent from all Mathlib Data/Nat/Choose/* files at the pin). S5 STATE-SYNC (researcher-3, 2026-05-16, this PR): post-S3-ACT-merge catch-up \u2014 confirms PR #19098 merged 23:30:27Z, refreshes 9-row bearer drift recheck (0 drift via lake-manifest byte-stability since S4c, lake SHA unchanged at 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67), simplifies S4 ACT readiness gate (Option B selected by event), pins paste anchor between L142 and L143, adds failure-mode row F7 (paste outside namespace), and re-verifies OQ01 parent-regression catalogue at current line numbers L408+L508-511 (catalogue unchanged from S4c; no mechanic/doctor PR has touched BirthdayProblemOQ01.lean). S4 ACT (researcher-?, 2026-05-16, PR #19422 MERGED 2026-05-16T04:40:14Z, merge commit cbfc0fdd8f1, build verified 7744 jobs): probCollision_ge_paley_zygmund in closed form k(k-1)/(2d + k(k-1)) \u2014 chains OQ02.probCollision_ge (exponential lower bound) with private bridge one_sub_exp_neg_ge_div_one_add: x/(1+x) \u2264 1 - exp(-x) via Real.add_one_le_exp + Real.exp_neg + one_div_le_one_div_of_le. File 143\u2192203 LOC, 0 sorries, 0 axioms. Together with S3's probCollision_le_choose_two_div, brackets probCollision intra-namespace without OQ01 import. F-extra trap surfaced at iter 1: field_simp on 1 - 1/(1+x) = x/(1+x) leaves algebraic residue 1 + x - 1 = x; fixed iter 2 with appended ring. Total 2 Docker iters. S6 STATE-SYNC (researcher-10, 2026-05-16, this PR): doc-only catch-up absorbing PR #19422 per its body's 'follow-on S6 STATE-SYNC is owed' declaration \u2014 state.md head Phase/Since/Iteration refresh + S4 ACT row in Iteration History + Next Action rewrite to S5 PREP target + JSON 13-field drift refresh + knowledge.md Insight 6 (F-extra). Bearer pin unchanged.",
+    "progressSummary": "S4 MERGED: BirthdayProblemOQ01OQ02.lean now gives a Lean-backed closed-form bracket on probCollision using product and Paley-Zygmund style bounds.",
     "builtItems": [
-      "one_sub_prod_le_sum (union bound for products, S2 ACT, PR #18921 merged)",
-      "probCollision_le_choose_two_div (Markov coupling closed-form upper bound, S3 ACT, PR #19098 MERGED 2026-05-15T23:30:27Z, build verified 7744 jobs)",
-      "one_sub_exp_neg_ge_div_one_add (private bridge x/(1+x) \u2264 1 - exp(-x), S4 ACT private)",
-      "probCollision_ge_paley_zygmund (Paley-Zygmund-equivalent closed-form lower bound k(k-1)/(2d+k(k-1)), S4 ACT, PR #19422 MERGED 2026-05-16T04:40:14Z, build verified 7744 jobs)"
+      "Product union-bound helper.",
+      "Closed-form upper bound probCollision <= k*(k-1)/(2*d).",
+      "Closed-form lower bound k*(k-1)/(2*d + k*(k-1)) <= probCollision."
     ],
     "insights": [
-      "Markov coupling probCollision <= expectedPairs has a one-line proof: chain one_sub_prod_le_sum (union bound) with gauss_sum_div (existing in OQ02:145) and two_mul_choose_two (existing in OQ01:109). ~40 lines total S2+S3.",
-      "Paley-Zygmund lower bound is heavier (~80 lines) because it needs (a) a second-moment formula and (b) a bridge between OQ02 product formulation and OQ01OQ01 finite-sample-space formulation. Best split: S4 (E[X^2] formula), S6 (bridge), S5 (Paley-Zygmund).",
-      "The OQ02 exponential bound is strictly sharper than Paley-Zygmund for the birthday parameter range (gap 0.007 vs 0.097 at n=23, d=365), but Markov gives an UPPER bound that the exponential argument does not.",
-      "variancePairs_le_expected (OQ01:164) is currently unused in the gallery; Paley-Zygmund (this OQ's S5) is the natural downstream client.",
-      "n=28 threshold (E[X]>1 for d=365) coincides with the Paley-Zygmund lower-bound 0.5 threshold: (C(28,2)/365)/(1+C(28,2)/365) = (378/365)/(743/365) = 378/743 >= 0.5. The two thresholds are not independent.",
-      "field_simp does NOT discharge algebraic residues \u2014 surfaced at S4 ACT iter 1 (PR #19422), build error L159:51 `unsolved goals: \u22a2 1 + x - 1 = x` after field_simp on bridge identity 1 - 1/(1+x) = x/(1+x). Fix: append `ring` (or `linarith`/`nlinarith` if inequality-typed). Mental model 'field_simp closes the goal' applies ONLY when cleared form is 0=0 or typeclass-decidable. NOT anticipated by S4c \u00a74 (F1-F6), S5 \u00a74 (F7), S5b \u00a73a/\u00a74a (F8/F9) registers; tracked as 'F-extra' in S6 STATE-SYNC \u00a77. Carries forward to future Mathlib `field_simp` work on equalities."
+      "The current bracket is independent of OQ01 and does not require the descFactorial bridge.",
+      "The tighter denominator and the descFactorial bridge are useful follow-ups, but not blockers for the merged bracket."
     ],
     "mathlibGaps": [
-      "No Finset.one_sub_prod_le_sum lemma at the pinned Mathlib revision that fires on the form 1 - prod(1 - f i) <= sum (f i). Provable in ~25 lines by induction on the index set (S2 deliverable).",
-      "No discrete-sample-space Markov / Paley-Zygmund that mirrors the measure-theoretic MeasureTheory.measure_*_inv_le_* family. The measure-theoretic version requires setting up a probability measure on Fin n -> Fin d, non-trivial in decide-style proofs.",
-      "No worked descFactorial-to-probAllDistinct bridge in Mathlib; Fintype.card_embedding_eq exists but the explicit product-to-counting identity for the birthday problem is not in the Probability namespace."
+      "A tighter second-moment proof may still need local probability algebra rather than a direct Mathlib API."
     ],
     "nextSteps": [
-      "S5 PREP (tight Paley-Zygmund, next non-STATE-SYNC iteration): design memo + Mathlib Probability.Variance API recheck for E[X\u00b2] surface; if no direct API, derive ad-hoc from BirthdayProblemOQ02.gauss_sum_div + new gauss_sum_sq_div helper (~30 LOC). Doc-only PREP; S5 ACT after PREP would ship ~120 LOC tightening denominator from 2d + k(k-1) to 2d + k(k-1) - 2 (\u0394 \u2248 0.0003 at threshold). MEDIUM risk on E[X\u00b2] API surface.",
-      "S6 PREP/ACT (parallel option): probAllDistinct_eq_descFactorial_div bridge OQ02\u2194OQ01OQ01 (~30 LOC telescoping). Independent of S5 PREP; either can be picked first. LOW risk.",
-      "S5 PREP (tight Paley-Zygmund): scope a sketch tightening denominator from 2d + k(k-1) to 2d + k(k-1) - 2 (uses exact E[X^2] = E[X] + C(n,2)*(C(n,2)-1)/d^2 instead of Var(X) <= E[X]). Marginal gain Delta ~ 0.0003 at n=23,d=365; design memo deferred per PR #19250 \u00a7R5.",
-      "S6 PREP/ACT: prove probAllDistinct_eq_descFactorial_div bridge OQ02-product to OQ01OQ01-counting (~30 lines, telescoping) for the variance-form pipeline.",
-      "OQ01 mechanic / doctor pass (different slug): close 7 v4.26.0 errors in BirthdayProblemOQ01.lean (L410 Nat.choose_three_right removal cascade + 5 native_decide failures on large C(n,k) literals). Catalogue with replacement candidates in S4c PREP \u00a75.",
-      "Post-OQ01-fix bridge (3 LOC): prove ((BirthdayProblemOQ01.expectedPairs k d : Q) : R) = k(k-1)/(2d) via Nat.choose_two_right + cast, lifting the S3 ACT closed form to the named-bound form."
+      "Prep the tight denominator or the probAllDistinct-to-descFactorial bridge as a separate follow-up."
     ]
   },
   "tags": [
@@ -76,12 +68,16 @@
     "coupling"
   ],
   "relatedProofs": [
+    "birthday-problem",
     "birthday-problem-oq-01",
     "birthday-problem-oq-01-oq-01",
     "birthday-problem-oq-02",
     "birthday-problem-oq-02-oq-01",
     "birthday-problem-oq-03",
-    "birthday-problem"
+    "birthday-problem-oq-03-oq-01",
+    "birthday-problem-oq-03-oq-01-oq-01",
+    "birthday-problem-oq-03-oq-01-oq-02",
+    "birthday-problem-oq-03-oq-03"
   ],
   "references": {
     "papers": [
@@ -96,5 +92,150 @@
       "Mathlib.Data.Fintype.Pi"
     ]
   },
-  "lastUpdate": "2026-05-16T09:55:00.000Z"
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
+  "leanFiles": [
+    {
+      "path": "Proofs/BirthdayProblem.lean",
+      "filename": "BirthdayProblem.lean",
+      "lineCount": 403,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblem.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemAsymptotics.lean",
+      "filename": "BirthdayProblemAsymptotics.lean",
+      "lineCount": 85,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemAsymptotics.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01.lean",
+      "filename": "BirthdayProblemOQ01.lean",
+      "lineCount": 514,
+      "theoremCount": 53,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01.lean",
+      "filename": "BirthdayProblemOQ01OQ01.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01Aristotle.lean",
+      "filename": "BirthdayProblemOQ01OQ01Aristotle.lean",
+      "lineCount": 35,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ01OQ02.lean",
+      "lineCount": 205,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02.lean",
+      "filename": "BirthdayProblemOQ02.lean",
+      "lineCount": 301,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02OQ01.lean",
+      "filename": "BirthdayProblemOQ02OQ01.lean",
+      "lineCount": 230,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03.lean",
+      "filename": "BirthdayProblemOQ03.lean",
+      "lineCount": 369,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01.lean",
+      "filename": "BirthdayProblemOQ03OQ01.lean",
+      "lineCount": 246,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ01.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ01.lean",
+      "lineCount": 318,
+      "theoremCount": 41,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
+      "lineCount": 2264,
+      "theoremCount": 54,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ03.lean",
+      "filename": "BirthdayProblemOQ03OQ03.lean",
+      "lineCount": 242,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ03.lean"
+    }
+  ]
 }

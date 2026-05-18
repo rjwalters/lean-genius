@@ -16,56 +16,45 @@
   },
   "knownResults": {
     "proven": [
-      "Generalized pigeonhole: n > (k-1)*d implies k-way coincidence certain",
-      "Classical recovery: k=2 is equivalent to non-injectivity",
-      "Monotonicity: k-way implies k'-way for k' <= k",
-      "Probability = 1 when pigeonhole bound exceeded",
-      "Probability monotonicity in k",
-      "No k-way when n < k (not enough people)"
+      "Generalized pigeonhole: n > (k-1)*d implies a k-way coincidence.",
+      "Classical recovery: k = 2 corresponds to non-injectivity.",
+      "probKWay and noKWaySet connect the event to finite probability.",
+      "Probability is one when the pigeonhole bound is exceeded.",
+      "K-way probability is monotone in k.",
+      "No k-way coincidence is possible when n < k."
     ],
-    "open": [
-      "Exact k=3 threshold computation (n≈88 for d=365)",
-      "Poisson approximation for k-way coincidences"
-    ],
-    "goal": "Complete formalization of k-way birthday coincidences"
+    "open": [],
+    "goal": "Completed parent framework for k-way birthday coincidences."
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-03-23T10:00:00-07:00",
-    "iteration": 1,
-    "focus": "Proof complete",
+    "since": "2026-05-18T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Complete core k-way birthday framework: fiberAt/HasKWay, generalized pigeonhole, k=2 iff non-injective, probKWay/noKWaySet, probability one above the pigeonhole bound, monotonicity in k, and zero probability when n < k are in Lean. Exact k=3 and Poisson work are child slugs, not parent blockers.",
     "blockers": [],
-    "nextAction": "None - proof complete",
+    "nextAction": "None for the parent proof; keep child links and enriched relatedProofs synced.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 368 lines, 25 theorems, 0 sorries, 0 axioms. Docker verified.",
+    "progressSummary": "COMPLETE: BirthdayProblemOQ03.lean supplies the reusable k-way birthday framework; numeric and asymptotic k=3 work is tracked in child records.",
     "builtItems": [
-      "fiberAt: fiber decomposition definition",
-      "HasKWay: k-way coincidence predicate",
-      "sum_fiberAt_card: fiber partition of unity",
-      "pigeonhole_kway: generalized pigeonhole bound",
-      "hasKWay_two_iff_not_injective: classical recovery",
-      "no_kway_two_iff_injective: complement characterization",
-      "hasKWay_mono: monotonicity in k",
-      "probKWay: probability formula",
-      "probKWay_one_of_pigeonhole: probability = 1 under pigeonhole",
-      "probKWay_mono_k: probability monotonicity",
-      "no_kway_of_lt: population bound",
-      "probKWay_zero_of_lt: zero probability when n < k"
+      "fiberAt and HasKWay definitions.",
+      "Generalized pigeonhole theorem.",
+      "k=2 recovery of the classical collision event.",
+      "probKWay/noKWaySet probability framework.",
+      "Monotonicity and impossible-case probability facts."
     ],
     "insights": [
-      "Finset.card_eq_sum_card_fiberwise is the key Mathlib lemma for fiber partition",
-      "Finset.one_lt_card connects fiber size >= 2 to distinct element extraction",
-      "The proof is entirely constructive except for the probability definitions (noncomputable)",
-      "k=2 case naturally connects to Function.Injective, bridging combinatorics and logic"
+      "This parent slug should stay focused on the general k-way framework; exact k=3 threshold and Poisson convergence belong to child slugs."
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "No parent-proof action; keep metadata synced."
+    ]
   },
   "tags": [
     "combinatorics",
@@ -75,6 +64,7 @@
   "relatedProofs": [
     "birthday-problem",
     "birthday-problem-oq-01",
+    "birthday-problem-oq-01-oq-01",
     "birthday-problem-oq-02",
     "birthday-problem-oq-02-oq-01",
     "birthday-problem-oq-03",
@@ -129,6 +119,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01.lean",
+      "filename": "BirthdayProblemOQ01OQ01.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01Aristotle.lean",
+      "filename": "BirthdayProblemOQ01OQ01Aristotle.lean",
+      "lineCount": 35,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ01OQ02.lean",
+      "lineCount": 205,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ02.lean"
     },
     {
       "path": "Proofs/BirthdayProblemOQ02.lean",
@@ -188,8 +211,8 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
-      "lineCount": 2263,
-      "theoremCount": 59,
+      "lineCount": 2264,
+      "theoremCount": 54,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
@@ -207,5 +230,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ03.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-05-18T00:00:00.000Z"
 }

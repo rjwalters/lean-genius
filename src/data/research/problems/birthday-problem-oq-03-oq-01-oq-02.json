@@ -15,56 +15,48 @@
   },
   "knownResults": {
     "proven": [
-      "asympThreshold_cubed: (asympThreshold d)^3 = 6d^2 * ln 2",
-      "asympThreshold_ratio: asympThreshold(d)/d^{2/3} = (6 ln 2)^{1/3}",
-      "asympThreshold_order: d^{2/3} <= asympThreshold(d) <= 3*d^{2/3}",
-      "asympThreshold_d365_bounds: 82 < asympThreshold(365) < 83",
-      "k3_threshold_gt_k2: asympThreshold(d) > k2Threshold(d) for d >= 1"
+      "choose3_mul_six: C(n,3)*6 = n*(n-1)*(n-2).",
+      "asympThreshold_cubed and asympThreshold_ratio.",
+      "asympThreshold_order and asympThreshold_d365_bounds.",
+      "k3_threshold_gt_k2 and general_threshold_exponent.",
+      "lambda_tendsto and exp_lambda_tendsto.",
+      "poisson_approx_birthday3 is a theorem derived from exp_lambda_tendsto and p_no_triple_tendsto."
     ],
     "open": [
-      "choose3_mul_six: C(n,3)*6 = n*(n-1)*(n-2) — sorry, needs Nat induction",
-      "poisson_approx_birthday3: Chen-Stein axiom connecting threshold to probability"
+      "p_no_triple_tendsto remains the single axiom; axiom removal is tracked by birthday-problem-oq-03-oq-01-oq-02-oq-01."
     ],
-    "goal": "COMPLETED: gallery proof BirthdayProblemOQ03OQ01OQ02.lean builds successfully with 2 sorries and 1 axiom"
+    "goal": "Maintain the axiomatized-complete k=3 asymptotic threshold proof while the child slug works on removing Lemma C."
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-04-04",
-    "iteration": 1,
-    "focus": "Proof compiles. Gallery data created.",
+    "phase": "AXIOMATIZED-COMPLETE",
+    "since": "2026-05-18T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Axiomatized-complete asymptotic proof: asympThreshold identities, ratio/order bounds, d=365 bounds, k3>k2, general exponent, lambda_tendsto, exp_lambda_tendsto, and theorem poisson_approx_birthday3 are in Lean. choose3_mul_six is proved. The remaining assumption is p_no_triple_tendsto only: 1 axiom, 0 generated sorries.",
     "blockers": [],
-    "nextAction": "Done.",
+    "nextAction": "Defer axiom removal to birthday-problem-oq-03-oq-01-oq-02-oq-01; for this slug, keep metadata synced.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: BirthdayProblemOQ03OQ01OQ02.lean compiles. Key results proved: asympThreshold_ratio (exact d^{2/3} scaling), asympThreshold_d365_bounds (82 < n*(365) < 83), k3_threshold_gt_k2 (k=3 > k=2 threshold).",
+    "progressSummary": "AXIOMATIZED-COMPLETE: BirthdayProblemOQ03OQ01OQ02.lean proves the asymptotic k=3 threshold theorem modulo the single axiom p_no_triple_tendsto.",
     "builtItems": [
-      "asympThreshold definition using Real.rpow: Proofs/BirthdayProblemOQ03OQ01OQ02.lean:130",
-      "asympThreshold_cubed: Proofs/BirthdayProblemOQ03OQ01OQ02.lean:134",
-      "asympThreshold_ratio (PROVED): Proofs/BirthdayProblemOQ03OQ01OQ02.lean:142",
-      "asympThreshold_order (PROVED): Proofs/BirthdayProblemOQ03OQ01OQ02.lean:156",
-      "asympThreshold_d365_bounds (PROVED): Proofs/BirthdayProblemOQ03OQ01OQ02.lean:241",
-      "k3_threshold_gt_k2 (PROVED): Proofs/BirthdayProblemOQ03OQ01OQ02.lean:322"
+      "choose3_mul_six and choose3 real/upper/lower bounds.",
+      "asympThreshold identities, order bounds, and d=365 bounds.",
+      "k3_threshold_gt_k2 and general_threshold_exponent.",
+      "lambda_tendsto, exp_lambda_tendsto, and poisson_approx_birthday3."
     ],
     "insights": [
-      "Real.rpow_le_rpow with inline `by` tactic arguments creates unresolved metavariables — use `calc` with `apply; norm_num` separated",
-      "Real.mul_rpow requires both factors non-negative; reorder product with `ring` first then apply",
-      "4-term Taylor series at x=0.7152 gives exp(0.7152) > 2.032 > 2, proving log 2 < 0.7152",
-      "k=3 vs k=2 comparison works via 6th-power lift: (6d^2 ln2)^2 vs (2d ln2)^3 reduces to 36d > 8 ln2",
-      "choose3_ub proved cleanly via push_cast + nlinarith with sq_nonneg hints, avoiding division lemma names",
-      "Nat.choose_le_choose 3 hn is correct (NOT Nat.choose_mono)"
+      "poisson_approx_birthday3 is no longer the axiom; it is derived from the remaining p_no_triple_tendsto axiom.",
+      "Generated metadata reports one axiom and zero sorries for the proof file."
     ],
     "mathlibGaps": [
-      "Chen-Stein method for Poisson approximation not in Mathlib — axiomatized as poisson_approx_birthday3",
-      "choose3_mul_six (C(n,3)*6 = n*(n-1)*(n-2)) — requires careful Nat induction, left as sorry"
+      "A method-of-factorial-moments or equivalent Poisson-convergence result is still needed to remove p_no_triple_tendsto."
     ],
     "nextSteps": [
-      "Prove choose3_mul_six by induction: C(n+1,3) = C(n,3) + C(n,2), then C(n,2)*2 = n*(n-1) by similar induction",
-      "Formalize Chen-Stein lemma for positively associated indicators to remove poisson_approx_birthday3 axiom"
+      "Do not change this parent proof for axiom removal; continue the Lemma C work in the child slug."
     ]
   },
   "tags": [
@@ -78,6 +70,7 @@
   "relatedProofs": [
     "birthday-problem",
     "birthday-problem-oq-01",
+    "birthday-problem-oq-01-oq-01",
     "birthday-problem-oq-02",
     "birthday-problem-oq-02-oq-01",
     "birthday-problem-oq-03",
@@ -101,7 +94,7 @@
     ]
   },
   "started": "2026-04-04T05:15:05.956Z",
-  "lastUpdate": "2026-04-04",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -137,6 +130,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01.lean",
+      "filename": "BirthdayProblemOQ01OQ01.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01Aristotle.lean",
+      "filename": "BirthdayProblemOQ01OQ01Aristotle.lean",
+      "lineCount": 35,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ01OQ02.lean",
+      "lineCount": 205,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ02.lean"
     },
     {
       "path": "Proofs/BirthdayProblemOQ02.lean",
@@ -196,8 +222,8 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
-      "lineCount": 2263,
-      "theoremCount": 59,
+      "lineCount": 2264,
+      "theoremCount": 54,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,

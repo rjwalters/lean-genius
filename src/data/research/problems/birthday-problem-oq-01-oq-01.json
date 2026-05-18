@@ -1,8 +1,8 @@
 {
   "slug": "birthday-problem-oq-01-oq-01",
   "title": "Birthday Distribution: Formal Analysis of Collision Count X",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -17,63 +17,48 @@
   },
   "knownResults": {
     "proven": [
-      "collisionCount_eq_zero_iff: X(f) = 0 ↔ f injective",
-      "card_zero_collision: #{f|X=0} = Nat.descFactorial d n",
-      "zero_collision_fraction: Pr(X=0) = descFactorial(d,n)/d^n (unification theorem)",
-      "collisionCount_eq_sum_indicators: X = Σ_{i<j} I_{ij}",
-      "collisionCount_le_choose_two: X ≤ C(n,2)",
-      "mean_collisionCount: E[X] = C(n,2)/d (assuming sum_collisionCount)",
-      "variance_bounded_by_mean: Var(X) ≤ E[X]"
+      "collisionCount_eq_zero_iff: X(f) = 0 iff f is injective.",
+      "card_zero_collision: #{f | X = 0} = Nat.descFactorial d n.",
+      "zero_collision_fraction: Pr(X = 0) = Nat.descFactorial d n / d^n.",
+      "collisionCount_eq_sum_indicators: X is the sum of pair-collision indicators.",
+      "card_ordered_pairs and card_funs_shared_birthday are proved in Lean.",
+      "sum_collisionCount proves the double-counting identity for total collisions.",
+      "mean_collisionCount proves E[X] = expectedPairs n d.",
+      "variance_bounded_by_mean imports the OQ01 variance bound."
     ],
-    "open": [
-      "card_ordered_pairs: #{(i,j) ∈ Fin n × Fin n | i<j} = C(n,2) — sorry",
-      "card_funs_shared_birthday: #{f : Fin n → Fin d | f(i)=f(j)} = d^{n-1} — sorry",
-      "sum_collisionCount: Σ_f X(f) = C(n,2)·d^{n-1} — sorry"
-    ],
-    "goal": "Eliminate the 3 sorry lemmas to make the full E[X] proof complete"
+    "open": [],
+    "goal": "Maintain metadata for the completed collision-count distribution analysis."
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-05-04T00:00:00.000Z",
-    "iteration": 1,
-    "focus": "Main structure proved. 3 sorry lemmas remain: card_ordered_pairs, card_funs_shared_birthday, sum_collisionCount.",
+    "phase": "COMPLETED",
+    "since": "2026-05-18T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Complete and gallery-backed: collisionCount, zero-collision counting, indicator decomposition, double-counting, mean_collisionCount, and variance_bounded_by_mean are all present in Lean. The generated sorryCount row reflects one comment match for the word \"sorry\", not an unfinished proof term.",
     "blockers": [],
-    "nextAction": "Prove card_ordered_pairs via Finset.card_offDiag or explicit induction; prove card_funs_shared_birthday via Fin equivalence bijection.",
+    "nextAction": "Metadata sync only: keep generated leanFiles and relatedProofs aligned with the Birthday gallery.",
     "attemptCounts": {
-      "total": 1,
+      "total": 2,
       "currentApproach": 1,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Distribution analysis file created with 15 theorems, 3 sorry lemmas. Key results proved: X=0↔injective, #{f|X=0}=descFactorial, Pr(X=0) formula, indicator decomposition.",
+    "progressSummary": "COMPLETE: BirthdayProblemOQ01OQ01.lean contains the collision-count distribution analysis, including zero-collision counting, the indicator-sum decomposition, the total-collision double count, the mean identity, and the variance bound.",
     "builtItems": [
-      "collisionCount def: X(f) = Finset.card of filtered pairs (i,j) with i<j and f(i)=f(j) [BirthdayProblemOQ01OQ01.lean:59]",
-      "collisionIndicator def: I_{ij}(f) = if f(i)=f(j) then 1 else 0 [BirthdayProblemOQ01OQ01.lean:63]",
-      "collisionCount_eq_zero_iff: X=0 ↔ injective via filter_eq_empty [BirthdayProblemOQ01OQ01.lean:71]",
-      "card_zero_collision: #{f|X=0}=descFactorial via Equiv chain + Fintype.card_embedding_eq [BirthdayProblemOQ01OQ01.lean:98]",
-      "zero_collision_fraction: Pr(X=0) = descFactorial(d,n)/d^n (unification) [BirthdayProblemOQ01OQ01.lean:126]",
-      "collisionCount_eq_sum_indicators: X = Σ_{i<j} I_{ij} [BirthdayProblemOQ01OQ01.lean:138]",
-      "collisionCount_le_choose_two: X ≤ C(n,2) [BirthdayProblemOQ01OQ01.lean:162]",
-      "mean_collisionCount: E[X] = expectedPairs assuming sum_collisionCount [BirthdayProblemOQ01OQ01.lean:204]"
+      "collisionCount and collisionIndicator definitions.",
+      "X = 0 iff injective and zero-collision count via Nat.descFactorial.",
+      "Pr(X = 0) = Nat.descFactorial d n / d^n.",
+      "X as a sum of pair indicators.",
+      "sum_collisionCount and mean_collisionCount.",
+      "variance_bounded_by_mean."
     ],
     "insights": [
-      "X=0 ↔ injective: the collision count is zero exactly when no two inputs share a value — proved via Finset.card_eq_zero + lt_or_gt_of_ne case split",
-      "Equiv chain pattern: {f|X=0} ≃ {f|injective} ≃ (Fin n ↪ Fin d) allows Fintype.card_embedding_eq to apply directly",
-      "Unification: both BirthdayProblem.lean and this file compute descFactorial(d,n)/d^n for Pr(X=0) — confirmed same formula",
-      "Indicator decomposition: Finset.card_filter = Finset.sum of {0,1} values — proved via sum_congr + case split",
-      "Double counting (Fubini): Σ_f X(f) = Σ_f Σ_{i<j} I_{ij}(f) = Σ_{i<j} d^{n-1} = C(n,2)·d^{n-1} — needs two sorry lemmas",
-      "card_ordered_pairs approach: use Finset.card_offDiag (= n(n-1)) + bijection with strict-order pairs, or induction on n",
-      "card_funs_shared_birthday approach: bijection with Fin d × (Fin(n-1) → Fin d) using Fin n \\ {j} ≃ Fin(n-1)"
+      "The generated sorryCount is one because the enrichment script counts the word in a comment; the Lean proof obligations are closed.",
+      "The file is the bridge between the birthday paradox probability formula and the moment-based collision-count view."
     ],
-    "mathlibGaps": [
-      "Finset.card_lt_pairs (or equivalent for #{(i,j)|i<j in Fin n} = n.choose 2) — may require constructing bijection manually",
-      "Fintype.card of functions with one value fixed — needed for card_funs_shared_birthday"
-    ],
+    "mathlibGaps": [],
     "nextSteps": [
-      "Prove card_ordered_pairs: try Finset.card_filter on univ (Fin n × Fin n) with p.1 < p.2 — may use Finset.card_lt_pairs or induction",
-      "Prove card_funs_shared_birthday: construct Equiv between {f|f(i)=f(j)} and Fin d × (Fin(n-1) → Fin d)",
-      "Once both proved, sum_collisionCount follows via simp_rw + Finset.sum_comm + Finset.sum_const"
+      "No Lean action for this slug; keep generated metadata synced."
     ]
   },
   "tags": [
@@ -88,6 +73,7 @@
   "relatedProofs": [
     "birthday-problem",
     "birthday-problem-oq-01",
+    "birthday-problem-oq-01-oq-01",
     "birthday-problem-oq-02",
     "birthday-problem-oq-02-oq-01",
     "birthday-problem-oq-03",
@@ -108,20 +94,152 @@
     ]
   },
   "started": "2026-05-04T00:00:00.000Z",
-  "lastUpdate": "2026-05-04T12:00:00.000Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 7,
   "tractability": 7,
   "leanFiles": [
     {
+      "path": "Proofs/BirthdayProblem.lean",
+      "filename": "BirthdayProblem.lean",
+      "lineCount": 403,
+      "theoremCount": 24,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblem.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemAsymptotics.lean",
+      "filename": "BirthdayProblemAsymptotics.lean",
+      "lineCount": 85,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemAsymptotics.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01.lean",
+      "filename": "BirthdayProblemOQ01.lean",
+      "lineCount": 514,
+      "theoremCount": 53,
+      "axiomCount": 0,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01.lean"
+    },
+    {
       "path": "Proofs/BirthdayProblemOQ01OQ01.lean",
       "filename": "BirthdayProblemOQ01OQ01.lean",
-      "lineCount": 241,
-      "theoremCount": 15,
+      "lineCount": 281,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 3,
+      "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01Aristotle.lean",
+      "filename": "BirthdayProblemOQ01OQ01Aristotle.lean",
+      "lineCount": 35,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ01OQ02.lean",
+      "lineCount": 205,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02.lean",
+      "filename": "BirthdayProblemOQ02.lean",
+      "lineCount": 301,
+      "theoremCount": 18,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ02OQ01.lean",
+      "filename": "BirthdayProblemOQ02OQ01.lean",
+      "lineCount": 230,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03.lean",
+      "filename": "BirthdayProblemOQ03.lean",
+      "lineCount": 369,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01.lean",
+      "filename": "BirthdayProblemOQ03OQ01.lean",
+      "lineCount": 246,
+      "theoremCount": 15,
+      "axiomCount": 0,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ01.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ01.lean",
+      "lineCount": 318,
+      "theoremCount": 41,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
+      "lineCount": 2264,
+      "theoremCount": 54,
+      "axiomCount": 1,
+      "defCount": 7,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ03OQ03.lean",
+      "filename": "BirthdayProblemOQ03OQ03.lean",
+      "lineCount": 242,
+      "theoremCount": 20,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ03.lean"
     }
   ]
 }
