@@ -1,7 +1,30 @@
 {
   "id": "divisibility-by-3-oq-03-oq-02",
-  "title": "The digital root in other bases: for base b, the analog is dr_b(n) = 1 + ((n-...",
-  "description": "The digital root in other bases: for base b, the analog is dr_b(n) = 1 + ((n-1) mod (b-1)). Can Lean 4 formalize a base-parametrized version of all these results, using the general Mathlib `Nat.digits b n` with variable b?",
+  "title": "Divisibility by 3 OQ-03-OQ-02: Base-Parametric Digital Roots",
+  "description": "Records the Lean base-parametric digital-root and divisibility rules for Nat.digits in arbitrary bases.",
+  "problemStatement": {
+    "formal": "Define `digitalRootBase b n` and prove congruence/divisibility rules modulo b - 1 for base-b digit sums.",
+    "plain": "Generalizes the decimal digital-root rule to any base b, including reusable divisibility tests for factors of b - 1.",
+    "whyMatters": [
+      "It turns the familiar divisibility-by-3 rule into a base-independent theorem.",
+      "The proof uses Mathlib digit-sum congruence lemmas instead of ad hoc decimal arithmetic.",
+      "Concrete octal, hexadecimal, and base-7 checks make the theorem computationally testable."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`digitalRootBase` defines the base-b digital-root function.",
+      "`digitSum_mod_base_pred` and `congruence` prove the digit-sum congruence modulo b - 1.",
+      "`digitalRootBase_range`, `digitalRootBase_single`, and `digitalRootBase_idempotent` prove the expected root behavior.",
+      "`div_pred_iff_div_digitSum` and `factor_div_rule` give the divisibility tests.",
+      "`hex_div15`, `oct_div7`, and the concrete root examples check non-decimal bases.",
+      "`DivisibilityBy3OQ03OQ02.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "The file gives divisibility rules for factors of b - 1, not a full catalogue of all digit tests for arbitrary moduli."
+    ],
+    "goal": "Expose the completed base-parametric digital-root formalization and its verified divisibility rules."
+  },
   "source": {
     "proofId": "divisibility-by-3-oq-03",
     "proofTitle": "Efficient Digital Root Computation via Modular Arithmetic",
@@ -16,6 +39,8 @@
     "modular-arithmetic",
     "algorithms",
     "research",
+    "digits",
+    "formalized",
     "seeker-selected"
   ],
   "relatedProofs": [
@@ -26,31 +51,9 @@
     "divisibility-by-3-oq-04",
     "divisibility-by-3-oq-04-oq-02"
   ],
-  "status": "completed",
-  "completedDate": "2026-04-12",
+  "status": "available",
   "selectedDate": "2026-04-12",
   "selectedBy": "seeker",
-  "knowledge": {
-    "progressSummary": "COMPLETE: base-parametrized digital root proved. 0 sorries, 0 axioms.",
-    "insights": [
-      "Nat.modEq_digits_sum provides the core congruence for any base b with b ≡ 1 mod d",
-      "base_mod_pred: b % (b-1) = 1 for b ≥ 3, proved by Nat.mod_eq_sub_mod (same as OQ-02)",
-      "congruence proof uses n = (n-1)+1, Nat.add_mod, Nat.mod_eq_of_lt (1 < b-1)",
-      "digitalRootBase_div_pred forward: decompose n-1 = (b-2) + (b-1)*(k-1) and apply Nat.add_mul_mod_self_left",
-      "All results work for b ≥ 3; the formula is also well-defined for b = 2 but the congruence argument requires b ≥ 3"
-    ],
-    "builtItems": [
-      "digitalRootBase def: if n = 0 then 0 else 1 + (n-1) % (b-1)",
-      "digitSum_mod_base_pred: n ≡ (digits b n).sum [MOD b-1] for b ≥ 3",
-      "congruence: n % (b-1) = dr_b(n) % (b-1)",
-      "digitalRootBase_range: 1 ≤ dr_b(n) ≤ b-1 for n > 0, b ≥ 3",
-      "digitalRootBase_single, digitalRootBase_idempotent, digitalRootBase_div_pred",
-      "factor_div_rule: for d | (b-1), d | n ↔ d | (digits b n).sum",
-      "Hex/octal/base-7 concrete examples via native_decide"
-    ],
-    "mathlibGaps": [],
-    "nextSteps": []
-  },
   "leanFiles": [
     {
       "path": "Proofs/DivisibilityBy3.lean",

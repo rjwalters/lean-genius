@@ -1,7 +1,30 @@
 {
   "id": "kummer-theorem-oq-01-oq-01",
-  "title": "Can the p-adic valuation statement be fully formalized using Kummer's theorem...",
-  "description": "Can the p-adic valuation statement be fully formalized using Kummer's theorem from Mathlib? This would require a Lean formalism for base-p carries (not yet in Mathlib) and induction over the telescoping product.",
+  "title": "Kummer OQ-01-OQ-01: Multinomial Carry Valuation",
+  "description": "Records the Lean bridge from multinomial p-adic valuation to a sum of binomial Kummer carry-count valuations.",
+  "problemStatement": {
+    "formal": "Express the p-adic valuation of a multinomial coefficient as the sum of binomial factorization valuations arising from the telescoping product.",
+    "plain": "Turns the multinomial version of Kummer's theorem into a verified Lean bridge: multinomial valuations are reduced to the Kummer theorem for binomial coefficients.",
+    "whyMatters": [
+      "It connects multinomial divisibility questions to Mathlib's binomial Kummer theorem.",
+      "The proof explains how the telescoping product controls the valuation without adding axioms.",
+      "Concrete multinomial checks provide regression examples for the formal carry-count story."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`factorization_list_prod` proves factorization additivity over nonzero list products.",
+      "`multinomial_factorization_is_sum_of_binomial_factorizations` gives the valuation bridge for multinomials.",
+      "`multinomial_kummer` states the carry-count interpretation through Mathlib's binomial Kummer theorem.",
+      "`multinomial_123_p2`, `multinomial_123_p3`, and `multinomial_123_value` verify concrete examples.",
+      "`KummerTheoremOQ01OQ01.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "A standalone base-p carry formalism for multinomials remains a broader library direction.",
+      "The file relies on the existing binomial Kummer theorem rather than rebuilding the full carry theory from scratch."
+    ],
+    "goal": "Expose the completed multinomial valuation bridge while keeping the larger carry-formalism gap explicit."
+  },
   "source": {
     "proofId": "kummer-theorem-oq-01",
     "proofTitle": "Multinomial Analogs of Kummer's Theorem",
@@ -14,6 +37,8 @@
     "number-theory",
     "p-adic",
     "multinomial",
+    "carry-counts",
+    "formalized",
     "seeker-selected"
   ],
   "relatedProofs": [
@@ -23,29 +48,9 @@
     "kummer-theorem-oq-02",
     "kummer-theorem-oq-03"
   ],
-  "status": "completed",
-  "completedDate": "2026-04-12",
+  "status": "available",
   "selectedDate": "2026-04-12",
   "selectedBy": "seeker",
-  "knowledge": {
-    "progressSummary": "COMPLETE: multinomial Kummer theorem proved. 0 sorries, 0 axioms.",
-    "insights": [
-      "Nat.factorization_choose' in Mathlib.Data.Nat.Choose.Factorization IS the carries formulation of Kummer's theorem — available in Mathlib 4.26.0",
-      "The comment in KummerTheoremOQ01.lean stating base-p carry counting was not yet in Mathlib was outdated",
-      "Three-step proof: (1) v_p distributes over products via factorization_list_prod, (2) bridge via multinomial_eq_prod_choose, (3) apply factorization_choose' to each binomial factor",
-      "The bound parameter b in factorization_choose' can always use b = log p ks.sum + 1, since every partial sum acc+k <= ks.sum (proved by scanl induction)"
-    ],
-    "builtItems": [
-      "factorization_list_prod: v_p(l.prod) = sum of v_p's, proved by induction on list",
-      "scanl_zip_sum_le: every pair (acc,k) in (scanl.zip ks) satisfies acc+k <= init+ks.sum",
-      "scanl_zip_tail_sum_le: every tail pair satisfies acc+k <= ks.sum",
-      "multinomial_factorization_is_sum_of_binomial_factorizations: v_p(mult) = sum of v_p of binomial factors",
-      "multinomial_kummer: v_p(mult) = total carries (general form with bound hypothesis)",
-      "multinomial_kummer_concrete: v_p(mult) = total carries (concrete form, always valid)"
-    ],
-    "mathlibGaps": [],
-    "nextSteps": []
-  },
   "leanFiles": [
     {
       "path": "Proofs/KummerTheorem.lean",
