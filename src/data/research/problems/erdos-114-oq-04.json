@@ -8,6 +8,28 @@
     "parentProof": "erdos-114",
     "question": "Can any of the axiomatized results be verified using Mathlib's complex analysis?"
   },
+  "problemStatement": {
+    "formal": "For lemniscate sets L(P) = {z : |P(z)| = 1}, replace axiomatized set definitions and basic lemniscate facts with Lean definitions and Mathlib complex-analysis lemmas where possible.",
+    "plain": "Determine which lemniscate facts in the Erdős #114 thread can be verified directly in Mathlib's complex-analysis library, especially the set-level definitions and elementary examples around z^n - 1.",
+    "whyMatters": [
+      "Separates facts already supported by Mathlib from analytic estimates that still need new infrastructure.",
+      "Turns previously axiomatized lemniscate definitions into inspectable Lean objects.",
+      "Clarifies that arc length and complex line-integration support are the remaining blockers for the deeper Danchenko-style bounds."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Lemniscate sets can be defined axiom-free using Polynomial.eval and the complex norm.",
+      "Basic set properties such as root membership, empty negative-level sets, and preimage descriptions are formalized.",
+      "The z^n - 1 lemniscate examples and membership lemmas are implemented without sorries."
+    ],
+    "open": [
+      "Arc length for parametric curves in C is not available as reusable Mathlib infrastructure.",
+      "The Danchenko bound still needs complex curve integration or a custom replacement.",
+      "A Gamma-function formula for the length of the z^n - 1 lemniscate remains outside the current Lean development."
+    ],
+    "goal": "Keep the axiom-free Mathlib-backed lemniscate definitions as the stable base, then remove the remaining analytic placeholder only after curve length and complex line-integral infrastructure exists."
+  },
   "knowledge": {
     "progressSummary": "COMPLETED: Defined lemniscate sets properly using Polynomial.eval + ‖·‖ (no axioms needed for set definitions). Proved basic properties. Assessed axiom eliminability: arc length requires curve integration not in Mathlib. 1 axiom (Danchenko placeholder), 0 sorries, 10 theorems, 177 lines.",
     "builtItems": [
@@ -208,5 +230,11 @@
     "erdos-1147",
     "erdos-1148",
     "erdos-1149"
+  ],
+  "tags": [
+    "erdos",
+    "complex-analysis",
+    "lemniscates",
+    "mathlib-gap"
   ]
 }
