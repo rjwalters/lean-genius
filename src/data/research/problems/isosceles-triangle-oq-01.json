@@ -6,14 +6,23 @@
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in geometry: Euclid I.5 Original Proof Formalization.",
-    "whyMatters": []
+    "formal": "In Euclidean geometry, prove that dist A B = dist A C implies angle A B C = angle A C B.",
+    "plain": "Formalize Euclid I.5, the isosceles triangle theorem: equal sides in a triangle imply equal base angles.",
+    "whyMatters": [
+      "Euclid I.5 is one of the classical first tests of a geometry formalization.",
+      "The proof connects a synthetic congruence argument with Lean's inner-product-space angle API.",
+      "The companion theorem exposes both the direct Mathlib route and a Pappus-style self-congruence proof."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "The direct companion file proves base-angle equality from equal side lengths (Lean: base_angles_equal_of_sides_equal).",
+      "The OQ file proves Pappus's self-congruence version of Euclid I.5 using equal-norm vector angle symmetry (Lean: pappus_isosceles).",
+      "A documented auxiliary lemma captures Euclid's outer-segment equality step for extended equal sides (Lean: euclid_outer_segs_eq).",
+      "The final Euclid-named theorem restates the base-angle conclusion as Pons Asinorum (Lean: euclid_i5)."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Document the verified Euclid I.5 formalization and its Pappus-style Lean proof route."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -55,7 +64,10 @@
     "seeker-selected",
     "geometry",
     "euclidean",
-    "classic"
+    "classic",
+    "isosceles-triangle",
+    "euclid",
+    "pons-asinorum"
   ],
   "relatedProofs": [
     "isosceles-triangle",

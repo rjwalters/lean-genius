@@ -6,14 +6,24 @@
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Divisor sum identity n = Σ φ(d) from Mathlib partition-of-unity.",
-    "whyMatters": []
+    "formal": "For every positive natural number n, prove sum_{d | n} phi(d) = n.",
+    "plain": "Prove the classical divisor-sum identity for Euler's totient function by partitioning residues according to their gcd with n.",
+    "whyMatters": [
+      "The identity sum_{d | n} phi(d) = n is one of the central structural facts about Euler's totient function.",
+      "The proof turns the identity into a counting partition of residue classes by gcd.",
+      "This connects number-theoretic divisor sums with finite-set partitions in Mathlib."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Residues below n are partitioned into gcd classes indexed by divisors (Lean: gcdClass, range_eq_biUnion_gcdClass).",
+      "Each gcd class has cardinality Nat.totient (n / d) for d dividing n (Lean: card_gcdClass_eq_totient).",
+      "The divisor-sum identity in quotient form is proved (Lean: divisor_sum_totient_div).",
+      "The classical identity sum_{d | n} Nat.totient d = n is proved for all natural n (Lean: divisor_sum_totient).",
+      "The file records partition-of-unity and gcd-class counting corollaries (Lean: partition_of_unity, totient_counts_gcd_class)."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Record the verified divisor-sum identity for Euler's totient function and the gcd-class partition proof."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -46,7 +56,10 @@
   "tags": [
     "seeker-selected",
     "number-theory",
-    "mathlib"
+    "mathlib",
+    "euler-totient",
+    "divisor-sums",
+    "finite-counting"
   ],
   "relatedProofs": [
     "euler-totient",

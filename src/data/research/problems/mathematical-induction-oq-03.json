@@ -8,12 +8,22 @@
   "problemStatement": {
     "formal": "\\forall n \\geq 1,\\; \\forall P : \\mathbb{Z}/n\\mathbb{Z} \\to \\text{Prop},\\quad\nP(0) \\;\\wedge\\; \\bigl(\\forall k,\\; P(k) \\to P(k+1)\\bigr) \\;\\implies\\; \\forall k,\\; P(k)",
     "plain": "Standard mathematical induction works for natural numbers: prove P(0), prove P(n) → P(n+1), conclude ∀n, P(n). But ℤ/nℤ is a finite cyclic group — you can keep adding 1 and eventually wrap back to 0. Does an analogous \"cyclic induction\" principle hold?",
-    "whyMatters": []
+    "whyMatters": [
+      "Cyclic induction explains why successor-style reasoning still works on finite cyclic types despite wraparound.",
+      "The ZMod formulation turns a familiar induction pattern into a reusable modular-arithmetic principle.",
+      "The follow-up lemmas connect induction, generation by 1, period-n functions, and finite sums over ZMod n."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "The cyclic induction principle for ZMod n is proved from ordinary Nat induction and ZMod.val (Lean: cyclic_induction).",
+      "Every element of ZMod n is generated additively by 1 (Lean: zmod_generated_by_one).",
+      "The wraparound law k + n = k and the cardinality/cardinality-step facts are verified (Lean: zmod_add_period, cyclic_induction_card, addOrderOf_one_zmod).",
+      "Period-n functions are shown to be determined by their values modulo n (Lean: cyclic_period_principle).",
+      "Finite-sum symmetry over ZMod n is formalized, including the odd-n zero-sum corollary (Lean: zmod_sum_neg_involution, zmod_sum_odd_eq_zero)."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Expose the completed cyclic-induction principle for ZMod n and its modular-arithmetic consequences."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -48,7 +58,8 @@
     "modular-arithmetic",
     "ZMod",
     "cyclic-groups",
-    "finite-types"
+    "finite-types",
+    "periodic-functions"
   ],
   "relatedProofs": [
     "mathematical-induction",
