@@ -1,19 +1,31 @@
 {
   "slug": "erdos-1172",
-  "title": "Erdős #1172",
+  "title": "Erdos 1172 ordinal partition questions",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "Formalize ordinal partition relations such as omega_3 -> (omega_2, omega)^2 and related GCH/CH questions, with weak consequences from Erdos-Dushnik-Miller and independence-style assumptions from Todorcevic and PFA.",
+    "plain": "Backfill the metadata for the Erdos 1172 ordinal partition scaffold: definitions of unbalanced and balanced partition relations, the four CH/GCH questions, provable weak forms, and the set-theoretic axioms used for independence context.",
+    "whyMatters": [
+      "Ordinal partition relations are a core meeting point of infinitary combinatorics and set-theoretic hypotheses.",
+      "The Lean file gives reusable definitions and weak consequences even though the original Erdos questions remain open.",
+      "The metadata should distinguish proved ordinal arithmetic from axiomatized deep set-theory inputs."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`OrdPartitionRel`, `BalancedPartitionRel`, `GCH`, `CH`, and `gch_implies_ch` set up the formal language for the four questions.",
+      "`omega1_lt_omega2`, `omega2_lt_omega3`, `omega_lt_omega1`, and related positivity lemmas supply the ordinal arithmetic base.",
+      "`partition_mono_target`, `omega3_edm`, `omega2_edm`, `q1_weak_from_edm`, `q1_implies_weak_second`, and `q2_weakened_first` prove weak partition consequences.",
+      "`partition_independence`, `q3_first_target_large`, and `q2_targets_lt_omega3` record independence context and target-size checks."
+    ],
+    "open": [
+      "`erdos_dushnik_miller`, `todorcevic_negative`, and `pfa_positive` are axioms in `Erdos1172Problem.lean`; the file has zero sorries.",
+      "The four headline questions `question1` through `question4` are definitions rather than solved theorems."
+    ],
+    "goal": "Make the ordinal-partition scaffold discoverable while marking the deep set-theoretic hypotheses as axioms."
   },
   "currentState": {
     "phase": "NEW",
@@ -42,7 +54,11 @@
     "markdown": "# Erdős #1172 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "set-theory",
+    "ordinal-partitions",
+    "infinite-combinatorics",
+    "axiom-backed"
   ],
   "relatedProofs": [
     "erdos-1",

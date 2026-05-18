@@ -1,19 +1,31 @@
 {
   "slug": "hilbert-17-oq-01",
-  "title": "hilbert-17-oq-01",
+  "title": "Hilbert 17 sum-of-squares examples and Pfister bounds",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Define positive semidefinite real polynomials and k-square sum representations, prove elementary SOS closure facts, compute Pfister bounds for small dimensions, and formalize the Brahmagupta-Fibonacci identity as the product law for two-square sums.",
+    "plain": "Backfill the Hilbert 17 OQ-01 metadata around the verified univariate/SOS scaffold: PSD and SOS definitions, examples like x^2 and x^2+1, monotonicity in the number of squares, Pfister bound values, and the two-square product identity.",
+    "whyMatters": [
+      "Hilbert's 17th problem asks when nonnegative polynomials are sums of squares of rational functions; this file captures a small verified polynomial-SOS toolkit.",
+      "The Brahmagupta-Fibonacci identity is the algebraic engine behind closure of sums of two squares.",
+      "The OQ-01 file is zero-axiom and zero-sorry, while the broader Hilbert 17 development still contains deeper axiomatized results."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`IsPSD`, `IsSumOfKSquares`, and `IsSOS` define the core positivity and sum-of-squares predicates.",
+      "`const_nonneg_is_one_square`, `sq_is_psd`, `sq_is_one_square`, `sq_plus_one_psd`, and `sq_plus_one_is_two_squares` provide concrete polynomial examples.",
+      "`psd_add`, `sum_of_k_squares_is_psd`, `sum_of_k_squares_mono`, and `sum_of_squares_le` prove basic SOS/PSD closure and monotonicity.",
+      "`pfister_bound_mono`, `pfister_univariate`, `pfister_bivariate`, `pfister_trivariate`, `brahmagupta_fibonacci`, `brahmagupta_fibonacci_poly`, `sos2_mul`, and `product_example` record the Pfister-bound and two-square product infrastructure."
+    ],
+    "open": [
+      "`Hilbert17OQ01.lean` has zero active axioms and zero sorries.",
+      "The broader `Hilbert17SumOfSquares.lean` development still carries axioms for deep Hilbert/Pfister results; this OQ-01 slice is an elementary verified scaffold."
+    ],
+    "goal": "Make the verified SOS toolkit and its boundary with deeper Hilbert 17 theory explicit in metadata."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -36,7 +48,13 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: hilbert-17-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "real-algebraic-geometry",
+    "sum-of-squares",
+    "positive-polynomials",
+    "pfister-bounds",
+    "fully-verified"
+  ],
   "relatedProofs": [
     "hilbert-17",
     "hilbert-17-oq-01"
