@@ -1,19 +1,31 @@
 {
   "slug": "erdos-1142",
-  "title": "Erdős #1142",
+  "title": "Erdos 1142 prime differences from powers of two",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "For n, define the powers of two strictly between 1 and n and require every difference n-2^k to be prime. Verify the known values 4, 7, 15, 21, 45, 75, 105, prove basic structural consequences such as n>=4 and oddness except n=4, and state infinitude/sparsity conjectures.",
+    "plain": "Backfill the Erdos 1142 metadata around the Lean result: the finite powers-of-two predicate, verified known examples, small non-examples, necessary parity structure, and the bounded completeness check through 105.",
+    "whyMatters": [
+      "This problem asks whether there are infinitely many numbers whose differences from all smaller powers of two are prime.",
+      "The Lean file gives a compact executable formalization of the known examples and structural constraints.",
+      "The metadata should replace the missing source statement with the actual formal predicate and verified finite boundary."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`powersOfTwoBetween` and `SatisfiesErdos1142` define the powers-of-two prime-difference property.",
+      "`erdos1142_value_4`, `erdos1142_value_7`, `erdos1142_value_15`, `erdos1142_value_21`, `erdos1142_value_45`, `erdos1142_value_75`, and `erdos1142_value_105` verify the known values.",
+      "`erdos1142_not_6`, `erdos1142_not_9`, and `erdos1142_not_10` provide computed non-examples.",
+      "`erdos1142_ge_4`, `erdos1142_n_minus_2_prime`, `erdos1142_odd_or_4`, `erdos1142_mod2`, `erdos_1142_conjecture`, `erdos_1142_stronger_conjecture`, and `erdos1142_complete_le_105` record structural facts and the open conjectures."
+    ],
+    "open": [
+      "`Erdos1142Problem.lean` has zero active axioms and zero active sorries.",
+      "Infinitude and the stronger o(log n) sparsity conjecture are definitions/open targets, not solved theorems."
+    ],
+    "goal": "Replace the missing problem statement with verified prime-difference metadata and explicit open-conjecture boundaries."
   },
   "currentState": {
     "phase": "NEW",
@@ -38,7 +50,11 @@
   },
   "approaches": [],
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "prime-differences",
+    "powers-of-two",
+    "fully-verified"
   ],
   "relatedProofs": [
     "erdos-1",
