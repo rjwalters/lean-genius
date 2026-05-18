@@ -16,24 +16,34 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T04:11:10.513Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-05-18T11:20:09Z",
+    "iteration": 2,
+    "focus": "Surveyed partial-divisor-sum definitions and missing theorem layer.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Add theorem-backed small examples or basic membership lemmas for partialDivisorSums.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: 0 theorems, 0 axioms, 0 sorries. The Lean file is a definitions-only formalization of the objects around the open problem; it has no formal conjecture, theorem, or axiom layer yet.",
+    "builtItems": [
+      "Confirmed properDivisorsSorted, partialDivisorSums, previousPartialSums, newElements, and firstAppearance are definition-only scaffolding.",
+      "Confirmed there are no formal conjectures, examples, theorems, axioms, or sorries in the current Lean file.",
+      "Synced Lean counters from proof metadata while using source inspection for namespace/import prose."
+    ],
+    "insights": [
+      "The main questions about new elements and f(N)=o(N) are present only in comments, not as formal conjecture definitions.",
+      "firstAppearance uses sInf over a set that may be empty without a proved existence guard.",
+      "This is a good target for small computational examples before any asymptotic formalization."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove basic membership examples for partialDivisorSums n and add a Prop for the firstAppearance growth question."
+    ],
     "markdown": "# Erdős #468 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFor any $n$ let $D_n$ be the set of sums of the shape $d_1,d_1+d_2,d_1+d_2+d_3,\\ldots$ where $1<d_1<d_2<\\cdots$ are the divisors of $n$.\n\nWhat is the size of $D_n\\backslash \\cup_{m<n}D_m$?\n\nIf $f(N)$ is the minimal $n$ such that $N\\in D_n$ then is it true that $f(N)=o(N)$? Perhaps just for almost all $N$?\n\n\n\n\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #467\n- Problem #469\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
@@ -50,14 +60,14 @@
     "mathlib": []
   },
   "started": "2026-01-13T04:11:10.513Z",
-  "lastUpdate": "2026-03-13T07:52:17.049Z",
+  "lastUpdate": "2026-05-18T11:20:09Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos468Problem.lean",
       "filename": "Erdos468Problem.lean",
-      "lineCount": 57,
+      "lineCount": 56,
       "theoremCount": 0,
       "axiomCount": 0,
       "defCount": 5,

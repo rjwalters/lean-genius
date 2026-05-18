@@ -16,24 +16,34 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T04:11:10.511Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-05-18T11:20:09Z",
+    "iteration": 2,
+    "focus": "Surveyed Bertrand-range prime-avoidance formalization and nk axioms.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Turn small computed values or CRT witnesses into checked examples before adding asymptotic claims.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: 8 theorems, 3 axioms, 0 sorries. The n_k function, lower bound, and minimality are axiomatized; CRT-style residue and divisibility infrastructure is proved, with superpolynomial/subexponential conjectures left open as definitions.",
+    "builtItems": [
+      "Confirmed descendingProduct, Bertrand-range predicates, bertrandPrimes, and safeResidues are definitions.",
+      "Confirmed at_most_one_div, prime_dvd_descendingProduct, card_safeResidues, avoidsBertrand_iff_finset, and adenwalla_crt_idea are theorem-backed.",
+      "Confirmed axiom surface: nk, nk_gt_2k, and nk_minimal."
+    ],
+    "insights": [
+      "Known numerical values in the header are comments only; there are no formal checked examples for small k.",
+      "Adenwalla upper-bound infrastructure is conditional on a product witness satisfying hM and hAvoids.",
+      "ErdosProblem451 combines two open asymptotic definitions and is not proved."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Add checked small-k examples for nk or prove explicit CRT witnesses for selected k."
+    ],
     "markdown": "# Erdős #451 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nEstimate $n_k$, the smallest integer $>2k$ such that $\\prod_{1\\leq i\\leq k}(n_k-i)$ has no prime factor in $(k,2k)$.\n\n\n\nErd\\H{o}s and Graham write 'we can prove $n_k>k^{1+c}$ but no doubt much more is true'.\n\nIn \\cite{Er79d} Erd\\H{o}s writes that probably $n_k<e^{o(k)}$ but $n_k>k^d$ for all constant $d$.\n\nAdenwalla observes that an easy upper bound is $n_k\\leq \\prod_{k<p<2k}p=e^{O(k)}$.\n\n\n\n\nReferences\n\n\n[Er79d] Erd\\H{o}s, P., Some unconventional problems in number theory. Acta Math. Acad. Sci. Hungar. (1979), 71-80.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #450\n- Problem #452\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
@@ -50,14 +60,14 @@
     "mathlib": []
   },
   "started": "2026-01-13T04:11:10.511Z",
-  "lastUpdate": "2026-03-13T07:52:17.048Z",
+  "lastUpdate": "2026-05-18T11:20:09Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos451Problem.lean",
       "filename": "Erdos451Problem.lean",
-      "lineCount": 186,
+      "lineCount": 185,
       "theoremCount": 8,
       "axiomCount": 3,
       "defCount": 8,

@@ -16,24 +16,34 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T02:41:06.676Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-05-18T11:20:09Z",
+    "iteration": 2,
+    "focus": "Surveyed Hofstadter-sequence computable prefix and open-question scaffolding.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Prove nontrivial well-definedness bounds before claiming global behavior.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: 7 theorems, 0 axioms, 0 sorries. Lean computes the sequence with total defaulted lookups and proves the first six values; well-definedness, missed values, surjectivity, and growth remain comment-only open questions.",
+    "builtItems": [
+      "Confirmed hofstadterFList and hofstadterF give a total computable model with out-of-bounds default 0.",
+      "Confirmed hofstadterF_one through hofstadterF_six and initial_values are theorem-backed by native_decide.",
+      "Confirmed WellDefinedAt and IsWellDefined are definitions only; the global well-definedness question is not proved or axiomatized."
+    ],
+    "insights": [
+      "The total function may mask failed recursive lookups via default 0, so global claims need WellDefinedAt hypotheses.",
+      "There are no axioms, but the file is mostly a computable-prefix scaffold rather than a resolution of the open questions.",
+      "Future proof work should separate the total fallback implementation from the intended partial recurrence."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove WellDefinedAt for a longer checked prefix or state a theorem connecting hofstadterFList to the intended recurrence under bounds hypotheses."
+    ],
     "markdown": "# Erdős #422 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(1)=f(2)=1$ and for $n>2$\\[f(n) = f(n-f(n-1))+f(n-f(n-2)).\\]Does $f(n)$ miss infinitely many integers? What is its behaviour?\n\n\n\nAsked by Hofstadter. The sequence begins $1,1,2,3,3,4,\\ldots$ and is A005185 in the OEIS. It is not even known whether $f(n)$ is well-defined for all $n$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #421\n- Problem #423\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
@@ -50,14 +60,14 @@
     "mathlib": []
   },
   "started": "2026-01-13T02:41:06.676Z",
-  "lastUpdate": "2026-03-13T07:52:17.048Z",
+  "lastUpdate": "2026-05-18T11:20:09Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos422Problem.lean",
       "filename": "Erdos422Problem.lean",
-      "lineCount": 94,
+      "lineCount": 93,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 4,
