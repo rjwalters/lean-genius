@@ -8,12 +8,22 @@
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
     "plain": "Equality characterization for the Cauchy-Schwarz inequality in complex (and general RCLike) inner product spaces: ‖⟪u,v⟫‖ = ‖u‖·‖v‖ if and only if u and v are linearly dependent.",
-    "whyMatters": []
+    "whyMatters": [
+      "Equality cases are what turn Cauchy-Schwarz from a bound into a structural statement about dependence.",
+      "The same formal pattern works over real and complex inner product spaces through the RCLike abstraction.",
+      "The residual-projection proof gives reusable orthogonality infrastructure for later Hilbert-space arguments."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "If one vector is a scalar multiple of the other, the Cauchy-Schwarz norm equality holds (Lean: cs_equality_of_smul).",
+      "The orthogonal projection residual lemma is formalized and used to force equality cases (Lean: inner_projection_residual_eq_zero).",
+      "Cauchy-Schwarz equality implies scalar dependence for nonzero vectors (Lean: cs_equality_implies_smul).",
+      "The equality characterization is proved for complex inner product spaces and uniformly for RCLike scalar fields (Lean: cauchy_schwarz_eq_iff_complex and cauchy_schwarz_eq_iff).",
+      "Zero-vector edge cases and a symmetric equality formulation are included."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Expose the verified Cauchy-Schwarz equality characterization and its projection-residual proof structure."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -55,7 +65,9 @@
   "tags": [
     "seeker-selected",
     "analysis",
-    "linear-algebra"
+    "linear-algebra",
+    "inner-product-spaces",
+    "equality-cases"
   ],
   "relatedProofs": [
     "cauchy-schwarz",

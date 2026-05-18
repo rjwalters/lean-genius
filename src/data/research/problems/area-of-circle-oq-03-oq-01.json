@@ -8,12 +8,22 @@
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
     "plain": "Formal investigation in mathematical analysis: Convergence Rate of Inscribed Polygon Area: |A_n - πr²| = O(1/n²).",
-    "whyMatters": []
+    "whyMatters": [
+      "Polygonal area convergence gives a quantitative bridge between elementary geometry and analytic estimates for pi.",
+      "The O(1/n^2) rate explains how quickly inscribed regular polygons approximate circle area.",
+      "The proof packages sine estimates that are reusable in other small-angle geometry arguments."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "The file proves sine and cosine inequalities needed for small-angle error estimates, including sin_sq_le_sq and cos_ge_one_sub_sq_div_two.",
+      "A lower sine estimate is formalized via sin_ge_sub_cube_div_six.",
+      "The inscribed polygon area is bounded above by the circle area (Lean: inscribed_area_upper).",
+      "The difference between circle area and inscribed polygon area is bounded by a constant times 1/n^2 (Lean: inscribed_area_rate_bound and inscribed_area_convergence_rate).",
+      "For n >= 3 and positive radius, the inscribed area error is positive."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Capture the verified O(1/n^2) convergence-rate proof for inscribed polygon area."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -46,7 +56,9 @@
   "tags": [
     "seeker-selected",
     "analysis",
-    "geometry"
+    "geometry",
+    "asymptotic-estimates",
+    "trigonometry"
   ],
   "relatedProofs": [
     "area-of-circle",

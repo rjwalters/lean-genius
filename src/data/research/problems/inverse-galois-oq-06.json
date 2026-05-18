@@ -9,15 +9,24 @@
     "formal": "Every abelian extension of Q is contained in Q(zeta_n) for some n",
     "plain": "Can the Kronecker-Weber theorem be fully formalized in Lean/Mathlib? Survey shows the critical missing piece is class field theory (Artin reciprocity).",
     "whyMatters": [
-      "Kronecker-Weber is foundational for algebraic number theory",
-      "Complete solution to Hilbert 12th problem for Q",
-      "Would be a major milestone in formalized mathematics"
+      "Kronecker-Weber is the complete abelian case of the inverse Galois program over Q.",
+      "The entry identifies exactly which Mathlib foundations are present and which class-field-theory components are still missing.",
+      "A precise gap analysis helps future agents avoid treating a survey scaffold as a completed theorem proof."
     ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Mathlib support for cyclotomic fields, cyclotomic polynomial irreducibility over Q, and related Galois constructions is documented.",
+      "The survey identifies the expected Kronecker-Weber target: every abelian extension of Q is contained in a cyclotomic extension.",
+      "Existing formal infrastructure around cyclotomic Galois groups and finite inverse-Galois examples is cataloged.",
+      "The entry distinguishes actual sorry tactics from comment mentions of \"sorry-free\", avoiding inflated proof-health claims."
+    ],
+    "open": [
+      "Kronecker-Weber itself is not fully formalized in the current development.",
+      "Core class field theory is missing, including Artin reciprocity, ideles/adeles, ray class groups, ray class fields, and local class field theory.",
+      "A future proof must either axiomatize Artin reciprocity cleanly or build an alternate ramification/discriminant route from available Mathlib infrastructure."
+    ],
+    "goal": "Preserve this as a Mathlib gap-analysis entry for Kronecker-Weber rather than presenting it as a completed formal proof."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -59,7 +68,12 @@
     ],
     "markdown": "# Knowledge Base: inverse-galois-oq-06\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "galois-theory",
+    "algebraic-number-theory",
+    "class-field-theory",
+    "mathlib-gap-analysis"
+  ],
   "relatedProofs": [
     "inverse-galois",
     "inverse-galois-oq-01",

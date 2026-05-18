@@ -8,12 +8,25 @@
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
     "plain": "Formal investigation in number theory: Gauss Sum Proof of Quadratic Reciprocity via Mathlib Characters.",
-    "whyMatters": []
+    "whyMatters": [
+      "Gauss sums give a classical route from character sums to quadratic reciprocity.",
+      "The file records how the Gauss-sum derivation aligns with other formal quadratic-reciprocity statements.",
+      "The remaining Gauss-sum square identity marks a clear boundary between proved infrastructure and the missing analytic algebra step."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Euler criterion and Legendre-symbol multiplicativity are available in the local derivation as euler_criterion' and legendre_mul'.",
+      "The Gauss-sum route is connected to the quadratic reciprocity statement (Lean: qr_matches_gauss_derivation).",
+      "The first supplementary law and the square criterion for -1 are formalized in this file.",
+      "The file records agreement between the Gauss-sum route and other quadratic-reciprocity proofs (Lean: three_proofs_agree).",
+      "A Gauss-sum absolute-value statement is derived in the same setup (Lean: gauss_sum_abs)."
+    ],
+    "open": [
+      "The core Gauss-sum square identity remains an explicit axiom in this file (Lean: gauss_sum_sq).",
+      "A fully axiom-free Gauss-sum proof would need to replace gauss_sum_sq with a Mathlib-backed theorem."
+    ],
+    "goal": "Document the verified quadratic-reciprocity bridge while making the remaining Gauss-sum axiom explicit."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -45,7 +58,10 @@
   "approaches": [],
   "tags": [
     "seeker-selected",
-    "number-theory"
+    "number-theory",
+    "quadratic-reciprocity",
+    "gauss-sums",
+    "characters"
   ],
   "relatedProofs": [
     "elementary-quadratic-reciprocity",
