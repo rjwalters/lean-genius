@@ -1,36 +1,36 @@
 {
   "slug": "divisibility-by-3-oq-04",
-  "title": "Are there practical applications of the generalized divisibility theorem",
+  "title": "Casting Out Nines: Practical Arithmetic Verification",
   "phase": "COMPLETED",
   "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "For base b, modulus d with b % d = 1: digitsum_b(a) + digitsum_b(c) ≡ digitsum_b(a+c) (mod d) and digitsum_b(a) * digitsum_b(c) ≡ digitsum_b(a*c) (mod d)",
-    "plain": "Digit sums respect both addition and multiplication modulo d when b % d = 1, enabling arithmetic verification (casting out nines and generalizations).",
+    "formal": "For any base b and modulus d with b % d = 1, digit sums respect addition and multiplication modulo d; failed digit-sum checks prove the claimed arithmetic result is wrong.",
+    "plain": "Formalizes casting out nines and its base/modulus generalizations: digit sums mirror addition and multiplication modulo d when b % d = 1, enabling arithmetic verification and error detection.",
     "whyMatters": [
-      "Formalizes a 1200-year-old arithmetic verification method",
-      "Provides machine-checked error detection guarantees"
+      "Gives a machine-checked version of a classical hand-calculation verification method.",
+      "Shows the casting-out principle is a general modular-arithmetic fact, not only a base-10 trick."
     ]
   },
   "knownResults": {
     "proven": [
-      "digit_sum_add_general: digit sums respect addition mod d (general)",
-      "digit_sum_mul_general: digit sums respect multiplication mod d (general)",
-      "detect_add_error_general: contrapositive error detection for addition",
-      "detect_mul_error_general: contrapositive error detection for multiplication",
-      "Specializations: casting out nines (mod 9), threes (mod 3), sevens (octal), fifteens (hex)"
+      "digit_sum_add_general and digit_sum_mul_general prove the base/modulus transfer laws.",
+      "detect_add_error_general and detect_mul_error_general prove the error-detection contrapositives.",
+      "casting_nines_add and casting_nines_mul specialize the result to base 10 modulo 9.",
+      "octal, hexadecimal, and modulo-3 specializations are included as concrete applications.",
+      "consistent_with_parent_div9 and consistent_with_parent_div3 connect the file back to the parent digit-sum congruence."
     ],
     "open": [],
-    "goal": "Complete formalization of casting out nines and generalizations"
+    "goal": "Keep the completed casting-out-nines record aligned with Proofs/DivisibilityBy3OQ04.lean."
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-24T05:49:05.000Z",
     "iteration": 1,
-    "focus": "Formalized casting out nines and generalizations",
+    "focus": "Source-backed metadata sync for Proofs/DivisibilityBy3OQ04.lean: 229 lines, 17 theorem declarations, 0 definitions, 0 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "None - completed",
+    "nextAction": "No Lean work is needed for the research record.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -38,22 +38,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 229-line Lean file with 17 theorems, 0 axioms, 0 sorries. Formalizes casting out nines for addition and multiplication, general casting out for arbitrary base/modulus, error detection contrapositives, and concrete examples.",
+    "progressSummary": "COMPLETED: Proofs/DivisibilityBy3OQ04.lean proves general digit-sum add/multiply congruences, casting-out-nines specializations, error-detection contrapositives, base-specific applications, examples, and consistency with the parent proof. Source audit: 229 lines, 17 theorems, 0 definitions, 0 axioms, 0 sorries.",
     "builtItems": [
-      "proofs/Proofs/DivisibilityBy3OQ04.lean (229 lines, 17 theorems, 0 axioms)",
-      "src/data/proofs/divisibility-by-3-oq-04/ (gallery entry with meta.json, annotations.json, index.ts)"
+      "Proofs/DivisibilityBy3OQ04.lean: 229 lines, 17 theorems, 0 axioms, 0 sorries",
+      "digit_sum_add_general and digit_sum_mul_general",
+      "detect_add_error_general and detect_mul_error_general",
+      "casting_nines_add, casting_nines_mul, casting_threes_add, and casting_threes_mul",
+      "consistent_with_parent_div9 and consistent_with_parent_div3"
     ],
     "insights": [
-      "Digit sums form a ring homomorphism N -> Z/dZ when b % d = 1",
-      "Nat.add_mod and Nat.mul_mod provide the algebraic transfer through arithmetic operations",
-      "Error detection is a simple contrapositive - no false positives but false negatives for multiples of d",
-      "Casting out threes catches 2/3 of errors vs 8/9 for nines - tradeoff between detection rate and simplicity"
+      "Digit sums respect arithmetic modulo d whenever the base satisfies b % d = 1.",
+      "Error detection is a contrapositive: a failed digit-sum check proves the proposed arithmetic result is false.",
+      "The same proof pattern covers casting out nines, threes, sevens in octal, and fifteens in hexadecimal."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Could formalize alternating digit sum rule for divisibility by b+1 (e.g. 11 in base 10)",
-      "Could formalize digital root (iterative digit summing)",
-      "Could quantify detection probability formally"
+      "Optional future work: formalize alternating digit-sum rules and detection probabilities."
     ]
   },
   "tags": [
@@ -78,14 +78,25 @@
     "mathlib": []
   },
   "started": "2026-03-24T00:48:59.818Z",
-  "lastUpdate": "2026-03-24T05:49:05.000Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
+      "path": "Proofs/DivisibilityBy3OQ04.lean",
+      "filename": "DivisibilityBy3OQ04.lean",
+      "lineCount": 229,
+      "theoremCount": 17,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04.lean"
+    },
+    {
       "path": "Proofs/DivisibilityBy3.lean",
       "filename": "DivisibilityBy3.lean",
-      "lineCount": 236,
+      "lineCount": 235,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 0,
@@ -96,7 +107,7 @@
     {
       "path": "Proofs/DivisibilityBy3OQ02.lean",
       "filename": "DivisibilityBy3OQ02.lean",
-      "lineCount": 163,
+      "lineCount": 162,
       "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 0,
@@ -107,7 +118,7 @@
     {
       "path": "Proofs/DivisibilityBy3OQ03.lean",
       "filename": "DivisibilityBy3OQ03.lean",
-      "lineCount": 271,
+      "lineCount": 270,
       "theoremCount": 16,
       "axiomCount": 0,
       "defCount": 3,
@@ -118,7 +129,7 @@
     {
       "path": "Proofs/DivisibilityBy3OQ03OQ02.lean",
       "filename": "DivisibilityBy3OQ03OQ02.lean",
-      "lineCount": 212,
+      "lineCount": 211,
       "theoremCount": 19,
       "axiomCount": 0,
       "defCount": 1,
@@ -127,20 +138,9 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ03OQ02.lean"
     },
     {
-      "path": "Proofs/DivisibilityBy3OQ04.lean",
-      "filename": "DivisibilityBy3OQ04.lean",
-      "lineCount": 230,
-      "theoremCount": 17,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/DivisibilityBy3OQ04.lean"
-    },
-    {
       "path": "Proofs/DivisibilityBy3OQ04OQ02.lean",
       "filename": "DivisibilityBy3OQ04OQ02.lean",
-      "lineCount": 229,
+      "lineCount": 228,
       "theoremCount": 22,
       "axiomCount": 0,
       "defCount": 0,
