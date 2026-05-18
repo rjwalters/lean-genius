@@ -36,7 +36,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: TaylorSinCosConvergence.lean - 348 lines, 31 theorems, 2 axioms, 0 sorries. Period-4 derivative cycle, universal norm bound, convergence, summability, tighter-than-exp comparison.",
+    "progressSummary": "COMPLETED modulo 2 axiomatized remainder bounds: TaylorSinCosConvergence.lean - 349 lines, 30 script-counted theorem/lemma declarations, 2 axioms, 0 sorries. Period-4 derivative cycle, universal norm bound, convergence, summability, tighter-than-exp comparison.",
     "builtItems": [
       "TaylorSinCosConvergence.lean:86 iteratedDeriv_sin_add_four (period-4 for sin)",
       "TaylorSinCosConvergence.lean:94 iteratedDeriv_cos_add_four (period-4 for cos)",
@@ -87,7 +87,7 @@
     {
       "path": "Proofs/TaylorSinCosConvergence.lean",
       "filename": "TaylorSinCosConvergence.lean",
-      "lineCount": 348,
+      "lineCount": 349,
       "theoremCount": 30,
       "axiomCount": 2,
       "defCount": 4,

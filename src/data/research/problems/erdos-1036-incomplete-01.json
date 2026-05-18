@@ -18,7 +18,9 @@
       "optimalConstant_pos: c > 0 → optimalConstant c > 0 (via Shelah + BddAbove + le_csSup)",
       "optimalConstant_le_one: c > 0 → optimalConstant c ≤ 1 (via csSup_le + rpow monotonicity)"
     ],
-    "open": [],
+    "open": [
+      "The quotient/isomorphism-class count remains a placeholder artifact; replacing it is future work."
+    ],
     "goal": "Resolved both sorries; 0 sorries remain"
   },
   "currentState": {
@@ -88,8 +90,8 @@
     {
       "path": "Proofs/Erdos1036Problem.lean",
       "filename": "Erdos1036Problem.lean",
-      "lineCount": 202,
-      "theoremCount": 7,
+      "lineCount": 244,
+      "theoremCount": 9,
       "axiomCount": 2,
       "defCount": 6,
       "sorryCount": 0,

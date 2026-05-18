@@ -19,12 +19,12 @@
     "phase": "ACT",
     "since": "2026-03-26T00:00:00Z",
     "iteration": 3,
-    "focus": "Proved H_spec, H_lower_bound (9->7 axioms). Remaining 7 axioms are deep or computational.",
+    "focus": "3 explicit axioms, 9 script-counted theorem declarations, and 0 sorries; structural canonical-Ramsey lemmas are verified.",
     "blockers": [],
-    "nextAction": "Prove H_spec (needs monotonicity argument), fix H_pos condition"
+    "nextAction": "Keep the deep canonical-Ramsey assumptions explicit; further work would formalize the remaining external results."
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "PROGRESS: 3 explicit axioms, 9 script-counted theorem declarations, and 0 sorries. H_spec, H_pos, H_minimal, and H_lower_bound are formalized; the asymptotic problem remains open.",
     "builtItems": [
       "H_minimal: proved from Nat.find_min (prior session)",
       "H_pos: proved for k>=1 (prior session)",
@@ -66,8 +66,8 @@
     {
       "path": "Proofs/Erdos190Problem.lean",
       "filename": "Erdos190Problem.lean",
-      "lineCount": 349,
-      "theoremCount": 6,
+      "lineCount": 400,
+      "theoremCount": 9,
       "axiomCount": 3,
       "defCount": 10,
       "sorryCount": 0,
