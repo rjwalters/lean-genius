@@ -2,7 +2,7 @@
   "slug": "erdos-327-oq-01",
   "title": "Parametrization of Sum-Divides-Product Pairs",
   "phase": "ACT",
-  "status": "completed",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -15,23 +15,24 @@
   },
   "knownResults": {
     "proven": [
-      "Explicit construction of all sum-dvd-prod pairs via coprime factorization (0 axioms, 0 sorries)",
-      "(3,6) is the smallest such pair (exhaustive verification for b ≤ 5)",
-      "Pair count is 0 for N ≤ 5, positive for N ≥ 6"
+      "Coprime construction produces valid sum-dvd-prod pairs; the converse classification is stated as SumDvdProdTriple but not proved.",
+      "(3,6) is the smallest such pair among the checked small cases.",
+      "Pair count is 0 for N <= 5 and positive for N >= 6."
     ],
     "open": [
-      "Exact constant in pair count asymptotic C·N·log(N)",
-      "Pair count for the (a+b)|2ab variant"
+      "Prove the bijectivity/classification direction for SumDvdProdTriple.",
+      "Prove pairCountAsymptotics, the Theta(N log N) density statement; the exact constant remains open.",
+      "Pair count for the (a+b)|2ab variant."
     ],
     "goal": "Complete parametrization and counting infrastructure"
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ACT",
     "since": "2026-03-29T19:00:00Z",
     "iteration": 1,
-    "focus": "Created 150-line formalization with 10 proved theorems and 0 axioms.",
+    "focus": "Source-backed metadata sync for the primary formalization: 165 lines, 6 theorems, 4 definitions, 0 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "None.",
+    "nextAction": "Prove the converse classification or the pair-count asymptotic statement.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -39,25 +40,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 150-line formalization with 10 proved theorems, 0 axioms, 0 sorries. Explicit construction, examples, minimality proof, counting functions.",
+    "progressSummary": "PARTIAL/ACTIVE: Proofs/Erdos327OQ01.lean proves the construction direction, concrete examples, small-case minimality, and counting functions. Source audit: primary file has 165 lines, 6 theorems, 4 definitions, 0 axioms, 0 sorries; the converse classification and asymptotic statement remain open.",
     "builtItems": [
-      "Created Proofs/Erdos327OQ01.lean (150 lines, 10 theorems, 0 axioms)",
-      "Created gallery entry src/data/proofs/erdos-327-oq-01/"
+      "Proofs/Erdos327OQ01.lean: 165 lines, 6 theorems, 4 definitions, 0 axioms, 0 sorries",
+      "Proofs/Erdos327OQ01OQ04.lean: 87 lines, 6 theorems, 1 definition, 0 axioms, 0 sorries",
+      "Proofs/Erdos327Problem.lean: 198 lines, 8 theorems, 5 definitions, 1 axiom, 0 sorries",
+      "construct_sumDvdProd_pair and construction_produces_valid_pairs",
+      "smallest_sumDvdProd_pair and numSumDvdProdPairs_pos"
     ],
     "insights": [
-      "Sum-dvd-prod pairs biject with triples (a', b', m): coprime a' < b', multiplier m ≥ 1, pair = (m·s·a', m·s·b') with s=a'+b'",
-      "The construction proof is pure algebra: a+b = ms² divides ab = m²s²a'b'",
-      "(3,6) minimality follows from exhaustive interval_cases check"
+      "The intended triple parametrization is stated as SumDvdProdTriple; the construction direction is proved, while the converse remains open.",
+      "The construction proof is pure algebra: a+b = m*s^2 divides ab = m^2*s^2*a*b in the coprime-parameter setup.",
+      "(3,6) minimality follows from exhaustive small-case checking."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove the converse classification direction for SumDvdProdTriple.",
+      "Prove pairCountAsymptotics for the Theta(N log N) density statement."
+    ],
     "markdown": ""
   },
   "tags": [
     "erdos",
     "number theory",
     "unit fractions",
-    "divisibility"
+    "divisibility",
+    "open question"
   ],
   "relatedProofs": [
     "erdos-3",
@@ -74,14 +82,14 @@
     "mathlib": []
   },
   "started": "2026-03-29T18:40:00Z",
-  "lastUpdate": "2026-03-29T19:00:00Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 4,
   "tractability": 8,
   "leanFiles": [
     {
       "path": "Proofs/Erdos327OQ01.lean",
       "filename": "Erdos327OQ01.lean",
-      "lineCount": 166,
+      "lineCount": 165,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 4,
@@ -92,7 +100,7 @@
     {
       "path": "Proofs/Erdos327OQ01OQ04.lean",
       "filename": "Erdos327OQ01OQ04.lean",
-      "lineCount": 88,
+      "lineCount": 87,
       "theoremCount": 6,
       "axiomCount": 0,
       "defCount": 1,
@@ -103,7 +111,7 @@
     {
       "path": "Proofs/Erdos327Problem.lean",
       "filename": "Erdos327Problem.lean",
-      "lineCount": 199,
+      "lineCount": 198,
       "theoremCount": 8,
       "axiomCount": 1,
       "defCount": 5,

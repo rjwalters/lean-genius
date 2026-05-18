@@ -1,19 +1,27 @@
 {
   "slug": "erdos-181-oq-01",
-  "title": "Is R(Q_n) ≪ 2^n for Hypercube Ramsey Numbers?",
+  "title": "Hypercube Ramsey Number R_sym(Q_n) Versus 2^n",
   "phase": "COMPLETED",
-  "status": "completed",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "R(Q_n) \\ll 2^n \\quad \\text{?}",
-    "plain": "The $n$-dimensional hypercube $Q_n$ is the graph on $\\{0,1\\}^n$ where vertices are adjacent iff they differ in exactly one bit. The Ramsey number $R(Q_n)$ is the smallest $N$ such that every 2-coloring of $K_N$ contains a monochromatic copy of $Q_n$.",
+    "formal": "Is R_sym(Q_n) << 2^n for hypercube Ramsey numbers?",
+    "plain": "The n-dimensional hypercube Q_n is the graph on binary strings of length n, adjacent when they differ in exactly one bit. The formalization proves the Q_1 symmetric Ramsey base case and leaves the general bounded-ratio conjecture axiomatized.",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "hypercubeAdj_one_iff identifies Q_1 adjacency with inequality.",
+      "two_in_symm_ramsey_set proves 2 belongs to the symmetric Ramsey set for Q_1.",
+      "ramseyNumberSymm_one proves R_sym(Q_1) = 2.",
+      "ramseyNumberSymm_ge proves the conditional lower bound R_sym(Q_n) >= 2^n when the Ramsey set is nonempty."
+    ],
+    "open": [
+      "Prove the general R_sym(Q_n) << 2^n conjecture without the erdos_181_conjecture_symm axiom.",
+      "Remove or replace the Tikhomirov asymptotic axiom with a formal proof or imported theorem."
+    ],
+    "goal": "Track the proved Q_1 base case separately from the axiomatized general hypercube Ramsey conjecture."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -21,7 +29,7 @@
     "iteration": 2,
     "focus": "R_sym(Q_1) = 2 proved; gallery entry created",
     "blockers": [],
-    "nextAction": "Merged — no further action needed",
+    "nextAction": "Gallery/base-case proof is present; the general R_sym(Q_n) << 2^n conjecture remains open and axiomatized.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,30 +37,32 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Proved R_sym(Q_1) = 2 with corrected symmetric Ramsey definition. Gallery entry created. Main conjecture R_sym(Q_n) ≪ 2^n remains open (axiom).",
+    "progressSummary": "PARTIAL/AXIOMATIZED: Proofs/Erdos181OQ01.lean proves R_sym(Q_1)=2 with the corrected symmetric Ramsey definition. The general R_sym(Q_n) << 2^n conjecture remains open and is represented by explicit axioms. Source audit: 170 lines, 11 theorems/lemmas, 3 definitions, 2 axioms, 0 sorries.",
     "builtItems": [
-      "symmRamseySet: Corrected Ramsey set using symmetric colorings (Erdos181OQ01.lean)",
-      "hypercubeAdj_one_iff: x≠y ↔ adjacent in Q_1 (Erdos181OQ01.lean:44)",
-      "two_in_symm_ramsey_set: 2 ∈ symmRamseySet(1) (Erdos181OQ01.lean:107)",
-      "ramseyNumberSymm_one: R_sym(Q_1) = 2 (Erdos181OQ01.lean:129)",
-      "ramseyNumberSymm_ge: lower bound theorem (Erdos181OQ01.lean:88)"
+      "Proofs/Erdos181OQ01.lean: 170 lines, 11 theorems/lemmas, 3 definitions, 2 axioms, 0 sorries",
+      "symmRamseySet: corrected Ramsey set using symmetric colorings",
+      "hypercubeAdj_one_iff: Q_1 adjacency iff the two vertices differ",
+      "two_in_symm_ramsey_set: 2 belongs to symmRamseySet 1",
+      "ramseyNumberSymm_one: R_sym(Q_1) = 2",
+      "ramseyNumberSymm_ge: conditional lower bound theorem"
     ],
     "insights": [
-      "Parent proof uses directed colorings — antisymmetric colorings make the Ramsey set empty for n≥1",
-      "Corrected definition: symmRamseySet using c(i,j)=c(j,i) correctly models undirected Ramsey theory",
-      "R_sym(Q_1) = 2 proved completely: 2 ∈ symmRamseySet(1) via id embedding + symmetry",
-      "Lower bound R_sym(Q_n) ≥ 2^n follows unconditionally from pigeonhole given non-emptiness",
-      "Main conjecture R_sym(Q_n) ≪ 2^n remains open; best known Tikhomirov exponent is 2-c ≈ 1.964"
+      "The corrected symmRamseySet definition models undirected Ramsey colorings by requiring color symmetry.",
+      "The Q_1 base case is fully proved with 0 sorries.",
+      "The lower bound R_sym(Q_n) >= 2^n is conditional on symmRamseySet n being nonempty.",
+      "The general bounded-ratio conjecture remains open and axiomatized."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: erdos-181-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
-    "combinatorics",
+    "erdos",
+    "graph-theory",
     "ramsey-theory",
-    "hypercube-graphs",
-    "graph-theory"
+    "hypercube",
+    "open-question",
+    "combinatorics"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -66,14 +76,14 @@
     "mathlib": []
   },
   "started": "2026-04-13T00:54:20.757Z",
-  "lastUpdate": "2026-04-13T15:48:33-07:00",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 8,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos181OQ01.lean",
       "filename": "Erdos181OQ01.lean",
-      "lineCount": 171,
+      "lineCount": 170,
       "theoremCount": 11,
       "axiomCount": 2,
       "defCount": 3,
@@ -84,7 +94,7 @@
     {
       "path": "Proofs/Erdos181Problem.lean",
       "filename": "Erdos181Problem.lean",
-      "lineCount": 386,
+      "lineCount": 385,
       "theoremCount": 17,
       "axiomCount": 3,
       "defCount": 2,

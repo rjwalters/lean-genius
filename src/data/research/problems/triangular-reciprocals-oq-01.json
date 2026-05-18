@@ -1,42 +1,66 @@
 {
   "slug": "triangular-reciprocals-oq-01",
-  "title": "triangular-reciprocals-oq-01",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Reciprocal Sums of Higher Figurate Numbers",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Define triangular, pentagonal, and hexagonal figurate numbers; prove triangular reciprocal partial fractions, basic figurate identities, and square-reciprocal summability.",
+    "plain": "Formalizes higher figurate-number reciprocal infrastructure, including triangular partial fractions, examples for square/pentagonal/hexagonal numbers, the hexagonal-triangular identity, and convergence of square reciprocals.",
+    "whyMatters": [
+      "Connects triangular reciprocal telescoping with broader figurate-number families.",
+      "Provides reusable convergence and identity infrastructure for related reciprocal-series questions."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "partial_fraction proves 2/(n(n+1)) = 2/n - 2/(n+1).",
+      "triangular, pentagonal, and hexagonal definitions are backed by concrete value theorems.",
+      "hexagonal_eq_triangular proves every hexagonal number is triangular.",
+      "square_reciprocals_summable proves summability of square reciprocals."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Keep the completed figurate-reciprocal research record aligned with Proofs/TriangularReciprocalsFigurate.lean."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-03-29T19:03:47-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Source-backed metadata sync for Proofs/TriangularReciprocalsFigurate.lean: 111 lines, 10 theorems, 3 definitions, 0 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "No Lean work is needed for the research record.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Proofs/TriangularReciprocalsFigurate.lean defines triangular, pentagonal, and hexagonal numbers; proves triangular reciprocal partial fractions and positivity; proves figurate examples and the hexagonal-triangular identity; and establishes square-reciprocal summability. Source audit: 111 lines, 10 theorems, 3 definitions, 0 axioms, 0 sorries.",
+    "builtItems": [
+      "Proofs/TriangularReciprocalsFigurate.lean: 111 lines, 10 theorems, 3 definitions, 0 axioms, 0 sorries",
+      "partial_fraction and triangular_reciprocal_pos",
+      "triangular, pentagonal, and hexagonal definitions with value theorems",
+      "hexagonal_eq_triangular",
+      "square_reciprocals_summable"
+    ],
+    "insights": [
+      "Triangular reciprocals reduce by a clean partial-fraction identity.",
+      "Hexagonal numbers are triangular numbers at odd indices.",
+      "Square-reciprocal convergence provides the master comparison target for higher figurate reciprocal questions."
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: triangular-reciprocals-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "analysis",
+    "series",
+    "combinatorics",
+    "figurate-numbers",
+    "classic"
+  ],
   "relatedProofs": [
     "triangular-reciprocals",
     "triangular-reciprocals-oq-01"
@@ -47,12 +71,12 @@
     "mathlib": []
   },
   "started": "2026-03-30T02:13:21.213Z",
-  "lastUpdate": "2026-03-30T02:13:21.225Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/TriangularReciprocalsFigurate.lean",
       "filename": "TriangularReciprocalsFigurate.lean",
-      "lineCount": 112,
+      "lineCount": 111,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 3,

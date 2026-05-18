@@ -1,27 +1,38 @@
 {
   "slug": "erdos-622-oq-04",
-  "title": "Formalize DKM 2025 absorbing method proof in Lean graph theory",
-  "phase": "NEW",
-  "status": "completed",
+  "title": "Absorbing Method Infrastructure for Erdos-Faudree Graphs",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in combinatorics: Formalize DKM 2025 absorbing method proof in Lean graph theory.",
-    "whyMatters": []
+    "formal": "Formalize edge-counting, common-neighborhood, and absorbing-pair infrastructure for Erdos-Faudree regular graphs.",
+    "plain": "Builds the absorbing-method infrastructure around Erdos-Faudree graphs: regular edge counts, common-neighborhood bounds, absorbing triples, absorbing pairs, and a statement-level absorbing structure definition.",
+    "whyMatters": [
+      "Turns the absorbing-method setup into reusable Lean graph-theory infrastructure.",
+      "Separates proved local absorbing-pair density from the still-open probabilistic machinery needed for a full absorbing lemma."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "regular_edge_count and erdos_faudree_edge_count prove the regular graph edge-count facts.",
+      "common_neighbors_ge and erdos_faudree_common_ge_two prove common-neighborhood lower bounds.",
+      "IsAbsorbingTriple and absorbingPairs provide the absorbing-pair framework.",
+      "absorbing_pair_exists and erdos_faudree_absorbing_pairs_ge prove local absorbing-pair existence and density."
+    ],
+    "open": [
+      "Prove HasAbsorbingStructure from the local absorbing-pair infrastructure.",
+      "Formalize the probabilistic path-sampling and concentration machinery needed for a full absorbing lemma."
+    ],
+    "goal": "Keep the completed absorbing-method infrastructure record aligned with Proofs/Erdos622OQ04.lean."
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-04-05T13:43:04.318Z",
     "iteration": 2,
-    "focus": "Both sorries proved: absorbing_pair_exists and erdos_faudree_absorbing_pairs_ge",
+    "focus": "Source-backed metadata sync for Proofs/Erdos622OQ04.lean: 215 lines, 8 public theorems plus 1 private helper lemma, 3 definitions, 0 axioms, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Gallery entry created, ready for merge",
+    "nextAction": "No Lean work is needed for the completed infrastructure record; future work is the full absorbing-structure theorem.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,44 +40,35 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All sorries eliminated. Fixed flipped hypothesis in absorbing_pair_exists (|V|+2 <= 2d, not 2d <= |V|+2). Proved absorbing_pair_exists via common neighborhood bound. Proved erdos_faudree_absorbing_pairs_ge via injection argument (u -> (u, choose(N(u) ∩ N(w)))). Fixed bug in isAbsorbingTriple_symm. Changed absorbingPairs to Prop-based filter for cleaner proofs. File: 0 sorries, 0 axioms, 9 theorems, 4 definitions.",
+    "progressSummary": "COMPLETED: Proofs/Erdos622OQ04.lean proves edge-counting, common-neighborhood, absorbing-triple, and absorbing-pair density infrastructure for Erdos-Faudree graphs. Source audit: primary file has 215 lines, 8 public theorems plus 1 private helper lemma, 3 definitions, 0 axioms, 0 sorries; parent file has 3 axioms.",
     "builtItems": [
-      "regular_edge_count: 2|E| = |V|·d for d-regular graphs (proved)",
-      "erdos_faudree_edge_count: |E| = n(n+1) (proved)",
-      "common_neighbors_ge: |N(u)∩N(v)| + |V| ≥ 2d (proved)",
-      "erdos_faudree_common_ge_two: common neighbors ≥ 2 in EF graphs (proved)",
-      "IsAbsorbingTriple definition and symmetry (proved)",
-      "absorbingPairs definition",
-      "HasAbsorbingStructure definition (absorbing lemma statement)",
-      "absorbing_pair_exists proved (triangle existence in dense regular graphs)",
-      "erdos_faudree_absorbing_pairs_ge proved (>= n absorbing pairs per vertex)",
-      "mem_absorbingPairs helper lemma for membership proofs",
-      "Fixed isAbsorbingTriple_symm (Ne.symm bug in positions 5-6)",
-      "Changed absorbingPairs to Prop-based filter"
+      "Proofs/Erdos622OQ04.lean: 215 lines, 8 public theorems plus 1 private helper lemma, 3 definitions, 0 axioms, 0 sorries",
+      "regular_edge_count and erdos_faudree_edge_count",
+      "common_neighbors_ge and erdos_faudree_common_ge_two",
+      "IsAbsorbingTriple, absorbingPairs, and isAbsorbingTriple_symm",
+      "absorbing_pair_exists and erdos_faudree_absorbing_pairs_ge",
+      "HasAbsorbingStructure definition"
     ],
     "insights": [
-      "Common neighborhood bound is the quantitative foundation: 2d - n common neighbors",
-      "For Erdős-Faudree graphs (d=n+1, |V|=2n), any two vertices share ≥ 2 common neighbors",
-      "Absorbing method requires: (1) absorbing pair density, (2) probabilistic path sampling, (3) concentration inequality",
-      "The absorbing pair density bound needs graph theory on induced subgraph edge count",
-      "The hypothesis in absorbing_pair_exists was flipped: need |V| <= 2d-2 (not |V| >= 2d-2)",
-      "Injection argument for density: u -> (u, choose(N(u) ∩ N(w))) has distinct first coords, so is injective",
-      "Prop-based Finset.filter is much cleaner than Bool-based decide && for membership proofs"
+      "The common-neighborhood bound is the quantitative foundation: two vertices have at least 2d - |V| common neighbors under the stated hypotheses.",
+      "For Erdos-Faudree graphs with d=n+1 and |V|=2n, the specialization gives at least two common neighbors.",
+      "The local absorbing-pair density result is proved; a full absorbing structure still needs probabilistic path-sampling and concentration machinery.",
+      "Prop-based Finset.filter keeps absorbingPairs membership proofs cleaner than Boolean filtering."
     ],
     "mathlibGaps": [
-      "No ready-made induced subgraph edge counting lemmas for regular graphs",
-      "Need neighborhood-restricted degree summation (handshaking for induced subgraphs)"
+      "Probabilistic path-sampling and concentration infrastructure for proving HasAbsorbingStructure from local absorbing-pair density."
     ],
     "nextSteps": [
-      "Prove absorbing_pair_exists: existence follows from common_neighbors_ge + adjacency in N(w)",
-      "Prove erdos_faudree_absorbing_pairs_ge: count edges in induced subgraph on N(w)",
-      "Submit 2 sorries to Aristotle for automated proof search"
+      "Prove HasAbsorbingStructure from the completed local absorbing-pair density infrastructure.",
+      "Formalize the probabilistic sampling and concentration lemmas needed for the full absorbing lemma."
     ]
   },
   "tags": [
-    "seeker-selected",
-    "combinatorics",
-    "absorbing-method"
+    "erdos",
+    "graph-theory",
+    "extremal-combinatorics",
+    "absorbing-method",
+    "regular-graphs"
   ],
   "relatedProofs": [
     "erdos-6",
@@ -79,15 +81,15 @@
     "urls": [],
     "mathlib": []
   },
-  "started": "2026-04-05T13:43:04.318Z",
-  "lastUpdate": "2026-04-05T13:43:04.318Z",
+  "started": "2026-04-05T14:51:46.143Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 6,
   "tractability": 7,
   "leanFiles": [
     {
       "path": "Proofs/Erdos622OQ04.lean",
       "filename": "Erdos622OQ04.lean",
-      "lineCount": 216,
+      "lineCount": 215,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 3,
@@ -98,7 +100,7 @@
     {
       "path": "Proofs/Erdos622Problem.lean",
       "filename": "Erdos622Problem.lean",
-      "lineCount": 172,
+      "lineCount": 171,
       "theoremCount": 0,
       "axiomCount": 3,
       "defCount": 13,
@@ -106,5 +108,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos622Problem.lean"
     }
-  ]
+  ],
+  "completed": "2026-04-12T22:45:44.730Z"
 }

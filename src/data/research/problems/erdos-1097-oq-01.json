@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1097-oq-01",
-  "title": "k-Term AP Common Differences",
+  "title": "Common Differences in k-Term Arithmetic Progressions",
   "phase": "ACT",
-  "status": "completed",
+  "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -15,9 +15,9 @@
   },
   "knownResults": {
     "proven": [
-      "D_k anti-monotone in k (17 theorems, 0 axioms, 0 sorries)",
-      "D_k(A) ⊆ D_3(A) for k ≥ 3",
-      "Negation symmetry, subset monotonicity, O(n²) upper bound"
+      "D_k is anti-monotone in k: longer arithmetic progressions have no more common differences than shorter ones.",
+      "D_k(A) is contained in D_3(A) for k >= 3.",
+      "Negation symmetry, subset monotonicity, and an O(n^2) upper bound are formalized."
     ],
     "open": [
       "Growth exponent α(4): is it strictly less than α(3)?",
@@ -29,7 +29,7 @@
     "phase": "COMPLETED",
     "since": "2026-03-29T18:30:00Z",
     "iteration": 1,
-    "focus": "Created 180-line formalization with 17 proved theorems and 0 axioms.",
+    "focus": "Source-backed metadata sync for Proofs/Erdos1097OQ01.lean: 207 lines, 18 theorems, 6 definitions, 0 axioms, and 0 sorries.",
     "blockers": [],
     "nextAction": "None — formalization complete.",
     "attemptCounts": {
@@ -39,15 +39,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 180-line formalization with 17 proved theorems, 0 axioms, 0 sorries. Defines k-AP predicate, proves anti-monotonicity, containment in D_3, symmetry, quadratic bound.",
+    "progressSummary": "COMPLETED INFRASTRUCTURE / ACTIVE QUESTION: Proofs/Erdos1097OQ01.lean defines k-AP common differences and proves anti-monotonicity, containment in D_3, symmetry, and quadratic bounds. Source audit: 207 lines, 18 theorems, 6 definitions, 0 axioms, 0 sorries. The growth-exponent question remains open.",
     "builtItems": [
-      "Created Proofs/Erdos1097OQ01.lean (180 lines, 17 theorems, 0 axioms)",
-      "Created gallery entry src/data/proofs/erdos-1097-oq-01/"
+      "Proofs/Erdos1097OQ01.lean: 207 lines, 18 theorems, 6 definitions, 0 axioms, 0 sorries",
+      "IsKAP, commonDiffK, commonDiffKFinset, and numCommonDiffK definitions",
+      "commonDiffK_anti, commonDiffK_subset_diff3, and commonDiffK_mono_k",
+      "neg_mem_commonDiffK and isKAP_three_iff",
+      "kAP_growth_mono and kAP_basic_bounds"
     ],
     "insights": [
-      "D_k anti-monotonicity follows directly from weakening the universal quantifier in the k-AP definition",
-      "The IsKAP definition with ∀ i < k supports clean induction and monotonicity proofs",
-      "IsKAP with k=3 is provably equivalent to the triple membership condition from Erdős #1097"
+      "D_k anti-monotonicity follows by weakening the universal quantifier in the k-AP definition.",
+      "The IsKAP definition supports direct monotonicity and containment proofs.",
+      "The k=3 specialization connects the generalized setup back to the parent Erdos 1097 formalization."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -57,7 +60,8 @@
     "erdos",
     "additive combinatorics",
     "arithmetic progressions",
-    "k-AP"
+    "k-AP",
+    "open question"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -74,14 +78,14 @@
     "mathlib": []
   },
   "started": "2026-03-29T18:00:00Z",
-  "lastUpdate": "2026-03-29T18:30:00Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 4,
   "tractability": 7,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1097OQ01.lean",
       "filename": "Erdos1097OQ01.lean",
-      "lineCount": 208,
+      "lineCount": 207,
       "theoremCount": 18,
       "axiomCount": 0,
       "defCount": 6,
@@ -92,7 +96,7 @@
     {
       "path": "Proofs/Erdos1097Problem.lean",
       "filename": "Erdos1097Problem.lean",
-      "lineCount": 391,
+      "lineCount": 390,
       "theoremCount": 23,
       "axiomCount": 3,
       "defCount": 8,

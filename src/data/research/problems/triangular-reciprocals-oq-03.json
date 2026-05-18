@@ -1,13 +1,13 @@
 {
   "slug": "triangular-reciprocals-oq-03",
-  "title": "Alternating Triangular Reciprocals Series",
+  "title": "Alternating Sum of Triangular Reciprocals",
   "phase": "COMPLETED",
   "status": "completed",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "theorem alternating_triangular_sum : HasSum (fun n : ℕ => if n = 0 then 0 else (-1 : ℝ) ^ (n + 1) * (2 / (↑n * (↑n + 1)))) (4 * Real.log 2 - 2)",
-    "plain": "Prove the alternating sum of reciprocals of triangular numbers: ∑(-1)^{n+1}·2/(n(n+1)) = 4·ln(2) - 2.",
+    "formal": "theorem alternating_triangular_sum : HasSum (fun n : Nat => if n = 0 then 0 else (-1 : Real) ^ (n + 1) * (2 / (n * (n + 1)))) (4 * Real.log 2 - 2)",
+    "plain": "Prove the alternating sum of reciprocals of triangular numbers: sum (-1)^(n+1) * 2/(n(n+1)) = 4*log(2) - 2.",
     "whyMatters": [
       "Extends the classical telescoping result ∑2/(n(n+1)) = 2 to its alternating variant",
       "Demonstrates that alternating figurate reciprocals yield transcendental values",
@@ -16,13 +16,13 @@
   },
   "knownResults": {
     "proven": [
-      "alternating_triangular_sum: ∑(-1)^{n+1}·2/(n(n+1)) = 4·ln(2) - 2 (HasSum, 2 axioms)",
-      "alternating_reciprocal_product_sum: ∑(-1)^{n+1}/(n(n+1)) = 2·ln(2) - 1 (corollary)",
-      "summable_alt_triangular: summability of the alternating series",
-      "tsum versions of both results"
+      "alternating_triangular_sum proves the alternating triangular reciprocal series equals 4*log(2)-2, using two alternating-harmonic axioms.",
+      "alternating_reciprocal_product_sum proves the unscaled corollary 2*log(2)-1.",
+      "summable_alt_triangular proves summability of the alternating triangular reciprocal series.",
+      "tsum versions of the main result and corollary are included."
     ],
     "open": [
-      "Prove the alternating harmonic series = ln(2) without axioms (requires Abel's theorem)"
+      "Prove the alternating harmonic series identities without axioms."
     ],
     "goal": "Prove ∑(-1)^{n+1}·2/(n(n+1)) = 4·ln(2) - 2"
   },
@@ -40,10 +40,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Alternating triangular reciprocals proved (0 sorries, 2 axioms for alternating harmonic series). Gallery entry created. The proof uses partial fractions to split into two Mercator series instances.",
+    "progressSummary": "COMPLETED: Proofs/TriangularReciprocalAlternatingOQ03.lean proves the alternating triangular reciprocal series with 0 sorries and 2 axioms for the alternating harmonic series. Source audit: 165 lines, 5 theorems, 0 definitions, 2 axioms, 0 sorries.",
     "builtItems": [
-      "proofs/Proofs/TriangularReciprocalAlternatingOQ03.lean - Main proof (165 lines, 0 sorries, 2 axioms)",
-      "src/data/proofs/triangular-reciprocals-oq-03/ - Gallery entry with meta.json, annotations.json, index.ts"
+      "Proofs/TriangularReciprocalAlternatingOQ03.lean: 165 lines, 5 theorems, 0 definitions, 2 axioms, 0 sorries",
+      "alternating_triangular_sum and alternating_triangular_tsum",
+      "alternating_reciprocal_product_sum and alternating_reciprocal_product_tsum",
+      "summable_alt_triangular"
     ],
     "insights": [
       "Partial fractions split (-1)^{n+1}·2/(n(n+1)) into 2·(-1)^{n+1}/n - 2·(-1)^{n+1}/(n+1)",
@@ -66,11 +68,10 @@
     }
   ],
   "tags": [
-    "seeker-selected",
     "analysis",
     "series",
     "classic",
-    "completed"
+    "intermediate"
   ],
   "relatedProofs": [
     "triangular-reciprocals",
@@ -91,20 +92,20 @@
     ]
   },
   "started": "2026-03-19T08:13:01.850Z",
-  "lastUpdate": "2026-03-19T10:00:00.000Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 7,
   "tractability": 8,
   "leanFiles": [
     {
-      "path": "Proofs/TriangularReciprocalsFigurate.lean",
-      "filename": "TriangularReciprocalsFigurate.lean",
-      "lineCount": 112,
-      "theoremCount": 10,
-      "axiomCount": 0,
-      "defCount": 3,
+      "path": "Proofs/TriangularReciprocalAlternatingOQ03.lean",
+      "filename": "TriangularReciprocalAlternatingOQ03.lean",
+      "lineCount": 165,
+      "theoremCount": 5,
+      "axiomCount": 2,
+      "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangularReciprocalsFigurate.lean"
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TriangularReciprocalAlternatingOQ03.lean"
     }
   ]
 }
