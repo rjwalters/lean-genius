@@ -6,14 +6,27 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Can we derive the binomial distribution and its key properties directly from the binomial theorem? YES. The identity (p + (1-p))^n = 1 gives normalization, algebraic manipulation yields mean = np and variance = np(1-p), Vandermonde's identity gives convolution, and the Poisson limit theorem follows from the derivative of log at 1.",
-    "whyMatters": []
+    "formal": "The binomial PMF sums to 1, has mean n*p and variance n*p*(1-p), has the expected probability generating function, is closed under convolution, and converges to the Poisson PMF under p = r/n.",
+    "plain": "Backfills metadata for deriving binomial-distribution facts from the binomial theorem. The proof defines the binomial PMF, proves normalization, symmetry, mean, variance, PGF, convolution, and a fixed-k Poisson limit theorem.",
+    "whyMatters": [
+      "The binomial distribution is a core meeting point of algebra, combinatorics, and probability.",
+      "The formalization shows how standard distribution facts flow from binomial identities and Vandermonde convolution.",
+      "Including the Poisson-limit theorem connects the finite binomial model with a central approximation theorem."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`binomPMF_sum_eq_one` proves normalization of the binomial PMF.",
+      "`binomial_mean`, `binomial_second_factorial_moment`, and `binomial_variance` prove the first two moments.",
+      "`binomial_pgf` records the probability generating function.",
+      "`binomPMF_convolution` proves closure under convolution via Vandermonde's identity.",
+      "`poisson_limit` proves fixed-k convergence of Bin(n, r/n) to the Poisson PMF.",
+      "The exact `BinomialTheoremOQ03.lean` file is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "Measure-theoretic independence infrastructure and broader distributional convergence are outside this finite algebraic slice."
+    ],
+    "goal": "Replace empty binomial-distribution metadata with theorem-level evidence from the completed Lean file."
   },
   "currentState": {
     "phase": "NEW",
@@ -39,8 +52,11 @@
     "algebra",
     "combinatorics",
     "probability",
-    "classic",
-    "beginner"
+    "binomial-distribution",
+    "generating-functions",
+    "vandermonde-identity",
+    "poisson-limit",
+    "formalized"
   ],
   "relatedProofs": [
     "binomial-theorem",
@@ -49,6 +65,7 @@
     "binomial-theorem-oq-02",
     "binomial-theorem-oq-02-oq-01",
     "binomial-theorem-oq-02-oq-01-oq-01",
+    "binomial-theorem-oq-02-oq-01-oq-01-oq-01",
     "binomial-theorem-oq-02-oq-01-oq-02",
     "binomial-theorem-oq-02-oq-01-oq-03",
     "binomial-theorem-oq-02-oq-02",
@@ -60,6 +77,7 @@
     "binomial-theorem-oq-04",
     "binomial-theorem-oq-04-oq-01",
     "binomial-theorem-oq-04-oq-02",
+    "binomial-theorem-oq-04-oq-02-oq-01",
     "binomial-theorem-oq-04-oq-03"
   ],
   "references": {
@@ -76,7 +94,7 @@
     {
       "path": "Proofs/BinomialTheorem.lean",
       "filename": "BinomialTheorem.lean",
-      "lineCount": 177,
+      "lineCount": 176,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
@@ -87,8 +105,8 @@
     {
       "path": "Proofs/BinomialTheoremOQ01.lean",
       "filename": "BinomialTheoremOQ01.lean",
-      "lineCount": 265,
-      "theoremCount": 17,
+      "lineCount": 264,
+      "theoremCount": 19,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -142,11 +160,11 @@
     {
       "path": "Proofs/BinomialTheoremOQ02OQ01OQ01.lean",
       "filename": "BinomialTheoremOQ02OQ01OQ01.lean",
-      "lineCount": 248,
+      "lineCount": 292,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 2,
-      "sorryCount": 7,
+      "sorryCount": 4,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01.lean"
     },
@@ -157,9 +175,20 @@
       "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 0,
-      "sorryCount": 5,
+      "sorryCount": 4,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ02OQ01OQ01OQ01.lean",
+      "filename": "BinomialTheoremOQ02OQ01OQ01OQ01.lean",
+      "lineCount": 186,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 4,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ01OQ01.lean"
     },
     {
       "path": "Proofs/BinomialTheoremOQ02OQ01OQ02.lean",
@@ -175,11 +204,11 @@
     {
       "path": "Proofs/BinomialTheoremOQ02OQ01OQ03.lean",
       "filename": "BinomialTheoremOQ02OQ01OQ03.lean",
-      "lineCount": 223,
+      "lineCount": 393,
       "theoremCount": 5,
       "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 2,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ02OQ01OQ03.lean"
     },
@@ -281,6 +310,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ02.lean"
+    },
+    {
+      "path": "Proofs/BinomialTheoremOQ04OQ02OQ01.lean",
+      "filename": "BinomialTheoremOQ04OQ02OQ01.lean",
+      "lineCount": 225,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BinomialTheoremOQ04OQ02OQ01.lean"
     },
     {
       "path": "Proofs/BinomialTheoremOQ04OQ03.lean",
