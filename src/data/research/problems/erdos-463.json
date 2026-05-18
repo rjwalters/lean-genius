@@ -1,27 +1,38 @@
 {
   "slug": "erdos-463",
-  "title": "Erdős #463",
+  "title": "Erdos 463 least-prime-factor composite gaps",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Is there a function $f$ with $f(n)\\to \\infty$ as $n\\to \\infty$ such that, for all large $n$, there is a composite number $m$ such that\\[n+f(n)<m<n+p(m)?\\](Here $p(m)$ is the least prime factor of $m$.)\n\n\n\nIn \\cite{Er92e} Erd\\H{o}s asks about\\[F(n)=\\min_{m>n}(m-p(m)),\\]and whether $n-F(n)\\sim cn^{1/2}$ for some $c>0$.\n\nSee also [385].",
-    "plain": "Is there a function $f$ with $f(n)\\to \\infty$ as $n\\to \\infty$ such that, for all large $n$, there is a composite number $m$ such that\\[n+f(n)n}(m-p(m)),\\]and whether $n-F(n)\\sim cn^{1/2}$ for some $c>0$.",
-    "whyMatters": []
+    "formal": "Is there a function $f(n)\\to\\infty$ such that, for all sufficiently large $n$, some composite $m$ satisfies $n+f(n)<m<n+p(m)$, where $p(m)$ is the least prime factor of $m$? Equivalently, the problem studies how large the gap $m-p(m)$ can force the first composite above n to be.",
+    "plain": "Can least-prime-factor gaps for composite numbers force an unbounded buffer above every large n?",
+    "whyMatters": [
+      "The Lean file isolates the elementary min-factor facts behind the open composite-gap question.",
+      "It proves why even composites alone are insufficient and why large least prime factors are necessary.",
+      "The metadata should replace the malformed plain statement with the verified least-prime-factor scaffold."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`leastPrimeGap`, `minFac_ge_two`, `even_composite_gap`, and `odd_composite_minFac_ge_three` formalize the least-prime-factor gap setup.",
+      "`odd_composite_ge_nine`, `composite_above_exists`, and `even_composites_insufficient` prove elementary constraints on composite witnesses.",
+      "`conjecture_needs_large_minFac`, `large_minFac_gap_bound`, and `leastPrimeGap_pos` record the verified reduction to composites with large least prime factor."
+    ],
+    "open": [
+      "`Erdos463Problem.lean` has zero active axioms and zero active sorries.",
+      "The asymptotic existence of an unbounded buffer function and the proposed square-root behavior remain open."
+    ],
+    "goal": "Make the verified `Nat.minFac` and composite-gap reductions discoverable for future work on the open asymptotic statement."
   },
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-13T04:11:10.512Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Metadata backfill aligned with the verified least-prime-factor gap lemmas.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Use the large-minimum-factor reduction to guide future attempts at the asymptotic composite-gap question.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -37,7 +48,12 @@
     "markdown": "# Erdős #463 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a function $f$ with $f(n)\\to \\infty$ as $n\\to \\infty$ such that, for all large $n$, there is a composite number $m$ such that\\[n+f(n)<m<n+p(m)?\\](Here $p(m)$ is the least prime factor of $m$.)\n\n\n\nIn \\cite{Er92e} Erd\\H{o}s asks about\\[F(n)=\\min_{m>n}(m-p(m)),\\]and whether $n-F(n)\\sim cn^{1/2}$ for some $c>0$.\n\nSee also [385].\n\n\n\n\nReferences\n\n\n[Er92e] Erd\\H{o}s, P\\'{a}l, Some Unsolved problems in Geometry, Number Theory and Combinatorics. Eureka (1992), 44-48.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #385\n- Problem #462\n- Problem #464\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n- Er92e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "least-prime-factor",
+    "composite-numbers",
+    "prime-gaps",
+    "fully-verified"
   ],
   "relatedProofs": [
     "erdos-4",

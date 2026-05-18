@@ -1,27 +1,39 @@
 {
   "slug": "erdos-686",
-  "title": "Erdős #686",
+  "title": "Erdos 686 consecutive product ratios",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Can every integer $N\\geq 2$ be written as\\[N=\\frac{\\prod_{1\\leq i\\leq k}(m+i)}{\\prod_{1\\leq i\\leq k}(n+i)}\\]for some $k\\geq 2$ and $m\\geq n+k$?\n\n\n\nIf $n$ and $k$ are fixed then can one say anything about the set of integers so represented?\n\nSee also [677].",
-    "plain": "Can every integer $N\\geq 2$ be written as\\[N=\\frac{\\prod_{1\\leq i\\leq k}(m+i)}{\\prod_{1\\leq i\\leq k}(n+i)}\\]for some $k\\geq 2$ and $m\\geq n+k$?",
-    "whyMatters": []
+    "formal": "Can every integer $N\\geq 2$ be represented as a ratio of consecutive products \\(\\prod_{1\\leq i\\leq k}(m+i)/\\prod_{1\\leq i\\leq k}(n+i)\\) with $k\\geq 2$ and $m\\geq n+k$? For fixed $n,k$, what can be said about the set of integers represented this way?",
+    "plain": "Can every integer at least 2 occur as an integer ratio of two same-length consecutive-product blocks?",
+    "whyMatters": [
+      "The formalization connects consecutive products to factorials and binomial coefficients.",
+      "It proves an infinite representable set for fixed parameters, giving a concrete positive result around the open universal conjecture.",
+      "The metadata should separate the verified product-divisibility scaffolding from the still-open representation question."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`consecutiveProduct`, `consecutiveProduct_succ`, `consecutiveProduct_eq_factorial`, `product_binomial_relation`, and `ratio_as_binomials` define the product blocks and relate them to factorial/binomial expressions.",
+      "`IsIntegerRatio`, `IsRepresentable`, `Representable`, and `Erdos686Conjecture` formalize the integer-ratio problem.",
+      "`numerator_gt_denominator`, `consecutiveProduct_pos`, `consecutiveProduct_mono`, `factor_dvd_consecutiveProduct`, `consecutiveProduct_dvd_of_pointwise`, `shifted_factor_dvd`, `integer_ratio_at_multiples`, and `ratioExpression_eq_nat_div` prove the main divisibility and monotonicity infrastructure.",
+      "`example_N2`, `example_N3`, `example_N6`, `example_N10`, `RepresentableSet`, `representable_set_infinite`, and `problem_677_special_case` record examples, an infinite fixed-parameter family, and the Problem 677 bridge."
+    ],
+    "open": [
+      "`Erdos686Problem.lean` has zero active axioms and zero active sorries.",
+      "The universal statement `Erdos686Conjecture` is a formal open target, not a theorem."
+    ],
+    "goal": "Make the verified consecutive-product and binomial-ratio infrastructure discoverable while preserving the universal representation conjecture as open."
   },
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-14T19:46:33.201Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Metadata backfill aligned with the fully verified Lean product-ratio scaffold.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Use the verified infinite fixed-parameter family and binomial identities as anchors for future attacks on `Erdos686Conjecture`.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -52,7 +64,12 @@
     "markdown": "# Erdős #686 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nCan every integer $N\\geq 2$ be written as\\[N=\\frac{\\prod_{1\\leq i\\leq k}(m+i)}{\\prod_{1\\leq i\\leq k}(n+i)}\\]for some $k\\geq 2$ and $m\\geq n+k$?\n\n\n\nIf $n$ and $k$ are fixed then can one say anything about the set of integers so represented?\n\nSee also [677].\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #677\n- Problem #685\n- Problem #687\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79d\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "consecutive-products",
+    "binomial-coefficients",
+    "factorials",
+    "fully-verified"
   ],
   "relatedProofs": [
     "erdos-6",

@@ -1,27 +1,39 @@
 {
   "slug": "erdos-1060",
-  "title": "Erdős #1060",
+  "title": "Erdos 1060 solutions to k sigma(k) equals n",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Let $f(n)$ count the number of solutions to $k\\sigma(k)=n$, where $\\sigma(k)$ is the sum of divisors of $k$. Is it true that $f(n)\\leq n^{o(\\frac{1}{\\log\\log n})}$? Perhaps even $\\leq (\\log n)^{O(1)}$?\n\n\n\nThis is discussed in problem B11 of Guy's collection \\cite{Gu04}.",
-    "plain": "Let $f(n)$ count the number of solutions to $k\\sigma(k)=n$, where $\\sigma(k)$ is the sum of divisors of $k$. Is it true that $f(n)\\leq n^{o(\\frac{1}{\\log\\log n})}$? Perhaps even $\\leq (\\log n)^{O(1)}$?",
-    "whyMatters": []
+    "formal": "Let $f(n)$ count the solutions of $k\\sigma(k)=n$, where $\\sigma(k)$ is the sum-of-divisors function. Are the values of $f(n)$ bounded by $n^{o(1/\\log\\log n)}$, or perhaps even by a fixed power of $\\log n$?",
+    "plain": "How many integers k can have k times its divisor sum equal the same n?",
+    "whyMatters": [
+      "The Lean file gives a reusable divisor-sum and counting-function scaffold for this Erdos-Guy question.",
+      "It proves finiteness and elementary bounds for the solution count, including a square-root bound.",
+      "The metadata should keep the proved finite-count infrastructure separate from the still-open asymptotic estimates."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`sigma_one`, `sigma_prime`, and `sigma_mul_coprime` establish basic sum-of-divisors facts used by the problem.",
+      "`g`, `solutionSet`, `sigma_pos`, `sigma_ge_self`, `k_le_g`, `g_ge_sq`, and `solutionSet_finite` formalize the equation and prove finiteness for positive n.",
+      "`f_eq_f'`, `f_of_one`, `f_of_zero`, `f_le_n`, `g_pos`, and `g_gt_k` record elementary count and growth facts.",
+      "`oeis_A327153`, `mem_A327153_iff`, `solution_le_sqrt`, and `f_le_sqrt` connect the formal count to the OEIS set and prove the square-root bound."
+    ],
+    "open": [
+      "`Erdos1060Problem.lean` has zero active axioms and zero active sorries.",
+      "The subpolynomial and polylogarithmic bounds from the problem statement remain open asymptotic targets."
+    ],
+    "goal": "Surface the verified divisor-sum counting framework and the proved finite/square-root bounds for future asymptotic work."
   },
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T14:31:40.058Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Metadata backfill aligned with the verified divisor-sum solution-count scaffold.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Use `f_le_sqrt` and the `solutionSet` formalization as the baseline for any future improvement toward the open asymptotic bounds.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -53,7 +65,12 @@
     "markdown": "# Erdős #1060 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ count the number of solutions to $k\\sigma(k)=n$, where $\\sigma(k)$ is the sum of divisors of $k$. Is it true that $f(n)\\leq n^{o(\\frac{1}{\\log\\log n})}$? Perhaps even $\\leq (\\log n)^{O(1)}$?\n\n\n\nThis is discussed in problem B11 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1059\n- Problem #1061\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "divisor-sums",
+    "counting-functions",
+    "oeis",
+    "fully-verified"
   ],
   "relatedProofs": [
     "erdos-1",
