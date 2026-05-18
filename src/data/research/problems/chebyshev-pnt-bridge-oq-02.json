@@ -10,8 +10,31 @@
     "number-theory",
     "prime-counting",
     "chebyshev",
-    "analytic-number-theory"
+    "analytic-number-theory",
+    "logarithms",
+    "intermediate"
   ],
+  "problemStatement": {
+    "formal": "For all n >= 1, prove (n * log 4 - log (2n + 1)) / log (2n) <= Nat.primeCounting (2n), and combine it with the matching Chebyshev upper estimate to obtain explicit pi(x) = Theta(x / log x) bounds.",
+    "plain": "Turn Chebyshev's integer power inequalities into an explicit real-valued lower bound for the prime-counting function at 2n.",
+    "whyMatters": [
+      "Completes the Chebyshev bridge from binomial coefficient estimates to prime-counting bounds.",
+      "Makes the lower constant explicit enough to pair with the existing upper-bound proof.",
+      "Documents a historically important route toward the prime number theorem without analytic machinery."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Proofs/ChebyshevPNTBridgeOQ02.lean proves chebyshev_lower_log, chebyshev_lower_real, chebyshev_lower_pos, and chebyshev_pi_interval.",
+      "Proof metadata records 173 lines, 5 theorems, 0 definitions, 0 axioms, and 0 sorries.",
+      "The lower bound plus the existing upper bound gives an explicit Chebyshev interval for pi(2n) with constants log 2 and 2 * log 4."
+    ],
+    "open": [
+      "Tightening the lower constant from log 2 toward Chebyshev's original 0.921 remains future work.",
+      "Improving the upper constant toward 1.106 would require finer binomial or sieve estimates."
+    ],
+    "goal": "Keep the verified real-valued Chebyshev prime-counting lower bound discoverable from the research index."
+  },
   "knowledge": {
     "progressSummary": "COMPLETE: Proved (n·log4 − log(2n+1))/log(2n) ≤ π(2n) for n ≥ 1. Four theorems, 0 sorries, 0 axioms.",
     "insights": [
