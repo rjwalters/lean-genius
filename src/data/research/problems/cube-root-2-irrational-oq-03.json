@@ -1,16 +1,16 @@
 {
   "slug": "cube-root-2-irrational-oq-03",
-  "title": "Algebraic Degree of n-th Roots: Non-Perfect-Power Criterion",
+  "title": "Algebraic Degree of nth Roots with a Square-Free Factor",
   "phase": "COMPLETED",
-  "status": "completed",
+  "status": "graduated",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "For m with prime factor p satisfying p | m but p² ∤ m, and n ≥ 2: (minpoly ℚ (m^(1/n))).natDegree = n and Module.finrank ℚ ℚ⟮m^(1/n)⟯ = n",
-    "plain": "Formalize the degree bound: any n-th root of a non-perfect-power is a degree-n algebraic number. Specifically, if m has a prime factor p with p | m but p² ∤ m (a 'square-free factor'), then m^(1/n) has algebraic degree exactly n over ℚ.",
+    "formal": "For m with prime factor p satisfying p | m but p^2 does not divide m, and n >= 2: (minpoly Q (m^(1/n))).natDegree = n and Module.finrank Q Q(m^(1/n)) = n.",
+    "plain": "Formalize the square-free-prime-factor sufficient criterion: if m has a prime factor p with p dividing m but p^2 not dividing m, then m^(1/n) has algebraic degree n over Q.",
     "whyMatters": [
       "Extends the prime case of NthRootIrrationalOQ01 to composite m with square-free prime factors",
-      "Proves [ℚ(m^(1/n)):ℚ] = n, the field extension degree equals n",
+      "Proves the field extension degree [Q(m^(1/n)):Q] = n under a concrete Eisenstein hypothesis",
       "Provides the degree-n algebraic number characterization for a natural class of non-perfect-powers",
       "Connects Eisenstein criterion to field theory: irreducible X^n-m → minpoly = X^n-m → degree n"
     ]
@@ -31,7 +31,7 @@
       "adjoin_fourthrt30_finrank: [ℚ(∜30):ℚ] = 4"
     ],
     "open": [],
-    "goal": "Prove algebraic degree n for n-th roots of non-perfect-powers"
+    "goal": "Prove algebraic degree n for nth roots under the square-free-prime-factor Eisenstein criterion"
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -47,7 +47,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries, 0 axioms. Degree-n bound proved for n-th roots of m with square-free prime factor.",
+    "progressSummary": "COMPLETED: CubeRoot2IrrationalOQ03.lean proves the square-free-prime-factor criterion with 12 public theorems, 0 axioms, and 0 sorries. This is an Eisenstein sufficient criterion, not the full Vahlen-Capelli characterization for every non-perfect-power.",
     "builtItems": [
       "CubeRoot2IrrationalOQ03.eisenstein_X_pow_sub_of_sqfree_factor: Eisenstein at p|m,p²∤m → X^n-m irred over ℚ",
       "CubeRoot2IrrationalOQ03.aeval_nthRoot_sub_eq_zero: m^(1/n) annihilates X^n-m",
@@ -67,12 +67,12 @@
       "pow_dvd_pow_of_dvd (without Nat prefix): a ∣ b → a^n ∣ b^n (used in not_perfect_power proof)",
       "Eisenstein at p works for composite m whenever p|m and p²∤m (same proof structure as prime case)",
       "Square-free factor condition p|m, p²∤m implies non-perfect-power: v_p(k^n) is 0 or ≥n, never 1",
-      "The key chain: Eisenstein → irreducible → minpoly = X^n-m → natDegree=n → finrank=n"
+      "The key chain: Eisenstein -> irreducible -> minpoly = X^n-m -> natDegree=n -> finrank=n"
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove the full Vahlen-Capelli theorem: X^n-m irreducible over ℚ iff m not a perfect q-th power for each prime q|n (and -4k^4 condition for 4|n)",
-      "Prove the converse: if m is a perfect n-th power then [ℚ(m^(1/n)):ℚ] < n",
+      "Prove the full Vahlen-Capelli theorem: X^n-m irreducible over Q iff m not a perfect q-th power for each prime q|n (and -4k^4 condition for 4|n)",
+      "Prove the converse: if m is a perfect n-th power then [Q(m^(1/n)):Q] < n",
       "Generalize to number fields: degree of m^(1/n) over K for arbitrary number field K"
     ]
   },
@@ -107,26 +107,26 @@
   "tractability": 7,
   "leanFiles": [
     {
-      "path": "Proofs/CubeRoot2Irrational.lean",
-      "filename": "CubeRoot2Irrational.lean",
-      "lineCount": 92,
-      "theoremCount": 5,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot2Irrational.lean"
-    },
-    {
       "path": "Proofs/CubeRoot2IrrationalOQ03.lean",
       "filename": "CubeRoot2IrrationalOQ03.lean",
-      "lineCount": 205,
+      "lineCount": 204,
       "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot2IrrationalOQ03.lean"
+    },
+    {
+      "path": "Proofs/CubeRoot2Irrational.lean",
+      "filename": "CubeRoot2Irrational.lean",
+      "lineCount": 91,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CubeRoot2Irrational.lean"
     }
   ]
 }

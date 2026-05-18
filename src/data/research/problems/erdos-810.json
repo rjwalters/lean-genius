@@ -2,26 +2,38 @@
   "slug": "erdos-810",
   "title": "Erdős #810",
   "phase": "COMPLETED",
-  "status": "active",
+  "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "Does there exist some $\\epsilon>0$ such that, for all sufficiently large $n$, there exists a graph $G$ on $n$ vertices with at least $\\epsilon n^2$ many edges such that the edges can be coloured with $n$ colours so that every $C_4$ receives $4$ distinct colours?\n\n\n\nA problem of Burr, Erd\\H{o}s, Graham, and S\\'{o}s.\n\nSee also [809].",
     "plain": "Does there exist some $\\epsilon>0$ such that, for all sufficiently large $n$, there exists a graph $G$ on $n$ vertices with at least $\\epsilon n^2$ many edges such that the edges can be coloured with $n$ colours so that every $C_4$ receives $4$ distinct colours?",
-    "whyMatters": []
+    "whyMatters": [
+      "Connects dense graph edge bounds with the obstruction that any quadratic-density witness must contain many C4s",
+      "Separates the Kovari-Sos-Turan input from the original rainbow C4 existence problem",
+      "Keeps the remaining graph-theoretic axiom explicit instead of presenting the open problem as solved"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "dense_graph_has_C4_large_n: dense enough graphs contain a C4, conditional on the KST axiom",
+      "witness_must_contain_C4: any Problem 810 witness must contain C4s",
+      "rainbow_C4_needs_4_colors: a rainbow C4 requires at least four colors",
+      "c4_free_vacuously_rainbow: C4-free graphs vacuously satisfy the rainbow condition"
+    ],
+    "open": [
+      "kovari_sos_turan_C4 remains axiomatized",
+      "The original Erdos 810 rainbow C4 existence problem remains open"
+    ],
+    "goal": "Record the conditional dense-graph obstruction with one explicit KST axiom"
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-01-15T09:32:29.766Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Conditional formalization: 213 lines, 4 public theorems, 5 defs, 1 KST axiom, 0 sorries.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None for this metadata slice; future proof work should replace the KST axiom or add constructions.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated last sorry in dense_graph_has_C4_large_n via rpow arithmetic (√n decomposition + KST). File now 213 lines, 4 theorems, 1 axiom, 0 sorries.",
+    "progressSummary": "COMPLETED metadata slice: Erdos810Problem.lean has 213 lines, 4 public theorems, 5 defs, 1 KST axiom, and 0 sorries. It proves conditional structural consequences and does not solve the original rainbow C4 problem.",
     "builtItems": [
       "dense_graph_has_C4_large_n: derived from KST axiom (replaced incorrect axiom, 1 arithmetic sorry)",
       "witness_must_contain_C4: any witness for Problem 810 must contain C₄s (proved from above)",
@@ -45,9 +57,10 @@
       "Related to Problem 809 (same authors). KST + density argument forces C₄ existence for large n",
       "Proved dense_graph_has_C4_large_n: decompose n^{3/2}=n·√n, cancel n, use n>(C/ε)² to get ε·√n>C, contradiction"
     ],
-    "mathlibGaps": [],
+    "mathlibGaps": [
+      "Kovari-Sos-Turan C4 extremal bound is axiomatized"
+    ],
     "nextSteps": [
-      "Prove the remaining sorry (real arithmetic: C·n^{3/2} < ε·n² for large n)",
       "Add lower bound constructions: bipartite graphs with structured colorings",
       "Connect to Problem 809 formalization"
     ],
@@ -74,7 +87,7 @@
     {
       "path": "Proofs/Erdos810Problem.lean",
       "filename": "Erdos810Problem.lean",
-      "lineCount": 214,
+      "lineCount": 213,
       "theoremCount": 4,
       "axiomCount": 1,
       "defCount": 5,
