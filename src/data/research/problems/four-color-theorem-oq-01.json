@@ -6,14 +6,28 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in graph theory: Is there a 'human-readable' proof of the Four Color Theorem that doesn't requ....",
-    "whyMatters": []
+    "formal": "Formalize structural obstacles to a short Kempe-chain proof of the four color theorem, including free-color pigeonhole facts, chain interference, and reducibility-style minimum-counterexample checks.",
+    "plain": "Backfills metadata for the Four Color Theorem OQ-01 investigation. The Lean file proves small graph-coloring and Kempe-chain obstruction lemmas explaining why the five-color Kempe strategy does not directly yield a human-readable four-color proof.",
+    "whyMatters": [
+      "The four color theorem is historically important precisely because the accepted proof is computer-assisted.",
+      "Kempe-chain failures explain why a tempting human-scale proof strategy breaks down.",
+      "The metadata surfaces the proved obstruction lemmas while keeping the full four-color theorem's axiom-backed status separate."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`free_color_of_degree_lt` proves the pigeonhole free-color principle for graph coloring.",
+      "`five_color_degree_four` records the degree-four extension step behind five-color-style arguments.",
+      "`degree_five_all_colors_possible` and `four_color_degree_five_pigeonhole` capture the degree-five bottleneck for four colors.",
+      "`chain_interference_obstruction`, `five_color_no_double_swap`, and `heawood_crossing_forced` formalize Kempe-chain interference phenomena.",
+      "`min_counterexample_has_low_degree` and `config_reduction` record minimum-counterexample and reducibility-style checks.",
+      "`FourColorTheoremOQ01.lean` is recorded with 0 axioms and 0 sorries, while the base four-color theorem file remains axiom-backed."
+    ],
+    "open": [
+      "A genuinely human-readable proof of the full four color theorem remains outside this file.",
+      "The complete computer-assisted reducible-configuration verification is not formalized here."
+    ],
+    "goal": "Expose the theorem-backed Kempe-chain obstruction and coloring-structure metadata without overstating the full four-color theorem."
   },
   "currentState": {
     "phase": "ACT",
@@ -59,9 +73,11 @@
   "tags": [
     "graph-theory",
     "combinatorics",
+    "four-color-theorem",
+    "kempe-chains",
     "computer-assisted-proof",
-    "advanced",
-    "wiedijk-100"
+    "wiedijk-100",
+    "formalized"
   ],
   "relatedProofs": [
     "four-color-theorem",

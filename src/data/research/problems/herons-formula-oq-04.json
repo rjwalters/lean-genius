@@ -1,19 +1,32 @@
 {
   "slug": "herons-formula-oq-04",
-  "title": "[Problem Title]",
+  "title": "Heron's Formula OQ-04: Triangle Isoperimetric Inequality",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "For positive side lengths a, b, c satisfying the triangle inequalities, Heron's product s(s-a)(s-b)(s-c), with s = (a+b+c)/2, is at most s^4/27.",
+    "plain": "Uses Heron's formula and the three-variable AM-GM inequality to prove that, among triangles with a fixed perimeter, the equilateral triangle maximizes area.",
+    "whyMatters": [
+      "This is the classical triangle isoperimetric inequality in a form directly tied to Heron's area formula.",
+      "The proof exposes reusable AM-GM and equality-case lemmas for later geometry entries.",
+      "The quantitative perimeter bound gives a searchable theorem-level endpoint instead of a placeholder description."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`amgm_three_nonneg` proves the three-variable AM-GM inequality for nonnegative real inputs.",
+      "`amgm_three_eq_iff` records the positive equality case for the AM-GM step.",
+      "`heron_product_le_equilateral` bounds Heron's product by the equilateral triangle with the same perimeter.",
+      "`heron_product_eq_equilateral_iff` identifies equality with the equilateral case.",
+      "`triangle_area_sq_le` and `isoperimetric_ratio` package the area and perimeter forms of the triangle isoperimetric inequality.",
+      "`HeronsFormulaOQ04.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "General polygonal isoperimetric results and the cyclic-quadrilateral analogue are outside this OQ-04 metadata slice."
+    ],
+    "goal": "Make the theorem-backed Heron/AM-GM proof of the fixed-perimeter triangle area bound searchable."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -37,9 +50,12 @@
     "markdown": "# Knowledge Base: herons-formula-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "geometry",
+    "triangle-geometry",
+    "herons-formula",
+    "isoperimetric-inequality",
+    "am-gm",
+    "formalized"
   ],
   "relatedProofs": [
     "herons-formula",
