@@ -1,27 +1,43 @@
 {
   "slug": "erdos-430",
   "title": "Erdős #430",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Fix some integer $n$ and define a decreasing sequence in $[1,n)$ by $a_1=n-1$ and, for $k\\geq 2$, letting $a_k$ be the greatest integer in $[1,a_{k-1})$ such that all of the prime factors of $a_k$ are $>n-a_k$.\n\nIs it true that, for sufficiently large $n$, not all of this sequence can be prime?\n\n\n\nErd\\H{o}s and Graham write 'preliminary calculations made by Selfridge indicate that this is the case but no proof is in sight'. For example if $n=8$ we have $a_1=7$ and $a_2=5$ and then must stop.\n\nSarosh Adenwalla has observed that this problem is equivalent to (the first part of) [385]. Indeed, assuming a positive answer to that, for all large $n$, there exists a composite $m<n$ such that all primes dividing $m$ are $>n-m$. It follows that such an $m$ is equal to some $a_i$ in the sequence defined for $[1,n)$, and $m$ is composite by assumption.",
-    "plain": "Fix some integer $n$ and define a decreasing sequence in $[1,n)$ by $a_1=n-1$ and, for $k\\geq 2$, letting $a_k$ be the greatest integer in $[1,a_{k-1})$ such that all of the prime factors of $a_k$ are $>n-a_k$.",
-    "whyMatters": []
+    "formal": "For fixed n, start with a0 = n-1 and recursively choose the largest m < previous, with 1 <= m < n, such that every prime divisor p of m satisfies p > n-m. For all sufficiently large n, must this greedy sequence contain a composite term?",
+    "plain": "Does this greedy sequence of numbers whose prime factors are all large eventually have to hit a composite number for every large n?",
+    "plainEnglish": "Does this greedy sequence of numbers whose prime factors are all large eventually have to hit a composite number for every large n?",
+    "whyMatters": [
+      "Links a greedy rough-number process with a related Erdos Problem #385 formulation.",
+      "The Lean file proves termination and the #385 equivalence while leaving the main eventual-composite claim as one axiom.",
+      "The n=8 example in source only verifies the first two values, so metadata needs modest wording."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Decidability instances for prime-factor and admissibility predicates are provided.",
+      "`example_n8` proves the first two computed values: greedySeq 8 0 = 7 and greedySeq 8 1 = 5.",
+      "`greedySeq_terminates` proves greedySeq n n = 0.",
+      "`erdos_385_equivalence` proves equivalence with the Problem #385-style rough composite existence statement.",
+      "`small_n_all_prime` is proved as a vacuous n <= 1 fact."
+    ],
+    "open": [
+      "The main eventual-composite claim `erdos_430_conjecture` remains the single source axiom.",
+      "The source does not prove exact termination for the historical n=8 narrative."
+    ],
+    "goal": "Keep the main conjecture axiom separate from the proved greedy-sequence infrastructure and equivalence theorem."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T02:41:06.676Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 2,
+    "focus": "Termination, decidability, the first n=8 values, and the Problem #385 equivalence are proved; the large-n composite claim is still `erdos_430_conjecture`.",
+    "blockers": [
+      "The main eventual-composite theorem remains open and is axiomatized."
+    ],
+    "nextAction": "Either prove concrete small-n traces more fully or attack the single `erdos_430_conjecture` axiom through the #385 equivalence.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,36 +45,37 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1A (open conjecture only), 3T proved, 0S. Eliminated small_n_all_prime axiom.",
+    "progressSummary": "CURRENT: 10 theorem/lemma declarations, 7 definitions, 1 axiom (`erdos_430_conjecture`), 0 sorries. Decidability, termination, first n=8 values, the #385 equivalence, and the vacuous small-n fact are proved.",
     "builtItems": [
-      "Decidable instance for allPrimeFactorsExceed in Erdos430Problem.lean:37-49",
-      "Decidable instance for IsAdmissible in Erdos430Problem.lean:56-57",
-      "Proved example_n8 in Erdos430Problem.lean:86",
-      "PROVED backward direction of erdos_385_equivalence (was sorry)",
-      "greedyNext_ge_m: greedy next ≥ m when m is admissible and prev > m",
-      "greedyNext_lt: greedy next < prev (picks from [1, prev-1])",
-      "greedyNext_zero: greedyNext n 0 = 0 via empty Finset.Icc",
-      "greedySeq_zero_of_le_one: greedySeq n k = 0 for all k when n≤1",
-      "small_n_all_prime: proved (was axiom) using n₀=1"
+      "`allPrimeFactorsExceed`, `IsAdmissible`, `greedyNext`, `greedySeq`, `hasComposite`",
+      "Decidability instances",
+      "`example_n8`",
+      "`greedySeq_le` and `greedySeq_terminates`",
+      "`erdos_385_equivalence`",
+      "`small_n_all_prime`"
     ],
     "insights": [
-      "greedySeq uses noncomputable Finset.sup with decide on universal quantifier - not computable",
-      "example_n8 would need greedySeq to be computable, or a manual proof",
-      "Main conjecture is open, erdos_385_equivalence would need significant proof",
-      "Provided Decidable instance for allPrimeFactorsExceed via bounded quantification over Finset.range",
-      "Added explicit Decidable instance for IsAdmissible",
-      "Removed noncomputable from greedyNext, greedySeq - now fully computable",
-      "example_n8 proved by native_decide (greedySeq 8 0 = 7, greedySeq 8 1 = 5)",
-      "erdos_385_equivalence fully proved: backward direction via greedy descent — if admissible composite m exists, greedy sequence reaches it since greedyNext ≥ m when prev > m",
-      "Strong induction on gap (current - m): sequence strictly decreases while bounded below by m, must reach m",
-      "Proved small_n_all_prime: for n≤1, greedySeq is identically 0 (vacuously true). Reduces axiom count from 2 to 1."
+      "Only the main large-n composite conjecture is axiomatized.",
+      "`example_n8` proves the first two values 7 and 5, not exact stopping or absence of later composite terms.",
+      "Under the current definitions, m=1 is admissible; historical \"then stop\" wording is not represented directly.",
+      "`greedySeq_terminates` proves zero by step n, independent of the main conjecture.",
+      "`small_n_all_prime` is a proved n <= 1 boundary fact, not evidence for a broad small-n phase transition."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Prove fuller concrete traces only if the intended treatment of 1/stopping is clarified.",
+      "Use the #385 equivalence as the main route for future theorem work.",
+      "Avoid claiming all deep results are axiomatized; only `erdos_430_conjecture` is."
+    ],
     "markdown": "# Erdős #430 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nFix some integer $n$ and define a decreasing sequence in $[1,n)$ by $a_1=n-1$ and, for $k\\geq 2$, letting $a_k$ be the greatest integer in $[1,a_{k-1})$ such that all of the prime factors of $a_k$ are $>n-a_k$.\n\nIs it true that, for sufficiently large $n$, not all of this sequence can be prime?\n\n\n\nErd\\H{o}s and Graham write 'preliminary calculations made by Selfridge indicate that this is the case but no proof is in sight'. For example if $n=8$ we have $a_1=7$ and $a_2=5$ and then must stop.\n\nSarosh Adenwalla has observed that this problem is equivalent to (the first part of) [385]. Indeed, assuming a positive answer to that, for all large $n$, there exists a composite $m<n$ such that all primes dividing $m$ are $>n-m$. It follows that such an $m$ is equal to some $a_i$ in the sequence defined for $[1,n)$, and $m$ is composite by assumption.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #385\n- Problem #429\n- Problem #431\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "prime-factorization",
+    "greedy-algorithms",
+    "rough-numbers",
+    "open"
   ],
   "relatedProofs": [
     "erdos-4",
@@ -66,20 +83,29 @@
     "erdos-430"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdos-Graham-Selfridge problem context"
+    ],
+    "urls": [
+      "https://erdosproblems.com/430"
+    ],
+    "mathlib": [
+      "Nat.Prime",
+      "Nat.factorization",
+      "Finset.sup",
+      "native_decide"
+    ]
   },
   "started": "2026-01-13T02:41:06.677Z",
-  "lastUpdate": "2026-03-13T07:52:17.048Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos430Problem.lean",
       "filename": "Erdos430Problem.lean",
-      "lineCount": 250,
-      "theoremCount": 5,
+      "lineCount": 249,
+      "theoremCount": 10,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
