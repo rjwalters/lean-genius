@@ -1,19 +1,30 @@
 {
   "slug": "collatz-cycles-oq-02",
-  "title": "Formalize Eliahou's lower bound: any non-trivial cycle has length at least 17...",
+  "title": "Collatz cycle infrastructure and small-cycle exclusions",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "Formalize Eliahou's lower bound: any non-trivial cycle has length at least 17,087,915",
-    "whyMatters": []
+    "formal": "C(n)=\\begin{cases}n/2,&2\\mid n\\\\3n+1,&2\\nmid n\\end{cases};\\ C(n)=n\\Rightarrow n=0,\\ C(C(n))=n\\Rightarrow n=0, and the orbit of 1 has period 3.",
+    "plain": "Backfill the Collatz-cycle metadata around the Lean results that are actually present: no fixed points except zero, no two-cycles except zero, the 1-4-2 cycle, contraction for `n % 4 = 1`, and small halving lower bounds.",
+    "whyMatters": [
+      "The Collatz cycle question is an accessible dynamical-systems test case for arithmetic iteration.",
+      "Small-cycle exclusions and contraction lemmas are useful infrastructure even though they are far below Eliahou's large lower bound.",
+      "Correcting the old title avoids advertising the 17,087,915 lower bound as formalized here."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`collatz`, `collatzIter`, and `IsPeriodic` define the iteration framework.",
+      "`collatz_no_fixpoint` and `collatz_no_two_cycle` exclude fixed points and two-cycles except zero.",
+      "`orbit_of_one`, `one_period_is_three`, and `orbit_one_elements` formalize the `1,4,2` cycle.",
+      "`three_quarter_contraction`, `min_cycle_length_j1` through `min_cycle_length_j4`, and `small_numbers_reach_one` provide basic cycle-constraint infrastructure."
+    ],
+    "open": [
+      "Eliahou's 17,087,915 lower bound is not proved by the linked Lean files; `CollatzCycles.lean` and `CollatzCyclesOQ04.lean` record zero axioms and zero sorries for the smaller infrastructure."
+    ],
+    "goal": "Align the metadata with the verified Collatz-cycle infrastructure and mark the original Eliahou target as still open."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -41,7 +52,10 @@
     "collatz-conjecture",
     "dynamical-systems",
     "cycles",
-    "number-sequences"
+    "number-sequences",
+    "cycle-exclusion",
+    "formalization",
+    "open-target"
   ],
   "relatedProofs": [
     "collatz-cycles",

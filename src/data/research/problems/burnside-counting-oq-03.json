@@ -1,19 +1,30 @@
 {
   "slug": "burnside-counting-oq-03",
-  "title": "Burnside Counting: Generalize to Polya Enumeration",
+  "title": "Polya enumeration for cyclic colorings",
   "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in group theory: Burnside Counting: Generalize to Polya Enumeration.",
-    "whyMatters": []
+    "formal": "|\\operatorname{Fix}(r)|=k^{\\gcd(r,n)} and \\sum_{r<n}k^{\\gcd(r,n)}=\\sum_{d\\mid n}\\varphi(n/d)k^d for cyclic rotations of length-n colorings.",
+    "plain": "Backfill the Polya-enumeration metadata around cyclic colorings: fixed-coloring counts, the binary length-4 sum, and the divisor-sum identity.",
+    "whyMatters": [
+      "Polya enumeration turns symmetry classes of colorings into arithmetic sums.",
+      "The fixed-count formula is the reusable step connecting rotations to gcd data.",
+      "The zero-sorry Lean file supersedes stale progress notes that still mention unresolved sorries."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`polya_cyclic_fixed_count` proves that a rotation fixes `k ^ gcd(r,n)` colorings.",
+      "`polya_sum_Z4_binary` and `polya_divisor_sum_Z4_binary` prove the binary length-4 Polya sums.",
+      "`fiber_card_eq_totient` supplies the totient-cardinality reindexing step.",
+      "`polya_sum_identity` proves the divisor-sum identity for cyclic rotations."
+    ],
+    "open": [
+      "`BurnsideCountingOQ03.lean` currently records zero axioms and zero sorries; `BurnsideCountingOQ03Aristotle.lean` remains a separate sketch file with sorries."
+    ],
+    "goal": "Replace stale Polya progress metadata with the completed cyclic-coloring theorem anchors and remaining sketch-file caveat."
   },
   "currentState": {
     "phase": "ACT",
@@ -61,7 +72,11 @@
     "seeker-selected",
     "group-theory",
     "combinatorics",
-    "generalization"
+    "generalization",
+    "polya-enumeration",
+    "burnside-lemma",
+    "cyclic-actions",
+    "formalization"
   ],
   "relatedProofs": [
     "burnside-counting",

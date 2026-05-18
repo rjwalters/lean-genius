@@ -1,19 +1,30 @@
 {
   "slug": "denumerability-rationals-oq-02",
-  "title": "Countability of Algebraic Numbers of Bounded Degree",
+  "title": "Cantor characterization of the rational order",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalization generalizing a known result in set theory: Countability of Algebraic Numbers of Bounded Degree.",
-    "whyMatters": []
+    "formal": "For any countable densely ordered linear order without endpoints,\\ \\alpha\\simeq_o\\mathbb{Q}; in particular any two such orders are order-isomorphic.",
+    "plain": "Backfill the denumerability-rationals OQ02 metadata around Cantor's characterization of the rationals as the unique countable dense linear order without endpoints.",
+    "whyMatters": [
+      "Cantor's back-and-forth theorem is the order-theoretic companion to the countability of the rationals.",
+      "The result explains why the rational order is canonical among countable dense orders without endpoints.",
+      "The existing title referred to a different algebraic-numbers problem; the Lean file proves rational-order categoricity instead."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`rationals_dense`, `rationals_no_min`, and `rationals_no_max` record the order hypotheses for `Q`.",
+      "`cantor_characterization` proves that any countable dense linear order without endpoints is order-isomorphic to `Q`.",
+      "`countable_dense_linear_orders_iso` proves uniqueness for any two such orders.",
+      "`midpoint_between`, `two_between`, `three_between`, `integers_embed`, and `fin_embeds` provide explicit density and embedding infrastructure."
+    ],
+    "open": [
+      "`DenumerabilityRationalsOQ02.lean` records zero axioms and zero sorries."
+    ],
+    "goal": "Correct the metadata to the actual Cantor-characterization formalization and expose the main order-isomorphism anchors."
   },
   "currentState": {
     "phase": "NEW",
@@ -38,7 +49,11 @@
   "tags": [
     "seeker-selected",
     "set-theory",
-    "generalization"
+    "generalization",
+    "order-theory",
+    "dense-linear-orders",
+    "cantor-characterization",
+    "formalization"
   ],
   "relatedProofs": [
     "denumerability-rationals",
