@@ -3,6 +3,39 @@
   "name": "Tucker 2D Lemma via Graph-Theoretic Path-Following",
   "status": "active",
   "phase": "ACT",
+  "problemStatement": {
+    "formal": "Formalize the graph-theoretic parity infrastructure for Tucker's 2D lemma, including complementary-label edges, complementary-degree positivity, and evenness of odd-degree vertices in a finite graph.",
+    "plain": "Backfills metadata for the Tucker path-following slice of the Borsuk-Ulam project. The Lean file defines complementary label pairs and triangulated-complex helpers, proves the parity principle from graph handshaking, and packages the 2D Tucker step from that parity argument.",
+    "whyMatters": [
+      "Tucker's lemma is a combinatorial route to Borsuk-Ulam.",
+      "The path-following proof isolates the finite graph parity argument behind complementary-edge existence.",
+      "The metadata distinguishes this clean graph slice from broader Borsuk-Ulam parents that still use axioms."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`complementary_pairs` classifies complementary Tucker label pairs.",
+      "`hasComplementaryEdge_iff_complementaryDegree_pos` relates complementary-edge existence to positive complementary degree.",
+      "`tucker_parity_principle` proves the parity step for the 2D Tucker setup.",
+      "`tucker_2d_from_parity` derives the Tucker 2D conclusion from the parity principle.",
+      "`even_card_odd_degree_vertices` proves the graph handshaking parity fact.",
+      "`tucker_parity_from_graph` removes an explicit handshaking hypothesis by using the SimpleGraph structure.",
+      "`BorsukUlamOQ03OQ01OQ01.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "Broader Borsuk-Ulam and Tucker parent files contain axioms; this metadata covers only the clean graph-theoretic path-following slice.",
+      "Grid and triangulation hypotheses needed by larger Tucker statements remain separate follow-up work."
+    ],
+    "goal": "Make the clean Tucker path-following parity infrastructure searchable with exact theorem names."
+  },
+  "tags": [
+    "topology",
+    "borsuk-ulam",
+    "tuckers-lemma",
+    "graph-theory",
+    "parity",
+    "formalized"
+  ],
   "knowledge": {
     "insights": [
       "OQ03 (5186L, 4A, 0S) is the main Tucker/Borsuk-Ulam formalization",
@@ -160,8 +193,8 @@
     {
       "path": "Proofs/BorsukUlamOQ03.lean",
       "filename": "BorsukUlamOQ03.lean",
-      "lineCount": 5140,
-      "theoremCount": 211,
+      "lineCount": 5139,
+      "theoremCount": 217,
       "axiomCount": 2,
       "defCount": 35,
       "sorryCount": 0,
@@ -171,8 +204,8 @@
     {
       "path": "Proofs/BorsukUlamOQ03OQ01.lean",
       "filename": "BorsukUlamOQ03OQ01.lean",
-      "lineCount": 1164,
-      "theoremCount": 41,
+      "lineCount": 1163,
+      "theoremCount": 47,
       "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 0,
@@ -202,12 +235,23 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ03.lean"
     },
     {
+      "path": "Proofs/BorsukUlamOQ03OQ04.lean",
+      "filename": "BorsukUlamOQ03OQ04.lean",
+      "lineCount": 236,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ03OQ04.lean"
+    },
+    {
       "path": "Proofs/BorsukUlamOQ04.lean",
       "filename": "BorsukUlamOQ04.lean",
-      "lineCount": 301,
-      "theoremCount": 7,
+      "lineCount": 449,
+      "theoremCount": 12,
       "axiomCount": 0,
-      "defCount": 8,
+      "defCount": 11,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BorsukUlamOQ04.lean"

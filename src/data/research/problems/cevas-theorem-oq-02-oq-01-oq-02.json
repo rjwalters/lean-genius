@@ -3,6 +3,38 @@
   "name": "Spherical Ceva Generalization to Non-Euclidean Spaces",
   "status": "completed",
   "phase": "COMPLETED",
+  "problemStatement": {
+    "formal": "For hyperbolic cevian configurations with positive weights alpha and beta, prove the sinh length ratio equals beta/alpha and that the Ceva concurrency criterion is equivalent to the universal weight-balance equation.",
+    "plain": "Extends the spherical Ceva weight-parameter method to the hyperbolic setting. The Lean file proves the hyperbolic key identities, derives the sinh-ratio formula, and shows that the same weight-balance condition controls Ceva concurrency across Euclidean, spherical, and hyperbolic models.",
+    "whyMatters": [
+      "Ceva's theorem is a central concurrency criterion in triangle geometry.",
+      "The weight-balance form reveals the algebraic core shared by multiple geometries.",
+      "The metadata turns rich built-item notes into searchable theorem-backed results."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`hyp_key_identity_BD` and `hyp_key_identity_DC` prove the two hyperbolic algebra identities for cevian segments.",
+      "`hyp_sinh_ratio` derives the hyperbolic sinh-length ratio beta/alpha.",
+      "`hyp_ceva_product_eq_weight_ratio` packages the triple cevian product as a weight-product ratio.",
+      "`hyp_ceva_iff_weight_balance` proves the hyperbolic Ceva criterion as weight balance.",
+      "`universal_weight_balance` states the geometry-independent weight-balance criterion.",
+      "`summary_answer_oq02oq01oq02` records the final answer for this open-question branch.",
+      "`CevasTheoremOQ02OQ01OQ02.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "One broader related Ceva parent file still contains a sorry; this metadata emphasizes the clean hyperbolic OQ-02-OQ-01-OQ-02 slice."
+    ],
+    "goal": "Expose the proved hyperbolic Ceva weight-balance generalization with exact theorem names."
+  },
+  "tags": [
+    "geometry",
+    "cevas-theorem",
+    "hyperbolic-geometry",
+    "non-euclidean-geometry",
+    "triangle-geometry",
+    "formalized"
+  ],
   "knowledge": {
     "insights": [
       "The weight-parameter framework extends identically to hyperbolic geometry",
@@ -88,6 +120,17 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02.lean"
     },
     {
+      "path": "Proofs/CevasTheoremNonEuclideanOQ02OQ01.lean",
+      "filename": "CevasTheoremNonEuclideanOQ02OQ01.lean",
+      "lineCount": 273,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremNonEuclideanOQ02OQ01.lean"
+    },
+    {
       "path": "Proofs/CevasTheoremOQ01.lean",
       "filename": "CevasTheoremOQ01.lean",
       "lineCount": 908,
@@ -97,6 +140,17 @@
       "sorryCount": 1,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ01.lean"
+    },
+    {
+      "path": "Proofs/CevasTheoremOQ01OQ03.lean",
+      "filename": "CevasTheoremOQ01OQ03.lean",
+      "lineCount": 231,
+      "theoremCount": 19,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CevasTheoremOQ01OQ03.lean"
     },
     {
       "path": "Proofs/CevasTheoremOQ02.lean",
@@ -180,7 +234,9 @@
     "cevas-theorem",
     "cevas-theorem-non-euclidean",
     "cevas-theorem-non-euclidean-oq-02",
+    "cevas-theorem-non-euclidean-oq-02-oq-01",
     "cevas-theorem-oq-01",
+    "cevas-theorem-oq-01-oq-03",
     "cevas-theorem-oq-02",
     "cevas-theorem-oq-02-oq-01",
     "cevas-theorem-oq-02-oq-01-oq-02",
