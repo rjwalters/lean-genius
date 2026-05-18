@@ -6,14 +6,26 @@
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "In normed additive groups and pseudometric spaces, prove the direct and reverse triangle inequalities for norms and distances, plus finite-sum norm bounds.",
+    "plain": "Collects formal triangle-inequality facts across absolute values, normed spaces, metric spaces, and finite sums. The entry also records Lipschitz consequences for absolute value and norm functions.",
+    "whyMatters": [
+      "Triangle inequalities are core estimates reused throughout analysis, geometry, and metric-space reasoning.",
+      "The file connects Mathlib's standard inequalities to named theorem-level entry points for downstream search.",
+      "The finite-sum bound supports later arguments that estimate norms of accumulated errors or series."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`norm_triangle` proves the norm triangle inequality in any seminormed additive commutative group.",
+      "`norm_reverse_triangle` and `dist_reverse_triangle` record reverse triangle inequalities for norms and metrics.",
+      "`dist_triangle_ineq` packages the metric-space distance triangle inequality.",
+      "`norm_finset_sum_le` proves the iterated triangle inequality for finite sums.",
+      "`abs_lipschitz` and `norm_lipschitz` capture the Lipschitz continuity consequences."
+    ],
+    "open": [
+      "Equality-case classifications and strict geometric characterizations are not the focus of this metadata entry."
+    ],
+    "goal": "Expose the proved triangle-inequality toolkit with searchable analysis and metric-space metadata."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -36,7 +48,14 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: triangle-inequality-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "analysis",
+    "metric-spaces",
+    "normed-spaces",
+    "inequalities",
+    "triangle-inequality",
+    "formalized"
+  ],
   "relatedProofs": [
     "triangle-inequality",
     "triangle-inequality-oq-03",
