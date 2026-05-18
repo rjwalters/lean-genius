@@ -1,27 +1,39 @@
 {
   "slug": "erdos-1052",
-  "title": "Erdős #1052",
+  "title": "Erdos 1052 unitary perfect numbers",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "A unitary divisor of $n$ is $d\\mid n$ such that $(d,n/d)=1$. A number $n\\geq 1$ is a unitary perfect number if it is the sum of its unitary divisors (aside from $n$ itself).\n\nAre there only finite many unitary perfect numbers?\n\n\n\nGuy \\cite{Gu04} reports that Carlitz, Erd\\H{o}s, and Subbarao offer \\$10 for settling this question, and that Subbarao offers 10 cents for each new example.\n\nThere are no odd unitary perfect numbers. There are five known unitary perfect numbers (A002827 in the OEIS):\\[6, 60, 90, 87360, 146361946186458562560000.\\]This is problem B3 in Guy's collection \\cite{Gu04}.",
-    "plain": "A unitary divisor of $n$ is $d\\mid n$ such that $(d,n/d)=1$. A number $n\\geq 1$ is a unitary perfect number if it is the sum of its unitary divisors (aside from $n$ itself).",
-    "whyMatters": []
+    "plain": "Are there only finitely many unitary perfect numbers, where the proper unitary divisors of n sum to n?",
+    "whyMatters": [
+      "The Lean files formalize unitary divisors and the unitary divisor sum from two complementary angles.",
+      "They verify small known examples and core multiplicativity/parity structure.",
+      "The finiteness problem remains open, so the metadata should highlight the checked arithmetic infrastructure and not imply a classification."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`properUnitaryDivisors`, `IsUnitaryPerfect`, and `unitaryDivisorSum` define the main arithmetic objects.",
+      "`isUnitaryPerfect_6`, `isUnitaryPerfect_60`, and `isUnitaryPerfect_90` verify three known examples in `Erdos1052Problem.lean`.",
+      "`unitaryDivisors_primePow`, `unitaryDivisorSum_prime_pow`, `unitaryDivisorSum_mul_coprime`, `unitary_complement`, `properUnitaryDivisors_pairing`, and `even_of_isUnitaryPerfect` record prime-power, multiplicative, complement, pairing, and parity structure.",
+      "`Erdos1052Aristotle.lean` supplies a smaller companion scaffold with `unitaryDivisorSum_one`, `unitaryDivisorSum_prime`, `card_properUnitaryDivisors_prime`, `unitary_complement_mem`, and multiplicativity for coprime inputs."
+    ],
+    "open": [
+      "`Erdos1052Problem.lean` and `Erdos1052Aristotle.lean` have zero active axioms and zero active sorries.",
+      "Finiteness of unitary perfect numbers and the full known-example classification are not proved in these files."
+    ],
+    "goal": "Surface the verified unitary-divisor definitions, examples, multiplicativity, and parity facts for future work on the finiteness problem."
   },
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T14:31:40.057Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Metadata backfill aligned with the zero-axiom unitary-perfect-number scaffolds.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Use the verified example and parity/multiplicativity lemmas as the baseline for future classification or finiteness work.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -68,7 +80,12 @@
     "markdown": "# Erdős #1052 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nA unitary divisor of $n$ is $d\\mid n$ such that $(d,n/d)=1$. A number $n\\geq 1$ is a unitary perfect number if it is the sum of its unitary divisors (aside from $n$ itself).\n\nAre there only finite many unitary perfect numbers?\n\n\n\nGuy \\cite{Gu04} reports that Carlitz, Erd\\H{o}s, and Subbarao offer \\$10 for settling this question, and that Subbarao offers 10 cents for each new example.\n\nThere are no odd unitary perfect numbers. There are five known unitary perfect numbers (A002827 in the OEIS):\\[6, 60, 90, 87360, 146361946186458562560000.\\]This is problem B3 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1051\n- Problem #1053\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "unitary-divisors",
+    "perfect-numbers",
+    "multiplicative-functions",
+    "fully-verified"
   ],
   "relatedProofs": [
     "erdos-1",
