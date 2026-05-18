@@ -6,22 +6,37 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "For finite r >= 2 and infinite lambda, does 2^lambda -> (kappa_alpha + 1)^(r+1) for alpha < gamma imply lambda -> (kappa_alpha)^r for alpha < gamma?",
+    "plain": "Can a strong partition relation one exponent up be stepped down from (r+1)-subsets on 2^lambda to r-subsets on lambda?",
+    "whyMatters": [
+      "This is a central stepping-down question in Erdos-Hajnal-Rado partition calculus.",
+      "The Lean file separates elementary partition-relation infrastructure from the two deep set-theoretic inputs.",
+      "The proved infinite Ramsey theorem removes one former axiom while leaving the original conjecture open."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean defines cardinal and indexed partition relations through `PartitionRelation` and `IndexedPartitionRelation`.",
+      "Structural lemmas prove one-color relations, target monotonicity, zero targets, indexed monotonicity, subset inheritance, and cardinal arithmetic for infinite targets.",
+      "The infinite Ramsey theorem for aleph_0 is proved in Lean; the remaining active axioms are `erdos_1167_conjecture` and `erdos_rado_theorem`."
+    ],
+    "open": [
+      "The Erdos-Hajnal-Rado stepping-down conjecture remains open.",
+      "The Erdos-Rado theorem is used as an axiom rather than proved from Mathlib.",
+      "The formalization does not prove the conjecture from ZFC."
+    ],
+    "goal": "Keep the proved Ramsey/cardinal-arithmetic scaffolding distinct from the two active deep partition-calculus axioms."
   },
   "currentState": {
-    "phase": "ORIENT",
+    "phase": "ACT",
     "since": "2026-01-15T16:53:51.159Z",
     "iteration": 3,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Metadata now reflects the sorry-free infinite Ramsey proof and the live two-axiom boundary without claiming the Erdos-Hajnal-Rado conjecture is solved.",
+    "blockers": [
+      "`erdos_1167_conjecture` is an active axiom.",
+      "`erdos_rado_theorem` is an active axiom."
+    ],
+    "nextAction": "A useful proof slice would either formalize a narrower Erdos-Rado consequence or add references explaining the remaining stepping-down axiom.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -71,7 +86,11 @@
     "markdown": "# Erdős #1167 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "set-theory",
+    "partition-calculus",
+    "ramsey-theory",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -80,9 +99,17 @@
     "erdos-1167"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdos-Hajnal-Rado partition calculus background"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1167"
+    ],
+    "mathlib": [
+      "Cardinal.add_eq_self",
+      "Cardinal.cantor",
+      "Finite.exists_infinite_fiber"
+    ]
   },
   "started": "2026-01-15T16:53:51.159Z",
   "lastUpdate": "2026-03-27T00:00:00Z",
@@ -92,9 +119,9 @@
     {
       "path": "Proofs/Erdos1167Problem.lean",
       "filename": "Erdos1167Problem.lean",
-      "lineCount": 595,
-      "theoremCount": 18,
-      "axiomCount": 3,
+      "lineCount": 594,
+      "theoremCount": 19,
+      "axiomCount": 2,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,

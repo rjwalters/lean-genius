@@ -6,22 +6,37 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "Does omega_1^2 -> (omega_1^2, 3)^2 hold in ZFC?",
+    "plain": "Must every two-coloring of pairs from omega_1^2 contain either a color-0 copy of order type omega_1^2 or a color-1 triangle?",
+    "whyMatters": [
+      "This is a sharp ordinal partition relation at the first uncountable ordinal square.",
+      "The Lean file connects the open ZFC question to Hajnal's CH-conditional theorem.",
+      "It is a key two-color input for later multicolor problems such as Erdos #1171."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean defines `ordinalPartitionRel`, `negPartitionRel`, `omega1`, `omega1Sq`, and the main statement `erdos_1169_statement`.",
+      "Assuming CH, the axiom `hajnal_ch_implies_partition` yields `erdos_1169_under_ch`.",
+      "`partition_monotone_clique` proves clique-target monotonicity, and CH gives finite-clique consequences through `erdos_1169_stronger_than_118_under_ch`."
+    ],
+    "open": [
+      "The ZFC status of omega_1^2 -> (omega_1^2, 3)^2 remains open.",
+      "`hajnal_ch_implies_partition` is the sole active axiom in the file.",
+      "`erdos_1169_open_in_zfc` is excluded middle, not a mathematical independence proof."
+    ],
+    "goal": "Record the CH-conditional formal consequences while keeping the ZFC problem and the Hajnal input clearly marked as open/axiomatized."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T16:53:51.159Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Metadata now names the ordinal partition statement, the CH-conditional theorem path, and the single active Hajnal axiom.",
+    "blockers": [
+      "ZFC case remains open.",
+      "`hajnal_ch_implies_partition` is axiomatized."
+    ],
+    "nextAction": "A useful next slice would add literature references or connect the statement more explicitly to related ordinal partition entries.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -44,7 +59,11 @@
     "markdown": "# Erdős #1169 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "set-theory",
+    "ordinal-partition-calculus",
+    "continuum-hypothesis",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -53,9 +72,17 @@
     "erdos-1169"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Hajnal CH-conditional ordinal partition theorem"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1169"
+    ],
+    "mathlib": [
+      "Ordinal",
+      "Cardinal.aleph",
+      "Classical.em"
+    ]
   },
   "started": "2026-01-15T16:53:51.159Z",
   "lastUpdate": "2026-03-13T07:52:17.059Z",
@@ -65,7 +92,7 @@
     {
       "path": "Proofs/Erdos1169Problem.lean",
       "filename": "Erdos1169Problem.lean",
-      "lineCount": 226,
+      "lineCount": 225,
       "theoremCount": 6,
       "axiomCount": 1,
       "defCount": 13,
