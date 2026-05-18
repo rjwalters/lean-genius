@@ -11,9 +11,16 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Proofs/ChineseRemainderNonCoprimeOQ02.lean extends non-coprime CRT to Euclidean domains with necessity, sufficiency via Bezout, and uniqueness modulo lcm.",
+      "The proof specializes the polynomial-ring case to Lagrange interpolation and proves the element-level coprimality to ideal-level coprimality bridge.",
+      "The ideal-theoretic and PID formulations are verified, including solvability iff a-b belongs to I+J; proof metadata records 55 theorems, 0 axioms, and 0 sorries."
+    ],
+    "open": [
+      "Three non-coprime moduli over PIDs are deferred to the OQ03 line.",
+      "Noetherian-ring variants, effective Euclidean-domain complexity bounds, and affine-scheme gluing interpretations remain future work."
+    ],
+    "goal": "Record the verified algebraic generalization of non-coprime CRT across Euclidean domains, polynomial rings, ideal theory, and PIDs."
   },
   "currentState": {
     "phase": "NEW",

@@ -13,9 +13,16 @@
     ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Proofs/CubeRoot3Irrational.lean proves irrational_cbrt3 using the same Mathlib irrational_nrt_of_notint_nrt template as the cube-root-of-2 proof.",
+      "The proof verifies cbrt3_cubed, proves three_not_perfect_cube from the bounds 1^3 < 3 < 2^3, and derives cbrt3_not_int.",
+      "Proof metadata records 5 theorems, 1 definition, 0 axioms, and 0 sorries, plus the alternative theorem irrational_three_pow_one_third."
+    ],
+    "open": [
+      "A fully general Lean theorem for irrational nth roots of non-perfect powers remains the main reusable abstraction.",
+      "Degree-three algebraic-number and Eisenstein-irreducibility strengthenings remain future work."
+    ],
+    "goal": "Record cube-root-of-3 irrationality as the sibling instance showing the cube-root template generalizes cleanly."
   },
   "currentState": {
     "phase": "COMPLETED",
