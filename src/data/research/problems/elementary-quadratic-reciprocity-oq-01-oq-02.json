@@ -1,13 +1,13 @@
 {
   "slug": "elementary-quadratic-reciprocity-oq-01-oq-02",
-  "title": "Can the character uniqueness argument be generalized to prove cubic or quarti...",
+  "title": "Cubic and quartic character generalizations of quadratic reciprocity",
   "phase": "COMPLETE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "AVAILABLE: Can the character uniqueness argument be generalized to prove cubic or quartic reciprocity? Cubic reciprocity requires $(\\mathbb{Z}[\\omega])^\\times$ for the Eisenstein integers — the cyclic group stru.",
+    "plain": "Cubic and quartic character packages are developed in Lean. The record is axiomatized-stable: the remaining cubic residue symbol and reciprocity axioms are an engineering refactor target, not an upstream Mathlib blocker.",
     "whyMatters": []
   },
   "knownResults": {
@@ -19,9 +19,9 @@
     "phase": "COMPLETE",
     "since": "2026-05-16T14:30:00.000Z",
     "iteration": 6,
-    "focus": "Axiomatized-stable on origin/main: 27 theorems / 0 sorries / 2 axioms (cubicResidueSymbol, cubic_reciprocity) at 578 LOC. S5 OBSERVE (2026-05-13) confirmed the 2 axioms are NOT Mathlib-blocked — Mathlib v4.26.0 already ships Eisenstein integers (Mathlib.NumberTheory.NumberField.Cyclotomic.Three for ℤ[ω] as 𝓞 K), the cyclotomic-3 PID instance (NumberField.Cyclotomic.PID.three_pid), and the Jacobi-sum API (NumberTheory.JacobiSum.Basic). Discharging the axioms is an engineering refactor (rebase local `structure EisensteinPrime` onto `𝓞 K`, port Ireland-Rosen Ch.9 Thm 1 using existing jacobiSum/gaussSum API, ~250 LOC), not a wait-on-upstream task.",
+    "focus": "Axiomatized-stable on origin/main: ElementaryQuadraticReciprocityOQ01OQ02.lean now has extractor counts of 579 lines, 27 theorem/lemma declarations, 6 defs, 0 sorries, and 2 axioms (cubicResidueSymbol, cubic_reciprocity). S5 OBSERVE confirmed the remaining axioms are an engineering refactor onto Mathlib cyclotomic/Jacobi-sum APIs rather than a wait-on-upstream task.",
     "blockers": [],
-    "nextAction": "Axiomatized-stable. Future S6/S7 ACT (optional, not actively scheduled): engineering refactor per research/problems/elementary-quadratic-reciprocity-oq-01-oq-02/s5-observe-eisenstein-bearer.md §'Suggested next ACT (S6) — refactor plan' (6-step Ireland-Rosen Ch.9 port, ~250 LOC, no new Mathlib bearer needed). Pin SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0) confirmed bearer-stable at S6 (T+3d since S5 audit).",
+    "nextAction": "Axiomatized-stable. Future S6/S7 ACT (optional, not actively scheduled): engineering refactor per research/problems/elementary-quadratic-reciprocity-oq-01-oq-02/s5-observe-eisenstein-bearer.md \u00a7'Suggested next ACT (S6) \u2014 refactor plan' (6-step Ireland-Rosen Ch.9 port, ~250 LOC, no new Mathlib bearer needed). Pin SHA 2df2f0150c275ad53cb3c90f7c98ec15a56a1a67 (v4.26.0) confirmed bearer-stable at S6 (T+3d since S5 audit).",
     "attemptCounts": {
       "total": 6,
       "currentApproach": 1,
@@ -29,37 +29,37 @@
     }
   },
   "knowledge": {
-    "progressSummary": "AXIOMATIZED-STABLE on origin/main: Cubic + quartic characters fully developed in Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean (578 lines as of S5 OBSERVE docstring corrections, 27 theorems, 6 defs, 0 sorries, 2 axioms). Both Euler criteria proved (easy + hard via discrete log); both kernel cardinalities |ker χ| = (p-1)/k proved via IsCyclic.card_pow_eq_one_le sandwich. The 2 remaining axioms (cubicResidueSymbol, cubic_reciprocity) are predicated on the file's local `structure EisensteinPrime` (line 469); S5 OBSERVE audit (2026-05-13) confirmed they are NOT Mathlib-blocked — discharging them is an engineering refactor onto Mathlib v4.26.0's already-shipped `IsCyclotomicExtension {3} ℚ K` / `𝓞 K` / `jacobiSum` API, ~250 LOC. Merged across PRs #15291 (construction), #15322 (cubicEuler_hard), #15334 (True-stub removal), #15356/#15357 (cubicChar_kernel_card), #15360 (API drift), #15414 (Session 2: quarticEuler_hard + quarticChar_kernel_card), #16616 (leanFiles drift sync), and the S5 OBSERVE doc-only audit (knowledge.md + meta.json + Lean docstring text-only). S6 STATE-SYNC (this PR) reconciles the canonical research-JSON with the S5 audit findings already present in knowledge.md and meta.json.",
+    "progressSummary": "AXIOMATIZED-STABLE on origin/main: Cubic + quartic characters are developed in Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean with extractor counts of 579 lines, 27 theorem/lemma declarations, 6 defs, 0 sorries, and 2 axioms. The 2 remaining axioms (cubicResidueSymbol, cubic_reciprocity) are tied to the file local EisensteinPrime structure; S5 OBSERVE says discharging them is an engineering refactor onto Mathlib v4.26.0 cyclotomic/Jacobi-sum APIs.",
     "builtItems": [
-      "cubicChar : (ZMod p)ˣ →* (ZMod p)ˣ in ElementaryQuadraticReciprocityOQ01OQ02.lean:84",
-      "cubicChar_pow_three_eq_one : χ₃(a)³ = 1 via Fermat in :106",
+      "cubicChar : (ZMod p)\u02e3 \u2192* (ZMod p)\u02e3 in ElementaryQuadraticReciprocityOQ01OQ02.lean:84",
+      "cubicChar_pow_three_eq_one : \u03c7\u2083(a)\u00b3 = 1 via Fermat in :106",
       "cubicChar_eq_one_of_cube : easy Euler criterion direction in :157",
-      "cubicEuler_hard : χ₃(a)=1 → IsCubicResidue via discrete log in :182",
+      "cubicEuler_hard : \u03c7\u2083(a)=1 \u2192 IsCubicResidue via discrete log in :182",
       "isCubicResidue_iff_cubicChar_one : full cubic Euler biconditional in :234",
-      "cubicChar_kernel_card : |ker χ₃| = (p-1)/3 via IsCyclic.card_pow_eq_one_le in :273",
-      "quarticChar : (ZMod p)ˣ →* (ZMod p)ˣ in :326",
-      "quarticChar_pow_four_eq_one : χ₄(a)⁴ = 1 via Fermat in :333",
+      "cubicChar_kernel_card : |ker \u03c7\u2083| = (p-1)/3 via IsCyclic.card_pow_eq_one_le in :273",
+      "quarticChar : (ZMod p)\u02e3 \u2192* (ZMod p)\u02e3 in :326",
+      "quarticChar_pow_four_eq_one : \u03c7\u2084(a)\u2074 = 1 via Fermat in :333",
       "quarticChar_eq_one_of_quarticResidue : easy quartic Euler in :344",
-      "quarticEuler_hard : χ₄(a)=1 → IsQuarticResidue via discrete log in :370",
+      "quarticEuler_hard : \u03c7\u2084(a)=1 \u2192 IsQuarticResidue via discrete log in :370",
       "isQuarticResidue_iff_quarticChar_one : full quartic Euler biconditional in :412",
-      "quarticChar_kernel_card : |ker χ₄| = (p-1)/4 in :421",
-      "cubic_character_package + quartic_character_package : summary theorems in :540, :553"
+      "quarticChar_kernel_card : |ker \u03c7\u2084| = (p-1)/4 in :421",
+      "cubic_character_package + quartic_character_package : summary theorems in :556, :569"
     ],
     "insights": [
-      "cubicChar = powMonoidHom((p-1)/3) is a well-typed group hom (ZMod p)ˣ →* (ZMod p)ˣ using CommMonoid instance",
-      "Easy Euler criterion: x³=a → a^((p-1)/3)=1 proved via Units.mk0 lift + pow_mul + units_pow_card_sub_one_eq_one",
-      "Hard Euler criterion (cubic + quartic): discrete log via IsCyclic.exists_generator + Subgroup.mem_zpowers_iff + orderOf_dvd_iff_zpow_eq_one.mpr; cubExp_mul / quartExp_mul rewrites convert (p-1) | k·cubExp into 3 | k (resp. 4 | k)",
-      "Kernel cardinality (cubic + quartic): IsCyclic.card_pow_eq_one_le gives upper bound k; lower bound via Finset.le_card_of_inj_on_range with k ↦ (g^3)^k (resp. g^4) using pow_injOn_Iio_orderOf",
-      "Eisenstein integers ℤ[ω] ARE in Mathlib v4.26.0 as 𝓞 K for IsCyclotomicExtension {3} ℚ K (Mathlib.NumberTheory.NumberField.Cyclotomic.Three + .PID.three_pid); cubic reciprocity is therefore NOT blocked on a Mathlib feature — the 2 axioms persist only because the file's local `structure EisensteinPrime` is decoupled from Mathlib's richer 𝓞 K formalization. S5 OBSERVE (2026-05-13) corrected the earlier 'not in Mathlib' framing; see s5-observe-eisenstein-bearer.md",
-      "Quartic character χ₄ = powMonoidHom((p-1)/4) has identical proof structure to χ₃; both kernel-card proofs share the IsCyclic sandwich argument"
+      "cubicChar = powMonoidHom((p-1)/3) is a well-typed group hom (ZMod p)\u02e3 \u2192* (ZMod p)\u02e3 using CommMonoid instance",
+      "Easy Euler criterion: x\u00b3=a \u2192 a^((p-1)/3)=1 proved via Units.mk0 lift + pow_mul + units_pow_card_sub_one_eq_one",
+      "Hard Euler criterion (cubic + quartic): discrete log via IsCyclic.exists_generator + Subgroup.mem_zpowers_iff + orderOf_dvd_iff_zpow_eq_one.mpr; cubExp_mul / quartExp_mul rewrites convert (p-1) | k\u00b7cubExp into 3 | k (resp. 4 | k)",
+      "Kernel cardinality (cubic + quartic): IsCyclic.card_pow_eq_one_le gives upper bound k; lower bound via Finset.le_card_of_inj_on_range with k \u21a6 (g^3)^k (resp. g^4) using pow_injOn_Iio_orderOf",
+      "Eisenstein integers \u2124[\u03c9] ARE in Mathlib v4.26.0 as \ud835\udcde K for IsCyclotomicExtension {3} \u211a K (Mathlib.NumberTheory.NumberField.Cyclotomic.Three + .PID.three_pid); cubic reciprocity is therefore NOT blocked on a Mathlib feature \u2014 the 2 axioms persist only because the file's local `structure EisensteinPrime` is decoupled from Mathlib's richer \ud835\udcde K formalization. S5 OBSERVE (2026-05-13) corrected the earlier 'not in Mathlib' framing; see s5-observe-eisenstein-bearer.md",
+      "Quartic character \u03c7\u2084 = powMonoidHom((p-1)/4) has identical proof structure to \u03c7\u2083; both kernel-card proofs share the IsCyclic sandwich argument"
     ],
     "mathlibGaps": [
-      "[RESOLVED in S5 OBSERVE 2026-05-13] Earlier claim 'Eisenstein integers not in Mathlib 4.26' was incorrect — Mathlib v4.26.0 ships ℤ[ω] as 𝓞 K via Mathlib.NumberTheory.NumberField.Cyclotomic.Three (η = unit primitive cube root, λ = η - 1 prime, lambda_sq, eta_sq, unit classification, Kummer's lemma for λ^2) plus Mathlib.NumberTheory.NumberField.Cyclotomic.PID.three_pid (𝓞 K is PID). The local `structure EisensteinPrime` in the file is a placeholder that decouples from this richer Mathlib formalization; refactoring onto 𝓞 K is engineering work, not a Mathlib feature gap.",
-      "[RESOLVED in S5 OBSERVE 2026-05-13] Earlier claim 'Cubic residue symbol requires ℤ[ω] units not in Mathlib' was incorrect — the cubic residue symbol can be defined directly on 𝓞 K using IsPrimitiveRoot.toInteger_cube_eq_one (η^3 = 1, so μ₃ ⊆ 𝓞 K is {1, η, η^2}). Mathlib.NumberTheory.JacobiSum.Basic also ships jacobiSum_mem_algebraAdjoin_of_pow_eq_one to conclude J(χ_π, χ_π) ∈ ℤ[ω]. No upstream Mathlib feature is needed."
+      "[RESOLVED in S5 OBSERVE 2026-05-13] Earlier claim 'Eisenstein integers not in Mathlib 4.26' was incorrect \u2014 Mathlib v4.26.0 ships \u2124[\u03c9] as \ud835\udcde K via Mathlib.NumberTheory.NumberField.Cyclotomic.Three (\u03b7 = unit primitive cube root, \u03bb = \u03b7 - 1 prime, lambda_sq, eta_sq, unit classification, Kummer's lemma for \u03bb^2) plus Mathlib.NumberTheory.NumberField.Cyclotomic.PID.three_pid (\ud835\udcde K is PID). The local `structure EisensteinPrime` in the file is a placeholder that decouples from this richer Mathlib formalization; refactoring onto \ud835\udcde K is engineering work, not a Mathlib feature gap.",
+      "[RESOLVED in S5 OBSERVE 2026-05-13] Earlier claim 'Cubic residue symbol requires \u2124[\u03c9] units not in Mathlib' was incorrect \u2014 the cubic residue symbol can be defined directly on \ud835\udcde K using IsPrimitiveRoot.toInteger_cube_eq_one (\u03b7^3 = 1, so \u03bc\u2083 \u2286 \ud835\udcde K is {1, \u03b7, \u03b7^2}). Mathlib.NumberTheory.JacobiSum.Basic also ships jacobiSum_mem_algebraAdjoin_of_pow_eq_one to conclude J(\u03c7_\u03c0, \u03c7_\u03c0) \u2208 \u2124[\u03c9]. No upstream Mathlib feature is needed."
     ],
     "nextSteps": [
-      "[Optional, not scheduled] S6/S7 refactor ACT — discharge the 2 axioms via Ireland-Rosen Ch.9 Thm 1 port. Per s5-observe-eisenstein-bearer.md §'Suggested next ACT (S6) — refactor plan': (1) delete local `structure EisensteinPrime`, replace with context `[hKζ : IsCyclotomicExtension {3} ℚ K] (hζ : IsPrimitiveRoot ζ 3)` and use `𝓞 K`; (2) define cubicResidueSymbol π a := IsPrimitiveRoot.cubicCharLift (a^((Ideal.absNorm (Ideal.span {π}) - 1) / 3) mod π) (image in μ₃ = {1, η, η^2}); (3) define χ_π : MulChar (𝓞 K ⧸ Ideal.span {π}) (𝓞 K) as the lift; (4) apply jacobiSum_mem_algebraAdjoin_of_pow_eq_one for J(χ_π, χ_π) ∈ ℤ[ω]; (5) compute |J|^2 = N(π) via jacobiSum_mul_jacobiSum_inv + gaussSum_pow_eq_prod_jacobiSum; (6) derive cubic reciprocity by comparing J(χ_π, χ_π)^((N(ρ)-1)/3) mod ρ against χ_ρ(N(π)) following Ireland-Rosen Theorem 1 of Chapter 9 verbatim. Estimated ~250 LOC. No new Mathlib bearer needed.",
-      "[Optional, not scheduled] After cubic axioms discharged, parallel refactor for quartic reciprocity using IsCyclotomicExtension {4} ℚ K (Gaussian integers ℤ[i]) — Mathlib has the cyclotomic-4 instance though PID/PID-companion lemmas may need separate audit."
+      "[Optional, not scheduled] S6/S7 refactor ACT \u2014 discharge the 2 axioms via Ireland-Rosen Ch.9 Thm 1 port. Per s5-observe-eisenstein-bearer.md \u00a7'Suggested next ACT (S6) \u2014 refactor plan': (1) delete local `structure EisensteinPrime`, replace with context `[hK\u03b6 : IsCyclotomicExtension {3} \u211a K] (h\u03b6 : IsPrimitiveRoot \u03b6 3)` and use `\ud835\udcde K`; (2) define cubicResidueSymbol \u03c0 a := IsPrimitiveRoot.cubicCharLift (a^((Ideal.absNorm (Ideal.span {\u03c0}) - 1) / 3) mod \u03c0) (image in \u03bc\u2083 = {1, \u03b7, \u03b7^2}); (3) define \u03c7_\u03c0 : MulChar (\ud835\udcde K \u29f8 Ideal.span {\u03c0}) (\ud835\udcde K) as the lift; (4) apply jacobiSum_mem_algebraAdjoin_of_pow_eq_one for J(\u03c7_\u03c0, \u03c7_\u03c0) \u2208 \u2124[\u03c9]; (5) compute |J|^2 = N(\u03c0) via jacobiSum_mul_jacobiSum_inv + gaussSum_pow_eq_prod_jacobiSum; (6) derive cubic reciprocity by comparing J(\u03c7_\u03c0, \u03c7_\u03c0)^((N(\u03c1)-1)/3) mod \u03c1 against \u03c7_\u03c1(N(\u03c0)) following Ireland-Rosen Theorem 1 of Chapter 9 verbatim. Estimated ~250 LOC. No new Mathlib bearer needed.",
+      "[Optional, not scheduled] After cubic axioms discharged, parallel refactor for quartic reciprocity using IsCyclotomicExtension {4} \u211a K (Gaussian integers \u2124[i]) \u2014 Mathlib has the cyclotomic-4 instance though PID/PID-companion lemmas may need separate audit."
     ]
   },
   "tags": [
@@ -99,8 +99,8 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocity.lean",
       "filename": "ElementaryQuadraticReciprocity.lean",
-      "lineCount": 357,
-      "theoremCount": 11,
+      "lineCount": 358,
+      "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -110,7 +110,7 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ01.lean",
       "filename": "ElementaryQuadraticReciprocityOQ01.lean",
-      "lineCount": 628,
+      "lineCount": 629,
       "theoremCount": 31,
       "axiomCount": 0,
       "defCount": 5,
@@ -121,7 +121,7 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01.lean",
       "filename": "ElementaryQuadraticReciprocityOQ01OQ01.lean",
-      "lineCount": 166,
+      "lineCount": 167,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 0,
@@ -130,9 +130,53 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ01OQ01OQ01.lean",
+      "lineCount": 225,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean",
+      "lineCount": 253,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ02.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ01OQ01OQ02.lean",
+      "lineCount": 222,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ03.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ01OQ01OQ03.lean",
+      "lineCount": 278,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ03.lean"
+    },
+    {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean",
       "filename": "ElementaryQuadraticReciprocityOQ01OQ02.lean",
-      "lineCount": 578,
+      "lineCount": 579,
       "theoremCount": 27,
       "axiomCount": 2,
       "defCount": 6,
@@ -143,7 +187,7 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ02.lean",
       "filename": "ElementaryQuadraticReciprocityOQ02.lean",
-      "lineCount": 175,
+      "lineCount": 176,
       "theoremCount": 7,
       "axiomCount": 1,
       "defCount": 0,
@@ -152,10 +196,21 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ02.lean"
     },
     {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ02OQ01.lean",
+      "lineCount": 200,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean"
+    },
+    {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ03.lean",
       "filename": "ElementaryQuadraticReciprocityOQ03.lean",
-      "lineCount": 199,
-      "theoremCount": 10,
+      "lineCount": 200,
+      "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -165,7 +220,7 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01.lean",
       "filename": "ElementaryQuadraticReciprocityOQ03OQ01.lean",
-      "lineCount": 311,
+      "lineCount": 312,
       "theoremCount": 24,
       "axiomCount": 0,
       "defCount": 0,
@@ -176,7 +231,7 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01.lean",
       "filename": "ElementaryQuadraticReciprocityOQ03OQ01OQ01.lean",
-      "lineCount": 164,
+      "lineCount": 165,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 5,
@@ -187,7 +242,7 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ01OQ04.lean",
       "filename": "ElementaryQuadraticReciprocityOQ03OQ01OQ01OQ04.lean",
-      "lineCount": 147,
+      "lineCount": 148,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 1,
@@ -198,7 +253,7 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean",
       "filename": "ElementaryQuadraticReciprocityOQ03OQ01OQ02.lean",
-      "lineCount": 189,
+      "lineCount": 190,
       "theoremCount": 18,
       "axiomCount": 0,
       "defCount": 2,
@@ -209,8 +264,8 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02.lean",
       "filename": "ElementaryQuadraticReciprocityOQ03OQ02.lean",
-      "lineCount": 223,
-      "theoremCount": 16,
+      "lineCount": 224,
+      "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 4,
       "sorryCount": 0,
@@ -220,8 +275,8 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean",
       "filename": "ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean",
-      "lineCount": 267,
-      "theoremCount": 6,
+      "lineCount": 268,
+      "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
@@ -229,9 +284,20 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean"
     },
     {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ03.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ02OQ03.lean",
+      "lineCount": 405,
+      "theoremCount": 20,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ03.lean"
+    },
+    {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ03.lean",
       "filename": "ElementaryQuadraticReciprocityOQ03OQ03.lean",
-      "lineCount": 102,
+      "lineCount": 103,
       "theoremCount": 3,
       "axiomCount": 1,
       "defCount": 0,
