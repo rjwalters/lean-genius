@@ -1,27 +1,41 @@
 {
   "slug": "erdos-1165",
-  "title": "Erdős #1165",
+  "title": "Erdos #1165: Favourite Sites of Planar Random Walks",
   "phase": "OBSERVE",
-  "status": "active",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "For a planar random walk, determine P(|F(n)| = r infinitely often) for r >= 3, where F(n) is the set of sites with maximal visit count at time n.",
+    "plain": "How often can a two-dimensional random walk have exactly r favourite sites tied for the most visits?",
+    "whyMatters": [
+      "Favourite-site questions probe the fine local-time structure of recurrent planar random walks.",
+      "Toth proved four or more favourite sites occur only finitely often, while Hao-Li-Okada-Zheng proved three occur infinitely often almost surely.",
+      "The Lean file records the resolution through a deliberately axiomatized random-walk/probability interface."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean defines the Z^2 state space, a favourite-site count interface, and the probability of infinitely-often favourite-count events.",
+      "The complete resolution theorem is derived from the Toth upper-bound axiom and the Hao-Li-Okada-Zheng three-favourite-sites axiom.",
+      "Derived corollaries cover finite occurrence for r >= 4 and probability one for r = 3."
+    ],
+    "open": [
+      "VisitCount, FavouriteSites, and prob_favourite_count_io are axiomatized interfaces rather than a full random-walk probability model.",
+      "The Toth and Hao-Li-Okada-Zheng theorems are active axioms, not Lean-derived probability proofs.",
+      "MaxVisitCount is a placeholder over the origin visit count, so metadata should not call it a true formal maximum."
+    ],
+    "goal": "Present the solved mathematical status while being explicit that Lean only derives the final consequences from axiomatized random-walk inputs."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-01-15T16:53:51.158Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Metadata now supplies the missing favourite-sites statement and keeps the five active axioms separate from the derived resolution theorems.",
+    "blockers": [
+      "The random-walk process, event probabilities, and two published favourite-site results are axiomatized."
+    ],
+    "nextAction": "Future proof work would replace the placeholder random-walk interface with a real probability-space/local-time model.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -37,7 +51,11 @@
     "markdown": "# Erdős #1165 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "probability",
+    "random-walks",
+    "favourite-sites",
+    "solved"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -51,17 +69,17 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:53:51.158Z",
-  "lastUpdate": "2026-03-13T07:52:17.059Z",
+  "lastUpdate": "2026-05-18T08:28:21Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1165Problem.lean",
       "filename": "Erdos1165Problem.lean",
-      "lineCount": 184,
+      "lineCount": 183,
       "theoremCount": 3,
       "axiomCount": 5,
-      "defCount": 2,
+      "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1165Problem.lean"

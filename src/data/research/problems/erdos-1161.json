@@ -1,27 +1,41 @@
 {
   "slug": "erdos-1161",
-  "title": "Erdős #1161",
+  "title": "Erdos #1161: Permutation Counts by Order",
   "phase": "COMPLETED",
   "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "For f_k(n) = #{sigma in S_n : order(sigma) = k}, determine which orders k maximize f_k(n).",
+    "plain": "Among permutations of n letters, which cyclic orders occur most often?",
+    "whyMatters": [
+      "Permutation order is controlled by cycle-type lcm data, linking group theory with arithmetic partitions.",
+      "Beker resolved the asymptotic maximization problem using an lcm divisibility criterion.",
+      "The Lean file provides verified counting infrastructure and small cases without active deep-result axioms."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean defines permCountByOrder, maxPermCountByOrder, and lcmRange.",
+      "The file proves total counting by order, vanishing when k does not divide n!, small S_1/S_2/S_3 counts, and a direct lower bound from n-cycles.",
+      "It proves prime-order counting for S_p and lcmRange monotonicity/divisibility lemmas."
+    ],
+    "open": [
+      "Beker's full characterization is documented in comments but is not an active Lean axiom or theorem in this file.",
+      "The full solved mathematical result should not be described as Lean-proved from the current declarations.",
+      "The statement permCountByOrder n n = (n - 1)! is not valid in general; the active exact theorem is prime-restricted."
+    ],
+    "goal": "Correct stale metadata by matching the active Lean file: zero active axioms, no sorries, and a verified combinatorial scaffold rather than a formal proof of Beker's theorem."
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-23T00:00:00Z",
     "iteration": 2,
-    "focus": "Eliminated sorry-dependency, converted deep results to axioms",
-    "blockers": [],
-    "nextAction": "None — formalization complete (0 sorries, 2 axioms for published results)",
+    "focus": "Metadata now treats Problem #1161 as mathematically solved by Beker but only partially reflected in Lean through proved counting infrastructure and no active deep axioms.",
+    "blockers": [
+      "Beker's full characterization and maximizer theorem are comment-level context, not active declarations."
+    ],
+    "nextAction": "Future Lean work would promote Beker's characterization from documentation into formal declarations and proofs.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -61,7 +75,11 @@
     "markdown": "# Erdős #1161 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "permutation-groups",
+    "symmetric-groups",
+    "enumerative-combinatorics",
+    "solved"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -75,15 +93,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:53:51.157Z",
-  "lastUpdate": "2026-03-13T07:52:17.059Z",
+  "lastUpdate": "2026-05-18T08:28:21Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1161Problem.lean",
       "filename": "Erdos1161Problem.lean",
-      "lineCount": 324,
-      "theoremCount": 14,
+      "lineCount": 323,
+      "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,

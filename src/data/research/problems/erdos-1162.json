@@ -1,27 +1,42 @@
 {
   "slug": "erdos-1162",
-  "title": "Erdős #1162",
+  "title": "Erdos #1162: Subgroups of the Symmetric Group",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Give an asymptotic formula for f(n) = |{H : H ≤ S_n}|. log f(n) = (1/16 + o(1))n² [Roney-Dougal-Tracey 2025]",
-    "plain": "Give an asymptotic formula for the number of subgroups of S_n. Is there a statistical theorem on their order?",
-    "whyMatters": []
+    "formal": "For f(n) = #{H : H <= S_n}, prove log f(n) = (1/16 + o(1)) n^2 and understand the orders of typical subgroups.",
+    "plain": "How many subgroups does the symmetric group S_n have, and what can be said about the orders of typical subgroups?",
+    "whyMatters": [
+      "Subgroup enumeration in S_n is a central asymptotic group-theory problem of Erdos and Turan.",
+      "The constant 1/16 reflects the dominant role of elementary abelian 2-subgroups.",
+      "The Lean file now derives Pyber-style bounds and small cases from a single deep asymptotic axiom."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean defines Sn and numSubgroups concretely as the number of subgroups of Equiv.Perm (Fin n).",
+      "The Roney-Dougal-Tracey asymptotic is the single active axiom, and Pyber-style two-sided bounds are derived from it.",
+      "Small subgroup counts f(1), f(2), f(3), and f(4) are proved, with f2-f4 discharged by native_decide."
+    ],
+    "open": [
+      "The Roney-Dougal-Tracey theorem is not proved in Lean.",
+      "The statistical theorem on subgroup orders remains only contextual in this file.",
+      "The metadata no longer treats the old Docker/build warning as current evidence."
+    ],
+    "goal": "Keep the resolved asymptotic formula visible while making clear that the deep published input is axiomatized and the subgroup-order statistics are not formalized."
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-03-28T09:30:00Z",
     "iteration": 2,
-    "focus": "Axiom elimination: 10→7 axioms. Build not verified (Docker unavailable).",
-    "blockers": [],
-    "nextAction": "Verify Docker build. Consider proving f1/f2 for small cases.",
+    "focus": "Metadata now reflects the current one-axiom formalization, proved Pyber consequence, and verified small subgroup counts instead of the stale build-warning copy.",
+    "blockers": [
+      "roney_dougal_tracey remains an axiom.",
+      "Typical subgroup-order statistics are not formalized."
+    ],
+    "nextAction": "Future work can formalize the subgroup-order statistical statement or reduce the asymptotic axiom to a more precise imported theorem interface.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -82,9 +97,9 @@
   "tags": [
     "erdos",
     "group-theory",
-    "symmetric-group",
-    "enumeration",
-    "asymptotic"
+    "symmetric-groups",
+    "subgroup-growth",
+    "asymptotic-enumeration"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -98,14 +113,14 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:53:51.157Z",
-  "lastUpdate": "2026-03-28T09:35:00.000Z",
+  "lastUpdate": "2026-05-18T08:28:21Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1162Problem.lean",
       "filename": "Erdos1162Problem.lean",
-      "lineCount": 222,
+      "lineCount": 221,
       "theoremCount": 9,
       "axiomCount": 1,
       "defCount": 5,

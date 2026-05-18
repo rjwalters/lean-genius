@@ -1,27 +1,42 @@
 {
   "slug": "erdos-1166",
-  "title": "Erdős #1166",
+  "title": "Erdos #1166: Cumulative Most-Visited Points in Planar Random Walks",
   "phase": "OBSERVE",
-  "status": "active",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "For a planar random walk, prove |union_{k <= n} F(k)| <= (log n)^O(1) almost surely for all sufficiently large n, where F(k) is the set of most-visited points at time k.",
+    "plain": "Does the cumulative set of sites that ever become most visited up to time n stay polylogarithmically small?",
+    "whyMatters": [
+      "Links instantaneous favourite-site bounds with growth of the cumulative favourite-site set.",
+      "Combines the eventual smallness of F(n) with Erdos-Taylor control of the maximum visit count.",
+      "The Lean file contains substantial finite-set counting infrastructure around an axiomatized almost-sure random-walk layer."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean defines RandomWalk, visitCount, maxVisitCount, mostVisitedSet, and cumulativeMostVisited.",
+      "The file proves monotonicity, maximum-achievement, most-visited nesting, cumulative containment, and finite-set cardinality bounds.",
+      "The polylog cumulative bound is derived from axiomatized eventual |F(n)| <= 3 and Erdos-Taylor maximum-visit-count ingredients."
+    ],
+    "open": [
+      "The probability filter, eventual most-visited bound, and Erdos-Taylor constant theorem are active axioms.",
+      "RandomWalk.starts_at_origin is a structure field assumption in the model.",
+      "The file should not be described as a full formal construction of planar random-walk probability or a proof of Erdos-Taylor."
+    ],
+    "goal": "Show the internal proof architecture for the cumulative polylog bound while clearly marking the three deep probabilistic assumptions."
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-01-15T16:53:51.158Z",
     "iteration": 1,
-    "focus": "Axiom elimination: 12→8 axioms (structure conversion + orphan removal)",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Metadata now describes the visit-count/cumulative-set infrastructure and the derived polylog bound without overstating the axiomatized probability inputs.",
+    "blockers": [
+      "asProbFilter, mostVisited_bounded_eventually, and erdosTaylor_constant remain axioms.",
+      "A full random-walk probability measure is not formalized."
+    ],
+    "nextAction": "Future work can strengthen the random-walk probability model or reduce the Erdos-Revesz and Erdos-Taylor inputs to imported theorem interfaces.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -51,7 +66,12 @@
     "markdown": "# Erdős #1166 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "probability",
+    "random-walks",
+    "favourite-sites",
+    "polylogarithmic-bounds",
+    "solved"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -65,17 +85,17 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:53:51.158Z",
-  "lastUpdate": "2026-03-28T12:00:00.000Z",
+  "lastUpdate": "2026-05-18T08:28:21Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1166Problem.lean",
       "filename": "Erdos1166Problem.lean",
-      "lineCount": 548,
+      "lineCount": 547,
       "theoremCount": 25,
       "axiomCount": 3,
-      "defCount": 6,
+      "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1166Problem.lean"
