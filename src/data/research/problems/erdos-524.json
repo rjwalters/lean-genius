@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Converted open conjecture to def (3→2 axioms). Remaining 2 axioms are deep published results.",
+    "progressSummary": "PROGRESS: Structural polynomial bounds are verified; the main order-of-magnitude result remains axiomatized as erdos_524_main.",
     "builtItems": [
       "binaryDigit_values: sign function returns ±1 (line 87)",
       "binaryDigit_cast_abs: |sign(t,k)| = 1 as real (line 92)",
@@ -48,9 +48,8 @@
     ],
     "insights": [
       "erdos_524_order_of_magnitude was OPEN conjecture axiomatized as true, now a def",
-      "erdos_lower_bound and chung_upper_bound are deep published results, both unused in proofs",
-      "All 3 axioms were unused: file proves structural properties from definitions only",
-      "Both remaining axioms (erdos_lower_bound, chung_upper_bound) are deep published results requiring measure theory + LIL — not eliminable from Mathlib"
+      "erdos_524_main is the sole explicit axiom and states the main order-of-magnitude result.",
+      "The file proves structural properties of binary digits, random-sign polynomials, and polyMax from definitions."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -81,9 +80,9 @@
     {
       "path": "Proofs/Erdos524Problem.lean",
       "filename": "Erdos524Problem.lean",
-      "lineCount": 318,
+      "lineCount": 323,
       "theoremCount": 22,
-      "axiomCount": 0,
+      "axiomCount": 1,
       "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,

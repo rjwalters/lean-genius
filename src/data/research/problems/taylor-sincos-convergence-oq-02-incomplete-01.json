@@ -17,6 +17,8 @@
   },
   "knownResults": {
     "proven": [
+      "cosSeries_cast_eq_evenTerm",
+      "sinSeries_cast_mul_I_eq_oddTerm",
       "summable_cosSeries_complex: Summable (cosSeries x) → Summable (cosSeries x : ℂ) via ofRealCLM",
       "summable_sinSeries_complex: same for sinSeries",
       "cosSeries_tsum_complex: ∑' k, (cosSeries x k : ℂ) = Complex.cos x",
@@ -45,9 +47,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: All 10 theorems proved. 0 sorries, 0 axioms. Euler formula from Taylor series fully verified.",
+    "progressSummary": "COMPLETE: All 12 script-counted top-level theorems proved. 0 sorries, 0 axioms. Euler formula from Taylor series fully verified.",
     "builtItems": [
-      "TaylorSinCosConvergenceOQ02.lean: 273 lines, 10 theorems, 0 sorries, 0 axioms",
+      "TaylorSinCosConvergenceOQ02.lean: 275 lines, 12 theorems, 0 sorries, 0 axioms",
       "summable_cosSeries/sinSeries_complex: via Complex.ofRealCLM.summable",
       "cosPartialSum_eq_cosSeries_sum: proved by induction using iteratedDeriv_cos_even/odd_zero",
       "sinPartialSum_eq_sinSeries_sum: proved by induction using iteratedDeriv_sin_even/odd_zero",
@@ -101,8 +103,8 @@
     {
       "path": "Proofs/TaylorSinCosConvergenceOQ02.lean",
       "filename": "TaylorSinCosConvergenceOQ02.lean",
-      "lineCount": 273,
-      "theoremCount": 10,
+      "lineCount": 275,
+      "theoremCount": 12,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,

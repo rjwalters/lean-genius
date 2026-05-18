@@ -19,7 +19,7 @@
     "phase": "ACT",
     "since": "2026-01-12T23:55:09.604Z",
     "iteration": 1,
-    "focus": "Eliminated 5 of 7 axioms via counterexamples and trivial arguments",
+    "focus": "Reduced the proof surface to one explicit deep axiom with auxiliary counterexamples verified.",
     "blockers": [],
     "nextAction": "Begin problem exploration.",
     "attemptCounts": {
@@ -29,7 +29,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 sorries, 1 deep axiom (min_degree_for_distinct). All other content verified.",
+    "progressSummary": "PROGRESS: 0 sorries and 1 deep axiom (min_degree_for_distinct); auxiliary content verifies without additional axioms.",
     "builtItems": [
       "lps_implies_power_distinct: trivial proof (take n=5)",
       "squares_not_distinct: counterexample (1,8) vs (4,7)",
@@ -38,7 +38,7 @@
       "linear_not_distinct: f(0)+f(3)=f(1)+f(2) for any linear f"
     ],
     "insights": [
-      "5 of 7 axioms eliminated: lps_implies_power_distinct (trivial), squares/cubes/quartics_not_distinct (counterexamples), linear_not_distinct (algebra).",
+      "Only min_degree_for_distinct remains as an explicit axiom; power-polynomial and low-degree counterexamples are verified.",
       "Key counterexamples: 1²+8²=4²+7²=65, 1³+12³=9³+10³=1729, 59⁴+158⁴=133⁴+134⁴=635318657.",
       "min_degree_for_distinct is the sole remaining axiom. It claims degree>=5 is necessary for ALL polynomials, not just power polynomials. Empirically verified for 2000+ test cases.",
       "distinct_count_eq_binomial is now PROVED (was formerly listed as axiom)."
@@ -68,8 +68,8 @@
     {
       "path": "Proofs/Erdos324Problem.lean",
       "filename": "Erdos324Problem.lean",
-      "lineCount": 273,
-      "theoremCount": 11,
+      "lineCount": 304,
+      "theoremCount": 13,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
