@@ -1,13 +1,13 @@
 {
   "slug": "taylor-sincos-convergence-oq-04",
-  "title": "Generalize Taylor convergence proof to arbitrary entire functions",
+  "title": "Taylor Convergence for Bounded-Derivative Smooth Functions",
   "phase": "COMPLETED",
-  "status": "completed",
+  "status": "graduated",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "If f : ℝ → ℝ is C^∞ and ∃ C ≥ 0, ∀ n x, ‖iteratedDeriv n f x‖ ≤ C, then Tendsto (taylorPartialSum f · x) atTop (𝓝 (f x))",
-    "plain": "Prove that for any smooth function f with all derivatives uniformly bounded by some constant C, the Taylor series at 0 converges to f(x) for every real x.",
+    "plain": "Prove that for any smooth real function whose iterated derivatives are uniformly bounded, the Taylor partial sums at 0 converge pointwise to the function.",
     "whyMatters": [
       "Generalizes specific sin/cos convergence to an abstract framework",
       "Shows the convergence mechanism depends only on derivative bounds, not algebraic structure"
@@ -41,31 +41,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: All 1 axiom + 1 sorry replaced with proofs. general_taylor_remainder_bound proved via reflection using iteratedDeriv_comp_neg. linear_combo_bound proved via smul linearity lemmas.",
+    "progressSummary": "COMPLETED: TaylorSinCosConvergenceOQ04.lean now has 18 public theorems, 1 def, 0 local axioms, and 0 sorries. The general_taylor_remainder_bound proof uses reflection via iteratedDeriv_comp_neg, while linear_combo_bound is proved with smul linearity lemmas; the imported parent proof still carries its own two remainder-bound axioms.",
     "builtItems": [
-      "TaylorSinCosConvergenceOQ04.lean:57 taylorPartialSum (general definition)",
-      "TaylorSinCosConvergenceOQ04.lean:88 taylorPartialSum_eq_taylorWithinEval (bridge to Mathlib)",
-      "TaylorSinCosConvergenceOQ04.lean:106 remainder_bound_pos (proved for x > 0)",
-      "TaylorSinCosConvergenceOQ04.lean:169 taylorPartialSum_tendsto (main theorem)",
-      "TaylorSinCosConvergenceOQ04.lean:216 sin_taylorPartialSum_tendsto (sin corollary)",
-      "TaylorSinCosConvergenceOQ04.lean:222 cos_taylorPartialSum_tendsto (cos corollary)",
-      "Proved general_taylor_remainder_bound: x<0 case via reflection g=f∘neg, iteratedDeriv_comp_neg at 0",
-      "Proved linear_combo_bound: via iteratedDeriv_const_smul + iteratedDeriv_add linearity"
+      "TaylorSinCosConvergenceOQ04.lean:62 taylorPartialSum (general definition)",
+      "TaylorSinCosConvergenceOQ04.lean:89 taylorPartialSum_eq_taylorWithinEval (bridge to Mathlib)",
+      "TaylorSinCosConvergenceOQ04.lean:108 remainder_bound_pos (proved for x > 0)",
+      "TaylorSinCosConvergenceOQ04.lean:132 general_taylor_remainder_bound",
+      "TaylorSinCosConvergenceOQ04.lean:204 taylorPartialSum_tendsto (main theorem)",
+      "TaylorSinCosConvergenceOQ04.lean:243 sin_taylorPartialSum_tendsto (sin corollary)",
+      "TaylorSinCosConvergenceOQ04.lean:249 cos_taylorPartialSum_tendsto (cos corollary)",
+      "TaylorSinCosConvergenceOQ04.lean:288 linear_combo_bound"
     ],
     "insights": [
       "Taylor convergence depends only on two properties: smoothness and uniform derivative bound. Period-4, parity, etc. are irrelevant to the convergence mechanism.",
-      "The x < 0 case requires iteratedDeriv n (f ∘ neg) = (-1)^n · (iteratedDeriv n f) ∘ neg. This is provable but requires chain rule infrastructure for iterated derivatives.",
+      "The x < 0 case is handled by reflecting g(t)=f(-t) and applying iteratedDeriv_comp_neg.",
       "By Bernstein's theorem, functions with uniformly bounded derivatives are exactly bounded entire functions of exponential type ≤ 1 (trigonometric polynomials with freq ≤ 1).",
       "Sin/cos achieve the minimum bound C = 1 among non-constant functions in this class.",
       "Proved general_taylor_remainder_bound by reflection: g(t)=f(-t), using iteratedDeriv_comp_neg (no hypotheses needed in Mathlib). This eliminates the 1 axiom."
     ],
-    "mathlibGaps": [
-      "No iterated derivative chain rule for composition with negation in Mathlib"
-    ],
-    "nextSteps": [
-      "Build verification needed (Docker not running during session)",
-      "If build passes: update pool status to completed"
-    ]
+    "mathlibGaps": [],
+    "nextSteps": []
   },
   "tags": [
     "analysis",
@@ -96,12 +91,13 @@
     {
       "path": "Proofs/TaylorSinCosConvergenceOQ04.lean",
       "filename": "TaylorSinCosConvergenceOQ04.lean",
-      "lineCount": 257,
-      "theoremCount": 16,
-      "axiomCount": 1,
+      "lineCount": 324,
+      "theoremCount": 18,
+      "axiomCount": 0,
       "defCount": 1,
-      "sorryCount": 1,
-      "isAristotle": false
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorSinCosConvergenceOQ04.lean"
     }
   ]
 }

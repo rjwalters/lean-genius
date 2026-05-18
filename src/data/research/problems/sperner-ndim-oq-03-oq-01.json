@@ -8,8 +8,8 @@
     "proofTitle": "Brouwer Fixed Point via Displacement Coloring (n-dimensional)",
     "type": "open-question"
   },
-  "phase": "DONE",
-  "status": "completed",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "completedDate": "2026-04-12",
   "selectedDate": "2026-04-12",
   "selectedBy": "researcher",
@@ -35,12 +35,12 @@
     "goal": "Formalize the 1D Brouwer fixed point theorem and the surrounding convergence theory"
   },
   "currentState": {
-    "phase": "DONE",
-    "since": "2026-04-03T00:00:00Z",
+    "phase": "COMPLETED",
+    "since": "2026-04-12T00:00:00Z",
     "iteration": 1,
     "focus": "Created SpernerNDimOQ03OQ01.lean with 4 theorems, 0 sorries, 0 axioms.",
     "blockers": [],
-    "nextAction": "Verify compilation with docker-build.sh.",
+    "nextAction": "None for this completed 1D Brouwer slice.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -59,7 +59,7 @@
       "Key Mathlib lemma: isPreconnected_Icc.intermediate_value₂ finds c where f(c)=g(c) given f(a)≤g(a) and g(b)≤f(b)",
       "In 1D, Brouwer is IVT applied to f - id: g(0)=f(0)≥0 and g(1)=f(1)-1≤0",
       "Contractive convergence uses tendsto_pow_atTop_nhds_zero_of_lt_one for geometric bound",
-      "The n-D case requires homeomorphism Δⁿ ≅ [0,1]ⁿ which needs substantial topology"
+      "Extending the pipeline beyond the interval case requires additional topology beyond this 1D file"
     ],
     "mathlibGaps": [],
     "nextSteps": []
@@ -69,7 +69,7 @@
     "topology",
     "sperner",
     "brouwer",
-    "sorry-closing"
+    "fixed-point-theorem"
   ],
   "relatedProofs": [
     "sperner-ndim",
@@ -79,10 +79,13 @@
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "isPreconnected_Icc intermediate value theorem",
+      "tendsto_pow_atTop_nhds_zero_of_lt_one"
+    ]
   },
   "started": "2026-04-03T02:57:02.772Z",
-  "lastUpdate": "2026-04-03T00:00:00Z",
+  "lastUpdate": "2026-04-12T00:00:00Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [

@@ -1,37 +1,47 @@
 {
   "slug": "ptolemys-theorem-oq-01-incomplete-01",
-  "title": "Complete Ptolemy OQ-01: Fill Sorries in PtolemysTheoremOQ01.lean",
+  "title": "Ptolemy Equality Converse for Unit-Circle Points",
   "phase": "COMPLETED",
-  "status": "completed",
+  "status": "graduated",
   "tier": "B",
   "path": "full",
   "significance": 7,
   "tractability": 7,
   "problemStatement": {
-    "formal": "Fill the 2 sorries in PtolemysTheoremOQ01.lean: (1) unit_star_eq_inv and (2) ptolemy_ratio_pos_of_ccw.",
-    "plain": "PtolemysTheoremOQ01.lean had 2 sorries: the algebraic step z*conj(z)=1→conj(z)=z⁻¹ for unit circle points, and the trig positivity argument for the Ptolemy cross-ratio for CCW-ordered points.",
+    "formal": "For four distinct unit-circle points, prove that Ptolemy equality implies counterclockwise or clockwise cyclic order, and package this as a biconditional with the forward CCW equality theorem.",
+    "plain": "Complete the unit-circle converse direction for Ptolemy equality: equality of the chord-length expression forces the four points into one of the two cyclic orders.",
     "whyMatters": [
-      "Completing these sorries makes PtolemysTheoremOQ01.lean a fully attempted proof of Ptolemy equality for concyclic CCW points",
-      "ptolemy_ratio_pos_of_ccw requires the half-angle formula for complex exponentials, demonstrating a non-trivial trig calculation in Lean"
+      "The converse turns Ptolemy equality from a one-way theorem into a cyclic-order characterization",
+      "The proof exercises complex half-angle factorization and sign analysis for points on the unit circle"
     ]
   },
   "knownResults": {
     "proven": [
-      "unit_star_eq_inv: proved via Complex.mul_conj + norm_cast (PtolemysTheoremOQ01.lean:44-46)",
-      "ptolemy_ratio_pos_of_ccw: full trig proof via half-angle formula hha, phase cancellation hE, hLHS.trans hRHS.symm (PtolemysTheoremOQ01.lean:116-209)",
+      "ptolemy_equality_implies_ccw_or_cw: Ptolemy equality for distinct unit-circle points implies CCW or CW order",
+      "ptolemy_equality_iff_ccw_or_cw: biconditional packaging of equality and cyclic order",
+      "unit_star_eq_inv: proved via Complex.mul_conj + norm_cast in the supporting OQ01 file",
+      "ptolemy_ratio_pos_of_ccw: full trig proof via half-angle factorization and sign positivity in the supporting OQ01 file",
       "ptolemy_equality_for_unit_circle_ccw: Ptolemy equality for CCW unit-circle points",
-      "ptolemy_equality_for_concyclic: Ptolemy equality for general concyclic points",
-      "ptolemy_equality_implies_ccw_or_cw: converse direction (1 sorry in t_eq_sine_ratio/hcx)",
-      "ptolemy_equality_iff_ccw_or_cw: full biconditional for unit-circle points"
+      "ptolemy_equality_for_concyclic: Ptolemy equality for general concyclic points"
     ],
     "open": [],
-    "goal": "0 sorries in PtolemysTheoremOQ01Incomplete01.lean (hcx sorry remains for Aristotle)"
+    "goal": "Complete the unit-circle Ptolemy equality converse and biconditional with 0 code sorries"
   },
   "currentState": {
-    "blockers": []
+    "phase": "COMPLETED",
+    "since": "2026-04-14T20:51:02.132Z",
+    "iteration": 2,
+    "focus": "Primary converse file is complete: 489 lines, 2 public theorems, 0 axioms, 0 code sorries.",
+    "blockers": [],
+    "nextAction": "None for this completed converse slice.",
+    "attemptCounts": {
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
+    }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Both sorries filled in PtolemysTheoremOQ01.lean (290 lines, 0 sorries). unit_star_eq_inv proved via Complex.mul_conj + norm_cast. ptolemy_ratio_pos_of_ccw proved via half-angle formula, positivity via Real.sin_pos_of_pos_of_lt_pi, equality via hLHS.trans hRHS.symm. PR #10653.",
+    "progressSummary": "COMPLETED: PtolemysTheoremOQ01Incomplete01.lean proves the converse and biconditional for unit-circle Ptolemy equality with 2 public theorems, 0 axioms, and 0 code sorries. The supporting PtolemysTheoremOQ01.lean file supplies the CCW equality direction with 8 public theorem/lemma declarations, 2 defs, 0 axioms, and 0 code sorries.",
     "insights": [
       "unit_star_eq_inv: Complex.mul_conj gives z * starRingEnd ℂ z = ↑(normSq z), combined with normSq=1 and norm_cast gives z * conj(z) = 1, then mul_left_cancel₀",
       "ptolemy_ratio_pos_of_ccw proof architecture: hfact → h2isin → hha (half-angle helpers) + hE (phase cancellation) + hcalc (scalar identity) + hLHS/hRHS calc blocks",
@@ -43,18 +53,14 @@
       "CW backward direction: apply ptolemy_ratio_pos_of_ccw and ptolemy_equality_of_proportional to reversed argument order (z1,z4,z3,z2), then use norm_sub_rev + linarith"
     ],
     "builtItems": [
-      "unit_star_eq_inv sorry replaced: PtolemysTheoremOQ01.lean:44-46",
-      "ptolemy_ratio_pos_of_ccw full proof: PtolemysTheoremOQ01.lean:116-209 (94 lines)",
-      "PR #10653: PtolemysTheoremOQ01.lean committed and pushed"
+      "PtolemysTheoremOQ01Incomplete01.lean:253 ptolemy_equality_implies_ccw_or_cw",
+      "PtolemysTheoremOQ01Incomplete01.lean:458 ptolemy_equality_iff_ccw_or_cw",
+      "PtolemysTheoremOQ01.lean:242 ptolemy_ratio_pos_of_ccw supporting the forward direction",
+      "PtolemysTheoremOQ01.lean:401 ptolemy_equality_for_concyclic"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Submit hcx sorry to Aristotle: ring identity after substituting hha for all four exp differences and using hE phase cancellation",
-      "Verify compilation: ./proofs/scripts/docker-build.sh Proofs.PtolemysTheoremOQ01Incomplete01",
-      "If hcx fails to compile, try: field_simp + ring after rw [hha x y] for all four differences, or use congrArg Complex.re/im",
-      "After hcx filled: update sorryCount to 0, status to verified, badge to original in meta.json"
-    ],
-    "phase": "ACT"
+    "nextSteps": [],
+    "phase": "COMPLETED"
   },
   "tags": [
     "geometry",
@@ -73,9 +79,20 @@
   "started": "2026-04-13T22:30:00Z",
   "leanFiles": [
     {
+      "path": "Proofs/PtolemysTheoremOQ01Incomplete01.lean",
+      "filename": "PtolemysTheoremOQ01Incomplete01.lean",
+      "lineCount": 489,
+      "theoremCount": 2,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/PtolemysTheoremOQ01Incomplete01.lean"
+    },
+    {
       "path": "Proofs/PtolemysTheoremOQ01.lean",
       "filename": "PtolemysTheoremOQ01.lean",
-      "lineCount": 289,
+      "lineCount": 470,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 2,

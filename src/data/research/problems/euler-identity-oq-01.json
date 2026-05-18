@@ -1,27 +1,37 @@
 {
   "slug": "euler-identity-oq-01",
-  "title": "Can the full Taylor series proof — showing $\\sum (ix)^n/n",
-  "phase": "OBSERVE",
-  "status": "active",
+  "title": "Euler's Identity via Taylor Series Splitting",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Prove exp(i x) = cos x + i sin x by splitting the exponential Taylor series into even and odd terms, then derive exp(i pi) + 1 = 0.",
+    "plain": "Formalize Euler's formula by separating the Taylor series for exp(i x) into its cosine and sine parts.",
+    "whyMatters": [
+      "Connects Euler's identity to the power-series definitions of exp, sin, and cos",
+      "Turns the even/odd Taylor-term split into reusable Lean theorems",
+      "Separates the Taylor-series scaffold from the broader Euler identity gallery proof"
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "EulerIdentityOQ01.lean proves the Taylor-term splitting route with 14 public theorems, 3 defs, 0 axioms, and 0 sorries",
+      "I_pow_even and I_pow_odd identify the even and odd powers of i",
+      "expTerm_even and expTerm_odd match the exponential terms to cosine and sine terms",
+      "euler_formula_taylor proves exp(i x) = cos x + sin x * i",
+      "euler_identity_taylor derives exp(i pi) + 1 = 0"
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Complete the Taylor-series derivation of Euler's formula and Euler's identity"
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-28T20:58:08-07:00",
     "iteration": 1,
-    "focus": "Proved euler_formula_algebraic + 4 supporting lemmas in EulerIdentity.lean",
+    "focus": "Primary OQ01 Taylor-series file is complete: 210 lines, 14 public theorems, 3 defs, 0 axioms, 0 sorries.",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "None for this completed Taylor-series Euler identity slice.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,26 +39,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved Euler formula algebraically from cos/sin definitions + I^2=-1, without using exp_mul_I. Added 5 theorems: pow_mul_I_even, pow_mul_I_odd, exp_mul_I_series_term_even, exp_mul_I_series_term_odd, euler_formula_algebraic.",
+    "progressSummary": "COMPLETED: EulerIdentityOQ01.lean proves the Taylor-series split for exp(i x) with 14 public theorems, 3 defs, 0 axioms, and 0 sorries. The related axiom-elimination child file keeps the earlier supporting split lemmas as theorem statements, and the parent EulerIdentity.lean remains broader gallery context.",
     "builtItems": [
-      "theorem pow_mul_I_even: (z*I)^{2k} = (-1)^k * z^{2k}",
-      "theorem pow_mul_I_odd: (z*I)^{2k+1} = (-1)^k * z^{2k+1} * I",
-      "theorem exp_mul_I_series_term_even: even Taylor terms are cosine series terms",
-      "theorem exp_mul_I_series_term_odd: odd Taylor terms are I × sine series terms",
-      "theorem euler_formula_algebraic: exp(zI) = cos(z) + sin(z)*I without exp_mul_I"
+      "EulerIdentityOQ01.lean:61 I_pow_even",
+      "EulerIdentityOQ01.lean:69 I_pow_odd",
+      "EulerIdentityOQ01.lean:94 expTerm_even",
+      "EulerIdentityOQ01.lean:102 expTerm_odd",
+      "EulerIdentityOQ01.lean:165 euler_formula_taylor",
+      "EulerIdentityOQ01.lean:186 euler_identity_taylor"
     ],
     "insights": [
-      "Complex.cos z is definitionally (exp(zI) + exp(-zI))/2 — cos_eq_exp is rfl",
-      "Complex.sin z is definitionally ((exp(-zI) - exp(zI))*I)/2",
-      "Euler formula follows from I^2=-1: sin(z)*I simplifies the exp terms",
-      "Taylor series splitting explained by pow_mul_I_even/odd: even powers are real, odd carry factor I",
-      "OQ answered: YES, full Taylor series proof works without Complex.exp_mul_I"
+      "Even powers of i contribute the cosine terms, while odd powers carry the factor i for the sine terms.",
+      "The Taylor split is expressed through expTerm_even and expTerm_odd before packaging the final Euler formula.",
+      "The parent EulerIdentity.lean provides algebraic and geometric Euler identity context, but is not the primary OQ01 source."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: euler-identity-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "analysis",
+    "complex-analysis",
+    "power-series",
+    "euler-identity"
+  ],
   "relatedProofs": [
     "euler-identity",
     "euler-identity-oq-01",
@@ -63,22 +77,11 @@
   "lastUpdate": "2026-03-29T04:28:18.987Z",
   "leanFiles": [
     {
-      "path": "Proofs/EulerIdentity.lean",
-      "filename": "EulerIdentity.lean",
-      "lineCount": 342,
-      "theoremCount": 13,
-      "axiomCount": 0,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerIdentity.lean"
-    },
-    {
       "path": "Proofs/EulerIdentityOQ01.lean",
       "filename": "EulerIdentityOQ01.lean",
-      "lineCount": 214,
-      "theoremCount": 7,
-      "axiomCount": 3,
+      "lineCount": 210,
+      "theoremCount": 14,
+      "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,
@@ -87,13 +90,24 @@
     {
       "path": "Proofs/EulerIdentityOQ01OQ01.lean",
       "filename": "EulerIdentityOQ01OQ01.lean",
-      "lineCount": 143,
+      "lineCount": 142,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 3,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerIdentityOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/EulerIdentity.lean",
+      "filename": "EulerIdentity.lean",
+      "lineCount": 341,
+      "theoremCount": 13,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/EulerIdentity.lean"
     }
   ]
 }
