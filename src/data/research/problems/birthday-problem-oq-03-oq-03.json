@@ -6,14 +6,26 @@
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "For k-way birthday collisions over d days, the model records threshold powers of the form k! * d^(k-1), verifies the k=2,3,4 special cases, and proves that the scaling exponent (k-1)/k tends to 1.",
+    "plain": "Backfills metadata for the asymptotic scaling entry in the k-way birthday problem. The proof computes concrete threshold powers, compares them with pigeonhole-style bounds in small cases, and proves that the exponent approaches the linear pigeonhole exponent as k grows.",
+    "whyMatters": [
+      "The ordinary birthday paradox has a square-root threshold; k-way collisions interpolate toward near-linear thresholds.",
+      "Explicit k=2, k=3, and k=4 formulas make the asymptotic scaling easy to search and compare.",
+      "The exponent-limit theorem captures the qualitative transition from pair collisions to high-multiplicity collisions."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`threshold_k2`, `threshold_k3`, and `threshold_k4` compute the modeled threshold powers for 2-way, 3-way, and 4-way collisions.",
+      "`pigeonhole_vs_threshold_k2` and `pigeonhole_vs_threshold_k3` compare the thresholds with pigeonhole-style bounds in clean cases.",
+      "`concrete_365_k2` records the standard 365-day k=2 threshold-power value.",
+      "`exponent_approaches_one` proves that the scaling exponent (k-1)/k approaches 1.",
+      "The exact `BirthdayProblemOQ03OQ03.lean` file is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "Sharper probability-limit constants for the full k-way collision distribution are handled by sibling files and are not restated here."
+    ],
+    "goal": "Expose the k-way birthday-threshold scaling proof through complete problem metadata."
   },
   "currentState": {
     "phase": "ACT",
@@ -48,9 +60,18 @@
     ],
     "markdown": "# Knowledge Base: birthday-problem-oq-03-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "probability",
+    "birthday-problem",
+    "asymptotics",
+    "thresholds",
+    "combinatorics",
+    "pigeonhole-principle",
+    "formalized"
+  ],
   "relatedProofs": [
     "birthday-problem",
+    "birthday-problem-oq-01",
     "birthday-problem-oq-02",
     "birthday-problem-oq-02-oq-01",
     "birthday-problem-oq-03",
@@ -158,10 +179,10 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
-      "lineCount": 419,
-      "theoremCount": 18,
+      "lineCount": 2263,
+      "theoremCount": 59,
       "axiomCount": 1,
-      "defCount": 3,
+      "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ03OQ01OQ02.lean"

@@ -6,14 +6,25 @@
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "For finite samples with nonnegative rational weights, Chebyshev and Paley-Zygmund style second-moment bounds control the size of large-value or positive-support sets.",
+    "plain": "Records theorem-level metadata for the second moment method. The Lean files prove a finite Chebyshev inequality, qualitative and quantitative Paley-Zygmund bounds, and a second-moment existence estimate for nonnegative finite data.",
+    "whyMatters": [
+      "Second-moment arguments are a standard probabilistic-method route from variance control to existence results.",
+      "The finite rational formulation gives reusable combinatorial estimates without needing measure-theory overhead.",
+      "The metadata exposes the exact theorem names needed to find the concentration and positive-support bounds."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`chebyshev_finite` proves a finite Chebyshev inequality over a Finset with rational-valued data.",
+      "`second_moment_existence` proves a positive-support lower bound from a second-moment hypothesis.",
+      "`paley_zygmund_probability` records the quantitative Paley-Zygmund probability-form corollary.",
+      "The listed proof files are recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "General measure-theoretic probability-space versions and asymptotic random-graph applications are outside this finite metadata slice."
+    ],
+    "goal": "Backfill searchable metadata for the theorem-backed finite second-moment method files."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -36,7 +47,15 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: prob-method-second-moment-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "probability",
+    "probabilistic-method",
+    "second-moment-method",
+    "chebyshev-inequality",
+    "paley-zygmund",
+    "finite-combinatorics",
+    "formalized"
+  ],
   "relatedProofs": [
     "prob-method-second-moment",
     "prob-method-second-moment-oq-01"
