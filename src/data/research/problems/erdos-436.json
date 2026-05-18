@@ -1,19 +1,30 @@
 {
   "slug": "erdos-436",
-  "title": "Consecutive kth Power Residues",
+  "title": "Consecutive kth power residues and Erdos 436",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "For prime p and k,m >= 2, let r(k,m,p) be the minimal r such that r,...,r+m-1 are kth power residues mod p. Let Lambda(k,m) = lim sup r(k,m,p). Hildebrand (1991) proved Lambda(k,2) finite for all k. Lambda(k,3) for odd k >= 5 remains OPEN.",
-    "whyMatters": []
+    "formal": "IsKthPowerResidue(r,k,p) := \\exists a, a^k \\equiv r\\pmod p;\\ AreConsecutiveKthResidues(r,k,m,p) asks r,\\ldots,r+m-1 to be kth-power residues, with LambdaFinite(k,m) recording bounded limsup behavior.",
+    "plain": "Backfill the Erdos 436 metadata around consecutive kth-power residues modulo primes, the formal LambdaFinite interface, checked small lambda values, Hildebrand/Graham-style axiom boundaries, and the remaining odd-k, m=3 problem.",
+    "whyMatters": [
+      "The problem packages a deep distribution question about power residues into finite runs modulo primes.",
+      "The Lean development contains useful first-principles residue infrastructure alongside explicitly axiom-backed global theorems.",
+      "The metadata needs to keep the solved m=2 direction and the open m=3 odd-k direction separate."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`IsKthPowerResidue`, `AreConsecutiveKthResidues`, `IsQuadraticResidue`, and `LambdaFinite` define the residue-run framework.",
+      "`zero_is_kth_power_residue`, `one_is_kth_power_residue`, `consecutive_shorten`, `consecutive_shift`, and `all_are_first_power_residues` give elementary infrastructure.",
+      "`erdos_436_question1`, `only_small_m_matters`, `quadratic_case_complete`, and `m_2_complete_picture` summarize the formalized solved directions.",
+      "`isSquare_to_kth_residue`, `not_kth_residue_to_not_isSquare`, `euler_criterion_backward`, and `qr_product_non_residues` add supporting quadratic-residue lemmas."
+    ],
+    "open": [
+      "`lambda_2_2`, `hildebrand_theorem`, `lambda_even_3_infinite`, and `graham_theorem` are axioms in `Erdos436Problem.lean`; the odd-k, m=3 Lambda question remains open."
+    ],
+    "goal": "Show the verified power-residue framework and clearly flag the global residue-run theorems that are recorded as axioms."
   },
   "currentState": {
     "phase": "NEW",
@@ -39,7 +50,10 @@
     "seeker-selected",
     "number-theory",
     "power-residues",
-    "1-sorry"
+    "finite-fields",
+    "quadratic-residues",
+    "axiom-backed",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-4",

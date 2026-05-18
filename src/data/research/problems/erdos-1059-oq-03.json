@@ -1,19 +1,30 @@
 {
   "slug": "erdos-1059-oq-03",
-  "title": "Find smallest prime p>211 failing Erdos 1059 property via computational search",
+  "title": "Smallest prime after 211 failing the Erdos 1059 property",
   "phase": "NEW",
   "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Find smallest prime p>211 failing Erdos 1059 property via computational search.",
-    "whyMatters": []
+    "formal": "AllFactorialSubtractionsComposite(n) := \\forall k, k! < n \\to \\neg\\operatorname{Prime}(n-k!);\\ 223\\text{ is prime},\\ \\neg AllFactorialSubtractionsComposite(223),\\text{ and no prime lies strictly between }211\\text{ and }223.",
+    "plain": "Identify the first prime after 211 that fails the Erdos 1059 factorial-subtraction property. The Lean proof shows 223 is prime, that 223 - 4! = 199 is prime, and that there are no intervening primes between 211 and 223.",
+    "whyMatters": [
+      "The result turns a computational search target into a small certified witness.",
+      "It records both the primality gap after 211 and the specific factorial subtraction that breaks the property.",
+      "The file is a good example of using Lean's decidable arithmetic for exact finite number-theory checks."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`AllFactorialSubtractionsComposite` defines the factorial-subtraction property for a natural number.",
+      "`prime_223`, `prime_199`, and `next_prime_after_211` certify the local prime facts around 211 and 223.",
+      "`counterexample_223` proves that 223 fails the property because 223 - 4! = 199 is prime.",
+      "`smallest_failing_prime_after_211` packages the computation as the first failing prime after 211."
+    ],
+    "open": [
+      "`Erdos1059OQ03.lean` itself has zero axioms and zero sorries; broader density and infinitude claims in sibling Erdos 1059 files are axiom-backed."
+    ],
+    "goal": "Expose the verified finite witness and avoid implying that the wider Erdos 1059 density program is settled here."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -50,7 +61,10 @@
     "number-theory",
     "computational",
     "primes",
-    "seeker-selected"
+    "seeker-selected",
+    "factorials",
+    "finite-computation",
+    "formalization"
   ],
   "relatedProofs": [
     "erdos-1",
