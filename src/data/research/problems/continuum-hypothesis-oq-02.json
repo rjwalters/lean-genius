@@ -1,19 +1,30 @@
 {
   "slug": "continuum-hypothesis-oq-02",
-  "title": "What is the 'true' size of the continuum",
+  "title": "Continuum size constraints and cardinal characteristics",
   "phase": "NEW",
   "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalization extending an existing formalization: What is the 'true' size of the continuum.",
-    "whyMatters": []
+    "formal": "ContinuumHypothesis.continuum \\ne Cardinal.aleph 0, ContinuumHypothesis.continuum \\ne Cardinal.aleph \\omega, successor alephs satisfy the possible-continuum predicate, and \\aleph_1 \\le \\mathfrak b \\le \\mathfrak d \\le 2^{\\aleph_0}.",
+    "plain": "Backfill the set-theoretic metadata around possible values of the continuum: Konig-style cofinality excludes aleph_omega, successor alephs remain possible, and bounding/dominating cardinal characteristics sit between aleph_1 and the continuum.",
+    "whyMatters": [
+      "The continuum problem is not just CH versus not-CH; ZFC also imposes cofinality constraints on possible continuum values.",
+      "Bounding and dominating numbers provide a finer structure between aleph_1 and 2^aleph_0.",
+      "The Lean file cleanly separates proved cardinal-arithmetic scaffolding from deep forcing/MA assumptions."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`aleph_one_is_regular`, `aleph_succ_is_regular`, `aleph_omega_is_singular`, and `konig_cofinality` provide the cofinality infrastructure.",
+      "`continuum_ne_aleph_omega`, `IsPossibleContinuumValue`, `successor_alephs_possible`, and `aleph_omega_not_possible` formalize the possible-continuum-value split.",
+      "`eventuallyDominates`, `IsUnbounded`, `IsDominating`, `boundingNumber`, and `dominatingNumber` define the cardinal-characteristic layer.",
+      "`dominating_le_continuum`, `bounding_le_dominating`, `characteristics_chain`, `easton_konig_characterization`, and `zfc_constraints_on_continuum` summarize the ZFC-side constraints."
+    ],
+    "open": [
+      "`bounding_number_uncountable` and `MA_implies_b_eq_continuum` remain axiom-backed in `ContinuumHypothesisOQ02.lean`; the file has zero sorries."
+    ],
+    "goal": "Expose the verified continuum-value and cardinal-characteristic scaffold while marking the forcing-strength inputs as assumptions."
   },
   "currentState": {
     "phase": "NEW",
@@ -85,7 +96,12 @@
   },
   "tags": [
     "seeker-selected",
-    "extension"
+    "extension",
+    "set-theory",
+    "foundations",
+    "cardinal-arithmetic",
+    "cardinal-characteristics",
+    "axiom-backed"
   ],
   "relatedProofs": [
     "continuum-hypothesis",
