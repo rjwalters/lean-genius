@@ -19,9 +19,11 @@
     "phase": "ACT",
     "since": "2026-01-14T21:29:39.409Z",
     "iteration": 3,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Axiomatized formalization present. Source has 0 sorries and 2 axioms: a formal Mertens-style asymptotic assumption and the open EGRS conjecture.",
+    "blockers": [
+      "mertens_theorem and erdos_726_conjecture remain axioms."
+    ],
+    "nextAction": "Replace the Mertens-style axiom if a suitable library theorem is available; the EGRS conjecture remains the open input.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,27 +31,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed gallery metadata inaccuracies (axiomCount 4→2, theoremCount 12→19, defCount 2→6, assumptions text, section line numbers). File is complete: 0 sorries, 2 justified axioms. No further improvement possible without Mertens theorem in Mathlib.",
+    "progressSummary": "Source-complete axiomatized model: 316 lines, 6 definitions, 19 theorems, 2 axioms, 0 sorries, and 0 admits. Defines upper/lower prime reciprocal sums and the Mertens sum; proves residue facts, nonnegativity and bounds, exact partition, upper-half heuristic count, lower-half consequence, upper/lower asymptotic equivalence, and ratio convergence conditional on the axioms.",
     "builtItems": [
-      "PROVED heuristic_half_fraction from upper_half_count (6A→5A)",
-      "sum_partition: mertensSum = upperHalfSum + lowerHalfSum",
-      "lower_half_also_half: proved from partition + ε/2 triangle inequality",
-      "PROVED ratio_converges_to_half: axiom→theorem via Tendsto log log atTop + numerator/denominator bounds (3A→2A)",
-      "Fixed meta.json: axiomCount 4→2, theoremCount 12→19, defCount 2→6, assumptions text corrected, section line numbers updated"
+      "Definitions: isUpperHalfResidue, primesUpTo, upperHalfSum, lowerHalfSum, mertensSum, and erdos_726_status.",
+      "Proved residue and sum facts: residue_bound, zero_not_upper_half, dvd_not_upper_half, upper_half_count, and nonnegativity/bound lemmas.",
+      "Proved analytic consequences conditional on axioms: sum_partition, lower_half_also_half, upper_lower_asymptotic, ratio_converges_to_half, mertensSum_mono, and mertensSum_pos."
     ],
     "insights": [
-      "heuristic_half_fraction follows from upper_half_count + Nat.cast_div. 6A→5A.",
-      "sum_partition proved via Finset.sum_filter_add_sum_filter_not on primes split by isUpperHalfResidue",
-      "lower_half_also_half: triangle inequality on limits (ε/2 + ε/2 = ε) from mertens + conjecture",
-      "Remaining 3A: mertens_theorem (deep), erdos_726_conjecture (open), ratio_converges_to_half (derivable but needs limit division)",
-      "ratio_converges_to_half proved: rewrite ratio diff as (2·upper - mertens)/(2·mertens), bound numerator < 3 from axioms, denominator → ∞ from log log growth",
-      "Remaining 2A: mertens_theorem (deep but possibly in Mathlib), erdos_726_conjecture (open conjecture - cannot be eliminated)",
-      "Meta.json had inaccurate counts (claimed 4-6 axioms when only 2 exist). Fixed axiomCount, theoremCount, defCount, and section line numbers.",
-      "Mertens theorem axiom uses additive asymptotic (|sum - log log n| < ε) which is technically the ~-notation interpreted as ratio → 1. The Meissel-Mertens constant M ≈ 0.261 means the additive difference converges to M, not 0. However, the ratio sum/log(log n) → 1 is correct and this is the standard meaning of ~ in the problem statement.",
-      "File is essentially complete: 0 sorries, 2 axioms (1 classical theorem, 1 open conjecture). No further axiom elimination possible without Mertens theorem in Mathlib."
+      "The formalization is an axiomatized model, not a proof of the open EGRS conjecture.",
+      "mertens_theorem is stated as a formal additive epsilon bound in this Lean file, so metadata should be careful when paraphrasing it as asymptotic notation.",
+      "No sorries or admits remain in the source."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Audit whether the Mertens-style axiom can be replaced with a library theorem or a corrected formal statement.",
+      "Keep erdos_726_conjecture marked as the open mathematical input."
+    ],
     "markdown": "# Erdős #726 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAs $n\\to \\infty$ ranges over integers\\[\\sum_{p\\leq n}1_{n\\in (p/2,p)\\pmod{p}}\\frac{1}{p}\\sim \\frac{\\log\\log n}{2}.\\]\n\n\n\nA conjecture of Erd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75}. For comparison the classical estimate of Mertens states that\\[\\sum_{p\\leq n}\\frac{1}{p}\\sim \\log\\log n.\\]By $n\\in (p/2,p)\\pmod{p}$ we mean $n\\equiv r\\pmod{p}$ for some integer $r$ with $p/2<r<p$.\n\n\n\n\nReferences\n\n\n[EGRS75] Erd\\H{o}s, P. and Graham, R. L. and Ruzsa, I. Z. and Straus, E. G., On the prime factors of $(\\sp{2n}\\sb{n})$. Math. Comp. (1975), 83-92.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #2\n- Problem #725\n- Problem #727\n- Problem #39\n- Problem #1\n\n## References\n\n- EGRS75\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
@@ -66,14 +63,14 @@
     "mathlib": []
   },
   "started": "2026-01-14T21:29:39.409Z",
-  "lastUpdate": "2026-03-27T05:00:00.000Z",
+  "lastUpdate": "2026-05-18T12:49:09Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos726Problem.lean",
       "filename": "Erdos726Problem.lean",
-      "lineCount": 317,
+      "lineCount": 316,
       "theoremCount": 19,
       "axiomCount": 2,
       "defCount": 6,

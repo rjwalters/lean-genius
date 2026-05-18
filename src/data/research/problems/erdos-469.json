@@ -19,9 +19,9 @@
     "phase": "COMPLETED",
     "since": "2026-03-28T09:05:00Z",
     "iteration": 3,
-    "focus": "Graduated: fully verified (0 axioms, 0 sorries)",
+    "focus": "Axiom-free, sorry-free Lean formalization of primitive pseudoperfect definitions, finite examples, and structural lemmas; the original Erdos convergence question remains open.",
     "blockers": [],
-    "nextAction": "None — axiom-free, sorry-free formalization. 31 theorems verified.",
+    "nextAction": "None for metadata; optional future work would formalize analytic progress on the open reciprocal-sum convergence question.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,27 +29,15 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Axiom-free formalization. 31 theorems, 0 axioms, 0 sorries. Verified examples of primitive pseudoperfect numbers (6, 20, 28, 88). Key results: multiple_of_pseudoperfect, deficient_not_pseudoperfect, all examples in A006036. Problem remains OPEN.",
+    "progressSummary": "Axiom-free, sorry-free formalization: 327 lines, 10 definitions, 32 theorems, 0 axioms. Verified examples include primitive pseudoperfect numbers 6, 20, 28, and 88. The original reciprocal-sum convergence problem remains open and is represented by erdos469_conjecture : Prop.",
     "builtItems": [
-      "Assessment: 2A both appropriate, excellent formalization",
-      "Proved pseudoperfect_28: 28 = 1+2+4+7+14 (perfect number)",
-      "Proved not_pseudoperfect_7, not_pseudoperfect_10, not_pseudoperfect_14 (all deficient)",
-      "Proved primitive_pseudoperfect_20: 20 is 2nd primitive pseudoperfect (A006036)",
-      "Proved primitive_pseudoperfect_28: 28 is 3rd primitive pseudoperfect (A006036, perfect number)",
-      "not_pseudoperfect_{8,11,22,44}: deficiency proofs for divisors of 88",
-      "pseudoperfect_88: witness {1,2,8,11,22,44} sums to 88",
-      "primitive_pseudoperfect_88: 4th entry of A006036 verified",
-      "Graduated to completed status (iteration 3)"
+      "Definitions: IsPseudoperfect, IsPrimitivePseudoperfect, primitivePseudoperfectSet, sigma0, IsAbundant, IsDeficient, IsPerfect', and IsWeird.",
+      "Verified examples and exclusions supporting primitive_pseudoperfect_6, primitive_pseudoperfect_20, primitive_pseudoperfect_28, and primitive_pseudoperfect_88.",
+      "Structural results: pseudoperfect_ge_six, deficient_not_pseudoperfect, primitive accessors, and multiple_of_pseudoperfect."
     ],
     "insights": [
-      "infinitely_many_primitive: known result (OEIS A006036 confirmed infinite) but proof is deep",
-      "erdos_469_convergence: THE open question — convergence of reciprocal sum",
-      "Excellent file: 19 theorems proved, including multiple_of_pseudoperfect (full proof)",
-      "Verified examples: 6 is smallest pseudoperfect, 6 is primitive pseudoperfect",
-      "deficient_not_pseudoperfect gives clean relationship between abundance and pseudoperfection",
-      "Weird number definition included for context (abundant but not pseudoperfect)",
-      "Both axioms (infinitely_many_primitive, erdos_469_convergence) were unused — removed (2→0A)",
-      "Graduation review: fully verified (0 axioms, 0 sorries). No structure-encoded assumptions. File is axiom-free."
+      "erdos469_conjecture and infinitely_many_primitive are proposition definitions, not axioms and not proved theorems.",
+      "The Lean development verifies a finite and structural fragment; it does not resolve the open reciprocal-sum convergence problem."
     ],
     "mathlibGaps": [],
     "nextSteps": [],
@@ -69,15 +57,15 @@
     "mathlib": []
   },
   "started": "2026-01-13T04:11:10.513Z",
-  "lastUpdate": "2026-03-28T01:37:21.456460+00:00Z",
+  "lastUpdate": "2026-05-18T12:49:09Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos469Problem.lean",
       "filename": "Erdos469Problem.lean",
-      "lineCount": 328,
-      "theoremCount": 31,
+      "lineCount": 327,
+      "theoremCount": 32,
       "axiomCount": 0,
       "defCount": 10,
       "sorryCount": 0,
