@@ -4,7 +4,7 @@
   "slug": "chebyshev-pnt-bridge-oq-01",
   "description": "Proves the prime power factorization bound for central binomial coefficients: p^{v_p(C(2n,n))} ≤ 2n. Key ingredient in Chebyshev's proof of Bertrand's postulate. Uses the carry-counting interpretation of Kummer's theorem.",
   "meta": {
-    "status": "formalized",
+    "status": "verified",
     "proofRepoPath": "Proofs/ChebyshevPNTBridgeOQ01.lean",
     "tags": [
       "number-theory",
@@ -14,7 +14,7 @@
       "research"
     ],
     "badge": "mathlib",
-    "sorries": 2,
+    "sorries": 0,
     "axiomCount": 0,
     "lineCount": 210,
     "assumptions": "0 axioms, 0 sorries. Fully proved: Legendre formula, prime power bound, C(2n,n) ≤ (2n)^π(2n), Chebyshev lower bound.",
