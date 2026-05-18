@@ -6,14 +6,27 @@
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "For Pell equations x^2 - D*y^2 = 1, the metadata records regulator definitions, positivity facts, near-square solutions D = n^2 - 1, and the large D = 61 example.",
+    "plain": "Backfills metadata for the Pell regulator entry. The Lean files define Pell norms and regulators, prove basic positivity and nonnegativity facts, verify explicit near-square solutions, and record the classical large solution for D = 61 while leaving regulator growth principles as conjectural Props.",
+    "whyMatters": [
+      "Pell equations connect Diophantine approximation, units in quadratic fields, and regulator growth.",
+      "Near-square examples show families with small regulators, while D = 61 demonstrates surprisingly large fundamental solutions.",
+      "The metadata separates proved arithmetic checks from the stated long-range regulator conjectures."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`pellNorm` and `pellRegulator` define the analytic quantities attached to Pell solutions.",
+      "`pellNorm_pos_of_pos` and `pellRegulator_nonneg` prove basic positivity/nonnegativity facts.",
+      "`pell_near_square_solution` proves that (n, 1) solves the equation for D = n^2 - 1.",
+      "`pellNorm_near_square` computes the corresponding norm expression.",
+      "`fermat_d61_solution` verifies the classical large solution for D = 61.",
+      "The listed Pell files are recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "`PellRegulatorBound`, `AverageRegulatorConjecture`, `DirichletClassNumberFormula`, and `PellPolynomialTime` are stated as Prop-level conjectural targets, not proved theorems."
+    ],
+    "goal": "Make the proved Pell regulator facts searchable while clearly marking conjectural follow-up statements."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -51,7 +64,14 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: pell-equation-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "number-theory",
+    "pell-equation",
+    "regulators",
+    "diophantine-equations",
+    "quadratic-fields",
+    "formalized"
+  ],
   "relatedProofs": [
     "pell-equation",
     "pell-equation-oq-01"
