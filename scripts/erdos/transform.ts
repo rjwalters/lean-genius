@@ -69,6 +69,8 @@ const TAG_MAPPING: Record<string, string[]> = {
   'logic': ['logic'],
 }
 
+const GENERIC_SLUG_TAGS = new Set(['number theory', 'combinatorics', 'graph theory', 'geometry', 'analysis'])
+
 /**
  * Generate a slug from problem number and title
  */
@@ -80,10 +82,11 @@ export function generateSlug(problem: ScrapedProblem): string {
   if (problem.tags.length > 0) {
     // Use the most specific tag (not generic like "number theory")
     const specificTags = problem.tags.filter(
-      t => !['number theory', 'combinatorics', 'graph theory', 'geometry', 'analysis'].includes(t.toLowerCase())
+      t => !GENERIC_SLUG_TAGS.has(t.trim().toLowerCase())
     )
     if (specificTags.length > 0) {
       const tagSlug = specificTags[0]
+        .trim()
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, '-')
         .replace(/^-|-$/g, '')
