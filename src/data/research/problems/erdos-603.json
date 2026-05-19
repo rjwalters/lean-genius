@@ -6,22 +6,37 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Let (Ai)\" role=\"presentation\" style=\"position: relative;\">(Ai)(Ai)(A_i) be a family of countably infinite sets such that &#x007C;Ai&#x2229;Aj&#x007C;&#x2260;2\" role=\"presentation\" style=\"position: relative;\">|Ai∩Aj|≠2|Ai∩Aj|≠2\\lvert A_i\\cap A_j\\rvert \\neq 2 for all i&#x2260;j\" role=\"presentation\" style=\"position: relative;\">i≠ji≠ji\\neq j. Find the smallest cardinal C\" role=\"presentation\" style=\"position: relative;\">CCC such that &#x222A;Ai\" role=\"presentation\" style=\"position: relative;\">∪Ai∪...",
-    "whyMatters": []
+    "formal": "For countably infinite sets (A_i) with |A_i intersect A_j| != 2 for i != j, find the smallest cardinal C such that the union can always be colored with at most C colors and no A_i is monochromatic.",
+    "plain": "Erdos #603 asks for the least number of colors needed to avoid monochromatic members in countably infinite set families whose pairwise intersections are never of size two.",
+    "whyMatters": [
+      "This is a hypergraph-coloring problem for infinite set systems with a forbidden intersection size.",
+      "The Lean file proves basic lower, countable-index upper, and disjoint-family special-case results.",
+      "The exact finite-versus-countable answer remains open and one related Komjath theorem is axiomatized."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean defines the family-coloring setup, SufficientColors, chromaticNumber, ErdosConjecture603, and minimalChromatic.",
+      "Theorems prove lower_bound_2, countable_suffices for countable index types, disjoint_2_colors, both_constraints, and erdos_603_statement.",
+      "The lemma IsCountablyInfiniteFamily.nonempty supplies the nonemptiness needed for the lower-bound and coloring arguments."
+    ],
+    "open": [
+      "The exact smallest cardinal for the not-two intersection problem remains open.",
+      "`komjath_not1` is the sole active axiom and concerns the related not-one variant.",
+      "`countable_suffices` assumes a countable index type; it should not be read as an arbitrary-index upper bound."
+    ],
+    "goal": "Present the verified bounds and special cases while keeping the exact Erdos #603 cardinal question and the related Komjath input visible."
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-28T08:30:00Z",
     "iteration": 3,
-    "focus": "Graduated: formalization complete (0 sorries, 1 deep axiom)",
-    "blockers": [],
-    "nextAction": "None — problem fully formalized. Remaining axiom (komjath_not1) is a deep published result.",
+    "focus": "Metadata now reflects the 2-color lower bound, countable-index upper bound, disjoint-family special case, and the single related Komjath axiom.",
+    "blockers": [
+      "`komjath_not1` is axiomatized for the related not-one variant.",
+      "The exact smallest cardinal for the not-two problem remains open."
+    ],
+    "nextAction": "A useful proof slice would add more finite-color special cases or separate the related not-one theorem from the not-two conjecture in the gallery narrative.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -53,7 +68,12 @@
     "markdown": "# Erdős #603 - Knowledge Base\n\n## Problem Statement\n\nLet (Ai)\" role=\"presentation\" style=\"position: relative;\">(Ai)(Ai)(A_i) be a family of countably infinite sets such that &#x007C;Ai&#x2229;Aj&#x007C;&#x2260;2\" role=\"presentation\" style=\"position: relative;\">|Ai∩Aj|≠2|Ai∩Aj|≠2\\lvert A_i\\cap A_j\\rvert \\neq 2 for all i&#x2260;j\" role=\"presentation\" style=\"position: relative;\">i≠ji≠ji\\neq j. Find the smallest cardinal C\" role=\"presentation\" style=\"position: relative;\">CCC such that &#x222A;Ai\" role=\"presentation\" style=\"position: relative;\">∪Ai∪Ai\\cup A_i can always be coloured with at most C\" role=\"presentation\" style=\"position: relative;\">CCC colours so that no Ai\" role=\"presentation\" style=\"position: relative;\">AiAiA_i is monochromatic.\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #602\n- Problem #604\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er87\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "set-theory",
+    "combinatorics",
+    "hypergraph-coloring",
+    "cardinals",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-6",
@@ -61,9 +81,18 @@
     "erdos-603"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Er87",
+      "Komjath 2003 related not-one theorem"
+    ],
+    "urls": [
+      "https://erdosproblems.com/603"
+    ],
+    "mathlib": [
+      "Mathlib",
+      "Set",
+      "Cardinal"
+    ]
   },
   "started": "2026-01-13T18:05:31.780Z",
   "lastUpdate": "2026-03-23T03:30:00.000Z",
@@ -73,10 +102,10 @@
     {
       "path": "Proofs/Erdos603Problem.lean",
       "filename": "Erdos603Problem.lean",
-      "lineCount": 288,
+      "lineCount": 287,
       "theoremCount": 6,
       "axiomCount": 1,
-      "defCount": 18,
+      "defCount": 19,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos603Problem.lean"
