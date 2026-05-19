@@ -19,7 +19,7 @@
       "solved"
     ],
     "badge": "axiom",
-    "sorries": 2,
+    "sorries": 0,
     "erdosNumber": 1196,
     "erdosUrl": "https://erdosproblems.com/1196",
     "erdosProblemStatus": "proved",
@@ -69,7 +69,7 @@
     ],
     "axiomCount": 8,
     "lineCount": 363,
-    "assumptions": "8 axiom declarations and 1 sorry. Key axioms: vonMangoldt_sum_eq_log (standard identity), subMarkov_adjoint (novel Lemma 4), erdos_sarkozy_szemeredi_conjecture (main theorem), mertens_erdos_sum (Mertens-type), sourceMass_bound, primePower_distribution_estimate, vonMangoldt_tail_estimate (standard estimates), lichtman_primitive_set_theorem (Lichtman 2023).",
+    "assumptions": "8 axiom declarations and 0 sorries in the main file (Erdos1196Problem.lean). Key axioms: vonMangoldt_sum_eq_log (standard identity), subMarkov_adjoint (novel Lemma 4), erdos_sarkozy_szemeredi_conjecture (main theorem), mertens_erdos_sum (Mertens-type), sourceMass_bound, primePower_distribution_estimate, vonMangoldt_tail_estimate (standard estimates), lichtman_primitive_set_theorem (Lichtman 2023).",
     "prerequisites": [
       "Analytic number theory (von Mangoldt function, Mertens' theorem)",
       "Markov chain theory (transition kernels, sub-Markov property)",
@@ -216,5 +216,5 @@
       "Proofs/Erdos1196Aristotle.lean"
     ]
   },
-  "sorries": 2
+  "sorries": 0
 }
