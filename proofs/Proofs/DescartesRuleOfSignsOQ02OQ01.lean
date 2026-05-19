@@ -40,6 +40,7 @@ import Mathlib.Algebra.Polynomial.Derivative
 import Mathlib.Data.Real.Basic
 import Mathlib.Tactic
 import Mathlib.Analysis.Calculus.LocalExtr.Rolle
+import Proofs.DescartesRuleOfSignsOQ02
 
 set_option maxHeartbeats 400000
 
@@ -237,3 +238,20 @@ then the sign-change accounting (hardest), then assembly.
 -/
 
 end BudanUpperBound
+
+namespace BudanTheorem
+
+open Polynomial
+
+/-- Base case of Budan's upper bound: a nonzero constant polynomial has no
+roots in any interval, and its Budan-Fourier sign-change count is identically
+zero. This discharges the `natDegree p = 0` slice of `budan_upper_bound_axiom`.
+-/
+theorem budan_upper_bound_natDegree_zero (p : ℝ[X]) (hp : p ≠ 0)
+    (hd : p.natDegree = 0) (a b : ℝ) (_hab : a < b) :
+    rootsInInterval p a b ≤ budanCount p a - budanCount p b := by
+  have hp_eq : p = C (p.coeff 0) := eq_C_of_natDegree_eq_zero hd
+  have hc_ne : p.coeff 0 ≠ 0 := fun h => hp (by rw [hp_eq, h, map_zero])
+  rw [hp_eq, rootsInInterval_C _ hc_ne, budanCount_C, budanCount_C]
+
+end BudanTheorem
