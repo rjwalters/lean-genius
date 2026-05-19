@@ -26,17 +26,18 @@
     ],
     "goal": "Prove IsPathConnected (harmonicPointSet d), at minimum for d=0 and d=1"
   },
+  "lastUpdate": "2026-05-17",
   "currentState": {
-    "phase": "OBSERVE",
-    "since": "2026-04-21",
-    "iteration": 2,
-    "focus": "Read Erdos268Problem.lean definition of harmonicPointSet, search Mathlib for IsPathConnected tools for intervals.",
+    "phase": "COMPLETED",
+    "since": "2026-05-17",
+    "iteration": 3,
+    "focus": "S3 STATE-SYNC (doc-only): catch up state.md + research JSON currentState + leanFiles[] numerics drift after research-wave-bypass (S2 PRs #10920-#11983, 2026-04-21 → 2026-04-23) and state.md mass-import via unrelated sperner PR #19454 (2026-05-16). Registry graduated 2026-04-25T12:53:24Z.",
     "blockers": [],
-    "nextAction": "ORIENT: Search Mathlib for isPathConnected_Ioi, isPathConnected_singleton, Fin.isEmpty for d=0.",
+    "nextAction": "COMPLETED. Post-merge: pool flip via `scripts/research/claim-problem.sh update erdos-268 completed` (728-slug systemic drift). If Kovač-Tao 2024 path-connectedness becomes a Mathlib theorem, replace harmonicPointSet_path_connected_large axiom with a proof.",
     "attemptCounts": {
-      "total": 0,
+      "total": 8,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 2
     }
   },
   "knowledge": {
@@ -120,7 +121,7 @@
     {
       "path": "Proofs/Erdos268Aristotle.lean",
       "filename": "Erdos268Aristotle.lean",
-      "lineCount": 143,
+      "lineCount": 142,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 4,
@@ -131,10 +132,10 @@
     {
       "path": "Proofs/Erdos268Problem.lean",
       "filename": "Erdos268Problem.lean",
-      "lineCount": 952,
-      "theoremCount": 19,
+      "lineCount": 979,
+      "theoremCount": 34,
       "axiomCount": 2,
-      "defCount": 15,
+      "defCount": 17,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos268Problem.lean"
@@ -142,7 +143,7 @@
     {
       "path": "Proofs/Erdos268ProblemAristotle.lean",
       "filename": "Erdos268ProblemAristotle.lean",
-      "lineCount": 213,
+      "lineCount": 212,
       "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 8,
