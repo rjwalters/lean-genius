@@ -1,27 +1,37 @@
 {
   "slug": "brouwer-fixed-point-oq-04-oq-01",
-  "title": "[Problem Title]",
+  "title": "Prove Kakutani Fixed Point Theorem from Brouwer via Mathlib topology",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{Formal statement not yet specified in the research notes. Recorded target: prove Kakutani Fixed Point Theorem from Brouwer via Mathlib topology.}",
+    "plain": "Formalize and prove the Kakutani fixed point theorem in Lean, using Brouwer fixed point theorem and Mathlib topology as the intended route. The precise Lean statement and hypotheses are not yet recorded in the research notes.",
+    "whyMatters": [
+      "This is a user-requested follow-up in the Brouwer fixed point family.",
+      "It aims to connect a Brouwer fixed point development with a set-valued fixed point theorem inside Lean.",
+      "The current value is to clarify the formal target before any proof attempts are recorded."
+    ]
   },
   "knownResults": {
     "proven": [],
-    "open": [],
-    "goal": ""
+    "open": [
+      "Precise Lean theorem statement for the Kakutani fixed point theorem.",
+      "Choice of domain, correspondence, compactness, convexity, and continuity hypotheses.",
+      "Mathlib and local Brouwer prerequisites needed for a derivation from Brouwer."
+    ],
+    "goal": "Turn the recorded user-requested target into a precise Lean formalization of Kakutani fixed point theorem derived from Brouwer using Mathlib topology."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-02T21:57:15-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
-    "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "focus": "OBSERVE-stage context gathering for the Kakutani-from-Brouwer target; no active approach or proof attempts are recorded.",
+    "blockers": [
+      "The research notes do not yet specify the formal theorem statement, hypotheses, references, or candidate Mathlib modules."
+    ],
+    "nextAction": "Move to ORIENT by choosing a precise Kakutani statement and identifying the Brouwer/topology prerequisites available in Mathlib and local related proofs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +39,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: brouwer-fixed-point-oq-04-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "OBSERVE-stage record only. problem.md names the target as proving Kakutani Fixed Point Theorem from Brouwer via Mathlib topology; state.md records path=full, iteration 1, no active approach, and zero attempts.",
+    "builtItems": [
+      "Research record initialized for slug brouwer-fixed-point-oq-04-oq-01.",
+      "State file records OBSERVE phase, full path, iteration 1, no active approach, and zero attempts."
+    ],
+    "insights": [
+      "The intended route is explicitly from Brouwer via Mathlib topology.",
+      "The formal theorem statement is absent from the allowed research notes, so the target must be specified before proof work starts.",
+      "No active approach, completed attempts, dead ends, or literature references are recorded for this child problem."
+    ],
+    "mathlibGaps": [
+      "Documentation gap: exact Mathlib modules and theorem names for the Brouwer/topology prerequisites are not recorded yet.",
+      "Documentation gap: the Lean encoding of the set-valued correspondence and its compactness, convexity, and continuity hypotheses is not recorded yet."
+    ],
+    "nextSteps": [
+      "Write a precise Lean and LaTeX target statement for Kakutani fixed point theorem.",
+      "Identify the specific Brouwer fixed point theorem and topology/convexity declarations that should be reused.",
+      "Populate literature and Mathlib references from source files before claiming known results.",
+      "Only after ORIENT evidence exists, record an approach and update attempt counts if proof work begins."
+    ],
+    "markdown": "# Knowledge Base: brouwer-fixed-point-oq-04-oq-01\n\n## Evidence Summary\n\n- problem.md records the target title: Prove Kakutani Fixed Point Theorem from Brouwer via Mathlib topology.\n- state.md records phase OBSERVE, path full, iteration 1, no active approach, and zero attempts.\n- knowledge.md contains no substantive notes beyond the initialized knowledge-base heading.\n\n## Current Understanding\n\nThe problem is a user-requested Brouwer-family follow-up whose intended route is to derive a Kakutani fixed point result using Brouwer and Mathlib topology. The formal theorem statement, exact hypotheses, and supporting modules are still unspecified in the research notes.\n\n## Open Gaps\n\n- Choose the precise Lean statement and mathematical hypotheses.\n- Identify the relevant Brouwer fixed point result and topology/convexity declarations.\n- Add literature and Mathlib references from concrete source evidence.\n\n## Next Steps\n\n1. Move to ORIENT by drafting the exact theorem statement.\n2. Survey available local Brouwer/Kakutani-related proofs and Mathlib topology support.\n3. Record known results only after source evidence identifies them.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "topology",
+    "fixed-point-theory",
+    "brouwer-fixed-point",
+    "kakutani-fixed-point",
+    "mathlib-formalization"
   ],
   "relatedProofs": [
     "brouwer-fixed-point",
@@ -58,7 +85,9 @@
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib topology library (exact modules not yet identified in the research notes)"
+    ]
   },
   "started": "2026-04-02T21:57:15-07:00",
   "leanFiles": [

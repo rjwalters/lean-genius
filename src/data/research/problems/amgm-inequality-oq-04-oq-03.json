@@ -1,27 +1,39 @@
 {
   "slug": "amgm-inequality-oq-04-oq-03",
-  "title": "[Problem Title]",
+  "title": "Gauss AGM Theorem via Hypergeometric Elliptic Integral Identity",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
-  "path": "full",
+  "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "M(a,b)=\\frac{a\\pi}{2K(k')}\\text{ where }k=b/a\\text{ and }k'=\\sqrt{1-k^2},\\text{ via }K(k)=\\frac{\\pi}{2}\\,{}_2F_1\\left(\\frac12,\\frac12;1;k^2\\right).",
+    "plain": "Prove Gauss's AGM theorem connecting the AGM limit M(a,b) to the complete elliptic integral K, using the stated hypergeometric-series identity for K(k).",
+    "whyMatters": [
+      "Connects the AGM limit to the complete elliptic integral K.",
+      "Extends the Gauss AGM iteration and elliptic-integral thread from amgm-inequality-oq-04 into a deeper analysis problem."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The problem statement records the intended hypergeometric route: K(k) = (pi/2) * _2F_1(1/2,1/2;1;k^2).",
+      "The source context is amgm-inequality-oq-04, described as Gauss AGM iteration and elliptic integrals."
+    ],
+    "open": [
+      "No active approach is recorded for this subproblem.",
+      "No Lean proof attempt is recorded; all attempt counts remain zero.",
+      "Mathlib hypergeometric-series support still needs to be checked.",
+      "A formal route from AGM convergence to the complete elliptic integral identity has not been documented."
+    ],
+    "goal": "Formalize Gauss's AGM theorem M(a,b) = a*pi/(2K(k')) with k = b/a and k' = sqrt(1-k^2), using the hypergeometric identity for K(k)."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-04T02:41:25-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "OBSERVE-stage orientation on the Gauss AGM theorem statement, its source context, and the recorded fast-path first steps.",
+    "activeApproach": "None recorded yet.",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "Check the existing AGM formalization from amgm-inequality-oq-04, search Mathlib for hypergeometric-series support, and try proving an AGM convergence-rate lemma first.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +41,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Only orientation metadata is recorded. The problem is active in OBSERVE phase on the fast path with zero attempts, no active approach, no blockers, and no documented Lean proof work.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: amgm-inequality-oq-04-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "The target theorem is Gauss's AGM theorem M(a,b) = a*pi/(2K(k')).",
+      "The problem defines k = b/a and k' = sqrt(1-k^2).",
+      "The proposed route is through the hypergeometric-series identity K(k) = (pi/2) * _2F_1(1/2,1/2;1;k^2).",
+      "The context marks this as a challenging deep analysis extension requiring hypergeometric functions and AGM convergence."
+    ],
+    "mathlibGaps": [
+      "Mathlib support for hypergeometric series has not yet been checked."
+    ],
+    "nextSteps": [
+      "Check the existing AGM formalization in amgm-inequality-oq-04.",
+      "Search Mathlib for hypergeometric-series support.",
+      "Try proving just the AGM convergence rate first.",
+      "Move to ACT only if the quick search reveals an obvious formal route."
+    ],
+    "markdown": "# Knowledge Base: amgm-inequality-oq-04-oq-03\n\n## Problem Understanding\n\n- Target: prove Gauss's AGM theorem M(a,b) = a*pi/(2K(k')).\n- Parameters recorded in the problem statement: k = b/a and k' = sqrt(1-k^2).\n- Intended route: use K(k) = (pi/2) * _2F_1(1/2,1/2;1;k^2).\n- Context: extension from amgm-inequality-oq-04, categorized as a challenging deep analysis problem involving hypergeometric functions and AGM convergence.\n\n## Current State\n\n- Phase: OBSERVE.\n- Path: fast.\n- Since: 2026-04-04T02:41:25-07:00.\n- Iteration: 1.\n- Active approach: none recorded yet.\n- Attempts: total 0, current approach 0, approaches tried 0.\n- Blockers: none recorded.\n\n## Known Work and Open Items\n\n- No Lean proof attempt or completion is recorded for this subproblem.\n- The existing AGM formalization in amgm-inequality-oq-04 still needs to be checked.\n- Mathlib hypergeometric-series support still needs to be searched.\n- A preliminary AGM convergence-rate lemma is the first suggested proof target.\n\n## Next Steps\n\n1. Check the existing AGM formalization in amgm-inequality-oq-04.\n2. Search Mathlib for hypergeometric-series support.\n3. Try proving just the AGM convergence rate first.\n4. Move to ACT only if the quick search reveals an obvious formal route.\n\n## Dead Ends\n\nNone recorded.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "analysis",
+    "agm",
+    "elliptic-integrals",
+    "hypergeometric-series",
+    "convergence"
   ],
   "relatedProofs": [
     "amgm-inequality",
