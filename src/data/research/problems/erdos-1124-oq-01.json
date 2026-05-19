@@ -6,14 +6,25 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
+    "formal": "TranslationEquidecomposableN(A,B,n) asks for n translation-congruent pieces from A to B; for equal-area disk and square, the file proves no 0-piece or 1-piece decomposition and records 3 \\le minPieceCount \\le 10^50 from external bounds.",
     "plain": "Laczkovich proved that a circle and square of equal area can be decomposed into ~10^50 translation-congruent pieces. But how few pieces actually suffice? This file formalizes the minimum piece count problem, proves 0-piece and 1-piece impossibility (the latter via a diagonal argument and π > 3), proves transitivity of translation congruence, and states the known bounds: at least 3 (topological obstruction) and at most 10^50 (Laczkovich) or 10^5 (Marks-Unger, with Borel pieces).",
-    "whyMatters": []
+    "whyMatters": [
+      "Circle squaring turns geometric area equality into a precise finite equidecomposition question.",
+      "The Lean development proves the small-piece impossibilities while treating the deep Laczkovich and topological bounds as axioms.",
+      "The metadata should separate the verified one-piece obstruction from the external high-complexity decomposition theorems."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`disk`, `square`, `translateBy`, `TranslationCongruent`, `IsNDecomposition`, `TranslationEquidecomposableN`, and `TranslationEquidecomposable` define the equidecomposition framework.",
+      "`equidecomposable_refl`, `translateBy_inv_image`, `equidecomposable_symm`, and `equidecomposable_mono` give basic closure properties.",
+      "`iUnion_fin_zero`, `not_zero_decomposition`, `disk_nonempty`, `square_nonempty`, and `not_zero_equidecomposable` rule out zero-piece decompositions.",
+      "`iUnion_fin_one_eq`, `mem_translateBy_iff`, `not_one_equidecomposable`, `translation_congruent_trans`, `piece_count_lower_bound`, and `piece_count_in_range` package the small-piece and range facts."
+    ],
+    "open": [
+      "`minPieceCount`, `minPieceCount_achieves`, `minPieceCount_is_min`, `laczkovich_upper_bound`, and `lower_bound_three` are axioms in `Erdos1124OQ01.lean`; the file has zero sorries."
+    ],
+    "goal": "Expose the formal equidecomposition vocabulary and small lower-bound proofs while keeping the deep circle-squaring bounds axiom-backed."
   },
   "currentState": {
     "phase": "NEW",
@@ -38,7 +49,10 @@
   "tags": [
     "seeker-selected",
     "geometry",
-    "equidecomposition"
+    "equidecomposition",
+    "circle-squaring",
+    "translation-congruence",
+    "axiom-backed"
   ],
   "relatedProofs": [
     "erdos-1",

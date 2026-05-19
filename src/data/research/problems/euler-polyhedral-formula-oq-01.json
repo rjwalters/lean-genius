@@ -6,14 +6,25 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
+    "formal": "For planar graph builds, V-E+F=2 is preserved by spanning-tree and cycle-edge construction; 5-degeneracy gives a six-color bound, and Euler edge bounds rule out K_5 and K_{3,3}.",
     "plain": "Extends Euler's polyhedral formula V-E+F=2 to planar graph theory: spanning tree approach, graph degeneracy (5-degenerate), and the Six Color Theorem via degeneracy coloring.",
-    "whyMatters": []
+    "whyMatters": [
+      "Euler's V-E+F relation becomes a working engine for planar graph coloring and nonplanarity results.",
+      "Degeneracy converts geometric embedding constraints into algorithmic color bounds.",
+      "The proof cluster is a useful bridge from polyhedra to planar graph theory and the six-color theorem."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`SpanningBuild.vertices`, `SpanningBuild.edges`, `SpanningBuild.faces`, and `SpanningBuild.eulerChar` define the planar-build bookkeeping.",
+      "`euler_spanning`, `buildPlanarGraph_counts`, `platonic_spanning_euler`, `face_count_formula`, and `face_from_euler` record Euler-characteristic consequences.",
+      "`KDegenerate`, `planar_five_degenerate`, `six_colorable_from_degeneracy`, `degeneracy_color_count`, and `planar_color_bound` connect planar edge bounds with coloring.",
+      "`edge_bound_simple`, `edge_bound_bipartite`, `k5_not_planar`, `k33_not_planar`, and `petersen_not_planar` package standard planar obstruction results."
+    ],
+    "open": [
+      "`EulerPolyhedralOQ01.lean` documents zero axioms and zero sorries; the parent `EulerPolyhedralFormula.lean` still has the general `euler_formula_axiom`."
+    ],
+    "goal": "Present the planar graph consequences as a clean axiom-free extension while distinguishing them from the older parent axiom."
   },
   "currentState": {
     "phase": "NEW",
@@ -39,7 +50,10 @@
     "seeker-selected",
     "geometry",
     "topology",
-    "graph-theory"
+    "graph-theory",
+    "planar-graphs",
+    "graph-coloring",
+    "formalization"
   ],
   "relatedProofs": [
     "euler-polyhedral-formula",

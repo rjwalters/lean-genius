@@ -6,14 +6,25 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalization of the Goemans-Williamson (1995) semidefinite programming approach to MaxCut, achieving an approximation ratio of α_GW ≈ 0.878 via hyperplane rounding of SDP relaxation.",
-    "whyMatters": []
+    "formal": "For a graph G, the Goemans-Williamson scaffold defines SDP(G), expected rounded cut value, and alpha_GW=878/1000, then states GWExpectedCut(G) \\ge alpha_GW * SDP(G) and SDP(G) \\ge MaxCut(G).",
+    "plain": "Backfill the MaxCut metadata around the Lean Goemans-Williamson scaffold: cut assignments, the conservative alpha_GW ratio, SDP and rounding axioms, endpoint checks for the rounding probability, and the final 0.878 approximation guarantee.",
+    "whyMatters": [
+      "MaxCut is a canonical example where randomized rounding and convex relaxation beat simple random cuts.",
+      "The Lean development makes a useful proof skeleton even though SDP existence and the rounding inequality are axiomatized.",
+      "The entry should advertise the formal scaffolding while avoiding overclaiming a full analytic SDP proof."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`GWCut`, `GWCut.edgeInCut`, `GWCut.size`, `GWCut.ofAssignment`, and `gwMaxCutValue` set up the MaxCut approximation vocabulary around the conservative 878/1000 ratio.",
+      "The ratio arithmetic lemmas verify positivity, the comparison with 1/2, the 7/8 and 9/10 bounds, and the 439/500 fractional form of the conservative constant.",
+      "`gw_approximation_guarantee`, `gw_ratio_bound`, `gw_improves_random`, `gwExpectedCut_le_edges`, and `gw_bipartite_bound` package the SDP-rounding consequences.",
+      "`roundingProb`, `sdpContrib`, `roundingProb_zero`, `roundingProb_neg_one`, `gw_ineq_at_zero`, and `gw_rounding_loss_bound` document the rounding-probability checks."
+    ],
+    "open": [
+      "`sdpRelaxation`, `sdp_ge_maxcut`, `gwExpectedCut`, `gw_rounding_inequality`, and `ugc_hardness_ratio` are axioms in `GoemansWilliamsonMaxCut.lean`; no active sorries were found."
+    ],
+    "goal": "Record the verified approximation skeleton and ratio arithmetic while clearly marking the SDP and geometric rounding inputs as assumptions."
   },
   "currentState": {
     "phase": "NEW",
@@ -39,7 +50,10 @@
     "seeker-selected",
     "graph-theory",
     "optimization",
-    "algorithms"
+    "algorithms",
+    "maxcut",
+    "semidefinite-programming",
+    "axiom-backed"
   ],
   "relatedProofs": [
     "randomized-maxcut",

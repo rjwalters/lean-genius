@@ -6,14 +6,25 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalize Dusart-type bounds p_n <= n(ln n + ln ln n) from the Prime Number Theorem.",
-    "whyMatters": []
+    "formal": "For the nth prime p_n, the file assumes the PNT asymptotic and Dusart upper/lower bounds, then proves eventual (1\\pm\\epsilon)n\\log n estimates, a subexponential PNT consequence, and a Dusart sandwich window.",
+    "plain": "Backfill the nth-prime bound metadata around the Lean result: prime-index basics, PNT-derived eventual upper/lower bounds, Dusart upper and lower axioms, the sandwich interval for p_n, and the resulting asymptotic upper estimate.",
+    "whyMatters": [
+      "Explicit nth-prime estimates are the numerical face of the prime number theorem.",
+      "The Lean file cleanly separates elementary consequences from the three analytic-number-theory axioms.",
+      "The metadata should show which parts are proven from the assumed PNT/Dusart facts and which facts remain imported assumptions."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`nth_prime_is_prime` and `nth_prime_ge_two` provide the basic nth-prime interface.",
+      "`nth_prime_eventually_lt_mul` and `nth_prime_eventually_gt_mul` unpack the PNT asymptotic into eventual epsilon bounds.",
+      "`pnt_bound_subexponential`, `dusart_sandwich`, `dusart_gap_width`, and `dusart_upper_at_six` record concrete consequences of the analytic estimates.",
+      "`dusart_implies_asymptotic_upper` connects the explicit Dusart upper bound back to the asymptotic PNT-style ratio."
+    ],
+    "open": [
+      "`nth_prime_asymptotic`, `dusart_upper_bound`, and `dusart_lower_bound` are axioms in `PrimeGapBoundsOQ01.lean`; the file has zero sorries."
+    ],
+    "goal": "Clarify that the formal work proves consequences of PNT/Dusart assumptions rather than deriving those analytic estimates from scratch."
   },
   "currentState": {
     "phase": "NEW",
@@ -60,7 +71,10 @@
   "tags": [
     "prime-number-theory",
     "explicit-bounds",
-    "seeker-selected"
+    "seeker-selected",
+    "nth-prime",
+    "dusart-bounds",
+    "axiom-backed"
   ],
   "relatedProofs": [
     "prime-gap-bounds",

@@ -6,14 +6,25 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
+    "formal": "In the Beltrami-Klein disk model, there exist a point P and a chord l with two distinct chords through P parallel to l; hence BKPlayfair fails and the parallel postulate is independent from the neutral incidence axioms modeled here.",
     "plain": "Constructs the Beltrami-Klein disk model of hyperbolic geometry with explicit coordinate geometry and proves the hyperbolic parallel property concretely, establishing independence of the parallel postulate via model construction.",
-    "whyMatters": []
+    "whyMatters": [
+      "The independence of the parallel postulate is clearest when a concrete hyperbolic model is on the page.",
+      "The Beltrami-Klein coordinates make the failure of Playfair uniqueness visible as explicit chords through one point.",
+      "The metadata should distinguish the checked coordinate witnesses from the one incidence reconstruction axiom."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`DiskPoint`, `Chord`, `OnChord`, `ChordParallel`, `xaxis`, and `P` define the Beltrami-Klein coordinate setup.",
+      "The coordinate witness lemmas verify that P is not on xaxis, lies on two distinct witness chords, and both witness chords are parallel to xaxis.",
+      "`hyperbolic_parallel_property`, `BKPlayfair`, `bk_not_playfair`, `bk_not_satisfies_playfair`, and `parallel_postulate_independent` package the independence result.",
+      "`eucGeom` and `euc_satisfies_playfair` supply the contrasting Euclidean incidence model."
+    ],
+    "open": [
+      "`two_points_determine_chord` is the sole axiom in `ParallelPostulateIndependenceOQ02.lean`; the file has zero sorries."
+    ],
+    "goal": "Backfill the concrete model-theoretic witness for failure of Playfair uniqueness and state the remaining incidence axiom explicitly."
   },
   "currentState": {
     "phase": "NEW",
@@ -38,7 +49,10 @@
   "tags": [
     "seeker-selected",
     "non-euclidean-geometry",
-    "foundations"
+    "foundations",
+    "hyperbolic-geometry",
+    "beltrami-klein-model",
+    "axiom-backed"
   ],
   "relatedProofs": [
     "parallel-postulate-independence",
