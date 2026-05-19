@@ -18,6 +18,21 @@ interface ExistingEntry {
   path: string
 }
 
+function compareExistingEntries(a: ExistingEntry, b: ExistingEntry): number {
+  const aNumber = a.erdosNumber ?? Number.POSITIVE_INFINITY
+  const bNumber = b.erdosNumber ?? Number.POSITIVE_INFINITY
+
+  if (aNumber !== bNumber) {
+    return aNumber - bNumber
+  }
+
+  if (a.type !== b.type) {
+    return a.type.localeCompare(b.type)
+  }
+
+  return a.slug.localeCompare(b.slug)
+}
+
 /**
  * Scan gallery directory for existing Erdős entries
  */
@@ -114,7 +129,7 @@ function scanResearchEntries(): ExistingEntry[] {
 export function getExistingEntries(): ExistingEntry[] {
   const gallery = scanGalleryEntries()
   const research = scanResearchEntries()
-  return [...gallery, ...research]
+  return [...gallery, ...research].sort(compareExistingEntries)
 }
 
 /**
@@ -124,7 +139,7 @@ export function checkDuplicate(
   problemNumber: number,
   existingEntries?: ExistingEntry[]
 ): DedupeResult {
-  const entries = existingEntries || getExistingEntries()
+  const entries = [...(existingEntries || getExistingEntries())].sort(compareExistingEntries)
 
   // First check by exact erdos number match
   const byNumber = entries.filter(e => e.erdosNumber === problemNumber)
