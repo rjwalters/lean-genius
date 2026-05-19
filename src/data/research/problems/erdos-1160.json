@@ -1,27 +1,42 @@
 {
   "slug": "erdos-1160",
-  "title": "Erdős #1160",
+  "title": "Erdos #1160: Group Counting Maximized at Powers of 2",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "Let g(n) be the number of non-isomorphic groups of order n. Is g(n) <= g(2^m) whenever n <= 2^m?",
+    "plain": "Do powers of 2 always maximize the finite-group counting function among all group orders up to the same size bound?",
+    "whyMatters": [
+      "Finite p-groups dominate the landscape of group enumeration, especially at powers of 2.",
+      "The conjecture asks for a pointwise dominance statement over an extremely irregular arithmetic function.",
+      "The Lean file turns the statement into equivalent formulations and verifies several small and structured cases."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean axiomatizes the group-counting function numGroups and proves equivalent formulations of the main conjecture.",
+      "Derived values cover g(2), g(4), g(6), g(8), g(9), g(10), g(14), and g(15), with base-range proofs through m = 4.",
+      "The file proves useful transfer lemmas such as erdos_1160_lift and checks prime and small-power cases from the declared group-counting inputs."
+    ],
+    "open": [
+      "The full conjecture remains open.",
+      "numGroups is not computed from a Mathlib finite-group classification; it is an axiomatized interface.",
+      "Pantelidakis odd-order and asymptotic growth statements are present as propositions or context, not Lean-proved theorems."
+    ],
+    "goal": "Record the precise group-counting conjecture and verified small cases while making the ten active axioms visible."
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T16:46:42.685Z",
     "iteration": 1,
-    "focus": "Initial formalization of group counting conjecture",
-    "blockers": [],
-    "nextAction": "Strengthen formalization with more proved cases and tighter bounds",
+    "focus": "Metadata now fills the missing problem statement and distinguishes proved small-case consequences from the axiomatized group-counting table and structural inputs.",
+    "blockers": [
+      "The full maximization conjecture is open.",
+      "Ten group-counting facts remain axioms."
+    ],
+    "nextAction": "Future work should either replace small group-counting axioms with formal classifications or extend verified finite ranges beyond m = 4.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -97,7 +112,11 @@
     "markdown": "# Erdős #1160 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "group-theory",
+    "finite-groups",
+    "enumeration",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -111,14 +130,14 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:46:42.685Z",
-  "lastUpdate": "2026-03-13T07:52:17.059Z",
+  "lastUpdate": "2026-05-18T08:28:21Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1160Problem.lean",
       "filename": "Erdos1160Problem.lean",
-      "lineCount": 330,
+      "lineCount": 329,
       "theoremCount": 24,
       "axiomCount": 10,
       "defCount": 5,
