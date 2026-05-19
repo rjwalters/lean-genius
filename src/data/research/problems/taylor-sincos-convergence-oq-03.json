@@ -3,6 +3,35 @@
   "name": "Can the remainder bounds be sharpened using the alternating series estimation",
   "parentId": "taylor-sincos-convergence",
   "status": "completed",
+  "problemStatement": {
+    "formal": "Sharpen sine and cosine Taylor remainder estimates by relating local remainder lemmas to Mathlib's alternating-series convergence and tail-bound infrastructure.",
+    "plain": "Survey how the sine and cosine Taylor remainder bounds could be improved using alternating-series estimation already present in Mathlib.",
+    "whyMatters": [
+      "Sharper remainder bounds make Taylor-polynomial approximations more reusable in downstream analysis proofs.",
+      "The entry identifies existing Mathlib alternating-series theorems that should replace local unfinished arguments.",
+      "It narrows the remaining work to API alignment rather than new mathematical discovery."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Mathlib alternating-series convergence tools were located for this problem family.",
+      "The relevant API includes Monotone.cauchySeq_alternating_series_of_tendsto_zero and Monotone.tendsto_alternating_series_of_tendsto_zero.",
+      "The survey identifies the hypotheses that need reformulation around monotonicity and antitonicity."
+    ],
+    "open": [
+      "The local alternating-series remainder lemmas still need to be connected to the Mathlib API.",
+      "The associated TaylorSinCos Lean files still contain sorries.",
+      "Research enrichment does not currently auto-link the TaylorSinCos Lean files from the taylor-sincos slug spelling."
+    ],
+    "goal": "Turn the survey into a Mathlib-backed proof of alternating-series remainder bounds for sine and cosine Taylor approximations."
+  },
+  "tags": [
+    "analysis",
+    "taylor-series",
+    "trigonometry",
+    "alternating-series",
+    "mathlib"
+  ],
   "knowledge": {
     "score": 6,
     "insights": [

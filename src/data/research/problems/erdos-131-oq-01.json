@@ -10,6 +10,21 @@
     "plain": "Determine the growth rate of F(N), the maximal size of a non-dividing subset of {1,...,N}. Known: N^{1/5} ≤ F(N) ≤ N^{1/4+o(1)}.",
     "whyMatters": []
   },
+  "knownResults": {
+    "proven": [
+      "Elementary exponential and logarithmic bounds around log 2 are formalized.",
+      "straus_constant_value proves that sqrt(2 / log 2) lies between 1.6 and 1.8.",
+      "one_not_in_large_nondividing shows that a non-dividing set of size at least 3 cannot contain 1.",
+      "{2,4,5} is formalized as a three-element non-dividing set, giving F(5) >= 3.",
+      "Finset cardinality helper lemmas support the small constructive example."
+    ],
+    "open": [
+      "Deep published bounds such as the ELRSS, Pham-Zakharov, Csaba, and Straus results remain outside the current proof.",
+      "The proof metadata records remaining axioms and a sorry for these deeper results.",
+      "The polynomial exponent gap between known lower and upper bounds remains part of the mathematical landscape."
+    ],
+    "goal": "Expose the verified elementary and finite examples while keeping the asymptotic published bounds clearly marked as deep external input."
+  },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-20",

@@ -3,6 +3,37 @@
   "name": "Erdős 780: Matoušek combinatorial proof of Kneser chromatic number",
   "parentId": "erdos-780",
   "status": "completed",
+  "problemStatement": {
+    "formal": "Develop Kneser graph chromatic-number infrastructure around the Lovasz-Kneser theorem and Matousek-style combinatorial/topological proofs.",
+    "plain": "Replace ad hoc Kneser chromatic-number axioms with reusable definitions and small-case proofs while tracking the remaining topological ingredients behind the full Kneser conjecture.",
+    "whyMatters": [
+      "Kneser graph chromatic numbers are a central bridge between graph coloring and topological combinatorics.",
+      "The entry converts several local placeholders into explicit Lean definitions or theorem statements.",
+      "It identifies Tucker's lemma and related topological results as the real remaining boundary."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "chromaticNumber is represented as a concrete sInf-based definition rather than an opaque axiom.",
+      "The Erdos-Ko-Rado ingredient is proved from the existing ErdosKoRado.Star construction.",
+      "Small Kneser graph cases such as Petersen, KG(7,3), KG(2r,r), and KG(2r+1,r) are organized as theorem targets.",
+      "The KG(7,3) chromatic-number value is corrected to 3."
+    ],
+    "open": [
+      "The full Kneser conjecture still depends on deep topological ingredients.",
+      "The proof metadata records remaining axioms in Erdos780Problem.lean and a sorry in the Aristotle companion.",
+      "Future work should connect this entry to SimpleGraph.chromaticNumber and to Tucker's lemma infrastructure."
+    ],
+    "goal": "Use the cleaned Kneser graph definitions and small-case organization as a staging point for a future topological-combinatorics proof."
+  },
+  "tags": [
+    "erdos",
+    "combinatorics",
+    "graph-theory",
+    "kneser-graphs",
+    "chromatic-number",
+    "topological-combinatorics"
+  ],
   "knowledge": {
     "score": 8,
     "insights": [
