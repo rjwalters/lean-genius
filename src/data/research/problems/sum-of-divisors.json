@@ -1,19 +1,31 @@
 {
   "slug": "sum-of-divisors",
-  "title": "Sum of Divisors Properties",
+  "title": "Sum-of-divisors arithmetic function properties",
   "phase": "COMPLETED",
   "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "SKIPPED: Already covered by PerfectNumbers.",
-    "whyMatters": []
+    "formal": "Using Mathlib's ArithmeticFunction.sigma, verify concrete divisor sums, prove sigma(p)=p+1 for primes, define deficient/perfect/abundant classifications, prove amicable-pair examples, multiplicativity, prime-power formulas, factorization computations, and that 12 is the smallest abundant number.",
+    "plain": "Backfill the sum-of-divisors metadata around the actual Lean file: concrete sigma values, prime and prime-power formulas, deficient/perfect/abundant classifications, amicable pairs, multiplicativity, and the smallest abundant-number theorem.",
+    "whyMatters": [
+      "The divisor-sum function is the central arithmetic function behind perfect, abundant, deficient, and amicable numbers.",
+      "The Lean file turns many classical examples into executable checked computations while also proving structural formulas.",
+      "This entry should no longer look skipped: the gallery file contains a broad zero-axiom divisor-sum toolkit."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`sigma_one_eq` through `sigma_hundred_eq` and `sigma_prime_2` through `sigma_prime_13` verify concrete divisor sums by `native_decide`.",
+      "`sigma_prime`, `sigma_multiplicative`, `sigma_mul_coprime`, and `sigma_prime_pow` provide prime, multiplicative, coprime-product, and prime-power formulas.",
+      "`IsDeficient`, `IsPerfect`, `IsAbundant`, `prime_is_deficient`, `six_is_perfect`, `twentyeight_is_perfect`, `fourhundredninetysix_is_perfect`, and `twelve_is_abundant` classify standard examples.",
+      "`AreAmicable`, `amicable_220_284`, `amicable_1184_1210`, `perfect_iff_abundancy_two`, `sigma_ge_self`, `sigma_gt_self`, and `twelve_smallest_abundant` record the main classical consequences."
+    ],
+    "open": [
+      "`SumOfDivisors.lean` has zero active axioms and zero active sorries in the proof metadata.",
+      "Open number-theory directions such as odd perfect numbers and aliquot-sequence behavior remain outside this file."
+    ],
+    "goal": "Replace the stale skipped framing with the verified divisor-sum theorem surface now present in `SumOfDivisors.lean`."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -43,7 +55,10 @@
   "tags": [
     "number-theory",
     "arithmetic-functions",
-    "classical"
+    "classical",
+    "sum-of-divisors",
+    "perfect-numbers",
+    "fully-verified"
   ],
   "relatedProofs": [
     "sum-of-divisors"
