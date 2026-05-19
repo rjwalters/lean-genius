@@ -1,19 +1,30 @@
 {
   "slug": "chinese-remainder-non-coprime-oq-04",
-  "title": "What are the implications for simultaneous Diophantine approximation",
+  "title": "Dirichlet approximation and lattice consequences",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Dirichlet's approximation theorem (1842): for any real α and N ≥ 1, there exist p, q with 1 ≤ q ≤ N and |qα - p| < 1/N. Proved via pigeonhole principle on fractional part binning. Includes mediant/Stern-Brocot property, lattice point theorem, golden ratio identities, and CRT non-coprime solvability examples connecting Diophantine approximation to lattice geometry.",
-    "whyMatters": []
+    "formal": "\\forall \\alpha\\in\\mathbb{R}\\ \\forall N>0,\\ \\exists p\\in\\mathbb{Z}\\ \\exists q\\in\\mathbb{N},\\ 1\\le q\\le N\\land |q\\alpha-p|<1/N.",
+    "plain": "Backfill the Dirichlet approximation metadata connected to the non-coprime CRT thread: a pigeonhole proof for fractional parts, nearest-integer and lattice-point consequences, mediants, and golden-ratio identities.",
+    "whyMatters": [
+      "Dirichlet approximation is a first bridge from congruence arithmetic to Diophantine approximation.",
+      "The proof packages pigeonhole reasoning in a concrete fractional-part construction.",
+      "The surrounding file connects approximation, lattice intervals, Farey mediants, and golden-ratio algebra."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`binFn` defines the finite binning map used in the pigeonhole proof.",
+      "`dirichlet_approximation` proves the stated approximation theorem.",
+      "`nearest_integer_bound` and `lattice_point_exists` give supporting interval and rounding results.",
+      "`mediant_between`, `farey_neighbor_order`, and `golden_ratio_quadratic` record the related Farey and golden-ratio consequences."
+    ],
+    "open": [
+      "`ChineseRemainderNonCoprimeOQ04.lean` records zero axioms and zero sorries; sibling OQ03 files include older sketch or historical proof-debt notes."
+    ],
+    "goal": "Expose the completed Dirichlet-approximation formalization without losing the CRT/lattice context."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -45,7 +56,12 @@
   },
   "tags": [
     "seeker-selected",
-    "extension"
+    "extension",
+    "diophantine-approximation",
+    "pigeonhole-principle",
+    "farey-sequences",
+    "golden-ratio",
+    "formalization"
   ],
   "relatedProofs": [
     "chinese-remainder-constructive-oq-04-oq-03",

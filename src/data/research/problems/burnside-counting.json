@@ -1,19 +1,30 @@
 {
   "slug": "burnside-counting",
-  "title": "Burnside Lemma Applications",
+  "title": "Burnside's lemma and binary necklace counting",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Apply Mathlib's MulAction.",
-    "whyMatters": []
+    "formal": "\\sum_{g\\in G}|\\operatorname{Fix}(g)|=|X/G|\\,|G|, with a binary length-4 cyclic-coloring instance giving fixed-point counts 16,2,4,2.",
+    "plain": "Backfill the Burnside-counting metadata around Mathlib's orbit-counting theorem, cyclic rotations of binary colorings, and the length-4 necklace example.",
+    "whyMatters": [
+      "Burnside's lemma is the standard bridge between group actions and orbit-counting problems.",
+      "Binary necklaces give a compact concrete example where fixed-point counts are visible.",
+      "The entry is useful as a baseline for later Polya-enumeration work, but its final necklace count still has axiomatized pieces."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`burnside_lemma` references Mathlib's finite-group orbit-counting theorem.",
+      "`Coloring`, `rotateColoring`, and `IsFixedByRotation` set up cyclic rotations of finite colorings.",
+      "`binary_4_colorings_count` proves that there are 16 binary colorings of four positions.",
+      "`constant_coloring_count` and `period2_count` prove the fixed-count infrastructure for constant and period-2 colorings."
+    ],
+    "open": [
+      "`BurnsideCounting.lean` has five axioms, including the rotation-composition lemma and final binary-necklace orbit count; the later OQ03 files reduce some of this proof debt."
+    ],
+    "goal": "Expose the verified Burnside infrastructure while clearly marking the axiomatized binary-necklace endpoint."
   },
   "currentState": {
     "phase": "NEW",
@@ -39,7 +50,10 @@
   "tags": [
     "combinatorics",
     "group-theory",
-    "counting"
+    "counting",
+    "burnside-lemma",
+    "necklaces",
+    "axiom-backed"
   ],
   "relatedProofs": [
     "burnside-counting",
