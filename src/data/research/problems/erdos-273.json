@@ -1,6 +1,6 @@
 {
   "slug": "erdos-273",
-  "title": "Erdős #273",
+  "title": "Erdos #273",
   "phase": "COMPLETED",
   "status": "active",
   "tier": "A",
@@ -8,12 +8,26 @@
   "problemStatement": {
     "formal": "Is there a covering system all of whose moduli are of the form $p-1$ for some primes $p\\geq 5$?\n\n\n\nSelfridge has found an example using divisors of $360$ if $p=3$ is allowed.",
     "plain": "Is there a covering system all of whose moduli are of the form $p-1$ for some primes $p\\geq 5$?",
-    "whyMatters": []
+    "whyMatters": [
+      "Covering systems are a compact way to encode congruence obstructions, and the prime-minus-one restriction makes density the central barrier.",
+      "The Selfridge p = 3 example shows why excluding modulus 2 changes the problem sharply.",
+      "The reciprocal-sum obstruction gives a reusable quantitative test for candidate covering systems."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "If all moduli have the form p - 1 with p >= 5 prime, then every modulus is even and at least 4.",
+      "The Selfridge example allowing p = 3 is formalized by the covering {0 mod 2, 1 mod 4, 3 mod 4}.",
+      "For any covering system, the sum of reciprocal moduli is at least 1 (Lean: covering_reciprocal_sum).",
+      "The easy-prime divisor set p in {5, 7, 13, 19, 37, 61, 181} has reciprocal sum 109/180, so it cannot by itself cover all integers.",
+      "No single p - 1 modulus with p >= 5 covers more than one quarter of the integers."
+    ],
+    "open": [
+      "The main question remains open: whether a covering system exists using only moduli p - 1 for primes p >= 5.",
+      "A complete obstruction or explicit construction for the p >= 5 restriction is not formalized.",
+      "Search bounds for finite candidate prime-minus-one modulus sets remain outside the current Lean development."
+    ],
+    "goal": "Capture the verified Selfridge comparison example and reciprocal-density obstructions for the prime-minus-one covering-system problem."
   },
   "currentState": {
     "phase": "ACT",
@@ -65,10 +79,13 @@
     "nextSteps": [
       "Problem fully proved: 0 axioms, 0 sorries. No further work needed."
     ],
-    "markdown": "# Erdős #273 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a covering system all of whose moduli are of the form $p-1$ for some primes $p\\geq 5$?\n\n\n\nSelfridge has found an example using divisors of $360$ if $p=3$ is allowed.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #272\n- Problem #274\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erdos #273 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a covering system all of whose moduli are of the form $p-1$ for some primes $p\\geq 5$?\n\n\n\nSelfridge has found an example using divisors of $360$ if $p=3$ is allowed.\n\n\nBack to the problem\n\n## Status\n\n**Erdos Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #272\n- Problem #274\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "covering-systems",
+    "prime-moduli"
   ],
   "relatedProofs": [
     "erdos-2",
