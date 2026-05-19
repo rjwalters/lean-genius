@@ -20,6 +20,7 @@ export async function onRequestGet(context: EventContext<Env, string, { id: stri
       .select({
         id: comments.id,
         proofId: comments.proofId,
+        annotationId: comments.annotationId,
         lineNumber: comments.lineNumber,
         parentId: comments.parentId,
         content: comments.content,
@@ -48,6 +49,7 @@ export async function onRequestGet(context: EventContext<Env, string, { id: stri
         comment: {
           id: row.id,
           proofId: row.proofId,
+          annotationId: row.annotationId,
           lineNumber: row.lineNumber,
           parentId: row.parentId,
           content: row.deletedAt ? '[deleted]' : row.content,
@@ -131,6 +133,7 @@ export async function onRequestPut(context: EventContext<Env, string, { id: stri
         comment: {
           id: commentId,
           proofId: existing.proofId,
+          annotationId: existing.annotationId,
           lineNumber: existing.lineNumber,
           parentId: existing.parentId,
           content,
