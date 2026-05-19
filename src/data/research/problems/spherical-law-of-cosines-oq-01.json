@@ -1,19 +1,33 @@
 {
   "slug": "spherical-law-of-cosines-oq-01",
-  "title": "Formalize the spherical law of sines: sin(a)/sin(A) = sin(b)/sin(B) = sin(c)/...",
+  "title": "Spherical Law of Cosines OQ-01: Vector Formalization on the Unit Sphere",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "Formalize the spherical law of sines: sin(a)/sin(A) = sin(b)/sin(B) = sin(c)/sin(C) for the angles A, B, C at each vertex",
-    "whyMatters": []
+    "formal": "For unit vectors A, B, C on S^2, prove the spherical law of cosines through the identity cos(sideC) = cos(sideB) * cos(sideA) + <proj_perp(A,C), proj_perp(B,C)>.",
+    "plain": "Formalizes spherical arc length and the inner-product decomposition behind the spherical law of cosines. The Lean file proves the algebraic and trigonometric forms for unit-vector spherical triangles.",
+    "whyMatters": [
+      "Spherical trigonometry is the non-Euclidean analogue of the planar law of cosines.",
+      "The vector proof reduces the geometry to reusable inner-product and perpendicular-projection lemmas.",
+      "The metadata corrects a stale law-of-sines description and points search to the actual cosine-law theorem names."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`arcLength_nonneg`, `arcLength_le_pi`, and `cos_arcLength` establish the basic arc-length facts for unit vectors.",
+      "`norm_projectPerp_sq_eq_sin_sq` and `norm_projectPerp_eq_sin` connect perpendicular projections with sine of arc length.",
+      "`spherical_law_of_cosines_algebraic` proves the core inner-product decomposition form.",
+      "`spherical_law_of_cosines_trig` packages the result for `SphericalTriangle` data.",
+      "`degenerate_triangle_sideB_zero` records a degenerate-case check and `planar_law_of_cosines` documents the planar comparison.",
+      "`SphericalLawOfCosines.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "A fully normalized angle form replacing the projection inner product with sin(a)sin(b)cos(C) is not separated as the main theorem here.",
+      "The small-angle planar limit is documented rather than proved as an asymptotic theorem."
+    ],
+    "goal": "Expose the proved vector formalization of the spherical law of cosines with accurate searchable metadata."
   },
   "currentState": {
     "phase": "OBSERVE",

@@ -1,19 +1,32 @@
 {
   "slug": "spherical-law-of-sines-oq-02",
-  "title": "Dual Spherical Law of Cosines",
+  "title": "Spherical Law of Sines OQ-02: Squared Ratio Formalization",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\cos C = -\\cos A \\cos B + \\sin A \\sin B \\cos c",
-    "plain": "On a sphere, triangles satisfy two \"laws of cosines\": one expressing a side in terms",
-    "whyMatters": []
+    "formal": "For unit vectors A, B, C with nondegenerate projected sides, prove equality of the squared spherical law-of-sines ratios such as sin^2(arcLen(B,C))/sin^2(angle_A) = sin^2(arcLen(A,C))/sin^2(angle_B).",
+    "plain": "Formalizes the spherical law of sines in squared form. The proof derives the shared ratio from triple products, perpendicular projections, and dihedral-angle sine identities.",
+    "whyMatters": [
+      "The law of sines is one of the basic computational tools of spherical trigonometry.",
+      "The squared formulation avoids orientation and sign choices while preserving the theorem's algebraic content.",
+      "The entry gives exact theorem names for the projection and triple-product identities used in the proof."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`lagrange_identity` and `tripleProduct_sq_swap` provide the vector-algebra backbone.",
+      "`sin_sq_arcLen` expresses squared sine of an arc length as a projected norm square.",
+      "`sin_sq_dihedralAngle` relates squared sine of the dihedral angle to the squared triple product.",
+      "`spherical_law_of_sines_sq` proves the two-ratio squared law of sines.",
+      "`spherical_law_of_sines_all_sq` proves equality of all three squared ratios.",
+      "`SphericalLawOfSines.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "The unsquared signed ratio form, with orientation and positivity conditions made explicit, is not the theorem exported by this file."
+    ],
+    "goal": "Make the proved squared spherical law-of-sines formalization discoverable from the problem metadata."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -40,6 +53,7 @@
     "geometry",
     "spherical-geometry",
     "trigonometry",
+    "law-of-sines",
     "non-euclidean-geometry"
   ],
   "relatedProofs": [

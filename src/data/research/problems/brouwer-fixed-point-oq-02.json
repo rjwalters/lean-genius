@@ -6,14 +6,29 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "A comprehensive formalization of the computational complexity landscape for finding approximate fixed points. Covers binary search optimality (O(log 1/epsilon) in 1D), contraction mapping convergence with explicit error bounds, PPAD structure and solution existence via pigeonhole, Sperner's lemma, fixed point stability under perturbation, and Krasnoselskii-Mann averaged iteration.",
-    "whyMatters": []
+    "formal": "For continuous self-maps of [0,1], prove existence of epsilon-approximate fixed points, convergence to exact fixed points, binary-search convergence, and finite PPAD-style solution existence.",
+    "plain": "Records the theorem-backed one-dimensional and finite-search parts of approximate Brouwer fixed point computation. The Lean files prove approximate fixed point existence, convergence facts, contraction estimates, binary-search convergence, and a PPAD path-following solution theorem.",
+    "whyMatters": [
+      "Approximate fixed point search is a central bridge between topology and computational complexity.",
+      "The one-dimensional case gives a fully formalized contrast with the harder higher-dimensional PPAD landscape.",
+      "The metadata separates proved Lean facts from broader complexity claims that remain background context."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`discrete_ivt` proves a one-dimensional sign-change lemma used as a discrete fixed-point proxy.",
+      "`approx_fixed_point_exists` proves epsilon-approximate fixed points for continuous self-maps of [0,1].",
+      "`approx_to_exact` shows convergent approximate fixed points limit to an exact fixed point.",
+      "`contraction_iterate_approx` and related extension theorems record geometric convergence bounds for contractions.",
+      "`binary_search_convergence` gives a formal O(log 1/epsilon)-style bisection family of approximate fixed points.",
+      "`ppad_solution_exists` proves solution existence for the finite PPAD path-following structure.",
+      "`BrouwerFixedPointOQ02.lean` and `BrouwerFixedPointOQ02Ext.lean` are recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "A full formal proof of higher-dimensional PPAD-completeness for approximate Brouwer fixed points is not included.",
+      "Some broader related Brouwer files contain axioms or sorries, so this metadata emphasizes the clean OQ-02 and OQ-02 extension files."
+    ],
+    "goal": "Expose the clean Lean-backed approximate fixed point and PPAD existence results while keeping broader complexity claims scoped."
   },
   "currentState": {
     "phase": "NEW",
@@ -36,11 +51,13 @@
     "nextSteps": []
   },
   "tags": [
-    "seeker-selected",
     "topology",
     "fixed-point-theory",
-    "algebraic-topology",
-    "computability"
+    "computational-complexity",
+    "approximate-fixed-points",
+    "ppad",
+    "computability",
+    "formalized"
   ],
   "relatedProofs": [
     "brouwer-fixed-point",

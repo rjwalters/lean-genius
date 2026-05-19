@@ -6,14 +6,28 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalization generalizing a known result: What are the higher categorical analogues of the covering space argument.",
-    "whyMatters": []
+    "formal": "Formalize the covering-space obstruction behind Borsuk-Ulam and a Z/2 G-covering framework that models higher categorical analogues of the argument.",
+    "plain": "Develops the quotient, descent, covering, and equivariance structures around the Borsuk-Ulam covering-space proof. The Lean file proves the classical obstruction from the base Borsuk-Ulam theorem and shows how the Z/2 covering framework recovers the antipodal case.",
+    "whyMatters": [
+      "The covering-space proof is a standard conceptual route to Borsuk-Ulam via projective space.",
+      "The G-covering abstraction points toward higher and equivariant obstruction theories without hiding the classical Z/2 case.",
+      "The metadata distinguishes the proved quotient/equivariance framework from later higher-categorical conjectural extensions."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`projMap_neg` proves that antipodal points project to the same real-projective quotient class.",
+      "`odd_preserves_relation`, `descendOdd`, and `descendOdd_comm` formalize descent of odd maps through the quotient.",
+      "`sphere_fiber_pair` records the antipodal fiber characterization for sphere points.",
+      "`covering_space_obstruction` derives the no-nonzero-odd-map obstruction from the base Borsuk-Ulam theorem.",
+      "`GCovering_z2_involutive`, `antipodalZ2Covering_deck_matches`, and `odd_gives_GEquivariant` connect the G-covering framework back to the classical Z/2 antipodal covering.",
+      "`BorsukUlamOQ04.lean` is recorded with 0 axioms and 0 sorries, while the imported base Borsuk-Ulam file contains an axiom-backed main theorem."
+    ],
+    "open": [
+      "Fully formal Pi-infinity, infinity-topos, and cohomological obstruction theories remain future work.",
+      "Lens-space and Z/p analogues are discussed as next-level generalizations but are not proved in this file."
+    ],
+    "goal": "Make the proved quotient, descent, and Z/2 G-covering framework searchable while clearly marking higher categorical extensions as open."
   },
   "currentState": {
     "phase": "ACT",
@@ -73,8 +87,12 @@
     ]
   },
   "tags": [
-    "seeker-selected",
-    "generalization"
+    "topology",
+    "borsuk-ulam",
+    "covering-spaces",
+    "equivariant-topology",
+    "higher-category-theory",
+    "formalized"
   ],
   "relatedProofs": [
     "borsuk-ulam",
