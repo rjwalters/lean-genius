@@ -6,14 +6,24 @@
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "The Neumann series ∑ T^n = (1-T)⁻¹ for elements T with ‖T‖ < 1 in complete normed rings, generalizing geometric series to matrices and operators.",
-    "whyMatters": []
+    "formal": "In a complete normed ring, prove that if ||T|| < 1 then the Neumann series sum_n T^n is summable, 1 - T is a unit, and the infinite sum equals Ring.inverse (1 - T), with finite-sum identities, inverse identities, norm bounds, and perturbation corollaries.",
+    "plain": "Extend the scalar geometric series to operators and complete normed rings: a small element T has a convergent Neumann series, and that series is the inverse of 1 - T.",
+    "whyMatters": [
+      "Neumann series are the standard bridge from geometric series to operator inverses and perturbation theory.",
+      "The proof packages invertibility, partial sums, and norm bounds in a reusable algebraic-analysis form.",
+      "The same pattern underlies resolvent identities and local invertibility results for normed algebras."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "For ||T|| < 1 in a complete normed ring, the power series n |-> T^n is summable (Lean: neumann_summable).",
+      "The element 1 - T is a unit and the Neumann sum equals Ring.inverse (1 - T) (Lean: one_sub_isUnit, neumann_sum).",
+      "Finite left and right geometric identities are proved for ring elements (Lean: finite_neumann_identity, finite_neumann_identity').",
+      "The infinite Neumann sum is both a left and right inverse of 1 - T, and satisfies a norm bound (Lean: left_inverse_identity, right_inverse_identity, norm_neumann_le).",
+      "Partial sums converge to the inverse, and nearby elements with ||1 - A|| < 1 are invertible (Lean: partial_sums_tendsto, invertible_near_one, inverse_near_one)."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Record the verified complete-normed-ring Neumann-series theorem and its operator-style consequences."
   },
   "currentState": {
     "phase": "NEW",
@@ -36,9 +46,14 @@
     "nextSteps": []
   },
   "tags": [
+    "analysis",
+    "functional-analysis",
+    "geometric-series",
+    "neumann-series",
+    "operator-theory",
+    "normed-rings",
     "seeker-selected",
     "linear-algebra",
-    "analysis",
     "generalization"
   ],
   "relatedProofs": [
