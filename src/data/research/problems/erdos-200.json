@@ -1,7 +1,7 @@
 {
   "slug": "erdos-200",
   "title": "Erdős #200",
-  "phase": "OBSERVE",
+  "phase": "ACTIVE_RESEARCH",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,20 +16,20 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T10:06:12.674Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACTIVE_RESEARCH",
+    "since": "2026-05-08T00:00:00.000Z",
+    "iteration": 8,
+    "focus": "Strengthen the structural relationship between Green–Tao (lower bound) and PNT (upper bound) on longestPrimeAP(N): factor bddAbove_isPrimeAP / nonempty_isPrimeAP / longest_prime_ap_monotone and strengthen pnt_green_tao_bracket so M is a free parameter (was existentially quantified and trivially satisfied with M = 0).",
+    "blockers": ["Build verification deferred (broken proofs/.lake symlink in main repo forces a fresh Mathlib clone). PR #17195 marked as build pending per convention."],
+    "nextAction": "Iteration 9 candidates: add prime_ap_8 (d=210, length-8 starting at 199) and prime_ap_10 (d=210, length-10 ending at 2089); prove quantitative lower bound on smallest N containing a length-k prime AP (combine ap_difference_primorial with primorial growth); replace inline le_csSup in longest_prime_ap_unbounded with factored bddAbove_isPrimeAP lemma (cleanup).",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 8,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 3A in file (was 1A — added prime_ap_pnt_upper and erdos_200), 7T proved (was 6T — added pnt_green_tao_bracket), 0S. 180 lines.",
+    "progressSummary": "PROGRESS (iter 8): 3 axioms (prime_ap_pnt_upper, green_tao, erdos_200), 11 theorems broad (8 narrow top-level — added bddAbove_isPrimeAP / nonempty_isPrimeAP / longest_prime_ap_monotone alongside strengthened pnt_green_tao_bracket with free parameter M), 3 definitions (IsPrimeAP, longestPrimeAP, plus helper), 0 sorries, 230 lines (was 180).",
     "builtItems": [
       "Proved exists_dvd_in_ap helper lemma (ZMod witness) in Erdos200Problem.lean:129",
       "Proved ap_difference_primorial theorem in Erdos200Problem.lean:150 (was false axiom)",
@@ -66,15 +66,15 @@
     "mathlib": []
   },
   "started": "2026-01-12T10:06:12.675Z",
-  "lastUpdate": "2026-03-13T07:52:17.044Z",
+  "lastUpdate": "2026-05-08T00:00:00.000Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos200Problem.lean",
       "filename": "Erdos200Problem.lean",
-      "lineCount": 180,
-      "theoremCount": 6,
+      "lineCount": 230,
+      "theoremCount": 11,
       "axiomCount": 3,
       "defCount": 3,
       "sorryCount": 0,
