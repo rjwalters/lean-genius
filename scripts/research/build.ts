@@ -165,7 +165,7 @@ function extractPlainStatement(content: string): string {
  * Extract "Why This Matters" list from problem.md
  */
 function extractWhyMatters(content: string): string[] {
-  const match = content.match(/###\s*Why This Matters\s*\n([\s\S]*?)(?=\n##|$)/m)
+  const match = content.match(/#{2,3}\s*Why This Matters\s*\n([\s\S]*?)(?=\n##|$)/m)
   if (!match) return []
   const items: string[] = []
   const lines = match[1].split('\n')
