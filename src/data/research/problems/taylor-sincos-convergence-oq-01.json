@@ -1,27 +1,36 @@
 {
   "slug": "taylor-sincos-convergence-oq-01",
-  "title": "[Problem Title]",
+  "title": "Bridge Taylor sin/cos partial sums to Mathlib remainder bounds",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\forall n\\ x,\\ \\|\\sin x - \\operatorname{sinPartialSum}(n,x)\\| \\le \\frac{|x|^{n+1}}{n!}\\ \\text{ and }\\ \\|\\cos x - \\operatorname{cosPartialSum}(n,x)\\| \\le \\frac{|x|^{n+1}}{n!}.",
+    "plain": "Replace the two Taylor remainder axioms for custom sine and cosine partial sums by connecting those sums to Mathlib's Taylor polynomial machinery.",
+    "whyMatters": [
+      "The gallery proof currently depends on two remainder axioms.",
+      "Resolving the bridge would move the Taylor sin/cos convergence proof toward verified status with axiomCount = 0."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "A bridge lemma shows iteratedDerivWithin for Real.sin agrees with iteratedDeriv on UniqueDiffOn sets.",
+      "The notes record that iterated derivatives of sin/cos are bounded by 1 and that the remaining convergence and summability structure is fully proved."
+    ],
+    "open": [
+      "Show sinPartialSum and cosPartialSum agree with Mathlib taylorWithinEval on a suitable set.",
+      "Apply Mathlib's Taylor mean remainder bound to replace the two remainder axioms."
+    ],
+    "goal": "Convert sin_taylor_remainder_bound and cos_taylor_remainder_bound from axioms into proved theorems, or at least theorem statements with proof bodies replacing axiom declarations."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-05T19:30:46-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Bridge custom sinPartialSum/cosPartialSum definitions to Mathlib taylorWithinEval and remainder bounds.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Prove term-by-term equality between the custom partial sums and taylorWithinEval, then instantiate taylor_mean_remainder_bound with derivative bound C=1.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -37,9 +46,9 @@
     "markdown": "# Knowledge: taylor-sincos-convergence-oq-01\n\n**Problem**: Eliminate remainder axioms by bridging sinPartialSum to Mathlib sin\n**Selected**: 2026-04-05\n**Status**: EMPTY → SEEKER INITIALIZED\n\n---\n\n## Problem Statement\n\nIn `proofs/Proofs/TaylorSinCosConvergence.lean`, two `axiom` declarations block full verification:\n\n```lean\naxiom sin_taylor_remainder_bound (n : ℕ) (x : ℝ) :\n    ‖Real.sin x - sinPartialSum n x‖ ≤ |x| ^ (n + 1) / (Nat.factorial n : ℝ)\n\naxiom cos_taylor_remainder_bound (n : ℕ) (x : ℝ) :\n    ‖Real.cos x - cosPartialSum n x‖ ≤ |x| ^ (n + 1) / (Nat.factorial n : ℝ)\n```\n\nGoal: convert these `axiom` declarations to `theorem ... := by sorry` (or full proofs) by connecting `sinPartialSum`/`cosPartialSum` to Mathlib's `taylorWithinEval`.\n\n---\n\n## Key Definitions\n\n**Custom (in proof file)**:\n```lean\nnoncomputable def sinPartialSum (n : ℕ) (x : ℝ) : ℝ :=\n  (Finset.range (n + 1)).sum fun k =>\n    (iteratedDeriv k Real.sin 0) * x ^ k / (Nat.factorial k : ℝ)\n```\n\n**Mathlib's Taylor polynomial** (from `Mathlib.Analysis.Calculus.Taylor`):\n- `taylorWithinEval f n s a x` — uses `iteratedDerivWithin n f s a`\n\n**Bridge already proved**:\n```lean\ntheorem iteratedDerivWithin_sin_eq {n : ℕ} {s : Set ℝ} {x : ℝ}\n    (hs : UniqueDiffOn ℝ s) (hx : x ∈ s) :\n    iteratedDerivWithin n Real.sin s x = iteratedDeriv n Real.sin x\n```\n\n---\n\n## Technical Gap\n\n`sinPartialSum` uses `iteratedDeriv` (global derivatives), while Mathlib's Taylor theorem (`taylor_mean_remainder_bound`) works with `taylorWithinEval` which uses `iteratedDerivWithin`.\n\nThe bridge lemma `iteratedDerivWithin_sin_eq` shows they agree on `UniqueDiffOn` sets. The approach is:\n1. Show `sinPartialSum n x = taylorWithinEval ℝ n Real.sin s 0 x` for some `s` containing 0 and x (e.g., `Set.univ` or `Set.Icc (-R) R`)\n2. Apply Mathlib's `taylor_mean_remainder_bound` with the universal bound `‖iteratedDeriv k sin t‖ ≤ 1`\n\n---\n\n## Mathlib API to Use\n\n- `taylorWithinEval`: The n-th Taylor polynomial of f at a, evaluated at x\n- `taylor_mean_remainder_bound`: Gives `‖f x - taylorWithinEval f n s a x‖ ≤ ...`\n  - Requires: `ContDiffOn`, `ContinuousOn` of n-th derivative on interval\n- `uniqueDiffOn_univ` or `uniqueDiffOn_Ioo`: For UniqueDiff sets\n- `Real.contDiff_sin`, `Real.contDiff_cos`: sin/cos are C∞\n\n## Approach\n\n**Step 1**: Prove `sinPartialSum_eq_taylorWithinEval`:\n```lean\ntheorem sinPartialSum_eq_taylorWithinEval (n : ℕ) (x : ℝ) :\n    sinPartialSum n x = taylorWithinEval ℝ n Set.univ Real.sin 0 x\n```\nThis requires unfolding `taylorWithinEval` definition and showing term-by-term equality using `iteratedDerivWithin_sin_eq`.\n\n**Step 2**: Apply Taylor remainder bound from Mathlib with C=1:\n```lean\n-- Use taylor_mean_remainder_bound or taylor_mean_remainder_lagrange\n-- with the bound ‖iteratedDeriv (n+1) Real.sin t‖ ≤ 1\n```\n\n---\n\n## Key Facts Known\n\n- `sinPartialSum` cycles through {sin,cos,-sin,-cos} values at 0\n- All iterated derivatives of sin/cos are bounded by 1 (proved in file)\n- `iteratedDerivWithin_sin_eq` proves the bridge on UniqueDiff sets\n- The remaining structure (convergence proofs, summability) is fully proved\n\n---\n\n## Gallery Status\n\n- `src/data/proofs/taylor-sincos-convergence/meta.json`: axiomCount = 2, status = axiomatized\n- Resolving this OQ would move status to `verified` with axiomCount = 0\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "analysis",
+    "taylor-series",
+    "mathlib"
   ],
   "relatedProofs": [
     "taylor-sincos-convergence",

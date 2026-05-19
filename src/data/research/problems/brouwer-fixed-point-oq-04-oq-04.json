@@ -1,27 +1,36 @@
 {
   "slug": "brouwer-fixed-point-oq-04-oq-04",
-  "title": "[Problem Title]",
+  "title": "Constructive content of Kakutani fixed-point theorem",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{For upper hemicontinuous convex-valued correspondences }F\\text{ on a compact convex domain, construct }\\varepsilon\\text{-approximate fixed points effectively.}",
+    "plain": "Extract an effective algorithmic version of Kakutani's fixed-point theorem by producing epsilon-approximate fixed points for upper hemicontinuous set-valued maps.",
+    "whyMatters": [
+      "Kakutani's theorem underlies Nash equilibrium and general equilibrium existence results.",
+      "Constructive approximate fixed points connect fixed-point topology with computational economics, game theory, and PPAD complexity."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "In one dimension, grid search via a discrete IVT gives 1/n-approximate fixed points in O(n) steps.",
+      "In n dimensions, Scarf's pivoting algorithm gives epsilon-approximate fixed points with O((1/epsilon)^n) behavior.",
+      "The associated computational problem is PPAD-complete."
+    ],
+    "open": [
+      "Lean formalization still needs the constructive Kakutani approximate fixed-point extraction packaged against the available correspondence infrastructure."
+    ],
+    "goal": "Formalize the constructive approximate fixed-point content of Kakutani's theorem, with the current local focus on the one-dimensional grid-search/discrete-IVT route."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-05T19:30:47-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Understand the constructive Kakutani approximate fixed-point target and reconcile the older local notes with the current Lean metadata.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Inspect BrouwerFixedPointOQ04OQ04.lean and verify how the current one-dimensional grid-search approximation result relates to the broader Kakutani extraction goal.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -37,9 +46,11 @@
     "markdown": "# Knowledge Base: brouwer-fixed-point-oq-04-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "topology",
+    "fixed-point-theory",
+    "constructive-mathematics",
+    "game-theory",
+    "complexity"
   ],
   "relatedProofs": [
     "brouwer-fixed-point",
