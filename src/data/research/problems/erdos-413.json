@@ -1,8 +1,8 @@
 {
   "slug": "erdos-413",
   "title": "Erdős #413",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -19,7 +19,7 @@
     "phase": "COMPLETED",
     "since": "2026-03-28T09:20:00Z",
     "iteration": 2,
-    "focus": "Graduated: 108 theorems, 0 sorries, 3 deep axioms",
+    "focus": "Graduated: 109 theorems, 19 definitions, 1 axiom (open conjecture), 0 sorries; 1115 LOC",
     "blockers": [],
     "nextAction": "None — formalization complete.",
     "attemptCounts": {
@@ -69,15 +69,16 @@
     "mathlib": []
   },
   "started": "2026-01-13T02:41:06.675Z",
-  "lastUpdate": "2026-03-13T07:52:17.048Z",
+  "lastUpdate": "2026-05-17T14:36:00Z",
+  "completed": "2026-03-23T22:15:18.939Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "Proofs/Erdos413Problem.lean",
       "filename": "Erdos413Problem.lean",
-      "lineCount": 1116,
-      "theoremCount": 108,
+      "lineCount": 1115,
+      "theoremCount": 109,
       "axiomCount": 1,
       "defCount": 19,
       "sorryCount": 0,
