@@ -1,27 +1,39 @@
 {
   "slug": "erdos-1062",
-  "title": "Erdős #1062",
+  "title": "Erdos 1062 no-divides-two-others sets",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Let $f(n)$ be the size of the largest subset $A\\subseteq \\{1,\\ldots,n\\}$ such that there are no three distinct elements $a,b,c\\in A$ such that $a\\mid b$ and $a\\mid c$. How large can $f(n)$ be? Is $\\lim f(n)/n$ irrational?\n\n\n\nThe example $[m+1,3m+2]$ shows that $f(n)\\geq\\lceil \\frac{2}{3}n\\rceil$. Lebensold \\cite{Le76} has shown that, for large $n$,\\[0.6725 n \\leq f(n) \\leq 0.6736 n.\\]This is problem B24 in Guy's collection \\cite{Gu04}.",
-    "plain": "Let $f(n)$ be the size of the largest subset $A\\subseteq \\{1,\\ldots,n\\}$ such that there are no three distinct elements $a,b,c\\in A$ such that $a\\mid b$ and $a\\mid c$. How large can $f(n)$ be? Is $\\lim f(n)/n$ irrational?",
-    "whyMatters": []
+    "formal": "Let f(n) be the largest size of a subset A of {1,...,n} with no three distinct elements a,b,c in A such that a divides both b and c. How large is f(n), and is the limiting density f(n)/n irrational?",
+    "plain": "How dense can a finite set be if no element divides two distinct other elements?",
+    "whyMatters": [
+      "The proof file formalizes a divisibility extremal problem close to primitive-set theory.",
+      "It proves the elementary two-thirds lower-bound construction and basic monotonicity/size bounds.",
+      "The irrational limiting-density question and Lebensold sharp bounds are outside the current Lean theorem strength."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`NoDividesTwoOthers` and `maxNDTOSize` formalize the property and extremal function.",
+      "`lower_bound_construction` verifies the upper-interval construction giving the elementary two-thirds style lower bound.",
+      "`ErdosProblem1062` states the limiting-density irrationality target.",
+      "`IsPrimitiveFinset`, `primitive_implies_ndto`, `ndto_strictly_weaker`, `ndto_subset`, `ndto_pair`, `maxNDTOSize_mono`, `ndto_singleton`, `maxNDTOSize_ge_one`, and `maxNDTOSize_le` provide comparison, inheritance, monotonicity, and trivial bound facts."
+    ],
+    "open": [
+      "`Erdos1062Problem.lean` has zero active axioms and zero active sorries.",
+      "The existence/irrationality of the limiting density and Lebensold's narrow asymptotic bounds are not proved in this file."
+    ],
+    "goal": "Make the verified NDTO extremal-function API and elementary bounds discoverable for future density work."
   },
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T14:38:41.570Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Metadata backfill aligned with the verified no-divides-two-others scaffold.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Use the interval construction, subset closure, and monotonicity lemmas as the baseline for sharper density bounds.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -48,7 +60,12 @@
     "markdown": "# Erdős #1062 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(n)$ be the size of the largest subset $A\\subseteq \\{1,\\ldots,n\\}$ such that there are no three distinct elements $a,b,c\\in A$ such that $a\\mid b$ and $a\\mid c$. How large can $f(n)$ be? Is $\\lim f(n)/n$ irrational?\n\n\n\nThe example $[m+1,3m+2]$ shows that $f(n)\\geq\\lceil \\frac{2}{3}n\\rceil$. Lebensold \\cite{Le76} has shown that, for large $n$,\\[0.6725 n \\leq f(n) \\leq 0.6736 n.\\]This is problem B24 in Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Le76] Lebensold, Kenneth, A divisibility problem. Studies in Appl. Math. (1976/77), 291--294.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1061\n- Problem #1063\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Gu04\n- Le76\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "divisibility",
+    "extremal-combinatorics",
+    "primitive-sets",
+    "fully-verified"
   ],
   "relatedProofs": [
     "erdos-1",

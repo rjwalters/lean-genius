@@ -1,27 +1,39 @@
 {
   "slug": "erdos-1117",
-  "title": "Erdős #1117",
+  "title": "Erdos 1117 maximum-modulus points of entire functions",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Let $f(z)$ be an entire function which is not a monomial. Let $\\nu(r)$ count the number of $z$ with $\\lvert z\\rvert=r$ such that $\\lvert f(z)\\rvert=\\max_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert$. (This is a finite quantity if $f$ is not a monomial.)\n\nIs it possible for\\[\\limsup \\nu(r)=\\infty?\\]Is it possible for\\[\\liminf \\nu(r)=\\infty?\\]\n\n\n\nThis is Problem 2.16 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nThe answer to the first question is yes, as shown by Herzog and Piranian \\cite{HePi68}. The second question is still open, although an 'approximate' affirmative answer is given by Gl\\\"{u}cksam and Pardo-Sim\\'{o}n \\cite{GlPa24}.",
-    "plain": "Let $f(z)$ be an entire function which is not a monomial. Let $\\nu(r)$ count the number of $z$ with $\\lvert z\\rvert=r$ such that $\\lvert f(z)\\rvert=\\max_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert$. (This is a finite quantity if $f$ is not a monomial.)",
-    "whyMatters": []
+    "formal": "For an entire non-monomial function f, let nu(r) count the points on |z|=r where |f(z)| attains its maximum on that circle. Herzog-Piranian showed limsup nu(r) can be infinite; the liminf version remains open. The Lean file formalizes the basic entire/monomial, maximum-modulus, and counting definitions.",
+    "plain": "How many maximum-modulus points can an entire non-monomial function have on large circles?",
+    "whyMatters": [
+      "The file replaces old axiomatic placeholders with Mathlib-based definitions for entire functions and monomials.",
+      "It gives a compact formal interface for maximum modulus and the `nu` counting function.",
+      "The deep limsup/liminf results are analytic theorems not proved in this scaffold, so the metadata should keep them as historical/open context."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`IsEntire` and `IsMonomial` define the analytic objects in Mathlib terms.",
+      "`maxModulus` and `maxModulus_def` define the circle maximum modulus as a supremum.",
+      "`nu` and `nu_def` define the count of maximum-modulus points on a radius-r circle.",
+      "`nu_finite` records the finite-valued nature of the current `nu : Nat` definition."
+    ],
+    "open": [
+      "`Erdos1117Problem.lean` has zero active axioms and zero active sorries.",
+      "The Herzog-Piranian limsup theorem, the open liminf question, and the Glucksam-Pardo-Simon approximate result are comments/context only, not active Lean theorems."
+    ],
+    "goal": "Make the maximum-modulus counting interface discoverable while clearly separating it from the unformalized deep analytic results."
   },
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T15:38:27.860Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Metadata backfill aligned with the zero-axiom maximum-modulus definitions.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Strengthen the analytic scaffold around compactness, maximum attainment, and asymptotic limsup/liminf statements before formalizing the deep results.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -37,7 +49,12 @@
     "markdown": "# Erdős #1117 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $f(z)$ be an entire function which is not a monomial. Let $\\nu(r)$ count the number of $z$ with $\\lvert z\\rvert=r$ such that $\\lvert f(z)\\rvert=\\max_{\\lvert z\\rvert=r}\\lvert f(z)\\rvert$. (This is a finite quantity if $f$ is not a monomial.)\n\nIs it possible for\\[\\limsup \\nu(r)=\\infty?\\]Is it possible for\\[\\liminf \\nu(r)=\\infty?\\]\n\n\n\nThis is Problem 2.16 in \\cite{Ha74}, where it is attributed to Erd\\H{o}s.\n\nThe answer to the first question is yes, as shown by Herzog and Piranian \\cite{HePi68}. The second question is still open, although an 'approximate' affirmative answer is given by Gl\\\"{u}cksam and Pardo-Sim\\'{o}n \\cite{GlPa24}.\n\n\n\n\nReferences\n\n\n[GlPa24] Gl\\\"ucksam, Adi and Pardo-Sim\\'on, Leticia, An approximate solution to {E}rd\\H{o}s' maximum modulus points\nproblem. J. Math. Anal. Appl. (2024), Paper No. 127768, 20.\n\n[Ha74] Hayman, W. K., Research problems in function theory: new problems. (1974), 155--180.\n\n[HePi68] Herzog, F. and Piranian, G., The counting function for points of maximum modulus. (1968), 240--243.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1116\n- Problem #1118\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Ha74\n- HePi68\n- GlPa24\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "complex-analysis",
+    "entire-functions",
+    "maximum-modulus",
+    "asymptotic-counting",
+    "fully-verified"
   ],
   "relatedProofs": [
     "erdos-1",
