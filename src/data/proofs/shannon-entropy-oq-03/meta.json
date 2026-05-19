@@ -17,7 +17,7 @@
     ],
     "proofRepoPath": "Proofs/ShannonEntropySSA.lean",
     "badge": "original",
-    "sorries": 3,
+    "sorries": 0,
     "axiomCount": 0,
     "assumptions": "None. All theorems proved from Mathlib primitives. Strong subadditivity proved via conditional KL divergence ≥ 0 (kl_term_bound applied to the conditional independence distribution q(x,y,z) = pXY(x,y)·pYZ(y,z)/pY(y)).",
     "mathlibDependencies": [
@@ -215,5 +215,5 @@
       "leanType": "shannonEntropy' pXYZ + shannonEntropy' (marginalY_3 pXYZ) ≤ shannonEntropy' (marginalXY pXYZ) + shannonEntropy' (marginalYZ pXYZ)"
     }
   ],
-  "sorries": 3
+  "sorries": 0
 }
