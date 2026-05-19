@@ -1,19 +1,33 @@
 {
   "slug": "e-transcendental-oq-01",
-  "title": "Is e + pi transcendental",
+  "title": "Is e + pi Transcendental?",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Is the number e + π = 5.8598... transcendental? Despite both e (Hermite, 1873) and π (Lindemann, 1882) being individually transcendental, the transcendence of their sum remains one of the most tantalizing open problems in mathematics. We prove what IS known: at least one of e+π or e·π must be transcendental — a clean consequence of e's transcendence via the Vieta symmetric polynomial identity.",
-    "whyMatters": []
+    "formal": "\\operatorname{Transcendental}_{\\mathbb{Q}}(e+\\pi)\\ ?",
+    "plain": "Ask whether e + pi is transcendental. The file proves the unconditional symmetric-polynomial consequence that at least one of e + pi or e*pi is transcendental, then records stronger conclusions that follow from algebraic-independence assumptions.",
+    "whyMatters": [
+      "The problem is a classic reminder that individual transcendence of two constants does not settle the transcendence of their sum.",
+      "The formal proof cleanly isolates what follows from Vieta-style algebra from what still depends on deep open conjectures."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`e_transcendental_q` and `pi_transcendental_q` make the imported transcendence facts for e and pi available over Q.",
+      "`e_root_of_vieta_quadratic` and `pi_root_of_vieta_quadratic` verify the quadratic identities with coefficients e+pi and e*pi.",
+      "`algebraic_root_of_algebraic_quadratic` proves that a root of a monic quadratic with algebraic coefficients is algebraic over Q.",
+      "`e_plus_pi_or_e_times_pi_transcendental` proves that e+pi and e*pi cannot both be algebraic.",
+      "`sum_transcendental_if_prod_algebraic` and `prod_transcendental_if_sum_algebraic` record the two conditional alternatives.",
+      "`pi_irrational_from_mathlib` imports Mathlib's direct irrationality theorem for pi.",
+      "`e_plus_pi_transcendental_from_independence`, `e_times_pi_transcendental_from_independence`, and `summary_independence_implies` prove the consequences of algebraic independence of e and pi."
+    ],
+    "open": [
+      "The transcendence and even irrationality of e+pi remain open unconditionally.",
+      "`nesterenko_algebraic_independence` and algebraic independence of e and pi are used as axiom/conjecture inputs for stronger results."
+    ],
+    "goal": "Document the unconditional disjunction while keeping conjectural algebraic-independence consequences clearly marked."
   },
   "currentState": {
     "phase": "NEW",
