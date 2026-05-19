@@ -24,7 +24,7 @@
     "dateAdded": "2026-05-04",
     "axiomCount": 2,
     "assumptions": "chebotarev_density: For a Galois extension L/ℚ with group G and conjugacy class C ⊆ G, the natural density of primes with Frobenius in C is |C|/|G|. Chebotarev (1922). Proof requires Dedekind domain theory, Frobenius elements, and L-function analytic continuation — not in Mathlib. | dirichlet_density: For gcd(a,n)=1, primes p ≡ a (mod n) have density 1/φ(n). Dirichlet (1837). Provable from chebotarev_density via cyclotomic fields; stated separately for clarity.",
-    "lineCount": 369,
+    "lineCount": 370,
     "theoremCount": 23,
     "definitionCount": 1,
     "originalContributions": [
@@ -289,7 +289,7 @@
     ],
     "opens": ["AbelRuffiniGaloisExtensions", "Finset"],
     "namespace": "AbelRuffiniOQ10",
-    "lineCount": 369,
+    "lineCount": 370,
     "axiomCount": 2,
     "theoremCount": 23,
     "definitionCount": 1,
