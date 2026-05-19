@@ -1,27 +1,40 @@
 {
   "slug": "erdos-1143",
-  "title": "Erdős #1143",
+  "title": "Erdos 1143 prime-multiple interval covering",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+      "formal": "Let $p_1<\\cdots<p_u$ be primes and let $F_k(p_1,\\ldots,p_u)$ be the minimum, over intervals of $k$ consecutive integers, of the number of integers divisible by at least one $p_i$. Estimate $F_k$, especially for $k=\\alpha p_u$ with constant $\\alpha>2$.",
+      "plain": "How many numbers in the sparsest interval of length $k$ must be covered by multiples of a chosen finite set of primes?",
+      "whyMatters": [
+        "The problem is a finite-interval counterpart to density heuristics for prime divisibility and is related to Jacobsthal-type covering questions.",
+        "The Lean file proves elementary single-prime and density-inequality scaffolding while leaving the main asymptotic and upper-bound estimates axiomatized."
+      ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`coveredInInterval`, `coveringFunction`, and `expectedDensity` define the interval-covering count and density heuristic.",
+      "`covering_le_k`, `single_prime_lower`, and `single_prime_upper` prove basic and single-prime interval bounds.",
+      "`expectedDensity_pos` and `expectedDensity_lt_one` prove density bounds for nonempty finite prime sets.",
+      "`covering_lower_bound` gives a trivial lower inequality, and `alpha_gt_3_open` packages lower and upper bounds using the active upper-bound axiom.",
+      "`density_two_three` and `density_two_three_five` verify concrete expected-density formulas."
+    ],
+    "open": [
+      "`covering_asymptotic` and `covering_upper_bound` remain active axioms.",
+      "`erdos_selfridge_exact` is formally a tautological existence statement for `coveringFunction primes k`, not a formalization of the historical exact formula.",
+      "The Jacobsthal-function relationship is comment-only context in this file."
+    ],
+    "goal": "Prove `covering_upper_bound` via a finite-period averaging argument, leaving only the deeper asymptotic estimate axiomatized."
   },
   "currentState": {
     "phase": "NEW",
     "since": "2026-01-15T16:41:04.199Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Metadata now separates proved covering-function scaffolding from the active asymptotic and upper-bound axioms.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Formalize the finite-period averaging proof for `covering_upper_bound`.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -56,7 +69,11 @@
     "markdown": "# Erdős #1143 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "prime-multiples",
+    "interval-covering",
+    "axiom-backed"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -70,15 +87,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:41:04.200Z",
-  "lastUpdate": "2026-03-13T07:52:17.058Z",
+  "lastUpdate": "2026-05-18T08:00:49Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1143Problem.lean",
       "filename": "Erdos1143Problem.lean",
-      "lineCount": 300,
-      "theoremCount": 10,
+      "lineCount": 299,
+      "theoremCount": 11,
       "axiomCount": 2,
       "defCount": 3,
       "sorryCount": 0,
