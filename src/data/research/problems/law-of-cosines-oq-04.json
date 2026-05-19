@@ -6,14 +6,25 @@
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "For a triangle with side a split into segments m and n by a cevian of length d, Stewart's theorem gives b^2*m + c^2*n = a*(d^2 + m*n); the file derives this from two law-of-cosines equations and records the median special case.",
+    "plain": "Develops the Stewart theorem extension of the law of cosines. It starts from the cosine-law equations in the two subtriangles cut by a cevian, cancels the angle terms, and specializes the result to the median of a right triangle.",
+    "whyMatters": [
+      "Stewart's theorem is a standard bridge from the law of cosines to cevian and median length formulas.",
+      "The formalization isolates the algebraic cancellation that turns two cosine-law equations into a reusable triangle identity.",
+      "The right-triangle median check provides a concrete sanity test for the general formula."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`stewarts_algebraic` records the algebraic rearrangement behind Stewart's theorem.",
+      "`stewarts_from_cosines` derives the Stewart identity from the two subtriangle law-of-cosines equations.",
+      "`stewarts_theorem` packages the standard b^2*m + c^2*n = a*(d^2 + m*n) form.",
+      "`median_length_formula` and `right_triangle_median` specialize the identity to the median formula and the 3-4-5 triangle check."
+    ],
+    "open": [
+      "A fully synthetic Euclidean-geometry version with explicit point and angle objects remains outside this algebraic file."
+    ],
+    "goal": "Make the Stewart-theorem law-of-cosines extension discoverable from the problem metadata."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -36,7 +47,14 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: law-of-cosines-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "geometry",
+    "euclidean-geometry",
+    "law-of-cosines",
+    "stewarts-theorem",
+    "triangle-geometry",
+    "formalized"
+  ],
   "relatedProofs": [
     "law-of-cosines",
     "law-of-cosines-oq-01-oq-05",
