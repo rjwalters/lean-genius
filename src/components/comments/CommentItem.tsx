@@ -25,6 +25,7 @@ export function CommentItem({ comment, onReply, onUpdate, onDelete, onVote }: Co
   const [isCollapsed, setIsCollapsed] = useState(comment.score <= COLLAPSE_THRESHOLD)
 
   const isOwner = user?.id === comment.author.id
+  const replyFormId = `comment-${comment.id}-reply-form`
 
   const handleReply = async (content: string) => {
     await onReply(comment.id, content)
@@ -120,6 +121,8 @@ export function CommentItem({ comment, onReply, onUpdate, onDelete, onVote }: Co
               {isAuthenticated && (
                 <button
                   onClick={() => setShowReplyForm(!showReplyForm)}
+                  aria-expanded={showReplyForm}
+                  aria-controls={replyFormId}
                   className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
                 >
                   <MessageSquare className="h-3 w-3" />
@@ -149,7 +152,7 @@ export function CommentItem({ comment, onReply, onUpdate, onDelete, onVote }: Co
           )}
 
           {showReplyForm && (
-            <div className="mt-3 ml-4 pl-4 border-l-2 border-border">
+            <div id={replyFormId} className="mt-3 ml-4 pl-4 border-l-2 border-border">
               <CommentForm
                 onSubmit={handleReply}
                 onCancel={() => setShowReplyForm(false)}
