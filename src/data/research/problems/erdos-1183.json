@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1183",
   "title": "Erdős #1183",
-  "phase": "OBSERVE",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
@@ -16,20 +16,22 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-01-16T08:44:15.246Z",
-    "iteration": 2,
-    "focus": "Formalized problem statement and proved trivial chain bound",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "COMPLETED",
+    "since": "2026-05-17T04:19:00.000Z",
+    "iteration": 4,
+    "focus": "S4 STATE-SYNC: doc-only catchup absorbing PR #13816 (upper bounds erdos1183_f n ≤ 2^n and erdos1183_F n ≤ 2^n added 2026-04-29) + JSON registry COMPLETED + leanFiles[0].lineCount 315→314 + pool flip. Slug COMPLETED since S3 (researcher-1 audit 2026-04-29T04:30Z).",
+    "blockers": [
+      "Genuine open conjectures (true growth of f, F) are research-paper-scale; Erdős/Ulam reported no plausible conjecture for the order of magnitude."
+    ],
+    "nextAction": "Slug COMPLETED. Lower bound (chain + pigeonhole), upper bound (#13816 via csSup_le and Fintype.card_finset), and definitional correctness (sSup not sInf) all delivered. Only optional decoration remains: explicit f(0)=1, f(1)=1, f(2)=2 computations (already implied by chain bound). Improving chain bound is research-paper-scale. Future researcher landing here should RELEASE without PR unless new substantive drift accumulates.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 1,
+      "total": 2,
+      "currentApproach": 0,
       "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 axioms (2→0). Open conjectures converted from axiom to def Prop (not assumed true). 15 theorems, 0 sorries, 0 axioms.",
+    "progressSummary": "PROGRESS: Eliminated 2 axioms (2→0). Open conjectures converted from axiom to def Prop (not assumed true). Lower bound f(n) ≥ ⌈(n+1)/2⌉ via chain + pigeonhole + le_csSup. Upper bound f(n), F(n) ≤ 2^n via csSup_le + Fintype.card_finset (PR #13816). 17 theorems, 14 definitions, 0 sorries, 0 axioms.",
     "builtItems": [
       "Erdos1183Problem.lean: full formalization (223 lines)",
       "Definitions: SubsetColoring, IsUnionClosed, IsInterClosed, IsSublattice, IsMonochromatic, IsChain",
@@ -44,7 +46,8 @@
       "Added import Mathlib.Order.ConditionallyCompleteLattice.Basic",
       "File grew from 223 → 277 lines; 10 → 15 theorems; 10 → 12 definitions",
       "Converted erdos1183_f_growth: axiom → def Prop",
-      "Converted erdos1183_F_superpolynomial: axiom → def Prop"
+      "Converted erdos1183_F_superpolynomial: axiom → def Prop",
+      "PR #13816 (rjwalters, merged 2026-04-29T05:08Z): Added Part VII trivial upper bounds — erdos1183_f_upper_bound (f(n) ≤ 2^n) and erdos1183_F_upper_bound (F(n) ≤ 2^n) via csSup_le and Fintype.card_finset; +34 LOC (280 → 314 lines wc -l canonical); 15 → 17 theorems; 12 → 14 definitions; 0 sorries, 0 axioms preserved"
     ],
     "insights": [
       "Problem is about monochromatic sublattice families in 2-colorings of the powerset",
@@ -57,7 +60,8 @@
       "The achievable set {k | every coloring has mono sublattice of size ≥ k} is bounded above by 2^n",
       "le_csSup connects the chain bound to the abstract sSup definition",
       "F(n) ≥ f(n) follows from csSup_le_csSup and the fact that sublattices are union-closed",
-      "Both axioms (erdos1183_f_growth, erdos1183_F_superpolynomial) are OPEN CONJECTURES not used by any theorem. Converted from axiom to def Prop: more honest (no assumption of truth) and eliminates 2 axioms."
+      "Both axioms (erdos1183_f_growth, erdos1183_F_superpolynomial) are OPEN CONJECTURES not used by any theorem. Converted from axiom to def Prop: more honest (no assumption of truth) and eliminates 2 axioms.",
+      "Trivial upper bound f(n), F(n) ≤ 2^n is constructive from Fintype.card_finset (|Finset (Fin n)| = 2^n) combined with csSup_le on the bounded achievable set (the bdd witness was already proved as achievableSublattice_bddAbove/achievableUnionClosed_bddAbove in Session 2)"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -82,14 +86,14 @@
     "mathlib": []
   },
   "started": "2026-01-16T08:44:15.246Z",
-  "lastUpdate": "2026-03-13T07:52:17.060Z",
+  "lastUpdate": "2026-05-17T04:19:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1183Problem.lean",
       "filename": "Erdos1183Problem.lean",
-      "lineCount": 315,
+      "lineCount": 314,
       "theoremCount": 17,
       "axiomCount": 0,
       "defCount": 14,
