@@ -1,27 +1,37 @@
 {
   "slug": "konigsberg-oq-03-oq-02",
-  "title": "[Problem Title]",
+  "title": "Infinite Path Formalization in Lean",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{Define an } \\mathrm{InfinitePath}(G) \\text{ or } \\mathrm{InfiniteWalk}(G) \\text{ type for a graph } G \\text{ representing a one-way or bi-infinite walk that can support an Euler edge-coverage predicate.}",
+    "plain": "Find a clean Lean 4 definition of an infinite graph path, either one-way or bi-infinite, using Mathlib-compatible structures such as streams, indexed sequences, or SimpleGraph walks. The definition should be strong enough to state that each edge is traversed exactly once.",
+    "whyMatters": [
+      "The HasInfiniteEulerPath stub cannot be stated precisely until infinite graph paths have a semantic foundation.",
+      "A usable infinite path definition is needed before formalizing the Erdős-Grünwald-Weiszfeld theorem for infinite Eulerian paths."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Mathlib has finite walk/path support in the SimpleGraph API.",
+      "Mathlib has a Stream API for infinite sequences."
+    ],
+    "open": [
+      "Choose and formalize a clean infinite graph path encoding compatible with Mathlib.",
+      "Encode the Euler constraint that every edge is visited exactly once for an infinite path.",
+      "Decide how to support both one-way and bi-infinite path variants."
+    ],
+    "goal": "Define a usable InfinitePath or InfiniteWalk type in Lean 4 that integrates with SimpleGraph and supports the infinite Eulerian path predicate."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-04T02:41:19-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Select a Mathlib-compatible encoding for infinite graph paths and the edge-traversal constraint.",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "Fast path: inspect Mathlib Stream and SimpleGraph.Walk APIs, then prototype the clearest one-way or bi-infinite InfiniteWalk definition.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +39,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Problem notes identify this as foundational definitional work for infinite Euler paths in Lean. Candidate encodings include Stream-based paths and Nat- or Int-indexed sequences, with edge uniqueness as the main design constraint.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: konigsberg-oq-03-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "The work is mostly definitional rather than a deep theorem proof.",
+      "A Stream-based definition is natural for one-way infinite paths, while a Nat-indexed sequence may be simpler and an Int-indexed sequence can model bi-infinite paths.",
+      "The chosen encoding must make the edge-traversal and edge-uniqueness constraints usable for Eulerian path statements."
+    ],
+    "mathlibGaps": [
+      "The notes do not identify an existing Mathlib infinite SimpleGraph path type that directly supports the needed Euler edge-coverage predicate."
+    ],
+    "nextSteps": [
+      "Compare Mathlib's Stream API with SimpleGraph.Walk support for finite paths.",
+      "Prototype a one-way InfiniteWalk definition and the predicate that every edge is traversed exactly once.",
+      "Check whether the same design extends cleanly to the bi-infinite Int-indexed case."
+    ],
+    "markdown": "# Knowledge Base: konigsberg-oq-03-oq-02\n\n## Problem Understanding\n\nThe problem asks for a clean Lean formalization of an infinite graph path, either one-way or bi-infinite, so that `HasInfiniteEulerPath` can be stated precisely. The definition should integrate with Mathlib's `SimpleGraph` ecosystem and support an edge-traversal predicate saying that each edge is visited exactly once.\n\n## Candidate Encodings\n\n- Stream-based paths using Mathlib's stream support, natural for one-way infinite paths.\n- `Nat -> ...` indexed paths, simple for one-way infinite walks.\n- `Int -> ...` indexed paths, a candidate for bi-infinite walks.\n\n## Open Design Points\n\nThe main unresolved point is how to encode the Euler constraint for infinite paths while staying compatible with existing Mathlib finite walk/path APIs.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "graph-theory",
+    "combinatorics",
+    "infinite-graphs",
+    "lean-formalization"
   ],
   "relatedProofs": [
     "konigsberg",
