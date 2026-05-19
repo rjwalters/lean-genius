@@ -1,19 +1,30 @@
 {
   "slug": "ptolemys-complex-proof-oq-01",
-  "title": "Can the converse direction be proved: if Ptolemy's equality holds, are the op...",
+  "title": "Ptolemy Complex Proof OQ-01: Equality Case and Same-Ray Converse",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "Can the converse direction be proved: if Ptolemy's equality holds, are the opposite-side products necessarily positively proportional (equivalently, are the points concyclic)?",
-    "whyMatters": []
+    "formal": "For complex points z1, z2, z3, z4, prove that equality in the triangle-inequality proof of Ptolemy is equivalent to a same-ray condition and implies proportionality of the opposite-side product vectors.",
+    "plain": "Backfills metadata for the equality-case direction of the complex proof of Ptolemy's theorem. The Lean file proves that Ptolemy equality is governed by the same-ray condition and yields the expected proportionality statement.",
+    "whyMatters": [
+      "Ptolemy's theorem connects cyclic geometry with metric inequalities.",
+      "The complex-number proof reduces the equality case to a precise triangle-inequality equality condition.",
+      "The converse/equality metadata helps distinguish the proved algebraic condition from broader concyclicity goals."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`ptolemy_equality_iff_sameRay` proves the equivalence between Ptolemy equality and the same-ray condition in the complex proof setup.",
+      "`ptolemy_equality_implies_proportional` derives positive proportionality from equality.",
+      "`ptolemy_equality_implies_sameRay` records the direct same-ray consequence.",
+      "`PtolemysComplexProofOQ01.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "A complete geometric concyclicity classification is outside this exact equality-case file."
+    ],
+    "goal": "Make the theorem-backed Ptolemy equality-case converse discoverable from metadata."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -39,9 +50,10 @@
   "tags": [
     "geometry",
     "complex-analysis",
+    "ptolemys-theorem",
+    "equality-cases",
     "inequality",
-    "classic",
-    "intermediate"
+    "formalized"
   ],
   "relatedProofs": [
     "ptolemys-complex-proof",

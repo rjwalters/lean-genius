@@ -1,19 +1,33 @@
 {
   "slug": "lovasz-local-lemma-oq-01",
-  "title": "Formalize the full probabilistic LLL with measure-theoretic probability space...",
+  "title": "Lovasz Local Lemma OQ-01: Finite Symmetric Thresholds",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "Formalize the full probabilistic LLL with measure-theoretic probability spaces in Lean 4",
-    "whyMatters": []
+    "formal": "For finite rational event systems with dependency degree d, prove general and symmetric Lovasz local lemma bounds plus explicit threshold inequalities.",
+    "plain": "Records the theorem-backed finite rational LLL formalization. The Lean file proves general and symmetric local lemma bounds, K-SAT and Moser-Tardos style corollaries, and threshold facts such as lllThreshold <= 1/4.",
+    "whyMatters": [
+      "The Lovasz local lemma is a core tool of the probabilistic method.",
+      "The finite rational formulation gives reusable combinatorial bounds without requiring full measure-theoretic probability infrastructure.",
+      "The metadata honestly marks the measure-theoretic and sibling-file work as outside the clean main-file slice."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`general_lll` and `lll_prob_bound` state the finite rational local lemma bounds.",
+      "`symmetric_lll_bound` and `symmetric_lll_avoidance` cover the symmetric dependency-degree form.",
+      "`ksat_lll` records a K-SAT-style application of the symmetric bound.",
+      "`lllThreshold_le_quarter` and `threshold_satisfies_lll` prove threshold facts for the symmetric setup.",
+      "`symmetric_lll_complete` packages the completed symmetric LLL criterion.",
+      "`LovaszLocalLemma.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "The full measure-theoretic probability-space LLL and some sibling OQ-02 variants remain outside this clean main-file metadata slice.",
+      "Listed related OQ-02 files contain sorries and are not the basis for these proven results."
+    ],
+    "goal": "Expose the clean finite Lovasz local lemma theorem set while scoping broader probability-space goals as open."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -40,8 +54,9 @@
     "combinatorics",
     "probabilistic-method",
     "graph-theory",
-    "lovász-local-lemma",
-    "k-sat"
+    "lovasz-local-lemma",
+    "k-sat",
+    "formalized"
   ],
   "relatedProofs": [
     "lovasz-local-lemma",
