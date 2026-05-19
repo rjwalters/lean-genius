@@ -1,14 +1,18 @@
 {
   "slug": "derangements-oq-03",
-  "title": "[Problem Title]",
+  "title": "Sharp Error Bound for Derangement Ratios",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "formal": "\\left|\\frac{D(n)}{n!} - \\frac{1}{e}\\right| \\leq \\frac{1}{(n+1)!},\\quad \\frac{D(n)}{n!} \\to \\frac{1}{e},\\quad \\text{with even partial sums above } \\frac{1}{e} \\text{ and odd partial sums below it.}",
     "plain": "Proves the sharp convergence rate |D(n)/n! - 1/e| ≤ 1/(n+1)! using the alternating series estimation theorem. The ratio D(n)/n! equals the n-th partial sum of the Taylor series for e^{-1}, and the error is bounded by the first omitted term. Also proves D(n)/n! → 1/e and the alternating property: even partial sums overshoot 1/e from above, odd partial sums undershoot from below.",
-    "whyMatters": []
+    "whyMatters": [
+      "Connects the classical derangement ratio D(n)/n! with the Taylor expansion of e^{-1}.",
+      "Records an explicit factorial error bound rather than only the limiting probability 1/e.",
+      "Captures the alternating overshoot and undershoot behavior of the partial sums."
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -29,17 +33,27 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "The local problem statement identifies the goal as proving the sharp bound between the derangement ratio D(n)/n! and 1/e via the alternating series estimate for the Taylor series of e^{-1}. The recorded research state is still OBSERVE with zero attempts.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "The intended bridge is the identity between D(n)/n! and the n-th partial sum of the Taylor series for e^{-1}.",
+      "The stated bound is the first omitted term bound from the alternating series estimation theorem.",
+      "The parity refinement is part of the target: even partial sums are above 1/e and odd partial sums are below it."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: derangements-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Read the existing derangement and convergence Lean files listed in the JSON before claiming any formal progress.",
+      "Identify the exact Lean statement connecting derangements to the finite alternating exponential sum.",
+      "Check whether the alternating-series error estimate and parity inequalities are already available or need local lemmas."
+    ],
+    "markdown": "# Knowledge Base: derangements-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThe local problem statement asks for the sharp convergence rate\n`|D(n)/n! - 1/e| <= 1/(n+1)!` for derangements. It frames `D(n)/n!` as the n-th partial sum of the Taylor series for `e^{-1}` and points to the alternating series estimation theorem as the intended proof mechanism.\n\n---\n\n## Insights\n\n- The main mathematical bridge is the equality between the derangement ratio and the finite alternating exponential sum.\n- The error bound should follow from bounding an alternating-series remainder by the first omitted term.\n- The target includes the parity behavior: even partial sums overshoot `1/e`, while odd partial sums undershoot it.\n\n---\n\n## Dead Ends\n\nNo failed approaches are recorded in the local research state.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "combinatorics",
+    "derangements",
+    "alternating-series",
+    "exponential-series",
+    "asymptotics"
   ],
   "relatedProofs": [
     "derangements",

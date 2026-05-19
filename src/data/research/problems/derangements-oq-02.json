@@ -1,14 +1,17 @@
 {
   "slug": "derangements-oq-02",
-  "title": "[Problem Title]",
+  "title": "Counting Permutations with Exactly k Fixed Points",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
+    "formal": "\\#\\{\\sigma \\in S_n : \\sigma \\text{ has exactly } k \\text{ fixed points}\\} = \\binom{n}{k} D(n-k)",
     "plain": "Proves S(n,k) = C(n,k)·D(n-k): the number of permutations of n elements with exactly k fixed points equals the binomial coefficient C(n,k) times the derangement number D(n-k). Verified for n=3,4,5 via native_decide. Proved via bijection between {σ | support = S} and derangements of S.",
-    "whyMatters": []
+    "whyMatters": [
+      "Connects fixed-point counting in permutations to derangements by choosing the fixed points and deranging the remaining elements.",
+      "Provides a natural bijective route for the formula S(n,k) = C(n,k)·D(n-k)."
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -21,7 +24,7 @@
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Read problem.md thoroughly and acquire full context, then move to ORIENT phase to explore literature and related proofs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +32,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "The local research state records this slug in OBSERVE phase with zero attempts. The problem statement identifies the target as the formula S(n,k) = C(n,k)·D(n-k), with a bijective proof idea between permutations with a chosen fixed-point set and derangements of the complement.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "The core count splits into choosing the k fixed points and deranging the remaining n-k elements.",
+      "The local problem statement reports small cases n=3,4,5 checked by native_decide.",
+      "The stated proof route is bijective: fix the support or fixed-point set, then relate the remaining action to derangements."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: derangements-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Read problem.md thoroughly and confirm the exact formal target.",
+      "Move to ORIENT phase to inspect related derangement proofs and available literature notes.",
+      "Identify the Lean lemmas needed for binomial choice of fixed points and derangements of the complement."
+    ],
+    "markdown": "# Knowledge Base: derangements-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThe target is the formula S(n,k) = C(n,k) * D(n-k): the number of permutations of n elements with exactly k fixed points equals the number of ways to choose those fixed points times the number of derangements of the remaining elements.\n\nThe local problem statement says cases n=3,4,5 were verified by native_decide and names a bijective route between permutations with a fixed support and derangements on the complementary set.\n\n---\n\n## Insights\n\n- The counting argument should separate the choice of fixed points from the derangement of the remaining elements.\n- The research state records zero attempts so far, so no completed local research approach is documented in the slug files.\n\n---\n\n## Dead Ends\n\nNo dead ends are recorded in the local slug evidence.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "combinatorics",
+    "permutations",
+    "derangements",
+    "fixed-points"
   ],
   "relatedProofs": [
     "derangements",
