@@ -3,6 +3,33 @@
   "name": "Extend Finset probabilistic framework to infinite spaces via MeasureTheory",
   "parentId": "prob-method-expectation",
   "status": "completed",
+  "tags": [
+    "probability",
+    "probabilistic-method",
+    "measure-theory",
+    "combinatorics"
+  ],
+  "problemStatement": {
+    "formal": "Show that the gallery's Finset-based expectation framework embeds into Mathlib MeasureTheory by identifying finite uniform expectation with the Bochner integral, then prove measure-theoretic first-moment and linearity statements.",
+    "plain": "Bridge the finite probabilistic-method proofs to Mathlib's measure-theory probability tools.",
+    "whyMatters": [
+      "Connects the gallery's elementary finite probability API to Mathlib's standard analytic probability framework.",
+      "Lets future probabilistic-method results reuse integral linearity and indicator expectation lemmas.",
+      "Creates a route from first-moment arguments toward richer measure-theoretic concentration tools."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Proofs/ProbMethodExpectationOQ01.lean constructs the finite uniform probability bridge and proves Finset expectation equals the Bochner integral.",
+      "The file proves measure-theoretic first-moment, linearity via integral_add, and indicator expectation facts.",
+      "Proof metadata records 120 lines, 5 theorems, 2 definitions, 0 axioms, and 0 sorries."
+    ],
+    "open": [
+      "The proof metadata lists IsProbabilityMeasure (uniformProbMeasure alpha) as a future improvement.",
+      "Second-moment, Lovasz local lemma, and concentration-inequality extensions remain future measure-theoretic work."
+    ],
+    "goal": "Connect the gallery's finite probabilistic method to Mathlib MeasureTheory in the research index."
+  },
   "knowledge": {
     "score": 6,
     "insights": [
@@ -12,7 +39,7 @@
       "First moment method needs Markov's inequality + integrability"
     ],
     "builtItems": [
-      "ProbMethodExpectationOQ01.lean: 100 lines, 0 axioms, 2 sorries, 2 proved"
+      "ProbMethodExpectationOQ01.lean: 120 lines, 0 axioms, 0 sorries, 5 theorems"
     ],
     "progressSummary": "COMPLETED: Bridge from Finset to MeasureTheory. Proved linearity + indicator expectation."
   },

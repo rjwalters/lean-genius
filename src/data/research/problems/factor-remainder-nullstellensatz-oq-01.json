@@ -3,6 +3,34 @@
   "name": "Strong Nullstellensatz I(V(J))=rad(J) in Lean",
   "parentId": "factor-remainder",
   "status": "completed",
+  "tags": [
+    "algebra",
+    "polynomials",
+    "algebraic-geometry",
+    "nullstellensatz",
+    "intermediate"
+  ],
+  "problemStatement": {
+    "formal": "Formalize the strong Nullstellensatz statement I(V(J)) = rad(J) for multivariate polynomial ideals over an algebraically closed field using Mathlib's Jacobson-ring infrastructure.",
+    "plain": "Expose Mathlib's strong Nullstellensatz as a clean gallery proof and derive standard corollaries about weak Nullstellensatz, polynomial membership, and radical ideals.",
+    "whyMatters": [
+      "Connects the factor-remainder gallery thread to a central theorem of algebraic geometry.",
+      "Shows the problem can be solved directly from Mathlib without extra axioms.",
+      "Gives future algebraic-geometry work a verified I(V(-)) and radical-ideal bridge."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "Proofs/FactorRemainderNullstellensatzOQ01.lean wraps Mathlib's strong Nullstellensatz theorem vanishingIdeal_zeroLocus_eq_radical.",
+      "The proof derives weak Nullstellensatz, a membership criterion, radical ideal correspondence, and V-I Galois connection corollaries.",
+      "Proof metadata records 82 lines, 5 theorems, 0 axioms, and 0 sorries."
+    ],
+    "open": [
+      "OQ02 is a separate entry with axiomatized parts; this OQ01 metadata describes only the fully verified Mathlib-backed bridge.",
+      "Future work could add category-theoretic varieties, Positivstellensatz variants, p-adic analogues, or effective Nullstellensatz bounds."
+    ],
+    "goal": "Document the fully verified strong Nullstellensatz bridge without overstating adjacent axiomatized work."
+  },
   "knowledge": {
     "score": 8,
     "insights": [
@@ -12,7 +40,7 @@
       "V,I form an antitone Galois connection (also in Mathlib)"
     ],
     "builtItems": [
-      "FactorRemainderNullstellensatzOQ01.lean: 85 lines, 0 axioms, 0 sorries",
+      "FactorRemainderNullstellensatzOQ01.lean: 82 lines, 0 axioms, 0 sorries",
       "strong_nullstellensatz, weak_nullstellensatz, membership_criterion, radical_ideal_correspondence"
     ],
     "progressSummary": "COMPLETED: Fully verified Nullstellensatz via Mathlib. 0 axioms, 0 sorries."
