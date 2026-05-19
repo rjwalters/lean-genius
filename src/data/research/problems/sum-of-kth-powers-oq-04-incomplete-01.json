@@ -1,27 +1,33 @@
 {
   "slug": "sum-of-kth-powers-oq-04-incomplete-01",
-  "title": "[Problem Title]",
+  "title": "Euler-Maclaurin Asymptotics for Power Sums",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\sum_{i=0}^{n-1} i^k / n^{k+1} \\to \\frac{1}{k+1} \\text{ as } n \\to \\infty",
+    "plain": "Show that the Riemann sum for x^k on [0,1] converges to 1/(k+1).",
+    "whyMatters": [
+      "This is a targeted completion or extension of the existing gallery proof sum-of-kth-powers-oq-04."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Parent proof sum-of-kth-powers-oq-04 provides the foundation."
+    ],
+    "open": [
+      "The Lean file has one sorry for the main asymptotics and axiomatizes Bernoulli polynomial leading behavior with one axiom."
+    ],
+    "goal": "Prove the asymptotic limit, potentially using a squeeze theorem, integral comparison, or Mathlib's MeasureTheory.integral_pow via Riemann sum approximation."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-03T02:25:34-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Turn the normalized power sum into a Riemann-sum convergence proof for x^k on [0,1].",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Read problem.md thoroughly and acquire full context. Then move to ORIENT phase to explore literature and related proofs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +35,25 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Initial notes identify the main target as the convergence of the normalized power sum to 1/(k+1), with the parent proof still carrying one sorry and one axiom.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "The theorem can be read as the Riemann sum for x^k on [0,1].",
+      "The source notes suggest a squeeze theorem, integral comparison, or Mathlib's MeasureTheory.integral_pow through a Riemann-sum approximation."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: sum-of-kth-powers-oq-04-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Inspect the parent Lean file for the main sorry and the Bernoulli-polynomial axiom.",
+      "Check whether Mathlib's integral_pow and Riemann-sum APIs can express the desired convergence.",
+      "Try a squeeze or integral-comparison proof if the direct Riemann-sum API is not available."
+    ],
+    "markdown": "# Knowledge Base: sum-of-kth-powers-oq-04-incomplete-01\n\n## Problem Understanding\n\nThe target is the convergence of the normalized power sum `sum_{i=0}^{n-1} i^k / n^{k+1}` to `1/(k+1)`, i.e. the Riemann sum for `x^k` on `[0,1]`.\n\nThe parent gallery proof is `sum-of-kth-powers-oq-04`. The local notes say it provides the foundation, with one sorry for the main asymptotics and one axiom for Bernoulli polynomial leading behavior.\n\n## Insights\n\nSuggested proof directions from the local problem notes are a squeeze theorem or comparison with integrals. Another candidate is applying Mathlib's `MeasureTheory.integral_pow` through a Riemann sum approximation.\n\n## Dead Ends\n\nNo dead ends are recorded in the local notes.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "analysis",
+    "number-theory",
+    "euler-maclaurin",
+    "asymptotic"
   ],
   "relatedProofs": [
     "sum-of-kth-powers",
