@@ -7,6 +7,26 @@
     "proofTitle": "Multiplicativity of Euler's Totient Function",
     "type": "open-question"
   },
+  "problemStatement": {
+    "formal": "Formalize Euler's totient product formula using Nat.factorization and product over prime factors.",
+    "plain": "Express phi(n) as a product over prime-power contributions, then derive rational-form and density interpretations.",
+    "whyMatters": [
+      "The result connects multiplicativity of the totient function to Lean's canonical prime-factorization API.",
+      "It gives concrete reusable formulas for computations and density-style interpretations of phi(n) / n."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "totient_factorization_formula proves the prime-factorization product formula for Nat.totient.",
+      "totient_rational_formula rewrites the same result as a rational product over prime divisors.",
+      "totient_div_primes_formula and totient_from_multiplicativity connect the formula to multiplicativity.",
+      "totient_prime_power_contribution isolates the contribution of a prime power.",
+      "totient_twelve_via_formula and totient_360 verify concrete examples.",
+      "totient_density and totient_density_same_support package the phi(n) / n density interpretation."
+    ],
+    "open": [],
+    "goal": "Expose the completed factorization-based totient formula and its computational corollaries."
+  },
   "category": "generalization",
   "tractability": "challenging",
   "tags": [
