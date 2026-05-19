@@ -30,15 +30,15 @@
   "currentState": {
     "phase": "AXIOMATIZED",
     "since": "2026-04-27T16:05:13Z",
-    "iteration": 5,
-    "focus": "Stable axiomatized rest state: 3 Lean files (Problem 600 LOC / OQ01 165 LOC / OQ03 420 LOC), 55 theorems, 2 axioms (`erdos_1022_conjecture`, `lll_propertyB`), 0 sorries. Matching case proved.",
+    "iteration": 6,
+    "focus": "Stable axiomatized rest state: 3 Lean files (Problem 599 LOC / OQ01 164 LOC / OQ03 419 LOC = 1182 LOC), 57 theorems (canonical inclusive regex, +2 private lemmas vs S1 narrow grep), 2 axioms (`erdos_1022_conjecture`, `lll_propertyB`), 0 sorries. Matching case proved. S2 STATE-SYNC repairs S1 off-by-one line counts and narrow theorem regex against canonical mechanic convention used by `src/data/proofs/erdos-1022/meta.json`.",
     "blockers": [
       "Mathlib lacks finite-probability + Lovász Local Lemma infrastructure needed to discharge `lll_propertyB`.",
       "The sparsity conjecture itself (`erdos_1022_conjecture`) is open since Erdős–Lovász 1973."
     ],
     "nextAction": "See research/problems/erdos-1022/state.md §Forward Levers for three orthogonal next steps (discharge LLL at t=3,d=1; small-case c(3); OQ-01 sparsity-aware hierarchy).",
     "attemptCounts": {
-      "total": 5,
+      "total": 6,
       "currentApproach": 0,
       "approachesTried": 3
     }
@@ -94,7 +94,7 @@
     {
       "path": "Proofs/Erdos1022OQ01.lean",
       "filename": "Erdos1022OQ01.lean",
-      "lineCount": 165,
+      "lineCount": 164,
       "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 3,
@@ -105,7 +105,7 @@
     {
       "path": "Proofs/Erdos1022OQ03.lean",
       "filename": "Erdos1022OQ03.lean",
-      "lineCount": 420,
+      "lineCount": 419,
       "theoremCount": 21,
       "axiomCount": 1,
       "defCount": 8,
@@ -116,14 +116,14 @@
     {
       "path": "Proofs/Erdos1022Problem.lean",
       "filename": "Erdos1022Problem.lean",
-      "lineCount": 600,
-      "theoremCount": 26,
+      "lineCount": 599,
+      "theoremCount": 28,
       "axiomCount": 1,
-      "defCount": 6,
+      "defCount": 7,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1022Problem.lean"
     }
   ],
-  "lastUpdate": "2026-05-13T13:00:00Z"
+  "lastUpdate": "2026-05-17T05:35:00Z"
 }
