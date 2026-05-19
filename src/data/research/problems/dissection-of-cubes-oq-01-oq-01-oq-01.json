@@ -1,25 +1,32 @@
 {
   "slug": "dissection-of-cubes-oq-01-oq-01-oq-01",
-  "title": "[Problem Title]",
+  "title": "Geometric Cube Tiling with Verified Coverage",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{Does a genuine geometric cube tiling with } covers\\_unit\\_cube \\text{ replacing the current } True \\text{ placeholder admit } HasMinimalCollision\\text{?}",
+    "plain": "Show that a properly formalized geometric cube tiling, using explicit tile coordinates and a real coverage predicate for the unit cube, can still satisfy HasMinimalCollision.",
+    "whyMatters": [
+      "The existing gallery proof sidesteps geometric coverage by axiomatizing covers_unit_cube as True.",
+      "Replacing that placeholder would connect the minimal-collision result to an actual geometric cube dissection."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The source problem establishes Minimal Collision is Achievable in Cube Dissections under the current axiomatized coverage setup."
+    ],
+    "open": [
+      "Whether the result still holds when covers_unit_cube is replaced by a proper geometric formulation with explicit tile coordinates."
+    ],
+    "goal": "Identify and verify a concrete geometric cube dissection, such as a 2x2x2 example, that has HasMinimalCollision under real unit-cube coverage."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-04T02:41:26-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Replace the True covers_unit_cube placeholder with real geometric coverage for an explicit cube tiling.",
     "blockers": [],
     "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
     "attemptCounts": {
@@ -29,17 +36,24 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Initial OBSERVE state only. The problem asks whether the minimal-collision construction survives replacing the True coverage placeholder with real geometric coverage.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "The key gap is geometric coverage verification for covers_unit_cube.",
+      "A concrete small example, such as a 2x2x2 cube dissection, is the suggested first target."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: dissection-of-cubes-oq-01-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Read the existing axiomatized proof dissection-of-cubes-oq-01-oq-01.",
+      "Clarify the meanings of HasMinimalCollision and covers_unit_cube.",
+      "Identify a concrete small geometric example, for example a 2x2x2 cube dissection."
+    ],
+    "markdown": "# Knowledge Base: dissection-of-cubes-oq-01-oq-01-oq-01\n\n## Problem Understanding\n\nThis problem asks whether the minimal-collision result for cube dissections can be proved for a genuine geometric cube tiling. The current gallery proof uses `covers_unit_cube` as a `True` placeholder, so the missing work is to replace that with real unit-cube coverage using explicit tile coordinates.\n\n## Insights\n\n- The source problem is `dissection-of-cubes-oq-01-oq-01`, described as Minimal Collision is Achievable in Cube Dissections.\n- The local notes classify this as a challenging combinatorial-geometry extension because geometric coverage is hard to formalize.\n- A concrete small example, such as a 2x2x2 cube dissection, is the suggested first target.\n\n## Dead Ends\n\nNo dead ends are recorded in the local notes.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "combinatorial-geometry",
+    "cube-dissection",
+    "geometric-coverage"
   ],
   "relatedProofs": [
     "dissection-of-cubes",

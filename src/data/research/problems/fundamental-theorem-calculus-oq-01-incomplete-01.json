@@ -1,27 +1,34 @@
 {
   "slug": "fundamental-theorem-calculus-oq-01-incomplete-01",
-  "title": "[Problem Title]",
+  "title": "FTC Lebesgue Generalization: Complete Proof",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{AC}(f) \\Rightarrow f'(x) \\text{ exists a.e. and } \\int_a^b f' = f(b) - f(a)",
+    "plain": "Prove the Lebesgue fundamental theorem of calculus for absolutely continuous functions: an absolutely continuous function is differentiable almost everywhere and integrates back to its endpoint difference.",
+    "whyMatters": [
+      "This completes a targeted extension of the existing gallery proof fundamental-theorem-calculus-oq-01."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Parent proof fundamental-theorem-calculus-oq-01 provides the foundation."
+    ],
+    "open": [
+      "One sorry remains, with source notes identifying line 224 as a Cantor function construction.",
+      "The source notes also flag two axioms for absolutely continuous function theory and say to check Mathlib for an AbsolutelyContinuous definition."
+    ],
+    "goal": "Complete the Lean proof by filling the remaining sorry and resolving any absolute-continuity theory gaps, possibly using MeasureTheory.BoundedVariation tools."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-03T02:25:34-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Inspect the Lebesgue FTC parent proof, especially the Cantor-function sorry and absolutely-continuous theory gaps.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Read problem.md thoroughly and acquire full context. Then move to ORIENT phase to explore literature and related proofs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,20 +36,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Initial local notes identify the problem as a gallery-gap completion for the Lebesgue FTC proof, with no research attempts recorded yet.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: fundamental-theorem-calculus-oq-01-incomplete-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "The target theorem is the Lebesgue FTC for absolutely continuous functions.",
+      "The remaining Lean work is tied to the parent proof fundamental-theorem-calculus-oq-01."
+    ],
+    "mathlibGaps": [
+      "Need to check Mathlib support for AbsolutelyContinuous.",
+      "Source notes mention two axioms for absolutely continuous function theory."
+    ],
+    "nextSteps": [
+      "Inspect the parent proof fundamental-theorem-calculus-oq-01 for the line 224 Cantor function sorry.",
+      "Explore whether MeasureTheory.BoundedVariation tools can support the completion."
+    ],
+    "markdown": "# Knowledge Base: fundamental-theorem-calculus-oq-01-incomplete-01\n\n## Problem Understanding\n\nThis is a targeted completion of the gallery proof `fundamental-theorem-calculus-oq-01`. The goal is the Lebesgue fundamental theorem of calculus for absolutely continuous functions: an absolutely continuous function is differentiable almost everywhere and its derivative integrates to the endpoint difference.\n\n## Insights\n\n- Parent proof `fundamental-theorem-calculus-oq-01` provides the foundation.\n- Source notes identify one remaining sorry, with line 224 tied to a Cantor function construction.\n- The notes flag absolutely continuous function theory as the likely Mathlib gap and suggest checking `MeasureTheory.BoundedVariation` tools.\n\n## Dead Ends\n\nNo failed approaches are recorded in the local notes.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "analysis",
+    "lebesgue",
+    "integration",
+    "absolutely-continuous"
   ],
   "relatedProofs": [
-    "fundamental-theorem-calculus",
     "fundamental-theorem-calculus-oq-01"
   ],
   "references": {

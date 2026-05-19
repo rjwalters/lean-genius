@@ -1,25 +1,35 @@
 {
   "slug": "konigsberg-oq-03-wip-01",
-  "title": "[Problem Title]",
+  "title": "Complete Eulerian Paths in Hypergraphs",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{For a connected hypergraph } H \\text{ where every vertex has even degree, there exists an Eulerian circuit traversing every hyperedge exactly once.}",
+    "plain": "Complete the work-in-progress Lean proof extending the classical Konigsberg bridge result to hypergraphs, where edges may connect more than two vertices, and to the related infinite-graph setting.",
+    "whyMatters": [
+      "Hypergraph Euler paths generalize the classical bridge-crossing theorem to richer combinatorial structures.",
+      "Completing this proof would close a work-in-progress gap in the gallery's combinatorics coverage."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Classical Eulerian circuits in finite graphs are known from the degree condition.",
+      "The parent konigsberg-oq-03 gallery entry contains partial work."
+    ],
+    "open": [
+      "Complete the Lean 4 proof for hypergraph Eulerian paths.",
+      "Handle the infinite graph case.",
+      "Resolve any remaining sorries in the konigsberg-oq-03 proof file."
+    ],
+    "goal": "Complete and verify the remaining work-in-progress proof obligations for konigsberg-oq-03."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-04T02:41:19-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Complete the konigsberg-oq-03 WIP proof obligations for hypergraph Eulerian paths.",
     "blockers": [],
     "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
     "attemptCounts": {
@@ -29,17 +39,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Initial notes identify this as a work-in-progress completion for Eulerian paths in hypergraphs and related infinite graph cases.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: konigsberg-oq-03-wip-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "The intended hypergraph theorem mirrors the classical Eulerian circuit degree condition.",
+      "The related infinite graph entries are konigsberg-oq-03-oq-01 and konigsberg-oq-03-oq-02."
+    ],
+    "mathlibGaps": [
+      "Custom hypergraph definitions may be needed if Mathlib's graph APIs do not cover the target structure."
+    ],
+    "nextSteps": [
+      "Inspect the parent konigsberg-oq-03 proof for existing sorries.",
+      "Check Mathlib.Combinatorics.SimpleGraph support and any local hypergraph definitions.",
+      "Clarify the hyperedge traversal predicate if the current structure is blocked."
+    ],
+    "markdown": "# Knowledge Base: konigsberg-oq-03-wip-01\n\n## Problem Understanding\n\nThis task is to complete the work-in-progress proof `konigsberg-oq-03`, which extends the classical Eulerian-circuit/Konigsberg bridge theorem to hypergraphs and related infinite graph cases.\n\nThe intended formal target is an Eulerian circuit theorem for connected hypergraphs in which every vertex has even degree and every hyperedge is traversed exactly once.\n\n## Known Context\n\n- Parent proof: `konigsberg-oq-03`.\n- Related gallery entries named in the local notes: `konigsberg-oq-03-oq-01` for infinite graph Euler paths and `konigsberg-oq-03-oq-02` for infinite path formalization.\n- Local notes expect Mathlib graph APIs such as `Mathlib.Combinatorics.SimpleGraph`; custom hypergraph definitions may be needed if Mathlib support is limited.\n\n## Current State\n\nNo proof attempts have been recorded yet. The current phase is OBSERVE, with the next action to perform a quick Mathlib search before moving to implementation if an obvious path is found.\n\n## Open Work\n\n- Identify and close existing `sorry` statements in the parent proof if the structure is salvageable.\n- If the current structure is blocked, consider restructuring the proof.\n- Clarify or refine the hyperedge traversal definition if needed.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "graph-theory",
+    "combinatorics",
+    "hypergraphs",
+    "euler-paths",
+    "work-in-progress"
   ],
   "relatedProofs": [
     "konigsberg",
