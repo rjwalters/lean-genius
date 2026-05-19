@@ -7,6 +7,26 @@
     "proofTitle": "Second-Order Derangement Convergence Rate",
     "type": "open-question"
   },
+  "problemStatement": {
+    "formal": "Express D(n) / n! - exp(-1) as an explicit alternating tail sum and derive the error sign pattern.",
+    "plain": "Strengthen the derangements convergence story by replacing a bare error bound with an exact alternating-series tail formula.",
+    "whyMatters": [
+      "The exact tail formula explains both the size and sign of the derangement approximation error.",
+      "It gives reusable lemmas for sharper convergence estimates around D(n) / n! -> 1 / e."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "errorTailSum defines the alternating factorial tail used in the exact error formula.",
+      "errorTailSum_nonneg, errorTailSum_le, errorTailSum_pos, and errorTailSum_ge bound the alternating tail.",
+      "error_closed_form expresses D(n) / n! - exp(-1) as a signed tail sum.",
+      "error_recurrence gives a recurrence for the exact approximation error.",
+      "error_strict_pos_even and error_strict_neg_odd prove the even/odd sign pattern.",
+      "normalized_error_tendsto proves the normalized error tends to 1."
+    ],
+    "open": [],
+    "goal": "Make the exact derangement-error formula and sign behavior visible in the research metadata."
+  },
   "category": "extension",
   "tractability": "easy",
   "tags": [
