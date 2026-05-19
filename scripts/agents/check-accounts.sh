@@ -11,6 +11,7 @@
 #   ./scripts/agents/check-accounts.sh --json     # JSON output
 #   ./scripts/agents/check-accounts.sh --quick     # Skip probe, just list
 #   ./scripts/agents/check-accounts.sh --ranking   # Write .ranking file for wrapper
+#   ./scripts/agents/check-accounts.sh --dry-run --ranking  # Preview .ranking
 #
 
 set -euo pipefail
@@ -20,12 +21,38 @@ TOKENS_DIR="$REPO_ROOT/.loom/tokens"
 JSON_MODE=false
 QUICK_MODE=false
 RANKING_MODE=false
+DRY_RUN=false
+
+usage() {
+    cat <<EOF
+Usage: check-accounts.sh [options]
+
+Show usage status for agent OAuth accounts.
+
+Options:
+  --json      Output account status as JSON
+  --quick     Skip API probes and only list configured token files
+  --ranking   Write .loom/tokens/.ranking for smart account selection
+  --dry-run   Preview --ranking output without writing .ranking
+  --help, -h  Show this help message
+EOF
+}
 
 for arg in "$@"; do
     case "$arg" in
         --json) JSON_MODE=true ;;
         --quick) QUICK_MODE=true ;;
         --ranking) RANKING_MODE=true ;;
+        --dry-run|-n) DRY_RUN=true ;;
+        --help|-h)
+            usage
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $arg" >&2
+            usage >&2
+            exit 1
+            ;;
     esac
 done
 
@@ -208,20 +235,33 @@ unset IFS
 # Ranking output: write .ranking file for wrapper's smart account selection
 if $RANKING_MODE; then
     _ranking_file="$TOKENS_DIR/.ranking"
-    : > "$_ranking_file"
+    _ranking_lines=()
     for r in "${sorted[@]}"; do
         IFS='|' read -r name s5h s7d hrs flag reset eligible <<< "$r"
         [[ "$s5h" == "-" || "$s5h" == "err" ]] && continue
-        [[ "$s5h" == "?" ]] && { echo "$name|available" >> "$_ranking_file"; continue; }
+        if [[ "$s5h" == "?" ]]; then
+            _ranking_lines+=("$name|available")
+            continue
+        fi
         if [[ "$flag" == "BLOCKED" ]]; then
-            echo "$name|blocked" >> "$_ranking_file"
+            _ranking_lines+=("$name|blocked")
         elif [[ "$s7d" == "0" ]]; then
-            echo "$name|exhausted" >> "$_ranking_file"
+            _ranking_lines+=("$name|exhausted")
         else
-            echo "$name|available" >> "$_ranking_file"
+            _ranking_lines+=("$name|available")
         fi
     done
-    echo "Wrote ranking to $_ranking_file ($(wc -l < "$_ranking_file" | tr -d ' ') accounts)" >&2
+
+    if $DRY_RUN; then
+        echo "Would write ranking to $_ranking_file (${#_ranking_lines[@]} accounts)" >&2
+        printf '%s\n' "${_ranking_lines[@]}"
+    else
+        : > "$_ranking_file"
+        if [[ ${#_ranking_lines[@]} -gt 0 ]]; then
+            printf '%s\n' "${_ranking_lines[@]}" > "$_ranking_file"
+        fi
+        echo "Wrote ranking to $_ranking_file (${#_ranking_lines[@]} accounts)" >&2
+    fi
     exit 0
 fi
 
