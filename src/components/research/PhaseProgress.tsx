@@ -32,11 +32,18 @@ export function PhaseProgress({ currentPhase, className = '' }: PhaseProgressPro
         const isCompleted = index < currentIndex
         const isCurrent = phase === currentPhase
         const isFuture = index > currentIndex
+        const phaseState = isCurrent
+          ? 'current'
+          : isCompleted
+            ? 'completed'
+            : 'upcoming'
 
         return (
           <Tooltip key={phase}>
             <TooltipTrigger asChild>
               <div
+                role="img"
+                aria-label={`${info.label}, ${phaseState}`}
                 className={`h-2 flex-1 rounded-full transition-all ${
                   isCurrent ? 'ring-2 ring-offset-1 ring-offset-background' : ''
                 }`}
@@ -91,6 +98,7 @@ export function PhaseProgressVertical({ currentPhase, className = '' }: PhasePro
         return (
           <div
             key={phase}
+            aria-current={isCurrent ? 'step' : undefined}
             className={`flex items-center gap-3 py-1 ${
               isFuture ? 'opacity-40' : ''
             }`}
