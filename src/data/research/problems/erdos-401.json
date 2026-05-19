@@ -1,13 +1,13 @@
 {
   "slug": "erdos-401",
   "title": "Erdős #401: Factorial Divisibility with Prime Products",
-  "phase": "NEW",
+  "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Erdős #401: Factorial Divisibility with Prime Products.",
+    "formal": "Does there exist a function $f(r)\\to\\infty$ such that for infinitely many $n$ there are $a_1,a_2$ with $a_1+a_2>n+f(r)\\log n$ and $a_1!a_2! \\mid n!\\,2^n3^n\\cdots p_r^n$?",
+    "plain": "Does the extra product of prime powers 2^n 3^n ... p_r^n allow two factorial factors to exceed the usual n+O(log n) barrier by an unbounded multiple of log n?",
     "whyMatters": []
   },
   "knownResults": {
@@ -16,24 +16,34 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-23T08:04:56.544Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "phase": "ACT",
+    "since": "2026-05-18T11:20:09Z",
+    "iteration": 2,
+    "focus": "Surveyed axiom-backed solved-status formalization.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Formalize the Barreto-Leeham construction or keep the solved result explicitly axiom-backed.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SURVEYED: 20 theorems, 3 axioms, 0 sorries. Prime/primorial infrastructure and wrapper consequences are proved, while the Erdos-Graham baseline, Barreto-Leeham positive result, and Sothanaphan counterexample enter as named axioms.",
+    "builtItems": [
+      "Verified nthPrime, primorial, primorialPow, and positivity/monotonicity infrastructure are theorem-backed from Mathlib.",
+      "Verified FactorialDivides and divisibility lemmas feed erdos_401_proved and erdos_401_complete.",
+      "Confirmed axiom surface: erdos_graham_baseline, barreto_leeham_401, and sothanaphan_counterexample."
+    ],
+    "insights": [
+      "The problem is marked solved mathematically, but the current Lean resolution is axiom-backed rather than a full formal proof of the published construction.",
+      "There is no erdos_729_connection declaration; Problem #729 appears only in comments.",
+      "The g2 and g2_modified definitions live near the end of the file, after the main axiom-backed consequences."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Formalize the Barreto-Leeham construction, or add a precise Problem #729 bridge only after a real declaration exists."
+    ]
   },
   "tags": [
     "erdos",
@@ -54,14 +64,14 @@
     "mathlib": []
   },
   "started": "2026-01-23T08:04:56.544Z",
-  "lastUpdate": "2026-01-23T08:04:56.544Z",
+  "lastUpdate": "2026-05-18T11:20:09Z",
   "significance": 6,
   "tractability": 7,
   "leanFiles": [
     {
       "path": "Proofs/Erdos401Problem.lean",
       "filename": "Erdos401Problem.lean",
-      "lineCount": 320,
+      "lineCount": 319,
       "theoremCount": 20,
       "axiomCount": 3,
       "defCount": 8,
