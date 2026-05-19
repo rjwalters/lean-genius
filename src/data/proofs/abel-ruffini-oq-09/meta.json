@@ -23,7 +23,7 @@
     "theoremCount": 24,
     "assumptions": "5 assumptions: 3 opaque predicates (IsElementaryOver, IsLiouvilleForm, IsElementaryFn — declared opaque since formalizing elementary functions / Liouville logarithmic-sum forms requires differential field theory not yet in Mathlib) + 2 axioms: liouville_integration_theorem (structural form of elementary antiderivatives requires differential Galois/Picard-Vessiot theory not in Mathlib), risch_exp_criterion_gaussian (Risch criterion: ∫e^(-x²)dx elementary iff rational Q with Q'-2xQ=1; requires partial fraction analysis and extension from polynomial to rational case). The Gaussian non-elementarity (gaussian_not_elementary) is now fully proved as a theorem via the iterated Risch operator degree-raising argument.",
     "dateAdded": "2026-05-03",
-    "lineCount": 540,
+    "lineCount": 541,
     "mathlib_version": "4.26.0",
     "originalContributions": [
       "risch_ode_coeff_top: coefficient identity showing L[p] = p'-C(2)·X·p has coefficient -2·leadingCoeff(p) at degree natDeg(p)+1 — the key lemma driving the degree-raising argument",
@@ -200,7 +200,7 @@
       "Real"
     ],
     "namespace": "AbelRuffiniOQ09",
-    "lineCount": 540,
+    "lineCount": 541,
     "axiomCount": 5,
     "theoremCount": 24,
     "definitionCount": 6,
