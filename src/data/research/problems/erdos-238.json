@@ -2,59 +2,79 @@
   "slug": "erdos-238",
   "title": "Erdős #238",
   "phase": "ACT",
-  "status": "completed",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
     "formal": "Let $c_1,c_2>0$. Is it true that, for any sufficiently large $x$, there exist more than $c_1\\log x$ many consecutive primes $\\leq x$ such that the difference between any two is $>c_2$?\n\n\n\nThis is well-known if $c_1$ is sufficiently small.",
-    "plain": "Let $c_1,c_2>0$. Is it true that, for any sufficiently large $x$, there exist more than $c_1\\log x$ many consecutive primes $\\leq x$ such that the difference between any two is $>c_2$?",
-    "whyMatters": []
+    "plain": "For fixed positive constants c1 and c2, ask whether sufficiently large x contains more than c1 log x consecutive primes at most x whose adjacent gaps all exceed c2.",
+    "whyMatters": [
+      "Studies long local runs of primes separated by gaps above a fixed threshold.",
+      "The Lean file proves prime-gap infrastructure, unbounded gaps, and consequences of the main conjecture.",
+      "The full two-constant statement is still open; only a small-c1 partial result is axiomatized."
+    ],
+    "plainEnglish": "For fixed positive constants c1 and c2, ask whether sufficiently large x contains more than c1 log x consecutive primes at most x whose adjacent gaps all exceed c2."
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`nthPrime`, `primeGap`, `consecutivePrimes`, `allPrimesLeX`, and `allGapsLarge` formalize the prime-gap run language.",
+      "`average_gap_grows` and `large_gaps_eventually_dominate` are proved from a factorial-composite proof of unbounded prime gaps.",
+      "`conjecture_implies_run_growth` proves the max-run-length consequence of `mainConjecture`.",
+      "`partial_weaker_than_full` and `conjecture_vs_negation` relate the full conjecture, the partial-result shape, and the negated formulation."
+    ],
+    "open": [
+      "`mainConjecture` for all c1,c2 > 0 remains open.",
+      "`erdos_partial_result` and `prime_number_theorem_asymptotic` are axioms.",
+      "Cramer-style context is stated as `cramersConjecture` but not used to prove the main result."
+    ],
+    "goal": "Keep the proved prime-gap infrastructure separate from the axiomatized partial result and the open full conjecture."
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-01-12T16:08:36.613Z",
-    "iteration": 1,
-    "focus": "Axiom elimination via sSup/BddAbove machinery",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 2,
+    "focus": "The file has 12 theorem declarations, 10 definitions, 2 axioms, and 0 sorries; unbounded prime gaps are proved, while the partial theorem and PNT are axioms.",
+    "blockers": [
+      "The full `mainConjecture` is open.",
+      "`erdos_partial_result` is axiomatized.",
+      "`prime_number_theorem_asymptotic` is axiomatized."
+    ],
+    "nextAction": "Prove additional unconditional run-length bounds from the existing unbounded-gap machinery, or narrow the interface around the partial-result axiom.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "CURRENT: 12 theorem declarations, 10 definitions, 2 axioms, 0 sorries. The factorial-composite argument proves unbounded prime gaps and derived large-gap existence; the full run-length conjecture remains open.",
     "builtItems": [
-      "Proved nthPrime_strictMono : StrictMono nthPrime (line 155)",
-      "Proved nthPrime_id_le : n <= nthPrime n (line 159)",
-      "Proved conjecture_implies_run_growth (40-line proof, lines 168-203)",
-      "Proved dvd_factorial' (induction on k, 8 lines)",
-      "Proved not_prime_factorial_add' (non-trivial divisor argument, 5 lines)",
-      "Proved nthPrime_isPrime (1 line via Nat.nth_mem_of_infinite)",
-      "Proved primeGap_unbounded (factorial + Galois connection, 25 lines)",
-      "Proved average_gap_grows (5 lines, uses primeGap_unbounded)"
+      "`nthPrime`, `primeGap`, `consecutivePrimes`, and gap predicates",
+      "`average_gap_grows` from a factorial-composite construction",
+      "`maxRunLength` and `conjecture_implies_run_growth`",
+      "`large_gaps_eventually_dominate`",
+      "`partial_weaker_than_full`, `conjecture_vs_negation`, and `erdos_238_summary`"
     ],
     "insights": [
-      "conjecture_implies_run_growth is a structural consequence of definitions, not a deep number-theoretic result",
-      "Key insight: the set {k | exists run of k primes <= x with gaps > c} is BddAbove by x+1, since n <= nthPrime(n) by strict monotonicity",
-      "Transfer from Filter.Eventually on R to N uses Archimedean property (exists_nat_ge)",
-      "Remaining 3 axioms are genuinely deep: erdos_partial_result (second moment method), average_gap_grows (PNT consequence), prime_number_theorem_asymptotic (PNT itself)",
-      "average_gap_grows does NOT need PNT despite its name - it just needs unbounded prime gaps",
-      "The Galois connection gc_count_nth between Nat.count and Nat.nth is the key to converting factorial argument into primeGap result",
-      "omega cannot see through set definitions - need explicit rw [← hc_def] to convert Nat.count back to c"
+      "Prime gaps are unbounded in this file without using the PNT axiom.",
+      "The average-gap theorem is really an existence-of-large-gap statement.",
+      "The partial result has the quantifier order exists c1 for each c2, weaker than the full for all c1,c2 conjecture.",
+      "The PNT axiom is present as context but not needed for the factorial proof of unbounded gaps."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Reduce use of the PNT axiom if it is only contextual.",
+      "Formalize a small explicit composite interval/gap example.",
+      "Investigate whether a weaker unconditional long-run theorem can be proved without the partial-result axiom."
+    ],
     "markdown": "# Erdős #238 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $c_1,c_2>0$. Is it true that, for any sufficiently large $x$, there exist more than $c_1\\log x$ many consecutive primes $\\leq x$ such that the difference between any two is $>c_2$?\n\n\n\nThis is well-known if $c_1$ is sufficiently small.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #237\n- Problem #239\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er55c\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "prime-gaps",
+    "analytic-number-theory",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-2",
@@ -62,20 +82,31 @@
     "erdos-238"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdos partial result on long runs of prime gaps",
+      "Prime Number Theorem background"
+    ],
+    "urls": [
+      "https://erdosproblems.com/238"
+    ],
+    "mathlib": [
+      "Nat.Prime",
+      "Nat.nth",
+      "Filter.atTop",
+      "Real.log",
+      "Nat.factorial"
+    ]
   },
   "started": "2026-01-12T16:08:36.613Z",
-  "lastUpdate": "2026-03-24T06:04:23.000Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos238Problem.lean",
       "filename": "Erdos238Problem.lean",
-      "lineCount": 346,
-      "theoremCount": 6,
+      "lineCount": 345,
+      "theoremCount": 12,
       "axiomCount": 2,
       "defCount": 10,
       "sorryCount": 0,

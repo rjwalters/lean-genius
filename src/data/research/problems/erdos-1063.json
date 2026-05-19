@@ -1,27 +1,44 @@
 {
   "slug": "erdos-1063",
   "title": "Erdős #1063",
-  "phase": "COMPLETED",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "Let $k\\geq 2$ and define $n_k\\geq 2k$ to be the least value of $n$ such that $n-i$ divides $\\binom{n}{k}$ for all but one $0\\leq i<k$. Estimate $n_k$.\n\n\n\nA problem of Erd\\H{o}s and Selfridge posed in \\cite{ErSe83}. Erd\\H{o}s and Selfridge noted (and a proof can be found in \\cite{Mo85}) that if $n\\geq 2k$ then there must exist at least one $0\\leq i<k$ such that $n-i$ does not divide $\\binom{n}{k}$.\n\nWe have $n_2=4$, $n_3=6$, $n_4=9$, and $n_5=12$. Monier \\cite{Mo85} observed that $n_k\\leq k!$ for $k\\geq 3$, since $\\binom{k!}{k}$ is divisible by $k!-i$ for $1\\leq i<k$. Cambie observes in the comments that this can be improved to\\[n_k\\leq k[2,3,\\ldots,k-1]\\leq e^{(1+o(1))k},\\]where $[\\cdots]$ is the least common multiple.\n\nThis is discussed in problem B31 of Guy's collection \\cite{Gu04}.",
-    "plain": "Let $k\\geq 2$ and define $n_k\\geq 2k$ to be the least value of $n$ such that $n-i$ divides $\\binom{n}{k}$ for all but one $0\\leq i<k$. Estimate $n_k$.",
-    "whyMatters": []
+    "plain": "For each k, estimate the least n >= 2k for which all but one of n, n-1, ..., n-k+1 divide binomial(n,k).",
+    "whyMatters": [
+      "Tracks how close binomial coefficients can come to being divisible by an entire block of nearby integers.",
+      "The Lean file formalizes the threshold and divisibility-count framework and verifies the small values n_2 through n_5.",
+      "The growth-rate question remains open; the strongest global inputs are still named axioms."
+    ],
+    "plainEnglish": "For each k, estimate the least n >= 2k for which all but one of n, n-1, ..., n-k+1 divide binomial(n,k)."
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`DividesChoose`, `divisibilityCount`, `AllButOneDivide`, and `IsThreshold` formalize the threshold problem.",
+      "`threshold_k2`, `threshold_k3`, `threshold_k4`, and `threshold_k5` prove n_2=4, n_3=6, n_4=9, and n_5=12.",
+      "`erdos_1063_summary` packages the Erdos-Selfridge non-divisibility statement and Monier factorial bound from named axioms."
+    ],
+    "open": [
+      "The polynomial-versus-exponential growth question for n_k is the active `ErdosProblem1063` statement.",
+      "The Erdos-Selfridge theorem, Monier factorial bound, and Cambie improvement are imported as axioms rather than proved here.",
+      "The Cambie entry is represented by a crude factorial proxy, not the exact lcm expression."
+    ],
+    "goal": "Keep the proved small thresholds distinct from the axiomatized global bounds and the open growth-rate question."
   },
   "currentState": {
-    "phase": "COMPLETED",
-    "since": "2026-01-15T14:38:41.571Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 2,
+    "focus": "The Lean file has 5 theorem declarations, 5 definitions, 3 axioms, and 0 sorries; small thresholds are proved while global growth bounds remain axiomatized.",
+    "blockers": [
+      "Erdos-Selfridge non-divisibility is an axiom.",
+      "Monier and Cambie upper bounds are axioms.",
+      "The true asymptotic growth of n_k remains open."
+    ],
+    "nextAction": "Formalize a faithful lcm bound or prove an additional small threshold case without adding new axioms.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,24 +46,34 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved threshold_k2 and threshold_k3 computationally. Axioms: 7 → 5, theorems: 1 → 3.",
+    "progressSummary": "CURRENT: 5 theorem declarations, 5 definitions, 3 axioms, 0 sorries. Small thresholds n_2 through n_5 are proved; the global non-divisibility and upper-bound results are named axioms.",
     "builtItems": [
-      "threshold_k2: proved n_2 = 4 (native_decide + omega)",
-      "threshold_k3: proved n_3 = 6 (native_decide + omega)",
-      "Eliminated 2 axioms"
+      "`DividesChoose`, `divisibilityCount`, and `AllButOneDivide`",
+      "`IsThreshold` for the least n with all-but-one divisibility",
+      "Proofs of `threshold_k2`, `threshold_k3`, `threshold_k4`, and `threshold_k5`",
+      "`ErdosProblem1063` as a polynomial-growth target",
+      "`erdos_1063_summary` combining the axiomatized structural facts"
     ],
     "insights": [
-      "threshold_k2 and threshold_k3 provable: minimality is vacuous when 2k = nk",
-      "divisibilityCount is computable, enabling native_decide for AllButOneDivide",
-      "threshold_k4 (nk=9) requires checking m=8, provable but more work",
-      "Erdős-Selfridge nondivisibility is deep (1983 paper)"
+      "The source is sorry-free but still depends on three mathematical axioms.",
+      "Small values are verified by native computation and simple minimality checks.",
+      "The main Prop asks for a polynomial bound, so the exponential-style upper bounds do not solve it.",
+      "Cambie is currently encoded using a coarse factorial expression rather than the exact lcm bound."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Replace the crude Cambie proxy with an lcm-based statement.",
+      "Prove additional explicit threshold values as computation-friendly examples.",
+      "Investigate whether the Erdos-Selfridge input can be isolated behind a smaller theorem interface."
+    ],
     "markdown": "# Erdős #1063 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $k\\geq 2$ and define $n_k\\geq 2k$ to be the least value of $n$ such that $n-i$ divides $\\binom{n}{k}$ for all but one $0\\leq i<k$. Estimate $n_k$.\n\n\n\nA problem of Erd\\H{o}s and Selfridge posed in \\cite{ErSe83}. Erd\\H{o}s and Selfridge noted (and a proof can be found in \\cite{Mo85}) that if $n\\geq 2k$ then there must exist at least one $0\\leq i<k$ such that $n-i$ does not divide $\\binom{n}{k}$.\n\nWe have $n_2=4$, $n_3=6$, $n_4=9$, and $n_5=12$. Monier \\cite{Mo85} observed that $n_k\\leq k!$ for $k\\geq 3$, since $\\binom{k!}{k}$ is divisible by $k!-i$ for $1\\leq i<k$. Cambie observes in the comments that this can be improved to\\[n_k\\leq k[2,3,\\ldots,k-1]\\leq e^{(1+o(1))k},\\]where $[\\cdots]$ is the least common multiple.\n\nThis is discussed in problem B31 of Guy's collection \\cite{Gu04}.\n\n\n\n\nReferences\n\n\n[ErSe83] Erdos, P. and Selfridge, J. L., Problem 6447. Amer. Math. Monthly (1983), 710.\n\n[Gu04] Guy, Richard K., Unsolved problems in number theory. (2004), xviii+437.\n\n[Mo85] No reference found.\n\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #1062\n- Problem #1064\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErSe73\n- ErSe83\n- Mo85\n- Gu04\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "binomial-coefficients",
+    "divisibility",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -55,22 +82,33 @@
     "erdos-1063"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdos-Selfridge 1983",
+      "Monier 1985",
+      "Guy, Unsolved Problems in Number Theory B31"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1063"
+    ],
+    "mathlib": [
+      "Nat.choose",
+      "Nat.factorial",
+      "Finset.range",
+      "Nat.dvd"
+    ]
   },
   "started": "2026-01-15T14:38:41.571Z",
-  "lastUpdate": "2026-03-24T16:50:00Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1063Problem.lean",
       "filename": "Erdos1063Problem.lean",
-      "lineCount": 170,
+      "lineCount": 169,
       "theoremCount": 5,
       "axiomCount": 3,
-      "defCount": 4,
+      "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1063Problem.lean"

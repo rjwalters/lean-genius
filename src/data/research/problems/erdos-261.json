@@ -1,94 +1,81 @@
 {
   "slug": "erdos-261",
   "title": "Erdős #261",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "Are there infinitely many $n$ such that there exists some $t\\geq 2$ and distinct integers $a_1,\\ldots,a_t\\geq 1$ such that\\[\\frac{n}{2^n}=\\sum_{1\\leq k\\leq t}\\frac{a_k}{2^{a_k}}?\\]Is this true for all $n$? Is there a rational $x$ such that\\[x = \\sum_{k=1}^\\infty \\frac{a_k}{2^{a_k}}\\]has at least $2^{\\aleph_0}$ solutions?\n\n\n\n\n\nRelated to [260].\n\nIn \\cite{Er88c} Erd\\H{o}s notes that Cusick had a simple proof that there do exist infinitely many such $n$. Erd\\H{o}s does not record what this was, but a later paper by Borwein and Loring \\cite{BoLo90} provides the following proof: for every positive integer $m$ and $n=2^{m+1}-m-2$ we have\\[\\frac{n}{2^n}=\\sum_{n<k\\leq n+m}\\frac{k}{2^k}.\\]Tengely, Ulas, and Zygadlo \\cite{TUZ20} have verified that all $n\\leq 10000$ have the required property.\n\nIn \\cite{Er88c} Erd\\H{o}s weakens the second question to asking for the existence of a rational $x$ which has two solutions.",
-    "plain": "Are there infinitely many $n$ such that there exists some $t\\geq 2$ and distinct integers $a_1,\\ldots,a_t\\geq 1$ such that\\[\\frac{n}{2^n}=\\sum_{1\\leq k\\leq t}\\frac{a_k}{2^{a_k}}?\\]Is this true for all $n$? Is there a rational $x$ such that\\[x = \\sum_{k=1}^\\infty \\frac{a_k}{2^{a_k}}\\]has at least $2^{\\aleph_0}$ solutions?",
-    "whyMatters": []
+    "plain": "Ask when n/2^n can be represented as a finite sum of distinct terms a/2^a, and whether related infinite representations can be abundant.",
+    "whyMatters": [
+      "Connects explicit binary-rational identities with representability questions for special exponential sums.",
+      "The Lean file proves the Borwein-Loring family and hence Cusick infinitude without axioms or sorries.",
+      "The infinite-representation portion still has a modeling caveat because the current predicate omits convergence."
+    ],
+    "plainEnglish": "Ask when n/2^n can be represented as a finite sum of distinct terms a/2^a, and whether related infinite representations can be abundant."
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`recipPow2Weight`, `recipPow2Sum`, `IsRecipPow2Rep`, and `IsRepresentable` formalize finite representations.",
+      "`partial_sum_formula` proves the telescoping identity for sums of k/2^k.",
+      "Explicit witnesses prove representability for n=1 through 7 and n=9, and the Borwein-Loring family gives n=4,11,26,57,120 and infinitely many n.",
+      "`ErdosProblem261_infinitely_many` proves the first infinitude question via `cusick_infinitely_many`."
+    ],
+    "open": [
+      "The stronger question whether every positive n is representable is not proved as an active theorem.",
+      "Tengely-Ulas-Zygadlo finite verification up to 10000 is mentioned in comments but not formalized.",
+      "`IsInfiniteRep` does not include series convergence and ignores the value x, so the continuum and two-representation theorems do not yet model the intended question."
+    ],
+    "goal": "Advertise the axiom-free finite-representation progress while clearly flagging the incomplete infinite-representation model."
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-01-12T22:30:27.389Z",
-    "iteration": 3,
-    "focus": "Building toward proving borwein_loring_family axiom from partial_sum_formula",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 4,
+    "focus": "The file has 34 theorem declarations, 5 definitions, 0 axioms, and 0 sorries; the finite Borwein-Loring/Cusick story is proved, but the infinite-representation model is incomplete.",
+    "blockers": [
+      "`IsInfiniteRep` lacks a convergence condition for the infinite series.",
+      "The all-n representability conjecture is not formalized as an active theorem.",
+      "The n <= 10000 verification is not encoded."
+    ],
+    "nextAction": "Repair `IsInfiniteRep` with a convergent series condition before relying on continuum or two-representation conclusions.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Extended explicit representations to n=1..7,9 (from n=1..6). Added BL values n=57,120. n=8,10 need large witness sets (13+ elements). 0 sorries, 2 axioms unchanged.",
+    "progressSummary": "CURRENT: 34 theorem declarations, 5 definitions, 0 axioms, 0 sorries. The Borwein-Loring explicit family and Cusick infinitude are proved; infinite-representation statements need a stronger model.",
     "builtItems": [
-      "recipPow2Weight_zero: w(0) = 0",
-      "recipPow2Weight_three: w(3) = 3/8",
-      "recipPow2Sum_nonneg: sum of positive-element sets is non-negative",
-      "recipPow2Sum_insert: sum decomposes on insert",
-      "recipPow2Sum_pair: explicit sum for 2-element set",
-      "recipPow2Sum_le_of_subset: monotonicity of sum under subset inclusion",
-      "partial_sum_formula: KEY — sum_{k=1}^n k/2^k = 2 - (n+2)/2^n by induction",
-      "representable_one: proved n=1 is representable via S={4,5,6} with norm_num",
-      "Eliminated ErdosProblem261_continuum axiom (trivially provable from incomplete def)",
-      "Eliminated ErdosProblem261_two_reps axiom (trivially provable from incomplete def)",
-      "Proved icc_recipPow2_sum: sum over Icc(a+1,a+m) = (a+2)/2^a - (a+m+2)/2^(a+m) by induction",
-      "Proved borwein_loring_family: m=1 via representable_one, m≥2 via Icc witness + telescoping identity",
-      "representable_of_eq_weight: general transfer via equal weight",
-      "representable_two: n=2 via weight coincidence with n=1",
-      "representable_three: n=3 via explicit set {4,6,8}",
-      "representable_four: n=4 from BL family m=2",
-      "representable_le_4: all n in [1,4] are representable",
-      "representable_seven: n=7 via {8,9,11,15,20,21,24} (7-element witness)",
-      "representable_nine: n=9 via {10,11,13,14} (4-element witness, clean!)",
-      "representable_le_7: all n in [1,7] proved representable",
-      "representable_57: BL family m=5 (n=57)",
-      "representable_120: BL family m=6 (n=120)"
+      "`recipPow2Weight`, `recipPow2Sum`, `IsRecipPow2Rep`, and `IsRepresentable`",
+      "`partial_sum_formula` and the interval-sum telescoping lemma",
+      "Representability witnesses for n=1 through 7 and n=9",
+      "`borwein_loring_family` and `cusick_infinitely_many`",
+      "`ErdosProblem261_infinitely_many`"
     ],
     "insights": [
-      "borwein_loring_family is the only provable axiom (5 total) — proof requires partial_sum_formula + telescoping + substitution",
-      "Key identity: sum_{k=1}^n k/2^k = 2 - (n+2)/2^n, proved by induction in partial_sum_formula",
-      "Partial sum formula enables proving BL family: n+m+2 = 2^{m+1} makes telescoping sum equal n/2^n",
-      "For m=1 (n=1), the BL set {n+1} has only 1 element — need separate argument for representability of 1",
-      "recipPow2Weight has the coincidence w(1) = w(2) = 1/2, then strictly decreasing for k >= 2",
-      "borwein_loring_identity key step: (n+2)/2^n - 2^{m+1}/2^{n+m} = n/2^n, since 2^{m+1}/2^{n+m} = 2/2^n",
-      "For m=1 (n=1): consecutive block {2} has card 1, need alternate construction S={4,5,6} (verified: 4/16+5/32+6/64=1/2)",
-      "Proof strategy: Icc sum = difference of partial sums via partial_sum_formula, then n+m+2=2^{m+1} collapses everything",
-      "IsInfiniteRep definition is INCOMPLETE — lacks convergence condition (x parameter unused), making continuum/two_reps axioms trivially satisfiable",
-      "ErdosProblem261_two_reps proved trivially: sequences 2n+1 and 2n+2 satisfy the incomplete definition",
-      "ErdosProblem261_continuum proved trivially: constant function f(t)(n)=n+1 satisfies the incomplete definition",
-      "A proper formalization needs Filter.Tendsto or tsum to express convergence of sum a(k)/2^{a(k)} to x",
-      "borwein_loring_family proof key: n+m+2 = 2^{m+1} makes (n+m+2)/2^{n+m} = 2/2^n, collapsing to n/2^n",
-      "Finset.Icc decomposition via ext+omega avoids needing exact Mathlib lemma names for insert/snoc",
-      "w(1) = w(2) = 1/2 means representable_one implies representable_two via weight transfer",
-      "n=3: representation {4,6,8} found by search: 4/16 + 6/64 + 8/256 = 3/8 = w(3)",
-      "n=4: directly from BL family (m=2), 4 = 2^3 - 2 - 2, set {5,6}",
-      "n=8 and n=10 require very large witness sets (13+ elements) due to dyadic structure of 1/32 and 5/512",
-      "n=9 has elegant 4-element representation {10,11,13,14} — among the smallest non-BL witnesses",
-      "n=7 needs 7 elements {8,9,11,15,20,21,24} — elements up to 24 make it the largest explicit witness",
-      "BL family gives n=1,4,11,26,57,120,247,... growing doubly-exponentially; covers sparse set of representable n"
+      "The finite-representation part is axiom-free and sorry-free.",
+      "Borwein-Loring supplies infinitely many representable n of the form 2^(m+1)-m-2.",
+      "`IsInfiniteRep` only asserts positive distinct terms; it does not tie the sequence to x by a convergent sum.",
+      "The continuum and two-representation theorems are therefore model artifacts, not mathematical resolutions of the original questions."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "n=8 representation needs 13 elements {9,10,12,14,18,19,21,22,24,26,29,30,32} — prove if verbose Lean proof acceptable",
-      "n=10 likely needs 20+ elements — may not be practical as explicit proof",
-      "Fix IsInfiniteRep definition with tsum/Filter.Tendsto for proper convergence",
-      "Prove monotonicity: w(k) strictly decreasing for k >= 2",
-      "Consider proving greedy algorithm correctness for specific n ranges"
+      "Introduce a convergence-aware infinite-sum predicate.",
+      "Add an active theorem or conjecture for all positive n representable.",
+      "Formalize the finite verification range separately from the infinite family."
     ],
     "markdown": "# Erdős #261 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre there infinitely many $n$ such that there exists some $t\\geq 2$ and distinct integers $a_1,\\ldots,a_t\\geq 1$ such that\\[\\frac{n}{2^n}=\\sum_{1\\leq k\\leq t}\\frac{a_k}{2^{a_k}}?\\]Is this true for all $n$? Is there a rational $x$ such that\\[x = \\sum_{k=1}^\\infty \\frac{a_k}{2^{a_k}}\\]has at least $2^{\\aleph_0}$ solutions?\n\n\n\n\n\nRelated to [260].\n\nIn \\cite{Er88c} Erd\\H{o}s notes that Cusick had a simple proof that there do exist infinitely many such $n$. Erd\\H{o}s does not record what this was, but a later paper by Borwein and Loring \\cite{BoLo90} provides the following proof: for every positive integer $m$ and $n=2^{m+1}-m-2$ we have\\[\\frac{n}{2^n}=\\sum_{n<k\\leq n+m}\\frac{k}{2^k}.\\]Tengely, Ulas, and Zygadlo \\cite{TUZ20} have verified that all $n\\leq 10000$ have the required property.\n\nIn \\cite{Er88c} Erd\\H{o}s weakens the second question to asking for the existence of a rational $x$ which has two solutions.\n\n\n\n\nReferences\n\n\n[BoLo90] Borwein, Peter and Loring, Terry A., Some questions of {E}rd\\H{o}s and {G}raham on numbers of the\nform {$\\sum g_n/2^{g_n}$}. Math. Comp. (1990), 377--394.\n\n[Er88c] Erd\\\"{o}s, P., On the irrationality of certain series: problems and results. New advances in transcendence theory (Durham, 1986) (1988), 102-109.\n\n[TUZ20] Tengely, Szabolcs and Ulas, Maciej and Zygad\\l o, Jakub, On a {D}iophantine equation of {E}rd\\H{o}s and {G}raham. J. Number Theory (2020), 445--459.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #260\n- Problem #262\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er74b\n- ErGr80\n- Er88c\n- BoLo90\n- TUZ20\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "binary-expansions",
+    "rational-representations",
+    "finite-sums",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-2",
@@ -96,20 +83,32 @@
     "erdos-261"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Borwein and Loring 1990",
+      "Tengely, Ulas, and Zygadlo 2020",
+      "Erdos 1988"
+    ],
+    "urls": [
+      "https://erdosproblems.com/261"
+    ],
+    "mathlib": [
+      "Rat",
+      "Finset.sum",
+      "Finset.Icc",
+      "Set.Infinite",
+      "Nat.pow"
+    ]
   },
   "started": "2026-01-12T22:30:27.389Z",
-  "lastUpdate": "2026-03-13T07:52:17.044Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "Proofs/Erdos261Problem.lean",
       "filename": "Erdos261Problem.lean",
-      "lineCount": 389,
-      "theoremCount": 32,
+      "lineCount": 388,
+      "theoremCount": 34,
       "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 0,
