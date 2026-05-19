@@ -45,7 +45,13 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
         comments: result,
         totalCount: result.length,
       }),
-      { status: 200, headers: { 'Content-Type': 'application/json' } }
+      {
+        status: 200,
+        headers: {
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store',
+        },
+      }
     )
   } catch (error) {
     console.error('Get user comments error:', error)
