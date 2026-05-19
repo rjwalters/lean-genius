@@ -97,5 +97,21 @@
     "formal": "",
     "plain": "Formalizes the Lebesgue generalization of the Fundamental Theorem of Calculus. Defines absolutely continuous functions (not yet in Mathlib), states the Lebesgue FTC (AC → a.e. differentiable, integral of derivative = net change), and connects to Mathlib's Vitali covering theorem, Lebesgue density theorem, and monotone a.e. differentiability.",
     "whyMatters": []
+  },
+  "knownResults": {
+    "proven": [
+      "The parent FundamentalTheoremCalculus.lean entry is recorded as complete with no axioms or sorries.",
+      "Mathlib interval-integral support covers the parent FTC Parts 1 and 2.",
+      "The survey proves Lipschitz implies the custom absolutely-continuous condition.",
+      "The survey proves the custom absolutely-continuous condition implies uniform continuity.",
+      "Mathlib support for monotone almost-everywhere differentiability is identified and connected to the path forward."
+    ],
+    "open": [
+      "The Lebesgue FTC itself is not complete in this entry.",
+      "Jordan decomposition from bounded variation to a difference of monotone functions is recorded as missing Mathlib infrastructure.",
+      "The custom AbsolutelyContinuousOn definition still needs a Mathlib-aligned replacement or bridge.",
+      "The Cantor-function counterexample remains a substantial future construction."
+    ],
+    "goal": "Keep this as a survey and infrastructure map for a future Lebesgue FTC proof, not as a claim that the Lebesgue FTC has been completed."
   }
 }
