@@ -72,7 +72,10 @@ export async function createComment(
   proofId: string,
   lineNumber: number,
   content: string,
-  parentId?: string
+  options: {
+    annotationId?: string | null
+    parentId?: string
+  } = {}
 ): Promise<Comment> {
   const token = getSessionToken()
   if (!token) {
@@ -85,7 +88,13 @@ export async function createComment(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ proofId, lineNumber, content, parentId }),
+    body: JSON.stringify({
+      proofId,
+      annotationId: options.annotationId || undefined,
+      lineNumber,
+      content,
+      parentId: options.parentId,
+    }),
   })
 
   if (!response.ok) {

@@ -19,6 +19,7 @@ type SortOrder = 'newest' | 'top'
 interface CommentSectionProps {
   proofId: string
   lineNumber: number
+  annotationId?: string | null
 }
 
 // Sort comments recursively
@@ -37,7 +38,7 @@ function sortComments(comments: Comment[], order: SortOrder): Comment[] {
   }))
 }
 
-export function CommentSection({ proofId, lineNumber }: CommentSectionProps) {
+export function CommentSection({ proofId, lineNumber, annotationId }: CommentSectionProps) {
   const { isAuthenticated } = useAuth()
   const [comments, setComments] = useState<Comment[]>([])
   const [isLoading, setIsLoading] = useState(true)
@@ -67,12 +68,17 @@ export function CommentSection({ proofId, lineNumber }: CommentSectionProps) {
   }, [comments, sortOrder])
 
   const handleCreate = async (content: string) => {
-    const newComment = await createComment(proofId, lineNumber, content)
+    const newComment = await createComment(proofId, lineNumber, content, { annotationId })
     setComments((prev) => [...prev, newComment])
   }
 
   const handleReply = async (parentId: string, content: string) => {
-    const newComment = await createComment(proofId, lineNumber, content, parentId)
+    const parent = comments.find((comment) => comment.id === parentId)
+    const replyAnnotationId = parent ? parent.annotationId : annotationId
+    const newComment = await createComment(proofId, lineNumber, content, {
+      annotationId: replyAnnotationId,
+      parentId,
+    })
     setComments((prev) => [...prev, newComment])
   }
 
