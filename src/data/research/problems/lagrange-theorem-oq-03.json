@@ -6,14 +6,25 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
+    "formal": "IsHallSubgroup(H) := Nat.Coprime |H| (|G|/|H|); for finite solvable groups, Hall divisors have Hall subgroups and Hall subgroups of the same order are conjugate, while A_4 shows divisibility alone does not imply subgroup existence.",
     "plain": "Formalizes Hall's theorem (1928) — the partial converse of Lagrange's theorem for solvable groups. A Hall subgroup has order coprime to its index; Hall's theorem states every Hall divisor of a solvable group's order yields a subgroup, and all such subgroups are conjugate. Proves Hall subgroup properties, Sylow-Hall relationship, index-2 Hall criterion, coprimality infrastructure, the A₄ counterexample (6|12 but no subgroup of order 6), and normal Hall uniqueness.",
-    "whyMatters": []
+    "whyMatters": [
+      "Hall's theorem is the solvable-group partial converse to Lagrange's theorem.",
+      "The A4 counterexample keeps the entry honest about why a full converse to Lagrange fails.",
+      "The formalization connects Sylow theory, coprime-index subgroups, and normal Hall complement facts."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`IsHallSubgroup`, `isHall_bot`, `isHall_card_dvd`, and `card_eq_mul_index` set up the Hall-subgroup arithmetic.",
+      "`sylow_is_hall_divisor`, `hall_generalizes_sylow`, and `hall_divisor_mul_eq` connect Hall divisors with Sylow-style subgroup data.",
+      "`a4_card`, `six_dvd_twelve`, `a4_no_subgroup_order_6`, and `lagrange_converse_fails` formalize the A4 obstruction to the naive converse of Lagrange.",
+      "`normal_hall_unique`, `normal_hall_disjoint`, `normal_hall_generates`, and `normal_hall_complement_exists_unique` record the normal Hall complement infrastructure."
+    ],
+    "open": [
+      "`hall_existence` and `hall_conjugacy` are axioms in `LagrangeTheoremOQ03.lean`; the surrounding consequences are checked with zero sorries."
+    ],
+    "goal": "Use the metadata to distinguish the axiom-backed Hall theorem statements from the fully formalized subgroup arithmetic and A4 counterexample."
   },
   "currentState": {
     "phase": "NEW",
@@ -38,7 +49,11 @@
   "tags": [
     "seeker-selected",
     "group-theory",
-    "abstract-algebra"
+    "abstract-algebra",
+    "hall-subgroups",
+    "solvable-groups",
+    "lagrange-theorem",
+    "axiom-backed"
   ],
   "relatedProofs": [
     "lagrange-theorem",

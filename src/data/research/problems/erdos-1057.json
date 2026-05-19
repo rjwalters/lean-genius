@@ -1,19 +1,30 @@
 {
   "slug": "erdos-1057",
-  "title": "Counting Carmichael Numbers",
+  "title": "Carmichael numbers and Erdos 1057 counting bounds",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Let C(x) count Carmichael numbers in [1,x]. Is C(x) = x^{1-o(1)}? Known: x^{0.3389} < C(x) < x·exp(-c·log x·log log log x / log log x). OPEN.",
-    "whyMatters": []
+    "formal": "IsCarmichael(n) := n>1 \\land \\neg Prime(n) \\land Squarefree(n) \\land \\forall p\\mid n,\\ Prime(p)\\to p-1\\mid n-1;\\ C(x):=|\\{n\\le x\\mid IsCarmichael(n)\\}|, with the Erdos 1057 asymptotic question C(x)=x^{1-o(1)} left open.",
+    "plain": "Backfill the Carmichael-number metadata around the formal Korselt-style definition, verified small examples such as 561 through 8911, elementary structural lemmas, and the open counting conjecture for C(x).",
+    "whyMatters": [
+      "Carmichael numbers are the standard obstruction to naive Fermat primality testing.",
+      "The Lean file separates verified finite examples and structural facts from axiom-backed global infinitude results.",
+      "The counting conjecture remains open, so the gallery entry should distinguish infrastructure from the unsolved asymptotic target."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`satisfiesKorselt`, `IsCarmichael`, and `C` define the Carmichael-number predicate and counting function.",
+      "`carmichael_561`, `carmichael_1105`, `carmichael_1729`, `carmichael_2465`, `carmichael_2821`, `carmichael_6601`, and `carmichael_8911` verify the first sample Carmichael numbers.",
+      "`carmichael_not_semiprime`, `carmichael_not_prime_power`, `carmichael_squarefree`, and `carmichael_korselt_dvd` provide reusable structural consequences.",
+      "`C_mono`, `C_below_561`, `C_561_pos`, `first_seven_carmichael`, and `C_8911_ge_7` give basic counting-function facts."
+    ],
+    "open": [
+      "`erdos1057OpenProblem` records the x^(1-o(1)) counting target; `korselt_backward` and `infinitely_many_carmichaels` are axioms in `Erdos1057Problem.lean`."
+    ],
+    "goal": "Present the verified Carmichael examples and structural infrastructure while marking the global counting theorem as open and axiom-backed."
   },
   "currentState": {
     "phase": "NEW",
@@ -40,7 +51,9 @@
     "number-theory",
     "carmichael-numbers",
     "pseudoprimes",
-    "1-sorry"
+    "korselt-criterion",
+    "counting-functions",
+    "axiom-backed"
   ],
   "relatedProofs": [
     "erdos-1",

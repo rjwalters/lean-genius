@@ -6,14 +6,25 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "BLOCKED: OPEN CONJECTURE - The main theorem (|A ∩ [1,N]| >> N^(1/2-ε)) is an unsolved problem in mathematics.",
-    "whyMatters": []
+    "formal": "IsSidon(A) := \\forall a,b,c,d\\in A,\\ a+b=c+d\\to (a=c\\land b=d)\\lor(a=d\\land b=c); the greedy Sidon growth conjecture asks for |A\\cap[1,N]| \\gg N^{1/2-\\varepsilon}, while the Lean file proves finite Sidon-set difference bounds.",
+    "plain": "Keep the open greedy Sidon growth conjecture explicit while surfacing the verified Lean infrastructure: Sidon-set definitions, subset closure, injectivity of pair differences, and weak cardinality bounds for finite Sidon sets.",
+    "whyMatters": [
+      "Sidon sets are central objects in additive combinatorics because their pair sums are essentially unique.",
+      "The greedy Sidon sequence growth lower bound is open, so the page should not read as if the conjecture is solved.",
+      "The formalized finite difference-set lemmas are still useful reusable infrastructure for the larger problem."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`IsSidon`, `IsSidon'`, `isSidon_empty`, `isSidon_singleton`, `isSidon_pair`, and `IsSidon.subset` define and stabilize finite Sidon sets.",
+      "`IsSidon.diff_injective`, `sidon_pairDiff_injective`, `sidon_diffSet_card`, and `card_diffSet_eq` formalize the difference-set injectivity mechanism.",
+      "`orderedPairsLt_card_via_choose`, `orderedPairsLt_card`, `sidon_lower_bound`, and `sidon_upper_bound_weak` provide finite cardinality estimates.",
+      "`greedySidon_strictMono` and `greedySidonSet_isSidon` expose the axiomatized greedy-sequence interface used for the conjectural part."
+    ],
+    "open": [
+      "`greedySidonSeq`, `greedySidonSeq_strictMono`, and `greedySidonSeq_isSidon` are axioms; the asymptotic greedy Sidon lower bound remains an open conjecture."
+    ],
+    "goal": "Separate the verified finite Sidon infrastructure from the axiom-backed greedy sequence and unsolved growth conjecture."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -29,12 +40,12 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fully proved, 0 sorries. ? lines.",
+    "progressSummary": "Backfilled status: the finite Sidon-set infrastructure is formalized with zero sorries, while the greedy sequence interface is axiom-backed and the asymptotic growth conjecture remains open.",
     "builtItems": [
       "Lean formalization complete"
     ],
     "insights": [
-      "Proof verified: 0 sorries via grep",
+      "Proof verified: 0 sorries via grep; greedy sequence behavior is represented by axioms",
       "Lean file exists and compiles",
       "Ready for gallery publication"
     ],
@@ -47,7 +58,10 @@
     "sidon-sets",
     "erdos-problem",
     "open-conjecture",
-    "blocked-open-problem"
+    "blocked-open-problem",
+    "difference-sets",
+    "axiom-backed",
+    "formalization"
   ],
   "relatedProofs": [
     "erdos-3",
