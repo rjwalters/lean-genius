@@ -89,10 +89,10 @@ export function ContributeSection() {
                 </div>
                 <div className="space-y-2">
                   <p className="text-xs text-muted-foreground">
-                    Fork the repository on GitHub, then clone your fork:
+                    Clone the repo (fork it first via the button below if you plan to open a PR):
                   </p>
                   <pre className="text-xs bg-background/50 rounded p-2 overflow-x-auto">
-                    <code className="text-annotation">git clone https://github.com/YOUR_USERNAME/lean-genius.git{'\n'}cd lean-genius</code>
+                    <code className="text-annotation">git clone https://github.com/rjwalters/lean-genius.git{'\n'}cd lean-genius</code>
                   </pre>
                 </div>
               </div>
