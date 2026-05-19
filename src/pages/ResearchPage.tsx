@@ -49,6 +49,7 @@ export function ResearchPage() {
 
   // Local-only UI state (no URL persistence needed)
   const [showFilters, setShowFilters] = useState(false)
+  const filterPanelId = 'research-gallery-filters'
 
   // Filter and sort problems
   const problems = useMemo(() => {
@@ -278,6 +279,8 @@ export function ResearchPage() {
             {/* Filter Button */}
             <button
               onClick={() => setShowFilters(!showFilters)}
+              aria-expanded={showFilters}
+              aria-controls={filterPanelId}
               className={`flex items-center gap-1.5 text-sm transition-colors ${
                 showFilters || hasFilters
                   ? 'text-annotation'
@@ -308,7 +311,7 @@ export function ResearchPage() {
 
         {/* Filter Panel */}
         {showFilters && (
-          <div className="mb-6 p-4 bg-card border border-border rounded-lg space-y-4">
+          <div id={filterPanelId} className="mb-6 p-4 bg-card border border-border rounded-lg space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-sm font-medium">Filters</span>
               {hasFilters && (
@@ -332,6 +335,7 @@ export function ResearchPage() {
                     <button
                       key={phase}
                       onClick={() => handlePhaseToggle(phase)}
+                      aria-pressed={isSelected}
                       className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium transition-all ${
                         isSelected ? 'ring-2 ring-offset-1 ring-offset-background' : 'opacity-50 hover:opacity-75'
                       }`}
@@ -358,6 +362,7 @@ export function ResearchPage() {
                     <button
                       key={tier}
                       onClick={() => handleTierToggle(tier)}
+                      aria-pressed={isSelected}
                       className={`inline-flex items-center gap-1.5 px-2 py-1 rounded text-xs font-medium transition-all ${
                         isSelected ? 'ring-2 ring-offset-1 ring-offset-background' : 'opacity-50 hover:opacity-75'
                       }`}
@@ -385,6 +390,7 @@ export function ResearchPage() {
                     <button
                       key={status}
                       onClick={() => handleStatusToggle(status)}
+                      aria-pressed={isSelected}
                       className={`inline-flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-all capitalize ${
                         isSelected ? 'ring-2 ring-offset-1 ring-offset-background' : 'opacity-50 hover:opacity-75'
                       }`}
