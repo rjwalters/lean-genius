@@ -11,9 +11,16 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Proofs/ChineseRemainderNonCoprimeOQ01.lean verifies that non-coprime CRT solutions can be canonicalized to the interval [0, lcm(m,n)).",
+      "The proof establishes the lcm efficiency bound, the reduced Bezout step on m/g and n/g, and Garner mixed-radix reconstruction with bounded coefficients.",
+      "The proof metadata records 0 axioms and 0 sorries, with concrete efficiency lemmas for lcm bounds, canonical representatives, reduced coprime moduli, and three-moduli iteration."
+    ],
+    "open": [
+      "Executable complexity bounds for a concrete non-coprime CRT algorithm remain future work.",
+      "A fully indexed many-moduli Garner implementation could make the efficiency story more directly reusable."
+    ],
+    "goal": "Document the verified computational-efficiency answer for non-coprime CRT without mixing it with the algebraic generalization in OQ02."
   },
   "currentState": {
     "phase": "NEW",
