@@ -133,13 +133,14 @@ export function tokenizeLine(line: string, inBlockComment: boolean = false): Tok
         if (line[j] === '\\') j++
         j++
       }
+      const end = Math.min(j + 1, line.length)
       tokens.push({
         type: 'string',
-        value: line.slice(i, j + 1),
+        value: line.slice(i, end),
         start: i,
-        end: j + 1,
+        end,
       })
-      i = j + 1
+      i = end
       continue
     }
 
