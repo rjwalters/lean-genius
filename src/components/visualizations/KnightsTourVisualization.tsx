@@ -262,7 +262,7 @@ export function KnightsTourVisualization({ className = '', compact = false }: Pr
               min={100}
               max={800}
               value={900 - speed}
-              onChange={(e) => setSpeed(900 - parseInt(e.target.value))}
+              onChange={(e) => setSpeed(900 - parseInt(e.target.value, 10))}
               className="w-full h-1 bg-border rounded-full appearance-none cursor-pointer
                          [&::-webkit-slider-thumb]:appearance-none
                          [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3
