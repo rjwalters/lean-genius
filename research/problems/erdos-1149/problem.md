@@ -45,12 +45,13 @@ tags:
 
 ## Formalization Status
 
-- `Proofs/Erdos1149Problem.lean` (320 lines, 17 theorems, 5 definitions, **0 sorries, 2 axioms**)
+- `Proofs/Erdos1149Problem.lean` (335 lines, 18 theorems, 5 definitions, **0 sorries, 1 axiom**)
 - `Proofs/Erdos1149Aristotle.lean` (106 lines, 14 theorems, **0 sorries, 0 axioms**)
 
-The 2 axioms in the main file:
+The 1 axiom in the main file:
 - `bergelson_richter` — main theorem, deep ergodic theory; unlikely Mathlib-provable.
-- `random_coprime_density` — classical Cesàro result; **infrastructure is in place** (`moebius_sum_divisors_eq`, `card_multiples`, `pairs_with_common_factor`) plus Mathlib's `hasSum_zeta_two`. Remaining gap is the Möbius–Tannery asymptotic interchange.
+
+`random_coprime_density` (classical Cesàro result) was originally axiomatized but was proved in PR #15578 via Möbius inversion + Tannery's theorem, drawing on `BaselProblemOQ04OQ03.coprime_pair_density_limit`. The supporting infrastructure (`moebius_sum_divisors_eq`, `card_multiples`, `pairs_with_common_factor`) is preserved in the file as proved lemmas.
 
 ## Related Gallery Proofs
 

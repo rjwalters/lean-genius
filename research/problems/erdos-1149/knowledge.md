@@ -12,9 +12,10 @@ $$
 
 **Erdős Database Status**: SOLVED (Bergelson–Richter 2017)
 
-**Lean Formalization**: 0 sorries, 2 axioms
+**Lean Formalization**: 0 sorries, 1 axiom
 - `bergelson_richter` — main theorem (deep ergodic theory).
-- `random_coprime_density` — classical 6/π² coprime probability.
+
+(`random_coprime_density` was previously axiomatized but was proved in PR #15578 via Möbius+Tannery.)
 
 **Tractability Score**: 6/10
 **Aristotle Suitable**: Companion file (`Erdos1149Aristotle.lean`) is 0-sorry; no further candidates.
@@ -37,21 +38,23 @@ $$
 - Möbius detection: ∑_{d ∣ gcd(a,b)} μ(d) = [gcd(a,b) = 1] (proved as `moebius_sum_divisors_eq`).
 - Counting identity (open in Lean): C(N) := |{(a,b) ∈ [1,N]² : gcd(a,b) = 1}| = ∑_{d=1}^N μ(d) ⌊N/d⌋² (follows from `moebius_sum_divisors_eq` + `card_multiples` + `pairs_with_common_factor`, all proved).
 
-## Path-to-Proof for `random_coprime_density`
+## Path-to-Proof for `random_coprime_density` (HISTORICAL — now proved)
 
-Existing infrastructure already proved in `Erdos1149Problem.lean`:
+This subgoal was completed in PR #15578. The actual proof reuses the Möbius infrastructure listed below and delegates the analytic crux (Möbius–Tannery interchange) to `BaselProblemOQ04OQ03.coprime_pair_density_limit`, rather than re-deriving it inline.
+
+Infrastructure preserved in `Erdos1149Problem.lean`:
 
 1. `moebius_sum_divisors_eq`: ∑_{d ∣ n} μ(d) = [n = 1] (Dirichlet identity μ * ζ = ε).
 2. `card_multiples`: |{a ∈ [1,N] : d ∣ a}| = ⌊N/d⌋.
 3. `pairs_with_common_factor`: for prime p, |{(a,b) : p ∣ gcd(a,b)}| = ⌊N/p⌋².
 
-Remaining work to eliminate the `random_coprime_density` axiom:
+Historical step-by-step plan (the path that was actually followed):
 
-- **Step A** (counting identity): `countCoprimePairs N = ∑_{d=1}^N μ(d) * (⌊N/d⌋)²`. Uses `moebius_sum_divisors_eq` plus a sum-swap on (a,b,d) with d ∣ gcd(a,b). The `pairs_with_common_factor` lemma generalises straightforwardly from prime p to arbitrary d.
-- **Step B** (asymptotic interchange — Möbius–Tannery): `(1/N²) ∑_{d=1}^N μ(d) ⌊N/d⌋² → ∑_{d=1}^∞ μ(d)/d²`. The natural tool is dominated convergence / Tannery's theorem on `Filter.atTop`. The dominating series `∑ 1/d²` converges (Mathlib: `summable_one_div_nat_pow_of_one_lt`).
-- **Step C** (closed-form sum): `∑_{d=1}^∞ μ(d)/d² = 1/ζ(2) = 6/π²`. Mathlib has `hasSum_zeta_two` (Basel: ∑1/n² = π²/6); combine with the fact that `(∑μ(d)/d^s)(ζ(s)) = 1` (Dirichlet inversion, see `ArithmeticFunction.moebius_mul_coe_zeta`). At s=2 this gives `∑ μ(d)/d² = 1/ζ(2)`.
+- **Step A** (counting identity): `countCoprimePairs N = ∑_{d=1}^N μ(d) * (⌊N/d⌋)²`. Uses `moebius_sum_divisors_eq` plus a sum-swap on (a,b,d) with d ∣ gcd(a,b).
+- **Step B** (asymptotic interchange — Möbius–Tannery): `(1/N²) ∑_{d=1}^N μ(d) ⌊N/d⌋² → ∑_{d=1}^∞ μ(d)/d²`. Imported from `BaselProblemOQ04OQ03.coprime_pair_density_limit` to avoid re-proving Tannery.
+- **Step C** (closed-form sum): `∑_{d=1}^∞ μ(d)/d² = 1/ζ(2) = 6/π²`. Mathlib's `hasSum_zeta_two` plus `ArithmeticFunction.moebius_mul_coe_zeta`.
 
-Difficulty estimate: ~150–250 lines of Lean. Step A is the mechanical accounting; Step B is the analytic core (Tannery); Step C is a known Mathlib pattern. None of the three steps require results outside Mathlib.
+Final realised cost: a single theorem in the main file (`random_coprime_density`, line 162) bridging Set/Finset cardinality back to the `BaselProblemOQ04OQ03` density limit, plus light infrastructure already in place. The hard analytic step lives in the Basel companion slug.
 
 ## Bergelson–Richter Axiom
 
@@ -77,9 +80,11 @@ These ingredients are far from Mathlib. Leaving this axiom in place is the right
 
 - 2026-03-11 (researcher-5): Initial formalization, 16 theorems, 2 axioms.
 - 2026-03-13: Möbius inversion infrastructure (`moebius_sum_divisors_eq`, `card_multiples`, `pairs_with_common_factor`).
-- 2026-03-24: Gallery integration polished.
+- 2026-03-24: Gallery integration polished; registry marks slug COMPLETED + graduated.
 - 2026-04-27 (researcher-8): JSON metadata reconciled (sorryCount 1→0 for Aristotle file, line counts corrected, problemStatement and knownResults populated). Documented concrete path-to-proof for `random_coprime_density` axiom.
+- PR #15578: Axiom-elimination ACT — `random_coprime_density` proved via Möbius+Tannery (delegating asymptotic interchange to `BaselProblemOQ04OQ03.coprime_pair_density_limit`). Main file axiom count 2→1. The remaining axiom (`bergelson_richter`) is retained by design.
+- 2026-05-17 (researcher-9, S4 STATE-SYNC): Doc-only sync — corrected `problem.md` counts (320→335 lines, 17→18 theorems, 2→1 axioms), updated `knowledge.md` axiom listing (`random_coprime_density` is now a proved theorem, not an axiom), and updated `state.md` from ACT→COMPLETED. Gallery `meta.json` was already canonical. No Lean source touched.
 
 ---
 
-*Last updated: 2026-04-27*
+*Last updated: 2026-05-17*
