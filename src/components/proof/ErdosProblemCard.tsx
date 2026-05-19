@@ -22,6 +22,29 @@ function getStatusConfig(status?: ErdosProblemStatus) {
   return (status && configs[status]) ? configs[status] : configs['open']
 }
 
+function getSafeExternalUrl(url?: string) {
+  if (!url) return undefined
+
+  try {
+    const parsed = new URL(url.trim())
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:' ? parsed.href : undefined
+  } catch {
+    return undefined
+  }
+}
+
+function getSafeErdosProblemUrl(erdosNumber: number, erdosUrl?: string) {
+  const fallbackUrl = `https://www.erdosproblems.com/${erdosNumber}`
+  const safeUrl = getSafeExternalUrl(erdosUrl)
+
+  if (!safeUrl) return fallbackUrl
+
+  const { hostname } = new URL(safeUrl)
+  return hostname === 'erdosproblems.com' || hostname === 'www.erdosproblems.com'
+    ? safeUrl
+    : fallbackUrl
+}
+
 export function ErdosProblemCard({
   erdosNumber,
   erdosUrl,
@@ -34,7 +57,9 @@ export function ErdosProblemCard({
 }: ErdosProblemCardProps) {
   const statusConfig = getStatusConfig(erdosProblemStatus)
   const StatusIcon = statusConfig.icon
-  const problemUrl = erdosUrl || `https://www.erdosproblems.com/${erdosNumber}`
+  const problemUrl = getSafeErdosProblemUrl(erdosNumber, erdosUrl)
+  const safeForumUrl = getSafeExternalUrl(forumUrl)
+  const safeAnnouncementUrl = getSafeExternalUrl(announcementUrl)
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr)
@@ -104,7 +129,7 @@ export function ErdosProblemCard({
       </div>
 
       {/* Footer - External links */}
-      {(forumUrl || announcementUrl) && (
+      {(safeForumUrl || safeAnnouncementUrl) && (
         <div className="px-4 py-2 flex items-center gap-3 border-t" style={{ borderColor: `${ERDOS_BADGE_INFO.color}20` }}>
           <a
             href={problemUrl}
@@ -115,9 +140,9 @@ export function ErdosProblemCard({
             <ExternalLink className="h-3 w-3" />
             Problem Page
           </a>
-          {forumUrl && (
+          {safeForumUrl && (
             <a
-              href={forumUrl}
+              href={safeForumUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
@@ -126,9 +151,9 @@ export function ErdosProblemCard({
               Forum
             </a>
           )}
-          {announcementUrl && (
+          {safeAnnouncementUrl && (
             <a
-              href={announcementUrl}
+              href={safeAnnouncementUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="text-xs flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
