@@ -4,6 +4,7 @@
 #
 # Usage:
 #   ./launch-agent.sh              # Launch the agent
+#   ./launch-agent.sh --dry-run    # Preview launch without starting tmux
 #   ./launch-agent.sh --status     # Show agent status
 #   ./launch-agent.sh --stop       # Stop the agent
 #   ./launch-agent.sh --attach     # Attach to agent session
@@ -31,6 +32,22 @@ PERSIST_JOBS="$PERSIST_DIR/aristotle-jobs.json"
 # Defaults
 TARGET_ACTIVE="${ARISTOTLE_TARGET:-3}"
 INTERVAL_MINUTES="${ARISTOTLE_INTERVAL:-30}"
+DRY_RUN=false
+ARGS=()
+
+for arg in "$@"; do
+    case "$arg" in
+        --dry-run|-n)
+            DRY_RUN=true
+            ;;
+        --help|-h)
+            ARGS+=("--help")
+            ;;
+        *)
+            ARGS+=("$arg")
+            ;;
+    esac
+done
 
 # Colors
 RED='\033[0;31m'
@@ -151,6 +168,13 @@ show_status() {
 
 # Signal graceful stop
 signal_stop() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        print_info "Dry run: would signal Aristotle agent to stop"
+        print_info "Would create directory: $SIGNALS_DIR"
+        print_info "Would create stop signal: $SIGNALS_DIR/stop-aristotle"
+        return
+    fi
+
     mkdir -p "$SIGNALS_DIR"
     touch "$SIGNALS_DIR/stop-aristotle"
     print_success "Signaled agent to stop after current cycle"
@@ -166,6 +190,13 @@ signal_stop() {
 
 # Stop agent (force)
 stop_agent() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        print_info "Dry run: would stop Aristotle agent"
+        print_info "Would kill tmux session if running: $SESSION_NAME"
+        print_info "Would remove stop signal: $SIGNALS_DIR/stop-aristotle"
+        return
+    fi
+
     if is_running; then
         tmux kill-session -t "$SESSION_NAME" 2>/dev/null
         print_success "Stopped agent"
@@ -178,6 +209,11 @@ stop_agent() {
 
 # Attach to session
 attach_agent() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        print_info "Dry run: would attach to tmux session: $SESSION_NAME"
+        return
+    fi
+
     if ! is_running; then
         print_error "Agent is not running"
         exit 1
@@ -189,6 +225,11 @@ attach_agent() {
 
 # Tail logs
 tail_logs() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        print_info "Dry run: would tail log file: $LOG_FILE"
+        return
+    fi
+
     if [[ ! -f "$LOG_FILE" ]]; then
         print_error "Log file not found: $LOG_FILE"
         exit 1
@@ -200,6 +241,30 @@ tail_logs() {
 
 # Launch agent
 launch_agent() {
+    if [[ "$DRY_RUN" == "true" ]]; then
+        print_info "Dry run: would launch Aristotle agent"
+        print_info "Would check dependencies: tmux, gh, ARISTOTLE_API_KEY or ~/.aristotle_key"
+        print_info "Would create directories: $LOGS_DIR, $SIGNALS_DIR"
+        print_info "Would remove signal: $SIGNALS_DIR/stop-aristotle"
+        print_info "Would update main branch with git checkout main and git pull origin main"
+        print_info "Would salvage jobs from: $WORKTREE_PATH/research/aristotle-jobs.json"
+        print_info "Would remove existing worktree if present: $WORKTREE_PATH"
+        print_info "Would delete branch if present: $BRANCH_NAME"
+        print_info "Would create worktree: $WORKTREE_PATH"
+        print_info "Would restore jobs from: $PERSIST_JOBS"
+        print_info "Would create tmux session: $SESSION_NAME"
+        print_info "Would export REPO_ROOT, ARISTOTLE_TARGET, and ARISTOTLE_INTERVAL"
+        if [[ -f "$HOME/.aristotle_key" ]]; then
+            print_info "Would load ARISTOTLE_API_KEY from ~/.aristotle_key"
+        fi
+        print_info "Would run: $REPO_ROOT/scripts/aristotle/aristotle-agent.sh --loop --target $TARGET_ACTIVE --interval $INTERVAL_MINUTES"
+        print_info "Worktree: $WORKTREE_PATH"
+        print_info "Branch: $BRANCH_NAME"
+        print_info "Target: $TARGET_ACTIVE active jobs"
+        print_info "Interval: $INTERVAL_MINUTES minutes"
+        return
+    fi
+
     check_deps
 
     if is_running; then
@@ -259,7 +324,7 @@ launch_agent() {
 }
 
 # Main
-case "${1:-}" in
+case "${ARGS[0]:-}" in
     --status|-s)
         show_status
         ;;
@@ -280,14 +345,16 @@ case "${1:-}" in
         echo ""
         echo "Commands:"
         echo "  (none)           Launch the agent"
+        echo "  --dry-run, -n    Preview launch/control actions without writing"
         echo "  --status, -s     Show agent status"
         echo "  --stop           Stop the agent"
+        echo "  --dry-run --stop Preview stop without touching tmux or signals"
         echo "  --graceful-stop  Signal graceful stop"
         echo "  --attach, -a     Attach to tmux session"
         echo "  --logs, -l       Tail agent logs"
         echo ""
         echo "Environment:"
-        echo "  ARISTOTLE_TARGET   Target active jobs (default: 20)"
+        echo "  ARISTOTLE_TARGET   Target active jobs (default: 3)"
         echo "  ARISTOTLE_INTERVAL Check interval in minutes (default: 30)"
         ;;
     "")
