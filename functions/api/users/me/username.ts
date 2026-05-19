@@ -101,6 +101,17 @@ export async function onRequestPut(context: EventContext<Env, string, unknown>) 
 
     // Check cooldown (skip if same username or first change)
     const now = Date.now()
+    if (user.username === username) {
+      return new Response(
+        JSON.stringify({
+          success: true,
+          username,
+          nextChangeAt: user.usernameChangedAt ? user.usernameChangedAt + USERNAME_COOLDOWN_MS : null,
+        }),
+        { status: 200, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
     if (user.usernameChangedAt && user.username?.toLowerCase() !== username.toLowerCase()) {
       const timeSinceChange = now - user.usernameChangedAt
       if (timeSinceChange < USERNAME_COOLDOWN_MS) {
