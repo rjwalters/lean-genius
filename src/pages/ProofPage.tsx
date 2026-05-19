@@ -159,7 +159,12 @@ export function ProofPage() {
         {/* Mobile menu */}
         <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
           <SheetTrigger asChild>
-            <Button variant="ghost" size="icon" className="lg:hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="lg:hidden"
+              aria-label="Open proof navigation"
+            >
               <Menu className="h-5 w-5" />
             </Button>
           </SheetTrigger>
