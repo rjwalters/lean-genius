@@ -6,14 +6,23 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "Apply the full probabilistic method library to prove classical results:",
-    "whyMatters": []
+    "formal": "Formalize representative applications of the probabilistic method, including Ramsey lower bounds, tournament domination, crossing-number estimates, unbalancing lights, and Property B lower bounds.",
+    "plain": "Apply the probabilistic method library to a small suite of classical combinatorics results: existence-style Ramsey, tournament, graph drawing, switching, and hypergraph coloring bounds.",
+    "whyMatters": [
+      "Shows that the probability infrastructure is useful for standard extremal-combinatorics arguments rather than only toy examples.",
+      "Gives compact verified examples of the first-moment and random-construction style used throughout probabilistic combinatorics."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "`ramsey_lower_bound` proves a diagonal Ramsey lower-bound application.",
+      "`tournament_domination` proves an existence result for small dominating sets in tournaments.",
+      "`crossing_number_bound` packages a crossing-number style lower-bound application.",
+      "`unbalancing_lights` formalizes the lights-out unbalancing argument.",
+      "`property_b_lower` proves a lower-bound application for Property B."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Keep the examples as a verified application gallery for the probabilistic-method library."
   },
   "currentState": {
     "phase": "NEW",

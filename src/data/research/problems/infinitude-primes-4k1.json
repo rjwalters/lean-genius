@@ -6,14 +6,23 @@
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "SKIPPED: Already in DirichletsTheorem.",
-    "whyMatters": []
+    "formal": "\\forall N : \\mathbb{N},\\ \\exists p > N,\\ \\operatorname{Prime}(p) \\land p \\equiv 1 \\pmod 4",
+    "plain": "Prove that there are infinitely many primes congruent to 1 modulo 4, using the classical Fermat sum-of-two-squares style argument rather than treating the case only as an instance of Dirichlet's theorem.",
+    "whyMatters": [
+      "This is the first nontrivial arithmetic-progression infinitude result many number-theory developments prove after Euclid's theorem.",
+      "The proof exercises congruence reasoning, prime divisors, and the special role of -1 as a square modulo primes congruent to 1 mod 4."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "`prime_dvd_sq_add_one_mod_four` isolates the congruence fact forcing an odd prime divisor of k^2 + 1 to be 1 mod 4.",
+      "`exists_odd_prime_factor` supplies an odd prime divisor for odd integers greater than 1.",
+      "`infinitely_many_primes_1_mod_4` proves the bound-form infinitude statement.",
+      "`primes_1_mod_4_infinite` derives set infinitude for primes congruent to 1 mod 4.",
+      "`no_largest_prime_1_mod_4` rules out a largest prime in this congruence class."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Maintain the direct elementary proof as a standalone companion to the broader Dirichlet-theorem development."
   },
   "currentState": {
     "phase": "NEW",

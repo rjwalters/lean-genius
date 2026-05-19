@@ -8,12 +8,23 @@
   "problemStatement": {
     "formal": "|\\text{triangles}| = (1 \\pm f(\\varepsilon)) \\cdot d_{12} d_{13} d_{23} \\cdot |V_1| |V_2| |V_3|",
     "plain": "The Counting Lemma says that epsilon-regular pairs behave like random graphs for the purpose of counting subgraphs: the number of copies of a fixed graph (like a triangle) in regular triples is approximately what you would expect if edges were placed independently at random. The Triangle Removal Lemma, a powerful consequence, says that a graph with few triangles can be made triangle-free by removing few edges.",
-    "whyMatters": []
+    "whyMatters": [
+      "The counting lemma is the engine that turns regular partitions into concrete subgraph counts.",
+      "The triangle and graph removal lemmas are central tools behind modern extremal combinatorics and Szemeredi-style arguments."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "`bad_vertices_small` and `perVertex_density_bound` establish the per-vertex regularity estimates needed for counting.",
+      "`counting_lemma` proves the main triangle-counting statement for regular triples.",
+      "`counting_lemma_lower_bound` gives a convenient lower-bound corollary for dense regular triples.",
+      "`triangle_removal_lemma` proves the qualitative triangle removal lemma.",
+      "`graph_removal_lemma` packages a general graph-removal statement.",
+      "`triangle_removal_quantitative` proves the quantitative removal lemma using regularity and counting.",
+      "`triangleCount_mono` and `triangleCount_le_total` provide supporting monotonicity and global bounds."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Keep the completed counting and removal lemmas available as the combinatorial bridge from regularity to Szemeredi-style applications."
   },
   "currentState": {
     "phase": "ACT",
