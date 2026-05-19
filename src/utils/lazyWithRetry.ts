@@ -1,5 +1,24 @@
 import { lazy } from 'react'
 
+function shouldReloadForChunkError() {
+  const key = 'chunk-reload-ts'
+  const now = Date.now()
+
+  try {
+    const lastReload = sessionStorage.getItem(key)
+
+    // Only auto-reload once per 30 seconds to avoid infinite loops
+    if (lastReload && now - Number(lastReload) <= 30_000) {
+      return false
+    }
+
+    sessionStorage.setItem(key, String(now))
+    return true
+  } catch {
+    return false
+  }
+}
+
 /**
  * Wraps React.lazy with retry logic for chunk loading failures.
  * When a deployment changes asset hashes, cached HTML may reference
@@ -18,16 +37,8 @@ export function lazyWithRetry<T extends React.ComponentType<unknown>>(
          error.message.includes('Loading chunk') ||
          error.message.includes('Loading CSS chunk'))
 
-      if (isChunkError) {
-        const key = 'chunk-reload-ts'
-        const lastReload = sessionStorage.getItem(key)
-        const now = Date.now()
-
-        // Only auto-reload once per 30 seconds to avoid infinite loops
-        if (!lastReload || now - Number(lastReload) > 30_000) {
-          sessionStorage.setItem(key, String(now))
-          window.location.reload()
-        }
+      if (isChunkError && shouldReloadForChunkError()) {
+        window.location.reload()
       }
 
       throw error
