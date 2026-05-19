@@ -33,7 +33,8 @@ export function VoteButtons({ score, userVote, onVote, disabled }: VoteButtonsPr
             : 'hover:bg-muted cursor-pointer',
           userVote === 1 && 'text-orange-500'
         )}
-        aria-label="Upvote"
+        aria-label={userVote === 1 ? 'Remove upvote' : 'Upvote'}
+        aria-pressed={userVote === 1}
       >
         <ChevronUp className="h-4 w-4" />
       </button>
@@ -57,7 +58,8 @@ export function VoteButtons({ score, userVote, onVote, disabled }: VoteButtonsPr
             : 'hover:bg-muted cursor-pointer',
           userVote === -1 && 'text-blue-500'
         )}
-        aria-label="Downvote"
+        aria-label={userVote === -1 ? 'Remove downvote' : 'Downvote'}
+        aria-pressed={userVote === -1}
       >
         <ChevronDown className="h-4 w-4" />
       </button>
