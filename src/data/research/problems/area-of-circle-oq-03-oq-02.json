@@ -8,12 +8,25 @@
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
     "plain": "Archimedes' classical bounds on π from inscribed and circumscribed 96-gons: 223/71 < π < 22/7. Both bounds proved from Mathlib's pi_gt_d4/pi_lt_d4, 0 axioms, 1 sorry remaining.",
-    "whyMatters": []
+    "whyMatters": [
+      "Archimedes bounds are a classical benchmark for connecting polygon approximations with numerical bounds on pi.",
+      "The formal file gives exact rational inequalities around pi and packages their gap and error consequences.",
+      "The entry is useful as a verified numerical-bound waypoint even though the full historical 96-gon derivation is not the main proof engine."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The lower bound 223/71 < pi is proved using Mathlib decimal pi estimates (Lean: archimedes_lower_bound).",
+      "The upper bound pi < 22/7 is proved using Mathlib decimal pi estimates (Lean: archimedes_upper_bound).",
+      "The traditional forms 3 + 10/71 < pi and pi < 3 + 1/7 are derived.",
+      "The exact gap 22/7 - 223/71 = 1/497 and a corresponding error bound are formalized.",
+      "A general inscribed half-perimeter upper bound n * sin(pi/n) < pi is included."
+    ],
+    "open": [
+      "A historically faithful 96-gon half-angle derivation is not packaged as the proof of the two rational bounds.",
+      "Further tightening or deriving the bounds without imported decimal pi estimates remains a possible extension."
+    ],
+    "goal": "Document the verified rational pi bounds and clarify that the current proof uses Mathlib pi estimates rather than a full 96-gon reconstruction."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -69,7 +82,9 @@
   "tags": [
     "seeker-selected",
     "geometry",
-    "analysis"
+    "analysis",
+    "pi-bounds",
+    "archimedes"
   ],
   "relatedProofs": [
     "area-of-circle",

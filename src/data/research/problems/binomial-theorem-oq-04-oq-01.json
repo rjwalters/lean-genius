@@ -8,12 +8,22 @@
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
     "plain": "Formal investigation in combinatorics: Combinatorial Proof of Vandermonde Identity via Explicit Bijection.",
-    "whyMatters": []
+    "whyMatters": [
+      "Vandermonde identity is a central binomial-coefficient convolution with many algebraic and combinatorial uses.",
+      "The explicit split-and-merge construction turns the identity into a bijective counting argument.",
+      "The same machinery also proves the sum-of-squares specialization."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Subsets of range (m + n) are split into low and high parts and reconstructed by an explicit merge map.",
+      "The low/high split preserves cardinalities and gives disjoint fibers indexed by the low-part size.",
+      "Each fiber cardinality is computed as choose m k * choose n (r - k) (Lean: card_fiber).",
+      "Vandermonde identity is proved by summing the fiber cardinalities (Lean: vandermonde_combinatorial).",
+      "The sum-of-squares identity follows as a specialization (Lean: sum_squares_combinatorial)."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Record the explicit bijective proof of Vandermonde identity and the resulting sum-of-squares corollary."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -45,7 +55,9 @@
   "approaches": [],
   "tags": [
     "seeker-selected",
-    "combinatorics"
+    "combinatorics",
+    "binomial-coefficients",
+    "vandermonde-identity"
   ],
   "relatedProofs": [
     "binomial-theorem",
