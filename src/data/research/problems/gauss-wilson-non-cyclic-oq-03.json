@@ -22,10 +22,10 @@
   "currentState": {
     "phase": "ACT",
     "since": "2026-05-12T13:00:00.000Z",
-    "iteration": 5,
-    "focus": "S4 (researcher-6, 2026-05-12): ACT — composed S4-prep order-2 decomposition with IsCyclic.card_orderOf_eq_totient into the generic endpoint card_filter_sq_eq_one_cyclic_even: any IsCyclic group of even order has exactly 2 square roots of 1. Proof reduces via card_filter_sq_eq_one_decomp + totient at d=1 and d=2 to phi(1) + phi(2) = 2, dispatched by decide. File: 257 → 296 lines (+39), +1 theorem, 0 axioms, 1 sorry (main theorem unchanged). Build verified via Docker.",
+    "iteration": 6,
+    "focus": "S5-prep (researcher-6, 2026-05-12): ACT — added Section 7 parity lemma two_dvd_card_units_zmod_odd_prime_pow: for any odd prime p and k ≥ 1, |(ZMod p^k)ˣ| = φ(p^k) = p^{k-1}(p-1) is even. Proof: ZMod.card_units_eq_totient + Nat.totient_prime_pow, then dvd_mul_of_dvd_right reduces to 2 ∣ p-1, which is immediate from Odd p via destructure + omega. This is the parity hypothesis required by S4 card_filter_sq_eq_one_cyclic_even when specialising to (ZMod p^k)ˣ. Three docstring references to the non-existent name ZMod.isCyclic_units_of_prime_pow were corrected to point at Mathlib’s real classification ZMod.isCyclic_units_iff. File: 296 → 341 lines (+45), +1 theorem, 0 axioms, 1 sorry unchanged.",
     "blockers": [],
-    "nextAction": "S5: ZMod prime-power specialisation card_sqrts_one_unit_prime_pow_odd (p hp hp2 k hk) : #{u : (ZMod (p^k))ˣ // u^2 = 1} = 2. Instantiate card_filter_sq_eq_one_cyclic_even (S4) with: (a) IsCyclic (ZMod p^k)ˣ from ZMod.isCyclic_units_of_prime_pow; (b) 2 ∣ Fintype.card (ZMod p^k)ˣ = p^{k-1}(p-1), valid for odd p since p-1 is even. Compose with S3 card_sqrts_one_eq_card_units_sqrts_one for the ring-level statement. Target ~30 lines, 0 sorries. Then S6: CRT multiplicativity; S7: induction on n.primeFactors.card to close the main sorry.",
+    "nextAction": "S5: package the cyclic instance via (ZMod.isCyclic_units_iff).mpr on the odd-prime-power disjunct, then combine with two_dvd_card_units_zmod_odd_prime_pow (S5-prep, this iteration) + card_filter_sq_eq_one_cyclic_even (S4) to obtain card_units_sq_eq_one_zmod_odd_prime_pow. Compose with S3 ring↔unit bridge for the full ring-level count. Target ~30 lines on top of S5-prep. Then S6 CRT multiplicativity; S7 induction assembly.",
     "attemptCounts": {
       "total": 5,
       "currentApproach": 5,
@@ -95,7 +95,7 @@
     ]
   },
   "started": "2026-05-12T04:44:06.000Z",
-  "lastUpdate": "2026-05-12T05:25:00.000Z",
+  "lastUpdate": "2026-05-12",
   "significance": 6,
   "tractability": 6,
   "leanFiles": [
@@ -109,6 +109,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclic.lean"
+    },
+    {
+      "path": "Proofs/GaussWilsonNonCyclicOQ03.lean",
+      "filename": "GaussWilsonNonCyclicOQ03.lean",
+      "lineCount": 341,
+      "theoremCount": 8,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/GaussWilsonNonCyclicOQ03.lean"
     }
   ]
 }
