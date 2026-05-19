@@ -18,14 +18,14 @@
   "currentState": {
     "phase": "DONE",
     "since": "2026-05-02T00:00:00.000Z",
-    "iteration": 11,
-    "focus": "S11 STATE-SYNC (2026-05-16, researcher-12, doc-only): canonical JSON catchup to S10 axiomatized-final reality. S10 (2026-05-02, PR #14937 merged) re-axiomatized the slug per S9 recommendation by converting the last walkTrace_reversal sorry to 1 axiom (bdry_all_even_of_no_fc_walks). Gallery meta.json + state.md both correctly reflected the terminal state since S10; this S11 reconciles the research-JSON canonical (phase/status/leanFiles/nextAction) which was never updated. Lean reality (`wc -l`=948, theorems=23, defs=5, axioms=1, sorries=0) matches gallery (lineCount 948, theoremCount 23, axiomCount 1, sorries 0, badge axiom, status axiomatized).",
+    "iteration": 12,
+    "focus": "S12 STATE-SYNC (2026-05-17, researcher-11, doc-only): canonical lineCount convention sync. Gallery meta.json `meta.lineCount` / `leanFile.lineCount` AND research-JSON `leanFiles[0].lineCount` all carried 948 (wc -l count) but the enricher canonical convention (`scripts/research/enrich-research.ts:145,174` — `content.split('\\n').length`) produces 949 for this file (948 newlines + trailing empty line because file ends with `\\n`). This S12 bumps all three sites 948→949 to align with canonical, refreshes lastUpdate, and increments iteration/attemptCounts.total 11→12. No Lean / problem.md / knowledge.md body / state.md head / sessions edits aside from S12 iteration-history entry. S11 STATE-SYNC (2026-05-16, researcher-12, doc-only) previously reconciled phase/status/leanFiles/nextAction to S10 axiomatized-final reality (PR #14937 merged 2026-05-02; converted last walkTrace_reversal sorry to 1 axiom bdry_all_even_of_no_fc_walks). Lean reality (split-newline=949, theorems=23, defs=5, axioms=1, sorries=0) matches gallery post-S12 (lineCount 949, theoremCount 23, axiomCount 1, sorries 0, badge axiom, status axiomatized).",
     "blockers": [
       "[RESOLVED in S10 by re-axiomatization 2026-05-02; JSON entry retained for historical record, reconciled by S11 STATE-SYNC 2026-05-16] kuhnPathStart forgets the walk path, only retains final simplex; closing the 1 sorry requires either a new kuhnWalkSeq function returning the full trace (List of (Simplex × entry × exit) triples) plus reversal lemmas, or formalizing the door graph as a Mathlib SimpleGraph and using SimpleGraph.Walk.reverse"
     ],
     "nextAction": "**None** — entry is axiomatized-final (badge `axiom`, status `axiomatized`). Optional follow-up: discharge the `bdry_all_even_of_no_fc_walks` axiom via Path A (kuhnWalkSeq, ~150 LOC) or Path B (Mathlib SimpleGraph reformulation, ~200+ LOC); both documented in knowledge.md §'Two Concrete Unblock Paths'.",
     "attemptCounts": {
-      "total": 11,
+      "total": 12,
       "currentApproach": 8,
       "approachesTried": 2
     }
@@ -129,14 +129,14 @@
     "mathlib": []
   },
   "started": "2026-04-22T13:03:46.382Z",
-  "lastUpdate": "2026-05-16T22:48:00.000Z",
+  "lastUpdate": "2026-05-17T18:30:00.000Z",
   "significance": 8,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/SpernerNDimOQ04.lean",
       "filename": "SpernerNDimOQ04.lean",
-      "lineCount": 948,
+      "lineCount": 949,
       "theoremCount": 23,
       "axiomCount": 1,
       "defCount": 5,

@@ -3,8 +3,8 @@
 **Phase**: COMPLETED — axiomatized-final
 **Path**: full
 **Since**: 2026-05-02 (Session 10: re-axiomatized; PR #14937 merged)
-**Iteration**: 11
-**Last Updated**: 2026-05-16T22:48Z
+**Iteration**: 12
+**Last Updated**: 2026-05-17T18:30Z
 
 ## S11 STATE-SYNC (2026-05-16, researcher-12, doc-only)
 
@@ -88,6 +88,7 @@ Optional future work (not blocking — slug is at terminal state):
 
 ## Iteration History
 
+- **S12 (2026-05-17, researcher-11, doc-only)** — STATE-SYNC: canonical lineCount convention sync 948→949 in gallery meta (`meta.lineCount` + `leanFile.lineCount`) and research-JSON (`leanFiles[0].lineCount`). Convention source: `scripts/research/enrich-research.ts:145,174` defines canonical lineCount as `content.split('\n').length` (not `wc -l`). For `SpernerNDimOQ04.lean` (948 newlines + trailing `\n` → split-len 949), all three sites previously held the `wc -l` value 948. No Lean / problem.md / knowledge.md / state-md-head edits; only refreshes lastUpdate (2026-05-16T22:48Z→2026-05-17T18:30Z), iteration (11→12), `currentState.focus` rewrite, attemptCounts.total 11→12, and this S12 ledger entry.
 - **S11 (2026-05-16, researcher-12, doc-only)** — STATE-SYNC: canonical JSON catchup to S10 axiomatized-final reality; fixes phase/status/leanFiles drift; bootstraps sessions/ directory; no Lean / problem.md / knowledge.md body / gallery / lake-manifest edits.
 - S10 (2026-05-02) — re-axiomatized: 1 sorry → 1 axiom (`bdry_all_even_of_no_fc_walks`); PR #14937 merged.
 - S1–S9 (2026-04-22 → 2026-04-27) — see `knowledge.md` for full prior-session log.
