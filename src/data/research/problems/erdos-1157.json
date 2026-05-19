@@ -1,27 +1,41 @@
 {
   "slug": "erdos-1157",
-  "title": "Erdős #1157",
+  "title": "Erdos #1157: Brown-Erdos-Sos Hypergraph Extremal Numbers",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "Determine f^(r)(n; k, s), and prove the Brown-Erdos-Sos little-o bound f^(t)(n; k, s) = o(n^t) when k >= (r - t)s + t + 1.",
+    "plain": "How many edges can a uniform hypergraph have while avoiding small vertex sets that span too many edges?",
+    "whyMatters": [
+      "Brown-Erdos-Sos is a central extremal-hypergraph threshold problem.",
+      "The 3-uniform case connects to Ruzsa-Szemeredi, Glock, Bohman-Warnke, and Delcourt-Postle results.",
+      "The Lean file captures useful exponent algebra and transfer principles around the conjectural threshold."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean defines valid hypergraphs, achievable edge counts, extremalNumber, the BES exponent, and the IsLittleO formulation of the conjecture.",
+      "The file proves monotonicity in k and s, exponent positivity/monotonicity formulas, special exponent values, and little-o transfer lemmas.",
+      "The 3-uniform consequences, including Ruzsa-Szemeredi and Glock cases, are derived from the Delcourt-Postle theorem axiom."
+    ],
+    "open": [
+      "The full Problem #1157 remains open beyond the axiomatized published results.",
+      "The Brown-Erdos-Sos lower bound and Delcourt-Postle theorem are active axioms, not Lean-derived proofs."
+    ],
+    "goal": "Use the formal definitions, exponent lemmas, and 3-uniform consequences without overstating the unresolved general conjecture."
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-15T16:46:42.684Z",
     "iteration": 4,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Metadata now matches the current Lean file: strong extremal-number and exponent infrastructure, two deep axioms, and 3-uniform consequences derived from Delcourt-Postle.",
+    "blockers": [
+      "Full Brown-Erdos-Sos remains open for higher-uniformity generality.",
+      "brown_erdos_sos_lower_bound and delcourt_postle_theorem are axioms."
+    ],
+    "nextAction": "Future work can reduce general cases via boundary-parameter transfer lemmas or replace specific published-result axioms with formal proofs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -64,7 +78,11 @@
     "markdown": "# Erdős #1157 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "hypergraphs",
+    "extremal-combinatorics",
+    "brown-erdos-sos",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -78,15 +96,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:46:42.684Z",
-  "lastUpdate": "2026-03-13T07:52:17.058Z",
+  "lastUpdate": "2026-05-18T08:13:08Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1157Problem.lean",
       "filename": "Erdos1157Problem.lean",
-      "lineCount": 379,
-      "theoremCount": 25,
+      "lineCount": 378,
+      "theoremCount": 27,
       "axiomCount": 2,
       "defCount": 7,
       "sorryCount": 0,

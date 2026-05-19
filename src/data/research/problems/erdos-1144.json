@@ -1,27 +1,43 @@
 {
   "slug": "erdos-1144",
-  "title": "Erdős #1144",
+  "title": "Erdos #1144: Partial Sums of Random Multiplicative Functions",
   "phase": "OBSERVE",
-  "status": "completed",
+  "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "For random completely multiplicative f with f(p) in {-1, 1}, prove limsup_{N -> infinity} |sum_{m <= N} f(m)| / sqrt(N) = infinity almost surely.",
+    "plain": "Do random completely multiplicative sign functions have partial sums that exceed every constant multiple of sqrt(N) infinitely often?",
+    "whyMatters": [
+      "Tests whether multiplicative correlations preserve square-root-scale random-walk fluctuations.",
+      "Connects random multiplicative functions with sharp analytic bounds such as Atherfold's upper estimate.",
+      "Clarifies the gap between deterministic Rademacher examples and a genuine probabilistic formalization."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean defines completely multiplicative and Rademacher multiplicative functions, plus the partial-sum functional.",
+      "The file proves basic Rademacher value lemmas, square values, partial-sum recursion, a trivial absolute bound, and the constant-one Rademacher example with linear growth.",
+      "Atherfold's almost-sure upper bound is recorded as the single active axiom, not proved in Lean."
+    ],
+    "open": [
+      "The Erdos limsup lower-bound conjecture remains open.",
+      "The formal probabilistic statement is a placeholder over Rademacher functions rather than a full probability-space model.",
+      "The constant-one example should not be treated as evidence for the random almost-sure claim."
+    ],
+    "goal": "Separate the open limsup conjecture from the Atherfold upper-bound axiom while preserving the verified partial-sum and Rademacher infrastructure."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T16:41:04.200Z",
     "iteration": 2,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Metadata now describes the active Rademacher/partial-sum scaffold, the constant-one example, and the lone Atherfold axiom without claiming the open random conjecture is solved.",
+    "blockers": [
+      "The main limsup lower-bound conjecture is open.",
+      "Atherfold's upper bound is axiomatized.",
+      "A full probability-space treatment is not formalized."
+    ],
+    "nextAction": "Future Lean work should either add a genuine probabilistic model or extend concrete multiplicative-function examples such as the Liouville function.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -60,7 +76,11 @@
     "markdown": "# Erdős #1144 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "multiplicative-functions",
+    "probabilistic-number-theory",
+    "partial-sums",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -74,14 +94,14 @@
     "mathlib": []
   },
   "started": "2026-01-15T16:41:04.200Z",
-  "lastUpdate": "2026-03-29T23:40:00Z",
+  "lastUpdate": "2026-05-18T08:13:08Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1144Problem.lean",
       "filename": "Erdos1144Problem.lean",
-      "lineCount": 227,
+      "lineCount": 226,
       "theoremCount": 16,
       "axiomCount": 1,
       "defCount": 5,
