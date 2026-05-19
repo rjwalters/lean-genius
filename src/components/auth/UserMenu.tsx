@@ -44,6 +44,7 @@ export function UserMenu() {
           size="icon"
           onClick={() => setProfileModalOpen(true)}
           title="Profile settings"
+          aria-label="Open profile settings"
         >
           <Settings className="h-4 w-4" />
         </Button>
@@ -52,6 +53,7 @@ export function UserMenu() {
           size="icon"
           onClick={() => logout()}
           title="Sign out"
+          aria-label="Sign out"
         >
           <LogOut className="h-4 w-4" />
         </Button>
