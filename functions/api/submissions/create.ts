@@ -24,7 +24,16 @@ export async function onRequestPost(context: EventContext<Env, string, unknown>)
     }
 
     // Parse and validate request body
-    const body = await context.request.json()
+    let body: unknown
+    try {
+      body = await context.request.json()
+    } catch {
+      return new Response(
+        JSON.stringify({ error: 'Invalid JSON request body' }),
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      )
+    }
+
     const submission = submitProofSchema.parse(body)
 
     // Generate email content
