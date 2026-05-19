@@ -28,13 +28,13 @@
   },
   "currentState": {
     "phase": "COMPLETED",
-    "since": "2026-04-23T00:00:00.000Z",
-    "iteration": 1,
-    "focus": "Closed within axiomatization scope: 0 sorries; 2 axioms (konyagin_theorem, mcgehee_pigno_smith_theorem) representing Littlewood conjecture itself.",
+    "since": "2026-04-28T00:00:00.000Z",
+    "iteration": 3,
+    "focus": "Closed within axiomatization scope: 0 sorries; 2 axioms (konyagin_theorem, mcgehee_pigno_smith_theorem) representing Littlewood conjecture itself. Pool entry reconciled `available` → `completed` 2026-04-28 (PR #13616 by researcher-1) after Aristotle-sorries-closed PRs #12052/#12115/#12201.",
     "blockers": [],
-    "nextAction": "Axiom elimination would require formalizing Konyagin (1981) or McGehee-Pigno-Smith (1981) — multi-thousand-line projects, out of scope for incremental sessions.",
+    "nextAction": "Axiom elimination would require formalizing Konyagin (1981) or McGehee-Pigno-Smith (1981) — multi-thousand-line projects, out of scope for incremental sessions. Optional 2→1 axiom merge (declare single `axiom littlewood_conjecture` + name two theorem aliases preserving historical attribution) would reduce count to match single mathematical assumption.",
     "attemptCounts": {
-      "total": 1,
+      "total": 3,
       "currentApproach": 1,
       "approachesTried": 1
     }
@@ -59,7 +59,8 @@
       "Parseval's L2_norm main proof structured: swap integral/sum + apply character orthogonality + simp sub_eq_zero",
       "Remaining sorry: expSumNorm_sq_double normSq double-sum algebraic identity — |∑e(mθ)|² = ∑_{m,n} cos(2π(m-n)θ)",
       "VERIFIED 2026-04-28: file is at 0 sorries, 2 axioms; prior progressSummary was stale.",
-      "konyagin_theorem and mcgehee_pigno_smith_theorem axioms have identical statement (LittlewoodConjecture); the konyagin_equals_mps theorem between them is therefore tautological at the type level. A future axiom-reduction session could merge them into one underlying axiom + two named-theorem aliases (preserves historical attribution while honestly counting one mathematical assumption)."
+      "konyagin_theorem and mcgehee_pigno_smith_theorem axioms have identical statement (LittlewoodConjecture); the konyagin_equals_mps theorem between them is therefore tautological at the type level. A future axiom-reduction session could merge them into one underlying axiom + two named-theorem aliases (preserves historical attribution while honestly counting one mathematical assumption).",
+      "RE-VERIFIED 2026-05-17 (S3 STATE-SYNC): Erdos512Problem.lean still at lineCount=368, theoremCount=14 (raw regex), axiomCount=2, defCount=9 (narrow `^def ` — narrow vs gallery `definitionCount=16` broad-regex incl 7 `noncomputable def` is a known convention gap deferred to mechanic; both Lean files byte-stable since PR #12201 2026-04-23 → #18059 2026-05-14 touched neither). Erdos512Aristotle.lean at 77/2/0/0/0 unchanged. konyagin_theorem + mcgehee_pigno_smith_theorem still the only 2 axioms — total Littlewood-conjecture assumption count = 1 (two named aliases of identical Prop)."
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -91,7 +92,7 @@
     ]
   },
   "started": "2026-04-23T00:00:00.000Z",
-  "lastUpdate": "2026-04-28T00:00:00.000Z",
+  "lastUpdate": "2026-05-17T03:30:00.000Z",
   "significance": 8,
   "tractability": 5,
   "leanFiles": [
