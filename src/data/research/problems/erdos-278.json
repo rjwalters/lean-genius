@@ -6,22 +6,38 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "Let $A=\\{n_1<\\cdots<n_r\\}$ be a finite set of integers. What is the maximum density of integers covered by a suitable choice of congruences $a_i\\pmod{n_i}$?\n\nIs the minimum density achieved when all the $a_i$ are equal?\n\n\n\nSimpson \\cite{Si86} has observed that the density of integers covered is at least\\[\\sum_i \\frac{1}{n_i}-\\sum_{i<j}\\frac{1}{[n_i,n_j]}+\\sum_{i<j<k}\\frac{1}{[n_i,n_j,n_k]}-\\cdot\\](where $[\\cdots]$ denotes the least common multiple) which is achieved when all $a_i$ are equal, settling the second question.",
-    "plain": "Let $A=\\{n_1<\\cdots<n_r\\}$ be a finite set of integers. What is the maximum density of integers covered by a suitable choice of congruences $a_i\\pmod{n_i}$?",
-    "whyMatters": []
+    "formal": "For a finite set of positive moduli A = {n_1,...,n_r}, choose residues a_i mod n_i. What is the maximum density of integers covered by the union of those congruence classes?",
+    "plain": "Erdos #278 asks how to choose residues modulo fixed positive integers to maximize the density of covered integers.",
+    "whyMatters": [
+      "The problem is a covering-system optimization question about overlap between residue classes.",
+      "The Lean file verifies density bounds, LCM infrastructure, and the coprime-moduli density formula.",
+      "The arbitrary non-coprime maximum-density problem remains open, and the Simpson minimum theorem is not present as a full Lean theorem."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean defines CongruenceSystem, isCovered, systemLCM, coverageDensity, maxCoverageDensity, minCoverageDensity, coprimeDensity, and sumReciprocalDensity.",
+      "Theorems prove nonnegativity and upper bounds for coverageDensity, density_bounds, and erdos_278_density_le_one.",
+      "The file proves systemLCM_coprime_eq_prod, coprime_density_formula, coprime_max_eq_min for pairwise coprime moduli, and single_modulus_density."
+    ],
+    "open": [
+      "The general maximum-density question for non-coprime moduli remains open.",
+      "The theorem equal_residues_minimize proves constant residues have the same density as constant zero; it is not the full Simpson minimum theorem among arbitrary residues.",
+      "No active axioms remain, but the proof metadata status text still uses older axiomatized wording."
+    ],
+    "goal": "Document the verified congruence-density infrastructure and coprime case while keeping the non-coprime maximum problem open."
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-12T22:33:22.719Z",
     "iteration": 6,
-    "focus": "Session 6: Proved systemLCM_coprime_eq_prod + foldl_lcm_eq_foldl_mul infrastructure",
-    "blockers": [],
-    "nextAction": "Use systemLCM_coprime_eq_prod to prove coprime_density_formula via CRT complement counting",
+    "focus": "Metadata now reflects the zero-axiom state, proved density/LCM/coprime infrastructure, and the still-open arbitrary-moduli maximum question.",
+    "blockers": [
+      "The arbitrary non-coprime maximum-density problem is not solved.",
+      "The full Simpson minimum theorem is not formalized as a theorem in this file.",
+      "Some older metadata prose still labels removed facts as axioms."
+    ],
+    "nextAction": "A useful proof slice would formalize Simpson's averaging theorem or handle a small non-coprime modulus family explicitly.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +45,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 0 axioms, 0 sorries, 12T proved. Fully verified.",
+    "progressSummary": "COMPLETE SUPPORTING FORMALIZATION: 29 theorem/lemma entries in proof metadata, 8 definitions, 0 axioms, 0 sorries. Density bounds, LCM infrastructure, the coprime case, and singleton case are verified; the arbitrary maximum question remains open.",
     "builtItems": [
       "Proved erdos_278_density_le_one (axiom → theorem) via csSup_le",
       "Fixed foldl_lcm_pos: updated List.mem_cons_self/mem_cons_of_mem to simp",
@@ -71,11 +87,20 @@
       "CRT complement counting: for coprime moduli, uncovered elements = ∏(nᵢ-1) by Finset induction with fiber decomposition"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Formalize Simpson's full minimum-density averaging theorem.",
+      "Prove a non-coprime two-modulus or small-family maximum-density case.",
+      "Keep equal_residues_minimize wording limited to constant-residue shift equality."
+    ],
     "markdown": "# Erdős #278 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $A=\\{n_1<\\cdots<n_r\\}$ be a finite set of integers. What is the maximum density of integers covered by a suitable choice of congruences $a_i\\pmod{n_i}$?\n\nIs the minimum density achieved when all the $a_i$ are equal?\n\n\n\nSimpson \\cite{Si86} has observed that the density of integers covered is at least\\[\\sum_i \\frac{1}{n_i}-\\sum_{i<j}\\frac{1}{[n_i,n_j]}+\\sum_{i<j<k}\\frac{1}{[n_i,n_j,n_k]}-\\cdot\\](where $[\\cdots]$ denotes the least common multiple) which is achieved when all $a_i$ are equal, settling the second question.\n\n\n\n\nReferences\n\n\n[Si86] Simpson, R. J., Exact coverings of the integers by arithmetic progressions. Discrete Math. (1986), 181--190.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #277\n- Problem #279\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Si86\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "covering-systems",
+    "congruences",
+    "density",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-2",
@@ -83,9 +108,20 @@
     "erdos-278"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Si86",
+      "Erdos-Graham covering systems problem list"
+    ],
+    "urls": [
+      "https://erdosproblems.com/278"
+    ],
+    "mathlib": [
+      "Finset",
+      "Nat.lcm",
+      "Nat.Coprime",
+      "Real",
+      "Tactic"
+    ]
   },
   "started": "2026-01-12T22:33:22.719Z",
   "lastUpdate": "2026-03-29T01:20:33.091286+00:00",
@@ -95,10 +131,10 @@
     {
       "path": "Proofs/Erdos278Problem.lean",
       "filename": "Erdos278Problem.lean",
-      "lineCount": 645,
-      "theoremCount": 12,
+      "lineCount": 644,
+      "theoremCount": 29,
       "axiomCount": 0,
-      "defCount": 7,
+      "defCount": 8,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos278Problem.lean"

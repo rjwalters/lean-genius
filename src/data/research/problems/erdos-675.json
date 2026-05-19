@@ -6,22 +6,38 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "We say that $A\\subset \\mathbb{N}$ has the translation property if, for every $n$, there exists some integer $t_n\\geq 1$ such that, for all $1\\leq a\\leq n$,\\[a\\in A\\quad\\textrm{ if and only if }\\quad a+t_n\\in A.\\] Does the set of the sums of two squares have the translation property? If we partition all primes into $P\\sqcup Q$, such that each set contains $\\gg x/\\log x$ many primes $\\leq x$ for all large $x$, then can the set of integers only divisible by primes from $P$ have the translation p...",
-    "whyMatters": []
+    "formal": "A set A of natural numbers has the translation property if every finite initial membership pattern reappears after some positive shift. Do sums of two squares have it, can a balanced prime partition produce it, and how fast do squarefree translations grow?",
+    "plain": "Erdos #675 studies the translation property for number-theoretic sets: finite initial patterns in the set should recur at some later translate.",
+    "whyMatters": [
+      "The problem turns sieve-theoretic structure into a recurrence property for arithmetic sets.",
+      "The Lean file proves the squarefree case from an axiomatized Brun-sieve translation theorem.",
+      "The sums-of-two-squares, balanced-prime-partition, and growth-rate questions remain open propositions."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean defines HasTranslationProperty, minTranslation, sumOfTwoSquares, squarefreeSet, bFreeSet, IsPairwiseCoprime, HasSmallReciprocalSum, and primeSquares.",
+      "Theorems prove primeSquares_pairwise_coprime, primeSquares_small_reciprocal for the formal placeholder condition, and squarefreeSet_eq_bfree.",
+      "squarefree_translation proves the squarefree set has the translation property, conditional on the Brun-sieve axiom."
+    ],
+    "open": [
+      "Whether sums of two squares have the translation property remains open.",
+      "The balanced-prime-partition smooth-number question remains open.",
+      "The lower growth rate for the squarefree minimal translation remains open, and HasSmallReciprocalSum is only an abstract placeholder condition."
+    ],
+    "goal": "Document the translation-property framework, the conditional squarefree proof, and the three open Erdos #675 questions without overclaiming the sieve input."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-14T18:07:47.337Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Metadata now separates the Brun-sieve-backed squarefree translation result from the three open translation-property questions.",
+    "blockers": [
+      "`brun_sieve_translation` is axiomatized.",
+      "HasSmallReciprocalSum is represented abstractly and does not formalize the real reciprocal-sum estimate.",
+      "The three main Erdos questions are definitions, not proved theorems."
+    ],
+    "nextAction": "A useful proof slice would make HasSmallReciprocalSum nontrivial or formalize a more explicit CRT/sieve lemma for B-free sets.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +45,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 1A appropriate (brun_sieve_translation — deep sieve theory), 4T proved, 0S.",
+    "progressSummary": "COMPLETE FOR THE FORMAL SQUAREFREE SLICE: 1A (`brun_sieve_translation`), 4 theorem entries, 13 definitions, 0 sorries. The three Erdos questions remain open definitions.",
     "builtItems": [
       "Proved squarefree_translation from brun_sieve_translation + primeSquares characterization",
       "primeSquares_pairwise_coprime: distinct prime squares are coprime (Coprime.pow_pow)",
@@ -45,11 +61,20 @@
       "brun_sieve_translation: Brun sieve applied to B-free sets — deep sieve theory, appropriate axiom"
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Replace the placeholder HasSmallReciprocalSum condition with a real finite/asymptotic statement.",
+      "Separate the squarefree conditional result from the sums-of-two-squares open question in gallery copy.",
+      "Investigate whether minTranslation needs a more faithful existence wrapper for arbitrary sets."
+    ],
     "markdown": "# Erdős #675 - Knowledge Base\n\n## Problem Statement\n\nWe say that $A\\subset \\mathbb{N}$ has the translation property if, for every $n$, there exists some integer $t_n\\geq 1$ such that, for all $1\\leq a\\leq n$,\\[a\\in A\\quad\\textrm{ if and only if }\\quad a+t_n\\in A.\\] Does the set of the sums of two squares have the translation property? If we partition all primes into $P\\sqcup Q$, such that each set contains $\\gg x/\\log x$ many primes $\\leq x$ for all large $x$, then can the set of integers only divisible by primes from $P$ have the translation property? If $A$ is the set of squarefree numbers then how fast does the minimal such $t_n$ grow? Is it true that $t_n>\\exp(n^c)$ for some constant $c>0$? Elementary sieve theory implies that the set of squarefree numbers has the translation property. More generally, Brun's sieve can be used to prove that if $B\\subseteq \\mathbb{N}$ is a set of pairwise coprime integers with $\\sum_{b View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #674\n- Problem #676\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er79\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "sieve-theory",
+    "translation-property",
+    "squarefree",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-6",
@@ -57,9 +82,18 @@
     "erdos-675"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Er79"
+    ],
+    "urls": [
+      "https://erdosproblems.com/675"
+    ],
+    "mathlib": [
+      "Nat",
+      "Set",
+      "Finset",
+      "Tactic"
+    ]
   },
   "started": "2026-01-14T18:07:47.343Z",
   "lastUpdate": "2026-03-13T07:52:17.050Z",
@@ -69,7 +103,7 @@
     {
       "path": "Proofs/Erdos675Problem.lean",
       "filename": "Erdos675Problem.lean",
-      "lineCount": 135,
+      "lineCount": 134,
       "theoremCount": 4,
       "axiomCount": 1,
       "defCount": 13,

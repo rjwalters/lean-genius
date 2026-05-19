@@ -6,22 +6,38 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Can one classify all solutions of&#x220F;1&#x2264;i&#x2264;k1(m1+i)=&#x220F;1&#x2264;j&#x2264;k2(m2+j)\" role=\"presentation\" style=\"text-align: center; position: relative;\">∏1≤i≤k1(m1+i)=∏1≤j≤k2(m2+j)∏1≤i≤k1(m1+i)=∏1≤j≤k2(m2+j)",
-    "whyMatters": []
+    "formal": "Classify or prove finiteness of solutions to prod_{i=1..k1}(m1+i) = prod_{j=1..k2}(m2+j) with k1,k2 > 3 and disjoint consecutive-integer blocks m1+k1 <= m2.",
+    "plain": "Erdos #388 asks when two disjoint blocks of consecutive integers can have the same product, and whether only finitely many such large-block coincidences exist.",
+    "whyMatters": [
+      "The equation is a Diophantine problem about factorial ratios and products of consecutive integers.",
+      "The Lean file currently verifies the consecutive-product infrastructure and factorial-ratio identity.",
+      "The main finiteness conjectures are described but not proved as active Lean theorems."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean defines consecutiveProduct, EqualProductSolution, equalProductSolutions, and ProportionalProductSolution.",
+      "consecutiveProduct_eq_factorial_ratio proves consecutiveProduct m k times m! equals (m+k)! by induction.",
+      "trivial_equal_product records the reflexive same-block equality excluded by the disjointness condition."
+    ],
+    "open": [
+      "The main finiteness/classification conjecture for disjoint blocks remains open.",
+      "The proportional-product generalization remains open.",
+      "The Erdos-Selfridge theorem and the finiteness conjectures are explanatory context in this file, not active proved declarations."
+    ],
+    "goal": "Present the verified consecutive-product and factorial infrastructure while keeping the finiteness conjectures open."
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-13T02:35:40.567Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Metadata now reflects the zero-axiom Lean file, proved factorial identity, and open finiteness/classification questions.",
+    "blockers": [
+      "The main finiteness conjecture is not proved.",
+      "The generalized proportional-product finiteness statement is not proved.",
+      "The classical Erdos-Selfridge theorem is not formalized here as a Lean theorem."
+    ],
+    "nextAction": "A useful proof slice would add active Prop definitions for the finiteness conjectures or formalize a special no-solution case.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,23 +45,29 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Eliminated 1 axiom (consecutiveProduct_eq_factorial_ratio) by proving the factorial identity via induction.",
+    "progressSummary": "COMPLETED INFRASTRUCTURE: 2 theorem entries, 4 definitions/structures in proof metadata, 0 axioms, 0 sorries. The factorial-ratio identity is proved; the finiteness conjectures remain open context.",
     "builtItems": [
       "consecutiveProduct_eq_factorial_ratio: proved (m+1)(m+2)...(m+k) × m! = (m+k)! by induction"
     ],
     "insights": [
       "consecutiveProduct_eq_factorial_ratio proved by induction on k. Key: split Icc 1 (n+1) = insert (n+1) (Icc 1 n), then use prod_insert and factorial_succ.",
-      "Remaining 3 axioms (erdos_388_conjecture, erdos_388_generalized, erdos_selfridge) are all deep results or the open conjecture."
+      "Current source has 0 active axioms. The main conjecture, generalized conjecture, and Erdos-Selfridge theorem are explanatory/open context rather than active Lean declarations."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "erdos_selfridge (1975 result) might be in Mathlib or provable, worth checking",
-      "The main conjecture and its generalization are open problems"
+      "Add active Prop definitions for the main and proportional finiteness conjectures.",
+      "Formalize a small-block or trivial-family classification lemma.",
+      "Investigate whether an Erdos-Selfridge statement can be imported or stated as separate context."
     ],
     "markdown": "# Erdős #388 - Knowledge Base\n\n## Problem Statement\n\nCan one classify all solutions of&#x220F;1&#x2264;i&#x2264;k1(m1+i)=&#x220F;1&#x2264;j&#x2264;k2(m2+j)\" role=\"presentation\" style=\"text-align: center; position: relative;\">∏1≤i≤k1(m1+i)=∏1≤j≤k2(m2+j)∏1≤i≤k1(m1+i)=∏1≤j≤k2(m2+j)\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #363\n- Problem #931\n- Problem #387\n- Problem #389\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er76d\n- ErGr80\n- Er92e\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "diophantine-equations",
+    "consecutive-integers",
+    "factorials",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-3",
@@ -53,9 +75,20 @@
     "erdos-388"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Er76d",
+      "ErGr80",
+      "Er92e",
+      "Erdos-Selfridge 1975"
+    ],
+    "urls": [
+      "https://erdosproblems.com/388"
+    ],
+    "mathlib": [
+      "Nat.factorial",
+      "Finset.Icc",
+      "Tactic"
+    ]
   },
   "started": "2026-01-13T02:35:40.568Z",
   "lastUpdate": "2026-03-13T07:52:17.047Z",
@@ -65,10 +98,10 @@
     {
       "path": "Proofs/Erdos388Problem.lean",
       "filename": "Erdos388Problem.lean",
-      "lineCount": 112,
+      "lineCount": 111,
       "theoremCount": 2,
       "axiomCount": 0,
-      "defCount": 2,
+      "defCount": 4,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos388Problem.lean"
