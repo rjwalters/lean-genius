@@ -43,6 +43,7 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
     headers: {
       'Location': googleAuthUrl.toString(),
       'Set-Cookie': stateCookie,
+      'Cache-Control': 'no-store',
     },
   })
 }
