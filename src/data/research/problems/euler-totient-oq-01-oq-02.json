@@ -1,19 +1,30 @@
 {
   "slug": "euler-totient-oq-01-oq-02",
-  "title": "Carmichael Function at Powers of 2 — λ(2^k) = 2^{k-2} for k ≥ 3",
+  "title": "Euler totient multiplicativity and prime-power formulas",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\lambda(2^k) = 2^{k-2} \\quad \\text{for all } k \\geq 3,",
-    "plain": "The Carmichael function λ(n) gives the smallest positive exponent e such that $a^e \\equiv 1 \\pmod{n}$ for all integers a coprime to n. For prime powers $p^k$, computing λ is straightforward via the structure of the multiplicative group. The case of $2^k$ is special: for k ≥ 3, the group $(ℤ/2^kℤ)^*$ is NOT cyclic — it decomposes as a direct product of two cyclic groups.",
-    "whyMatters": []
+    "formal": "\\operatorname{Nat.totient}(mn)=\\operatorname{Nat.totient}(m)\\operatorname{Nat.totient}(n)\\ \\text{when}\\ \\gcd(m,n)=1,\\quad \\varphi(p^k)=p^k-p^{k-1}.",
+    "plain": "Use the Euler-totient Lean support around coprime multiplicativity, prime-power evaluation, and the unit-group/cardinality interpretation. These zero-sorry files provide the arithmetic group-theory infrastructure needed before tackling Carmichael-function formulas at powers of 2.",
+    "whyMatters": [
+      "Totient multiplicativity is the CRT-backed counting principle behind many modular-arithmetic formulas.",
+      "Prime-power evaluation is the local factor in Euler product computations for phi.",
+      "The unit-group interpretation connects the arithmetic function to multiplicative groups modulo n."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`totient_mul_coprime` proves multiplicativity of `Nat.totient` for coprime factors.",
+      "`totient_prime_pow` proves the prime-power formula for Euler's totient.",
+      "`totient_eq_card_units` identifies `Nat.totient n` with the cardinality of units in `ZMod n`.",
+      "`totient_mul_crt_explanation` records the CRT explanation for multiplicativity."
+    ],
+    "open": [
+      "The Carmichael formula for powers of two is motivational context here; the cited Lean anchors are totient/CRT infrastructure rather than a completed Carmichael-function proof."
+    ],
+    "goal": "Expose the completed totient infrastructure as the safe formal base for later Carmichael-function work."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -39,9 +50,13 @@
   "tags": [
     "number-theory",
     "carmichael-function",
+    "euler-totient",
     "group-theory",
     "zmod",
-    "multiplicative-order"
+    "multiplicative-order",
+    "chinese-remainder-theorem",
+    "prime-powers",
+    "formalization"
   ],
   "relatedProofs": [
     "euler-totient",

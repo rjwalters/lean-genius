@@ -6,14 +6,25 @@
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Is f₃(n) = o(3^n) where f₃(n) is the max cap set in {0,1,2}^n? YES - Proved via density Hales-Jewett (Furstenberg-Katznelson 1991).",
-    "whyMatters": []
+    "formal": "f_3(n)=\\max\\{|S|:S\\subseteq\\{0,1,2\\}^n,\\ S\\text{ contains no three-term combinatorial line}\\},\\quad f_3(n)=o(3^n).",
+    "plain": "Formalize Erdos problem 185 on cap sets in the ternary hypercube. The Lean file defines cap sets, proves elementary finite cases and lower-bound constructions, and derives the asymptotic answer from an axiomatized density Hales-Jewett input.",
+    "whyMatters": [
+      "Cap sets are a central bridge between extremal combinatorics, additive combinatorics, and polynomial-method ideas.",
+      "The ternary hypercube model gives concrete finite examples such as `f3 1`, `f3 2`, `f3 3`, and `f3 4`.",
+      "The final asymptotic answer is mathematically known, but this Lean entry still depends on external theorem axioms."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`IsCapSet` defines cap sets in `{0,1,2}^n`, and `isCapSet_empty`/`isCapSet_singleton` prove base examples.",
+      "`f3_1`, `f3_2`, `f3_3`, and `f3_4` compute the first nontrivial maximum cap-set sizes.",
+      "`binaryCubeImg_isCapSet` and `f3_ge_two_pow` give a uniform binary-cube lower bound.",
+      "`erdos_185`, `erdos_185_density`, and `erdos_185_answer` derive the little-o answer from the axiomatized density Hales-Jewett theorem."
+    ],
+    "open": [
+      "`density_hales_jewett_k3` and `meshulam_upper_bound` are axioms, so the global asymptotic result is imported rather than proved internally."
+    ],
+    "goal": "Record the completed cap-set metadata with a clear split between proved finite/combinatorial infrastructure and axiom-backed asymptotic theory."
   },
   "currentState": {
     "phase": "NEW",
@@ -40,7 +51,7 @@
     "combinatorics",
     "additive-combinatorics",
     "cap-sets",
-    "1-sorry",
+    "axiom-backed",
     "solved"
   ],
   "relatedProofs": [

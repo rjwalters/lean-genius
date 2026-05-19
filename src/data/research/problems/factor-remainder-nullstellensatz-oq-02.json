@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(see formal statement in Lean file)}",
-    "plain": "Formalize Alon's Combinatorial Nullstellensatz: if a polynomial has a nonzero coefficient at a maximal-degree monomial and we evaluate on sufficiently large sets, some evaluation is nonzero.",
+    "formal": "\\operatorname{coeff}_{\\prod_i X_i^{t_i}}(f)\\ne 0,\\quad \\deg f\\le \\sum_i t_i,\\quad |S_i|>t_i\\ \\Longrightarrow\\ \\exists s\\in\\prod_i S_i,\\ f(s)\\ne 0.",
+    "plain": "Formalize Alon's Combinatorial Nullstellensatz: a polynomial with a nonzero maximal-degree coefficient cannot vanish on every sufficiently large grid. The Lean development proves the single-variable non-vanishing base case and states the grid/nonvanishing theorem with two explicit axioms.",
     "whyMatters": [
       "Cornerstone of the polynomial method in combinatorics",
       "Applications to Cauchy-Davenport, Chevalley-Warning, graph coloring"
@@ -15,13 +15,14 @@
   },
   "knownResults": {
     "proven": [
-      "Single-variable non-vanishing from polynomial root count"
+      "`exists_eval_ne_zero` proves the single-variable non-vanishing result from polynomial root-count bounds.",
+      "`combinatorial_nullstellensatz'` and `nonvanishing_uniform_grid` derive useful corollaries from the main axiomatized theorem."
     ],
     "open": [
-      "Grid non-vanishing by induction",
-      "Multivariate polynomial division"
+      "`grid_nonvanishing` and `combinatorial_nullstellensatz` are axioms in the current OQ-02 file.",
+      "A fully internal proof still needs grid non-vanishing by induction and multivariate polynomial reduction infrastructure."
     ],
-    "goal": "Full formal proof of the Combinatorial Nullstellensatz"
+    "goal": "Make the axiom boundary explicit while preserving the proved single-variable base case and corollary metadata."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -69,7 +70,10 @@
     "algebra",
     "nullstellensatz",
     "polynomial-method",
-    "seeker-selected"
+    "seeker-selected",
+    "combinatorial-nullstellensatz",
+    "axiom-backed",
+    "formalization"
   ],
   "relatedProofs": [
     "factor-remainder-nullstellensatz",

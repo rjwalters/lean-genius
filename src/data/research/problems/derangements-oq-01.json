@@ -6,14 +6,25 @@
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in combinatorics: Derangement Convergence Rate to 1/e Formalization.",
-    "whyMatters": []
+    "formal": "D_n=n!\\sum_{k=0}^{n}\\frac{(-1)^k}{k!},\\quad \\left|\\frac{D_n}{n!}-e^{-1}\\right|\\le \\frac{1}{(n+1)!},\\quad \\frac{D_n}{n!}\\to e^{-1}.",
+    "plain": "Backfill the derangement convergence metadata around the exact inclusion-exclusion formula and quantitative convergence to `1/e`. The Lean support proves derangement counts, alternating-factorial expansions, explicit error bounds, and nearest-integer consequences, with a few older sibling files retaining sorries.",
+    "whyMatters": [
+      "Derangements are the canonical fixed-point-free permutation count.",
+      "The `D_n/n! -> 1/e` limit links finite combinatorics to analytic estimates.",
+      "The quantitative error bounds support nearest-integer and convergence-rate statements."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`numDerangements_formula` gives the exact inclusion-exclusion formula.",
+      "`derangements_div_factorial` rewrites `D_n/n!` as a finite alternating reciprocal-factorial sum.",
+      "`derangements_rate_scaled`, `derangements_nearest_integer`, and `derangements_unique_nearest` prove nearest-integer and scaled error statements in the zero-sorry OQ-01-OQ-01 file.",
+      "`derangements_quarter_bound`, `derangements_parametric_bound`, and `derangements_error_sign` provide explicit quantitative refinements."
+    ],
+    "open": [
+      "`DerangementsConvergenceOQ01.lean` and `DerangementsOQ02.lean` still contain sorries in sibling developments, so completed claims should be tied to the zero-sorry convergence files."
+    ],
+    "goal": "Expose the completed derangement convergence and error-bound results without hiding sibling proof debt."
   },
   "currentState": {
     "phase": "NEW",
@@ -39,7 +50,11 @@
     "seeker-selected",
     "combinatorics",
     "analysis",
-    "convergence"
+    "convergence",
+    "derangements",
+    "inclusion-exclusion",
+    "asymptotics",
+    "formalization"
   ],
   "relatedProofs": [
     "derangements",

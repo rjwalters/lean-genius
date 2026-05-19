@@ -1,19 +1,30 @@
 {
   "slug": "combinations-formula-oq-01",
-  "title": "Generalized Binomial Coefficients for Non-Integer Arguments",
+  "title": "Binomial identities and generalized combination formulas",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "A",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalization generalizing a known result in combinatorics: Generalized Binomial Coefficients for Non-Integer Arguments.",
-    "whyMatters": []
+    "formal": "\\sum_i \\binom{m}{i}\\binom{n}{r-i}=\\binom{m+n}{r},\\quad \\sum_{k=0}^{n}\\binom{n}{k}=2^n,\\quad {n\\brack k}_q\\rvert_{q=1}=\\binom{n}{k}.",
+    "plain": "Organize the Lean-supported binomial identity track around Vandermonde's identity, hockey-stick sums, row sums, Catalan and central-binomial estimates, and q-binomial specializations at q = 1.",
+    "whyMatters": [
+      "These binomial identities are reusable infrastructure for finite combinatorics and generating-function arguments.",
+      "The q-binomial track connects ordinary combinations to polynomial analogues.",
+      "Most declared files are zero-axiom and zero-sorry; the only visible caveat is a separate Aristotle sketch with sorries."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`vandermonde` proves the convolution identity for ordinary binomial coefficients.",
+      "`hockey_stick`, `choose_product`, `choose_row_sum`, and `choose_alternating_sum` cover standard Pascal-triangle identities.",
+      "`central_binom_le` bounds central binomial coefficients by `4 ^ n`.",
+      "`qBinom_at_one`, `qBinom_vandermonde`, and `vandermonde_at_one` connect q-binomial identities back to ordinary binomial identities."
+    ],
+    "open": [
+      "`CombinationsFormulaOQ02Aristotle.lean` is a sketch file with four sorries; the main non-Aristotle files listed here are zero-sorry."
+    ],
+    "goal": "Present the completed binomial-identity and q-binomial support as reusable combinatorial metadata."
   },
   "currentState": {
     "phase": "NEW",
@@ -38,7 +49,12 @@
   "tags": [
     "seeker-selected",
     "combinatorics",
-    "generalization"
+    "generalization",
+    "binomial-coefficients",
+    "vandermonde",
+    "catalan-numbers",
+    "q-binomial",
+    "formalization"
   ],
   "relatedProofs": [
     "combinations-formula",

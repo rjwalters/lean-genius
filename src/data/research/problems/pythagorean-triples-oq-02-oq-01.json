@@ -6,14 +6,25 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Pythagorean Triples: Complete Classification via Gaussian Integers.",
-    "whyMatters": []
+    "formal": "N((a,b)(c,d))=N(a,b)N(c,d),\\quad (m^2-n^2)^2+(2mn)^2=(m^2+n^2)^2,\\quad \\text{primitive triples arise from coprime parity data up to signs/order}.",
+    "plain": "Connect the Gaussian-integer construction of Pythagorean triples with the broader classification story. The zero-axiom OQ-02 file proves norm multiplicativity, the Gaussian square formula, and product rules for triples; the larger OQ-01 classification file records the coprime primitive-triple theorem but also uses several analytic number-theory axioms for density statements.",
+    "whyMatters": [
+      "Gaussian integers turn the classical parametrization into a norm identity.",
+      "The product rule explains why multiplying sums of two squares preserves Pythagorean structure.",
+      "Separating the constructive Gaussian core from axiom-backed density and classification context keeps the metadata honest."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`gaussNorm` and `norm_multiplicative` formalize multiplicativity of the Gaussian norm.",
+      "`gaussSq_formula` and `pythagorean_from_gaussian` prove the standard `(m^2-n^2, 2mn, m^2+n^2)` construction.",
+      "`gaussian_gives_pythagorean_triple` packages the Gaussian-square construction as a Pythagorean triple.",
+      "`coprime_triple_classified` records the primitive classification theorem in the broader OQ-01 file."
+    ],
+    "open": [
+      "`PythagoreanTriplesOQ01.lean` contains seven axioms for density and two-squares infrastructure, and the Aristotle variant contains one sorry; those should not be described as fully internal proofs."
+    ],
+    "goal": "Present the Gaussian-integer construction as the safe completed core, while pointing to the axiom-backed primitive-classification context."
   },
   "currentState": {
     "phase": "NEW",
@@ -39,7 +50,10 @@
     "number-theory",
     "gaussian-integers",
     "pythagorean-triples",
-    "classification"
+    "classification",
+    "sums-of-squares",
+    "formalization",
+    "axiom-caveat"
   ],
   "relatedProofs": [
     "pythagorean-triples",
