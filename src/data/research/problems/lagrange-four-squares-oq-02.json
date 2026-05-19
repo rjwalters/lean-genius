@@ -6,14 +6,27 @@
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formalization extending an existing formalization in number theory: Distribution of Four-Square Representations Among Orderings.",
-    "whyMatters": []
+    "formal": "Four-square representation types have computable contributions determined by permutation multiplicities and sign factors, with verified values for key equality patterns and small n.",
+    "plain": "Backfills metadata for the ordering and symmetry distribution of four-square representations. The Lean file defines representation types, enumerates sorted nonnegative quadruples, computes sign/permutation contributions, verifies small totals, and proves closed-form contribution values for several equality patterns.",
+    "whyMatters": [
+      "Lagrange's four-squares theorem counts existence; this slice studies how representations are distributed across symmetries and orderings.",
+      "The contribution formula separates permutation multiplicities from sign choices, making the combinatorics inspectable.",
+      "Orbit-stabilizer checks explain the numerical contribution factors that appear in four-square counts."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`totalFromEnum` computes representation counts from enumerated type contributions.",
+      "`totalFromEnum_1` through later concrete checks verify small values such as n = 1, 2, 3, 4, 9, 14, 15, and 16.",
+      "`trivialType_contribution`, `allEqualType_contribution`, `threeEqualType_contribution`, `twoPairType_contribution`, and related theorems prove closed-form contributions for equality patterns.",
+      "`allDistinctType_contribution` proves the all-distinct contribution is 384, with `symmetry_ratio_eq_factorial` connecting the ratio to 4!.",
+      "`orbit_stabilizer_trivial` and companion theorems record stabilizer-size ratios for several type families.",
+      "The exact `LagrangeFourSquaresOQ02.lean` file is recorded with 0 axioms and 0 sorries; sibling four-squares files include separate axioms."
+    ],
+    "open": [
+      "The metadata is scoped to the clean OQ02 ordering/symmetry file and does not claim the axiom-dependent base Lagrange proof."
+    ],
+    "goal": "Expose the clean four-squares ordering-distribution theorem evidence while clearly separating sibling-file assumptions."
   },
   "currentState": {
     "phase": "NEW",
@@ -36,9 +49,13 @@
     "nextSteps": []
   },
   "tags": [
-    "seeker-selected",
     "number-theory",
-    "extension"
+    "lagrange-four-squares",
+    "representations",
+    "combinatorics",
+    "symmetry",
+    "orbit-stabilizer",
+    "formalized"
   ],
   "relatedProofs": [
     "lagrange-four-squares",

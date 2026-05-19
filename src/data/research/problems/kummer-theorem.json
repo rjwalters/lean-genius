@@ -6,16 +6,26 @@
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\nu_p\\binom{n}{k} = \\text{(number of carries when adding } k + (n-k) \\text{ in base } p\\text{)}",
-    "plain": "The p-adic valuation of a binomial coefficient C(n,k) equals the number of carries when adding k and (n-k) in base p arithmetic.",
+    "formal": "For a prime p and k <= n, the multiplicity of p in Nat.choose n k is the number of base-p carry positions when adding k and n-k.",
+    "plain": "Backfills metadata for Kummer's theorem on binomial divisibility. The proof packages Mathlib's multiplicity-of-choose theorem, records the alternate C(n+k,k) formulation, verifies concrete examples, and links the result with Lucas and Legendre digit-sum formulas.",
     "whyMatters": [
-      "Classical number theory"
+      "Kummer's theorem turns p-adic divisibility of binomial coefficients into a base-p digit calculation.",
+      "The result connects number theory, combinatorics, and positional numeral systems.",
+      "The Lean file gives both the main theorem and useful corollaries/examples for search and reuse."
     ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`kummer` proves the multiplicity/carry-count statement for Nat.choose n k.",
+      "`kummer'` gives the alternate Nat.choose (n + k) k formulation.",
+      "`prime_dvd_choose_prime_pow` proves a prime divides Nat.choose (p^n) k for nontrivial k.",
+      "`legendre_digit_sum` records the digit-sum form of Legendre's formula for factorial multiplicity.",
+      "The listed Kummer theorem family files are recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "The file demonstrates Lucas' theorem as Mathlib infrastructure rather than developing a separate proof of Lucas from scratch."
+    ],
+    "goal": "Enrich the completed Kummer entry with theorem-level binomial-divisibility metadata."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -40,9 +50,12 @@
   },
   "tags": [
     "number-theory",
-    "binomial",
-    "classical",
-    "p-adic"
+    "binomial-coefficients",
+    "p-adic-valuation",
+    "kummer-theorem",
+    "lucas-theorem",
+    "digit-sums",
+    "formalized"
   ],
   "relatedProofs": [
     "kummer-theorem",

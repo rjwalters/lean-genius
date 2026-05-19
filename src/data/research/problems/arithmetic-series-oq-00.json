@@ -6,14 +6,26 @@
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\sum_{k=1}^{n} k^3 = \\left(\\frac{n(n+1)}{2}\\right)^2 = T_n^2",
-    "plain": "The sum of the first n perfect cubes (1³ + 2³ + 3³ + ... + n³) equals the square",
-    "whyMatters": []
+    "formal": "sum_{k=1}^n k^3 = (n(n+1)/2)^2, equivalently the sum of the first n cubes equals the square of the n-th triangular number.",
+    "plain": "Backfills metadata for Nicomachus's theorem. The focused Lean file proves the rational triangular-square identity, the square-of-Gauss-sum form, a division-free natural-number form, and concrete checks for the first values.",
+    "whyMatters": [
+      "Nicomachus's theorem is a classical bridge between power sums and figurate numbers.",
+      "The proof gives several equivalent forms, including a natural-number version that avoids division.",
+      "The named theorem evidence makes this elementary induction result easy to find from the research metadata."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`sum_cubes_eq_triangular_sq` proves the rational identity for the sum of the first n cubes.",
+      "`gauss_sum_rat` and `sum_cubes_eq_sq_sum` prove the square-of-sum formulation.",
+      "`sum_cubes_mul_four` gives the division-free natural-number version.",
+      "`nicomachus_step` records the algebraic induction step, with concrete examples through `sum_cubes_10`.",
+      "The exact `ArithmeticSeriesOQ00.lean` file is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "Broader arithmetic-series siblings cover other power-sum identities and are not restated by this exact entry."
+    ],
+    "goal": "Expose the theorem-backed Nicomachus proof in complete searchable metadata."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -46,7 +58,8 @@
     "induction",
     "power-sums",
     "figurate-numbers",
-    "nicomachus"
+    "nicomachus-theorem",
+    "formalized"
   ],
   "relatedProofs": [
     "arithmetic-series",
