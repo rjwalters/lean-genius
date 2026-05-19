@@ -1,19 +1,32 @@
 {
   "slug": "erdos-395-oq-01-incomplete-01",
-  "title": "Optimal Constant in Reverse Littlewood-Offord",
+  "title": "Reverse Littlewood-Offord at the Carnielli-Carolino threshold",
   "phase": "NEW",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in probability theory: Optimal Constant in Reverse Littlewood-Offord.",
-    "whyMatters": []
+    "formal": "For the Carnielli-Carolino configuration z_0=1 and z_i=i in even dimension n>=2, prove every sign vector has signedSumAbs at least sqrt 2, then connect this witness to the reverse Littlewood-Offord threshold and the 1/n optimal-constant framework.",
+    "plain": "Backfill the reverse Littlewood-Offord metadata around the Lean results: the axiom-free parity proof of the Carnielli-Carolino lower bound, the derived failure of the original threshold-1 question, and the remaining optimal-constant facts that still depend on external probability estimates.",
+    "whyMatters": [
+      "The file turns the geometric counterexample into explicit Lean arithmetic on sign vectors.",
+      "It separates the elementary parity proof from deeper HJNS and extremal-distribution inputs.",
+      "The metadata should make clear that the exact optimal constant remains open even though the threshold obstruction is formalized."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`counterexample_always_large_proved` proves the Carnielli-Carolino sqrt 2 lower bound without axioms in `Erdos395OQ01Incomplete01.lean`.",
+      "`valid_constants_nonempty`, `valid_constants_bddAbove`, and `optimal_constant_pos` build the positive optimal-constant framework in `Erdos395OQ01.lean`.",
+      "`counterexample_exceeds_one`, `erdos_original_is_false_proved`, and `sqrt2_is_critical` record the threshold-1 obstruction and the critical sqrt 2 boundary.",
+      "`count_monotone_threshold`, `rate_is_tight`, `extremal_is_unit`, and `optimal_constant_summary` document monotonicity, tightness, and the final rate summary."
+    ],
+    "open": [
+      "`counterexample_always_large` and `extremal_example_tight` are axioms in `Erdos395OQ01.lean`; the companion incomplete file proves the first one for the Carnielli-Carolino configuration.",
+      "`hjns_2024` remains the imported deep reverse Littlewood-Offord input; the exact optimal constant is not determined here.",
+      "The active Lean files have zero sorries."
+    ],
+    "goal": "Clarify the verified counterexample proof and the axiom boundary for the optimal reverse Littlewood-Offord constant."
   },
   "currentState": {
     "phase": "NEW",
@@ -51,7 +64,10 @@
     "erdos",
     "probability",
     "combinatorics",
-    "seeker-selected"
+    "seeker-selected",
+    "littlewood-offord",
+    "sign-vectors",
+    "axiom-backed"
   ],
   "relatedProofs": [
     "erdos-3",

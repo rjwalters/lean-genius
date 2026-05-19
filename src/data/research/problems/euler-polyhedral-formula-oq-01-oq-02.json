@@ -1,19 +1,32 @@
 {
   "slug": "euler-polyhedral-formula-oq-01-oq-02",
-  "title": "Can the Four Color Theorem (Gonthier 2005 Coq proof) be re-formalized in Lean...",
+  "title": "Four Color Theorem Lean feasibility and small coloring cases",
   "phase": "COMPLETED",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Record verified graph-coloring basics around the Four Color Theorem feasibility question: colorability monotonicity, empty and edgeless graph cases, finite-graph distinct-color colorability, <=4-vertex four-colorability, bipartite-to-four-colorability, and the planar low-degree-vertex placeholder predicate.",
+    "plain": "Backfill the Four Color Theorem survey metadata around the Lean file's actual contributions: small coloring lemmas and a clear assessment that a full Gonthier-style Lean formalization would require major planar graph and reducibility infrastructure.",
+    "whyMatters": [
+      "The Four Color Theorem is a landmark computer-assisted proof; a Lean port needs careful scoping before implementation.",
+      "The file proves useful starter coloring lemmas while explicitly marking the full theorem as far beyond this slice.",
+      "Metadata should prevent overclaiming by separating verified small cases from the multi-year full 4CT project."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`colorable_of_le`, `empty_colorable`, `edgeless_one_colorable`, and `colorable_of_fintype` establish basic Mathlib graph-coloring facts.",
+      "`four_colorable_small` proves graphs with at most four vertices are four-colorable by distinct colors.",
+      "`four_colorable_of_bipartite` lifts any two-coloring of a bipartite graph to a four-coloring.",
+      "`PlanarHasLowDegreeVertex` records the Euler-formula consequence needed for the Five Color Theorem pathway, but only as a placeholder proposition."
+    ],
+    "open": [
+      "`EulerPolyhedralFormulaOQ01OQ02.lean` has zero active axioms and zero sorries.",
+      "`PlanarHasLowDegreeVertex` is defined as `True`; the file does not prove planar graph low-degree structure, the Five Color Theorem, or the Four Color Theorem.",
+      "The parent Euler polyhedral development still uses `euler_formula_axiom`; this OQ-01-OQ-02 slice is a feasibility survey plus small verified coloring lemmas."
+    ],
+    "goal": "Keep the 4CT feasibility metadata honest: verified small coloring lemmas, explicit infrastructure gap, and no claim of full planar formalization."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -46,7 +59,13 @@
     "nextSteps": [],
     "markdown": ""
   },
-  "tags": [],
+  "tags": [
+    "graph-theory",
+    "four-color-theorem",
+    "graph-coloring",
+    "formalization-feasibility",
+    "fully-verified"
+  ],
   "relatedProofs": [
     "euler-polyhedral-formula",
     "euler-polyhedral-formula-oq-01",
