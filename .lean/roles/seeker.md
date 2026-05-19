@@ -151,7 +151,13 @@ jq -e ".candidates[] | select(.id == \"$PROBLEM_ID\")" .lean/state/candidate-poo
 ./.lean/scripts/research.sh init $(echo $PROBLEM_ID | sed 's/-oq-[0-9]*$//')
 
 # Update problem.md with the specific question
+npx tsx scripts/research/validate-seeker-stubs.ts $(echo $PROBLEM_ID | sed 's/-oq-[0-9]*$//')
 ```
+
+The validator must pass before you commit, open a PR, update selection stats, or
+hand the problem to a Researcher. If it fails, keep filling in `problem.md` and
+the matching `src/data/research/problems/<slug>.json` until no template
+placeholders remain.
 
 > **Why database-first?** The database (`research/db/knowledge.db`) is the single
 > source of truth. `candidate-pool.json` is auto-generated from it via `sync_pool.py`.
@@ -331,11 +337,14 @@ After selecting a problem, follow this **database-first** sequence:
 3. **Verify pool entry**: Confirm the problem appears in `.lean/state/candidate-pool.json`
 4. **Create workspace**: `./.lean/scripts/research.sh init [slug]`
 5. **Populate problem.md**: Copy the problem description and context
-6. **Set initial state**: OBSERVE phase
-7. **Hand off**: The Researcher takes over from here
+6. **Validate filled stub**: `npx tsx scripts/research/validate-seeker-stubs.ts [slug]`
+7. **Set initial state**: OBSERVE phase
+8. **Hand off**: The Researcher takes over from here
 
 > **Important**: Steps 1-3 are required for Researchers to discover the problem.
 > Skipping them causes the pool to show 0 available problems even though workspaces exist.
+> The validation step is required before handoff; do not ship placeholder-filled
+> `problem.md` or site JSON.
 
 ## Autonomous Operation
 

@@ -192,9 +192,13 @@ You are the **seeker** agent. Your mission is to keep the research pipeline fed 
      b. Insert into database: \`sqlite3 research/db/knowledge.db "INSERT INTO problems ..."\`
      c. Regenerate pool JSON: \`python3 research/db/sync_pool.py\`
      d. Then initialize workspace: \`./.lean/scripts/research.sh init <slug>\`
+     e. Fill in \`research/problems/<slug>/problem.md\` and any matching site JSON
+     f. Validate the filled stub: \`npx tsx scripts/research/validate-seeker-stubs.ts <slug>\`
    - Without steps (a-c), Researchers will NOT see the new problems in candidate-pool.json
+   - Without step (f), unfilled template placeholders may leak into the public gallery
    - **After each problem is selected**, create a completion signal for stats tracking:
      \`\`\`bash
+     npx tsx scripts/research/validate-seeker-stubs.ts <slug>
      $REPO_ROOT/scripts/lean/update-stats.sh problem-selected
      \`\`\`
 
