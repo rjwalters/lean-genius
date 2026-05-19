@@ -1,19 +1,30 @@
 {
   "slug": "herons-formula-oq-03",
-  "title": "Formalize Kahan numerically stable variant of Heron's formula",
+  "title": "Kahan's numerically stable form of Heron's formula",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in geometry: Formalize Kahan numerically stable variant of Heron's formula.",
-    "whyMatters": []
+    "formal": "K(a,b,c)=(a+(b+c))(c-(a-b))(c+(a-b))(a+(b-c))=16s(s-a)(s-b)(s-c), and \\sqrt{K(a,b,c)}/4 equals the triangle area under the triangle inequalities.",
+    "plain": "Backfill the Kahan-form metadata for Heron's formula: the Lean file defines Kahan's product and area formula, proves equality with the classical Heron product, and checks stable numerical examples.",
+    "whyMatters": [
+      "Kahan's rearrangement is a standard numerically stable presentation of Heron's area formula.",
+      "The formalization connects an implementation-friendly expression back to the classical semiperimeter formula.",
+      "Concrete 3-4-5 and 5-12-13 examples make the algebraic identity easy to audit."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`kahan_product` and `kahan_area` define the stable product and its area expression.",
+      "`kahan_eq_sixteen_heron` proves equality with sixteen times the classical Heron product.",
+      "`kahan_product_nonneg` and `kahan_area_eq_triangle_area` connect the expression to triangle-area semantics under triangle-inequality hypotheses.",
+      "`kahan_product_345`, `kahan_area_345`, `kahan_product_5_12_13`, and `kahan_area_5_12_13` verify concrete examples."
+    ],
+    "open": [
+      "`HeronsFormulaOQ03.lean` records zero axioms and zero sorries; the separate `HeronsFormulaOQ01.lean` sibling still has one axiom and should not be conflated with this Kahan result."
+    ],
+    "goal": "Present the completed Kahan/Heron equivalence and examples while keeping the sibling axiom caveat visible."
   },
   "currentState": {
     "phase": "NEW",
@@ -39,7 +50,11 @@
     "seeker-selected",
     "geometry",
     "computation",
-    "numerical"
+    "numerical",
+    "herons-formula",
+    "kahan-formula",
+    "numerical-stability",
+    "formalization"
   ],
   "relatedProofs": [
     "herons-formula",

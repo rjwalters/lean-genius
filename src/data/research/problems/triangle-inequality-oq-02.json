@@ -6,14 +6,25 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Triangle Inequality: Ultrametric Triangle Inequality in p-adic Analysis.",
-    "whyMatters": []
+    "formal": "|x+y|_p\\le \\max(|x|_p,|y|_p),\\quad \\operatorname{dist}_p(x,z)\\le \\max(\\operatorname{dist}_p(x,y),\\operatorname{dist}_p(y,z)) for rational and p-adic norms.",
+    "plain": "Backfill the p-adic ultrametric triangle-inequality metadata around the rational `padicNorm`, p-adic field norm, p-adic integers, and induced ultrametric distance.",
+    "whyMatters": [
+      "The ultrametric inequality is the defining geometric feature of p-adic analysis.",
+      "The formalization shows the strict strengthening from an additive triangle inequality to a maximum bound.",
+      "The result connects elementary rational p-adic norms to p-adic fields, integers, and distances."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`padicNorm_ultrametric` proves the rational p-adic norm version.",
+      "`padic_ultrametric` and `padic_add_eq_max_of_ne` cover the p-adic field norm and the unequal-norm equality case.",
+      "`padicInt_ultrametric`, `padic_ultrametric_three`, and `padic_dist_ultrametric` extend the inequality to p-adic integers, three-term sums, and distance.",
+      "`abs_triangle` and `norm_triangle` remain the ordinary real/normed-space comparison points in the parent file."
+    ],
+    "open": [
+      "`TriangleInequalityOQ02.lean` records zero axioms and zero sorries; the separate `TriangleInequalityOQ03.lean` sibling has one axiom."
+    ],
+    "goal": "Expose the completed p-adic ultrametric theorem and distinguish it from the sibling axiom-backed development."
   },
   "currentState": {
     "phase": "NEW",
@@ -38,10 +49,15 @@
   "tags": [
     "seeker-selected",
     "number-theory",
-    "p-adic"
+    "p-adic",
+    "p-adic-analysis",
+    "ultrametric",
+    "triangle-inequality",
+    "formalization"
   ],
   "relatedProofs": [
     "triangle-inequality",
+    "triangle-inequality-oq-02",
     "triangle-inequality-oq-03",
     "triangle-inequality-oq-04"
   ],

@@ -6,14 +6,25 @@
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Multiplicative Property of Euler Totient Function.",
-    "whyMatters": []
+    "formal": "\\gcd(m,n)=1\\Rightarrow \\varphi(mn)=\\varphi(m)\\varphi(n),\\quad \\varphi(p^k)=p^k-p^{k-1}\\text{ for prime }p\\text{ and }k>0.",
+    "plain": "Backfill the Euler totient multiplicativity entry around the CRT-based product formula, prime-power computation, and the identification of `Nat.totient n` with the unit group of `ZMod n`.",
+    "whyMatters": [
+      "Totient multiplicativity is the basic structural theorem behind many elementary number-theory computations.",
+      "Prime-power formulas plus coprime multiplicativity determine the totient function from factorizations.",
+      "The Lean proofs connect the arithmetic statement to finite unit groups and the Chinese remainder theorem."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`totient_mul_coprime` and `totient_mul_of_gcd_eq_one` prove multiplicativity under coprimality.",
+      "`totient_prime_pow` proves the prime-power formula.",
+      "`totient_eq_card_units` identifies the totient with the cardinality of `(ZMod n)^*`.",
+      "`totient_mul_crt_explanation` records the CRT explanation for the multiplicative formula, and `euler_totient` supplies the Euler-theorem parent result."
+    ],
+    "open": [
+      "The listed Euler-totient files for this entry record zero axioms and zero sorries."
+    ],
+    "goal": "Expose the completed totient multiplicativity and prime-power metadata with the relevant CRT/unit-group anchors."
   },
   "currentState": {
     "phase": "NEW",
@@ -38,7 +49,11 @@
   "tags": [
     "seeker-selected",
     "number-theory",
-    "modular-arithmetic"
+    "modular-arithmetic",
+    "euler-totient",
+    "multiplicative-functions",
+    "chinese-remainder-theorem",
+    "formalization"
   ],
   "relatedProofs": [
     "euler-totient",
