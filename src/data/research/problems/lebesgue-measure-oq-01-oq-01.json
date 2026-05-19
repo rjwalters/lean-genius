@@ -6,14 +6,24 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in measure theory: Can the modified Dirichlet function $f(x) = 1/q$ for $x = p/q$ in lowest term....",
-    "whyMatters": []
+    "formal": "Define Thomae's function on R and prove its Lebesgue integral over R and over [0, 1] is zero.",
+    "plain": "Formalize the modified Dirichlet, or Thomae, function: it is nonzero only on rational points, so it is zero almost everywhere and has Lebesgue integral zero.",
+    "whyMatters": [
+      "Thomae's function is a classic example separating pointwise discontinuity behavior from Lebesgue integration.",
+      "The proof shows how a countable support gives an almost-everywhere zero function.",
+      "The result reuses the same measure-zero rational-set idea behind the standard Dirichlet-function integral."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Thomae's function is defined by rational denominator when x is rational and zero when x is irrational (Lean: thomae).",
+      "The function is zero at irrational points, nonnegative, and bounded above by one (Lean: thomae_irrational, thomae_nonneg, thomae_le_one).",
+      "The support of Thomae's function is contained in the rationals, hence it is zero almost everywhere (Lean: thomae_support_subset_rationals, thomae_ae_zero).",
+      "The Lebesgue integral over R and over the unit interval is zero (Lean: thomae_integral_zero, thomae_integral_unit_interval).",
+      "The file compares Thomae's function with the standard Dirichlet indicator and proves the Dirichlet integral is also zero (Lean: thomae_le_dirichlet, dirichlet_integral_zero)."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Document the verified almost-everywhere-zero proof that Thomae's function has Lebesgue integral zero."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -56,6 +66,7 @@
     "measure-theory",
     "lebesgue-integral",
     "dirichlet-function",
+    "thomae-function",
     "almost-everywhere",
     "countable-sets",
     "real-analysis"

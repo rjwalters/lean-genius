@@ -6,14 +6,24 @@
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Define triangular, pentagonal, and hexagonal figurate numbers, prove the triangular reciprocal partial fraction identity, and verify convergence-supporting reciprocal facts.",
+    "plain": "Extend the triangular-reciprocal story to higher figurate numbers by formalizing basic figurate definitions, examples, telescoping identities, and square-reciprocal summability.",
+    "whyMatters": [
+      "Triangular reciprocal sums are a clean example of telescoping via partial fractions.",
+      "Figurate-number definitions make the reciprocal-sum question extensible beyond triangles.",
+      "The square-reciprocal summability result supplies the comparison-theorem backbone for broader convergence claims."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "The triangular reciprocal partial fraction identity 2/(n(n+1)) = 2/n - 2/(n+1) is proved for n >= 1 (Lean: partial_fraction).",
+      "Triangular reciprocal terms are positive for positive n (Lean: triangular_reciprocal_pos).",
+      "Triangular, pentagonal, and hexagonal number functions are defined and checked on initial values (Lean: triangular, pentagonal, hexagonal, triangular_values, pentagonal_values, hexagonal_values).",
+      "Triangular numbers grow at least linearly and hexagonal numbers are identified with a triangular subsequence (Lean: triangular_ge_n, hexagonal_eq_triangular).",
+      "The reciprocal square series is proved summable, giving the p-series comparison model for figurate reciprocal convergence (Lean: square_reciprocals_summable)."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Document the verified figurate-number reciprocal lemmas and convergence-supporting facts."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -59,7 +69,14 @@
     ],
     "markdown": "# Knowledge Base: triangular-reciprocals-oq-03-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "number-theory",
+    "series",
+    "figurate-numbers",
+    "triangular-numbers",
+    "partial-fractions",
+    "summability"
+  ],
   "relatedProofs": [
     "triangular-reciprocals",
     "triangular-reciprocals-oq-01",
