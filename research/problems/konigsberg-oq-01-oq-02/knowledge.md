@@ -85,6 +85,100 @@ the main file.
 
 ---
 
+## Session 2026-05-09 (Session 17) — walkEdges' Bridge with hsteps_list Derivation
+
+**Mode**: REVISIT (extending the recipe library; build verification pending)
+**Outcome**: extended `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` with
+the `walkEdges'` parallel definition + membership characterization
++ `walkEdges'_hsteps_list` derivation. After S17, the Recipe-side
+mathematical chain has only ONE remaining piece (the `Nodup`-conditional
+`hcov_list` derivation, deferred to S18+).
+
+**File delta**: `+96` lines on `KonigsbergOQ01OQ02Recipe.lean` (640 → 736).
+No changes to the broken main file.
+
+### What I added
+
+1. **`walkEdges' (walk : List V) : List (V × V)`** — Recipe-side
+   parallel copy of the broken main file's private `walkEdges`
+   (currently L1089–1093 of `KonigsbergOQ01OQ02.lean`):
+
+   ```lean
+   def walkEdges' (walk : List V) : List (V × V) :=
+     (List.range (walk.length - 1)).filterMap (fun i =>
+       if h : i + 1 < walk.length then
+         some (walk[i]'(by omega), walk[i + 1]'h)
+       else none)
+   ```
+
+   Same semantics as the broken main file's def, but uses
+   bracket-with-proof indexing `walk[i]'h` for parity with current
+   Mathlib (`GetElem`/`GetElem?` typeclass) instead of the broken
+   `walk.get ⟨i, by omega⟩` pattern.
+
+2. **`mem_walkEdges'`** — membership characterization. An edge `e`
+   belongs to `walkEdges' walk` iff there exists a position `i` with
+   `i + 1 < walk.length` such that `e = (walk[i], walk[i + 1])`.
+   Proof routes through `List.mem_filterMap` + `dif_pos`/`dif_neg`
+   case splits on the `i + 1 < walk.length` decidable condition.
+
+3. **`walkEdges'_hsteps_list`** — the `hsteps_list` hypothesis of
+   `circuit_edge_balance_list'` (S15), specialised to `walkEdges'`-style
+   `L`. For any walk of length `n + 1`, every position `i < n`
+   contributes an edge whose components match the `Option`-projections
+   `walk[i]?` and `walk[i+1]?`. Proof: existence witness is
+   `(walk[i], walk[i+1])`, membership via `mem_walkEdges'` (S17),
+   `Option`-form via `List.getElem?_eq_getElem`.
+
+### Why this matters for `remove_circuit_balanced`
+
+After S17, the only remaining Recipe-side gap to the deferred
+`remove_circuit_balanced` proof is the `hcov_list` (uniqueness)
+derivation, which depends on `walkEdges' walk` being `Nodup`. The
+`Nodup` direction is deferred to S18+ since it requires either
+strengthening `DirectedCircuit` with an `edges_distinct` field
+(intrusive) or adding a `hnodup` hypothesis to `remove_circuit_balanced`
+itself (clean, recommended).
+
+### Why I did NOT do the in-place refactor
+
+State.md's prior Next Action #1 called for the in-place refactor of
+the broken `KonigsbergOQ01OQ02.lean` (estimated 2–3 hours mechanical
+work + 30–60 min Docker build). With my session budget (~60 min
+effective time) and the Docker `proofs/.lake` symlink in its current
+broken state (forces 30–45 min Mathlib clone + cache fetch on every
+fresh worktree per memory note `feedback_researcher_lake_symlink_broken.md`),
+attempting the in-place refactor would likely terminate mid-refactor
+with the main file in an even more broken state (mixed forms across
+signature boundaries — exactly the failure mode S7–S16 cite as the
+reason for the recipe-extension pattern in the first place).
+
+The recipe-extension pattern continues: each session adds a
+build-verifiable template that reduces total mathematical risk for
+the eventual single-pass S19+ in-place refactor.
+
+### S17 Mathlib API used (all v4.26.0)
+
+- `List.range` (basic), `List.filterMap`, `List.mem_filterMap`,
+  `List.mem_range`, `List.getElem?_eq_getElem`
+- `dif_pos`, `dif_neg` (decidability rewrites for `if h : c then _ else _`)
+- `Option.some_inj`, `Option.noConfusion`, `congrArg`
+- `omega` for the arithmetic on `i + 1 < walk.length` ↔ `i < walk.length`
+  derivations.
+
+The `walk[i]'(by omega)` syntax requires `omega` to discharge `i < walk.length`
+from the in-scope hypothesis `h : i + 1 < walk.length`, which it does
+trivially. No Mathlib lemma names guessed beyond the standard `List`
+and `Option` API (all confirmed used in
+`KonigsbergOQ01OQ02Recipe.lean`'s prior S9–S16 contributions).
+
+### Files Modified
+- `proofs/Proofs/KonigsbergOQ01OQ02Recipe.lean` (640 → 736 lines, +96)
+- `research/problems/konigsberg-oq-01-oq-02/state.md` (Session 17 entry)
+- `research/problems/konigsberg-oq-01-oq-02/knowledge.md` (this entry)
+
+---
+
 ## Session 2026-05-09 (Session 16) — Finset-Removal Balance Helper: Full Mathematical Chain Complete
 
 **Mode**: REVISIT (Sessions 9–15 built the recipe library culminating in
