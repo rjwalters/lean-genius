@@ -61,14 +61,29 @@ export const voteCommentSchema = z.object({
 
 export type VoteCommentRequest = z.infer<typeof voteCommentSchema>
 
+const optionalTrimmedString = (maxLength: number) =>
+  z.preprocess((value) => {
+    if (typeof value !== 'string') return value
+
+    const trimmed = value.trim()
+    return trimmed.length > 0 ? trimmed : undefined
+  }, z.string().max(maxLength).optional())
+
+const optionalTrimmedUrl = z.preprocess((value) => {
+  if (typeof value !== 'string') return value
+
+  const trimmed = value.trim()
+  return trimmed.length > 0 ? trimmed : undefined
+}, z.string().url('Invalid URL').optional())
+
 // Proof submission request
 export const submitProofSchema = z.object({
-  title: z.string().min(1, 'Title is required').max(200, 'Title too long'),
-  description: z.string().min(10, 'Please provide a description (at least 10 characters)').max(5000, 'Description too long'),
+  title: z.string().trim().min(1, 'Title is required').max(200, 'Title too long'),
+  description: z.string().trim().min(10, 'Please provide a description (at least 10 characters)').max(5000, 'Description too long'),
   leanSource: z.string().min(10, 'Lean source code is required').max(100000, 'Source code too long'),
-  mathlibVersion: z.string().max(50).optional(),
-  githubUrl: z.string().url('Invalid URL').optional().or(z.literal('')),
-  additionalNotes: z.string().max(5000).optional(),
+  mathlibVersion: optionalTrimmedString(50),
+  githubUrl: optionalTrimmedUrl,
+  additionalNotes: optionalTrimmedString(5000),
 })
 
 export type SubmitProofRequest = z.infer<typeof submitProofSchema>
