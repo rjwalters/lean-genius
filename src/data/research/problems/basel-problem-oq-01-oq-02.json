@@ -6,14 +6,26 @@
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "The Basel series has sum pi^2/6, its reciprocal-square terms are summable and nonnegative, and the zeta(4) companion series has sum pi^4/90.",
+    "plain": "Backfills metadata for the clean Basel/zeta-value core. The base proof records Mathlib-backed HasSum and tsum statements for the Basel problem, convergence and positivity facts for 1/n^2, and the zeta(4) value pi^4/90.",
+    "whyMatters": [
+      "The Basel problem is a landmark example connecting infinite series, pi, Fourier analysis, and zeta values.",
+      "The clean base file gives reliable theorem names for the classical pi^2/6 and pi^4/90 facts.",
+      "Separating this from axiom-dependent Apery-style siblings keeps the metadata precise."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`basel_hasSum` proves HasSum (fun n => 1 / n^2) (pi^2 / 6).",
+      "`basel_tsum` gives the corresponding tsum equality for the reciprocal-square series.",
+      "`summable_one_div_sq` and `one_div_sq_nonneg` record convergence and nonnegativity facts for the series terms.",
+      "`zeta_four_hasSum` proves the zeta(4) value pi^4 / 90.",
+      "The base `BaselProblem.lean` file is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "Apery-style irrationality and richer zeta-value extensions in sibling files include separate assumptions or incomplete work and are not claimed by this entry."
+    ],
+    "goal": "Make the clean Basel and zeta(4) theorem evidence searchable from the problem metadata."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -36,7 +48,16 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: basel-problem-oq-01-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "analysis",
+    "series",
+    "basel-problem",
+    "zeta-values",
+    "pi",
+    "summability",
+    "classic",
+    "formalized"
+  ],
   "relatedProofs": [
     "basel-problem",
     "basel-problem-oq-01",
