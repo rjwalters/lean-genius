@@ -1,27 +1,39 @@
 {
   "slug": "erdos-szekeres-oq-01",
-  "title": "[Problem Title]",
+  "title": "Formalize Erdos-Szekeres with explicit pair tracking for pigeonhole",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
-  "path": "fast",
+  "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\forall r\\ s\\ n,\\ n \\ge (r-1)(s-1)+1 \\Rightarrow \\text{every injective sequence of length } n \\text{ has an increasing subsequence of length } r \\text{ or a decreasing subsequence of length } s.",
+    "plain": "Complete the formal Erdos-Szekeres pigeonhole proof by tracking, for each sequence position, the pair consisting of the longest increasing subsequence ending there and the longest decreasing subsequence ending there.",
+    "whyMatters": [
+      "The parent Erdos-Szekeres proof is currently axiomatized at the core existence step.",
+      "The intended pair-tracking argument is explicit and well suited to a focused Lean formalization attempt.",
+      "A successful proof would address the first open question and could reduce the parent proof's axiom count."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The related gallery proof erdos-szekeres exists as the parent proof.",
+      "The parent proof is reported as axiomatized with 2 axioms and 0 sorries.",
+      "The intended proof strategy is the standard pigeonhole argument over pairs of longest increasing and decreasing subsequence lengths."
+    ],
+    "open": [
+      "The core Erdos-Szekeres existence theorem still depends on an axiom.",
+      "The tightness statement also remains axiomatized.",
+      "The explicit map from positions to longest-increasing/longest-decreasing length pairs has not yet been formalized."
+    ],
+    "goal": "Replace or reduce the axiomatized existence proof by formalizing the pigeonhole argument on distinct subsequence-length pairs."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-05T19:30:46-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Orient around the explicit pair-tracking pigeonhole proof.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Read the parent Erdos-Szekeres metadata and Lean source, then survey Mathlib subsequence and Finset pigeonhole support before deciding whether custom pair-tracking infrastructure is needed.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,25 +41,43 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Selected for first exploration. No proof attempt has been made yet; the evidence identifies the intended route as the standard pigeonhole argument on pairs of longest increasing and decreasing subsequence lengths ending at each position.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: erdos-szekeres-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "The target proof strategy assigns each index i a pair (a_i, b_i), where a_i is the longest increasing subsequence length ending at i and b_i is the longest decreasing subsequence length ending at i.",
+      "If no increasing subsequence of length r and no decreasing subsequence of length s exists, all pairs should lie in a grid of size (r-1)(s-1).",
+      "The key formal burden is proving the position-to-pair map is injective by showing that comparable positions with unequal values extend one of the two subsequence lengths.",
+      "Mathlib Finset and List/Sublist infrastructure are likely relevant, but the selection report leaves open whether existing lemmas are enough."
+    ],
+    "mathlibGaps": [
+      "Need to check whether Mathlib already has a suitable monotone-subsequence theorem or only lower-level Finset/List tools.",
+      "Need to check whether existing pigeonhole lemmas line up with the desired finite grid of length pairs."
+    ],
+    "nextSteps": [
+      "Inspect src/data/proofs/erdos-szekeres/meta.json and Proofs/ErdosSzekeres.lean to locate the two axioms and the existing scaffolding definitions.",
+      "Survey Mathlib for List.Sublist, Finset pigeonhole lemmas, and monotone subsequence support.",
+      "Decide whether to use existing Mathlib subsequence infrastructure directly or introduce custom definitions for longest subsequences ending at an index."
+    ],
+    "markdown": "# Knowledge Base: erdos-szekeres-oq-01\n\n---\n\n## Problem Understanding\n\nThis problem targets the open proof obligation in the parent Erdos-Szekeres formalization: formalize the explicit pigeonhole argument using pairs of longest increasing and decreasing subsequence lengths ending at each position.\n\n---\n\n## Insights\n\n- For each position i, the intended pair is (a_i, b_i), with a_i the longest increasing subsequence length ending at i and b_i the longest decreasing subsequence length ending at i.\n- If the sequence has no increasing subsequence of length r and no decreasing subsequence of length s, those pairs should all lie in the finite grid {1, ..., r-1} x {1, ..., s-1}.\n- The decisive Lean step is proving the pairs are distinct, so the number of positions cannot exceed the grid size.\n- The selection report recommends checking List.Sublist, Finset pigeonhole lemmas, and any existing monotone subsequence support before committing to custom infrastructure.\n\n---\n\n## Dead Ends\n\nNo attempted approaches have been ruled out yet.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "combinatorics",
+    "order-theory",
+    "pigeonhole",
+    "sequences"
   ],
   "relatedProofs": [
-    "erdos-szekeres"
+    "erdos-szekeres",
+    "ramseys-theorem",
+    "pigeonhole-principle"
   ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "List.Sublist",
+      "Finset.exists_ne_map_eq_of_card_lt_of_mem"
+    ]
   },
   "started": "2026-04-06T03:14:36.235Z",
   "lastUpdate": "2026-04-12T21:07:23.995Z",
