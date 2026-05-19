@@ -22,6 +22,7 @@ function formatBuildTime(isoString: string): string {
 export function Footer() {
   const commitHash = __COMMIT_HASH__
   const buildTime = __BUILD_TIME__
+  const hasCommitLink = commitHash.length > 0 && commitHash !== 'unknown'
 
   return (
     <footer className="border-t border-border">
@@ -61,14 +62,18 @@ export function Footer() {
           </a>
         </p>
         <p className="mt-2 text-xs text-muted-foreground/60">
-          <a
-            href={`https://github.com/rjwalters/lean-genius/commit/${commitHash}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="font-mono hover:text-muted-foreground"
-          >
-            {commitHash}
-          </a>
+          {hasCommitLink ? (
+            <a
+              href={`https://github.com/rjwalters/lean-genius/commit/${commitHash}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono hover:text-muted-foreground"
+            >
+              {commitHash}
+            </a>
+          ) : (
+            <span className="font-mono">{commitHash}</span>
+          )}
           {' · '}
           <span>Deployed {formatBuildTime(buildTime)}</span>
         </p>
