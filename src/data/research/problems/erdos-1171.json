@@ -6,22 +6,39 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "(LaTeX not available)",
-    "plain": "Problem statement not found",
-    "whyMatters": []
+    "formal": "For every finite k, does omega_1^2 -> (omega_1 * omega, 3, ..., 3)^2_(k+1) hold?",
+    "plain": "For any finite number of colors on pairs from omega_1^2, must there be either a large color-0 set of type omega_1 * omega or a monochromatic triangle in some other color?",
+    "whyMatters": [
+      "The problem generalizes Erdos #1169 from two colors to a finite multicolor hierarchy.",
+      "The Lean proof shows the multicolor part reduces combinatorially to the two-color #1169 relation.",
+      "It separates CH and Martin's Axiom consequences from the still-open ZFC statement."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Lean gives concrete definitions `ordinalPartitionRelMulti` and `ordinalPartitionRel2` for the multicolor and two-color partition relations.",
+      "Ordinal arithmetic and monotonicity theorems handle omega_1, omega_1^2, omega_1 * omega, source/target weakening, color weakening, and the two-color equivalence `multi_two_eq`.",
+      "`reduction_to_1169` proves the full multicolor statement follows from the two-color #1169 relation; CH gives `erdos_1171_under_ch` via `hajnal_ch`.",
+      "Baumgartner's MA theorem gives the k=1 case through `baumgartner_ma`."
+    ],
+    "open": [
+      "The ZFC statement for all finite k remains open.",
+      "`hajnal_ch` and `baumgartner_ma` are active axioms representing deep set-theoretic results.",
+      "The MA result covers only the two-color/k=1 case, not the full finite-k statement."
+    ],
+    "goal": "Emphasize the proved reduction to #1169 while keeping CH, MA, and the ZFC status separate."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T17:01:06.707Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Metadata now captures the concrete multicolor formalization, the reduction to #1169, and the two active set-theoretic axioms.",
+    "blockers": [
+      "The ZFC statement remains open.",
+      "`hajnal_ch` is axiomatized.",
+      "`baumgartner_ma` is axiomatized."
+    ],
+    "nextAction": "A useful proof slice would strengthen references around the #1169 reduction or isolate the k=1 MA consequence as a smaller gallery theorem.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -71,7 +88,12 @@
     "markdown": "# Erdős #1171 - Knowledge Base\n\n## Problem Statement\n\nProblem statement not found\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "set-theory",
+    "ordinal-partition-calculus",
+    "ramsey-theory",
+    "continuum-hypothesis",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -80,9 +102,18 @@
     "erdos-1171"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Baumgartner MA partition result",
+      "Hajnal CH ordinal partition theorem"
+    ],
+    "urls": [
+      "https://erdosproblems.com/1171"
+    ],
+    "mathlib": [
+      "Ordinal.mul_isLimit",
+      "Cardinal.ord_isLimit",
+      "StrictMono"
+    ]
   },
   "started": "2026-01-15T17:01:06.707Z",
   "lastUpdate": "2026-03-28T20:30:00.000Z",
@@ -92,7 +123,7 @@
     {
       "path": "Proofs/Erdos1171Problem.lean",
       "filename": "Erdos1171Problem.lean",
-      "lineCount": 446,
+      "lineCount": 445,
       "theoremCount": 22,
       "axiomCount": 2,
       "defCount": 8,

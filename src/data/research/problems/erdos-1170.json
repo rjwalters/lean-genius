@@ -6,30 +6,37 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "ω₂ → (α)²₂ for all α < ω₂",
-    "plain": "Is it consistent with ZFC that for every α < ω₂, any 2-coloring of pairs from ω₂ has a homogeneous subset of order type α?",
+    "formal": "Is it consistent that omega_2 -> (alpha)^2_2 for every alpha < omega_2?",
+    "plain": "Can it be consistent with ZFC that every two-coloring of pairs from omega_2 has homogeneous subsets of every order type below omega_2?",
     "whyMatters": [
-      "Central open problem in infinitary Ramsey theory / ordinal partition calculus",
-      "Connects large cardinal consistency strength to combinatorial properties of ω₂"
+      "The problem asks for a consistency result rather than an ordinary ZFC theorem.",
+      "It distinguishes the full balanced partition property from known polarized forcing results.",
+      "The Lean file cleanly isolates Laver's deep forcing input from elementary ordinal/cardinal consequences."
     ]
   },
   "knownResults": {
     "proven": [
-      "Laver (1982): Consistent that ω₂ → (ω₁² + 1, α)² for all α < ω₂ (polarized version)",
-      "Foreman-Hajnal (2003): Extended Laver's consistency result"
+      "Lean defines balanced and polarized ordinal partition relations using order-preserving embeddings.",
+      "Lean proves `balanced_implies_polarized`, target and source monotonicity, `omega1_lt_omega2`, and `omega1Sq_lt_omega2`.",
+      "The axiom `laver_consistency` supplies the known polarized omega_2 -> (omega_1^2 + 1, alpha)^2 result for alpha < omega_2."
     ],
     "open": [
-      "Full balanced partition property: ω₂ → (α)²₂ for all α < ω₂"
+      "The full balanced consistency question remains open.",
+      "`laver_consistency` is a deep forcing result and is not proved from Mathlib.",
+      "The Lean file does not derive the balanced property from Laver's polarized result."
     ],
-    "goal": "Formalize the problem with minimal axioms; only deep forcing results should remain as axioms"
+    "goal": "Treat the formalization as complete at one deep axiom while preserving the original Erdos problem as open."
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-24T10:36:00Z",
     "iteration": 2,
-    "focus": "Axiom elimination: replaced 6 of 7 axioms with constructive defs and proofs",
-    "blockers": [],
-    "nextAction": "None - formalization complete at 1 axiom (Laver forcing result)",
+    "focus": "Surface metadata now clarifies that the Lean formalization is complete at one axiom, while the original balanced consistency problem remains open.",
+    "blockers": [
+      "`laver_consistency` remains axiomatized.",
+      "The balanced omega_2 property is not proved from the polarized Laver result."
+    ],
+    "nextAction": "No immediate metadata action; future proof work could refine the forcing-result interface or add stronger literature references.",
     "attemptCounts": {
       "total": 2,
       "currentApproach": 1,
@@ -63,7 +70,8 @@
     "erdos",
     "ramsey-theory",
     "set-theory",
-    "ordinal-partition-calculus"
+    "ordinal-partition-calculus",
+    "open-problem"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -76,8 +84,8 @@
   ],
   "references": {
     "papers": [
-      "Laver (1982): Partition relations and large cardinals",
-      "Foreman-Hajnal (2003): Extensions of Laver's consistency results"
+      "Laver (1982): partition relations and large cardinals",
+      "Foreman-Hajnal (2003): extensions of Laver consistency results"
     ],
     "urls": [
       "https://erdosproblems.com/1170"
@@ -98,7 +106,7 @@
     {
       "path": "Proofs/Erdos1170Problem.lean",
       "filename": "Erdos1170Problem.lean",
-      "lineCount": 187,
+      "lineCount": 186,
       "theoremCount": 7,
       "axiomCount": 1,
       "defCount": 6,
