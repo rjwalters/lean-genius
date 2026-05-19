@@ -210,7 +210,7 @@ theorem con_proof_witnesses_inconsistency :
     (⊢ Con) → ¬ Consistent :=
   fun hCon hConsist => second_incompleteness hConsist hCon
 
-/-- **Löb's Theorem (informal statement)**
+/-! **Löb's Theorem (informal statement)**
 
     Löb (1955): For any formula A, `F ⊢ (□A → A)` implies `F ⊢ A`.
 
@@ -235,7 +235,7 @@ theorem con_proof_witnesses_inconsistency :
 -- (Löb's full proof would need a Henkin fixed-point axiom; we omit it here
 --  to keep the file honest and free of unprovable sorry-substitutes.)
 
-/-- **Note on Axiom Count**
+/-! **Note on Axiom Count**
 
     This file adds 1 axiom: `con_implies_G` (the formalized First Incompleteness).
     Combined with the 5 axioms from `GodelFirstIncompletenessOQ01`:
