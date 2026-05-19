@@ -1,27 +1,41 @@
 {
   "slug": "erdos-428",
   "title": "Erdős #428",
-  "phase": "OBSERVE",
+  "phase": "ACT",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "Is there a set $A\\subseteq \\mathbb{N}$ such that, for infinitely many $n$, all of $n-a$ are prime for all $a\\in A$ with $0<a<n$ and\\[\\liminf\\frac{\\lvert A\\cap [1,x]\\rvert}{\\pi(x)}>0?\\]\n\n\n\nErd\\H{o}s and Graham could show this is true (assuming the prime $k$-tuple conjecture) if we replace $\\liminf$ by $\\limsup$.",
-    "plain": "Is there a set $A\\subseteq \\mathbb{N}$ such that, for infinitely many $n$, all of $n-a$ are prime for all $a\\in A$ with $00?\\]",
-    "whyMatters": []
+    "formal": "Does there exist a set A subset N such that for infinitely many n, every a in A with 0 < a < n makes n-a prime, and liminf_{x -> infinity} |A cap [1,x]| / pi(x) > 0?",
+    "plain": "Can a relatively prime-density-sized set of offsets repeatedly line up so that n minus every active offset is prime?",
+    "plainEnglish": "Can a relatively prime-density-sized set of offsets repeatedly line up so that n minus every active offset is prime?",
+    "whyMatters": [
+      "Connects prime k-tuples with density of admissible offset sets.",
+      "The Lean file distinguishes the original liminf problem from an easier limsup variant.",
+      "Finite-set obstructions are proved while the Erdos-Graham conditional limsup result remains an axiom."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`liminf_implies_limsup` proves the liminf formulation implies the limsup formulation.",
+      "Finite sets have zero prime-density ratio, so any liminf solution must be infinite.",
+      "Basic prime-counting positivity, offset, monotonicity, and nonnegativity lemmas are proved."
+    ],
+    "open": [
+      "The original liminf problem `ErdosProblem428` is defined but not proved.",
+      "The Erdos-Graham conditional limsup statement is the source axiom `erdos_graham_limsup` from the prime k-tuple conjecture."
+    ],
+    "goal": "Track the exact boundary between elementary density lemmas, the open liminf problem, and the conditional limsup axiom."
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-13T02:41:06.676Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "ACT",
+    "since": "2026-05-18T00:00:00Z",
+    "iteration": 2,
+    "focus": "Finite-set zero-density and liminf-to-limsup infrastructure are proved; only the conditional limsup result `erdos_graham_limsup` is axiomatized.",
+    "blockers": [
+      "Prime k-tuple/Hardy-Littlewood input remains outside the local Lean proof."
+    ],
+    "nextAction": "Keep `erdos_graham_limsup` as the single analytic axiom unless prime k-tuple infrastructure is formalized.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,30 +43,37 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Assessed and marked complete.",
+    "progressSummary": "CURRENT: 12 theorem/lemma declarations, 6 definitions, 1 axiom (`erdos_graham_limsup`), 0 sorries. The original liminf problem remains open; the conditional limsup variant is axiomatized from the prime k-tuple conjecture.",
     "builtItems": [
-      "Proved primeCounting_mono (monotonicity)",
-      "Proved primeCounting_lt_of_prime (strict monotonicity at primes)",
-      "Proved primeCounting_tendsto_nat (π(n) → ∞ as ℕ)",
-      "Proved primeCounting_real_tendsto (π(n) → ∞ as ℝ)",
-      "Proved finite_set_zero_density (eliminated axiom)"
+      "`primeCounting` and `primeDensityRatio`",
+      "`AllOffsetsPrime`, `ErdosProblem428`, `ErdosProblem428Limsup`, `PrimeKTupleConjecture`",
+      "`liminf_implies_limsup`",
+      "`primeCounting_pos` and `primeDensityRatio_nonneg`",
+      "`finite_set_zero_density` and `erdos428_requires_infinite`"
     ],
     "insights": [
-      "Only 2 axioms - well-developed file",
-      "finite_set_zero_density provable: finite A has bounded intersection, pi(n)->inf by infinitude of primes",
-      "erdos_graham_limsup is conditional on prime k-tuple conjecture - deep result",
-      "Proved finite_set_zero_density: finite A has bounded |A∩[1,n]| while π(n)→∞, so density→0 by squeeze theorem",
-      "primeCounting unboundedness proved via Nat.exists_infinite_primes + monotonicity",
-      "Filter.liminf_le_limsup in current Mathlib requires IsBoundedUnder (bounded above) which fails for general density ratios",
-      "squeeze_zero in current Mathlib takes ∀ (not ∀ᶠ) - API change from earlier versions",
-      "Meta.json was stale — sorryCount was 1 but file has 0 sorries since liminf_implies_limsup was proved"
+      "The corrupted plain statement has been replaced with the offset-prime density question.",
+      "`ErdosProblem428` is a definition, not a theorem.",
+      "`finite_set_zero_density` proves finite A cannot solve the liminf problem.",
+      "`erdos428_requires_infinite` packages the finite-set obstruction.",
+      "`liminf_implies_limsup` uses direct liminf/limsup filter reasoning rather than relying on a boundedness-heavy canned inequality."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Leave `erdos_graham_limsup` as the analytic boundary.",
+      "If proof metadata is edited later, fix stale line ranges and dependency notes.",
+      "Do not present the liminf problem as solved."
+    ],
     "markdown": "# Erdős #428 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nIs there a set $A\\subseteq \\mathbb{N}$ such that, for infinitely many $n$, all of $n-a$ are prime for all $a\\in A$ with $0<a<n$ and\\[\\liminf\\frac{\\lvert A\\cap [1,x]\\rvert}{\\pi(x)}>0?\\]\n\n\n\nErd\\H{o}s and Graham could show this is true (assuming the prime $k$-tuple conjecture) if we replace $\\liminf$ by $\\limsup$.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #427\n- Problem #429\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- ErGr80\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-13*\n"
   },
   "tags": [
-    "erdos"
+    "erdos",
+    "number-theory",
+    "prime-numbers",
+    "density",
+    "prime-k-tuples",
+    "analytic-number-theory",
+    "open"
   ],
   "relatedProofs": [
     "erdos-4",
@@ -60,20 +81,30 @@
     "erdos-428"
   ],
   "references": {
-    "papers": [],
-    "urls": [],
-    "mathlib": []
+    "papers": [
+      "Erdos-Graham conditional limsup result under the prime k-tuple conjecture"
+    ],
+    "urls": [
+      "https://erdosproblems.com/428"
+    ],
+    "mathlib": [
+      "Nat.Prime",
+      "Filter.liminf",
+      "Filter.limsup",
+      "Filter.Frequently",
+      "Set.ncard"
+    ]
   },
   "started": "2026-01-13T02:41:06.676Z",
-  "lastUpdate": "2026-03-13T07:52:17.048Z",
+  "lastUpdate": "2026-05-18T00:00:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos428Problem.lean",
       "filename": "Erdos428Problem.lean",
-      "lineCount": 221,
-      "theoremCount": 8,
+      "lineCount": 220,
+      "theoremCount": 12,
       "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,
