@@ -6,14 +6,24 @@
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Define Stein's binaryGcd on natural numbers and prove binaryGcd a b = Nat.gcd a b for all a b.",
+    "plain": "Formalize Stein's binary GCD algorithm and prove that it computes the same greatest common divisor as Nat.gcd.",
+    "whyMatters": [
+      "Binary gcd is the subtraction-and-shift variant used by practical integer libraries for large inputs.",
+      "The proof packages the local gcd identities needed to justify each recursive branch of the algorithm.",
+      "A verified executable binaryGcd gives later cost-model proofs a trustworthy correctness foundation."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "The file proves the subtraction and factor-removal lemmas used by Stein's algorithm (Lean: gcd_sub_right, gcd_mul_two_left, gcd_mul_two_right, gcd_two_mul).",
+      "The recursive binaryGcd function is defined for natural-number inputs with termination by a + b.",
+      "Correctness is proved for all inputs: binaryGcd a b = Nat.gcd a b (Lean: binaryGcd_eq_gcd).",
+      "Basic API corollaries include commutativity and zero-input simplifications (Lean: binaryGcd_comm, binaryGcd_zero_left, binaryGcd_zero_right).",
+      "The related Euclidean-domain file records gcd divisibility/characterization lemmas beyond the Nat-specific binaryGcd proof."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Expose the verified correctness proof for Stein's binary gcd algorithm and its supporting gcd lemmas."
   },
   "currentState": {
     "phase": "ACT",
@@ -45,7 +55,14 @@
     "nextSteps": [],
     "markdown": "# Knowledge Base: gcd-algorithm-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
-  "tags": [],
+  "tags": [
+    "algorithms",
+    "number-theory",
+    "gcd",
+    "binary-gcd",
+    "stein-algorithm",
+    "algorithm-correctness"
+  ],
   "relatedProofs": [
     "binary-gcd",
     "gcd-algorithm",
