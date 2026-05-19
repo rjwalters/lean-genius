@@ -292,7 +292,7 @@ export function generateResearchEntries(
     results.push(result)
 
     if (!result.skipped) {
-      console.log(`  Created: ${problem.slug}`)
+      console.log(`  ${dryRun ? 'Would create' : 'Created'}: ${problem.slug}`)
 
       // Prepare registry entry
       newRegistryEntries.push({
@@ -306,26 +306,28 @@ export function generateResearchEntries(
   }
 
   // Update registry with new entries
-  if (updateRegistry && !dryRun && newRegistryEntries.length > 0) {
+  if (updateRegistry && newRegistryEntries.length > 0) {
     const registry = loadRegistry()
 
     // Check for existing slugs to avoid duplicates
     const existingSlugs = new Set(registry.problems.map((p: any) => p.slug))
+    const entriesToAdd = newRegistryEntries.filter(entry => !existingSlugs.has(entry.slug))
 
-    for (const entry of newRegistryEntries) {
-      if (!existingSlugs.has(entry.slug)) {
-        registry.problems.push(entry)
-      }
+    if (dryRun) {
+      console.log(`  [dry-run] Would update registry with ${entriesToAdd.length} new entries`)
+    } else {
+      registry.problems.push(...entriesToAdd)
+      saveRegistry(registry)
+      console.log(`  Updated registry with ${entriesToAdd.length} new entries`)
     }
-
-    saveRegistry(registry)
-    console.log(`  Updated registry with ${newRegistryEntries.length} new entries`)
   }
 
   const created = results.filter(r => !r.skipped).length
   const skipped = results.filter(r => r.skipped).length
 
-  console.log(`Research generation complete: ${created} created, ${skipped} skipped`)
+  console.log(
+    `Research generation complete: ${created} ${dryRun ? 'would be created' : 'created'}, ${skipped} skipped`
+  )
 
   return results
 }
