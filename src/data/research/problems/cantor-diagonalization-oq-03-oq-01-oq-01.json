@@ -1,27 +1,36 @@
 {
   "slug": "cantor-diagonalization-oq-03-oq-01-oq-01",
-  "title": "[Problem Title]",
+  "title": "Close 2 Sorries in Lawvere Categorical Bridge",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{Given a } \\text{CategoricalEval}, \\text{ construct an } \\text{EvalStructure}\\text{ connecting } \\text{CategoricalEval.apply} \\leftrightarrow \\text{EvalStructure.eval.}",
+    "plain": "Close the two remaining sorry gaps in the lawvere_categorical bridge by constructing the EvalStructure induced by a CategoricalEval and relating apply to eval.",
+    "whyMatters": [
+      "Completing the bridge would make the categorical Lawvere fixed-point theorem proof fully machine-verified.",
+      "The parent result connects Cantor diagonalization with fixed-point phenomena behind incompleteness, halting, and Rice-style arguments."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The parent gallery proof covers the basic Lawvere Fixed-Point Theorem at cantor-diagonalization-oq-03-oq-01.",
+      "Categorical evaluation structure definitions are recorded as available in the local problem statement."
+    ],
+    "open": [
+      "Close the two sorries connecting CategoricalEval.apply to EvalStructure.eval in lawvere_categorical.",
+      "Fully verify the categorical bridge."
+    ],
+    "goal": "Construct the explicit bridge from CategoricalEval to EvalStructure and close both lawvere_categorical sorries."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-04T02:41:19-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "OBSERVE-stage triage for the two lawvere_categorical sorries; no proof attempts are recorded yet.",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "Fast path: search the existing proof and Mathlib for CategoricalEval, EvalStructure, and lawvere_categorical, then try the direct construction if the bridge is definitional.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +38,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: cantor-diagonalization-oq-03-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "progressSummary": "Local evidence frames this as an unstarted sorry-completion task for the Lawvere categorical bridge; state.md records zero attempts and no blockers.",
+    "builtItems": [
+      "Parent proof cantor-diagonalization-oq-03-oq-01 covers the basic Lawvere Fixed-Point Theorem.",
+      "The local problem statement says categorical evaluation structure definitions are already present."
+    ],
+    "insights": [
+      "The target bridge should induce an EvalStructure from a CategoricalEval.",
+      "The key compatibility is between CategoricalEval.apply and EvalStructure.eval.",
+      "The local notes suggest direct construction or definition unfolding may work, with possible universe or typeclass friction."
+    ],
+    "mathlibGaps": [
+      "Lean 4 category-theory names and universe/typeclass requirements still need checking against the existing proof."
+    ],
+    "nextSteps": [
+      "Inspect lawvere_categorical, CategoricalEval, and EvalStructure in Proofs/CantorDiagonalizationOQ03OQ01.lean.",
+      "Search Mathlib/category-theory support needed for the evaluation bridge.",
+      "Try the direct EvalStructure construction before heavier tactic work."
+    ],
+    "markdown": "# Knowledge Base: cantor-diagonalization-oq-03-oq-01-oq-01\n\n## Problem Understanding\n\nThis task is to close the two remaining sorries in the lawvere_categorical bridge. The desired construction takes a CategoricalEval and produces an EvalStructure by connecting CategoricalEval.apply with EvalStructure.eval.\n\n## Evidence From Local State\n\nstate.md records phase OBSERVE, fast path, iteration 1, zero total attempts, zero approaches tried, and no blockers. The current focus is initial problem understanding.\n\n## Known Context\n\nThe parent gallery proof cantor-diagonalization-oq-03-oq-01 covers the basic Lawvere Fixed-Point Theorem, and the local problem statement records categorical evaluation structure definitions as already available.\n\n## Next Steps\n\nInspect lawvere_categorical, CategoricalEval, and EvalStructure in the existing Lean proof, then search Mathlib only as needed. Start with the direct construction path and use unfolding or simp if the compatibility is definitional.\n\n## Dead Ends\n\nNone recorded locally.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "category-theory",
+    "fixed-point-theorems",
+    "lawvere",
+    "sorry-completion"
   ],
   "relatedProofs": [
     "cantor-diagonalization",

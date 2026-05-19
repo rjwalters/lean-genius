@@ -1,27 +1,38 @@
 {
   "slug": "cantor-diagonalization-oq-03-oq-01-oq-03",
-  "title": "[Problem Title]",
+  "title": "Godel Incompleteness as a Lawvere Instance",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{Lawvere FPT with Val = sentences, point-surjectivity = diagonal lemma, and } f=\\neg\\mathrm{Prov} \\Rightarrow \\exists G\\,(\\mathrm{True}(G) \\land \\neg\\mathrm{Prov}(G)).",
+    "plain": "Derive Godel's first incompleteness theorem as a Lawvere fixed-point instance: use sentences as values, the diagonal lemma for point-surjectivity, and negated provability to obtain a true but unprovable sentence.",
+    "whyMatters": [
+      "Connects the Cantor diagonalization gallery to one of its central logical consequences.",
+      "Tests whether the Lawvere fixed-point abstraction can organize incompleteness rather than merely illustrate it.",
+      "Clarifies the exact proof infrastructure needed for a Lean 4 provability-logic instance."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Parent gallery proof cantor-diagonalization-oq-03-oq-01 gives the Lawvere Fixed-Point Theorem.",
+      "Problem notes cite partial formalizations of Godel incompleteness in theorem provers."
+    ],
+    "open": [
+      "Lean 4 derivation of Godel incompleteness as a Lawvere FPT instance.",
+      "Diagonal lemma formalization in Lean 4 for provability logic.",
+      "Formal syntax and provability encoding needed to support the instance."
+    ],
+    "goal": "Instantiate the Lawvere FPT gallery proof with sentences, diagonal lemma point-surjectivity, and negated provability to derive the incompleteness conclusion."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-04T02:41:19-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Assess Godel incompleteness as a Lawvere FPT instance and check whether Lean 4 has usable provability and diagonal-lemma machinery.",
     "blockers": [],
-    "nextAction": "Fast path: Quick Mathlib search, then directly to ACT if obvious approach found.",
+    "nextAction": "Fast path: search Mathlib for provability logic, formal syntax or Godel coding, Peano arithmetic support, and diagonal-lemma machinery before choosing an ACT approach.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +40,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "OBSERVE only: local notes define the Lawvere/Godel instantiation goal and identify likely hard dependencies; no implementation attempts are recorded.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: cantor-diagonalization-oq-03-oq-01-oq-03\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "The intended Lawvere instance maps values to sentences, point-surjectivity to the diagonal lemma, and the self-map to negated provability.",
+      "The main technical risk is the amount of formal syntax, Godel coding, provability logic, and Peano arithmetic infrastructure required.",
+      "A direct syntactic proof via Godel numbering is possible in principle but may be technically heavy and less directly connected to the Lawvere gallery proof."
+    ],
+    "mathlibGaps": [
+      "Need to verify whether Mathlib has usable provability logic and Peano arithmetic infrastructure for this formalization.",
+      "No local evidence identifies an existing Mathlib diagonal lemma for provability logic."
+    ],
+    "nextSteps": [
+      "Search Mathlib for provability logic, formal syntax, Godel coding, Peano arithmetic, and diagonal lemma support.",
+      "If suitable infrastructure exists, model the Lawvere evaluation structure for sentences and provability.",
+      "If not, scope the required custom syntax and provability layer before attempting the Lawvere instance."
+    ],
+    "markdown": "# Knowledge Base: cantor-diagonalization-oq-03-oq-01-oq-03\n\n## Problem Understanding\n\nThe problem is to formalize Godel's first incompleteness theorem as an instance of the Lawvere Fixed-Point Theorem. The intended interpretation is: values are sentences, point-surjectivity is supplied by the diagonal lemma, and the self-map is negated provability, yielding a true but unprovable sentence.\n\n---\n\n## Local Evidence\n\nThe parent proof cantor-diagonalization-oq-03-oq-01 provides the Lawvere FPT gallery result. The problem note records that a Lean 4 derivation of the Godel instance and a Lean 4 diagonal lemma for provability logic remain open.\n\n---\n\n## Technical Risks\n\nThe local notes flag formal-system encoding, Godel numbering or equivalent syntax machinery, provability logic, and the diagonal lemma as the hard prerequisites. Mathlib support for these pieces still needs a focused search.\n\n---\n\n## Dead Ends\n\nNo dead ends are recorded in the local research state.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "logic",
+    "incompleteness",
+    "godel",
+    "lawvere",
+    "category-theory",
+    "provability"
   ],
   "relatedProofs": [
     "cantor-diagonalization",

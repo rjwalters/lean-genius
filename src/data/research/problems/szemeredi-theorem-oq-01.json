@@ -1,27 +1,37 @@
 {
   "slug": "szemeredi-theorem-oq-01",
-  "title": "[Problem Title]",
+  "title": "Kelley-Meka bounds for 3-AP-free sets",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{For }A \\subseteq \\{1,\\dots,N\\}\\text{ with no nontrivial 3-term arithmetic progressions, formalize a Kelley-Meka-style density bound such as }|A| \\le N / \\exp(c(\\log N)^{1/11})\\text{ for some }c>0\\text{, or a tractable weaker bound tied to the existing Szemeredi gallery infrastructure.}",
+    "plain": "Investigate a quantitative extension of the Szemerédi theorem gallery: instead of only saying dense sets contain 3-term arithmetic progressions, formalize an upper bound for how large a 3-AP-free subset of {1,...,N} can be, with the Kelley-Meka breakthrough as the guiding target.",
+    "whyMatters": [
+      "Kelley-Meka 2023 is a major recent advance on quantitative bounds for 3-AP-free sets.",
+      "Even a weaker formal statement would connect the qualitative Szemerédi gallery proof to quantitative additive combinatorics.",
+      "The task can reuse and stress-test existing AP, density, regularity, and counting infrastructure in the local Szemerédi proof family."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "The related `szemeredi-theorem` gallery proof records the qualitative k=3 density result.",
+      "The selection report identifies related local infrastructure in `szemeredi-regularity`, `szemeredi-core`, and `szemeredi-counting`."
+    ],
+    "open": [
+      "The Kelley-Meka quantitative bound itself is not formalized in this local entry.",
+      "It is not yet clear which density, AP-free, or finite-interval APIs are sufficient for even a weaker Salem-Spencer-style bound."
+    ],
+    "goal": "Survey the local Szemerédi proof family and Mathlib additive-combinatorics APIs, then choose a tractable quantitative target: a statement-only Kelley-Meka theorem, a weaker exponential bound, or a bridge from 3-AP-freeness to cap-set style structure."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-05T19:30:47-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "OBSERVE the quantitative 3-AP-free-set problem selected from the Kelley-Meka direction and map it onto existing Szemerédi gallery infrastructure.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Survey `proofs/Proofs/Szemeredi*.lean` and Mathlib additive-combinatorics/density APIs, then decide whether to formalize the Kelley-Meka statement, a weaker Salem-Spencer-style bound, or a cap-set bridge.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,26 +39,44 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "The selection report identifies this as an OBSERVE-phase quantitative additive-combinatorics target: formalize or axiomatize a Kelley-Meka-style upper bound for 3-AP-free subsets of finite intervals. The local problem.md and knowledge.md remain template-only, so no proof progress is claimed.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: szemeredi-theorem-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "The target is quantitative: upper bounds for 3-AP-free sets in {1,...,N}, not the already represented qualitative Szemerédi theorem alone.",
+      "The report suggests three possible first scopes: state the Kelley-Meka theorem, prove a weaker exponential bound, or formalize a cap-set/tensor-power bridge.",
+      "The existing `szemeredi-theorem`, `szemeredi-regularity`, `szemeredi-core`, and `szemeredi-counting` entries are the natural local starting points."
+    ],
+    "mathlibGaps": [
+      "Need to confirm available APIs for finite interval density, 3-term arithmetic progressions, AP-free sets, and quantitative asymptotic bounds.",
+      "Higher-order Fourier-analysis ingredients from Kelley-Meka are likely absent and should be treated as deep external input unless proved separately."
+    ],
+    "nextSteps": [
+      "Read the local `proofs/Proofs/Szemeredi*.lean` files to identify existing AP-free and density predicates.",
+      "Search Mathlib for additive-combinatorics and finite-interval APIs relevant to 3-term progressions.",
+      "Choose the first scoped deliverable: statement-only Kelley-Meka theorem, weaker exponential bound, or cap-set bridge."
+    ],
+    "markdown": "# Knowledge Base: szemeredi-theorem-oq-01\n\n## Problem Understanding\n\nThis entry targets the Kelley-Meka direction for quantitative bounds on 3-AP-free subsets of finite intervals. The selection report is the substantive evidence; the generated problem.md is still template-only.\n\n## Insights\n\nUseful first scopes are: formalize the Kelley-Meka statement as an axiomatized theorem, prove a weaker Salem-Spencer-style bound, or connect 3-AP-freeness to a cap-set/tensor-power formulation.\n\n## Dead Ends\n\nNone recorded yet.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "additive-combinatorics",
+    "szemeredi-theorem",
+    "three-term-arithmetic-progressions",
+    "density-bounds",
+    "kelley-meka"
   ],
   "relatedProofs": [
     "szemeredi-full",
     "szemeredi-theorem"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Kelley and Meka (2023), strong bounds for 3-term arithmetic-progression-free sets"
+    ],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Combinatorics.Additive",
+      "Mathlib.Data.Finset.Interval"
+    ]
   },
   "started": "2026-04-06T03:14:36.235Z",
   "lastUpdate": "2026-04-12T21:07:23.996Z",

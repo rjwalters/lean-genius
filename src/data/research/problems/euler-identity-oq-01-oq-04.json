@@ -1,27 +1,38 @@
 {
   "slug": "euler-identity-oq-01-oq-04",
-  "title": "[Problem Title]",
+  "title": "Extend Euler identity proof to $\\mathbb{R}/2\\pi\\mathbb{Z} \\cong S^1$",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "B",
-  "path": "fast",
+  "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{Construct a group isomorphism } \\mathbb{R}/2\\pi\\mathbb{Z} \\cong S^1 \\text{ induced by } t \\mapsto \\exp(i t).",
+    "plain": "Show that the Euler exponential map t |-> exp(i*t) descends from real angles modulo 2*pi to the unit circle and gives a full group isomorphism.",
+    "whyMatters": [
+      "Turns the point identity e^(i*pi)+1=0 into the structural circle-group statement behind Euler's formula.",
+      "Connects the Euler identity gallery to quotient groups, Lie groups, and Mathlib's circle APIs.",
+      "Likely produces a reusable wrapper around existing exponential-map and AddCircle infrastructure."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`euler-identity` is the base formalization of e^(i*pi) + 1 = 0.",
+      "`euler-identity-oq-01` extends the Euler identity thread via Taylor-series tsum facts for cosine and sine.",
+      "The selection report identifies relevant Mathlib infrastructure: `Complex.expMapCircle`, `Complex.exp_periodic`, `AddCircle`, `AddCircle.homeomorphCircle`, `QuotientAddGroup.quotientKerEquivRange`, and `MonoidHom.ker`."
+    ],
+    "open": [
+      "Determine whether `AddCircle.homeomorphCircle` or `QuotientAddGroup.quotientKerEquivRange Complex.expMapCircle` already yields the desired group isomorphism.",
+      "If using a quotient-by-kernel route, locate or prove the kernel of `Complex.expMapCircle` as the 2*pi integer lattice."
+    ],
+    "goal": "Formalize a clean theorem or wrapper showing R/(2*pi Z) is group-isomorphic to S^1 via Euler's exponential map, without claiming proof completion before Mathlib API exploration."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-05T19:03:34-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Initial understanding of the selected complex-analysis/Lie-group target; no proof attempt has started.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Move to ORIENT by reading the related Euler identity Lean files and searching Mathlib for expMapCircle, AddCircle.homeomorphCircle, exp_periodic, and quotient-kernel isomorphism lemmas.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +40,30 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "EMPTY research state: selection report frames the target as extending the Euler identity thread to the full group isomorphism R/(2*pi Z) ~= S^1 via Euler's exponential map; no implementation attempt has begun.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: euler-identity-oq-01-oq-04\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "This is a complex-analysis/Lie-group formalization target.",
+      "The intended map is the Euler exponential homomorphism from real angles to the unit circle, with angles identified modulo 2*pi.",
+      "The selection report highlights two likely routes: reuse `AddCircle.homeomorphCircle`, or apply a quotient-by-kernel theorem to `Complex.expMapCircle`.",
+      "Kernel identification for `Complex.expMapCircle` may be the main remaining work if Mathlib does not already package it in the needed form."
+    ],
+    "mathlibGaps": [
+      "Unknown at OBSERVE time whether Mathlib exposes the kernel of `Complex.expMapCircle` as the 2*pi integer lattice in the exact form needed."
+    ],
+    "nextSteps": [
+      "Read `proofs/Proofs/EulerIdentityOQ01.lean` and related Euler identity proofs.",
+      "Search Mathlib for `Complex.expMapCircle`, `Complex.exp_periodic`, `AddCircle.homeomorphCircle`, and quotient-kernel isomorphism lemmas.",
+      "Decide whether the target is a thin wrapper around existing APIs or requires an additional kernel lemma."
+    ],
+    "markdown": "# Knowledge Base: euler-identity-oq-01-oq-04\n\n## Problem Understanding\n\nThe selected target is to extend the Euler identity proof thread to the full group isomorphism R/(2*pi Z) ~= S^1. The intended map sends a real angle t to exp(i*t) on the unit circle and should descend through the quotient identifying angles that differ by 2*pi.\n\n---\n\n## Current Evidence\n\nThe selection report classifies this as complex analysis / Lie group theory and points to Mathlib APIs around `Complex.expMapCircle`, `Complex.exp_periodic`, `AddCircle`, `AddCircle.homeomorphCircle`, `QuotientAddGroup.quotientKerEquivRange`, and `MonoidHom.ker`. The research state is still OBSERVE with zero attempts, so no new theorem has been built for this target yet.\n\n---\n\n## Open Work\n\nThe next question is whether `AddCircle.homeomorphCircle` already gives the desired quotient-circle isomorphism, or whether the proof should use the first isomorphism theorem for `Complex.expMapCircle`. The quotient-by-kernel route may require locating or proving that the kernel is exactly the 2*pi integer lattice.\n\n---\n\n## Next Steps\n\nRead the related Euler identity Lean files, search the named Mathlib APIs, and then decide whether the result is a wrapper theorem or needs an auxiliary kernel lemma.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "complex-analysis",
+    "lie-group-theory",
+    "group-theory",
+    "quotient-groups",
+    "euler-identity"
   ],
   "relatedProofs": [
     "euler-identity",
