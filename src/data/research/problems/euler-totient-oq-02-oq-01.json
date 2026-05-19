@@ -1,7 +1,30 @@
 {
   "id": "euler-totient-oq-02-oq-01",
-  "title": "Can the totient product formula φ(n) = n·∏_{p|n}(1-1/p) be formalized directl...",
-  "description": "Can the totient product formula φ(n) = n·∏_{p|n}(1-1/p) be formalized directly in Lean using Mathlib's prime factorization infrastructure? This would generalize totient_prime_pow by expressing φ as a product over distinct prime divisors.",
+  "title": "Euler Totient OQ-02-OQ-01: Factorization Product Formula",
+  "description": "Records the Lean factorization/product-formula route for Euler's totient function using Mathlib's prime-factorization infrastructure.",
+  "problemStatement": {
+    "formal": "Derive totient product formulas from Nat.factorization and multiplicativity, including rational and divisor-product presentations.",
+    "plain": "Formalizes the standard product formula for Euler's totient function by reducing it to the prime-power factorization of n.",
+    "whyMatters": [
+      "It connects the computational totient API to the classical product over prime divisors.",
+      "The file provides concrete checked examples such as phi(12), phi(30), and phi(360).",
+      "The proof clarifies that the product formula is a consequence of factorization plus multiplicativity."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`totient_factorization_formula` states the factorization-product version for nonzero n.",
+      "`totient_rational_formula` and `totient_div_primes_formula` expose rational and divisor-product forms.",
+      "`totient_from_multiplicativity` derives the formula from multiplicativity and prime powers.",
+      "`totient_twelve_via_formula`, `totient_360`, and `totient_rational_30` verify sample computations.",
+      "`totient_density` and `totient_density_same_support` record density consequences.",
+      "`EulerTotientOQ02OQ01.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "The file focuses on the factorization route, not on a separate analytic theory of average totient order."
+    ],
+    "goal": "Surface the completed totient product-formula formalization as a verified extension of multiplicativity."
+  },
   "source": {
     "proofId": "euler-totient-oq-02",
     "proofTitle": "Multiplicativity of Euler's Totient Function",
@@ -34,6 +57,8 @@
     "multiplicative-functions",
     "modular-arithmetic",
     "totient",
+    "factorization",
+    "formalized",
     "seeker-selected"
   ],
   "relatedProofs": [

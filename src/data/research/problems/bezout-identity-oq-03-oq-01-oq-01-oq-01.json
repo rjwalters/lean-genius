@@ -1,8 +1,33 @@
 {
   "id": "bezout-identity-oq-03-oq-01-oq-01-oq-01",
   "name": "Ideal-theoretic Chinese Remainder Theorem: R/⨅Iᵢ ≅ ∏ R/Iᵢ",
+  "title": "Bezout OQ-03-OQ-01-OQ-01-OQ-01: Ideal-Theoretic CRT",
   "status": "completed",
   "phase": "COMPLETED",
+  "problemStatement": {
+    "formal": "For pairwise coprime ideals, construct quotient equivalences R/(inf I_i) ~= product_i R/I_i and derive two-ideal product/intersection forms.",
+    "plain": "Formalizes the ideal-theoretic Chinese Remainder Theorem and its two-ideal product form using Mathlib's ideal quotient equivalences.",
+    "whyMatters": [
+      "It lifts Bezout-style congruence reasoning from integers to ideal quotients.",
+      "The proof shows how coprime ideals turn intersections into products.",
+      "The general and two-ideal CRT equivalences connect the elementary and algebraic formulations."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`coprime_iff_sup_eq_top` bridges Mathlib's ideal coprimality API with sup-equals-top.",
+      "`inf_eq_mul_of_coprime` proves the two-ideal intersection/product identity.",
+      "`crt_two` constructs the two-ideal quotient equivalence.",
+      "`crt_general` constructs the finite family quotient equivalence.",
+      "`crt_product` combines the product identity with the two-ideal CRT.",
+      "`isCoprime_of_coprime_inf` records coprimality inheritance through intersections.",
+      "`BezoutIdentityOQ03OQ01OQ01OQ01.lean` is recorded with 0 axioms and 0 sorries in its source summary."
+    ],
+    "open": [
+      "The file relies on Mathlib quotient-equivalence APIs rather than developing a separate constructive quotient algorithm."
+    ],
+    "goal": "Expose the completed ideal-theoretic CRT slice and its product/intersection consequences."
+  },
   "knowledge": {
     "insights": [
       "Mathlib has Ideal.quotientInfRingEquivPiQuotient for k-fold CRT and quotientInfEquivQuotientProd for 2-fold",

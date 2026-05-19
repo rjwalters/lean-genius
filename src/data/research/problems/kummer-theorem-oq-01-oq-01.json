@@ -1,7 +1,30 @@
 {
   "id": "kummer-theorem-oq-01-oq-01",
-  "title": "Can the p-adic valuation statement be fully formalized using Kummer's theorem...",
-  "description": "Can the p-adic valuation statement be fully formalized using Kummer's theorem from Mathlib? This would require a Lean formalism for base-p carries (not yet in Mathlib) and induction over the telescoping product.",
+  "title": "Kummer OQ-01-OQ-01: Multinomial Carry Valuation",
+  "description": "Records the Lean bridge from multinomial p-adic valuation to a sum of binomial Kummer carry-count valuations.",
+  "problemStatement": {
+    "formal": "Express the p-adic valuation of a multinomial coefficient as the sum of binomial factorization valuations arising from the telescoping product.",
+    "plain": "Turns the multinomial version of Kummer's theorem into a verified Lean bridge: multinomial valuations are reduced to the Kummer theorem for binomial coefficients.",
+    "whyMatters": [
+      "It connects multinomial divisibility questions to Mathlib's binomial Kummer theorem.",
+      "The proof explains how the telescoping product controls the valuation without adding axioms.",
+      "Concrete multinomial checks provide regression examples for the formal carry-count story."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`factorization_list_prod` proves factorization additivity over nonzero list products.",
+      "`multinomial_factorization_is_sum_of_binomial_factorizations` gives the valuation bridge for multinomials.",
+      "`multinomial_kummer` states the carry-count interpretation through Mathlib's binomial Kummer theorem.",
+      "`multinomial_123_p2`, `multinomial_123_p3`, and `multinomial_123_value` verify concrete examples.",
+      "`KummerTheoremOQ01OQ01.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "A standalone base-p carry formalism for multinomials remains a broader library direction.",
+      "The file relies on the existing binomial Kummer theorem rather than rebuilding the full carry theory from scratch."
+    ],
+    "goal": "Expose the completed multinomial valuation bridge while keeping the larger carry-formalism gap explicit."
+  },
   "source": {
     "proofId": "kummer-theorem-oq-01",
     "proofTitle": "Multinomial Analogs of Kummer's Theorem",
@@ -14,6 +37,8 @@
     "number-theory",
     "p-adic",
     "multinomial",
+    "carry-counts",
+    "formalized",
     "seeker-selected"
   ],
   "relatedProofs": [

@@ -1,14 +1,33 @@
 {
   "slug": "bezout-identity-oq-03-oq-01-oq-02",
-  "title": "Bezout Identity OQ-03 OQ-01 OQ-02",
+  "title": "Bezout OQ-03-OQ-01-OQ-02: Generalized CRT over Integers",
   "phase": "COMPLETED",
   "status": "completed",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "Formal investigation in number theory: Bezout Identity OQ-03 OQ-01 OQ-02.",
-    "whyMatters": []
+    "formal": "For integers m,n,a,b, prove solvability and uniqueness criteria for simultaneous congruences in terms of gcd and lcm.",
+    "plain": "Formalizes the two-modulus generalized Chinese Remainder Theorem over integers, including existence, uniqueness modulo lcm, and explicit solution structure.",
+    "whyMatters": [
+      "It covers the non-coprime CRT case used by many modular-arithmetic arguments.",
+      "The gcd-divides-difference condition is the exact solvability criterion.",
+      "The lcm uniqueness statements explain precisely what changes when moduli are not coprime."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "`solvable_implies_gcd_dvd` proves necessity of the gcd divisibility condition.",
+      "`gcd_dvd_implies_solvable` proves sufficiency.",
+      "`generalized_crt_iff` packages the two-modulus existence criterion.",
+      "`crt_unique_mod_lcm` and `crt_unique_iff_lcm` prove uniqueness modulo lcm.",
+      "`genCRTSolution`, `genCRT_mod_left`, and `genCRT_mod_right` provide an explicit solution interface.",
+      "`generalized_crt_modEq` and `generalized_crt_full` state the final modular equivalence forms.",
+      "`BezoutIdentityOQ03OQ01OQ02.lean` is recorded with 0 axioms and 0 sorries."
+    ],
+    "open": [
+      "This slice handles the integer two-modulus case; ideal-theoretic and k-fold variants live in related Bezout/CRT files."
+    ],
+    "goal": "Expose the completed generalized CRT proof over integers with its exact gcd and lcm criteria."
   },
   "currentState": {
     "phase": "COMPLETED",
