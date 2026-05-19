@@ -30,6 +30,24 @@ const DECLARATION_KEYWORDS: DeclarationKind[] = [
   'example',
 ];
 
+const DECLARATION_PREFIX = String.raw`(?:@\[.*?\]\s*)*(?:(?:private|protected|noncomputable)\s+)*`;
+
+function matchDeclarationHeader(trimmed: string): { kind: DeclarationKind; afterKeyword: string } | null {
+  for (const keyword of DECLARATION_KEYWORDS) {
+    const pattern = new RegExp(`^${DECLARATION_PREFIX}${keyword}\\s+`);
+    const match = trimmed.match(pattern);
+
+    if (match) {
+      return {
+        kind: keyword,
+        afterKeyword: trimmed.slice(match[0].length),
+      };
+    }
+  }
+
+  return null;
+}
+
 /**
  * Parse a Lean file and extract all anchorable constructs
  */
@@ -279,38 +297,14 @@ function tryParseDeclaration(
   const line = lines[startIndex];
   const trimmed = line.trim();
 
-  // Check for declaration keywords
-  let foundKind: DeclarationKind | null = null;
-  let afterKeyword = '';
-
-  for (const keyword of DECLARATION_KEYWORDS) {
-    // Match: "theorem name", "@[attr] theorem name", "private theorem name", etc.
-    const patterns = [
-      new RegExp(`^${keyword}\\s+`),
-      new RegExp(`^@\\[.*?\\]\\s*${keyword}\\s+`),
-      new RegExp(`^private\\s+${keyword}\\s+`),
-      new RegExp(`^protected\\s+${keyword}\\s+`),
-      new RegExp(`^noncomputable\\s+${keyword}\\s+`),
-    ];
-
-    for (const pattern of patterns) {
-      const match = trimmed.match(pattern);
-      if (match) {
-        foundKind = keyword;
-        afterKeyword = trimmed.slice(match[0].length);
-        break;
-      }
-    }
-    if (foundKind) break;
-  }
-
-  if (!foundKind) return null;
+  const header = matchDeclarationHeader(trimmed);
+  if (!header) return null;
 
   // Extract name (first identifier after keyword)
   // Note: 'example' declarations don't have names, they go directly to ':'
-  const nameMatch = afterKeyword.match(/^([a-zA-Z_][a-zA-Z0-9_']*)/);
+  const nameMatch = header.afterKeyword.match(/^([a-zA-Z_][a-zA-Z0-9_']*)/);
   let name: string | undefined;
-  if (foundKind === 'example') {
+  if (header.kind === 'example') {
     // Examples are anonymous - use a placeholder name based on line number
     name = `example_${startIndex + 1}`;
   } else if (nameMatch) {
@@ -325,7 +319,7 @@ function tryParseDeclaration(
   return {
     construct: {
       type: 'declaration',
-      kind: foundKind,
+      kind: header.kind,
       name,
       startLine: startIndex + 1,
       endLine: endIndex + 1,
@@ -346,6 +340,34 @@ function findDeclarationEnd(lines: string[], startIndex: number): number {
   for (let i = startIndex; i < lines.length; i++) {
     const line = lines[i];
 
+    // Check for next declaration or blank line as terminator
+    if (i > startIndex) {
+      const nextTrimmed = lines[i].trim();
+
+      // Empty line with balanced braces often ends a declaration
+      if (nextTrimmed === '' && braceDepth <= 0 && parenDepth <= 0) {
+        return i - 1;
+      }
+
+      // New top-level declaration starts
+      if (braceDepth <= 0 && parenDepth <= 0) {
+        if (matchDeclarationHeader(nextTrimmed)) {
+          return i - 1;
+        }
+
+        // Other top-level constructs
+        if (
+          nextTrimmed.startsWith('namespace ') ||
+          nextTrimmed.startsWith('end ') ||
+          nextTrimmed.startsWith('section ') ||
+          nextTrimmed.startsWith('/-!') ||
+          nextTrimmed.startsWith('#')
+        ) {
+          return i - 1;
+        }
+      }
+    }
+
     // Strip line comments before counting delimiters
     // This prevents parens/braces in comments from affecting depth tracking
     const lineWithoutComment = line.replace(/--.*$/, '');
@@ -361,40 +383,6 @@ function findDeclarationEnd(lines: string[], startIndex: number): number {
     // Check for "by" starting a tactic proof
     if (line.includes(':= by') || line.trim() === 'by' || line.trim().startsWith('by ')) {
       inProofBlock = true;
-    }
-
-    // Check for next declaration or blank line as terminator
-    if (i > startIndex) {
-      const nextTrimmed = lines[i].trim();
-
-      // Empty line with balanced braces often ends a declaration
-      if (nextTrimmed === '' && braceDepth <= 0 && parenDepth <= 0) {
-        return i - 1;
-      }
-
-      // New top-level declaration starts
-      if (braceDepth <= 0 && parenDepth <= 0) {
-        for (const keyword of DECLARATION_KEYWORDS) {
-          if (
-            nextTrimmed.startsWith(keyword + ' ') ||
-            nextTrimmed.match(new RegExp(`^@\\[.*?\\]\\s*${keyword}\\s+`)) ||
-            nextTrimmed.startsWith('private ' + keyword) ||
-            nextTrimmed.startsWith('protected ' + keyword)
-          ) {
-            return i - 1;
-          }
-        }
-        // Other top-level constructs
-        if (
-          nextTrimmed.startsWith('namespace ') ||
-          nextTrimmed.startsWith('end ') ||
-          nextTrimmed.startsWith('section ') ||
-          nextTrimmed.startsWith('/-!') ||
-          nextTrimmed.startsWith('#')
-        ) {
-          return i - 1;
-        }
-      }
     }
   }
 
