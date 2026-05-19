@@ -95,7 +95,7 @@ function scanResearchEntries(): ExistingEntry[] {
     if (item.isDirectory() && item.name.toLowerCase().includes('erdos')) {
       // Try to extract erdos number from directory name
       const match = item.name.match(/erdos-?(\d+)/i)
-      const erdosNumber = match ? parseInt(match[1]) : undefined
+      const erdosNumber = match ? parseInt(match[1], 10) : undefined
 
       entries.push({
         type: 'research',
@@ -109,7 +109,7 @@ function scanResearchEntries(): ExistingEntry[] {
     if (item.isFile() && item.name.toLowerCase().includes('erdos') && item.name.endsWith('.md')) {
       const slug = item.name.replace('.md', '')
       const match = slug.match(/erdos-?(\d+)/i)
-      const erdosNumber = match ? parseInt(match[1]) : undefined
+      const erdosNumber = match ? parseInt(match[1], 10) : undefined
 
       entries.push({
         type: 'research',
