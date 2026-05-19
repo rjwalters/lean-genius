@@ -1,8 +1,8 @@
 {
   "slug": "erdos-1071",
   "title": "Erdős #1071",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,20 +16,22 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "ACT",
-    "since": "2026-01-15T14:38:41.571Z",
-    "iteration": 3,
-    "focus": "Proved structural geometry lemmas. 3 deep axioms remain.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "COMPLETED",
+    "since": "2026-05-17T05:23:00.000Z",
+    "iteration": 4,
+    "focus": "Slug graduated 2026-03-24 (registry); gallery axiomatized with 1 Danzer axiom + 0 sorries. S4 reconciles per-slug research JSON + state.md + pool to the registry-COMPLETED state. Existence of a maximal unit-segment packing in [0,1]^2 proved constructively via Zorn (exists_maximal_packing). Part (a) Danzer finite witness retained as 1 axiom; Part (b) countably-infinite-maximal-packing-in-a-region remains the OPEN Erdős conjecture, stated as a Prop, not assumed.",
+    "blockers": [
+      "Danzer's $10-prize construction is not in Mathlib; replacing axiom danzer_finite_maximal_packing with a constructive theorem would be ~500–1500 LOC of geometry — not a session-scale task. axiomatized + badge=axiom honestly reflects this."
+    ],
+    "nextAction": "None — slug COMPLETED. Optional future work documented in state.md: (1) constructive Danzer, (2) concrete countably-infinite region-packing witnesses for Part (b), (3) cosmetic refactor of unitSquare_convex.",
     "attemptCounts": {
-      "total": 0,
+      "total": 4,
       "currentApproach": 0,
-      "approachesTried": 0
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Added 3 structural lemmas (segmentSet_nonempty, not_areDisjoint_self, maximal_packing_nonempty). Total: 20 theorems, 3 axioms, 0 sorries.",
+    "progressSummary": "COMPLETED: Existence of a maximal unit-segment packing of [0,1]^2 proved constructively via Zorn (exists_maximal_packing); singleton-packing + horizontalMidSegment witness gives non-emptiness (maximal_packing_nonempty). Danzer's finite-maximal-packing result (Part (a), $10 prize) retained as 1 axiom (danzer_finite_maximal_packing); Part (b) countably-infinite-maximal-region-packing is the OPEN Erdős conjecture, stated as a Prop, not assumed. Total: 23 theorems/lemmas, 14 def + 1 structure + 1 abbrev = 16 definitions, 1 axiom, 0 sorries.",
     "builtItems": [
       "euclidDist definition",
       "segmentSet definition (convex combination)",
@@ -122,15 +124,16 @@
     "mathlib": []
   },
   "started": "2026-01-15T14:38:41.571Z",
-  "lastUpdate": "2026-03-28T23:10:00.000Z",
+  "lastUpdate": "2026-05-17T05:23:00.000Z",
+  "completed": "2026-03-24T17:16:51.000Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1071Problem.lean",
       "filename": "Erdos1071Problem.lean",
-      "lineCount": 324,
-      "theoremCount": 22,
+      "lineCount": 323,
+      "theoremCount": 23,
       "axiomCount": 1,
       "defCount": 14,
       "sorryCount": 0,
