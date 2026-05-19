@@ -77,5 +77,26 @@
     "formal": "",
     "plain": "Proves structural constraints on hypothetical Collatz cycles: no fixed points, no 2-cycles, the unique cycle through 1 is {1,4,2} with period 3, and derives algebraic bounds on cycle length from the 2^M > 3^j constraint. All n ≤ 20 verified to reach 1.",
     "whyMatters": []
-  }
+  },
+  "knownResults": {
+    "proven": [
+      "The only fixed point of the Collatz step on natural numbers is 0.",
+      "There are no nonzero two-cycles for the Collatz map.",
+      "The cycle through 1 has minimum period 3, corresponding to 1, 4, 2.",
+      "Odd-cycle halving requirements imply small lower bounds on possible cycle lengths.",
+      "All starting values from 1 through 20 are verified to reach 1 with explicit step counts."
+    ],
+    "open": [
+      "Tighter minimum-element bounds for hypothetical cycles are not yet formalized.",
+      "Large verification ranges need longer or more structured native_decide computations.",
+      "Connections to Tao's almost-bounded orbit result remain future work."
+    ],
+    "goal": "Use the fully verified small-cycle exclusions as a reusable base for stronger compressed-cycle and stopping-time arguments."
+  },
+  "tags": [
+    "number-theory",
+    "collatz",
+    "dynamical-systems",
+    "cycle-exclusion"
+  ]
 }

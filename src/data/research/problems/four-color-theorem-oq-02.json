@@ -3,6 +3,28 @@
   "name": "Minimal unavoidable reducible configurations",
   "parentId": "four-color-theorem",
   "status": "completed",
+  "problemStatement": {
+    "formal": "Survey known bounds and formal placeholders around the minimum size of unavoidable reducible configuration sets used in computer-assisted proofs of the Four Color Theorem.",
+    "plain": "Record what is known about how small an unavoidable reducible configuration set for the Four Color Theorem can be, including the RSST 633-configuration proof and the lack of a tight lower bound.",
+    "whyMatters": [
+      "Keeps the gallery entry honest about being a survey rather than a new human-readable Four Color proof.",
+      "Connects the formal Lean stub to the historical computer-assisted proof strategy.",
+      "Separates known configuration counts from the still-open minimality question."
+    ]
+  },
+  "knownResults": {
+    "proven": [
+      "The Robertson-Sanders-Seymour-Thomas proof uses an unavoidable set of 633 reducible configurations.",
+      "A lower bound of at least 10 configurations is recorded in the survey entry.",
+      "The Lean development contains concrete data types for the survey, but not a full reducibility checker."
+    ],
+    "open": [
+      "The exact minimum size of an unavoidable reducible configuration set is not known.",
+      "A fully formal, human-readable Four Color proof remains outside this entry.",
+      "Bridging the survey data to a verified reducibility-checking pipeline is future work."
+    ],
+    "goal": "Represent the minimal-configuration question as a bounded survey entry while keeping the full Four Color proof and reducibility machinery explicitly out of scope."
+  },
   "knowledge": {
     "score": 4,
     "insights": [
@@ -54,5 +76,11 @@
     "four-color-theorem",
     "four-color-theorem-oq-01",
     "four-color-theorem-oq-02"
+  ],
+  "tags": [
+    "graph-theory",
+    "combinatorics",
+    "computer-assisted-proof",
+    "four-color-theorem"
   ]
 }
