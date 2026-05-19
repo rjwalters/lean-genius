@@ -11,7 +11,7 @@
  * 1. Clean nav prefix: "Forum\nFavourites\nTags\n..." (nav on its own lines)
  * 2. Mixed prefix: "Let Forum\nFavourites\n..." (content fragment + nav)
  *
- * Run: npx tsx scripts/research/fix-formal-statements.ts
+ * Run: npx tsx scripts/research/fix-formal-statements.ts [--dry-run]
  */
 
 import * as fs from 'fs'
@@ -22,6 +22,22 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 const PROBLEMS_DIR = path.join(__dirname, '../../research/problems')
+
+interface Options {
+  dryRun: boolean
+}
+
+type ProcessResult = 'cleaned' | 'would-clean' | 'already-clean' | 'placeholder'
+
+function printUsage(): void {
+  console.log(`Usage: npx tsx scripts/research/fix-formal-statements.ts [options]
+
+Strip scraped navigation junk from Erdos research problem.md files.
+
+Options:
+  --dry-run   Report files that would be cleaned without writing changes
+  -h, --help  Show this help message`)
+}
 
 /**
  * Check if text contains the navigation junk pattern.
@@ -111,7 +127,7 @@ function stripTrailingJunk(text: string): string {
  * Process a single problem.md file.
  * Cleans both formal statement and plain language sections.
  */
-function processFile(filePath: string): 'cleaned' | 'already-clean' | 'placeholder' {
+function processFile(filePath: string, options: Options): ProcessResult {
   const content = fs.readFileSync(filePath, 'utf-8')
 
   // Check if this is a placeholder
@@ -167,6 +183,9 @@ function processFile(filePath: string): 'cleaned' | 'already-clean' | 'placehold
   }
 
   if (didClean) {
+    if (options.dryRun) {
+      return 'would-clean'
+    }
     fs.writeFileSync(filePath, modified)
     return 'cleaned'
   }
@@ -177,8 +196,8 @@ function processFile(filePath: string): 'cleaned' | 'already-clean' | 'placehold
 /**
  * Main
  */
-function main(): void {
-  console.log('Fixing formal statements in Erdos research problem files...\n')
+function main(options: Options): void {
+  console.log(`Fixing formal statements in Erdos research problem files${options.dryRun ? ' (dry run)' : ''}...\n`)
 
   const dirs = fs.readdirSync(PROBLEMS_DIR)
     .filter(d => d.startsWith('erdos-'))
@@ -186,18 +205,23 @@ function main(): void {
     .sort()
 
   let cleaned = 0
+  let wouldClean = 0
   let alreadyClean = 0
   let placeholder = 0
   let potentialRescrape = 0
 
   for (const dir of dirs) {
     const filePath = path.join(PROBLEMS_DIR, dir, 'problem.md')
-    const result = processFile(filePath)
+    const result = processFile(filePath, options)
 
     switch (result) {
       case 'cleaned':
         cleaned++
         console.log(`  Cleaned: ${dir}`)
+        break
+      case 'would-clean':
+        wouldClean++
+        console.log(`  WOULD CLEAN: ${dir}`)
         break
       case 'already-clean':
         alreadyClean++
@@ -219,11 +243,43 @@ function main(): void {
   }
 
   console.log(`\n--- Summary ---`)
-  console.log(`Files cleaned:     ${cleaned}`)
+  if (options.dryRun) {
+    console.log(`Would clean:       ${wouldClean}`)
+  } else {
+    console.log(`Files cleaned:     ${cleaned}`)
+  }
   console.log(`Already clean:     ${alreadyClean}`)
   console.log(`Placeholders:      ${placeholder}`)
   console.log(`  (with LaTeX in plain, could rescrape: ${potentialRescrape})`)
   console.log(`Total processed:   ${dirs.length}`)
+
+  if (options.dryRun) {
+    console.log('No files written')
+  }
 }
 
-main()
+function parseArgs(args: string[]): Options {
+  if (args.includes('--help') || args.includes('-h')) {
+    printUsage()
+    process.exit(0)
+  }
+
+  const unknownArgs = args.filter(arg => arg !== '--dry-run')
+  if (unknownArgs.length > 0) {
+    console.error(`Unknown option(s): ${unknownArgs.join(', ')}`)
+    printUsage()
+    process.exit(1)
+  }
+
+  return {
+    dryRun: args.includes('--dry-run'),
+  }
+}
+
+function isMainModule(): boolean {
+  return process.argv[1] ? path.resolve(process.argv[1]) === __filename : false
+}
+
+if (isMainModule()) {
+  main(parseArgs(process.argv.slice(2)))
+}
