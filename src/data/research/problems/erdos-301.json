@@ -1,7 +1,7 @@
 {
   "slug": "erdos-301",
   "title": "Erdős #301",
-  "phase": "OBSERVE",
+  "phase": "SCOPED",
   "status": "active",
   "tier": "A",
   "path": "full",
@@ -16,16 +16,18 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-01-12T23:48:29.416Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "phase": "SCOPED",
+    "since": "2026-04-27T17:35:00Z",
+    "iteration": 2,
+    "focus": "Erdos301Problem.lean (158 lines, 0 sorries, 0 axioms, 7 theorems, 4 defs) formalizes f(N) = max |A ⊆ {1,...,N}| with no Egyptian-fraction decomposition. Lower bound f(N) ≥ N/2 proved via half-interval (N/2, N]. Upper bound theorem vanDoorn_upper is misleadingly named: states f(N) ≤ (25/28 + 1)·N = (53/28)·N which is trivially true since f(N) ≤ N; does NOT formalize Van Doorn's actual 25/28 argument.",
+    "blockers": [
+      "Disk space tight (S2: 88% capacity, ~1.7 GB free on 2026-04-27); S3 (today) still tight at 4.5 GiB host avail (below 5 GiB soft floor)"
+    ],
+    "nextAction": "S3+ menu: (A) honest renaming of vanDoorn_upper → trivial_upper_const_5328 (~5 min, 0-line proof change, just rename + comment); (B) lower-bound parity refinement f(N) ≥ ⌈N/2⌉ + 1 for specific parities (~10-15 lines); (C) genuine exclusion-based upper bound f(N) ≤ N - ⌊N/k⌋ via highly-composite exclusion (~50+ lines); (D) partial Van Doorn argument (multi-session). Sequence A → B → D when disk > 5 GiB free.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
@@ -58,14 +60,14 @@
     "mathlib": []
   },
   "started": "2026-01-12T23:48:29.416Z",
-  "lastUpdate": "2026-03-13T07:52:17.045Z",
+  "lastUpdate": "2026-05-17T05:25:00Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
       "path": "Proofs/Erdos301Problem.lean",
       "filename": "Erdos301Problem.lean",
-      "lineCount": 159,
+      "lineCount": 158,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 4,
