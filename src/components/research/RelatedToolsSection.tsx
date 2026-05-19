@@ -65,12 +65,15 @@ const IconComponent = ({ icon }: { icon: Tool['icon'] }) => {
 
 export function RelatedToolsSection() {
   const [isExpanded, setIsExpanded] = useState(false)
+  const comparisonPanelId = 'ai-proof-systems-comparison'
 
   return (
     <div className="bg-gradient-to-r from-blue-500/5 to-purple-500/10 border border-blue-500/20 rounded-xl overflow-hidden">
       {/* Header - Always visible */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
+        aria-expanded={isExpanded}
+        aria-controls={comparisonPanelId}
         className="w-full px-6 py-4 flex items-center justify-between hover:bg-blue-500/5 transition-colors"
       >
         <div className="flex items-center gap-3">
@@ -98,7 +101,7 @@ export function RelatedToolsSection() {
 
       {/* Expanded Content */}
       {isExpanded && (
-        <div className="px-6 pb-6 border-t border-blue-500/10">
+        <div id={comparisonPanelId} className="px-6 pb-6 border-t border-blue-500/10">
           <div className="mt-4 space-y-4">
             {/* Tool Cards */}
             <div className="grid gap-4 md:grid-cols-3">
