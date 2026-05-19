@@ -1,5 +1,6 @@
 import { createDb } from '../../../shared/db/client'
 import { sessionTokens, users } from '../../../shared/db/schema'
+import { extractBearerToken } from '../../lib/auth'
 import { eq } from 'drizzle-orm'
 
 interface Env {
@@ -12,9 +13,8 @@ export async function onRequestGet(context: EventContext<Env, string, unknown>) 
 
   try {
     // Get session token from Authorization header or query param
-    const authHeader = context.request.headers.get('Authorization')
     const url = new URL(context.request.url)
-    const sessionToken = authHeader?.replace('Bearer ', '') || url.searchParams.get('session_token')
+    const sessionToken = extractBearerToken(context.request) || url.searchParams.get('session_token')
 
     if (!sessionToken) {
       return new Response(
