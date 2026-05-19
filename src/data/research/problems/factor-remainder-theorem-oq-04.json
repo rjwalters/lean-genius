@@ -1,19 +1,29 @@
 {
   "slug": "factor-remainder-theorem-oq-04",
-  "title": "The Berlekamp-Zassenhaus algorithm factors polynomials over $\\mathbb{Z}$ by first factoring modulo a prime $p$ (using the Factor Theorem over $\\mathbb{F}_p$) and then lifting via Hensel's lemma. Can t",
+  "title": "Factor-remainder theorem bridge to univariate algebraic closure",
   "phase": "NEW",
   "status": "active",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: The Berlekamp-Zassenhaus algorithm factors polynomials over $\\mathbb{Z}$ by first factoring modulo a prime $p$ (using the Factor Theorem over $\\mathbb{F}_p$) and then lifting via Hensel's lemma. Can t.",
-    "whyMatters": []
+    "formal": "(X-C(a))\\mid p \\Longleftrightarrow p(a)=0,\\quad p \\bmod (X-C(a))=C(p(a)),\\quad \\operatorname{IsAlgClosed}(k)\\Rightarrow \\forall f\\ne 0,\\ 0<\\deg f\\Rightarrow \\exists a, f(a)=0.",
+    "plain": "Record the Lean-supported polynomial root/divisibility bridge behind elementary factorization and one-variable algebraic-geometry reductions. The current files prove the factor theorem, the remainder theorem, and a univariate weak Nullstellensatz consequence over algebraically closed fields.",
+    "whyMatters": [
+      "The factor theorem is the algebraic hinge between roots and linear factors.",
+      "The remainder theorem gives an executable evaluation shortcut for polynomial division by a linear term.",
+      "The univariate Nullstellensatz bridge shows how these elementary facts scale into algebraic-closure arguments."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`factor_theorem` proves `(X - C a) | p` if and only if `p.eval a = 0`.",
+      "`remainder_theorem` proves that reduction modulo `X - C a` leaves the constant polynomial `C (p.eval a)`.",
+      "`weak_nullstellensatz_univariate` proves that every nonzero nonconstant polynomial over an algebraically closed field has a root."
+    ],
+    "open": [
+      "A full Berlekamp-Zassenhaus or Hensel-lifting formalization is not part of the current Lean inventory and should remain a follow-on target."
+    ],
+    "goal": "Use the completed factor/remainder statements as the safe foundation for later polynomial-factorization metadata and proof work."
   },
   "currentState": {
     "phase": "NEW",
@@ -37,7 +47,13 @@
   },
   "tags": [
     "seeker-selected",
-    "extension"
+    "extension",
+    "algebra",
+    "polynomials",
+    "factor-theorem",
+    "remainder-theorem",
+    "nullstellensatz",
+    "formalization"
   ],
   "relatedProofs": [
     "factor-remainder-nullstellensatz",
@@ -51,7 +67,7 @@
   "started": "2026-03-29T18:32:39.304Z",
   "lastUpdate": "2026-03-29T18:32:39.304Z",
   "significance": 6,
-  "tractability": 6,
+  "tractability": 8,
   "leanFiles": [
     {
       "path": "Proofs/FactorRemainderTheorem.lean",
