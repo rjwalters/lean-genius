@@ -21,7 +21,7 @@
     "badge": "axiom",
     "sorries": 1,
     "axiomCount": 0,
-    "lineCount": 1380,
+    "lineCount": 1381,
     "assumptions": "1 sorry: the general statement `eisenstein_conjecture_cos_pi_p` (for all odd primes p ≥ 3) is open in this gallery. The proof requires cyclotomic ramification theory: Φ_{2p}(−1) = p (the cyclotomic anchor — now uniform via the S8 bridge identity `cyclotomic_two_mul_prime_mul_X_add_one_uniform` modulo the eval-at-(-1) corollary deferred to S9) and the local-field theorem 'uniformizer of totally ramified extension ⇒ minimal polynomial is Eisenstein'. The uniform cyclotomic bridge `Φ_{2p}(X) · (X+1) = X^p + 1` for odd primes p ≥ 3 is now proved (S8); it composes S7's divisor enumeration `divisors_two_mul_odd_prime` with `prod_cyclotomic_eq_X_pow_sub_one` and `cyclotomic_prime_mul_X_sub_one`. The local-field uniformizer theorem (for the sub-leading divisibility half) remains the deeper gap (~200–400 lines). All per-prime cases for p ∈ {3, 5, 7, 11, 13} are fully proven with 0 sorries.",
     "mathlib_version": "4.26.0",
     "historicalContext": "The angle trisection impossibility proof reduces to the irreducibility of minimal polynomials of cosines. For specific primes the gallery already has formalizations: cos(20°) = cos(π/9) (Eisenstein at 3), cos(π/5) (Eisenstein at 5), cos(π/7) (Eisenstein at 7). The pattern Y → Y − 2 and the resulting Eisenstein-at-p form for the minimal polynomial of 2 + 2cos(π/p) is conjectured to hold for every odd prime p ≥ 3. The cyclotomic perspective ties this to Φ_{2p}(−1) = Φ_p(1) = p, a Mathlib-available identity, and the standard ramification theory of cyclotomic fields developed by Kummer, Hilbert, and Hensel.",
