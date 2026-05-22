@@ -23,6 +23,7 @@
     "axiomCount": 2,
     "lineCount": 399,
     "theoremCount": 9,
+    "definitionCount": 4,
     "assumptions": "0 sorries, 2 axioms in this file: (i) `bezdek_kuperberg_ellipsoid_lattice_upper_bound` (Bezdek-Kuperberg 2007, the ellipsoid lattice density bound, stated but not proved in Lean — published proof relies on affine density invariance under linear transforms, not yet in Mathlib v4.26.0); and (ii) `ulam_conjecture` (Ulam 1972, OPEN — the bound `fccDensity ≤ δ_K` for centrally symmetric convex bodies `K ⊂ ℝ³`, stated as a STATEMENT axiom because the conjecture remains unproven after 50+ years). The parent `Proofs/KeplerConjecture.lean` axiomatizes (a) `thues_theorem` (2D hexagonal optimality, Thue 1892 / Fejes Tóth 1940), (b) `fccDensity_lt_one` (numerical bound), and (c) the Kepler conjecture itself (Hales 1998, Flyspeck 2014). This OQ-04 file defines the Chen-Engel-Glotzer rational constant 4000/4671, the `tetrahedronDimerPacking : PackingDensity` instance, the `EllipsoidLatticePacking` marker structure, and the `SymmetricConvexBody3DPacking` marker structure; proves seven theorems including `tetrahedronDimerDensity_gt_fccDensity` (the central refutation `π/(3√2) < 4000/4671`, via `Real.pi_lt_d2` and `Real.lt_sqrt`, axiom-free), the existential corollary `exists_packingDensity_gt_fcc`, the Bezdek-Kuperberg-derived corollary `ellipsoid_lattice_le_fccPacking`, and the Ulam-derived corollary `ulam_le_fccPacking_density`.",
     "mathlib_version": "4.26.0",
     "mathlibDependencies": [
