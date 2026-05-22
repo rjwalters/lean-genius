@@ -20,7 +20,7 @@
     "dateAdded": "2026-04-02",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified. Works in any CommRing R.",
-    "lineCount": 88,
+    "lineCount": 89,
     "theoremCount": 5,
     "definitionCount": 0,
     "originalContributions": [
@@ -49,7 +49,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Newton-Girard p₂ = e₁² - 2e₂ via double sum decomposition into diagonal and off-diagonal parts. Works in any CommRing over any Finset. 5 theorems, 0 axioms, 88 lines.",
+    "summary": "Newton-Girard p₂ = e₁² - 2e₂ via double sum decomposition into diagonal and off-diagonal parts. Works in any CommRing over any Finset. 5 theorems, 0 axioms, 89 lines.",
     "implications": "This algebraic identity is the foundation of AM-GM for n variables and Newton's power sum method for symmetric polynomials. The Finset-based proof applies to sums over any finite index set, making it reusable for combinatorial applications.",
     "openQuestions": [
       "Prove the full Newton-Girard recurrence: p_k = Σ_{i=1}^k (-1)^{i-1} eᵢ p_{k-i}",
@@ -58,7 +58,7 @@
   },
   "leanFile": {
     "namespace": "AMGMInequalityOQ02OQ01",
-    "lineCount": 88,
+    "lineCount": 89,
     "axiomCount": 0,
     "theoremCount": 5,
     "definitionCount": 0,
