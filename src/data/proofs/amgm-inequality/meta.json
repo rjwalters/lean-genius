@@ -73,7 +73,7 @@
     "wiedijkNumber": 38,
     "axiomCount": 0,
     "assumptions": "None. Fully verified with 0 axioms, 0 sorries, and 0 structure-encoded assumptions. The elementary two-variable proof (`am_gm_two`) and equality characterization (`am_gm_two_eq_iff`) are original constructions using `sq_nonneg`, `Real.sq_sqrt`, and `linarith`. The general weighted form (`am_gm_weighted`) and three-variable case (`am_gm_three`) are pedagogical wrappers around Mathlib's `Real.geom_mean_le_arith_mean_weighted` and `Real.geom_mean_le_arith_mean3_weighted` respectively. Wiedijk 100 theorem #38.",
-    "lineCount": 225,
+    "lineCount": 226,
     "mathlib_version": "4.26.0",
     "relatedProblems": [
       {
@@ -305,7 +305,7 @@
     ],
     "opens": [],
     "namespace": "AMGMInequality",
-    "lineCount": 225,
+    "lineCount": 226,
     "axiomCount": 0,
     "theoremCount": 8,
     "substantiveTheoremCount": 3,
