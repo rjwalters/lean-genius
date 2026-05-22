@@ -23,7 +23,7 @@
     "dateAdded": "2026-04-04",
     "axiomCount": 0,
     "assumptions": "None. Fully machine-verified with 0 axioms, 0 sorries. All 18 theorems proved from Mathlib infrastructure (Algebraic.countable, cardinalMk_of_countable_of_charZero, Set.Countable.mono, Set.countable_iUnion) with no custom axioms or structure-encoded assumptions. The 4 definitions (algebraicRealsOfBoundedDegree, algebraicComplexOfBoundedDegree, algebraicRealsOfDegree, algebraicComplexOfDegree) are noncomputable due to minpoly's use of Classical.choice.",
-    "lineCount": 254,
+    "lineCount": 255,
     "theoremCount": 18,
     "definitionCount": 4,
     "sourceUrl": "https://leanprover-community.github.io/mathlib4_docs/Mathlib/Algebra/AlgebraicCard.html",
@@ -360,7 +360,7 @@
       "Cardinal"
     ],
     "namespace": "AlgebraicNumbersCountable",
-    "lineCount": 254,
+    "lineCount": 255,
     "path": "Proofs/AlgebraicNumbersCountable.lean",
     "axiomCount": 0,
     "theoremCount": 18,
