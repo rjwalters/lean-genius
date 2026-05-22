@@ -29,7 +29,7 @@
     "erdosProblemStatus": "open",
     "dateAdded": "2026-05-12",
     "mathlib_version": "4.26.0",
-    "lineCount": 166,
+    "lineCount": 167,
     "theoremCount": 5,
     "definitionCount": 2,
     "mathlibDependencies": [
@@ -150,7 +150,7 @@
     ]
   },
   "conclusion": {
-    "summary": "Formalizes the AP-gap prime-sequence generalization of Erdős Problem #455 with two axiom-encoded regime cases (Green-Tao 2008 for d = 0, Bunyakovsky 1857 for d > 0) and a concrete sorry-free length-40 Euler witness ($n^2 + n + 41$ at d = 2). The file totals 166 lines: 2 axioms, 5 theorems, 2 definitions, 1 structure, 0 sorries. Build-verified at Mathlib v4.26.0 (PR #19074, 3061-job Docker clean).",
+    "summary": "Formalizes the AP-gap prime-sequence generalization of Erdős Problem #455 with two axiom-encoded regime cases (Green-Tao 2008 for d = 0, Bunyakovsky 1857 for d > 0) and a concrete sorry-free length-40 Euler witness ($n^2 + n + 41$ at d = 2). The file totals 167 lines: 2 axioms, 5 theorems, 2 definitions, 1 structure, 0 sorries. Build-verified at Mathlib v4.26.0 (PR #19074, 3061-job Docker clean).",
     "implications": "The AP-gap framework establishes a unified data-type substrate `HasAPGaps`/`APGapPrimeSeq` over which both proved (Green-Tao, d = 0) and conjectural (Bunyakovsky, d > 0) regimes can be reasoned about uniformly. Downstream consequences: the bridge theorems `exists_apGap_zero_of_length` and `exists_apGapPrimeSeq_of_length_d_pos` are immediately usable in any Mathlib proof requiring 'arbitrarily long arithmetic-progression-gap prime sequences'. The Euler length-40 witness gives a quantitative lower bound on the d = 2 record, independent of Bunyakovsky. The two-axiom separation makes future Mathlib integration tractable: if Green-Tao is formalized in Mathlib (an active project), `greenTao_finitary` can be discharged to that theorem with **no change** to the d > 0 (Bunyakovsky) regime or any downstream consumer.",
     "openQuestions": [
       "**Can the length-40 d = 2 Euler record be improved?** Heuristically, quadratics with larger discriminants of class-1 imaginary-quadratic fields might give longer prefixes, but the only class-1 candidates are exhausted by Heegner / Stark-Baker (the nine fields $\\mathbb{Q}(\\sqrt{-1}), \\mathbb{Q}(\\sqrt{-2}), \\ldots, \\mathbb{Q}(\\sqrt{-163})$). Computer searches at $|d| > 2$ have not improved on 40 either.",
@@ -174,7 +174,7 @@
   ],
   "leanFile": {
     "axiomCount": 2,
-    "lineCount": 166,
+    "lineCount": 167,
     "path": "Proofs/Erdos455OQ04.lean",
     "sorries": 0,
     "definitionCount": 2,
