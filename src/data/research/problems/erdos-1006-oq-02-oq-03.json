@@ -6,22 +6,30 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
+    "formal": "For finite G, prove G.chromaticNumber < G.egirth -> admitsRobustAcyclicOrientation G; in the rank-based formulation this follows from the stronger coloring-orientation result.",
     "plain": "A direct Lean 4 proof of the Fisher-Fraughnaugh-Langley-West (FFLLW) theorem from Mathlib primitives: if χ(G) < girth(G), then G admits a robustly acyclic orientation. The proof constructs the coloring orientation (orient u→v when col(u) < col(v)) and shows it is always robustly acyclic. Key insight: under the rank-based formulation, ANY properly colorable finite graph has a robust orientation, making the girth condition unnecessary.",
-    "whyMatters": []
+    "whyMatters": [
+      "It explains why the rank-based Erdos1006 formalization makes FFLLW immediate from colorability."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`coloringOrientation_robustlyAcyclic` proves the coloring orientation is rank-based robustly acyclic.",
+      "`ffllw_direct` proves the FFLLW implication as a corollary.",
+      "`every_finite_graph_has_robust` proves every finite graph has a rank-based robust orientation."
+    ],
+    "open": [
+      "Classical path-based robustness remains a separate question from the rank-based result."
+    ],
+    "goal": "Keep the direct FFLLW/rank-based proof metadata aligned with the current Erdos1006 proof family."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-02-24T17:52:20.368Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Completed direct FFLLW/rank-based proof record refreshed against the current seven-file Erdos1006 proof family.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No immediate action; future work should focus on classical robustness if the goal is to match the original FFLLW statement more closely.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,9 +37,16 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Metadata sync 2026-05-18: Erdos1006OQ03.lean script-counts as 248 lines, 7 theorems, 0 axioms, 5 definitions, and 1 raw sorry hit from comment text. The proof establishes the FFLLW implication via the stronger rank-based coloring orientation result.",
+    "builtItems": [
+      "coloringOrientation construction from a proper coloring.",
+      "coloringOrientation_robustlyAcyclic proof.",
+      "ffllw_direct and every_finite_graph_has_robust corollaries."
+    ],
+    "insights": [
+      "Under the rank-based formulation, the girth hypothesis is not needed once a proper coloring exists.",
+      "The classical path-based interpretation remains mathematically distinct and is handled separately in OQ02."
+    ],
     "mathlibGaps": [],
     "nextSteps": []
   },
@@ -60,7 +75,7 @@
     "mathlib": []
   },
   "started": "2026-02-25T19:36:59.227Z",
-  "lastUpdate": "2026-02-25T19:36:59.227Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "completed": "2026-02-25T19:36:59.227Z",
   "significance": 6,
   "tractability": 5,
@@ -112,13 +127,24 @@
     {
       "path": "Proofs/Erdos1006OQ04.lean",
       "filename": "Erdos1006OQ04.lean",
-      "lineCount": 193,
+      "lineCount": 194,
       "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ04Decidability.lean",
+      "filename": "Erdos1006OQ04Decidability.lean",
+      "lineCount": 116,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04Decidability.lean"
     },
     {
       "path": "Proofs/Erdos1006Problem.lean",

@@ -6,22 +6,30 @@
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Prove the Pretzel/Brightwell characterization that robustly acyclic orientations are exactly cover graphs, removing the `cover_graph_characterization` axiom.",
+    "plain": "Can the cover-graph characterization of robustly acyclic orientations be proved directly in Lean instead of assumed as an axiom?",
+    "whyMatters": [
+      "This would replace the main OQ01 characterization axiom with a checked proof."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Erdos1006OQ01 proves empty and bipartite graphs admit rank-based robust orientations and that cover graphs admit robust orientations.",
+      "The broader Erdos1006 family also contains cover-recognition scaffolding, FFLLW/classical witness work, and OQ04 decidability support."
+    ],
+    "open": [
+      "`cover_graph_characterization` in Erdos1006OQ01.lean remains an axiom.",
+      "The reverse Pretzel/Brightwell direction from robustly acyclic orientations to cover graphs still needs a direct formalization."
+    ],
+    "goal": "Replace the characterization axiom with a direct Lean proof."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-05T20:06:18-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Metadata refreshed against the current seven-file Erdos1006 proof family; the target remains the axiom-removal version of the cover-graph characterization.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Audit the Pretzel/Brightwell reverse direction and identify a small formal sublemma that can replace part of `cover_graph_characterization`.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,14 +37,28 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Metadata sync 2026-05-18: broad Erdos1006 matching now includes seven Lean files, including Erdos1006OQ04Decidability. Script-style counts use split-line totals and raw word matches, so comment text can produce sorryCount entries.",
+    "builtItems": [
+      "Broad Erdos1006 leanFiles metadata refreshed to seven current proof files."
+    ],
+    "insights": [
+      "The slug broad-matches the whole Erdos1006* proof family because the stripped base prefix is Erdos1006.",
+      "The main characterization is still represented by an explicit axiom in Erdos1006OQ01.lean."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: erdos-1006-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Survey dependent-arc and cover-graph lemmas needed for the Pretzel/Brightwell reverse implication."
+    ],
+    "markdown": "# Knowledge Base: erdos-1006-oq-01-oq-01\n\nMetadata refreshed on 2026-05-18. The target is the axiom-removal version of the Pretzel/Brightwell cover-graph characterization: prove directly that robustly acyclic orientations correspond to cover graphs.\n"
   },
-  "tags": [],
+  "tags": [
+    "erdos",
+    "graph-theory",
+    "orientations",
+    "posets",
+    "cover-graphs",
+    "acyclicity"
+  ],
   "relatedProofs": [
     "erdos-1",
     "erdos-10",
@@ -102,13 +124,24 @@
     {
       "path": "Proofs/Erdos1006OQ04.lean",
       "filename": "Erdos1006OQ04.lean",
-      "lineCount": 193,
+      "lineCount": 194,
       "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ04Decidability.lean",
+      "filename": "Erdos1006OQ04Decidability.lean",
+      "lineCount": 116,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04Decidability.lean"
     },
     {
       "path": "Proofs/Erdos1006Problem.lean",
@@ -121,5 +154,6 @@
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006Problem.lean"
     }
-  ]
+  ],
+  "lastUpdate": "2026-05-18T00:00:00.000Z"
 }

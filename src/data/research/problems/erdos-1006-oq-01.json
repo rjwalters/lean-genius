@@ -1,27 +1,36 @@
 {
   "slug": "erdos-1006-oq-01",
-  "title": "erdos-1006-oq-01",
+  "title": "Robustly acyclic orientations and cover graphs",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Relate rank-based robustly acyclic orientations to cover graphs, with empty/bipartite constructions and `cover_graph_characterization` as the main remaining axiom.",
+    "plain": "Which graphs admit robustly acyclic orientations, and how does that connect to cover graphs of finite posets?",
+    "whyMatters": [
+      "This is the parent scaffold for the Erdos #1006 cover-graph subquestions."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Empty graphs admit robust orientations.",
+      "Bipartite graphs admit robust orientations under the rank-based setup.",
+      "Cover graphs admit robust orientations when the poset/rank hypotheses are available."
+    ],
+    "open": [
+      "`cover_graph_characterization` remains an axiom for the full iff statement.",
+      "The high-girth counterexample and FFLLW bridge are still represented axiomatically in this parent scaffold."
+    ],
+    "goal": "Keep the parent OQ01 scaffold accurate while child slugs reduce individual axioms."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-03-28T06:54:25-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Graduated parent scaffold refreshed against the current seven-file Erdos1006 proof family; remaining characterization-level facts are explicit axioms rather than hidden proof gaps.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Use child slugs such as erdos-1006-oq-01-oq-01 and erdos-1006-oq-01-oq-02 for axiom reduction work.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,12 +38,21 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Metadata sync 2026-05-18: parent OQ01 metadata now matches the seven-file Erdos1006 proof family, including Erdos1006OQ04Decidability. Raw sorry counts in OQ01/OQ02/OQ03 come from comment text, not proof holes.",
+    "builtItems": [
+      "Rank-based orientation scaffold for robust acyclicity.",
+      "Empty and bipartite graph robust-orientation examples.",
+      "Cover graph to robust-orientation direction under poset hypotheses."
+    ],
+    "insights": [
+      "The parent scaffold intentionally carries axioms for the full characterization and classical external theorems.",
+      "Child slugs are the right place to chip away at individual axioms or restricted recognition cases."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: erdos-1006-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Keep parent metadata synchronized while pursuing axiom-reduction work in narrower child records."
+    ],
+    "markdown": "# Knowledge Base: erdos-1006-oq-01\n\nMetadata refreshed on 2026-05-18. This graduated parent record is the scaffold for robustly acyclic orientations and cover graphs; open characterization work should continue in child slugs.\n"
   },
   "tags": [],
   "relatedProofs": [
@@ -54,7 +72,7 @@
     "mathlib": []
   },
   "started": "2026-02-08T06:11:43.710Z",
-  "lastUpdate": "2026-02-09T23:59:13.857Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "completed": "2026-02-09T23:59:13.857Z",
   "leanFiles": [
     {
@@ -104,13 +122,24 @@
     {
       "path": "Proofs/Erdos1006OQ04.lean",
       "filename": "Erdos1006OQ04.lean",
-      "lineCount": 193,
+      "lineCount": 194,
       "theoremCount": 15,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04.lean"
+    },
+    {
+      "path": "Proofs/Erdos1006OQ04Decidability.lean",
+      "filename": "Erdos1006OQ04Decidability.lean",
+      "lineCount": 116,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1006OQ04Decidability.lean"
     },
     {
       "path": "Proofs/Erdos1006Problem.lean",
