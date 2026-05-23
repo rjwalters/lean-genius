@@ -7,21 +7,24 @@
   "path": "full",
   "problemStatement": {
     "formal": "\\text{(formal statement to be added)}",
-    "plain": "Zolotarev's 1872 proof of quadratic reciprocity via permutation signatures — the Legendre symbol (a/p) equals the sign of the multiplication-by-a permutation on (ZMod p)ˣ.",
+    "plain": "Zolotarev's 1872 proof of quadratic reciprocity via permutation signatures \u2014 the Legendre symbol (a/p) equals the sign of the multiplication-by-a permutation on (ZMod p)\u02e3.",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "zolotarev_lemma connects the Legendre symbol to the sign of multiplication permutations",
+      "zolotarev_qr records the quadratic reciprocity pathway via Zolotarev"
+    ],
     "open": [],
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-03-11T09:48:08.980Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Zolotarev permutation-signature pathway is represented by ElementaryQuadraticReciprocityOQ01.lean with current extractor counts of 629 lines, 31 theorem/lemma declarations, 5 defs, 0 sorries, and 0 axioms.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No immediate proof action; keep metadata synchronized with the Lean files.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "COMPLETED: Zolotarev permutation-based quadratic reciprocity pathway is represented by ElementaryQuadraticReciprocityOQ01.lean with extractor counts of 629 lines, 31 theorem/lemma declarations, 5 defs, 0 sorries, and 0 axioms.",
     "builtItems": [],
     "insights": [],
     "mathlibGaps": [],
@@ -100,9 +103,53 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ01.lean"
     },
     {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ01OQ01OQ01.lean",
+      "lineCount": 225,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean",
+      "lineCount": 253,
+      "theoremCount": 10,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ02.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ01OQ01OQ02.lean",
+      "lineCount": 222,
+      "theoremCount": 4,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ03.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ01OQ01OQ03.lean",
+      "lineCount": 278,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ03.lean"
+    },
+    {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean",
       "filename": "ElementaryQuadraticReciprocityOQ01OQ02.lean",
-      "lineCount": 563,
+      "lineCount": 579,
       "theoremCount": 27,
       "axiomCount": 2,
       "defCount": 6,
@@ -120,6 +167,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ02.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ02OQ01.lean",
+      "lineCount": 200,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ02OQ01.lean"
     },
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ03.lean",
@@ -197,6 +255,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ01.lean"
+    },
+    {
+      "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ03.lean",
+      "filename": "ElementaryQuadraticReciprocityOQ03OQ02OQ03.lean",
+      "lineCount": 405,
+      "theoremCount": 20,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ElementaryQuadraticReciprocityOQ03OQ02OQ03.lean"
     },
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ03OQ03.lean",

@@ -11,7 +11,11 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "legendreCharQ defines the Legendre character bridge into ZMod q",
+      "gauss_sum_zmod_qr records the ZMod q Gauss-sum QR identity",
+      "gauss_sum_qr_assembled records the assembled quadratic reciprocity statement"
+    ],
     "open": [],
     "goal": ""
   },
@@ -19,7 +23,7 @@
     "phase": "COMPLETE",
     "since": "2026-05-07T17:10:00.000Z",
     "iteration": 2,
-    "focus": "S2 RETRO-BOOTSTRAP (researcher-4, 2026-05-16) \u2014 doc-only scaffolding catchup. S1 (2026-05-07) was a single-session FRESH ACT documented in knowledge.md only (no state.md, no problem.md, no sessions/ directory). S2 closes the scaffolding gap so future-researcher landings can orient via state.md Status Summary in ~30s instead of reading 65-LOC knowledge.md end-to-end. Slug remains COMPLETED \u2014 verified, axiom-free, sorry-free on origin/main since 2026-05-07 (PR #16443 ACT + PR #16579 enricher-2 + PR #16457 audit-clean). Primary file ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean is 252 LOC, 11 theorems, 1 def, 0 sorries, 0 axioms (verified at S2 author time). Main theorem gauss_sum_qr_assembled at line 174 lifts Mathlib's legendreSym.quadratic_reciprocity. JSON leanFiles[i] for the primary file shows lineCount=254 vs actual 252 (+2 drift, informational handoff to mechanic in S2 memo \u00a73; not edited here).",
+    "focus": "S2 RETRO-BOOTSTRAP (researcher-4, 2026-05-16) - doc-only scaffolding catchup. Slug remains COMPLETED: ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean now has extractor counts of 253 lines, 10 theorem/lemma declarations, 1 def, 0 sorries, and 0 axioms. Main theorem gauss_sum_qr_assembled assembles the four-step Gauss sum QR pathway.",
     "blockers": [],
     "nextAction": "None \u2014 closed.",
     "attemptCounts": {
@@ -29,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Full four-step Gauss sum QR assembly proved in Lean 4 (PR #16443) and submitted to gallery (PR #16579, merged 2026-05-07). File: ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean (254 lines, 11 theorems, 1 def, 0 sorries, 0 axioms). Gallery entry: src/data/proofs/elementary-quadratic-reciprocity-oq-01-oq-01-oq-01-oq-02/.",
+    "progressSummary": "COMPLETE: Full four-step Gauss sum QR assembly proved in Lean 4. ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean has extractor counts of 253 lines, 10 theorem/lemma declarations, 1 def, 0 sorries, and 0 axioms.",
     "builtItems": [
       "legendreCharQ: MulChar (ZMod p) (ZMod q) via ringHomComp Int.castRingHom",
       "legendreCharQ_ne_one: nontriviality proved via case analysis on IsQuadratic values",
@@ -40,7 +44,7 @@
       "gauss_sum_qr_assembled: legendreSym p q * legendreSym q p = (-1)^(p/2*q/2)"
     ],
     "insights": [
-      "All four steps of Gauss sum QR proof are formalized with 0 axioms",
+      "The four-step Gauss sum QR assembly file has 0 axioms and 0 sorries under extractor counts",
       "legendreCharQ (Legendre char as MulChar ZMod p -> ZMod q) is the key bridge",
       "Nontriviality of legendreCharQ requires both p!=2 (for QNR) and q!=2 (for -1!=1)",
       "gauss_sum_zmod_qr: QR in ZMod q via Euler criterion p^(q/2) = legendreSym q p",
@@ -118,7 +122,7 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01.lean",
       "filename": "ElementaryQuadraticReciprocityOQ01OQ01OQ01.lean",
-      "lineCount": 213,
+      "lineCount": 225,
       "theoremCount": 7,
       "axiomCount": 0,
       "defCount": 2,
@@ -129,8 +133,8 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean",
       "filename": "ElementaryQuadraticReciprocityOQ01OQ01OQ01OQ02.lean",
-      "lineCount": 252,
-      "theoremCount": 11,
+      "lineCount": 253,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -140,7 +144,7 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ01OQ02.lean",
       "filename": "ElementaryQuadraticReciprocityOQ01OQ01OQ02.lean",
-      "lineCount": 217,
+      "lineCount": 222,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
@@ -162,7 +166,7 @@
     {
       "path": "Proofs/ElementaryQuadraticReciprocityOQ01OQ02.lean",
       "filename": "ElementaryQuadraticReciprocityOQ01OQ02.lean",
-      "lineCount": 563,
+      "lineCount": 579,
       "theoremCount": 27,
       "axiomCount": 2,
       "defCount": 6,
