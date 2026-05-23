@@ -19,7 +19,7 @@
     "focus": "Formalize connection between simplicial numbers and f-vectors of standard simplices"
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved euler_characteristic (last sorry). File now fully verified: 11 theorems, 1 def, 0 axioms, 0 sorries.",
+    "progressSummary": "COMPLETED: Proved euler_characteristic. Core file now has 10 extractor-counted theorems, 1 def, 0 axioms, 0 sorries; Aristotle companion adds the separate Aristotle check.",
     "builtItems": [
       "faceCount definition: C(k+1, j+1) for j-faces of Δ^k",
       "faceCount_eq_simplicial: main theorem connecting face counts to simplicial numbers",
@@ -38,10 +38,7 @@
       "Euler characteristic proof: split ∑_{i=0}^{k+1} (-1)^i C(k+1,i) = 0 via sum_range_succ, extract i=0 term, use (-1)^{j+1} = -(-1)^j to relate to target sum"
     ],
     "mathlibGaps": [],
-    "nextSteps": [
-      "Prove euler_characteristic: needs alternating binomial sum identity ∑(-1)^i C(n,i) = 0 for n≥1",
-      "Submit euler_characteristic to Aristotle (routine alternating sum)"
-    ]
+    "nextSteps": []
   },
   "tags": [
     "combinatorics",
@@ -81,7 +78,7 @@
     {
       "path": "Proofs/ArithmeticSeries.lean",
       "filename": "ArithmeticSeries.lean",
-      "lineCount": 180,
+      "lineCount": 181,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 1,
@@ -103,8 +100,8 @@
     {
       "path": "Proofs/ArithmeticSeriesOQ00OQ01.lean",
       "filename": "ArithmeticSeriesOQ00OQ01.lean",
-      "lineCount": 282,
-      "theoremCount": 12,
+      "lineCount": 283,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -121,6 +118,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean",
+      "filename": "ArithmeticSeriesOQ00OQ02OQ01.lean",
+      "lineCount": 140,
+      "theoremCount": 7,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ00OQ02OQ01.lean"
     },
     {
       "path": "Proofs/ArithmeticSeriesOQ02.lean",
@@ -264,6 +272,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03.lean",
+      "lineCount": 227,
+      "theoremCount": 12,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03.lean"
+    },
+    {
+      "path": "Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean",
+      "filename": "ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean",
+      "lineCount": 154,
+      "theoremCount": 5,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/ArithmeticSeriesOQ02OQ04OQ01OQ03OQ02OQ03OQ02.lean"
     },
     {
       "path": "Proofs/ArithmeticSeriesOQ04.lean",
