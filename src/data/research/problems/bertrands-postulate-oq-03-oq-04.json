@@ -6,22 +6,34 @@
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal mathematical investigation: PNT-based asymptotic for prime gaps in short intervals.",
-    "whyMatters": []
+    "formal": "ShortIntervalPNT theta states the density asymptotic for h = x^theta; the file proves that this density input implies eventual PrimeGapConjecture theta and records an RH-conditional axiom for theta > 1/2.",
+    "plain": "Formalize how short-interval density estimates imply prime-gap existence bounds, with PNT long-interval algebra and an RH-conditional short-interval axiom.",
+    "whyMatters": [
+      "Distinguishes density asymptotics from mere prime existence in a gap",
+      "Connects PNT-scale intervals, RH-conditional short intervals, and prime-gap conjectures",
+      "Provides the parent context for the Cramer implication and filter-algebra subfiles"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "ShortIntervalPNT definition and density-to-prime-gap implication",
+      "long_interval_density_from_pnt for h = c*x",
+      "rh_implies_density_for_all_theta_gt_half from the recorded RH-conditional axiom",
+      "prime_density_in_short_intervals_summary"
+    ],
+    "open": [
+      "shortIntervalPNT_rh_conditional is the deep RH/von-Koch style axiom",
+      "Sublinear short-interval density below the RH range is not proved here"
+    ],
+    "goal": "COMPLETED"
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-04-28T00:00:00.000Z",
     "iteration": 3,
-    "focus": "Problem axiomatized; metadata reconciled.",
+    "focus": "Six matched Lean files recorded; parent short-interval density file has 358 lines, 6 theorem/lemma declarations, 1 axiom, 2 defs, and 0 sorry tokens.",
     "blockers": [],
-    "nextAction": "None — gallery entry verified axiomatized with 1 deep RH-conditional axiom.",
+    "nextAction": "None - gallery entry verified axiomatized with one deep RH-conditional axiom.",
     "attemptCounts": {
       "total": 3,
       "currentApproach": 0,
@@ -29,37 +41,47 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: BertrandsPostulateOQ03OQ04.lean (358 lines, 0 sorries, 1 RH-conditional axiom). Companion Aristotle file 0 sorries. Sub-file OQ03OQ04OQ03.lean has 0 sorries. Gallery status: axiomatized (1 deep axiom shortIntervalPNT_rh_conditional encoding the RH+von-Koch density bound).",
+    "progressSummary": "COMPLETED: BertrandsPostulateOQ03OQ04.lean has 358 lines, 6 theorem/lemma declarations, 2 defs, 1 RH-conditional axiom, and 0 sorry tokens. The matched family now also includes the OQ03OQ04OQ01 Cramer implication file.",
     "builtItems": [
-      "BertrandsPostulateOQ03OQ04.lean: ShortIntervalPNT def + 7 proved/partial theorems",
+      "BertrandsPostulateOQ03OQ04.lean: ShortIntervalPNT definition plus 6 theorem/lemma declarations",
+      "BertrandsPostulateOQ03OQ04OQ01.lean: Cramer conditional implication subfile",
       "Gallery entry: src/data/proofs/bertrands-postulate-oq-03-oq-04/meta.json"
     ],
     "insights": [
       "ShortIntervalPNT (density ~ h/ln x) is strictly stronger than PrimeGapConjecture (existence only)",
-      "primeCounting_lt_implies_prime_exists: counting jump → prime in gap, proved via Finset.card_le_card",
-      "log(x)/log((1+c)x) → 1 proved via 1/(1 + log(1+c)/log(x)) decomposition",
-      "Under RH: von Koch bound gives density for h = x^(1/2+ε) — axiomatized",
-      "Filter limit algebra for combining PNT limits is the hard part — 2 sorries remain"
+      "primeCounting_lt_implies_prime_exists: counting jump implies a prime in the gap, proved via Finset.card_le_card",
+      "log(x)/log((1+c)x) tends to 1 using a 1/(1 + log(1+c)/log(x)) decomposition",
+      "Under RH, a von-Koch style bound gives density for h = x^(1/2+epsilon), recorded as an axiom",
+      "The long-interval filter algebra has been separated into the OQ03 subfile"
     ],
     "mathlibGaps": [],
     "nextSteps": []
   },
   "tags": [
-    "seeker-selected"
+    "seeker-selected",
+    "number-theory",
+    "prime-gaps",
+    "short-intervals"
   ],
   "relatedProofs": [
     "bertrands-postulate",
     "bertrands-postulate-oq-03",
     "bertrands-postulate-oq-03-oq-04",
+    "bertrands-postulate-oq-03-oq-04-oq-01",
     "bertrands-postulate-oq-03-oq-04-oq-03"
   ],
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.NumberTheory.PrimeCounting",
+      "Filter.Tendsto.mul",
+      "Filter.Tendsto.sub",
+      "Real.tendsto_log_atTop"
+    ]
   },
   "started": "2026-04-05T05:54:09.851Z",
-  "lastUpdate": "2026-04-28T00:00:00.000Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
@@ -106,6 +128,17 @@
       "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BertrandsPostulateOQ03OQ04OQ01.lean",
+      "filename": "BertrandsPostulateOQ03OQ04OQ01.lean",
+      "lineCount": 258,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04OQ01.lean"
     },
     {
       "path": "Proofs/BertrandsPostulateOQ03OQ04OQ03.lean",

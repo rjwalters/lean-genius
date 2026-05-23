@@ -6,8 +6,8 @@
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "theorem pnt_density_long_interval (c : ℝ) (hc : c > 0) : Tendsto (fun x : ℝ => ((primePi ((1 + c) * x) : ℝ) - (primePi x : ℝ)) * Real.log x / (c * x)) atTop (𝓝 1)",
-    "plain": "Can the filter limit steps in long_interval_density_from_pnt be isolated as standalone sorry-free lemmas? Specifically: (1) π((1+c)x)·log(x)/((1+c)x) → 1, and (2) (π((1+c)x) - π(x))·log(x)/(cx) → 1.",
+    "formal": "theorem pnt_density_long_interval (c : Real) (hc : c > 0) : Tendsto (fun x => ((primePi ((1 + c) * x) : Real) - (primePi x : Real)) * Real.log x / (c * x)) atTop (nhds 1)",
+    "plain": "Isolate the filter-limit algebra behind long_interval_density_from_pnt as standalone proof-hole-free lemmas for scaled PNT and long-interval density.",
     "whyMatters": [
       "Modular proof structure makes filter algebra architecture explicit",
       "Isolates the change-of-point step (PNT rescaling) as a reusable lemma",
@@ -16,8 +16,8 @@
   },
   "knownResults": {
     "proven": [
-      "pnt_at_scaled_point: π((1+c)x)·log(x)/((1+c)x) → 1 (proved via Tendsto.mul + tendsto_congr')",
-      "pnt_density_long_interval: (π((1+c)x) - π(x))·log(x)/(cx) → 1 (proved via linear combination of PNT estimates)"
+      "pnt_at_scaled_point: scaled PNT limit at (1+c)x proved via Tendsto.mul and tendsto_congr'",
+      "pnt_density_long_interval: long-interval density limit proved by a linear combination of PNT estimates"
     ],
     "open": [],
     "goal": "Standalone filter algebra proofs of the two key lemmas"
@@ -28,7 +28,7 @@
     "iteration": 1,
     "focus": "Proof complete.",
     "blockers": [],
-    "nextAction": "Build verification when Docker available.",
+    "nextAction": "None - proof metadata refreshed; repo-level checks cover this batch.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -36,7 +36,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: Created BertrandsPostulateOQ03OQ04OQ03.lean (185 lines, 0 sorries, 0 axioms). Proved pnt_at_scaled_point and pnt_density_long_interval as standalone filter algebra lemmas.",
+    "progressSummary": "COMPLETE: BertrandsPostulateOQ03OQ04OQ03.lean has 214 script-counted lines, 3 theorem/lemma declarations, 0 axioms, and one raw doc-comment sorry token. The declarations are proof-hole-free.",
     "builtItems": [
       "BertrandsPostulateOQ03OQ04OQ03.lean: pnt_at_scaled_point (Tendsto.mul + tendsto_congr')",
       "BertrandsPostulateOQ03OQ04OQ03.lean: pnt_density_long_interval (const_mul + sub)",
@@ -45,10 +45,10 @@
     ],
     "insights": [
       "The key algebraic identity: interval_density = (1+c)/c * PNT_upper - 1/c * PNT_lower",
-      "log(x)/log((1+c)x) → 1 because the additive constant log(1+c) is negligible for large log(x)",
+      "log(x)/log((1+c)x) tends to 1 because the additive constant log(1+c) is negligible for large log(x)",
       "Tendsto.mul handles limit multiplication; tendsto_congr' handles algebraic cleanup with field_simp + ring",
-      "Private declarations in parent file (log_ratio_tendsto_one, primeCounting_lt_implies_prime_exists) must be reproved locally",
-      "Filter algebra for h=cx works from PNT alone; filter algebra for h=x^θ (θ<1) requires more input"
+      "The local file reproves log_ratio_tendsto_one; primeCounting_lt_implies_prime_exists lives in the parent file",
+      "Filter algebra for h=cx works from PNT alone; filter algebra for sublinear h requires more input"
     ],
     "mathlibGaps": [],
     "nextSteps": [
@@ -67,6 +67,7 @@
     "bertrands-postulate",
     "bertrands-postulate-oq-03",
     "bertrands-postulate-oq-03-oq-04",
+    "bertrands-postulate-oq-03-oq-04-oq-01",
     "bertrands-postulate-oq-03-oq-04-oq-03",
     "prime-number-theorem"
   ],
@@ -81,7 +82,7 @@
     ]
   },
   "started": "2026-04-14T00:00:00.000Z",
-  "lastUpdate": "2026-04-14T00:00:00.000Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 7,
   "tractability": 6,
   "leanFiles": [
@@ -128,6 +129,17 @@
       "sorryCount": 0,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BertrandsPostulateOQ03OQ04OQ01.lean",
+      "filename": "BertrandsPostulateOQ03OQ04OQ01.lean",
+      "lineCount": 258,
+      "theoremCount": 7,
+      "axiomCount": 1,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BertrandsPostulateOQ03OQ04OQ01.lean"
     },
     {
       "path": "Proofs/BertrandsPostulateOQ03OQ04OQ03.lean",
