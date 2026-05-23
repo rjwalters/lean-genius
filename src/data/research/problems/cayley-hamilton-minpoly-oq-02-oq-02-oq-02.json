@@ -1,14 +1,17 @@
 {
   "slug": "cayley-hamilton-minpoly-oq-02-oq-02-oq-02",
-  "title": "[Problem Title]",
+  "title": "Formalize Jordan normal form over algebraically closed fields",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{Formalize a Jordan normal form theorem over algebraically closed fields.}",
+    "plain": "The research target is to formalize Jordan normal form over algebraically closed fields. The local problem notes do not yet specify the exact theorem statement or Lean API shape.",
+    "whyMatters": [
+      "Jordan normal form is part of the surrounding Cayley-Hamilton and minimal-polynomial research family for this slug.",
+      "A precise formalization target still needs to be identified before implementation work can begin."
+    ]
   },
   "knownResults": {
     "proven": [],
@@ -21,7 +24,7 @@
     "iteration": 1,
     "focus": "Initial problem understanding. Read problem.md and gather context.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Read problem.md thoroughly, acquire full context, then move to ORIENT phase to explore literature and related proofs.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,17 +32,26 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "Initial OBSERVE state only. The local evidence names the target as formalizing Jordan normal form over algebraically closed fields, but the formal theorem statement, supporting references, and implementation approach remain unspecified.",
     "builtItems": [],
-    "insights": [],
+    "insights": [
+      "The problem is in the Cayley-Hamilton/minimal-polynomial family and is currently framed as a Jordan normal form formalization task.",
+      "The available problem, knowledge, and literature notes are still mostly scaffold material, so no Lean progress or external sources should be inferred."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: cayley-hamilton-minpoly-oq-02-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Replace the scaffold formal statement with the exact Jordan normal form theorem to be pursued.",
+      "Identify directly relevant Mathlib modules or existing gallery proofs before attempting implementation.",
+      "Move from OBSERVE to ORIENT once the target theorem and supporting references are documented."
+    ],
+    "markdown": "# Knowledge Base: cayley-hamilton-minpoly-oq-02-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\nThe local problem note names the target as formalizing Jordan normal form over algebraically closed fields. The exact theorem statement has not yet been specified in the available local evidence.\n\n---\n\n## Insights\n\n- This slug belongs to the Cayley-Hamilton/minimal-polynomial research family.\n- The current research state is OBSERVE with zero attempts recorded.\n- The available literature note is still a scaffold and does not list concrete papers, URLs, or Mathlib references.\n\n---\n\n## Dead Ends\n\nNo dead ends are recorded in the local evidence.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "algebra",
+    "linear-algebra",
+    "jordan-normal-form",
+    "minimal-polynomial",
+    "cayley-hamilton"
   ],
   "relatedProofs": [
     "cayley-hamilton",
@@ -305,9 +317,9 @@
     {
       "path": "Proofs/CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean",
       "filename": "CayleyHamiltonMinpolyOQ05OQ01OQ04WIP05.lean",
-      "lineCount": 190,
-      "theoremCount": 2,
-      "axiomCount": 0,
+      "lineCount": 191,
+      "theoremCount": 1,
+      "axiomCount": 1,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
