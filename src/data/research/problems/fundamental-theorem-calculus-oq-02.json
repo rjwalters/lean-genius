@@ -21,11 +21,11 @@
       "Antiderivative uniqueness: two antiderivatives differ by a constant",
       "de Rham cohomology: H^0(R) = R, H^1(R) = 0",
       "Orientation-reversal negates the integral",
-      "Evaluation formula from Stokes theorem"
+      "Evaluation formula from Stokes theorem",
+      "dd_eq_zero_2D is proved from the mixed-partial symmetry bridge",
+      "Green's theorem in Stokes form is proved via GreensTheoremOQ01.greens_theorem_concrete"
     ],
     "open": [
-      "d^2 = 0 (Clairaut) — stated, needs Mathlib bridge for iteratedFDeriv",
-      "Green's theorem in Stokes form — stated, full proof in GreensTheoremOQ01",
       "General Stokes theorem on manifolds with boundary"
     ],
     "goal": "Complete formalization of the Stokes hierarchy with proved d^2=0"
@@ -34,9 +34,9 @@
     "phase": "SURVEYED",
     "since": "2026-03-30T03:00:00.000Z",
     "iteration": 1,
-    "focus": "Created FundamentalTheoremCalculusStokes.lean with 11 theorems, 8 defs, 0 axioms, 2 sorries",
+    "focus": "Main Stokes file has 11 theorems, 7 defs, 0 axioms, and 0 sorries; the Aristotle companion still has 3 sorry tokens.",
     "blockers": [],
-    "nextAction": "Prove d^2=0 via Mathlib's iteratedFDeriv symmetry",
+    "nextAction": "Keep the fully general manifold Stokes theorem as the remaining open direction.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -44,9 +44,9 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Created 345-line Lean 4 file with concrete differential forms framework in dimensions 1 and 2. Proved 9 of 11 theorems (2 sorries). Gallery entry created.",
+    "progressSummary": "Main Stokes formalization is now 396 split-lines with 11 theorems, 7 defs, 0 axioms, and 0 sorries. It proves dd_eq_zero_2D via mixed-partial symmetry and proves stokes_2d_rectangle via GreensTheoremOQ01.greens_theorem_concrete. The auxiliary Aristotle companion is 138 split-lines and still has 3 sorry tokens in stokes_2d_rectangle.",
     "builtItems": [
-      "proofs/Proofs/FundamentalTheoremCalculusStokes.lean (345 lines, 11 theorems, 8 defs)",
+      "proofs/Proofs/FundamentalTheoremCalculusStokes.lean (396 split-lines, 11 theorems, 7 defs, 0 sorries)",
       "src/data/proofs/fundamental-theorem-calculus-oq-02/meta.json",
       "stokes_1d: FTC as 1D Stokes theorem (proved from Mathlib)",
       "stokes_1d_differentiable: clean version for differentiable functions",
@@ -68,8 +68,6 @@
       "Integration of differential forms on manifolds not yet in Mathlib"
     ],
     "nextSteps": [
-      "Prove dd_eq_zero_2D via ContDiff.isSymmetric_iteratedFDeriv",
-      "Prove stokes_2d_rectangle by adapting GreensTheoremOQ01 proof",
       "Compute de Rham cohomology of S^1: H^1(S^1) = R"
     ]
   },
@@ -143,22 +141,22 @@
     {
       "path": "Proofs/FundamentalTheoremCalculusStokes.lean",
       "filename": "FundamentalTheoremCalculusStokes.lean",
-      "lineCount": 366,
+      "lineCount": 396,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 7,
-      "sorryCount": 1,
+      "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusStokes.lean"
     },
     {
       "path": "Proofs/FundamentalTheoremCalculusStokesAristotle.lean",
       "filename": "FundamentalTheoremCalculusStokesAristotle.lean",
-      "lineCount": 64,
+      "lineCount": 138,
       "theoremCount": 2,
       "axiomCount": 0,
       "defCount": 4,
-      "sorryCount": 2,
+      "sorryCount": 3,
       "isAristotle": true,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/FundamentalTheoremCalculusStokesAristotle.lean"
     }
