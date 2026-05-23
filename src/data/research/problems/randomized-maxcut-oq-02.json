@@ -1,19 +1,30 @@
 {
   "slug": "randomized-maxcut-oq-02",
-  "title": "[Problem Title]",
+  "title": "Randomized MaxCut Approximation",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{Target guarantee: } \\exists S,\\ \\operatorname{cutWeight}(G,S) \\ge \\frac{1}{2}\\operatorname{totalWeight}(G), with comparison to the Goemans-Williamson ratio.",
+    "plain": "Track the basic randomized MaxCut guarantee: a random partition should cut half the total edge weight in expectation, yielding a partition with at least half the total weight, and compare that baseline with the Goemans-Williamson approximation ratio.",
+    "whyMatters": [
+      "Randomized MaxCut is a clean example of the probabilistic method in approximation algorithms.",
+      "The record also documents the path from an axiomatized existence statement to the later conditional-expectations proof."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`random_partition_expected_cut` records the nonnegativity sanity check for the weighted expected-cut expression used by the OQ02 setup.",
+      "`gw_ratio_lower` and `gw_beats_random` record numerical comparisons for the placeholder Goemans-Williamson ratio constant.",
+      "`max_ge_avg`, `greedyContrib_ge_half`, `sum_cutWeight_eq`, and `exists_good_partition'` in the related OQ04 file provide the deterministic averaging and conditional-expectations route.",
+      "`conditional_expectation_method` packages the fully proved constructive MaxCut baseline in the OQ04 development."
+    ],
+    "open": [
+      "`exists_good_partition` is axiomatized in OQ02; the related OQ04 file removes that axiom for the constructive baseline.",
+      "The OQ02 Goemans-Williamson ratio is a placeholder constant, not a full SDP-rounding formalization."
+    ],
+    "goal": "Track the randomized half-cut guarantee and its axiom-free conditional-expectations refinement as a small approximation-algorithm case study."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -37,9 +48,10 @@
     "markdown": "# Knowledge Base: randomized-maxcut-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "combinatorial-optimization",
+    "probabilistic-method",
+    "approximation-algorithms",
+    "maxcut"
   ],
   "relatedProofs": [
     "randomized-maxcut",
