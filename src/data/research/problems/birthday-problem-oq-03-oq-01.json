@@ -1,48 +1,56 @@
 {
   "slug": "birthday-problem-oq-03-oq-01",
   "title": "Exact k=3 birthday coincidence threshold",
-  "phase": "DONE",
+  "phase": "COMPLETED",
   "status": "completed",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in probability theory: Exact k=3 birthday coincidence threshold.",
-    "whyMatters": []
+    "formal": "Define extensionCount for no-triple assignments below the k=3 pigeonhole bound and prove the day-type decomposition supporting recursive exact-threshold counts.",
+    "plain": "Build the exact-counting framework for k=3 birthday coincidences: classify empty, single, double, and full days, then count legal extensions of no-triple assignments.",
+    "whyMatters": [
+      "Supports recursive exact-threshold computation for the first n with triple-collision probability above one half.",
+      "Separates the extension-counting framework from downstream numeric threshold and asymptotic work."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "fullDays and extensionCount are defined for the k-way framework.",
+      "Below the pigeonhole limit, not all days are full.",
+      "For k=3, full days are exactly doubled days.",
+      "A valid no-triple assignment below 2*d has a positive extension count.",
+      "Empty, single, and double day counts partition the d days."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Completed extension-counting framework for exact k=3 birthday calculations."
   },
   "currentState": {
-    "phase": "ORIENT",
-    "since": "2026-03-30T08:49:59.592Z",
-    "iteration": 1,
-    "focus": "Surveyed: exact threshold requires computing P(no 3-way) as product over multinomial arrangements",
+    "phase": "COMPLETED",
+    "since": "2026-05-18T00:00:00.000Z",
+    "iteration": 2,
+    "focus": "Complete extension-counting framework for k=3: the Lean file defines fibers, day types, full days, and extensionCount; proves that below 2*d a valid no-triple assignment has a legal extension; and proves the empty/single/double day counts sum to d.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "No Lean action for this framework; downstream exact and asymptotic work is tracked in child slugs.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "SURVEY: Assessed tractability. Parent BirthdayProblemOQ03.lean has k-way pigeonhole (fully proved, 0 axioms). Exact k=3 threshold n=88 requires computing probability that all days have ≤2 people — a counting/probability computation best handled via computable functions + native_decide.",
-    "builtItems": [],
+    "progressSummary": "COMPLETE: BirthdayProblemOQ03OQ01.lean contains the extension-counting framework for k=3 no-triple assignments.",
+    "builtItems": [
+      "fullDays and extensionCount definitions.",
+      "fullDays_lt_d and extensionCount_pos.",
+      "k=3 identification of full days with doubled days.",
+      "Day-type partition for empty, single, and double days."
+    ],
     "insights": [
-      "Parent has HasKWay, fiberAt, generalized pigeonhole — all fully proved (0 axioms, 0 sorries)",
-      "Exact k=3 threshold for d=365 is n=88 (first n where P(≥3-way) > 1/2)",
-      "P(no 3-way with n people, d days) = sum over valid assignments (each day ≤ 2 people) / d^n",
-      "Approach: define computable noKWayProb function, verify threshold via native_decide or norm_num",
-      "For small d (e.g., d=7), threshold can be computed directly; d=365 may require efficient algorithms"
+      "The file supports exact-threshold computation but intentionally does not close the numeric n=88 calculation by itself."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Define computable function: noKWayCount n d k = number of f : Fin n → Fin d with all fibers < k",
-      "Prove noKWayCount relates to HasKWay probability",
-      "Compute noKWayCount 87 365 3 > 365^87 / 2 and noKWayCount 88 365 3 ≤ 365^88 / 2 (or similar threshold)"
+      "No framework action; use child slugs for exact/asymptotic threshold work."
     ]
   },
   "tags": [
@@ -53,6 +61,7 @@
   "relatedProofs": [
     "birthday-problem",
     "birthday-problem-oq-01",
+    "birthday-problem-oq-01-oq-01",
     "birthday-problem-oq-02",
     "birthday-problem-oq-02-oq-01",
     "birthday-problem-oq-03",
@@ -67,7 +76,7 @@
     "mathlib": []
   },
   "started": "2026-03-30T08:49:59.591Z",
-  "lastUpdate": "2026-03-30T08:49:59.591Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 6,
   "tractability": 7,
   "leanFiles": [
@@ -103,6 +112,39 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01.lean",
+      "filename": "BirthdayProblemOQ01OQ01.lean",
+      "lineCount": 281,
+      "theoremCount": 14,
+      "axiomCount": 0,
+      "defCount": 2,
+      "sorryCount": 1,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ01Aristotle.lean",
+      "filename": "BirthdayProblemOQ01OQ01Aristotle.lean",
+      "lineCount": 35,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": true,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ01Aristotle.lean"
+    },
+    {
+      "path": "Proofs/BirthdayProblemOQ01OQ02.lean",
+      "filename": "BirthdayProblemOQ01OQ02.lean",
+      "lineCount": 205,
+      "theoremCount": 3,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BirthdayProblemOQ01OQ02.lean"
     },
     {
       "path": "Proofs/BirthdayProblemOQ02.lean",
@@ -162,8 +204,8 @@
     {
       "path": "Proofs/BirthdayProblemOQ03OQ01OQ02.lean",
       "filename": "BirthdayProblemOQ03OQ01OQ02.lean",
-      "lineCount": 2263,
-      "theoremCount": 59,
+      "lineCount": 2264,
+      "theoremCount": 54,
       "axiomCount": 1,
       "defCount": 7,
       "sorryCount": 0,
