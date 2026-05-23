@@ -1,27 +1,33 @@
 {
   "slug": "shannon-channel-coding-oq-01",
-  "title": "shannon-channel-coding-oq-01",
+  "title": "Specific channel capacities beyond placeholders",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "",
-    "plain": "",
-    "whyMatters": []
+    "formal": "Compute capacities for concrete channels such as BSC, BEC, and AWGN beyond placeholder True statements.",
+    "plain": "Can specific channel capacities, including BSC, BEC, and AWGN, be computed formally rather than left as placeholder statements?",
+    "whyMatters": [
+      "Turns the Shannon channel-coding scaffold into concrete capacity theorems for named channels."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Existing ShannonChannelCoding sibling files include BSC capacity and binary-entropy support proofs."
+    ],
+    "open": [
+      "BEC and AWGN capacity coverage remains to be audited separately."
+    ],
+    "goal": "Replace placeholder concrete-channel capacity statements with real formal capacity results."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-03-30T11:35:15-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Metadata refreshed against the current ShannonChannelCoding proof family; the concrete-capacity question now has BSC-related sibling proofs to inspect before any new Lean work.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Inspect the BSC/BEC/AWGN capacity coverage and decide whether this broad question should stay active or be split into concrete sibling tasks.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,12 +35,18 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Metadata sync 2026-05-18: Extractor note: broad slug matching includes the full ShannonChannelCoding* proof family; line counts use content.split(\"\\n\"), theorem counts ignore private/attributed declarations, and raw sorry counts include comments.",
+    "builtItems": [
+      "Broad ShannonChannelCoding leanFiles metadata refreshed to 11 current proof files."
+    ],
+    "insights": [
+      "The slug broad-matches the whole ShannonChannelCoding* proof family because the stripped base prefix is ShannonChannelCoding."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: shannon-channel-coding-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "nextSteps": [
+      "Audit BEC/AWGN capacity coverage separately from the already-developed BSC family."
+    ],
+    "markdown": "# Knowledge Base: shannon-channel-coding-oq-01\n\nMetadata refreshed on 2026-05-18. The actual question is whether concrete channel capacities such as BSC, BEC, and AWGN can be formalized beyond placeholders. Existing ShannonChannelCoding sibling files already cover substantial BSC and entropy infrastructure; BEC/AWGN coverage should be audited separately.\n"
   },
   "tags": [],
   "relatedProofs": [
@@ -54,12 +66,12 @@
     "mathlib": []
   },
   "started": "2026-03-30T18:39:05.245Z",
-  "lastUpdate": "2026-03-30T18:39:05.263Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "leanFiles": [
     {
       "path": "Proofs/ShannonChannelCoding.lean",
       "filename": "ShannonChannelCoding.lean",
-      "lineCount": 555,
+      "lineCount": 556,
       "theoremCount": 16,
       "axiomCount": 3,
       "defCount": 6,
@@ -70,7 +82,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ02.lean",
       "filename": "ShannonChannelCodingOQ02.lean",
-      "lineCount": 297,
+      "lineCount": 298,
       "theoremCount": 13,
       "axiomCount": 0,
       "defCount": 1,
@@ -81,7 +93,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ02OQ01.lean",
       "filename": "ShannonChannelCodingOQ02OQ01.lean",
-      "lineCount": 312,
+      "lineCount": 313,
       "theoremCount": 6,
       "axiomCount": 1,
       "defCount": 0,
@@ -92,7 +104,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ02OQ01Aristotle.lean",
       "filename": "ShannonChannelCodingOQ02OQ01Aristotle.lean",
-      "lineCount": 111,
+      "lineCount": 112,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
@@ -103,7 +115,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ02OQ03.lean",
       "filename": "ShannonChannelCodingOQ02OQ03.lean",
-      "lineCount": 162,
+      "lineCount": 163,
       "theoremCount": 5,
       "axiomCount": 1,
       "defCount": 1,
@@ -114,8 +126,8 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ02OQ04.lean",
       "filename": "ShannonChannelCodingOQ02OQ04.lean",
-      "lineCount": 248,
-      "theoremCount": 11,
+      "lineCount": 249,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
@@ -125,8 +137,8 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ03.lean",
       "filename": "ShannonChannelCodingOQ03.lean",
-      "lineCount": 664,
-      "theoremCount": 10,
+      "lineCount": 665,
+      "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 3,
       "sorryCount": 0,
@@ -136,7 +148,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ03Aristotle.lean",
       "filename": "ShannonChannelCodingOQ03Aristotle.lean",
-      "lineCount": 104,
+      "lineCount": 105,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 3,
@@ -147,8 +159,8 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ04.lean",
       "filename": "ShannonChannelCodingOQ04.lean",
-      "lineCount": 224,
-      "theoremCount": 10,
+      "lineCount": 225,
+      "theoremCount": 8,
       "axiomCount": 0,
       "defCount": 2,
       "sorryCount": 0,
@@ -158,7 +170,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ04OQ01.lean",
       "filename": "ShannonChannelCodingOQ04OQ01.lean",
-      "lineCount": 126,
+      "lineCount": 127,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
@@ -169,7 +181,7 @@
     {
       "path": "Proofs/ShannonChannelCodingOQ04OQ01OQ01.lean",
       "filename": "ShannonChannelCodingOQ04OQ01OQ01.lean",
-      "lineCount": 102,
+      "lineCount": 103,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
