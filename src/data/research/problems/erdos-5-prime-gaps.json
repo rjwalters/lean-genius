@@ -1,19 +1,32 @@
 {
   "slug": "erdos-5-prime-gaps",
-  "title": "Erdős #5: Prime Gap Limit Points",
+  "title": "Prime gap limit points for normalized gaps",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "PROGRESS: Created Erdos5PrimeGaps.",
-    "whyMatters": []
+    "formal": "\\mathrm{limitPointSet}=\\{C \\in \\mathbb{R}: 0 \\le C\\}\\; \\wedge\\; \\mathrm{InfinityIsLimitPoint}.",
+    "plain": "Erdos #5 asks whether every non-negative real number, together with infinity, occurs as a limit point of normalized prime gaps (p_{n+1}-p_n)/log(n). The Lean file defines the normalized gap sequence, proves basic structural facts about its limit-point set, and packages known deep prime-gap inputs as axioms.",
+    "whyMatters": [
+      "Connects prime-gap distribution to a clean topological statement about subsequential limits.",
+      "Separates elementary consequences of prime ordering from deep inputs such as bounded gaps and large-gap theorems."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`nthPrime`, `primeGap`, `normalizedGap`, `IsLimitPoint`, and `limitPointSet` define the normalized prime-gap setting.",
+      "`primeGap_pos`, `normalizedGap_nonneg`, `limitPoint_nonneg`, and `limitPointSet_subset_nonneg` prove basic positivity facts.",
+      "`zhang_implies_zero_limit`, `zero_mem_limitPointSet`, and `goldston_pintz_yildirim_small_gaps` derive 0 as a limit point from bounded-gaps input.",
+      "`westzynthius_implies_frequently_large` and `frequently_normalizedGap_gt` capture arbitrarily large normalized gaps from Westzynthius input.",
+      "`limitPointSet_isClosed`, `erdos_5_iff`, `erdos_5_from_dense_values`, and `erdos_5_iff_dense_at_every_point` reframe the conjecture as set equality and frequent-neighborhood density."
+    ],
+    "open": [
+      "`erdos_5` remains open: proving every non-negative real is a limit point is the main missing theorem.",
+      "`westzynthius_large_gaps`, `zhang_bounded_gaps`, and `hildebrand_maier_large_limit_points` are axioms for deep external number-theory results.",
+      "Measure-theoretic results about the size of the limit-point set are noted but not formalized here."
+    ],
+    "goal": "Keep the topological limit-point reductions theorem-backed while replacing deep prime-gap axioms only when the required analytic number theory is available."
   },
   "currentState": {
     "phase": "NEW",
@@ -39,6 +52,7 @@
     "number-theory",
     "primes",
     "prime-gaps",
+    "limit-points",
     "erdos-problem",
     "open-conjecture"
   ],

@@ -1,19 +1,32 @@
 {
   "slug": "erdos-14-unique-sums",
-  "title": "Erdős #14: Unique Representation Sums",
+  "title": "Erdos #14: Unique representation sums and Sidon obstructions",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "PROGRESS: Created Erdos14UniqueSums.",
-    "whyMatters": []
+    "formal": "For A \\subseteq \\mathbb{N}, let U_A(N)=|[1,N] \\setminus \\mathrm{uniqueSums}(A)|. Study whether U_A(N) is forced near N^{1/2} and whether U_A(N)=o(\\sqrt{N}) is possible.",
+    "plain": "Erdos #14 studies how many integers fail to have a unique representation as a sum of two elements of A. The Lean file defines representation counts, unique sums, Sidon sets, and formal versions of the two open growth questions.",
+    "whyMatters": [
+      "Links additive-combinatorics extremal questions with concrete representation-count definitions.",
+      "Clarifies why Sidon sets make all represented sums unique but are too sparse to resolve the density question alone."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "`repCount`, `uniqueSums`, `sumset`, `nonUniqueSums`, and `nonUniqueCount` define the counting framework.",
+      "`IsSidon` and `sidon_all_unique` prove Sidon sets have all represented sums unique.",
+      "`sidon_size_bound` proves a square-root upper bound for Sidon sets in finite intervals.",
+      "`erdos_14a` and `erdos_14b` encode the two main growth questions.",
+      "`omega_sqrt_implies_not_little_o`, `singleton_uniqueSums`, and `consecutive_many_nonunique` record useful structural examples."
+    ],
+    "open": [
+      "`erdos_14a` and `erdos_14b` remain open.",
+      "The construction bounds are axiomatized as `erdos_upper_construction`, `erdos_lower_infinitely_often`, and `erdos_freud_finite`.",
+      "The current file notes that the quantified lower-bound formulation does not directly refute an o(sqrt(N)) example."
+    ],
+    "goal": "Separate theorem-backed Sidon/counting lemmas from the axiomatized Erdos construction bounds, then refine the growth-question formulations if needed."
   },
   "currentState": {
     "phase": "NEW",
@@ -39,6 +52,7 @@
     "number-theory",
     "additive-combinatorics",
     "sidon-sets",
+    "unique-representation",
     "erdos-problem",
     "open-conjecture"
   ],
