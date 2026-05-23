@@ -8,12 +8,22 @@
   "problemStatement": {
     "formal": "\\forall n \\in \\mathbb{N},\\; \\exists\\, a, b, c, d \\in \\mathbb{Z} \\text{ such that } n = a^2 + b^2 + c^2 + d^2",
     "plain": "Every non-negative integer can be written as the sum of four integer squares. This is Lagrange's theorem (1770), extending Fermat's two-squares theorem to all integers (which only characterizes primes of the form $4k+1$ as sums of two squares).",
-    "whyMatters": []
+    "whyMatters": [
+      "Lagrange's theorem shows that four squares suffice for every natural number, a cornerstone of additive number theory.",
+      "The quaternion norm identity explains why sums of four squares are closed under multiplication.",
+      "The file links the two-squares story with the broader four-squares theorem in a fully verified Lean development."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "Euler's four-square identity is formalized over commutative rings (Lean: euler_four_square_identity).",
+      "Lipschitz quaternion norm and multiplication are defined, with multiplicativity of the norm verified (Lean: LipschitzQuat.normSq_mul).",
+      "Every natural number is proved to be a sum of four natural squares (Lean: lagrange_four_squares).",
+      "An integer-valued version and closure of two-square/four-square representations under multiplication are included (Lean: lagrange_four_squares_int, two_squares_closed, four_squares_closed).",
+      "The file also records Fermat two-squares and concrete examples such as 3 not being two squares but being four squares (Lean: fermat_two_squares, three_not_two_squares, three_is_four_squares)."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Document the verified Lagrange four-squares formalization and its connection to Fermat two-squares."
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -59,7 +69,9 @@
     "sum-of-squares",
     "additive-number-theory",
     "classic",
-    "extension"
+    "extension",
+    "lagrange-four-squares",
+    "quaternions"
   ],
   "relatedProofs": [
     "fermat-two-squares",
