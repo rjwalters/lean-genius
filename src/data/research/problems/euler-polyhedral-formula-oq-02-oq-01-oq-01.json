@@ -1,19 +1,25 @@
 {
   "slug": "euler-polyhedral-formula-oq-02-oq-01-oq-01",
-  "title": "[Problem Title]",
+  "title": "Full Smooth Gauss-Bonnet Theorem from First Principles",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
-  "path": "full",
+  "path": "fast",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
+    "formal": "\\forall M,\\; M \\text{ compact Riemannian 2-manifold with boundary} \\Rightarrow \\int_M K\\,dA + \\int_{\\partial M} \\kappa_g\\,ds = 2\\pi\\chi(M).",
+    "plain": "Prove, from actual Lean/Mathlib definitions rather than structure fields or axioms, the full smooth Gauss-Bonnet theorem for compact Riemannian surfaces with boundary: total Gaussian curvature plus the boundary geodesic-curvature integral equals 2*pi times the Euler characteristic. Local evidence frames this as future-infrastructure work because the parent smooth file currently axiomatizes the geometric statements that Mathlib does not yet provide.",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Discrete Gauss-Bonnet is implemented in proofs/Proofs/EulerPolyhedralOQ02.lean for polyhedral surfaces using angular deficiency and Euler characteristic.",
+      "The parent smooth file proofs/Proofs/EulerPolyhedralOQ02OQ01.lean models closed and boundary Gauss-Bonnet with structure fields and proves algebraic consequences from those assumptions."
+    ],
+    "open": [
+      "First-principles definitions for Riemannian surfaces, Gaussian curvature, geodesic curvature, and manifold integration are not available in the local evidence.",
+      "Replace the pseudo-Lean theorem in problem.md with a real Mathlib statement once the required infrastructure exists."
+    ],
+    "goal": "Prove the boundary-form smooth Gauss-Bonnet theorem from first-principles Mathlib infrastructure, without assuming the Gauss-Bonnet equation as a field or axiom."
   },
   "currentState": {
     "phase": "OBSERVE",
@@ -29,17 +35,33 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
+    "progressSummary": "OBSERVE: target identified as the full smooth Gauss-Bonnet theorem with boundary. No Lean attempt is recorded for this subproblem. The parent smooth file is an axiomatized model that proves consequences from assumed Gauss-Bonnet fields, not a first-principles proof.",
     "builtItems": [],
-    "insights": [],
-    "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Knowledge Base: euler-polyhedral-formula-oq-02-oq-01-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
+    "insights": [
+      "This target is stronger than the parent compact closed-surface model because problem.md includes the boundary term int_boundary kappa_g ds.",
+      "The related smooth proof file encodes Gauss-Bonnet as fields such as gauss_bonnet and gauss_bonnet_boundary, then proves consequences from those assumptions.",
+      "The local state is OBSERVE with zero attempts, so there is no evidence of Lean progress on this first-principles subproblem."
+    ],
+    "mathlibGaps": [
+      "Riemannian metric infrastructure for smooth manifolds.",
+      "Gaussian curvature and geodesic curvature definitions.",
+      "Integration on manifolds with boundary, likely via differential forms or related manifold integration APIs.",
+      "Connection/vector-bundle infrastructure needed for a first-principles smooth Gauss-Bonnet proof."
+    ],
+    "nextSteps": [
+      "Survey current Mathlib manifold integration and smooth-manifold APIs.",
+      "Check whether Riemannian metric, curvature, differential-form, and boundary integration support now exist.",
+      "If the APIs are still absent, document the gap and avoid replacing the target theorem with axioms.",
+      "Use the discrete and axiomatized parent files as specification references only."
+    ],
+    "markdown": "# Knowledge Base: euler-polyhedral-formula-oq-02-oq-01-oq-01\n\n## Problem Understanding\n\nThe target asks for the full smooth Gauss-Bonnet theorem for compact Riemannian 2-manifolds with boundary, not merely the existing closed-surface axiomatized model. The formula is `int_M K dA + int_boundary kappa_g ds = 2*pi*chi(M)`.\n\n## Local Evidence\n\n- `problem.md` gives a pseudo-Lean target using `RiemannianManifold`, `Compact`, and `WithBoundary`, and names `Mathlib.Geometry.Manifold.Integration` as a key dependency.\n- `state.md` keeps the problem in OBSERVE with zero attempts and the fast path.\n- The parent proof `proofs/Proofs/EulerPolyhedralOQ02OQ01.lean` states that Mathlib v4.26.0 lacks Riemannian metrics, Gaussian curvature, manifold integration, differential forms, vector bundles with connection, and Morse theory; it therefore models Gauss-Bonnet through fields such as `gauss_bonnet` and `gauss_bonnet_boundary`.\n- `proofs/Proofs/EulerPolyhedralOQ02.lean` is a discrete/polyhedral baseline, not a first-principles smooth proof.\n\n## Current Status\n\nNo Lean progress is recorded for this subproblem. The correct next move is an infrastructure survey before any proof attempt.\n\n## Next Steps\n\n1. Survey current Mathlib manifold integration and smooth-manifold APIs.\n2. Check for Riemannian metric, curvature, differential-form, and boundary integration support.\n3. If those APIs are still absent, document the gap instead of axiomatizing the target theorem.\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "topology",
+    "geometry",
+    "differential-geometry",
+    "riemannian-geometry",
+    "manifolds"
   ],
   "relatedProofs": [
     "euler-polyhedral-formula",
@@ -50,7 +72,9 @@
   "references": {
     "papers": [],
     "urls": [],
-    "mathlib": []
+    "mathlib": [
+      "Mathlib.Geometry.Manifold.Integration"
+    ]
   },
   "started": "2026-04-04T09:42:47.007Z",
   "lastUpdate": "2026-04-04T09:42:47.023Z",
