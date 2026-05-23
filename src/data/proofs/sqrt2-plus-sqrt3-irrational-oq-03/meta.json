@@ -16,7 +16,7 @@
       "square-roots"
     ],
     "badge": "mathlib",
-    "sorries": 3,
+    "sorries": 0,
     "dateAdded": "2026-04-22",
     "axiomCount": 0,
     "assumptions": "None. Fully proved: 0 sorries, 0 axioms. Irreducibility is proved over \u2124[X] via case analysis, then transferred to \u211a[X] via Gauss's lemma (Mathlib's IsPrimitive.Int.irreducible_iff_irreducible_map_cast).",
@@ -129,5 +129,5 @@
       "summary": "adjoin_sqrt2_plus_sqrt3_finrank: [\u211a(\u221a2+\u221a3):\u211a]=4 via adjoin.finrank and natDegree computation. sqrt2_plus_sqrt3_irrational: fully proved by direct algebra \u2014 if \u221a2+\u221a3=q then (q\u00b2-5)/2=\u221a6, contradicting irrationality of \u221a6."
     }
   ],
-  "sorries": 3
+  "sorries": 0
 }
