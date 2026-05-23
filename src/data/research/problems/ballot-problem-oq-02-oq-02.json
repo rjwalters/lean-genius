@@ -1,27 +1,35 @@
 {
   "slug": "ballot-problem-oq-02-oq-02",
-  "title": "[Problem Title]",
+  "title": "First passage time characterization via csInf theory",
   "phase": "OBSERVE",
   "status": "active",
   "tier": "C",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "[Explain what we're trying to prove in accessible terms]",
-    "whyMatters": []
+    "formal": "\\text{For a continuous path, under nonempty hitting-set hypotheses, }\\; firstPassageTime\\; bm\\; a\\; \\omega \\le T \\iff \\omega \\in maxEvent\\; bm\\; a\\; T.",
+    "plain": "Prove the parent first-passage-time/max-event equivalence from path continuity and csInf theory, with the needed nonemptiness condition made explicit.",
+    "whyMatters": [
+      "The local notes show the unconditional parent axiom is false in Lean because sInf of the empty real set is 0.",
+      "Replacing the axiom with a proved, hypothesis-correct characterization removes a fragile assumption from the ballot-problem development."
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "A full proof with 0 sorries builds in BallotProblemOQ02OQ02.lean.",
+      "The notes record fpt_le_iff_maxEvent, fpt_le_set_eq_maxEvent, and ivt_first_crossing as main results."
+    ],
+    "open": [
+      "The unconditional equality is not valid without a nonemptiness hypothesis."
+    ],
+    "goal": "Use path continuity, closed hitting sets, csInf membership, and IVT to prove the corrected first-passage-time/max-event characterization."
   },
   "currentState": {
     "phase": "OBSERVE",
     "since": "2026-04-02T21:57:15-07:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Completed corrected characterization: prove the equivalence under nonempty hitting-set hypotheses and document why the unconditional axiom fails.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "Use the proved OQ-02-OQ-02 result as the replacement for the parent axiom only where the needed nonemptiness hypotheses are available.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -37,9 +45,10 @@
     "markdown": "# Knowledge Base: ballot-problem-oq-02-oq-02\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
-    "prime-gaps",
-    "sieve-methods"
+    "probability",
+    "brownian-motion",
+    "order-theory",
+    "continuity"
   ],
   "relatedProofs": [
     "ballot-problem",
