@@ -16,7 +16,7 @@
       "rational-canonical-form"
     ],
     "badge": "original",
-    "sorries": 0,
+    "sorries": 12,
     "mathlibDependencies": [
       {
         "theorem": "Matrix.aeval_self_charpoly",
@@ -164,7 +164,7 @@
       "description": "Sibling entry in the reduction series: OQ-01 proves the Cayley-Hamilton theorem for block upper triangular matrices via the trace formula. Together with this OQ-02-OQ-01, they form the infrastructure for the rational canonical form."
     }
   ],
-  "sorries": 0,
+  "sorries": 12,
   "leanFile": {
     "imports": [
       "Mathlib.LinearAlgebra.Matrix.Charpoly.Basic",
