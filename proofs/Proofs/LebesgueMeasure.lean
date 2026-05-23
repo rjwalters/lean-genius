@@ -37,11 +37,11 @@ fundamental convergence theorems:
   and integrals.
 
 ## Status
-- [ ] Complete proof
+- [x] Complete proof
 - [x] Uses Mathlib for main result
 - [ ] Proves extensions/corollaries
 - [ ] Pedagogical example
-- [x] Incomplete (has sorries)
+- [ ] Incomplete (has sorries)
 
 ## Mathlib Dependencies
 - `MeasureTheory.Measure.volume` : Lebesgue measure on ℝⁿ
