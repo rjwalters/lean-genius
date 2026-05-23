@@ -1,49 +1,69 @@
 {
   "slug": "bounded-prime-gaps-oq-01",
-  "title": "[Problem Title]",
+  "title": "Gap-bound hierarchy and optimal small tuples",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{[LaTeX formulation of the theorem/conjecture]}",
-    "plain": "Formal mathematical investigation: [Problem Title].",
-    "whyMatters": []
+    "formal": "OpenQuestion01 asks whether the known Polymath bound H <= 246 can be improved, while the OQ01 companion files compare EH, TPC, and exact small admissible tuple diameters.",
+    "plain": "Track the bounded-prime-gaps improvement question and the formal hierarchy connecting twin primes, Elliott-Halberstam bounds, and the Polymath 246 bound.",
+    "whyMatters": [
+      "Connects the main bounded-gaps theorem to natural improvement questions",
+      "Records exact small admissible tuple tables and EH comparison files",
+      "Replaces placeholder metadata with the actual matched Lean development"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "gap_bound_upper_bound_246 records the Polymath upper bound",
+      "eh_conditional_h_le_12 gives the EH-conditional H <= 12 companion result",
+      "complete_diameter_table records exact small tuple diameter entries"
+    ],
+    "open": [
+      "OpenQuestion01 remains the improvement question below the current unconditional 246 bound"
+    ],
+    "goal": "Track improvement paths for the bounded prime gaps constant."
   },
   "currentState": {
-    "phase": "OBSERVE",
+    "phase": "COMPLETED",
     "since": "2026-02-24T13:38:06-08:00",
     "iteration": 1,
-    "focus": "Initial problem understanding. Read problem.md and gather context.",
+    "focus": "Metadata refreshed for the 15-file bounded-prime-gaps match set.",
     "blockers": [],
-    "nextAction": "Read problem.md thoroughly and acquire full context.",
+    "nextAction": "None for metadata; future proof work would improve the unconditional bound.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Gap-bound improvement metadata now reflects OQ01, EH companion, exact tuple table, and the broader bounded-prime-gaps proof family.",
+    "builtItems": [
+      "BoundedPrimeGapsOQ01.lean: open improvement question and gap-bound hierarchy",
+      "BoundedPrimeGapsOQ01OQ02.lean: EH-conditional H <= 12 comparison",
+      "BoundedPrimeGapsOQ01OQ03.lean: exact small admissible tuple table"
+    ],
+    "insights": [
+      "EH improves the unconditional 246 bound to 12 in the formal hierarchy",
+      "Exact tuple tables separate combinatorial tuple limits from analytic sieve inputs",
+      "The broad matcher attaches the full bounded-prime-gaps proof family to this record"
+    ],
     "mathlibGaps": [],
     "nextSteps": [],
     "markdown": "# Knowledge Base: bounded-prime-gaps-oq-01\n\nInsights accumulated during research on this problem.\n\n---\n\n## Problem Understanding\n\n[Initial observations about the problem will be recorded here]\n\n---\n\n## Insights\n\n[Insights from research attempts will be accumulated here]\n\n---\n\n## Dead Ends\n\n[Approaches known not to work will be documented here]\n"
   },
   "tags": [
-    "number-theory  # or: algebra, analysis, topology, combinatorics, etc.",
+    "number-theory",
     "prime-gaps",
     "sieve-methods"
   ],
   "relatedProofs": [
     "bounded-prime-gaps",
     "bounded-prime-gaps-oq-01",
+    "bounded-prime-gaps-oq-01-oq-02",
+    "bounded-prime-gaps-oq-01-oq-03",
     "bounded-prime-gaps-oq-03",
     "bounded-prime-gaps-oq-03-oq-01",
     "bounded-prime-gaps-oq-03-oq-01-oq-04",
@@ -52,12 +72,16 @@
     "bounded-prime-gaps-oq-04-oq-02"
   ],
   "references": {
-    "papers": [],
+    "papers": [
+      "Zhang (2013), Bounded gaps between primes",
+      "Maynard (2015), Small gaps between primes",
+      "Polymath 8b (2014), Variants of the Selberg sieve"
+    ],
     "urls": [],
     "mathlib": []
   },
   "started": "2026-02-25T19:36:59.225Z",
-  "lastUpdate": "2026-02-25T19:36:59.225Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "completed": "2026-02-25T19:36:59.225Z",
   "significance": 8,
   "tractability": 5,
@@ -83,6 +107,28 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ02.lean",
+      "lineCount": 220,
+      "theoremCount": 25,
+      "axiomCount": 0,
+      "defCount": 3,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ02.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ01OQ03.lean",
+      "filename": "BoundedPrimeGapsOQ01OQ03.lean",
+      "lineCount": 156,
+      "theoremCount": 9,
+      "axiomCount": 0,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ01OQ03.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ03.lean",
@@ -116,6 +162,17 @@
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ01OQ04.lean"
+    },
+    {
+      "path": "Proofs/BoundedPrimeGapsOQ03OQ02.lean",
+      "filename": "BoundedPrimeGapsOQ03OQ02.lean",
+      "lineCount": 954,
+      "theoremCount": 26,
+      "axiomCount": 2,
+      "defCount": 4,
+      "sorryCount": 2,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/BoundedPrimeGapsOQ03OQ02.lean"
     },
     {
       "path": "Proofs/BoundedPrimeGapsOQ03OQ03.lean",
