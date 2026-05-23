@@ -31,7 +31,7 @@
   "knowledge": {
     "progressSummary": "COMPLETED: q-Hockey Stick identity proved (0 sorries, 0 axioms). Fixed incorrect statement (q^{j(k+1)} -> q^{(k+1)(N-j)}) and proved by induction on N using q-Pascal recurrence.",
     "builtItems": [
-      "proofs/Proofs/ArithmeticSeriesOQ02OQ01.lean: 170 lines, 0 sorries, 0 axioms (was 1 sorry)",
+      "proofs/Proofs/ArithmeticSeriesOQ02OQ01.lean: 174 lines, 0 sorries, 0 axioms (was 1 sorry)",
       "qHockeyStick: q-hockey stick identity proved by induction on N",
       "Fixed statement: original used q^{j(k+1)} which is wrong for q≠1; corrected to q^{(k+1)(N-j)}"
     ],
@@ -82,7 +82,7 @@
     {
       "path": "Proofs/ArithmeticSeries.lean",
       "filename": "ArithmeticSeries.lean",
-      "lineCount": 180,
+      "lineCount": 181,
       "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 1,
@@ -104,8 +104,8 @@
     {
       "path": "Proofs/ArithmeticSeriesOQ00OQ01.lean",
       "filename": "ArithmeticSeriesOQ00OQ01.lean",
-      "lineCount": 282,
-      "theoremCount": 12,
+      "lineCount": 283,
+      "theoremCount": 10,
       "axiomCount": 0,
       "defCount": 1,
       "sorryCount": 0,
