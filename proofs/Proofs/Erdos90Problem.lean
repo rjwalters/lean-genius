@@ -8,10 +8,19 @@ Known results:
 - Upper bound: u(n) = O(n^{4/3}) (Spencer–Szemerédi–Trotter 1984)
 - Lower bound: u(n) ≥ n^{1+c/log log n} for some c > 0 (lattice constructions)
 - The upper bound cannot be improved by methods that work in general metrics (Valtr)
+- On 2026-05-20, OpenAI announced a construction (rings of integers in number fields
+  with infinite class field towers, via Golod–Shafarevich) reportedly disproving the
+  conjectured exponent — peer review pending. The Spencer–Szemerédi–Trotter O(n^{4/3})
+  upper bound is unaffected, and the true asymptotic order of u(n) remains open.
 
 $500 prize offered by Erdős.
 
-Reference: https://erdosproblems.com/90
+References:
+- https://erdosproblems.com/90
+- OpenAI announcement (2026-05-20):
+    https://openai.com/index/model-disproves-discrete-geometry-conjecture/
+- OpenAI technical note:
+    https://cdn.openai.com/pdf/74c24085-19b0-4534-9c90-465b8e29ad73/unit-distance-remarks.pdf
 -/
 
 import Mathlib.Analysis.InnerProductSpace.Basic
@@ -49,14 +58,21 @@ noncomputable def maxUnitDistances (n : ℕ) : ℕ :=
 
 /-- There exist n-point configurations with n^{1+c/log log n} unit distances
     for some constant c > 0, achieved by lattice-point constructions -/
-/- ## The Erdős Conjecture -/
+/- ## Erdős's 1946 Conjecture (reportedly disproved by OpenAI 2026-05-20,
+       peer review pending) -/
 
-/-- Erdős Problem 90: u(n) = n^{1+O(1/log log n)}, i.e. the maximum number of
-    unit distances among n points in ℝ² is at most n^{1+O(1/log log n)}.
-    This would match the lattice lower bound up to the constant in the exponent.
-    $500 prize. Open since 1946. -/
-/-- Stronger form: u(n) = n^{1+o(1)}, meaning the exponent approaches 1.
-    Erdős offered $300 (later $250) for this weaker conjecture. -/
+/-- Erdős's 1946 conjecture (now reportedly false, peer review pending):
+    u(n) = n^{1+O(1/log log n)}, i.e. the maximum number of unit distances
+    among n points in ℝ² is at most n^{1+O(1/log log n)}. This would have
+    matched the lattice lower bound up to the constant in the exponent.
+    $500 prize. Posed 1946. On 2026-05-20, OpenAI announced a construction
+    via number fields with infinite class field towers (Golod–Shafarevich)
+    reportedly giving a polynomial improvement over the lattice lower bound,
+    disproving the conjectured exponent — peer review pending. -/
+/-- Stronger (now also in doubt) form: u(n) = n^{1+o(1)}, meaning the exponent
+    approaches 1. Erdős offered $300 (later $250) for this weaker conjecture.
+    Status of this weak form under the OpenAI 2026 construction depends on the
+    precise exponent achieved (peer review pending). -/
 /- ## Valtr's Obstruction -/
 
 /-- Valtr showed that there exists a metric on ℝ² (not Euclidean) where
