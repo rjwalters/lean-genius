@@ -1,8 +1,8 @@
 {
   "slug": "taylor-theorem-oq-02",
   "title": "Taylor Series Convergence for Analytic Functions",
-  "phase": "ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "B",
   "path": "fast",
   "problemStatement": {
@@ -21,18 +21,16 @@
       "multilinear_eval_const — p n (y,...,y) = yⁿ · p n (1,...,1) for 1D CML maps",
       "HasFPowerSeriesOnBall.iteratedFDeriv_eq_sum — FPS-to-derivative connection (Mathlib)"
     ],
-    "open": [
-      "fps_coeff_eq_taylor_coeff — 1 sorry remaining: exact Mathlib API for iteratedFDeriv_eq_sum call"
-    ],
-    "goal": "Prove fps_coeff_eq_taylor_coeff to eliminate the 1 remaining sorry"
+    "open": [],
+    "goal": "Prove analytic Taylor convergence and show the Taylor remainder tends to zero"
   },
   "currentState": {
-    "phase": "ACT",
+    "phase": "COMPLETED",
     "since": "2026-04-12T21:30:00Z",
     "iteration": 2,
-    "focus": "Written TaylorTheoremOQ02.lean with 1 sorry; resolve fps_coeff_eq_taylor_coeff bridge",
+    "focus": "TaylorTheoremOQ02.lean is complete: 218 lines, 9 public theorem/lemma declarations, 0 axioms, 0 sorries.",
     "blockers": [],
-    "nextAction": "Submit fps_coeff_eq_taylor_coeff to Aristotle, or search exact Mathlib API name",
+    "nextAction": "None for this completed analytic Taylor convergence slice.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -42,7 +40,7 @@
   "knowledge": {
     "progressSummary": "COMPLETE: 0A, 0S, 9T. fps_coeff_eq_taylor_coeff fully proved via iteratedFDeriv_eq_sum_of_completeSpace. All Taylor convergence theorems verified.",
     "builtItems": [
-      "TaylorTheoremOQ02.lean — 8 theorems, 1 sorry, in Proofs/",
+      "TaylorTheoremOQ02.lean - 9 public theorem/lemma declarations, 0 axioms, 0 sorries, in Proofs/",
       "multilinear_eval_const — p n (y,...,y) = yⁿ · p n (1,...,1) via map_smul_univ",
       "fps_eval_eq_taylor_term — p n (fun _ => y) = iteratedDeriv n f x₀ / n! · yⁿ",
       "taylor_hasSum_of_hasFPS — HasSum of Taylor terms to f(x₀+y) for analytic f",
@@ -60,17 +58,8 @@
       "The proof structure avoids needing symmetry of formal power series — the constant evaluation trick sidesteps this",
       "linarith may not work for non-linear goals after map_smul_univ — may need ring or exact instead"
     ],
-    "mathlibGaps": [
-      "Need exact call signature for HasFPowerSeriesOnBall.iteratedFDeriv_eq_sum — exists in Mathlib.Analysis.Analytic.IteratedFDeriv but argument order uncertain",
-      "ContinuousMultilinearMap.map_smul_univ may need to go through .toMultilinearMap — need to verify",
-      "HasFPowerSeriesOnBall.le_radius may or may not be the right field name"
-    ],
-    "nextSteps": [
-      "Verify ContinuousMultilinearMap.map_smul_univ exists or use .toMultilinearMap.map_smul_univ",
-      "Find exact name of HasFPowerSeriesOnBall.iteratedFDeriv_eq_sum — check Analysis.Analytic.IteratedFDeriv",
-      "Submit fps_coeff_eq_taylor_coeff sorry to Aristotle for resolution",
-      "Run docker build to validate the file compiles (modulo the sorry)"
-    ]
+    "mathlibGaps": [],
+    "nextSteps": []
   },
   "tags": [
     "analysis",
@@ -102,20 +91,9 @@
   "tractability": 7,
   "leanFiles": [
     {
-      "path": "Proofs/TaylorTheorem.lean",
-      "filename": "TaylorTheorem.lean",
-      "lineCount": 203,
-      "theoremCount": 6,
-      "axiomCount": 0,
-      "defCount": 1,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheorem.lean"
-    },
-    {
       "path": "Proofs/TaylorTheoremOQ02.lean",
       "filename": "TaylorTheoremOQ02.lean",
-      "lineCount": 219,
+      "lineCount": 218,
       "theoremCount": 9,
       "axiomCount": 0,
       "defCount": 0,
@@ -124,9 +102,20 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheoremOQ02.lean"
     },
     {
+      "path": "Proofs/TaylorTheorem.lean",
+      "filename": "TaylorTheorem.lean",
+      "lineCount": 202,
+      "theoremCount": 6,
+      "axiomCount": 0,
+      "defCount": 1,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/TaylorTheorem.lean"
+    },
+    {
       "path": "Proofs/TaylorTheoremOQ03.lean",
       "filename": "TaylorTheoremOQ03.lean",
-      "lineCount": 269,
+      "lineCount": 268,
       "theoremCount": 14,
       "axiomCount": 0,
       "defCount": 0,

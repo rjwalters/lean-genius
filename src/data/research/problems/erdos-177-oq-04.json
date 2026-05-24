@@ -2,26 +2,38 @@
   "slug": "erdos-177-oq-04",
   "title": "Optimal Colorings for Discrepancy of APs",
   "phase": "COMPLETED",
-  "status": "completed",
+  "status": "graduated",
   "tier": "A",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in combinatorics: Optimal Colorings for Discrepancy of APs.",
-    "whyMatters": []
+    "formal": "\\text{For colorings } f : \\mathbb{N} \\to \\{-1,1\\}, \\text{ study discrepancy along arithmetic progressions and exact optimality for } d = 1.",
+    "plain": "Formalize arithmetic-progression discrepancy for +/-1 colorings, prove the exact d=1 optimum, and record axiomatized deep bounds for the wider discrepancy problem.",
+    "whyMatters": [
+      "Separates the elementary d=1 optimum from deeper discrepancy bounds",
+      "Provides reusable definitions for AP sums, valid colorings, and optimal discrepancy",
+      "Makes clear which parts are proved locally and which parts remain axiomatized context"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "alternating_valid: the alternating coloring is a valid +/-1 coloring",
+      "alternating_d1_bound: alternating coloring has discrepancy at most 1 on step d=1",
+      "disc_length_1: every valid coloring has discrepancy at least 1 on length-1 progressions",
+      "optimalDisc_one: exact computation optimalDisc 1 = 1",
+      "alternating_isOptimal_d1: alternating coloring is optimal for d=1"
+    ],
+    "open": [
+      "Roth, Beck, and Rudin-Shapiro style asymptotic bounds remain axiomatized in this file"
+    ],
+    "goal": "Formalize AP discrepancy infrastructure and prove the exact d=1 optimum"
   },
   "currentState": {
     "phase": "COMPLETED",
     "since": "2026-03-19T08:13:01.845Z",
     "iteration": 2,
-    "focus": "Created formalization: 240 lines, 0 sorries, 4 axioms",
+    "focus": "Axiomatized primary formalization: 282 lines, 12 public theorems, 8 defs, 3 axioms, 0 sorries.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None for this completed axiomatized metadata slice.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +41,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Proved optimalDisc 1 = 1 (exact axiom-free computation via csInf). Added alternating_isOptimal_d1. Fixed 3 pre-existing Mathlib-compat build errors.",
+    "progressSummary": "COMPLETED: Erdos177OQ04.lean proves the exact d=1 optimum and alternating_isOptimal_d1 with 0 sorries. The file intentionally keeps three deep discrepancy bounds as axioms, so it should be described as axiomatized rather than as a full solution of the open discrepancy problem.",
     "builtItems": [
       "alternating coloring with validity proof",
       "disc_trivial_upper: |sum| ≤ k proved by induction",
@@ -84,7 +96,7 @@
     {
       "path": "Proofs/Erdos177OQ04.lean",
       "filename": "Erdos177OQ04.lean",
-      "lineCount": 283,
+      "lineCount": 282,
       "theoremCount": 12,
       "axiomCount": 3,
       "defCount": 8,
@@ -95,7 +107,7 @@
     {
       "path": "Proofs/Erdos177Problem.lean",
       "filename": "Erdos177Problem.lean",
-      "lineCount": 164,
+      "lineCount": 163,
       "theoremCount": 9,
       "axiomCount": 1,
       "defCount": 6,
