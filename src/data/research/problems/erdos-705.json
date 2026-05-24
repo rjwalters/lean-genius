@@ -17,41 +17,33 @@
   },
   "currentState": {
     "phase": "ACT",
-    "since": "2026-01-14T21:07:11.724Z",
+    "since": "2026-05-18T11:20:09Z",
     "iteration": 3,
-    "focus": "6 remaining axioms are concrete constructions (Moser, Wormald, etc.) — deep results.",
+    "focus": "Surveyed unit-distance graph girth/chromatic-number formalization.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Keep construction results axiom-backed unless formal point-set geometry witnesses are added.",
     "attemptCounts": {
-      "total": 1,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 2,
+      "currentApproach": 1,
+      "approachesTried": 2
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: 3 axioms (all deep geometric constructions), 10 theorems proved, 0 sorries. Formalization is clean for an open problem.",
+    "progressSummary": "SURVEYED: 10 theorems, 3 axioms, 0 sorries. Mathlib chromatic number and girth are used directly; the remaining axioms are the Moser, ODonell, and Wormald unit-distance graph construction claims.",
     "builtItems": [
-      "Replaced axiom chromaticNumber' with Mathlib SimpleGraph.chromaticNumber",
-      "Replaced axiom girth' with Mathlib SimpleGraph.girth",
-      "Added import Mathlib.Combinatorics.SimpleGraph.Girth",
-      "threshold_ge_6: proved k≥6 lower bound from Wormald axiom",
-      "erdos_705_conjecture_lower: conjecture implies ∃k≥6 with the threshold property",
-      "theorem conjecture_implies_not_negation (proved)",
-      "theorem negation_implies_not_conjecture (proved)",
-      "Fixed axiomCount in meta.json (8→6)"
+      "Confirmed unitDistAdj, unitDistGraph, isKColorable, hasGirthAtLeast, erdos_705_conjecture, erdos_705_negation, vertexCountGrowth, and erdos_705_status are definitions.",
+      "Confirmed girth_3_chi_4, girth_4_chi_4, girth_5_chi_4, threshold_ge_6, and logical implication theorems are theorem-backed.",
+      "Confirmed axiom surface: moser_spindle_exists, odonnell_graph_exists, and wormald_graph_exists."
     ],
     "insights": [
-      "chromaticNumber' and girth' were unnecessary axiom-definitions — Mathlib provides real definitions",
-      "SimpleGraph.chromaticNumber returns ℕ, SimpleGraph.girth returns ℕ∞ (⊤ for acyclic)",
-      "hasGirthAtLeast simplifies to (k : ℕ∞) ≤ G.girth, naturally handling acyclic case",
-      "threshold_ge_6: any k satisfying conjecture must be ≥ 6 (derived from Wormald girth-5 construction)",
-      "All 6 remaining axioms are concrete construction claims or deep results — none easily eliminable",
-      "All 6 axioms are deep existence results about specific geometric constructions — none provable from Mathlib",
-      "Meta.json had incorrect axiomCount: 8 claimed, 6 actual. Fixed.",
-      "Added 2 structural theorems: conjecture_implies_not_negation, negation_implies_not_conjecture"
+      "The conjecture remains open; Lean proves lower-threshold consequences from the Wormald axiom rather than proving the conjecture.",
+      "Older metadata mentioned six or more axioms, but current proof metadata is 3A/10T/0S.",
+      "vertexCountGrowth is a data definition only, not a proof of construction existence."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Formalize concrete finite unit-distance graph witnesses if source coordinates are available."
+    ],
     "markdown": "# Erdős #705 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $G$ be a finite unit distance graph in $\\mathbb{R}^2$ (i.e. the vertices are a finite collection of points in $\\mathbb{R}^2$ and there is an edge between two points if and only if the distance between them is $1$).\n\nIs there some $k$ such that if $G$ has girth $\\geq k$ (i.e. $G$ contains no cycles of length $<k$) then $\\chi(G)\\leq 3$?\n\n\n\nThe maximal value of $\\chi(G)$ (without a girth condition) is the Hadwiger-Nelson problem. There are unit distance graphs (e.g. the Moser spindle) with $\\chi(G)=4$ of girth $3$. de Grey \\cite{dG18} has constructed a unit distance graph $G$ with $\\chi(G)=5$. (I do not know what the largest girth achieved is by these recent constructions.)\n\nWormald \\cite{Wo79} has constructed a unit distance graph with $\\chi(G)=4$ and girth $5$, with $6448$ vertices. O'Donnell \\cite{OD94} has constructed a unit distance graph with $\\chi(G)=4$ and girth $4$, with $56$ vertices. Chilakamarri \\cite{Ch95} has constructed an infinite family of unit distance graphs with $\\chi(G)=4$ and girth $4$, the smallest of which has $47$ vertices.\n\n\nSee also [508], [704], and [706].\n\n\n\n\nReferences\n\n\n[Ch95] Chilakamarri, Kiran B., A {$4$}-chromatic unit-distance graph with no triangles. Geombinatorics (1995), 64-76.\n\n[OD94] O'Donnell, Paul, A triangle-free {$4$}-chromatic graph in the plane. Geombinatorics (1994), 23-29.\n\n[Wo79] Wormald, Nicholas, A {$4$}-chromatic graph with a special plane drawing. J. Austral. Math. Soc. Ser. A (1979), 1-8.\n\n[dG18] de Grey, Aubrey D. N. J., The chromatic number of the plane is at least 5. Geombinatorics (2018), 18-31.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 3/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #508\n- Problem #704\n- Problem #706\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Wo79\n- OD94\n- Ch95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-14*\n"
   },
   "tags": [
@@ -68,14 +60,14 @@
     "mathlib": []
   },
   "started": "2026-01-14T21:07:11.724Z",
-  "lastUpdate": "2026-03-13T07:52:17.052Z",
+  "lastUpdate": "2026-05-18T11:20:09Z",
   "significance": 5,
   "tractability": 3,
   "leanFiles": [
     {
       "path": "Proofs/Erdos705Problem.lean",
       "filename": "Erdos705Problem.lean",
-      "lineCount": 362,
+      "lineCount": 361,
       "theoremCount": 10,
       "axiomCount": 3,
       "defCount": 8,
