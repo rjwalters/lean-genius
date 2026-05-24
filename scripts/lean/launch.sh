@@ -763,9 +763,54 @@ find_claude_child() {
     '
 }
 
+# Helper: Collect every descendant PID of $1 (full process tree).
+#
+# Performs a breadth-first walk via repeated `pgrep -P` lookups so that
+# grandchildren, great-grandchildren, and arbitrarily deep descendants
+# (e.g. claude -> zsh shell-snapshot -> bash docker-build.sh -> docker)
+# are all captured before we start signalling anything.
+#
+# Capturing the full set up-front (rather than recursing post-order)
+# matters because once we start sending signals, descendants get
+# re-parented to init (PPID=1) and a parent-based walk loses them.
+#
+# Echoes one PID per line, deepest descendants first, root pid last.
+# See #15191 for the orphan-grandchildren bug this guards against.
+collect_proc_tree() {
+    local root="$1"
+    [[ -z "$root" ]] && return 0
+
+    local -a queue=("$root")
+    local -a order=()
+    local head=0
+    while [[ $head -lt ${#queue[@]} ]]; do
+        local cur="${queue[$head]}"
+        head=$((head + 1))
+        order+=("$cur")
+        local kids
+        kids=$(pgrep -P "$cur" 2>/dev/null || true)
+        if [[ -n "$kids" ]]; then
+            local k
+            for k in $kids; do
+                queue+=("$k")
+            done
+        fi
+    done
+
+    # Emit in reverse-BFS order so leaves are killed before their parents.
+    local i
+    for (( i=${#order[@]}-1; i>=0; i-- )); do
+        echo "${order[$i]}"
+    done
+}
+
 # Helper: Kill all processes in a tmux session before destroying it.
 # This prevents orphaned claude/timeout processes when tmux SIGHUP
 # doesn't propagate across process group boundaries.
+#
+# Walks the FULL process subtree (not just direct children) so that
+# nested shells, docker-build.sh wrappers, and the docker CLI itself
+# get signaled too. See #15191.
 kill_proc_tree() {
     local pid="$1"
     local sig="${2:-TERM}"
@@ -773,16 +818,36 @@ kill_proc_tree() {
     [[ -z "$pid" ]] && return 0
     kill -0 "$pid" 2>/dev/null || return 0
 
-    local children
-    children=$(pgrep -P "$pid" 2>/dev/null || true)
-    if [[ -n "$children" ]]; then
-        local child
-        for child in $children; do
-            kill_proc_tree "$child" "$sig"
-        done
-    fi
+    local tree
+    tree=$(collect_proc_tree "$pid")
+    [[ -z "$tree" ]] && return 0
 
-    kill "-$sig" "$pid" 2>/dev/null || true
+    local p
+    while IFS= read -r p; do
+        [[ -z "$p" ]] && continue
+        kill "-$sig" "$p" 2>/dev/null || true
+    done <<< "$tree"
+}
+
+# Helper: Kill every process matching $1 (pgrep -f pattern) AND all of
+# their descendants. Standard `pkill -f` only signals the matched
+# process, so grandchildren (zsh shell-snapshot -> bash -> docker) get
+# orphaned to init and survive every "force stop". See #15191.
+#
+# $1 = pgrep -f pattern
+# $2 = signal name (default TERM)
+kill_pattern_tree() {
+    local pattern="$1"
+    local sig="${2:-TERM}"
+
+    local matches
+    matches=$(pgrep -f "$pattern" 2>/dev/null || true)
+    [[ -z "$matches" ]] && return 0
+
+    local m
+    for m in $matches; do
+        kill_proc_tree "$m" "$sig"
+    done
 }
 
 kill_session_processes() {
@@ -2256,14 +2321,36 @@ cmd_stop() {
             echo "$agent_pids" | xargs kill 2>/dev/null || true
         fi
 
-        # Kill timeout wrappers around agent processes
-        pkill -f 'timeout.*claude -p.*dangerously-skip-permissions' 2>/dev/null || true
+        # Kill timeout wrappers AND their full descendant tree.
+        # Bare `pkill -f` would leave grandchildren (zsh shell-snapshot ->
+        # bash docker-build.sh -> docker CLI) orphaned to init. See #15191.
+        kill_pattern_tree 'timeout.*claude -p.*dangerously-skip-permissions' TERM
 
-        # Kill claude-wrapper.sh scripts
-        pkill -f 'claude-wrapper.sh.*\(researcher\|enricher\|deployer\|seeker\|aristotle\|auditor\|mechanic\|herald\|tester\)' 2>/dev/null || true
+        # Kill claude-wrapper.sh scripts and their full subtree
+        kill_pattern_tree 'claude-wrapper.sh.*(researcher|enricher|deployer|seeker|aristotle|auditor|mechanic|herald|tester)' TERM
 
-        # Kill aristotle-agent.sh
-        pkill -f 'aristotle-agent.sh' 2>/dev/null || true
+        # Kill aristotle-agent.sh and its full subtree
+        kill_pattern_tree 'aristotle-agent.sh' TERM
+
+        # ============================================================
+        # STEP 5: Orphan sweep — catch already-reparented descendants
+        # whose parent agent was killed in an earlier cycle. These have
+        # PPID=1 now, so no parent-based walk can find them. We match
+        # against known orphan signatures from the lean-genius tree.
+        # See #15191 for the postmortem.
+        # ============================================================
+        local repo_root_pat
+        repo_root_pat="$(pwd)"
+        local orphan_patterns=(
+            "docker-build.sh.*Proofs"
+            "lean-build-[0-9]+"
+            "/bin/zsh.*shell-snapshots.*${repo_root_pat}"
+            "bash .*proofs/scripts/docker-build.sh"
+        )
+        local pat
+        for pat in "${orphan_patterns[@]}"; do
+            kill_pattern_tree "$pat" TERM
+        done
 
         # Brief wait, then force-kill any survivors
         sleep 2
@@ -2274,10 +2361,25 @@ cmd_stop() {
             survivor_count=$(echo "$survivors" | wc -l | tr -d ' ')
             echo -e "  Force-killing $survivor_count surviving process(es)"
             echo "$survivors" | xargs kill -9 2>/dev/null || true
-            pkill -9 -f 'timeout.*claude -p.*dangerously-skip-permissions' 2>/dev/null || true
-            pkill -9 -f 'claude-wrapper.sh.*\(researcher\|enricher\|deployer\|seeker\|aristotle\|auditor\|mechanic\|herald\|tester\)' 2>/dev/null || true
-        else
+            kill_pattern_tree 'timeout.*claude -p.*dangerously-skip-permissions' KILL
+            kill_pattern_tree 'claude-wrapper.sh.*(researcher|enricher|deployer|seeker|aristotle|auditor|mechanic|herald|tester)' KILL
+        fi
+
+        # Force-kill orphan survivors regardless of claude survivors
+        local orphan_survivors=0
+        for pat in "${orphan_patterns[@]}"; do
+            local n
+            n=$(pgrep -f "$pat" 2>/dev/null | wc -l | tr -d ' ')
+            if [[ "$n" -gt 0 ]]; then
+                orphan_survivors=$((orphan_survivors + n))
+                kill_pattern_tree "$pat" KILL
+            fi
+        done
+
+        if [[ -z "$survivors" && "$orphan_survivors" -eq 0 ]]; then
             echo -e "  ${GREEN}All agent processes confirmed dead${NC}"
+        elif [[ "$orphan_survivors" -gt 0 ]]; then
+            echo -e "  Force-killed $orphan_survivors orphan descendant(s)"
         fi
 
         # Update state (preserves agents, session_stats, etc.)
