@@ -96,6 +96,66 @@
     "prerequisites": ["Finset.sum_involution lemma", "abstract CellComplex axioms (adj_symm, adj_vertices, adj_ne)", "signed adjacency coherence"]
   },
   {
+    "id": "ann-cancel-case",
+    "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
+    "range": { "startLine": 153, "endLine": 164 },
+    "type": "technique",
+    "title": "cancel Case — Direct sign_adj Application",
+    "content": "The first of `Finset.sum_involution`'s four obligations: prove that $f(p) + f(g(p, hp)) = 0$ for every $p \\in S$. Here $f := K.\\mathrm{sign}\\ p_1\\ p_2$ and $g$ is `signedAdjMap K`. The discharge is the cleanest of the four: unfold membership in $S$ to extract the witness `hadj_ne : K.adj p.1 p.2 ≠ none`, case-split on `K.adj p.1 p.2` (the `none` case contradicts `hadj_ne`), and in the `some (s', k')` case unfold `signedAdjMap` to expose `(s', k')`. The final goal `K.sign p.1 p.2 + K.sign s' k' = 0` is *exactly* `K.sign_adj p.1 p.2 s' k' hadj_eq` — the structure's defining adjacency-orientation coherence. This is the moral heart of the proof: the entire ℤ-valued structural choice exists to make this one step a direct axiom application.",
+    "mathContext": "$\\mathrm{adj}\\ s\\ k = \\mathrm{some}\\ (s', k') \\Rightarrow K.\\mathrm{sign}\\ s\\ k + K.\\mathrm{sign}\\ s'\\ k' = 0\\quad \\text{(by sign\\_adj)}$",
+    "significance": "key",
+    "relatedConcepts": ["sign_adj coherence", "Finset.sum_involution cancel obligation", "Option pattern match", "absurd"],
+    "prerequisites": ["Finset.sum_involution signature", "SignedCellComplex.sign_adj", "Lean 4 case tactic"]
+  },
+  {
+    "id": "ann-fpf-case",
+    "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
+    "range": { "startLine": 166, "endLine": 178 },
+    "type": "technique",
+    "title": "fpf Case — Fixed-Point-Freeness from adj_ne",
+    "content": "The second obligation of `Finset.sum_involution`: at every $p$ with nonzero $f(p)$, the involution must move $p$, i.e., $g(p, hp) \\neq p$. Here $f(p) = K.\\mathrm{sign}\\ p_1\\ p_2$ is *always* nonzero (by `sign_pm_one`), so this obligation must hold at every $p \\in S$. Discharge: case-split on `K.adj p.1 p.2`; in the `some (s', k')` case the goal `signedAdjMap K p ≠ p` unfolds to `(s', k') ≠ p`. Suppose `heq : (s', k') = p`; then `congr_arg Prod.fst heq : s' = p.1`, contradicting `K.adj_ne p.1 p.2 s' k' hadj_eq` (the parent's axiom: the adjacent simplex differs from the source). This is where `adj_ne` earns its keep — without it, a self-adjacency would create a fixed point and break the cancellation.",
+    "mathContext": "$\\mathrm{adj}\\ s\\ k = \\mathrm{some}\\ (s', k') \\wedge s' = s \\Rightarrow \\bot\\quad \\text{(by adj\\_ne)}$",
+    "significance": "key",
+    "relatedConcepts": ["adj_ne axiom", "Finset.sum_involution fpf obligation", "congr_arg Prod.fst", "fixed-point-free involution"],
+    "prerequisites": ["CellComplex.adj_ne", "involution non-trivial action", "Prod projection"]
+  },
+  {
+    "id": "ann-gmem-case",
+    "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
+    "range": { "startLine": 180, "endLine": 197 },
+    "type": "technique",
+    "title": "gmem Case — Membership Preservation via door_transfer + adj_symm",
+    "content": "The third obligation of `Finset.sum_involution`: the involution must stay inside the finset, $g(p, hp) \\in S$. Membership in $S$ unfolds to two conjuncts: (1) `isDoorAt c K.toCellComplex (s', k')` and (2) `K.adj s' k' ≠ none`. Case-split on `K.adj p.1 p.2 = some (s', k')` and extract two reusable facts: `hadj_back := K.adj_symm` (which gives `K.adj s' k' = some (p.1, p.2)`, so the back-adjacency is `some`, settling conjunct 2) and `hvert := K.adj_vertices` (which equates the vertex sets modulo the missing index, feeding `door_transfer_signed_one_dir` to transfer the door predicate, settling conjunct 1). This case is the technical engine of the cancellation argument — `adj_symm` and `adj_vertices` together promote a one-direction adjacency into the symmetric, vertex-preserving relation needed to keep the involution inside the door-predicate filter.",
+    "mathContext": "$\\mathrm{adj}\\ s\\ k = \\mathrm{some}\\ (s', k') \\Rightarrow (\\mathrm{isDoorAt}\\ c\\ K\\ s'\\ k') \\wedge (K.\\mathrm{adj}\\ s'\\ k' \\neq \\mathrm{none})$",
+    "significance": "key",
+    "relatedConcepts": ["adj_symm", "adj_vertices", "door_transfer_signed_one_dir", "Finset.sum_involution gmem obligation", "Option.noConfusion"],
+    "prerequisites": ["CellComplex.adj_symm", "CellComplex.adj_vertices", "isDoorAt predicate"]
+  },
+  {
+    "id": "ann-invol-case",
+    "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
+    "range": { "startLine": 199, "endLine": 202 },
+    "type": "technique",
+    "title": "invol Case — Delegation to Extracted Helper",
+    "content": "The fourth and final obligation of `Finset.sum_involution`: $g(g(p, hp), hp') = p$, i.e., applying the involution twice returns to the start. This case is *trivially* delegated to `signedAdjMap_invol K p hp.2` — the private helper defined earlier. The extraction is **pragmatic, not mathematical**: inlining the proof here triggers a dependent-type `generalize` failure on the membership proof `hp` (because the involution's domain proof depends on $p$). Extracting the involutivity argument to a standalone lemma — where the only hypothesis is `hadj : K.adj p.1 p.2 ≠ none`, with no dependence on the filter membership — sidesteps the tactic-level limitation. The mathematical content (apply `adj_symm` twice) is one line; the engineering wrapping is the rest.",
+    "mathContext": "$K.\\mathrm{adj}\\ p_1\\ p_2 \\neq \\mathrm{none} \\Rightarrow \\mathrm{signedAdjMap}\\ K\\ (\\mathrm{signedAdjMap}\\ K\\ p) = p\\quad \\text{(by adj\\_symm}^2\\text{)}$",
+    "significance": "supporting",
+    "relatedConcepts": ["signedAdjMap_invol helper", "Finset.sum_involution invol obligation", "generalize failure", "dependent type elimination", "adj_symm"],
+    "prerequisites": ["Lean 4 generalize tactic limitations", "extracted-lemma pattern", "CellComplex.adj_symm"]
+  },
+  {
+    "id": "ann-finset-sum-involution-technique",
+    "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
+    "range": { "startLine": 149, "endLine": 151 },
+    "type": "technique",
+    "title": "Finset.sum_involution — The Mathlib Hammer",
+    "content": "The discharge tactic for the entire signed-cancellation theorem fits in three lines: `refine Finset.sum_involution (fun p _hp => signedAdjMap K p) ?cancel ?fpf ?gmem ?invol`. `Finset.sum_involution` is the additive cousin of `Finset.prod_involution`, derived in Mathlib via the `@[to_additive]` attribute (one source, two lemmas). Its dependent signature `g : ∀ a ∈ s, ι` lets the involution depend on the membership proof — useful when the action requires knowing $a \\in s$. The four named obligations (`cancel`, `fpf`, `gmem`, `invol`) become Lean goals that this proof discharges in four explicit case blocks. The hammer reduces a $\\sum = 0$ argument to four local conditions on the involution, which is exactly the level of abstraction at which the signed-CellComplex axioms (`sign_adj`, `adj_symm`, `adj_vertices`, `adj_ne`) speak.",
+    "mathContext": "$\\frac{g : \\forall a \\in s, \\iota \\quad f(a) + f(g(a, h_a)) = 0 \\quad g\\ \\text{fpf at nonzero}\\ f \\quad g(a, h_a) \\in s \\quad g(g(a, h_a), h_{g(a)}) = a}{\\displaystyle\\sum_{x \\in s} f(x) = 0}$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.prod_involution", "@[to_additive]", "dependent function", "Mathlib BigOperators", "abelian cancellation"],
+    "prerequisites": ["Finset.sum", "involutive functions", "Mathlib @[to_additive] meta-attribute"]
+  },
+  {
     "id": "ann-future-tucker-bridge",
     "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
     "range": { "startLine": 9, "endLine": 47 },

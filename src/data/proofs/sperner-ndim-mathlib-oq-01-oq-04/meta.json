@@ -132,6 +132,16 @@
       "proofId": "borsuk-ulam",
       "relationship": "supports",
       "description": "The signed CellComplex structure here is the natural ℤ-valued substrate for an equivariant Sperner argument; Tucker's lemma (the ℤ/2-equivariant Sperner statement) is the combinatorial heart of Borsuk–Ulam. This file delivers the foundational cancellation theorem; the Tucker/Borsuk–Ulam bridges remain follow-up work."
+    },
+    {
+      "proofId": "brouwer-fixed-point",
+      "relationship": "supports",
+      "description": "The Sperner → Brouwer reduction relies on the unsigned door-counting parity argument; the signed (oriented) analog here is the natural lift for an *equivariant* Brouwer statement (degree-tracking via the ℤ-valued sign field). The signed-interior-doors cancellation theorem is the structural ingredient that would feed any such oriented refinement."
+    },
+    {
+      "proofId": "sperner-mathlib4",
+      "relationship": "complements",
+      "description": "Mathlib4's concrete Sperner formalisation operates over a specific geometric triangulation; this file's abstract signed CellComplex is the orientation-aware companion to the parent's abstract unsigned framework. The two stacks are complementary: Mathlib4-Sperner gives a concrete combinatorial closed theorem; the abstract framework here gives the structural API for equivariant / signed extensions."
     }
   ],
   "mainTheorems": [
