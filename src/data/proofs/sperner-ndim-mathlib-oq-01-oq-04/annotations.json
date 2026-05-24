@@ -162,8 +162,33 @@
     "type": "context",
     "title": "Forward Plan — Tucker's Lemma, Borsuk–Ulam, AlternatingFaceMapComplex",
     "content": "The signed CellComplex structure is the natural ℤ-valued substrate for two future bridges. (1) Tucker's lemma (Tucker 1946, antipodal ℤ/2-equivariant Sperner) requires an antipodal involution `ι : V → V` and a sign-respecting hypothesis on the colouring — the ℤ-valued sign field here is exactly the data needed for the equivariant counting argument. (2) Embedding into Mathlib's `AlternatingFaceMapComplex` over `ModuleCat ℤ` would tie the abstract `CellComplex` API into the standard algebraic-topology infrastructure, opening the door to spectral sequences, homology computations, and the singular-versus-simplicial comparison. Both are listed as follow-up sessions in the file's iteration plan (S2-B Mathlib bridge, S2-C Tucker scaffold, S2-D Borsuk–Ulam).",
+    "mathContext": "Tucker (1946): given an antipodal labelling $\\lambda : V \\to \\{\\pm 1, \\pm 2, \\dots, \\pm n\\}$ of a triangulation $T$ of the $n$-ball satisfying $\\lambda(-v) = -\\lambda(v)$ on $\\partial T$, there exists an edge $\\{u, v\\} \\in T$ with $\\lambda(u) = -\\lambda(v)$ (a *complementary edge*). The signed-cancellation theorem here is the structural backbone of Tucker's counting argument: complementary edges correspond to interior facets whose sign contribution cancels pairwise, so the boundary-edge signed sum determines a topological invariant.",
     "significance": "context",
     "relatedConcepts": ["Tucker's lemma 1946", "antipodal ℤ/2-equivariant Sperner", "AlternatingFaceMapComplex", "ModuleCat ℤ", "Borsuk–Ulam theorem", "Matoušek 2008"],
     "prerequisites": ["abstract CellComplex framework", "equivariant combinatorics intuition", "chain complex basics"]
+  },
+  {
+    "id": "ann-namespace-linter-setup",
+    "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "context",
+    "title": "Namespace Layout and Linter Suppression",
+    "content": "Two namespacing decisions deserve note. (1) `set_option linter.unusedVariables false` is enabled because the dependent-argument signature of `Finset.sum_involution` (`g : ∀ a ∈ s, ι`) forces every obligation lambda to bind a membership proof `_hp` that the cancellation does not consume — the unused-binder linter would otherwise drown the proof in noise. The leading underscore in `_hp` signals intent, but the linter still fires. (2) The file lives in a *nested* namespace `SpernerAbstract.Signed`, paralleling the parent's `SpernerAbstract` root. This is the conventional Lean 4 idiom for orientation/signing variants: the unsigned theory lives at the root, signed/oriented/graded extensions inhabit sub-namespaces so that `import Proofs.SpernerNDimMathlibOQ01OQ04` does not shadow parent definitions. (3) `open Finset BigOperators` enables the `∑ p ∈ s, f p` notation throughout — without `BigOperators`, the sum expressions in `signedDoorCount` and the main theorem would need explicit `Finset.sum` invocations.",
+    "mathContext": "Namespace tree: $\\mathtt{SpernerAbstract.CellComplex}\\ \\to\\ \\mathtt{SpernerAbstract.Signed.SignedCellComplex}\\ \\to\\ \\mathtt{SpernerAbstract.Signed.SignedCellComplex.signedAdjMap}$.",
+    "significance": "context",
+    "relatedConcepts": ["set_option linter", "namespace nesting", "BigOperators", "Finset.sum notation", "Lean 4 imports", "Mathlib idiom"],
+    "prerequisites": ["Lean 4 namespace system", "linter directives", "Mathlib notation packages"]
+  },
+  {
+    "id": "ann-sum-involution-obligation-anatomy",
+    "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
+    "range": { "startLine": 145, "endLine": 152 },
+    "type": "insight",
+    "title": "Anatomy of the Four Obligations — Why Each CellComplex Axiom Earns Its Keep",
+    "content": "The four obligations of `Finset.sum_involution` partition the structural requirements onto the four axioms of `SignedCellComplex`-extending-`CellComplex` exactly. **cancel** (sums to zero) consumes `sign_adj` — the only axiom involving the sign field; without it the values would not cancel. **fpf** (involution moves nonzero values) consumes `adj_ne` — without it a self-adjacency `adj s k = some (s, k)` would create a fixed point and `f(p) + f(p) = 2·f(p) ≠ 0`. **gmem** (stays in the filtered domain) consumes `adj_vertices` (via `door_transfer_signed_one_dir`) for the door predicate, plus `adj_symm` for the back-edge non-`none`-ness. **invol** (applies twice = identity) consumes `adj_symm` alone. This is no accident: the `CellComplex` axioms are exactly the minimal axiomatisation of an abstract face-map involution structure, and `Finset.sum_involution` is the universal cancellation lemma over such structures. The file's reuse of *every* parent axiom in *exactly one* obligation is evidence that the parent's axiomatisation is tight — no axiom is redundant for this theorem.",
+    "mathContext": "$\\boxed{\\text{cancel} \\leftarrow \\mathrm{sign\\_adj}}\\quad \\boxed{\\text{fpf} \\leftarrow \\mathrm{adj\\_ne}}\\quad \\boxed{\\text{gmem} \\leftarrow \\mathrm{adj\\_vertices} + \\mathrm{adj\\_symm}}\\quad \\boxed{\\text{invol} \\leftarrow \\mathrm{adj\\_symm}}$",
+    "significance": "key",
+    "relatedConcepts": ["axiom economy", "tight axiomatisation", "Finset.sum_involution", "sign_adj", "adj_symm", "adj_ne", "adj_vertices", "involution lemma"],
+    "prerequisites": ["abstract CellComplex axioms", "Finset.sum_involution signature", "abelian group cancellation"]
   }
 ]
