@@ -34,13 +34,20 @@
     },
     "type": "concept",
     "title": "Mathlib Imports",
-    "content": "We import the key Mathlib modules:\n- `AbelRuffini`: The main theorem connecting radicals to solvable groups\n- `Solvable`: Definition of solvable groups and key theorems\n- `Alternating`: Properties of alternating groups, including A\u2085 simplicity\n- `Galois.Basic`: Galois group definitions and correspondence",
-    "mathContext": "The four imports form a complete logical chain: `FieldTheory.AbelRuffini` provides `solvableByRad.isSolvable'` ($\\alpha$ solvable by radicals $\\Rightarrow$ $\\text{Gal}(\\text{minpoly}(\\alpha))$ solvable); `GroupTheory.Solvable` provides `IsSolvable` and `Equiv.Perm.not_solvable` ($5 \\leq |X| \\Rightarrow S_X$ not solvable); `SpecificGroups.Alternating` provides `alternatingGroup.isSimpleGroup_five` ($A_5$ simple); `FieldTheory.Galois.Basic` provides $\\text{Polynomial.Gal}$, the type of the Galois group of a polynomial.",
+    "content": "We import the key Mathlib modules:\n- `AbelRuffini`: The main theorem connecting radicals to solvable groups\n- `Solvable`: Definition of solvable groups and key theorems\n- `Alternating`: Properties of alternating groups, including A\u2085 simplicity\n- `Galois.Basic`: Galois group definitions and correspondence\n\n**Why exactly these four imports?** Mathlib's Galois infrastructure spans roughly two dozen files; the minimal set that lets the present formalization avoid stating any independent lemmas about radical towers, derived series, or simple groups is exactly this quartet. `FieldTheory.AbelRuffini` is the closure of the radical-tower theory under composition with the Galois bridge \u2014 by importing it, we inherit a single Mathlib lemma (`solvableByRad.isSolvable'`) that already packages the entire Kummer-theoretic decomposition of a radical tower into cyclic Galois layers. Importing leaner field-theory modules alone would force us to redevelop the bridge from scratch. Similarly, `GroupTheory.Solvable` is the minimal home of the `IsSolvable` predicate together with its closure properties (subgroups, quotients, extensions) and the $S_5$-obstruction lemma `Equiv.Perm.not_solvable`; `SpecificGroups.Alternating` is the minimal home of `alternatingGroup.isSimpleGroup_five`; `FieldTheory.Galois.Basic` exposes `Polynomial.Gal` as a type with the correct `IsSolvable` instance machinery. No subset of three suffices, and any superset would import results the file does not use.",
+    "mathContext": "The four imports form a complete logical chain: `FieldTheory.AbelRuffini` provides `solvableByRad.isSolvable'` ($\\alpha$ solvable by radicals $\\Rightarrow$ $\\text{Gal}(\\text{minpoly}(\\alpha))$ solvable); `GroupTheory.Solvable` provides `IsSolvable` and `Equiv.Perm.not_solvable` ($5 \\leq |X| \\Rightarrow S_X$ not solvable); `SpecificGroups.Alternating` provides `alternatingGroup.isSimpleGroup_five` ($A_5$ simple); `FieldTheory.Galois.Basic` provides `Polynomial.Gal`, the type of the Galois group of a polynomial.\n\n**The Kummer-theoretic substrate.** Although `solvableByRad.isSolvable'` is invoked as a one-line black box in `galois_bridge`, its proof inside `FieldTheory.AbelRuffini` ultimately reduces each radical step $K_i \\subset K_{i+1} = K_i(\\sqrt[n]{a})$ to a cyclic Galois extension via the Kummer correspondence: when $K_i$ contains a primitive $n$th root of unity, $K_{i+1}/K_i$ has Galois group a quotient of $\\mathbb{Z}/n$ (see keyInsight #12 on Kummer theory). The decomposition $\\text{Gal}(K_m/K_0) \\twoheadrightarrow \\text{Gal}(K_m/K_{m-1}) \\twoheadrightarrow \\cdots$ then exhibits a composition series with cyclic factors \u2014 exactly the definition of a solvable group. By importing `FieldTheory.AbelRuffini`, this entire algebraic chain (Kummer + composition series + cyclotomic abelianness) is delivered as a single hypothesis-discharging step, which is why the file's `galois_bridge` is a one-line wrapper rather than a multi-page proof.",
     "significance": "supporting",
     "relatedConcepts": [
       "Mathlib",
       "Galois theory",
-      "group theory"
+      "group theory",
+      "IsSolvableByRad",
+      "solvableByRad.isSolvable'",
+      "Equiv.Perm.not_solvable",
+      "alternatingGroup.isSimpleGroup_five",
+      "Polynomial.Gal",
+      "Kummer theory",
+      "minimal import set"
     ],
     "prerequisites": [
       "Lean 4 import system",
