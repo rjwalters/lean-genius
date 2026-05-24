@@ -1,6 +1,6 @@
 {
   "slug": "prob-method-second-moment",
-  "title": "Second Moment / Variance Method",
+  "title": "Second Moment Method (Probabilistic Method)",
   "phase": "COMPLETED",
   "status": "graduated",
   "tier": "A",
@@ -16,32 +16,44 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
-    "since": "2026-03-21",
-    "iteration": 0,
-    "focus": "Formalize second moment method and concentration inequalities.",
-    "blockers": [
-      "Depends on prob-method-expectation for base probability framework."
-    ],
-    "nextAction": "Check Mathlib for existing Chebyshev/Paley-Zygmund infrastructure.",
+    "phase": "COMPLETED",
+    "since": "2026-03-21T21:57:07.469Z",
+    "iteration": 1,
+    "focus": "Source-backed metadata sync for Proofs/ProbMethodSecondMoment.lean: 226 lines, 4 public theorem declarations, 3 private helper lemmas, 0 axioms, and 0 sorries.",
+    "blockers": [],
+    "nextAction": "No Lean work is needed for the research record.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 1,
+      "currentApproach": 1,
+      "approachesTried": 1
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "COMPLETED: Proofs/ProbMethodSecondMoment.lean proves finite Chebyshev, qualitative Paley-Zygmund, second_moment_existence, and quantitative Paley-Zygmund, with three private helper lemmas. Source audit: 226 lines, 4 public theorems, 3 private lemmas, 0 axioms, 0 sorries.",
+    "builtItems": [
+      "Proofs/ProbMethodSecondMoment.lean: 226 lines, 4 public theorems, 3 private helper lemmas, 0 axioms, 0 sorries",
+      "chebyshev_finite and paley_zygmund",
+      "second_moment_existence",
+      "paley_zygmund_quantitative",
+      "Proofs/ProbMethodSecondMomentOQ01.lean: 147 lines, 3 public theorems, 0 axioms, 0 sorries"
+    ],
+    "insights": [
+      "The research JSON counts public theorem declarations; the proof meta theorem total also includes private helper lemmas.",
+      "The file gives exact finite-set, rational-valued versions of the standard second-moment tools.",
+      "The companion OQ01 file specializes the same namespace with quantitative Paley-Zygmund material."
+    ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Optional future work: avoid duplicate theorem names between the parent and companion if they are imported together."
+    ]
   },
   "tags": [
     "probabilistic-method",
     "combinatorics",
     "analysis",
-    "marquee-phase-1"
+    "marquee-phase-1",
+    "probability",
+    "intermediate"
   ],
   "relatedProofs": [
     "prob-method-second-moment",
@@ -53,7 +65,7 @@
     "mathlib": []
   },
   "started": "2026-03-21T20:11:02.346Z",
-  "lastUpdate": "2026-03-21T21:57:07.469Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "completed": "2026-03-21T21:57:07.469Z",
   "significance": 8,
   "tractability": 7,
@@ -61,7 +73,7 @@
     {
       "path": "Proofs/ProbMethodSecondMoment.lean",
       "filename": "ProbMethodSecondMoment.lean",
-      "lineCount": 227,
+      "lineCount": 226,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
@@ -72,7 +84,7 @@
     {
       "path": "Proofs/ProbMethodSecondMomentOQ01.lean",
       "filename": "ProbMethodSecondMomentOQ01.lean",
-      "lineCount": 148,
+      "lineCount": 147,
       "theoremCount": 3,
       "axiomCount": 0,
       "defCount": 0,

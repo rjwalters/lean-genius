@@ -1,27 +1,36 @@
 {
   "slug": "collatz-structured-oq-02-oq-01",
-  "title": "Rule out k-cycles in Collatz via case-analysis extension",
-  "phase": "DONE",
+  "title": "Extending Collatz k-Cycle Exclusion via Case Analysis",
+  "phase": "COMPLETED",
   "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
-    "formal": "\\text{(formal statement to be added)}",
-    "plain": "Formal investigation in number theory: Rule out k-cycles in Collatz via case-analysis extension.",
-    "whyMatters": []
+    "formal": "Extend finite Collatz cycle case analysis with j=1 uniqueness, period-4 exclusions, halving lower bounds for j=5..8, and a bounded-cycle conclusion from the Eliahou lower-bound axiom.",
+    "plain": "Formalizes a limited case-analysis extension for Collatz cycles: the file rules out several small cycle patterns, proves halving and cycle-length lower bounds for j=5 through j=8, and packages the result with the Eliahou cycle-bound axiom.",
+    "whyMatters": [
+      "Shows exactly how far elementary finite case analysis can go before the known global cycle-bound result is needed.",
+      "Keeps the Collatz cycle-extension catalog entry aligned with its dedicated Lean source instead of the parent Collatz file."
+    ]
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "j1_cycle_equation_unique proves the j=1 cycle equation forces n=1 and M=2.",
+      "j1_cycle_period_three_only and no_j1_period4_cycle rule out selected period-4 cases.",
+      "min_halvings_five_odd through min_halvings_eight_odd prove halving lower bounds for j=5..8.",
+      "min_cycle_length_j5 through min_cycle_length_j8 derive corresponding minimum cycle lengths.",
+      "oq01_case_analysis_limited combines finite case analysis with the Eliahou cycle-bound axiom."
+    ],
     "open": [],
-    "goal": ""
+    "goal": "Maintain the completed Collatz cycle-extension record against Proofs/CollatzStructuredOQ02OQ01.lean."
   },
   "currentState": {
-    "phase": "DONE",
+    "phase": "COMPLETED",
     "since": "2026-04-03T02:57:02.771Z",
     "iteration": 1,
-    "focus": "Completed: j=1 uniqueness, extended halving bounds j=5..8, Eliahou axiom.",
+    "focus": "Source-backed metadata sync for Proofs/CollatzStructuredOQ02OQ01.lean: 213 lines, 16 theorem declarations, 1 definition, 1 axiom, and 0 sorries.",
     "blockers": [],
-    "nextAction": "Completed",
+    "nextAction": "No Lean work is needed for the research record; the Eliahou lower-bound dependency remains explicitly axiomatized.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,30 +38,31 @@
     }
   },
   "knowledge": {
-    "progressSummary": "Formalized j=1 cycle uniqueness (3n+1=2^M·n → n=1,M=2), extended halving bounds to j=5..8, proved minimum cycle lengths, axiomatized Eliahou 1993 bound. 0 sorries, 1 axiom.",
+    "progressSummary": "COMPLETED: Proofs/CollatzStructuredOQ02OQ01.lean formalizes j=1 cycle uniqueness, period-4 exclusions, halving lower bounds for j=5..8, minimum cycle-length bounds, and a bounded-cycle result using the Eliahou cycle-bound axiom. Source audit: 213 lines, 16 theorems, 1 definition, 1 axiom, 0 sorries.",
     "builtItems": [
-      "CollatzStructuredOQ02OQ01.lean: j1_cycle_equation_unique — algebraic uniqueness proof",
-      "min_halvings_five_odd through min_halvings_eight_odd — halving bounds for j=5..8",
-      "min_cycle_length_j5 through min_cycle_length_j8 — cycle length bounds",
-      "parity_cases_lower_bound — 2^k ≥ k+1 exponential case explosion",
-      "eliahou_cycle_bound axiom — non-trivial cycles have period > 17 billion",
-      "oq01_case_analysis_limited — all cycles with period ≤ 17 billion reduce to {1,4,2}"
+      "Proofs/CollatzStructuredOQ02OQ01.lean: 213 lines, 16 theorems, 1 definition, 1 axiom, 0 sorries",
+      "j1_cycle_equation_unique, j1_cycle_period_three_only, and no_j1_period4_cycle",
+      "min_halvings_five_odd through min_halvings_eight_odd",
+      "min_cycle_length_j5 through min_cycle_length_j8",
+      "parity_cases_lower_bound and oq01_case_analysis_limited"
     ],
     "insights": [
-      "3n+1 = 2^M*n rearranges to n*(2^M-3)=1, forcing n|1 so n=1 (and M=2)",
-      "For period-4 cycles: j=1 gives 5n=1 (impossible), j≥2 violates 2^(4-j)>3^j",
-      "Halving bounds grow as ceil(j*log2(3))≈1.585j; min cycle lengths ≈ 2.585j",
-      "Parity case explosion: 2^k patterns for k-cycle makes direct analysis infeasible for large k",
-      "Eliahou (1993) uses algebraic sum bounds to prove 17-billion lower bound in one argument"
+      "The j=1 cycle equation collapses algebraically to the trivial cycle case.",
+      "Finite parity-case analysis gives concrete small-period exclusions but does not scale to the full conjecture.",
+      "The final bounded-cycle conclusion depends on the explicit Eliahou cycle-bound axiom."
     ],
     "mathlibGaps": [],
-    "nextSteps": []
+    "nextSteps": [
+      "Optional future work: replace the Eliahou cycle-bound axiom only if a dedicated formal proof of that bound is added."
+    ]
   },
   "tags": [
     "seeker-selected",
     "number-theory",
     "collatz",
-    "cycles"
+    "cycles",
+    "case-analysis",
+    "dynamics"
   ],
   "relatedProofs": [
     "collatz-structured",
@@ -66,25 +76,14 @@
     "mathlib": []
   },
   "started": "2026-04-03T02:57:02.771Z",
-  "lastUpdate": "2026-04-03T02:57:02.771Z",
+  "lastUpdate": "2026-05-18T00:00:00.000Z",
   "significance": 6,
   "tractability": 5,
   "leanFiles": [
     {
-      "path": "Proofs/CollatzStructured.lean",
-      "filename": "CollatzStructured.lean",
-      "lineCount": 208,
-      "theoremCount": 16,
-      "axiomCount": 1,
-      "defCount": 4,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructured.lean"
-    },
-    {
       "path": "Proofs/CollatzStructuredOQ02OQ01.lean",
       "filename": "CollatzStructuredOQ02OQ01.lean",
-      "lineCount": 214,
+      "lineCount": 213,
       "theoremCount": 16,
       "axiomCount": 1,
       "defCount": 1,
@@ -93,9 +92,20 @@
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructuredOQ02OQ01.lean"
     },
     {
+      "path": "Proofs/CollatzStructured.lean",
+      "filename": "CollatzStructured.lean",
+      "lineCount": 207,
+      "theoremCount": 16,
+      "axiomCount": 1,
+      "defCount": 4,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/CollatzStructured.lean"
+    },
+    {
       "path": "Proofs/CollatzStructuredOQ03.lean",
       "filename": "CollatzStructuredOQ03.lean",
-      "lineCount": 150,
+      "lineCount": 149,
       "theoremCount": 2,
       "axiomCount": 1,
       "defCount": 13,
