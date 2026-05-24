@@ -16,33 +16,45 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-27T22:18:02.333Z",
-    "iteration": 1,
-    "focus": "Initial exploration of the problem.",
+    "iteration": 4,
+    "focus": "Source metadata refresh: Erdos1109Problem.lean is a zero-sorry squarefree-sumset development with 151 theorem declarations when private helper theorems are included, 8 defs, and only the two Konyagin bound axioms.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "Keep metadata aligned with the 3713-line source; further Lean work would reduce the two analytic Konyagin bound axioms or extend the residue-density chain.",
     "attemptCounts": {
-      "total": 0,
-      "currentApproach": 0,
-      "approachesTried": 0
+      "total": 4,
+      "currentApproach": 1,
+      "approachesTried": 4
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "SOURCE CHECKED: Erdos1109Problem.lean has 3713 lines, 151 theorem declarations including private helpers, 8 defs, 2 axioms, and 0 sorries/admits. The only axioms are konyagin_lower_2004 and konyagin_upper_2004; explicit construction and residue-density work now reaches f_ge_twelve and f_complete_bounds.",
+    "builtItems": [
+      "Zero-sorry primary squarefree-sumset formalization with 151 theorem declarations including private helpers.",
+      "Explicit lower-bound construction chain through f_ge_twelve.",
+      "Residue exclusion and density bounds through mod_5336100_residue_image_le_69120 and f_complete_bounds.",
+      "Konyagin lower and upper bounds isolated as the remaining analytic axioms."
+    ],
+    "insights": [
+      "The old 1-sorry tag and 58-theorem summary are stale; mod_9_residue_image_le_4 is now proved.",
+      "The source no longer contains the broader seven-axiom inventory described in the old markdown.",
+      "Proof metadata theoremCount includes private squarefree helper theorems; public/top-level theorem declarations alone count lower than the proof-meta counter."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
-    "markdown": "# Erdos #1109: Squarefree Sumsets - Knowledge\n\n## Problem\nLet f(N) be the max size of A ⊆ {1,...,N} with A+A squarefree. Estimate f(N).\n\n## Key Results\n\n### Proved Theorems (58 total, 1 sorry in counting step)\n\n**Core structural theorems (iterations 1-2):**\n1. `squarefree_iff_no_prime_sq`: Squarefree iff no prime square divides\n2. `one_squarefree`: 1 is squarefree\n3. `prime_squarefree`: Primes are squarefree\n4. `distinct_primes_squarefree`: Products of distinct primes are squarefree (**PROVED**, was axiom)\n5. `all_odd`: All elements in a squarefree-sumset set must be odd\n6. `prime_sq_avoidance`: For any prime p, no two elements sum to a multiple of p^2\n7. `double_squarefree`: For any a in A, 2a is squarefree\n8. `element_not_div_prime_sq`: No element is divisible by p^2 for any prime p\n9. `element_squarefree`: All positive elements of A are themselves squarefree\n10. `current_bounds`: Combined Konyagin 2004 bounds (from axioms)\n11. `erdos_1109_summary`: Full bound summary theorem (from axioms)\n\n**New in iteration 3 (2026-02-04):**\n12. `f_ge_two`: f(N) >= 2 for N >= 5 via {1, 5} construction\n13. `not_div_25`: No element divisible by 25 = 5^2\n14. `no_sum_div_25`: No pair sums to a multiple of 25\n15. `forbidden_class_zero_25`: Residue 0 mod 25 is forbidden\n16. `no_complementary_mod_25`: No complementary residues mod 25\n17. `residue_class_zero_forbidden`: General: class 0 mod p^2 is forbidden\n18. `sum_residue_nonzero`: General sum constraint mod p^2\n19. `residue_image_avoids_zero`: Image of A mod p^2 avoids 0\n20. `mod_4_residue_image_small`: A uses at most 1 residue class mod 4\n21. `self_sum_not_div_9`: 2a not divisible by 9\n22. `mod_9_class_0_forbidden`: Class 0 mod 9 is forbidden\n23. `mod_9_pair_1_8`: Pair {1,8} exclusion mod 9\n24. `mod_9_pair_2_7`: Pair {2,7} exclusion mod 9\n25. `mod_9_pair_3_6`: Pair {3,6} exclusion mod 9\n26. `mod_9_pair_4_5`: Pair {4,5} exclusion mod 9\n27. `mod_9_residue_image_le_4`: At most 4 residue classes mod 9 (1 sorry: counting)\n28. `no_complementary_pair_general`: General complementary pair exclusion for any prime\n29. `density_per_prime`: Density bound (p^2-1)/2 <= p^2 per prime\n\n### Iteration 3 Progress (2026-02-04)\n- **Proved `f_ge_two`**: f(N) >= 2 for N >= 5, using the {1, 5} witness\n- **Mod 25 (p=5) constraints**: not_div_25, no_sum_div_25, forbidden_class_zero_25, no_complementary_mod_25\n- **General density framework**: residue_class_zero_forbidden, sum_residue_nonzero, residue_image_avoids_zero\n- **Mod 4 density result**: `mod_4_residue_image_small` - A uses exactly 1 of 4 residue classes mod 4\n- **Mod 9 pair exclusions**: All 4 complementary pairs {1,8}, {2,7}, {3,6}, {4,5} proved individually\n- **Mod 9 counting**: `mod_9_residue_image_le_4` - at most 4 of 9 residue classes (1 sorry in finite counting)\n- **General pair exclusion**: `no_complementary_pair_general` for arbitrary primes\n- Total: 19 new theorems added (18 fully proved, 1 with sorry in counting step)\n- File compiles cleanly with 1 sorry (mod 9 counting step - finite combinatorial verification)\n\n### Iteration 2 Progress (2026-02-03)\n- **Converted `distinct_primes_squarefree` from axiom to theorem**\n  - Proof by induction on the list of distinct primes\n  - Key Mathlib lemmas: `Nat.squarefree_mul_iff`, `Prime.dvd_prod_iff`, `Nat.Prime.coprime_iff_not_dvd`\n  - Strategy: In the inductive step, show p is coprime to ps.prod because\n    p is prime, all elements of ps are prime, and p not in ps (Nodup). If p | q for\n    some q in ps, then since q is prime, p = q, contradicting Nodup.\n- **Added `double_squarefree`**: 2a is squarefree for all a in A\n- **Added `element_not_div_prime_sq`**: No element divisible by p^2 (follows from diagonal of prime_sq_avoidance)\n- **Added `element_squarefree`**: All positive elements are squarefree (uses squarefree_iff_no_prime_sq + element_not_div_prime_sq)\n- Added `import Mathlib.Data.List.Prime` for `Prime.dvd_prod_iff`\n\n### Structural Constraint Hierarchy\nThe theorems form a logical hierarchy:\n1. `prime_sq_avoidance` (most general): for all a, b in A and prime p, p^2 does not divide a+b\n2. `element_not_div_prime_sq` (diagonal case): setting a = b, p^2 does not divide 2a, hence p^2 does not divide a\n3. `element_squarefree` (aggregated): combining over all primes, elements are squarefree\n4. `all_odd` (p=2 special case): the simplest constraint, elements must be odd\n\n### Iteration 1 Progress (2026-01-28)\n- Fixed compilation (missing imports, wrong sSup syntax)\n- Changed /-! to /- for Aristotle compatibility\n- Proved `all_odd` and `prime_sq_avoidance`\n- File now compiles cleanly\n\n### Compilation Fixes (Iteration 1)\n- Changed all `/-!` docstrings to `/-` (Aristotle compatibility)\n- Added `import Mathlib.Data.Real.Basic` for R type\n- Added `import Mathlib.Analysis.SpecialFunctions.Log.Basic` for `Real.log`\n- Added `import Mathlib.Analysis.SpecialFunctions.Pow.Real` for R^R power\n- Fixed `sSup` set builder syntax\n- Fixed axiom quantifier patterns\n\n## Axiom Inventory (7 axioms, down from 8)\n1. ~~`distinct_primes_squarefree`~~ **PROVED** (was axiom)\n2. `erdos_sarkozy_lower_1987` - f(N) >> log N\n3. `erdos_sarkozy_upper_1987` - f(N) << N^{3/4} log N\n4. `konyagin_lower_2004` - f(N) >> (log log N)(log N)^2\n5. `konyagin_upper_2004` - f(N) << N^{11/15+o(1)}\n6. `erdos_sarkozy_conjecture` - f(N) = (log N)^{O(1)}\n7. `connection_to_1103` - Finite bounds -> infinite sequence growth\n8. `sarkozy_k_power_free` - k-power-free generalization bounds\n\n## Next Steps\n- Close the sorry in `mod_9_residue_image_le_4` (finite combinatorial verification via 16-way case split)\n- Submit remaining 7 axioms to Aristotle (bound axioms from published papers)\n- Prove explicit mod 25 residue counting (at most 12 of 25 classes)\n- Formalize Chinese Remainder Theorem application for combined density: product of (allowed/p^2) over primes\n- Prove f(N) >= 2 for N >= 5 by explicit construction witness\n- Explore connection between density product and Konyagin's upper bound exponent 11/15\n"
+    "nextSteps": [
+      "Keep line/theorem counters synced to src/data/proofs/erdos-1109/meta.json.",
+      "If continuing formalization, target the remaining analytic Konyagin lower/upper axioms.",
+      "Document any future residue-density improvements after f_complete_bounds."
+    ],
+    "markdown": "# Erdos #1109: Squarefree Sumsets - Knowledge\n\nSource checked on 2026-05-18. `Erdos1109Problem.lean` has 3713 lines, 151 theorem declarations including private helpers, 8 defs, 2 axioms, and 0 sorries/admits. The old 1-sorry and seven-axiom notes are stale. Remaining axioms are `konyagin_lower_2004` and `konyagin_upper_2004`; construction and residue-density theorems now extend through `f_ge_twelve`, `f_complete_bounds`, and `f_lower_bound_chain`.\n"
   },
   "tags": [
     "seeker-selected",
     "number-theory",
     "additive-combinatorics",
     "sumsets",
-    "squarefree",
-    "1-sorry"
+    "squarefree"
   ],
   "relatedProofs": [
     "erdos-1",
@@ -56,7 +68,7 @@
     "mathlib": []
   },
   "started": "2026-01-27T22:18:02.332Z",
-  "lastUpdate": "2026-02-13T07:22:26.134Z",
+  "lastUpdate": "2026-05-18T13:51:00Z",
   "completed": "2026-02-13T07:22:26.134Z",
   "significance": 7,
   "tractability": 6,
@@ -64,8 +76,8 @@
     {
       "path": "Proofs/Erdos1109Problem.lean",
       "filename": "Erdos1109Problem.lean",
-      "lineCount": 3714,
-      "theoremCount": 92,
+      "lineCount": 3713,
+      "theoremCount": 151,
       "axiomCount": 2,
       "defCount": 8,
       "sorryCount": 0,
