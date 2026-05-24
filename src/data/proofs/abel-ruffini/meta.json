@@ -899,6 +899,20 @@
       "year": "1956",
       "venue": "Mathematica Scandinavica, vol. 4, pp. 287–302",
       "note": "Selmer's theorem: the trinomial $x^n - x - 1$ is irreducible over $\\mathbb{Q}$ for every $n \\geq 2$. This irreducibility is the load-bearing first ingredient in the canonical Abel-Ruffini concrete witness $x^5 - x - 1$ that this entry's keyInsights and openQuestions repeatedly invoke. With Selmer's irreducibility in hand, the Galois group computation $\\text{Gal}(x^5 - x - 1/\\mathbb{Q}) \\cong S_5$ proceeds via the standard textbook recipe (Dummit-Foote, Rotman): reduction modulo 2 supplies a 5-cycle in $\\text{Gal}$ via Frobenius, the discriminant $\\Delta = 2869 = 19 \\cdot 151$ is not a perfect square (so $\\text{Gal} \\not\\subseteq A_5$), and exactly three real plus two complex-conjugate roots contribute a transposition via complex conjugation — forcing $\\text{Gal} = S_5$ since any transitive subgroup of $S_p$ for prime $p$ containing a $p$-cycle and a transposition is all of $S_p$. The Lean formalization of $x^5 - 4x + 2$ in `abel-ruffini-oq-04-oq-01` follows this blueprint via Eisenstein at $p = 2$ instead of Selmer's specialized trinomial irreducibility; a Selmer-style formalization establishing irreducibility of the entire family $x^n - x - 1$ in Mathlib remains an open challenge."
+    },
+    {
+      "authors": "Cayley, Arthur",
+      "title": "On a new auxiliary equation in the theory of equations of the fifth order",
+      "year": "1861",
+      "venue": "Philosophical Transactions of the Royal Society of London, vol. 151, pp. 263–276",
+      "note": "Cayley's resolvent sextic of the quintic: given a general quintic $f(x) = 0$, Cayley constructs an explicit degree-6 polynomial $R_f(y)$ whose factorization pattern over $\\mathbb{Q}$ identifies $\\text{Gal}(f/\\mathbb{Q})$ as a transitive subgroup of $S_5$. The key diagnostic: if $R_f$ has a rational root, then $\\text{Gal}(f)$ lies in one of the three solvable transitive subgroups ($C_5$, $D_5$, $F_{20}$) and $f$ is solvable by radicals; if $R_f$ is irreducible over $\\mathbb{Q}$, then $\\text{Gal}(f) \\in \\{A_5, S_5\\}$ and (combined with the discriminant criterion separating $A_5$ from $S_5$) the quintic is not solvable by radicals. This is the historical precursor to Stauduhar's 1973 algorithm and the Dummit/Geißler-Klüners refinements implemented in modern computer-algebra systems. Cited in keyInsight #8 on the five transitive subgroups of $S_5$ and their resolvent-based discrimination — the practical complement to `not_solvable_by_rad_of_not_solvable_gal`'s abstract impossibility."
+    },
+    {
+      "authors": "Dummit, David S.",
+      "title": "Solving solvable quintics",
+      "year": "1991",
+      "venue": "Mathematics of Computation, vol. 57, no. 195, pp. 387–401",
+      "note": "Dummit's algorithm for the *positive* side of Abel-Ruffini at degree 5: given an irreducible quintic $f \\in \\mathbb{Q}[X]$ with solvable Galois group (i.e., $\\text{Gal}(f) \\in \\{C_5, D_5, F_{20}\\}$), Dummit constructs the explicit radical formula for the roots. The method refines Cayley's 1861 resolvent sextic into a constructive procedure: identify the solvable-Galois case via a rational root of the resolvent, then assemble the radical tower via Kummer-theoretic adjunction of fifth roots of unity and successive root-extractions of an explicit Lagrange-resolvent expression. This is the formal complement to this entry's `not_solvable_by_rad_of_not_solvable_gal`: the contrapositive blocks radical solutions when $\\text{Gal} = S_5$ (or $A_5$), and Dummit's algorithm produces them when $\\text{Gal}$ is one of the three solvable transitive subgroups. Cited in keyInsight #8 on the three-vs-two solvable/non-solvable dichotomy among transitive subgroups of $S_5$. Implemented in Maple, Mathematica, and Magma's `SolveQuintic` / `IsSolvableQuintic` routines."
     }
   ],
   "mainTheorems": [
