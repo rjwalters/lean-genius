@@ -1,27 +1,40 @@
 {
   "slug": "erdos-731",
   "title": "Erdős #731",
-  "phase": "ACT",
-  "status": "active",
+  "phase": "COMPLETED",
+  "status": "graduated",
   "tier": "B",
   "path": "full",
   "problemStatement": {
     "formal": "Find some reasonable function $f(n)$ such that, for almost all integers $n$, the least integer $m$ such that $m\\nmid \\binom{2n}{n}$ satisfies\\[m\\sim f(n).\\]\n\n\n\nA problem of Erd\\H{o}s, Graham, Ruzsa, and Straus \\cite{EGRS75}, who say it is 'not hard to show that', for almost all $n$, the minimal such $m$ satisfies\\[m=\\exp((\\log n)^{1/2+o(1)}).\\]",
     "plain": "Find some reasonable function $f(n)$ such that, for almost all integers $n$, the least integer $m$ such that $m\\nmid \\binom{2n}{n}$ satisfies\\[m\\sim f(n).\\]",
-    "whyMatters": []
+    "whyMatters": [
+      "Central binomial coefficients provide a concrete test bed for p-adic divisibility and Kummer-style carry arguments",
+      "The file replaces false all-n claims with source-backed counterexamples and conditional bounds",
+      "The remaining axiom marks the Kummer/carry characterization needed for the deeper asymptotic problem"
+    ]
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "centralBinom and leastNonDivCentral infrastructure",
+      "small_primes_divide_false counterexample for the old overclaim",
+      "two_divides_central and bertrand_central divisibility lemmas",
+      "central_binom_succ_identity and dvd_central_implies_sq_dvd",
+      "prime_sq_not_dvd_choose and two proofs that prime (2n+1) does not divide centralBinom n"
+    ],
+    "open": [
+      "prime_divides_central_iff remains a substantive Kummer/carry axiom",
+      "The original almost-all asymptotic Erdos 731 problem remains open"
+    ],
+    "goal": "Record the supporting central-binomial formalization while marking the remaining axiom and open asymptotic honestly"
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "COMPLETED",
     "since": "2026-01-14T21:29:39.410Z",
     "iteration": 2,
-    "focus": "Initial exploration of the problem.",
+    "focus": "Axiomatized supporting formalization: 439 lines, 31 public theorems, 3 defs, 1 axiom, 0 sorries.",
     "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "nextAction": "None for this metadata slice; future proof work should eliminate the Kummer/carry axiom.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,12 +42,8 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: 24 theorems (was 18), 2 axioms, 0 sorries. Added 6 structural theorems: absorption identity, coprimality, dvd-implies-sq-dvd, prime_sq_not_dvd_choose, two proofs of prime non-divisibility.",
+    "progressSummary": "COMPLETED metadata slice: Erdos731Problem.lean is a 439-line supporting formalization with 31 public theorems, 3 defs, 1 substantive Kummer/carry axiom, and 0 sorries. It does not solve the original almost-all asymptotic problem.",
     "builtItems": [
-      "Proved erdos_731_conjecture (True placeholder)",
-      "Proved kummer_carries (True placeholder)",
-      "Proved primorial_asymptotic (True placeholder)",
-      "Proved egrs_typical_behavior (True placeholder)",
       "Proved lower_bound_most_n (True with existential)",
       "Fixed leastNonDivisor definition (omega -> Nat.pos_of_ne_zero)",
       "Proved two_divides_central: Pascal + choose_symm → C(2n,n) = 2·C(2n-1,n-1)",
@@ -61,10 +70,10 @@
       "Central binom lower bound: max-term argument from Σ C(2n,k) = 4^n with 2n+1 terms",
       "FOUND FALSE AXIOM: small_primes_divide claimed ∀ primes p, ∃ N, ∀ n≥N, p|C(2n,n). FALSE for p≥3: n=p^k gives 0 carries in Kummer theorem, so p∤C(2p^k,p^k) for all k.",
       "Concrete counterexample: p=3, n=3, C(6,3)=20, 3∤20. Replaced axiom with counterexample theorem.",
-      "Axiom count reduced 3→2",
+      "Axiom count reduced to 1: prime_divides_central_iff remains as the Kummer/carry characterization.",
       "prime_gt_not_dvd_central gives upper_bound_trivial when 2n+1 is prime (common case). General composite case requires Kummer-type analysis.",
       "CRITICAL: (2n+1)∤C(2n,n) is FALSE for composite 2n+1 (e.g., n=577, 1155|C(1154,577))",
-      "Full upper_bound_trivial proof needs: C(2n+1,n)|lcm(1,...,2n+1) via Kummer carry analysis, then C(2n+1,n)>C(2n,n) by Pascal gives lcm > C(2n,n)",
+      "upper_bound_trivial is now proved in the source file; the deeper almost-all asymptotic still needs Kummer carry analysis.",
       "The identity (n+1)*C(2n+1,n) = (2n+1)*C(2n,n) with gcd(2n+1,n+1)=1 gives: (2n+1)|C(2n,n) ↔ (2n+1)²|C(2n+1,n)"
     ],
     "mathlibGaps": [],
@@ -92,9 +101,9 @@
     {
       "path": "Proofs/Erdos731Problem.lean",
       "filename": "Erdos731Problem.lean",
-      "lineCount": 302,
-      "theoremCount": 21,
-      "axiomCount": 3,
+      "lineCount": 439,
+      "theoremCount": 31,
+      "axiomCount": 1,
       "defCount": 3,
       "sorryCount": 0,
       "isAristotle": false,

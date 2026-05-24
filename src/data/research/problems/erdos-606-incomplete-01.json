@@ -2,7 +2,7 @@
   "slug": "erdos-606-incomplete-01",
   "title": "Erdős 606: Sylvester-Gallai via Kelly's Proof",
   "phase": "COMPLETED",
-  "status": "completed",
+  "status": "graduated",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -16,14 +16,13 @@
   },
   "knownResults": {
     "proven": [
-      "sylvester_gallai: main theorem proved from kelly_distance_lemma axiom",
+      "kelly_distance_lemma: geometric distance inequality proved by coordinate case analysis",
+      "sylvester_gallai: main theorem proved from Kelly's extremal argument",
       "collinear_self_left: reflexivity of collinearity",
       "collinear_comm: symmetry of collinearity base points"
     ],
-    "open": [
-      "kelly_distance_lemma: the geometric distance inequality (axiomatized)"
-    ],
-    "goal": "Eliminate kelly_distance_lemma axiom via coordinate calculation"
+    "open": [],
+    "goal": "Complete the Sylvester-Gallai formalization via Kelly's proof with 0 axioms and 0 sorries"
   },
   "currentState": {
     "phase": "COMPLETED",
@@ -39,7 +38,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETE: sylvester_gallai proved, kelly_distance_lemma proved via 6-case analysis. 0 axioms, 0 sorries. Gallery meta.json updated to verified/original badge.",
+    "progressSummary": "COMPLETED: sylvester_gallai and kelly_distance_lemma are both proved in Erdos606OQ03OQ03.lean. The primary file has 508 lines, 4 public theorem/lemma declarations, 5 defs, 0 axioms, and 0 sorries.",
     "builtItems": [
       "sylvester_gallai: proved main theorem using Kelly's extremal argument",
       "hall3 helper: from ¬HasOrdinaryLine, every line through 2 pts has ≥3",
@@ -52,8 +51,8 @@
       "AllCollinear: all pts collinear definition"
     ],
     "insights": [
-      "Kelly's proof formalizes cleanly: contradiction via Finset.exists_min_image + axiom",
-      "The main theorem sorries are now 0; only the geometric inequality is axiomatized",
+      "Kelly's proof formalizes cleanly: contradiction via Finset.exists_min_image and the proved distance lemma",
+      "The formerly axiomatized geometric inequality is now proved by coordinate case analysis",
       "Finset.one_lt_card gives distinct elements from card≥3 (via omega)",
       "The AllCollinear negation pattern uses rcases ... with rfl | ⟨c, hcS, hnc⟩",
       "hall3 extracted from ¬IsOrdinaryLine via simp+push_neg on the universally quantified conclusion",
@@ -61,7 +60,7 @@
       "Coordinate proof of kelly_distance_lemma: h·(γ-α)/√(h²+γ²) < h iff (γ-α)² < h²+γ² iff α²-2αγ < h² iff α(α-2γ)≤0<h²"
     ],
     "mathlibGaps": [
-      "No major gaps — Real.sqrt, inner product space, Finset.exists_min_image all available"
+      "No major gaps - Real.sqrt, inner product space, Finset.exists_min_image all available"
     ],
     "nextSteps": []
   },
@@ -98,9 +97,9 @@
     {
       "path": "Proofs/Erdos606OQ03OQ03.lean",
       "filename": "Erdos606OQ03OQ03.lean",
-      "lineCount": 224,
-      "theoremCount": 3,
-      "axiomCount": 1,
+      "lineCount": 508,
+      "theoremCount": 4,
+      "axiomCount": 0,
       "defCount": 5,
       "sorryCount": 0,
       "isAristotle": false,
