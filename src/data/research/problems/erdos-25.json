@@ -7,21 +7,30 @@
   "path": "full",
   "problemStatement": {
     "formal": "(LaTeX not available)",
-    "plain": "Let $n_1 View the LaTeX source",
+    "plain": "Let 1 <= n_1 < n_2 < ... be an arbitrary strictly increasing sequence of positive integers, each with an associated residue class a_i modulo n_i. Let A be the set of positive integers m such that for every i, either m < n_i or m is not congruent to a_i modulo n_i. Must the logarithmic density of A exist?",
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "logDensity_mem_unit and logDensity_unique are proved in Erdos25Problem.lean.",
+      "finite_sieve_density_exists is proved vacuously under the current contradictory hypotheses.",
+      "zero_in_sieved, small_in_sieved, sieved_set_nonempty, sieve_monotone, and sieve_monotone_set are proved.",
+      "LogDensityExists_of_naturalDensity and erdos_25_via_naturalDensity reduce the problem to natural-density existence for every sieved set."
+    ],
+    "open": [
+      "ErdosProblem25 remains open.",
+      "PrimeResidueCase is stated but not proved in this file.",
+      "The natural-density strengthening is only a sufficient condition and is itself open in general."
+    ],
+    "goal": "Prove ErdosProblem25: every congruence-sieved set has logarithmic density."
   },
   "currentState": {
     "phase": "ACT",
     "since": "2026-01-12T04:34:21.348Z",
     "iteration": 2,
-    "focus": "Axiom elimination: proved sieved_set_nonempty (was buggy axiom)",
+    "focus": "Erdos25Problem.lean now has zero local axioms: it defines the congruence-sieve problem, proves basic log-density facts, membership and monotonicity lemmas, and reduces Erdos #25 to natural-density existence for every sieved set.",
     "blockers": [],
-    "nextAction": "Continue proving remaining axioms (logDensity_evens, naturalDensity_implies_logDensity)",
+    "nextAction": "Continue eliminating imported Erdos25LogDensity axioms, especially naturalDensity_implies_logDensity and exists_logDensity_no_naturalDensity.",
     "attemptCounts": {
       "total": 1,
       "currentApproach": 1,
@@ -29,7 +38,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated logDensity_avoid_one_residue axiom (4→3 axioms). Proved via generalized weighted count for multiples + complement splitting.",
+    "progressSummary": "PROGRESS: Erdos25Problem.lean has zero local axioms, 11 script-counted theorem declarations, and 0 sorries. The file defines the congruence sieve, proves core membership and monotonicity lemmas, and reduces Erdos #25 to natural-density existence for every sieved set.",
     "builtItems": [
       "Proved logWeightedCount_nonneg in Erdos25LogDensity.lean",
       "Proved logWeightedCount_mono in Erdos25LogDensity.lean",
@@ -80,7 +89,7 @@
       "Prove exists_logDensity_no_naturalDensity: requires explicit construction (~150 lines)",
       "davenport_erdos: deep theorem, likely stays as axiom"
     ],
-    "markdown": "# Erdős #25 - Knowledge Base\n\n## Problem Statement\n\nLet $n_1 View the LaTeX source\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #486\n- Problem #24\n- Problem #26\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
+    "markdown": "# Erdos #25 - Knowledge Base\n\n## Problem Statement\n\nLet 1 <= n_1 < n_2 < ... be an arbitrary strictly increasing sequence of positive integers, each with an associated residue class a_i modulo n_i. Let A be the set of positive integers m such that for every i, either m < n_i or m is not congruent to a_i modulo n_i. Must the logarithmic density of A exist?\n\n## Status\n\n**Erdos Database Status**: OPEN\n\n**Tractability Score**: 6/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #337\n- Problem #2000\n- Problem #60\n- Problem #486\n- Problem #24\n- Problem #26\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er95\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-12*\n"
   },
   "tags": [
     "erdos"
@@ -244,8 +253,8 @@
     {
       "path": "Proofs/Erdos25Problem.lean",
       "filename": "Erdos25Problem.lean",
-      "lineCount": 167,
-      "theoremCount": 7,
+      "lineCount": 209,
+      "theoremCount": 11,
       "axiomCount": 0,
       "defCount": 6,
       "sorryCount": 0,

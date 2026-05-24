@@ -33,7 +33,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Formalized partial flag extension (OQ-02). Proved: q-factorial = flag class, GL_n = (L-1)^n · flag · L^T(n), Grassmannian q-Pascal. 3 axioms (partial flag conjecture + moduli space), 3 sorries (duality, lines, Gaussian binomial). Gallery data created.",
+    "progressSummary": "COMPLETED: Formalized the partial flag extension (OQ-02). Proved q-factorial = flag class, GL_n = (L-1)^n * flag * L^T(n), and Grassmannian q-Pascal infrastructure. MotivicFlagMapsPartialFlags.lean has 2 explicit axioms and 0 sorries; the parent MotivicFlagMaps.lean has 2 explicit axioms and 0 sorries.",
     "builtItems": [
       "q-number [n]_L and q-factorial [n]_L! infrastructure in MotivicFlagMapsPartialFlags.lean",
       "Recursive Grassmannian motivic class via q-Pascal identity",
@@ -83,8 +83,8 @@
     {
       "path": "Proofs/MotivicFlagMaps.lean",
       "filename": "MotivicFlagMaps.lean",
-      "lineCount": 439,
-      "theoremCount": 26,
+      "lineCount": 502,
+      "theoremCount": 30,
       "axiomCount": 2,
       "defCount": 17,
       "sorryCount": 0,
