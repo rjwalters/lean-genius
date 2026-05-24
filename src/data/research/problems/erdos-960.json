@@ -11,17 +11,20 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
+    "proven": [
+      "threshold_r2 proves the r = 2 threshold value in the formal model.",
+      "erdos_960_littleo_false records the APSSV disproof range through explicit axioms for external results."
+    ],
     "open": [],
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ACT",
     "since": "2026-03-28T09:15:00Z",
     "iteration": 2,
-    "focus": "Graduated: 0 sorries, 3 deep axioms",
+    "focus": "0 sorries and 2 explicit APSSV disproof axioms; structural threshold lemmas are verified.",
     "blockers": [],
-    "nextAction": "None — formalization complete.",
+    "nextAction": "Keep the external APSSV assumptions explicit; further work would formalize the disproof construction.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,7 +32,7 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: 6 theorems, 3 deep axioms, 0 sorries. Axioms: main conjecture (OPEN), Turán upper bound, Green-Tao ordinary lines. All structural results proved.",
+    "progressSummary": "PROGRESS: 12 script-counted theorems, 2 APSSV disproof axioms, 0 sorries. Structural ordinary-line and threshold results are verified; external disproof results remain axiomatized.",
     "builtItems": [
       "Proved trivial_bound: ordinaryLineCount P ≤ P.n * (P.n - 1) / 2",
       "Identified bug in threshold_r2 (claims 1, should be 0)",
@@ -43,7 +46,7 @@
       "ordinary_line_exists: helper lemma extracting ordinary pair from ordinaryLineCount ≥ 1",
       "threshold_r2: full proof via le_antisymm, csSup_le, ordinary line extraction, isOrdinaryLine_symm",
       "Graduated to completed (iteration 2)",
-      "Removed 2 unused axioms (turan_upper_bound, green_tao_ordinary_lines) — 3→1 axioms"
+      "Removed stale Turan and Green-Tao axiom declarations; the live source has 2 APSSV disproof axioms"
     ],
     "insights": [
       "trivial_bound provable: filter_le on offDiag + card_offDiag + omega",
@@ -65,7 +68,7 @@
       "threshold_r2 proof: for r=2, any ordinary line gives a 2-element all-ordinary subset, so the counterexample set in sSup is empty/singleton, hence sSup=0",
       "turan_upper_bound axiomatized: Turán 1941 is in Mathlib (SimpleGraph.Extremal.Turan) but bridging to PointConfig needs ~200-400 lines of infrastructure",
       "csSup_le + Finset.mem_filter extraction pattern effective for sSup-based threshold proofs",
-      "Graduation review: 3 axioms verified as deep (Turán, Green-Tao, main OPEN conjecture). Formalization complete.",
+      "The live source has 2 APSSV disproof axioms; Turan and Green-Tao remain documentation context rather than axiom declarations.",
       "turan_upper_bound and green_tao_ordinary_lines were unused by any theorem — removed as documentation artifacts"
     ],
     "mathlibGaps": [],
@@ -93,8 +96,8 @@
     {
       "path": "Proofs/Erdos960Problem.lean",
       "filename": "Erdos960Problem.lean",
-      "lineCount": 252,
-      "theoremCount": 6,
+      "lineCount": 297,
+      "theoremCount": 12,
       "axiomCount": 2,
       "defCount": 7,
       "sorryCount": 0,
