@@ -11,17 +11,24 @@
     "whyMatters": []
   },
   "knownResults": {
-    "proven": [],
-    "open": [],
-    "goal": ""
+    "proven": [
+      "Under the recorded ABC-based Cushing-Pascoe input, n! +/- 1 variants are eventually not powerful.",
+      "Under the recorded ABC-based CrowdMath input, 2^n +/- 1 variants are eventually not powerful."
+    ],
+    "open": [
+      "Unconditional finiteness of powerful 2^n +/- 1 and n! +/- 1 remains open in this formalization."
+    ],
+    "goal": "Replace or refine the conditional literature axioms if formal ABC consequences become available."
   },
   "currentState": {
-    "phase": "NEW",
+    "phase": "ACT",
     "since": "2026-01-15T11:50:52.409Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Backfill the research record to reflect the existing conditional Lean formalization of Erdos #936 under ABC.",
+    "blockers": [
+      "The unconditional finiteness questions remain open; the file records ABC-based literature inputs as axioms."
+    ],
+    "nextAction": "Record that the four variants are derived conditionally from ABC-based axioms, not proved unconditionally.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,11 +36,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "",
-    "builtItems": [],
-    "insights": [],
+    "progressSummary": "Existing Lean file defines Powerful, EventuallyNotPowerful, and Squarefree'. It proves basic examples and prime/square lemmas, axiomatizes ABC plus the Cushing-Pascoe and CrowdMath conditional results, and derives all four Erdos #936 variants and a combined summary theorem. Source counters are 327 lines, 3 definitions, 27 theorems, 3 axioms, and no sorries or admits.",
+    "builtItems": [
+      "Definitions: Powerful, EventuallyNotPowerful, and Squarefree'.",
+      "Proved small examples, prime-not-powerful facts, square-powerful facts, and the eventual-not-powerful equivalence.",
+      "Axiomatized ABC plus the Cushing-Pascoe and CrowdMath conditional theorems, then derived the 2^n +/- 1 and n! +/- 1 variant theorems."
+    ],
+    "insights": [
+      "CuPa16 and Cr20 are conditional ABC results in this file, not unconditional solutions.",
+      "The formalization is not initial exploration; it has a substantial axiomatized scaffold with derived theorems.",
+      "Proof-meta wording about variant axioms should be read carefully: the variants in the source are theorems derived from the conditional theorem axioms."
+    ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Keep counters synced to the proof meta: 327 lines, 27 theorems, 3 definitions, 3 axioms, 0 sorries.",
+      "Treat further mathematical progress as replacing or refining the ABC/literature axioms.",
+      "Avoid wording that suggests the original unconditional problem is solved."
+    ],
     "markdown": "# Erdős #936 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nAre\\[2^n\\pm 1\\]and\\[n!\\pm 1\\]powerful (i.e. if $p\\mid m$ then $p^2\\mid m$) for only finitely many $n$?\n\n\n\nCushing and Pascoe \\cite{CuPa16} have shown the answer to the second question is yes assuming the abc conjecture - in fact, for any fixed $k\\geq 0$, there are only finitely many $n$ and powerful $x$ such that $\\lvert x-n!\\rvert \\leq k$.\n\nCrowdMath \\cite{Cr20} has shown that the answer to the first question is yes, again assuming the abc conjecture.\n\n\n\n\nReferences\n\n\n[Cr20] P. A. CrowdMath, Applications of the abc conjecture to powerful numbers. arXiv:2005.07321 (2020).\n\n[CuPa16] D. Cushing and J. E. Pascoe, Powerful numbers and the ABC-conjecture. arXiv:1611.01192 (2016).\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #935\n- Problem #937\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- CuPa16\n- Cr20\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -50,14 +69,14 @@
     "mathlib": []
   },
   "started": "2026-01-15T11:50:52.409Z",
-  "lastUpdate": "2026-03-13T07:52:17.055Z",
+  "lastUpdate": "2026-05-18T13:24:20Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos936Problem.lean",
       "filename": "Erdos936Problem.lean",
-      "lineCount": 328,
+      "lineCount": 327,
       "theoremCount": 27,
       "axiomCount": 3,
       "defCount": 3,

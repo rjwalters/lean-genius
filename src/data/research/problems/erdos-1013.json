@@ -16,12 +16,14 @@
     "goal": ""
   },
   "currentState": {
-    "phase": "COMPLETED",
+    "phase": "ORIENT",
     "since": "2026-01-15T13:36:13.714Z",
     "iteration": 1,
-    "focus": "Initial exploration of the problem.",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Metadata backfill for the current Lean formalization: core definitions are present, the asymptotic and ratio questions are definitions, threshold monotonicity and h3(1)/h3(2) are proved, and mycielski_construction remains the only axiom.",
+    "blockers": [
+      "mycielski_construction remains the only axiom; h3(3)=5 and h3(4)=11 are documented in comments only."
+    ],
+    "nextAction": "Remove stale references to nonexistent bound declarations, keep counters synced from proof meta, and consider threshold_three only as a separate explicit C5 construction step.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,34 +31,22 @@
     }
   },
   "knowledge": {
-    "progressSummary": "COMPLETED: Fixed definition bug (sSup→sInf, k→k-1), eliminated 3 axioms (threshold_mono, threshold_one, threshold_two now proved). Axioms: 9→6, theorems: 5→12.",
+    "progressSummary": "Current Lean source has 201 lines, 6 definitions, 12 theorem-or-lemma declarations by proof-meta counting, 1 axiom (mycielski_construction), and no sorries or admits. It proves threshold monotonicity, h3(1)=1, h3(2)=2, and basic coloring/triangle-free helpers. The known asymptotic bounds and h3(3)/h3(4) are documented only in comments.",
     "builtItems": [
-      "trivial_n_coloring: any graph is n-colorable (proved)",
-      "coloring_monotone: k-colorable implies (k+1)-colorable (proved)",
-      "empty_graph_colorable, empty_graph_triangle_free, single_vertex_triangle_free (all proved)",
-      "Fixed graver_yackel_bound logic bug (→ to ∧)",
-      "Converted 2 open conjectures from axioms to defs",
-      "coloring_le_mono: generalized coloring monotonicity (proved)",
-      "fin1_triangle_free: graphs on 1 vertex are TF (proved)",
-      "fin1_one_colorable: graphs on 1 vertex are 1-colorable (proved)",
-      "threshold_set_nonempty: threshold set always nonempty (proved)",
-      "threshold_mono: h₃ monotonicity (was axiom, now proved)",
-      "threshold_one: h₃(1)=1 (was axiom, now proved)",
-      "threshold_two: h₃(2)=2 (was axiom, now proved)"
+      "Definitions: IsTriangleFree, HasProperColoring, chromaticNumber, triangleFreeChromThreshold, Erdos1013Asymptotic, and Erdos1013RatioConvergence.",
+      "Proved threshold_set_nonempty, threshold_mono, threshold_one, threshold_two, and basic coloring/triangle-free helper theorems.",
+      "Axiom: mycielski_construction."
     ],
     "insights": [
-      "Two open conjectures (asymptotic, ratio convergence) were incorrectly axiomatized — converted to defs",
-      "graver_yackel_bound had a logic bug: used → instead of ∧, making it trivially true by picking c ≤ 0",
-      "Any graph is n-colorable (one color per vertex) — basic structural fact proved",
-      "Coloring is monotone: k-colorable implies (k+1)-colorable",
-      "triangleFreeChromThreshold definition uses sSup which may not behave well on ℕ — possible definitional issue for future work",
-      "triangleFreeChromThreshold had a definition bug: used HasProperColoring G k instead of k-1, causing value mismatch with axioms",
-      "Fixed definition to sInf-based formulation matching standard h₃(k)"
+      "The old Axioms: 9 to 6 progress summary is stale; the current source has 1 axiom.",
+      "References to graver_yackel_bound are stale because no such declaration exists in the current source.",
+      "triangleFreeChromThreshold now uses the sInf-based formulation; older sSup concern is stale."
     ],
     "mathlibGaps": [],
     "nextSteps": [
-      "Prove threshold_three (h₃(3)=5) by constructing C₅ explicitly",
-      "Prove threshold_four (h₃(4)=11) by constructing Grötzsch graph"
+      "Keep metadata counters synced and clarify that proof-meta theoremCount includes the private lemma declaration.",
+      "Remove or qualify stale bound-theorem references unless formal declarations are added.",
+      "Next Lean work: formalize triangleFreeChromThreshold 3 = 5 via an explicit C5 construction and non-2-colorability proof."
     ],
     "markdown": "# Erdős #1013 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $h_3(k)$ be the minimal $n$ such that there exists a triangle-free graph on $n$ vertices with chromatic number $k$. Find an asymptotic for $h_3(k)$, and also prove\\[\\lim_{k\\to \\infty}\\frac{h_3(k+1)}{h_3(k)}=1.\\]\n\n\n\nIt is known that\\[\\frac{\\log k}{\\log\\log k}k^2 \\ll h_3(k) \\ll (\\log k)k^2.\\]The lower bound is due to Graver and Yackel \\cite{GrYa68}, the upper bound follows from Shearer's upper bound for $R(3,k)$ (see [165]).\n\nThe function $h_r(k)$ for $r\\geq 4$ is the subject of [920].\n\n\n\n\nReferences\n\n\n[GrYa68] Graver, Jack E. and Yackel, James, Some graph theoretic results associated with {R}amsey's\ntheorem. J. Combinatorial Theory (1968), 125--175.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 4/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #165\n- Problem #920\n- Problem #1012\n- Problem #1014\n- Problem #2\n- Problem #39\n- Problem #1\n\n## References\n\n- Er71\n- GrYa68\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
@@ -75,15 +65,15 @@
     "mathlib": []
   },
   "started": "2026-01-15T13:36:13.714Z",
-  "lastUpdate": "2026-03-24T16:15:00Z",
+  "lastUpdate": "2026-05-18T13:24:20Z",
   "significance": 6,
   "tractability": 4,
   "leanFiles": [
     {
       "path": "Proofs/Erdos1013Problem.lean",
       "filename": "Erdos1013Problem.lean",
-      "lineCount": 202,
-      "theoremCount": 8,
+      "lineCount": 201,
+      "theoremCount": 12,
       "axiomCount": 1,
       "defCount": 6,
       "sorryCount": 0,

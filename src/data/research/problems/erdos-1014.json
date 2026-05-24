@@ -19,9 +19,11 @@
     "phase": "ACT",
     "since": "2026-01-15T13:43:13.293Z",
     "iteration": 2,
-    "focus": "Axiom elimination: proved ramsey_pos (13→12 axioms)",
-    "blockers": [],
-    "nextAction": "Begin problem exploration.",
+    "focus": "Source-backed metadata sync for Erdos #1014: parent primary remains Proofs/Erdos1014Problem.lean, with OQ01 and OQ02 kept as companion proof entries.",
+    "blockers": [
+      "The parent Ramsey-number infrastructure and main conjecture remain axiomatized; OQ files are companions, not replacements for the primary file."
+    ],
+    "nextAction": "Refresh leanFiles counters from source/proof metadata, clarify theoremCount aggregation versus raw theorem/lemma counts, and keep OQ files linked as companions behind the parent primary path.",
     "attemptCounts": {
       "total": 0,
       "currentApproach": 0,
@@ -29,39 +31,23 @@
     }
   },
   "knowledge": {
-    "progressSummary": "PROGRESS: Eliminated 2 sorries in OQ02 (corrected incorrect O(1/l) rate claim). Main file: 12 axioms, 0 sorries.",
+    "progressSummary": "Primary proof meta points to Proofs/Erdos1014Problem.lean: 483 lines, 20 theorem-or-lemma declarations, 12 axioms, 0 definitions, and 0 sorries or admits. Research also references OQ01 with 365 lines, 1 definition, 12 theorem-or-lemma declarations, 1 axiom, and OQ02 with 186 lines, 4 theorems, 0 own axioms; both companions have 0 sorries or admits.",
     "builtItems": [
-      "Proved diagonal_ramsey_upper from ramsey_upper_erdos_szekeres (4 lines)",
-      "Proved ratio_equiv_difference from monotonicity + positivity + real analysis (35 lines)",
-      "ramsey_2k: R(l,2) = l from symm + k2",
-      "ramsey_monotone_left: R(k,l) <= R(k+1,l) via symm trick",
-      "R22: R(2,2) = 2",
-      "diagonal_ramsey_lower: R(k,k) >= k for k >= 2",
-      "R33_lt_R34, R34_lt_R35: strict monotonicity of specific values",
-      "R3_ratio_convergence: k=3 case of Erdős 1014 (~55 lines)",
-      "R3_asymptotic_bounds: tight bounds theorem from R3_lower + R3_upper",
-      "increment_bound_k3: R(3,l+1) ≤ R(3,l) + (l+1) from recurrence",
-      "increment_bound_general: R(k,l+1) ≤ R(k,l) + R(k-1,l+1)",
-      "Fixed R3_lower axiom from ∀c to ∃c (consistency fix)",
-      "ramsey_pos proved as theorem from ramsey_k2 + ramsey_monotone_left iterated (eliminates 1 axiom)",
-      "ramsey_mono_left_ge2: R(2,l) ≤ R(k,l) for k ≥ 2 via induction on k",
-      "Eliminated 2 sorries in Erdos1014OQ02.lean by replacing conditional_rate_general_k (incorrect O(1/l) claim) with conditional_convergence_general_k (correct o(1) via ratio_from_asymptotics)"
+      "Primary file proves ratio_from_asymptotics, ratio_equiv_difference, diagonal Ramsey bounds, increment bounds, R3_asymptotic_bounds, and R3_ratio_convergence from axiomatized Ramsey inputs.",
+      "OQ01 defines a concrete Ramsey-number scaffold and proves erdos_1014_k3_ratio_convergence with one lower-bound axiom.",
+      "OQ02 proves the corrected conditional general-k convergence result and records that the old O(1/l) rate claim does not follow without a quantified convergence rate."
     ],
     "insights": [
-      "2 axioms proved: diagonal_ramsey_upper (from Erdős-Szekeres with k=l) and ratio_equiv_difference (algebraic identity |x/y-1|=(x-y)/y for x>=y>0)",
-      "ratio_equiv_difference proof uses: ramsey_pos for R(k,l)>=1, ramsey_monotone_right for R(k,l+1)>=R(k,l), sub_div+div_self+abs_of_nonneg for the algebraic identity",
-      "Most axioms CANNOT be eliminated - no Ramsey theory in Mathlib (ramseyNumber is an opaque axiom)",
-      "ramsey_monotone_left provable from symm + monotone_right",
-      "diagonal_ramsey_lower from R(2,k)=k + left monotonicity",
-      "Specific Ramsey values (R33,R34,R35) enable strict monotonicity proofs",
-      "R3_lower was inconsistent: ∀c>0 R(3,l)≥c·l²/log l contradicts R3_upper. Fixed to ∃c>0.",
-      "R3_ratio_convergence proved directly: recurrence gives R(3,l+1)-R(3,l)≤l+1, combined with R(3,l)≥c·l²/log l gives ratio O(log l/l)→0",
-      "R3_asymptotic_bounds combines R3_lower and R3_upper to give R(3,l) = Θ(l²/log l)",
-      "ramsey_pos(k,l) for k ≥ 2 follows from R(2,l)=l ≥ 1 and R(2,l) ≤ R(k,l) by iterated ramsey_monotone_left. Only k=1 case would need an axiom but it is never used.",
-      "OQ02 conditional_rate_general_k had incorrect O(1/l) conclusion — only o(1) follows from the given hypothesis. The growth ratio g(l+1)/g(l) is 1+O(k/l), but the R/g error is o(1) at unspecified rate. Fixed by delegating to ratio_from_asymptotics."
+      "The research primary path was stale: Proofs/Erdos1014Problem.lean is the primary file, while OQ01 and OQ02 are companions.",
+      "Proof-meta theoremCount for the parent aggregates theorem and lemma declarations; raw source has 17 theorem declarations and 3 lemma declarations.",
+      "OQ02 has corrected the conditional convergence result, though its Lean header still contains stale O(1/l) wording that should be fixed in a source-editing pass."
     ],
     "mathlibGaps": [],
-    "nextSteps": [],
+    "nextSteps": [
+      "Keep src/data/research/problems/erdos-1014.json leanFiles counters synced with proof meta and actual Lean sources.",
+      "Clarify that src/data/proofs/erdos-1014/meta.json primary is Proofs/Erdos1014Problem.lean; OQ01 and OQ02 are companion proof entries.",
+      "In a future Lean-source cleanup, update the stale OQ02 header sentence about a general-k O(1/l) rate."
+    ],
     "markdown": "# Erdős #1014 - Knowledge Base\n\n## Problem Statement\n\nForum\nFavourites\nTags\nMore\n Go\n Go\nDual View\nRandom Solved\nRandom Open\n\nLet $R(k,l)$ be the Ramsey number, so the minimal $n$ such that every graph on at least $n$ vertices contains either a $K_k$ or an independent set on $l$ vertices.\n\nProve, for fixed $k\\geq 3$, that\\[\\lim_{l\\to \\infty}\\frac{R(k,l+1)}{R(k,l)}=1.\\]\n\n\n\nThis is open even for $k=3$.\n\nSee also [544] for other behaviour of $R(3,k)$, and [1030] for the diagonal version of this question.\n\n\nBack to the problem\n\n## Status\n\n**Erdős Database Status**: OPEN\n\n**Tractability Score**: 5/10\n**Aristotle Suitable**: No\n\n## Tags\n\n- erdos\n\n## Related Problems\n\n- Problem #2000\n- Problem #83\n- Problem #888\n- Problem #1998\n- Problem #544\n- Problem #1030\n- Problem #1013\n- Problem #1015\n- Problem #2\n- Problem #39\n- Problem #1\n- Problem #9\n\n## References\n\n- (None available)\n\n## Sessions\n\n(No research sessions yet)\n\n---\n\n*Generated from erdosproblems.com on 2026-01-15*\n"
   },
   "tags": [
@@ -81,15 +67,26 @@
     "mathlib": []
   },
   "started": "2026-01-15T13:43:13.293Z",
-  "lastUpdate": "2026-03-13T07:52:17.055Z",
+  "lastUpdate": "2026-05-18T13:24:20Z",
   "significance": 7,
   "tractability": 5,
   "leanFiles": [
     {
+      "path": "Proofs/Erdos1014Problem.lean",
+      "filename": "Erdos1014Problem.lean",
+      "lineCount": 483,
+      "theoremCount": 20,
+      "axiomCount": 12,
+      "defCount": 0,
+      "sorryCount": 0,
+      "isAristotle": false,
+      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014Problem.lean"
+    },
+    {
       "path": "Proofs/Erdos1014OQ01.lean",
       "filename": "Erdos1014OQ01.lean",
-      "lineCount": 366,
-      "theoremCount": 7,
+      "lineCount": 365,
+      "theoremCount": 12,
       "axiomCount": 1,
       "defCount": 1,
       "sorryCount": 0,
@@ -99,24 +96,13 @@
     {
       "path": "Proofs/Erdos1014OQ02.lean",
       "filename": "Erdos1014OQ02.lean",
-      "lineCount": 187,
+      "lineCount": 186,
       "theoremCount": 4,
       "axiomCount": 0,
       "defCount": 0,
       "sorryCount": 0,
       "isAristotle": false,
       "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014OQ02.lean"
-    },
-    {
-      "path": "Proofs/Erdos1014Problem.lean",
-      "filename": "Erdos1014Problem.lean",
-      "lineCount": 484,
-      "theoremCount": 15,
-      "axiomCount": 12,
-      "defCount": 0,
-      "sorryCount": 0,
-      "isAristotle": false,
-      "githubUrl": "https://github.com/rjwalters/lean-genius/blob/main/proofs/Proofs/Erdos1014Problem.lean"
     }
   ]
 }
