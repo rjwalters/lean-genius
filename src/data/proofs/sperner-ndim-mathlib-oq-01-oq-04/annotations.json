@@ -180,6 +180,18 @@
     "prerequisites": ["Lean 4 namespace system", "linter directives", "Mathlib notation packages"]
   },
   {
+    "id": "ann-set-with-hsdef-idiom",
+    "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
+    "range": { "startLine": 145, "endLine": 148 },
+    "type": "technique",
+    "title": "set S := ... with hS_def — Named Local Definition for Goal Stability",
+    "content": "Before invoking `Finset.sum_involution`, the proof captures the filtered finset with `set S : Finset (K.Simplex × Fin (d + 1)) := Finset.univ.filter (...) with hS_def`. The `set` tactic introduces a local abbreviation `S` and folds occurrences in the goal; the optional `with hS_def` clause additionally records the defining equation as a hypothesis, allowing later `simp only [hS_def, Finset.mem_filter, ...]` rewrites to unfold membership predicates uniformly across the four case blocks. Without this naming, each case would have to re-state the long filter predicate verbatim, and the membership-unpacking `simp only` would have to inline-rewrite a different concrete predicate each time. This is the kind of pragmatic Lean 4 idiom that keeps multi-obligation proofs maintainable.",
+    "mathContext": "$S := \\{p \\in \\mathrm{Simplex} \\times \\mathrm{Fin}(d+1) \\ |\\ \\mathrm{isDoorAt}\\ c\\ K\\ p_1\\ p_2 \\wedge K.\\mathrm{adj}\\ p_1\\ p_2 \\neq \\mathrm{none}\\}$",
+    "significance": "technical",
+    "relatedConcepts": ["set tactic", "with-clause", "local abbreviation", "simp only", "Finset.filter membership"],
+    "prerequisites": ["Lean 4 set tactic", "Finset.filter / Finset.mem_filter"]
+  },
+  {
     "id": "ann-sum-involution-obligation-anatomy",
     "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
     "range": { "startLine": 145, "endLine": 152 },

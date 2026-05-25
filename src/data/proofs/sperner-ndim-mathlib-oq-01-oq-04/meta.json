@@ -119,8 +119,8 @@
     }
   ],
   "conclusion": {
-    "summary": "Delivers a structural ℤ-valued signed CellComplex and the foundational signed-interior-doors cancellation theorem (sum vanishes in ℤ) in 200 LOC with 0 axioms and 0 sorries. The ZMod-2-vacuity diagnosis (sign collapse via ZMod.neg_eq_self_mod_two) justifies the move to ℤ, and Finset.sum_involution discharges the cancellation directly.",
-    "implications": "This is the substrate for two follow-up directions: (1) embedding into Mathlib's AlternatingFaceMapComplex over ModuleCat ℤ to connect with the standard algebraic-topology API, and (2) the Tucker/Borsuk–Ulam chain — Tucker's lemma is the antipodal ℤ/2-equivariant Sperner statement, and the ℤ-valued sign structure here is exactly the orientation data needed for the equivariant counting argument. The 200-LOC delivery preserves the proof economy of the parent's abstract framework: no concrete triangulation is required, the three CellComplex adjacency axioms suffice for the signed cancellation.",
+    "summary": "Delivers a structural ℤ-valued signed CellComplex and the foundational signed-interior-doors cancellation theorem (sum vanishes in ℤ) in 207 LOC with 0 axioms and 0 sorries. The ZMod-2-vacuity diagnosis (sign collapse via ZMod.neg_eq_self_mod_two) justifies the move to ℤ, and Finset.sum_involution discharges the cancellation directly.",
+    "implications": "This is the substrate for two follow-up directions: (1) embedding into Mathlib's AlternatingFaceMapComplex over ModuleCat ℤ to connect with the standard algebraic-topology API, and (2) the Tucker/Borsuk–Ulam chain — Tucker's lemma is the antipodal ℤ/2-equivariant Sperner statement, and the ℤ-valued sign structure here is exactly the orientation data needed for the equivariant counting argument. The 207-LOC delivery preserves the proof economy of the parent's abstract framework: no concrete triangulation is required, the three CellComplex adjacency axioms suffice for the signed cancellation. Notably, the four Finset.sum_involution obligations align bijectively with the four CellComplex+Signed axioms (cancel↔sign_adj, fpf↔adj_ne, gmem↔adj_vertices+adj_symm, invol↔adj_symm), evidencing a tight axiomatisation with no redundancy for this theorem.",
     "openQuestions": [
       "S2-B (Mathlib bridge): embed SignedCellComplex into AlternatingFaceMapComplex over ModuleCat ℤ (~80 LOC, expected).",
       "S2-C (Tucker scaffold): define AntipodalCellComplex (vertex-level involution ι : V → V) and state Tucker's lemma over it (~120 LOC, 2 statement-only sorries expected).",
@@ -209,6 +209,11 @@
       "type": "textbook",
       "citation": "Matoušek, J. (2008). Using the Borsuk-Ulam Theorem. Springer.",
       "relevance": "Standard reference for the equivariant / antipodal versions of Sperner's lemma (Tucker, Ky Fan, KKM equivariant). Chapter 2 details the signed counting argument that this file's signed_interior_doors_sum_zero theorem foundationally supports."
+    },
+    {
+      "type": "textbook",
+      "citation": "Hatcher, A. (2002). Algebraic Topology. Cambridge University Press. §2.1 (Simplicial and Singular Homology).",
+      "relevance": "Standard reference for oriented simplicial chain complexes with the alternating-sign boundary operator $\\partial \\sigma = \\sum_i (-1)^i \\partial_i \\sigma$. The ℤ-valued sign field of `SignedCellComplex` is the abstract-CellComplex analogue of Hatcher's per-facet orientation data; the signed-interior-doors cancellation theorem here mirrors the $\\partial \\circ \\partial = 0$ identity over a single facet pair. Hatcher's discussion of why characteristic ≠ 2 matters for orientation is the textbook companion to this file's ZMod-2-vacuity diagnosis."
     },
     {
       "type": "internal",
