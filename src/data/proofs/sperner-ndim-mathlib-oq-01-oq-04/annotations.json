@@ -12,6 +12,17 @@
     "prerequisites": ["ZMod arithmetic", "ring characteristic", "chain complex boundary"]
   },
   {
+    "id": "ann-namespace-scaffolding",
+    "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
+    "range": { "startLine": 50, "endLine": 55 },
+    "type": "technique",
+    "title": "Namespace Nesting and Linter Scoping",
+    "content": "Three small but load-bearing scaffolding choices precede the math. (1) `set_option linter.unusedVariables false` is *file-scoped*, deliberately silencing Lean's unused-variable linter so the `cases hadj_eq : ...` blocks in the main theorem can introduce the destructured `sk = (s', k')` names without triggering warnings on every branch where the binders are pattern-eliminated rather than referenced. (2) The double namespace `SpernerAbstract.Signed` keeps the signed API in its own sub-namespace below the parent, so `SignedCellComplex` does not shadow the parent's `CellComplex` and downstream files can `open SpernerAbstract.Signed` selectively. (3) `open Finset BigOperators` brings the `∑` notation and `Finset.univ.filter` syntax into scope at file level rather than per-definition — this is the Mathlib convention for files dominated by Finset.sum computations.",
+    "significance": "technical",
+    "relatedConcepts": ["set_option scope", "linter.unusedVariables", "namespace nesting", "open Finset", "BigOperators ∑ notation"],
+    "prerequisites": ["Lean 4 namespace mechanics", "Mathlib BigOperators convention"]
+  },
+  {
     "id": "ann-signedcellcomplex-struct",
     "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
     "range": { "startLine": 65, "endLine": 70 },

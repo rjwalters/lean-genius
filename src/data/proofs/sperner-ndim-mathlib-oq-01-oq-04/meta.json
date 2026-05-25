@@ -60,7 +60,8 @@
       "The right coherence for adjacent facets is sign(s,k) + sign(s',k') = 0 in ℤ (i.e., they are genuinely negatives), which makes ∂σ = ∑ (-1)^i ∂_i σ a meaningful boundary operator.",
       "Finset.sum_involution (additive cousin of prod_involution, derived via @[to_additive]) is the ideal Mathlib hammer: it takes a dependent involution g : ∀ a ∈ s, ι with a cancellation hypothesis f a + f (g a ha) = 0 and yields ∑ x ∈ s, f x = 0 directly.",
       "The parent's interior_doors_even proof structure (using adjMap as the involution and the three CellComplex adjacency axioms) reuses verbatim for the signed cancellation, modulo replacing the parity-of-cardinality conclusion with the additive-zero conclusion.",
-      "The parent's door_transfer lemma is private, so the signed file re-proves a one-dir variant (door_transfer_signed_one_dir, 8 LOC) directly from the public adj_vertices axiom. No parent surgery is needed."
+      "The parent's door_transfer lemma is private, so the signed file re-proves a one-dir variant (door_transfer_signed_one_dir, 8 LOC) directly from the public adj_vertices axiom. No parent surgery is needed.",
+      "Lean's `structure ... extends` mechanism is the right inheritance model here: every `SignedCellComplex` is automatically a `CellComplex` via `K.toCellComplex`, so all parent-file lemmas (interior_doors_even, the three adjacency axioms) apply verbatim to signed instances. The signed file adds *only* the orientation data — no axiom re-statement, no API duplication."
     ],
     "prerequisites": [
       "SpernerNDimMathlib (abstract CellComplex with adj_symm, adj_vertices, adj_ne axioms)",
@@ -99,8 +100,8 @@
       "id": "main-theorem",
       "title": "Signed Interior Doors Sum to Zero",
       "startLine": 101,
-      "endLine": 200,
-      "summary": "signed_interior_doors_sum_zero: the central cancellation theorem. Applies Finset.sum_involution with the four obligations dispatched in case blocks (cancel/fpf/gmem/invol). The proof closely mirrors the parent's interior_doors_even structure but yields an additive-zero conclusion in ℤ instead of an even-cardinality conclusion."
+      "endLine": 207,
+      "summary": "signed_interior_doors_sum_zero: the central cancellation theorem (lines 132-202). Applies Finset.sum_involution with the four obligations dispatched in case blocks (cancel/fpf/gmem/invol). The proof closely mirrors the parent's interior_doors_even structure but yields an additive-zero conclusion in ℤ instead of an even-cardinality conclusion. Closes with the matching namespace teardown (end SignedCellComplex / end Signed / end SpernerAbstract)."
     }
   ],
   "conclusion": {
