@@ -102,8 +102,21 @@
     "type": "context",
     "title": "Forward Plan — Tucker's Lemma, Borsuk–Ulam, AlternatingFaceMapComplex",
     "content": "The signed CellComplex structure is the natural ℤ-valued substrate for two future bridges. (1) Tucker's lemma (Tucker 1946, antipodal ℤ/2-equivariant Sperner) requires an antipodal involution `ι : V → V` and a sign-respecting hypothesis on the colouring — the ℤ-valued sign field here is exactly the data needed for the equivariant counting argument. (2) Embedding into Mathlib's `AlternatingFaceMapComplex` over `ModuleCat ℤ` would tie the abstract `CellComplex` API into the standard algebraic-topology infrastructure, opening the door to spectral sequences, homology computations, and the singular-versus-simplicial comparison. Both are listed as follow-up sessions in the file's iteration plan (S2-B Mathlib bridge, S2-C Tucker scaffold, S2-D Borsuk–Ulam).",
+    "mathContext": "$\\text{AntipodalCellComplex} := \\text{SignedCellComplex} + (\\iota : V \\to V,\\ \\iota \\circ \\iota = \\mathrm{id},\\ \\iota\\ v \\neq v)$;\\ Tucker: an antipodal colouring on $\\mathrm{Sym}(\\mathbb{S}^{d-1})$ with $c(\\iota v) = -c(v)$ has a fully-coloured cell. Algebraic chain bridge: $C_\\bullet(K; \\mathbb{Z}) \\to \\text{AlternatingFaceMapComplex}\\ \\mathbb{Z}$ via $\\partial_n = \\sum_{i=0}^{n} (-1)^i\\, \\partial_i$.",
     "significance": "context",
     "relatedConcepts": ["Tucker's lemma 1946", "antipodal ℤ/2-equivariant Sperner", "AlternatingFaceMapComplex", "ModuleCat ℤ", "Borsuk–Ulam theorem", "Matoušek 2008"],
     "prerequisites": ["abstract CellComplex framework", "equivariant combinatorics intuition", "chain complex basics"]
+  },
+  {
+    "id": "ann-sum-involution-pattern",
+    "proofId": "sperner-ndim-mathlib-oq-01-oq-04",
+    "range": { "startLine": 149, "endLine": 202 },
+    "type": "technique",
+    "title": "The Four-Obligation Pattern of Finset.sum_involution",
+    "content": "Mathlib's `Finset.sum_involution` is the additive image (via `@[to_additive]`) of `Finset.prod_involution`, designed for the precise scenario at hand: a sum over a finite set where elements pair up under an involution and the paired values cancel. Invoking it requires discharging four obligations, each surfaced here as a named `case` block: (1) **cancel** — for every `p ∈ S`, `f p + f (g p hp) = 0` (here: `sign_adj`); (2) **fpf** — for every `p ∈ S` with `f p ≠ 0`, `g p hp ≠ p`, i.e., the involution has no fixed points where the summand contributes (here: `adj_ne`); (3) **gmem** — the involution preserves domain membership: `g p hp ∈ S` (here: `door_transfer_signed_one_dir` for the door predicate + `adj_symm` for the adjacency-non-`none` predicate); (4) **invol** — `g (g p hp) _ = p` (here: `adj_symm` via the extracted `signedAdjMap_invol`). Once these are dispatched, Mathlib concludes `∑ x ∈ S, f x = 0` because each pair `{p, g p}` contributes `f p + f (g p) = 0` and unpaired elements (fixed points) have `f p = 0`. The lemma's dependent-function signature `g : ∀ a ∈ s, ι` is what enables membership-aware involutions like `signedAdjMap`, where the involution's well-definedness on the source set is part of the proof obligation rather than a side condition.",
+    "mathContext": "$\\text{If } g : \\forall a \\in s,\\ \\iota,\\ \\text{ and } \\forall a\\ \\text{ha},\\ (f\\ a + f\\ (g\\ a\\ \\text{ha}) = 0)\\ \\wedge\\ (f\\ a \\neq 0 \\Rightarrow g\\ a\\ \\text{ha} \\neq a)\\ \\wedge\\ (g\\ a\\ \\text{ha} \\in s)\\ \\wedge\\ (g\\ (g\\ a\\ \\text{ha})\\ \\_ = a),\\ \\text{ then } \\sum_{x \\in s} f\\ x = 0.$",
+    "significance": "key",
+    "relatedConcepts": ["Finset.sum_involution", "Finset.prod_involution", "@[to_additive]", "dependent function arguments", "pairing argument", "fixed-point-free involution"],
+    "prerequisites": ["Finset.sum / Finset.prod", "dependent function types in Lean 4", "involution and fixed-point-free maps"]
   }
 ]

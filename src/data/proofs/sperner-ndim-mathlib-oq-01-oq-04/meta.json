@@ -60,7 +60,8 @@
       "The right coherence for adjacent facets is sign(s,k) + sign(s',k') = 0 in ℤ (i.e., they are genuinely negatives), which makes ∂σ = ∑ (-1)^i ∂_i σ a meaningful boundary operator.",
       "Finset.sum_involution (additive cousin of prod_involution, derived via @[to_additive]) is the ideal Mathlib hammer: it takes a dependent involution g : ∀ a ∈ s, ι with a cancellation hypothesis f a + f (g a ha) = 0 and yields ∑ x ∈ s, f x = 0 directly.",
       "The parent's interior_doors_even proof structure (using adjMap as the involution and the three CellComplex adjacency axioms) reuses verbatim for the signed cancellation, modulo replacing the parity-of-cardinality conclusion with the additive-zero conclusion.",
-      "The parent's door_transfer lemma is private, so the signed file re-proves a one-dir variant (door_transfer_signed_one_dir, 8 LOC) directly from the public adj_vertices axiom. No parent surgery is needed."
+      "The parent's door_transfer lemma is private, so the signed file re-proves a one-dir variant (door_transfer_signed_one_dir, 8 LOC) directly from the public adj_vertices axiom. No parent surgery is needed.",
+      "Two pragmatic engineering shifts emerged in implementation: (a) `signedAdjMap` is exposed as a public top-level definition (rather than reusing the parent's `private adjMap`), and (b) `signedAdjMap_invol` is extracted as a standalone lemma to dodge a dependent-type `generalize` failure that occurs when its proof is inlined inside the main theorem's `invol` case. Both choices preserve the proof's mathematical content but reflect the Lean-4 reality that tactic-level limitations sometimes force structural decomposition that is invisible from a paper proof."
     ],
     "prerequisites": [
       "SpernerNDimMathlib (abstract CellComplex with adj_symm, adj_vertices, adj_ne axioms)",
@@ -99,8 +100,15 @@
       "id": "main-theorem",
       "title": "Signed Interior Doors Sum to Zero",
       "startLine": 101,
-      "endLine": 200,
+      "endLine": 203,
       "summary": "signed_interior_doors_sum_zero: the central cancellation theorem. Applies Finset.sum_involution with the four obligations dispatched in case blocks (cancel/fpf/gmem/invol). The proof closely mirrors the parent's interior_doors_even structure but yields an additive-zero conclusion in ℤ instead of an even-cardinality conclusion."
+    },
+    {
+      "id": "namespace-close",
+      "title": "Namespace Closures",
+      "startLine": 204,
+      "endLine": 207,
+      "summary": "Close the nested namespaces SignedCellComplex, Signed, and SpernerAbstract. Definitions in this file are accessed externally as SpernerAbstract.Signed.SignedCellComplex.* (mirroring the parent's SpernerAbstract namespace for the unsigned CellComplex)."
     }
   ],
   "conclusion": {
@@ -132,6 +140,11 @@
       "proofId": "borsuk-ulam",
       "relationship": "supports",
       "description": "The signed CellComplex structure here is the natural ℤ-valued substrate for an equivariant Sperner argument; Tucker's lemma (the ℤ/2-equivariant Sperner statement) is the combinatorial heart of Borsuk–Ulam. This file delivers the foundational cancellation theorem; the Tucker/Borsuk–Ulam bridges remain follow-up work."
+    },
+    {
+      "proofId": "sperner-mathlib",
+      "relationship": "background",
+      "description": "Mathlib's standard Sperner formalisation. The abstract-CellComplex line (parent SpernerNDimMathlib and this signed OQ-04 extension) is a complementary, lighter-weight framework: where Mathlib uses explicit triangulations, the abstract CellComplex captures only the adjacency axioms needed for the door-counting argument. The ℤ-valued signed extension here is the natural orientation enrichment of that abstract approach."
     }
   ],
   "mainTheorems": [
