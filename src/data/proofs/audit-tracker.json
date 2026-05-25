@@ -3578,9 +3578,9 @@
     },
     "erdos-1078": {
       "agentId": "auditor-agent-2026-05-01",
-      "auditCount": 3,
-      "lastAudited": "2026-05-01T05:51:29Z",
-      "result": "issues-fixed",
+      "auditCount": 4,
+      "lastAudited": "2026-05-25T09:47:47Z",
+      "result": "clean",
       "issues": [
         "sections.comparison.summary claims theorem asymptotic_agreement (line 167-172) but only docstring exists; no Lean declaration",
         "sections.transversals.summary claims theorem extremal_construction (line 185-188) but only docstring exists; no Lean declaration"
