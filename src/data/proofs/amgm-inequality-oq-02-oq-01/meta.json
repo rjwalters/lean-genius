@@ -40,7 +40,9 @@
       "Diagonal/off-diagonal split: the $n^2$ cross-product terms decompose into $n$ diagonal terms $f(i)^2$ and $n^2 - n$ off-diagonal terms $f(i)f(j)$ with $i \\neq j$, via `Finset.add_sum_erase`",
       "The off-diagonal sum $\\sum_{i \\neq j} f(i)f(j) = 2e_2 = 2\\sum_{i < j} f(i)f(j)$ by commutativity: each unordered pair $\\{i,j\\}$ contributes both $f(i)f(j)$ and $f(j)f(i)$. This final step (not proved in this file) requires a linear order on the index type",
       "Over any CommRing: no ordering, no positivity, no limits needed. The identity $(\\sum x_i)^2 = \\sum x_i^2 + \\sum_{i \\neq j} x_i x_j$ is a pure ring identity, which is why `ring` closes the two-variable cases in one line",
-      "`DecidableEq ι` is required for `Finset.erase` but not for `Finset.sum_mul_sum` — a subtle type-class distinction showing that the main bridge theorem (Part I) is more general than the diagonal/off-diagonal decomposition (Part IV)"
+      "`DecidableEq ι` is required for `Finset.erase` but not for `Finset.sum_mul_sum` — a subtle type-class distinction showing that the main bridge theorem (Part I) is more general than the diagonal/off-diagonal decomposition (Part IV)",
+      "**$n=2$ as the gateway to the full Newton-Girard recurrence**. The identity $p_2 = e_1^2 - 2e_2$ proved here is the second case of the *Newton-Girard recurrence*: $p_k = e_1 p_{k-1} - e_2 p_{k-2} + e_3 p_{k-3} - \\cdots + (-1)^{k-1} k \\cdot e_k$ for $1 \\leq k \\leq n$ (and a homogeneous form for $k > n$). The $k=1$ case is trivial ($p_1 = e_1$); $k=2$ is this file; $k=3$ would give $p_3 = e_1 p_2 - e_2 p_1 + 3 e_3 = e_1^3 - 3 e_1 e_2 + 3 e_3$. Each higher-$k$ identity decomposes a degree-$k$ power sum into a polynomial in the elementary symmetric polynomials with rational coefficients — the *fundamental theorem of symmetric polynomials* in computable form. The Lean proof generalizes structurally: the diagonal/off-diagonal split becomes a $k$-way partition of multi-indices into 'diagonal' (constant index), 'pair-diagonal' (two-element multisets), etc., with each piece contributing a different elementary symmetric polynomial term. **Implication**: closing $k=3, 4, \\ldots$ in Lean follows the same template as $k=2$ but requires increasingly sophisticated `Finset` partition manipulation; full Newton-Girard for arbitrary $k$ in Mathlib is a known formalization gap (Mathlib has `Polynomial.NewtonSums` for the polynomial ring case but lacks the Finset-level statement this entry's framework would extend to).",
+      "**Newton-Girard $\\Rightarrow$ Maclaurin chain $\\Rightarrow$ AM-GM**. The identity $p_2 = e_1^2 - 2e_2$ specializes (when $e_1/n = e_2/\\binom{n}{2}$ equal real values) to the chain of Maclaurin's inequalities $S_1 \\geq S_2^{1/2} \\geq \\cdots \\geq S_n^{1/n}$ where $S_k = e_k / \\binom{n}{k}$ are the *normalized* elementary symmetric polynomials. Specifically: from $p_2 = e_1^2 - 2 e_2$ and $p_2 \\geq e_1^2 / n$ (Cauchy-Schwarz / power-mean), one derives $e_1^2 \\geq \\frac{2n}{n-1} e_2$, i.e., $S_1^2 \\geq S_2$, the first Maclaurin step. Iterating the higher Newton-Girard identities ($p_3 = \\ldots$, etc.) gives the full Maclaurin chain, which at the extremes recovers AM-GM ($S_1 \\geq S_n^{1/n}$) since $S_1 = (\\sum x_i)/n = \\text{AM}$ and $S_n^{1/n} = (\\prod x_i)^{1/n} = \\text{GM}$. This file is therefore not a self-contained curiosity but the *foundational base case* of a layered inequality hierarchy: every Maclaurin inequality $S_k^{1/k} \\geq S_{k+1}^{1/(k+1)}$ ultimately reduces (via Newton-Girard) to a polynomial identity provable by the same diagonal/off-diagonal decomposition technique demonstrated here at $k=2$."
     ],
     "prerequisites": [
       "Finset.sum_mul_sum: (Σf)(Σg) = ΣΣ f(i)g(j)",
@@ -121,6 +123,20 @@
       "year": "1629",
       "venue": "Amsterdam",
       "note": "Girard's earlier statement of symmetric function relations including the n=2 power sum identity"
+    },
+    {
+      "authors": "Macdonald, I. G.",
+      "title": "Symmetric Functions and Hall Polynomials",
+      "year": "1995",
+      "venue": "Oxford Mathematical Monographs, 2nd edition",
+      "note": "Definitive modern reference for symmetric function theory. Chapter I §2 develops Newton's identities $p_k = e_1 p_{k-1} - e_2 p_{k-2} + \\cdots$ as a recurrence connecting power sums $p_k$ and elementary symmetric polynomials $e_k$. The identity proved here ($p_2 = e_1^2 - 2 e_2$) is the second case of this recurrence. Macdonald's treatment uses generating-function manipulation (the logarithmic derivative of the generating function for $e_k$ equals the generating function for $p_k$), giving a uniform proof for all $k$ that the Finset-level proof here would extend."
+    },
+    {
+      "authors": "Stanley, R. P.",
+      "title": "Enumerative Combinatorics, Volume 2",
+      "year": "1999",
+      "venue": "Cambridge Studies in Advanced Mathematics 62, Cambridge University Press",
+      "note": "Chapter 7 (Symmetric Functions) develops the symmetric function ring $\\Lambda$ with bases $\\{e_\\lambda\\}, \\{p_\\lambda\\}, \\{h_\\lambda\\}, \\{m_\\lambda\\}, \\{s_\\lambda\\}$ (Schur). Newton's identities are the transition matrix between $e$-basis and $p$-basis at low degrees. The $n=2$ identity here is the $\\Lambda^2 \\to \\Lambda^2$ change of basis between $\\{e_1^2, e_2\\}$ and $\\{p_1^2, p_2\\}$. Mathlib's `Mathlib.RingTheory.Polynomial.NewtonSums` formalizes the polynomial-ring version of these identities, an upstream target for the Finset-level framework demonstrated in this file."
     }
   ],
   "sections": [
