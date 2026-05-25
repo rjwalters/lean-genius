@@ -267,3 +267,155 @@ in Lean 4 elaborate to the same rational literal.
 
 3. **Per-point Cauchy–Schwarz refinement** to chase a $1 - o(1)$
    leading constant on `improved_upper_bound`'s $n(n-1)/12$.
+
+## S12 (researcher-1, 2026-05-24) — IsBigO / IsLittleO bridge to Mathlib idiom
+
+### S12 deliverable (this iteration)
+
+Three artifacts inserted into `Erdos101OQ01.lean` after
+`bounds_at_rate_quadratic_over_twelve` (pre-edit L204 end), before the
+S2 doc block (pre-edit L208 onward). All five S9 + S10 audit-flagged
+bugs (F/G/H/I/J) inlined per S10 PREP §5.1–§5.3.
+
+| Artifact | Type | LOC | Sorries | Notes |
+|---|---|---|---|---|
+| `maxFourPointLines (n : ℕ) : ℕ := n*(n-1)/12` | noncomputable def | ~3 | 0 | aggregator surrogate |
+| `maxFourPointLines_isBigO_n_squared` | theorem | ~17 | 0 | Bug-I fix: single-norm `rw [Real.norm_of_nonneg]` |
+| `fourPointLineCount_le_max (P) (hP : NoFiveCollinear P)` | theorem | ~8 | 0 | Bug-G fix: load-bearing `NoFiveCollinear` |
+| `isLittleOh_n_squared_iff_isLittleO (g : ℕ → ℕ)` | lemma | ~28 | 0 | Bug-H fix: first materialisation |
+| `erdos_101_oq_01_isLittleO_form` | def | ~6 | 0 | Bug-F fix: existential, not concrete |
+| `erdos_101_oq_01_rate_form_iff_isLittleO` | theorem | ~10 | 0 | uses bridge lemma |
+| `erdos_101_oq_01_isLittleO` | theorem | ~4 | 1 | OPEN, the main conjecture in Mathlib idiom |
+
+Two new imports: `Mathlib.Analysis.Asymptotics.Defs` +
+`Mathlib.Order.Filter.AtTopBot.Basic`.
+
+### Counter deltas
+
+| Metric | Pre-S12 | Post-S12 | Δ |
+|---|---|---|---|
+| Sorries | 2 | 3 | +1 |
+| Axioms | 0 | 0 | 0 |
+| Theorems | 9 | 13 | +4 |
+| Lemmas | 0 | 1 | +1 |
+| Defs | 4 | 6 | +2 |
+| LOC | 471 | 603 | +132 (~78 body + ~54 docstrings) |
+
+### Why the artifact-(i) IsBigO body uses a single `Real.norm_of_nonneg`
+
+`Asymptotics.IsBigO.of_norm_le` has signature:
+```
+theorem IsBigO.of_norm_le {g : α → ℝ} (h : ∀ x, ‖f x‖ ≤ g x) : f =O[l] g
+```
+Note `g x`, **not** `‖g x‖`. After `apply IsBigO.of_norm_le; intro n`,
+the goal is:
+```
+⊢ ‖(maxFourPointLines n : ℝ)‖ ≤ (n : ℝ)^2
+```
+There is **only one** `‖·‖` to collapse (on the LHS). Using
+`rw [Real.norm_of_nonneg (by positivity)]` collapses it cleanly; no
+`show |·| ≤ |·|`, no `rw [abs_of_nonneg, abs_of_nonneg]` (the second
+`abs_of_nonneg` would have no target).
+
+This is the canonical "bearer existence audited, bearer shape not"
+pitfall — S9 PREP §6 verified the lemma's *name* but not its
+*hypothesis shape* (one norm, not two). S10 PREP §4 caught it via
+goal-state walking.
+
+### Why the artifact-(ii) bridge's `←` direction needs `c := ε/2` + `max N₀ 1` lift
+
+Going from Mathlib's `Asymptotics.IsLittleO atTop ↑g (·^2)` (`≤`-form)
+to slug's `IsLittleOh_n_squared g` (strict `<`-form) requires a strict
+gap. Mathlib's form gives `∀ c > 0, ∀ᶠ n, (g n : ℝ) ≤ c * (n : ℝ)^2`.
+To establish slug's `(g n : ℝ) < ε * (n : ℝ)^2`, we:
+
+1. Instantiate Mathlib's `c` at `ε / 2`, giving
+   `(g n : ℝ) ≤ (ε/2) * (n : ℝ)^2`.
+2. Lift `N` to `max N₀ 1` so that `(n : ℝ)^2 > 0` (the `n = 0` vacuous
+   case would fail strict `<`).
+3. `nlinarith` (with `hn_sq_pos : 0 < (n : ℝ)^2` in context) closes
+   `(g n : ℝ) ≤ (ε/2) * (n : ℝ)^2 → (g n : ℝ) < ε * (n : ℝ)^2`.
+
+The `→` direction is *direct*: slug's strict `<` is *stronger* than
+Mathlib's `≤`, so `linarith` after `Real.norm_of_nonneg` on each side
+closes it without any `c := ε/2` trick.
+
+S6 PREP §"S6 ACT scope" originally got the direction-mapping
+*backward* (assigning the `ε/2` trick to the `→` direction); S7 PREP
+§3 corrected it.
+
+### Why the per-`P` corollary needs `NoFiveCollinear` as a load-bearing hypothesis
+
+Without `hP : NoFiveCollinear P`, the bound
+`fourPointLineCount P ≤ maxFourPointLines |P|` is refutable. Counterexample:
+9 collinear points on a single line. Then:
+- `fourPointLineCount P = C(9, 4) = 126` (every 4-element subset of the 9
+  is collinear).
+- `maxFourPointLines 9 = 9 * 8 / 12 = 72 / 12 = 6`.
+
+So `126 > 6`, contradicting the bound.
+
+The hypothesis routes through `improved_upper_bound P hP` (parent file),
+which itself depends on `NoFiveCollinear` to prove
+`fourPointLineCount P ≤ |P| * (|P| - 1) / 12`. S9 PREP Bug-G first
+surfaced this — the S8 STATE-SYNC narrative's "per-P corollary" omitted
+`hP` and would have been refuted at 9 collinear points.
+
+### Why artifact (iii) is the existential form, not concrete IsLittleO on `maxFourPointLines`
+
+S8 STATE-SYNC's narrative §3 had artifact (iii) as a *concrete*
+`IsLittleO` statement: `Asymptotics.IsLittleO atTop ↑maxFourPointLines
+(·^2)`. This is **unsound**: `maxFourPointLines n = n*(n-1)/12` has
+ratio `n*(n-1)/12 / n² → 1/12`, which is *nonzero*. The IsLittleO
+statement would be **false** at this surrogate.
+
+The correct artifact (iii) is the *existential*: `∃ g : ℕ → ℕ,
+Asymptotics.IsLittleO atTop ↑g (·^2) ∧ BoundsAtRate ↑g`. The witness
+`g` is the (unknown) o(n²) rate that OQ-01 conjectures exists; the
+existential is OPEN, sorry-able.
+
+S9 PREP Bug-F first surfaced this — the S8 narrative description of
+artifact (iii) would have been false-on-elaboration at the
+`maxFourPointLines / n²` ratio limit.
+
+### Build risk
+
+Build NOT verified locally (worktree's `.lake` is a self-symlink).
+Forecast ≤ 2 Docker iterations per S10 §8 gate 7. Likely iter-2 fix
+sources:
+
+1. `Real.norm_of_nonneg` vs `Real.norm_natCast` normalisation: fall
+   back to `simp only [Real.norm_eq_abs, abs_of_nonneg (by positivity)]`.
+2. `nlinarith` in artifact (ii) ← direction: fall back to explicit
+   `calc` chain (S10 §11 ~3 extra LOC).
+
+### Why S12 is meaningful
+
+S12 is the **first** session in the S6–S10 PREP chain that actually
+edits `Erdos101OQ01.lean` — the prior six iterations (S6 plan + S7
+audit + S8 STATE-SYNC + S9 audit + S10 audit + S11 STATE-SYNC) were
+all doc-only, surfacing successive layers of audit-flagged bugs in the
+queued recipe. S12 lands the recipe verbatim with all five corrections
+inlined.
+
+The slug now has two equivalent open statements of OQ-01: the original
+ε–N `erdos_101_oq_01` and the Mathlib-idiom existential
+`erdos_101_oq_01_isLittleO`. The iff `erdos_101_oq_01_rate_form_iff_isLittleO`
+certifies their equivalence. Downstream consumers can cite OQ-01 in
+Mathlib idiom directly.
+
+### S13 next-action candidates
+
+1. **Mechanic iter-2** (if S12 PR's Docker build fails): apply fallback
+   per session-file §4.
+2. **True-sup `maxFourPointLines`**: replace surrogate `n*(n-1)/12`
+   with `Finset.sup'` over no-five-collinear point sets of fixed size
+   (~15 LOC).
+3. **Cauchy–Schwarz refinement** of `fourCollinearThrough_bound`
+   $\leq (n-1)/3$ for a $1 - o(1)$ leading constant on the $n^2/12$
+   elementary bound.
+4. **Witness extraction at small `n`** via `decide`/`native_decide`
+   on small finite combinatorics; supplies certified gallery examples.
+5. **Downstream integration**: search proofs/ for places where
+   `Asymptotics.IsLittleO`-style consumption would benefit from the
+   new bridge.
