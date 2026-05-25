@@ -2,17 +2,33 @@
 
 ## Current State
 
-**Phase**: S6 ACT — `hypersimplex_count_k_one` discharged (Option A from S5b §3 transcribed); both reference identities now proven
+**Phase**: S7 STATE-SYNC — slug COMPLETED (hypersimplex track, Option A); both reference identities proven, build verified, meta verified+original.
 **Path**: full
-**Since**: 2026-05-16T14:30Z (researcher-8, S6 ACT — k=1 discharged; build pending — Docker daemon hung)
-**Last Updated**: 2026-05-16T14:30Z (Session 8 ACT researcher-8; iteration 6 → 7)
-**Iteration**: 7
+**Since**: 2026-05-25T08:20Z (researcher-1, S7 STATE-SYNC — pool registry catch-up post-build-verify)
+**Last Updated**: 2026-05-25T08:20Z (Session 9 STATE-SYNC researcher-1; iteration 7 → 8)
+**Iteration**: 8
 
-**Sorries**: 1 → 0 (`hypersimplex_palindrome_k_d_minus_1` proven at S4 ACT 2026-05-14; `hypersimplex_count_k_one` proven at S6 ACT 2026-05-16 via Option A from S5b §3).
+**Sorries**: 0 (`hypersimplex_palindrome_k_d_minus_1` proven at S4 ACT 2026-05-14 PR #18923; `hypersimplex_count_k_one` proven at S6 ACT 2026-05-16 PR #19639 via Option A from S5b §3).
 **Axioms**: 0 (no `axiom` declarations, no structure-encoded assumptions).
-**Build**: last clean = S4 ACT 2026-05-14 (7743 Docker jobs); S6 ACT proof body PENDING build-verify (Docker daemon hung at S6 author time — disk 6.7 Gi avail, `docker info` no Server response past 8s). Bearer pin re-verified at lake SHA `2df2f0150c2` via gh-api spot-check before transcription.
-**File**: `proofs/Proofs/EhrhartCubeProvenOQ03.lean` 169 → 210 LOC.
-**Status flip readiness**: with 0 sorries + 0 axioms, eligible for `meta.status: formalized → verified` + `meta.badge: formalized → original` once Docker build clears (auditor/mechanic flip; deferred this PR per build-pending).
+**Build**: VERIFIED GREEN. S6 ACT proof body confirmed compiling post Docker recovery; mechanic flipped `meta.status: formalized → verified` and `meta.badge: formalized → original` in PR #19751 (merged 2026-05-16 same day as S6 ACT). Meta lineCount catch-up in PR #20524.
+**File**: `proofs/Proofs/EhrhartCubeProvenOQ03.lean` 210 LOC, 6 theorems, 2 definitions.
+**Meta**: `src/data/proofs/ehrhart-cube-proven-oq-03/meta.json` → `status: verified`, `badge: original`, `sorries: 0`, `axiomCount: 0`.
+
+## S7 STATE-SYNC (researcher-1, 2026-05-25, doc-only)
+
+Pool registry catch-up. The pool entry `ehrhart-cube-proven-oq-03` ("Barvinok's algorithm for lattice point counting in fixed dimension") was still status `available` despite the on-main slug having shipped axiom-free at S6 ACT and the gallery meta being `verified/original` since PR #19751. The seeker was re-selecting a slot whose deliverable is already merged.
+
+**What S7 does:** flip pool `status: available → completed` and JSON `phase: S6_ACT → COMPLETED`, `status: in-progress → completed`. Clears the four legacy blockers (Docker hung at S6 author time; bearer audit Mathlib Ehrhart absence; slot drift from Barvinok plan to hypersimplex scaffold; status-flip deferral) — all now superseded by post-S6 reality.
+
+**What S7 does NOT do:** no `.lean` edit, no `meta.json` edit, no new sibling slug creation, no scope-decision flip. The Barvinok-track Option B (spin off as `oq-05`/`-06`) remains an *independent* scope decision for seeker/curator/human triage — it is not a blocker on **this** slug, which delivered the hypersimplex track in full.
+
+**Pool entry name vs slug reality (audit note).** The pool's `name` field still reads "Barvinok's algorithm…", which is a stale seeker artefact from the original S1 plan that S2 PREP (researcher-10, 2026-05-13) found to be incompatible with the on-main hypersimplex slot. Renaming the pool entry to match `meta.json` ("Ehrhart Polynomial of the Hypersimplex: First-Principles Scaffold") is a separate seeker/curator territory edit — left out of this PR to keep S7 scope narrow (registry-state-sync only, no metadata renames). Future seekers picking from this pool will see the slug as `completed` regardless of `name`.
+
+### S7 STATE-SYNC files modified (this PR)
+
+* `research/problems/ehrhart-cube-proven-oq-03/state.md` — this section + header refresh (phase, since, last updated, iteration, sorries, build, meta).
+* `src/data/research/problems/ehrhart-cube-proven-oq-03.json` — `currentState.{phase: COMPLETED, since, iteration: 8, focus, nextAction, attemptCounts.total: 8}`, `status: in-progress → completed`, `currentState.blockers: []`, `lastUpdate`.
+* `.lean/state/candidate-pool.json` — via `claim-problem.sh update ehrhart-cube-proven-oq-03 completed` (auto: pool entry `status: available → completed`).
 
 ## S6 ACT (researcher-8, 2026-05-16, this PR)
 

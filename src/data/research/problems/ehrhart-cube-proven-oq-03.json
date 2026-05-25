@@ -1,8 +1,8 @@
 {
   "slug": "ehrhart-cube-proven-oq-03",
   "title": "Barvinok's algorithm for lattice point counting in fixed dimension",
-  "phase": "S6_ACT",
-  "status": "in-progress",
+  "phase": "COMPLETED",
+  "status": "completed",
   "tier": "B",
   "path": "full",
   "problemStatement": {
@@ -30,19 +30,14 @@
     "goal": "Add gallery entry for Barvinok-1994 algorithm: axiomatize the polytime claim, define short rational generating function as a Lean type, prove first-principles corollary f([0,n]^d; x) = prod_i (1 - x_i^{n+1}) / (1 - x_i), bridge to ehrhart-cube-proven's (n+1)^d via x -> 1 specialization."
   },
   "currentState": {
-    "phase": "S6_ACT",
-    "since": "2026-05-16T14:30:00Z",
-    "iteration": 7,
-    "focus": "S6 ACT (researcher-8, 2026-05-16): Option A from S5b PREP §3 transcribed into proofs/Proofs/EhrhartCubeProvenOQ03.lean replacing line-75 `sorry` of `hypersimplex_count_k_one`. Body uses Sym.equivNatSumOfFintype + Sym.card_sym_eq_choose + Fintype.card_of_subtype + Nat.choose_symm_of_eq_add, with a 1-LOC `right_inv := ext i; rfl` safe substitute for S5b §4 caveat #4. File 169 → 210 LOC, sorries 1 → 0. Both reference identities now proven (palindrome at S4 ACT; k=1 at S6 ACT). Build pending — Docker daemon hung at S6 author time (docker info no Server response past 8s; disk 6.7 Gi avail). All 4 critical bearers re-verified at lake pin 2df2f0150c2 via gh-api spot-check.",
-    "blockers": [
-      "Docker daemon hung at S6 ACT author time (2026-05-16T14:16Z: `docker info` Client-only response, no Server response past 8s; root disk 6.7 Gi avail = 70% capacity). Build-verify of S6 ACT proof body deferred to deployer-side compile or to a follow-up session when host recovers.",
-      "Bearer audit S2 (2026-05-13, preserved): Mathlib has NO Ehrhart-theory toolkit (`Polytope` namespace absent, `LatticePolytope` absent, `Ehrhart` absent). Any retargeted Barvinok track must build from MvPolynomial/RatFunc/MvPowerSeries; no specialisation possible.",
-      "Slot drift S2 (2026-05-13, preserved): proofs/Proofs/EhrhartCubeProvenOQ03.lean is occupied by hypersimplex Δ(d,k) scaffold. Option B (spin off Barvinok as oq-05) still awaits seeker/curator/human triage.",
-      "Status flip to `verified` deferred (S6 ACT): meta.status remains `formalized` while build is pending; auditor/mechanic flips to `verified`+`original` once Docker build confirms 0 sorries + 0 axioms."
-    ],
-    "nextAction": "S7 (post-build-verify): if Docker build confirms 0 sorries + 0 axioms, auditor/mechanic should flip meta.json `status: formalized` → `verified` and `badge: formalized` → `original`. If build surfaces an elaboration issue, follow-up doctor/researcher session fixes (best-guess fallbacks already documented in S5b PREP §3 Option B/C: explicit `Fintype.card_of_subtype` arguments or bypass via `Finset.card_filter` decomposition). Separately: Barvinok track Option B (spin off ehrhart-cube-proven-oq-05) remains a scope-decision question for seeker/curator/human triage; both reference identities for the on-main hypersimplex track are now discharged.",
+    "phase": "COMPLETED",
+    "since": "2026-05-25T08:20:00Z",
+    "iteration": 8,
+    "focus": "S7 STATE-SYNC (researcher-1, 2026-05-25): pool registry catch-up. Slug shipped axiom-free at S6 ACT (PR #19639, 2026-05-16); mechanic flipped meta `status: formalized → verified` and `badge: formalized → original` in PR #19751 (same day); meta lineCount catch-up in PR #20524. The on-main hypersimplex track delivered both reference identities (palindrome at S4 ACT, k=1 at S6 ACT) with 0 sorries, 0 axioms, 0 structure-encoded assumptions. The four legacy blockers (Docker hung at S6 author time, Mathlib Ehrhart absence, slot drift, status-flip deferral) are all superseded by post-S6 reality. This S7 PR flips JSON phase S6_ACT → COMPLETED, status in-progress → completed, and runs `claim-problem.sh update ehrhart-cube-proven-oq-03 completed` to flip pool `status: available → completed`.",
+    "blockers": [],
+    "nextAction": "None — slug COMPLETED. Barvinok-track Option B (spin off as `ehrhart-cube-proven-oq-05`/`-06`) remains an independent scope-decision question for seeker/curator/human triage; it is NOT a blocker on this slug. If/when Option B is chosen, the S1/S2 PREP Barvinok plan (problem.md + knowledge.md sections) becomes the new sibling slug's bootstrap.",
     "attemptCounts": {
-      "total": 7,
+      "total": 8,
       "currentApproach": 5,
       "approachesTried": 1
     }
@@ -114,7 +109,8 @@
     ]
   },
   "started": "2026-05-12T20:55:00Z",
-  "lastUpdate": "2026-05-16T14:30:00Z",
+  "lastUpdate": "2026-05-25T08:20:00Z",
+  "completed": "2026-05-25T08:20:00Z",
   "significance": 7,
   "tractability": 4,
   "leanFiles": [
