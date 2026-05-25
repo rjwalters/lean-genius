@@ -59,7 +59,8 @@
       "**subgroupOf_sup key lemma**: `(A ⊔ B).subgroupOf C = A.subgroupOf C ⊔ B.subgroupOf C` — used in `sup_eq_of_isMaximal` to show $x \\vee y$ is relatively normal in $z$ when both $x$ and $y$ are relatively normal in $z$. This reflects the lattice homomorphism property of `subgroupOf`: pulling back along the inclusion $z \\hookrightarrow G$ preserves joins.",
       "**The element-wise argument in isMaximal_inf_left_of_isMaximal_sup**: The maximality step — showing N = x when N ⊔ y = x ⊔ y — uses a direct membership argument: for any $a \\in x$, write $a = nb$ with $n \\in N, b \\in y$ (using `Subgroup.mem_sup`); then $b = n^{-1}a \\in x \\cap y \\leq N$ (since $n \\in N \\leq x$), so $a = nb \\in N$. This avoids needing to transfer simplicity through the second isomorphism.",
       "**Uniqueness as the key to Abel-Ruffini's absoluteness**: Jordan-Hölder guarantees the composition series of $S_5$ is unique: $\\{e\\} \\triangleleft A_5 \\triangleleft S_5$. The non-abelian simple factor $A_5$ cannot be avoided by any alternative decomposition. This is what makes the degree-5 impossibility absolute — not just an artifact of one particular analysis, but a structural necessity enforced by Jordan-Hölder uniqueness.",
-      "**Contributed to Mathlib**: The JordanHolderLattice instance proved here fills a gap in Mathlib's formalization infrastructure, making Jordan-Hölder available for groups as a concrete instance rather than an abstract exercise. A natural next step is contributing this to Mathlib upstream."
+      "**Contributed to Mathlib**: The JordanHolderLattice instance proved here fills a gap in Mathlib's formalization infrastructure, making Jordan-Hölder available for groups as a concrete instance rather than an abstract exercise. A natural next step is contributing this to Mathlib upstream.",
+      "**Fundamental theorem of arithmetic — explicit dictionary**: Jordan-Hölder is precisely the group-theoretic counterpart of unique prime factorization, and the analogy is exact at the structural level. For integers: every $n \\geq 2$ factors as $n = p_1^{a_1} \\cdots p_k^{a_k}$, unique up to permutation; the building blocks are *primes*, the indecomposable positive integers under multiplication. For groups: every finite group $G$ has a composition series with factors $\\{G_{i+1}/G_i\\}$, unique as a multiset up to permutation and isomorphism; the building blocks are *finite simple groups*, the indecomposable objects under group extension. The Jordan-Hölder theorem proved here ($\\texttt{jordan\\_holder\\_subgroups}$) is the group analogue of the *uniqueness* clause; existence of a composition series (for finite groups, automatic; for infinite groups, requires additional hypotheses) is the analogue of existence of prime factorization. The dictionary breaks one place: integer multiplication is commutative, so $p_1^{a_1} \\cdots p_k^{a_k}$ is well-defined as an ordered product; group extensions are non-commutative (the extension class in $H^2$ matters), so 'same composition factors' does *not* imply 'isomorphic groups' — e.g., $\\mathbb{Z}/6\\mathbb{Z}$ and $S_3$ both have composition factors $\\{\\mathbb{Z}/2, \\mathbb{Z}/3\\}$ but are non-isomorphic. Jordan-Hölder gives uniqueness of the *factor multiset* but not of the group itself — the extension data (recovered via group cohomology) is the additional information needed to reconstruct $G$ from its composition factors."
     ]
   },
   "conclusion": {
@@ -255,6 +256,26 @@
       "targetId": "abel-ruffini-oq-04-oq-02-oq-03",
       "relationship": "complementary",
       "description": "Proves all finite groups of order $< 60$ are solvable. $A_5$ (order 60) is the minimal non-solvable group — equivalently, the first group to have a non-cyclic composition factor. Jordan-Hölder makes this precise: the 59 groups of smaller order all have composition series with only cyclic factors"
+    },
+    {
+      "targetId": "abel-ruffini-oq-04-oq-02-oq-02",
+      "relationship": "complementary",
+      "description": "Alternating Groups: $A_n$ solvable $\\iff n \\leq 4$. Jordan-Hölder uniqueness sharpens this classification: the composition series of $A_n$ for $n \\geq 5$ is forced to be the single chain $\\{e\\} \\triangleleft A_n$ (since $A_n$ itself is simple for $n \\geq 5$). This uniqueness — that no decomposition can split $A_n$ into smaller pieces — is exactly what Jordan-Hölder guarantees, making the non-solvability boundary structurally absolute rather than a feature of one analysis."
+    },
+    {
+      "targetId": "lagrange-theorem",
+      "relationship": "foundational",
+      "description": "Lagrange's theorem $|G| = |H| \\cdot [G:H]$ underlies the numerical content of Jordan-Hölder: the product of the orders of the composition factors equals $|G|$. For $S_5$: $|S_5| = |\\mathbb{Z}/2\\mathbb{Z}| \\cdot |A_5| = 2 \\cdot 60 = 120$, matching $5! = 120$. Jordan-Hölder uniqueness turns this multiplicative identity into a *unique factorization* statement — the analogue of the fundamental theorem of arithmetic, where the simple-group factors play the role of primes. Lagrange's theorem alone gives the divisibility constraints; Jordan-Hölder gives the uniqueness of the factor multiset."
+    },
+    {
+      "targetId": "solution-of-cubic",
+      "relationship": "complementary",
+      "description": "Cardano's cubic formula — the constructive realization of $S_3$'s Jordan-Hölder composition series $\\{e\\} \\triangleleft A_3 \\triangleleft S_3$ with factors $\\mathbb{Z}/3\\mathbb{Z}$ (cyclic of order 3, the cube-root step) and $\\mathbb{Z}/2\\mathbb{Z}$ (cyclic of order 2, the square-root step). Jordan-Hölder uniqueness guarantees this two-layer decomposition is the *only* composition series of $S_3$, explaining why Cardano's formula has its specific two-radical structure (one cube root inside one square root) — no alternative algebraic decomposition exists. Together with `general-quartic` (Ferrari), provides the constructive content corresponding to the smallest Jordan-Hölder series for non-abelian solvable symmetric groups."
+    },
+    {
+      "targetId": "general-quartic",
+      "relationship": "complementary",
+      "description": "Ferrari's quartic formula — the constructive realization of $S_4$'s Jordan-Hölder composition series $\\{e\\} \\triangleleft V_4 \\triangleleft A_4 \\triangleleft S_4$ with factors $V_4 \\cong (\\mathbb{Z}/2\\mathbb{Z})^2$, $\\mathbb{Z}/3\\mathbb{Z}$, and $\\mathbb{Z}/2\\mathbb{Z}$. Jordan-Hölder uniqueness guarantees this three-layer decomposition is the *only* composition series of $S_4$, explaining why Ferrari's formula has exactly three nested radical layers (matching the derived length 3 of $S_4$). The Klein four-group $V_4$ at the bottom — the unique proper non-trivial normal subgroup of $A_4$ — is the *unique* possible composition factor at that level, making Ferrari's resolvent cubic structurally forced rather than an arbitrary choice."
     }
   ],
   "references": [
