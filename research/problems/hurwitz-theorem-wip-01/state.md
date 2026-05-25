@@ -2,15 +2,35 @@
 
 ## Current State
 
-**Phase**: PARK (still BLOCKED, single-step blocker; refined crit-IPS)
+**Phase**: BLOCKED (6 iterations, single-step Mathlib blocker; pin-gated)
 **Path**: full
-**Since**: 2026-05-08T16:30:00Z
-**Iteration**: 5
+**Since**: 2026-05-25T07:22:00Z
+**Iteration**: 6
 
 ## Current Focus
 
-Iteration 5 (PARK): second Mathlib master re-survey, ~9 hours after S4. **No
-movement** on either crit-F (Frobenius for real division algebras) or
+Iteration 6 (BLOCKED): re-confirmed the blocker stands and identified the
+**dependency-pin gate** the prior five sessions missed. The project does not
+track Mathlib master — `proofs/lake-manifest.json` pins mathlib4 to release
+**v4.26.0** (rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`). v4.26.0 has no
+real-Clifford structure classification, no Frobenius-for-real-division-algebras
+theorem, and no parallelogram-identity-from-NormedDivisionRing. So the S3–S5
+"wait for Mathlib master" unblock plan was necessary but **not sufficient**:
+even if crit-F / crit-PI land upstream, this project cannot compile against
+them until someone bumps the Mathlib pin to a release containing them. This
+explains why five sessions of "waiting" produced zero movement — the project
+isn't tracking the branch they were watching.
+
+State verified this session: 2 genuine open sorries remain
+(`HurwitzTheorem.lean:1937` even n∉{2,4,8}; `HurwitzOnlyIf.lean:111`
+`hurwitz_only_if_ring`), 0 axioms across all three Hurwitz files,
+`HurwitzTheoremOQ04.lean` has 0 genuine sorries (its "sorry" mentions are
+docstring annotations on already-proved lemmas). All linear-algebra
+infrastructure for the impossibility argument is in place; the sole gap is
+the Clifford structure theorem (~1000 lines of Mathlib additions).
+
+**Iteration 5 (prior, PARK)**: second Mathlib master re-survey, ~9 hours after
+S4. **No movement** on either crit-F (Frobenius for real division algebras) or
 crit-IPS (InnerProductSpace from NormedDivisionRing). Mathlib commits to
 `Mathlib/LinearAlgebra/CliffordAlgebra/` since 2026-04-15 are all chore-only
 (documented in S5 report). The single missing theorem from S4 stands.
@@ -36,13 +56,19 @@ available, Frobenius alone suffices to pin down the `D` in the
 
 ## Active Approach
 
-**Wait** — until Mathlib gains a Frobenius-for-real-division-algebras theorem
-or an InnerProductSpace-from-NormedDivisionRing construction. See "Unblock
-Criteria" for concrete trigger conditions.
+**BLOCKED — recommend pool status `blocked` and move on.** Six sessions have
+converged on the same single-step Mathlib blocker, which is additionally
+pin-gated (project tracks mathlib4 v4.26.0, not master). Per the researcher
+STUCK rule (3+ sessions on the same sorry → flag BLOCKED), this problem should
+be removed from the active claim pool until the two-part unblock condition
+below is met. The candidate-pool entry currently reads `available` even though
+the problem JSON already reads `blocked`; aligning the pool to `blocked` stops
+the depth-first claimer from repeatedly serving this RICH problem to
+researchers who can only re-confirm the blocker.
 
 ## Attempt Count
 
-- Total attempts: 5
+- Total attempts: 6
 - Approaches tried:
   1. (S2, prior session) OBSERVE / SURVEY: enumerate proved infrastructure,
      classify what's left, identify Mathlib gap precisely.
@@ -53,13 +79,20 @@ Criteria" for concrete trigger conditions.
      **already landed**; pruned blocker list; sharpened the unblock
      criteria to a two-bullet wishlist (Frobenius theorem OR
      `InnerProductSpace`-from-`NormedDivisionRing`).
-  4. (S5, this session) Second Mathlib re-survey (~9h after S4): no
+  4. (S5, prior session) Second Mathlib re-survey (~9h after S4): no
      movement on crit-F or crit-IPS; CliffordAlgebra/ commits all
      chore-only since 2026-04-15. Discovered
      `Mathlib.Analysis.InnerProductSpace.OfNorm.InnerProductSpace.ofNorm`,
      which refactors crit-IPS into a three-step bridge with a cheap
      middle step — the new bottleneck is the parallelogram identity for
      finite-dim NormedDivisionRing, which is itself Frobenius in disguise.
+  5. (S6, this session) Verified current file state (2 open sorries, 0
+     axioms) and identified the **dependency-pin gate**: project pins
+     mathlib4 v4.26.0 (lake-manifest), so it does not see master. Unblock
+     now requires BOTH an upstream theorem AND a Mathlib pin bump.
+     Recommend pool status `blocked`; declined the n=6/n=10 small-case
+     route (enumeration theater that saturates per S2/S5 insights and still
+     needs the Wedderburn structure of Cl(0,5)/Cl(0,9)).
 
 ## Blockers (revised after S5)
 
@@ -140,6 +173,17 @@ in mathlib4 master:
 Any one suffices: `crit-F` + already-available Wedderburn–Artin closes the
 sorry directly; `crit-PI` (or equivalently `crit-IPS`) enables the option-B
 refactor.
+
+- **(crit-PIN, S6)** **Necessary in addition to any of the above.** The
+  project pins mathlib4 to release **v4.26.0** in
+  `proofs/lake-manifest.json` (rev `2df2f0150c275ad53cb3c90f7c98ec15a56a1a67`,
+  inputRev `v4.26.0`). A theorem landing in Mathlib *master* does not unblock
+  this project until the pin is bumped to a tagged release that contains it.
+  So the real trigger is: (crit-F ∨ crit-PI ∨ crit-IPS) lands in a Mathlib
+  release **AND** this repo bumps its Mathlib pin to ≥ that release. The pin
+  bump is an infrastructure/tooling change, not a researcher action — track it
+  separately (it may carry its own downstream breakage to fix across the
+  proof corpus).
 
 **Note on crit-PI**: the parallelogram identity for any finite-dim NDR over
 ℝ is **essentially equivalent** to the conclusion we want (it implies the
