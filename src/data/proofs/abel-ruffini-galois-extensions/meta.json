@@ -384,6 +384,24 @@
       "year": "1970",
       "venue": "Mathematische Zeitschrift 113: 373–375",
       "note": "Character-free proof of Burnside's theorem for the case where both primes are odd. Together with Matsuyama (1973) — who handled the case $p = 2$ — provides a fully elementary route to Burnside's $p^a q^b$ theorem, sidestepping representation theory. Cited in the openQuestion as the technical path most amenable to Lean formalization, since Mathlib has stronger group-theoretic infrastructure than character-theoretic infrastructure."
+    },
+    {
+      "authors": [
+        "C. Jordan"
+      ],
+      "title": "Traité des substitutions et des équations algébriques",
+      "year": "1870",
+      "venue": "Gauthier-Villars, Paris (xviii + 667 pp.)",
+      "note": "The first systematic treatise on group theory and its application to polynomial equations. Jordan's *Traité* organized Galois's posthumously published manuscripts (Liouville 1846) into a coherent algebraic theory, introducing the modern terminology of *groupe* (group), *substitution* (permutation), *transitivité* (transitivity), and *primitivité* (primitivity) used throughout this Lean formalization (`Equiv.Perm`, transitive action, simple group). Book III ('Des équations algébriques') develops the complete solvability classification: $S_n$ solvable iff $n \\leq 4$ via explicit derivation of the chain $\\{e\\} \\trianglelefteq V_4 \\trianglelefteq A_4 \\trianglelefteq S_4 \\trianglelefteq S_5$, with $V_4$ identified as 'le groupe quaternaire' (Jordan's name for the Klein four-group three years before Klein himself studied it). The *Traité* established that the simple group $A_5$ is the structural obstruction at $n = 5$, anticipating Hölder's 1889 formulation of the Jordan-Hölder theorem. Foundational reference for the entire solvability framework formalized in this file."
+    },
+    {
+      "authors": [
+        "M. Bhargava"
+      ],
+      "title": "The density of discriminants of quartic rings and fields",
+      "year": "2005",
+      "venue": "Annals of Mathematics, Second Series, 162(2): 1031–1063",
+      "note": "Established Malle's conjecture for $G = S_4$: the number of quartic number fields $K/\\mathbb{Q}$ with $|\\text{disc}(K)| \\leq X$ is asymptotically $c \\cdot X$, with explicit constant $c$. Companion paper 'The density of discriminants of quintic rings and fields' (Annals of Mathematics 172(3): 1559–1591, 2010) proves the corresponding asymptotic for $G = S_5$. Together with Davenport-Heilbronn (1971) for $S_3$ and Wright (1989) for abelian groups, this fully resolves Malle's conjecture for $S_n$ with $n \\leq 5$ via Bhargava's prehomogeneous-vector-spaces method (the basis of his 2014 Fields Medal). For $G = A_5$ (non-solvable, order 60), only the upper bound from Bhargava-Shankar-Tsimerman (2010) is known — the precise asymptotic remains open, the quantitative frontier directly beyond this file's qualitative threshold. Cited in the Malle-conjecture openQuestion."
     }
   ],
   "sections": [
